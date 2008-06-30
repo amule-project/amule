@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-28 03:30+0200\n"
+"POT-Creation-Date: 2008-06-30 03:30+0200\n"
 "PO-Revision-Date: 2008-06-12 12:08+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -145,15 +145,15 @@ msgstr "No s'han pogut obtenir els compartits de l'usuari '%s'"
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1424
-#: src/DownloadListCtrl.cpp:1437 src/DownloadListCtrl.cpp:1448
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1415
+#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
-#: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
-#: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
+#: src/ClientListCtrl.cpp:668 src/ClientListCtrl.cpp:691
+#: src/ClientListCtrl.cpp:699 src/ClientListCtrl.cpp:863
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
-#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:409
+#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:407
 msgid "Unknown"
 msgstr "Desconegut"
 
@@ -219,8 +219,8 @@ msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Client %s amb IP:Port %s:%d usant %s %s %s"
 
 #: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:55
-#: src/ClientListCtrl.cpp:504 src/ClientListCtrl.cpp:829
-#: src/ClientListCtrl.cpp:997
+#: src/ClientListCtrl.cpp:499 src/ClientListCtrl.cpp:825
+#: src/ClientListCtrl.cpp:993
 msgid "Username"
 msgstr "Usuari"
 
@@ -228,8 +228,8 @@ msgstr "Usuari"
 msgid "Friends"
 msgstr "Amics"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1022
-#: src/ClientListCtrl.cpp:253
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1018
+#: src/ClientListCtrl.cpp:248
 msgid "Show &Details"
 msgstr "Mostra els &detalls"
 
@@ -245,8 +245,8 @@ msgstr "Elimina l'amic"
 msgid "Send &Message"
 msgstr "Envia un &missatge"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1024
-#: src/ClientListCtrl.cpp:255
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1020
+#: src/ClientListCtrl.cpp:250
 msgid "View Files"
 msgstr "Veure els compartits"
 
@@ -265,7 +265,7 @@ msgstr "Esteu segur que voleu esborrar els amics seleccionats?"
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
-#: src/DownloadListCtrl.cpp:583 src/DownloadListCtrl.cpp:903
+#: src/DownloadListCtrl.cpp:579 src/DownloadListCtrl.cpp:899
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:925
 #: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:1065 src/muuli_wdr.cpp:2540
 #: src/muuli_wdr.cpp:2642 src/muuli_wdr.cpp:3424
@@ -329,13 +329,13 @@ msgid "Error on completion"
 msgstr "Error completant"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
+#: src/DownloadListCtrl.cpp:187 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Fitxer"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
-#: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:630
+#: src/DownloadListCtrl.cpp:188 src/PartFileConvert.cpp:630
 msgid "Size"
 msgstr "Mida"
 
@@ -345,7 +345,7 @@ msgstr "Tipus"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:902
+#: src/DownloadListCtrl.cpp:194 src/DownloadListCtrl.cpp:898
 msgid "Priority"
 msgstr "Prioritat"
 
@@ -369,8 +369,8 @@ msgstr "Dades transferides"
 msgid "Share Ratio"
 msgstr "Rati"
 
-#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:512
-#: src/ClientListCtrl.cpp:839
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:507
+#: src/ClientListCtrl.cpp:835
 msgid "Obtained Parts"
 msgstr "Parts obtingudes"
 
@@ -393,19 +393,19 @@ msgstr "Molt baixa"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2604
+#: src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:2604
 msgid "Low"
 msgstr "Baixa"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2605
+#: src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:2605
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:2606
+#: src/DownloadListCtrl.cpp:895 src/muuli_wdr.cpp:2606
 msgid "High"
 msgstr "Alta"
 
@@ -417,7 +417,7 @@ msgstr "Molt alta"
 msgid "Release"
 msgstr "Llançament"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:900
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:896
 #: src/muuli_wdr.cpp:2607
 msgid "Auto"
 msgstr "Auto"
@@ -442,7 +442,7 @@ msgstr "Afegeix els fitxers de la col·lecció a les transferències"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Copia l'enllaç en format &Magnet al porta-retalls"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:944
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:940
 msgid "Copy eD2k &link to clipboard"
 msgstr "Copia &l'enllaç eD2k al porta-retalls"
 
@@ -469,11 +469,11 @@ msgstr ""
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Copia l'enllaç eD2k al porta-retalls (amb l'informació &AICH)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:946
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:942
 msgid "Copy feedback to clipboard"
 msgstr "Copia la &informació al porta-retalls"
 
-#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:729
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:725
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -496,15 +496,15 @@ msgstr "AVÍS"
 msgid "Shared Files (%i)"
 msgstr "Fitxers compartits (%i)"
 
-#: src/SharedFilesCtrl.cpp:609
+#: src/SharedFilesCtrl.cpp:589
 msgid "[PartFile]"
 msgstr "[Fitxer de parts]"
 
-#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1081
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1077
 msgid "Enter new name for this file:"
 msgstr "Introduïu un nom nou per al fitxer:"
 
-#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1082
+#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1078
 msgid "File rename"
 msgstr "Reanomena"
 
@@ -548,77 +548,77 @@ msgstr[1] "S'han escrit %d contactes Kad"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "ERROR: No s'ha pogut escoltar el port TCP."
 
-#: src/webserver/src/WebServer.cpp:301
+#: src/webserver/src/WebServer.cpp:307
 msgid "web client connection accepted\n"
 msgstr "s'ha acceptat la connexió del client web\n"
 
-#: src/webserver/src/WebServer.cpp:304
+#: src/webserver/src/WebServer.cpp:310
 msgid "ERROR: can not accept web client connection\n"
 msgstr "ERROR: no es pot acceptar la connexió del client web\n"
 
-#: src/webserver/src/WebServer.cpp:374
+#: src/webserver/src/WebServer.cpp:380
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Ha fallat la petició amb el següent error: %s."
 
-#: src/webserver/src/WebServer.cpp:377 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:383 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "La petició ha fallat amb un error desconegut."
 
-#: src/webserver/src/WebServer.cpp:1738
+#: src/webserver/src/WebServer.cpp:1744
 msgid "Index file not found: "
 msgstr "No s'ha trobat el fitxer d'índex:"
 
-#: src/webserver/src/WebServer.cpp:1815
+#: src/webserver/src/WebServer.cpp:1821
 msgid "Session expired - requesting login\n"
 msgstr "La sessió ha caducat - s'està demanant la identificació\n"
 
-#: src/webserver/src/WebServer.cpp:1820
+#: src/webserver/src/WebServer.cpp:1826
 msgid "Session ok, logged in\n"
 msgstr "Sessió correcta, identificat\n"
 
-#: src/webserver/src/WebServer.cpp:1822
+#: src/webserver/src/WebServer.cpp:1828
 msgid "Session ok, not logged in\n"
 msgstr "Sessió correcta, sense identificar\n"
 
-#: src/webserver/src/WebServer.cpp:1827
+#: src/webserver/src/WebServer.cpp:1833
 msgid "No session opened - will request login\n"
 msgstr "No hi ha cap sessió oberta - es demanarà identificació\n"
 
-#: src/webserver/src/WebServer.cpp:1836
+#: src/webserver/src/WebServer.cpp:1842
 msgid "Session created - requesting login\n"
 msgstr "Sessió creada - s'està demanant la identificació\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1859
 msgid "Processing request [original]: "
 msgstr "S'està processant la petició [original]: "
 
-#: src/webserver/src/WebServer.cpp:1869
+#: src/webserver/src/WebServer.cpp:1875
 msgid "Checking password\n"
 msgstr "S'està comprovant la contrasenya\n"
 
-#: src/webserver/src/WebServer.cpp:1874
+#: src/webserver/src/WebServer.cpp:1880
 msgid "Password hash invalid\n"
 msgstr "El resum de la contrasenya és invàlid\n"
 
-#: src/webserver/src/WebServer.cpp:1889
+#: src/webserver/src/WebServer.cpp:1895
 msgid "Password ok\n"
 msgstr "Contrasenya correcta\n"
 
-#: src/webserver/src/WebServer.cpp:1891
+#: src/webserver/src/WebServer.cpp:1897
 msgid "Password bad\n"
 msgstr "Contrasenya incorrecta\n"
 
-#: src/webserver/src/WebServer.cpp:1894
+#: src/webserver/src/WebServer.cpp:1900
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
 "No heu especificat cap contrasenya. No es permet una contrasenya en blanc.\n"
 
-#: src/webserver/src/WebServer.cpp:1902
+#: src/webserver/src/WebServer.cpp:1908
 msgid "Logout requested\n"
 msgstr "Eixida sol·licitada\n"
 
-#: src/webserver/src/WebServer.cpp:1907
+#: src/webserver/src/WebServer.cpp:1913
 msgid "Processing request [redirected]: "
 msgstr "S'està processant la petició [redirigit]: "
 
@@ -1064,13 +1064,13 @@ msgid "HighID"
 msgstr "ID Alta"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
-#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:878
+#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:874
 #: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "ID Baixa"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:401
+#: src/MuleTrayIcon.cpp:399
 msgid "Not Connected"
 msgstr "Desconnectat"
 
@@ -1189,7 +1189,7 @@ msgstr "Desa"
 msgid "Copy to clipboard"
 msgstr "Copia al porta-retalls"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:561
+#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:559
 msgid "Exit"
 msgstr "Surt"
 
@@ -1305,7 +1305,7 @@ msgstr "Auto [No]"
 msgid "Auto [Hi]"
 msgstr "Auto [Al]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:647
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "Connectant"
@@ -1314,20 +1314,20 @@ msgstr "Connectant"
 msgid "Asking"
 msgstr "Preguntant"
 
-#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:656
+#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:651
 msgid "Connecting via server"
 msgstr "S'està connectant via servidor"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
-#: src/ClientListCtrl.cpp:691
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1685
+#: src/ClientListCtrl.cpp:686
 msgid "Queue Full"
 msgstr "Cua plena"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:669
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:664
 msgid "On Queue"
 msgstr "Cua"
 
-#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:661
+#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:656
 msgid "Transferring"
 msgstr "Transferint"
 
@@ -1356,7 +1356,7 @@ msgid "Too many Kad connections"
 msgstr "Massa connexions Kad"
 
 #: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
-#: src/ClientListCtrl.cpp:838
+#: src/ClientListCtrl.cpp:834
 msgid "Banned"
 msgstr "Expulsats"
 
@@ -1413,166 +1413,166 @@ msgstr "Llavors font"
 msgid "Search Result"
 msgstr ""
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "System default"
 msgstr "Predeterminat"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Albanian"
 msgstr "Albanès"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Arabic"
 msgstr "Àrab"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:631
 msgid "Basque"
 msgstr "Basc"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:632
 msgid "Bulgarian"
 msgstr "Búlgar"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Catalan"
 msgstr "Català; Valencià"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:634
 msgid "Chinese (Simplified)"
 msgstr "Xinès (Simplificat)"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:635
 msgid "Chinese (Traditional)"
 msgstr "Xinès (Tradicional)"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:636
 msgid "Croatian"
 msgstr "Croat"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:637
 msgid "Czech"
 msgstr "Txec"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:638
 msgid "Danish"
 msgstr "Danès"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:639
 msgid "Dutch"
 msgstr "Holandès"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:640
 msgid "English (U.K.)"
 msgstr "Anglès (R.U.)"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:641
 msgid "Estonian"
 msgstr "Estonià"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:642
 msgid "Finnish"
 msgstr "Finès"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:643
 msgid "French"
 msgstr "Francès"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:644
 msgid "Galician"
 msgstr "Gallec"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:645
 msgid "German"
 msgstr "Alemany"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:646
 msgid "Greek"
 msgstr "Grec"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:647
 msgid "Hebrew"
 msgstr "Hebreu"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Hungarian"
 msgstr "Hongarès"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Italian"
 msgstr "Italià"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Italian (Swiss)"
 msgstr "Italià (Suïssa)"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Japanese"
 msgstr "Japonès"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Korean"
 msgstr "Coreà"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Lithuanian"
 msgstr "Lituà"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Norwegian (Nynorsk)"
 msgstr "Noruec"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Polish"
 msgstr "Polonès"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Portuguese"
 msgstr "Portuguès"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Portuguese (Brazilian)"
 msgstr "Portuguès (Brasil)"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Russian"
 msgstr "Rus"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Slovenian"
 msgstr "Eslovè"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Spanish"
 msgstr "Espanyol; Castellà"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Swedish"
 msgstr "Suec"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "Turc"
 
-#: src/Preferences.cpp:813
+#: src/Preferences.cpp:814
 msgid "User:"
 msgstr ""
 
-#: src/Preferences.cpp:838
+#: src/Preferences.cpp:839
 msgid "System:"
 msgstr ""
 
-#: src/Preferences.cpp:849
+#: src/Preferences.cpp:850
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1643
+#: src/Preferences.cpp:1644
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "El port TCP no pot ser més gran que 65532 puix el sòcol UDP del servidor és "
 "TCP+3"
 
-#: src/Preferences.cpp:1644
+#: src/Preferences.cpp:1645
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "S'usarà el port per defecte (%d)"
@@ -1625,8 +1625,8 @@ msgstr ""
 "Esteu intentant esborrar un servidor al què esteu connectat. Per favor, "
 "desconnecteu-vos primer. NO s'ha esborrat el servidor."
 
-#: src/ServerListCtrl.cpp:144 src/CatDialog.cpp:142 src/CatDialog.cpp:152
-#: src/CatDialog.cpp:160 src/ServerList.cpp:341 src/amule.cpp:713
+#: src/ServerListCtrl.cpp:144 src/CatDialog.cpp:141 src/CatDialog.cpp:151
+#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:713
 #: src/amule.cpp:1329
 msgid "Info"
 msgstr "Informació"
@@ -1640,15 +1640,15 @@ msgstr "(Nom desconegut)"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Esteu segur que voleu esborrar el servidor estàtic %s"
 
-#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:907
-#: src/ClientListCtrl.cpp:1050 src/ClientListCtrl.cpp:1063
-#: src/ClientListCtrl.cpp:1069
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:903
+#: src/ClientListCtrl.cpp:1046 src/ClientListCtrl.cpp:1059
+#: src/ClientListCtrl.cpp:1065
 msgid "Yes"
 msgstr "Sí"
 
-#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:909
-#: src/ClientListCtrl.cpp:1052 src/ClientListCtrl.cpp:1063
-#: src/ClientListCtrl.cpp:1069
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:905
+#: src/ClientListCtrl.cpp:1048 src/ClientListCtrl.cpp:1059
+#: src/ClientListCtrl.cpp:1065
 msgid "No"
 msgstr "No"
 
@@ -1723,7 +1723,7 @@ msgstr "Esteu segur que voleu esborrar el servidor seleccionat?"
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "Esteu segur que voleu esborrar els servidors seleccionats?"
 
-#: src/OScopeCtrl.cpp:242
+#: src/OScopeCtrl.cpp:241
 #, c-format
 msgid "Disabled [%s]"
 msgstr "Inhabilitat [%s]"
@@ -1846,7 +1846,7 @@ msgstr "Kad: Inativa"
 msgid "Stop the current connection attempts"
 msgstr "Atura els intents de connexió actuals"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:540
+#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "Desconnecta"
 
@@ -1855,7 +1855,7 @@ msgid "Disconnect from the currently connected networks"
 msgstr "Desconnecta de les xarxes on s'està connectat actualment."
 
 #: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:2987 src/muuli_wdr.cpp:3420
-#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:543
+#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "Connecta"
 
@@ -2117,41 +2117,41 @@ msgstr ""
 "Feu clic sobre el botó \"Llista\" d'aquest quadre de verificació per afegir "
 "una adreça."
 
-#: src/PrefsUnifiedDlg.cpp:809
+#: src/PrefsUnifiedDlg.cpp:808
 msgid "Temporary files"
 msgstr "Fitxers temporals"
 
-#: src/PrefsUnifiedDlg.cpp:814
+#: src/PrefsUnifiedDlg.cpp:813
 msgid "Incoming files"
 msgstr "Fitxers entrants"
 
-#: src/PrefsUnifiedDlg.cpp:819
+#: src/PrefsUnifiedDlg.cpp:818
 msgid "Online Signatures"
 msgstr "Signatures en línia"
 
-#: src/PrefsUnifiedDlg.cpp:832
+#: src/PrefsUnifiedDlg.cpp:831
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Carpeta per a %s"
 
-#: src/PrefsUnifiedDlg.cpp:852
+#: src/PrefsUnifiedDlg.cpp:851
 msgid "Browse for videoplayer"
 msgstr "Explora per a trobar un reproductor de vídeo"
 
-#: src/PrefsUnifiedDlg.cpp:856
+#: src/PrefsUnifiedDlg.cpp:855
 msgid "Select browser"
 msgstr "Selecciona navegador"
 
-#: src/PrefsUnifiedDlg.cpp:862
+#: src/PrefsUnifiedDlg.cpp:861
 #, c-format
 msgid "Executable%s"
 msgstr "Executable%s"
 
-#: src/PrefsUnifiedDlg.cpp:883
+#: src/PrefsUnifiedDlg.cpp:882
 msgid "Edit server list"
 msgstr "Edita la llista de servidors"
 
-#: src/PrefsUnifiedDlg.cpp:884
+#: src/PrefsUnifiedDlg.cpp:883
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2159,83 +2159,83 @@ msgstr ""
 "Afegiu ací adreces d'on baixar el fitxer server.met.\n"
 "Només una adreça a cada línia."
 
-#: src/PrefsUnifiedDlg.cpp:940
+#: src/PrefsUnifiedDlg.cpp:939
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Retard de l'actualització: %d seg"
 msgstr[1] "Retard de l'actualització: %d segs"
 
-#: src/PrefsUnifiedDlg.cpp:947
+#: src/PrefsUnifiedDlg.cpp:946
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Temps per al gràfic de mitjanes: %d min"
 msgstr[1] "Temps per al gràfic de mitjanes: %d mins"
 
-#: src/PrefsUnifiedDlg.cpp:953
+#: src/PrefsUnifiedDlg.cpp:952
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Escala del gràfic de connexions: %d"
 
-#: src/PrefsUnifiedDlg.cpp:959
+#: src/PrefsUnifiedDlg.cpp:958
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Retard de l'actualització: %d seg"
 msgstr[1] "Retard de l'actualització: %d segs"
 
-#: src/PrefsUnifiedDlg.cpp:965
+#: src/PrefsUnifiedDlg.cpp:964
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Mida de la memòria intermèdia de fitxer: %d byte"
 msgstr[1] "Mida de la memòria intermèdia de fitxer: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:971
+#: src/PrefsUnifiedDlg.cpp:970
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Mida de la cua de pujada: %d client"
 msgstr[1] "Mida de la cua de pujada: %d clients"
 
-#: src/PrefsUnifiedDlg.cpp:978
+#: src/PrefsUnifiedDlg.cpp:977
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Interval de refresc de la connexió amb el servidor: %d minut"
 msgstr[1] "Interval de refresc de la connexió amb el servidor: %d minuts"
 
-#: src/PrefsUnifiedDlg.cpp:980
+#: src/PrefsUnifiedDlg.cpp:979
 msgid "Server connection refresh interval: Disabled"
 msgstr "Interval de refresc de la connexió amb el servidor: Inhabilitat"
 
-#: src/PrefsUnifiedDlg.cpp:1025
+#: src/PrefsUnifiedDlg.cpp:1024
 msgid "UDP port for extended server requests (TCP+3):"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1044
+#: src/PrefsUnifiedDlg.cpp:1043
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Executa una ordre per a l'esdeveniment '%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1047
+#: src/PrefsUnifiedDlg.cpp:1046
 msgid "Enable command execution on core"
 msgstr "Activa l'execució d'ordres al nucli"
 
-#: src/PrefsUnifiedDlg.cpp:1055
+#: src/PrefsUnifiedDlg.cpp:1054
 msgid "Core command:"
 msgstr "Odre del nucli:"
 
-#: src/PrefsUnifiedDlg.cpp:1064
+#: src/PrefsUnifiedDlg.cpp:1063
 msgid "Enable command execution on GUI"
 msgstr "Activa l'execució d'ordres a la interfície gràfica"
 
-#: src/PrefsUnifiedDlg.cpp:1072
+#: src/PrefsUnifiedDlg.cpp:1071
 msgid "GUI command:"
 msgstr "Ordre de la GUI:"
 
-#: src/PrefsUnifiedDlg.cpp:1081
+#: src/PrefsUnifiedDlg.cpp:1080
 msgid "The following variables will be replaced:"
 msgstr "Les següents variables seran reemplaçades:"
 
@@ -2466,7 +2466,7 @@ msgid "eD2k Status:"
 msgstr "Estat eD2k:"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
-#: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
+#: src/ClientListCtrl.cpp:999 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "Connectat"
 
@@ -2530,7 +2530,7 @@ msgstr "Mitjana de fitxers:"
 msgid "Not running"
 msgstr "Aturat"
 
-#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:450
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:448
 #, c-format
 msgid "Uptime: %s"
 msgstr "Funcionant: %s"
@@ -2603,7 +2603,7 @@ msgstr "Total de sessions de pujada fallades: %s"
 msgid "Average upload time: %s"
 msgstr "Temps mitjà de pujada: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:890 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Baixades"
 
@@ -2682,7 +2682,7 @@ msgstr "Mitjana de connexions (aprox.): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Pic de connexions (aprox.): %i"
 
-#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:247
 msgid "Clients"
 msgstr "Clients"
 
@@ -2938,13 +2938,13 @@ msgstr "Informació"
 msgid "The specified userhash is not valid!"
 msgstr "El resum d'usuari especificat no és vàlid!"
 
-#: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
+#: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:193
 #: src/PartFile.cpp:3911 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Fonts"
 
-#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:505
-#: src/ClientListCtrl.cpp:830
+#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:500
+#: src/ClientListCtrl.cpp:826
 msgid "File"
 msgstr "Fitxer"
 
@@ -2953,7 +2953,7 @@ msgstr "Fitxer"
 msgid "Download"
 msgstr "Baixada"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:951
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:947
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Categoria"
@@ -3010,163 +3010,163 @@ msgstr "Tots"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuaris Totals: %s | Fitxers Totals: %s"
 
-#: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:508
+#: src/DownloadListCtrl.cpp:189 src/ClientListCtrl.cpp:503
 msgid "Transferred"
 msgstr "Transferit"
 
-#: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:190 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
 msgid "Completed"
 msgstr "Completat"
 
-#: src/DownloadListCtrl.cpp:193 src/ClientListCtrl.cpp:507
+#: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:502
 msgid "Speed"
 msgstr "Velocitat"
 
-#: src/DownloadListCtrl.cpp:194
+#: src/DownloadListCtrl.cpp:192
 msgid "Progress"
 msgstr "Progrés"
 
-#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3913
-#: src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:195 src/PartFile.cpp:3913
+#: src/ClientListCtrl.cpp:506
 msgid "Status"
 msgstr "Estat"
 
-#: src/DownloadListCtrl.cpp:198
+#: src/DownloadListCtrl.cpp:196
 msgid "Time Remaining"
 msgstr "Temps Restant"
 
-#: src/DownloadListCtrl.cpp:199
+#: src/DownloadListCtrl.cpp:197
 msgid "Last Seen Complete"
 msgstr "Últim cop vist complet"
 
-#: src/DownloadListCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:198
 msgid "Last Reception"
 msgstr "Última recepció"
 
-#: src/DownloadListCtrl.cpp:579
+#: src/DownloadListCtrl.cpp:575
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "Esteu segur que voleu esborrar el fitxer seleccionat?"
 
-#: src/DownloadListCtrl.cpp:581
+#: src/DownloadListCtrl.cpp:577
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Esteu segur que voleu esborrar els fitxers seleccionats?"
 
-#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:839 src/ClientListCtrl.cpp:355
 msgid "Send message to user"
 msgstr "Envia un missatge a l'usuari"
 
-#: src/DownloadListCtrl.cpp:844 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:840 src/ClientListCtrl.cpp:355
 msgid "Message to send:"
 msgstr "Missatge a enviar:"
 
-#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:900 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Atura"
 
-#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:901 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausa"
 
-#: src/DownloadListCtrl.cpp:906 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:902 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Continua"
 
-#: src/DownloadListCtrl.cpp:907
+#: src/DownloadListCtrl.cpp:903
 msgid "C&lear completed"
 msgstr "&Neteja els completats"
 
-#: src/DownloadListCtrl.cpp:913
+#: src/DownloadListCtrl.cpp:909
 msgid "Swap every A4AF to this file now"
 msgstr "Intercanvia cada A4AF a aquest fitxer ara"
 
-#: src/DownloadListCtrl.cpp:915
+#: src/DownloadListCtrl.cpp:911
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Intercanvia cada A4AF a aquest fitxer (Automàtic)"
 
-#: src/DownloadListCtrl.cpp:920
+#: src/DownloadListCtrl.cpp:916
 msgid "Swap every A4AF to any other file now"
 msgstr "Intercanvia cada A4AF a qualsevol altre fitxer ara"
 
-#: src/DownloadListCtrl.cpp:923
+#: src/DownloadListCtrl.cpp:919
 msgid "Extended Options"
 msgstr "Opcions avançades"
 
-#: src/DownloadListCtrl.cpp:934 src/DownloadListCtrl.cpp:996
+#: src/DownloadListCtrl.cpp:930 src/DownloadListCtrl.cpp:992
 msgid "Preview"
 msgstr "Previsualitza"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:931
 msgid "Show file &details"
 msgstr "Mostra els &detalls del fitxer"
 
-#: src/DownloadListCtrl.cpp:937 src/muuli_wdr.cpp:826
+#: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:826
 msgid "Show all comments"
 msgstr "Mostra els comentaris"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:938
 msgid "Copy magnet URI to clipboard"
 msgstr "Copia l'enllaç amb format Magnet al porta-retalls"
 
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:951
 msgid "unassign"
 msgstr "Cap categoria"
 
-#: src/DownloadListCtrl.cpp:962
+#: src/DownloadListCtrl.cpp:958
 msgid "Assign to category"
 msgstr "Assigna a una categoria"
 
-#: src/DownloadListCtrl.cpp:999
+#: src/DownloadListCtrl.cpp:995
 msgid "&Open the file"
 msgstr "&Obre el fitxer"
 
-#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1019 src/ClientListCtrl.cpp:249
 msgid "Remove from friends"
 msgstr "Elimina'l dels amics"
 
-#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1019 src/ClientListCtrl.cpp:249
 msgid "Add to Friends"
 msgstr "Afegeix a la llista d'amics"
 
-#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
+#: src/DownloadListCtrl.cpp:1021 src/ClientListCtrl.cpp:251
 msgid "Send message"
 msgstr "Envia un missatge"
 
-#: src/DownloadListCtrl.cpp:1026
+#: src/DownloadListCtrl.cpp:1022
 msgid "Swap to this file"
 msgstr "Intercanvia cap a aquest fitxer"
 
-#: src/DownloadListCtrl.cpp:1312 src/DownloadListCtrl.cpp:1615
+#: src/DownloadListCtrl.cpp:1303 src/DownloadListCtrl.cpp:1606
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1713 src/muuli_wdr.cpp:1726
 #: src/muuli_wdr.cpp:1739 src/muuli_wdr.cpp:1757 src/muuli_wdr.cpp:1770
-#: src/ClientListCtrl.cpp:634 src/ClientListCtrl.cpp:702
+#: src/ClientListCtrl.cpp:629 src/ClientListCtrl.cpp:697
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1435 src/DownloadListCtrl.cpp:1446
+#: src/DownloadListCtrl.cpp:1426 src/DownloadListCtrl.cpp:1437
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%d/%m/%y %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1663
+#: src/DownloadListCtrl.cpp:1654
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1713
+#: src/DownloadListCtrl.cpp:1704
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "C: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1727
+#: src/DownloadListCtrl.cpp:1718
 msgid "Asked for another file"
 msgstr "S'ha preguntat per un altre fitxer"
 
-#: src/DownloadListCtrl.cpp:2050
+#: src/DownloadListCtrl.cpp:2041
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Baixades (%i)"
 
-#: src/DownloadListCtrl.cpp:2255
+#: src/DownloadListCtrl.cpp:2257
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -3174,11 +3174,11 @@ msgstr ""
 "Per a evitar que en cada previsualització aparegui aquest avís, configureu\n"
 "un reproductor de vídeo a les preferències (per defecte s'usa mplayer)."
 
-#: src/DownloadListCtrl.cpp:2256
+#: src/DownloadListCtrl.cpp:2258
 msgid "File preview"
 msgstr "Previsualització"
 
-#: src/DownloadListCtrl.cpp:2292
+#: src/DownloadListCtrl.cpp:2294
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr ""
@@ -3424,7 +3424,7 @@ msgstr "ERROR: S'ha intentat compartir %s"
 msgid "File Comments"
 msgstr "Comentaris del Fitxer"
 
-#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:833
+#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:829
 msgid "Rating"
 msgstr "Valoració"
 
@@ -3682,8 +3682,8 @@ msgstr "amb ID Alta"
 msgid "Now connecting"
 msgstr "Connectant"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:386
-#: src/MuleTrayIcon.cpp:400
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:384
+#: src/MuleTrayIcon.cpp:398
 msgid "Not connected"
 msgstr "Desconnectat"
 
@@ -4556,7 +4556,7 @@ msgid_plural "%u malformed lines were discarded."
 msgstr[0] "S'ha descartat %u línia malformada."
 msgstr[1] "S'han descartat %u línies malformades."
 
-#: src/StatisticsDlg.cpp:189
+#: src/StatisticsDlg.cpp:188
 #, c-format
 msgid "Active connections (1:%u)"
 msgstr "Connexions actives (1:%u)"
@@ -4785,7 +4785,7 @@ msgstr "Nom Complet:"
 #: src/muuli_wdr.cpp:1503 src/muuli_wdr.cpp:1510 src/muuli_wdr.cpp:1519
 #: src/muuli_wdr.cpp:1526 src/muuli_wdr.cpp:1535 src/muuli_wdr.cpp:1553
 #: src/muuli_wdr.cpp:1562 src/muuli_wdr.cpp:1569 src/muuli_wdr.cpp:1578
-#: src/ClientListCtrl.cpp:622
+#: src/ClientListCtrl.cpp:617
 msgid "N/A"
 msgstr "N/D"
 
@@ -6224,19 +6224,19 @@ msgstr "Finestra de la configuració de preferències"
 msgid "New Category"
 msgstr "Nova categoria"
 
-#: src/CatDialog.cpp:126
+#: src/CatDialog.cpp:125
 msgid "Choose a folder for incoming files"
 msgstr "Carpeta per als fitxers entrants"
 
-#: src/CatDialog.cpp:141
+#: src/CatDialog.cpp:140
 msgid "You must specify a name for the category!"
 msgstr "Heu d'especificar un nom per a la categoria!"
 
-#: src/CatDialog.cpp:151
+#: src/CatDialog.cpp:150
 msgid "You must specify a path for the category!"
 msgstr "Heu d'especificar un directori per a la categoria!"
 
-#: src/CatDialog.cpp:159
+#: src/CatDialog.cpp:158
 msgid ""
 "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
@@ -6486,97 +6486,97 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
 
-#: src/ClientListCtrl.cpp:257
+#: src/ClientListCtrl.cpp:252
 msgid "Unban"
 msgstr "Admet de nou"
 
-#: src/ClientListCtrl.cpp:262
+#: src/ClientListCtrl.cpp:257
 msgid "Show Uploads"
 msgstr "Mostra les pujades"
 
-#: src/ClientListCtrl.cpp:263
+#: src/ClientListCtrl.cpp:258
 msgid "Show Queue"
 msgstr "Mostra la cua"
 
-#: src/ClientListCtrl.cpp:264
+#: src/ClientListCtrl.cpp:259
 msgid "Show Clients"
 msgstr "Mostra els clients"
 
-#: src/ClientListCtrl.cpp:268
+#: src/ClientListCtrl.cpp:263
 msgid "Select View"
 msgstr "Selecciona la vista"
 
-#: src/ClientListCtrl.cpp:506 src/ClientListCtrl.cpp:831
-#: src/ClientListCtrl.cpp:1002
+#: src/ClientListCtrl.cpp:501 src/ClientListCtrl.cpp:827
+#: src/ClientListCtrl.cpp:998
 msgid "Client Software"
 msgstr "Programari"
 
-#: src/ClientListCtrl.cpp:509
+#: src/ClientListCtrl.cpp:504
 msgid "Waited"
 msgstr "Temps esperat"
 
-#: src/ClientListCtrl.cpp:510
+#: src/ClientListCtrl.cpp:505
 msgid "Upload Time"
 msgstr "Temps pujant"
 
-#: src/ClientListCtrl.cpp:513
+#: src/ClientListCtrl.cpp:508
 msgid "Upload/Download"
 msgstr "Pujat/Baixat"
 
-#: src/ClientListCtrl.cpp:514
+#: src/ClientListCtrl.cpp:509
 msgid "Remote Status"
 msgstr "Estat remot"
 
-#: src/ClientListCtrl.cpp:694
+#: src/ClientListCtrl.cpp:689
 #, c-format
 msgid "QR: %u"
 msgstr "C: %u"
 
-#: src/ClientListCtrl.cpp:832
+#: src/ClientListCtrl.cpp:828
 msgid "File Priority"
 msgstr "Prioritat"
 
-#: src/ClientListCtrl.cpp:834
+#: src/ClientListCtrl.cpp:830
 msgid "Score"
 msgstr "Puntuació"
 
-#: src/ClientListCtrl.cpp:835
+#: src/ClientListCtrl.cpp:831
 msgid "Asked"
 msgstr "Demanat"
 
-#: src/ClientListCtrl.cpp:836
+#: src/ClientListCtrl.cpp:832
 msgid "Last Seen"
 msgstr "Últim cop vist"
 
-#: src/ClientListCtrl.cpp:837
+#: src/ClientListCtrl.cpp:833
 msgid "Entered Queue"
 msgstr "En cua"
 
-#: src/ClientListCtrl.cpp:998
+#: src/ClientListCtrl.cpp:994
 msgid "Upload Status"
 msgstr "Estat local"
 
-#: src/ClientListCtrl.cpp:999
+#: src/ClientListCtrl.cpp:995
 msgid "Transferred Up"
 msgstr "Pujat"
 
-#: src/ClientListCtrl.cpp:1000
+#: src/ClientListCtrl.cpp:996
 msgid "Download Status"
 msgstr "Estat remot"
 
-#: src/ClientListCtrl.cpp:1001
+#: src/ClientListCtrl.cpp:997
 msgid "Transferred Down"
 msgstr "Baixat"
 
-#: src/ClientListCtrl.cpp:1004
+#: src/ClientListCtrl.cpp:1000
 msgid "Userhash"
 msgstr "Resum de l'usuari"
 
-#: src/ClientListCtrl.cpp:1005
+#: src/ClientListCtrl.cpp:1001
 msgid "Encrypted"
 msgstr "Xifrat"
 
-#: src/ClientListCtrl.cpp:1006
+#: src/ClientListCtrl.cpp:1002
 msgid "Hide shared files"
 msgstr "Oculta els fitxers compartits"
 
@@ -6635,136 +6635,136 @@ msgstr ""
 msgid "Search warning"
 msgstr "Avís de cerca"
 
-#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:495
-#: src/MuleTrayIcon.cpp:516
+#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:493
+#: src/MuleTrayIcon.cpp:514
 msgid "Unlimited"
 msgstr "Il·limitat"
 
-#: src/MuleTrayIcon.cpp:333
+#: src/MuleTrayIcon.cpp:331
 msgid "aMule Tray Menu"
 msgstr "Menú de la icona d'estat"
 
-#: src/MuleTrayIcon.cpp:339
+#: src/MuleTrayIcon.cpp:337
 msgid "Speed limits:"
 msgstr "Límits de velocitat"
 
-#: src/MuleTrayIcon.cpp:344
+#: src/MuleTrayIcon.cpp:342
 msgid "UL: None"
 msgstr "PU: cap"
 
-#: src/MuleTrayIcon.cpp:347
+#: src/MuleTrayIcon.cpp:345
 #, c-format
 msgid "UL: %u"
 msgstr "PU: %u"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:352
 msgid "DL: None"
 msgstr "BA: cap"
 
-#: src/MuleTrayIcon.cpp:357
+#: src/MuleTrayIcon.cpp:355
 #, c-format
 msgid "DL: %u"
 msgstr "BA: %u"
 
-#: src/MuleTrayIcon.cpp:361
+#: src/MuleTrayIcon.cpp:359
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Velocitat de baixada: %.1f"
 
-#: src/MuleTrayIcon.cpp:363
+#: src/MuleTrayIcon.cpp:361
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Velocitat de pujada: %.1f"
 
-#: src/MuleTrayIcon.cpp:369
+#: src/MuleTrayIcon.cpp:367
 msgid "Client Information"
 msgstr "Informació del client"
 
-#: src/MuleTrayIcon.cpp:373
+#: src/MuleTrayIcon.cpp:371
 #, c-format
 msgid "Nickname: %s"
 msgstr "Sobrenom: %s"
 
-#: src/MuleTrayIcon.cpp:373
+#: src/MuleTrayIcon.cpp:371
 msgid "No Nickname Selected!"
 msgstr "No heu seleccionat cap sobrenom!"
 
-#: src/MuleTrayIcon.cpp:380
+#: src/MuleTrayIcon.cpp:378
 msgid "ClientID: "
 msgstr "ID de client: "
 
-#: src/MuleTrayIcon.cpp:393
+#: src/MuleTrayIcon.cpp:391
 msgid "ServerName: "
 msgstr "Servidor: "
 
-#: src/MuleTrayIcon.cpp:394
+#: src/MuleTrayIcon.cpp:392
 msgid "ServerIP: "
 msgstr "IP del Servidor: "
 
-#: src/MuleTrayIcon.cpp:409
+#: src/MuleTrayIcon.cpp:407
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:418
+#: src/MuleTrayIcon.cpp:416
 #, c-format
 msgid "TCP port: %d"
 msgstr "Port TCP: %d"
 
-#: src/MuleTrayIcon.cpp:420
+#: src/MuleTrayIcon.cpp:418
 msgid "TCP port: Not ready"
 msgstr "Port TCP: No està llest"
 
-#: src/MuleTrayIcon.cpp:429
+#: src/MuleTrayIcon.cpp:427
 #, c-format
 msgid "UDP port: %d"
 msgstr "Port UDP: %d"
 
-#: src/MuleTrayIcon.cpp:431
+#: src/MuleTrayIcon.cpp:429
 msgid "UDP port: Not ready"
 msgstr "Port UDP: No està llest"
 
-#: src/MuleTrayIcon.cpp:440
+#: src/MuleTrayIcon.cpp:438
 msgid "Online Signature: Enabled"
 msgstr "Signatura en línia: Habilitada"
 
-#: src/MuleTrayIcon.cpp:443
+#: src/MuleTrayIcon.cpp:441
 msgid "Online Signature: Disabled"
 msgstr "Signatura en línia: Inhabilitada"
 
-#: src/MuleTrayIcon.cpp:456
+#: src/MuleTrayIcon.cpp:454
 #, c-format
 msgid "Shared files: %d"
 msgstr "Fitxers compartits: %d"
 
-#: src/MuleTrayIcon.cpp:462
+#: src/MuleTrayIcon.cpp:460
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Clients en cua: %d"
 
-#: src/MuleTrayIcon.cpp:469
+#: src/MuleTrayIcon.cpp:467
 #, c-format
 msgid "Total DL: %s"
 msgstr "Total BA: %s"
 
-#: src/MuleTrayIcon.cpp:476
+#: src/MuleTrayIcon.cpp:474
 #, c-format
 msgid "Total UL: %s"
 msgstr "Total PU: %s"
 
-#: src/MuleTrayIcon.cpp:487
+#: src/MuleTrayIcon.cpp:485
 msgid "Upload limit"
 msgstr "Límit de pujada"
 
-#: src/MuleTrayIcon.cpp:491
+#: src/MuleTrayIcon.cpp:489
 msgid "Download limit"
 msgstr "Límit de baixada"
 
-#: src/MuleTrayIcon.cpp:551
+#: src/MuleTrayIcon.cpp:549
 msgid "Hide aMule"
 msgstr "Amaga l'aMule"
 
-#: src/MuleTrayIcon.cpp:554
+#: src/MuleTrayIcon.cpp:552
 msgid "Show aMule"
 msgstr "Mostra l'aMule"
 
