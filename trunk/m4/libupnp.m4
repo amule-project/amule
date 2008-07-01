@@ -60,19 +60,21 @@ dnl	Check for the presence
 	AC_MSG_CHECKING([for libupnp presence])
 	AS_IF([test -n "$LIBUPNP_PREFIX"],[dnl
 		LIBUPNP_STYLE=prefix
-		LIBUPNP_VERSION_STRING=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --modversion)
-		AS_IF([test -n "LIBUPNP_VERSION_STRING"], [dnl
+		LIBUPNP_VERSION_STRING=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --modversion`
+		AS_IF([test -n "$LIBUPNP_VERSION_STRING"], [dnl
 			result=yes
 			resultstr=" (prefix specified in --with-libupnp-prefix=PREFIX)"dnl
 		], [dnl
 			result=no
 			resultstr=" (maybe an invalid prefix was specified in --with-libupnp-prefix=PREFIX)"dnl
 		])dnl
-	],[dnl
-		LIBUPNP_PREFIX=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --prefix)
-		LIBUPNP_STYLE=system
-		LIBUPNP_VERSION_STRING=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --modversion)
-		AS_IF([test -n "LIBUPNP_VERSION_STRING"], [dnl
+	], [dnl
+		AS_IF([pkg-config libupnp --exists], [dnl
+			LIBUPNP_PREFIX=`pkg-config libupnp --prefix`
+			LIBUPNP_STYLE=system
+			LIBUPNP_VERSION_STRING=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --modversion`
+		])dnl
+		AS_IF([test -n "$LIBUPNP_VERSION_STRING"], [dnl
 			result=yes
 			resultstr=" (installed in the system)"dnl
 		], [dnl
@@ -92,11 +94,11 @@ dnl		Ok, we know that libupnp is in the system, check for the mininum library ve
 		AS_IF([test -n "$LIBUPNP_VERSION_NUMBER" && test "$LIBUPNP_VERSION_NUMBER" -ge $minvers], [dnl
 			result=yes
 			resultstr=" (version $LIBUPNP_VERSION_STRING)"
-			LIBUPNP_CPPFLAGS=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --cflags-only-I)
-			LIBUPNP_CFLAGS=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --cflags-only-other)
-			LIBUPNP_LDFLAGS=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --libs-only-other)
-			LIBUPNP_LDADD=$(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --libs-only-L)
-			LIBUPNP_LDADD="$LIBUPNP_LDADD $(PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --libs-only-l)"
+			LIBUPNP_CPPFLAGS=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --cflags-only-I`
+			LIBUPNP_CFLAGS=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --cflags-only-other`
+			LIBUPNP_LDFLAGS=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --libs-only-other`
+			LIBUPNP_LDADD=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --libs-only-L`
+			LIBUPNP_LDADD="$LIBUPNP_LDADD `PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --libs-only-l`"
 			AH_TEMPLATE([LIBUPNP_INCLUDE_PREFIX], [Define this to the include prefix of libupnp])
 			AC_DEFINE_UNQUOTED([LIBUPNP_INCLUDE_PREFIX], $LIBUPNP_INCLUDE_PREFIX)dnl
 		], [dnl
@@ -107,7 +109,7 @@ dnl		Ok, we know that libupnp is in the system, check for the mininum library ve
 	])
 
 dnl	Execute the right action.
-	m4_ifval([$2$3], [AS_IF([test ${result:-no} = yes], [$2], [$3])])
+	AS_IF([test ${result:-no} = yes], [$2], [$3])
 
 dnl Exported symbols
 AC_SUBST([LIBUPNP_CPPFLAGS])dnl
