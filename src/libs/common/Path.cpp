@@ -26,12 +26,9 @@
 #include "MuleDebug.h"
 #include "StringFunctions.h"
 
-#ifdef __WXMAC__
-#	include <wx/file.h>
-#	define FILE_WRAPPER	wxFile
-#else
+#include <wx/file.h>
+#ifdef __WXMSW__
 #	include <wx/ffile.h>
-#	define FILE_WRAPPER	wxFFile
 #endif
 #include <wx/utils.h>
 #include <wx/filename.h>
@@ -442,7 +439,7 @@ CPath CPath::GetFullName() const
 sint64 CPath::GetFileSize() const
 {
 	if (FileExists()) {
-		FILE_WRAPPER f(m_filesystem);
+		wxFile f(m_filesystem);
 		if (f.IsOpened()) {
 			return f.Length();
 		}
@@ -613,7 +610,13 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 
 	if (CPath::CloneFile(src, dst, true)) {
 		// Try to ensure that the backup gets physically written 
-		FILE_WRAPPER backupFile;
+		// Now - does this have any effect reopening a already closed file
+		// to flush it ???
+#ifdef __WXMSW__
+		wxFFile backupFile;
+#else
+		wxFile backupFile;
+#endif
 		if (backupFile.Open(dst.m_filesystem)) {
 			backupFile.Flush();
 		}
