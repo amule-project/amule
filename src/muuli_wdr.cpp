@@ -890,7 +890,8 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, 
-        _("For a film you can say its length, its story, language ...\nand if it's a fake, you can tell that to other users of aMule."),
+        _("For a film you can say its length, its story, language ...\n"
+          "and if it's a fake, you can tell that to other users of aMule."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -987,7 +988,7 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item2 = new wxStaticText( parent, -1, _("Downloading, please wait ..."), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item2, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxGauge *item3 = new wxGauge( parent, ID_HTTPDOWNLOADPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), wxGA_SMOOTH );
+    wxGauge *item3 = new wxGauge( parent, ID_HTTPDOWNLOADPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), wxGA_SMOOTH|wxGA_PROGRESSBAR );
     item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item4 = new wxStaticText( parent, IDC_DOWNLOADSIZE, _("Unknown size"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
@@ -1773,7 +1774,8 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item16->Add( item23, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item26 = new wxStaticText( parent, -1, 
-        _("Note: These values are\n only used for statistics."),
+        _("Note: These values are\n"
+          " only used for statistics."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item16->Add( item26, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -2088,7 +2090,7 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticText *item11 = new wxStaticText( parent, -1, _("(Right click on folder icon for recursive share)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item9->Add( item11, 0, wxALIGN_CENTER, 5 );
 
-    CDirectoryTreeCtrl *item12 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100), wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT );
+    CDirectoryTreeCtrl *item12 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT);
     wxASSERT( item12 );
     item9->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2229,7 +2231,12 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item1->Add( item2, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item3 = new wxStaticText( parent, -1, 
-        _("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."),
+        _("Do not change these setting unless you know\n"
+          "what you are doing, otherwise you can easily\n"
+          "make things worse for yourself.\n"
+          "\n"
+          "aMule will run fine without adjusting any of\n"
+          "these settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item3->SetForegroundColour( *wxRED );
     item1->Add( item3, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
@@ -2479,7 +2486,8 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     item29->AddGrowableCol( 1 );
 
     wxStaticText *item30 = new wxStaticText( parent, -1, 
-        _("IP of the listening interface\n(empty for any)"),
+        _("IP of the listening interface\n"
+          "(empty for any)"),
         wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item29->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -2993,7 +3001,8 @@ item9->SetName(wxT("kadScope"));
     item20->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item37 = new wxButton( parent, ID_KNOWNNODECONNECT, 
-        _("Bootstrap from \nknown clients"),
+        _("Bootstrap from \n"
+          "known clients"),
         wxDefaultPosition, wxDefaultSize, 0 );
     item20->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3219,7 +3228,7 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Messages") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
     wxCheckBox *item3 = new wxCheckBox( parent, IDC_MSGFILTER, _("Filter incoming messages (except current chat):"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3246,29 +3255,22 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_MSGLOG, _("Show messages in log"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item13 = new wxStaticBox( parent, -1, _("Comments") );
+    wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
 
-    wxStaticBitmap *item12 = new wxStaticBitmap( parent, -1, amuleSpecial( 23 ), wxDefaultPosition, wxDefaultSize );
-    item11->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_FILTERCOMMENTS, _("Filter comments containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, -1, _("Comments"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Add( item13, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxTextCtrl *item15 = new wxTextCtrl( parent, IDC_COMMENTWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item15->SetToolTip( _("add here the words amule should filter and block messages including it") );
+    item12->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
 
-    item0->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Disable/Enable") );
-    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
-
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_FILTERCOMMENTS, _("Filter comments containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxTextCtrl *item17 = new wxTextCtrl( parent, IDC_COMMENTWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item17->SetToolTip( _("add here the words amule should filter and block messages including it") );
-    item14->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
-
-    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

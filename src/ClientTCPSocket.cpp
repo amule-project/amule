@@ -800,7 +800,11 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			if (IsMessageFiltered(message, m_client)) {
 				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			} else {
-				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+				wxString logMsg = CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP();
+				if(thePrefs::ShowMessagesInLog()) {
+					logMsg += wxT(": ") + message;
+				}
+				AddLogLineM( true, logMsg);
 				
 				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
 			}
