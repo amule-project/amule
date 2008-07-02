@@ -72,7 +72,7 @@ dnl	Check for the presence
 		AS_IF([pkg-config libupnp --exists], [dnl
 			LIBUPNP_PREFIX=`pkg-config libupnp --prefix`
 			LIBUPNP_STYLE=system
-			LIBUPNP_VERSION_STRING=`PKG_CONFIG_PATH=$LIBUPNP_PREFIX/lib/pkgconfig pkg-config libupnp --modversion`
+			LIBUPNP_VERSION_STRING=`pkg-config libupnp --modversion`
 		])dnl
 		AS_IF([test -n "$LIBUPNP_VERSION_STRING"], [dnl
 			result=yes
