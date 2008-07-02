@@ -478,7 +478,8 @@ public:
 	static const wxString&	GetMessageFilterString()	{ return s_MessageFilterString; }
 	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
 	static bool		IsMessageFiltered(const wxString& message);
-
+	static bool		ShowMessagesInLog()		{ return s_ShowMessagesInLog; }
+	
 	static bool		FilterComments()		{ return s_FilterComments; }
 	static void		SetFilterComments(bool val)	{ s_FilterComments = val; }
 	static const wxString&	GetCommentFilterString()	{ return s_CommentFilterString; }
@@ -720,6 +721,7 @@ protected:
 	static wxString 	s_MessageFilterString;
 	static bool		s_FilterAllMessages;
 	static bool		s_FilterSomeMessages;
+	static bool		s_ShowMessagesInLog;
 
 	static bool 		s_FilterComments;
 	static wxString 	s_CommentFilterString;
