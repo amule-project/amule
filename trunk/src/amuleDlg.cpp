@@ -462,16 +462,16 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 #ifdef SVNDATE
 	msg << _("Snapshot:") << wxT("\n ") << wxT(SVNDATE);
 #endif
-	msg << wxT("\n\n") << _(" 'All-Platform' p2p client based on eMule \n\n") <<
-		_(" Website: http://www.amule.org \n") <<
-		_(" Forum: http://forum.amule.org \n") << 
-		_(" FAQ: http://wiki.amule.org \n\n") <<
-		_(" Contact: admin@amule.org (administrative issues) \n") <<
-		_(" Copyright (C) 2003-2008 aMule Team \n\n") <<
-		_(" Part of aMule is based on \n") <<
+	msg << wxT("\n\n") << _("'All-Platform' p2p client based on eMule \n\n") <<
+		_("Website: http://www.amule.org \n") <<
+		_("Forum: http://forum.amule.org \n") << 
+		_("FAQ: http://wiki.amule.org \n\n") <<
+		_("Contact: admin@amule.org (administrative issues) \n") <<
+		_("Copyright (C) 2003-2008 aMule Team \n\n") <<
+		_("Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
-		_(" Copyright (C) 2002 Petar Maymounkov\n") <<
-		_(" http://kademlia.scs.cs.nyu.edu\n");
+		_("Copyright (C) 2002 Petar Maymounkov\n") <<
+		_("http://kademlia.scs.cs.nyu.edu\n");
 	
 	if (m_is_safe_state) {
 		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);
