@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-30 03:30+0200\n"
+"POT-Creation-Date: 2008-07-02 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -525,76 +525,76 @@ msgstr[1] ""
 msgid "ERROR: Could not listen to TCP port."
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:307
+#: src/webserver/src/WebServer.cpp:306
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:310
+#: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: can not accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:380
+#: src/webserver/src/WebServer.cpp:379
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "הבקשה נכשלה עם השגיאות הבאות: %s."
 
-#: src/webserver/src/WebServer.cpp:383 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "הבקשה נכשלה עם שגיאה לא ידועה"
 
-#: src/webserver/src/WebServer.cpp:1744
+#: src/webserver/src/WebServer.cpp:1743
 msgid "Index file not found: "
 msgstr "קובץ האינדקס לא נמצא"
 
-#: src/webserver/src/WebServer.cpp:1821
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session expired - requesting login\n"
 msgstr "פג התוקף של החיבור - מבקש התחברות מחדש\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1825
 msgid "Session ok, logged in\n"
 msgstr "התחברות הצליחה - מחובר\n"
 
-#: src/webserver/src/WebServer.cpp:1828
+#: src/webserver/src/WebServer.cpp:1827
 msgid "Session ok, not logged in\n"
 msgstr "התחברות הצליחה, לא מזוהה\n"
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1832
 msgid "No session opened - will request login\n"
 msgstr "לא נפתחה התחברות - הולך לבקש להזדהות\n"
 
-#: src/webserver/src/WebServer.cpp:1842
+#: src/webserver/src/WebServer.cpp:1841
 msgid "Session created - requesting login\n"
 msgstr "נוצרה התחברות מבקש להזדהות\n"
 
-#: src/webserver/src/WebServer.cpp:1859
+#: src/webserver/src/WebServer.cpp:1858
 msgid "Processing request [original]: "
 msgstr "מעבד בקשה [מקורי]: "
 
-#: src/webserver/src/WebServer.cpp:1875
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Checking password\n"
 msgstr "בודק סיסמא\n"
 
-#: src/webserver/src/WebServer.cpp:1880
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password hash invalid\n"
 msgstr "גיבוב הסיסמא אינו תקף\n"
 
-#: src/webserver/src/WebServer.cpp:1895
+#: src/webserver/src/WebServer.cpp:1894
 msgid "Password ok\n"
 msgstr "הסיסמא בסדר\n"
 
-#: src/webserver/src/WebServer.cpp:1897
+#: src/webserver/src/WebServer.cpp:1896
 msgid "Password bad\n"
 msgstr "סיסמא שגויה\n"
 
-#: src/webserver/src/WebServer.cpp:1900
+#: src/webserver/src/WebServer.cpp:1899
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "לא הזנת סיסמא. סיסמאות ריקות אינם קבילות.\n"
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Logout requested\n"
 msgstr "ב‏‎ֻקְשַה התנתקות\n"
 
-#: src/webserver/src/WebServer.cpp:1913
+#: src/webserver/src/WebServer.cpp:1912
 msgid "Processing request [redirected]: "
 msgstr "מעבד בקשה [הופנתה מחדש]: "
 
