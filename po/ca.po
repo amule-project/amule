@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-30 03:30+0200\n"
+"POT-Creation-Date: 2008-07-02 03:30+0200\n"
 "PO-Revision-Date: 2008-06-12 12:08+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -548,77 +548,77 @@ msgstr[1] "S'han escrit %d contactes Kad"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "ERROR: No s'ha pogut escoltar el port TCP."
 
-#: src/webserver/src/WebServer.cpp:307
+#: src/webserver/src/WebServer.cpp:306
 msgid "web client connection accepted\n"
 msgstr "s'ha acceptat la connexió del client web\n"
 
-#: src/webserver/src/WebServer.cpp:310
+#: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: can not accept web client connection\n"
 msgstr "ERROR: no es pot acceptar la connexió del client web\n"
 
-#: src/webserver/src/WebServer.cpp:380
+#: src/webserver/src/WebServer.cpp:379
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Ha fallat la petició amb el següent error: %s."
 
-#: src/webserver/src/WebServer.cpp:383 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "La petició ha fallat amb un error desconegut."
 
-#: src/webserver/src/WebServer.cpp:1744
+#: src/webserver/src/WebServer.cpp:1743
 msgid "Index file not found: "
 msgstr "No s'ha trobat el fitxer d'índex:"
 
-#: src/webserver/src/WebServer.cpp:1821
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session expired - requesting login\n"
 msgstr "La sessió ha caducat - s'està demanant la identificació\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1825
 msgid "Session ok, logged in\n"
 msgstr "Sessió correcta, identificat\n"
 
-#: src/webserver/src/WebServer.cpp:1828
+#: src/webserver/src/WebServer.cpp:1827
 msgid "Session ok, not logged in\n"
 msgstr "Sessió correcta, sense identificar\n"
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1832
 msgid "No session opened - will request login\n"
 msgstr "No hi ha cap sessió oberta - es demanarà identificació\n"
 
-#: src/webserver/src/WebServer.cpp:1842
+#: src/webserver/src/WebServer.cpp:1841
 msgid "Session created - requesting login\n"
 msgstr "Sessió creada - s'està demanant la identificació\n"
 
-#: src/webserver/src/WebServer.cpp:1859
+#: src/webserver/src/WebServer.cpp:1858
 msgid "Processing request [original]: "
 msgstr "S'està processant la petició [original]: "
 
-#: src/webserver/src/WebServer.cpp:1875
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Checking password\n"
 msgstr "S'està comprovant la contrasenya\n"
 
-#: src/webserver/src/WebServer.cpp:1880
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password hash invalid\n"
 msgstr "El resum de la contrasenya és invàlid\n"
 
-#: src/webserver/src/WebServer.cpp:1895
+#: src/webserver/src/WebServer.cpp:1894
 msgid "Password ok\n"
 msgstr "Contrasenya correcta\n"
 
-#: src/webserver/src/WebServer.cpp:1897
+#: src/webserver/src/WebServer.cpp:1896
 msgid "Password bad\n"
 msgstr "Contrasenya incorrecta\n"
 
-#: src/webserver/src/WebServer.cpp:1900
+#: src/webserver/src/WebServer.cpp:1899
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
 "No heu especificat cap contrasenya. No es permet una contrasenya en blanc.\n"
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Logout requested\n"
 msgstr "Eixida sol·licitada\n"
 
-#: src/webserver/src/WebServer.cpp:1913
+#: src/webserver/src/WebServer.cpp:1912
 msgid "Processing request [redirected]: "
 msgstr "S'està processant la petició [redirigit]: "
 

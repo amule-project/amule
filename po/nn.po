@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-30 03:30+0200\n"
+"POT-Creation-Date: 2008-07-02 03:30+0200\n"
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -536,76 +536,76 @@ msgstr[1] "Skreiv %d kadkontaktar"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "FEIL: Greidde ikkje lytte til TCP port."
 
-#: src/webserver/src/WebServer.cpp:307
+#: src/webserver/src/WebServer.cpp:306
 msgid "web client connection accepted\n"
 msgstr "vevklientoppkopling godkjend\n"
 
-#: src/webserver/src/WebServer.cpp:310
+#: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: can not accept web client connection\n"
 msgstr "FEIL: kan ikkje godkjenne vevklientkopling\n"
 
-#: src/webserver/src/WebServer.cpp:380
+#: src/webserver/src/WebServer.cpp:379
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Etterspurnaden mislukka med følgjande feil: %s."
 
-#: src/webserver/src/WebServer.cpp:383 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Etterspurnaden mislukka med ukjend feil."
 
-#: src/webserver/src/WebServer.cpp:1744
+#: src/webserver/src/WebServer.cpp:1743
 msgid "Index file not found: "
 msgstr "Registerfil ikkje funne: "
 
-#: src/webserver/src/WebServer.cpp:1821
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session expired - requesting login\n"
 msgstr "Økt utgått - ber om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1825
 msgid "Session ok, logged in\n"
 msgstr "Økt ok, logga inn\n"
 
-#: src/webserver/src/WebServer.cpp:1828
+#: src/webserver/src/WebServer.cpp:1827
 msgid "Session ok, not logged in\n"
 msgstr "Økt ok, ikkje innlogga\n"
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1832
 msgid "No session opened - will request login\n"
 msgstr "Inga økt opna - vil be om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1842
+#: src/webserver/src/WebServer.cpp:1841
 msgid "Session created - requesting login\n"
 msgstr "Økt oppretta - ber om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1859
+#: src/webserver/src/WebServer.cpp:1858
 msgid "Processing request [original]: "
 msgstr "Handsamar etterspurnad [original]: "
 
-#: src/webserver/src/WebServer.cpp:1875
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Checking password\n"
 msgstr "Sjekkar passord\n"
 
-#: src/webserver/src/WebServer.cpp:1880
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password hash invalid\n"
 msgstr "Passord hash feil\n"
 
-#: src/webserver/src/WebServer.cpp:1895
+#: src/webserver/src/WebServer.cpp:1894
 msgid "Password ok\n"
 msgstr "Passord ok\n"
 
-#: src/webserver/src/WebServer.cpp:1897
+#: src/webserver/src/WebServer.cpp:1896
 msgid "Password bad\n"
 msgstr "Feil passord\n"
 
-#: src/webserver/src/WebServer.cpp:1900
+#: src/webserver/src/WebServer.cpp:1899
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Du skreiv ikkje inn eit passord. Tomt passord er ikkje tillate.\n"
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Logout requested\n"
 msgstr "Utlogging etterspurt\n"
 
-#: src/webserver/src/WebServer.cpp:1913
+#: src/webserver/src/WebServer.cpp:1912
 msgid "Processing request [redirected]: "
 msgstr "Handsamar etterspurnad [omdirigert]: "
 

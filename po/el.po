@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-30 03:30+0200\n"
+"POT-Creation-Date: 2008-07-02 03:30+0200\n"
 "PO-Revision-Date: 2008-06-29 09:07-0600\n"
 "Last-Translator: Dimitrios Galanakis <dimitris.galanakis@gmail.com>\n"
 "Language-Team: Greek\n"
@@ -545,76 +545,76 @@ msgstr[1] "Γράψιμο %d επαφών Kad"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "ΣΦΑΛΜΑ: Δεν μπορώ να ακούσω την θύρα TCP."
 
-#: src/webserver/src/WebServer.cpp:307
+#: src/webserver/src/WebServer.cpp:306
 msgid "web client connection accepted\n"
 msgstr "η σύνδεση πελάτη ιστού έγινε αποδεκτή\n"
 
-#: src/webserver/src/WebServer.cpp:310
+#: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: can not accept web client connection\n"
 msgstr "ΣΦΑΛΜΑ: Η σύνδεση πελάτη ιστού δεν μπορεί να γίνει δεκτή.\n"
 
-#: src/webserver/src/WebServer.cpp:380
+#: src/webserver/src/WebServer.cpp:379
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Η αίτηση απέτυχε με το εξής σφάλμα: %s"
 
-#: src/webserver/src/WebServer.cpp:383 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Η αίτηση απέτυχε για άγνωστο λόγο"
 
-#: src/webserver/src/WebServer.cpp:1744
+#: src/webserver/src/WebServer.cpp:1743
 msgid "Index file not found: "
 msgstr "Το αρχείο δεικτών δεν βρέθηκε (ψάχνω ψάχνω και τίποτα δεν βρίσκω)"
 
-#: src/webserver/src/WebServer.cpp:1821
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session expired - requesting login\n"
 msgstr "Η περίοδος εργασίας έληξε - αίτηση επανασύνδεσης\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1825
 msgid "Session ok, logged in\n"
 msgstr "Η Περίοδος εργασίας είναι εντάξει, συνδεδεμένο\n"
 
-#: src/webserver/src/WebServer.cpp:1828
+#: src/webserver/src/WebServer.cpp:1827
 msgid "Session ok, not logged in\n"
 msgstr "Η περίοδος εργασίας είναι εντάξει, μη συνδεδεμένο\n"
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1832
 msgid "No session opened - will request login\n"
 msgstr "Δεν έχει ξεκινήσει περίοδος εργασίας - θα ζητήσει σύνδεση\n"
 
-#: src/webserver/src/WebServer.cpp:1842
+#: src/webserver/src/WebServer.cpp:1841
 msgid "Session created - requesting login\n"
 msgstr "Δημιουργία περιόδου εργασίας - ζήτηση σύνδεσης\n"
 
-#: src/webserver/src/WebServer.cpp:1859
+#: src/webserver/src/WebServer.cpp:1858
 msgid "Processing request [original]: "
 msgstr "H αίτηση διεκπεραιώνεται [αρχικό]:"
 
-#: src/webserver/src/WebServer.cpp:1875
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Checking password\n"
 msgstr "Έλεγχος κωδικού\n"
 
-#: src/webserver/src/WebServer.cpp:1880
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password hash invalid\n"
 msgstr "Ο κωδικός κατακερματισμού είναι άκυρος\n"
 
-#: src/webserver/src/WebServer.cpp:1895
+#: src/webserver/src/WebServer.cpp:1894
 msgid "Password ok\n"
 msgstr "Ο κωδικός είναι εντάξει\n"
 
-#: src/webserver/src/WebServer.cpp:1897
+#: src/webserver/src/WebServer.cpp:1896
 msgid "Password bad\n"
 msgstr "Κακός κωδικός\n"
 
-#: src/webserver/src/WebServer.cpp:1900
+#: src/webserver/src/WebServer.cpp:1899
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Δεν βάλατε κανέναν κωδικό. Δεν επιτρέπεται κενός κωδικός.\n"
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Logout requested\n"
 msgstr "Ζητήθηκε αποσύνδεση\n"
 
-#: src/webserver/src/WebServer.cpp:1913
+#: src/webserver/src/WebServer.cpp:1912
 msgid "Processing request [redirected]: "
 msgstr "Επεξεργασία αιτήματος [ανακατεύθυνση]"
 
