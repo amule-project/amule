@@ -52,7 +52,7 @@ typedef uint32_t COLORTYPE;
 
 inline unsigned long RGB(int r, int g, int b)
 {
-	return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
+	return ((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xff);
 }
 
 inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
