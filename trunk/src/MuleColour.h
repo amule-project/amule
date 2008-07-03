@@ -29,40 +29,15 @@ public:
 	
 	const CMuleColour& BlendWith(const CMuleColour& colour, double covered)
 	{
-		return BlendWith(colour.GetULong(), covered);
-	}
-	
-	const CMuleColour& BlendWith(unsigned long colour, double covered)
-	{
-		unsigned int red = (unsigned int)(Red() + (GetByteValue(colour, COLOUR_R) * covered) + 0.5);
-		unsigned int green = (unsigned int)(Green() + (GetByteValue(colour, COLOUR_G) * covered) + 0.5);
-		unsigned int blue = (unsigned int)(Blue() + (GetByteValue(colour, COLOUR_B) * covered) + 0.5);
+		unsigned int red = (unsigned int)(Red() + (colour.Red() * covered) + 0.5);
+		unsigned int green = (unsigned int)(Green() + (colour.Green() * covered) + 0.5);
+		unsigned int blue = (unsigned int)(Blue() + (colour.Blue() * covered) + 0.5);
 		Set((red < 255) ? red : 255, (green < 255) ? green : 255, (blue < 255) ? blue : 255, Alpha());
 		return *this;
 	}
 	
 	unsigned long GetULong() const { return (Blue() << 16) | (Green() << 8) | Red(); }
-	
-	static inline byte GetByteValue(unsigned long rgb, ColourComponent component)
-	{
-		byte result = 0;
-		switch (component) {
-			case COLOUR_B:
-				result = (rgb >> 16);
-				break;
-			case COLOUR_G:
-				result = (rgb >> 8);
-				break;
-			case COLOUR_R:
-				result = rgb;
-				break;
-			default:
-				wxASSERT(0);
-		}
 		
-		return (result & 0xFF);
-	}
-	
 	bool IsBlack() const { return !GetULong(); }
 	
 	bool IsSameAs(const CMuleColour& colour) const { return GetULong() == colour.GetULong(); }
