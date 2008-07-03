@@ -20,9 +20,9 @@ public:
 	
 	const CMuleColour& Blend(byte percentage, ColourComponent flags = (ColourComponent)(COLOUR_R | COLOUR_G | COLOUR_B) )
 	{
-		unsigned int red = Red() * ((flags & COLOUR_R) ? ((float)percentage/(float)100) : (float)1);
-		unsigned int green = Green() * ((flags & COLOUR_G) ? ((float)percentage/(float)100) : (float)1);
-		unsigned int blue = Blue() * ((flags & COLOUR_B) ? ((float)percentage/(float)100) : (float)1);
+		unsigned int red = (unsigned int)(Red() * ((flags & COLOUR_R) ? ((float)percentage/(float)100) : (float)1));
+		unsigned int green = (unsigned int)(Green() * ((flags & COLOUR_G) ? ((float)percentage/(float)100) : (float)1));
+		unsigned int blue = (unsigned int)(Blue() * ((flags & COLOUR_B) ? ((float)percentage/(float)100) : (float)1));
 		Set((red < 255) ? red : 255, (green < 255) ? green : 255, (blue < 255) ? blue : 255, Alpha());
 		return *this;
 	}
@@ -34,26 +34,26 @@ public:
 	
 	const CMuleColour& BlendWith(unsigned long colour, double covered)
 	{
-		unsigned int red = Red() + (GetByteValue(colour, COLOUR_R) * covered) + 0.5;
-		unsigned int green = Green() + (GetByteValue(colour, COLOUR_G) * covered) + 0.5;
-		unsigned int blue = Blue() + (GetByteValue(colour, COLOUR_B) * covered) + 0.5;
+		unsigned int red = (unsigned int)(Red() + (GetByteValue(colour, COLOUR_R) * covered) + 0.5);
+		unsigned int green = (unsigned int)(Green() + (GetByteValue(colour, COLOUR_G) * covered) + 0.5);
+		unsigned int blue = (unsigned int)(Blue() + (GetByteValue(colour, COLOUR_B) * covered) + 0.5);
 		Set((red < 255) ? red : 255, (green < 255) ? green : 255, (blue < 255) ? blue : 255, Alpha());
 		return *this;
 	}
 	
-	unsigned long GetULong() const { return (Red() << 16) | (Green() << 8) | Blue(); }
+	unsigned long GetULong() const { return (Blue() << 16) | (Green() << 8) | Red(); }
 	
 	static inline byte GetByteValue(unsigned long rgb, ColourComponent component)
 	{
 		byte result = 0;
 		switch (component) {
-			case COLOUR_R:
+			case COLOUR_B:
 				result = (rgb >> 16);
 				break;
 			case COLOUR_G:
 				result = (rgb >> 8);
 				break;
-			case COLOUR_B:
+			case COLOUR_R:
 				result = rgb;
 				break;
 			default:

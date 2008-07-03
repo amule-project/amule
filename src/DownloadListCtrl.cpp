@@ -2088,7 +2088,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	const CPartFile::CGapPtrList& gaplist = file->GetGapList();
 	CPartFile::CGapPtrList::const_iterator it = gaplist.begin();
 	uint64 lastGapEnd = 0;
-	CMuleColour colour(crMissing);
+	CMuleColour colour;
 	
 	for (; it != gaplist.end(); ++it) {
 		Gap_Struct* gap = *it;
@@ -2113,7 +2113,9 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			if ( i < file->m_SrcpartFrequency.size() && file->m_SrcpartFrequency[i]) {
 				int blue = 210 - ( 22 * ( file->m_SrcpartFrequency[i] - 1 ) );
 				colour.Set(0, ( blue < 0 ? 0 : blue ), 255 );
-			} 
+			} else {
+				colour = crMissing;
+			}
 
 			if ( file->IsStopped() ) {
 				colour.Blend(50);

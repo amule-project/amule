@@ -569,7 +569,7 @@ public:
 
 
 /**
- * Cfg-class for uint64s, with no assisiated widgets.
+ * Cfg-class for uint64s, with no associated widgets.
  */
 class Cfg_Counter : public Cfg_Base
 {
@@ -611,6 +611,33 @@ protected:
 
 
 #ifndef AMULE_DAEMON
+
+class Cfg_Colour : public Cfg_Base
+{
+      public:
+	Cfg_Colour(const wxString& key, wxColour& colour)
+		: Cfg_Base(key),
+		  m_colour(colour),
+		  m_default(CMuleColour(colour).GetULong())
+	{}
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		long int rgb;
+		cfg->Read(GetKey(), &rgb, m_default);
+		m_colour.Set(rgb);
+	}
+
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write(GetKey(), static_cast<long int>(CMuleColour(m_colour).GetULong()));
+	}
+
+      private:
+	wxColour&	m_colour;
+	long int	m_default;
+};
+
 
 typedef struct {
 	int	 id;
@@ -1184,8 +1211,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  
 		wxString str = wxString::Format(wxT("/eMule/StatColor%i"),i);
-		uint32_t statcolour = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
-		s_MiscList.push_back( MkCfg_Int( str, statcolour, statcolour ) );
+		s_MiscList.push_back( new Cfg_Colour( str, CStatisticsDlg::acrStat[i] ) );
 	}
 #endif
 
