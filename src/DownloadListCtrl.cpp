@@ -476,6 +476,8 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		for ( it = a4afSources.begin(); it != a4afSources.end(); ++it ) {
 			AddSource( file, *it, A4AF_SOURCE );
 		}
+
+		SortList();
 	} else {
 		for ( int i = GetItemCount() - 1; i >= 0; --i ) {
 			CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData(i);
@@ -989,10 +991,10 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 		wxString view;
 		if (file->IsPartFile() && (file->GetStatus() != PS_COMPLETE)) {
-			view << CFormat(wxT("%s [%s]")) % _("Preview")
+			view = CFormat(wxT("%s [%s]")) % _("Preview")
 					% file->GetPartMetFileName().RemoveExt();
 		} else if ( file->GetStatus() == PS_COMPLETE ) {
-			view << _("&Open the file");
+			view = _("&Open the file");
 		}
 		menu->SetLabel(MP_VIEW, view);
 		menu->Enable(MP_VIEW, file->PreviewAvailable() );
@@ -1612,6 +1614,9 @@ void CDownloadListCtrl::DrawSourceItem(
 			if ( thePrefs::ShowProgBar() ) {
 				int iWidth = rect.GetWidth() - 2;
 				int iHeight = rect.GetHeight() - 2;
+
+				// don't draw Text beyond the bar
+				dc->SetClippingRegion(rect.GetX(), rect.GetY() + 1, iWidth, iHeight);
 			
 				if ( item->GetType() != A4AF_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
@@ -1651,7 +1656,14 @@ void CDownloadListCtrl::DrawSourceItem(
 
 					dc->Blit(rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 				} else {
-					buffer = _("A4AF");
+					wxString a4af;
+					CPartFile* p = client->GetRequestFile();
+					if (p) {
+						a4af = p->GetFileName().GetPrintable();
+					} else {
+						a4af = wxT("?");
+					}
+					buffer = CFormat(wxT("%s: %s")) % _("A4AF") % a4af;
 					
 					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;
@@ -1661,7 +1673,7 @@ void CDownloadListCtrl::DrawSourceItem(
 					dc->GetTextExtent(buffer, &txtwidth, &txtheight);
 					
 					dc->SetTextForeground(*wxBLACK);
-					dc->DrawText(buffer, midx - (txtwidth >> 1), midy - (txtheight >> 1));
+					dc->DrawText(buffer, wxMax(rect.GetX() + 2, midx - (txtwidth >> 1)), midy - (txtheight >> 1));
 
 					// Draw black border
 					dc->SetPen( *wxBLACK_PEN );
