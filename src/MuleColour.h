@@ -38,7 +38,7 @@ public:
 	
 	unsigned long GetULong() const { return (Blue() << 16) | (Green() << 8) | Red(); }
 		
-	bool IsBlack() const { return !GetULong(); }
+	bool IsBlack() const { return !Red() && !Blue() && !Green(); }
 	
 	bool IsSameAs(const CMuleColour& colour) const { return GetULong() == colour.GetULong(); }
 	
