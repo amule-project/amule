@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-03 03:30+0200\n"
-"PO-Revision-Date: 2008-07-03 07:12+0100\n"
+"PO-Revision-Date: 2008-07-03 12:01+0100\n"
 "Last-Translator: Festor Wailon Dacoba <festor90@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -1860,14 +1860,16 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
+"cliente 'Multi-Plataforma' p2p baseado no eMule \n"
+"\n"
 
 #: src/amuleDlg.cpp:466
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "Páxina web: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:467
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "Foro: http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:468
 msgid ""
