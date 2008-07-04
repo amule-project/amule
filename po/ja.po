@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-03 03:30+0200\n"
+"POT-Creation-Date: 2008-07-04 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -134,8 +134,8 @@ msgstr "ユーザ '%s' から共有ファイルを取得することができま
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1415
-#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
+#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1441
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:668 src/ClientListCtrl.cpp:691
@@ -205,11 +205,11 @@ msgstr "クライアント %s がIP：ポート %s:%d にいて、  %s %s %s を
 msgid "Username"
 msgstr "ユーザ名"
 
-#: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:500 src/muuli_wdr.cpp:3032
+#: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:500 src/muuli_wdr.cpp:3024
 msgid "Friends"
 msgstr "友達"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1018
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1020
 #: src/ClientListCtrl.cpp:248
 msgid "Show &Details"
 msgstr "詳細を表示(&D)"
@@ -226,7 +226,7 @@ msgstr "友達を削除する"
 msgid "Send &Message"
 msgstr "送信 &Message"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1020
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1022
 #: src/ClientListCtrl.cpp:250
 msgid "View Files"
 msgstr "ファイルを見る"
@@ -246,10 +246,10 @@ msgstr "選択された友達を削除しますか？"
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
-#: src/DownloadListCtrl.cpp:579 src/DownloadListCtrl.cpp:899
+#: src/DownloadListCtrl.cpp:581 src/DownloadListCtrl.cpp:901
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:852 src/muuli_wdr.cpp:918
-#: src/muuli_wdr.cpp:992 src/muuli_wdr.cpp:1058 src/muuli_wdr.cpp:2527
-#: src/muuli_wdr.cpp:2629 src/muuli_wdr.cpp:3374
+#: src/muuli_wdr.cpp:992 src/muuli_wdr.cpp:1058 src/muuli_wdr.cpp:2520
+#: src/muuli_wdr.cpp:2622 src/muuli_wdr.cpp:3366
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -324,7 +324,7 @@ msgstr "タイプ"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:194 src/DownloadListCtrl.cpp:898
+#: src/DownloadListCtrl.cpp:194 src/DownloadListCtrl.cpp:900
 msgid "Priority"
 msgstr "優先度"
 
@@ -362,7 +362,7 @@ msgid "Directory Path"
 msgstr "ディレクトリパス"
 
 #: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1084
-#: src/muuli_wdr.cpp:3567
+#: src/muuli_wdr.cpp:3559
 msgid "Shared Files"
 msgstr "共有ファイル"
 
@@ -372,19 +372,19 @@ msgstr "非常に低い"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:2591
+#: src/DownloadListCtrl.cpp:895 src/muuli_wdr.cpp:2584
 msgid "Low"
 msgstr "低い"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:2592
+#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2585
 msgid "Normal"
 msgstr "普通"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:895 src/muuli_wdr.cpp:2593
+#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2586
 msgid "High"
 msgstr "高い"
 
@@ -396,8 +396,8 @@ msgstr "非常に高い"
 msgid "Release"
 msgstr "離す"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:896
-#: src/muuli_wdr.cpp:2594
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:898
+#: src/muuli_wdr.cpp:2587
 msgid "Auto"
 msgstr "自動"
 
@@ -421,7 +421,7 @@ msgstr "コレクションに存在するファイルを転送リストに追加
 msgid "Copy magnet &URI to clipboard"
 msgstr "マグネット &URI をクリップボードにコピーする"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:940
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:942
 msgid "Copy eD2k &link to clipboard"
 msgstr ""
 
@@ -445,11 +445,11 @@ msgstr ""
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:942
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:944
 msgid "Copy feedback to clipboard"
 msgstr "フィードバックをクリップボードにコピーする"
 
-#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:725
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:727
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -476,11 +476,11 @@ msgstr "共有ファイル（%i）"
 msgid "[PartFile]"
 msgstr "[部分ファイル]"
 
-#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1077
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1079
 msgid "Enter new name for this file:"
 msgstr "このファイルの新しい名前を入力してください："
 
-#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1078
+#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1080
 msgid "File rename"
 msgstr "ファイルの改名"
 
@@ -669,7 +669,7 @@ msgid "( %s / %s )"
 msgstr "（ %s / %s）"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1314
-#: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3571
+#: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3563
 msgid "Preferences"
 msgstr "設定"
 
@@ -680,8 +680,8 @@ msgstr "amulesig.datファイルの入っているディレクトリ"
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
 #: src/utils/aLinkCreator/src/alcframe.cpp:141 src/muuli_wdr.cpp:1655
-#: src/muuli_wdr.cpp:2050 src/muuli_wdr.cpp:2061 src/muuli_wdr.cpp:2090
-#: src/muuli_wdr.cpp:3159
+#: src/muuli_wdr.cpp:2049 src/muuli_wdr.cpp:2060 src/muuli_wdr.cpp:2089
+#: src/muuli_wdr.cpp:3151
 msgid "Browse"
 msgstr "閲覧"
 
@@ -725,8 +725,8 @@ msgstr "統計イメージを置きたいFTPサーバのディレクトリをこ
 msgid "User"
 msgstr "ユーザ"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:210 src/muuli_wdr.cpp:2455
-#: src/muuli_wdr.cpp:3354
+#: src/utils/wxCas/src/wxcasprefs.cpp:210 src/muuli_wdr.cpp:2449
+#: src/muuli_wdr.cpp:3346
 msgid "Password"
 msgstr "パスワード"
 
@@ -781,8 +781,8 @@ msgid "Absolute Maximum DL rate during wxCas previous runs"
 msgstr "前のwxCas起動を含めて記憶した最大DL速度"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:138
-#: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:2678
-#: src/muuli_wdr.cpp:2703
+#: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:2671
+#: src/muuli_wdr.cpp:2696
 msgid "Reset"
 msgstr "リセット"
 
@@ -1109,7 +1109,7 @@ msgid ""
 msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1054
-#: src/muuli_wdr.cpp:2763
+#: src/muuli_wdr.cpp:2756
 msgid "Add"
 msgstr "追加"
 
@@ -1278,7 +1278,7 @@ msgstr "要求中"
 msgid "Connecting via server"
 msgstr "サーバ経由に接続中"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1685
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1697
 #: src/ClientListCtrl.cpp:686
 msgid "Queue Full"
 msgstr "キューが一杯"
@@ -1349,7 +1349,7 @@ msgid "Remote Server"
 msgstr "リモートサーバ"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:704 src/muuli_wdr.cpp:193
-#: src/muuli_wdr.cpp:3515 src/SearchDlg.cpp:109
+#: src/muuli_wdr.cpp:3507 src/SearchDlg.cpp:109
 msgid "Kad"
 msgstr "Kad"
 
@@ -1373,165 +1373,165 @@ msgstr "ソースシード"
 msgid "Search Result"
 msgstr ""
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:656
 msgid "System default"
 msgstr "システムの標準設定"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:657
 msgid "Albanian"
 msgstr "アルバニア語"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:658
 msgid "Arabic"
 msgstr "アラブ語"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:659
 msgid "Basque"
 msgstr "バスク語"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:660
 msgid "Bulgarian"
 msgstr "ブルガリア語"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:661
 msgid "Catalan"
 msgstr "カタロニア語"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:662
 msgid "Chinese (Simplified)"
 msgstr "中国語（簡体字）"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:663
 msgid "Chinese (Traditional)"
 msgstr "中国語（繁体字）"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:664
 msgid "Croatian"
 msgstr "クロアチア語"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:665
 msgid "Czech"
 msgstr "チェコ語"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:666
 msgid "Danish"
 msgstr "デンマーク語"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:667
 msgid "Dutch"
 msgstr "オランダ語"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:668
 msgid "English (U.K.)"
 msgstr "英語（U.K.）"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:669
 msgid "Estonian"
 msgstr "エストニア語"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:670
 msgid "Finnish"
 msgstr "フィンランド語"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:671
 msgid "French"
 msgstr "フランス語"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:672
 msgid "Galician"
 msgstr "ガリシア語"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:673
 msgid "German"
 msgstr "ドイツ語"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:674
 msgid "Greek"
 msgstr "ギリシア語"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:675
 msgid "Hebrew"
 msgstr "ヘブライ語"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:676
 msgid "Hungarian"
 msgstr "ハンガリー語"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:677
 msgid "Italian"
 msgstr "イタリア語"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:678
 msgid "Italian (Swiss)"
 msgstr "イタリア語（スイス）"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:679
 msgid "Japanese"
 msgstr "日本語"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:680
 msgid "Korean"
 msgstr "韓国語"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:681
 msgid "Lithuanian"
 msgstr "リトアニア語"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:682
 msgid "Norwegian (Nynorsk)"
 msgstr "ルウェー語"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:683
 msgid "Polish"
 msgstr "ポーランド語"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:684
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:685
 msgid "Portuguese (Brazilian)"
 msgstr "ポルトガル語（ブラジル）"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:686
 msgid "Russian"
 msgstr "ロシア語"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:687
 msgid "Slovenian"
 msgstr "スロベニア語"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:688
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:689
 msgid "Swedish"
 msgstr "スウェーデン語"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:690
 msgid "Turkish"
 msgstr "トルコ語"
 
-#: src/Preferences.cpp:815
+#: src/Preferences.cpp:842
 msgid "User:"
 msgstr ""
 
-#: src/Preferences.cpp:840
+#: src/Preferences.cpp:867
 msgid "System:"
 msgstr ""
 
-#: src/Preferences.cpp:851
+#: src/Preferences.cpp:878
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1646
+#: src/Preferences.cpp:1672
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "サーバのUDPソケトがTCP+3であるためTCPポートを65532以上には設定できません"
 
-#: src/Preferences.cpp:1647
+#: src/Preferences.cpp:1673
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "デフォルトポートを使用します (%d)"
@@ -1797,7 +1797,7 @@ msgstr "Kad: オフ"
 msgid "Stop the current connection attempts"
 msgstr "現在の接続試行を中止する"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2770 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2763 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "切断する"
 
@@ -1805,8 +1805,8 @@ msgstr "切断する"
 msgid "Disconnect from the currently connected networks"
 msgstr "ネットワークから切断します。"
 
-#: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:2953 src/muuli_wdr.cpp:3370
-#: src/muuli_wdr.cpp:3561 src/MuleTrayIcon.cpp:541
+#: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:2946 src/muuli_wdr.cpp:3362
+#: src/muuli_wdr.cpp:3553 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "接続する"
 
@@ -1852,8 +1852,8 @@ msgstr "スキンディレクトリ '%s' は存在しません"
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1289 src/amuleDlg.cpp:1450 src/muuli_wdr.cpp:1845
-#: src/muuli_wdr.cpp:3563
+#: src/amuleDlg.cpp:1289 src/amuleDlg.cpp:1450 src/muuli_wdr.cpp:1844
+#: src/muuli_wdr.cpp:3555
 msgid "Networks"
 msgstr "ネットワーク"
 
@@ -1861,7 +1861,7 @@ msgstr "ネットワーク"
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3564
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3556
 msgid "Searches"
 msgstr "検索"
 
@@ -1869,7 +1869,7 @@ msgstr "検索"
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:3565
+#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:3557
 msgid "Transfers"
 msgstr "転送"
 
@@ -1885,8 +1885,8 @@ msgstr ""
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:518 src/muuli_wdr.cpp:3179
-#: src/muuli_wdr.cpp:3568
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:518 src/muuli_wdr.cpp:3171
+#: src/muuli_wdr.cpp:3560
 msgid "Messages"
 msgstr "メッセージ"
 
@@ -1895,7 +1895,7 @@ msgid "Messages window"
 msgstr ""
 
 #: src/amuleDlg.cpp:1309 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
-#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1094 src/muuli_wdr.cpp:3569
+#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1094 src/muuli_wdr.cpp:3561
 msgid "Statistics"
 msgstr "統計"
 
@@ -1907,19 +1907,19 @@ msgstr ""
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3572
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3564
 msgid "Import"
 msgstr "インポート"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3572
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3564
 msgid "The partfile importer tool"
 msgstr "部分ファイルをインポートするためのツール"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3573
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3565
 msgid "About"
 msgstr "情報"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3573
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3565
 msgid "About/Help"
 msgstr "ソフトウェア情報／ヘルプ"
 
@@ -2401,7 +2401,7 @@ msgstr ""
 msgid "Connected"
 msgstr "接続"
 
-#: src/ServerWnd.cpp:169 src/muuli_wdr.cpp:2749
+#: src/ServerWnd.cpp:169 src/muuli_wdr.cpp:2742
 msgid "IP:Port"
 msgstr "IP:ポート"
 
@@ -2433,7 +2433,7 @@ msgstr "接続状況："
 msgid "Firewalled"
 msgstr "ファイアワォールされています"
 
-#: src/ServerWnd.cpp:219 src/muuli_wdr.cpp:2522 src/muuli_wdr.cpp:2625
+#: src/ServerWnd.cpp:219 src/muuli_wdr.cpp:2515 src/muuli_wdr.cpp:2618
 msgid "OK"
 msgstr "OK"
 
@@ -2534,7 +2534,7 @@ msgstr "失敗したアップロードセッションの合計： %s"
 msgid "Average upload time: %s"
 msgstr "平均アップロード時間： %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:890 src/muuli_wdr.cpp:421
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:892 src/muuli_wdr.cpp:421
 msgid "Downloads"
 msgstr "ダウンロード数"
 
@@ -2883,7 +2883,7 @@ msgstr "ファイル"
 msgid "Download"
 msgstr "ダウンロード"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:947
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:949
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "カテゴリ"
@@ -2972,99 +2972,99 @@ msgstr "最後に全部分を確認した時刻"
 msgid "Last Reception"
 msgstr "最後に受信した時刻"
 
-#: src/DownloadListCtrl.cpp:575
+#: src/DownloadListCtrl.cpp:577
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "本当に選択されたファイルを削除しますか？"
 
-#: src/DownloadListCtrl.cpp:577
+#: src/DownloadListCtrl.cpp:579
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "本当に選択されたファイルを削除しますか？"
 
-#: src/DownloadListCtrl.cpp:839 src/ClientListCtrl.cpp:355
+#: src/DownloadListCtrl.cpp:841 src/ClientListCtrl.cpp:355
 msgid "Send message to user"
 msgstr "ユーザへメッセージを送る"
 
-#: src/DownloadListCtrl.cpp:840 src/ClientListCtrl.cpp:355
+#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:355
 msgid "Message to send:"
 msgstr "メッセージ："
 
-#: src/DownloadListCtrl.cpp:900 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:902 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "中止する(&S)"
 
-#: src/DownloadListCtrl.cpp:901 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "停止する(&P)"
 
-#: src/DownloadListCtrl.cpp:902 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "再開する(&R)"
 
-#: src/DownloadListCtrl.cpp:903
+#: src/DownloadListCtrl.cpp:905
 msgid "C&lear completed"
 msgstr "完了したものをクリアする(&L)"
 
-#: src/DownloadListCtrl.cpp:909
+#: src/DownloadListCtrl.cpp:911
 msgid "Swap every A4AF to this file now"
 msgstr "すぐにこのファイルの全てのA4AFを交換する"
 
-#: src/DownloadListCtrl.cpp:911
+#: src/DownloadListCtrl.cpp:913
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "このファイルの全てのA4AFを交換する（オート）"
 
-#: src/DownloadListCtrl.cpp:916
+#: src/DownloadListCtrl.cpp:918
 msgid "Swap every A4AF to any other file now"
 msgstr "このファイル以外の全てのA4AFを交換する"
 
-#: src/DownloadListCtrl.cpp:919
+#: src/DownloadListCtrl.cpp:921
 msgid "Extended Options"
 msgstr "拡張オプション"
 
-#: src/DownloadListCtrl.cpp:930 src/DownloadListCtrl.cpp:992
+#: src/DownloadListCtrl.cpp:932 src/DownloadListCtrl.cpp:994
 msgid "Preview"
 msgstr "プレビュー"
 
-#: src/DownloadListCtrl.cpp:931
+#: src/DownloadListCtrl.cpp:933
 msgid "Show file &details"
 msgstr "ファイルの詳細(&D)"
 
-#: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:823
+#: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:823
 msgid "Show all comments"
 msgstr "全てのコメントを表示"
 
-#: src/DownloadListCtrl.cpp:938
+#: src/DownloadListCtrl.cpp:940
 msgid "Copy magnet URI to clipboard"
 msgstr "マグネットURIをクリップボードへコピーする"
 
-#: src/DownloadListCtrl.cpp:951
+#: src/DownloadListCtrl.cpp:953
 msgid "unassign"
 msgstr "割り当てない"
 
-#: src/DownloadListCtrl.cpp:958
+#: src/DownloadListCtrl.cpp:960
 msgid "Assign to category"
 msgstr "カテゴリに割り当てる"
 
-#: src/DownloadListCtrl.cpp:995
+#: src/DownloadListCtrl.cpp:997
 msgid "&Open the file"
 msgstr "ファイルを開く(&O)"
 
-#: src/DownloadListCtrl.cpp:1019 src/ClientListCtrl.cpp:249
+#: src/DownloadListCtrl.cpp:1021 src/ClientListCtrl.cpp:249
 msgid "Remove from friends"
 msgstr "仲間リストから外す"
 
-#: src/DownloadListCtrl.cpp:1019 src/ClientListCtrl.cpp:249
+#: src/DownloadListCtrl.cpp:1021 src/ClientListCtrl.cpp:249
 msgid "Add to Friends"
 msgstr "仲間リストに追加する"
 
-#: src/DownloadListCtrl.cpp:1021 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:251
 msgid "Send message"
 msgstr "メッセージを送る"
 
-#: src/DownloadListCtrl.cpp:1022
+#: src/DownloadListCtrl.cpp:1024
 msgid "Swap to this file"
 msgstr "このファイルへ交換する"
 
-#: src/DownloadListCtrl.cpp:1303 src/DownloadListCtrl.cpp:1606
+#: src/DownloadListCtrl.cpp:1305 src/DownloadListCtrl.cpp:1608
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1694 src/muuli_wdr.cpp:1707
 #: src/muuli_wdr.cpp:1720 src/muuli_wdr.cpp:1738 src/muuli_wdr.cpp:1751
@@ -3072,39 +3072,39 @@ msgstr "このファイルへ交換する"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1426 src/DownloadListCtrl.cpp:1437
+#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1654
+#: src/DownloadListCtrl.cpp:1666
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1704
+#: src/DownloadListCtrl.cpp:1716
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1718
+#: src/DownloadListCtrl.cpp:1730
 msgid "Asked for another file"
 msgstr "他のファイルを頼みました"
 
-#: src/DownloadListCtrl.cpp:2041
+#: src/DownloadListCtrl.cpp:2053
 #, c-format
 msgid "Downloads (%i)"
 msgstr "ダウンロード数（%i）"
 
-#: src/DownloadListCtrl.cpp:2257
+#: src/DownloadListCtrl.cpp:2271
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2258
+#: src/DownloadListCtrl.cpp:2272
 msgid "File preview"
 msgstr "ファイル・プレビュー"
 
-#: src/DownloadListCtrl.cpp:2294
+#: src/DownloadListCtrl.cpp:2308
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "エラー：外部メディア・プレイヤーを実行できませんでした！コマンド: `%s'"
@@ -4270,7 +4270,7 @@ msgstr "成功にインポートしたダウンロードのソース・ファイ
 msgid "Remove sources?"
 msgstr "ソースを削除しますか？"
 
-#: src/PartFileConvert.cpp:723 src/muuli_wdr.cpp:3426
+#: src/PartFileConvert.cpp:723 src/muuli_wdr.cpp:3418
 msgid "Waiting..."
 msgstr "待機中…"
 
@@ -4289,7 +4289,7 @@ msgid "kB"
 msgstr "kB"
 
 #: src/OtherFunctions.cpp:116 src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290
-#: src/muuli_wdr.cpp:2019
+#: src/muuli_wdr.cpp:2018
 msgid "MB"
 msgstr "MB"
 
@@ -4621,7 +4621,7 @@ msgid "Sends the specified message."
 msgstr "指示するメッセージを送信します。"
 
 #: src/muuli_wdr.cpp:538 src/muuli_wdr.cpp:956 src/muuli_wdr.cpp:1567
-#: src/muuli_wdr.cpp:3463 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3455 src/MuleNotebook.cpp:155
 msgid "Close"
 msgstr "閉じる"
 
@@ -4704,7 +4704,7 @@ msgstr "転送済み："
 msgid "Completed Size :"
 msgstr "完全サイズ："
 
-#: src/muuli_wdr.cpp:753 src/muuli_wdr.cpp:1956
+#: src/muuli_wdr.cpp:753 src/muuli_wdr.cpp:1955
 msgid "Intelligent Corruption Handling"
 msgstr "I.C.H.（知的破損処理）"
 
@@ -4821,15 +4821,15 @@ msgstr "アクティブなアップロード数："
 msgid "Download-Speed"
 msgstr "ダウンロード速度："
 
-#: src/muuli_wdr.cpp:1201 src/muuli_wdr.cpp:1250 src/muuli_wdr.cpp:2875
+#: src/muuli_wdr.cpp:1201 src/muuli_wdr.cpp:1250 src/muuli_wdr.cpp:2868
 msgid "Current"
 msgstr "現在"
 
-#: src/muuli_wdr.cpp:1212 src/muuli_wdr.cpp:1261 src/muuli_wdr.cpp:2886
+#: src/muuli_wdr.cpp:1212 src/muuli_wdr.cpp:1261 src/muuli_wdr.cpp:2879
 msgid "Running average"
 msgstr "移動平均"
 
-#: src/muuli_wdr.cpp:1223 src/muuli_wdr.cpp:1272 src/muuli_wdr.cpp:2897
+#: src/muuli_wdr.cpp:1223 src/muuli_wdr.cpp:1272 src/muuli_wdr.cpp:2890
 msgid "Session average"
 msgstr "セッション平均"
 
@@ -4841,7 +4841,7 @@ msgstr "アップロード速度"
 msgid "Connections"
 msgstr "接続数"
 
-#: src/muuli_wdr.cpp:1299 src/muuli_wdr.cpp:2151
+#: src/muuli_wdr.cpp:1299 src/muuli_wdr.cpp:2150
 msgid "Active downloads"
 msgstr "アクティブなダウンロード数"
 
@@ -4849,15 +4849,15 @@ msgstr "アクティブなダウンロード数"
 msgid "Active connections (1:1)"
 msgstr "アクティブな接続（1:1）"
 
-#: src/muuli_wdr.cpp:1321 src/muuli_wdr.cpp:2152
+#: src/muuli_wdr.cpp:1321 src/muuli_wdr.cpp:2151
 msgid "Active uploads"
 msgstr "アクティブなアップロード数"
 
-#: src/muuli_wdr.cpp:1330 src/muuli_wdr.cpp:2168
+#: src/muuli_wdr.cpp:1330 src/muuli_wdr.cpp:2167
 msgid "Statistics Tree"
 msgstr "統計木"
 
-#: src/muuli_wdr.cpp:1360 src/muuli_wdr.cpp:3291
+#: src/muuli_wdr.cpp:1360 src/muuli_wdr.cpp:3283
 msgid "Username:"
 msgstr "ユーザ名："
 
@@ -5065,183 +5065,183 @@ msgstr ""
 "注意：この値は統計にしか\n"
 "使われていません。"
 
-#: src/muuli_wdr.cpp:1768
+#: src/muuli_wdr.cpp:1767
 msgid "Standard client TCP Port:"
 msgstr "標準クライアントTCPポート："
 
-#: src/muuli_wdr.cpp:1772
+#: src/muuli_wdr.cpp:1771
 msgid "This is the standard eD2k port and cannot be disabled."
 msgstr ""
 
-#: src/muuli_wdr.cpp:1777
+#: src/muuli_wdr.cpp:1776
 msgid "Extended client UDP Port:"
 msgstr "延長クライアントUDPポート："
 
-#: src/muuli_wdr.cpp:1781
+#: src/muuli_wdr.cpp:1780
 msgid "This UDP port is used for extended ed2k requests and Kad network"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1784
+#: src/muuli_wdr.cpp:1783
 msgid "disable"
 msgstr "無効にする"
 
-#: src/muuli_wdr.cpp:1791
+#: src/muuli_wdr.cpp:1790
 msgid "Bind Address"
 msgstr "アドレスをバインドする"
 
-#: src/muuli_wdr.cpp:1802
+#: src/muuli_wdr.cpp:1801
 msgid "UDP port for extended server requests (TCP+3): 4665"
 msgstr "延長サーバ・リクエストのUDPポート（TCP+3）： 4665"
 
-#: src/muuli_wdr.cpp:1809
+#: src/muuli_wdr.cpp:1808
 msgid "Max Sources per File"
 msgstr "ファイルごとの最大ソース数"
 
-#: src/muuli_wdr.cpp:1817
+#: src/muuli_wdr.cpp:1816
 msgid "Connection limits"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1827
+#: src/muuli_wdr.cpp:1826
 msgid "Universal Plug and Play"
 msgstr "ユニバーサル・プラグ・アンド・プレイ"
 
-#: src/muuli_wdr.cpp:1830
+#: src/muuli_wdr.cpp:1829
 msgid "Enable UPnP"
 msgstr "UPnPを有効にする"
 
-#: src/muuli_wdr.cpp:1835
+#: src/muuli_wdr.cpp:1834
 msgid "UPnP TCP Port:"
 msgstr "UPnPのTCPポート："
 
-#: src/muuli_wdr.cpp:1848
+#: src/muuli_wdr.cpp:1847
 msgid "Kademlia"
 msgstr "Kademlia"
 
-#: src/muuli_wdr.cpp:1852 src/muuli_wdr.cpp:3510
+#: src/muuli_wdr.cpp:1851 src/muuli_wdr.cpp:3502
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/muuli_wdr.cpp:1861
+#: src/muuli_wdr.cpp:1860
 msgid "Autoconnect on startup"
 msgstr "スタートアップに自動接続する"
 
-#: src/muuli_wdr.cpp:1864
+#: src/muuli_wdr.cpp:1863
 msgid "Reconnect on loss"
 msgstr "接続を失う時に再接続する"
 
-#: src/muuli_wdr.cpp:1868
+#: src/muuli_wdr.cpp:1867
 msgid "Show overhead bandwith"
 msgstr "オーバヘッドの帯域幅を表示する"
 
-#: src/muuli_wdr.cpp:1894
+#: src/muuli_wdr.cpp:1893
 msgid "Remove dead server after"
 msgstr "再試行後、応答のないサーバを削除する。再試行回数："
 
-#: src/muuli_wdr.cpp:1900
+#: src/muuli_wdr.cpp:1899
 msgid "retries"
 msgstr "回"
 
-#: src/muuli_wdr.cpp:1907
+#: src/muuli_wdr.cpp:1906
 msgid "Auto-update server list at startup"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1910
+#: src/muuli_wdr.cpp:1909
 msgid "List"
 msgstr "リスト"
 
-#: src/muuli_wdr.cpp:1915
+#: src/muuli_wdr.cpp:1914
 msgid "Update server list when connecting to a server"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1918
+#: src/muuli_wdr.cpp:1917
 msgid "Update server list when a client connects"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1921
+#: src/muuli_wdr.cpp:1920
 msgid "Use priority system"
 msgstr "優先度システムを使用する"
 
-#: src/muuli_wdr.cpp:1925
+#: src/muuli_wdr.cpp:1924
 msgid "Use smart LowID check on connect"
 msgstr "接続の時にLowIDチェックを使用する"
 
-#: src/muuli_wdr.cpp:1929
+#: src/muuli_wdr.cpp:1928
 msgid "Safe connect"
 msgstr "安全接続"
 
-#: src/muuli_wdr.cpp:1933
+#: src/muuli_wdr.cpp:1932
 msgid "Autoconnect to servers in static list only"
 msgstr "スタティック・リストに含まれているサーバのみに自動接続する"
 
-#: src/muuli_wdr.cpp:1936
+#: src/muuli_wdr.cpp:1935
 msgid "Set manually added servers to High Priority"
 msgstr "手動で追加したサーバを高い優先度に設定する"
 
-#: src/muuli_wdr.cpp:1959
+#: src/muuli_wdr.cpp:1958
 msgid "I.C.H. active"
 msgstr "I.C.H.を有効にする"
 
-#: src/muuli_wdr.cpp:1963
+#: src/muuli_wdr.cpp:1962
 msgid "AICH trusts every hash (not recomended)"
 msgstr "AICHはすべてのハッシュを信頼する（非推奨）"
 
-#: src/muuli_wdr.cpp:1971
+#: src/muuli_wdr.cpp:1970
 msgid "Add files to download in pause mode"
 msgstr "ダウンロードファイルを停止モードで追加する"
 
-#: src/muuli_wdr.cpp:1974
+#: src/muuli_wdr.cpp:1973
 msgid "Add files to download with auto priority"
 msgstr "ダウンロードファイルを優先度を自動にして追加する"
 
-#: src/muuli_wdr.cpp:1977
+#: src/muuli_wdr.cpp:1976
 msgid "Try to download first and last chunks first"
 msgstr "最初と最後のチャンクを先にダウンロードしようとする"
 
-#: src/muuli_wdr.cpp:1981
+#: src/muuli_wdr.cpp:1980
 msgid "Add new shared files with auto priority"
 msgstr "新しい共有ファイルを自動優先度として追加する"
 
-#: src/muuli_wdr.cpp:1984
+#: src/muuli_wdr.cpp:1983
 msgid "Try to transfer full chunks to all uploads"
 msgstr "すべてのアップロードにフル・チャンクを転送しようとする"
 
-#: src/muuli_wdr.cpp:1988
+#: src/muuli_wdr.cpp:1987
 msgid "Start next paused file when a file completed"
 msgstr "ファイルが完了されたらすぐに次の停止されたファイルを始める"
 
-#: src/muuli_wdr.cpp:1992
+#: src/muuli_wdr.cpp:1991
 msgid "From the same category"
 msgstr "同じカテゴリから"
 
-#: src/muuli_wdr.cpp:1995
+#: src/muuli_wdr.cpp:1994
 msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "珍しいファイルには10ソースを保存する（<20ソース）"
 
-#: src/muuli_wdr.cpp:2001
+#: src/muuli_wdr.cpp:2000
 msgid "Disk space"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2004
+#: src/muuli_wdr.cpp:2003
 msgid "Check disk space"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2005
+#: src/muuli_wdr.cpp:2004
 msgid "Select this if you want aMule to check your disk space"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2012
+#: src/muuli_wdr.cpp:2011
 msgid "Min disk space:"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2016
+#: src/muuli_wdr.cpp:2015
 msgid "Enter here the min disk space desired."
 msgstr "望ましい最小のディスク領域をここに入力してください。"
 
-#: src/muuli_wdr.cpp:2024
+#: src/muuli_wdr.cpp:2023
 msgid "Preallocate disk space for new files"
 msgstr "新しいファイルのためのディスク領域を事前に確保する"
 
-#: src/muuli_wdr.cpp:2025
+#: src/muuli_wdr.cpp:2024
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
@@ -5249,119 +5249,119 @@ msgstr ""
 "新しいファイルのためにファイル全体が格納できるディスク領域を事前に確保し、断"
 "片化を防ぎます。"
 
-#: src/muuli_wdr.cpp:2044
+#: src/muuli_wdr.cpp:2043
 msgid "Incoming"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2055
+#: src/muuli_wdr.cpp:2054
 msgid "Temporary"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2066
+#: src/muuli_wdr.cpp:2065
 msgid "Shared"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2069
+#: src/muuli_wdr.cpp:2068
 msgid "(Right click on folder icon for recursive share)"
 msgstr "（再帰的に共有するにはフォルダ・アイコンを右クリックしてください）"
 
-#: src/muuli_wdr.cpp:2076
+#: src/muuli_wdr.cpp:2075
 msgid "Share hidden files"
 msgstr "隠れたファイルを共有する"
 
-#: src/muuli_wdr.cpp:2082
+#: src/muuli_wdr.cpp:2081
 msgid "Video Player"
 msgstr "ビデオ・プレイヤー"
 
-#: src/muuli_wdr.cpp:2095
+#: src/muuli_wdr.cpp:2094
 msgid "Create Backup for preview"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2114
+#: src/muuli_wdr.cpp:2113
 msgid "Graphs"
 msgstr "グラフ"
 
-#: src/muuli_wdr.cpp:2117 src/muuli_wdr.cpp:2171
+#: src/muuli_wdr.cpp:2116 src/muuli_wdr.cpp:2170
 msgid "Update delay : 5 secs"
 msgstr "アップデート延期：５秒"
 
-#: src/muuli_wdr.cpp:2123
+#: src/muuli_wdr.cpp:2122
 msgid "Time for average graph: 100 mins"
 msgstr "平均グラフの時間：１００分"
 
-#: src/muuli_wdr.cpp:2129
+#: src/muuli_wdr.cpp:2128
 msgid "Connections Graph Scale: 100 "
 msgstr "接続数のグラフスケール：１００"
 
-#: src/muuli_wdr.cpp:2135
+#: src/muuli_wdr.cpp:2134
 msgid "Select Statistics Colors"
 msgstr "統計の色を選択する"
 
-#: src/muuli_wdr.cpp:2142
+#: src/muuli_wdr.cpp:2141
 msgid "Background"
 msgstr "背景"
 
-#: src/muuli_wdr.cpp:2143
+#: src/muuli_wdr.cpp:2142
 msgid "Grid"
 msgstr "グリッド"
 
-#: src/muuli_wdr.cpp:2144
+#: src/muuli_wdr.cpp:2143
 msgid "Download current"
 msgstr "ダウンロード現在"
 
-#: src/muuli_wdr.cpp:2145
+#: src/muuli_wdr.cpp:2144
 msgid "Download running average"
 msgstr "ダウンロード移動平均"
 
-#: src/muuli_wdr.cpp:2146
+#: src/muuli_wdr.cpp:2145
 msgid "Download session average"
 msgstr "ダウンロードセッション平均"
 
-#: src/muuli_wdr.cpp:2147
+#: src/muuli_wdr.cpp:2146
 msgid "Upload current"
 msgstr "アップロード現在"
 
-#: src/muuli_wdr.cpp:2148
+#: src/muuli_wdr.cpp:2147
 msgid "Upload running average"
 msgstr "アップロード移動平均"
 
-#: src/muuli_wdr.cpp:2149
+#: src/muuli_wdr.cpp:2148
 msgid "Upload session average"
 msgstr "アップロードセッション平均"
 
-#: src/muuli_wdr.cpp:2150
+#: src/muuli_wdr.cpp:2149
 msgid "Active connections"
 msgstr "アクティブ接続数"
 
-#: src/muuli_wdr.cpp:2153
+#: src/muuli_wdr.cpp:2152
 msgid "Systray Icon Speedbar"
 msgstr "システム・トレイ・アイコン・スピードバー"
 
-#: src/muuli_wdr.cpp:2154
+#: src/muuli_wdr.cpp:2153
 msgid "Kad-nodes current"
 msgstr "現在のKadノード数"
 
-#: src/muuli_wdr.cpp:2155
+#: src/muuli_wdr.cpp:2154
 msgid "Kad-nodes running"
 msgstr "動作中のKadノード数"
 
-#: src/muuli_wdr.cpp:2156
+#: src/muuli_wdr.cpp:2155
 msgid "Kad-nodes session"
 msgstr "セッションのKadノード数"
 
-#: src/muuli_wdr.cpp:2161 src/muuli_wdr.cpp:2615
+#: src/muuli_wdr.cpp:2160 src/muuli_wdr.cpp:2608
 msgid "Select"
 msgstr "選択"
 
-#: src/muuli_wdr.cpp:2179
+#: src/muuli_wdr.cpp:2178
 msgid "Number of Client Versions shown (0=unlimited)"
 msgstr "表示されているクライアントのバージョン数（0＝無制限）"
 
-#: src/muuli_wdr.cpp:2207
+#: src/muuli_wdr.cpp:2206
 msgid "!!! WARNING !!!"
 msgstr "！！！注意！！！"
 
-#: src/muuli_wdr.cpp:2213
+#: src/muuli_wdr.cpp:2212
 msgid ""
 "Do not change these setting unless you know\n"
 "what you are doing, otherwise you can easily\n"
@@ -5377,156 +5377,156 @@ msgstr ""
 "この設定を変更しなくてもaMuleはうまく動いて\n"
 "います。"
 
-#: src/muuli_wdr.cpp:2225
+#: src/muuli_wdr.cpp:2219
 msgid "Advanced Settings"
 msgstr "詳細な設定"
 
-#: src/muuli_wdr.cpp:2228
+#: src/muuli_wdr.cpp:2222
 msgid "Max new connections / 5 secs"
 msgstr "最大の新しい接続数（5秒ごと）"
 
-#: src/muuli_wdr.cpp:2234
+#: src/muuli_wdr.cpp:2228
 msgid "File Buffer Size: 240000 bytes"
 msgstr "ファイル・バファー・サイズ：240000バイト"
 
-#: src/muuli_wdr.cpp:2240
+#: src/muuli_wdr.cpp:2234
 msgid "Upload Queue Size: 5000 clients"
 msgstr "アップロードキューサイズ：5000クライアント"
 
-#: src/muuli_wdr.cpp:2246
+#: src/muuli_wdr.cpp:2240
 msgid "Server connection refresh interval: Disable"
 msgstr "サーバ接続のリフレッシュ空間：無効にする"
 
-#: src/muuli_wdr.cpp:2268
+#: src/muuli_wdr.cpp:2262
 msgid "Download Queue Files Progress"
 msgstr "ダウンロードキューにあるファイルの進捗"
 
-#: src/muuli_wdr.cpp:2271
+#: src/muuli_wdr.cpp:2265
 msgid "Show percentage"
 msgstr "パーセンテージを表示する"
 
-#: src/muuli_wdr.cpp:2275
+#: src/muuli_wdr.cpp:2269
 msgid "Show progressbar "
 msgstr "進捗バーを表示する"
 
-#: src/muuli_wdr.cpp:2281
+#: src/muuli_wdr.cpp:2275
 msgid "Progressbar Style"
 msgstr "進捗バーのスタイル"
 
-#: src/muuli_wdr.cpp:2291
+#: src/muuli_wdr.cpp:2285
 msgid "Flat"
 msgstr "フラット"
 
-#: src/muuli_wdr.cpp:2294
+#: src/muuli_wdr.cpp:2288
 msgid "Round"
 msgstr "ラウンド"
 
-#: src/muuli_wdr.cpp:2305
+#: src/muuli_wdr.cpp:2299
 msgid "Skin Support"
 msgstr "スキンのサポート"
 
-#: src/muuli_wdr.cpp:2308
+#: src/muuli_wdr.cpp:2302
 msgid "Enable skin support "
 msgstr "スキンのサポートを有効にする"
 
-#: src/muuli_wdr.cpp:2313
+#: src/muuli_wdr.cpp:2307
 msgid "Skin:"
 msgstr "スキン："
 
-#: src/muuli_wdr.cpp:2318
+#: src/muuli_wdr.cpp:2312
 msgid "- no skins available -"
 msgstr "- スキンがありません -"
 
-#: src/muuli_wdr.cpp:2327
+#: src/muuli_wdr.cpp:2321
 msgid "Column Sorting"
 msgstr "コラムのソーティング"
 
-#: src/muuli_wdr.cpp:2330
+#: src/muuli_wdr.cpp:2324
 msgid "Auto-sort files in the download queue (high CPU)"
 msgstr ""
 "ダウンロードキューにあるファイルを自動ソーティングする（CPUを強く使用する）"
 
-#: src/muuli_wdr.cpp:2332
+#: src/muuli_wdr.cpp:2326
 msgid "aMule will sort the columns in your download list automatically"
 msgstr "aMuleはダウンロードリストの列を自動的にソートする"
 
-#: src/muuli_wdr.cpp:2337
+#: src/muuli_wdr.cpp:2331
 msgid "Misc Gui Tweaks"
 msgstr "雑なGUIの調整"
 
-#: src/muuli_wdr.cpp:2340
+#: src/muuli_wdr.cpp:2334
 msgid "Show Fast eD2k Links Handler"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2344
+#: src/muuli_wdr.cpp:2338
 msgid "Show extended info on categories tabs"
 msgstr "延長情報をカテゴリ・タブで表示する"
 
-#: src/muuli_wdr.cpp:2348
+#: src/muuli_wdr.cpp:2342
 msgid "Show transfer rates on title"
 msgstr "タイトルに転送速度を表示する"
 
-#: src/muuli_wdr.cpp:2352
+#: src/muuli_wdr.cpp:2346
 msgid "Vertical toolbar orientation"
 msgstr "垂直ツールバー"
 
-#: src/muuli_wdr.cpp:2355
+#: src/muuli_wdr.cpp:2349
 msgid "Show part file number before file name"
 msgstr "ファイル名の前に部分ファイル番号を表示する"
 
-#: src/muuli_wdr.cpp:2374
+#: src/muuli_wdr.cpp:2368
 msgid "Web server parameters"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2377
+#: src/muuli_wdr.cpp:2371
 msgid "Run amuleweb on startup"
 msgstr "スタートアップの時にamulewebを起動する"
 
-#: src/muuli_wdr.cpp:2382
+#: src/muuli_wdr.cpp:2376
 msgid "Web server port"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2390
+#: src/muuli_wdr.cpp:2384
 msgid "Enable UPnP port forwarding on the web server port"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2395
+#: src/muuli_wdr.cpp:2389
 msgid "Web server UPnP TCP port"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2405
+#: src/muuli_wdr.cpp:2399
 msgid "Page Refresh Time (in secs)"
 msgstr "ページのリフレッシュ間隔（秒単位）"
 
-#: src/muuli_wdr.cpp:2413
+#: src/muuli_wdr.cpp:2407
 msgid "Enable Gzip compression"
 msgstr "gzip圧縮を有効にする"
 
-#: src/muuli_wdr.cpp:2417
+#: src/muuli_wdr.cpp:2411
 msgid "Enable Low rights User"
 msgstr "低権限ユーザを有効にする"
 
-#: src/muuli_wdr.cpp:2424
+#: src/muuli_wdr.cpp:2418
 msgid "Full rights password"
 msgstr "全権限パスワード"
 
-#: src/muuli_wdr.cpp:2430
+#: src/muuli_wdr.cpp:2424
 msgid "Low rights password"
 msgstr "低権限パスワード"
 
-#: src/muuli_wdr.cpp:2436
+#: src/muuli_wdr.cpp:2430
 msgid "Web template"
 msgstr "ウェブテンプレート"
 
-#: src/muuli_wdr.cpp:2447
+#: src/muuli_wdr.cpp:2441
 msgid "External Connection Parameters"
 msgstr "外部接続のパラメタ"
 
-#: src/muuli_wdr.cpp:2450
+#: src/muuli_wdr.cpp:2444
 msgid "Accept external connections"
 msgstr "外部接続を許可にする"
 
-#: src/muuli_wdr.cpp:2468
+#: src/muuli_wdr.cpp:2462
 msgid ""
 "IP of the listening interface\n"
 "(empty for any)"
@@ -5534,7 +5534,7 @@ msgstr ""
 "聞いているインターフェイスのIPアドレス\n"
 "（空にすると任意）"
 
-#: src/muuli_wdr.cpp:2474
+#: src/muuli_wdr.cpp:2467
 msgid ""
 "Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
 "An empty field or 0.0.0.0 will mean any interface."
@@ -5543,63 +5543,63 @@ msgstr ""
 "入力してください。空のフィールド、または0.0.0.0は任意のインターフェイスを意味"
 "します。"
 
-#: src/muuli_wdr.cpp:2481
+#: src/muuli_wdr.cpp:2474
 msgid "TCP port"
 msgstr "TCPポート"
 
-#: src/muuli_wdr.cpp:2489
+#: src/muuli_wdr.cpp:2482
 msgid "Enable UPnP port forwarding on the EC port"
 msgstr "ECポートでUPnPポート転送を有効にする"
 
-#: src/muuli_wdr.cpp:2524
+#: src/muuli_wdr.cpp:2517
 msgid "Click here to apply any changes made to the preferences."
 msgstr "設定の変更をすべて適用します。"
 
-#: src/muuli_wdr.cpp:2528
+#: src/muuli_wdr.cpp:2521
 msgid "Reset any changes made to the preferences."
 msgstr "設定の変更を全てリセットする"
 
-#: src/muuli_wdr.cpp:2552
+#: src/muuli_wdr.cpp:2545
 msgid "Title :"
 msgstr "タイトル："
 
-#: src/muuli_wdr.cpp:2562
+#: src/muuli_wdr.cpp:2555
 msgid "Comment :"
 msgstr "コメント："
 
-#: src/muuli_wdr.cpp:2572
+#: src/muuli_wdr.cpp:2565
 msgid "Incoming Dir :"
 msgstr "受信ディレクトリ："
 
-#: src/muuli_wdr.cpp:2578
+#: src/muuli_wdr.cpp:2571
 msgid "..."
 msgstr "..."
 
-#: src/muuli_wdr.cpp:2585
+#: src/muuli_wdr.cpp:2578
 msgid "Change priority for new assigned files :"
 msgstr "新しく割り当てられたファイルの優先度を変更する："
 
-#: src/muuli_wdr.cpp:2590
+#: src/muuli_wdr.cpp:2583
 msgid "Dont change"
 msgstr "変更しない"
 
-#: src/muuli_wdr.cpp:2604
+#: src/muuli_wdr.cpp:2597
 msgid "Select color for this Category (currently selected) :"
 msgstr "このカテゴリの色を選択する（現在選択中）："
 
-#: src/muuli_wdr.cpp:2679 src/muuli_wdr.cpp:2704
+#: src/muuli_wdr.cpp:2672 src/muuli_wdr.cpp:2697
 msgid "Click this button to reset the log."
 msgstr "このボタンをクリックするとログのリセットが行います。"
 
-#: src/muuli_wdr.cpp:2726
+#: src/muuli_wdr.cpp:2719
 msgid "Click on this button to update the servers list from URL ..."
 msgstr "このボタンをクリックするとサーバ・リストはURLから最新化する..."
 
-#: src/muuli_wdr.cpp:2730
+#: src/muuli_wdr.cpp:2723
 msgid "Server list"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2735
+#: src/muuli_wdr.cpp:2728
 msgid ""
 "Enter the url to a server.met file here and press the button to the left to "
 "update the list of known servers."
@@ -5607,51 +5607,51 @@ msgstr ""
 "server.metファイルへのURLをここに入力してから左側のボタンをクリックすると、既"
 "知のサーバのリストがアップデートされます。"
 
-#: src/muuli_wdr.cpp:2742
+#: src/muuli_wdr.cpp:2735
 msgid "Add server manually: Name"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2746
+#: src/muuli_wdr.cpp:2739
 msgid "Enter the name of the new server here"
 msgstr "新しいサーバの名前をここに入力してください"
 
-#: src/muuli_wdr.cpp:2753
+#: src/muuli_wdr.cpp:2746
 msgid "Enter the IP of the server here, using the x.x.x.x format."
 msgstr "x.x.x.xフォーマットでサーバのIPアドレスを入力してください。"
 
-#: src/muuli_wdr.cpp:2760
+#: src/muuli_wdr.cpp:2753
 msgid "Enter the port of the server here."
 msgstr "サーバのポートをここに入力してください。"
 
-#: src/muuli_wdr.cpp:2764
+#: src/muuli_wdr.cpp:2757
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "手動でサーバを追加する（先に左側のフィールドを入力してください）..."
 
-#: src/muuli_wdr.cpp:2802
+#: src/muuli_wdr.cpp:2795
 msgid "aMule Log"
 msgstr "aMuleのログ"
 
-#: src/muuli_wdr.cpp:2806
+#: src/muuli_wdr.cpp:2799
 msgid "Server Info"
 msgstr "サーバ情報"
 
-#: src/muuli_wdr.cpp:2810
+#: src/muuli_wdr.cpp:2803
 msgid "ED2K Info"
 msgstr "ED2K情報"
 
-#: src/muuli_wdr.cpp:2814
+#: src/muuli_wdr.cpp:2807
 msgid "Kad Info"
 msgstr "Kad情報"
 
-#: src/muuli_wdr.cpp:2843
+#: src/muuli_wdr.cpp:2836
 msgid "Click on this button to update the nodes list from URL ..."
 msgstr "このボタンをクリックするとノード・リストをURLからアップデートします..."
 
-#: src/muuli_wdr.cpp:2847
+#: src/muuli_wdr.cpp:2840
 msgid "Nodes (0)"
 msgstr "ノード数（0）"
 
-#: src/muuli_wdr.cpp:2852
+#: src/muuli_wdr.cpp:2845
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
@@ -5659,27 +5659,27 @@ msgstr ""
 "ここにnodes.datファイルへのURLを入力してから左側のボタンをクリックすると、既"
 "知のノード・リストをアップデートします。"
 
-#: src/muuli_wdr.cpp:2857
+#: src/muuli_wdr.cpp:2850
 msgid "Nodes stats"
 msgstr "ノードの統計"
 
-#: src/muuli_wdr.cpp:2908
+#: src/muuli_wdr.cpp:2901
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
-#: src/muuli_wdr.cpp:2911
+#: src/muuli_wdr.cpp:2904
 msgid "New node"
 msgstr "新しいノード"
 
-#: src/muuli_wdr.cpp:2916
+#: src/muuli_wdr.cpp:2909
 msgid "IP:"
 msgstr "IP："
 
-#: src/muuli_wdr.cpp:2945
+#: src/muuli_wdr.cpp:2938
 msgid "Port:"
 msgstr "ポート："
 
-#: src/muuli_wdr.cpp:2962
+#: src/muuli_wdr.cpp:2955
 msgid ""
 "Bootstrap from \n"
 "known clients"
@@ -5687,19 +5687,19 @@ msgstr ""
 "既知のクライアントから\n"
 "ブートストラップする"
 
-#: src/muuli_wdr.cpp:2969
+#: src/muuli_wdr.cpp:2961
 msgid "Disconnect Kad"
 msgstr "Kadを切断する"
 
-#: src/muuli_wdr.cpp:3007
+#: src/muuli_wdr.cpp:2999
 msgid "Protocol Obfuscation"
 msgstr "プロトコルを難読化する"
 
-#: src/muuli_wdr.cpp:3010
+#: src/muuli_wdr.cpp:3002
 msgid "Support Protocol Obfuscation"
 msgstr "プロトコルの難読化を有効にする"
 
-#: src/muuli_wdr.cpp:3012
+#: src/muuli_wdr.cpp:3004
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
@@ -5707,11 +5707,11 @@ msgstr ""
 "このオプションによってプロトコルの難読化を有効にできます。そうすると、aMuleは"
 "他のクライアントからの難読化された接続を受け入れられます。"
 
-#: src/muuli_wdr.cpp:3015
+#: src/muuli_wdr.cpp:3007
 msgid "Use obfuscation for outgoing connections"
 msgstr "外方向の接続に難読化を使用する"
 
-#: src/muuli_wdr.cpp:3017
+#: src/muuli_wdr.cpp:3009
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
@@ -5719,11 +5719,11 @@ msgstr ""
 "このオプションによって、aMuleは他のサーバまたはクライアントに接続する時にプロ"
 "トコル難読化を使用します。"
 
-#: src/muuli_wdr.cpp:3020
+#: src/muuli_wdr.cpp:3012
 msgid "Accept only obfuscated connections"
 msgstr "難読化された接続のみを受信する"
 
-#: src/muuli_wdr.cpp:3021
+#: src/muuli_wdr.cpp:3013
 msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
@@ -5731,87 +5731,87 @@ msgstr ""
 "このオプションによって、aMuleは難読化された接続のみを受信します。ソース数が減"
 "りますが、トラフィックが全て難読化されます。"
 
-#: src/muuli_wdr.cpp:3026
+#: src/muuli_wdr.cpp:3018
 msgid "File Options"
 msgstr "ファイル・オプション"
 
-#: src/muuli_wdr.cpp:3031
+#: src/muuli_wdr.cpp:3023
 msgid "Everybody"
 msgstr "全員"
 
-#: src/muuli_wdr.cpp:3033
+#: src/muuli_wdr.cpp:3025
 msgid "No one"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3035
+#: src/muuli_wdr.cpp:3027
 msgid "Who can see shared files:"
 msgstr "共有ファイルの閲覧を許可する："
 
-#: src/muuli_wdr.cpp:3036
+#: src/muuli_wdr.cpp:3028
 msgid "Select who can request to view a list of your shared files."
 msgstr "あなたの共有ファイル・リストを要求できるユーザを選択してください。"
 
-#: src/muuli_wdr.cpp:3041
+#: src/muuli_wdr.cpp:3033
 msgid "IP-Filtering"
 msgstr "IPフィルタリング"
 
-#: src/muuli_wdr.cpp:3048
+#: src/muuli_wdr.cpp:3040
 msgid "Filter clients"
 msgstr "クライアントをフィルタする"
 
-#: src/muuli_wdr.cpp:3050
+#: src/muuli_wdr.cpp:3042
 msgid ""
 "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "~/.aMule/ipfilter.datに登録されちるクライアントIPにフィルタリングをかけること"
 "を有効にします。"
 
-#: src/muuli_wdr.cpp:3053
+#: src/muuli_wdr.cpp:3045
 msgid "Filter servers"
 msgstr "サーバをフィルタする"
 
-#: src/muuli_wdr.cpp:3055
+#: src/muuli_wdr.cpp:3047
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "~/.aMule/ipfilter.datに登録されちるサーバIPにフィルタリングをかけることを有効"
 "にします。"
 
-#: src/muuli_wdr.cpp:3062
+#: src/muuli_wdr.cpp:3054
 msgid "Reload List"
 msgstr "リストを再ロードする"
 
-#: src/muuli_wdr.cpp:3063
+#: src/muuli_wdr.cpp:3055
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
 msgstr ""
 "フィルタリングをかける目標のIPリストを~/.aMule/ipfilter.datから再ロードをしま"
 "す。"
 
-#: src/muuli_wdr.cpp:3071
+#: src/muuli_wdr.cpp:3063
 msgid "URL:"
 msgstr "URL："
 
-#: src/muuli_wdr.cpp:3077
+#: src/muuli_wdr.cpp:3069
 msgid "Update now"
 msgstr "只今アップデートする"
 
-#: src/muuli_wdr.cpp:3082
+#: src/muuli_wdr.cpp:3074
 msgid "Auto-update ipfilter at startup"
 msgstr "スタートアップの時にipfilterを自動アップデートする"
 
-#: src/muuli_wdr.cpp:3087
+#: src/muuli_wdr.cpp:3079
 msgid "Filtering Level:"
 msgstr "フィルタリング段階："
 
-#: src/muuli_wdr.cpp:3097
+#: src/muuli_wdr.cpp:3089
 msgid "Always filter LAN IPs"
 msgstr "いつもLANのIPにフィルタリングをかける"
 
-#: src/muuli_wdr.cpp:3101
+#: src/muuli_wdr.cpp:3093
 msgid "Paranoid handling of non-matching IPs"
 msgstr "適合しないIPを被害妄想的に扱う"
 
-#: src/muuli_wdr.cpp:3103
+#: src/muuli_wdr.cpp:3095
 msgid ""
 "Rejects packet if the client ip is different from the ip where the packet is "
 "received from. Use with caution."
@@ -5819,11 +5819,11 @@ msgstr ""
 "クライアントIPがパケットがもともと受信されたIPと違いますとパケットを拒否しま"
 "す。使用するに気をつけてください。"
 
-#: src/muuli_wdr.cpp:3106
+#: src/muuli_wdr.cpp:3098
 msgid "Use system-wide ipfilter.dat if available"
 msgstr "提供されていれば、全システム応用のipfilter.datファイルを使用する"
 
-#: src/muuli_wdr.cpp:3107
+#: src/muuli_wdr.cpp:3099
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
@@ -5831,11 +5831,11 @@ msgstr ""
 "ローカルなipfilter.datファイルが見つからなければ、全システム応用のipfilter."
 "datファイルを使用可能します。"
 
-#: src/muuli_wdr.cpp:3110
+#: src/muuli_wdr.cpp:3102
 msgid "Use Secure User Identification"
 msgstr "セキュア・ユーザ保証（SUI）を使用する"
 
-#: src/muuli_wdr.cpp:3112
+#: src/muuli_wdr.cpp:3104
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
@@ -5843,11 +5843,11 @@ msgstr ""
 "このオプションを有効にするのは推奨されます。SUIが有効でないとあなたはクレジッ"
 "トを得られません。"
 
-#: src/muuli_wdr.cpp:3134
+#: src/muuli_wdr.cpp:3126
 msgid "Enable Online-Signature"
 msgstr "オンライン証明を有効にする"
 
-#: src/muuli_wdr.cpp:3136
+#: src/muuli_wdr.cpp:3128
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
@@ -5855,207 +5855,207 @@ msgstr ""
 "OSファイルの書き込みを有効にします。このファイルは外のアプリケーションに証明"
 "等を作成するためにを使用されます。"
 
-#: src/muuli_wdr.cpp:3141
+#: src/muuli_wdr.cpp:3133
 msgid "Update Frequency (Secs):"
 msgstr "アップデート頻度（秒単位）"
 
-#: src/muuli_wdr.cpp:3145
+#: src/muuli_wdr.cpp:3137
 msgid "Change the frequency (in seconds) of Online Signature updates."
 msgstr "オンライン証明アップデート頻度（秒単位）を変化します。"
 
-#: src/muuli_wdr.cpp:3153
+#: src/muuli_wdr.cpp:3145
 msgid "Online Signature Directory:"
 msgstr "オンライン証明ディレクトリ："
 
-#: src/muuli_wdr.cpp:3160
+#: src/muuli_wdr.cpp:3152
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr ""
 "ここをクリックするとオンライン証明ファイルが入っているディレクトリを選択でき"
 "ます。"
 
-#: src/muuli_wdr.cpp:3182
+#: src/muuli_wdr.cpp:3174
 msgid "Filter incoming messages (except current chat):"
 msgstr "受信メッセージをフィルタする（現在のチャットを除く）："
 
-#: src/muuli_wdr.cpp:3185
+#: src/muuli_wdr.cpp:3177
 msgid "Filtering Options:"
 msgstr "フィルタ・オプション："
 
-#: src/muuli_wdr.cpp:3188
+#: src/muuli_wdr.cpp:3180
 msgid "Filter all messages"
 msgstr "全てのメッセージをフィルタする"
 
-#: src/muuli_wdr.cpp:3191
+#: src/muuli_wdr.cpp:3183
 msgid "Filter messages from people not on your friend list"
 msgstr "友達リストの入っていない方々からのメッセージをフィルタする"
 
-#: src/muuli_wdr.cpp:3194
+#: src/muuli_wdr.cpp:3186
 msgid "Filter messages from unknown clients"
 msgstr "知らないクライアントからのメッセージをフィルタする"
 
-#: src/muuli_wdr.cpp:3197
+#: src/muuli_wdr.cpp:3189
 msgid "Filter messages containing (use ',' as separator):"
 msgstr "次のストリングが入っているメッセージをフィルタする（','で区分する）："
 
-#: src/muuli_wdr.cpp:3201 src/muuli_wdr.cpp:3218
+#: src/muuli_wdr.cpp:3193 src/muuli_wdr.cpp:3210
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
 "amuleがメッセージ・フィルタ／ブロックの目標にする言葉をここに追加してください"
 
-#: src/muuli_wdr.cpp:3206
+#: src/muuli_wdr.cpp:3198
 msgid "Show messages in log"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3211
+#: src/muuli_wdr.cpp:3203
 msgid "Comments"
 msgstr "コメント"
 
-#: src/muuli_wdr.cpp:3214
+#: src/muuli_wdr.cpp:3206
 msgid "Filter comments containing (use ',' as separator):"
 msgstr "次のストリングが入っていコメントをフィルタする（','で区分する）："
 
-#: src/muuli_wdr.cpp:3243
+#: src/muuli_wdr.cpp:3235
 msgid "Enable Proxy"
 msgstr "プロクシを有効にする"
 
-#: src/muuli_wdr.cpp:3244
+#: src/muuli_wdr.cpp:3236
 msgid "Enable/disable proxy support"
 msgstr "プロクシ・サポートを有効／無効にする"
 
-#: src/muuli_wdr.cpp:3249
+#: src/muuli_wdr.cpp:3241
 msgid "Proxy type:"
 msgstr "プロクシの種類："
 
-#: src/muuli_wdr.cpp:3254
+#: src/muuli_wdr.cpp:3246
 msgid "SOCKS5"
 msgstr "SOCKS5"
 
-#: src/muuli_wdr.cpp:3255
+#: src/muuli_wdr.cpp:3247
 msgid "SOCKS4"
 msgstr "SOCKS4"
 
-#: src/muuli_wdr.cpp:3256
+#: src/muuli_wdr.cpp:3248
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/muuli_wdr.cpp:3257
+#: src/muuli_wdr.cpp:3249
 msgid "SOCKS4a"
 msgstr "SOCKS4a"
 
-#: src/muuli_wdr.cpp:3260
+#: src/muuli_wdr.cpp:3252
 msgid "The type of proxy you are connecting to"
 msgstr "接続するプロクシーの種類"
 
-#: src/muuli_wdr.cpp:3263
+#: src/muuli_wdr.cpp:3255
 msgid "Proxy host:"
 msgstr "プロクシー・ホスト："
 
-#: src/muuli_wdr.cpp:3267
+#: src/muuli_wdr.cpp:3259
 msgid "The proxy host name"
 msgstr "プロクシー・ホスト名："
 
-#: src/muuli_wdr.cpp:3270
+#: src/muuli_wdr.cpp:3262
 msgid "Proxy port:"
 msgstr "プロクシー・ポート："
 
-#: src/muuli_wdr.cpp:3274
+#: src/muuli_wdr.cpp:3266
 msgid "The proxy port"
 msgstr "プロクシーのポート"
 
-#: src/muuli_wdr.cpp:3284
+#: src/muuli_wdr.cpp:3276
 msgid "Enable authentication"
 msgstr "認証を有効にする"
 
-#: src/muuli_wdr.cpp:3285
+#: src/muuli_wdr.cpp:3277
 msgid "Enable/disable username/password authentication"
 msgstr "ユーザ名／パスワード認証を有効／無効にする"
 
-#: src/muuli_wdr.cpp:3295
+#: src/muuli_wdr.cpp:3287
 msgid "The username to use to connect to the proxy"
 msgstr "プロクシーに接続に使うユーザ名"
 
-#: src/muuli_wdr.cpp:3298
+#: src/muuli_wdr.cpp:3290
 msgid "Password:"
 msgstr "パスワード："
 
-#: src/muuli_wdr.cpp:3302
+#: src/muuli_wdr.cpp:3294
 msgid "The password to use to connect to the proxy"
 msgstr "プロクシーに接続に使うパスワード"
 
-#: src/muuli_wdr.cpp:3309
+#: src/muuli_wdr.cpp:3301
 msgid "Automatic server connect without proxy"
 msgstr "プロクシー無しの自動的なサーバ接続"
 
-#: src/muuli_wdr.cpp:3328
+#: src/muuli_wdr.cpp:3320
 msgid "Connect to:"
 msgstr "次に接続する："
 
-#: src/muuli_wdr.cpp:3342
+#: src/muuli_wdr.cpp:3334
 msgid "Login to remote amule"
 msgstr "リモートamuleにログインする"
 
-#: src/muuli_wdr.cpp:3347
+#: src/muuli_wdr.cpp:3339
 msgid "User name"
 msgstr "ユーザ名"
 
-#: src/muuli_wdr.cpp:3364
+#: src/muuli_wdr.cpp:3356
 msgid "Remember those settings"
 msgstr "設定を記憶する"
 
-#: src/muuli_wdr.cpp:3395
+#: src/muuli_wdr.cpp:3387
 msgid "Enable Verbose Debug-Logging."
 msgstr "冗長なデバッグ・ロギングを有効にする"
 
-#: src/muuli_wdr.cpp:3400
+#: src/muuli_wdr.cpp:3392
 msgid "Message Categories:"
 msgstr "メッセージのカテゴリ："
 
-#: src/muuli_wdr.cpp:3453
+#: src/muuli_wdr.cpp:3445
 msgid "Add imports"
 msgstr "インポートを追加する"
 
-#: src/muuli_wdr.cpp:3457
+#: src/muuli_wdr.cpp:3449
 msgid "Retry selected"
 msgstr "選択したものを再試行"
 
-#: src/muuli_wdr.cpp:3460
+#: src/muuli_wdr.cpp:3452
 msgid "Remove selected"
 msgstr "選択したものを破棄"
 
-#: src/muuli_wdr.cpp:3535
+#: src/muuli_wdr.cpp:3527
 msgid "Event types"
 msgstr "イベントの種類"
 
-#: src/muuli_wdr.cpp:3561
+#: src/muuli_wdr.cpp:3553
 msgid "Connect to any server and/or Kad"
 msgstr "すべてのサーバ、もしくはKadに接続する"
 
-#: src/muuli_wdr.cpp:3563
+#: src/muuli_wdr.cpp:3555
 msgid "Networks Window"
 msgstr "ネットワークウィンドウ"
 
-#: src/muuli_wdr.cpp:3564
+#: src/muuli_wdr.cpp:3556
 msgid "Searches Window"
 msgstr "検索ウィンドウ"
 
-#: src/muuli_wdr.cpp:3565
+#: src/muuli_wdr.cpp:3557
 msgid "Files Transfers Window"
 msgstr "ファイル転送ウィンドウ"
 
-#: src/muuli_wdr.cpp:3567
+#: src/muuli_wdr.cpp:3559
 msgid "Shared Files Window"
 msgstr "共有ファイルウィンドウ"
 
-#: src/muuli_wdr.cpp:3568
+#: src/muuli_wdr.cpp:3560
 msgid "Messages Window"
 msgstr "メッセージウィンドウ"
 
-#: src/muuli_wdr.cpp:3569
+#: src/muuli_wdr.cpp:3561
 msgid "Statistics Graph Window"
 msgstr "統計グラフウィインドウ"
 
-#: src/muuli_wdr.cpp:3571
+#: src/muuli_wdr.cpp:3563
 msgid "Preferences Settings Window"
 msgstr "個人設定ウィンドウ"
 
