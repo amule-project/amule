@@ -71,10 +71,7 @@ libmuleappcommon_a_SOURCES = \
 	RandomFunctions.cpp \
 	kademlia/utils/UInt128.cpp
 
-libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
-if ENABLE_UPNP
-libmuleappcommon_a_CPPFLAGS += -DENABLE_UPNP=1
-endif
+libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
 
 # Common to core/monolithic
@@ -91,10 +88,7 @@ libmuleappcore_a_SOURCES = \
 	StateMachine.cpp \
 	ThreadScheduler.cpp
 
-libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
-if ENABLE_UPNP
-libmuleappcore_a_CPPFLAGS += -DENABLE_UPNP=1
-endif
+libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
 
 # Common to gui/monolithic
@@ -116,10 +110,7 @@ libmuleappgui_a_SOURCES = \
 	MuleCollection.cpp \
 	muuli_wdr.cpp 
 
-libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
-if ENABLE_UPNP
-libmuleappgui_a_CPPFLAGS += -DENABLE_UPNP=1
-endif
+libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS)
 
 core_sources = \
 	RC4Encrypt.cpp \
@@ -226,7 +217,7 @@ common_sources = \
 
 # Libs
 
-core_libs = -L. -lmuleappcore $(LIBUPNP_LDADD)
+core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIBS)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
@@ -243,11 +234,7 @@ endif
 #
 # Flags
 #
-core_flags =
-if ENABLE_UPNP
-core_flags += -DENABLE_UPNP=1 $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
-endif
-
+core_flags = $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
 gui_flags = $(WX_CPPFLAGS) $(GEOIP_CPPFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 

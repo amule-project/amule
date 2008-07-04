@@ -306,7 +306,7 @@ AS_IF([test ${SYS:-unknown} = win32],
 AS_IF([test "${ENABLE_UPNP:-yes}" = yes], [
 	LIBUPNP_CHECK(
 		[1.6.6],
-		[],
+		[MULE_APPEND([LIBUPNP_CPPFLAGS], [-DENABLE_UPNP=1])],
 		[ENABLE_UPNP=disabled]
 	)
 ])dnl
@@ -549,7 +549,7 @@ echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with UPnP support?                ${ENABLE_UPNP:-yes}"
-echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-yes}"
+echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-no}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
@@ -583,12 +583,9 @@ AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
-MULE_IF(
-	[test x${ENABLE_UPNP} = xyes],
-		[echo "                                       libupnp               ${LIBUPNP_VERSION_STRING} (${LIBUPNP_STYLE}, in ${LIBUPNP_PREFIX})"],
-	[test x${ENABLE_UPNP} = xdisabled], 
-		[echo "                                       libupnp               Not Detected"]
-)
+AS_IF([test x${ENABLE_UPNP} = xyes], [dnl
+echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}"
+])dnl
 if test x${WEB:-no} != xno; then
 AS_IF([test $regex_found = no], 
 	[regex_found="Not detected"],
@@ -629,7 +626,6 @@ fi
 if test x$ENABLE_UPNP = xdisabled; then
 echo ""
 echo ""
-echo "WARNING! UPnP code has been disabled because configure could not find the"
-echo "libupnp library."
+echo "WARNING! UPnP code has been disabled because ${libupnp_error}."
 echo ""
 fi
