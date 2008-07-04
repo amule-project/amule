@@ -429,9 +429,7 @@ noinst_HEADERS = \
 		UPnP.h \
 		UPnPCompatibility.h \
 		UserEvents.h \
-		extern/wxWidgets/listctrl.h \
-		extern/upnp/ixml.h \
-		extern/upnp/upnp.h
+		extern/wxWidgets/listctrl.h
 
 MAINTAINERCLEANFILES = Makefile.in
 
