@@ -21,7 +21,7 @@ amuleweb_SOURCES +=  \
 endif
 
 php_parser.c: php_parser.y
-	bison --debug -t -d -v -o $@ $<
+	bison --debug -t -d -v -p php -o $@ $<
 
 php_lexer.c: php_lexer.l
 	$(LEX) -o$@ $<

@@ -58,6 +58,14 @@
 /* Using locations.  */
 #define YYLSP_NEEDED 0
 
+/* Substitute the variable and function names.  */
+#define yyparse phpparse
+#define yylex   phplex
+#define yyerror phperror
+#define yylval  phplval
+#define yychar  phpchar
+#define yydebug phpdebug
+#define yynerrs phpnerrs
 
 
 /* Tokens.  */
@@ -282,7 +290,7 @@
 
 #include "php_syntree.h"
 
-int yylex();
+int phplex();
 
 // add item to syntree list
 PHP_SYN_NODE *add_statement_2_list(PHP_SYN_NODE *list, PHP_SYN_NODE *st)
@@ -344,8 +352,8 @@ typedef union YYSTYPE
 
 	char str_val[256];
 }
-/* Line 187 of yacc.c.  */
-#line 349 "php_parser.c"
+/* Line 193 of yacc.c.  */
+#line 357 "php_parser.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -358,7 +366,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 362 "php_parser.c"
+#line 370 "php_parser.c"
 
 #ifdef short
 # undef short
@@ -408,7 +416,7 @@ typedef short int yytype_int16;
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
 #   define YY_(msgid) dgettext ("bison-runtime", msgid)
@@ -1702,7 +1710,7 @@ while (YYID (0))
    we won't break user code: when these are the locations we know.  */
 
 #ifndef YY_LOCATION_PRINT
-# if YYLTYPE_IS_TRIVIAL
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
 #  define YY_LOCATION_PRINT(File, Loc)			\
      fprintf (File, "%d.%d-%d.%d",			\
 	      (Loc).first_line, (Loc).first_column,	\
@@ -3244,7 +3252,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 3248 "php_parser.c"
+#line 3256 "php_parser.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

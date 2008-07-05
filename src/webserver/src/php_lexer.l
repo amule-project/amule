@@ -205,41 +205,41 @@ EOL ("\r"|"\n"|"\r\n")
 	}
 
 "$"{IDENT} {
-        yylval.exp_node = get_var_node(yytext+1);
+        phplval.exp_node = get_var_node(yytext+1);
         return VARIABLE;
 	}
 
 {IDENT} {
-        strcpy(yylval.str_val, yytext);
+        strcpy(phplval.str_val, yytext);
         return IDENT;
 	}
 
 {HEX_NUM} {
 	int val;
 	sscanf(yytext, "0x%x", &val);
-	yylval.exp_node = make_const_exp_dnum(val);
+	phplval.exp_node = make_const_exp_dnum(val);
 	return DNUMBER;
 	}
 
 {DEC_NUM} {
-	yylval.exp_node = make_const_exp_dnum(atoi(yytext));
+	phplval.exp_node = make_const_exp_dnum(atoi(yytext));
 	return DNUMBER;
 	}
 
 {FLOANUM} {
-	yylval.exp_node = make_const_exp_fnum(atof(yytext));
+	phplval.exp_node = make_const_exp_fnum(atof(yytext));
 	return FNUMBER;
 	}
 
 \"(\\.|[^\\"])*\" {
 		yytext[strlen(yytext)-1] = 0;
-		yylval.exp_node = make_const_exp_str(yytext+1, 1);
+		phplval.exp_node = make_const_exp_str(yytext+1, 1);
 		return STRING;
 }
 
 \'(\\.|[^\\'])*\' {
 		yytext[strlen(yytext)-1] = 0;
-		yylval.exp_node = make_const_exp_str(yytext+1, 0);
+		phplval.exp_node = make_const_exp_str(yytext+1, 0);
 		return STRING;
 }
 
