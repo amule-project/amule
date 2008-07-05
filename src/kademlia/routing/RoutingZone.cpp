@@ -71,7 +71,7 @@ using namespace Kademlia;
 ////////////////////////////////////////
 
 // This is just a safety precaution
-#define CONTACT_FILE_LIMIT 5000
+#define CONTACT_FILE_LIMIT 200
 
 wxString CRoutingZone::m_filename;
 CUInt128 CRoutingZone::me((uint32_t)0);
@@ -197,21 +197,33 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 
 void CRoutingZone::WriteFile()
 {
+	// The bootstrap method gets a very nice sample of contacts to save.
+	ContactList contacts;
+	GetBootstrapContacts(&contacts, CONTACT_FILE_LIMIT);
+	uint32_t numContacts = (uint32_t) contacts.size();
+	numContacts = wxMin(numContacts, CONTACT_FILE_LIMIT); // safety precaution, should not be above
+	if (numContacts < 25) {
+		AddLogLineM(false, wxString::Format(wxPLURAL("Only %d Kad contact available, nodes.dat not written",
+													 "Only %d Kad contacts available, nodes.dat not written", numContacts), numContacts));
+		return;
+	}
 	try {
 		unsigned int count = 0;
 		CFile file;
 		if (file.Open(m_filename, CFile::write)) {
-			// The bootstrap method gets a very nice sample of contacts to save.
-			ContactList contacts;
-			GetBootstrapContacts(&contacts, 200);
 			// Start file with 0 to prevent older clients from reading it.
 			file.WriteUInt32(0);
 			// Now tag it with a version which happens to be 2.
 			file.WriteUInt32(2);
-			file.WriteUInt32((uint32_t)std::min((int)contacts.size(), CONTACT_FILE_LIMIT));
+			file.WriteUInt32(numContacts);
 			for (ContactList::const_iterator it = contacts.begin(); it != contacts.end(); ++it) {
 				CContact *c = *it;
 				count++;
+				if (count > CONTACT_FILE_LIMIT) {
+					// This should never happen
+					wxFAIL;
+					break;
+				}
 				file.WriteUInt128(c->GetClientID());
 				file.WriteUInt32(c->GetIPAddress());
 				file.WriteUInt16(c->GetUDPPort());
@@ -219,11 +231,6 @@ void CRoutingZone::WriteFile()
 				file.WriteUInt8(c->GetVersion());
 				c->GetUDPKey().StoreToFile(file);
 				file.WriteUInt8(c->IsIPVerified() ? 1 : 0);
-				if (count == CONTACT_FILE_LIMIT) {
-					// This should never happen
-					wxFAIL;
-					break;
-				}
 			}
 		}
 		AddLogLineM(false, wxString::Format(wxPLURAL("Wrote %d Kad contact", "Wrote %d Kad contacts", count), count));
