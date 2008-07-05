@@ -32,8 +32,16 @@ Version 2.2.2 - Whatever comes next.
 		  --with-libupnp-prefix.
 
 	Stu Redman:
-		* scanner fix for MSVC compilation
+		* Scanner fix for MSVC compilation
 		* Sort DownloadListCtrl on startup
+		* Sort source list on opening and add file name to A4AF files
+		* Fixed crash when progress bar was resized to zero width
+		* Fixed sharing of large files on Windows
+		* Fixed free disc space check
+		* Sanity check before writing nodes.dat - don't write it 
+		  if there are less than 25 contacts
+		* Moved transfer rates in title to the front (so they are visible
+		  in a task bar)
 
 	Vollstrecker:
 		* Made possible to deactivate xas

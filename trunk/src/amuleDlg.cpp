@@ -286,12 +286,12 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxASSERT(logs_notebook->GetPageCount() == 4);
 	wxASSERT(networks_notebook->GetPageCount() == 2);
 	
-	for (int i = 0; i < logs_notebook->GetPageCount(); ++i) {
+	for (uint32 i = 0; i < logs_notebook->GetPageCount(); ++i) {
 		m_logpages[i].page = logs_notebook->GetPage(i);
 		m_logpages[i].name = logs_notebook->GetPageText(i);
 	}
 
-	for (int i = 0; i < networks_notebook->GetPageCount(); ++i) {
+	for (uint32 i = 0; i < networks_notebook->GetPageCount(); ++i) {
 		m_networkpages[i].page = networks_notebook->GetPage(i);
 		m_networkpages[i].name = networks_notebook->GetPageText(i);
 	}
@@ -816,8 +816,8 @@ void CamuleDlg::ShowTransferRate()
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
-		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
+		wxString UpDownSpeed = wxString::Format(wxT("%.1f | %.1f -- "), kBpsUp, kBpsDown);
+		SetTitle(UpDownSpeed + theApp->m_FrameTitle);
 	}
 
 	wxASSERT((m_wndTaskbarNotifier != NULL) == thePrefs::UseTrayIcon());
