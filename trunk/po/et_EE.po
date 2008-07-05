@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-04 03:30+0200\n"
-"PO-Revision-Date: 2008-06-22 10:03+0300\n"
+"POT-Creation-Date: 2008-07-05 10:14+0300\n"
+"PO-Revision-Date: 2008-07-03 09:35+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1740,34 +1740,40 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
+" eMulel põhinev, platvormist sõltumatu, p2p klient \n"
+"\n"
 
 #: src/amuleDlg.cpp:466
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "Web: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:467
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "Foorum: http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:468
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
+"KKK: http://wiki.amule.org \n"
+"\n"
 
 #: src/amuleDlg.cpp:469
 msgid "Contact: admin@amule.org (administrative issues) \n"
-msgstr ""
+msgstr "Kontakt: admin@amule.org (administratiivsed küsimused) \n"
 
 #: src/amuleDlg.cpp:470
 msgid ""
 "Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
+"Copyright (C) 2003-2008 aMule Meeskond \n"
+"\n"
 
 #: src/amuleDlg.cpp:471
 msgid "Part of aMule is based on \n"
-msgstr ""
+msgstr "Osa aMule põhineb \n"
 
 #: src/amuleDlg.cpp:472
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -1775,11 +1781,11 @@ msgstr "Kademlia: Sõlmest-Sõlmeni ruutimine põhineb XOR meetrikal.\n"
 
 #: src/amuleDlg.cpp:473
 msgid "Copyright (C) 2002 Petar Maymounkov\n"
-msgstr ""
+msgstr "Copyright (C) 2002 Petar Maymounkov\n"
 
 #: src/amuleDlg.cpp:474
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:477 src/PrefsUnifiedDlg.cpp:507
 #: src/PrefsUnifiedDlg.cpp:602 src/PrefsUnifiedDlg.cpp:689 src/KadDlg.cpp:177
@@ -4794,6 +4800,8 @@ msgid ""
 "For a film you can say its length, its story, language ...\\n\\nand if it's "
 "a fake, you can tell that to other users of aMule."
 msgstr ""
+"Filmi puhul saad öelda tema pikkuse, tema süzee, keele ....\\n\\nja kui see "
+"on võltsing siis saad sellest teisi aMule kasutajaid hoiatada."
 
 #: src/muuli_wdr.cpp:894
 msgid "File Quality"
@@ -5944,7 +5952,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3198
 msgid "Show messages in log"
-msgstr ""
+msgstr "Näita logis teateid"
 
 #: src/muuli_wdr.cpp:3203
 msgid "Comments"
@@ -7096,82 +7104,3 @@ msgstr "Sõprade faili 'emfriends.met' avamine lugemiseks ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ msgstr ""
-#~ " eMulel põhinev, platvormist sõltumatu, p2p klient \n"
-#~ "\n"
-
-#~ msgid " Website: http://www.amule.org \n"
-#~ msgstr " Web: http://www.amule.org \n"
-
-#~ msgid " Forum: http://forum.amule.org \n"
-#~ msgstr " Foorum: http://forum.amule.org \n"
-
-#~ msgid ""
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ msgstr ""
-#~ " KKK: http://wiki.amule.org \n"
-#~ "\n"
-
-#~ msgid " Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr " Kontakt: admin@amule.org (administratiivsed küsimused) \n"
-
-#~ msgid ""
-#~ " Copyright (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ msgstr ""
-#~ " Copyright (C) 2003-2008 aMule Meeskond \n"
-#~ "\n"
-
-#~ msgid " Part of aMule is based on \n"
-#~ msgstr " Osa aMule põhineb \n"
-
-#~ msgid " Copyright (C) 2002 Petar Maymounkov\n"
-#~ msgstr " Copyright (C) 2002 Petar Maymounkov\n"
-
-#~ msgid " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid ""
-#~ "For a film you can say its length, its story, language ...\n"
-#~ "and if it's a fake, you can tell that to other users of aMule."
-#~ msgstr ""
-#~ "Filmi puhul saad öelda tema pikkuse, tema süzee, keele ....\n"
-#~ "ja kui see on võltsing siis saad sellest teisi aMule kasutajaid hoiatada."
-
-#~ msgid "Misc Options"
-#~ msgstr "Muud valikud"
-
-#~ msgid "Server Options"
-#~ msgstr "Serveri valikud"
-
-#~ msgid "Display server motd when connected ..."
-#~ msgstr "Näita ühendumisel serveri motd ..."
-
-#~ msgid "eD2k Info"
-#~ msgstr "eD2k Info"
-
-#~ msgid "Disable/Enable"
-#~ msgstr "Ära kasuta/Kasuta"
-
-#~ msgid "Authentication"
-#~ msgstr "Autoriseerimine"
-
-#~ msgid "General Settings"
-#~ msgstr "Üldised seaded"
-
-#~ msgid "Hard limit"
-#~ msgstr "Maksimaalselt"
-
-#~ msgid "Max Connections"
-#~ msgstr "Max ühendusi"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "GUI Optimeerimine"
-
-#~ msgid "Remote Control"
-#~ msgstr "Kaugjuhtimine"
