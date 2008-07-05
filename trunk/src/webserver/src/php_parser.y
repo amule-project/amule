@@ -29,7 +29,7 @@
 
 #include "php_syntree.h"
 
-int yylex();
+int phplex();
 
 // add item to syntree list
 PHP_SYN_NODE *add_statement_2_list(PHP_SYN_NODE *list, PHP_SYN_NODE *st)

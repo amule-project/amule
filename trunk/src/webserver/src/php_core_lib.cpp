@@ -500,12 +500,12 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	m_server = server;
 
 	php_engine_init();
-	yyin = fopen(file, "r");
-	if ( !yyin ) {
+	phpin = fopen(file, "r");
+	if ( !phpin ) {
 		return;
 	}
 
-	yyparse();
+	phpparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
@@ -522,7 +522,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 	m_global_scope = g_global_scope;
 
 	php_set_input_buffer(php_buf, len);
-	yyparse();
+	phpparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 }

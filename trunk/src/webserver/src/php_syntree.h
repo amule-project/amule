@@ -342,13 +342,13 @@ extern "C" {
 /*
  * lex/yacc stuff
  */
-	int yyerror(char *err);
-	int yyparse();
+	int phperror(char *err);
+	int phpparse();
 	
-	extern int yydebug;
-	extern FILE *yyin;
-	extern char *yytext;
-	extern int yylineno;
+	extern int pphdebug;
+	extern FILE *phpin;
+	extern char *phptext;
+	extern int phplineno;
 
 /* 
  * Syntax tree interface to parser
