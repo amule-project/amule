@@ -105,7 +105,6 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
 
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
-	EVT_BUTTON(IDC_SHOWSTATUSTEXT, CamuleDlg::OnBnStatusText)
 
 	EVT_TIMER(ID_GUI_TIMER_EVENT, CamuleDlg::OnGUITimer)
 
@@ -560,16 +559,6 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
-{
-	wxString line = CastChild(wxT("infoLabel"), wxStaticText)->GetLabel();
-
-	if (!line.IsEmpty()) {
-		wxMessageBox(line, wxString(_("Status text")), wxOK|wxICON_INFORMATION, this);
-	}
-}
-
-
 void CamuleDlg::ResetLog(int id)
 {
 	wxTextCtrl* ct = CastByID(id, m_serverwnd, wxTextCtrl);
@@ -626,6 +615,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
 		// Only show the first line if multiple lines
 		text->SetLabel( bufferline.BeforeFirst( wxT('\n') ) );
+		text->SetToolTip( bufferline );
 		text->GetParent()->Layout();
 	}
 	

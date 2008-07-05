@@ -211,7 +211,6 @@ protected:
 #endif
 	void OnMinimize(wxIconizeEvent& evt);
 	void OnBnClickedFast(wxCommandEvent& evt);
-	void OnBnStatusText(wxCommandEvent& evt);
 	void OnGUITimer(wxTimerEvent& evt);
 	void OnMainGUISizeChange(wxSizeEvent& evt);
 	void OnExit(wxCommandEvent& evt);
