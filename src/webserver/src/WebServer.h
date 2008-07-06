@@ -37,7 +37,7 @@
 #include "OtherStructs.h"
 
 #ifdef ENABLE_UPNP
-#	include "UPnP.h"
+#	include "UPnPBase.h"
 #endif
 
 #include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete

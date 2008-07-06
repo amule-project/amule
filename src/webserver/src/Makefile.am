@@ -16,7 +16,7 @@ amuleweb_SOURCES =  \
 
 if ENABLE_UPNP
 amuleweb_SOURCES +=  \
-	$(top_srcdir)/src/UPnP.cpp \
+	$(top_srcdir)/src/UPnPBase.cpp \
 	UPnPCompatibility.cpp
 endif
 
