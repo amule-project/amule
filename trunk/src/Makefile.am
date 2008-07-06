@@ -157,7 +157,7 @@ core_sources = \
 
 if ENABLE_UPNP
 core_sources += \
-	UPnP.cpp \
+	UPnPBase.cpp \
 	UPnPCompatibility.cpp
 endif
 
@@ -426,7 +426,7 @@ noinst_HEADERS = \
 		updownclient.h \
 		UploadBandwidthThrottler.h \
 		UploadQueue.h \
-		UPnP.h \
+		UPnPBase.h \
 		UPnPCompatibility.h \
 		UserEvents.h \
 		extern/wxWidgets/listctrl.h

@@ -25,7 +25,7 @@
 
 #define UPNP_C
 
-#include "UPnP.h"
+#include "UPnPBase.h"
 
 
 #include <dlfcn.h>		// For dlopen(), dlsym(), dlclose()

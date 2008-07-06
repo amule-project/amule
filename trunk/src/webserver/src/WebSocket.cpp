@@ -29,7 +29,7 @@
 
 
 #ifdef ENABLE_UPNP
-#	include "UPnP.h"
+#	include "UPnPBase.h"
 #endif
 
 CWebSocket::CWebSocket(CWebServerBase *parent)
