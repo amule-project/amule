@@ -583,8 +583,9 @@ AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
+AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
 AS_IF([test x${ENABLE_UPNP} = xyes], [dnl
-echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}"
+echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
 ])dnl
 if test x${WEB:-no} != xno; then
 AS_IF([test $regex_found = no], 

@@ -49,7 +49,7 @@ dnl	Test for --with-libupnp-prefix
 		[AS_HELP_STRING(
 			[--with-libupnp-prefix=PREFIX],
 			[UPnP library location])],
-		[AS_IF([test -n "$PKG_CONFIG"], [PKG_CONFIG="PKG_CONFIG_PATH=$withval/lib/pkgconfig $PKG_CONFIG"])])
+		[export PKG_CONFIG_PATH=$withval/lib/pkgconfig])
 
 dnl	Check for libupnp >= MIN_LIBUPNP_VERSION
 	AS_IF([test $cross_compiling = no], [dnl
