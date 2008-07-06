@@ -71,7 +71,7 @@ using namespace Kademlia;
 ////////////////////////////////////////
 
 // This is just a safety precaution
-#define CONTACT_FILE_LIMIT 200
+#define CONTACT_FILE_LIMIT	500
 
 wxString CRoutingZone::m_filename;
 CUInt128 CRoutingZone::me((uint32_t)0);
@@ -199,12 +199,11 @@ void CRoutingZone::WriteFile()
 {
 	// The bootstrap method gets a very nice sample of contacts to save.
 	ContactList contacts;
-	GetBootstrapContacts(&contacts, CONTACT_FILE_LIMIT);
-	uint32_t numContacts = (uint32_t) contacts.size();
-	numContacts = wxMin(numContacts, CONTACT_FILE_LIMIT); // safety precaution, should not be above
+	GetBootstrapContacts(&contacts, 200);
+	ContactList::size_type numContacts = contacts.size();
+	numContacts = std::min<ContactList::size_type>(numContacts, CONTACT_FILE_LIMIT); // safety precaution, should not be above
 	if (numContacts < 25) {
-		AddLogLineM(false, wxString::Format(wxPLURAL("Only %d Kad contact available, nodes.dat not written",
-													 "Only %d Kad contacts available, nodes.dat not written", numContacts), numContacts));
+		AddLogLineM(false, wxString::Format(wxPLURAL("Only %d Kad contact available, nodes.dat not written", "Only %d Kad contacts available, nodes.dat not written", numContacts), numContacts));
 		return;
 	}
 	try {
