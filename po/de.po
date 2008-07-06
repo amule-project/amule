@@ -532,8 +532,8 @@ msgstr[1] "Lese %u Kad-Kontakte"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Nur %d Kad-Kontakt verfügbar, nodes.dat wurde nicht geschrieben."
+msgstr[1] "Nur %d Kad-Kontakte verfügbar, nodes.dat wurde nicht geschrieben."
 
 #: src/kademlia/routing/RoutingZone.cpp:236
 #, c-format
