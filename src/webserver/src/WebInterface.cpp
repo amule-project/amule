@@ -454,17 +454,16 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		return true;
 	}
 	
-#ifdef __WXGTK__
-	// Returns 'aMule' when we use 'amule' elsewhere
-	dir = wxStandardPaths::Get().GetDataDir();
+	dir = wxStandardPaths::Get().GetResourcesDir();	// Returns 'aMule' when we use 'amule' elsewhere
+#if !defined(__WXMSW__) && !defined(__WXMAC__)
 	dir = dir.BeforeLast(wxFileName::GetPathSeparator());
-	dir = JoinPaths(dir, JoinPaths(wxT("amule"), wxT("webserver")));
+	dir = JoinPaths(dir, wxT("amule"));
+#endif
+	dir = JoinPaths(dir, wxT("webserver"));
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;
 	}
-#endif
-
 	
 	// template not found. reverting to default
 	const wxChar* const defaultTemplateName = wxT("php-default");
