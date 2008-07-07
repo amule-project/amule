@@ -816,8 +816,8 @@ void CamuleDlg::ShowTransferRate()
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = wxString::Format(wxT("%.1f | %.1f -- "), kBpsUp, kBpsDown);
-		SetTitle(UpDownSpeed + theApp->m_FrameTitle);
+		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
 	wxASSERT((m_wndTaskbarNotifier != NULL) == thePrefs::UseTrayIcon());
