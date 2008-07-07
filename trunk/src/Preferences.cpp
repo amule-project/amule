@@ -846,13 +846,14 @@ public:
 			while (d.GetNext(&Filename));
 		}
 
-		wxStandardPathsBase &spb(wxStandardPaths::Get());
-#ifdef __WXMSW__
-		wxString dataDir(spb.GetPluginsDir());
-#elif defined(__WXMAC__)
-		wxString dataDir(spb.GetDataDir());
-#else
-	wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+		wxString dataDir;
+		if (skins) {
+			dataDir = wxStandardPaths::Get().GetDataDir();
+		} else {
+			dataDir = wxStandardPaths::Get().GetResourcesDir();
+		}
+#if !defined(__WXMSW__) && !defined(__WXMAC__)
+		dataDir = dataDir.BeforeLast(wxT('/')) + wxT("/amule");
 #endif
 		wxString systemDir(JoinPaths(dataDir,folder));
 
