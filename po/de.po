@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-06 03:30+0200\n"
+"POT-Creation-Date: 2008-07-07 03:30+0200\n"
 "PO-Revision-Date: 2008-07-03 08:37+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <de@li.org>\n"
@@ -535,7 +535,7 @@ msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Nur %d Kad-Kontakt verfügbar, nodes.dat wurde nicht geschrieben."
 msgstr[1] "Nur %d Kad-Kontakte verfügbar, nodes.dat wurde nicht geschrieben."
 
-#: src/kademlia/routing/RoutingZone.cpp:236
+#: src/kademlia/routing/RoutingZone.cpp:235
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
