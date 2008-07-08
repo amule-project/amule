@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-07 03:30+0200\n"
+"POT-Creation-Date: 2008-07-08 03:30+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -620,59 +620,59 @@ msgstr "Dalja e kerkuar\n"
 msgid "Processing request [redirected]: "
 msgstr "Perpunimi i kerkeses [e ridrejtuar]: "
 
-#: src/webserver/src/WebInterface.cpp:483
+#: src/webserver/src/WebInterface.cpp:482
 msgid "Loads template <str>"
 msgstr "Duke ngarkuar modelin <str>"
 
-#: src/webserver/src/WebInterface.cpp:487
+#: src/webserver/src/WebInterface.cpp:486
 msgid "Web server HTTP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:491
+#: src/webserver/src/WebInterface.cpp:490
 msgid "Use UPnP port forwarding on web server port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:495
+#: src/webserver/src/WebInterface.cpp:494
 msgid "UPnP port"
 msgstr "Porta UPnP"
 
-#: src/webserver/src/WebInterface.cpp:499
+#: src/webserver/src/WebInterface.cpp:498
 msgid "Use gzip compression"
 msgstr "Perdor kompresimin gzip "
 
-#: src/webserver/src/WebInterface.cpp:507
+#: src/webserver/src/WebInterface.cpp:506
 msgid "Full access password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:511
+#: src/webserver/src/WebInterface.cpp:510
 msgid "Guest password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:515
+#: src/webserver/src/WebInterface.cpp:514
 msgid "Allow guest access"
 msgstr "Lejo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:519
+#: src/webserver/src/WebInterface.cpp:518
 msgid "Deny guest access"
 msgstr "Ndalo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:523
+#: src/webserver/src/WebInterface.cpp:522
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:527
+#: src/webserver/src/WebInterface.cpp:526
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Rruga per konfigurimin e failit te aMule. MOS E PERDORNI DIREKT!"
 
-#: src/webserver/src/WebInterface.cpp:535
+#: src/webserver/src/WebInterface.cpp:534
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "C'aktivizo interpretuesin e PHP (nuk aprovohet)"
 
-#: src/webserver/src/WebInterface.cpp:543
+#: src/webserver/src/WebInterface.cpp:542
 msgid "Recompile PHP pages on each request"
 msgstr "Rimbush faqet PHP ne c'do kerkese"
 
-#: src/webserver/src/WebInterface.cpp:638
+#: src/webserver/src/WebInterface.cpp:637
 msgid "aMule Web Server"
 msgstr "Web Server i aMule"
 
@@ -1547,22 +1547,22 @@ msgstr "Turqisht"
 msgid "User:"
 msgstr ""
 
-#: src/Preferences.cpp:867
+#: src/Preferences.cpp:868
 msgid "System:"
 msgstr ""
 
-#: src/Preferences.cpp:878
+#: src/Preferences.cpp:879
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1672
+#: src/Preferences.cpp:1673
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Porta TCP nuk mund te jene me te medha se 65532  sepse socket i UDP eshte "
 "fiksuar ne TCP+3"
 
-#: src/Preferences.cpp:1673
+#: src/Preferences.cpp:1674
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Do te perdoret porta e vendosur (%d)"
