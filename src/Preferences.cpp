@@ -188,7 +188,6 @@ wxString	CPreferences::s_Skin;
 bool		CPreferences::s_UseSkinFiles;
 bool		CPreferences::s_FastED2KLinksHandler;
 bool		CPreferences::s_ToolbarOrientation;
-bool		CPreferences::s_ShowPartFileNumber;
 bool		CPreferences::s_AICHTrustEveryHash;
 wxString 	CPreferences::s_CommentFilterString;
 bool		CPreferences::s_IPFilterAutoLoad;
@@ -1114,7 +1113,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_USESKINFILES,	(new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFiles"), s_UseSkinFiles, false )));
 	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  wxT("/SkinGUIOptions/Skin"), s_Skin, wxEmptyString )));
 	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( wxT("/eMule/VerticalToolbar"), s_ToolbarOrientation, false )));
-	NewCfgItem(IDC_SHOWPARTFILENUMBER,(new Cfg_Bool( wxT("/eMule/ShowPartFileNumber"), s_ShowPartFileNumber, false )));
 	
 	/**
 	 * External Apps

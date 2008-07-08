@@ -445,8 +445,6 @@ public:
 
 	static bool		VerticalToolbar()		{ return s_ToolbarOrientation; }
 
-	static bool		ShowPartFileNumber()		{ return s_ShowPartFileNumber; }
-		
 	static const CPath&	GetOSDir()			{ return s_OSDirectory; }
 	static uint16		GetOSUpdate()			{ return s_OSUpdate; }
 
@@ -657,7 +655,6 @@ protected:
 	static wxString	s_datetimeformat;
 	
 	static bool	s_ToolbarOrientation;
-	static bool	s_ShowPartFileNumber;
 
 	// Web Server [kuchin]
 	static wxString	s_sWebPassword;
