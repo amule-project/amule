@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-07 03:30+0200\n"
+"POT-Creation-Date: 2008-07-08 03:30+0200\n"
 "PO-Revision-Date: 2008-06-24 20:07+0100\n"
 "Last-Translator: Youpla <youpla@youpla.com>\n"
 "Language-Team: Español <en@li.org>\n"
@@ -635,62 +635,62 @@ msgstr "Déconnexion demandée\n"
 msgid "Processing request [redirected]: "
 msgstr "Requête en cours [redirigée] :"
 
-#: src/webserver/src/WebInterface.cpp:483
+#: src/webserver/src/WebInterface.cpp:482
 msgid "Loads template <str>"
 msgstr "Charge le template <str>"
 
-#: src/webserver/src/WebInterface.cpp:487
+#: src/webserver/src/WebInterface.cpp:486
 msgid "Web server HTTP port"
 msgstr "Port HTTP du serveur Web"
 
-#: src/webserver/src/WebInterface.cpp:491
+#: src/webserver/src/WebInterface.cpp:490
 msgid "Use UPnP port forwarding on web server port"
 msgstr "Utiliser le forward de port UPnP sur le port du serveur web"
 
-#: src/webserver/src/WebInterface.cpp:495
+#: src/webserver/src/WebInterface.cpp:494
 msgid "UPnP port"
 msgstr "Port UPnP"
 
-#: src/webserver/src/WebInterface.cpp:499
+#: src/webserver/src/WebInterface.cpp:498
 msgid "Use gzip compression"
 msgstr "Utiliser la compression gzip"
 
-#: src/webserver/src/WebInterface.cpp:507
+#: src/webserver/src/WebInterface.cpp:506
 msgid "Full access password for web server"
 msgstr "Mot de passe d'accès total pour le serveur web"
 
-#: src/webserver/src/WebInterface.cpp:511
+#: src/webserver/src/WebInterface.cpp:510
 msgid "Guest password for web server"
 msgstr "Mot de passe invité pour le serveur web"
 
-#: src/webserver/src/WebInterface.cpp:515
+#: src/webserver/src/WebInterface.cpp:514
 msgid "Allow guest access"
 msgstr "Autoriser l'accès invité"
 
-#: src/webserver/src/WebInterface.cpp:519
+#: src/webserver/src/WebInterface.cpp:518
 msgid "Deny guest access"
 msgstr "Interdire l'accès invité"
 
-#: src/webserver/src/WebInterface.cpp:523
+#: src/webserver/src/WebInterface.cpp:522
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 "Charger/sauvegarder les paramètres du serveur web depuis/vers un aMule "
 "distant"
 
-#: src/webserver/src/WebInterface.cpp:527
+#: src/webserver/src/WebInterface.cpp:526
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr ""
 "Chemin du fichier de configuration d'aMule. NE PAS UTILISER DIRECTEMENT!"
 
-#: src/webserver/src/WebInterface.cpp:535
+#: src/webserver/src/WebInterface.cpp:534
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Desactiver l'interpréteur PHP (déprécié)"
 
-#: src/webserver/src/WebInterface.cpp:543
+#: src/webserver/src/WebInterface.cpp:542
 msgid "Recompile PHP pages on each request"
 msgstr "Recompiler les pages PHP à chaque requête"
 
-#: src/webserver/src/WebInterface.cpp:638
+#: src/webserver/src/WebInterface.cpp:637
 msgid "aMule Web Server"
 msgstr "Serveur Web d'aMule"
 
@@ -1577,22 +1577,22 @@ msgstr "Turque"
 msgid "User:"
 msgstr "Utilisateur :"
 
-#: src/Preferences.cpp:867
+#: src/Preferences.cpp:868
 msgid "System:"
 msgstr "Système :"
 
-#: src/Preferences.cpp:878
+#: src/Preferences.cpp:879
 msgid "no options available"
 msgstr "pas d'option disponible"
 
-#: src/Preferences.cpp:1672
+#: src/Preferences.cpp:1673
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Le port TCP ne peut pas dépasser 65532 car le socket UDP du serveur sera à "
 "TCP+3"
 
-#: src/Preferences.cpp:1673
+#: src/Preferences.cpp:1674
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Le port par défaut sera utilisé (%d)"
