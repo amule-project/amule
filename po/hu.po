@@ -4921,7 +4921,7 @@ msgstr "Aktív feltöltések"
 
 #: src/muuli_wdr.cpp:1329 src/muuli_wdr.cpp:2166
 msgid "Statistics Tree"
-msgstr "Statisztika Fa"
+msgstr "Statisztika fa"
 
 #: src/muuli_wdr.cpp:1359 src/muuli_wdr.cpp:3282
 msgid "Username:"

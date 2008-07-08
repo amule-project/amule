@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-08 03:30+0200\n"
-"PO-Revision-Date: 2008-06-10 21:25+0100\n"
+"PO-Revision-Date: 2008-07-08 02:22+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
@@ -533,7 +533,7 @@ msgstr ""
 
 #: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: can not accept web client connection\n"
-msgstr "ERROR: cannot accept web client connection\n"
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:379
 #, c-format
@@ -1989,8 +1989,6 @@ msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
 msgstr ""
-"Your auto-update server list is empty.\n"
-"'Auto-update server list at startup' will be disabled."
 
 #: src/PrefsUnifiedDlg.cpp:513
 msgid ""
@@ -3092,7 +3090,7 @@ msgstr ""
 #: src/PartFile.cpp:351
 #, c-format
 msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
-msgstr "ERROR: Invalid part.met file version: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:601
 #, c-format
@@ -3257,7 +3255,7 @@ msgstr ""
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Knownfile list corrupted, contains invalid header."
-msgstr "WARNING: Known file list corrupted, contains invalid header."
+msgstr ""
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -4943,7 +4941,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1682
 msgid "Bandwith limits"
-msgstr "Bandwidth limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1698 src/muuli_wdr.cpp:1742
 msgid "Upload"
@@ -4977,7 +4975,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "This UDP port is used for extended ed2k requests and Kad network"
-msgstr "This UDP port is used for extended eD2k requests and Kad network"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1782
 msgid "disable"
@@ -5029,7 +5027,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1866
 msgid "Show overhead bandwith"
-msgstr "Show overhead bandwidth"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1892
 msgid "Remove dead server after"
@@ -5171,7 +5169,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2093
 msgid "Create Backup for preview"
-msgstr "Create backup for preview"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2112
 msgid "Graphs"

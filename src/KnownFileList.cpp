@@ -83,7 +83,7 @@ bool CKnownFileList::Init()
 	try {
 		uint8 version = file.ReadUInt8();
 		if ((version != MET_HEADER) && (version != MET_HEADER_WITH_LARGEFILES)) {
-			AddLogLineM(true, _("WARNING: Knownfile list corrupted, contains invalid header."));
+			AddLogLineM(true, _("WARNING: Known file list corrupted, contains invalid header."));
 			return false;
 		}
 		

@@ -461,8 +461,9 @@ public:
 	static void LoadAllItems(wxConfigBase* cfg);
 	static void SaveAllItems(wxConfigBase* cfg);
 
-	static bool 		GetShowRatesOnTitle()		{ return s_ShowRatesOnTitle; }
-	
+	static uint8_t		GetShowRatesOnTitle()		{ return s_showRatesOnTitle; }
+	static void		SetShowRatesOnTitle(uint8_t val) { s_showRatesOnTitle = val; }
+
 	// Message Filters
 	
 	static bool		MustFilterMessages()		{ return s_MustFilterMessages; }
@@ -641,7 +642,7 @@ protected:
 	static bool	s_bDAP;
 	static bool	s_bUAP;
 
-	static bool	s_ShowRatesOnTitle;
+	static uint8_t	s_showRatesOnTitle;	// 0=no, 1=after app name, 2=before app name
 
 	static wxString	s_VideoPlayer;
 	static bool	s_moviePreviewBackup;
