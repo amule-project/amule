@@ -523,8 +523,10 @@ m_SCPD(NULL)
 		"\n        absEventSubURL: " << m_absEventSubURL;
 	AddDebugLogLineM(false, logUPnP, msg);
 
-	if (	m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
-		m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
+	if (m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
+	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION ||
+	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_COMMON_INTERFACE_CONFIG ||
+	    m_serviceType == upnpLib.UPNP_SERVICE_LAYER3_FORWARDING) {
 //#warning Delete this code on release.
 		//if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
 			// This condition can be used to suspend the parse

@@ -30,6 +30,9 @@ Version 2.2.2 - Whatever comes next.
 		* Added the m4 macro to test for libupnp.
 		* Updated amule_build_install.sh to work with
 		  --with-libupnp-prefix.
+		* Added a search for WANCommonInterfaceConfig and
+		  Layer3Forwarding services for UPnP, aside from
+		  WANIPConnection and WANPPPConnection.
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation
