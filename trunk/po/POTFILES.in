@@ -78,6 +78,7 @@ src/SearchDlg.cpp
 src/MuleTrayIcon.cpp
 src/ChatSelector.cpp
 src/MuleNotebook.cpp
+src/amule-gui.cpp
 src/ServerList.cpp
 src/UserEvents.cpp
 src/amule.cpp
