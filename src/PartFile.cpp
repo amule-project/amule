@@ -2565,7 +2565,7 @@ void CPartFile::ResumeFile()
 }
 
 
-bool CPartFile::CheckFreeDiskSpace( uint32 neededSpace )
+bool CPartFile::CheckFreeDiskSpace( uint64 neededSpace )
 {
 	uint64 free = CPath::GetFreeSpaceAt(GetFilePath());
 	if (free == static_cast<uint64>(wxInvalidOffset)) {
