@@ -524,9 +524,12 @@ m_SCPD(NULL)
 	AddDebugLogLineM(false, logUPnP, msg);
 
 	if (m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
+	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
+#if 0
 	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION ||
 	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_COMMON_INTERFACE_CONFIG ||
 	    m_serviceType == upnpLib.UPNP_SERVICE_LAYER3_FORWARDING) {
+#endif
 //#warning Delete this code on release.
 		//if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
 			// This condition can be used to suspend the parse
@@ -1506,39 +1509,47 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 void CUPnPControlPoint::Subscribe(CUPnPService &service)
 {
 	std::ostringstream msg;
-	int errcode = UpnpSubscribe(m_UPnPClientHandle,
-		service.GetAbsEventSubURL().c_str(),
-		service.GetTimeoutAddr(),
-		service.GetSID());
+
+	IXML_Document *scpdDoc = NULL;
+	int errcode = UpnpDownloadXmlDoc(
+		service.GetAbsSCPDURL().c_str(), &scpdDoc);
 	if (errcode == UPNP_E_SUCCESS) {
-		m_ServiceMap[service.GetAbsEventSubURL()] = &service;
-		msg << "Successfully subscribed to service " <<
+		// Get the root node of this service (the SCPD Document)
+		IXML_Element *scpdRoot =
+			m_upnpLib.Element_GetRootElement(scpdDoc);
+		CUPnPSCPD *scpd = new CUPnPSCPD(*this, m_upnpLib,
+			scpdRoot, service.GetAbsSCPDURL());
+		service.SetSCPD(scpd);
+		msg << "Successfully retrieved SCPD Document for service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
 			service.GetAbsEventSubURL() << ".";
 		AddLogLineM(true, logUPnP, msg);
+		msg.str("");
 
-		IXML_Document *scpdDoc = NULL;
-		errcode = UpnpDownloadXmlDoc(
-			service.GetAbsSCPDURL().c_str(), &scpdDoc);
+		// Now try to subscribe to this service. If the subscription
+		// is not successfull, we will not be notified about events,
+		// but it may be possible to use the service anyway.
+		errcode = UpnpSubscribe(m_UPnPClientHandle,
+			service.GetAbsEventSubURL().c_str(),
+			service.GetTimeoutAddr(),
+			service.GetSID());
 		if (errcode == UPNP_E_SUCCESS) {
-			// Get the root node
-			IXML_Element *scpdRoot =
-				m_upnpLib.Element_GetRootElement(scpdDoc);
-			CUPnPSCPD *scpd = new CUPnPSCPD(*this, m_upnpLib,
-				scpdRoot, service.GetAbsSCPDURL());
-			service.SetSCPD(scpd);
-		} else {
-			msg.str("");
-			msg << "Error getting SCPD Document from " <<
-				service.GetAbsSCPDURL() << ".";
+			m_ServiceMap[service.GetAbsEventSubURL()] = &service;
+			msg << "Successfully subscribed to service " <<
+				service.GetServiceType() << ", absEventSubURL: " <<
+				service.GetAbsEventSubURL() << ".";
 			AddLogLineM(true, logUPnP, msg);
+		} else {
+			msg << "Error subscribing to service " <<
+				service.GetServiceType() << ", absEventSubURL: " <<
+				service.GetAbsEventSubURL() << ", error: " <<
+				m_upnpLib.GetUPnPErrorMessage(errcode) << ".";
+			goto error;
 		}
 	} else {
-		msg << "Error subscribing to service " <<
-			service.GetServiceType() << ", absEventSubURL: " <<
-			service.GetAbsEventSubURL() << ", error: " <<
-			m_upnpLib.GetUPnPErrorMessage(errcode) << ".";
-		goto error;
+		msg << "Error getting SCPD Document from " <<
+			service.GetAbsSCPDURL() << ".";
+		AddLogLineM(true, logUPnP, msg);
 	}
 	
 	return;
