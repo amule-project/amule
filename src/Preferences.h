@@ -185,10 +185,10 @@ public:
 	static uint16		GetPort()			{ return s_port; }
 	static void		SetPort(uint16 val);
 	static uint16		GetUDPPort()			{ return s_udpport; }
-	static uint16		GetEffectiveUDPPort()	{ return s_UDPDisable ? 0 : s_udpport; }
+	static uint16		GetEffectiveUDPPort()	{ return s_UDPEnable ? s_udpport : 0; }
 	static void		SetUDPPort(uint16 val)		{ s_udpport = val; }
-	static bool		IsUDPDisabled()			{ return s_UDPDisable; }
-	static void		SetUDPDisable(bool val)		{ s_UDPDisable = val; }
+	static bool		IsUDPDisabled()			{ return !s_UDPEnable; }
+	static void		SetUDPDisable(bool val)		{ s_UDPEnable = !val; }
 	static const CPath&	GetIncomingDir()		{ return s_incomingdir; }
 	static void		SetIncomingDir(const CPath& dir){ s_incomingdir = dir; }
 	static const CPath&	GetTempDir()			{ return s_tempdir; }
@@ -568,7 +568,7 @@ protected:
 	static wxString s_Addr;
 	static uint16	s_port;
 	static uint16	s_udpport;
-	static bool	s_UDPDisable;
+	static bool	s_UDPEnable;
 	static uint16	s_maxconnections;
 	static bool	s_reconnect;
 	static bool	s_autoconnect;
