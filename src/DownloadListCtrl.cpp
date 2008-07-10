@@ -184,19 +184,18 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_hilightUnfocusBrush = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125), wxSOLID ));
 
-	InsertColumn( ColumnPart,			_("Part"),					wxLIST_FORMAT_LEFT,  60 );
-	InsertColumn( ColumnFileName,		_("File Name"),				wxLIST_FORMAT_LEFT, 260 );
-	InsertColumn( ColumnSize,			_("Size"),					wxLIST_FORMAT_LEFT,  60 );
-	InsertColumn( ColumnTransferred,	_("Transferred"),			wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( ColumnCompleted,		_("Completed"),				wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( ColumnSpeed,			_("Speed"),					wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( ColumnProgress,		_("Progress"),				wxLIST_FORMAT_LEFT, 170 );
-	InsertColumn( ColumnSources,		_("Sources"),				wxLIST_FORMAT_LEFT,  50 );
-	InsertColumn( ColumnPriority,		_("Priority"),				wxLIST_FORMAT_LEFT,  55 );
-	InsertColumn( ColumnStatus,			_("Status"),				wxLIST_FORMAT_LEFT,  70 );
-	InsertColumn( ColumnTimeRemaining,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110 );
-	InsertColumn( ColumnLastSeenComplete, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220 );
-	InsertColumn( ColumnLastReception,	_("Last Reception"),		wxLIST_FORMAT_LEFT, 220 );
+	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260 );
+	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60 );
+	InsertColumn( 2,  _("Transferred"),		wxLIST_FORMAT_LEFT,  65 );
+	InsertColumn( 3,  _("Completed"),		wxLIST_FORMAT_LEFT,  65 );
+	InsertColumn( 4,  _("Speed"),			wxLIST_FORMAT_LEFT,  65 );
+	InsertColumn( 5,  _("Progress"),		wxLIST_FORMAT_LEFT, 170 );
+	InsertColumn( 6,  _("Sources"),			wxLIST_FORMAT_LEFT,  50 );
+	InsertColumn( 7,  _("Priority"),		wxLIST_FORMAT_LEFT,  55 );
+	InsertColumn( 8,  _("Status"),			wxLIST_FORMAT_LEFT,  70 );
+	InsertColumn( 9,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110 );
+	InsertColumn( 10, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220 );
+	InsertColumn( 11, _("Last Reception"),		wxLIST_FORMAT_LEFT, 220 );
 
 	m_category = 0;
 	m_completedFiles = 0;
@@ -1168,7 +1167,7 @@ void CDownloadListCtrl::OnDrawItem(
 
 			// Make a copy of the current rectangle so we can apply specific tweaks
 			wxRect target_rec = cur_rec;
-			if ( i == ColumnProgress ) {
+			if ( i == 5 ) {
 				tree_show = ( listitem.GetWidth() > 0 );
 
 				tree_start = cur_rec.x - iOffset;
@@ -1252,20 +1251,16 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	wxString text;
 
 	switch (nColumn) {
-	// Part Number
-	case ColumnPart: {
-	        wxString partno;
-
-
-		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-		  partno = CFormat(wxT("%s")) % file->GetPartMetFileName().RemoveAllExt();
-		}
-		dc->DrawText(partno, rect.GetX(), rect.GetY());
-	}
-	break;
 	// Filename
-	case ColumnFileName: {
-		wxString filename = file->GetFileName().GetPrintable();
+	case 0: {
+		// show no. of partfile in filename column
+		wxString filename;
+		if (thePrefs::ShowPartFileNumber()) {
+			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+				filename = CFormat(wxT("[%s] ")) % file->GetPartMetFileName().RemoveAllExt();
+			}
+		}
+		filename += file->GetFileName().GetPrintable();
 
 		if (file->HasRating() || file->HasComment()) {
 			int image = Client_CommentOnly_Smiley;
@@ -1289,29 +1284,29 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	break;
 
 	// Filesize
-	case ColumnSize:
+	case 1:
 		text = CastItoXBytes( file->GetFileSize() );
 		break;
 
 	// Transferred
-	case ColumnTransferred:
+	case 2:
 		text = CastItoXBytes( file->GetTransferred() );
 		break;
 	
 	// Completed
-	case ColumnCompleted:
+	case 3:
 		text = CastItoXBytes( file->GetCompletedSize() );
 		break;
 	
 	// Speed
-	case ColumnSpeed:	// speed
+	case 4:	// speed
 		if ( file->GetTransferingSrcCount() ) {
 			text = wxString::Format( wxT("%.1f "), file->GetKBpsDown() ) +
 				_("kB/s");
 		}
 		break;
 	
-	case ColumnProgress:	// progress
+	case 5:	// progress
 	{
 		if (thePrefs::ShowProgBar())
 		{
@@ -1380,7 +1375,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	break;
 
 	// Sources
-	case ColumnSources:	{
+	case 6:	{
 		uint16 sc = file->GetSourceCount();
 		uint16 ncsc = file->GetNotCurrentSourcesCount();
 		if ( ncsc ) {
@@ -1401,17 +1396,17 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	}
 
 	// Priority
-	case ColumnPriority:
+	case 7:
 		text = PriorityToStr( file->GetDownPriority(), file->IsAutoDownPriority() );
 		break;
 			
 	// File-status
-	case ColumnStatus:
+	case 8:
 		text = file->getPartfileStatus();
 		break;
 	
 	// Remaining
-	case ColumnTimeRemaining: {
+	case 9: {
 		if ((file->GetStatus() != PS_COMPLETING) && file->IsPartFile()) {
 			uint64 remainSize = file->GetFileSize() - file->GetCompletedSize();
 			sint32 remainTime = file->getTimeRemaining();
@@ -1428,7 +1423,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	}
 	
 	// Last seen completed
-	case ColumnLastSeenComplete: {
+	case 10: {
 		if ( file->lastseencomplete ) {
 			text = wxDateTime( file->lastseencomplete ).Format( _("%y/%m/%d %H:%M:%S") );
 		} else {
@@ -1437,8 +1432,8 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		break;
 	}
 	
-	// Last received
-	case ColumnLastReception: {
+	// Laste received
+	case 11: {
 		const time_t lastReceived = file->GetLastChangeDatetime();
 		if (lastReceived) {
 			text = wxDateTime(lastReceived).Format( _("%y/%m/%d %H:%M:%S") );
@@ -1464,7 +1459,7 @@ void CDownloadListCtrl::DrawSourceItem(
 
 	switch (nColumn) {
 		// Client name + various icons
-		case ColumnFileName: {
+		case 0: {
 			wxRect cur_rec = rect;
 			// +3 is added by OnDrawItem()... so take it off
 			// Kry - eMule says +1, so I'm trusting it
@@ -1600,14 +1595,14 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnCompleted:	// completed
+		case 3:	// completed
 			if (item->GetType() != A4AF_SOURCE && client->GetTransferredDown()) {
 				buffer = CastItoXBytes(client->GetTransferredDown());
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
 
-		case ColumnSpeed:	// speed
+		case 4:	// speed
 			if (item->GetType() != A4AF_SOURCE && client->GetKBpsDown() > 0.001) {
 				buffer = wxString::Format(wxT("%.1f "),
 						client->GetKBpsDown()) + _("kB/s");
@@ -1615,7 +1610,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnProgress:	// file info
+		case 5:	// file info
 			if ( thePrefs::ShowProgBar() ) {
 				int iWidth = rect.GetWidth() - 2;
 				int iHeight = rect.GetHeight() - 2;
@@ -1688,13 +1683,13 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnSources: {
+		case 6: {
 				// Version
 				dc->DrawText(client->GetClientVerString(), rect.GetX(), rect.GetY());
 				break;
 			}
 
-		case ColumnPriority:	// prio
+		case 7:	// prio
 			// We only show priority for sources actually queued for that file
 			if (	item->GetType() != A4AF_SOURCE &&
 				client->GetDownloadState() == DS_ONQUEUE ) {
@@ -1727,7 +1722,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnStatus:	// status
+		case 8:	// status
 			if (item->GetType() != A4AF_SOURCE) {
 				buffer = DownloadStateToStr( client->GetDownloadState(), 
 					client->IsRemoteQueueFull() );
@@ -1742,7 +1737,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			break;
 		// Source comes from?
-		case ColumnTimeRemaining: {
+		case 9: {
 			buffer = wxGetTranslation(OriginToText(client->GetSourceFrom()));
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			break;
@@ -1830,78 +1825,71 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 	int result = 0;
 
 	switch (lParamSort) {
-	// Sort by part number
-	case ColumnPart:
-		result = CmpAny(
-			file1->GetPartMetFileName().RemoveAllExt(),
-			file2->GetPartMetFileName().RemoveAllExt() );
-		break;
-
 	// Sort by filename
-	case ColumnFileName:
+	case 0:
 		result = CmpAny(
 			file1->GetFileName(),
 			file2->GetFileName() );
 		break;
 
 	// Sort by size
-	case ColumnSize:
+	case 1:
 		result = CmpAny(
 			file1->GetFileSize(),
 			file2->GetFileSize() );
 		break;
 
 	// Sort by transferred
-	case ColumnTransferred:
+	case 2:
 		result = CmpAny(
 			file1->GetTransferred(),
 			file2->GetTransferred() );
 		break;
 
 	// Sort by completed
-	case ColumnCompleted:
+	case 3:
 		result = CmpAny(
 			file1->GetCompletedSize(),
 			file2->GetCompletedSize() );
 		break;
 
 	// Sort by speed
-	case ColumnSpeed:
+	case 4:
 		result = CmpAny(
 			file1->GetKBpsDown() * 1024,
 			file2->GetKBpsDown() * 1024 );
 		break;
 
 	// Sort by percentage completed
-	case ColumnProgress:
+	case 5:
 		result = CmpAny(
 			file1->GetPercentCompleted(),
 			file2->GetPercentCompleted() );
 		break;
 
 	// Sort by number of sources
-	case ColumnSources:
+	case 6:
 		result = CmpAny(
 			file1->GetSourceCount(),
 			file2->GetSourceCount() );
 		break;
 
 	// Sort by priority
-	case ColumnPriority:
+	case 7:
 		result = CmpAny(
 			file1->GetDownPriority(),
 			file2->GetDownPriority() );
 		break;
 
 	// Sort by status
-	case ColumnStatus:
+	case 8:
 		result = CmpAny(
 			file1->getPartfileStatusRang(),
 			file2->getPartfileStatusRang() );
 		break;
 
 	// Sort by remaining time
-	case ColumnTimeRemaining:
+	case 9:
 		if (file1->getTimeRemaining() == -1) {
 			if (file2->getTimeRemaining() == -1) {
 				result = 0;
@@ -1920,14 +1908,14 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 		break;
 
 	// Sort by last seen complete
-	case ColumnLastSeenComplete:
+	case 10:
 		result = CmpAny(
 			file1->lastseencomplete,
 			file2->lastseencomplete );
 		break;
 
 	// Sort by last reception
-	case ColumnLastReception:
+	case 11:
 		result = CmpAny(
 			file1->GetLastChangeDatetime(),
 			file2->GetLastChangeDatetime() );
@@ -1943,31 +1931,30 @@ int CDownloadListCtrl::Compare(
 {
 	switch (lParamSort) {
 		// Sort by name
-		case ColumnPart:
-		case ColumnFileName:
+		case 0:
 			return CmpAny( client1->GetUserName(), client2->GetUserName() );
 	
 		// Sort by status (size field)
-		case ColumnSize:
+		case 1:
 			return CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
 	
 		// Sort by transferred in the following fields
-		case ColumnTransferred:	
-		case ColumnCompleted:
+		case 2:	
+		case 3:
 			return CmpAny( client1->GetTransferredDown(), client2->GetTransferredDown() );
 
 		// Sort by speed
-		case ColumnSpeed:
+		case 4:
 			return CmpAny( client1->GetKBpsDown(), client2->GetKBpsDown() );
 		
 		// Sort by parts offered (Progress field)
-		case ColumnProgress:
+		case 5:
 			return CmpAny(
 				client1->GetAvailablePartCount(),
 				client2->GetAvailablePartCount() );
 		
 		// Sort by client version
-		case ColumnSources: {
+		case 6: {
 			if (client1->GetClientSoft() != client2->GetClientSoft()) {
 				return client1->GetSoftStr().Cmp(client2->GetSoftStr());
 			}
@@ -1980,7 +1967,7 @@ int CDownloadListCtrl::Compare(
 		}
 		
 		// Sort by Queue-Rank
-		case ColumnPriority: {
+		case 7: {
 			// This will sort by download state: Downloading, OnQueue, Connecting ...
 			// However, Asked For Another will always be placed last, due to
 			// sorting in SortProc
@@ -2017,7 +2004,7 @@ int CDownloadListCtrl::Compare(
 		}
 		
 		// Sort by state
-		case ColumnStatus: {
+		case 8: {
 			if (client1->GetDownloadState() == client2->GetDownloadState()) {
 				return CmpAny(
 					client1->IsRemoteQueueFull(),
@@ -2030,7 +2017,7 @@ int CDownloadListCtrl::Compare(
 		}
 
 		// Source of source ;)
-		case ColumnTimeRemaining:
+		case 9:
 			return CmpAny(client1->GetSourceFrom(), client2->GetSourceFrom());
 		
 		default:

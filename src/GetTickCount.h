@@ -34,6 +34,9 @@
 #else
 	#ifndef _MSC_VER
 		#include <winbase.h> // Do_not_auto_remove
+    #else
+		// GetTickCount64 is a system function in Vista 
+		#define GetTickCount64 GetTickCount_64
 	#endif
 #endif
 
