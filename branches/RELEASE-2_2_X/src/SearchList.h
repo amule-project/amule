@@ -60,7 +60,6 @@ public:
 	struct CSearchParams
 	{
 		/** Prevents accidential use of uninitialized variables. */
-	AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort));
 		CSearchParams() { minSize = maxSize = availability = 0; }
 		
 		//! The actual string to search for.
