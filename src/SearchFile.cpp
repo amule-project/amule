@@ -31,8 +31,9 @@
 #include "Preferences.h"		// Needed for thePrefs
 #include "GuiEvents.h"
 #include "Logger.h"
+#include "PartFile.h"                  // Needed for CPartFile::CanAddSource
 
-CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort), const wxString& directory, bool kademlia)
+CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID, uint32_t serverIP, uint16_t serverPort, const wxString& directory, bool kademlia)
 	: m_parent(NULL),
 	  m_showChildren(false),
 	  m_searchID(searchID),
@@ -40,6 +41,8 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 	  m_completeSourceCount(0),
 	  m_kademlia(kademlia),
 	  m_directory(directory),
+          m_clientServerIP(serverIP),
+          m_clientServerPort(serverPort),
 	  m_kadPublishInfo(0)
 {
 	m_abyFileHash = data.ReadHash();
@@ -94,9 +97,12 @@ CSearchFile::CSearchFile(const CSearchFile& other)
 	  m_sourceCount(other.m_sourceCount),
 	  m_completeSourceCount(other.m_completeSourceCount),
 	  m_kademlia(other.m_kademlia),
+	  m_directory(other.m_directory),
+          m_clients(other.m_clients),
 	  m_clientID(other.m_clientID),
 	  m_clientPort(other.m_clientPort),
-	  m_directory(other.m_directory),
+	  m_clientServerIP(other.m_clientServerIP),
+	  m_clientServerPort(other.m_clientServerPort),
 	  m_kadPublishInfo(other.m_kadPublishInfo)
 {
 	for (size_t i = 0; i < other.m_children.size(); ++i) {
@@ -110,6 +116,15 @@ CSearchFile::~CSearchFile()
 	for (size_t i = 0; i < m_children.size(); ++i) {
 		delete m_children.at(i);
 	}
+}
+
+
+void CSearchFile::AddClient(const ClientStruct& client)
+{
+       for (std::list<ClientStruct>::const_iterator it = m_clients.begin(); it != m_clients.end(); ++it) {
+               if (client.m_ip == it->m_ip && client.m_port == it->m_port) return;
+       }
+       m_clients.push_back(client);
 }
 
 
@@ -149,6 +164,17 @@ void CSearchFile::MergeResults(const CSearchFile& other)
 		}
 	}
 }
+
+
+
+       // copy possible available sources from new result
+       if (other.GetClientID() && other.GetClientPort()) {
+               // pre-filter sources which would be dropped by CPartFile::AddSources
+               if (CPartFile::CanAddSource(other.GetClientID(), other.GetClientPort(), other.GetClientServerIP(), other.GetClientServerPort())) {
+                       CSearchFile::ClientStruct client(other.GetClientID(), other.GetClientPort(), other.GetClientServerIP(), other.GetClientServerPort());
+                       AddClient(client);
+               }
+       }
 
 
 void CSearchFile::AddChild(CSearchFile* file)
@@ -243,6 +269,16 @@ void CSearchFile::UpdateParent()
 			ratingTotal += child->UserRating();
 		}
 	}
+
+
+               // Available sources
+               if (child->GetClientID() && child->GetClientPort()) {
+                       CSearchFile::ClientStruct client(child->GetClientID(), child->GetClientPort(), child->GetClientServerIP(), child->GetClientServerPort());
+                       AddClient(client);
+               }
+               for (std::list<ClientStruct>::const_iterator cit = child->m_clients.begin(); cit != child->m_clients.end(); ++cit) {
+                       AddClient(*cit);
+               }
 
 	m_sourceCount = sourceCount;
 	m_completeSourceCount = completeSourceCount;
