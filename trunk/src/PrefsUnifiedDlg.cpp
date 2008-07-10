@@ -68,7 +68,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_SPINCTRL(IDC_PORT,			PrefsUnifiedDlg::OnTCPClientPortChange)
 
 	// The rest. Organize it!
-	EVT_CHECKBOX(IDC_UDPDISABLE,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_UDPENABLE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_USESKINFILES,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange)
@@ -377,7 +377,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_SKIN )->Enable( thePrefs::UseSkins() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
-	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
+	FindWindow( IDC_UDPPORT )->Enable( thePrefs::s_UDPEnable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 
@@ -670,9 +670,8 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	}
 
 	switch ( id ) {
-		case IDC_UDPDISABLE:
-			// UDP is disable rather than enable, so we flip the value
-			FindWindow( IDC_UDPPORT )->Enable(!value);
+		case IDC_UDPENABLE:
+			FindWindow( IDC_UDPPORT )->Enable(value);
 			break;
 
 		case IDC_CHECKDISKSPACE:
@@ -1035,10 +1034,7 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 
 void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 {
-	int port = CastChild(IDC_PORT, wxSpinCtrl)->GetValue();
-	wxString txt;
-	txt << _("UDP port for extended server requests (TCP+3):") << port + 3;
-	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(txt);
+	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(wxString() << (CastChild(IDC_PORT, wxSpinCtrl)->GetValue() + 3));
 }
 
 void PrefsUnifiedDlg::OnUserEventSelected(wxListEvent& event)
