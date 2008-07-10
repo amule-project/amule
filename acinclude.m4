@@ -294,7 +294,6 @@ AC_DEFUN([MULE_CHECK_CCACHE],
 			CXX="$with_ccache_prefix/ccache $CXX"
 			BUILD_CC="$with_ccache_prefix/ccache $BUILD_CC"
 		], [
-			enable_ccache=no
 			AC_MSG_RESULT([no])
 		])
 	])
@@ -391,7 +390,6 @@ dnl This function will test the existance of a POSIX compliant regex library.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_CHECK_REGEX],
 [
-	AC_CHECK_HEADERS([sys/types.h])
 	AC_MSG_CHECKING([for a POSIX compliant regex library])
 	regex_found=no
 	for REGEX_LIBS in '' -lgnurx -lregex; do
@@ -399,9 +397,6 @@ AC_DEFUN([MULE_CHECK_REGEX],
 		MULE_PREPEND([LIBS], [$REGEX_LIBS])
 		AC_LINK_IFELSE([
 			AC_LANG_PROGRAM([[
-				#ifdef HAVE_SYS_TYPES_H
-				#	include <sys/types.h>
-				#endif
 				#include <regex.h>
 			]], [[
 				regex_t preg;

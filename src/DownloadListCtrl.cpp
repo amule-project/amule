@@ -180,23 +180,24 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_menu = NULL;
 
-	m_hilightBrush  = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125), wxSOLID ));
+	wxColour colour = BLEND( SYSCOLOR( wxSYS_COLOUR_HIGHLIGHT ), 125 );
+	m_hilightBrush  = new wxBrush( colour, wxSOLID );
+	
+	colour = BLEND( SYSCOLOR( wxSYS_COLOUR_BTNSHADOW), 125 );
+	m_hilightUnfocusBrush = new wxBrush( colour, wxSOLID );
 
-	m_hilightUnfocusBrush = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125), wxSOLID ));
-
-	InsertColumn( ColumnPart,			_("Part"),					wxLIST_FORMAT_LEFT,  60 );
-	InsertColumn( ColumnFileName,		_("File Name"),				wxLIST_FORMAT_LEFT, 260 );
-	InsertColumn( ColumnSize,			_("Size"),					wxLIST_FORMAT_LEFT,  60 );
-	InsertColumn( ColumnTransferred,	_("Transferred"),			wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( ColumnCompleted,		_("Completed"),				wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( ColumnSpeed,			_("Speed"),					wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( ColumnProgress,		_("Progress"),				wxLIST_FORMAT_LEFT, 170 );
-	InsertColumn( ColumnSources,		_("Sources"),				wxLIST_FORMAT_LEFT,  50 );
-	InsertColumn( ColumnPriority,		_("Priority"),				wxLIST_FORMAT_LEFT,  55 );
-	InsertColumn( ColumnStatus,			_("Status"),				wxLIST_FORMAT_LEFT,  70 );
-	InsertColumn( ColumnTimeRemaining,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110 );
-	InsertColumn( ColumnLastSeenComplete, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220 );
-	InsertColumn( ColumnLastReception,	_("Last Reception"),		wxLIST_FORMAT_LEFT, 220 );
+	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260 );
+	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60 );
+	InsertColumn( 2,  _("Transferred"),		wxLIST_FORMAT_LEFT,  65 );
+	InsertColumn( 3,  _("Completed"),		wxLIST_FORMAT_LEFT,  65 );
+	InsertColumn( 4,  _("Speed"),			wxLIST_FORMAT_LEFT,  65 );
+	InsertColumn( 5,  _("Progress"),		wxLIST_FORMAT_LEFT, 170 );
+	InsertColumn( 6,  _("Sources"),			wxLIST_FORMAT_LEFT,  50 );
+	InsertColumn( 7,  _("Priority"),		wxLIST_FORMAT_LEFT,  55 );
+	InsertColumn( 8,  _("Status"),			wxLIST_FORMAT_LEFT,  70 );
+	InsertColumn( 9,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110 );
+	InsertColumn( 10, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220 );
+	InsertColumn( 11, _("Last Reception"),		wxLIST_FORMAT_LEFT, 220 );
 
 	m_category = 0;
 	m_completedFiles = 0;
@@ -211,6 +212,8 @@ CDownloadListCtrl::~CDownloadListCtrl()
 		delete m_ListItems.begin()->second;
 		m_ListItems.erase( m_ListItems.begin() );
 	}
+	delete m_hilightBrush;
+	delete m_hilightUnfocusBrush;
 }
 
 
@@ -228,7 +231,6 @@ void CDownloadListCtrl::AddFile( CPartFile* file )
 		// Check if the new file is visible in the current category
 		if ( file->CheckShowItemInGivenCat( m_category ) ) {
 			ShowFile( file, true );
-			SortList();
 		}
 	}
 }
@@ -477,8 +479,6 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		for ( it = a4afSources.begin(); it != a4afSources.end(); ++it ) {
 			AddSource( file, *it, A4AF_SOURCE );
 		}
-
-		SortList();
 	} else {
 		for ( int i = GetItemCount() - 1; i >= 0; --i ) {
 			CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData(i);
@@ -992,10 +992,10 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 		wxString view;
 		if (file->IsPartFile() && (file->GetStatus() != PS_COMPLETE)) {
-			view = CFormat(wxT("%s [%s]")) % _("Preview")
+			view << CFormat(wxT("%s [%s]")) % _("Preview")
 					% file->GetPartMetFileName().RemoveExt();
 		} else if ( file->GetStatus() == PS_COMPLETE ) {
-			view = _("&Open the file");
+			view << _("&Open the file");
 		}
 		menu->SetLabel(MP_VIEW, view);
 		menu->Enable(MP_VIEW, file->PreviewAvailable() );
@@ -1107,10 +1107,10 @@ void CDownloadListCtrl::OnDrawItem(
 	// Define text-color and background
 	if ((content->GetType() == FILE_TYPE) && (highlighted)) {
 		if (GetFocus()) {
-			dc->SetBackground(m_hilightBrush);
+			dc->SetBackground(*m_hilightBrush);
 			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		} else {
-			dc->SetBackground(m_hilightUnfocusBrush);
+			dc->SetBackground(*m_hilightUnfocusBrush);
 			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	} else {
@@ -1122,14 +1122,19 @@ void CDownloadListCtrl::OnDrawItem(
 
 	// Define the border of the drawn area
 	if ( highlighted ) {
-		CMuleColour colour;
+		wxColour old;
 		if ( ( content->GetType() == FILE_TYPE ) && !GetFocus() ) {
-			colour = m_hilightUnfocusBrush.GetColour();
+			old = m_hilightUnfocusBrush->GetColour();
 		} else {
-			colour = m_hilightBrush.GetColour();
+			old = m_hilightBrush->GetColour();
 		}
 
-		dc->SetPen( *(wxThePenList->FindOrCreatePen(colour.Blend(65), 1, wxSOLID) ));
+		wxColor newcol(
+			((int)old.Red() * 65) / 100,
+			((int)old.Green() * 65) / 100,
+			((int)old.Blue() * 65) / 100);
+
+		dc->SetPen( wxPen(newcol, 1, wxSOLID) );
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -1145,7 +1150,7 @@ void CDownloadListCtrl::OnDrawItem(
 		CPartFile *file = content->GetFile();
 		if ( file->GetCategory() ) {
 			dc->SetTextForeground(
-				CMuleColour(theApp->glob_prefs->GetCatColor(file->GetCategory())) );
+				WxColourFromCr(theApp->glob_prefs->GetCatColor(file->GetCategory())) );
 		}
 	}
 
@@ -1168,7 +1173,7 @@ void CDownloadListCtrl::OnDrawItem(
 
 			// Make a copy of the current rectangle so we can apply specific tweaks
 			wxRect target_rec = cur_rec;
-			if ( i == ColumnProgress ) {
+			if ( i == 5 ) {
 				tree_show = ( listitem.GetWidth() > 0 );
 
 				tree_start = cur_rec.x - iOffset;
@@ -1252,20 +1257,16 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	wxString text;
 
 	switch (nColumn) {
-	// Part Number
-	case ColumnPart: {
-	        wxString partno;
-
-
-		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-		  partno = CFormat(wxT("%s")) % file->GetPartMetFileName().RemoveAllExt();
-		}
-		dc->DrawText(partno, rect.GetX(), rect.GetY());
-	}
-	break;
 	// Filename
-	case ColumnFileName: {
-		wxString filename = file->GetFileName().GetPrintable();
+	case 0: {
+		// show no. of partfile in filename column
+		wxString filename;
+		if (thePrefs::ShowPartFileNumber()) {
+			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+				filename = CFormat(wxT("[%s] ")) % file->GetPartMetFileName().RemoveAllExt();
+			}
+		}
+		filename += file->GetFileName().GetPrintable();
 
 		if (file->HasRating() || file->HasComment()) {
 			int image = Client_CommentOnly_Smiley;
@@ -1289,29 +1290,29 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	break;
 
 	// Filesize
-	case ColumnSize:
+	case 1:
 		text = CastItoXBytes( file->GetFileSize() );
 		break;
 
 	// Transferred
-	case ColumnTransferred:
+	case 2:
 		text = CastItoXBytes( file->GetTransferred() );
 		break;
 	
 	// Completed
-	case ColumnCompleted:
+	case 3:
 		text = CastItoXBytes( file->GetCompletedSize() );
 		break;
 	
 	// Speed
-	case ColumnSpeed:	// speed
+	case 4:	// speed
 		if ( file->GetTransferingSrcCount() ) {
 			text = wxString::Format( wxT("%.1f "), file->GetKBpsDown() ) +
 				_("kB/s");
 		}
 		break;
 	
-	case ColumnProgress:	// progress
+	case 5:	// progress
 	{
 		if (thePrefs::ShowProgBar())
 		{
@@ -1380,7 +1381,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	break;
 
 	// Sources
-	case ColumnSources:	{
+	case 6:	{
 		uint16 sc = file->GetSourceCount();
 		uint16 ncsc = file->GetNotCurrentSourcesCount();
 		if ( ncsc ) {
@@ -1401,17 +1402,17 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	}
 
 	// Priority
-	case ColumnPriority:
+	case 7:
 		text = PriorityToStr( file->GetDownPriority(), file->IsAutoDownPriority() );
 		break;
 			
 	// File-status
-	case ColumnStatus:
+	case 8:
 		text = file->getPartfileStatus();
 		break;
 	
 	// Remaining
-	case ColumnTimeRemaining: {
+	case 9: {
 		if ((file->GetStatus() != PS_COMPLETING) && file->IsPartFile()) {
 			uint64 remainSize = file->GetFileSize() - file->GetCompletedSize();
 			sint32 remainTime = file->getTimeRemaining();
@@ -1428,7 +1429,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	}
 	
 	// Last seen completed
-	case ColumnLastSeenComplete: {
+	case 10: {
 		if ( file->lastseencomplete ) {
 			text = wxDateTime( file->lastseencomplete ).Format( _("%y/%m/%d %H:%M:%S") );
 		} else {
@@ -1437,8 +1438,8 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		break;
 	}
 	
-	// Last received
-	case ColumnLastReception: {
+	// Laste received
+	case 11: {
 		const time_t lastReceived = file->GetLastChangeDatetime();
 		if (lastReceived) {
 			text = wxDateTime(lastReceived).Format( _("%y/%m/%d %H:%M:%S") );
@@ -1464,7 +1465,7 @@ void CDownloadListCtrl::DrawSourceItem(
 
 	switch (nColumn) {
 		// Client name + various icons
-		case ColumnFileName: {
+		case 0: {
 			wxRect cur_rec = rect;
 			// +3 is added by OnDrawItem()... so take it off
 			// Kry - eMule says +1, so I'm trusting it
@@ -1600,14 +1601,14 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnCompleted:	// completed
+		case 3:	// completed
 			if (item->GetType() != A4AF_SOURCE && client->GetTransferredDown()) {
 				buffer = CastItoXBytes(client->GetTransferredDown());
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
 
-		case ColumnSpeed:	// speed
+		case 4:	// speed
 			if (item->GetType() != A4AF_SOURCE && client->GetKBpsDown() > 0.001) {
 				buffer = wxString::Format(wxT("%.1f "),
 						client->GetKBpsDown()) + _("kB/s");
@@ -1615,13 +1616,10 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnProgress:	// file info
+		case 5:	// file info
 			if ( thePrefs::ShowProgBar() ) {
 				int iWidth = rect.GetWidth() - 2;
 				int iHeight = rect.GetHeight() - 2;
-
-				// don't draw Text beyond the bar
-				dc->SetClippingRegion(rect.GetX(), rect.GetY() + 1, iWidth, iHeight);
 			
 				if ( item->GetType() != A4AF_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
@@ -1661,14 +1659,7 @@ void CDownloadListCtrl::DrawSourceItem(
 
 					dc->Blit(rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 				} else {
-					wxString a4af;
-					CPartFile* p = client->GetRequestFile();
-					if (p) {
-						a4af = p->GetFileName().GetPrintable();
-					} else {
-						a4af = wxT("?");
-					}
-					buffer = CFormat(wxT("%s: %s")) % _("A4AF") % a4af;
+					buffer = _("A4AF");
 					
 					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;
@@ -1678,7 +1669,7 @@ void CDownloadListCtrl::DrawSourceItem(
 					dc->GetTextExtent(buffer, &txtwidth, &txtheight);
 					
 					dc->SetTextForeground(*wxBLACK);
-					dc->DrawText(buffer, wxMax(rect.GetX() + 2, midx - (txtwidth >> 1)), midy - (txtheight >> 1));
+					dc->DrawText(buffer, midx - (txtwidth >> 1), midy - (txtheight >> 1));
 
 					// Draw black border
 					dc->SetPen( *wxBLACK_PEN );
@@ -1688,13 +1679,13 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnSources: {
+		case 6: {
 				// Version
 				dc->DrawText(client->GetClientVerString(), rect.GetX(), rect.GetY());
 				break;
 			}
 
-		case ColumnPriority:	// prio
+		case 7:	// prio
 			// We only show priority for sources actually queued for that file
 			if (	item->GetType() != A4AF_SOURCE &&
 				client->GetDownloadState() == DS_ONQUEUE ) {
@@ -1727,7 +1718,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-		case ColumnStatus:	// status
+		case 8:	// status
 			if (item->GetType() != A4AF_SOURCE) {
 				buffer = DownloadStateToStr( client->GetDownloadState(), 
 					client->IsRemoteQueueFull() );
@@ -1742,7 +1733,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			break;
 		// Source comes from?
-		case ColumnTimeRemaining: {
+		case 9: {
 			buffer = wxGetTranslation(OriginToText(client->GetSourceFrom()));
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			break;
@@ -1830,78 +1821,71 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 	int result = 0;
 
 	switch (lParamSort) {
-	// Sort by part number
-	case ColumnPart:
-		result = CmpAny(
-			file1->GetPartMetFileName().RemoveAllExt(),
-			file2->GetPartMetFileName().RemoveAllExt() );
-		break;
-
 	// Sort by filename
-	case ColumnFileName:
+	case 0:
 		result = CmpAny(
 			file1->GetFileName(),
 			file2->GetFileName() );
 		break;
 
 	// Sort by size
-	case ColumnSize:
+	case 1:
 		result = CmpAny(
 			file1->GetFileSize(),
 			file2->GetFileSize() );
 		break;
 
 	// Sort by transferred
-	case ColumnTransferred:
+	case 2:
 		result = CmpAny(
 			file1->GetTransferred(),
 			file2->GetTransferred() );
 		break;
 
 	// Sort by completed
-	case ColumnCompleted:
+	case 3:
 		result = CmpAny(
 			file1->GetCompletedSize(),
 			file2->GetCompletedSize() );
 		break;
 
 	// Sort by speed
-	case ColumnSpeed:
+	case 4:
 		result = CmpAny(
 			file1->GetKBpsDown() * 1024,
 			file2->GetKBpsDown() * 1024 );
 		break;
 
 	// Sort by percentage completed
-	case ColumnProgress:
+	case 5:
 		result = CmpAny(
 			file1->GetPercentCompleted(),
 			file2->GetPercentCompleted() );
 		break;
 
 	// Sort by number of sources
-	case ColumnSources:
+	case 6:
 		result = CmpAny(
 			file1->GetSourceCount(),
 			file2->GetSourceCount() );
 		break;
 
 	// Sort by priority
-	case ColumnPriority:
+	case 7:
 		result = CmpAny(
 			file1->GetDownPriority(),
 			file2->GetDownPriority() );
 		break;
 
 	// Sort by status
-	case ColumnStatus:
+	case 8:
 		result = CmpAny(
 			file1->getPartfileStatusRang(),
 			file2->getPartfileStatusRang() );
 		break;
 
 	// Sort by remaining time
-	case ColumnTimeRemaining:
+	case 9:
 		if (file1->getTimeRemaining() == -1) {
 			if (file2->getTimeRemaining() == -1) {
 				result = 0;
@@ -1920,14 +1904,14 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 		break;
 
 	// Sort by last seen complete
-	case ColumnLastSeenComplete:
+	case 10:
 		result = CmpAny(
 			file1->lastseencomplete,
 			file2->lastseencomplete );
 		break;
 
 	// Sort by last reception
-	case ColumnLastReception:
+	case 11:
 		result = CmpAny(
 			file1->GetLastChangeDatetime(),
 			file2->GetLastChangeDatetime() );
@@ -1943,31 +1927,30 @@ int CDownloadListCtrl::Compare(
 {
 	switch (lParamSort) {
 		// Sort by name
-		case ColumnPart:
-		case ColumnFileName:
+		case 0:
 			return CmpAny( client1->GetUserName(), client2->GetUserName() );
 	
 		// Sort by status (size field)
-		case ColumnSize:
+		case 1:
 			return CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
 	
 		// Sort by transferred in the following fields
-		case ColumnTransferred:	
-		case ColumnCompleted:
+		case 2:	
+		case 3:
 			return CmpAny( client1->GetTransferredDown(), client2->GetTransferredDown() );
 
 		// Sort by speed
-		case ColumnSpeed:
+		case 4:
 			return CmpAny( client1->GetKBpsDown(), client2->GetKBpsDown() );
 		
 		// Sort by parts offered (Progress field)
-		case ColumnProgress:
+		case 5:
 			return CmpAny(
 				client1->GetAvailablePartCount(),
 				client2->GetAvailablePartCount() );
 		
 		// Sort by client version
-		case ColumnSources: {
+		case 6: {
 			if (client1->GetClientSoft() != client2->GetClientSoft()) {
 				return client1->GetSoftStr().Cmp(client2->GetSoftStr());
 			}
@@ -1980,7 +1963,7 @@ int CDownloadListCtrl::Compare(
 		}
 		
 		// Sort by Queue-Rank
-		case ColumnPriority: {
+		case 7: {
 			// This will sort by download state: Downloading, OnQueue, Connecting ...
 			// However, Asked For Another will always be placed last, due to
 			// sorting in SortProc
@@ -2017,7 +2000,7 @@ int CDownloadListCtrl::Compare(
 		}
 		
 		// Sort by state
-		case ColumnStatus: {
+		case 8: {
 			if (client1->GetDownloadState() == client2->GetDownloadState()) {
 				return CmpAny(
 					client1->IsRemoteQueueFull(),
@@ -2030,7 +2013,7 @@ int CDownloadListCtrl::Compare(
 		}
 
 		// Source of source ;)
-		case ColumnTimeRemaining:
+		case 9:
 			return CmpAny(client1->GetSourceFrom(), client2->GetSourceFrom());
 		
 		default:
@@ -2082,39 +2065,35 @@ bool CDownloadListCtrl::ShowItemInCurrentCat(
 		(newsel > 0 && newsel == file->GetCategory());
 }
 
-static const CMuleColour crHave(104, 104, 104);
-static const CMuleColour crFlatHave(0, 0, 0);
 
-static const CMuleColour crPending(255, 208, 0);
-static const CMuleColour crFlatPending(255, 255, 100);
-
-static const CMuleColour crProgress(0, 224, 0);
-static const CMuleColour crFlatProgress(0, 150, 0);
-
-static const CMuleColour crMissing(255, 0, 0);
 
 void CDownloadListCtrl::DrawFileStatusBar(
 	const CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat ) const
 {
 	static CBarShader s_ChunkBar(16);
 	
+	COLORREF crHave		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
+	COLORREF crPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 208,   0 ) );
+	COLORREF crProgress	= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 224,   0 ) );
+	COLORREF crMissing	= RGB(255, 0, 0);
+
 	s_ChunkBar.SetHeight(rect.height);
 	s_ChunkBar.SetWidth(rect.width); 
 	s_ChunkBar.SetFileSize( file->GetFileSize() );
 	s_ChunkBar.Set3dDepth( thePrefs::Get3DDepth() );
 
+
 	if ( file->GetStatus() == PS_COMPLETE || file->GetStatus() == PS_COMPLETING ) {
-		s_ChunkBar.Fill( bFlat ? crFlatProgress : crProgress );
+		s_ChunkBar.Fill( crProgress );
 		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
 		return;
 	}
+
 	
 	// Part availability ( of missing parts )
 	const CPartFile::CGapPtrList& gaplist = file->GetGapList();
 	CPartFile::CGapPtrList::const_iterator it = gaplist.begin();
 	uint64 lastGapEnd = 0;
-	CMuleColour colour;
-	
 	for (; it != gaplist.end(); ++it) {
 		Gap_Struct* gap = *it;
 
@@ -2122,7 +2101,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		uint32 start = ( gap->start / PARTSIZE );
 		// fill the Have-Part (between this gap and the last)
 		if (gap->start) {
-		  s_ChunkBar.FillRange(lastGapEnd + 1, gap->start - 1,  bFlat ? crFlatHave : crHave);
+		  s_ChunkBar.FillRange(lastGapEnd + 1, gap->start - 1,  crHave);
 		}
 		lastGapEnd = gap->end;
 		// End position
@@ -2135,26 +2114,27 @@ void CDownloadListCtrl::DrawFileStatusBar(
 
 		// Place each gap, one PART at a time
 		for ( uint64 i = start; i < end; ++i ) {
+			COLORREF color;
 			if ( i < file->m_SrcpartFrequency.size() && file->m_SrcpartFrequency[i]) {
 				int blue = 210 - ( 22 * ( file->m_SrcpartFrequency[i] - 1 ) );
-				colour.Set(0, ( blue < 0 ? 0 : blue ), 255 );
+				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			} else {
-				colour = crMissing;
-			}
+				color = crMissing;
+			}	
 
 			if ( file->IsStopped() ) {
-				colour.Blend(50);
+				color = DarkenColour( color, 2 );
 			}
 			
 			uint64 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
 			uint64 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) - 1 );
 		
-			s_ChunkBar.FillRange( gap_begin, gap_end,  colour);
+			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
 		}
 	}
-	
 	// fill the last Have-Part (between this gap and the last)
-	s_ChunkBar.FillRange(lastGapEnd + 1, file->GetFileSize() - 1,  bFlat ? crFlatHave : crHave);
+	s_ChunkBar.FillRange(lastGapEnd + 1, file->GetFileSize() - 1,  crHave);
+	
 	
 	// Pending parts
 	const CPartFile::CReqBlockPtrList& requestedblocks_list = file->GetRequestedBlockList();
@@ -2162,18 +2142,12 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	// adjacing pending parts must be joined to avoid bright lines between them
 	uint64 lastStartOffset = 0;
 	uint64 lastEndOffset = 0;
-	
-	colour = bFlat ? crFlatPending : crPending;
-	
-	if ( file->IsStopped() ) {
-		colour.Blend(50);
-	}
-
+	COLORREF color = file->IsStopped() ? DarkenColour( crPending, 2 ) : crPending;
 	for (; it2 != requestedblocks_list.end(); ++it2) {
 		
 		if ((*it2)->StartOffset > lastEndOffset + 1) { 
 			// not adjacing, draw last block
-			s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, colour);
+			s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, color);
 			lastStartOffset = (*it2)->StartOffset;
 			lastEndOffset   = (*it2)->EndOffset;
 		} else {
@@ -2181,8 +2155,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			lastEndOffset   = (*it2)->EndOffset;
 		}
 	}
-	
-	s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, colour);
+	s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, color);
 
 
 	// Draw the progress-bar
@@ -2194,35 +2167,32 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			file->GetCompletedSize() );
 
 	if ( bFlat ) {
-		dc->SetBrush( *(wxTheBrushList->FindOrCreateBrush(crFlatProgress , wxSOLID ) ));
+		dc->SetBrush( wxBrush( crProgress, wxSOLID ) );
 		
 		dc->DrawRectangle( rect.x, rect.y, width, 3 );
 	} else {
 		// Draw the two black lines for 3d-effect
-		dc->SetPen( *wxBLACK_PEN );
+		dc->SetPen( wxPen( wxColour( 0, 0, 0 ), 1, wxSOLID ) );
 		dc->DrawLine( rect.x, rect.y + 0, rect.x + width, rect.y + 0 );
 		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
 		
 		// Draw the green line
-		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxSOLID ) ));
+		dc->SetPen( wxPen( crProgress, 1, wxSOLID ) );
 		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
 	}
 }
 
-static const CMuleColour crBoth(0, 192, 0);
-static const CMuleColour crFlatBoth(0, 150, 0);
-
-static const CMuleColour crNeither(240, 240, 240);
-static const CMuleColour crFlatNeither(224, 224, 224);
-
-#define crClientOnly crHave
-#define crFlatClientOnly crFlatHave
-#define crNextPending crFlatPending
 
 void CDownloadListCtrl::DrawSourceStatusBar(
 	const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool bFlat) const
 {
 	static CBarShader s_StatusBar(16);
+
+	uint32 crBoth			= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 192,   0 ) );
+	uint32 crNeither		= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
+	uint32 crClientOnly		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
+	uint32 crPending		= ( bFlat ? RGB( 255, 208,   0 ) : RGB( 255, 208,   0 ) );
+	uint32 crNextPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 255, 100 ) );
 
 	CPartFile* reqfile = source->GetRequestFile();
 
@@ -2241,29 +2211,29 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 		uint64 uStart = PARTSIZE * i;
 		uEnd = wxMin(reqfile->GetFileSize(), uStart + PARTSIZE) - 1;
 
-		CMuleColour colour;
+		uint32 color = 0;
 		if (!partStatus[i]) {
-			colour = bFlat ? crFlatNeither : crNeither;
+			color = crNeither;
 		} else if ( reqfile->IsComplete(uStart, uEnd)) {
-			colour = bFlat ? crFlatBoth : crBoth;
+			color = crBoth;
 		} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
 				source->GetLastBlockOffset() <= uEnd &&
 				source->GetLastBlockOffset() >= uStart) {
-			colour = crPending;
+			color = crPending;
 		} else if (gettingParts.GetChar((uint16)i) == 'Y') {
-			colour = crNextPending;
+			color = crNextPending;
 		} else {
-			colour = bFlat ? crFlatClientOnly : crClientOnly;
+			color = crClientOnly;
 		}
 
 		if ( source->GetRequestFile()->IsStopped() ) {
-			colour.Blend(50);
+			color = DarkenColour( color, 2 );
 		}
 
-		s_StatusBar.FillRange(uStart, uEnd, colour);
+		s_StatusBar.FillRange(uStart, uEnd, color);
 	}
 	// fill the rest (if partStatus is empty)
-	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, bFlat ? crFlatNeither : crNeither);
+	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, crNeither);
 
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }

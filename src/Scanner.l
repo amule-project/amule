@@ -7,10 +7,6 @@
 
 #include "libs/common/StringFunctions.h"
 
-#ifdef _MSC_VER
-#define isatty(DUMMY) 0
-#endif
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

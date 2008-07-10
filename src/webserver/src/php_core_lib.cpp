@@ -23,17 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"
-#endif
 
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
-#ifdef HAVE_SYS_TYPES_H
-#	include <sys/types.h>
-#endif
+#include <sys/types.h>
 #include <regex.h>
 
+#include "config.h"
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
 
@@ -500,12 +496,12 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	m_server = server;
 
 	php_engine_init();
-	phpin = fopen(file, "r");
-	if ( !phpin ) {
+	yyin = fopen(file, "r");
+	if ( !yyin ) {
 		return;
 	}
 
-	phpparse();
+	yyparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
@@ -522,7 +518,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 	m_global_scope = g_global_scope;
 
 	php_set_input_buffer(php_buf, len);
-	phpparse();
+	yyparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 }

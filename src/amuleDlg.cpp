@@ -36,7 +36,6 @@
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
-#include <wx/sysopt.h>
 #include <wx/wupdlock.h>	// Needed for wxWindowUpdateLocker
 
 #include <common/EventIDs.h>
@@ -105,6 +104,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
 
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
+	EVT_BUTTON(IDC_SHOWSTATUSTEXT, CamuleDlg::OnBnStatusText)
 
 	EVT_TIMER(ID_GUI_TIMER_EVENT, CamuleDlg::OnGUITimer)
 
@@ -199,10 +199,6 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		return;
 	}
 
-#ifdef __WXMSW__
-	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
-#endif
-
 	SetIcon(wxICON(aMule));
 
 	srand(time(NULL));
@@ -286,12 +282,12 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxASSERT(logs_notebook->GetPageCount() == 4);
 	wxASSERT(networks_notebook->GetPageCount() == 2);
 	
-	for (uint32 i = 0; i < logs_notebook->GetPageCount(); ++i) {
+	for (int i = 0; i < logs_notebook->GetPageCount(); ++i) {
 		m_logpages[i].page = logs_notebook->GetPage(i);
 		m_logpages[i].name = logs_notebook->GetPageText(i);
 	}
 
-	for (uint32 i = 0; i < networks_notebook->GetPageCount(); ++i) {
+	for (int i = 0; i < networks_notebook->GetPageCount(); ++i) {
 		m_networkpages[i].page = networks_notebook->GetPage(i);
 		m_networkpages[i].name = networks_notebook->GetPageText(i);
 	}
@@ -461,16 +457,16 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 #ifdef SVNDATE
 	msg << _("Snapshot:") << wxT("\n ") << wxT(SVNDATE);
 #endif
-	msg << wxT("\n\n") << _("'All-Platform' p2p client based on eMule \n\n") <<
-		_("Website: http://www.amule.org \n") <<
-		_("Forum: http://forum.amule.org \n") << 
-		_("FAQ: http://wiki.amule.org \n\n") <<
-		_("Contact: admin@amule.org (administrative issues) \n") <<
-		_("Copyright (C) 2003-2008 aMule Team \n\n") <<
-		_("Part of aMule is based on \n") <<
+	msg << wxT("\n\n") << _(" 'All-Platform' p2p client based on eMule \n\n") <<
+		_(" Website: http://www.amule.org \n") <<
+		_(" Forum: http://forum.amule.org \n") << 
+		_(" FAQ: http://wiki.amule.org \n\n") <<
+		_(" Contact: admin@amule.org (administrative issues) \n") <<
+		_(" Copyright (C) 2003-2008 aMule Team \n\n") <<
+		_(" Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
-		_("Copyright (C) 2002 Petar Maymounkov\n") <<
-		_("http://kademlia.scs.cs.nyu.edu\n");
+		_(" Copyright (C) 2002 Petar Maymounkov\n") <<
+		_(" http://kademlia.scs.cs.nyu.edu\n");
 	
 	if (m_is_safe_state) {
 		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);
@@ -559,6 +555,16 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 }
 
 
+void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
+{
+	wxString line = CastChild(wxT("infoLabel"), wxStaticText)->GetLabel();
+
+	if (!line.IsEmpty()) {
+		wxMessageBox(line, wxString(_("Status text")), wxOK|wxICON_INFORMATION, this);
+	}
+}
+
+
 void CamuleDlg::ResetLog(int id)
 {
 	wxTextCtrl* ct = CastByID(id, m_serverwnd, wxTextCtrl);
@@ -615,7 +621,6 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
 		// Only show the first line if multiple lines
 		text->SetLabel( bufferline.BeforeFirst( wxT('\n') ) );
-		text->SetToolTip( bufferline );
 		text->GetParent()->Layout();
 	}
 	
@@ -636,7 +641,7 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 }
 
 
-void CamuleDlg::ShowConnectionState(bool skinChanged)
+void CamuleDlg::ShowConnectionState()
 {
 	static wxImageList status_arrows(16,16,true,0);
 	if (!status_arrows.GetImageCount()) {
@@ -738,7 +743,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 		currentState = ECS_Disconnected;
 	}
 
-	if ( (true == skinChanged) || (currentState != s_oldState) ) {
+	if (currentState != s_oldState) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
 		
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
@@ -816,12 +821,8 @@ void CamuleDlg::ShowTransferRate()
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = wxString::Format(wxT("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
-		if (thePrefs::GetShowRatesOnTitle() == 1) {
-			SetTitle(theApp->m_FrameTitle + wxT(" -- ") + UpDownSpeed);
-		} else {
-			SetTitle(UpDownSpeed + wxT(" -- ") + theApp->m_FrameTitle);
-		}
+		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
 	wxASSERT((m_wndTaskbarNotifier != NULL) == thePrefs::UseTrayIcon());
@@ -991,38 +992,38 @@ bool CamuleDlg::SaveGUIPrefs()
 
 void CamuleDlg::DoIconize(bool iconize) 
 {
-	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-		if (iconize) {
-			// Skip() will do it.
-			//Iconize(true);
-			if (SafeState()) {
-				Show(false);
+	// Evil Hack: check if the mouse is inside the window
+#ifndef __WINDOWS__
+	if (GetScreenRect().Contains(wxGetMousePosition()))
+#endif
+	{
+		if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
+			if (iconize) {
+				// Skip() will do it.
+				//Iconize(true);
+				if (SafeState()) {
+					Show(false);
+				}
+			} else {
+				Show(true);
+				Raise();
 			}
 		} else {
-			Show(true);
-			Raise();
+			// Will be done by Skip();
+			//Iconize(iconize);
 		}
-	} else {
-		// Will be done by Skip();
-		//Iconize(iconize);
 	}
 }
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-// Evil Hack: check if the mouse is inside the window
-#ifndef __WINDOWS__
-	if (GetScreenRect().Contains(wxGetMousePosition()))
-#endif
-	{
-		if (m_prefsDialog && m_prefsDialog->IsShown()) {
-			// Veto.
-		} else {
-			if (m_wndTaskbarNotifier) {
-				DoIconize(evt.Iconized());
-			}
-			evt.Skip();
+	if (m_prefsDialog && m_prefsDialog->IsShown()) {
+		// Veto.
+	} else {
+		if (m_wndTaskbarNotifier) {
+			DoIconize(evt.Iconized());
 		}
+		evt.Skip();
 	}
 }
 
@@ -1096,13 +1097,16 @@ void CamuleDlg::SetMessagesTool()
 	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
 	
 	wxWindowUpdateLocker freezer(m_wndToolbar);
-#ifdef __WXCOCOA__
-	m_wndToolbar->FindById(ID_BUTTONMESSAGES)->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));	
-#else
 	m_wndToolbar->SetToolNormalBitmap(ID_BUTTONMESSAGES, m_tblist.GetBitmap(m_CurrentBlinkBitmap));
-#endif
 }
 
+
+/*
+	Try to launch the specified url:
+	 - Windows: Default or custom browser will be used.
+	 - Mac: Currently not implemented
+	 - Anything else: Try a number of hardcoded browsers. Should be made configurable...
+*/
 void CamuleDlg::LaunchUrl( const wxString& url )
 {
 	wxString cmd;
@@ -1324,7 +1328,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->Realize();
 	
 	// Updates the "Connect" button, and so on.
-	ShowConnectionState(true);
+	ShowConnectionState();
 }
 
 

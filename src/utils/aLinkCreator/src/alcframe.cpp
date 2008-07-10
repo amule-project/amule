@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+/// Copyright (C) 2004 by Phoenix
 ///
 /// Pixmaps from:
 /// 	http://jimmac.musichall.cz/ikony.php3 

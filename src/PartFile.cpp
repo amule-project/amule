@@ -348,7 +348,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
 			//if (version == 83) return ImportShareazaTempFile(...)
-			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met file version: %s ==> %s") )
+			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met fileversion: %s ==> %s") )
 				% m_partmetfilename 
 				% GetFileName() );
 			return false;
@@ -2565,7 +2565,7 @@ void CPartFile::ResumeFile()
 }
 
 
-bool CPartFile::CheckFreeDiskSpace( uint64 neededSpace )
+bool CPartFile::CheckFreeDiskSpace( uint32 neededSpace )
 {
 	uint64 free = CPath::GetFreeSpaceAt(GetFilePath());
 	if (free == static_cast<uint64>(wxInvalidOffset)) {

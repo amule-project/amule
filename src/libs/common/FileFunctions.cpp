@@ -130,15 +130,12 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 	wxZipFSHandler archive; 
 	wxString filename = archive.FindFirst(
 		wxT("file:") + file + wxT("#zip:/*"), wxFILE);
-	
-	wxTempFile target(file);
-
-	while (!filename.IsEmpty() && !target.Length()) {
+	while (!filename.IsEmpty()) {
 		// Extract the filename part of the URI
 		filename = filename.AfterLast(wxT(':')).Lower();
 	
 		// We only care about the files specified in the array
-		for (size_t i = 0; files[i] && !target.Length(); ++i) {
+		for (size_t i = 0; files[i]; ++i) {
 			if (files[i] == filename) {
 				std::auto_ptr<wxZipEntry> entry;
 				wxFFileInputStream fileInputStream(file);
@@ -149,21 +146,19 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 					// read 'zip' to access the entry's data
 					if (name == filename) {
 						char buffer[10240];
+						wxTempFile target(file);
 						while (!zip.Eof()) {
 							zip.Read(buffer, sizeof(buffer));
 							target.Write(buffer, zip.LastRead());
-						}						
-						break;
+						}
+						target.Commit();
+						
+						return true;
 					}
 				}
 			}
 		}
-
 		filename = archive.FindNext();
-	}
-	
-	if (target.Length()) {
-		target.Commit();
 	}
 
 	return false;

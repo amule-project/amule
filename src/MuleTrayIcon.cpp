@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2003-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2003-2008 Patrizio Bassi (Hetfield) ( hetfield@amule.org )
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 //
@@ -263,7 +263,9 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		int Bar_xSize = 4; 
 		int Bar_xPos = CurrentIcon.GetWidth() - 5; 
 		
-		IconWithSpeed.SetBrush(*(wxTheBrushList->FindOrCreateBrush(CStatisticsDlg::getColors(11))));
+		wxColour col= WxColourFromCr( CStatisticsDlg::getColors(11) );
+		wxBrush	brush(col);
+		IconWithSpeed.SetBrush(brush);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
@@ -315,10 +317,7 @@ void CMuleTrayIcon::UpdateTray()
 #endif
 
 	// Icon update and Tip update
-#ifndef __WXCOCOA__
-	if (IsOk()) 
-#endif
-	{
+	if (IsOk()) {
 		SetIcon(CurrentIcon, CurrentTip);
 	}	
 }
@@ -563,6 +562,15 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
 {
-	theApp->amuledlg->DoIconize(theApp->amuledlg->IsShown());
+	if ( !theApp->amuledlg->IsIconized() ) {
+		theApp->amuledlg->Iconize(true);
+		if (thePrefs::DoMinToTray()) {
+			theApp->amuledlg->Show(false);
+		}
+	} else {
+		theApp->amuledlg->Iconize(false);
+		theApp->amuledlg->Show(true);
+		theApp->amuledlg->Raise();
+	}
 }
 // File_checked_for_headers

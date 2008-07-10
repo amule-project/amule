@@ -193,9 +193,9 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	#endif
 #else
 	#ifdef CLIENT_GUI
-		m_FrameTitle = wxString::Format(_("aMule remote control"));
+		m_FrameTitle = wxString::Format(wxT("aMule remote control %s"), wxT( VERSION ));
 	#else
-		m_FrameTitle = wxString::Format(_("aMule"));
+		m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT( VERSION ));
 	#endif
 #endif
 	if ( geometry_enabled ) {
