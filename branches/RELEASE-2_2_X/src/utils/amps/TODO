@@ -1,0 +1,11 @@
+AMPS Todo
+
+- FEATURE [DONE]: Change image output to PNG or add an option to select type
+  (version 0.6)
+- FIXME [DONE]: Fix the incorrect display of special characters in the signature
+  image. (version 0.4)
+- FEATURE/FIXME: Improve multilingual support by allowing formatable strings
+  via printf()
+- FEATURE: Improve 'theme' support beyond the simple CSS file.
+- FIXME [DONE]: Change passing of sig_image variable so using register_globals
+  is not necessary. (version 0.7)

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=wxCas
+Exec=wxcas
+Icon=wxcas
+Terminal=false
+Type=Application
+Categories=Network;P2P;
+Comment=aMule online statistics
+Comment[de]=aMule-Onlinestatistik
+Comment[fr]=Statistiques d'aMule en ligne
+Comment[hu]=aMule online statisztikák
