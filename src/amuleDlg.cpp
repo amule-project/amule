@@ -646,7 +646,7 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 }
 
 
-void CamuleDlg::ShowConnectionState()
+void CamuleDlg::ShowConnectionState(bool skinChanged)
 {
 	static wxImageList status_arrows(16,16,true,0);
 	if (!status_arrows.GetImageCount()) {
@@ -748,7 +748,7 @@ void CamuleDlg::ShowConnectionState()
 		currentState = ECS_Disconnected;
 	}
 
-	if (currentState != s_oldState) {
+	if ( (true == skinChanged) || (currentState != s_oldState)) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
 		
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
@@ -997,39 +997,39 @@ bool CamuleDlg::SaveGUIPrefs()
 
 void CamuleDlg::DoIconize(bool iconize) 
 {
-	// Evil Hack: check if the mouse is inside the window
-#ifndef __WINDOWS__
-	if (GetScreenRect().Contains(wxGetMousePosition()))
-#endif
-	{
-		if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-			if (iconize) {
-				// Skip() will do it.
-				//Iconize(true);
-				if (SafeState()) {
-					Show(false);
-				}
-			} else {
-				Show(true);
-				Raise();
+	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
+		if (iconize) {
+			// Skip() will do it.
+			//Iconize(true);
+			if (SafeState()) {
+				Show(false);
 			}
 		} else {
-			// Will be done by Skip();
-			//Iconize(iconize);
+			Show(true);
+			Raise();
 		}
+	} else {
+		// Will be done by Skip();
+		//Iconize(iconize);
 	}
 }
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-	if (m_prefsDialog && m_prefsDialog->IsShown()) {
-		// Veto.
-	} else {
-		if (m_wndTaskbarNotifier) {
-			DoIconize(evt.Iconized());
+// Evil Hack: check if the mouse is inside the window
+#ifndef __WINDOWS__
+       if (GetScreenRect().Contains(wxGetMousePosition()))
+#endif
+       {
+		if (m_prefsDialog && m_prefsDialog->IsShown()) {
+			// Veto.
+		} else {
+			if (m_wndTaskbarNotifier) {
+				DoIconize(evt.Iconized());
+			}
+			evt.Skip();
 		}
-		evt.Skip();
-	}
+       }
 }
 
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
@@ -1333,7 +1333,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->Realize();
 	
 	// Updates the "Connect" button, and so on.
-	ShowConnectionState();
+	ShowConnectionState(true);
 }
 
 
