@@ -210,11 +210,11 @@ bool		CPreferences::s_DropSlowSources;
 bool		CPreferences::s_IsClientCryptLayerSupported;
 bool		CPreferences::s_bCryptLayerRequested;
 bool		CPreferences::s_IsClientCryptLayerRequired;
-uint32	CPreferences::s_dwKadUDPKey;
-uint8	CPreferences::s_byCryptTCPPaddingLength;
+uint32		CPreferences::s_dwKadUDPKey;
+uint8		CPreferences::s_byCryptTCPPaddingLength;
 
-wxString CPreferences::s_Ed2kURL;
-wxString CPreferences::s_KadURL;
+wxString 	CPreferences::s_Ed2kURL;
+wxString 	CPreferences::s_KadURL;
 
 
 /**
@@ -1250,13 +1250,19 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 #ifndef CLIENT_GUI
 	// Preserve values from old config. The global config object may not be set yet
 	// when BuildItemList() is called, so we need to provide defaults later - here.
-	bool ExecOnCompletion;
-	wxString ExecOnCompletionCommand;
-	cfg->Read(wxT("/eMule/ExecOnCompletion"), &ExecOnCompletion, false);
-	cfg->Read(wxT("/eMule/ExecOnCompletionCommand"), &ExecOnCompletionCommand, wxEmptyString);
-	// Assign to core command, that's the most likely it was.
-	static_cast<Cfg_Bool*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 1])->SetDefault(ExecOnCompletion);
-	static_cast<Cfg_Str*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 2])->SetDefault(ExecOnCompletionCommand);
+	if (cfg->HasEntry(wxT("/eMule/ExecOnCompletion"))) {
+		bool ExecOnCompletion;
+		cfg->Read(wxT("/eMule/ExecOnCompletion"), &ExecOnCompletion, false);
+		// Assign to core command, that's the most likely it was.
+		static_cast<Cfg_Bool*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 1])->SetDefault(ExecOnCompletion);
+		cfg->DeleteEntry(wxT("/eMule/ExecOnCompletion"));
+	}
+	if (cfg->HasEntry(wxT("/eMule/ExecOnCompletionCommand"))) {
+		wxString ExecOnCompletionCommand;
+		cfg->Read(wxT("/eMule/ExecOnCompletionCommand"), &ExecOnCompletionCommand, wxEmptyString);
+		static_cast<Cfg_Str*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 2])->SetDefault(ExecOnCompletionCommand);
+		cfg->DeleteEntry(wxT("/eMule/ExecOnCompletionCommand"));
+	}
 #endif
 	CFGMap::iterator it_a = s_CfgList.begin();
 	for ( ; it_a != s_CfgList.end(); ++it_a ) {
@@ -1268,8 +1274,16 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 		(*it_b)->LoadFromFile( cfg ); 
 	}
 
-// Load debug-categories
+	// Preserve old value of UDPDisable
+	if (cfg->HasEntry(wxT("/eMule/UDPDisable"))) {
+		bool UDPDisable;
+		cfg->Read(wxT("/eMule/UDPDisable"), &UDPDisable, false);
+		SetUDPDisable(UDPDisable);
+		cfg->DeleteEntry(wxT("/eMule/UDPDisable"));
+	}
+
 #ifdef __DEBUG__
+	// Load debug-categories
 	int count = CLogger::GetDebugCategoryCount();
 
 	for ( int i = 0; i < count; i++ ) {
