@@ -132,20 +132,6 @@ void CMuleListCtrl::LoadSettings()
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
-	// Set the column widths (and check if number of columns has changed)
-	wxString buffer;
-	if (cfg->Read( wxT("/eMule/TableWidths") + m_name, &buffer, wxEmptyString)) {
-		int counter = 0;
-		
-		wxStringTokenizer tokenizer( buffer, wxT(",") );
-		if (tokenizer.CountTokens() != GetColumnCount()) {
-			return;		// number of columns has changed, reject settings
-		}
-		while (tokenizer.HasMoreTokens()) {
-			SetColumnWidth(counter++, StrToLong( tokenizer.GetNextToken()));
-		}
-	}
-
 	// Load sort order (including sort-column)
 	m_sort_orders.clear();
 	wxString setting = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
@@ -182,6 +168,17 @@ void CMuleListCtrl::LoadSettings()
 	// Re-enable sorting and resort the contents (if any).
 	m_sort_func = sortFunc;
 	SortList();	
+
+	// Set the column widths
+	wxString buffer;
+	if (cfg->Read( wxT("/eMule/TableWidths") + m_name, &buffer, wxEmptyString)) {
+		int counter = 0;
+		
+		wxStringTokenizer tokenizer( buffer, wxT(",") );
+		while (tokenizer.HasMoreTokens() && (counter < GetColumnCount())) {
+			SetColumnWidth(counter++, StrToLong( tokenizer.GetNextToken()));
+		}
+	}
 }
 
 
