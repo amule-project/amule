@@ -97,7 +97,7 @@ int CPartFileConvert::ScanFolderToAdd(const CPath& folder, bool deletesource)
 	CDirIterator finder(folder);
 
 	CPath file = finder.GetFirstFile(CDirIterator::File, wxT("*.part.met"));
-	while (!file.IsOk()) {
+	while (file.IsOk()) {
 		ConvertToeMule(folder.JoinPaths(file), deletesource);
 		file = finder.GetNextFile();
 		count++;
@@ -112,7 +112,7 @@ int CPartFileConvert::ScanFolderToAdd(const CPath& folder, bool deletesource)
 	*/
 
 	file = finder.GetFirstFile(CDirIterator::Dir, wxT("*.*"));
-	while (!file.IsOk()) {
+	while (file.IsOk()) {
 		ScanFolderToAdd(folder.JoinPaths(file), deletesource);
 		
 		file = finder.GetNextFile();
@@ -306,7 +306,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			unsigned maxindex = 0;
 			unsigned partfilecount = 0;
 			CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
-			while (!filePath.IsOk()) {
+			while (filePath.IsOk()) {
 				long l;
 				++partfilecount;
 				filePath.GetFullName().RemoveExt().GetExt().ToLong(&l);
