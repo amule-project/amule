@@ -569,6 +569,12 @@ bool CUPnPService::Execute(
 	const std::vector<CUPnPArgumentValue> &ArgValue) const
 {
 	std::ostringstream msg;
+	if (m_SCPD.get() == NULL) {
+		msg << "Service not subscribed, cannot execute service '" <<
+			GetServiceType() << "'.";
+		AddDebugLogLineM(false, logUPnP, msg);
+		return false;
+	}
 	std::ostringstream msgAction("Sending action ");
 	// Check for correct action name
 	ActionList::const_iterator itAction =
