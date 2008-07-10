@@ -573,8 +573,8 @@ bool CUPnPService::Execute(
 {
 	std::ostringstream msg;
 	if (m_SCPD.get() == NULL) {
-		msg << "Service not subscribed, cannot execute service '" <<
-			GetServiceType() << "'.";
+		msg << "Service without SCPD Document, cannot execute action '" << ActionName <<
+			"' for service '" << GetServiceType() << "'.";
 		AddDebugLogLineM(false, logUPnP, msg);
 		return false;
 	}
