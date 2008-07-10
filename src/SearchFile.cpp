@@ -163,9 +163,6 @@ void CSearchFile::MergeResults(const CSearchFile& other)
 			m_iUserRating = other.m_iUserRating;
 		}
 	}
-}
-
-
 
        // copy possible available sources from new result
        if (other.GetClientID() && other.GetClientPort()) {
@@ -175,7 +172,7 @@ void CSearchFile::MergeResults(const CSearchFile& other)
                        AddClient(client);
                }
        }
-
+}
 
 void CSearchFile::AddChild(CSearchFile* file)
 {
@@ -268,10 +265,8 @@ void CSearchFile::UpdateParent()
 			ratingCount++;
 			ratingTotal += child->UserRating();
 		}
-	}
-
-
-               // Available sources
+	
+	 	// Available sources
                if (child->GetClientID() && child->GetClientPort()) {
                        CSearchFile::ClientStruct client(child->GetClientID(), child->GetClientPort(), child->GetClientServerIP(), child->GetClientServerPort());
                        AddClient(client);
@@ -279,6 +274,7 @@ void CSearchFile::UpdateParent()
                for (std::list<ClientStruct>::const_iterator cit = child->m_clients.begin(); cit != child->m_clients.end(); ++cit) {
                        AddClient(*cit);
                }
+	}
 
 	m_sourceCount = sourceCount;
 	m_completeSourceCount = completeSourceCount;

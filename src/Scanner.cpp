@@ -560,6 +560,10 @@ char *yytext;
 
 #include "libs/common/StringFunctions.h"
 
+#ifdef _MSC_VER
+#define isatty(DUMMY) 0
+#endif
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
