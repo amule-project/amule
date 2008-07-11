@@ -134,6 +134,10 @@ public:
 	void	ToggleView();
 
 	
+protected:
+	/// Return old column order.
+	wxString GetOldColumnOrder() const;
+
 private:
 	/**
 	 * Custom cell-drawing function.
@@ -249,6 +253,11 @@ struct CUploadingView
 	 * Helperfunction which draws a simple bar-span over the clients requested file.
 	 */
 	static void DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect &rect );
+
+	/**
+	 * Return the old column order for this view.
+	 */
+	static wxString GetOldColumnOrder();
 };
 
 
@@ -273,6 +282,11 @@ struct CQueuedView
 	 * @see CUploadingView::SortProc
 	 */
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+
+	/**
+	 * Return the old column order for this view.
+	 */
+	static wxString GetOldColumnOrder();
 };
 
 
@@ -297,6 +311,11 @@ struct CClientsView
 	 * @see CUploadingView::SortProc
 	 */
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+
+	/**
+	 * Return the old column order for this view.
+	 */
+	static wxString GetOldColumnOrder();
 };
 
 #endif

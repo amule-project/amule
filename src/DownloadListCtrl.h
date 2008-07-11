@@ -172,9 +172,13 @@ public:
 	 */
 	void ClearCompleted();
 
+protected:
+	/// Return old column order.
+	wxString GetOldColumnOrder() const;
+
 private:
 	/**
-	 * Updates the displayed number representing the ammount of files currently shown.
+	 * Updates the displayed number representing the amount of files currently shown.
 	 */
 	void ShowFilesCount( int diff );
 

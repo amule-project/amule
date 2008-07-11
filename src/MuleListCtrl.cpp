@@ -99,6 +99,35 @@ CMuleListCtrl::~CMuleListCtrl()
 	}
 }
 
+long CMuleListCtrl::InsertColumn(long col, const wxString& heading, int format, int width, const wxString& name)
+{
+	if (!name.IsEmpty()) {
+#ifdef __DEBUG__
+		// Check for valid names
+		wxASSERT_MSG(name.Find(wxT(':')) == wxNOT_FOUND, wxT("Column name \"") + name + wxT("\" contains invalid characters!"));
+		wxASSERT_MSG(name.Find(wxT(',')) == wxNOT_FOUND, wxT("Column name \"") + name + wxT("\" contains invalid characters!"));
+
+		// Check for uniqueness of names.
+		for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+			if (name == it->second) {
+				wxFAIL_MSG(wxT("Column name \"") + name + wxT("\" is not unique!"));
+			}
+		}
+#endif
+		// Insert name at position col.
+		ColNameList::iterator it = m_column_names.begin();
+		while (it != m_column_names.end() && it->first < col) {
+			++it;
+		}
+		m_column_names.insert(it, ColNameEntry(col, name));
+		while (it != m_column_names.end()) {
+			++it;
+			++(it->first);
+		}
+	}
+
+	return MuleExtern::wxGenericListCtrl::InsertColumn(col, heading, format, width);
+}
 
 void CMuleListCtrl::SaveSettings()
 {
@@ -108,48 +137,54 @@ void CMuleListCtrl::SaveSettings()
 
 	// Save sorting, column and order
 	wxString sortOrder;
-	for (CSortingList::iterator it = m_sort_orders.begin(); it != m_sort_orders.end(); ++it) {
-		sortOrder += wxString::Format(wxT("%u %u, "), it->first, it->second);
+	for (CSortingList::iterator it = m_sort_orders.begin(); it != m_sort_orders.end();) {
+		wxString columnName = GetColumnName(it->first);
+		if (!columnName.IsEmpty()) {
+			sortOrder += columnName;
+			sortOrder += wxT(":");
+			sortOrder += it->second & SORT_DES ? wxT("1") : wxT("0");
+			sortOrder += wxT(":");
+			sortOrder += it->second & SORT_ALT ? wxT("1") : wxT("0");
+			if (++it != m_sort_orders.end()) {
+				sortOrder += wxT(",");
+			}
+		} else {
+			++it;
+		}
 	}
 	
 	cfg->Write(wxT("/eMule/TableOrdering") + m_name, sortOrder);
 
 	// Save column widths. ATM this is also used to signify hidden columns.
 	wxString buffer;
-	for ( int i = 0; i < GetColumnCount(); ++i ) {
-		if ( i ) buffer << wxT(",");
-
-		buffer << GetColumnWidth(i);
+	for (int i = 0; i < GetColumnCount(); ++i) {
+		wxString columnName = GetColumnName(i);
+		if (!columnName.IsEmpty()) {
+			if (!buffer.IsEmpty()) {
+				buffer << wxT(",");
+			}
+			buffer << columnName << wxT(":") << GetColumnWidth(i);
+		}
 	}
 
-	cfg->Write( wxT("/eMule/TableWidths") +m_name, buffer );
+	cfg->Write(wxT("/eMule/TableWidths") + m_name, buffer);
 }	
 
-
-void CMuleListCtrl::LoadSettings()
+void CMuleListCtrl::ParseOldConfigEntries(const wxString& sortOrders, const wxString& columnWidths)
 {
-	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
-
-	wxConfigBase* cfg = wxConfigBase::Get();
-
-	// Load sort order (including sort-column)
-	m_sort_orders.clear();
-	wxString setting = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
-	
-	// Prevent sorting from occuring when calling SetSorting
-	MuleListCtrlCompare sortFunc = m_sort_func;
-	m_sort_func = NULL;
-	
-	wxStringTokenizer tokens(setting, wxT(","));
+	// Set sort order (including sort column)
+	wxStringTokenizer tokens(sortOrders, wxT(","));
 	while (tokens.HasMoreTokens()) {
 		wxString token = tokens.GetNextToken();
 
-		unsigned long column = 0, order = 0;
+		long column = 0;
+		unsigned long order = 0;
 
-		if (token.BeforeFirst(wxT(' ')).Strip(wxString::both).ToULong(&column)) {
+		if (token.BeforeFirst(wxT(' ')).Strip(wxString::both).ToLong(&column)) {
 			if (token.AfterFirst(wxT(' ')).Strip(wxString::both).ToULong(&order)) {
+				column = GetNewColumnIndex(column);
 				// Sanity checking, to avoid asserting if column count changes.
-				if (column < (unsigned)GetColumnCount()) {
+				if (column >= 0 && column < GetColumnCount()) {
 					// Sanity checking, to avoid asserting if data-format changes.
 					if ((order & ~SORTING_MASK) == 0) {
 						// SetSorting will take care of duplicate entries
@@ -159,7 +194,63 @@ void CMuleListCtrl::LoadSettings()
 			}
 		}
 	}
-	
+
+	// Set column widths
+	int counter = 0;
+	wxStringTokenizer tokenizer(columnWidths, wxT(","));
+	while (tokenizer.HasMoreTokens()) {
+		long idx = GetNewColumnIndex(counter++);
+		if (idx >= 0) {
+			SetColumnWidth(idx, StrToLong(tokenizer.GetNextToken()));
+		}
+	}
+}
+
+void CMuleListCtrl::LoadSettings()
+{
+	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
+
+	wxConfigBase* cfg = wxConfigBase::Get();
+
+	// Load sort order (including sort-column)
+	m_sort_orders.clear();
+	wxString sortOrders = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
+	wxString columnWidths = cfg->Read(wxT("/eMule/TableWidths") + m_name, wxEmptyString);
+
+	// Prevent sorting from occuring when calling SetSorting
+	MuleListCtrlCompare sortFunc = m_sort_func;
+	m_sort_func = NULL;
+
+	if (columnWidths.Find(wxT(':')) == wxNOT_FOUND) {
+		// Old-style config entries...
+		ParseOldConfigEntries(sortOrders, columnWidths);
+	} else {
+		// Sort orders
+		wxStringTokenizer tokens(sortOrders, wxT(","));
+		while (tokens.HasMoreTokens()) {
+			wxString token = tokens.GetNextToken();
+			wxString name = token.BeforeFirst(wxT(':'));
+			long order = StrToLong(token.AfterFirst(wxT(':')).BeforeLast(wxT(':')));
+			long alt = StrToLong(token.AfterLast(wxT(':')));
+			int col = GetColumnIndex(name);
+			if (col > 0) {
+				SetSorting(col, (order ? SORT_DES : 0) | (alt ? SORT_ALT : 0));
+			}
+		}
+
+		// Column widths
+		wxStringTokenizer tkz(columnWidths, wxT(","));
+		while (tkz.HasMoreTokens()) {
+			wxString token = tkz.GetNextToken();
+			wxString name = token.BeforeFirst(wxT(':'));
+			long width = StrToLong(token.AfterFirst(wxT(':')));
+			int col = GetColumnIndex(name);
+			if (col > 0) {
+				SetColumnWidth(col, width);
+			}
+		}
+	}
+
 	// Must have at least one sort-order specified
 	if (m_sort_orders.empty()) {
 		m_sort_orders.push_back(CColPair(0, 0));
@@ -168,19 +259,42 @@ void CMuleListCtrl::LoadSettings()
 	// Re-enable sorting and resort the contents (if any).
 	m_sort_func = sortFunc;
 	SortList();	
-
-	// Set the column widths
-	wxString buffer;
-	if (cfg->Read( wxT("/eMule/TableWidths") + m_name, &buffer, wxEmptyString)) {
-		int counter = 0;
-		
-		wxStringTokenizer tokenizer( buffer, wxT(",") );
-		while (tokenizer.HasMoreTokens() && (counter < GetColumnCount())) {
-			SetColumnWidth(counter++, StrToLong( tokenizer.GetNextToken()));
-		}
-	}
 }
 
+
+const wxString& CMuleListCtrl::GetColumnName(int index) const
+{
+	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+		if (it->first == index) {
+			return it->second;
+		}
+	}
+	return EmptyString;
+}
+
+int CMuleListCtrl::GetColumnIndex(const wxString& name) const
+{
+	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+		if (it->second == name) {
+			return it->first;
+		}
+	}
+	return -1;
+}
+
+int CMuleListCtrl::GetNewColumnIndex(int oldindex) const
+{
+	wxStringTokenizer oldcolumns(GetOldColumnOrder(), wxT(","), wxTOKEN_RET_EMPTY_ALL);
+
+	while (oldcolumns.HasMoreTokens()) {
+		wxString name = oldcolumns.GetNextToken();
+		if (oldindex == 0) {
+			return GetColumnIndex(name);
+		}
+		--oldindex;
+	}
+	return -1;
+}
 
 long CMuleListCtrl::GetInsertPos(wxUIntPtr data)
 {
@@ -386,30 +500,6 @@ void CMuleListCtrl::ClearSelection()
 }
 
 
-void CMuleListCtrl::SetTableName(const wxString& name)
-{
-	m_name = name;
-}
-
-
-unsigned CMuleListCtrl::GetSortColumn() const
-{
-	return m_sort_orders.front().first;
-}
-
-
-unsigned CMuleListCtrl::GetSortOrder() const
-{
-	return m_sort_orders.front().second;
-}
-
-
-void CMuleListCtrl::SetSortFunc(MuleListCtrlCompare func)
-{
-	m_sort_func = func;
-}
-
-
 bool CMuleListCtrl::AltSortAllowed(unsigned WXUNUSED(column)) const
 {
 	return false;
@@ -476,10 +566,10 @@ void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
 
 void CMuleListCtrl::SetColumnImage(unsigned col, int image)
 {
-    wxListItem item;
-    item.SetMask(wxLIST_MASK_IMAGE);
+	wxListItem item;
+	item.SetMask(wxLIST_MASK_IMAGE);
 	item.SetImage(image);
-    SetColumn(col, item);	
+	SetColumn(col, item);	
 }
 
 
@@ -531,7 +621,7 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 		key = evt.GetUnicodeKey();
 	} else if (key >= WXK_START) {
 		// wxKeycodes are ignored, as they signify events such as the 'home'
-		// button. Unicoded chars are not checke as there is an overlap valid
+		// button. Unicoded chars are not checked as there is an overlap valid
 		// chars and the wx keycodes.
 		evt.Skip();
 		return;
@@ -637,5 +727,10 @@ void CMuleListCtrl::ResetTTS()
 {
 	m_tts_item = -1;
 	m_tts_time =  0;
+}
+
+wxString CMuleListCtrl::GetOldColumnOrder() const
+{
+	return wxEmptyString;
 }
 // File_checked_for_headers

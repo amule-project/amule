@@ -99,26 +99,31 @@ CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos,
 
 	m_menu=NULL;
 
-	InsertColumn(ID_SHARED_COL_NAME,  _("File Name"),			wxLIST_FORMAT_LEFT, 250);
-	InsertColumn(ID_SHARED_COL_SIZE,  _("Size"),					wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(ID_SHARED_COL_TYPE,  _("Type"),					wxLIST_FORMAT_LEFT,  50);
-	InsertColumn(ID_SHARED_COL_PRIO,  _("Priority"),				wxLIST_FORMAT_LEFT,  70);
-	InsertColumn(ID_SHARED_COL_ID,  _("FileID"),				wxLIST_FORMAT_LEFT, 220);
-	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),				wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(ID_SHARED_COL_AREQ,  _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120);
-	InsertColumn(ID_SHARED_COL_RTIO,  _("Share Ratio"),			wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(ID_SHARED_COL_PART,  _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120);
-	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120);
-	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220);
+	InsertColumn(ID_SHARED_COL_NAME, _("File Name"),		wxLIST_FORMAT_LEFT, 250, wxT("N") );
+	InsertColumn(ID_SHARED_COL_SIZE, _("Size"),			wxLIST_FORMAT_LEFT, 100, wxT("Z") );
+	InsertColumn(ID_SHARED_COL_TYPE, _("Type"),			wxLIST_FORMAT_LEFT,  50, wxT("Y") );
+	InsertColumn(ID_SHARED_COL_PRIO, _("Priority"),			wxLIST_FORMAT_LEFT,  70, wxT("p") );
+	InsertColumn(ID_SHARED_COL_ID,   _("FileID"),			wxLIST_FORMAT_LEFT, 220, wxT("I") );
+	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),			wxLIST_FORMAT_LEFT, 100, wxT("Q") );
+	InsertColumn(ID_SHARED_COL_AREQ, _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100, wxT("A") );
+	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120, wxT("T") );
+	InsertColumn(ID_SHARED_COL_RTIO, _("Share Ratio"),		wxLIST_FORMAT_LEFT, 100, wxT("R") );
+	InsertColumn(ID_SHARED_COL_PART, _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120, wxT("P") );
+	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120, wxT("C") );
+	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220, wxT("D") );
 
 	LoadSettings();
 }
 
 
+wxString CSharedFilesCtrl::GetOldColumnOrder() const
+{
+	return wxT("N,Z,Y,p,I,Q,A,T,R,P,C,D");
+}
+
+
 CSharedFilesCtrl::~CSharedFilesCtrl()
 {
-
 }
 
 

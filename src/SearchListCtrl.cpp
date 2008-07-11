@@ -84,11 +84,11 @@ m_filterEnabled(false)
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
 
-	InsertColumn( ID_SEARCH_COL_NAME,    _("File Name"), wxLIST_FORMAT_LEFT, 500);
-	InsertColumn( ID_SEARCH_COL_SIZE,    _("Size"),      wxLIST_FORMAT_LEFT, 100);
-	InsertColumn( ID_SEARCH_COL_SOURCES, _("Sources"),   wxLIST_FORMAT_LEFT, 50);
-	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT, 65);
-	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280);
+	InsertColumn( ID_SEARCH_COL_NAME,    _("File Name"), wxLIST_FORMAT_LEFT, 500, wxT("N") );
+	InsertColumn( ID_SEARCH_COL_SIZE,    _("Size"),      wxLIST_FORMAT_LEFT, 100, wxT("Z") );
+	InsertColumn( ID_SEARCH_COL_SOURCES, _("Sources"),   wxLIST_FORMAT_LEFT,  50, wxT("u") );
+	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT,  65, wxT("Y") );
+	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, wxT("I") );
 
 	m_nResultsID = 0;
 
@@ -108,6 +108,12 @@ m_filterEnabled(false)
 
 	// Add the list so that it will be synced with the other lists
 	s_lists.push_back( this );
+}
+
+
+wxString CSearchListCtrl::GetOldColumnOrder() const
+{
+	return wxT("N,Z,u,Y,I");
 }
 
 

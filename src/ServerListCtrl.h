@@ -142,7 +142,11 @@ public:
 	 * This function updates the server-count in the server-wnd.
 	 */
 	void	ShowServerCount();
-	
+
+protected:
+	/// Return old column order.
+	wxString GetOldColumnOrder() const;
+
 private:
 
 	/**

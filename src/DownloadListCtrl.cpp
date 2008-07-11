@@ -184,18 +184,18 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125).GetBrush();
 
-	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260 );
-	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60 );
-	InsertColumn( 2,  _("Transferred"),		wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( 3,  _("Completed"),		wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( 4,  _("Speed"),			wxLIST_FORMAT_LEFT,  65 );
-	InsertColumn( 5,  _("Progress"),		wxLIST_FORMAT_LEFT, 170 );
-	InsertColumn( 6,  _("Sources"),			wxLIST_FORMAT_LEFT,  50 );
-	InsertColumn( 7,  _("Priority"),		wxLIST_FORMAT_LEFT,  55 );
-	InsertColumn( 8,  _("Status"),			wxLIST_FORMAT_LEFT,  70 );
-	InsertColumn( 9,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110 );
-	InsertColumn( 10, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220 );
-	InsertColumn( 11, _("Last Reception"),		wxLIST_FORMAT_LEFT, 220 );
+	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260, wxT("N") );
+	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60, wxT("Z") );
+	InsertColumn( 2,  _("Transferred"),		wxLIST_FORMAT_LEFT,  65, wxT("T") );
+	InsertColumn( 3,  _("Completed"),		wxLIST_FORMAT_LEFT,  65, wxT("C") );
+	InsertColumn( 4,  _("Speed"),			wxLIST_FORMAT_LEFT,  65, wxT("S") );
+	InsertColumn( 5,  _("Progress"),		wxLIST_FORMAT_LEFT, 170, wxT("P") );
+	InsertColumn( 6,  _("Sources"),			wxLIST_FORMAT_LEFT,  50, wxT("u") );
+	InsertColumn( 7,  _("Priority"),		wxLIST_FORMAT_LEFT,  55, wxT("p") );
+	InsertColumn( 8,  _("Status"),			wxLIST_FORMAT_LEFT,  70, wxT("s") );
+	InsertColumn( 9,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110, wxT("r") );
+	InsertColumn( 10, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220, wxT("c") );
+	InsertColumn( 11, _("Last Reception"),		wxLIST_FORMAT_LEFT, 220, wxT("R") );
 
 	m_category = 0;
 	m_completedFiles = 0;
@@ -203,6 +203,10 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	LoadSettings();
 }
 
+wxString CDownloadListCtrl::GetOldColumnOrder() const
+{
+	return wxT("N,Z,T,C,S,P,u,p,s,r,c,R");
+}
 
 CDownloadListCtrl::~CDownloadListCtrl()
 {

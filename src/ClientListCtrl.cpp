@@ -108,6 +108,9 @@ struct ClientListView
 	
 	//! Pointer to the sorting function.
 	MuleListCtrlCompare	m_sort;
+
+	//! Pointer to the function which returns the old column order.
+	wxString	(*m_getOldColumnOrder)();
 };
 
 
@@ -120,6 +123,7 @@ ClientListView g_listViews[] =
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 	},
 
 	//! Uploading: The clients currently being uploaded to.
@@ -128,6 +132,7 @@ ClientListView g_listViews[] =
 		CUploadingView::Initialize,
 		CUploadingView::DrawCell,
 		CUploadingView::SortProc,
+		CUploadingView::GetOldColumnOrder,
 	},
 
 	//! Queued: The clients currently queued for uploading.
@@ -136,6 +141,7 @@ ClientListView g_listViews[] =
 		CQueuedView::Initialize,
 		CQueuedView::DrawCell,
 		CQueuedView::SortProc,
+		CQueuedView::GetOldColumnOrder,
 	},
 
 	//! Clients The complete list of all known clients.
@@ -144,6 +150,7 @@ ClientListView g_listViews[] =
 		CClientsView::Initialize,
 		CClientsView::DrawCell,
 		CClientsView::SortProc,
+		CClientsView::GetOldColumnOrder,
 	}
 };
 
@@ -493,20 +500,30 @@ wxString CClientListCtrl::GetTTSText(unsigned item) const
 }
 
 
+wxString CClientListCtrl::GetOldColumnOrder() const
+{
+	const ClientListView& view = g_listViews[ (int)m_viewType ];
+	if (view.m_getOldColumnOrder) {
+		return view.m_getOldColumnOrder();
+	}
+	return wxEmptyString;
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CUploadingView::Initialize( CClientListCtrl* list )
 {
-	list->InsertColumn( 0,	_("Username"),        wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 1,	_("File"),            wxLIST_FORMAT_LEFT, 275 );
-	list->InsertColumn( 2,	_("Client Software"), wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 3,	_("Speed"),           wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 4,	_("Transferred"),     wxLIST_FORMAT_LEFT,  65 );
-	list->InsertColumn( 5,	_("Waited"),          wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 6,	_("Upload Time"),     wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 7,	_("Status"),          wxLIST_FORMAT_LEFT, 110 );
-	list->InsertColumn( 8,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 9,	_("Upload/Download"), wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 10,	_("Remote Status"),   wxLIST_FORMAT_LEFT, 100 );			
+	list->InsertColumn( 0,	_("Username"),        wxLIST_FORMAT_LEFT, 150, wxT("U") );
+	list->InsertColumn( 1,	_("File"),            wxLIST_FORMAT_LEFT, 275, wxT("F") );
+	list->InsertColumn( 2,	_("Client Software"), wxLIST_FORMAT_LEFT, 100, wxT("C") );
+	list->InsertColumn( 3,	_("Speed"),           wxLIST_FORMAT_LEFT,  60, wxT("S") );
+	list->InsertColumn( 4,	_("Transferred"),     wxLIST_FORMAT_LEFT,  65, wxT("T") );
+	list->InsertColumn( 5,	_("Waited"),          wxLIST_FORMAT_LEFT,  60, wxT("W") );
+	list->InsertColumn( 6,	_("Upload Time"),     wxLIST_FORMAT_LEFT,  60, wxT("u") );
+	list->InsertColumn( 7,	_("Status"),          wxLIST_FORMAT_LEFT, 110, wxT("s") );
+	list->InsertColumn( 8,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100, wxT("P") );
+	list->InsertColumn( 9,	_("Upload/Download"), wxLIST_FORMAT_LEFT, 100, wxT("R") );
+	list->InsertColumn( 10,	_("Remote Status"),   wxLIST_FORMAT_LEFT, 100, wxT("r") );			
 
 	// Insert any existing items on the list
 	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
@@ -514,6 +531,12 @@ void CUploadingView::Initialize( CClientListCtrl* list )
 	for (; it != uploading.end(); ++it) {
 		list->InsertClient( *it, list->GetListView() );		
 	}
+}
+
+
+wxString CUploadingView::GetOldColumnOrder()
+{
+	return wxT("U,F,C,S,T,W,u,s,P,R,r");
 }
 
 
@@ -822,25 +845,30 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CQueuedView::Initialize( CClientListCtrl* list )
 {
-	list->InsertColumn( 0,	_("Username"),        wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 1,	_("File"),            wxLIST_FORMAT_LEFT, 275 );
-	list->InsertColumn( 2,	_("Client Software"), wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 3,	_("File Priority"),   wxLIST_FORMAT_LEFT, 110 );
-	list->InsertColumn( 4,	_("Rating"),          wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 5,	_("Score"),           wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 6,	_("Asked"),           wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 7,	_("Last Seen"),       wxLIST_FORMAT_LEFT, 110 );
-	list->InsertColumn( 8,	_("Entered Queue"),   wxLIST_FORMAT_LEFT, 110 );
-	list->InsertColumn( 9,	_("Banned"),          wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 10,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100 );
+	list->InsertColumn( 0,	_("Username"),        wxLIST_FORMAT_LEFT, 150, wxT("U") );
+	list->InsertColumn( 1,	_("File"),            wxLIST_FORMAT_LEFT, 275, wxT("F") );
+	list->InsertColumn( 2,	_("Client Software"), wxLIST_FORMAT_LEFT, 100, wxT("C") );
+	list->InsertColumn( 3,	_("File Priority"),   wxLIST_FORMAT_LEFT, 110, wxT("p") );
+	list->InsertColumn( 4,	_("Rating"),          wxLIST_FORMAT_LEFT,  60, wxT("R") );
+	list->InsertColumn( 5,	_("Score"),           wxLIST_FORMAT_LEFT,  60, wxT("c") );
+	list->InsertColumn( 6,	_("Asked"),           wxLIST_FORMAT_LEFT,  60, wxT("A") );
+	list->InsertColumn( 7,	_("Last Seen"),       wxLIST_FORMAT_LEFT, 110, wxT("L") );
+	list->InsertColumn( 8,	_("Entered Queue"),   wxLIST_FORMAT_LEFT, 110, wxT("Q") );
+	list->InsertColumn( 9,	_("Banned"),          wxLIST_FORMAT_LEFT,  60, wxT("B") );
+	list->InsertColumn( 10,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100, wxT("P") );
 
-	// Insert any existing items on the list
 	// Insert any existing items on the list
 	const CClientPtrList& uploading = theApp->uploadqueue->GetWaitingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		list->InsertClient( *it, list->GetListView() );		
 	}
+}
+
+
+wxString CQueuedView::GetOldColumnOrder()
+{
+	return wxT("U,F,C,p,R,c,A,L,Q,B,P");
 }
 
 
@@ -990,16 +1018,16 @@ int CQueuedView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CClientsView::Initialize( CClientListCtrl* list )
 {
-	list->InsertColumn( 0, _("Username"),          wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 1, _("Upload Status"),     wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 2, _("Transferred Up"),    wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 3, _("Download Status"),   wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 4, _("Transferred Down"),  wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 5, _("Client Software"),   wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 6, _("Connected"),         wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 7, _("Userhash"),          wxLIST_FORMAT_LEFT, 150 );
-	list->InsertColumn( 8, _("Encrypted"),         wxLIST_FORMAT_LEFT, 100 );			
-	list->InsertColumn( 9, _("Hide shared files"), wxLIST_FORMAT_LEFT, 100 );			
+	list->InsertColumn( 0, _("Username"),          wxLIST_FORMAT_LEFT, 150, wxT("U") );
+	list->InsertColumn( 1, _("Upload Status"),     wxLIST_FORMAT_LEFT, 150, wxT("S") );
+	list->InsertColumn( 2, _("Transferred Up"),    wxLIST_FORMAT_LEFT, 150, wxT("T") );
+	list->InsertColumn( 3, _("Download Status"),   wxLIST_FORMAT_LEFT, 150, wxT("s") );
+	list->InsertColumn( 4, _("Transferred Down"),  wxLIST_FORMAT_LEFT, 150, wxT("t") );
+	list->InsertColumn( 5, _("Client Software"),   wxLIST_FORMAT_LEFT, 150, wxT("C") );
+	list->InsertColumn( 6, _("Connected"),         wxLIST_FORMAT_LEFT, 150, wxT("c") );
+	list->InsertColumn( 7, _("Userhash"),          wxLIST_FORMAT_LEFT, 150, wxT("H") );
+	list->InsertColumn( 8, _("Encrypted"),         wxLIST_FORMAT_LEFT, 100, wxT("E") );			
+	list->InsertColumn( 9, _("Hide shared files"), wxLIST_FORMAT_LEFT, 100, wxT("h") );			
 
 	const CClientList::IDMap& clist = theApp->clientlist->GetClientList();
 	CClientList::IDMap::const_iterator it = clist.begin();
@@ -1007,6 +1035,12 @@ void CClientsView::Initialize( CClientListCtrl* list )
 	for ( ; it != clist.end(); ++it ) {
 		list->InsertClient( it->second, list->GetListView() );
 	}
+}
+
+
+wxString CClientsView::GetOldColumnOrder()
+{
+	return wxT("U,S,T,s,t,C,c,H,E,h");
 }
 
 
