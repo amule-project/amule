@@ -110,7 +110,7 @@ wxBitmap CCatDialog::MakeBitmap()
 	wxBitmap bitmap(16, 16);
 	wxMemoryDC dc(bitmap);
 
-	dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_colour, wxSOLID)));
+	dc.SetBrush(m_colour.GetBrush());
 	dc.DrawRectangle(0, 0, 16, 16);
 	
 	return bitmap;

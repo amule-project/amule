@@ -26,13 +26,14 @@
 #include <wx/dcclient.h>
 
 #include "ColorFrameCtrl.h"	// Interface declarations
+#include "MuleColour.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl
 CColorFrameCtrl::CColorFrameCtrl( wxWindow* parent,int id, int wid,int hei )
   : wxControl(parent,id,wxDefaultPosition,wxSize(wid,hei)),
     m_brushBack(*wxBLACK_BRUSH),
-    m_brushFrame(*(wxTheBrushList->FindOrCreateBrush(wxColour(0,255,255),wxSOLID)))
+    m_brushFrame(CMuleColour(0,255,255).GetBrush())
 {
 	SetSizeHints(wid,hei,wid,hei,0,0);
 	wxRect rc=GetClientRect();

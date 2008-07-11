@@ -86,7 +86,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	nYDecimals = nDecimals;
 	m_bgColour  = wxColour(  0,   0,   0) ;  // see also SetBackgroundColor
 	m_gridColour  = wxColour(  0, 255, 255) ;  // see also SetGridColor
-	brushBack = *(wxTheBrushList->FindOrCreateBrush(m_bgColour, wxSOLID));
+	brushBack = *wxBLACK_BRUSH;
 
 	strXUnits = wxT("X");  // can also be set with SetXUnits
 	strYUnits = wxT("Y");  // can also be set with SetYUnits

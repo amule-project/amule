@@ -473,12 +473,12 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 
 	if ( highlighted ) {
 		CMuleColour newcol(GetFocus() ? wxSYS_COLOUR_HIGHLIGHT : wxSYS_COLOUR_BTNSHADOW);	
-		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(newcol.Blend(125), wxSOLID)));
+		dc->SetBackground(newcol.Blend(125).GetBrush());
 		dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		// The second blending goes over the first one.
-		dc->SetPen(*(wxThePenList->FindOrCreatePen(newcol.Blend(65), 1, wxSOLID)));
+		dc->SetPen(newcol.Blend(65).GetPen());
 	} else {
-		dc->SetBackground( *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_LISTBOX), wxSOLID) ));
+		dc->SetBackground( CMuleColour(wxSYS_COLOUR_LISTBOX).GetBrush() );
 		dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
