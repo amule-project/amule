@@ -86,6 +86,10 @@ public:
 	 */
 	void	ShowFilesCount();
 	
+protected:
+	/// Return old column order.
+	wxString GetOldColumnOrder() const;
+
 private:
 	/**
 	 * Adds the specified file to the list. 

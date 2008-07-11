@@ -84,20 +84,20 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 
 	m_connected = 0;
 
-	InsertColumn( COLUMN_SERVER_NAME, _("Server Name"),	wxLIST_FORMAT_LEFT, 150);
-	InsertColumn( COLUMN_SERVER_ADDR, _("Address"),			wxLIST_FORMAT_LEFT, 140);
-	InsertColumn( COLUMN_SERVER_PORT, _("Port"),			wxLIST_FORMAT_LEFT, 25);
-	InsertColumn( COLUMN_SERVER_DESC, _("Description"),	wxLIST_FORMAT_LEFT, 150);
-	InsertColumn( COLUMN_SERVER_PING, _("Ping"),			wxLIST_FORMAT_LEFT, 25);
-	InsertColumn( COLUMN_SERVER_USERS, _("Users"),		wxLIST_FORMAT_LEFT, 40);
-	InsertColumn( COLUMN_SERVER_FILES, _("Files"),		wxLIST_FORMAT_LEFT, 45);
-	InsertColumn( COLUMN_SERVER_PRIO, _("Priority"),		wxLIST_FORMAT_LEFT, 60);
-	InsertColumn( COLUMN_SERVER_FAILS, _("Failed"),		wxLIST_FORMAT_LEFT, 40);
-	InsertColumn( COLUMN_SERVER_STATIC, _("Static"),		wxLIST_FORMAT_LEFT, 40);
-	InsertColumn( COLUMN_SERVER_VERSION, _("Version"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_NAME,	_("Server Name"),	wxLIST_FORMAT_LEFT, 150, wxT("N") );
+	InsertColumn( COLUMN_SERVER_ADDR,	_("Address"),		wxLIST_FORMAT_LEFT, 140, wxT("A") );
+	InsertColumn( COLUMN_SERVER_PORT,	_("Port"),		wxLIST_FORMAT_LEFT,  25, wxT("P") );
+	InsertColumn( COLUMN_SERVER_DESC,	_("Description"),	wxLIST_FORMAT_LEFT, 150, wxT("D") );
+	InsertColumn( COLUMN_SERVER_PING,	_("Ping"),		wxLIST_FORMAT_LEFT,  25, wxT("p") );
+	InsertColumn( COLUMN_SERVER_USERS,	_("Users"),		wxLIST_FORMAT_LEFT,  40, wxT("U") );
+	InsertColumn( COLUMN_SERVER_FILES,	_("Files"),		wxLIST_FORMAT_LEFT,  45, wxT("F") );
+	InsertColumn( COLUMN_SERVER_PRIO,	_("Priority"),		wxLIST_FORMAT_LEFT,  60, wxT("r") );
+	InsertColumn( COLUMN_SERVER_FAILS,	_("Failed"),		wxLIST_FORMAT_LEFT,  40, wxT("f") );
+	InsertColumn( COLUMN_SERVER_STATIC,	_("Static"),		wxLIST_FORMAT_LEFT,  40, wxT("S") );
+	InsertColumn( COLUMN_SERVER_VERSION,	_("Version"),		wxLIST_FORMAT_LEFT,  80, wxT("V") );
 	#ifdef __DEBUG__
-	InsertColumn( COLUMN_SERVER_TCPFLAGS, wxT("TCP Flags"),		wxLIST_FORMAT_LEFT, 80);
-	InsertColumn( COLUMN_SERVER_UDPFLAGS, wxT("UDP Flags"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_TCPFLAGS,	wxT("TCP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("t") );
+	InsertColumn( COLUMN_SERVER_UDPFLAGS,	wxT("UDP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("u") );
 	#endif
 	
 	
@@ -105,9 +105,14 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 }
 
 
+wxString CServerListCtrl::GetOldColumnOrder() const
+{
+	return wxT("N,A,P,D,p,U,F,r,f,S,V,t,u");
+}
+
+
 CServerListCtrl::~CServerListCtrl()
 {
-
 }
 
 
