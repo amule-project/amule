@@ -208,7 +208,7 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, const CMuleColour& c
 	wxASSERT( dc );
 
 	if( bFlat || colour.IsBlack() ) {
-		dc->SetBrush( *(wxTheBrushList->FindOrCreateBrush(colour, wxSOLID) ));
+		dc->SetBrush( colour.GetBrush() );
 		dc->DrawRectangle( rectSpan );
 	} else {
 		int x1 = rectSpan.x;
@@ -218,7 +218,7 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, const CMuleColour& c
 		
 		int Max = HALF(m_Height);
 		for (int i = 0; i < Max; i++) {
-			dc->SetPen( *(wxThePenList->FindOrCreatePen(CMuleColour(0, 0, 0).BlendWith(colour, m_Modifiers[i]), 1, wxSOLID)) );
+			dc->SetPen( CMuleColour(0, 0, 0).BlendWith(colour, m_Modifiers[i]).GetPen() );
 
 			// Draw top row
 			dc->DrawLine( x1, y1 + i, x2, y1 + i );

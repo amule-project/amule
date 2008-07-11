@@ -2732,8 +2732,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
     // Ensure an uniform background color, as to avoid differences between
     // the automatically cleared parts and the rest of the canvas.
-    dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(
-	wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
+    dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
 
     if ( m_freezeCount )
         return;

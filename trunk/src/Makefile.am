@@ -184,6 +184,7 @@ gui_sources = \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
 	MuleTrayIcon.cpp \
+	MuleColour.cpp \
 	TransferWnd.cpp 
 
 if ENABLE_IP2COUNTRY

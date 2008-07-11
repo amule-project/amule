@@ -157,9 +157,9 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	
 	m_menu = NULL;
 
-	m_hilightBrush  = *(wxTheBrushList->FindOrCreateBrush( CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125), wxSOLID ));
+	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125).GetBrush();
 
-	m_hilightUnfocusBrush = *(wxTheBrushList->FindOrCreateBrush( CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125), wxSOLID ));
+	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125).GetBrush();
 
 	// We show the uploading-list initially
 	SetListView( vtUploading );
@@ -454,7 +454,7 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 		CMuleColour colour = GetFocus() ? m_hilightBrush.GetColour() : m_hilightUnfocusBrush.GetColour();
 		dc->SetPen( *(wxThePenList->FindOrCreatePen( colour.Blend(65), 1, wxSOLID) ));
 	} else {
-		dc->SetBackground( *(wxTheBrushList->FindOrCreateBrush( CMuleColour(wxSYS_COLOUR_LISTBOX), wxSOLID ) ));
+		dc->SetBackground( CMuleColour(wxSYS_COLOUR_LISTBOX).GetBrush());
 		dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_WINDOWTEXT) );
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}

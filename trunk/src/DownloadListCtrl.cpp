@@ -180,9 +180,9 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_menu = NULL;
 
-	m_hilightBrush  = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125), wxSOLID ));
+	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125).GetBrush();
 
-	m_hilightUnfocusBrush = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125), wxSOLID ));
+	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125).GetBrush();
 
 	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260 );
 	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60 );
@@ -1128,7 +1128,7 @@ void CDownloadListCtrl::OnDrawItem(
 			colour = m_hilightBrush.GetColour();
 		}
 
-		dc->SetPen( *(wxThePenList->FindOrCreatePen(colour.Blend(65), 1, wxSOLID) ));
+		dc->SetPen( colour.Blend(65).GetPen() );
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -2181,7 +2181,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			file->GetCompletedSize() );
 
 	if ( bFlat ) {
-		dc->SetBrush( *(wxTheBrushList->FindOrCreateBrush(crFlatProgress , wxSOLID ) ));
+		dc->SetBrush( crFlatProgress.GetBrush() );
 		
 		dc->DrawRectangle( rect.x, rect.y, width, 3 );
 	} else {

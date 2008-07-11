@@ -754,7 +754,7 @@ void CSearchListCtrl::DownloadSelected(int category)
 
 const wxBrush& GetBrush(wxSystemColour index)
 {
-	return *wxTheBrushList->FindOrCreateBrush(CMuleColour(index));
+	return CMuleColour(index).GetBrush();
 }
 
 

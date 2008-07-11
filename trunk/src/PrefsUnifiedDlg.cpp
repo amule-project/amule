@@ -797,11 +797,10 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent& WXUNUSED(event))
 {
 	int index = m_choiceColor->GetSelection();
-	CMuleColour col(thePrefs::s_colors[index]);
-	col = wxGetColourFromUser( this, col );
+	wxColour col = wxGetColourFromUser( this, CMuleColour(thePrefs::s_colors[index]) );
 	if ( col.Ok() ) {
 		m_buttonColor->SetBackgroundColour( col );
-		thePrefs::s_colors[index] = col.GetULong();
+		thePrefs::s_colors[index] = CMuleColour(col).GetULong();
 	}
 }
 
