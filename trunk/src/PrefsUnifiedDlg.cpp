@@ -70,7 +70,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// The rest. Organize it!
 	EVT_CHECKBOX(IDC_UDPENABLE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_USESKINFILES,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_AUTOSERVER,		PrefsUnifiedDlg::OnCheckBoxChange)
@@ -168,17 +167,17 @@ PrefsPage pages[] =
 {
 	{ wxTRANSLATE("General"),		PreferencesGeneralTab,		13, NULL },
 	{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14, NULL },
+	{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17, NULL },
+	{ wxTRANSLATE("Servers"),		PreferencesServerTab,		15, NULL },
+	{ wxTRANSLATE("Files"),			PreferencesFilesTab,		16, NULL },
+	{ wxTRANSLATE("Security"),		PreferencesSecurityTab,		22, NULL },
+	{ wxTRANSLATE("Interface"),		PreferencesGuiTweaksTab,	19, NULL },
+	{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10, NULL },
 	{ wxTRANSLATE("Proxy"),			PreferencesProxyTab,		24, NULL },
-	{ wxTRANSLATE("Message Filter"),	PreferencesMessagesTab,		23, NULL },
+	{ wxTRANSLATE("Filters"),		PreferencesFilteringTab,		23, NULL },
 	{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11, NULL },
 	{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21, NULL },
-	{ wxTRANSLATE("Server"),		PreferencesServerTab,		15, NULL },
-	{ wxTRANSLATE("Files"),			PreferencesFilesTab,		16, NULL },
-	{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17, NULL },
-	{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10, NULL },
-	{ wxTRANSLATE("Security"),		PreferencesSecurityTab,		22, NULL },
-	{ wxTRANSLATE("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL },
-	{ wxTRANSLATE("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL },
+	{ wxTRANSLATE("Advanced"),		PreferencesaMuleTweaksTab,	12, NULL },
 	{ wxTRANSLATE("Events"),		PreferencesEventsTab,		5,  NULL }
 #ifdef __DEBUG__
 	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,		25, NULL }
@@ -374,7 +373,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	
 	// Enable/Disable some controls
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
-	FindWindow( IDC_SKIN )->Enable( thePrefs::UseSkins() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_UDPPORT )->Enable( thePrefs::s_UDPEnable );
@@ -590,7 +588,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->amuledlg->m_statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
 
-	if (CfgChanged(IDC_SKIN) || CfgChanged(IDC_USESKINFILES)) {
+	if (CfgChanged(IDC_SKIN)) {
 		theApp->amuledlg->Create_Toolbar(thePrefs::VerticalToolbar());
 	}
 
@@ -677,10 +675,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_CHECKDISKSPACE:
 			FindWindow( IDC_MINDISKSPACE )->Enable(value);
 			break;	
-
-		case IDC_USESKINFILES:
-			FindWindow( IDC_SKIN )->Enable(value);;
-			break;
 
 		case IDC_ONLINESIG:
 			FindWindow( IDC_OSDIR )->Enable(value);;

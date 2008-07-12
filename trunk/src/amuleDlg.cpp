@@ -1156,6 +1156,10 @@ bool CamuleDlg::Check_and_Init_Skin()
 	bool ret = true;
 	wxString skinFileName(thePrefs::GetSkin());
 
+	if (skinFileName.IsEmpty()) {
+		return false;
+	}
+
 	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
 	
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
@@ -1185,14 +1189,14 @@ bool CamuleDlg::Check_and_Init_Skin()
 		ret = false;
 	}
 
-		wxFFileInputStream in(m_skinFileName.GetFullPath());
-		wxZipInputStream zip(in);
+	wxFFileInputStream in(m_skinFileName.GetFullPath());
+	wxZipInputStream zip(in);
 
-		while ((entry = zip.GetNextEntry()) != NULL) {
-			wxZipEntry*& current = cat[entry->GetInternalName()];
-			delete current;
-			current = entry;
-		}
+	while ((entry = zip.GetNextEntry()) != NULL) {
+		wxZipEntry*& current = cat[entry->GetInternalName()];
+		delete current;
+		current = entry;
+	}
 
 	return ret;
 }
@@ -1237,7 +1241,7 @@ void CamuleDlg::Add_Skin_Icon(
 
 void CamuleDlg::Apply_Clients_Skin()
 {
-	bool useSkins = thePrefs::UseSkins() && Check_and_Init_Skin();
+	bool useSkins = Check_and_Init_Skin();
 	
 	// Clear the client image list
 	m_imagelist.RemoveAll();
@@ -1252,7 +1256,8 @@ void CamuleDlg::Apply_Clients_Skin()
 
 void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 {
-	bool useSkins = thePrefs::UseSkins() && Check_and_Init_Skin();
+	bool useSkins = Check_and_Init_Skin();
+	
 	
 	// Clear the toolbar image list
 	m_tblist.RemoveAll();
@@ -1270,7 +1275,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	Add_Skin_Icon(wxT("Toolbar_Prefs"),      amuleDlgImages(26), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(32), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(29), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Blink"),	     amuleDlgImages(33), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Blink"),	 amuleDlgImages(33), useSkins);
 	
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);
