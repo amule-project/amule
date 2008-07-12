@@ -1629,7 +1629,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item13->SetToolTip( _("The delay before showing tool-tips.") );
     item12->Add( item13, 1, wxALIGN_CENTER, 0 );
 
-    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
+    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 9, 1 );
     item14->SetToolTip( _("The delay before showing tool-tips.") );
     item12->Add( item14, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
