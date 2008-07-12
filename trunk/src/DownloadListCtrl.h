@@ -296,6 +296,23 @@ private:
 	int m_filecount;
 
 	DECLARE_EVENT_TABLE()
+
+	enum ColumnEnum {
+		ColumnPart = 0,
+		ColumnFileName,
+		ColumnSize,
+		ColumnTransferred,
+		ColumnCompleted,
+		ColumnSpeed,
+		ColumnProgress,
+		ColumnSources,
+		ColumnPriority,
+		ColumnStatus,
+		ColumnTimeRemaining,
+		ColumnLastSeenComplete,
+		ColumnLastReception,
+		ColumnNumberOfColumns
+	};
 };
 
 #endif
