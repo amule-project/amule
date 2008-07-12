@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-11 03:30+0200\n"
+"POT-Creation-Date: 2008-07-12 03:31+0200\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -134,12 +134,12 @@ msgstr "無法獲取用戶 '%s' 的共享文件"
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
-#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1441
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1421
+#: src/DownloadListCtrl.cpp:1434 src/DownloadListCtrl.cpp:1445
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
-#: src/ClientListCtrl.cpp:668 src/ClientListCtrl.cpp:691
-#: src/ClientListCtrl.cpp:699 src/ClientListCtrl.cpp:863
+#: src/ClientListCtrl.cpp:691 src/ClientListCtrl.cpp:714
+#: src/ClientListCtrl.cpp:722 src/ClientListCtrl.cpp:891
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:407
@@ -200,8 +200,8 @@ msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "客戶 %s 位于 %s:%d，使用 %s %s %s"
 
 #: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:55
-#: src/ClientListCtrl.cpp:499 src/ClientListCtrl.cpp:825
-#: src/ClientListCtrl.cpp:993
+#: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:848
+#: src/ClientListCtrl.cpp:1021
 msgid "Username"
 msgstr "使用者名稱"
 
@@ -209,8 +209,8 @@ msgstr "使用者名稱"
 msgid "Friends"
 msgstr "好友"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1020
-#: src/ClientListCtrl.cpp:248
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1024
+#: src/ClientListCtrl.cpp:255
 msgid "Show &Details"
 msgstr "顯示附加訊息 (&D)"
 
@@ -226,8 +226,8 @@ msgstr "移除好友"
 msgid "Send &Message"
 msgstr "發訊息 (&M)"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1022
-#: src/ClientListCtrl.cpp:250
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1026
+#: src/ClientListCtrl.cpp:257
 msgid "View Files"
 msgstr "顯示檔案"
 
@@ -244,9 +244,9 @@ msgid "Are you sure that you wish to delete the selected friends?"
 msgstr "確定刪除選中的好友嗎？"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
-#: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:748
-#: src/DownloadListCtrl.cpp:581 src/DownloadListCtrl.cpp:901
+#: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
+#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:748
+#: src/DownloadListCtrl.cpp:585 src/DownloadListCtrl.cpp:905
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2460
 #: src/muuli_wdr.cpp:2562 src/muuli_wdr.cpp:3284
@@ -324,9 +324,9 @@ msgstr "大小"
 msgid "Type"
 msgstr "類型"
 
-#: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:194 src/DownloadListCtrl.cpp:900
+#: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:145
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:428
+#: src/DownloadListCtrl.cpp:194 src/DownloadListCtrl.cpp:904
 msgid "Priority"
 msgstr "優先等級"
 
@@ -350,8 +350,8 @@ msgstr "已傳送資料"
 msgid "Share Ratio"
 msgstr "共享比例"
 
-#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:507
-#: src/ClientListCtrl.cpp:835
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:524
+#: src/ClientListCtrl.cpp:858
 msgid "Obtained Parts"
 msgstr "已下載資料段"
 
@@ -363,124 +363,124 @@ msgstr "完整源"
 msgid "Directory Path"
 msgstr "所在目錄"
 
-#: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1081
+#: src/SharedFilesCtrl.cpp:135 src/Statistics.cpp:727 src/muuli_wdr.cpp:1081
 #: src/muuli_wdr.cpp:3469
 msgid "Shared Files"
 msgstr "分享的檔案"
 
-#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:41
+#: src/SharedFilesCtrl.cpp:137 src/DataToText.cpp:41
 msgid "Very low"
 msgstr "極低"
 
-#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
-#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:895 src/muuli_wdr.cpp:2524
+#: src/SharedFilesCtrl.cpp:138 src/DataToText.cpp:42
+#: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:424
+#: src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:2524
 msgid "Low"
 msgstr "低"
 
-#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
-#: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2525
+#: src/SharedFilesCtrl.cpp:139 src/DataToText.cpp:43
+#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:425
+#: src/DownloadListCtrl.cpp:900 src/muuli_wdr.cpp:2525
 msgid "Normal"
 msgstr "普通"
 
-#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
-#: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2526
+#: src/SharedFilesCtrl.cpp:140 src/DataToText.cpp:44
+#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:426
+#: src/DownloadListCtrl.cpp:901 src/muuli_wdr.cpp:2526
 msgid "High"
 msgstr "高"
 
-#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:45
+#: src/SharedFilesCtrl.cpp:141 src/DataToText.cpp:45
 msgid "Very High"
 msgstr "極高"
 
-#: src/SharedFilesCtrl.cpp:137 src/DataToText.cpp:46
+#: src/SharedFilesCtrl.cpp:142 src/DataToText.cpp:46
 msgid "Release"
 msgstr "發行"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:898
+#: src/SharedFilesCtrl.cpp:143 src/DownloadListCtrl.cpp:902
 #: src/muuli_wdr.cpp:2527
 msgid "Auto"
 msgstr "自動"
 
-#: src/SharedFilesCtrl.cpp:145
+#: src/SharedFilesCtrl.cpp:150
 msgid "Add Comment/Rating"
 msgstr "添加注釋/率"
 
-#: src/SharedFilesCtrl.cpp:147
+#: src/SharedFilesCtrl.cpp:152
 msgid "Edit Comment/Rating"
 msgstr "編輯注釋/率"
 
-#: src/SharedFilesCtrl.cpp:151
+#: src/SharedFilesCtrl.cpp:156
 msgid "Rename"
 msgstr "更名"
 
-#: src/SharedFilesCtrl.cpp:158
+#: src/SharedFilesCtrl.cpp:163
 msgid "Add files in collection to transfer list"
 msgstr "添加收藏中的文件至傳輸列表"
 
-#: src/SharedFilesCtrl.cpp:161
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy magnet &URI to clipboard"
 msgstr "複制 magnet 地址到剪貼板（&U）"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:942
+#: src/SharedFilesCtrl.cpp:167 src/DownloadListCtrl.cpp:946
 msgid "Copy eD2k &link to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:163
+#: src/SharedFilesCtrl.cpp:168
 msgid "Copy eD2k link to clipboard (&Source)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:164
+#: src/SharedFilesCtrl.cpp:169
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:165
+#: src/SharedFilesCtrl.cpp:170
 msgid "Copy eD2k link to clipboard (&Hostname)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:166
+#: src/SharedFilesCtrl.cpp:171
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:167
+#: src/SharedFilesCtrl.cpp:172
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:944
+#: src/SharedFilesCtrl.cpp:173 src/DownloadListCtrl.cpp:948
 msgid "Copy feedback to clipboard"
 msgstr "拷貝反饋信息到剪貼板"
 
-#: src/SharedFilesCtrl.cpp:200 src/DownloadListCtrl.cpp:727
+#: src/SharedFilesCtrl.cpp:205 src/DownloadListCtrl.cpp:731
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
 "\n"
 msgstr "來自%s(%s)的反饋\n"
 
-#: src/SharedFilesCtrl.cpp:316
+#: src/SharedFilesCtrl.cpp:321
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "你需要高ID來產生源連結"
 
-#: src/SharedFilesCtrl.cpp:316 src/PrefsUnifiedDlg.cpp:620 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:321 src/PrefsUnifiedDlg.cpp:620 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:673
 msgid "WARNING"
 msgstr "警告"
 
-#: src/SharedFilesCtrl.cpp:461
+#: src/SharedFilesCtrl.cpp:466
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "分享的檔案 (%i)"
 
-#: src/SharedFilesCtrl.cpp:599
+#: src/SharedFilesCtrl.cpp:604
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:698 src/DownloadListCtrl.cpp:1079
+#: src/SharedFilesCtrl.cpp:703 src/DownloadListCtrl.cpp:1083
 msgid "Enter new name for this file:"
 msgstr "請輸入新文件名"
 
-#: src/SharedFilesCtrl.cpp:699 src/DownloadListCtrl.cpp:1080
+#: src/SharedFilesCtrl.cpp:704 src/DownloadListCtrl.cpp:1084
 msgid "File rename"
 msgstr "更改文件名"
 
@@ -1044,7 +1044,7 @@ msgid "HighID"
 msgstr "高ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
-#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:874
+#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:902
 #: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "低ID"
@@ -1272,7 +1272,7 @@ msgstr "自動 [普]"
 msgid "Auto [Hi]"
 msgstr "自動 [高]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:538 src/ClientListCtrl.cpp:647
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:538 src/ClientListCtrl.cpp:670
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "正在連線"
@@ -1281,20 +1281,20 @@ msgstr "正在連線"
 msgid "Asking"
 msgstr "正在詢問"
 
-#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:651
+#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:674
 msgid "Connecting via server"
 msgstr "通過伺服器連線中"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1697
-#: src/ClientListCtrl.cpp:686
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1701
+#: src/ClientListCtrl.cpp:709
 msgid "Queue Full"
 msgstr "等候已滿"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:664
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:687
 msgid "On Queue"
 msgstr "在等候"
 
-#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:656
+#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:679
 msgid "Transferring"
 msgstr "下載中"
 
@@ -1323,7 +1323,7 @@ msgid "Too many Kad connections"
 msgstr "Kad 連接過多"
 
 #: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
-#: src/ClientListCtrl.cpp:834
+#: src/ClientListCtrl.cpp:857
 msgid "Banned"
 msgstr "封殺"
 
@@ -1583,107 +1583,107 @@ msgstr "靜態"
 msgid "Version"
 msgstr "版本"
 
-#: src/ServerListCtrl.cpp:144
+#: src/ServerListCtrl.cpp:149
 msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
 msgstr "現在正連接在要刪除的服務器。該服務器暫時無法刪除。請先斷開連接。"
 
-#: src/ServerListCtrl.cpp:144 src/CatDialog.cpp:141 src/CatDialog.cpp:151
+#: src/ServerListCtrl.cpp:149 src/CatDialog.cpp:141 src/CatDialog.cpp:151
 #: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:713
 #: src/amule.cpp:1329
 msgid "Info"
 msgstr "訊息"
 
-#: src/ServerListCtrl.cpp:147
+#: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
 msgstr "(未知名稱)"
 
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:154
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "您確定要刪除靜態服務器 %s ?"
 
-#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:903
-#: src/ClientListCtrl.cpp:1046 src/ClientListCtrl.cpp:1059
-#: src/ClientListCtrl.cpp:1065
+#: src/ServerListCtrl.cpp:242 src/ClientListCtrl.cpp:931
+#: src/ClientListCtrl.cpp:1080 src/ClientListCtrl.cpp:1093
+#: src/ClientListCtrl.cpp:1099
 msgid "Yes"
 msgstr "是"
 
-#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:905
-#: src/ClientListCtrl.cpp:1048 src/ClientListCtrl.cpp:1059
-#: src/ClientListCtrl.cpp:1065
+#: src/ServerListCtrl.cpp:242 src/ClientListCtrl.cpp:933
+#: src/ClientListCtrl.cpp:1082 src/ClientListCtrl.cpp:1093
+#: src/ClientListCtrl.cpp:1099
 msgid "No"
 msgstr "無"
 
-#: src/ServerListCtrl.cpp:346
+#: src/ServerListCtrl.cpp:351
 #, c-format
 msgid "Failed to open '%s'"
 msgstr "無法讀取 '%s'"
 
-#: src/ServerListCtrl.cpp:369
+#: src/ServerListCtrl.cpp:374
 #, c-format
 msgid "Servers (%i)"
 msgstr "伺服器 (%i)"
 
-#: src/ServerListCtrl.cpp:417 src/PrefsUnifiedDlg.cpp:175
+#: src/ServerListCtrl.cpp:422 src/PrefsUnifiedDlg.cpp:175
 #: src/ServerWnd.cpp:180 src/ServerSocket.cpp:257 src/ServerSocket.cpp:272
 msgid "Server"
 msgstr "伺服器"
 
-#: src/ServerListCtrl.cpp:422
+#: src/ServerListCtrl.cpp:427
 msgid "Connect to server"
 msgstr "連接到服務器"
 
-#: src/ServerListCtrl.cpp:428
+#: src/ServerListCtrl.cpp:433
 msgid "Mark server as static"
 msgstr "標記服務器爲靜態"
 
-#: src/ServerListCtrl.cpp:429
+#: src/ServerListCtrl.cpp:434
 msgid "Mark server as non-static"
 msgstr "標記服務器爲非靜態"
 
-#: src/ServerListCtrl.cpp:431
+#: src/ServerListCtrl.cpp:436
 msgid "Mark servers as static"
 msgstr "標記服務器爲靜態"
 
-#: src/ServerListCtrl.cpp:432
+#: src/ServerListCtrl.cpp:437
 msgid "Mark servers as non-static"
 msgstr "標記服務器爲非靜態"
 
-#: src/ServerListCtrl.cpp:438
+#: src/ServerListCtrl.cpp:443
 msgid "Remove server"
 msgstr "移除伺服器"
 
-#: src/ServerListCtrl.cpp:440
+#: src/ServerListCtrl.cpp:445
 msgid "Remove servers"
 msgstr "移除伺服器"
 
-#: src/ServerListCtrl.cpp:442
+#: src/ServerListCtrl.cpp:447
 msgid "Remove all servers"
 msgstr "移除所有伺服器"
 
-#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:603
+#: src/ServerListCtrl.cpp:452 src/SearchListCtrl.cpp:609
 msgid "Copy eD2k link to clipboard"
 msgstr ""
 
-#: src/ServerListCtrl.cpp:449
+#: src/ServerListCtrl.cpp:454
 msgid "Copy eD2k links to clipboard"
 msgstr ""
 
-#: src/ServerListCtrl.cpp:457
+#: src/ServerListCtrl.cpp:462
 msgid "Reconnect to server"
 msgstr "重新連接到服務器"
 
-#: src/ServerListCtrl.cpp:554
+#: src/ServerListCtrl.cpp:559
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "您確定要刪除所有服務器嗎？"
 
-#: src/ServerListCtrl.cpp:570
+#: src/ServerListCtrl.cpp:575
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "您確定要刪除已選的服務器嗎？"
 
-#: src/ServerListCtrl.cpp:572
+#: src/ServerListCtrl.cpp:577
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "您確定要刪除已選的服務器嗎？"
 
@@ -2386,7 +2386,7 @@ msgid "eD2k Status:"
 msgstr ""
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
-#: src/ClientListCtrl.cpp:999 src/ClientDetailDialog.cpp:143
+#: src/ClientListCtrl.cpp:1027 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "已建立連線"
 
@@ -2524,7 +2524,7 @@ msgstr "失敗上傳會話總數：%s"
 msgid "Average upload time: %s"
 msgstr "平均上傳時間: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:892 src/muuli_wdr.cpp:420
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:420
 #: src/muuli_wdr.cpp:1911
 msgid "Downloads"
 msgstr "下載"
@@ -2604,7 +2604,7 @@ msgstr "平均連接數(估計)：%g"
 msgid "Peak Connections (estimate): %i"
 msgstr "最高連接 (估計值): %i"
 
-#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:247
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:254
 msgid "Clients"
 msgstr "客戶"
 
@@ -2852,33 +2852,33 @@ msgstr "這個使用者碼有錯"
 msgid "Sources"
 msgstr "來源"
 
-#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:500
-#: src/ClientListCtrl.cpp:826
+#: src/SearchListCtrl.cpp:584 src/ClientListCtrl.cpp:517
+#: src/ClientListCtrl.cpp:849
 msgid "File"
 msgstr "檔案"
 
-#: src/SearchListCtrl.cpp:579 src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1693
+#: src/SearchListCtrl.cpp:585 src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1693
 msgid "Download"
 msgstr "下載"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:949
+#: src/SearchListCtrl.cpp:587 src/DownloadListCtrl.cpp:953
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:238 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "分類"
 
-#: src/SearchListCtrl.cpp:582 src/SearchDlg.cpp:647
+#: src/SearchListCtrl.cpp:588 src/SearchDlg.cpp:647
 msgid "Main"
 msgstr "主要"
 
-#: src/SearchListCtrl.cpp:588
+#: src/SearchListCtrl.cpp:594
 msgid "Download in category"
 msgstr "下載分類"
 
-#: src/SearchListCtrl.cpp:594
+#: src/SearchListCtrl.cpp:600
 msgid "Search related files (eD2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:599
+#: src/SearchListCtrl.cpp:605
 msgid "Mark as known file"
 msgstr "標記為已知文件"
 
@@ -2916,7 +2916,7 @@ msgstr "全部"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "用戶總數：%s | 文件總數：%s"
 
-#: src/DownloadListCtrl.cpp:189 src/ClientListCtrl.cpp:503
+#: src/DownloadListCtrl.cpp:189 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "已傳輸"
 
@@ -2925,7 +2925,7 @@ msgstr "已傳輸"
 msgid "Completed"
 msgstr "已完成"
 
-#: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:502
+#: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "速度"
 
@@ -2934,7 +2934,7 @@ msgid "Progress"
 msgstr "進度"
 
 #: src/DownloadListCtrl.cpp:195 src/PartFile.cpp:3913
-#: src/ClientListCtrl.cpp:506
+#: src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "狀態"
 
@@ -2950,139 +2950,139 @@ msgstr "最後一次發現完整檔案"
 msgid "Last Reception"
 msgstr "最後一次下載"
 
-#: src/DownloadListCtrl.cpp:577
+#: src/DownloadListCtrl.cpp:581
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "您確定要刪除這些文件嗎？"
 
-#: src/DownloadListCtrl.cpp:579
+#: src/DownloadListCtrl.cpp:583
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "您確定要刪除這些文件嗎？"
 
-#: src/DownloadListCtrl.cpp:841 src/ClientListCtrl.cpp:355
+#: src/DownloadListCtrl.cpp:845 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "發消息給用戶"
 
-#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:355
+#: src/DownloadListCtrl.cpp:846 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "發送消息："
 
-#: src/DownloadListCtrl.cpp:902 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:906 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "停止(&S)"
 
-#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:907 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "暫停 (&P)"
 
-#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:908 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "續傳(&R)"
 
-#: src/DownloadListCtrl.cpp:905
+#: src/DownloadListCtrl.cpp:909
 msgid "C&lear completed"
 msgstr "清除已完成的檔案 (&l)"
 
-#: src/DownloadListCtrl.cpp:911
+#: src/DownloadListCtrl.cpp:915
 msgid "Swap every A4AF to this file now"
 msgstr "立即轉移所有 A4AF 到這個檔案"
 
-#: src/DownloadListCtrl.cpp:913
+#: src/DownloadListCtrl.cpp:917
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "自動轉移所有 A4AF 到這個檔案"
 
-#: src/DownloadListCtrl.cpp:918
+#: src/DownloadListCtrl.cpp:922
 msgid "Swap every A4AF to any other file now"
 msgstr "立即轉移所有 A4AF 到其它檔案"
 
-#: src/DownloadListCtrl.cpp:921
+#: src/DownloadListCtrl.cpp:925
 msgid "Extended Options"
 msgstr "延伸選項"
 
-#: src/DownloadListCtrl.cpp:932 src/DownloadListCtrl.cpp:994
+#: src/DownloadListCtrl.cpp:936 src/DownloadListCtrl.cpp:998
 msgid "Preview"
 msgstr "預覽"
 
-#: src/DownloadListCtrl.cpp:933
+#: src/DownloadListCtrl.cpp:937
 msgid "Show file &details"
 msgstr "顯示檔案訊息"
 
-#: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:822
+#: src/DownloadListCtrl.cpp:939 src/muuli_wdr.cpp:822
 msgid "Show all comments"
 msgstr "顯示所有註釋"
 
-#: src/DownloadListCtrl.cpp:940
+#: src/DownloadListCtrl.cpp:944
 msgid "Copy magnet URI to clipboard"
 msgstr "複制 magnet 地址到剪貼板"
 
-#: src/DownloadListCtrl.cpp:953
+#: src/DownloadListCtrl.cpp:957
 msgid "unassign"
 msgstr "清除"
 
-#: src/DownloadListCtrl.cpp:960
+#: src/DownloadListCtrl.cpp:964
 msgid "Assign to category"
 msgstr "分類"
 
-#: src/DownloadListCtrl.cpp:997
+#: src/DownloadListCtrl.cpp:1001
 msgid "&Open the file"
 msgstr "開啟檔案 (&O)"
 
-#: src/DownloadListCtrl.cpp:1021 src/ClientListCtrl.cpp:249
+#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
 msgid "Remove from friends"
 msgstr "從好友中刪除"
 
-#: src/DownloadListCtrl.cpp:1021 src/ClientListCtrl.cpp:249
+#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
 msgid "Add to Friends"
 msgstr "加入好友"
 
-#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1027 src/ClientListCtrl.cpp:258
 msgid "Send message"
 msgstr "發送短消息"
 
-#: src/DownloadListCtrl.cpp:1024
+#: src/DownloadListCtrl.cpp:1028
 msgid "Swap to this file"
 msgstr "轉移到這個文件"
 
-#: src/DownloadListCtrl.cpp:1305 src/DownloadListCtrl.cpp:1608
+#: src/DownloadListCtrl.cpp:1309 src/DownloadListCtrl.cpp:1612
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1699 src/muuli_wdr.cpp:1708
 #: src/muuli_wdr.cpp:1717 src/muuli_wdr.cpp:2065 src/muuli_wdr.cpp:2074
-#: src/ClientListCtrl.cpp:629 src/ClientListCtrl.cpp:697
+#: src/ClientListCtrl.cpp:652 src/ClientListCtrl.cpp:720
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
+#: src/DownloadListCtrl.cpp:1432 src/DownloadListCtrl.cpp:1443
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1666
+#: src/DownloadListCtrl.cpp:1670
 msgid "A4AF"
 msgstr "已請求其它文件"
 
-#: src/DownloadListCtrl.cpp:1716
+#: src/DownloadListCtrl.cpp:1720
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1730
+#: src/DownloadListCtrl.cpp:1734
 msgid "Asked for another file"
 msgstr "已要求其它檔案 (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2053
+#: src/DownloadListCtrl.cpp:2057
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下載 (%i)"
 
-#: src/DownloadListCtrl.cpp:2271
+#: src/DownloadListCtrl.cpp:2275
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2272
+#: src/DownloadListCtrl.cpp:2276
 msgid "File preview"
 msgstr "文件預覽"
 
-#: src/DownloadListCtrl.cpp:2308
+#: src/DownloadListCtrl.cpp:2312
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "錯誤：無法運行媒體播放器！命令：`%s'"
@@ -3311,7 +3311,7 @@ msgstr ""
 msgid "File Comments"
 msgstr "檔案註釋"
 
-#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:829
+#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:852
 msgid "Rating"
 msgstr "評價"
 
@@ -4605,7 +4605,7 @@ msgstr "全名︰"
 #: src/muuli_wdr.cpp:1481 src/muuli_wdr.cpp:1488 src/muuli_wdr.cpp:1497
 #: src/muuli_wdr.cpp:1504 src/muuli_wdr.cpp:1513 src/muuli_wdr.cpp:1531
 #: src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1547 src/muuli_wdr.cpp:1556
-#: src/ClientListCtrl.cpp:617
+#: src/ClientListCtrl.cpp:640
 msgid "N/A"
 msgstr "N/A"
 
@@ -6212,97 +6212,97 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "錯誤：%s"
 
-#: src/ClientListCtrl.cpp:252
+#: src/ClientListCtrl.cpp:259
 msgid "Unban"
 msgstr "取消封殺"
 
-#: src/ClientListCtrl.cpp:257
+#: src/ClientListCtrl.cpp:264
 msgid "Show Uploads"
 msgstr "顯示上傳"
 
-#: src/ClientListCtrl.cpp:258
+#: src/ClientListCtrl.cpp:265
 msgid "Show Queue"
 msgstr "顯示等候"
 
-#: src/ClientListCtrl.cpp:259
+#: src/ClientListCtrl.cpp:266
 msgid "Show Clients"
 msgstr "顯示客戶"
 
-#: src/ClientListCtrl.cpp:263
+#: src/ClientListCtrl.cpp:270
 msgid "Select View"
 msgstr "選擇視角"
 
-#: src/ClientListCtrl.cpp:501 src/ClientListCtrl.cpp:827
-#: src/ClientListCtrl.cpp:998
+#: src/ClientListCtrl.cpp:518 src/ClientListCtrl.cpp:850
+#: src/ClientListCtrl.cpp:1026
 msgid "Client Software"
 msgstr "用戶軟件"
 
-#: src/ClientListCtrl.cpp:504
+#: src/ClientListCtrl.cpp:521
 msgid "Waited"
 msgstr "已等待"
 
-#: src/ClientListCtrl.cpp:505
+#: src/ClientListCtrl.cpp:522
 msgid "Upload Time"
 msgstr "上傳時間"
 
-#: src/ClientListCtrl.cpp:508
+#: src/ClientListCtrl.cpp:525
 msgid "Upload/Download"
 msgstr "上傳/下載"
 
-#: src/ClientListCtrl.cpp:509
+#: src/ClientListCtrl.cpp:526
 msgid "Remote Status"
 msgstr "遠程狀態"
 
-#: src/ClientListCtrl.cpp:689
+#: src/ClientListCtrl.cpp:712
 #, c-format
 msgid "QR: %u"
 msgstr "QR: %u"
 
-#: src/ClientListCtrl.cpp:828
+#: src/ClientListCtrl.cpp:851
 msgid "File Priority"
 msgstr "檔案優先等級"
 
-#: src/ClientListCtrl.cpp:830
+#: src/ClientListCtrl.cpp:853
 msgid "Score"
 msgstr "分數"
 
-#: src/ClientListCtrl.cpp:831
+#: src/ClientListCtrl.cpp:854
 msgid "Asked"
 msgstr "已請求"
 
-#: src/ClientListCtrl.cpp:832
+#: src/ClientListCtrl.cpp:855
 msgid "Last Seen"
 msgstr "最後連線"
 
-#: src/ClientListCtrl.cpp:833
+#: src/ClientListCtrl.cpp:856
 msgid "Entered Queue"
 msgstr "進入等候"
 
-#: src/ClientListCtrl.cpp:994
+#: src/ClientListCtrl.cpp:1022
 msgid "Upload Status"
 msgstr "上傳狀態"
 
-#: src/ClientListCtrl.cpp:995
+#: src/ClientListCtrl.cpp:1023
 msgid "Transferred Up"
 msgstr "已傳輸"
 
-#: src/ClientListCtrl.cpp:996
+#: src/ClientListCtrl.cpp:1024
 msgid "Download Status"
 msgstr "下載狀態"
 
-#: src/ClientListCtrl.cpp:997
+#: src/ClientListCtrl.cpp:1025
 msgid "Transferred Down"
 msgstr "已傳輸"
 
-#: src/ClientListCtrl.cpp:1000
+#: src/ClientListCtrl.cpp:1028
 msgid "Userhash"
 msgstr "用戶編碼"
 
-#: src/ClientListCtrl.cpp:1001
+#: src/ClientListCtrl.cpp:1029
 msgid "Encrypted"
 msgstr "已加密"
 
-#: src/ClientListCtrl.cpp:1002
+#: src/ClientListCtrl.cpp:1030
 msgid "Hide shared files"
 msgstr "隱藏共享檔案"
 
