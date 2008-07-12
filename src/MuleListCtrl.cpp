@@ -200,8 +200,9 @@ void CMuleListCtrl::ParseOldConfigEntries(const wxString& sortOrders, const wxSt
 	wxStringTokenizer tokenizer(columnWidths, wxT(","));
 	while (tokenizer.HasMoreTokens()) {
 		long idx = GetNewColumnIndex(counter++);
+		long width = StrToLong(tokenizer.GetNextToken());
 		if (idx >= 0) {
-			SetColumnWidth(idx, StrToLong(tokenizer.GetNextToken()));
+			SetColumnWidth(idx, width);
 		}
 	}
 }
