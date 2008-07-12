@@ -1280,6 +1280,16 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 		cfg->DeleteEntry(wxT("/eMule/UDPDisable"));
 	}
 
+	// Preserve old value of UseSkinFiles
+	if (cfg->HasEntry(wxT("/SkinGUIOptions/UseSkinFiles"))) {
+		bool UseSkinFiles;
+		cfg->Read(wxT("/SkinGUIOptions/UseSkinFiles"), &UseSkinFiles, false);
+		if (!UseSkinFiles) {
+			s_Skin.Clear();
+		}
+		cfg->DeleteEntry(wxT("/SkinGUIOptions/UseSkinFiles"));
+	}
+
 #ifdef __DEBUG__
 	// Load debug-categories
 	int count = CLogger::GetDebugCategoryCount();
