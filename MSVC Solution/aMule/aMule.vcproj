@@ -389,6 +389,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\MuleColour.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\MuleGifCtrl.cpp"
 				>
 			</File>
@@ -840,6 +844,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\MuleCollection.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\MuleColour.h"
 				>
 			</File>
 			<File
