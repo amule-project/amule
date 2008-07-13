@@ -231,6 +231,7 @@ void CDownloadListCtrl::AddFile( CPartFile* file )
 		// Check if the new file is visible in the current category
 		if ( file->CheckShowItemInGivenCat( m_category ) ) {
 			ShowFile( file, true );
+			SortList();
 		}
 	}
 }
@@ -479,6 +480,8 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		for ( it = a4afSources.begin(); it != a4afSources.end(); ++it ) {
 			AddSource( file, *it, A4AF_SOURCE );
 		}
+
+		SortList();
 	} else {
 		for ( int i = GetItemCount() - 1; i >= 0; --i ) {
 			CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData(i);
