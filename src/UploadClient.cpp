@@ -207,7 +207,7 @@ void CUpDownClient::CreateNextBlockPackage()
 {
 	// See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
 	if(m_BlockRequests_queue.empty() || // There are no new blocks requested
-		m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024) { // the buffered data is large enough allready
+		((m_addedPayloadQueueSession > GetQueueSessionPayloadUp()) && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024)) { // the buffered data is large enough allready
 		return;
 	}
 
