@@ -293,6 +293,17 @@ AS_IF([test ${SYS:-unknown} = win32],
 	MULERCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
 ])
 
+
+# Check for libupnp
+AS_IF([test "${ENABLE_UPNP:-yes}" = yes], [
+	LIBUPNP_CHECK(
+		[1.6.6],
+		[MULE_APPEND([LIBUPNP_CPPFLAGS], [-DENABLE_UPNP=1])],
+		[ENABLE_UPNP=disabled]
+	)
+])dnl
+
+
 # Check for Crypto++
 MULE_CHECK_CRYPTOPP([5.1], [
 	# Check for CryptoPP >= 5.5
@@ -452,7 +463,7 @@ AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
-AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes -a x$SYS != xwin32)
+AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes)
 AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
@@ -529,7 +540,7 @@ echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with UPnP support?                ${ENABLE_UPNP:-yes}"
-echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-yes}"
+echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-no}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
@@ -562,6 +573,10 @@ AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
+AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
+AS_IF([test x${ENABLE_UPNP} = xyes], [dnl
+echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
+])dnl
 if test x${WEB:-no} != xno; then
 AS_IF([test $regex_found = no], 
 	[regex_found="Not detected"],
@@ -595,7 +610,13 @@ fi
 if test -z "$LIBPNG_VERSION"; then
 echo ""
 echo ""
-echo " WARNING! libpng >= 1.2.0 not found."
-echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
+echo "WARNING! libpng >= 1.2.0 not found."
+echo "amuleweb will be compiled but file download progress bar images will NOT be generated."
+echo ""
+fi
+if test x$ENABLE_UPNP = xdisabled; then
+echo ""
+echo ""
+echo "WARNING! UPnP code has been disabled because ${libupnp_error}."
 echo ""
 fi
