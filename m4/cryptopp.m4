@@ -132,7 +132,7 @@ m4_define([MIN_CRYPTO_VERSION], [m4_ifval([$1], [$1], [5.1])])dnl
 
 	AC_MSG_RESULT([$result$resultstr])
 
-	m4_ifval([$2$3], [AS_IF([test ${result:-no} = yes], [$2], [$3])])
+	AS_IF([test ${result:-no} = yes], [$2], [$3])
 
 dnl Exported symbols
 AC_SUBST([CRYPTOPP_CPPFLAGS])dnl

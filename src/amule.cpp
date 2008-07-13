@@ -83,7 +83,7 @@
 #include "UserEvents.h"
 
 #ifdef ENABLE_UPNP
-#include "UPnP.h"			// Needed for UPnP
+#include "UPnPBase.h"			// Needed for UPnP
 #endif
 
 #ifdef __WXMAC__

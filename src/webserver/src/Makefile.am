@@ -16,7 +16,7 @@ amuleweb_SOURCES =  \
 
 if ENABLE_UPNP
 amuleweb_SOURCES +=  \
-	$(top_srcdir)/src/UPnP.cpp \
+	$(top_srcdir)/src/UPnPBase.cpp \
 	UPnPCompatibility.cpp
 endif
 
@@ -30,17 +30,13 @@ amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libe
 amuleweb_CPPFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include \
 	$(MULECPPFLAGS) $(AMULEWEB_DEFS) $(BFD_CPPFLAGS) $(WXBASE_CPPFLAGS) \
 	-DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" -DECSOCKET_USE_EVENTS=0 \
-	$(INCINTL) $(ZLIB_CPPFLAGS)
-amuleweb_CFLAGS = $(MULECFLAGS) $(WX_CFLAGS_ONLY) $(LIBPNG_CFLAGS)
-amuleweb_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY) $(LIBPNG_CFLAGS)
+	$(INCINTL) $(ZLIB_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
+amuleweb_CFLAGS = $(MULECFLAGS) $(WX_CFLAGS_ONLY) $(LIBPNG_CFLAGS) $(LIBUPNP_CFLAGS)
+amuleweb_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY) $(LIBPNG_CFLAGS) $(LIBUPNP_CFLAGS)
 
-if ENABLE_UPNP
-amuleweb_CPPFLAGS += -DENABLE_UPNP
-endif
-
-amuleweb_LDFLAGS = $(MULELDFLAGS) -L../../libs/common -L../../libs/ec/cpp $(LIBPNG_LDFLAGS) $(ZLIB_LDFLAGS)
+amuleweb_LDFLAGS = $(MULELDFLAGS) -L../../libs/common -L../../libs/ec/cpp $(LIBPNG_LDFLAGS) $(ZLIB_LDFLAGS) $(LIBUPNP_LDFLAGS)
 amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(ZLIB_LIBS) \
-	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIBS) $(REGEX_LIBS) $(LIBINTL)
+	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIBS) $(REGEX_LIBS) $(LIBINTL) $(LIBUPNP_LIBS)
 
 noinst_HEADERS = \
 		 WebInterface.h \
@@ -76,3 +72,4 @@ EXTRA_DIST = \
 	missing-template.html \
 	php_lexer.l \
 	php_parser.y
+

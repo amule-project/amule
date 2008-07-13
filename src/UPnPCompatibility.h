@@ -27,7 +27,9 @@
 #ifndef UPNPCOMPATIBILITY_H
 #define UPNPCOMPATIBILITY_H
 
-#include "extern/upnp/upnp.h"
+
+#include "upnp.h"
+#include "upnptools.h"
 
 
 #include <sstream>

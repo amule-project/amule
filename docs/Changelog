@@ -1,3 +1,19 @@
+Version 2.2.2 - Whatever comes next.
+----------
+2008-??-??
+
+	Phoenix:
+		* Removed the dlopen() code from UPnP.cpp.
+		* Added the m4 macro to test for libupnp.
+		* Updated amule_build_install.sh to work with
+		  --with-libupnp-prefix.
+		* Changed the UPnP code to allow the use of a service without
+		  having successfully subscribed to it. That should be enough
+		  to deal with some lazy router implementations.
+
+--------------------------------------------------------------------------------
+
+
 Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.
 ----------
 2008-06-11
