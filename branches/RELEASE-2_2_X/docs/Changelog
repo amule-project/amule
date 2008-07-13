@@ -1,6 +1,29 @@
 Version 2.2.2 - Whatever comes next.
 ----------
-2008-??-??
+2008-07-??
+
+	bomj:
+		* Patch for alcc to improve usability
+
+	Gaznevada:
+		* implement getopt_long in cas for systems which lack it
+
+	GonoszTopi:
+		* Fixing denoiser
+		* include <sys/types.h> before <regex.h> as by POSIX
+		* Fix noinline in crypto for some systems
+		* Fix display of ccache option
+		* Add sources from search results for new downloads
+		* Use output of gdlib-config for gd.h detection
+		* Solaris mntent fix
+		* Fix NULL pointer dereference
+		* Fix for configure not using --with-geo-ip value in library check
+
+	MalaPraxis:
+		* Remap colours on Windows
+		* Add resources
+		* Fix wrong usage of CPath::IsOk which caused an infinite loop on Import
+		* Fix wxTempFile usage for compressed IPFilter files
 
 	Phoenix:
 		* Removed the dlopen() code from UPnP.cpp.
@@ -10,6 +33,17 @@ Version 2.2.2 - Whatever comes next.
 		* Changed the UPnP code to allow the use of a service without
 		  having successfully subscribed to it. That should be enough
 		  to deal with some lazy router implementations.
+
+	Stu Redman:
+		* Scanner fix for MSVC compilation
+		* Fixed crash when progress bar was resized to zero width
+		* Fixed sharing of large files on Windows
+		* Fixed free disc space check
+		* Sanity check before writing nodes.dat - don't write it 
+		  if there are less than 25 contacts
+
+	Wuischke:
+		* Show connection status in toolbar when changing skin, thanks to greek
 
 --------------------------------------------------------------------------------
 
