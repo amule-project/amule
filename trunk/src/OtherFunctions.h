@@ -350,7 +350,7 @@ void DumpMem_DW(const uint32 *ptr, int count);
 
 
 
-inline const long int make_full_ed2k_version(int a, int b, int c) {
+inline long int make_full_ed2k_version(int a, int b, int c) {
 	return ((a << 17) | (b << 10) | (c << 7));
 }
 
