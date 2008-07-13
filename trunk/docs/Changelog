@@ -1,6 +1,54 @@
-Version 2.2.2 - Whatever comes next.
+Version 2.x.x - The river knows.
 ----------
 2008-??-??
+
+	GonoszTopi:
+		* Various fixes to new colour code
+		* Allow user to select display of transfer rates
+		* Extendable list-control settings save/load code
+		* Fix for hang in case of excess data
+		* WXMSW fix
+		* Added pkg.m4 from pkg-config-0.23
+
+	Greek:
+		* Part number is now an extra column in the download list
+		* Improvements to preferences dialogs
+		* Redesign skin selection
+
+	Kry:
+		* Fix indexes after removing GUI items
+		* Resolve MSVC compilation problem with separate strings in GUI
+		* Fixes to Windows build
+		* Allow compilation with wxCocoa
+		* Replace Color.h by new class implementation MuleColour
+		* Lower class overhead and user two-level cache for pen/brushes
+		* Preferences changes
+
+	lfroen:
+		* php prefix for lex/yacc
+
+	Stu Redman:
+		* Sort DownloadListCtrl on startup
+		* Sort source list on opening and add file name to A4AF files
+
+	Vollstrecker:
+		* Made possible to deactivate xas
+		* Unify copyright lines
+
+	Wuischke:
+		* Simplify browser selection
+		* Use DoIconize() for dclick on tray icon, too
+		* Fix minimizing from tray icon
+		* Add option to show chat messages in log
+
+	Special Thanks To:
+		* Greek for his contributions to aMule's user interface.
+
+--------------------------------------------------------------------------------
+
+Version 2.2.2 - Whatever comes next.
+----------
+2008-07-??
 
 	bomj:
 		* Patch for alcc to improve usability
@@ -19,9 +67,6 @@ Version 2.2.2 - Whatever comes next.
 		* Fix NULL pointer dereference
 		* Fix for configure not using --with-geo-ip value in library check
 
-	Greek:
-		* Part number is now an extra column in the download list
-
 	MalaPraxis:
 		* Remap colours on Windows
 		* Add resources
@@ -39,16 +84,11 @@ Version 2.2.2 - Whatever comes next.
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation
-		* Sort DownloadListCtrl on startup
-		* Sort source list on opening and add file name to A4AF files
 		* Fixed crash when progress bar was resized to zero width
 		* Fixed sharing of large files on Windows
 		* Fixed free disc space check
 		* Sanity check before writing nodes.dat - don't write it 
 		  if there are less than 25 contacts
-
-	Vollstrecker:
-		* Made possible to deactivate xas
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
