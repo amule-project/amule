@@ -40,6 +40,31 @@
 #include "html.h"
 #include "lines.h"
 
+#ifdef HAVE_CONFIG_H
+	#include "config.h"	// For HAVE_GETOPT_LONG
+#endif
+
+#ifndef HAVE_GETOPT_LONG
+/* Code from getopt_long.h - getopt_long() for systems that lack it
+  Copyright (C) 2001, 2002, 2008 Arthur de Jong, GPL 2 and later */
+# define no_argument 0
+# define required_argument 1
+# define optional_argument 2
+ 
+struct option {
+	const char *name;
+	int has_arg;
+	int *flag;
+	int val;
+};
+ 
+int getopt_long(int argc,
+		char * const argv[],
+		const char *optstring,
+		const struct option *longopts,
+		int *longindex);
+#endif
+
 /*
  * History:
  *
@@ -78,6 +103,57 @@ void usage(char *myname)
 			"-h, --help\t\tThis help you're reading\n", CAS_VERSION, myname);
 }
 
+#ifndef HAVE_GETOPT_LONG
+
+/* Code from getopt_long.c - getopt_long() for systems that lack it
+  Copyright (C) 2001, 2002, 2008 Arthur de Jong, GPL 2 and later
+  Slightly edited for the sake of clarity by Gaznevada */
+
+int getopt_long(int argc,
+                char * const argv[],
+                const char *optstring,
+                const struct option *longopts,
+                int *longindex)
+{
+int i;
+int length;
+if ( (optind > 0) && (optind < argc) &&
+     (strncmp(argv[optind],"--",2) == 0) &&
+     (argv[optind][2] != '\0') ) {
+        for (i = 0; longopts[i].name != NULL; i++) {
+                length = strlen(longopts[i].name);
+                if (strncmp(argv[optind]+2,longopts[i].name,length) == 0) {
+                        if ( (longopts[i].has_arg == no_argument) && (argv[optind][2+length] == '\0') ) {
+                                optind++;
+                                return longopts[i].val;
+                        }
+                else if ( (longopts[i].has_arg == required_argument) && (argv[optind][2+length] == '=') ) {
+                        optarg=argv[optind]+3+length;
+                        optind++;
+                        return longopts[i].val;
+                        }
+                else if ( (longopts[i].has_arg == required_argument) && (argv[optind][2+length] == '\0') ) {
+                        optarg=argv[optind+1];
+                        optind+=2;
+                        return longopts[i].val;
+                        }
+                else if ( (longopts[i].has_arg == optional_argument) && (argv[optind][2+length] == '=') ) {
+                        optarg=argv[optind]+3+length;
+                        optind++;
+                        return longopts[i].val;
+                        }
+                else if ( (longopts[i].has_arg==optional_argument) && (argv[optind][2+length] == '\0') ) {
+                        optind++;
+                        return longopts[i].val;
+                        }
+                }
+        }
+}
+return getopt(argc,argv,optstring);
+}
+
+#endif // HAVE_GETOPT_LONG
+
 int main(int argc, char *argv[])
 {
 	/* Declaration of variables */
@@ -92,6 +168,7 @@ int main(int argc, char *argv[])
 	char * buffer;
 	int i;
 	int c;
+	int errflag = 0;
 	char *path_for_picture=NULL;
 	char *path_for_html=NULL;
 	CONF config;
@@ -123,7 +200,13 @@ int main(int argc, char *argv[])
 				path_for_picture = optarg;
 			}
 			break;
-	}
+		case '?':
+			errflag++;
+		}
+		if (errflag) {
+			usage(argv[0]);
+               		exit (2);
+          	}
 
 	/* get amulesig path */
 
