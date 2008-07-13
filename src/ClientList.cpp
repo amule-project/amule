@@ -1018,7 +1018,7 @@ void CClientList::CleanUpClientList()
 			// Don't delete sources coming from source seeds for 10 mins,
 			// to give them a chance to connect and become a useful source.
 			if (pCurClient->GetSourceFrom() == SF_SOURCE_SEEDS && cur_tick - (uint32)theStats::GetStartTime() < MIN2MS(10)) continue;
-			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
+			if ((pCurClient->GetUploadState() == US_NONE || (pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned()))
 				&& pCurClient->GetDownloadState() == DS_NONE
 				&& pCurClient->GetChatState() == MS_NONE
 				&& pCurClient->GetKadState() == KS_NONE
@@ -1028,7 +1028,7 @@ void CClientList::CleanUpClientList()
 				pCurClient->Disconnected(wxT("Removed during ClientList cleanup."));
 				pCurClient->Safe_Delete(); 
 			} else {
-				if (!(pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())) {
+				if (!(pCurClient->GetUploadState() == US_NONE || (pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned()))) {
 					AddDebugLogLineM(false, logProxy,
 						CFormat(wxT("Debug: Not deleted client %x with up state: %i "))
 							% (long int)pCurClient % pCurClient->GetUploadState());
