@@ -530,10 +530,12 @@ m_SCPD(NULL)
 	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_COMMON_INTERFACE_CONFIG ||
 	    m_serviceType == upnpLib.UPNP_SERVICE_LAYER3_FORWARDING) {
 #endif
+#if 0
 //#warning Delete this code on release.
-		//if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
+		if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
 			// This condition can be used to suspend the parse
 			// of the XML tree.
+#endif
 //#warning Delete this code when m_WanService is no longer used.
 			upnpLib.m_ctrlPoint.SetWanService(this);
 			// Log it
@@ -543,8 +545,8 @@ m_SCPD(NULL)
 			AddDebugLogLineM(true, logUPnP, msg);
 			// Subscribe
 			upnpLib.m_ctrlPoint.Subscribe(*this);
-//#warning Delete this code on release.
 #if 0
+//#warning Delete this code on release.
 		} else {
 			msg.str("");
 			msg << "WAN service detected again: '" <<
@@ -933,7 +935,7 @@ bool CUPnPControlPoint::AddPortMappings(
 	if (!WanServiceDetected()) {
 		msg <<  "UPnP Error: "
 			"CUPnPControlPoint::AddPortMapping: "
-			"Wan Service not detected.";
+			"WAN Service not detected.";
 		AddLogLineM(true, logUPnP, msg);
 		return false;
 	}
@@ -1069,7 +1071,7 @@ bool CUPnPControlPoint::DeletePortMappings(
 	if (!WanServiceDetected()) {
 		msg <<  "UPnP Error: "
 			"CUPnPControlPoint::DeletePortMapping: "
-			"Wan Service not detected.";
+			"WAN Service not detected.";
 		AddLogLineM(true, logUPnP, msg);
 		return false;
 	}
@@ -1520,6 +1522,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		CUPnPSCPD *scpd = new CUPnPSCPD(*this, m_upnpLib,
 			scpdRoot, service.GetAbsSCPDURL());
 		service.SetSCPD(scpd);
+		m_ServiceMap[service.GetAbsEventSubURL()] = &service;
 		msg << "Successfully retrieved SCPD Document for service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
 			service.GetAbsEventSubURL() << ".";
@@ -1534,7 +1537,6 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 			service.GetTimeoutAddr(),
 			service.GetSID());
 		if (errcode == UPNP_E_SUCCESS) {
-			m_ServiceMap[service.GetAbsEventSubURL()] = &service;
 			msg << "Successfully subscribed to service " <<
 				service.GetServiceType() << ", absEventSubURL: " <<
 				service.GetAbsEventSubURL() << ".";
@@ -1563,8 +1565,10 @@ error:
 void CUPnPControlPoint::Unsubscribe(CUPnPService &service)
 {
 	ServiceMap::iterator it = m_ServiceMap.find(service.GetAbsEventSubURL());
-	m_ServiceMap.erase(it);
-	UpnpUnSubscribe(m_UPnPClientHandle, service.GetSID());
+	if (it != m_ServiceMap.end()) {
+		m_ServiceMap.erase(it);
+		UpnpUnSubscribe(m_UPnPClientHandle, service.GetSID());
+	}
 }
 
 
