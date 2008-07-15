@@ -33,6 +33,8 @@ Version 2.2.2 - Whatever comes next.
 		* Changed the UPnP code to allow the use of a service without
 		  having successfully subscribed to it. That should be enough
 		  to deal with some lazy router implementations.
+		* Do not unregister if no service is found
+		* Save the found service even if subscription has failed
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation
@@ -44,6 +46,9 @@ Version 2.2.2 - Whatever comes next.
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
+
+	xor:
+	                * Fix window resize problem on Mac OS X
 
 --------------------------------------------------------------------------------
 
