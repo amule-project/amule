@@ -93,6 +93,9 @@ Version 2.2.2 - Whatever comes next.
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
 
+	xor:
+		* Fix window resize problem on Mac OS X
+
 --------------------------------------------------------------------------------
 
 Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.

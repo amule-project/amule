@@ -188,16 +188,6 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
 	wxInitAllImageHandlers();
 	Apply_Clients_Skin();
-	
-	bool override_where = where != wxDefaultPosition;
-	bool override_size =
-		dlg_size.x != DEFAULT_SIZE_X ||
-		dlg_size.y != DEFAULT_SIZE_Y;
-	if (!LoadGUIPrefs(override_where, override_size)) {
-		// Prefs not loaded for some reason, exit
-		AddLogLineM( true, wxT("Error! Unable to load Preferences") );
-		return;
-	}
 
 #ifdef __WXMSW__
 	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
@@ -255,6 +245,16 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	Create_Toolbar(thePrefs::VerticalToolbar());
 	SetActiveDialog(DT_TRANSFER_WND, m_transferwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true );
+
+	bool override_where = (where != wxDefaultPosition);
+	bool override_size = (
+		(dlg_size.x != DEFAULT_SIZE_X) ||
+		(dlg_size.y != DEFAULT_SIZE_Y) );
+	if (!LoadGUIPrefs(override_where, override_size)) {
+		// Prefs not loaded for some reason, exit
+		AddLogLineM( true, wxT("Error! Unable to load Preferences") );
+		return;
+	}
 
 	m_is_safe_state = true;
 
