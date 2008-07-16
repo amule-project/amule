@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-16 03:30+0200\n"
-"PO-Revision-Date: 2008-07-12 08:41+0300\n"
+"POT-Creation-Date: 2008-07-16 16:38+0300\n"
+"PO-Revision-Date: 2008-07-13 12:38+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1545,7 +1545,7 @@ msgstr "Türgi"
 
 #: src/Preferences.cpp:822 src/muuli_wdr.cpp:2223
 msgid "- default -"
-msgstr ""
+msgstr "- vaikimisi -"
 
 #: src/Preferences.cpp:838
 msgid "User:"
@@ -1992,7 +1992,7 @@ msgstr "Turvalisus"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Liides"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
@@ -2000,7 +2000,7 @@ msgstr "Puhverserver"
 
 #: src/PrefsUnifiedDlg.cpp:177
 msgid "Filters"
-msgstr ""
+msgstr "Filtrid"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2012,7 +2012,7 @@ msgstr "Online Allkiri"
 
 #: src/PrefsUnifiedDlg.cpp:180
 msgid "Advanced"
-msgstr ""
+msgstr "Muud"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2096,7 +2096,7 @@ msgid ""
 msgstr ""
 "Serverite automaatse värskendamise loetelu on tühi.\n"
 "Palun sisesta vähemalt üks server.met faili asukoha kehtiv URL.\n"
-"URL sisestamiseks kliki nupule 'Loetelu'."
+"URL sisestamiseks kliki nupule 'Loend'."
 
 #: src/PrefsUnifiedDlg.cpp:816
 msgid "Temporary files"
@@ -2971,7 +2971,7 @@ msgstr "Kokku Kasutajaid: %s | Kokku Faile: %s"
 
 #: src/DownloadListCtrl.cpp:187
 msgid "Part"
-msgstr ""
+msgstr "Osa"
 
 #: src/DownloadListCtrl.cpp:190 src/ClientListCtrl.cpp:520
 msgid "Transferred"
@@ -5017,7 +5017,7 @@ msgstr "See on see nimi mida teised näevad kui sinuga ühenduvad."
 
 #: src/muuli_wdr.cpp:1594
 msgid "Language: "
-msgstr ""
+msgstr "Keel: "
 
 #: src/muuli_wdr.cpp:1595 src/muuli_wdr.cpp:1629 src/muuli_wdr.cpp:1633
 #: src/muuli_wdr.cpp:1637
@@ -5073,11 +5073,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1628
 msgid "Tooltip delay time: "
-msgstr ""
+msgstr "Abitekstide viide sekundites: "
 
 #: src/muuli_wdr.cpp:1636
 msgid "seconds"
-msgstr ""
+msgstr "sekundit"
 
 #: src/muuli_wdr.cpp:1642
 msgid "Browser Selection"
@@ -5206,7 +5206,7 @@ msgstr "Käivitamisel värskenda automaatselt serverite nimekirja"
 
 #: src/muuli_wdr.cpp:1863
 msgid "List"
-msgstr "Loetelu"
+msgstr "Loend"
 
 #: src/muuli_wdr.cpp:1868
 msgid "Update server list when connecting to a server"
@@ -5457,7 +5457,7 @@ msgstr "Serveriühenduse värskenadamise intervall: Ei kasuta"
 
 #: src/muuli_wdr.cpp:2218
 msgid "Skin to use: "
-msgstr ""
+msgstr "Kasutatav rüü: "
 
 #: src/muuli_wdr.cpp:2230
 msgid "Show \"Fast eD2k Links Handler\" in every window."
@@ -5891,7 +5891,7 @@ msgstr "Muuda Online Allkirja värskendamise (sekundites) sagedust."
 
 #: src/muuli_wdr.cpp:3072
 msgid "Save online signature file in: "
-msgstr ""
+msgstr "Salvesta online ollkirja fail: "
 
 #: src/muuli_wdr.cpp:3079
 msgid ""
@@ -5926,7 +5926,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3120
 msgid "Show received messages in the log"
-msgstr ""
+msgstr "Näita logis saabunud teateid"
 
 #: src/muuli_wdr.cpp:3125
 msgid "Comments"
@@ -7086,39 +7086,3 @@ msgstr "Sõprade faili 'emfriends.met' avamine lugemiseks ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
-
-#~ msgid "Message Filter"
-#~ msgstr "Teadete Filter"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "GUI Optimeerimine"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "Tuuma Optimiseerimine"
-
-#~ msgid "Language"
-#~ msgstr "Keel"
-
-#~ msgid "Tooltip Delay Time in secs"
-#~ msgstr "Abitekstide viide sekundites"
-
-#~ msgid "Show part file number before file name"
-#~ msgstr "Näita osafaili numbrit enne failinime"
-
-#~ msgid "Skin Support"
-#~ msgstr "Rüüde tugi"
-
-#~ msgid "- no skins available -"
-#~ msgstr "- rüüd pole saadaval -"
-
-#~ msgid "Other"
-#~ msgstr "Muu"
-
-#~ msgid "Online Signature Directory:"
-#~ msgstr "Online Allkirja asukoha kataloog:"
-
-#~ msgid "Show messages in log"
-#~ msgstr "Näita logis teateid"
-
-#~ msgid "Filtering Options:"
-#~ msgstr "Filtreerimise valikud:"
