@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-13 03:30+0200\n"
+"POT-Creation-Date: 2008-07-16 03:30+0200\n"
 "PO-Revision-Date: 2008-07-03 12:01+0100\n"
 "Last-Translator: Festor Wailon Dacoba <festor90@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -1748,21 +1748,21 @@ msgstr "¿Estás seguro de que queres borrar os servidores seleccionados?"
 msgid "Disabled [%s]"
 msgstr "Desactivado [%s]"
 
-#: src/amuleDlg.cpp:223
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Este é aMule %s basado en eMule"
 
-#: src/amuleDlg.cpp:225
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "Executando en %s"
 
-#: src/amuleDlg.cpp:227
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "Visita http://www.amule.org por se existe algunha nova versión."
 
-#: src/amuleDlg.cpp:250
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "ERRO GRAVE: Non se puido crear o temporizador"
 

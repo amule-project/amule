@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-13 03:30+0200\n"
+"POT-Creation-Date: 2008-07-16 03:30+0200\n"
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -1722,22 +1722,22 @@ msgstr "Er du viss på at du vil slette dei valde tenarane?"
 msgid "Disabled [%s]"
 msgstr "Deaktivert [%s]"
 
-#: src/amuleDlg.cpp:223
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Dette er aMule %s basert på eMule."
 
-#: src/amuleDlg.cpp:225
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "Køyrer på %s"
 
-#: src/amuleDlg.cpp:227
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr ""
 "Vitje http://www.amule.org for å sjekke om ei ny utgåve er tilgjengeleg."
 
-#: src/amuleDlg.cpp:250
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "FATAL FEIL: Greidde ikkje å lage tidtakar"
 

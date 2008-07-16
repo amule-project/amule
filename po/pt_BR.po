@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-13 03:30+0200\n"
+"POT-Creation-Date: 2008-07-16 03:30+0200\n"
 "PO-Revision-Date: 2008-06-13 17:15-0300\n"
 "Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
@@ -1726,21 +1726,21 @@ msgstr "Deseja remover o servidores selecionados?"
 msgid "Disabled [%s]"
 msgstr "Desativado [%s]"
 
-#: src/amuleDlg.cpp:223
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Esse é o aMule %s, baseado no eMule"
 
-#: src/amuleDlg.cpp:225
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "Executando em %s"
 
-#: src/amuleDlg.cpp:227
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "Visite http://www.amule.org para ver se há nova versão disponível."
 
-#: src/amuleDlg.cpp:250
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "ERRO FATAL: Falha ao criar Timer"
 

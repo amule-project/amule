@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-13 03:30+0200\n"
+"POT-Creation-Date: 2008-07-16 03:30+0200\n"
 "PO-Revision-Date: 2008-06-08 23:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -1704,21 +1704,21 @@ msgstr "您确定要删除已选的服务器吗？"
 msgid "Disabled [%s]"
 msgstr "已禁用 [%s]"
 
-#: src/amuleDlg.cpp:223
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "这是基于eMule的aMule %s。"
 
-#: src/amuleDlg.cpp:225
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "运行于%s"
 
-#: src/amuleDlg.cpp:227
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "访问 http://www.amule.org 可查看是否有新版本"
 
-#: src/amuleDlg.cpp:250
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "致命错误：创建计时器失败"
 
