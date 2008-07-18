@@ -43,12 +43,13 @@ Version 2.2.2 - Whatever comes next.
 		* Fixed free disc space check
 		* Sanity check before writing nodes.dat - don't write it 
 		  if there are less than 25 contacts
+		* Download List sorted on startup
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
 
 	xor:
-	                * Fix window resize problem on Mac OS X
+		* Fix window resize problem on Mac OS X
 
 --------------------------------------------------------------------------------
 
