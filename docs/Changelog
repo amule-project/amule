@@ -1,4 +1,3 @@
-
 Version 2.2.2 - Whatever comes next.
 ----------
 2008-07-??
@@ -37,6 +36,8 @@ Version 2.2.2 - Whatever comes next.
 		* Do not unregister if no service is found
 		* Save the found service even if subscription has failed
 		* Fix for initialization of "resultstr" in cryptopp.m4.
+		* Fix for message "Duplicate partfile with hash..." in
+		  DonwloadQueue.cpp. It was using deleted corrupted data.
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation
