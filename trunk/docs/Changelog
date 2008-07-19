@@ -29,6 +29,8 @@ Version 2.x.x - The river knows.
 
 	Phoenix:
 		* Fix for initialization of "resultstr" in cryptopp.m4.
+		* Fix for message "Duplicate partfile with hash..." in
+		  DonwloadQueue.cpp. It was using deleted corrupted data.
 
 	Stu Redman:
 		* Sort DownloadListCtrl on startup

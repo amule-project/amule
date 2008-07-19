@@ -129,27 +129,21 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 	// Load part-files	
 	for ( size_t i = 0; i < files.size(); i++ ) {
 		printf("\rLoading PartFile %u of %u", (unsigned int)(i + 1), (unsigned int)files.size());
-			
 		fileName = files[i].GetFullName();
-		
-		CPartFile* toadd = new CPartFile();
-		bool result = (toadd->LoadPartFile(path, fileName) != 0);
+		CPartFile *toadd = new CPartFile();
+		bool result = toadd->LoadPartFile(path, fileName) != 0;
 		if (!result) {
 			// Try from backup
-			result = (toadd->LoadPartFile(path, fileName, true) != 0);
+			result = toadd->LoadPartFile(path, fileName, true) != 0;
 		}
-		
 		if (result && !IsFileExisting(toadd->GetFileHash())) {
 			{
 				wxMutexLocker lock(m_mutex);
 				m_filelist.push_back(toadd);
 			}
-		
-			NotifyObservers( EventType( EventType::INSERTED, toadd ) );
+			NotifyObservers(EventType(EventType::INSERTED, toadd));
 			Notify_DownloadCtrlAddFile(toadd);
 		} else {
-			delete toadd;
-			
 			wxString msg;
 			if (result) {
 				msg << CFormat(wxT("WARNING: Duplicate partfile with hash '%s' found, skipping: %s"))
@@ -160,14 +154,15 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 					_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
 				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName;
 			}
-			
 			AddDebugLogLineM(true, logPartFile, msg);
 			
 			// Newline so that the error stays visible.
 			printf(": %s\n", (const char*)unicode2char(msg));
+
+			// Delete the partfile object in the end.
+			delete toadd;
 		}
 	}
-
 	printf("\nAll PartFiles Loaded.\n");
 	
 	if ( GetFileCount() == 0 ) {
