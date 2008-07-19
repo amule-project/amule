@@ -85,7 +85,6 @@ Version 2.2.2 - Whatever comes next.
 		* Fix for message "Duplicate partfile with hash..." in
 		  DonwloadQueue.cpp. It was using deleted corrupted data.
 
-
 	Stu Redman:
 		* Scanner fix for MSVC compilation
 		* Fixed crash when progress bar was resized to zero width
