@@ -27,6 +27,9 @@ Version 2.x.x - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
+	Phoenix:
+		* Fix for initialization of "resultstr" in cryptopp.m4.
+
 	Stu Redman:
 		* Sort DownloadListCtrl on startup
 		* Sort source list on opening and add file name to A4AF files
