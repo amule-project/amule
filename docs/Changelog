@@ -27,11 +27,6 @@ Version 2.x.x - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
-	Phoenix:
-		* Fix for initialization of "resultstr" in cryptopp.m4.
-		* Fix for message "Duplicate partfile with hash..." in
-		  DonwloadQueue.cpp. It was using deleted corrupted data.
-
 	Stu Redman:
 		* Sort DownloadListCtrl on startup
 		* Sort source list on opening and add file name to A4AF files
@@ -86,6 +81,10 @@ Version 2.2.2 - Whatever comes next.
 		* Changed the UPnP code to allow the use of a service without
 		  having successfully subscribed to it. That should be enough
 		  to deal with some lazy router implementations.
+		* Fix for initialization of "resultstr" in cryptopp.m4.
+		* Fix for message "Duplicate partfile with hash..." in
+		  DonwloadQueue.cpp. It was using deleted corrupted data.
+
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation
