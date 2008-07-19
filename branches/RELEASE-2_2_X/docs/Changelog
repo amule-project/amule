@@ -1,3 +1,4 @@
+
 Version 2.2.2 - Whatever comes next.
 ----------
 2008-07-??
@@ -35,6 +36,7 @@ Version 2.2.2 - Whatever comes next.
 		  to deal with some lazy router implementations.
 		* Do not unregister if no service is found
 		* Save the found service even if subscription has failed
+		* Fix for initialization of "resultstr" in cryptopp.m4.
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation
