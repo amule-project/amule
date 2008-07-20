@@ -47,6 +47,7 @@ const wxPen& CMuleColour::GetPen(int width, int style) const
 		std::map<uint32_t, wxPen*>::iterator it = wxPenCache.find(hash);
 		if (it != wxPenCache.end()) {
 			result = it->second;
+			m_cachedpen = result;
 		} else {
 			result = wxThePenList->FindOrCreatePen(wxColour(m_red, m_green, m_blue), width, style);
 			m_cachedpen = result;
@@ -72,6 +73,7 @@ const wxBrush& CMuleColour::GetBrush(int style) const
 		std::map<uint32_t, wxBrush*>::iterator it = wxBrushCache.find(hash);
 		if (it != wxBrushCache.end()) {
 			result = it->second;
+			m_cachedbrush = result;
 		} else {
 			result = wxTheBrushList->FindOrCreateBrush(wxColour(m_red, m_green, m_blue), style);
 			m_cachedbrush = result;
