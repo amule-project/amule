@@ -43,7 +43,7 @@ const wxPen& CMuleColour::GetPen(int width, int style) const
 	if (m_cachedpen && (m_cachedpen->GetWidth() == width) && (m_cachedpen->GetStyle() == style)) {
 		result = m_cachedpen;
 	} else {
-		const uint32_t hash = ((width & 0xF) << 28) | ((style & 0xF) << style) | (GetULong() & 0xFFFFFF);
+		const uint32_t hash = ((width & 0xF) << 28) | ((style & 0xF) << 24) | (GetULong() & 0xFFFFFF);
 		std::map<uint32_t, wxPen*>::iterator it = wxPenCache.find(hash);
 		if (it != wxPenCache.end()) {
 			result = it->second;
@@ -68,7 +68,7 @@ const wxBrush& CMuleColour::GetBrush(int style) const
 	if (m_cachedbrush && (m_cachedbrush->GetStyle() == style)) {
 		result = m_cachedbrush;
 	} else {
-		const uint32_t hash = ((style & 0xF) << style) | (GetULong() & 0xFFFFFF);
+		const uint32_t hash = ((style & 0xF) << 24) | (GetULong() & 0xFFFFFF);
 		std::map<uint32_t, wxBrush*>::iterator it = wxBrushCache.find(hash);
 		if (it != wxBrushCache.end()) {
 			result = it->second;
