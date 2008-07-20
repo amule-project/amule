@@ -2639,7 +2639,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 	const BitVector& reqstatus = forClient->GetPartStatus();
 	bool KnowNeededParts = !reqstatus.empty();
 	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
-	if (reqstatus.size() != GetPartCount()) {
+	if (KnowNeededParts && (reqstatus.size() != GetPartCount())) {
 		// Yuck. Same file but different part count? Seriously fucked up.
 		AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Impossible situation: different partcounts for the same part file: %i (client) and %i (file)"),reqstatus.size(),GetPartCount()));
 		return NULL;
