@@ -931,12 +931,14 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 	
 				// Handle differently depending on whether packed or not
 				if (!packed) {
+					// security sanitize check
+					if (nEndPos > cur_block->block->EndOffset) {
+						AddDebugLogLineM(false, logRemoteClient, CFormat(wxT("Received Blockpacket exceeds requested boundaries (requested end: %u, Part: %u, received end: %u, Part: %u), file: %s remote IP: %s")) % cur_block->block->EndOffset % (uint32)(cur_block->block->EndOffset / PARTSIZE) % nEndPos % (uint32)(nEndPos / PARTSIZE) % m_reqfile->GetFileName() % Uint32toStringIP(GetIP()));
+						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+						return;
+					}
 					// Write to disk (will be buffered in part file class)
-					lenWritten = m_reqfile->WriteToBuffer( size - header_size, 
-														   (byte*)(packet + header_size),
-														   nStartPos,
-														   nEndPos,
-														   cur_block->block );
+					lenWritten = m_reqfile->WriteToBuffer( size - header_size, (byte*)(packet + header_size), nStartPos, nEndPos, cur_block->block );
 				} else {
 					// Packed
 					wxASSERT( (long int)size > 0 );
