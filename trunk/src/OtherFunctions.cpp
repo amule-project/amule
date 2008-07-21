@@ -500,7 +500,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
  *
  * Base64 encoding/decoding command line filter
  *
- * Copyright (c) 2002 Matthias Gaertner 29.06.2002
+ * Copyright (c) 2002-2008 Matthias Gaertner
  * Adapted by (C) 2005-2008 Phoenix to use wxWidgets.
  *
  */

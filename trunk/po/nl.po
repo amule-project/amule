@@ -1,6 +1,6 @@
 # translation of nl.po to Dutch
 # aMule i18n resource file.
-# Copyright (C) 2004 aMule Team
+# Copyright (c) 2003-2008 aMule Team
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.

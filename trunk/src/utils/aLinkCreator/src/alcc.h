@@ -5,7 +5,7 @@
 ///
 /// Author:       ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (C) 2004 by ThePolish
+/// Copyright (c) 2004-2008 ThePolish
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by

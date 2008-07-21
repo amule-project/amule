@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2007-2008 Johannes Krampf <wuischke@amule.org>
+// Copyright (c) 2007-2008 Johannes Krampf ( wuischke@amule.org )
 //
 // Other code by:
 //

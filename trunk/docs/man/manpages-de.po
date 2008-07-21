@@ -1,6 +1,5 @@
 # translation of manpages-de.po to
 # SOME DESCRIPTIVE TITLE
-# Copyright (C) 2007 Free Software Foundation, Inc.
 #
 # Werner Mahr <werner@vollstreckernet.de>, 2007.
 msgid ""

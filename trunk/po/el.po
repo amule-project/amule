@@ -1,5 +1,4 @@
 # Greek translations for aMule.
-# Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as aMule.
 # Dimitrios Galanakis <dgalanak@yahoo.com>, 2007.
 #

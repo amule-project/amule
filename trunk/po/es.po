@@ -1,5 +1,5 @@
 # translation of es.po to Spanish
-# Copyright (C) 2004 aMule Team
+# Copyright (c) 2003-2008 aMule Team
 # This file is distributed under the terms of the GNU General Public
 # License
 #

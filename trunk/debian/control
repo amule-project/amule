@@ -2,8 +2,8 @@ Source: amule
 Section: net
 Priority: optional
 Maintainer: Vollstrecker <amule@vollstreckernet.de>
-Build-Depends: debhelper (>= 5.0.0), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline5-dev, libgeoip-dev, libupnp-dev, binutils-dev
-Standards-Version: 3.7.2.2
+Build-Depends: debhelper (>= 5.0.0), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline5-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev
+Standards-Version: 3.8.0.1
 
 Package: amule
 Architecture: any

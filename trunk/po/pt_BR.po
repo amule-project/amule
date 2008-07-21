@@ -6,7 +6,7 @@
 # Israel Rodrigo Faria <israel.faria@gmail.com>, 2007.
 # Fabio Junior Beneditto <fabiobeneditto@uol.com.br>, 2008.
 # aMule i18n resource file.
-# Copyright (C) 2004 aMule Team
+# Copyright (c) 2003-2008 aMule Team
 # This file is distributed under the same license as the aMule package.
 msgid ""
 msgstr ""

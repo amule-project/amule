@@ -32,8 +32,10 @@ Version 2.x.x - The river knows.
 		* Sort source list on opening and add file name to A4AF files
 
 	Vollstrecker:
-		* Made possible to deactivate xas
-		* Unify copyright lines
+		* Make Themes and Skins selectable for install
+		* Let ed2k register itself in browsers
+		* Colorize Logger
+		* Port cas to wx for drop of long_opt hack and l10n
 
 	Wuischke:
 		* Simplify browser selection
@@ -92,6 +94,11 @@ Version 2.2.2 - Whatever comes next.
 		* Fixed free disc space check
 		* Sanity check before writing nodes.dat - don't write it 
 		  if there are less than 25 contacts
+
+	Vollstrecker:
+		* Made possible to deactivate xas
+		* Various Updates in debian/ see debian/changelog
+		* Unify copyright lines
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek

@@ -5,7 +5,7 @@
 ///
 /// Author:       ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (C) 2004 by ThePolish
+/// Copyright (c) 2004-2008 ThePolish
 ///
 /// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.icomania.com
 ///

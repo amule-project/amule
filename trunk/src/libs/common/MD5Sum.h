@@ -1,7 +1,7 @@
 // This file is part of the aMule Project.
  /* 
  Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
- Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
+ Copyright (c) 1991-2, RSA Data Security, Inc. Created 1991. All
  rights reserved.
 
  License to copy and use this software is granted provided that it

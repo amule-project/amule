@@ -8,7 +8,7 @@
 # a UTF-8:
 # 	msgconv -t UTF-8 gl.po > gl.po.new && mv gl.po.new gl.po
 # Onde gl.po é o ficheiro que estades a traducir.
-# Copyright (C) YEAR aMule Team.
+# Copyright (c) 2003-2008 aMule Team.
 #
 # Josemari Rodríguez Gutiérrez <thorerocs@hotmail.com>, 2004.
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.

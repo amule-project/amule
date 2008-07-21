@@ -28,7 +28,7 @@
 
 /*
  ---------------------------------------------------------------------------
- Copyright (c) 2002, Dr Brian Gladman <brg@gladman.me.uk>, Worcester, UK.
+ Copyright (c) 2002-2008 Dr Brian Gladman ( brg@gladman.me.uk )
  All rights reserved.
 
  LICENSE TERMS
