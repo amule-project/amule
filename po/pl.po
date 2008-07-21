@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-16 03:30+0200\n"
+"POT-Creation-Date: 2008-07-21 03:30+0200\n"
 "PO-Revision-Date: 2008-07-11 14:13+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -58,34 +58,34 @@ msgstr "Sukces! Nawiązano połączenie z aMule"
 msgid "Succeeded! Connection established."
 msgstr "Sukces! Nawiązano połączenie."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3861
 msgid "Hashing"
 msgstr "Tworzenie skrótu"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3867
 msgid "Completing"
 msgstr "Zakańczanie"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3852
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3870
 msgid "Complete"
 msgstr "Ukończono"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3855
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3873
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
 msgid "Paused"
 msgstr "Wstrzymano"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3858
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3876
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
 msgid "Erroneous"
 msgstr "Błędne"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3865
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3883
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
 msgid "Downloading"
 msgstr "Pobieranie"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3867
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3885
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
 msgid "Waiting"
 msgstr "Czeka"
@@ -2921,7 +2921,7 @@ msgid "The specified userhash is not valid!"
 msgstr "Wybrany skrót użytkownika jest niepoprawny!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:194
-#: src/PartFile.cpp:3911 src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3929 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Źródła"
 
@@ -3011,7 +3011,7 @@ msgstr "Prędkość"
 msgid "Progress"
 msgstr "Postęp"
 
-#: src/DownloadListCtrl.cpp:196 src/PartFile.cpp:3913
+#: src/DownloadListCtrl.cpp:196 src/PartFile.cpp:3931
 #: src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Status"
@@ -3328,38 +3328,38 @@ msgstr ""
 "BŁĄD: Nie można utworzyć skrótu pobranej części - zestaw skrótów "
 "niekompletny (%s). Nie powinno do tego dojść"
 
-#: src/PartFile.cpp:3069
+#: src/PartFile.cpp:3087
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "UWAGA: Niewystarczająca ilość wolnego miejsca! Wstrzymywanie pliku: %s"
 
-#: src/PartFile.cpp:3154
+#: src/PartFile.cpp:3172
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Pobrana część %i jest uszkodzona w pliku: %s"
 
-#: src/PartFile.cpp:3197
+#: src/PartFile.cpp:3215
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Odzyskano uszkodzoną część %i dla %s -> Zapisanych bajtów: %s"
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3863
 msgid "Allocating"
 msgstr "Alokuję"
 
-#: src/PartFile.cpp:3861
+#: src/PartFile.cpp:3879
 msgid "Insufficient disk space"
 msgstr "Niewystarczająca ilość przestrzeni dyskowej"
 
-#: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3890 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
 msgstr "Zatrzymany"
 
-#: src/PartFile.cpp:3910
+#: src/PartFile.cpp:3928
 msgid "Downloaded"
 msgstr "Pobrano"
 
-#: src/PartFile.cpp:4143
+#: src/PartFile.cpp:4161
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "BŁĄD: Nie udało się otworzyć pliku części '%s'"
@@ -3503,7 +3503,7 @@ msgstr "BŁĄD: nieprawidłowe gniazdo przy sprawdzaniu timeouta"
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Próba połączenia z %s (%s:%i) przedawniła się."
 
-#: src/DownloadQueue.cpp:160
+#: src/DownloadQueue.cpp:154
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
@@ -3511,11 +3511,11 @@ msgstr ""
 "BŁĄD: Załadowanie pliku kopii zapasowej nieudane. Poszukaj na http://forum."
 "amule.org sposobów odzyskiwania .part.met."
 
-#: src/DownloadQueue.cpp:174
+#: src/DownloadQueue.cpp:169
 msgid "No part files found"
 msgstr "Nie znaleziono plików z częściami"
 
-#: src/DownloadQueue.cpp:176
+#: src/DownloadQueue.cpp:171
 #, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
@@ -3523,45 +3523,45 @@ msgstr[0] "Znaleziono %u plik części"
 msgstr[1] "Znaleziono %u pliki części"
 msgstr[2] "Znaleziono %u plików części"
 
-#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1392
+#: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1387
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr "System plików katalogu Temp nie obsługuje dużych plików."
 
-#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1395
+#: src/DownloadQueue.cpp:230 src/DownloadQueue.cpp:1390
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr "System plików katalogu Incoming nie obsługuje dużych plików."
 
-#: src/DownloadQueue.cpp:344
+#: src/DownloadQueue.cpp:339
 #, c-format
 msgid "Downloading %s"
 msgstr "Pobieranie %s"
 
-#: src/DownloadQueue.cpp:352
+#: src/DownloadQueue.cpp:347
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Starasz się już pobierać plik '%s'"
 
-#: src/DownloadQueue.cpp:364
+#: src/DownloadQueue.cpp:359
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Masz już ten plik '%s'"
 
-#: src/DownloadQueue.cpp:369
+#: src/DownloadQueue.cpp:364
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Starasz się już pobierać plik %s"
 
-#: src/DownloadQueue.cpp:1326
+#: src/DownloadQueue.cpp:1321
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Nie można skonwertować magnet linka do eD2k: %s"
 
-#: src/DownloadQueue.cpp:1334
+#: src/DownloadQueue.cpp:1329
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Nieznany protokół linku: %s"
 
-#: src/DownloadQueue.cpp:1355
+#: src/DownloadQueue.cpp:1350
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Nieprawidłowy link eD2k! BŁĄD: %s"
