@@ -466,12 +466,12 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		_("Forum: http://forum.amule.org \n") << 
 		_("FAQ: http://wiki.amule.org \n\n") <<
 		_("Contact: admin@amule.org (administrative issues) \n") <<
-		_("Copyright (C) 2003-2008 aMule Team \n\n") <<
+		_("Copyright (c) 2003-2008 aMule Team \n\n") <<
 		_("Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
-		_("Copyright (C) 2002 Petar Maymounkov\n") <<
+                _(" Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n") <<
 		_("http://kademlia.scs.cs.nyu.edu\n");
-	
+
 	if (m_is_safe_state) {
 		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);
 	}

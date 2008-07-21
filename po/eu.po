@@ -1,6 +1,5 @@
 # translation of eu.po to Euskara
 # translation of source_strings-04-08-2005.po to
-# Copyright (C) 2005-2006, 2007, 2008Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Piarres Beobide <pi@beobide.net>, 2005, 2007, 2008.

@@ -1,5 +1,4 @@
 # Chinese translation of aMule.
-# Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # Chen Nan, 2004.
 # xiaoqiao <29551030@qq.com>, 2007, 2008.

@@ -8,7 +8,7 @@
 # translation of it_CH.po to Italian
 # translation of source_strings.po to
 # aMule i18n resource file.
-# Copyright (C) 2004,2005 aMule Team
+# Copyright (c) 2003-2008 aMule Team
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""

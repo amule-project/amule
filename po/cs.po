@@ -1,5 +1,4 @@
 # Czech aMule 2.2.1 translation
-# Copyright (C) 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # David Watzke <david@watzke.cz>, 2007.
 #

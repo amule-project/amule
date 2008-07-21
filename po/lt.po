@@ -1,7 +1,6 @@
 # translation of lt.po to Lithuanian
 # Dovydas Sankauskas <laisve@gmail.com>, 2006, 2007, 2008.
 # Dovydas Sankauskas <dovydas@pasaka>, 2006.
-# Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""

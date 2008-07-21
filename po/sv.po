@@ -1,5 +1,4 @@
 # Swedish tranlation for aMule
-# Copyright (C) 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the amule package.
 # Daniel Nylander <po@danielnylander.se>, 2007.
 #

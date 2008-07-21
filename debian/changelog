@@ -1,3 +1,21 @@
+amule (2.2.1+SVN20080717) testing; urgency=low
+
+  * debian/control
+      Adjusted Build-Deps to use libupnp-dev >> 1.6.6
+      Bumped Standards-Version to 3.8.0.1
+
+amule (2.1.3+SVN20080614) testing; urgency=low
+
+  * Renamed Packages to SVN instead of CVS
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 14 Jun 2008  15:51:02 +0100
+
+amule (2.2.1) testing; urgency=low
+
+  * New Upstream Stable Release
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 12 Jun 2008  19:32:02 +0100
+
 amule (2.1.3+CVS20080609) testing; urgency=low
 
   * Added dh_clean to clean-target

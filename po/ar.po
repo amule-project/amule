@@ -1,5 +1,5 @@
 # Translation of amule interface to arabic
-# Copyright (C) YEAR aMule Team
+# Copyright (c) 2003-2008 aMule Team
 # This file is distributed under the same license as the PACKAGE package.
 #  saleh alhathal <hathalsal@hotmail.com>, 2004.
 #
