@@ -83,6 +83,8 @@ Version 2.2.2 - Whatever comes next.
 		* Changed the UPnP code to allow the use of a service without
 		  having successfully subscribed to it. That should be enough
 		  to deal with some lazy router implementations.
+		* Do not unregister if no service is found
+		* Save the found service even if subscription has failed
 		* Fix for initialization of "resultstr" in cryptopp.m4.
 		* Fix for message "Duplicate partfile with hash..." in
 		  DonwloadQueue.cpp. It was using deleted corrupted data.
