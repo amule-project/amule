@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 03:30+0200\n"
+"POT-Creation-Date: 2008-07-22 03:31+0200\n"
 "PO-Revision-Date: 2008-06-12 18:58+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -1775,7 +1775,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:469
 msgid ""
-"Copyright (C) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -1788,7 +1788,7 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademliaan: Vertaisreititys perustuen XOR-metriikkaan.\n"
 
 #: src/amuleDlg.cpp:472
-msgid "Copyright (C) 2002 Petar Maymounkov\n"
+msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:473

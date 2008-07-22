@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 03:30+0200\n"
+"POT-Creation-Date: 2008-07-22 03:31+0200\n"
 "PO-Revision-Date: 2008-07-12 10:12-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -1801,11 +1801,9 @@ msgstr "Επικοινωνία: admin@amule.org (διαδικαστικά θέμ
 
 #: src/amuleDlg.cpp:469
 msgid ""
-"Copyright (C) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
-"Πνευματικά δικαιώματα (C) 2003-2008 η ομάδα του aMule \n"
-"\n"
 
 #: src/amuleDlg.cpp:470
 msgid "Part of aMule is based on \n"
@@ -1816,8 +1814,8 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Δρομολόγηση Peer-to-peer βασισμένη στην μετρική XOR.\n"
 
 #: src/amuleDlg.cpp:472
-msgid "Copyright (C) 2002 Petar Maymounkov\n"
-msgstr "Πνευματικά δικαιώματα (C) 2002 Petar Maymounkov\n"
+msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:473
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -7233,6 +7231,16 @@ msgstr "Αποτυχία ανάγνωσης του αρχείου της λίσ�
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Αποτυχία γραψίματος στο αρχείο της λίστας φίλων 'emfriends.met' "
+
+#~ msgid ""
+#~ "Copyright (C) 2003-2008 aMule Team \n"
+#~ "\n"
+#~ msgstr ""
+#~ "Πνευματικά δικαιώματα (C) 2003-2008 η ομάδα του aMule \n"
+#~ "\n"
+
+#~ msgid "Copyright (C) 2002 Petar Maymounkov\n"
+#~ msgstr "Πνευματικά δικαιώματα (C) 2002 Petar Maymounkov\n"
 
 #~ msgid "Show part file number before file name"
 #~ msgstr "Εμφάνιση του αριθμού ημιτελούς αρχείου πριν το όνομα αρχείου"
