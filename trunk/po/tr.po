@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 03:30+0200\n"
+"POT-Creation-Date: 2008-07-22 03:31+0200\n"
 "PO-Revision-Date: 2008-07-16 16:58+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -1768,11 +1768,9 @@ msgstr "İletişim: admin@amule.org (yönetimsel konular) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-"Copyright (C) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (C) 2003-2008 aMule Takımı \n"
-"\n"
 
 #: src/amuleDlg.cpp:470
 msgid "Part of aMule is based on \n"
@@ -1783,8 +1781,8 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr " Kademlia: XOR matrisi üzerine kurulu bire-bir iletişim.\n"
 
 #: src/amuleDlg.cpp:472
-msgid "Copyright (C) 2002 Petar Maymounkov\n"
-msgstr "Copyright (C) 2002 Petar Maymounkov\n"
+msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:473
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -7062,3 +7060,13 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyası okunamıyor!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
+
+#~ msgid ""
+#~ "Copyright (C) 2003-2008 aMule Team \n"
+#~ "\n"
+#~ msgstr ""
+#~ "Copyright (C) 2003-2008 aMule Takımı \n"
+#~ "\n"
+
+#~ msgid "Copyright (C) 2002 Petar Maymounkov\n"
+#~ msgstr "Copyright (C) 2002 Petar Maymounkov\n"

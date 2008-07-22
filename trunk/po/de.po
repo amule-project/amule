@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 03:30+0200\n"
+"POT-Creation-Date: 2008-07-22 03:31+0200\n"
 "PO-Revision-Date: 2008-07-13 12:13+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
@@ -1786,11 +1786,9 @@ msgstr "Kontakt: admin@amule.org (administrative Fragen) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-"Copyright (C) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (C) 2003-2008 aMule Team \n"
-"\n"
 
 #: src/amuleDlg.cpp:470
 msgid "Part of aMule is based on \n"
@@ -1801,8 +1799,8 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Peer-to-peer Weiterleitung basierend auf der XOR Funktion.\n"
 
 #: src/amuleDlg.cpp:472
-msgid "Copyright (C) 2002 Petar Maymounkov\n"
-msgstr "Copyright (C) 2002 Petar Maymounkov\n"
+msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:473
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -7178,6 +7176,16 @@ msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht lesen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht schreiben!"
+
+#~ msgid ""
+#~ "Copyright (C) 2003-2008 aMule Team \n"
+#~ "\n"
+#~ msgstr ""
+#~ "Copyright (C) 2003-2008 aMule Team \n"
+#~ "\n"
+
+#~ msgid "Copyright (C) 2002 Petar Maymounkov\n"
+#~ msgstr "Copyright (C) 2002 Petar Maymounkov\n"
 
 #~ msgid "Message Filter"
 #~ msgstr "Nachrichtenfilter"
