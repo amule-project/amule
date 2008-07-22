@@ -1,4 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -7,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 03:30+0200\n"
+"POT-Creation-Date: 2008-07-22 03:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1735,7 +1736,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:469
 msgid ""
-"Copyright (C) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -1748,7 +1749,7 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:472
-msgid "Copyright (C) 2002 Petar Maymounkov\n"
+msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:473
