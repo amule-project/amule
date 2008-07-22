@@ -86,6 +86,8 @@ Version 2.2.2 - Whatever comes next.
 		* Fix for initialization of "resultstr" in cryptopp.m4.
 		* Fix for message "Duplicate partfile with hash..." in
 		  DonwloadQueue.cpp. It was using deleted corrupted data.
+		* amule_build_install.sh now uses -a flag in unzip so that
+		  cryptopp files are properly converted from DOS text format.
 
 	Stu Redman:
 		* Scanner fix for MSVC compilation

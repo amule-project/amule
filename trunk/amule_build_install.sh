@@ -71,7 +71,7 @@ function untar_distro {
 	    TARCMD="tar jxf"
 	    ;;
 	*.zip)
-	    TARCMD="unzip -o"
+	    TARCMD="unzip -ao"
 	    ;;
     esac
     $TARCMD $1
