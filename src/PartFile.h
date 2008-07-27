@@ -146,7 +146,10 @@ public:
 	const CPath& GetPartMetFileName() const { return m_partmetfilename; }
 	uint64	GetTransferred() const		{ return transferred; }
 	const CPath& GetFullName() const	{ return m_fullname; }
-	float	GetKBpsDown() const		{ return kBpsDown; }
+	// download rate adjusted to total transfer rate
+	float	GetKBpsDown() const;
+	// raw measured download rate
+	float	GetRawKBpsDown() const		{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
 
 #ifndef CLIENT_GUI

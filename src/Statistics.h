@@ -326,6 +326,7 @@ class CStatistics {
 
 	// Other
 	static	void	CalculateRates();
+	static  float	GetDownloadRateAdjust()			{ return s_downloadRateAdjust; }
 
 	static	void	AddReceivedBytes(uint32 bytes)
 		{
@@ -429,6 +430,7 @@ class CStatistics {
 	static	CStatTreeItemCounter*		s_cryptDownOverhead;
 	static	CStatTreeItemNativeCounter*	s_foundSources;
 	static	CStatTreeItemNativeCounter*	s_activeDownloads;
+	static  float                       s_downloadRateAdjust;
 
 	// Connection
 	static	CStatTreeItemReconnects*	s_reconnects;

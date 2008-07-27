@@ -1161,6 +1161,12 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZi
 }
 
 
+float CUpDownClient::GetKBpsDown() const
+{ 
+	return kBpsDown * theStats::GetDownloadRateAdjust(); 
+}
+
+
 // Emilio: rewrite of eMule code to eliminate use of lists for averaging and fix
 // errors in calculation (32-bit rollover and time measurement)  This function 
 // uses a first-order filter with variable time constant (initially very short 

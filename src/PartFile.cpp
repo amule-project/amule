@@ -4056,8 +4056,21 @@ uint32 CPartFile::GetDlActiveTime() const
 	return nDlActiveTime;
 }
 
+#ifdef CLIENT_GUI
 
-#ifndef CLIENT_GUI
+// remote Gui has no adjustment factor transferred yet, so use raw rate
+float CPartFile::GetKBpsDown() const
+{ 
+	return kBpsDown; 
+}
+
+#else
+
+float CPartFile::GetKBpsDown() const
+{ 
+	return kBpsDown * theStats::GetDownloadRateAdjust(); 
+}
+
 
 uint8 CPartFile::GetStatus(bool ignorepause) const
 {
