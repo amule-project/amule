@@ -244,6 +244,8 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Set transfers as active window
 	Create_Toolbar(thePrefs::VerticalToolbar());
 	SetActiveDialog(DT_TRANSFER_WND, m_transferwnd);
+	// Prepare the dialog, sets the splitter-position
+	m_transferwnd->Prepare();
 	m_wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true );
 
 	bool override_where = (where != wxDefaultPosition);
