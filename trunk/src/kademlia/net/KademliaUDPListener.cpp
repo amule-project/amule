@@ -106,17 +106,17 @@ void CKademliaUDPListener::Bootstrap(uint32_t ip, uint16_t port, bool kad2)
 		SendPacket(bio, KADEMLIA2_BOOTSTRAP_REQ, ip, port, 0, NULL);
 	} else {
 		DebugSend(KadBootstrapReq, ip, port);
-		SendMyDetails(KADEMLIA_BOOTSTRAP_REQ, ip, port, kad2, 0, NULL);
+		SendMyDetails(KADEMLIA_BOOTSTRAP_REQ, ip, port, 0, 0, NULL, false);
 	}
 }
 
 // Used by Kad1.0 and Kad2.0
-void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t port, bool kad2, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID)
+void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t port, uint8_t kadVersion, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID, bool requestAckPacket)
 {
 	CMemFile packetdata;
 	packetdata.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
 	
-	if (kad2) {
+	if (kadVersion > 0) {
 		packetdata.WriteUInt16(thePrefs::GetPort());
 		packetdata.WriteUInt8(KADEMLIA_VERSION);
 		// Tag Count.
@@ -124,14 +124,30 @@ void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t p
 		if (!CKademlia::GetPrefs()->GetUseExternKadPort()) {
 			tagCount++;
 		}
+		if (kadVersion >= 8 && (requestAckPacket || CKademlia::GetPrefs()->GetFirewalled() || CUDPFirewallTester::IsFirewalledUDP(true))) {
+			tagCount++;
+		}
 		packetdata.WriteUInt8(tagCount);
 		if (!CKademlia::GetPrefs()->GetUseExternKadPort()) {
 			packetdata.WriteTag(CTagVarInt(TAG_SOURCEUPORT, CKademlia::GetPrefs()->GetInternKadPort()));
+		}
+		if (kadVersion >= 8 && (requestAckPacket || CKademlia::GetPrefs()->GetFirewalled() || CUDPFirewallTester::IsFirewalledUDP(true))) {
+			// if we're firewalled we send this tag, so the other client doesn't add us to his routing table (if UDP firewalled) and for statistics reasons (TCP firewalled)
+			// 5 - reserved (!)
+			// 1 - requesting HELLO_RES_ACK
+			// 1 - TCP firewalled
+			// 1 - UDP firewalled
+			packetdata.WriteTag(CTagVarInt(TAG_KADMISCOPTIONS, (uint8_t)(
+				(requestAckPacket ? 1 : 0) << 2 |
+				(CKademlia::GetPrefs()->GetFirewalled() ? 1 : 0) << 1 |
+				(CUDPFirewallTester::IsFirewalledUDP(true) ? 1 : 0)
+			)));
 		}
 		// packetdata.WriteTag(CKadTagUInt(TAG_USER_COUNT, CKademlia::GetPrefs()->GetKademliaUsers()));
 		// packetdata.WriteTag(CKadTagUInt(TAG_FILE_COUNT, CKademlia::GetPrefs()->GetKademliaFiles()));
 		SendPacket(packetdata, opcode, ip, port, targetKey, cryptTargetID);
 	} else {
+		wxASSERT(!requestAckPacket);
 		packetdata.WriteUInt32(CKademlia::GetPrefs()->GetIPAddress());
 		packetdata.WriteUInt16(thePrefs::GetEffectiveUDPPort());
 		packetdata.WriteUInt16(thePrefs::GetPort());
@@ -250,6 +266,10 @@ void CKademliaUDPListener::ProcessPacket(const uint8_t* data, uint32_t lenData, 
 		case KADEMLIA2_HELLO_RES:
 			DebugRecv(Kad2HelloRes, ip, port);
 			Process2HelloResponse(packetData, lenPacket, ip, port, senderKey, validReceiverKey);
+			break;
+		case KADEMLIA2_HELLO_RES_ACK:
+			DebugRecv(Kad2HelloResAck, ip, port);
+			Process2HelloResponseAck(packetData, lenPacket, ip, validReceiverKey);
 			break;
 		case KADEMLIA_REQ:
 			DebugRecv(KadReq, ip, port);
@@ -378,10 +398,13 @@ void CKademliaUDPListener::ProcessPacket(const uint8_t* data, uint32_t lenData, 
 }
 
 // Used only for Kad1.0
-void CKademliaUDPListener::AddContact(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t port, uint16_t tport, const CKadUDPKey& udpKey, bool ipVerified, bool update)
+bool CKademliaUDPListener::AddContact(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t port, uint16_t tport, const CKadUDPKey& udpKey, bool& ipVerified, bool update, CUInt128* outContactID)
 {
 	CMemFile bio(data, lenData);
 	CUInt128 id = bio.ReadUInt128();
+	if (outContactID != NULL) {
+		*outContactID = id;
+	}
 	bio.ReadUInt32();
 	bio.ReadUInt16();
 	if (tport) {
@@ -391,28 +414,49 @@ void CKademliaUDPListener::AddContact(const uint8_t *data, uint32_t lenData, uin
 	}
 	bio.ReadUInt8();
 	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
-	if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip), port)) {
-		// Ignore stated ip and port, use the address the packet came from
-		CKademlia::GetRoutingZone()->Add(id, ip, port, tport, 0, udpKey, ipVerified, update);
-	}
+	// Ignore stated ip and port, use the address the packet came from
+	return CKademlia::GetRoutingZone()->Add(id, ip, port, tport, 0, udpKey, ipVerified, update, false, true);
 }
 
 // Used only for Kad2.0
-void CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t& port, uint8_t *outVersion, const CKadUDPKey& udpKey, bool ipVerified, bool update)
+bool CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t& port, uint8_t *outVersion, const CKadUDPKey& udpKey, bool& ipVerified, bool update, bool fromHelloReq, bool* outRequestsACK, CUInt128* outContactID)
 {
+	if (outRequestsACK != 0) {
+		*outRequestsACK = false;
+	}
+
 	CMemFile bio(data, lenData);
 	CUInt128 id = bio.ReadUInt128();
+	if (outContactID != NULL) {
+		*outContactID = id;
+	}
 	uint16_t tport = bio.ReadUInt16();
 	uint8_t version = bio.ReadUInt8();
 	if (outVersion != NULL) {
 		*outVersion = version;
 	}
+	bool udpFirewalled = false;
+	bool tcpFirewalled = false;
 	uint8_t tags = bio.ReadUInt8();
 	while (tags) {
 		CTag *tag = bio.ReadTag();
 		if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
 			if (tag->IsInt() && (uint16_t)tag->GetInt() > 0) {
 				port = tag->GetInt();
+			} else {
+				wxFAIL;
+			}
+		} else if (!tag->GetName().Cmp(TAG_KADMISCOPTIONS)) {
+			if (tag->IsInt() && tag->GetInt() > 0) {
+				udpFirewalled = (tag->GetInt() & 0x01) > 0;
+				tcpFirewalled = (tag->GetInt() & 0x02) > 0;
+				if ((tag->GetInt() & 0x04) > 0) {
+					if (outRequestsACK != NULL && version >= 8) {
+						*outRequestsACK = true;
+					} else {
+						wxFAIL;
+					}
+				}
 			} else {
 				wxFAIL;
 			}
@@ -433,7 +477,21 @@ void CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, ui
 		}
 	}
 
-	CKademlia::GetRoutingZone()->Add(id, ip, port, tport, version, udpKey, ipVerified, update);
+	if (fromHelloReq && version >= 8) {
+		// this is just for statistic calculations. We try to determine the ratio of (UDP) firewalled users,
+		// by counting how many of all nodes which have us in their routing table (our own routing table is supposed
+		// to have no UDP firewalled nodes at all) and support the firewalled tag are firewalled themself.
+		// Obviously this only works if we are not firewalled ourself
+		CKademlia::GetPrefs()->StatsIncUDPFirewalledNodes(udpFirewalled);
+		CKademlia::GetPrefs()->StatsIncTCPFirewalledNodes(tcpFirewalled);
+	}
+
+	if (!udpFirewalled) {	// do not add (or update) UDP firewalled sources to our routing table
+		return CKademlia::GetRoutingZone()->Add(id, ip, port, tport, version, udpKey, ipVerified, update, false, true);
+	} else {
+		AddDebugLogLineM(false, logKadRouting, wxT("Not adding firewalled client to routing table (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+		return false;
+	}
 }
 
 // Used only for Kad1.0
@@ -448,10 +506,9 @@ void CKademliaUDPListener::AddContacts(const uint8_t *data, uint32_t lenData, ui
 		uint16_t port = bio.ReadUInt16();
 		uint16_t tport = bio.ReadUInt16();
 		bio.ReadUInt8();
+		bool verified = false;
 		//AddDebugLogLineM(false, logKadMain, wxT("Adding contact(s) with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
-		if (IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip), port)) {
-			routingZone->Add(id, ip, port, tport, 0, 0, false, update);
-		}
+		routingZone->Add(id, ip, port, tport, 0, 0, verified, update, false, false);
 	}
 }
 
@@ -463,7 +520,8 @@ void CKademliaUDPListener::ProcessBootstrapRequest(const uint8_t *packetData, ui
 	CHECK_PACKET_EXACT_SIZE(25);
 
 	// Add the sender to the list of contacts
-	AddContact(packetData, lenPacket, ip, port, 0, 0, false, true);
+	bool verified = false;
+	AddContact(packetData, lenPacket, ip, port, 0, 0, verified, true, NULL);
 
 	// Get some contacts to return
 	ContactList contacts;
@@ -565,7 +623,7 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 	CUInt128 contactID = bio.ReadUInt128();
 	uint16_t tport = bio.ReadUInt16();
 	uint8_t version = bio.ReadUInt8();
-	routingZone->Add(contactID, ip, port, tport, version, senderKey, validReceiverKey, true);
+	routingZone->Add(contactID, ip, port, tport, version, senderKey, validReceiverKey, true, false, false);
 
 	uint16_t numContacts = bio.ReadUInt16();
 	while (numContacts) {
@@ -574,7 +632,8 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 		port = bio.ReadUInt16();
 		tport = bio.ReadUInt16();
 		version = bio.ReadUInt8();
-		routingZone->Add(contactID, ip, port, tport, version, 0, false, false);
+		bool verified = false;
+		routingZone->Add(contactID, ip, port, tport, version, 0, verified, false, false, false);
 		numContacts--;
 	}
 }
@@ -587,11 +646,18 @@ void CKademliaUDPListener::ProcessHelloRequest (const uint8_t *packetData, uint3
 	CHECK_PACKET_EXACT_SIZE(25);
 
 	// Add the sender to the list of contacts
-	AddContact(packetData, lenPacket, ip, port, 0, 0, false, true);
+	bool validReceiverKey = false;
+	CUInt128 contactID;
+	bool addedOrUpdated = AddContact(packetData, lenPacket, ip, port, 0, 0, validReceiverKey, true, &contactID);
 
 	// Send response
 	DebugSend(KadHelloRes, ip, port);	
-	SendMyDetails(KADEMLIA_HELLO_RES, ip, port, false, 0, NULL);
+	SendMyDetails(KADEMLIA_HELLO_RES, ip, port, 0, 0, NULL, false);
+
+	if (addedOrUpdated && !validReceiverKey) {
+		// we need to verify this contact but it doesn't support HELLO_RES_ACK nor keys, do a little workaround
+		SendLegacyChallenge(ip, port, contactID, false);
+	}
 
 	// Check if firewalled
 	if (CKademlia::GetPrefs()->GetRecheckIP()) {
@@ -604,8 +670,10 @@ void CKademliaUDPListener::ProcessHelloRequest (const uint8_t *packetData, uint3
 void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey, bool validReceiverKey)
 {
 	uint16_t dbgOldUDPPort = port;
-	uint8_t contactVersion;
-	AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true); // might change (udp)port
+	uint8_t contactVersion = 0;
+	CUInt128 contactID;
+	bool addedOrUpdated = AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true, true, NULL, &contactID); // might change (udp)port
+	wxASSERT(contactVersion >= 1);
 #ifdef __DEBUG__
 	if (dbgOldUDPPort != port) {
 		AddDebugLogLineM(false, logClientKadUDP, wxT("KadContact ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxString::Format(wxT(" uses his internal (%u) instead external (%u) UDP Port"), port, dbgOldUDPPort));
@@ -613,17 +681,38 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 #endif
 
 	DebugSend(Kad2HelloRes, ip, port);
-	SendMyDetails(KADEMLIA2_HELLO_RES, ip, port, true, senderKey, NULL);
+	// if this contact was added or updated (so with other words not filtered or invalid) to our routing table and did not already send a valid
+	// receiver key or is already verified in the routing table, we request an additional ACK package to complete a three-way-handshake and
+	// verify the remote IP
+	SendMyDetails(KADEMLIA2_HELLO_RES, ip, port, contactVersion, senderKey, NULL, addedOrUpdated && !validReceiverKey);
+
+	if (addedOrUpdated && !validReceiverKey && contactVersion == 7) {
+		// Kad Version 7 doesn't support HELLO_RES_ACK but sender/receiver keys, so send a ping to validate
+		DebugSend(Kad2Ping, ip, port);
+		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
+#ifdef __DEBUG__
+		CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
+		if (contact != NULL) {
+			if (contact->GetType() < 2) {
+				AddDebugLogLineM(false, logClientKadUDP, wxT("Sending (ping) challenge to a long known contact (should be verified already) - ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
+			}
+		} else {
+			wxFAIL;
+		}
+#endif
+	} else if (CKademlia::GetPrefs()->GetExternalKadPort() == 0 && contactVersion > 5) {	// do we need to find out our extern port?
+		DebugSend(Kad2Ping, ip, port);
+		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
+	}
+
+	if (addedOrUpdated && !validReceiverKey && contactVersion < 7) {
+		// we need to verify this contact but it doesn't support HELLO_RES_ACK nor keys, do a little workaround
+		SendLegacyChallenge(ip, port, contactID, true);
+	}
 
 	// Check if firewalled
 	if (CKademlia::GetPrefs()->GetRecheckIP()) {
 		FirewalledCheck(ip, port, senderKey, contactVersion);
-	}
-
-	// do we need to find out our extern port?
-	if (CKademlia::GetPrefs()->GetExternalKadPort() == 0 && contactVersion > 5) {
-		DebugSend(Kad2Ping, ip, port);
-		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
 	}
 }
 
@@ -637,7 +726,35 @@ void CKademliaUDPListener::ProcessHelloResponse(const uint8_t *packetData, uint3
 	CHECK_PACKET_EXACT_SIZE(25);
 
 	// Add or Update contact.
-	AddContact(packetData, lenPacket, ip, port, 0, 0, false, true);
+	bool validReceiverKey = false;
+	CUInt128 contactID;
+	bool addedOrUpdated = AddContact(packetData, lenPacket, ip, port, 0, 0, validReceiverKey, true, &contactID);
+	if (addedOrUpdated && !validReceiverKey) {
+		// even though this is supposably an answer to a request from us, there are still possibilities to spoof
+		// it, as long as the attacker knows that we would send a HELLO_REQ (which in this case is quite often),
+		// so for old Kad Version which doesn't support keys, we need
+		SendLegacyChallenge(ip, port, contactID, false);
+	}
+}
+
+// KADEMLIA2_HELLO_RES_ACK
+// Used in Kad2.0 only
+void CKademliaUDPListener::Process2HelloResponseAck(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, bool validReceiverKey)
+{
+	CHECK_PACKET_MIN_SIZE(17);
+	CHECK_TRACKED_PACKET(KADEMLIA2_HELLO_RES);
+
+	if (!validReceiverKey) {
+		AddDebugLogLineM(false, logClientKadUDP, wxT("Receiver key is invalid! (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+		return;
+	}
+
+	// Additional packet to complete a three-way-handshake, making sure the remote contact is not using a spoofed ip.
+	CMemFile bio(packetData, lenPacket);
+	CUInt128 remoteID = bio.ReadUInt128();
+	if (!CKademlia::GetRoutingZone()->VerifyContact(remoteID, ip)) {
+		AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+	}
 }
 
 // KADEMLIA2_HELLO_RES
@@ -648,7 +765,30 @@ void CKademliaUDPListener::Process2HelloResponse(const uint8_t *packetData, uint
 
 	// Add or Update contact.
 	uint8_t contactVersion;
-	AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true);
+	CUInt128 contactID;
+	bool sendACK = false;
+	bool addedOrUpdated = AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true, false, &sendACK, &contactID);
+
+	if (sendACK) {
+		// the client requested us to send an ACK packet, which proves that we're not a spoofed fake contact
+		// fulfill his wish
+		if (senderKey.IsEmpty()) {
+			// but we don't have a valid sender key - there is no point to reply in this case
+			// most likely a bug in the remote client
+			AddDebugLogLineM(false, logClientKadUDP, wxT("Remote client demands ACK, but didn't send any sender key! (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+		} else {
+			CMemFile packet(17);
+			packet.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
+			packet.WriteUInt8(0);	// no tags at this time
+			DebugSend(Kad2HelloResAck, ip, port);
+			SendPacket(packet, KADEMLIA2_HELLO_RES_ACK, ip, port, senderKey, NULL);
+		}
+	} else if (addedOrUpdated && !validReceiverKey && contactVersion < 7) {
+		// even though this is supposably an answer to a request from us, there are still possibilities to spoof
+		// it, as long as the attacker knows that we would send a HELLO_REQ (which in this case is quite often),
+		// so for old Kad Version which doesn't support keys, we need
+		SendLegacyChallenge(ip, port, contactID, true);
+	}
 
 	// do we need to find out our extern port?
 	if (CKademlia::GetPrefs()->GetExternalKadPort() == 0 && contactVersion > 5) {
@@ -673,7 +813,7 @@ void CKademliaUDPListener::ProcessKademliaRequest(const uint8_t *packetData, uin
 	if (CKademlia::GetPrefs()->GetRecheckIP()) {
 		FirewalledCheck(ip, port, 0, 0);
 		DebugSend(KadHelloReq, ip, port);
-		SendMyDetails(KADEMLIA_HELLO_REQ, ip, port, false, 0, NULL);
+		SendMyDetails(KADEMLIA_HELLO_REQ, ip, port, 0, 0, NULL, false);
 	}
 
 	// Get target and type
@@ -785,13 +925,28 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 	if (CKademlia::GetPrefs()->GetRecheckIP()) {
 		FirewalledCheck(ip, port, 0, 0);
 		DebugSend(KadHelloReq, ip, port);
-		SendMyDetails(KADEMLIA_HELLO_REQ, ip, port, false, 0, NULL);
+		SendMyDetails(KADEMLIA_HELLO_REQ, ip, port, 0, 0, NULL, false);
 	}
 
 	// What search does this relate to
 	CMemFile bio(packetData, lenPacket);
 	CUInt128 target = bio.ReadUInt128();
-	uint16 numContacts = bio.ReadUInt8();
+	uint8_t numContacts = bio.ReadUInt8();
+
+	// Is this one of our legacy challenge packets?
+	CUInt128 contactID;
+	if (IsLegacyChallenge(target, ip, KADEMLIA_REQ, contactID)) {
+		// yup it is, set the contact as verified
+		if (!routingZone->VerifyContact(contactID, ip)) {
+			AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+		}
+#ifdef __DEBUG__
+		else {
+			AddDebugLogLineM(false, logClientKadUDP, wxT("Verified contact with legacy challenge (KadReq) - ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
+		}
+#endif
+		return;	// we do not actually care for its other content
+	}
 
 	// Verify packet is expected size
 	CHECK_PACKET_EXACT_SIZE(16+1 + (16+4+2+2+1)*numContacts);
@@ -807,7 +962,12 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 		uint32_t hostIP = wxUINT32_SWAP_ALWAYS(contactIP);
 		if(::IsGoodIPPort(hostIP, contactPort) && contactPort != 53 /*No DNS Port without encryption*/) {
 			if (!theApp->ipfilter->IsFiltered(hostIP)) {
-				routingZone->AddUnfiltered(id, contactIP, contactPort, tport, 0, 0, false, false);
+				bool verified = false;
+				// we are now setting all version for received contact to "2" which means we assume full Kad2 when adding
+				// the contact to the routing table. If this should be an old Kad1 contact, we won't be able to keep it, but
+				// we avoid having to send double hello packets to the 90% Kad2 nodes
+				// This is the first step of dropping Kad1 support
+				routingZone->AddUnfiltered(id, contactIP, contactPort, tport, 2, 0, verified, false, false, false);
 				results->push_back(new CContact(id, contactIP, contactPort, tport, 0, 0, false, target));
 			}
 		}
@@ -837,6 +997,20 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 	CUInt128 target = bio.ReadUInt128();
 	uint8_t numContacts = bio.ReadUInt8();
 
+	// Is this one of our legacy challenge packets?
+	CUInt128 contactID;
+	if (IsLegacyChallenge(target, ip, KADEMLIA2_REQ, contactID)) {
+		// yup it is, set the contact as verified
+		if (!routingZone->VerifyContact(contactID, ip)) {
+			AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+		}
+#ifdef __DEBUG__
+		else {
+			AddDebugLogLineM(false, logClientKadUDP, wxT("Verified contact with legacy challenge (Kad2Req) - ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
+		}
+#endif
+		return;	// we do not actually care for its other content
+	}
 	// Verify packet is expected size
 	CHECK_PACKET_EXACT_SIZE(16+1 + (16+4+2+2+1)*numContacts);
 
@@ -864,7 +1038,8 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 					// care for IPs and not the random set target
 					CUDPFirewallTester::AddPossibleTestContact(id, contactIP, contactPort, tport, target, version, 0, false);
 				} else {
-					routingZone->AddUnfiltered(id, contactIP, contactPort, tport, version, 0, false, false);
+					bool verified = false;
+					routingZone->AddUnfiltered(id, contactIP, contactPort, tport, version, 0, verified, false, false, false);
 					results->push_back(new CContact(id, contactIP, contactPort, tport, version, 0, false, target));
 				}
 			}
@@ -1986,6 +2161,21 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 	CHECK_PACKET_MIN_SIZE(2);
 	CHECK_TRACKED_PACKET(KADEMLIA2_PING);
 
+	// Is this one of our legacy challenge packets?
+	CUInt128 contactID;
+	if (IsLegacyChallenge(CUInt128((uint32_t)0), ip, KADEMLIA2_PING, contactID)) {
+		// yup it is, set the contact as verified
+		if (!CKademlia::GetRoutingZone()->VerifyContact(contactID, ip)) {
+			AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+		}
+#ifdef __DEBUG__
+		else {
+			AddDebugLogLineM(false, logClientKadUDP, wxT("Verified contact with legacy challenge (Kad2Ping) - ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
+		}
+#endif
+		return;	// we do not actually care for its other content
+	}
+
 	if (CKademlia::GetPrefs()->GetExternalKadPort() == 0) {
 		// the reported port doesn't always have to be our true external port, esp. if we used our intern port
 		// and communicated recently with the client some routers might remember this and assign the intern port as source
@@ -2044,11 +2234,11 @@ bool CKademliaUDPListener::FindNodeIDByIP(CKadClientSearcher* requester, uint32_
 {
 	// send a hello packet to the given IP in order to get a HELLO_RES with the NodeID
 
-	// we will drop support for Kad1 soon, so dont bother sending two packets in case we don't know if kad2 is supported
-	// (if we know that its not, this function isn't called in the first place)
+	// we will drop support for Kad1 soon, so don't bother sending two packets in case we don't know if kad2 is supported
+	// (if we know that it's not, this function isn't called in the first place)
 	AddDebugLogLineM(false, logClientKadUDP, wxT("FindNodeIDByIP: Requesting NodeID from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(" by sending Kad2HelloReq"));
 	DebugSend(Kad2HelloReq, ip, udpPort);
-	SendMyDetails(KADEMLIA2_HELLO_REQ, ip, udpPort, true, 0, NULL); // todo: we send this unobfuscated, which is not perfect, see this can be avoided in the future
+	SendMyDetails(KADEMLIA2_HELLO_REQ, ip, udpPort, 1, 0, NULL, false); // todo: we send this unobfuscated, which is not perfect, see this can be avoided in the future
 	FetchNodeID_Struct sRequest = { ip, tcpPort, ::GetTickCount() + SEC2MS(60), requester };
 	m_fetchNodeIDRequests.push_back(sRequest);
 	return true;
@@ -2066,6 +2256,48 @@ void CKademliaUDPListener::ExpireClientSearch(CKadClientSearcher* expireImmediat
 			it2->requester->KadSearchNodeIDByIPResult(KCSR_TIMEOUT, NULL);
 			m_fetchNodeIDRequests.erase(it2);
 		}
+	}
+}
+
+void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const CUInt128& contactID, bool kad2)
+{
+	// We want to verify that a pre-0.49a contact is valid and not sent from a spoofed IP.
+	// Because those versions don't support any direct validating, we send a KAD_REQ with a random ID,
+	// which is our challenge. If we receive an answer packet for this request, we can be sure the
+	// contact is not spoofed
+#ifdef __DEBUG__
+	CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
+	if (contact != NULL) {
+		if (contact->GetType() < 2) {
+			AddDebugLogLineM(false, logClientKadUDP, wxT("Sending challenge to a long known contact (should be verified already) - %s") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
+		}
+	} else {
+		wxFAIL;
+	}
+#endif
+
+	CMemFile packetdata(33);
+	packetdata.WriteUInt8(KADEMLIA_FIND_VALUE);
+	CUInt128 challenge;
+	challenge.SetValueRandom();
+	if (challenge == 0) {
+		// hey there is a 2^128 chance that this happens ;)
+		wxFAIL;
+		challenge = 1;
+	}
+	// Put the target we want into the packet. This is our challenge
+	packetdata.WriteUInt128(challenge);
+	// Add the ID of the contact we are contacting for sanity checks on the other end.
+	packetdata.WriteUInt128(contactID);
+	if (kad2) {
+		DebugSendF(wxT("Kad2Req(SendLegacyChallenge)"), ip, port);
+		// those versions we send those requests to don't support encryption / obfuscation
+		SendPacket(packetdata, KADEMLIA2_REQ, ip, port, 0, NULL);
+		AddLegacyChallenge(contactID, challenge, ip, KADEMLIA2_REQ);
+	} else {
+		DebugSendF(wxT("KadReq(SendLegacyChallenge)"), ip, port);
+		SendPacket(packetdata, KADEMLIA_REQ, ip, port, 0, NULL);
+		AddLegacyChallenge(contactID, challenge, ip, KADEMLIA_REQ);
 	}
 }
 

@@ -70,16 +70,18 @@ public:
 	void	 OnSmallTimer();
 	uint32_t Consolidate();
 
-	bool	 Add(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool ipVerified, bool update);
-	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool ipVerified, bool update);
-	bool	 Add(CContact *contact, bool update);
+	bool	 Add(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool& ipVerified, bool update, bool fromNodesDat, bool fromHello);
+	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool& ipVerified, bool update, bool fromNodesDat, bool fromHello);
+	bool	 Add(CContact *contact, bool& update, bool& outIpVerified);
 
 	void	 ReadFile(const wxString& specialNodesdat = wxEmptyString);
 
+	bool	 VerifyContact(const CUInt128& id, uint32_t ip);
 	CContact *GetContact(const CUInt128& id) const throw();
 	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw();
 	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw();
 	uint32_t GetNumContacts() const throw();
+	void	 GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const;
 
 	// Returns a list of all contacts in all leafs of this zone.
 	void	 GetAllEntries(ContactList *result, bool emptyFirst = true) const;
@@ -120,6 +122,8 @@ private:
 	void StopTimer();
 
 	void RandomLookup() const;
+
+	void SetAllContactsVerified();
 
 	/**
 	 * Generates a new TokenBin for this zone. Used when the current zone is becoming a leaf zone.

@@ -289,6 +289,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 			// Add to list of people who responded
 			m_responded[fromDistance] = from;
 
+			std::map<uint32_t, uint32_t> mapReceivedIPs;
 			// Loop through their responses
 			for (response = results->begin(); response != results->end(); ++response) {
 				CContact *c = *response;
@@ -302,6 +303,15 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 				if (m_tried.count(distance) > 0) {
 					// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
 					continue;
+				}
+
+				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
+				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
+				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
+					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP(") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress())) + wxT(") in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
+					continue;
+				} else {
+					mapReceivedIPs[c->GetIPAddress()] = 1;
 				}
 
 				// Add to possible
@@ -782,8 +792,8 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 	uint32_t ip = 0;
 	uint16_t tcp = 0;
 	uint16_t udp = 0;
-	uint32_t serverip = 0;
-	uint16_t serverport = 0;
+	uint32_t buddyip = 0;
+	uint16_t buddyport = 0;
 	uint8_t byCryptOptions = 0; // 0 = not supported.
 	CUInt128 buddy;
 
@@ -798,9 +808,9 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
 			udp = tag->GetInt();
 		} else if (!tag->GetName().Cmp((TAG_SERVERIP))) {
-			serverip = tag->GetInt();
+			buddyip = tag->GetInt();
 		} else if (!tag->GetName().Cmp(TAG_SERVERPORT)) {
-			serverport = tag->GetInt();
+			buddyport = tag->GetInt();
 		} else if (!tag->GetName().Cmp(TAG_BUDDYHASH)) {
 			CMD4Hash hash;
 			// TODO: Error handling
@@ -827,7 +837,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		case 6:
 			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), udp));
 			m_answers++;
-			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, byCryptOptions);
+			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, buddyip, buddyport, byCryptOptions);
 			break;
 		case 2: 
 			//Don't use this type, some clients will process it wrong.

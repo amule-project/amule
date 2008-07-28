@@ -43,6 +43,7 @@ there client on the eMule forum..
 #include "Kademlia.h"
 #include "Indexed.h"
 #include "UDPFirewallTester.h"
+#include "../routing/RoutingZone.h"
 #include "../../amule.h"
 #include "../../CFile.h"
 #include "../../ServerList.h"
@@ -89,6 +90,12 @@ void CPrefs::Init(const wxString& filename)
 	m_lastFirewallState = true;
 	m_externKadPort = 0;
 	m_useExternKadPort = true;
+	m_statsUDPOpenNodes = 0;
+	m_statsUDPFirewalledNodes = 0;
+	m_statsTCPOpenNodes = 0;
+	m_statsTCPFirewalledNodes = 0;
+	m_statsKadV8LastChecked = 0;
+	m_statsKadV8Ratio = 0;
 	ReadFile();
 }
 
@@ -233,4 +240,41 @@ uint32_t CPrefs::GetUDPVerifyKey(uint32_t targetIP) throw()
 	MD5Sum md5((const uint8_t *)&buffer, 8);
 	return (uint32_t)(PeekUInt32(md5.GetRawHash()) ^ PeekUInt32(md5.GetRawHash() + 4) ^ PeekUInt32(md5.GetRawHash() + 8) ^ PeekUInt32(md5.GetRawHash() + 12)) % 0xFFFFFFFE + 1;
 }
-// File_checked_for_headers
+
+float CPrefs::StatsGetFirewalledRatio(bool udp) const throw()
+{
+	// gives an estimated percentage of TCP firewalled clients in the network
+	// will only work once enough > 0.49b nodes have spread and only if we are not UDP firewalled ourself
+	if (udp) {
+		if (m_statsUDPFirewalledNodes > 0 && m_statsUDPOpenNodes > 10) {
+			return ((float)m_statsUDPFirewalledNodes / (float)(m_statsUDPFirewalledNodes + m_statsUDPOpenNodes));
+		} else {
+			return 0;
+		}
+	} else {
+		if (m_statsTCPFirewalledNodes > 0 && m_statsTCPOpenNodes > 10) {
+			return ((float)m_statsTCPFirewalledNodes / (float)(m_statsTCPFirewalledNodes + m_statsTCPOpenNodes));
+		} else {
+			return 0;
+		}
+	}
+}
+
+float CPrefs::StatsGetKadV8Ratio()
+{
+	// this function is basically just a buffer, so we don't recount all nodes everytime we need the result
+	time_t now = time(NULL);
+	if (m_statsKadV8LastChecked + 60 < now) {
+		m_statsKadV8LastChecked = now;
+		uint32_t nV8Contacts = 0;
+		uint32_t nNonV8Contacts = 0;
+		CKademlia::GetRoutingZone()->GetNumContacts(nV8Contacts, nNonV8Contacts, 8);
+		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"), nV8Contacts, nNonV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100));
+		if (nV8Contacts > 0) {
+			m_statsKadV8Ratio = ((float)nV8Contacts / (float)(nV8Contacts + nNonV8Contacts));
+		} else {
+			m_statsKadV8Ratio = 0;
+		}
+	}
+	return m_statsKadV8Ratio;
+}

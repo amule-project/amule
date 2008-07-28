@@ -67,12 +67,14 @@ public:
 	CContact *GetOldest() const throw()		{ return m_entries.size() ? m_entries.front() : NULL; }
 
 	uint32_t  GetSize() const throw()		{ return m_entries.size(); }
+	void	  GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const;
 	uint32_t  GetRemaining() const throw()		{ return K - m_entries.size(); }
 	void	  GetEntries(ContactList *result, bool emptyFirst = true) const;
 	void	  GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_t maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
 	bool	  ChangeContactIPAddress(CContact *contact, uint32_t newIP);
 	void	  PushToBottom(CContact *contact); // puts an existing contact from X to the end of the list
 	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw();
+	void	  SetAllContactsVerified();
 
 	bool m_dontDeleteContacts;
 

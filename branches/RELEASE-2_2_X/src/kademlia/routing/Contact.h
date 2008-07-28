@@ -103,6 +103,9 @@ public:
 	bool	 IsIPVerified() const throw()			{ return m_ipVerified; }
 	void	 SetIPVerified(bool ipVerified) throw()		{ m_ipVerified = ipVerified; }
 
+	bool	GetReceivedHelloPacket() const throw()		{ return m_receivedHelloPacket; }
+	void	SetReceivedHelloPacket() throw()		{ m_receivedHelloPacket = true; }
+
 private:
 	CUInt128	m_clientID;
 	CUInt128	m_distance;
@@ -117,6 +120,7 @@ private:
 	uint8_t		m_version;
 	bool		m_checkKad2;
 	bool		m_ipVerified;
+	bool		m_receivedHelloPacket;
 	CKadUDPKey	m_udpKey;
 };
 
