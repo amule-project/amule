@@ -50,6 +50,10 @@ CPacketTracking::~CPacketTracking()
 void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)
 {
 	// this tracklist tacks _outgoing_ request packets, to make sure incoming answer packets were requested
+	// only track packets which we actually check for later
+	if (!IsTrackedOutListRequestPacket(opcode)) {
+		return;
+	}
 	uint32_t now = ::GetTickCount();
 	TrackPackets_Struct track = { ip, now, opcode };
 	listTrackedRequests.push_front(track);
@@ -62,8 +66,39 @@ void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)
 	}
 }
 
+bool CPacketTracking::IsTrackedOutListRequestPacket(uint8_t opcode) throw()
+{
+	switch (opcode) {
+	 case KADEMLIA_BOOTSTRAP_REQ:
+	 case KADEMLIA2_BOOTSTRAP_REQ:
+	 case KADEMLIA_HELLO_REQ:
+	 case KADEMLIA2_HELLO_REQ:
+	 case KADEMLIA2_HELLO_RES:
+	 case KADEMLIA_REQ:
+	 case KADEMLIA2_REQ:
+	 case KADEMLIA_SEARCH_NOTES_REQ:
+	 case KADEMLIA2_SEARCH_NOTES_REQ:
+	 case KADEMLIA_PUBLISH_REQ:
+	 case KADEMLIA_PUBLISH_NOTES_REQ:
+	 case KADEMLIA2_PUBLISH_KEY_REQ:
+	 case KADEMLIA2_PUBLISH_SOURCE_REQ:
+	 case KADEMLIA2_PUBLISH_NOTES_REQ:
+	 case KADEMLIA_FINDBUDDY_REQ:
+	 case KADEMLIA_CALLBACK_REQ:
+	 case KADEMLIA2_PING:
+		 return true;
+	 default:
+		 return false;
+	}
+}
+
 bool CPacketTracking::IsOnOutTrackList(uint32_t ip, uint8_t opcode, bool dontRemove)
 {
+#ifdef __DEBUG__
+	if (!IsTrackedOutListRequestPacket(opcode)) {
+		wxFAIL;	// code error / bug
+	}
+#endif
 	uint32_t now = ::GetTickCount();
 	for (TrackedPacketList::iterator it = listTrackedRequests.begin(); it != listTrackedRequests.end(); ++it) {
 		if (it->ip == ip && it->opcode == opcode && now - it->inserted < SEC2MS(180)) {
@@ -234,4 +269,38 @@ void CPacketTracking::InTrackListCleanup()
 		}
 	}
 	AddDebugLogLineM(false, logKadPacketTracking, wxString::Format(wxT("Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u"), dbgOldSize, m_mapTrackPacketsIn.size()));
+}
+
+void CPacketTracking::AddLegacyChallenge(const CUInt128& contactID, const CUInt128& challengeID, uint32_t ip, uint8_t opcode)
+{
+	uint32_t now = ::GetTickCount();
+	TrackChallenge_Struct sTrack = { ip, now, opcode, contactID, challengeID };
+	listChallengeRequests.push_front(sTrack);
+	while (!listChallengeRequests.empty()) {
+		if (now - listChallengeRequests.back().inserted > SEC2MS(180)) {
+			AddDebugLogLineM(false, logKadPacketTracking, wxT("Challenge timed out, client not verified - ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(listChallengeRequests.back().ip)));
+			listChallengeRequests.pop_back();
+		} else {
+			break;
+		}
+	}
+}
+
+bool CPacketTracking::IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip, uint8_t opcode, CUInt128& contactID)
+{
+	uint32_t now = ::GetTickCount();
+	for (TrackChallengeList::iterator it = listChallengeRequests.begin(); it != listChallengeRequests.end();) {
+		TrackChallengeList::iterator it2 = it++;
+		if (it2->ip == ip && it2->opcode == opcode && now - it2->inserted < SEC2MS(180)) {
+			wxASSERT(it2->challenge != 0 || opcode == KADEMLIA2_PING);
+			if (it2->challenge == 0 || it2->challenge == challengeID) {
+				contactID = it2->contactID;
+				listChallengeRequests.erase(it2);
+				return true;
+			} else {
+				AddDebugLogLineM(false, logKadPacketTracking, wxT("Wrong challenge answer received, client not verified (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+			}
+		}
+	}
+	return false;
 }
