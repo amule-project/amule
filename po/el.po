@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-22 03:31+0200\n"
+"POT-Creation-Date: 2008-07-28 03:30+0200\n"
 "PO-Revision-Date: 2008-07-12 10:12-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -138,7 +138,7 @@ msgstr "Αποτυχία λήψης των κοινόχρηστων αρχείω
 #: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
+#: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -258,7 +258,7 @@ msgstr "Σίγουρα θέλετε να διαγράψετε τους επιλ�
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:748
+#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:750
 #: src/DownloadListCtrl.cpp:588 src/DownloadListCtrl.cpp:908
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454
@@ -376,7 +376,7 @@ msgstr "Ολοκληρωμένες πηγές"
 msgid "Directory Path"
 msgstr "Μονοπάτι καταλόγου"
 
-#: src/SharedFilesCtrl.cpp:135 src/Statistics.cpp:727 src/muuli_wdr.cpp:1081
+#: src/SharedFilesCtrl.cpp:135 src/Statistics.cpp:734 src/muuli_wdr.cpp:1081
 #: src/muuli_wdr.cpp:3460
 msgid "Shared Files"
 msgstr "Κοινόχρηστα αρχεία"
@@ -701,7 +701,7 @@ msgstr "Μεταφόρτωση..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1313
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1315
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3464
 msgid "Preferences"
 msgstr "Προτιμήσεις"
@@ -1317,7 +1317,7 @@ msgstr "Αυτόματη [Κανονική]"
 msgid "Auto [Hi]"
 msgstr "Αυτόματη [Υψηλή]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:538 src/ClientListCtrl.cpp:670
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:670
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "Συνδέοντας"
@@ -1367,7 +1367,7 @@ msgstr "Σύνδεση μέσω Kad"
 msgid "Too many Kad connections"
 msgstr "Υπερβολικά πολλές συνδέσεις Kad"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
+#: src/DataToText.cpp:71 src/Statistics.cpp:717 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:857
 msgid "Banned"
 msgstr "Απαγορευμένοι"
@@ -1629,7 +1629,7 @@ msgstr "Απέτυχε"
 msgid "Static"
 msgstr "Στατικό"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
+#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:878
 msgid "Version"
 msgstr "Έκδοση"
 
@@ -1763,15 +1763,15 @@ msgstr ""
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "ΜΟΙΡΑΙΟ ΣΦΑΛΜΑ: Αποτυχία δημιουργίας Χρονομέτρου"
 
-#: src/amuleDlg.cpp:456
+#: src/amuleDlg.cpp:458
 msgid "aMule remote control "
 msgstr "Τηλεχειρισμός aMule"
 
-#: src/amuleDlg.cpp:462
+#: src/amuleDlg.cpp:464
 msgid "Snapshot:"
 msgstr "Στιγμιότυπο"
 
-#: src/amuleDlg.cpp:464
+#: src/amuleDlg.cpp:466
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1779,15 +1779,15 @@ msgstr ""
 "Πελάτης P2P για όλες τις πλατφόρμες βασισμένος στο eMule \n"
 "\n"
 
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:467
 msgid "Website: http://www.amule.org \n"
 msgstr "Ιστοσελίδα: http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:468
 msgid "Forum: http://forum.amule.org \n"
 msgstr "Συζητήσεις: http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:469
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1795,201 +1795,201 @@ msgstr ""
 "Συχνές Ερωτήσεις: http://wiki.amule.org \n"
 "\n"
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:470
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Επικοινωνία: admin@amule.org (διαδικαστικά θέματα) \n"
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:471
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:472
 msgid "Part of aMule is based on \n"
 msgstr "Μέρος του aMule είναι βασισμένο στο  \n"
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:473
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Δρομολόγηση Peer-to-peer βασισμένη στην μετρική XOR.\n"
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:474
 msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:475
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:515
+#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:515
 #: src/PrefsUnifiedDlg.cpp:610 src/PrefsUnifiedDlg.cpp:692 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: src/amuleDlg.cpp:679
+#: src/amuleDlg.cpp:681
 msgid "eD2k: Connecting"
 msgstr "eD2k: Συνδέεται"
 
-#: src/amuleDlg.cpp:683
+#: src/amuleDlg.cpp:685
 msgid "eD2k: Disconnected"
 msgstr "eD2k: Αποσυνδεδεμένο"
 
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:691
 msgid "Kad: Firewalled"
 msgstr "Kad: Πίσω από τοίχο προστασίας"
 
-#: src/amuleDlg.cpp:693
+#: src/amuleDlg.cpp:695
 msgid "Kad: Connected"
 msgstr "Kad: Συνδεδεμένο"
 
-#: src/amuleDlg.cpp:698
+#: src/amuleDlg.cpp:700
 msgid "Kad: Connecting"
 msgstr "Kad: Σε διαδικασία σύνδεσης"
 
-#: src/amuleDlg.cpp:702
+#: src/amuleDlg.cpp:704
 msgid "Kad: Off"
 msgstr "Kad: Εκτός"
 
-#: src/amuleDlg.cpp:749
+#: src/amuleDlg.cpp:751
 msgid "Stop the current connection attempts"
 msgstr "Σταμάτησε τις τρέχουσες απόπειρες σύνδεσης"
 
-#: src/amuleDlg.cpp:754 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:756 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "Αποσύνδεση"
 
-#: src/amuleDlg.cpp:755
+#: src/amuleDlg.cpp:757
 msgid "Disconnect from the currently connected networks"
 msgstr "Αποσύνδεση από τα συνδεδεμένα δίκτυα"
 
-#: src/amuleDlg.cpp:760 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
+#: src/amuleDlg.cpp:762 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "Σύνδεση"
 
-#: src/amuleDlg.cpp:761
+#: src/amuleDlg.cpp:763
 msgid "Connect to the currently enabled networks"
 msgstr "Σύνδεση στα ενεργοποιημένα δίκτυα"
 
-#: src/amuleDlg.cpp:807
+#: src/amuleDlg.cpp:809
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Πάνω: %.1f(%.1f) | Κάτω: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:809
+#: src/amuleDlg.cpp:811
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Πάνω: %.1f | Κάτω: %.1f"
 
-#: src/amuleDlg.cpp:835
+#: src/amuleDlg.cpp:837
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Συνδεδεμένο)"
 
-#: src/amuleDlg.cpp:837
+#: src/amuleDlg.cpp:839
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Αποσυνδεδεμένο)"
 
-#: src/amuleDlg.cpp:868
+#: src/amuleDlg.cpp:870
 msgid "Do you really want to exit aMule?"
 msgstr "Σίγουρα θέλετε να κλείσετε το aMule;"
 
-#: src/amuleDlg.cpp:869
+#: src/amuleDlg.cpp:871
 msgid "Exit confirmation"
 msgstr "Έξοδος επιβεβαίωσης"
 
-#: src/amuleDlg.cpp:1182
+#: src/amuleDlg.cpp:1184
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Ο κατάλογος των θεμάτων '%s'  δεν υπάρχει"
 
-#: src/amuleDlg.cpp:1187
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Δεν είναι δυνατή η ανάγνωση του αρχείου θέματος '%s' "
 
-#: src/amuleDlg.cpp:1288 src/amuleDlg.cpp:1449 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1290 src/amuleDlg.cpp:1451 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Δίκτυα"
 
-#: src/amuleDlg.cpp:1290
+#: src/amuleDlg.cpp:1292
 msgid "Networks window"
 msgstr "Παράθυρο δικτύων"
 
-#: src/amuleDlg.cpp:1292 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Αναζητήσεις"
 
-#: src/amuleDlg.cpp:1294
+#: src/amuleDlg.cpp:1296
 msgid "Searches window"
 msgstr "Παράθυρο αναζητήσεων"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Μεταφορές"
 
-#: src/amuleDlg.cpp:1298
+#: src/amuleDlg.cpp:1300
 msgid "Files transfers window"
 msgstr "Παράθυρο μεταφορών αρχείων"
 
-#: src/amuleDlg.cpp:1300
+#: src/amuleDlg.cpp:1302
 msgid "Shared files"
 msgstr "Κοινόχρηστα αρχεία"
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1304
 msgid "Shared files window"
 msgstr "Παράθυρο κοινόχρηστων αρχείων"
 
-#: src/amuleDlg.cpp:1304 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Μηνύματα"
 
-#: src/amuleDlg.cpp:1306
+#: src/amuleDlg.cpp:1308
 msgid "Messages window"
 msgstr "Παράθυρο μηνυμάτων"
 
-#: src/amuleDlg.cpp:1308 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
-#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1310 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
+#: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "Στατιστικές"
 
-#: src/amuleDlg.cpp:1310
+#: src/amuleDlg.cpp:1312
 msgid "Statistics graph window"
 msgstr "Παράθυρο γραφημάτων στατιστικών"
 
-#: src/amuleDlg.cpp:1315
+#: src/amuleDlg.cpp:1317
 msgid "Preferences settings window"
 msgstr "Παράθυρο ρυθμίσεων"
 
-#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Εισαγωγή"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Το εργαλείο εισαγωγής ημιτελών αρχείων"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3466
 msgid "About"
 msgstr "Σχετικά"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "Σχετικά/Βοήθεια"
 
-#: src/amuleDlg.cpp:1460
+#: src/amuleDlg.cpp:1462
 msgid "eD2k network"
 msgstr "Δίκτυο eD2k"
 
-#: src/amuleDlg.cpp:1464
+#: src/amuleDlg.cpp:1466
 msgid "Kad network"
 msgstr "Δίκτυο Kad"
 
-#: src/amuleDlg.cpp:1469
+#: src/amuleDlg.cpp:1471
 msgid "No network"
 msgstr "Κανένα δίκτυο"
 
@@ -1997,7 +1997,7 @@ msgstr "Κανένα δίκτυο"
 msgid "General"
 msgstr "Γενικά"
 
-#: src/PrefsUnifiedDlg.cpp:169 src/Statistics.cpp:688
+#: src/PrefsUnifiedDlg.cpp:169 src/Statistics.cpp:695
 msgid "Connection"
 msgstr "Σύνδεση"
 
@@ -2005,7 +2005,7 @@ msgstr "Σύνδεση"
 msgid "Directories"
 msgstr "Κατάλογοι Αρχείων"
 
-#: src/PrefsUnifiedDlg.cpp:171 src/Statistics.cpp:714
+#: src/PrefsUnifiedDlg.cpp:171 src/Statistics.cpp:721
 msgid "Servers"
 msgstr "Διακομιστές"
 
@@ -2533,243 +2533,243 @@ msgstr "Μέσα αρχεία:"
 msgid "Not running"
 msgstr "Δεν τρέχει"
 
-#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:448
+#: src/Statistics.cpp:651 src/MuleTrayIcon.cpp:448
 #, c-format
 msgid "Uptime: %s"
 msgstr "Χρόνος λειτουργίας: %s"
 
-#: src/Statistics.cpp:646 src/muuli_wdr.cpp:639
+#: src/Statistics.cpp:653 src/muuli_wdr.cpp:639
 msgid "Transfer"
 msgstr "Μεταφορά"
 
-#: src/Statistics.cpp:648 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:459
+#: src/Statistics.cpp:655 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:459
 #: src/muuli_wdr.cpp:1965
 msgid "Uploads"
 msgstr "Ανεβασμένα"
 
-#: src/Statistics.cpp:649
+#: src/Statistics.cpp:656
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "Ανεβασμένα Δεδομένα (Συνεδρία (Συνολικά)): %s"
 
-#: src/Statistics.cpp:651 src/Statistics.cpp:672
+#: src/Statistics.cpp:658 src/Statistics.cpp:679
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "Συνολική επιβάρυνση (Πακέτα): %s"
 
-#: src/Statistics.cpp:652 src/Statistics.cpp:673
+#: src/Statistics.cpp:659 src/Statistics.cpp:680
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "Επιβάρυνση αίτησης αρχείου (Πακέτα): %s"
 
-#: src/Statistics.cpp:654 src/Statistics.cpp:675
+#: src/Statistics.cpp:661 src/Statistics.cpp:682
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "Επιβάρυνση ανταλλαγής πηγών (Πακέτα): %s"
 
-#: src/Statistics.cpp:656 src/Statistics.cpp:677
+#: src/Statistics.cpp:663 src/Statistics.cpp:684
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "Επιβάρυνση διακομιστή (Πακέτα): %s"
 
-#: src/Statistics.cpp:658 src/Statistics.cpp:679
+#: src/Statistics.cpp:665 src/Statistics.cpp:686
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "Επιβάρυνση Kad (Πακέτα): %s"
 
-#: src/Statistics.cpp:660 src/Statistics.cpp:681
+#: src/Statistics.cpp:667 src/Statistics.cpp:688
 #, c-format
 msgid "Crypt overhead (UDP): %s"
 msgstr "Κρυπτογραφική επιβάρυνση (UDP): %s"
 
-#: src/Statistics.cpp:662
+#: src/Statistics.cpp:669
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "Ενεργά ανεβάσματα: %s"
 
-#: src/Statistics.cpp:663
+#: src/Statistics.cpp:670
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "Ανεβάσματα σε αναμονή: %s"
 
-#: src/Statistics.cpp:664
+#: src/Statistics.cpp:671
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "Συνολικός αρ. επιτυχών συνεδριών ανεβάσματος: %s"
 
-#: src/Statistics.cpp:665
+#: src/Statistics.cpp:672
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "Συνολικός αριθμός αποτυχημένων συνεδριών ανεβάσματος: %s"
 
-#: src/Statistics.cpp:667
+#: src/Statistics.cpp:674
 #, c-format
 msgid "Average upload time: %s"
 msgstr "Μέσος χρόνος ανεβάσματος: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:420
+#: src/Statistics.cpp:676 src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:420
 #: src/muuli_wdr.cpp:1919
 msgid "Downloads"
 msgstr "Κατεβασμένα"
 
-#: src/Statistics.cpp:670
+#: src/Statistics.cpp:677
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "Κατέβηκαν δεδομένα (Συνεδρία (Συνολικά)): %s"
 
-#: src/Statistics.cpp:683
+#: src/Statistics.cpp:690
 #, c-format
 msgid "Found Sources: %s"
 msgstr "Βρέθηκαν πηγές: %s"
 
-#: src/Statistics.cpp:684
+#: src/Statistics.cpp:691
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "Ενεργά κατεβάσματα (κομμάτια): %s"
 
-#: src/Statistics.cpp:686
+#: src/Statistics.cpp:693
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "Συνεδρία λόγος Άνω:Κάτω (Σύνολο): %s"
 
-#: src/Statistics.cpp:689
+#: src/Statistics.cpp:696
 #, c-format
 msgid "Average download rate (Session): %s"
 msgstr "Μέσος ρυθμός κατεβάσματος (Συνεδρία): %s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:697
 #, c-format
 msgid "Average upload rate (Session): %s"
 msgstr "Μέσος ρυθμός ανεβάσματος (Συνεδρία): %s"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:698
 #, c-format
 msgid "Max download rate (Session): %s"
 msgstr "Μέγιστος ρυθμός κατεβάσματος (Συνεδρία): %s"
 
-#: src/Statistics.cpp:692
+#: src/Statistics.cpp:699
 #, c-format
 msgid "Max upload rate (Session): %s"
 msgstr "Ελάχιστος ρυθμός κατεβάσματος (Συνεδρία): %s"
 
-#: src/Statistics.cpp:693
+#: src/Statistics.cpp:700
 #, c-format
 msgid "Reconnects: %i"
 msgstr "Επανασυνδέσεις: %i"
 
-#: src/Statistics.cpp:694
+#: src/Statistics.cpp:701
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "Χρόνος μετά από την πρώτη μεταφορά: %s"
 
-#: src/Statistics.cpp:695
+#: src/Statistics.cpp:702
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "Σύνδεση με τον διακομιστή από: %s"
 
-#: src/Statistics.cpp:696
+#: src/Statistics.cpp:703
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "Ενεργές συνδέσεις (εκτίμηση): %i"
 
-#: src/Statistics.cpp:697
+#: src/Statistics.cpp:704
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "Έφτασε στο μέγιστο αρ. συνδέσεων: %s"
 
-#: src/Statistics.cpp:698
+#: src/Statistics.cpp:705
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "Μέσες συνδέσεις (εκτίμηση): %g"
 
-#: src/Statistics.cpp:700
+#: src/Statistics.cpp:707
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "Κορυφαίες συνδέσεις (εκτίμηση): %i"
 
-#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:254
+#: src/Statistics.cpp:709 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:254
 msgid "Clients"
 msgstr "Πελάτες"
 
-#: src/Statistics.cpp:709
+#: src/Statistics.cpp:716
 msgid "Filtered"
 msgstr "Φιλτραρισμένοι"
 
-#: src/Statistics.cpp:711
+#: src/Statistics.cpp:718
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "Συνολικοί: %i Γνωστοί: %i"
 
-#: src/Statistics.cpp:715
+#: src/Statistics.cpp:722
 #, c-format
 msgid "Working Servers: %i"
 msgstr "Εργαζόμενοι διακομιστές: %i"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:723
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "Αποτυχημένοι διακομιστές: %i"
 
-#: src/Statistics.cpp:717
+#: src/Statistics.cpp:724
 #, c-format
 msgid "Total: %s"
 msgstr "Σύνολο: %s"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:725
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "Διαγραμμένοι διακομιστές: %s"
 
-#: src/Statistics.cpp:719
+#: src/Statistics.cpp:726
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "Φιλτραρισμένοι διακομιστές: %s"
 
-#: src/Statistics.cpp:720
+#: src/Statistics.cpp:727
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "Χρήστες στους εργαζόμενους διακομιστές: %llu"
 
-#: src/Statistics.cpp:721
+#: src/Statistics.cpp:728
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "Αρχεία στους εργαζόμενους διακομιστές: %llu"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:729
 #, c-format
 msgid "Total Users: %llu"
 msgstr "Σύνολο χρηστών: %llu"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:730
 #, c-format
 msgid "Total Files: %llu"
 msgstr "Σύνολο αρχείων: %llu"
 
-#: src/Statistics.cpp:724
+#: src/Statistics.cpp:731
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "Κατοχή διακομιστών: %.2f%%"
 
-#: src/Statistics.cpp:728
+#: src/Statistics.cpp:735
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "Αριθμός κοινόχρηστων αρχείων: %s"
 
-#: src/Statistics.cpp:729
+#: src/Statistics.cpp:736
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "Συνολικό μέγεθος κοινόχρηστων αρχείων: %s"
 
-#: src/Statistics.cpp:731
+#: src/Statistics.cpp:738
 #, c-format
 msgid "Average file size: %s"
 msgstr "Μέσο μέγεθος αρχείου: %s"
 
-#: src/Statistics.cpp:872
+#: src/Statistics.cpp:879
 msgid "Operating System"
 msgstr "Λειτουργικό σύστημα"
 
-#: src/Statistics.cpp:897
+#: src/Statistics.cpp:904
 msgid "Not Received"
 msgstr "Δεν ελήφθει"
 
@@ -3386,7 +3386,7 @@ msgstr "Σταματημένο"
 msgid "Downloaded"
 msgstr "Έχει κατεβεί"
 
-#: src/PartFile.cpp:4161
+#: src/PartFile.cpp:4174
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ΣΦΑΛΜΑ: Αποτυχία ανοίγματος του ημιτελούς αρχείου '%s'"
@@ -3553,13 +3553,13 @@ msgid_plural "Found %u part files"
 msgstr[0] "Βρέθηκε %u ημιτελές αρχείο"
 msgstr[1] "Βρέθηκαν %u ημιτελή αρχεία"
 
-#: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1387
+#: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1400
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 "Το σύστημα αρχείων του προσωρινού καταλόγου δεν μπορεί να διαχειριστεί "
 "μεγάλα αρχεία."
 
-#: src/DownloadQueue.cpp:230 src/DownloadQueue.cpp:1390
+#: src/DownloadQueue.cpp:230 src/DownloadQueue.cpp:1403
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Το σύστημα αρχείων του καταλόγου εισερχομένων δεν μπορεί να διαχειριστεί "
@@ -3585,17 +3585,17 @@ msgstr "Το αρχείο '%s' υπάρχει ήδη"
 msgid "You are already trying to download the file %s"
 msgstr "Ήδη προσπαθείτε να κατεβάσετε το αρχείο %s"
 
-#: src/DownloadQueue.cpp:1321
+#: src/DownloadQueue.cpp:1334
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Δεν γίνεται η μετατροπή του μαγνητικού συνδέσμου σε σύνδεσμο eD2k: %s"
 
-#: src/DownloadQueue.cpp:1329
+#: src/DownloadQueue.cpp:1342
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Άγνωστο πρωτόκολλο του συνδέσμου: %s"
 
-#: src/DownloadQueue.cpp:1350
+#: src/DownloadQueue.cpp:1363
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Άκυρος σύνδεσμος eD2k! ΣΦΑΛΜΑ: %s"
