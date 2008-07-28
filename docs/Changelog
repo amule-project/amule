@@ -6,7 +6,6 @@ Version 2.x.x - The river knows.
 		* Various fixes to new colour code
 		* Allow user to select display of transfer rates
 		* Extendable list-control settings save/load code
-		* Fix for hang in case of excess data
 		* WXMSW fix
 		* Added pkg.m4 from pkg-config-0.23
 
@@ -67,7 +66,46 @@ Version 2.2.2 - Whatever comes next.
 		* Use output of gdlib-config for gd.h detection
 		* Solaris mntent fix
 		* Fix NULL pointer dereference
-		* Fix for configure not using --with-geo-ip value in library check
+		* Fix for configure not using --with-geoip value in library check
+		* Ported Kademlia Protocol Version 8 from eMule0.49b.
+			- Kad now ignores multiple IDs pointing to one IP in
+			  routing request answers
+			- When calculating the total user count, Kad now uses
+			  (if available) the real number of firewalled clients
+			  for the calculation instead a fixed value. This will
+			  take more effect when 0.49+ nodes become common
+			- Kad no longer tries to add UDP firewalled (and therefore
+			  mostly unreachable) nodes into its routing table,
+			  reducing overhead and increasing reliability [Idea: Netfinity]
+			- Optimized the Kad packettracking code to only track
+			  packets which we check later, to save resources
+			- Fixed a bug which let Kad sometimes assume a Kad2
+			  contact to be Kad1 after probing for both versions
+			- Did first small step in dropping Kad1 support by not
+			  probing unknown Kad contacts for Kad1 anymore to save
+			  overhead. Kad1 clients will nevertheless still be work
+			  for now.
+			- Several changes were made to Kad in order to defy
+			  routing attacks researched by University of Minnesota
+			  guys [Peng Wang, James Tyra, Eric Chan-Tin,
+			  Tyson Malchow, Denis Foo Kune, Nicholas Hopper,
+			  Yongdae Kim], in particular:
+				- Kad contacts will only be able to update
+				  themself in others routing tables if they
+				  provide the proper key (supported by 0.49a+
+				  nodes) in order to make it impossible to
+				  hijack them
+				- Kad uses now a three-way-handshake (or for
+				  older version a similar check) for new contacts,
+				  making sure they do not use a spoofed IP
+				- Unverified contacts are not used for routing
+				  tasks
+			- When reading a nodes.dat without any verified contacts
+			  (possible an old file version), aMule will assume all
+			  contacts to be verified to avoid slowing down the
+			  connecting process
+		* Fixed not sending sources for clients that did not announce
+		  their part availability.
 
 	MalaPraxis:
 		* Remap colours on Windows

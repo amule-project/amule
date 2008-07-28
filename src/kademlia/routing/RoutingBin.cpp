@@ -167,6 +167,18 @@ CContact *CRoutingBin::GetContact(uint32_t ip, uint16_t port, bool tcpPort) cons
 	return NULL;
 }
 
+void CRoutingBin::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const
+{
+	// count all nodes which meet the search criteria and also report those who don't
+	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
+		if ((*it)->GetVersion() >= minVersion) {
+			nInOutContacts++;
+		} else {
+			nInOutFilteredContacts++;
+		}
+	}
+}
+
 void CRoutingBin::GetEntries(ContactList *result, bool emptyFirst) const
 {
 	// Clear results if requested first.
@@ -195,7 +207,7 @@ void CRoutingBin::GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_
 	// First put results in sort order for target so we can insert them correctly.
 	// We don't care about max results at this time.
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
-		if ((*it)->GetType() <= maxType) {
+		if ((*it)->GetType() <= maxType && (*it)->IsIPVerified()) {
 			CUInt128 targetDistance((*it)->GetClientID() ^ target);
 			(*result)[targetDistance] = *it;
 			// This list will be used for an unknown time, Inc in use so it's not deleted.
@@ -357,4 +369,11 @@ CContact *CRoutingBin::GetRandomContact(uint32_t maxType, uint32_t minKadVersion
 	}
 
 	return lastFit;
+}
+
+void CRoutingBin::SetAllContactsVerified()
+{
+	for (ContactList::iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
+		(*it)->SetIPVerified(true);
+	}
 }

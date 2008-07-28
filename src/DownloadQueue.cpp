@@ -1471,42 +1471,41 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
 }
 
-void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint8 byCryptOptions)
+void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8_t type, uint32_t ip, uint16_t tcp, uint16_t udp, uint32_t buddyip, uint16_t buddyport, uint8_t byCryptOptions)
 {
-	
 	AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
-	
+
 	//Safety measure to make sure we are looking for these sources
 	CPartFile* temp = GetFileByKadFileSearchID(searchID);
 	if( !temp ) {
 		AddDebugLogLineM(false, logKadSearch, wxT("This is not the file we're looking for..."));
 		return;
 	}
-	
+
 	//Do we need more sources?
 	if(!(!temp->IsStopped() && thePrefs::GetMaxSourcePerFile() > temp->GetSourceCount())) {
 		AddDebugLogLineM(false, logKadSearch, wxT("No more sources needed for this file"));
 		return;
 	}
 
-	uint32 ED2KID = wxUINT32_SWAP_ALWAYS(ip);
-	
+	uint32_t ED2KID = wxUINT32_SWAP_ALWAYS(ip);
+
 	if (theApp->ipfilter->IsFiltered(ED2KID)) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Source ip got filtered"));
 		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2KID));
 		return;
 	}
-	
+
 	if( (ip == Kademlia::CKademlia::GetIPAddress() || ED2KID == theApp->GetED2KID()) && tcp == thePrefs::GetPort()) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Trying to add myself as source, ignore"));
 		return;
 	}
-	
+
 	CUpDownClient* ctemp = NULL; 
-	switch( type ) {
+	switch (type) {
 		case 4:
 		case 1: {
-			//NonFirewalled users
+			// NonFirewalled users
 			if(!tcp) {
 				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
 				return;
@@ -1516,10 +1515,11 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, filtered")) % Uint32toStringIP(ED2KID));
 				return;
 			}
-			ctemp = new CUpDownClient(tcp,ip,0,0,temp,false, true);
+			ctemp = new CUpDownClient(tcp, ip, 0, 0, temp, false, true);
 			ctemp->SetSourceFrom(SF_KADEMLIA);
-			ctemp->SetServerIP(serverip);
-			ctemp->SetServerPort(serverport);
+			// not actually sent or needed for HighID sources
+			//ctemp->SetServerIP(serverip);
+			//ctemp->SetServerPort(serverport);
 			ctemp->SetKadPort(udp);
 			byte cID[16];
 			pcontactID->ToByteArray(cID);
@@ -1527,16 +1527,16 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			break;
 		}
 		case 2: {
-			//Don't use this type... Some clients will process it wrong..
+			// Don't use this type... Some clients will process it wrong..
 			break;
 		}
 		case 5:
 		case 3: {
-			//This will be a firewaled client connected to Kad only.
-			//We set the clientID to 1 as a Kad user only has 1 buddy.
-			ctemp = new CUpDownClient(tcp,1,0,0,temp,false, true);
-			//The only reason we set the real IP is for when we get a callback
-			//from this firewalled source, the compare method will match them.
+			// This will be a firewalled client connected to Kad only.
+			// We set the clientID to 1 as a Kad user only has 1 buddy.
+			ctemp = new CUpDownClient(tcp, 1, 0, 0, temp, false, true);
+			// The only reason we set the real IP is for when we get a callback
+			// from this firewalled source, the compare method will match them.
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetKadPort(udp);
 			byte cID[16];
@@ -1544,12 +1544,12 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			ctemp->SetUserHash(CMD4Hash(cID));
 			pbuddyID->ToByteArray(cID);
 			ctemp->SetBuddyID(cID);
-			ctemp->SetBuddyIP(serverip);
-			ctemp->SetBuddyPort(serverport);
+			ctemp->SetBuddyIP(buddyip);
+			ctemp->SetBuddyPort(buddyport);
 			break;
 		}
 		case 6: {
-			// firewalled source which supports direct udp callback
+			// firewalled source which supports direct UDP callback
 			// if we are firewalled ourself, the source is useless to us
 			if (theApp->IsFirewalled()) {
 				break;
@@ -1559,15 +1559,14 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Received Kad source type 6 (direct callback) which has the direct callback flag not set (%s)")) % Uint32toStringIP(ED2KID));
 				break;
 			}
-			
+
 			ctemp = new CUpDownClient(tcp, 1, 0, 0, temp, false, true);
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetKadPort(udp);
-			ctemp->SetIP(ED2KID); // need to set the Ip address, which cannot be used for TCP but for UDP
+			ctemp->SetIP(ED2KID); // need to set the IP address, which cannot be used for TCP but for UDP
 			byte cID[16];
 			pcontactID->ToByteArray(cID);
 			ctemp->SetUserHash(CMD4Hash(cID));
-			pbuddyID->ToByteArray(cID);
 		}
 	}
 
@@ -1582,17 +1581,15 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 
 CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const
 {
-	
 	wxMutexLocker lock( m_mutex );
-	
+
 	for ( uint16 i = 0; i < m_filelist.size(); ++i ) {
 		if ( id == m_filelist[i]->GetKadFileSearchID()) {
 			return m_filelist[ i ];
 		}
 	}
-	
+
 	return NULL;
-	
 }
 
 bool CDownloadQueue::DoKademliaFileRequest()

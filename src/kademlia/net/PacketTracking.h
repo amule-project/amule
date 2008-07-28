@@ -29,6 +29,7 @@
 
 #include <map>
 #include <list>
+#include "../utils/UInt128.h"
 #include "../../Types.h"
 
 namespace Kademlia
@@ -38,6 +39,14 @@ struct TrackPackets_Struct {
 	uint32_t ip;
 	uint32_t inserted;
 	uint8_t  opcode;
+};
+
+struct TrackChallenge_Struct {
+	uint32_t	ip;
+	uint32_t	inserted;
+	uint8_t		opcode;
+	CUInt128	contactID;
+	CUInt128	challenge;
 };
 
 struct TrackPacketsIn_Struct {
@@ -71,11 +80,16 @@ class CPacketTracking
 	bool IsOnOutTrackList(uint32_t ip, uint8_t opcode, bool dontRemove = false);
 	bool InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bool validReceiverkey);
 	void InTrackListCleanup();
+	void AddLegacyChallenge(const CUInt128& contactID, const CUInt128& challengeID, uint32_t ip, uint8_t opcode);
+	bool IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip, uint8_t opcode, CUInt128& contactID);
 
       private:
+	static bool IsTrackedOutListRequestPacket(uint8_t opcode) throw();
 	typedef std::list<TrackPackets_Struct>		TrackedPacketList;
+	typedef std::list<TrackChallenge_Struct>	TrackChallengeList;
 	typedef std::map<uint32_t, TrackPacketsIn_Struct*>	TrackedPacketInMap;
 	TrackedPacketList	listTrackedRequests;
+	TrackChallengeList	listChallengeRequests;
 	TrackedPacketInMap	m_mapTrackPacketsIn;
 	uint32_t		lastTrackInCleanup;
 };

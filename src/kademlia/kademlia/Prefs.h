@@ -116,6 +116,12 @@ public:
 	static uint8_t	GetMyConnectOptions(bool encryption = true, bool callback = true);
 	static uint32_t GetUDPVerifyKey(uint32_t targetIP) throw();
 
+	// Statistics
+	void	StatsIncUDPFirewalledNodes(bool firewalled) throw()	{ firewalled ? ++m_statsUDPFirewalledNodes : ++m_statsUDPOpenNodes; }
+	void	StatsIncTCPFirewalledNodes(bool firewalled) throw()	{ firewalled ? ++m_statsTCPFirewalledNodes : ++m_statsTCPOpenNodes; }
+	float	StatsGetFirewalledRatio(bool udp) const throw();
+	float	StatsGetKadV8Ratio();
+
 private:
 	wxString	m_filename;
 
@@ -139,6 +145,14 @@ private:
 	bool		m_lastFirewallState;
 	bool		m_useExternKadPort;
 	uint16_t	m_externKadPort;
+
+	// Statistics
+	uint32_t	m_statsUDPOpenNodes;
+	uint32_t	m_statsUDPFirewalledNodes;
+	uint32_t	m_statsTCPOpenNodes;
+	uint32_t	m_statsTCPFirewalledNodes;
+	time_t		m_statsKadV8LastChecked;
+	float		m_statsKadV8Ratio;
 
 	void Init(const wxString& filename);
 	//	void Reset();
