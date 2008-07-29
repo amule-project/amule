@@ -7,7 +7,6 @@ Version 2.x.x - The river knows.
 		* Allow user to select display of transfer rates
 		* Extendable list-control settings save/load code
 		* WXMSW fix
-		* Added pkg.m4 from pkg-config-0.23
 
 	Greek:
 		* Part number is now an extra column in the download list
@@ -67,6 +66,7 @@ Version 2.2.2 - Whatever comes next.
 		* Solaris mntent fix
 		* Fix NULL pointer dereference
 		* Fix for configure not using --with-geoip value in library check
+		* Added pkg.m4 from pkg-config-0.23
 		* Ported Kademlia Protocol Version 8 from eMule0.49b.
 			- Kad now ignores multiple IDs pointing to one IP in
 			  routing request answers
@@ -106,6 +106,8 @@ Version 2.2.2 - Whatever comes next.
 			  connecting process
 		* Fixed not sending sources for clients that did not announce
 		  their part availability.
+		* Fixed all list columns being disabled in case of invalid data
+		  in config file.
 
 	MalaPraxis:
 		* Remap colours on Windows
