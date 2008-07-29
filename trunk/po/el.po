@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-28 03:30+0200\n"
+"POT-Creation-Date: 2008-07-29 03:30+0200\n"
 "PO-Revision-Date: 2008-07-12 10:12-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -526,14 +526,14 @@ msgstr "Kademlia: O κωδικός αναζήτησης είναι πολύ μι
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: Ο κωδικός αναζήτησης υπάρχει ήδη στη λίστα αναζητήσεων: "
 
-#: src/kademlia/routing/RoutingZone.cpp:188
+#: src/kademlia/routing/RoutingZone.cpp:193
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Ανάγνωση %u επαφής Kad"
 msgstr[1] "Ανάγνωση %u επαφών Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:206
+#: src/kademlia/routing/RoutingZone.cpp:215
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
@@ -542,7 +542,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Μόνο %d γνωριμίες Kad είναι διαθέσιμες. το αρχείο nodes.dat δεν γράφτηκε"
 
-#: src/kademlia/routing/RoutingZone.cpp:235
+#: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

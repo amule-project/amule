@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-28 03:30+0200\n"
+"POT-Creation-Date: 2008-07-29 03:30+0200\n"
 "PO-Revision-Date: 2008-07-11 14:13+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -525,7 +525,7 @@ msgstr "Kademlia: wyszukiwana fraza jest za krótka"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:188
+#: src/kademlia/routing/RoutingZone.cpp:193
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -533,7 +533,7 @@ msgstr[0] "Wczytaj %u kontakt Kad"
 msgstr[1] "Wczytaj %u kontakty Kad"
 msgstr[2] "Wczytaj %u kontaktów Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:206
+#: src/kademlia/routing/RoutingZone.cpp:215
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
@@ -541,7 +541,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:235
+#: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

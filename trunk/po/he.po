@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-28 03:30+0200\n"
+"POT-Creation-Date: 2008-07-29 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -506,21 +506,21 @@ msgstr "קאדימליה: מילת חיפוש קצרה מדי"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:188
+#: src/kademlia/routing/RoutingZone.cpp:193
 #, fuzzy, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "קרא %u יוצרי קשר ל קאד"
 msgstr[1] "קרא %u יוצרי קשר ל קאד"
 
-#: src/kademlia/routing/RoutingZone.cpp:206
+#: src/kademlia/routing/RoutingZone.cpp:215
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:235
+#: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
