@@ -7143,7 +7143,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Ademais, a configuración do navegador foi restablecida á configuración por defecto do sistema. Por favor configure as opción do seu navegador de novo se é preciso."
+"Ademais, a configuración do navegador foi restablecida á configuración por defecto do sistema. Por favor configure as opción do seu navegador de novo se é preciso.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
