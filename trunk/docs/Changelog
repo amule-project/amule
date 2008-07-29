@@ -108,6 +108,7 @@ Version 2.2.2 - Whatever comes next.
 		  their part availability.
 		* Fixed all list columns being disabled in case of invalid data
 		  in config file.
+		* Fixed directory tree not available.
 
 	MalaPraxis:
 		* Remap colours on Windows
