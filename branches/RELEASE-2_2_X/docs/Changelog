@@ -16,6 +16,7 @@ Version 2.2.2 - Whatever comes next.
 		* Add sources from search results for new downloads
 		* Use output of gdlib-config for gd.h detection
 		* Solaris mntent fix
+		* wxMSW fix
 		* Fix NULL pointer dereference
 		* Fix for configure not using --with-geoip value in library check
 		* Added pkg.m4 from pkg-config-0.23

@@ -22,10 +22,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-// MP: This define needs to be kept here, before the .h include because wxWidgets will include the WinIoCtl.h 
-// file with a different value, and we'll never get the FSCTL_SET_SPARSE
-#define _WIN32_WINNT 0x0500
-
 #include "PlatformSpecific.h"
 
 #ifdef HAVE_CONFIG_H
@@ -37,10 +33,12 @@
 #include "common/Format.h"
 #include "Logger.h"
 #include <winbase.h>
-#ifdef __MINGW32__
-#	include <ddk/ntifs.h>
-#else
-#	include <winioctl.h>
+#include <winioctl.h>
+#ifndef FSCTL_SET_SPARSE
+#	define FSCTL_SET_SPARSE		CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 49, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#endif
+#ifndef FSCTL_SET_ZERO_DATA
+#	define FSCTL_SET_ZERO_DATA	CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 50, METHOD_BUFFERED, FILE_WRITE_DATA)
 #endif
 
 // Create a message from a Windows error code
