@@ -22,7 +22,8 @@
 use POSIX qw(strftime);
 
 
-my $PACKAGE="amule";
+my $PACKAGE="aMule";
+my $DOMAIN="amule";
 
 
 use Locale::Language;
@@ -54,7 +55,7 @@ $now = `date`;
 
 system("intltool-update --pot > /dev/null");
 
-$_ = `msgfmt --statistics $PACKAGE.pot -o /dev/null 2>&1`;
+$_ = `msgfmt --statistics $DOMAIN.pot -o /dev/null 2>&1`;
 
 die "unable to get total: $!" unless (/(\d+) untranslated messages/);
 
@@ -65,13 +66,13 @@ chomp($stats_generated);
 
 print "<?xml version='1.0'?>\n";
 print "<?xml-stylesheet type='text/xsl' href='l10n.xsl'?>\n";
-print "<project version='1.0' xmlns:l10n='http://faceprint.com/code/l10n' name='$PACKAGE' pofile='$PACKAGE.pot' strings='$total' generated='$generated' stats_generated='$stats_generated'>\n";
+print "<project version='1.0' xmlns:l10n='http://faceprint.com/code/l10n' name='$PACKAGE' pofile='$DOMAIN.pot' strings='$total' generated='$generated' stats_generated='$stats_generated'>\n";
 
 foreach $index (0 .. $#pos) {
 	$trans = $fuzz = $untrans = 0;
 	$po = $pos[$index];
 	print STDERR "$po..." if($ARGV[0] eq '-v');
-	system("msgmerge $po.po $PACKAGE.pot -o $po.new 2>$po.po.warnings");
+	system("msgmerge $po.po $DOMAIN.pot -o $po.new 2>$po.po.warnings");
 	$_ = `msgfmt --statistics $po.new -o /dev/null 2>&1`;
 	chomp;
 	if(/(\d+) translated message/) { $trans = $1; }
