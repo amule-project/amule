@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-29 03:30+0200\n"
-"PO-Revision-Date: 2008-06-18 19:27+0100\n"
+"PO-Revision-Date: 2008-07-30 19:29+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -524,7 +524,7 @@ msgstr[0] "%u Kad kapcsolat beolvasva"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
+msgstr[0] "Csak %d Kad kapcsolat elérhető, a nodes.dat fájl nem lett felülírva"
 
 #: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
@@ -542,7 +542,7 @@ msgstr "web ügyfél kapcsolat elfogadva\n"
 
 #: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: cannot accept web client connection\n"
-msgstr ""
+msgstr "HIBA: nem tudom fogadni a web ügyfél kapcsolatot\n"
 
 #: src/webserver/src/WebServer.cpp:379
 #, c-format
@@ -1542,19 +1542,19 @@ msgstr "Török"
 
 #: src/Preferences.cpp:822 src/muuli_wdr.cpp:2223
 msgid "- default -"
-msgstr ""
+msgstr "- alapértelmezett -"
 
 #: src/Preferences.cpp:838
 msgid "User:"
-msgstr ""
+msgstr "Felhasználó:"
 
 #: src/Preferences.cpp:864
 msgid "System:"
-msgstr ""
+msgstr "Rendszer:"
 
 #: src/Preferences.cpp:875
 msgid "no options available"
-msgstr ""
+msgstr "nincs elérhető opció"
 
 #: src/Preferences.cpp:1693
 msgid ""
@@ -1749,34 +1749,40 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
+"'Minden-platform' p2p ügyfél az eMule alapján \n"
+"\n"
 
 #: src/amuleDlg.cpp:467
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "Honlap: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:468
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "Fórum: http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
+"GYIK: http://wiki.amule.org \n"
+"\n"
 
 #: src/amuleDlg.cpp:470
 msgid "Contact: admin@amule.org (administrative issues) \n"
-msgstr ""
+msgstr "Kapcsolat: admin@amule.org (adminisztratív ügyekben) \n"
 
 #: src/amuleDlg.cpp:471
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
+"Copyright (c) 2003-2008 aMule Team \n"
+"\n"
 
 #: src/amuleDlg.cpp:472
 msgid "Part of aMule is based on \n"
-msgstr ""
+msgstr "Az aMule részben a következőn alapul: \n"
 
 #: src/amuleDlg.cpp:473
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -1784,11 +1790,11 @@ msgstr "Kademlia: Egyenrangú útvonal-megállapítás a XOR metrika alapján.\n
 
 #: src/amuleDlg.cpp:474
 msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
-msgstr ""
+msgstr " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 
 #: src/amuleDlg.cpp:475
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:515
 #: src/PrefsUnifiedDlg.cpp:610 src/PrefsUnifiedDlg.cpp:692 src/KadDlg.cpp:177
@@ -1984,7 +1990,7 @@ msgstr "Biztonság"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Felület"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
@@ -1992,7 +1998,7 @@ msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
 msgid "Filters"
-msgstr ""
+msgstr "Szűrők"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2004,7 +2010,7 @@ msgstr "Online aláírás"
 
 #: src/PrefsUnifiedDlg.cpp:180
 msgid "Advanced"
-msgstr ""
+msgstr "Haladó"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2036,6 +2042,8 @@ msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
 msgstr ""
+"Az automatikusan frissített kiszolgálóü lista üres.\n"
+"A 'kiszolgáló lista automatikus frissítése induláskor' letiltva."
 
 #: src/PrefsUnifiedDlg.cpp:521
 msgid ""
@@ -3167,7 +3175,7 @@ msgstr "HIBA: A part.met fájl 0 méretű: %s ==> %s"
 #: src/PartFile.cpp:351
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
-msgstr ""
+msgstr "HIBA: Érvénytelen .part.met fájl változat: %s ==> %s"
 
 #: src/PartFile.cpp:601
 #, c-format
@@ -3340,6 +3348,7 @@ msgstr "FIGYELEM: known.met nem nyitható meg."
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
+"FIGYELEM: Az ismert fájlok listája sérült, érvénytelen fejlécet tartalmaz."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -4818,6 +4827,8 @@ msgid ""
 "For a film you can say its length, its story, language ...\\n\\nand if it's "
 "a fake, you can tell that to other users of aMule."
 msgstr ""
+"Megadhatod egy film hosszát, történetét, nyelvét...\\n\\nés ha a fájl hamis, "
+"elmondhatod ezt a többi aMule felhasználónak."
 
 #: src/muuli_wdr.cpp:893
 msgid "File Quality"
@@ -5023,7 +5034,7 @@ msgstr "Becenév"
 
 #: src/muuli_wdr.cpp:1585
 msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr ""
+msgstr "http://www.aMule.org - a multi-platform Mule"
 
 #: src/muuli_wdr.cpp:1586
 msgid "This is the name that other users will see when connecting to you."
@@ -5032,7 +5043,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1594
 msgid "Language: "
-msgstr ""
+msgstr "Nyelv: "
 
 #: src/muuli_wdr.cpp:1595 src/muuli_wdr.cpp:1629 src/muuli_wdr.cpp:1633
 #: src/muuli_wdr.cpp:1637
@@ -5065,7 +5076,7 @@ msgstr "Figyelmeztetés kilépéskor"
 
 #: src/muuli_wdr.cpp:1615
 msgid "Makes aMule prompt before exiting."
-msgstr ""
+msgstr "Figyelmeztessen az aMule bezárása előtt."
 
 #: src/muuli_wdr.cpp:1618
 msgid "Enable Tray Icon"
@@ -5104,6 +5115,8 @@ msgid ""
 "Enter your browser name here. Leave this field empty to use the system "
 "default browser."
 msgstr ""
+"Írd ide a böngésződ nevét. Hagyd üresen, hogy a rendszer alapértelmezett "
+"böngészőjéhez."
 
 #: src/muuli_wdr.cpp:1656
 msgid "Open in new tab if possible"
@@ -5119,11 +5132,11 @@ msgstr "Videólejátszó"
 
 #: src/muuli_wdr.cpp:1676
 msgid "Create backup for preview"
-msgstr ""
+msgstr "Másolat készítése előnézethez"
 
 #: src/muuli_wdr.cpp:1695
 msgid "Bandwidth limits"
-msgstr ""
+msgstr "Sávszélesség korlátok"
 
 #: src/muuli_wdr.cpp:1710
 msgid "Upload"
@@ -5135,11 +5148,11 @@ msgstr "Slot kiosztás"
 
 #: src/muuli_wdr.cpp:1732
 msgid "Ports"
-msgstr ""
+msgstr "Portok"
 
 #: src/muuli_wdr.cpp:1738
 msgid "Standard TCP Port "
-msgstr ""
+msgstr "Szabvány TCP port "
 
 #: src/muuli_wdr.cpp:1742
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -5147,7 +5160,7 @@ msgstr "Ez a szabvány eD2k port és nem lehet letiltani."
 
 #: src/muuli_wdr.cpp:1745
 msgid "UDP port for server requests (TCP+3):"
-msgstr ""
+msgstr "UDP port a kiszolgáló kérésekhez (TCP+3):"
 
 #: src/muuli_wdr.cpp:1748
 msgid "4665"
@@ -5155,15 +5168,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1751
 msgid "Extended UDP port (Kad / global search) "
-msgstr ""
+msgstr "Bővített UDP port (Kad / globális keresés) "
 
 #: src/muuli_wdr.cpp:1755
 msgid "This UDP port is used for extended eD2k requests and Kad network"
-msgstr ""
+msgstr "Ezt az UDP portot a bővített eD2k kérések és a Kad hálózat használja"
 
 #: src/muuli_wdr.cpp:1758
 msgid "Enable UPnP for router port forwarding"
-msgstr ""
+msgstr "UPnP engedélyezése a router port továbbításhoz"
 
 #: src/muuli_wdr.cpp:1763
 msgid "UPnP TCP Port (Optional):"
@@ -5178,14 +5191,16 @@ msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
 msgstr ""
+"Csak haladó felhasználóknak: Ha több hálózati kártyád van, írd ide a címet, "
+"amelyhez az aMule kötve legyen."
 
 #: src/muuli_wdr.cpp:1788
 msgid "Max sources per downloading file:"
-msgstr ""
+msgstr "Max források letöltési fájlonként:"
 
 #: src/muuli_wdr.cpp:1794
 msgid "Max simultaneous connections:"
-msgstr ""
+msgstr "Max egyidejű kapcsolatok:"
 
 #: src/muuli_wdr.cpp:1807
 msgid "Kademlia"
@@ -5249,15 +5264,15 @@ msgstr "A kézileg hozzáadott kiszolgálók Magas Prioritással történő felv
 
 #: src/muuli_wdr.cpp:1907
 msgid "Intelligent Corruption Handling (I.C.H.)"
-msgstr ""
+msgstr "Intelligens Sérülés Kezelő (I.S.K.)"
 
 #: src/muuli_wdr.cpp:1910
 msgid "Enable"
-msgstr ""
+msgstr "Engedélyezés"
 
 #: src/muuli_wdr.cpp:1914
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr ""
+msgstr "Feljett I.S.K. megbízzon minden hash-ben (nem ajánlott)"
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
@@ -5273,7 +5288,7 @@ msgstr "Előszőr az első és utolsó adatelemet próbálja meg letölteni"
 
 #: src/muuli_wdr.cpp:1932
 msgid "Start next paused file when a file completes"
-msgstr ""
+msgstr "Következő szüneteltetett fájl indítása amikor egy letöltés befejeződik"
 
 #: src/muuli_wdr.cpp:1936
 msgid "From the same category"
@@ -5293,7 +5308,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1946
 msgid "Stop downloads when free disk space reaches "
-msgstr ""
+msgstr "Letöltések megállítása amikor a szabad hely kevesebb mint "
 
 #: src/muuli_wdr.cpp:1947
 msgid "Select this if you want aMule to check your disk space"
@@ -5327,7 +5342,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2013
 msgid "Shared folders"
-msgstr ""
+msgstr "Megosztott mappák"
 
 #: src/muuli_wdr.cpp:2016
 msgid "(Right click on folder icon for recursive share)"
@@ -5363,7 +5378,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2090
 msgid "Colours: "
-msgstr ""
+msgstr "Színek: "
 
 #: src/muuli_wdr.cpp:2095
 msgid "Background"
@@ -5471,7 +5486,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2230
 msgid "Show \"Fast eD2k Links Handler\" in every window."
-msgstr ""
+msgstr "A \"Gyors eD2k hivatkozás kezelő\" mutatása minden ablakban."
 
 #: src/muuli_wdr.cpp:2234
 msgid "Show extended info on categories tabs"
@@ -5483,15 +5498,15 @@ msgstr "Átviteli ráták megjelenítése a címsorban"
 
 #: src/muuli_wdr.cpp:2241
 msgid "Before application name"
-msgstr ""
+msgstr "Az alkalmazás neve előtt"
 
 #: src/muuli_wdr.cpp:2244
 msgid "After application name"
-msgstr ""
+msgstr "Az alkalmazás neve után"
 
 #: src/muuli_wdr.cpp:2248
 msgid "Show overhead bandwidth"
-msgstr ""
+msgstr "Többletterhelés sávszélességének mutatása"
 
 #: src/muuli_wdr.cpp:2252
 msgid "Vertical toolbar orientation"
@@ -5503,11 +5518,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2258
 msgid "Show progress percentage"
-msgstr ""
+msgstr "Százalékos arány mutatása"
 
 #: src/muuli_wdr.cpp:2265
 msgid "Show progress bar"
-msgstr ""
+msgstr "Folyamatjelző csík mutatása"
 
 #: src/muuli_wdr.cpp:2269
 msgid "Flat"
@@ -5519,7 +5534,7 @@ msgstr "Gömbölyű"
 
 #: src/muuli_wdr.cpp:2280
 msgid "Auto-sort files (high CPU)"
-msgstr ""
+msgstr "Fájlok automatikus rendezése (erős CPU)"
 
 #: src/muuli_wdr.cpp:2282
 msgid "aMule will sort the columns in your download list automatically"
@@ -5548,7 +5563,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2323 src/muuli_wdr.cpp:2384
 msgid "TCP port:"
-msgstr ""
+msgstr "TCP port:"
 
 #: src/muuli_wdr.cpp:2331
 msgid "Enable UPnP port forwarding on the EC port"
@@ -5560,7 +5575,7 @@ msgstr "Web kiszolgáló paraméterek"
 
 #: src/muuli_wdr.cpp:2349
 msgid "Run webserver on startup"
-msgstr ""
+msgstr "Webkiszolgáló indítása induláskor"
 
 #: src/muuli_wdr.cpp:2355
 msgid "Web template"
@@ -5580,7 +5595,7 @@ msgstr "Vendég jelszó"
 
 #: src/muuli_wdr.cpp:2392
 msgid "Enable UPnP port forwarding of the web server port"
-msgstr ""
+msgstr "A web kiszolgáló port UPnP továbbításának engedélyezése"
 
 #: src/muuli_wdr.cpp:2397
 msgid "Web server UPnP TCP port (Optional)"
@@ -5796,7 +5811,7 @@ msgstr "Senki"
 
 #: src/muuli_wdr.cpp:2963
 msgid "Who can see my shared files:"
-msgstr ""
+msgstr "Ki láthatja a megosztott fájljaimat:"
 
 #: src/muuli_wdr.cpp:2964
 msgid "Select who can request to view a list of your shared files."
@@ -5938,7 +5953,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3120
 msgid "Show received messages in the log"
-msgstr ""
+msgstr "A kapott üzenetek megjelenítése a naplóban"
 
 #: src/muuli_wdr.cpp:3125
 msgid "Comments"
@@ -5962,7 +5977,7 @@ msgstr "Felhasználói név/jelszó hitelesítés engedélyezése/tiltása"
 
 #: src/muuli_wdr.cpp:3163
 msgid "Username: "
-msgstr ""
+msgstr "Felhasználói név: "
 
 #: src/muuli_wdr.cpp:3167
 msgid "The username to use to connect to the proxy"
@@ -6062,7 +6077,7 @@ msgstr "Kijelöltek eltávolítása"
 
 #: src/muuli_wdr.cpp:3429
 msgid "Event Types"
-msgstr ""
+msgstr "Esemény típusok"
 
 #: src/muuli_wdr.cpp:3454
 msgid "Connect to any server and/or Kad"
@@ -6675,7 +6690,7 @@ msgstr "A többi fül bezárása"
 
 #: src/amule-gui.cpp:196
 msgid "aMule remote control"
-msgstr ""
+msgstr "aMule távoli vezérlő"
 
 #: src/ServerList.cpp:83
 #, c-format
