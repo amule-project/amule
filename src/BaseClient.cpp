@@ -1087,7 +1087,8 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 	const uint32 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 	const uint32 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;	
-	const uint32 uSupportsSourceEx2		= 1;					
+	const uint32 uSupportsSourceEx2		= 1;
+	const uint32 uSupportsCaptcha		= 0; // No captcha support in aMule, at least for now
 	// direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
 	const uint32 uDirectUDPCallback		= (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled()
 						   && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
@@ -1095,7 +1096,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	CTagVarInt tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     )
 				(uDirectUDPCallback	<< 12) |
-// 				(uSupportsCaptcha	<< 11) |	// No captcha support in aMule
+ 				(uSupportsCaptcha	<< 11) |	
 				(uSupportsSourceEx2	<< 10) |
 				(uRequiresCryptLayer	<<  9) |
 				(uRequestsCryptLayer	<<  8) |
@@ -2234,7 +2235,8 @@ bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXU
 }
 
 
-wxString CUpDownClient::GetClientFullInfo() {
+wxString CUpDownClient::GetClientFullInfo()
+{
 
 	if (m_clientVerString.IsEmpty()) {
 		ReGetClientSoft();

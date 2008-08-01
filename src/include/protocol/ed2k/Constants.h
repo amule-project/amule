@@ -55,7 +55,7 @@
 
 #define	MIN_UP_CLIENTS_ALLOWED			2	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
 
-#define	SOURCEEXCHANGE2_VERSION			4		// replaces the version sent in MISC_OPTIONS flag fro SX1
+#define	SOURCEEXCHANGE2_VERSION			4		// replaces the version sent in MISC_OPTIONS flag from SX1
 
 // MOD Note: end
 
