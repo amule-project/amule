@@ -204,6 +204,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 					}
 				}
 			}
+			file.Close();
 			AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", validContacts), validContacts));
 			if (!doHaveVerifiedContacts) {
 				AddDebugLogLineM(false, logKadRouting, wxT("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping."));
