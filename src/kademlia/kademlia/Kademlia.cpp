@@ -67,7 +67,7 @@ time_t		CKademlia::m_bootstrap;
 time_t		CKademlia::m_consolidate;
 time_t		CKademlia::m_externPortLookup;
 bool		CKademlia::m_running = false;
-
+ContactList	CKademlia::s_bootstrapList;
 
 void CKademlia::Start(CPrefs *prefs)
 {
@@ -151,6 +151,11 @@ void CKademlia::Stop()
 
 	delete instance;
 	instance = NULL;
+
+	for (ContactList::iterator it = s_bootstrapList.begin(); it != s_bootstrapList.end(); ++it) {
+		delete *it;
+	}
+	s_bootstrapList.clear();
 
 	// Make sure all zones are removed.
 	m_events.clear();
@@ -260,6 +265,15 @@ void CKademlia::Process()
 			instance->m_prefs->SetKademliaFiles();
 			theApp->ShowUserCount();
 		}
+	}
+
+	if (!IsConnected() && !s_bootstrapList.empty() && (now - m_bootstrap > 10 || (GetRoutingZone()->GetNumContacts() == 0 && now - m_bootstrap >= 3))) {
+		CContact *contact = s_bootstrapList.front();
+		s_bootstrapList.pop_front();
+		m_bootstrap = now;
+		AddDebugLogLineM(false, logKadMain, wxT("Trying to bootstrap Kad from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(", %u contacts left"), s_bootstrapList.size()));
+		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion() > 1, contact->GetVersion(), &contact->GetClientID());
+		delete contact;
 	}
 
 	if (GetUDPListener() != NULL) {

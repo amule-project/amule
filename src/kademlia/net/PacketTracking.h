@@ -82,6 +82,7 @@ class CPacketTracking
 	void InTrackListCleanup();
 	void AddLegacyChallenge(const CUInt128& contactID, const CUInt128& challengeID, uint32_t ip, uint8_t opcode);
 	bool IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip, uint8_t opcode, CUInt128& contactID);
+	bool HasActiveLegacyChallenge(uint32_t ip) const;
 
       private:
 	static bool IsTrackedOutListRequestPacket(uint8_t opcode) throw();
