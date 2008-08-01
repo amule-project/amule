@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-29 03:30+0200\n"
-"PO-Revision-Date: 2008-08-01 02:08+0100\n"
+"PO-Revision-Date: 2008-08-01 12:19+0100\n"
 "Last-Translator: Aïssi Dylan <aissi.dylan@free.fr>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "Vous devez entrer un mot de passe non vide."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
-msgstr "Mot de passe invalide, ce n'est pas un hash MD5 !"
+msgstr "Mot de passe invalide, ce n'est pas un hachage MD5 !"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
@@ -105,17 +105,17 @@ msgstr "En attente"
 #: src/ThreadTasks.cpp:130
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
-msgstr "Création des hashes MD4 et AICH démarrée pour le fichier: %s"
+msgstr "Création des hachages MD4 et AICH démarrée pour le fichier: %s"
 
 #: src/ThreadTasks.cpp:134
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
-msgstr "Création du hash MD4 démarrée pour le fichier: %s"
+msgstr "Création du hachage MD4 démarrée pour le fichier: %s"
 
 #: src/ThreadTasks.cpp:138
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
-msgstr "Création du hash AICH démarrée pour le fichier: %s"
+msgstr "Création du hachage AICH démarrée pour le fichier: %s"
 
 #: src/ThreadTasks.cpp:347
 #, c-format
@@ -329,7 +329,7 @@ msgstr "Le nom du fichier sans la partie répertoire."
 
 #: src/UserEvents.h:71
 msgid "The eD2k hash of the file."
-msgstr "Le hash eD2k du fichier."
+msgstr "Le hachage eD2k du fichier."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -670,7 +670,7 @@ msgstr "Vérification du mot de passe\n"
 
 #: src/webserver/src/WebServer.cpp:1879
 msgid "Password hash invalid\n"
-msgstr "Hash du mot de passe invalide\n"
+msgstr "Hachage du mot de passe invalide\n"
 
 #: src/webserver/src/WebServer.cpp:1894
 msgid "Password ok\n"
@@ -1239,7 +1239,7 @@ msgstr "Effacer"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:160
 msgid "Create link with part-hashes"
-msgstr "Créer le lien avec les hashs partiels"
+msgstr "Créer le lien avec les hachages partiels"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:166
 msgid "Help to spread new and rare files faster, at the cost of an increased link size"
@@ -1247,11 +1247,11 @@ msgstr "Aide à retrouver les fichiers rares et nouveaux au prix d'un lien de pl
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:192
 msgid "MD4 File Hash"
-msgstr "Hash MD4 du fichier"
+msgstr "Hachage MD4 du fichier"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
 msgid "eD2k File Hash"
-msgstr "Hash du fichier eD2k"
+msgstr "Hachage du fichier eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
 msgid "eD2k link"
@@ -1363,7 +1363,7 @@ msgstr "Traitement du fichier numéro %u : %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:70
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "Vous avez demandé les hashs partiels (Seulement utilisés pour des fichiers dont les tailles sont > 9.5 Mo)"
+msgstr "Vous avez demandé les hachages partiels (Seulement utilisés pour des fichiers dont les tailles sont > 9.5 Mo)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:83
 #, c-format
@@ -2422,12 +2422,12 @@ msgstr "Accès accepté."
 #: src/ExternalConn.cpp:565
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr "Échec de la commande PartFile à distance: Hash du fichier non trouvé: %s"
+msgstr "Échec de la commande PartFile à distance: Hachage du fichier non trouvé: %s"
 
 #: src/ExternalConn.cpp:567
 #, c-format
 msgid "FileHash not found: %s"
-msgstr "Hash du fichier non trouvé : %s"
+msgstr "Hachage du fichier non trouvé : %s"
 
 #: src/ExternalConn.cpp:630
 #: src/ExternalConn.cpp:714
@@ -3042,7 +3042,7 @@ msgstr "Information"
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
-msgstr "Le Hash utilisateur spécifié est invalide !"
+msgstr "Le hachage utilisateur spécifié est invalide !"
 
 #: src/SearchListCtrl.cpp:89
 #: src/DownloadListCtrl.cpp:194
@@ -3440,7 +3440,7 @@ msgstr "Partie complète (%i) trouvée dans %s"
 #: src/PartFile.cpp:1218
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "Re-hash de %s terminé"
+msgstr "Re-hachage de %s terminé"
 
 #: src/PartFile.cpp:2242
 #, c-format
@@ -3460,12 +3460,12 @@ msgstr "Fichier supprimé : %s"
 #: src/PartFile.cpp:2386
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "AVERTISSEMENT : Impossible de calculer le hash de la partie téléchargée. Ensemble de hash incomplet pour '%s'"
+msgstr "AVERTISSEMENT : Impossible de calculer le hachage de la partie téléchargée. Ensemble de hachage incomplet pour '%s'"
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
-msgstr "ERREUR : Imppossible de calculer le hash de la partie téléchargée - Ensemble de hash incomplet pour (%s). Ceci ne devrait jamais arriver"
+msgstr "ERREUR : Impossible de calculer le hachage de la partie téléchargée - Ensemble de hachage incomplet pour (%s). Ceci ne devrait jamais arriver"
 
 #: src/PartFile.cpp:3087
 #, c-format
@@ -3714,7 +3714,7 @@ msgstr "Cette commande nécessite un argument. Arguments valides : 'all', nom de
 
 #: src/TextClient.cpp:346
 msgid "Processing by hash: "
-msgstr "Traitement par hash :"
+msgstr "Traitement par hachage :"
 
 #: src/TextClient.cpp:361
 msgid "Processing by filename: "
@@ -3722,7 +3722,7 @@ msgstr "Traitement par nom de fichier :"
 
 #: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr "Cette commande nécessite un argument. Arguments valides : un hash de fichier.\n"
+msgstr "Cette commande nécessite un argument. Arguments valides : un hachage de fichier.\n"
 
 #: src/TextClient.cpp:410
 msgid "Not a valid number\n"
@@ -3730,7 +3730,7 @@ msgstr "Nombre invalide\n"
 
 #: src/TextClient.cpp:414
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
-msgstr "Ce n'est pas un hash valide (la longueur devrait être exactement 32 caractères)\n"
+msgstr "Ce n'est pas un hachage valide (la longueur devrait être exactement 32 caractères)\n"
 
 #: src/TextClient.cpp:630
 msgid "Operation was successful."
@@ -3963,7 +3963,7 @@ msgstr ""
 "*) ou un lien de liste de serveurs, dans ce cas tous les serveurs dans la liste\n"
 "   seront ajoutés à la liste des serveurs.\n"
 "\n"
-"Le lien aimant devra contenir le hash eD2k et la taille du fichier.\n"
+"Le lien aimant devra contenir le hachage eD2k et la taille du fichier.\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -4474,7 +4474,7 @@ msgstr "État"
 
 #: src/PartFileConvert.cpp:631
 msgid "Filehash"
-msgstr "Hash du fichier"
+msgstr "Hachage du fichier"
 
 #: src/PartFileConvert.cpp:677
 msgid "Import partfiles"
@@ -4750,7 +4750,7 @@ msgstr "Global"
 
 #: src/muuli_wdr.cpp:193
 msgid "FileHash"
-msgstr "Hash du fichier"
+msgstr "Hachage du fichier"
 
 #: src/muuli_wdr.cpp:201
 msgid "Extended Parameters"
@@ -4917,7 +4917,7 @@ msgstr "Fichier .met :"
 
 #: src/muuli_wdr.cpp:589
 msgid "Hash :"
-msgstr "Hash :"
+msgstr "Hachage :"
 
 #: src/muuli_wdr.cpp:604
 msgid "Filesize :"
@@ -5058,7 +5058,7 @@ msgstr "Nom d'utilisateur :"
 
 #: src/muuli_wdr.cpp:1039
 msgid "Userhash :"
-msgstr "Hash de l'utilisateur :"
+msgstr "Hachage de l'utilisateur :"
 
 #: src/muuli_wdr.cpp:1078
 msgid "Reload your shared files"
@@ -5136,7 +5136,7 @@ msgstr "Nom d'utilisateur :"
 
 #: src/muuli_wdr.cpp:1360
 msgid "Userhash:"
-msgstr "Hash de l'utilisateur :"
+msgstr "Hachage de l'utilisateur :"
 
 #: src/muuli_wdr.cpp:1383
 msgid "Client software:"
@@ -5271,7 +5271,7 @@ msgstr "Confirmation en quittant"
 
 #: src/muuli_wdr.cpp:1615
 msgid "Makes aMule prompt before exiting."
-msgstr ""
+msgstr "Confirmation de fermeture d'aMule."
 
 #: src/muuli_wdr.cpp:1618
 msgid "Enable Tray Icon"
@@ -5291,7 +5291,7 @@ msgstr "Activer ceci va faire minimiser aMule dans la boîte à miniatures plut�
 
 #: src/muuli_wdr.cpp:1628
 msgid "Tooltip delay time: "
-msgstr ""
+msgstr "Délai d'affichage des infobulles:"
 
 #: src/muuli_wdr.cpp:1636
 msgid "seconds"
@@ -5371,7 +5371,7 @@ msgstr "Port TCP UPnP (Facultatif):"
 
 #: src/muuli_wdr.cpp:1776
 msgid "Bind local address to IP (empty for any):"
-msgstr ""
+msgstr "Lier l'adresse local à une IP (vide pour tout):"
 
 #: src/muuli_wdr.cpp:1780
 msgid "Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound."
@@ -5448,7 +5448,7 @@ msgstr "Mettre les serveurs ajoutés manuellement en priorité haute"
 
 #: src/muuli_wdr.cpp:1907
 msgid "Intelligent Corruption Handling (I.C.H.)"
-msgstr ""
+msgstr "Gestion Intelligente de la Corruption (I.C.H.)"
 
 #: src/muuli_wdr.cpp:1910
 msgid "Enable"
@@ -5456,7 +5456,7 @@ msgstr "Activer"
 
 #: src/muuli_wdr.cpp:1914
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr ""
+msgstr "Gestion Avancée de la Corruption se fiant aux hachages (non recommandé)"
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
@@ -5665,9 +5665,8 @@ msgid "Skin to use: "
 msgstr "Skin à utiliser:"
 
 #: src/muuli_wdr.cpp:2230
-#, fuzzy
 msgid "Show \"Fast eD2k Links Handler\" in every window."
-msgstr "Afficher \"Gestionnaire rapide de lien eD2k \" dans chaque fenêtre."
+msgstr "Afficher le \"Gestionnaire rapide de lien eD2k \" dans chaque fenêtre."
 
 #: src/muuli_wdr.cpp:2234
 msgid "Show extended info on categories tabs"
@@ -6580,7 +6579,7 @@ msgstr "Reçus"
 
 #: src/ClientListCtrl.cpp:1028
 msgid "Userhash"
-msgstr "Hash de l'utilisateur"
+msgstr "Hachage de l'utilisateur"
 
 #: src/ClientListCtrl.cpp:1029
 msgid "Encrypted"
