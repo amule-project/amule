@@ -15,10 +15,10 @@
 # This file is distributed under the same license as the aMule package.
 msgid ""
 msgstr ""
-"Project-Id-Version: it2\n"
+"Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-30 20:26+0200\n"
-"PO-Revision-Date: 2008-06-13 17:04+0200\n"
+"POT-Creation-Date: 2008-08-01 10:30+0200\n"
+"PO-Revision-Date: 2008-08-01 10:14+0200\n"
 "Last-Translator: rik <rik_kornellatyahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -540,8 +540,8 @@ msgstr[1] "Letti %u contatti Kad"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Solo %d contatto Kad disponibile, nodes.dat non scritto"
+msgstr[1] "Solo %d contatti Kad disponibili, nodes.dat non scritto"
 
 #: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
@@ -1414,9 +1414,8 @@ msgid "Source Seeds"
 msgstr "Fonti salvate"
 
 #: src/DataToText.cpp:133
-#, fuzzy
 msgid "Search Result"
-msgstr "Ricerca"
+msgstr "Risultati Ricerca"
 
 #: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
@@ -5156,9 +5155,8 @@ msgid "Browser Selection"
 msgstr "Selezione browser"
 
 #: src/muuli_wdr.cpp:1671
-#, fuzzy
 msgid "System Default"
-msgstr "Predefinita di sistema"
+msgstr "Predefinito di Sistema"
 
 #: src/muuli_wdr.cpp:1672
 msgid "Konqueror"
@@ -5541,11 +5539,8 @@ msgid "Line Capacities"
 msgstr "Capacità linea"
 
 #: src/muuli_wdr.cpp:2246
-#, fuzzy
 msgid "Note: These values are only used for statistics."
-msgstr ""
-"Nota: Questi valori sono\n"
-"usati solo nelle statistiche."
+msgstr "Nota: Questi valori sono usati solo nelle statistiche."
 
 #: src/muuli_wdr.cpp:2269
 msgid "!!! WARNING !!!"
@@ -7096,6 +7091,11 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"Inoltre, le impostazioni del browser sono state riportate ai valori "
+"predefiniti di sistema.Se necessario, configura nuovamente le opzioni del "
+"browser.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7251,18 +7251,3 @@ msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Impossibile aprire in scrittura il file della lista degli amici 'emfriend."
 "met'!"
-
-#~ msgid "Please wait... "
-#~ msgstr "Attendere... "
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Non è possibile trovare il comando per lanciare il browser."
-
-#~ msgid "General Settings"
-#~ msgstr "Impostazioni generali"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "Tweaks GUI"
-
-#~ msgid "Remote Control"
-#~ msgstr "Controlli remoti"
