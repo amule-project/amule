@@ -80,7 +80,7 @@ class CKademliaUDPListener : public CPacketTracking
 {
 public:
 	~CKademliaUDPListener();
-	void Bootstrap(uint32_t ip, uint16_t port, bool kad2);
+	void Bootstrap(uint32_t ip, uint16_t port, bool kad2, uint8_t kadVersion = 0, const CUInt128* cryptTargetID = NULL);
 	void FirewalledCheck(uint32_t ip, uint16_t port, const CKadUDPKey& senderKey, uint8_t kadVersion);
 	void SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t port, uint8_t kadVersion, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID, bool requestAckPacket);
 	void SendNullPacket(uint8_t opcode, uint32_t ip, uint16_t port, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID);

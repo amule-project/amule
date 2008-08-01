@@ -289,6 +289,7 @@ void CPacketTracking::AddLegacyChallenge(const CUInt128& contactID, const CUInt1
 bool CPacketTracking::IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip, uint8_t opcode, CUInt128& contactID)
 {
 	uint32_t now = ::GetTickCount();
+	bool warning = false;
 	for (TrackChallengeList::iterator it = listChallengeRequests.begin(); it != listChallengeRequests.end();) {
 		TrackChallengeList::iterator it2 = it++;
 		if (it2->ip == ip && it2->opcode == opcode && now - it2->inserted < SEC2MS(180)) {
@@ -298,8 +299,22 @@ bool CPacketTracking::IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip
 				listChallengeRequests.erase(it2);
 				return true;
 			} else {
-				AddDebugLogLineM(false, logKadPacketTracking, wxT("Wrong challenge answer received, client not verified (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+				warning = true;
 			}
+		}
+	}
+	if (warning) {
+		AddDebugLogLineM(false, logKadPacketTracking, wxT("Wrong challenge answer received, client not verified (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+	}
+	return false;
+}
+
+bool CPacketTracking::HasActiveLegacyChallenge(uint32_t ip) const
+{
+	uint32_t now = ::GetTickCount();
+	for (TrackChallengeList::const_iterator it = listChallengeRequests.begin(); it != listChallengeRequests.end(); ++it) {
+		if (it->ip == ip && now - it->inserted <= SEC2MS(180)) {
+			return true;
 		}
 	}
 	return false;

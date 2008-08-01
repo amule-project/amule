@@ -4,6 +4,7 @@
 // Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
+// Copyright (C)2007-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,6 +143,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 	// Read in the saved contact list
 	try {
 		uint32_t numContacts = 0;
+		uint32_t validContacts = 0;
 		CFile file;
 		if (CPath::FileExists(specialNodesdat.IsEmpty() ? m_filename : specialNodesdat) && file.Open(m_filename, CFile::read)) {
 			// Get how many contacts in the saved list.
@@ -150,62 +152,144 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 			numContacts = file.ReadUInt32();
 			uint32_t fileVersion = 0;
 			if (numContacts == 0) {
-				fileVersion = file.ReadUInt32();
-				if (fileVersion >= 1) {
-					numContacts = file.ReadUInt32();
-				}
-			}
-			uint32_t validContacts = 0;
-			for (uint32_t i = 0; i < numContacts; i++) {
-				CUInt128 id = file.ReadUInt128();
-				uint32_t ip = file.ReadUInt32();
-				uint16_t udpPort = file.ReadUInt16();
-				uint16_t tcpPort = file.ReadUInt16();
-				uint8_t type = 0;
-				uint8_t contactVersion = 0;
-				if (fileVersion >= 1) {
-					contactVersion = file.ReadUInt8();
-				} else {
-					type = file.ReadUInt8();
-				}
-				CKadUDPKey kadUDPKey;
-				bool verified = false;
-				if (fileVersion >= 2) {
-					kadUDPKey.ReadFromFile(file);
-					verified = file.ReadUInt8() != 0;
-					if (verified) {
-						doHaveVerifiedContacts = true;
+				if (file.GetLength() >= 8) {
+					fileVersion = file.ReadUInt32();
+					if (fileVersion == 3) {
+						uint32_t bootstrapEdition = file.ReadUInt32();
+						if (bootstrapEdition == 1) {
+							// this is a special bootstrap-only nodes.dat, handle it in a separate reading function
+							ReadBootstrapNodesDat(file);
+							file.Close();
+							return;
+						}
+					}
+					if (fileVersion >= 1 && fileVersion <= 3) {
+						numContacts = file.ReadUInt32();
 					}
 				}
-				// IP appears valid
-				if (type < 4) {
-					if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),udpPort)) {
-						if (!theApp->ipfilter->IsFiltered(wxUINT32_SWAP_ALWAYS(ip)) &&
-						    !(udpPort == 53 && contactVersion <= 5 /*No DNS Port without encryption*/)) {
-							// This was not a dead contact, inc counter if add was successful
-							if (AddUnfiltered(id, ip, udpPort, tcpPort, contactVersion, kadUDPKey, verified, false, true, false)) {
-								validContacts++;
+			}
+			if (numContacts != 0 && numContacts * 25 <= (file.GetLength() - file.GetPosition())) {
+				for (uint32_t i = 0; i < numContacts; i++) {
+					CUInt128 id = file.ReadUInt128();
+					uint32_t ip = file.ReadUInt32();
+					uint16_t udpPort = file.ReadUInt16();
+					uint16_t tcpPort = file.ReadUInt16();
+					uint8_t type = 0;
+					uint8_t contactVersion = 0;
+					if (fileVersion >= 1) {
+						contactVersion = file.ReadUInt8();
+					} else {
+						type = file.ReadUInt8();
+					}
+					CKadUDPKey kadUDPKey;
+					bool verified = false;
+					if (fileVersion >= 2) {
+						kadUDPKey.ReadFromFile(file);
+						verified = file.ReadUInt8() != 0;
+						if (verified) {
+							doHaveVerifiedContacts = true;
+						}
+					}
+					// IP appears valid
+					if (type < 4) {
+						if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),udpPort)) {
+							if (!theApp->ipfilter->IsFiltered(wxUINT32_SWAP_ALWAYS(ip)) &&
+							    !(udpPort == 53 && contactVersion <= 5 /*No DNS Port without encryption*/)) {
+								// This was not a dead contact, inc counter if add was successful
+								if (AddUnfiltered(id, ip, udpPort, tcpPort, contactVersion, kadUDPKey, verified, false, true, false)) {
+									validContacts++;
+								}
 							}
 						}
 					}
 				}
 			}
 			AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", validContacts), validContacts));
+			if (!doHaveVerifiedContacts) {
+				AddDebugLogLineM(false, logKadRouting, wxT("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping."));
+				SetAllContactsVerified();
+			}
 		}
-		if (numContacts == 0) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Error while reading Kad contacts - 0 entries"));
+		if (validContacts == 0) {
+			AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
 	}
-	if (!doHaveVerifiedContacts) {
-		AddDebugLogLineM(false, logKadRouting, wxT("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping."));
-		SetAllContactsVerified();
+}
+
+void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
+{
+	// Bootstrap versions of nodes.dat files are in the style of version 1 nodes.dats. The difference is that
+	// they will contain more contacts, 500-1000 instead of 50, and those contacts are not added into the routing table
+	// but used to sent Bootstrap packets to. The advantage is that on a list with a high ratio of dead nodes,
+	// we will be able to bootstrap faster than on a normal nodes.dat and more important, if we would deliver
+	// a normal nodes.dat with eMule, those 50 nodes would be kinda DDOSed because everyone adds them to their routing
+	// table, while with this style, we don't actually add any of the contacts to our routing table in the end and we
+	// ask only one of those 1000 contacts one time (well or more until we find an alive one).
+	if (!CKademlia::s_bootstrapList.empty()){
+		wxFAIL;
+		return;
+	}
+	uint32_t numContacts = file.ReadUInt32();
+	if (numContacts != 0 && numContacts * 25 == (file.GetLength() - file.GetPosition())) {
+		uint32_t validContacts = 0;
+		while (numContacts) {
+			CUInt128 id = file.ReadUInt128();
+			uint32_t ip = file.ReadUInt32();
+			uint16_t udpPort = file.ReadUInt16();
+			uint16_t tcpPort = file.ReadUInt16();
+			uint8_t contactVersion = file.ReadUInt8();
+
+			if (::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip), udpPort)) {
+				if (!theApp->ipfilter->IsFiltered(wxUINT32_SWAP_ALWAYS(ip)) &&
+				    !(udpPort == 53 && contactVersion <= 5) && 
+				    (contactVersion > 1))	// only kad2 nodes
+				{
+					// we want the 50 nodes closest to our own ID (provides randomness between different users and gets has good chances to get a bootstrap with close Nodes which is a nice start for our routing table) 
+					CUInt128 distance = me;
+					distance ^= id;
+					validContacts++;
+					// don't bother if we already have 50 and the farest distance is smaller than this contact
+					if (CKademlia::s_bootstrapList.size() < 50 || CKademlia::s_bootstrapList.back()->GetDistance() > distance) {
+						// look where to put this contact into the proper position
+						bool inserted = false;
+						CContact* contact = new CContact(id, ip, udpPort, tcpPort, contactVersion, 0, false, me);
+						for (ContactList::iterator it = CKademlia::s_bootstrapList.begin(); it != CKademlia::s_bootstrapList.end(); ++it) {
+							if ((*it)->GetDistance() > distance) {
+								CKademlia::s_bootstrapList.insert(it, contact);
+								inserted = true;
+								break;
+							}
+						}
+						if (!inserted) {
+							wxASSERT(CKademlia::s_bootstrapList.size() < 50);
+							CKademlia::s_bootstrapList.push_back(contact);
+						} else if (CKademlia::s_bootstrapList.size() > 50) {
+							delete CKademlia::s_bootstrapList.back();
+							CKademlia::s_bootstrapList.pop_back();
+						}
+					}
+				}
+			}
+			numContacts--;
+		}
+		AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", CKademlia::s_bootstrapList.size()), CKademlia::s_bootstrapList.size()));
+		AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts"), CKademlia::s_bootstrapList.size(), validContacts));
+	}
+	if (CKademlia::s_bootstrapList.size() == 0) {
+		AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
 	}
 }
 
 void CRoutingZone::WriteFile()
 {
+	// don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finish probing
+	if (!CKademlia::s_bootstrapList.empty() && GetNumContacts() == 0) {
+		AddDebugLogLineM(false, logKadRouting, wxT("Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table"));
+		return;
+	}
+
 	// The bootstrap method gets a very nice sample of contacts to save.
 	ContactList contacts;
 	GetBootstrapContacts(&contacts, 200);
@@ -223,6 +307,7 @@ void CRoutingZone::WriteFile()
 			file.WriteUInt32(0);
 			// Now tag it with a version which happens to be 2.
 			file.WriteUInt32(2);
+			// file.WriteUInt32(0); // if we would use version >= 3 this would mean that this is a normal nodes.dat
 			file.WriteUInt32(numContacts);
 			for (ContactList::const_iterator it = contacts.begin(); it != contacts.end(); ++it) {
 				CContact *c = *it;
@@ -246,6 +331,55 @@ void CRoutingZone::WriteFile()
 		AddDebugLogLineM(true, logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
 	}
 }
+
+#if 0
+void CRoutingZone::WriteBootstrapFile()
+{
+	AddDebugLogLineM(true, logKadRouting, wxT("Writing special bootstrap nodes.dat - not intended for normal use"));
+	try {
+		// Write a saved contact list.
+		CUInt128 id;
+		CFile file;
+		if (file.Open(m_filename, CFile::write)) {
+			// The bootstrap method gets a very nice sample of contacts to save.
+			ContactMap mapContacts;
+			CUInt128 random(CUInt128((uint32_t)0), 0);
+			CUInt128 distance = random;
+			distance ^= me;
+			GetClosestTo(2, random, distance, 1200, &mapContacts, false, false);
+			// filter out Kad1 nodes
+			for (ContactMap::iterator it = mapContacts.begin(); it != mapContacts.end(); ) {
+				ContactMap::iterator itCur = it++;
+				CContact* contact = itCur->second;
+				if (contact->GetVersion() <= 1) {
+					mapContacts.erase(itCur);
+				}
+			}
+			// Start file with 0 to prevent older clients from reading it.
+			file.WriteUInt32(0);
+			// Now tag it with a version which happens to be 3.
+			file.WriteUInt32(3);
+			file.WriteUInt32(1); // using version >= 3, this means that this is not a normal nodes.dat
+			file.WriteUInt32((uint32_t)mapContacts.size());
+			for (ContactMap::const_iterator it = mapContacts.begin(); it != mapContacts.end(); ++it)
+			{
+				CContact* contact = it->second;
+				file.WriteUInt128(contact->GetClientID());
+				file.WriteUInt32(contact->GetIPAddress());
+				file.WriteUInt16(contact->GetUDPPort());
+				file.WriteUInt16(contact->GetTCPPort());
+				file.WriteUInt8(contact->GetVersion());
+			}
+			file.Close();
+			AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Wrote %u contacts to bootstrap file."), mapContacts.size()));
+		} else {
+			AddDebugLogLineM(true, logKadRouting, wxT("Unable to store Kad file: ") + m_filename);
+		}
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(false, logKadRouting, wxT("CFileException in CRoutingZone::writeFile") + e.what());
+	}
+}
+#endif
 
 bool CRoutingZone::CanSplit() const throw()
 {

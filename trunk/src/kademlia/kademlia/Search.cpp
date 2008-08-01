@@ -4,6 +4,7 @@
 // Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2004-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -80,10 +81,30 @@ CSearch::CSearch()
 	m_searchTermsData = NULL;
 	m_searchTermsDataSize = 0;
 	m_nodeSpecialSearchRequester = NULL;
+	m_closestDistantFound = 0;
 }
 
 CSearch::~CSearch()
 {
+	// remember the closest node we found and tried to contact (if any) during this search
+	// for statistical caluclations, but only if its a certain type
+	switch (m_type) {
+		case NODECOMPLETE:
+		case FILE:
+		case KEYWORD:
+		case NOTES:
+		case STOREFILE:
+		case STOREKEYWORD:
+		case STORENOTES:
+		case FINDSOURCE: // maybe also exclude
+			if (m_closestDistantFound != 0) {
+				CKademlia::StatsAddClosestDistance(m_closestDistantFound);
+			}
+			break;
+		default: // NODE, NODESPECIAL, NODEFWCHECKUDP, FINDBUDDY
+			break;
+	}
+
 	if (m_nodeSpecialSearchRequester != NULL) {
 		// inform requester that our search failed
 		m_nodeSpecialSearchRequester->KadSearchIPByNodeIDResult(KCSR_NOTFOUND, 0, 0);
@@ -365,6 +386,10 @@ void CSearch::StorePacket()
 	ContactMap::const_iterator possible = m_possible.begin();
 	CUInt128 fromDistance(possible->first);
 	CContact *from = possible->second;
+
+	if (fromDistance < m_closestDistantFound || m_closestDistantFound == 0) {
+		m_closestDistantFound = fromDistance;
+	}
 
 	// Make sure this is a valid node to store.
 	if(thePrefs::FilterLanIPs() && fromDistance.Get32BitChunk(0) > SEARCHTOLERANCE) {

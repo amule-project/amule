@@ -4,6 +4,7 @@
 // Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
+// Copyright (C)2007-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -95,15 +96,18 @@ CKademliaUDPListener::~CKademliaUDPListener()
 }
 
 // Used by Kad1.0 and Kad2.0
-void CKademliaUDPListener::Bootstrap(uint32_t ip, uint16_t port, bool kad2)
+void CKademliaUDPListener::Bootstrap(uint32_t ip, uint16_t port, bool kad2, uint8_t kadVersion, const CUInt128* cryptTargetID)
 {
 	wxASSERT(ip);
 
 	if (kad2) {
 		DebugSend(Kad2BootstrapReq, ip, port);
 		CMemFile bio(0);
-		// TODO: add possibility to encrypt bootstrap packets
-		SendPacket(bio, KADEMLIA2_BOOTSTRAP_REQ, ip, port, 0, NULL);
+		if (kadVersion >= 6) {
+			SendPacket(bio, KADEMLIA2_BOOTSTRAP_REQ, ip, port, 0, cryptTargetID);
+		} else {
+			SendPacket(bio, KADEMLIA2_BOOTSTRAP_REQ, ip, port, 0, NULL);
+		}
 	} else {
 		DebugSend(KadBootstrapReq, ip, port);
 		SendMyDetails(KADEMLIA_BOOTSTRAP_REQ, ip, port, 0, 0, NULL, false);
@@ -145,7 +149,17 @@ void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t p
 		}
 		// packetdata.WriteTag(CKadTagUInt(TAG_USER_COUNT, CKademlia::GetPrefs()->GetKademliaUsers()));
 		// packetdata.WriteTag(CKadTagUInt(TAG_FILE_COUNT, CKademlia::GetPrefs()->GetKademliaFiles()));
-		SendPacket(packetdata, opcode, ip, port, targetKey, cryptTargetID);
+		if (kadVersion >= 6) {
+			if (cryptTargetID == NULL || *cryptTargetID == 0) {
+				AddDebugLogLineM(false, logClientKadUDP, wxT("Sending hello response to crypt enabled Kad Node which provided an empty NodeID: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxString::Format(wxT(" (%u)"), kadVersion));
+				SendPacket(packetdata, opcode, ip, port, targetKey, NULL);
+			} else {
+				SendPacket(packetdata, opcode, ip, port, targetKey, cryptTargetID);
+			}
+		} else {
+			SendPacket(packetdata, opcode, ip, port, 0, NULL);
+			wxASSERT(targetKey.IsEmpty());
+		}
 	} else {
 		wxASSERT(!requestAckPacket);
 		packetdata.WriteUInt32(CKademlia::GetPrefs()->GetIPAddress());
@@ -597,6 +611,7 @@ void CKademliaUDPListener::ProcessBootstrapResponse(const uint8_t *packetData, u
 	CHECK_PACKET_MIN_SIZE(27);
 	CHECK_TRACKED_PACKET(KADEMLIA_BOOTSTRAP_REQ);
 
+	//AddDebugLogLineM(false, logClientKadUDP, wxT("Inc Kad1 Bootstrap packet from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 	// How many contacts were given
 	CMemFile bio(packetData, lenPacket);
 	uint16_t numContacts = bio.ReadUInt16();
@@ -623,7 +638,15 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 	CUInt128 contactID = bio.ReadUInt128();
 	uint16_t tport = bio.ReadUInt16();
 	uint8_t version = bio.ReadUInt8();
-	routingZone->Add(contactID, ip, port, tport, version, senderKey, validReceiverKey, true, false, false);
+	// if we don't know any Contacts yet and try to Bootstrap, we assume that all contacts are verified,
+	// in order to speed up the connecting process. The attackvectors to exploit this are very small with no
+	// major effects, so that's a good trade
+	bool assumeVerified = CKademlia::GetRoutingZone()->GetNumContacts() == 0;
+
+	if (CKademlia::s_bootstrapList.empty()) {
+		routingZone->Add(contactID, ip, port, tport, version, senderKey, validReceiverKey, true, false, false);
+	}
+	//AddDebugLogLineM(false, logClientKadUDP, wxT("Inc Kad2 Bootstrap packet from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 
 	uint16_t numContacts = bio.ReadUInt16();
 	while (numContacts) {
@@ -632,7 +655,7 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 		port = bio.ReadUInt16();
 		tport = bio.ReadUInt16();
 		version = bio.ReadUInt8();
-		bool verified = false;
+		bool verified = assumeVerified;
 		routingZone->Add(contactID, ip, port, tport, version, 0, verified, false, false, false);
 		numContacts--;
 	}
@@ -640,7 +663,7 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 
 // KADEMLIA_HELLO_REQ
 // Used in Kad1.0 only
-void CKademliaUDPListener::ProcessHelloRequest (const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t port)
+void CKademliaUDPListener::ProcessHelloRequest(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t port)
 {
 	// Verify packet is expected size
 	CHECK_PACKET_EXACT_SIZE(25);
@@ -672,7 +695,7 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 	uint16_t dbgOldUDPPort = port;
 	uint8_t contactVersion = 0;
 	CUInt128 contactID;
-	bool addedOrUpdated = AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true, true, NULL, &contactID); // might change (udp)port
+	bool addedOrUpdated = AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true, true, NULL, &contactID); // might change (udp)port, validReceiverKey
 	wxASSERT(contactVersion >= 1);
 #ifdef __DEBUG__
 	if (dbgOldUDPPort != port) {
@@ -684,9 +707,9 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 	// if this contact was added or updated (so with other words not filtered or invalid) to our routing table and did not already send a valid
 	// receiver key or is already verified in the routing table, we request an additional ACK package to complete a three-way-handshake and
 	// verify the remote IP
-	SendMyDetails(KADEMLIA2_HELLO_RES, ip, port, contactVersion, senderKey, NULL, addedOrUpdated && !validReceiverKey);
+	SendMyDetails(KADEMLIA2_HELLO_RES, ip, port, contactVersion, senderKey, &contactID, addedOrUpdated && !validReceiverKey);
 
-	if (addedOrUpdated && !validReceiverKey && contactVersion == 7) {
+	if (addedOrUpdated && !validReceiverKey && contactVersion == 7 && !HasActiveLegacyChallenge(ip)) {
 		// Kad Version 7 doesn't support HELLO_RES_ACK but sender/receiver keys, so send a ping to validate
 		DebugSend(Kad2Ping, ip, port);
 		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
@@ -705,7 +728,7 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
 	}
 
-	if (addedOrUpdated && !validReceiverKey && contactVersion < 7) {
+	if (addedOrUpdated && !validReceiverKey && contactVersion < 7 && !HasActiveLegacyChallenge(ip)) {
 		// we need to verify this contact but it doesn't support HELLO_RES_ACK nor keys, do a little workaround
 		SendLegacyChallenge(ip, port, contactID, true);
 	}
@@ -755,6 +778,11 @@ void CKademliaUDPListener::Process2HelloResponseAck(const uint8_t *packetData, u
 	if (!CKademlia::GetRoutingZone()->VerifyContact(remoteID, ip)) {
 		AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
 	}
+#ifdef __DEBUG__
+	else {
+		AddDebugLogLineM(false, logKadRouting, wxT("Verified contact (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(") by HELLO_RES_ACK"));
+	}
+#endif
 }
 
 // KADEMLIA2_HELLO_RES
@@ -2276,6 +2304,10 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	}
 #endif
 
+	if (HasActiveLegacyChallenge(ip)) {
+		// don't send more than one challenge at a time
+		return;
+	}
 	CMemFile packetdata(33);
 	packetdata.WriteUInt8(KADEMLIA_FIND_VALUE);
 	CUInt128 challenge;

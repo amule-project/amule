@@ -42,6 +42,7 @@ there client on the eMule forum..
 #include <map>
 #include "../utils/UInt128.h"
 #include "Prefs.h"
+#include "../routing/Maps.h"
 #include "../net/KademliaUDPListener.h"
 #include <common/Macros.h>
 
@@ -82,7 +83,9 @@ public:
 	static uint32_t			GetIPAddress() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
 	static void Bootstrap(uint32_t ip, uint16_t port, bool kad2)
 	{
-		if (instance && instance->m_udpListener && !IsConnected() && time(NULL) - m_bootstrap > MIN2S(1) ) {
+		time_t now = time(NULL);
+		if (instance && instance->m_udpListener && !IsConnected() && now - m_bootstrap > 10) {
+			m_bootstrap = now;
 			instance->m_udpListener->Bootstrap(ip, port, kad2);
 		}
 	}
@@ -95,6 +98,8 @@ public:
 	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
 	static bool FindIPByNodeID(CKadClientSearcher& requester, const uint8_t *nodeID);
 	static void CancelClientSearch(CKadClientSearcher& fromRequester);
+
+	static ContactList	s_bootstrapList;
 
 private:
 	CKademlia() {}
@@ -124,4 +129,3 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID);
 wxString KadGetKeywordBytes(const wxString& rstrKeywordW);
 
 #endif // __KAD_KADEMLIA_H__
-// File_checked_for_headers

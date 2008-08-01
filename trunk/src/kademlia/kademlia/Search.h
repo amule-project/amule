@@ -136,6 +136,7 @@ private:
 	ContactMap	m_best;
 	ContactList	m_delete;
 	ContactMap	m_inUse;
+	CUInt128	m_closestDistantFound; // not used for the search itself, but for statistical data collecting
 };
 
 } // End namespace

@@ -57,6 +57,8 @@ Version 2.2.2 - Whatever comes next.
 			  (possible an old file version), aMule will assume all
 			  contacts to be verified to avoid slowing down the
 			  connecting process
+			- Implemented a special nodes.dat file version suitable
+			  for mass distribution.
 		* Fixed not sending sources for clients that did not announce
 		  their part availability.
 		* Fixed all list columns being disabled in case of invalid data
