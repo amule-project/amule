@@ -128,11 +128,14 @@ void DecodeNodesDat(const CFileDataIO& file)
 	uint32_t numContacts = file.ReadUInt32();
 	uint32_t fileVersion = 0;
 
-	DoPrint(wxT("NumContacts #1: ")); Print(numContacts); DoPrint(wxT("\n"));
+	DoPrint(wxT("NumContacts #1  : ")); Print(numContacts); DoPrint(wxT("\n"));
 	if (numContacts == 0) {
-		DoPrint(wxT("FileVersion   : ")); Print(fileVersion = file.ReadUInt32()); DoPrint(wxT("\n"));
-		if (fileVersion >= 1) {
-			DoPrint(wxT("NumContacts #2: ")); Print(numContacts = file.ReadUInt32()); DoPrint(wxT("\n"));
+		DoPrint(wxT("FileVersion     : ")); Print(fileVersion = file.ReadUInt32()); DoPrint(wxT("\n"));
+		if (fileVersion == 3) {
+			DoPrint(wxT("BootstrapEdition: ")); Print(file.ReadUInt32()); DoPrint(wxT("\n"));
+		}
+		if (fileVersion >= 1 && fileVersion <= 3) {
+			DoPrint(wxT("NumContacts #2  : ")); Print(numContacts = file.ReadUInt32()); DoPrint(wxT("\n"));
 		}
 	}
 	for (uint32_t i = 0; i < numContacts; i++) {
