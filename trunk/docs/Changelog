@@ -114,6 +114,10 @@ Version 2.2.2 - Whatever comes next.
 		  in config file.
 		* Fixed directory tree not available.
 
+	Kry:
+		* Fixed: Incorrect SX packets sent, plus no reply to
+		  out-of-multipacket SX as a bonus
+
 	MalaPraxis:
 		* Remap colours on Windows
 		* Add resources
