@@ -6,6 +6,8 @@ Version 2.x.x - The river knows.
 		* Various fixes to new colour code
 		* Allow user to select display of transfer rates
 		* Extendable list-control settings save/load code
+		* Implemented an alternate method to estimate the real user count
+		  in the Kad network, which is not based on our local routing table.
 
 	Greek:
 		* Part number is now an extra column in the download list
@@ -104,6 +106,8 @@ Version 2.2.2 - Whatever comes next.
 			  (possible an old file version), aMule will assume all
 			  contacts to be verified to avoid slowing down the
 			  connecting process
+			- Implemented a special nodes.dat file version suitable
+			  for mass distribution.
 		* Fixed not sending sources for clients that did not announce
 		  their part availability.
 		* Fixed all list columns being disabled in case of invalid data

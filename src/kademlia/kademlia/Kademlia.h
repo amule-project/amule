@@ -42,6 +42,7 @@ there client on the eMule forum..
 #include <map>
 #include "../utils/UInt128.h"
 #include "Prefs.h"
+#include "../routing/Maps.h"
 #include "../net/KademliaUDPListener.h"
 #include <common/Macros.h>
 
@@ -72,7 +73,8 @@ public:
 	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
 	static bool			IsFirewalled() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() : true; }
 	static void			RecheckFirewalled();
-	static uint32_t			GetKademliaUsers() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaUsers() : 0; }
+	static uint32_t			GetKademliaUsers(bool newMethod = false) throw()
+		{ return instance && instance->m_prefs ? (newMethod ? CalculateKadUsersNew() : instance->m_prefs->GetKademliaUsers()) : 0; }
 	static uint32_t			GetKademliaFiles() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaFiles() : 0; }
 	static uint32_t			GetTotalStoreKey() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreKey() : 0; }
 	static uint32_t			GetTotalStoreSrc() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreSrc() : 0; }
@@ -82,7 +84,9 @@ public:
 	static uint32_t			GetIPAddress() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
 	static void Bootstrap(uint32_t ip, uint16_t port, bool kad2)
 	{
-		if (instance && instance->m_udpListener && !IsConnected() && time(NULL) - m_bootstrap > MIN2S(1) ) {
+		time_t now = time(NULL);
+		if (instance && instance->m_udpListener && !IsConnected() && now - m_bootstrap > 10) {
+			m_bootstrap = now;
 			instance->m_udpListener->Bootstrap(ip, port, kad2);
 		}
 	}
@@ -92,12 +96,17 @@ public:
 	static void AddEvent(CRoutingZone *zone) throw()		{ m_events[zone] = zone; }
 	static void RemoveEvent(CRoutingZone *zone)			{ m_events.erase(zone); }
 	static void Process();
+	static void StatsAddClosestDistance(const CUInt128& distance);
 	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
 	static bool FindIPByNodeID(CKadClientSearcher& requester, const uint8_t *nodeID);
 	static void CancelClientSearch(CKadClientSearcher& fromRequester);
 
+	static ContactList	s_bootstrapList;
+
 private:
 	CKademlia() {}
+
+	static uint32_t	CalculateKadUsersNew();
 
 	static CKademlia *instance;
 	static EventMap	m_events;
@@ -111,6 +120,7 @@ private:
 	static time_t	m_consolidate;
 	static time_t	m_externPortLookup;
 	static bool	m_running;
+	static std::list<uint32_t>	m_statsEstUsersProbes;
 
 	CPrefs *		m_prefs;
 	CRoutingZone *		m_routingZone;
@@ -124,4 +134,3 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID);
 wxString KadGetKeywordBytes(const wxString& rstrKeywordW);
 
 #endif // __KAD_KADEMLIA_H__
-// File_checked_for_headers

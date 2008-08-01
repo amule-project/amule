@@ -42,6 +42,8 @@ there client on the eMule forum..
 #include "Maps.h"
 #include "../utils/UInt128.h"
 
+class CFileDataIO;
+
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
@@ -102,6 +104,10 @@ private:
 
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128& zone_index) { Init(super_zone, level, zone_index); }
 	void Init(CRoutingZone *super_zone, int level, const CUInt128& zone_index);
+	void ReadBootstrapNodesDat(CFileDataIO& file);
+#if 0
+	void WriteBootstrapFile();
+#endif
 
 	void WriteFile();
 
