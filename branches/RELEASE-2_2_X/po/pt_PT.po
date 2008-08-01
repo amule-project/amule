@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-01 08:21+0200\n"
+"POT-Creation-Date: 2008-07-30 20:26+0200\n"
 "PO-Revision-Date: 2008-04-15 02:00+0100\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese\n"
@@ -521,7 +521,7 @@ msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: palavra-chave de pesquisa demasiado curta"
 
 #: src/kademlia/routing/RoutingZone.cpp:193
-#, fuzzy, c-format
+#, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Lido %u contacto Kad"
@@ -1409,7 +1409,6 @@ msgid "Source Seeds"
 msgstr "Sementes de Fontes"
 
 #: src/DataToText.cpp:133
-#, fuzzy
 msgid "Search Result"
 msgstr "Resultados de Pesquisas"
 
@@ -2152,14 +2151,14 @@ msgstr ""
 "Apenas uma localização por linha."
 
 #: src/PrefsUnifiedDlg.cpp:973
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Intervalo de actualização: %d segundo"
 msgstr[1] "Intervalo de actualização: %d segundos"
 
 #: src/PrefsUnifiedDlg.cpp:980
-#, fuzzy, c-format
+#, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Tempo para o gráfico de média: %d minuto"
@@ -2171,28 +2170,28 @@ msgid "Connections Graph Scale: %d"
 msgstr "Escala do Gráfico de Ligações: %d"
 
 #: src/PrefsUnifiedDlg.cpp:992
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Intervalo de actualização: %d segundo"
 msgstr[1] "Intervalo de actualização: %d segundos"
 
 #: src/PrefsUnifiedDlg.cpp:998
-#, fuzzy, c-format
+#, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Tamanho de memória temporária de ficheiros: %d byte"
 msgstr[1] "Tamanho de memória temporária de ficheiros: %d bytes"
 
 #: src/PrefsUnifiedDlg.cpp:1004
-#, fuzzy, c-format
+#, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Tamanho da fila de espera de upload: %d cliente"
 msgstr[1] "Tamanho da fila de espera de upload: %d clientes"
 
 #: src/PrefsUnifiedDlg.cpp:1011
-#, fuzzy, c-format
+#, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Intervalo de actualização de ligação ao servidor: %d minuto"
@@ -3245,7 +3244,7 @@ msgid "Failed to save part.met.seeds file for %s"
 msgstr "Erro ao gravar o ficheiro 'part.met.seeds' para %s"
 
 #: src/PartFile.cpp:1024
-#, fuzzy, c-format
+#, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "Gravada %i semente de fontes para o ficheiro de partes: %s (%s)"
@@ -3378,14 +3377,14 @@ msgid "Error while saving known.met file: %s"
 msgstr "Erro ao gravar ficheiro known.met: %s"
 
 #: src/SharedFileList.cpp:352
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "Encontrado %i ficheiro partilhado conhecido"
 msgstr[1] "Encontrados %i ficheiros partilhados conhecidos"
 
 #: src/SharedFileList.cpp:358
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Encontrado %i ficheiro partilhado conhecido, %i desconhecido"
@@ -3413,7 +3412,7 @@ msgid "No comments"
 msgstr "Sem comentários"
 
 #: src/CommentDialogLst.cpp:104
-#, fuzzy, c-format
+#, c-format
 msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "%u comentário"
@@ -3470,7 +3469,7 @@ msgid "%s (%s:%i) appears to be full."
 msgstr "%s (%s:%i) parece estar cheio."
 
 #: src/ServerConnect.cpp:381
-#, fuzzy, c-format
+#, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Ligação automática ao servidor irá repetir-se em %d segundo"
@@ -3507,7 +3506,7 @@ msgid "No part files found"
 msgstr "Nenhum ficheiro de partes (.part) encontrado"
 
 #: src/DownloadQueue.cpp:171
-#, fuzzy, c-format
+#, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "Encontrado %u ficheiro de partes"
@@ -4109,7 +4108,7 @@ msgid "Unknown server info received! - too short"
 msgstr "Recebida informação do servidor desconhecida! - demasiado curta"
 
 #: src/ServerSocket.cpp:539
-#, fuzzy, c-format
+#, c-format
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "Recebido %d novo servidor"
@@ -4140,7 +4139,7 @@ msgstr ""
 "Não é possível criar o processo leve de resolução de nomes para ligar a %s"
 
 #: src/ServerSocket.cpp:729
-#, fuzzy, c-format
+#, c-format
 msgid "Server IP %s (%s) is filtered.  Not connecting."
 msgstr "O endereço IP do servidor %s (%s) está filtrado. Não irá ligar."
 
@@ -4163,7 +4162,7 @@ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Carregamento dos dados do país falhou de "
 
 #: src/IP2Country.cpp:104
-#, fuzzy, c-format
+#, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
 msgstr[0] "%d imagem de bandeira foi carregada."
@@ -4374,7 +4373,6 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Disco: %s)"
 
 #: src/OtherFunctions.cpp:112
-#, fuzzy
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "byte"
@@ -4414,7 +4412,6 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:147
-#, fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "byte/seg"
@@ -4511,14 +4508,14 @@ msgstr ""
 "ficheiro."
 
 #: src/IPFilter.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "%u intervalo IP carregado de '%s'."
 msgstr[1] "%u intervalos IP carregados de '%s'."
 
 #: src/IPFilter.cpp:332
-#, fuzzy, c-format
+#, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "%u linha defeituosa foi ignorada"
@@ -4586,7 +4583,6 @@ msgstr ""
 "deutilizadores."
 
 #: src/muuli_wdr.cpp:113
-#, fuzzy
 msgid ""
 "Current average upload and download rates. If enabled the numbers in the "
 "braces signify the overhead from client communication."
@@ -5520,7 +5516,6 @@ msgid "Line Capacities"
 msgstr "Capacidades da Ligação"
 
 #: src/muuli_wdr.cpp:2246
-#, fuzzy
 msgid "Note: These values are only used for statistics."
 msgstr "Nota: estes valores são usados apenas nas estatísticas."
 
@@ -6474,14 +6469,14 @@ msgid "Print program version."
 msgstr "Mostrar a versão do programa."
 
 #: src/ClientCreditsList.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "Ficheiro de créditos carregado, %u cliente conhecido"
 msgstr[1] "Ficheiro de créditos carregado, %u clientes conhecidos"
 
 #: src/ClientCreditsList.cpp:171
-#, fuzzy, c-format
+#, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - Os créditos expiraram para %u cliente!"
@@ -6847,14 +6842,14 @@ msgstr ""
 "Ficheiro server.met corrompido, versão inválida encontrada: 0x%x, tamanho %i"
 
 #: src/ServerList.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "Foi encontrado %i servidor no server.met"
 msgstr[1] "Foram encontrados %i servidores no server.met"
 
 #: src/ServerList.cpp:170
-#, fuzzy, c-format
+#, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d servidor adicionado"
