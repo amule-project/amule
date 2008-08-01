@@ -47,7 +47,7 @@
 #define __SVN__
 
 #ifndef VERSION
-	#define VERSION "2.2.1"
+	#define VERSION "2.3.0"
 #endif
 
 #ifdef __SVN__
@@ -57,8 +57,8 @@
 #endif
 
 #define	VERSION_MJR		2
-#define	VERSION_MIN		2
-#define	VERSION_UPDATE		1
+#define	VERSION_MIN		3
+#define	VERSION_UPDATE		0
 
 #ifndef PACKAGE
 #define PACKAGE "amule"
