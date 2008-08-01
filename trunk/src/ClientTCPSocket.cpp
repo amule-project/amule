@@ -1196,7 +1196,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 						AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET has OP_REQUESTSOURCES(2)") );
 						uint8 byRequestedVersion = 0;
 						uint16 byRequestedOptions = 0;
-						if (opcode == OP_REQUESTSOURCES2){ // SX2 requests contains additional data
+						if (opcode_in == OP_REQUESTSOURCES2){ // SX2 requests contains additional data
 							byRequestedVersion = data_in.ReadUInt8();
 							byRequestedOptions = data_in.ReadUInt16();
 						}						
@@ -1478,6 +1478,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			m_client->SetRemoteQueueRank(newrank);
 			break;
 		}
+		case OP_REQUESTSOURCES2:
 		case OP_REQUESTSOURCES:{
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQUESTSOURCES from ") + m_client->GetFullIP()  );
 			
