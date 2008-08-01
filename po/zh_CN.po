@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-29 03:30+0200\n"
-"PO-Revision-Date: 2008-06-08 23:30+0800\n"
+"PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
-"Language-Team: 小桥 <29551030@qq.com>\n"
+"Language-Team: Chinese <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -503,7 +503,7 @@ msgstr "Kad：搜索关键词太短"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr ""
+msgstr "Kad：搜索关键词已经在搜索列表中："
 
 #: src/kademlia/routing/RoutingZone.cpp:193
 #, c-format
@@ -516,8 +516,8 @@ msgstr[1] "读取 %u 个 Kad 联系人"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "只有%d个Kad联系人可用，nodes.dat没有写入"
+msgstr[1] "只有%d个Kad联系人可用，nodes.dat没有写入"
 
 #: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
@@ -536,7 +536,7 @@ msgstr "网页客户端连接已被接受\n"
 
 #: src/webserver/src/WebServer.cpp:309
 msgid "ERROR: cannot accept web client connection\n"
-msgstr ""
+msgstr "错误：无法接受网页客户端连接\n"
 
 #: src/webserver/src/WebServer.cpp:379
 #, c-format
@@ -1385,7 +1385,7 @@ msgstr "资源种子"
 
 #: src/DataToText.cpp:133
 msgid "Search Result"
-msgstr ""
+msgstr "搜索结果"
 
 #: src/Preferences.cpp:654
 msgid "System default"
@@ -1529,19 +1529,19 @@ msgstr "土耳其语"
 
 #: src/Preferences.cpp:822 src/muuli_wdr.cpp:2223
 msgid "- default -"
-msgstr ""
+msgstr "- 默认 -"
 
 #: src/Preferences.cpp:838
 msgid "User:"
-msgstr ""
+msgstr "用户："
 
 #: src/Preferences.cpp:864
 msgid "System:"
-msgstr ""
+msgstr "系统："
 
 #: src/Preferences.cpp:875
 msgid "no options available"
-msgstr ""
+msgstr "无选项可用"
 
 #: src/Preferences.cpp:1693
 msgid ""
@@ -1733,35 +1733,35 @@ msgstr "快照："
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
-msgstr ""
+msgstr "基于eMule的“全平台”P2P客户端\n"
 
 #: src/amuleDlg.cpp:467
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "网站：http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:468
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "论坛：http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
-msgstr ""
+msgstr "FAQ: http://wiki.amule.org \n"
 
 #: src/amuleDlg.cpp:470
 msgid "Contact: admin@amule.org (administrative issues) \n"
-msgstr ""
+msgstr "联系邮件：admin@amule.org (管理问题) \n"
 
 #: src/amuleDlg.cpp:471
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
-msgstr ""
+msgstr "版权所有 (C) 2003-2008 aMule 团队 \n"
 
 #: src/amuleDlg.cpp:472
 msgid "Part of aMule is based on \n"
-msgstr ""
+msgstr "aMule的一部分是基于 \n"
 
 #: src/amuleDlg.cpp:473
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -1769,11 +1769,11 @@ msgstr "Kademlia：基于异或算法的点对点路由。\n"
 
 #: src/amuleDlg.cpp:474
 msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
-msgstr ""
+msgstr "版权所有 (C) 2002 Petar Maymounkov\n"
 
 #: src/amuleDlg.cpp:475
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:515
 #: src/PrefsUnifiedDlg.cpp:610 src/PrefsUnifiedDlg.cpp:692 src/KadDlg.cpp:177
@@ -1969,7 +1969,7 @@ msgstr "安全"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "接口"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
@@ -1977,7 +1977,7 @@ msgstr "代理"
 
 #: src/PrefsUnifiedDlg.cpp:177
 msgid "Filters"
-msgstr ""
+msgstr "过滤"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -1989,7 +1989,7 @@ msgstr "在线统计"
 
 #: src/PrefsUnifiedDlg.cpp:180
 msgid "Advanced"
-msgstr ""
+msgstr "高级"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2018,6 +2018,8 @@ msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
 msgstr ""
+"您的自动更新服务器列表是可空的，\n"
+"启动时自动更新服务器列表功能将被禁用。"
 
 #: src/PrefsUnifiedDlg.cpp:521
 msgid ""
@@ -2931,7 +2933,7 @@ msgstr "用户总数：%s | 文件总数：%s"
 
 #: src/DownloadListCtrl.cpp:187
 msgid "Part"
-msgstr ""
+msgstr "块"
 
 #: src/DownloadListCtrl.cpp:190 src/ClientListCtrl.cpp:520
 msgid "Transferred"
@@ -3128,7 +3130,7 @@ msgstr "错误：part.met文件大小为0： %s ==> %s"
 #: src/PartFile.cpp:351
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
-msgstr ""
+msgstr "错误：非法的part.met文件版本：%s ==> %s"
 
 #: src/PartFile.cpp:601
 #, c-format
@@ -3296,7 +3298,7 @@ msgstr "警告：known.net文件无法打开。"
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Known file list corrupted, contains invalid header."
-msgstr ""
+msgstr "警告：已知文件的列表已经损坏，包含有非法头部。"
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -4737,6 +4739,8 @@ msgid ""
 "For a film you can say its length, its story, language ...\\n\\nand if it's "
 "a fake, you can tell that to other users of aMule."
 msgstr ""
+"像电影的话，您可以说明它的长度、情节和语言等等...\\n\\n"
+"如果文件是假冒的，您可以提醒其它用户。"
 
 #: src/muuli_wdr.cpp:893
 msgid "File Quality"
@@ -4940,7 +4944,7 @@ msgstr "昵称"
 
 #: src/muuli_wdr.cpp:1585
 msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr ""
+msgstr "http://www.aMule.org - 支持多平台的骡子"
 
 #: src/muuli_wdr.cpp:1586
 msgid "This is the name that other users will see when connecting to you."
@@ -4948,7 +4952,7 @@ msgstr "这是其他用户看到的名字。"
 
 #: src/muuli_wdr.cpp:1594
 msgid "Language: "
-msgstr ""
+msgstr "语言"
 
 #: src/muuli_wdr.cpp:1595 src/muuli_wdr.cpp:1629 src/muuli_wdr.cpp:1633
 #: src/muuli_wdr.cpp:1637
@@ -4981,7 +4985,7 @@ msgstr "退出时确认"
 
 #: src/muuli_wdr.cpp:1615
 msgid "Makes aMule prompt before exiting."
-msgstr ""
+msgstr "在aMule退出前进行询问"
 
 #: src/muuli_wdr.cpp:1618
 msgid "Enable Tray Icon"
@@ -5003,11 +5007,11 @@ msgstr "启用此选项将使aMule最小化到系统状态栏，而不是任务�
 
 #: src/muuli_wdr.cpp:1628
 msgid "Tooltip delay time: "
-msgstr ""
+msgstr "提示延时："
 
 #: src/muuli_wdr.cpp:1636
 msgid "seconds"
-msgstr "seconds"
+msgstr "秒"
 
 #: src/muuli_wdr.cpp:1642
 msgid "Browser Selection"
@@ -5017,7 +5021,7 @@ msgstr "浏览器选择"
 msgid ""
 "Enter your browser name here. Leave this field empty to use the system "
 "default browser."
-msgstr ""
+msgstr "在此处输入您的浏览器名称，如要使用系统默认浏览器则请留空。"
 
 #: src/muuli_wdr.cpp:1656
 msgid "Open in new tab if possible"
@@ -5033,11 +5037,11 @@ msgstr "录像播放器"
 
 #: src/muuli_wdr.cpp:1676
 msgid "Create backup for preview"
-msgstr ""
+msgstr "为预览创建备份"
 
 #: src/muuli_wdr.cpp:1695
 msgid "Bandwidth limits"
-msgstr ""
+msgstr "带宽限制"
 
 #: src/muuli_wdr.cpp:1710
 msgid "Upload"
@@ -5049,11 +5053,11 @@ msgstr "单用户上传速度"
 
 #: src/muuli_wdr.cpp:1732
 msgid "Ports"
-msgstr ""
+msgstr "端口"
 
 #: src/muuli_wdr.cpp:1738
 msgid "Standard TCP Port "
-msgstr ""
+msgstr "标准TCP端口 "
 
 #: src/muuli_wdr.cpp:1742
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -5061,45 +5065,46 @@ msgstr "这是标准的eD2k端口，不能被禁用。"
 
 #: src/muuli_wdr.cpp:1745
 msgid "UDP port for server requests (TCP+3):"
-msgstr ""
+msgstr "用户服务器请求的UDP端口（TCP+3）："
 
 #: src/muuli_wdr.cpp:1748
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1751
 msgid "Extended UDP port (Kad / global search) "
-msgstr ""
+msgstr "扩展UDP端口（Kad / 全局搜索）"
 
 #: src/muuli_wdr.cpp:1755
 msgid "This UDP port is used for extended eD2k requests and Kad network"
-msgstr ""
+msgstr "此UDP端口用于扩展eD2k请求和Kad网络"
 
 #: src/muuli_wdr.cpp:1758
 msgid "Enable UPnP for router port forwarding"
-msgstr ""
+msgstr "启用UPnP以用于路由器端口转发"
 
 #: src/muuli_wdr.cpp:1763
 msgid "UPnP TCP Port (Optional):"
-msgstr ""
+msgstr "UPnP的TCP端口（可选）："
 
 #: src/muuli_wdr.cpp:1776
 msgid "Bind local address to IP (empty for any):"
-msgstr ""
+msgstr "为本地地址绑定IP（全部绑定则留空）："
 
 #: src/muuli_wdr.cpp:1780
 msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
 msgstr ""
+"只限高级用户：如果您有多个网络接口，请输入aMule将要绑定接口的地址。"
 
 #: src/muuli_wdr.cpp:1788
 msgid "Max sources per downloading file:"
-msgstr ""
+msgstr "每个下载文件的最大的源数量："
 
 #: src/muuli_wdr.cpp:1794
 msgid "Max simultaneous connections:"
-msgstr ""
+msgstr "最大同时连接："
 
 #: src/muuli_wdr.cpp:1807
 msgid "Kademlia"
@@ -5163,15 +5168,15 @@ msgstr "设置用户输入的服务器为高优先级"
 
 #: src/muuli_wdr.cpp:1907
 msgid "Intelligent Corruption Handling (I.C.H.)"
-msgstr ""
+msgstr "智能损坏数据处理 (I.C.H.)"
 
 #: src/muuli_wdr.cpp:1910
 msgid "Enable"
-msgstr ""
+msgstr "启用"
 
 #: src/muuli_wdr.cpp:1914
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr ""
+msgstr "高级I.C.H.，信任全部校验值（不推荐）"
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
@@ -5187,7 +5192,7 @@ msgstr "尝试先下载文件的第一段和最后一段"
 
 #: src/muuli_wdr.cpp:1932
 msgid "Start next paused file when a file completes"
-msgstr ""
+msgstr "当一个文件完成时开始下一个暂停的文件"
 
 #: src/muuli_wdr.cpp:1936
 msgid "From the same category"
@@ -5205,7 +5210,7 @@ msgstr "为新文件分配全部所需的磁盘空间，这样可以减少碎片
 
 #: src/muuli_wdr.cpp:1946
 msgid "Stop downloads when free disk space reaches "
-msgstr ""
+msgstr "停止下载当可用磁盘空间只有"
 
 #: src/muuli_wdr.cpp:1947
 msgid "Select this if you want aMule to check your disk space"
@@ -5229,15 +5234,15 @@ msgstr "添加新共享文件时设优先级为自动状态"
 
 #: src/muuli_wdr.cpp:1991
 msgid "Destination folder for downloads"
-msgstr ""
+msgstr "下载文件存放文件夹"
 
 #: src/muuli_wdr.cpp:2002
 msgid "Folder for temporary download files"
-msgstr ""
+msgstr "临时下载文件存放文件夹"
 
 #: src/muuli_wdr.cpp:2013
 msgid "Shared folders"
-msgstr ""
+msgstr "共享的文件夹"
 
 #: src/muuli_wdr.cpp:2016
 msgid "(Right click on folder icon for recursive share)"
@@ -5265,15 +5270,15 @@ msgstr "连接图表尺寸：100 "
 
 #: src/muuli_wdr.cpp:2067
 msgid "Download graph scale:"
-msgstr ""
+msgstr "下载图表尺寸："
 
 #: src/muuli_wdr.cpp:2076
 msgid "Upload graph scale:"
-msgstr ""
+msgstr "上传图表尺寸："
 
 #: src/muuli_wdr.cpp:2090
 msgid "Colours: "
-msgstr ""
+msgstr "颜色："
 
 #: src/muuli_wdr.cpp:2095
 msgid "Background"
@@ -5333,7 +5338,7 @@ msgstr "选择"
 
 #: src/muuli_wdr.cpp:2121
 msgid "Tree"
-msgstr ""
+msgstr "树"
 
 #: src/muuli_wdr.cpp:2132
 msgid "Number of Client Versions shown (0=unlimited)"
@@ -5374,11 +5379,11 @@ msgstr "服务器连接刷新周期：禁用"
 
 #: src/muuli_wdr.cpp:2218
 msgid "Skin to use: "
-msgstr ""
+msgstr "要使用的皮肤："
 
 #: src/muuli_wdr.cpp:2230
 msgid "Show \"Fast eD2k Links Handler\" in every window."
-msgstr ""
+msgstr "在全部窗口都显示快捷eD2k连接处理栏。"
 
 #: src/muuli_wdr.cpp:2234
 msgid "Show extended info on categories tabs"
@@ -5390,15 +5395,15 @@ msgstr "标题栏显示传送速度"
 
 #: src/muuli_wdr.cpp:2241
 msgid "Before application name"
-msgstr ""
+msgstr "程序名称之前"
 
 #: src/muuli_wdr.cpp:2244
 msgid "After application name"
-msgstr ""
+msgstr "程序名称之后"
 
 #: src/muuli_wdr.cpp:2248
 msgid "Show overhead bandwidth"
-msgstr ""
+msgstr "显示开销带宽"
 
 #: src/muuli_wdr.cpp:2252
 msgid "Vertical toolbar orientation"
@@ -5406,15 +5411,15 @@ msgstr "垂直显示工具栏"
 
 #: src/muuli_wdr.cpp:2255
 msgid "Download Queue Files"
-msgstr ""
+msgstr "下载队列文件"
 
 #: src/muuli_wdr.cpp:2258
 msgid "Show progress percentage"
-msgstr ""
+msgstr "显示进度百分比"
 
 #: src/muuli_wdr.cpp:2265
 msgid "Show progress bar"
-msgstr ""
+msgstr "显示进度条"
 
 #: src/muuli_wdr.cpp:2269
 msgid "Flat"
@@ -5426,7 +5431,7 @@ msgstr "圆润"
 
 #: src/muuli_wdr.cpp:2280
 msgid "Auto-sort files (high CPU)"
-msgstr ""
+msgstr "自动排序文件（高CPU占用）"
 
 #: src/muuli_wdr.cpp:2282
 msgid "aMule will sort the columns in your download list automatically"
@@ -5442,7 +5447,7 @@ msgstr "接受远程连接"
 
 #: src/muuli_wdr.cpp:2311
 msgid "IP of the listening interface:"
-msgstr ""
+msgstr "监听借口的IP："
 
 #: src/muuli_wdr.cpp:2315
 msgid ""
@@ -5452,7 +5457,7 @@ msgstr "在此输入正确的IP（格式：a.b.c.d）用于监听远程连接接
 
 #: src/muuli_wdr.cpp:2323 src/muuli_wdr.cpp:2384
 msgid "TCP port:"
-msgstr ""
+msgstr "TCP端口"
 
 #: src/muuli_wdr.cpp:2331
 msgid "Enable UPnP port forwarding on the EC port"
@@ -5464,7 +5469,7 @@ msgstr "Web服务器参数"
 
 #: src/muuli_wdr.cpp:2349
 msgid "Run webserver on startup"
-msgstr ""
+msgstr "启动时运行Web服务器"
 
 #: src/muuli_wdr.cpp:2355
 msgid "Web template"
@@ -5484,11 +5489,11 @@ msgstr "低权限密码"
 
 #: src/muuli_wdr.cpp:2392
 msgid "Enable UPnP port forwarding of the web server port"
-msgstr ""
+msgstr "为Web服务器端口启用UPnP端口转发"
 
 #: src/muuli_wdr.cpp:2397
 msgid "Web server UPnP TCP port (Optional)"
-msgstr ""
+msgstr "Web服务器UPnP的TCP端口（可选）"
 
 #: src/muuli_wdr.cpp:2407
 msgid "Page Refresh Time (in secs)"
@@ -5688,7 +5693,7 @@ msgstr "没人"
 
 #: src/muuli_wdr.cpp:2963
 msgid "Who can see my shared files:"
-msgstr ""
+msgstr "谁可查看我的共享文件："
 
 #: src/muuli_wdr.cpp:2964
 msgid "Select who can request to view a list of your shared files."
@@ -5784,7 +5789,7 @@ msgstr "更改在线统计文件的更新频率（秒）。"
 
 #: src/muuli_wdr.cpp:3072
 msgid "Save online signature file in: "
-msgstr ""
+msgstr "保存在线统计文件在："
 
 #: src/muuli_wdr.cpp:3079
 msgid ""
@@ -5817,7 +5822,7 @@ msgstr "输入需过滤的词组"
 
 #: src/muuli_wdr.cpp:3120
 msgid "Show received messages in the log"
-msgstr ""
+msgstr "在日志中显示接收的消息"
 
 #: src/muuli_wdr.cpp:3125
 msgid "Comments"
@@ -5841,7 +5846,7 @@ msgstr "启用/禁用用户名/密码验证"
 
 #: src/muuli_wdr.cpp:3163
 msgid "Username: "
-msgstr ""
+msgstr "用户名："
 
 #: src/muuli_wdr.cpp:3167
 msgid "The username to use to connect to the proxy"
@@ -5941,7 +5946,7 @@ msgstr "删除所选"
 
 #: src/muuli_wdr.cpp:3429
 msgid "Event Types"
-msgstr ""
+msgstr "事件类型"
 
 #: src/muuli_wdr.cpp:3454
 msgid "Connect to any server and/or Kad"
@@ -6795,6 +6800,9 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"此外，浏览器设定已经被重设为系统默认，如有必要，请重新配置浏览器选项。\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
