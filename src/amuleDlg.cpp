@@ -593,11 +593,14 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 			ct->AppendText( wxT("\n") );
 		} else {
 			// Bold critical log-lines
+			// Windows doesn't support this feature, and it causes GDI resource leaks
+#ifndef __WXMSW__
 			wxTextAttr style = ct->GetDefaultStyle();
 			wxFont font = style.GetFont();
 			font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
 			style.SetFont(font);
 			ct->SetDefaultStyle(style);
+#endif
 			
 			// Split multi-line messages into individual lines
 			wxStringTokenizer tokens( bufferline, wxT("\n") );		
@@ -655,8 +658,8 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	////////////////////////////////////////////////////////////	
 	// Determine the status of the networks
 	//
-	enum ED2KState { ED2KOff = 0, ED2KLowID = 1, ED2KConnecting = 2, ED2KHighID = 3 };
-	enum EKadState { EKadOff = 4, EKadFW = 5, EKadConnecting = 5, EKadOK = 6 };
+	enum ED2KState { ED2KOff = 0, ED2KLowID = 1, ED2KConnecting = 2, ED2KHighID = 3, ED2KUndef = -1 };
+	enum EKadState { EKadOff = 4, EKadFW = 5, EKadConnecting = 5, EKadOK = 6, EKadUndef = -1 };
 
 	ED2KState ed2kState = ED2KOff;
 	EKadState kadState  = EKadOff;
@@ -773,17 +776,29 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 	////////////////////////////////////////////////////////////	
 	// Update the globe-icon in the lower-right corner.
-	// 	
-	wxStaticBitmap* connBitmap = CastChild( wxT("connImage"), wxStaticBitmap );
-	wxCHECK_RET(connBitmap, wxT("'connImage' widget not found"));
+	// (only if connection state has changed)
+	//
+	static ED2KState s_ED2KOldState = ED2KUndef;
+	static EKadState s_EKadOldState = EKadUndef;
+	if (ed2kState != s_ED2KOldState || kadState != s_EKadOldState) {
+		s_ED2KOldState = ed2kState;
+		s_EKadOldState = kadState;
+		wxStaticBitmap* connBitmap = CastChild( wxT("connImage"), wxStaticBitmap );
+		wxCHECK_RET(connBitmap, wxT("'connImage' widget not found"));
 
-	wxBitmap statusIcon = connBitmap->GetBitmap();
-	wxMemoryDC bitmapDC(statusIcon);
+		wxBitmap statusIcon = connBitmap->GetBitmap();
+		// Sanity check - otherwise there's a crash here if aMule runs out of ressources
+		if (statusIcon.GetBitmapData() == NULL) {
+			return;
+		}
 
-	status_arrows.Draw(kadState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
-	status_arrows.Draw(ed2kState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
+		wxMemoryDC bitmapDC(statusIcon);
 
-	connBitmap->SetBitmap(statusIcon);
+		status_arrows.Draw(kadState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
+		status_arrows.Draw(ed2kState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
+
+		connBitmap->SetBitmap(statusIcon);
+	}
 }
 
 
