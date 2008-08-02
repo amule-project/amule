@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -126,12 +126,12 @@ msgstr "경고: 백업을 생성한 후 원본 '%s'를 제거할수 없습니다
 msgid "WARNING: Failed to delete %s"
 msgstr "경고: %s를 삭제하지 못했습니다."
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -147,35 +147,35 @@ msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 msgid "Unknown"
 msgstr "알수없는"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (가짜 이뮬 버젼 %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr " (가짜 이뮬)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "엑스뮬(가짜 이뮬)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (이뮬 v0.%u 기반)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "별명: %s 아이디: %u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, fuzzy, c-format
 msgid "Requested: %s\n"
 msgstr "요청됨:"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -185,7 +185,7 @@ msgstr[0] ""
 msgstr[1] ""
 "이 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -197,11 +197,11 @@ msgstr[1] ""
 "모든 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니"
 "다.\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "알 수 없는 파일이 요청되었습니다."
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "클라이언트 %s, IP:포트 %s:%d, %s %s %s 사용"
@@ -515,7 +515,8 @@ msgstr "카뎀리아: 검색어가 너무 짧습니다."
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, fuzzy, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -523,13 +524,18 @@ msgstr[0] "%u개의 Kad 접속을 읽었음"
 msgstr[1] "%u개의 Kad 접속을 읽었음"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

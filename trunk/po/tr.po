@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2008-07-23 19:00+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -125,12 +125,12 @@ msgstr "UYARI: Yedekleme oluşturulduktan sonra özgün '%s' çıkartılamıyor"
 msgid "WARNING: Failed to delete %s"
 msgstr "UYARI: %s dosyası silinemiyor"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -146,35 +146,35 @@ msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Sahte eMule sürümü %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr "(Sahte eMule)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Sahte eMule)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (eMule s.0.%u üzerine kurulu)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Rumuz: %s ID: %u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Requested: %s\n"
 msgstr "İstek: %s\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -184,7 +184,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -196,11 +196,11 @@ msgstr[1] ""
 "Tüm oturumlar için dosya durumu: Kabul edilen istek %d si %d nin, %s "
 "aktarıldı\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "Bilinmeyen dosya istendi"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "%s Kullanıcısı IP:Port %s:%d üzerinde ve %s %s %s kullanıyor"
@@ -515,7 +515,8 @@ msgstr "Kademlia: Arama sözcüğü çok kısa"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: Arama anahtar sözcüğü zaten arama listesinde var. "
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -523,13 +524,18 @@ msgstr[0] "%u adet Kademlia bağlantısı okundu"
 msgstr[1] "%u adet Kademlia bağlantısı okundu"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Sadece %d Kad bağlantısı var. Nodes.dat yazılamadı"
 msgstr[1] "Sadece %d adet Kad bağlantısı var. Nodes.dat yazılamadı"
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

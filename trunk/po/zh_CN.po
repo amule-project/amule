@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -124,12 +124,12 @@ msgstr "警告：为 '%s' 建立备份后无法删除原文件"
 msgid "WARNING: Failed to delete %s"
 msgstr "警告：无法删除 %s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "无法获取用户%s的共享文件"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -145,35 +145,35 @@ msgstr "无法获取用户%s的共享文件"
 msgid "Unknown"
 msgstr "未知"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (假冒 eMule 版本 %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr " (假冒 eMule)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "xMule (假冒 eMule)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (基于 eMule v0.%u)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "昵称：%s ID：%u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Requested: %s\n"
 msgstr "已请求： %s\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -181,7 +181,7 @@ msgid_plural ""
 msgstr[0] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -189,11 +189,11 @@ msgid_plural ""
 msgstr[0] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "请求了未知文件"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "用户 %s 位于 %s:%d，使用 %s %s %s"
@@ -505,7 +505,8 @@ msgstr "Kad：搜索关键词太短"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kad：搜索关键词已经在搜索列表中："
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -513,13 +514,18 @@ msgstr[0] "读取 %u 个 Kad 联系人"
 msgstr[1] "读取 %u 个 Kad 联系人"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "只有%d个Kad联系人可用，nodes.dat没有写入"
 msgstr[1] "只有%d个Kad联系人可用，nodes.dat没有写入"
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -4739,8 +4745,8 @@ msgid ""
 "For a film you can say its length, its story, language ...\\n\\nand if it's "
 "a fake, you can tell that to other users of aMule."
 msgstr ""
-"像电影的话，您可以说明它的长度、情节和语言等等...\\n\\n"
-"如果文件是假冒的，您可以提醒其它用户。"
+"像电影的话，您可以说明它的长度、情节和语言等等...\\n\\n如果文件是假冒的，您可"
+"以提醒其它用户。"
 
 #: src/muuli_wdr.cpp:893
 msgid "File Quality"
@@ -5095,8 +5101,7 @@ msgstr "为本地地址绑定IP（全部绑定则留空）："
 msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
-msgstr ""
-"只限高级用户：如果您有多个网络接口，请输入aMule将要绑定接口的地址。"
+msgstr "只限高级用户：如果您有多个网络接口，请输入aMule将要绑定接口的地址。"
 
 #: src/muuli_wdr.cpp:1788
 msgid "Max sources per downloading file:"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2008-07-23 18:30+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -128,12 +128,12 @@ msgstr "HOIATUS: peale varukoopia tegemist ei suuda '%s' originaali eemaldada"
 msgid "WARNING: Failed to delete %s"
 msgstr "HOIATUS: Ei suutnud %s kustutada"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -149,35 +149,35 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Valetatud eMule versioon %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr " (Valetatud eMule)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Valetatud eMule)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (baseerub eMule v0.%u)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Kasutajanimi: %s ID: %u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Küsitud: %s\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -187,7 +187,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -199,11 +199,11 @@ msgstr[1] ""
 "Kõikide seansside failistatistika: Aksepteeritud %d/%d päringust, %s "
 "siirdatud\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "Küsiti tundmatut faili"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Klient %s IP:Port %s:%d kasutab %s %s %s"
@@ -517,7 +517,8 @@ msgstr "Kademlia: otsingu võtmesõna on liiga lühike"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: otsingu võtmesõna on juba loetelus: "
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -525,13 +526,18 @@ msgstr[0] "Loetud %u Kad kontakti"
 msgstr[1] "Loetud %u Kad kontakti"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Saadaval ainult %d Kad kontakt, nodes.dat ei lisatud"
 msgstr[1] "Saadaval ainult %d Kad kontakti, nodes.dat ei lisatud"
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
