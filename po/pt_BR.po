@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2008-06-13 17:15-0300\n"
 "Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
@@ -133,12 +133,12 @@ msgstr "AVISO: Não foi possível remover arquivo '%s' depois de criar o backup"
 msgid "WARNING: Failed to delete %s"
 msgstr "AVISO: Falha ao apagar %s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Falha ao receber lista de compartilhamentos do usuário '%s'"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -154,35 +154,35 @@ msgstr "Falha ao receber lista de compartilhamentos do usuário '%s'"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (versão de eMule FALSA %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr " (eMule Falso)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "xMule (eMule Falso)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (baseado no eMule v0.%u)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Nickname: %s ID: %u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Solicitado: %s\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -191,7 +191,7 @@ msgstr[0] "Estatísticas dessa sessão: Aceito %d de %d pedido, %s transferido\n
 msgstr[1] ""
 "Estatísticas dessa sessão: Aceitos %d de %d pedidos, %s transferidos\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -201,11 +201,11 @@ msgstr[0] ""
 msgstr[1] ""
 "Estatísticas de todas as sessões: Aceitos %d de %d pedidos, %s transferidos\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "Solicitado um arquivo desconhecido"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Cliente %s em IP:Porta %s:%d usando %s %s %s"
@@ -523,7 +523,8 @@ msgstr "Kademlia: chave de pesquisa muito curta"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -531,13 +532,18 @@ msgstr[0] "Lendo %u contato Kad"
 msgstr[1] "Lendo %u contatos Kad"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

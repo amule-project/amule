@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -128,12 +128,12 @@ msgstr "ÅTVARING: Kunne ikkje fjerne den opphavelege '%s' etter tryggleikskopi"
 msgid "WARNING: Failed to delete %s"
 msgstr "ÅTVARING: Greidde ikkje å slette %s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -149,35 +149,35 @@ msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 msgid "Unknown"
 msgstr "Ukjend"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Falsk eMuleutgåve %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr " (Falsk eMule)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Falsk eMule)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x·(basert på eMule·v0.%u)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Brukarnamn: %s·ID:·%u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Etterspurt: %s\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -188,7 +188,7 @@ msgstr[1] ""
 "Filstatistikk for denne økta: Godkjende %d av %d etterspurnader, %s "
 "overført\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -199,11 +199,11 @@ msgstr[1] ""
 "Filstatistikk for alle økter: Godkjende %d av %d etterspurnader, %s "
 "overført\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "Etterspurt ukjend fil"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Klient %s·på·IP:Port·%s:%d·nyttar·%s·%s·%s"
@@ -517,7 +517,8 @@ msgstr "Kademlia: for kort søkjeord"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -525,13 +526,18 @@ msgstr[0] "Las %u kadkontakt"
 msgstr[1] "Las %u kadkontaktar"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

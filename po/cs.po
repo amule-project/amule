@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 03:30+0200\n"
+"POT-Creation-Date: 2008-08-02 03:30+0200\n"
 "PO-Revision-Date: 2007-09-03 20:20+0100\n"
 "Last-Translator: David Watzke <david@watzke.cz>\n"
 "Language-Team: cs <cs@li.org>\n"
@@ -126,12 +126,12 @@ msgstr "VAROVÁNÍ: Nelze smazat původní '%s' po vytvoření zálohy"
 msgid "WARNING: Failed to delete %s"
 msgstr "VAROVÁNÍ: Nelze smazat %s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1309
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Nelze získat seznam sdílených souborů od uživatele '%s'"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
@@ -147,35 +147,35 @@ msgstr "Nelze získat seznam sdílených souborů od uživatele '%s'"
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1740
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (falešná eMule verze %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1751
 msgid " (Fake eMule)"
 msgstr " (falešná eMule)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1753
 msgid "xMule (Fake eMule)"
 msgstr "xMule (falešná eMule)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (založeno na eMule v.%u)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Přezdívka: %s ID: %u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1964
 #, fuzzy, c-format
 msgid "Requested: %s\n"
 msgstr "Vyžádáno:"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 #, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -185,7 +185,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Statistika souboru pro toto sezení: Přijato %d z %d požadavků, %s přeneseno\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1969
 #, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -197,11 +197,11 @@ msgstr[1] ""
 "Statistika souboru pro všechna sezení: Přijato %d z %d požadavků, %s "
 "přeneseno\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
 msgstr "Vyžádán neznámý soubor"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2245
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Klient %s s IP %s na portu %d používá %s %s %s"
@@ -515,7 +515,8 @@ msgstr "Kademlia: hledaný výraz je příliš krátký"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, fuzzy, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -523,13 +524,18 @@ msgstr[0] "Přečteno %u Kad kontaktů"
 msgstr[1] "Přečteno %u Kad kontaktů"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:282
+msgid "No contacts found, please bootstrap, or download a nodes.dat file."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
