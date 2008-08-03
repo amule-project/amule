@@ -604,11 +604,14 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 			ct->AppendText( wxT("\n") );
 		} else {
 			// Bold critical log-lines
+			// Windows doesn't support this feature, and it causes GDI resource leaks
+#ifndef __WXMSW__
 			wxTextAttr style = ct->GetDefaultStyle();
 			wxFont font = style.GetFont();
 			font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
 			style.SetFont(font);
 			ct->SetDefaultStyle(style);
+#endif
 			
 			// Split multi-line messages into individual lines
 			wxStringTokenizer tokens( bufferline, wxT("\n") );		
