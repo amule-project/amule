@@ -787,6 +787,10 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 		wxCHECK_RET(connBitmap, wxT("'connImage' widget not found"));
 
 		wxBitmap statusIcon = connBitmap->GetBitmap();
+		// Sanity check - otherwise there's a crash here if aMule runs out of resources
+		if (statusIcon.GetRefData() == NULL) {
+			return;
+		}
 
 		wxMemoryDC bitmapDC(statusIcon);
 
