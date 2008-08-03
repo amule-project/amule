@@ -105,6 +105,8 @@ Version 2.2.2 - Whatever comes next.
 
 	xor:
 		* Fix window resize problem on Mac OS X
+		* Fix for packets being lost in EC communication.
+		  Fixes aMuleGUI not updating after a while.
 
 --------------------------------------------------------------------------------
 

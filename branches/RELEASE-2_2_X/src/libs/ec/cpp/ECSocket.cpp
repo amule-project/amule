@@ -678,7 +678,8 @@ bool CECSocket::FlushBuffers()
 
 void CECSocket::WritePacket(const CECPacket *packet)
 {
-	if (SocketError()) {
+	if (SocketError() && !WouldBlock()) {
+		OnError();
 		return;
 	}
 
