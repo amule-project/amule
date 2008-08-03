@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-02 03:30+0200\n"
+"POT-Creation-Date: 2008-08-03 03:30+0200\n"
 "PO-Revision-Date: 2008-07-25 21:00+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -261,7 +261,7 @@ msgstr "¿Estás seguro que deseas borrar a los amigos seleccionados?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:750
+#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:753
 #: src/DownloadListCtrl.cpp:588 src/DownloadListCtrl.cpp:908
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454
@@ -706,7 +706,7 @@ msgstr "Descargando..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1315
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1330
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3464
 msgid "Preferences"
 msgstr "Opciones"
@@ -1823,169 +1823,169 @@ msgstr "http://kademlia.scs.cs.nyu.edu\n"
 msgid "Message"
 msgstr "Mensaje"
 
-#: src/amuleDlg.cpp:681
+#: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
 msgstr "eD2k: Conectando"
 
-#: src/amuleDlg.cpp:685
+#: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
 msgstr "eD2k: Desconectado"
 
-#: src/amuleDlg.cpp:691
+#: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
 msgstr "Kad: Tras Cortafuegos"
 
-#: src/amuleDlg.cpp:695
+#: src/amuleDlg.cpp:698
 msgid "Kad: Connected"
 msgstr "Kad: Conectado"
 
-#: src/amuleDlg.cpp:700
+#: src/amuleDlg.cpp:703
 msgid "Kad: Connecting"
 msgstr "Kad: Conectando"
 
-#: src/amuleDlg.cpp:704
+#: src/amuleDlg.cpp:707
 msgid "Kad: Off"
 msgstr "Kad: Apagada"
 
-#: src/amuleDlg.cpp:751
+#: src/amuleDlg.cpp:754
 msgid "Stop the current connection attempts"
 msgstr "Detener los intentos de conexión actuales"
 
-#: src/amuleDlg.cpp:756 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "Desconectar"
 
-#: src/amuleDlg.cpp:757
+#: src/amuleDlg.cpp:760
 msgid "Disconnect from the currently connected networks"
 msgstr "Desconectarse de las redes conectas"
 
-#: src/amuleDlg.cpp:762 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
+#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "Conectar"
 
-#: src/amuleDlg.cpp:763
+#: src/amuleDlg.cpp:766
 msgid "Connect to the currently enabled networks"
 msgstr "Conectarse a las redes disponibles"
 
-#: src/amuleDlg.cpp:809
+#: src/amuleDlg.cpp:824
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Su: %.1f(%.1f) | Desc: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:811
+#: src/amuleDlg.cpp:826
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Su: %.1f | Desc: %.1f"
 
-#: src/amuleDlg.cpp:837
+#: src/amuleDlg.cpp:852
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Conectado)"
 
-#: src/amuleDlg.cpp:839
+#: src/amuleDlg.cpp:854
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Desconectado)"
 
-#: src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:885
 msgid "Do you really want to exit aMule?"
 msgstr "¿Realmente deseas cerrar aMule?"
 
-#: src/amuleDlg.cpp:871
+#: src/amuleDlg.cpp:886
 msgid "Exit confirmation"
 msgstr "Confirmación de salida"
 
-#: src/amuleDlg.cpp:1184
+#: src/amuleDlg.cpp:1199
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "El directorio de tema '%s' no existe"
 
-#: src/amuleDlg.cpp:1189
+#: src/amuleDlg.cpp:1204
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "ATENCIÓN: No se puede abrir el archivo de pieles '%s' para lectura"
 
-#: src/amuleDlg.cpp:1290 src/amuleDlg.cpp:1451 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1305 src/amuleDlg.cpp:1466 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Redes"
 
-#: src/amuleDlg.cpp:1292
+#: src/amuleDlg.cpp:1307
 msgid "Networks window"
 msgstr "Ventana de redes"
 
-#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Buscar"
 
-#: src/amuleDlg.cpp:1296
+#: src/amuleDlg.cpp:1311
 msgid "Searches window"
 msgstr "Ventana de búsquedas"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Tráfico"
 
-#: src/amuleDlg.cpp:1300
+#: src/amuleDlg.cpp:1315
 msgid "Files transfers window"
 msgstr "Ventana de transferencia de archivos"
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1317
 msgid "Shared files"
 msgstr "Compartidos"
 
-#: src/amuleDlg.cpp:1304
+#: src/amuleDlg.cpp:1319
 msgid "Shared files window"
 msgstr "Ventana de archivos compartidos"
 
-#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Mensajes"
 
-#: src/amuleDlg.cpp:1308
+#: src/amuleDlg.cpp:1323
 msgid "Messages window"
 msgstr "Ventana de mensajes"
 
-#: src/amuleDlg.cpp:1310 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
+#: src/amuleDlg.cpp:1325 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
 #: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "Estadísticas"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1327
 msgid "Statistics graph window"
 msgstr "Ventana del gráfico de las estadísticas"
 
-#: src/amuleDlg.cpp:1317
+#: src/amuleDlg.cpp:1332
 msgid "Preferences settings window"
 msgstr "Ventana de la configuración de las preferencias"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Importar"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "La herramienta para importar archivos part"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3466
 msgid "About"
 msgstr "Acerca de"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "Acerca de/Ayuda"
 
-#: src/amuleDlg.cpp:1462
+#: src/amuleDlg.cpp:1477
 msgid "eD2k network"
 msgstr "Red eD2k"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1481
 msgid "Kad network"
 msgstr "red Kad"
 
-#: src/amuleDlg.cpp:1471
+#: src/amuleDlg.cpp:1486
 msgid "No network"
 msgstr "Sin red"
 

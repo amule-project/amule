@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-02 03:30+0200\n"
+"POT-Creation-Date: 2008-08-03 03:30+0200\n"
 "PO-Revision-Date: 2007-09-03 20:20+0100\n"
 "Last-Translator: David Watzke <david@watzke.cz>\n"
 "Language-Team: cs <cs@li.org>\n"
@@ -254,7 +254,7 @@ msgstr "Opravdu si přejete odstranit vybrané kamarády?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:750
+#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:753
 #: src/DownloadListCtrl.cpp:588 src/DownloadListCtrl.cpp:908
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454
@@ -692,7 +692,7 @@ msgstr "Stahuji..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1315
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1330
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3464
 msgid "Preferences"
 msgstr "Nastavení"
@@ -1805,176 +1805,176 @@ msgstr ""
 msgid "Message"
 msgstr "Zpráva"
 
-#: src/amuleDlg.cpp:681
+#: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
 msgstr ""
 
-#: src/amuleDlg.cpp:685
+#: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
 msgstr ""
 
-#: src/amuleDlg.cpp:691
+#: src/amuleDlg.cpp:694
 #, fuzzy
 msgid "Kad: Firewalled"
 msgstr "Za firewallem"
 
-#: src/amuleDlg.cpp:695
+#: src/amuleDlg.cpp:698
 #, fuzzy
 msgid "Kad: Connected"
 msgstr "Připojen"
 
-#: src/amuleDlg.cpp:700
+#: src/amuleDlg.cpp:703
 #, fuzzy
 msgid "Kad: Connecting"
 msgstr "Připojuji"
 
-#: src/amuleDlg.cpp:704
+#: src/amuleDlg.cpp:707
 #, fuzzy
 msgid "Kad: Off"
 msgstr " Kad: "
 
-#: src/amuleDlg.cpp:751
+#: src/amuleDlg.cpp:754
 #, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "Zastaví nynější pokusy o připojení"
 
-#: src/amuleDlg.cpp:756 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "Odpojit"
 
-#: src/amuleDlg.cpp:757
+#: src/amuleDlg.cpp:760
 #, fuzzy
 msgid "Disconnect from the currently connected networks"
 msgstr "Odpojit se od sítě."
 
-#: src/amuleDlg.cpp:762 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
+#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "Připojit"
 
-#: src/amuleDlg.cpp:763
+#: src/amuleDlg.cpp:766
 #, fuzzy
 msgid "Connect to the currently enabled networks"
 msgstr "Připojit se k síti."
 
-#: src/amuleDlg.cpp:809
+#: src/amuleDlg.cpp:824
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Od: %.1f(%.1f) | St: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:811
+#: src/amuleDlg.cpp:826
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Od: %.1f | St: %.1f"
 
-#: src/amuleDlg.cpp:837
+#: src/amuleDlg.cpp:852
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | připojen)"
 
-#: src/amuleDlg.cpp:839
+#: src/amuleDlg.cpp:854
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | odpojen)"
 
-#: src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:885
 msgid "Do you really want to exit aMule?"
 msgstr "Opravdu si přejete ukončit aMule?"
 
-#: src/amuleDlg.cpp:871
+#: src/amuleDlg.cpp:886
 msgid "Exit confirmation"
 msgstr "Potvrzení ukončení"
 
-#: src/amuleDlg.cpp:1184
+#: src/amuleDlg.cpp:1199
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Adresář se skiny '%s' neexistuje"
 
-#: src/amuleDlg.cpp:1189
+#: src/amuleDlg.cpp:1204
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1290 src/amuleDlg.cpp:1451 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1305 src/amuleDlg.cpp:1466 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Sítě"
 
-#: src/amuleDlg.cpp:1292
+#: src/amuleDlg.cpp:1307
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Vyhledávání"
 
-#: src/amuleDlg.cpp:1296
+#: src/amuleDlg.cpp:1311
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Přenosy"
 
-#: src/amuleDlg.cpp:1300
+#: src/amuleDlg.cpp:1315
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1317
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1304
+#: src/amuleDlg.cpp:1319
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Zprávy"
 
-#: src/amuleDlg.cpp:1308
+#: src/amuleDlg.cpp:1323
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1310 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
+#: src/amuleDlg.cpp:1325 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
 #: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1327
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1317
+#: src/amuleDlg.cpp:1332
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Import"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Nástroj pro import částečných souborů"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3466
 msgid "About"
 msgstr "O programu"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "O programu/Nápověda"
 
-#: src/amuleDlg.cpp:1462
+#: src/amuleDlg.cpp:1477
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1481
 msgid "Kad network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1471
+#: src/amuleDlg.cpp:1486
 msgid "No network"
 msgstr ""
 
