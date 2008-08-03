@@ -1,4 +1,4 @@
-Version 2.x.x - The river knows.
+Version 2.3.0 - The river knows.
 ----------
 2008-??-??
 
@@ -158,6 +158,8 @@ Version 2.2.2 - Whatever comes next.
 
 	xor:
 		* Fix window resize problem on Mac OS X
+		* Fix for packets being lost in EC communication.
+		  Fixes aMuleGUI not updating after a while.
 
 --------------------------------------------------------------------------------
 
