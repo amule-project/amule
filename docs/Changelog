@@ -99,6 +99,8 @@ Version 2.2.2 - Whatever comes next.
 		* Sanity check before writing nodes.dat - don't write it 
 		  if there are less than 25 contacts
 		* Download List sorted on startup
+		* Splitter bar position in transfer window is restored again
+		* Fixed a GDI resource leak for Windows
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
