@@ -27,8 +27,9 @@ Version 2.3.0 - The river knows.
 		* php prefix for lex/yacc
 
 	Stu Redman:
-		* Sort DownloadListCtrl on startup
 		* Sort source list on opening and add file name to A4AF files
+		* Adjust displayed download rates for files and sources 
+		  so that the sum matches the total download rate.
 
 	Vollstrecker:
 		* Made possible to deactivate xas
