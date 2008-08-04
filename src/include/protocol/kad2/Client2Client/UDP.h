@@ -46,6 +46,7 @@ enum Kademlia2Opcodes {
 	KADEMLIA2_PUBLISH_SOURCE_REQ	= 0x44,
 	KADEMLIA2_PUBLISH_NOTES_REQ	= 0x45,
 	KADEMLIA2_PUBLISH_RES		= 0x4B,
+	KADEMLIA2_PUBLISH_RES_ACK	= 0x4C,	// (null)
 	KADEMLIA_FIREWALLED2_REQ	= 0x53,	// <TCPPORT (sender) [2]><userhash><connectoptions 1>
 	KADEMLIA2_PING			= 0x60,	// (null)
 	KADEMLIA2_PONG			= 0x61,	// (null)

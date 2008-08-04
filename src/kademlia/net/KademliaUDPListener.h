@@ -137,7 +137,7 @@ private:
 	void Process2PublishNotesRequest	(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
 	void Process2PublishKeyRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
 	void Process2PublishSourceRequest	(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
-	void Process2PublishResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, const CKadUDPKey& senderKey);
+	void Process2PublishResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
 	void Process2Ping			(uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
 	void Process2Pong			(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);
 	void Process2FirewallUDP		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);
