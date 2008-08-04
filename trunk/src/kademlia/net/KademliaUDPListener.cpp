@@ -363,7 +363,7 @@ void CKademliaUDPListener::ProcessPacket(const uint8_t* data, uint32_t lenData, 
 			break;
 		case KADEMLIA2_PUBLISH_RES:
 			DebugRecv(Kad2PublishRes, ip, port);
-			Process2PublishResponse(packetData, lenPacket, ip, senderKey);
+			Process2PublishResponse(packetData, lenPacket, ip, port, senderKey);
 			break;
 		case KADEMLIA_FIREWALLED_REQ:
 			DebugRecv(KadFirewalledReq, ip, port);
@@ -1750,7 +1750,7 @@ void CKademliaUDPListener::ProcessPublishResponse(const uint8_t *packetData, uin
 
 // KADEMLIA2_PUBLISH_RES
 // Used only by Kad2.0
-void CKademliaUDPListener::Process2PublishResponse(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, const CKadUDPKey& WXUNUSED(senderKey))
+void CKademliaUDPListener::Process2PublishResponse(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey)
 {
 	if (!IsOnOutTrackList(ip, KADEMLIA2_PUBLISH_KEY_REQ) && !IsOnOutTrackList(ip, KADEMLIA2_PUBLISH_SOURCE_REQ) && !IsOnOutTrackList(ip, KADEMLIA2_PUBLISH_NOTES_REQ)) {
 		throw wxString::Format(wxT("***NOTE: Received unrequested response packet, size (%u) in "), lenPacket) + wxString::FromAscii(__FUNCTION__);
@@ -1759,6 +1759,15 @@ void CKademliaUDPListener::Process2PublishResponse(const uint8_t *packetData, ui
 	CUInt128 file = bio.ReadUInt128();
 	uint8_t load = bio.ReadUInt8();
 	CSearchManager::ProcessPublishResult(file, load, true);
+	if (bio.GetLength() > bio.GetPosition()) {
+		// for future use
+		uint8_t options = bio.ReadUInt8();
+		bool requestACK = (options & 0x01) > 0;
+		if (requestACK && !senderKey.IsEmpty()) {
+			DebugSend(Kad2PublishResAck, ip, port);
+			SendNullPacket(KADEMLIA2_PUBLISH_RES_ACK, ip, port, senderKey, NULL);
+		}
+	}
 }
 
 // KADEMLIA_SEARCH_NOTES_REQ
