@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-30 10:58+0200\n"
+"POT-Creation-Date: 2008-08-05 13:56+0200\n"
 "PO-Revision-Date: 2008-07-30 10:58+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -250,7 +250,7 @@ msgstr "Tényleg törölni szeretnéd a kiválasztott barátokat?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:753
 #: src/DownloadListCtrl.cpp:585 src/DownloadListCtrl.cpp:905
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:926
 #: src/muuli_wdr.cpp:1000 src/muuli_wdr.cpp:1066 src/muuli_wdr.cpp:2589
@@ -510,19 +510,20 @@ msgstr "aMule szöveges kliens"
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: a keresési kulcsszó túl rövid"
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "%u Kad kapcsolat beolvasva"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:297
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Csak %d Kad kapcsolat elérhető, a nodes.dat fájl nem lett felülírva"
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -679,7 +680,7 @@ msgstr "Letöltés..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1317
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:191 src/muuli_wdr.cpp:3682
 msgid "Preferences"
 msgstr "Beállítások"
@@ -1288,7 +1289,7 @@ msgstr "Auto [No]"
 msgid "Auto [Hi]"
 msgstr "Auto [Ma]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:652
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "Kapcsolódás"
@@ -1702,33 +1703,33 @@ msgstr "Biztos, hogy törlöd a kiválasztott kiszolgálókat?"
 msgid "Disabled [%s]"
 msgstr "Tiltva [%s]"
 
-#: src/amuleDlg.cpp:214
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Ez az aMule %s, az eMule alapján."
 
-#: src/amuleDlg.cpp:216
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "%s-en fut"
 
-#: src/amuleDlg.cpp:218
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "Új verzióért látogasd meg a http://www.amule.org oldalt."
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "VÉGZETES HIBA: Időzítő létrehozása sikertelen"
 
-#: src/amuleDlg.cpp:457
+#: src/amuleDlg.cpp:458
 msgid "aMule remote control "
 msgstr "aMule távoli vezérlő"
 
-#: src/amuleDlg.cpp:463
+#: src/amuleDlg.cpp:464
 msgid "Snapshot:"
 msgstr "Pillanatkép:"
 
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:466
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1736,15 +1737,15 @@ msgstr ""
 " 'Minden-platform' p2p ügyfél az eMule alapján \n"
 "\n"
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:467
 msgid " Website: http://www.amule.org \n"
 msgstr " Honlap: http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:468
 msgid " Forum: http://forum.amule.org \n"
 msgstr " Fórum: http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:469
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1752,11 +1753,11 @@ msgstr ""
 " GYIK: http://wiki.amule.org\n"
 "\n"
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:470
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr " Kapcsolat: admin@amule.org (adminisztratív ügyek) \n"
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:471
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
@@ -1764,194 +1765,190 @@ msgstr ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:472
 msgid " Part of aMule is based on \n"
 msgstr " Az aMule részben a következőn alapul: \n"
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:473
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Egyenrangú útvonal-megállapítás a XOR metrika alapján.\n"
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:474
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr " Copyright (C) 2002 Petar Maymounkov\n"
 
-#: src/amuleDlg.cpp:474
+#: src/amuleDlg.cpp:475
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:477 src/PrefsUnifiedDlg.cpp:520
+#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:520
 #: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Üzenet"
 
-#: src/amuleDlg.cpp:568
-msgid "Status text"
-msgstr "Állapot"
-
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
 msgstr "eD2K: Kapcsolódás"
 
-#: src/amuleDlg.cpp:693
+#: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
 msgstr "eD2k: Szétkapcsolva"
 
-#: src/amuleDlg.cpp:699
+#: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
 msgstr "Kad: Tűzfal mögött"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:698
 msgid "Kad: Connected"
 msgstr "Kad: Csatlakozva"
 
-#: src/amuleDlg.cpp:708
+#: src/amuleDlg.cpp:703
 msgid "Kad: Connecting"
 msgstr "Kad: Kapcsolódás"
 
-#: src/amuleDlg.cpp:712
+#: src/amuleDlg.cpp:707
 msgid "Kad: Off"
 msgstr "Kad: Nincs kapcsolat"
 
-#: src/amuleDlg.cpp:759
+#: src/amuleDlg.cpp:754
 msgid "Stop the current connection attempts"
 msgstr "Aktuális kapcsolódási kísérletek leállítása"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2853 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2853 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "Szétkapcsolás"
 
-#: src/amuleDlg.cpp:765
+#: src/amuleDlg.cpp:760
 msgid "Disconnect from the currently connected networks"
 msgstr "Leválaszt az éppen kapcsolódott hálózatokról."
 
-#: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:3036 src/muuli_wdr.cpp:3470
+#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:3036 src/muuli_wdr.cpp:3470
 #: src/muuli_wdr.cpp:3672 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "Kapcsolatfelvétel"
 
-#: src/amuleDlg.cpp:771
+#: src/amuleDlg.cpp:766
 msgid "Connect to the currently enabled networks"
 msgstr "Kapcsolódás a pillanatnyilag engedélyezett hálózatokhoz."
 
-#: src/amuleDlg.cpp:817
+#: src/amuleDlg.cpp:812
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Fel: %.1f(%.1f) | Le: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:819
+#: src/amuleDlg.cpp:814
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Fel: %.1f | Le: %.1f"
 
-#: src/amuleDlg.cpp:841
+#: src/amuleDlg.cpp:836
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Kapcsolódva)"
 
-#: src/amuleDlg.cpp:843
+#: src/amuleDlg.cpp:838
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Nincs kapcsolat)"
 
-#: src/amuleDlg.cpp:874
+#: src/amuleDlg.cpp:869
 msgid "Do you really want to exit aMule?"
 msgstr "Biztos, hogy ki akarsz lépni az aMule-ból?"
 
-#: src/amuleDlg.cpp:875
+#: src/amuleDlg.cpp:870
 msgid "Exit confirmation"
 msgstr "Kilépés megerősítése"
 
-#: src/amuleDlg.cpp:1187
+#: src/amuleDlg.cpp:1182
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "A(z) '%s' felület könyvtár nem létezik"
 
-#: src/amuleDlg.cpp:1192
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "FIGYELEM: Nem tudom a(z) '%s' felület fáljt megnyitni olvasásra"
 
-#: src/amuleDlg.cpp:1292 src/amuleDlg.cpp:1453 src/muuli_wdr.cpp:1864
+#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1864
 #: src/muuli_wdr.cpp:3674
 msgid "Networks"
 msgstr "Hálózatok"
 
-#: src/amuleDlg.cpp:1294
+#: src/amuleDlg.cpp:1289
 msgid "Networks window"
 msgstr "Hálózatok ablak"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3675
 msgid "Searches"
 msgstr "Keresések"
 
-#: src/amuleDlg.cpp:1298
+#: src/amuleDlg.cpp:1293
 msgid "Searches window"
 msgstr "Keresések ablak"
 
-#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:3676
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3676
 msgid "Transfers"
 msgstr "Átvitelek"
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1297
 msgid "Files transfers window"
 msgstr "Fájl átvitelek ablak"
 
-#: src/amuleDlg.cpp:1304
+#: src/amuleDlg.cpp:1299
 msgid "Shared files"
 msgstr "Megosztott fájlok"
 
-#: src/amuleDlg.cpp:1306
+#: src/amuleDlg.cpp:1301
 msgid "Shared files window"
 msgstr "Megosztott fájlok ablak"
 
-#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
 msgid "Messages"
 msgstr "Üzenetek"
 
-#: src/amuleDlg.cpp:1310
+#: src/amuleDlg.cpp:1305
 msgid "Messages window"
 msgstr "Üzenetek ablak"
 
-#: src/amuleDlg.cpp:1312 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1105 src/muuli_wdr.cpp:3680
 msgid "Statistics"
 msgstr "Statisztikák"
 
-#: src/amuleDlg.cpp:1314
+#: src/amuleDlg.cpp:1309
 msgid "Statistics graph window"
 msgstr "Statisztika grafikon ablak"
 
-#: src/amuleDlg.cpp:1319
+#: src/amuleDlg.cpp:1314
 msgid "Preferences settings window"
 msgstr "Beállítások ablak"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3683
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3683
 msgid "Import"
 msgstr "Importálás"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3683
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3683
 msgid "The partfile importer tool"
 msgstr "A részfájl importáló eszköz"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3684
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3684
 msgid "About"
 msgstr "Névjegy"
 
-#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3684
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3684
 msgid "About/Help"
 msgstr "Névjegy/Súgó"
 
-#: src/amuleDlg.cpp:1464
+#: src/amuleDlg.cpp:1459
 msgid "eD2k network"
 msgstr "eD2k hálózat"
 
-#: src/amuleDlg.cpp:1468
+#: src/amuleDlg.cpp:1463
 msgid "Kad network"
 msgstr "Kad hálózat"
 
-#: src/amuleDlg.cpp:1473
+#: src/amuleDlg.cpp:1468
 msgid "No network"
 msgstr "Nincs hálózat"
 
@@ -2874,11 +2871,11 @@ msgstr ""
 msgid "Continue?"
 msgstr "Folytassuk?"
 
-#: src/Logger.cpp:270
+#: src/Logger.cpp:273
 msgid "ERROR: "
 msgstr "HIBA: "
 
-#: src/Logger.cpp:270
+#: src/Logger.cpp:273
 msgid "WARNING: "
 msgstr "FIGYELEM: "
 
@@ -4516,21 +4513,17 @@ msgstr ""
 "Kattints ide, hogy a szövegbeviteli mezőben található eD2k hivatkozást "
 "hozzáadd a letöltési sorhoz."
 
-#: src/muuli_wdr.cpp:85
-msgid "Pop-up status text"
-msgstr "Állapot felugró ablakban"
-
-#: src/muuli_wdr.cpp:88
-msgid "Loading ..."
-msgstr "Betöltés..."
-
-#: src/muuli_wdr.cpp:89
+#: src/muuli_wdr.cpp:85 src/muuli_wdr.cpp:89
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
 "Itt kerülnek megjelenítésre az események. A teljes eseménylistáért nézd meg "
 "a naplót a kiszolgáló-fülön."
+
+#: src/muuli_wdr.cpp:88
+msgid "Loading ..."
+msgstr "Betöltés..."
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -7197,6 +7190,12 @@ msgstr ""
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "A barátokat tartalmazó emfriends.dat fájl írásra megnyitása sikertelen!"
+
+#~ msgid "Status text"
+#~ msgstr "Állapot"
+
+#~ msgid "Pop-up status text"
+#~ msgstr "Állapot felugró ablakban"
 
 #~ msgid "Please wait... "
 #~ msgstr "Kis türelmet..."

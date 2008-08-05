@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-30 20:26+0200\n"
+"POT-Creation-Date: 2008-08-05 13:56+0200\n"
 "PO-Revision-Date: 2008-02-24 13:33+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -252,7 +252,7 @@ msgstr "Oletko varma että haluat poistaa valitut kaverit?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:753
 #: src/DownloadListCtrl.cpp:585 src/DownloadListCtrl.cpp:905
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:926
 #: src/muuli_wdr.cpp:1000 src/muuli_wdr.cpp:1066 src/muuli_wdr.cpp:2589
@@ -511,21 +511,22 @@ msgstr "aMule tekstiasiakas"
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: hakusana on liian lyhyt"
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Luettu %u Kad-kontakti"
 msgstr[1] "Luettu %u Kad-kontaktia"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:297
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -682,7 +683,7 @@ msgstr "Ladataan..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1317
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:191 src/muuli_wdr.cpp:3682
 msgid "Preferences"
 msgstr "Asetukset"
@@ -1289,7 +1290,7 @@ msgstr "Auto [No]"
 msgid "Auto [Hi]"
 msgstr "Auto [Ko]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:652
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "Yhdistää"
@@ -1705,35 +1706,35 @@ msgstr "Oletko varma että haluat poistaa valitut palvelimet?"
 msgid "Disabled [%s]"
 msgstr "Poissa käytöstä [%s]"
 
-#: src/amuleDlg.cpp:214
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Tämä on aMule %s ja pohjautuu eMuleen."
 
-#: src/amuleDlg.cpp:216
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "Käynnissä %s"
 
-#: src/amuleDlg.cpp:218
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr ""
 "Vieraile nettisivulla http://www.amule.org tarkistaaksi uuden version "
 "saatavuuden."
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "KRIITTINEN VIRHE: Ajastimen luominen epäonnistui"
 
-#: src/amuleDlg.cpp:457
+#: src/amuleDlg.cpp:458
 msgid "aMule remote control "
 msgstr "aMule etähallinta "
 
-#: src/amuleDlg.cpp:463
+#: src/amuleDlg.cpp:464
 msgid "Snapshot:"
 msgstr "Tilannevedos:"
 
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:466
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1741,15 +1742,15 @@ msgstr ""
 " 'Kaikkien alustojen' vertaisverkkoasiakas pohjautuen eMuleen \n"
 "\n"
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:467
 msgid " Website: http://www.amule.org \n"
 msgstr " Verkkosivu: http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:468
 msgid " Forum: http://forum.amule.org \n"
 msgstr " Foorumi: http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:469
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1757,11 +1758,11 @@ msgstr ""
 " UKK: http://wiki.amule.org \n"
 "\n"
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:470
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr " Yhteydenotot: admin@amule.org (hallinnolliset asiat, englanniksi) \n"
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:471
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
@@ -1769,194 +1770,190 @@ msgstr ""
 " Tekijänoikeudet (C) 2003-2008 aMule-Tiimi \n"
 "\n"
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:472
 msgid " Part of aMule is based on \n"
 msgstr " Osa aMulesta pohjautuu \n"
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:473
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademliaan: Vertaisreititys perustuen XOR-metriikkaan.\n"
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:474
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr " Tekijänoikeudet (C) 2002 Petar Maymounkov\n"
 
-#: src/amuleDlg.cpp:474
+#: src/amuleDlg.cpp:475
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:477 src/PrefsUnifiedDlg.cpp:520
+#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:520
 #: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Viesti"
 
-#: src/amuleDlg.cpp:568
-msgid "Status text"
-msgstr "Tilanneteksti"
-
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
 msgstr "eD2k: Yhdistää"
 
-#: src/amuleDlg.cpp:693
+#: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
 msgstr "eD2k: Ei yhdistetty"
 
-#: src/amuleDlg.cpp:699
+#: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
 msgstr "Kad: Palomuurattu"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:698
 msgid "Kad: Connected"
 msgstr "Kad: Yhdistety"
 
-#: src/amuleDlg.cpp:708
+#: src/amuleDlg.cpp:703
 msgid "Kad: Connecting"
 msgstr "Kad: Yhdistää"
 
-#: src/amuleDlg.cpp:712
+#: src/amuleDlg.cpp:707
 msgid "Kad: Off"
 msgstr "Kad: Pois päältä"
 
-#: src/amuleDlg.cpp:759
+#: src/amuleDlg.cpp:754
 msgid "Stop the current connection attempts"
 msgstr "Pysäytä nykyiset yhteysyritykset"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2853 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2853 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
-#: src/amuleDlg.cpp:765
+#: src/amuleDlg.cpp:760
 msgid "Disconnect from the currently connected networks"
 msgstr "Katkaise yhteys yhdistettyihin verkkoihin"
 
-#: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:3036 src/muuli_wdr.cpp:3470
+#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:3036 src/muuli_wdr.cpp:3470
 #: src/muuli_wdr.cpp:3672 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "Yhdistä"
 
-#: src/amuleDlg.cpp:771
+#: src/amuleDlg.cpp:766
 msgid "Connect to the currently enabled networks"
 msgstr "Yhdistä sallittuihin verkkoihin"
 
-#: src/amuleDlg.cpp:817
+#: src/amuleDlg.cpp:812
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Ylös: %.1f(%.1f) | Alas: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:819
+#: src/amuleDlg.cpp:814
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Ylös: %.1f | Alas: %.1f"
 
-#: src/amuleDlg.cpp:841
+#: src/amuleDlg.cpp:836
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Yhdistetty)"
 
-#: src/amuleDlg.cpp:843
+#: src/amuleDlg.cpp:838
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ei yhdistetty)"
 
-#: src/amuleDlg.cpp:874
+#: src/amuleDlg.cpp:869
 msgid "Do you really want to exit aMule?"
 msgstr "Haluatko varmasti sulkea aMulen?"
 
-#: src/amuleDlg.cpp:875
+#: src/amuleDlg.cpp:870
 msgid "Exit confirmation"
 msgstr "Lopettamisen varmistus"
 
-#: src/amuleDlg.cpp:1187
+#: src/amuleDlg.cpp:1182
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Teemakansiota '%s' ei ole olemassa"
 
-#: src/amuleDlg.cpp:1192
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "VAROITUS: Ei voida avata teematiedostoa '%s' luettavaksi"
 
-#: src/amuleDlg.cpp:1292 src/amuleDlg.cpp:1453 src/muuli_wdr.cpp:1864
+#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1864
 #: src/muuli_wdr.cpp:3674
 msgid "Networks"
 msgstr "Verkot"
 
-#: src/amuleDlg.cpp:1294
+#: src/amuleDlg.cpp:1289
 msgid "Networks window"
 msgstr "Verkkoikkuna"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3675
 msgid "Searches"
 msgstr "Haut"
 
-#: src/amuleDlg.cpp:1298
+#: src/amuleDlg.cpp:1293
 msgid "Searches window"
 msgstr "Hakujen ikkuna"
 
-#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:3676
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3676
 msgid "Transfers"
 msgstr "Siirrot"
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1297
 msgid "Files transfers window"
 msgstr "Siirrettävien tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1304
+#: src/amuleDlg.cpp:1299
 msgid "Shared files"
 msgstr "Jaetut tiedostot"
 
-#: src/amuleDlg.cpp:1306
+#: src/amuleDlg.cpp:1301
 msgid "Shared files window"
 msgstr "Jaettujen tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
 msgid "Messages"
 msgstr "Viestit"
 
-#: src/amuleDlg.cpp:1310
+#: src/amuleDlg.cpp:1305
 msgid "Messages window"
 msgstr "Viestien ikkuna"
 
-#: src/amuleDlg.cpp:1312 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1105 src/muuli_wdr.cpp:3680
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: src/amuleDlg.cpp:1314
+#: src/amuleDlg.cpp:1309
 msgid "Statistics graph window"
 msgstr "Tilastokuvaajien ikkuna"
 
-#: src/amuleDlg.cpp:1319
+#: src/amuleDlg.cpp:1314
 msgid "Preferences settings window"
 msgstr "Asetuksien säätöikkuna"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3683
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3683
 msgid "Import"
 msgstr "Tuonti"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3683
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3683
 msgid "The partfile importer tool"
 msgstr "Osatiedostojen tuontityökalu"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3684
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3684
 msgid "About"
 msgstr "Tietoja"
 
-#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3684
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3684
 msgid "About/Help"
 msgstr "Tietoja/Ohje"
 
-#: src/amuleDlg.cpp:1464
+#: src/amuleDlg.cpp:1459
 msgid "eD2k network"
 msgstr "eD2k-verkko"
 
-#: src/amuleDlg.cpp:1468
+#: src/amuleDlg.cpp:1463
 msgid "Kad network"
 msgstr "Kad-verkko"
 
-#: src/amuleDlg.cpp:1473
+#: src/amuleDlg.cpp:1468
 msgid "No network"
 msgstr "Ei verkkoa"
 
@@ -2873,11 +2870,11 @@ msgstr ""
 msgid "Continue?"
 msgstr "Jatketaanko?"
 
-#: src/Logger.cpp:270
+#: src/Logger.cpp:273
 msgid "ERROR: "
 msgstr "VIRHE: "
 
-#: src/Logger.cpp:270
+#: src/Logger.cpp:273
 msgid "WARNING: "
 msgstr "VAROITUS: "
 
@@ -4515,21 +4512,17 @@ msgid ""
 "Click here to add the eD2k link in the text control to your download queue."
 msgstr "Klikkaa tästä lisätäksesi eD2k-linkin tekstikentästä latauslistaasi."
 
-#: src/muuli_wdr.cpp:85
-msgid "Pop-up status text"
-msgstr "Ponnauta tilanneteksti nähtäville"
-
-#: src/muuli_wdr.cpp:88
-msgid "Loading ..."
-msgstr "Lataa ..."
-
-#: src/muuli_wdr.cpp:89
+#: src/muuli_wdr.cpp:85 src/muuli_wdr.cpp:89
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
 "Tapahtumat näytetään tässä. Nähdäksesi täyden listan tapahtumista, katso "
 "loki Palvelimet-välilehdeltä."
+
+#: src/muuli_wdr.cpp:88
+msgid "Loading ..."
+msgstr "Lataa ..."
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -7188,6 +7181,12 @@ msgstr "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua luettavaksi!"
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua kirjoitettavaksi!"
+
+#~ msgid "Status text"
+#~ msgstr "Tilanneteksti"
+
+#~ msgid "Pop-up status text"
+#~ msgstr "Ponnauta tilanneteksti nähtäville"
 
 #~ msgid "Please wait... "
 #~ msgstr "Odota... "

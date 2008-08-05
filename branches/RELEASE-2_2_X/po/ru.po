@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-30 20:26+0200\n"
+"POT-Creation-Date: 2008-08-05 13:56+0200\n"
 "PO-Revision-Date: 2008-03-05 15:54+0200\n"
 "Last-Translator: Nick Shaforostoff <shaforostoff@kde.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -264,7 +264,7 @@ msgstr "Удалить выбранных пользователей из спи
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:753
 #: src/DownloadListCtrl.cpp:585 src/DownloadListCtrl.cpp:905
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:926
 #: src/muuli_wdr.cpp:1000 src/muuli_wdr.cpp:1066 src/muuli_wdr.cpp:2589
@@ -523,7 +523,8 @@ msgstr "Текстовый клиент aMule"
 msgid "Kademlia: search keyword too short"
 msgstr "Kad: слово запроса лишком коротоко"
 
-#: src/kademlia/routing/RoutingZone.cpp:193
+#: src/kademlia/routing/RoutingZone.cpp:208
+#: src/kademlia/routing/RoutingZone.cpp:278
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -531,7 +532,7 @@ msgstr[0] "Считан %u контакт Kad"
 msgstr[1] "Считано %u контакта Kad"
 msgstr[2] "Считано %u контактов Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
+#: src/kademlia/routing/RoutingZone.cpp:297
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
@@ -539,7 +540,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:244
+#: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -698,7 +699,7 @@ msgstr "Принимается..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1317
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:191 src/muuli_wdr.cpp:3682
 msgid "Preferences"
 msgstr "Настройки"
@@ -1308,7 +1309,7 @@ msgstr "Авто [Норм]"
 msgid "Auto [Hi]"
 msgstr "Авто [Выс]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:652
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "Идёт подключение"
@@ -1721,34 +1722,34 @@ msgstr "Удалить выбранные серверы?"
 msgid "Disabled [%s]"
 msgstr "Отключено [%s]"
 
-#: src/amuleDlg.cpp:214
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "aMule %s (основан на eMule)."
 
-#: src/amuleDlg.cpp:216
+#: src/amuleDlg.cpp:215
 #, c-format
 msgid "Running on %s"
 msgstr "Работает на %s"
 
-#: src/amuleDlg.cpp:218
+#: src/amuleDlg.cpp:217
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "Посетите http://www.amule.org для проверки наличия новой версии."
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:240
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "ФАТАЛЬНАЯ ОШИБКА: не удалось создать таймер"
 
-#: src/amuleDlg.cpp:457
+#: src/amuleDlg.cpp:458
 msgid "aMule remote control "
 msgstr "Удалённое управление aMule"
 
 # Used only in CVS!
-#: src/amuleDlg.cpp:463
+#: src/amuleDlg.cpp:464
 msgid "Snapshot:"
 msgstr "Версия CVS:"
 
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:466
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1757,15 +1758,15 @@ msgstr ""
 "eMule \n"
 "\n"
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:467
 msgid " Website: http://www.amule.org \n"
 msgstr " Сайт: http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:468
 msgid " Forum: http://forum.amule.org \n"
 msgstr " Форум: http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:469
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1773,11 +1774,11 @@ msgstr ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:470
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr "По административным вопросам: admin@amule.org\n"
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:471
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
@@ -1785,194 +1786,190 @@ msgstr ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:472
 msgid " Part of aMule is based on \n"
 msgstr "Часть aMule основана на \n"
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:473
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: пиринговый роутинг на основе XOR-метрики.\n"
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:474
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr "Copyright (C) 2002 Петр Маймунков\n"
 
-#: src/amuleDlg.cpp:474
+#: src/amuleDlg.cpp:475
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:477 src/PrefsUnifiedDlg.cpp:520
+#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:520
 #: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Сообщение"
 
-#: src/amuleDlg.cpp:568
-msgid "Status text"
-msgstr "Статус"
-
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
 msgstr "eD2k: Соединение"
 
-#: src/amuleDlg.cpp:693
+#: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
 msgstr "eD2k: не соединено"
 
-#: src/amuleDlg.cpp:699
+#: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
 msgstr "Kad: За брандмауэром"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:698
 msgid "Kad: Connected"
 msgstr "Kad: Соединение установлено"
 
-#: src/amuleDlg.cpp:708
+#: src/amuleDlg.cpp:703
 msgid "Kad: Connecting"
 msgstr "Kad: Идёт подключение"
 
-#: src/amuleDlg.cpp:712
+#: src/amuleDlg.cpp:707
 msgid "Kad: Off"
 msgstr " Kad: Выключено"
 
-#: src/amuleDlg.cpp:759
+#: src/amuleDlg.cpp:754
 msgid "Stop the current connection attempts"
 msgstr "Прекрытить попытки соединения"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2853 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2853 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "Отключиться"
 
-#: src/amuleDlg.cpp:765
+#: src/amuleDlg.cpp:760
 msgid "Disconnect from the currently connected networks"
 msgstr "Отключиться от работающих сетей"
 
-#: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:3036 src/muuli_wdr.cpp:3470
+#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:3036 src/muuli_wdr.cpp:3470
 #: src/muuli_wdr.cpp:3672 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "Подключиться"
 
-#: src/amuleDlg.cpp:771
+#: src/amuleDlg.cpp:766
 msgid "Connect to the currently enabled networks"
 msgstr "Подключиться к разрешенным сетям"
 
-#: src/amuleDlg.cpp:817
+#: src/amuleDlg.cpp:812
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Передача: %.1f(%.1f) | Приём: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:819
+#: src/amuleDlg.cpp:814
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Передача: %.1f | Приём: %.1f"
 
-#: src/amuleDlg.cpp:841
+#: src/amuleDlg.cpp:836
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Подключен)"
 
-#: src/amuleDlg.cpp:843
+#: src/amuleDlg.cpp:838
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Отключен)"
 
-#: src/amuleDlg.cpp:874
+#: src/amuleDlg.cpp:869
 msgid "Do you really want to exit aMule?"
 msgstr "Вы действительно хотите выйти из aMule?"
 
-#: src/amuleDlg.cpp:875
+#: src/amuleDlg.cpp:870
 msgid "Exit confirmation"
 msgstr "Подтверждение выхода"
 
-#: src/amuleDlg.cpp:1187
+#: src/amuleDlg.cpp:1182
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Каталог с темами оформления '%s' не существует."
 
-#: src/amuleDlg.cpp:1192
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: невозможно открыть для чтения файл скина '%s'"
 
-#: src/amuleDlg.cpp:1292 src/amuleDlg.cpp:1453 src/muuli_wdr.cpp:1864
+#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1864
 #: src/muuli_wdr.cpp:3674
 msgid "Networks"
 msgstr "Сети"
 
-#: src/amuleDlg.cpp:1294
+#: src/amuleDlg.cpp:1289
 msgid "Networks window"
 msgstr "Окно сетей"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3675
 msgid "Searches"
 msgstr "Поиск"
 
-#: src/amuleDlg.cpp:1298
+#: src/amuleDlg.cpp:1293
 msgid "Searches window"
 msgstr "Окно поиска"
 
-#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:3676
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3676
 msgid "Transfers"
 msgstr "Передачи"
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1297
 msgid "Files transfers window"
 msgstr "Окно передач"
 
-#: src/amuleDlg.cpp:1304
+#: src/amuleDlg.cpp:1299
 msgid "Shared files"
 msgstr "Публикуемые файлы"
 
-#: src/amuleDlg.cpp:1306
+#: src/amuleDlg.cpp:1301
 msgid "Shared files window"
 msgstr "Окно публикуемых файлов"
 
-#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
 msgid "Messages"
 msgstr "Сообщения"
 
-#: src/amuleDlg.cpp:1310
+#: src/amuleDlg.cpp:1305
 msgid "Messages window"
 msgstr "Окно сообщений"
 
-#: src/amuleDlg.cpp:1312 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1105 src/muuli_wdr.cpp:3680
 msgid "Statistics"
 msgstr "Статистика"
 
-#: src/amuleDlg.cpp:1314
+#: src/amuleDlg.cpp:1309
 msgid "Statistics graph window"
 msgstr "Окно статистики"
 
-#: src/amuleDlg.cpp:1319
+#: src/amuleDlg.cpp:1314
 msgid "Preferences settings window"
 msgstr "Окно настроек"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3683
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3683
 msgid "Import"
 msgstr "Импорт"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3683
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3683
 msgid "The partfile importer tool"
 msgstr "Инструмент импортирования частично загруженных файлов (part files)"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3684
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3684
 msgid "About"
 msgstr "О программе"
 
-#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3684
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3684
 msgid "About/Help"
 msgstr "О программе"
 
-#: src/amuleDlg.cpp:1464
+#: src/amuleDlg.cpp:1459
 msgid "eD2k network"
 msgstr "Сеть eD2k"
 
-#: src/amuleDlg.cpp:1468
+#: src/amuleDlg.cpp:1463
 msgid "Kad network"
 msgstr "Сеть Kad"
 
-#: src/amuleDlg.cpp:1473
+#: src/amuleDlg.cpp:1468
 msgid "No network"
 msgstr "Нет сети"
 
@@ -2896,11 +2893,11 @@ msgstr "Это удалит используемые в данный момен�
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: src/Logger.cpp:270
+#: src/Logger.cpp:273
 msgid "ERROR: "
 msgstr "ОШИБКА:"
 
-#: src/Logger.cpp:270
+#: src/Logger.cpp:273
 msgid "WARNING: "
 msgstr "ПРЕДУПРЕЖДЕНИЕ:"
 
@@ -4568,22 +4565,17 @@ msgstr ""
 "Нажмите сюда чтобы добавить eD2k ссылку из текстового поля в очередь "
 "загрузок."
 
-# это тултип для кнопульки в левом нижнем углу
-#: src/muuli_wdr.cpp:85
-msgid "Pop-up status text"
-msgstr "Показать статус."
-
-#: src/muuli_wdr.cpp:88
-msgid "Loading ..."
-msgstr "Загружается..."
-
-#: src/muuli_wdr.cpp:89
+#: src/muuli_wdr.cpp:85 src/muuli_wdr.cpp:89
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
 "Тут отображаются события. Для полного списка событий, обратитесь к журналу в "
 "окне \"Сети\"."
+
+#: src/muuli_wdr.cpp:88
+msgid "Loading ..."
+msgstr "Загружается..."
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -7255,6 +7247,13 @@ msgstr "Не удалось открыть список друзей 'emfriends.
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Не удалось открыть список друзей 'emfriends.met' для записи!"
+
+#~ msgid "Status text"
+#~ msgstr "Статус"
+
+# это тултип для кнопульки в левом нижнем углу
+#~ msgid "Pop-up status text"
+#~ msgstr "Показать статус."
 
 #~ msgid "Please wait... "
 #~ msgstr "Пожалуйста, подождите... "
