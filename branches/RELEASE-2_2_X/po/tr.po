@@ -31,19 +31,19 @@ msgstr "Bağlantı başarısız"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC connection failed. Empty reply."
-msgstr ""
+msgstr "EC bağlantısı başarısız. Boş cevap."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "External Connection: Access denied because: "
-msgstr ""
+msgstr "Dış Bağlantı: Erişim engellendi çünkü: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "External Connection: Access denied"
-msgstr ""
+msgstr "Dış Bağlantı: Erişim engellendi"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "External Connection: Bad reply from server. Connection closed."
-msgstr ""
+msgstr "Dış Bağlantı: Sunucudan kötü yanıt. Bağlantı kapatıldı."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -286,7 +286,7 @@ msgstr "Yol eki olmaksızın dosyanın tam adı."
 
 #: src/UserEvents.h:71
 msgid "The eD2k hash of the file."
-msgstr ""
+msgstr "Dosyanın eD2k adreslemesi."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -432,27 +432,27 @@ msgstr "Magnet &bağlantısını panoya kopyala"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:946
 msgid "Copy eD2k &link to clipboard"
-msgstr ""
+msgstr "Kopya&la"
 
 #: src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k link to clipboard (&Source)"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy eD2k link to clipboard (&Hostname)"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&AICH info)"
-msgstr ""
+msgstr "Kopy&ala"
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:948
 msgid "Copy feedback to clipboard"
@@ -523,8 +523,8 @@ msgstr[1] "%u adet Kademlia bağlantısı okundu"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Sadece %d Kad bağlantısı var. Nodes.dat yazılamadı"
+msgstr[1] "Sadece %d adet Kad bağlantısı var. Nodes.dat yazılamadı"
 
 #: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
@@ -535,11 +535,11 @@ msgstr[1] "%d adet Kad bağlantısı yazıldı"
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
-msgstr ""
+msgstr "HATA: TCP portu dinlenemiyor."
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
-msgstr ""
+msgstr "web aracı bağlantısı kabul edildi\n"
 
 #: src/webserver/src/WebServer.cpp:304
 msgid "ERROR: can not accept web client connection\n"
@@ -616,11 +616,11 @@ msgstr "Şablonu yükler <str>"
 
 #: src/webserver/src/WebInterface.cpp:487
 msgid "Web server HTTP port"
-msgstr ""
+msgstr "web sunucusu HTTP portu"
 
 #: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on web server port"
-msgstr ""
+msgstr "Web sunucu portu üzerine iletmek için UPnP portunu kullanın"
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -632,11 +632,11 @@ msgstr "Gzip sıkıştırması kullan"
 
 #: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for web server"
-msgstr ""
+msgstr "Web sunucusu için tam erişim parolası"
 
 #: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for web server"
-msgstr ""
+msgstr "Web sunucusu için konuk parolası"
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -648,7 +648,7 @@ msgstr "Konuk girişini reddet"
 
 #: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save web server settings from/to remote aMule"
-msgstr ""
+msgstr "Web sunucusu ayarlarını uzak aMule'ye/ aMule'den kaydet/yükle"
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1116,13 +1116,13 @@ msgstr "Bu dosya için isteğe bağlı adres ekleyin"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid "Enter here the file you want to compute the eD2k link"
-msgstr ""
+msgstr "eD2k bağlantısının hesaplanmasını istediğiniz dosyayı buraya girin"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
 "Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
-msgstr ""
+msgstr "Ekle"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1062
 #: src/muuli_wdr.cpp:2846
@@ -1156,11 +1156,11 @@ msgstr "MD4 Dosya Adreslemesi"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
 msgid "eD2k File Hash"
-msgstr ""
+msgstr "Dosya"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
 msgid "eD2k link"
-msgstr ""
+msgstr "eD2k bağlantısı"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1180,15 +1180,15 @@ msgstr "Çıkış"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
-msgstr ""
+msgstr "eD2k bağlantısını hesaplamak için bir dosya açın"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
-msgstr ""
+msgstr "Kaydet"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1197,7 +1197,7 @@ msgstr "aLinkCreator Hakkında"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
-msgstr ""
+msgstr "Seçiniz"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1205,7 +1205,7 @@ msgstr "Şimdilik kopyalanacak bir şey yok !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
 msgid "Select the file to your computed eD2k link"
-msgstr ""
+msgstr "Seçiniz"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1231,6 +1231,8 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"aMule<thepolish@vipmail.ru>http://www.everaldo.comhttp://www.icomania."
+"comhttp://jimmac.musichall.cz/ikony.php3"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1267,7 +1269,7 @@ msgstr "%s ---> Var olmayan dosya !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
 msgid "aLinkCreator, the aMule eD2k link creator"
-msgstr ""
+msgstr "aMule"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1386,9 +1388,8 @@ msgid "Source Seeds"
 msgstr "Kaynak Girdileri"
 
 #: src/DataToText.cpp:133
-#, fuzzy
 msgid "Search Result"
-msgstr "Ara"
+msgstr "Arama Sonucu"
 
 #: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
@@ -1669,11 +1670,11 @@ msgstr "Bütün sunucuları kaldır"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:603
 msgid "Copy eD2k link to clipboard"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/ServerListCtrl.cpp:449
 msgid "Copy eD2k links to clipboard"
-msgstr ""
+msgstr "Kopyala"
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1712,7 +1713,7 @@ msgstr "Yeni sürüm kontrolü için http://www.amule.org adresini ziyaret edini
 
 #: src/amuleDlg.cpp:241
 msgid "FATAL ERROR: Failed to create Timer"
-msgstr ""
+msgstr "Başarısız"
 
 #: src/amuleDlg.cpp:457
 msgid "aMule remote control "
@@ -1786,11 +1787,11 @@ msgstr "Durum iletisi"
 
 #: src/amuleDlg.cpp:689
 msgid "eD2k: Connecting"
-msgstr ""
+msgstr "Bağlanıyor"
 
 #: src/amuleDlg.cpp:693
 msgid "eD2k: Disconnected"
-msgstr ""
+msgstr "Bağlantı kesildi"
 
 #: src/amuleDlg.cpp:699
 msgid "Kad: Firewalled"
@@ -1865,7 +1866,7 @@ msgstr "Kaplama dizini '%s'yok."
 #: src/amuleDlg.cpp:1192
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
-msgstr ""
+msgstr "UYARI: Kaplama dosyası '%s' okuma için açılamıyor"
 
 #: src/amuleDlg.cpp:1292 src/amuleDlg.cpp:1453 src/muuli_wdr.cpp:1864
 #: src/muuli_wdr.cpp:3674
@@ -1874,7 +1875,7 @@ msgstr "Ağ"
 
 #: src/amuleDlg.cpp:1294
 msgid "Networks window"
-msgstr ""
+msgstr "Ağ"
 
 #: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3675
 msgid "Searches"
@@ -1882,7 +1883,7 @@ msgstr "Ara"
 
 #: src/amuleDlg.cpp:1298
 msgid "Searches window"
-msgstr ""
+msgstr "Ara"
 
 #: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:3676
 msgid "Transfers"
@@ -1890,15 +1891,15 @@ msgstr "Aktarımlar"
 
 #: src/amuleDlg.cpp:1302
 msgid "Files transfers window"
-msgstr ""
+msgstr "Dosyalar"
 
 #: src/amuleDlg.cpp:1304
 msgid "Shared files"
-msgstr ""
+msgstr "Paylaşılan dosyalar"
 
 #: src/amuleDlg.cpp:1306
 msgid "Shared files window"
-msgstr ""
+msgstr "Paylaşılan dosya penceresi"
 
 #: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3679
 msgid "Messages"
@@ -1906,7 +1907,7 @@ msgstr "Sohbet"
 
 #: src/amuleDlg.cpp:1310
 msgid "Messages window"
-msgstr ""
+msgstr "Sohbet"
 
 #: src/amuleDlg.cpp:1312 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1105 src/muuli_wdr.cpp:3680
@@ -1915,11 +1916,11 @@ msgstr "İstatistikler"
 
 #: src/amuleDlg.cpp:1314
 msgid "Statistics graph window"
-msgstr ""
+msgstr "İstatistikler"
 
 #: src/amuleDlg.cpp:1319
 msgid "Preferences settings window"
-msgstr ""
+msgstr "Ayarlar"
 
 #: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3683
 msgid "Import"
@@ -1939,7 +1940,7 @@ msgstr "Hakkında/Yardım"
 
 #: src/amuleDlg.cpp:1464
 msgid "eD2k network"
-msgstr ""
+msgstr "eD2k ağı"
 
 #: src/amuleDlg.cpp:1468
 msgid "Kad network"
@@ -2047,7 +2048,7 @@ msgstr "Gön: 0.0 | İnd: 0.0"
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
-msgstr ""
+msgstr "Kademlia pasifleştirilmiş."
 
 #: src/PrefsUnifiedDlg.cpp:614
 msgid ""
@@ -2109,7 +2110,7 @@ msgstr "Çalıştırılabilir  %s"
 
 #: src/PrefsUnifiedDlg.cpp:916
 msgid "Edit server list"
-msgstr ""
+msgstr "Düzenle"
 
 #: src/PrefsUnifiedDlg.cpp:917
 msgid ""
@@ -2217,7 +2218,7 @@ msgstr "Yeni dışarıdan bağlantı kabul edildi"
 
 #: src/ExternalConn.cpp:221
 msgid "ERROR: couldn't accept a new external connection"
-msgstr ""
+msgstr "HATA: yeni bir dış bağlantı kabul edilemiyor"
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2297,7 +2298,7 @@ msgstr "çıkarılacak sunucunun tanımlanması gerekli"
 
 #: src/ExternalConn.cpp:708
 msgid "eD2k is disabled in preferences."
-msgstr ""
+msgstr "pasifleştirilmiş."
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2321,7 +2322,7 @@ msgstr "Yazılımınız bu ayrıntı düzeyi için yapılandırılmamış."
 
 #: src/ExternalConn.cpp:1058
 msgid "External Connection: shutdown requested"
-msgstr ""
+msgstr "Bağlantı kapat"
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2350,11 +2351,11 @@ msgstr "Dosya yeniden adlandırılamıyor."
 
 #: src/ExternalConn.cpp:1406
 msgid "Already connected to eD2k."
-msgstr ""
+msgstr "eD2k ağına zaten bağlandı."
 
 #: src/ExternalConn.cpp:1409
 msgid "Connecting to eD2k..."
-msgstr ""
+msgstr "Bağlanıyor."
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2370,7 +2371,7 @@ msgstr "Bütün ağlar devre dışı"
 
 #: src/ExternalConn.cpp:1433
 msgid "Disconnected from eD2k."
-msgstr ""
+msgstr "Bağlantı kesildi."
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2379,7 +2380,7 @@ msgstr "Bağlantı kesildi :Kad."
 #: src/ExternalConn.cpp:1445
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
-msgstr ""
+msgstr "Dış Bağlantı: geçersiz opcode alındı: %#x"
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2411,7 +2412,7 @@ msgstr "Sunucu eklenmedi: Geçersiz sunucu portu girildi."
 
 #: src/ServerWnd.cpp:162
 msgid "eD2k Status:"
-msgstr ""
+msgstr "Durum:"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2524,7 +2525,7 @@ msgstr "Kad. Ek Yükü (Paketler): %s"
 #: src/Statistics.cpp:660 src/Statistics.cpp:681
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr ""
+msgstr "Şifreleme ek yükü (UDP): %s"
 
 #: src/Statistics.cpp:662
 #, c-format
@@ -2578,22 +2579,22 @@ msgstr "Oturum GÖN:İND Oranı (Toplam): %s"
 #: src/Statistics.cpp:689
 #, c-format
 msgid "Average download rate (Session): %s"
-msgstr ""
+msgstr "Ortalama aktarım oranı (Oturum): %s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Average upload rate (Session): %s"
-msgstr ""
+msgstr "Ortalama gönderim oranı (Oturum): %s"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Max download rate (Session): %s"
-msgstr ""
+msgstr "En fazla aktarım oranı (Oturum): %s"
 
 #: src/Statistics.cpp:692
 #, c-format
 msgid "Max upload rate (Session): %s"
-msgstr ""
+msgstr "En fazla gönderim oranı (Oturum): %s"
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2710,7 +2711,7 @@ msgstr "Paylaşılan Dosyaların Toplam Boyutu: %s"
 #: src/Statistics.cpp:731
 #, c-format
 msgid "Average file size: %s"
-msgstr ""
+msgstr "Ortalama dosya boyutu: %s"
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2742,7 +2743,7 @@ msgstr "Kad. çalışmıyorsa, Kad. araması yapılamaz."
 
 #: src/SearchList.cpp:294
 msgid "eD2k search can't be done if eD2k is not connected"
-msgstr ""
+msgstr "eD2k ağına bağlanılmamışsa eD2k araması yapılamaz"
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2857,11 +2858,11 @@ msgstr "Devam mı?"
 
 #: src/Logger.cpp:270
 msgid "ERROR: "
-msgstr ""
+msgstr "HATA: "
 
 #: src/Logger.cpp:270
 msgid "WARNING: "
-msgstr ""
+msgstr "UYARI "
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2909,7 +2910,7 @@ msgstr "Kategoriye göre indir"
 
 #: src/SearchListCtrl.cpp:594
 msgid "Search related files (eD2k, local server)"
-msgstr ""
+msgstr "Ara"
 
 #: src/SearchListCtrl.cpp:599
 msgid "Mark as known file"
@@ -2927,13 +2928,13 @@ msgstr "Bağlantı başarısız "
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1340
 msgid "ERROR"
-msgstr ""
+msgstr "HATA"
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
-msgstr ""
+msgstr "UYARI."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3109,7 +3110,7 @@ msgstr "İndirmeler (%i)"
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
-msgstr ""
+msgstr "yukarı."
 
 #: src/DownloadListCtrl.cpp:2258
 msgid "File preview"
@@ -3132,12 +3133,12 @@ msgstr "Met-dosyası yedeklemesi %s konumundan yüklenmeye çalışılıyor."
 #: src/PartFile.cpp:334
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
-msgstr ""
+msgstr "HATA: part.met dosyası açılamadı: %s ==> %s"
 
 #: src/PartFile.cpp:340
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
-msgstr ""
+msgstr "HATA: part.met dosyası 0 boyuta sahip: %s ==> %s"
 
 #: src/PartFile.cpp:351
 #, c-format
@@ -3147,7 +3148,7 @@ msgstr ""
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
+msgstr "HATA: %s (%s) bozuk (hatalı başlık sayısı), dosya yüklenemez."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3174,7 +3175,7 @@ msgstr "%s (%s) açma başarısız"
 #: src/PartFile.cpp:708
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
-msgstr ""
+msgstr "UYARI: %s bozulmuş olabilir (%i)"
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3246,7 +3247,7 @@ msgstr "%s dosyasının yeniden adreslenmesi bitti"
 #: src/PartFile.cpp:2242
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
-msgstr ""
+msgstr "%s tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3261,7 +3262,7 @@ msgstr "Dosya siliniyor: %s"
 #: src/PartFile.cpp:2386
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr ""
+msgstr "UYARI: İndirlen parça adreslenemiyor - adresleme seti '%s' için eksik"
 
 #: src/PartFile.cpp:2391
 #, c-format
@@ -3269,6 +3270,8 @@ msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
+"HATA: Aktarılan parça adreslenemiyor.- adres seti tamamlanmamış (%s). Bu hiç "
+"olmamalıydı"
 
 #: src/PartFile.cpp:3088
 #, c-format
@@ -3289,11 +3292,11 @@ msgstr ""
 
 #: src/PartFile.cpp:3864
 msgid "Allocating"
-msgstr ""
+msgstr "Ayrılıyor"
 
 #: src/PartFile.cpp:3880
 msgid "Insufficient disk space"
-msgstr ""
+msgstr "Yetersiz disk alanı"
 
 #: src/PartFile.cpp:3891 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3306,11 +3309,11 @@ msgstr "İndirilen"
 #: src/PartFile.cpp:4162
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
-msgstr ""
+msgstr "HATA: Parça dosyası '%s' açılamıyor"
 
 #: src/KnownFileList.cpp:79
 msgid "WARNING: known.met cannot be opened."
-msgstr ""
+msgstr "UYARI."
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Knownfile list corrupted, contains invalid header."
@@ -3343,7 +3346,7 @@ msgstr[1] "Bilinen %i adet paylaşılmış dosya bulundu. Bilinmeyen %i adet"
 #: src/SharedFileList.cpp:367
 #, c-format
 msgid "ERROR: Attempted to share %s"
-msgstr ""
+msgstr "HATA: %s paylaşılmak istendi"
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3383,11 +3386,11 @@ msgstr ""
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr ""
+msgstr "pasifleştirilmiş."
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
 msgid "No valid servers to which to connect found in server list"
-msgstr ""
+msgstr "Sunucu listesinde bağlanılabilecek geçerli bir sunucu yok"
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3437,7 +3440,7 @@ msgstr "%s (%s:%i) adresine bağlantı başarısız."
 
 #: src/ServerConnect.cpp:450
 msgid "ERROR: Socket invalid at timeout check"
-msgstr ""
+msgstr "HATA: Zaman aşımı denetlemesinde soket geçersiz"
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3448,7 +3451,7 @@ msgstr "%s (%s:%i) adresine bağlanma denemesi zamanaşımına uğradı."
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr ""
+msgstr "Başarısız Arahttp://forum.amule.org."
 
 #: src/DownloadQueue.cpp:169
 msgid "No part files found"
@@ -3463,11 +3466,11 @@ msgstr[1] "%u adet parça dosyası bulundu"
 
 #: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1387
 msgid "Filesystem for Temp directory cannot handle large files."
-msgstr ""
+msgstr "Geçici dizininin dosya sistemi büyük dosyaları kullanamaz."
 
 #: src/DownloadQueue.cpp:230 src/DownloadQueue.cpp:1390
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr ""
+msgstr "Gelen dizininin dosya sistemi büyük dosyaları kullanamaz."
 
 #: src/DownloadQueue.cpp:339
 #, c-format
@@ -3492,7 +3495,7 @@ msgstr "%s dosyasını indirmeyi zaten deniyorsunuz"
 #: src/DownloadQueue.cpp:1321
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
-msgstr ""
+msgstr "Magnet bağlantısı eD2k' ya çevrilemez: %s"
 
 #: src/DownloadQueue.cpp:1329
 #, c-format
@@ -3502,7 +3505,7 @@ msgstr "Bağlantı için bilinmeyen protokol: %s"
 #: src/DownloadQueue.cpp:1350
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
-msgstr ""
+msgstr "Geçersiz eD2k bağlantısı! HATA: %s"
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3576,11 +3579,11 @@ msgstr "Şu anki IP Süzgeç seviyesi %d.\n"
 #: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr ""
+msgstr "Bağlantı sınırları: Gön: %u kb/s, İnd: %u kB/s.\n"
 
 #: src/TextClient.cpp:689
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3688,7 +3691,7 @@ msgstr ""
 
 #: src/TextClient.cpp:848
 msgid "Shut down aMule."
-msgstr ""
+msgstr "aMule' yi kapat."
 
 #: src/TextClient.cpp:849
 msgid ""
@@ -3696,6 +3699,9 @@ msgid ""
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
+"Çalışan uzak çekirdeği kapat (amule/amuled).\n"
+"Bu ayrıca sonraki aracı da kapatacaktır; çünkü çalışan bir çekirdek olmadan\n"
+"bir işe yaramayacaktır.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3728,7 +3734,7 @@ msgstr ""
 
 #: src/TextClient.cpp:857
 msgid "Connect to eD2k only."
-msgstr ""
+msgstr "Sadece eD2k ağına bağlan."
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3744,7 +3750,7 @@ msgstr "Bu, şu anda bağlı olduğunuz tüm ağlarla bağlantıyı kesecektir.\
 
 #: src/TextClient.cpp:862
 msgid "Disconnect from eD2k only."
-msgstr ""
+msgstr "Sadece eD2k bağlantısını kes."
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
@@ -3752,7 +3758,7 @@ msgstr "Sadece Kad'dan bağlantıyı kes."
 
 #: src/TextClient.cpp:865
 msgid "Adds an eD2k or magnet link to core."
-msgstr ""
+msgstr "Çekirdeğe bir eD2k veya magnet bağlantısı ekler."
 
 #: src/TextClient.cpp:866
 msgid ""
@@ -3764,7 +3770,7 @@ msgid ""
 "   server list.\n"
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
-msgstr ""
+msgstr "Tümü\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -3991,7 +3997,7 @@ msgstr "Kaydı (Log) Sıfırla."
 #: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, use '%s' instead."
-msgstr ""
+msgstr "Geçersiz komut, yerine '%s' kullanın."
 
 #: src/TextClient.cpp:953
 #, c-format
@@ -4009,12 +4015,12 @@ msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
 #: src/ServerSocket.cpp:259
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "HATA: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:274
 #, c-format
 msgid "WARNING: %s (%s) - %s"
-msgstr ""
+msgstr "UYARI: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4235,19 +4241,19 @@ msgstr "İşlem yapılıyor"
 
 #: src/PartFileConvert.cpp:613
 msgid "ERROR: Out of diskspace"
-msgstr ""
+msgstr "HATA: Disk dolu"
 
 #: src/PartFileConvert.cpp:614
 msgid "ERROR: Partmet not found"
-msgstr ""
+msgstr "HATA: Partmet bulunamadı"
 
 #: src/PartFileConvert.cpp:615
 msgid "ERROR: IO error!"
-msgstr ""
+msgstr "HATA: IO hatası!"
 
 #: src/PartFileConvert.cpp:616
 msgid "ERROR: Failed!"
-msgstr ""
+msgstr "Başarısız!"
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4462,7 +4468,7 @@ msgstr "%.2f%% tamamlandı"
 
 #: src/muuli_wdr.cpp:69
 msgid "eD2k Link: "
-msgstr ""
+msgstr "Bağlantı "
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4472,6 +4478,8 @@ msgstr "Onayla"
 msgid ""
 "Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
+"Metin denetimindeki eD2k bağlantısını indirme sırasına eklemek için burayı "
+"tıklayın."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4608,7 +4616,7 @@ msgstr "Daha Fazla"
 
 #: src/muuli_wdr.cpp:352
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
-msgstr ""
+msgstr "Ara Kademlia."
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -5137,7 +5145,7 @@ msgstr "Standart TCP Portu:"
 
 #: src/muuli_wdr.cpp:1793
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr ""
+msgstr "pasifleştirilmiş."
 
 #: src/muuli_wdr.cpp:1798
 msgid "Extended client UDP Port:"
@@ -5221,7 +5229,7 @@ msgstr "denemeden sonra kaldır"
 
 #: src/muuli_wdr.cpp:1957
 msgid "Auto-update server list at startup"
-msgstr ""
+msgstr "Otomatik başlangıç"
 
 #: src/muuli_wdr.cpp:1960
 msgid "List"
@@ -5229,11 +5237,11 @@ msgstr "Liste"
 
 #: src/muuli_wdr.cpp:1965
 msgid "Update server list when connecting to a server"
-msgstr ""
+msgstr "Güncelle"
 
 #: src/muuli_wdr.cpp:1968
 msgid "Update server list when a client connects"
-msgstr ""
+msgstr "Güncelle"
 
 #: src/muuli_wdr.cpp:1971
 msgid "Use priority system"
@@ -5305,7 +5313,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2055
 msgid "Select this if you want aMule to check your disk space"
-msgstr ""
+msgstr "aMule' nin disketeki alanı denetlemesini istiyorsanız bunu seçiniz."
 
 #: src/muuli_wdr.cpp:2062
 msgid "Min disk space:"
@@ -5317,13 +5325,15 @@ msgstr "Buraya istenilen en az disk alanını giriniz"
 
 #: src/muuli_wdr.cpp:2074
 msgid "Preallocate disk space for new files"
-msgstr ""
+msgstr "Yeni dosyalar için diskte yer ayır"
 
 #: src/muuli_wdr.cpp:2075
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
 msgstr ""
+"Yeni dosyalarda, dosyanın tamamı için sabit diskte yer ayrılarak parçalanma "
+"azaltılır"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Incoming"
@@ -5555,7 +5565,7 @@ msgstr "İsimden önce parça dosyası numarasını göster."
 
 #: src/muuli_wdr.cpp:2436
 msgid "Web server parameters"
-msgstr ""
+msgstr "Web sunucusu değerleri"
 
 #: src/muuli_wdr.cpp:2439
 msgid "Run amuleweb on startup"
@@ -5687,7 +5697,7 @@ msgstr "Sunucu listesini İnternet'ten güncellemek için bu düğmeye basınız
 
 #: src/muuli_wdr.cpp:2813
 msgid "Server list"
-msgstr ""
+msgstr "Sunucu"
 
 #: src/muuli_wdr.cpp:2818
 msgid ""
@@ -5699,7 +5709,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2825
 msgid "Add server manually: Name"
-msgstr ""
+msgstr "Ekle Adı"
 
 #: src/muuli_wdr.cpp:2829
 msgid "Enter the name of the new server here"
@@ -5827,7 +5837,7 @@ msgstr "Herkes"
 
 #: src/muuli_wdr.cpp:3126
 msgid "No one"
-msgstr ""
+msgstr "Hiç kimse"
 
 #: src/muuli_wdr.cpp:3128
 msgid "Who can see shared files:"
@@ -6570,7 +6580,7 @@ msgstr "aMule Sistem Tablası Menüsü"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Speed limits:"
-msgstr ""
+msgstr "Hız:"
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6593,12 +6603,12 @@ msgstr "İND: %u"
 #: src/MuleTrayIcon.cpp:358
 #, c-format
 msgid "Download speed: %.1f"
-msgstr ""
+msgstr "Aktarım hızı: %.1f"
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
 msgid "Upload speed: %.1f"
-msgstr ""
+msgstr "Gönderme hızı: %.1f"
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6633,20 +6643,20 @@ msgstr "IP: %s"
 #: src/MuleTrayIcon.cpp:415
 #, c-format
 msgid "TCP port: %d"
-msgstr ""
+msgstr "TCP port: %d"
 
 #: src/MuleTrayIcon.cpp:417
 msgid "TCP port: Not ready"
-msgstr ""
+msgstr "TCP port: Hazır değil"
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
 msgid "UDP port: %d"
-msgstr ""
+msgstr "UDP port: %d"
 
 #: src/MuleTrayIcon.cpp:428
 msgid "UDP port: Not ready"
-msgstr ""
+msgstr "UDP port: Hazır değil"
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6659,12 +6669,12 @@ msgstr "Çevrim içi İmza: Devre dışı"
 #: src/MuleTrayIcon.cpp:453
 #, c-format
 msgid "Shared files: %d"
-msgstr ""
+msgstr "Paylaşılan dosyalar: %d"
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
 msgid "Queued clients: %d"
-msgstr ""
+msgstr "Sıraya giren kullanıcılar: %d"
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6678,11 +6688,11 @@ msgstr "Toplam GÖN: %s"
 
 #: src/MuleTrayIcon.cpp:484
 msgid "Upload limit"
-msgstr ""
+msgstr "Gönderim sınırı"
 
 #: src/MuleTrayIcon.cpp:488
 msgid "Download limit"
-msgstr ""
+msgstr "Aktarım sınırı"
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6809,6 +6819,9 @@ msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
 msgstr ""
+"'addresses.dat' dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen "
+"sunuculistenizi otomatik güncellemek için bu bu dosyaya sunucu listesi "
+"dosyası yapıştırın"
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6818,7 +6831,7 @@ msgstr "Sunucu listesini %s adresinden indirmeye başla."
 #: src/ServerList.cpp:839
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr ""
+msgstr "UYARI: sunucuların otomatik güncellenmesi için geçersi URL girildi: %s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6861,7 +6874,7 @@ msgstr "Sunucu listesi indirme"
 #: src/amule.cpp:844
 #, c-format
 msgid "web server running on pid %d"
-msgstr ""
+msgstr "web sunucusu pid %d üzerinde çalışıyor"
 
 #: src/amule.cpp:848
 msgid ""
@@ -6869,6 +6882,10 @@ msgid ""
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
+"Web sunucusunun başlangıçta çalışmasını istediniz. Fakat amuleweb "
+"çalıştırılamıyor. Lütfen, aMule web sunucusunu içeren paketi yükleyin veya "
+"aMule' yi --enable-webserver komutu ile derleyip make install komutunu "
+"çalıştırın"
 
 #: src/amule.cpp:938
 #, c-format
@@ -6978,6 +6995,10 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"Ayrıca, tarayıcı ayarları sistem ön tanımlısına ayarlanmıştır. Gerekirse, "
+"lütfen tarayıcı seçeneklerini yeniden yapılandırın.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7002,7 +7023,7 @@ msgstr ""
 #: src/amule.cpp:1626
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
-msgstr ""
+msgstr "%s dosyası için diskte yer ayırma başarısız oldu: %s"
 
 #: src/amule.cpp:1774
 msgid "ERROR: can't open logfile"
@@ -7085,7 +7106,7 @@ msgstr "Bağlanıyor: %s"
 
 #: src/amule.cpp:2106
 msgid "Disconnected from eD2k"
-msgstr ""
+msgstr "eD2k Bağlantısı kesildi"
 
 #: src/amule.cpp:2113
 msgid "Kad started."
@@ -7121,11 +7142,11 @@ msgstr "Kad. ağı ayarlarda devre dışı bırakılmış, bağlanılmıyor."
 
 #: src/FriendList.cpp:120
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr ""
+msgstr "Arkadaş listesi  'emfriends.met'  dosyası okunamıyor!"
 
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
-msgstr ""
+msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
 
 #~ msgid "Please wait... "
 #~ msgstr "Lütfen bekleyiniz... "

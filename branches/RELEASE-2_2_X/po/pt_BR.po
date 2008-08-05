@@ -5096,7 +5096,7 @@ msgstr "Browser Padrão"
 
 #: src/muuli_wdr.cpp:1671
 msgid "System Default"
-msgstr ""
+msgstr "Padrão do Sistema"
 
 #: src/muuli_wdr.cpp:1672
 msgid "Konqueror"
@@ -7029,6 +7029,10 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"Adicionalmente, as preferências tem de ser reinicidas para o padrão do "
+"sistema. Por favor configure suas opções novamente se for necessário.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
