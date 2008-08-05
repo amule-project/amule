@@ -7113,15 +7113,16 @@ msgstr ""
 "funcioni correctament."
 
 #: src/amule.cpp:1319
-#, fuzzy
 msgid ""
 "\n"
 "\n"
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
 "A més a més, s'han reiniciat les preferències del navegador als valors per "
-"defecte del sistema. Per favor configureu-les de nou si és necessari."
+"defecte del sistema. Per favor configureu-les de nou si és necessari.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"

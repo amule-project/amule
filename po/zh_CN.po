@@ -513,8 +513,8 @@ msgstr[1] "读取 %u 个 Kad 联系人"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "只有%d个Kad联系人可用，nodes.dat没有写入"
+msgstr[1] "只有%d个Kad联系人可用，nodes.dat没有写入"
 
 #: src/kademlia/routing/RoutingZone.cpp:244
 #, c-format
@@ -1381,7 +1381,6 @@ msgid "Source Seeds"
 msgstr "资源种子"
 
 #: src/DataToText.cpp:133
-#, fuzzy
 msgid "Search Result"
 msgstr "搜索结果"
 
@@ -6893,6 +6892,9 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"此外，浏览器设定已经被重设为系统默认，如有必要，请重新配置浏览器选项。\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
