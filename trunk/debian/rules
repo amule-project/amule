@@ -851,6 +851,10 @@ language-packages: i18n-ar i18n-bg i18n-ca i18n-da i18n-de i18n-en-gb i18n-es i1
 
 i18n-en-only: ; 
 
+#If we build from a svn checkout, we need to generate configure
+configure:
+	./autogen.sh
+
 #Now the targets for dpkg-buildpackage
 binary-indep: build install
 
