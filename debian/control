@@ -382,61 +382,72 @@ Description: Chinese (zh_TW) internationalized (i18n) files for amule
  This package contains the Chinese internationalized files for amule.
 
 Package: amule-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule (= ${binary:Version})
 Description: aNOTHER eMule P2P Client debugging symbols
  this package contains the debugging symbols for the amule binary
 
 Package: amule-ed2k-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-ed2k (= ${binary:Version})
 Description: amule ed2k link-handler debugging symbols
  The debugging symbols for the ed2k binary
 
 Package: amule-cas-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-cas (= ${binary:Version})
 Description: reporting module for amule debugging symbols
  the debugging symbols for the cas binary
 
 Package: amule-wxcas-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-wxcas (= ${binary:Version})
 Description: reporting module for amule (graphical) debugging symbols
  the debugging symbols for the wxcas binary
 
 Package: amuleweb-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
 Description: the webserver for amule debugging symbols
  the debugging symbols for the amuleweb binary
 
 Package: amule-remote-gui-dbg
+Priority: extra
 Architecture: any
+Depends: ${shlibs:Depends}, amule-remote-gui (= ${binary:Version})
 Description: the remote gui for amule debugging symbols
  the debugging symbols for the amulegui binary
 
 Package: amule-daemon-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-daemon (= ${binary:Version})
 Description: the amule daemon debugging symbols
  the debugging symbols for the amuled binary
 
 Package: amule-alc-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-alc (= ${binary:Version})
 Description: the amule-link-creator debugging symbols
  the debugging symbols for the alc binary
 
 Package: amule-alcc-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-alcc (= ${binary:Version})
 Description: the amule-link-creator (commandline-version) debugging symbols
  the debugging symbols for the alcc binary
 
 Package: amule-cmd-dbg
+Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, amule-cmd (= ${binary:Version})
 Description: the amule-commandline-client-dbg
  the debugging symbols for the amulecmd binary
 
@@ -445,8 +456,8 @@ Architecture: any
 Depends: amule (= ${binary:Version})
 Provides: amule-skin
 Conflicts: amule (<< ${binary:Version})
-Description: Gnome Skin files for amule
- This package contains the Gnome Skin files for amule.
+Description: GNOME Skin files for amule
+ This package contains the GNOME Skin files for amule.
 
 Package: amule-skin-kde4
 Architecture: any

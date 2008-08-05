@@ -1,8 +1,30 @@
+amule (2.2.1+CVS20080802) testing; urgency=low
+
+  * debian/control
+     Moved -dbg packages to section extra
+     Let -dbg packages depend on their binary ones
+     Corrected Spelling of Gnome -> GNOME
+  * debian/rules
+     Add target to call autogen.sh when svn checkout is used
+  * Adjusted menu-section for wxcas
+  * Adjusted menu-section for amule-remote-gui
+  * Adjusted menu-section for alc
+  * Adjusted menu-section for amule
+  * Fixed amule-common: empty-directory usr/share/pixmaps/
+  * Fixed amule-common: empty-directory usr/share/doc/aMule-CVS/
+  * Fixed amule-cas: empty-directory usr/share/pixmap/
+  * Fixed amule-alc-dbg: empty-directory usr/share/applications/
+  * Fixed amule-xas: empty-directory usr/share/doc/xchat-common/scripts-perl/
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 02 Aug 2008  18:15:01 +0200
+
 amule (2.2.1+SVN20080717) testing; urgency=low
 
   * debian/control
       Adjusted Build-Deps to use libupnp-dev >> 1.6.6
       Bumped Standards-Version to 3.8.0.1
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 17 Jun 2008  15:29:01 +0200
 
 amule (2.1.3+SVN20080614) testing; urgency=low
 

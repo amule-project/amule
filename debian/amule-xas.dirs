@@ -1,5 +1,4 @@
 usr/bin
-usr/share/doc/xchat-common/scripts-perl
 usr/share/lintian/overrides
 usr/lib/xchat/plugins
 usr/share/man/man1
