@@ -1,0 +1,622 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+#
+# This file is part of the aMule Project.
+#
+# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+#
+# Any parts of this program derived from the xMule, lMule or eMule project,
+# or contributed by third-party developers are copyrighted by their
+# respective authors.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+#
+
+AC_INIT([aMule],[SVN],[admin@amule.org])
+AM_INIT_AUTOMAKE
+
+AC_CONFIG_SRCDIR([src/amule.cpp])
+AC_CONFIG_HEADERS([config.h])
+AM_MAINTAINER_MODE
+
+dnl Check host system.
+MULE_CHECK_SYSTEM
+
+dnl Checks for programs.
+dnl Workaround for these checks may alter CFLAGS and CXXFLAGS, especially if they were empty
+MULE_BACKUP([CFLAGS])
+MULE_BACKUP([CXXFLAGS])
+MULE_BACKUP([BUILD_CFLAGS])
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_CC
+AC_PROG_CPP
+AS_IF([test "$cross_compiling" = yes], [AC_PROG_BUILD_CC], [BUILD_CC="$CC" ; BUILD_EXEEXT=$EXEEXT])
+MULE_RESTORE([CFLAGS])
+MULE_RESTORE([CXXFLAGS])
+MULE_RESTORE([BUILD_CFLAGS])
+AC_PROG_AWK
+AC_PROG_EGREP
+AC_PROG_MAKE_SET
+AC_PROG_LEX
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+AC_PROG_YACC
+
+dnl Find the right ranlib, even when cross-compiling
+dnl And for some other tools for cross compilation
+AC_CHECK_TOOL(RANLIB, ranlib)
+AC_CHECK_TOOL(STRIP, strip)
+AC_CHECK_TOOL(AR, ar)
+AC_CHECK_TOOL(LD, ld)
+
+dnl
+dnl Add args to configure
+dnl
+AC_ARG_ENABLE(
+	[monolithic],
+	[AS_HELP_STRING(
+		[--disable-monolithic],
+		[disable building of the monolithic aMule app])],
+	[MONOLITHIC=$enableval], [MONOLITHIC=yes])
+
+AC_ARG_ENABLE(
+	[amule-daemon],
+	[AS_HELP_STRING(
+		[--enable-amule-daemon],
+		[compile aMule daemon version])],
+	[AMULE_DAEMON=$enableval], [AMULE_DAEMON=no])
+
+AC_ARG_ENABLE(
+	[amulecmd],
+	[AS_HELP_STRING(
+		[--enable-amulecmd],
+		[compile aMule command line client])],
+	[AMULECMD=$enableval], [AMULECMD=no])
+
+AC_ARG_ENABLE(
+	[webserver],
+	[AS_HELP_STRING(
+		[--enable-webserver],
+		[compile aMule WebServer])],
+	[WEB=$enableval], [WEB=no])
+
+AC_ARG_ENABLE(
+	[amule-gui],
+	[AS_HELP_STRING(
+		[--enable-amule-gui],
+		[compile aMule remote GUI (EXPERIMENTAL)])],
+	[AMULE_GUI=$enableval], [AMULE_GUI=no])
+
+AC_ARG_ENABLE(
+	[cas],
+	[AS_HELP_STRING(
+		[--enable-cas],
+		[compile C aMule Statistics])],
+	[CAS=$enableval], [CAS=no])
+
+AC_ARG_ENABLE(
+	[wxcas],
+	[AS_HELP_STRING(
+		[--enable-wxcas],
+		[compile aMule GUI Statistics])],
+	[WXCAS=$enableval], [WXCAS=no])
+
+AC_ARG_ENABLE(
+	[ed2k],
+	[AS_HELP_STRING(
+		[--disable-ed2k],
+		[don't compile aMule ed2k links handler])],
+	[ED2K=$enableval], [ED2K=yes])
+
+AC_ARG_ENABLE(
+	[alc],
+	[AS_HELP_STRING(
+		[--enable-alc],
+		[compile aMuleLinkCreator GUI version])],
+	[ALC=$enableval], [ALC=no])
+	      
+AC_ARG_ENABLE(
+	[alcc],
+	[AS_HELP_STRING(
+		[--enable-alcc],
+		[compile aMuleLinkCreator for console])],
+	[ALCC=$enableval], [ALCC=no])
+
+AC_ARG_ENABLE(
+	[monolithic],
+	[AS_HELP_STRING(
+		[--disable-monolithic],
+		[disable building of the monolithic aMule app])],
+	[MONOLITHIC=$enableval], [MONOLITHIC=yes])
+
+AC_ARG_ENABLE(
+	[upnp],
+	[AS_HELP_STRING(
+		[--disable-upnp],
+		[do not compile UPnP code])],
+	[ENABLE_UPNP=$enableval], [ENABLE_UPNP=yes])
+
+AC_ARG_ENABLE(
+	[geoip],
+	[AS_HELP_STRING(
+		[--enable-geoip],
+		[compile with GeoIP IP2Country library])],
+	[ENABLE_IP2COUNTRY=$enableval], [ENABLE_IP2COUNTRY=no])
+AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [GEOIP_LIBS="-lGeoIP"])
+
+AC_ARG_WITH(
+	[geoip-headers],
+	AS_HELP_STRING([--with-geoip-headers=DIR],
+		[GeoIP include files location]),
+	[GEOIP_CPPFLAGS="-I$withval"])
+
+AC_ARG_WITH(
+	[geoip-lib],
+	AS_HELP_STRING([--with-geoip-lib=DIR],
+		[GeoIP library location]),
+	[GEOIP_LDFLAGS="-L$withval"])
+
+AC_ARG_WITH(
+	[geoip-static],
+	AS_HELP_STRING([--with-geoip-static],
+		[Explicitly link GeoIP statically (default=no)]),
+	[AS_IF([test "$withval" != "no"], [GEOIP_LIBS="-Wl,-Bstatic $GEOIP_LIBS -Wl,-Bdynamic"])])
+
+# Default is yes, because they're most likely compatible.
+# However, this is only used when cross-compiling.
+AC_ARG_WITH(
+	[gnu-malloc],
+	[AS_HELP_STRING([--without-gnu-malloc],
+		[Don't assume that we use GNU libc compatible malloc/realloc when cross-compiling])],
+	[gnumalloc=$withval], [gnumalloc=yes])
+
+
+# Checking for libs before all other stuff to break
+# configure as soon as possible in case of a missing one
+# to avoid losing too much time
+
+# Check for zlib
+MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
+
+AS_IF([test x$CAS = xyes], [
+	# Check for gd
+	MULE_CHECK_GDLIB([2.0.0], [
+		CAS_DEFS="-D__GD__"
+		MULE_PREPEND([GDLIB_LIBS], [-lgd])
+	], [CAS_DEFS=])
+	AS_IF([test -z "$CAS_DEFS"], [
+		AC_MSG_WARN([
+	gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
+	Please check that gdlib-config is in your default path, check out
+	LD_LIBRARY_PATH or equivalent variable.
+	Or this might also be that your gdlib-config has other name.
+	Please try again with --with-gdlib-config=/usr/bin/gdlib-config
+	(replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
+	If you use compiled packages check if you have devel pack installed.
+	To download the latest version check http://www.boutell.com/gd
+	for sources.])
+	])
+], [GDLIB_VERSION="not_needed"])
+AC_SUBST([CAS_DEFS])dnl
+
+
+AS_IF([test x$WEB = xyes], [MULE_CHECK_REGEX(, [WEB=disabled])])
+AS_IF([test x$WEB = xyes], 
+	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [AC_MSG_WARN([libpng-devel >= 1.2.0 is needed for amuleweb])])], 
+	[LIBPNG_VERSION="not_needed"])
+AC_SUBST([AMULEWEB_DEFS])dnl
+
+
+# Check for perl File::Copy
+AC_MSG_CHECKING([for File::Copy])
+AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])], [AC_MSG_ERROR([File::Copy perl module is required])])
+
+
+# Check if we need the GUI
+AC_MSG_CHECKING([whether we need the GUI])
+AS_IF([test x$MONOLITHIC = xyes], [need_gui=yes])
+AS_IF([test x$WXCAS = xyes], [need_gui=yes])
+AS_IF([test x$ALC = xyes], [need_gui=yes])
+AS_IF([test x$AMULE_GUI = xyes], [need_gui=yes])
+AS_IF([test x${need_gui:+set} != xset], [need_gui=no])
+AC_MSG_RESULT($need_gui)
+
+
+# Check for GeoIP (required for IP2Country capability)
+AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
+	MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
+	MULE_BACKUP([CPPFLAGS])
+	MULE_APPEND([CPPFLAGS], [$GEOIP_CPPFLAGS])
+	MULE_BACKUP([LDFLAGS])
+	MULE_APPEND([LDFLAGS], [$GEOIP_LDFLAGS])
+	AC_CHECK_HEADER([GeoIP.h],,
+		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP header files were not found])])
+	AC_CHECK_LIB([GeoIP], [GeoIP_open],
+		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)],
+		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP libraries were not found])])
+	MULE_RESTORE([CPPFLAGS])
+	MULE_RESTORE([LDFLAGS])
+])
+AC_SUBST([GEOIP_CPPFLAGS])dnl
+AC_SUBST([GEOIP_LDFLAGS])dnl
+AC_SUBST([GEOIP_LIBS])dnl
+
+
+# Check for wx
+WX_CONFIG_OPTIONS
+WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
+# Force using a static wxWidgets library if the executable is to be linked statically.
+AS_IF([test ${enable_static:-no} = yes], [WX_SHARED=0])
+# Force using a unicode build of the library
+WX_UNICODE=1
+DEBUG=$WX_DEBUG
+WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS
+WX_CONFIG_CHECK([2.8.0], [wxWin=1],,, [$WXCONFIG_FLAGS])
+if test "$wxWin" != 1; then
+	AC_MSG_ERROR([
+		wxWidgets must be installed on your system but wx-config 
+		script couldn't be found. Please check that wx-config is 
+		in path or specified by --with-wx-config=path flag, the 
+		directory where wxWidgets libraries are installed (returned 
+		by 'wx-config --libs' command) is in LD_LIBRARY_PATH or
+		equivalent variable and wxWidgets version is 2.8.0 or above.
+	])
+fi
+WX_DETECT_STANDARD_OPTION_VALUES
+
+# We also need wxBase
+WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
+WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
+WXBASE_CPPFLAGS="$WX_CPPFLAGS -DwxUSE_GUI=0"
+AC_SUBST([WXBASE_LIBS])
+AC_SUBST([WXBASE_CPPFLAGS])
+
+dnl Get flags for windres
+AC_ARG_VAR([RC], [Resource Compiler])dnl
+AC_ARG_VAR([RCFLAGS], [Resource Compiler Flags])dnl
+AS_IF([test ${SYS:-unknown} = win32],
+[
+	AC_CHECK_TOOL([RC], [windres], [:])
+	MULERCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
+])
+
+
+# Check for libupnp
+AS_IF([test "${ENABLE_UPNP:-yes}" = yes], [
+	LIBUPNP_CHECK(
+		[1.6.6],
+		[MULE_APPEND([LIBUPNP_CPPFLAGS], [-DENABLE_UPNP=1])],
+		[ENABLE_UPNP=disabled]
+	)
+])dnl
+
+
+# Check for Crypto++
+MULE_CHECK_CRYPTOPP([5.1], [
+	# Check for CryptoPP >= 5.5
+	AS_IF([test $CRYPTOPP_VERSION_NUMBER -ge "5005000"], [MULE_APPEND([CRYPTOPP_CPPFLAGS], [-D__WEAK_CRYPTO__])])
+], [
+	AC_MSG_ERROR([
+	Could not find crypto++ header file "$cryptopp_file_with_version".
+	Please try again with --with-crypto-prefix=/my_crypto_prefix
+	(replace /my_crypto_prefix with a valid path to your crypto++
+	installation directory).])
+])
+
+dnl Checks requiring C++
+AC_LANG_PUSH([C++])
+MULE_CHECK_GLIBCXX
+MULE_CHECK_WX_SUPPORTS_LARGEFILE
+
+# Check if the compiler is broken, wrt. exceptions.
+MULE_CHECK_EXCEPTIONS
+
+MULE_CHECK_CXXABI
+AC_LANG_POP([C++])
+
+# Check for bfd.h (to have proper backtraces without using wxExecute)
+MULE_CHECK_BFD
+MULE_CHECK_EXECINFO
+
+# Ok, we have all needed libs, now checking for other stuff
+AS_IF([test "$LEX" = "flex"], [MULE_CHECK_FLEX_EXTENDED], [HAVE_FLEX_EXTENDED=no])
+
+# Flush standard test results for speeding cache
+AC_CACHE_SAVE
+
+dnl -------------------------------------------------------------------------------
+dnl Start of autoscan stuff
+dnl -------------------------------------------------------------------------------
+# Checks for header files.
+AC_PATH_X
+AC_FUNC_ALLOCA
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS([argz.h arpa/inet.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h  nl_types.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mntent.h sys/mnttab.h sys/mount.h sys/param.h sys/resource.h sys/select.h sys/socket.h sys/statvfs.h sys/time.h sys/timeb.h sys/types.h unistd.h])
+AC_HEADER_SYS_WAIT
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_MODE_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+AC_TYPE_UID_T
+AC_C_VOLATILE
+AC_CHECK_TYPES([ptrdiff_t])
+
+# Checks for library functions.
+AC_FUNC_CLOSEDIR_VOID
+AC_PROG_GCC_TRADITIONAL
+AC_FUNC_FORK
+AS_IF([test x$SYS != xwin32], [
+	AC_FUNC_GETMNTENT
+	AC_FUNC_LSTAT
+	AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
+])
+AC_FUNC_MEMCMP
+AC_FUNC_MMAP
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_SETVBUF_REVERSED
+AC_TYPE_SIGNAL
+AC_FUNC_STAT
+AC_FUNC_STRFTIME
+AC_FUNC_STRTOD
+AC_FUNC_VPRINTF
+dnl Some other functions that worth checking deeper:
+dnl AC_FUNC_CLOSEDIR_VOID
+dnl AC_FUNC_MEMCMP
+dnl AC_FUNC_MMAP
+dnl AC_FUNC_STAT
+dnl AC_FUNC_STRTOD
+dnl AC_FUNC_SETVBUF_REVERSED
+dnl Anyways, do we actually USE them?
+AS_IF([test $cross_compiling = yes -a $gnumalloc = yes], [
+	AC_MSG_WARN([
+    configure cannot check whether malloc() and realloc() are GNU libc
+    compatible. You have to be ABSOLUTELY sure that they are, otherwise
+    run configure with the --without-gnu-malloc switch.])
+	ac_cv_func_malloc_0_nonnull=yes
+	ac_cv_func_realloc_0_nonnull=yes
+])
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getpass gettimeofday inet_ntoa localeconv memmove mempcpy memset munmap nl_langinfo pow select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
+#-------------------------------------------------------------------------------
+# End of autoscan stuff
+#-------------------------------------------------------------------------------
+
+dnl
+dnl autoscan has missed these ones.
+dnl
+AC_CHECK_FUNCS([mkdir getrlimit setrlimit getopt_long])
+
+MULE_BACKUP([CPPFLAGS])
+MULE_APPEND([CPPFLAGS], [-D_XOPEN_SOURCE=600])
+AC_FUNC_STRERROR_R
+MULE_RESTORE([CPPFLAGS])
+
+# Look for a way to preallocate disk space for files.
+MULE_CHECK_FALLOCATE
+
+# Checking Native Language Support
+dnl Sets gettext version.
+dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.in!
+AM_GNU_GETTEXT_VERSION(0.11.5)
+MULE_CHECK_NLS
+
+# Flush standard test results for speeding cache
+AC_CACHE_SAVE
+
+# Other tests
+# aMule options
+MULE_COMPILATION_FLAGS
+
+# autoconf >= 2.60 already defines ${docdir}, but we always need it.
+AC_MSG_CHECKING([for docdir])
+AS_IF([test -z "$docdir"], [docdir="${datadir}/doc/${PACKAGE_NAME}-${PACKAGE_VERSION}"])
+AC_SUBST([docdir])dnl
+AC_MSG_RESULT([$docdir])
+
+# Try to set the SVN checkout-date
+AC_MSG_CHECKING([for SVNDATE])
+if test -f "$srcdir/SVNDATE" # SVNDATE for tarballs
+then
+	svndate=`cat $srcdir/SVNDATE`
+elif test -d $srcdir/.svn # SVNDATE for svn
+then
+	svndate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
+fi
+AC_MSG_RESULT(${svndate:-None required})
+AS_IF([test -n "$svndate"], [
+	    AC_DEFINE_UNQUOTED([SVNDATE], ["$svndate"], [The checkout date or svn revision number.])
+	    MULE_ADDFLAG([RC], [-D__PRERELEASE__])
+])
+AC_SUBST([SVNDATE], [$svndate])dnl
+
+dnl Set up the denoiser
+MULE_DENOISER
+
+AM_CONDITIONAL(WEB, test x$WEB = xyes)
+AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
+AM_CONDITIONAL(CAS, test x$CAS = xyes)
+AM_CONDITIONAL(WXCAS, test x$WXCAS = xyes)
+AM_CONDITIONAL(ALC, test x$ALC = xyes)
+AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
+AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
+AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
+AM_CONDITIONAL(COMPILE_CMD, test x$AMULECMD = xyes)
+AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
+AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes)
+AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
+AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
+AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
+AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
+AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
+AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
+
+# Check for readline library
+if test x$AMULECMD = xyes -o x$WEB = xyes; then
+	VL_LIB_READLINE
+fi
+
+# DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
+
+MULE_CHECK_CCACHE
+
+dnl
+dnl Generate the Makefiles
+dnl
+AC_CONFIG_FILES([Makefile
+		 docs/Makefile
+		 docs/man/Makefile
+		 intl/Makefile
+		 src/Makefile
+		 src/pixmaps/Makefile
+		 src/pixmaps/flags_xpm/Makefile
+		 src/libs/Makefile
+		 src/libs/ec/Makefile
+		 src/libs/ec/cpp/Makefile
+		 src/libs/common/Makefile
+		 src/utils/Makefile
+		 src/utils/aLinkCreator/Makefile
+		 src/utils/aLinkCreator/docs/Makefile
+		 src/utils/aLinkCreator/src/Makefile
+		 src/utils/cas/Makefile
+		 src/utils/cas/docs/Makefile
+		 src/utils/fileview/Makefile
+		 src/utils/wxCas/Makefile
+		 src/utils/wxCas/docs/Makefile
+		 src/utils/wxCas/src/Makefile
+		 src/utils/xas/Makefile
+		 src/utils/xas/autostart-xas
+		 src/utils/xas/docs/Makefile
+		 src/skins/Makefile
+		 src/webserver/Makefile
+		 src/webserver/src/Makefile
+		 src/webserver/default/Makefile
+		 src/webserver/php-default/Makefile
+		 src/webserver/chicane/Makefile
+		 src/webserver/litoral/Makefile
+		 unittests/Makefile
+		 unittests/muleunit/Makefile
+		 unittests/tests/Makefile])
+dnl
+dnl autoscan has missed these, i wonder why...
+dnl
+AC_CONFIG_FILES([po/Makefile.in
+		 Compilation.flags])
+AS_IF([test x$SYS = xwin32], [AC_CONFIG_FILES([version.rc])])
+AC_OUTPUT
+
+echo
+echo
+echo "  Configure script has finished system check."
+echo
+echo "  Configured aMule ${PACKAGE_VERSION} for '${host}'."
+echo
+echo "  aMule enabled options:"
+echo 
+echo "  **** aMule Core ****" 
+echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
+echo "  Should aMule be compiled with i18n support?                ${USE_NLS:-no}"
+echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
+echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
+echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
+echo "  Should aMule be compiled with UPnP support?                ${ENABLE_UPNP:-yes}"
+echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-no}"
+echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
+echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
+echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
+echo "  Crypto++ library/headers style?                            ${CRYPTOPP_STYLE:-not found}"
+
+echo
+echo "  **** aMule TextClient ****"
+echo "  Should aMule Command Line Client be built?                 ${AMULECMD:-no}"
+echo
+echo "  **** aMule WebServer ****"
+echo "  Should aMule WebServer be built?                           ${WEB:-no}"
+echo
+echo "  **** aMule ED2K Links Handler ****"
+echo "  Should aMule ED2K Links Handler be built?                  ${ED2K:-yes}"
+echo
+echo "  **** aMuleLinkCreator ****"
+echo "  Should aMuleLinkCreator GUI version (alc) be built?        ${ALC:-no}"
+echo "  Should aMuleLinkCreator for console (alcc) be built?       ${ALCC:-no}"
+echo
+echo "  **** aMule Statistics ****"
+echo "  Should C aMule Statistics (CAS) be built?                  ${CAS:-no}"
+echo "  Should aMule GUI Statistics (wxCas) be built?              ${WXCAS:-no}"
+
+echo
+echo "  **** General Libraries and Tools ****"
+echo "  Should ccache support be enabled?                          ${enable_ccache:-no}"
+echo "  Libraries aMule will use to build:"
+wxinfo="$WX_PORT"
+AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
+AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
+echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
+echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
+AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
+AS_IF([test x${ENABLE_UPNP} = xyes], [dnl
+echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
+])dnl
+if test x${WEB:-no} != xno; then
+AS_IF([test $regex_found = no], 
+	[regex_found="Not detected"],
+	[AS_IF([test -z "$REGEX_LIB"], 
+		[regex_found=system], 
+		[regex_found="standalone (in $REGEX_LIB)"])])
+echo "                                       regex                 $regex_found"
+fi
+if test ${enable_nls:-yes} = yes; then
+AS_IF([test x$USE_NLS = xno],
+	[libintl_found="Not detected"],
+	[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], 
+		[libintl_found="included"], 
+		[libintl_found="system"])])
+echo "                                       libintl               $libintl_found"
+fi
+if test x$LIBPNG_VERSION != xnot_needed; then
+echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
+fi
+if test x$GDLIB_VERSION != xnot_needed; then
+echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
+fi
+echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
+if test x$WEB = xdisabled; then
+echo ""
+echo ""
+echo "WARNING! amuleweb has been disabled because configure could not find"
+echo "a POSIX compliant regex library."
+echo ""
+fi
+if test -z "$LIBPNG_VERSION"; then
+echo ""
+echo ""
+echo "WARNING! libpng >= 1.2.0 not found."
+echo "amuleweb will be compiled but file download progress bar images will NOT be generated."
+echo ""
+fi
+if test x$ENABLE_UPNP = xdisabled; then
+echo ""
+echo ""
+echo "WARNING! UPnP code has been disabled because ${libupnp_error}."
+echo ""
+fi

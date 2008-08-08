@@ -1,0 +1,18 @@
+C AMULE STATS
+
+
+
+This is a little app that i've been doing cause i really didnt liked aStats.
+I was too slow, so i tried to do a little remake of it in c just to learn a 
+bit more of c and do a nice app too.
+
+feel free to contact me at falso@rdk.homeip.net
+
+---
+Nice things to do if you have the time and want to contribute:
+
+* Put an end to lines[] madness
+* Get the mule to formally define onlinesig format and use that to access
+  the fields, not meaningless offsets (needs a patch against/rewrite of
+  amule[d].cpp:OnlineSig() at this time)
+* Clean up confusing code
