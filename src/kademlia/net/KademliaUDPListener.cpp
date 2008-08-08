@@ -1,7 +1,7 @@
 //
 // This file is part of aMule Project
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 // Copyright (C)2007-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
@@ -611,7 +611,6 @@ void CKademliaUDPListener::ProcessBootstrapResponse(const uint8_t *packetData, u
 	CHECK_PACKET_MIN_SIZE(27);
 	CHECK_TRACKED_PACKET(KADEMLIA_BOOTSTRAP_REQ);
 
-	//AddDebugLogLineM(false, logClientKadUDP, wxT("Inc Kad1 Bootstrap packet from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 	// How many contacts were given
 	CMemFile bio(packetData, lenPacket);
 	uint16_t numContacts = bio.ReadUInt16();
@@ -646,7 +645,6 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 	if (CKademlia::s_bootstrapList.empty()) {
 		routingZone->Add(contactID, ip, port, tport, version, senderKey, validReceiverKey, true, false, false);
 	}
-	//AddDebugLogLineM(false, logClientKadUDP, wxT("Inc Kad2 Bootstrap packet from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 
 	uint16_t numContacts = bio.ReadUInt16();
 	while (numContacts) {

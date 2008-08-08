@@ -184,7 +184,6 @@ gui_sources = \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
 	MuleTrayIcon.cpp \
-	MuleColour.cpp \
 	TransferWnd.cpp 
 
 if ENABLE_IP2COUNTRY
@@ -325,6 +324,7 @@ noinst_HEADERS = \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
 		ColorFrameCtrl.h \
+		Color.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
 		Constants.h \
@@ -363,7 +363,6 @@ noinst_HEADERS = \
 		MD4Hash.h \
 		MemFile.h \
 		MuleCollection.h \
-		MuleColour.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
 		MuleNotebook.h \

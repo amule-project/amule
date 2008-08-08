@@ -1986,9 +1986,9 @@ void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 }
 
 
-int phperror(char *s)
+int yyerror(char *s)
 {
-	printf("ERROR in grammar %s after [%s] near line %d\n", s, phptext, phplineno);
+	printf("ERROR in grammar %s after [%s] near line %d\n", s, yytext, yylineno);
 	return 0;
 }
 

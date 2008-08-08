@@ -138,7 +138,7 @@ public:
 	void	SetFilter(const wxString& regExp, bool invert, bool filterKnown);
 
 	/**
-	 * Toggles the use of filtering on and off.
+	 * Toggels the use of filtering on and off.
 	 */
 	void	EnableFiltering(bool enabled);
 	
@@ -154,10 +154,6 @@ public:
 	 */
 	void	DownloadSelected(int category = -1);	
 	
-protected:
-	/// Return old column order.
-	wxString GetOldColumnOrder() const;
-
 protected:
 	typedef std::list<CSearchFile*> ResultList;
 

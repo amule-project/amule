@@ -938,7 +938,10 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 						return;
 					}
 					// Write to disk (will be buffered in part file class)
-					lenWritten = m_reqfile->WriteToBuffer( size - header_size, (byte*)(packet + header_size), nStartPos, nEndPos, cur_block->block );
+					lenWritten = m_reqfile->WriteToBuffer( size - header_size,
+														   (byte*)(packet + header_size),
+														   nStartPos, nEndPos,
+														   cur_block->block);
 				} else {
 					// Packed
 					wxASSERT( (long int)size > 0 );
@@ -1158,12 +1161,6 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZi
 	}
 	
 	return err;
-}
-
-
-float CUpDownClient::GetKBpsDown() const
-{ 
-	return kBpsDown * theStats::GetDownloadRateAdjust(); 
 }
 
 

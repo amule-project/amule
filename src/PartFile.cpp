@@ -348,7 +348,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
 			//if (version == 83) return ImportShareazaTempFile(...)
-			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met file version: %s ==> %s") )
+			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met fileversion: %s ==> %s") )
 				% m_partmetfilename 
 				% GetFileName() );
 			return false;
@@ -2979,23 +2979,24 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 		return 0;
 	}
 
-	// security sanitize check to make sure we do not write anything into an already hashed complete chunk
-	const uint64 nStartChunk = start / PARTSIZE;
-	const uint64 nEndChunk = end / PARTSIZE;
-	if (IsComplete(PARTSIZE * (uint64)nStartChunk, (PARTSIZE * (uint64)(nStartChunk + 1)) - 1)) {
-		AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (start): %u-%u; File=%s")) % start % end % GetFileName());
-		return 0;
-	} else if (nStartChunk != nEndChunk) {
-		if (IsComplete(PARTSIZE * (uint64)nEndChunk, (PARTSIZE * (uint64)(nEndChunk + 1)) - 1)) {
-			AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (end): %u-%u; File=%s")) % start % end % GetFileName());
-			return 0;
-		}
+       // security sanitize check to make sure we do not write anything into an already hashed complete chunk
+       const uint64 nStartChunk = start / PARTSIZE;
+       const uint64 nEndChunk = end / PARTSIZE;
+       if (IsComplete(PARTSIZE * (uint64)nStartChunk, (PARTSIZE * (uint64)(nStartChunk + 1)) - 1)) {
+               AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (start): %u-%u; File=%s")) % start % end % GetFileName());
+               return 0;
+       } else if (nStartChunk != nEndChunk) {
+               if (IsComplete(PARTSIZE * (uint64)nEndChunk, (PARTSIZE * (uint64)(nEndChunk + 1)) - 1)) {
+                       AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (end): %u-%u; File=%s")) % start % end % GetFileName());
+                       return 0;
+               }
 #ifdef __DEBUG__
-		else {
-			AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data crosses chunk boundaries: %u-%u; File=%s")) % start % end % GetFileName());
-		}
+               else {
+                       AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data crosses chunk boundaries: %u-%u; File=%s")) % start % end % GetFileName());
+               }
 #endif
-	}
+       }
+
 
 	// Create copy of data as new buffer
 	byte *buffer = new byte[lenData];
@@ -4056,21 +4057,8 @@ uint32 CPartFile::GetDlActiveTime() const
 	return nDlActiveTime;
 }
 
-#ifdef CLIENT_GUI
 
-// remote Gui has no adjustment factor transferred yet, so use raw rate
-float CPartFile::GetKBpsDown() const
-{ 
-	return kBpsDown; 
-}
-
-#else
-
-float CPartFile::GetKBpsDown() const
-{ 
-	return kBpsDown * theStats::GetDownloadRateAdjust(); 
-}
-
+#ifndef CLIENT_GUI
 
 uint8 CPartFile::GetStatus(bool ignorepause) const
 {

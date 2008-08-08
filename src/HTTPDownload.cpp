@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Timo Kujala ( tiku@users.sourceforge.net )
+// Copyright (c) 2002 Tiku
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -200,7 +200,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.
-		// MP: Most people can download at least at 32kb/s from http...
+		// MP: Most people can download at least at 32kbs/s from http...
 		const unsigned MAX_HTTP_READ = 32768;
 		
 		char buffer[MAX_HTTP_READ];

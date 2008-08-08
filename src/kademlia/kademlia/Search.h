@@ -1,7 +1,7 @@
 //								-*- C++ -*-
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
@@ -136,7 +136,6 @@ private:
 	ContactMap	m_best;
 	ContactList	m_delete;
 	ContactMap	m_inUse;
-	CUInt128	m_closestDistantFound; // not used for the search itself, but for statistical data collecting
 };
 
 } // End namespace

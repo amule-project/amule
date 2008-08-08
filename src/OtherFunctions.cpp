@@ -500,7 +500,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
  *
  * Base64 encoding/decoding command line filter
  *
- * Copyright (c) 2002-2008 Matthias Gaertner
+ * Copyright (c) 2002 Matthias Gaertner 29.06.2002
  * Adapted by (C) 2005-2008 Phoenix to use wxWidgets.
  *
  */
@@ -797,7 +797,6 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vob"),   ED2KFT_VIDEO));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmv"),   ED2KFT_VIDEO));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xvid"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flv"),   ED2KFT_VIDEO));
 
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bmp"),   ED2KFT_IMAGE));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dcx"),   ED2KFT_IMAGE));

@@ -213,9 +213,9 @@ void CLogger::AddLogLine(
 {
 	wxString msg;
 #ifdef __DEBUG__
-	msg << file.AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/')) << wxT("(") << line << wxT("): ");
+       msg << file.AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/')) << wxT("(") << line << wxT("): ");
 #endif
-	msg << str;
+       msg << str;
 	PushEntry(critical, msg);
 
 	if (wxThread::IsMain()) {

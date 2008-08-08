@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
-// Copyright (c) 2005-2008 D√©vai Tam√°s ( gonosztopi@amule.org )
+// Copyright (C) 2005-2008  DÈvai Tam·s ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -41,7 +41,6 @@
 	#include "ServerList.h"		// Needed for CServerList (tree)
 	#include <cmath>		// Needed for std::floor
 	#include "updownclient.h"	// Needed for CUpDownClient
-	#include "DownloadQueue.h"	// Needed for theApp->downloadqueue
 #else
 	#include "Preferences.h"
 	#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
@@ -178,7 +177,6 @@ CStatTreeItemPackets*		CStatistics::s_kadDownOverhead;
 CStatTreeItemCounter*		CStatistics::s_cryptDownOverhead;
 CStatTreeItemNativeCounter*	CStatistics::s_foundSources;
 CStatTreeItemNativeCounter*	CStatistics::s_activeDownloads;
-float                       CStatistics::s_downloadRateAdjust = 1.0;
 
 // Connection
 CStatTreeItemReconnects*	CStatistics::s_reconnects;
@@ -281,11 +279,6 @@ void CStatistics::CalculateRates()
 	s_upOverheadRate->CalculateRate(now);
 	s_downloadrate->CalculateRate(now);
 	s_uploadrate->CalculateRate(now);
-	// calculate rate adjustment, so that the sum of all file download rates
-	// matches the total transfer rate
-	float dlspeedfiles = theApp->downloadqueue->GetDownloadingFileRate();
-	float dlspeedall   = s_downloadrate->GetRate();
-	s_downloadRateAdjust = (dlspeedfiles < 1.0 || dlspeedall < 1.0) ? 1.0 : dlspeedall/dlspeedfiles;
 }
 
 

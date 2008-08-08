@@ -130,7 +130,7 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 	wxZipFSHandler archive; 
 	wxString filename = archive.FindFirst(
 		wxT("file:") + file + wxT("#zip:/*"), wxFILE);
-	
+
 	wxTempFile target(file);
 
 	while (!filename.IsEmpty() && !target.Length()) {
@@ -152,16 +152,15 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 						while (!zip.Eof()) {
 							zip.Read(buffer, sizeof(buffer));
 							target.Write(buffer, zip.LastRead());
-						}						
+						}
 						break;
 					}
 				}
 			}
 		}
-
 		filename = archive.FindNext();
 	}
-	
+
 	if (target.Length()) {
 		target.Commit();
 	}

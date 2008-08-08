@@ -211,8 +211,8 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 				SetAllContactsVerified();
 			}
 		}
-		if (validContacts == 0) {
-			AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
+		if (numContacts == 0) {
+			AddDebugLogLineM(false, logKadRouting, wxT("Error while reading Kad contacts - 0 entries"));
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
@@ -278,9 +278,6 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
 		AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", CKademlia::s_bootstrapList.size()), CKademlia::s_bootstrapList.size()));
 		AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts"), CKademlia::s_bootstrapList.size(), validContacts));
 	}
-	if (CKademlia::s_bootstrapList.size() == 0) {
-		AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
-	}
 }
 
 void CRoutingZone::WriteFile()
@@ -308,7 +305,6 @@ void CRoutingZone::WriteFile()
 			file.WriteUInt32(0);
 			// Now tag it with a version which happens to be 2.
 			file.WriteUInt32(2);
-			// file.WriteUInt32(0); // if we would use version >= 3 this would mean that this is a normal nodes.dat
 			file.WriteUInt32(numContacts);
 			for (ContactList::const_iterator it = contacts.begin(); it != contacts.end(); ++it) {
 				CContact *c = *it;
@@ -332,55 +328,6 @@ void CRoutingZone::WriteFile()
 		AddDebugLogLineM(true, logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
 	}
 }
-
-#if 0
-void CRoutingZone::WriteBootstrapFile()
-{
-	AddDebugLogLineM(true, logKadRouting, wxT("Writing special bootstrap nodes.dat - not intended for normal use"));
-	try {
-		// Write a saved contact list.
-		CUInt128 id;
-		CFile file;
-		if (file.Open(m_filename, CFile::write)) {
-			// The bootstrap method gets a very nice sample of contacts to save.
-			ContactMap mapContacts;
-			CUInt128 random(CUInt128((uint32_t)0), 0);
-			CUInt128 distance = random;
-			distance ^= me;
-			GetClosestTo(2, random, distance, 1200, &mapContacts, false, false);
-			// filter out Kad1 nodes
-			for (ContactMap::iterator it = mapContacts.begin(); it != mapContacts.end(); ) {
-				ContactMap::iterator itCur = it++;
-				CContact* contact = itCur->second;
-				if (contact->GetVersion() <= 1) {
-					mapContacts.erase(itCur);
-				}
-			}
-			// Start file with 0 to prevent older clients from reading it.
-			file.WriteUInt32(0);
-			// Now tag it with a version which happens to be 3.
-			file.WriteUInt32(3);
-			file.WriteUInt32(1); // using version >= 3, this means that this is not a normal nodes.dat
-			file.WriteUInt32((uint32_t)mapContacts.size());
-			for (ContactMap::const_iterator it = mapContacts.begin(); it != mapContacts.end(); ++it)
-			{
-				CContact* contact = it->second;
-				file.WriteUInt128(contact->GetClientID());
-				file.WriteUInt32(contact->GetIPAddress());
-				file.WriteUInt16(contact->GetUDPPort());
-				file.WriteUInt16(contact->GetTCPPort());
-				file.WriteUInt8(contact->GetVersion());
-			}
-			file.Close();
-			AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Wrote %u contacts to bootstrap file."), mapContacts.size()));
-		} else {
-			AddDebugLogLineM(true, logKadRouting, wxT("Unable to store Kad file: ") + m_filename);
-		}
-	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(false, logKadRouting, wxT("CFileException in CRoutingZone::writeFile") + e.what());
-	}
-}
-#endif
 
 bool CRoutingZone::CanSplit() const throw()
 {

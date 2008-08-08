@@ -27,6 +27,7 @@
 #define PREFERENCES_H
 
 #include "MD4Hash.h"			// Needed for CMD4Hash
+#include "Color.h"			// Needed for COLORREF
 
 #include <wx/arrstr.h>			// Needed for wxArrayString
 
@@ -38,6 +39,7 @@
 class CPreferences;
 class wxConfigBase;
 class wxWindow;
+
 
 enum EViewSharedFilesAccess{
 	vsfaEverybody = 0,
@@ -185,10 +187,10 @@ public:
 	static uint16		GetPort()			{ return s_port; }
 	static void		SetPort(uint16 val);
 	static uint16		GetUDPPort()			{ return s_udpport; }
-	static uint16		GetEffectiveUDPPort()	{ return s_UDPEnable ? s_udpport : 0; }
+	static uint16		GetEffectiveUDPPort()	{ return s_UDPDisable ? 0 : s_udpport; }
 	static void		SetUDPPort(uint16 val)		{ s_udpport = val; }
-	static bool		IsUDPDisabled()			{ return !s_UDPEnable; }
-	static void		SetUDPDisable(bool val)		{ s_UDPEnable = !val; }
+	static bool		IsUDPDisabled()			{ return s_UDPDisable; }
+	static void		SetUDPDisable(bool val)		{ s_UDPDisable = val; }
 	static const CPath&	GetIncomingDir()		{ return s_incomingdir; }
 	static void		SetIncomingDir(const CPath& dir){ s_incomingdir = dir; }
 	static const CPath&	GetTempDir()			{ return s_tempdir; }
@@ -308,10 +310,10 @@ public:
 	static void		SetSafeServerConnectEnabled(bool val) { s_safeServerConnect = val; }
 	static bool		IsMoviePreviewBackup()		{ return s_moviePreviewBackup; }
 	
-	static bool		IsCheckDiskspaceEnabled()			{ return s_checkDiskspace; }
+	static bool		IsCheckDiskspaceEnabled()	{ return s_checkDiskspace; }
 	static void		SetCheckDiskspaceEnabled(bool val)	{ s_checkDiskspace = val; }
-	static uint32	GetMinFreeDiskSpaceMB()				{ return s_uMinFreeDiskSpace; }
-	static uint64	GetMinFreeDiskSpace()				{ return s_uMinFreeDiskSpace * 1048576ull; }
+	static uint32		GetMinFreeDiskSpaceMB()		{ return s_uMinFreeDiskSpace; }
+	static uint64		GetMinFreeDiskSpace()		{ return s_uMinFreeDiskSpace * 1048576ull; }
 	static void		SetMinFreeDiskSpaceMB(uint32 val)	{ s_uMinFreeDiskSpace = val; }
 
 	static const wxString&	GetYourHostname() 		{ return s_yourHostname; }
@@ -441,8 +443,12 @@ public:
 	
 	static const wxString&	GetSkin()			{ return s_Skin; }
 	
+	static bool		UseSkins()			{ return s_UseSkinFiles; }
+
 	static bool		VerticalToolbar()		{ return s_ToolbarOrientation; }
 
+	static bool		ShowPartFileNumber()		{ return s_ShowPartFileNumber; }
+		
 	static const CPath&	GetOSDir()			{ return s_OSDirectory; }
 	static uint16		GetOSUpdate()			{ return s_OSUpdate; }
 
@@ -457,9 +463,8 @@ public:
 	static void LoadAllItems(wxConfigBase* cfg);
 	static void SaveAllItems(wxConfigBase* cfg);
 
-	static uint8_t		GetShowRatesOnTitle()		{ return s_showRatesOnTitle; }
-	static void		SetShowRatesOnTitle(uint8_t val) { s_showRatesOnTitle = val; }
-
+	static bool 		GetShowRatesOnTitle()		{ return s_ShowRatesOnTitle; }
+	
 	// Message Filters
 	
 	static bool		MustFilterMessages()		{ return s_MustFilterMessages; }
@@ -475,8 +480,7 @@ public:
 	static const wxString&	GetMessageFilterString()	{ return s_MessageFilterString; }
 	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
 	static bool		IsMessageFiltered(const wxString& message);
-	static bool		ShowMessagesInLog()		{ return s_ShowMessagesInLog; }
-	
+
 	static bool		FilterComments()		{ return s_FilterComments; }
 	static void		SetFilterComments(bool val)	{ s_FilterComments = val; }
 	static const wxString&	GetCommentFilterString()	{ return s_CommentFilterString; }
@@ -534,9 +538,9 @@ protected:
 	static	int32 GetRecommendedMaxConnections();
 
 	//! Temporary storage for statistic-colors.
-	static unsigned long	s_colors[cntStatColors];
+	static COLORREF	s_colors[cntStatColors];
 	//! Reference for checking if the colors has changed.
-	static unsigned long	s_colors_ref[cntStatColors];
+	static COLORREF	s_colors_ref[cntStatColors];
 	 
 	typedef std::vector<Cfg_Base*>			CFGList;
 	typedef std::map<int, Cfg_Base*>		CFGMap;
@@ -564,7 +568,7 @@ protected:
 	static wxString s_Addr;
 	static uint16	s_port;
 	static uint16	s_udpport;
-	static bool	s_UDPEnable;
+	static bool	s_UDPDisable;
 	static uint16	s_maxconnections;
 	static bool	s_reconnect;
 	static bool	s_autoconnect;
@@ -638,7 +642,7 @@ protected:
 	static bool	s_bDAP;
 	static bool	s_bUAP;
 
-	static uint8_t	s_showRatesOnTitle;	// 0=no, 1=after app name, 2=before app name
+	static bool	s_ShowRatesOnTitle;
 
 	static wxString	s_VideoPlayer;
 	static bool	s_moviePreviewBackup;
@@ -653,6 +657,7 @@ protected:
 	static wxString	s_datetimeformat;
 	
 	static bool	s_ToolbarOrientation;
+	static bool	s_ShowPartFileNumber;
 
 	// Web Server [kuchin]
 	static wxString	s_sWebPassword;
@@ -701,6 +706,7 @@ protected:
 	
 	static bool	s_allocFullFile;
 	
+	static uint16	s_Browser;
 	static wxString	s_CustomBrowser;
 	static bool	s_BrowserTab;     // Jacobo221 - Open in tabs if possible
 	
@@ -708,6 +714,7 @@ protected:
 	static uint16	s_OSUpdate;
 	
 	static wxString	s_Skin;
+	static bool	s_UseSkinFiles;
 	
 	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 	
@@ -716,7 +723,6 @@ protected:
 	static wxString 	s_MessageFilterString;
 	static bool		s_FilterAllMessages;
 	static bool		s_FilterSomeMessages;
-	static bool		s_ShowMessagesInLog;
 
 	static bool 		s_FilterComments;
 	static wxString 	s_CommentFilterString;

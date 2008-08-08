@@ -1,7 +1,7 @@
 //								-*- C++ -*-
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
@@ -73,8 +73,7 @@ public:
 	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
 	static bool			IsFirewalled() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() : true; }
 	static void			RecheckFirewalled();
-	static uint32_t			GetKademliaUsers(bool newMethod = false) throw()
-		{ return instance && instance->m_prefs ? (newMethod ? CalculateKadUsersNew() : instance->m_prefs->GetKademliaUsers()) : 0; }
+	static uint32_t			GetKademliaUsers() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaUsers() : 0; }
 	static uint32_t			GetKademliaFiles() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaFiles() : 0; }
 	static uint32_t			GetTotalStoreKey() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreKey() : 0; }
 	static uint32_t			GetTotalStoreSrc() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreSrc() : 0; }
@@ -96,7 +95,6 @@ public:
 	static void AddEvent(CRoutingZone *zone) throw()		{ m_events[zone] = zone; }
 	static void RemoveEvent(CRoutingZone *zone)			{ m_events.erase(zone); }
 	static void Process();
-	static void StatsAddClosestDistance(const CUInt128& distance);
 	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
 	static bool FindIPByNodeID(CKadClientSearcher& requester, const uint8_t *nodeID);
 	static void CancelClientSearch(CKadClientSearcher& fromRequester);
@@ -105,8 +103,6 @@ public:
 
 private:
 	CKademlia() {}
-
-	static uint32_t	CalculateKadUsersNew();
 
 	static CKademlia *instance;
 	static EventMap	m_events;
@@ -120,7 +116,6 @@ private:
 	static time_t	m_consolidate;
 	static time_t	m_externPortLookup;
 	static bool	m_running;
-	static std::list<uint32_t>	m_statsEstUsersProbes;
 
 	CPrefs *		m_prefs;
 	CRoutingZone *		m_routingZone;

@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
@@ -135,7 +135,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		// Verify that we are not already searching for this target.
 		if (AlreadySearchingFor(s->m_target)) {
-			throw _("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
+			throw wxT("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
 		}
 
 		s->SetSearchTermData(searchTermsDataSize, searchTermsData);

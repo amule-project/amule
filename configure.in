@@ -150,19 +150,11 @@ AC_ARG_ENABLE(
 	[ENABLE_UPNP=$enableval], [ENABLE_UPNP=yes])
 
 AC_ARG_ENABLE(
-	[xas],
-	[AS_HELP_STRING(
-		[--disable-xas],
-		[do not install xas XChat2 plugin])],
-	[XAS=$enableval], [XAS=yes])
-
-AC_ARG_ENABLE(
 	[geoip],
 	[AS_HELP_STRING(
 		[--enable-geoip],
 		[compile with GeoIP IP2Country library])],
 	[ENABLE_IP2COUNTRY=$enableval], [ENABLE_IP2COUNTRY=no])
-
 AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [GEOIP_LIBS="-lGeoIP"])
 
 AC_ARG_WITH(
@@ -471,7 +463,6 @@ AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
-AM_CONDITIONAL(XAS, test x$XAS = xyes)
 AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes)
 AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
@@ -572,7 +563,6 @@ echo
 echo "  **** aMule Statistics ****"
 echo "  Should C aMule Statistics (CAS) be built?                  ${CAS:-no}"
 echo "  Should aMule GUI Statistics (wxCas) be built?              ${WXCAS:-no}"
-echo "  Should xas XChat2 plugin be installed?                     ${XAS:-yes}"
 
 echo
 echo "  **** General Libraries and Tools ****"

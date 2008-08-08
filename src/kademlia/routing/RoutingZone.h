@@ -1,7 +1,7 @@
 //								-*- C++ -*-
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
@@ -105,9 +105,6 @@ private:
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128& zone_index) { Init(super_zone, level, zone_index); }
 	void Init(CRoutingZone *super_zone, int level, const CUInt128& zone_index);
 	void ReadBootstrapNodesDat(CFileDataIO& file);
-#if 0
-	void WriteBootstrapFile();
-#endif
 
 	void WriteFile();
 

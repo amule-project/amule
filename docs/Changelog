@@ -1,53 +1,4 @@
-Version 2.3.0 - The river knows.
-----------
-2008-??-??
-
-	GonoszTopi:
-		* Various fixes to new colour code
-		* Allow user to select display of transfer rates
-		* Extendable list-control settings save/load code
-		* Implemented an alternate method to estimate the real user count
-		  in the Kad network, which is not based on our local routing table.
-
-	Greek:
-		* Part number is now an extra column in the download list
-		* Improvements to preferences dialogs
-		* Redesign skin selection
-
-	Kry:
-		* Fix indexes after removing GUI items
-		* Resolve MSVC compilation problem with separate strings in GUI
-		* Fixes to Windows build
-		* Allow compilation with wxCocoa
-		* Replace Color.h by new class implementation MuleColour
-		* Lower class overhead and user two-level cache for pen/brushes
-		* Preferences changes
-
-	lfroen:
-		* php prefix for lex/yacc
-
-	Stu Redman:
-		* Sort source list on opening and add file name to A4AF files
-		* Adjust displayed download rates for files and sources 
-		  so that the sum matches the total download rate.
-
-	Vollstrecker:
-		* Made possible to deactivate xas
-		* Various Updates in debian/ see debian/changelog
-		* Unify copyright lines
-
-	Wuischke:
-		* Simplify browser selection
-		* Use DoIconize() for dclick on tray icon, too
-		* Fix minimizing from tray icon
-		* Add option to show chat messages in log
-
-	Special Thanks To:
-		* Greek for his contributions to aMule's user interface.
-
---------------------------------------------------------------------------------
-
-Version 2.2.2 - The "Similarity." version.
+Version 2.2.2 - The "Similarity." version
 ----------
 2008-08-08
 
@@ -160,6 +111,7 @@ Version 2.2.2 - The "Similarity." version.
 		  Fixes aMuleGUI not updating after a while.
 
 --------------------------------------------------------------------------------
+
 
 Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.
 ----------

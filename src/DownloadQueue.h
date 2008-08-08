@@ -251,11 +251,6 @@ public:
 	uint16	GetDownloadingFileCount() const;
 
 	/**
-	 * Returns the sum of the (raw) download rates of all files.
-	 */
-	float	GetDownloadingFileRate() const;
-
-	/**
 	 * Returns the current number of paused files.
 	 */
 	uint16	GetPausedFileCount() const;

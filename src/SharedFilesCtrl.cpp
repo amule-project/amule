@@ -99,31 +99,26 @@ CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos,
 
 	m_menu=NULL;
 
-	InsertColumn(ID_SHARED_COL_NAME, _("File Name"),		wxLIST_FORMAT_LEFT, 250, wxT("N") );
-	InsertColumn(ID_SHARED_COL_SIZE, _("Size"),			wxLIST_FORMAT_LEFT, 100, wxT("Z") );
-	InsertColumn(ID_SHARED_COL_TYPE, _("Type"),			wxLIST_FORMAT_LEFT,  50, wxT("Y") );
-	InsertColumn(ID_SHARED_COL_PRIO, _("Priority"),			wxLIST_FORMAT_LEFT,  70, wxT("p") );
-	InsertColumn(ID_SHARED_COL_ID,   _("FileID"),			wxLIST_FORMAT_LEFT, 220, wxT("I") );
-	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),			wxLIST_FORMAT_LEFT, 100, wxT("Q") );
-	InsertColumn(ID_SHARED_COL_AREQ, _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100, wxT("A") );
-	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120, wxT("T") );
-	InsertColumn(ID_SHARED_COL_RTIO, _("Share Ratio"),		wxLIST_FORMAT_LEFT, 100, wxT("R") );
-	InsertColumn(ID_SHARED_COL_PART, _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120, wxT("P") );
-	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120, wxT("C") );
-	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220, wxT("D") );
+	InsertColumn(ID_SHARED_COL_NAME,  _("File Name"),			wxLIST_FORMAT_LEFT, 250);
+	InsertColumn(ID_SHARED_COL_SIZE,  _("Size"),					wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_TYPE,  _("Type"),					wxLIST_FORMAT_LEFT,  50);
+	InsertColumn(ID_SHARED_COL_PRIO,  _("Priority"),				wxLIST_FORMAT_LEFT,  70);
+	InsertColumn(ID_SHARED_COL_ID,  _("FileID"),				wxLIST_FORMAT_LEFT, 220);
+	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),				wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_AREQ,  _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_RTIO,  _("Share Ratio"),			wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_PART,  _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220);
 
 	LoadSettings();
 }
 
 
-wxString CSharedFilesCtrl::GetOldColumnOrder() const
-{
-	return wxT("N,Z,Y,p,I,Q,A,T,R,P,C,D");
-}
-
-
 CSharedFilesCtrl::~CSharedFilesCtrl()
 {
+
 }
 
 
@@ -134,13 +129,13 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 	if ( (m_menu == NULL) && (item_hit != -1)) {
 		m_menu = new wxMenu(_("Shared Files"));
 		wxMenu* prioMenu = new wxMenu();
-		prioMenu->AppendCheckItem(MP_PRIOVERYLOW, _("Very low"));
-		prioMenu->AppendCheckItem(MP_PRIOLOW, _("Low"));
-		prioMenu->AppendCheckItem(MP_PRIONORMAL, _("Normal"));
-		prioMenu->AppendCheckItem(MP_PRIOHIGH, _("High"));
-		prioMenu->AppendCheckItem(MP_PRIOVERYHIGH, _("Very High"));
-		prioMenu->AppendCheckItem(MP_POWERSHARE, _("Release"));
-		prioMenu->AppendCheckItem(MP_PRIOAUTO, _("Auto"));
+		prioMenu->Append(MP_PRIOVERYLOW, _("Very low"));
+		prioMenu->Append(MP_PRIOLOW, _("Low"));
+		prioMenu->Append(MP_PRIONORMAL, _("Normal"));
+		prioMenu->Append(MP_PRIOHIGH, _("High"));
+		prioMenu->Append(MP_PRIOVERYHIGH, _("Very High"));
+		prioMenu->Append(MP_POWERSHARE, _("Release"));
+		prioMenu->Append(MP_PRIOAUTO, _("Auto"));
 
 		m_menu->Append(0,_("Priority"),prioMenu);
 		m_menu->AppendSeparator();
@@ -176,17 +171,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_GETHOSTNAMECRYPTSOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_RENAME, file->IsPartFile());
-
-		int priority = file->IsAutoUpPriority() ? PR_AUTO : file->GetUpPriority();
-
-		prioMenu->Check(MP_PRIOVERYLOW,	priority == PR_VERYLOW);
-		prioMenu->Check(MP_PRIOLOW,	priority == PR_LOW);
-		prioMenu->Check(MP_PRIONORMAL,	priority == PR_NORMAL);
-		prioMenu->Check(MP_PRIOHIGH,	priority == PR_HIGH);
-		prioMenu->Check(MP_PRIOVERYHIGH,priority == PR_VERYHIGH);
-		prioMenu->Check(MP_POWERSHARE,	priority == PR_POWERSHARE);
-		prioMenu->Check(MP_PRIOAUTO,	priority == PR_AUTO);
-
+		
 		PopupMenu( m_menu, event.GetPoint() );
 
 		delete m_menu;
@@ -477,14 +462,34 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 	wxASSERT( file );
 
 	if ( highlighted ) {
-		CMuleColour newcol(GetFocus() ? wxSYS_COLOUR_HIGHLIGHT : wxSYS_COLOUR_BTNSHADOW);	
-		dc->SetBackground(newcol.Blend(125).GetBrush());
-		dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
-		// The second blending goes over the first one.
-		dc->SetPen(newcol.Blend(65).GetPen());
+		wxColour newcol;
+		wxBrush hilBrush;
+
+		if (GetFocus()) {
+			newcol = SYSCOLOR(wxSYS_COLOUR_HIGHLIGHT);
+			newcol = wxColour(G_BLEND(newcol.Red(),125),
+			                  G_BLEND(newcol.Green(),125),
+			                  G_BLEND(newcol.Blue(),125));
+			hilBrush = wxBrush(newcol, wxSOLID);
+			dc->SetBackground(hilBrush);
+		} else {
+			newcol = SYSCOLOR(wxSYS_COLOUR_BTNSHADOW);
+			newcol = wxColour(G_BLEND(newcol.Red(),125),
+			                  G_BLEND(newcol.Green(),125),
+			                  G_BLEND(newcol.Blue(),125));
+			hilBrush = wxBrush(newcol, wxSOLID);
+			dc->SetBackground(hilBrush);
+		}
+		
+		dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+
+		newcol = wxColour( G_BLEND(newcol.Red(), 65),
+		                   G_BLEND(newcol.Green(), 65),
+		                   G_BLEND(newcol.Blue(), 65) );
+		dc->SetPen(wxPen(newcol,1,wxSOLID));
 	} else {
-		dc->SetBackground( CMuleColour(wxSYS_COLOUR_LISTBOX).GetBrush() );
-		dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_WINDOWTEXT));
+		dc->SetBackground( wxBrush(SYSCOLOR(wxSYS_COLOUR_LISTBOX), wxSOLID) );
+		dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
 	
@@ -662,11 +667,13 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxR
 	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
 	uint64 end = 0;
 	for ( unsigned int i = 0; i < list.size(); ++i ) {
+		COLORREF color = list[i] ? (RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255))
+								 : RGB(255, 0, 0);
 		uint64 start = PARTSIZE * static_cast<uint64>(i);
-		end   = PARTSIZE * static_cast<uint64>(i + 1);
-		s_ChunkBar.FillRange(start, end, CMuleColour(list[i] ? 0 : 255, list[i] ? ((210-(22*( list[i] - 1 ) ) < 0) ? 0 : (210-(22*( list[i] - 1 ) ))) : 0, list[i] ? 255 : 0));
+		       end   = PARTSIZE * static_cast<uint64>(i + 1);
+		s_ChunkBar.FillRange(start, end, color);
 	}
-	s_ChunkBar.FillRange(end + 1, file->GetFileSize() - 1, CMuleColour(255, 0, 0));
+	s_ChunkBar.FillRange(end + 1, file->GetFileSize() - 1, RGB(255, 0, 0));
 	s_ChunkBar.Draw(dc, barRect.x, barRect.y, bFlat); 
 
 	if (!bFlat) {
