@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
@@ -57,11 +57,11 @@ msgstr "Hasher"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3867
 msgid "Completing"
-msgstr "F�rdigg�r"
+msgstr "Færdiggør"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3870
 msgid "Complete"
-msgstr "F�rdig"
+msgstr "Færdig"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3873
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
@@ -101,18 +101,18 @@ msgstr "Begynder at lave AICH hash for fil: %s"
 #: src/ThreadTasks.cpp:347
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr "Konverter gamle AICH hashs�t i '%s' til 64b i '%s'."
+msgstr "Konverter gamle AICH hashsæt i '%s' til 64b i '%s'."
 
 #: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
-"ADVARSEL: Filnavnet '%s' er ikke underst�ttet og er blevet omd�bt til '%s'"
+"ADVARSEL: Filnavnet '%s' er ikke understøttet og er blevet omdøbt til '%s'"
 
 #: src/ThreadTasks.cpp:439
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "ADVARSEL: Filen '%s' eksistere, ny fil omd�bt til '%s'."
+msgstr "ADVARSEL: Filen '%s' eksistere, ny fil omdøbt til '%s'."
 
 #: src/ThreadTasks.cpp:452
 #, c-format
@@ -161,7 +161,7 @@ msgstr "xMule (Falsk eMule)"
 #: src/BaseClient.cpp:1792
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
-msgstr "1.x (baseret p� eMule v0.%u)"
+msgstr "1.x (baseret på eMule v0.%u)"
 
 #: src/BaseClient.cpp:1962
 #, c-format
@@ -215,7 +215,7 @@ msgstr "Vis &Detaljer"
 
 #: src/FriendListCtrl.cpp:234
 msgid "Add a friend"
-msgstr "Tilf�j en ven"
+msgstr "Tilføj en ven"
 
 #: src/FriendListCtrl.cpp:237
 msgid "Remove Friend"
@@ -237,12 +237,12 @@ msgstr ""
 #: src/FriendListCtrl.cpp:273
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected friend?"
-msgstr "Er du sikker p� at du �nsker at slette de(n) valgt(e) ven(ner)?"
+msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 
 #: src/FriendListCtrl.cpp:275
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected friends?"
-msgstr "Er du sikker p� at du �nsker at slette de(n) valgt(e) ven(ner)?"
+msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
@@ -317,7 +317,7 @@ msgstr "Fil Navn"
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
 #: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:630
 msgid "Size"
-msgstr "St�rrelse"
+msgstr "Størrelse"
 
 #: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:90 src/muuli_wdr.cpp:185
 msgid "Type"
@@ -343,7 +343,7 @@ msgstr "Godtaget Anmodninger"
 
 #: src/SharedFilesCtrl.cpp:109
 msgid "Transferred Data"
-msgstr "Overf�rt Data"
+msgstr "Overført Data"
 
 #: src/SharedFilesCtrl.cpp:110
 msgid "Share Ratio"
@@ -387,11 +387,11 @@ msgstr "Normal"
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:426
 #: src/DownloadListCtrl.cpp:904 src/muuli_wdr.cpp:2520
 msgid "High"
-msgstr "H�j"
+msgstr "Høj"
 
 #: src/SharedFilesCtrl.cpp:141 src/DataToText.cpp:45
 msgid "Very High"
-msgstr "Meget H�j"
+msgstr "Meget Høj"
 
 #: src/SharedFilesCtrl.cpp:142 src/DataToText.cpp:46
 msgid "Release"
@@ -404,19 +404,19 @@ msgstr "Auto"
 
 #: src/SharedFilesCtrl.cpp:150
 msgid "Add Comment/Rating"
-msgstr "Tilf�j kommentar/bed�mmelse"
+msgstr "Tilføj kommentar/bedømmelse"
 
 #: src/SharedFilesCtrl.cpp:152
 msgid "Edit Comment/Rating"
-msgstr "Rediger Kommentar/Bed�mmelse"
+msgstr "Rediger Kommentar/Bedømmelse"
 
 #: src/SharedFilesCtrl.cpp:156
 msgid "Rename"
-msgstr "Omd�b"
+msgstr "Omdøb"
 
 #: src/SharedFilesCtrl.cpp:163
 msgid "Add files in collection to transfer list"
-msgstr "Tilf�j filer i samling til overf�relses liste"
+msgstr "Tilføj filer i samling til overførelses liste"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy magnet &URI to clipboard"
@@ -482,7 +482,7 @@ msgstr "Indtast nyt navn for denne fil:"
 
 #: src/SharedFilesCtrl.cpp:704 src/DownloadListCtrl.cpp:1087
 msgid "File rename"
-msgstr "Omd�b fil"
+msgstr "Omdøb fil"
 
 #: src/UploadQueue.cpp:512
 #, c-format
@@ -500,7 +500,7 @@ msgstr ""
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
-msgstr "Kademlia: s�geord er for kort"
+msgstr "Kademlia: søgeord er for kort"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
@@ -511,8 +511,8 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
-msgstr[0] "L�s %u Kad kontakter"
-msgstr[1] "L�s %u Kad kontakter"
+msgstr[0] "Læs %u Kad kontakter"
+msgstr[1] "Læs %u Kad kontakter"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
 #: src/kademlia/routing/RoutingZone.cpp:282
@@ -548,7 +548,7 @@ msgstr ""
 #: src/webserver/src/WebServer.cpp:379
 #, c-format
 msgid "Request failed with the following error: %s."
-msgstr "Admoding fejlede med f�lgende fejl: %s."
+msgstr "Admoding fejlede med følgende fejl: %s."
 
 #: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
@@ -560,7 +560,7 @@ msgstr "Index fil ikke fundet: "
 
 #: src/webserver/src/WebServer.cpp:1820
 msgid "Session expired - requesting login\n"
-msgstr "Session udl�bet - admoder login\n"
+msgstr "Session udløbet - admoder login\n"
 
 #: src/webserver/src/WebServer.cpp:1825
 msgid "Session ok, logged in\n"
@@ -572,7 +572,7 @@ msgstr "Session ok, ikke logget in\n"
 
 #: src/webserver/src/WebServer.cpp:1832
 msgid "No session opened - will request login\n"
-msgstr "Ingen session �bnet - vil admode om login\n"
+msgstr "Ingen session åbnet - vil admode om login\n"
 
 #: src/webserver/src/WebServer.cpp:1841
 msgid "Session created - requesting login\n"
@@ -580,11 +580,11 @@ msgstr "Session oprettet - admoder login\n"
 
 #: src/webserver/src/WebServer.cpp:1858
 msgid "Processing request [original]: "
-msgstr "Udf�rer anmodning [Original]: "
+msgstr "Udfører anmodning [Original]: "
 
 #: src/webserver/src/WebServer.cpp:1874
 msgid "Checking password\n"
-msgstr "Unders�ger password\n"
+msgstr "Undersøger password\n"
 
 #: src/webserver/src/WebServer.cpp:1879
 msgid "Password hash invalid\n"
@@ -608,7 +608,7 @@ msgstr "Logout anmodning\n"
 
 #: src/webserver/src/WebServer.cpp:1912
 msgid "Processing request [redirected]: "
-msgstr "Udf�rer foresp�rgsel [omledt]: "
+msgstr "Udfører forespørgsel [omledt]: "
 
 #: src/webserver/src/WebInterface.cpp:482
 msgid "Loads template <str>"
@@ -668,7 +668,7 @@ msgstr "aMule Web Server"
 
 #: src/StatTree.cpp:555 src/StatTree.cpp:570
 msgid "Not available"
-msgstr "Ikke tilg�ngelig"
+msgstr "Ikke tilgængelig"
 
 #: src/StatTree.cpp:606 src/StatTree.cpp:620
 msgid "Never"
@@ -710,7 +710,7 @@ msgstr "Opdaterings rate interval i sekunder"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:115
 msgid "Generate a stat image at every refresh event"
-msgstr "Generer et statistisk billede for hver opdaterings h�ndelse"
+msgstr "Generer et statistisk billede for hver opdaterings hændelse"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
@@ -730,12 +730,12 @@ msgstr "FTP Sti"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:188
 msgid "Enter here the URL of your FTP server"
-msgstr "Skriv her URL p� din FTP server"
+msgstr "Skriv her URL på din FTP server"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
 msgstr ""
-"Skriv her biblioteket hvor dit statistiske billede p� FPT serveren skal ligge"
+"Skriv her biblioteket hvor dit statistiske billede på FPT serveren skal ligge"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -748,11 +748,11 @@ msgstr "Password"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:221
 msgid "Enter here the User name to log into your FTP server"
-msgstr "Skriv her brugernavnet for at logge p� din FTP server"
+msgstr "Skriv her brugernavnet for at logge på din FTP server"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:233
 msgid "Enter here the User password to log into your FTP server"
-msgstr "Skriv her bruger passworded for at logge p� din FTP server"
+msgstr "Skriv her bruger passworded for at logge på din FTP server"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:252
 msgid "FTP update rate interval in minutes"
@@ -794,7 +794,7 @@ msgstr "Maksimum DL rate siden wxCas er startet"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr "Absolute Maksimum DL rate gennem wxCas forrige k�rsel"
+msgstr "Absolute Maksimum DL rate gennem wxCas forrige kørsel"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:138
 #: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:2605
@@ -862,7 +862,7 @@ msgid ""
 "Perhaps your current printer is not set correctly?"
 msgstr ""
 "Der var et problem med udskrivningen.\n"
-"M�ske printer instillingerne er forkerte."
+"Måske printer instillingerne er forkerte."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:384
 msgid "Printing"
@@ -882,22 +882,22 @@ msgstr ""
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
-"Baseret p� CAS af Pedro de Oliveira <falso@rdk.homeip.net>\n"
+"Baseret på CAS af Pedro de Oliveira <falso@rdk.homeip.net>\n"
 "Omdelt under GPL"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:573
 msgid "Oh Oh, aMule is not running..."
-msgstr "Oh Oh, aMule k�rer ikke..."
+msgstr "Oh Oh, aMule kører ikke..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:649
 #: src/utils/wxCas/src/wxcasframe.cpp:719
 #: src/utils/wxCas/src/wxcasframe.cpp:788
 msgid "aMule is running"
-msgstr "aMule k�rer"
+msgstr "aMule kører"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:858
 msgid "aMule is running, but disconnected"
-msgstr "aMule k�rer men ikke forbundet"
+msgstr "aMule kører men ikke forbundet"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:929
 msgid "aMule is connecting..."
@@ -917,7 +917,7 @@ msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1006
 msgid " has been running for "
-msgstr " har k�rt i "
+msgstr " har kørt i "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1011
 msgid " is stopped !"
@@ -934,7 +934,7 @@ msgstr " forbinder..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is doing something strange, check it !"
-msgstr "g�r noget m�rkeligt, unders�g det !"
+msgstr "gør noget mærkeligt, undersøg det !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1044
 msgid " is connected to "
@@ -962,7 +962,7 @@ msgstr "afbrudt"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1057
 msgid " is on "
-msgstr " er t�ndt "
+msgstr " er tændt "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1064
 #, fuzzy
@@ -1001,7 +1001,7 @@ msgstr "Deling: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid " file(s), Clients on queue: "
-msgstr " fil(er), Klienter i k�: "
+msgstr " fil(er), Klienter i kø: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1128
 msgid "Time: "
@@ -1016,7 +1016,7 @@ msgstr "%.2f kB/s"
 #: src/utils/wxCas/src/wxcasframe.cpp:1138
 #: src/utils/wxCas/src/wxcasframe.cpp:1148
 msgid " on "
-msgstr " t�ndt "
+msgstr " tændt "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1158
 msgid "System Load Average (1-5-15 min): "
@@ -1049,7 +1049,7 @@ msgstr "%02us"
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:184
 #: src/ClientDetailDialog.cpp:104
 msgid "HighID"
-msgstr "H�jtID"
+msgstr "HøjtID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
 #: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:902
@@ -1097,7 +1097,7 @@ msgstr "Anulleret !"
 #: src/utils/aLinkCreator/src/ed2khash.cpp:82
 #, c-format
 msgid "Unable to open %s"
-msgstr "Ikke muligt at �bne %s"
+msgstr "Ikke muligt at åbne %s"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
@@ -1129,7 +1129,7 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1051
 #: src/muuli_wdr.cpp:2690
 msgid "Add"
-msgstr "Tilf�j"
+msgstr "Tilføj"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:149
 msgid "Remove"
@@ -1279,7 +1279,7 @@ msgstr "Auto [No]"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Hi]"
-msgstr "Auto [H�]"
+msgstr "Auto [Hø]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:670
 #: src/amule.cpp:801
@@ -1288,7 +1288,7 @@ msgstr "Forbinder"
 
 #: src/DataToText.cpp:60
 msgid "Asking"
-msgstr "Sp�rger"
+msgstr "Spørger"
 
 #: src/DataToText.cpp:61 src/ClientListCtrl.cpp:674
 msgid "Connecting via server"
@@ -1297,19 +1297,19 @@ msgstr "Forbinder via Server"
 #: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1709
 #: src/ClientListCtrl.cpp:709
 msgid "Queue Full"
-msgstr "K� Fuld"
+msgstr "Kø Fuld"
 
 #: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:687
 msgid "On Queue"
-msgstr "I K�"
+msgstr "I Kø"
 
 #: src/DataToText.cpp:63 src/ClientListCtrl.cpp:679
 msgid "Transferring"
-msgstr "Overf�rer"
+msgstr "Overfører"
 
 #: src/DataToText.cpp:64
 msgid "Receiving hashset"
-msgstr "Modtaget Hashs�t"
+msgstr "Modtaget Hashsæt"
 
 #: src/DataToText.cpp:65
 msgid "No needed parts"
@@ -1695,12 +1695,12 @@ msgstr ""
 #: src/ServerListCtrl.cpp:575
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected server?"
-msgstr "Er du sikker p� at du �nsker at slette de(n) valgt(e) ven(ner)?"
+msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 
 #: src/ServerListCtrl.cpp:577
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected servers?"
-msgstr "Er du sikker p� at du �nsker at slette de(n) valgt(e) ven(ner)?"
+msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 
 #: src/OScopeCtrl.cpp:241
 #, c-format
@@ -1816,7 +1816,7 @@ msgstr " Kad: "
 #: src/amuleDlg.cpp:754
 #, fuzzy
 msgid "Stop the current connection attempts"
-msgstr "Stop de nuv�rende forbindelses fors�g"
+msgstr "Stop de nuværende forbindelses forsøg"
 
 #: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
@@ -1825,7 +1825,7 @@ msgstr "Afbryd"
 #: src/amuleDlg.cpp:760
 #, fuzzy
 msgid "Disconnect from the currently connected networks"
-msgstr "Afbryd fra nuværende server"
+msgstr "Afbryd fra nuvÃŠrende server"
 
 #: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
@@ -1862,7 +1862,7 @@ msgstr "Vil du virkelig afslutte aMule?"
 
 #: src/amuleDlg.cpp:886
 msgid "Exit confirmation"
-msgstr "Bekr�ft afslut"
+msgstr "Bekræft afslut"
 
 #: src/amuleDlg.cpp:1199
 #, c-format
@@ -1885,7 +1885,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3457
 msgid "Searches"
-msgstr "S�g"
+msgstr "Søg"
 
 #: src/amuleDlg.cpp:1311
 msgid "Searches window"
@@ -1893,7 +1893,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:3458
 msgid "Transfers"
-msgstr "Overf�rsler"
+msgstr "Overførsler"
 
 #: src/amuleDlg.cpp:1315
 msgid "Files transfers window"
@@ -2108,8 +2108,8 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"Tilf�j URLer hvor der kan hentes server.met filer.\n"
-"Kun en URL p� hver linje."
+"Tilføj URLer hvor der kan hentes server.met filer.\n"
+"Kun en URL på hver linje."
 
 #: src/PrefsUnifiedDlg.cpp:947
 #, fuzzy, c-format
@@ -2141,8 +2141,8 @@ msgstr[1] "Opdaterings interval : 5 sek"
 #, fuzzy, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
-msgstr[0] "Fil Buffer Størrelse %i bytes"
-msgstr[1] "Fil Buffer Størrelse %i bytes"
+msgstr[0] "Fil Buffer StÃžrrelse %i bytes"
+msgstr[1] "Fil Buffer StÃžrrelse %i bytes"
 
 #: src/PrefsUnifiedDlg.cpp:978
 #, c-format
@@ -2472,7 +2472,7 @@ msgstr ""
 
 #: src/Statistics.cpp:653 src/muuli_wdr.cpp:639
 msgid "Transfer"
-msgstr "Overf�r"
+msgstr "Overfør"
 
 #: src/Statistics.cpp:655 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:459
 #: src/muuli_wdr.cpp:1965
@@ -2592,7 +2592,7 @@ msgstr "Genforbindelser: %i"
 #: src/Statistics.cpp:701
 #, c-format
 msgid "Time Since First Transfer: %s"
-msgstr "Tid Siden F�rste Overf�rsel: %s"
+msgstr "Tid Siden Første Overførsel: %s"
 
 #: src/Statistics.cpp:702
 #, c-format
@@ -2690,7 +2690,7 @@ msgstr ""
 #: src/Statistics.cpp:736
 #, c-format
 msgid "Total size of Shared Files: %s"
-msgstr "Total St�rrelse Af Delte Filer: %s"
+msgstr "Total Størrelse Af Delte Filer: %s"
 
 #: src/Statistics.cpp:738
 #, c-format
@@ -2844,7 +2844,7 @@ msgstr ""
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
-msgstr "Tilf�j en Ven"
+msgstr "Tilføj en Ven"
 
 #: src/AddFriend.cpp:61
 msgid "You have to enter a valid IP and port!"
@@ -2933,12 +2933,12 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:190 src/ClientListCtrl.cpp:520
 msgid "Transferred"
-msgstr "Overf�rt"
+msgstr "Overført"
 
 #: src/DownloadListCtrl.cpp:191 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
 msgid "Completed"
-msgstr "F�rdig"
+msgstr "Færdig"
 
 #: src/DownloadListCtrl.cpp:192 src/ClientListCtrl.cpp:519
 msgid "Speed"
@@ -2946,7 +2946,7 @@ msgstr "Hastighed"
 
 #: src/DownloadListCtrl.cpp:193
 msgid "Progress"
-msgstr "Forl�b"
+msgstr "Forløb"
 
 #: src/DownloadListCtrl.cpp:196 src/PartFile.cpp:3931
 #: src/ClientListCtrl.cpp:523
@@ -2959,7 +2959,7 @@ msgstr "Tid Tilbage"
 
 #: src/DownloadListCtrl.cpp:198
 msgid "Last Seen Complete"
-msgstr "Sidst F�rdig"
+msgstr "Sidst Færdig"
 
 #: src/DownloadListCtrl.cpp:199
 msgid "Last Reception"
@@ -2968,12 +2968,12 @@ msgstr "Sidste Kontakt"
 #: src/DownloadListCtrl.cpp:584
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected file?"
-msgstr "Er du sikker p� at du �nsker at slette de(n) valgt(e) ven(ner)?"
+msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 
 #: src/DownloadListCtrl.cpp:586
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected files?"
-msgstr "Er du sikker p� at du �nsker at slette de(n) valgt(e) ven(ner)?"
+msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 
 #: src/DownloadListCtrl.cpp:848 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
@@ -2997,7 +2997,7 @@ msgstr "&Genoptag"
 
 #: src/DownloadListCtrl.cpp:912
 msgid "C&lear completed"
-msgstr "Ryd f�rdige"
+msgstr "Ryd færdige"
 
 #: src/DownloadListCtrl.cpp:918
 msgid "Swap every A4AF to this file now"
@@ -3041,7 +3041,7 @@ msgstr "Flyt til kategori"
 
 #: src/DownloadListCtrl.cpp:1004
 msgid "&Open the file"
-msgstr "&�ben filen"
+msgstr "&Åben filen"
 
 #: src/DownloadListCtrl.cpp:1028 src/ClientListCtrl.cpp:256
 msgid "Remove from friends"
@@ -3049,7 +3049,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:1028 src/ClientListCtrl.cpp:256
 msgid "Add to Friends"
-msgstr "Tilf�j til Venner"
+msgstr "Tilføj til Venner"
 
 #: src/DownloadListCtrl.cpp:1030 src/ClientListCtrl.cpp:258
 msgid "Send message"
@@ -3082,7 +3082,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:1742
 msgid "Asked for another file"
-msgstr "Sp�rger efter en anden fil"
+msgstr "Spørger efter en anden fil"
 
 #: src/DownloadListCtrl.cpp:2073
 #, c-format
@@ -3152,7 +3152,7 @@ msgstr ""
 #: src/PartFile.cpp:660
 #, c-format
 msgid "Failed to open %s (%s)"
-msgstr "Kunne ikke �bne %s (%s)"
+msgstr "Kunne ikke åbne %s (%s)"
 
 #: src/PartFile.cpp:708
 #, c-format
@@ -3375,7 +3375,7 @@ msgstr "Forbindelse oprettet til: %s"
 
 #: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Kunne ikke forbinde. Internettet m� v�re nede."
+msgstr "Kunne ikke forbinde. Internettet må være nede."
 
 #: src/ServerConnect.cpp:339
 #, c-format
@@ -3385,7 +3385,7 @@ msgstr "Mistede forbindelsen til %s (%s:%i)"
 #: src/ServerConnect.cpp:349
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
-msgstr "%s (%s:%i) ser ud til at v�re d�d"
+msgstr "%s (%s:%i) ser ud til at være død"
 
 #: src/ServerConnect.cpp:362
 #, c-format
@@ -3396,8 +3396,8 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
-msgstr[0] "Automatisk forbindelse til server vil pr�ve igen om %d sekunder"
-msgstr[1] "Automatisk forbindelse til server vil pr�ve igen om %d sekunder"
+msgstr[0] "Automatisk forbindelse til server vil prøve igen om %d sekunder"
+msgstr[1] "Automatisk forbindelse til server vil prøve igen om %d sekunder"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -3460,7 +3460,7 @@ msgstr ""
 #: src/DownloadQueue.cpp:364
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr "Du pr�ver allerede at downloade denne fil %s"
+msgstr "Du prøver allerede at downloade denne fil %s"
 
 #: src/DownloadQueue.cpp:1334
 #, c-format
@@ -3498,7 +3498,7 @@ msgstr ""
 #: src/TextClient.cpp:361
 #, fuzzy
 msgid "Processing by filename: "
-msgstr "Udf�rer anmodning [Original]: "
+msgstr "Udfører anmodning [Original]: "
 
 #: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
@@ -4037,11 +4037,11 @@ msgstr[1] ""
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr ""
-"Er du sikker p� du vil annullere og slette alle filer i denne kategori?"
+"Er du sikker på du vil annullere og slette alle filer i denne kategori?"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
-msgstr "Bekr�ftelse Kr�vet"
+msgstr "Bekræftelse Krævet"
 
 #: src/TransferWnd.cpp:342
 msgid "All others"
@@ -4088,11 +4088,11 @@ msgstr ""
 
 #: src/TransferWnd.cpp:367
 msgid "Add category"
-msgstr "Tilf�j kategori"
+msgstr "Tilføj kategori"
 
 #: src/TransferWnd.cpp:370
 msgid "Edit category"
-msgstr "�ndre kategori"
+msgstr "Ændre kategori"
 
 #: src/TransferWnd.cpp:371
 msgid "Remove category"
@@ -4322,7 +4322,7 @@ msgstr "Alle"
 
 #: src/OtherFunctions.cpp:290 src/OtherFunctions.cpp:296 src/muuli_wdr.cpp:898
 msgid "Not rated"
-msgstr "Ikke ansl�et"
+msgstr "Ikke anslået"
 
 #: src/OtherFunctions.cpp:291 src/muuli_wdr.cpp:899
 msgid "Invalid / Corrupt / Fake"
@@ -4330,7 +4330,7 @@ msgstr "Invalid / fejl / Falsk"
 
 #: src/OtherFunctions.cpp:292 src/muuli_wdr.cpp:900
 msgid "Poor"
-msgstr "D�rlig"
+msgstr "Dårlig"
 
 #: src/OtherFunctions.cpp:293 src/muuli_wdr.cpp:901
 msgid "Fair"
@@ -4400,7 +4400,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
-msgstr "Overf�r"
+msgstr "Overfør"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
@@ -4419,7 +4419,7 @@ msgstr "Henter ..."
 
 #: src/muuli_wdr.cpp:96
 msgid "Number of users on the server you are connected to ..."
-msgstr "Antal brugere p� den server du er forbundet til ..."
+msgstr "Antal brugere på den server du er forbundet til ..."
 
 #: src/muuli_wdr.cpp:99
 msgid "Users: 0"
@@ -4459,7 +4459,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:171
 msgid "Search"
-msgstr "S�g"
+msgstr "Søg"
 
 #: src/muuli_wdr.cpp:177
 msgid "Name:"
@@ -4495,7 +4495,7 @@ msgstr "Endelse"
 
 #: src/muuli_wdr.cpp:254
 msgid "Min Size"
-msgstr "Min St�rrelse"
+msgstr "Min Størrelse"
 
 #: src/muuli_wdr.cpp:264 src/muuli_wdr.cpp:287
 msgid "Bytes"
@@ -4507,7 +4507,7 @@ msgstr "KB"
 
 #: src/muuli_wdr.cpp:277
 msgid "Max Size"
-msgstr "Max St�rrelse"
+msgstr "Max Størrelse"
 
 #: src/muuli_wdr.cpp:300
 msgid "Availability"
@@ -4559,7 +4559,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:465
 msgid "Clients on queue :"
-msgstr "Klienter i k� :"
+msgstr "Klienter i kø :"
 
 #: src/muuli_wdr.cpp:532
 msgid "Send"
@@ -4611,7 +4611,7 @@ msgstr "Hash :"
 
 #: src/muuli_wdr.cpp:604
 msgid "Filesize :"
-msgstr "Filst�rrelse :"
+msgstr "Filstørrelse :"
 
 #: src/muuli_wdr.cpp:615
 msgid "Partfilestatus :"
@@ -4619,7 +4619,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:626
 msgid "Last seen complete :"
-msgstr "Sidst f�rdig :"
+msgstr "Sidst færdig :"
 
 #: src/muuli_wdr.cpp:648
 msgid "Found Sources :"
@@ -4627,7 +4627,7 @@ msgstr "Fundne Kilder :"
 
 #: src/muuli_wdr.cpp:659
 msgid "Transferring Sources :"
-msgstr "Overf�rer Kilder :"
+msgstr "Overfører Kilder :"
 
 #: src/muuli_wdr.cpp:670
 msgid "Filepart-Count :"
@@ -4635,7 +4635,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:681
 msgid "Available :"
-msgstr "Tilg�ngelig :"
+msgstr "Tilgængelig :"
 
 #: src/muuli_wdr.cpp:692
 msgid "Datarate :"
@@ -4647,15 +4647,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:714 src/muuli_wdr.cpp:1144 src/muuli_wdr.cpp:1155
 msgid "Transferred :"
-msgstr "Overf�rt :"
+msgstr "Overført :"
 
 #: src/muuli_wdr.cpp:725
 msgid "Completed Size :"
-msgstr "F�rdig St�rrelse :"
+msgstr "Færdig Størrelse :"
 
 #: src/muuli_wdr.cpp:752
 msgid "Intelligent Corruption Handling"
-msgstr "Intelligent Fejl H�ndtering"
+msgstr "Intelligent Fejl Håndtering"
 
 #: src/muuli_wdr.cpp:761
 msgid "Lost to corruption :"
@@ -4721,7 +4721,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1007
 msgid "Required Information"
-msgstr "Kr�vet Information"
+msgstr "Krævet Information"
 
 #: src/muuli_wdr.cpp:1012
 msgid "IP Address :"
@@ -4749,7 +4749,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1096
 msgid "Current Session"
-msgstr "Nuv�rende Session"
+msgstr "Nuværende Session"
 
 #: src/muuli_wdr.cpp:1103
 msgid "Total"
@@ -4769,11 +4769,11 @@ msgstr "Download-Hastighed"
 
 #: src/muuli_wdr.cpp:1198 src/muuli_wdr.cpp:1247 src/muuli_wdr.cpp:2802
 msgid "Current"
-msgstr "Nuv�rende"
+msgstr "Nuværende"
 
 #: src/muuli_wdr.cpp:1209 src/muuli_wdr.cpp:1258 src/muuli_wdr.cpp:2813
 msgid "Running average"
-msgstr "Nuv�rende Gennemsnit"
+msgstr "Nuværende Gennemsnit"
 
 #: src/muuli_wdr.cpp:1220 src/muuli_wdr.cpp:1269 src/muuli_wdr.cpp:2824
 msgid "Session average"
@@ -4938,7 +4938,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1613
 msgid "Prompt on exit"
-msgstr "Sp�rg ved afslut"
+msgstr "Spørg ved afslut"
 
 #: src/muuli_wdr.cpp:1615
 msgid "Makes aMule prompt before exiting."
@@ -5080,11 +5080,11 @@ msgstr "Genforbind ved fejl"
 
 #: src/muuli_wdr.cpp:1847
 msgid "Remove dead server after"
-msgstr "Fjern ikke tilg�ngelige servere, efter"
+msgstr "Fjern ikke tilgængelige servere, efter"
 
 #: src/muuli_wdr.cpp:1853
 msgid "retries"
-msgstr "fors�g"
+msgstr "forsøg"
 
 #: src/muuli_wdr.cpp:1860
 msgid "Auto-update server list at startup"
@@ -5120,7 +5120,7 @@ msgstr "Autoforbind kun til servere i statik liste"
 
 #: src/muuli_wdr.cpp:1889
 msgid "Set manually added servers to High Priority"
-msgstr "S�t manuelt tilf�jede servere til H�j Priotet"
+msgstr "Sæt manuelt tilføjede servere til Høj Priotet"
 
 #: src/muuli_wdr.cpp:1907
 msgid "Intelligent Corruption Handling (I.C.H.)"
@@ -5136,15 +5136,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
-msgstr "Tilf�j filer til download i pause tilstand"
+msgstr "Tilføj filer til download i pause tilstand"
 
 #: src/muuli_wdr.cpp:1925
 msgid "Add files to download with auto priority"
-msgstr "Tilf�j filer til download med auto priotet"
+msgstr "Tilføj filer til download med auto priotet"
 
 #: src/muuli_wdr.cpp:1928
 msgid "Try to download first and last chunks first"
-msgstr "Pr�v at download f�rste og sidste del f�rst"
+msgstr "Prøv at download første og sidste del først"
 
 #: src/muuli_wdr.cpp:1932
 msgid "Start next paused file when a file completes"
@@ -5182,11 +5182,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1968
 msgid "Try to transfer full chunks to all uploads"
-msgstr "Pr�v at overf�re hele dele til uploads"
+msgstr "Prøv at overføre hele dele til uploads"
 
 #: src/muuli_wdr.cpp:1972
 msgid "Add new shared files with auto priority"
-msgstr "Tilf�j nye delte filer med auto priotet"
+msgstr "Tilføj nye delte filer med auto priotet"
 
 #: src/muuli_wdr.cpp:1991
 msgid "Destination folder for downloads"
@@ -5290,7 +5290,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2114 src/muuli_wdr.cpp:2542
 msgid "Select"
-msgstr "V�lg"
+msgstr "Vælg"
 
 #: src/muuli_wdr.cpp:2121
 msgid "Tree"
@@ -5320,7 +5320,7 @@ msgstr "Max nye forbindelser / 5 sekunder"
 
 #: src/muuli_wdr.cpp:2182
 msgid "File Buffer Size: 240000 bytes"
-msgstr "Fil Buffer St�rrelse"
+msgstr "Fil Buffer Størrelse"
 
 #: src/muuli_wdr.cpp:2188
 msgid "Upload Queue Size: 5000 clients"
@@ -5344,7 +5344,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2238
 msgid "Show transfer rates on title"
-msgstr "Vis overf�rsels hastighed i titel"
+msgstr "Vis overførsels hastighed i titel"
 
 #: src/muuli_wdr.cpp:2241
 msgid "Before application name"
@@ -5498,7 +5498,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2653
 msgid "Click on this button to update the servers list from URL ..."
-msgstr "Tryk p� denne knap for at opdatere serverlisten fra URL ..."
+msgstr "Tryk på denne knap for at opdatere serverlisten fra URL ..."
 
 #: src/muuli_wdr.cpp:2657
 msgid "Server list"
@@ -5909,11 +5909,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3457
 msgid "Searches Window"
-msgstr "S�ge Vindue"
+msgstr "Søge Vindue"
 
 #: src/muuli_wdr.cpp:3458
 msgid "Files Transfers Window"
-msgstr "Fil Overf�rsel Vindue"
+msgstr "Fil Overførsel Vindue"
 
 #: src/muuli_wdr.cpp:3460
 msgid "Shared Files Window"
@@ -5937,7 +5937,7 @@ msgstr ""
 
 #: src/CatDialog.cpp:125
 msgid "Choose a folder for incoming files"
-msgstr "V�lg en mappe til indkommende filer"
+msgstr "Vælg en mappe til indkommende filer"
 
 #: src/CatDialog.cpp:140
 msgid "You must specify a name for the category!"
@@ -6142,8 +6142,8 @@ msgstr[1] ""
 #, fuzzy, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
-msgstr[0] "Kredit udløbet!"
-msgstr[1] "Kredit udløbet!"
+msgstr[0] "Kredit udlÃžbet!"
+msgstr[1] "Kredit udlÃžbet!"
 
 #: src/ClientCreditsList.cpp:315
 msgid "No 'cryptkey.dat' file found, creating."
@@ -6172,7 +6172,7 @@ msgstr "Vis Uploads"
 
 #: src/ClientListCtrl.cpp:265
 msgid "Show Queue"
-msgstr "Vis K�en"
+msgstr "Vis Køen"
 
 #: src/ClientListCtrl.cpp:266
 msgid "Show Clients"
@@ -6226,7 +6226,7 @@ msgstr "Sidst Set"
 
 #: src/ClientListCtrl.cpp:856
 msgid "Entered Queue"
-msgstr "Kom I K�"
+msgstr "Kom I Kø"
 
 #: src/ClientListCtrl.cpp:1022
 msgid "Upload Status"
@@ -6283,7 +6283,7 @@ msgstr ""
 
 #: src/ClientDetailDialog.cpp:199
 msgid "Not complete"
-msgstr "Ikke f�rdig"
+msgstr "Ikke færdig"
 
 #: src/ClientDetailDialog.cpp:202
 msgid "Bad Guy"
@@ -6313,7 +6313,7 @@ msgstr ""
 #: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:493
 #: src/MuleTrayIcon.cpp:514
 msgid "Unlimited"
-msgstr "Ubegr�nset"
+msgstr "Ubegrænset"
 
 #: src/MuleTrayIcon.cpp:331
 msgid "aMule Tray Menu"
@@ -6510,8 +6510,8 @@ msgstr[1] "%i Serverer fundet i server.met"
 #, fuzzy, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
-msgstr[0] "Servere tilføjet: "
-msgstr[1] "Servere tilføjet: "
+msgstr[0] "Servere tilfÃžjet: "
+msgstr[1] "Servere tilfÃžjet: "
 
 #: src/ServerList.cpp:191
 #, c-format
@@ -6662,7 +6662,7 @@ msgstr ""
 #: src/amule.cpp:1310
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
-"Vi giver ikke garanti for at det ikke vil �del�gge noget, br�nde dit hus,\n"
+"Vi giver ikke garanti for at det ikke vil ødelægge noget, brænde dit hus,\n"
 
 #: src/amule.cpp:1311
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
@@ -6729,7 +6729,7 @@ msgstr ""
 
 #: src/amule.cpp:1774
 msgid "ERROR: can't open logfile"
-msgstr "FEJL: Kan ikke �bne logfil"
+msgstr "FEJL: Kan ikke åbne logfil"
 
 #: src/amule.cpp:1778
 msgid "WARNING: logfile is empty. Something is wrong."
@@ -6750,7 +6750,7 @@ msgstr "Fejl ved hentning af node listen"
 
 #: src/amule.cpp:1876
 msgid "Failed to open the downloaded version check file"
-msgstr "Fejl ved �bning af den hentet version check filen"
+msgstr "Fejl ved åbning af den hentet version check filen"
 
 #: src/amule.cpp:1879 src/amule.cpp:1889 src/amule.cpp:1895
 msgid "Corrupted version check file"
@@ -6758,7 +6758,7 @@ msgstr "Korrupt version check fil"
 
 #: src/amule.cpp:1905
 msgid "You are using an outdated version of aMule!"
-msgstr "Du bruger en for�ldet version af aMule"
+msgstr "Du bruger en forældet version af aMule"
 
 #: src/amule.cpp:1906
 #, c-format
@@ -6772,7 +6772,7 @@ msgstr "Den sidste nye version kan altid findes hos http://www.amule.org"
 #: src/amule.cpp:1910
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
-msgstr "FARE: Din aMule version er for�ldet: %i.%i.%i < %li.%li.%li"
+msgstr "FARE: Din aMule version er forældet: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:1914
 msgid "Your copy of aMule is up to date."
@@ -6835,12 +6835,12 @@ msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
-"Kad netv�rk kan ikke bruges hvis UDP port er fravalgt i instillinger, "
+"Kad netværk kan ikke bruges hvis UDP port er fravalgt i instillinger, "
 "starter ikke."
 
 #: src/amule.cpp:2193
 msgid "Kad network disabled on preferences, not connecting."
-msgstr "Kad netv�rk fravalgt i instillinger, forbinder ikke."
+msgstr "Kad netværk fravalgt i instillinger, forbinder ikke."
 
 #: src/FriendList.cpp:120
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
@@ -6863,7 +6863,7 @@ msgstr ""
 #~ msgstr "Max Kilder Pr Fil"
 
 #~ msgid "Start next paused file when a file completed"
-#~ msgstr "Start n�ste pausede fil n�r en fil er f�rdig"
+#~ msgstr "Start næste pausede fil når en fil er færdig"
 
 #~ msgid "Show percentage"
 #~ msgstr "Vis procent"
@@ -6875,14 +6875,14 @@ msgstr ""
 #~ msgstr "I.C.H. aktiv"
 
 #~ msgid "Progressbar Style"
-#~ msgstr "Forl�bs Stil"
+#~ msgstr "Forløbs Stil"
 
 #~ msgid ""
 #~ "For a film you can say its length, its story, language ...\n"
 #~ "and if it's a fake, you can tell that to other users of aMule."
 #~ msgstr ""
-#~ "For en film kan du sige den l�ngde, dens histori, sprog ...\n"
-#~ "og hvis den er falsk, kan du ogs� fort�lle det til andre aMule brugere."
+#~ "For en film kan du sige den længde, dens histori, sprog ...\n"
+#~ "og hvis den er falsk, kan du også fortælle det til andre aMule brugere."
 
 #~ msgid "Misc Options"
 #~ msgstr "Andre Indstillinger"
@@ -6900,7 +6900,7 @@ msgstr ""
 #~ msgstr "ExternalConn: Adgang afvist"
 
 #~ msgid "ExternalConn: Bad reply from server. Connection closed."
-#~ msgstr "ExternalConn: D�rligt svar fra server. Forbindelse lukket"
+#~ msgstr "ExternalConn: Dårligt svar fra server. Forbindelse lukket"
 
 #~ msgid "Copy ED2k &link to clipboard"
 #~ msgstr "Kopier ED2k-Link til udklipsholder"
@@ -6965,10 +6965,10 @@ msgstr ""
 #~ msgstr "Afbrudt"
 
 #~ msgid "Edit Serverlist"
-#~ msgstr "�ndre Serverlisten"
+#~ msgstr "Ændre Serverlisten"
 
 #~ msgid "Average filesize: %s"
-#~ msgstr "Gennemsnitlig filst�rrelse: %s"
+#~ msgstr "Gennemsnitlig filstørrelse: %s"
 
 #~ msgid "Error"
 #~ msgstr "Fejl"
@@ -6977,7 +6977,7 @@ msgstr ""
 #~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
 #~ "should never happen"
 #~ msgstr ""
-#~ "Fejl: Kunne ikke hashe downloadede del - hashs�t ikke f�rdig (%s). Dette "
+#~ "Fejl: Kunne ikke hashe downloadede del - hashsæt ikke færdig (%s). Dette "
 #~ "skulle aldrig ske"
 
 #~ msgid "No valid servers to connect in serverlist found"
@@ -6990,10 +6990,10 @@ msgstr ""
 #~ msgstr "Tilladte Hastigheder"
 
 #~ msgid "Hard Limit"
-#~ msgstr "Fast Gr�nse"
+#~ msgstr "Fast Grænse"
 
 #~ msgid "Connection Limits"
-#~ msgstr "Forbindelses Gr�nser"
+#~ msgstr "Forbindelses Grænser"
 
 #~ msgid "Auto-update serverlist at startup"
 #~ msgstr "Opdater serverliste ved start"
@@ -7002,7 +7002,7 @@ msgstr ""
 #~ msgstr "Opdater serverliste ved forbindelse til server"
 
 #~ msgid "Update serverlist when a client connect"
-#~ msgstr "Opdater serverliste n�r en klient forbinder"
+#~ msgstr "Opdater serverliste når en klient forbinder"
 
 #~ msgid "Incoming Directory :"
 #~ msgstr "Indkommende Mappe :"
@@ -7017,7 +7017,7 @@ msgstr ""
 #~ msgstr "Opret backup for smug kig"
 
 #~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Vis hurtig ED2K link h�ndtering"
+#~ msgstr "Vis hurtig ED2K link håndtering"
 
 #~ msgid "Webserver Parameters"
 #~ msgstr "Webserver Parametre"
@@ -7029,7 +7029,7 @@ msgstr ""
 #~ msgstr "Serverliste"
 
 #~ msgid "Manual Server Add : Name"
-#~ msgstr "Tilf�j Manuelt en server : Navn"
+#~ msgstr "Tilføj Manuelt en server : Navn"
 
 #~ msgid "No One"
 #~ msgstr "Ingen"
@@ -7041,28 +7041,28 @@ msgstr ""
 #~ msgstr "UDP Port: Ikke Klar"
 
 #~ msgid "Upload Limit"
-#~ msgstr "Upload Gr�nse"
+#~ msgstr "Upload Grænse"
 
 #~ msgid "Download Limit"
-#~ msgstr "Download Gr�nse"
+#~ msgstr "Download Grænse"
 
 #~ msgid "Disconnected from ED2K"
 #~ msgstr "Afbrudt fra ED2K"
 
 #~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr "Fejl ved �bning af venneliste fil 'emfriends.met' ved l�sning!"
+#~ msgstr "Fejl ved åbning af venneliste fil 'emfriends.met' ved læsning!"
 
 #~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr "Fejl ved �bing af venneliste fil 'emfriends.met' ved skrivning!"
+#~ msgstr "Fejl ved åbing af venneliste fil 'emfriends.met' ved skrivning!"
 
 #~ msgid "Can't create web socket thread\n"
-#~ msgstr "Kan ikke oprette web socket tr�d\n"
+#~ msgstr "Kan ikke oprette web socket tråd\n"
 
 #~ msgid "Web Server: Started\n"
 #~ msgstr "Web Server: Startet\n"
 
 #~ msgid "Not Supported"
-#~ msgstr "Ikke Underst�ttet"
+#~ msgstr "Ikke Understøttet"
 
 #~ msgid "Browse wav"
 #~ msgstr "Find wav"
@@ -7080,7 +7080,7 @@ msgstr ""
 #~ msgstr "Brug lyd"
 
 #~ msgid "Pop out when :"
-#~ msgstr "Popop n�r :"
+#~ msgstr "Popop når :"
 
 #~ msgid "New entry on log"
 #~ msgstr "Ny tekst i log"
@@ -7092,7 +7092,7 @@ msgstr ""
 #~ msgstr "En ny chat besked er modtaget"
 
 #~ msgid "A download is added or finished"
-#~ msgstr "En download er tilf�jet eller f�rdig"
+#~ msgstr "En download er tilføjet eller færdig"
 
 #~ msgid "New aMule version detected"
 #~ msgstr "Ny aMule version fundet"
@@ -7104,7 +7104,7 @@ msgstr ""
 #~ msgstr "Underret via Mail"
 
 #~ msgid "Send an Email when transfer complete."
-#~ msgstr "Send en Email n�r overf�rsel er f�rdig."
+#~ msgstr "Send en Email når overførsel er færdig."
 
 #~ msgid "SMTP server :"
 #~ msgstr "SMTP server :"
@@ -7122,17 +7122,17 @@ msgstr ""
 #~ msgstr " | Kad: "
 
 #~ msgid "Syncronization thread started."
-#~ msgstr "Synkroniserings tr�d startet."
+#~ msgstr "Synkroniserings tråd startet."
 
 #~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Masterhashes af kendte filer er indl�st."
+#~ msgstr "Masterhashes af kendte filer er indlæst."
 
 #, fuzzy
 #~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Fejl under indl�sning af Kad kontakter - 0 indtastninger"
+#~ msgstr "Fejl under indlæsning af Kad kontakter - 0 indtastninger"
 
 #~ msgid "Merge attempt"
-#~ msgstr "Samlings fors�g"
+#~ msgstr "Samlings forsøg"
 
 #~ msgid "Sucessful merge!"
 #~ msgstr "Succesfuld samling"
@@ -7144,22 +7144,22 @@ msgstr ""
 #~ msgstr "%d"
 
 #~ msgid "Send sources to any other file before dropping (High CPU)"
-#~ msgstr "Send kilder til en anden fil f�r droppelse (H�j CPU)"
+#~ msgstr "Send kilder til en anden fil før droppelse (Høj CPU)"
 
 #~ msgid "Full Queue Sources Handling"
-#~ msgstr "Kilder i fyldt k� h�ndtering"
+#~ msgstr "Kilder i fyldt kø håndtering"
 
 #~ msgid "Enable auto drop Full Queue Sources"
-#~ msgstr "Drop kilder som er i en fuld k�"
+#~ msgstr "Drop kilder som er i en fuld kø"
 
 #~ msgid "High Queue Rating Sources Handling"
-#~ msgstr "Kilder i lang k� h�ndtering"
+#~ msgstr "Kilder i lang kø håndtering"
 
 #~ msgid "Enable auto drop High Queue Rating Sources"
-#~ msgstr "Drop automatisk kilder i lang k�"
+#~ msgstr "Drop automatisk kilder i lang kø"
 
 #~ msgid "High Queue Rating value"
-#~ msgstr "For k�er som er over"
+#~ msgstr "For køer som er over"
 
 #~ msgid "(Min 300 / Max 3000)"
 #~ msgstr "(Min 300 / Max 3000)"
@@ -7174,10 +7174,10 @@ msgstr ""
 #~ msgstr "(Min 60 / 3600 Max)"
 
 #~ msgid "Minimize to trayicon"
-#~ msgstr "Minimer til statusområde"
+#~ msgstr "Minimer til statusomrÃ¥de"
 
 #~ msgid "Port %d is not available. You will be LOWID"
-#~ msgstr "Port %d er ikke tilgængelig. Du får LAVID"
+#~ msgstr "Port %d er ikke tilgÃŠngelig. Du fÃ¥r LAVID"
 
 #~ msgid ""
 #~ "Port %d is not available !!\n"
@@ -7187,11 +7187,11 @@ msgstr ""
 #~ "Use netstat to determine when port becomes available\n"
 #~ "and try starting amule again."
 #~ msgstr ""
-#~ "Port %d er ikke tilgængelig !!\n"
+#~ "Port %d er ikke tilgÃŠngelig !!\n"
 #~ "\n"
-#~ "Dette vil sige du får et LAV ID.\n"
+#~ "Dette vil sige du fÃ¥r et LAV ID.\n"
 #~ "\n"
-#~ "Brug netstat for at finde ud af når porten er fri\n"
+#~ "Brug netstat for at finde ud af nÃ¥r porten er fri\n"
 #~ "og start aMule igen."
 
 #~ msgid "Failed to save"
@@ -7204,27 +7204,27 @@ msgstr ""
 #~ "Unable to launch browser. Please set correct browserexecutable path in "
 #~ "Preferences."
 #~ msgstr ""
-#~ "Kunne ikke starte din browser. Vælg venligt en korekt sti til den under "
+#~ "Kunne ikke starte din browser. VÃŠlg venligt en korekt sti til den under "
 #~ "indstillinger."
 
 #~ msgid ""
 #~ " --- This is the first time you run aMule %s ---\n"
 #~ "\n"
 #~ msgstr ""
-#~ " --- Dette er første fanf du kører aMule %s ---\n"
+#~ " --- Dette er fÃžrste fanf du kÃžrer aMule %s ---\n"
 #~ "\n"
 
 #~ msgid "This version is a testing version, updated daily, and \n"
 #~ msgstr "Denne version er en test version, opdateret daglig, og \n"
 
 #~ msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-#~ msgstr "eller dræbe din hund, Men det skulle være sikkert at bruge. \n"
+#~ msgstr "eller drÃŠbe din hund, Men det skulle vÃŠre sikkert at bruge. \n"
 
 #~ msgid "client credits will be lost on this first run. \n"
-#~ msgstr "klient kredits vil gå tabt ved denne første kørsel \n"
+#~ msgstr "klient kredits vil gÃ¥ tabt ved denne fÃžrste kÃžrsel \n"
 
 #~ msgid "Feel free to report any bugs to forum.amule.org"
-#~ msgstr "Reporter gerne alle fejl på forum.amule.org"
+#~ msgstr "Reporter gerne alle fejl pÃ¥ forum.amule.org"
 
 #~ msgid "Desktop integration"
 #~ msgstr "Desktop integration"
@@ -7233,7 +7233,7 @@ msgstr ""
 #~ msgstr "Forbindelse etableret til: "
 
 #~ msgid "Connect to any server"
-#~ msgstr "Forbind til en tilfældig server"
+#~ msgstr "Forbind til en tilfÃŠldig server"
 
 #~ msgid "You are not connected to a server!"
 #~ msgstr "Du er ikke forbundet til en server!"
@@ -7266,31 +7266,31 @@ msgstr ""
 #~ msgstr "kan ikke oprette fil '%s'"
 
 #~ msgid "Can't open file '%s'"
-#~ msgstr "Kan ikke åbne fil '%s'"
+#~ msgstr "Kan ikke Ã¥bne fil '%s'"
 
 #~ msgid "can't close file descriptor %d"
 #~ msgstr "kan ikke lukke fil beskrivelse %d"
 
 #~ msgid "can't read from file descriptor %d"
-#~ msgstr "kan ikke læse fil beskrivelse %d"
+#~ msgstr "kan ikke lÃŠse fil beskrivelse %d"
 
 #~ msgid "can't write to file descriptor %d"
 #~ msgstr "kan ikke skrive til fil beskrivelse %d"
 
 #~ msgid "can't flush file descriptor %d"
-#~ msgstr "kan ikke tømme fil beskrivelse %d"
+#~ msgstr "kan ikke tÃžmme fil beskrivelse %d"
 
 #~ msgid "unknown seek origin"
-#~ msgstr "ikke kendt søge oprindelse"
+#~ msgstr "ikke kendt sÃžge oprindelse"
 
 #~ msgid "can't get seek position on file descriptor %d"
-#~ msgstr "kan ikke søge position i fil beskrivelse %d"
+#~ msgstr "kan ikke sÃžge position i fil beskrivelse %d"
 
 #~ msgid "can't find length of file on file descriptor %d"
-#~ msgstr "kan ikke finde længde af fil i fil beskrivelse %d"
+#~ msgstr "kan ikke finde lÃŠngde af fil i fil beskrivelse %d"
 
 #~ msgid "can't determine if the end of file is reached on descriptor %d"
-#~ msgstr "kan ikke afgøre om enden af filen er nået i beskrivelse %d"
+#~ msgstr "kan ikke afgÃžre om enden af filen er nÃ¥et i beskrivelse %d"
 
 #~ msgid "invalid eof() return value."
 #~ msgstr "invalid eof() tilbage melding."
@@ -7308,7 +7308,7 @@ msgstr ""
 #~ msgstr "*** Ikke Forbundet"
 
 #~ msgid "Failed to load creditfile"
-#~ msgstr "Fejl ved indlæsning af kreditfil"
+#~ msgstr "Fejl ved indlÃŠsning af kreditfil"
 
 #~ msgid "Failed to save creditfile"
 #~ msgstr "Kunne ikke gemme kreditfil"
@@ -7320,7 +7320,7 @@ msgstr ""
 #~ msgstr "<- Klient Version ->v"
 
 #~ msgid "Not Avaiable"
-#~ msgstr "Ikke Tilgængelig"
+#~ msgstr "Ikke TilgÃŠngelig"
 
 #~ msgid "Corrupted compressed packet for %s received (error %i)"
 #~ msgstr "Beskadiget pakket pakke fra %s modtaget (fejl %i)"
@@ -7365,16 +7365,16 @@ msgstr ""
 #~ msgstr "Ny MLdonkey"
 
 #~ msgid "Are you sure that you want to cancel and delete this file ?\n"
-#~ msgstr "Er du sikker på du vil annullere og slette denne fil ?\n"
+#~ msgstr "Er du sikker pÃ¥ du vil annullere og slette denne fil ?\n"
 
 #~ msgid "Are you sure that you want to cancel and delete these files ?\n"
-#~ msgstr "Er du sikker på du vil annullere og slette denne fil ?\n"
+#~ msgstr "Er du sikker pÃ¥ du vil annullere og slette denne fil ?\n"
 
 #~ msgid "You already have the file %s"
 #~ msgstr "Du har allerede filen %s"
 
 #~ msgid "Bad link."
-#~ msgstr "Dårligt link."
+#~ msgstr "DÃ¥rligt link."
 
 #~ msgid "not a well-formed ed2k link"
 #~ msgstr "ikke et odentligt ed2k link"
@@ -7386,13 +7386,13 @@ msgstr ""
 #~ msgstr "kan ikke skrive fil '%s'"
 
 #~ msgid "done"
-#~ msgstr "færdig"
+#~ msgstr "fÃŠrdig"
 
 #~ msgid "Failed to copy the file '%s' to '%s'"
 #~ msgstr "Fejlede ved kopiering af fil '%s' til '%s'"
 
 #~ msgid "Loaded ipfilter with %d IP addresses."
-#~ msgstr "Indlæste ipfilter med IP adresse %d."
+#~ msgstr "IndlÃŠste ipfilter med IP adresse %d."
 
 #~ msgid "Error: the file known.met is corrupted, unable to load known files"
 #~ msgstr "Fejl: filen known.met er beskadiget, kunne ikke hente kendte filer"
@@ -7401,7 +7401,7 @@ msgstr ""
 #~ "Unexpected file error while reading known.met: %s, unable to load known "
 #~ "files"
 #~ msgstr ""
-#~ "Uventet fejl ved læsning af known.met: %s, kunne ikke hente kendte filer"
+#~ "Uventet fejl ved lÃŠsning af known.met: %s, kunne ikke hente kendte filer"
 
 #~ msgid "User %s (%u) requested your sharedfiles-list -> %s"
 #~ msgstr "Bruger %s (%u) anmodede om din deleliste -> %s"
@@ -7410,7 +7410,7 @@ msgstr ""
 #~ msgstr "accepteret"
 
 #~ msgid "denied"
-#~ msgstr "nægtet"
+#~ msgstr "nÃŠgtet"
 
 #~ msgid "Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"
 #~ msgstr "Klient '%s' (IP:%s) lavede en fejl: %s. Afbryder Klient"
@@ -7436,13 +7436,13 @@ msgstr ""
 #~ msgstr "Forbindelses Type"
 
 #~ msgid "Select your connection type here :"
-#~ msgstr "Vælg din forbindelse type her :"
+#~ msgstr "VÃŠlg din forbindelse type her :"
 
 #~ msgid "True download bandwidth"
-#~ msgstr "Max download grænse"
+#~ msgstr "Max download grÃŠnse"
 
 #~ msgid "True upload bandwidth"
-#~ msgstr "Max upload grænse"
+#~ msgstr "Max upload grÃŠnse"
 
 #~ msgid "Unit:"
 #~ msgstr "Enhed:"
@@ -7455,9 +7455,9 @@ msgstr ""
 #~ "you must specify which desktop you are using.\n"
 #~ "You can change this later from preferences."
 #~ msgstr ""
-#~ "For at få amule til at integrere med statusområdet,\n"
-#~ "skal du vælge hvilken desktop du bruger.\n"
-#~ "du kan ændre dette senere."
+#~ "For at fÃ¥ amule til at integrere med statusomrÃ¥det,\n"
+#~ "skal du vÃŠlge hvilken desktop du bruger.\n"
+#~ "du kan ÃŠndre dette senere."
 
 #~ msgid "Desktop"
 #~ msgstr "Desktop"
@@ -7472,19 +7472,19 @@ msgstr ""
 #~ msgstr "KDE 2.x / Gnome 1.2 "
 
 #~ msgid "No systray integration, please"
-#~ msgstr "Ingen integration til statusområde"
+#~ msgstr "Ingen integration til statusomrÃ¥de"
 
 #~ msgid "Fast ED2K Links Handler (Direct Download)"
-#~ msgstr "Hurtig ED2K Link Håndtering (Direkte Download)"
+#~ msgstr "Hurtig ED2K Link HÃ¥ndtering (Direkte Download)"
 
 #~ msgid "Name"
 #~ msgstr "Navn"
 
 #~ msgid "Min Availability"
-#~ msgstr "Min Tilgængelighed"
+#~ msgstr "Min TilgÃŠngelighed"
 
 #~ msgid "Search global"
-#~ msgstr "Søg globalt"
+#~ msgstr "SÃžg globalt"
 
 #~ msgid "Clear All"
 #~ msgstr "Ryd Alt"
@@ -7496,7 +7496,7 @@ msgstr ""
 #~ msgstr "Codec:"
 
 #~ msgid "Length:"
-#~ msgstr "Længde:"
+#~ msgstr "LÃŠngde:"
 
 #~ msgid " / ("
 #~ msgstr " / ("
@@ -7583,10 +7583,10 @@ msgstr ""
 #~ msgstr "Dobbeltklik for udfoldelse af downloadlist"
 
 #~ msgid "Tooltip Delay Time in secs (1s to 5s)"
-#~ msgstr "Statusområde ikons opdaterings tid i sekunder (1s til 5s)"
+#~ msgstr "StatusomrÃ¥de ikons opdaterings tid i sekunder (1s til 5s)"
 
 #~ msgid "Systray Integration"
-#~ msgstr "Statusområde Integration"
+#~ msgstr "StatusomrÃ¥de Integration"
 
 #~ msgid "Startup"
 #~ msgstr "Programm start"
@@ -7598,7 +7598,7 @@ msgstr ""
 #~ msgstr "Se efter ny version"
 
 #~ msgid "Show Splashscreen"
-#~ msgstr "Vis velkomstskærm"
+#~ msgstr "Vis velkomstskÃŠrm"
 
 #~ msgid "Clientport"
 #~ msgstr "Klient Port"
@@ -7619,7 +7619,7 @@ msgstr ""
 #~ msgstr "IP-Filter Aktiv / Inaktiv"
 
 #~ msgid "Always filter bad IPs"
-#~ msgstr "Filtrer dårlige IPer"
+#~ msgstr "Filtrer dÃ¥rlige IPer"
 
 #~ msgid "See my shares"
 #~ msgstr "Kan se mine delte filer"
@@ -7628,7 +7628,7 @@ msgstr ""
 #~ msgstr "mplayer -idx"
 
 #~ msgid "Autotake ED2K Links only during runtime"
-#~ msgstr "Overtag kun ED2K links når amule kører"
+#~ msgstr "Overtag kun ED2K links nÃ¥r amule kÃžrer"
 
 #~ msgid "Arrange Downloads"
 #~ msgstr "Arranger Downloads"
@@ -7643,7 +7643,7 @@ msgstr ""
 #~ msgstr "Antal kilder"
 
 #~ msgid "GTK Theme Selector"
-#~ msgstr "GTK Tema Vælger"
+#~ msgstr "GTK Tema VÃŠlger"
 
 #~ msgid "Theme :"
 #~ msgstr "Tema :"
@@ -7655,7 +7655,7 @@ msgstr ""
 #~ msgstr "Font"
 
 #~ msgid "No Needed Sources Handling"
-#~ msgstr "Ikke Brugbar Kilde Håndtering"
+#~ msgstr "Ikke Brugbar Kilde HÃ¥ndtering"
 
 #~ msgid "Enable auto drop No Needed Sources"
 #~ msgstr "Aktiver auto dropning af ikke brugbare kilder"
@@ -7679,7 +7679,7 @@ msgstr ""
 #~ msgstr "Aktiver kodeord"
 
 #~ msgid "Notify"
-#~ msgstr "Påmind"
+#~ msgstr "PÃ¥mind"
 
 #~ msgid ""
 #~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
@@ -7707,7 +7707,7 @@ msgstr ""
 #~ msgstr "D"
 
 #~ msgid "Error: Failed to open part.met file! (%s => %s)"
-#~ msgstr "Kunne ikke åbne part.met fil! (%s => %s)"
+#~ msgstr "Kunne ikke Ã¥bne part.met fil! (%s => %s)"
 
 #~ msgid "Error: Invalid part.met fileversion! (%s => %s)"
 #~ msgstr "Fejl: Invalid part.met filversion! (%s => %s)"
@@ -7716,7 +7716,7 @@ msgstr ""
 #~ msgstr "Fejl: %s (%s) er beskadiget"
 
 #~ msgid "Warning: %s might be corrupted"
-#~ msgstr "Advarsel: %s er måske beskadiget"
+#~ msgstr "Advarsel: %s er mÃ¥ske beskadiget"
 
 #~ msgid "ERROR while saving partfile: %s (%s => %s)"
 #~ msgstr "Fejl ved gemning af partfil: %s (%s => %s)"
@@ -7725,7 +7725,7 @@ msgstr ""
 #~ msgstr ".part fil ikke fundet"
 
 #~ msgid "Unable to open %s file - using .bak file.\n"
-#~ msgstr "Kunne ikke indlæse %s - bruger .bak fil.\n"
+#~ msgstr "Kunne ikke indlÃŠse %s - bruger .bak fil.\n"
 
 #~ msgid "Found corrupted part (%i) in %s"
 #~ msgstr "Fandt beskadigede dele (%i) i %s"
@@ -7734,7 +7734,7 @@ msgstr ""
 #~ msgstr "Kunne ikke slette %s"
 
 #~ msgid "Finished downloading %s :-)"
-#~ msgstr "Færdig med downloading af %s :-)"
+#~ msgstr "FÃŠrdig med downloading af %s :-)"
 
 #~ msgid "Downloaded:"
 #~ msgstr "Downloaded:"
@@ -7744,7 +7744,7 @@ msgstr ""
 
 #~ msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
 #~ msgstr ""
-#~ "Advarsel: kunne ikke hashe downloadede del - hashsæt ikke færdig (%s)"
+#~ "Advarsel: kunne ikke hashe downloadede del - hashsÃŠt ikke fÃŠrdig (%s)"
 
 #~ msgid "ERROR: Cannot write to disk"
 #~ msgstr "Fejl: Kan ikke skrive til disk"
@@ -7766,13 +7766,13 @@ msgstr ""
 #~ "Dele: %d , %s: %d (%.1f%%)\n"
 
 #~ msgid "%d%% done (%s) - Transferring from %d sources"
-#~ msgstr "%d%% færdig (%s) - Overfører fra %d kilder"
+#~ msgstr "%d%% fÃŠrdig (%s) - OverfÃžrer fra %d kilder"
 
 #~ msgid "Available"
-#~ msgstr "Tilgængelig"
+#~ msgstr "TilgÃŠngelig"
 
 #~ msgid "Last Seen Complete :"
-#~ msgstr "Sidst Færdig :"
+#~ msgstr "Sidst FÃŠrdig :"
 
 #~ msgid "Last Reception:"
 #~ msgstr "Sidst Aktiv"
@@ -7781,7 +7781,7 @@ msgstr ""
 #~ msgstr "Program (*)|*||"
 
 #~ msgid "Language change will not be applied until aMule is restarted."
-#~ msgstr "Sprog ændringer vil ikke blive aktiveret før du genstarter aMule."
+#~ msgstr "Sprog ÃŠndringer vil ikke blive aktiveret fÃžr du genstarter aMule."
 
 #~ msgid "Update: Disabled"
 #~ msgstr "Opdater: Inaktiv"
@@ -7796,7 +7796,7 @@ msgstr ""
 #~ msgstr "Tuning"
 
 #~ msgid "Choose a folder for "
-#~ msgstr "Vælg en mappe til "
+#~ msgstr "VÃŠlg en mappe til "
 
 #~ msgid "%i days"
 #~ msgstr "%i dage"
@@ -7808,7 +7808,7 @@ msgstr ""
 #~ msgstr "Kopier ED2k-Link til udklipsholder (HTML)"
 
 #~ msgid "Close this search result"
-#~ msgstr "Luk dette søge resultat"
+#~ msgstr "Luk dette sÃžge resultat"
 
 #~ msgid "Description: %s"
 #~ msgstr "Beskrivelse: %s"
@@ -7826,10 +7826,10 @@ msgstr ""
 #~ msgstr "Kunne ikke hente serverlist fra %s"
 
 #~ msgid "Failed to load server.met!"
-#~ msgstr "Fejl ved indlæsning af server.met!"
+#~ msgstr "Fejl ved indlÃŠsning af server.met!"
 
 #~ msgid "Invalid versiontag in server.met (0x%i , size %i)!"
-#~ msgstr "Invalid versionsnummer i server.met (0x%i , størrelse %i)!"
+#~ msgstr "Invalid versionsnummer i server.met (0x%i , stÃžrrelse %i)!"
 
 #~ msgid "Error: the file server.met is corrupted"
 #~ msgstr "Fejl: filen server.met er beskadiget"
@@ -7838,7 +7838,7 @@ msgstr ""
 #~ msgstr "Forbind til denne server"
 
 #~ msgid "Add to static"
-#~ msgstr "Tilføj til statitik"
+#~ msgstr "TilfÃžj til statitik"
 
 #~ msgid "Remove from static server list"
 #~ msgstr "Fjern fra static server liste"
@@ -7850,10 +7850,10 @@ msgstr ""
 #~ msgstr "Ingen Indstilling"
 
 #~ msgid "Failed to open staticservers.dat"
-#~ msgstr "Kunne ikke åbne staticservers.dat"
+#~ msgstr "Kunne ikke Ã¥bne staticservers.dat"
 
 #~ msgid "Added to static server list"
-#~ msgstr "Tilføj til statik server liste"
+#~ msgstr "TilfÃžj til statik server liste"
 
 #~ msgid "Unknown server info received !"
 #~ msgstr "Ukendt server info modtaget !"
@@ -7871,27 +7871,27 @@ msgstr ""
 #~ msgstr "Dette er "
 
 #~ msgid " (based on "
-#~ msgstr " (baseret på "
+#~ msgstr " (baseret pÃ¥ "
 
 #~ msgid "Visit http://www.amule.org to check if a new version is available.\n"
 #~ msgstr ""
-#~ "Besøg http://www.amule.org for at tjekke om der er en ny version "
-#~ "tilgængelig.\n"
+#~ "BesÃžg http://www.amule.org for at tjekke om der er en ny version "
+#~ "tilgÃŠngelig.\n"
 
 #~ msgid "Please enter a serveraddress"
 #~ msgstr "Indtast venligst en serveradresse"
 
 #~ msgid "Incomplete serverport: Please enter a serverport"
-#~ msgstr "forkert serverport: Indsæt en serverport"
+#~ msgstr "forkert serverport: IndsÃŠt en serverport"
 
 #~ msgid "Server not added!"
-#~ msgstr "Server ikke tilføjet!"
+#~ msgstr "Server ikke tilfÃžjet!"
 
 #~ msgid "Low ID"
 #~ msgstr "Lav ID"
 
 #~ msgid "High ID"
-#~ msgstr "høj ID"
+#~ msgstr "hÃžj ID"
 
 #~ msgid "Loading..."
 #~ msgstr "Henter..."
@@ -7906,13 +7906,13 @@ msgstr ""
 #~ msgstr "Kun venner"
 
 #~ msgid "Locked"
-#~ msgstr "Låst"
+#~ msgstr "LÃ¥st"
 
 #~ msgid "Permissions"
 #~ msgstr "Tilladelser"
 
 #~ msgid "Change this file's comment..."
-#~ msgstr "Ændre kommentaren til denne fil"
+#~ msgstr "Ãndre kommentaren til denne fil"
 
 #~ msgid "Auto [Re]"
 #~ msgstr "Auto [Re]"
@@ -7921,16 +7921,16 @@ msgstr ""
 #~ msgstr "Skjult"
 
 #~ msgid "You cannot change permissions while a file is still downloading!"
-#~ msgstr "Du kan ikke ændre rettigheder mens filen stadig downloader!"
+#~ msgstr "Du kan ikke ÃŠndre rettigheder mens filen stadig downloader!"
 
 #~ msgid "%s (%s:%i) appears to be full"
-#~ msgstr "%s (%s:%i) ser ud til at være fuld"
+#~ msgstr "%s (%s:%i) ser ud til at vÃŠre fuld"
 
 #~ msgid "Connecting to %s (%s:%i ) failed."
 #~ msgstr "Forbindelse til %s (%s:%i ) fejlede."
 
 #~ msgid "Connection attempt to %s (%s:%i ) timed out"
-#~ msgstr "Forbindelses forsøg til %s (%s:%i ) tid gik"
+#~ msgstr "Forbindelses forsÃžg til %s (%s:%i ) tid gik"
 
 #~ msgid "Filtered: %i"
 #~ msgstr "Filtreret: %i"
@@ -7954,7 +7954,7 @@ msgstr ""
 #~ msgstr "Ventende Uploads: %i"
 
 #~ msgid "Total successful upload sessions: %i"
-#~ msgstr "Færdige upload sessioner (Total): %i"
+#~ msgstr "FÃŠrdige upload sessioner (Total): %i"
 
 #~ msgid "Total failed upload sessions: %i"
 #~ msgstr "Fejlede upload sessioner (Total): %i"
@@ -7972,13 +7972,13 @@ msgstr ""
 #~ msgstr "Max Download Hastighed (Session): %.2f kB/s"
 
 #~ msgid "waiting for transfer..."
-#~ msgstr "Venter på overførsel..."
+#~ msgstr "Venter pÃ¥ overfÃžrsel..."
 
 #~ msgid "waiting for connection..."
-#~ msgstr "venter på forbindelse..."
+#~ msgstr "venter pÃ¥ forbindelse..."
 
 #~ msgid "%s Not available"
-#~ msgstr "%s Ikke tilgængelig"
+#~ msgstr "%s Ikke tilgÃŠngelig"
 
 #~ msgid "Number of Shared Files: %i"
 #~ msgstr "Antal Delte Filer: %i"
@@ -8020,10 +8020,10 @@ msgstr ""
 #~ msgstr "Slettede Servere"
 
 #~ msgid "Users on Working Servers"
-#~ msgstr "Brugere På Virkende Servere"
+#~ msgstr "Brugere PÃ¥ Virkende Servere"
 
 #~ msgid "Files on Working Servers"
-#~ msgstr "Filer På Virkende Servere"
+#~ msgstr "Filer PÃ¥ Virkende Servere"
 
 #~ msgid "Total Users"
 #~ msgstr "Antal Brugere Total"
@@ -8032,22 +8032,22 @@ msgstr ""
 #~ msgstr "Antal Filer Total"
 
 #~ msgid "Active Connections (estimate)"
-#~ msgstr "Aktive Forbindelser (anslået)"
+#~ msgstr "Aktive Forbindelser (anslÃ¥et)"
 
 #~ msgid "Max Connection Limit Reached"
-#~ msgstr "Max Forbindelses Grænse Nået"
+#~ msgstr "Max Forbindelses GrÃŠnse NÃ¥et"
 
 #~ msgid "Average Connections (estimate)"
-#~ msgstr "Gennemsnitlige Forbindelser (anslået)"
+#~ msgstr "Gennemsnitlige Forbindelser (anslÃ¥et)"
 
 #~ msgid "Peak Connections (estimate)"
-#~ msgstr "Peak Forbindelser (anslået)"
+#~ msgstr "Peak Forbindelser (anslÃ¥et)"
 
 #~ msgid "Not Found"
 #~ msgstr "Ikke Fundet"
 
 #~ msgid "Actual Speed Limits:"
-#~ msgstr "Nuværende Hastigheds Grænser:"
+#~ msgstr "NuvÃŠrende Hastigheds GrÃŠnser:"
 
 #~ msgid "DL: "
 #~ msgstr "DL: "
@@ -8095,7 +8095,7 @@ msgstr ""
 #~ msgstr "Delte Filer"
 
 #~ msgid "Queued Clients: "
-#~ msgstr "Klienter i Kø: "
+#~ msgstr "Klienter i KÃž: "
 
 #~ msgid "Total DL: "
 #~ msgstr "Total DL: "
@@ -8143,14 +8143,14 @@ msgstr ""
 #~ "Client '%s' seems to be an aggressive client and is banned from the "
 #~ "uploadqueue"
 #~ msgstr ""
-#~ "Klient '%s' ser ud til at v�re en aggresiv klient og er banlyst fra "
-#~ "upload k�en"
+#~ "Klient '%s' ser ud til at være en aggresiv klient og er banlyst fra "
+#~ "upload køen"
 
 #~ msgid "%s [%s:%i] using %s removed : invalide eMule client"
 #~ msgstr "%s [%s:%i] bruger %s fjernet : invalid eMule klient"
 
 #~ msgid "%s [%s:%i] using %s removed : suspicious mod string change"
-#~ msgstr "%s [%s:%i] bruger %s fjernet : mærklig mod string ændring"
+#~ msgstr "%s [%s:%i] bruger %s fjernet : mÃŠrklig mod string ÃŠndring"
 
 #~ msgid "Wizard"
 #~ msgstr "Assistent"
@@ -8165,7 +8165,7 @@ msgstr ""
 #~ msgstr "manuel"
 
 #~ msgid "(enter below!)"
-#~ msgstr "(indsæt nedenfor!)"
+#~ msgstr "(indsÃŠt nedenfor!)"
 
 #~ msgid "56-k Modem"
 #~ msgstr "56k-Modem"
