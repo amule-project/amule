@@ -2,7 +2,6 @@
 
 /* Skeleton implementation for Bison's Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
    Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -263,8 +262,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com )
+// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their

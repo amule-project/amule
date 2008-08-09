@@ -4,7 +4,7 @@
 // Author:      Robert Roebling
 // Created:     01/02/97
 // RCS-ID:      $Id$
-// Copyright:   (c) 1998 Robert Roebling and Julian Smart
+// Copyright:   Copyright (c) 1998-2008 Robert Roebling and Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 

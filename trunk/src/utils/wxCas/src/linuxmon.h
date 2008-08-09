@@ -5,11 +5,11 @@
 ///
 /// Author:       ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (c) 2004-2008 ThePolish
+/// Copyright (c) 2004-2008 ThePolish ( thepolish@vipmail.ru )
 ///
 /// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
 ///
-/// Pixmats from aMule http://www.amule.org
+/// Pixmaps from aMule http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by

@@ -3,7 +3,7 @@
 
 Summary:        aMule - another eMule p2p client
 Name:           aMule
-Version:        CVS
+Version:        SVN
 Release:        %{svndate}
 License:        GPL
 Group:          Applications/Internet
@@ -20,7 +20,7 @@ the first multi-platform edonkey network client.
 
 %pre
 echo "****************************************************************************"
-echo "Warning: This is a cvs release!"
+echo "Warning: This is a svn release!"
 echo "This release is made for testing purpose and it may cause several problems,"
 echo "burn your house, kill your dog, etc, but it *should* be safe to use anyway."
 echo "If you would like to test some of the great new features go on and install."

@@ -109,7 +109,7 @@ namespace amule.net {
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(300, 17);
             this.labelCopyright.TabIndex = 21;
-            this.labelCopyright.Text = "Copyright (c) 2007-2008 aMule Team";
+            this.labelCopyright.Text = "Copyright (c) 2007-2008 aMule Team ( admin@amule.org / http://www.amule.org )";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCompanyName

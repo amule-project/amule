@@ -46,7 +46,7 @@
 
 #ifndef HAVE_GETOPT_LONG
 /* Code from getopt_long.h - getopt_long() for systems that lack it
-  Copyright (C) 2001, 2002, 2008 Arthur de Jong, GPL 2 and later */
+  Copyright (c) 2001-2008 Arthur de Jong, GPL 2 and later */
 # define no_argument 0
 # define required_argument 1
 # define optional_argument 2
@@ -106,7 +106,7 @@ void usage(char *myname)
 #ifndef HAVE_GETOPT_LONG
 
 /* Code from getopt_long.c - getopt_long() for systems that lack it
-  Copyright (C) 2001, 2002, 2008 Arthur de Jong, GPL 2 and later
+  Copyright (c) 2001-2008 Arthur de Jong, GPL 2 and later
   Slightly edited for the sake of clarity by Gaznevada */
 
 int getopt_long(int argc,
