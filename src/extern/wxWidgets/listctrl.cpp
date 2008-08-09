@@ -4,7 +4,7 @@
 // Author:      Robert Roebling
 //              Vadim Zeitlin (virtual list control support)
 // Id:          $Id$
-// Copyright:   (c) 1998 Robert Roebling
+// Copyright:   Copyright (c) 1998-2008 Robert Roebling
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 

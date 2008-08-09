@@ -1,8 +1,9 @@
+
 //
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -471,7 +472,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		_("Copyright (c) 2003-2008 aMule Team \n\n") <<
 		_("Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
-                _(" Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n") <<
+                _(" Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n") <<
 		_("http://kademlia.scs.cs.nyu.edu\n");
 
 	if (m_is_safe_state) {
