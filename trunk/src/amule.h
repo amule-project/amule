@@ -36,7 +36,7 @@
 #ifndef __WXMSW__
 	#include <map>
 	#include <signal.h>
-	#include <wx/unix/execute.h>
+//	#include <wx/unix/execute.h>
 #endif // __WXMSW__
 
 
@@ -404,7 +404,7 @@ public:
 };
 
 
-typedef std::map<int, wxEndProcessData *> EndProcessDataMap;
+typedef std::map<int, class wxEndProcessData *> EndProcessDataMap;
 
 
 class CDaemonAppTraits : public wxConsoleAppTraits
