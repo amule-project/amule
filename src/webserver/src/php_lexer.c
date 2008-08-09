@@ -660,7 +660,7 @@ char *phptext;
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (C) 2005-2006 Froenchenko Leonid ( lfroen@amule.org )
+// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
