@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-03 03:30+0200\n"
+"POT-Creation-Date: 2008-08-10 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -66,22 +66,22 @@ msgid "Complete"
 msgstr "完成"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3873
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:707
 msgid "Paused"
 msgstr "已暫停"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3876
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:706
 msgid "Erroneous"
 msgstr "已出錯"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3883
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:705
 msgid "Downloading"
 msgstr "正在下載"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3885
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:704
 msgid "Waiting"
 msgstr "等待中"
 
@@ -245,7 +245,7 @@ msgstr "確定刪除選中的好友嗎？"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:753
+#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:754
 #: src/DownloadListCtrl.cpp:588 src/DownloadListCtrl.cpp:908
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454
@@ -683,7 +683,7 @@ msgstr "正在下載..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1330
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1331
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3464
 msgid "Preferences"
 msgstr "設定"
@@ -1278,7 +1278,7 @@ msgstr "自動 [普]"
 msgid "Auto [Hi]"
 msgstr "自動 [高]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:670
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:541 src/ClientListCtrl.cpp:670
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "正在連線"
@@ -1386,168 +1386,168 @@ msgstr "資源種子"
 msgid "Search Result"
 msgstr ""
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "System default"
 msgstr "系統預設"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Albanian"
 msgstr "阿爾巴尼亞語"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Arabic"
 msgstr "阿拉伯語"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Basque"
 msgstr "巴斯克語"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Bulgarian"
 msgstr "保加利亞語"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Catalan"
 msgstr "加泰羅尼亞語"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Chinese (Simplified)"
 msgstr "中文簡體"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Chinese (Traditional)"
 msgstr "中文繁體"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Croatian"
 msgstr "克羅的亞語"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 msgid "Czech"
 msgstr "捷克語"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Danish"
 msgstr "丹麥語"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Dutch"
 msgstr "荷蘭語"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:667
 msgid "English (U.K.)"
 msgstr "英語 (英國)"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:668
 msgid "Estonian"
 msgstr "愛斯托尼亞語"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:669
 msgid "Finnish"
 msgstr "芬蘭語"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:670
 msgid "French"
 msgstr "法語"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:671
 msgid "Galician"
 msgstr "加利西亞語"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:672
 msgid "German"
 msgstr "德語"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:673
 msgid "Greek"
 msgstr "希臘語"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:674
 msgid "Hebrew"
 msgstr "希伯來語"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:675
 msgid "Hungarian"
 msgstr "匈牙利語"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:676
 msgid "Italian"
 msgstr "意大利語"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:677
 msgid "Italian (Swiss)"
 msgstr "意大利語 (瑞士)"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:678
 msgid "Japanese"
 msgstr "日語"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:679
 msgid "Korean"
 msgstr "韓語"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:680
 msgid "Lithuanian"
 msgstr "立托尼亞語"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:681
 msgid "Norwegian (Nynorsk)"
 msgstr "新挪威語"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:682
 msgid "Polish"
 msgstr "芬蘭語"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:683
 msgid "Portuguese"
 msgstr "葡萄牙語"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:684
 msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙語 (巴西)"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:685
 msgid "Russian"
 msgstr "俄語"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:686
 msgid "Slovenian"
 msgstr "斯洛文尼亞語"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:687
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:688
 msgid "Swedish"
 msgstr "瑞典語"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:689
 msgid "Turkish"
 msgstr "土耳其語"
 
-#: src/Preferences.cpp:822 src/muuli_wdr.cpp:2223
+#: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr ""
 
-#: src/Preferences.cpp:838
+#: src/Preferences.cpp:839
 msgid "User:"
 msgstr ""
 
-#: src/Preferences.cpp:864
+#: src/Preferences.cpp:865
 msgid "System:"
 msgstr ""
 
-#: src/Preferences.cpp:875
+#: src/Preferences.cpp:876
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1693
+#: src/Preferences.cpp:1694
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因爲服務器UDP端口值爲TCP端口值+3"
 
-#: src/Preferences.cpp:1694
+#: src/Preferences.cpp:1695
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口將被使用(%d)"
@@ -1702,247 +1702,247 @@ msgstr "您確定要刪除已選的服務器嗎？"
 msgid "Disabled [%s]"
 msgstr "已停用 [%s]"
 
-#: src/amuleDlg.cpp:213
+#: src/amuleDlg.cpp:214
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "這是aMule %s (基于 eMule)"
 
-#: src/amuleDlg.cpp:215
+#: src/amuleDlg.cpp:216
 #, c-format
 msgid "Running on %s"
 msgstr "運行于 %s"
 
-#: src/amuleDlg.cpp:217
+#: src/amuleDlg.cpp:218
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "請訪問 http://www.amule.org 以下載最新版本"
 
-#: src/amuleDlg.cpp:240
+#: src/amuleDlg.cpp:241
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr ""
 
-#: src/amuleDlg.cpp:458
+#: src/amuleDlg.cpp:459
 msgid "aMule remote control "
 msgstr "aMule 遠程控制"
 
-#: src/amuleDlg.cpp:464
+#: src/amuleDlg.cpp:465
 msgid "Snapshot:"
 msgstr "快照："
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:467
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:468
 msgid "Website: http://www.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:469
 msgid "Forum: http://forum.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:470
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:471
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:472
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:473
 msgid "Part of aMule is based on \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:474
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr " KAD：基於異或算法的點對點路由。\n"
 
-#: src/amuleDlg.cpp:474
-msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+#: src/amuleDlg.cpp:475
+msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:475
+#: src/amuleDlg.cpp:476
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:515
+#: src/amuleDlg.cpp:479 src/PrefsUnifiedDlg.cpp:515
 #: src/PrefsUnifiedDlg.cpp:610 src/PrefsUnifiedDlg.cpp:692 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:684
+#: src/amuleDlg.cpp:685
 msgid "eD2k: Connecting"
 msgstr ""
 
-#: src/amuleDlg.cpp:688
+#: src/amuleDlg.cpp:689
 msgid "eD2k: Disconnected"
 msgstr ""
 
-#: src/amuleDlg.cpp:694
+#: src/amuleDlg.cpp:695
 msgid "Kad: Firewalled"
 msgstr "Kad：有防火牆"
 
-#: src/amuleDlg.cpp:698
+#: src/amuleDlg.cpp:699
 msgid "Kad: Connected"
 msgstr "Kad：已建立連線"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:704
 msgid "Kad: Connecting"
 msgstr "Kad：正在連線"
 
-#: src/amuleDlg.cpp:707
+#: src/amuleDlg.cpp:708
 msgid "Kad: Off"
 msgstr "Kad：停止"
 
-#: src/amuleDlg.cpp:754
+#: src/amuleDlg.cpp:755
 msgid "Stop the current connection attempts"
 msgstr "終止連線嘗試"
 
-#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:760 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "中斷連線"
 
-#: src/amuleDlg.cpp:760
+#: src/amuleDlg.cpp:761
 msgid "Disconnect from the currently connected networks"
 msgstr "斷開網絡。"
 
-#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
+#: src/amuleDlg.cpp:766 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "連線"
 
-#: src/amuleDlg.cpp:766
+#: src/amuleDlg.cpp:767
 msgid "Connect to the currently enabled networks"
 msgstr "連接至網絡。"
 
-#: src/amuleDlg.cpp:824
+#: src/amuleDlg.cpp:825
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "上傳: %.1f(%.1f) | 下載: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:826
+#: src/amuleDlg.cpp:827
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "上傳: %.1f | 下載: %.1f"
 
-#: src/amuleDlg.cpp:852
+#: src/amuleDlg.cpp:853
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | 已連接)"
 
-#: src/amuleDlg.cpp:854
+#: src/amuleDlg.cpp:855
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | 已斷開)"
 
-#: src/amuleDlg.cpp:885
+#: src/amuleDlg.cpp:886
 msgid "Do you really want to exit aMule?"
 msgstr "您確定要關閉 aMule 嗎?"
 
-#: src/amuleDlg.cpp:886
+#: src/amuleDlg.cpp:887
 msgid "Exit confirmation"
 msgstr "離開確認"
 
-#: src/amuleDlg.cpp:1199
+#: src/amuleDlg.cpp:1200
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "皮膚目錄 '%s' 不存在"
 
-#: src/amuleDlg.cpp:1204
+#: src/amuleDlg.cpp:1205
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1305 src/amuleDlg.cpp:1466 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1306 src/amuleDlg.cpp:1467 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "網絡"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1308
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "搜尋"
 
-#: src/amuleDlg.cpp:1311
+#: src/amuleDlg.cpp:1312
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "傳輸檔案"
 
-#: src/amuleDlg.cpp:1315
+#: src/amuleDlg.cpp:1316
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1317
+#: src/amuleDlg.cpp:1318
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1319
+#: src/amuleDlg.cpp:1320
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "訊息"
 
-#: src/amuleDlg.cpp:1323
+#: src/amuleDlg.cpp:1324
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1325 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
+#: src/amuleDlg.cpp:1326 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
 #: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "統計"
 
-#: src/amuleDlg.cpp:1327
+#: src/amuleDlg.cpp:1328
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1332
+#: src/amuleDlg.cpp:1333
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "導入"
 
-#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "part文件導入工具"
 
-#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
 msgid "About"
 msgstr "關于"
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "關于/幫助"
 
-#: src/amuleDlg.cpp:1477
+#: src/amuleDlg.cpp:1478
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1481
+#: src/amuleDlg.cpp:1482
 msgid "Kad network"
 msgstr "kad 網絡"
 
-#: src/amuleDlg.cpp:1486
+#: src/amuleDlg.cpp:1487
 msgid "No network"
 msgstr "無網絡"
 
@@ -2733,73 +2733,73 @@ msgstr ""
 msgid "Unexpected error while attempting Kad search: "
 msgstr "嘗試 Kad 搜索時出現不可預料的錯誤："
 
-#: src/ClientTCPSocket.cpp:801
+#: src/ClientTCPSocket.cpp:800
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "來自 '%s'(IP：%s)的消息被過濾掉了"
 
-#: src/ClientTCPSocket.cpp:803
+#: src/ClientTCPSocket.cpp:802
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "新消息來自于 '%s'(IP:%s)"
 
-#: src/ClientTCPSocket.cpp:825
+#: src/ClientTCPSocket.cpp:824
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr "用戶 %s (%u) 請求您的共享文件列表 -> 已接受"
 
-#: src/ClientTCPSocket.cpp:846
+#: src/ClientTCPSocket.cpp:845
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr "用戶 %s (%u) 請求您的共享文件列表 -> 已拒絕"
 
-#: src/ClientTCPSocket.cpp:878
+#: src/ClientTCPSocket.cpp:877
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr "用戶 %s (%u) 請求了共享文件夾列表 -> 接受"
 
-#: src/ClientTCPSocket.cpp:918
+#: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr "用戶 %s (%u) 請求了共享文件夾列表 -> 拒絕"
 
-#: src/ClientTCPSocket.cpp:943
+#: src/ClientTCPSocket.cpp:942
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr "用戶 %s (%u) 請求目錄 %s 的共享文件列表 -> 已接受"
 
-#: src/ClientTCPSocket.cpp:980
+#: src/ClientTCPSocket.cpp:979
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr "用戶 %s (%u) 請求目錄 %s 的共享文件列表 -> 已拒絕"
 
-#: src/ClientTCPSocket.cpp:999
+#: src/ClientTCPSocket.cpp:998
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "使用者 %s (%u) 分享的檔案夾 %s"
 
-#: src/ClientTCPSocket.cpp:1014
+#: src/ClientTCPSocket.cpp:1013
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "用戶%s (%u) 發送了未經請求的共享文件夾列表"
 
-#: src/ClientTCPSocket.cpp:1029
+#: src/ClientTCPSocket.cpp:1028
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "使用者 %s (%u) 傳送了資料夾 %s 內的共享檔案清單"
 
-#: src/ClientTCPSocket.cpp:1036
+#: src/ClientTCPSocket.cpp:1035
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "使用者 %s (%u) 完成了共享檔案清單的傳送"
 
-#: src/ClientTCPSocket.cpp:1041
+#: src/ClientTCPSocket.cpp:1040
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "使用者 %s (%u) 傳送了未經請求的共享檔案清單"
 
-#: src/ClientTCPSocket.cpp:1053
+#: src/ClientTCPSocket.cpp:1052
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr "用戶 %s (%u) 拒絕了目錄/文件列表的訪問"
@@ -2936,7 +2936,7 @@ msgid "Transferred"
 msgstr "已傳輸"
 
 #: src/DownloadListCtrl.cpp:191 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
+#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:703
 msgid "Completed"
 msgstr "已完成"
 
@@ -3272,7 +3272,7 @@ msgstr "正在分配"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:3890 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3890 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:708
 msgid "Stopped"
 msgstr "已停止"
 
@@ -4070,38 +4070,38 @@ msgstr "需要確認"
 msgid "All others"
 msgstr "所有其它"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:701
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:702
 msgid "Incomplete"
 msgstr "未完成"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:714
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:715
 msgid "Active"
 msgstr "活動"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:708
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:709
 msgid "Video"
 msgstr "視訊"
 
 #: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:228
-#: src/OtherFunctions.cpp:709 src/muuli_wdr.cpp:225
+#: src/OtherFunctions.cpp:710 src/muuli_wdr.cpp:225
 msgid "Audio"
 msgstr "音樂"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:710
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:711
 msgid "Archive"
 msgstr "歸檔"
 
 #: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:242
-#: src/OtherFunctions.cpp:711 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:226
 msgid "CD-Images"
 msgstr "CD影像"
 
 #: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:249
-#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:713 src/muuli_wdr.cpp:227
 msgid "Pictures"
 msgstr "圖片"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:713
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:714
 msgid "Text"
 msgstr "純文字"
 
@@ -4365,11 +4365,11 @@ msgstr "好"
 msgid "Excellent"
 msgstr "優良"
 
-#: src/OtherFunctions.cpp:699
+#: src/OtherFunctions.cpp:700
 msgid "all"
 msgstr "所有"
 
-#: src/OtherFunctions.cpp:700
+#: src/OtherFunctions.cpp:701
 msgid "all others"
 msgstr "其它"
 

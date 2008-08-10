@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-03 03:30+0200\n"
+"POT-Creation-Date: 2008-08-10 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -66,22 +66,22 @@ msgid "Complete"
 msgstr "סיים"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3873
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:707
 msgid "Paused"
 msgstr "הושהה"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3876
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:706
 msgid "Erroneous"
 msgstr "שגוי"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3883
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:705
 msgid "Downloading"
 msgstr "מוריד מהרשת"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3885
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:704
 msgid "Waiting"
 msgstr "ממתין"
 
@@ -245,7 +245,7 @@ msgstr "האם אתה בטוח שאתה רוצה להסיר את החברים ש
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:753
+#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:754
 #: src/DownloadListCtrl.cpp:588 src/DownloadListCtrl.cpp:908
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454
@@ -683,7 +683,7 @@ msgstr "מוריד מהרשת..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1330
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1331
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3464
 msgid "Preferences"
 msgstr "העדפות"
@@ -1277,7 +1277,7 @@ msgstr "אוטומטי [לא]"
 msgid "Auto [Hi]"
 msgstr "אוטומטי [גבוה]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:540 src/ClientListCtrl.cpp:670
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:541 src/ClientListCtrl.cpp:670
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "מתחבר"
@@ -1385,170 +1385,170 @@ msgstr "מזריעי מקורות"
 msgid "Search Result"
 msgstr ""
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "System default"
 msgstr "ברירת מחדל של המערכת"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Albanian"
 msgstr "אלבני"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Arabic"
 msgstr "ערבית"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Basque"
 msgstr "בסקית"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Bulgarian"
 msgstr "בולגרית"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Catalan"
 msgstr "קטלונית"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Chinese (Simplified)"
 msgstr "סינית (מופשטת)"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Chinese (Traditional)"
 msgstr "סינית (מסורתית)"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Croatian"
 msgstr "קרואטית"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 msgid "Czech"
 msgstr "צ'כית"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Danish"
 msgstr "דנית"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Dutch"
 msgstr "הולנדית"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:667
 msgid "English (U.K.)"
 msgstr "אנגלית (בריטית)"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:668
 msgid "Estonian"
 msgstr "אסטונית"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:669
 msgid "Finnish"
 msgstr "פינית"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:670
 msgid "French"
 msgstr "צרפתית"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:671
 msgid "Galician"
 msgstr "גאלית"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:672
 msgid "German"
 msgstr "גרמנית"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:673
 msgid "Greek"
 msgstr "יוונית"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:674
 msgid "Hebrew"
 msgstr ""
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:675
 msgid "Hungarian"
 msgstr "הונגרית"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:676
 msgid "Italian"
 msgstr "איטלקית"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:677
 msgid "Italian (Swiss)"
 msgstr "איטלקית (שוויצרית)"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:678
 msgid "Japanese"
 msgstr "יפנית"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:679
 msgid "Korean"
 msgstr "קוראינית"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:680
 msgid "Lithuanian"
 msgstr "ליטאית"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:681
 msgid "Norwegian (Nynorsk)"
 msgstr "נורבגית (Nynorsk)"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:682
 msgid "Polish"
 msgstr "פונלית"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:683
 msgid "Portuguese"
 msgstr "פורטגזית"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:684
 msgid "Portuguese (Brazilian)"
 msgstr "פורטגזית (ברזילאית)"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:685
 msgid "Russian"
 msgstr "רוסית"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:686
 msgid "Slovenian"
 msgstr "סלובקית"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:687
 msgid "Spanish"
 msgstr "ספרדית"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:688
 msgid "Swedish"
 msgstr "שוודית"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:689
 msgid "Turkish"
 msgstr "טורקית"
 
-#: src/Preferences.cpp:822 src/muuli_wdr.cpp:2223
+#: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr ""
 
-#: src/Preferences.cpp:838
+#: src/Preferences.cpp:839
 msgid "User:"
 msgstr ""
 
-#: src/Preferences.cpp:864
+#: src/Preferences.cpp:865
 msgid "System:"
 msgstr ""
 
-#: src/Preferences.cpp:875
+#: src/Preferences.cpp:876
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1693
+#: src/Preferences.cpp:1694
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "מבואת ה TCP אינה יכולה להיות גבוהה יותר מ 65532 מאחר שמבואת ה UDP של השרת "
 "היא מבואת ה TCP +3"
 
-#: src/Preferences.cpp:1694
+#: src/Preferences.cpp:1695
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "נשתמש במבואה שבברירת מחדך (%d)"
@@ -1702,247 +1702,247 @@ msgstr "האם אתה בטוח שאתה מעוניין למחוק את כל הש
 msgid "Disabled [%s]"
 msgstr "נוטרל [%s]"
 
-#: src/amuleDlg.cpp:213
+#: src/amuleDlg.cpp:214
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "זהו אֵימיול %s המבוסס על אִמיול"
 
-#: src/amuleDlg.cpp:215
+#: src/amuleDlg.cpp:216
 #, c-format
 msgid "Running on %s"
 msgstr "פועל על %s"
 
-#: src/amuleDlg.cpp:217
+#: src/amuleDlg.cpp:218
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "בקר ב http://www.amule.org כדי לבדוק האם ישנה גירסה חדישה זמינה."
 
-#: src/amuleDlg.cpp:240
+#: src/amuleDlg.cpp:241
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr ""
 
-#: src/amuleDlg.cpp:458
+#: src/amuleDlg.cpp:459
 msgid "aMule remote control "
 msgstr "אימיול שלט רחוק"
 
-#: src/amuleDlg.cpp:464
+#: src/amuleDlg.cpp:465
 msgid "Snapshot:"
 msgstr "צילום:"
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:467
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:468
 msgid "Website: http://www.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:469
 msgid "Forum: http://forum.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:470
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:471
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:472
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:473
 msgid "Part of aMule is based on \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:474
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "קאדימליה: תקשורת עמית לעמית מנותבת המבוסס על ה XOR המטרי.\n"
 
-#: src/amuleDlg.cpp:474
-msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+#: src/amuleDlg.cpp:475
+msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:475
+#: src/amuleDlg.cpp:476
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:515
+#: src/amuleDlg.cpp:479 src/PrefsUnifiedDlg.cpp:515
 #: src/PrefsUnifiedDlg.cpp:610 src/PrefsUnifiedDlg.cpp:692 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "הודעה"
 
-#: src/amuleDlg.cpp:684
+#: src/amuleDlg.cpp:685
 msgid "eD2k: Connecting"
 msgstr ""
 
-#: src/amuleDlg.cpp:688
+#: src/amuleDlg.cpp:689
 msgid "eD2k: Disconnected"
 msgstr ""
 
-#: src/amuleDlg.cpp:694
+#: src/amuleDlg.cpp:695
 msgid "Kad: Firewalled"
 msgstr "קאד: חסום חומתאש"
 
-#: src/amuleDlg.cpp:698
+#: src/amuleDlg.cpp:699
 msgid "Kad: Connected"
 msgstr "קאד: מחובר"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:704
 msgid "Kad: Connecting"
 msgstr "קאד: מתחבר"
 
-#: src/amuleDlg.cpp:707
+#: src/amuleDlg.cpp:708
 msgid "Kad: Off"
 msgstr "קאד: מכובה"
 
-#: src/amuleDlg.cpp:754
+#: src/amuleDlg.cpp:755
 msgid "Stop the current connection attempts"
 msgstr "הפסק את ניסיונות ההתחברות הנוכחיים"
 
-#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:760 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "מנותק"
 
-#: src/amuleDlg.cpp:760
+#: src/amuleDlg.cpp:761
 msgid "Disconnect from the currently connected networks"
 msgstr "התנתק מהרשתות שאליהם אתה מחובר כעת"
 
-#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
+#: src/amuleDlg.cpp:766 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "התחבר"
 
-#: src/amuleDlg.cpp:766
+#: src/amuleDlg.cpp:767
 msgid "Connect to the currently enabled networks"
 msgstr "התחבר לרשתות שמאופשרות כרגע"
 
-#: src/amuleDlg.cpp:824
+#: src/amuleDlg.cpp:825
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "מעלה: %.1f(%.1f) | מוריד: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:826
+#: src/amuleDlg.cpp:827
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "מעלה: %.1f | מוריד: %.1f"
 
-#: src/amuleDlg.cpp:852
+#: src/amuleDlg.cpp:853
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "אימיול (%s | מחובר)"
 
-#: src/amuleDlg.cpp:854
+#: src/amuleDlg.cpp:855
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "אימיול (%s | מנותק)"
 
-#: src/amuleDlg.cpp:885
+#: src/amuleDlg.cpp:886
 msgid "Do you really want to exit aMule?"
 msgstr "האם אתה באמת רוצה לצאת מאימיול?"
 
-#: src/amuleDlg.cpp:886
+#: src/amuleDlg.cpp:887
 msgid "Exit confirmation"
 msgstr "אישרור יצאיה"
 
-#: src/amuleDlg.cpp:1199
+#: src/amuleDlg.cpp:1200
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "ספריית הסקינים '%s' לא קיימת"
 
-#: src/amuleDlg.cpp:1204
+#: src/amuleDlg.cpp:1205
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1305 src/amuleDlg.cpp:1466 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1306 src/amuleDlg.cpp:1467 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "רשתות"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1308
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "חיפושים"
 
-#: src/amuleDlg.cpp:1311
+#: src/amuleDlg.cpp:1312
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "העברות"
 
-#: src/amuleDlg.cpp:1315
+#: src/amuleDlg.cpp:1316
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1317
+#: src/amuleDlg.cpp:1318
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1319
+#: src/amuleDlg.cpp:1320
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "הודעות"
 
-#: src/amuleDlg.cpp:1323
+#: src/amuleDlg.cpp:1324
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1325 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
+#: src/amuleDlg.cpp:1326 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
 #: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "סטטיסטיקות"
 
-#: src/amuleDlg.cpp:1327
+#: src/amuleDlg.cpp:1328
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1332
+#: src/amuleDlg.cpp:1333
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "ייבא"
 
-#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "כלי הייבא עבור קובץ-החלקים"
 
-#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
 msgid "About"
 msgstr "אודות"
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "אודות/עזרה"
 
-#: src/amuleDlg.cpp:1477
+#: src/amuleDlg.cpp:1478
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1481
+#: src/amuleDlg.cpp:1482
 msgid "Kad network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1486
+#: src/amuleDlg.cpp:1487
 msgid "No network"
 msgstr ""
 
@@ -2738,73 +2738,73 @@ msgstr ""
 msgid "Unexpected error while attempting Kad search: "
 msgstr "שגיאה לא צפויה בעת ניסיון ביצוע חיפוש ב קאד: "
 
-#: src/ClientTCPSocket.cpp:801
+#: src/ClientTCPSocket.cpp:800
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "סוננה הודעה מ '%s'·(IP:%s)"
 
-#: src/ClientTCPSocket.cpp:803
+#: src/ClientTCPSocket.cpp:802
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "הודעה חדשה מ '%s'·(IP:%s)"
 
-#: src/ClientTCPSocket.cpp:825
+#: src/ClientTCPSocket.cpp:824
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr "המשתמש %s (%u) ביקש את רשימת הקבצים המשותפים שלך -> אושר"
 
-#: src/ClientTCPSocket.cpp:846
+#: src/ClientTCPSocket.cpp:845
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr "המשתמש %s (%u) ביקש את רשימת הקבצים המשותפים שלך -> נדחה"
 
-#: src/ClientTCPSocket.cpp:878
+#: src/ClientTCPSocket.cpp:877
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr "המשתמש %s (%u) ביקש את רשימת התקיות המשותפים שלך -> אושר"
 
-#: src/ClientTCPSocket.cpp:918
+#: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr "המשתמש %s (%u) ביקש את רשימת התקיות המשותפים שלך -> נדחה"
 
-#: src/ClientTCPSocket.cpp:943
+#: src/ClientTCPSocket.cpp:942
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr "המשתמש %s (%u) ביקש את רשימת הקבצים המשותפים שלך בתקיה %s -> אושר"
 
-#: src/ClientTCPSocket.cpp:980
+#: src/ClientTCPSocket.cpp:979
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr "המשתמש %s (%u) ביקש את רשימת הקבצים המשותפים שלך בתקייה %s -> נדחה"
 
-#: src/ClientTCPSocket.cpp:999
+#: src/ClientTCPSocket.cpp:998
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "משתמש %s·(%u) משתף את התקייה %s"
 
-#: src/ClientTCPSocket.cpp:1014
+#: src/ClientTCPSocket.cpp:1013
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "משתמש %s·(%u) שלח רשימת תקיות משותף בלי שהתבקש."
 
-#: src/ClientTCPSocket.cpp:1029
+#: src/ClientTCPSocket.cpp:1028
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "משתמש %s (%u) שלח רשימה של קבצים משותפים עבור הספריה %s"
 
-#: src/ClientTCPSocket.cpp:1036
+#: src/ClientTCPSocket.cpp:1035
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "משתמש %s (%u) סיים לשלוח את רשימת הקבצים המשותפים"
 
-#: src/ClientTCPSocket.cpp:1041
+#: src/ClientTCPSocket.cpp:1040
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "משתמש %s·(%u) שלח רשימה של קבצים משותפים מבלי שהתבקש"
 
-#: src/ClientTCPSocket.cpp:1053
+#: src/ClientTCPSocket.cpp:1052
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr "משתמש %s (%u) שלל גישה לרשימת הקבצים/תקיות שלו"
@@ -2941,7 +2941,7 @@ msgid "Transferred"
 msgstr "הועברו"
 
 #: src/DownloadListCtrl.cpp:191 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
+#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:703
 msgid "Completed"
 msgstr "הסתיים"
 
@@ -3275,7 +3275,7 @@ msgstr ""
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:3890 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3890 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:708
 msgid "Stopped"
 msgstr "נעצר"
 
@@ -4077,38 +4077,38 @@ msgstr "זקוק לאישור."
 msgid "All others"
 msgstr "כל האחרים"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:701
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:702
 msgid "Incomplete"
 msgstr "חלקי"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:714
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:715
 msgid "Active"
 msgstr "פןעל"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:708
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:709
 msgid "Video"
 msgstr "ווידאו"
 
 #: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:228
-#: src/OtherFunctions.cpp:709 src/muuli_wdr.cpp:225
+#: src/OtherFunctions.cpp:710 src/muuli_wdr.cpp:225
 msgid "Audio"
 msgstr "אודיו"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:710
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:711
 msgid "Archive"
 msgstr "ארכיב"
 
 #: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:242
-#: src/OtherFunctions.cpp:711 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:226
 msgid "CD-Images"
 msgstr "אימג' של סי.די."
 
 #: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:249
-#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:713 src/muuli_wdr.cpp:227
 msgid "Pictures"
 msgstr "תמונות"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:713
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:714
 msgid "Text"
 msgstr "טקסט"
 
@@ -4374,11 +4374,11 @@ msgstr "טוב"
 msgid "Excellent"
 msgstr "מצויין"
 
-#: src/OtherFunctions.cpp:699
+#: src/OtherFunctions.cpp:700
 msgid "all"
 msgstr "הכול"
 
-#: src/OtherFunctions.cpp:700
+#: src/OtherFunctions.cpp:701
 msgid "all others"
 msgstr "כל האחרים"
 
