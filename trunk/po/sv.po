@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-10 03:30+0200\n"
+"POT-Creation-Date: 2008-08-11 03:30+0200\n"
 "PO-Revision-Date: 2007-03-12 22:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -1287,7 +1287,8 @@ msgstr "Ansluter via server"
 msgid "Queue Full"
 msgstr ""
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:687
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/KnownFile.cpp:1365
+#: src/ClientListCtrl.cpp:687
 msgid "On Queue"
 msgstr ""
 
@@ -4121,7 +4122,7 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: src/KnownFile.cpp:1365
+#: src/KnownFile.cpp:1366
 msgid "Complete sources"
 msgstr ""
 

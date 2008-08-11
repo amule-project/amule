@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-10 03:30+0200\n"
+"POT-Creation-Date: 2008-08-11 03:30+0200\n"
 "PO-Revision-Date: 2004-04-08 00:30+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
@@ -1291,7 +1291,8 @@ msgstr "Spaja preko servera"
 msgid "Queue Full"
 msgstr "Pun red cekanja"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:687
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/KnownFile.cpp:1365
+#: src/ClientListCtrl.cpp:687
 msgid "On Queue"
 msgstr "U redu cekanja"
 
@@ -4116,7 +4117,7 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: src/KnownFile.cpp:1365
+#: src/KnownFile.cpp:1366
 msgid "Complete sources"
 msgstr ""
 

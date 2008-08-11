@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-10 03:30+0200\n"
+"POT-Creation-Date: 2008-08-11 03:30+0200\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -1314,7 +1314,8 @@ msgstr "Povezovanje preko strežnika"
 msgid "Queue Full"
 msgstr "Vrsta polna"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:687
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/KnownFile.cpp:1365
+#: src/ClientListCtrl.cpp:687
 msgid "On Queue"
 msgstr "V vrsti"
 
@@ -4221,7 +4222,7 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: src/KnownFile.cpp:1365
+#: src/KnownFile.cpp:1366
 msgid "Complete sources"
 msgstr ""
 
