@@ -26,6 +26,9 @@ Version 2.3.0 - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
+	myth:
+		* Feedback from shared files - add number of clients on queue.
+
 	Stu Redman:
 		* Sort source list on opening and add file name to A4AF files
 		* Adjust displayed download rates for files and sources 

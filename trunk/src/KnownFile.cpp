@@ -1362,6 +1362,7 @@ wxString CKnownFile::GetFeedback() const
 		+ _("Uploaded") + wxT(": ") + CastItoXBytes(statistic.GetTransferred()) + wxT(" (") + CastItoXBytes(statistic.GetAllTimeTransferred()) + wxT(")\n")
 		+ _("Requested") + CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
 		+ _("Accepted") + CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
+		+ _("On Queue") + CFormat(wxT(": %u\n")) % GetQueuedCount()
 		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
 }
 // File_checked_for_headers
