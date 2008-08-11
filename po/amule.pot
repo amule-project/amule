@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-10 03:30+0200\n"
+"POT-Creation-Date: 2008-08-11 03:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1285,7 +1285,8 @@ msgstr ""
 msgid "Queue Full"
 msgstr ""
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:687
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/KnownFile.cpp:1365
+#: src/ClientListCtrl.cpp:687
 msgid "On Queue"
 msgstr ""
 
@@ -4093,7 +4094,7 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: src/KnownFile.cpp:1365
+#: src/KnownFile.cpp:1366
 msgid "Complete sources"
 msgstr ""
 
