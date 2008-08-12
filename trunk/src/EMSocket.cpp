@@ -237,7 +237,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 	// Bandwidth control
 	if(downloadLimitEnable == true){
 		// Update limit
-		//downloadLimit -= GetRealReceivedBytes();
+		downloadLimit -= GetRealReceivedBytes();
 	}
 
 	// CPU load improvement
