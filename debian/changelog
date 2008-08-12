@@ -1,3 +1,9 @@
+amule (2.2.2-1) testing; urgency=low
+
+  * New Upstream Release
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 08 Aug 2008 16:21:02 +0100
+
 amule (2.2.1+CVS20080802) testing; urgency=low
 
   * debian/control

@@ -48,6 +48,7 @@ datadir = @datadir@/g' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Mak
         sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\
 datadir = @datadir@/g' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
     fi
+sed -e '/^clean:/a\\trm -f *.gmo' < po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
 #    if [ -f Makefile -a -x config.status ]; then
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
 #    fi
