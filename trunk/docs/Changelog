@@ -35,9 +35,9 @@ Version 2.3.0 - The river knows.
 		  so that the sum matches the total download rate.
 
 	Vollstrecker:
-		* Made possible to deactivate xas
-		* Various Updates in debian/ see debian/changelog
 		* Unify copyright lines
+		* Fixed clean and distclean targets for make
+		* Various Updates in debian/ see debian/changelog
 
 	Wuischke:
 		* Simplify browser selection
@@ -153,6 +153,10 @@ Version 2.2.2 - The "Similarity." version.
 		* Download List sorted on startup
 		* Splitter bar position in transfer window is restored again
 		* Fixed a GDI resource leak for Windows
+
+	Vollstrecker:
+		* Made possible to deactivate xas
+		* Various Updates in debian/ see debian/changelog
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
