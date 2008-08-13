@@ -150,7 +150,7 @@ EOL ("\r"|"\n"|"\r\n")
 
 "include" BEGIN(INCLUDE);
 <INCLUDE>[ \t]*
-<INCLUDE>\'[a-zA-Z_][a-zA-Z0-9_\.]*\' {
+<INCLUDE>\'[a-zA-Z_][a-zA-Z0-9_\.\-]*\' {
 	yytext[strlen(yytext)-1] = 0;
 	if ( php_include_stack_ptr >= MAX_INCLUDE_DEPTH ) {
 		fprintf( stderr, "WARNING: maximum include depth (which is %d) exceed", MAX_INCLUDE_DEPTH);
