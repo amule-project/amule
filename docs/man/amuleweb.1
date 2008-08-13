@@ -1,11 +1,11 @@
-.TH AMULEWEB 1 "January 2007" "aMule webserver v2.2.0" "aMule utilities"
+.TH AMULEWEB 1 "August 2008" "aMule webserver v2.2.2" "aMule utilities"
 .SH NAME
 amuleweb \- aMule web server
 .SH SYNOPSIS
 .B amuleweb
 .RB [ \-h " " \fI<host> ]
 .RB [ \-p " " \fI<port> ]
-.RB [ \-P " " \fI<pass> ]
+.RB [ \-P " " \fI<passwd> ]
 .RB [ \-f " " \fI<path> ]
 .RB [ \-q ]
 .RB [ \-v ]
@@ -13,6 +13,8 @@ amuleweb \- aMule web server
 .RB [ \-w ]
 .RB [ \-t " " \fI<name> ]
 .RB [ \-s " " \fI<port> ]
+.RB [ \-u ]
+.RB [ \-U ]
 .RB [ \-z ]
 .RB [ \-Z ]
 .RB [ \-A " " \fI<pass> ]
@@ -34,75 +36,81 @@ amuleweb \- aMule web server
 .PP
 .B amuleweb \-\-no\-php
 .SH DESCRIPTION
-\fBamuleweb\fR manages your access to amule through a webbrowser.
+\fBamuleweb\fR manages your access to amule through a web browser.
 You can start amuleweb together with \fBamule\fR(1), or separately, any time later.
 Options can be specified via command-line or via config-file.
 Command-line options take precedence over config-file options.
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
 Host where aMule is running (default: \fIlocalhost\fR).
-\fI<host>\fR might be an IP address or a DNS name
+\fI<host>\fR might be an IP address or a DNS name.
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-aMule's port for External Connections, as set in Preferences->Remote Controls (default: \fI4712\fR)
+aMule's port for External Connections, as set in Preferences->Remote Controls (default: \fI4712\fR).
 .TP
-\fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR
-External Connections password
+\fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR.
+External Connections password.
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-Use the given configuration file.
-Default configuration file is \fI~/.aMule/remote.conf\fR
+Uses the given configuration file.
+Default configuration file is \fI~/.aMule/remote.conf\fR .
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-Do not print any output to stdout.
-You may want to use \fB\-q\fR to daemonize the webserver, i.e. running as '\fBamuleweb \-q &\fR'
+Does not print any output to stdout.
+You may want to use \fB\-q\fR to daemonize the webserver, i.e. running as '\fBamuleweb \-q &\fR'.
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-Be verbose \- show also debug messages
+Be verbose \- show also debug messages.
 .TP
 \fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
 Sets program locale (language).
 See section \fBLANGUAGES\fR for the description of the \fI<lang>\fR parameter.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-Write command line options to config file and exit
+Writes command line options to config file and exit.
 .TP
 \fB\-\-create\-config\-from\fR=\fI<path>\fR
-Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit
+Creates config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
 .TP
 \fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
 Loads the template named \fI<name>\fR. See also the section
-.B SKIN SUPPORT
+.B SKIN SUPPORT.
 .TP
 \fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
-Webserver's HTTP port. This is the port you can point your browser to (default: \fI4711\fR)
+Webserver's HTTP port. This is the port you can point your browser to (default: \fI4711\fR).
+.TP
+\fB\-z\fR, \fB\-\-enable\-upnp\fR
+Enables use of UPnP port forwarding on web server port.
+.TP
+\fB\-U\fR, \fB\-\-upnp\-port\fR
+UPnP port.
 .TP
 \fB\-z\fR, \fB\-\-enable\-gzip\fR
-Enable using gzip compression in HTTP traffic to save bandwidth
+Enables using gzip compression in HTTP traffic to save bandwidth.
 .TP
 \fB\-Z\fR, \fB\-\-disable\-gzip\fR
-Disable using gzip compression (this is the default)
+Disables using gzip compression (this is the default).
 .TP
 \fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
-Full access password for webserver
+Full access password for webserver.
 .TP
 \fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
-Guest password for webserver
+Guest password for webserver.
 .TP
 \fB\-a\fR, \fB\-\-allow\-guest\fR
-Allow guest access
+Allows guest access.
 .TP
 \fB\-d\fR, \fB\-\-deny\-guest\fR
-Deny guest access (default)
+Denies guest access (default).
 .TP
 \fB\-L\fR, \fB\-\-load\-settings\fR
 Load/save webserver settings from/to remote aMule.
 This causes amuleweb to ignore command-line and config-file settings, and load them from aMule.
 When saving preferences none will be written to the config file, but to aMule.
-(Of course, this works only for those settings, that can be set in aMule's Preferences->Remote Controls)
+(Of course, this works only for those settings that can be set in aMule's Preferences->Remote Controls.)
 .TP
 \fB\-N\fR, \fB\-\-no\-script\-cache\fR
-Recompile PHP pages on each request
+Recompiles PHP pages on each request.
 .TP
 \fB\-\-amule\-config\-file\fR=\fI<path>\fR
 aMule config file path.

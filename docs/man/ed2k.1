@@ -1,4 +1,4 @@
-.TH ED2K "1" "January 2007" "aMule ED2k link parser v1.2.0" "aMule utilities"
+.TH ED2K "1" "August 2008" "aMule ED2k link parser v1.4.1" "aMule utilities"
 .SH NAME
 ed2k \- aMule ED2k link parser
 .SH SYNOPSIS
@@ -8,9 +8,10 @@ ed2k \- aMule ED2k link parser
 .B ed2k
 .RB [ \-\-help ]
 .RB [ \-\-config\-dir, \-c ]
+.RB [ \-\-emulecollection, \-e ]
 .RB [ \-\-version ]
 .SH DESCRIPTION
-aMule ED2k link parser v1.1.0.
+aMule ED2k link parser v1.4.1.
 Sends the given \fI<ED2k_link>\fR to aMule, i.e. writes it to the file ~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
 \fBed2k\fR accepts file, server and serverlist links.
 .SS "Usage:"
@@ -20,6 +21,9 @@ Prints a short usage description.
 .TP
 \fB\-c\fR, \fB\-\-config\-dir\fR=\fI<dir>\fR 
 Specifies the aMule configuration directory. This must be writeable by the user running \fBed2k\fR.
+.TP
+\fB\-e\fR, \fB\-\-emulecollection \fI<file>\fR
+Loads all links of the emulecollection passed as parameter.
 .TP
 \fB\-\-version\fR
 Displays the current version number.

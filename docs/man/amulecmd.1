@@ -1,4 +1,4 @@
-.TH AMULECMD 1 "January 2007" "aMuleCmd v2.2.0" "aMule utilities"
+.TH AMULECMD 1 "August 2008" "aMuleCmd v2.2.2" "aMule utilities"
 .SH NAME
 amulecmd \- Console-based program to control aMule
 .SH SYNOPSIS
@@ -39,7 +39,7 @@ Use the given configuration file.
 Default configuration file is \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-Ddo not print any output to stdout. This seems to be a very much useless option with \fBamulecmd\fR.
+Do not print any output to stdout. This seems to be a very much useless option with \fBamulecmd\fR.
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
 Be verbose \- show also debug messages
@@ -63,15 +63,15 @@ Prints a short usage description.
 \fB\-\-version\fR
 Displays the current version number.
 .SH COMMANDS
-All commands are case insensitive
+All commands are case insensitive.
 .SS \fBAdd\fR <ed2k-link>
-Adds an ed2k-linkto the core.
+Adds an ed2k-link to the core.
 
 The ed2k link to be added can be:
 .br
-*) a file link (ed2k://|file|...), it will be added to the download queue,
+*) a file link (ed2k://|file|...), it will be added to the download queue;
 .br
-*) a server link (ed2k://|server|...), it will be added to the server list,
+*) a server link (ed2k://|server|...), it will be added to the server list;
 .br
 *) or a serverlist link, in which case all servers in the list will be added to the server list.
 
@@ -91,10 +91,10 @@ resolvable DNS name.
 When giving kad, it connects to Kad only.
 .SS \fBDisconnect\fR (ed2k|kad)
 
-Disconnect from all networks you are cionnected to, or just disconnect from the
+Disconnect from all networks you are connected to, or just disconnect from the
 specified network.
 .SS \fBDownload\fR num
-Start downloading a file
+Start downloading a file.
 
 The number of a file from the last search has to be given.
 Example: 'download 12' will start to download the file with the number 12 of the
@@ -106,7 +106,7 @@ Disconnect from amule/amuled and quit amulecmd.
 .SS \fBGet\fR value
 Get and display a preference value.
 
-This command is incomplete, aviable values are listed below.
+This command is incomplete, available values are listed below.
 
 Available values to get:
 .br
@@ -115,12 +115,12 @@ BwLimits	Get bandwidth limits.
 IPFilter	Get IPFilter preferences.
 .SS \fBHelp\fR <command>
 Get a short help.
-If called without parameter, it shows a list of aviable commands.
+If called without parameter, it shows a list of available commands.
 If called with <command>, it shows a short description of the given command.
 .SS \fBPause\fR <hash>
 Pauses the download specified by hash. To get the hash use \fIshow\fR.
 .SS \fBProgress\fR
-Shows the progress of an ongiong search.
+Shows the progress of an on\-going search.
 
 This command can't have an argument.
 .SS \fBQuit\fR
@@ -130,7 +130,7 @@ This command can't have an argument.
 .SS \fBReload\fR
 Reloads a given object.
 
-This command is incomplete, aviable values are listed below.
+This command is incomplete, available values are listed below.
 
 Available values to get:
 .br
@@ -152,7 +152,7 @@ Makes a search for the given file. A searchtype and a file to search is mandator
 to do this.
 \fIExample\fR 'search kad amule' performs a kad search for amule.
 
-Aviable searchtypes:
+Available searchtypes:
 .br
 global	performs a global search
 .br
@@ -162,7 +162,7 @@ local	performs a local search
 .SS \fBSet\fR <value>
 Sets a given preferences value.
 
-This command is incomplete, aviable values are listed below.
+This command is incomplete, available values are listed below.
 
 Available values to get:
 .br
@@ -170,7 +170,7 @@ BwLimits	Set bandwidth limits.
 .br
 IPFilter	Set IPFilter preferences.
 .SS \fBShow\fR DL|Log|Servers|UL
-Shows upload/download queue, server list or shared files list.
+Shows upload/download queue, servers list or shared files list.
 
 This command must have an argument.
 

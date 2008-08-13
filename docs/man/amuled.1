@@ -1,4 +1,4 @@
-.TH AMULED 1 "January 2007" "aMule Daemon v2.2.0" "aMule Daemon"
+.TH AMULED 1 "August 2008" "aMule Daemon v2.2.2" "aMule Daemon"
 .SH NAME
 amuled \- the all\-platform eMule p2p client \- daemonized version
 .SH SYNOPSIS
@@ -8,6 +8,7 @@ amuled \- the all\-platform eMule p2p client \- daemonized version
 .RB [ \-i ]
 .RB [ \-f ]
 .RB [ \-c " " \fI<dir> ]
+.RB [ \-e ]
 .RB [ \-d ]
 .RB [ \-o ]
 .RB [ \-r ]
@@ -24,16 +25,22 @@ Prints a short usage description.
 Does not disable stdin.
 .TP
 \fB\-f\fR, \fB\-\-full\-daemon\fR
-Fork to Background
+Forks to background.
 .TP
 \fB\-c\fR, \fB\-\-config\-dir\fR=\fI<dir>\fR
-Read config from <dir> instead of home.
+Reads config from <dir> instead of home.
+.TP
+\fB\-e\fR, \fB\-\-ec\-config\fR
+Configures EC (External Connections).
 .TP
 \fB\-d\fR, \fB\-\-disable\-fatal\fR
 Does not handle fatal exception.
 .TP
 \fB-o\fR, \fB\-\-log\-stdout\fR
-Print log messages to stdout.
+Prints log messages to stdout.
+.TP
+\fB-r\fR, \fB\-\-reset\-config\fR
+Resets config to default values.
 .SH FILES
 ~/.aMule/*
 .SH REPORTING BUGS

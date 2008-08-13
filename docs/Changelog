@@ -26,6 +26,9 @@ Version 2.3.0 - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
+	morph:
+		* Patch to uniform and fix minor errors on man pages
+
 	myth:
 		* Feedback from shared files - add number of clients on queue.
 
