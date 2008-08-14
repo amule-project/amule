@@ -101,20 +101,16 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Hostname(host);
 	addr.Service(port);
 
-	if ( !ConnectSocket(addr) ) {
-		return false;
-	}
-	
-	// if we're using blocking calls - enter login sequence now. Else, 
-	// we will wait untill OnConnect gets called
-	if ( !m_notifier ) {
+	if (ConnectSocket(addr)) {
 		CECLoginPacket login_req(m_connectionPassword, m_client, m_version);
 		std::auto_ptr<const CECPacket> reply(SendRecvPacket(&login_req));
 		return ConnectionEstablished(reply.get());
-	} else {
+	} else if (m_notifier) {
 		m_ec_state = EC_CONNECT_SENT;
+	} else {
+		return false;
 	}
-	
+
 	return true;
 }
 
@@ -130,14 +126,12 @@ void CRemoteConnect::OnConnect() {
 	}
 }
 
-void CRemoteConnect::OnClose() {
+void CRemoteConnect::OnLost() {
 	if (m_notifier) {
 		// Notify app of failure
 		wxECSocketEvent event(wxEVT_EC_CONNECTION,false,_("Connection failure"));
 		m_notifier->AddPendingEvent(event);
 	}
-	// FIXME: wtf is that ?
-	//CECSocket::OnClose();
 }
 
 const CECPacket *CRemoteConnect::OnPacketReceived(const CECPacket *packet)
