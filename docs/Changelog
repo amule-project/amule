@@ -41,6 +41,7 @@ Version 2.3.0 - The river knows.
 		* Unify copyright lines
 		* Fixed clean and distclean targets for make
 		* Various Updates in debian/ see debian/changelog
+		* Added crash handling in command-line tools
 
 	Wuischke:
 		* Simplify browser selection
