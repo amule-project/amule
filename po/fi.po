@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-11 03:30+0200\n"
+"POT-Creation-Date: 2008-08-15 03:30+0200\n"
 "PO-Revision-Date: 2008-06-12 18:58+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -25,31 +25,31 @@ msgstr "Salasana ei voi olla tyhjä."
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Virheellinen salasana, ei MD5-tarkiste!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:136
+#: src/libs/ec/cpp/RemoteConnect.cpp:132
 msgid "Connection failure"
 msgstr "Yhdistäminen ei onnistunut"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:188
 msgid "EC connection failed. Empty reply."
 msgstr "Etäyhteysyritys epäonnistui. Vastaus oli tyhjä."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:200
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "External Connection: Access denied because: "
 msgstr "Etäyhteys: Pääsy evättiin: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:203
+#: src/libs/ec/cpp/RemoteConnect.cpp:197
 msgid "External Connection: Access denied"
 msgstr "Etäyhteys: Pääsy evättiin"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:207
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr "Etäyhteys: Epäkelpo vastaus palvelimelta. Yhteys suljettu."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:211
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "Succeeded! Connection established to aMule "
 msgstr "Yhdistetty onnistuneesti kohteeseen aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:214
+#: src/libs/ec/cpp/RemoteConnect.cpp:208
 msgid "Succeeded! Connection established."
 msgstr "Yhdistetty onnistuneesti."
 
@@ -6186,17 +6186,17 @@ msgstr ""
 "Komennot eivät erottele isoja ja pieniä kirjaimia.\n"
 "Kirjoita '%s <komento>' saadaksesi lisätietoa komennosta.\n"
 
-#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
+#: src/ExternalConnector.cpp:228 src/ExternalConnector.cpp:229
 msgid "Exits from the application."
 msgstr "Poistuu sovelluksesta."
 
-#: src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:230
 msgid "Show help."
 msgstr "Näyttää ohjeen."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:221
+#: src/ExternalConnector.cpp:233
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6204,7 +6204,7 @@ msgstr ""
 "Saadaksesi ohjeen komennosta, kirjoita 'help <komento>'.\n"
 "Saadaksesi listan komennoista kirjoita 'help'.\n"
 
-#: src/ExternalConnector.cpp:242
+#: src/ExternalConnector.cpp:254
 #, c-format
 msgid ""
 "\n"
@@ -6215,48 +6215,48 @@ msgstr ""
 "Käytä '%s' listataksesi komennot\n"
 "\n"
 
-#: src/ExternalConnector.cpp:272
+#: src/ExternalConnector.cpp:284
 msgid "Syntax error!"
 msgstr "Syntaksivirhe!"
 
-#: src/ExternalConnector.cpp:275
+#: src/ExternalConnector.cpp:287
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Virhe käsiteltäessä komentoa - näin ei pitäisi tapahtua! Ole hyvä ja "
 "raportoi tästä\n"
 
-#: src/ExternalConnector.cpp:278
+#: src/ExternalConnector.cpp:290
 msgid "This command should not have any parameters."
 msgstr "Tämä komento ei tarvitse parametreja."
 
-#: src/ExternalConnector.cpp:281
+#: src/ExternalConnector.cpp:293
 msgid "This command must have a parameter."
 msgstr "Tälle komennolle on annettava parametri."
 
-#: src/ExternalConnector.cpp:284
+#: src/ExternalConnector.cpp:296
 msgid "Invalid argument."
 msgstr "Virheellinen parametri."
 
-#: src/ExternalConnector.cpp:287
+#: src/ExternalConnector.cpp:299
 msgid "This is an incomplete command."
 msgstr "Komento on puutteellinen."
 
-#: src/ExternalConnector.cpp:296
+#: src/ExternalConnector.cpp:308
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Kirjoita '%s' saadaksesi lisää ohjeita.\n"
 
-#: src/ExternalConnector.cpp:361
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Tämä on %s %s %s\n"
 
-#: src/ExternalConnector.cpp:363
+#: src/ExternalConnector.cpp:366
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Tämä on %s %s\n"
 
-#: src/ExternalConnector.cpp:394
+#: src/ExternalConnector.cpp:397
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6264,11 +6264,12 @@ msgstr ""
 "\n"
 "Luon asiakasta...\n"
 
-#: src/ExternalConnector.cpp:404
-msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr "Yhteysyritys epäonnistui. Annettuun isäntään ei saatu yhteyttä\n"
+#: src/ExternalConnector.cpp:403
+#, c-format
+msgid "Connection Failed. Unable to connect to %s:%d\n"
+msgstr ""
 
-#: src/ExternalConnector.cpp:415
+#: src/ExternalConnector.cpp:414
 #, c-format
 msgid ""
 "\n"
@@ -6277,7 +6278,7 @@ msgstr ""
 "\n"
 "Ok, suljen %s...\n"
 
-#: src/ExternalConnector.cpp:420
+#: src/ExternalConnector.cpp:419
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6291,47 +6292,47 @@ msgstr ""
 "\n"
 "Suljen...\n"
 
-#: src/ExternalConnector.cpp:427
+#: src/ExternalConnector.cpp:426
 msgid "Show this help text."
 msgstr "Näytä tämä ohje."
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:429
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Isäntäkone jossa aMule on käynnissä. (oletus: localhost)"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:432
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMulen portti etäyhteydelle. (oletus: 4712)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:435
 msgid "External Connection password."
 msgstr "Etäyhteyden salasana."
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:438
 msgid "Read configuration from file."
 msgstr "Lue asetukset tiedostosta."
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:441
 msgid "Do not print any output to stdout."
 msgstr "Älä tulosta mitään stdout:iin."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:444
 msgid "Be verbose - show also debug messages."
 msgstr "Ole monisanainen - näytä myös virheenetsintäviestit."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:447
 msgid "Sets program locale (language)."
 msgstr "Asettaa ohjelman maa-asetukset (kielen)."
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:450
 msgid "Write command line options to config file."
 msgstr "Kirjoita komentoriviparametrit asetustiedostoon."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:453
 msgid "Creates config file based on aMule's config file."
 msgstr "Luo asetustiedoston perustuen aMulen asetustiedostoon."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:456
 msgid "Print program version."
 msgstr "Näyttää ohjelman version."
 
@@ -7098,6 +7099,9 @@ msgstr "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua luettavaksi!"
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua kirjoitettavaksi!"
+
+#~ msgid "Connection Failed. Unable to connect to the specified host\n"
+#~ msgstr "Yhteysyritys epäonnistui. Annettuun isäntään ei saatu yhteyttä\n"
 
 #~ msgid "Message Filter"
 #~ msgstr "Viestisuodatin"

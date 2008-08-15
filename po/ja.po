@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-11 03:30+0200\n"
+"POT-Creation-Date: 2008-08-15 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -23,31 +23,31 @@ msgstr "空のパスワードは無効です。"
 msgid "Invalid password, not a MD5 hash!"
 msgstr "不正なパスワード、 MD5ハッシュではありません！"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:136
+#: src/libs/ec/cpp/RemoteConnect.cpp:132
 msgid "Connection failure"
 msgstr "接続に失敗しました"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:188
 msgid "EC connection failed. Empty reply."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:200
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "External Connection: Access denied because: "
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:203
+#: src/libs/ec/cpp/RemoteConnect.cpp:197
 msgid "External Connection: Access denied"
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:207
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:211
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "Succeeded! Connection established to aMule "
 msgstr "成功です！aMuleへの接続を確立しました "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:214
+#: src/libs/ec/cpp/RemoteConnect.cpp:208
 msgid "Succeeded! Connection established."
 msgstr "成功です！接続を確立しました。"
 
@@ -6118,17 +6118,17 @@ msgstr ""
 "すべてのコマンドは大文字と小文字を区別しません。\n"
 "'%s <コマンド>'を入力すると<コマンド>の詳細情報が表示されます。\n"
 
-#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
+#: src/ExternalConnector.cpp:228 src/ExternalConnector.cpp:229
 msgid "Exits from the application."
 msgstr "アプリケーションが終了します。"
 
-#: src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:230
 msgid "Show help."
 msgstr "ヘルプを表示します。"
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:221
+#: src/ExternalConnector.cpp:233
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6136,7 +6136,7 @@ msgstr ""
 "コマンドに対してヘルプを得るためには'help ＜コマンド＞'を入力してください。\n"
 "全てのコマンドのリストを得るためには'help'を入力してください。\n"
 
-#: src/ExternalConnector.cpp:242
+#: src/ExternalConnector.cpp:254
 #, c-format
 msgid ""
 "\n"
@@ -6147,48 +6147,48 @@ msgstr ""
 "コマンド・リストには'%s'を使用してください\n"
 "\n"
 
-#: src/ExternalConnector.cpp:272
+#: src/ExternalConnector.cpp:284
 msgid "Syntax error!"
 msgstr "シンタックス・エラー！"
 
-#: src/ExternalConnector.cpp:275
+#: src/ExternalConnector.cpp:287
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "コマンドを処理する時にエラーが発生しました。これはありえない！バッグをリポー"
 "トしてください\n"
 
-#: src/ExternalConnector.cpp:278
+#: src/ExternalConnector.cpp:290
 msgid "This command should not have any parameters."
 msgstr "このコマンドには引数が認められていません。"
 
-#: src/ExternalConnector.cpp:281
+#: src/ExternalConnector.cpp:293
 msgid "This command must have a parameter."
 msgstr "このコマンドには引数が不可欠です。"
 
-#: src/ExternalConnector.cpp:284
+#: src/ExternalConnector.cpp:296
 msgid "Invalid argument."
 msgstr "引数が不正です。"
 
-#: src/ExternalConnector.cpp:287
+#: src/ExternalConnector.cpp:299
 msgid "This is an incomplete command."
 msgstr "このコマンドは不完全です。"
 
-#: src/ExternalConnector.cpp:296
+#: src/ExternalConnector.cpp:308
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "'%s'を入力して、ヘルプを得てください。\n"
 
-#: src/ExternalConnector.cpp:361
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "これは %s %s %s　です\n"
 
-#: src/ExternalConnector.cpp:363
+#: src/ExternalConnector.cpp:366
 #, c-format
 msgid "This is %s %s\n"
 msgstr "これは %s %s　です\n"
 
-#: src/ExternalConnector.cpp:394
+#: src/ExternalConnector.cpp:397
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6196,11 +6196,12 @@ msgstr ""
 "\n"
 "クライアントを生成中です…\n"
 
-#: src/ExternalConnector.cpp:404
-msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr "接続に失敗しました。指示されたホストには接続はできませんでし。\n"
+#: src/ExternalConnector.cpp:403
+#, c-format
+msgid "Connection Failed. Unable to connect to %s:%d\n"
+msgstr ""
 
-#: src/ExternalConnector.cpp:415
+#: src/ExternalConnector.cpp:414
 #, c-format
 msgid ""
 "\n"
@@ -6209,7 +6210,7 @@ msgstr ""
 "\n"
 "OK、%s を終了中です…\n"
 
-#: src/ExternalConnector.cpp:420
+#: src/ExternalConnector.cpp:419
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6223,47 +6224,47 @@ msgstr ""
 "\n"
 "終了中です…\n"
 
-#: src/ExternalConnector.cpp:427
+#: src/ExternalConnector.cpp:426
 msgid "Show this help text."
 msgstr "このヘルプ・テキストを表示する。"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:429
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "aMuleが起動しているホストです。（デフォルト：localhost）"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:432
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMuleの外接続用のポート。（デフォルト：4712）"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:435
 msgid "External Connection password."
 msgstr "外接続用のパスワード。"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:438
 msgid "Read configuration from file."
 msgstr "設定をファイルから読み込む。"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:441
 msgid "Do not print any output to stdout."
 msgstr "アウトプットをstdoutにプリンとしないように。"
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:444
 msgid "Be verbose - show also debug messages."
 msgstr "冗長にして：デバッグ・メッセージも表示する。"
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:447
 msgid "Sets program locale (language)."
 msgstr "プログラム・ロカールを設定する（言語）。"
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:450
 msgid "Write command line options to config file."
 msgstr "コマンド・ライン・オプションを設定ファイルに書き込む。"
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:453
 msgid "Creates config file based on aMule's config file."
 msgstr "aMuleの設定ファイルを元に設定ファイルを生成する。"
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:456
 msgid "Print program version."
 msgstr "プログラム・バージョンをプリンとする。"
 
@@ -7021,6 +7022,9 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "Connection Failed. Unable to connect to the specified host\n"
+#~ msgstr "接続に失敗しました。指示されたホストには接続はできませんでし。\n"
 
 #~ msgid "Message Filter"
 #~ msgstr "メッセージフィルタ"

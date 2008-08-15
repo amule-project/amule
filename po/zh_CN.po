@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-11 03:30+0200\n"
+"POT-Creation-Date: 2008-08-15 03:30+0200\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -24,31 +24,31 @@ msgstr "您必须输入密码"
 msgid "Invalid password, not a MD5 hash!"
 msgstr "非法密码，不是合法的MD5校验码"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:136
+#: src/libs/ec/cpp/RemoteConnect.cpp:132
 msgid "Connection failure"
 msgstr "连接失败"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:188
 msgid "EC connection failed. Empty reply."
 msgstr "远程连接失败，回复为空。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:200
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "External Connection: Access denied because: "
 msgstr "远程连接：访问被拒绝，原因："
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:203
+#: src/libs/ec/cpp/RemoteConnect.cpp:197
 msgid "External Connection: Access denied"
 msgstr "远程连接：请求被拒绝"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:207
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr "远程连接：服务器错误回复，已断开连接。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:211
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "Succeeded! Connection established to aMule "
 msgstr "成功！已连接至aMule"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:214
+#: src/libs/ec/cpp/RemoteConnect.cpp:208
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
 
@@ -6064,17 +6064,17 @@ msgstr ""
 "全部命令都不区分大小写。\n"
 "输入 '%s <命令>' 获取在 <命令> 中的详细信息。\n"
 
-#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
+#: src/ExternalConnector.cpp:228 src/ExternalConnector.cpp:229
 msgid "Exits from the application."
 msgstr "退出程序。"
 
-#: src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:230
 msgid "Show help."
 msgstr "显示帮助。"
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:221
+#: src/ExternalConnector.cpp:233
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6082,7 +6082,7 @@ msgstr ""
 "输入 'help <命令>' 可显示命令的帮助。\n"
 "输入 'help' 可显示全部命令列表。\n"
 
-#: src/ExternalConnector.cpp:242
+#: src/ExternalConnector.cpp:254
 #, c-format
 msgid ""
 "\n"
@@ -6093,46 +6093,46 @@ msgstr ""
 "使用 '%s' 列出所有命令\n"
 "\n"
 
-#: src/ExternalConnector.cpp:272
+#: src/ExternalConnector.cpp:284
 msgid "Syntax error!"
 msgstr "语法错误！"
 
-#: src/ExternalConnector.cpp:275
+#: src/ExternalConnector.cpp:287
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr "处理指令时发生意外错误！请提交错误报告\n"
 
-#: src/ExternalConnector.cpp:278
+#: src/ExternalConnector.cpp:290
 msgid "This command should not have any parameters."
 msgstr "此命令不需要任何参数。"
 
-#: src/ExternalConnector.cpp:281
+#: src/ExternalConnector.cpp:293
 msgid "This command must have a parameter."
 msgstr "此命令必须要参数。"
 
-#: src/ExternalConnector.cpp:284
+#: src/ExternalConnector.cpp:296
 msgid "Invalid argument."
 msgstr "无效参数"
 
-#: src/ExternalConnector.cpp:287
+#: src/ExternalConnector.cpp:299
 msgid "This is an incomplete command."
 msgstr "此命令不完整。"
 
-#: src/ExternalConnector.cpp:296
+#: src/ExternalConnector.cpp:308
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "输入 '%s' 显示更多帮助信息。\n"
 
-#: src/ExternalConnector.cpp:361
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "这是 %s %s %s\n"
 
-#: src/ExternalConnector.cpp:363
+#: src/ExternalConnector.cpp:366
 #, c-format
 msgid "This is %s %s\n"
 msgstr "这是 %s %s\n"
 
-#: src/ExternalConnector.cpp:394
+#: src/ExternalConnector.cpp:397
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6140,11 +6140,12 @@ msgstr ""
 "\n"
 "正在建立用户...\n"
 
-#: src/ExternalConnector.cpp:404
-msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr "连接失败，无法连接到指定的计算机\n"
+#: src/ExternalConnector.cpp:403
+#, c-format
+msgid "Connection Failed. Unable to connect to %s:%d\n"
+msgstr ""
 
-#: src/ExternalConnector.cpp:415
+#: src/ExternalConnector.cpp:414
 #, c-format
 msgid ""
 "\n"
@@ -6153,7 +6154,7 @@ msgstr ""
 "\n"
 "完成，正在退出 %s...\n"
 
-#: src/ExternalConnector.cpp:420
+#: src/ExternalConnector.cpp:419
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6166,47 +6167,47 @@ msgstr ""
 "或在命令行设置一个，或者在询问时输入。\n"
 "\n"
 
-#: src/ExternalConnector.cpp:427
+#: src/ExternalConnector.cpp:426
 msgid "Show this help text."
 msgstr "显示帮助信息。"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:429
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "aMule正在运行的主机。(缺省：localhost)"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:432
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMule的远程连接端口。（默认：4712）"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:435
 msgid "External Connection password."
 msgstr "远程连接密码。"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:438
 msgid "Read configuration from file."
 msgstr "从文件读取设置。"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:441
 msgid "Do not print any output to stdout."
 msgstr "不打印任何信息到控制台。"
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:444
 msgid "Be verbose - show also debug messages."
 msgstr "详细显示调试信息。"
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:447
 msgid "Sets program locale (language)."
 msgstr "设置程序地区(语言)。"
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:450
 msgid "Write command line options to config file."
 msgstr "把命令行参数写入设置文件。"
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:453
 msgid "Creates config file based on aMule's config file."
 msgstr "基于aMule的设置文件建立新设置文件。"
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:456
 msgid "Print program version."
 msgstr "打印程序版本。"
 
@@ -6955,6 +6956,9 @@ msgstr "为读取而打开好友列表文件emfriends.met失败"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "为写入而打开好友列表文件emfriends.met失败"
+
+#~ msgid "Connection Failed. Unable to connect to the specified host\n"
+#~ msgstr "连接失败，无法连接到指定的计算机\n"
 
 #~ msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 #~ msgstr "版权所有 (C) 2002 Petar Maymounkov\n"

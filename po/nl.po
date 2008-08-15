@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-11 03:30+0200\n"
+"POT-Creation-Date: 2008-08-15 03:30+0200\n"
 "PO-Revision-Date: 2008-06-07 22:20+0200\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -30,31 +30,31 @@ msgstr "U moet een niet-leeg wachtwoord opgeven."
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Ongeldig wachtwoord, geen MD5 hash!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:136
+#: src/libs/ec/cpp/RemoteConnect.cpp:132
 msgid "Connection failure"
 msgstr "Verbindingsfout"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:188
 msgid "EC connection failed. Empty reply."
 msgstr "EV verbinding mislukte. Leeg antwoord."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:200
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "External Connection: Access denied because: "
 msgstr "Externe Verbinding: Toegang geweigerd omdat: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:203
+#: src/libs/ec/cpp/RemoteConnect.cpp:197
 msgid "External Connection: Access denied"
 msgstr "Externe Verbinding: Toegang geweigerd"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:207
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr "Externe Verbinding: Slecht antwoord van server. Verbinding verbroken."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:211
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "Succeeded! Connection established to aMule "
 msgstr "Succes! Verbinding gemaakt met aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:214
+#: src/libs/ec/cpp/RemoteConnect.cpp:208
 msgid "Succeeded! Connection established."
 msgstr "Gelukt! Verbinding gemaakt."
 
@@ -6214,17 +6214,17 @@ msgstr ""
 "Alle commandos zijn hoofdlettergevoelig.\n"
 "Type '%s <command>' om gedetailleerde info te krijgen over <command>.\n"
 
-#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
+#: src/ExternalConnector.cpp:228 src/ExternalConnector.cpp:229
 msgid "Exits from the application."
 msgstr "Sluit het programma af."
 
-#: src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:230
 msgid "Show help."
 msgstr "Toon help."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:221
+#: src/ExternalConnector.cpp:233
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6232,7 +6232,7 @@ msgstr ""
 "Om help te krijgen over een commando, type 'help <commando>'.\n"
 "Om de volledige commando lijst te krijgen type 'help'.\n"
 
-#: src/ExternalConnector.cpp:242
+#: src/ExternalConnector.cpp:254
 #, c-format
 msgid ""
 "\n"
@@ -6243,48 +6243,48 @@ msgstr ""
 "Gebruik '%s' voor commando lijst\n"
 "\n"
 
-#: src/ExternalConnector.cpp:272
+#: src/ExternalConnector.cpp:284
 msgid "Syntax error!"
 msgstr "Syntax fout!"
 
-#: src/ExternalConnector.cpp:275
+#: src/ExternalConnector.cpp:287
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Fout bij het verwerken van commando - zou nooit mogen gebeuren! Rapporteer "
 "deze bug, a.u.b.\n"
 
-#: src/ExternalConnector.cpp:278
+#: src/ExternalConnector.cpp:290
 msgid "This command should not have any parameters."
 msgstr "Dit commando heeft geen parameters."
 
-#: src/ExternalConnector.cpp:281
+#: src/ExternalConnector.cpp:293
 msgid "This command must have a parameter."
 msgstr "Dit commando moet een parameter hebben."
 
-#: src/ExternalConnector.cpp:284
+#: src/ExternalConnector.cpp:296
 msgid "Invalid argument."
 msgstr "Ongeldig argument."
 
-#: src/ExternalConnector.cpp:287
+#: src/ExternalConnector.cpp:299
 msgid "This is an incomplete command."
 msgstr "Dit is een incompleet commando."
 
-#: src/ExternalConnector.cpp:296
+#: src/ExternalConnector.cpp:308
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Type '%s' voor meer help.\n"
 
-#: src/ExternalConnector.cpp:361
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Dit is %s %s %s\n"
 
-#: src/ExternalConnector.cpp:363
+#: src/ExternalConnector.cpp:366
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Dit is %s %s\n"
 
-#: src/ExternalConnector.cpp:394
+#: src/ExternalConnector.cpp:397
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6292,11 +6292,12 @@ msgstr ""
 "\n"
 "Aanmaken van client...\n"
 
-#: src/ExternalConnector.cpp:404
-msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr "Verbinding Mislukt. Kon niet verbinden met opgegeven host\n"
+#: src/ExternalConnector.cpp:403
+#, c-format
+msgid "Connection Failed. Unable to connect to %s:%d\n"
+msgstr ""
 
-#: src/ExternalConnector.cpp:415
+#: src/ExternalConnector.cpp:414
 #, c-format
 msgid ""
 "\n"
@@ -6305,7 +6306,7 @@ msgstr ""
 "\n"
 "Ok, %s wordt afgesloten...\n"
 
-#: src/ExternalConnector.cpp:420
+#: src/ExternalConnector.cpp:419
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6320,47 +6321,47 @@ msgstr ""
 "\n"
 "Bezig met afsluiten...\n"
 
-#: src/ExternalConnector.cpp:427
+#: src/ExternalConnector.cpp:426
 msgid "Show this help text."
 msgstr "Toon deze help tekst"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:429
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Host waar aMule draait. (standaard: localhost)"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:432
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMules poort voor Externe Verbindingen. (standaard: 4712)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:435
 msgid "External Connection password."
 msgstr "Externe Verbinding wachtwoord."
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:438
 msgid "Read configuration from file."
 msgstr "Lees configuratie uit bestand."
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:441
 msgid "Do not print any output to stdout."
 msgstr "Print geen uitvoer naar stdout."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:444
 msgid "Be verbose - show also debug messages."
 msgstr "Wees uitgebreid - toon ook debug berichten."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:447
 msgid "Sets program locale (language)."
 msgstr "Stelt programma locale (taal) in."
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:450
 msgid "Write command line options to config file."
 msgstr "Schrijf opties op de opdrachtregel naar config bestand."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:453
 msgid "Creates config file based on aMule's config file."
 msgstr "Maakt config bestand gebaseerd op aMules config bestand."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:456
 msgid "Print program version."
 msgstr "Toon programma versie."
 
@@ -7130,6 +7131,9 @@ msgstr "Kon vriendenlijst-bestand 'emfriends.met' niet lezen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Kon niet schrijven naar vriendenlijst-bestand 'emfriends.met'!"
+
+#~ msgid "Connection Failed. Unable to connect to the specified host\n"
+#~ msgstr "Verbinding Mislukt. Kon niet verbinden met opgegeven host\n"
 
 #~ msgid "Message Filter"
 #~ msgstr "Bericht Filter"
