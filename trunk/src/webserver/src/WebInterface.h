@@ -27,17 +27,27 @@
 #ifndef WEBINTERFACE_H
 #define WEBINTERFACE_H
 
+
 #include "ExternalConnector.h"
+
 
 class CamulewebApp
 :
 public CaMuleExternalConnector
 {
-    class CWebserverGSocketFuncTable *m_table;
+	class CWebserverGSocketFuncTable *m_table;
 	class CWebServerBase *m_webserver;
+
+private:
+	//Assert Stuff
+	enum APPState {
+		APP_STATE_RUNNING = 0,
+		APP_STATE_STARTING
+	};
 
 public:
 	CamulewebApp();
+	~CamulewebApp() {}
 	
 	const wxString GetGreetingTitle();
 	void Pre_Shell();
@@ -58,13 +68,12 @@ public:
 	CMD4Hash m_AdminPass, m_GuestPass;
 	bool	m_AllowGuest;
 
-	long		m_WebserverPort;
-	bool		m_UPnPWebServerEnabled;
-	int		m_UPnPTCPPort;
+	long	m_WebserverPort;
+	bool	m_UPnPWebServerEnabled;
+	int	m_UPnPTCPPort;
 	unsigned int	m_PageRefresh;
-	bool		m_LoadSettingsFromAmule;
-
-	bool		m_TemplateOk;
+	bool	m_LoadSettingsFromAmule;
+	bool	m_TemplateOk;
 
 public:
 	virtual void Post_Shell();
@@ -76,12 +85,29 @@ public:
 	virtual wxString SetLocale(const wxString& language);
 
 	DECLARE_EVENT_TABLE();
-	
-private:
-	virtual bool	OnInit();
-	virtual int 	OnRun();
 
-	bool	m_localTemplate;
+	// Assert Stuff
+	bool IsRunning() const
+	{
+		return (m_app_state == APP_STATE_RUNNING);
+	}
+
+private:
+	virtual bool OnInit();
+	virtual int OnRun();
+	void OnFatalException();
+	void OnAssertFailure(
+		const wxChar* file,
+		int line, 
+		const wxChar* func,
+		const wxChar* cond,
+		const wxChar* msg);
+
+	bool m_localTemplate;
+	wxString m_FullMuleVersion;
+	wxString m_OsDescription;
+	// Assert Stuff
+	APPState m_app_state;
 };
 
 #endif // WEBINTERFACE_H
