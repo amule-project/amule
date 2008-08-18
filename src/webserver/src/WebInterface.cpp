@@ -101,7 +101,9 @@ void CSocketSet::AddSocket(GSocket *socket)
 	}
 
 #if defined(__DEBUG__)
-	fprintf(stderr, "fd == %d\n", fd);
+	if (fd > 2 && fd < FD_SETSIZE) {
+		fprintf(stderr, "fd == %d\n", fd);
+	}
 #endif
 	wxASSERT(fd > 2 && fd < FD_SETSIZE);
 
@@ -125,9 +127,11 @@ void CSocketSet::RemoveSocket(GSocket *socket)
 	}
 
 #if defined(__DEBUG__)
-	fprintf(stderr, "fd == %d\n", fd);
+	if (fd > 2 && fd < FD_SETSIZE) {
+		fprintf(stderr, "fd == %d\n", fd);
+	}
 #endif
-	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
+	wxASSERT(fd > 2 && fd < FD_SETSIZE);
 
 	int i = m_fd_idx[fd];
 	if (i == 0xffff) {
