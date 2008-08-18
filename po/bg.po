@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-15 03:30+0200\n"
+"POT-Creation-Date: 2008-08-18 03:30+0200\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -618,59 +618,59 @@ msgstr ""
 msgid "Processing request [redirected]: "
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:482
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Loads template <str>"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:486
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Web server HTTP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:490
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Use UPnP port forwarding on web server port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:494
+#: src/webserver/src/WebInterface.cpp:544
 msgid "UPnP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:498
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Use gzip compression"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:506
+#: src/webserver/src/WebInterface.cpp:556
 msgid "Full access password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:510
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Guest password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:514
+#: src/webserver/src/WebInterface.cpp:564
 msgid "Allow guest access"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:518
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Deny guest access"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:522
+#: src/webserver/src/WebInterface.cpp:572
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:526
+#: src/webserver/src/WebInterface.cpp:576
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:534
+#: src/webserver/src/WebInterface.cpp:584
 msgid "Disable PHP interpreter (deprecated)"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:542
+#: src/webserver/src/WebInterface.cpp:592
 msgid "Recompile PHP pages on each request"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:637
+#: src/webserver/src/WebInterface.cpp:689
 msgid "aMule Web Server"
 msgstr ""
 
