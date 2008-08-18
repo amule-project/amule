@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-15 03:30+0200\n"
+"POT-Creation-Date: 2008-08-18 03:30+0200\n"
 "PO-Revision-Date: 2008-06-12 18:58+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -620,59 +620,59 @@ msgstr "Uloskirjautumista pyydetty\n"
 msgid "Processing request [redirected]: "
 msgstr "Käsittelee pyyntöä [uudelleenohjattu]: "
 
-#: src/webserver/src/WebInterface.cpp:482
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Loads template <str>"
 msgstr "Lataa mallin <str>"
 
-#: src/webserver/src/WebInterface.cpp:486
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Web server HTTP port"
 msgstr "Web-palvelimen HTTP-portti"
 
-#: src/webserver/src/WebInterface.cpp:490
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Use UPnP port forwarding on web server port"
 msgstr "Käytä UPnP-portinohjausta web-palvelimen portissa"
 
-#: src/webserver/src/WebInterface.cpp:494
+#: src/webserver/src/WebInterface.cpp:544
 msgid "UPnP port"
 msgstr "UPnP-portti"
 
-#: src/webserver/src/WebInterface.cpp:498
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Use gzip compression"
 msgstr "Käytä gzip-pakkausta"
 
-#: src/webserver/src/WebInterface.cpp:506
+#: src/webserver/src/WebInterface.cpp:556
 msgid "Full access password for web server"
 msgstr "Täyden käyttöoikeuden salasana web-palvelimelle"
 
-#: src/webserver/src/WebInterface.cpp:510
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Guest password for web server"
 msgstr "Vieraan salasana web-palvelimelle"
 
-#: src/webserver/src/WebInterface.cpp:514
+#: src/webserver/src/WebInterface.cpp:564
 msgid "Allow guest access"
 msgstr "Salli vieraskäyttö"
 
-#: src/webserver/src/WebInterface.cpp:518
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Deny guest access"
 msgstr "Estä vieraskäyttö"
 
-#: src/webserver/src/WebInterface.cpp:522
+#: src/webserver/src/WebInterface.cpp:572
 msgid "Load/save web server settings from/to remote aMule"
 msgstr "Hae/tallenna web-palvelimen asetukset etä-aMulesta/een"
 
-#: src/webserver/src/WebInterface.cpp:526
+#: src/webserver/src/WebInterface.cpp:576
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMulen konfiguraatiotiedoston polku. ÄLÄ KÄYTÄ SUORAAN!"
 
-#: src/webserver/src/WebInterface.cpp:534
+#: src/webserver/src/WebInterface.cpp:584
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Poista PHP-tulkki käytöstä (vanhentunut)"
 
-#: src/webserver/src/WebInterface.cpp:542
+#: src/webserver/src/WebInterface.cpp:592
 msgid "Recompile PHP pages on each request"
 msgstr "Uudelleenkoosta PHP-sivut joka pyynnöllä"
 
-#: src/webserver/src/WebInterface.cpp:637
+#: src/webserver/src/WebInterface.cpp:689
 msgid "aMule Web Server"
 msgstr "aMule Web-Palvelin"
 

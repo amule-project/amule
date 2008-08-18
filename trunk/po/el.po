@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-15 03:30+0200\n"
+"POT-Creation-Date: 2008-08-18 03:30+0200\n"
 "PO-Revision-Date: 2008-07-30 01:25-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -632,61 +632,61 @@ msgstr "Ζητήθηκε αποσύνδεση\n"
 msgid "Processing request [redirected]: "
 msgstr "Επεξεργασία αιτήματος [ανακατεύθυνση]"
 
-#: src/webserver/src/WebInterface.cpp:482
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Loads template <str>"
 msgstr "Φορτώνει προτύπου <str>"
 
-#: src/webserver/src/WebInterface.cpp:486
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Web server HTTP port"
 msgstr "Θύρα HTTP του διακομιστή ιστού"
 
-#: src/webserver/src/WebInterface.cpp:490
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Use UPnP port forwarding on web server port"
 msgstr "Χρήση της προώθησης της θύρας UPnP στη θύρα διακομιστή ιστού"
 
-#: src/webserver/src/WebInterface.cpp:494
+#: src/webserver/src/WebInterface.cpp:544
 msgid "UPnP port"
 msgstr "Θύρα UPnP "
 
-#: src/webserver/src/WebInterface.cpp:498
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Use gzip compression"
 msgstr " Χρήση συμπίεσης τύπου gzip"
 
-#: src/webserver/src/WebInterface.cpp:506
+#: src/webserver/src/WebInterface.cpp:556
 msgid "Full access password for web server"
 msgstr "Κωδικός πλήρους πρόσβασης για τον διακομιστή ιστού"
 
-#: src/webserver/src/WebInterface.cpp:510
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Guest password for web server"
 msgstr "Κωδικός επισκέπτη για τον διακομιστή ιστού"
 
-#: src/webserver/src/WebInterface.cpp:514
+#: src/webserver/src/WebInterface.cpp:564
 msgid "Allow guest access"
 msgstr "Να επιτρέπεται η πρόσβαση σε επισκέπτες"
 
-#: src/webserver/src/WebInterface.cpp:518
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Deny guest access"
 msgstr "Να απαγορεύεται η πρόσβαση σε επισκέπτες"
 
-#: src/webserver/src/WebInterface.cpp:522
+#: src/webserver/src/WebInterface.cpp:572
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 "Φόρτωση/Αποθήκευση των ρυθμίσεων του διακομιστή ιστού από/προς απομακρυσμένο "
 "aMule"
 
-#: src/webserver/src/WebInterface.cpp:526
+#: src/webserver/src/WebInterface.cpp:576
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Η διαδρομή στα αρχεία ρυθμίσεων του aMule. ΜΗΝ ΑΛΛΑΖΕΤΕ ΑΠΕΥΘΕΙΑΣ"
 
-#: src/webserver/src/WebInterface.cpp:534
+#: src/webserver/src/WebInterface.cpp:584
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Απενεργοποίηση του διερμηνέα PHP (απαρχαιωμένο)"
 
-#: src/webserver/src/WebInterface.cpp:542
+#: src/webserver/src/WebInterface.cpp:592
 msgid "Recompile PHP pages on each request"
 msgstr "Μεταγλώττιση των σελίδων PHP σε κάθε αίτηση"
 
-#: src/webserver/src/WebInterface.cpp:637
+#: src/webserver/src/WebInterface.cpp:689
 msgid "aMule Web Server"
 msgstr "Ο διακομιστής δικτύου του aMule"
 
