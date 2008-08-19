@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 03:30+0200\n"
+"POT-Creation-Date: 2008-08-19 03:30+0200\n"
 "PO-Revision-Date: 2008-07-25 21:00+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -633,59 +633,59 @@ msgstr "Desconexión solicitada\n"
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitud [redirigida]:"
 
-#: src/webserver/src/WebInterface.cpp:532
+#: src/webserver/src/WebInterface.cpp:508
 msgid "Loads template <str>"
 msgstr "Carga la plantilla <str>"
 
-#: src/webserver/src/WebInterface.cpp:536
+#: src/webserver/src/WebInterface.cpp:512
 msgid "Web server HTTP port"
 msgstr "Puerto HTTP del servidor web"
 
-#: src/webserver/src/WebInterface.cpp:540
+#: src/webserver/src/WebInterface.cpp:516
 msgid "Use UPnP port forwarding on web server port"
 msgstr "Usar forwarding de puertos UPnP en el puerto del servidor web"
 
-#: src/webserver/src/WebInterface.cpp:544
+#: src/webserver/src/WebInterface.cpp:520
 msgid "UPnP port"
 msgstr "Puerto UPnP"
 
-#: src/webserver/src/WebInterface.cpp:548
+#: src/webserver/src/WebInterface.cpp:524
 msgid "Use gzip compression"
 msgstr "Usar compresión gzip"
 
-#: src/webserver/src/WebInterface.cpp:556
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Full access password for web server"
 msgstr "Contraseña de acceso total para el servidor web"
 
-#: src/webserver/src/WebInterface.cpp:560
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Guest password for web server"
 msgstr "Contraseña de invitado para servidor web"
 
-#: src/webserver/src/WebInterface.cpp:564
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Allow guest access"
 msgstr "Permitir acceso a invitado"
 
-#: src/webserver/src/WebInterface.cpp:568
+#: src/webserver/src/WebInterface.cpp:544
 msgid "Deny guest access"
 msgstr "Denegar acceso a invitado"
 
-#: src/webserver/src/WebInterface.cpp:572
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Load/save web server settings from/to remote aMule"
 msgstr "Cargar/guardar la configuración del servidor web desde/a aMule remoto"
 
-#: src/webserver/src/WebInterface.cpp:576
+#: src/webserver/src/WebInterface.cpp:552
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Ruta al archivo config de aMule. ¡NO USAR DIRECTAMENTE!"
 
-#: src/webserver/src/WebInterface.cpp:584
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Deshabilitar interprete PHP (desuso)"
 
-#: src/webserver/src/WebInterface.cpp:592
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Recompile PHP pages on each request"
 msgstr "Recompila páginas PHP para otra solicitud"
 
-#: src/webserver/src/WebInterface.cpp:689
+#: src/webserver/src/WebInterface.cpp:665
 msgid "aMule Web Server"
 msgstr "Servidor web aMule"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 03:30+0200\n"
+"POT-Creation-Date: 2008-08-19 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -610,59 +610,59 @@ msgstr "ב‏‎ֻקְשַה התנתקות\n"
 msgid "Processing request [redirected]: "
 msgstr "מעבד בקשה [הופנתה מחדש]: "
 
-#: src/webserver/src/WebInterface.cpp:532
+#: src/webserver/src/WebInterface.cpp:508
 msgid "Loads template <str>"
 msgstr "טוען תבנית<מחרוזת>"
 
-#: src/webserver/src/WebInterface.cpp:536
+#: src/webserver/src/WebInterface.cpp:512
 msgid "Web server HTTP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:540
+#: src/webserver/src/WebInterface.cpp:516
 msgid "Use UPnP port forwarding on web server port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:544
+#: src/webserver/src/WebInterface.cpp:520
 msgid "UPnP port"
 msgstr "מבואת UPnP"
 
-#: src/webserver/src/WebInterface.cpp:548
+#: src/webserver/src/WebInterface.cpp:524
 msgid "Use gzip compression"
 msgstr "השמתש בדחיסת gzip"
 
-#: src/webserver/src/WebInterface.cpp:556
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Full access password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:560
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Guest password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:564
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Allow guest access"
 msgstr "אפשר גישה לאורחים"
 
-#: src/webserver/src/WebInterface.cpp:568
+#: src/webserver/src/WebInterface.cpp:544
 msgid "Deny guest access"
 msgstr "מנע גישה מאורחים"
 
-#: src/webserver/src/WebInterface.cpp:572
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:576
+#: src/webserver/src/WebInterface.cpp:552
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "נתיב קובץ ההגדרות של אימיול. לא לשימוש בצורה ישירה!!"
 
-#: src/webserver/src/WebInterface.cpp:584
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "נטרל מפענח PHP (מיושן-מבוטל)"
 
-#: src/webserver/src/WebInterface.cpp:592
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Recompile PHP pages on each request"
 msgstr "הדר מחדש דפי PHP לאחר כל בקשה"
 
-#: src/webserver/src/WebInterface.cpp:689
+#: src/webserver/src/WebInterface.cpp:665
 msgid "aMule Web Server"
 msgstr "שרת אימיול רשתי"
 

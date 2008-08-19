@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 03:30+0200\n"
+"POT-Creation-Date: 2008-08-19 03:30+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -625,59 +625,59 @@ msgstr "Dalja e kerkuar\n"
 msgid "Processing request [redirected]: "
 msgstr "Perpunimi i kerkeses [e ridrejtuar]: "
 
-#: src/webserver/src/WebInterface.cpp:532
+#: src/webserver/src/WebInterface.cpp:508
 msgid "Loads template <str>"
 msgstr "Duke ngarkuar modelin <str>"
 
-#: src/webserver/src/WebInterface.cpp:536
+#: src/webserver/src/WebInterface.cpp:512
 msgid "Web server HTTP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:540
+#: src/webserver/src/WebInterface.cpp:516
 msgid "Use UPnP port forwarding on web server port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:544
+#: src/webserver/src/WebInterface.cpp:520
 msgid "UPnP port"
 msgstr "Porta UPnP"
 
-#: src/webserver/src/WebInterface.cpp:548
+#: src/webserver/src/WebInterface.cpp:524
 msgid "Use gzip compression"
 msgstr "Perdor kompresimin gzip "
 
-#: src/webserver/src/WebInterface.cpp:556
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Full access password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:560
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Guest password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:564
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Allow guest access"
 msgstr "Lejo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:568
+#: src/webserver/src/WebInterface.cpp:544
 msgid "Deny guest access"
 msgstr "Ndalo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:572
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:576
+#: src/webserver/src/WebInterface.cpp:552
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Rruga per konfigurimin e failit te aMule. MOS E PERDORNI DIREKT!"
 
-#: src/webserver/src/WebInterface.cpp:584
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "C'aktivizo interpretuesin e PHP (nuk aprovohet)"
 
-#: src/webserver/src/WebInterface.cpp:592
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Recompile PHP pages on each request"
 msgstr "Rimbush faqet PHP ne c'do kerkese"
 
-#: src/webserver/src/WebInterface.cpp:689
+#: src/webserver/src/WebInterface.cpp:665
 msgid "aMule Web Server"
 msgstr "Web Server i aMule"
 
