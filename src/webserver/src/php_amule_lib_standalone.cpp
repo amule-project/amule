@@ -28,6 +28,7 @@
 // in separate build
 //
 #include <string> // Do_not_auto_remove (g++-4.0.1)
+#include <map>
 
 #include <sys/types.h>
 #include <regex.h>
@@ -40,8 +41,6 @@
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
-
-#include <wx/datetime.h>
 
 
 void php_native_shared_file_cmd(PHP_VALUE_NODE *)
@@ -588,7 +587,7 @@ PHP_BLTIN_FUNC_DEF amule_lib_funcs[] = {
 void php_init_amule_lib()
 {
 	// load function definitions
-	PHP_BLTIN_FUNC_DEF *curr_def = core_lib_funcs;
+	PHP_BLTIN_FUNC_DEF *curr_def = amule_lib_funcs;
 	while ( curr_def->name ) {
 		php_add_native_func(curr_def);
 		curr_def++;
@@ -599,6 +598,25 @@ void php_init_amule_lib()
 	php_add_native_class("AmuleServer", amule_server_prop_get);
 	php_add_native_class("AmuleSharedFile", amule_shared_file_prop_get);
 	php_add_native_class("AmuleSearchFile", amule_search_file_prop_get);
+}
+
+int main(int argc, char *argv[])
+{
+	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
+
+	CWriteStrBuffer buffer;
+	
+	//phpdebug = 0;
+
+	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
+	
+	int size = buffer.Length();
+	char *buf = new char [size+1];
+	buffer.CopyAll(buf);
+	printf("%s", buf);
+	delete [] buf;
+	
+	return 0;
 }
 
 // File_checked_for_headers

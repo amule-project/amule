@@ -57,9 +57,8 @@ class CPhPLibContext {
 		PHP_SCOPE_TABLE m_global_scope;
 		
 		CWriteStrBuffer *m_curr_str_buffer;
-#ifndef PHP_STANDALONE_EN
+
 		CWebServerBase *m_server;
-#endif		
 	public:
 		// parse file and take a "snapshot" of global vars
 		CPhPLibContext(CWebServerBase *server, const char *file);

@@ -1992,26 +1992,4 @@ int phperror(char *s)
 	return 0;
 }
 
-#ifdef PHP_STANDALONE_EN
-
-int main(int argc, char *argv[])
-{
-	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
-
-	CWriteStrBuffer buffer;
-	
-	yydebug = 0;
-
-	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
-	
-	int size = buffer.Length();
-	char *buf = new char [size+1];
-	buffer.CopyAll(buf);
-	printf("%s", buf);
-	delete [] buf;
-	
-	return 0;
-}
-
-#endif
 // File_checked_for_headers
