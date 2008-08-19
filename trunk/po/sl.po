@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 03:30+0200\n"
+"POT-Creation-Date: 2008-08-19 03:30+0200\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -620,59 +620,59 @@ msgstr "Zahtevana odjava\n"
 msgid "Processing request [redirected]: "
 msgstr "Obdelovanje zahteve [preusmerjeno]: "
 
-#: src/webserver/src/WebInterface.cpp:532
+#: src/webserver/src/WebInterface.cpp:508
 msgid "Loads template <str>"
 msgstr "Naloži predlogo <str>"
 
-#: src/webserver/src/WebInterface.cpp:536
+#: src/webserver/src/WebInterface.cpp:512
 msgid "Web server HTTP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:540
+#: src/webserver/src/WebInterface.cpp:516
 msgid "Use UPnP port forwarding on web server port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:544
+#: src/webserver/src/WebInterface.cpp:520
 msgid "UPnP port"
 msgstr "Vrata UPnP"
 
-#: src/webserver/src/WebInterface.cpp:548
+#: src/webserver/src/WebInterface.cpp:524
 msgid "Use gzip compression"
 msgstr "Uporabi kompresijo gzip"
 
-#: src/webserver/src/WebInterface.cpp:556
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Full access password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:560
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Guest password for web server"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:564
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Allow guest access"
 msgstr "Dovoli dostop gostom"
 
-#: src/webserver/src/WebInterface.cpp:568
+#: src/webserver/src/WebInterface.cpp:544
 msgid "Deny guest access"
 msgstr "Zavrni dostop gostom"
 
-#: src/webserver/src/WebInterface.cpp:572
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:576
+#: src/webserver/src/WebInterface.cpp:552
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Pot do nastavitvene datoteke. NE UPORABI NEPOSREDNO!"
 
-#: src/webserver/src/WebInterface.cpp:584
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Onemogoči tolmač PHP (zastarelo)"
 
-#: src/webserver/src/WebInterface.cpp:592
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Recompile PHP pages on each request"
 msgstr "Ponovno prevedi strani PHP ob vsaki zahtevi"
 
-#: src/webserver/src/WebInterface.cpp:689
+#: src/webserver/src/WebInterface.cpp:665
 msgid "aMule Web Server"
 msgstr "Spletni strežnik aMule"
 

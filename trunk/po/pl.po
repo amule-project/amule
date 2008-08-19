@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 03:30+0200\n"
+"POT-Creation-Date: 2008-08-19 03:30+0200\n"
 "PO-Revision-Date: 2008-07-11 14:13+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -632,59 +632,59 @@ msgstr "Zażądano wylogowania\n"
 msgid "Processing request [redirected]: "
 msgstr "Przetwarzam żądanie (przekierowane): "
 
-#: src/webserver/src/WebInterface.cpp:532
+#: src/webserver/src/WebInterface.cpp:508
 msgid "Loads template <str>"
 msgstr "Ładuje szablon <str>"
 
-#: src/webserver/src/WebInterface.cpp:536
+#: src/webserver/src/WebInterface.cpp:512
 msgid "Web server HTTP port"
 msgstr "Port HTTP serwera sieciowego"
 
-#: src/webserver/src/WebInterface.cpp:540
+#: src/webserver/src/WebInterface.cpp:516
 msgid "Use UPnP port forwarding on web server port"
 msgstr "Użyj forwardowania portu UPnP na porcie serwera sieciowego"
 
-#: src/webserver/src/WebInterface.cpp:544
+#: src/webserver/src/WebInterface.cpp:520
 msgid "UPnP port"
 msgstr "Port UPnP"
 
-#: src/webserver/src/WebInterface.cpp:548
+#: src/webserver/src/WebInterface.cpp:524
 msgid "Use gzip compression"
 msgstr "Używaj kompresji gzip"
 
-#: src/webserver/src/WebInterface.cpp:556
+#: src/webserver/src/WebInterface.cpp:532
 msgid "Full access password for web server"
 msgstr "Hasło pełnego dostępu do serwera sieciowego"
 
-#: src/webserver/src/WebInterface.cpp:560
+#: src/webserver/src/WebInterface.cpp:536
 msgid "Guest password for web server"
 msgstr "Hasło gościa do serwera sieciowego"
 
-#: src/webserver/src/WebInterface.cpp:564
+#: src/webserver/src/WebInterface.cpp:540
 msgid "Allow guest access"
 msgstr "Pozwól na dostęp gości"
 
-#: src/webserver/src/WebInterface.cpp:568
+#: src/webserver/src/WebInterface.cpp:544
 msgid "Deny guest access"
 msgstr "Zabroń dostępu gościom"
 
-#: src/webserver/src/WebInterface.cpp:572
+#: src/webserver/src/WebInterface.cpp:548
 msgid "Load/save web server settings from/to remote aMule"
 msgstr "Wczytaj/zapisz ustawienia serwera sieciowego z/do zdalnego aMule"
 
-#: src/webserver/src/WebInterface.cpp:576
+#: src/webserver/src/WebInterface.cpp:552
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Ścieżka do pliku konfiguracyjnego aMule. NIE UŻYWAJ BEZPOŚREDNIO!"
 
-#: src/webserver/src/WebInterface.cpp:584
+#: src/webserver/src/WebInterface.cpp:560
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Zablokuj interpreter PHP (wycofywany)"
 
-#: src/webserver/src/WebInterface.cpp:592
+#: src/webserver/src/WebInterface.cpp:568
 msgid "Recompile PHP pages on each request"
 msgstr "Przekompiluj strony PHP przy każdym żądaniu"
 
-#: src/webserver/src/WebInterface.cpp:689
+#: src/webserver/src/WebInterface.cpp:665
 msgid "aMule Web Server"
 msgstr "Serwer WWW aMule"
 
