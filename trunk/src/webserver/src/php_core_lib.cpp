@@ -34,13 +34,21 @@
 #endif
 #include <regex.h>
 
+#ifdef PHP_STANDALONE_EN
+#include <map>
+#include <string>
+#include <list>
+#else
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
+#endif
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
+#ifndef PHP_STANDALONE_EN
 #include <wx/datetime.h>
+#endif
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -580,6 +588,7 @@ void CPhPLibContext::Print(const char *str)
 	}
 }
 
+
 CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 			const char *file, CWriteStrBuffer *buff)
 {
@@ -617,23 +626,27 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 
-
+#ifndef PHP_STANDALONE_EN
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
 		load_session_vars("_SESSION", sess->m_vars);
 
 		context->Execute(buff);
 
 		save_session_vars(sess->m_vars);
+#endif
 
 		delete context;
 		
 		scan_ptr = curr_code_end;
 	}
 
+#ifndef PHP_STANDALONE_EN
 	sess->m_get_vars.clear();
+#endif
 
 	delete [] buf;
 }
+
 
 /*
  * String buffer: almost same as regular 'string' class, but,

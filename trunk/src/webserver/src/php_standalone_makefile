@@ -1,8 +1,9 @@
 CXXFLAGS = -DPHP_STANDALONE_EN
 
-amulephp : amulephp-php_amule_lib.o amulephp-php_lexer.o amulephp-php_parser.o amulephp-php_syntree.o amulephp-php_core_lib.o
-	$(CXX) -o $@ -g -O0 -Wall $<
-
+OBJ = amulephp-php_amule_lib.o amulephp-php_lexer.o amulephp-php_parser.o amulephp-php_syntree.o amulephp-php_core_lib.o
+amulephp :$(OBJ)
+	$(CXX) -o $@ -g -O0 -Wall $(OBJ)
+	
 amulephp-php_amule_lib.o : php_amule_lib_standalone.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ -g -Wall $<
 
