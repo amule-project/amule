@@ -594,9 +594,11 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 {
 	FILE *f = fopen(file, "r");
 	if ( !f ) {
+		printf("ERROR: php can not open source file [%s]\n", file);
 		return;
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
+		printf("ERROR: fseek failed on php source file [%s]\n", file); 
 		return;
 	}
 	int size = ftell(f);
@@ -629,9 +631,11 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 #ifndef PHP_STANDALONE_EN
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
 		load_session_vars("_SESSION", sess->m_vars);
+#endif
 
 		context->Execute(buff);
 
+#ifndef PHP_STANDALONE_EN
 		save_session_vars(sess->m_vars);
 #endif
 
