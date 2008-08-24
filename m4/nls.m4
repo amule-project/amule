@@ -54,7 +54,7 @@ dnl to the package root (top_srcdir)
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([GENERATE_MANS_TO_INSTALL],
 [
-	AS_IF([test "$[]$1" == "yes"], [
+	AS_IF([test "$[]$1" = "yes"], [
 		AS_IF([test -z "$LINGUAS"],
 			[$1_MANPAGES=`ls -1 ${srcdir}/$2.* | sed -e 's:.*/::g'`],
 		[
