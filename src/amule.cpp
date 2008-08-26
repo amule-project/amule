@@ -456,7 +456,11 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
-	
+#ifndef __WXMSW__
+	// Change webserver path, not available on Windows
+	cmdline.AddOption(wxT("w"), wxT("use-amuleweb"), wxT("Specify location of amuleweb binary."));
+#endif
+
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
 		return false;		
@@ -813,6 +817,9 @@ bool CamuleApp::OnInit()
 	if (thePrefs::GetWSIsEnabled()) {
 		wxString aMuleConfigFile = ConfigDir + wxT("amule.conf");
 		wxString amulewebPath = wxT("amuleweb");
+		if(true == cmdline.Found(wxT("use-amuleweb"), &amulewebPath)) {
+			printf("Using amuleweb in '%s'.\n", (const char *)unicode2char(amulewebPath));
+		}
 
 #if defined(__WXMAC__) && !defined(AMULE_DAEMON)
 		// For the Mac GUI application, look for amuleweb in the bundle
