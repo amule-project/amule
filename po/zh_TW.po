@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-19 03:30+0200\n"
+"POT-Creation-Date: 2008-08-27 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -463,7 +463,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "你需要高ID來產生源連結"
 
 #: src/SharedFilesCtrl.cpp:321 src/PrefsUnifiedDlg.cpp:618 src/KadDlg.cpp:167
-#: src/KadDlg.cpp:173 src/amule.cpp:673
+#: src/KadDlg.cpp:173 src/amule.cpp:677
 msgid "WARNING"
 msgstr "警告"
 
@@ -1279,7 +1279,7 @@ msgid "Auto [Hi]"
 msgstr "自動 [高]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:541 src/ClientListCtrl.cpp:670
-#: src/amule.cpp:801
+#: src/amule.cpp:805
 msgid "Connecting"
 msgstr "正在連線"
 
@@ -1601,8 +1601,8 @@ msgid ""
 msgstr "現在正連接在要刪除的服務器。該服務器暫時無法刪除。請先斷開連接。"
 
 #: src/ServerListCtrl.cpp:149 src/CatDialog.cpp:141 src/CatDialog.cpp:151
-#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:713
-#: src/amule.cpp:1329
+#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:717
+#: src/amule.cpp:1336
 msgid "Info"
 msgstr "訊息"
 
@@ -2903,12 +2903,12 @@ msgid "Connection failed "
 msgstr "連接失敗"
 
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
-#: src/amule.cpp:973 src/amule.cpp:1340
+#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:859
+#: src/amule.cpp:980 src/amule.cpp:1347
 msgid "ERROR"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
+#: src/amule-remote-gui.cpp:479 src/amule.cpp:1085
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -3558,11 +3558,11 @@ msgstr ""
 msgid "Connected to %s %s %s"
 msgstr "已連接到 %s %s %s"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2099
+#: src/TextClient.cpp:697 src/amule.cpp:2106
 msgid "with LowID"
 msgstr "有低ID"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2099
+#: src/TextClient.cpp:697 src/amule.cpp:2106
 msgid "with HighID"
 msgstr "有高ID"
 
@@ -6644,13 +6644,13 @@ msgstr "本地服務器被IP過濾器過濾掉了，正在重新連接至其他�
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr "執行`%s' 事件中的命令`%s' 失敗。"
 
-#: src/amule.cpp:711
+#: src/amule.cpp:715
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
 msgstr "對不起,由于版本變動,您的地區設置已經被變爲系統默認值。"
 
-#: src/amule.cpp:784
+#: src/amule.cpp:788
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -6658,33 +6658,33 @@ msgstr ""
 "在服務器列表中沒有任何服務器。\n"
 "需要 aMule 現在就下載一個新的列表嗎？"
 
-#: src/amule.cpp:785
+#: src/amule.cpp:789
 msgid "Server list download"
 msgstr "服務器列表已下載"
 
-#: src/amule.cpp:844
+#: src/amule.cpp:851
 #, c-format
 msgid "web server running on pid %d"
 msgstr ""
 
-#: src/amule.cpp:848
+#: src/amule.cpp:855
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
-#: src/amule.cpp:938
+#: src/amule.cpp:945
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "無法綁定端口到指定的地址：%s"
 
-#: src/amule.cpp:965
+#: src/amule.cpp:972
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "端口 %u 已被占用。你會成爲低ID。\n"
 
-#: src/amule.cpp:971
+#: src/amule.cpp:978
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6699,15 +6699,15 @@ msgstr ""
 "\n"
 "請檢測網絡設置以確保端口可用于輸入輸出。"
 
-#: src/amule.cpp:1122
+#: src/amule.cpp:1129
 msgid "Failed to create OnlineSig File"
 msgstr "創建在線簽名文件失敗"
 
-#: src/amule.cpp:1130
+#: src/amule.cpp:1137
 msgid "Failed to create aMule OnlineSig File"
 msgstr "創建 aMule 在線簽名文件失敗"
 
-#: src/amule.cpp:1298
+#: src/amule.cpp:1305
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6715,30 +6715,30 @@ msgstr ""
 "您所選擇的地區設置在您的計算機上似乎沒有安裝.但無論如何，我還是會采用你所選擇"
 "的地區設置。"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1314
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "這是您第一次運行 aMule %s"
 
-#: src/amule.cpp:1309
+#: src/amule.cpp:1316
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "這個版本是測試版, 每天更新, 而且 \n"
 
-#: src/amule.cpp:1310
+#: src/amule.cpp:1317
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "我們無法承諾它一定不會損壞任何東西或燒掉你的房子,\n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1318
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "或殺死你的狗. 但一般來講它應該是安全的.\n"
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1322
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "此版本中，因爲安全問題以下選項已經被更改：\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1323
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -6747,7 +6747,7 @@ msgstr ""
 "\n"
 "* 爲進站和出站連接啓用模糊協議支持。\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1324
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -6755,7 +6755,7 @@ msgstr ""
 "\n"
 "* 禁用從其他服務器和客戶端更新服務器列表。\n"
 
-#: src/amule.cpp:1318
+#: src/amule.cpp:1325
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -6768,7 +6768,7 @@ msgstr ""
 "aMule 爲\"fake servers\" 信息的 wiki，地址是： http://wiki.amule.org。\n"
 "有一點很重要，爲了讓你的 aMule 正常工作，請從服務器列表中清除假冒服務器。"
 
-#: src/amule.cpp:1319
+#: src/amule.cpp:1326
 msgid ""
 "\n"
 "\n"
@@ -6776,19 +6776,19 @@ msgid ""
 "Please configure your browser options again if needed.\n"
 msgstr ""
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1331
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "如要獲取使用信息，用戶支援以及下載最新版本，請到我們的網頁\n"
 
-#: src/amule.cpp:1325
+#: src/amule.cpp:1332
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org，或我們在irc.freenode.net的IRC頻道 #aMule。\n"
 
-#: src/amule.cpp:1327
+#: src/amule.cpp:1334
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "歡迎您到 forum.amule.org 去提交錯誤報告"
 
-#: src/amule.cpp:1340
+#: src/amule.cpp:1347
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6796,121 +6796,121 @@ msgstr ""
 "您爲在線簽名文件所選擇的文件夾無效！\n"
 "在您更正設置之前在線簽名將被禁用。"
 
-#: src/amule.cpp:1626
+#: src/amule.cpp:1633
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "為文件'%s'預分配磁盤空間失敗：%s"
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1781
 msgid "ERROR: can't open logfile"
 msgstr "錯誤: 無法打開日志文件"
 
-#: src/amule.cpp:1778
+#: src/amule.cpp:1785
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "警告：日志文件爲空。肯定有什麽地方出錯了。"
 
-#: src/amule.cpp:1797
+#: src/amule.cpp:1804
 msgid "Log has been reset"
 msgstr "記錄文件已被重啓"
 
-#: src/amule.cpp:1825
+#: src/amule.cpp:1832
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "服務器消息：%s"
 
-#: src/amule.cpp:1863
+#: src/amule.cpp:1870
 msgid "Failed to download the nodes list."
 msgstr "下載節點列表失敗。"
 
-#: src/amule.cpp:1876
+#: src/amule.cpp:1883
 msgid "Failed to open the downloaded version check file"
 msgstr "打開已下載的版本檢查文件失敗"
 
-#: src/amule.cpp:1879 src/amule.cpp:1889 src/amule.cpp:1895
+#: src/amule.cpp:1886 src/amule.cpp:1896 src/amule.cpp:1902
 msgid "Corrupted version check file"
 msgstr "損壞的版本檢查文件"
 
-#: src/amule.cpp:1905
+#: src/amule.cpp:1912
 msgid "You are using an outdated version of aMule!"
 msgstr "你使用的是老版本的 aMule！"
 
-#: src/amule.cpp:1906
+#: src/amule.cpp:1913
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "你的 aMule 版本是%i.%i.%i，最新版本是 %li.%li.%li"
 
-#: src/amule.cpp:1907
+#: src/amule.cpp:1914
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "最新版本可從此下載：http://www.amule.org"
 
-#: src/amule.cpp:1910
+#: src/amule.cpp:1917
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "警告：你的 aMuled 版本太舊：%i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1914
+#: src/amule.cpp:1921
 msgid "Your copy of aMule is up to date."
 msgstr "你的 aMule 是最新版本。"
 
-#: src/amule.cpp:1921
+#: src/amule.cpp:1928
 msgid "Failed to download the version check file"
 msgstr "下載版本檢查文件失敗"
 
-#: src/amule.cpp:2024
+#: src/amule.cpp:2031
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "用戶：%s | 文件：%s"
 
-#: src/amule.cpp:2025
+#: src/amule.cpp:2032
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "用戶：E：%s K:%s | 文件：E：%s K：%s"
 
-#: src/amule.cpp:2034
+#: src/amule.cpp:2041
 msgid "No networks selected"
 msgstr "沒有選擇網絡"
 
-#: src/amule.cpp:2101
+#: src/amule.cpp:2108
 #, c-format
 msgid "Connected to %s %s"
 msgstr "已連接到 %s %s"
 
-#: src/amule.cpp:2104
+#: src/amule.cpp:2111
 #, c-format
 msgid "Connecting to %s"
 msgstr "正在連接到 %s"
 
-#: src/amule.cpp:2106
+#: src/amule.cpp:2113
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2113
+#: src/amule.cpp:2120
 msgid "Kad started."
 msgstr "Kad 已啓動。"
 
-#: src/amule.cpp:2115
+#: src/amule.cpp:2122
 msgid "Kad stopped."
 msgstr "Kad 已停止。"
 
-#: src/amule.cpp:2122
+#: src/amule.cpp:2129
 msgid "Connected to Kad (ok)"
 msgstr "已連接至 Kad"
 
-#: src/amule.cpp:2124
+#: src/amule.cpp:2131
 msgid "Connected to Kad (firewalled)"
 msgstr "已連接至 Kad 網絡(有防火牆)"
 
-#: src/amule.cpp:2127
+#: src/amule.cpp:2134
 msgid "Disconnected from Kad"
 msgstr "已斷開 Kad 連接"
 
-#: src/amule.cpp:2190
+#: src/amule.cpp:2197
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr "如果在設置中禁用了 UDP 端口，Kad 網絡將不能使用，沒有啓動。"
 
-#: src/amule.cpp:2193
+#: src/amule.cpp:2200
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 網絡在設置中被禁用了，沒有連接。"
 
