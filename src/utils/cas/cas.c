@@ -247,6 +247,10 @@ int main(int argc, char *argv[])
 	// obtain file size.
 	fseek (amulesig , 0 , SEEK_END);
 	lSize = ftell (amulesig);
+	if (0 == lSize) {
+		perror("aMule signature file is 0 Byte, exiting.\n");
+		exit(2);
+	}
 	rewind (amulesig);
 	buffer = (char*) malloc (lSize);
 	if (buffer == NULL) {
@@ -256,23 +260,14 @@ int main(int argc, char *argv[])
 	fread (buffer,1,lSize,amulesig);
 	fclose(amulesig);
 
-	stats[0] = strtok (buffer,"\n"); /* ed2k status*/
-	stats[1] = strtok (NULL,"\n"); /* server name */
-	stats[2] = strtok (NULL,"\n"); /* server ip */
-	stats[3] = strtok (NULL,"\n"); /* server port */
-	stats[4] = strtok (NULL,"\n"); /* high or low id */
-	stats[5] = strtok (NULL,"\n"); /* kad status */
-	stats[6] = strtok (NULL,"\n"); /* dl */
-	stats[7] = strtok (NULL,"\n"); /* ul*/
-	stats[8] = strtok (NULL,"\n"); /* queue*/
-	stats[9] = strtok (NULL,"\n"); /* clients*/
-	stats[10] = strtok (NULL,"\n"); /* nick*/
-	stats[11] = strtok (NULL,"\n"); /* total download */
-	stats[12] = strtok (NULL,"\n"); /* total upload */
-	stats[13] = strtok (NULL,"\n"); /* version */
-	stats[14] = strtok (NULL,"\n"); /*Session download*/
-	stats[15] = strtok (NULL,"\n"); /* Session upload */
-	stats[16] = strtok (NULL,"\n"); /* aMule running Time */
+	stats[0] = strtok (buffer,"\n");
+	for (i=1;i<17;i++) {
+		stats[i] = strtok (NULL,"\n");
+		if (NULL == stats[i]) {
+			perror("Too few fields in aMule signature file, exiting.\n");
+			exit(2);
+		}
+	}
 
 	// local time stored as stats[17]
 	lt = time(NULL);
