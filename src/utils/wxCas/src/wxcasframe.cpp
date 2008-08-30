@@ -349,24 +349,28 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 {
 	wxImage * statImage = GetStatImage ();
 
-	wxString saveFileName = wxFileSelector(
+	wxFileDialog selectSaveFile(this,
 		_( "Save Statistics Image" ),
 		wxFileName::GetHomeDir (),
 		WxCasCte::AMULESIG_IMG_NAME,
-		( const wxChar * ) NULL,
-		wxT ( "PNG files (*.png)|*.png|" )
-		wxT ( "JPEG files (*.jpg)|*.jpg|" )
-		wxT ( "BMP files (*.bmp)|*.bmp|" ),
-		wxFD_SAVE, this);
-	
-	if ( !saveFileName.empty () ) {
-		// This one guesses image format from filename extension
-		// (it may fail if the extension is not recognized):
+		wxT("PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|BMP (*.bmp)|*.bmp|"),
+		wxFD_SAVE);
 
-		if ( !statImage->SaveFile ( saveFileName ) ) {
-			wxMessageBox ( _( "No handler for this file type." ),
-			               _( "File was not saved" ), wxOK | wxCENTRE, this );
+	selectSaveFile.ShowModal();
+
+	wxString saveFileName(selectSaveFile.GetPath());
+
+	if ( !saveFileName.empty () ) {
+		// static list of allowed types, update if you change extensions above
+		const wxString ext[3] = { wxT(".png"), wxT(".jpg"), wxT(".bmp") };
+		const wxString fileType = ext[selectSaveFile.GetFilterIndex()];
+
+		if (fileType != saveFileName.Right(4)) {
+			saveFileName += fileType;
 		}
+
+		// wx will display a message if saving fails, file type is taken from extension
+		statImage->SaveFile( saveFileName );
 	}
 	delete statImage;
 }
