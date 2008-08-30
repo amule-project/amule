@@ -42,19 +42,12 @@
 
 #include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
 
-//class TransferredData;
-class CWSThread;
 class CWebSocket;
 class CMD4Hash;
 
 #define SESSION_TIMEOUT_SECS	300	// 5 minutes session expiration
 #define SHORT_FILENAME_LENGTH	40	// Max size of file name.
 
-//
-//uint8 GetHigherPrio(uint32 prio, bool autoprio);
-//uint8 GetHigherPrioShared(uint32 prio, bool autoprio);
-//uint8 GetLowerPrio(uint32 prio, bool autoprio);
-//uint8 GetLowerPrioShared(uint32 prio, bool autoprio);
 wxString _SpecialChars(wxString str);
 
 class CEC_PartFile_Tag;
@@ -691,11 +684,8 @@ class CUPnPPortMapping;
 
 class CWebServerBase : public wxEvtHandler {
 	protected:
-		//CWSThread *wsThread;
 		wxSocketServer *m_webserver_socket;
 		
-		wxMutex m_mutexChildren;
-
 		ServersInfo m_ServersInfo;
 		SharedFileInfo m_SharedFileInfo;
 		DownloadFileInfo m_DownloadFileInfo;
