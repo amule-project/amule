@@ -364,8 +364,16 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 		// static list of allowed types, update if you change extensions above
 		const wxString ext[3] = { wxT(".png"), wxT(".jpg"), wxT(".bmp") };
 		const wxString fileType = ext[selectSaveFile.GetFilterIndex()];
+		bool isValidFileType = false;
 
-		if (fileType != saveFileName.Right(4)) {
+		for(int i=0;i<3;++i) {
+			if(ext[i] == saveFileName.Right(4)) {
+				isValidFileType = true;
+				break;
+			}
+		}
+
+		if (!isValidFileType) {
 			saveFileName += fileType;
 		}
 
