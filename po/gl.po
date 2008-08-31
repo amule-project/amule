@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-27 03:30+0200\n"
+"POT-Creation-Date: 2008-08-31 03:30+0200\n"
 "PO-Revision-Date: 2008-07-03 12:01+0100\n"
 "Last-Translator: Festor Wailon Dacoba <festor90@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -575,70 +575,70 @@ msgstr "conexión do cliente web aceptada\n"
 msgid "ERROR: cannot accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:379
+#: src/webserver/src/WebServer.cpp:378
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Petición fallida co seguinte erro: %s."
 
-#: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:381 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Petición fallida cun erro descoñecido."
 
-#: src/webserver/src/WebServer.cpp:1743
+#: src/webserver/src/WebServer.cpp:1742
 msgid "Index file not found: "
 msgstr "Ficheiro índice non atopado: "
 
-#: src/webserver/src/WebServer.cpp:1820
+#: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"
 msgstr "Sesión expirada - petición de conexión\n"
 
-#: src/webserver/src/WebServer.cpp:1825
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Session ok, logged in\n"
 msgstr "Sesión aceptada, conectado\n"
 
-#: src/webserver/src/WebServer.cpp:1827
+#: src/webserver/src/WebServer.cpp:1826
 msgid "Session ok, not logged in\n"
 msgstr "Sesión aceptada, non conectado\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1831
 msgid "No session opened - will request login\n"
 msgstr "Ningunha sesión aberta - petición de conexión\n"
 
-#: src/webserver/src/WebServer.cpp:1841
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Session created - requesting login\n"
 msgstr "Sesión creada - petición de conexión\n"
 
-#: src/webserver/src/WebServer.cpp:1858
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Processing request [original]: "
 msgstr "Procesando petición [orixinal]: "
 
-#: src/webserver/src/WebServer.cpp:1874
+#: src/webserver/src/WebServer.cpp:1871
 msgid "Checking password\n"
 msgstr "Comprobando contrasinal\n"
 
-#: src/webserver/src/WebServer.cpp:1879
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Password hash invalid\n"
 msgstr "Contrasinal hash inválido\n"
 
-#: src/webserver/src/WebServer.cpp:1894
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password ok\n"
 msgstr "Contrasinal aceptado\n"
 
-#: src/webserver/src/WebServer.cpp:1896
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Password bad\n"
 msgstr "Contrasinal erróneo\n"
 
-#: src/webserver/src/WebServer.cpp:1899
+#: src/webserver/src/WebServer.cpp:1896
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
 "Non introduciches ningún contrasinal. Un contrasinal en branco non está "
 "permitido.\n"
 
-#: src/webserver/src/WebServer.cpp:1907
+#: src/webserver/src/WebServer.cpp:1904
 msgid "Logout requested\n"
 msgstr "Desconexión solicitada\n"
 
-#: src/webserver/src/WebServer.cpp:1912
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitude [redirixida]: "
 
@@ -858,7 +858,7 @@ msgid "Preferences setting"
 msgstr "Preferencias"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:227
-#: src/utils/wxCas/src/wxcasframe.cpp:406
+#: src/utils/wxCas/src/wxcasframe.cpp:410
 msgid "About wxCas"
 msgstr "Acerca de wxCas"
 
@@ -878,19 +878,11 @@ msgstr "Auto recarga iniciada"
 msgid "Save Statistics Image"
 msgstr "Gardar imaxe de estatísticas"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:367
-msgid "No handler for this file type."
-msgstr "Sen asociar este tipo de ficheiro."
-
-#: src/utils/wxCas/src/wxcasframe.cpp:368
-msgid "File was not saved"
-msgstr "O ficheiro non foi gardado"
-
-#: src/utils/wxCas/src/wxcasframe.cpp:379
+#: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid "aMule Online Statistics"
 msgstr "Estatísticas aMule en liña"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:383
+#: src/utils/wxCas/src/wxcasframe.cpp:387
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -898,11 +890,11 @@ msgstr ""
 "Houbo un problema imprimindo.\n"
 "Tal vez túa impresora actual non esté configurada?"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:384
+#: src/utils/wxCas/src/wxcasframe.cpp:388
 msgid "Printing"
 msgstr "Imprimindo"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:402
+#: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -920,142 +912,142 @@ msgstr ""
 "\n"
 "Distribuido baixo GPL"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:573
+#: src/utils/wxCas/src/wxcasframe.cpp:577
 msgid "Oh Oh, aMule is not running..."
 msgstr "Oh Oh, non se está executando aMule..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:649
-#: src/utils/wxCas/src/wxcasframe.cpp:719
-#: src/utils/wxCas/src/wxcasframe.cpp:788
+#: src/utils/wxCas/src/wxcasframe.cpp:653
+#: src/utils/wxCas/src/wxcasframe.cpp:723
+#: src/utils/wxCas/src/wxcasframe.cpp:792
 msgid "aMule is running"
 msgstr "aMule está iniciado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:858
+#: src/utils/wxCas/src/wxcasframe.cpp:862
 msgid "aMule is running, but disconnected"
 msgstr "aMule estase executando, pero está desconectado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:929
+#: src/utils/wxCas/src/wxcasframe.cpp:933
 msgid "aMule is connecting..."
 msgstr "aMule está conectando..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:933
+#: src/utils/wxCas/src/wxcasframe.cpp:937
 msgid "Oh Oh, aMule status is unknown..."
 msgstr "Oh Oh, estado de aMule descoñecido..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1004
-#: src/utils/wxCas/src/wxcasframe.cpp:1009
+#: src/utils/wxCas/src/wxcasframe.cpp:1008
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
+#: src/utils/wxCas/src/wxcasframe.cpp:1025
 msgid "aMule "
 msgstr "aMule "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1006
+#: src/utils/wxCas/src/wxcasframe.cpp:1010
 msgid " has been running for "
 msgstr " foi executado durante "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1011
+#: src/utils/wxCas/src/wxcasframe.cpp:1015
 msgid " is stopped !"
 msgstr " está detido !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1015
-#: src/utils/wxCas/src/wxcasframe.cpp:1039
+#: src/utils/wxCas/src/wxcasframe.cpp:1019
+#: src/utils/wxCas/src/wxcasframe.cpp:1043
 msgid " is not connected !"
 msgstr " non está conectado!"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1019
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is connecting..."
 msgstr " está conectando..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1023
+#: src/utils/wxCas/src/wxcasframe.cpp:1027
 msgid " is doing something strange, check it !"
 msgstr " pasou algo estraño, compróbao !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1044
+#: src/utils/wxCas/src/wxcasframe.cpp:1048
 msgid " is connected to "
 msgstr " está conectado a "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1045
-#: src/utils/wxCas/src/wxcasframe.cpp:1067
+#: src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid " Kad: "
 msgstr " Kad: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1047
-#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:711
+#: src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/utils/wxCas/src/wxcasframe.cpp:1073 src/TextClient.cpp:711
 msgid "ok"
 msgstr "aceptar"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:709
+#: src/utils/wxCas/src/wxcasframe.cpp:1053
+#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "cortafogos"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1051
-#: src/utils/wxCas/src/wxcasframe.cpp:1073
+#: src/utils/wxCas/src/wxcasframe.cpp:1055
+#: src/utils/wxCas/src/wxcasframe.cpp:1077
 msgid "off"
 msgstr "apagar"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1057
+#: src/utils/wxCas/src/wxcasframe.cpp:1061
 msgid " is on "
 msgstr " conectado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1064
+#: src/utils/wxCas/src/wxcasframe.cpp:1068
 msgid " with "
 msgstr "con "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1082
+#: src/utils/wxCas/src/wxcasframe.cpp:1086
 msgid "Total Download: "
 msgstr "Total descargado: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1084
-#: src/utils/wxCas/src/wxcasframe.cpp:1095
+#: src/utils/wxCas/src/wxcasframe.cpp:1088
+#: src/utils/wxCas/src/wxcasframe.cpp:1099
 msgid ", Upload: "
 msgstr ", Subido: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1093
+#: src/utils/wxCas/src/wxcasframe.cpp:1097
 msgid "Session Download: "
 msgstr "Descarga de sesión: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1104
+#: src/utils/wxCas/src/wxcasframe.cpp:1108
 msgid "Download: "
 msgstr "Descargado: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106
+#: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s, Upload: "
 msgstr " kB/s, Subido: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1108
+#: src/utils/wxCas/src/wxcasframe.cpp:1112
 msgid " kB/s"
 msgstr " kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1116
+#: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid "Sharing: "
 msgstr "Compartindo: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1118
+#: src/utils/wxCas/src/wxcasframe.cpp:1122
 msgid " file(s), Clients on queue: "
 msgstr " ficheiro(s), Clientes en cola: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1128
+#: src/utils/wxCas/src/wxcasframe.cpp:1132
 msgid "Time: "
 msgstr "Tempo: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1137
-#: src/utils/wxCas/src/wxcasframe.cpp:1147 src/FileDetailDialog.cpp:116
+#: src/utils/wxCas/src/wxcasframe.cpp:1141
+#: src/utils/wxCas/src/wxcasframe.cpp:1151 src/FileDetailDialog.cpp:116
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1138
-#: src/utils/wxCas/src/wxcasframe.cpp:1148
+#: src/utils/wxCas/src/wxcasframe.cpp:1142
+#: src/utils/wxCas/src/wxcasframe.cpp:1152
 msgid " on "
 msgstr " en "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1158
+#: src/utils/wxCas/src/wxcasframe.cpp:1162
 msgid "System Load Average (1-5-15 min): "
 msgstr "Media de carga de sistema (1-5-15 min): "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1169
+#: src/utils/wxCas/src/wxcasframe.cpp:1173
 msgid "System uptime: "
 msgstr "Tempo de execución do sistema: "
 
@@ -7163,6 +7155,12 @@ msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "¡ No se puido abrir o arquivo de amigos 'emfriends.met' para a súa "
 "escritura !"
+
+#~ msgid "No handler for this file type."
+#~ msgstr "Sen asociar este tipo de ficheiro."
+
+#~ msgid "File was not saved"
+#~ msgstr "O ficheiro non foi gardado"
 
 #~ msgid "Connection Failed. Unable to connect to the specified host\n"
 #~ msgstr "Conexión fallida. Non se puido conectar ao anfitrión especificado\n"

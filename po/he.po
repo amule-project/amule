@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-27 03:30+0200\n"
+"POT-Creation-Date: 2008-08-31 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -545,68 +545,68 @@ msgstr ""
 msgid "ERROR: cannot accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:379
+#: src/webserver/src/WebServer.cpp:378
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "הבקשה נכשלה עם השגיאות הבאות: %s."
 
-#: src/webserver/src/WebServer.cpp:382 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:381 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "הבקשה נכשלה עם שגיאה לא ידועה"
 
-#: src/webserver/src/WebServer.cpp:1743
+#: src/webserver/src/WebServer.cpp:1742
 msgid "Index file not found: "
 msgstr "קובץ האינדקס לא נמצא"
 
-#: src/webserver/src/WebServer.cpp:1820
+#: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"
 msgstr "פג התוקף של החיבור - מבקש התחברות מחדש\n"
 
-#: src/webserver/src/WebServer.cpp:1825
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Session ok, logged in\n"
 msgstr "התחברות הצליחה - מחובר\n"
 
-#: src/webserver/src/WebServer.cpp:1827
+#: src/webserver/src/WebServer.cpp:1826
 msgid "Session ok, not logged in\n"
 msgstr "התחברות הצליחה, לא מזוהה\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1831
 msgid "No session opened - will request login\n"
 msgstr "לא נפתחה התחברות - הולך לבקש להזדהות\n"
 
-#: src/webserver/src/WebServer.cpp:1841
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Session created - requesting login\n"
 msgstr "נוצרה התחברות מבקש להזדהות\n"
 
-#: src/webserver/src/WebServer.cpp:1858
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Processing request [original]: "
 msgstr "מעבד בקשה [מקורי]: "
 
-#: src/webserver/src/WebServer.cpp:1874
+#: src/webserver/src/WebServer.cpp:1871
 msgid "Checking password\n"
 msgstr "בודק סיסמא\n"
 
-#: src/webserver/src/WebServer.cpp:1879
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Password hash invalid\n"
 msgstr "גיבוב הסיסמא אינו תקף\n"
 
-#: src/webserver/src/WebServer.cpp:1894
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password ok\n"
 msgstr "הסיסמא בסדר\n"
 
-#: src/webserver/src/WebServer.cpp:1896
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Password bad\n"
 msgstr "סיסמא שגויה\n"
 
-#: src/webserver/src/WebServer.cpp:1899
+#: src/webserver/src/WebServer.cpp:1896
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "לא הזנת סיסמא. סיסמאות ריקות אינם קבילות.\n"
 
-#: src/webserver/src/WebServer.cpp:1907
+#: src/webserver/src/WebServer.cpp:1904
 msgid "Logout requested\n"
 msgstr "ב‏‎ֻקְשַה התנתקות\n"
 
-#: src/webserver/src/WebServer.cpp:1912
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Processing request [redirected]: "
 msgstr "מעבד בקשה [הופנתה מחדש]: "
 
@@ -823,7 +823,7 @@ msgid "Preferences setting"
 msgstr "הגדרת העדפות"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:227
-#: src/utils/wxCas/src/wxcasframe.cpp:406
+#: src/utils/wxCas/src/wxcasframe.cpp:410
 msgid "About wxCas"
 msgstr "אודות wxCas"
 
@@ -843,19 +843,11 @@ msgstr "רענון אוטמטי התחיל"
 msgid "Save Statistics Image"
 msgstr "שמור תמונה סטטיסטית"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:367
-msgid "No handler for this file type."
-msgstr "אין 'מאחז' עבור סוג קובץ זה"
-
-#: src/utils/wxCas/src/wxcasframe.cpp:368
-msgid "File was not saved"
-msgstr "קובץ לא נשמר"
-
-#: src/utils/wxCas/src/wxcasframe.cpp:379
+#: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid "aMule Online Statistics"
 msgstr "סטטיסטיקות מקוונות של אימיול"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:383
+#: src/utils/wxCas/src/wxcasframe.cpp:387
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -863,11 +855,11 @@ msgstr ""
 "ישנה בעייה בהדפסה.\n"
 "האם המדפסת הנוכחית שלך מוגדרת בצורה נכונה?"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:384
+#: src/utils/wxCas/src/wxcasframe.cpp:388
 msgid "Printing"
 msgstr "מדפיס"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:402
+#: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -884,142 +876,142 @@ msgstr ""
 "\n"
 "מופץ תחת רשיון GPL"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:573
+#: src/utils/wxCas/src/wxcasframe.cpp:577
 msgid "Oh Oh, aMule is not running..."
 msgstr "או או.. אימיול לא פועל..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:649
-#: src/utils/wxCas/src/wxcasframe.cpp:719
-#: src/utils/wxCas/src/wxcasframe.cpp:788
+#: src/utils/wxCas/src/wxcasframe.cpp:653
+#: src/utils/wxCas/src/wxcasframe.cpp:723
+#: src/utils/wxCas/src/wxcasframe.cpp:792
 msgid "aMule is running"
 msgstr "אימיול פועל"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:858
+#: src/utils/wxCas/src/wxcasframe.cpp:862
 msgid "aMule is running, but disconnected"
 msgstr "אמיול פועל אך אינו מחובר"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:929
+#: src/utils/wxCas/src/wxcasframe.cpp:933
 msgid "aMule is connecting..."
 msgstr "אימיול מתחבר..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:933
+#: src/utils/wxCas/src/wxcasframe.cpp:937
 msgid "Oh Oh, aMule status is unknown..."
 msgstr "או או... המצב של אימיול אינו ידוע..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1004
-#: src/utils/wxCas/src/wxcasframe.cpp:1009
+#: src/utils/wxCas/src/wxcasframe.cpp:1008
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
+#: src/utils/wxCas/src/wxcasframe.cpp:1025
 msgid "aMule "
 msgstr "אֵימיול "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1006
+#: src/utils/wxCas/src/wxcasframe.cpp:1010
 msgid " has been running for "
 msgstr " פועל במשך "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1011
+#: src/utils/wxCas/src/wxcasframe.cpp:1015
 msgid " is stopped !"
 msgstr " הופסק !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1015
-#: src/utils/wxCas/src/wxcasframe.cpp:1039
+#: src/utils/wxCas/src/wxcasframe.cpp:1019
+#: src/utils/wxCas/src/wxcasframe.cpp:1043
 msgid " is not connected !"
 msgstr " אינו מחובר !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1019
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is connecting..."
 msgstr " מתחבר..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1023
+#: src/utils/wxCas/src/wxcasframe.cpp:1027
 msgid " is doing something strange, check it !"
 msgstr " עושה משהו מוזר, תבדוק את זה!"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1044
+#: src/utils/wxCas/src/wxcasframe.cpp:1048
 msgid " is connected to "
 msgstr " מחובר ל "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1045
-#: src/utils/wxCas/src/wxcasframe.cpp:1067
+#: src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid " Kad: "
 msgstr " קאד: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1047
-#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:711
+#: src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/utils/wxCas/src/wxcasframe.cpp:1073 src/TextClient.cpp:711
 msgid "ok"
 msgstr "בסדר"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:709
+#: src/utils/wxCas/src/wxcasframe.cpp:1053
+#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "חסום-חומתאש"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1051
-#: src/utils/wxCas/src/wxcasframe.cpp:1073
+#: src/utils/wxCas/src/wxcasframe.cpp:1055
+#: src/utils/wxCas/src/wxcasframe.cpp:1077
 msgid "off"
 msgstr "מכובה"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1057
+#: src/utils/wxCas/src/wxcasframe.cpp:1061
 msgid " is on "
 msgstr " דלוק "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1064
+#: src/utils/wxCas/src/wxcasframe.cpp:1068
 msgid " with "
 msgstr " עם "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1082
+#: src/utils/wxCas/src/wxcasframe.cpp:1086
 msgid "Total Download: "
 msgstr "סכום כולל של הורדות: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1084
-#: src/utils/wxCas/src/wxcasframe.cpp:1095
+#: src/utils/wxCas/src/wxcasframe.cpp:1088
+#: src/utils/wxCas/src/wxcasframe.cpp:1099
 msgid ", Upload: "
 msgstr ", הועלה: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1093
+#: src/utils/wxCas/src/wxcasframe.cpp:1097
 msgid "Session Download: "
 msgstr "הורד בהחתברות הנוכחית: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1104
+#: src/utils/wxCas/src/wxcasframe.cpp:1108
 msgid "Download: "
 msgstr "מוריד: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106
+#: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s, Upload: "
 msgstr " ק\"ב/ש, העלאה: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1108
+#: src/utils/wxCas/src/wxcasframe.cpp:1112
 msgid " kB/s"
 msgstr " ק\"ב/ש"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1116
+#: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid "Sharing: "
 msgstr "משתף: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1118
+#: src/utils/wxCas/src/wxcasframe.cpp:1122
 msgid " file(s), Clients on queue: "
 msgstr " קבצ(ים), לקוחות בתור: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1128
+#: src/utils/wxCas/src/wxcasframe.cpp:1132
 msgid "Time: "
 msgstr "זמן: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1137
-#: src/utils/wxCas/src/wxcasframe.cpp:1147 src/FileDetailDialog.cpp:116
+#: src/utils/wxCas/src/wxcasframe.cpp:1141
+#: src/utils/wxCas/src/wxcasframe.cpp:1151 src/FileDetailDialog.cpp:116
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f ק\"ב/ש"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1138
-#: src/utils/wxCas/src/wxcasframe.cpp:1148
+#: src/utils/wxCas/src/wxcasframe.cpp:1142
+#: src/utils/wxCas/src/wxcasframe.cpp:1152
 msgid " on "
 msgstr " דלוק "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1158
+#: src/utils/wxCas/src/wxcasframe.cpp:1162
 msgid "System Load Average (1-5-15 min): "
 msgstr "עומס ממוצע של המערכת ( 1-5-15 דקות): "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1169
+#: src/utils/wxCas/src/wxcasframe.cpp:1173
 msgid "System uptime: "
 msgstr "משך הפעולה של המערכת:"
 
@@ -6884,6 +6876,12 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "No handler for this file type."
+#~ msgstr "אין 'מאחז' עבור סוג קובץ זה"
+
+#~ msgid "File was not saved"
+#~ msgstr "קובץ לא נשמר"
 
 #~ msgid "Message Filter"
 #~ msgstr "מסנן הודעות"
