@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-31 03:30+0200\n"
+"POT-Creation-Date: 2008-09-01 03:31+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -841,7 +841,7 @@ msgid "Preferences setting"
 msgstr "Rregullimet e preferencave"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:227
-#: src/utils/wxCas/src/wxcasframe.cpp:410
+#: src/utils/wxCas/src/wxcasframe.cpp:418
 msgid "About wxCas"
 msgstr "Rreth wxCas"
 
@@ -861,11 +861,11 @@ msgstr "Rifreskimi Automatik filloi"
 msgid "Save Statistics Image"
 msgstr "Shpeto imazhet e statistikave"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:383
+#: src/utils/wxCas/src/wxcasframe.cpp:391
 msgid "aMule Online Statistics"
 msgstr "Statistikat Online te aMule"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:387
+#: src/utils/wxCas/src/wxcasframe.cpp:395
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -873,11 +873,11 @@ msgstr ""
 "Kishte nje problem duke printuar.\n"
 " Mos valle printeri juaj nuk eshte instaluar ne menyre korrekte?"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:388
+#: src/utils/wxCas/src/wxcasframe.cpp:396
 msgid "Printing"
 msgstr "Duke printuar"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:406
+#: src/utils/wxCas/src/wxcasframe.cpp:414
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -895,142 +895,142 @@ msgstr ""
 "\n"
 "Shperndare nga GPL"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:577
+#: src/utils/wxCas/src/wxcasframe.cpp:585
 msgid "Oh Oh, aMule is not running..."
 msgstr "Oh Oh, aMule nuk eshte duke punuar..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:653
-#: src/utils/wxCas/src/wxcasframe.cpp:723
-#: src/utils/wxCas/src/wxcasframe.cpp:792
+#: src/utils/wxCas/src/wxcasframe.cpp:661
+#: src/utils/wxCas/src/wxcasframe.cpp:731
+#: src/utils/wxCas/src/wxcasframe.cpp:800
 msgid "aMule is running"
 msgstr "aMule eshte duke punuar"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:862
+#: src/utils/wxCas/src/wxcasframe.cpp:870
 msgid "aMule is running, but disconnected"
 msgstr "aMule eshte duke punuar,por e shkeputur"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:933
+#: src/utils/wxCas/src/wxcasframe.cpp:941
 msgid "aMule is connecting..."
 msgstr "aMule po lidhet..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:937
+#: src/utils/wxCas/src/wxcasframe.cpp:945
 msgid "Oh Oh, aMule status is unknown..."
 msgstr "Oh Oh, Statusi i aMule eshte i panjohur..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1008
-#: src/utils/wxCas/src/wxcasframe.cpp:1013
-#: src/utils/wxCas/src/wxcasframe.cpp:1017
+#: src/utils/wxCas/src/wxcasframe.cpp:1016
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 #: src/utils/wxCas/src/wxcasframe.cpp:1025
+#: src/utils/wxCas/src/wxcasframe.cpp:1029
+#: src/utils/wxCas/src/wxcasframe.cpp:1033
 msgid "aMule "
 msgstr "aMule "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1010
+#: src/utils/wxCas/src/wxcasframe.cpp:1018
 msgid " has been running for "
 msgstr "ka punuar per "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1015
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is stopped !"
 msgstr " ka ndaluar !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1019
-#: src/utils/wxCas/src/wxcasframe.cpp:1043
+#: src/utils/wxCas/src/wxcasframe.cpp:1027
+#: src/utils/wxCas/src/wxcasframe.cpp:1051
 msgid " is not connected !"
 msgstr " nuk eshte lidhur !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1023
+#: src/utils/wxCas/src/wxcasframe.cpp:1031
 msgid " is connecting..."
 msgstr " po lidhet..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1027
+#: src/utils/wxCas/src/wxcasframe.cpp:1035
 msgid " is doing something strange, check it !"
 msgstr " eshte duke bere dicka te cuditshme, kontrolloje !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1048
+#: src/utils/wxCas/src/wxcasframe.cpp:1056
 msgid " is connected to "
 msgstr " eshte lidhur me "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071
+#: src/utils/wxCas/src/wxcasframe.cpp:1057
+#: src/utils/wxCas/src/wxcasframe.cpp:1079
 msgid " Kad: "
 msgstr " Kad: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1051
-#: src/utils/wxCas/src/wxcasframe.cpp:1073 src/TextClient.cpp:711
+#: src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/utils/wxCas/src/wxcasframe.cpp:1081 src/TextClient.cpp:711
 msgid "ok"
 msgstr "ok"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1053
-#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/TextClient.cpp:709
+#: src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/utils/wxCas/src/wxcasframe.cpp:1083 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "firewalled"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1055
-#: src/utils/wxCas/src/wxcasframe.cpp:1077
+#: src/utils/wxCas/src/wxcasframe.cpp:1063
+#: src/utils/wxCas/src/wxcasframe.cpp:1085
 msgid "off"
 msgstr "Fikur"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/utils/wxCas/src/wxcasframe.cpp:1069
 msgid " is on "
 msgstr "  Eshte ndezur "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1068
+#: src/utils/wxCas/src/wxcasframe.cpp:1076
 msgid " with "
 msgstr " me "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1086
+#: src/utils/wxCas/src/wxcasframe.cpp:1094
 msgid "Total Download: "
 msgstr "Shkarkimi Total: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1088
-#: src/utils/wxCas/src/wxcasframe.cpp:1099
+#: src/utils/wxCas/src/wxcasframe.cpp:1096
+#: src/utils/wxCas/src/wxcasframe.cpp:1107
 msgid ", Upload: "
 msgstr ", Ngarkimi: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1097
+#: src/utils/wxCas/src/wxcasframe.cpp:1105
 msgid "Session Download: "
 msgstr "Sesioni i Shkarkimit: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1108
+#: src/utils/wxCas/src/wxcasframe.cpp:1116
 msgid "Download: "
 msgstr "Shkarkim: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1110
+#: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid " kB/s, Upload: "
 msgstr " kB/s, Ngarkim: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1112
+#: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " kB/s"
 msgstr " kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1120
+#: src/utils/wxCas/src/wxcasframe.cpp:1128
 msgid "Sharing: "
 msgstr "Te ndara: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1122
+#: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid " file(s), Clients on queue: "
 msgstr " faili(et), Klientet ne pritje: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1132
+#: src/utils/wxCas/src/wxcasframe.cpp:1140
 msgid "Time: "
 msgstr "Koha: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1141
-#: src/utils/wxCas/src/wxcasframe.cpp:1151 src/FileDetailDialog.cpp:116
+#: src/utils/wxCas/src/wxcasframe.cpp:1149
+#: src/utils/wxCas/src/wxcasframe.cpp:1159 src/FileDetailDialog.cpp:116
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1142
-#: src/utils/wxCas/src/wxcasframe.cpp:1152
+#: src/utils/wxCas/src/wxcasframe.cpp:1150
+#: src/utils/wxCas/src/wxcasframe.cpp:1160
 msgid " on "
 msgstr " Ndezur "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1162
+#: src/utils/wxCas/src/wxcasframe.cpp:1170
 msgid "System Load Average (1-5-15 min): "
 msgstr "Ngarikimi mesatar i sistemit (1-5-15 minuta): "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1173
+#: src/utils/wxCas/src/wxcasframe.cpp:1181
 msgid "System uptime: "
 msgstr "Uptime i Sistemit: "
 
