@@ -50,19 +50,68 @@ AC_DEFUN([MULE_BACKUP], [mule_backup_$1="$$1"])
 dnl MULE_RESTORE(VAR)
 AC_DEFUN([MULE_RESTORE], [$1="$mule_backup_$1"])
 
-dnl Helper macro for MULE_IF
+dnl ---------------------------------------------------------------------------
+dnl MULE_IF(CONDITION, [IF-TRUE] [, ELIF-CONDITION, [IF-TRUE]]... [, ELSE-BRANCH])
+dnl
+dnl Works like AS_IF(), but allows elif-branches too.
+dnl ---------------------------------------------------------------------------
 m4_define([__mule_if_helper],
 [m4_if( [$#], 0,,
 	[$#], 1, [m4_ifvaln([$1], [m4_n([else])  $1])],
 	[m4_n([elif $1; then])  m4_ifvaln([$2], [$2], :)])dnl
 m4_if(m4_eval([$# > 2]), 1, [$0(m4_shiftn(2, $@))])])
 
-dnl MULE_IF(CONDITION, [IF-TRUE] [, ELIF-CONDITION, [IF-TRUE]]... [, ELSE-BRANCH])
 m4_define([MULE_IF],
 [m4_if( [$#], 0,,
 	[$#], 1,,
 	[m4_n([if $1; then])  m4_ifval([$2],[$2], :)
 m4_if(m4_eval([$# > 2]), 1, [__mule_if_helper(m4_shiftn(2, $@))])m4_n([fi])])])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_WARNING(MESSAGE)
+dnl
+dnl Works like AC_MSG_WARN(), but the warning will be reproduced at the end of
+dnl the configure run. An empty line is prepended at the final output and a
+dnl newline is appended for free.
+dnl ---------------------------------------------------------------------------
+m4_define([_MULE_WARNINGS],
+	[m4_ifdef([_m4_divert(BODY)], incr(_m4_divert(BODY)), [5000])])
+m4_define([_MULE_WARNCOUNT], [0])
+
+m4_divert_push(_MULE_WARNINGS)dnl
+if test ${_mule_has_warnings:-no} = yes; then
+echo ""
+echo ""
+echo " *** Warnings during configuration ***"
+fi
+m4_divert_pop()dnl
+
+m4_define([MULE_WARNING],
+[AC_MSG_WARN(
+m4_pushdef([_mule_Prefix], [        ])dnl
+m4_foreach([_mule_Line], m4_quote(m4_split([$1], [
+])), [
+m4_text_wrap(m4_defn([_mule_Line]), _mule_Prefix)])[]dnl
+m4_popdef([_mule_Prefix])dnl
+)
+_mule_warning_[]_MULE_WARNCOUNT[]=yes
+_mule_has_warnings=yes
+m4_divert_push(_MULE_WARNINGS)dnl
+if test ${_mule_warning_[]_MULE_WARNCOUNT[]:-no} = yes; then
+cat <<_MULEEOT
+
+m4_pushdef([_mule_Prefix1], [* ])dnl
+m4_pushdef([_mule_Prefix], [  ])dnl
+m4_foreach([_mule_Line], m4_quote(m4_split([$1], [
+])), [m4_text_wrap(m4_defn([_mule_Line]), _mule_Prefix, _mule_Prefix1)
+m4_define([_mule_Prefix1], _mule_Prefix)dnl
+])[]dnl
+m4_popdef([_mule_Prefix])dnl
+m4_popdef([_mule_Prefix1])dnl
+_MULEEOT
+fi
+m4_divert_pop()dnl
+m4_define([_MULE_WARNCOUNT], incr(_MULE_WARNCOUNT))])
 
 dnl ---------------------------------------------------------------------------
 dnl MULE_CHECK_SYSTEM
@@ -323,9 +372,7 @@ AC_DEFUN([MULE_CHECK_BFD],
 		BFD_LIBS="-lbfd -liberty"
 	], [
 		AC_MSG_RESULT([no])
-		AC_MSG_WARN([
-	bfd.h not found or unusable, please install binutils development
-	package if you are a developer or want to help testing aMule])
+		MULE_WARNING([bfd.h not found or unusable, please install binutils development package if you are a developer or want to help testing aMule])
 	])
 	MULE_RESTORE([LIBS])
 
@@ -376,10 +423,9 @@ AC_DEFUN([MULE_CHECK_EXCEPTIONS],
 		AC_MSG_ERROR([Exception handling does not work. Broken compiler?])
 	], [
 		AC_MSG_RESULT([undeterminable])
-		AC_MSG_WARN([
-	Cross-compilation detected, so exception handling cannot be tested.
-	Note that broken exception handling in your compiler may lead to
-	unexpected crashes.])
+		MULE_WARNING(
+			[Cross-compilation detected, so exception handling cannot be tested.
+			Note that broken exception handling in your compiler may lead to unexpected crashes.])
 	])
 ])
 
@@ -417,7 +463,7 @@ AC_DEFUN([MULE_CHECK_REGEX],
 		], [MULE_RESTORE([LIBS])])
 	done
 	AC_MSG_RESULT([$regex_found])
-	ifelse([$1$2],,, [AS_IF([test $regex_found = yes], [$1], [$2])])
+	AS_IF([test $regex_found = yes], [$1], [$2])
 AC_SUBST([REGEX_LIBS])dnl
 ])
 

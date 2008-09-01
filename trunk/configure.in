@@ -205,26 +205,31 @@ AS_IF([test x$CAS = xyes], [
 		CAS_DEFS="-D__GD__"
 		MULE_PREPEND([GDLIB_LIBS], [-lgd])
 	], [CAS_DEFS=])
-	AS_IF([test -z "$CAS_DEFS"], [
-		AC_MSG_WARN([
-	gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
-	Please check that gdlib-config is in your default path, check out
-	LD_LIBRARY_PATH or equivalent variable.
-	Or this might also be that your gdlib-config has other name.
-	Please try again with --with-gdlib-config=/usr/bin/gdlib-config
-	(replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
-	If you use compiled packages check if you have devel pack installed.
-	To download the latest version check http://www.boutell.com/gd
-	for sources.])
-	])
+	AS_IF([test -z "$CAS_DEFS"],
+		[MULE_WARNING(
+			[gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
+			Please check that gdlib-config is in your default path, check out LD_LIBRARY_PATH or equivalent variable.
+			Or this might also be that your gdlib-config has other name.
+			Please try again with --with-gdlib-config=/usr/bin/gdlib-config (replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
+			If you use compiled packages check if you have devel pack installed.
+			To download the latest version check http://www.boutell.com/gd for sources.])])
 ], [GDLIB_VERSION="not_needed"])
 AC_SUBST([CAS_DEFS])dnl
 
 
-AS_IF([test x$WEB = xyes], [MULE_CHECK_REGEX(, [WEB=disabled])])
 AS_IF([test x$WEB = xyes], 
-	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [AC_MSG_WARN([libpng-devel >= 1.2.0 is needed for amuleweb])])], 
-	[LIBPNG_VERSION="not_needed"])
+	[MULE_CHECK_REGEX(, [
+		WEB=disabled
+		MULE_WARNING([amuleweb has been disabled because configure could not find a POSIX compliant regex library.])
+	])
+])
+AS_IF([test x$WEB = xyes], 
+	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [
+		MULE_WARNING(
+			[libpng >= 1.2.0 not found.
+			amuleweb will be compiled but file download progress bar images will NOT be generated.])
+		])
+	], [LIBPNG_VERSION="not_needed"])
 AC_SUBST([AMULEWEB_DEFS])dnl
 
 
@@ -307,7 +312,8 @@ AS_IF([test "${ENABLE_UPNP:-yes}" = yes], [
 	LIBUPNP_CHECK(
 		[1.6.6],
 		[MULE_APPEND([LIBUPNP_CPPFLAGS], [-DENABLE_UPNP=1])],
-		[ENABLE_UPNP=disabled]
+		[ENABLE_UPNP=disabled
+		MULE_WARNING([UPnP code has been disabled because ${libupnp_error}.])]
 	)
 ])dnl
 
@@ -396,10 +402,7 @@ dnl AC_FUNC_STRTOD
 dnl AC_FUNC_SETVBUF_REVERSED
 dnl Anyways, do we actually USE them?
 AS_IF([test $cross_compiling = yes -a $gnumalloc = yes], [
-	AC_MSG_WARN([
-    configure cannot check whether malloc() and realloc() are GNU libc
-    compatible. You have to be ABSOLUTELY sure that they are, otherwise
-    run configure with the --without-gnu-malloc switch.])
+	MULE_WARNING([configure cannot check whether malloc() and realloc() are GNU libc compatible. You have to be ABSOLUTELY sure that they are, otherwise run configure with the --without-gnu-malloc switch.])
 	ac_cv_func_malloc_0_nonnull=yes
 	ac_cv_func_realloc_0_nonnull=yes
 ])
@@ -610,23 +613,3 @@ if test x$GDLIB_VERSION != xnot_needed; then
 echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
 fi
 echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
-if test x$WEB = xdisabled; then
-echo ""
-echo ""
-echo "WARNING! amuleweb has been disabled because configure could not find"
-echo "a POSIX compliant regex library."
-echo ""
-fi
-if test -z "$LIBPNG_VERSION"; then
-echo ""
-echo ""
-echo "WARNING! libpng >= 1.2.0 not found."
-echo "amuleweb will be compiled but file download progress bar images will NOT be generated."
-echo ""
-fi
-if test x$ENABLE_UPNP = xdisabled; then
-echo ""
-echo ""
-echo "WARNING! UPnP code has been disabled because ${libupnp_error}."
-echo ""
-fi
