@@ -26,64 +26,102 @@
 #ifndef FILEVIEW_PRINT_H
 #define FILEVIEW_PRINT_H
 
+#include <common/DataFileVersion.h>
 #include <common/StringFunctions.h>
 #include "../../kademlia/utils/UInt128.h"
 #include "../../MD4Hash.h"
+#include "../../Tag.h"
 
 #include <cstdio>
 #include <time.h>
+#include <iostream>
 
-class CTag;
+using std::cout;
+using std::cerr;
+using std::endl;
 
+enum SDMODE {
+	SD_DISPLAY,
+	SD_SAFE,
+	SD_UTF8,
+	SD_NONE
+};
+
+extern SDMODE g_stringDecodeMode;
+
+inline void SetStringsMode(SDMODE mode)	{ g_stringDecodeMode = mode; }
+inline SDMODE GetStringsMode()	{ return g_stringDecodeMode; }
 
 wxString MakePrintableString(const wxString& str);
 
+inline std::ostream& operator<<(std::ostream& x, const wxString& y)		{ return x << (const char *)unicode2char(y); }
+inline std::ostream& operator<<(std::ostream& x, const Kademlia::CUInt128& y)	{ return x << y.ToHexString(); }
+inline std::ostream& operator<<(std::ostream& x, const CMD4Hash& y)		{ return x << y.Encode(); }
 
-template<typename _Tp> void Print(const _Tp& value);
-template<typename _Tp> void PrintHex(_Tp value);
+inline wxString hex(uint8_t value)	{ return wxString::Format(wxT("0x%02x"), value); }
+inline wxString hex(uint16_t value)	{ return wxString::Format(wxT("0x%04x"), value); }
+inline wxString hex(uint32_t value)	{ return wxString::Format(wxT("0x%08x"), value); }
 
-void inline DoPrint(const wxString& str)	{ std::printf("%s", (const char *)unicode2char(str)); }
+inline void PrintByteArray(const void *buf, unsigned int size)
+{
+// #if wxCHECK_VERSION(2, 8, 4)
+// 	cout << MakePrintableString(wxString::From8BitData(static_cast<const char *>(buf), size));
+// #else
+	for (unsigned int i = 0; i < size; i++) {
+		cout << wxString::Format(wxT("%02X "), static_cast<const unsigned char *>(buf)[i]);
+	}
+// #endif
+}
 
-template<> inline void PrintHex<uint8_t>(uint8_t value)		{ DoPrint(wxString::Format(wxT("0x%02x"), value)); }
-template<> inline void PrintHex<uint16_t>(uint16_t value)	{ DoPrint(wxString::Format(wxT("0x%04x"), value)); }
-template<> inline void PrintHex<uint32_t>(uint32_t value)	{ DoPrint(wxString::Format(wxT("0x%08x"), value)); }
 
-template<> inline void Print<bool>(const bool& value)					{ DoPrint(value ? wxT("true") : wxT("false")); }
-template<> inline void Print<uint8_t>(const uint8_t& value)				{ DoPrint(wxString::Format(wxT("%u"), value)); }
-template<> inline void Print<uint16_t>(const uint16_t& value)				{ DoPrint(wxString::Format(wxT("%u"), value)); }
-template<> inline void Print<uint32_t>(const uint32_t& value)				{ DoPrint(wxString::Format(wxT("%u"), value)); }
-template<> inline void Print<uint64_t>(const uint64_t& value)				{ DoPrint(wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), value)); }
-template<> inline void Print<float>(const float& value)					{ DoPrint(wxString::Format(wxT("%g"), value)); }
-template<> inline void Print<double>(const double& value)				{ DoPrint(wxString::Format(wxT("%g"), value)); }
-template<> inline void Print<wxString>(const wxString& value)				{ DoPrint(MakePrintableString(value)); }
-template<> inline void Print<Kademlia::CUInt128>(const Kademlia::CUInt128& value)	{ DoPrint(value.ToHexString()); }
-template<> inline void Print<CMD4Hash>(const CMD4Hash& value)				{ DoPrint(value.Encode()); }
+class CTimeT
+{
+      public:
+	explicit CTimeT(time_t t) { m_time = t; }
+	operator time_t() const { return m_time; }
+      private:
+	time_t m_time;
+};
 
-// Transparent class for Kad IPs
 class CKadIP
 {
       public:
-	CKadIP(uint32_t ip) { m_ip = ip; }
+	explicit CKadIP(uint32_t ip) { m_ip = ip; }
 	operator uint32_t() const { return m_ip; }
       private:
 	uint32_t m_ip;
 };
 
-template<> void Print<time_t>(const time_t& time);
-template<> void Print<CKadIP>(const CKadIP& ip);
-template<> void Print<CTag>(const CTag& tag);
-
-
-// Some formatting functions
-
-inline wxString Uint32toStringIP(uint32_t ip)
+class CeD2kIP
 {
-	return wxString::Format(wxT("%u.%u.%u.%u"), (uint8_t)ip, (uint8_t)(ip>>8), (uint8_t)(ip>>16), (uint8_t)(ip>>24));	
-}
+      public:
+	explicit CeD2kIP(uint32_t ip) { m_ip = ip; }
+	operator uint32_t() const { return m_ip; }
+      private:
+	uint32_t m_ip;
+};
 
-inline wxString Uint32_16toStringIP_Port(uint32_t ip, uint16_t port)
+class CServerTag : public CTag
 {
-	return wxString::Format(wxT("%u.%u.%u.%u:%u"), (uint8_t)ip, (uint8_t)(ip>>8), (uint8_t)(ip>>16), (uint8_t)(ip>>24), port);	
-}
+      public:
+	CServerTag(const CTag& tag)
+		: CTag(tag)
+	{}
+};
+
+class CFriendTag : public CTag
+{
+      public:
+	CFriendTag(const CTag& tag)
+		: CTag(tag)
+	{}
+};
+
+std::ostream& operator<<(std::ostream& x, const CTimeT& y);
+std::ostream& operator<<(std::ostream& x, const CKadIP& ip);
+std::ostream& operator<<(std::ostream& x, const CeD2kIP& ip);
+std::ostream& operator<<(std::ostream& x, const CTag& tag);
+std::ostream& operator<<(std::ostream& x, const CServerTag& tag);
+std::ostream& operator<<(std::ostream& x, const CFriendTag& tag);
 
 #endif /* FILEVIEW_PRINT_H */

@@ -3,8 +3,11 @@ noinst_PROGRAMS = mulefileview
 mulefileview_SOURCES = \
 	../../CFile.cpp \
 	../../SafeFile.cpp \
+	../../OtherFunctions.cpp \
 	../../Tag.cpp \
 	../../kademlia/utils/UInt128.cpp \
+	eD2kFiles.h \
+	eD2kFiles.cpp \
 	FileView.cpp \
 	KadFiles.h \
 	KadFiles.cpp \

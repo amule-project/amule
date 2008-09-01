@@ -26,13 +26,14 @@
 #include <wx/app.h>
 #include <wx/cmdline.h>
 #include <list>
+#include "eD2kFiles.h"
 #include "KadFiles.h"
 #include "Print.h"
 #include "../../CFile.h"
 
 #define VERSION_MAJOR	0
-#define VERSION_MINOR	1
-#define VERSION_MICRO	0
+#define VERSION_MINOR	9
+#define VERSION_MICRO	7
 
 class CFileView : public wxApp
 {
@@ -59,12 +60,12 @@ namespace CLogger {
 
 	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, const wxString& str)
 	{
-		DoPrint(wxT("Log: ") + str + wxT("\n"));
+		cout << "Log: " << str << "\n";
 	}
 
 	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str)
 	{
-		DoPrint(wxT("DebugLog: ") + str + wxT("\n"));
+		cout << "DebugLog: " << str << "\n";
 	}
 
 }
@@ -76,15 +77,34 @@ void CFileView::OnInitCmdLine(wxCmdLineParser& parser)
 {
 	parser.AddSwitch(wxT("h"), wxT("help"), wxT("Show help"), wxCMD_LINE_OPTION_HELP);
 	parser.AddSwitch(wxT("v"), wxT("version"), wxT("Show program version"), wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("s"), wxT("strings"), wxT("String decoding mode: display (default), safe, utf8, none"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 	parser.AddParam(wxT("input file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
 }
 
 bool CFileView::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	if (parser.Found(wxT("version"))) {
-		DoPrint(wxString::Format(wxT("MuleFileView version %u.%u.%u\nCopyright (c) 2008 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO));
+		cout << wxString::Format(wxT("MuleFileView version %u.%u.%u\nCopyright (c) 2008 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 		return false;
 	} else {
+		wxString strDecode;
+		if (parser.Found(wxT("strings"), &strDecode)) {
+			if (strDecode == wxT("display")) {
+				SetStringsMode(SD_DISPLAY);
+			} else if (strDecode == wxT("safe")) {
+				SetStringsMode(SD_SAFE);
+			} else if (strDecode == wxT("utf8")) {
+				SetStringsMode(SD_UTF8);
+			} else if (strDecode == wxT("none")) {
+				SetStringsMode(SD_NONE);
+			} else {
+				parser.SetLogo(wxT("Error: Invalid argument to --strings option: \"") + strDecode + wxT("\""));
+				parser.Usage();
+				return false;
+			}
+		} else {
+			SetStringsMode(SD_DISPLAY);
+		}
 		for (size_t n = 0; n < parser.GetParamCount(); n++) {
 			m_files.push_back(parser.GetParam(n));
 		}
@@ -105,9 +125,9 @@ int CFileView::OnRun()
 			CFile file(*it);
 			if (file.IsOpened()) {
 				if (it != m_files.begin()) {
-					DoPrint(wxT("\n"));
+					cout << endl;
 				}
-				DoPrint(wxT("Decoding file: ") + (*it) + wxT("\n"));
+				cout << "Decoding file: " << *it << endl;
 				if (basename == wxT("preferencesKad.dat")) {
 					DecodePreferencesKadDat(file);
 				} else if (basename == wxT("load_index.dat")) {
@@ -118,24 +138,36 @@ int CFileView::OnRun()
 					DecodeSourceIndexDat(file);
 				} else if (basename == wxT("nodes.dat")) {
 					DecodeNodesDat(file);
+				} else if (basename == wxT("preferences.dat")) {
+					DecodePreferencesDat(file);
+				} else if (basename == wxT("emfriends.met")) {
+					DecodeFriendList(file);
+				} else if (basename == wxT("server.met")) {
+					DecodeServerMet(file);
+				} else if (basename == wxT("clients.met")) {
+					DecodeClientsMet(file);
+				} else if (basename == wxT("known.met")) {
+					DecodeKnownMet(file);
+				} else if (basename.Find(wxT(".part.met")) != wxNOT_FOUND) {
+					DecodePartMetFile(file);
 				} else {
-					DoPrint(wxT("ERROR: Don't know how to decode ") + (*it) + wxT("\n"));
+					cerr << "ERROR: Don't know how to decode " << *it << endl;
 				}
 			}
 		} catch (const CEOFException& e) {
-			DoPrint(wxT("ERROR: A CEOFException has been raised while decoding ") + (*it) + wxT(": ") + e.what() + wxT("\n"));
+			cerr << "ERROR: A CEOFException has been raised while decoding " << *it << ": " << e.what() << endl;
 			return 1;
 		} catch (const CIOFailureException& e) {
-			DoPrint(wxT("ERROR: A CIOFailureException has been raised while decoding ") + (*it) + wxT(": ") + e.what() + wxT("\n"));
+			cerr << "ERROR: A CIOFailureException has been raised while decoding " << *it << ": " << e.what() << endl;
 			return 1;
 		} catch (const CSafeIOException& e) {
-			DoPrint(wxT("ERROR: A CSafeIOException has been raised while decoding ") + (*it) + wxT(": ") + e.what() + wxT("\n"));
+			cerr << "ERROR: A CSafeIOException has been raised while decoding " << *it << ": " << e.what() << endl;
 			return 1;
 		} catch (const CMuleException& e) {
-			DoPrint(wxT("ERROR: A CMuleException has been raised while decoding ") + (*it) + wxT(": ") + e.what() + wxT("\n"));
+			cerr << "ERROR: A CMuleException has been raised while decoding " << *it << ": " << e.what() << endl;
 			return 1;
 		} catch (const wxString& e) {
-			DoPrint(wxT("ERROR: An exception of type wxString has been raised while decoding ") + (*it) + wxT(": ") + e + wxT("\n"));
+			cerr << "ERROR: An exception of type wxString has been raised while decoding " << *it << ": " << e << endl;
 			return 1;
 		}
 	}
