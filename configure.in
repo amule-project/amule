@@ -156,33 +156,6 @@ AC_ARG_ENABLE(
 		[do not install xas XChat2 plugin])],
 	[XAS=$enableval], [XAS=yes])
 
-AC_ARG_ENABLE(
-	[geoip],
-	[AS_HELP_STRING(
-		[--enable-geoip],
-		[compile with GeoIP IP2Country library])],
-	[ENABLE_IP2COUNTRY=$enableval], [ENABLE_IP2COUNTRY=no])
-
-AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [GEOIP_LIBS="-lGeoIP"])
-
-AC_ARG_WITH(
-	[geoip-headers],
-	AS_HELP_STRING([--with-geoip-headers=DIR],
-		[GeoIP include files location]),
-	[GEOIP_CPPFLAGS="-I$withval"])
-
-AC_ARG_WITH(
-	[geoip-lib],
-	AS_HELP_STRING([--with-geoip-lib=DIR],
-		[GeoIP library location]),
-	[GEOIP_LDFLAGS="-L$withval"])
-
-AC_ARG_WITH(
-	[geoip-static],
-	AS_HELP_STRING([--with-geoip-static],
-		[Explicitly link GeoIP statically (default=no)]),
-	[AS_IF([test "$withval" != "no"], [GEOIP_LIBS="-Wl,-Bstatic $GEOIP_LIBS -Wl,-Bdynamic"])])
-
 # Default is yes, because they're most likely compatible.
 # However, this is only used when cross-compiling.
 AC_ARG_WITH(
@@ -249,24 +222,7 @@ AC_MSG_RESULT($need_gui)
 
 
 # Check for GeoIP (required for IP2Country capability)
-AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
-	MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
-	MULE_BACKUP([CPPFLAGS])
-	MULE_APPEND([CPPFLAGS], [$GEOIP_CPPFLAGS])
-	MULE_BACKUP([LDFLAGS])
-	MULE_APPEND([LDFLAGS], [$GEOIP_LDFLAGS])
-	AC_CHECK_HEADER([GeoIP.h],,
-		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP header files were not found])])
-	AC_CHECK_LIB([GeoIP], [GeoIP_open],
-		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)],
-		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP libraries were not found])])
-	MULE_RESTORE([CPPFLAGS])
-	MULE_RESTORE([LDFLAGS])
-])
-AC_SUBST([GEOIP_CPPFLAGS])dnl
-AC_SUBST([GEOIP_LDFLAGS])dnl
-AC_SUBST([GEOIP_LIBS])dnl
-
+MULE_CHECK_GEOIP
 
 # Check for wx
 WX_CONFIG_OPTIONS
@@ -606,6 +562,8 @@ AS_IF([test x$USE_NLS = xno],
 		[libintl_found="system"])])
 echo "                                       libintl               $libintl_found"
 fi
+AS_IF([test -z "${with_geoip_headers:-}${with_geoip_lib:-}"], [geoip_style=system], [geoip_style=user])
+AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [echo "                                       libGeoIP              ${geoip_style}"])
 if test x$LIBPNG_VERSION != xnot_needed; then
 echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
 fi
