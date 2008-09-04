@@ -836,7 +836,7 @@ public:
 			do
 			{
 				if (m_is_skin) {
-					Filename = _("User:") + Filename;
+					Filename = wxT("User:") + Filename;
 				}
 				skinSelector->Append(Filename);
 			}
@@ -862,7 +862,7 @@ public:
 			do
 			{
 				if (m_is_skin) {
-					Filename = _("System:") +  Filename;
+					Filename = wxT("System:") +  Filename;
 				}
 				// avoid duplicates for webserver templates
 				if (skinSelector->FindString(Filename) == wxNOT_FOUND) {
