@@ -164,6 +164,7 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 	
 	if (target.Length()) {
 		target.Commit();
+		return true;
 	}
 
 	return false;
