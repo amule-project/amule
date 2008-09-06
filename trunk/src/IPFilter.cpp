@@ -274,6 +274,7 @@ private:
 
 		const wxChar* ipfilter_files[] = {
 			wxT("ipfilter.dat"),
+			wxT("guardian.p2p"),
 			wxT("guarding.p2p"),
 			NULL
 		};
