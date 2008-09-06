@@ -1,3 +1,15 @@
+Version 2.2.3 - The "Vampires suck" version.
+----------
+2008-10-??
+
+	GonoszTopi:
+		* Fix for shells not properly handling empty lists.
+		* POSIX fixes in shell code.
+		* Made not finding GeoIP non-fatal.
+		* Check if --enable-geoip-static can be fulfilled.
+
+--------------------------------------------------------------------------------
+
 Version 2.2.2 - The "Similarity." version
 ----------
 2008-08-08
@@ -111,7 +123,6 @@ Version 2.2.2 - The "Similarity." version
 		  Fixes aMuleGUI not updating after a while.
 
 --------------------------------------------------------------------------------
-
 
 Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.
 ----------
