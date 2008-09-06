@@ -281,16 +281,21 @@ CECSocket::~CECSocket()
 
 bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 {
-	bool res = InternalConnect(ip, port, false);
+	bool res;
+#if wxCHECK_VERSION(2, 8, 8)
+	res = InternalConnect(ip, port, !m_use_events);
+#else
+	res = InternalConnect(ip, port, false);
 	if ( !m_use_events ) {
-		res = WaitSocketConnect(10, 0);
+		res = WaitSocketConnect(10, 0) && InternalIsConnected();
 		if ( res ) {
 			OnConnect();
 		} else {
 			OnLost();
 		}
 	}
-	return !SocketError();
+#endif
+	return !SocketError() && res;
 }
 
 void CECSocket::SendPacket(const CECPacket *packet)

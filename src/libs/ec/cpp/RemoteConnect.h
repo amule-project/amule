@@ -84,7 +84,7 @@ public:
 	}
 	
 	virtual void OnConnect(); // To override connection events
-	virtual void OnClose(); // To override close events
+	virtual void OnLost(); // To override close events
 
 	void SendRequest(CECPacketHandlerBase *handler, CECPacket *request);
 	void SendPacket(CECPacket *request);

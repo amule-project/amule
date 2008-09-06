@@ -394,14 +394,10 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		Show(_("\nCreating client...\n"));
 		m_ECClient = new CRemoteConnect(NULL);
 
-		m_ECClient->ConnectToCore(m_host, m_port, wxT("foobar"), m_password.Encode(),
-								 ProgName, ProgVersion);
-		
-		m_ECClient->WaitSocketConnect(10);
-
-		if (!m_ECClient->IsSocketConnected()) {
+		// ConnectToCore is blocking since m_ECClient was initialized with NULL
+		if (!m_ECClient->ConnectToCore(m_host, m_port, wxT("foobar"), m_password.Encode(), ProgName, ProgVersion)) {
 			// no connection => close gracefully
-			Show(_("Connection Failed. Unable to connect to the specified host\n"));
+			Show(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % m_host % m_port);
 		} else {
 			// Authenticate ourselves
 			// ConnectToCore() already authenticated for us.
