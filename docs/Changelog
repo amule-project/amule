@@ -20,7 +20,7 @@ Version 2.3.0 - The river knows.
 		* Fixes to Windows build
 		* Allow compilation with wxCocoa
 		* Replace Color.h by new class implementation MuleColour
-		* Lower class overhead and user two-level cache for pen/brushes
+		* Lower class overhead and use two-level cache for pens/brushes
 		* Preferences changes
 
 	lfroen:
@@ -54,6 +54,18 @@ Version 2.3.0 - The river knows.
 
 	Special Thanks To:
 		* Greek for his contributions to aMule's user interface.
+
+--------------------------------------------------------------------------------
+
+Version 2.2.3 - The "Vampires suck" version.
+----------
+2008-10-??
+
+	GonoszTopi:
+		* Fix for shells not properly handling empty lists.
+		* POSIX fixes in shell code.
+		* Made not finding GeoIP non-fatal.
+		* Check if --enable-geoip-static can be fulfilled.
 
 --------------------------------------------------------------------------------
 
