@@ -60,6 +60,10 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 	}
 
 	im = gdImageCreateFromPng(in);
+	if( NULL == im) {
+		perror("Error loading source image (not a valid image file?).\n");
+		return 0;
+	}
 	white = gdImageColorResolve(im, 255, 255, 255);
 
 	for (i = 0; i <= (IMG_TEXTLINES - 1); i++) {

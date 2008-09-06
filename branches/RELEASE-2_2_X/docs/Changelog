@@ -10,6 +10,9 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Fixed loading of zipped ipfilter files. Thanks to CtrlAltDel
 		  for the investigation of the problem.
 
+	Wuischke:
+		* Add checks to cas to prevent segfaults
+
 --------------------------------------------------------------------------------
 
 Version 2.2.2 - The "Similarity." version

@@ -49,7 +49,6 @@ Version 2.3.0 - The river knows.
 		* Fix minimizing from tray icon
 		* Add option to show chat messages in log
 		* Add option to specify amuleweb binary location
-		* Add checks to cas to prevent segfaults
 		* Fix wxCas save file dialog for file types
 
 	Special Thanks To:
@@ -68,6 +67,9 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Check if --enable-geoip-static can be fulfilled.
 		* Fixed loading of zipped ipfilter files. Thanks to CtrlAltDel
 		  for the investigation of the problem.
+
+	Wuischke:
+		* Add checks to cas to prevent segfaults
 
 --------------------------------------------------------------------------------
 
