@@ -66,6 +66,8 @@ Version 2.2.3 - The "Vampires suck" version.
 		* POSIX fixes in shell code.
 		* Made not finding GeoIP non-fatal.
 		* Check if --enable-geoip-static can be fulfilled.
+		* Fixed loading of zipped ipfilter files. Thanks to CtrlAltDel
+		  for the investigation of the problem.
 
 --------------------------------------------------------------------------------
 
