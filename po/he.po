@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -1520,14 +1520,6 @@ msgstr "טורקית"
 
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
-msgstr ""
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr ""
-
-#: src/Preferences.cpp:865
-msgid "System:"
 msgstr ""
 
 #: src/Preferences.cpp:876
@@ -4379,24 +4371,24 @@ msgstr "כל האחרים"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "טוען את מסנני ה IP 'ipfilter.dat' ואת 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "טעינת קובץ מסננים עם סיומת '.dat' '%s', נכשלה. פורמט הקובץ לא ידוע."
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "טעינת קובץ מסננים עם סיומת '.dat' '%s', נכשלה. לא ניתן לפתוח את הקובץ."
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, fuzzy, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "טוען %u טווח - IP מ '%s'."
 msgstr[1] "טוען %u טווח - IP מ '%s'."
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, fuzzy, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."

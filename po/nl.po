@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-06-07 22:20+0200\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -1560,14 +1560,6 @@ msgstr "Turks"
 
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
-msgstr ""
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr ""
-
-#: src/Preferences.cpp:865
-msgid "System:"
 msgstr ""
 
 #: src/Preferences.cpp:876
@@ -4489,24 +4481,24 @@ msgstr "alle anderen"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "IP-filters 'ipfilter.dat' en 'ipfilter_static.dat' worden geladen."
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Kon ipfilter.dat bestand '%s' niet laden, onbekend formaat."
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "Kon ipfilter.dat bestand '%s' niet laden, kon bestand niet openen."
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "%u IP-reeks geladen van '%s'."
 msgstr[1] "%u IP-reeksen geladen van '%s'."
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."

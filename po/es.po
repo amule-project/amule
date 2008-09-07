@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-07-25 21:00+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -1554,14 +1554,6 @@ msgstr "Turco"
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr "- defecto -"
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr "Usuario:"
-
-#: src/Preferences.cpp:865
-msgid "System:"
-msgstr "Sistema:"
 
 #: src/Preferences.cpp:876
 msgid "no options available"
@@ -4498,24 +4490,24 @@ msgstr "El resto"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Cargando filtros IP 'ipfilter.dat' y 'ipfilter_static.dat'"
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Error al cargar ipfilter.dat '%s', encontrado formato desconocido."
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "Error al cargar ipfilter.dat '%s', imposible abrir el archivo."
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "Cargado %u rango IP desde '%s'."
 msgstr[1] "Cargado %u rangos IP desde '%s'."
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
@@ -7153,6 +7145,12 @@ msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "¡ No se ha podido abrir el archivo de amigos 'emfriends.met' para su "
 "escritura !"
+
+#~ msgid "User:"
+#~ msgstr "Usuario:"
+
+#~ msgid "System:"
+#~ msgstr "Sistema:"
 
 #~ msgid "No handler for this file type."
 #~ msgstr "Sin asociar este tipo de archivo"

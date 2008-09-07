@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-07-03 12:01+0100\n"
 "Last-Translator: Festor Wailon Dacoba <festor90@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -1571,14 +1571,6 @@ msgstr "Turco"
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr ""
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr "Usuario:"
-
-#: src/Preferences.cpp:865
-msgid "System:"
-msgstr "Sistema:"
 
 #: src/Preferences.cpp:876
 msgid "no options available"
@@ -4503,26 +4495,26 @@ msgstr "todo o demais"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Cargando filtrados de IP 'ipfilter.dat' e 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "Fallou ao cargar o ficheiro ipfilter.dat '%s', atopado formato descoñecido."
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Fallou ao cargar o ficheiro ipfilter.dat '%s', non se puido abrir o ficheiro."
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "Cargados %u rango de IP de '%s'."
 msgstr[1] "Cargados %u rangos de IP de '%s'."
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
@@ -7155,6 +7147,12 @@ msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "¡ No se puido abrir o arquivo de amigos 'emfriends.met' para a súa "
 "escritura !"
+
+#~ msgid "User:"
+#~ msgstr "Usuario:"
+
+#~ msgid "System:"
+#~ msgstr "Sistema:"
 
 #~ msgid "No handler for this file type."
 #~ msgstr "Sen asociar este tipo de ficheiro."
