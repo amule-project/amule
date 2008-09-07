@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-08-17 09:52+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -1538,14 +1538,6 @@ msgstr "Türkçe"
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr "- ön tanımlı -"
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr "User:"
-
-#: src/Preferences.cpp:865
-msgid "System:"
-msgstr "System:"
 
 #: src/Preferences.cpp:876
 msgid "no options available"
@@ -4438,25 +4430,25 @@ msgstr "Diğer"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "IP süzgeçleri 'ipfilter.dat' ve 'ipfilter_static.dat' yükleniyor."
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor."
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "%u adet IP-aralığı '%s' den  yüklendi."
 msgstr[1] "%u adet IP-aralığı '%s' den  yüklendi."
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
@@ -7064,6 +7056,12 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyası okunamıyor!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
+
+#~ msgid "User:"
+#~ msgstr "User:"
+
+#~ msgid "System:"
+#~ msgstr "System:"
 
 #~ msgid "No handler for this file type."
 #~ msgstr "Bu dosya türü için ilişkilendirilmiş uygulama yok."

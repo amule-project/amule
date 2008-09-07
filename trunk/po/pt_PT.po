@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-04-15 02:00+0100\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -1531,14 +1531,6 @@ msgstr "Turco"
 
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
-msgstr ""
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr ""
-
-#: src/Preferences.cpp:865
-msgid "System:"
 msgstr ""
 
 #: src/Preferences.cpp:876
@@ -4433,28 +4425,28 @@ msgstr "todos os outros"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "A carregar os filtros de ip 'ipfilter.dat' e 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "Erro ao carregar o ficheiro ipfilter.dat '%s', formato desconhecido "
 "encontrado."
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Erro ao carregar o ficheiro ipfilter.dat '%s', não foi possível abrir o "
 "ficheiro."
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, fuzzy, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "%u intervalos IP carregados de '%s'."
 msgstr[1] "%u intervalos IP carregados de '%s'."
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, fuzzy, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."

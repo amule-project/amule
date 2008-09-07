@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-01 03:31+0200\n"
+"POT-Creation-Date: 2008-09-07 03:30+0200\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -1529,14 +1529,6 @@ msgstr "土耳其语"
 #: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr "- 默认 -"
-
-#: src/Preferences.cpp:839
-msgid "User:"
-msgstr "用户："
-
-#: src/Preferences.cpp:865
-msgid "System:"
-msgstr "系统："
 
 #: src/Preferences.cpp:876
 msgid "no options available"
@@ -4394,24 +4386,24 @@ msgstr "其它"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "正在载入 IP 过滤文件 ipfilter.dat 和 ipfilter_static.dat。"
 
-#: src/IPFilter.cpp:285
+#: src/IPFilter.cpp:286
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "载入 ipfilter.dat 文件 '%s' 失败，遇到未知格式。"
 
-#: src/IPFilter.cpp:326
+#: src/IPFilter.cpp:327
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "载入 ipfilter.dat 文件 '%s' 失败，无法打开文件。"
 
-#: src/IPFilter.cpp:331
+#: src/IPFilter.cpp:332
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "载入 %u 个IP段自 %s。"
 msgstr[1] "载入 %u 个IP段自 %s。"
 
-#: src/IPFilter.cpp:333
+#: src/IPFilter.cpp:334
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
@@ -6948,6 +6940,12 @@ msgstr "为读取而打开好友列表文件emfriends.met失败"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "为写入而打开好友列表文件emfriends.met失败"
+
+#~ msgid "User:"
+#~ msgstr "用户："
+
+#~ msgid "System:"
+#~ msgstr "系统："
 
 #~ msgid "No handler for this file type."
 #~ msgstr "无法处理该文件类型"
