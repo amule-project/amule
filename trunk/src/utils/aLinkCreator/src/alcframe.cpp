@@ -493,7 +493,7 @@ bool AlcFrame::Hook(int percent)
 /// Compute Hashes on Start Button
 void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
 {
-  int i;
+  size_t i;
   wxString filename = m_inputFileTextCtrl->GetValue();
 
   if (!filename.empty ())
@@ -592,7 +592,7 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
   if (!url.IsEmpty())
     {
       // Check if the URL already exist in list
-      int i;
+      size_t i;
       bool UrlNotExists = true;
       for (i=0;i < m_inputUrlListBox->GetCount();++i)
         {

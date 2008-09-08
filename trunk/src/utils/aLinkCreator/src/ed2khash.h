@@ -48,7 +48,7 @@ class Ed2kHash:public MD4
 
     wxArrayString m_ed2kArrayOfHashes;
     wxString m_filename;
-    size_t m_fileSize;
+    uint64_t m_fileSize;
 
   protected:
 
