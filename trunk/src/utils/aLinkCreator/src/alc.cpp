@@ -47,7 +47,7 @@ IMPLEMENT_APP (alc)
 bool alc::OnInit ()
 {
 #ifndef _MSC_VER
-  // Used to tell wxCas to use aMule catalog
+  // Used to tell alc to use aMule catalog
   m_locale.Init();
   m_locale.AddCatalog(wxT(PACKAGE));
 #endif

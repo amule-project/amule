@@ -90,7 +90,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
       size_t read;
       size_t partcount;
       size_t dataread;
-      size_t totalread;
+      wxFileOffset totalread;
 
       char *buf = new char[BUFSIZE];
 
@@ -117,7 +117,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
             {
               if (hook)
                 {
-                  goAhead = hook( (int)((double)(100.0 * totalread) / file.Length()));
+                  goAhead = hook((int)((double)(100.0 * totalread) / file.Length()));
                 }
               if (goAhead)
                 {
@@ -215,8 +215,8 @@ bool Ed2kHash::SetED2KHashFromFile(const wxString& filename, MD4Hook hook)
 wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* arrayOfUrls)
 {
   // Constructing ed2k basic link
-  wxString ed2kLink = wxT("ed2k://|file|")+CleanFilename(m_filename)
-                      +wxT("|")+ wxString::Format(wxT("%llu"),m_fileSize) +wxT("|")
+  wxString ed2kLink = wxT("ed2k://|file|") + CleanFilename(m_filename)
+                      + wxString::Format(wxT("|%") wxLongLongFmtSpec wxT("u|"), m_fileSize)
                       + m_ed2kArrayOfHashes.Last() + wxT("|");
 
 
