@@ -47,7 +47,7 @@ IMPLEMENT_APP (alcc)
 /// Running Alcc
 int alcc::OnRun ()
 {
-  // Used to tell wxCas to use aMule catalog
+  // Used to tell alcc to use aMule catalog
   m_locale.Init();
   m_locale.AddCatalog(wxT(PACKAGE));
 

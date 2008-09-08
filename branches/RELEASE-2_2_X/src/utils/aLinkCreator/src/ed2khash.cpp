@@ -82,12 +82,6 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
       wxLogError (_("Unable to open %s"),unicode2char(filename.GetFullPath()));
       return (false);
     }
-  else if (file.Length() > (size_t)-1)
-    {
-      wxLogError (_("The file %s is to big for the Donkey: maximum allowed is 4 GB."),
-                  unicode2char(filename.GetFullPath()));
-      return (false);
-    }
   else
     {
       unsigned char ret[MD4_HASHLEN_BYTE];
@@ -96,7 +90,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
       size_t read;
       size_t partcount;
       size_t dataread;
-      size_t totalread;
+      wxFileOffset totalread;
 
       char *buf = new char[BUFSIZE];
 
@@ -123,7 +117,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
             {
               if (hook)
                 {
-                  goAhead = hook( (int)((double)(100.0 * totalread) / file.Length()));
+                  goAhead = hook((int)((double)(100.0 * totalread) / file.Length()));
                 }
               if (goAhead)
                 {
@@ -221,8 +215,8 @@ bool Ed2kHash::SetED2KHashFromFile(const wxString& filename, MD4Hook hook)
 wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* arrayOfUrls)
 {
   // Constructing ed2k basic link
-  wxString ed2kLink = wxT("ed2k://|file|")+CleanFilename(m_filename)
-                      +wxT("|")+ wxString::Format(wxT("%u"),m_fileSize) +wxT("|")
+  wxString ed2kLink = wxT("ed2k://|file|") + CleanFilename(m_filename)
+                      + wxString::Format(wxT("|%") wxLongLongFmtSpec wxT("u|"), m_fileSize)
                       + m_ed2kArrayOfHashes.Last() + wxT("|");
 
 
