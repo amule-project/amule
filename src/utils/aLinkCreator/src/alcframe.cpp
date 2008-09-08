@@ -256,18 +256,18 @@ AlcFrame::AlcFrame (const wxString & title):
   m_toolbar->SetToolBitmapSize (wxSize (32, 32));
   m_toolbar->SetMargins (2, 2);
 
-  m_toolbar->AddTool (ID_BAR_OPEN, wxT("Open"), m_toolBarBitmaps[0],
+  m_toolbar->AddTool (ID_BAR_OPEN, _("Open"), m_toolBarBitmaps[0],
                       _("Open a file to compute its eD2k link"));
 
-  m_toolbar->AddTool (ID_BAR_COPY, wxT("Copy"), m_toolBarBitmaps[1],
+  m_toolbar->AddTool (ID_BAR_COPY, _("Copy"), m_toolBarBitmaps[1],
                       _("Copy computed eD2k link to clipboard"));
 
-  m_toolbar->AddTool (ID_BAR_SAVEAS, wxT("Save as"), m_toolBarBitmaps[2],
+  m_toolbar->AddTool (ID_BAR_SAVEAS, _("Save as"), m_toolBarBitmaps[2],
                       _("Save computed eD2k link to file"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[3],
+  m_toolbar->AddTool (ID_BAR_ABOUT, _("About"), m_toolBarBitmaps[3],
                       _("About aLinkCreator"));
 
   m_toolbar->Realize ();
@@ -395,7 +395,7 @@ AlcFrame::CopyEd2kLinkToClipBoard()
       wxClipboardLocker clipLocker;
       if ( !clipLocker )
         {
-          wxLogError(wxT("Can't open the clipboard"));
+          wxLogError(_("Can't open the clipboard"));
 
           return;
         }
@@ -513,7 +513,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
 
 #ifdef WANT_MD4SUM
       // Create MD4 progress bar dialog
-      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing MD4 Hash..."),
+      m_progressBar=new wxProgressDialog  (_("aLinkCreator is working for you"), _("Computing MD4 Hash..."),
                                            100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
       m_md4HashTextCtrl->SetValue(_("Hashing..."));
 
@@ -528,7 +528,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
 #endif
 
       // Create ED2K progress bar dialog
-      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing eD2k Hashes..."),
+      m_progressBar=new wxProgressDialog  (_("aLinkCreator is working for you"), _("Computing eD2k Hashes..."),
                                            100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
 
       // Compute ed2k Hash
