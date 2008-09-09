@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-07 03:30+0200\n"
+"POT-Creation-Date: 2008-09-09 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -1084,11 +1084,6 @@ msgstr "キャンセルされました！"
 msgid "Unable to open %s"
 msgstr "%s を開くことができません"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:87
-#, c-format
-msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr "ファイル %s はDonkeyにとって大きすぎます：最大許可サイズは4GBです。"
-
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr "入力パラメタ"
@@ -1164,17 +1159,35 @@ msgstr "クリップボードへコピーする"
 msgid "Exit"
 msgstr "終了"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:259
+msgid "Open"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
 msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:262 src/MuleTextCtrl.cpp:80
+#: src/PartFileConvert.cpp:426
+msgid "Copy"
+msgstr "コピー"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
 msgstr ""
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:265
+msgid "Save as"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
 msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1339
+#: src/muuli_wdr.cpp:3466
+msgid "About"
+msgstr "情報"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1183,6 +1196,10 @@ msgstr "aLinkCreatorについて"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:398
+msgid "Can't open the clipboard"
 msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
@@ -1223,6 +1240,19 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
 msgstr "ハッシュ中…"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "aLinkCreator is working for you"
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+msgid "Computing MD4 Hash..."
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "Computing eD2k Hashes..."
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1910,10 +1940,6 @@ msgstr "インポート"
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "部分ファイルをインポートするためのツール"
-
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
-msgid "About"
-msgstr "情報"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
@@ -2696,10 +2722,6 @@ msgstr "受信していません"
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "カット"
-
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:426
-msgid "Copy"
-msgstr "コピー"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
@@ -7006,6 +7028,9 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr "ファイル %s はDonkeyにとって大きすぎます：最大許可サイズは4GBです。"
 
 #~ msgid "No handler for this file type."
 #~ msgstr "このファイルタイプのハンドラがありません。"

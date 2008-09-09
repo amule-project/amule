@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-07 03:30+0200\n"
+"POT-Creation-Date: 2008-09-09 03:30+0200\n"
 "PO-Revision-Date: 2008-06-07 22:20+0200\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -1114,11 +1114,6 @@ msgstr "Afgebroken !"
 msgid "Unable to open %s"
 msgstr "Kon %s niet openen"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:87
-#, c-format
-msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr "Het bestand %s is te groot voor de Donkey: maximum toegestaan is 4 GB."
-
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr "Invoer parameters"
@@ -1197,17 +1192,35 @@ msgstr "Kopieer naar klembord"
 msgid "Exit"
 msgstr "Afsluiten"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:259
+msgid "Open"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
 msgstr "Open een bestand om zijn eD2k link te berekenen"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:262 src/MuleTextCtrl.cpp:80
+#: src/PartFileConvert.cpp:426
+msgid "Copy"
+msgstr "Kopiëren"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
 msgstr "Kopieer berekende eD2k link naar klembord"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:265
+msgid "Save as"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
 msgstr "Bewaar berekende eD2k link naar bestand"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1339
+#: src/muuli_wdr.cpp:3466
+msgid "About"
+msgstr "Over"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1217,6 +1230,10 @@ msgstr "Over aLinkCreator"
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
 msgstr "Selecteer het bestand waarvoor u de eD2k link wilt laten berekenen"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:398
+msgid "Can't open the clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1264,6 +1281,19 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
 msgstr "Hashen..."
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "aLinkCreator is working for you"
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+msgid "Computing MD4 Hash..."
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "Computing eD2k Hashes..."
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1953,10 +1983,6 @@ msgstr "Importeer"
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Het partbestand importeer programma"
-
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
-msgid "About"
-msgstr "Over"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
@@ -2747,10 +2773,6 @@ msgstr "Niet Ontvangen"
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "Knippen"
-
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:426
-msgid "Copy"
-msgstr "Kopiëren"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
@@ -7115,6 +7137,10 @@ msgstr "Kon vriendenlijst-bestand 'emfriends.met' niet lezen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Kon niet schrijven naar vriendenlijst-bestand 'emfriends.met'!"
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr ""
+#~ "Het bestand %s is te groot voor de Donkey: maximum toegestaan is 4 GB."
 
 #~ msgid "No handler for this file type."
 #~ msgstr "Geen afhandelaar voor dit bestandstype."
