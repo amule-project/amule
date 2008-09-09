@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-07 03:30+0200\n"
+"POT-Creation-Date: 2008-09-09 03:30+0200\n"
 "PO-Revision-Date: 2008-06-13 17:15-0300\n"
 "Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
@@ -1105,11 +1105,6 @@ msgstr "Cancelado !"
 msgid "Unable to open %s"
 msgstr "Impossível abrir %s"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:87
-#, c-format
-msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr "O arquivo %s é muito grande para a Mula: máximo suportado é 4 GB."
-
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr "Parâmetros de Entrada"
@@ -1188,17 +1183,35 @@ msgstr "Copiar para a Área de Transferência"
 msgid "Exit"
 msgstr "Sair"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:259
+msgid "Open"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
 msgstr "Abra o arquivo para computar esta ligação eD2k"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:262 src/MuleTextCtrl.cpp:80
+#: src/PartFileConvert.cpp:426
+msgid "Copy"
+msgstr "Copiar"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
 msgstr "Copiar ligação eD2k computada para a área de transferência"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:265
+msgid "Save as"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
 msgstr "Salvar ligação eD2k computada no arquivo"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1339
+#: src/muuli_wdr.cpp:3466
+msgid "About"
+msgstr "Sobre"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1208,6 +1221,10 @@ msgstr "Sobre o aLinkCreator"
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
 msgstr "Selecione o arquivo que você quer computar a ligação eD2k"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:398
+msgid "Can't open the clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1255,6 +1272,19 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
 msgstr "Criando Hash..."
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "aLinkCreator is working for you"
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+msgid "Computing MD4 Hash..."
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "Computing eD2k Hashes..."
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1940,10 +1970,6 @@ msgstr "Importar"
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Ferramenta de importação de arquivos .part"
-
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
-msgid "About"
-msgstr "Sobre"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
@@ -2732,10 +2758,6 @@ msgstr "Não recebido"
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "Recortar"
-
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:426
-msgid "Copy"
-msgstr "Copiar"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
@@ -7078,6 +7100,9 @@ msgstr ""
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Falha em abrir lista de amigos do arquivo 'emfriends.met' para escrita!"
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr "O arquivo %s é muito grande para a Mula: máximo suportado é 4 GB."
 
 #~ msgid "No handler for this file type."
 #~ msgstr "Não há um programa definido para esse tipo de arquivo."

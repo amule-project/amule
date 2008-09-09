@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-07 03:30+0200\n"
+"POT-Creation-Date: 2008-09-09 03:30+0200\n"
 "PO-Revision-Date: 2008-07-30 01:25-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -1116,13 +1116,6 @@ msgstr "Ακυρώθηκε!"
 msgid "Unable to open %s"
 msgstr "Αποτυχία ανοίγματος του %s"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:87
-#, c-format
-msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr ""
-"Το αρχείο %s είναι πολύ μεγάλο για το Μουλάρι: το μέγιστο επιτρεπτό είναι 4 "
-"GB."
-
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr "Παράμετρος εισόδου"
@@ -1203,17 +1196,35 @@ msgstr "Αντιγραφή στο πρόχειρο"
 msgid "Exit"
 msgstr "Έξοδος"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:259
+msgid "Open"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
 msgstr "Άνοιγμα αρχείου για τον υπολογισμού του συνδέσμου eD2k του"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:262 src/MuleTextCtrl.cpp:80
+#: src/PartFileConvert.cpp:426
+msgid "Copy"
+msgstr "Αντιγραφή"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
 msgstr "Αντιγραφή υπολογισμένου συνδέσμου eD2k στο πρόχειρο"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:265
+msgid "Save as"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
 msgstr "Αποθήκευση υπολογισμένου συνδέσμου eD2k σε αρχείο"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1339
+#: src/muuli_wdr.cpp:3466
+msgid "About"
+msgstr "Σχετικά"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1224,6 +1235,10 @@ msgstr "Σχετικά με τον aLinkCreator"
 msgid "Select the file you want to compute the eD2k link"
 msgstr ""
 "Επιλέξτε το αρχείο για το οποίο θέλετε να υπολογίσετε τον σύνδεσμο eD2k"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:398
+msgid "Can't open the clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1271,6 +1286,19 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
 msgstr "Κατακερματίζεται..."
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "aLinkCreator is working for you"
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+msgid "Computing MD4 Hash..."
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "Computing eD2k Hashes..."
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1965,10 +1993,6 @@ msgstr "Εισαγωγή"
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Το εργαλείο εισαγωγής ημιτελών αρχείων"
-
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
-msgid "About"
-msgstr "Σχετικά"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
@@ -2769,10 +2793,6 @@ msgstr "Δεν ελήφθει"
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "Αποκοπή"
-
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:426
-msgid "Copy"
-msgstr "Αντιγραφή"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
@@ -7224,6 +7244,11 @@ msgstr "Αποτυχία ανάγνωσης του αρχείου της λίσ�
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Αποτυχία γραψίματος στο αρχείο της λίστας φίλων 'emfriends.met' "
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr ""
+#~ "Το αρχείο %s είναι πολύ μεγάλο για το Μουλάρι: το μέγιστο επιτρεπτό είναι "
+#~ "4 GB."
 
 #~ msgid "User:"
 #~ msgstr "Χρήστης:"

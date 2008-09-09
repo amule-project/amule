@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-07 03:30+0200\n"
+"POT-Creation-Date: 2008-09-09 03:30+0200\n"
 "PO-Revision-Date: 2008-07-30 19:29+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -1095,11 +1095,6 @@ msgstr "Megszakítva !"
 msgid "Unable to open %s"
 msgstr "%s-t nem lehet megnyitni"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:87
-#, c-format
-msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr "A(z) %s fájl túlságosan nagy a Donkey számára: max 4 GB engedélyezett."
-
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr "Bemeneti paraméterek"
@@ -1179,17 +1174,35 @@ msgstr "Másolás a vágólapra"
 msgid "Exit"
 msgstr "Kilépés"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:259
+msgid "Open"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
 msgstr "Fájl megnyitása, amire eD2k hivatkozást kell készíteni"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:262 src/MuleTextCtrl.cpp:80
+#: src/PartFileConvert.cpp:426
+msgid "Copy"
+msgstr "Másolás"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
 msgstr "A számított eD2k hivatkozás másolása a vágólapra"
 
+#: src/utils/aLinkCreator/src/alcframe.cpp:265
+msgid "Save as"
+msgstr ""
+
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
 msgstr "A számított eD2k hivatkozás mentése fájlba"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1339
+#: src/muuli_wdr.cpp:3466
+msgid "About"
+msgstr "Névjegy"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1199,6 +1212,10 @@ msgstr "aLinkCreator Névjegy"
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
 msgstr "Válaszd ki a fájlt, hogy kiszámíttasd az eD2k hivatkozását"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:398
+msgid "Can't open the clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1246,6 +1263,19 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
 msgstr "Tördelőalgoritmizálás..."
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "aLinkCreator is working for you"
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+msgid "Computing MD4 Hash..."
+msgstr ""
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:531
+msgid "Computing eD2k Hashes..."
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1938,10 +1968,6 @@ msgstr "Importálás"
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "A részfájl importáló eszköz"
-
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3466
-msgid "About"
-msgstr "Névjegy"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
 msgid "About/Help"
@@ -2727,10 +2753,6 @@ msgstr "Nem fogadott"
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "Kivágás"
-
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:426
-msgid "Copy"
-msgstr "Másolás"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
@@ -7107,6 +7129,10 @@ msgstr ""
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "A barátokat tartalmazó emfriends.dat fájl írásra megnyitása sikertelen!"
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr ""
+#~ "A(z) %s fájl túlságosan nagy a Donkey számára: max 4 GB engedélyezett."
 
 #~ msgid "User:"
 #~ msgstr "Felhasználó:"
