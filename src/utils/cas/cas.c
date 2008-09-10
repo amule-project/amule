@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 	char *config_path=NULL;
 	char *path;
 	char *stats[20];
-	char *lines[7];
+	char *lines[IMG_TEXTLINES];
 	long lSize;
 	char * buffer;
 	int i;

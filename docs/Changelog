@@ -75,6 +75,7 @@ Version 2.2.3 - The "Vampires suck" version.
 	Wuischke:
 		* Add checks to cas to prevent segfaults
 		* Fix wxCas save file dialog for file types
+		* Fix a buffer overflow error in cas
 
 --------------------------------------------------------------------------------
 

@@ -35,9 +35,9 @@ typedef struct {
 	char font[120];
 	char source[120];
 	char template[120];
-	int x[6];
-	int y[6];
-	int enabled[6];
+	int x[IMG_TEXTLINES];
+	int y[IMG_TEXTLINES];
+	int enabled[IMG_TEXTLINES];
 	float size;
 	int img_type; // 0 = PNG, else = JPG
 } CONF;
