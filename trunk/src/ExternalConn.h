@@ -1,8 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2003-2008 Kry ( elkry@users.sourceforge.net / http://www.amule.org )
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2008 Froenchenko Leonid (lfroen@gmail.com)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -203,7 +204,7 @@ class CObjTagMap {
 
 
 class CECServerSocket;
-
+class ECNotifier;
 
 class ExternalConn : public wxEvtHandler
 {
@@ -216,7 +217,8 @@ public:
 	~ExternalConn();
 	
 	wxSocketServer *m_ECServer;
-
+	ECNotifier *m_ec_notifier;
+	
 	static CECPacket *ProcessRequest2(
 		const CECPacket *request,
 		CPartFile_Encoder_Map &,
@@ -234,6 +236,97 @@ private:
 	void OnServerEvent(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
 };
+
+class ECUpdateMsgSource {
+	public:
+		virtual ~ECUpdateMsgSource()
+		{
+		}
+		virtual CECPacket *GetNextPacket() = 0;
+};
+
+class ECPartFileMsgSource : public ECUpdateMsgSource {
+		typedef struct {
+			bool m_new;
+			bool m_comment_changed;
+			bool m_removed;
+			bool m_finished;
+		} PARTFILE_STATUS;
+		std::map<CMD4Hash, PARTFILE_STATUS> m_dirty_status;
+	public:
+		ECPartFileMsgSource();
+		
+		void SetDirty(CPartFile *file);
+		void SetNew(CPartFile *file);
+		void SetCompleted(CPartFile *file);
+		void SetRemoved(CPartFile *file);
+		
+		virtual CECPacket *GetNextPacket();
+	
+};
+
+class ECClientMsgSource : public ECUpdateMsgSource {
+	public:
+		virtual CECPacket *GetNextPacket();
+};
+
+class ECStatusMsgSource : public ECUpdateMsgSource {
+		bool m_pending;
+	public:
+		ECStatusMsgSource();
+		
+		virtual CECPacket *GetNextPacket();
+};
+
+class ECSearchMsgSource : public ECUpdateMsgSource {
+	public:
+		ECSearchMsgSource();
+		
+		virtual CECPacket *GetNextPacket();
+};
+
+class ECNotifier {
+		//
+		// designated priority for each type of update
+		//
+		enum EC_SOURCE_PRIO {
+			EC_STATUS = 0,
+			EC_SEARCH,
+			EC_PARTFILE,
+			EC_CLIENT,
+			
+			EC_STATUS_LAST_PRIO
+		};
+		
+		//ECUpdateMsgSource *m_msg_source[EC_STATUS_LAST_PRIO];
+		std::map<CECServerSocket *, ECUpdateMsgSource **> m_msg_source;
+		
+		void NextPacketToSocket();
+		
+		CECPacket *GetNextPacket(ECUpdateMsgSource *msg_source_array[]);
+	public:
+		ECNotifier();
+		
+		void Add_EC_Client(CECServerSocket *sock);
+		void Remove_EC_Client(CECServerSocket *sock);
+		
+		CECPacket *GetNextPacket(CECServerSocket *sock);
+		
+		//
+		// Interface to notification macros
+		//
+		void DownloadFile_SetDirty(CPartFile *file);
+		void DownloadFile_RemoveFile(CPartFile *file);
+		void DownloadFile_RemoveSource(CPartFile *file);
+		void DownloadFile_AddFile(CPartFile *file);
+		void DownloadFile_AddSource(CPartFile *file);
+		
+		void Status_ConnectionState();
+		void Status_QueueCount();
+		void Status_UserCount();
+		
+};
+
 
 #endif // EXTERNALCONN_H
 // File_checked_for_headers

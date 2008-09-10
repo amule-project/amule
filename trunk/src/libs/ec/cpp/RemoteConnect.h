@@ -66,7 +66,8 @@ private:
 	wxString m_server_reply;
 	wxString m_client;
 	wxString m_version;
-	
+
+	void WriteDoneAndQueueEmpty();	
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);

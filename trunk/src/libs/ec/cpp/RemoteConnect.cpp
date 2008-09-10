@@ -114,6 +114,10 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	return true;
 }
 
+void CRemoteConnect::WriteDoneAndQueueEmpty()
+{
+}
+
 void CRemoteConnect::OnConnect() {
 	if (m_notifier) {
 		wxASSERT(m_ec_state == EC_CONNECT_SENT);

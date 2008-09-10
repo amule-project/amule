@@ -1,8 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2003-2008 Kry ( elkry@sourceforge.net / http://www.amule.org )
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2008 Froenchenko Leonid (lfroen@gmail.com)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -57,13 +58,16 @@
 class CECServerSocket : public CECMuleSocket
 {
 public:
-	CECServerSocket();
+	CECServerSocket(ECNotifier *notifier);
 	virtual ~CECServerSocket();
 
 	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
 	virtual void OnLost();
 
+	virtual void WriteDoneAndQueueEmpty();
 private:
+	ECNotifier *m_ec_notifier;
+	
 	bool m_authenticated;
 	CPartFile_Encoder_Map	m_part_encoder;
 	CKnownFile_Encoder_Map	m_shared_encoder;
@@ -71,7 +75,7 @@ private:
 };
 
 
-CECServerSocket::CECServerSocket()
+CECServerSocket::CECServerSocket(ECNotifier *notifier)
 :
 CECMuleSocket(true),
 m_authenticated(false),
@@ -81,6 +85,7 @@ m_obj_tagmap()
 {
 	wxASSERT(theApp->ECServerHandler);
 	theApp->ECServerHandler->AddSocket(this);
+	m_ec_notifier = notifier;
 }
 
 
@@ -118,6 +123,13 @@ void CECServerSocket::OnLost()
 	DestroySocket();
 }
 
+void CECServerSocket::WriteDoneAndQueueEmpty()
+{
+	CECPacket *packet = m_ec_notifier->GetNextPacket(this);
+	if ( packet ) {
+		SendPacket(packet);
+	}
+}
 
 //-------------------- ExternalConn --------------------
 
@@ -168,6 +180,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		*msg += wxT("External connections disabled in config file\n");
 		AddLogLineM(false,_("External connections disabled in config file"));
 	}
+	m_ec_notifier = new ECNotifier();
 }
 
 
@@ -175,6 +188,7 @@ ExternalConn::~ExternalConn()
 {
 	KillAllSockets();
 	delete m_ECServer;
+	delete m_ec_notifier;
 }
 
 
@@ -209,7 +223,7 @@ void ExternalConn::KillAllSockets()
 
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 {
-	CECServerSocket *sock = new CECServerSocket;
+	CECServerSocket *sock = new CECServerSocket(m_ec_notifier);
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
@@ -1450,4 +1464,214 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 	}
 	return response;
 }
+
+/*
+ * Here notification-based EC. Notification will be sorted by priority for possible throttling. 
+ */
+ 
+/*
+ * Core general status
+ */
+ECStatusMsgSource::ECStatusMsgSource()
+{
+}
+
+CECPacket *ECStatusMsgSource::GetNextPacket()
+{
+	CECPacket *response = new CECPacket(EC_OP_STATS);
+	response->AddTag(CEC_ConnState_Tag(EC_DETAIL_UPDATE));
+	return response;
+}
+
+/*
+ * Downloading files
+*/
+ECPartFileMsgSource::ECPartFileMsgSource()
+{
+	PARTFILE_STATUS status = { true, false, false, false };
+	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
+		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
+		m_dirty_status[cur_file->GetFileHash()] = status;
+	}
+}
+
+void ECPartFileMsgSource::SetDirty(CPartFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	if ( m_dirty_status.find(filehash) != m_dirty_status.end() ) {
+		//
+		// entry already present, meaning "dirty" flag is set
+		//
+		return ;
+	}
+	PARTFILE_STATUS status = { false, false, false, false };
+	m_dirty_status[filehash] = status;
+}
+
+void ECPartFileMsgSource::SetNew(CPartFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	wxASSERT ( m_dirty_status.find(filehash) == m_dirty_status.end() );
+	PARTFILE_STATUS status = { true, false, false, false };
+	m_dirty_status[filehash] = status;
+}
+
+void ECPartFileMsgSource::SetCompleted(CPartFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
+
+	m_dirty_status[filehash].m_finished = true;
+}
+
+void ECPartFileMsgSource::SetRemoved(CPartFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
+
+	m_dirty_status[filehash].m_removed = true;
+}
+
+CECPacket *ECPartFileMsgSource::GetNextPacket()
+{
+	if ( m_dirty_status.empty() ) {
+		return 0;
+	}
+	std::map<CMD4Hash, PARTFILE_STATUS>::iterator it = m_dirty_status.begin();
+	CMD4Hash filehash = it->first;
+	
+	CPartFile *partfile = theApp->downloadqueue->GetFileByID(filehash);
+	
+	CECPacket *packet = new CECPacket(EC_OP_DLOAD_QUEUE);
+	CEC_PartFile_Tag tag(partfile, EC_DETAIL_UPDATE);
+	packet->AddTag(tag);
+	
+	m_dirty_status.erase(it);
+	
+	return packet;
+}
+
+/*
+ * Notification about search status
+*/
+ECSearchMsgSource::ECSearchMsgSource()
+{
+}
+
+CECPacket *ECSearchMsgSource::GetNextPacket()
+{
+	return 0;
+}
+
+/*
+ * Notification about uploading clients
+ */
+CECPacket *ECClientMsgSource::GetNextPacket()
+{
+	return 0;
+}
+	
+//
+// Notification iface per-client
+//
+ECNotifier::ECNotifier()
+{
+}
+
+CECPacket *ECNotifier::GetNextPacket(ECUpdateMsgSource *msg_source_array[])
+{
+	CECPacket *packet = 0;
+	//
+	// priority 0 is highest
+	//
+	for(int i = 0; i < EC_STATUS_LAST_PRIO; i++) {
+		if ( (packet = msg_source_array[i]->GetNextPacket()) != 0 ) {
+			break;
+		}
+	}
+	return packet;
+}
+
+CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
+{
+	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
+	CECPacket *packet = GetNextPacket(notifier_array);
+	return packet;
+}
+
+//
+// Interface to notification macros
+//
+void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
+{
+	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
+		i != m_msg_source.end(); i++) {
+		ECUpdateMsgSource **notifier_array = i->second;
+		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetDirty(file);
+	}
+}
+
+void ECNotifier::DownloadFile_RemoveFile(CPartFile *file)
+{
+	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
+		i != m_msg_source.end(); i++) {
+		ECUpdateMsgSource **notifier_array = i->second;
+		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetRemoved(file);
+	}
+}
+
+void ECNotifier::DownloadFile_RemoveSource(CPartFile *)
+{
+	// per-partfile source list is not supported (yet), and IMHO quite useless
+}
+
+void ECNotifier::DownloadFile_AddFile(CPartFile *file)
+{
+	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
+		i != m_msg_source.end(); i++) {
+		ECUpdateMsgSource **notifier_array = i->second;
+		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetNew(file);
+	}
+}
+
+void ECNotifier::DownloadFile_AddSource(CPartFile *)
+{
+	// per-partfile source list is not supported (yet), and IMHO quite useless
+}
+
+void ECNotifier::Add_EC_Client(CECServerSocket *sock)
+{
+	ECUpdateMsgSource **notifier_array = new ECUpdateMsgSource *[EC_STATUS_LAST_PRIO];
+	notifier_array[EC_STATUS] = new ECStatusMsgSource();
+	notifier_array[EC_SEARCH] = new ECSearchMsgSource();
+	notifier_array[EC_PARTFILE] = new ECPartFileMsgSource();
+	notifier_array[EC_CLIENT] = new ECClientMsgSource();
+
+	m_msg_source[sock] = notifier_array;
+}
+
+void ECNotifier::Remove_EC_Client(CECServerSocket *sock)
+{
+	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
+	m_msg_source.erase(sock);
+	
+	for(int i = 0; i < EC_STATUS_LAST_PRIO; i++) {
+		delete notifier_array[i];
+	}
+	delete [] notifier_array;
+}
+
+void ECNotifier::NextPacketToSocket()
+{
+	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
+		i != m_msg_source.end(); i++) {
+		CECServerSocket *sock = i->first;
+		if ( !sock->DataPending() ) {
+			ECUpdateMsgSource **notifier_array = i->second;
+			CECPacket *packet = GetNextPacket(notifier_array);
+			sock->SendPacket(packet);
+		}
+	}
+}
+
 // File_checked_for_headers
