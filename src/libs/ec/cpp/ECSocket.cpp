@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal Veiga ( kry@users.sourceforge.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -281,21 +281,16 @@ CECSocket::~CECSocket()
 
 bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 {
-	bool res;
-#if wxCHECK_VERSION(2, 8, 8)
-	res = InternalConnect(ip, port, !m_use_events);
-#else
-	res = InternalConnect(ip, port, false);
+	bool res = InternalConnect(ip, port, false);
 	if ( !m_use_events ) {
-		res = WaitSocketConnect(10, 0) && InternalIsConnected();
+		res = WaitSocketConnect(10, 0);
 		if ( res ) {
 			OnConnect();
 		} else {
 			OnLost();
 		}
 	}
-#endif
-	return !SocketError() && res;
+	return !SocketError();
 }
 
 void CECSocket::SendPacket(const CECPacket *packet)
@@ -473,6 +468,15 @@ void CECSocket::OnOutput()
 			}
 		}
 	}
+	//
+	// All outstanding data sent to socket
+	//
+	WriteDoneAndQueueEmpty();
+}
+
+bool CECSocket::DataPending()
+{
+	return !m_output_queue.empty();
 }
 
 //
