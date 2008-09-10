@@ -61,15 +61,16 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 
 	im = gdImageCreateFromPng(in);
 	if( NULL == im) {
-		perror("Error loading source image (not a valid image file?).\n");
+		perror("Error loading source image (not a valid png image file?).\n");
 		return 0;
 	}
 	white = gdImageColorResolve(im, 255, 255, 255);
 
-	for (i = 0; i <= (IMG_TEXTLINES - 1); i++) {
-		if (config->enabled[i] == 1)
+	for (i = 0; i < IMG_TEXTLINES; i++) {
+		if (config->enabled[i] == 1) {
 			gdImageStringFT(im, &brect[0], white, config->font, config->size,
 					0.0, config->x[i], config->y[i], lines[i]);
+		}
 	}
 	
 	if (config->img_type==0) {
