@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 03:30+0200\n"
+"POT-Creation-Date: 2008-09-11 03:31+0200\n"
 "PO-Revision-Date: 2008-08-06 16:07+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -35,31 +35,31 @@ msgstr "Необходимо указать пароль."
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Неверный пароль. Не MD5-хеш!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:132
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Подключение не удалось"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:188
+#: src/libs/ec/cpp/RemoteConnect.cpp:192
 msgid "EC connection failed. Empty reply."
 msgstr "EC соединение не удалось. Пустой ответ."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:198
 msgid "External Connection: Access denied because: "
 msgstr "Внешнее Соединение: В доступе отказано по причине:"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:197
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Access denied"
 msgstr "Внешнее Соединение: В доступе отказано"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr "Внешнее соединение: Некорректный ответ сервера. Соединение закрыто."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:205
+#: src/libs/ec/cpp/RemoteConnect.cpp:209
 msgid "Succeeded! Connection established to aMule "
 msgstr "Успешное подключение к aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:212
 msgid "Succeeded! Connection established."
 msgstr "Соединение установлено."
 
@@ -145,7 +145,7 @@ msgstr "Не удалось получить список доступных ф�
 #: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:265 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -2263,44 +2263,44 @@ msgstr "Команда GUI:"
 msgid "The following variables will be replaced:"
 msgstr "Следующие переменные будут заменены:"
 
-#: src/ExternalConn.cpp:102
+#: src/ExternalConn.cpp:107
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Попытка неавторизированного доступа. Соединение разорвано."
 
-#: src/ExternalConn.cpp:117
+#: src/ExternalConn.cpp:122
 msgid "External connection closed."
 msgstr "Внешнее соединение закрыто."
 
-#: src/ExternalConn.cpp:144
+#: src/ExternalConn.cpp:156
 msgid "External connections disabled due to empty password!"
 msgstr "Внешние соединения выключены из-за отсутствия пароля."
 
-#: src/ExternalConn.cpp:169
+#: src/ExternalConn.cpp:181
 msgid "External connections disabled in config file"
 msgstr "Внешние соединения выключены в конфигурационном файле"
 
-#: src/ExternalConn.cpp:218
+#: src/ExternalConn.cpp:232
 msgid "New external connection accepted"
 msgstr "Принято новое внешнее соединение"
 
-#: src/ExternalConn.cpp:221
+#: src/ExternalConn.cpp:235
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ОШИБКА: невозможно принять новое внешнее соединение"
 
-#: src/ExternalConn.cpp:240
+#: src/ExternalConn.cpp:254
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Отказано во внешнем соединении из-за пустого пароля"
 
-#: src/ExternalConn.cpp:250
+#: src/ExternalConn.cpp:264
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Соединение с клиентом: %s %s"
 
-#: src/ExternalConn.cpp:252
+#: src/ExternalConn.cpp:266
 msgid "Unknown version"
 msgstr "Неизвестная версия"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:277
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2308,7 +2308,7 @@ msgstr ""
 "Неверный идентификатор версии ВС. Возможна бинарная несовместимость. "
 "Используйте ядро и компонент удаленного доступа одинаковой версии."
 
-#: src/ExternalConn.cpp:268
+#: src/ExternalConn.cpp:282
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2316,141 +2316,141 @@ msgstr ""
 "Вы не можете подсоединиться к релизной версии с произвольной SVN версии! "
 "Возможный сбой предотвращен"
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:303
 msgid "Authentication failed."
 msgstr "Ошибка идентификации."
 
-#: src/ExternalConn.cpp:293
+#: src/ExternalConn.cpp:307
 msgid "Invalid protocol version."
 msgstr "Недопустимая версия протокола."
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:311
 msgid "Missing protocol version tag."
 msgstr "Тег версии протокола отсутствует."
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:315
 msgid "Invalid request, you should first authenticate."
 msgstr "Неверный запрос, сначала пройдите идентификацию."
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:321
 msgid "Access granted."
 msgstr "Доступ получен."
 
-#: src/ExternalConn.cpp:565
+#: src/ExternalConn.cpp:579
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Удаленная команда PartFile не удалась: хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:567
+#: src/ExternalConn.cpp:581
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:630 src/ExternalConn.cpp:714
+#: src/ExternalConn.cpp:644 src/ExternalConn.cpp:728
 msgid "OOPS! OpCode processing error!"
 msgstr "Ошибка при выполнении OpCode."
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:674
 msgid "Server not added"
 msgstr "Сервер не добавлен"
 
-#: src/ExternalConn.cpp:678
+#: src/ExternalConn.cpp:692
 #, c-format
 msgid "server not found: %s"
 msgstr "сервер не найден: %s"
 
-#: src/ExternalConn.cpp:694
+#: src/ExternalConn.cpp:708
 msgid "need to define server to be removed"
 msgstr "необходимо выделить сервер для удаления"
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:722
 msgid "eD2k is disabled in preferences."
 msgstr "Сеть eD2k отключена в настройках"
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:818
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Поиск запущен. Ждите результатов."
 
 # Explained by Jacobo221.
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:823
 msgid "WebSearch from remote interface makes no sense."
 msgstr "При удаленном использовании aMule WWW поиск бесполезен."
 
-#: src/ExternalConn.cpp:860
+#: src/ExternalConn.cpp:874
 msgid "Kad is disabled in preferences."
 msgstr "Kad выключена в настройках."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1035
 msgid "No points for graph."
 msgstr "В графике нет точек."
 
-#: src/ExternalConn.cpp:1030
+#: src/ExternalConn.cpp:1044
 msgid "Your client is not configured for this detail level."
 msgstr "Ваш клиент не настроен на этот уровень детализации."
 
-#: src/ExternalConn.cpp:1058
+#: src/ExternalConn.cpp:1072
 msgid "External Connection: shutdown requested"
 msgstr "Внешнее соединение: запрошено выключение"
 
-#: src/ExternalConn.cpp:1070
+#: src/ExternalConn.cpp:1084
 msgid "Already shutting down."
 msgstr "Уже завершаю работу."
 
-#: src/ExternalConn.cpp:1078
+#: src/ExternalConn.cpp:1092
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: добавляю ссылку '%s'."
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1098
 msgid "Invalid link or already on list."
 msgstr "Ссылка неверна или уже в списке."
 
-#: src/ExternalConn.cpp:1169
+#: src/ExternalConn.cpp:1183
 msgid "File not found."
 msgstr "Файл не найден."
 
-#: src/ExternalConn.cpp:1174
+#: src/ExternalConn.cpp:1188
 msgid "Invalid file name."
 msgstr "Неверное имя файла."
 
-#: src/ExternalConn.cpp:1182
+#: src/ExternalConn.cpp:1196
 msgid "Unable to rename file."
 msgstr "Невозможно переименовать файл."
 
-#: src/ExternalConn.cpp:1406
+#: src/ExternalConn.cpp:1420
 msgid "Already connected to eD2k."
 msgstr "Уже подсоединен к сети eD2k."
 
-#: src/ExternalConn.cpp:1409
+#: src/ExternalConn.cpp:1423
 msgid "Connecting to eD2k..."
 msgstr "Подсоединение к сети eD2k..."
 
-#: src/ExternalConn.cpp:1417
+#: src/ExternalConn.cpp:1431
 msgid "Already connected to Kad."
 msgstr "Уже подключен к Kad."
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1434
 msgid "Connecting to Kad..."
 msgstr "Подключаюсь к Kad..."
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1439
 msgid "All networks are disabled."
 msgstr "Все сети выключены."
 
-#: src/ExternalConn.cpp:1433
+#: src/ExternalConn.cpp:1447
 msgid "Disconnected from eD2k."
 msgstr "Отсоединен от сети eD2k."
 
-#: src/ExternalConn.cpp:1437
+#: src/ExternalConn.cpp:1451
 msgid "Disconnected from Kad."
 msgstr "Отключен от Kad."
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1459
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Внешнее соединение: получен неверный код операции: %#x"
 
-#: src/ExternalConn.cpp:1448
+#: src/ExternalConn.cpp:1462
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Неверный opcode (Возможно, не та версия протокола)"
 

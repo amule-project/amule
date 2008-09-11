@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 03:30+0200\n"
+"POT-Creation-Date: 2008-09-11 03:31+0200\n"
 "PO-Revision-Date: 2008-06-12 12:08+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -29,32 +29,32 @@ msgstr "Heu d'especificar una contrasenya (no buida)."
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Contrasenya invàlida, no és un resum MD5!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:132
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Fallada en la connexió"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:188
+#: src/libs/ec/cpp/RemoteConnect.cpp:192
 msgid "EC connection failed. Empty reply."
 msgstr "La connexió externa ha fallat. Resposta buida."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:198
 msgid "External Connection: Access denied because: "
 msgstr "Connexió externa: Accés denegat perquè: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:197
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Access denied"
 msgstr "Connexió externa: Accés denegat"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr ""
 "Connexió externa: Resposta del servidor incorrecta. S'ha tancat la connexió."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:205
+#: src/libs/ec/cpp/RemoteConnect.cpp:209
 msgid "Succeeded! Connection established to aMule "
 msgstr "Connexió establerta amb l'aMule"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:212
 msgid "Succeeded! Connection established."
 msgstr "Connexió establerta amb èxit."
 
@@ -144,7 +144,7 @@ msgstr "No s'han pogut obtenir els compartits de l'usuari '%s'"
 #: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:265 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -2251,47 +2251,47 @@ msgstr "Ordre de la GUI:"
 msgid "The following variables will be replaced:"
 msgstr "Les següents variables seran reemplaçades:"
 
-#: src/ExternalConn.cpp:102
+#: src/ExternalConn.cpp:107
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Intent d'accés no autoritzat. Connexió tancada."
 
-#: src/ExternalConn.cpp:117
+#: src/ExternalConn.cpp:122
 msgid "External connection closed."
 msgstr "Connexió externa tancada."
 
-#: src/ExternalConn.cpp:144
+#: src/ExternalConn.cpp:156
 msgid "External connections disabled due to empty password!"
 msgstr ""
 "Les connexions externes han estat inhabilitades per manca d'una contrasenya!"
 
-#: src/ExternalConn.cpp:169
+#: src/ExternalConn.cpp:181
 msgid "External connections disabled in config file"
 msgstr "Les connexions externes estan inhabilitades al fitxer de configuració"
 
-#: src/ExternalConn.cpp:218
+#: src/ExternalConn.cpp:232
 msgid "New external connection accepted"
 msgstr "Nova connexió externa acceptada"
 
-#: src/ExternalConn.cpp:221
+#: src/ExternalConn.cpp:235
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ERROR: no s'ha pogut acceptar una nova connexió externa"
 
-#: src/ExternalConn.cpp:240
+#: src/ExternalConn.cpp:254
 msgid "External connection refused due to empty password in preferences!"
 msgstr ""
 "S'ha rebutjat la connexió externa per manca d'una contrasenya a les "
 "preferències!"
 
-#: src/ExternalConn.cpp:250
+#: src/ExternalConn.cpp:264
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "S'està connectant al client: %s %s"
 
-#: src/ExternalConn.cpp:252
+#: src/ExternalConn.cpp:266
 msgid "Unknown version"
 msgstr "Versió desconeguda"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:277
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2299,7 +2299,7 @@ msgstr ""
 "ID de versió EC incorrecta, pot haver-hi incompatibilitat binaria. Useu un "
 "nucli i un client remot del mateix llançament (versió)."
 
-#: src/ExternalConn.cpp:268
+#: src/ExternalConn.cpp:282
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2307,142 +2307,142 @@ msgstr ""
 "No podeu connectar a una versió estable des de una versió SVN arbitrària! és "
 "possible que es produeixin fallades"
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:303
 msgid "Authentication failed."
 msgstr "Ha fallat l'autenticació."
 
-#: src/ExternalConn.cpp:293
+#: src/ExternalConn.cpp:307
 msgid "Invalid protocol version."
 msgstr "Versió del protocol invàlida."
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:311
 msgid "Missing protocol version tag."
 msgstr "Marcador de la versió del protocol inexistent."
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:315
 msgid "Invalid request, you should first authenticate."
 msgstr "Petició invàlida, primer heu d'autenticar-vos."
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:321
 msgid "Access granted."
 msgstr "Accés concedit."
 
-#: src/ExternalConn.cpp:565
+#: src/ExternalConn.cpp:579
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "Ha fallat una ordre remota de fitxer de parts: No s'ha trobat el resum del "
 "fitxer: %s"
 
-#: src/ExternalConn.cpp:567
+#: src/ExternalConn.cpp:581
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "No s'ha trobat el resum del fitxer: %s"
 
-#: src/ExternalConn.cpp:630 src/ExternalConn.cpp:714
+#: src/ExternalConn.cpp:644 src/ExternalConn.cpp:728
 msgid "OOPS! OpCode processing error!"
 msgstr "Error en processar el codi d'opció!"
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:674
 msgid "Server not added"
 msgstr "No s'ha afegit el servidor"
 
-#: src/ExternalConn.cpp:678
+#: src/ExternalConn.cpp:692
 #, c-format
 msgid "server not found: %s"
 msgstr "no s'ha trobat el servidor: %s"
 
-#: src/ExternalConn.cpp:694
+#: src/ExternalConn.cpp:708
 msgid "need to define server to be removed"
 msgstr "és necessari definir el servidor a esborrar"
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:722
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k és inhabilitada a les preferències."
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:818
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Cerca en procés. S'obtindran resultats en un moment!"
 
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:823
 msgid "WebSearch from remote interface makes no sense."
 msgstr "La recerca web des de la interfície remota no té sentit."
 
-#: src/ExternalConn.cpp:860
+#: src/ExternalConn.cpp:874
 msgid "Kad is disabled in preferences."
 msgstr "Kad està inhabilitada a les preferències."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1035
 msgid "No points for graph."
 msgstr "Cap punt per al gràfic."
 
-#: src/ExternalConn.cpp:1030
+#: src/ExternalConn.cpp:1044
 msgid "Your client is not configured for this detail level."
 msgstr "El vostre client no està configurat per a aquest nivell de detall."
 
-#: src/ExternalConn.cpp:1058
+#: src/ExternalConn.cpp:1072
 msgid "External Connection: shutdown requested"
 msgstr "Connexió externa: s'ha demanat l'aturada"
 
-#: src/ExternalConn.cpp:1070
+#: src/ExternalConn.cpp:1084
 msgid "Already shutting down."
 msgstr "Ja s'està aturant."
 
-#: src/ExternalConn.cpp:1078
+#: src/ExternalConn.cpp:1092
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: afegint l'enllaç '%s'"
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1098
 msgid "Invalid link or already on list."
 msgstr "L'enllaç és invàlid o ja és present a la llista."
 
-#: src/ExternalConn.cpp:1169
+#: src/ExternalConn.cpp:1183
 msgid "File not found."
 msgstr "No s'ha trobat el fitxer."
 
-#: src/ExternalConn.cpp:1174
+#: src/ExternalConn.cpp:1188
 msgid "Invalid file name."
 msgstr "Nom de fitxer invàlid."
 
-#: src/ExternalConn.cpp:1182
+#: src/ExternalConn.cpp:1196
 msgid "Unable to rename file."
 msgstr "No s'ha pogut canviar el nom del fitxer."
 
-#: src/ExternalConn.cpp:1406
+#: src/ExternalConn.cpp:1420
 msgid "Already connected to eD2k."
 msgstr "Ja esteu connectat a eD2k."
 
-#: src/ExternalConn.cpp:1409
+#: src/ExternalConn.cpp:1423
 msgid "Connecting to eD2k..."
 msgstr "Connectant a eD2k..."
 
-#: src/ExternalConn.cpp:1417
+#: src/ExternalConn.cpp:1431
 msgid "Already connected to Kad."
 msgstr "Ja esteu connectat a Kad."
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1434
 msgid "Connecting to Kad..."
 msgstr "S'està connectant a Kad..."
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1439
 msgid "All networks are disabled."
 msgstr "Totes les xarxes estan inhabilitades."
 
-#: src/ExternalConn.cpp:1433
+#: src/ExternalConn.cpp:1447
 msgid "Disconnected from eD2k."
 msgstr "Desconnectat de eD2k."
 
-#: src/ExternalConn.cpp:1437
+#: src/ExternalConn.cpp:1451
 msgid "Disconnected from Kad."
 msgstr "Desconnectat de Kad."
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1459
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Connexió externa: s'ha rebut un codi d'opció invàlid: %#x"
 
-#: src/ExternalConn.cpp:1448
+#: src/ExternalConn.cpp:1462
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Codi d'opció invàlid (versió de protocol errònia?)"
 

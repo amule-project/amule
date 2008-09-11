@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it-cvs_beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 03:30+0200\n"
+"POT-Creation-Date: 2008-09-11 03:31+0200\n"
 "PO-Revision-Date: 2008-08-19 11:33+0200\n"
 "Last-Translator: rik <rik_kornellatyahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
@@ -39,32 +39,32 @@ msgstr "Devi specificare una password non vuota."
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Password non valida, non è un hash MD5!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:132
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Connessione non riuscita"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:188
+#: src/libs/ec/cpp/RemoteConnect.cpp:192
 msgid "EC connection failed. Empty reply."
 msgstr "Connessione EC fallita. Risposta vuota."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:198
 msgid "External Connection: Access denied because: "
 msgstr "Connessione Esterna: Accesso negato a causa di: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:197
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Access denied"
 msgstr "Connessione Esterna: Accesso negato"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr ""
 "Connessione Esterna: risposta non valida dal server. Connessione chiusa."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:205
+#: src/libs/ec/cpp/RemoteConnect.cpp:209
 msgid "Succeeded! Connection established to aMule "
 msgstr "Fatto! Connessione stabilita con aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:212
 msgid "Succeeded! Connection established."
 msgstr "Fatto! Connessione stabilita."
 
@@ -151,7 +151,7 @@ msgstr "Impossibile ricevere i file condivisi dall'utente '%s'"
 #: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:265 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -2258,45 +2258,45 @@ msgstr "Comando GUI:"
 msgid "The following variables will be replaced:"
 msgstr "Le seguenti variabili saranno sostituite:"
 
-#: src/ExternalConn.cpp:102
+#: src/ExternalConn.cpp:107
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Tentativo di accesso non autorizzato. Connessione chiusa."
 
-#: src/ExternalConn.cpp:117
+#: src/ExternalConn.cpp:122
 msgid "External connection closed."
 msgstr "Connessione esterna chiusa."
 
-#: src/ExternalConn.cpp:144
+#: src/ExternalConn.cpp:156
 msgid "External connections disabled due to empty password!"
 msgstr "Connessioni esterne disabilitate perché la password è vuota!"
 
-#: src/ExternalConn.cpp:169
+#: src/ExternalConn.cpp:181
 msgid "External connections disabled in config file"
 msgstr "Connessioni esterne disabilitate nel file di configurazione"
 
-#: src/ExternalConn.cpp:218
+#: src/ExternalConn.cpp:232
 msgid "New external connection accepted"
 msgstr "Accettata nuova connessione esterna"
 
-#: src/ExternalConn.cpp:221
+#: src/ExternalConn.cpp:235
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ERRORE: impossibile accettare una nuova connessione esterna"
 
-#: src/ExternalConn.cpp:240
+#: src/ExternalConn.cpp:254
 msgid "External connection refused due to empty password in preferences!"
 msgstr ""
 "Connessione esterna rifiutata perché la password nelle preferenze è vuota!"
 
-#: src/ExternalConn.cpp:250
+#: src/ExternalConn.cpp:264
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Connessione al client: %s %s"
 
-#: src/ExternalConn.cpp:252
+#: src/ExternalConn.cpp:266
 msgid "Unknown version"
 msgstr "Versione sconosciuta"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:277
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2304,7 +2304,7 @@ msgstr ""
 "ID della versione EC non corretto, potrebbe esserci un'incompatibilità "
 "binaria. Usare core e client remoto dello stesso snapshot."
 
-#: src/ExternalConn.cpp:268
+#: src/ExternalConn.cpp:282
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2312,140 +2312,140 @@ msgstr ""
 "Non puoi connetterti a una versione definitiva da una versione SVN "
 "arbitraria! *sigh* possibile crash evitato"
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:303
 msgid "Authentication failed."
 msgstr "Autenticazione non riuscita."
 
-#: src/ExternalConn.cpp:293
+#: src/ExternalConn.cpp:307
 msgid "Invalid protocol version."
 msgstr "Versione protocollo non valida."
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:311
 msgid "Missing protocol version tag."
 msgstr "Tag versione di protocollo mancante."
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:315
 msgid "Invalid request, you should first authenticate."
 msgstr "Richiesta non valida, prima devi autenticarti."
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:321
 msgid "Access granted."
 msgstr "Accesso consentito."
 
-#: src/ExternalConn.cpp:565
+#: src/ExternalConn.cpp:579
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Comando Partfile remoto fallito: hash del file non trovato: %s"
 
-#: src/ExternalConn.cpp:567
+#: src/ExternalConn.cpp:581
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Hash del file non trovato: %s"
 
-#: src/ExternalConn.cpp:630 src/ExternalConn.cpp:714
+#: src/ExternalConn.cpp:644 src/ExternalConn.cpp:728
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! errore nel processare l'opcode!"
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:674
 msgid "Server not added"
 msgstr "Server non aggiunto"
 
-#: src/ExternalConn.cpp:678
+#: src/ExternalConn.cpp:692
 #, c-format
 msgid "server not found: %s"
 msgstr "server non trovato: %s"
 
-#: src/ExternalConn.cpp:694
+#: src/ExternalConn.cpp:708
 msgid "need to define server to be removed"
 msgstr "è necessario definire il server da rimuovere"
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:722
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k è disabilitato nelle preferenze."
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:818
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Ricerca in corso. Risultati in arrivo!"
 
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:823
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Non ha senso usare la ricerca Web da interfaccia remota."
 
-#: src/ExternalConn.cpp:860
+#: src/ExternalConn.cpp:874
 msgid "Kad is disabled in preferences."
 msgstr "La rete Kad è disabilitata nelle Preferenze."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1035
 msgid "No points for graph."
 msgstr "Niente punti per il grafico."
 
-#: src/ExternalConn.cpp:1030
+#: src/ExternalConn.cpp:1044
 msgid "Your client is not configured for this detail level."
 msgstr "Il tuo client non è configurato per questo livello di dettaglio."
 
-#: src/ExternalConn.cpp:1058
+#: src/ExternalConn.cpp:1072
 msgid "External Connection: shutdown requested"
 msgstr "Connessione Esterna: richiesto l'arresto"
 
-#: src/ExternalConn.cpp:1070
+#: src/ExternalConn.cpp:1084
 msgid "Already shutting down."
 msgstr "Sto già uscendo."
 
-#: src/ExternalConn.cpp:1078
+#: src/ExternalConn.cpp:1092
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: aggiungo il collegamento '%s'."
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1098
 msgid "Invalid link or already on list."
 msgstr "Collegamento non valido o già nella lista."
 
-#: src/ExternalConn.cpp:1169
+#: src/ExternalConn.cpp:1183
 msgid "File not found."
 msgstr "File non trovato."
 
-#: src/ExternalConn.cpp:1174
+#: src/ExternalConn.cpp:1188
 msgid "Invalid file name."
 msgstr "Nome file non valido."
 
-#: src/ExternalConn.cpp:1182
+#: src/ExternalConn.cpp:1196
 msgid "Unable to rename file."
 msgstr "Impossibile rinominare il file."
 
-#: src/ExternalConn.cpp:1406
+#: src/ExternalConn.cpp:1420
 msgid "Already connected to eD2k."
 msgstr "eD2k è già connesso."
 
-#: src/ExternalConn.cpp:1409
+#: src/ExternalConn.cpp:1423
 msgid "Connecting to eD2k..."
 msgstr "Connessione alla rete eD2k..."
 
-#: src/ExternalConn.cpp:1417
+#: src/ExternalConn.cpp:1431
 msgid "Already connected to Kad."
 msgstr "Già connesso alla rete Kad."
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1434
 msgid "Connecting to Kad..."
 msgstr "Connessione alla rete Kad..."
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1439
 msgid "All networks are disabled."
 msgstr "Tutte le reti sono disabilitate."
 
-#: src/ExternalConn.cpp:1433
+#: src/ExternalConn.cpp:1447
 msgid "Disconnected from eD2k."
 msgstr "Disconnesso dalla rete eD2k."
 
-#: src/ExternalConn.cpp:1437
+#: src/ExternalConn.cpp:1451
 msgid "Disconnected from Kad."
 msgstr "Disconnesso dalla rete Kad."
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1459
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Connessione Esterna: ricevuto un opcode invalido: %#x"
 
-#: src/ExternalConn.cpp:1448
+#: src/ExternalConn.cpp:1462
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Opcode non valido (versione errata del protocollo?)"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 03:30+0200\n"
+"POT-Creation-Date: 2008-09-11 03:31+0200\n"
 "PO-Revision-Date: 2008-07-30 19:29+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -26,31 +26,31 @@ msgstr "Egy nem üres jelszót kell megadni."
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Érvénytelen jelszó, nem egy MD5 hash!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:132
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Kapcsolódási hiba"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:188
+#: src/libs/ec/cpp/RemoteConnect.cpp:192
 msgid "EC connection failed. Empty reply."
 msgstr "EC kapcsolat sikertelen. Üres válasz."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:198
 msgid "External Connection: Access denied because: "
 msgstr "Külső kapcsolat: Hozzáférés megtagadva, mert: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:197
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Access denied"
 msgstr "Külső kapcsolat: Hozzáférés megtagadva"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr "Külső kapcsolat: Rossz válasz a kiszolgálótól. Kapcsolat lezárva."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:205
+#: src/libs/ec/cpp/RemoteConnect.cpp:209
 msgid "Succeeded! Connection established to aMule "
 msgstr "Sikerült! Kapcsolat létrejött ezzel: aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:212
 msgid "Succeeded! Connection established."
 msgstr "Sikerült! Kapcsolat létrejött."
 
@@ -136,7 +136,7 @@ msgstr "Megosztott fájlok lehozatala sikertelen a(z) '%s' felhasználótól"
 #: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:265 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -2226,44 +2226,44 @@ msgstr "GUI parancs:"
 msgid "The following variables will be replaced:"
 msgstr "A következő változók lesznek behelyettesítve:"
 
-#: src/ExternalConn.cpp:102
+#: src/ExternalConn.cpp:107
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Jogosulatlan hozzáférési kísérlet. Kapcsolat lezárva."
 
-#: src/ExternalConn.cpp:117
+#: src/ExternalConn.cpp:122
 msgid "External connection closed."
 msgstr "Külső kapcsolat lezárva."
 
-#: src/ExternalConn.cpp:144
+#: src/ExternalConn.cpp:156
 msgid "External connections disabled due to empty password!"
 msgstr "A külső kapcsolatok letiltásra kerültek üres jelszó miatt!"
 
-#: src/ExternalConn.cpp:169
+#: src/ExternalConn.cpp:181
 msgid "External connections disabled in config file"
 msgstr "A külső kapcsolatok le vannak tiltva konfig fájlban"
 
-#: src/ExternalConn.cpp:218
+#: src/ExternalConn.cpp:232
 msgid "New external connection accepted"
 msgstr "Új külső kapcsolat elfogadva"
 
-#: src/ExternalConn.cpp:221
+#: src/ExternalConn.cpp:235
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "HIBA: nem tudtam fogadni egy új külső kapcsolatot"
 
-#: src/ExternalConn.cpp:240
+#: src/ExternalConn.cpp:254
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Külső kapcsolat elutasítva, üres jelszó a beállításokban!"
 
-#: src/ExternalConn.cpp:250
+#: src/ExternalConn.cpp:264
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Kapcsolódó kliens: %s %s"
 
-#: src/ExternalConn.cpp:252
+#: src/ExternalConn.cpp:266
 msgid "Unknown version"
 msgstr "Ismeretlen verzió"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:277
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2271,7 +2271,7 @@ msgstr ""
 "Helytelen EC verzió azonosító, összeférhetetlenség lehetséges. A fő- és a "
 "távoli programot ugyanabból a pillanatképből használd."
 
-#: src/ExternalConn.cpp:268
+#: src/ExternalConn.cpp:282
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2279,140 +2279,140 @@ msgstr ""
 "Nem kapcsolódhatsz egy kiadott változathoz akármilyen SVN változattal! "
 "*sóhaj* lehetséges összeomlás megelőzve"
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:303
 msgid "Authentication failed."
 msgstr "Hitelesítés sikertelen."
 
-#: src/ExternalConn.cpp:293
+#: src/ExternalConn.cpp:307
 msgid "Invalid protocol version."
 msgstr "Érvénytelen protokoll verzió."
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:311
 msgid "Missing protocol version tag."
 msgstr "Hiányzó protokoll verzió azonosító."
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:315
 msgid "Invalid request, you should first authenticate."
 msgstr "Érvénytelen kérés, először hitelesítened kellene."
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:321
 msgid "Access granted."
 msgstr "Hozzáférés elfogadva."
 
-#: src/ExternalConn.cpp:565
+#: src/ExternalConn.cpp:579
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Távoli PartFile parancs sikertelen: nem található FileHash: %s"
 
-#: src/ExternalConn.cpp:567
+#: src/ExternalConn.cpp:581
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "FileHash nem található: %s"
 
-#: src/ExternalConn.cpp:630 src/ExternalConn.cpp:714
+#: src/ExternalConn.cpp:644 src/ExternalConn.cpp:728
 msgid "OOPS! OpCode processing error!"
 msgstr "Hoppá! Opkód feldolgozási hiba!"
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:674
 msgid "Server not added"
 msgstr "Kiszolgáló nem lett hozzáadva"
 
-#: src/ExternalConn.cpp:678
+#: src/ExternalConn.cpp:692
 #, c-format
 msgid "server not found: %s"
 msgstr "kiszolgáló nem található: %s"
 
-#: src/ExternalConn.cpp:694
+#: src/ExternalConn.cpp:708
 msgid "need to define server to be removed"
 msgstr "ki kell jelölnöd a kiszolgálót az eltávolításhoz"
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:722
 msgid "eD2k is disabled in preferences."
 msgstr "Az eD2k le van tiltva a beállításokban."
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:818
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Keresés folyamatban. Kérdezze le az eredményeket egy rövid idő múlva!"
 
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:823
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Webes keresésnek a távoli felületről nincs értelme."
 
-#: src/ExternalConn.cpp:860
+#: src/ExternalConn.cpp:874
 msgid "Kad is disabled in preferences."
 msgstr "A Kad le van tiltva a beállításokban."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1035
 msgid "No points for graph."
 msgstr "Nincsenek pontok a grafikonhoz."
 
-#: src/ExternalConn.cpp:1030
+#: src/ExternalConn.cpp:1044
 msgid "Your client is not configured for this detail level."
 msgstr "A kliensed nincs beállítva ehhez a részletességi szinthez."
 
-#: src/ExternalConn.cpp:1058
+#: src/ExternalConn.cpp:1072
 msgid "External Connection: shutdown requested"
 msgstr "Külső kapcsolat: leállítás kérve"
 
-#: src/ExternalConn.cpp:1070
+#: src/ExternalConn.cpp:1084
 msgid "Already shutting down."
 msgstr "Kikapcsolás folyamatban."
 
-#: src/ExternalConn.cpp:1078
+#: src/ExternalConn.cpp:1092
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: hivatkozás hozzáadása: '%s'."
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1098
 msgid "Invalid link or already on list."
 msgstr "Érvénytelen hivatkozás, vagy már rajta van a listán."
 
-#: src/ExternalConn.cpp:1169
+#: src/ExternalConn.cpp:1183
 msgid "File not found."
 msgstr "Fájl nem található."
 
-#: src/ExternalConn.cpp:1174
+#: src/ExternalConn.cpp:1188
 msgid "Invalid file name."
 msgstr "Érvénytelen fájl név."
 
-#: src/ExternalConn.cpp:1182
+#: src/ExternalConn.cpp:1196
 msgid "Unable to rename file."
 msgstr "Nem tudom átnevezni a fájlt."
 
-#: src/ExternalConn.cpp:1406
+#: src/ExternalConn.cpp:1420
 msgid "Already connected to eD2k."
 msgstr "Már csatlakozva az eD2k-hoz."
 
-#: src/ExternalConn.cpp:1409
+#: src/ExternalConn.cpp:1423
 msgid "Connecting to eD2k..."
 msgstr "Kapcsolódás az eD2k-hoz..."
 
-#: src/ExternalConn.cpp:1417
+#: src/ExternalConn.cpp:1431
 msgid "Already connected to Kad."
 msgstr "Már kapcsolódva a Kad-hoz."
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1434
 msgid "Connecting to Kad..."
 msgstr "Kapcsolódás a Kad-hoz..."
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1439
 msgid "All networks are disabled."
 msgstr "Minden hálózat le van tiltva."
 
-#: src/ExternalConn.cpp:1433
+#: src/ExternalConn.cpp:1447
 msgid "Disconnected from eD2k."
 msgstr "Leválasztva az eD2k-ról."
 
-#: src/ExternalConn.cpp:1437
+#: src/ExternalConn.cpp:1451
 msgid "Disconnected from Kad."
 msgstr "Leválasztva a Kad-ról."
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1459
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Külső kapcsolat: érvénytelen opcode: %#x"
 
-#: src/ExternalConn.cpp:1448
+#: src/ExternalConn.cpp:1462
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Érvénytelen opcode (rossz protokoll verzió?)"
 
