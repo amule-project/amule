@@ -132,7 +132,7 @@ int readconfig(CONF *config)
 					sscanf(buffer, "%*s %d", &config->img_type);
 				}
 					
-				for (i = 0; i <= IMG_TEXTLINES; i++) {
+				for (i = 0; i < IMG_TEXTLINES; i++) {
 					if (strcmp(option, lines[i]) == 0) {
 						sscanf(buffer,
 							"%*s %d,%d,%d",
