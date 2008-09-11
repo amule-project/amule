@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 03:30+0200\n"
+"POT-Creation-Date: 2008-09-11 03:31+0200\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -24,31 +24,31 @@ msgstr "您必须输入密码"
 msgid "Invalid password, not a MD5 hash!"
 msgstr "非法密码，不是合法的MD5校验码"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:132
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "连接失败"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:188
+#: src/libs/ec/cpp/RemoteConnect.cpp:192
 msgid "EC connection failed. Empty reply."
 msgstr "远程连接失败，回复为空。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:194
+#: src/libs/ec/cpp/RemoteConnect.cpp:198
 msgid "External Connection: Access denied because: "
 msgstr "远程连接：访问被拒绝，原因："
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:197
+#: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Access denied"
 msgstr "远程连接：请求被拒绝"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "External Connection: Bad reply from server. Connection closed."
 msgstr "远程连接：服务器错误回复，已断开连接。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:205
+#: src/libs/ec/cpp/RemoteConnect.cpp:209
 msgid "Succeeded! Connection established to aMule "
 msgstr "成功！已连接至aMule"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:212
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
 
@@ -132,7 +132,7 @@ msgstr "无法获取用户%s的共享文件"
 #: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:265 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -2208,189 +2208,189 @@ msgstr "图形界面命令："
 msgid "The following variables will be replaced:"
 msgstr "以下变量将被替换："
 
-#: src/ExternalConn.cpp:102
+#: src/ExternalConn.cpp:107
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "非法登录尝试。已关闭连接。"
 
-#: src/ExternalConn.cpp:117
+#: src/ExternalConn.cpp:122
 msgid "External connection closed."
 msgstr "已关闭远程连接。"
 
-#: src/ExternalConn.cpp:144
+#: src/ExternalConn.cpp:156
 msgid "External connections disabled due to empty password!"
 msgstr "密码未设置，远程连接已被禁止"
 
-#: src/ExternalConn.cpp:169
+#: src/ExternalConn.cpp:181
 msgid "External connections disabled in config file"
 msgstr "配置文件中已禁止远程连接"
 
-#: src/ExternalConn.cpp:218
+#: src/ExternalConn.cpp:232
 msgid "New external connection accepted"
 msgstr "新的远程连接已被接受"
 
-#: src/ExternalConn.cpp:221
+#: src/ExternalConn.cpp:235
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "错误：不能接受新的远程连接"
 
-#: src/ExternalConn.cpp:240
+#: src/ExternalConn.cpp:254
 msgid "External connection refused due to empty password in preferences!"
 msgstr "由于未设置密码，远程连接已被拒绝！"
 
-#: src/ExternalConn.cpp:250
+#: src/ExternalConn.cpp:264
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "正在连接用户：%s %s"
 
-#: src/ExternalConn.cpp:252
+#: src/ExternalConn.cpp:266
 msgid "Unknown version"
 msgstr "未知版本"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:277
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr "错误的远程连接版本号，可能会不兼容，请使用相同版本的核心和远程程序。"
 
-#: src/ExternalConn.cpp:268
+#: src/ExternalConn.cpp:282
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr "为了尽可能避免程序崩溃，您不能从任意的SVN版本连接到发行版本！"
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:303
 msgid "Authentication failed."
 msgstr "登录失败。"
 
-#: src/ExternalConn.cpp:293
+#: src/ExternalConn.cpp:307
 msgid "Invalid protocol version."
 msgstr "非法协议版本。"
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:311
 msgid "Missing protocol version tag."
 msgstr "缺失协议版本标签。"
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:315
 msgid "Invalid request, you should first authenticate."
 msgstr "无效请求，请现登录。"
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:321
 msgid "Access granted."
 msgstr "登录成功"
 
-#: src/ExternalConn.cpp:565
+#: src/ExternalConn.cpp:579
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "远程 Part 文件命令失败：文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:567
+#: src/ExternalConn.cpp:581
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:630 src/ExternalConn.cpp:714
+#: src/ExternalConn.cpp:644 src/ExternalConn.cpp:728
 msgid "OOPS! OpCode processing error!"
 msgstr "哇靠! OpCode处理错误！"
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:674
 msgid "Server not added"
 msgstr "服务器没有被添加"
 
-#: src/ExternalConn.cpp:678
+#: src/ExternalConn.cpp:692
 #, c-format
 msgid "server not found: %s"
 msgstr "找不到服务器：%s"
 
-#: src/ExternalConn.cpp:694
+#: src/ExternalConn.cpp:708
 msgid "need to define server to be removed"
 msgstr "必须定义需删除的服务器"
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:722
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k被设为禁用"
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:818
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "正在搜索，请稍等然后刷新结果！"
 
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:823
 msgid "WebSearch from remote interface makes no sense."
 msgstr "远程界面使用网络搜索没有意义。"
 
-#: src/ExternalConn.cpp:860
+#: src/ExternalConn.cpp:874
 msgid "Kad is disabled in preferences."
 msgstr "Kad被设为禁用"
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1035
 msgid "No points for graph."
 msgstr "此图没有节点"
 
-#: src/ExternalConn.cpp:1030
+#: src/ExternalConn.cpp:1044
 msgid "Your client is not configured for this detail level."
 msgstr "你的客户端没有为详细级别进行配置。"
 
-#: src/ExternalConn.cpp:1058
+#: src/ExternalConn.cpp:1072
 msgid "External Connection: shutdown requested"
 msgstr "远程连接：已请求关闭"
 
-#: src/ExternalConn.cpp:1070
+#: src/ExternalConn.cpp:1084
 msgid "Already shutting down."
 msgstr "已经在关闭。"
 
-#: src/ExternalConn.cpp:1078
+#: src/ExternalConn.cpp:1092
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "远程连接：正在添加链接 '%s'。"
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1098
 msgid "Invalid link or already on list."
 msgstr "非法链接或已经存在列表中。"
 
-#: src/ExternalConn.cpp:1169
+#: src/ExternalConn.cpp:1183
 msgid "File not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1174
+#: src/ExternalConn.cpp:1188
 msgid "Invalid file name."
 msgstr "非法文件名。"
 
-#: src/ExternalConn.cpp:1182
+#: src/ExternalConn.cpp:1196
 msgid "Unable to rename file."
 msgstr "无法重命名文件。"
 
-#: src/ExternalConn.cpp:1406
+#: src/ExternalConn.cpp:1420
 msgid "Already connected to eD2k."
 msgstr "已经连接至eD2k。"
 
-#: src/ExternalConn.cpp:1409
+#: src/ExternalConn.cpp:1423
 msgid "Connecting to eD2k..."
 msgstr "正在连接至eD2k..."
 
-#: src/ExternalConn.cpp:1417
+#: src/ExternalConn.cpp:1431
 msgid "Already connected to Kad."
 msgstr "已连接至 Kad。"
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1434
 msgid "Connecting to Kad..."
 msgstr "正在连接至 Kad..."
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1439
 msgid "All networks are disabled."
 msgstr "全部网络都被禁用了。"
 
-#: src/ExternalConn.cpp:1433
+#: src/ExternalConn.cpp:1447
 msgid "Disconnected from eD2k."
 msgstr "已从eD2k断开连接。"
 
-#: src/ExternalConn.cpp:1437
+#: src/ExternalConn.cpp:1451
 msgid "Disconnected from Kad."
 msgstr "断开 Kad。"
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1459
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "远程连接：收到非法的操作码：%#x"
 
-#: src/ExternalConn.cpp:1448
+#: src/ExternalConn.cpp:1462
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "非法的操作码（错误的协议版本？）"
 
