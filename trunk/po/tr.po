@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-11 03:31+0200\n"
-"PO-Revision-Date: 2008-08-17 09:52+0300\n"
+"PO-Revision-Date: 2008-09-12 00:48+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
-"Language-Team: Turkish <tr@li.org>\n"
+"Language-Team: Turkish <kde-i18n-doc@lists.kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 0.2\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -1178,7 +1178,7 @@ msgstr "Çıkış"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
 msgid "Open"
-msgstr ""
+msgstr "Aç"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1195,7 +1195,7 @@ msgstr "Kopyala"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 msgid "Save as"
-msgstr ""
+msgstr "Farklı Kaydet"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1217,7 +1217,7 @@ msgstr "Seçiniz"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
 msgid "Can't open the clipboard"
-msgstr ""
+msgstr "Pano açılamıyor"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1263,15 +1263,15 @@ msgstr "Adreslemesi Yapılıyor."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator sizin için çalışıyor"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "MD4 Adreslemesi hesaplanıyor..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "Computing eD2k Hashes..."
-msgstr ""
+msgstr "eD2k Adreslemeleri hesaplanıyor..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -7100,3 +7100,4 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
 
 #~ msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 #~ msgstr "Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+
