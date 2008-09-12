@@ -7100,4 +7100,3 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
 
 #~ msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 #~ msgstr "Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
-
