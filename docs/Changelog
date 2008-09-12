@@ -21,6 +21,8 @@ Version 2.3.0 - The river knows.
 		* Allow compilation with wxCocoa
 		* Replace Color.h by new class implementation MuleColour
 		* Lower class overhead and use two-level cache for pens/brushes
+		* Added aMuleCMD project for MSVC.
+		* Fixed UnitTests and aMuleCMD in MSVC to use _CONSOLE subsystem.
 		* Preferences changes
 
 	lfroen:
@@ -36,7 +38,7 @@ Version 2.3.0 - The river knows.
 		* Sort source list on opening and add file name to A4AF files
 		* Adjust displayed download rates for files and sources 
 		  so that the sum matches the total download rate.
-		* MSVC projects for aMuleCmd and ed2k 
+		* MSVC project for ed2k 
 
 	Vollstrecker:
 		* Unify copyright lines
