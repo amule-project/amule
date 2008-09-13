@@ -1595,6 +1595,13 @@ CECPacket *ECNotifier::GetNextPacket(ECUpdateMsgSource *msg_source_array[])
 CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
 {
 	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
+	//
+	// OnOutput is called for a first time before
+	// socket is registered
+	// 
+	if ( !notifier_array ) {
+		return 0;
+	}
 	CECPacket *packet = GetNextPacket(notifier_array);
 	return packet;
 }
