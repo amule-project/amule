@@ -38,7 +38,7 @@ Version 2.3.0 - The river knows.
 		* Sort source list on opening and add file name to A4AF files
 		* Adjust displayed download rates for files and sources 
 		  so that the sum matches the total download rate.
-		* MSVC project for ed2k 
+		* MSVC: solution for MSVC 2008 Express edition, project for ed2k 
 
 	Vollstrecker:
 		* Unify copyright lines
