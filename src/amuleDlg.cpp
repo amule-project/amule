@@ -82,7 +82,13 @@
 #include "kademlia/kademlia/Kademlia.h"
 
 #ifdef ENABLE_IP2COUNTRY
-	#include "IP2Country.h"		// Needed for IP2Country
+
+#include "IP2Country.h"		// Needed for IP2Country
+void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
+{ 
+	m_IP2Country->DownloadFinished(result); 
+}
+
 #endif
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
@@ -219,7 +225,10 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	AddLogLineM(false, wxEmptyString);
 
 #ifdef ENABLE_IP2COUNTRY
+	m_GeoIPavailable = true;
 	m_IP2Country = new CIP2Country();
+#else
+	m_GeoIPavailable = false;
 #endif
 	m_searchwnd = new CSearchDlg(p_cnt);
 	m_transferwnd = new CTransferWnd(p_cnt);

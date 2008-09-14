@@ -1870,6 +1870,11 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 				AddLogLineM(true, _("Failed to download the nodes list."));
 			}
 			break;
+#ifdef ENABLE_IP2COUNTRY	
+		case HTTP_GeoIP:
+			theApp->amuledlg->IP2CountryDownloadFinished(event.GetExtraLong());
+			break;
+#endif	
 	}
 }
 

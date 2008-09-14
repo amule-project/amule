@@ -185,6 +185,7 @@ public:
 	
 #ifdef ENABLE_IP2COUNTRY	
 	CIP2Country*		m_IP2Country;
+	void IP2CountryDownloadFinished(uint32 result);
 #endif	
 	wxWindow*		m_activewnd;
 	CTransferWnd*		m_transferwnd;
@@ -228,6 +229,7 @@ private:
 	uint32 m_last_iconizing;
 	wxFileName m_skinFileName;
 	std::vector<wxString> m_clientSkinNames;
+	bool m_GeoIPavailable;
 
 	WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
 	ZipCatalog::iterator it;

@@ -193,9 +193,11 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	wxString serverName;
 #ifdef ENABLE_IP2COUNTRY
 	// Get the country name
-	const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
-	serverName << countrydata.Name;
-	serverName << wxT(" - ");
+	if (theApp->amuledlg->m_IP2Country->IsEnabled()) {
+		const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
+		serverName << countrydata.Name;
+		serverName << wxT(" - ");
+	}
 #endif // ENABLE_IP2COUNTRY
 	serverName << server->GetListName();
 	SetItem(itemnr, COLUMN_SERVER_NAME, serverName);
