@@ -40,6 +40,9 @@
 // Contact: mjames@gmail.com
 //
 
+// MSVC projects can't include files configuration dependent, so just double-check the #define
+#ifdef ENABLE_IP2COUNTRY
+
 #include "IP2Country.h"
 
 
@@ -91,7 +94,7 @@ CIP2Country::CIP2Country()
 	for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
 		CountryData countrydata;
 		countrydata.Name = char2unicode(flagXPMCodeVector[i].code);
-		countrydata.Flag = wxBitmap(flagXPMCodeVector[i].xpm);
+		countrydata.Flag = wxImage(flagXPMCodeVector[i].xpm);
 		
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
@@ -137,3 +140,4 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 	return it->second;	
 }
 
+#endif // ENABLE_IP2COUNTRY

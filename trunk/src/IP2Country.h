@@ -48,13 +48,13 @@
 
 #include <map>
 
-#include <wx/bitmap.h>
+#include <wx/image.h>
 #include <wx/string.h>
 
 
 typedef struct {
 	wxString Name;
-	wxBitmap Flag;
+	wxImage  Flag;
 } CountryData;
 
 

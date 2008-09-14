@@ -40,6 +40,7 @@ Version 2.3.0 - The river knows.
 		  so that the sum matches the total download rate.
 		* MSVC: solution for MSVC 2008 Express edition, 
 		  project for ed2k and fileview
+		  optional GeoIP support
 
 	Vollstrecker:
 		* Unify copyright lines
