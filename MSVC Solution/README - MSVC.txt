@@ -40,7 +40,10 @@ There are three solutions:
    includes only wxWidgets and Crypto++ and builds a single library libext.lib from them. You must first build this solution before building
 2) aMule-MSVCE.sln
    which includes aMule, aMule tools and aMule's internal libs
-   
+
+To build aMule with GeoIP see libs\libGeoIP\readme.txt . 
+Without it you get an error building libGeoIP when you build the full solution.
+Just ignore it or unload the libGeoIP project.
 
 
 If aMule fails to compile, here are some guidelines/patches to the most common problems:
