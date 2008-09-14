@@ -523,12 +523,17 @@ public:
 	static bool		IsServerCryptLayerUDPEnabled()		{return IsClientCryptLayerSupported();}
 	static bool		IsServerCryptLayerTCPRequested()	{return IsClientCryptLayerRequested();}
 	static bool		IsServerCryptLayerTCPRequired()		{return IsClientCryptLayerRequired();}
-	static uint32		GetKadUDPKey()				{return s_dwKadUDPKey;}
-	static uint8		GetCryptTCPPaddingLength()		{return s_byCryptTCPPaddingLength;}
+	static uint32	GetKadUDPKey()						{return s_dwKadUDPKey;}
+	static uint8	GetCryptTCPPaddingLength()			{return s_byCryptTCPPaddingLength;}
 	
 	static void		SetClientCryptLayerSupported(bool v)	{s_IsClientCryptLayerSupported = v;}
 	static void		SetClientCryptLayerRequested(bool v)	{s_bCryptLayerRequested = v; }
-	static void		SetClientCryptLayerRequired(bool v)	{s_IsClientCryptLayerRequired = v;}
+	static void		SetClientCryptLayerRequired(bool v)		{s_IsClientCryptLayerRequired = v;}
+
+	// GeoIP
+	static bool				IsGeoIPEnabled()		{return s_GeoIPEnabled;}
+	static void				SetGeoIPEnabled(bool v)	{s_GeoIPEnabled = v;}
+	static const wxString&	GetGeoIPUpdateUrl()		{return s_GeoIPUpdateUrl;}
 
 protected:
 	static	int32 GetRecommendedMaxConnections();
@@ -748,7 +753,11 @@ protected:
 	static bool s_IsClientCryptLayerRequired;
 	static bool s_bCryptLayerRequested;	
 	static uint32	s_dwKadUDPKey;
-	static uint8 s_byCryptTCPPaddingLength;	
+	static uint8 s_byCryptTCPPaddingLength;
+
+	// GeoIP
+	static bool s_GeoIPEnabled;
+	static wxString s_GeoIPUpdateUrl;
 };
 
 

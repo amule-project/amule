@@ -80,7 +80,9 @@ enum HTTP_Download_File
 	//! The download is the version check file.
 	HTTP_VersionCheck,
 	//! The download is a notes.dat file (possibly compressed).
-	HTTP_NodesDat
+	HTTP_NodesDat,
+	//! The download is a GeoIP database file (possibly compressed).
+	HTTP_GeoIP
 };
 
 
