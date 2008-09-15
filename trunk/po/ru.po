@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-11 03:31+0200\n"
+"POT-Creation-Date: 2008-09-15 03:30+0200\n"
 "PO-Revision-Date: 2008-08-06 16:07+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -264,8 +264,8 @@ msgid "Are you sure that you wish to delete the selected friends?"
 msgstr "Удалить выбранных пользователей из списка друзей?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
-#: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:561
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:754
+#: src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:563
+#: src/ServerListCtrl.cpp:582 src/amuleDlg.cpp:763
 #: src/DownloadListCtrl.cpp:588 src/DownloadListCtrl.cpp:908
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915
 #: src/muuli_wdr.cpp:989 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454
@@ -345,7 +345,7 @@ msgid "Type"
 msgstr "Тип"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:145
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:428
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:430
 #: src/DownloadListCtrl.cpp:195 src/DownloadListCtrl.cpp:907
 msgid "Priority"
 msgstr "Приоритет"
@@ -394,19 +394,19 @@ msgid "Very low"
 msgstr "Очень низкий"
 
 #: src/SharedFilesCtrl.cpp:138 src/DataToText.cpp:42
-#: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:424
+#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:426
 #: src/DownloadListCtrl.cpp:902 src/muuli_wdr.cpp:2518
 msgid "Low"
 msgstr "Низкий"
 
 #: src/SharedFilesCtrl.cpp:139 src/DataToText.cpp:43
-#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:425
+#: src/ServerListCtrl.cpp:238 src/ServerListCtrl.cpp:427
 #: src/DownloadListCtrl.cpp:903 src/muuli_wdr.cpp:2519
 msgid "Normal"
 msgstr "Нормальный"
 
 #: src/SharedFilesCtrl.cpp:140 src/DataToText.cpp:44
-#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:426
+#: src/ServerListCtrl.cpp:239 src/ServerListCtrl.cpp:428
 #: src/DownloadListCtrl.cpp:904 src/muuli_wdr.cpp:2520
 msgid "High"
 msgstr "Высокий"
@@ -712,7 +712,7 @@ msgstr "Принимается..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1331
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1340
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3464
 msgid "Preferences"
 msgstr "Настройки"
@@ -1223,7 +1223,7 @@ msgstr ""
 msgid "Save computed eD2k link to file"
 msgstr "Сохранить полученную eD2k ссылку в файл"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1339
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1348
 #: src/muuli_wdr.cpp:3466
 msgid "About"
 msgstr "О программе"
@@ -1344,7 +1344,7 @@ msgstr "Авто [Норм]"
 msgid "Auto [Hi]"
 msgstr "Авто [Выс]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:541 src/ClientListCtrl.cpp:670
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:550 src/ClientListCtrl.cpp:670
 #: src/amule.cpp:805
 msgid "Connecting"
 msgstr "Идёт подключение"
@@ -1453,160 +1453,160 @@ msgstr "Источники"
 msgid "Search Result"
 msgstr "Результаты поиска"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:657
 msgid "System default"
 msgstr "Системный"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:658
 msgid "Albanian"
 msgstr "Албанский"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "Arabic"
 msgstr "Арабский"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Basque"
 msgstr "Баскский"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Bulgarian"
 msgstr "Болгарский"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 msgid "Catalan"
 msgstr "Каталонский"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:663
 msgid "Chinese (Simplified)"
 msgstr "Китайский (упрощенный)"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:664
 msgid "Chinese (Traditional)"
 msgstr "Китайский (традиционный)"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:665
 msgid "Croatian"
 msgstr "Хорватский"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:666
 msgid "Czech"
 msgstr "Чешский"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:667
 msgid "Danish"
 msgstr "Датский"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:668
 msgid "Dutch"
 msgstr "Голландский"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:669
 msgid "English (U.K.)"
 msgstr "Английский (Великобритания)"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:670
 msgid "Estonian"
 msgstr "Эстонский"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:671
 msgid "Finnish"
 msgstr "Финский"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:672
 msgid "French"
 msgstr "Французский"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:673
 msgid "Galician"
 msgstr "Гальский"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:674
 msgid "German"
 msgstr "Немецкий"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:675
 msgid "Greek"
 msgstr "Греческий"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:676
 msgid "Hebrew"
 msgstr "Израильский"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:677
 msgid "Hungarian"
 msgstr "Венгерский"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:678
 msgid "Italian"
 msgstr "Итальянский"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:679
 msgid "Italian (Swiss)"
 msgstr "Итальянский (Швеция)"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:680
 msgid "Japanese"
 msgstr "Японский"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:681
 msgid "Korean"
 msgstr "Корейский"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:682
 msgid "Lithuanian"
 msgstr "Литовский"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:683
 msgid "Norwegian (Nynorsk)"
 msgstr "Норвежский (Нюнорск)"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:684
 msgid "Polish"
 msgstr "Польский"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:685
 msgid "Portuguese"
 msgstr "Португальский"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:686
 msgid "Portuguese (Brazilian)"
 msgstr "Португальский (Бразилия)"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:687
 msgid "Russian"
 msgstr "Русский"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:688
 msgid "Slovenian"
 msgstr "Словакский"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:689
 msgid "Spanish"
 msgstr "Испанский"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:690
 msgid "Swedish"
 msgstr "Шведский"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:691
 msgid "Turkish"
 msgstr "Турецкий"
 
-#: src/Preferences.cpp:823 src/muuli_wdr.cpp:2223
+#: src/Preferences.cpp:825 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr "- по умолчанию -"
 
-#: src/Preferences.cpp:876
+#: src/Preferences.cpp:878
 msgid "no options available"
 msgstr "нет доступных опций"
 
-#: src/Preferences.cpp:1694
+#: src/Preferences.cpp:1699
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP порт не может быть выше 65532, так как UDP сокет - TCP+3"
 
-#: src/Preferences.cpp:1695
+#: src/Preferences.cpp:1700
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Используется порт по умолчанию (%d)"
@@ -1674,86 +1674,86 @@ msgstr "(Неизвестное имя)"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Вы уверены, что хотите удалить сервер %s из статического списка "
 
-#: src/ServerListCtrl.cpp:242 src/ClientListCtrl.cpp:931
+#: src/ServerListCtrl.cpp:244 src/ClientListCtrl.cpp:931
 #: src/ClientListCtrl.cpp:1080 src/ClientListCtrl.cpp:1093
 #: src/ClientListCtrl.cpp:1099
 msgid "Yes"
 msgstr "Да"
 
-#: src/ServerListCtrl.cpp:242 src/ClientListCtrl.cpp:933
+#: src/ServerListCtrl.cpp:244 src/ClientListCtrl.cpp:933
 #: src/ClientListCtrl.cpp:1082 src/ClientListCtrl.cpp:1093
 #: src/ClientListCtrl.cpp:1099
 msgid "No"
 msgstr "Нет"
 
-#: src/ServerListCtrl.cpp:351
+#: src/ServerListCtrl.cpp:353
 #, c-format
 msgid "Failed to open '%s'"
 msgstr "Невозможно открыть %s"
 
-#: src/ServerListCtrl.cpp:374
+#: src/ServerListCtrl.cpp:376
 #, c-format
 msgid "Servers (%i)"
 msgstr "Серверов (%i)"
 
-#: src/ServerListCtrl.cpp:422 src/ServerWnd.cpp:180 src/ServerSocket.cpp:257
+#: src/ServerListCtrl.cpp:424 src/ServerWnd.cpp:180 src/ServerSocket.cpp:257
 #: src/ServerSocket.cpp:272
 msgid "Server"
 msgstr "Сервер"
 
-#: src/ServerListCtrl.cpp:427
+#: src/ServerListCtrl.cpp:429
 msgid "Connect to server"
 msgstr "Подключиться к серверу"
 
-#: src/ServerListCtrl.cpp:433
+#: src/ServerListCtrl.cpp:435
 msgid "Mark server as static"
 msgstr "Внести в список статических серверов"
 
-#: src/ServerListCtrl.cpp:434
+#: src/ServerListCtrl.cpp:436
 msgid "Mark server as non-static"
 msgstr "Удалить из списка статических серверов"
 
-#: src/ServerListCtrl.cpp:436
+#: src/ServerListCtrl.cpp:438
 msgid "Mark servers as static"
 msgstr "Внести в список статических серверов"
 
-#: src/ServerListCtrl.cpp:437
+#: src/ServerListCtrl.cpp:439
 msgid "Mark servers as non-static"
 msgstr "Удалить из списка статических серверов"
 
-#: src/ServerListCtrl.cpp:443
+#: src/ServerListCtrl.cpp:445
 msgid "Remove server"
 msgstr "Удалить выбранный сервер"
 
-#: src/ServerListCtrl.cpp:445
+#: src/ServerListCtrl.cpp:447
 msgid "Remove servers"
 msgstr "Удалить выбранные серверы"
 
-#: src/ServerListCtrl.cpp:447
+#: src/ServerListCtrl.cpp:449
 msgid "Remove all servers"
 msgstr "Удалить все сервера"
 
-#: src/ServerListCtrl.cpp:452 src/SearchListCtrl.cpp:609
+#: src/ServerListCtrl.cpp:454 src/SearchListCtrl.cpp:609
 msgid "Copy eD2k link to clipboard"
 msgstr "Копировать eD2k ссылку в буфер"
 
-#: src/ServerListCtrl.cpp:454
+#: src/ServerListCtrl.cpp:456
 msgid "Copy eD2k links to clipboard"
 msgstr "Копировать eD2k ссылки в буфер"
 
-#: src/ServerListCtrl.cpp:462
+#: src/ServerListCtrl.cpp:464
 msgid "Reconnect to server"
 msgstr "Восстановить соединение с сервером"
 
-#: src/ServerListCtrl.cpp:559
+#: src/ServerListCtrl.cpp:561
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "Вы уверены, что хотите удалить все сервера?"
 
-#: src/ServerListCtrl.cpp:575
+#: src/ServerListCtrl.cpp:577
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "Удалить выбранный сервер?"
 
-#: src/ServerListCtrl.cpp:577
+#: src/ServerListCtrl.cpp:579
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "Удалить выбранные серверы?"
 
@@ -1762,34 +1762,34 @@ msgstr "Удалить выбранные серверы?"
 msgid "Disabled [%s]"
 msgstr "Отключено [%s]"
 
-#: src/amuleDlg.cpp:214
+#: src/amuleDlg.cpp:220
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "aMule %s (основан на eMule)."
 
-#: src/amuleDlg.cpp:216
+#: src/amuleDlg.cpp:222
 #, c-format
 msgid "Running on %s"
 msgstr "Работает на %s"
 
-#: src/amuleDlg.cpp:218
+#: src/amuleDlg.cpp:224
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "Посетите http://www.amule.org для проверки наличия новой версии."
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:250
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "ФАТАЛЬНАЯ ОШИБКА: не удалось создать таймер"
 
-#: src/amuleDlg.cpp:459
+#: src/amuleDlg.cpp:468
 msgid "aMule remote control "
 msgstr "Удалённое управление aMule"
 
 # Used only in CVS!
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:474
 msgid "Snapshot:"
 msgstr "Версия CVS:"
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:476
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1797,15 +1797,15 @@ msgstr ""
 "Многоплатформенный p2p клиент основанный на eMule \n"
 "\n"
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:477
 msgid "Website: http://www.amule.org \n"
 msgstr "Сайт: http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:478
 msgid "Forum: http://forum.amule.org \n"
 msgstr "Форум: http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:479
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1813,11 +1813,11 @@ msgstr ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:480
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Контакт: admin@amule.org (по административным вопросам) \n"
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:481
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
@@ -1825,187 +1825,187 @@ msgstr ""
 "Copyright (c) 2003-2008 команда aMule \n"
 "\n"
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:482
 msgid "Part of aMule is based on \n"
 msgstr "Часть aMule основана на \n"
 
-#: src/amuleDlg.cpp:474
+#: src/amuleDlg.cpp:483
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: пиринговый роутинг на основе XOR-метрики.\n"
 
-#: src/amuleDlg.cpp:475
+#: src/amuleDlg.cpp:484
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:476
+#: src/amuleDlg.cpp:485
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:479 src/PrefsUnifiedDlg.cpp:515
+#: src/amuleDlg.cpp:488 src/PrefsUnifiedDlg.cpp:515
 #: src/PrefsUnifiedDlg.cpp:610 src/PrefsUnifiedDlg.cpp:692 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Сообщение"
 
-#: src/amuleDlg.cpp:685
+#: src/amuleDlg.cpp:694
 msgid "eD2k: Connecting"
 msgstr "eD2k: Соединение"
 
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:698
 msgid "eD2k: Disconnected"
 msgstr "eD2k: не соединено"
 
-#: src/amuleDlg.cpp:695
+#: src/amuleDlg.cpp:704
 msgid "Kad: Firewalled"
 msgstr "Kad: За брандмауэром"
 
-#: src/amuleDlg.cpp:699
+#: src/amuleDlg.cpp:708
 msgid "Kad: Connected"
 msgstr "Kad: Подключена"
 
-#: src/amuleDlg.cpp:704
+#: src/amuleDlg.cpp:713
 msgid "Kad: Connecting"
 msgstr "Kad: Идёт подключение"
 
-#: src/amuleDlg.cpp:708
+#: src/amuleDlg.cpp:717
 msgid "Kad: Off"
 msgstr " Kad: Выключено"
 
-#: src/amuleDlg.cpp:755
+#: src/amuleDlg.cpp:764
 msgid "Stop the current connection attempts"
 msgstr "Прекратить попытки соединения"
 
-#: src/amuleDlg.cpp:760 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
+#: src/amuleDlg.cpp:769 src/muuli_wdr.cpp:2697 src/MuleTrayIcon.cpp:538
 msgid "Disconnect"
 msgstr "Отключиться"
 
-#: src/amuleDlg.cpp:761
+#: src/amuleDlg.cpp:770
 msgid "Disconnect from the currently connected networks"
 msgstr "Отключиться от работающих сетей"
 
-#: src/amuleDlg.cpp:766 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
+#: src/amuleDlg.cpp:775 src/muuli_wdr.cpp:2880 src/muuli_wdr.cpp:3271
 #: src/muuli_wdr.cpp:3454 src/MuleTrayIcon.cpp:541
 msgid "Connect"
 msgstr "Подключиться"
 
-#: src/amuleDlg.cpp:767
+#: src/amuleDlg.cpp:776
 msgid "Connect to the currently enabled networks"
 msgstr "Подключиться к разрешенным сетям"
 
-#: src/amuleDlg.cpp:825
+#: src/amuleDlg.cpp:834
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Передача: %.1f(%.1f) | Приём: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:827
+#: src/amuleDlg.cpp:836
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Передача: %.1f | Приём: %.1f"
 
-#: src/amuleDlg.cpp:853
+#: src/amuleDlg.cpp:862
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Подключен)"
 
-#: src/amuleDlg.cpp:855
+#: src/amuleDlg.cpp:864
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Отключен)"
 
-#: src/amuleDlg.cpp:886
+#: src/amuleDlg.cpp:895
 msgid "Do you really want to exit aMule?"
 msgstr "Вы действительно хотите выйти из aMule?"
 
-#: src/amuleDlg.cpp:887
+#: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
 msgstr "Подтверждение выхода"
 
-#: src/amuleDlg.cpp:1200
+#: src/amuleDlg.cpp:1209
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Каталог с темами оформления '%s' не существует."
 
-#: src/amuleDlg.cpp:1205
+#: src/amuleDlg.cpp:1214
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: невозможно открыть для чтения файл скина '%s'"
 
-#: src/amuleDlg.cpp:1306 src/amuleDlg.cpp:1467 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1315 src/amuleDlg.cpp:1476 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Сети"
 
-#: src/amuleDlg.cpp:1308
+#: src/amuleDlg.cpp:1317
 msgid "Networks window"
 msgstr "Окно сетей"
 
-#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Поиск"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1321
 msgid "Searches window"
 msgstr "Окно поиска"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Передачи"
 
-#: src/amuleDlg.cpp:1316
+#: src/amuleDlg.cpp:1325
 msgid "Files transfers window"
 msgstr "Окно передач"
 
-#: src/amuleDlg.cpp:1318
+#: src/amuleDlg.cpp:1327
 msgid "Shared files"
 msgstr "Публикуемые файлы"
 
-#: src/amuleDlg.cpp:1320
+#: src/amuleDlg.cpp:1329
 msgid "Shared files window"
 msgstr "Окно публикуемых файлов"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Сообщения"
 
-#: src/amuleDlg.cpp:1324
+#: src/amuleDlg.cpp:1333
 msgid "Messages window"
 msgstr "Окно сообщений"
 
-#: src/amuleDlg.cpp:1326 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
+#: src/amuleDlg.cpp:1335 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:646
 #: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "Статистика"
 
-#: src/amuleDlg.cpp:1328
+#: src/amuleDlg.cpp:1337
 msgid "Statistics graph window"
 msgstr "Окно статистики"
 
-#: src/amuleDlg.cpp:1333
+#: src/amuleDlg.cpp:1342
 msgid "Preferences settings window"
 msgstr "Окно настроек"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Импорт"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Инструмент импортирования частично загруженных файлов (part files)"
 
-#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "О программе/Помощь"
 
-#: src/amuleDlg.cpp:1478
+#: src/amuleDlg.cpp:1487
 msgid "eD2k network"
 msgstr "Сеть eD2k"
 
-#: src/amuleDlg.cpp:1482
+#: src/amuleDlg.cpp:1491
 msgid "Kad network"
 msgstr "Сеть Kad"
 
-#: src/amuleDlg.cpp:1487
+#: src/amuleDlg.cpp:1496
 msgid "No network"
 msgstr "Нет сети"
 
@@ -3688,11 +3688,11 @@ msgstr "eD2k"
 msgid "Connected to %s %s %s"
 msgstr "Подключен к %s %s %s"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2106
+#: src/TextClient.cpp:697 src/amule.cpp:2111
 msgid "with LowID"
 msgstr "LowID"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2106
+#: src/TextClient.cpp:697 src/amule.cpp:2111
 msgid "with HighID"
 msgstr "HighID"
 
@@ -4204,17 +4204,38 @@ msgstr "Установка соединения с %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Не удалось разрешить DNS для сервера %s: Невозможно подключиться."
 
-#: src/IP2Country.cpp:99
+#: src/IP2Country.cpp:96
+msgid "Download new GeoIP.dat from "
+msgstr ""
+
+#: src/IP2Country.cpp:119
+msgid "Failed to remove GeoIP.dat file, aborting update."
+msgstr ""
+
+#: src/IP2Country.cpp:125
+msgid "Failed to rename new GeoIP.dat file, aborting update."
+msgstr ""
+
+#: src/IP2Country.cpp:131
+msgid "Successfully updated GeoIP.dat"
+msgstr ""
+
+#: src/IP2Country.cpp:133
+msgid "Error updating GeoIP.dat"
+msgstr ""
+
+#: src/IP2Country.cpp:136
+msgid "Failed to download GeoIP.dat from "
+msgstr ""
+
+#: src/IP2Country.cpp:153
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Не удалось загрузить данные о стране"
 
-#: src/IP2Country.cpp:104
+#: src/IP2Country.cpp:158
 #, c-format
-msgid "Loaded %d flag bitmap."
-msgid_plural "Loaded %d flag bitmaps."
-msgstr[0] "Загружено %d флагов."
-msgstr[1] "Загружено %d карт флагов."
-msgstr[2] "Загружено %d карт флагов."
+msgid "Loaded %d flag bitmaps."
+msgstr ""
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
@@ -7086,94 +7107,94 @@ msgstr "Сообщение сервера: %s"
 msgid "Failed to download the nodes list."
 msgstr "Ошибка при загрузке списка узлов."
 
-#: src/amule.cpp:1883
+#: src/amule.cpp:1888
 msgid "Failed to open the downloaded version check file"
 msgstr "Ошибка при загрузке файла контроля версии"
 
-#: src/amule.cpp:1886 src/amule.cpp:1896 src/amule.cpp:1902
+#: src/amule.cpp:1891 src/amule.cpp:1901 src/amule.cpp:1907
 msgid "Corrupted version check file"
 msgstr "Поврежден файл контроля версии"
 
-#: src/amule.cpp:1912
+#: src/amule.cpp:1917
 msgid "You are using an outdated version of aMule!"
 msgstr "Вы используете устаревшую версию aMule!"
 
-#: src/amule.cpp:1913
+#: src/amule.cpp:1918
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Версия вашего aMule - %i.%i.%i, тогда как актуальная версия - %li.%li.%li"
 
-#: src/amule.cpp:1914
+#: src/amule.cpp:1919
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Актуальная версия aMule всегда доступна тут:  http://www.amule.org"
 
-#: src/amule.cpp:1917
+#: src/amule.cpp:1922
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "ВНИМАНИЕ: Версия вашего aMule устарела: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1921
+#: src/amule.cpp:1926
 msgid "Your copy of aMule is up to date."
 msgstr "Ваша копия aMule актуальна."
 
-#: src/amule.cpp:1928
+#: src/amule.cpp:1933
 msgid "Failed to download the version check file"
 msgstr "Ошибка при загрузке файла контроля версии"
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2036
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Польз.: %s | Файлов: %s"
 
-#: src/amule.cpp:2032
+#: src/amule.cpp:2037
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Польз.: E: %s K: %s | Файлов: E: %s K: %s"
 
-#: src/amule.cpp:2041
+#: src/amule.cpp:2046
 msgid "No networks selected"
 msgstr "Нет выделенной сети"
 
-#: src/amule.cpp:2108
+#: src/amule.cpp:2113
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Соединён с %s %s"
 
-#: src/amule.cpp:2111
+#: src/amule.cpp:2116
 #, c-format
 msgid "Connecting to %s"
 msgstr "Подключение к %s"
 
-#: src/amule.cpp:2113
+#: src/amule.cpp:2118
 msgid "Disconnected from eD2k"
 msgstr "Отсоединен от eD2k"
 
 # Kad как сеть, или служба - поэтому в женском роде
 # да, согласен
-#: src/amule.cpp:2120
+#: src/amule.cpp:2125
 msgid "Kad started."
 msgstr "Kad запущена."
 
 # Kad как сеть, или служба - поэтому в женском роде
 # согласен
-#: src/amule.cpp:2122
+#: src/amule.cpp:2127
 msgid "Kad stopped."
 msgstr "Kad остановлена."
 
-#: src/amule.cpp:2129
+#: src/amule.cpp:2134
 msgid "Connected to Kad (ok)"
 msgstr "Подключен к Kad (норм.)"
 
-#: src/amule.cpp:2131
+#: src/amule.cpp:2136
 msgid "Connected to Kad (firewalled)"
 msgstr "Подключен к Kad (за брандмауэром)"
 
-#: src/amule.cpp:2134
+#: src/amule.cpp:2139
 msgid "Disconnected from Kad"
 msgstr "Отключился от Kad"
 
-#: src/amule.cpp:2197
+#: src/amule.cpp:2202
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7181,7 +7202,7 @@ msgstr ""
 "Сеть Kad не может быть использована если порт UDP выключен в настройках. "
 "Отменяю запуск."
 
-#: src/amule.cpp:2200
+#: src/amule.cpp:2205
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Сеть Kad выключена в настройках. Отменяю соединение."
 
@@ -7192,6 +7213,12 @@ msgstr "Не удалось открыть список друзей 'emfriends.
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Не удалось открыть список друзей 'emfriends.met' для записи!"
+
+#~ msgid "Loaded %d flag bitmap."
+#~ msgid_plural "Loaded %d flag bitmaps."
+#~ msgstr[0] "Загружено %d флагов."
+#~ msgstr[1] "Загружено %d карт флагов."
+#~ msgstr[2] "Загружено %d карт флагов."
 
 #~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
 #~ msgstr "Файл %s слишком велик для сети Donkey: максимальный размер - 4 ГБ."
