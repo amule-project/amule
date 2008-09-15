@@ -1930,7 +1930,7 @@ msgstr "Fenêtre des transferts de fichiers"
 
 #: src/amuleDlg.cpp:1299
 msgid "Shared files"
-msgstr "Échec de connexion EC. Réponse vide."
+msgstr "Fichiers partagés."
 
 #: src/amuleDlg.cpp:1301
 msgid "Shared files window"
