@@ -36,6 +36,10 @@ echo >> CountryFlags.h
 #sed -i -e 's/it\[\]/it_\[\]/' it.xpm
 #sed -i -e 's/sz\[\]/sz_\[\]/' sz.xpm
 
+# other reserved symbols
+#sed -i -e 's/tm\[\]/tm_\[\]/' tm.xpm
+#sed -i -e 's/ws\[\]/ws_\[\]/' ws.xpm
+
 # Create the flag/Code vector
 echo 'static struct FlagXPMCode flagXPMCodeVector[] = {'>> CountryFlags.h
 ls *.xpm | sed -e 's/\.xpm$//;/\//s:.*/\([^/][^/]*\):\1:' | \
@@ -43,7 +47,9 @@ ls *.xpm | sed -e 's/\.xpm$//;/\//s:.*/\([^/][^/]*\):\1:' | \
 	sed -e 's/do/do_/1' |
 	sed -e 's/ht/ht_/1' |
 	sed -e 's/it/it_/1' |
-	sed -e 's/sz/sz_/1' \
+	sed -e 's/sz/sz_/1' |
+	sed -e 's/tm/tm_/1' |
+	sed -e 's/ws/ws_/1' \
 	>> CountryFlags.h
 echo '};'>> CountryFlags.h
 echo >> CountryFlags.h
