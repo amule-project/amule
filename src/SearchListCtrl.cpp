@@ -685,16 +685,15 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 
 void CSearchListCtrl::OnMarkAsKnown( wxCommandEvent& WXUNUSED(event) )
 {
-	int index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if (index == -1) {
-		return;
+#ifndef CLIENT_GUI
+	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	while (index > -1) {
+		CSearchFile *searchFile = (CSearchFile *)GetItemData(index);
+		CKnownFile *knownFile(new CKnownFile(*searchFile));
+		theApp->knownfiles->SafeAddKFile(knownFile);
+		UpdateAllRelativesColor(searchFile, index);
+		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
-
-#ifndef CLIENT_GUI	
-	CSearchFile *searchFile = (CSearchFile *)GetItemData(index);
-	CKnownFile *knownFile(new CKnownFile(*searchFile));
-	theApp->knownfiles->SafeAddKFile(knownFile);
-	UpdateAllRelativesColor(searchFile, index);
 #endif
 }
 
