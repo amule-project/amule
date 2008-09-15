@@ -28,6 +28,9 @@ Version 2.3.0 - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
+	LittleAbacus
+		* Support multiple selections on CSearchListCtrl::OnMarkAsKnown().
+
 	morph:
 		* Patch to uniform and fix minor errors on man pages
 
