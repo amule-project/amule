@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it-cvs_beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-15 03:30+0200\n"
+"POT-Creation-Date: 2008-09-16 03:30+0200\n"
 "PO-Revision-Date: 2008-08-19 11:33+0200\n"
 "Last-Translator: rik <rik_kornellatyahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
@@ -4203,35 +4203,35 @@ msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr ""
 "Non è possibile risolvere il DNS per il server %s: impossibile connettersi!"
 
-#: src/IP2Country.cpp:96
+#: src/IP2Country.cpp:97
 msgid "Download new GeoIP.dat from "
 msgstr ""
 
-#: src/IP2Country.cpp:119
+#: src/IP2Country.cpp:121
 msgid "Failed to remove GeoIP.dat file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:125
+#: src/IP2Country.cpp:127
 msgid "Failed to rename new GeoIP.dat file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:131
+#: src/IP2Country.cpp:133
 msgid "Successfully updated GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:133
+#: src/IP2Country.cpp:135
 msgid "Error updating GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:136
+#: src/IP2Country.cpp:138
 msgid "Failed to download GeoIP.dat from "
 msgstr ""
 
-#: src/IP2Country.cpp:153
+#: src/IP2Country.cpp:155
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Impossibile ottenere i dati sul Paese da "
 
-#: src/IP2Country.cpp:158
+#: src/IP2Country.cpp:160
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
