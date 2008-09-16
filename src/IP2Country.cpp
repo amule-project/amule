@@ -94,7 +94,7 @@ void CIP2Country::Enable()
 void CIP2Country::Update()
 {
 #ifndef CLIENT_GUI
-	AddLogLineM(false, _("Download new GeoIP.dat from ") + thePrefs::GetGeoIPUpdateUrl());
+	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
 	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBaseName + wxT(".download"), HTTP_GeoIP);
 	downloader->Create();
 	downloader->Run();
@@ -135,7 +135,7 @@ void CIP2Country::DownloadFinished(uint32 result)
 		  AddLogLineM(false, _("Error updating GeoIP.dat"));
 		}
 	} else {
-		AddLogLineM(false, _("Failed to download GeoIP.dat from ") + thePrefs::GetGeoIPUpdateUrl());
+		AddLogLineM(false, CFormat(_("Failed to download GeoIP.dat from ")) % thePrefs::GetGeoIPUpdateUrl());
 		// if it failed, turn it off
 		thePrefs::SetGeoIPEnabled(false);
 	}
