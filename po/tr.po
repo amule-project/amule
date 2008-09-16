@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-16 03:30+0200\n"
-"PO-Revision-Date: 2008-09-12 00:48+0300\n"
+"POT-Creation-Date: 2008-09-16 00:01+0200\n"
+"PO-Revision-Date: 2008-09-16 02:06+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@lists.kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -4119,27 +4119,28 @@ msgstr "Sunucu %s için DNS çözümlenemiyor: Bağlanmak imkansız!"
 
 #: src/IP2Country.cpp:97
 msgid "Download new GeoIP.dat from "
-msgstr ""
+msgstr "Yeni GeoIP.dat dosyasını şuradan al:"
 
 #: src/IP2Country.cpp:121
 msgid "Failed to remove GeoIP.dat file, aborting update."
-msgstr ""
+msgstr "GeoIP.dat dosyası silinemedi. Güncelleme iptal edildi."
 
 #: src/IP2Country.cpp:127
 msgid "Failed to rename new GeoIP.dat file, aborting update."
 msgstr ""
+"Yeni GeoIP.dat dosyası yeniden adlandırılamadı. Güncelleme iptal edildi."
 
 #: src/IP2Country.cpp:133
 msgid "Successfully updated GeoIP.dat"
-msgstr ""
+msgstr "GeoIP.dat başarıyla güncellendi."
 
 #: src/IP2Country.cpp:135
 msgid "Error updating GeoIP.dat"
-msgstr ""
+msgstr "GeoIP.dat güncellemesinde hata oluştu."
 
 #: src/IP2Country.cpp:138
 msgid "Failed to download GeoIP.dat from "
-msgstr ""
+msgstr "GeoIP.dat dosyası şuradan indirilemedi:"
 
 #: src/IP2Country.cpp:155
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
@@ -4148,7 +4149,7 @@ msgstr "CIP2Country::CIP2Country(): Ülke verisi yükleme başarısız "
 #: src/IP2Country.cpp:160
 #, c-format
 msgid "Loaded %d flag bitmaps."
-msgstr ""
+msgstr "%d adet bit işlem bayrağı yüklendi."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
@@ -7127,3 +7128,4 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
 
 #~ msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 #~ msgstr "Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
+
