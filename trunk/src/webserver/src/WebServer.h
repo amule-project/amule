@@ -57,6 +57,12 @@ class CEC_SearchFile_Tag;
 class CProgressImage;
 class CEC_KadNode_Tag;
 
+class CURLDecoder
+{
+      public:
+	static wxString	Decode(const wxString& url);
+};
+
 class DownloadFile {
 	public:
 		wxString	sFileName;
@@ -630,20 +636,6 @@ class CImageLib {
 		CAnyImage *GetImage(wxString &name);
 		void AddImage(CAnyImage *img, const wxString &name);
 		void RemoveImage(const wxString &name);
-};
-
-class CUrlDecodeTable {
-		static CUrlDecodeTable*		ms_instance;
-		static wxCriticalSection	ms_instance_guard;
-
-		wxString m_enc_u_str[256], m_enc_l_str[256], m_dec_str[256];
-
-		CUrlDecodeTable();
-		
-	public:
-		static CUrlDecodeTable* GetInstance();
-
-		void DecodeString(wxString &str);
 };
 
 class CParsedUrl {
