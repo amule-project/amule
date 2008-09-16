@@ -208,7 +208,7 @@ void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
 
 BEGIN_EVENT_TABLE(CWebServerBase, wxEvtHandler)
 	EVT_SOCKET(ID_WEBLISTENSOCKET_EVENT, CWebServerBase::OnWebSocketServerEvent)
-	EVT_SOCKET(ID_WEBCLIENTSOCKET_ENENT, CWebServerBase::OnWebSocketEvent)
+	EVT_SOCKET(ID_WEBCLIENTSOCKET_EVENT, CWebServerBase::OnWebSocketEvent)
 END_EVENT_TABLE()
 
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :

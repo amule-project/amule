@@ -666,7 +666,7 @@ struct ThreadData {
 enum {
     // Socket handlers
     ID_WEBLISTENSOCKET_EVENT = wxID_HIGHEST+123,  // random safe ID
-    ID_WEBCLIENTSOCKET_ENENT,
+    ID_WEBCLIENTSOCKET_EVENT,
 };
 
 #ifdef ENABLE_UPNP
