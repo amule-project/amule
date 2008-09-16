@@ -47,7 +47,7 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 	
 	m_pParent = parent;
 	
-	SetEventHandler(*parent, ID_WEBCLIENTSOCKET_ENENT);
+	SetEventHandler(*parent, ID_WEBCLIENTSOCKET_EVENT);
 	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	Notify(true);
 	
