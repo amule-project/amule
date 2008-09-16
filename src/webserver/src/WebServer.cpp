@@ -25,8 +25,9 @@
 //
 
 
-#include <cmath> // Needed for cos, M_PI
-#include <string> // Do_not_auto_remove (g++-4.0.1)
+#include <cctype>	// Needed for std::toupper()
+#include <cmath>	// Needed for cos, M_PI
+#include <string>	// Do_not_auto_remove (g++-4.0.1)
 
 #include <wx/datetime.h>
 
@@ -139,48 +140,35 @@ uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 }
 
 /*
- * Url string decoder and parser
+ * Url string decoder
  */
-CUrlDecodeTable::CUrlDecodeTable()
+wxString CURLDecoder::Decode(const wxString& url)
 {
-	for (int i = 0 ; i < 256 ; i++) {
-		char fromReplace[4];		// decode URL
-		snprintf(fromReplace, sizeof(fromReplace), "%%%02x", i);
-		m_enc_l_str[i] = char2unicode(fromReplace);
-
-		snprintf(fromReplace, sizeof(fromReplace), "%%%02X", i);
-		m_enc_u_str[i] = char2unicode(fromReplace);
-
-		m_dec_str[i] = wxString::Format(wxT("%c"), i);
-	}
-}
-
-void CUrlDecodeTable::DecodeString(wxString &str)
-{
-	str.Replace(wxT("+"), wxT(" "));
-	for (int i = 0 ; i < 256 ; ++i) {
-		str.Replace(m_enc_l_str[i], m_dec_str[i]);
-		str.Replace(m_enc_u_str[i], m_dec_str[i]);
-	}
-	size_t n = str.Len();
+	size_t n = url.length();
 	std::vector<char> buffer(n + 1);
-	for (size_t i = 0; i < n; ++i) {
-		buffer[i] = str[i];
-	}
-	buffer[n] = 0; // Mark the end of the string
-	str = UTF82unicode(&buffer[0]);
-}
+	size_t i, j;
 
-CUrlDecodeTable*	CUrlDecodeTable::ms_instance;
-wxCriticalSection	CUrlDecodeTable::ms_instance_guard;
-
-CUrlDecodeTable* CUrlDecodeTable::GetInstance()
-{
-	wxCriticalSectionLocker lock(ms_instance_guard);
-	if (ms_instance == NULL) {
-		ms_instance = new CUrlDecodeTable();
+	for (i = 0, j = 0; i < n; i++, j++) {
+		if (url[i] == wxT('+')) {
+			buffer[j] = ' ';
+		} else if (url[i] == wxT('%') && i < n - 2) {
+			char ch1 = std::toupper(url[i+1]);
+			char ch2 = std::toupper(url[i+2]);
+			if (((ch1 >= '0' && ch1 <= '9') || (ch1 >= 'A' && ch1 <= 'F')) &&
+			    ((ch2 >= '0' && ch2 <= '9') || (ch2 >= 'A' && ch2 <= 'F'))) {
+				i += 2;
+				buffer[j] = ((ch1 > '9' ? ch1 - 'A' + 10 : ch1 - '0') << 4) | (ch2 > '9' ? ch2 - 'A' + 10 : ch2 - '0');
+			} else {
+				// Invalid %-escape sequence
+				buffer[j] = url[i];
+			}
+		} else {
+			buffer[j] = url[i];
+		}
 	}
-	return ms_instance;
+	buffer[j] = '\0';
+
+	return UTF82unicode(&buffer[0]);
 }
 
 CParsedUrl::CParsedUrl(const wxString &url)
@@ -197,15 +185,15 @@ CParsedUrl::CParsedUrl(const wxString &url)
 		
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
-	    	wxString param_val = tkz.GetNextToken();
-	    	wxString key = param_val.BeforeFirst('=');
-	    	wxString val = param_val.AfterFirst('=');
-	    	CUrlDecodeTable::GetInstance()->DecodeString(val);
-	    	if ( m_params.count(key) ) {
-	    		m_params[key] = m_params[key] + wxT("|") + val;
-	    	} else {
-	    		m_params[key] = val;
-	    	}
+			wxString param_val = tkz.GetNextToken();
+			wxString key = param_val.BeforeFirst('=');
+			wxString val = param_val.AfterFirst('=');
+			val = CURLDecoder::Decode(val);
+			if ( m_params.count(key) ) {
+				m_params[key] = m_params[key] + wxT("|") + val;
+			} else {
+				m_params[key] = val;
+			}
 		}
     }
 }
