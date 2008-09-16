@@ -1930,7 +1930,7 @@ msgstr "Fenêtre des transferts de fichiers"
 
 #: src/amuleDlg.cpp:1299
 msgid "Shared files"
-msgstr "Fichiers partagés."
+msgstr "Fichiers partagés"
 
 #: src/amuleDlg.cpp:1301
 msgid "Shared files window"
