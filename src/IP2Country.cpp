@@ -135,7 +135,7 @@ void CIP2Country::DownloadFinished(uint32 result)
 		  AddLogLineM(false, _("Error updating GeoIP.dat"));
 		}
 	} else {
-		AddLogLineM(false, CFormat(_("Failed to download GeoIP.dat from ")) % thePrefs::GetGeoIPUpdateUrl());
+		AddLogLineM(false, CFormat(_("Failed to download GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
 		// if it failed, turn it off
 		thePrefs::SetGeoIPEnabled(false);
 	}
