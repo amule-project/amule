@@ -689,6 +689,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_SPANISH,				true,	wxEmptyString,	wxTRANSLATE("Spanish") },
 	{ wxLANGUAGE_SWEDISH,				true,	wxEmptyString,	wxTRANSLATE("Swedish") },
 	{ wxLANGUAGE_TURKISH,				true,	wxEmptyString,	wxTRANSLATE("Turkish") },
+	{ wxLANGUAGE_UKRAINIAN,				true,	wxEmptyString,	wxTRANSLATE("Ukrainian") },
 };
 
 
