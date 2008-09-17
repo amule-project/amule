@@ -3,6 +3,7 @@
 #ifndef COUNTRY_FLAGS_H
 #define COUNTRY_FLAGS_H
 
+namespace flags {
 
 #include "ad.xpm"
 #include "ae.xpm"
@@ -361,7 +362,7 @@ static struct FlagXPMCode flagXPMCodeVector[] = {
 	{hm, "hm"},
 	{hn, "hn"},
 	{hr, "hr"},
-	{ht_, "ht"},
+	{ht, "ht"},
 	{hu, "hu"},
 	{id, "id"},
 	{ie, "ie"},
@@ -371,7 +372,7 @@ static struct FlagXPMCode flagXPMCodeVector[] = {
 	{iq, "iq"},
 	{ir, "ir"},
 	{is, "is"},
-	{it_, "it"},
+	{it, "it"},
 	{jm, "jm"},
 	{jo, "jo"},
 	{jp, "jp"},
@@ -471,7 +472,7 @@ static struct FlagXPMCode flagXPMCodeVector[] = {
 	{st, "st"},
 	{sv, "sv"},
 	{sy, "sy"},
-	{sz_, "sz"},
+	{sz, "sz"},
 	{tc, "tc"},
 	{td, "td"},
 	{tf, "tf"},
@@ -480,7 +481,7 @@ static struct FlagXPMCode flagXPMCodeVector[] = {
 	{tj, "tj"},
 	{tk, "tk"},
 	{tl, "tl"},
-	{tm_, "tm"},
+	{tm, "tm"},
 	{tn, "tn"},
 	{to, "to"},
 	{tr, "tr"},
@@ -504,7 +505,7 @@ static struct FlagXPMCode flagXPMCodeVector[] = {
 	{vu, "vu"},
 	{wales, "wales"},
 	{wf, "wf"},
-	{ws_, "ws"},
+	{ws, "ws"},
 	{ye, "ye"},
 	{yt, "yt"},
 	{za, "za"},
@@ -516,4 +517,5 @@ static struct FlagXPMCode flagXPMCodeVector[] = {
 static const int FLAGS_XPM_SIZE = (sizeof flagXPMCodeVector) / (sizeof flagXPMCodeVector[0]);
 
 
+}	// namespace flags
 #endif // COUNTRY_FLAGS_H
