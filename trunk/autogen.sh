@@ -43,12 +43,13 @@ rm -rf intl/*
         echo autopoint honors dataroot variable, not patching.
     else 
 	echo autopoint does not honor dataroot variable, patching.
-        sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\
-datadir = @datadir@/g' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
-        sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\
-datadir = @datadir@/g' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
+        sed -e '/^datadir *=/a\
+datarootdir = @datarootdir@' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
+        sed -e '/^datadir *=/a\
+datarootdir = @datarootdir@' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
     fi
-sed -e '/^clean:/a\\trm -f *.gmo' < po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
+    sed -e '/^clean:/a\
+	rm -f *.gmo' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
 #    if [ -f Makefile -a -x config.status ]; then
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
 #    fi
