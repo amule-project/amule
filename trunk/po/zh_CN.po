@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-16 03:30+0200\n"
+"POT-Creation-Date: 2008-09-17 03:30+0200\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -536,76 +536,76 @@ msgstr[1] "已写入%d个Kad联系人"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "错误：无法监听TCP端口。"
 
-#: src/webserver/src/WebServer.cpp:306
+#: src/webserver/src/WebServer.cpp:294
 msgid "web client connection accepted\n"
 msgstr "网页客户端连接已被接受\n"
 
-#: src/webserver/src/WebServer.cpp:309
+#: src/webserver/src/WebServer.cpp:297
 msgid "ERROR: cannot accept web client connection\n"
 msgstr "错误：无法接受网页客户端连接\n"
 
-#: src/webserver/src/WebServer.cpp:378
+#: src/webserver/src/WebServer.cpp:366
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "请求失败，错误为：%s"
 
-#: src/webserver/src/WebServer.cpp:381 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:369 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "请求失败，错误未知。"
 
-#: src/webserver/src/WebServer.cpp:1742
+#: src/webserver/src/WebServer.cpp:1730
 msgid "Index file not found: "
 msgstr "索引文件未找到："
 
-#: src/webserver/src/WebServer.cpp:1819
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session expired - requesting login\n"
 msgstr "会话过期 - 正在请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1824
+#: src/webserver/src/WebServer.cpp:1812
 msgid "Session ok, logged in\n"
 msgstr "会话正常，已登录\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1814
 msgid "Session ok, not logged in\n"
 msgstr "会话正常，未登录\n"
 
-#: src/webserver/src/WebServer.cpp:1831
+#: src/webserver/src/WebServer.cpp:1819
 msgid "No session opened - will request login\n"
 msgstr "没有会话已打开 - 将请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1828
 msgid "Session created - requesting login\n"
 msgstr "会话已创建 - 正在请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1843
 msgid "Processing request [original]: "
 msgstr "正在处理请求 [原始]："
 
-#: src/webserver/src/WebServer.cpp:1871
+#: src/webserver/src/WebServer.cpp:1859
 msgid "Checking password\n"
 msgstr "检查密码\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1864
 msgid "Password hash invalid\n"
 msgstr "密码校验值错误\n"
 
-#: src/webserver/src/WebServer.cpp:1891
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password ok\n"
 msgstr "密码正确\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1881
 msgid "Password bad\n"
 msgstr "密码错误\n"
 
-#: src/webserver/src/WebServer.cpp:1896
+#: src/webserver/src/WebServer.cpp:1884
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "您没有输入密码，不允许空密码。\n"
 
-#: src/webserver/src/WebServer.cpp:1904
+#: src/webserver/src/WebServer.cpp:1892
 msgid "Logout requested\n"
 msgstr "已请求注销\n"
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
 msgstr "正在处理请求 [已重定向]："
 
@@ -1556,20 +1556,24 @@ msgstr "瑞典语"
 msgid "Turkish"
 msgstr "土耳其语"
 
-#: src/Preferences.cpp:825 src/muuli_wdr.cpp:2223
+#: src/Preferences.cpp:692
+msgid "Ukrainian"
+msgstr ""
+
+#: src/Preferences.cpp:826 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr "- 默认 -"
 
-#: src/Preferences.cpp:878
+#: src/Preferences.cpp:879
 msgid "no options available"
 msgstr "无选项可用"
 
-#: src/Preferences.cpp:1699
+#: src/Preferences.cpp:1700
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因为服务器UDP端口值为TCP端口值+3"
 
-#: src/Preferences.cpp:1700
+#: src/Preferences.cpp:1701
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口将被使用（%d）"
@@ -4079,7 +4083,8 @@ msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "无法查找服务器%s的DNS记录： 无法连接！"
 
 #: src/IP2Country.cpp:97
-msgid "Download new GeoIP.dat from "
+#, c-format
+msgid "Download new GeoIP.dat from %s"
 msgstr ""
 
 #: src/IP2Country.cpp:121
@@ -4099,7 +4104,8 @@ msgid "Error updating GeoIP.dat"
 msgstr ""
 
 #: src/IP2Country.cpp:138
-msgid "Failed to download GeoIP.dat from "
+#, c-format
+msgid "Failed to download GeoIP.dat from %s"
 msgstr ""
 
 #: src/IP2Country.cpp:155
