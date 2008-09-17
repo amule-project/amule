@@ -35,17 +35,13 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 		[ENABLE_IP2COUNTRY=$enableval], [ENABLE_IP2COUNTRY=no])
 
 	AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
-		GEOIP_LIBS="-lGeoIP"
-
 		AC_ARG_WITH([geoip-headers],
 			AS_HELP_STRING([--with-geoip-headers=DIR], [GeoIP include files location]),
 			[GEOIP_CPPFLAGS="-I$withval"])
-
 		AC_ARG_WITH([geoip-lib],
 			AS_HELP_STRING([--with-geoip-lib=DIR], [GeoIP library location]),
 			[GEOIP_LDFLAGS="-L$withval"])
 
-		MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
 		MULE_BACKUP([CPPFLAGS])
 		MULE_APPEND([CPPFLAGS], [$GEOIP_CPPFLAGS])
 		MULE_BACKUP([LDFLAGS])
@@ -53,6 +49,8 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 		AC_CHECK_HEADER([GeoIP.h], [
 			AC_CHECK_LIB([GeoIP], [GeoIP_open], [
 				AC_DEFINE([SUPPORT_GEOIP], [1], [Define if you want GeoIP support.])
+				GEOIP_LIBS="-lGeoIP"
+				MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
 				AC_ARG_WITH([geoip-static], AS_HELP_STRING([--with-geoip-static], [Explicitly link GeoIP statically (default=no)]),
 				[
 					AS_IF([test "$withval" != "no" -a ${enable_static:-no} = no], [
