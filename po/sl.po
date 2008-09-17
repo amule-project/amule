@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-16 03:30+0200\n"
+"POT-Creation-Date: 2008-09-17 03:30+0200\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -547,76 +547,76 @@ msgstr[1] ""
 msgid "ERROR: Could not listen to TCP port."
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:306
+#: src/webserver/src/WebServer.cpp:294
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:309
+#: src/webserver/src/WebServer.cpp:297
 msgid "ERROR: cannot accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:378
+#: src/webserver/src/WebServer.cpp:366
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Zahteve ni bilo mogoče izvesti zaradi napake: %s."
 
-#: src/webserver/src/WebServer.cpp:381 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:369 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Zahteva prekinjena z neznano napako."
 
-#: src/webserver/src/WebServer.cpp:1742
+#: src/webserver/src/WebServer.cpp:1730
 msgid "Index file not found: "
 msgstr "Indeksne datoteke ni mogoče najti: "
 
-#: src/webserver/src/WebServer.cpp:1819
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session expired - requesting login\n"
 msgstr "Seja potekla - zahtevek za prijavo\n"
 
-#: src/webserver/src/WebServer.cpp:1824
+#: src/webserver/src/WebServer.cpp:1812
 msgid "Session ok, logged in\n"
 msgstr "Seja v redu, prijavljen\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1814
 msgid "Session ok, not logged in\n"
 msgstr "Seja v redu, ni prijave\n"
 
-#: src/webserver/src/WebServer.cpp:1831
+#: src/webserver/src/WebServer.cpp:1819
 msgid "No session opened - will request login\n"
 msgstr "Ni odprte seje - zahtevek za prijavo\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1828
 msgid "Session created - requesting login\n"
 msgstr "Seja ustvarjena - zahtevek za prijavo\n"
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1843
 msgid "Processing request [original]: "
 msgstr "Obdelovanje zahteve [izvirno]: "
 
-#: src/webserver/src/WebServer.cpp:1871
+#: src/webserver/src/WebServer.cpp:1859
 msgid "Checking password\n"
 msgstr "Preverjanje gesla\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1864
 msgid "Password hash invalid\n"
 msgstr "Hash gesla ni veljaven\n"
 
-#: src/webserver/src/WebServer.cpp:1891
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password ok\n"
 msgstr "Geslo v redu\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1881
 msgid "Password bad\n"
 msgstr "Napačno geslo\n"
 
-#: src/webserver/src/WebServer.cpp:1896
+#: src/webserver/src/WebServer.cpp:1884
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Niste navedli gesla. Prazno geslo ni dovoljeno.\n"
 
-#: src/webserver/src/WebServer.cpp:1904
+#: src/webserver/src/WebServer.cpp:1892
 msgid "Logout requested\n"
 msgstr "Zahtevana odjava\n"
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
 msgstr "Obdelovanje zahteve [preusmerjeno]: "
 
@@ -1566,20 +1566,24 @@ msgstr ""
 msgid "Turkish"
 msgstr "turški"
 
-#: src/Preferences.cpp:825 src/muuli_wdr.cpp:2223
+#: src/Preferences.cpp:692
+msgid "Ukrainian"
+msgstr ""
+
+#: src/Preferences.cpp:826 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr ""
 
-#: src/Preferences.cpp:878
+#: src/Preferences.cpp:879
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1699
+#: src/Preferences.cpp:1700
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Vrata TCP ne smejo biti večja od 65532, ker so vrata UDP TCP+3"
 
-#: src/Preferences.cpp:1700
+#: src/Preferences.cpp:1701
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Uporabljena bodo privzeta vrata (%d)"
@@ -4127,7 +4131,8 @@ msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Ni mogoče razrešiti DNS za strežnik: %s: Povezava ni mogoča!"
 
 #: src/IP2Country.cpp:97
-msgid "Download new GeoIP.dat from "
+#, c-format
+msgid "Download new GeoIP.dat from %s"
 msgstr ""
 
 #: src/IP2Country.cpp:121
@@ -4147,7 +4152,8 @@ msgid "Error updating GeoIP.dat"
 msgstr ""
 
 #: src/IP2Country.cpp:138
-msgid "Failed to download GeoIP.dat from "
+#, c-format
+msgid "Failed to download GeoIP.dat from %s"
 msgstr ""
 
 #: src/IP2Country.cpp:155

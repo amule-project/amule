@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-16 00:01+0200\n"
+"POT-Creation-Date: 2008-09-17 03:30+0200\n"
 "PO-Revision-Date: 2008-09-16 02:06+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@lists.kde.org>\n"
@@ -548,76 +548,76 @@ msgstr[1] "%d Kademlia bağlantısı yazıldı"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "HATA: TCP portu dinlenemiyor."
 
-#: src/webserver/src/WebServer.cpp:306
+#: src/webserver/src/WebServer.cpp:294
 msgid "web client connection accepted\n"
 msgstr "web aracı bağlantısı kabul edildi\n"
 
-#: src/webserver/src/WebServer.cpp:309
+#: src/webserver/src/WebServer.cpp:297
 msgid "ERROR: cannot accept web client connection\n"
 msgstr "HATA: web aracı bağlantısı kabul edilemiyor\n"
 
-#: src/webserver/src/WebServer.cpp:378
+#: src/webserver/src/WebServer.cpp:366
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "İstem şu hatayla başarısız oldu: %s."
 
-#: src/webserver/src/WebServer.cpp:381 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:369 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "İstem bilinmeyen bir hatayla başarısız oldu."
 
-#: src/webserver/src/WebServer.cpp:1742
+#: src/webserver/src/WebServer.cpp:1730
 msgid "Index file not found: "
 msgstr "İndeks dosyası bulunamadı: "
 
-#: src/webserver/src/WebServer.cpp:1819
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session expired - requesting login\n"
 msgstr "Oturum sona erdi - giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1824
+#: src/webserver/src/WebServer.cpp:1812
 msgid "Session ok, logged in\n"
 msgstr "Oturum tamam, giriş yapıldı.\n"
 
-#: src/webserver/src/WebServer.cpp:1826
+#: src/webserver/src/WebServer.cpp:1814
 msgid "Session ok, not logged in\n"
 msgstr "Oturum tamam, giriş yapılmadı.\n"
 
-#: src/webserver/src/WebServer.cpp:1831
+#: src/webserver/src/WebServer.cpp:1819
 msgid "No session opened - will request login\n"
 msgstr "Hiç oturum açılmadı -  giriş gerekecek\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1828
 msgid "Session created - requesting login\n"
 msgstr "Oturum oluşturuldu.-  giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1843
 msgid "Processing request [original]: "
 msgstr "İstem işleniyor [özgün]: "
 
-#: src/webserver/src/WebServer.cpp:1871
+#: src/webserver/src/WebServer.cpp:1859
 msgid "Checking password\n"
 msgstr "Şifre denetleniyor\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1864
 msgid "Password hash invalid\n"
 msgstr "Şifre adreslemesi geçersiz.\n"
 
-#: src/webserver/src/WebServer.cpp:1891
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Password ok\n"
 msgstr "Şifre kabul edildi.\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1881
 msgid "Password bad\n"
 msgstr "Şifre kötü.\n"
 
-#: src/webserver/src/WebServer.cpp:1896
+#: src/webserver/src/WebServer.cpp:1884
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Herhangi bir şifre girmediniz. Boş şifre kullanılamaz.\n"
 
-#: src/webserver/src/WebServer.cpp:1904
+#: src/webserver/src/WebServer.cpp:1892
 msgid "Logout requested\n"
 msgstr "Çıkış istendi.\n"
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
 
@@ -1565,21 +1565,25 @@ msgstr "İsveççe"
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: src/Preferences.cpp:825 src/muuli_wdr.cpp:2223
+#: src/Preferences.cpp:692
+msgid "Ukrainian"
+msgstr ""
+
+#: src/Preferences.cpp:826 src/muuli_wdr.cpp:2223
 msgid "- default -"
 msgstr "- ön tanımlı -"
 
-#: src/Preferences.cpp:878
+#: src/Preferences.cpp:879
 msgid "no options available"
 msgstr "mevcut seçenek yok"
 
-#: src/Preferences.cpp:1699
+#: src/Preferences.cpp:1700
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
 
-#: src/Preferences.cpp:1700
+#: src/Preferences.cpp:1701
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Varsayılan port kullanılacak (%d)"
@@ -4118,8 +4122,9 @@ msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Sunucu %s için DNS çözümlenemiyor: Bağlanmak imkansız!"
 
 #: src/IP2Country.cpp:97
-msgid "Download new GeoIP.dat from "
-msgstr "Yeni GeoIP.dat dosyasını şuradan al:"
+#, c-format
+msgid "Download new GeoIP.dat from %s"
+msgstr ""
 
 #: src/IP2Country.cpp:121
 msgid "Failed to remove GeoIP.dat file, aborting update."
@@ -4139,8 +4144,9 @@ msgid "Error updating GeoIP.dat"
 msgstr "GeoIP.dat güncellemesinde hata oluştu."
 
 #: src/IP2Country.cpp:138
-msgid "Failed to download GeoIP.dat from "
-msgstr "GeoIP.dat dosyası şuradan indirilemedi:"
+#, c-format
+msgid "Failed to download GeoIP.dat from %s"
+msgstr ""
 
 #: src/IP2Country.cpp:155
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
@@ -7102,6 +7108,12 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyası okunamıyor!"
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
 
+#~ msgid "Download new GeoIP.dat from "
+#~ msgstr "Yeni GeoIP.dat dosyasını şuradan al:"
+
+#~ msgid "Failed to download GeoIP.dat from "
+#~ msgstr "GeoIP.dat dosyası şuradan indirilemedi:"
+
 #~ msgid "Loaded %d flag bitmap."
 #~ msgid_plural "Loaded %d flag bitmaps."
 #~ msgstr[0] "%d adet bayrak bitmapi yüklendi"
@@ -7128,4 +7140,3 @@ msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
 
 #~ msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
 #~ msgstr "Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
-
