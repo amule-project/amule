@@ -144,10 +144,10 @@ void CIP2Country::DownloadFinished(uint32 result)
 void CIP2Country::LoadFlags()
 {
 	// Load data from xpm files
-	for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
+	for (int i = 0; i < flags::FLAGS_XPM_SIZE; ++i) {
 		CountryData countrydata;
-		countrydata.Name = char2unicode(flagXPMCodeVector[i].code);
-		countrydata.Flag = wxImage(flagXPMCodeVector[i].xpm);
+		countrydata.Name = char2unicode(flags::flagXPMCodeVector[i].code);
+		countrydata.Flag = wxImage(flags::flagXPMCodeVector[i].xpm);
 		
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
