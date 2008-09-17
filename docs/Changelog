@@ -28,9 +28,6 @@ Version 2.3.0 - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
-	LittleAbacus
-		* Support multiple selections on CSearchListCtrl::OnMarkAsKnown().
-
 	morph:
 		* Patch to uniform and fix minor errors on man pages
 
@@ -76,6 +73,9 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Fixed loading of zipped ipfilter files. Thanks to CtrlAltDel
 		  for the investigation of the problem.
 		* Fixed alc progress bar for files >4GB.
+
+	LittleAbacus:
+		* Support multiple selections on CSearchListCtrl::OnMarkAsKnown().
 
 	Skolnick:
 		* Fix alc and alcc to work with files bigger than 4GB
