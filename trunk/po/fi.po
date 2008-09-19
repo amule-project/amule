@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the aMule package.
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Tapio Rantala <tapio.rantala@iki.fi>, 2007-2008.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -180,20 +180,18 @@ msgstr "Pyydetty: %s\n"
 #: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s siirretty\n"
-"Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s siirretty\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1969
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
-"siirretty\n"
-"Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
-"siirretty\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1972
 msgid "Requested unknown file"
@@ -529,7 +527,9 @@ msgstr "Ei kontakteja, käytä yhdistämisapua tai hae nodes.dat-tiedosto."
 #: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
-msgstr ""
+msgid_plural "Only %d Kad contacts available, nodes.dat not written"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
@@ -1815,7 +1815,8 @@ msgstr "Kademliaan: Vertaisreititys perustuen XOR-metriikkaan.\n"
 
 #: src/amuleDlg.cpp:484
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr " Tekijänoikeudet (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgstr ""
+" Tekijänoikeudet (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:485
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -3263,17 +3264,15 @@ msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Virhe luettaessa osatiedoston lähdetiedostoa (%s - %s): %s"
 
 #: src/PartFile.cpp:1136 src/PartFile.cpp:1164
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
+msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr ""
-"Turmeltunut osa (%d) kohteen %d osatiedostossa %s - Tiedostotulostarkiste |%"
-"s| Tiedostotarkiste |%s|"
-"Turmeltunut osa (%d) kohteen %d osatiedostossa %s - Tiedostotulostarkiste |%"
-"s| Tiedostotarkiste |%s|"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/PartFile.cpp:1181
 #, c-format
@@ -3358,7 +3357,9 @@ msgstr "VAROITUS: Tiedostoa known.met ei voida avata."
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Known file list corrupted, contains invalid header."
-msgstr "VAROITUS: Tunnettujen tiedostojen lista on turmeltunut, sisältää epäkelvon otsakkeen."
+msgstr ""
+"VAROITUS: Tunnettujen tiedostojen lista on turmeltunut, sisältää epäkelvon "
+"otsakkeen."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -4161,7 +4162,9 @@ msgstr "GeoIP.dat-tiedoston poisto epäonnistui, keskeytän päivittämisen"
 
 #: src/IP2Country.cpp:127
 msgid "Failed to rename new GeoIP.dat file, aborting update."
-msgstr "Uuden GeoIP.dat-tiedoston uudelleennimeäminen epäonnistui, keskeytän päivittämisen."
+msgstr ""
+"Uuden GeoIP.dat-tiedoston uudelleennimeäminen epäonnistui, keskeytän "
+"päivittämisen."
 
 #: src/IP2Country.cpp:133
 msgid "Successfully updated GeoIP.dat"
@@ -4863,8 +4866,8 @@ msgid ""
 "For a film you can say its length, its story, language ...\\n\\nand if it's "
 "a fake, you can tell that to other users of aMule."
 msgstr ""
-"Elokuvalle voit kertoa sen pituuden, tarinan, kielen ...\\n\\nja mikäli "
-"se on väärennös, voit kertoa sen muille aMulen käyttäjille."
+"Elokuvalle voit kertoa sen pituuden, tarinan, kielen ...\\n\\nja mikäli se "
+"on väärennös, voit kertoa sen muille aMulen käyttäjille."
 
 #: src/muuli_wdr.cpp:893
 msgid "File Quality"
@@ -5210,7 +5213,8 @@ msgstr "Laajennettu UDP-portti (Kad / haku kaikkialta)."
 
 #: src/muuli_wdr.cpp:1755
 msgid "This UDP port is used for extended eD2k requests and Kad network"
-msgstr "Tätä UDP-porttia käytetään laajennettuihin eD2k-hakuihin sekä Kad-verkossa"
+msgstr ""
+"Tätä UDP-porttia käytetään laajennettuihin eD2k-hakuihin sekä Kad-verkossa"
 
 #: src/muuli_wdr.cpp:1758
 msgid "Enable UPnP for router port forwarding"
@@ -5229,7 +5233,8 @@ msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
 msgstr ""
-"Vain edistyneille käyttäjille: mikäli sinulla on useampia verkkoliitäntöjä, syötä sen liitännän osoite johon haluat aMulen sidottavan."
+"Vain edistyneille käyttäjille: mikäli sinulla on useampia verkkoliitäntöjä, "
+"syötä sen liitännän osoite johon haluat aMulen sidottavan."
 
 #: src/muuli_wdr.cpp:1788
 msgid "Max sources per downloading file:"
@@ -6990,9 +6995,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Lisäksi, selaimen asetukset on nollattu järjestelmän oletukseen. Ole hyvä "
-"ja konfiguroi selaimen asetukset uudelleen mikäli tarpeellista."
-"\n"
+"Lisäksi, selaimen asetukset on nollattu järjestelmän oletukseen. Ole hyvä ja "
+"konfiguroi selaimen asetukset uudelleen mikäli tarpeellista.\n"
 
 #: src/amule.cpp:1331
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7145,3 +7149,31 @@ msgstr "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua luettavaksi!"
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua kirjoitettavaksi!"
+
+#~ msgid ""
+#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s "
+#~ "siirretty\n"
+#~ "Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s "
+#~ "siirretty\n"
+
+#~ msgid ""
+#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
+#~ "siirretty\n"
+#~ "Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
+#~ "siirretty\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
+#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
+#~ "FileResultHash |%s| FileHash |%s|"
+#~ msgstr ""
+#~ "Turmeltunut osa (%d) kohteen %d osatiedostossa %s - Tiedostotulostarkiste "
+#~ "|%s| Tiedostotarkiste |%s|Turmeltunut osa (%d) kohteen %d osatiedostossa %"
+#~ "s - Tiedostotulostarkiste |%s| Tiedostotarkiste |%s|"
