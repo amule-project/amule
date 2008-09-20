@@ -5285,7 +5285,7 @@ msgstr "Émission"
 
 #: src/muuli_wdr.cpp:1719
 msgid "Slot Allocation"
-msgstr "Allocation des slots Amis"
+msgstr "Émission par slot"
 
 #: src/muuli_wdr.cpp:1732
 msgid "Ports"
