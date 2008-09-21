@@ -1873,6 +1873,8 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 #ifdef ENABLE_IP2COUNTRY	
 		case HTTP_GeoIP:
 			theApp->amuledlg->IP2CountryDownloadFinished(event.GetExtraLong());
+			// If we updated, the dialog is already up. Redraw it to show the flags.
+			theApp->amuledlg->Refresh();
 			break;
 #endif	
 	}

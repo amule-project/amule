@@ -227,6 +227,12 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 #ifdef ENABLE_IP2COUNTRY
 	m_GeoIPavailable = true;
 	m_IP2Country = new CIP2Country();
+	// remote GUI has to do this a bit later (after the main dialog is up)
+#ifndef CLIENT_GUI
+	if (thePrefs::IsGeoIPEnabled()) {
+		m_IP2Country->Enable();
+	}
+#endif
 #else
 	m_GeoIPavailable = false;
 #endif

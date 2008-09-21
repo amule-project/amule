@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;__WEAK_CRYPTO__"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -107,7 +107,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;__WEAK_CRYPTO__"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"

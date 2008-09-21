@@ -67,9 +67,6 @@ CIP2Country::CIP2Country()
 // right now, flags are loaded even when it's disabled
 		LoadFlags();
 	}
-	if (thePrefs::IsGeoIPEnabled()) {
-		Enable();
-	}
 }
 
 void CIP2Country::Enable()
@@ -93,12 +90,10 @@ void CIP2Country::Enable()
 
 void CIP2Country::Update()
 {
-#ifndef CLIENT_GUI
 	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
 	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBaseName + wxT(".download"), HTTP_GeoIP);
 	downloader->Create();
 	downloader->Run();
-#endif
 }
 
 void CIP2Country::Disable()

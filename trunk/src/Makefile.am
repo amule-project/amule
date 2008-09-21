@@ -247,6 +247,11 @@ amulegui_SOURCES = \
 	$(ec_sources) \
 	$(common_sources)
 
+if ENABLE_IP2COUNTRY
+amulegui_SOURCES += \
+	HTTPDownload.cpp
+endif
+
 amule_SOURCES = \
 	$(core_sources) \
 	$(gui_sources) \
