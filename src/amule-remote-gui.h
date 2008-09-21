@@ -677,7 +677,8 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	void OnECInitDone(wxEvent& event);
 	void OnLoggingEvent(CLoggingEvent& evt);
 	void OnNotifyEvent(CMuleGUIEvent& evt);
-	
+	void OnFinishedHTTPDownload(CMuleInternalEvent& event);
+
 	CStatsUpdaterRem m_stats_updater;
 public:
 

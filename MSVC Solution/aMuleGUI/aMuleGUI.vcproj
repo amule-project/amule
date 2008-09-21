@@ -283,6 +283,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\HTTPDownload.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\IP2Country.cpp"
 				>
 			</File>
