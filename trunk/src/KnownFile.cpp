@@ -1346,7 +1346,7 @@ wxString CKnownFile::GetAICHMasterHash() const
 bool CKnownFile::HasProperAICHHashSet() const
 {
 #ifdef CLIENT_GUI
-	return m_AICHMasterHash.Length();
+	return m_AICHMasterHash.Length() != 0;
 #else
 	return m_pAICHHashSet->HasValidMasterHash() &&
 		(m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
