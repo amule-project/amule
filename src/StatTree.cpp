@@ -64,7 +64,7 @@ CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STATTREE_NODE);
 
-	for (int i = 0; i < tag->GetTagCount(); ++i) {
+	for (size_t i = 0; i < tag->GetTagCount(); ++i) {
 		const CECTag *tmp = tag->GetTagByIndex(i);
 		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
 			m_children.push_back(new CStatTreeItemBase(tmp));
