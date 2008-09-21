@@ -1058,8 +1058,8 @@ void CProgressImage::CreateSpan()
 				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			}
 
-			uint32 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
-			uint32 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
+			uint64 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
+			uint64 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
 			
 			wxASSERT(colored_gaps_size < color_gaps_alloc);
 			

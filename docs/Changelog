@@ -54,6 +54,7 @@ Version 2.3.0 - The river knows.
 		* Fix minimizing from tray icon
 		* Add option to show chat messages in log
 		* Add option to specify amuleweb binary location
+		* Fix amuleweb progress bar display for files > 4GB
 
 	Special Thanks To:
 		* Greek for his contributions to aMule's user interface.
