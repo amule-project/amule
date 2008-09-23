@@ -1,3 +1,3 @@
-SUBDIRS = default php-default chicane litoral src
+SUBDIRS = default src
 
 MAINTAINERCLEANFILES = Makefile.in
