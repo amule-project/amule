@@ -69,6 +69,6 @@ dist_webserver_DATA = \
 	up.png \
 	yellow.gif
 
-webserverdir = $(pkgdatadir)/webserver/litoral
+webserverdir = $(pkgdatadir)/webserver/default
 
 MAINTAINERCLEANFILES = Makefile.in
