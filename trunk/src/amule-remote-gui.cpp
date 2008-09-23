@@ -53,8 +53,8 @@ using std::auto_ptr;
 #include "GuiEvents.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
-	#include "InternalEvents.h"	// Needed for wxEVT_CORE_FINISHED_HTTP_DOWNLOAD
 #endif
+#include "InternalEvents.h"	// Needed for wxEVT_CORE_FINISHED_HTTP_DOWNLOAD
 #include "Logger.h"
 #include "muuli_wdr.h"			// Needed for IDs
 #include "PartFile.h"			// Needed for CPartFile
