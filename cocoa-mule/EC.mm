@@ -135,6 +135,31 @@
 
 @end
 
+@implementation ECTagInt16
+
++ (id)tagFromInt16:(uint16_t) value withName:(ECTagNames) name {
+	ECTagInt16 *tag = [[ECTagInt16 alloc] init];
+	tag->m_val = value;
+	tag->m_size = 2;
+	tag->m_type = EC_TAGTYPE_UINT16;
+	tag->m_name = name;
+	
+	return tag;	
+}
+
++ (id)tagFromBuffer:(uint8_t *) buffer {
+	ECTagInt16 *tag = [[ECTagInt16 alloc] init];
+	
+	tag->m_val = ntohs(*((uint16_t *)buffer));
+	tag->m_size = 2;
+	tag->m_type = EC_TAGTYPE_UINT16;
+	
+	return tag;
+}
+
+
+@end
+
 
 @implementation ECTagInt64
 
@@ -150,7 +175,7 @@
 
 
 + (id)tagFromBuffer:(uint8_t *) buffer {
-	ECTagInt64 *tag = [[ECTagInt8 alloc] init];
+	ECTagInt64 *tag = [[ECTagInt64 alloc] init];
 	uint64_t lo, hi;
 	uint32 val32 = *((uint32_t *)buffer);
 	lo = ntohl(val32);
@@ -465,7 +490,16 @@
 				//
 				// full packet received, call handler
 				//
-				id packet = [ECPacket packetFromBuffer:m_rxbuf];
+				ECPacket *packet = [ECPacket packetFromBuffer:m_rxbuf];
+				if ( m_login_requested ) {
+					m_login_requested = false;
+					m_login_ok = packet.opcode == EC_OP_AUTH_OK;
+				} else {
+					if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
+						[delegate handlePacket: packet];
+					}
+				}
+
 			}
             break;
         }
@@ -488,4 +522,16 @@
 		}
 	}
 }
+
+- (void)setDelegate:(id)val
+{
+    delegate = val;
+}
+
+- (id)delegate
+{
+    return delegate;
+}
+
+
 @end
