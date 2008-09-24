@@ -98,6 +98,10 @@
 
 + (id)loginPacket:(NSString *) password withVersion:(NSString *) version;
 
+@end	
+
+@interface NSObject (ECRemoteConnection)
+- (void)handlePacket:(ECPacket *) packet;
 @end
 
 @interface ECRemoteConnection : NSObject {
@@ -116,6 +120,8 @@
 	
 	bool m_login_requested;
 	bool m_login_ok;
+
+    id delegate;
 }
 
 + (id)remoteConnection;
@@ -126,6 +132,9 @@
 - (void)sendLogin:(NSString *) password;
 
 - (void)sendPacket:(ECPacket *) packet;
+
+- (void)setDelegate:(id) val;
+- (id)delegate;
 
 @end
 
