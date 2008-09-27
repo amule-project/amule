@@ -3770,6 +3770,13 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 { 
 	return m_FileRatingList; 
 }
+
+void CPartFile::SetCategory(uint8 cat)
+{
+	wxASSERT( cat < theApp->glob_prefs->GetCatCount() );
+	
+	m_category = cat; 
+}
 #endif // !CLIENT_GUI
 
 

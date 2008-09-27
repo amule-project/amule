@@ -226,11 +226,6 @@ public:
 
 
 	/**
-	 * Resets the category of all files with the specified category.
-	 */
-	void	ResetCatParts(uint8 cat);
-
-	/**
 	 * Sets the priority of all files with the specified category.
 	 */
 	void	SetCatPrio(uint8 cat, uint8 newprio);
