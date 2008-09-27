@@ -65,6 +65,9 @@ Version 2.2.3 - The "Vampires suck" version.
 ----------
 2008-10-??
 
+	Alfred:
+		* Fixes to compile with Sun Studio 12.
+
 	GonoszTopi:
 		* Fixed improper handling of EC connection failures.
 		* Fix for shells not properly handling empty lists.

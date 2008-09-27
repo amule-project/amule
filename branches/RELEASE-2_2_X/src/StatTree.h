@@ -313,7 +313,7 @@ private:
 
 #ifndef EC_REMOTE
 	//! Function used when sorting children by value.
-	static bool ValueSort(CStatTreeItemBase* a, CStatTreeItemBase* b);
+	static bool ValueSort(const CStatTreeItemBase* a, const CStatTreeItemBase* b);
 
 	//! ID of this node.
 	uint32_t m_id;

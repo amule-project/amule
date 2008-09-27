@@ -30,6 +30,10 @@
 #include "SafeFile.h"		// Needed for CFileDataIO
 #include "MD4Hash.h"			// Needed for CMD4Hash
 
+#if defined(__SUNPRO_CC)
+#define __FUNCTION__ __FILE__+__LINE__
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
 

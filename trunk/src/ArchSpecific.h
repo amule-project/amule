@@ -33,7 +33,7 @@
 #define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ON_BE(x))
 #define ENDIAN_SWAP_I_32(x) x = wxUINT32_SWAP_ON_BE(x)
 
-#if ((defined __GNUC__) && __GNUC__ >= 2) || defined (_MSC_VER)
+#if ((defined __GNUC__) && __GNUC__ >= 2) || defined (_MSC_VER) || (defined(__SUNPRO_CC) && (__SUNPRO_CC >= 0x550))
 	#define ENDIAN_SWAP_64(x) (wxUINT64_SWAP_ON_BE(x))
 	#define ENDIAN_SWAP_I_64(x) x = wxUINT64_SWAP_ON_BE(x)
 #endif

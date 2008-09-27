@@ -70,6 +70,9 @@ there client on the eMule forum..
 
 #define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
 
+#if defined(__SUNPRO_CC)
+#define __FUNCTION__ __FILE__+__LINE__
+#endif
 
 #define CHECK_PACKET_SIZE(OP, SIZE) \
 	if (lenPacket OP (uint32_t)(SIZE)) \

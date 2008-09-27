@@ -203,32 +203,32 @@ CXML_List<T, XML_ELEMENT_NAME, XML_LIST_NAME>::~CXML_List()
 	}
 }
 
+extern const char s_argument[];
+extern const char s_argumentList[];
+extern const char s_action[];
+extern const char s_actionList[];
+extern const char s_allowedValue[];
+extern const char s_allowedValueList[];
+extern const char s_stateVariable[];
+extern const char s_serviceStateTable[];
+extern const char s_service[];
+extern const char s_serviceList[];
+extern const char s_device[];
+extern const char s_deviceList[];
+
 #ifdef UPNP_C
-	char s_argument[] = "argument";
-	char s_argumentList[] = "argumentList";
-	char s_action[] = "action";
-	char s_actionList[] = "actionList";
-	char s_allowedValue[] = "allowedValue";
-	char s_allowedValueList[] = "allowedValueList";
-	char s_stateVariable[] = "stateVariable";
-	char s_serviceStateTable[] = "serviceStateTable";
-	char s_service[] = "service";
-	char s_serviceList[] = "serviceList";
-	char s_device[] = "device";
-	char s_deviceList[] = "deviceList";
-#else // UPNP_C
-	extern char s_argument[];
-	extern char s_argumentList[];
-	extern char s_action[];
-	extern char s_actionList[];
-	extern char s_allowedValue[];
-	extern char s_allowedValueList[];
-	extern char s_stateVariable[];
-	extern char s_serviceStateTable[];
-	extern char s_service[];
-	extern char s_serviceList[];
-	extern char s_device[];
-	extern char s_deviceList[];
+	const char s_argument[] = "argument";
+	const char s_argumentList[] = "argumentList";
+	const char s_action[] = "action";
+	const char s_actionList[] = "actionList";
+	const char s_allowedValue[] = "allowedValue";
+	const char s_allowedValueList[] = "allowedValueList";
+	const char s_stateVariable[] = "stateVariable";
+	const char s_serviceStateTable[] = "serviceStateTable";
+	const char s_service[] = "service";
+	const char s_serviceList[] = "serviceList";
+	const char s_device[] = "device";
+	const char s_deviceList[] = "deviceList";
 #endif // UPNP_C
 
 
