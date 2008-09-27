@@ -1052,22 +1052,6 @@ void CDownloadQueue::AddLinksFromFile()
 }
 
 
-void CDownloadQueue::ResetCatParts(uint8 cat)
-{
-	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
-		CPartFile* file = GetFileByIndex( i );
-		
-		if ( file->GetCategory() == cat ) {
-			// Reset the category
-			file->SetCategory( 0 );
-		} else if ( file->GetCategory() > cat ) {
-			// Set to the new position of the original category
-			file->SetCategory( file->GetCategory() - 1 );
-		}
-	}
-}
-
-
 void CDownloadQueue::SetCatPrio(uint8 cat, uint8 newprio)
 {
 	for ( uint16 i = 0; i < GetFileCount(); i++ ) {

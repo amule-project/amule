@@ -171,6 +171,11 @@ public:
 	 */
 	void ClearCompleted();
 
+	/**
+	 * Adjust category of all files when cat is deleted.
+	 */
+	void ResetCatParts(uint8 cat);
+
 private:
 	/**
 	 * Updates the displayed number representing the ammount of files currently shown.

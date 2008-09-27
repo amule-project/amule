@@ -2045,6 +2045,27 @@ void CDownloadListCtrl::ClearCompleted()
 }
 
 
+void CDownloadListCtrl::ResetCatParts(uint8 cat)
+{
+	// Go through all files
+	for ( ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); ) {
+		CtrlItem_Struct* item = it->second; ++it;
+		
+		if ( item->GetType() == FILE_TYPE ) {
+			CPartFile* file = item->GetFile();
+			
+			if ( file->GetCategory() == cat ) {
+				// Reset the category
+				file->SetCategory( 0 );
+			} else if ( file->GetCategory() > cat ) {
+				// Set to the new position of the original category
+				file->SetCategory( file->GetCategory() - 1 );
+			}
+		}
+	}
+}
+
+
 void CDownloadListCtrl::ShowFilesCount( int diff )
 {
 	m_filecount += diff;
