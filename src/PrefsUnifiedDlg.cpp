@@ -511,7 +511,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) && 
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
-		wxMessageBox(wxString::wxString( _("Your Auto-update server list is empty.\n'Auto-update server list at startup' will be disabled.")),
+		wxMessageBox(_("Your Auto-update server list is empty.\n'Auto-update server list at startup' will be disabled."),
 			_("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 
@@ -601,8 +601,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}	
 
 	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
-		wxMessageBox(wxString::wxString(
-			_("Both eD2k and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them.")));
+		wxMessageBox(
+			_("Both eD2k and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them."));
 	}	
 	
 	if (thePrefs::GetNetworkKademlia() && thePrefs::IsUDPDisabled()) {
@@ -688,7 +688,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_AUTOSERVER:
 			if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) && 
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
-				wxMessageBox(wxString::wxString( _("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL.")),
+				wxMessageBox(_("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL."),
 					_("Message"), wxOK | wxICON_INFORMATION);
 				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
 			}

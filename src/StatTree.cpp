@@ -181,7 +181,7 @@ void CStatTreeItemBase::GetNextVisibleChild(StatTreeItemIterator& it)
 //
 #ifndef EC_REMOTE
 
-bool CStatTreeItemBase::ValueSort(CStatTreeItemBase* a, CStatTreeItemBase* b)
+bool CStatTreeItemBase::ValueSort(const CStatTreeItemBase* a, const CStatTreeItemBase* b)
 {
 	if (a->m_id < 0x00000100 || a->m_id > 0x7fffffff || b->m_id < 0x00000100 || b->m_id > 0x7fffffff) {
 		return a->m_id > b->m_id;

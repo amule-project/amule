@@ -28,6 +28,9 @@
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 #include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
 
+#if defined(__SUNPRO_CC)
+#define __FUNCTION__ __FILE__+__LINE__
+#endif
 
 #define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 

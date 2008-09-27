@@ -49,6 +49,10 @@ there client on the eMule forum..
 
 #include <wx/tokenzr.h>
 
+#if defined(__SUNPRO_CC)
+#define __FUNCTION__ __FILE__+__LINE__
+#endif
+
 ////////////////////////////////////////
 using namespace Kademlia;
 ////////////////////////////////////////
