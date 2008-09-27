@@ -94,6 +94,8 @@ static const int IMAGE_MARGIN_IN_REPORT_MODE = 5;
 // the space between the image and the text in the report mode in header
 static const int HEADER_IMAGE_MARGIN_IN_REPORT_MODE = 2;
 
+const wxChar wxListCtrlNameStr[] = wxT("listCtrl");
+
 // ============================================================================
 // private classes
 // ============================================================================
