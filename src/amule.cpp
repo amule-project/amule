@@ -1243,7 +1243,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 
 	// amule version
 #ifdef SVNDATE
-	amulesig_out.AddLine(CFormat(wxT("%s %s")) % wxT(VERSION) % wxT(SVNDATE));
+	amulesig_out.AddLine(wxT(VERSION) wxT(" ") wxT(SVNDATE));
 #else
 	amulesig_out.AddLine(wxT(VERSION));
 #endif
