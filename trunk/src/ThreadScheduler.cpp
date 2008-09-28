@@ -301,7 +301,7 @@ void* CThreadScheduler::Entry()
 			// a different task, so dont remove it. That also means 
 			// that it cant be the last task of this type.
 			if (!task->m_abort) {
-				AddLogLineM(false, logThreads,
+				AddDebugLogLineM(false, logThreads,
 					CFormat(wxT("Completed task '%s%s', %u tasks remaining.")) 
 						% task->GetType()
 						% (task->GetDesc().IsEmpty() ? wxString() : (wxT(" - ") + task->GetDesc()))
