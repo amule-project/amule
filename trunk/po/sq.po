@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-22 03:30+0200\n"
+"POT-Creation-Date: 2008-09-28 03:30+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -513,11 +513,11 @@ msgstr "Duke pezulluar ngarkimin e failit: %s"
 msgid "aMule text client"
 msgstr "Teksti i klientit aMule"
 
-#: src/kademlia/kademlia/SearchManager.cpp:125
+#: src/kademlia/kademlia/SearchManager.cpp:129
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: fjala qe u kerkua eshte shume e shkurter"
 
-#: src/kademlia/kademlia/SearchManager.cpp:138
+#: src/kademlia/kademlia/SearchManager.cpp:142
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
@@ -1643,7 +1643,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:149 src/CatDialog.cpp:141 src/CatDialog.cpp:151
 #: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:717
-#: src/amule.cpp:1336
+#: src/amule.cpp:1333
 msgid "Info"
 msgstr "Informacion"
 
@@ -2956,12 +2956,12 @@ msgid "Connection failed "
 msgstr "Lidhja deshtoi "
 
 #: src/amule-remote-gui.cpp:307 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:859
-#: src/amule.cpp:980 src/amule.cpp:1347
+#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:856
+#: src/amule.cpp:977 src/amule.cpp:1344
 msgid "ERROR"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:504 src/amule.cpp:1085
+#: src/amule-remote-gui.cpp:504 src/amule.cpp:1082
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -3626,11 +3626,11 @@ msgstr ""
 msgid "Connected to %s %s %s"
 msgstr "I lidhur tek %s %s %s"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2113
+#: src/TextClient.cpp:697 src/amule.cpp:2110
 msgid "with LowID"
 msgstr "me ID te ulet"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2113
+#: src/TextClient.cpp:697 src/amule.cpp:2110
 msgid "with HighID"
 msgstr "me ID te larte"
 
@@ -6861,17 +6861,17 @@ msgid ""
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
-#: src/amule.cpp:945
+#: src/amule.cpp:942
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Nuk mund te lidh portat tek adresa e dhene: %s"
 
-#: src/amule.cpp:972
+#: src/amule.cpp:969
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Porta %u nuk eshte me vlere. Ju do te keni ID te ulet\n"
 
-#: src/amule.cpp:978
+#: src/amule.cpp:975
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6887,15 +6887,15 @@ msgstr ""
 "KOntrolloni rrjetin tuaj per tu siguruar qe porta eshte hapur per hyrje dhe "
 "dalje."
 
-#: src/amule.cpp:1129
+#: src/amule.cpp:1126
 msgid "Failed to create OnlineSig File"
 msgstr "Deshtoi te krijoje failin per Firmen Online"
 
-#: src/amule.cpp:1137
+#: src/amule.cpp:1134
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Deshtoi te krijoje failin per Firmen Online te aMule-s"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1302
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6903,33 +6903,33 @@ msgstr ""
 "Vendi i zgjedur duket se nuk do te instalohet ne kutine tuaj. (Shenim: Une "
 "do te mundohem ta vendos ate)"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1311
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Kjo eshte hera e pare qe ju po persorni aMule %s"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1313
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Ky eshte nje version per testim,i azhornuar per dite, dhe\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1314
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "ne nuk japim siguri per te ai nuk do te thyej asgje,nuk do te djegi shtepine "
 "tuaj,\n"
 
-#: src/amule.cpp:1318
+#: src/amule.cpp:1315
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "ose te vrasi qenin tuaj. Por ai *do te* behet i sigurte per tu perdorur.\n"
 
-#: src/amule.cpp:1322
+#: src/amule.cpp:1319
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "Opsionet ne vazhdim u ndryshuan ne kete version per aresye sigurie:\n"
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1320
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -6939,7 +6939,7 @@ msgstr ""
 "* U aktivizua protekoli per suportimin e Fshejes per lidhjet hyrese dhe "
 "dalese.\n"
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1321
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -6948,7 +6948,7 @@ msgstr ""
 "* U c'aktivizua azhornimi i listes se serverave nga serverat dhe klientet e "
 "tjere.\n"
 
-#: src/amule.cpp:1325
+#: src/amule.cpp:1322
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -6963,7 +6963,7 @@ msgstr ""
 "Eshte e rendesishme qe ju te fshini cdo server te rreme nga lista juaj qe "
 "aMule te punoje rregullisht."
 
-#: src/amule.cpp:1326
+#: src/amule.cpp:1323
 msgid ""
 "\n"
 "\n"
@@ -6971,22 +6971,22 @@ msgid ""
 "Please configure your browser options again if needed.\n"
 msgstr ""
 
-#: src/amule.cpp:1331
+#: src/amule.cpp:1328
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Me shume informacion,mbeshtetje dhe leshime te reja do ti gjeni tek faqet "
 "tona,\n"
 
-#: src/amule.cpp:1332
+#: src/amule.cpp:1329
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "tek www.amule.org ose ne kanalin tone IRC #amule tek irc.freenode.net.\n"
 
-#: src/amule.cpp:1334
+#: src/amule.cpp:1331
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Raportoni cdo gabim tek http://forum.amule.org"
 
-#: src/amule.cpp:1347
+#: src/amule.cpp:1344
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6994,117 +6994,117 @@ msgstr ""
 "Kartela e faileve per Firmen Online qe ju specifikuat eshte e PAVLERE!\n"
 " Firma Online do te C'AKTIVIZOHET deri sa ju ta rregulloni tek Preferencat."
 
-#: src/amule.cpp:1633
+#: src/amule.cpp:1630
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr ""
 
-#: src/amule.cpp:1781
+#: src/amule.cpp:1778
 msgid "ERROR: can't open logfile"
 msgstr "GABIM: nuk mund te hapet logfile"
 
-#: src/amule.cpp:1785
+#: src/amule.cpp:1782
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "KUJDES: faili i log-ve eshte bosh. Dicka nuk shkon."
 
-#: src/amule.cpp:1804
+#: src/amule.cpp:1801
 msgid "Log has been reset"
 msgstr "Faili i Log eshte risetuar"
 
-#: src/amule.cpp:1832
+#: src/amule.cpp:1829
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Mesazhe nga Serveri: %s"
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1867
 msgid "Failed to download the nodes list."
 msgstr "Deshtoi ne shkarkimin e listave nod."
 
-#: src/amule.cpp:1890
+#: src/amule.cpp:1887
 msgid "Failed to open the downloaded version check file"
 msgstr "Deshtoi te hapi failin per kontrollin e versionit qe sapo shkarkuat"
 
-#: src/amule.cpp:1893 src/amule.cpp:1903 src/amule.cpp:1909
+#: src/amule.cpp:1890 src/amule.cpp:1900 src/amule.cpp:1906
 msgid "Corrupted version check file"
 msgstr "Fili per kontrollin e versionit eshte i demtuar"
 
-#: src/amule.cpp:1919
+#: src/amule.cpp:1916
 msgid "You are using an outdated version of aMule!"
 msgstr "Ju po perdorni nje version te vjeter te aMule!"
 
-#: src/amule.cpp:1920
+#: src/amule.cpp:1917
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Versioni juaj i amUle eshte %i.%i-%i dhe versioni i fundit eshte %li.%li.%li"
 
-#: src/amule.cpp:1921
+#: src/amule.cpp:1918
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Versioni i fundit mund te gjendet gjithmone tek http://www.amule.org"
 
-#: src/amule.cpp:1924
+#: src/amule.cpp:1921
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 "KUJDES: Versioni juaj i aMule-s eshte i vjeteruar: %i.%i-%i < %li.%li.%li"
 
-#: src/amule.cpp:1928
+#: src/amule.cpp:1925
 msgid "Your copy of aMule is up to date."
 msgstr "Kopja juaj e aMule eshte azhornuar."
 
-#: src/amule.cpp:1935
+#: src/amule.cpp:1932
 msgid "Failed to download the version check file"
 msgstr "Deshtoi ne shkarkimin e failit per kontrollin e versionit"
 
-#: src/amule.cpp:2038
+#: src/amule.cpp:2035
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr ""
 
-#: src/amule.cpp:2039
+#: src/amule.cpp:2036
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr ""
 
-#: src/amule.cpp:2048
+#: src/amule.cpp:2045
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:2115
+#: src/amule.cpp:2112
 #, c-format
 msgid "Connected to %s %s"
 msgstr "I lidhur tek %s %s"
 
-#: src/amule.cpp:2118
+#: src/amule.cpp:2115
 #, c-format
 msgid "Connecting to %s"
 msgstr "Duke u lidhur tek %s"
 
-#: src/amule.cpp:2120
+#: src/amule.cpp:2117
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2127
+#: src/amule.cpp:2124
 msgid "Kad started."
 msgstr "Kad filloi."
 
-#: src/amule.cpp:2129
+#: src/amule.cpp:2126
 msgid "Kad stopped."
 msgstr "Kad u ndalua."
 
-#: src/amule.cpp:2136
+#: src/amule.cpp:2133
 msgid "Connected to Kad (ok)"
 msgstr "I lidhur ne Kad (Ne rregull)"
 
-#: src/amule.cpp:2138
+#: src/amule.cpp:2135
 msgid "Connected to Kad (firewalled)"
 msgstr "I lidhur ne Kad (Me firewall)"
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2138
 msgid "Disconnected from Kad"
 msgstr "I shkeputur nga Kad"
 
-#: src/amule.cpp:2204
+#: src/amule.cpp:2201
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7112,7 +7112,7 @@ msgstr ""
 "Rrjeti Kad nuk mund te perdoret nqs porta UDP eshte c'aktivizuar tek "
 "Preferencat, nuk po filloj."
 
-#: src/amule.cpp:2207
+#: src/amule.cpp:2204
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Rrjeti Kad eshte c'aktivizuar tek Preferencat,nuk eshte duke u lidhur."
 
