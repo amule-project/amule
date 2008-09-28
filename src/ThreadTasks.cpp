@@ -126,15 +126,15 @@ void CHashingTask::Entry()
 	
 	if ((m_toHash & EH_MD4) && (m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddLogLineM( false, logHasher, CFormat( 
+		AddDebugLogLineM( false, logHasher, CFormat( 
 			_("Starting to create MD4 and AICH hash for file: %s")) %
 			m_filename );
 	} else if ((m_toHash & EH_MD4)) {
-		AddLogLineM( false, logHasher, CFormat(
+		AddDebugLogLineM( false, logHasher, CFormat(
 			_("Starting to create MD4 hash for file: %s")) % m_filename );
 	} else if ((m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddLogLineM( false, logHasher, CFormat(
+		AddDebugLogLineM( false, logHasher, CFormat(
 			_("Starting to create AICH hash for file: %s")) % m_filename );
 	} else {
 		wxCHECK_RET(0, (CFormat(wxT("No hashes requested for file, skipping: %s"))
@@ -423,7 +423,7 @@ void CCompletionTask::Entry()
 	}
 
 	if (m_filename != dstName) {
-		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
+		AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
 			% m_filename % dstName);
 	}
 	
@@ -436,7 +436,7 @@ void CCompletionTask::Entry()
 	}
 
 	if (newName != targetPath.JoinPaths(dstName)) {
-		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
+		AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
 			% dstName % newName.GetFullName());
 	}
 
@@ -449,7 +449,7 @@ void CCompletionTask::Entry()
 		}
 		
 		if (!CPath::RemoveFile(partfilename)) {
-			AddLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
+			AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
 				% partfilename);
 		}
 	}
@@ -461,7 +461,7 @@ void CCompletionTask::Entry()
 
 		if (toRemove.FileExists()) {
 			if (!CPath::RemoveFile(toRemove)) {
-				AddLogLineM(true, logPartFile, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
+				AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
 			}
 		}
 	}
