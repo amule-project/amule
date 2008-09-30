@@ -42,8 +42,8 @@ i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, bg, 
 			If you just want en_GB, use i18n-en-only
 
 If one of the -dbg targets is choosen, the corresponding binary will be built, too. In this case,
-debugging is enabled, profiling and optimising are disabled. Is no -dbg target choosen, debugging
-is disabled, profiling and optimising are enabled.
+debugging is enabled, optimising is disabled. Is no -dbg target choosen, debugging is disabled, 
+optimising is enabled.
 
 If you choose to just build a few packages, you have to explicit activate ed2k or xas if 
 you want to get the pkg's
