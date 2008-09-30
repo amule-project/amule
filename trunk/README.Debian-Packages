@@ -2,8 +2,9 @@ This debian rules file controls the buildprocess of the packages of aMule you ca
 dpkg-buildpackage -us -uc -b -rfakeroot
 to build them all, or you can invoke debian/rules directly with the target you want to be build. If you run
 debian/rules without a target, or with the target help, this help will be printed. Other possible targets
-are listed below, you can combine them as you need. amule-common, the packages with the themes for the
-webserver and i18n-en-gb are build everytime.
+are listed below, you can combine them as you need. amule-common, the packages with the skins and
+i18n-en-gb are build everytime. The Theme for the webserver get build when you build the
+webserver.
 
 amule			Builds the normal GUI-Version of aMule
 ed2k			Builds the ed2k-client of aMule
