@@ -1,3 +1,157 @@
+amule (2.2.2+SVN20080930) testing; urgency=low
+
+  * debian/rules
+    + clean target now uses dh_autoclean
+    + clean target now uses dh_prep
+    + Removed stamp-files from clean target
+    + Moved the stripping of -dbg packages to separate define
+    + Removed dh_clean from build target
+    + Removed dh_installdirs from clean target
+    + Use dh_auto_install
+    + Added xas to normal-packages
+    + Use dh_auto-build
+    + Use dh_auto_configure and remove the now unneeded params and vars
+    + Removed dh_clean and dh_installdirs from install target
+    + Removed the unnueeded pkg var
+    + Made the commands use $@
+    + Put language-packages into one generic target
+    + Removed the trap for clean
+    + Removed the setting of gcc-vars, dpkg-buildpackage does this by itself
+    + Moved all -stage1 and -stage2 targets into generic ones
+    + Let the mapping targets use $@
+    + Added check for existing .ovveride file before installing it
+    + Moved package amule-theme-default from general to webserver
+  * debian/compat
+    Use debhelper 7 features
+  * debian/control
+    + Adjusted description of amule-theme-default
+    + Changed Maintainer to satisfy lintian
+    + Added Replaces for older amule-utils for amule-ed2k
+    + Added Replaces for older amule-utils for amule-alcc
+    + Added Replaces for older amule-utils for amule-cas
+    + Added Replaces for older amule-utils for amule-amulecmd
+    + Added Replaces for older amule-utils-gui for amule-wxcas
+    + Added Replaces for older amule-utils-gui for amule-alc
+    + Added Replaces for older amule-utils-gui for amule-remotegui
+  * Added debian/clean
+  * Removed maintainer warning from override files
+  * Deleted now empty file
+    + amule-alcc-dbg.override
+    + amule-alcc.override
+    + amule-alc-dbg.override
+    + amule-alc.override
+    + amule-cas-dbg.override
+    + amule-cas.override
+    + amule-cmd-dbg.override
+    + amule-cmd.override
+    + amule-common.override
+    + amule-daemon-dbg.override
+    + amule-daemon.override
+    + amule-dbg.override
+    + amule-ed2k-dbg.override
+    + amule-ed2k.override
+    + amule-i18n-ar.override
+    + amule-i18n-bg.override
+    + amule-i18n-ca.override
+    + amule-i18n-da.override
+    + amule-i18n-de.override
+    + amule-i18n-en-gb.override
+    + amule-i18n-es.override
+    + amule-i18n-et-ee.override
+    + amule-i18n-eu.override
+    + amule-i18n-fi.override
+    + amule-i18n-fr.override
+    + amule-i18n-gl.override
+    + amule-i18n-hr.override
+    + amule-i18n-hu.override
+    + amule-i18n-it-ch.override
+    + amule-i18n-it.override
+    + amule-i18n-ko-kr.override
+    + amule-i18n-lt.override
+    + amule-i18n-nl.override
+    + amule-i18n-nn.override
+    + amule-i18n-pl.override
+    + amule-i18n-pt-br.override
+    + amule-i18n-pt-pt.override
+    + amule-i18n-ru.override
+    + amule-i18n-sl.override
+    + amule-i18n-sv.override
+    + amule-i18n-tr.override
+    + amule-i18n-zh-cn.override
+    + amule-i18n-zh-tw.override
+    + amule-remote-gui-dbg.override
+    + amule-remote-gui.override
+    + amule-skin-gnome.override
+    + amule-skin-kde4.override
+    + amule-skin-tango.override
+    + amule-skin-xfce.override
+    + amule-theme-default.override
+    + amule-utils-gui.override
+    + amule-utils.override
+    + amuleweb-dbg.override
+    + amuleweb.override
+    + amule-wxcas-dbg.override
+    + amule-wxcas.override
+  * Removed ovveride dir from
+    + amule-alcc-dbg.dirs
+    + amule-alcc.dirs
+    + amule-alc-dbg.dirs
+    + amule-alc.dirs
+    + amule-cas-dbg.dirs
+    + amule-cas.dirs
+    + amule-cmd-dbg.dirs
+    + amule-cmd.dirs
+    + amule-common.dirs
+    + amule-daemon-dbg.dirs
+    + amule-daemon.dirs
+    + amule-dbg.dirs
+    + amule-ed2k-dbg.dirs
+    + amule-ed2k.dirs
+    + amule-i18n-ar.dirs
+    + amule-i18n-bg.dirs
+    + amule-i18n-ca.dirs
+    + amule-i18n-da.dirs
+    + amule-i18n-de.dirs
+    + amule-i18n-en-gb.dirs
+    + amule-i18n-es.dirs
+    + amule-i18n-et-ee.dirs
+    + amule-i18n-eu.dirs
+    + amule-i18n-fi.dirs
+    + amule-i18n-fr.dirs
+    + amule-i18n-gl.dirs
+    + amule-i18n-hr.dirs
+    + amule-i18n-hu.dirs
+    + amule-i18n-it-ch.dirs
+    + amule-i18n-it.dirs
+    + amule-i18n-ko-kr.dirs
+    + amule-i18n-lt.dirs
+    + amule-i18n-nl.dirs
+    + amule-i18n-nn.dirs
+    + amule-i18n-pl.dirs
+    + amule-i18n-pt-br.dirs
+    + amule-i18n-pt-pt.dirs
+    + amule-i18n-ru.dirs
+    + amule-i18n-sl.dirs
+    + amule-i18n-sv.dirs
+    + amule-i18n-tr.dirs
+    + amule-i18n-zh-cn.dirs
+    + amule-i18n-zh-tw.dirs
+    + amule-remote-gui-dbg.dirs
+    + amule-remote-gui.dirs
+    + amule-skin-gnome.dirs
+    + amule-skin-kde4.dirs
+    + amule-skin-tango.dirs
+    + amule-skin-xfce.dirs
+    + amule-theme-default.dirs
+    + amuleweb-dbg.dirs
+    + amuleweb.dirs
+    + amule-wxcas-dbg.dirs
+    + amule-wxcas.dirs
+  * Removed Package amule-theme-php-default
+  * Removed Package amule-theme-chicane
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Tue, 30 Sep 2008  11:46:01 +0100
+
 amule (2.2.2+SVN20080812) testing; urgency=low
 
   * Corrected Copyright file

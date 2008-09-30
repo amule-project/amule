@@ -1,7 +1,7 @@
 Source: amule
 Section: net
 Priority: optional
-Maintainer: Vollstrecker <amule@vollstreckernet.de>
+Maintainer: Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>
 Build-Depends: debhelper (>= 5.0.0), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline5-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev
 Standards-Version: 3.8.0.1
 
@@ -52,7 +52,8 @@ Description: amule ed2k link-handler
 Package: amule-cas
 Architecture: any
 Depends: ${shlibs:Depends}, amule (= ${binary:Version}) | amule-daemon (= ${binary:Version})
-Conflicts: amule-utils (<< ${binary:Version}), amule-common (<< ${binary:Version})
+Conflicts: amule-utils (<< ${binary:Version})
+Replaces: amule-utils (<< ${binary:Version})
 Description: reporting module for amule
  cas reports statistics about amule on the console
 
@@ -60,6 +61,7 @@ Package: amule-wxcas
 Architecture: any
 Depends: ${shlibs:Depends}, amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}), amule-i18n-en-gb (= ${binary:Version}) | amule-i18n
 Conflicts: amule-utils (<< ${binary:Version})
+Replaces: amule-utils (<< ${binary:Version})
 Description: reporting module for amule (graphical)
  wxcas reports statistics about amule on your desktop, using wxlib
 
@@ -83,22 +85,8 @@ Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
 Conflicts: amule-common (<< ${binary:Version}), amule (<< ${binary:Version})
 Description: the default template for the webserver
  this package contains the default template for amulewebserver
-
-Package: amule-theme-php-default
-Architecture: any
-Provides: amule-web-templates
-Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
-Conflicts: amule-common (<< ${binary:Version})
-Description: the default template for the webserver
- this package contains the default php template for amulewebserver
-
-Package: amule-theme-chicane
-Architecture: any
-Provides: amule-web-templates
-Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
-Conflicts: amule-common (<< ${binary:Version}), amule (<< ${binary:Version})
-Description: a new template set for the webserver
- this package contains a new theme for amulewebserver
+ atm the litoral theme is the default one, and the only one
+ included in aMule
 
 Package: amuleweb
 Architecture: any
@@ -130,6 +118,7 @@ Package: amule-alc
 Architecture: any
 Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n
 Conflicts: amule-utils (<< ${binary:Version})
+Replaces: amule-utils (<< ${binary:Version})
 Description: the amule-link-creator
  amule-link-creator lets you create ed2k-links and hashes for a given file.
 
@@ -137,6 +126,7 @@ Package: amule-alcc
 Architecture: any
 Depends: ${shlibs:Depends}
 Conflicts: amule-utils (<< ${binary:Version})
+Replaces: amule-utils (<< ${binary:Version})
 Description: the amule-link-creator (commandline-version)
  amule-link-creator lets you create ed2k-links and hashes for a given file
  from the commandline.
@@ -145,6 +135,7 @@ Package: amule-cmd
 Architecture: any
 Depends: ${shlibs:Depends}
 Conflicts: amule-utils (<< ${binary:Version})
+Replaces: amule-utils (<< ${binary:Version})
 Description: the amule-commandline-client
  amulecmd gives you control over a running amule-daemon or amule from
  commandline.
