@@ -270,6 +270,11 @@ m_in_header(true)
 	
 }
 
+bool CECSocket::HaveNotificationSupport()
+{
+	return (m_rx_flags & EC_FLAG_NOTIFY) != 0;
+}
+
 CECSocket::~CECSocket()
 {
 	while (!m_output_queue.empty()) {

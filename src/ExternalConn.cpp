@@ -1616,6 +1616,7 @@ void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetDirty(file);
 	}
+	NextPacketToSocket();
 }
 
 void ECNotifier::DownloadFile_RemoveFile(CPartFile *file)
@@ -1673,7 +1674,7 @@ void ECNotifier::NextPacketToSocket()
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); i++) {
 		CECServerSocket *sock = i->first;
-		if ( !sock->DataPending() ) {
+		if ( sock->HaveNotificationSupport() && !sock->DataPending() ) {
 			ECUpdateMsgSource **notifier_array = i->second;
 			CECPacket *packet = GetNextPacket(notifier_array);
 			sock->SendPacket(packet);
