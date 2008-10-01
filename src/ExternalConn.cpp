@@ -125,9 +125,11 @@ void CECServerSocket::OnLost()
 
 void CECServerSocket::WriteDoneAndQueueEmpty()
 {
-	CECPacket *packet = m_ec_notifier->GetNextPacket(this);
-	if ( packet ) {
-		SendPacket(packet);
+	if ( HaveNotificationSupport() ) {
+		CECPacket *packet = m_ec_notifier->GetNextPacket(this);
+		if ( packet ) {
+			SendPacket(packet);
+		}
 	}
 }
 
