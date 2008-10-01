@@ -8,7 +8,7 @@
 @synthesize tagName = m_name;
 @synthesize tagType = m_type;
 
-+ (id)tagFromBuffer:(uint8_t *) buffer withLenght:(int) length {
++ (id)tagFromBuffer:(uint8_t **) buffer withLenght:(int) length {
 	ECTag *tag = nil; //[[ECTag alloc] init];
 
 	if ( length < 4 ) {
@@ -16,30 +16,29 @@
 		return nil;
 	}
 	
-	uint16_t name16 = *(uint16_t *)buffer;
+	uint16_t name16 = *(uint16_t *)(*buffer);
 	name16 = ntohs(name16);
 	bool have_subtags = (name16 & 1) != 0;
 	name16 >>= 1;
 	ECTagNames tag_name = (ECTagNames)(name16);
+	*buffer += sizeof(name16);
 	
-	uint8_t type8 = *(buffer + 1);
+	uint8_t type8 = *(*buffer);
 	ECTagTypes tag_type = (ECTagTypes)type8;
-	
-	buffer += 3;
+	*buffer += sizeof(type8);
 
-	// TODO: buffer pointer is not advanced here!
-	NSMutableArray *subtags = have_subtags ? [ECTag readSubtags:buffer] : nil;
+	NSMutableArray *subtags = have_subtags ? [ECTag readSubtags:buffer withLenght:(length-3)] : nil;
 
 	switch (tag_type) {
 		case EC_TAGTYPE_UINT8:
 			tag = [ECTagInt8 tagFromBuffer:buffer];
 			break;
-//		case EC_TAGTYPE_UINT16:
-//			tag = [ECTagInt16 tagFromBuffer:buffer];
-//			break;
-//		case EC_TAGTYPE_UINT32:
-//			tag = [ECTagInt32 tagFromBuffer:buffer];
-//			break;
+		case EC_TAGTYPE_UINT16:
+			tag = [ECTagInt16 tagFromBuffer:buffer];
+			break;
+		case EC_TAGTYPE_UINT32:
+			tag = [ECTagInt32 tagFromBuffer:buffer];
+			break;
 		case EC_TAGTYPE_UINT64:
 			tag = [ECTagInt64 tagFromBuffer:buffer];
 			break;
@@ -53,7 +52,15 @@
 	return tag;	
 }
 
-+ (NSMutableArray *)readSubtags:(uint8_t *) buffer {
++ (NSMutableArray *)readSubtags:(uint8_t **) buffer withLenght:(int) length {
+
+	uint16_t count16 = *(uint16_t *)buffer;
+	count16 = ntohs(count16);
+	buffer += sizeof(count16);
+	
+	for(int i = 0; i < count16; i++) {
+	}
+	
 	return nil;
 }
 
@@ -118,11 +125,13 @@
 	return tag;	
 }
 
-+ (id)tagFromBuffer:(uint8_t *) buffer {
++ (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt8 *tag = [[ECTagInt8 alloc] init];
-	tag->m_val = *buffer;
+	tag->m_val = **buffer;
 	tag->m_size = 1;
 	tag->m_type = EC_TAGTYPE_UINT8;
+	
+	*buffer += 1;
 	
 	return tag;
 }
@@ -147,19 +156,47 @@
 	return tag;	
 }
 
-+ (id)tagFromBuffer:(uint8_t *) buffer {
++ (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt16 *tag = [[ECTagInt16 alloc] init];
 	
-	tag->m_val = ntohs(*((uint16_t *)buffer));
+	tag->m_val = ntohs(*((uint16_t *)(*buffer)));
 	tag->m_size = 2;
 	tag->m_type = EC_TAGTYPE_UINT16;
 	
+	*buffer += 2;
+
 	return tag;
 }
 
 
 @end
 
+@implementation ECTagInt32
+
++ (id)tagFromInt32:(uint32_t) value withName:(ECTagNames) name {
+	ECTagInt32 *tag = [[ECTagInt32 alloc] init];
+	tag->m_val = value;
+	tag->m_size = 4;
+	tag->m_type = EC_TAGTYPE_UINT32;
+	tag->m_name = name;
+	
+	return tag;	
+}
+
++ (id)tagFromBuffer:(uint8_t **) buffer {
+	ECTagInt32 *tag = [[ECTagInt32 alloc] init];
+	
+	tag->m_val = ntohs(*((uint32_t *)(*buffer)));
+	tag->m_size = 4;
+	tag->m_type = EC_TAGTYPE_UINT32;
+	
+	*buffer += 4;
+
+	return tag;
+}
+
+
+@end
 
 @implementation ECTagInt64
 
@@ -174,13 +211,16 @@
 }
 
 
-+ (id)tagFromBuffer:(uint8_t *) buffer {
++ (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt64 *tag = [[ECTagInt64 alloc] init];
 	uint64_t lo, hi;
-	uint32 val32 = *((uint32_t *)buffer);
+	uint32 val32 = *((uint32_t *)(*buffer));
 	lo = ntohl(val32);
-	val32 = *((uint32_t *)(buffer + 4));
+	*buffer += 4;
+
+	val32 = *((uint32_t *)(*buffer));
 	hi = ntohl(val32);
+	*buffer += 4;
 	
 	tag->m_val = (hi << 32) | lo;
 	tag->m_size = 8;
@@ -216,6 +256,12 @@
 - (void) dealloc {
 	[m_data release];
 	[super dealloc];
+}
+
++ (id)tagFromBuffer:(uint8_t **) buffer {
+	ECTagInt64 *tag = [[ECTagInt64 alloc] init];
+	
+	return tag;
 }
 
 
@@ -299,6 +345,11 @@
 	data++;
 
 	uint16_t tag_count = ntohl(*((uint16_t *)data));
+	uint8_t *start_ptr = data;
+	for(int i = 0; i < tag_count; i++) {
+		ECTag *tag = [ECTag tagFromBuffer:&data withLenght:([buffer length] - (data - start_ptr))];
+		[p->m_subtags addObject:tag];
+	}
 	data += 2;
 	
 	return p;
@@ -349,6 +400,9 @@
 	
 	ECTagInt64 *proto_version_tag = [ECTagInt64 tagFromInt64:EC_CURRENT_PROTOCOL_VERSION withName:EC_TAG_PROTOCOL_VERSION];
 	[p->m_subtags addObject:proto_version_tag];
+	
+	// allow notification push to my client
+	p->m_flags |= EC_FLAG_NOTIFY;
 	
 	return p;
 }

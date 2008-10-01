@@ -12,8 +12,8 @@
 	NSMutableArray *m_subtags;
 }
 
-+ (id)tagFromBuffer:(uint8_t *) buffer withLenght:(int) length;
-+ (NSMutableArray *)readSubtags:(uint8_t *) buffer;
++ (id)tagFromBuffer:(uint8_t **) buffer withLenght:(int) length;
++ (NSMutableArray *)readSubtags:(uint8_t **) buffer withLenght:(int) length;
 
 - (void)initSubtags;
 - (void)writeToSocket:(NSOutputStream *) socket;
@@ -31,7 +31,7 @@
 }
 
 + (id)tagFromInt8:(uint8_t) value withName:(ECTagNames) name;
-+ (id)tagFromBuffer:(uint8_t *) buffer;
++ (id)tagFromBuffer:(uint8_t **) buffer;
 
 @end
 
@@ -40,7 +40,16 @@
 }
 
 + (id)tagFromInt16:(uint16_t) value withName:(ECTagNames) name;
-+ (id)tagFromBuffer:(uint8_t *) buffer;
++ (id)tagFromBuffer:(uint8_t **) buffer;
+
+@end
+
+@interface ECTagInt32 : ECTag {
+	uint32_t m_val;
+}
+
++ (id)tagFromInt32:(uint32_t) value withName:(ECTagNames) name;
++ (id)tagFromBuffer:(uint8_t **) buffer;
 
 @end
 
@@ -49,7 +58,7 @@
 }
 
 + (id)tagFromInt64:(uint64_t) value withName:(ECTagNames) name;
-+ (id)tagFromBuffer:(uint8_t *) buffer;
++ (id)tagFromBuffer:(uint8_t **) buffer;
 
 @end
 
@@ -58,7 +67,7 @@
 }
 
 - (void)writeToSocket:(NSOutputStream *) socket;
-+ (id)tagFromBuffer:(NSMutableData *) buffer;
++ (id)tagFromBuffer:(uint8_t **) buffer;
 
 @end
 
