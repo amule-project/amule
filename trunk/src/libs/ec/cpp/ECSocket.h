@@ -99,6 +99,8 @@ public:
 
 	void CloseSocket() { InternalClose(); }
 
+	bool HaveNotificationSupport();
+		
 	/**
 	 * Sends an EC packet and returns immediately.
 	 *
