@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-28 03:30+0200\n"
+"POT-Creation-Date: 2008-10-02 03:31+0200\n"
 "PO-Revision-Date: 2008-09-17 01:38+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@lists.kde.org>\n"
@@ -133,7 +133,7 @@ msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız"
 #: src/BaseClient.cpp:1723 src/BaseClient.cpp:2246 src/BaseClient.cpp:2520
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:265 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:267 src/Statistics.cpp:710 src/Statistics.cpp:891
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -2236,36 +2236,36 @@ msgstr "Yetkilendirilmemiş giriş denemesi. Bağlantı kesildi."
 msgid "External connection closed."
 msgstr "Dışarıdan bağlantı kesildi."
 
-#: src/ExternalConn.cpp:156
+#: src/ExternalConn.cpp:158
 msgid "External connections disabled due to empty password!"
 msgstr "Boş şifre sebebiyle dışarıdan bağlantı devre dışı!"
 
-#: src/ExternalConn.cpp:181
+#: src/ExternalConn.cpp:183
 msgid "External connections disabled in config file"
 msgstr "Yapılandırma dosyasında dışarıdan bağlantılar devre dışı bırakılmış."
 
-#: src/ExternalConn.cpp:232
+#: src/ExternalConn.cpp:234
 msgid "New external connection accepted"
 msgstr "Yeni dışarıdan bağlantı kabul edildi"
 
-#: src/ExternalConn.cpp:235
+#: src/ExternalConn.cpp:237
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "HATA: yeni bir dış bağlantı kabul edilemiyor"
 
-#: src/ExternalConn.cpp:254
+#: src/ExternalConn.cpp:256
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Ayarlardaki boş şifre sebebiyle dışarıdan bağlantılar reddedildi."
 
-#: src/ExternalConn.cpp:264
+#: src/ExternalConn.cpp:266
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Kullanıcıya bağlanılıyor: %s %s"
 
-#: src/ExternalConn.cpp:266
+#: src/ExternalConn.cpp:268
 msgid "Unknown version"
 msgstr "Bilinmeyen sürüm"
 
-#: src/ExternalConn.cpp:277
+#: src/ExternalConn.cpp:279
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2273,7 +2273,7 @@ msgstr ""
 "Yanlış EC sürüm ID, bir çift uyumsuzluğu olabilir. Aynı görüntüden çekirdek "
 "ve uzak kullanınız."
 
-#: src/ExternalConn.cpp:282
+#: src/ExternalConn.cpp:284
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2281,140 +2281,140 @@ msgstr ""
 "Keyfi bir SVN sürümden dengeli bir sürüme bağlanamazsınız! muhtemel bir kaza "
 "önlendi"
 
-#: src/ExternalConn.cpp:303
+#: src/ExternalConn.cpp:305
 msgid "Authentication failed."
 msgstr "Doğrulanamadı."
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:309
 msgid "Invalid protocol version."
 msgstr "Geçersiz protokol sürümü."
 
-#: src/ExternalConn.cpp:311
+#: src/ExternalConn.cpp:313
 msgid "Missing protocol version tag."
 msgstr "Kayıp protokol sürüm eki."
 
-#: src/ExternalConn.cpp:315
+#: src/ExternalConn.cpp:317
 msgid "Invalid request, you should first authenticate."
 msgstr "Geçersiz istem, öncelikle doğrulatmanız lazım."
 
-#: src/ExternalConn.cpp:321
+#: src/ExternalConn.cpp:323
 msgid "Access granted."
 msgstr "Giriş izni verildi."
 
-#: src/ExternalConn.cpp:579
+#: src/ExternalConn.cpp:581
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Uzak Parça Dosyası komutu başarısız: Dosya Adreslemesi bulunamadı: %s"
 
-#: src/ExternalConn.cpp:581
+#: src/ExternalConn.cpp:583
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Dosya adreslemesi bulunamadı: %s"
 
-#: src/ExternalConn.cpp:644 src/ExternalConn.cpp:728
+#: src/ExternalConn.cpp:646 src/ExternalConn.cpp:730
 msgid "OOPS! OpCode processing error!"
 msgstr "Aman aman! OpCode işleme hatası!"
 
-#: src/ExternalConn.cpp:674
+#: src/ExternalConn.cpp:676
 msgid "Server not added"
 msgstr "Sunucu eklenmedi."
 
-#: src/ExternalConn.cpp:692
+#: src/ExternalConn.cpp:694
 #, c-format
 msgid "server not found: %s"
 msgstr "sunucu bulunamadı: %s"
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:710
 msgid "need to define server to be removed"
 msgstr "çıkarılacak sunucunun tanımlanması gerekli"
 
-#: src/ExternalConn.cpp:722
+#: src/ExternalConn.cpp:724
 msgid "eD2k is disabled in preferences."
 msgstr "pasifleştirilmiş."
 
-#: src/ExternalConn.cpp:818
+#: src/ExternalConn.cpp:820
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Arama sürüyor.Bir dakikaya sonuçlanır!"
 
-#: src/ExternalConn.cpp:823
+#: src/ExternalConn.cpp:825
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Uzak arayüzden Web araması yapmak anlamsız."
 
-#: src/ExternalConn.cpp:874
+#: src/ExternalConn.cpp:876
 msgid "Kad is disabled in preferences."
 msgstr "Kad. ayarlarda devre dışı bırakılmış."
 
-#: src/ExternalConn.cpp:1035
+#: src/ExternalConn.cpp:1037
 msgid "No points for graph."
 msgstr "Grafik için hiç nokta yok."
 
-#: src/ExternalConn.cpp:1044
+#: src/ExternalConn.cpp:1046
 msgid "Your client is not configured for this detail level."
 msgstr "Yazılımınız bu ayrıntı düzeyi için yapılandırılmamış."
 
-#: src/ExternalConn.cpp:1072
+#: src/ExternalConn.cpp:1074
 msgid "External Connection: shutdown requested"
 msgstr "Bağlantı kapat"
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1086
 msgid "Already shutting down."
 msgstr "Zaten kapatılıyor."
 
-#: src/ExternalConn.cpp:1092
+#: src/ExternalConn.cpp:1094
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Dışarıdan Bağ.:'%s' bağlantısı ekleniyor."
 
-#: src/ExternalConn.cpp:1098
+#: src/ExternalConn.cpp:1100
 msgid "Invalid link or already on list."
 msgstr "Geçersiz bağlantı veya zaten listede mevcut."
 
-#: src/ExternalConn.cpp:1183
+#: src/ExternalConn.cpp:1185
 msgid "File not found."
 msgstr "Dosya bulunamadı."
 
-#: src/ExternalConn.cpp:1188
+#: src/ExternalConn.cpp:1190
 msgid "Invalid file name."
 msgstr "Geçersiz dosya adı."
 
-#: src/ExternalConn.cpp:1196
+#: src/ExternalConn.cpp:1198
 msgid "Unable to rename file."
 msgstr "Dosya yeniden adlandırılamıyor."
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1422
 msgid "Already connected to eD2k."
 msgstr "eD2k ağına zaten bağlandı."
 
-#: src/ExternalConn.cpp:1423
+#: src/ExternalConn.cpp:1425
 msgid "Connecting to eD2k..."
 msgstr "Bağlanıyor."
 
-#: src/ExternalConn.cpp:1431
+#: src/ExternalConn.cpp:1433
 msgid "Already connected to Kad."
 msgstr "Kad. zaten bağlı."
 
-#: src/ExternalConn.cpp:1434
+#: src/ExternalConn.cpp:1436
 msgid "Connecting to Kad..."
 msgstr "Kad.' a bağlanıyor..."
 
-#: src/ExternalConn.cpp:1439
+#: src/ExternalConn.cpp:1441
 msgid "All networks are disabled."
 msgstr "Bütün ağlar devre dışı"
 
-#: src/ExternalConn.cpp:1447
+#: src/ExternalConn.cpp:1449
 msgid "Disconnected from eD2k."
 msgstr "Bağlantı kesildi."
 
-#: src/ExternalConn.cpp:1451
+#: src/ExternalConn.cpp:1453
 msgid "Disconnected from Kad."
 msgstr "Bağlantı kesildi :Kad."
 
-#: src/ExternalConn.cpp:1459
+#: src/ExternalConn.cpp:1461
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Dış Bağlantı: geçersiz opcode alındı: %#x"
 
-#: src/ExternalConn.cpp:1462
+#: src/ExternalConn.cpp:1464
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Geçersiz opcode (yanlış protokol sürümü mü?)"
 
