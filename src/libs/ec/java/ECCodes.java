@@ -33,6 +33,7 @@ public final static int EC_FLAG_ZLIB	 = 0x00000001;
 public final static int EC_FLAG_UTF8_NUMBERS = 0x00000002;
 public final static int EC_FLAG_HAS_ID	 = 0x00000004;
 public final static int EC_FLAG_ACCEPTS	 = 0x00000010;
+public final static int EC_FLAG_NOTIFY	 = 0x00008000;
 public final static int EC_FLAG_UNKNOWN_MASK = 0xff7f7f08;
 
 public final static byte EC_OP_NOOP                          = 0x01;

@@ -34,6 +34,7 @@ public enum ECFlags {
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
+	EC_FLAG_NOTIFY	 = 0x00008000,
 
 };
 public enum ECOpCodes {
