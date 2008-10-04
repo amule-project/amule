@@ -7,6 +7,7 @@
 
 @synthesize tagName = m_name;
 @synthesize tagType = m_type;
+@synthesize subtags = m_subtags;
 
 + (id)tagFromBuffer:(uint8_t **) buffer withLenght:(int) length {
 	ECTag *tag = nil; //[[ECTag alloc] init];
@@ -287,6 +288,16 @@
 	return tag;
 }
 
+
+- (MD5Data)getMD5Data {
+	uint8_t *data_ptr = (uint8_t *)[m_data bytes];
+
+	uint64_t hi = *(uint64_t *)data_ptr;
+	data_ptr += 8;
+	uint64_t lo = *(uint64_t *)data_ptr;
+	MD5Data md5 = {hi, lo};
+	return md5;
+}
 
 @end
 

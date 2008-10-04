@@ -24,6 +24,9 @@
 @property (readonly) ECTagTypes tagType;
 @property (readonly) ECTagNames tagName;
 
+// needed for fast enumeration of subtags in data updates
+@property (readonly) NSMutableArray *subtags;
+
 @end
 
 @interface ECTagInt8 : ECTag {
@@ -71,11 +74,16 @@
 
 @end
 
+typedef struct {
+	uint64_t lo, hi;
+} MD5Data;
+
 @interface ECTagMD5 : ECTagData {
 }
 
-+ tagFromString:(NSString *) string withName:(ECTagNames) name;
++ (id)tagFromString:(NSString *) string withName:(ECTagNames) name;
 
+- (MD5Data)getMD5Data;
 
 @end
 
