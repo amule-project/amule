@@ -335,6 +335,10 @@
 - (void)initWithOpcode:(ec_opcode_t) opcode {
 	m_opcode = opcode;
 	m_flags = 0x20;
+
+	// allow notification push to my client
+	m_flags |= EC_FLAG_NOTIFY;
+
 	[self initSubtags];
 }
 
@@ -411,10 +415,7 @@
 	
 	ECTagInt64 *proto_version_tag = [ECTagInt64 tagFromInt64:EC_CURRENT_PROTOCOL_VERSION withName:EC_TAG_PROTOCOL_VERSION];
 	[p->m_subtags addObject:proto_version_tag];
-	
-	// allow notification push to my client
-	p->m_flags |= EC_FLAG_NOTIFY;
-	
+		
 	return p;
 }
 
@@ -559,12 +560,15 @@
 				if ( m_login_requested ) {
 					m_login_requested = false;
 					m_login_ok = packet.opcode == EC_OP_AUTH_OK;
+					NSLog(@"[EC] server reply: %@\n", m_login_ok ? @"login OK" : @"login FAILED");
 				} else {
+					NSLog(@"[EC] calling delegate\n");
 					if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
 						[delegate handlePacket: packet];
 					}
 				}
-
+				m_remaining_size = 8;
+				m_rx_size = 0;
 			}
             break;
         }
