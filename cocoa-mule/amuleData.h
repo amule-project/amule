@@ -2,9 +2,16 @@
 
 #import "EC.h"
 
-@interface DownloadingFile : NSObject {
+@interface amuleFile : NSObject {
 	NSString *m_name;
-	
+	MD5Data m_hash;
+}
+
+- (bool)sameID: (MD5Data *) hash;
+
+@end
+
+@interface DownloadingFile : amuleFile {	
 	int m_src_count;
 	int m_non_current_src_count;
 	int m_xfer_src_count;
@@ -16,7 +23,6 @@
 	
 	int m_speed;
 	
-	MD5Data m_hash;
 }
 
 + (id)createFromEC:(ECTag *) tag;

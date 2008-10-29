@@ -1,6 +1,14 @@
 
 #import "amuleData.h"
 
+@implementation amuleFile
+
+- (bool)sameID: (MD5Data *) hash {
+	return ((hash->lo == m_hash.lo) && (hash->hi == m_hash.hi));
+}
+
+@end
+
 
 @implementation amuleData
 
@@ -31,10 +39,14 @@
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet {
 	for (ECTag *t in packet.subtags) {
-		//
-		// FIXME: some kind of custom hash should be used to locate
-		// object for given MD5.
-		for (DownloadingFile *o in m_downloads) {
+		if ( [t isKindOfClass:[ECTagMD5 class]] ) {
+			//
+			// FIXME: some kind of custom hash should be used to locate
+			// object for given MD5.
+			for (DownloadingFile *o in m_downloads) {
+			}
+		} else {
+			NSLog(@"[EC] bad tag type '%s'\n", [t class]);
 		}
 	}
 }

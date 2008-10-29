@@ -7,10 +7,14 @@
 - (IBAction)show_Networks:(id)sender {
 	[m_main_tabview selectTabViewItemAtIndex: 2];
 	
-	ECRemoteConnection *c = [ECRemoteConnection remoteConnection];
-//	
-	[c connectToAddress:@"127.0.0.1" withPort:4712];
-	ECLoginPacket *p = [ECLoginPacket loginPacket:@"123456" withVersion:@"0.1"];
+	m_connection = [ECRemoteConnection remoteConnection];
+	[m_connection retain];
+	
+	[m_connection connectToAddress:@"127.0.0.1" withPort:4712];
+
+	[m_connection sendLogin:@"123456"];
+
+//	ECLoginPacket *p = [ECLoginPacket loginPacket:@"123456" withVersion:@"0.1"];
 //	NSOutputStream *stream = [NSOutputStream outputStreamToMemory];
 //	uint8_t buffer[1024];
 //	memset(buffer, 0, 1024);
@@ -20,7 +24,7 @@
 //	id data = [stream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
 // 	int off = [data length];
 //	NSLog(@"off=%d", off);
-	[c sendPacket:p];
+//	[m_connection sendPacket:p];
 }
 
 - (IBAction)show_Search:(id)sender {
@@ -37,6 +41,9 @@
 
 - (IBAction)show_Xfers:(id)sender {
 	[m_main_tabview selectTabViewItemAtIndex: 0];
+
+	ECPacket *p = [ECPacket packetWithOpcode:EC_OP_GET_DLOAD_QUEUE];
+	[m_connection sendPacket:p];
 }
 
 -(IBAction)show_Preferences:(id)sender {
