@@ -135,16 +135,6 @@ private:
 	 */
 	void BuildModifiers();
 	
-	/**
-	 * Fills a rectangle with a given color.
-	 *
-	 * @param dc The DC upon which to draw the bar.
-	 * @param rectSpan The area within the specifed DC upon which to draw.
-	 * @param color The color of the rectangle.
-	 * @param bFlat If this is true, a simple rectangle will be drawn, otherwise the modifers will be applyed to achive a 3D effect.
-	 */
-	void FillRect(wxDC* dc, const wxRect& rectSpan, const CMuleColour& colour, bool bFlat);
-
 	//! The width of the drawn bar
 	int    m_Width;
 	//! The height of the drawn bar
