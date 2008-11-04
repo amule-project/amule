@@ -24,6 +24,7 @@
 //
 
 #include <wx/dc.h>
+#include <wx/image.h>
 #include "BarShader.h"		// Interface declarations.
 
 const double Pi = 3.14159265358979323846264338328;
@@ -178,56 +179,52 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.height = m_Height;
 	rectSpan.width = 0;
 	
-	// CMuleColour could be used for everything here, but I don't use it for speedup reasons.
-	
-	CMuleColour lastcolour;
-	
-	dc->SetPen(*wxTRANSPARENT_PEN);
+	// Render the bar into a raw buffer
+	unsigned char * buf = (unsigned char *) malloc(m_Width * m_Height * 3);
 
-	// draw each pixel, draw same colored pixels together
-	for (int x = 0; x < m_Width; x++) {
-		const CMuleColour& colour = m_Content[x];
-		if (x && colour.IsSameAs(lastcolour)) {
-			rectSpan.width++;
-		} else {
-			if (rectSpan.width) {
-				FillRect(dc, rectSpan, lastcolour, bFlat);
-				rectSpan.x += rectSpan.width;
+	// draw flat bar
+	if (bFlat) {
+		for (int x = 0; x < m_Width; x++) {
+			int cRed   = m_Content[x].Red();
+			int cGreen = m_Content[x].Green();
+			int cBlue  = m_Content[x].Blue();
+			for (int y = 0; y < m_Height; y++) {
+				int idx = (y * m_Width + x) * 3;
+				buf[idx++] = cRed;
+				buf[idx++] = cGreen;
+				buf[idx]   = cBlue;
 			}
-			rectSpan.width = 1;
-			lastcolour = colour;
 		}
-	}
-	
-	FillRect(dc, rectSpan, lastcolour, bFlat);
-}
-
-
-void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, const CMuleColour& colour, bool bFlat)
-{
-	wxASSERT( dc );
-
-	if( bFlat || colour.IsBlack() ) {
-		dc->SetBrush( colour.GetBrush() );
-		dc->DrawRectangle( rectSpan );
 	} else {
-		int x1 = rectSpan.x;
-		int x2 = rectSpan.x + rectSpan.width;
-		int y1 = rectSpan.y;
-		int y2 = rectSpan.GetBottom();
-		
+	// draw rounded bar
 		int Max = HALF(m_Height);
-		for (int i = 0; i < Max; i++) {
-			dc->SetPen( CMuleColour(0, 0, 0).BlendWith(colour, m_Modifiers[i]).GetPen() );
-
-			// Draw top row
-			dc->DrawLine( x1, y1 + i, x2, y1 + i );
-
-			// Draw bottom row
-			dc->DrawLine( x1, y2 - i, x2, y2 - i );
+		for (int x = 0; x < m_Width; x++) {
+			for (int i = 0; i < Max; i++) {
+				int cRed   = (int)(m_Content[x].Red()   * m_Modifiers[i] + .5f);
+				int cGreen = (int)(m_Content[x].Green() * m_Modifiers[i] + .5f);
+				int cBlue  = (int)(m_Content[x].Blue()  * m_Modifiers[i] + .5f);
+				cRed   = std::min(255, cRed);
+				cGreen = std::min(255, cGreen);
+				cBlue  = std::min(255, cBlue);
+				// Draw top row
+				int y = i;
+				int idx = (y * m_Width + x) * 3;
+				buf[idx++] = cRed;
+				buf[idx++] = cGreen;
+				buf[idx]   = cBlue;
+				// Draw bottom row
+				y = m_Height - 1 - i;
+				idx = (y * m_Width + x) * 3;
+				buf[idx++] = cRed;
+				buf[idx++] = cGreen;
+				buf[idx]   = cBlue;
+			}
 		}
 	}
-
-	dc->SetBrush(wxNullBrush);
+	wxImage image(m_Width, m_Height);
+	image.SetData(buf);
+	wxBitmap bitmap(image);
+	dc->DrawBitmap(bitmap, iLeft, iTop);
 }
+
 // File_checked_for_headers

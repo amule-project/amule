@@ -41,6 +41,7 @@ Version 2.3.0 - The river knows.
 		* MSVC: solution for MSVC 2008 Express edition, 
 		  project for ed2k and fileview
 		  optional GeoIP support
+		* Faster progress bars with less overhead (without pens/brushes)
 
 	Vollstrecker:
 		* Unify copyright lines
