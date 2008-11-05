@@ -230,6 +230,7 @@ bool CLogger::OpenLogfile(const wxString & name)
 	bool ret = applog->Ok();
 	if (ret) {
 		FlushApplog();
+		m_LogfileName = name;
 	} else {
 		CloseLogfile();
 	}
@@ -241,6 +242,7 @@ void CLogger::CloseLogfile()
 {
 	delete applog;
 	applog = NULL;
+	m_LogfileName = wxT("");
 }
 
 
@@ -325,6 +327,60 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	bool critical = str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "));
 
 	AddLogLineM(critical, str);
+}
+
+
+CLoggerAccess::CLoggerAccess()
+{
+	m_bufferlen = 4096;
+	m_buffer = new wxCharBuffer(m_bufferlen);
+	m_logfile = new wxFFileInputStream(theLogger.GetLogfileName());
+	m_pos = 0;
+	m_ready = false;
+}
+
+
+CLoggerAccess::~CLoggerAccess()
+{
+	delete m_buffer;
+	delete m_logfile;
+}
+
+
+//
+// read a line of text from the logfile if available
+// (can't believe there's no library function for this >:( )
+//
+bool CLoggerAccess::HasString()
+{
+	while (!m_ready) {
+		int c = m_logfile->GetC();
+		if (c == wxEOF) {
+			break;
+		}
+		// check for buffer overrun
+		if (m_pos == m_bufferlen) {
+			m_bufferlen += 1024;
+			m_buffer->extend(m_bufferlen);
+		}
+		m_buffer->data()[m_pos++] = c;
+		if (c == '\n') {
+			m_ready = true;
+		}
+	}
+	return m_ready;
+}
+
+
+bool CLoggerAccess::GetString(wxString & s)
+{
+	if (!HasString()) {
+		return false;
+	}
+	s = wxString(m_buffer->data(), wxConvUTF8, m_pos);
+	m_pos = 0;
+	m_ready = false;
+	return true;
 }
 
 // File_checked_for_headers

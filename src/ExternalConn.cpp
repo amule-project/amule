@@ -69,9 +69,16 @@ private:
 	ECNotifier *m_ec_notifier;
 	
 	bool m_authenticated;
+	CLoggerAccess m_LoggerAccess;
 	CPartFile_Encoder_Map	m_part_encoder;
 	CKnownFile_Encoder_Map	m_shared_encoder;
 	CObjTagMap		m_obj_tagmap;
+	CECPacket *ProcessRequest2(
+		const CECPacket *request,
+		CPartFile_Encoder_Map &,
+		CKnownFile_Encoder_Map &,
+		CObjTagMap &);
+	
 };
 
 
@@ -110,7 +117,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 			m_authenticated = true;
 		}
 	} else {
-		reply = ExternalConn::ProcessRequest2(
+		reply = ProcessRequest2(
 			packet, m_part_encoder, m_shared_encoder, m_obj_tagmap);
 	}
 	return reply;
@@ -328,7 +335,25 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
+// Make a Logger tag (if there are any logging messages) and add it to the response
+static void AddLoggerTag(CECPacket *response, CLoggerAccess &LoggerAccess)
+{
+	if (LoggerAccess.HasString()) {
+		CECTag tag(EC_TAG_STATS_LOGGER_MESSAGE, (uint8_t) 0);
+		// Tag structure is fix: tag carries nothing, inside are the strings
+		// maximum of 200 log lines per message
+		int entries = 0;
+		wxString line;
+		while (entries < 200 && LoggerAccess.GetString(line)) {
+			tag.AddTag(CECTag(EC_TAG_STRING, line));
+			entries++;
+		}
+		response->AddTag(tag);
+		//printf("send Log tag %d %d\n", FirstEntry, entries);
+	}
+}
+
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &LoggerAccess)
 {
 	CECPacket *response = new CECPacket(EC_OP_STATS);
 
@@ -337,6 +362,7 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 			response->AddTag(CECTag(EC_TAG_STATS_UP_OVERHEAD, (uint32)theStats::GetUpOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_DOWN_OVERHEAD, (uint32)theStats::GetDownOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT, /*(uint32)*/theStats::GetBannedCount()));
+			AddLoggerTag(response, LoggerAccess);
 		case EC_DETAIL_WEB:
 		case EC_DETAIL_CMD:
 			response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theStats::GetUploadRate()));
@@ -1054,7 +1080,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 	return response;
 }
 
-CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
+CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 	CPartFile_Encoder_Map &enc_part_map, CKnownFile_Encoder_Map &enc_shared_map, CObjTagMap &objmap)
 {
 
@@ -1105,7 +1131,8 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Status requests
 		//
 		case EC_OP_STAT_REQ:
-			response = Get_EC_Response_StatRequest(request);
+			response = Get_EC_Response_StatRequest(request, m_LoggerAccess);
+			break;
 		case EC_OP_GET_CONNSTATE:
 			if (!response) {
 				response = new CECPacket(EC_OP_MISC_DATA);

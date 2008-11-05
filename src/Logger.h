@@ -244,6 +244,13 @@ public:
 	void CloseLogfile();
 
 	/**
+	 * Get name of Logfile
+	 */
+	const wxString & GetLogfileName() const { 
+		return m_LogfileName; 
+	}
+
+	/**
 	 * Event handler
 	 */
 	void OnLoggingEvent(class CLoggingEvent& evt);
@@ -259,6 +266,7 @@ public:
 
 private:
 	class wxFFileOutputStream* applog; 	// the logfile
+	wxString m_LogfileName;
 	wxString m_ApplogBuf;
 	bool m_StdoutLog;
 	int  m_count;			// output line counter
@@ -339,6 +347,33 @@ typedef void (wxEvtHandler::*MuleLogEventFunction)(CLoggingEvent&);
 	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_LOGLINE, -1, -1, \
 	(wxObjectEventFunction) (wxEventFunction) \
 	wxStaticCastEvent(MuleLogEventFunction, &func), (wxObject*) NULL),
+
+
+// access the logfile for EC
+class CLoggerAccess
+{
+private:
+	class wxFFileInputStream * m_logfile;
+	class wxCharBuffer * m_buffer;
+	size_t m_bufferlen;
+	size_t m_pos;
+
+	bool m_ready;
+public:
+	//
+	// construct/destruct
+	//
+	CLoggerAccess();
+	~CLoggerAccess();
+	//
+	// get a String (if there is one)
+	//
+	bool GetString(wxString & s);
+	//
+	// is a String available ?
+	//
+	bool HasString();
+};
 
 
 /**

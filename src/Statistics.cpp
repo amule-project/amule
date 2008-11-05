@@ -36,7 +36,6 @@
 	#endif
 	#include "DataToText.h"		// Needed for GetSoftName()
 	#include "Preferences.h"	// Needed for thePrefs
-	#include "amule.h"		// Needed for theApp
 	#include "ListenSocket.h"	// (tree, GetAverageConnections)
 	#include "ServerList.h"		// Needed for CServerList (tree)
 	#include <cmath>		// Needed for std::floor
@@ -46,6 +45,7 @@
 	#include "Preferences.h"
 	#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
+	#include "amule.h"		// Needed for theApp
 
 #include <wx/intl.h>
 
@@ -968,6 +968,12 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 	s_statData[sdKadUsers] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_USERS)->GetInt();
 	s_statData[sdED2KFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_ED2K_FILES)->GetInt();
 	s_statData[sdKadFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_FILES)->GetInt();
+	const CECTag * LoggerTag = stats->GetTagByName(EC_TAG_STATS_LOGGER_MESSAGE);
+	if (LoggerTag) {
+		for (int i = 0; i < LoggerTag->GetTagCount(); i++) {
+			theApp->AddRemoteLogLine(LoggerTag->GetTagByIndex(i)->GetStringData());
+		}
+	}
 }
 
 

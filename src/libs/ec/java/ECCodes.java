@@ -142,6 +142,7 @@ public final static short 	EC_TAG_STATS_ED2K_USERS                   = 0x0209;
 public final static short 	EC_TAG_STATS_KAD_USERS                    = 0x020A;
 public final static short 	EC_TAG_STATS_ED2K_FILES                   = 0x020B;
 public final static short 	EC_TAG_STATS_KAD_FILES                    = 0x020C;
+public final static short 	EC_TAG_STATS_LOGGER_MESSAGE               = 0x020D;
 public final static short EC_TAG_PARTFILE                           = 0x0300;
 public final static short 	EC_TAG_PARTFILE_NAME                      = 0x0301;
 public final static short 	EC_TAG_PARTFILE_PARTMETID                 = 0x0302;
