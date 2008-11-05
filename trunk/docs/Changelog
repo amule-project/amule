@@ -42,6 +42,7 @@ Version 2.3.0 - The river knows.
 		  project for ed2k and fileview
 		  optional GeoIP support
 		* Faster progress bars with less overhead (without pens/brushes)
+		* Show log messages in remote gui
 
 	Vollstrecker:
 		* Unify copyright lines

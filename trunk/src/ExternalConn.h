@@ -219,12 +219,6 @@ public:
 	wxSocketServer *m_ECServer;
 	ECNotifier *m_ec_notifier;
 	
-	static CECPacket *ProcessRequest2(
-		const CECPacket *request,
-		CPartFile_Encoder_Map &,
-		CKnownFile_Encoder_Map &,
-		CObjTagMap &);
-	
 	static CECPacket *Authenticate(const CECPacket *);
 
 	void AddSocket(CECServerSocket *s);

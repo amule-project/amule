@@ -416,6 +416,11 @@ void CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 }
 
 
+void CamuleRemoteGuiApp::AddRemoteLogLine(const wxString& line)
+{
+	amuledlg->AddLogLine(line);
+}
+
 int CamuleRemoteGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 {
 	CamuleGuiBase::InitGui(geometry_enabled, geom_string);
@@ -782,7 +787,7 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 
 bool CServerConnectRem::ReQuery()
 {
-	CECPacket stat_req(EC_OP_STAT_REQ);
+	CECPacket stat_req(EC_OP_GET_CONNSTATE);
 	m_Conn->SendRequest(this, &stat_req);
 
 	return true;

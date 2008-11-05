@@ -154,6 +154,7 @@ enum ECTagNames {
 		EC_TAG_STATS_KAD_USERS                    = 0x020A,
 		EC_TAG_STATS_ED2K_FILES                   = 0x020B,
 		EC_TAG_STATS_KAD_FILES                    = 0x020C,
+		EC_TAG_STATS_LOGGER_MESSAGE               = 0x020D,
 	EC_TAG_PARTFILE                           = 0x0300,
 		EC_TAG_PARTFILE_NAME                      = 0x0301,
 		EC_TAG_PARTFILE_PARTMETID                 = 0x0302,

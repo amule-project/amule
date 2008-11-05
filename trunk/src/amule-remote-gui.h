@@ -726,6 +726,7 @@ public:
 	wxString GetServerLog(bool reset = false);
 
 	void AddServerMessageLine(wxString &msg);
+	void AddRemoteLogLine(const wxString& line);
 
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 
