@@ -253,7 +253,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
 	if (!gui_timer) {
-		AddLogLine(false, _("FATAL ERROR: Failed to create Timer"));
+		AddLogLineM(false, _("FATAL ERROR: Failed to create Timer"));
 		exit(1);
 	}
 
@@ -553,7 +553,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 			}
 		} else {		
 			//connect if not currently connected
-			AddLogLine(true, _("Connecting"));
+			AddLogLineM(true, _("Connecting"));
 			theApp->serverconnect->ConnectToAnyServer();
 		}
 	} else {
@@ -593,38 +593,26 @@ void CamuleDlg::ResetLog(int id)
 }
 
 
-void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
+void CamuleDlg::AddLogLine(const wxString& line)
 {
-	// Remove newspace at end, it causes problems with the layout...
-	wxString bufferline = line.Strip(wxString::trailing);
-
-	// Create the timestamp
-	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT(": ");
+	bool addtostatusbar = line[0] == '!';
+	wxString bufferline = line.Mid(1);
 
 	// Add the message to the log-view
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, m_serverwnd, wxTextCtrl );
 	if ( ct ) {
-		if ( bufferline.IsEmpty() ) {
-			// If it's empty we just write a blank line with no timestamp.
-			ct->AppendText( wxT("\n") );
-		} else {
-			// Bold critical log-lines
-			// Windows doesn't support this feature, and it causes GDI resource leaks
-#ifndef __WXMSW__
-			wxTextAttr style = ct->GetDefaultStyle();
-			wxFont font = style.GetFont();
-			font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
-			style.SetFont(font);
-			ct->SetDefaultStyle(style);
+		// Bold critical log-lines
+		// to enable this on Windows control has to be changed to wxTE_RICH2 in muuli
+#ifdef __WXMSW__
+		ct->AppendText(line); // keep the leading "!" if it can't be bolded
+#else
+		wxTextAttr style = ct->GetDefaultStyle();
+		wxFont font = style.GetFont();
+		font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
+		style.SetFont(font);
+		ct->SetDefaultStyle(style);
+		ct->AppendText(bufferline);
 #endif
-			
-			// Split multi-line messages into individual lines
-			wxStringTokenizer tokens( bufferline, wxT("\n") );		
-			while ( tokens.HasMoreTokens() ) {
-				ct->AppendText( stamp + tokens.GetNextToken() + wxT("\n") );
-			}
-		}
-			
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
 	

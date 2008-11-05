@@ -157,8 +157,7 @@ core_sources = \
 
 if ENABLE_UPNP
 core_sources += \
-	UPnPBase.cpp \
-	UPnPCompatibility.cpp
+	UPnPBase.cpp
 endif
 
 gui_sources = \
