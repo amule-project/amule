@@ -59,3 +59,7 @@ void CLogger::AddLogLine(
 		line, s.c_str(), msg.str().c_str());
 }
 
+CLogger theLogger;
+
+BEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
+END_EVENT_TABLE()

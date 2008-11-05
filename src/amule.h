@@ -33,8 +33,8 @@
 
 
 #include "Types.h"		// Needed for int32, uint16 and uint64
+#include <map>
 #ifndef __WXMSW__
-	#include <map>
 	#include <signal.h>
 //	#include <wx/unix/execute.h>
 #endif // __WXMSW__
@@ -210,8 +210,6 @@ public:
 
 	wxString ConfigDir;
 
-	void AddLogLine(const wxString &msg);
-
 	const wxString& GetOSType() const { return OSType; }
 
 	void ShowUserCount();
@@ -231,8 +229,6 @@ public:
 	
 	bool CryptoAvailable() const;
 	
-	//! TODO: Move to CLogger
-	wxFFileOutputStream* applog;
 protected:
 	// Used to detect a previous running instance of aMule
 	wxSingleInstanceChecker*	m_singleInstance;
@@ -244,19 +240,6 @@ protected:
 	virtual void OnAssertFailure(const wxChar* file, int line,
 		const wxChar* func, const wxChar* cond, const wxChar* msg);
 #endif
-
-	/**
-	 * This class is used to contain log messages that are to be displayed
-	 * on the GUI, when it is currently impossible to do so. This is in order
-	 * to allows us to queue messages till after the dialog has been created.
-	 */
-	struct QueuedLogLine
-	{
-		//! The text line to be displayed
-		wxString 	line;
-		//! True if the line should be shown on the status bar, false otherwise.
-		bool		show;
-	};
 
 	void OnUDPDnsDone(CMuleInternalEvent& evt);
 	void OnSourceDnsDone(CMuleInternalEvent& evt);
@@ -275,8 +258,6 @@ protected:
 
 	void SetTimeOnTransfer();
 
-	std::list<QueuedLogLine> m_logLines;
-
 	APPState m_app_state;
 
 	wxString m_emulesig_path;
@@ -290,7 +271,6 @@ protected:
 
 	long webserver_pid;
 
-	bool enable_stdout_log;
 	bool enable_daemon_fork;
 	wxString server_msg;
 
@@ -321,6 +301,15 @@ public:
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
+
+	void AddGuiLogLine(const wxString& line);
+protected:
+	/**
+	 * This list is used to contain log messages that are to be displayed
+	 * on the GUI, when it is currently impossible to do so. This is in order
+	 * to allows us to queue messages till after the dialog has been created.
+	 */
+	std::list<wxString> m_logLines;
 };
 
 
@@ -340,7 +329,6 @@ public:
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	void ShutDown(wxCloseEvent &evt);
-	void OnLoggingEvent(CLoggingEvent& evt);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
@@ -465,8 +453,6 @@ public:
 	bool CopyTextToClipboard(wxString strText);
 	
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
-	
-	void OnLoggingEvent(CLoggingEvent& evt);
 	
 	DECLARE_EVENT_TABLE()
 	

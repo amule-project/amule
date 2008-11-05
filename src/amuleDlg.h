@@ -113,7 +113,7 @@ public:
 		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
-	void AddLogLine(bool addtostatusbar, const wxString& line);
+	void AddLogLine(const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(int id);
 	

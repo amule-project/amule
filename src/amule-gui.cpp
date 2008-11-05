@@ -68,7 +68,6 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_MULE_TIMER(ID_CORE_TIMER_EVENT, CamuleGuiApp::OnCoreTimer)
 
 	EVT_MULE_NOTIFY(CamuleGuiApp::OnNotifyEvent)
-	EVT_MULE_LOGGING(CamuleGuiApp::OnLoggingEvent)
 	
 	// Async dns handling
 	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
@@ -224,6 +223,20 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 }
 
 
+void CamuleGuiBase::AddGuiLogLine(const wxString& line)
+{
+	if (amuledlg) {
+		while ( !m_logLines.empty() ) {
+			amuledlg->AddLogLine(m_logLines.front());
+			m_logLines.pop_front();
+		}
+		amuledlg->AddLogLine(line);
+	} else {
+		m_logLines.push_back(line);
+	}
+}
+
+
 #ifndef CLIENT_GUI
 
 int CamuleGuiApp::InitGui(bool geometry_enable, wxString &geometry_string)
@@ -322,25 +335,6 @@ void CamuleGuiApp::AddServerMessageLine(wxString &msg)
 {
 	amuledlg->AddServerMessageLine(msg);
 	CamuleApp::AddServerMessageLine(msg);
-}
-
-
-void CamuleGuiApp::OnLoggingEvent(CLoggingEvent& evt)
-{
-	if (amuledlg) {
-		while ( !m_logLines.empty() ) {
-			QueuedLogLine entry = m_logLines.front();
-			amuledlg->AddLogLine( entry.show, entry.line );
-			m_logLines.pop_front();
-		}
-		
-		amuledlg->AddLogLine(evt.IsCritical(), evt.Message());
-	} else {
-		QueuedLogLine entry = { evt.Message(), evt.IsCritical() };
-		m_logLines.push_back( entry );
-	}
-			
-	CamuleApp::AddLogLine( evt.Message() );
 }
 
 #endif /* CLIENT_GUI */

@@ -255,11 +255,11 @@ wxDialog(parent, -1, _("Preferences"),
 		}
 #ifdef __DEBUG__
 		else if (pages[i].m_function == PreferencesDebug) {
-			int count = CLogger::GetDebugCategoryCount();
+			int count = theLogger.GetDebugCategoryCount();
 			wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
 			for ( int j = 0; j < count; j++ ) {
-				list->Append( CLogger::GetDebugCategory( j ).GetName() );
+				list->Append( theLogger.GetDebugCategory( j ).GetName() );
 			}
 		}
 #endif
@@ -416,11 +416,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 
 #ifdef __DEBUG__
 	// Set debugging toggles
-	int count = CLogger::GetDebugCategoryCount();
+	int count = theLogger.GetDebugCategoryCount();
 	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
 	for ( int i = 0; i < count; i++ ) {
-		list->Check( i, CLogger::GetDebugCategory( i ).IsEnabled() );
+		list->Check( i, theLogger.GetDebugCategory( i ).IsEnabled() );
 	}
 #endif
 	
@@ -454,11 +454,11 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 
 #ifdef __DEBUG__
 	// Get debugging toggles
-	int count = CLogger::GetDebugCategoryCount();
+	int count = theLogger.GetDebugCategoryCount();
 	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
 	for ( int i = 0; i < count; i++ ) {
-		CLogger::SetEnabled( CLogger::GetDebugCategory( i ).GetType(), list->IsChecked( i ) );
+		theLogger.SetEnabled( theLogger.GetDebugCategory( i ).GetType(), list->IsChecked( i ) );
 	}
 #endif
 

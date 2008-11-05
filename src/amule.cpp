@@ -190,13 +190,11 @@ CamuleApp::CamuleApp()
 	m_upnpMappings.resize(4);
 #endif
 	core_timer	= NULL;
-	applog		= NULL;
 	
 	m_localip	= 0;
 	m_dwPublicIP	= 0;
 	webserver_pid	= 0;
 
-	enable_stdout_log = false;
 	enable_daemon_fork = false;
 
 	strFullMuleVersion = NULL;
@@ -210,8 +208,7 @@ CamuleApp::~CamuleApp()
 {
 	// Closing the log-file as the very last thing, since
 	// wxWidgets log-events are saved in it as well.
-	delete applog;
-	applog = NULL;
+	theLogger.CloseLogfile();
 
 	free(strFullMuleVersion);
 	free(strOSDescription);
@@ -220,7 +217,7 @@ CamuleApp::~CamuleApp()
 int CamuleApp::OnExit()
 {
 	if (m_app_state!=APP_STATE_STARTING) {
-		printf("Now, exiting main app...\n");
+		AddLogLineMS(false, _("Now, exiting main app..."));
 	}
 
 	// From wxWidgets docs, wxConfigBase:
@@ -239,14 +236,14 @@ int CamuleApp::OnExit()
 
 	// Kill amuleweb if running
 	if (webserver_pid) {
-		printf("Killing amuleweb instance with pid `%ld' ... ", webserver_pid);
+		AddLogLineMS(false, CFormat(_("Killing amuleweb instance with pid `%ld' ... ")) % webserver_pid);
 		wxKillError rc;
 		wxKill(webserver_pid, wxSIGTERM, &rc);
-		printf("Killed!\n");
+		AddLogLineMS(false, _("Killed!"));
 	}
 
 	if (m_app_state!=APP_STATE_STARTING) {
-		printf("aMule OnExit: Terminating core.\n");
+		AddLogLineMS(false, _("aMule OnExit: Terminating core."));
 	}
 
 	delete serverlist;
@@ -316,11 +313,11 @@ int CamuleApp::OnExit()
 	uploadBandwidthThrottler = NULL;
 
 	if (m_app_state!=APP_STATE_STARTING) {
-		printf("aMule shutdown completed.\n");
+		AddLogLineMS(false, _("aMule shutdown completed."));
 	}
 
 #if wxUSE_MEMORY_TRACING
-	printf("Memory debug results for aMule exit:\n");
+	AddLogLineMS(false, _("Memory debug results for aMule exit:"));
 	// Log mem debug mesages to wxLogStderr
 	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
 	/*
@@ -329,7 +326,7 @@ int CamuleApp::OnExit()
 	*/
 	//printf("***************Dump***************\n");
 	//wxDebugContext::Dump();
-	printf("***************Stats**************\n");
+	AddLogLineMS(false, wxT("***************Stats**************"));
 	wxDebugContext::PrintStatistics(true);
 
 	// Set back to wxLogGui
@@ -396,7 +393,8 @@ std::pair<bool, CPath> CheckMuleDirectory(const wxString& desc, const CPath& dir
 bool CamuleApp::OnInit()
 {
 #if wxUSE_MEMORY_TRACING
-	printf("Checkpoint set on app init for memory debug\n");
+	// any text before call of Localize_mule needs not to be translated.
+	AddLogLineMS(false, wxT("Checkpoint set on app init for memory debug"));
 	wxDebugContext::SetCheckpoint();
 #endif
 
@@ -493,26 +491,24 @@ bool CamuleApp::OnInit()
 
 	bool reset_config = cmdline.Found(wxT("reset-config"));
 	
-	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
+	theLogger.SetEnabledStdoutLog(cmdline.Found(wxT("log-stdout")));
 #ifdef AMULE_DAEMON		
 	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
 #else
 	enable_daemon_fork = false;
 #endif
 	
-	if ( enable_stdout_log ) {
+	if (theLogger.IsEnabledStdoutLog()) {
 		if ( enable_daemon_fork ) {
-			printf("Daemon will fork to background - log to stdout disabled\n");
-			enable_stdout_log = false;
+			AddLogLineMS(false, wxT("Daemon will fork to background - log to stdout disabled"));
+			theLogger.SetEnabledStdoutLog(false);
 		} else {
-			printf("Logging to stdout enabled\n");
+			AddLogLineMS(false, wxT("Logging to stdout enabled"));
 		}
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
-		printf("%s (OS: %s)\n",
-			(const char*)unicode2char(GetFullMuleVersion()),
-			(const char*)unicode2char(OSType));
+		AddLogLineMS(false, CFormat(wxT("%s (OS: %s)")) % GetFullMuleVersion() % OSType);
 		
 		return false;
 	}
@@ -527,7 +523,7 @@ bool CamuleApp::OnInit()
 #endif
 
 
-	printf("Initialising aMule\n");
+	AddLogLineMS(false, wxT("Initialising aMule"));
 
 	// Ensure that "~/.aMule/" is accessible.
 	if (!CheckMuleDirectory(wxT("configuration"), CPath(ConfigDir), wxEmptyString).first) {
@@ -538,19 +534,19 @@ bool CamuleApp::OnInit()
 		// Make a backup first.
 		wxRemoveFile(ConfigDir + wxT("amule.conf.backup"));
 		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
-		printf("Your settings have ben resetted to default values.\nOld config file has been saved as amule.conf.backup\n");
+		AddLogLineMS(false, wxT("Your settings have ben resetted to default values.\nOld config file has been saved as amule.conf.backup\n"));
 	}
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
 	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
-	printf("WARNING: The check for other instances is currently disabled in amuled.\n"
-		"Please make sure that no other instance of aMule is running or your files might be corrupted.\n");
+	AddLogLineMS(true, wxT("WARNING: The check for other instances is currently disabled in amuled.\n"
+		"Please make sure that no other instance of aMule is running or your files might be corrupted.\n"));
 #else
-	printf("Checking if there is an instance already running...\n");
+	AddLogLineMS(false, wxT("Checking if there is an instance already running..."));
 
 	m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
 	if (m_singleInstance->IsAnotherRunning()) {
-		printf("There is an instance of aMule already running\n");
+		AddLogLineMS(true, wxT("There is an instance of aMule already running"));
 		
 		// This is very tricky. The most secure way to communicate is via ED2K links file
 		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
@@ -562,14 +558,14 @@ bool CamuleApp::OnInit()
 			ed2kFile.AddLine(wxT("RAISE_DIALOG"));
 			ed2kFile.Write();
 			
-			printf("Raising current running instance.\n");
+			AddLogLineMS(false, wxT("Raising current running instance."));
 		} else {
-			printf("Failed to open 'ED2KFile', cannot signal running instance.\n");
+			AddLogLineMS(true, wxT("Failed to open 'ED2KFile', cannot signal running instance."));
 		}
 			
 		return false;
 	} else {
-		printf("No other instances are running.\n");
+		AddLogLineMS(false, wxT("No other instances are running."));
 	}
 #endif
 
@@ -596,12 +592,9 @@ bool CamuleApp::OnInit()
 	}
 
 	// Open the log file
-	applog = new wxFFileOutputStream(logfileName.GetRaw());
-	if (!applog->Ok()) {
+	if (!theLogger.OpenLogfile(logfileName.GetRaw())) {
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
-		delete applog;
-		applog = NULL;
 		// failure to open log is serious problem
 		return false;
 	}
@@ -642,10 +635,10 @@ bool CamuleApp::OnInit()
 
 	// Configure EC for amuled when invoked with ec-config
 	if (ec_config) {
-		printf("\nEC configuration\n");
+		AddLogLineMS(false, _("\nEC configuration"));
 		thePrefs::SetECPass(GetPassword());
 		thePrefs::EnableExternalConnections(true);
-		printf("Password set and external connections enabled.\n");
+		AddLogLineMS(false, _("Password set and external connections enabled."));
 	}
 	
 	// Display notification on new version or first run
@@ -736,7 +729,8 @@ bool CamuleApp::OnInit()
 	// Creates all needed listening sockets
 	wxString msg;
 	if (!ReinitializeNetwork(&msg)) {
-		printf("\n%s\n", (const char *)unicode2char(msg));
+		AddLogLineMS(false, wxT("\n"));
+		AddLogLineMS(false, msg);
 	}
 
 	// Create main dialog, or fork to background (daemon).
@@ -1396,7 +1390,7 @@ void CamuleApp::OnSourceDnsDone(CMuleInternalEvent& evt)
 
 void CamuleApp::OnServerDnsDone(CMuleInternalEvent& evt)
 {
-	printf("Server hostname notified\n");
+	AddLogLineMS(false, _("Server hostname notified"));
 	serverconnect->OnServerHostnameResolved(evt.GetClientData(), evt.GetExtraLong());
 }
 
@@ -1438,8 +1432,6 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	}
 #endif
 
-	CLogger::FlushPendingEntries();
-	
 	uploadqueue->Process();
 	downloadqueue->Process();
 	//theApp->clientcredits->Process();
@@ -1718,30 +1710,6 @@ bool CamuleApp::AddServer(CServer *srv, bool fromUser)
 }
 
 
-void CamuleApp::AddLogLine(const wxString &msg)
-{
-	// At most one trailing new-line, which we add
-	wxString message = msg;
-	while ( !message.IsEmpty() && message.Last() == wxT('\n') ) {
-		message.RemoveLast();
-	}
-	
-	wxString full_line = wxDateTime::Now().FormatISODate() + wxT(" ") + 
-		wxDateTime::Now().FormatISOTime() + wxT(": ") + message + wxT("\n");
-	
-	wxStringInputStream stream(full_line);
-	
-	if (applog) { // This check is needed, because if we assert before the logger is created, it will crash.
-		(*applog) << stream;
-		applog->Sync();
-	}
-	
-	if (enable_stdout_log) { 
-		printf("%s", (const char*)unicode2char(full_line));
-	}
-}
-
-
 uint32 CamuleApp::GetPublicIP(bool ignorelocal) const
 {
 	if (m_dwPublicIP == 0) {
@@ -1775,11 +1743,11 @@ wxString CamuleApp::GetLog(bool reset)
 	wxFile logfile;
 	logfile.Open(ConfigDir + wxT("logfile"));
 	if ( !logfile.IsOpened() ) {
-		return wxTRANSLATE("ERROR: can't open logfile");
+		return _("ERROR: can't open logfile");
 	}
 	int len = logfile.Length();
 	if ( len == 0 ) {
-		return wxTRANSLATE("WARNING: logfile is empty. Something is wrong.");
+		return _("WARNING: logfile is empty. Something is wrong.");
 	}
 	char *tmp_buffer = new char[len + sizeof(wxChar)];
 	logfile.Read(tmp_buffer, len);
@@ -1795,13 +1763,9 @@ wxString CamuleApp::GetLog(bool reset)
 
 	delete [] tmp_buffer;
 	if ( reset ) {
-		delete applog;
-		applog = new wxFFileOutputStream(ConfigDir + wxT("logfile"));
-		if ( applog->Ok() ) {
-			AddLogLine(_("Log has been reset"));
-		} else {
-			delete applog;
-			applog = 0;
+		theLogger.CloseLogfile();
+		if (theLogger.OpenLogfile(ConfigDir + wxT("logfile"))) {
+			AddLogLineM(false, _("Log has been reset"));
 		}
 	}
 	return str;
@@ -1826,7 +1790,7 @@ wxString CamuleApp::GetDebugLog(bool reset)
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	server_msg += msg + wxT("\n");
-	AddLogLine(CFormat(_("ServerMessage: %s")) % msg);
+	AddLogLineM(false, CFormat(_("ServerMessage: %s")) % msg);
 }
 
 
@@ -1917,9 +1881,8 @@ void CamuleApp::CheckNewVersion(uint32 result)
 				AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2]));
 				AddLogLineM(false, _("The latest version can always be found at http://www.amule.org"));
 				#ifdef AMULE_DAEMON
-				printf("%s\n", (const char*)unicode2UTF8(wxString::Format(
-					_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"),
-					VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2])));
+				AddLogLineMS(true, CFormat(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"))
+					% VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
 				#endif
 			} else {
 				AddLogLineM(false, _("Your copy of aMule is up to date."));
@@ -2109,33 +2072,33 @@ void CamuleApp::ShowConnectionState()
 				// We connected to some server
 				const wxString id = theApp->serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
 
-				AddLogLine(CFormat(_("Connected to %s %s")) % connected_server % id);
+				AddLogLineM(true, CFormat(_("Connected to %s %s")) % connected_server % id);
 			} else {
 				if ( theApp->serverconnect->IsConnecting() ) {
-					AddLogLine(CFormat(_("Connecting to %s")) % connected_server);
+					AddLogLineM(true, CFormat(_("Connecting to %s")) % connected_server);
 				} else {
-					AddLogLine(_("Disconnected from eD2k"));
+					AddLogLineM(true, _("Disconnected from eD2k"));
 				}
 			}
 		}
 		
 		if (changed_flags & CONNECTED_KAD_NOT) {
 			if (state & CONNECTED_KAD_NOT) {
-				AddLogLine(_("Kad started."));
+				AddLogLineM(true, _("Kad started."));
 			} else {
-				AddLogLine(_("Kad stopped."));
+				AddLogLineM(true, _("Kad stopped."));
 			}
 		}
 		
 		if (changed_flags & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 			if (state & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 				if (state & CONNECTED_KAD_OK) {
-					AddLogLine(_("Connected to Kad (ok)"));
+					AddLogLineM(true, _("Connected to Kad (ok)"));
 				} else {
-					AddLogLine(_("Connected to Kad (firewalled)"));
+					AddLogLineM(true, _("Connected to Kad (firewalled)"));
 				}
 			} else {
-				AddLogLine(_("Disconnected from Kad"));
+				AddLogLineM(true, _("Disconnected from Kad"));
 			}
 		}
 		
