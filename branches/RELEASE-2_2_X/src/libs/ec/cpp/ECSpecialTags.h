@@ -351,12 +351,12 @@ class CEC_Search_Tag : public CECTag {
 	public:
 		// search request
 		CEC_Search_Tag(const wxString &name, EC_SEARCH_TYPE search_type, const wxString &file_type,
-			const wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
+			const wxString &extension, uint32 avail, uint64 min_size, uint64 max_size);
 			
 		wxString SearchText() { return GetTagByNameSafe(EC_TAG_SEARCH_NAME)->GetStringData(); }
 		EC_SEARCH_TYPE SearchType() { return (EC_SEARCH_TYPE)GetInt(); }
-		uint32 MinSize() { return GetTagByNameSafe(EC_TAG_SEARCH_MIN_SIZE)->GetInt(); }
-		uint32 MaxSize() { return GetTagByNameSafe(EC_TAG_SEARCH_MAX_SIZE)->GetInt(); }
+		uint64 MinSize() { return GetTagByNameSafe(EC_TAG_SEARCH_MIN_SIZE)->GetInt(); }
+		uint64 MaxSize() { return GetTagByNameSafe(EC_TAG_SEARCH_MAX_SIZE)->GetInt(); }
 		uint32 Avail() { return GetTagByNameSafe(EC_TAG_SEARCH_AVAILABILITY)->GetInt(); }
 		wxString SearchExt() { return GetTagByNameSafe(EC_TAG_SEARCH_EXTENSION)->GetStringData(); }
 		wxString SearchFileType() { return GetTagByNameSafe(EC_TAG_SEARCH_FILE_TYPE)->GetStringData(); }
