@@ -654,12 +654,12 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	LexFree();
 	
 #ifdef __DEBUG__
-	printf("Search parsing result for \"%s\": %i\n",
-		(const char*)unicode2UTF8(params.searchString),iParseResult);
+	AddLogLineNS(CFormat(wxT("Search parsing result for \"%s\": %i"))
+		% params.searchString % iParseResult);
 #endif
 	if (_astrParserErrors.Count() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
-			printf("Error %u: %s\n",i,(const char*)unicode2UTF8(_astrParserErrors[i]));
+			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
 		}
 		
 		return CMemFilePtr(NULL);
@@ -672,17 +672,18 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	}
 	
 	#ifdef __DEBUG__
-	printf("Search expression: ");
-	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++){
-		printf("%s ",(const char*)unicode2char(_SearchExpr.m_aExpr[i]));
+	wxString mes(wxT("Search expression:"));
+	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++) {
+		mes << wxT(" ") << _SearchExpr.m_aExpr[i];
 	}
-	printf("\nExpression count: %i\n",(int)_SearchExpr.m_aExpr.GetCount());
+	AddLogLineNS(mes);
+	AddLogLineNS(CFormat(wxT("Expression count: %i")) % _SearchExpr.m_aExpr.GetCount());
 	#endif
 
 	parametercount += _SearchExpr.m_aExpr.GetCount();
 	
 	#ifdef __DEBUG__
-	printf("Parameters: %i\n",parametercount);
+	AddLogLineNS(CFormat(wxT("Parameters: %i")) % parametercount);
 	#endif
 	
 	/* Leave the unicode comment there, please... */

@@ -304,8 +304,8 @@ wxDialog(parent, -1, _("Preferences"),
 	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->ConnectToWidget(it->first, this) ) {
-			printf("Failed to connect Cfg to widget with the ID %d and key %s\n",
-				it->first, (const char *)unicode2char(it->second->GetKey()));
+			AddLogLineNS(CFormat(_("Failed to connect Cfg to widget with the ID %d and key %s"))
+				% it->first % it->second->GetKey());
 		}
 	}
 	Fit();
@@ -342,8 +342,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->TransferToWindow() ) {
-			printf("Failed to transfer data from Cfg to Widget with the ID %d and key %s\n",
-				it->first, (const char *)unicode2char(it->second->GetKey()));
+			AddLogLineNS(CFormat(_("Failed to transfer data from Cfg to Widget with the ID %d and key %s"))
+				% it->first % it->second->GetKey());
 		}
 	}
 
@@ -435,8 +435,8 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->TransferFromWindow() ) {
-			printf("Failed to transfer data from Widget to Cfg with the ID %d and key %s\n",
-				it->first, (const char *)unicode2char(it->second->GetKey()));
+			AddLogLineNS(CFormat(_("Failed to transfer data from Widget to Cfg with the ID %d and key %s"))
+				% it->first % it->second->GetKey());
 		}
 	}
 

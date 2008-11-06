@@ -27,6 +27,8 @@
 #include "MD4Hash.h"				// Needed for CMD4Hash
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 #include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
+#include "Logger.h"
+#include <common/Format.h>	// Needed for CFormat
 
 #if defined(__SUNPRO_CC)
 #define __FUNCTION__ __FILE__+__LINE__
@@ -469,8 +471,8 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 				throw wxString(wxT("Invalid Kad tag type on packet"));
 		}
 	} catch (...) {
-		printf("Invalid Kad tag; type=0x%02x name=%s\n",
-			type, (const char *)unicode2char(name));
+		AddLogLineNS(CFormat(wxT("Invalid Kad tag; type=0x%02x name=%s\n"))
+			% type % name);
 		delete retVal;
 		throw;
 	}
@@ -541,13 +543,12 @@ void CFileDataIO::WriteTag(const CTag& tag)
 			default:
 				//TODO: Support more tag types
 				// With the if above, this should NEVER happen.
-				printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, tag.GetType());
+				AddLogLineNS(CFormat(wxT("CFileDataIO::WriteTag: Unknown tag: type=0x%02X")) % tag.GetType());
 				wxASSERT(0);
 				break;
 		}				
 	} catch (...) {
-		//AddDebugLogLine(false, wxT("Exception in CDataIO:WriteTag"));
-		printf("Exception in CDataIO:WriteTag");
+		AddLogLineNS(wxT("Exception in CDataIO:WriteTag"));
 		throw;
 	}
 }

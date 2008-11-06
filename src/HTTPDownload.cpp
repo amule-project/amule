@@ -104,7 +104,7 @@ private:
 	}
 
 	void OnBtnCancel(wxCommandEvent& WXUNUSED(evt)) {
-		printf("HTTP download cancelled\n");
+		AddLogLineNS(_("HTTP download cancelled"));
 		Show(false);
 		StopThread();
 	}
@@ -169,7 +169,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 	wxHTTP* url_handler = NULL;
 	wxInputStream* url_read_stream = NULL;
 	
-	printf("HTTP download thread started\n");
+	AddLogLineNS(_("HTTP download thread started"));
 	
 	const CProxyData* proxy_data = thePrefs::GetProxyData();
 	bool use_proxy = proxy_data != NULL && proxy_data->m_proxyEnable;
@@ -196,7 +196,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		}
 		
 		int download_size = url_read_stream->GetSize();
-		printf("Download size: %i\n",download_size);
+		AddLogLineNS(CFormat(_("Download size: %i")) % download_size);
 		
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.
@@ -243,7 +243,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		url_handler->Destroy();
 	}
 	
-	printf("HTTP download thread ended\n");
+	AddLogLineNS(_("HTTP download thread ended"));
 	
 	return 0;
 }
@@ -323,12 +323,12 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 
 	wxInputStream* url_read_stream = (*url_handler)->GetInputStream(url);
 
-	printf("Host: %s:%i\n",(const char*)unicode2char(host),port);
-	printf("URL: %s\n",(const char*)unicode2char(url));
-	printf("Response: %i (Error: %i)\n",(*url_handler)->GetResponse(), (*url_handler)->GetError());
+	AddLogLineNS(CFormat(_("Host: %s:%i\n")) % host % port);
+	AddLogLineNS(CFormat(wxT("URL: %s\n")) % url);
+	AddLogLineNS(CFormat(_("Response: %i (Error: %i)")) % (*url_handler)->GetResponse() % (*url_handler)->GetError());
 
 	if (!(*url_handler)->GetResponse()) {
-		printf("WARNING: Void response on stream creation\n");
+		AddLogLineNS(_("WARNING: Void response on stream creation"));
 		// WTF? Why does this happen?
 		// This is probably produced by an already existing connection, because
 		// the input stream is created nevertheless. However, data is not the same.
@@ -352,7 +352,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 			(*url_handler)->SetProxyMode(proxy);
 			url_read_stream = GetInputStream(url_handler, new_location, proxy);
 		} else {
-			printf("ERROR: Redirection code received with no URL\n");
+			AddLogLineCS(_("ERROR: Redirection code received with no URL"));
 			url_handler = NULL;
 			url_read_stream = NULL;
 		}

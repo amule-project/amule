@@ -177,7 +177,7 @@ void CPartFileConvert::StopThread()
 		return;
 	}
 
-	printf("Waiting for partfile convert thread to die...\n");
+	AddLogLineNS(_("Waiting for partfile convert thread to die..."));
 	while (s_convertPfThread) {
 		wxSleep(1);
 	}

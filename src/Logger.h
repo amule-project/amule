@@ -387,13 +387,28 @@ public:
  * AddLogLineMS will also always print to stdout.
  */
 #if defined(MULEUNIT)
-	#define AddDebugLogLineM(critical, type, string) do {} while (false)
+	#define AddDebugLogLineM(...) do {} while (false)
 	#define AddLogLineM(...) do {} while (false)
 	#define AddLogLineMS(...) do {} while (false)
+	#define AddDebugLogLineN(...) do {} while (false)
+	#define AddLogLineN(...) do {} while (false)
+	#define AddLogLineNS(...) do {} while (false)
+	#define AddDebugLogLineC(...) do {} while (false)
+	#define AddLogLineC(...) do {} while (false)
+	#define AddLogLineCS(...) do {} while (false)
 #else
+// Macros passing critical flag (legacy)
 	#define AddDebugLogLineM(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 	#define AddLogLineM(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string)
 	#define AddLogLineMS(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string, true)
+// Macros for 'N'on critical logging
+	#define AddDebugLogLineN(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
+	#define AddLogLineN(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string)
+	#define AddLogLineNS(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string, true)
+// Macros for 'C'ritical logging
+	#define AddDebugLogLineC(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, true, type, string)
+	#define AddLogLineC(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string)
+	#define AddLogLineCS(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string, true)
 #endif
 
 #endif

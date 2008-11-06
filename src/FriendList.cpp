@@ -219,7 +219,7 @@ void CFriendList::StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16
 			friend_client->LinkClient(client);
 		}
 	} else {
-		printf("CRITICAL - no client on StartChatSession\n");
+		AddLogLineC(_("CRITICAL - no client on StartChatSession"));
 	}
 	
 }

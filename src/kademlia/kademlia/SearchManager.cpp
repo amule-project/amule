@@ -131,7 +131,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		wxString wstrKeyword = s->m_words.front();
 
-		printf("Keyword for search: %s\n",(const char*)unicode2char(wstrKeyword));
+		AddLogLineNS(CFormat(_("Keyword for search: %s")) % wstrKeyword);
 
 		// Kry - I just decided to assume everyone is unicoded
 		// GonoszTopi - seconded

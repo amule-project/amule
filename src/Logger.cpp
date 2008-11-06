@@ -319,6 +319,13 @@ CLoggerTarget::CLoggerTarget()
 
 void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 {
+	// prevent infinite recursion
+	static bool recursion = false;
+	if (recursion) {
+		return;
+	}
+	recursion = true;
+
 	wxCHECK_RET(msg, wxT("Log message is NULL in DoLogString!"));
 	
 	wxString str(msg);
@@ -327,6 +334,8 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	bool critical = str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "));
 
 	AddLogLineM(critical, str);
+
+	recursion = false;
 }
 
 

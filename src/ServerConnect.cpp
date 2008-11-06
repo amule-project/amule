@@ -626,7 +626,7 @@ void CServerConnect::OnServerHostnameResolved(void* socket, uint32 ip)
 	if (it != m_lstOpenSockets.end()) {
 		(*it)->OnHostnameResolved(ip);
 	} else {
-		printf("Received late result of DNS lookup, discarding.\n");
+		AddLogLineNS(_("Received late result of DNS lookup, discarding."));
 	}
 }
 

@@ -321,8 +321,8 @@ void CSharedFileList::FindSharedFiles()
 		CPartFile* file = theApp->downloadqueue->GetFileByIndex( i );
 		
 		if ( file->GetStatus(true) == PS_READY ) {
-			printf("Adding file %s to shares\n",
-				(const char *)unicode2char(file->GetFullName().GetPrintable()));
+			AddLogLineNS(CFormat(_("Adding file %s to shares"))
+				% file->GetFullName().GetPrintable());
 			AddFile(file);
 		}
 	}
@@ -388,8 +388,8 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 	}
 
 	if (!directory.DirExists()) {
-		printf("Shared directory not found, skipping: %s\n",
-			(const char *)unicode2char(directory.GetPrintable()));
+		AddLogLineNS(CFormat(_("Shared directory not found, skipping: %s"))
+			% directory.GetPrintable());
 		
 		return 0;
 	}
@@ -460,8 +460,8 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 	}
 
 	if ((addedFiles == 0) && (knownFiles == 0)) {
-		printf("No shareable files found in directory: %s\n",
-			(const char *)unicode2char(directory.GetPrintable()));
+		AddLogLineNS(CFormat(_("No shareable files found in directory: %s"))
+			% directory.GetPrintable());
 	}
 
 	return addedFiles;
