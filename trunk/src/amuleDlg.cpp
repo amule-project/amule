@@ -521,7 +521,7 @@ void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
 
 CamuleDlg::~CamuleDlg()
 {
-	printf("Shutting down aMule...\n");
+	AddLogLineN(_("Shutting down aMule..."));
 	
 	SaveGUIPrefs();
 
@@ -531,7 +531,7 @@ CamuleDlg::~CamuleDlg()
 	delete m_IP2Country;
 #endif
 	
-	printf("aMule dialog destroyed\n");
+	AddLogLineN(_("aMule dialog destroyed"));
 }
 
 
@@ -1141,7 +1141,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 
 		CTerminationProcess *p = new CTerminationProcess(cmd);
 		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
-			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
+			AddLogLineN(_("Launch Command: ") + cmd);
 			return;
 		} else {
 			delete p;

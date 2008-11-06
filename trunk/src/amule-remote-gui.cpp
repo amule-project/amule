@@ -126,7 +126,6 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
 	
 	EVT_MULE_NOTIFY(CamuleRemoteGuiApp::OnNotifyEvent)
-	EVT_MULE_LOGGING(CamuleRemoteGuiApp::OnLoggingEvent)
 
 #ifdef ENABLE_IP2COUNTRY
 	// HTTPDownload finished
@@ -201,7 +200,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		request_step = 0;
 		break;
 	default:
-		printf("WTF?\n");
+		AddLogLineCS(wxT("WTF?")); // should not happen. :-)
 		request_step = 0;
 	}
 }
@@ -255,7 +254,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Create the polling timer
 	poll_timer = new wxTimer(this,ID_CORE_TIMER_EVENT);
 	if (!poll_timer) {
-		printf("Fatal Error: Failed to create Poll Timer");
+		AddLogLineCS(_("Fatal Error: Failed to create Poll Timer"));
 		OnExit();
 	}
 
@@ -279,7 +278,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	bool result = ShowConnectionDialog();
 
-	printf("Going to event loop...\n");
+	AddLogLineNS(_("Going to event loop..."));
 	
 	return result;
 }
@@ -300,7 +299,7 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 		
 		return false;
 	}
-	printf("Connecting...\n");
+	AddLogLineNS(_("Connecting..."));
 	if (!m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
 		dialog->Login(), dialog->PassHash(),
 		wxT("amule-remote"), wxT("0x0001"))) {
@@ -315,13 +314,13 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 
 void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
-	printf("Remote GUI EC event handler\n");
+	AddLogLineNS(_("Remote GUI EC event handler"));
 	AddLogLineM(true,evt.GetServerReply());
 	if (evt.GetResult() == true) {
 		// Connected - go to next init step
 		glob_prefs->LoadRemote();
 	} else {
-		printf("Going down\n");
+		AddLogLineNS(_("Going down"));
 		ExitMainLoop();
 	}
 }
@@ -330,12 +329,6 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 void CamuleRemoteGuiApp::OnECInitDone(wxEvent& )
 {
 	Startup();
-}
-
-
-void CamuleRemoteGuiApp::OnLoggingEvent(CLoggingEvent& evt)
-{
-	printf("LOG: %s\n", unicode2char(evt.Message()).data());
 }
 
 
@@ -425,6 +418,7 @@ int CamuleRemoteGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 {
 	CamuleGuiBase::InitGui(geometry_enabled, geom_string);
 	SetTopWindow(amuledlg);
+	AddLogLineN(_("Ready")); // The first log line after the window is up triggers output of all the ones before
 	return 0;
 }
 
@@ -1496,7 +1490,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			file->m_SrcpartFrequency[i] = part_info[i];
 		}
 	} else {
-		printf("ERROR: %p %p %p\n", (void*)gaptag, (void*)parttag, (void*)reqtag);
+		AddLogLineNS(CFormat(wxT("ERROR: %X %X %X")) % (size_t)gaptag % (size_t)parttag % (size_t)reqtag);
 	}
 	
 	// Get source names

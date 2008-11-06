@@ -1533,7 +1533,7 @@ void CPreferences::LoadCats()
 
 		// Some sainity checking
 		if ( newcat->title.IsEmpty() || !newcat->path.IsOk() ) {
-			printf("Invalid category found, skipping\n");
+			AddLogLineN(_("Invalid category found, skipping"));
 			
 			delete newcat;
 			continue;
@@ -1721,8 +1721,7 @@ void CPreferences::ReloadSharedFolders()
 			if (path.DirExists()) {
 				shareddir_list.push_back(path);
 			} else {
-				printf("Dropping non-existing shared directory: %s\n",
-					(const char*)unicode2char(path.GetRaw()));
+				AddLogLineN(CFormat(_("Dropping non-existing shared directory: %s")) % path.GetRaw());
 			}
 		}
 	}

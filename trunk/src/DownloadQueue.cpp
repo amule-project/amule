@@ -97,19 +97,17 @@ CDownloadQueue::~CDownloadQueue()
 {
 	if ( !m_filelist.empty() ) {
 		for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
-			printf("\rSaving PartFile %u of %u", i + 1, (unsigned int)m_filelist.size());
-			fflush(stdout);
+			AddLogLineNS(CFormat(_("Saving PartFile %u of %u")) % (i + 1) % m_filelist.size());
 			delete m_filelist[i];
 		}
-		printf("\nAll PartFiles Saved.\n");
+		AddLogLineNS(_("All PartFiles Saved."));
 	}
 }
 
 
 void CDownloadQueue::LoadMetFiles(const CPath& path)
 {
-	printf("Loading temp files from %s.\n",
-		(const char *)unicode2char(path.GetPrintable()));
+	AddLogLineNS(CFormat(_("Loading temp files from %s.")) % path.GetPrintable());
 	
 	std::vector<CPath> files;
 
@@ -128,7 +126,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 
 	// Load part-files	
 	for ( size_t i = 0; i < files.size(); i++ ) {
-		printf("\rLoading PartFile %u of %u", (unsigned int)(i + 1), (unsigned int)files.size());
+		AddLogLineNS(CFormat(_("Loading PartFile %u of %u")) % (i + 1) % files.size());
 		fileName = files[i].GetFullName();
 		CPartFile *toadd = new CPartFile();
 		bool result = toadd->LoadPartFile(path, fileName) != 0;
@@ -154,16 +152,13 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 					_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
 				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName;
 			}
-			AddDebugLogLineM(true, logPartFile, msg);
-			
-			// Newline so that the error stays visible.
-			printf(": %s\n", (const char*)unicode2char(msg));
+			AddLogLineCS(msg);
 
 			// Delete the partfile object in the end.
 			delete toadd;
 		}
 	}
-	printf("\nAll PartFiles Loaded.\n");
+	AddLogLineNS(_("All PartFiles Loaded."));
 	
 	if ( GetFileCount() == 0 ) {
 		AddLogLineM(false, _("No part files found"));
@@ -1044,7 +1039,7 @@ void CDownloadQueue::AddLinksFromFile()
 
 		file.Close();
 	} else {
-		printf("Failed to open ED2KLinks file.\n");
+		AddLogLineNS(_("Failed to open ED2KLinks file."));
 	}
 	
 	// Delete the file.

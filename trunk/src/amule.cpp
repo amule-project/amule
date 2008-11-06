@@ -313,20 +313,18 @@ int CamuleApp::OnExit()
 	uploadBandwidthThrottler = NULL;
 
 	if (m_app_state!=APP_STATE_STARTING) {
-		AddLogLineMS(false, _("aMule shutdown completed."));
+		AddLogLineNS(_("aMule shutdown completed."));
 	}
 
 #if wxUSE_MEMORY_TRACING
-	AddLogLineMS(false, _("Memory debug results for aMule exit:"));
+	AddLogLineNS(_("Memory debug results for aMule exit:"));
 	// Log mem debug mesages to wxLogStderr
 	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
-	/*
-	printf("**************Classes**************\n");
-	wxDebugContext::PrintClasses();
-	*/
-	//printf("***************Dump***************\n");
+	//AddLogLineNS(wxT("**************Classes**************");
+	//wxDebugContext::PrintClasses();
+	//AddLogLineNS(wxT("***************Dump***************");
 	//wxDebugContext::Dump();
-	AddLogLineMS(false, wxT("***************Stats**************"));
+	AddLogLineNS(wxT("***************Stats**************"));
 	wxDebugContext::PrintStatistics(true);
 
 	// Set back to wxLogGui
@@ -812,7 +810,7 @@ bool CamuleApp::OnInit()
 		wxString aMuleConfigFile = ConfigDir + wxT("amule.conf");
 		wxString amulewebPath = wxT("amuleweb");
 		if(true == cmdline.Found(wxT("use-amuleweb"), &amulewebPath)) {
-			printf("Using amuleweb in '%s'.\n", (const char *)unicode2char(amulewebPath));
+			AddLogLineNS(CFormat(_("Using amuleweb in '%s'.")) % amulewebPath);
 		}
 
 #if defined(__WXMAC__) && !defined(AMULE_DAEMON)

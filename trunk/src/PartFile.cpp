@@ -549,7 +549,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 									gap->end = newtag.GetInt()-1;
 								}
 							} else {
-								printf("Wrong gap map key while reading met file!\n");
+								AddDebugLogLineN(logPartFile, wxT("Wrong gap map key while reading met file!"));
 								wxASSERT(0);
 							}
 							// End Changes by Slugfiller for better exception handling
@@ -888,22 +888,14 @@ bool CPartFile::SavePartFile(bool Initial)
 			++i_pos;
 		}
 	} catch (const wxString& error) {
-		AddLogLineM(false, CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
+		AddLogLineNS(CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
 			% error
 			% m_partmetfilename
 			% GetFileName() );
 
-		wxString err = CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
-			% error
-			% m_partmetfilename
-			% GetFileName();
-		
-		printf("%s\n", (const char*)unicode2char(err));
-		
 		return false;
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logPartFile, wxT("IO failure while saving partfile: ") + e.what());
-		printf("IO failure while saving partfile: %s\n", (const char*)unicode2char(e.what()));
+		AddLogLineCS(_("IO failure while saving partfile: ") + e.what());
 		
 		return false;
 	}

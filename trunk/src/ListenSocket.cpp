@@ -63,10 +63,9 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
  		SetNotify(wxSOCKET_CONNECTION_FLAG);
  		Notify(true);
 
-		printf("ListenSocket: Ok.\n");
+		AddLogLineNS(_("ListenSocket: Ok."));
 	} else {
-		AddLogLineM( true, _("ERROR: Could not listen to TCP port.") );
-		printf("ListenSocket: Could not listen to TCP port.");
+		AddLogLineCS(_("ERROR: Could not listen to TCP port.") );
 	}
 }
 

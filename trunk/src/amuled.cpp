@@ -655,7 +655,7 @@ int CamuleDaemonApp::OnRun()
 
 bool CamuleDaemonApp::OnInit()
 {
-	printf("amuled: OnInit - starting timer\n");
+	AddLogLineNS(_("amuled: OnInit - starting timer"));
 	if ( !CamuleApp::OnInit() ) {
 		return false;
 	}
@@ -673,7 +673,8 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 	if ( !enable_daemon_fork ) {
 		return 0;
 	}
-	printf("amuled: forking to background - see you\n");
+	AddLogLineNS(_("amuled: forking to background - see you"));
+	theLogger.SetEnabledStdoutLog(false);
 	//
 	// fork to background and detouch from controlling tty
 	// while redirecting stdout to /dev/null
@@ -730,13 +731,7 @@ void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 	if ( flags | wxICON_ERROR ) {
 		title = CFormat(_("ERROR: %s")) % title;
 	}
-	
-	// Ensure that alerts are always visible on the console (when possible).
-	if (! theLogger.IsEnabledStdoutLog() && ! enable_daemon_fork) {
-		printf("%s\n", unicode2UTF8(title + wxT(" ") + msg).data());
-	}
-	
-	AddLogLineM(true, title + wxT(" ") + msg);
+	AddLogLineCS(title + wxT(" ") + msg);
 }
 
 // File_checked_for_headers

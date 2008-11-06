@@ -280,7 +280,7 @@ bool CamuleGuiApp::OnInit()
 	// Create the Core timer
 	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
 	if (!core_timer) {
-		printf("Fatal Error: Failed to create Core Timer");
+		AddLogLineCS(_("Fatal Error: Failed to create Core Timer"));
 		OnExit();
 	}
 

@@ -45,6 +45,7 @@
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
 #include "Statistics.h"			// Needed for theStats
 #include <common/Format.h>			// Needed for CFormat
+#include "Logger.h"
 
 
 // Pop-up menu clickable entries
@@ -308,7 +309,7 @@ void CMuleTrayIcon::UpdateTray()
 	// http://sourceforge.net/tracker/index.php?func=detail&aid=1872724&group_id=9863&atid=109863
 	if (m_iconWnd) {
 		if (wxTopLevelWindows.IndexOf((wxWindow*)m_iconWnd) == wxNOT_FOUND) {
-			printf("Traybar-icon lost, trying to recreate ...\n");
+			AddLogLineCS(_("Traybar-icon lost, trying to recreate ..."));
 			m_iconWnd = NULL;
 		}
 	}
