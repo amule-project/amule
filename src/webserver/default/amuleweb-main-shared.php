@@ -262,6 +262,14 @@ function formCommandSubmit(command)
 			return $result;
 		}
 
+		function PrioSort($file) {
+		// Very low (4) has a too high number
+			if (4 == $file->prio) {
+				return 0;
+			}
+			return $file->prio+1;
+		}
+
 		//
 		// declare it here, before any function reffered it in "global"
 		//
@@ -277,7 +285,7 @@ function formCommandSubmit(command)
 				case "xfer": $result = $a->xfer > $b->xfer; break;
 				case "acc": $result = $a->accept > $b->accept; break;
 				case "req": $result = $a->req > $b->req; break;
-				case "prio": $result = PrioString($a) > PrioString($b); break;
+				case "prio": $result = PrioSort($a) < PrioSort($b); break;
 			}
 
 			if ( $sort_reverse ) {
