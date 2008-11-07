@@ -136,14 +136,14 @@ std::string CUPnPLib::processUPnPErrorMessage(
 				errorString <<
 				"'.";
 		}
-		AddLogLineM(false, logUPnP, msg);
+		AddLogLineU(false, logUPnP, msg);
 	} else {
 		msg << "Error: " <<
 			messsage <<
 			": UPnP SDK error: " <<
 			GetUPnPErrorMessage(errorCode) << 
 			" (" << errorCode << ").";
-		AddLogLineM(false, logUPnP, msg);
+		AddLogLineU(false, logUPnP, msg);
 	}
 	
 	return msg.str();
@@ -678,7 +678,7 @@ bool CUPnPService::Execute(
 			0, NULL);
 		if (!ActionDoc) {
 			msg << "Error: UpnpMakeAction returned NULL.";
-			AddLogLineM(false, logUPnP, msg);
+			AddLogLineU(false, logUPnP, msg);
 			return false;
 		}
 	}
@@ -865,7 +865,7 @@ m_WanService(NULL)
 	ipAddress = UpnpGetServerIpAddress();
 	msg << "bound to " << ipAddress << ":" <<
 		port << ".";
-	AddLogLineM(false, logUPnP, msg);
+	AddLogLineU(false, logUPnP, msg);
 	msg.str("");
 	ret = UpnpRegisterClient(
 		static_cast<Upnp_FunPtr>(&CUPnPControlPoint::Callback),
@@ -936,7 +936,7 @@ bool CUPnPControlPoint::AddPortMappings(
 		msg <<  "UPnP Error: "
 			"CUPnPControlPoint::AddPortMapping: "
 			"WAN Service not detected.";
-		AddLogLineM(true, logUPnP, msg);
+		AddLogLineU(true, logUPnP, msg);
 		return false;
 	}
 	
@@ -1072,7 +1072,7 @@ bool CUPnPControlPoint::DeletePortMappings(
 		msg <<  "UPnP Error: "
 			"CUPnPControlPoint::DeletePortMapping: "
 			"WAN Service not detected.";
-		AddLogLineM(true, logUPnP, msg);
+		AddLogLineU(true, logUPnP, msg);
 		return false;
 	}
 	
@@ -1101,7 +1101,7 @@ bool CUPnPControlPoint::DeletePortMappings(
 					"CUPnPControlPoint::DeletePortMapping: "
 					"Mapping was not found in the active "
 					"mapping map.";
-				AddLogLineM(true, logUPnP, msg);
+				AddLogLineU(true, logUPnP, msg);
 			}
 			
 			// Delete the port mapping
@@ -1222,7 +1222,7 @@ upnpDiscovery:
 				// we don't want to spam our logs.
 				if (EventType != UPNP_DISCOVERY_ADVERTISEMENT_ALIVE) {
 					msg.str("Internet Gateway Device Detected.");
-					AddLogLineM(true, logUPnP, msg);
+					AddLogLineU(true, logUPnP, msg);
 				}
 				// Add the root device to our list
 				upnpCP->AddRootDevice(rootDevice, urlBase,
@@ -1526,7 +1526,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		msg << "Successfully retrieved SCPD Document for service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
 			service.GetAbsEventSubURL() << ".";
-		AddLogLineM(true, logUPnP, msg);
+		AddLogLineU(true, logUPnP, msg);
 		msg.str("");
 
 		// Now try to subscribe to this service. If the subscription
@@ -1540,7 +1540,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 			msg << "Successfully subscribed to service " <<
 				service.GetServiceType() << ", absEventSubURL: " <<
 				service.GetAbsEventSubURL() << ".";
-			AddLogLineM(true, logUPnP, msg);
+			AddLogLineU(true, logUPnP, msg);
 		} else {
 			msg << "Error subscribing to service " <<
 				service.GetServiceType() << ", absEventSubURL: " <<
@@ -1551,14 +1551,14 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 	} else {
 		msg << "Error getting SCPD Document from " <<
 			service.GetAbsSCPDURL() << ".";
-		AddLogLineM(true, logUPnP, msg);
+		AddLogLineU(true, logUPnP, msg);
 	}
 	
 	return;
 
 	// Error processing	
 error:
-	AddLogLineM(true, logUPnP, msg);
+	AddLogLineU(true, logUPnP, msg);
 }
 
 
