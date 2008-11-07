@@ -131,7 +131,7 @@ public:
 	
 	void	UpdateCompletedInfos();
 
-	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
+	bool	GetNextRequestedBlock(CUpDownClient* sender, std::vector<Requested_Block_Struct*>& toadd, uint16& count);
 	void	WritePartStatus(CMemFile* file);
 	void	WriteCompleteSourcesCount(CMemFile* file);
 	static bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped = NULL, bool ed2kID = true);
