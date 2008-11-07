@@ -140,13 +140,12 @@ color: white;
       <td bgcolor="#FFFFFF"><table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
               <tr> 
                 <th width="3%"></th>
-                <th width="20%" ><a href="amuleweb-main-servers.php?sort=name">Server Name</a></th>
-                <th width="35%" ><a href="amuleweb-main-servers.php?sort=desc">Description</a></th>
-                <th width="17%">Address</th>
-                <th width="5%"><a href="amuleweb-main-servers.php?sort=users">Users</a></th>
-                <th width="10%"><a href="amuleweb-main-servers.php?sort=maxusers">maximal Users</a></th>
-                <th width="5%"><a href="amuleweb-main-servers.php?sort=files">Files</a></th>
-		</tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
+                <th width="22%" ><a href="amuleweb-main-servers.php?sort=name">Server Name</a></th>
+                <th width="42%" ><a href="amuleweb-main-servers.php?sort=desc">Description</a></th>
+                <th width="19%">Address</th>
+                <th width="7%"><a href="amuleweb-main-servers.php?sort=users">Users</a></th>
+                <th width="7%"><a href="amuleweb-main-servers.php?sort=files">Files</a></th>
+		</tr><tr><td colspan="8" height="1" bgcolor="#000000"></td></tr>
               <?php
 
 
@@ -162,7 +161,6 @@ color: white;
 				case "name": $result = $a->name > $b->name; break;
 				case "desc": $result = $a->desc > $b->desc; break;
 				case "users": $result = $a->users > $b->users; break;
-				case "max_users": $result = $a->maxusers > $b->maxusers; break;
 				case "files":$result = $a->files > $b->files; break;
 			}
 
@@ -220,7 +218,6 @@ color: white;
 			echo "<td class='texte'>", $srv->desc, "</td>";
 			echo "<td class='texte' align='center'>", $srv->addr, "</td>";
 			echo "<td class='texte' align='center'>", $srv->users, "</td>";
-			echo "<td class='texte' align='center'>", $srv->maxusers, "</td>";
 			echo "<td class='texte' align='center'>", $srv->files, "</td>";
 
 			echo "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
