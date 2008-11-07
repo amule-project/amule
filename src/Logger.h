@@ -401,6 +401,8 @@ public:
 	#define AddDebugLogLineM(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 	#define AddLogLineM(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string)
 	#define AddLogLineMS(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string, true)
+// Macro for UPnP. This is not a debug macro, but wants its category printed nevertheless (sigh).
+	#define AddLogLineU(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 // Macros for 'N'on critical logging
 	#define AddDebugLogLineN(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
 	#define AddLogLineN(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string)
