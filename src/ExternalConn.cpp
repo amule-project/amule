@@ -339,7 +339,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 static void AddLoggerTag(CECPacket *response, CLoggerAccess &LoggerAccess)
 {
 	if (LoggerAccess.HasString()) {
-		CECTag tag(EC_TAG_STATS_LOGGER_MESSAGE, (uint8_t) 0);
+		CECEmptyTag tag(EC_TAG_STATS_LOGGER_MESSAGE);
 		// Tag structure is fix: tag carries nothing, inside are the strings
 		// maximum of 200 log lines per message
 		int entries = 0;
