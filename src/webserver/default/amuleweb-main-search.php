@@ -172,7 +172,7 @@ function formCommandSubmit(command)
                     </select></td>
                 </tr>
                 <tr> 
-                  <td align="center"><a href="amuleweb-main-search.php">Click here to update the search results</a> </td>
+                  <td align="center"><a href="amuleweb-main-search.php?search_sort=<?php echo($HTTP_GET_VARS["sort"]);?>">Click here to update the search results</a> </td>
                   <td align="right">Search type :</td>
                   <td> 
                     <select name="searchtype" id="select">
