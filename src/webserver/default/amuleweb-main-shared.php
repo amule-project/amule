@@ -217,11 +217,11 @@ function formCommandSubmit(command)
                   <th></th>
                   <th><a href="amuleweb-main-shared.php?sort=name">File Name</a></th>
                   <th><a href="amuleweb-main-shared.php?sort=xfer">Transferred</a> 
-                    (<a href="amuleweb-main-shared.php">Total</a>)</th>
+                    (<a href="amuleweb-main-shared.php?sort=xfer_all">Total</a>)</th>
                   <th><a href="amuleweb-main-shared.php?sort=req">Requested</a> 
-                    (<a href="amuleweb-main-shared.php">Total</a>)</th>
+                    (<a href="amuleweb-main-shared.php?sort=req_all">Total</a>)</th>
                   <th><a href="amuleweb-main-shared.php?sort=acc">Accepted requests</a> 
-                    (<a href="amuleweb-main-shared.php">Total</a>)</th>
+                    (<a href="amuleweb-main-shared.php?sort=acc_all">Total</a>)</th>
                   <th><a href="amuleweb-main-shared.php?sort=size">Size</a></th>
                   <th><a href="amuleweb-main-shared.php?sort=prio">Priority</a></th>
                 </tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
@@ -283,8 +283,11 @@ function formCommandSubmit(command)
 				case "size": $result = $a->size > $b->size; break;
 				case "name": $result = $a->name > $b->name; break;
 				case "xfer": $result = $a->xfer > $b->xfer; break;
+				case "xfer_all": $result = $a->xfer_all > $b->xfer_all; break;
 				case "acc": $result = $a->accept > $b->accept; break;
+				case "acc_all": $result = $a->accept_all > $b->accept_all; break;
 				case "req": $result = $a->req > $b->req; break;
+				case "req_all": $result = $a->req_all > $b->req_all; break;
 				case "prio": $result = PrioSort($a) < PrioSort($b); break;
 			}
 
@@ -338,10 +341,10 @@ function formCommandSubmit(command)
 			echo "<td class='texte'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
 			echo "<td class='texte'>", $file->short_name, "</td>";
-			echo "<td class='texte' align='center'>", CastToXBytes($file->xfer), "</td>";
+			echo "<td class='texte' align='center'>", CastToXBytes($file->xfer), " (", CastToXBytes($file->xfer_all),")</td>";
 
-			echo "<td class='texte' align='center'>", $file->req, "</td>";
-			echo "<td class='texte' align='center'>", $file->accept, "</td>";
+			echo "<td class='texte' align='center'>", $file->req, " (", $file->req_all, ")</td>";
+			echo "<td class='texte' align='center'>", $file->accept, " (", $file->accept_all, ")</td>";
 			
 			echo "<td class='texte' align='center'>", CastToXBytes($file->size), "</td>";
 
