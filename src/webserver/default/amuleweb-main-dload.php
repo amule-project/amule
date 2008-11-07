@@ -320,7 +320,7 @@ function formCommandSubmit(command)
 				case "speed": $result = $a->speed > $b->speed; break;
 				case "scrcount": $result = $a->src_count > $b->src_count; break;
 				case "status": $result = StatusString($a) > StatusString($b); break;
-				case "prio": $result = PrioString($a) > PrioString($b); break;
+				case "prio": $result = $a->prio < $b->prio; break;
 			}
 
 			if ( $sort_reverse ) {
