@@ -33,7 +33,7 @@ Version 2.2.3 - The "Vampires suck" version.
 
 --------------------------------------------------------------------------------
 
-Version 2.2.2 - The "Similarity." version
+Version 2.2.2 - The "Similarity." version.
 ----------
 2008-08-08
 
@@ -136,6 +136,10 @@ Version 2.2.2 - The "Similarity." version
 		* Download List sorted on startup
 		* Splitter bar position in transfer window is restored again
 		* Fixed a GDI resource leak for Windows
+
+	Vollstrecker:
+		* Made possible to deactivate xas
+		* Various Updates in debian/ see debian/changelog
 
 	Wuischke:
 		* Show connection status in toolbar when changing skin, thanks to greek
