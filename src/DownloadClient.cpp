@@ -619,8 +619,8 @@ void CUpDownClient::SendBlockRequests()
 	if (m_DownloadBlocks_list.empty()) {
 		// Barry - instead of getting 3, just get how many is needed
 		uint16 count = m_MaxBlockRequests - m_PendingBlocks_list.size();
-		std::vector<Requested_Block_Struct*> toadd(count);
-		if (m_reqfile->GetNextRequestedBlock(this,&(toadd[0]),&count)) {
+		std::vector<Requested_Block_Struct*> toadd;
+		if (m_reqfile->GetNextRequestedBlock(this, toadd, count)) {
 			for (int i = 0; i != count; i++) {
 				m_DownloadBlocks_list.push_back(toadd[i]);
 			}
@@ -672,8 +672,8 @@ void CUpDownClient::SendBlockRequests()
 			wxASSERT(m_DownloadBlocks_list.empty());
 			wxASSERT(m_PendingBlocks_list.empty());
 			uint16 count = m_MaxBlockRequests;
-			std::vector<Requested_Block_Struct*> toadd(count);
-			if (m_reqfile->GetNextRequestedBlock(this, &(toadd[0]),&count)) {
+			std::vector<Requested_Block_Struct*> toadd;
+			if (m_reqfile->GetNextRequestedBlock(this, toadd, count)) {
 				for (int i = 0; i != count; i++) {
 					Pending_Block_Struct* pblock = new Pending_Block_Struct;
 					pblock->block = toadd[i];
