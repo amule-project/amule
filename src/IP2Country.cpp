@@ -40,10 +40,10 @@
 // Contact: mjames@gmail.com
 //
 
+#include "IP2Country.h"
+
 // MSVC projects can't include files configuration dependent, so just double-check the #define
 #ifdef ENABLE_IP2COUNTRY
-
-#include "IP2Country.h"
 
 #include "amule.h"			// For theApp
 #include "Preferences.h"	// For thePrefs
