@@ -867,7 +867,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 			return;
 	}
 	wxString wildcard = CFormat(_("Executable%s"))
-#ifdef __WINDOWS__
+#ifdef __WXMSW__
 		% wxT(" (*.exe)|*.exe");
 #else
 		% wxT("|*");

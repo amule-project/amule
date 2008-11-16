@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="aMuleGUI"
 	ProjectGUID="{9E601FE7-C3E1-48A8-8EAB-A1EEB501FBC7}"
 	RootNamespace="aMuleGUI"
@@ -42,13 +42,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;&quot;$(SolutionDir)\libs\libGeoIP&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG__;_WINDOWS;MSVC;USE_WX_EXTENSIONS;CONVAMULE_CPP;__WEAK_CRYPTO__;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;EC_REMOTE"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;EC_REMOTE;ENABLE_NLS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -118,9 +117,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="3"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;&quot;$(SolutionDir)\libs\libGeoIP&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;MSVC;USE_WX_EXTENSIONS;CONVAMULE_CPP;__WEAK_CRYPTO__;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;EC_REMOTE"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;EC_REMOTE;ENABLE_NLS"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
