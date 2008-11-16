@@ -970,7 +970,7 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 	s_statData[sdKadFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_FILES)->GetInt();
 	const CECTag * LoggerTag = stats->GetTagByName(EC_TAG_STATS_LOGGER_MESSAGE);
 	if (LoggerTag) {
-		for (int i = 0; i < LoggerTag->GetTagCount(); i++) {
+		for (size_t i = 0; i < LoggerTag->GetTagCount(); i++) {
 			theApp->AddRemoteLogLine(LoggerTag->GetTagByIndex(i)->GetStringData());
 		}
 	}

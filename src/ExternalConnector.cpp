@@ -62,6 +62,10 @@
 #include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
 
+#ifdef _MSC_VER  // silly warnings about deprecated functions
+#pragma warning(disable:4996)
+#endif
+
 //-------------------------------------------------------------------
 
 CCommandTree::~CCommandTree()

@@ -214,7 +214,7 @@ bool isNumber( const string& str )
 		}
 	}
 
-	return str.length();
+	return str.length() > 0;
 }
 
 
