@@ -42,13 +42,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;&quot;$(SolutionDir)\libs\libGeoIP&quot;"
-				PreprocessorDefinitions="__DEBUG__;_DEBUG;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS"
+				PreprocessorDefinitions="__DEBUG__;_DEBUG;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -63,6 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -118,7 +119,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;&quot;$(SolutionDir)\libs\libGeoIP&quot;"
-				PreprocessorDefinitions="USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS"
+				PreprocessorDefinitions="USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"

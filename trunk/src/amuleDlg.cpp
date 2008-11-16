@@ -82,13 +82,13 @@
 #include "kademlia/kademlia/Kademlia.h"
 
 #ifdef ENABLE_IP2COUNTRY
-
 #include "IP2Country.h"		// Needed for IP2Country
 void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
 { 
+#ifdef ENABLE_IP2COUNTRY	// That's no bug. Dummy GeoIP.h turns ENABLE_IP2COUNTRY off again
 	m_IP2Country->DownloadFinished(result); 
+#endif
 }
-
 #endif
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
