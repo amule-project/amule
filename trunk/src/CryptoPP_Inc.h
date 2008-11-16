@@ -25,6 +25,12 @@
 #ifndef CRYPTOPP_INC_H
 #define CRYPTOPP_INC_H
 
+// WIN32: force usage of Cryptopp >= 5.5 (no reason to use an older one)
+// and so get rid of "weak algorithm" warnings
+#if defined(_WIN32) && !defined(__WEAK_CRYPTO__)
+	#define __WEAK_CRYPTO__ 1
+#endif
+
 #ifdef __WEAK_CRYPTO__
 	#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #endif

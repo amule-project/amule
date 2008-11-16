@@ -34,7 +34,7 @@ const int versionRevision	= 1;
 
 #ifdef __APPLE__
 	#include <CoreServices/CoreServices.h>
-#elif defined(__WIN32__)
+#elif defined(_WIN32)
 	#include <winerror.h>
 	#include <shlobj.h>
 	#include <shlwapi.h>
@@ -49,7 +49,7 @@ using std::string;
 string GetLinksFilePath(const string& configDir)
 {
 	if (!configDir.empty()) {
-#ifdef __WIN32__
+#ifdef _WIN32
 		char buffer[MAX_PATH + 1];
 		configDir.copy(buffer, MAX_PATH);
 		if (PathAppendA(buffer, "ED2KLinks")) {
@@ -85,7 +85,7 @@ string GetLinksFilePath(const string& configDir)
 
 	return strDir + "/aMule/ED2KLinks";
 
-#elif defined(__WIN32__)
+#elif defined(_WIN32)
 
 	std::string strDir;
 	LPITEMIDLIST pidl;

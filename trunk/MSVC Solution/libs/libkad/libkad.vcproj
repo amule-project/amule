@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="libkad"
 	ProjectGUID="{DBADF72E-2572-403F-B0D6-AC8C9B3ECCFE}"
 	RootNamespace="libkad"
@@ -43,14 +43,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;__WEAK_CRYPTO__"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -106,9 +105,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="3"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;__WEAK_CRYPTO__"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"

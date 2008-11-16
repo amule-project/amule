@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;__WIN32__;_DEBUG;_WINDOWS;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_DEBUG;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -117,9 +117,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="3"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;__WIN32__;NDEBUG;_WINDOWS;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"

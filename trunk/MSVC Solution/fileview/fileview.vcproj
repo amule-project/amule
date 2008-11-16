@@ -4,7 +4,7 @@
 	Version="9,00"
 	Name="fileview"
 	ProjectGUID="{02A90868-EC36-4EA2-8D46-3B0BB33AEAC6}"
-	RootNamespace="ed2k"
+	RootNamespace="fileview"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;__WIN32__;_DEBUG;_WINDOWS;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT"
+				PreprocessorDefinitions="_DEBUG;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -117,9 +117,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="3"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;__WIN32__;NDEBUG;_WINDOWS;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"

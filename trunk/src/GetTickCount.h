@@ -29,7 +29,7 @@
 
 #include "Types.h"		// Needed for uint32
 
-#ifndef __WINDOWS__
+#ifndef _WIN32
 	uint32 GetTickCount();
 #else
 	#ifndef _MSC_VER
