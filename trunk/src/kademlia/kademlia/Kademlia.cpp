@@ -50,6 +50,9 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include <protocol/kad2/Client2Client/UDP.h>
 
+#ifdef _MSC_VER  // silly warnings about deprecated functions
+#pragma warning(disable:4996)
+#endif
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -422,10 +425,10 @@ uint32_t CKademlia::CalculateKadUsersNew()
 	// Modify count by assuming 20% of the users are firewalled and can't be a contact for < 0.49b nodes
 	// Modify count by actual statistics of Firewalled ratio for >= 0.49b if we are not firewalled ourself
 	// Modify count by 40% for >= 0.49b if we are firewalled ourself (the actual Firewalled count at this date on kad is 35-55%)
-	const float firewalledModifyOld = 1.20;
+	const float firewalledModifyOld = 1.20f;
 	float firewalledModifyNew = 0.0;
 	if (CUDPFirewallTester::IsFirewalledUDP(true)) {
-		firewalledModifyNew = 1.40; // we are firewalled and can't get the real statistics, assume 40% firewalled >=0.49b nodes
+		firewalledModifyNew = 1.40f; // we are firewalled and can't get the real statistics, assume 40% firewalled >=0.49b nodes
 	} else if (GetPrefs()->StatsGetFirewalledRatio(true) > 0) {
 		firewalledModifyNew = 1.0 + (CKademlia::GetPrefs()->StatsGetFirewalledRatio(true)); // apply the firewalled ratio to the modify
 		wxASSERT(firewalledModifyNew > 1.0 && firewalledModifyNew < 1.90);
