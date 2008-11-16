@@ -337,7 +337,7 @@
 	m_flags = 0x20;
 
 	// allow notification push to my client
-	m_flags |= EC_FLAG_NOTIFY;
+	m_flags |= EC_FLAG_NOTIFY | EC_FLAG_ACCEPTS;
 
 	[self initSubtags];
 }
@@ -359,7 +359,7 @@
 	p->m_opcode = (ec_opcode_t)(*data);
 	data++;
 
-	uint16_t tag_count = ntohl(*((uint16_t *)data));
+	uint16_t tag_count = ntohs(*((uint16_t *)data));
 	uint8_t *start_ptr = data;
 	for(int i = 0; i < tag_count; i++) {
 		ECTag *tag = [ECTag tagFromBuffer:&data withLenght:([buffer length] - (data - start_ptr))];
