@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="aMuleCMD"
-	ProjectGUID="{EC3DE6B0-0C01-4D64-928A-4ADDB09472BA}"
-	RootNamespace="aMuleCMD"
+	Name="ed2k"
+	ProjectGUID="{FF560C5D-4369-4DEF-B2EC-6F507D554DB6}"
+	RootNamespace="ed2k"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -41,9 +41,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
-				PreprocessorDefinitions="_DEBUG;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;EC_REMOTE;ECSOCKET_USE_EVENTS=0"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="_DEBUG;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="shlwapi.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -117,8 +118,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
-				PreprocessorDefinitions="_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;EC_REMOTE;ECSOCKET_USE_EVENTS=0"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -135,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="shlwapi.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -177,19 +178,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\ExternalConnector.cpp"
+				RelativePath="..\..\src\ED2KLinkParser.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NetworkFunctions.cpp"
+				RelativePath="..\..\src\MagnetURI.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\OtherFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\TextClient.cpp"
+				RelativePath="..\..\src\MuleCollection.cpp"
 				>
 			</File>
 		</Filter>
@@ -199,19 +196,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\ExternalConnector.h"
+				RelativePath="..\..\src\FileLock.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NetworkFunctions.h"
+				RelativePath="..\..\src\MagnetURI.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\OtherFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\TextClient.h"
+				RelativePath="..\..\src\MuleCollection.h"
 				>
 			</File>
 		</Filter>

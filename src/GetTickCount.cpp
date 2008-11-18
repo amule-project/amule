@@ -26,7 +26,7 @@
 
 #include "GetTickCount.h" // Interface
 
-#ifdef __WINDOWS__
+#ifdef __WXMSW__
 
 void StartTickTimer(){};
 

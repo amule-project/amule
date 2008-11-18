@@ -26,7 +26,7 @@
 #ifndef MULELISTCTRL_H
 #define MULELISTCTRL_H
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <wx/msw/winundef.h>
 #endif
 
