@@ -39,7 +39,7 @@
 	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
 	#include <wx/mac/corefoundation/cfstring.h> // Do_not_auto_remove
 	#include <wx/intl.h> // Do_not_auto_remove
-#elif defined(__WINDOWS__)
+#elif defined(__WXMSW__)
 	#include <winerror.h> // Do_not_auto_remove
 	#include <shlobj.h> // Do_not_auto_remove
 #endif
@@ -137,7 +137,7 @@ wxString GetDefaultAmulesigPath()
 			+ wxFileName::GetPathSeparator() + wxT("aMule");
 	}
 
-#elif defined(__WINDOWS__)
+#elif defined(__WXMSW__)
  
 	LPITEMIDLIST pidl;
 

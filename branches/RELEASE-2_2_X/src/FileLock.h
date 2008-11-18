@@ -57,7 +57,7 @@ public:
 	 * file is not removed afterwards.
 	 */
 	CFileLock(const std::string& file)
-#if defined(__WIN32__) || defined(_MSC_VER)
+#ifdef _WIN32
 		: m_ok(false)
    	{
 		hd = CreateFileA((file + "_lock").c_str(),

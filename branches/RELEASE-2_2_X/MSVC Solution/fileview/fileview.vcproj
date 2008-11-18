@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="aMuleCMD"
-	ProjectGUID="{EC3DE6B0-0C01-4D64-928A-4ADDB09472BA}"
-	RootNamespace="aMuleCMD"
+	Name="fileview"
+	ProjectGUID="{02A90868-EC36-4EA2-8D46-3B0BB33AEAC6}"
+	RootNamespace="fileview"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -41,9 +41,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
-				PreprocessorDefinitions="_DEBUG;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;EC_REMOTE;ECSOCKET_USE_EVENTS=0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\..\&quot;"
+				PreprocessorDefinitions="_DEBUG;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT"
 				MinimalRebuild="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="shlwapi.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -117,8 +118,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
-				PreprocessorDefinitions="_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;EC_REMOTE;ECSOCKET_USE_EVENTS=0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\..\&quot;"
+				PreprocessorDefinitions="_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -135,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="shlwapi.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -177,11 +178,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\ExternalConnector.cpp"
+				RelativePath="..\..\src\CFile.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NetworkFunctions.cpp"
+				RelativePath="..\..\src\utils\fileview\FileView.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\utils\fileview\KadFiles.cpp"
 				>
 			</File>
 			<File
@@ -189,7 +194,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\TextClient.cpp"
+				RelativePath="..\..\src\utils\fileview\Print.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\SafeFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\Tag.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\kademlia\utils\UInt128.cpp"
 				>
 			</File>
 		</Filter>
@@ -199,19 +216,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\ExternalConnector.h"
+				RelativePath="..\..\src\utils\fileview\eD2kFiles.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NetworkFunctions.h"
+				RelativePath="..\..\src\utils\fileview\KadFiles.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\OtherFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\TextClient.h"
+				RelativePath="..\..\src\utils\fileview\Print.h"
 				>
 			</File>
 		</Filter>
