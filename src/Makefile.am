@@ -219,7 +219,7 @@ common_sources = \
 
 core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
-remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIBS)
+remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
 
 core_deps = libmuleappcore.a
@@ -305,8 +305,7 @@ amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags) -DEC_REMOT
 amulecmd_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec \
-	$(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) \
-	$(RESOLV_LIB) $(BFD_LIBS)
+	$(WXBASE_LIBS) $(READLINE_LIBS) $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
 
 noinst_HEADERS = \
 		AddFriend.h \

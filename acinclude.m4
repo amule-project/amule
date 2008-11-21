@@ -358,7 +358,9 @@ AC_DEFUN([MULE_CHECK_BFD],
 [
 	AC_MSG_CHECKING([for bfd])
 	MULE_BACKUP([LIBS])
-	MULE_PREPEND([LIBS], [-lbfd -liberty -lz])
+	MULE_BACKUP([LDFLAGS])
+	MULE_PREPEND([LIBS], [-lbfd -liberty ${ZLIB_LIBS}])
+	MULE_APPEND([LDFLAGS], [${ZLIB_LDFLAGS}])
 	AC_LINK_IFELSE([
 		AC_LANG_PROGRAM([[
 			#include <ansidecl.h>
@@ -369,12 +371,13 @@ AC_DEFUN([MULE_CHECK_BFD],
 	], [
 		AC_MSG_RESULT([yes])
 		BFD_CPPFLAGS="-DHAVE_BFD"
-		BFD_LIBS="-lbfd -liberty -lz"
+		BFD_LIBS="-lbfd -liberty"
 	], [
 		AC_MSG_RESULT([no])
 		MULE_WARNING([bfd.h not found or unusable, please install binutils development package if you are a developer or want to help testing aMule])
 	])
 	MULE_RESTORE([LIBS])
+	MULE_RESTORE([LDFLAGS])
 
 AC_SUBST([BFD_CPPFLAGS])dnl
 AC_SUBST([BFD_LIBS])dnl
