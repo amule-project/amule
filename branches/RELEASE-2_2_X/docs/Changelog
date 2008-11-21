@@ -25,6 +25,7 @@ Version 2.2.3 - The "Vampires suck" version.
 
 	Stu Redman:
 		* Fix crash when last category was removed with a completed file in it
+		* Fix wrong ordering/placing of clients in the download window
 
 	Wuischke:
 		* Add checks to cas to prevent segfaults

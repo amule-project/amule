@@ -1824,12 +1824,8 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 	int result = 0;
 
 	switch (lParamSort) {
-	// Sort by filename
-	case 0:
-		result = CmpAny(
-			file1->GetFileName(),
-			file2->GetFileName() );
-		break;
+	// Sort by filename is done in the end, when result is still 0
+	// case 0:
 
 	// Sort by size
 	case 1:
@@ -1919,6 +1915,23 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 			file1->GetLastChangeDatetime(),
 			file2->GetLastChangeDatetime() );
 		break;
+	}
+
+	// Files must never be treated as equal on sort.
+	// When a file has sources visible, and another one is equal, 
+	// then the sources can be assigned to the wrong file.
+	// So sort by filename in this case (which should not be equal).
+	if (result == 0) {
+		result = CmpAny(
+			file1->GetFileName(),
+			file2->GetFileName() );
+	}
+	// Last resort if names ARE equal (maybe same name in two cats)
+	// - take the hash
+	if (result == 0) {
+		result = CmpAny(
+			file1->GetFileHash(),
+			file2->GetFileHash() );
 	}
 
 	return result;
