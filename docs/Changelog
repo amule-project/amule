@@ -2,9 +2,6 @@ Version 2.3.0 - The river knows.
 ----------
 2008-??-??
 
-	Gerd78:
-		* Fix for linking with a static bfd library.
-
 	GonoszTopi:
 		* Various fixes to new colour code
 		* Allow user to select display of transfer rates
@@ -72,6 +69,9 @@ Version 2.2.3 - The "Vampires suck" version.
 
 	Alfred:
 		* Fixes to compile with Sun Studio 12.
+
+	Gerd78:
+		* Fix for linking with a static bfd library.
 
 	GonoszTopi:
 		* Fixed improper handling of EC connection failures.
