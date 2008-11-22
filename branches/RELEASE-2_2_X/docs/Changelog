@@ -5,6 +5,9 @@ Version 2.2.3 - The "Vampires suck" version.
 	Alfred:
 		* Fixes to compile with Sun Studio 12.
 
+	Gerd78:
+		* Fix for linking with a static bfd library.
+
 	GonoszTopi:
 		* Fixed improper handling of EC connection failures.
 		* Fix for shells not properly handling empty lists.
