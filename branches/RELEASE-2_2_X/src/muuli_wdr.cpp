@@ -47,6 +47,11 @@
 #include "PartFileConvert.h"
 #include "KadDlg.h"
 
+// Make source compatible to wx 2.8 without 2.6 backward compatibility
+#ifndef wxGA_PROGRESSBAR
+#define wxGA_PROGRESSBAR 0
+#endif
+
 
 // Implement window functions
 
