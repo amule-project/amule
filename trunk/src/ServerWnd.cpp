@@ -36,6 +36,8 @@
 #include "Logger.h"
 
 #include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/UDPFirewallTester.h"
+#include "kademlia/kademlia/Indexed.h"
 #include "ClientList.h"
 #include "updownclient.h"
 
@@ -205,32 +207,58 @@ void CServerWnd::UpdateKadInfo()
 	KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 
 	if (theApp->IsKadRunning()) {
-		KadInfoList->SetItem(next_row, 1, _("Running"));
-			
-		++next_row;
+		KadInfoList->SetItem(next_row++, 1, _("Running"));
 			
 		// Connection data		
-			
 		KadInfoList->InsertItem(next_row, _("Status:"));
-		KadInfoList->SetItem(next_row, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
-		++next_row;
+		KadInfoList->SetItem(next_row++, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
 		if (theApp->IsConnectedKad()) {
 			KadInfoList->InsertItem(next_row, _("Connection State:"));
-			KadInfoList->SetItem(next_row, 1, theApp->IsFirewalledKad() ? _("Firewalled") : _("OK"));
-			++next_row;
+			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ? 
+				CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort() : _("OK"));
 			#ifndef CLIENT_GUI
-			if (theApp->IsFirewalledKad()) {
+			KadInfoList->InsertItem(next_row, _("UDP Connection State:"));
+			bool UDPFirewalled = Kademlia::CUDPFirewallTester::IsFirewalledUDP(true);
+			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ? 
+				CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort() : _("OK"));
+
+			if (theApp->IsFirewalledKad() || UDPFirewalled) {
 				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
-				KadInfoList->SetItem(next_row, 1, theApp->clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
-				++next_row;
-				#ifdef __DEBUG__
-				if (theApp->clientlist->GetBuddy()) {
-					KadInfoList->InsertItem(next_row, wxT("Buddy address: "));
-					KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp->clientlist->GetBuddy()->GetIP(), theApp->clientlist->GetBuddy()->GetUDPPort()));
-					++next_row;		
+				wxString BuddyState;
+				switch ( theApp->clientlist->GetBuddyStatus() )
+				{
+					case Disconnected:
+						if (!theApp->IsFirewalledKad()) {
+							BuddyState = _("No buddy required - TCP port open");
+						} else if (!UDPFirewalled) {
+							BuddyState = _("No buddy required - UDP port open");
+						} else {
+							BuddyState = _("No buddy");
+						}
+						break;
+					case Connecting:
+						BuddyState = _("Connecting to buddy");
+						break;
+					case Connected:
+						BuddyState = CFormat(_("Connected to buddy at %s")) % Uint32_16toStringIP_Port(theApp->clientlist->GetBuddy()->GetIP(), theApp->clientlist->GetBuddy()->GetUDPPort());
+						break;
 				}
-				#endif
+				KadInfoList->SetItem(next_row++, 1, BuddyState);
 			}
+
+			KadInfoList->InsertItem(next_row, _("IP address:"));
+			KadInfoList->SetItem(next_row++, 1, Uint32toStringIP(wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetPrefs()->GetIPAddress()))); // WTF ?
+
+			// Index info
+			KadInfoList->InsertItem(next_row, _("Indexed sources:"));
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexSource);
+			KadInfoList->InsertItem(next_row, _("Indexed keywords:"));
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexKeyword);
+			KadInfoList->InsertItem(next_row, _("Indexed notes:"));
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexNotes);
+			KadInfoList->InsertItem(next_row, _("Indexed load:"));
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexLoad);
+
 			uint32 KademliaUsers = Kademlia::CKademlia::GetKademliaUsers();
 			uint32 KademliaFiles = Kademlia::CKademlia::GetKademliaFiles();
 			#else 
