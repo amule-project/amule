@@ -85,6 +85,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_ENABLE_PO_OUTGOING,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENFORCE_PO_INCOMING,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_SHOWRATEONTITLE,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_NETWORKED2K,		PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
@@ -158,29 +159,27 @@ struct PrefsPage
 	wxSizer*	(*m_function)(wxWindow*, bool, bool );
 	//! The index of the image used on the list.
 	int 		m_imageidx;
-	//! The actual widget. To be set later.
-	wxPanel*	m_widget;
 };
 
 
 PrefsPage pages[] =
 {
-	{ wxTRANSLATE("General"),		PreferencesGeneralTab,		13, NULL },
-	{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14, NULL },
-	{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17, NULL },
-	{ wxTRANSLATE("Servers"),		PreferencesServerTab,		15, NULL },
-	{ wxTRANSLATE("Files"),			PreferencesFilesTab,		16, NULL },
-	{ wxTRANSLATE("Security"),		PreferencesSecurityTab,		22, NULL },
-	{ wxTRANSLATE("Interface"),		PreferencesGuiTweaksTab,	19, NULL },
-	{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10, NULL },
-	{ wxTRANSLATE("Proxy"),			PreferencesProxyTab,		24, NULL },
-	{ wxTRANSLATE("Filters"),		PreferencesFilteringTab,		23, NULL },
-	{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11, NULL },
-	{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21, NULL },
-	{ wxTRANSLATE("Advanced"),		PreferencesaMuleTweaksTab,	12, NULL },
-	{ wxTRANSLATE("Events"),		PreferencesEventsTab,		5,  NULL }
+	{ wxTRANSLATE("General"),			PreferencesGeneralTab,		13 },
+	{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14 },
+	{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17 },
+	{ wxTRANSLATE("Servers"),			PreferencesServerTab,		15 },
+	{ wxTRANSLATE("Files"),				PreferencesFilesTab,		16 },
+	{ wxTRANSLATE("Security"),			PreferencesSecurityTab,		22 },
+	{ wxTRANSLATE("Interface"),			PreferencesGuiTweaksTab,	19 },
+	{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10 },
+	{ wxTRANSLATE("Proxy"),				PreferencesProxyTab,		24 },
+	{ wxTRANSLATE("Filters"),			PreferencesFilteringTab,	23 },
+	{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11 },
+	{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21 },
+	{ wxTRANSLATE("Advanced"),			PreferencesaMuleTweaksTab,	12 },
+	{ wxTRANSLATE("Events"),			PreferencesEventsTab,		5 }
 #ifdef __DEBUG__
-	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,		25, NULL }
+	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,			25 }
 #endif
 };
 
@@ -193,14 +192,14 @@ wxDialog(parent, -1, _("Preferences"),
 {
 	preferencesDlgTop(this, false);
 	
-	wxListCtrl *PrefsIcons = CastChild(ID_PREFSLISTCTRL, wxListCtrl);
+	m_PrefsIcons = CastChild(ID_PREFSLISTCTRL, wxListCtrl);
 	wxImageList *icon_list = new wxImageList(16, 16);
-	PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
+	m_PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
 
 	// Add the single column used
-	PrefsIcons->InsertColumn(
+	m_PrefsIcons->InsertColumn(
 		0, wxEmptyString, wxLIST_FORMAT_LEFT,
-		PrefsIcons->GetSize().GetWidth()-5);
+		m_PrefsIcons->GetSize().GetWidth()-5);
 
 	// Temp variables for finding the smallest height and width needed
 	int width = 0;
@@ -208,24 +207,30 @@ wxDialog(parent, -1, _("Preferences"),
 
 	// Add each page to the page-list
 	for (unsigned int i = 0; i < itemsof(pages); ++i) {
-		// Add the icon and label assosiated with the page
+		// Add the icon and label associated with the page
 		icon_list->Add(amuleSpecial(pages[i].m_imageidx));
-		PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
+		m_PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
 	}
 	
-	// Set list-width so that there arn't any scrollers
-	PrefsIcons->SetColumnWidth(0, wxLIST_AUTOSIZE);
-	PrefsIcons->SetMinSize(wxSize(PrefsIcons->GetColumnWidth(0) + 10, -1));
-	PrefsIcons->SetMaxSize(wxSize(PrefsIcons->GetColumnWidth(0) + 10, -1));
+	// Set list-width so that there aren't any scrollers
+	m_PrefsIcons->SetColumnWidth(0, wxLIST_AUTOSIZE);
+	m_PrefsIcons->SetMinSize(wxSize(m_PrefsIcons->GetColumnWidth(0) + 10, -1));
+	m_PrefsIcons->SetMaxSize(wxSize(m_PrefsIcons->GetColumnWidth(0) + 10, -1));
 
-	// Now add the pages and calculate the minimum size	
+	// Now add the pages and calculate the minimum size
+	wxPanel * DefaultWidget;
 	for (unsigned int i = 0; i < itemsof(pages); ++i) {
 		// Create a container widget and the contents of the page
-		pages[i].m_widget = new wxPanel(this, -1);
-		pages[i].m_function(pages[i].m_widget, true, true);
+		wxPanel * Widget = new wxPanel(this, -1);
+		// Widget is stored as user data in the list control
+		m_PrefsIcons->SetItemPtrData(i, (wxUIntPtr) Widget);
+		pages[i].m_function(Widget, true, true);
+		if (i == 0) {
+			DefaultWidget = Widget;
+		}
 
 		// Add it to the sizer
-		prefs_sizer->Add(pages[i].m_widget, 0, wxGROW|wxEXPAND);
+		prefs_sizer->Add(Widget, 0, wxGROW|wxEXPAND);
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
@@ -235,7 +240,7 @@ wxDialog(parent, -1, _("Preferences"),
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
-#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, pages[i].m_widget); break;
+#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, Widget); break;
 
 			wxListCtrl *list = CastChild(IDC_EVENTLIST, wxListCtrl);
 			list->InsertColumn(0, wxEmptyString);
@@ -252,6 +257,10 @@ wxDialog(parent, -1, _("Preferences"),
 				}
 			}
 			list->SetColumnWidth(0, wxLIST_AUTOSIZE);
+		}
+		else if (pages[i].m_function == PreferencesServerTab) {
+			m_IndexServerTab = i;
+			m_ServerWidget = Widget;
 		}
 #ifdef __DEBUG__
 		else if (pages[i].m_function == PreferencesDebug) {
@@ -279,20 +288,24 @@ wxDialog(parent, -1, _("Preferences"),
 		}
 
 		// Hide it for now
-		prefs_sizer->Detach(pages[i].m_widget);
-		pages[i].m_widget->Show(false);
+		prefs_sizer->Detach(Widget);
+		Widget->Show(false);
 	}
 	
 	// Default to the General tab
-	m_CurrentPanel = pages[0].m_widget;
-	prefs_sizer->Add(pages[0].m_widget, 0, wxGROW|wxEXPAND);
+	m_CurrentPanel = DefaultWidget;
+	prefs_sizer->Add(DefaultWidget, 0, wxGROW|wxEXPAND);
 	m_CurrentPanel->Show( true );
 
 	// Select the first item
-	PrefsIcons->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+	m_PrefsIcons->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 
 	// We now have the needed minimum height and width
 	prefs_sizer->SetMinSize(width, height);
+
+	// Don't show server prefs if ED2K is disabled
+	m_ServerTabVisible = true;
+	EnableServerTab(thePrefs::GetNetworkED2K());
 
 	// Store some often used pointers
 	m_ShareSelector = CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl);
@@ -320,6 +333,21 @@ wxDialog(parent, -1, _("Preferences"),
 
 	// Position the dialog.
 	Center();
+}
+
+
+void PrefsUnifiedDlg::EnableServerTab(bool enable)
+{
+	if (enable && !m_ServerTabVisible) {
+	// turn server widget on
+		m_PrefsIcons->InsertItem(m_IndexServerTab, wxGetTranslation(pages[m_IndexServerTab].m_title), m_IndexServerTab);
+		m_PrefsIcons->SetItemPtrData(m_IndexServerTab, (wxUIntPtr) m_ServerWidget);
+		m_ServerTabVisible = true;
+	} else if (!enable && m_ServerTabVisible) {
+	// turn server widget off
+		m_PrefsIcons->DeleteItem(m_IndexServerTab);
+		m_ServerTabVisible = false;
+	}
 }
 
 
@@ -413,6 +441,17 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	CastChild(IDC_SHOWRATEONTITLE, wxCheckBox)->SetValue(thePrefs::GetShowRatesOnTitle() != 0);
 	CastChild(IDC_RATESBEFORETITLE, wxRadioButton)->SetValue(thePrefs::GetShowRatesOnTitle() == 2);
 	CastChild(IDC_RATESAFTERTITLE, wxRadioButton)->SetValue(thePrefs::GetShowRatesOnTitle() != 2);
+
+	// UPNP
+#ifndef ENABLE_UPNP
+	FindWindow(IDC_UPNP_ENABLED)->Enable(false);	
+	FindWindow(IDC_UPNPTCPPORT)->Enable(false);
+	thePrefs::SetUPnPEnabled(false);
+	// TODO: grey out "UPnP TCP Port", "Webserver UPnP TCP Port"
+	FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);	
+	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(false);
+	thePrefs::SetUPnPWebServerEnabled(false);
+#endif
 
 #ifdef __DEBUG__
 	// Set debugging toggles
@@ -649,6 +688,8 @@ void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
 	Show(false);
+	// restore state of server tab if necessary
+	EnableServerTab(thePrefs::GetNetworkED2K());
 }
 
 
@@ -782,6 +823,10 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(IDC_RATESAFTERTITLE)->Enable(value);
 			break;
 
+		case IDC_NETWORKED2K:
+			EnableServerTab(value);
+			break;
+
 		default:
 			break;
 	}
@@ -913,7 +958,7 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 	prefs_sizer->Detach( m_CurrentPanel );
 	m_CurrentPanel->Show( false );
 
-	m_CurrentPanel = pages[ event.GetIndex() ].m_widget;
+	m_CurrentPanel = (wxPanel *) m_PrefsIcons->GetItemData(event.GetIndex());
 
 	prefs_sizer->Add( m_CurrentPanel, 0, wxGROW|wxEXPAND );
 	m_CurrentPanel->Show( true );
@@ -1027,7 +1072,9 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 
 void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 {
-	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(wxString() << (CastChild(IDC_PORT, wxSpinCtrl)->GetValue() + 3));
+	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel( 
+		m_ServerTabVisible ? (wxString() << (CastChild(IDC_PORT, wxSpinCtrl)->GetValue() + 3)) 
+							: wxString(_("disabled")));
 }
 
 void PrefsUnifiedDlg::OnUserEventSelected(wxListEvent& event)

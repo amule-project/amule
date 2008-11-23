@@ -36,6 +36,7 @@ class wxWindow;
 class wxChoice;
 class wxButton;
 class wxPanel;
+class wxListCtrl;
 
 class wxCommandEvent;
 class wxListEvent;
@@ -96,6 +97,12 @@ protected:
 	//! Pointer to the currently shown preference-page
 	wxPanel*		m_CurrentPanel;
 
+	//! hide/show server tab
+	int				m_IndexServerTab;
+	bool			m_ServerTabVisible;
+	wxPanel*		m_ServerWidget;
+	wxListCtrl*		m_PrefsIcons;
+	void EnableServerTab(bool enable);
 
 	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
