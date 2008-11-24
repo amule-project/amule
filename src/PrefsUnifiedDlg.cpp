@@ -823,9 +823,12 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(IDC_RATESAFTERTITLE)->Enable(value);
 			break;
 
-		case IDC_NETWORKED2K:
+		case IDC_NETWORKED2K: {
 			EnableServerTab(value);
+			wxSpinEvent e;
+			OnTCPClientPortChange(e);
 			break;
+		}
 
 		default:
 			break;
