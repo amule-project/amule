@@ -1209,7 +1209,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/ShowRatesOnTitle"),		s_showRatesOnTitle, 0 ));
 
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/GeoIPEnabled"), 		s_GeoIPEnabled, true ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/GeoIPUpdateUrl"),		s_GeoIPUpdateUrl, wxT("http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz") ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/GeoLiteCountryUpdateUrl"),		s_GeoIPUpdateUrl, wxT("http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz") ) );
+	wxConfigBase::Get()->DeleteEntry(wxT("/eMule/GeoIPUpdateUrl")); // get rid of the old one for a while
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
