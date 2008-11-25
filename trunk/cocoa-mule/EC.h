@@ -70,7 +70,7 @@
 }
 
 - (void)writeToSocket:(NSOutputStream *) socket;
-+ (id)tagFromBuffer:(uint8_t **) buffer;
++ (id)tagFromBuffer:(uint8_t **) buffer withLenght:(int) length;
 
 @end
 
@@ -79,9 +79,12 @@ typedef struct {
 } MD5Data;
 
 @interface ECTagMD5 : ECTagData {
+	// contain either raw data (in case of hashed string) or 2 64-bit words (in case of tag coming from ec)
+	MD5Data m_val;
 }
 
 + (id)tagFromString:(NSString *) string withName:(ECTagNames) name;
++ (id)tagFromBuffer:(uint8_t **) buffer;
 
 - (MD5Data)getMD5Data;
 
