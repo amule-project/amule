@@ -43,6 +43,9 @@
 		case EC_TAGTYPE_UINT64:
 			tag = [ECTagInt64 tagFromBuffer:buffer];
 			break;
+		case EC_TAGTYPE_HASH16:
+			tag = [ECTagMD5 tagFromBuffer:buffer];
+			break;
 		default: ;
 			break;
 	}
@@ -259,8 +262,11 @@
 	[super dealloc];
 }
 
-+ (id)tagFromBuffer:(uint8_t **) buffer {
-	ECTagInt64 *tag = [[ECTagInt64 alloc] init];
++ (id)tagFromBuffer:(uint8_t **) buffer withLenght:(int) length {
+	ECTagData *tag = [[ECTagData alloc] init];
+
+	tag->m_data = [NSData dataWithBytes: *buffer length: length];
+	[tag->m_data retain];
 	
 	return tag;
 }
@@ -288,15 +294,28 @@
 	return tag;
 }
 
++ (id)tagFromBuffer:(uint8_t **) buffer {
+	ECTagMD5 *tag = [[ECTagMD5 alloc] init];
+	
+	tag->m_data = 0;
+	tag->m_val.lo = *((uint64_t *)(*buffer));
+	tag->m_val.hi = *((uint64_t *)((*buffer))+8);
+
+	return tag;
+}
 
 - (MD5Data)getMD5Data {
-	uint8_t *data_ptr = (uint8_t *)[m_data bytes];
+	if ( m_data ) {
+		uint8_t *data_ptr = (uint8_t *)[m_data bytes];
 
-	uint64_t hi = *(uint64_t *)data_ptr;
-	data_ptr += 8;
-	uint64_t lo = *(uint64_t *)data_ptr;
-	MD5Data md5 = {hi, lo};
-	return md5;
+		uint64_t hi = *(uint64_t *)data_ptr;
+		data_ptr += 8;
+		uint64_t lo = *(uint64_t *)data_ptr;
+		MD5Data md5 = {hi, lo};
+		return md5;
+	} else {
+		return m_val;
+	}
 }
 
 @end
@@ -360,12 +379,12 @@
 	data++;
 
 	uint16_t tag_count = ntohs(*((uint16_t *)data));
+	data += 2;
 	uint8_t *start_ptr = data;
 	for(int i = 0; i < tag_count; i++) {
 		ECTag *tag = [ECTag tagFromBuffer:&data withLenght:([buffer length] - (data - start_ptr))];
 		[p->m_subtags addObject:tag];
 	}
-	data += 2;
 	
 	return p;
 }
