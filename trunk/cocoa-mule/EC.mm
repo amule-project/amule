@@ -28,6 +28,10 @@
 	ECTagTypes tag_type = (ECTagTypes)type8;
 	*buffer += sizeof(type8);
 
+	uint32_t size32 = *(uint32_t *)(*buffer);
+	size32 = ntohl(size32);
+	*buffer += sizeof(uint32_t);
+	
 	NSMutableArray *subtags = have_subtags ? [ECTag readSubtags:buffer withLenght:(length-3)] : nil;
 
 	switch (tag_type) {
@@ -46,6 +50,9 @@
 		case EC_TAGTYPE_HASH16:
 			tag = [ECTagMD5 tagFromBuffer:buffer];
 			break;
+		case EC_TAGTYPE_STRING:
+			tag = [ECTagString tagFromBuffer:buffer];
+			break;
 		default: ;
 			break;
 	}
@@ -58,14 +65,19 @@
 
 + (NSMutableArray *)readSubtags:(uint8_t **) buffer withLenght:(int) length {
 
-	uint16_t count16 = *(uint16_t *)buffer;
+	uint16_t count16 = *(uint16_t *)(*buffer);
 	count16 = ntohs(count16);
-	buffer += sizeof(count16);
-	
+	*buffer += sizeof(count16);
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	[array retain];
 	for(int i = 0; i < count16; i++) {
+		id tag = [ECTag tagFromBuffer:buffer withLenght:length];
+		if ( tag != nil ) {
+			[array addObject:tag];
+		}
 	}
 	
-	return nil;
+	return array;
 }
 
 - (void)writeToSocket:(NSOutputStream *) socket {
@@ -103,6 +115,17 @@
 		}
 	}
 	return total_size;
+}
+
+- (id)tagByName:(ECTagNames) tagname {
+	ECTag *mytag = nil;
+	for (ECTag *t in m_subtags) {
+		if (t.tagName == tagname) {
+			mytag = t;
+			break;
+		}
+	}
+	return mytag;
 }
 
 - (void)initSubtags {
@@ -301,6 +324,8 @@
 	tag->m_val.lo = *((uint64_t *)(*buffer));
 	tag->m_val.hi = *((uint64_t *)((*buffer))+8);
 
+	(*buffer) += 16;
+	
 	return tag;
 }
 
@@ -322,6 +347,8 @@
 
 @implementation ECTagString
 
+@synthesize stringValue = m_val;
+
 + tagFromString:(NSString *) string withName:(ECTagNames) name {
 	ECTagString *tag = [[ECTagString alloc] init];
 
@@ -335,6 +362,14 @@
 	return tag;
 }
 
++ (id)tagFromBuffer:(uint8_t **) buffer {
+	ECTagString *tag = [[ECTagString alloc] init];
+
+	tag->m_val = [NSString stringWithCString:(char *)(*buffer) encoding:NSUTF8StringEncoding];
+	*buffer += [tag->m_val length] + 1;
+	
+	return tag;
+}
 
 @end
 
@@ -380,10 +415,17 @@
 
 	uint16_t tag_count = ntohs(*((uint16_t *)data));
 	data += 2;
-	uint8_t *start_ptr = data;
-	for(int i = 0; i < tag_count; i++) {
-		ECTag *tag = [ECTag tagFromBuffer:&data withLenght:([buffer length] - (data - start_ptr))];
-		[p->m_subtags addObject:tag];
+	if ( tag_count ) {
+		p->m_subtags = [[NSMutableArray alloc] init];
+		[p->m_subtags retain];
+		uint8_t *start_ptr = data;
+		for(int i = 0; i < tag_count; i++) {
+			ECTag *tag = [ECTag tagFromBuffer:&data withLenght:([buffer length] - (data - start_ptr))];
+			// some tags are not supported yet
+			if ( tag != nil ) {
+				[p->m_subtags addObject:tag];
+			}
+		}
 	}
 	
 	return p;
