@@ -21,6 +21,8 @@
 
 - (int)getSize;
 
+- (id)tagByName:(ECTagNames) tagname;
+
 @property (readonly) ECTagTypes tagType;
 @property (readonly) ECTagNames tagName;
 
@@ -91,9 +93,14 @@ typedef struct {
 @end
 
 @interface ECTagString : ECTagData {
+	// string 
+	NSString *m_val;
 }
 
 + tagFromString:(NSString *) string withName:(ECTagNames) name;
++ (id)tagFromBuffer:(uint8_t **) buffer;
+
+@property (readonly) NSString * stringValue;
 
 @end
 
