@@ -27,6 +27,7 @@
 
 #include <wx/log.h>
 #include <wx/event.h>
+#include <sstream>
 
 
 enum DebugType 
