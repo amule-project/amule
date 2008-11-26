@@ -29,7 +29,6 @@
 #include <wx/wfstream.h>
 #include <wx/sstream.h>
 #include <wx/filename.h>
-#include <sstream>
 
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
