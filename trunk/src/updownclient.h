@@ -783,8 +783,8 @@ private:
 	std::list<Pending_Block_Struct*>	m_PendingBlocks_list;
 	std::list<Requested_Block_Struct*>	m_DownloadBlocks_list;
 
+	// download speed calculation
 	float		kBpsDown;
-	float		fDownAvgFilter;
 	uint32		msReceivedPrev;
 	uint32		bytesReceivedCycle;
 	// chat

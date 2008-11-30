@@ -151,7 +151,6 @@ void CUpDownClient::Init()
 	m_cAsked = 0;
 	msReceivedPrev = 0;
 	kBpsDown = 0.0;
-	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
 	m_nServerPort = 0;
 	m_iFileListRequested = 0;

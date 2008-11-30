@@ -326,7 +326,7 @@ class CStatistics {
 
 	// Other
 	static	void	CalculateRates();
-	static  float	GetDownloadRateAdjust()			{ return s_downloadRateAdjust; }
+	static  float	GetDownloadRateAdjust()			{ return 1.0;/*s_downloadRateAdjust;*/ }
 
 	static	void	AddReceivedBytes(uint32 bytes)
 		{

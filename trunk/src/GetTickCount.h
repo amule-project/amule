@@ -35,7 +35,9 @@
 	#ifndef _MSC_VER
 		#include <winbase.h> // Do_not_auto_remove
     #else
-		// GetTickCount64 is a system function in Vista 
+		// System GetTickcount is lowres, so use fullres
+		#define GetTickCount GetTickCountFullRes
+		// GetTickCount64 is a system function in Vista so rename it
 		#define GetTickCount64 GetTickCount_64
 	#endif
 #endif

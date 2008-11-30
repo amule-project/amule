@@ -531,6 +531,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			}
 		}
 		if (byNewState == DS_DOWNLOADING) {
+			msReceivedPrev = GetTickCount();
 			theStats::AddDownloadingSource();
 		} else if (m_nDownloadState == DS_DOWNLOADING) {
 			theStats::RemoveDownloadingSource();
@@ -1167,53 +1168,39 @@ float CUpDownClient::GetKBpsDown() const
 }
 
 
-// Emilio: rewrite of eMule code to eliminate use of lists for averaging and fix
-// errors in calculation (32-bit rollover and time measurement)  This function 
-// uses a first-order filter with variable time constant (initially very short 
-// to quickly reach the right value without spiking, then gradually approaching 
-// the value of 50 seconds which is equivalent to the original averaging period 
-// used in eMule).  The download rate is measured using actual timestamps.  The 
-// filter-based averaging however uses a simplified algorithm that assumes a 
-// fixed loop time - this does not introduce any measurement error, it simply 
-// makes the degree of smoothing slightly imprecise (the true TC of the filter 
-// varies inversely with the true loop time), which is of no importance here.
+// Speed is now updated only when data was received, calculated as
+// (data received) / (time since last receiption)
+// and slightly filtered (10s average).
+// Result is quite precise now and makes the DownloadRateAdjust workaround obsolete.
 
 float CUpDownClient::CalculateKBpsDown()
 {
-												// -- all timing values are in seconds --
-	const	float tcLoop   =  0.1f;				// _assumed_ Process() loop time = 0.1 sec
-	const	float tcInit   =  0.4f;				// initial filter time constant
-	const	float tcFinal  = 50.0f;				// final filter time constant
-	const	float tcReduce =  5.0f;				// transition from tcInit to tcFinal
-	
-	const	float fInit  = tcLoop/tcInit;		// initial averaging factor
-	const	float fFinal = tcLoop/tcFinal;		// final averaging factor
-	const	float fReduce = std::exp(std::log(fFinal/fInit) / (tcReduce/tcLoop)) * 0.99999;
-	
-	uint32	msCur = ::GetTickCount();
+	const	float tAverage = 10.0;
+	uint32	msCur = GetTickCount();
 
-	if (msReceivedPrev == 0) {  // initialize the averaging filter
-		fDownAvgFilter = fInit;
-		// "kBpsDown =  bytesReceivedCycle/1024.0 / tcLoop"  would be technically correct,
-		// but the first loop often receives a large chunk of data and then produces a spike
-		kBpsDown = /* 0.0 * (1.0-fInit) + */ bytesReceivedCycle/1024.0 / tcLoop * fInit;
-		bytesReceivedCycle = 0;
-	} else if (msCur != msReceivedPrev) {	// (safeguard against divide-by-zero)
-		if (fDownAvgFilter > fFinal) {		// reduce time constant during ramp-up phase
-			fDownAvgFilter *= fReduce;		// this approximates averaging a lengthening list
+	if (bytesReceivedCycle) {
+		float dt = (msCur - msReceivedPrev) / 1000.0; // time since last reception
+		if (dt < 0.01) {	// (safeguard against divide-by-zero)
+			dt = 0.01f;		//  diff should be 100ms actually
 		}
-		kBpsDown = kBpsDown * (1.0 - fDownAvgFilter) 
-					+ (bytesReceivedCycle/1.024)/((float)(msCur-msReceivedPrev)) * fDownAvgFilter;
+		float kBpsDownCur = bytesReceivedCycle / 1024.0 / dt;
+		if (dt >= tAverage) {
+			kBpsDown = kBpsDownCur;
+		} else {
+			kBpsDown = (kBpsDown * (tAverage - dt) + kBpsDownCur * dt) / tAverage;
+		}
+		AddDebugLogLineM( false, logLocalClient, CFormat(wxT("CalculateKBpsDown %X kbps %.1f kbpsCur %.1f dt %.3f rcv %d ")) 
+					% (uint32)this % kBpsDown  % kBpsDownCur % dt % bytesReceivedCycle);
 		bytesReceivedCycle = 0;
+		msReceivedPrev = msCur;	
 	}
-	msReceivedPrev = msCur;	
 
 	m_cShowDR++;
 	if (m_cShowDR == 30){
 		m_cShowDR = 0;
 		UpdateDisplayedInfo();
 	}
-	if ((::GetTickCount() - m_dwLastBlockReceived) > DOWNLOADTIMEOUT){
+	if (msCur - m_dwLastBlockReceived > DOWNLOADTIMEOUT) {
 		if (!GetSentCancelTransfer()){
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
