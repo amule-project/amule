@@ -536,9 +536,9 @@ msgstr[2] "Считано %u контактов Kad"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Доступен только %d контакт Kad, файл nodes.dat не записан"
+msgstr[1] "Доступно только %d контакта Kad, файл nodes.dat не записан"
+msgstr[2] "Доступно только %d контактов Kad, файл nodes.dat не записан"
 
 #: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
