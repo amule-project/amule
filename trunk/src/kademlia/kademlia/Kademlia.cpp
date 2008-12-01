@@ -292,10 +292,11 @@ void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip
 			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
 	} catch (const wxString& error) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception on Kad processPacket: ") + error);
-		throw;		
+		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port) + wxT(':'));
+		AddDebugLogLineM(false, logKadMain, error);
+		throw;
 	} catch (...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Unhandled exception on Kad processPacket"));
+		AddDebugLogLineM(false, logKadMain, wxT("Unhandled exception on Kad ProcessPacket"));
 		throw;
 	}
 }
