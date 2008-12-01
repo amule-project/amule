@@ -1247,7 +1247,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 			bio->WriteTagPtrList(taglist);
 		} else {
 			//If we get here.. Bad things happen.. Will fix this later if it is a real issue.
-			wxASSERT(0);
+			wxFAIL;
 		}
 	} catch (const CEOFException& err) {
 		AddDebugLogLineM(true, logKadSearch, wxT("CEOFException in CSearch::PreparePacketForTags: ") + err.what());

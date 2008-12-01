@@ -449,6 +449,9 @@ bool CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, ui
 	}
 	uint16_t tport = bio.ReadUInt16();
 	uint8_t version = bio.ReadUInt8();
+	if (version == 0) {
+		throw wxString::Format(wxT("***NOTE: Received invalid Kademlia2 version (%u) in "), version) + wxString::FromAscii(__FUNCTION__);
+	}
 	if (outVersion != NULL) {
 		*outVersion = version;
 	}
@@ -460,22 +463,20 @@ bool CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, ui
 		if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
 			if (tag->IsInt() && (uint16_t)tag->GetInt() > 0) {
 				port = tag->GetInt();
-			} else {
-				wxFAIL;
 			}
 		} else if (!tag->GetName().Cmp(TAG_KADMISCOPTIONS)) {
 			if (tag->IsInt() && tag->GetInt() > 0) {
 				udpFirewalled = (tag->GetInt() & 0x01) > 0;
 				tcpFirewalled = (tag->GetInt() & 0x02) > 0;
 				if ((tag->GetInt() & 0x04) > 0) {
-					if (outRequestsACK != NULL && version >= 8) {
-						*outRequestsACK = true;
+					if (outRequestsACK != NULL) {
+						if (version >= 8) {
+							*outRequestsACK = true;
+						}
 					} else {
 						wxFAIL;
 					}
 				}
-			} else {
-				wxFAIL;
 			}
 		}
 		delete tag;
@@ -2309,7 +2310,7 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
 	if (contact != NULL) {
 		if (contact->GetType() < 2) {
-			AddDebugLogLineM(false, logClientKadUDP, wxT("Sending challenge to a long known contact (should be verified already) - %s") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
+			AddDebugLogLineM(false, logClientKadUDP, wxT("Sending challenge to a long known contact (should be verified already) - ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 		}
 	} else {
 		wxFAIL;
