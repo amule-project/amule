@@ -192,7 +192,7 @@ public:
 	void    AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 uClientSXVersion, bool bSourceExchange2, const CUpDownClient* pClient = NULL);
 
 	bool	PreviewAvailable();
-	uint8	GetAvailablePartCount() const	{ return m_availablePartsCount; }
+	uint16	GetAvailablePartCount() const	{ return m_availablePartsCount; }
 	uint32	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
 	void	SetLastAnsweredTime();
 	void	SetLastAnsweredTimeTimeout();
@@ -351,7 +351,7 @@ private:
 	CReqBlockPtrList m_requestedblocks_list;
 	double	percentcompleted;
 	std::list<uint16> m_corrupted_list;
-	uint8	m_availablePartsCount;
+	uint16	m_availablePartsCount;
 	uint32	m_ClientSrcAnswered;
 	bool	m_bPercentUpdated;
 
