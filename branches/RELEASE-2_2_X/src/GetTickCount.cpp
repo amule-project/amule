@@ -32,30 +32,39 @@ void StartTickTimer(){};
 
 void StopTickTimer(){};
 
+/**
+ * Returns the tickcount in full resolution using the highres timer.
+ * This function replaces calls to the low res system function GetTickCOunt
+ * (which can also be messed up when an app changes the system timer resolution)
+ */
 uint32 GetTickCountFullRes() {
-	return GetTickCount();
+	return GetTickCount_64();
 }
 	
 /**
  * Returns the tickcount in 64bits.
  */
-uint64 GetTickCount64()
+uint64 GetTickCount_64()
 {
-	// The base value, can store more than 49 days worth of ms.
-	static uint64 tick = 0;
-	// The current tickcount, may have overflown any number of times.
-	static uint32 lastTick = 0;
+	// Use highres timer for all operations on Windows
+	// The Timer starts at system boot and runs (on a Intel Quad core) 
+	// with 14 million ticks per second. So it won't overflow for 
+	// 35000 years.
 
-	uint32 curTick = GetTickCount();
+	// Convert hires ticks to milliseconds
+	static double tickFactor;
+	_LARGE_INTEGER li;
 
-	// Check for overflow
-	if ( curTick < lastTick ) {
-		// Change the base value to contain the overflown value.
-		tick += (uint64)1 << 32;
+	static bool first = true;
+	if (first) {
+		// calculate the conversion factor for the highres timer
+		QueryPerformanceFrequency(&li);
+		tickFactor = 1000.0 / li.QuadPart;
+		first = false;
 	}
-		
-	lastTick = curTick;
-	return tick + lastTick;
+
+	QueryPerformanceCounter(&li);
+	return li.QuadPart * tickFactor;
 }
 
 #else
@@ -139,7 +148,7 @@ uint32 GetTickCountFullRes(void) {
 	uint64 GetTickCount64() {
 		struct timeval aika;
 		gettimeofday(&aika,NULL);
-		return aika.tv_sec * 1000 + aika.tv_usec / 1000;
+		return aika.tv_sec * (uint64)1000 + aika.tv_usec / 1000;
 	}
 
 #endif

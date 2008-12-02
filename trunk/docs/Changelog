@@ -97,6 +97,9 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Reordered preferences, disabled ED2K/UPnP prefs if ED2K/UPnP is disabled
 		* MSVC: solution for MSVC 2008 Express edition, 
 		  project for ed2k and fileview
+		* Fix wrong file download rates in transfer window
+		* Windows: fix broken core timer, use precise tickcount
+		  and so fix download limit
 
 	Wuischke:
 		* Add checks to cas to prevent segfaults
