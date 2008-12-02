@@ -509,7 +509,11 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	singleconnecting = false;
 
 	// initalize socket for udp packets
-	serverudpsocket = new CServerUDPSocket(address, thePrefs::GetProxyData());
+	if (thePrefs::GetNetworkED2K()) {
+		serverudpsocket = new CServerUDPSocket(address, thePrefs::GetProxyData());
+	} else {
+		serverudpsocket = NULL;
+	}
 }
 
 
