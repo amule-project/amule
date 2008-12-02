@@ -288,12 +288,12 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxASSERT(logs_notebook->GetPageCount() == 4);
 	wxASSERT(networks_notebook->GetPageCount() == 2);
 	
-	for (int i = 0; i < logs_notebook->GetPageCount(); ++i) {
+	for (size_t i = 0; i < logs_notebook->GetPageCount(); ++i) {
 		m_logpages[i].page = logs_notebook->GetPage(i);
 		m_logpages[i].name = logs_notebook->GetPageText(i);
 	}
 
-	for (int i = 0; i < networks_notebook->GetPageCount(); ++i) {
+	for (size_t i = 0; i < networks_notebook->GetPageCount(); ++i) {
 		m_networkpages[i].page = networks_notebook->GetPage(i);
 		m_networkpages[i].name = networks_notebook->GetPageText(i);
 	}

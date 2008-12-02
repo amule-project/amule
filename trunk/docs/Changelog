@@ -38,9 +38,7 @@ Version 2.3.0 - The river knows.
 		* Sort source list on opening and add file name to A4AF files
 		* Adjust displayed download rates for files and sources 
 		  so that the sum matches the total download rate.
-		* MSVC: solution for MSVC 2008 Express edition, 
-		  project for ed2k and fileview
-		  optional GeoIP support
+		* MSVC: optional GeoIP support
 		* Faster progress bars with less overhead (without pens/brushes)
 		* Show log messages in remote gui
 
@@ -95,6 +93,10 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Fix crash when last category was removed with a completed file in it
 		* Fix wrong ordering/placing of clients in the download window
 		* Fix available fileparts display for large files
+		* Don't open server UDP socked if ED2K is disabled
+		* Reordered preferences, disabled ED2K/UPnP prefs if ED2K/UPnP is disabled
+		* MSVC: solution for MSVC 2008 Express edition, 
+		  project for ed2k and fileview
 
 	Wuischke:
 		* Add checks to cas to prevent segfaults
