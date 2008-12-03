@@ -1962,9 +1962,6 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 	//
 
 	// Check input parameters
-	if(count == NULL) {
-		return false;
-	}
 	if ( sender->GetPartStatus().empty() ) {
 		return false;
 	}
