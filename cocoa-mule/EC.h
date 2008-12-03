@@ -89,6 +89,7 @@ typedef struct {
 + (id)tagFromBuffer:(uint8_t **) buffer;
 
 - (MD5Data)getMD5Data;
+- (NSString *)stringKey;
 
 @end
 

@@ -322,9 +322,9 @@
 	
 	tag->m_data = 0;
 	tag->m_val.lo = *((uint64_t *)(*buffer));
-	tag->m_val.hi = *((uint64_t *)((*buffer))+8);
-
-	(*buffer) += 16;
+	(*buffer) += 8;
+	tag->m_val.hi = *((uint64_t *)(*buffer));
+	(*buffer) += 8;
 	
 	return tag;
 }
@@ -341,6 +341,10 @@
 	} else {
 		return m_val;
 	}
+}
+- (NSString *)stringKey {
+	NSString *s = [NSString stringWithFormat:@"%qx%qx", m_val.hi, m_val.lo];
+	return s;
 }
 
 @end

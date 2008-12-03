@@ -7,7 +7,9 @@
 	MD5Data m_hash;
 }
 
-- (bool)sameID: (MD5Data *) hash;
+- (unsigned)hash;
+- (NSString *)key;
+- (BOOL)isEqual: (id) object;
 
 @end
 
@@ -25,9 +27,9 @@
 	
 }
 
-+ (id)createFromEC:(ECTag *) tag;
++ (id)createFromEC:(ECTagMD5 *) tag;
 
-- (void)updateFromEC:(ECTag *) tag;
+- (void)updateFromEC:(ECTagMD5 *) tag;
 
 @end
 
@@ -44,7 +46,7 @@
 	int m_down_speed;
 	int m_up_speed;
 
-	NSMutableArray *m_downloads;
+	NSMutableDictionary *m_downloads;
 
 	ECRemoteConnection *m_connection;
 }
