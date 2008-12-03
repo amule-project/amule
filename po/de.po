@@ -13,14 +13,13 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-03 19:42+0100\n"
-"PO-Revision-Date: 2008-07-31 09:49+0100\n"
+"PO-Revision-Date: 2008-12-03 23:16+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=n != 1;"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -183,21 +182,17 @@ msgstr "Angefordert: %s\n"
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
+msgstr ""
 "Dateistatistik dieser Sitzung: %d von %d Anfrage akzeptiert, %s übertragen\n"
-msgstr[1] ""
 "Dateistatistik dieser Sitzung: %d von %d Anfragen akzeptiert, %s übertragen\n"
 
 #: src/BaseClient.cpp:1967
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
+msgstr ""
 "Dateistatistik aller Sitzungen: %d von %d Anfrage akzeptiert, %s übertragen\n"
-msgstr[1] ""
 "Dateistatistik aller Sitzungen: %d von %d Anfragen akzeptiert, %s "
 "übertragen\n"
 
@@ -1175,9 +1170,8 @@ msgid "Exit"
 msgstr "Schließen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Öffnen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1193,9 +1187,8 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "Kopiere erstellten eD2k-Verweis in die Zwischenablage"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
-msgstr "Speichern"
+msgstr "Speichern unter"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1216,9 +1209,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Datei zum Erstellen des eD2k-Verweises auswählen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "In die Zwischenablage kopieren"
+msgstr "Kann die Zwischenablage nicht öffnen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1271,16 +1263,15 @@ msgstr "Prüfsummenberechnung..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator arbeitet jetzt..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "Berechne MD4-Prüfsumme"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "Verbinde mit eD2k..."
+msgstr "Berechne eD2k-Prüfsummen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1575,7 +1566,7 @@ msgstr "Türkisch"
 
 #: src/Preferences.cpp:663
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainisch"
 
 #: src/Preferences.cpp:1626 src/Preferences.cpp:1641 src/Preferences.cpp:1648
 msgid "Unable to determine selected browser!"
@@ -2011,16 +2002,15 @@ msgstr "Sicherheit"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Aussehen"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Filter:"
+msgstr "Filter"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2031,9 +2021,8 @@ msgid "Online Signature"
 msgstr "Onlinesignatur"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Erweiterte Einstellungen"
+msgstr "Erweitert"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2223,14 +2212,12 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Server-Wiederverbindungsintervall: Aus"
 
 #: src/PrefsUnifiedDlg.cpp:1104
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "UDP-Port für erweiterte Serveranfragen (TCP+3):4665"
+msgstr "UDP-Port für erweiterte Serveranfragen (TCP+3):"
 
 #: src/PrefsUnifiedDlg.cpp:1108
-#, fuzzy
 msgid "disabled"
-msgstr "deaktivieren"
+msgstr "deaktiviert"
 
 #: src/PrefsUnifiedDlg.cpp:1128
 #, c-format
@@ -3306,15 +3293,13 @@ msgstr "Fehler beim Lesen der Partfile-Einstiegsquellendatei (%s - %s): %s"
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
-msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr[0] ""
+msgstr ""
 "korrumpierter Teil (%1$d) in Datei %3$s mit %2$d Teil gefunden - "
 "Dateiergebnishash |%4$s| Dateihash |%5$s|"
-msgstr[1] ""
-"korrumpierter Teil (%1$d) in Datei %3$s mit %2$d Teilen gefunden - "
-"Dateiergebnishash |%4$s| Dateihash |%5$s|"
+"korrumpierter Teil (%6$d) in Datei %8$s mit %7$d Teilen gefunden - "
+"Dateiergebnishash |%9$s| Dateihash |%10$s|"
 
 #: src/PartFile.cpp:1181
 #, c-format
@@ -3516,8 +3501,7 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] ""
 "Automatische Verbindungsherstellung zum Server wird in %d Sekunde wiederholt"
-msgstr[1] ""
-"Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
+msgstr[1] "Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -6439,10 +6423,10 @@ msgstr ""
 "Erstelle Client...\n"
 
 #: src/ExternalConnector.cpp:400
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
-"Verbindung fehlgeschlagen. Verbindung zum angegebenen Host nicht möglich\n"
+"Verbindung fehlgeschlagen. Kann nicht zu %s:%d verbinden.\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
@@ -7864,33 +7848,6 @@ msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht schreiben!"
 
 #~ msgid "Not Supported"
 #~ msgstr "Nicht unterstützt"
-
-#~ msgid ""
-#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "Dateistatistik für diese Sitzung: %d von %d Anfrage akzeptiert, %s "
-#~ "übertragen\n"
-#~ "Dateistatistik für diese Sitzung: %d von %d Anfragen akzeptiert, %s "
-#~ "übertragen\n"
-
-#~ msgid ""
-#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "Dateistatistik für alle Sitzungen: %d von %d Anfrage akzeptiert, %s "
-#~ "übertragen\n"
-#~ "Dateistatistik für alle Sitzungen: %d von %d Anfragen akzeptiert, %s "
-#~ "übertragen\n"
-
-#~ msgid ""
-#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
-#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
-#~ "FileResultHash |%s| FileHash |%s|"
-#~ msgstr ""
-#~ "Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - FileResultHash |%s| "
-#~ "FileHash |%s|Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - "
-#~ "FileResultHash |%s| FileHash |%s|"
 
 #~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
 #~ msgstr "LowID: %u (%.2f%% Gesamt %.2f%% Bekannt)"
