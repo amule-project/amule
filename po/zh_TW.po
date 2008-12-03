@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-02 00:16+0100\n"
+"POT-Creation-Date: 2008-12-03 19:42+0100\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -53,34 +53,34 @@ msgstr "成功！連接成功建立"
 msgid "Succeeded! Connection established."
 msgstr "已成功連接。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3869
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3866
 msgid "Hashing"
 msgstr "正在生成檢驗碼"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3875
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3872
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3878
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3875
 msgid "Complete"
 msgstr "完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3881
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3878
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
 msgid "Paused"
 msgstr "已暫停"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3884
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3881
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
 msgid "Erroneous"
 msgstr "已出錯"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3891
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3888
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
 msgid "Downloading"
 msgstr "正在下載"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3893
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3890
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
 msgid "Waiting"
 msgstr "等待中"
@@ -125,18 +125,18 @@ msgstr "警告：爲 '%s' 建立備份後無法刪除原文件"
 msgid "WARNING: Failed to delete %s"
 msgstr "警告：無法刪除 %s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1307
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "無法獲取用戶 '%s' 的共享文件"
 
-#: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
+#: src/BaseClient.cpp:1721 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1418
 #: src/DownloadListCtrl.cpp:1431 src/DownloadListCtrl.cpp:1442
-#: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
+#: src/PartFile.cpp:2618 src/PartFile.cpp:2624 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
 #: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
@@ -146,35 +146,35 @@ msgstr "無法獲取用戶 '%s' 的共享文件"
 msgid "Unknown"
 msgstr "不明"
 
-#: src/BaseClient.cpp:1739
+#: src/BaseClient.cpp:1738
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (假冒 eMule 版本 %#x)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1749
 msgid " (Fake eMule)"
 msgstr " (假冒 eMule)"
 
-#: src/BaseClient.cpp:1752
+#: src/BaseClient.cpp:1751
 msgid "xMule (Fake eMule)"
 msgstr "xMule (假冒 eMule)"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1790
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (基于 eMule v0.%u)"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1960
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "昵稱: %s ID: %u"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "Requested: %s\n"
 msgstr "已請求：%s\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -182,7 +182,7 @@ msgid_plural ""
 msgstr[0] "本次執行檔案統計: 接受了 %d/%d 個請求，已傳送 %s\n"
 msgstr[1] "本次執行檔案統計: 接受了 %d/%d 個請求，已傳送 %s\n"
 
-#: src/BaseClient.cpp:1968
+#: src/BaseClient.cpp:1967
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -190,11 +190,11 @@ msgid_plural ""
 msgstr[0] "曆史運行文件統計: 接受了%d個請求(總請求數%d)，已傳送 %s\n"
 msgstr[1] "曆史運行文件統計: 接受了%d個請求(總請求數%d)，已傳送 %s\n"
 
-#: src/BaseClient.cpp:1971
+#: src/BaseClient.cpp:1970
 msgid "Requested unknown file"
 msgstr "請求不名檔案"
 
-#: src/BaseClient.cpp:2243
+#: src/BaseClient.cpp:2242
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "客戶 %s 位于 %s:%d，使用 %s %s %s"
@@ -462,7 +462,7 @@ msgstr "來自%s(%s)的反饋\n"
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "你需要高ID來產生源連結"
 
-#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:623 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:662 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:673
 msgid "WARNING"
 msgstr "警告"
@@ -675,7 +675,7 @@ msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
-#: src/PrefsUnifiedDlg.cpp:191 src/muuli_wdr.cpp:3679
+#: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3679
 msgid "Preferences"
 msgstr "設定"
 
@@ -1413,7 +1413,7 @@ msgstr "資源種子"
 msgid "Search Result"
 msgstr "搜尋結果"
 
-#: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
+#: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "系統預設"
 
@@ -1595,7 +1595,7 @@ msgstr "Ping"
 msgid "Users"
 msgstr "使用者數"
 
-#: src/ServerListCtrl.cpp:93 src/PrefsUnifiedDlg.cpp:176
+#: src/ServerListCtrl.cpp:93 src/PrefsUnifiedDlg.cpp:172
 msgid "Files"
 msgstr "檔案"
 
@@ -1655,8 +1655,8 @@ msgstr "無法讀取 '%s'"
 msgid "Servers (%i)"
 msgstr "伺服器 (%i)"
 
-#: src/ServerListCtrl.cpp:417 src/PrefsUnifiedDlg.cpp:175
-#: src/ServerWnd.cpp:180 src/ServerSocket.cpp:257 src/ServerSocket.cpp:272
+#: src/ServerListCtrl.cpp:417 src/ServerWnd.cpp:180 src/ServerSocket.cpp:257
+#: src/ServerSocket.cpp:272
 msgid "Server"
 msgstr "伺服器"
 
@@ -1795,8 +1795,8 @@ msgstr " 版權所有 (C) 2002 Petar Maymounkov\n"
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:520
-#: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:559
+#: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:743 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "消息"
@@ -1925,7 +1925,7 @@ msgstr "訊息"
 msgid "Messages window"
 msgstr "訊息 視窗"
 
-#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1109 src/muuli_wdr.cpp:3677
 msgid "Statistics"
 msgstr "統計"
@@ -1962,80 +1962,86 @@ msgstr "kad 網絡"
 msgid "No network"
 msgstr "無網絡"
 
-#: src/PrefsUnifiedDlg.cpp:169 src/muuli_wdr.cpp:571 src/muuli_wdr.cpp:1377
+#: src/PrefsUnifiedDlg.cpp:168 src/muuli_wdr.cpp:571 src/muuli_wdr.cpp:1377
 #: src/muuli_wdr.cpp:3334
 msgid "General"
 msgstr "一般"
 
-#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:688
+#: src/PrefsUnifiedDlg.cpp:169 src/Statistics.cpp:688
 msgid "Connection"
 msgstr "連線"
 
-#: src/PrefsUnifiedDlg.cpp:171
-msgid "Proxy"
-msgstr "代理"
-
-#: src/PrefsUnifiedDlg.cpp:172
-msgid "Message Filter"
-msgstr "消息過濾"
-
-#: src/PrefsUnifiedDlg.cpp:173
-msgid "Remote Controls"
-msgstr "遠端控制"
-
-#: src/PrefsUnifiedDlg.cpp:174
-msgid "Online Signature"
-msgstr "在線簽名"
-
-#: src/PrefsUnifiedDlg.cpp:177
+#: src/PrefsUnifiedDlg.cpp:170
 msgid "Directories"
 msgstr "目錄"
 
-#: src/PrefsUnifiedDlg.cpp:179
+#: src/PrefsUnifiedDlg.cpp:171 src/Statistics.cpp:714
+msgid "Servers"
+msgstr "伺服器"
+
+#: src/PrefsUnifiedDlg.cpp:173
 msgid "Security"
 msgstr "安全"
 
+#: src/PrefsUnifiedDlg.cpp:174
+msgid "Interface"
+msgstr ""
+
+#: src/PrefsUnifiedDlg.cpp:176
+msgid "Proxy"
+msgstr "代理"
+
+#: src/PrefsUnifiedDlg.cpp:177
+#, fuzzy
+msgid "Filters"
+msgstr "過濾："
+
+#: src/PrefsUnifiedDlg.cpp:178
+msgid "Remote Controls"
+msgstr "遠端控制"
+
+#: src/PrefsUnifiedDlg.cpp:179
+msgid "Online Signature"
+msgstr "在線簽名"
+
 #: src/PrefsUnifiedDlg.cpp:180
-msgid "Gui Tweaks"
-msgstr "界面設定"
+#, fuzzy
+msgid "Advanced"
+msgstr "高級設置"
 
 #: src/PrefsUnifiedDlg.cpp:181
-msgid "Core Tweaks"
-msgstr "核心特殊設置"
-
-#: src/PrefsUnifiedDlg.cpp:182
 msgid "Events"
 msgstr "事件"
 
-#: src/PrefsUnifiedDlg.cpp:184
+#: src/PrefsUnifiedDlg.cpp:183
 msgid "Debugging"
 msgstr "調試"
 
-#: src/PrefsUnifiedDlg.cpp:238 src/muuli_wdr.cpp:1684
+#: src/PrefsUnifiedDlg.cpp:243 src/muuli_wdr.cpp:1684
 msgid "User Defined"
 msgstr "使用者定義的"
 
-#: src/PrefsUnifiedDlg.cpp:498
+#: src/PrefsUnifiedDlg.cpp:537
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr "重啓 aMule 後設置才能生效：\n"
 
-#: src/PrefsUnifiedDlg.cpp:505
+#: src/PrefsUnifiedDlg.cpp:544
 msgid "- TCP port changed.\n"
 msgstr "- TCP 端口已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:510
+#: src/PrefsUnifiedDlg.cpp:549
 msgid "- UDP port changed.\n"
 msgstr "- UDP 端口已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:519
+#: src/PrefsUnifiedDlg.cpp:558
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:526
+#: src/PrefsUnifiedDlg.cpp:565
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -2043,19 +2049,19 @@ msgstr ""
 "您已經啓用了外部連接但還沒有設置密碼。\n"
 "外部連接在沒有有效密碼的情況下不能使用。"
 
-#: src/PrefsUnifiedDlg.cpp:538
+#: src/PrefsUnifiedDlg.cpp:577
 msgid "- Language changed.\n"
 msgstr "- 語言已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:543
+#: src/PrefsUnifiedDlg.cpp:582
 msgid "- Temp folder changed.\n"
 msgstr "- 臨時文件目錄已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:568 src/muuli_wdr.cpp:117
+#: src/PrefsUnifiedDlg.cpp:607 src/muuli_wdr.cpp:117
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "上傳: 0.0 | 下載: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:610
+#: src/PrefsUnifiedDlg.cpp:649
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -2063,7 +2069,7 @@ msgstr ""
 "eD2k 語 Kad 網路都未啟用\n"
 "請至少開啟一種，否則您將無法連線"
 
-#: src/PrefsUnifiedDlg.cpp:614
+#: src/PrefsUnifiedDlg.cpp:653
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -2071,7 +2077,7 @@ msgstr ""
 "如果你的 UDP 端口被禁用，Kad 將不能啓動。\n"
 "啓動 UDP 端口或禁用 Kad。"
 
-#: src/PrefsUnifiedDlg.cpp:623
+#: src/PrefsUnifiedDlg.cpp:662
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2081,7 +2087,7 @@ msgstr ""
 "你必須現在重啓aMule，\n"
 "如果現在不重啓的話，出現任何問題可別怪別人。\n"
 
-#: src/PrefsUnifiedDlg.cpp:701
+#: src/PrefsUnifiedDlg.cpp:742
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2091,41 +2097,41 @@ msgstr ""
 "請輸入至少一個指向有效server.met的URL。\n"
 "點擊這個檢驗欄旁邊的\"列表\"按鈕然後輸入URL。"
 
-#: src/PrefsUnifiedDlg.cpp:842
+#: src/PrefsUnifiedDlg.cpp:890
 msgid "Temporary files"
 msgstr "臨時文件"
 
-#: src/PrefsUnifiedDlg.cpp:847
+#: src/PrefsUnifiedDlg.cpp:895
 msgid "Incoming files"
 msgstr "傳入文件"
 
-#: src/PrefsUnifiedDlg.cpp:852
+#: src/PrefsUnifiedDlg.cpp:900
 msgid "Online Signatures"
 msgstr "在線簽名"
 
-#: src/PrefsUnifiedDlg.cpp:865
+#: src/PrefsUnifiedDlg.cpp:913
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "爲%s選擇文件夾"
 
-#: src/PrefsUnifiedDlg.cpp:885
+#: src/PrefsUnifiedDlg.cpp:933
 msgid "Browse for videoplayer"
 msgstr "瀏覽尋找影片播放器"
 
-#: src/PrefsUnifiedDlg.cpp:889
+#: src/PrefsUnifiedDlg.cpp:937
 msgid "Select browser"
 msgstr "選擇浏覽器"
 
-#: src/PrefsUnifiedDlg.cpp:895
+#: src/PrefsUnifiedDlg.cpp:943
 #, c-format
 msgid "Executable%s"
 msgstr "可執行%s"
 
-#: src/PrefsUnifiedDlg.cpp:916
+#: src/PrefsUnifiedDlg.cpp:964
 msgid "Edit server list"
 msgstr "編輯伺服器清單"
 
-#: src/PrefsUnifiedDlg.cpp:917
+#: src/PrefsUnifiedDlg.cpp:965
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2133,79 +2139,89 @@ msgstr ""
 "加入下載 server.met 檔案的網址.\n"
 "每行只限一個網址."
 
-#: src/PrefsUnifiedDlg.cpp:973
+#: src/PrefsUnifiedDlg.cpp:1021
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "刷新時間 : %d 秒"
 msgstr[1] "刷新時間 : %d 秒"
 
-#: src/PrefsUnifiedDlg.cpp:980
+#: src/PrefsUnifiedDlg.cpp:1028
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均值圖表顯示時間: %d 分鍾"
 msgstr[1] "平均值圖表顯示時間: %d 分鍾"
 
-#: src/PrefsUnifiedDlg.cpp:986
+#: src/PrefsUnifiedDlg.cpp:1034
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "網絡連接圖表縮放: %d"
 
-#: src/PrefsUnifiedDlg.cpp:992
+#: src/PrefsUnifiedDlg.cpp:1040
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "刷新時間 : %d 秒"
 msgstr[1] "刷新時間 : %d 秒"
 
-#: src/PrefsUnifiedDlg.cpp:998
+#: src/PrefsUnifiedDlg.cpp:1046
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "文件緩沖區大小: %d bytes"
 msgstr[1] "文件緩沖區大小: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:1004
+#: src/PrefsUnifiedDlg.cpp:1052
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "上傳隊列長度: %d 個用戶"
 msgstr[1] "上傳隊列長度: %d 個用戶"
 
-#: src/PrefsUnifiedDlg.cpp:1011
+#: src/PrefsUnifiedDlg.cpp:1059
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "服務器連接刷新周期: %d 分鍾"
 msgstr[1] "服務器連接刷新周期: %d 分鍾"
 
-#: src/PrefsUnifiedDlg.cpp:1013
+#: src/PrefsUnifiedDlg.cpp:1061
 msgid "Server connection refresh interval: Disabled"
 msgstr "伺服器連線重新整理週期: 已停用"
 
-#: src/PrefsUnifiedDlg.cpp:1077
+#: src/PrefsUnifiedDlg.cpp:1104
+#, fuzzy
+msgid "UDP port for extended server requests (TCP+3): "
+msgstr "用于擴展的服務器請求的 UDP 端口 (TCP+3): 4665"
+
+#: src/PrefsUnifiedDlg.cpp:1108
+#, fuzzy
+msgid "disabled"
+msgstr "停用"
+
+#: src/PrefsUnifiedDlg.cpp:1128
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "發生 '%s' 事件時執行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1080
+#: src/PrefsUnifiedDlg.cpp:1131
 msgid "Enable command execution on core"
 msgstr "在核心啓用執行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1088
+#: src/PrefsUnifiedDlg.cpp:1139
 msgid "Core command:"
 msgstr "核心命令："
 
-#: src/PrefsUnifiedDlg.cpp:1097
+#: src/PrefsUnifiedDlg.cpp:1148
 msgid "Enable command execution on GUI"
 msgstr "在圖形界面端啓用執行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1105
+#: src/PrefsUnifiedDlg.cpp:1156
 msgid "GUI command:"
 msgstr "圖形界面命令："
 
-#: src/PrefsUnifiedDlg.cpp:1114
+#: src/PrefsUnifiedDlg.cpp:1165
 msgid "The following variables will be replaced:"
 msgstr "以下變量將被替換："
 
@@ -2653,10 +2669,6 @@ msgstr "被過濾"
 msgid "Total: %i Known: %i"
 msgstr "總數: %i 已知: %i"
 
-#: src/Statistics.cpp:714
-msgid "Servers"
-msgstr "伺服器"
-
 #: src/Statistics.cpp:715
 #, c-format
 msgid "Working Servers: %i"
@@ -2880,7 +2892,7 @@ msgid "The specified userhash is not valid!"
 msgstr "這個使用者碼有錯"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/PartFile.cpp:3937 src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3934 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "來源"
 
@@ -2966,7 +2978,7 @@ msgstr "速度"
 msgid "Progress"
 msgstr "進度"
 
-#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3939
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3936
 #: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "狀態"
@@ -3242,65 +3254,65 @@ msgstr "發現了已完成的資料段 %i 在%s"
 msgid "Finished rehashing %s"
 msgstr "完成了檢驗碼生成 %s"
 
-#: src/PartFile.cpp:2242
+#: src/PartFile.cpp:2239
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "計算 %s 時發生意外的錯誤，暫停檔案處理"
 
-#: src/PartFile.cpp:2268
+#: src/PartFile.cpp:2265
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "完成下載 %s"
 
-#: src/PartFile.cpp:2325
+#: src/PartFile.cpp:2322
 #, c-format
 msgid "Deleting file: %s"
 msgstr "刪除文件: %s "
 
-#: src/PartFile.cpp:2386
+#: src/PartFile.cpp:2383
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "影告：無法切細已下載部份 - %s 的片段切細值不完整"
 
-#: src/PartFile.cpp:2391
+#: src/PartFile.cpp:2388
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr "錯誤：無法切細已下載部分 - %s 的片段切細值不完整，此狀況不該發生"
 
-#: src/PartFile.cpp:3088
+#: src/PartFile.cpp:3085
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盤空間不足！暫停文件：%s"
 
-#: src/PartFile.cpp:3173
+#: src/PartFile.cpp:3170
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下載的數據段 %i 已損壞 文件： (%s)"
 
-#: src/PartFile.cpp:3216
+#: src/PartFile.cpp:3213
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修複了損壞的數據段 %i (%s) -> 挽救數據(字節): %s"
 
-#: src/PartFile.cpp:3871
+#: src/PartFile.cpp:3868
 msgid "Allocating"
 msgstr "正在分配"
 
-#: src/PartFile.cpp:3887
+#: src/PartFile.cpp:3884
 msgid "Insufficient disk space"
 msgstr "磁碟空間不足"
 
-#: src/PartFile.cpp:3898 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/PartFile.cpp:3936
+#: src/PartFile.cpp:3933
 msgid "Downloaded"
 msgstr "已下載"
 
-#: src/PartFile.cpp:4169
+#: src/PartFile.cpp:4166
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "錯誤：打開part文件'%s'失敗"
@@ -7052,6 +7064,15 @@ msgstr "無法開啟好友清單檔案 'emfriends.met' 供讀取"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "無法開啟好友清單檔案 'emfriends.met' 供寫入"
+
+#~ msgid "Message Filter"
+#~ msgstr "消息過濾"
+
+#~ msgid "Gui Tweaks"
+#~ msgstr "界面設定"
+
+#~ msgid "Core Tweaks"
+#~ msgstr "核心特殊設置"
 
 #~ msgid "No handler for this file type."
 #~ msgstr "無法處理該文件類型"
