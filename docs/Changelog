@@ -82,6 +82,9 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Fixed alc progress bar for files >4GB.
 		* Fixed #1056: amulegui: incorrect results when searching with
 		  min size >= 4GB
+		* Disable automatic sorting of dowload list while there is a
+		  pop-up menu or file detail dialog displayed.
+		* MinGW compilation fix.
 
 	LittleAbacus:
 		* Support multiple selections on CSearchListCtrl::OnMarkAsKnown().
