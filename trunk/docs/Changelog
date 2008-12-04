@@ -39,8 +39,6 @@ Version 2.3.0 - The river knows.
 
 	Stu Redman:
 		* Sort source list on opening and add file name to A4AF files
-		* Adjust displayed download rates for files and sources 
-		  so that the sum matches the total download rate.
 		* MSVC: optional GeoIP support
 		* Faster progress bars with less overhead (without pens/brushes)
 		* Show log messages in remote gui

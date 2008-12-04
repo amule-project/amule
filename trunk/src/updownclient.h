@@ -376,6 +376,7 @@ public:
 
 	const BitVector& GetPartStatus() const		{ return m_downPartStatus; }
 	const BitVector& GetUpPartStatus() const	{ return m_upPartStatus; }
+	float		GetKBpsDown() const				{ return kBpsDown; }
 	float		CalculateKBpsDown();
 	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
 	uint16		GetOldRemoteQueueRank() const	{ return m_nOldRemoteQueueRank; }
@@ -394,11 +395,9 @@ public:
 
 #ifndef CLIENT_GUI
 	uint16		GetAvailablePartCount() const;
-	float		GetKBpsDown() const;
 #else
 	uint16		m_AvailPartCount;
 	uint16		GetAvailablePartCount() const	{ return m_AvailPartCount; }
-	float		GetKBpsDown() const				{ return kBpsDown; }
 #endif
 
 	bool		SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
