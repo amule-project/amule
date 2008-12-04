@@ -1189,8 +1189,8 @@ float CUpDownClient::CalculateKBpsDown()
 		} else {
 			kBpsDown = (kBpsDown * (tAverage - dt) + kBpsDownCur * dt) / tAverage;
 		}
-		AddDebugLogLineM( false, logLocalClient, CFormat(wxT("CalculateKBpsDown %X kbps %.1f kbpsCur %.1f dt %.3f rcv %d ")) 
-					% (uint32)this % kBpsDown  % kBpsDownCur % dt % bytesReceivedCycle);
+		AddDebugLogLineM( false, logLocalClient, CFormat(wxT("CalculateKBpsDown %p kbps %.1f kbpsCur %.1f dt %.3f rcv %d ")) 
+					% this % kBpsDown  % kBpsDownCur % dt % bytesReceivedCycle);
 		bytesReceivedCycle = 0;
 		msReceivedPrev = msCur;	
 	}
