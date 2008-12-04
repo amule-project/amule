@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-03 19:42+0100\n"
-"PO-Revision-Date: 2008-04-15 02:00+0100\n"
+"PO-Revision-Date: 2008-12-03 23:23+0000\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -1181,9 +1181,8 @@ msgid "Exit"
 msgstr "Sair"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Abrir"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1199,9 +1198,8 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "Copiar ligação eD2k calculada para a área de transferência"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
-msgstr "Gravar"
+msgstr "Gravar como"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1222,9 +1220,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Seleccione o ficheiro para o qual pretende criar a ligação eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "Copiar para a área de transferência"
+msgstr "Não é possível abrir a área de transferência"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1276,16 +1273,15 @@ msgstr "A gerar chaves..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "O aLinkCreator está a trabalhar"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "A calcular chave MD4..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "A ligar à eD2k..."
+msgstr "A calcular chave eD2k..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1580,7 +1576,7 @@ msgstr "Turco"
 
 #: src/Preferences.cpp:663
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucraniano"
 
 #: src/Preferences.cpp:1626 src/Preferences.cpp:1641 src/Preferences.cpp:1648
 msgid "Unable to determine selected browser!"
@@ -2018,16 +2014,15 @@ msgstr "Segurança"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Filtro:"
+msgstr "Filtros"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2038,9 +2033,8 @@ msgid "Online Signature"
 msgstr "Assinatura Online"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Preferências Avançadas"
+msgstr "Avançado"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2230,14 +2224,12 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Intervalo de actualização de ligação ao servidor: Desactivado"
 
 #: src/PrefsUnifiedDlg.cpp:1104
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "Porto UDP para pedidos de servidor extendidos (TCP+3): 4665"
+msgstr "Porto UDP para pedidos extendidos ao servidor (TCP+3): "
 
 #: src/PrefsUnifiedDlg.cpp:1108
-#, fuzzy
 msgid "disabled"
-msgstr "desactivar"
+msgstr "desactivado"
 
 #: src/PrefsUnifiedDlg.cpp:1128
 #, c-format
@@ -6422,9 +6414,9 @@ msgstr ""
 "A criar o cliente...\n"
 
 #: src/ExternalConnector.cpp:400
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "A ligação falhou. Não é possível ligar à máquina especificada\n"
+msgstr "A ligação falhou. Não é possível ligar a %s:%d\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
