@@ -126,6 +126,7 @@ public:
 	CFormat& operator%(const wxChar* value);
 	CFormat& operator%(const wxString& value);
 	CFormat& operator%(const CPrintable& value);	
+	CFormat& operator%(void * value);	
 	// \}
 
 
