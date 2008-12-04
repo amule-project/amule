@@ -2,6 +2,9 @@ Version 2.3.0 - The river knows.
 ----------
 2008-??-??
 
+	FreeToGo:
+		* Add comment to desktop file to allow autostart in Gnome
+
 	GonoszTopi:
 		* Various fixes to new colour code
 		* Allow user to select display of transfer rates
