@@ -1123,19 +1123,6 @@ uint16 CDownloadQueue::GetDownloadingFileCount() const
 }
 
 
-float CDownloadQueue::GetDownloadingFileRate() const
-{
-	wxMutexLocker lock( m_mutex );
-	
-	float rate = 0.0;
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-		rate += m_filelist[i]->GetRawKBpsDown() * 1024.0;
-	}
-
-	return rate;
-}
-
-
 uint16 CDownloadQueue::GetPausedFileCount() const
 {
 	wxMutexLocker lock( m_mutex );
