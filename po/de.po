@@ -19,7 +19,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -180,18 +180,27 @@ msgid "Requested: %s\n"
 msgstr "Angefordert: %s\n"
 
 #: src/BaseClient.cpp:1964
-#, c-format
+#, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
+msgstr[0] ""
+"Dateistatistik dieser Sitzung: %d von %d Anfrage akzeptiert, %s übertragen\n"
+"Dateistatistik dieser Sitzung: %d von %d Anfragen akzeptiert, %s übertragen\n"
+msgstr[1] ""
 "Dateistatistik dieser Sitzung: %d von %d Anfrage akzeptiert, %s übertragen\n"
 "Dateistatistik dieser Sitzung: %d von %d Anfragen akzeptiert, %s übertragen\n"
 
 #: src/BaseClient.cpp:1967
-#, c-format
+#, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
+msgstr[0] ""
+"Dateistatistik aller Sitzungen: %d von %d Anfrage akzeptiert, %s übertragen\n"
+"Dateistatistik aller Sitzungen: %d von %d Anfragen akzeptiert, %s "
+"übertragen\n"
+msgstr[1] ""
 "Dateistatistik aller Sitzungen: %d von %d Anfrage akzeptiert, %s übertragen\n"
 "Dateistatistik aller Sitzungen: %d von %d Anfragen akzeptiert, %s "
 "übertragen\n"
@@ -3289,17 +3298,21 @@ msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Fehler beim Lesen der Partfile-Einstiegsquellendatei (%s - %s): %s"
 
 #: src/PartFile.cpp:1136 src/PartFile.cpp:1164
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
+msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr ""
+msgstr[0] ""
 "korrumpierter Teil (%1$d) in Datei %3$s mit %2$d Teil gefunden - "
-"Dateiergebnishash |%4$s| Dateihash |%5$s|"
-"korrumpierter Teil (%6$d) in Datei %8$s mit %7$d Teilen gefunden - "
-"Dateiergebnishash |%9$s| Dateihash |%10$s|"
+"Dateiergebnishash |%4$s| Dateihash |%5$s|korrumpierter Teil (%6$d) in Datei %"
+"8$s mit %7$d Teilen gefunden - Dateiergebnishash |%9$s| Dateihash |%10$s|"
+msgstr[1] ""
+"korrumpierter Teil (%1$d) in Datei %3$s mit %2$d Teil gefunden - "
+"Dateiergebnishash |%4$s| Dateihash |%5$s|korrumpierter Teil (%6$d) in Datei %"
+"8$s mit %7$d Teilen gefunden - Dateiergebnishash |%9$s| Dateihash |%10$s|"
 
 #: src/PartFile.cpp:1181
 #, c-format
@@ -3501,7 +3514,8 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] ""
 "Automatische Verbindungsherstellung zum Server wird in %d Sekunde wiederholt"
-msgstr[1] "Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
+msgstr[1] ""
+"Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -6425,8 +6439,7 @@ msgstr ""
 #: src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr ""
-"Verbindung fehlgeschlagen. Kann nicht zu %s:%d verbinden.\n"
+msgstr "Verbindung fehlgeschlagen. Kann nicht zu %s:%d verbinden.\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
