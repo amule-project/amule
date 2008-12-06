@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 21:14+0100\n"
+"POT-Creation-Date: 2008-12-06 18:40+0100\n"
 "PO-Revision-Date: 2008-09-19 01:57+0300\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -54,34 +54,34 @@ msgstr "Yhdistetty onnistuneesti kohteeseen aMule "
 msgid "Succeeded! Connection established."
 msgstr "Yhdistetty onnistuneesti."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3850
 msgid "Hashing"
 msgstr "Luo tarkistetta"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3859
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3856
 msgid "Completing"
 msgstr "Viimeistelee"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3862
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3859
 msgid "Complete"
 msgstr "Valmis"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3865
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3862
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:707
 msgid "Paused"
 msgstr "Tauotettu"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3868
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3865
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:706
 msgid "Erroneous"
 msgstr "Virheellinen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3875
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3872
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:705
 msgid "Downloading"
 msgstr "Lataa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3877
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3874
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:704
 msgid "Waiting"
 msgstr "Odottaa"
@@ -140,10 +140,10 @@ msgstr ""
 #: src/BaseClient.cpp:1720 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:274 src/Statistics.cpp:710 src/Statistics.cpp:891
+#: src/ExternalConn.cpp:274 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
-#: src/PartFile.cpp:2613 src/PartFile.cpp:2619 src/KnownFile.cpp:884
+#: src/PartFile.cpp:2610 src/PartFile.cpp:2616 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:691 src/ClientListCtrl.cpp:714
 #: src/ClientListCtrl.cpp:722 src/ClientListCtrl.cpp:891
@@ -370,7 +370,7 @@ msgstr "Täysiä kopioita"
 msgid "Directory Path"
 msgstr "Kansiopolku"
 
-#: src/SharedFilesCtrl.cpp:135 src/Statistics.cpp:734 src/muuli_wdr.cpp:1081
+#: src/SharedFilesCtrl.cpp:135 src/Statistics.cpp:727 src/muuli_wdr.cpp:1081
 #: src/muuli_wdr.cpp:3460
 msgid "Shared Files"
 msgstr "Jaetut tiedostot"
@@ -1418,7 +1418,7 @@ msgstr "Yhdistää Kadiin"
 msgid "Too many Kad connections"
 msgstr "Liian monta Kad-yhteyttä"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:717 src/TransferWnd.cpp:309
+#: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:857
 msgid "Banned"
 msgstr "Estetty"
@@ -1685,7 +1685,7 @@ msgstr "Epäonnistunut"
 msgid "Static"
 msgstr "Kiinteä"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:878
+#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
 msgid "Version"
 msgstr "Versio"
 
@@ -2025,8 +2025,8 @@ msgstr "Viestit"
 msgid "Messages window"
 msgstr "Viestien ikkuna"
 
-#: src/amuleDlg.cpp:1329 src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:646
-#: src/Statistics.cpp:944 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1329 src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639
+#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 msgid "Statistics"
 msgstr "Tilastot"
 
@@ -2066,7 +2066,7 @@ msgstr "Ei verkkoa"
 msgid "General"
 msgstr "Yleiset"
 
-#: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:695
+#: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:688
 msgid "Connection"
 msgstr "Yhteys"
 
@@ -2074,7 +2074,7 @@ msgstr "Yhteys"
 msgid "Directories"
 msgstr "Kansiot"
 
-#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:721
+#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:714
 msgid "Servers"
 msgstr "Palvelimet"
 
@@ -2662,243 +2662,243 @@ msgstr "Keskimäärin tiedostoja:"
 msgid "Not running"
 msgstr "Ei käynnissä"
 
-#: src/Statistics.cpp:651 src/MuleTrayIcon.cpp:449
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:449
 #, c-format
 msgid "Uptime: %s"
 msgstr "Päälläoloaika: %s"
 
-#: src/Statistics.cpp:653 src/muuli_wdr.cpp:639
+#: src/Statistics.cpp:646 src/muuli_wdr.cpp:639
 msgid "Transfer"
 msgstr "Siirto"
 
-#: src/Statistics.cpp:655 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:459
+#: src/Statistics.cpp:648 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:459
 #: src/muuli_wdr.cpp:1965
 msgid "Uploads"
 msgstr "Lähetykset"
 
-#: src/Statistics.cpp:656
+#: src/Statistics.cpp:649
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "Lähetetty data (Sessiossa (Yhteensä)): %s"
 
-#: src/Statistics.cpp:658 src/Statistics.cpp:679
+#: src/Statistics.cpp:651 src/Statistics.cpp:672
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "Otsikkotietoja yhteensä (Paketteja): %s"
 
-#: src/Statistics.cpp:659 src/Statistics.cpp:680
+#: src/Statistics.cpp:652 src/Statistics.cpp:673
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "Tiedostopyyntöotsikkoja (Paketteja): %s"
 
-#: src/Statistics.cpp:661 src/Statistics.cpp:682
+#: src/Statistics.cpp:654 src/Statistics.cpp:675
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "Lähdevaihdon otsikkoja (Paketteja): %s"
 
-#: src/Statistics.cpp:663 src/Statistics.cpp:684
+#: src/Statistics.cpp:656 src/Statistics.cpp:677
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "Palvelimen otsikkoja (Paketteja): %s"
 
-#: src/Statistics.cpp:665 src/Statistics.cpp:686
+#: src/Statistics.cpp:658 src/Statistics.cpp:679
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "Kad-otsikkoja (Paketteja): %s"
 
-#: src/Statistics.cpp:667 src/Statistics.cpp:688
+#: src/Statistics.cpp:660 src/Statistics.cpp:681
 #, fuzzy, c-format
 msgid "Crypt overhead (UDP): %s"
 msgstr "Kryptauksen otsikkoja (UDP): %s"
 
-#: src/Statistics.cpp:669
+#: src/Statistics.cpp:662
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "Lähetyksiä käynnissä: %s"
 
-#: src/Statistics.cpp:670
+#: src/Statistics.cpp:663
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "Lähetyksiä odottamassa: %s"
 
-#: src/Statistics.cpp:671
+#: src/Statistics.cpp:664
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "Onnistuneita lähetyksiä yhteensä: %s"
 
-#: src/Statistics.cpp:672
+#: src/Statistics.cpp:665
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "Epäonnistuneita lähetyksiä yhteensä: %s"
 
-#: src/Statistics.cpp:674
+#: src/Statistics.cpp:667
 #, c-format
 msgid "Average upload time: %s"
 msgstr "Keskimääräinen lähetysaika: %s"
 
-#: src/Statistics.cpp:676 src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:420
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:420
 #: src/muuli_wdr.cpp:1919
 msgid "Downloads"
 msgstr "Lataukset"
 
-#: src/Statistics.cpp:677
+#: src/Statistics.cpp:670
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "Ladattu data (Sessiossa (Yhteensä)): %s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:683
 #, c-format
 msgid "Found Sources: %s"
 msgstr "Lähteitä löytynyt: %s"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:684
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "Latauksia käynnissä (paloja): %s"
 
-#: src/Statistics.cpp:693
+#: src/Statistics.cpp:686
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "Session jakosuhde lähetys:lataus (Yhteensä): %s"
 
-#: src/Statistics.cpp:696
+#: src/Statistics.cpp:689
 #, c-format
 msgid "Average download rate (Session): %s"
 msgstr "Keskimääräinen latausnopeus (Sessiossa): %s"
 
-#: src/Statistics.cpp:697
+#: src/Statistics.cpp:690
 #, c-format
 msgid "Average upload rate (Session): %s"
 msgstr "Keskimääräinen lähetysnopeus (Sessiossa): %s"
 
-#: src/Statistics.cpp:698
+#: src/Statistics.cpp:691
 #, c-format
 msgid "Max download rate (Session): %s"
 msgstr "Suurin latausnopeus (Sessiossa): %s"
 
-#: src/Statistics.cpp:699
+#: src/Statistics.cpp:692
 #, c-format
 msgid "Max upload rate (Session): %s"
 msgstr "Suurin lähetysnopeus (Sessiossa): %s"
 
-#: src/Statistics.cpp:700
+#: src/Statistics.cpp:693
 #, c-format
 msgid "Reconnects: %i"
 msgstr "Uudelleenyhdistämisiä: %i"
 
-#: src/Statistics.cpp:701
+#: src/Statistics.cpp:694
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "Aikaa ensimmäisestä siirrosta: %s"
 
-#: src/Statistics.cpp:702
+#: src/Statistics.cpp:695
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "Yhdistetty palvelimeen: %s"
 
-#: src/Statistics.cpp:703
+#: src/Statistics.cpp:696
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "Aktiivisia yhteyksiä (arvio): %i"
 
-#: src/Statistics.cpp:704
+#: src/Statistics.cpp:697
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "Maksimimäärä yhteyksiä saavutettu: %s"
 
-#: src/Statistics.cpp:705
+#: src/Statistics.cpp:698
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "Yhteyksiä keskimäärin (arvio): %g"
 
-#: src/Statistics.cpp:707
+#: src/Statistics.cpp:700
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "Yhteyksiä enimmillään (arvio): %i"
 
-#: src/Statistics.cpp:709 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:254
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:254
 msgid "Clients"
 msgstr "Asiakkaat"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:709
 msgid "Filtered"
 msgstr "Suodatettu"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:711
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "Yhteensä: %i Tunnettuja: %i"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:715
 #, c-format
 msgid "Working Servers: %i"
 msgstr "Toimivia palvelimia: %i"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:716
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "Toimimattomia palvelimia: %i"
 
-#: src/Statistics.cpp:724
+#: src/Statistics.cpp:717
 #, c-format
 msgid "Total: %s"
 msgstr "Yhteensä: %s"
 
-#: src/Statistics.cpp:725
+#: src/Statistics.cpp:718
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "Poistettuja palvelimia: %s"
 
-#: src/Statistics.cpp:726
+#: src/Statistics.cpp:719
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "Suodatettuja palvelimia: %s"
 
-#: src/Statistics.cpp:727
+#: src/Statistics.cpp:720
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "Käyttäjiä toimivilla palvelimilla: %llu"
 
-#: src/Statistics.cpp:728
+#: src/Statistics.cpp:721
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "Tiedostoja toimivilla palvelimilla: %llu"
 
-#: src/Statistics.cpp:729
+#: src/Statistics.cpp:722
 #, c-format
 msgid "Total Users: %llu"
 msgstr "Käyttäjiä yhteensä: %llu"
 
-#: src/Statistics.cpp:730
+#: src/Statistics.cpp:723
 #, c-format
 msgid "Total Files: %llu"
 msgstr "Tiedostoja yhteensä: %llu"
 
-#: src/Statistics.cpp:731
+#: src/Statistics.cpp:724
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "Palvelimien käyttö: %.2f% %"
 
-#: src/Statistics.cpp:735
+#: src/Statistics.cpp:728
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "Jaettuja tiedostoja: %s"
 
-#: src/Statistics.cpp:736
+#: src/Statistics.cpp:729
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "Jaettujen tiedostojen yhteenlaskettu koko: %s"
 
-#: src/Statistics.cpp:738
+#: src/Statistics.cpp:731
 #, c-format
 msgid "Average file size: %s"
 msgstr "Keskimääräinen tiedostokoko: %s"
 
-#: src/Statistics.cpp:879
+#: src/Statistics.cpp:872
 msgid "Operating System"
 msgstr "Käyttöjärjestelmä"
 
-#: src/Statistics.cpp:904
+#: src/Statistics.cpp:897
 msgid "Not Received"
 msgstr "Ei vastaanotettu"
 
@@ -3057,7 +3057,7 @@ msgid "The specified userhash is not valid!"
 msgstr "Annettu käyttäjätarkiste ei ole kelvollinen!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:194
-#: src/PartFile.cpp:3921 src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3918 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Lähteet"
 
@@ -3174,7 +3174,7 @@ msgstr "Nopeus"
 msgid "Progress"
 msgstr "Edistyminen"
 
-#: src/DownloadListCtrl.cpp:196 src/PartFile.cpp:3923
+#: src/DownloadListCtrl.cpp:196 src/PartFile.cpp:3920
 #: src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Tila"
@@ -3456,29 +3456,29 @@ msgstr "Valmis osa (%i) kohteessa %s"
 msgid "Finished rehashing %s"
 msgstr "Tarkiste uudelleenluotu: %s"
 
-#: src/PartFile.cpp:2234
+#: src/PartFile.cpp:2231
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Odottamaton virhe viimeistellessä %s. Tiedosto tauotettu"
 
-#: src/PartFile.cpp:2260
+#: src/PartFile.cpp:2257
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Lataus suoritettu: %s"
 
-#: src/PartFile.cpp:2317
+#: src/PartFile.cpp:2314
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Poistan tiedoston: %s"
 
-#: src/PartFile.cpp:2378
+#: src/PartFile.cpp:2375
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "VAROITUS: Ei voitu laskea tarkistetta ladatusta osasta - tarkistejoukko on "
 "puutteellinen kohteelle '%s'"
 
-#: src/PartFile.cpp:2383
+#: src/PartFile.cpp:2380
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3487,38 +3487,38 @@ msgstr ""
 "VIRHE: Ei voitu luoda tarkistetta ladatulle osalle - tarkistejoukko on "
 "puutteellinen (%s). Näin ei pitäisi koskaan tapahtua."
 
-#: src/PartFile.cpp:3079
+#: src/PartFile.cpp:3076
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "VAROITUS: Levytilaa ei ole tarpeeksi! Tauotan tiedoston: %s"
 
-#: src/PartFile.cpp:3164
+#: src/PartFile.cpp:3161
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Ladattu osa %i on turmeltunut tiedostossa: %s"
 
-#: src/PartFile.cpp:3207
+#: src/PartFile.cpp:3204
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Palautettu turmeltunut osa %i kohteessa %s -> Säästetyt tavut: %s"
 
-#: src/PartFile.cpp:3855
+#: src/PartFile.cpp:3852
 msgid "Allocating"
 msgstr "Allokoidaan"
 
-#: src/PartFile.cpp:3871
+#: src/PartFile.cpp:3868
 msgid "Insufficient disk space"
 msgstr "Riittämätön levytila"
 
-#: src/PartFile.cpp:3882 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:708
+#: src/PartFile.cpp:3879 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:708
 msgid "Stopped"
 msgstr "Pysäytetty"
 
-#: src/PartFile.cpp:3920
+#: src/PartFile.cpp:3917
 msgid "Downloaded"
 msgstr "Ladattu"
 
-#: src/PartFile.cpp:4166
+#: src/PartFile.cpp:4149
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "VIRHE: Ei voida avata osatiedostoa '%s'"
@@ -3723,12 +3723,12 @@ msgid_plural "Found %u part files"
 msgstr[0] "Löydetty %u osatiedosto"
 msgstr[1] "Löydetty %u osatiedostoa"
 
-#: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1395
+#: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1382
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 "Väliaikaiskansion tiedostojärjestelmä ei osaa käsitellä suuria tiedostoja."
 
-#: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1398
+#: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1385
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Saapuvien kansion tiedostojärjestelmä ei osaa käsitellä suuria tiedostoja."
@@ -3758,17 +3758,17 @@ msgstr "Lataat jo tiedostoa %s"
 msgid "Failed to open ED2KLinks file."
 msgstr "Avaaminen epäonnistui: %s (%s)"
 
-#: src/DownloadQueue.cpp:1329
+#: src/DownloadQueue.cpp:1316
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Ei voitu kääntää magnet-linkkiä eD2k-linkiksi: %s"
 
-#: src/DownloadQueue.cpp:1337
+#: src/DownloadQueue.cpp:1324
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Linkin protokolla tuntematon: %s"
 
-#: src/DownloadQueue.cpp:1358
+#: src/DownloadQueue.cpp:1345
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Virheellinen eD2k-linkki! VIRHE: %s"
