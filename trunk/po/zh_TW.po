@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-01 21:14+0100\n"
-"PO-Revision-Date: 2008-12-05 23:42+0800\n"
+"PO-Revision-Date: 2008-12-06 14:09+0800\n"
 "Last-Translator: mstar\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -530,7 +530,7 @@ msgstr "複製 eD2k 連結到剪貼簿 (AICH 資訊) (&A)"
 #: src/SharedFilesCtrl.cpp:173
 #: src/DownloadListCtrl.cpp:951
 msgid "Copy feedback to clipboard"
-msgstr "複製回覆訊息到剪貼簿"
+msgstr "複製傳輸狀況到剪貼簿"
 
 #: src/SharedFilesCtrl.cpp:205
 #: src/DownloadListCtrl.cpp:734
@@ -773,7 +773,7 @@ msgstr "不可用"
 #: src/StatTree.cpp:606
 #: src/StatTree.cpp:620
 msgid "Never"
-msgstr "從不"
+msgstr "無"
 
 #: src/HTTPDownload.cpp:55
 msgid "Downloading..."
@@ -943,7 +943,7 @@ msgstr "過去執行 wxCas 時最大下載速度"
 #: src/muuli_wdr.cpp:2605
 #: src/muuli_wdr.cpp:2630
 msgid "Reset"
-msgstr "重置"
+msgstr "清除"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
@@ -1062,7 +1062,7 @@ msgstr " 已停止！"
 #: src/utils/wxCas/src/wxcasframe.cpp:1027
 #: src/utils/wxCas/src/wxcasframe.cpp:1051
 msgid " is not connected !"
-msgstr " 未連線！"
+msgstr "未連線！"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1031
 msgid " is connecting..."
@@ -1537,11 +1537,11 @@ msgstr "遠端等候區已滿"
 
 #: src/DataToText.cpp:103
 msgid "Old MLDonkey"
-msgstr "舊版 MLDonkey"
+msgstr "舊 MLDonkey"
 
 #: src/DataToText.cpp:106
 msgid "New MLDonkey"
-msgstr "新版 MLDonkey"
+msgstr "新 MLDonkey"
 
 #: src/DataToText.cpp:116
 msgid "eMule Compatible"
@@ -1984,7 +1984,7 @@ msgstr "部份 aMule 源自 \n"
 
 #: src/amuleDlg.cpp:489
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr "KAD：基於 XOR 演算法的 P2P 路由。\n"
+msgstr " KAD：基於 XOR 演算法的 P2P 路由。\n"
 
 #: src/amuleDlg.cpp:490
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
@@ -2038,7 +2038,7 @@ msgstr "Kad：關閉"
 
 #: src/amuleDlg.cpp:758
 msgid "Stop the current connection attempts"
-msgstr "停止再嘗試連線"
+msgstr "停止連線作業"
 
 #: src/amuleDlg.cpp:763
 #: src/muuli_wdr.cpp:2697
@@ -2226,7 +2226,7 @@ msgstr "介面"
 
 #: src/PrefsUnifiedDlg.cpp:175
 msgid "Proxy"
-msgstr "代理"
+msgstr "代理伺服器"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Filters"
@@ -2382,15 +2382,15 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"加入下載 server.met 檔案的網址。\n"
+"加入可下載 server.met 檔案的網址。\n"
 "每一行一個網址。"
 
 #: src/PrefsUnifiedDlg.cpp:995
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
-msgstr[0] "更新延遲 : %d 秒"
-msgstr[1] "更新延遲 : %d 秒"
+msgstr[0] "更新延遲時間：%d 秒"
+msgstr[1] "更新延遲時間：%d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:1002
 #, c-format
@@ -2408,8 +2408,8 @@ msgstr "網路連線圖表比例：%d"
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
-msgstr[0] "更新延遲 : %d 秒"
-msgstr[1] "更新延遲 : %d 秒"
+msgstr[0] "更新延遲時間：%d 秒"
+msgstr[1] "更新延遲時間：%d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:1020
 #, c-format
@@ -2463,7 +2463,9 @@ msgstr "圖形界面端指令："
 
 #: src/PrefsUnifiedDlg.cpp:1135
 msgid "The following variables will be replaced:"
-msgstr "以下變數將被替換："
+msgstr ""
+"使用以下變數：\n"
+" "
 
 #: src/ExternalConn.cpp:114
 msgid "Unauthorized access attempt. Connection closed."
@@ -2797,7 +2799,7 @@ msgstr "未執行"
 #: src/MuleTrayIcon.cpp:449
 #, c-format
 msgid "Uptime: %s"
-msgstr "執行時間：%s"
+msgstr "已執行時間：%s"
 
 #: src/Statistics.cpp:653
 #: src/muuli_wdr.cpp:639
@@ -2814,63 +2816,63 @@ msgstr "上傳"
 #: src/Statistics.cpp:656
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
-msgstr "本次上傳 (總計)：%s"
+msgstr "本次上傳量/總計上傳量：%s"
 
 #: src/Statistics.cpp:658
 #: src/Statistics.cpp:679
 #, c-format
 msgid "Total Overhead (Packets): %s"
-msgstr "額外支出的傳輸 (封包)： %s"
+msgstr "額外支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:659
 #: src/Statistics.cpp:680
 #, c-format
 msgid "File Request Overhead (Packets): %s"
-msgstr "檔案要求支出的傳輸 (封包)：%s"
+msgstr "檔案要求支出傳輸量/封包：%s"
 
 #: src/Statistics.cpp:661
 #: src/Statistics.cpp:682
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
-msgstr "來源交換支出的傳輸 (封包)： %s"
+msgstr "來源交換支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:663
 #: src/Statistics.cpp:684
 #, c-format
 msgid "Server Overhead (Packets): %s"
-msgstr "伺服器支出的傳輸 (封包)： %s"
+msgstr "伺服器支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:665
 #: src/Statistics.cpp:686
 #, c-format
 msgid "Kad Overhead (Packets): %s"
-msgstr "Kad 網路支出的傳輸 (封包)： %s"
+msgstr "Kad 網路支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:667
 #: src/Statistics.cpp:688
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr "加密支出的傳輸 (封包)： %s"
+msgstr "加密支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:669
 #, c-format
 msgid "Active Uploads: %s"
-msgstr "作用中上傳數：%s"
+msgstr "目前上傳數：%s"
 
 #: src/Statistics.cpp:670
 #, c-format
 msgid "Waiting Uploads: %s"
-msgstr "等候中上傳數：%s"
+msgstr "等候中：%s"
 
 #: src/Statistics.cpp:671
 #, c-format
 msgid "Total successful upload sessions: %s"
-msgstr "上傳成功工作階段總數：%s"
+msgstr "上傳成功總次數：%s"
 
 #: src/Statistics.cpp:672
 #, c-format
 msgid "Total failed upload sessions: %s"
-msgstr "上傳失敗工作階段總數：%s"
+msgstr "上傳失敗總次數：%s"
 
 #: src/Statistics.cpp:674
 #, c-format
@@ -2887,22 +2889,22 @@ msgstr "下載"
 #: src/Statistics.cpp:677
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
-msgstr "本次下載 (總計)：%s"
+msgstr "本次下載量/總計下載量：%s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Found Sources: %s"
-msgstr "找到來源：%s"
+msgstr "找到的來源數：%s"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Active Downloads (chunks): %s"
-msgstr "作用中下載 (區塊)：%s"
+msgstr "目前下載數/區塊數：%s"
 
 #: src/Statistics.cpp:693
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
-msgstr "本次上傳下載比 (總計)：%s"
+msgstr "本次上傳下載比率 (總計)：%s"
 
 #: src/Statistics.cpp:696
 #, c-format
@@ -2942,12 +2944,12 @@ msgstr "與伺服器連線時間：%s"
 #: src/Statistics.cpp:703
 #, c-format
 msgid "Active Connections (estimate): %i"
-msgstr "作用中連線數 (估計值)：%i"
+msgstr "目前連線數 (估計值)：%i"
 
 #: src/Statistics.cpp:704
 #, c-format
 msgid "Max Connection Limit Reached: %s"
-msgstr "達到最大連線次數：%s"
+msgstr "達到最大連線量次數：%s"
 
 #: src/Statistics.cpp:705
 #, c-format
@@ -2967,22 +2969,22 @@ msgstr "客戶端"
 
 #: src/Statistics.cpp:716
 msgid "Filtered"
-msgstr "被過濾"
+msgstr "已過濾"
 
 #: src/Statistics.cpp:718
 #, c-format
 msgid "Total: %i Known: %i"
-msgstr "總計：%i 已知：%i"
+msgstr "總計：%i  -  已知：%i"
 
 #: src/Statistics.cpp:722
 #, c-format
 msgid "Working Servers: %i"
-msgstr "有效伺服器：%i"
+msgstr "有效：%i"
 
 #: src/Statistics.cpp:723
 #, c-format
 msgid "Failed Servers: %i"
-msgstr "無效伺服器：%i"
+msgstr "無效：%i"
 
 #: src/Statistics.cpp:724
 #, c-format
@@ -2992,22 +2994,22 @@ msgstr "總計：%s"
 #: src/Statistics.cpp:725
 #, c-format
 msgid "Deleted Servers: %s"
-msgstr "已刪除伺服器：%s"
+msgstr "已刪除：%s"
 
 #: src/Statistics.cpp:726
 #, c-format
 msgid "Filtered Servers: %s"
-msgstr "已過濾伺服器：%s"
+msgstr "已過濾：%s"
 
 #: src/Statistics.cpp:727
 #, c-format
 msgid "Users on Working Servers: %llu"
-msgstr "有效伺服器的使用者數：%llu"
+msgstr "有效使用者數：%llu"
 
 #: src/Statistics.cpp:728
 #, c-format
 msgid "Files on Working Servers: %llu"
-msgstr "有效伺服器的檔案數：%llu"
+msgstr "有效檔案數：%llu"
 
 #: src/Statistics.cpp:729
 #, c-format
@@ -3022,17 +3024,17 @@ msgstr "檔案總數：%llu"
 #: src/Statistics.cpp:731
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr "伺服器占用率：%.2f%%"
+msgstr "伺服器使用率：%.2f%%"
 
 #: src/Statistics.cpp:735
 #, c-format
 msgid "Number of Shared Files: %s"
-msgstr "分享檔案數：%s"
+msgstr "檔案數：%s"
 
 #: src/Statistics.cpp:736
 #, c-format
 msgid "Total size of Shared Files: %s"
-msgstr "分享檔案總容量: %s"
+msgstr "檔案總容量：%s"
 
 #: src/Statistics.cpp:738
 #, c-format
@@ -3289,7 +3291,7 @@ msgstr "警告：LowID 時不可以將自己加入 eD2k 連結來源。"
 #: src/amule-remote-gui.cpp:598
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
-msgstr "使用者：E：%s K：%s | 檔案 E：%s K：%s"
+msgstr "使用者：E:%s K:%s | 檔案 E:%s K:%s"
 
 #: src/amule-remote-gui.cpp:656
 #: src/TransferWnd.cpp:341
@@ -3338,7 +3340,7 @@ msgstr "剩餘時間"
 
 #: src/DownloadListCtrl.cpp:198
 msgid "Last Seen Complete"
-msgstr "最後發現完整檔案"
+msgstr "最後看到完整檔案"
 
 #: src/DownloadListCtrl.cpp:199
 msgid "Last Reception"
@@ -3404,7 +3406,7 @@ msgstr "預覽"
 
 #: src/DownloadListCtrl.cpp:940
 msgid "Show file &details"
-msgstr "顯示檔案資訊(&D)"
+msgstr "顯示檔案詳細資訊(&D)"
 
 #: src/DownloadListCtrl.cpp:942
 #: src/muuli_wdr.cpp:822
@@ -3473,7 +3475,7 @@ msgstr "A4AF"
 #: src/DownloadListCtrl.cpp:1728
 #, c-format
 msgid "QR: %u (%i)"
-msgstr "QR: %u (%i)"
+msgstr "QR：%u (%i)"
 
 #: src/DownloadListCtrl.cpp:1742
 msgid "Asked for another file"
@@ -3628,7 +3630,7 @@ msgstr "計算 %s 時發生意外的錯誤，暫停檔案處理"
 #: src/PartFile.cpp:2260
 #, c-format
 msgid "Finished downloading: %s"
-msgstr "已完成下載：%s"
+msgstr "下載完成：%s"
 
 #: src/PartFile.cpp:2317
 #, c-format
@@ -3767,7 +3769,7 @@ msgstr "無法與清單中的模糊伺服器連線，嘗試不使用模糊協定
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr "無法與清單中的模糊伺服器連線，開始嘗試第二輪。"
+msgstr "無法與清單中的模糊伺服器連線，開始下一輪嘗試。"
 
 #: src/ServerConnect.cpp:88
 #: src/ServerConnect.cpp:137
@@ -3831,7 +3833,7 @@ msgstr "錯誤：連接端點於逾時查驗時失效"
 #: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
-msgstr "連線逾時 %s (%s:%i)。"
+msgstr "連線到 %s (%s:%i) 時逾時。"
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
@@ -4405,7 +4407,7 @@ msgstr "顯示伺服器清單。"
 
 #: src/TextClient.cpp:945
 msgid "Reset log."
-msgstr "重設記錄。"
+msgstr "清除記錄。"
 
 #: src/TextClient.cpp:952
 #, c-format
@@ -4480,7 +4482,7 @@ msgstr "從伺服器收到偽裝封包：%s"
 #: src/ServerSocket.cpp:607
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
-msgstr "處理伺服器傳來的封包時發生無法處理的錯誤 : %s "
+msgstr "處理伺服器傳來的封包時發生無法處理的錯誤：%s "
 
 #: src/ServerSocket.cpp:646
 #: src/ServerSocket.cpp:650
@@ -4495,7 +4497,7 @@ msgstr "伺服器 IP %s (%s) 已被過濾。未連線。"
 
 #: src/ServerSocket.cpp:739
 msgid "using protocol obfuscation."
-msgstr "使用模糊協定。"
+msgstr "，使用模糊協定。"
 
 #: src/ServerSocket.cpp:748
 #, c-format
@@ -4907,8 +4909,8 @@ msgstr "無法載入 ipfilter.dat 檔案 '%s'，無法開啟檔案。"
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] "已載入 %u 個 IP 區段 (自 '%s')。"
-msgstr[1] "已載入 %u 個 IP 區段 (自 '%s')。"
+msgstr[0] "已載入 %u 個 IP 區段 (從 '%s')。"
+msgstr[1] "已載入 %u 個 IP 區段 (從 '%s')。"
 
 #: src/IPFilter.cpp:334
 #, c-format
@@ -4920,7 +4922,7 @@ msgstr[1] "放棄 %u 行錯誤資料。"
 #: src/StatisticsDlg.cpp:188
 #, c-format
 msgid "Active connections (1:%u)"
-msgstr "作用中連線 (1:%u)"
+msgstr "目前連線數 (1:%u)"
 
 #: src/FileDetailDialog.cpp:59
 msgid "File Details"
@@ -4929,7 +4931,7 @@ msgstr "檔案詳細資訊"
 #: src/FileDetailDialog.cpp:114
 #, c-format
 msgid "%.2f%% done"
-msgstr "已完成 %.2f%%"
+msgstr "%.2f%%"
 
 #: src/muuli_wdr.cpp:69
 msgid "eD2k Link: "
@@ -4937,11 +4939,11 @@ msgstr "eD2k 連結："
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
-msgstr "認可"
+msgstr "加入"
 
 #: src/muuli_wdr.cpp:77
 msgid "Click here to add the eD2k link in the text control to your download queue."
-msgstr "點選這裏將次項的 eD2k 連結加入下載等候區。"
+msgstr "點選這裏將欄內的 eD2k 連結加入下載等候區。"
 
 #: src/muuli_wdr.cpp:85
 msgid "Events are displayed here. For a complete list of events, refer to the log in the Servers-tab."
@@ -4961,11 +4963,11 @@ msgstr "使用者數：0"
 
 #: src/muuli_wdr.cpp:100
 msgid "Users connected to the current server and an estimate of the total number of users."
-msgstr "目前伺服器上的連線使用者和估計總使用者總數。"
+msgstr "目前伺服器上的連線使用者和估計的總使用者數。"
 
 #: src/muuli_wdr.cpp:111
 msgid "Up: 0.0 | Down: 0.0"
-msgstr "上傳: 0.0 | 下載: 0.0"
+msgstr "上傳：0.0 | 下載：0.0"
 
 #: src/muuli_wdr.cpp:112
 msgid "Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication."
@@ -4973,7 +4975,7 @@ msgstr "目前平均上傳下載速度。括號中的爲與其他客戶端連線
 
 #: src/muuli_wdr.cpp:120
 msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
-msgstr "顯示目前連線狀態與目前傳輸狀態。紅色箭頭表示未連線，黃色箭頭表示 LowID (防火牆內)，綠色箭頭表示正常連線。"
+msgstr "顯示目前連線與傳輸狀態。紅色箭頭表示未連線，黃色箭頭表示 LowID (防火牆內)，綠色箭頭表示正常連線。"
 
 #: src/muuli_wdr.cpp:124
 msgid "Not Connected ..."
@@ -5072,7 +5074,7 @@ msgstr "停止"
 
 #: src/muuli_wdr.cpp:372
 msgid "Reset Fields"
-msgstr "重設欄位"
+msgstr "清空欄位"
 
 #: src/muuli_wdr.cpp:387
 msgid "Results"
@@ -5169,27 +5171,27 @@ msgstr "met 檔案"
 
 #: src/muuli_wdr.cpp:589
 msgid "Hash :"
-msgstr "雜湊值 :"
+msgstr "雜湊值："
 
 #: src/muuli_wdr.cpp:604
 msgid "Filesize :"
-msgstr "檔案大小 :"
+msgstr "檔案大小："
 
 #: src/muuli_wdr.cpp:615
 msgid "Partfilestatus :"
-msgstr "暫存檔狀態 :"
+msgstr "暫存檔狀態："
 
 #: src/muuli_wdr.cpp:626
 msgid "Last seen complete :"
-msgstr "最後發現完整檔案 :"
+msgstr "最後看到完整檔案："
 
 #: src/muuli_wdr.cpp:648
 msgid "Found Sources :"
-msgstr "找到的來源 :"
+msgstr "找到的來源："
 
 #: src/muuli_wdr.cpp:659
 msgid "Transferring Sources :"
-msgstr "正在傳輸的來源 :"
+msgstr "正在傳輸的來源："
 
 #: src/muuli_wdr.cpp:670
 msgid "Filepart-Count :"
@@ -5197,41 +5199,41 @@ msgstr "檔案分段數："
 
 #: src/muuli_wdr.cpp:681
 msgid "Available :"
-msgstr "可用 :"
+msgstr "可用："
 
 #: src/muuli_wdr.cpp:692
 msgid "Datarate :"
-msgstr "資料率 :"
+msgstr "速度："
 
 #: src/muuli_wdr.cpp:703
 msgid "Download Active Time: "
-msgstr "下載動作時間："
+msgstr "下載時間："
 
 #: src/muuli_wdr.cpp:714
 #: src/muuli_wdr.cpp:1144
 #: src/muuli_wdr.cpp:1155
 msgid "Transferred :"
-msgstr "已傳輸"
+msgstr "已傳輸："
 
 #: src/muuli_wdr.cpp:725
 msgid "Completed Size :"
-msgstr "已完成大小 :"
+msgstr "已完成："
 
 #: src/muuli_wdr.cpp:752
 msgid "Intelligent Corruption Handling"
-msgstr "智慧資料損壞處理 (ICH)"
+msgstr "智慧資料損壞處理 (I.C.H.)"
 
 #: src/muuli_wdr.cpp:761
 msgid "Lost to corruption :"
-msgstr "因資料損壞而損失 :"
+msgstr "因資料損壞而損失："
 
 #: src/muuli_wdr.cpp:772
 msgid "Gained by compression :"
-msgstr "壓縮效益 :"
+msgstr "壓縮量："
 
 #: src/muuli_wdr.cpp:783
 msgid "Packages saved by I.C.H. :"
-msgstr "由 I.C.H. 救回的封包 :"
+msgstr "由 I.C.H. 救回的封包："
 
 #: src/muuli_wdr.cpp:803
 msgid "File Names"
@@ -5264,7 +5266,7 @@ msgid ""
 "\\n"
 "and if it's a fake, you can tell that to other users of aMule."
 msgstr ""
-"針對影片，您可以留下長度、故事、語言...等資訊\\n"
+"針對影片，您可以留下片長、故事、語言...等資訊\\n"
 "\\n"
 "或是提出假檔警告，以供其他 aMule 使用者注意。"
 
@@ -5290,7 +5292,7 @@ msgstr "未知大小"
 
 #: src/muuli_wdr.cpp:1007
 msgid "Required Information"
-msgstr "要求的資訊"
+msgstr "必要資訊"
 
 #: src/muuli_wdr.cpp:1012
 msgid "IP Address :"
@@ -5327,12 +5329,12 @@ msgstr "總計"
 #: src/muuli_wdr.cpp:1108
 #: src/muuli_wdr.cpp:1119
 msgid "Requested :"
-msgstr "已要求 :"
+msgstr "已要求："
 
 #: src/muuli_wdr.cpp:1126
 #: src/muuli_wdr.cpp:1137
 msgid "Active Uploads :"
-msgstr "作用中上傳 :"
+msgstr "目前上傳數："
 
 #: src/muuli_wdr.cpp:1180
 msgid "Download-Speed"
@@ -5367,16 +5369,16 @@ msgstr "連線"
 #: src/muuli_wdr.cpp:1296
 #: src/muuli_wdr.cpp:2104
 msgid "Active downloads"
-msgstr "作用中下載"
+msgstr "目前下載數"
 
 #: src/muuli_wdr.cpp:1307
 msgid "Active connections (1:1)"
-msgstr "作用中連線 (1:1)"
+msgstr "目前連線數 (1:1)"
 
 #: src/muuli_wdr.cpp:1318
 #: src/muuli_wdr.cpp:2105
 msgid "Active uploads"
-msgstr "作用中上傳"
+msgstr "目前上傳數"
 
 #: src/muuli_wdr.cpp:1327
 msgid "Statistics Tree"
@@ -5392,19 +5394,19 @@ msgstr "使用者雜湊值"
 
 #: src/muuli_wdr.cpp:1383
 msgid "Client software:"
-msgstr "客戶端軟體 :"
+msgstr "客戶端軟體："
 
 #: src/muuli_wdr.cpp:1392
 msgid "Client version:"
-msgstr "客戶端軟體版本 :"
+msgstr "版本："
 
 #: src/muuli_wdr.cpp:1408
 msgid "User ID:"
-msgstr "使用者 ID: "
+msgstr "使用者 ID："
 
 #: src/muuli_wdr.cpp:1415
 msgid "Server IP:"
-msgstr "伺服器 IP :"
+msgstr "伺服器 IP："
 
 #: src/muuli_wdr.cpp:1424
 msgid "Server name:"
@@ -5420,7 +5422,7 @@ msgstr "Kad："
 
 #: src/muuli_wdr.cpp:1451
 msgid "Transfers to client"
-msgstr "傳輸到客戶端"
+msgstr "傳輸"
 
 #: src/muuli_wdr.cpp:1456
 msgid "Current request:"
@@ -5428,27 +5430,27 @@ msgstr "目前要求："
 
 #: src/muuli_wdr.cpp:1469
 msgid "Average upload rate:"
-msgstr "平均上傳速度 :"
+msgstr "平均上傳速度："
 
 #: src/muuli_wdr.cpp:1478
 msgid "Average download rate:"
-msgstr "平均下載速度 :"
+msgstr "平均下載速度："
 
 #: src/muuli_wdr.cpp:1485
 msgid "Uploaded (session):"
-msgstr "上傳 (本次) :"
+msgstr "本次上傳："
 
 #: src/muuli_wdr.cpp:1494
 msgid "Downloaded (session):"
-msgstr "下載 (本次) :"
+msgstr "本次下載："
 
 #: src/muuli_wdr.cpp:1501
 msgid "Uploaded (total):"
-msgstr "上傳 (總計) :"
+msgstr "總計上傳："
 
 #: src/muuli_wdr.cpp:1510
 msgid "Downloaded (total):"
-msgstr "下載 (總計) :"
+msgstr "總計下載："
 
 #: src/muuli_wdr.cpp:1521
 msgid "Scores"
@@ -5456,19 +5458,19 @@ msgstr "分數"
 
 #: src/muuli_wdr.cpp:1528
 msgid "DL/UP modifier:"
-msgstr "下載/上傳 比率 :"
+msgstr "下載/上傳 比率："
 
 #: src/muuli_wdr.cpp:1537
 msgid "Secure ident:"
-msgstr "安全辨正 :"
+msgstr "安全驗證："
 
 #: src/muuli_wdr.cpp:1544
 msgid "Rating (total):"
-msgstr "評價 (總計) :"
+msgstr "評價 (總計)："
 
 #: src/muuli_wdr.cpp:1553
 msgid "Queue score:"
-msgstr "等候分數:"
+msgstr "得分："
 
 #: src/muuli_wdr.cpp:1582
 msgid "Nick"
@@ -5515,7 +5517,7 @@ msgstr "啓用後使 aMule 啓動後立即最小化。"
 
 #: src/muuli_wdr.cpp:1613
 msgid "Prompt on exit"
-msgstr "離開前確認"
+msgstr "離開前先確認"
 
 #: src/muuli_wdr.cpp:1615
 msgid "Makes aMule prompt before exiting."
@@ -5595,7 +5597,7 @@ msgstr "標準 eD2k 通訊埠，不可停用。"
 
 #: src/muuli_wdr.cpp:1745
 msgid "UDP port for server requests (TCP+3):"
-msgstr "伺服器所需 UDP 埠 (TCP+3)："
+msgstr "伺服器要求 UDP 埠 (TCP+3)："
 
 #: src/muuli_wdr.cpp:1748
 msgid "4665"
@@ -5607,7 +5609,7 @@ msgstr "擴充 UDP 埠 (Kad / 全球搜尋)"
 
 #: src/muuli_wdr.cpp:1755
 msgid "This UDP port is used for extended eD2k requests and Kad network"
-msgstr "此 UDP 埠用於 eD2k 擴充功能與 Kad 網路"
+msgstr "此 UDP 埠用於 eD2k 擴充要求與 Kad 網路"
 
 #: src/muuli_wdr.cpp:1758
 msgid "Enable UPnP for router port forwarding"
@@ -5652,7 +5654,7 @@ msgstr "斷線後自動重新連線"
 
 #: src/muuli_wdr.cpp:1847
 msgid "Remove dead server after"
-msgstr "移除無法連線伺服器，如果"
+msgstr "移除無法連線伺服器：如果"
 
 #: src/muuli_wdr.cpp:1853
 msgid "retries"
@@ -5712,7 +5714,7 @@ msgstr "加入新下載檔案時設為暫停狀態"
 
 #: src/muuli_wdr.cpp:1925
 msgid "Add files to download with auto priority"
-msgstr "加入新下載檔案時設優先等級為自動狀態"
+msgstr "加入新下載檔案時設定優先等級為自動狀態"
 
 #: src/muuli_wdr.cpp:1928
 msgid "Try to download first and last chunks first"
@@ -5724,7 +5726,7 @@ msgstr "完成後自動傳輸下一個暫停的檔案"
 
 #: src/muuli_wdr.cpp:1936
 msgid "From the same category"
-msgstr "來自同一分類"
+msgstr "同一分類檔案"
 
 #: src/muuli_wdr.cpp:1939
 msgid "Preallocate disk space for new files"
@@ -5785,11 +5787,11 @@ msgstr "圖表"
 #: src/muuli_wdr.cpp:2046
 #: src/muuli_wdr.cpp:2124
 msgid "Update delay : 5 secs"
-msgstr "更新延遲 : 5 秒"
+msgstr "更新延遲時間：5 秒"
 
 #: src/muuli_wdr.cpp:2052
 msgid "Time for average graph: 100 mins"
-msgstr "平均圖表顯示時間: 100 分鐘"
+msgstr "平均圖表顯示時間：100 分鐘"
 
 #: src/muuli_wdr.cpp:2058
 msgid "Connections Graph Scale: 100 "
@@ -5841,7 +5843,7 @@ msgstr "本次平均上傳"
 
 #: src/muuli_wdr.cpp:2103
 msgid "Active connections"
-msgstr "作用中連線"
+msgstr "目前連線數"
 
 #: src/muuli_wdr.cpp:2106
 msgid "Systray Icon Speedbar"
@@ -5870,7 +5872,7 @@ msgstr "樹狀"
 
 #: src/muuli_wdr.cpp:2132
 msgid "Number of Client Versions shown (0=unlimited)"
-msgstr "顯示客戶端版本的數量 (0代表不限制)"
+msgstr "顯示客戶端版本的數量 ('0' 代表不限制)"
 
 #: src/muuli_wdr.cpp:2160
 msgid "!!! WARNING !!!"
@@ -5885,8 +5887,7 @@ msgid ""
 "aMule will run fine without adjusting any of\n"
 "these settings."
 msgstr ""
-"注意︰\n"
-"\n"
+" \n"
 "如果您不清楚以下設定的意義，則請不要隨意變更，\n"
 "否則可能匯弄巧成拙。\n"
 "\n"
@@ -5962,7 +5963,7 @@ msgstr "圓弧"
 
 #: src/muuli_wdr.cpp:2280
 msgid "Auto-sort files (high CPU)"
-msgstr "自動排序檔案 (耗系統速度)"
+msgstr "自動排序檔案 (耗系統資源)"
 
 #: src/muuli_wdr.cpp:2282
 msgid "aMule will sort the columns in your download list automatically"
@@ -5978,11 +5979,11 @@ msgstr "接受外部連線"
 
 #: src/muuli_wdr.cpp:2311
 msgid "IP of the listening interface:"
-msgstr "監聽的 IP："
+msgstr "監聽 IP："
 
 #: src/muuli_wdr.cpp:2315
 msgid "Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface."
-msgstr "輸入要監聽外部連線的的 IP (格式：a.b.c.d)，空白或 0.0.0.0 表示使用任意介面。"
+msgstr "輸入要監聽外部連線的的 IP (格式：a.b.c.d)，空白或 0.0.0.0 表示全部。"
 
 #: src/muuli_wdr.cpp:2323
 #: src/muuli_wdr.cpp:2384
@@ -6043,11 +6044,11 @@ msgstr "取消所有偏好設定變更。"
 
 #: src/muuli_wdr.cpp:2479
 msgid "Title :"
-msgstr "標題 :"
+msgstr "標題："
 
 #: src/muuli_wdr.cpp:2489
 msgid "Comment :"
-msgstr "註解 :"
+msgstr "註解："
 
 #: src/muuli_wdr.cpp:2499
 msgid "Incoming Dir :"
@@ -6059,7 +6060,7 @@ msgstr "..."
 
 #: src/muuli_wdr.cpp:2512
 msgid "Change priority for new assigned files :"
-msgstr "設定新加入的檔案優先等級為 :"
+msgstr "設定新加入的檔案優先等級為："
 
 #: src/muuli_wdr.cpp:2517
 msgid "Dont change"
@@ -6067,12 +6068,12 @@ msgstr "不要變更"
 
 #: src/muuli_wdr.cpp:2531
 msgid "Select color for this Category (currently selected) :"
-msgstr "選取該分類的顏色 (目前選擇) :"
+msgstr "選取該分類的顏色 (目前選擇)："
 
 #: src/muuli_wdr.cpp:2606
 #: src/muuli_wdr.cpp:2631
 msgid "Click this button to reset the log."
-msgstr "點選此按鈕重設記錄。"
+msgstr "點選此按鈕清除記錄。"
 
 #: src/muuli_wdr.cpp:2653
 msgid "Click on this button to update the servers list from URL ..."
@@ -6132,7 +6133,7 @@ msgstr "節點 (0)"
 
 #: src/muuli_wdr.cpp:2779
 msgid "Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes."
-msgstr "輸入 nodes.dat 檔案的網址並按下左邊的按鈕以更新已知節點清單。"
+msgstr "輸入 nodes.dat 檔案的網址，並按下左邊的按鈕以更新已知節點清單。"
 
 #: src/muuli_wdr.cpp:2784
 msgid "Nodes stats"
@@ -6158,9 +6159,7 @@ msgstr "埠："
 msgid ""
 "Bootstrap from \n"
 "known clients"
-msgstr ""
-"啓動，從：\n"
-"已知客戶端"
+msgstr "從已知客戶端啓動"
 
 #: src/muuli_wdr.cpp:2895
 msgid "Disconnect Kad"
@@ -6324,7 +6323,7 @@ msgstr "過濾來自不明客戶端的訊息"
 
 #: src/muuli_wdr.cpp:3113
 msgid "Filter messages containing (use ',' as separator):"
-msgstr "過濾包含以下內容的訊息 (用半形逗號分隔)："
+msgstr "過濾含以下內容的訊息 (用逗號 ',' 隔開)："
 
 #: src/muuli_wdr.cpp:3117
 #: src/muuli_wdr.cpp:3132
@@ -6341,7 +6340,7 @@ msgstr "註解"
 
 #: src/muuli_wdr.cpp:3128
 msgid "Filter comments containing (use ',' as separator):"
-msgstr "過濾包含以下內容的註解 (用半形逗號分隔)："
+msgstr "過濾含以下內容的註解 (用逗號 ',' 隔開)："
 
 #: src/muuli_wdr.cpp:3151
 msgid "Automatic server connect without proxy"
@@ -6373,15 +6372,15 @@ msgstr "登入代理伺服器的密碼"
 
 #: src/muuli_wdr.cpp:3177
 msgid "Enable Proxy"
-msgstr "啓用代理"
+msgstr "啓用代理伺服器"
 
 #: src/muuli_wdr.cpp:3178
 msgid "Enable/disable proxy support"
-msgstr "啓用/停用代理支援"
+msgstr "啓用/停用代理伺服器支援"
 
 #: src/muuli_wdr.cpp:3183
 msgid "Proxy type:"
-msgstr "代理類型："
+msgstr "類型："
 
 #: src/muuli_wdr.cpp:3188
 msgid "SOCKS5"
@@ -6405,7 +6404,7 @@ msgstr "正在連線的代理伺服器類型"
 
 #: src/muuli_wdr.cpp:3197
 msgid "Proxy host:"
-msgstr "代理主機："
+msgstr "主機："
 
 #: src/muuli_wdr.cpp:3201
 msgid "The proxy host name"
@@ -6413,11 +6412,11 @@ msgstr "代理伺服器主機名稱"
 
 #: src/muuli_wdr.cpp:3204
 msgid "Proxy port:"
-msgstr "代理伺服器埠："
+msgstr "連接埠："
 
 #: src/muuli_wdr.cpp:3208
 msgid "The proxy port"
-msgstr "代理伺服器埠"
+msgstr "代理伺服器連接埠"
 
 #: src/muuli_wdr.cpp:3229
 msgid "Connect to:"
@@ -6721,8 +6720,8 @@ msgstr "列出程式版本。"
 #, c-format
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
-msgstr[0] "積分檔已載入，%u 個已知客戶端"
-msgstr[1] "積分檔已載入，%u 個已知客戶端"
+msgstr[0] "積分檔已載入，有 %u 個已知客戶端"
+msgstr[1] "積分檔已載入，有 %u 個已知客戶端"
 
 #: src/ClientCreditsList.cpp:171
 #, c-format
@@ -6758,7 +6757,7 @@ msgstr "錯誤：%s"
 
 #: src/ClientListCtrl.cpp:259
 msgid "Unban"
-msgstr "取消封殺"
+msgstr "取消封鎖"
 
 #: src/ClientListCtrl.cpp:264
 msgid "Show Uploads"
@@ -6774,7 +6773,7 @@ msgstr "顯示客戶端"
 
 #: src/ClientListCtrl.cpp:270
 msgid "Select View"
-msgstr "選取檢視"
+msgstr "切換顯示"
 
 #: src/ClientListCtrl.cpp:518
 #: src/ClientListCtrl.cpp:850
@@ -6817,7 +6816,7 @@ msgstr "已要求"
 
 #: src/ClientListCtrl.cpp:855
 msgid "Last Seen"
-msgstr "最後連線"
+msgstr "最後看到"
 
 #: src/ClientListCtrl.cpp:856
 msgid "Entered Queue"
@@ -6853,7 +6852,7 @@ msgstr "隱藏分享檔案"
 
 #: src/ClientDetailDialog.cpp:50
 msgid "Client Details"
-msgstr "客戶端詳細"
+msgstr "客戶端詳細資訊"
 
 #: src/ClientDetailDialog.cpp:129
 msgid "Enabled"
@@ -7394,7 +7393,7 @@ msgstr "警告：沒有記錄檔，肯定有什麽地方出錯了。"
 
 #: src/amule.cpp:1766
 msgid "Log has been reset"
-msgstr "記錄檔已被重設"
+msgstr "記錄已被清除"
 
 #: src/amule.cpp:1791
 #, c-format
@@ -7449,7 +7448,7 @@ msgstr "使用者：%s | 檔案：%s"
 #: src/amule.cpp:1997
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
-msgstr "使用者：E：%s K:%s | 檔案：E：%s K：%s"
+msgstr "使用者：E:%s K:%s | 檔案：E:%s K:%s"
 
 #: src/amule.cpp:2006
 msgid "No networks selected"
@@ -7691,7 +7690,7 @@ msgstr "重大 - 開始交談時沒有客戶端"
 #~ msgstr "Epiphany"
 #~ msgid "Select your browser here"
 #~ msgstr "請選擇您的網路瀏覽器"
-#~ msgid "Custom Browser:"
+#~ msgid " Browser:"
 #~ msgstr "其它瀏覽器"
 #~ msgid ""
 #~ "Enter your browser name here. To use the custom browser, select the "
