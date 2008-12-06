@@ -1,4 +1,4 @@
-# translation of amule_2007-08-29.po to Русский
+# translation of ru.po to Русский
 # aMule project source code strings for i18n.
 # This file is distributed under the same license as the aMule package.
 #
@@ -8,23 +8,23 @@
 # toshi <K.Koshelyaev@gmail.com>, 2006.
 # Ivan Nazimov <ivan@lonerx.net>, 2007.
 # Nick Shaforostoff <shaforostoff@kde.ru>, 2008.
+# User294, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: amule_2007-08-29\n"
+"Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-03 19:42+0100\n"
-"PO-Revision-Date: 2008-03-05 15:54+0200\n"
-"Last-Translator: Nick Shaforostoff <shaforostoff@kde.ru>\n"
-"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"PO-Revision-Date: 2008-12-05 14:00+0300\n"
+"Last-Translator: User294\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: LoKalize 0.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -188,26 +188,18 @@ msgstr "Запрошено: %s\n"
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
-msgstr[1] ""
-"Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
-msgstr[2] ""
-"Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
+msgstr[1] "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
+msgstr[2] "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
 
 #: src/BaseClient.cpp:1967
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
-msgstr[1] ""
-"Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
-msgstr[2] ""
-"Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
+msgstr[1] "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
+msgstr[2] "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
 
 #: src/BaseClient.cpp:1970
 msgid "Requested unknown file"
@@ -730,8 +722,7 @@ msgstr "Генерировать картинку со статистикой п
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr ""
-"Укажите здесь каталог, в который вы хотите сохранять картинку со статистикой"
+msgstr "Укажите здесь каталог, в который вы хотите сохранять картинку со статистикой"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
@@ -751,8 +742,7 @@ msgstr "Введите здесь адрес вашего FTP сервера"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
-"Введите здесь путь для сохранения картинки со статистикой на FTP сервере"
+msgstr "Введите здесь путь для сохранения картинки со статистикой на FTP сервере"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -1186,9 +1176,8 @@ msgid "Exit"
 msgstr "Выйти"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Открыть"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1204,9 +1193,8 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "Копировать полученную eD2k ссылку в буфер"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
-msgstr "Сохранить"
+msgstr "Сохранить как"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1227,9 +1215,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Выберите файл для которого вы хотите получить eD2k ссылку"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "Скопировать в буфер обмена"
+msgstr "Не удалось открыть буфер обмена"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1281,16 +1268,15 @@ msgstr "Идёт хеширование..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator работает для вас"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "Вычисляется MD4 хэш..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "Подсоединение к сети eD2k..."
+msgstr "Вычисляются ed2k хэши..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1585,15 +1571,14 @@ msgstr "Турецкий"
 
 #: src/Preferences.cpp:663
 msgid "Ukrainian"
-msgstr ""
+msgstr "Украинский"
 
 #: src/Preferences.cpp:1626 src/Preferences.cpp:1641 src/Preferences.cpp:1648
 msgid "Unable to determine selected browser!"
 msgstr "Не удалось найти выбранный броузер!"
 
 #: src/Preferences.cpp:1679
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP порт не может быть выше 65532, так как UDP сокет - TCP+3"
 
 #: src/Preferences.cpp:1680
@@ -2022,16 +2007,15 @@ msgstr "Безопасность"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Интерфейс"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "Прокси"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Фильтр:"
+msgstr "Фильтры"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2042,9 +2026,8 @@ msgid "Online Signature"
 msgstr "Online-подпись"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Дополнительные настройки"
+msgstr "Дополнительно"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2052,7 +2035,7 @@ msgstr "События"
 
 #: src/PrefsUnifiedDlg.cpp:183
 msgid "Debugging"
-msgstr "Отладчик"
+msgstr "Отладка"
 
 #: src/PrefsUnifiedDlg.cpp:243 src/muuli_wdr.cpp:1684
 msgid "User Defined"
@@ -2107,7 +2090,7 @@ msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"Сети eD2k и Kad обе отключены.\n"
+"Обе сети eD2k и Kad отключены.\n"
 "Вы не сможете подсоединиться пока не подключите хотя бы одну из них."
 
 #: src/PrefsUnifiedDlg.cpp:653
@@ -2239,14 +2222,12 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Обновление соединения с сервером: Отключено"
 
 #: src/PrefsUnifiedDlg.cpp:1104
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "UDP-порт для расширенных запросов сервера (TCP+3): 4665"
+msgstr "UDP-порт для расширенных серверных запросов (TCP+3):"
 
 #: src/PrefsUnifiedDlg.cpp:1108
-#, fuzzy
 msgid "disabled"
-msgstr "выключить"
+msgstr "отключено"
 
 #: src/PrefsUnifiedDlg.cpp:1128
 #, c-format
@@ -2851,8 +2832,7 @@ msgstr "Пользователь %s (%u) запросил список публ�
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Пользователь %s (%u) запросил список публикуемых каталогов из каталога %s -> "
 "Принято"
@@ -2877,8 +2857,7 @@ msgstr "Пользователь %s (%u) отправил незапрошенн
 #: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr ""
-"Пользователь %s (%u) отправил список публикуемых каталогов из каталога %s"
+msgstr "Пользователь %s (%u) отправил список публикуемых каталогов из каталога %s"
 
 #: src/ClientTCPSocket.cpp:1032
 #, c-format
@@ -2888,14 +2867,12 @@ msgstr "Пользователь %s (%u) закончил передачу сп�
 #: src/ClientTCPSocket.cpp:1037
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr ""
-"Пользователь %s (%u) отправил список публикуемых файлов, который не нужен."
+msgstr "Пользователь %s (%u) отправил список публикуемых файлов, который не нужен."
 
 #: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr ""
-"Пользователь %s (%u) отказал в доступе к списку публикуемых файлов/папок"
+msgstr "Пользователь %s (%u) отказал в доступе к списку публикуемых файлов/папок"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2919,8 +2896,7 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Вы уверены что хотите загрузить новый файл nodes.dat?\n"
 
 #: src/KadDlg.cpp:197
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr "Это удалит используемые в данный момент узлы и перезапустит Kademlia."
 
 #: src/KadDlg.cpp:198
@@ -3225,8 +3201,7 @@ msgstr "ОШИБКА: неправильная версия файла part.met:
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
-"ОШИБКА: %s (%s) поврежден (неверное число тегов), невозможно открыть файл."
+msgstr "ОШИБКА: %s (%s) поврежден (неверное число тегов), невозможно открыть файл."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3515,12 +3490,9 @@ msgstr "%s (%s:%i) вероятно заполнен."
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
-msgstr[0] ""
-"Автоматическое соединение с сервером будет предпринято через %d секунду"
-msgstr[1] ""
-"Автоматическое соединение с сервером будет предпринято через %d секунды"
-msgstr[2] ""
-"Автоматическое соединение с сервером будет предпринято через %d секунд"
+msgstr[0] "Автоматическое соединение с сервером будет предпринято через %d секунду"
+msgstr[1] "Автоматическое соединение с сервером будет предпринято через %d секунды"
+msgstr[2] "Автоматическое соединение с сервером будет предпринято через %d секунд"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -3763,8 +3735,7 @@ msgstr "Показать краткую информацию о статусе."
 
 #: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr ""
-"Показать состояние соединения, такущие скорости отдачи/закачки, и т.д.\n"
+msgstr "Показать состояние соединения, такущие скорости отдачи/закачки, и т.д.\n"
 
 #: src/TextClient.cpp:845
 msgid "Show full statistics tree."
@@ -4404,8 +4375,7 @@ msgid ""
 msgstr "Укажите каталог для поиска незавершенных загрузок."
 
 #: src/PartFileConvert.cpp:701
-msgid ""
-"Do you want the source files of succesfully imported downloads be deleted?"
+msgid "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Вы хотите, чтобы исходные файлы импортированных закачек были удалены?"
 
 #: src/PartFileConvert.cpp:702
@@ -4593,8 +4563,7 @@ msgid "Commit"
 msgstr "Добавить"
 
 #: src/muuli_wdr.cpp:82
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
+msgid "Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
 "Нажмите сюда чтобы добавить eD2k ссылку из текстового поля в очередь "
 "загрузок."
@@ -5177,7 +5146,7 @@ msgstr "Выбор браузера"
 
 #: src/muuli_wdr.cpp:1675
 msgid "System Default"
-msgstr ""
+msgstr "Системные настройки"
 
 #: src/muuli_wdr.cpp:1676
 msgid "Konqueror"
@@ -5217,7 +5186,7 @@ msgstr "Выберите браузер"
 
 #: src/muuli_wdr.cpp:1693
 msgid "Custom Browser:"
-msgstr "Команда вызова браузера:"
+msgstr "Свой браузер:"
 
 #: src/muuli_wdr.cpp:1697
 msgid ""
@@ -5293,7 +5262,7 @@ msgstr "Макс. количество источников на файл"
 
 #: src/muuli_wdr.cpp:1841
 msgid "Hard limit"
-msgstr ""
+msgstr "Жесткое ограничение"
 
 #: src/muuli_wdr.cpp:1851
 msgid "Connection limits"
@@ -5433,8 +5402,7 @@ msgstr "Проверка дискового пространства"
 
 #: src/muuli_wdr.cpp:2059
 msgid "Select this if you want aMule to check your disk space"
-msgstr ""
-"Отметьте это если  хотите чтобы aMule проверял наличие свободного места"
+msgstr "Отметьте это если  хотите чтобы aMule проверял наличие свободного места"
 
 #: src/muuli_wdr.cpp:2066
 msgid "Min disk space:"
@@ -5452,8 +5420,7 @@ msgstr "Заранее выделять место для новых фалов"
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
-msgstr ""
-"Сразу выделяет место под весь файл. Такоим образом уменьшается фрагментация"
+msgstr "Сразу выделяет место под весь файл. Такоим образом уменьшается фрагментация"
 
 #: src/muuli_wdr.cpp:2098
 msgid "Incoming"
@@ -5469,8 +5436,7 @@ msgstr "Опубликованные"
 
 #: src/muuli_wdr.cpp:2123
 msgid "(Right click on folder icon for recursive share)"
-msgstr ""
-"(кликните правой кнопкой на значке каталога для рекурсивной публикации)"
+msgstr "(кликните правой кнопкой на значке каталога для рекурсивной публикации)"
 
 #: src/muuli_wdr.cpp:2130
 msgid "Share hidden files"
@@ -5561,11 +5527,8 @@ msgid "Line Capacities"
 msgstr "Пропускная способность линии"
 
 #: src/muuli_wdr.cpp:2250
-#, fuzzy
 msgid "Note: These values are only used for statistics."
-msgstr ""
-"Это используется только \n"
-"для статистики."
+msgstr "Учтите: эти значения используются только для статистик."
 
 #: src/muuli_wdr.cpp:2273
 msgid "!!! WARNING !!!"
@@ -5979,8 +5942,7 @@ msgid "Filter clients"
 msgstr "Фильтровать клиентов."
 
 #: src/muuli_wdr.cpp:3140
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Включает фильтрацию IP клиентов в соответствии с файлом ~/.aMule/ipfilter."
 "dat."
@@ -5990,8 +5952,7 @@ msgid "Filter servers"
 msgstr "Фильтровать сервера"
 
 #: src/muuli_wdr.cpp:3145
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Включает фильтрацию IP серверов в соответствии с файлом ~/.aMule/ipfilter."
 "dat."
@@ -6084,8 +6045,7 @@ msgid "Online Signature Directory:"
 msgstr "Каталог Online-подписи:"
 
 #: src/muuli_wdr.cpp:3250
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr "Кликните здесь, чтобы выбрать каталок для файлов Online-подписи."
 
 #: src/muuli_wdr.cpp:3269 src/muuli_wdr.cpp:3308 src/muuli_wdr.cpp:3490
@@ -6295,8 +6255,7 @@ msgid "You must specify a path for the category!"
 msgstr "Вы должны указать путь для категории!"
 
 #: src/CatDialog.cpp:159
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Не удалось создать каталог для загружаемых файлов категории. Укажите верный "
 "путь."
@@ -6437,9 +6396,9 @@ msgstr ""
 "Создается клиент...\n"
 
 #: src/ExternalConnector.cpp:400
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "Соединение не установлено. Невозможно подключиться к указанному узлу\n"
+msgstr "Соединение не удалось. Невозможно подключиться к %s:%d\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
@@ -6922,8 +6881,7 @@ msgstr "Сервер добавлен: сервер [%s:%d] использует
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
-msgstr ""
-"Вы соединены с сервером, который вы пытаетесь удалить. Отключитесь от него."
+msgstr "Вы соединены с сервером, который вы пытаетесь удалить. Отключитесь от него."
 
 #: src/ServerList.cpp:628
 msgid "Failed to save server.met!"
@@ -6971,8 +6929,7 @@ msgstr ""
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr ""
-"Локальный сервер отфильтрован через IPFilters. Подключаюсь к другому серверу!"
+msgstr "Локальный сервер отфильтрован через IPFilters. Подключаюсь к другому серверу!"
 
 #: src/UserEvents.cpp:132
 #, c-format
@@ -7078,8 +7035,7 @@ msgstr ""
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr ""
-"Эти опции были изменены в данном релизе по соображениям безопасности:\n"
+msgstr "Эти опции были изменены в данном релизе по соображениям безопасности:\n"
 
 #: src/amule.cpp:1313
 msgid ""
@@ -7191,8 +7147,7 @@ msgstr "Вы используете устаревшую версию aMule!"
 #: src/amule.cpp:1903
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-msgstr ""
-"Версия вашего aMule - %i.%i.%i, тогда как актуальная версия - %li.%li.%li"
+msgstr "Версия вашего aMule - %i.%i.%i, тогда как актуальная версия - %li.%li.%li"
 
 #: src/amule.cpp:1904
 msgid "The latest version can always be found at http://www.amule.org"
@@ -7283,991 +7238,3 @@ msgstr "Не удалось открыть список друзей 'emfriends.
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Не удалось открыть список друзей 'emfriends.met' для записи!"
 
-#~ msgid "Message Filter"
-#~ msgstr "Фильтр сообщений"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "Внешний вид"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "Настройки ядра"
-
-#~ msgid "No handler for this file type."
-#~ msgstr "Обработчик для этого типа файла не предусмотрен."
-
-#~ msgid "File was not saved"
-#~ msgstr "Не удалось сохранить"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr "Файл %s слишком велик для сети Donkey: максимальный размер - 4 ГБ."
-
-#~ msgid "Status text"
-#~ msgstr "Статус"
-
-# это тултип для кнопульки в левом нижнем углу
-#~ msgid "Pop-up status text"
-#~ msgstr "Показать статус."
-
-#~ msgid "Please wait... "
-#~ msgstr "Пожалуйста, подождите... "
-
-#~ msgid "General Settings"
-#~ msgstr "Общие настройки"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "Внешний вид"
-
-#~ msgid "Remote Control"
-#~ msgstr "Удалённый контроль"
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Невозможно определить команду для запуска обозревателя."
-
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "ВС-соединение не удалось. Получен пустой ответ."
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "Внешнее подключение: Отказано в доступе: "
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "Внешнее соединение: отказано в доступе"
-
-#~ msgid "ExternalConn: Bad reply from server. Connection closed."
-#~ msgstr "Внешнее соединение: недопустимый ответ сервера. Соединение закрыто."
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Скопировать ed2k-&ссылку в буфер обмена"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "Скопировать ed2k-ссылку в буфер обмена (&источник)"
-
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr ""
-#~ "Скопировать ed2k-ссылку в буфер обмена (источник) (использовать опции "
-#~ "&шифрования)"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "Скопировать ed2k-ссылку в буфер обмена (&Имя хоста)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr ""
-#~ "Скопировать ed2k-ссылку в буфер обмена (Имя хоста) (использовать опции "
-#~ "&шифрования)"
-
-#~ msgid "Copy ED2k link to clipboard (&AICH info)"
-#~ msgstr "Скопировать ed2k-ссылку в буфер обмена (AICH инфо)"
-
-#~ msgid "Warning"
-#~ msgstr "Предупреждение"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "Ошибка: не удалось открыть TCP порт."
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "HTTP порт web-сервера"
-
-#~ msgid "Use UPnP port forwarding on webserver port"
-#~ msgstr "Использовать UPnP для порта веб-сервера"
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "Привилегированный пароль для веб-сервера"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "Пароль ограниченного доступа"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr "Загружать/сохранять настройки веб-сервера c/на удалённый aMule"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr ""
-#~ "Введите здесь имя файла, для которого вы хотите составить ed2k-ссылку"
-
-#~ msgid ""
-#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
-#~ "let aLinkCreator append the current file name"
-#~ msgstr ""
-#~ "Введите здесь URL, который вы хотите добавить в Ed2k-ссылку: Добавьте / в "
-#~ "конце, чтобы aLinkCreator добавил имя файла"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "Хеш ed2k"
-
-#~ msgid "Ed2k link"
-#~ msgstr "Ссылка ed2k"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "Открыть файл для расчёта его ed2k-ссылки"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "Скопировать ed2k ссылку в буфер обмена"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "Сохранить вычисленные ed2k-ссылки в файл"
-
-#~ msgid "Select the file you want to compute the ed2k link"
-#~ msgstr "Выберите файл, для которого вам нужно создать ed2k ссылку"
-
-#~ msgid "Select the file to your computed ed2k link"
-#~ msgstr "Выберите файл для вашей ed2k ссылке"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "aLinkCreator, генератор ed2k-ссылок для aMule\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Графика с http://www.everaldo.com, http://www.icomania.com\n"
-#~ "и http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Лицензия - GPL"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "aLinkCreator, генератор ссылок ed2k для aMule"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "Скопировать ed2k-ссылку в буфер обмена"
-
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Скопировать ed2k-ссылки в буфер обмена"
-
-#~ msgid "Fatal Error: Failed to create Timer"
-#~ msgstr "Фатальная ошибка: не удалось создать таймер"
-
-#~ msgid "ED2K: Connecting"
-#~ msgstr "ED2K: Идёт подключение"
-
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "ED2K: Соединение не установлено"
-
-#~ msgid "Warning: Unable to open skin file '%s' for read"
-#~ msgstr "Предупреждение: Невозможно открыть файл темы '%s' на чтение"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "Список автоматического обновления серверов пуст.\n"
-#~ "Автоматическое обновление серверов при запуске будет отключено."
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "Обе сети, и ED2K и Kad выключены.\n"
-#~ "Вы не сможете подключиться, пока не включите хотя бы одну."
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Редактировать список серверов"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "Ошибка: не удалось принять новое внешнее соединение"
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "ED2K выключена в настройках."
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "Внешнее соединение: запрос на выключение"
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "Уже подключен к ED2K."
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "Подключаюсь к ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "Отключен от ED2K"
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "ExternalConn: получен неверный opcode: %#x"
-
-#~ msgid "ED2K Status:"
-#~ msgstr "Статус ED2K:"
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "Средн. скорость загрузки (за сессию): %s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "Средн. скорость отдачи (за сессию): %s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "Макс. скорость загрузки (за сессию): %s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "Макс. скорость отдачи (за сессию): %s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "Средний размер файла: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "Неворзможно осуществить поиск через ED2K если нет соединения с ED2K"
-
-#~ msgid "Error: "
-#~ msgstr "Ошибка: "
-
-#~ msgid "Warning: "
-#~ msgstr "Предупреждение: "
-
-#~ msgid "Search related files (ED2k, local server)"
-#~ msgstr "Искать похожие файлы (ED2K, локальный сервер)"
-
-#~ msgid "Error"
-#~ msgstr "Ошибка"
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr ""
-#~ "Предупреждение: Вы не можете добавить себя как источник для ed2k ссылки "
-#~ "под низким ID."
-
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "Укажите в настройках используемый вами видео-проигрыватель.\n"
-#~ "Без этого aMule будет пытаться использовать 'mplayer' и вы будете "
-#~ "получать данное предупреждение при каждой попытке предварительного "
-#~ "просмотра"
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "Ошибка: невозможно открыть файл 'part.met': %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "Ошибка: размер файла 'part.met' - 0: %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "Ошибка: неверная версия файла 'part.met': %s ==> %s"
-
-#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-#~ msgstr "Ошибка: %s (%s) повреждён, невозможно загрузить файл"
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "Предупреждение: %s вероятно повреждён (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "Неожиданная ошибка во время завершения %s. Пауза"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr ""
-#~ "Предупреждение: Невозможно хешировать загруженную часть - неполная "
-#~ "контрольная сумма для '%s'"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "Ошибка: Невозможно хешировать загруженную часть - контрольная сумма "
-#~ "неполная (%s). Так быть не должно."
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "Недостаточно места на диске"
-
-#~ msgid "Warning: known.met cannot be opened."
-#~ msgstr "Предупреждение: невозможно открыть файл known.met."
-
-#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
-#~ msgstr ""
-#~ "Предупреждение: Список известных файлов поврежден - неверный заголовок."
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "Ошибка! Попытка публикации %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "Сеть ED2K выключена в настройках. Не устанавливаю соединение."
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr ""
-#~ "Ни одного действительного сервера для соединения в списке не найдено."
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "Ошибка: неверный сокет по истечении времени ожидания"
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "Не могу конвертировать magnet-ссылку в ed2k-ссылку: %s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "Неправильная ed2k-ссылка. Ошибка: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "Ограничения скорости: Передача: %u КБ/с, Приём: %u КБ/с.\n"
-
-#~ msgid "Shutdown aMule."
-#~ msgstr "Остановить aMule."
-
-#~ msgid ""
-#~ "Shutdown the remote running core (amule/amuled).\n"
-#~ "This will also shut down the text client, since it is unusable without a\n"
-#~ "running core.\n"
-#~ msgstr ""
-#~ "Остановить удаленный aMule (amule/amuled).\n"
-#~ "Это также остановит текстовый клиент, так как он не может\n"
-#~ "функционировать без действующего ядра aMule.\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "Подключиться только к ED2K."
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "Отсоединиться от ED2K."
-
-#~ msgid "Adds an ed2k or magnet link to core."
-#~ msgstr "Добавляет ED2K или magnet-ссылку."
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ "\n"
-#~ "The magnet link must contain the ed2k hash and file length.\n"
-#~ msgstr ""
-#~ "ED2K-ссылка, которую надо добавить может быть:\n"
-#~ "*) ссылкой на файл (ed2k://|file|...), и будет добавлена в очередь "
-#~ "загрузки,\n"
-#~ "*) ссылкой на сервер (ed2k://|server|...), и будет добавлена в список "
-#~ "серверов,\n"
-#~ "*) ссылкой на список серверов, и тогда все серверы из этого списка "
-#~ "будутn   добавлены в ваш список серверов.\n"
-#~ "\n"
-#~ "magnet-ссылка должна содержать хеш ED2K и длину файла.\n"
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "Ошибка: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "Предупреждение: %s (%s) - %s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "Ошибка: нет места на диске"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "Ошибка: partmet не найден"
-
-#~ msgid "Error: IO error!"
-#~ msgstr "Ошибка: ошибка ввода/вывода"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "Ошибка: неудача!"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "ED2k-ссылка:"
-
-#~ msgid ""
-#~ "Click here to add the ed2k link in the text control to your download "
-#~ "queue."
-#~ msgstr "Кликните тут, чтобы добавить ed2k-ссылку в очередь на загрузку."
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "Находит больше результатов в ED2K. В Kad пока не поддерживается."
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "Ограничения скорости"
-
-#~ msgid "This is the standard ED2K port and cannot be disabled."
-#~ msgstr "Это стандартный порт ED2k, и он не может быть выключен."
-
-#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
-#~ msgstr ""
-#~ "Этот UDP-порт используется для дополнительных запросов ED2K  и сети Kad."
-
-#~ msgid "Hard Limit"
-#~ msgstr "Жёсткое ограничение"
-
-#~ msgid "Connection Limits"
-#~ msgstr "Ограничение количества соединений"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "Автоматическое обновление списка серверов при запуске"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "Обновление списка серверов при соединении с сервером"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "Обновление списка серверов при соединении с клиентами"
-
-#~ msgid "Disk Space"
-#~ msgstr "Место на диске"
-
-#~ msgid "Check Disk Space"
-#~ msgstr "Проверять место на диске"
-
-#~ msgid "Select this if you want aMule to check your Disk Space"
-#~ msgstr ""
-#~ "Включите, если вы хотите, чтобы aMule проверял наличие свободного места "
-#~ "на диске."
-
-#~ msgid "Min Disk Space:"
-#~ msgstr "Мин. дисковое пространство:"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Входящие файлы:"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Временный каталог:"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Каталоги с публикуемыми файлами"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "Создать резервную копию для просмотра"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Показывать поле для ed2k-ссылок"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "Параметры web-сервера"
-
-#~ msgid "Webserver port"
-#~ msgstr "Порт web-сервера"
-
-#~ msgid "Enable UPnP port forwarding on the Webserver port"
-#~ msgstr "Использовать UPnP для порта веб-сервера"
-
-#~ msgid "Webserver UPnP TCP port"
-#~ msgstr "UPnP -порт веб-сервера:"
-
-#~ msgid "Serverlist"
-#~ msgstr "Список серверов"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Ручное добавление сервера: Имя"
-
-#~ msgid "No One"
-#~ msgstr "Никому"
-
-#~ msgid "Speed Limits:"
-#~ msgstr "Ограничения скорости:"
-
-#~ msgid "Download Speed: %.1f"
-#~ msgstr "Скорость приёма: %.1f"
-
-#~ msgid "Upload Speed: %.1f"
-#~ msgstr "Скорость отдачи: %.1f"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "TCP порт: %d"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "TCP порт: не готов"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "UDP порт: %d"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "UDP порт: не готов"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "Публикуемые файлы: %d"
-
-#~ msgid "Queued Clients: %d"
-#~ msgstr "Клиентов в очереди: %d"
-
-#~ msgid "Upload Limit"
-#~ msgstr "Ограничение скорости отдачи"
-
-#~ msgid "Download Limit"
-#~ msgstr "Ограничение скорости приёма"
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "В указанном файле 'addresses.dat' не найден адрес списка серверов. "
-#~ "Пожалуйста, укажите верный адрес списка серверов, чтобы автоматически "
-#~ "обновлять ваш список серверов"
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr ""
-#~ "Внимание, указан неверный URL для автоматического обновления списка "
-#~ "серверов: %s"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "номер процесса веб сервера %d"
-
-#~ msgid ""
-#~ "You requested to run webserver from startup, but the amuleweb binary "
-#~ "cannot be run. Please install the package containing aMule webserver, or "
-#~ "compile aMule using --enable-webserver and run make install"
-#~ msgstr ""
-#~ "Вы настроили веб-сервер на запуск при открытии aMule, но 'amuleweb' не "
-#~ "может быть запущен. Пожалуйста, установите пакет, содержащий веб-сервер, "
-#~ "или соберите aMule используя параметр '--enable-webserver' при "
-#~ "конфигурации."
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "Отключен от ED2K"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr ""
-#~ "Не удалось открыть файл со списком друзей 'emfriends.met' для чтения!"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr ""
-#~ "Не удалось открыть файл со списком друзей 'emfriends.met' для записи."
-
-#~ msgid "ERROR: Failed to open partfile)"
-#~ msgstr "Ошибка: невозможно открыть part-файл)"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Can't create web socket thread\n"
-#~ msgstr "Не удалось создать поток веб-сокета\n"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "Веб-сервер: запущен\n"
-
-#~ msgid "Not Supported"
-#~ msgstr "Не поддерживается"
-
-#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-#~ msgstr "LowID: %u (%.2f%% Всего %.2f%% Известно)"
-
-#~ msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-#~ msgstr "Безопасная идентификация Вкл/Выкл: %u (%.2f%%) : %u (%.2f%%)"
-
-#~ msgid "Browse wav"
-#~ msgstr "Выбрать wav"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "Файл wav (*.wav)|*.wav||"
-
-#~ msgid "No comment(s)"
-#~ msgstr "Нет комментариев"
-
-#~ msgid "Notifications"
-#~ msgstr "Уведомления"
-
-#~ msgid "Messages popup"
-#~ msgstr "Всплывающие окна"
-
-#~ msgid "Use sound"
-#~ msgstr "Включить звуки"
-
-#~ msgid "Pop out when :"
-#~ msgstr "Уведомлять при :"
-
-#~ msgid "New entry on log"
-#~ msgstr "Новая запись в журнал"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "Начат новый чат"
-
-#~ msgid "A new chat message is received"
-#~ msgstr "Получено новое сообщение"
-
-#~ msgid "A download is added or finished"
-#~ msgstr "Добавлена или завершена загрузка"
-
-#~ msgid "New aMule version detected"
-#~ msgstr "Обнаружена новая версия aMule"
-
-#~ msgid "Notify by Mail"
-#~ msgstr "Уведомление по e-mail"
-
-#~ msgid "Send an Email when transfer complete."
-#~ msgstr "Послать email, когда загрузка завершена"
-
-#~ msgid "SMTP server :"
-#~ msgstr "SMTP сервер :"
-
-#~ msgid "Email Address :"
-#~ msgstr "E-mail:"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid ""
-#~ "The selected locale seems not to be installed on your box\n"
-#~ "You must generate it to use this language.\n"
-#~ "A good start on linux systems is the file /etc/locale.gen and the package "
-#~ "'locales'\n"
-#~ "Good luck!\n"
-#~ "(Note: I'll try to set it anyway)"
-#~ msgstr ""
-#~ "Возможно, что выбранная вами локаль не установлена на вашей системе.\n"
-#~ "вам нужно сгенерировать её, чтобы использовать данный язык.\n"
-#~ "Проверьте файл '/etc/locale.gen' и пакет 'locales'.\n"
-#~ "Удачи! ;-)\n"
-#~ "(и всё же будет произведена попытка включить эту локаль)"
-
-#~ msgid "Never show this again"
-#~ msgstr "Не выводить это сообщение в будущем"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "Включить/Выключить"
-
-#~ msgid "You can't update server.met from remote GUI yet."
-#~ msgstr ""
-#~ "В данный момент вы не можете обновить файл server.met из удалённого ГИП."
-
-#~ msgid "Disconnect from "
-#~ msgstr "Отсоединение от "
-
-#~ msgid "current server"
-#~ msgstr "текущий сервер"
-
-#~ msgid " and "
-#~ msgstr " и "
-
-#~ msgid "Disconnect from any server and/or Kad"
-#~ msgstr "Отключитесь ото всех серверов и/или от Kad"
-
-#~ msgid " ["
-#~ msgstr " ["
-
-#~ msgid " | Kad: "
-#~ msgstr " | Kad: "
-
-#~ msgid "TCP Flags"
-#~ msgstr "Флаги TCP"
-
-#~ msgid "UDP Flags"
-#~ msgstr "Флаги UDP"
-
-#~ msgid "Copy ED2k link(s) to clipboard"
-#~ msgstr "Скопировать ed2k-ссылки в буфер обмена"
-
-#~ msgid "Client requests %u"
-#~ msgstr "Клиент запрашивает %u"
-
-#~ msgid "File block %u-%u (%d bytes):"
-#~ msgstr "Блок файла %u-%u (%d Б):"
-
-#~ msgid "Client request is invalid!"
-#~ msgstr "Недопустимый запрос от клиента!"
-
-#~ msgid "Client request is invalid! %i / %i"
-#~ msgstr "Недопустимый запрос от клиента! %i / %i"
-
-#~ msgid "Command: %s"
-#~ msgstr "Команда: %s"
-
-#~ msgid "Unable to open %s file - using %s file."
-#~ msgstr "Не удалось открыть %s - используется %s."
-
-#~ msgid "Warning: known.met does not exist."
-#~ msgstr "Предупреждение: файл known.met не существует."
-
-#~ msgid ""
-#~ "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
-#~ "directory not found."
-#~ msgstr ""
-#~ "CSharedFileList::FindSharedFiles: Удаляю %s из публикуемого каталога: "
-#~ "Каталог не найден"
-
-#~ msgid "Waiting for subprocess termination failed"
-#~ msgstr "Ожидание завершения дочернего процесса прервано."
-
-#~ msgid ""
-#~ "You cannot connect to a release version from an arbitrary CVS version! "
-#~ "*sigh* possible crash prevented"
-#~ msgstr ""
-#~ "Вы не можете подключиться к стабильной версии, используя произвольную CVS "
-#~ "версию."
-
-#~ msgid "doesn't work"
-#~ msgstr "не работает"
-
-#~ msgid "remote gui"
-#~ msgstr "далённый гип"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "Ошибка: не удалось открыть файл. Узнайте на http://forum.amule.org о "
-#~ "методах восстановления '.part' файлов."
-
-#~ msgid ""
-#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "Ошибка: размер файла 'part.met' - 0. Узнайте на http://forum.amule.org о "
-#~ "методах восстановления 'part.met' файлов."
-
-#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
-#~ msgstr "Ошибка: размер бэкапа файла 'part.met' равен нулю: %s ==> %s"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ " Website: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ " Part of aMule is based on \n"
-#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr ""
-#~ "'Многоплатформенный' p2p-клиент, основанный на eMule \n"
-#~ "\n"
-#~ "Веб-сайт: http://www.amule.org \n"
-#~ "Форум: http://forum.amule.org \n"
-#~ "ЧаВо: http://wiki.amule.org \n"
-#~ "\n"
-#~ "Писать на: admin@amule.org (по административным вопросам) \n"
-#~ "Все права защищены (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ "Часть aMule основана на \n"
-#~ "Kademlia: маршрутизация peer-to-peer на основе XOR-метрики.\n"
-#~ "Все права защищены (C) 2002 Petar Maymounkov\n"
-#~ "http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid "WARNING: You have recieved Low-ID!"
-#~ msgstr "Предупреждение: Вы получили LowID!"
-
-#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-#~ msgstr "Этой команде требуется аргумент. Допустимые аргументы: хеш файла\n"
-
-#~ msgid "Deprecated command, now 'Status'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Status'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Status' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё  'Status'\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Set "
-#~ "IPFilter'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё   'Set IPFilter'\n"
-
-#~ msgid "Deprecated command, now 'Get IPFilter Level'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Get "
-#~ "IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё 'Get IPFilter Level'\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter Level'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё  'Set "
-#~ "IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё  'Set IPFilter Level'\n"
-
-#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Get/Set "
-#~ "IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get/Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё 'Get/Set IPFilter Level'\n"
-
-#~ msgid "Deprecated command, now 'Show Servers'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Show "
-#~ "Servers'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Show Servers' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё  'Show Servers'\n"
-
-#~ msgid "Deprecated command, now 'Get BwLimits'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Get "
-#~ "BwLimits'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get BwLimits' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё  'Get BwLimits'\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Up'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё  'Set "
-#~ "BwLimit Up'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Up' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё  'Set BwLimit Up'\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Down'."
-#~ msgstr ""
-#~ "Команда не рекомендована к использованию. Используйте вместо неё 'Set "
-#~ "BwLimit Down'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Down' instead.\n"
-#~ msgstr ""
-#~ "Эта команда не рекомендована к использованию и может быть удалена в "
-#~ "будущем.\n"
-#~ "Используйте вместо неё 'Set BwLimit Down'\n"
-
-#~ msgid "Syncronization thread started."
-#~ msgstr "Поток синхронизации запущен."
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Мастер-хеши известных файлов загружены."
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Ошибка чтения контактов Kad - 0 контактов"
-
-#~ msgid "Merge attempt"
-#~ msgstr "Попытка совмещения"
-
-#~ msgid "Recursive merge"
-#~ msgstr "рекурсивное совмещение"
-
-#~ msgid "Sucessful merge!"
-#~ msgstr "Совмещение удалось!"
-
-#~ msgid "No merge possible"
-#~ msgstr "Совмещение невозможно"
-
-#~ msgid "Buddy address: "
-#~ msgstr "Адрес друга:"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "     %d"
-#~ msgstr "     %d"
-
-#~ msgid ".%d"
-#~ msgstr ".%d"
-
-#~ msgid "Shows the process of a search."
-#~ msgstr "Показывает процесс поиска."
-
-#~ msgid "Shows the process of a search..\n"
-#~ msgstr "Показывает процесс поиска..\n"
-
-#~ msgid "Client Identification:"
-#~ msgstr "Идентификация клиента:"
-
-#~ msgid "Use Secure Identification"
-#~ msgstr "Использовать безопасную идентификацию"
-
-#~ msgid ""
-#~ "Secure Identification uses a handshake approch to safely identify clients "
-#~ "for use with the credit system."
-#~ msgstr ""
-#~ "Безопасная идентификация использует метод согласования для безопасного "
-#~ "опеределения клиентов, для последующего использования в системе кредитов."
-
-#~ msgid "Sources Dropping"
-#~ msgstr "Отброс источников"
-
-#~ msgid "Source Dropping"
-#~ msgstr "Отброс источников"
-
-#~ msgid "Keep sources"
-#~ msgstr "Оставлять"
-
-#~ msgid "Drop sources"
-#~ msgstr "Отбрасывать"
-
-#~ msgid "Send sources to any other file before dropping (High CPU)"
-#~ msgstr "Перебрасывать на другие файлы (большая нагрузка на процессор)"
-
-#~ msgid "Sources with no needed file-parts."
-#~ msgstr "Источники без нужных частей."
-
-#~ msgid "Full Queue Sources Handling"
-#~ msgstr "Источники с полной очередью"
-
-#~ msgid "Enable auto drop Full Queue Sources"
-#~ msgstr "Отбрасывать источники с полной очередью"
-
-#~ msgid "High Queue Rating Sources Handling"
-#~ msgstr "Обработка источников с большой очередью"
-
-#~ msgid "Enable auto drop High Queue Rating Sources"
-#~ msgstr "Отбрасывать источники с большой очередью"
-
-#~ msgid "High Queue Rating value"
-#~ msgstr "Значение большой очереди"
-
-#~ msgid "(Min 300 / Max 3000)"
-#~ msgstr "(Мин. - 300, Макс. - 3000)"
-
-#~ msgid "Auto Drop Sources Timer"
-#~ msgstr "Таймер авто-отброса источников"
-
-#~ msgid "Timer (in secs)"
-#~ msgstr "Таймер (в секундах)"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(Мин. - 60, Макс. - 3600)"
-
-#~ msgid "Drop No Needed Sources now"
-#~ msgstr "Отбросить немедленно ненужные источники"
-
-#~ msgid "Drop Full Queue Sources now"
-#~ msgstr "Отбросить источники с полной очередью"
-
-#~ msgid "Drop High Queue Rating Sources now"
-#~ msgstr "Отбросить источники с превышением макс. очереди"
-
-#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-#~ msgstr "Отбросить бесполезные источники (NNS, FQS && HQRS)"
-
-#~ msgid "English (U.S.)"
-#~ msgstr "Английский (США)"
-
-#~ msgid "Spanish (Mexican)"
-#~ msgstr "Испанский (Мексика)"
