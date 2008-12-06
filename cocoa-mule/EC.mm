@@ -138,9 +138,43 @@
 	[super dealloc];
 }
 
+- (uint64_t)tagInt64ByName: (ECTagNames) tagname {
+	ECTag *st = [self tagByName: tagname];
+	if (st == nil) {
+		return 0;
+	}
+	uint64_t value = 0;
+	switch ([st getSize]) {
+		case 1: {
+			ECTagInt8 *t = (ECTagInt8 *)st;
+			value = t.uint8Value;
+			break;
+			}
+		case 2: {
+			ECTagInt16 *t = (ECTagInt16 *)st;
+			value = t.uint16Value;
+			break;
+			}
+		case 4: {
+			ECTagInt32 *t = (ECTagInt32 *)st;
+			value = t.uint32Value;
+			break;
+			}
+		case 8: {
+			ECTagInt64 *t = (ECTagInt64 *)st;
+			value = t.uint64Value;
+			break;
+			}
+	}
+	return value;
+}
+
+
 @end
 
 @implementation ECTagInt8
+
+@synthesize uint8Value = m_val;
 
 + (id)tagFromInt8:(uint8_t) value withName:(ECTagNames) name {
 	ECTagInt8 *tag = [[ECTagInt8 alloc] init];
@@ -173,6 +207,8 @@
 
 @implementation ECTagInt16
 
+@synthesize uint16Value = m_val;
+
 + (id)tagFromInt16:(uint16_t) value withName:(ECTagNames) name {
 	ECTagInt16 *tag = [[ECTagInt16 alloc] init];
 	tag->m_val = value;
@@ -200,6 +236,8 @@
 
 @implementation ECTagInt32
 
+@synthesize uint32Value = m_val;
+
 + (id)tagFromInt32:(uint32_t) value withName:(ECTagNames) name {
 	ECTagInt32 *tag = [[ECTagInt32 alloc] init];
 	tag->m_val = value;
@@ -213,7 +251,7 @@
 + (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt32 *tag = [[ECTagInt32 alloc] init];
 	
-	tag->m_val = ntohs(*((uint32_t *)(*buffer)));
+	tag->m_val = ntohl(*((uint32_t *)(*buffer)));
 	tag->m_size = 4;
 	tag->m_type = EC_TAGTYPE_UINT32;
 	
@@ -226,6 +264,8 @@
 @end
 
 @implementation ECTagInt64
+
+@synthesize uint64Value = m_val;
 
 + (id)tagFromInt64:(uint64_t) value withName:(ECTagNames) name {
 	ECTagInt64 *tag = [[ECTagInt64 alloc] init];

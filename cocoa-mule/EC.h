@@ -23,6 +23,8 @@
 
 - (id)tagByName:(ECTagNames) tagname;
 
+- (uint64_t)tagInt64ByName:(ECTagNames) tagname;
+
 @property (readonly) ECTagTypes tagType;
 @property (readonly) ECTagNames tagName;
 
@@ -38,6 +40,8 @@
 + (id)tagFromInt8:(uint8_t) value withName:(ECTagNames) name;
 + (id)tagFromBuffer:(uint8_t **) buffer;
 
+@property (readonly)uint8_t uint8Value;
+
 @end
 
 @interface ECTagInt16 : ECTag {
@@ -46,6 +50,8 @@
 
 + (id)tagFromInt16:(uint16_t) value withName:(ECTagNames) name;
 + (id)tagFromBuffer:(uint8_t **) buffer;
+
+@property (readonly)uint16_t uint16Value;
 
 @end
 
@@ -56,6 +62,8 @@
 + (id)tagFromInt32:(uint32_t) value withName:(ECTagNames) name;
 + (id)tagFromBuffer:(uint8_t **) buffer;
 
+@property (readonly)uint32_t uint32Value;
+
 @end
 
 @interface ECTagInt64 : ECTag {
@@ -64,6 +72,8 @@
 
 + (id)tagFromInt64:(uint64_t) value withName:(ECTagNames) name;
 + (id)tagFromBuffer:(uint8_t **) buffer;
+
+@property (readonly)uint64_t uint64Value;
 
 @end
 

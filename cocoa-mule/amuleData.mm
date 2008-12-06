@@ -35,10 +35,23 @@
 	ECTagString *stag = (ECTagString *)nametag;
 	obj->m_name = stag.stringValue;;
 	
+	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
+	[obj updateFromEC:tag];
+	
 	return obj;
 }
 
 - (void)updateFromEC:(ECTagMD5 *) tag {
+	m_size_done = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_DONE];
+	m_size_xfer = [tag tagInt64ByName:EC_TAG_PARTFILE_SIZE_XFER];
+	
+	m_speed = [tag tagInt64ByName:EC_TAG_PARTFILE_SPEED];
+	
+	m_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT];
+	m_non_current_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT];
+	m_xfer_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_XFER];
+	m_a4af_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_A4AF];
+	
 }
 
 @end
