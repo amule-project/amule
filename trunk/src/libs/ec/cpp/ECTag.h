@@ -98,6 +98,7 @@ class CECTag {
 		// tag for custom data: just init object, alloc buffer and return pointer
 		CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
 		// Routines for special data types.
+		CECTag(ec_tagname_t name, bool data);
 		CECTag(ec_tagname_t name, uint8_t data);
 		CECTag(ec_tagname_t name, uint16_t data);
 		CECTag(ec_tagname_t name, uint32_t data);
@@ -108,6 +109,7 @@ class CECTag {
 		CECTag(ec_tagname_t name, const CMD4Hash& data);
 		#ifdef USE_WX_EXTENSIONS
 		CECTag(ec_tagname_t name, const wxString& data);
+		CECTag(ec_tagname_t name, const wxChar* data);
 		CECTag(ec_tagname_t name, const char* data) { ConstructStringTag(name, data); }
 		#endif
 		CECTag(const CECTag& tag);

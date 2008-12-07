@@ -818,6 +818,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\Statistics.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\StatisticsDlg.h"
 				>
 			</File>

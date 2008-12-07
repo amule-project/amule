@@ -135,21 +135,36 @@ public:
 	bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTTINGDOWN); }
 
 	// Check ED2K and Kademlia state
-	bool IsFirewalled();
-	// Check Kad state
-	bool IsFirewalledKad();
-	// Check if we should callback this client
-	bool DoCallback( CUpDownClient *client );
-
-	// Connection to ED2K
-	bool IsConnectedED2K();
-	// Connection to Kad
-	bool IsConnectedKad();
+	bool IsFirewalled() const;
 	// Are we connected to at least one network?
-	bool IsConnected();
+	bool IsConnected() const;
+	// Connection to ED2K
+	bool IsConnectedED2K() const;
 
 	// What about Kad? Is it running?
-	bool IsKadRunning();
+	bool IsKadRunning() const;
+	// Connection to Kad
+	bool IsConnectedKad() const;
+	// Check Kad state (TCP)
+	bool IsFirewalledKad() const;
+	// Check Kad state (UDP)
+	bool IsFirewalledKadUDP() const;
+	// Kad stats
+	uint32	GetKadUsers() const;
+	uint32	GetKadFiles() const;
+	uint32	GetKadIndexedSources() const;
+	uint32	GetKadIndexedKeywords() const;
+	uint32	GetKadIndexedNotes() const;
+	uint32	GetKadIndexedLoad() const;
+	// True IP of machine
+	uint32	GetKadIPAdress() const;
+	// Buddy status
+	uint8	GetBuddyStatus() const;
+	uint32	GetBuddyIP() const;
+	uint32	GetBuddyPort() const;
+
+	// Check if we should callback this client
+	bool DoCallback( CUpDownClient *client );
 
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);

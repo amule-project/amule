@@ -51,6 +51,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/UDPFirewallTester.h"
 
 
 //-------------------- CECServerSocket --------------------
@@ -379,6 +380,25 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &
 				response->AddTag(CECTag(EC_TAG_STATS_KAD_USERS, Kademlia::CKademlia::GetKademliaUsers()));
 				response->AddTag(CECTag(EC_TAG_STATS_ED2K_FILES, totalfile));
 				response->AddTag(CECTag(EC_TAG_STATS_KAD_FILES, Kademlia::CKademlia::GetKademliaFiles()));
+			}
+			// Kad stats
+			if (Kademlia::CKademlia::IsConnected()) {
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_FIREWALLED_UDP, Kademlia::CUDPFirewallTester::IsFirewalledUDP(true)));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_SOURCES, Kademlia::CKademlia::GetIndexed()->m_totalIndexSource));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_KEYWORDS, Kademlia::CKademlia::GetIndexed()->m_totalIndexKeyword));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_NOTES, Kademlia::CKademlia::GetIndexed()->m_totalIndexNotes));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_LOAD, Kademlia::CKademlia::GetIndexed()->m_totalIndexLoad));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_IP_ADRESS, wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetPrefs()->GetIPAddress())));
+				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_STATUS, theApp->clientlist->GetBuddyStatus()));
+				uint32 BuddyIP = 0;
+				uint16 BuddyPort = 0;
+				CUpDownClient * Buddy = theApp->clientlist->GetBuddy();
+				if (Buddy) {
+					BuddyIP = Buddy->GetIP();
+					BuddyPort = Buddy->GetUDPPort();
+				}
+				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_IP, BuddyIP));
+				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_PORT, BuddyPort));
 			}
 		case EC_DETAIL_UPDATE:
 		case EC_DETAIL_INC_UPDATE:

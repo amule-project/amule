@@ -35,9 +35,6 @@
 #include "amule.h"			// Needed for theApp
 #include "Logger.h"
 
-#include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/kademlia/UDPFirewallTester.h"
-#include "kademlia/kademlia/Indexed.h"
 #include "ClientList.h"
 #include "updownclient.h"
 
@@ -216,16 +213,15 @@ void CServerWnd::UpdateKadInfo()
 			KadInfoList->InsertItem(next_row, _("Connection State:"));
 			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ? 
 				CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort() : _("OK"));
-			#ifndef CLIENT_GUI
 			KadInfoList->InsertItem(next_row, _("UDP Connection State:"));
-			bool UDPFirewalled = Kademlia::CUDPFirewallTester::IsFirewalledUDP(true);
+			bool UDPFirewalled = theApp->IsFirewalledKadUDP();
 			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ? 
 				CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort() : _("OK"));
 
 			if (theApp->IsFirewalledKad() || UDPFirewalled) {
 				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
 				wxString BuddyState;
-				switch ( theApp->clientlist->GetBuddyStatus() )
+				switch ( theApp->GetBuddyStatus() )
 				{
 					case Disconnected:
 						if (!theApp->IsFirewalledKad()) {
@@ -240,39 +236,30 @@ void CServerWnd::UpdateKadInfo()
 						BuddyState = _("Connecting to buddy");
 						break;
 					case Connected:
-						BuddyState = CFormat(_("Connected to buddy at %s")) % Uint32_16toStringIP_Port(theApp->clientlist->GetBuddy()->GetIP(), theApp->clientlist->GetBuddy()->GetUDPPort());
+						BuddyState = CFormat(_("Connected to buddy at %s")) % Uint32_16toStringIP_Port(theApp->GetBuddyIP(), theApp->GetBuddyPort());
 						break;
 				}
 				KadInfoList->SetItem(next_row++, 1, BuddyState);
 			}
 
 			KadInfoList->InsertItem(next_row, _("IP address:"));
-			KadInfoList->SetItem(next_row++, 1, Uint32toStringIP(wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetPrefs()->GetIPAddress()))); // WTF ?
+			KadInfoList->SetItem(next_row++, 1, Uint32toStringIP(theApp->GetKadIPAdress()));
 
 			// Index info
 			KadInfoList->InsertItem(next_row, _("Indexed sources:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexSource);
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedSources());
 			KadInfoList->InsertItem(next_row, _("Indexed keywords:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexKeyword);
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedKeywords());
 			KadInfoList->InsertItem(next_row, _("Indexed notes:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexNotes);
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedNotes());
 			KadInfoList->InsertItem(next_row, _("Indexed load:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % Kademlia::CKademlia::GetIndexed()->m_totalIndexLoad);
+			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedLoad());
 
-			uint32 KademliaUsers = Kademlia::CKademlia::GetKademliaUsers();
-			uint32 KademliaFiles = Kademlia::CKademlia::GetKademliaFiles();
-			#else 
-			uint32 KademliaUsers = theStats::GetKadUsers();
-			uint32 KademliaFiles = theStats::GetKadFiles();
-			//#warning TODO: Buddy state on remote GUI
-			/* Maybe Averages too, but that would be redundant 
-			   they are already on the status bar */
-			#endif
 			KadInfoList->InsertItem(next_row, _("Average Users:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(KademliaUsers));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(theApp->GetKadUsers()));
 			++next_row;
 			KadInfoList->InsertItem(next_row, _("Average Files:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(KademliaFiles));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(theApp->GetKadFiles()));
 			
 		} 
 			

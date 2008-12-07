@@ -742,7 +742,23 @@ public:
 	bool IsKadRunning() const { return ((m_ConnState & CONNECTED_KAD_OK) 
 				|| (m_ConnState & CONNECTED_KAD_FIREWALLED)
 				|| (m_ConnState & CONNECTED_KAD_NOT)); }
-				
+
+	// Check Kad state (UDP)
+	bool IsFirewalledKadUDP() const		{ return theStats::IsFirewalledKadUDP(); }
+	// Kad stats
+	uint32 GetKadUsers() const			{ return theStats::GetKadUsers(); }
+	uint32 GetKadFiles() const			{ return theStats::GetKadFiles(); }
+	uint32 GetKadIndexedSources() const	{ return theStats::GetKadIndexedSources(); }
+	uint32 GetKadIndexedKeywords() const{ return theStats::GetKadIndexedKeywords(); }
+	uint32 GetKadIndexedNotes() const	{ return theStats::GetKadIndexedNotes(); }
+	uint32 GetKadIndexedLoad() const	{ return theStats::GetKadIndexedLoad(); }
+	// True IP of machine
+	uint32 GetKadIPAdress() const		{ return theStats::GetKadIPAdress(); }
+	// Buddy status
+	uint8	GetBuddyStatus() const		{ return theStats::GetBuddyStatus(); }
+	uint32	GetBuddyIP() const			{ return theStats::GetBuddyIP(); }
+	uint32	GetBuddyPort() const		{ return theStats::GetBuddyPort(); }
+
 	void StartKad();
 	void StopKad();
 	

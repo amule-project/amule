@@ -62,6 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib shlwapi.lib"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
