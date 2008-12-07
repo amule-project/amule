@@ -53,6 +53,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
+#include "kademlia/kademlia/UDPFirewallTester.h"
 #include "ClientCreditsList.h"		// Needed for CClientCreditsList
 #include "ClientList.h"			// Needed for CClientList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
@@ -1896,25 +1897,25 @@ void CamuleApp::CheckNewVersion(uint32 result)
 }
 
 
-bool CamuleApp::IsConnected()
+bool CamuleApp::IsConnected() const
 {
 	return (IsConnectedED2K() || IsConnectedKad());
 }
 
 
-bool CamuleApp::IsConnectedED2K()
+bool CamuleApp::IsConnectedED2K() const
 {
 	return serverconnect && serverconnect->IsConnected();
 }
 
 
-bool CamuleApp::IsConnectedKad()
+bool CamuleApp::IsConnectedKad() const
 {
 	return Kademlia::CKademlia::IsConnected(); 
 }
 
 
-bool CamuleApp::IsFirewalled()
+bool CamuleApp::IsFirewalled() const
 {
 	if (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) {
 		return false; // we have an eD2K HighID -> not firewalled
@@ -1923,18 +1924,75 @@ bool CamuleApp::IsFirewalled()
 	return IsFirewalledKad(); // If kad says ok, it's ok.
 }
 
-bool CamuleApp::IsFirewalledKad()
+bool CamuleApp::IsFirewalledKad() const
 {
-	if (Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled()) {
-		return false; // we have an Kad HighID -> not firewalled
-	}
-
-	return true; // firewalled	
+	return !Kademlia::CKademlia::IsConnected()		// not connected counts as firewalled
+			|| Kademlia::CKademlia::IsFirewalled();
 }
 
-bool CamuleApp::IsKadRunning()
+bool CamuleApp::IsFirewalledKadUDP() const
+{
+	return !Kademlia::CKademlia::IsConnected()		// not connected counts as firewalled
+			|| Kademlia::CUDPFirewallTester::IsFirewalledUDP(true);
+}
+
+bool CamuleApp::IsKadRunning() const
 {
 	return Kademlia::CKademlia::IsRunning();
+}
+
+// Kad stats
+uint32 CamuleApp::GetKadUsers() const
+{
+	return Kademlia::CKademlia::GetKademliaUsers();
+}
+
+uint32 CamuleApp::GetKadFiles() const
+{
+	return Kademlia::CKademlia::GetKademliaFiles();
+}
+
+uint32 CamuleApp::GetKadIndexedSources() const
+{
+	return Kademlia::CKademlia::GetIndexed()->m_totalIndexSource;
+}
+
+uint32 CamuleApp::GetKadIndexedKeywords() const
+{
+	return Kademlia::CKademlia::GetIndexed()->m_totalIndexKeyword;
+}
+
+uint32 CamuleApp::GetKadIndexedNotes() const
+{
+	return Kademlia::CKademlia::GetIndexed()->m_totalIndexNotes;
+}
+
+uint32 CamuleApp::GetKadIndexedLoad() const
+{
+	return Kademlia::CKademlia::GetIndexed()->m_totalIndexLoad;
+}
+
+
+// True IP of machine
+uint32 CamuleApp::GetKadIPAdress() const
+{
+	return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetPrefs()->GetIPAddress());
+}
+
+// Buddy status
+uint8	CamuleApp::GetBuddyStatus() const
+{
+	return clientlist->GetBuddyStatus();
+}
+
+uint32	CamuleApp::GetBuddyIP() const
+{
+	return clientlist->GetBuddy()->GetIP();
+}
+
+uint32	CamuleApp::GetBuddyPort() const
+{
+	return clientlist->GetBuddy()->GetUDPPort();
 }
 
 bool CamuleApp::DoCallback( CUpDownClient *client )

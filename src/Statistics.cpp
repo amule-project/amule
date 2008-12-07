@@ -961,6 +961,16 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 	s_statData[sdKadUsers] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_USERS)->GetInt();
 	s_statData[sdED2KFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_ED2K_FILES)->GetInt();
 	s_statData[sdKadFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_FILES)->GetInt();
+	s_statData[sdKadFirewalledUDP] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_FIREWALLED_UDP)->GetInt();
+	s_statData[sdKadIndexedSources] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_INDEXED_SOURCES)->GetInt();
+	s_statData[sdKadIndexedKeywords] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_INDEXED_KEYWORDS)->GetInt();
+	s_statData[sdKadIndexedNotes] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_INDEXED_NOTES)->GetInt();
+	s_statData[sdKadIndexedLoad] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_INDEXED_LOAD)->GetInt();
+	s_statData[sdKadIPAdress] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_IP_ADRESS)->GetInt();
+	s_statData[sdBuddyStatus] = stats->GetTagByNameSafe(EC_TAG_STATS_BUDDY_STATUS)->GetInt();
+	s_statData[sdBuddyIP] = stats->GetTagByNameSafe(EC_TAG_STATS_BUDDY_IP)->GetInt();
+	s_statData[sdBuddyPort] = stats->GetTagByNameSafe(EC_TAG_STATS_BUDDY_PORT)->GetInt();
+
 	const CECTag * LoggerTag = stats->GetTagByName(EC_TAG_STATS_LOGGER_MESSAGE);
 	if (LoggerTag) {
 		for (size_t i = 0; i < LoggerTag->GetTagCount(); i++) {

@@ -182,6 +182,10 @@ CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dyn
 {
 	ConstructStringTag(name, (const char*)unicode2UTF8(data));
 }
+CECTag::CECTag(ec_tagname_t name, const wxChar* data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
+{
+	ConstructStringTag(name, (const char*)unicode2UTF8(data));
+}
 
 /**
  * Copy constructor
@@ -230,6 +234,10 @@ CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tag
  *
  * @see GetInt()
  */
+CECTag::CECTag(ec_tagname_t name, bool data) : m_tagName(name), m_dynamic(true)
+{
+	InitInt(data);
+}
 CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
 {
 	InitInt(data);

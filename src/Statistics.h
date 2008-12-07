@@ -486,6 +486,15 @@ enum StatDataIndex {
 	sdKadUsers,
 	sdED2KFiles,
 	sdKadFiles,
+	sdKadFirewalledUDP,
+	sdKadIndexedSources,
+	sdKadIndexedKeywords,
+	sdKadIndexedNotes,
+	sdKadIndexedLoad,
+	sdKadIPAdress,
+	sdBuddyStatus,
+	sdBuddyIP,
+	sdBuddyPort,
 
 	sdTotalItems
 };
@@ -524,6 +533,16 @@ private:
 	static	uint32	GetKadUsers() 			{ return s_statData[sdKadUsers]; }
 	static	uint32	GetED2KFiles()			{ return s_statData[sdED2KFiles]; }
 	static	uint32	GetKadFiles() 			{ return s_statData[sdKadFiles]; }
+
+	static	bool	IsFirewalledKadUDP()	{ return s_statData[sdKadFirewalledUDP] != 0; }
+	static	uint32	GetKadIndexedSources()	{ return s_statData[sdKadIndexedSources]; }
+	static	uint32	GetKadIndexedKeywords()	{ return s_statData[sdKadIndexedKeywords]; }
+	static	uint32	GetKadIndexedNotes()	{ return s_statData[sdKadIndexedNotes]; }
+	static	uint32	GetKadIndexedLoad()		{ return s_statData[sdKadIndexedLoad]; }
+	static	uint32	GetKadIPAdress()		{ return s_statData[sdKadIPAdress]; }
+	static	uint8	GetBuddyStatus()		{ return s_statData[sdBuddyStatus]; }
+	static	uint32	GetBuddyIP()			{ return s_statData[sdBuddyIP]; }
+	static	uint32	GetBuddyPort()			{ return s_statData[sdBuddyPort]; }
 
 	static	void	UpdateStats(const CECPacket* stats);
 
