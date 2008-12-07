@@ -23,7 +23,7 @@
 //
 
 #include "Format.h"
-
+#include "../../Types.h"
 
 //! Known type-modifiers. 
 enum Modifiers
@@ -420,8 +420,19 @@ CFormat& CFormat::operator%(void * value)
 	} else if (field.Last() != wxT('p')) {
 		wxFAIL_MSG(wxT("Pointer value passed to non-pointer format string: ") + m_format);
 		SetCurrentField(field);
+	} else if (field != wxT("%p")) {
+		wxFAIL_MSG(wxT("Modifiers are not allowed for pointer format string: ") + m_format);
+		SetCurrentField(field);
 	} else {
-		SetCurrentField(wxString::Format(field, value));
+		// built-in Format for pointer is not optimal:
+		// - Windows: uppercase, no leading 0x
+		// - Linux:   leading zeros missing 
+		// -> format it as hex
+		if (sizeof (void *) == 8) { // 64 bit
+			SetCurrentField(wxString::Format(wxT("0x%016x"), (uint64) value));
+		} else { // 32 bit
+			SetCurrentField(wxString::Format(wxT("0x%08x"), (uint32) value));
+		}
 	}
 
 	return *this;
