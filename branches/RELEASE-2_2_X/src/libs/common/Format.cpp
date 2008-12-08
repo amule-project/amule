@@ -429,9 +429,9 @@ CFormat& CFormat::operator%(void * value)
 		// - Linux:   leading zeros missing 
 		// -> format it as hex
 		if (sizeof (void *) == 8) { // 64 bit
-			SetCurrentField(wxString::Format(wxT("0x%016x"), (unsigned __int64) value));
+			SetCurrentField(wxString::Format(wxT("0x%016x"), (uint64_t) value));
 		} else { // 32 bit
-			SetCurrentField(wxString::Format(wxT("0x%08x"), (unsigned __int32) value));
+			SetCurrentField(wxString::Format(wxT("0x%08x"), (uint32_t) value));
 		}
 	}
 
