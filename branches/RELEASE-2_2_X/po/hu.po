@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-03 19:42+0100\n"
-"PO-Revision-Date: 2008-07-30 10:58+0100\n"
+"PO-Revision-Date: 2008-12-08 19:53+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1166,9 +1166,8 @@ msgid "Exit"
 msgstr "Kilépés"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Megnyitás"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1184,9 +1183,8 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "A számított eD2k hivatkozás másolása a vágólapra"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
-msgstr "Ment"
+msgstr "Mentés másként"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1207,9 +1205,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Válaszd ki a fájlt, hogy kiszámíttasd az eD2k hivatkozását"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "Másolás a vágólapra"
+msgstr "Nem tudom megnyitni a vágólapot"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1261,16 +1258,15 @@ msgstr "Tördelőalgoritmizálás..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "Az aLinkCreator dolgozik"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "MD4 hash számítása..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "Kapcsolódás az eD2k-hoz..."
+msgstr "eD2k hash-ek számítása..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1565,7 +1561,7 @@ msgstr "Török"
 
 #: src/Preferences.cpp:663
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrán"
 
 #: src/Preferences.cpp:1626 src/Preferences.cpp:1641 src/Preferences.cpp:1648
 msgid "Unable to determine selected browser!"
@@ -2001,16 +1997,15 @@ msgstr "Biztonság"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Felület"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Szűrő:"
+msgstr "Szűrők"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2021,9 +2016,8 @@ msgid "Online Signature"
 msgstr "Online aláírás"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Haladó beállítások"
+msgstr "Haladó"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2206,14 +2200,12 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Kiszolgáló kapcsolat frissítési gyakorisága: Tiltva"
 
 #: src/PrefsUnifiedDlg.cpp:1104
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "UDP port a bővített kiszolgáló kéréseknek (TCP+3): 4665"
+msgstr "UDP port a bővített kiszolgáló kéréseknek (TCP+3): "
 
 #: src/PrefsUnifiedDlg.cpp:1108
-#, fuzzy
 msgid "disabled"
-msgstr "letilt"
+msgstr "letiltva"
 
 #: src/PrefsUnifiedDlg.cpp:1128
 #, c-format
@@ -3162,7 +3154,7 @@ msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"Állítsd be a kedvenc videó-lejátszódat a beálíításoknál,\n"
+"Állítsd be a kedvenc videó-lejátszódat a beállításoknál,\n"
 " hogy ezt a figyemeztetést ne kapd minden előnézetnél (alapértelmezett az "
 "mplayer)."
 
@@ -3294,7 +3286,7 @@ msgstr "(%i) befejezett fájlrészt találtam a(z) %s fájlban"
 #: src/PartFile.cpp:1218
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "%s újra algoritmizálása befejeződött"
+msgstr "%s újrahash-elése befejeződött"
 
 #: src/PartFile.cpp:2239
 #, c-format
@@ -6386,9 +6378,9 @@ msgstr ""
 "Kliens létrehozása...\n"
 
 #: src/ExternalConnector.cpp:400
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "Kapcsolódás sikertelen. A megadott host-ra nem lehet kapcsolódni\n"
+msgstr "Kapcsolódás sikertelen. Nem lehet kapcsolódni a %s:%d-hez.\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
