@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-03 19:42+0100\n"
-"PO-Revision-Date: 2008-12-04 00:57+0200\n"
+"PO-Revision-Date: 2008-12-08 20:06+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
@@ -2153,9 +2153,8 @@ msgid "Online Signature"
 msgstr "Online-Signeeraus"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Laajennetut asetukset"
+msgstr "Lisäasetukset"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
