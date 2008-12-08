@@ -3331,7 +3331,7 @@ msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"Állítsd be a kedvenc videó-lejátszódat a beálíításoknál,\n"
+"Állítsd be a kedvenc videó-lejátszódat a beállításoknál,\n"
 " hogy ezt a figyemeztetést ne kapd minden előnézetnél (alapértelmezett az "
 "mplayer)."
 
