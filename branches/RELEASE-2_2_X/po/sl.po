@@ -14,7 +14,7 @@ msgstr ""
 "Language-Team: Slovenščina <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -178,18 +178,26 @@ msgid "Requested: %s\n"
 msgstr "Zahtevano: %s\n"
 
 #: src/BaseClient.cpp:1964
-#, c-format
+#, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
+msgstr[0] ""
+"Statistika datotek v tej seji: Sprejetih %d od %d zahtev, %s prenesenih\n"
+"Statistika datotek v tej seji: Sprejetih %d od %d zahtev, %s prenesenih\n"
+msgstr[1] ""
 "Statistika datotek v tej seji: Sprejetih %d od %d zahtev, %s prenesenih\n"
 "Statistika datotek v tej seji: Sprejetih %d od %d zahtev, %s prenesenih\n"
 
 #: src/BaseClient.cpp:1967
-#, c-format
+#, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
+msgstr[0] ""
+"Statistika datotek vseh sejah: Sprejetih %d od %d zahtev, %s prenesenih\n"
+"Statistika datotek vseh sejah: Sprejetih %d od %d zahtev, %s prenesenih\n"
+msgstr[1] ""
 "Statistika datotek vseh sejah: Sprejetih %d od %d zahtev, %s prenesenih\n"
 "Statistika datotek vseh sejah: Sprejetih %d od %d zahtev, %s prenesenih\n"
 
@@ -444,7 +452,8 @@ msgstr "Kopiraj povezavo eD2k v odložišče (&Ime gostitelja)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Kopiraj povezavo eD2k v odložišče (Ime gostitelja) (Z &Crypt možnostmi)"
+msgstr ""
+"Kopiraj povezavo eD2k v odložišče (Ime gostitelja) (Z &Crypt možnostmi)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&AICH info)"
@@ -459,7 +468,8 @@ msgstr "Kopiraj odziv v odložišče"
 msgid ""
 "Feedback from: %s (%s)\n"
 "\n"
-msgstr "Odgovor od: %s (%s)\n"
+msgstr ""
+"Odgovor od: %s (%s)\n"
 "\n"
 
 #: src/SharedFilesCtrl.cpp:306
@@ -508,19 +518,25 @@ msgstr "Kademlia: iskalni niz je prekratek"
 
 #: src/kademlia/routing/RoutingZone.cpp:208
 #: src/kademlia/routing/RoutingZone.cpp:278
-#, c-format
+#, fuzzy, c-format
 msgid "Read %u Kad contact"
-msgstr "Prebranih %u stikov Kad"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "Prebranih %u stikov Kad"
+msgstr[1] "Prebranih %u stikov Kad"
 
 #: src/kademlia/routing/RoutingZone.cpp:297
-#, c-format
+#, fuzzy, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
-msgstr "Samo %d Kad stiki so na voljo, nodes.dat ni zapisan"
+msgid_plural "Only %d Kad contacts available, nodes.dat not written"
+msgstr[0] "Samo %d Kad stiki so na voljo, nodes.dat ni zapisan"
+msgstr[1] "Samo %d Kad stiki so na voljo, nodes.dat ni zapisan"
 
 #: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
 msgid "Wrote %d Kad contact"
-msgstr ""
+msgid_plural "Wrote %d Kad contacts"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
@@ -2133,14 +2149,18 @@ msgstr ""
 "Po en URL v vsako vrstico."
 
 #: src/PrefsUnifiedDlg.cpp:1021
-#, c-format
+#, fuzzy, c-format
 msgid "Update delay: %d second"
-msgstr "Zakasnitev osveževanja: %d sek."
+msgid_plural "Update delay: %d seconds"
+msgstr[0] "Zakasnitev osveževanja: %d sek."
+msgstr[1] "Zakasnitev osveževanja: %d sek."
 
 #: src/PrefsUnifiedDlg.cpp:1028
-#, c-format
+#, fuzzy, c-format
 msgid "Time for average graph: %d minute"
-msgstr "Čas za graf povprečja: %d min."
+msgid_plural "Time for average graph: %d minutes"
+msgstr[0] "Čas za graf povprečja: %d min."
+msgstr[1] "Čas za graf povprečja: %d min."
 
 #: src/PrefsUnifiedDlg.cpp:1034
 #, c-format
@@ -2148,24 +2168,32 @@ msgid "Connections Graph Scale: %d"
 msgstr "Merilo za graf povezav: %d"
 
 #: src/PrefsUnifiedDlg.cpp:1040
-#, c-format
+#, fuzzy, c-format
 msgid "Update delay : %d second"
-msgstr "Zakasnitev osveževanja: %d sek."
+msgid_plural "Update delay : %d seconds"
+msgstr[0] "Zakasnitev osveževanja: %d sek."
+msgstr[1] "Zakasnitev osveževanja: %d sek."
 
 #: src/PrefsUnifiedDlg.cpp:1046
-#, c-format
+#, fuzzy, c-format
 msgid "File Buffer Size: %d byte"
-msgstr "Velikost medpomnilnika: %d bajtov"
+msgid_plural "File Buffer Size: %d bytes"
+msgstr[0] "Velikost medpomnilnika: %d bajtov"
+msgstr[1] "Velikost medpomnilnika: %d bajtov"
 
 #: src/PrefsUnifiedDlg.cpp:1052
-#, c-format
+#, fuzzy, c-format
 msgid "Upload Queue Size: %d client"
-msgstr "Velikost čakalne vrste: %d odjemalcev"
+msgid_plural "Upload Queue Size: %d clients"
+msgstr[0] "Velikost čakalne vrste: %d odjemalcev"
+msgstr[1] "Velikost čakalne vrste: %d odjemalcev"
 
 #: src/PrefsUnifiedDlg.cpp:1059
-#, c-format
+#, fuzzy, c-format
 msgid "Server connection refresh interval: %d minute"
-msgstr "Interval osvežitev povezave s strežnikom: %d min."
+msgid_plural "Server connection refresh interval: %d minutes"
+msgstr[0] "Interval osvežitev povezave s strežnikom: %d min."
+msgstr[1] "Interval osvežitev povezave s strežnikom: %d min."
 
 #: src/PrefsUnifiedDlg.cpp:1061
 msgid "Server connection refresh interval: Disabled"
@@ -3201,9 +3229,11 @@ msgid "Failed to save part.met.seeds file for %s"
 msgstr "Ni bilo mogoče shraniti datoteke part.met.seeds za %s"
 
 #: src/PartFile.cpp:1024
-#, c-format
+#, fuzzy, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
-msgstr "Shranjenih %i virov za delno datoteko: %s (%s)"
+msgid_plural "Saved %i source seeds for partfile: %s (%s)"
+msgstr[0] "Shranjenih %i virov za delno datoteko: %s (%s)"
+msgstr[1] "Shranjenih %i virov za delno datoteko: %s (%s)"
 
 #: src/PartFile.cpp:1053
 #, c-format
@@ -3221,17 +3251,21 @@ msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Napaka pri branju delne datoteke 'seeds' (%s - %s): %s"
 
 #: src/PartFile.cpp:1136 src/PartFile.cpp:1164
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
+msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr ""
-"Najden pokvarjen del (%d) v %d delni datoteki %s - FileResultHash |%s| FileHash |"
-"%s|"
-"Najden pokvarjen del (%d) v %d delni datoteki %s - FileResultHash |%s| FileHash "
-"|%s|"
+msgstr[0] ""
+"Najden pokvarjen del (%d) v %d delni datoteki %s - FileResultHash |%s| "
+"FileHash |%s|Najden pokvarjen del (%d) v %d delni datoteki %s - "
+"FileResultHash |%s| FileHash |%s|"
+msgstr[1] ""
+"Najden pokvarjen del (%d) v %d delni datoteki %s - FileResultHash |%s| "
+"FileHash |%s|Najden pokvarjen del (%d) v %d delni datoteki %s - "
+"FileResultHash |%s| FileHash |%s|"
 
 #: src/PartFile.cpp:1181
 #, c-format
@@ -3261,7 +3295,8 @@ msgstr "Brisanje datoteke: %s"
 #: src/PartFile.cpp:2383
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "OPOZORILO: Ni mogoče hashirati prenesenega dela - hashset nepopoln za '%s'"
+msgstr ""
+"OPOZORILO: Ni mogoče hashirati prenesenega dela - hashset nepopoln za '%s'"
 
 #: src/PartFile.cpp:2388
 #, c-format
@@ -3325,14 +3360,18 @@ msgid "Error while saving known.met file: %s"
 msgstr "Napaka med shranjevanjem datoteke known.met: %s"
 
 #: src/SharedFileList.cpp:352
-#, c-format
+#, fuzzy, c-format
 msgid "Found %i known shared file"
-msgstr "Najdenih %i znanih deljenih datotek"
+msgid_plural "Found %i known shared files"
+msgstr[0] "Najdenih %i znanih deljenih datotek"
+msgstr[1] "Najdenih %i znanih deljenih datotek"
 
 #: src/SharedFileList.cpp:358
-#, c-format
+#, fuzzy, c-format
 msgid "Found %i known shared file, %i unknown"
-msgstr "Najdenih %i znanih deljenih datotek, %i neznanih"
+msgid_plural "Found %i known shared files, %i unknown"
+msgstr[0] "Najdenih %i znanih deljenih datotek, %i neznanih"
+msgstr[1] "Najdenih %i znanih deljenih datotek, %i neznanih"
 
 #: src/SharedFileList.cpp:367
 #, c-format
@@ -3356,9 +3395,11 @@ msgid "No comments"
 msgstr "Ni komentarjev"
 
 #: src/CommentDialogLst.cpp:104
-#, c-format
+#, fuzzy, c-format
 msgid "%u comment"
-msgstr "%u komentar"
+msgid_plural "%u comments"
+msgstr[0] "%u komentar"
+msgstr[1] "%u komentar"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -3413,9 +3454,12 @@ msgid "%s (%s:%i) appears to be full."
 msgstr "%s (%s:%i) je poln."
 
 #: src/ServerConnect.cpp:381
-#, c-format
+#, fuzzy, c-format
 msgid "Automatic connection to server will retry in %d second"
-msgstr ""
+msgid_plural "Automatic connection to server will retry in %d seconds"
+msgstr[0] ""
+"Samodejen poskus povezovanja s strežnikom se bo izvedel čez %d sekund"
+msgstr[1] ""
 "Samodejen poskus povezovanja s strežnikom se bo izvedel čez %d sekund"
 
 #: src/ServerConnect.cpp:401
@@ -3447,9 +3491,11 @@ msgid "No part files found"
 msgstr "Ni mogoče najti delnih datotek"
 
 #: src/DownloadQueue.cpp:171
-#, c-format
+#, fuzzy, c-format
 msgid "Found %u part file"
-msgstr "Najdenih %u delnih datotek"
+msgid_plural "Found %u part files"
+msgstr[0] "Najdenih %u delnih datotek"
+msgstr[1] "Najdenih %u delnih datotek"
 
 #: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1371
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -3506,7 +3552,9 @@ msgstr "Neveljaven format IP. Uporabite xxx.xxx.xxx.xxx:xxxx\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "Ta ukaz potrebuje argument. Veljavni argumenti: 'all', ime datoteke ali število.\n"
+msgstr ""
+"Ta ukaz potrebuje argument. Veljavni argumenti: 'all', ime datoteke ali "
+"število.\n"
 
 #: src/TextClient.cpp:346
 msgid "Processing by hash: "
@@ -4023,9 +4071,11 @@ msgid "Unknown server info received! - too short"
 msgstr "Prejete neznane informacije strežnika! - prekratke"
 
 #: src/ServerSocket.cpp:539
-#, c-format
+#, fuzzy, c-format
 msgid "Received %d new server"
-msgstr "Prejetih %d novih strežnikov"
+msgid_plural "Received %d new servers"
+msgstr[0] "Prejetih %d novih strežnikov"
+msgstr[1] "Prejetih %d novih strežnikov"
 
 #: src/ServerSocket.cpp:542
 msgid "Saving of server-list completed."
@@ -4075,9 +4125,11 @@ msgstr ""
 "CIP2Country::CIP2Country(): Ni bilo mogoče naložiti podatkov o državah iz "
 
 #: src/IP2Country.cpp:104
-#, c-format
+#, fuzzy, c-format
 msgid "Loaded %d flag bitmap."
-msgstr "Naloženih %d slik zastav."
+msgid_plural "Loaded %d flag bitmaps."
+msgstr[0] "Naloženih %d slik zastav."
+msgstr[1] "Naloženih %d slik zastav."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
@@ -4282,8 +4334,11 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Disk: %s)"
 
 #: src/OtherFunctions.cpp:112
+#, fuzzy
 msgid "byte"
-msgstr "bajtov"
+msgid_plural "bytes"
+msgstr[0] "bajtov"
+msgstr[1] "bajtov"
 
 #: src/OtherFunctions.cpp:114
 msgid "kB"
@@ -4319,8 +4374,11 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:147
+#, fuzzy
 msgid "byte/sec"
-msgstr "bajtov/sek."
+msgid_plural "bytes/sec"
+msgstr[0] "bajtov/sek."
+msgstr[1] "bajtov/sek."
 
 #: src/OtherFunctions.cpp:151
 msgid "MB/s"
@@ -4411,14 +4469,18 @@ msgstr ""
 "odpreti."
 
 #: src/IPFilter.cpp:331
-#, c-format
+#, fuzzy, c-format
 msgid "Loaded %u IP-range from '%s'."
-msgstr "Naloženih %u nizov IP iz '%s'."
+msgid_plural "Loaded %u IP-ranges from '%s'."
+msgstr[0] "Naloženih %u nizov IP iz '%s'."
+msgstr[1] "Naloženih %u nizov IP iz '%s'."
 
 #: src/IPFilter.cpp:333
-#, c-format
+#, fuzzy, c-format
 msgid "%u malformed line was discarded."
-msgstr "%u nepravilnih vrstic izpuščenih."
+msgid_plural "%u malformed lines were discarded."
+msgstr[0] "%u nepravilnih vrstic izpuščenih."
+msgstr[1] "%u nepravilnih vrstic izpuščenih."
 
 #: src/StatisticsDlg.cpp:189
 #, c-format
@@ -5407,8 +5469,7 @@ msgstr "Zmožnosti povezave"
 
 #: src/muuli_wdr.cpp:2250
 msgid "Note: These values are only used for statistics."
-msgstr ""
-"Opomba: Te vrednosti so uporabljene le za statistiko."
+msgstr "Opomba: Te vrednosti so uporabljene le za statistiko."
 
 #: src/muuli_wdr.cpp:2273
 msgid "!!! WARNING !!!"
@@ -5894,7 +5955,9 @@ msgstr ""
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr "Priporočeno je, da omogočite to možnost. Če SUI ni omogočen, ne boste dobivali kreditov."
+msgstr ""
+"Priporočeno je, da omogočite to možnost. Če SUI ni omogočen, ne boste "
+"dobivali kreditov."
 
 #: src/muuli_wdr.cpp:3224
 msgid "Enable Online-Signature"
@@ -6278,8 +6341,7 @@ msgstr ""
 #: src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr ""
-"Povezava ni uspela. Ni se bilo mogoče povezati z %s:%d\n"
+msgstr "Povezava ni uspela. Ni se bilo mogoče povezati z %s:%d\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
@@ -6350,14 +6412,18 @@ msgid "Print program version."
 msgstr "Izpiši različico programa."
 
 #: src/ClientCreditsList.cpp:168
-#, c-format
+#, fuzzy, c-format
 msgid "Creditfile loaded, %u client is known"
-msgstr "Datoteka s krediti naložena, %u znanih odjemalcev"
+msgid_plural "Creditfile loaded, %u clients are known"
+msgstr[0] "Datoteka s krediti naložena, %u znanih odjemalcev"
+msgstr[1] "Datoteka s krediti naložena, %u znanih odjemalcev"
 
 #: src/ClientCreditsList.cpp:171
-#, c-format
+#, fuzzy, c-format
 msgid " - Credits expired for %u client!"
-msgstr " - Krediti potekli za %u odjemalcev!"
+msgid_plural " - Credits expired for %u clients!"
+msgstr[0] " - Krediti potekli za %u odjemalcev!"
+msgstr[1] " - Krediti potekli za %u odjemalcev!"
 
 #: src/ClientCreditsList.cpp:315
 msgid "No 'cryptkey.dat' file found, creating."
@@ -6718,14 +6784,18 @@ msgstr ""
 "('versiontag'): 0x%x, velikost %i"
 
 #: src/ServerList.cpp:168
-#, c-format
+#, fuzzy, c-format
 msgid "%i server in server.met found"
-msgstr "%i najdenih strežnikov v server.met"
+msgid_plural "%i servers in server.met found"
+msgstr[0] "%i najdenih strežnikov v server.met"
+msgstr[1] "%i najdenih strežnikov v server.met"
 
 #: src/ServerList.cpp:170
-#, c-format
+#, fuzzy, c-format
 msgid "%d server added"
-msgstr "%d strežnikov dodanih"
+msgid_plural "%d servers added"
+msgstr[0] "%d strežnikov dodanih"
+msgstr[1] "%d strežnikov dodanih"
 
 #: src/ServerList.cpp:191
 #, c-format
