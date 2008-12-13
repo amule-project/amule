@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-06 18:40+0100\n"
+"POT-Creation-Date: 2008-12-13 20:03+0100\n"
 "PO-Revision-Date: 2008-08-06 16:07+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -149,7 +149,7 @@ msgstr ""
 #: src/BaseClient.cpp:1720 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:274 src/Statistics.cpp:703 src/Statistics.cpp:884
+#: src/ExternalConn.cpp:275 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2610 src/PartFile.cpp:2616 src/KnownFile.cpp:884
@@ -490,7 +490,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "Для создания ссылки на источник требуется HighID"
 
 #: src/SharedFilesCtrl.cpp:321 src/PrefsUnifiedDlg.cpp:657 src/KadDlg.cpp:167
-#: src/KadDlg.cpp:173 src/amule.cpp:668
+#: src/KadDlg.cpp:173 src/amule.cpp:669
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
@@ -1119,18 +1119,18 @@ msgstr "%02uмин %02uс"
 msgid "%02us"
 msgstr "%02uс"
 
-#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:186
+#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:183
 #: src/ClientDetailDialog.cpp:104
 msgid "HighID"
 msgstr "HighID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:173
-#: src/ServerWnd.cpp:183 src/ClientListCtrl.cpp:902
+#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:170
+#: src/ServerWnd.cpp:180 src/ClientListCtrl.cpp:902
 #: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "LowID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:191
+#: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:188
 #: src/MuleTrayIcon.cpp:400
 msgid "Not Connected"
 msgstr "Не подключен"
@@ -1396,7 +1396,7 @@ msgid "Auto [Hi]"
 msgstr "Авто [Выс]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:556 src/ClientListCtrl.cpp:670
-#: src/amule.cpp:797
+#: src/amule.cpp:798
 msgid "Connecting"
 msgstr "Идёт подключение"
 
@@ -1724,8 +1724,8 @@ msgstr ""
 "отключиться от него. Сервер НЕ удален."
 
 #: src/ServerListCtrl.cpp:149 src/CatDialog.cpp:141 src/CatDialog.cpp:151
-#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:708
-#: src/amule.cpp:1325
+#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:709
+#: src/amule.cpp:1326
 msgid "Info"
 msgstr "Сведения"
 
@@ -1760,7 +1760,7 @@ msgstr "Невозможно открыть %s"
 msgid "Servers (%i)"
 msgstr "Серверов (%i)"
 
-#: src/ServerListCtrl.cpp:424 src/ServerWnd.cpp:182 src/ServerSocket.cpp:257
+#: src/ServerListCtrl.cpp:424 src/ServerWnd.cpp:179 src/ServerSocket.cpp:257
 #: src/ServerSocket.cpp:272
 msgid "Server"
 msgstr "Сервер"
@@ -2360,44 +2360,44 @@ msgstr "Команда GUI:"
 msgid "The following variables will be replaced:"
 msgstr "Следующие переменные будут заменены:"
 
-#: src/ExternalConn.cpp:114
+#: src/ExternalConn.cpp:115
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Попытка неавторизированного доступа. Соединение разорвано."
 
-#: src/ExternalConn.cpp:129
+#: src/ExternalConn.cpp:130
 msgid "External connection closed."
 msgstr "Внешнее соединение закрыто."
 
-#: src/ExternalConn.cpp:165
+#: src/ExternalConn.cpp:166
 msgid "External connections disabled due to empty password!"
 msgstr "Внешние соединения выключены из-за отсутствия пароля."
 
-#: src/ExternalConn.cpp:190
+#: src/ExternalConn.cpp:191
 msgid "External connections disabled in config file"
 msgstr "Внешние соединения выключены в конфигурационном файле"
 
-#: src/ExternalConn.cpp:241
+#: src/ExternalConn.cpp:242
 msgid "New external connection accepted"
 msgstr "Принято новое внешнее соединение"
 
-#: src/ExternalConn.cpp:244
+#: src/ExternalConn.cpp:245
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ОШИБКА: невозможно принять новое внешнее соединение"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:264
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Отказано во внешнем соединении из-за пустого пароля"
 
-#: src/ExternalConn.cpp:273
+#: src/ExternalConn.cpp:274
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Соединение с клиентом: %s %s"
 
-#: src/ExternalConn.cpp:275
+#: src/ExternalConn.cpp:276
 msgid "Unknown version"
 msgstr "Неизвестная версия"
 
-#: src/ExternalConn.cpp:286
+#: src/ExternalConn.cpp:287
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2405,7 +2405,7 @@ msgstr ""
 "Неверный идентификатор версии ВС. Возможна бинарная несовместимость. "
 "Используйте ядро и компонент удаленного доступа одинаковой версии."
 
-#: src/ExternalConn.cpp:291
+#: src/ExternalConn.cpp:292
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2413,141 +2413,141 @@ msgstr ""
 "Вы не можете подсоединиться к релизной версии с произвольной SVN версии! "
 "Возможный сбой предотвращен"
 
-#: src/ExternalConn.cpp:312
+#: src/ExternalConn.cpp:313
 msgid "Authentication failed."
 msgstr "Ошибка идентификации."
 
-#: src/ExternalConn.cpp:316
+#: src/ExternalConn.cpp:317
 msgid "Invalid protocol version."
 msgstr "Недопустимая версия протокола."
 
-#: src/ExternalConn.cpp:320
+#: src/ExternalConn.cpp:321
 msgid "Missing protocol version tag."
 msgstr "Тег версии протокола отсутствует."
 
-#: src/ExternalConn.cpp:324
+#: src/ExternalConn.cpp:325
 msgid "Invalid request, you should first authenticate."
 msgstr "Неверный запрос, сначала пройдите идентификацию."
 
-#: src/ExternalConn.cpp:330
+#: src/ExternalConn.cpp:331
 msgid "Access granted."
 msgstr "Доступ получен."
 
-#: src/ExternalConn.cpp:607
+#: src/ExternalConn.cpp:627
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Удаленная команда PartFile не удалась: хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:609
+#: src/ExternalConn.cpp:629
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:672 src/ExternalConn.cpp:756
+#: src/ExternalConn.cpp:692 src/ExternalConn.cpp:776
 msgid "OOPS! OpCode processing error!"
 msgstr "Ошибка при выполнении OpCode."
 
-#: src/ExternalConn.cpp:702
+#: src/ExternalConn.cpp:722
 msgid "Server not added"
 msgstr "Сервер не добавлен"
 
-#: src/ExternalConn.cpp:720
+#: src/ExternalConn.cpp:740
 #, c-format
 msgid "server not found: %s"
 msgstr "сервер не найден: %s"
 
-#: src/ExternalConn.cpp:736
+#: src/ExternalConn.cpp:756
 msgid "need to define server to be removed"
 msgstr "необходимо выделить сервер для удаления"
 
-#: src/ExternalConn.cpp:750
+#: src/ExternalConn.cpp:770
 msgid "eD2k is disabled in preferences."
 msgstr "Сеть eD2k отключена в настройках"
 
-#: src/ExternalConn.cpp:846
+#: src/ExternalConn.cpp:866
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Поиск запущен. Ждите результатов."
 
 # Explained by Jacobo221.
-#: src/ExternalConn.cpp:851
+#: src/ExternalConn.cpp:871
 msgid "WebSearch from remote interface makes no sense."
 msgstr "При удаленном использовании aMule WWW поиск бесполезен."
 
-#: src/ExternalConn.cpp:902
+#: src/ExternalConn.cpp:922
 msgid "Kad is disabled in preferences."
 msgstr "Kad выключена в настройках."
 
-#: src/ExternalConn.cpp:1063
+#: src/ExternalConn.cpp:1083
 msgid "No points for graph."
 msgstr "В графике нет точек."
 
-#: src/ExternalConn.cpp:1072
+#: src/ExternalConn.cpp:1092
 msgid "Your client is not configured for this detail level."
 msgstr "Ваш клиент не настроен на этот уровень детализации."
 
-#: src/ExternalConn.cpp:1100
+#: src/ExternalConn.cpp:1120
 msgid "External Connection: shutdown requested"
 msgstr "Внешнее соединение: запрошено выключение"
 
-#: src/ExternalConn.cpp:1112
+#: src/ExternalConn.cpp:1132
 msgid "Already shutting down."
 msgstr "Уже завершаю работу."
 
-#: src/ExternalConn.cpp:1120
+#: src/ExternalConn.cpp:1140
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: добавляю ссылку '%s'."
 
-#: src/ExternalConn.cpp:1126
+#: src/ExternalConn.cpp:1146
 msgid "Invalid link or already on list."
 msgstr "Ссылка неверна или уже в списке."
 
-#: src/ExternalConn.cpp:1212
+#: src/ExternalConn.cpp:1232
 msgid "File not found."
 msgstr "Файл не найден."
 
-#: src/ExternalConn.cpp:1217
+#: src/ExternalConn.cpp:1237
 msgid "Invalid file name."
 msgstr "Неверное имя файла."
 
-#: src/ExternalConn.cpp:1225
+#: src/ExternalConn.cpp:1245
 msgid "Unable to rename file."
 msgstr "Невозможно переименовать файл."
 
-#: src/ExternalConn.cpp:1449
+#: src/ExternalConn.cpp:1469
 msgid "Already connected to eD2k."
 msgstr "Уже подсоединен к сети eD2k."
 
-#: src/ExternalConn.cpp:1452
+#: src/ExternalConn.cpp:1472
 msgid "Connecting to eD2k..."
 msgstr "Подсоединение к сети eD2k..."
 
-#: src/ExternalConn.cpp:1460
+#: src/ExternalConn.cpp:1480
 msgid "Already connected to Kad."
 msgstr "Уже подключен к Kad."
 
-#: src/ExternalConn.cpp:1463
+#: src/ExternalConn.cpp:1483
 msgid "Connecting to Kad..."
 msgstr "Подключаюсь к Kad..."
 
-#: src/ExternalConn.cpp:1468
+#: src/ExternalConn.cpp:1488
 msgid "All networks are disabled."
 msgstr "Все сети выключены."
 
-#: src/ExternalConn.cpp:1476
+#: src/ExternalConn.cpp:1496
 msgid "Disconnected from eD2k."
 msgstr "Отсоединен от сети eD2k."
 
-#: src/ExternalConn.cpp:1480
+#: src/ExternalConn.cpp:1500
 msgid "Disconnected from Kad."
 msgstr "Отключен от Kad."
 
-#: src/ExternalConn.cpp:1488
+#: src/ExternalConn.cpp:1508
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Внешнее соединение: получен неверный код операции: %#x"
 
-#: src/ExternalConn.cpp:1491
+#: src/ExternalConn.cpp:1511
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Неверный opcode (Возможно, не та версия протокола)"
 
@@ -2566,128 +2566,128 @@ msgstr "Запрошен набор хешей для неизвестного �
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
 msgstr "Команда `%s' с pid `%d' завершилась с кодом статуса `%d'."
 
-#: src/ServerWnd.cpp:106
+#: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
 msgstr "Сервер не был добавлен: не указан адрес сервера."
 
-#: src/ServerWnd.cpp:111
+#: src/ServerWnd.cpp:108
 msgid "Server not added: Invalid server-port specified."
 msgstr "Сервер не был добавлен: указан неверный порт сервера."
 
-#: src/ServerWnd.cpp:164
+#: src/ServerWnd.cpp:161
 msgid "eD2k Status:"
 msgstr "Статус eD2k:"
 
-#: src/ServerWnd.cpp:167 src/ServerWnd.cpp:214 src/TextClient.cpp:707
+#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1027 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "Подключен"
 
-#: src/ServerWnd.cpp:171 src/muuli_wdr.cpp:2676
+#: src/ServerWnd.cpp:168 src/muuli_wdr.cpp:2676
 msgid "IP:Port"
 msgstr "IP:Порт"
 
-#: src/ServerWnd.cpp:175
+#: src/ServerWnd.cpp:172
 msgid "ID"
 msgstr "ID"
 
-#: src/ServerWnd.cpp:207
+#: src/ServerWnd.cpp:204
 msgid "Kademlia Status:"
 msgstr "Статус Kademlia:"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:207
 msgid "Running"
 msgstr "Выполняется"
 
-#: src/ServerWnd.cpp:213
+#: src/ServerWnd.cpp:210
 msgid "Status:"
 msgstr "Статус:"
 
-#: src/ServerWnd.cpp:214 src/ClientDetailDialog.cpp:145
+#: src/ServerWnd.cpp:211 src/ClientDetailDialog.cpp:145
 msgid "Disconnected"
 msgstr "Отключен"
 
-#: src/ServerWnd.cpp:216
+#: src/ServerWnd.cpp:213
 msgid "Connection State:"
 msgstr "Состояние соединения:"
 
-#: src/ServerWnd.cpp:218
+#: src/ServerWnd.cpp:215
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
 
-#: src/ServerWnd.cpp:218 src/ServerWnd.cpp:223 src/muuli_wdr.cpp:2449
+#: src/ServerWnd.cpp:215 src/ServerWnd.cpp:219 src/muuli_wdr.cpp:2449
 #: src/muuli_wdr.cpp:2552
 msgid "OK"
 msgstr "ОК"
 
-#: src/ServerWnd.cpp:220
+#: src/ServerWnd.cpp:216
 #, fuzzy
 msgid "UDP Connection State:"
 msgstr "Состояние соединения:"
 
-#: src/ServerWnd.cpp:223
+#: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
-#: src/ServerWnd.cpp:226
+#: src/ServerWnd.cpp:222
 msgid "Firewalled state: "
 msgstr "Состояние брандмауэра:"
 
-#: src/ServerWnd.cpp:232
+#: src/ServerWnd.cpp:228
 msgid "No buddy required - TCP port open"
 msgstr ""
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:230
 msgid "No buddy required - UDP port open"
 msgstr ""
 
-#: src/ServerWnd.cpp:236
+#: src/ServerWnd.cpp:232
 msgid "No buddy"
 msgstr "Нет друзей"
 
-#: src/ServerWnd.cpp:240
+#: src/ServerWnd.cpp:236
 #, fuzzy
 msgid "Connecting to buddy"
 msgstr "Соединен с другом"
 
-#: src/ServerWnd.cpp:243
+#: src/ServerWnd.cpp:239
 #, fuzzy, c-format
 msgid "Connected to buddy at %s"
 msgstr "Соединен с другом"
 
-#: src/ServerWnd.cpp:249 src/muuli_wdr.cpp:1399
+#: src/ServerWnd.cpp:245 src/muuli_wdr.cpp:1399
 msgid "IP address:"
 msgstr "IP адрес:"
 
-#: src/ServerWnd.cpp:253
+#: src/ServerWnd.cpp:249
 #, fuzzy
 msgid "Indexed sources:"
 msgstr "Найдено источников:"
 
-#: src/ServerWnd.cpp:255
+#: src/ServerWnd.cpp:251
 msgid "Indexed keywords:"
 msgstr ""
 
-#: src/ServerWnd.cpp:257
+#: src/ServerWnd.cpp:253
 #, fuzzy
 msgid "Indexed notes:"
 msgstr "Индексный файл не найден:"
 
-#: src/ServerWnd.cpp:259
+#: src/ServerWnd.cpp:255
 msgid "Indexed load:"
 msgstr ""
 
-#: src/ServerWnd.cpp:271
+#: src/ServerWnd.cpp:258
 msgid "Average Users:"
 msgstr "Пользователей в среднем:"
 
-#: src/ServerWnd.cpp:274
+#: src/ServerWnd.cpp:261
 msgid "Average Files:"
 msgstr "Файлов в среднем:"
 
-#: src/ServerWnd.cpp:281 src/TextClient.cpp:718
+#: src/ServerWnd.cpp:268 src/TextClient.cpp:718
 msgid "Not running"
 msgstr "Не запущен"
 
@@ -3149,8 +3149,8 @@ msgid "Connection failed "
 msgstr "Попытка подключиться не удалась "
 
 #: src/amule-remote-gui.cpp:306 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:848
-#: src/amule.cpp:969 src/amule.cpp:1336
+#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:849
+#: src/amule.cpp:970 src/amule.cpp:1337
 msgid "ERROR"
 msgstr "ОШИБКА"
 
@@ -3166,7 +3166,7 @@ msgstr ""
 msgid "Ready"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:503 src/amule.cpp:1074
+#: src/amule-remote-gui.cpp:503 src/amule.cpp:1075
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -3912,11 +3912,11 @@ msgstr "eD2k"
 msgid "Connected to %s %s %s"
 msgstr "Подключен к %s %s %s"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2071
+#: src/TextClient.cpp:697 src/amule.cpp:2129
 msgid "with LowID"
 msgstr "LowID"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2071
+#: src/TextClient.cpp:697 src/amule.cpp:2129
 msgid "with HighID"
 msgstr "HighID"
 
@@ -7161,49 +7161,49 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr "Не удалось выполнить команду `%s' при событии `%s'."
 
-#: src/amule.cpp:220
+#: src/amule.cpp:221
 #, fuzzy
 msgid "Now, exiting main app..."
 msgstr ""
 "\n"
 "Ok, выход из %s...\n"
 
-#: src/amule.cpp:239
+#: src/amule.cpp:240
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr ""
 
-#: src/amule.cpp:242
+#: src/amule.cpp:243
 #, fuzzy
 msgid "Killed!"
 msgstr "Неудачно"
 
-#: src/amule.cpp:246
+#: src/amule.cpp:247
 msgid "aMule OnExit: Terminating core."
 msgstr ""
 
-#: src/amule.cpp:316
+#: src/amule.cpp:317
 #, fuzzy
 msgid "aMule shutdown completed."
 msgstr "Загрузка завершена"
 
-#: src/amule.cpp:320
+#: src/amule.cpp:321
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:636
+#: src/amule.cpp:637
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "Подтверждение выхода"
 
-#: src/amule.cpp:639
+#: src/amule.cpp:640
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "Принято новое внешнее соединение"
 
-#: src/amule.cpp:706
+#: src/amule.cpp:707
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -7211,7 +7211,7 @@ msgstr ""
 "В связи со сменой версии, значение вашей локали было изменено на значение по "
 "умолчанию. Извините."
 
-#: src/amule.cpp:780
+#: src/amule.cpp:781
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -7219,21 +7219,21 @@ msgstr ""
 "Ваш список серверов пуст.\n"
 "Скачать новый список?"
 
-#: src/amule.cpp:781
+#: src/amule.cpp:782
 msgid "Server list download"
 msgstr "Загрузить список серверов"
 
-#: src/amule.cpp:813
+#: src/amule.cpp:814
 #, c-format
 msgid "Using amuleweb in '%s'."
 msgstr ""
 
-#: src/amule.cpp:843
+#: src/amule.cpp:844
 #, c-format
 msgid "web server running on pid %d"
 msgstr "веб-сервер работает с pid %d"
 
-#: src/amule.cpp:847
+#: src/amule.cpp:848
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -7243,17 +7243,17 @@ msgstr ""
 "может быть запущен. Установите пакет содержащий веб-сервер aMule или "
 "скомпилируйте его с опцией --enable-webserver и запустите make install"
 
-#: src/amule.cpp:934
+#: src/amule.cpp:935
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Невозможно связать порты с указанными адресами: %s"
 
-#: src/amule.cpp:961
+#: src/amule.cpp:962
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Порт %u не доступен. У вас будет LowID\n"
 
-#: src/amule.cpp:967
+#: src/amule.cpp:968
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -7268,15 +7268,15 @@ msgstr ""
 "\n"
 "Проверьте вашу сетевую конфигурацию, убедитесь что необходимый порт открыт."
 
-#: src/amule.cpp:1118
+#: src/amule.cpp:1119
 msgid "Failed to create OnlineSig File"
 msgstr "Не удалось создать aMule OnlineSig файл"
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1127
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Не удалось создать aMule OnlineSig файл"
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1295
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -7284,35 +7284,35 @@ msgstr ""
 "Выбранная локаль отсутствует в вашей системе (тем не менее, будет "
 "произведена попытка её использовать)."
 
-#: src/amule.cpp:1303
+#: src/amule.cpp:1304
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Это первый запуск aMule %s"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1306
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Эта версия является тестовой и обновляется ежедневно.\n"
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1307
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "мы не предоставляем никаких гарантий на случай каких либо повреждений, "
 "пожара \n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1308
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "или же смерти вашей любимой собачки. И всё же использование её *должно* быть "
 "безопасным. \n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1312
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr ""
 "Эти опции были изменены в данном релизе по соображениям безопасности:\n"
 
-#: src/amule.cpp:1312
+#: src/amule.cpp:1313
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -7322,7 +7322,7 @@ msgstr ""
 "*Включена поддержка вуалирования протокола для входящих и исходящих "
 "соединений.\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1314
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -7330,7 +7330,7 @@ msgstr ""
 "\n"
 "* Отключено обновление списка серверов с других серверов и от клиентов.\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1315
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -7345,7 +7345,7 @@ msgstr ""
 "Важно, чтобы вы удалили все поддельные сервера из списка, чтобы aMule "
 "работал правильно."
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1316
 msgid ""
 "\n"
 "\n"
@@ -7357,23 +7357,23 @@ msgstr ""
 "Настройки браузера были скинуты на значения по умолчанию. Настройте свой "
 "браузер снова если нужно.\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1321
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Дополнительную информацию, поддержку и обновленные версии вы найдёте на "
 "нашем сайте \n"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1322
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "www.aMule.org, или на нашем irc-канале #aMule, находящемся на сервере irc."
 "freenode.net. \n"
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1324
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Сообщайте нам о найденных ошибках на форум http://forum.amule.org"
 
-#: src/amule.cpp:1336
+#: src/amule.cpp:1337
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -7381,125 +7381,125 @@ msgstr ""
 "Указан неверный каталог для файлов Online-подписей!\n"
 "Online-подписи будут отключены пока вы не исправите это в настройках."
 
-#: src/amule.cpp:1391
+#: src/amule.cpp:1392
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Имя сервера:"
 
-#: src/amule.cpp:1620
+#: src/amule.cpp:1621
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Выделение место под файл '%s' не удалось: %s"
 
-#: src/amule.cpp:1744
+#: src/amule.cpp:1745
 msgid "ERROR: can't open logfile"
 msgstr "Ошибка: невозможно открыть файл журнала"
 
-#: src/amule.cpp:1748
+#: src/amule.cpp:1749
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ПРЕДУПРЕЖДЕНИЕ: файл журнала пуст. Что-то здесь не так :-("
 
-#: src/amule.cpp:1766
+#: src/amule.cpp:1767
 msgid "Log has been reset"
 msgstr "Журнал был очищен"
 
-#: src/amule.cpp:1791
+#: src/amule.cpp:1792
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Сообщение сервера: %s"
 
-#: src/amule.cpp:1829
+#: src/amule.cpp:1830
 msgid "Failed to download the nodes list."
 msgstr "Ошибка при загрузке списка узлов."
 
-#: src/amule.cpp:1849
+#: src/amule.cpp:1850
 msgid "Failed to open the downloaded version check file"
 msgstr "Ошибка при загрузке файла контроля версии"
 
-#: src/amule.cpp:1852 src/amule.cpp:1862 src/amule.cpp:1868
+#: src/amule.cpp:1853 src/amule.cpp:1863 src/amule.cpp:1869
 msgid "Corrupted version check file"
 msgstr "Поврежден файл контроля версии"
 
-#: src/amule.cpp:1878
+#: src/amule.cpp:1879
 msgid "You are using an outdated version of aMule!"
 msgstr "Вы используете устаревшую версию aMule!"
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1880
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Версия вашего aMule - %i.%i.%i, тогда как актуальная версия - %li.%li.%li"
 
-#: src/amule.cpp:1880
+#: src/amule.cpp:1881
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Актуальная версия aMule всегда доступна тут:  http://www.amule.org"
 
-#: src/amule.cpp:1882
+#: src/amule.cpp:1883
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "ВНИМАНИЕ: Версия вашего aMule устарела: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1887
 msgid "Your copy of aMule is up to date."
 msgstr "Ваша копия aMule актуальна."
 
-#: src/amule.cpp:1893
+#: src/amule.cpp:1894
 msgid "Failed to download the version check file"
 msgstr "Ошибка при загрузке файла контроля версии"
 
-#: src/amule.cpp:1996
+#: src/amule.cpp:2054
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Польз.: %s | Файлов: %s"
 
-#: src/amule.cpp:1997
+#: src/amule.cpp:2055
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Польз.: E: %s K: %s | Файлов: E: %s K: %s"
 
-#: src/amule.cpp:2006
+#: src/amule.cpp:2064
 msgid "No networks selected"
 msgstr "Нет выделенной сети"
 
-#: src/amule.cpp:2073
+#: src/amule.cpp:2131
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Соединён с %s %s"
 
-#: src/amule.cpp:2076
+#: src/amule.cpp:2134
 #, c-format
 msgid "Connecting to %s"
 msgstr "Подключение к %s"
 
-#: src/amule.cpp:2078
+#: src/amule.cpp:2136
 msgid "Disconnected from eD2k"
 msgstr "Отсоединен от eD2k"
 
 # Kad как сеть, или служба - поэтому в женском роде
 # да, согласен
-#: src/amule.cpp:2085
+#: src/amule.cpp:2143
 msgid "Kad started."
 msgstr "Kad запущена."
 
 # Kad как сеть, или служба - поэтому в женском роде
 # согласен
-#: src/amule.cpp:2087
+#: src/amule.cpp:2145
 msgid "Kad stopped."
 msgstr "Kad остановлена."
 
-#: src/amule.cpp:2094
+#: src/amule.cpp:2152
 msgid "Connected to Kad (ok)"
 msgstr "Подключен к Kad (норм.)"
 
-#: src/amule.cpp:2096
+#: src/amule.cpp:2154
 msgid "Connected to Kad (firewalled)"
 msgstr "Подключен к Kad (за брандмауэром)"
 
-#: src/amule.cpp:2099
+#: src/amule.cpp:2157
 msgid "Disconnected from Kad"
 msgstr "Отключился от Kad"
 
-#: src/amule.cpp:2162
+#: src/amule.cpp:2220
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7507,7 +7507,7 @@ msgstr ""
 "Сеть Kad не может быть использована если порт UDP выключен в настройках. "
 "Отменяю запуск."
 
-#: src/amule.cpp:2165
+#: src/amule.cpp:2223
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Сеть Kad выключена в настройках. Отменяю соединение."
 
