@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-06 18:40+0100\n"
+"POT-Creation-Date: 2008-12-13 20:03+0100\n"
 "PO-Revision-Date: 2008-12-13 09:24+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -115,7 +115,8 @@ msgstr "HOIATUS: Fail ninega '%s' on vigane ja nimetatati ringi '%s'."
 #: src/ThreadTasks.cpp:439
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "HOIATUS: Sama nimega fail '%s' on olemas, uus fail nimetatati ringi '%s'."
+msgstr ""
+"HOIATUS: Sama nimega fail '%s' on olemas, uus fail nimetatati ringi '%s'."
 
 #: src/ThreadTasks.cpp:452
 #, c-format
@@ -139,7 +140,7 @@ msgstr "Otsin lowid ühenduse jaoks semu"
 #: src/BaseClient.cpp:1720 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
-#: src/ExternalConn.cpp:274 src/Statistics.cpp:703 src/Statistics.cpp:884
+#: src/ExternalConn.cpp:275 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/PartFile.cpp:2610 src/PartFile.cpp:2616 src/KnownFile.cpp:884
@@ -183,14 +184,18 @@ msgstr "Küsitud: %s\n"
 #: src/BaseClient.cpp:1963
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
-msgstr[1] "Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
+msgstr[1] ""
+"Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
 
 #: src/BaseClient.cpp:1966
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Kõikide seansside failistatistika: Aksepteeritud %d/%d päringust, %s "
 "siirdatud\n"
@@ -473,7 +478,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "Allika lingi loomiseks pead omama HighID'd."
 
 #: src/SharedFilesCtrl.cpp:321 src/PrefsUnifiedDlg.cpp:657 src/KadDlg.cpp:167
-#: src/KadDlg.cpp:173 src/amule.cpp:668
+#: src/KadDlg.cpp:173 src/amule.cpp:669
 msgid "WARNING"
 msgstr "!!! HOIATUS !!!"
 
@@ -1090,18 +1095,18 @@ msgstr "%02umin %02us"
 msgid "%02us"
 msgstr "%02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:186
+#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:183
 #: src/ClientDetailDialog.cpp:104
 msgid "HighID"
 msgstr "HighID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:173
-#: src/ServerWnd.cpp:183 src/ClientListCtrl.cpp:902
+#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:170
+#: src/ServerWnd.cpp:180 src/ClientListCtrl.cpp:902
 #: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "LowID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:191
+#: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:188
 #: src/MuleTrayIcon.cpp:400
 msgid "Not Connected"
 msgstr "Pole ühendust"
@@ -1188,7 +1193,8 @@ msgstr "Loo link osa-kontrollsummadega"
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
-msgstr "Aita suurenenud lingi hinnaga uusi ja haruldasi faile kiiremini levitada."
+msgstr ""
+"Aita suurenenud lingi hinnaga uusi ja haruldasi faile kiiremini levitada."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:192
 msgid "MD4 File Hash"
@@ -1341,7 +1347,8 @@ msgstr "Töötlen faili number %u: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:70
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "Soovisid osade kontrollsummasid (Kasutatakse ainult failidel mis on > 9.5 MB)"
+msgstr ""
+"Soovisid osade kontrollsummasid (Kasutatakse ainult failidel mis on > 9.5 MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:83
 #, c-format
@@ -1365,7 +1372,7 @@ msgid "Auto [Hi]"
 msgstr "Auto [Kõrge]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:556 src/ClientListCtrl.cpp:670
-#: src/amule.cpp:797
+#: src/amule.cpp:798
 msgid "Connecting"
 msgstr "Ühendun"
 
@@ -1630,7 +1637,8 @@ msgid "Invalid category found, skipping"
 msgstr "Leidsin vigase kategooria, ignoreerin"
 
 #: src/Preferences.cpp:1701
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP port ei saa olla suuerm kui 65532, sest serveri UDP soket on TCP+3"
 
 #: src/Preferences.cpp:1702
@@ -1692,8 +1700,8 @@ msgstr ""
 "ühendus. Serverit ei kustutatud."
 
 #: src/ServerListCtrl.cpp:149 src/CatDialog.cpp:141 src/CatDialog.cpp:151
-#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:708
-#: src/amule.cpp:1325
+#: src/CatDialog.cpp:159 src/ServerList.cpp:341 src/amule.cpp:709
+#: src/amule.cpp:1326
 msgid "Info"
 msgstr "Info"
 
@@ -1728,7 +1736,7 @@ msgstr "Ei suuda avada '%s'"
 msgid "Servers (%i)"
 msgstr "Servereid (%i)"
 
-#: src/ServerListCtrl.cpp:424 src/ServerWnd.cpp:182 src/ServerSocket.cpp:257
+#: src/ServerListCtrl.cpp:424 src/ServerWnd.cpp:179 src/ServerSocket.cpp:257
 #: src/ServerSocket.cpp:272
 msgid "Server"
 msgstr "Server"
@@ -2317,44 +2325,44 @@ msgstr "GUI Käsk:"
 msgid "The following variables will be replaced:"
 msgstr "Järgnevad muutujad asendatakse:"
 
-#: src/ExternalConn.cpp:114
+#: src/ExternalConn.cpp:115
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Autoriseerimata ligipääsukatse. Ühendus suletud."
 
-#: src/ExternalConn.cpp:129
+#: src/ExternalConn.cpp:130
 msgid "External connection closed."
 msgstr "Välisühendus suleti"
 
-#: src/ExternalConn.cpp:165
+#: src/ExternalConn.cpp:166
 msgid "External connections disabled due to empty password!"
 msgstr "Välisühendused on tühja parooli tõttu mitteaktiivsed"
 
-#: src/ExternalConn.cpp:190
+#: src/ExternalConn.cpp:191
 msgid "External connections disabled in config file"
 msgstr "Välisühendused on konfiguratsioonifailis defineeritud mitteaktiivsena."
 
-#: src/ExternalConn.cpp:241
+#: src/ExternalConn.cpp:242
 msgid "New external connection accepted"
 msgstr "Kinnitati uus väline ühendus"
 
-#: src/ExternalConn.cpp:244
+#: src/ExternalConn.cpp:245
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "VIGA: Ei suutnud uut välist ühendust aksepteerida"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:264
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Välisühendustest keelduti tühja parooli tõttu seadetes!"
 
-#: src/ExternalConn.cpp:273
+#: src/ExternalConn.cpp:274
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Ühendan klienti: %s %s"
 
-#: src/ExternalConn.cpp:275
+#: src/ExternalConn.cpp:276
 msgid "Unknown version"
 msgstr "Versioon teadmata"
 
-#: src/ExternalConn.cpp:286
+#: src/ExternalConn.cpp:287
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -2362,7 +2370,7 @@ msgstr ""
 "Mittekorrektne Välisühenduste versiooni ID, siin võib olla binaarne "
 "kokkusobimatus.Kasuta sama versiooni tuuma ja kaugklienti."
 
-#: src/ExternalConn.cpp:291
+#: src/ExternalConn.cpp:292
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -2370,140 +2378,140 @@ msgstr ""
 "Sa ei saa ajutise SVN versiooniga ühenduda reliisi versiooniga!!!! *RRRRRR* "
 "hoidsin ära võimaliku crässi"
 
-#: src/ExternalConn.cpp:312
+#: src/ExternalConn.cpp:313
 msgid "Authentication failed."
 msgstr "Autoriserimine ebaõnnestus"
 
-#: src/ExternalConn.cpp:316
+#: src/ExternalConn.cpp:317
 msgid "Invalid protocol version."
 msgstr "Vigane protokolli versioon."
 
-#: src/ExternalConn.cpp:320
+#: src/ExternalConn.cpp:321
 msgid "Missing protocol version tag."
 msgstr "Puudub protokolli versiooni märgis"
 
-#: src/ExternalConn.cpp:324
+#: src/ExternalConn.cpp:325
 msgid "Invalid request, you should first authenticate."
 msgstr "Vigane päring, alustuseks pead ennast autoriseerima."
 
-#: src/ExternalConn.cpp:330
+#: src/ExternalConn.cpp:331
 msgid "Access granted."
 msgstr "Ligipääs Lubatud."
 
-#: src/ExternalConn.cpp:607
+#: src/ExternalConn.cpp:627
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Kaug OsaFaili käsk ebaõnnestus: Faili kontrollsummat ei leidnud: %s"
 
-#: src/ExternalConn.cpp:609
+#: src/ExternalConn.cpp:629
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Faili '%s' kontrollsummat ei leitud"
 
-#: src/ExternalConn.cpp:672 src/ExternalConn.cpp:756
+#: src/ExternalConn.cpp:692 src/ExternalConn.cpp:776
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! OpCode töötlemise viga!"
 
-#: src/ExternalConn.cpp:702
+#: src/ExternalConn.cpp:722
 msgid "Server not added"
 msgstr "Serverit ei lisatud"
 
-#: src/ExternalConn.cpp:720
+#: src/ExternalConn.cpp:740
 #, c-format
 msgid "server not found: %s"
 msgstr "serverit ei leidnud: %s"
 
-#: src/ExternalConn.cpp:736
+#: src/ExternalConn.cpp:756
 msgid "need to define server to be removed"
 msgstr "eemaldatav server on vaja määrata"
 
-#: src/ExternalConn.cpp:750
+#: src/ExternalConn.cpp:770
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k on seadetes väljalülitatud."
 
-#: src/ExternalConn.cpp:846
+#: src/ExternalConn.cpp:866
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Otsing on käimas. Varsti näed tulemusi!"
 
-#: src/ExternalConn.cpp:851
+#: src/ExternalConn.cpp:871
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Web Otsing kaugtöökohast ei oma mõtet."
 
-#: src/ExternalConn.cpp:902
+#: src/ExternalConn.cpp:922
 msgid "Kad is disabled in preferences."
 msgstr "Kad on seadetes väljalülitatud."
 
-#: src/ExternalConn.cpp:1063
+#: src/ExternalConn.cpp:1083
 msgid "No points for graph."
 msgstr "Graafiku jaoks pole punkte."
 
-#: src/ExternalConn.cpp:1072
+#: src/ExternalConn.cpp:1092
 msgid "Your client is not configured for this detail level."
 msgstr "Sinu klient pole seadistatud sellise detailsuse astme jaoks."
 
-#: src/ExternalConn.cpp:1100
+#: src/ExternalConn.cpp:1120
 msgid "External Connection: shutdown requested"
 msgstr "Väline Ühendus: nõutakse seiskamist"
 
-#: src/ExternalConn.cpp:1112
+#: src/ExternalConn.cpp:1132
 msgid "Already shutting down."
 msgstr "Juba sulgun..."
 
-#: src/ExternalConn.cpp:1120
+#: src/ExternalConn.cpp:1140
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Väline ühendus: lisan lingi '%s'."
 
-#: src/ExternalConn.cpp:1126
+#: src/ExternalConn.cpp:1146
 msgid "Invalid link or already on list."
 msgstr "Vigane link või on juba loetelus."
 
-#: src/ExternalConn.cpp:1212
+#: src/ExternalConn.cpp:1232
 msgid "File not found."
 msgstr "Faili ei leitud."
 
-#: src/ExternalConn.cpp:1217
+#: src/ExternalConn.cpp:1237
 msgid "Invalid file name."
 msgstr "Vigane failinimi."
 
-#: src/ExternalConn.cpp:1225
+#: src/ExternalConn.cpp:1245
 msgid "Unable to rename file."
 msgstr "Ei suuda faili ringinimetada."
 
-#: src/ExternalConn.cpp:1449
+#: src/ExternalConn.cpp:1469
 msgid "Already connected to eD2k."
 msgstr "Juba ühendatud eD2k võrku."
 
-#: src/ExternalConn.cpp:1452
+#: src/ExternalConn.cpp:1472
 msgid "Connecting to eD2k..."
 msgstr "Ühendun eD2k..."
 
-#: src/ExternalConn.cpp:1460
+#: src/ExternalConn.cpp:1480
 msgid "Already connected to Kad."
 msgstr "Juba ühendatud Kad võrku."
 
-#: src/ExternalConn.cpp:1463
+#: src/ExternalConn.cpp:1483
 msgid "Connecting to Kad..."
 msgstr "Ühendun Kad..."
 
-#: src/ExternalConn.cpp:1468
+#: src/ExternalConn.cpp:1488
 msgid "All networks are disabled."
 msgstr "Kõik võrgud on väljalülitatud."
 
-#: src/ExternalConn.cpp:1476
+#: src/ExternalConn.cpp:1496
 msgid "Disconnected from eD2k."
 msgstr "eD2k ühendus katkestatud."
 
-#: src/ExternalConn.cpp:1480
+#: src/ExternalConn.cpp:1500
 msgid "Disconnected from Kad."
 msgstr "Kad ühendus katkestatud."
 
-#: src/ExternalConn.cpp:1488
+#: src/ExternalConn.cpp:1508
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Väline Ühendus: sain vigase opkoodi: %#x"
 
-#: src/ExternalConn.cpp:1491
+#: src/ExternalConn.cpp:1511
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Vigane opcode (vale protokolli versioon?)"
 
@@ -2522,124 +2530,124 @@ msgstr "Tundmatu faili '%s' jaoks küsiti kontrollsummat."
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
 msgstr "Käsk `%s' protsessi'id %d' lõpetas staatusega`%d'."
 
-#: src/ServerWnd.cpp:106
+#: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
 msgstr "Serverit ei lisatud: IP aadressi või masinanime pole defineeritud."
 
-#: src/ServerWnd.cpp:111
+#: src/ServerWnd.cpp:108
 msgid "Server not added: Invalid server-port specified."
 msgstr "Serverit ei lisatud: Defineerisid vigase pordi."
 
-#: src/ServerWnd.cpp:164
+#: src/ServerWnd.cpp:161
 msgid "eD2k Status:"
 msgstr "eD2k Olek:"
 
-#: src/ServerWnd.cpp:167 src/ServerWnd.cpp:214 src/TextClient.cpp:707
+#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1027 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "Ühendatud"
 
-#: src/ServerWnd.cpp:171 src/muuli_wdr.cpp:2676
+#: src/ServerWnd.cpp:168 src/muuli_wdr.cpp:2676
 msgid "IP:Port"
 msgstr "IP:Port"
 
-#: src/ServerWnd.cpp:175
+#: src/ServerWnd.cpp:172
 msgid "ID"
 msgstr "ID"
 
-#: src/ServerWnd.cpp:207
+#: src/ServerWnd.cpp:204
 msgid "Kademlia Status:"
 msgstr "Kademlia Olek:"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:207
 msgid "Running"
 msgstr "Töötab"
 
-#: src/ServerWnd.cpp:213
+#: src/ServerWnd.cpp:210
 msgid "Status:"
 msgstr "Olek:"
 
-#: src/ServerWnd.cpp:214 src/ClientDetailDialog.cpp:145
+#: src/ServerWnd.cpp:211 src/ClientDetailDialog.cpp:145
 msgid "Disconnected"
 msgstr "Pole ühendust"
 
-#: src/ServerWnd.cpp:216
+#: src/ServerWnd.cpp:213
 msgid "Connection State:"
 msgstr "Ühenduse olek:"
 
-#: src/ServerWnd.cpp:218
+#: src/ServerWnd.cpp:215
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Tulemüüriga - ava oma ruuteris või tulemüüris TCP%d port"
 
-#: src/ServerWnd.cpp:218 src/ServerWnd.cpp:223 src/muuli_wdr.cpp:2449
+#: src/ServerWnd.cpp:215 src/ServerWnd.cpp:219 src/muuli_wdr.cpp:2449
 #: src/muuli_wdr.cpp:2552
 msgid "OK"
 msgstr "Sobib"
 
-#: src/ServerWnd.cpp:220
+#: src/ServerWnd.cpp:216
 msgid "UDP Connection State:"
 msgstr "UDP ühenduse olek:"
 
-#: src/ServerWnd.cpp:223
+#: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Tulemüüriga - ava oma ruuteris või tulemüüris UDP %d port"
 
-#: src/ServerWnd.cpp:226
+#: src/ServerWnd.cpp:222
 msgid "Firewalled state: "
 msgstr "Olek tulemüüriga: "
 
-#: src/ServerWnd.cpp:232
+#: src/ServerWnd.cpp:228
 msgid "No buddy required - TCP port open"
 msgstr "Semu pole tarvis - TCP port on avatud"
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:230
 msgid "No buddy required - UDP port open"
 msgstr "Semu pole tarvis - UDP port on avatud"
 
-#: src/ServerWnd.cpp:236
+#: src/ServerWnd.cpp:232
 msgid "No buddy"
 msgstr "Semu puudub"
 
-#: src/ServerWnd.cpp:240
+#: src/ServerWnd.cpp:236
 msgid "Connecting to buddy"
 msgstr "Ühendun semuga"
 
-#: src/ServerWnd.cpp:243
+#: src/ServerWnd.cpp:239
 #, c-format
 msgid "Connected to buddy at %s"
 msgstr "Ühendus semuga %s"
 
-#: src/ServerWnd.cpp:249 src/muuli_wdr.cpp:1399
+#: src/ServerWnd.cpp:245 src/muuli_wdr.cpp:1399
 msgid "IP address:"
 msgstr "IP aadress:"
 
-#: src/ServerWnd.cpp:253
+#: src/ServerWnd.cpp:249
 msgid "Indexed sources:"
 msgstr "Indekseeritud allikaid:"
 
-#: src/ServerWnd.cpp:255
+#: src/ServerWnd.cpp:251
 msgid "Indexed keywords:"
 msgstr "Indekseeritud märksõnu:"
 
-#: src/ServerWnd.cpp:257
+#: src/ServerWnd.cpp:253
 msgid "Indexed notes:"
 msgstr "Indekseeritud märkmeid:"
 
-#: src/ServerWnd.cpp:259
+#: src/ServerWnd.cpp:255
 msgid "Indexed load:"
 msgstr "Indekseeritud laadimisi:"
 
-#: src/ServerWnd.cpp:271
+#: src/ServerWnd.cpp:258
 msgid "Average Users:"
 msgstr "Keskmiselt kasutajaid:"
 
-#: src/ServerWnd.cpp:274
+#: src/ServerWnd.cpp:261
 msgid "Average Files:"
 msgstr "Keskmiselt faile:"
 
-#: src/ServerWnd.cpp:281 src/TextClient.cpp:718
+#: src/ServerWnd.cpp:268 src/TextClient.cpp:718
 msgid "Not running"
 msgstr "Ei tööta"
 
@@ -2920,7 +2928,8 @@ msgstr "'%s' (IP:%s) saatis uue teate"
 #: src/ClientTCPSocket.cpp:820
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
+msgstr ""
+"Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
 
 #: src/ClientTCPSocket.cpp:841
 #, c-format
@@ -2930,7 +2939,8 @@ msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Keeldusid"
 #: src/ClientTCPSocket.cpp:873
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
+msgstr ""
+"Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
 
 #: src/ClientTCPSocket.cpp:913
 #, c-format
@@ -2939,7 +2949,8 @@ msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Keeldusid"
 
 #: src/ClientTCPSocket.cpp:938
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> "
 "Kinnitasid"
@@ -2947,7 +2958,8 @@ msgstr ""
 #: src/ClientTCPSocket.cpp:975
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-msgstr "Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> keeldusid"
+msgstr ""
+"Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> keeldusid"
 
 #: src/ClientTCPSocket.cpp:994
 #, c-format
@@ -2977,7 +2989,8 @@ msgstr "Kasutaja %s (%u) saatis soovimatu jagatud failide nimekirja"
 #: src/ClientTCPSocket.cpp:1048
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "Kasutaja %s (%u) keelas ligipääsu jagatud kataloogide/failide nimekirjale"
+msgstr ""
+"Kasutaja %s (%u) keelas ligipääsu jagatud kataloogide/failide nimekirjale"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -3001,8 +3014,10 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Oled kindel et tahad tõmmata uut nodes.dat faili?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
-msgstr "Nii tehes eemaldad oma olemasolevad sõlmed ja taaskäivitad Kademlia ühenduse."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
+msgstr ""
+"Nii tehes eemaldad oma olemasolevad sõlmed ja taaskäivitad Kademlia ühenduse."
 
 #: src/KadDlg.cpp:198
 msgid "Continue?"
@@ -3088,8 +3103,8 @@ msgid "Connection failed "
 msgstr "Ühendus ebaõnnestus "
 
 #: src/amule-remote-gui.cpp:306 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:848
-#: src/amule.cpp:969 src/amule.cpp:1336
+#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:849
+#: src/amule.cpp:970 src/amule.cpp:1337
 msgid "ERROR"
 msgstr "VIGA"
 
@@ -3105,7 +3120,7 @@ msgstr "Peatun "
 msgid "Ready"
 msgstr "Valmis"
 
-#: src/amule-remote-gui.cpp:503 src/amule.cpp:1074
+#: src/amule-remote-gui.cpp:503 src/amule.cpp:1075
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -3503,7 +3518,8 @@ msgstr "HOIATUS: known.met faili ei saa avada."
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Known file list corrupted, contains invalid header."
-msgstr "HOIATUS: Tuttavate failde loetelu on riknenud, sisaldab riknenud päist."
+msgstr ""
+"HOIATUS: Tuttavate failde loetelu on riknenud, sisaldab riknenud päist."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3698,7 +3714,8 @@ msgstr "Temp kataloogi failisüsteem ei suuda suuri faile käidelda."
 
 #: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1385
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr "Sisenevate failide kataloogi failisüsteem ei suuda suuri faile käidelda."
+msgstr ""
+"Sisenevate failide kataloogi failisüsteem ei suuda suuri faile käidelda."
 
 #: src/DownloadQueue.cpp:334
 #, c-format
@@ -3751,7 +3768,8 @@ msgstr "Vigane IP formaat. Kasuta xxx.xxx.xxx.xxx:xxxx\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "See käsk vajab muutujat. Sobivad muutujad on: 'all', failinimi või number.\n"
+msgstr ""
+"See käsk vajab muutujat. Sobivad muutujad on: 'all', failinimi või number.\n"
 
 #: src/TextClient.cpp:346
 msgid "Processing by hash: "
@@ -3819,11 +3837,11 @@ msgstr "eD2k"
 msgid "Connected to %s %s %s"
 msgstr "Ühendatud %s %s %s"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2071
+#: src/TextClient.cpp:697 src/amule.cpp:2129
 msgid "with LowID"
 msgstr "koos LowID"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2071
+#: src/TextClient.cpp:697 src/amule.cpp:2129
 msgid "with HighID"
 msgstr "koos HighID"
 
@@ -4064,7 +4082,8 @@ msgstr "Määra ribalaiuse piirang."
 
 #: src/TextClient.cpp:884
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
-msgstr "Väärtus, mis nendele käskudele antakse, peab olema kilobaiti/sekundis.\n"
+msgstr ""
+"Väärtus, mis nendele käskudele antakse, peab olema kilobaiti/sekundis.\n"
 
 #: src/TextClient.cpp:885
 msgid "Set upload bandwidth limit."
@@ -4203,7 +4222,8 @@ msgstr "Näita järjekorda/nimekirja."
 
 #: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "Näitab saatmise/tõmbamise järjekorda, serveri jagatud failide loetelu.\n"
+msgstr ""
+"Näitab saatmise/tõmbamise järjekorda, serveri jagatud failide loetelu.\n"
 
 #: src/TextClient.cpp:939
 msgid "Show upload queue."
@@ -4360,7 +4380,8 @@ msgstr "Laetud %d riigilipu pilti."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr "Oled kindel et tahad katkestada ja kustutada kõik selle kategooria failid?"
+msgstr ""
+"Oled kindel et tahad katkestada ja kustutada kõik selle kategooria failid?"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
@@ -4545,7 +4566,8 @@ msgstr ""
 "siia)"
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Kas soovid õnnestunult imporditud tõmmatud failide allikad kustutada?"
 
 #: src/PartFileConvert.cpp:702
@@ -4731,14 +4753,16 @@ msgid "Commit"
 msgstr "Jõusta"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the eD2k link in the text control to your download queue."
+msgid ""
+"Click here to add the eD2k link in the text control to your download queue."
 msgstr "Klikka siia, et lisada eD2k link tekstiväljalt tõmbamise järjekorda."
 
 #: src/muuli_wdr.cpp:85
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
-msgstr "Siin näidatakse sündmusi. Kogu sündmuste loetelu on logis Serverid lehel."
+msgstr ""
+"Siin näidatakse sündmusi. Kogu sündmuste loetelu on logis Serverid lehel."
 
 #: src/muuli_wdr.cpp:88
 msgid "Loading ..."
@@ -5291,7 +5315,8 @@ msgstr "Vähenda Ribale ikooniks"
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
-msgstr "Valituna vähendab aMule ennast pigem Süsteemiribale, kui tööriistaribale."
+msgstr ""
+"Valituna vähendab aMule ennast pigem Süsteemiribale, kui tööriistaribale."
 
 #: src/muuli_wdr.cpp:1628
 msgid "Tooltip delay time: "
@@ -5367,7 +5392,8 @@ msgstr "Laiendatud UDP port (Kad / globaalne otsing) "
 
 #: src/muuli_wdr.cpp:1755
 msgid "This UDP port is used for extended eD2k requests and Kad network"
-msgstr "Seda UDP porti kasutatkse laiendatud omadustega eD2k ja Kad võrgu puhul"
+msgstr ""
+"Seda UDP porti kasutatkse laiendatud omadustega eD2k ja Kad võrgu puhul"
 
 #: src/muuli_wdr.cpp:1758
 msgid "Enable UPnP for router port forwarding"
@@ -5469,7 +5495,8 @@ msgstr "Luba"
 
 #: src/muuli_wdr.cpp:1914
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr "Laiendatud I.C.H. usaldab suvalist kontrollsummat (pole soovitatav valik)"
+msgstr ""
+"Laiendatud I.C.H. usaldab suvalist kontrollsummat (pole soovitatav valik)"
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
@@ -6020,7 +6047,8 @@ msgid "Filter clients"
 msgstr "Filtreeri kliente"
 
 #: src/muuli_wdr.cpp:2976
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Rakenda klientide IP filtreerimine failis ~/.aMule/ipfilter.dat defineeritud "
 "aadressidele."
@@ -6030,7 +6058,8 @@ msgid "Filter servers"
 msgstr "Filtreeri servereid"
 
 #: src/muuli_wdr.cpp:2981
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Rakenda serverite IP filtreerimine failis ~/.aMule/ipfilter.dat defineeritud "
 "aadressidele."
@@ -6112,7 +6141,8 @@ msgid "Save online signature file in: "
 msgstr "Salvesta online ollkirja fail: "
 
 #: src/muuli_wdr.cpp:3079
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr "Siin saad valida kataloogi kus asub sinu Online Allkirja fail."
 
 #: src/muuli_wdr.cpp:3101
@@ -6318,8 +6348,10 @@ msgid "You must specify a path for the category!"
 msgstr "Sa pead kategooria jaoks asukoha defineerima!"
 
 #: src/CatDialog.cpp:158
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
-msgstr "Ei suutnud luua kategooria sisendkataloogi. Palun defineeri kehtiv asukoht!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
+msgstr ""
+"Ei suutnud luua kategooria sisendkataloogi. Palun defineeri kehtiv asukoht!"
 
 #: src/ExternalConnector.cpp:145
 #, c-format
@@ -6566,8 +6598,11 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
-"VIGA: Väliste ühenduste jaoks peab olema määratud kehtiv parool ning aMule deemonit ei saa kasutada ilma väliste ühendusteta. aMule deemoni kasutamiseks pead määrama konfiguratsioonifailis ~/.aMule/amule.conf  \"ECPassword\" väärtuseks kohase väärtuse."
-"Parooli seadmiseks käivita amuled võtmega '--ec-config'. Lisainformatsiooni leiad http://wiki.amule.org"
+"VIGA: Väliste ühenduste jaoks peab olema määratud kehtiv parool ning aMule "
+"deemonit ei saa kasutada ilma väliste ühendusteta. aMule deemoni "
+"kasutamiseks pead määrama konfiguratsioonifailis ~/.aMule/amule.conf  "
+"\"ECPassword\" väärtuseks kohase väärtuse.Parooli seadmiseks käivita amuled "
+"võtmega '--ec-config'. Lisainformatsiooni leiad http://wiki.amule.org"
 
 #: src/amuled.cpp:658
 msgid "amuled: OnInit - starting timer"
@@ -6916,7 +6951,8 @@ msgstr "Server.met faili ei leitud."
 #: src/ServerList.cpp:96
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr "server.met faili '%s' laadimine ebaõnnestus, arusaamatu formaat sattus ette."
+msgstr ""
+"server.met faili '%s' laadimine ebaõnnestus, arusaamatu formaat sattus ette."
 
 #: src/ServerList.cpp:102
 msgid "Failed to open server.met!"
@@ -6925,7 +6961,8 @@ msgstr "Ei saanud avada server.met faili!"
 #: src/ServerList.cpp:113
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr "Server.met fail on riknenud, leidsin vigase versiooni sildi: 0x%x, suurus %i"
+msgstr ""
+"Server.met fail on riknenud, leidsin vigase versiooni sildi: 0x%x, suurus %i"
 
 #: src/ServerList.cpp:168
 #, c-format
@@ -7018,39 +7055,40 @@ msgstr ""
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "Kohalik server on IPFiltri poolt väljafiltreeritud, ühendud teise serveriga!"
+msgstr ""
+"Kohalik server on IPFiltri poolt väljafiltreeritud, ühendud teise serveriga!"
 
 #: src/UserEvents.cpp:132
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr "Käsu '%s' käivitamine '%s' sündmuse puhul ebaõnnestus"
 
-#: src/amule.cpp:220
+#: src/amule.cpp:221
 msgid "Now, exiting main app..."
 msgstr "Ok, lahkun põhiprogrammist..."
 
-#: src/amule.cpp:239
+#: src/amule.cpp:240
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr "Mõrvan amuleweb tegelase, protsessi id `%ld' ... "
 
-#: src/amule.cpp:242
+#: src/amule.cpp:243
 msgid "Killed!"
 msgstr "Tapetud!"
 
-#: src/amule.cpp:246
+#: src/amule.cpp:247
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule OnExit: Peatan tuuma."
 
-#: src/amule.cpp:316
+#: src/amule.cpp:317
 msgid "aMule shutdown completed."
 msgstr "aMule seiskamine lõpetatud."
 
-#: src/amule.cpp:320
+#: src/amule.cpp:321
 msgid "Memory debug results for aMule exit:"
 msgstr "aMule väljumise mälu veajälituse tulemus:"
 
-#: src/amule.cpp:636
+#: src/amule.cpp:637
 msgid ""
 "\n"
 "EC configuration"
@@ -7058,11 +7096,11 @@ msgstr ""
 "\n"
 "EC seadistused"
 
-#: src/amule.cpp:639
+#: src/amule.cpp:640
 msgid "Password set and external connections enabled."
 msgstr "Parool on määratud ja välised ühendused võimalikud."
 
-#: src/amule.cpp:706
+#: src/amule.cpp:707
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -7070,7 +7108,7 @@ msgstr ""
 "Sinu keelelokaat muudeti süsteemi vaikeväärtuseks seoses konfiguratsiooni "
 "muudatustega. Sorry."
 
-#: src/amule.cpp:780
+#: src/amule.cpp:781
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -7078,21 +7116,21 @@ msgstr ""
 "Serverite nimekirjas pole ühtegi serverit.\n"
 "Kas aMule võiks uue nimekirja tõmmata?"
 
-#: src/amule.cpp:781
+#: src/amule.cpp:782
 msgid "Server list download"
 msgstr "Serverite nimekiri tõmmatud"
 
-#: src/amule.cpp:813
+#: src/amule.cpp:814
 #, c-format
 msgid "Using amuleweb in '%s'."
 msgstr ""
 
-#: src/amule.cpp:843
+#: src/amule.cpp:844
 #, c-format
 msgid "web server running on pid %d"
 msgstr "web server töötab protsessi id'ga %d"
 
-#: src/amule.cpp:847
+#: src/amule.cpp:848
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -7103,17 +7141,17 @@ msgstr ""
 "serverit või kompileeri aMule kasutades võtit --enable-webserver ja seejärel "
 "make install"
 
-#: src/amule.cpp:934
+#: src/amule.cpp:935
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Ei suuda siduda porti määratud aadressiga: %s"
 
-#: src/amule.cpp:961
+#: src/amule.cpp:962
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port %u ei ole kasutatav. Sa saad LOWID\n"
 
-#: src/amule.cpp:967
+#: src/amule.cpp:968
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -7128,15 +7166,15 @@ msgstr ""
 "Kasuta netstat programmi kontrollimaks kuna port vabaneb\n"
 "ja proovi amule uuesti käivitada."
 
-#: src/amule.cpp:1118
+#: src/amule.cpp:1119
 msgid "Failed to create OnlineSig File"
 msgstr "Ei suutnud luua OnlineSig Faili"
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1127
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Ei suutnud luua aMule OnlineSig Faili"
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1295
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -7144,32 +7182,34 @@ msgstr ""
 "Tundub et valitud keelelokaat pole sinu karpi installeritud. (Märkus: Ma "
 "proovin seda seada sellest hoolimata)"
 
-#: src/amule.cpp:1303
+#: src/amule.cpp:1304
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "See on aMule %s käivitamise esimene kord"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1306
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "See on testversioon, mida igapäevaselt uuendatakse ja\n"
 
-#: src/amule.cpp:1306
-msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "me ei anna mingit garantiid, et see ei lõhu midagi, ei süüta sinu elamist\n"
-
 #: src/amule.cpp:1307
+msgid "we give no warranty it won't break anything, burn your house,\n"
+msgstr ""
+"me ei anna mingit garantiid, et see ei lõhu midagi, ei süüta sinu elamist\n"
+
+#: src/amule.cpp:1308
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "ega tapa sinu koera. Sellest hoolimata peaks see olema *turvaline* "
 "kasutada.\n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1312
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr "Selles versioonis on turvalisusest johtuvalt muudetud järgmisi seadeid:\n"
+msgstr ""
+"Selles versioonis on turvalisusest johtuvalt muudetud järgmisi seadeid:\n"
 
-#: src/amule.cpp:1312
+#: src/amule.cpp:1313
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -7179,7 +7219,7 @@ msgstr ""
 "* Lisatud on Protokolli Hämamise tugi sisenevatele ja väljuvatele "
 "ühendustele.\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1314
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -7188,7 +7228,7 @@ msgstr ""
 "* Eemaldatud on serverite nimekirja värskendmine teistest serveritest ja "
 "klientidest.\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1315
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -7202,7 +7242,7 @@ msgstr ""
 "On oluline et aMule ei kasutaks võltsservereid, vastasel juhul ei pruugi\n"
 "aMule korralikult toimida."
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1316
 msgid ""
 "\n"
 "\n"
@@ -7214,25 +7254,25 @@ msgstr ""
 "Lisaks sellele taastati ka lehitseja vaikeväärtused. Palun määra vajadusel "
 "lehitsejale uued väärtused.\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1321
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Rohkem informatsiooni, tuge ja uusi programmi versioone leiad meie "
 "kodulehelt,\n"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1322
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "aadressil www.aMule.org või meie IRC kanalis #aMule aadressil irc.freenode."
 "net.\n"
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1324
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr ""
 "Tunne ennast vabalt suvaliste vigade leidmisest teavitamisel aadressil "
 "http://forum.amule.org"
 
-#: src/amule.cpp:1336
+#: src/amule.cpp:1337
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -7240,125 +7280,126 @@ msgstr ""
 "Online Allkirja kataloog on VIGANE!\n"
 " Online Allkirja ei kasutata, kuni parandad vea seadetes."
 
-#: src/amule.cpp:1391
+#: src/amule.cpp:1392
 msgid "Server hostname notified"
 msgstr ""
 
-#: src/amule.cpp:1620
+#: src/amule.cpp:1621
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Kettaruumi eraldamine faili '%s' jaoks ebaõnnestus: %s"
 
-#: src/amule.cpp:1744
+#: src/amule.cpp:1745
 msgid "ERROR: can't open logfile"
 msgstr "VIGA: Ei suutnud avada logifaili"
 
-#: src/amule.cpp:1748
+#: src/amule.cpp:1749
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "HOIATUS: logifail on tühi, miskit on kapitaalselt viltu."
 
-#: src/amule.cpp:1766
+#: src/amule.cpp:1767
 msgid "Log has been reset"
 msgstr "Log on nullitud"
 
-#: src/amule.cpp:1791
+#: src/amule.cpp:1792
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Serveri teade: %s"
 
-#: src/amule.cpp:1829
+#: src/amule.cpp:1830
 msgid "Failed to download the nodes list."
 msgstr "Ebaõnnestus sõlmede nimekirja tõmbamine."
 
-#: src/amule.cpp:1849
+#: src/amule.cpp:1850
 msgid "Failed to open the downloaded version check file"
 msgstr "Ebaõnnestus tõmmatud versiooni kotrollfaili avamine"
 
-#: src/amule.cpp:1852 src/amule.cpp:1862 src/amule.cpp:1868
+#: src/amule.cpp:1853 src/amule.cpp:1863 src/amule.cpp:1869
 msgid "Corrupted version check file"
 msgstr "Versiooni kontrollfail on korrumpeerunud"
 
-#: src/amule.cpp:1878
+#: src/amule.cpp:1879
 msgid "You are using an outdated version of aMule!"
 msgstr "Kasutad aegunud aMule versiooni!"
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1880
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Sinu aMule versioon on %i.%i.%i ja uusim versioon on %li.%li.%li"
 
-#: src/amule.cpp:1880
+#: src/amule.cpp:1881
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Uuema aMule versiooni saad alati aadressilt http://www.amule.org"
 
-#: src/amule.cpp:1882
+#: src/amule.cpp:1883
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "HOAITUS: Sinu aMuled versioon on vananenud: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1887
 msgid "Your copy of aMule is up to date."
 msgstr "Sinu aMule koopia on ajakohane."
 
-#: src/amule.cpp:1893
+#: src/amule.cpp:1894
 msgid "Failed to download the version check file"
 msgstr "Versiooni kontrollfaili tõmbamine ebaõnnestus"
 
-#: src/amule.cpp:1996
+#: src/amule.cpp:2054
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Kasutajaid: %s | Faile: %s"
 
-#: src/amule.cpp:1997
+#: src/amule.cpp:2055
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Kasutajaid: E: %s K: %s | Faile E: %s K: %s"
 
-#: src/amule.cpp:2006
+#: src/amule.cpp:2064
 msgid "No networks selected"
 msgstr "Ühtegi võrku pole valitud"
 
-#: src/amule.cpp:2073
+#: src/amule.cpp:2131
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Ühendatud %s %s"
 
-#: src/amule.cpp:2076
+#: src/amule.cpp:2134
 #, c-format
 msgid "Connecting to %s"
 msgstr "Ühendun %s"
 
-#: src/amule.cpp:2078
+#: src/amule.cpp:2136
 msgid "Disconnected from eD2k"
 msgstr "eD2k ühendus katkestatud."
 
-#: src/amule.cpp:2085
+#: src/amule.cpp:2143
 msgid "Kad started."
 msgstr "Kad käivitatud."
 
-#: src/amule.cpp:2087
+#: src/amule.cpp:2145
 msgid "Kad stopped."
 msgstr "Kad peatatud."
 
-#: src/amule.cpp:2094
+#: src/amule.cpp:2152
 msgid "Connected to Kad (ok)"
 msgstr "Ühendus Kad võrk (ok)"
 
-#: src/amule.cpp:2096
+#: src/amule.cpp:2154
 msgid "Connected to Kad (firewalled)"
 msgstr "Ühendus Kad võrku (tulemüüriga)"
 
-#: src/amule.cpp:2099
+#: src/amule.cpp:2157
 msgid "Disconnected from Kad"
 msgstr "Ühendus Kad võrguga katkestatud"
 
-#: src/amule.cpp:2162
+#: src/amule.cpp:2220
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
-msgstr "Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
+msgstr ""
+"Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
 
-#: src/amule.cpp:2165
+#: src/amule.cpp:2223
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad on seadetes väljalülitatud, ei ühenda."
 
@@ -7373,4 +7414,3 @@ msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
 #: src/FriendList.cpp:222
 msgid "CRITICAL - no client on StartChatSession"
 msgstr ""
-
