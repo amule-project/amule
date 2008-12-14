@@ -173,7 +173,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 				if (pServer) {
 					pServer->SetID(server_ip);
 				} else {
-					AddLogLineM(false,_("theApp->serverlist->GetServerByAddress() returned NULL"));
+					AddDebugLogLineM(false, logServer, wxT("theApp->serverlist->GetServerByAddress() returned NULL"));
 					return;
 				}
 			}
@@ -406,7 +406,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				}
 				
 				if (connectionstate != CS_CONNECTED) {
-					AddDebugLogLineM(true,logServer,wxT("Connected"));
+					AddDebugLogLineM(false,logServer,wxT("Connected"));
 					
 					SetConnectionState(CS_CONNECTED);
 					theApp->OnlineSig();       // Added By Bouc7
@@ -448,7 +448,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				if (CPartFile* file = theApp->downloadqueue->GetFileByID(fileid)) {
 					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_LOCAL_SERVER, (opcode == OP_FOUNDSOURCES_OBFU));
 				} else {
-					AddDebugLogLineM(true, logServer, wxT("Sources received for unknown file: ") + fileid.Encode());			
+					AddDebugLogLineM(false, logServer, wxT("Sources received for unknown file: ") + fileid.Encode());			
 				}
 				break;
 			}
@@ -618,7 +618,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 
 void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 {
-	AddDebugLogLineM(true,logServer,wxT("Trying to connect"));
+	AddDebugLogLineM(false,logServer,wxT("Trying to connect"));
 	
 	if (cur_server){
 		wxASSERT(0);
