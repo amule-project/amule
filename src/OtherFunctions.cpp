@@ -109,17 +109,15 @@ wxString CastItoXBytes( uint64 count )
 {
 
 	if (count < 1024)
-		return wxString::Format( wxT("%.0f "), (float)(uint32)count) + wxPLURAL("byte", "bytes", count) ;
+		return wxString::Format( wxT("%u "), (unsigned)count) + wxPLURAL("byte", "bytes", count) ;
 	else if (count < 1048576)
-		return wxString::Format( wxT("%.0f "), (float)(uint32)count/1024) + _("kB") ;
+		return wxString::Format( wxT("%u "), (unsigned)count >> 10) + _("kB") ;
 	else if (count < 1073741824)
 		return wxString::Format( wxT("%.2f "), (float)(uint32)count/1048576) + _("MB") ;
 	else if (count < 1099511627776LL)
 		return wxString::Format( wxT("%.2f "), (float)((uint32)(count/1024))/1048576) + _("GB") ;
 	else
 		return wxString::Format( wxT("%.3f "), (float)count/1099511627776LL) + _("TB") ;
-
-	return _("ERROR");
 }
 
 
@@ -134,10 +132,8 @@ wxString CastItoIShort(uint64 count)
 		return wxString::Format(wxT("%.2f"),(float)(uint32)count/1000000) + _("M") ;
 	else if (count < 1000000000000LL)
 		return wxString::Format(wxT("%.2f"),(float)((uint32)(count/1000))/1000000) + _("G") ;
-	else if (count < 1000000000000000LL)
+	else
 		return wxString::Format(wxT("%.2f"),(float)count/1000000000000LL) + _("T");
-
-	return _("ERROR");
 }
 
 
@@ -190,8 +186,6 @@ wxString CastSecondsToHM(uint64 count, uint16 msecs)
 			(count % 86400)/3600,
 			(count % 3600)/60) + _("hours");
 	}
-		
-	return _("ERROR");
 }
 
 
