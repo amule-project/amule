@@ -222,6 +222,7 @@ private:
 	wxToolBar *m_wndToolbar;
 	wxTimer *gui_timer;
 	CMuleTrayIcon *m_wndTaskbarNotifier;
+	bool m_TrayIcon;
 	DialogType m_nActiveDialog;
 	bool m_is_safe_state;
 	bool m_BlinkMessages;
