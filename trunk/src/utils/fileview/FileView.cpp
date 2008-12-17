@@ -51,24 +51,18 @@ DECLARE_APP(CFileView);
 // Logging facility from aMule
 enum DebugType {};
 
-namespace CLogger {
+class CLogger
+{
+      public:
+	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/);
+};
 
-	bool IsEnabled(DebugType)
-	{
-		return true;
-	}
-
-	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, const wxString& str)
-	{
-		cout << "Log: " << str << "\n";
-	}
-
-	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str)
-	{
-		cout << "DebugLog: " << str << "\n";
-	}
-
+void CLogger::AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/)
+{
+	cout << "DebugLog: " << str << "\n";
 }
+
+CLogger theLogger;
 
 
 IMPLEMENT_APP(CFileView);
