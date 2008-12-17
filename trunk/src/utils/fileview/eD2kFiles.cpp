@@ -64,7 +64,7 @@ static wxString VersionInfo(uint8_t version, uint8_t type)
 			verStr = wxT("MET_HEADER_WITH_LARGEFILES");
 		}
 	}
-	return verStr + wxT(" (")+ hex(version) + wxT(")");
+	return hex(version) + wxT(' ') + verStr;
 };
 
 void DecodePreferencesDat(const CFileDataIO& file)
