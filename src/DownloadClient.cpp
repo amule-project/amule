@@ -749,7 +749,6 @@ void CUpDownClient::SendBlockRequests()
 						bHasLongBlocks = true;
 						if (!SupportsLargeFiles()){
 							// Requesting a large block from a client that doesn't support large files?
-							wxASSERT( false );
 							if (!GetSentCancelTransfer()){
 								CPacket* cancel_packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 								theStats::AddUpOverheadFileRequest(cancel_packet->GetPacketSize());
