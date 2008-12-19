@@ -160,6 +160,8 @@ typedef struct {
 	bool m_login_ok;
 
     id delegate;
+	
+	bool m_error;
 }
 
 + (id)remoteConnection;
@@ -170,6 +172,8 @@ typedef struct {
 - (void)sendLogin:(NSString *) password;
 
 - (void)sendPacket:(ECPacket *) packet;
+
+@property (readonly) bool error;
 
 - (void)setDelegate:(id) val;
 - (id)delegate;

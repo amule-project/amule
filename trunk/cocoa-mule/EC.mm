@@ -530,6 +530,8 @@
 
 @implementation ECRemoteConnection
 
+@synthesize error = m_error;
+
 + (id)remoteConnection {
 	ECRemoteConnection *p = [[ECRemoteConnection alloc] init];
 	
@@ -562,9 +564,11 @@
 
 
 - (void)connectToAddress:(NSString *) hostname withPort:(int)trgport {
+	m_error = false;
+	
 //	NSHost *host = [NSHost hostWithName:hostname];
 	NSHost *host = [NSHost hostWithAddress:hostname];
-	
+
 	[NSStream getStreamsToHost:host port:trgport inputStream:&m_istream outputStream:&m_ostream];
 
 	[m_istream retain];
@@ -610,6 +614,18 @@
 		m_txbuf = (NSData *)data;
 		[m_txbuf retain];
 	}
+	NSStreamStatus stream_status = [m_ostream streamStatus];
+	switch ( stream_status ) {
+		case NSStreamStatusNotOpen:
+		case NSStreamStatusClosed:
+		case NSStreamStatusError:
+			NSLog(@"[EC] error in output stream\n");
+			m_error = true;
+			break;
+		default:;
+	}
+//	NSLog(@"[EC] status in output stream=%d\n", stream_status);
+
 }
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {

@@ -1,18 +1,12 @@
 #import "AppController.h"
 
-#import "EC.h"
+#include <unistd.h>
 
 @implementation AppController
 
 - (IBAction)show_Networks:(id)sender {
 	[m_main_tabview selectTabViewItemAtIndex: 2];
 	
-	m_connection = [ECRemoteConnection remoteConnection];
-	[m_connection retain];
-	
-	[m_connection connectToAddress:@"127.0.0.1" withPort:4712];
-
-	[m_connection sendLogin:@"123456"];
 
 //	ECLoginPacket *p = [ECLoginPacket loginPacket:@"123456" withVersion:@"0.1"];
 //	NSOutputStream *stream = [NSOutputStream outputStreamToMemory];
@@ -53,6 +47,101 @@
 }
 
 -(void)awakeFromNib {
+	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
+	NSString *mode = [args stringForKey:@"mode"];
+	NSLog(@"amule controller started, mode = [%@]\n", mode);
+	
+	NSString *targetaddr = 0;
+	int targetport = 0;
+	
+	if ( (mode != nil) && ([mode compare:@"remote"] == NSOrderedSame) ) {
+		targetaddr = @"127.0.0.1";
+		targetport = 4712;
+		NSLog(@"Remote mode selected, target=%@:%d\n", targetaddr, targetport);
+	} else {
+		NSLog(@"Local mode selected - starting daemon\n");
+		if ( [self startDaemon] == -1 ) {
+			NSRunAlertPanel(@"Daemon startup error", 
+							@"Unable to start core daemon (amuled)",
+							@"OK", nil,nil);
+			exit(-1);
+		}
+	}
+	
+	m_connection = [ECRemoteConnection remoteConnection];
+	[m_connection retain];
+	m_data = [amuleData initWithConnection:m_connection];
+	[m_data retain];
+
+	//
+	// daemon (either local or remote) must be running by now
+	//
+	// try to connect 3 times, hopefully giving daemon enough
+	// time to start listening for EC
+	//
+	for(int i = 0; i < 3; i++) {
+		sleep(1);
+		[m_connection connectToAddress:targetaddr withPort:targetport];
+		[m_connection sendLogin:@"123456"];
+		if ( !m_connection.error ) {
+			break;
+		}
+	}
+	if ( m_connection.error ) {
+		NSRunAlertPanel(@"Connection error", 
+                        @"Unable to start communication with daemon",
+                        @"OK", nil,nil);
+		exit(-1);
+	}
+
+}
+
+- (int)startDaemon {
+	int pid = fork();
+	if ( pid == -1 ) {
+		// fork failed
+		return -1;
+	} else if ( pid > 0 ) {
+		sleep(2);
+		NSLog(@"Parent running, calling waitpid for pid %d\n", pid);
+		// parent
+		int status;
+		switch ( waitpid(pid, &status, WNOHANG) ) {
+			case -1:
+				NSLog(@"waitpid() call failed with code %d\n", errno);
+				break;
+			case 0:
+				NSLog(@"Daemon running on pid %d status %d\n", pid, status);
+				m_daemon_pid = pid;
+				break;
+			default:
+				//NSLog(@"waitpid returned pid=%d status=%x\n", pid, status);
+				if ( WIFEXITED(status) ) {
+					int exit_code = WEXITSTATUS(status);
+					NSLog(@"Daemon exec failed - child process exited with status %d", exit_code);
+					return -1;
+				} else if ( WIFSIGNALED(status) ) {
+					int sig_num = WTERMSIG(status);
+					NSLog(@"Child process terminated on signal %d", sig_num);
+					return -1;
+				} else if ( WIFSTOPPED(status) ) {
+					NSLog(@"Child process stopped. Not supposed to happen.");
+					return -1;
+				} else {
+					NSLog(@"Should not get here: child status unknown = %x", status);
+				}
+				break;
+		}
+		return 0;
+	} else {
+		// child
+		NSLog(@"Child running, calling execlp\n");
+		//execlp("/usr/bin/touch", "/usr/bin/touch", "xxxx", 0);
+		execlp("amuled", 0);
+		NSLog(@"execlp() failed\n");
+		exit(-1);
+	}
+	return 0;
 }
 
 @end
