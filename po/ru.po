@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-03 19:42+0100\n"
+"POT-Creation-Date: 2008-12-20 13:23+0100\n"
 "PO-Revision-Date: 2008-12-05 14:00+0300\n"
 "Last-Translator: User294\n"
 "Language-Team: \n"
@@ -24,7 +24,8 @@ msgstr ""
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -75,22 +76,22 @@ msgid "Complete"
 msgstr "Завершён"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3878
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:700
 msgid "Paused"
 msgstr "Приостановлен"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3881
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:699
 msgid "Erroneous"
 msgstr "Ошибочный"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3888
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:698
 msgid "Downloading"
 msgstr "Загружается"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3890
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:697
 msgid "Waiting"
 msgstr "Ожидает"
 
@@ -188,18 +189,26 @@ msgstr "Запрошено: %s\n"
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
-msgstr[1] "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
-msgstr[2] "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
+msgstr[1] ""
+"Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
+msgstr[2] ""
+"Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
 
 #: src/BaseClient.cpp:1967
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
-msgstr[1] "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
-msgstr[2] "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
+msgstr[1] ""
+"Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
+msgstr[2] ""
+"Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
 
 #: src/BaseClient.cpp:1970
 msgid "Requested unknown file"
@@ -722,7 +731,8 @@ msgstr "Генерировать картинку со статистикой п
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr "Укажите здесь каталог, в который вы хотите сохранять картинку со статистикой"
+msgstr ""
+"Укажите здесь каталог, в который вы хотите сохранять картинку со статистикой"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
@@ -742,7 +752,8 @@ msgstr "Введите здесь адрес вашего FTP сервера"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr "Введите здесь путь для сохранения картинки со статистикой на FTP сервере"
+msgstr ""
+"Введите здесь путь для сохранения картинки со статистикой на FTP сервере"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -1578,7 +1589,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Не удалось найти выбранный броузер!"
 
 #: src/Preferences.cpp:1679
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP порт не может быть выше 65532, так как UDP сокет - TCP+3"
 
 #: src/Preferences.cpp:1680
@@ -2832,7 +2844,8 @@ msgstr "Пользователь %s (%u) запросил список публ�
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Пользователь %s (%u) запросил список публикуемых каталогов из каталога %s -> "
 "Принято"
@@ -2857,7 +2870,8 @@ msgstr "Пользователь %s (%u) отправил незапрошенн
 #: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr "Пользователь %s (%u) отправил список публикуемых каталогов из каталога %s"
+msgstr ""
+"Пользователь %s (%u) отправил список публикуемых каталогов из каталога %s"
 
 #: src/ClientTCPSocket.cpp:1032
 #, c-format
@@ -2867,12 +2881,14 @@ msgstr "Пользователь %s (%u) закончил передачу сп�
 #: src/ClientTCPSocket.cpp:1037
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "Пользователь %s (%u) отправил список публикуемых файлов, который не нужен."
+msgstr ""
+"Пользователь %s (%u) отправил список публикуемых файлов, который не нужен."
 
 #: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "Пользователь %s (%u) отказал в доступе к списку публикуемых файлов/папок"
+msgstr ""
+"Пользователь %s (%u) отказал в доступе к списку публикуемых файлов/папок"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2896,7 +2912,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Вы уверены что хотите загрузить новый файл nodes.dat?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
 msgstr "Это удалит используемые в данный момент узлы и перезапустит Kademlia."
 
 #: src/KadDlg.cpp:198
@@ -2972,9 +2989,8 @@ msgstr "Подключиться к удалённому aMule"
 msgid "Connection failed "
 msgstr "Попытка подключиться не удалась "
 
-#: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:849
-#: src/amule.cpp:970 src/amule.cpp:1337
+#: src/amule-remote-gui.cpp:289 src/amule.cpp:849 src/amule.cpp:970
+#: src/amule.cpp:1337
 msgid "ERROR"
 msgstr "ОШИБКА"
 
@@ -3005,7 +3021,7 @@ msgid "Transferred"
 msgstr "Передано"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
+#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:696
 msgid "Completed"
 msgstr "Завершено"
 
@@ -3127,7 +3143,7 @@ msgid "Swap to this file"
 msgstr "Переключить на этот файл"
 
 #: src/DownloadListCtrl.cpp:1306 src/DownloadListCtrl.cpp:1609
-#: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
+#: src/OtherFunctions.cpp:145 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1758 src/muuli_wdr.cpp:1771
 #: src/muuli_wdr.cpp:1784 src/muuli_wdr.cpp:2236 src/muuli_wdr.cpp:2245
 #: src/ClientListCtrl.cpp:634 src/ClientListCtrl.cpp:702
@@ -3201,7 +3217,8 @@ msgstr "ОШИБКА: неправильная версия файла part.met:
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr "ОШИБКА: %s (%s) поврежден (неверное число тегов), невозможно открыть файл."
+msgstr ""
+"ОШИБКА: %s (%s) поврежден (неверное число тегов), невозможно открыть файл."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3360,7 +3377,7 @@ msgstr "Выделяется место"
 msgid "Insufficient disk space"
 msgstr "Недостаточно места на диске"
 
-#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:701
 msgid "Stopped"
 msgstr "Остановлен"
 
@@ -3490,9 +3507,12 @@ msgstr "%s (%s:%i) вероятно заполнен."
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
-msgstr[0] "Автоматическое соединение с сервером будет предпринято через %d секунду"
-msgstr[1] "Автоматическое соединение с сервером будет предпринято через %d секунды"
-msgstr[2] "Автоматическое соединение с сервером будет предпринято через %d секунд"
+msgstr[0] ""
+"Автоматическое соединение с сервером будет предпринято через %d секунду"
+msgstr[1] ""
+"Автоматическое соединение с сервером будет предпринято через %d секунды"
+msgstr[2] ""
+"Автоматическое соединение с сервером будет предпринято через %d секунд"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -3735,7 +3755,8 @@ msgstr "Показать краткую информацию о статусе."
 
 #: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr "Показать состояние соединения, такущие скорости отдачи/закачки, и т.д.\n"
+msgstr ""
+"Показать состояние соединения, такущие скорости отдачи/закачки, и т.д.\n"
 
 #: src/TextClient.cpp:845
 msgid "Show full statistics tree."
@@ -4090,10 +4111,6 @@ msgstr ""
 "Устаревшая команда, и возможно в будущем будет удалена.\n"
 "Используйте вместо нее '%s'.\n"
 
-#: src/ServerSocket.cpp:176
-msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
-
 #: src/ServerSocket.cpp:259
 #, c-format
 msgid "ERROR: %s (%s) - %s"
@@ -4201,38 +4218,38 @@ msgstr "Требуется подтверждение"
 msgid "All others"
 msgstr "Все остальные"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:701
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:695
 msgid "Incomplete"
 msgstr "Незавершенные"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:714
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:708
 msgid "Active"
 msgstr "Активный"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:708
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:702
 msgid "Video"
 msgstr "Видео"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:228
-#: src/OtherFunctions.cpp:709 src/muuli_wdr.cpp:231
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:222
+#: src/OtherFunctions.cpp:703 src/muuli_wdr.cpp:231
 msgid "Audio"
 msgstr "Аудио"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:710
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:704
 msgid "Archive"
 msgstr "Архив"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:242
-#: src/OtherFunctions.cpp:711 src/muuli_wdr.cpp:232
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:236
+#: src/OtherFunctions.cpp:705 src/muuli_wdr.cpp:232
 msgid "CD-Images"
 msgstr "CD-образ"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:249
-#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:233
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:243
+#: src/OtherFunctions.cpp:706 src/muuli_wdr.cpp:233
 msgid "Pictures"
 msgstr "Изображение"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:713
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:707
 msgid "Text"
 msgstr "Текст"
 
@@ -4375,7 +4392,8 @@ msgid ""
 msgstr "Укажите каталог для поиска незавершенных загрузок."
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Вы хотите, чтобы исходные файлы импортированных закачек были удалены?"
 
 #: src/PartFileConvert.cpp:702
@@ -4415,98 +4433,98 @@ msgstr "ГБ"
 msgid "TB"
 msgstr "ТБ"
 
-#: src/OtherFunctions.cpp:132
+#: src/OtherFunctions.cpp:130
 msgid "k"
 msgstr "К"
 
-#: src/OtherFunctions.cpp:134
+#: src/OtherFunctions.cpp:132
 msgid "M"
 msgstr "М"
 
-#: src/OtherFunctions.cpp:136
+#: src/OtherFunctions.cpp:134
 msgid "G"
 msgstr "Г"
 
-#: src/OtherFunctions.cpp:138
+#: src/OtherFunctions.cpp:136
 msgid "T"
 msgstr "Т"
 
-#: src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:143
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "Б/с"
 msgstr[1] "байт/сек"
 msgstr[2] "байт/сек"
 
-#: src/OtherFunctions.cpp:151
+#: src/OtherFunctions.cpp:147
 msgid "MB/s"
 msgstr "МБ/с"
 
-#: src/OtherFunctions.cpp:162 src/OtherFunctions.cpp:166
+#: src/OtherFunctions.cpp:158 src/OtherFunctions.cpp:162
 msgid "secs"
 msgstr "с"
 
-#: src/OtherFunctions.cpp:174
+#: src/OtherFunctions.cpp:170
 msgid "mins"
 msgstr "м"
 
-#: src/OtherFunctions.cpp:181 src/OtherFunctions.cpp:191
+#: src/OtherFunctions.cpp:177 src/OtherFunctions.cpp:187
 msgid "hours"
 msgstr "ч"
 
-#: src/OtherFunctions.cpp:189
+#: src/OtherFunctions.cpp:185
 msgid "Days"
 msgstr "д"
 
-#: src/OtherFunctions.cpp:221 src/muuli_wdr.cpp:236
+#: src/OtherFunctions.cpp:215 src/muuli_wdr.cpp:236
 msgid "Videos"
 msgstr "Видео"
 
-#: src/OtherFunctions.cpp:235 src/muuli_wdr.cpp:230
+#: src/OtherFunctions.cpp:229 src/muuli_wdr.cpp:230
 msgid "Archives"
 msgstr "Архив"
 
-#: src/OtherFunctions.cpp:256 src/muuli_wdr.cpp:235
+#: src/OtherFunctions.cpp:250 src/muuli_wdr.cpp:235
 msgid "Texts"
 msgstr "Текст"
 
-#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:234
+#: src/OtherFunctions.cpp:257 src/muuli_wdr.cpp:234
 msgid "Programs"
 msgstr "Программа"
 
-#: src/OtherFunctions.cpp:270 src/muuli_wdr.cpp:229
+#: src/OtherFunctions.cpp:264 src/muuli_wdr.cpp:229
 msgid "Any"
 msgstr "Любой"
 
-#: src/OtherFunctions.cpp:290 src/OtherFunctions.cpp:296 src/muuli_wdr.cpp:911
+#: src/OtherFunctions.cpp:284 src/OtherFunctions.cpp:290 src/muuli_wdr.cpp:911
 msgid "Not rated"
 msgstr "Без оценки"
 
-#: src/OtherFunctions.cpp:291 src/muuli_wdr.cpp:912
+#: src/OtherFunctions.cpp:285 src/muuli_wdr.cpp:912
 msgid "Invalid / Corrupt / Fake"
 msgstr "Ошибочный / Повреждённый / Фальшивка"
 
-#: src/OtherFunctions.cpp:292 src/muuli_wdr.cpp:913
+#: src/OtherFunctions.cpp:286 src/muuli_wdr.cpp:913
 msgid "Poor"
 msgstr "Плохой"
 
-#: src/OtherFunctions.cpp:293 src/muuli_wdr.cpp:914
+#: src/OtherFunctions.cpp:287 src/muuli_wdr.cpp:914
 msgid "Fair"
 msgstr "Очень хороший"
 
-#: src/OtherFunctions.cpp:294 src/muuli_wdr.cpp:915
+#: src/OtherFunctions.cpp:288 src/muuli_wdr.cpp:915
 msgid "Good"
 msgstr "Хороший"
 
-#: src/OtherFunctions.cpp:295 src/muuli_wdr.cpp:916
+#: src/OtherFunctions.cpp:289 src/muuli_wdr.cpp:916
 msgid "Excellent"
 msgstr "Великолепный"
 
-#: src/OtherFunctions.cpp:699
+#: src/OtherFunctions.cpp:693
 msgid "all"
 msgstr "все"
 
-#: src/OtherFunctions.cpp:700
+#: src/OtherFunctions.cpp:694
 msgid "all others"
 msgstr "все остальные"
 
@@ -4563,7 +4581,8 @@ msgid "Commit"
 msgstr "Добавить"
 
 #: src/muuli_wdr.cpp:82
-msgid "Click here to add the eD2k link in the text control to your download queue."
+msgid ""
+"Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
 "Нажмите сюда чтобы добавить eD2k ссылку из текстового поля в очередь "
 "загрузок."
@@ -5402,7 +5421,8 @@ msgstr "Проверка дискового пространства"
 
 #: src/muuli_wdr.cpp:2059
 msgid "Select this if you want aMule to check your disk space"
-msgstr "Отметьте это если  хотите чтобы aMule проверял наличие свободного места"
+msgstr ""
+"Отметьте это если  хотите чтобы aMule проверял наличие свободного места"
 
 #: src/muuli_wdr.cpp:2066
 msgid "Min disk space:"
@@ -5420,7 +5440,8 @@ msgstr "Заранее выделять место для новых фалов"
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
-msgstr "Сразу выделяет место под весь файл. Такоим образом уменьшается фрагментация"
+msgstr ""
+"Сразу выделяет место под весь файл. Такоим образом уменьшается фрагментация"
 
 #: src/muuli_wdr.cpp:2098
 msgid "Incoming"
@@ -5436,7 +5457,8 @@ msgstr "Опубликованные"
 
 #: src/muuli_wdr.cpp:2123
 msgid "(Right click on folder icon for recursive share)"
-msgstr "(кликните правой кнопкой на значке каталога для рекурсивной публикации)"
+msgstr ""
+"(кликните правой кнопкой на значке каталога для рекурсивной публикации)"
 
 #: src/muuli_wdr.cpp:2130
 msgid "Share hidden files"
@@ -5942,7 +5964,8 @@ msgid "Filter clients"
 msgstr "Фильтровать клиентов."
 
 #: src/muuli_wdr.cpp:3140
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Включает фильтрацию IP клиентов в соответствии с файлом ~/.aMule/ipfilter."
 "dat."
@@ -5952,7 +5975,8 @@ msgid "Filter servers"
 msgstr "Фильтровать сервера"
 
 #: src/muuli_wdr.cpp:3145
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Включает фильтрацию IP серверов в соответствии с файлом ~/.aMule/ipfilter."
 "dat."
@@ -6045,7 +6069,8 @@ msgid "Online Signature Directory:"
 msgstr "Каталог Online-подписи:"
 
 #: src/muuli_wdr.cpp:3250
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr "Кликните здесь, чтобы выбрать каталок для файлов Online-подписи."
 
 #: src/muuli_wdr.cpp:3269 src/muuli_wdr.cpp:3308 src/muuli_wdr.cpp:3490
@@ -6255,7 +6280,8 @@ msgid "You must specify a path for the category!"
 msgstr "Вы должны указать путь для категории!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Не удалось создать каталог для загружаемых файлов категории. Укажите верный "
 "путь."
@@ -6881,7 +6907,8 @@ msgstr "Сервер добавлен: сервер [%s:%d] использует
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
-msgstr "Вы соединены с сервером, который вы пытаетесь удалить. Отключитесь от него."
+msgstr ""
+"Вы соединены с сервером, который вы пытаетесь удалить. Отключитесь от него."
 
 #: src/ServerList.cpp:628
 msgid "Failed to save server.met!"
@@ -6929,7 +6956,8 @@ msgstr ""
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "Локальный сервер отфильтрован через IPFilters. Подключаюсь к другому серверу!"
+msgstr ""
+"Локальный сервер отфильтрован через IPFilters. Подключаюсь к другому серверу!"
 
 #: src/UserEvents.cpp:132
 #, c-format
@@ -7035,7 +7063,8 @@ msgstr ""
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr "Эти опции были изменены в данном релизе по соображениям безопасности:\n"
+msgstr ""
+"Эти опции были изменены в данном релизе по соображениям безопасности:\n"
 
 #: src/amule.cpp:1313
 msgid ""
@@ -7147,7 +7176,8 @@ msgstr "Вы используете устаревшую версию aMule!"
 #: src/amule.cpp:1903
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-msgstr "Версия вашего aMule - %i.%i.%i, тогда как актуальная версия - %li.%li.%li"
+msgstr ""
+"Версия вашего aMule - %i.%i.%i, тогда как актуальная версия - %li.%li.%li"
 
 #: src/amule.cpp:1904
 msgid "The latest version can always be found at http://www.amule.org"
@@ -7238,3 +7268,5 @@ msgstr "Не удалось открыть список друзей 'emfriends.
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Не удалось открыть список друзей 'emfriends.met' для записи!"
 
+#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
+#~ msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
