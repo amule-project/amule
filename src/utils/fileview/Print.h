@@ -36,6 +36,16 @@
 #include <time.h>
 #include <iostream>
 
+#if defined __GNUC__ && defined __GNUC_MINOR__
+#	if __GNUC__ > 3 || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 2))
+#		define __attribute_always_inline__	__attribute__((__always_inline__))
+#	else
+#		define __attrbiute_always_inline__
+#	endif
+#else
+#	define __attribute_always_inline__
+#endif
+
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -54,7 +64,7 @@ inline SDMODE GetStringsMode()	{ return g_stringDecodeMode; }
 
 wxString MakePrintableString(const wxString& str);
 
-inline std::ostream& operator<<(std::ostream& x, const wxString& y)		{ return x << (const char *)unicode2char(y); }
+inline __attribute_always_inline__ std::ostream& operator<<(std::ostream& x, const wxString& y)		{ return x << (const char *)unicode2char(y); }
 inline std::ostream& operator<<(std::ostream& x, const Kademlia::CUInt128& y)	{ return x << y.ToHexString(); }
 inline std::ostream& operator<<(std::ostream& x, const CMD4Hash& y)		{ return x << y.Encode(); }
 
