@@ -234,7 +234,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 				// over the limit, drop the packet but do nothing else
 				if (!it->m_dbgLogged) {
 					it->m_dbgLogged = true;
-					AddDebugLogLineM(false, logKadPacketTracking, wxString::Format(wxT("Request flood detected for opcode 0x%X (0x%X) from IP "), opcode, dbgOrgOpcode) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(" - Droping packets with this opcode"));
+					AddDebugLogLineM(false, logKadPacketTracking, wxString::Format(wxT("Request flood detected for opcode 0x%X (0x%X) from IP "), opcode, dbgOrgOpcode) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(" - Dropping packets with this opcode"));
 				}
 				return false; // drop packet
 			} else {
