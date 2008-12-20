@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-03 19:42+0100\n"
-"PO-Revision-Date: 2008-12-04 18:17+0200\n"
+"PO-Revision-Date: 2008-12-18 21:15+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -756,7 +756,7 @@ msgstr "FTP värskendamise intervall minutites"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:296
 msgid "Validate"
-msgstr "Kinnita/kontrolli"
+msgstr "Kinnita"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
@@ -790,13 +790,13 @@ msgstr "Suurim Tõmbamine alates wxCas käivitamisest"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr "Absoluutselt suurim Tõmbamine wxCas eelmistest käivitamistest"
+msgstr "Absoluutselt suurim varasem tõmbamine"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:138
 #: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:2749
 #: src/muuli_wdr.cpp:2784
 msgid "Reset"
-msgstr "Algväärtusta"
+msgstr "Unusta"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
@@ -838,7 +838,7 @@ msgstr "Automaatne värskendamine on käivitatud"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:353
 msgid "Save Statistics Image"
-msgstr "Salvesta Statistika"
+msgstr "Statistika kuvandi salvestamine"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:391
 msgid "aMule Online Statistics"
@@ -894,7 +894,7 @@ msgstr "aMule ühendub..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:945
 msgid "Oh Oh, aMule status is unknown..."
-msgstr "Oh Oh, aMule olek on teadmata..."
+msgstr "Oh Oh, aMule hetkeolek on teadmata..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1016
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
@@ -959,7 +959,7 @@ msgstr " koos "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1094
 msgid "Total Download: "
-msgstr "Kokku Tõmbamisi: "
+msgstr "Kokku tõmmatud: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1096
 #: src/utils/wxCas/src/wxcasframe.cpp:1107
@@ -968,15 +968,15 @@ msgstr ", Saatmine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1105
 msgid "Session Download: "
-msgstr "Seansil Tõmmatud: "
+msgstr "Seansil tõmmatud: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1116
 msgid "Download: "
-msgstr "Tõmbamine: "
+msgstr "Tõmban: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid " kB/s, Upload: "
-msgstr " kB/s, Saatmine: "
+msgstr " kB/s, Saadan: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " kB/s"
@@ -984,7 +984,7 @@ msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1128
 msgid "Sharing: "
-msgstr "Jagamine: "
+msgstr "Jagatud: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid " file(s), Clients on queue: "
