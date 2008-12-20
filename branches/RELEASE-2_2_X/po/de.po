@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-03 19:42+0100\n"
+"POT-Creation-Date: 2008-12-20 13:23+0100\n"
 "PO-Revision-Date: 2008-12-06 09:33+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <de@li.org>\n"
@@ -70,22 +70,22 @@ msgid "Complete"
 msgstr "Vollständig"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3878
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:700
 msgid "Paused"
 msgstr "Pausiert"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3881
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:699
 msgid "Erroneous"
 msgstr "Fehlerhaft"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3888
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:698
 msgid "Downloading"
 msgstr "Herunterladen"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3890
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:697
 msgid "Waiting"
 msgstr "Warten"
 
@@ -2993,9 +2993,8 @@ msgstr "Verbinde mit entferntem aMule"
 msgid "Connection failed "
 msgstr "Verbindung fehlgeschlagen "
 
-#: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:849
-#: src/amule.cpp:970 src/amule.cpp:1337
+#: src/amule-remote-gui.cpp:289 src/amule.cpp:849 src/amule.cpp:970
+#: src/amule.cpp:1337
 msgid "ERROR"
 msgstr "FEHLER"
 
@@ -3026,7 +3025,7 @@ msgid "Transferred"
 msgstr "Übertragen"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
+#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:696
 msgid "Completed"
 msgstr "Fertiggestellt"
 
@@ -3148,7 +3147,7 @@ msgid "Swap to this file"
 msgstr "Zu dieser Datei verschieben"
 
 #: src/DownloadListCtrl.cpp:1306 src/DownloadListCtrl.cpp:1609
-#: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
+#: src/OtherFunctions.cpp:145 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1758 src/muuli_wdr.cpp:1771
 #: src/muuli_wdr.cpp:1784 src/muuli_wdr.cpp:2236 src/muuli_wdr.cpp:2245
 #: src/ClientListCtrl.cpp:634 src/ClientListCtrl.cpp:702
@@ -3380,7 +3379,7 @@ msgstr "Reserviere"
 msgid "Insufficient disk space"
 msgstr "Ungenügender Festplattenplatz"
 
-#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:701
 msgid "Stopped"
 msgstr "Angehalten"
 
@@ -4111,10 +4110,6 @@ msgstr ""
 "Das ist ein veralteter Befehl und könnte in der Zukunft enfernt werden.\n"
 "Nutze stattdessen '%s'.\n"
 
-#: src/ServerSocket.cpp:176
-msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
-
 #: src/ServerSocket.cpp:259
 #, c-format
 msgid "ERROR: %s (%s) - %s"
@@ -4222,38 +4217,38 @@ msgstr "Bestätigung erforderlich"
 msgid "All others"
 msgstr "Alle anderen"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:701
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:695
 msgid "Incomplete"
 msgstr "Unvollständig"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:714
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:708
 msgid "Active"
 msgstr "Aktiv"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:708
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:702
 msgid "Video"
 msgstr "Video"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:228
-#: src/OtherFunctions.cpp:709 src/muuli_wdr.cpp:231
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:222
+#: src/OtherFunctions.cpp:703 src/muuli_wdr.cpp:231
 msgid "Audio"
 msgstr "Audio"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:710
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:704
 msgid "Archive"
 msgstr "Archiv"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:242
-#: src/OtherFunctions.cpp:711 src/muuli_wdr.cpp:232
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:236
+#: src/OtherFunctions.cpp:705 src/muuli_wdr.cpp:232
 msgid "CD-Images"
 msgstr "CD-Abbilder"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:249
-#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:233
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:243
+#: src/OtherFunctions.cpp:706 src/muuli_wdr.cpp:233
 msgid "Pictures"
 msgstr "Bilder"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:713
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:707
 msgid "Text"
 msgstr "Text"
 
@@ -4433,97 +4428,97 @@ msgstr "GB"
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:132
+#: src/OtherFunctions.cpp:130
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:134
+#: src/OtherFunctions.cpp:132
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:136
+#: src/OtherFunctions.cpp:134
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:138
+#: src/OtherFunctions.cpp:136
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:143
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "Byte/Sek"
 msgstr[1] "Bytes/Sek"
 
-#: src/OtherFunctions.cpp:151
+#: src/OtherFunctions.cpp:147
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:162 src/OtherFunctions.cpp:166
+#: src/OtherFunctions.cpp:158 src/OtherFunctions.cpp:162
 msgid "secs"
 msgstr "Sekunden"
 
-#: src/OtherFunctions.cpp:174
+#: src/OtherFunctions.cpp:170
 msgid "mins"
 msgstr "Minuten"
 
-#: src/OtherFunctions.cpp:181 src/OtherFunctions.cpp:191
+#: src/OtherFunctions.cpp:177 src/OtherFunctions.cpp:187
 msgid "hours"
 msgstr "Stunden"
 
-#: src/OtherFunctions.cpp:189
+#: src/OtherFunctions.cpp:185
 msgid "Days"
 msgstr "Tage"
 
-#: src/OtherFunctions.cpp:221 src/muuli_wdr.cpp:236
+#: src/OtherFunctions.cpp:215 src/muuli_wdr.cpp:236
 msgid "Videos"
 msgstr "Videos"
 
-#: src/OtherFunctions.cpp:235 src/muuli_wdr.cpp:230
+#: src/OtherFunctions.cpp:229 src/muuli_wdr.cpp:230
 msgid "Archives"
 msgstr "Archive"
 
-#: src/OtherFunctions.cpp:256 src/muuli_wdr.cpp:235
+#: src/OtherFunctions.cpp:250 src/muuli_wdr.cpp:235
 msgid "Texts"
 msgstr "Texte"
 
-#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:234
+#: src/OtherFunctions.cpp:257 src/muuli_wdr.cpp:234
 msgid "Programs"
 msgstr "Programme"
 
-#: src/OtherFunctions.cpp:270 src/muuli_wdr.cpp:229
+#: src/OtherFunctions.cpp:264 src/muuli_wdr.cpp:229
 msgid "Any"
 msgstr "Jeder"
 
-#: src/OtherFunctions.cpp:290 src/OtherFunctions.cpp:296 src/muuli_wdr.cpp:911
+#: src/OtherFunctions.cpp:284 src/OtherFunctions.cpp:290 src/muuli_wdr.cpp:911
 msgid "Not rated"
 msgstr "Nicht bewertet"
 
-#: src/OtherFunctions.cpp:291 src/muuli_wdr.cpp:912
+#: src/OtherFunctions.cpp:285 src/muuli_wdr.cpp:912
 msgid "Invalid / Corrupt / Fake"
 msgstr "Ungültig / fehlerhaft / Fälschung"
 
-#: src/OtherFunctions.cpp:292 src/muuli_wdr.cpp:913
+#: src/OtherFunctions.cpp:286 src/muuli_wdr.cpp:913
 msgid "Poor"
 msgstr "Schlecht"
 
-#: src/OtherFunctions.cpp:293 src/muuli_wdr.cpp:914
+#: src/OtherFunctions.cpp:287 src/muuli_wdr.cpp:914
 msgid "Fair"
 msgstr "Ordentlich"
 
-#: src/OtherFunctions.cpp:294 src/muuli_wdr.cpp:915
+#: src/OtherFunctions.cpp:288 src/muuli_wdr.cpp:915
 msgid "Good"
 msgstr "Gut"
 
-#: src/OtherFunctions.cpp:295 src/muuli_wdr.cpp:916
+#: src/OtherFunctions.cpp:289 src/muuli_wdr.cpp:916
 msgid "Excellent"
 msgstr "Überragend"
 
-#: src/OtherFunctions.cpp:699
+#: src/OtherFunctions.cpp:693
 msgid "all"
 msgstr "alle"
 
-#: src/OtherFunctions.cpp:700
+#: src/OtherFunctions.cpp:694
 msgid "all others"
 msgstr "alle anderen"
 
@@ -7283,6 +7278,9 @@ msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht lesen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht schreiben!"
+
+#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
+#~ msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
 
 #~ msgid "Message Filter"
 #~ msgstr "Nachrichtenfilter"

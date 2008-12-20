@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-03 19:42+0100\n"
+"POT-Creation-Date: 2008-12-20 13:23+0100\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -71,22 +71,22 @@ msgid "Complete"
 msgstr "E kompletuar"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3878
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:700
 msgid "Paused"
 msgstr "Ne pritje"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3881
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:699
 msgid "Erroneous"
 msgstr "E gabuar"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3888
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:698
 msgid "Downloading"
 msgstr "Duke shkarkuar"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3890
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:697
 msgid "Waiting"
 msgstr "Duke pritur"
 
@@ -2971,9 +2971,8 @@ msgstr "Lidhu me Remote te amule"
 msgid "Connection failed "
 msgstr "Lidhja deshtoi "
 
-#: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
-#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:849
-#: src/amule.cpp:970 src/amule.cpp:1337
+#: src/amule-remote-gui.cpp:289 src/amule.cpp:849 src/amule.cpp:970
+#: src/amule.cpp:1337
 msgid "ERROR"
 msgstr ""
 
@@ -3002,7 +3001,7 @@ msgid "Transferred"
 msgstr "Te transferuara"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
+#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:696
 msgid "Completed"
 msgstr "Te kompletuara"
 
@@ -3124,7 +3123,7 @@ msgid "Swap to this file"
 msgstr "Sposto tek ky fail"
 
 #: src/DownloadListCtrl.cpp:1306 src/DownloadListCtrl.cpp:1609
-#: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
+#: src/OtherFunctions.cpp:145 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1758 src/muuli_wdr.cpp:1771
 #: src/muuli_wdr.cpp:1784 src/muuli_wdr.cpp:2236 src/muuli_wdr.cpp:2245
 #: src/ClientListCtrl.cpp:634 src/ClientListCtrl.cpp:702
@@ -3345,7 +3344,7 @@ msgstr ""
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
+#: src/PartFile.cpp:3895 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:701
 msgid "Stopped"
 msgstr "E ndalur"
 
@@ -4053,10 +4052,6 @@ msgstr ""
 "Kjo eshte nje komande e pavlere dhe mund te largohet ne te ardhmen.\n"
 "Perdor '%s' ne vendin e saj.\n"
 
-#: src/ServerSocket.cpp:176
-msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-msgstr "theApp->serverlist->GetServerByAddress() na solli NULL"
-
 #: src/ServerSocket.cpp:259
 #, c-format
 msgid "ERROR: %s (%s) - %s"
@@ -4166,38 +4161,38 @@ msgstr "Konfirmo kerkesen"
 msgid "All others"
 msgstr "Te gjithe te tjeret"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:701
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:695
 msgid "Incomplete"
 msgstr "E pakompletuar"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:714
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:708
 msgid "Active"
 msgstr "Aktive"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:708
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:702
 msgid "Video"
 msgstr "Video"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:228
-#: src/OtherFunctions.cpp:709 src/muuli_wdr.cpp:231
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:222
+#: src/OtherFunctions.cpp:703 src/muuli_wdr.cpp:231
 msgid "Audio"
 msgstr "Audio"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:710
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:704
 msgid "Archive"
 msgstr "Arkivi"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:242
-#: src/OtherFunctions.cpp:711 src/muuli_wdr.cpp:232
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:236
+#: src/OtherFunctions.cpp:705 src/muuli_wdr.cpp:232
 msgid "CD-Images"
 msgstr "Imazhet-CD"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:249
-#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:233
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:243
+#: src/OtherFunctions.cpp:706 src/muuli_wdr.cpp:233
 msgid "Pictures"
 msgstr "Figurat"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:713
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:707
 msgid "Text"
 msgstr "Tekst"
 
@@ -4380,97 +4375,97 @@ msgstr "GB"
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:132
+#: src/OtherFunctions.cpp:130
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:134
+#: src/OtherFunctions.cpp:132
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:136
+#: src/OtherFunctions.cpp:134
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:138
+#: src/OtherFunctions.cpp:136
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:143
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "byte/sec"
 msgstr[1] "bytes/sec"
 
-#: src/OtherFunctions.cpp:151
+#: src/OtherFunctions.cpp:147
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:162 src/OtherFunctions.cpp:166
+#: src/OtherFunctions.cpp:158 src/OtherFunctions.cpp:162
 msgid "secs"
 msgstr "sekonda"
 
-#: src/OtherFunctions.cpp:174
+#: src/OtherFunctions.cpp:170
 msgid "mins"
 msgstr "minuta"
 
-#: src/OtherFunctions.cpp:181 src/OtherFunctions.cpp:191
+#: src/OtherFunctions.cpp:177 src/OtherFunctions.cpp:187
 msgid "hours"
 msgstr "ore"
 
-#: src/OtherFunctions.cpp:189
+#: src/OtherFunctions.cpp:185
 msgid "Days"
 msgstr "Dite"
 
-#: src/OtherFunctions.cpp:221 src/muuli_wdr.cpp:236
+#: src/OtherFunctions.cpp:215 src/muuli_wdr.cpp:236
 msgid "Videos"
 msgstr "Video"
 
-#: src/OtherFunctions.cpp:235 src/muuli_wdr.cpp:230
+#: src/OtherFunctions.cpp:229 src/muuli_wdr.cpp:230
 msgid "Archives"
 msgstr "Arkive"
 
-#: src/OtherFunctions.cpp:256 src/muuli_wdr.cpp:235
+#: src/OtherFunctions.cpp:250 src/muuli_wdr.cpp:235
 msgid "Texts"
 msgstr "Tekste"
 
-#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:234
+#: src/OtherFunctions.cpp:257 src/muuli_wdr.cpp:234
 msgid "Programs"
 msgstr "Programe"
 
-#: src/OtherFunctions.cpp:270 src/muuli_wdr.cpp:229
+#: src/OtherFunctions.cpp:264 src/muuli_wdr.cpp:229
 msgid "Any"
 msgstr "Kushdo"
 
-#: src/OtherFunctions.cpp:290 src/OtherFunctions.cpp:296 src/muuli_wdr.cpp:911
+#: src/OtherFunctions.cpp:284 src/OtherFunctions.cpp:290 src/muuli_wdr.cpp:911
 msgid "Not rated"
 msgstr "E pavotuar"
 
-#: src/OtherFunctions.cpp:291 src/muuli_wdr.cpp:912
+#: src/OtherFunctions.cpp:285 src/muuli_wdr.cpp:912
 msgid "Invalid / Corrupt / Fake"
 msgstr "Pa vlere / E prishur / Falso"
 
-#: src/OtherFunctions.cpp:292 src/muuli_wdr.cpp:913
+#: src/OtherFunctions.cpp:286 src/muuli_wdr.cpp:913
 msgid "Poor"
 msgstr "I varfer"
 
-#: src/OtherFunctions.cpp:293 src/muuli_wdr.cpp:914
+#: src/OtherFunctions.cpp:287 src/muuli_wdr.cpp:914
 msgid "Fair"
 msgstr "Mjaftueshem"
 
-#: src/OtherFunctions.cpp:294 src/muuli_wdr.cpp:915
+#: src/OtherFunctions.cpp:288 src/muuli_wdr.cpp:915
 msgid "Good"
 msgstr "Mire"
 
-#: src/OtherFunctions.cpp:295 src/muuli_wdr.cpp:916
+#: src/OtherFunctions.cpp:289 src/muuli_wdr.cpp:916
 msgid "Excellent"
 msgstr "E perkryer"
 
-#: src/OtherFunctions.cpp:699
+#: src/OtherFunctions.cpp:693
 msgid "all"
 msgstr "te gjithe"
 
-#: src/OtherFunctions.cpp:700
+#: src/OtherFunctions.cpp:694
 msgid "all others"
 msgstr "te gjithe te tjeret"
 
@@ -7209,6 +7204,9 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
+#~ msgstr "theApp->serverlist->GetServerByAddress() na solli NULL"
 
 #~ msgid "Message Filter"
 #~ msgstr "Filtrimi i mesazheve"
