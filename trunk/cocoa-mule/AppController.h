@@ -21,4 +21,6 @@
 
 - (int)startDaemon;
 
+- (bool)askCoreParams;
+
 @end

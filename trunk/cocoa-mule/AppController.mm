@@ -1,5 +1,7 @@
 #import "AppController.h"
 
+#import "LoginDialogController.h"
+
 #include <unistd.h>
 
 @implementation AppController
@@ -46,6 +48,11 @@
 -(IBAction)show_About:(id)sender {
 }
 
+- (bool)askCoreParams {
+	LoginDialogController *dlg = [[LoginDialogController alloc] init];
+	return [dlg showDlg:nil];
+}
+
 -(void)awakeFromNib {
 	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 	NSString *mode = [args stringForKey:@"mode"];
@@ -57,11 +64,15 @@
 	if ( (mode != nil) && ([mode compare:@"remote"] == NSOrderedSame) ) {
 		targetaddr = @"127.0.0.1";
 		targetport = 4712;
+		if (![self askCoreParams] ) {
+			// "Cancel" selected on login dialog
+			exit(0);
+		}
 		NSLog(@"Remote mode selected, target=%@:%d\n", targetaddr, targetport);
 	} else {
 		NSLog(@"Local mode selected - starting daemon\n");
 		if ( [self startDaemon] == -1 ) {
-			NSRunAlertPanel(@"Daemon startup error", 
+			NSRunCriticalAlertPanel(@"Daemon startup error", 
 							@"Unable to start core daemon (amuled)",
 							@"OK", nil,nil);
 			exit(-1);
@@ -88,7 +99,7 @@
 		}
 	}
 	if ( m_connection.error ) {
-		NSRunAlertPanel(@"Connection error", 
+		NSRunCriticalAlertPanel(@"Connection error", 
                         @"Unable to start communication with daemon",
                         @"OK", nil,nil);
 		exit(-1);
