@@ -11,6 +11,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B20E7E300EFD313400EF0D8D /* LoginDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */; };
+		B20E7E360EFD322C00EF0D8D /* LoginDialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */; };
 		B228A7A60E7C426B009B94B4 /* EC.mm in Sources */ = {isa = PBXBuildFile; fileRef = B228A7A50E7C426B009B94B4 /* EC.mm */; };
 		B2499CA70E7CBBF400F67575 /* Client_A4AFNoNeededPartsQueueFull.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C7E0E7CBBF400F67575 /* Client_A4AFNoNeededPartsQueueFull.png */; };
 		B2499CA80E7CBBF400F67575 /* Client_aMule.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C7F0E7CBBF400F67575 /* Client_aMule.png */; };
@@ -68,6 +70,8 @@
 		32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "cocoa-mule_Prefix.pch"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* cocoa-mule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cocoa-mule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B20E7E340EFD322C00EF0D8D /* LoginDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDialogController.h; sourceTree = "<group>"; };
+		B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDialogController.m; sourceTree = "<group>"; };
 		B228A7A40E7C426B009B94B4 /* EC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EC.h; sourceTree = "<group>"; };
 		B228A7A50E7C426B009B94B4 /* EC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EC.mm; sourceTree = "<group>"; };
 		B228A7BA0E7C438A009B94B4 /* ECCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECCodes.h; path = ../src/libs/ec/cpp/ECCodes.h; sourceTree = SOURCE_ROOT; };
@@ -114,6 +118,7 @@
 		B2499CA40E7CBBF400F67575 /* Toolbar_Shared.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Shared.png; sourceTree = "<group>"; };
 		B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Stats.png; sourceTree = "<group>"; };
 		B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Transfers.png; sourceTree = "<group>"; };
+		B29E77B50EFC357600F4C677 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/LoginDialog.nib; sourceTree = "<group>"; };
 		B2CDC5AB0E9541D5009370D9 /* amuleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amuleData.h; sourceTree = "<group>"; };
 		B2CDC5AC0E9541D5009370D9 /* amuleData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amuleData.mm; sourceTree = "<group>"; };
 		B2DD601F0E7BC62A00987099 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -175,6 +180,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */,
 			);
 			name = "cocoa-mule";
 			sourceTree = "<group>";
@@ -186,6 +192,8 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				B2DD60220E7BC65400987099 /* AppController.mm */,
 				B2DD601F0E7BC62A00987099 /* AppController.h */,
+				B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */,
+				B20E7E340EFD322C00EF0D8D /* LoginDialogController.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -357,6 +365,7 @@
 				B2499CCD0E7CBBF400F67575 /* Toolbar_Shared.png in Resources */,
 				B2499CCE0E7CBBF400F67575 /* Toolbar_Stats.png in Resources */,
 				B2499CCF0E7CBBF400F67575 /* Toolbar_Transfers.png in Resources */,
+				B20E7E300EFD313400EF0D8D /* LoginDialog.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +380,7 @@
 				B2DD60230E7BC65400987099 /* AppController.mm in Sources */,
 				B228A7A60E7C426B009B94B4 /* EC.mm in Sources */,
 				B2CDC5AD0E9541D5009370D9 /* amuleData.mm in Sources */,
+				B20E7E360EFD322C00EF0D8D /* LoginDialogController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +401,14 @@
 				29B97319FDCFA39411CA2CEA /* English */,
 			);
 			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B29E77B50EFC357600F4C677 /* English */,
+			);
+			name = LoginDialog.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
