@@ -1054,36 +1054,40 @@ wxString GetConfigDir()
 }
 
 
+/*************************** Locale specific stuff ***************************/
+
+#ifndef __WXMSW__
+#	define	SETWINLANG(LANG, SUBLANG)
+#else
+#	define	SETWINLANG(LANG, SUBLANG) \
+	info.WinLang = LANG; \
+	info.WinSublang = SUBLANG;
+#endif
+
+#define CUSTOMLANGUAGE(wxid, iso, winlang, winsublang, dir, desc) \
+	info.Language = wxid;		\
+	info.CanonicalName = wxT(iso);	\
+	info.LayoutDirection = dir;	\
+	info.Description = wxT(desc);	\
+	SETWINLANG(winlang, winsublang)	\
+	wxLocale::AddLanguage(info);
+
 void InitCustomLanguages()
 {
-	wxLanguageInfo CustomLanguage;
-	CustomLanguage.Language = wxLANGUAGE_ITALIAN_NAPOLITAN;
-	CustomLanguage.CanonicalName = wxT("it_NA");
-	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
-	wxLocale::AddLanguage(CustomLanguage);
+	wxLanguageInfo info;
+
+	CUSTOMLANGUAGE(wxLANGUAGE_ASTURIAN,	"ast",	0,	0,	wxLayout_LeftToRight,	"Asturian");
 }
 
 
 void InitLocale(wxLocale& locale, int language)
 {
-	int language_flags = 0;
-	if (language != wxLANGUAGE_CUSTOM && language != wxLANGUAGE_ITALIAN_NAPOLITAN) {
-		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
-	}
+	locale.Init(language, wxLOCALE_LOAD_DEFAULT); 
 	
-	locale.Init(language,language_flags); 
-	
-	if (language != wxLANGUAGE_CUSTOM) {
-
 #if defined(__WXMAC__) || defined(__WXMSW__)
-		locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
+	locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
 #endif
-		locale.AddCatalog(wxT(PACKAGE));
-
-	} else {
-		locale.AddCatalogLookupPathPrefix(GetConfigDir());
-		locale.AddCatalog(wxT("custom"));
-	}
+	locale.AddCatalog(wxT(PACKAGE));
 }
 
 
@@ -1118,6 +1122,8 @@ wxString wxLang2Str(const int lang)
 		return wxEmptyString;
 	}
 }
+
+/*****************************************************************************/
 
 wxString GetPassword() {
 wxString pass_plain;

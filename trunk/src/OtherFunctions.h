@@ -357,8 +357,9 @@ inline long int make_full_ed2k_version(int a, int b, int c) {
 
 wxString GetConfigDir();
 
-#define  wxLANGUAGE_CUSTOM 		wxLANGUAGE_USER_DEFINED+1
-#define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
+enum {
+	wxLANGUAGE_ASTURIAN	= wxLANGUAGE_USER_DEFINED + 1
+};
 
 /**
  * Adds aMule's custom languages to db.
