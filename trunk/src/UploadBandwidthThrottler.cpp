@@ -35,7 +35,6 @@
 #include "ThrottledSocket.h"
 #include "Logger.h"
 #include "Preferences.h"
-#include "amule.h"
 #include "Statistics.h"
 
 #ifndef _MSC_VER
@@ -256,14 +255,16 @@ void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledFileSocket* socket)
  */
 void UploadBandwidthThrottler::EndThread()
 {
-	{
-		wxMutexLocker lock(m_sendLocker);
+	if (m_doRun) {	// do it only once
+		{
+			wxMutexLocker lock(m_sendLocker);
 
-		// signal the thread to stop looping and exit.
-		m_doRun = false;
+			// signal the thread to stop looping and exit.
+			m_doRun = false;
+		}
+		
+		Wait();
 	}
-	
-	Wait();
 }
 
 
@@ -293,12 +294,7 @@ void* UploadBandwidthThrottler::Entry()
 		// Get current speed from UploadSpeedSense
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
 			// Try to increase the upload rate
-			if (theApp->uploadqueue) {
-				allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
-			} else {
-				// App not created yet or already destroyed.
-				allowedDataRate = (uint32)(-1);
-			}
+			allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
 		} else {
 			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
 		}
