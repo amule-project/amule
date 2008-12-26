@@ -971,7 +971,6 @@ wxString CSearchListCtrl::GetTTSText(unsigned item) const
 wxString CSearchListCtrl::DetermineStatusPrintable(CSearchFile *toshow)
 {
 	wxString retVal;
-	//CSearchFile* file = (CSearchFile*)GetItemData(index);
 	
 	CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(toshow->GetFileHash());
 	if ( !sameFile ) {
