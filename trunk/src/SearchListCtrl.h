@@ -153,7 +153,9 @@ public:
 	 * @param category The target category, or -1 to use the drop-down selection.
 	 */
 	void	DownloadSelected(int category = -1);	
-	
+
+	static wxString DetermineStatusPrintable(CSearchFile *toshow);
+
 protected:
 	/// Return old column order.
 	wxString GetOldColumnOrder() const;
