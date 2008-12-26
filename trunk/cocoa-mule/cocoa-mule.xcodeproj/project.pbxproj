@@ -55,6 +55,7 @@
 		B2499CCD0E7CBBF400F67575 /* Toolbar_Shared.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA40E7CBBF400F67575 /* Toolbar_Shared.png */; };
 		B2499CCE0E7CBBF400F67575 /* Toolbar_Stats.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */; };
 		B2499CCF0E7CBBF400F67575 /* Toolbar_Transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */; };
+		B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */; };
 		B2CDC5AD0E9541D5009370D9 /* amuleData.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CDC5AC0E9541D5009370D9 /* amuleData.mm */; };
 		B2DD60230E7BC65400987099 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2DD60220E7BC65400987099 /* AppController.mm */; };
 /* End PBXBuildFile section */
@@ -119,6 +120,8 @@
 		B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Stats.png; sourceTree = "<group>"; };
 		B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Transfers.png; sourceTree = "<group>"; };
 		B29E77B50EFC357600F4C677 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/LoginDialog.nib; sourceTree = "<group>"; };
+		B2B307A20F05470200AE5E79 /* DownloadsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadsViewController.h; sourceTree = "<group>"; };
+		B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DownloadsViewController.mm; sourceTree = "<group>"; };
 		B2CDC5AB0E9541D5009370D9 /* amuleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amuleData.h; sourceTree = "<group>"; };
 		B2CDC5AC0E9541D5009370D9 /* amuleData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amuleData.mm; sourceTree = "<group>"; };
 		B2DD601F0E7BC62A00987099 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -140,6 +143,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B2B307A20F05470200AE5E79 /* DownloadsViewController.h */,
+				B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */,
+				32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -176,7 +182,7 @@
 				B2499C7D0E7CBBF400F67575 /* images */,
 				B228A7C30E7C4393009B94B4 /* EC */,
 				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97315FDCFA39411CA2CEA /* GUI */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -185,17 +191,16 @@
 			name = "cocoa-mule";
 			sourceTree = "<group>";
 		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+		29B97315FDCFA39411CA2CEA /* GUI */ = {
 			isa = PBXGroup;
 			children = (
-				32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				B2DD60220E7BC65400987099 /* AppController.mm */,
 				B2DD601F0E7BC62A00987099 /* AppController.h */,
 				B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */,
 				B20E7E340EFD322C00EF0D8D /* LoginDialogController.h */,
 			);
-			name = "Other Sources";
+			name = GUI;
 			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
@@ -381,6 +386,7 @@
 				B228A7A60E7C426B009B94B4 /* EC.mm in Sources */,
 				B2CDC5AD0E9541D5009370D9 /* amuleData.mm in Sources */,
 				B20E7E360EFD322C00EF0D8D /* LoginDialogController.m in Sources */,
+				B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,7 +458,9 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 2.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
