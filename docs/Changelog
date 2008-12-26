@@ -31,6 +31,9 @@ Version 2.3.0 - The river knows.
 	lfroen:
 		* php prefix for lex/yacc
 
+	LittleAbacus:
+		* Search results can now be sorted by "knownness" state.
+
 	morph:
 		* Patch to uniform and fix minor errors on man pages
 

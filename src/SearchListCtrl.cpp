@@ -63,7 +63,8 @@ enum SearchListColumns {
 	ID_SEARCH_COL_SIZE,
 	ID_SEARCH_COL_SOURCES,
 	ID_SEARCH_COL_TYPE,
-	ID_SEARCH_COL_FILEID
+	ID_SEARCH_COL_FILEID,
+	ID_SEARCH_COL_STATUS
 };
 
 
@@ -89,6 +90,7 @@ m_filterEnabled(false)
 	InsertColumn( ID_SEARCH_COL_SOURCES, _("Sources"),   wxLIST_FORMAT_LEFT,  50, wxT("u") );
 	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT,  65, wxT("Y") );
 	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, wxT("I") );
+	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, wxT("S") );
 
 	m_nResultsID = 0;
 
@@ -113,7 +115,7 @@ m_filterEnabled(false)
 
 wxString CSearchListCtrl::GetOldColumnOrder() const
 {
-	return wxT("N,Z,u,Y,I");
+	return wxT("N,Z,u,Y,I,S");
 }
 
 
@@ -224,6 +226,9 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	// File-hash
 	SetItem(newid, ID_SEARCH_COL_FILEID, toshow->GetFileHash().Encode() );
 
+	// File status
+	SetItem(newid, ID_SEARCH_COL_STATUS, DetermineStatusPrintable(toshow));
+
 	// Set the color of the item
 	UpdateItemColor( newid );
 }
@@ -267,6 +272,8 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 		}
 #endif
 		SetItem(index, ID_SEARCH_COL_SOURCES, temp);
+
+		SetItem(index, ID_SEARCH_COL_STATUS, DetermineStatusPrintable(toupdate));
 
 		UpdateItemColor(index);
 
@@ -536,6 +543,10 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 		// Sort by file-hash
 		case ID_SEARCH_COL_FILEID:
 			result = CmpAny(file2->GetFileHash(), file1->GetFileHash());
+		
+		// Sort by file status
+		case ID_SEARCH_COL_STATUS:
+			result = CmpAny(DetermineStatusPrintable(file2), DetermineStatusPrintable(file1));
 	}
 
 	return modifier * result;
@@ -751,6 +762,7 @@ void CSearchListCtrl::DownloadSelected(int category)
 	while (index > -1) {
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
 		CoreNotify_Search_Add_Download(file, category);
+		UpdateResult(file);
 		UpdateAllRelativesColor(file, index);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
@@ -953,5 +965,34 @@ void CSearchListCtrl::ShowChildren(CSearchFile* file, bool show)
 wxString CSearchListCtrl::GetTTSText(unsigned item) const
 {
 	return GetItemText(item);
+}
+
+
+wxString CSearchListCtrl::DetermineStatusPrintable(CSearchFile *toshow)
+{
+	wxString retVal;
+	//CSearchFile* file = (CSearchFile*)GetItemData(index);
+	
+	CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(toshow->GetFileHash());
+	if ( !sameFile ) {
+		sameFile = theApp->knownfiles->FindKnownFileByID(toshow->GetFileHash());
+	}
+
+	if ( sameFile ) {
+		if ( sameFile->IsPartFile() ) {
+			// File is already being downloaded.
+			retVal = wxT("Queued");
+		} else if ( sameFile->GetStatus() == PS_COMPLETE ) {
+			// File has already been downloaded.
+			retVal = wxT("Downloaded");
+		} else {
+			// File has been cancelled or removed.
+			retVal = wxT("Cancelled");
+		}
+	} else {
+		// File is new
+		retVal = wxT("New");
+	}
+	return retVal;
 }
 // File_checked_for_headers
