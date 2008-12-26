@@ -1,6 +1,7 @@
 #import "AppController.h"
 
 #import "LoginDialogController.h"
+#import "DownloadsViewController.h"
 
 #include <unistd.h>
 
@@ -60,7 +61,13 @@
 	
 	NSString *targetaddr = 0;
 	int targetport = 0;
-	
+
+	if ( (mode != nil) && ([mode compare:@"guitest"] == NSOrderedSame) ) {
+		[m_dload_tableview reloadData];
+		NSLog(@"Started in GUI test mode - will not connect to core");
+		return;
+	}	
+
 	if ( (mode != nil) && ([mode compare:@"remote"] == NSOrderedSame) ) {
 		targetaddr = @"127.0.0.1";
 		targetport = 4712;

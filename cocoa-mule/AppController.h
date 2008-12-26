@@ -6,6 +6,10 @@
 @interface AppController : NSObject {
     IBOutlet id m_main_tabview;
 
+	IBOutlet id m_dload_tableview;
+	
+	IBOutlet id m_dload_controller;
+	
 	ECRemoteConnection *m_connection;
 	amuleData *m_data;
 	
