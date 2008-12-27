@@ -68,7 +68,9 @@ enum EFileType
 	//! Met file, will be left unchanged.
 	EFT_Met,
 	//! Unknown filetype, will be left unchanged.
-	EFT_Unknown
+	EFT_Unknown,
+	//! This is returned when trying to unpack a broken archive.
+	EFT_Error
 };
 
 
