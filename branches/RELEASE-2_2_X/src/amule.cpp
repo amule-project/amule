@@ -431,7 +431,7 @@ bool CamuleApp::OnInit()
 	OSType = OSDescription.BeforeFirst( wxT(' ') );
 	if ( OSType.IsEmpty() ) {
 		OSType = wxT("Unknown");
-	}	
+	}
 
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
@@ -506,9 +506,7 @@ bool CamuleApp::OnInit()
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
-		printf("%s (OS: %s)\n",
-			(const char*)unicode2char(GetFullMuleVersion()),
-			(const char*)unicode2char(OSType));
+		printf("%s (OS: %s)\n", strFullMuleVersion, (const char*)unicode2char(OSType));
 		
 		return false;
 	}
@@ -522,8 +520,7 @@ bool CamuleApp::OnInit()
 	}
 #endif
 
-
-	printf("Initialising aMule\n");
+	printf("Initialising %s\n", strFullMuleVersion);
 
 	// Ensure that "~/.aMule/" is accessible.
 	if (!CheckMuleDirectory(wxT("configuration"), CPath(ConfigDir), wxEmptyString).first) {
@@ -601,6 +598,9 @@ bool CamuleApp::OnInit()
 		// failure to open log is serious problem
 		return false;
 	}
+
+	// This cannot be translated, as localization is not set up yet.
+	AddLogLineM(false, wxT("Starting ") + FullMuleVersion);
 
 	// Load Preferences
 	CPreferences::BuildItemList(ConfigDir);
