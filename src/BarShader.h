@@ -51,7 +51,7 @@ public:
 	 * @param height The height of the area upon which the span is drawn.
 	 * @param width  The width of the area upon which the span is drawn.
 	 */
-	CBarShader(uint32 height = 1, uint32 width = 1);
+	CBarShader(unsigned height = 1, unsigned width = 1);
 
 	/**
 	 * Destructor.
@@ -66,7 +66,7 @@ public:
 	 * Setting this sets the width the bar which is used when it
 	 * is drawn and resets the pixel buffer to the fill color.
 	 */
-	void SetWidth(int width);
+	void SetWidth(unsigned width);
 
 	/**
 	 * Sets the height of the drawn bar.
@@ -75,15 +75,14 @@ public:
 	 *
 	 * Changes the height of the bar, used when it is drawn.
 	 */
-	void SetHeight( int height );
-
+	void SetHeight(unsigned height);
 
 	/**
 	 * Sets the 3D-depth of the bar
 	 *
 	 * @param depth A value in the range from 1 to 5.
 	 */
-	void Set3dDepth( int depth );
+	void Set3dDepth(unsigned depth);
 
 	/**
 	 * Sets a new filesize.
@@ -93,7 +92,7 @@ public:
 	 * Calling this function sets a new filesize, which is the virtual 
 	 * length of the bar. This function must be called before any filling.
 	 */
-	void SetFileSize(uint64 fileSize);
+	void SetFileSize(uint64 fileSize)	{ m_FileSize = fileSize; }
 
 	/**
 	 * Fills in a range with a certain color.
@@ -114,7 +113,11 @@ public:
 	 *
 	 * @param colour The colour of the new span.
 	 */
-	void Fill(const CMuleColour& colour);
+	void Fill(const CMuleColour& colour)
+	{
+		m_Content.clear();
+		m_Content.resize(m_Width, colour);
+	}
 
 	/**
 	 * Draws the bar on the specifed wxDC.
@@ -136,15 +139,15 @@ private:
 	void BuildModifiers();
 	
 	//! The width of the drawn bar
-	int    m_Width;
+	unsigned	m_Width;
 	//! The height of the drawn bar
-	int    m_Height;
+	unsigned	m_Height;
 	//! The virtual filesize assosiated with the bar
-	uint64 m_FileSize;
+	uint64	m_FileSize;
 	//! Pointer to array of modifers used to create 3D effect. Size is (m_Height+1)/2 when set.
-	double* m_Modifiers;
+	double*	m_Modifiers;
 	//! The current 3d level 
-	uint16 m_used3dlevel;
+	uint16	m_used3dlevel;
 
 	// color for each pixel across the width is stored here
 	std::vector<CMuleColour> m_Content;

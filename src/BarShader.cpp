@@ -26,13 +26,14 @@
 #include <wx/dc.h>
 #include <wx/image.h>
 #include "BarShader.h"		// Interface declarations.
+#include <cstring>		// Needed for std::memcpy
 
 const double Pi = 3.14159265358979323846264338328;
 
 #define HALF(X) (((X) + 1) / 2)
 #define DEFAULT_DEPTH 10
 
-CBarShader::CBarShader(uint32 height, uint32 width)
+CBarShader::CBarShader(unsigned height, unsigned width)
 : m_Width( width ),
   m_Height( height ),
   m_FileSize( 1 ),
@@ -51,13 +52,7 @@ CBarShader::~CBarShader()
 }
 
 
-void CBarShader::SetFileSize(uint64 fileSize)
-{
-	m_FileSize = fileSize;
-}
-
-
-void CBarShader::SetHeight( int height )
+void CBarShader::SetHeight(unsigned height)
 {
 	if( m_Height != height ) {
 		m_Height = height;
@@ -71,7 +66,7 @@ void CBarShader::SetHeight( int height )
 }
 
 
-void CBarShader::SetWidth(int width)
+void CBarShader::SetWidth(unsigned width)
 {
 	if (width > 0) {
 		m_Width = width;
@@ -80,7 +75,7 @@ void CBarShader::SetWidth(int width)
 }
 
 
-void CBarShader::Set3dDepth( int depth )
+void CBarShader::Set3dDepth(unsigned depth)
 {
 	if ( depth < 1 ) {
 		depth = 1;
@@ -102,24 +97,28 @@ void CBarShader::Set3dDepth( int depth )
 
 void CBarShader::BuildModifiers()
 {
+	wxASSERT(m_used3dlevel < 7);
+
 	if ( m_Modifiers ) {
 		delete[] m_Modifiers;
 	}
 
-	int depth = (7-m_used3dlevel);
-	int count = HALF(m_Height);
+	unsigned depth = (7 - m_used3dlevel);
+	unsigned count = HALF(m_Height);
 	double piOverDepth = Pi/depth;
 	double base = piOverDepth * ((depth / 2.0) - 1);
 	double increment = piOverDepth / (count - 1);
 
 	m_Modifiers = new double[count];
-	for (int i = 0; i < count; i++)
+	for (unsigned i = 0; i < count; i++)
 		m_Modifiers[i] = (double)(sin(base + i * increment));
 }
 
 
 void CBarShader::FillRange(uint64 start, uint64 end, const CMuleColour& colour)
 {
+	wxASSERT(m_FileSize > 0);
+
 	if (start >= end || start >= m_FileSize) {
 		return;
 	}
@@ -133,8 +132,8 @@ void CBarShader::FillRange(uint64 start, uint64 end, const CMuleColour& colour)
 		end = m_FileSize;
 	}
 
-	uint32 firstPixel = start * m_Width / m_FileSize;
-	uint32 lastPixel  = end   * m_Width / m_FileSize;
+	unsigned firstPixel = start * m_Width / m_FileSize;
+	unsigned lastPixel  = end   * m_Width / m_FileSize;
 	if (lastPixel == m_Width) {
 		lastPixel--;
 	}
@@ -150,17 +149,10 @@ void CBarShader::FillRange(uint64 start, uint64 end, const CMuleColour& colour)
 		m_Content[firstPixel].BlendWith(colour, firstCovered);
 		m_Content[lastPixel].BlendWith(colour, lastCovered);
 		// fill pixels between (if any)
-		for (uint32 i = firstPixel + 1; i < lastPixel; i++) {
+		for (unsigned i = firstPixel + 1; i < lastPixel; i++) {
 			m_Content[i] = colour;
 		}
 	}
-}
-
-
-void CBarShader::Fill(const CMuleColour& colour)
-{
-	m_Content.clear();
-	m_Content.resize(m_Width, colour);
 }
 
 
@@ -173,52 +165,48 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 		BuildModifiers();
 	}
 
-	wxRect rectSpan;
-	rectSpan.x = iLeft;
-	rectSpan.y = iTop;
-	rectSpan.height = m_Height;
-	rectSpan.width = 0;
-	
 	// Render the bar into a raw buffer
 	unsigned char * buf = (unsigned char *) malloc(m_Width * m_Height * 3);
 
-	// draw flat bar
 	if (bFlat) {
-		for (int x = 0; x < m_Width; x++) {
-			int cRed   = m_Content[x].Red();
-			int cGreen = m_Content[x].Green();
-			int cBlue  = m_Content[x].Blue();
-			for (int y = 0; y < m_Height; y++) {
-				int idx = (y * m_Width + x) * 3;
-				buf[idx++] = cRed;
-				buf[idx++] = cGreen;
-				buf[idx]   = cBlue;
-			}
+		// draw flat bar
+		unsigned idx = 0;
+		for (unsigned x = 0; x < m_Width; x++) {
+			unsigned cRed   = m_Content[x].Red();
+			unsigned cGreen = m_Content[x].Green();
+			unsigned cBlue  = m_Content[x].Blue();
+			buf[idx++] = cRed;
+			buf[idx++] = cGreen;
+			buf[idx++] = cBlue;
+		}
+		unsigned linelength = idx;
+		unsigned y = 1;
+		for (; y < m_Height >> 1; y <<= 1, idx <<= 1) {
+			std::memcpy(buf + idx, buf, idx);
+		}
+		if (y < m_Height) {
+			std::memcpy(buf + idx, buf, (m_Height - y) * linelength);
 		}
 	} else {
-	// draw rounded bar
-		int Max = HALF(m_Height);
-		for (int x = 0; x < m_Width; x++) {
-			for (int i = 0; i < Max; i++) {
-				int cRed   = (int)(m_Content[x].Red()   * m_Modifiers[i] + .5f);
-				int cGreen = (int)(m_Content[x].Green() * m_Modifiers[i] + .5f);
-				int cBlue  = (int)(m_Content[x].Blue()  * m_Modifiers[i] + .5f);
-				cRed   = std::min(255, cRed);
-				cGreen = std::min(255, cGreen);
-				cBlue  = std::min(255, cBlue);
-				// Draw top row
-				int y = i;
-				int idx = (y * m_Width + x) * 3;
+		// draw rounded bar
+		unsigned Max = HALF(m_Height);
+		unsigned idx = 0;
+		for (unsigned y = 0; y < Max; y++) {
+			for (unsigned x = 0; x < m_Width; x++) {
+				unsigned cRed   = (unsigned)(m_Content[x].Red()   * m_Modifiers[y] + .5f);
+				unsigned cGreen = (unsigned)(m_Content[x].Green() * m_Modifiers[y] + .5f);
+				unsigned cBlue  = (unsigned)(m_Content[x].Blue()  * m_Modifiers[y] + .5f);
+				cRed   = std::min(255u, cRed);
+				cGreen = std::min(255u, cGreen);
+				cBlue  = std::min(255u, cBlue);
 				buf[idx++] = cRed;
 				buf[idx++] = cGreen;
-				buf[idx]   = cBlue;
-				// Draw bottom row
-				y = m_Height - 1 - i;
-				idx = (y * m_Width + x) * 3;
-				buf[idx++] = cRed;
-				buf[idx++] = cGreen;
-				buf[idx]   = cBlue;
+				buf[idx++] = cBlue;
 			}
+		}
+		unsigned linelength = m_Width * 3;
+		for (unsigned y = std::max(Max, m_Height - Max); y < m_Height; y++) {
+			std::memcpy(buf + y * linelength, buf + (m_Height - 1 - y) * linelength, linelength);
 		}
 	}
 	wxImage image(m_Width, m_Height);
@@ -226,5 +214,4 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	wxBitmap bitmap(image);
 	dc->DrawBitmap(bitmap, iLeft, iTop);
 }
-
 // File_checked_for_headers
