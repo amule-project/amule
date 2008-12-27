@@ -41,9 +41,8 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_MENU(MP_CLOSE_OTHER_TABS,	CMuleNotebook::OnPopupCloseOthers)	
 	
 	// Madcat - tab closing engine
-	EVT_LEFT_DOWN(CMuleNotebook::MouseClick)
-	EVT_LEFT_DCLICK(CMuleNotebook::MouseClick)
-	EVT_MOTION(CMuleNotebook::MouseMotion)
+	EVT_LEFT_UP(CMuleNotebook::OnMouseLeftRelease)
+	EVT_MOTION(CMuleNotebook::OnMouseMotion)
 END_EVENT_TABLE()
 
 CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name )
@@ -185,7 +184,7 @@ void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CMuleNotebook::MouseClick(wxMouseEvent &event)
+void CMuleNotebook::OnMouseLeftRelease(wxMouseEvent &event)
 {
 
 	if (GetImageList() == NULL) {
@@ -210,7 +209,7 @@ void CMuleNotebook::MouseClick(wxMouseEvent &event)
 	
 }
 
-void CMuleNotebook::MouseMotion(wxMouseEvent &event)
+void CMuleNotebook::OnMouseMotion(wxMouseEvent &event)
 {
 
 	if (GetImageList() == NULL) {
