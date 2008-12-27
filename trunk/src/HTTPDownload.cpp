@@ -227,15 +227,19 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		} while (current_read && !TestDestroy());
 
 		if (current_read == 0) {
-			// Download was succesful.
-			m_result = 1;
+			if (total_read != download_size) {
+				throw CFormat(_("Expected %d bytes, but downloaded %d bytes")) % download_size % total_read;
+			} else {
+				// Download was succesful.
+				m_result = 1;
+			}
 		}
 	} catch (const wxString& error) {
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
 
-		AddLogLineM(false, error);
+		AddLogLineNS(error); // If there's console output anyway there should also be console output on error.
 	}
 
 	delete url_read_stream;

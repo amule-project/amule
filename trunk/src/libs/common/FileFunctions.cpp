@@ -258,7 +258,7 @@ UnpackResult UnpackArchive(const CPath& path, const wxChar* files[])
 				// Unpack nested archives if needed.
 				return UnpackResult(true, UnpackArchive(path, files).second);
 			} else {
-				return UnpackResult(false, EFT_Zip);
+				return UnpackResult(false, EFT_Error);
 			}
 
 		case EFT_GZip:
@@ -266,7 +266,7 @@ UnpackResult UnpackArchive(const CPath& path, const wxChar* files[])
 				// Unpack nested archives if needed.
 				return UnpackResult(true, UnpackArchive(path, files).second);
 			} else {
-				return UnpackResult(false, EFT_GZip);
+				return UnpackResult(false, EFT_Error);
 			}
 
 		default:

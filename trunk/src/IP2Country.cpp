@@ -77,14 +77,6 @@ void CIP2Country::Enable()
 		return;
 	}
 
-	const wxChar* geoip_files[] = {
-		wxT("GeoIP.dat"),
-		NULL
-	};
-	
-	// Try to unpack the file, might be an archive
-	UnpackArchive(CPath(m_DataBaseName), geoip_files);
-
 	m_geoip = GeoIP_open(unicode2char(m_DataBaseName), GEOIP_STANDARD);
 }
 
@@ -111,6 +103,17 @@ void CIP2Country::DownloadFinished(uint32 result)
 		// download succeeded. Switch over to new database.
 		wxString newDat = m_DataBaseName + wxT(".download");
 
+		// Try to unpack the file, might be an archive
+		const wxChar* geoip_files[] = {
+			wxT("GeoIP.dat"),
+			NULL
+		};
+
+		if (UnpackArchive(CPath(newDat), geoip_files).second == EFT_Error) {
+			AddLogLineM(false, _("Download of GeoIP.dat file failed, aborting update."));
+			return;
+		}
+
 		if (wxFileExists(m_DataBaseName)) {
 			if (!wxRemoveFile(m_DataBaseName)) {
 				AddLogLineM(false, _("Failed to remove GeoIP.dat file, aborting update."));
@@ -131,8 +134,10 @@ void CIP2Country::DownloadFinished(uint32 result)
 		}
 	} else {
 		AddLogLineM(false, CFormat(_("Failed to download GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-		// if it failed, turn it off
-		thePrefs::SetGeoIPEnabled(false);
+		// if it failed and there is no database, turn it off
+		if (!wxFileExists(m_DataBaseName)) {
+			thePrefs::SetGeoIPEnabled(false);
+		}
 	}
 }
 
