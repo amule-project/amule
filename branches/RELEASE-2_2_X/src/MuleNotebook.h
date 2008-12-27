@@ -108,8 +108,15 @@ public:
 	void SetPopupHandler( wxWindow* widget );
 
 protected:
-	void MouseClick(wxMouseEvent &event);  // Mouse clicks event handler
-	void MouseMotion(wxMouseEvent &event); // Mouse moving around
+	/**
+	 * Event handler for left mouse button release (for closing pages)
+	 */
+	void OnMouseLeftRelease(wxMouseEvent &event);
+
+	/**
+	 * Event handler for mouse motion (for highlighting the 'x')
+	 */
+	void OnMouseMotion(wxMouseEvent &event);
 	
 	/**
 	 * Event-handler for right-clicks that takes care of displaying the popup-menu.
