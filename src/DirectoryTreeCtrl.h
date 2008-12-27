@@ -42,16 +42,16 @@ public:
 
 	// get all shared directories
 	void GetSharedDirectories(PathList* list);
-	// set shared directories
+	// set list of shared directories
 	void SetSharedDirectories(PathList* list);
 	
 	// User made any changes to list?
 	bool HasChanged;
 
-private:
 	// initialize control
 	void Init();
 
+private:
 	// add a new item
 	void AddChildItem(wxTreeItemId hBranch, const CPath& item);
 	// add subdirectory items
@@ -64,6 +64,8 @@ private:
 	void CheckChanged(wxTreeItemId hItem, bool bChecked);
 	// returns true if a subdirectory of strDir is shared
 	bool HasSharedSubdirectory(const CPath& path);
+	// set shared directories according to list
+	void UpdateSharedDirectories();
 	// when sharing a directory, make all parent directories red
 	void UpdateParentItems(wxTreeItemId hChild, bool add);
 
@@ -78,6 +80,8 @@ private:
 	void OnItemActivated(wxTreeEvent& evt);
 
 	PathList m_lstShared;
+
+	bool m_IsInit;
 	
 	
 	DECLARE_EVENT_TABLE()
