@@ -91,6 +91,7 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Disable automatic sorting of dowload list while there is a
 		  pop-up menu or file detail dialog displayed.
 		* MinGW compilation fix.
+		* Fixed GTK crash on closing search tabs. Thanks to btkaos.
 
 	LittleAbacus:
 		* Support multiple selections on CSearchListCtrl::OnMarkAsKnown().
