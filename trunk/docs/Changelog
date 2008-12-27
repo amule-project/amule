@@ -46,6 +46,7 @@ Version 2.3.0 - The river knows.
 		* Faster progress bars with less overhead (without pens/brushes)
 		* Show log messages in remote gui
 		* More info in the Kad tab
+		* Fixed Windows lag when opening preferences dialog
 
 	Vollstrecker:
 		* Unify copyright lines

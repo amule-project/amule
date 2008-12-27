@@ -962,6 +962,9 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 	m_CurrentPanel->Show( false );
 
 	m_CurrentPanel = (wxPanel *) m_PrefsIcons->GetItemData(event.GetIndex());
+	if (pages[event.GetIndex()].m_function == PreferencesDirectoriesTab) {
+		CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl)->Init();
+	}
 
 	prefs_sizer->Add( m_CurrentPanel, 0, wxGROW|wxEXPAND );
 	m_CurrentPanel->Show( true );
