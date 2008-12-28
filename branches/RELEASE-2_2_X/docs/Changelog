@@ -1,6 +1,6 @@
-Version 2.2.3 - The "Vampires suck" version.
+Version 2.2.3 - The "Late Christmas present" version.
 ----------
-2008-10-??
+2008-12-28
 
 	Alfred:
 		* Fixes to compile with Sun Studio 12.
@@ -46,6 +46,9 @@ Version 2.2.3 - The "Vampires suck" version.
 		* Add checks to cas to prevent segfaults
 		* Fix wxCas save file dialog for file types
 		* Fix a buffer overflow error in cas
+
+	Special Thanks to:
+		* btkaos and CtrlAltDel for their invaluable help in tracking off bugs.
 
 --------------------------------------------------------------------------------
 

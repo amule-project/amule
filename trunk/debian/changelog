@@ -1,3 +1,9 @@
+amule (2.2.3) testing; urgency=low
+
+  * New Upstream release
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Sun, 28 Dec 2008  16:00:00 +0100
+
 amule (2.2.2+SVN20080930) testing; urgency=low
 
   * debian/rules
