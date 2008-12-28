@@ -1,0 +1,116 @@
+.TH AMULECMD 1 "2005 Martxoa" "aMuleCmd 2.0.0b" "aMule lanabesak"
+.SH IZENA
+amulecmd \- aMule kontrolatzeko testuan oinarrituriko programa
+.SH LABURPENA
+.B amulecmd
+.RB [ \-h " " \fI<ost> ]
+.RB [ \-p " " \fI<ataka> ]
+.RB [ \-P " " \fI<pasahitza> ]
+.RB [ \-f " " \fI<bidea> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-l " " \fI<hizkuntza> ]
+.RB [ \-w ]
+.RB [ \-c " " \fI<komandoa> ]
+.PP
+.B amulecmd
+.RB [ \-f " " \fI<bidea> ]
+.B \-\-create-config-from=\fI<bidea>
+.PP
+.B amulecmd
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.SH DESCRIPTION
+\fBamulecmd\fR aMule kontrolatzeko testuan oinarrituriko programa bat da.
+Programa abiarazten duzunean argibide erabilgarriak jaso ditzazkezu.
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<ostalaria>\fR
+aMule abiarazirik dagoen ostalaria (lehenetsia: \fIlocalhost\fR). \fI<host>\fR IP helbide edo DNS izen bat izan behar 
+da.
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<ataka>\fR
+aMule-ren kanpo konexioetarako ataka, Hobespenak->Urruneko Kontrolak atalean ezarririk dagoen bezala (lehenetsia: 
+\fI4712\fR)
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<pasahitza>\fR
+Kanpo Konexioetarako pasahitza
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<bidea>\fR
+emandako konfigurazio fitxategia erabili. Lehenetsiriko konfigurazio fitxategia \fI~/.aMule/remote.conf\fR da
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+ez irteerarik inprimatu irteera estandarrean. Ez da erabilgarria \fBamulecmd\fR erabiltzean.
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+luzea izan \- arazpen mezuak ere ikusi
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<hizkuntza>\fR
+Programa lokalak ezartzen ditu (hizkuntza).
+\fOHARRAK\fr atala irakurri \fI<hizkuntza>\fR parametroaz gehiago jakiteko.
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+komando lerroko aukerak konfigurazio fitxategian gorde eta irten
+.TP
+\fB\-c\fR, \fB\-\-command\fR=\fI<komandoa>\fR
+\fI<komadoa>\fR amulecmd-ren barnean egin bazen bezala abiarazi eta irten
+.TP
+\fB\-\-create\-config\-from\fR=\fI<bidea>\fR
+konfigurazio fitxategia \fI<bidea>\fR oinarriturik egin, zein aMule konfigurazio fitxategiaren bidea izan behar da eta irten
+.TP
+\fB\-\-help\fR
+erabilera laguntza argibideak bistarazi eta irten
+.TP
+\fB\-\-version\fR
+programa bertsio argibideak bistarazi eta irten
+.SH OHARRAK
+.SS Bideak
+\fI<bidea>\fR balio duten aukera guztietan, \fI<bidea>\fR-ek ez badu direktorio zatirik (Adib. fitxategi izen 
+arrunta), aMule konfigurazio direktorioan (\fI~/.aMule\fR) dagoela pentsatuko da.
+.SS Hizkuntzak
+\fB\-l\fR aukeraren \fI<hizkuntza>\fR parametroa hurrengo formatukoa da: 
+\fIhizkuntza\fR[\fB_\fIHIZKUNTZA\fR][\fB.\fIkodeketa\fR][\fB@\fIaldagaia\fR]
+non \fIhizkuntzalang\fR hizkuntza nagusia, \fIHIZKUNTZA\fR azpihizkuntz/kokapena, \fIkodeketak\fR karkatere jokoa 
+diren eta \fIaldagaia\fR-k erabiltzaileari kategoria hizkuntza aldagaiak erabiltzeko aukera ematen du".
+.PP
+Adibdiez, hurrengo kateak egokiak dira:
+.br
+eu
+.br
+eu_FR
+.br
+eu_ES.iso88591
+.br
+de_DE@euro
+.br
+de_DE.iso88591@euro
+.PP
+Kontutan izan gohiko kate guztiak hizkuntz definizio zuzenak direla nahi ez \fIkodeketak\fR eta \fIaldagaia\fR 
+erabili.
+.PP
+Goiko formatuaz gain, hizkuntzaren Ingelesezko izen osoaz ere ezarri dezakezu - beraz \fB\-l german\fR egokia da eta 
+\fB-l de_DE\fR erabiltzearen berdina da.
+.PP
+Ez denean konfigurazio fitxategian edo komando lerroan lokalik ezartzen sistemaren lehenetsia erabiliko da.
+.SH FITXATEGIAK
+~/.aMule/remote.conf
+.SH ADIBIDEA
+Normalean amulecmd lehen aldian horrela abiarazi behar da:
+.PP
+\fBamulecmd\fR \fB\-h\fR \fIostalaria\fR \fB\-p\fR \fIECataka\fR \fB\-P\fR \fIECpasahitza\fR \fB\-w\fR
+.PP
+edo
+.PP
+\fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Honek ezarpenak \fI$HOME/.aMule/remote.conf\fR-en gordeko ditu, eta hemendik aurrera hau eginaz aski izango da:
+.PP
+.B amulecmd
+.PP
+Noski ez duzu adibide hau jarraitu beharrik.
+.SH ZORRIEN BERRI EMATEN
+Mesedez zorrien berri emateko gure foroa (\fIhttp://forum.amule.org/\fR), edo gure zorri kudeatzailea (\fIhttp://bugs.amule.org/\fR) erabili.
+Mesedez ez eman zorrien berri epostaz, ez gure eposta zerrendan ez taldeko partaideei.
+.SH COPYRIGHT
+aMule eta inguruneko lanabes guztiak GNU Lizentzia Publiko Orokorraz banatzen dira.
+.SH IKUSI ERE
+\fBamule\fR(1), \fBamuleweb\fR(1)

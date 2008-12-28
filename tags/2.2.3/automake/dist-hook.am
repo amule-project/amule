@@ -1,0 +1,12 @@
+dist-hook:
+	test -z "$(EXTRA__DIST__SUBDIRS)" || \
+	for d in $(EXTRA__DIST__SUBDIRS) ; do \
+		mkdir $(distdir)/$$d ; \
+		for f in `find $(srcdir)/$$d -name '.svn' -prune -o -printf "%P\n"` ; do \
+			if test -d $(srcdir)/$$d/$$f ; then \
+				mkdir $(distdir)/$$d/$$f ; \
+			else \
+				cp -p $(srcdir)/$$d/$$f $(distdir)/$$d/$$f ; \
+			fi ; \
+		done ; \
+	done

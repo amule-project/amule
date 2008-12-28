@@ -1,0 +1,5 @@
+Make the packages that are ever build chooseable, too.
+Make a useable Startscript
+Add support for ed2k in the various browsers with debconf
+More cleanup
+Let the theme for amuleweb be choosen by debconf
