@@ -12,7 +12,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aMule 2.2.2\n"
+"Project-Id-Version: aMule 2.2.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-28 14:27+0100\n"
 "PO-Revision-Date: 2008-12-03 23:23+0000\n"
