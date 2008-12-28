@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-20 13:24+0100\n"
+"POT-Creation-Date: 2008-12-28 14:30+0100\n"
 "PO-Revision-Date: 2008-06-07 22:20+0200\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -68,24 +68,24 @@ msgstr "Download voltooid"
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:637
+#: src/amule.cpp:636
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "Afsluit bevestiging"
 
-#: src/amule.cpp:640
+#: src/amule.cpp:639
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "Nieuwe externe verbinding geaccepteerd"
 
-#: src/amule.cpp:669 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:668 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:657 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "WAARSCHUWING"
 
-#: src/amule.cpp:707
+#: src/amule.cpp:706
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -93,13 +93,13 @@ msgstr ""
 "De taalinstelling is veranderd in Systeem Standaard vanwege een configuratie "
 "wijziging. Sorry."
 
-#: src/amule.cpp:709 src/amule.cpp:1326 src/CatDialog.cpp:141
+#: src/amule.cpp:708 src/amule.cpp:1325 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:341
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Info"
 
-#: src/amule.cpp:781
+#: src/amule.cpp:780
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -107,26 +107,26 @@ msgstr ""
 "U heeft geen servers in de serverlijst.\n"
 "Wilt u dat aMule nu een nieuwe lijst download?"
 
-#: src/amule.cpp:782
+#: src/amule.cpp:781
 msgid "Server list download"
 msgstr "Download van serverlijst"
 
-#: src/amule.cpp:798 src/amuleDlg.cpp:559 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:797 src/amuleDlg.cpp:559 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:59
 msgid "Connecting"
 msgstr "Aan het verbinden"
 
-#: src/amule.cpp:814
+#: src/amule.cpp:813
 #, fuzzy, c-format
 msgid "Using amuleweb in '%s'."
 msgstr "Start amuleweb bij het opstarten"
 
-#: src/amule.cpp:844
+#: src/amule.cpp:843
 #, c-format
 msgid "web server running on pid %d"
 msgstr "webserver draait met pid %d"
 
-#: src/amule.cpp:848
+#: src/amule.cpp:847
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -136,22 +136,22 @@ msgstr ""
 "amuleweb kan niet gestart worden. Installeer a.u.b. het pakket met de aMule "
 "webserver, of compileer aMule met --enable-webserver en draai make install."
 
-#: src/amule.cpp:849 src/amule.cpp:970 src/amule.cpp:1337
+#: src/amule.cpp:848 src/amule.cpp:969 src/amule.cpp:1336
 #: src/amule-remote-gui.cpp:306
 msgid "ERROR"
 msgstr "FOUT"
 
-#: src/amule.cpp:935
+#: src/amule.cpp:934
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Kon geen poorten koppelen aan het opgegeven adres: %s"
 
-#: src/amule.cpp:962
+#: src/amule.cpp:961
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Poort %u is niet beschikbaar. U krijgt een LAAG ID\n"
 
-#: src/amule.cpp:968
+#: src/amule.cpp:967
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -167,7 +167,7 @@ msgstr ""
 "Controleer uw netwerk en zorg ervoor dat de poort open is voor in- en "
 "uitgaand verkeer."
 
-#: src/amule.cpp:1075 src/amule-remote-gui.cpp:503
+#: src/amule.cpp:1074 src/amule-remote-gui.cpp:503
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -175,15 +175,15 @@ msgstr ""
 "WAARSCHUWING: U kunt uzelf niet toevoegen als bron voor een eD2k link "
 "terwijl u een laag id hebt."
 
-#: src/amule.cpp:1119
+#: src/amule.cpp:1118
 msgid "Failed to create OnlineSig File"
 msgstr "Kon OnlineHandtekening Bestand niet maken"
 
-#: src/amule.cpp:1127
+#: src/amule.cpp:1126
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Kon aMule OnlineHandtekening Bestand niet maken"
 
-#: src/amule.cpp:1295
+#: src/amule.cpp:1294
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -191,25 +191,25 @@ msgstr ""
 "De gekozen locale lijkt niet ge?nstalleerd te zijn op uw pc. (Let op: Ik "
 "probeer het toch in te stellen)"
 
-#: src/amule.cpp:1304
+#: src/amule.cpp:1303
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Dit is de eerste keer dat u aMule %s draait"
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1305
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Dit is een test versie, dagelijks geupdate, en\n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1306
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "we geven geen garantie dat het niks sloopt, uw huis verbrandt,\n"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1307
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "of uw hond doodt. Maar het *zou* veilig moeten zijn om het te gebruiken.\n"
 
-#: src/amule.cpp:1312
+#: src/amule.cpp:1311
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
@@ -217,7 +217,7 @@ msgstr ""
 "De volgende opties zijn vanwege beveiligingsredenen gewijzigd in deze "
 "versie:\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1312
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -227,7 +227,7 @@ msgstr ""
 "* Protocol Obfuscatie ingeschakeld voor binnenkomende en uitgaande "
 "verbindingen.\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1313
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -235,7 +235,7 @@ msgstr ""
 "\n"
 "* Serverlijst updaten van andere servers en clients uitgeschakeld.\n"
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1314
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -249,7 +249,7 @@ msgstr ""
 "Het is belangrijk dat u alle nepservers uit uw serverlijst verwijderd om "
 "aMule goed te laten werken."
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1315
 msgid ""
 "\n"
 "\n"
@@ -257,21 +257,21 @@ msgid ""
 "Please configure your browser options again if needed.\n"
 msgstr ""
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1320
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Meer informatie, ondersteuning en niuwe versies kunnen gevonden worden op "
 "onze homepage,\n"
 
-#: src/amule.cpp:1322
+#: src/amule.cpp:1321
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "op www.aMule.org, of op ons IRC kanaal #amule op irc.freenode.net.\n"
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1323
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Bugs kunt u altijd melden op http://forum.amule.org"
 
-#: src/amule.cpp:1337
+#: src/amule.cpp:1336
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -280,128 +280,128 @@ msgstr ""
 "ONGELDIG!\n"
 " OnlineSignature is UITGESCHAKELD totdat u dit verbetert in voorkeuren."
 
-#: src/amule.cpp:1392
+#: src/amule.cpp:1391
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Servernaam:"
 
-#: src/amule.cpp:1621
+#: src/amule.cpp:1620
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Toewijzen schijfruimte voor bestand '%s' mislukt: %s"
 
-#: src/amule.cpp:1745
+#: src/amule.cpp:1744
 msgid "ERROR: can't open logfile"
 msgstr "FOUT: kan logbestand niet openen"
 
-#: src/amule.cpp:1749
+#: src/amule.cpp:1748
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "WAARSCHUWING: logbestand is leeg. Er is iets mis."
 
-#: src/amule.cpp:1767
+#: src/amule.cpp:1766
 msgid "Log has been reset"
 msgstr "Log is gereset"
 
-#: src/amule.cpp:1792
+#: src/amule.cpp:1791
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ServerBericht: %s"
 
-#: src/amule.cpp:1830
+#: src/amule.cpp:1829
 msgid "Failed to download the nodes list."
 msgstr "Kon nodes lijst niet downloaden."
 
-#: src/amule.cpp:1850
+#: src/amule.cpp:1849
 msgid "Failed to open the downloaded version check file"
 msgstr "Kon gedownload versie controle bestand niet openen"
 
-#: src/amule.cpp:1853 src/amule.cpp:1863 src/amule.cpp:1869
+#: src/amule.cpp:1852 src/amule.cpp:1862 src/amule.cpp:1868
 msgid "Corrupted version check file"
 msgstr "Beschadigd versie controle bestand"
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1878
 msgid "You are using an outdated version of aMule!"
 msgstr "U gebruikt een verouderde versie van aMule!"
 
-#: src/amule.cpp:1880
+#: src/amule.cpp:1879
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Uw aMule versie is %i.%i.%i en de nieuwste versie is %li.%li.%li"
 
-#: src/amule.cpp:1881
+#: src/amule.cpp:1880
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "De nieuwste versie kan altijd gevonden worden op http://www.amule.org"
 
-#: src/amule.cpp:1883
+#: src/amule.cpp:1882
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "WAARSCHUWING: Uw aMuled versie is verouderd: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1887
+#: src/amule.cpp:1886
 msgid "Your copy of aMule is up to date."
 msgstr "U heeft de nieuwste aMule versie."
 
-#: src/amule.cpp:1894
+#: src/amule.cpp:1893
 msgid "Failed to download the version check file"
 msgstr "Kon versie controle bestand niet downloaden"
 
-#: src/amule.cpp:2054
+#: src/amule.cpp:2053
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Gebruikers: %s | Bestanden: %s"
 
-#: src/amule.cpp:2055
+#: src/amule.cpp:2054
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Gebruikers: E: %s K: %s | Bestanden: E: %s K: %s"
 
-#: src/amule.cpp:2064
+#: src/amule.cpp:2063
 msgid "No networks selected"
 msgstr "Geen netwerken geselecteerd"
 
-#: src/amule.cpp:2129 src/TextClient.cpp:697
+#: src/amule.cpp:2128 src/TextClient.cpp:697
 msgid "with LowID"
 msgstr "met Laag ID"
 
-#: src/amule.cpp:2129 src/TextClient.cpp:697
+#: src/amule.cpp:2128 src/TextClient.cpp:697
 msgid "with HighID"
 msgstr "met Hoog ID"
 
-#: src/amule.cpp:2131
+#: src/amule.cpp:2130
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Verbonden met %s %s"
 
-#: src/amule.cpp:2134
+#: src/amule.cpp:2133
 #, c-format
 msgid "Connecting to %s"
 msgstr "Verbinden met %s"
 
-#: src/amule.cpp:2136
+#: src/amule.cpp:2135
 msgid "Disconnected from eD2k"
 msgstr "Verbinding verbroken met eD2K"
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2142
 msgid "Kad started."
 msgstr "Kad gestart."
 
-#: src/amule.cpp:2145
+#: src/amule.cpp:2144
 msgid "Kad stopped."
 msgstr "Kad gestopt."
 
-#: src/amule.cpp:2152
+#: src/amule.cpp:2151
 msgid "Connected to Kad (ok)"
 msgstr "Verbonden met Kad (ok)"
 
-#: src/amule.cpp:2154
+#: src/amule.cpp:2153
 msgid "Connected to Kad (firewalled)"
 msgstr "Verbonden met Kad (firewalled)"
 
-#: src/amule.cpp:2157
+#: src/amule.cpp:2156
 msgid "Disconnected from Kad"
 msgstr "Verbinding met Kad verbroken"
 
-#: src/amule.cpp:2220
+#: src/amule.cpp:2219
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -409,7 +409,7 @@ msgstr ""
 "Kad netwerk kan niet gebruikt worden als de UDP poort is uitgeschakeld in "
 "voorkeuren, wordt niet gestart."
 
-#: src/amule.cpp:2223
+#: src/amule.cpp:2222
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad netwerk is uitgeschakeld in voorkeuren, wordt niet mee verbonden."
 
@@ -871,7 +871,7 @@ msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Client %s op IP:Poort %s:%d gebruikt %s %s %s"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
-#: src/SearchListCtrl.cpp:587 src/TransferWnd.cpp:336
+#: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
 msgid "Category"
 msgstr "Categorie"
 
@@ -1065,7 +1065,7 @@ msgid "Username"
 msgstr "Gebruikersnaam"
 
 #: src/ClientListCtrl.cpp:517 src/ClientListCtrl.cpp:849
-#: src/SearchListCtrl.cpp:584
+#: src/SearchListCtrl.cpp:595
 msgid "File"
 msgstr "Bestand"
 
@@ -1091,7 +1091,7 @@ msgid "Upload Time"
 msgstr "Upload Tijd"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3920
+#: src/PartFile.cpp:3920 src/SearchListCtrl.cpp:93
 msgid "Status"
 msgstr "Status"
 
@@ -1308,7 +1308,7 @@ msgid "File Comments"
 msgstr "Bestand Commentaren"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:188
-#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:87
+#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:88
 #: src/SharedFilesCtrl.cpp:102
 msgid "File Name"
 msgstr "Bestandsnaam"
@@ -1456,7 +1456,7 @@ msgid "Part"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:630
-#: src/SearchListCtrl.cpp:88 src/SharedFilesCtrl.cpp:103
+#: src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
 msgid "Size"
 msgstr "Grootte"
 
@@ -1470,7 +1470,7 @@ msgid "Progress"
 msgstr "Voortgang"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3918 src/SearchListCtrl.cpp:89
+#: src/PartFile.cpp:3918 src/SearchListCtrl.cpp:90
 msgid "Sources"
 msgstr "Bronnen"
 
@@ -2220,61 +2220,70 @@ msgstr ""
 msgid "Download size: %i"
 msgstr "Downloads (%i)"
 
-#: src/HTTPDownload.cpp:246
+#: src/HTTPDownload.cpp:231
+#, c-format
+msgid "Expected %d bytes, but downloaded %d bytes"
+msgstr ""
+
+#: src/HTTPDownload.cpp:250
 msgid "HTTP download thread ended"
 msgstr ""
 
-#: src/HTTPDownload.cpp:326
+#: src/HTTPDownload.cpp:330
 #, c-format
 msgid "Host: %s:%i\n"
 msgstr ""
 
-#: src/HTTPDownload.cpp:328
+#: src/HTTPDownload.cpp:332
 #, c-format
 msgid "Response: %i (Error: %i)"
 msgstr ""
 
-#: src/HTTPDownload.cpp:331
+#: src/HTTPDownload.cpp:335
 #, fuzzy
 msgid "WARNING: Void response on stream creation"
 msgstr ""
 "WAARSCHUWING: Kon origineel '%s' niet verwijderen na het maken van backup"
 
-#: src/HTTPDownload.cpp:355
+#: src/HTTPDownload.cpp:359
 msgid "ERROR: Redirection code received with no URL"
 msgstr ""
 
-#: src/IP2Country.cpp:93
+#: src/IP2Country.cpp:85
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr ""
 
-#: src/IP2Country.cpp:116
+#: src/IP2Country.cpp:113
+msgid "Download of GeoIP.dat file failed, aborting update."
+msgstr ""
+
+#: src/IP2Country.cpp:119
 msgid "Failed to remove GeoIP.dat file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:122
+#: src/IP2Country.cpp:125
 msgid "Failed to rename new GeoIP.dat file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:128
+#: src/IP2Country.cpp:131
 msgid "Successfully updated GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:130
+#: src/IP2Country.cpp:133
 msgid "Error updating GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:133
+#: src/IP2Country.cpp:136
 #, c-format
 msgid "Failed to download GeoIP.dat from %s"
 msgstr ""
 
-#: src/IP2Country.cpp:150
+#: src/IP2Country.cpp:155
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Kon landengegevens niet laden uit "
 
-#: src/IP2Country.cpp:155
+#: src/IP2Country.cpp:160
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
@@ -2509,20 +2518,20 @@ msgstr "FOUT: "
 msgid "WARNING: "
 msgstr "WAARSCHUWING: "
 
-#: src/MuleNotebook.cpp:155 src/muuli_wdr.cpp:537 src/muuli_wdr.cpp:953
+#: src/MuleNotebook.cpp:154 src/muuli_wdr.cpp:537 src/muuli_wdr.cpp:953
 #: src/muuli_wdr.cpp:1564 src/muuli_wdr.cpp:3360
 msgid "Close"
 msgstr "Sluiten"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:155
 msgid "Close tab"
 msgstr "Sluit tabblad"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:156
 msgid "Close all tabs"
 msgstr "Sluit alle tabbladen"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:157
 msgid "Close other tabs"
 msgstr "Sluit andere tabbladen"
 
@@ -2788,7 +2797,7 @@ msgstr "Zoeken"
 msgid "Name:"
 msgstr "Naam:"
 
-#: src/muuli_wdr.cpp:185 src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:104
+#: src/muuli_wdr.cpp:185 src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:104
 msgid "Type"
 msgstr "Type"
 
@@ -2916,7 +2925,7 @@ msgstr "Zoekt naar meer resultaten op eD2K. Werkt nog niet voor Kad."
 msgid "Stop"
 msgstr "Stop"
 
-#: src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1701 src/SearchListCtrl.cpp:585
+#: src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1701 src/SearchListCtrl.cpp:596
 msgid "Download"
 msgstr "Download"
 
@@ -3760,7 +3769,7 @@ msgstr "Server verbinding verversingsinterval: Uitschakelen"
 msgid "Skin to use: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:826
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:827
 msgid "- default -"
 msgstr ""
 
@@ -4829,158 +4838,163 @@ msgid "Arabic"
 msgstr "Arabisch"
 
 #: src/Preferences.cpp:660
+#, fuzzy
+msgid "Asturian"
+msgstr "Estonisch"
+
+#: src/Preferences.cpp:661
 msgid "Basque"
 msgstr "Baskisch"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Bulgarian"
 msgstr "Bulgaars"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Catalan"
 msgstr "Catalaans"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 msgid "Chinese (Simplified)"
 msgstr "Chinees (Vereenvoudigd)"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Chinese (Traditional)"
 msgstr "Chinees (Traditioneel)"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Croatian"
 msgstr "Kroatisch"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:667
 msgid "Czech"
 msgstr "Tsjechisch"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:668
 msgid "Danish"
 msgstr "Deens"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:669
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:670
 msgid "English (U.K.)"
 msgstr "Engels (V.K.)"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:671
 msgid "Estonian"
 msgstr "Estonisch"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:672
 msgid "Finnish"
 msgstr "Fins"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:673
 msgid "French"
 msgstr "Frans"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:674
 msgid "Galician"
 msgstr "Gallisch"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:675
 msgid "German"
 msgstr "Duits"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:676
 msgid "Greek"
 msgstr "Grieks"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:677
 msgid "Hebrew"
 msgstr "Hebreeuws"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:678
 msgid "Hungarian"
 msgstr "Hongaars"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:679
 msgid "Italian"
 msgstr "Italiaans"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:680
 msgid "Italian (Swiss)"
 msgstr "Italiaans (Zwitsers)"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:681
 msgid "Japanese"
 msgstr "Japans"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:682
 msgid "Korean"
 msgstr "Koreaans"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:683
 msgid "Lithuanian"
 msgstr "Litouws"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:684
 msgid "Norwegian (Nynorsk)"
 msgstr "Noors"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:685
 msgid "Polish"
 msgstr "Pools"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:686
 msgid "Portuguese"
 msgstr "Portugees"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:687
 msgid "Portuguese (Brazilian)"
 msgstr "Portugees (Braziliaans)"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:688
 msgid "Russian"
 msgstr "Russisch"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:689
 msgid "Slovenian"
 msgstr "Sloveens"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:690
 msgid "Spanish"
 msgstr "Spaans"
 
-#: src/Preferences.cpp:690
+#: src/Preferences.cpp:691
 msgid "Swedish"
 msgstr "Zweeds"
 
-#: src/Preferences.cpp:691
+#: src/Preferences.cpp:692
 msgid "Turkish"
 msgstr "Turks"
 
-#: src/Preferences.cpp:692
+#: src/Preferences.cpp:693
 msgid "Ukrainian"
 msgstr ""
 
-#: src/Preferences.cpp:879
+#: src/Preferences.cpp:880
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1537
+#: src/Preferences.cpp:1538
 msgid "Invalid category found, skipping"
 msgstr ""
 
-#: src/Preferences.cpp:1701
+#: src/Preferences.cpp:1702
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP poort kan niet hoger zijn dan 65532 omdat de server UDP poort de TCP "
 "poort + 3 is"
 
-#: src/Preferences.cpp:1702
+#: src/Preferences.cpp:1703
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Standaard poort zal worden gebruikt (%d)"
 
-#: src/Preferences.cpp:1725
+#: src/Preferences.cpp:1726
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr ""
@@ -5169,84 +5183,84 @@ msgstr ""
 "Voeg hier URL's toe om server.met bestanden te downloaden.\n"
 "Slechts een url per regel."
 
-#: src/PrefsUnifiedDlg.cpp:995
+#: src/PrefsUnifiedDlg.cpp:998
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Update vertraging: %d seconde"
 msgstr[1] "Update vertraging: %d seconden"
 
-#: src/PrefsUnifiedDlg.cpp:1002
+#: src/PrefsUnifiedDlg.cpp:1005
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Tijd voor gemiddeldengrafiek: %d minuut"
 msgstr[1] "Tijd voor gemiddeldengrafiek: %d minuten"
 
-#: src/PrefsUnifiedDlg.cpp:1008
+#: src/PrefsUnifiedDlg.cpp:1011
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Verbindingen Grafiek Schaal: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1014
+#: src/PrefsUnifiedDlg.cpp:1017
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Update vertraging : %d seconde"
 msgstr[1] "Update vertraging : %d seconden"
 
-#: src/PrefsUnifiedDlg.cpp:1020
+#: src/PrefsUnifiedDlg.cpp:1023
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Bestandsbuffer Grootte: %d byte"
 msgstr[1] "Bestandsbuffer Grootte: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:1026
+#: src/PrefsUnifiedDlg.cpp:1029
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Upload Wachtrij Grootte: %d client"
 msgstr[1] "Upload Wachtrij Grootte: %d clients"
 
-#: src/PrefsUnifiedDlg.cpp:1033
+#: src/PrefsUnifiedDlg.cpp:1036
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Server verbinding verversingsinterval: %d minuut"
 msgstr[1] "Server verbinding verversingsinterval: %d minuten"
 
-#: src/PrefsUnifiedDlg.cpp:1035
+#: src/PrefsUnifiedDlg.cpp:1038
 msgid "Server connection refresh interval: Disabled"
 msgstr "Server verbinding verversingstijd: Uitgeschakeld"
 
-#: src/PrefsUnifiedDlg.cpp:1080
+#: src/PrefsUnifiedDlg.cpp:1083
 #, fuzzy
 msgid "disabled"
 msgstr "uitschakelen"
 
-#: src/PrefsUnifiedDlg.cpp:1098
+#: src/PrefsUnifiedDlg.cpp:1101
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Voer commando uit bij gebeurtenis `%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1101
+#: src/PrefsUnifiedDlg.cpp:1104
 msgid "Enable command execution on core"
 msgstr "Schakel uitvoeren van commando's in kern in"
 
-#: src/PrefsUnifiedDlg.cpp:1109
+#: src/PrefsUnifiedDlg.cpp:1112
 msgid "Core command:"
 msgstr "Kern commando:"
 
-#: src/PrefsUnifiedDlg.cpp:1118
+#: src/PrefsUnifiedDlg.cpp:1121
 msgid "Enable command execution on GUI"
 msgstr "Schakel uitvoeren van commando's in GUI in"
 
-#: src/PrefsUnifiedDlg.cpp:1126
+#: src/PrefsUnifiedDlg.cpp:1129
 msgid "GUI command:"
 msgstr "GUI commando:"
 
-#: src/PrefsUnifiedDlg.cpp:1135
+#: src/PrefsUnifiedDlg.cpp:1138
 msgid "The following variables will be replaced:"
 msgstr "De volgende variabelen worden vervangen:"
 
@@ -5259,7 +5273,7 @@ msgstr ""
 msgid "Search warning"
 msgstr "Zoekwaarschuwing"
 
-#: src/SearchDlg.cpp:647 src/SearchListCtrl.cpp:588
+#: src/SearchDlg.cpp:647 src/SearchListCtrl.cpp:599
 msgid "Main"
 msgstr "Standaard"
 
@@ -5275,23 +5289,23 @@ msgstr "eD2K zoekopdracht kan niet worden uitgevoerd als eD2K niet draait"
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Onverwachte fout bij Kad zoekopdracht: "
 
-#: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:106
+#: src/SearchListCtrl.cpp:92 src/SharedFilesCtrl.cpp:106
 msgid "FileID"
 msgstr "BestandsID"
 
-#: src/SearchListCtrl.cpp:594
+#: src/SearchListCtrl.cpp:605
 msgid "Download in category"
 msgstr "Download in categorie"
 
-#: src/SearchListCtrl.cpp:600
+#: src/SearchListCtrl.cpp:611
 msgid "Search related files (eD2k, local server)"
 msgstr "Zoek gelijkwaardige bestanden (eD2k, lokale server)"
 
-#: src/SearchListCtrl.cpp:605
+#: src/SearchListCtrl.cpp:616
 msgid "Mark as known file"
 msgstr "Markeer als bekend bestand"
 
-#: src/SearchListCtrl.cpp:609 src/ServerListCtrl.cpp:454
+#: src/SearchListCtrl.cpp:620 src/ServerListCtrl.cpp:454
 msgid "Copy eD2k link to clipboard"
 msgstr "Kopieer eD2k link naar klembord"
 
