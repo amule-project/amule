@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_prerelease\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-25 01:25+0100\n"
+"POT-Creation-Date: 2008-12-28 14:27+0100\n"
 "PO-Revision-Date: 2008-12-04 09:47+0100\n"
 "Last-Translator: rik <rik_kornellatyahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
@@ -4753,7 +4753,7 @@ msgid "Sends the specified message."
 msgstr "Invia messaggio specificato."
 
 #: src/muuli_wdr.cpp:546 src/muuli_wdr.cpp:968 src/muuli_wdr.cpp:1591
-#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:154
 msgid "Close"
 msgstr "Chiudi"
 
@@ -6829,15 +6829,15 @@ msgstr "*** Connessione al client in corso ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Impossibile connettersi al client / Connessione persa ***"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:155
 msgid "Close tab"
 msgstr "Chiudi scheda"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:156
 msgid "Close all tabs"
 msgstr "Chiudi tutte le schede"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:157
 msgid "Close other tabs"
 msgstr "Chiudi le altre schede"
 

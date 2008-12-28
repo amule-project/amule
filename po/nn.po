@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-25 01:25+0100\n"
+"POT-Creation-Date: 2008-12-28 14:27+0100\n"
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -4690,7 +4690,7 @@ msgid "Sends the specified message."
 msgstr "Sender meldinga."
 
 #: src/muuli_wdr.cpp:546 src/muuli_wdr.cpp:968 src/muuli_wdr.cpp:1591
-#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:154
 msgid "Close"
 msgstr "Stengje"
 
@@ -6754,15 +6754,15 @@ msgstr "***·Koplar til klient·***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Greidde ikkje å kople til klient / Kopling mista ***"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:155
 msgid "Close tab"
 msgstr "Stengje faneblad"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:156
 msgid "Close all tabs"
 msgstr "Stengje alle faneblad"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:157
 msgid "Close other tabs"
 msgstr "Stengje andre faneblad"
 

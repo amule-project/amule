@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-25 01:25+0100\n"
+"POT-Creation-Date: 2008-12-28 14:27+0100\n"
 "PO-Revision-Date: 2008-12-04 18:59+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
@@ -4676,7 +4676,7 @@ msgid "Sends the specified message."
 msgstr "Belirlenen iletiyi gönderir."
 
 #: src/muuli_wdr.cpp:546 src/muuli_wdr.cpp:968 src/muuli_wdr.cpp:1591
-#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:154
 msgid "Close"
 msgstr "Kapat"
 
@@ -6742,15 +6742,15 @@ msgstr "*** Kullanıcıya Bağlanıyor.***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kullanıcıya bağlantı başarısız. / Bağlantı koptu.***"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:155
 msgid "Close tab"
 msgstr "Sekmeyi Kapat"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:156
 msgid "Close all tabs"
 msgstr "Tüm sekmeleri kapat"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:157
 msgid "Close other tabs"
 msgstr "Diğer sekmeleri kapat"
 

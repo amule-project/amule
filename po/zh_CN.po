@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-25 01:25+0100\n"
+"POT-Creation-Date: 2008-12-28 14:27+0100\n"
 "PO-Revision-Date: 2008-06-08 23:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -4629,7 +4629,7 @@ msgid "Sends the specified message."
 msgstr "发送指定消息。"
 
 #: src/muuli_wdr.cpp:546 src/muuli_wdr.cpp:968 src/muuli_wdr.cpp:1591
-#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:154
 msgid "Close"
 msgstr "关闭"
 
@@ -6655,15 +6655,15 @@ msgstr "*** 正在连接用户 ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** 无法连接用户/连接中断 ***"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:155
 msgid "Close tab"
 msgstr "关闭分页"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:156
 msgid "Close all tabs"
 msgstr "关闭所有分页"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:157
 msgid "Close other tabs"
 msgstr "关闭其它分页"
 
