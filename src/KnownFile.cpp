@@ -4,7 +4,7 @@
 // Parts of this file are based on work from pan One (http://home-3.tiscali.nl/~meost/pms/)
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -1346,7 +1346,7 @@ wxString CKnownFile::GetAICHMasterHash() const
 bool CKnownFile::HasProperAICHHashSet() const
 {
 #ifdef CLIENT_GUI
-	return m_AICHMasterHash.Length() != 0;
+	return m_AICHMasterHash.Length();
 #else
 	return m_pAICHHashSet->HasValidMasterHash() &&
 		(m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
@@ -1362,7 +1362,6 @@ wxString CKnownFile::GetFeedback() const
 		+ _("Uploaded") + wxT(": ") + CastItoXBytes(statistic.GetTransferred()) + wxT(" (") + CastItoXBytes(statistic.GetAllTimeTransferred()) + wxT(")\n")
 		+ _("Requested") + CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
 		+ _("Accepted") + CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
-		+ _("On Queue") + CFormat(wxT(": %u\n")) % GetQueuedCount()
 		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
 }
 // File_checked_for_headers

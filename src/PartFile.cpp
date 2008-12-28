@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -348,7 +348,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
 			//if (version == 83) return ImportShareazaTempFile(...)
-			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met file version: %s ==> %s") )
+			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met fileversion: %s ==> %s") )
 				% m_partmetfilename 
 				% GetFileName() );
 			return false;
@@ -549,7 +549,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 									gap->end = newtag.GetInt()-1;
 								}
 							} else {
-								AddDebugLogLineN(logPartFile, wxT("Wrong gap map key while reading met file!"));
+								printf("Wrong gap map key while reading met file!\n");
 								wxASSERT(0);
 							}
 							// End Changes by Slugfiller for better exception handling
@@ -888,14 +888,22 @@ bool CPartFile::SavePartFile(bool Initial)
 			++i_pos;
 		}
 	} catch (const wxString& error) {
-		AddLogLineNS(CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
+		AddLogLineM(false, CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
 			% error
 			% m_partmetfilename
 			% GetFileName() );
 
+		wxString err = CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
+			% error
+			% m_partmetfilename
+			% GetFileName();
+		
+		printf("%s\n", (const char*)unicode2char(err));
+		
 		return false;
 	} catch (const CIOFailureException& e) {
-		AddLogLineCS(_("IO failure while saving partfile: ") + e.what());
+		AddDebugLogLineM(true, logPartFile, wxT("IO failure while saving partfile: ") + e.what());
+		printf("IO failure while saving partfile: %s\n", (const char*)unicode2char(e.what()));
 		
 		return false;
 	}
@@ -2968,23 +2976,24 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 		return 0;
 	}
 
-	// security sanitize check to make sure we do not write anything into an already hashed complete chunk
-	const uint64 nStartChunk = start / PARTSIZE;
-	const uint64 nEndChunk = end / PARTSIZE;
-	if (IsComplete(PARTSIZE * (uint64)nStartChunk, (PARTSIZE * (uint64)(nStartChunk + 1)) - 1)) {
-		AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (start): %u-%u; File=%s")) % start % end % GetFileName());
-		return 0;
-	} else if (nStartChunk != nEndChunk) {
-		if (IsComplete(PARTSIZE * (uint64)nEndChunk, (PARTSIZE * (uint64)(nEndChunk + 1)) - 1)) {
-			AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (end): %u-%u; File=%s")) % start % end % GetFileName());
-			return 0;
-		}
+       // security sanitize check to make sure we do not write anything into an already hashed complete chunk
+       const uint64 nStartChunk = start / PARTSIZE;
+       const uint64 nEndChunk = end / PARTSIZE;
+       if (IsComplete(PARTSIZE * (uint64)nStartChunk, (PARTSIZE * (uint64)(nStartChunk + 1)) - 1)) {
+               AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (start): %u-%u; File=%s")) % start % end % GetFileName());
+               return 0;
+       } else if (nStartChunk != nEndChunk) {
+               if (IsComplete(PARTSIZE * (uint64)nEndChunk, (PARTSIZE * (uint64)(nEndChunk + 1)) - 1)) {
+                       AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (end): %u-%u; File=%s")) % start % end % GetFileName());
+                       return 0;
+               }
 #ifdef __DEBUG__
-		else {
-			AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data crosses chunk boundaries: %u-%u; File=%s")) % start % end % GetFileName());
-		}
+               else {
+                       AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data crosses chunk boundaries: %u-%u; File=%s")) % start % end % GetFileName());
+               }
 #endif
-	}
+       }
+
 
 	// Create copy of data as new buffer
 	byte *buffer = new byte[lenData];
@@ -3758,6 +3767,13 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 { 
 	return m_FileRatingList; 
 }
+
+void CPartFile::SetCategory(uint8 cat)
+{
+	wxASSERT( cat < theApp->glob_prefs->GetCatCount() );
+	
+	m_category = cat; 
+}
 #endif // !CLIENT_GUI
 
 
@@ -4044,6 +4060,7 @@ uint32 CPartFile::GetDlActiveTime() const
 	}
 	return nDlActiveTime;
 }
+
 
 #ifndef CLIENT_GUI
 

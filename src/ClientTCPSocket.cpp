@@ -2,7 +2,8 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )//
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+//
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
 // respective authors.
@@ -662,7 +663,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 			theApp->uploadqueue->RemoveFromUploadQueue(m_client);
-			AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
+			if ( CLogger::IsEnabled( logClient ) ) {
+				AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
+			}
 			break;
 		}
 		
@@ -672,7 +675,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash(buffer)) {
 				theApp->uploadqueue->RemoveFromUploadQueue(m_client);
-				AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
+				if ( CLogger::IsEnabled( logClient ) ) {
+					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
+				}
 			}
 			break;
 		}
@@ -795,11 +800,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			if (IsMessageFiltered(message, m_client)) {
 				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			} else {
-				wxString logMsg = CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP();
-				if(thePrefs::ShowMessagesInLog()) {
-					logMsg += wxT(": ") + message;
-				}
-				AddLogLineM( true, logMsg);
+				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 				
 				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
 			}
@@ -1959,7 +1960,7 @@ void CClientTCPSocket::OnError(int nErrorCode)
 			strError += wxT("caused a socket blocking error.");
 		}
 	} else {
-		if (theLogger.IsEnabled(logClient) && nErrorCode != 107) {
+		if ( CLogger::IsEnabled( logClient ) && (nErrorCode != 107)) {
 			// 0    -> No Error / Disconect
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {

@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -83,7 +83,7 @@ bool CKnownFileList::Init()
 	try {
 		uint8 version = file.ReadUInt8();
 		if ((version != MET_HEADER) && (version != MET_HEADER_WITH_LARGEFILES)) {
-			AddLogLineM(true, _("WARNING: Known file list corrupted, contains invalid header."));
+			AddLogLineM(true, _("WARNING: Knownfile list corrupted, contains invalid header."));
 			return false;
 		}
 		

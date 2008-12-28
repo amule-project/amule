@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -321,8 +321,8 @@ void CSharedFileList::FindSharedFiles()
 		CPartFile* file = theApp->downloadqueue->GetFileByIndex( i );
 		
 		if ( file->GetStatus(true) == PS_READY ) {
-			AddLogLineNS(CFormat(_("Adding file %s to shares"))
-				% file->GetFullName().GetPrintable());
+			printf("Adding file %s to shares\n",
+				(const char *)unicode2char(file->GetFullName().GetPrintable()));
 			AddFile(file);
 		}
 	}
@@ -388,8 +388,8 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 	}
 
 	if (!directory.DirExists()) {
-		AddLogLineNS(CFormat(_("Shared directory not found, skipping: %s"))
-			% directory.GetPrintable());
+		printf("Shared directory not found, skipping: %s\n",
+			(const char *)unicode2char(directory.GetPrintable()));
 		
 		return 0;
 	}
@@ -460,8 +460,8 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 	}
 
 	if ((addedFiles == 0) && (knownFiles == 0)) {
-		AddLogLineNS(CFormat(_("No shareable files found in directory: %s"))
-			% directory.GetPrintable());
+		printf("No shareable files found in directory: %s\n",
+			(const char *)unicode2char(directory.GetPrintable()));
 	}
 
 	return addedFiles;

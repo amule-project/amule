@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -376,7 +376,7 @@ public:
 
 	const BitVector& GetPartStatus() const		{ return m_downPartStatus; }
 	const BitVector& GetUpPartStatus() const	{ return m_upPartStatus; }
-	float		GetKBpsDown() const				{ return kBpsDown; }
+	float		GetKBpsDown() const		{ return kBpsDown; }
 	float		CalculateKBpsDown();
 	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
 	uint16		GetOldRemoteQueueRank() const	{ return m_nOldRemoteQueueRank; }

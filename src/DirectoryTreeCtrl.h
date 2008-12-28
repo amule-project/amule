@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Robert Rostek ( tecxx@rrs.at )
+// Copyright (c) 2002 Robert Rostek ( tecxx@rrs.at )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -42,16 +42,16 @@ public:
 
 	// get all shared directories
 	void GetSharedDirectories(PathList* list);
-	// set list of shared directories
+	// set shared directories
 	void SetSharedDirectories(PathList* list);
 	
 	// User made any changes to list?
 	bool HasChanged;
 
+private:
 	// initialize control
 	void Init();
 
-private:
 	// add a new item
 	void AddChildItem(wxTreeItemId hBranch, const CPath& item);
 	// add subdirectory items
@@ -64,8 +64,6 @@ private:
 	void CheckChanged(wxTreeItemId hItem, bool bChecked);
 	// returns true if a subdirectory of strDir is shared
 	bool HasSharedSubdirectory(const CPath& path);
-	// set shared directories according to list
-	void UpdateSharedDirectories();
 	// when sharing a directory, make all parent directories red
 	void UpdateParentItems(wxTreeItemId hChild, bool add);
 
@@ -80,8 +78,6 @@ private:
 	void OnItemActivated(wxTreeEvent& evt);
 
 	PathList m_lstShared;
-
-	bool m_IsInit;
 	
 	
 	DECLARE_EVENT_TABLE()

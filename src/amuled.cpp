@@ -27,13 +27,6 @@
 
 #include <include/common/EventIDs.h>
 
-// amuled doesn't run on Windows.
-// To make it at least compile some code has to be excluded.
-// For a real port all usages of TODO_MSW have to be resolved !
-#ifdef __WXMSW__
-	#define TODO_MSW 1
-#endif
-
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, HAVE_STRERROR_R and STRERROR_R_CHAR_P
 #endif
@@ -137,6 +130,7 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	EVT_MULE_TIMER(ID_CORE_TIMER_EVENT, CamuleDaemonApp::OnCoreTimer)
 
 	EVT_MULE_NOTIFY(CamuleDaemonApp::OnNotifyEvent)
+	EVT_MULE_LOGGING(CamuleDaemonApp::OnLoggingEvent)
 
 	// Async dns handling
 	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleDaemonApp::OnUDPDnsDone)
@@ -293,8 +287,6 @@ void CAmuledGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
 
 void CAmuledGSocketFuncTable::RunSelect()
 {
-#ifndef TODO_MSW
-// This is why it doesn't work on Windows
 	wxMutexLocker lock(m_lock);
 
 	int max_fd = -1;
@@ -311,7 +303,6 @@ void CAmuledGSocketFuncTable::RunSelect()
 		m_out_set->Detected(&GSocket::Detected_Write);
 	}
 	
-#endif
 }
 
 GSocketGUIFunctionsTable *CDaemonAppTraits::GetSocketGUIFunctionsTable()
@@ -374,11 +365,9 @@ CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table)
 wxConsoleAppTraits(),
 m_table(table),
 m_lock(wxMUTEX_RECURSIVE),
-m_sched_delete()
-#ifndef TODO_MSW
-,m_oldSignalChildAction(),
+m_sched_delete(),
+m_oldSignalChildAction(),
 m_newSignalChildAction()
-#endif
 {
 	m_lock.Unlock();
 }
@@ -587,10 +576,25 @@ pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
 int CamuleDaemonApp::OnRun()
 {
 	if (!thePrefs::AcceptExternalConnections()) {
-		AddLogLineMS(true, _("ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"));
+		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
+			"To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key"
+			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
+		
+		AddLogLineM(true, warning);
+		printf("\n%s\n\n", (const char*)unicode2char(warning));
+		
 		return 0;
 	} else if (thePrefs::ECPassword().IsEmpty()) {
-		AddLogLineMS(true, _("ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule deamon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at http://wiki.amule.org"));
+		wxString warning = wxT("ERROR: A valid password is required to use "
+			"external connections, and aMule daemon cannot be used without "
+			"external connections. To run aMule deamon, you must set the "
+			"\"ECPassword\" field in the file ~/.aMule/amule.conf with an "
+			"appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at "
+			"http://wiki.amule.org");
+	
+		AddLogLineM(true, warning);
+		printf("\n%s\n\n", (const char*)unicode2char(warning));
+		
 		return 0;
 	}
 
@@ -655,7 +659,7 @@ int CamuleDaemonApp::OnRun()
 
 bool CamuleDaemonApp::OnInit()
 {
-	AddLogLineNS(_("amuled: OnInit - starting timer"));
+	printf("amuled: OnInit - starting timer\n");
 	if ( !CamuleApp::OnInit() ) {
 		return false;
 	}
@@ -673,8 +677,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 	if ( !enable_daemon_fork ) {
 		return 0;
 	}
-	AddLogLineNS(_("amuled: forking to background - see you"));
-	theLogger.SetEnabledStdoutLog(false);
+	printf("amuled: forking to background - see you\n");
 	//
 	// fork to background and detouch from controlling tty
 	// while redirecting stdout to /dev/null
@@ -731,7 +734,19 @@ void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 	if ( flags | wxICON_ERROR ) {
 		title = CFormat(_("ERROR: %s")) % title;
 	}
-	AddLogLineCS(title + wxT(" ") + msg);
+	
+	// Ensure that alerts are always visible on the console (when possible).
+	if ((not enable_stdout_log) and (not enable_daemon_fork)) {
+		printf("%s\n", unicode2UTF8(title + wxT(" ") + msg).data());
+	}
+	
+	AddLogLineM(true, title + wxT(" ") + msg);
+}
+
+
+void CamuleDaemonApp::OnLoggingEvent(CLoggingEvent& evt)
+{
+	CamuleApp::AddLogLine(evt.Message());
 }
 
 // File_checked_for_headers

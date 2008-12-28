@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -27,8 +27,6 @@
 #include "MD4Hash.h"				// Needed for CMD4Hash
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 #include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
-#include "Logger.h"
-#include <common/Format.h>	// Needed for CFormat
 
 #if defined(__SUNPRO_CC)
 #define __FUNCTION__ __FILE__+__LINE__
@@ -471,8 +469,8 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 				throw wxString(wxT("Invalid Kad tag type on packet"));
 		}
 	} catch (...) {
-		AddLogLineNS(CFormat(wxT("Invalid Kad tag; type=0x%02x name=%s\n"))
-			% type % name);
+		printf("Invalid Kad tag; type=0x%02x name=%s\n",
+			type, (const char *)unicode2char(name));
 		delete retVal;
 		throw;
 	}
@@ -543,12 +541,13 @@ void CFileDataIO::WriteTag(const CTag& tag)
 			default:
 				//TODO: Support more tag types
 				// With the if above, this should NEVER happen.
-				AddLogLineNS(CFormat(wxT("CFileDataIO::WriteTag: Unknown tag: type=0x%02X")) % tag.GetType());
+				printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, tag.GetType());
 				wxASSERT(0);
 				break;
 		}				
 	} catch (...) {
-		AddLogLineNS(wxT("Exception in CDataIO:WriteTag"));
+		//AddDebugLogLine(false, wxT("Exception in CDataIO:WriteTag"));
+		printf("Exception in CDataIO:WriteTag");
 		throw;
 	}
 }

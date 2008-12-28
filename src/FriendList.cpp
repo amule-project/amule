@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -219,7 +219,7 @@ void CFriendList::StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16
 			friend_client->LinkClient(client);
 		}
 	} else {
-		AddLogLineC(_("CRITICAL - no client on StartChatSession"));
+		printf("CRITICAL - no client on StartChatSession\n");
 	}
 	
 }

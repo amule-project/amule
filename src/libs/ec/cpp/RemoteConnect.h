@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal Veiga ( kry@users.sourceforge.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -66,8 +66,7 @@ private:
 	wxString m_server_reply;
 	wxString m_client;
 	wxString m_version;
-
-	void WriteDoneAndQueueEmpty();	
+	
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);

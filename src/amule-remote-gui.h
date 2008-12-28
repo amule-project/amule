@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -314,7 +314,7 @@ public:
 
 	void ProcessFull(const CECPacket *reply)
 	{
-		for (size_t i = 0;i < reply->GetTagCount();i++) {
+		for (int i = 0;i < reply->GetTagCount();i++) {
 			G *tag = (G *)reply->GetTagByIndex(i);
 			// initialize item data from EC tag
 			T *item = this->CreateItem(tag);
@@ -325,7 +325,7 @@ public:
 	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 	{
 		std::set<I> core_files;
-		for (size_t i = 0;i < reply->GetTagCount();i++) {
+		for (int i = 0;i < reply->GetTagCount();i++) {
 			G *tag = (G *)reply->GetTagByIndex(i);
 			if ( tag->GetTagName() != req_type ) {
 				continue;
@@ -675,9 +675,9 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	
 	void OnECConnection(wxEvent& event);
 	void OnECInitDone(wxEvent& event);
+	void OnLoggingEvent(CLoggingEvent& evt);
 	void OnNotifyEvent(CMuleGUIEvent& evt);
-	void OnFinishedHTTPDownload(CMuleInternalEvent& event);
-
+	
 	CStatsUpdaterRem m_stats_updater;
 public:
 
@@ -725,7 +725,6 @@ public:
 	wxString GetServerLog(bool reset = false);
 
 	void AddServerMessageLine(wxString &msg);
-	void AddRemoteLogLine(const wxString& line);
 
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 
@@ -737,28 +736,12 @@ public:
 		return ((m_ConnState & CONNECTED_KAD_OK) 
 				|| (m_ConnState & CONNECTED_KAD_FIREWALLED));
 	}
-	bool IsFirewalledKad() const { return (m_ConnState & CONNECTED_KAD_FIREWALLED) != 0; }
+	bool IsFirewalledKad() const { return (m_ConnState & CONNECTED_KAD_FIREWALLED); }
 	
 	bool IsKadRunning() const { return ((m_ConnState & CONNECTED_KAD_OK) 
 				|| (m_ConnState & CONNECTED_KAD_FIREWALLED)
 				|| (m_ConnState & CONNECTED_KAD_NOT)); }
-
-	// Check Kad state (UDP)
-	bool IsFirewalledKadUDP() const		{ return theStats::IsFirewalledKadUDP(); }
-	// Kad stats
-	uint32 GetKadUsers() const			{ return theStats::GetKadUsers(); }
-	uint32 GetKadFiles() const			{ return theStats::GetKadFiles(); }
-	uint32 GetKadIndexedSources() const	{ return theStats::GetKadIndexedSources(); }
-	uint32 GetKadIndexedKeywords() const{ return theStats::GetKadIndexedKeywords(); }
-	uint32 GetKadIndexedNotes() const	{ return theStats::GetKadIndexedNotes(); }
-	uint32 GetKadIndexedLoad() const	{ return theStats::GetKadIndexedLoad(); }
-	// True IP of machine
-	uint32 GetKadIPAdress() const		{ return theStats::GetKadIPAdress(); }
-	// Buddy status
-	uint8	GetBuddyStatus() const		{ return theStats::GetBuddyStatus(); }
-	uint32	GetBuddyIP() const			{ return theStats::GetBuddyIP(); }
-	uint32	GetBuddyPort() const		{ return theStats::GetBuddyPort(); }
-
+				
 	void StartKad();
 	void StopKad();
 	

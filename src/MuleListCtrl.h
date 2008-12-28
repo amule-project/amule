@@ -36,6 +36,7 @@
 #include <vector>
 #include <list>
 
+
 /**
  * Enhanced wxListCtrl provided custom-drawing among other things.
  *
@@ -79,14 +80,14 @@ public:
 	 * @see wxGenericListCtrl::wxGenericListCtrl for documentation of parameters.
 	 */
 	 CMuleListCtrl(
-		       wxWindow *parent,
-		       wxWindowID winid = -1,
-		       const wxPoint &pos = wxDefaultPosition,
-		       const wxSize &size = wxDefaultSize,
-		       long style = wxLC_ICON,
-		       const wxValidator& validator = wxDefaultValidator,
-		       const wxString &name = wxT("mulelistctrl") );
-
+	            wxWindow *parent,
+                wxWindowID winid = -1,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
+                long style = wxLC_ICON,
+                const wxValidator& validator = wxDefaultValidator,
+                const wxString &name = wxT("mulelistctrl") );
+	
 	/**
 	 * Destructor.
 	 *
@@ -94,6 +95,7 @@ public:
 	 * column settings will be saved automatically.
 	 */ 
 	virtual ~CMuleListCtrl();
+
 
 	/**
 	 * Saves column settings.
@@ -112,6 +114,7 @@ public:
 	 */
 	virtual void LoadSettings();
 
+
 	/**
 	 * This function tries to locate the best place to insert an item.
 	 *
@@ -120,10 +123,11 @@ public:
 	 * This function does a binary type search to locate the best place to
 	 * insert the new item with the specified userdata. It then returns the 
 	 * item after this position. To do this, the sorter-function must be set
-	 * through the SetSortFunc function, otherwise it will just return the 
+	 * though the SetSortFunc function, otherwise it will just return the 
 	 * position after the last item.
 	 */
 	long GetInsertPos( wxUIntPtr data );
+
 
 	/**
 	 * Sorts the list.
@@ -134,13 +138,14 @@ public:
 	 */
 	virtual void SortList();
 
+
 	//! The type of the list of item specific data
 	typedef std::vector<wxUIntPtr> ItemDataList;
 
 	/**
 	 * Returns a list the user-data of all selected items.
 	 *
-	 * @return A list of data associated with the selected items.
+	 * @return A list of data assosiated with the selected items.
 	 *
 	 * This function will return the user-data for each selected item in a
 	 * vector, which can then be manipulated with regards to changes made
@@ -148,6 +153,7 @@ public:
 	 */
 	ItemDataList GetSelectedItems() const;	
 
+	
 	/**
 	 * Sets the sorter function.
 	 *
@@ -156,71 +162,14 @@ public:
 	 * See the documentation on wxListCtrl::SortItems for more information
 	 * about the expected function type.
 	 */
-	void SetSortFunc(MuleListCtrlCompare func)	{ m_sort_func = func; }
+	void SetSortFunc(MuleListCtrlCompare func);
+
 
 	/**
 	 * Deselects all selected items, but does not change focus.
 	 */
 	void ClearSelection();
-
-	/**
-	 * Insert a new column.
-	 *
-	 * @param[in] col	Column will be inserted at this position.
-	 * @param[in] heading	Heading text for the column.
-	 * @param[in] format	Format (alignment) of the column.
-	 * @param[in] width	The column width.
-	 * @param[in] name	Internal name of the column.
-	 *
-	 * We override this method to allow a name to be specified for each
-	 * column. The name is used for saving/loading column settings
-	 * independently of their index. It is necessary to set a unique name
-	 * for each column, to let column settings be saved/loaded. If you
-	 * don't set a name for a column, settings for that column won't be
-	 * saved.
-	 *
-	 * Requirements about column names:
-	 * - they must not contain the ':' (colon) and ',' (comma) characters,
-	 * - they should be at least one character long.
-	 *
-	 * @note Changing the internal name of one column results in width of
-	 * that column being reset to default, and if sorting was done by that
-	 * column, sorting being forgotten. If you change the name of a column,
-	 * don't forget to update the list GetOldColumnOrder() returns, if
-	 * necessary.
-	 *
-	 * For more information refer to the wxWidgets documentation of
-	 * wxListCtrl::InsertColumn()
-	 */
-	long InsertColumn(
-			  long col,
-			  const wxString& heading,
-			  int format = wxLIST_FORMAT_LEFT,
-			  int width = -1,
-			  const wxString& name = wxEmptyString
-			  );
-
-	/**
-	 * Clears all items and all columns.
-	 *
-	 * Intercepted to clear column name list.
-	 *
-	 * For more information see the wxWidgets documentation of
-	 * wxListCtrl::ClearAll()
-	 */
-	void ClearAll()
-	{
-		m_column_names.clear();
-		MuleExtern::wxGenericListCtrl::ClearAll();
-	}
-
-	/**
-	 * Delete one column from the list.
-	 *
-	 * Not implemented yet, intercepted here just as a sanity check.
-	 */
-	bool DeleteColumn(int WXUNUSED(col))	{ wxFAIL; return false; }
-
+	
 protected:
 
 	/**
@@ -245,6 +194,7 @@ protected:
 	 * enabled, this function _must_ be overriden.
 	 */
 	virtual wxString GetTTSText(unsigned item) const;
+	
 
 	/**
 	 * Sets the internally used table-name.
@@ -255,34 +205,17 @@ protected:
 	 * make use of the LoadSettings/SaveSettings functions. CMuleListCtrl
 	 * uses the name specified in this command to create unique keynames.
 	 */
-	void SetTableName(const wxString& name)		{ m_name = name; }
-
-	/**
-	 * Return old column order.
-	 *
-	 * @return The pre-2.2.2 column order.
-	 *
-	 * This function should be overridden in descendant classes to return a
-	 * comma-separated list of the old column order, when column data was
-	 * saved/loaded by index. The default implementation returns an empty
-	 * string, meaning that old settings (if any) should be discarded.
-	 *
-	 * @note When you add or remove columns from the list control, DO NOT
-	 * change this list. This list may only be updated if you changed a
-	 * column name that is already in this list, to reflect the name
-	 * change. List order also must be preserved.
-	 */
-	virtual wxString GetOldColumnOrder() const;
+	void SetTableName(const wxString& name);
 
 	/**
 	 * Returns the column which is currently used to sort the list.
 	 */
-	unsigned GetSortColumn() const	{ return m_sort_orders.front().first; }
+	unsigned GetSortColumn() const;
 
 	/**
 	 * Returns the current sorting order, a combination of the DES and ALT flags.
 	 */
-	unsigned GetSortOrder() const	{ return m_sort_orders.front().second; }
+	unsigned GetSortOrder() const;
 
 	/**
 	 * Set the sort column
@@ -296,10 +229,12 @@ protected:
 	void SetSorting(unsigned column, unsigned order);
 
 	/**
-	 * Returns true if the item is sorted compared to its neighbours.
+	 * Returns true if the item is sorted compared to its neighbohrs.
 	 */
 	bool IsItemSorted(long item);
 
+	
+	
 	/**
 	 * Check and fix selection state.
 	 * 
@@ -314,32 +249,28 @@ protected:
 	long CheckSelection(wxListEvent& event);
 	long CheckSelection(wxMouseEvent& event);
 	//@}
+	
 
 	/**
 	 * Event handler for right-clicks on the column headers.
 	 */
 	void OnColumnRClick(wxListEvent& evt);
-
 	/**
 	 * Event handler for left-clicks on the column headers.
 	 */
 	void OnColumnLClick(wxListEvent& evt);
-
 	/**
 	 * Event handler for the hide/show menu items.
 	 */
 	void OnMenuSelected(wxCommandEvent& evt);
-
 	/**
 	 * Event handler for the mouse wheel.
 	 */
 	void OnMouseWheel(wxMouseEvent &event);
-
 	/**
 	 * Event handler for key-presses, needed by TTS.
 	 */
 	void OnChar(wxKeyEvent& evt);
-
 	/**
 	 * Event handler for item selection/deletion, needed by TTS.
 	 */
@@ -347,12 +278,13 @@ protected:
 	void OnItemDeleted(wxListEvent& evt);
 	void OnAllItemsDeleted(wxListEvent& evt);
 
+	
 private:
 	/**
 	 * Resets the current TTS session.
 	 */
 	void ResetTTS();
-
+	
 	/**
 	 * Sets the image of a specific column.
 	 *
@@ -361,20 +293,19 @@ private:
 	 */
 	void SetColumnImage(unsigned col, int image);
 
+	
 	//! The name of the table. Used to load/save settings.
-	wxString		m_name;
-
+	wxString			m_name;
 	//! The sorter function needed by wxListCtrl.
 	MuleListCtrlCompare	m_sort_func;
 
 	//! Contains the current search string.
-	wxString		m_tts_text;
-
+	wxString			m_tts_text;
 	//! Timestamp for the last TTS event.
-	unsigned		m_tts_time;
-
+	unsigned			m_tts_time;
 	//! The index of the last item selected via TTS.
-	int			m_tts_item;
+	int					m_tts_item;
+
 
 	/**
 	 * Wrapper around the user-provided sorter function.
@@ -390,61 +321,19 @@ private:
 
 	/** Compares two items in the list, using the current sort sequence. */
 	int CompareItems(wxUIntPtr item1, wxUIntPtr item2);
-
+	
+	
 	//! This pair contains a column number and its sorting order.
 	typedef std::pair<unsigned, unsigned> CColPair;
 	typedef std::list<CColPair> CSortingList;
-
+	
 	//! This list contains in order the columns sequence to sort by.
 	CSortingList m_sort_orders;
-
-	/**
-	 * Get the column name by index.
-	 *
-	 * @param[in] column Index of the column whose name we're looking for.
-	 *
-	 * @return The column name or an empty string if index is invalid
-	 * (out of range), or the column name hasn't been set.
-	 */
-	const wxString& GetColumnName(int column) const;
-
-	/**
-	 * Get column index by name.
-	 *
-	 * @param[in] name Internal name of the colunm whose index is needed.
-	 *
-	 * @return The column index, or -1 in case the name was invalid.
-	 */
-	int GetColumnIndex(const wxString& name) const;
-
-	/**
-	 * Find out the new index of the column by the old index.
-	 *
-	 * @param[in] oldindex Old column index which we want to turn into a
-	 * new index.
-	 *
-	 * @return The new index of the column, or -1 if an error occured.
-	 */
-	int GetNewColumnIndex(int oldindex) const;
-
-	/**
-	 * Parses old config entries.
-	 *
-	 * @param[in] sortOrders	Old sort orders line.
-	 * @param[in] columnWidths	Old column widths line.
-	 */
-	void ParseOldConfigEntries(const wxString& sortOrders, const wxString& columnWidths);
-
-	/// This pair contains a column index and its name.
-	typedef std::pair<int, wxString>	ColNameEntry;
-	/// This list contains the colunms' names.
-	typedef std::list<ColNameEntry>		ColNameList;
-
-	/// Container for column names, sorted by column index.
-	ColNameList	m_column_names;
-
+	
+	
 	DECLARE_EVENT_TABLE()
 };
+
 
 #endif // MULELISTCTRL_H
 // File_checked_for_headers

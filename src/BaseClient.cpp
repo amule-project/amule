@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -277,7 +277,7 @@ CUpDownClient::~CUpDownClient()
 {
 	#ifdef __DEBUG__
 	if (!connection_reason.IsEmpty()) {
-		AddDebugLogLineN(logClient, wxT("Client to check for ") + connection_reason + wxT(" was deleted without connection."));
+		printf("Client to check for %s was deleted without connection.\n",(const char*)unicode2char(connection_reason));
 	}
 	#endif	
 	
@@ -464,7 +464,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_nUDPPort = temptag.GetInt() & 0xFFFF;
 				dwEmuleTags |= 1;
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(CFormat(wxT("Hello type packet processing with eMule ports UDP=%i KAD=%i")) % m_nUDPPort % m_nKadPort);
+				printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
 				#endif
 				break;
 				
@@ -472,7 +472,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				// 32 BUDDY IP
 				m_nBuddyIP = temptag.GetInt();
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(CFormat(wxT("Hello type packet processing with eMule BuddyIP=%u (%s)")) % m_nBuddyIP % Uint32toStringIP(m_nBuddyIP));
+				printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
 				#endif
 				break;				
 				
@@ -481,7 +481,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				// 16 BUDDY Port
 				m_nBuddyPort = (uint16)temptag.GetInt();
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(CFormat(wxT("Hello type packet processing with eMule BuddyPort=%u")) % m_nBuddyPort);
+				printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
 				#endif
 				break;
 				
@@ -512,17 +512,17 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_fSupportsPreview		= (flags >> 1*0) & 0x01;
 				dwEmuleTags |= 2;
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(wxT("Hello type packet processing with eMule Misc Options:"));
-				AddLogLineNS(CFormat(wxT("m_byUDPVer = %i")) % m_byUDPVer);
-				AddLogLineNS(CFormat(wxT("m_byDataCompVer = %i")) % m_byDataCompVer);
-				AddLogLineNS(CFormat(wxT("m_bySupportSecIdent = %i")) % m_bySupportSecIdent);
-				AddLogLineNS(CFormat(wxT("m_bySourceExchangeVer = %i")) % m_bySourceExchange1Ver);
-				AddLogLineNS(CFormat(wxT("m_byExtendedRequestsVer = %i")) % m_byExtendedRequestsVer);
-				AddLogLineNS(CFormat(wxT("m_byAcceptCommentVer = %i")) % m_byAcceptCommentVer);
-				AddLogLineNS(CFormat(wxT("m_fNoViewSharedFiles = %i")) % m_fNoViewSharedFiles);
-				AddLogLineNS(CFormat(wxT("m_bMultiPacket = %i")) % m_bMultiPacket);
-				AddLogLineNS(CFormat(wxT("m_fSupportsPreview = %i")) % m_fSharedDirectories);
-				AddLogLineNS(wxT("That's all."));
+				printf("Hello type packet processing with eMule Misc Options:\n");
+				printf("m_byUDPVer = %i\n",m_byUDPVer);
+				printf("m_byDataCompVer = %i\n",m_byDataCompVer);
+				printf("m_bySupportSecIdent = %i\n",m_bySupportSecIdent);
+				printf("m_bySourceExchangeVer = %i\n",m_bySourceExchange1Ver);
+				printf("m_byExtendedRequestsVer = %i\n",m_byExtendedRequestsVer);
+				printf("m_byAcceptCommentVer = %i\n",m_byAcceptCommentVer);
+				printf("m_fNoViewSharedFiles = %i\n",m_fNoViewSharedFiles);
+				printf("m_bMultiPacket = %i\n",m_bMultiPacket);
+				printf("m_fSupportsPreview = %i\n",m_fSharedDirectories);
+				printf("That's all.\n");
 				#endif
 				SecIdentSupRec +=  1;
 				break;
@@ -556,16 +556,16 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
 			
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(wxT("Hello type packet processing with eMule Misc Options 2:"));
-				AddLogLineNS(CFormat(wxT("	m_fDirectUDPCallback	= %i")) % m_fDirectUDPCallback);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsSourceEx2	= %i")) % m_fSupportsSourceEx2);
-				AddLogLineNS(CFormat(wxT("	m_fRequiresCryptLayer	= %i")) % m_fRequiresCryptLayer);
-				AddLogLineNS(CFormat(wxT("	m_fRequestsCryptLayer	= %i")) % m_fRequestsCryptLayer);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsCryptLayer	= %i")) % m_fSupportsCryptLayer);
-				AddLogLineNS(CFormat(wxT("	m_fExtMultiPacket	= %i")) % m_fExtMultiPacket);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsLargeFiles	= %i")) % m_fSupportsLargeFiles);
-				AddLogLineNS(CFormat(wxT("	KadVersion		= %u")) % m_byKadVersion);
-				AddLogLineNS(wxT("That's all."));
+				printf("Hello type packet processing with eMule Misc Options 2:\n");
+				printf("	m_fDirectUDPCallback	= %i\n", m_fDirectUDPCallback);
+				printf("	m_fSupportsSourceEx2	= %i\n", m_fSupportsSourceEx2);
+				printf("	m_fRequiresCryptLayer	= %i\n", m_fRequiresCryptLayer);
+				printf("	m_fRequestsCryptLayer	= %i\n", m_fRequestsCryptLayer);
+				printf("	m_fSupportsCryptLayer	= %i\n", m_fSupportsCryptLayer);
+				printf("	m_fExtMultiPacket	= %i\n", m_fExtMultiPacket);
+				printf("	m_fSupportsLargeFiles	= %i\n", m_fSupportsLargeFiles);
+				printf("	KadVersion		= %u\n", m_byKadVersion);
+				printf("That's all.\n");
 				#endif			
 				break;
 
@@ -1086,8 +1086,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 	const uint32 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 	const uint32 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;	
-	const uint32 uSupportsSourceEx2		= 1;
-	const uint32 uSupportsCaptcha		= 0; // No captcha support in aMule, at least for now
+	const uint32 uSupportsSourceEx2		= 1;					
 	// direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
 	const uint32 uDirectUDPCallback		= (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled()
 						   && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
@@ -1095,7 +1094,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	CTagVarInt tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     )
 				(uDirectUDPCallback	<< 12) |
- 				(uSupportsCaptcha	<< 11) |	
+// 				(uSupportsCaptcha	<< 11) |	// No captcha support in aMule
 				(uSupportsSourceEx2	<< 10) |
 				(uRequiresCryptLayer	<<  9) |
 				(uRequestsCryptLayer	<<  8) |
@@ -1520,7 +1519,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
 					} else {
-						AddLogLineN(_("Searching buddy for lowid connection"));
+						printf("Searching buddy for lowid connection\n");
 						//Create search to find buddy.
 						Kademlia::CSearch *findSource = new Kademlia::CSearch;
 						findSource->SetSearchTypes(Kademlia::CSearch::FINDSOURCE);
@@ -1557,6 +1556,8 @@ bool CUpDownClient::Connect()
 	if (!m_socket->IsOk()) {
 		// Enable or disable crypting based on our and the remote clients preference
 		if (HasValidHash() && SupportsCryptLayer() && thePrefs::IsClientCryptLayerSupported() && (RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested())){
+//			printf("Set connection encryption for socket\n");
+			//DebugLog(_T("Enabling CryptLayer on outgoing connection to client %s"), DbgGetClientInfo()); // to be removed later
 			m_socket->SetConnectionEncryption(true, GetUserHash().GetHash(), false);
 		} else {
 			m_socket->SetConnectionEncryption(false, NULL, false);
@@ -1585,8 +1586,8 @@ void CUpDownClient::ConnectionEstablished()
 	
 	#ifdef __DEBUG__
 	if (!connection_reason.IsEmpty()) {
-		AddLogLineN(CFormat(wxT("Got client info checking for %s: %s\nDisconnecting and deleting.")) % connection_reason % GetClientFullInfo());
-		connection_reason.Clear(); // So we don't re-print on destructor.
+		printf("Got client info checking for %s: %s\nDisconnecting and deleting.\n",(const char*)unicode2char(connection_reason),(const char*)unicode2char(GetClientFullInfo()));
+		connection_reason.Clear(); // So we don't re-printf on destructor.
 		Safe_Delete();
 		return;
 	}
@@ -1766,7 +1767,7 @@ void CUpDownClient::ReGetClientSoft()
 					(m_byCompatibleClient != 0xf0)	// Chinese leech mod
 					&& (1==1) 						// Your ad here
 					) {
-					AddLogLineNS(CFormat(wxT("Compatible client found with ET_COMPATIBLECLIENT of %x")) % m_byCompatibleClient);
+					printf("Compatible client found with ET_COMPATIBLECLIENT of %#x\n",m_byCompatibleClient);
 				}
 				#endif
 				m_clientSoftString = GetSoftName(m_clientSoft) + wxString::Format(wxT("(%#x)"),m_byCompatibleClient);
@@ -2232,8 +2233,7 @@ bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXU
 }
 
 
-wxString CUpDownClient::GetClientFullInfo()
-{
+wxString CUpDownClient::GetClientFullInfo() {
 
 	if (m_clientVerString.IsEmpty()) {
 		ReGetClientSoft();
@@ -2286,7 +2286,7 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 		m_socket->SendPacket(packet, delpacket, controlpacket );
 		return true;
 	} else {
-		AddLogLineN(wxT("CAUGHT DEAD SOCKET IN SENDPACKET()"));
+		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
 		return false;
 	}
 }
@@ -2325,7 +2325,7 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 		}		
 		
 	} else {
-		AddLogLineNS(CFormat(wxT("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f")) % kBpsClient);
+		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f\n", kBpsClient);
 	}
 	
 	return kBpsClient;

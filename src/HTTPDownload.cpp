@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Timo Kujala ( tiku@users.sourceforge.net )
+// Copyright (c) 2002 Tiku
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -104,7 +104,7 @@ private:
 	}
 
 	void OnBtnCancel(wxCommandEvent& WXUNUSED(evt)) {
-		AddLogLineNS(_("HTTP download cancelled"));
+		printf("HTTP download cancelled\n");
 		Show(false);
 		StopThread();
 	}
@@ -169,7 +169,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 	wxHTTP* url_handler = NULL;
 	wxInputStream* url_read_stream = NULL;
 	
-	AddLogLineNS(_("HTTP download thread started"));
+	printf("HTTP download thread started\n");
 	
 	const CProxyData* proxy_data = thePrefs::GetProxyData();
 	bool use_proxy = proxy_data != NULL && proxy_data->m_proxyEnable;
@@ -196,11 +196,11 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		}
 		
 		int download_size = url_read_stream->GetSize();
-		AddLogLineNS(CFormat(_("Download size: %i")) % download_size);
+		printf("Download size: %i\n",download_size);
 		
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.
-		// MP: Most people can download at least at 32kb/s from http...
+		// MP: Most people can download at least at 32kbs/s from http...
 		const unsigned MAX_HTTP_READ = 32768;
 		
 		char buffer[MAX_HTTP_READ];
@@ -227,19 +227,15 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		} while (current_read && !TestDestroy());
 
 		if (current_read == 0) {
-			if (total_read != download_size) {
-				throw CFormat(_("Expected %d bytes, but downloaded %d bytes")) % download_size % total_read;
-			} else {
-				// Download was succesful.
-				m_result = 1;
-			}
+			// Download was succesful.
+			m_result = 1;
 		}
 	} catch (const wxString& error) {
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
 
-		AddLogLineNS(error); // If there's console output anyway there should also be console output on error.
+		AddLogLineM(false, error);
 	}
 
 	delete url_read_stream;
@@ -247,7 +243,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		url_handler->Destroy();
 	}
 	
-	AddLogLineNS(_("HTTP download thread ended"));
+	printf("HTTP download thread ended\n");
 	
 	return 0;
 }
@@ -327,12 +323,12 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 
 	wxInputStream* url_read_stream = (*url_handler)->GetInputStream(url);
 
-	AddLogLineNS(CFormat(_("Host: %s:%i\n")) % host % port);
-	AddLogLineNS(CFormat(wxT("URL: %s\n")) % url);
-	AddLogLineNS(CFormat(_("Response: %i (Error: %i)")) % (*url_handler)->GetResponse() % (*url_handler)->GetError());
+	printf("Host: %s:%i\n",(const char*)unicode2char(host),port);
+	printf("URL: %s\n",(const char*)unicode2char(url));
+	printf("Response: %i (Error: %i)\n",(*url_handler)->GetResponse(), (*url_handler)->GetError());
 
 	if (!(*url_handler)->GetResponse()) {
-		AddLogLineNS(_("WARNING: Void response on stream creation"));
+		printf("WARNING: Void response on stream creation\n");
 		// WTF? Why does this happen?
 		// This is probably produced by an already existing connection, because
 		// the input stream is created nevertheless. However, data is not the same.
@@ -356,7 +352,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 			(*url_handler)->SetProxyMode(proxy);
 			url_read_stream = GetInputStream(url_handler, new_location, proxy);
 		} else {
-			AddLogLineCS(_("ERROR: Redirection code received with no URL"));
+			printf("ERROR: Redirection code received with no URL\n");
 			url_handler = NULL;
 			url_read_stream = NULL;
 		}

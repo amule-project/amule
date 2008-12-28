@@ -2,8 +2,8 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Robert Rostek ( tecxx@rrs.at )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003 Robert Rostek ( tecxx@rrs.at )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -66,7 +66,7 @@ class CItemData : public wxTreeItemData
 CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
 	: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree"))
 {
-	m_IsInit = false;
+	Init();
 }
 
 
@@ -82,12 +82,6 @@ enum {
 
 void CDirectoryTreeCtrl::Init()
 {
-	// already done ?
-	if (m_IsInit) {
-		return;
-	}
-	m_IsInit = true;
-
 	// init image(s)
 	wxImageList* images = new wxImageList(16, 16);
 	images->Add(wxBitmap(amuleSpecial(1)));
@@ -105,31 +99,16 @@ void CDirectoryTreeCtrl::Init()
 #ifndef __WXMSW__
 	AddChildItem(root, CPath(wxT("/")));
 #else
-	// this might take awhile, so change the cursor
-	::wxSetCursor(*wxHOURGLASS_CURSOR);
-	// retrieve bitmask of all drives available
-	uint32 drives = GetLogicalDrives();
-	drives >>= 1;
 	for (char drive = 'C'; drive <= 'Z'; drive++) {
-		drives >>= 1;
-		if (! (drives & 1)) { // skip non existant drives
-			continue;
-		}
 		wxString driveStr = wxString::Format(wxT("%c:"), drive);
-		uint32 type = GetDriveType(driveStr + wxT("\\"));
-
-		// skip removable/undefined drives, share only fixed or remote drives
-		if ((type == 3 || type == 4)   // fixed drive / remote drive
-			&& CPath::DirExists(driveStr)) {
+		
+		if (CPath::DirExists(driveStr)) {
 			AddChildItem(root, CPath(driveStr));
 		}
 	}
-	::wxSetCursor(*wxSTANDARD_CURSOR);
 #endif
 
 	HasChanged = false;
-
-	UpdateSharedDirectories();
 }
 
 
@@ -260,14 +239,6 @@ void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 	m_lstShared.clear();
 	m_lstShared.insert(m_lstShared.end(), list->begin(), list->end());
 
-	if (m_IsInit) {
-		UpdateSharedDirectories();
-	}
-}
-
-
-void CDirectoryTreeCtrl::UpdateSharedDirectories()
-{
 	// Mark all shared root items (on windows this can be multiple
 	// drives, on unix there is only the root dir).
 	wxTreeItemIdValue cookie;

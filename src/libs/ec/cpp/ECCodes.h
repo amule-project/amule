@@ -41,7 +41,6 @@ enum ECFlags {
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
-	EC_FLAG_NOTIFY	 = 0x00008000,
 	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
 };
 
@@ -154,16 +153,6 @@ enum ECTagNames {
 		EC_TAG_STATS_KAD_USERS                    = 0x020A,
 		EC_TAG_STATS_ED2K_FILES                   = 0x020B,
 		EC_TAG_STATS_KAD_FILES                    = 0x020C,
-		EC_TAG_STATS_LOGGER_MESSAGE               = 0x020D,
-		EC_TAG_STATS_KAD_FIREWALLED_UDP           = 0x020E,
-		EC_TAG_STATS_KAD_INDEXED_SOURCES          = 0x020F,
-		EC_TAG_STATS_KAD_INDEXED_KEYWORDS         = 0x0210,
-		EC_TAG_STATS_KAD_INDEXED_NOTES            = 0x0211,
-		EC_TAG_STATS_KAD_INDEXED_LOAD             = 0x0212,
-		EC_TAG_STATS_KAD_IP_ADRESS                = 0x0213,
-		EC_TAG_STATS_BUDDY_STATUS                 = 0x0214,
-		EC_TAG_STATS_BUDDY_IP                     = 0x0215,
-		EC_TAG_STATS_BUDDY_PORT                   = 0x0216,
 	EC_TAG_PARTFILE                           = 0x0300,
 		EC_TAG_PARTFILE_NAME                      = 0x0301,
 		EC_TAG_PARTFILE_PARTMETID                 = 0x0302,

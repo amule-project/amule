@@ -1,9 +1,8 @@
-
 //
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -82,13 +81,7 @@
 #include "kademlia/kademlia/Kademlia.h"
 
 #ifdef ENABLE_IP2COUNTRY
-#include "IP2Country.h"		// Needed for IP2Country
-void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
-{ 
-#ifdef ENABLE_IP2COUNTRY	// That's no bug. Dummy GeoIP.h turns ENABLE_IP2COUNTRY off again
-	m_IP2Country->DownloadFinished(result); 
-#endif
-}
+	#include "IP2Country.h"		// Needed for IP2Country
 #endif
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
@@ -196,9 +189,9 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
 	wxInitAllImageHandlers();
 	Apply_Clients_Skin();
-
+	
 #ifdef __WXMSW__
-	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
+       wxSystemOptions::SetOption(wxT("msw.remap"), 0);
 #endif
 
 	SetIcon(wxICON(aMule));
@@ -226,16 +219,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	AddLogLineM(false, wxEmptyString);
 
 #ifdef ENABLE_IP2COUNTRY
-	m_GeoIPavailable = true;
 	m_IP2Country = new CIP2Country();
-	// remote GUI has to do this a bit later (after the main dialog is up)
-#ifndef CLIENT_GUI
-	if (thePrefs::IsGeoIPEnabled()) {
-		m_IP2Country->Enable();
-	}
-#endif
-#else
-	m_GeoIPavailable = false;
 #endif
 	m_searchwnd = new CSearchDlg(p_cnt);
 	m_transferwnd = new CTransferWnd(p_cnt);
@@ -254,7 +238,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
 	if (!gui_timer) {
-		AddLogLineM(false, _("FATAL ERROR: Failed to create Timer"));
+		AddLogLine(false, _("FATAL ERROR: Failed to create Timer"));
 		exit(1);
 	}
 
@@ -305,12 +289,12 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxASSERT(logs_notebook->GetPageCount() == 4);
 	wxASSERT(networks_notebook->GetPageCount() == 2);
 	
-	for (uint32 i = 0; i < logs_notebook->GetPageCount(); ++i) {
+	for (size_t i = 0; i < logs_notebook->GetPageCount(); ++i) {
 		m_logpages[i].page = logs_notebook->GetPage(i);
 		m_logpages[i].name = logs_notebook->GetPageText(i);
 	}
 
-	for (uint32 i = 0; i < networks_notebook->GetPageCount(); ++i) {
+	for (size_t i = 0; i < networks_notebook->GetPageCount(); ++i) {
 		m_networkpages[i].page = networks_notebook->GetPage(i);
 		m_networkpages[i].name = networks_notebook->GetPageText(i);
 	}
@@ -482,17 +466,17 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 #ifdef SVNDATE
 	msg << _("Snapshot:") << wxT("\n ") << wxT(SVNDATE);
 #endif
-	msg << wxT("\n\n") << _("'All-Platform' p2p client based on eMule \n\n") <<
-		_("Website: http://www.amule.org \n") <<
-		_("Forum: http://forum.amule.org \n") << 
-		_("FAQ: http://wiki.amule.org \n\n") <<
-		_("Contact: admin@amule.org (administrative issues) \n") <<
-		_("Copyright (c) 2003-2008 aMule Team \n\n") <<
-		_("Part of aMule is based on \n") <<
+	msg << wxT("\n\n") << _(" 'All-Platform' p2p client based on eMule \n\n") <<
+		_(" Website: http://www.amule.org \n") <<
+		_(" Forum: http://forum.amule.org \n") << 
+		_(" FAQ: http://wiki.amule.org \n\n") <<
+		_(" Contact: admin@amule.org (administrative issues) \n") <<
+		_(" Copyright (C) 2003-2008 aMule Team \n\n") <<
+		_(" Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
-                _(" Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n") <<
-		_("http://kademlia.scs.cs.nyu.edu\n");
-
+		_(" Copyright (C) 2002 Petar Maymounkov\n") <<
+		_(" http://kademlia.scs.cs.nyu.edu\n");
+	
 	if (m_is_safe_state) {
 		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
@@ -524,7 +508,7 @@ void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
 
 CamuleDlg::~CamuleDlg()
 {
-	AddLogLineN(_("Shutting down aMule..."));
+	printf("Shutting down aMule...\n");
 	
 	SaveGUIPrefs();
 
@@ -534,7 +518,7 @@ CamuleDlg::~CamuleDlg()
 	delete m_IP2Country;
 #endif
 	
-	AddLogLineN(_("aMule dialog destroyed"));
+	printf("aMule dialog destroyed\n");
 }
 
 
@@ -556,7 +540,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 			}
 		} else {		
 			//connect if not currently connected
-			AddLogLineM(true, _("Connecting"));
+			AddLogLine(true, _("Connecting"));
 			theApp->serverconnect->ConnectToAnyServer();
 		}
 	} else {
@@ -596,26 +580,38 @@ void CamuleDlg::ResetLog(int id)
 }
 
 
-void CamuleDlg::AddLogLine(const wxString& line)
+void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 {
-	bool addtostatusbar = line[0] == '!';
-	wxString bufferline = line.Mid(1);
+	// Remove newspace at end, it causes problems with the layout...
+	wxString bufferline = line.Strip(wxString::trailing);
+
+	// Create the timestamp
+	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT(": ");
 
 	// Add the message to the log-view
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, m_serverwnd, wxTextCtrl );
 	if ( ct ) {
-		// Bold critical log-lines
-		// to enable this on Windows control has to be changed to wxTE_RICH2 in muuli
-#ifdef __WXMSW__
-		ct->AppendText(line); // keep the leading "!" if it can't be bolded
-#else
-		wxTextAttr style = ct->GetDefaultStyle();
-		wxFont font = style.GetFont();
-		font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
-		style.SetFont(font);
-		ct->SetDefaultStyle(style);
-		ct->AppendText(bufferline);
+		if ( bufferline.IsEmpty() ) {
+			// If it's empty we just write a blank line with no timestamp.
+			ct->AppendText( wxT("\n") );
+		} else {
+			// Bold critical log-lines
+			// Windows doesn't support this feature, and it causes GDI resource leaks
+#ifndef __WXMSW__
+			wxTextAttr style = ct->GetDefaultStyle();
+			wxFont font = style.GetFont();
+			font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
+			style.SetFont(font);
+			ct->SetDefaultStyle(style);
 #endif
+			
+			// Split multi-line messages into individual lines
+			wxStringTokenizer tokens( bufferline, wxT("\n") );		
+			while ( tokens.HasMoreTokens() ) {
+				ct->AppendText( stamp + tokens.GetNextToken() + wxT("\n") );
+			}
+		}
+			
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
 	
@@ -665,8 +661,8 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	////////////////////////////////////////////////////////////	
 	// Determine the status of the networks
 	//
-	enum ED2KState { ED2KOff = 0, ED2KLowID = 1, ED2KConnecting = 2, ED2KHighID = 3, ED2KUndef = -1 };
-	enum EKadState { EKadOff = 4, EKadFW = 5, EKadConnecting = 5, EKadOK = 6, EKadUndef = -1 };
+	enum ED2KState { ED2KOff = 0, ED2KLowID = 1, ED2KConnecting = 2, ED2KHighID = 3 };
+	enum EKadState { EKadOff = 4, EKadFW = 5, EKadConnecting = 5, EKadOK = 6 };
 
 	ED2KState ed2kState = ED2KOff;
 	EKadState kadState  = EKadOff;
@@ -750,7 +746,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 		currentState = ECS_Disconnected;
 	}
 
-	if ( (true == skinChanged) || (currentState != s_oldState) ) {
+	if ( (true == skinChanged) || (currentState != s_oldState)) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
 		
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
@@ -783,29 +779,17 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 	////////////////////////////////////////////////////////////	
 	// Update the globe-icon in the lower-right corner.
-	// (only if connection state has changed)
-	//
-	static ED2KState s_ED2KOldState = ED2KUndef;
-	static EKadState s_EKadOldState = EKadUndef;
-	if (ed2kState != s_ED2KOldState || kadState != s_EKadOldState) {
-		s_ED2KOldState = ed2kState;
-		s_EKadOldState = kadState;
-		wxStaticBitmap* connBitmap = CastChild( wxT("connImage"), wxStaticBitmap );
-		wxCHECK_RET(connBitmap, wxT("'connImage' widget not found"));
+	// 	
+	wxStaticBitmap* connBitmap = CastChild( wxT("connImage"), wxStaticBitmap );
+	wxCHECK_RET(connBitmap, wxT("'connImage' widget not found"));
 
-		wxBitmap statusIcon = connBitmap->GetBitmap();
-		// Sanity check - otherwise there's a crash here if aMule runs out of resources
-		if (statusIcon.GetRefData() == NULL) {
-			return;
-		}
+	wxBitmap statusIcon = connBitmap->GetBitmap();
+	wxMemoryDC bitmapDC(statusIcon);
 
-		wxMemoryDC bitmapDC(statusIcon);
+	status_arrows.Draw(kadState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
+	status_arrows.Draw(ed2kState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
 
-		status_arrows.Draw(kadState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
-		status_arrows.Draw(ed2kState, bitmapDC, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
-
-		connBitmap->SetBitmap(statusIcon);
-	}
+	connBitmap->SetBitmap(statusIcon);
 }
 
 
@@ -840,12 +824,8 @@ void CamuleDlg::ShowTransferRate()
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = wxString::Format(wxT("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
-		if (thePrefs::GetShowRatesOnTitle() == 1) {
-			SetTitle(theApp->m_FrameTitle + wxT(" -- ") + UpDownSpeed);
-		} else {
-			SetTitle(UpDownSpeed + wxT(" -- ") + theApp->m_FrameTitle);
-		}
+		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
 	wxASSERT(m_TrayIcon == thePrefs::UseTrayIcon());
@@ -1036,9 +1016,9 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 // Evil Hack: check if the mouse is inside the window
 #ifndef __WXMSW__
-	if (GetScreenRect().Contains(wxGetMousePosition()))
+       if (GetScreenRect().Contains(wxGetMousePosition()))
 #endif
-	{
+       {
 		if (m_prefsDialog && m_prefsDialog->IsShown()) {
 			// Veto.
 		} else {
@@ -1047,7 +1027,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 			}
 			evt.Skip();
 		}
-	}
+       }
 }
 
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
@@ -1120,13 +1100,16 @@ void CamuleDlg::SetMessagesTool()
 	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
 	
 	wxWindowUpdateLocker freezer(m_wndToolbar);
-#ifdef __WXCOCOA__
-	m_wndToolbar->FindById(ID_BUTTONMESSAGES)->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));	
-#else
 	m_wndToolbar->SetToolNormalBitmap(ID_BUTTONMESSAGES, m_tblist.GetBitmap(m_CurrentBlinkBitmap));
-#endif
 }
 
+
+/*
+	Try to launch the specified url:
+	 - Windows: Default or custom browser will be used.
+	 - Mac: Currently not implemented
+	 - Anything else: Try a number of hardcoded browsers. Should be made configurable...
+*/
 void CamuleDlg::LaunchUrl( const wxString& url )
 {
 	wxString cmd;
@@ -1144,7 +1127,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 
 		CTerminationProcess *p = new CTerminationProcess(cmd);
 		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
-			AddLogLineN(_("Launch Command: ") + cmd);
+			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
 			return;
 		} else {
 			delete p;
@@ -1180,10 +1163,6 @@ bool CamuleDlg::Check_and_Init_Skin()
 	bool ret = true;
 	wxString skinFileName(thePrefs::GetSkin());
 
-	if (skinFileName.IsEmpty()) {
-		return false;
-	}
-
 	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
 	
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
@@ -1213,14 +1192,14 @@ bool CamuleDlg::Check_and_Init_Skin()
 		ret = false;
 	}
 
-	wxFFileInputStream in(m_skinFileName.GetFullPath());
-	wxZipInputStream zip(in);
+		wxFFileInputStream in(m_skinFileName.GetFullPath());
+		wxZipInputStream zip(in);
 
-	while ((entry = zip.GetNextEntry()) != NULL) {
-		wxZipEntry*& current = cat[entry->GetInternalName()];
-		delete current;
-		current = entry;
-	}
+		while ((entry = zip.GetNextEntry()) != NULL) {
+			wxZipEntry*& current = cat[entry->GetInternalName()];
+			delete current;
+			current = entry;
+		}
 
 	return ret;
 }
@@ -1265,7 +1244,7 @@ void CamuleDlg::Add_Skin_Icon(
 
 void CamuleDlg::Apply_Clients_Skin()
 {
-	bool useSkins = Check_and_Init_Skin();
+	bool useSkins = thePrefs::UseSkins() && Check_and_Init_Skin();
 	
 	// Clear the client image list
 	m_imagelist.RemoveAll();
@@ -1280,8 +1259,7 @@ void CamuleDlg::Apply_Clients_Skin()
 
 void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 {
-	bool useSkins = Check_and_Init_Skin();
-	
+	bool useSkins = thePrefs::UseSkins() && Check_and_Init_Skin();
 	
 	// Clear the toolbar image list
 	m_tblist.RemoveAll();
@@ -1299,7 +1277,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	Add_Skin_Icon(wxT("Toolbar_Prefs"),      amuleDlgImages(26), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(32), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(29), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Blink"),	 amuleDlgImages(33), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Blink"),	     amuleDlgImages(33), useSkins);
 	
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);

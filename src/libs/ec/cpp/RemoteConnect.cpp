@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2008 Angel Vidal Veiga ( kry@users.sourceforge.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -112,10 +112,6 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	}
 
 	return true;
-}
-
-void CRemoteConnect::WriteDoneAndQueueEmpty()
-{
 }
 
 void CRemoteConnect::OnConnect() {

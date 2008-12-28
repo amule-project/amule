@@ -12,7 +12,6 @@ echo >> CountryFlags.h
 echo '#ifndef COUNTRY_FLAGS_H' >> CountryFlags.h
 echo '#define COUNTRY_FLAGS_H' >> CountryFlags.h
 echo >> CountryFlags.h
-echo 'namespace flags {' >> CountryFlags.h
 echo >> CountryFlags.h
 
 # Create include directives
@@ -32,11 +31,19 @@ echo >> CountryFlags.h
 # "do" is a reserved word, we can't use it
 #sed -i -e 's/do\[\]/do_\[\]/' do.xpm
 
+# globally used names by wx
+#sed -i -e 's/ht\[\]/ht_\[\]/' ht.xpm
+#sed -i -e 's/it\[\]/it_\[\]/' it.xpm
+#sed -i -e 's/sz\[\]/sz_\[\]/' sz.xpm
+
 # Create the flag/Code vector
 echo 'static struct FlagXPMCode flagXPMCodeVector[] = {'>> CountryFlags.h
 ls *.xpm | sed -e 's/\.xpm$//;/\//s:.*/\([^/][^/]*\):\1:' | \
 	sed -e 's/[A-Za-z]*/\t{&, "&"},/' | \
-	sed -e 's/do/do_/1' \
+	sed -e 's/do/do_/1' |
+	sed -e 's/ht/ht_/1' |
+	sed -e 's/it/it_/1' |
+	sed -e 's/sz/sz_/1' \
 	>> CountryFlags.h
 echo '};'>> CountryFlags.h
 echo >> CountryFlags.h
@@ -48,6 +55,5 @@ echo >> CountryFlags.h
 echo >> CountryFlags.h
 
 # Finish
-echo '}	// namespace flags' >> CountryFlags.h
 echo '#endif // COUNTRY_FLAGS_H' >> CountryFlags.h
 

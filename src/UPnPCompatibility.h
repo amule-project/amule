@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+// Copyright (c) 2006-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
 // Copyright (c) 2006-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -40,6 +40,22 @@
 
 
 #include "Logger.h"				// for Add(Debug)LogLineM()
+
+
+namespace CLogger
+{
+	void AddLogLine(
+		const wxString &file,
+		int line,
+		bool critical,
+		const std::ostringstream &msg);
+	void AddLogLine(
+		const wxString &file,
+		int line,
+		bool critical,
+		DebugType type,
+		const std::ostringstream &msg);
+}
 
 
 class CUPnPException : public CMuleException

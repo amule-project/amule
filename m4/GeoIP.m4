@@ -65,18 +65,18 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 						], [
 							GEOIP_LIBS="-Wl,-Bstatic $GEOIP_LIBS -Wl,-Bdynamic"
 						], [
-							MULE_WARNING([Cannot link GeoIP statically, because your linker ($LD) does not support it.])
+							AC_MSG_WARN([Cannot link GeoIP statically, because your linker ($LD) does not support it.])
 						])
 						MULE_RESTORE([LIBS])
 					])
 				])
 			], [
 				ENABLE_IP2COUNTRY=disabled
-				MULE_WARNING([GeoIP support has been disabled because the GeoIP libraries were not found])
+				AC_MSG_WARN([GeoIP support has been disabled because the GeoIP libraries were not found])
 			])
 		], [
 			ENABLE_IP2COUNTRY=disabled
-			MULE_WARNING([GeoIP support has been disabled because the GeoIP header files were not found])
+			AC_MSG_WARN([GeoIP support has been disabled because the GeoIP header files were not found])
 		])
 
 		MULE_RESTORE([CPPFLAGS])

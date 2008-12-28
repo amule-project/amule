@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 DÃ©vai TamÃ¡s ( gonosztopi@amule.org )
+// Copyright (C) 2005-2008 Dévai Tamás ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -64,7 +64,7 @@ CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STATTREE_NODE);
 
-	for (size_t i = 0; i < tag->GetTagCount(); ++i) {
+	for (int i = 0; i < tag->GetTagCount(); ++i) {
 		const CECTag *tmp = tag->GetTagByIndex(i);
 		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
 			m_children.push_back(new CStatTreeItemBase(tmp));

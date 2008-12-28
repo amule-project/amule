@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (C) 2005-2008 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -57,8 +57,9 @@ class CPhPLibContext {
 		PHP_SCOPE_TABLE m_global_scope;
 		
 		CWriteStrBuffer *m_curr_str_buffer;
-
+#ifndef PHP_STANDALONE_EN
 		CWebServerBase *m_server;
+#endif		
 	public:
 		// parse file and take a "snapshot" of global vars
 		CPhPLibContext(CWebServerBase *server, const char *file);

@@ -1,7 +1,7 @@
 # This file is part of the aMule project.
 #
-# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-# Copyright (c) 2006-2008 D√©vai Tam√°s ( gonosztopi@amule.org )
+# Copyright (c) 2003-2008 aMule Project ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2006-2008 DÈvai Tam·s aka GonoszTopi
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -113,10 +113,10 @@ MAKEFLAGS=-w -s
 	s/ -%l,/ -Wl,/g
 	s/ -%a,/ -Wa,/g
 	s/ -%p,/ -Wp,/g
-
-	# insert -w flag into MULECFLAGS and MULECXXFLAGS if it isn't already in
-	/^MULEC\(XX\)\?FLAGS/! b 9
-	/ -w/! s/=/= -w/
+	
+       # insert -w flag into MULECFLAGS and MULECXXFLAGS if it isn't already in
+       /^MULEC\(XX\)\?FLAGS/! b 9
+       / -w/! s/=/= -w/
 	:9
 }
 #endif

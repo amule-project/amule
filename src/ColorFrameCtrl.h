@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -30,8 +30,8 @@
 #include <wx/control.h>		// Needed for wxControl
 
 #include "Types.h"		// Needed for RECT
+#include "Color.h"		// Needed for COLORREF
 
-class wxColour;
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl window
@@ -40,10 +40,15 @@ class CColorFrameCtrl : public wxControl {
 
 public:
 	CColorFrameCtrl( wxWindow* parent, int id,int wid,int hei );
+
+	void SetFrameColor(COLORREF color);
+	void SetBackgroundColor(COLORREF color);
+
+	COLORREF m_crBackColor;        // background color
+	COLORREF m_crFrameColor;       // frame color
+
 	virtual ~CColorFrameCtrl();
 
-	void SetFrameBrushColour(const wxColour& colour);
-	void SetBackgroundBrushColour(const wxColour& colour);
 protected:
 
 	void OnPaint(wxPaintEvent& evt);

@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -54,7 +54,6 @@ using std::auto_ptr;
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
 #endif
-#include "InternalEvents.h"	// Needed for wxEVT_CORE_FINISHED_HTTP_DOWNLOAD
 #include "Logger.h"
 #include "muuli_wdr.h"			// Needed for IDs
 #include "PartFile.h"			// Needed for CPartFile
@@ -126,11 +125,7 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
 	
 	EVT_MULE_NOTIFY(CamuleRemoteGuiApp::OnNotifyEvent)
-
-#ifdef ENABLE_IP2COUNTRY
-	// HTTPDownload finished
-	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleRemoteGuiApp::OnFinishedHTTPDownload)
-#endif
+	EVT_MULE_LOGGING(CamuleRemoteGuiApp::OnLoggingEvent)
 END_EVENT_TABLE()
 
 
@@ -200,21 +195,9 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		request_step = 0;
 		break;
 	default:
-		AddLogLineCS(wxT("WTF?")); // should not happen. :-)
+		printf("WTF?\n");
 		request_step = 0;
 	}
-}
-
-
-void CamuleRemoteGuiApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
-{
-#ifdef ENABLE_IP2COUNTRY
-	if (event.GetInt() == HTTP_GeoIP) {
-		amuledlg->IP2CountryDownloadFinished(event.GetExtraLong());
-		// If we updated, the dialog is already up. Redraw it to show the flags.
-		amuledlg->Refresh();
-	}
-#endif	
 }
 
 
@@ -254,7 +237,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Create the polling timer
 	poll_timer = new wxTimer(this,ID_CORE_TIMER_EVENT);
 	if (!poll_timer) {
-		AddLogLineCS(_("Fatal Error: Failed to create Poll Timer"));
+		printf("Fatal Error: Failed to create Poll Timer");
 		OnExit();
 	}
 
@@ -278,7 +261,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	bool result = ShowConnectionDialog();
 
-	AddLogLineNS(_("Going to event loop..."));
+	printf("Going to event loop...\n");
 	
 	return result;
 }
@@ -299,7 +282,7 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 		
 		return false;
 	}
-	AddLogLineNS(_("Connecting..."));
+	printf("Connecting...\n");
 	if (!m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
 		dialog->Login(), dialog->PassHash(),
 		wxT("amule-remote"), wxT("0x0001"))) {
@@ -314,13 +297,13 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 
 void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
-	AddLogLineNS(_("Remote GUI EC event handler"));
+	printf("Remote GUI EC event handler\n");
 	AddLogLineM(true,evt.GetServerReply());
 	if (evt.GetResult() == true) {
 		// Connected - go to next init step
 		glob_prefs->LoadRemote();
 	} else {
-		AddLogLineNS(_("Going down"));
+		printf("Going down\n");
 		ExitMainLoop();
 	}
 }
@@ -329,6 +312,12 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 void CamuleRemoteGuiApp::OnECInitDone(wxEvent& )
 {
 	Startup();
+}
+
+
+void CamuleRemoteGuiApp::OnLoggingEvent(CLoggingEvent& evt)
+{
+	printf("LOG: %s\n", unicode2char(evt.Message()).data());
 }
 
 
@@ -393,13 +382,6 @@ void CamuleRemoteGuiApp::Startup() {
 	// Start the Poll Timer
 	poll_timer->Start(1000);	
 	amuledlg->StartGuiTimer();
-
-	// Now activate GeoIP, so that the download dialog doesn't get destroyed immediately 
-#ifdef ENABLE_IP2COUNTRY
-	if (thePrefs::IsGeoIPEnabled()) {
-		amuledlg->m_IP2Country->Enable();
-	}
-#endif
 }
 
 
@@ -409,16 +391,10 @@ void CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 }
 
 
-void CamuleRemoteGuiApp::AddRemoteLogLine(const wxString& line)
-{
-	amuledlg->AddLogLine(line);
-}
-
 int CamuleRemoteGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 {
 	CamuleGuiBase::InitGui(geometry_enabled, geom_string);
 	SetTopWindow(amuledlg);
-	AddLogLineN(_("Ready")); // The first log line after the window is up triggers output of all the ones before
 	return 0;
 }
 
@@ -641,7 +617,7 @@ void CPreferencesRem::HandlePacket(const CECPacket *packet)
 	((CEC_Prefs_Packet *)packet)->Apply();
 
 	if ( packet->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
-		for (size_t i = 0; i < packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
+		for (int i = 0; i < packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
 			const CECTag *cat_tag = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
 			Category_Struct *cat = new Category_Struct;
 			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
@@ -781,7 +757,7 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 
 bool CServerConnectRem::ReQuery()
 {
-	CECPacket stat_req(EC_OP_GET_CONNSTATE);
+	CECPacket stat_req(EC_OP_STAT_REQ);
 	m_Conn->SendRequest(this, &stat_req);
 
 	return true;
@@ -1490,7 +1466,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			file->m_SrcpartFrequency[i] = part_info[i];
 		}
 	} else {
-		AddLogLineNS(CFormat(wxT("ERROR: %X %X %X")) % (size_t)gaptag % (size_t)parttag % (size_t)reqtag);
+		printf("ERROR: %p %p %p\n", (void*)gaptag, (void*)parttag, (void*)reqtag);
 	}
 	
 	// Get source names

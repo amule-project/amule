@@ -3,7 +3,6 @@
 //
 // Copyright (c) 2003-2008 Kry ( elkry@sourceforge.net / http://www.amule.org )
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2008 Froenchenko Leonid (lfroen@gmail.com)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -51,7 +50,6 @@
 #include "Statistics.h"		// Needed for theStats
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/kademlia/UDPFirewallTester.h"
 
 
 //-------------------- CECServerSocket --------------------
@@ -59,31 +57,21 @@
 class CECServerSocket : public CECMuleSocket
 {
 public:
-	CECServerSocket(ECNotifier *notifier);
+	CECServerSocket();
 	virtual ~CECServerSocket();
 
 	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
 	virtual void OnLost();
 
-	virtual void WriteDoneAndQueueEmpty();
 private:
-	ECNotifier *m_ec_notifier;
-	
 	bool m_authenticated;
-	CLoggerAccess m_LoggerAccess;
 	CPartFile_Encoder_Map	m_part_encoder;
 	CKnownFile_Encoder_Map	m_shared_encoder;
 	CObjTagMap		m_obj_tagmap;
-	CECPacket *ProcessRequest2(
-		const CECPacket *request,
-		CPartFile_Encoder_Map &,
-		CKnownFile_Encoder_Map &,
-		CObjTagMap &);
-	
 };
 
 
-CECServerSocket::CECServerSocket(ECNotifier *notifier)
+CECServerSocket::CECServerSocket()
 :
 CECMuleSocket(true),
 m_authenticated(false),
@@ -93,7 +81,6 @@ m_obj_tagmap()
 {
 	wxASSERT(theApp->ECServerHandler);
 	theApp->ECServerHandler->AddSocket(this);
-	m_ec_notifier = notifier;
 }
 
 
@@ -118,7 +105,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 			m_authenticated = true;
 		}
 	} else {
-		reply = ProcessRequest2(
+		reply = ExternalConn::ProcessRequest2(
 			packet, m_part_encoder, m_shared_encoder, m_obj_tagmap);
 	}
 	return reply;
@@ -131,15 +118,6 @@ void CECServerSocket::OnLost()
 	DestroySocket();
 }
 
-void CECServerSocket::WriteDoneAndQueueEmpty()
-{
-	if ( HaveNotificationSupport() ) {
-		CECPacket *packet = m_ec_notifier->GetNextPacket(this);
-		if ( packet ) {
-			SendPacket(packet);
-		}
-	}
-}
 
 //-------------------- ExternalConn --------------------
 
@@ -190,7 +168,6 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		*msg += wxT("External connections disabled in config file\n");
 		AddLogLineM(false,_("External connections disabled in config file"));
 	}
-	m_ec_notifier = new ECNotifier();
 }
 
 
@@ -198,7 +175,6 @@ ExternalConn::~ExternalConn()
 {
 	KillAllSockets();
 	delete m_ECServer;
-	delete m_ec_notifier;
 }
 
 
@@ -233,7 +209,7 @@ void ExternalConn::KillAllSockets()
 
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 {
-	CECServerSocket *sock = new CECServerSocket(m_ec_notifier);
+	CECServerSocket *sock = new CECServerSocket;
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
@@ -336,25 +312,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	return response;
 }
 
-// Make a Logger tag (if there are any logging messages) and add it to the response
-static void AddLoggerTag(CECPacket *response, CLoggerAccess &LoggerAccess)
-{
-	if (LoggerAccess.HasString()) {
-		CECEmptyTag tag(EC_TAG_STATS_LOGGER_MESSAGE);
-		// Tag structure is fix: tag carries nothing, inside are the strings
-		// maximum of 200 log lines per message
-		int entries = 0;
-		wxString line;
-		while (entries < 200 && LoggerAccess.GetString(line)) {
-			tag.AddTag(CECTag(EC_TAG_STRING, line));
-			entries++;
-		}
-		response->AddTag(tag);
-		//printf("send Log tag %d %d\n", FirstEntry, entries);
-	}
-}
-
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &LoggerAccess)
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STATS);
 
@@ -363,7 +321,6 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &
 			response->AddTag(CECTag(EC_TAG_STATS_UP_OVERHEAD, (uint32)theStats::GetUpOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_DOWN_OVERHEAD, (uint32)theStats::GetDownOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT, /*(uint32)*/theStats::GetBannedCount()));
-			AddLoggerTag(response, LoggerAccess);
 		case EC_DETAIL_WEB:
 		case EC_DETAIL_CMD:
 			response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theStats::GetUploadRate()));
@@ -380,25 +337,6 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &
 				response->AddTag(CECTag(EC_TAG_STATS_KAD_USERS, Kademlia::CKademlia::GetKademliaUsers()));
 				response->AddTag(CECTag(EC_TAG_STATS_ED2K_FILES, totalfile));
 				response->AddTag(CECTag(EC_TAG_STATS_KAD_FILES, Kademlia::CKademlia::GetKademliaFiles()));
-			}
-			// Kad stats
-			if (Kademlia::CKademlia::IsConnected()) {
-				response->AddTag(CECTag(EC_TAG_STATS_KAD_FIREWALLED_UDP, Kademlia::CUDPFirewallTester::IsFirewalledUDP(true)));
-				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_SOURCES, Kademlia::CKademlia::GetIndexed()->m_totalIndexSource));
-				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_KEYWORDS, Kademlia::CKademlia::GetIndexed()->m_totalIndexKeyword));
-				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_NOTES, Kademlia::CKademlia::GetIndexed()->m_totalIndexNotes));
-				response->AddTag(CECTag(EC_TAG_STATS_KAD_INDEXED_LOAD, Kademlia::CKademlia::GetIndexed()->m_totalIndexLoad));
-				response->AddTag(CECTag(EC_TAG_STATS_KAD_IP_ADRESS, wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetPrefs()->GetIPAddress())));
-				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_STATUS, theApp->clientlist->GetBuddyStatus()));
-				uint32 BuddyIP = 0;
-				uint16 BuddyPort = 0;
-				CUpDownClient * Buddy = theApp->clientlist->GetBuddy();
-				if (Buddy) {
-					BuddyIP = Buddy->GetIP();
-					BuddyPort = Buddy->GetUDPPort();
-				}
-				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_IP, BuddyIP));
-				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_PORT, BuddyPort));
 			}
 		case EC_DETAIL_UPDATE:
 		case EC_DETAIL_INC_UPDATE:
@@ -1100,7 +1038,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 	return response;
 }
 
-CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
+CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 	CPartFile_Encoder_Map &enc_part_map, CKnownFile_Encoder_Map &enc_shared_map, CObjTagMap &objmap)
 {
 
@@ -1151,8 +1089,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 		// Status requests
 		//
 		case EC_OP_STAT_REQ:
-			response = Get_EC_Response_StatRequest(request, m_LoggerAccess);
-			break;
+			response = Get_EC_Response_StatRequest(request);
 		case EC_OP_GET_CONNSTATE:
 			if (!response) {
 				response = new CECPacket(EC_OP_MISC_DATA);
@@ -1513,222 +1450,4 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 	}
 	return response;
 }
-
-/*
- * Here notification-based EC. Notification will be sorted by priority for possible throttling. 
- */
- 
-/*
- * Core general status
- */
-ECStatusMsgSource::ECStatusMsgSource()
-{
-}
-
-CECPacket *ECStatusMsgSource::GetNextPacket()
-{
-	CECPacket *response = new CECPacket(EC_OP_STATS);
-	response->AddTag(CEC_ConnState_Tag(EC_DETAIL_UPDATE));
-	return response;
-}
-
-/*
- * Downloading files
-*/
-ECPartFileMsgSource::ECPartFileMsgSource()
-{
-	PARTFILE_STATUS status = { true, false, false, false };
-	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
-		m_dirty_status[cur_file->GetFileHash()] = status;
-	}
-}
-
-void ECPartFileMsgSource::SetDirty(CPartFile *file)
-{
-	CMD4Hash filehash = file->GetFileHash();
-	if ( m_dirty_status.find(filehash) != m_dirty_status.end() ) {
-		//
-		// entry already present, meaning "dirty" flag is set
-		//
-		return ;
-	}
-	PARTFILE_STATUS status = { false, false, false, false };
-	m_dirty_status[filehash] = status;
-}
-
-void ECPartFileMsgSource::SetNew(CPartFile *file)
-{
-	CMD4Hash filehash = file->GetFileHash();
-	wxASSERT ( m_dirty_status.find(filehash) == m_dirty_status.end() );
-	PARTFILE_STATUS status = { true, false, false, false };
-	m_dirty_status[filehash] = status;
-}
-
-void ECPartFileMsgSource::SetCompleted(CPartFile *file)
-{
-	CMD4Hash filehash = file->GetFileHash();
-	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
-
-	m_dirty_status[filehash].m_finished = true;
-}
-
-void ECPartFileMsgSource::SetRemoved(CPartFile *file)
-{
-	CMD4Hash filehash = file->GetFileHash();
-	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
-
-	m_dirty_status[filehash].m_removed = true;
-}
-
-CECPacket *ECPartFileMsgSource::GetNextPacket()
-{
-	if ( m_dirty_status.empty() ) {
-		return 0;
-	}
-	std::map<CMD4Hash, PARTFILE_STATUS>::iterator it = m_dirty_status.begin();
-	CMD4Hash filehash = it->first;
-	
-	CPartFile *partfile = theApp->downloadqueue->GetFileByID(filehash);
-	
-	CECPacket *packet = new CECPacket(EC_OP_DLOAD_QUEUE);
-	CEC_PartFile_Tag tag(partfile, EC_DETAIL_UPDATE);
-	packet->AddTag(tag);
-	
-	m_dirty_status.erase(it);
-	
-	return packet;
-}
-
-/*
- * Notification about search status
-*/
-ECSearchMsgSource::ECSearchMsgSource()
-{
-}
-
-CECPacket *ECSearchMsgSource::GetNextPacket()
-{
-	return 0;
-}
-
-/*
- * Notification about uploading clients
- */
-CECPacket *ECClientMsgSource::GetNextPacket()
-{
-	return 0;
-}
-	
-//
-// Notification iface per-client
-//
-ECNotifier::ECNotifier()
-{
-}
-
-CECPacket *ECNotifier::GetNextPacket(ECUpdateMsgSource *msg_source_array[])
-{
-	CECPacket *packet = 0;
-	//
-	// priority 0 is highest
-	//
-	for(int i = 0; i < EC_STATUS_LAST_PRIO; i++) {
-		if ( (packet = msg_source_array[i]->GetNextPacket()) != 0 ) {
-			break;
-		}
-	}
-	return packet;
-}
-
-CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
-{
-	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
-	//
-	// OnOutput is called for a first time before
-	// socket is registered
-	// 
-	if ( !notifier_array ) {
-		return 0;
-	}
-	CECPacket *packet = GetNextPacket(notifier_array);
-	return packet;
-}
-
-//
-// Interface to notification macros
-//
-void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
-{
-	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
-		ECUpdateMsgSource **notifier_array = i->second;
-		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetDirty(file);
-	}
-	NextPacketToSocket();
-}
-
-void ECNotifier::DownloadFile_RemoveFile(CPartFile *file)
-{
-	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
-		ECUpdateMsgSource **notifier_array = i->second;
-		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetRemoved(file);
-	}
-}
-
-void ECNotifier::DownloadFile_RemoveSource(CPartFile *)
-{
-	// per-partfile source list is not supported (yet), and IMHO quite useless
-}
-
-void ECNotifier::DownloadFile_AddFile(CPartFile *file)
-{
-	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
-		ECUpdateMsgSource **notifier_array = i->second;
-		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetNew(file);
-	}
-}
-
-void ECNotifier::DownloadFile_AddSource(CPartFile *)
-{
-	// per-partfile source list is not supported (yet), and IMHO quite useless
-}
-
-void ECNotifier::Add_EC_Client(CECServerSocket *sock)
-{
-	ECUpdateMsgSource **notifier_array = new ECUpdateMsgSource *[EC_STATUS_LAST_PRIO];
-	notifier_array[EC_STATUS] = new ECStatusMsgSource();
-	notifier_array[EC_SEARCH] = new ECSearchMsgSource();
-	notifier_array[EC_PARTFILE] = new ECPartFileMsgSource();
-	notifier_array[EC_CLIENT] = new ECClientMsgSource();
-
-	m_msg_source[sock] = notifier_array;
-}
-
-void ECNotifier::Remove_EC_Client(CECServerSocket *sock)
-{
-	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
-	m_msg_source.erase(sock);
-	
-	for(int i = 0; i < EC_STATUS_LAST_PRIO; i++) {
-		delete notifier_array[i];
-	}
-	delete [] notifier_array;
-}
-
-void ECNotifier::NextPacketToSocket()
-{
-	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
-		CECServerSocket *sock = i->first;
-		if ( sock->HaveNotificationSupport() && !sock->DataPending() ) {
-			ECUpdateMsgSource **notifier_array = i->second;
-			CECPacket *packet = GetNextPacket(notifier_array);
-			sock->SendPacket(packet);
-		}
-	}
-}
-
 // File_checked_for_headers

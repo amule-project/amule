@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -483,7 +483,7 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 	bool unicoded = (sender->GetUnicodeSupport() != utf8strNone);
 	for (unsigned int i = 0; i != results; ++i){			
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, searchID, 0, 0, directory);
-		if (sender) {
+		if (sender){
 			toadd->SetClientID(sender->GetUserIDHybrid());
 			toadd->SetClientPort(sender->GetUserPort());
 		}
@@ -510,9 +510,9 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 {
 	CMemFile packet(in_packet, size);
 
-	uint32_t results = packet.ReadUInt32();
-	for (; results > 0; --results) {
-		AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
+       uint32_t results = packet.ReadUInt32();
+       for (; results > 0; --results) {
+               AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
 	}
 }
 
@@ -654,12 +654,12 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	LexFree();
 	
 #ifdef __DEBUG__
-	AddLogLineNS(CFormat(wxT("Search parsing result for \"%s\": %i"))
-		% params.searchString % iParseResult);
+	printf("Search parsing result for \"%s\": %i\n",
+		(const char*)unicode2UTF8(params.searchString),iParseResult);
 #endif
 	if (_astrParserErrors.Count() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
-			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
+			printf("Error %u: %s\n",i,(const char*)unicode2UTF8(_astrParserErrors[i]));
 		}
 		
 		return CMemFilePtr(NULL);
@@ -672,18 +672,17 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	}
 	
 	#ifdef __DEBUG__
-	wxString mes(wxT("Search expression:"));
-	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++) {
-		mes << wxT(" ") << _SearchExpr.m_aExpr[i];
+	printf("Search expression: ");
+	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++){
+		printf("%s ",(const char*)unicode2char(_SearchExpr.m_aExpr[i]));
 	}
-	AddLogLineNS(mes);
-	AddLogLineNS(CFormat(wxT("Expression count: %i")) % _SearchExpr.m_aExpr.GetCount());
+	printf("\nExpression count: %i\n",(int)_SearchExpr.m_aExpr.GetCount());
 	#endif
 
 	parametercount += _SearchExpr.m_aExpr.GetCount();
 	
 	#ifdef __DEBUG__
-	AddLogLineNS(CFormat(wxT("Parameters: %i")) % parametercount);
+	printf("Parameters: %i\n",parametercount);
 	#endif
 	
 	/* Leave the unicode comment there, please... */

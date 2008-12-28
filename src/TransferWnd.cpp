@@ -247,7 +247,7 @@ void CTransferWnd::OnDelCategory(wxCommandEvent& WXUNUSED(event))
 void CTransferWnd::RemoveCategory(int index)
 {
 	if ( index > 0 ) {
-		theApp->downloadqueue->ResetCatParts(index);
+		downloadlistctrl->ResetCatParts(index);
 		theApp->glob_prefs->RemoveCat(index);
 		RemoveCategoryPage(index);
 		if ( theApp->glob_prefs->GetCatCount() == 1 ) {

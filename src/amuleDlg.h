@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -113,7 +113,7 @@ public:
 		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
-	void AddLogLine(const wxString& line);
+	void AddLogLine(bool addtostatusbar, const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(int id);
 	
@@ -185,7 +185,6 @@ public:
 	
 #ifdef ENABLE_IP2COUNTRY	
 	CIP2Country*		m_IP2Country;
-	void IP2CountryDownloadFinished(uint32 result);
 #endif	
 	wxWindow*		m_activewnd;
 	CTransferWnd*		m_transferwnd;
@@ -230,7 +229,6 @@ private:
 	uint32 m_last_iconizing;
 	wxFileName m_skinFileName;
 	std::vector<wxString> m_clientSkinNames;
-	bool m_GeoIPavailable;
 
 	WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
 	ZipCatalog::iterator it;

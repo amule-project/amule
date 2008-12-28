@@ -116,6 +116,7 @@ protected:
 	void OnButtonIPFilterUpdate(wxCommandEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxCommandEvent &event);
+	void OnBrowserChange(wxCommandEvent &event);
 	void OnPrefsPageChange(wxListEvent& event);
 	void OnToolTipDelayChange(wxSpinEvent& event);
 	void OnScrollBarChange( wxScrollEvent& event );

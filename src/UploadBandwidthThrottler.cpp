@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 // 
-// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (C) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -35,6 +35,7 @@
 #include "ThrottledSocket.h"
 #include "Logger.h"
 #include "Preferences.h"
+#include "amule.h"
 #include "Statistics.h"
 
 #ifndef _MSC_VER
@@ -255,16 +256,14 @@ void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledFileSocket* socket)
  */
 void UploadBandwidthThrottler::EndThread()
 {
-	if (m_doRun) {	// do it only once
-		{
-			wxMutexLocker lock(m_sendLocker);
+	{
+		wxMutexLocker lock(m_sendLocker);
 
-			// signal the thread to stop looping and exit.
-			m_doRun = false;
-		}
-		
-		Wait();
+		// signal the thread to stop looping and exit.
+		m_doRun = false;
 	}
+	
+	Wait();
 }
 
 
@@ -294,7 +293,12 @@ void* UploadBandwidthThrottler::Entry()
 		// Get current speed from UploadSpeedSense
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
 			// Try to increase the upload rate
-			allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
+			if (theApp->uploadqueue) {
+				allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
+			} else {
+				// App not created yet or already destroyed.
+				allowedDataRate = (uint32)(-1);
+			}
 		} else {
 			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
 		}

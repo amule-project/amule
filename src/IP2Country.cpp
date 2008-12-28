@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+// Copyright (c) 2006-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
 // Copyright (c) 2006-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -42,112 +42,56 @@
 
 #include "IP2Country.h"
 
-// MSVC projects can't include files configuration dependent, so just double-check the #define
-#ifdef ENABLE_IP2COUNTRY
 
-#include "amule.h"			// For theApp
-#include "Preferences.h"	// For thePrefs
-#include "CFile.h"			// For CPath
-#include "HTTPDownload.h"
 #include "Logger.h"			// For AddLogLineM()
 #include <common/Format.h>		// For CFormat()
-#include "common/FileFunctions.h"	// For UnpackArchive
 #include <common/StringFunctions.h>	// For unicode2char()
 #include "pixmaps/flags_xpm/CountryFlags.h"
 
 #include <wx/intl.h>
 #include <wx/image.h>
 
+#ifdef __WXMAC__
+	#include <CoreFoundation/CFBundle.h>
+	#include <wx/mac/corefoundation/cfstring.h>
+#endif
+
 CIP2Country::CIP2Country()
 {
 	m_geoip = NULL;
-	m_DataBaseName = theApp->ConfigDir + wxT("GeoIP.dat");
-	if (m_CountryDataMap.empty()) {
-// this must go to enable - when all usages of GetCountryData() (ClientListCtrl, DownloadListCtrl) are surrounded with an IsEnabled()
-// right now, flags are loaded even when it's disabled
-		LoadFlags();
-	}
-}
 
-void CIP2Country::Enable()
-{
-	Disable();
-	if (!CPath::FileExists(m_DataBaseName)) {
-		Update();
-		return;
-	}
+#ifdef __WXMAC__
+	// For the Mac GUI application, look for GeoIP database in the bundle
+	CFURLRef GeoIPDBUrl = CFBundleCopyResourceURL(
+		CFBundleGetMainBundle(),
+		CFSTR("GeoIP"), CFSTR("dat"), CFSTR("GeoIP")
+		);
+	if (GeoIPDBUrl) {
+		CFURLRef absoluteURL =
+			CFURLCopyAbsoluteURL(GeoIPDBUrl);
+		CFRelease(GeoIPDBUrl);
+		if (absoluteURL) {
+			CFStringRef pathString =
+				CFURLCopyFileSystemPath(
+					absoluteURL,
+					kCFURLPOSIXPathStyle);
+			CFRelease(absoluteURL);
+			wxString GeoIPDB = wxMacCFStringHolder(pathString).
+				AsString(wxLocale::GetSystemEncoding());
 
-	m_geoip = GeoIP_open(unicode2char(m_DataBaseName), GEOIP_STANDARD);
-}
-
-void CIP2Country::Update()
-{
-	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBaseName + wxT(".download"), HTTP_GeoIP);
-	downloader->Create();
-	downloader->Run();
-}
-
-void CIP2Country::Disable()
-{
-	if (m_geoip) {
-		GeoIP_delete(m_geoip);
-		m_geoip = NULL;
-	}
-}
-
-void CIP2Country::DownloadFinished(uint32 result)
-{
-	if (result == 1) {
-		Disable();
-		// download succeeded. Switch over to new database.
-		wxString newDat = m_DataBaseName + wxT(".download");
-
-		// Try to unpack the file, might be an archive
-		const wxChar* geoip_files[] = {
-			wxT("GeoIP.dat"),
-			NULL
-		};
-
-		if (UnpackArchive(CPath(newDat), geoip_files).second == EFT_Error) {
-			AddLogLineM(false, _("Download of GeoIP.dat file failed, aborting update."));
-			return;
-		}
-
-		if (wxFileExists(m_DataBaseName)) {
-			if (!wxRemoveFile(m_DataBaseName)) {
-				AddLogLineM(false, _("Failed to remove GeoIP.dat file, aborting update."));
-				return;
-			}
-		}
-
-		if (!wxRenameFile(newDat, m_DataBaseName)) {
-			AddLogLineM(false,	_("Failed to rename new GeoIP.dat file, aborting update."));
-			return;
-		}
-
-		Enable();
-		if (m_geoip) {
-		  AddLogLineM(false, _("Successfully updated GeoIP.dat"));
-		} else {
-		  AddLogLineM(false, _("Error updating GeoIP.dat"));
-		}
-	} else {
-		AddLogLineM(false, CFormat(_("Failed to download GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-		// if it failed and there is no database, turn it off
-		if (!wxFileExists(m_DataBaseName)) {
-			thePrefs::SetGeoIPEnabled(false);
+			m_geoip = GeoIP_open(unicode2char(GeoIPDB),
+					GEOIP_STANDARD);
 		}
 	}
-}
-
-void CIP2Country::LoadFlags()
-{
+#endif
+	if (m_geoip == NULL)
+		m_geoip = GeoIP_new(GEOIP_STANDARD);
+		
 	// Load data from xpm files
-	for (int i = 0; i < flags::FLAGS_XPM_SIZE; ++i) {
+	for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
 		CountryData countrydata;
-		countrydata.Name = char2unicode(flags::flagXPMCodeVector[i].code);
-		countrydata.Flag = wxImage(flags::flagXPMCodeVector[i].xpm);
+		countrydata.Name = char2unicode(flagXPMCodeVector[i].code);
+		countrydata.Flag = wxBitmap(flagXPMCodeVector[i].xpm);
 		
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
@@ -157,13 +101,13 @@ void CIP2Country::LoadFlags()
 		}
 	}
 	
-	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());  // there's never just one - no plural needed
+	AddLogLineM(false, CFormat(wxPLURAL("Loaded %d flag bitmap.", "Loaded %d flag bitmaps.", m_CountryDataMap.size())) % m_CountryDataMap.size());
 }
 
 
 CIP2Country::~CIP2Country()
 {
-	Disable();
+	GeoIP_delete(m_geoip);
 }
 
 
@@ -193,4 +137,3 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 	return it->second;	
 }
 
-#endif // ENABLE_IP2COUNTRY

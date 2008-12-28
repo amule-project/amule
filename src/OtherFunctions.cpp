@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -494,9 +494,8 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
  *
  * Base64 encoding/decoding command line filter
  *
- * Copyright (c) 2002-2008 Matthias Gaertner
- * Adapted to use wxWidgets by
- * Copyright (c) 2005-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+ * Copyright (c) 2002 Matthias Gaertner 29.06.2002
+ * Adapted by (C) 2005-2008 Phoenix to use wxWidgets.
  *
  */
 static const wxString to_b64(
@@ -792,7 +791,6 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vob"),   ED2KFT_VIDEO));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmv"),   ED2KFT_VIDEO));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xvid"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flv"),   ED2KFT_VIDEO));
 
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bmp"),   ED2KFT_IMAGE));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dcx"),   ED2KFT_IMAGE));
@@ -1054,40 +1052,36 @@ wxString GetConfigDir()
 }
 
 
-/*************************** Locale specific stuff ***************************/
-
-#ifndef __WXMSW__
-#	define	SETWINLANG(LANG, SUBLANG)
-#else
-#	define	SETWINLANG(LANG, SUBLANG) \
-	info.WinLang = LANG; \
-	info.WinSublang = SUBLANG;
-#endif
-
-#define CUSTOMLANGUAGE(wxid, iso, winlang, winsublang, dir, desc) \
-	info.Language = wxid;		\
-	info.CanonicalName = wxT(iso);	\
-	info.LayoutDirection = dir;	\
-	info.Description = wxT(desc);	\
-	SETWINLANG(winlang, winsublang)	\
-	wxLocale::AddLanguage(info);
-
 void InitCustomLanguages()
 {
-	wxLanguageInfo info;
-
-	CUSTOMLANGUAGE(wxLANGUAGE_ASTURIAN,	"ast",	0,	0,	wxLayout_LeftToRight,	"Asturian");
+	wxLanguageInfo CustomLanguage;
+	CustomLanguage.Language = wxLANGUAGE_ITALIAN_NAPOLITAN;
+	CustomLanguage.CanonicalName = wxT("it_NA");
+	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
+	wxLocale::AddLanguage(CustomLanguage);
 }
 
 
 void InitLocale(wxLocale& locale, int language)
 {
-	locale.Init(language, wxLOCALE_LOAD_DEFAULT); 
+	int language_flags = 0;
+	if (language != wxLANGUAGE_CUSTOM && language != wxLANGUAGE_ITALIAN_NAPOLITAN) {
+		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
+	}
 	
+	locale.Init(language,language_flags); 
+	
+	if (language != wxLANGUAGE_CUSTOM) {
+
 #if defined(__WXMAC__) || defined(__WXMSW__)
-	locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
+		locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
 #endif
-	locale.AddCatalog(wxT(PACKAGE));
+		locale.AddCatalog(wxT(PACKAGE));
+
+	} else {
+		locale.AddCatalogLookupPathPrefix(GetConfigDir());
+		locale.AddCatalog(wxT("custom"));
+	}
 }
 
 
@@ -1122,8 +1116,6 @@ wxString wxLang2Str(const int lang)
 		return wxEmptyString;
 	}
 }
-
-/*****************************************************************************/
 
 wxString GetPassword() {
 wxString pass_plain;
