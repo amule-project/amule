@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-25 01:25+0100\n"
+"POT-Creation-Date: 2008-12-28 14:27+0100\n"
 "PO-Revision-Date: 2008-12-11 22:22+0100\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -4673,7 +4673,7 @@ msgid "Sends the specified message."
 msgstr "Pošlje navedeno sporočilo."
 
 #: src/muuli_wdr.cpp:546 src/muuli_wdr.cpp:968 src/muuli_wdr.cpp:1591
-#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3561 src/MuleNotebook.cpp:154
 msgid "Close"
 msgstr "Zapri"
 
@@ -6741,15 +6741,15 @@ msgstr "*** Povezovanje z odjemalcem ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Povezava z odjemalcem ni uspela / povezava izgubljena ***"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:155
 msgid "Close tab"
 msgstr "Zapri zavihek"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:156
 msgid "Close all tabs"
 msgstr "Zapri vse zavihke"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:157
 msgid "Close other tabs"
 msgstr "Zapri ostale zavihke"
 
