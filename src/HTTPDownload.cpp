@@ -228,7 +228,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 
 		if (current_read == 0) {
 			if (total_read != download_size) {
-				throw CFormat(_("Expected %d bytes, but downloaded %d bytes")) % download_size % total_read;
+				throw wxString(CFormat(_("Expected %d bytes, but downloaded %d bytes")) % download_size % total_read);
 			} else {
 				// Download was succesful.
 				m_result = 1;
