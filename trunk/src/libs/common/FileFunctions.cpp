@@ -93,6 +93,9 @@ bool CDirIterator::HasSubDirs(const wxString& spec)
 EFileType GuessFiletype(const wxString& file)
 {
 	wxFile archive(file, wxFile::read);
+	if (!archive.IsOpened()) {
+		return EFT_Error;
+	}
 	char head[10] = {0};
 	int read = archive.Read(head, std::min<off_t>(10, archive.Length()));
 
