@@ -83,12 +83,27 @@
 
 #ifdef ENABLE_IP2COUNTRY
 #include "IP2Country.h"		// Needed for IP2Country
+#endif
+
+#ifdef ENABLE_IP2COUNTRY	// That's no bug. MSVC has ENABLE_IP2COUNTRY always on,
+							// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
 void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
 { 
-#ifdef ENABLE_IP2COUNTRY	// That's no bug. Dummy GeoIP.h turns ENABLE_IP2COUNTRY off again
 	m_IP2Country->DownloadFinished(result); 
-#endif
 }
+
+void CamuleDlg::EnableIP2Country()
+{
+	if (thePrefs::IsGeoIPEnabled()) {
+		m_IP2Country->Enable();
+	}
+}
+
+#else
+
+void CamuleDlg::IP2CountryDownloadFinished(uint32){}
+void CamuleDlg::EnableIP2Country(){}
+
 #endif
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
@@ -228,12 +243,6 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 #ifdef ENABLE_IP2COUNTRY
 	m_GeoIPavailable = true;
 	m_IP2Country = new CIP2Country();
-	// remote GUI has to do this a bit later (after the main dialog is up)
-#ifndef CLIENT_GUI
-	if (thePrefs::IsGeoIPEnabled()) {
-		m_IP2Country->Enable();
-	}
-#endif
 #else
 	m_GeoIPavailable = false;
 #endif
