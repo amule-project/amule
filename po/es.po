@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-28 14:30+0100\n"
-"PO-Revision-Date: 2008-12-27 17:59+0100\n"
+"PO-Revision-Date: 2008-12-30 20:19+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -2240,7 +2240,7 @@ msgstr "Tamaño de descarga: %i"
 #: src/HTTPDownload.cpp:231
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Se experaban %d bytes, pero se descargaron %d bytes"
 
 #: src/HTTPDownload.cpp:250
 msgid "HTTP download thread ended"
@@ -2270,9 +2270,8 @@ msgid "Download new GeoIP.dat from %s"
 msgstr "Descargar nuevo GeoIP.dat desde %s"
 
 #: src/IP2Country.cpp:113
-#, fuzzy
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr "Error al borrar archivo GeoIP.dat, abortando actualización."
+msgstr "Descarga del archivo GeoIP.dat fallida, abortando actualización."
 
 #: src/IP2Country.cpp:119
 msgid "Failed to remove GeoIP.dat file, aborting update."
@@ -4865,9 +4864,8 @@ msgid "Arabic"
 msgstr "Árabe"
 
 #: src/Preferences.cpp:660
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonio"
+msgstr "Asturiano"
 
 #: src/Preferences.cpp:661
 msgid "Basque"
