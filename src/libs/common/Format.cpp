@@ -23,6 +23,7 @@
 //
 
 #include "Format.h"
+#include <stdint.h>
 
 //! Known type-modifiers. 
 enum Modifiers
