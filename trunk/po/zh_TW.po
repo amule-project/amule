@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the aMule package.
 # Chen yu-kai <ishappyday@msn.com>, 2004.
 # xiaoqiao <29551030@qq.com>, 2007, 2008.
+# Wayne Su <mstarmstar@gmail.com>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-28 14:30+0100\n"
-"PO-Revision-Date: 2008-12-06 14:09+0800\n"
+"PO-Revision-Date: 2008-12-29 15:31+0800\n"
 "Last-Translator: mstar\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,7 +20,6 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-Country: TAIWAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Bookmarks: 826,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -116,7 +116,7 @@ msgstr "在 '%s' 使用 amuleweb 。"
 #: src/amule.cpp:843
 #, c-format
 msgid "web server running on pid %d"
-msgstr "執行中網站伺服器的 pid：%d"
+msgstr "執行中的網站伺服器 pid：%d"
 
 #: src/amule.cpp:847
 msgid ""
@@ -185,15 +185,15 @@ msgstr "這是您第一次執行 aMule %s"
 
 #: src/amule.cpp:1305
 msgid "This version is a testing version, updated daily, and\n"
-msgstr "這個版本是測試版，每日有更新，只是我們無法保證\n"
+msgstr "這個版本是測試版，每日有更新，只是我們不擔保\n"
 
 #: src/amule.cpp:1306
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "它一定不會造成任何損害，像是燒掉您的房子、\n"
+msgstr "它不會造成任何損害，例如燒掉您的房子、\n"
 
 #: src/amule.cpp:1307
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr "或殺死您的狗。但一般來講它應該是安全的。\n"
+msgstr "或殺死您的狗。但一般來講它「應該」是安全的。\n"
 
 #: src/amule.cpp:1311
 msgid ""
@@ -277,7 +277,7 @@ msgstr "錯誤：無法打開記錄檔"
 
 #: src/amule.cpp:1748
 msgid "WARNING: logfile is empty. Something is wrong."
-msgstr "警告：沒有記錄檔，肯定有什麽地方出錯了。"
+msgstr "警告：沒有記錄檔。肯定有什麽地方出錯了。"
 
 #: src/amule.cpp:1766
 msgid "Log has been reset"
@@ -1349,7 +1349,7 @@ msgstr "沒有需要的部份"
 
 #: src/DataToText.cpp:66
 msgid "Cannot connect LowID to LowID"
-msgstr "兩個 LowID 使用者不能連線"
+msgstr "無法由 LowID 連線至 LowID"
 
 #: src/DataToText.cpp:67
 msgid "Too many connections"
@@ -1385,7 +1385,7 @@ msgstr "eMule 相容版"
 
 #: src/DataToText.cpp:126
 msgid "Local Server"
-msgstr "本機伺服器"
+msgstr "本地伺服器"
 
 #: src/DataToText.cpp:127
 msgid "Remote Server"
@@ -1558,7 +1558,7 @@ msgstr "轉移到這個檔案"
 
 #: src/DownloadListCtrl.cpp:1086 src/SharedFilesCtrl.cpp:703
 msgid "Enter new name for this file:"
-msgstr "請輸入新檔案名："
+msgstr "請輸入新檔案名稱："
 
 #: src/DownloadListCtrl.cpp:1087 src/SharedFilesCtrl.cpp:704
 msgid "File rename"
@@ -1741,7 +1741,7 @@ msgstr ""
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
-msgstr "為了避免系統受損害，您不能用開發中的版本連線到正式發行版"
+msgstr "為了避免系統受損害，您不能用開發中版本 (SVN) 連線到正式發行版"
 
 #: src/ExternalConn.cpp:313
 msgid "Authentication failed."
@@ -1796,7 +1796,7 @@ msgstr "eD2k 網路已在偏好設定中被停用了。"
 
 #: src/ExternalConn.cpp:866
 msgid "Search in progress. Refetch results in a moment!"
-msgstr "搜尋中，請稍後再重新抓取結果！"
+msgstr "搜尋中，請稍候！"
 
 #: src/ExternalConn.cpp:871
 msgid "WebSearch from remote interface makes no sense."
@@ -1812,7 +1812,7 @@ msgstr "此圖沒有參考點。"
 
 #: src/ExternalConn.cpp:1092
 msgid "Your client is not configured for this detail level."
-msgstr "此細部等級中沒有設定您的客戶端。"
+msgstr "您的客戶端並沒有設定此細部等級。"
 
 #: src/ExternalConn.cpp:1120
 msgid "External Connection: shutdown requested"
@@ -1952,7 +1952,7 @@ msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
 msgstr ""
-"輸入 'help <指令>' 可顯示指令的說明。\n"
+"輸入 'help <指令>' 可顯示該指令的說明。\n"
 "輸入 'help' 可顯示所有指令一覽。\n"
 
 #: src/ExternalConnector.cpp:258
@@ -2110,7 +2110,7 @@ msgstr "無法開啟好友清單檔案 emfriends.met 供寫入！"
 
 #: src/FriendList.cpp:222
 msgid "CRITICAL - no client on StartChatSession"
-msgstr "重大 - 開始交談時沒有客戶端"
+msgstr "重大錯誤 - 開始交談時沒有客戶端"
 
 #: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:499 src/muuli_wdr.cpp:2960
 msgid "Friends"
@@ -2177,7 +2177,7 @@ msgstr "下載大小：%i "
 #: src/HTTPDownload.cpp:231
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "原預計 %d B，但實際下載了 %d B"
 
 #: src/HTTPDownload.cpp:250
 msgid "HTTP download thread ended"
@@ -2207,9 +2207,8 @@ msgid "Download new GeoIP.dat from %s"
 msgstr "從 %s 下載新的 GeoIP.dat"
 
 #: src/IP2Country.cpp:113
-#, fuzzy
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr "無法移除 GeoIP.dat，停止更新。"
+msgstr "無法下載 GeoIP.dat，停止更新。"
 
 #: src/IP2Country.cpp:119
 msgid "Failed to remove GeoIP.dat file, aborting update."
@@ -2916,7 +2915,7 @@ msgstr "全名︰"
 
 #: src/muuli_wdr.cpp:578
 msgid "met-File :"
-msgstr "met 檔案"
+msgstr "met 檔"
 
 #: src/muuli_wdr.cpp:589
 msgid "Hash :"
@@ -3355,7 +3354,7 @@ msgstr "影片播放器"
 
 #: src/muuli_wdr.cpp:1676
 msgid "Create backup for preview"
-msgstr "建立預覽用備份"
+msgstr "建立備份檔案以供預覽"
 
 #: src/muuli_wdr.cpp:1695
 msgid "Bandwidth limits"
@@ -3758,7 +3757,7 @@ msgstr "自動排序檔案 (耗系統資源)"
 
 #: src/muuli_wdr.cpp:2282
 msgid "aMule will sort the columns in your download list automatically"
-msgstr "aMule  會自動自動逐行排列下載清單"
+msgstr "aMule 將自動對下載清單進行排序"
 
 #: src/muuli_wdr.cpp:2301
 msgid "External Connection Parameters"
@@ -4385,7 +4384,7 @@ msgstr "時"
 
 #: src/OtherFunctions.cpp:185
 msgid "Days"
-msgstr "日"
+msgstr "天"
 
 #: src/OtherFunctions.cpp:694
 msgid "all"
@@ -4722,9 +4721,8 @@ msgid "Arabic"
 msgstr "阿拉伯語"
 
 #: src/Preferences.cpp:660
-#, fuzzy
 msgid "Asturian"
-msgstr "愛沙尼亞語"
+msgstr "奧地利語"
 
 #: src/Preferences.cpp:661
 msgid "Basque"
@@ -4953,7 +4951,7 @@ msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr ""
-"重新啟動 aMule，變更的設定才能生效：\n"
+"請重新啟動 aMule，變更的設定才能生效：\n"
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:539
@@ -5222,7 +5220,7 @@ msgstr "已連線到：%s"
 
 #: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "連線時發生嚴重錯誤. Internet 連線可能有問題"
+msgstr "連線時發生嚴重錯誤. 網路連線可能有問題"
 
 #: src/ServerConnect.cpp:339
 #, c-format
@@ -5795,27 +5793,27 @@ msgstr "額外支出傳輸量/封包： %s"
 #: src/Statistics.cpp:652 src/Statistics.cpp:673
 #, c-format
 msgid "File Request Overhead (Packets): %s"
-msgstr "檔案要求支出傳輸量/封包：%s"
+msgstr "  檔案要求支出傳輸量/封包：%s"
 
 #: src/Statistics.cpp:654 src/Statistics.cpp:675
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
-msgstr "來源交換支出傳輸量/封包： %s"
+msgstr "  來源交換支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:656 src/Statistics.cpp:677
 #, c-format
 msgid "Server Overhead (Packets): %s"
-msgstr "伺服器支出傳輸量/封包： %s"
+msgstr "  伺服器支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:658 src/Statistics.cpp:679
 #, c-format
 msgid "Kad Overhead (Packets): %s"
-msgstr "Kad 網路支出傳輸量/封包： %s"
+msgstr "  Kad 網路支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:660 src/Statistics.cpp:681
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr "加密支出傳輸量/封包： %s"
+msgstr "  加密支出傳輸量/封包： %s"
 
 #: src/Statistics.cpp:662
 #, c-format
@@ -5855,7 +5853,7 @@ msgstr "找到的來源數：%s"
 #: src/Statistics.cpp:684
 #, c-format
 msgid "Active Downloads (chunks): %s"
-msgstr "目前下載數/區塊數：%s"
+msgstr "目前下載中區塊數：%s"
 
 #: src/Statistics.cpp:686
 #, c-format
@@ -6822,7 +6820,7 @@ msgstr "正在雜湊..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr "aLinkCreator，協助您的作業"
+msgstr "aLinkCreator 正為您運作中"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
@@ -6925,7 +6923,7 @@ msgstr "系統"
 #: src/utils/wxCas/src/wxcasframe.cpp:211
 #: src/utils/wxCas/src/wxcasframe.cpp:340
 msgid "Stop Auto Refresh"
-msgstr "停止更新顯示"
+msgstr "停止自動更新顯示"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:216
 msgid "Save Online Statistics image"
@@ -7312,1405 +7310,3 @@ msgstr "正在處理要求 [已重定向]："
 
 #~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
 #~ msgstr "theApp->serverlist->GetServerByAddress() 傳回  NULL"
-
-#~ msgid "Firewalled"
-#~ msgstr "防火牆內"
-
-#~ msgid "Loaded %d flag bitmap."
-#~ msgid_plural "Loaded %d flag bitmaps."
-#~ msgstr[0] "%d個國旗圖片已載入。"
-#~ msgstr[1] "%d個國旗圖片已載入。"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr "檔案 %s 過大：上限爲 4GB。"
-
-#~ msgid "No handler for this file type."
-#~ msgstr "無法處理該檔案類型"
-
-#~ msgid "File was not saved"
-#~ msgstr "檔案未被儲存"
-
-#~ msgid "Connection Failed. Unable to connect to the specified host\n"
-#~ msgstr "連線失敗。無法連結指定的主機\n"
-
-#~ msgid "Message Filter"
-#~ msgstr "訊息過濾"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "界面設定"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "核心特殊設定"
-
-#~ msgid "Language"
-#~ msgstr "語言"
-
-#~ msgid "Tooltip Delay Time in secs"
-#~ msgstr "提示延遲時間秒數"
-
-#~ msgid "Show part file number before file name"
-#~ msgstr "在檔案名前顯示暫存檔編號"
-
-#~ msgid "Skin Support"
-#~ msgstr "面板支援"
-
-#~ msgid "- no skins available -"
-#~ msgstr "- 沒有面板可用 -"
-
-#~ msgid "Online Signature Directory:"
-#~ msgstr "線上簽名目錄："
-
-#~ msgid "Filtering Options:"
-#~ msgstr "過濾選項："
-
-#~ msgid "Line Capacities"
-#~ msgstr "連線容量"
-
-#~ msgid ""
-#~ "Note: These values are\n"
-#~ " only used for statistics."
-#~ msgstr ""
-#~ "注意：這些數值只是\n"
-#~ " 統計使用。"
-
-#~ msgid "Standard client TCP Port:"
-#~ msgstr "標準客戶端 TCP 埠"
-
-#~ msgid "Extended client UDP Port:"
-#~ msgstr "擴充客戶端 UDP 埠"
-
-#~ msgid "Bind Address"
-#~ msgstr "綁定位址"
-
-#~ msgid "UDP port for extended server requests (TCP+3): 4665"
-#~ msgstr "用於擴充的伺服器要求的 UDP 埠 (TCP+3): 4665"
-
-#~ msgid "Max Sources per File"
-#~ msgstr "每個檔案最大來源數"
-
-#~ msgid "Universal Plug and Play"
-#~ msgstr "通用即插即用（UPnP）"
-
-#~ msgid "Enable UPnP"
-#~ msgstr "啓用 UPnP"
-
-#~ msgid "UPnP TCP Port:"
-#~ msgstr "UPnP TCP 埠"
-
-#~ msgid "Start next paused file when a file completed"
-#~ msgstr "檔案下載完畢開始下一個暫停的檔案"
-
-#~ msgid "Select Statistics Colors"
-#~ msgstr "選擇統計圖表使用顏色"
-
-#~ msgid "Download Queue Files Progress"
-#~ msgstr "下載等候檔案進度"
-
-#~ msgid "Show percentage"
-#~ msgstr "顯示百分比"
-
-#~ msgid "Show progressbar "
-#~ msgstr "顯示進度條"
-
-#~ msgid "Enable skin support "
-#~ msgstr "啓用面板支持"
-
-#~ msgid "Skin:"
-#~ msgstr "面板："
-
-#~ msgid "Auto-sort files in the download queue (high CPU)"
-#~ msgstr "自動排列下載隊列中的檔案 (大CPU用量)"
-
-#~ msgid ""
-#~ "IP of the listening interface\n"
-#~ "(empty for any)"
-#~ msgstr ""
-#~ "監聽介面的 IP\n"
-#~ "（空白表示使用任意介面）"
-
-#~ msgid "TCP port"
-#~ msgstr "TCP 埠"
-
-#~ msgid "Who can see shared files:"
-#~ msgstr "誰可以查看我分享的檔案： "
-
-#~ msgid "Event types"
-#~ msgstr "事件類型"
-
-#~ msgid "Makes aMule promt before exiting."
-#~ msgstr "退出前確認。"
-
-#~ msgid "Show overhead bandwith"
-#~ msgstr "顯示頻寬浪費"
-
-#~ msgid "I.C.H. active"
-#~ msgstr "I.C.H 已啟用"
-
-#~ msgid "AICH trusts every hash (not recomended)"
-#~ msgstr "高級智能損壞數據處理(AICH)信任所有校驗碼(建議不要使用)"
-
-#~ msgid "Advanced Settings"
-#~ msgstr "高級設定"
-
-#~ msgid "Progressbar Style"
-#~ msgstr "進度條風格"
-
-#~ msgid "Column Sorting"
-#~ msgstr "列排序"
-
-#~ msgid "Misc Gui Tweaks"
-#~ msgstr "使用者界面特殊設定"
-
-#~ msgid "File Options"
-#~ msgstr "檔案選項"
-
-#~ msgid "Status text"
-#~ msgstr "狀態"
-
-#~ msgid "Pop-up status text"
-#~ msgstr "彈出狀態顯示"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ msgstr " 源自 eMule 的“全平台”P2P 客戶端 \n"
-
-#~ msgid " Website: http://www.amule.org \n"
-#~ msgstr " 網站：http://www.amule.org \n"
-
-#~ msgid " Forum: http://forum.amule.org \n"
-#~ msgstr " 論壇：http://forum.amule.org \n"
-
-#~ msgid ""
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ msgstr ""
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-
-#~ msgid " Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr " 聯繫郵件：admin@amule.org (管理問題) \n"
-
-#~ msgid ""
-#~ " Copyright (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ msgstr " 版權所有 (C) 2003-2008 aMule 團隊 \n"
-
-#~ msgid " Part of aMule is based on \n"
-#~ msgstr " aMule 的一部分是源自 \n"
-
-#~ msgid " Copyright (C) 2002 Petar Maymounkov\n"
-#~ msgstr " 版權所有 (C) 2002 Petar Maymounkov\n"
-
-#~ msgid " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid ""
-#~ "For a film you can say its length, its story, language ...\n"
-#~ "and if it's a fake, you can tell that to other users of aMule."
-#~ msgstr ""
-#~ "您可以說明電影的長度，情節和語言等等...\n"
-#~ "如果電影是假冒的，您可以提醒其它使用者。"
-
-#~ msgid "Misc Options"
-#~ msgstr "其它選項"
-
-#~ msgid "Server Options"
-#~ msgstr "伺服器選項"
-
-#~ msgid "Display server motd when connected ..."
-#~ msgstr "連線後顯示伺服器當日通告"
-
-#~ msgid "Disable/Enable"
-#~ msgstr "禁用/啓用"
-
-#~ msgid "Authentication"
-#~ msgstr "登入驗證"
-
-#~ msgid "General Settings"
-#~ msgstr "綜合設定"
-
-#~ msgid "Max Connections"
-#~ msgstr "最大連線數"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "界面設定"
-
-#~ msgid "Remote Control"
-#~ msgstr "遠端控制"
-
-#~ msgid "Unable to determine selected browser!"
-#~ msgstr "未檢測到所選擇的浏覽器"
-
-#~ msgid "User Defined"
-#~ msgstr "使用者定義的"
-
-#~ msgid "http://www.aMule.org - the Linux Mule"
-#~ msgstr "http://www.aMule.org - the Linux Mule"
-
-#~ msgid "Konqueror"
-#~ msgstr "Konqueror"
-
-#~ msgid "Mozilla"
-#~ msgstr "Mozilla"
-
-#~ msgid "Firefox"
-#~ msgstr "Firefox"
-
-#~ msgid "Firebird"
-#~ msgstr "Firebird"
-
-#~ msgid "Opera"
-#~ msgstr "Opera"
-
-#~ msgid "Netscape"
-#~ msgstr "Netscape"
-
-#~ msgid "Galeon"
-#~ msgstr "Galeon"
-
-#~ msgid "Epiphany"
-#~ msgstr "Epiphany"
-
-#~ msgid "Select your browser here"
-#~ msgstr "請選擇您的網路瀏覽器"
-
-#~ msgid " Browser:"
-#~ msgstr "其它瀏覽器"
-
-#~ msgid ""
-#~ "Enter your browser name here. To use the custom browser, select the "
-#~ "Custom menu-item from the dropdown-menu above."
-#~ msgstr ""
-#~ "請輸入網路浏覽器名稱。如需使用自定義浏覽器，在以上彈出菜單中選擇自定義。"
-
-#~ msgid "Please wait... "
-#~ msgstr "請等待 ..."
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "無法確定執行瀏覽器的指令"
-
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "外部連線失敗，回覆爲空"
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "外部連線：連線被拒絕，原因："
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "外部連線：要求被拒絕"
-
-#~ msgid "ExternalConn: Bad reply from server. Connection closed."
-#~ msgstr "外部連線：伺服器回覆錯誤。已切斷連線。"
-
-#~ msgid "The ed2k hash of the file."
-#~ msgstr "檔案的ed2k校驗碼。"
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "複製 ED2k 連線到剪貼簿 (&l)"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "複製 ED2K 連結到剪貼簿 (源)"
-
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr "複製 ED2K 連結到剪貼板 (源) (使用加密選項(&W))"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "複製 ED2K 連結到剪貼板(主機名(&H))"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr "複製 ED2K 連結到剪貼板(主機名) (使用加密選項(&C))"
-
-#~ msgid "Copy ED2k link to clipboard (&AICH info)"
-#~ msgstr "複製 ED2K 連結到剪貼板(&AICH 資訊)"
-
-#~ msgid "Warning"
-#~ msgstr "警告"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "錯誤：無法監聽TCP埠。"
-
-#~ msgid "Error: can not accept web client connection\n"
-#~ msgstr "錯誤：無法接受網頁客戶端連線\n"
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "Web 伺服器埠"
-
-#~ msgid "Use UPnP port forwarding on webserver port"
-#~ msgstr "在 Web 伺服器埠使用 UPnP埠轉發"
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "Web 伺服器最高訪問權密碼"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "伺服器訪客密碼"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr "載入/保存 Web 伺服器設定 自/至 遠端 aMule"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr "輸入需要産生ED2K連結的檔案"
-
-#~ msgid ""
-#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
-#~ "let aLinkCreator append the current file name"
-#~ msgstr "在這裏輸入添加到ED2K連結的URL。在結尾加'/'以便添加後綴檔案名"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "ED2K 檔案校檢碼"
-
-#~ msgid "Ed2k link"
-#~ msgstr "ED2k 連結"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "打開檔案以計算它的ED2K連結"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "複製ED2K連結到剪貼板"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "保存ED2K連結到檔案"
-
-#~ msgid "Select the file you want to compute the ed2k link"
-#~ msgstr "選擇要産生ED2K連結的檔案"
-
-#~ msgid "Select the file to your computed ed2k link"
-#~ msgstr "請選擇要計算ED2K連結的檔案"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "aLinkCreator, 用於創建 ed2k 連結\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "依據 GPL 授權散佈"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "aLinkCreator, aMule ED2K 連結生成器"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "複製 ED2K 連結到剪貼簿"
-
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "複製 ED2K 連結到剪貼簿"
-
-#~ msgid "ED2K: Connecting"
-#~ msgstr "ED2K：正在連線"
-
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "ED2K：連線已斷"
-
-#~ msgid "Warning: Unable to open skin file '%s' for read"
-#~ msgstr "警告：無法打開面板檔案 '%s'"
-
-#~ msgid "ed2k network"
-#~ msgstr "ed2k 網路"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "自動更新伺服器列表空白。\n"
-#~ "自動更新伺服器已被禁用。"
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "ED2K 和 Kad 網路都已被禁用，\n"
-#~ "你至少必須啓用其中的一項才能連線。"
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "編輯伺服器清單"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "錯誤: 無法接受新外部連線"
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "ED2K 在設定中被禁用了。"
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "外部連線：收到關機要求"
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "已連線至 ED2K。"
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "正在連線至 ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "切斷 ED2K 連線。"
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "外部連線：收到錯誤的操作碼：%#x"
-
-#~ msgid "ED2K Status:"
-#~ msgstr "ED2K 狀態："
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "平均下載速度(本次運行)：%s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "平均上傳速度(本次運行)：%s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "最大下載速度(本次運行)：%s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "最大上傳速度(本次運行)：%s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "平均檔案大小: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "ED2k 搜尋不能使用，因爲 ED2K 位連線"
-
-#~ msgid "Error: "
-#~ msgstr "錯誤："
-
-#~ msgid "Warning: "
-#~ msgstr "警告："
-
-#~ msgid "Search related files (ED2k, local server)"
-#~ msgstr "搜尋相關檔案（ED2K，本地伺服器）"
-
-#~ msgid "Error"
-#~ msgstr "錯誤"
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr "警告：在低ID的情況下，你不能添加你自己作爲 ed2k 連結的源"
-
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "請設定您的動畫播放器。\n"
-#~ "aMule會嘗試使用mplayer。這個提示會在每次預覽時出現 "
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "錯誤: 無法打開 part.met 檔案: %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "錯誤: part.met 檔案長度爲0 : %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "錯誤: 無效 part.met 檔案版本: %s ==> %s"
-
-#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-#~ msgstr "錯誤: 檔案 %s (%s) 已損壞(標簽數不對)，無法讀取檔案"
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "警告: %s 可能已損壞 (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "在完成檔案 %s 時遇到意外性檔案錯誤. 檔案已暫停"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr "警告: 無法爲已下載的數據段計算校檢碼 - 校檢碼集殘缺 '%s'"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr "警告: 無法生成檢驗碼 - 檢驗碼殘缺 (%s). 正常情況下這是不應該發生的"
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "磁碟空間不足"
-
-#~ msgid "Warning: known.met cannot be opened."
-#~ msgstr "警告：know.net檔案無法打開。"
-
-#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
-#~ msgstr "警告：已知檔案列表已損壞，檔案頭無效"
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "錯誤！試圖分享 %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "ED2K網路在設定被禁用，未連線。"
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "伺服器清單中沒有有效伺服器可供連線"
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "錯誤: 接口無效"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions."
-#~ msgstr ""
-#~ "錯誤：載入備份檔案失敗！請到http://forum.amule.org搜尋.part和.met檔案的恢"
-#~ "復方法。"
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "無法轉換 magnet 連結至 ed2k：%s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "無效 ed2k 連結! 錯誤: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "帶寬限制：上傳: %u kB/s, 下載: %u kB/s.\n"
-
-#~ msgid "Shutdown aMule."
-#~ msgstr "關閉aMule。"
-
-#~ msgid ""
-#~ "Shutdown the remote running core (amule/amuled).\n"
-#~ "This will also shut down the text client, since it is unusable without a\n"
-#~ "running core.\n"
-#~ msgstr ""
-#~ "關閉遠端運行核心程序（amule/amuled）。\n"
-#~ "這也將關閉文本客戶端，直至沒有一個在運行的核心可用。\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "只連線到 ED2K 網路。"
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "只切斷 ED2K 連線。"
-
-#~ msgid "Adds an ed2k or magnet link to core."
-#~ msgstr "新增 ed2k 或 magnet 連線到主程式。"
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ "\n"
-#~ "The magnet link must contain the ed2k hash and file length.\n"
-#~ msgstr ""
-#~ "添加的 ed2k 連結可以是：\n"
-#~ "*) 檔案連結（ed2k://|file|..），將添加至下載隊列，\n"
-#~ "*) 伺服器連結（ed2k://|server|...），將添加至伺服器列表，\n"
-#~ "*) 或伺服器列表連結，這種情況將添加此列表中的所有伺服器至伺服器列表。\n"
-#~ "\n"
-#~ "\n"
-#~ "magnet 連結必須包含 ed2k 校驗碼和檔案大小。\n"
-
-#~ msgid "Deprecated command, now '%s'."
-#~ msgstr "已廢棄的命令，現用'%s'。"
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "錯誤: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "警告：%s (%s) - %s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "錯誤：磁碟空間不足"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "錯誤：partmet檔案未找到"
-
-#~ msgid "Error: IO error!"
-#~ msgstr "錯誤：IO錯誤！"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "錯誤：失敗！"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "ED2K 連結："
-
-#~ msgid ""
-#~ "Click here to add the ed2k link in the text control to your download "
-#~ "queue."
-#~ msgstr "請點擊這裏把輸入的ED2K連結加入下載隊列。"
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "在 ED2K 上搜尋更多結果，咱不支持 Kad"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "頻寬限制"
-
-#~ msgid "This is the standard ED2K port and cannot be disabled."
-#~ msgstr "這是標準 ED2K 埠，不能被禁用"
-
-#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
-#~ msgstr "此 UDP 埠用於擴展的 Ed2k 要求和 Kad 網路"
-
-#~ msgid "Hard Limit"
-#~ msgstr "絕對上限"
-
-#~ msgid "Connection Limits"
-#~ msgstr "連線限制"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "啟動後自動更新伺服器清單"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "與伺服器連線時更新伺服器清單"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "與其它使用者連線時更新伺服器清單"
-
-#~ msgid "Disk Space"
-#~ msgstr "硬碟空間"
-
-#~ msgid "Check Disk Space"
-#~ msgstr "檢查硬碟空間"
-
-#~ msgid "Select this if you want aMule to check your Disk Space"
-#~ msgstr "這個選項使aMule檢查硬碟容量"
-
-#~ msgid "Min Disk Space:"
-#~ msgstr "最小磁碟容量："
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "新進檔目錄 :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "暫存檔目錄："
-
-#~ msgid "Shared Directories"
-#~ msgstr "分享的目錄"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "預覽前備份檔案"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "顯示快捷 ED2K 連結處理"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "Web 伺服器參數"
-
-#~ msgid "Webserver port"
-#~ msgstr "Web 伺服器通訊埠"
-
-#~ msgid "Enable UPnP port forwarding on the Webserver port"
-#~ msgstr "在 Web 伺服器埠上啓動 UPnP 埠轉發"
-
-#~ msgid "Webserver UPnP TCP port"
-#~ msgstr "Web 伺服器 UPnP TCP 埠"
-
-#~ msgid "Serverlist"
-#~ msgstr "伺服器清單"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "加入伺服器: 名稱"
-
-#~ msgid "No One"
-#~ msgstr "任何人都不可以"
-
-#~ msgid "Speed Limits:"
-#~ msgstr "速度限制"
-
-#~ msgid "Download Speed: %.1f"
-#~ msgstr "下載速度：%.1f"
-
-#~ msgid "Upload Speed: %.1f"
-#~ msgstr "上傳速度：%.1f"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "TCP 埠：%d"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "TCP 埠︰未就緒"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "UDP 埠：%d"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "UDP 連接埠︰未就緒"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "已分享的檔案：%d"
-
-#~ msgid "Queued Clients: %d"
-#~ msgstr "等候區使用者數: %d"
-
-#~ msgid "Upload Limit"
-#~ msgstr "上傳限制"
-
-#~ msgid "Download Limit"
-#~ msgstr "下載限制"
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "'addresses.dat' 檔案內沒有伺服器清單位址. 請貼上一個有效伺服器清單位址到該"
-#~ "檔案以自動更新伺服器清單."
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr "警告，該自動更新URL無效：%s"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "Web 伺服器正在運行，pid 是 %d"
-
-#~ msgid ""
-#~ "You requested to run webserver from startup, but the amuleweb binary "
-#~ "cannot be run. Please install the package containing aMule webserver, or "
-#~ "compile aMule using --enable-webserver and run make install"
-#~ msgstr ""
-#~ "您要求啓動時運行 Web 伺服器，但 amuleweb 程序無法運行。請先安裝包含 aMule "
-#~ "Web 伺服器的 aMule 版本，或者使用 --enable-webserver選項編譯 aMule，然後運"
-#~ "行 make install進行安裝"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "已 ED2K 連線"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr "無法打開好友列表檔案 'emfriends.met'!"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr "無法寫入好友列表檔案 'emfriends.met'!"
-
-#~ msgid "ERROR: Failed to open partfile)"
-#~ msgstr "錯誤: 無法打開 part 檔案)"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Can't create web socket thread\n"
-#~ msgstr "無法創建 Web 埠進程\n"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "Web 伺服器：已啓動\n"
-
-#~ msgid "Not Supported"
-#~ msgstr "不被支援"
-
-#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-#~ msgstr "低ID: %u (總計 %.2f%% 已知 %.2f%%)"
-
-#~ msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-#~ msgstr "安全身份 開/關：%u (%.2f%%) : %u (%.2f%%)"
-
-#~ msgid "Browse wav"
-#~ msgstr "瀏覽 wav 檔案"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr " wav 檔案(*.wav)|*.wav||"
-
-#~ msgid "No comment(s)"
-#~ msgstr "無註釋"
-
-#~ msgid ""
-#~ "Note: These values are\n"
-#~ "only used for statistics."
-#~ msgstr ""
-#~ "提示：此值只用於統計用途。\n"
-#~ " "
-
-#~ msgid "Notifications"
-#~ msgstr "通知"
-
-#~ msgid "Messages popup"
-#~ msgstr "訊息跳出"
-
-#~ msgid "Use sound"
-#~ msgstr "啟用聲音"
-
-#~ msgid "Pop out when :"
-#~ msgstr "以下情況跳出視窗 :"
-
-#~ msgid "New entry on log"
-#~ msgstr "日誌中加入了新內容"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "開始新的短訊息對話"
-
-#~ msgid "A new chat message is received"
-#~ msgstr "收到新短訊息"
-
-#~ msgid "A download is added or finished"
-#~ msgstr "加入或完成了下載檔案"
-
-#~ msgid "New aMule version detected"
-#~ msgstr "發現新 aMule 版本"
-
-#~ msgid "Urgent OOD, serverconnection lost"
-#~ msgstr "磁碟已滿, 伺服器連線已斷"
-
-#~ msgid "Notify by Mail"
-#~ msgstr "信件知會"
-
-#~ msgid "Send an Email when transfer complete."
-#~ msgstr "下載完成后用電子信件知會"
-
-#~ msgid "SMTP server :"
-#~ msgstr "電郵伺服器 :"
-
-#~ msgid "Email Address :"
-#~ msgstr "電郵位址 :"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid ""
-#~ "The selected locale seems not to be installed on your box\n"
-#~ "You must generate it to use this language.\n"
-#~ "A good start on linux systems is the file /etc/locale.gen and the package "
-#~ "'locales'\n"
-#~ "Good luck!\n"
-#~ "(Note: I'll try to set it anyway)"
-#~ msgstr ""
-#~ "您所選擇的地區設定在您的計算機上似乎沒有安裝\n"
-#~ "您需要先產生它.您可以在/etc/locale.gen檔案和locales套裝軟體開始,祝您好運!"
-#~ "無論如何，我還是會先嘗試你所選擇的地區設定。"
-
-#~ msgid "Never show this again"
-#~ msgstr "下次不需要再顯示"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "啓用/禁用"
-
-#~ msgid "You can't bootstrap an specific ip from remote GUI yet."
-#~ msgstr "您不能使用遠端GUI用指定的IP啓動"
-
-#~ msgid "You can't update server.met from remote GUI yet."
-#~ msgstr "不能從遠端GUI更新 server.met。"
-
-#~ msgid "Disconnect from "
-#~ msgstr "切斷連線"
-
-#~ msgid "current server"
-#~ msgstr "目前伺服器"
-
-#~ msgid " and "
-#~ msgstr " 和 "
-
-#~ msgid "Disconnect from any server and/or Kad"
-#~ msgstr "從所有伺服器和/或 Kad 斷線"
-
-#~ msgid " ["
-#~ msgstr " ["
-
-#~ msgid " | Kad: "
-#~ msgstr " | Kad: "
-
-#~ msgid "TCP Flags"
-#~ msgstr "TCP 標志"
-
-#~ msgid "UDP Flags"
-#~ msgstr "UDP 標志"
-
-#~ msgid "Remove server(s)"
-#~ msgstr "刪除伺服器"
-
-#~ msgid "Copy ED2k link(s) to clipboard"
-#~ msgstr "複製 ED2K 連結到剪貼板"
-
-#~ msgid "Client requests %u"
-#~ msgstr "客戶要求 %u"
-
-#~ msgid "File block %u-%u (%d bytes):"
-#~ msgstr "檔案數據段 %u-%u (%d 比特): "
-
-#~ msgid "Client request is invalid!"
-#~ msgstr "客戶端要求非法！"
-
-#~ msgid "Client request is invalid! %i / %i"
-#~ msgstr "客戶端要求非法！%i / %i"
-
-#~ msgid "Unable to open %s file - using %s file."
-#~ msgstr "無法讀取 %s - 現在使用 %s"
-
-#~ msgid "Warning: known.met does not exist."
-#~ msgstr "警告：known.net檔案不存在。"
-
-#~ msgid ""
-#~ "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
-#~ "directory not found."
-#~ msgstr ""
-#~ "CSharedFileList::FindSharedFiles: 從分享檔案列表中刪除 %s：找不到目錄"
-
-#~ msgid "Waiting for subprocess termination failed"
-#~ msgstr "等待子進程終止失敗"
-
-#~ msgid ""
-#~ "You cannot connect to a release version from an arbitrary CVS version! "
-#~ "*sigh* possible crash prevented"
-#~ msgstr "為了避免系統受損害，您不能用開發中的版本連線到正式發行版！"
-
-#~ msgid "doesn't work"
-#~ msgstr "沒有工作"
-
-#~ msgid "remote gui"
-#~ msgstr "遠端GUI"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "錯誤: 無法載入備份檔案. 請到http://forum.amule.org搜尋關於.part和.met的恢"
-#~ "復的貼子"
-
-#~ msgid ""
-#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "錯誤: 備份 part.met 檔案長度爲0. 請到http://forum.amule.org搜尋關於.part."
-#~ "met檔案恢復的貼子"
-
-#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
-#~ msgstr "錯誤：part.met檔案大小爲0：%s ==> %s"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ " Website: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ " Part of aMule is based on \n"
-#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr ""
-#~ " 源自 eMule 的跨平台 P2P 軟體\n"
-#~ "\n"
-#~ " 網站： http://www.amule.org \n"
-#~ " 論壇：http://forum.amule.org \n"
-#~ " FAQ：http://wiki.amule.org \n"
-#~ "\n"
-#~ " 聯系人：admin@amule.org (administrative issues) \n"
-#~ " 版權所有 (C) 2003-2008 aMule 開發團隊 \n"
-#~ "\n"
-#~ " aMule 的一部分是源自：\n"
-#~ " Kad：基於 XOR 演算法的 P2P 路由協定。\n"
-#~ " 版權所有 (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid "WARNING: You have recieved Low-ID!"
-#~ msgstr "警告：您收到了低ID！"
-
-#~ msgid ""
-#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
-#~ msgstr "該命令需要一個參數。有效參數爲：'all', 或一數字\n"
-
-#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-#~ msgstr "此命令需要一個參數，參數無效，需要檔案校驗碼。\n"
-
-#~ msgid "Deprecated command, now 'Status'."
-#~ msgstr "過時的命令，現已改爲 'Status'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Status' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "'Status' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter'."
-#~ msgstr "過時的命令，現已改爲 'Set IPFilter'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Set IPFilter' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Get IPFilter Level'."
-#~ msgstr "過時的命令，現已改爲 'Get IPFilter Level'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Get IPFilter Level' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter Level'."
-#~ msgstr "過時的命令，現已改爲 'Set IPFilter Level'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Set IPFilter Level' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-#~ msgstr "過時的命令，現已改爲 'Get/Set IPFilter Level'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get/Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Get/Set IPFilter Level' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Show Servers'."
-#~ msgstr "過時的命令，現已改爲 'Show Servers'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Show Servers' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Show Servers' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Get BwLimits'."
-#~ msgstr "過時的命令，現已改爲 'Get BwLimits'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get BwLimits' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Get BwLimits' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Up'."
-#~ msgstr "過時的命令，現已改爲 'Set BwLimit Up'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Up' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Set BwLimit Up' 替代。\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Down'."
-#~ msgstr "過時的命令，現已改爲 'Set BwLimit Down'。"
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Down' instead.\n"
-#~ msgstr ""
-#~ "此命令已過時，將來可能會刪除。\n"
-#~ "請用 'Set BwLimit Down' 替代。\n"
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "已經檔案的主校驗碼已經載入"
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "讀取 Kad 聯繫時出錯 - 沒有記錄 "
-
-#~ msgid "Merge attempt"
-#~ msgstr "嘗試合併"
-
-#~ msgid "Recursive merge"
-#~ msgstr "遞歸合併"
-
-#~ msgid "Sucessful merge!"
-#~ msgstr "合併成功！"
-
-#~ msgid "No merge possible"
-#~ msgstr "無法合併"
-
-#~ msgid "Buddy address: "
-#~ msgstr "好友地址："
-
-#~ msgid "Allow usage of system wide ipfilter.dat"
-#~ msgstr "允許使用系統等級的 ipfilter.dat"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "     %d"
-#~ msgstr "     %d"
-
-#~ msgid ".%d"
-#~ msgstr ".%d"
-
-#~ msgid "Shows the process of a search."
-#~ msgstr "顯示搜尋進度。"
-
-#~ msgid "Shows the process of a search..\n"
-#~ msgstr "顯示搜尋進度..\n"
-
-#~ msgid "Search warning."
-#~ msgstr "搜尋警告"
-
-#~ msgid "Client Identification:"
-#~ msgstr "使用者身份："
-
-#~ msgid "Use Secure Identification"
-#~ msgstr "使用安全身份"
-
-#~ msgid ""
-#~ "Secure Identification uses a handshake approch to safely identify clients "
-#~ "for use with the credit system."
-#~ msgstr "安全身份使用握手協定來確認使用者身份以計算積分。"
-
-#~ msgid "Sources Dropping"
-#~ msgstr "源的精簡"
-
-#~ msgid "Source Dropping"
-#~ msgstr "源的清理"
-
-#~ msgid "Drop sources"
-#~ msgstr "清除源"
-
-#~ msgid "Send sources to any other file before dropping (High CPU)"
-#~ msgstr "清除無用源前把源指派到其它下載檔案 (大CPU用量)"
-
-#~ msgid "Sources with no needed file-parts."
-#~ msgstr "無需要檔案段的源。"
-
-#~ msgid "Full Queue Sources Handling"
-#~ msgstr "等候已滿的源的處理"
-
-#~ msgid "Enable auto drop Full Queue Sources"
-#~ msgstr "啟用自動清除等候已滿的源"
-
-#~ msgid "High Queue Rating Sources Handling"
-#~ msgstr "等候過長的源的處理"
-
-#~ msgid "Enable auto drop High Queue Rating Sources"
-#~ msgstr "啟用自動清除等候過長的源"
-
-#~ msgid "High Queue Rating value"
-#~ msgstr "等候長度"
-
-#~ msgid "(Min 300 / Max 3000)"
-#~ msgstr "(最低 300 / 最高 3000)"
-
-#~ msgid "Auto Drop Sources Timer"
-#~ msgstr "自動源清楚計時"
-
-#~ msgid "Timer (in secs)"
-#~ msgstr "計時 (秒)"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(最低 60 / 最高 3600)"
-
-#~ msgid "Drop No Needed Sources now"
-#~ msgstr "立即清理無可供下載的源"
-
-#~ msgid "Drop Full Queue Sources now"
-#~ msgstr "立即清理等候已滿的源"
-
-#~ msgid "Drop High Queue Rating Sources now"
-#~ msgstr "立即清理等候超長的源"
-
-#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-#~ msgstr "立即清理所有無用源"
-
-#~ msgid "English (U.S.)"
-#~ msgstr "英語 (美國)"
-
-#~ msgid "Spanish (Mexican)"
-#~ msgstr "西班牙語 (墨西哥)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname)"
-#~ msgstr "複製 ED2K 連結到剪貼簿 (計算機名)"
-
-#~ msgid "Minimize to trayicon"
-#~ msgstr "縮到最小到系統狀態列"
-
-#~ msgid "Global Search"
-#~ msgstr "全球搜尋"
-
-#~ msgid "Port %d is not available. You will be LOWID"
-#~ msgstr "連接埠 %d 已被占用。你會成為低ID。"
-
-#~ msgid ""
-#~ "Port %d is not available !!\n"
-#~ "\n"
-#~ "This will mean that you will be LOWID.\n"
-#~ "\n"
-#~ "Use netstat to determine when port becomes available\n"
-#~ "and try starting amule again."
-#~ msgstr ""
-#~ "連接埠 %d 已被占用。\n"
-#~ "這意味著你會成為低ID。\n"
-#~ "\n"
-#~ "請先用 netstat 指令查看通訊埠是否被占用，\n"
-#~ "然後再啟動 aMule。"
-
-#~ msgid "Failed to save"
-#~ msgstr "存檔失敗: "
-
-#~ msgid " OnlineSig File"
-#~ msgstr "線上簽名檔案"
-
-#~ msgid ""
-#~ "Unable to launch browser. Please set correct browser executable path in "
-#~ "Preferences."
-#~ msgstr "無法執行瀏覽器。請更正設定中的瀏覽器路徑。"
-
-#~ msgid ""
-#~ " --- This is the first time you run aMule %s ---\n"
-#~ "\n"
-#~ msgstr ""
-#~ " --- 這是您第一次執行 aMule %s ---\n"
-#~ "\n"
-
-#~ msgid "This version is a testing version, updated daily, and \n"
-#~ msgstr "這個版本是測試版, 請每天更新, 不然可能會\n"
-
-#~ msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-#~ msgstr "害死您家中的狗，但一般來講它應該是安全的。\n"
-
-#~ msgid "This version has new SecureIdent support, so your \n"
-#~ msgstr "這個版本有新的安全代碼的功能，所以您的\n"
-
-#~ msgid "client credits will be lost on this first run. \n"
-#~ msgstr "使用者積分會在這次執行時消失！\n"
-
-#~ msgid "There is no way to fix that, and eMule did the same.\n"
-#~ msgstr "沒有辦法可以解決這個問題，即使是 eMule 也有同樣的問題。\n"
-
-#~ msgid "But your hash will be safe against stealers now, and your\n"
-#~ msgstr "但您的代碼再也不會被盜用了，而且您的\n"
-
-#~ msgid ""
-#~ "cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n"
-#~ msgstr "aMule 的 cryptokey.dat 和 clients.met 檔案現在和 eMule 相容了。\n"
-
-#~ msgid ""
-#~ "Just take them from your eMule config dir and put then on ~/.aMule.\n"
-#~ msgstr "您可以從您的 eMule 設定資料夾複製這兩個檔案到 ~/.aMule\n"
-
-#~ msgid ""
-#~ "This rc2 version fixes most of the rc1 version bugs and adds new "
-#~ "features.\n"
-#~ msgstr ""
-#~ "這個 RC2 測試版已經改正了前個測試版中絕大多數錯誤，並且增加了新功能\n"
-
-#~ msgid ""
-#~ "For a full changes review, check Changelog file or www.amule.org, section "
-#~ "Changelog.\n"
-#~ msgstr "如要瞭解所有變更，請到網站 (www.amule.org) 查詢 Changelog\n"
-
-#~ msgid ""
-#~ "You locale has been changed to System Default due to version change. "
-#~ "Sorry."
-#~ msgstr "對不起,由於版本變動,您的地區設定已經被變為系統預設地區"
-
-#~ msgid "Feel free to report any bugs to forum.amule.org"
-#~ msgstr "請您到 forum.amule.org 回報錯誤"
-
-#~ msgid "Desktop integration"
-#~ msgstr "桌面整合"
-
-#~ msgid "Disconnect from current server"
-#~ msgstr "伺服器連線已中斷"
-
-#~ msgid "Connection established on:"
-#~ msgstr "已成功連線到:"
-
-#~ msgid "Connect to any server"
-#~ msgstr "連線到任意伺服器"
-
-#~ msgid "You are not connected to a server!"
-#~ msgstr "您現在沒有連線到伺服器上！"
-
-#~ msgid "This ed2k link is invalid (%s)"
-#~ msgstr "該 ED2K 連結無效 (%s)"
-
-#~ msgid "Invalid link: %s"
-#~ msgstr "無效連結: %s"
-
-#~ msgid "Filtered IP: %s (%s)"
-#~ msgstr "過濾 IP: %s (%s)"
-
-#~ msgid "Rating for file '%s' received: %i"
-#~ msgstr "檔案 '%s' 的評價已收到: %i"
-
-#~ msgid "Description for file '%s' received: %s"
-#~ msgstr "檔案 '%s' 的描述已收到: %s"
-
-#~ msgid "Unable to retrieve shared files from '%s'"
-#~ msgstr "無法獲取 '%s' 的分享的檔案"
-
-#~ msgid "Old MlDonkey"
-#~ msgstr "舊 MlDonkey"
-
-#~ msgid "New MlDonkey"
-#~ msgstr "新 MlDonkey"
-
-#~ msgid "MLdonkey"
-#~ msgstr "MlDonkey"
-
-#~ msgid "Requesting shared files from '%s'"
-#~ msgstr "正在要求 '%s' 的分享的檔案"
-
-#~ msgid "Requesting shared files from user %s (%u) is already in progress"
-#~ msgstr "已經在要求 %s (%u) 的分享的檔案"
-
-#~ msgid "NickName: %s\n"
-#~ msgstr "暱稱: %s\n"
-
-#~ msgid "Filestats for all sessions: Accepted %d of %d requests"
-#~ msgstr "整體檔案統計: 接受了 %d/%d 個要求"
-
-#~ msgid "Handshake not finished while processing packet."
-#~ msgstr "處理資料包時未能完成協定擬定"
-
-#~ msgid "can't create file '%s'"
-#~ msgstr "無法產生檔案: '%s'"
-
-#~ msgid "Can't open file '%s'"
-#~ msgstr "無法開啟檔案: '%s'"
-
-#~ msgid "can't close file descriptor %d"
-#~ msgstr "無法關閉檔案導引 %d"
-
-#~ msgid "can't read from file descriptor %d"
-#~ msgstr "無法讀取檔案導引 %d"
-
-#~ msgid "can't write to file descriptor %d"
-#~ msgstr "無法寫入檔案導引 %d"
-
-#~ msgid "can't flush file descriptor %d"
-#~ msgstr "無法清空檔案導引 %d"
-
-#~ msgid "unknown seek origin"
-#~ msgstr "不明搜尋原點"
-
-#~ msgid "can't get seek position on file descriptor %d"
-#~ msgstr "無法在檔案導引 %d 中讀取搜尋位置"
-
-#~ msgid "can't find length of file on file descriptor %d"
-#~ msgstr "無法在檔案導引 %d 中讀取檔案大小"
-
-#~ msgid "can't determine if the end of file is reached on descriptor %d"
-#~ msgstr "無法偵測檔案導引 %d 是否抵達檔案結尾"
-
-#~ msgid "invalid eof() return value."
-#~ msgstr "eof() 傳回值無效"
-
-#~ msgid "*** Chatsession Start : "
-#~ msgstr "*** 對話開始 : "
-
-#~ msgid "failed"
-#~ msgstr "失敗"
-
-#~ msgid "*** Disconnected"
-#~ msgstr "*** 連線已斷"
-
-#~ msgid "Failed to load creditfile"
-#~ msgstr "積分檔載入失敗"
-
-#~ msgid "Creditfile is out of date and will be replaced"
-#~ msgstr "積分檔已過期，將會被取代"
-
-#~ msgid "Credits expired!"
-#~ msgstr "積分已過期"
-
-#~ msgid "Failed to save creditfile"
-#~ msgstr "積分檔儲存失敗"
-
-#~ msgid "ClientSoftware ->"
-#~ msgstr "客戶端軟體"
-
-#~ msgid "<- ClientVersion ->v"
-#~ msgstr "<- 客戶端軟體版本 ->v"
