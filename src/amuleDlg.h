@@ -183,11 +183,10 @@ public:
 	
 	void DoNetworkRearrange();
 	
-#ifdef ENABLE_IP2COUNTRY	
 	CIP2Country*		m_IP2Country;
 	void IP2CountryDownloadFinished(uint32 result);
 	void EnableIP2Country();
-#endif	
+
 	wxWindow*		m_activewnd;
 	CTransferWnd*		m_transferwnd;
 	CServerWnd*		m_serverwnd;
