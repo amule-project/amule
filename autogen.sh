@@ -2,7 +2,8 @@
 # Helps bootstrapping 'aMule' when checked out from the source control system.
 # Requires GNU autoconf, GNU automake and GNU which.
 
-export WANT_AUTOMAKE="1.7"
+WANT_AUTOMAKE="1.7"
+export WANT_AUTOMAKE
 (autoconf --version) >/dev/null 2>/dev/null || (echo "You need GNU autoconf to install from sources (ftp://ftp.gnu.org/gnu/autoconf/)"; exit 1) || exit 1
 (automake --version) >/dev/null 2>/dev/null || (echo "You need GNU automake 1.7 to install from sources (ftp://ftp.gnu.org/gnu/automake/)"; exit 1) || exit 1
 
