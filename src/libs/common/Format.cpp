@@ -23,7 +23,9 @@
 //
 
 #include "Format.h"
+#ifndef __WXMSW__
 #include <stdint.h>
+#endif
 
 //! Known type-modifiers. 
 enum Modifiers
