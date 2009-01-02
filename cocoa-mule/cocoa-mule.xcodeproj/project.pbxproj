@@ -143,6 +143,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B2CDC5AB0E9541D5009370D9 /* amuleData.h */,
+				B2CDC5AC0E9541D5009370D9 /* amuleData.mm */,
 				B2B307A20F05470200AE5E79 /* DownloadsViewController.h */,
 				B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */,
 				32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */,
@@ -225,8 +227,6 @@
 		B228A7C30E7C4393009B94B4 /* EC */ = {
 			isa = PBXGroup;
 			children = (
-				B2CDC5AB0E9541D5009370D9 /* amuleData.h */,
-				B2CDC5AC0E9541D5009370D9 /* amuleData.mm */,
 				B228A7A50E7C426B009B94B4 /* EC.mm */,
 				B228A7A40E7C426B009B94B4 /* EC.h */,
 				B228A7BA0E7C438A009B94B4 /* ECCodes.h */,
