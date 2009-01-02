@@ -42,6 +42,8 @@
 
 #include "IP2Country.h"
 
+#include <GeoIP.h>
+
 // MSVC projects can't include files configuration dependent, so just double-check the #define
 #ifdef ENABLE_IP2COUNTRY
 
