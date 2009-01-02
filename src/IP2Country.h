@@ -45,8 +45,6 @@
 
 #include "Types.h"	// Needed for uint8, uint16 and uint32
 
-#include <GeoIP.h>
-
 #include <map>
 
 #include <wx/image.h>
@@ -74,7 +72,7 @@ public:
 	void DownloadFinished(uint32 result);
 
 private:
-	GeoIP *m_geoip;
+	struct GeoIPTag *m_geoip;
 	CountryDataMap m_CountryDataMap;
 	wxString m_DataBaseName;
 
