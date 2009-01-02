@@ -210,7 +210,6 @@ public:
 	uint8	GetCategory() const { return m_category; }
 	void	SetCategory(uint8 cat);
 
-	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	volatile bool m_bPreviewing;
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
 	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
@@ -299,6 +298,7 @@ public:
 
 	void	AllocationFinished();
 private:
+	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	//! A local list of sources that are invalid for this file.
 #ifndef CLIENT_GUI
 	CDeadSourceList	m_deadSources;
@@ -337,8 +337,9 @@ private:
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
 	float 	kBpsDown;
-	CPath	m_fullname;
-	CPath	m_partmetfilename;
+	CPath	m_fullname;			// path/name of the met file
+	CPath	m_partmetfilename;	// name of the met file
+	CPath 	m_PartPath; 		// path/name of the partfile
 	bool	m_paused;
 	bool	m_stopped;
 	bool	m_insufficient;
@@ -405,6 +406,8 @@ public:
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
 	
+	// size of a certain part, last is different, all others are PARTSIZE
+	uint32 GetPartSize(uint16 part) const;
 
 //	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
 
@@ -423,8 +426,10 @@ public:
 	void LoadSourceSeeds();
 	
 	// Dropping slow sources
-	
-	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller) ;
+	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller);
+
+  // Read data for sharing
+	bool ReadData(uint64 offset, byte * adr, uint32 toread);
 
 private:
 	/* downloading sources list */
