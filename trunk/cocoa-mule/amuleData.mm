@@ -3,6 +3,8 @@
 
 @implementation amuleFile
 
+@synthesize name = m_name;
+@synthesize size = m_size;
 
 - (unsigned)hash {
 	return m_hash.lo ^ m_hash.hi;
@@ -22,9 +24,33 @@
 	}
 }
 
+- (NSString *)convertWithPrefix:(uint64_t)number {
+	NSString *res = nil;
+	double dnum = number;
+	if ( number < 1024 ) { // bytes
+		res = [NSString stringWithFormat:@"%llu bytes", number]; 
+	} else if ( number < 1024*1024 ) { // K
+		res = [NSString stringWithFormat:@"%0.2f Kb", dnum / 1024.0]; 
+	} else if ( number < 1024*1024*1024 ) { // M
+		res = [NSString stringWithFormat:@"%.2f Mb", dnum / 1048576.0]; 
+	} else {
+		res = [NSString stringWithFormat:@"%.2f Gb", dnum / 1073741824.0]; 
+	}
+	return res;
+}
+
+
 @end
 
 @implementation DownloadingFile
+
+@synthesize src_count = m_src_count;
+@synthesize non_current_src_count = m_non_current_src_count;
+@synthesize xfer_src_count = m_xfer_src_count;
+@synthesize a4af_src_count = m_a4af_src_count;
+
+@synthesize size_done = m_size_done;
+@synthesize size_xfer = m_size_xfer;
 
 + (id)createFromEC: (ECTagMD5 *) tag {
 	DownloadingFile *obj = [[DownloadingFile alloc] init];
@@ -56,8 +82,75 @@
 
 @end
 
+@implementation amuleFileSet
+
+- (id)init {
+    if ((self = [super init])) {
+		m_file_dict = [NSMutableDictionary dictionaryWithCapacity:256];
+		m_file_array = [[NSMutableArray alloc] init];
+	}
+	return self;
+}
+
+- (int)count {
+	return [m_file_dict count];
+}
+
+- (void)insertObject:(id)object {
+	id objKey = [object key];
+	[m_file_dict setObject:object forKey:objKey];
+	[m_file_array addObject:object];
+	
+	if ([m_gui_controller respondsToSelector:@selector(reload)]) {
+		[m_gui_controller performSelector:@selector(reload)];
+	} else {
+		NSLog(@"Internal error: gui controller doesnt respond to 'reload'\n");
+	}
+}
+
+- (id)objectAtIndex:(int)index {
+	return [m_file_array objectAtIndex:index];
+}
+
+- (id)objectForKey:(id)key {
+	return [m_file_dict objectForKey:key];
+}
+
+- (void)removeAtIndex:(int)index {
+	id curr_obj = [m_file_array objectAtIndex:index];
+	id key = [curr_obj key];
+	[m_file_dict removeObjectForKey:key];
+	[m_file_array removeObjectAtIndex:index];
+}
+
+- (void)removeAtKey:(id)key {
+	[m_file_dict removeObjectForKey:key];
+	int index = -1;
+	for (int i = 0; i < [m_file_array count]; i++) {
+		id curr_obj = [m_file_array objectAtIndex:i];
+		if ([curr_obj key] == key) {
+			index = i;
+			break;
+		}
+	}
+	if ( index != -1 ) {
+		[m_file_array removeObjectAtIndex:index];
+	} else {
+		NSLog(@"Internal error: object not found in array\n");
+	}
+}
+
+- (void)setGuiController:(id)controller {
+	m_gui_controller = controller;
+}
+
+@end
 
 @implementation amuleData
+
+@synthesize downloads = m_downloads;
+@synthesize shared = m_shared;
+@synthesize search_resuls = m_search_results;
 
 + (id)initWithConnection:(ECRemoteConnection *) connection {
 	amuleData *obj = [[amuleData alloc] init];
@@ -65,7 +158,9 @@
 	
 	obj->m_connection = connection;
 	
-	obj->m_downloads = [NSMutableDictionary dictionaryWithCapacity:256];
+	obj->m_downloads = [[amuleFileSet alloc] init];
+	obj->m_shared = [[amuleFileSet alloc] init];
+	obj->m_search_results = [[amuleFileSet alloc] init];
 	 
 	return obj;
 }
@@ -96,7 +191,8 @@
 				NSString *str = stag.stringValue;
 				printf("FILE: %s\n", [str UTF8String]);
 				DownloadingFile *file = [DownloadingFile createFromEC:tag];
-				[m_downloads setObject:file forKey:[file key]];
+
+				[m_downloads insertObject:file];
 			} else {
 				DownloadingFile *file = [m_downloads objectForKey:[tag stringKey]];
 				[file updateFromEC:tag];

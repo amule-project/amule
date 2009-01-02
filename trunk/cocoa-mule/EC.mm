@@ -440,12 +440,12 @@
 	[self initSubtags];
 }
 
-+ (id)packetFromBuffer:(NSMutableData *) buffer {
-	if ( [buffer length] < 11 ) {
++ (id)packetFromBuffer:(uint8_t *) buffer withLength:(int)length {
+	if ( length < 11 ) {
 		return nil;
 	}
 	ECPacket *p = [[ECPacket alloc] init];
-	uint8_t *data = (uint8_t *)[buffer mutableBytes];
+	uint8_t *data = buffer;
 	
 	p->m_flags = ntohl(*((uint32_t *)data));
 	data += 4;
@@ -464,7 +464,7 @@
 		[p->m_subtags retain];
 		uint8_t *start_ptr = data;
 		for(int i = 0; i < tag_count; i++) {
-			ECTag *tag = [ECTag tagFromBuffer:&data withLenght:([buffer length] - (data - start_ptr))];
+			ECTag *tag = [ECTag tagFromBuffer:&data withLenght:(length - (data - start_ptr))];
 			// some tags are not supported yet
 			if ( tag != nil ) {
 				[p->m_subtags addObject:tag];
@@ -645,51 +645,61 @@
         case NSStreamEventHasBytesAvailable:
         {
 			uint8_t *data_ptr = (uint8_t *)[m_rxbuf mutableBytes];
-			data_ptr += m_rx_size;
 			unsigned int len = [m_rxbuf length];
-            len = [(NSInputStream *)stream read:data_ptr maxLength:len];
+
+            len = [(NSInputStream *)stream read:data_ptr + m_rx_size maxLength:len];
 			NSLog(@"[EC] receiving %d bytes, %d in total, %d remaining\n", len, m_rx_size, m_remaining_size);
 			if ( len == 0 ) {
 				//
 				// Remote side must be closed connection
 				//
 			}
-			m_remaining_size -= len;
-			// are we still waiting for flags and size?
-			if ( m_rx_size < 8 ) {
-				if ( (m_rx_size + len) >= 8 ) {
-					// got flags and packet size - may proceed
-					//uint32_t flags = *(((uint32_t *)[m_rxbuf mutableBytes]) + 0);
-					uint32_t val32 = *((uint32_t *)(data_ptr + 4));
+			int total_len = len;
+			int packet_offset = 0;
+			while ( total_len != 0 ) {
+				len = ( m_remaining_size > total_len ) ? total_len : m_remaining_size;
+				total_len -= len;
 
-					int delta = 8 - m_rx_size;
+				// are we still waiting for flags and size?
+				if ( m_rx_size < 8 ) {
+					if ( (m_rx_size + len) >= 8 ) {
+						// got flags and packet size - may proceed
+						//uint32_t flags = *(((uint32_t *)[m_rxbuf mutableBytes]) + 0);
+						uint32_t val32 = *((uint32_t *)(data_ptr + 4 + packet_offset));
 
-					m_remaining_size = ntohl(val32) - (len - delta);
-					NSLog(@"[EC] rx got flags+size, remaining count %d\n", m_remaining_size);
+						int delta = 8 - m_rx_size;
+
+						m_remaining_size = ntohl(val32) - (len - delta);
+						NSLog(@"[EC] rx got flags+size, remaining count %d\n", m_remaining_size);
+					} else {
+						m_remaining_size -= len;
+					}
 				} else {
 					m_remaining_size -= len;
 				}
-			} else {
-				m_remaining_size -= len;
-			}
-			m_rx_size += len;
-			if ( m_remaining_size == 0 ) {
-				//
-				// full packet received, call handler
-				//
-				ECPacket *packet = [ECPacket packetFromBuffer:m_rxbuf];
-				if ( m_login_requested ) {
-					m_login_requested = false;
-					m_login_ok = packet.opcode == EC_OP_AUTH_OK;
-					NSLog(@"[EC] server reply: %@\n", m_login_ok ? @"login OK" : @"login FAILED");
-				} else {
-					NSLog(@"[EC] calling delegate\n");
-					if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
-						[delegate handlePacket: packet];
+				m_rx_size += len;
+				if ( m_remaining_size == 0 ) {
+					//
+					// full packet received, call handler
+					//
+					uint8_t *packet_start = data_ptr + packet_offset;
+					int packet_length = [m_rxbuf length] - packet_offset;
+					ECPacket *packet = [ECPacket packetFromBuffer:packet_start withLength:packet_length];
+					packet_offset += m_rx_size;
+					
+					if ( m_login_requested ) {
+						m_login_requested = false;
+						m_login_ok = packet.opcode == EC_OP_AUTH_OK;
+						NSLog(@"[EC] server reply: %@\n", m_login_ok ? @"login OK" : @"login FAILED");
+					} else {
+						NSLog(@"[EC] calling delegate\n");
+						if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
+							[delegate handlePacket: packet];
+						}
 					}
+					m_remaining_size = 8;
+					m_rx_size = 0;
 				}
-				m_remaining_size = 8;
-				m_rx_size = 0;
 			}
             break;
         }

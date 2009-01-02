@@ -121,7 +121,7 @@ typedef struct {
 }
 
 + (id)packetWithOpcode:(ec_opcode_t) opcode;
-+ (id)packetFromBuffer:(NSMutableData *) buffer;
++ (id)packetFromBuffer:(uint8_t *) buffer withLength:(int)length;
 
 - (void)initWithOpcode:(ec_opcode_t) opcode;
 

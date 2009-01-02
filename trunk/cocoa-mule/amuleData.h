@@ -4,12 +4,19 @@
 
 @interface amuleFile : NSObject {
 	NSString *m_name;
+	uint64_t m_size;
+
 	MD5Data m_hash;
 }
 
 - (unsigned)hash;
 - (NSString *)key;
 - (BOOL)isEqual: (id) object;
+
+- (NSString *)convertWithPrefix:(uint64_t)number;
+
+@property (readonly) NSString *name;
+@property (readonly) uint64_t size;
 
 @end
 
@@ -19,7 +26,6 @@
 	int m_xfer_src_count;
 	int m_a4af_src_count;
 	
-	uint64_t m_size;
 	uint64_t m_size_done;
 	uint64_t m_size_xfer;
 	
@@ -31,8 +37,39 @@
 
 - (void)updateFromEC:(ECTagMD5 *) tag;
 
+@property (readonly) int src_count;
+@property (readonly) int non_current_src_count;
+@property (readonly) int xfer_src_count;
+@property (readonly) int a4af_src_count;
+
+@property (readonly) uint64_t size_done;
+@property (readonly) uint64_t size_xfer;
+
+
 @end
 
+@interface amuleFileSet : NSObject {
+	NSMutableDictionary *m_file_dict;
+	NSMutableArray *m_file_array;
+	
+	id m_gui_controller;
+}
+
+- (id)init;
+
+- (int)count;
+
+- (void)insertObject:(id)object;
+
+- (id)objectAtIndex:(int)index;
+- (id)objectForKey:(id)key;
+
+- (void)removeAtIndex:(int)index;
+- (void)removeAtKey:(id)key;
+
+- (void)setGuiController:(id)controller;
+
+@end
 
 @interface amuleData : NSObject {
 
@@ -46,8 +83,10 @@
 	int m_down_speed;
 	int m_up_speed;
 
-	NSMutableDictionary *m_downloads;
-
+	amuleFileSet *m_downloads;
+	amuleFileSet *m_shared;
+	amuleFileSet *m_search_results;
+	
 	ECRemoteConnection *m_connection;
 }
 
@@ -60,5 +99,9 @@
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet;
 - (void)handleStatusUpdate:(ECPacket *) packet;
+
+@property (readonly) amuleFileSet *downloads;
+@property (readonly) amuleFileSet *shared;
+@property (readonly) amuleFileSet *search_resuls;
 
 @end
