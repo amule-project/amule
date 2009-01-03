@@ -235,7 +235,7 @@ CPartFile::~CPartFile()
 	// But, where does this wrong handle comes from?
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) { 
-		FlushBuffer(true);
+		FlushBuffer();
 	}
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) {
@@ -2462,7 +2462,7 @@ void CPartFile::StopFile(bool bCancel)
 	memset(m_anStates,0,sizeof(m_anStates));
 	
 	if (!bCancel) {
-		FlushBuffer(true);
+		FlushBuffer();
 	}
 	
 	UpdateDisplayedInfo(true);
@@ -3044,14 +3044,14 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	}
 
 	if (m_gaplist.empty()) {
-		FlushBuffer(true);
+		FlushBuffer();
 	}
 
 	// Return the length of data written to the buffer
 	return lenData;
 }
 
-void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
+void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 {
 	m_nLastBufferFlushTime = GetTickCount();
 	
@@ -3169,7 +3169,8 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 					m_corrupted_list.push_back(partNumber);
 				}
 				// request AICH recovery data
-				if (!bNoAICH) {
+				// Don't if called from the AICHRecovery. It's already there and would lead to an infinite recursion.
+				if (!fromAICHRecoveryDataAvailable) { 
 					RequestAICHRecovery((uint16)partNumber);					
 				}
 				// Reduce transferred amount by corrupt amount
@@ -3193,7 +3194,9 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 					}
 				}
 			}
-		} else if ( IsCorruptedPart(partNumber) && (thePrefs::IsICHEnabled() || bForceICH)) {
+		} else if ( IsCorruptedPart(partNumber) &&		// corrupted part:
+					(thePrefs::IsICHEnabled()			// old ICH:  rehash whenever we have new data hoping it will be good now
+					|| fromAICHRecoveryDataAvailable)) {// new AICH: one rehash right before performing it (maybe it's already good)
 			// Try to recover with minimal loss
 			if (HashSinglePart(partNumber)) {
 				++m_iTotalPacketsSavedDueToICH;
@@ -3513,7 +3516,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		return;
 	}
 
-	FlushBuffer(true, true, true);
+	FlushBuffer(true);
 	uint32 length = GetPartSize(nPart);
 	// if the part was already ok, it would now be complete
 	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
@@ -3581,8 +3584,6 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		else{
 			AddDebugLogLineM( false, logAICHRecovery, wxString::Format( 
 				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"), nPart) );
-			// alrighty not so bad
-			EraseFirstValue(m_corrupted_list, nPart);
 			if (status == PS_EMPTY && theApp->IsRunning()){
 				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
 					// Successfully recovered part, make it available for sharing
@@ -3599,6 +3600,9 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			}
 		}
 	} // end sanity check
+	// We did the best we could. If it's still incomplete, then no need to keep
+	// bashing it with ICH. So remove it from the list of corrupted parts.
+	EraseFirstValue(m_corrupted_list, nPart);
 	// Update met file
 	SavePartFile();
 	
