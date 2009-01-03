@@ -1059,13 +1059,20 @@ void InitCustomLanguages()
 	CustomLanguage.CanonicalName = wxT("it_NA");
 	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
 	wxLocale::AddLanguage(CustomLanguage);
+
+	CustomLanguage.Language = wxLANGUAGE_ASTURIAN;
+	CustomLanguage.CanonicalName = wxT("ast_ES");
+	CustomLanguage.Description = wxT("Asturian");
+	wxLocale::AddLanguage(CustomLanguage);
 }
 
 
 void InitLocale(wxLocale& locale, int language)
 {
 	int language_flags = 0;
-	if (language != wxLANGUAGE_CUSTOM && language != wxLANGUAGE_ITALIAN_NAPOLITAN) {
+	if ((wxLANGUAGE_CUSTOM != language) && 
+		(wxLANGUAGE_ASTURIAN != language) &&
+		(wxLANGUAGE_ITALIAN_NAPOLITAN != language)) {
 		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
 	}
 	
