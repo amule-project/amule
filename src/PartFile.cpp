@@ -2409,8 +2409,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 		if (GetPartCount() > 1) {
 			if (hashresult != GetPartHash(partnumber)) {
-				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Expected part-hash: %s")) % GetFileName() % GetPartHash(partnumber).Encode() );
-				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Actual part-hash: %s")) % GetFileName() % hashresult.Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Expected hash of part %d: %s")) % GetFileName() % partnumber % GetPartHash(partnumber).Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Actual   hash of part %d: %s")) % GetFileName() % partnumber % hashresult.Encode() );
 				return false;
 			} else {
 				return true;
@@ -3061,25 +3061,11 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 
 	
 	uint32 partCount = GetPartCount();
-	std::vector<bool> changedPart(partCount);
-	
 	// Remember which parts need to be checked at the end of the flush
-	for ( uint32 i = 0; i < partCount; ++i ) {
-		changedPart[ i ] = false;
-	}
-
+	std::vector<bool> changedPart(partCount, false);
 	
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
-	uint32 newData = 0;
-
-	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
-	for (; it != m_BufferedData_list.end(); ++it) {
-		PartFileBufferedData* item = *it;
-		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
-		newData += (uint32) (item->end - item->start + 1);
-	}
-	
-	if ( !CheckFreeDiskSpace( newData ) ) {
+	if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
 		// Not enough free space to write the last item, bail
 		AddLogLineM(true, CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
 	
@@ -3096,6 +3082,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		// This is needed a few times
 		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
 		uint32 toWrite = (uint32)(item->end - item->start + 1);
+		uint32 toWriteAll = toWrite;
 		uint64 adr = item->start;
 		byte * data = item->data;
 
@@ -3136,7 +3123,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		}
 
 		// Decrease buffer size
-		m_nTotalBufferData -= toWrite;
+		m_nTotalBufferData -= toWriteAll;
 
 		// Release memory used by this item
 		delete [] item->data;
