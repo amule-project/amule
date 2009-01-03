@@ -2481,6 +2481,7 @@ void CPartFile::StopPausedFile()
 					m_iLastPausePurge = time(NULL);
 					StopFile();
 				}
+				kBpsDown = 0.0;
 		}
 	}
 }
