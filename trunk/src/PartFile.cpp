@@ -3584,8 +3584,6 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		else{
 			AddDebugLogLineM( false, logAICHRecovery, wxString::Format( 
 				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"), nPart) );
-			// alrighty not so bad
-			EraseFirstValue(m_corrupted_list, nPart);
 			if (status == PS_EMPTY && theApp->IsRunning()){
 				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
 					// Successfully recovered part, make it available for sharing
@@ -3602,6 +3600,9 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			}
 		}
 	} // end sanity check
+	// We did the best we could. If it's still incomplete, then no need to keep
+	// bashing it with ICH. So remove it from the list of corrupted parts.
+	EraseFirstValue(m_corrupted_list, nPart);
 	// Update met file
 	SavePartFile();
 	
