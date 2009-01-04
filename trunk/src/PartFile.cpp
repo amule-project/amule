@@ -278,13 +278,13 @@ void CPartFile::CreatePartFile()
 	
 	m_gaplist.push_back(gap);
 	
-	CPath partPath = m_fullname.RemoveExt();
+	m_PartPath = m_fullname.RemoveExt();
 	bool fileCreated;
 	if (thePrefs::GetAllocFullFile()) {
-		fileCreated = m_hpartfile.Create(partPath.GetRaw(), true);
+		fileCreated = m_hpartfile.Create(m_PartPath.GetRaw(), true);
 		m_hpartfile.Close();
 	} else {
-		fileCreated = PlatformSpecific::CreateSparseFile(partPath, GetFileSize());
+		fileCreated = PlatformSpecific::CreateSparseFile(m_PartPath, GetFileSize());
 	}
 	if (!fileCreated) {
 		AddLogLineM(false,_("ERROR: Failed to create partfile)"));
@@ -655,8 +655,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	}
 
 	// open permanent handle
-	CPath partFilePath = m_fullname.RemoveExt();
-	if ( !m_hpartfile.Open(partFilePath, CFile::read_write)) {
+	m_PartPath = m_fullname.RemoveExt();
+	if ( !m_hpartfile.Open(m_PartPath, CFile::read_write)) {
 		AddLogLineM(false, CFormat( _("Failed to open %s (%s)") )
 			% m_fullname
 			% GetFileName() );
@@ -700,13 +700,13 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	}
 
 	if (!isnewstyle) { // not for importing	
-		const time_t file_date = CPath::GetModificationTime(partFilePath);
+		const time_t file_date = CPath::GetModificationTime(m_PartPath);
 		if (m_lastDateChanged != file_date) {
 			// It's pointless to rehash an empty file, since the case
 			// where a user has zero'd a file is handled above ...
 			if (m_hpartfile.GetLength()) {
 				AddLogLineM(false, CFormat( _("WARNING: %s might be corrupted (%i)") )
-					% partFilePath
+					% m_PartPath
 					% (m_lastDateChanged - file_date) );
 				// rehash
 				SetPartFileStatus(PS_WAITINGFORHASH);
@@ -745,7 +745,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	
 	CFile file;
 	try {
-		if (!m_fullname.RemoveExt().FileExists()) {
+		if (!m_PartPath.FileExists()) {
 			throw wxString(wxT(".part file not found"));
 		}
 		
@@ -764,7 +764,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		// version
 		file.WriteUInt8(IsLargeFile() ? PARTFILE_VERSION_LARGEFILE : PARTFILE_VERSION);
 		
-		file.WriteUInt32(CPath::GetModificationTime(m_fullname.RemoveExt()));
+		file.WriteUInt32(CPath::GetModificationTime(m_PartPath));
 		// hash
 		file.WriteHash(m_abyFileHash);
 		uint16 parts = m_hashlist.size();
@@ -2340,9 +2340,8 @@ void CPartFile::Delete()
 		AddDebugLogLineM(false, logPartFile, wxT("\tRemoved .part.met"));
 	}
 
-	CPath partFile = m_fullname.RemoveExt();
-	if (!CPath::RemoveFile(partFile)) {
-		AddDebugLogLineM(true, logPartFile, CFormat(wxT("Failed to delete '%s'")) % partFile);
+	if (!CPath::RemoveFile(m_PartPath)) {
+		AddDebugLogLineM(true, logPartFile, CFormat(wxT("Failed to delete '%s'")) % m_PartPath);
 	} else {
 		AddDebugLogLineM(false, logPartFile, wxT("\tRemoved .part"));
 	}
@@ -3128,7 +3127,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while truncating part-file (%s): %s"))
-				% m_fullname.RemoveExt() % e.what());
+				% m_PartPath % e.what());
 		SetPartFileStatus(PS_ERROR);
 	}
 
@@ -3143,7 +3142,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while accessing part-file (%s): %s"))
-				% m_fullname.RemoveExt() % e.what());
+				% m_PartPath % e.what());
 		SetPartFileStatus(PS_ERROR);
 	}
 	
@@ -3361,7 +3360,7 @@ uint64 CPartFile::GetNeededSpace()
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while retrieving file-length (%s): %s"))
-				% m_fullname.RemoveExt() % e.what());
+				% m_PartPath % e.what());
 		SetPartFileStatus(PS_ERROR);
 		return 0;
 	}
@@ -3525,7 +3524,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while retrieving file-length (%s): %s"))
-				% m_fullname.RemoveExt() % e.what());
+				% m_PartPath % e.what());
 		SetPartFileStatus(PS_ERROR);
 		return;
 	}
@@ -4165,7 +4164,7 @@ CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient
 
 void CPartFile::AllocationFinished()
 {
-	if (!m_hpartfile.Open(GetFullName().RemoveExt(), CFile::read_write)) {
+	if (!m_hpartfile.Open(m_PartPath, CFile::read_write)) {
 		AddLogLineM(false, CFormat(_("ERROR: Failed to open partfile '%s'")) % GetFullName());
 		SetPartFileStatus(PS_ERROR);
 	}
