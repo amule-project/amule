@@ -1145,8 +1145,10 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			// Very nice feature, if a file is completed but .part.met don't believe it,
 			// update it.
 			
+			uint64 partStart = i * PARTSIZE;
+			uint64 partEnd   = partStart + GetPartSize(i) - 1;
 			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == GetPartHash(i)))){
-				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
+				if (IsComplete(partStart, partEnd)) {
 					CMD4Hash wronghash;
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
@@ -1163,23 +1165,17 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 						% wronghash.Encode()
 						% GetPartHash(i).Encode() );
 				
-					AddGap(i*PARTSIZE,
-						((uint64)(((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
-							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
+					AddGap(partStart, partEnd);
 					errorfound = true;
 				}
 			} else {
-				if (!IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
+				if (!IsComplete(partStart, partEnd)){
 					AddLogLineM(false, CFormat( _("Found completed part (%i) in %s") )
 						% ( i + 1 )
 						% GetFileName() );
 
-					FillGap(i*PARTSIZE,
-						((uint64)(((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
-							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
-					RemoveBlockFromList(i*PARTSIZE,
-						((uint64)(((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
-							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
+					FillGap(partStart, partEnd);
+					RemoveBlockFromList(partStart, partEnd);
 				}
 			}						
 		}
@@ -1289,10 +1285,7 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 	uint64 start = partStart;
 
 	// What is the end limit of this block, i.e. can't go outside part (or filesize)
-	uint64 partEnd = (PARTSIZE * (partNumber + 1)) - 1;
-	if (partEnd >= GetFileSize()) {
-		partEnd = GetFileSize() - 1;
-	}
+	uint64 partEnd = partStart + GetPartSize(partNumber) - 1;
 	// Loop until find a suitable gap and return true, or no more gaps and return false
 	while (true) {
 		firstGap = NULL;
@@ -2031,9 +2024,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 					
 					// Offsets of chunk
 					const uint64 uStart = cur_chunk.part * PARTSIZE;
-					const uint64 uEnd  =
-						((GetFileSize() - 1) < (uStart + PARTSIZE - 1)) ?
-							(GetFileSize() - 1) : (uStart + PARTSIZE - 1);
+					const uint64 uEnd   = uStart + GetPartSize(cur_chunk.part) - 1;
 					// Criterion 2. Parts used for preview
 					// Remark: - We need to download the first part and the last part(s).
 					//        - When the last part is very small, it's necessary to 
@@ -3397,10 +3388,7 @@ uint64 CPartFile::GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) c
 uint64 CPartFile::GetTotalGapSizeInPart(uint32 uPart) const
 {
 	uint64 uRangeStart = uPart * PARTSIZE;
-	uint64 uRangeEnd = uRangeStart + PARTSIZE - 1;
-	if (uRangeEnd >= GetFileSize()) {
-		uRangeEnd = GetFileSize();
-	}
+	uint64 uRangeEnd = uRangeStart + GetPartSize(uPart) - 1;
 	return GetTotalGapSizeInRange(uRangeStart, uRangeEnd);
 }
 
@@ -3413,7 +3401,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart)
 		AddDebugLogLineM( false, logAICHRecovery, wxT("Unable to request AICH Recoverydata because we have no trusted Masterhash") );
 		return;
 	}
-	if (GetFileSize() <= EMBLOCKSIZE || GetFileSize() - PARTSIZE*nPart <= EMBLOCKSIZE)
+	if (GetPartSize(nPart) <= EMBLOCKSIZE)
 		return;
 	if (CAICHHashSet::IsClientRequestPending(this, nPart)){
 		AddDebugLogLineM( false, logAICHRecovery, wxT("RequestAICHRecovery: Already a request for this part pending"));
