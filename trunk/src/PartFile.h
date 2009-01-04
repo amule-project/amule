@@ -406,6 +406,8 @@ public:
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
 	
+	// size of a certain part, last is different, all others are PARTSIZE
+	uint32 GetPartSize(uint16 part) const;
 
 //	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
 

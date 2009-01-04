@@ -2367,6 +2367,15 @@ void CPartFile::Delete()
 	delete this;
 }
 
+// size of a certain part, last is different, all others are PARTSIZE
+uint32 CPartFile::GetPartSize(uint16 partNumber) const 
+{ 
+	if (GetFileSize() / PARTSIZE == partNumber) 
+		return GetFileSize() % PARTSIZE; 
+	else 
+		return PARTSIZE; 
+}
+
 
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
@@ -2382,14 +2391,10 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		CMD4Hash hashresult;
-		uint64 length = PARTSIZE;
-		const uint64 offset = length * partnumber;
+		uint64 offset = PARTSIZE * partnumber;
+		uint32 length = GetPartSize(partnumber);
 		try {
 			m_hpartfile.Seek(offset, wxFromStart);
-			if (offset + PARTSIZE > m_hpartfile.GetLength()) {
-				length = m_hpartfile.GetLength() - offset;
-				wxASSERT( length <= PARTSIZE );
-			}
 			CreateHashFromFile(&m_hpartfile, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
@@ -3123,28 +3128,15 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 	
 	// Check each part of the file
-	uint32 partRange = 0;
-	try {
-		uint64 curLength = m_hpartfile.GetLength();
-
-		partRange = (uint32)((curLength % PARTSIZE > 0) ? ((curLength % PARTSIZE) - 1) : (PARTSIZE - 1));
-	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logPartFile,
-			CFormat(wxT("Error while accessing part-file (%s): %s"))
-				% m_PartPath % e.what());
-		SetPartFileStatus(PS_ERROR);
-	}
-	
-	wxASSERT(partRange);
-	for (int partNumber = partCount-1; partRange && partNumber >= 0; partNumber--) {
+	for (uint32 partNumber = 0; partNumber < partCount; ++partNumber) {
 		if (changedPart[partNumber] == false) {
-			// Any parts other than last must be full size
-			partRange = PARTSIZE - 1;
 			continue;
 		}
 
+		uint32 partRange = GetPartSize(partNumber) - 1;
+	
 		// Is this 9MB part complete
-		if (IsComplete(PARTSIZE * partNumber, (PARTSIZE * (partNumber + 1)) - 1)) {
+		if (IsComplete(PARTSIZE * partNumber, PARTSIZE * partNumber + partRange)) {
 			// Is part corrupt
 			if (!HashSinglePart(partNumber)) {
 				AddLogLineM(true, CFormat(
@@ -3209,8 +3201,6 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				}
 			}
 		}
-		// Any parts other than last must be full size
-		partRange = PARTSIZE - 1;
 	}
 
 	// Update met file
@@ -3505,22 +3495,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 
 	FlushBuffer(true);
-	
-	uint64 length = PARTSIZE;
-
-	try {
-		if ((unsigned)(PARTSIZE * (nPart + 1)) > m_hpartfile.GetLength()){
-			length = (m_hpartfile.GetLength() - (PARTSIZE * nPart));
-			wxASSERT( length <= PARTSIZE );
-		}
-	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logPartFile,
-			CFormat(wxT("Error while retrieving file-length (%s): %s"))
-				% m_PartPath % e.what());
-		SetPartFileStatus(PS_ERROR);
-		return;
-	}
-	
+	uint32 length = GetPartSize(nPart);
 	// if the part was already ok, it would now be complete
 	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
 		AddDebugLogLineM( false, logAICHRecovery,
