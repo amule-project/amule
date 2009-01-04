@@ -357,8 +357,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		isnewstyle = (version == PARTFILE_SPLITTEDVERSION);
 		partmettype = isnewstyle ? PMT_SPLITTED : PMT_DEFAULTOLD;
 		
-		if (!isnewstyle) {
-			uint8 test[4];
+		if (version == PARTFILE_VERSION) {// Do we still need this check ?
+			uint8 test[4];									// It will fail for certain files.
 			metFile.Seek(24, wxFromStart);
 			metFile.Read(test,4);
 		
