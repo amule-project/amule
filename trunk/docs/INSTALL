@@ -8,62 +8,61 @@
  Requirements
 --------------
 
-  You will need glib/gtk-1.2.10 (package names like glib and glibdev
-  or glib-devel, gtk and gtkdev or gtk-devel or similar) or gtk2
-  (package names correspond to gtk ones), libexpat (package name
-  should be expat) and gettext to compile aMule. Also wxWidgets-2.4.2 or greater (wxGTK-2.6.x is recommended),
-  linked against glib/gtk-1.2.10 is needed (package names wxGTK and
-  wxGTK-devel or similar).
+  To compile aMule, you'll need at least the following packages:
+    * zlib >= 1.1.4       (1.2.3 is recommended)
+    * wxWidgets >= 2.8.0  (2.8.9 is recommended)
+    * Crypto++ >= 5.1     (5.5.2 is recommended)
+    * the perl File::Copy module
 
-  If you compile with wxGTK-2.4.2, you will need wxBase-2.4.2
-  package,  too, if you want to use amulecmd (the TextClient).
-  You can link it to wxgtk too, but it won't run on non-graphical consoles,
-  thus removing all the fun ;)
-  Since wxWidgets-2.5.x you don't need wxBase anymore.
+  For aMuleWeb you'll also need:
+    * a POSIX compliant regex library (like libgnurx or libregex, for most
+      GNU systems it's part of the standard C library).
 
-  It is known to compile in GCC 3.2, 3.3 and 3.4, older GCC's probably 
-  can't handle Microsoft C++ well enough.
+  Optionally you may want to provide:
+    * libgd (or gdlib) >= 2.0.0, to let cas generate statistics images;
+    * libupnp >= 1.6.6 if you want to have UPnP support;
+    * libpng >= 1.2.0 to let aMuleWeb generate nice statistics graphs;
+    * libGeoIP >= 1.4.4 if you want colourful country flags and IP to country
+      mappings in the GUI;
+    * gettext >= 0.11.5 if you want to enable NLS (Native Language Support).
 
- How to compile wxWidgets
---------------------------
+  It is known to compile with GCC 3.2, 3.3, 3.4, 4.1, 4.2 and 4.3; 
+  Sun Studio 12 and MSVC. GCC 2.95 is not supported.
 
-  Only GTK1 is supported. GTK2 with wxWidgets 2.6 and greater, but it is known
-  to have lots of leaks and so is not supported.
+  aMule requires a wxWidgets builds that supports unicode. Since wxWidgets
+  does not support unicode with GTK1, it is not possible to make aMule use
+  GTK1.
 
-  For GTK1:
-  ./configure  --prefix=/usr --disable-gtk2 --with-gtk && make
+  As Crypto++ is very sensitive to compiler defects, if you're compiling it
+  from source be sure to always test your compilation with `cryptest.exe v'.
+  (Yes, it's called cryptest.exe on all platforms.) Only when all tests
+  passed may you safely go on with compiling aMule.
+  Adding "-DCRYPTOPP_DISABLE_ASM -O1" to CXXFLAGS is known to resolve 
+  these problems.
 
-  After wxWidgets has compiled and you have installed it, you can compile aMule.
-  Do "./configure && make" as usual. If for some reason, wx-config cannot be 
-  found, use ./configure --with-wx-config=/path/wx-config. Sometimes it will be
-  named wxgtk-2.4-config.
 
-  To install it, as root type "make install" anyway, you don't have to install
-  if you don't want to. It will run fine from the source directory too.
+ Compiling aMule
+-----------------
 
-  Note: If you are using a CVS version, you will have to run ./autogen.sh before
-  ./configure to generate configure script. Automake > 1.5, Autoconf >= 2.57 and
-  gettext are required.
+  Compiling and installing aMule is as easy as running the usual
+  
+    ./configure
+    make
+    make install
 
-  And if you want to remote-administer it, you should definitely try VNC (or 
-  TightVNC). You probably won't get disappointed :)
-  * http://www.realvnc.org/
-  * http://www.tightvnc.org/
+  commands (if you have all the above requirements fulfilled, of course).
 
-  If you change the chart colors and want to select a custom color... be sure to 
-  press "Add to custom color"-button and select the color from there. Otherwise 
-  color will not change :) 
+  Solutions for Microsoft Visual Studio 2008 and the free Express Edition
+  are included. Please see the readme file for more information.
+
 
  ADVANCED OPTIONS
 ------------------
 
-  This are some of the availabe configure options:
+  These are some of the availabe configure options:
 
     --disable-debug           disable additional debugging output
     --enable-optimize         enable code optimizing
-    --enable-profile          enable code profiling
-    --enable-static           produce a statically linked executable
-    --enable-embedded_crypto  use embedded Crypto code (default)
     --enable-amulecmd         compile aMule command line client
     --enable-amule-gui        compile aMule remote GUI (EXPERIMENTAL)
     --enable-amule-daemon     compile aMule daemon version
@@ -73,30 +72,17 @@
     --disable-ed2k            don't compile aMule ed2k links handler
     --enable-alc              compile aMuleLinkCreator GUI version
     --enable-alcc             compile aMuleLinkCreator for console
-    --disable-gsocket         disable gsocket.c linking
-    --disable-gtk             disable pure GTK code in amule
-    --enable-utf8-systray     use UTF-8 encoded strings in the systray
-    --disable-systray         disable SysTray compilation
     --disable-monolithic      disable building of the monolithic aMule app
-    --disable-gtktest         do not try to compile and run a test GTK+ program
-    --disable-gtktest         do not try to compile and run a test GTK program
-    --disable-rpath           do not hardcode runtime library paths
-    --disable-nls             do not use Native Language Support
-    --enable-ccache           enable ccache support for fast recompilation
 	
-  With --enable-optimize, -O flag will be added to the compilation options. If not 
-  given, no optimization will occur. It is currently preferable not to optimise (in
-  fact, it is not supported), because if aMule crashes, the optimised code will not
-  produce usable stack trace. -O2 is reported to work fine, -O3 will totally crash
-  on start up, don't waste your time as of now.
+  For a full list of available options run `./configure --help' from the
+  aMule source directory.
 
-  With --enable-profile, -pg flag will be added to the compilation options. aMule 
-  will then record profiling data in gmon.out, from which one can see where aMule 
-  spends its time. You probably do not want to turn this on, unless you want to 
-  help the devs figure out where your CPU time is going :P
 
  Links
 -------
 
-  Compiling aMule and wxWidgets
-    http://www.amule.org/wiki/index.php/Compile
+  Detailed information on compiling and installing aMule:
+    http://www.amule.org/wiki/index.php/Main_Page
+
+  Forum to ask questions, report bugs, etc:
+    http://forum.amule.org/
