@@ -2051,27 +2051,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 						IsAlreadyRequested(uStart, uEnd);
 
 					// Criterion 4. Completion
-					uint64 partSize = PARTSIZE;
-
-					std::list<Gap_Struct*>::iterator it2 = m_gaplist.begin();
-					for (; it2 != m_gaplist.end(); ++it2) {
-						const Gap_Struct* cur_gap = *it2;
-						// Check if Gap is into the limit
-						if(cur_gap->start < uStart) {
-							if(cur_gap->end > uStart && cur_gap->end < uEnd) {
-								partSize -= cur_gap->end - uStart + 1;
-							} else if(cur_gap->end >= uEnd) {
-								partSize = 0;
-								break; // exit loop for()
-							}
-						} else if(cur_gap->start <= uEnd) {
-							if(cur_gap->end < uEnd) {
-								partSize -= cur_gap->end - cur_gap->start + 1;
-							} else {
-								partSize -= uEnd - cur_gap->start + 1;
-							}
-						}
-					}
+					// PARTSIZE instead of GetPartSize() favours the last chunk - but that may be intentional
+					uint32 partSize = PARTSIZE - GetTotalGapSizeInPart(cur_chunk.part);
 					const uint16 critCompletion = (uint16)(partSize/(PARTSIZE/100)); // in [%]
 
 					// Calculate priority with all criteria
@@ -3385,7 +3366,7 @@ uint64 CPartFile::GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) c
 	return uTotalGapSize;
 }
 
-uint64 CPartFile::GetTotalGapSizeInPart(uint32 uPart) const
+uint32 CPartFile::GetTotalGapSizeInPart(uint16 uPart) const
 {
 	uint64 uRangeStart = uPart * PARTSIZE;
 	uint64 uRangeEnd = uRangeStart + GetPartSize(uPart) - 1;

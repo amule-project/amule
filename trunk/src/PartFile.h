@@ -322,7 +322,7 @@ private:
 	
 	bool	IsCorruptedPart(uint16 partnumber);
 	
-	uint64	GetTotalGapSizeInPart(uint32 uPart) const;
+	uint32	GetTotalGapSizeInPart(uint16 uPart) const;
 
 	uint64	GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) const;	
 	
