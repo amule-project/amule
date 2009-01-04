@@ -3058,16 +3058,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	std::vector<bool> changedPart(partCount, false);
 	
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
-	uint32 newData = 0;
-
-	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
-	for (; it != m_BufferedData_list.end(); ++it) {
-		PartFileBufferedData* item = *it;
-		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
-		newData += (uint32) (item->end - item->start + 1);
-	}
-	
-	if ( !CheckFreeDiskSpace( newData ) ) {
+	if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
 		// Not enough free space to write the last item, bail
 		AddLogLineM(true, CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
 	
