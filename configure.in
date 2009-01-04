@@ -220,6 +220,10 @@ AS_IF([test x$AMULE_GUI = xyes], [need_gui=yes])
 AS_IF([test x${need_gui:+set} != xset], [need_gui=no])
 AC_MSG_RESULT($need_gui)
 
+# Check if we need to install skins
+AS_IF([test x$MONOLITHIC = xyes], [INSTALL_SKINS=yes])
+AS_IF([test x$AMULE_GUI = xyes], [INSTALL_SKINS=yes])
+AS_IF([test x${INSTALL_SKINS:+set} != xset], [INSTALL_SKINS=no])
 
 # Check for GeoIP (required for IP2Country capability)
 MULE_CHECK_GEOIP
@@ -438,6 +442,7 @@ AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
+AM_CONDITIONAL(INSTALL_SKINS, test x$INSTALL_SKINS = xyes)
 
 # Check for readline library
 if test x$AMULECMD = xyes -o x$WEB = xyes; then

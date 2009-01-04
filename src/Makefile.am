@@ -3,10 +3,14 @@ AM_CFLAGS = $(MULECFLAGS)
 AM_CXXFLAGS = $(MULECXXFLAGS)
 AM_LDFLAGS = $(MULELDFLAGS)
 
-SUBDIRS = libs utils pixmaps skins
+SUBDIRS = libs utils pixmaps
 
 if WEB
 SUBDIRS += webserver
+endif
+
+if INSTALL_SKINS
+SUBDIRS += skins
 endif
 
 EXTRA_DIST = \
