@@ -1297,10 +1297,8 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 			
 			// Want gaps that overlap start<->partEnd
 			if ((currentGap->start <= partEnd) && (currentGap->end >= start)) {
-				// Is this the first gap?
-				if ((firstGap == NULL) || (currentGap->start < firstGap->start)) {
-					firstGap = currentGap;
-				}
+				firstGap = currentGap;
+				break;
 			}
 		}
 
@@ -3969,6 +3967,9 @@ bool CPartFile::IsComplete(uint64 start, uint64 end)
 			||(cur_gap->end <= end && cur_gap->end >= start)
 			||(start >= cur_gap->start && end <= cur_gap->end)) {
 			return false;	
+		}
+		if (cur_gap->start > end) {
+			break;
 		}
 	}
 	return true;
