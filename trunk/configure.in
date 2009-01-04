@@ -152,9 +152,9 @@ AC_ARG_ENABLE(
 AC_ARG_ENABLE(
 	[xas],
 	[AS_HELP_STRING(
-		[--disable-xas],
-		[do not install xas XChat2 plugin])],
-	[XAS=$enableval], [XAS=yes])
+		[--enable-xas],
+		[install xas XChat2 plugin])],
+	[XAS=$enableval], [XAS=no])
 
 # Default is yes, because they're most likely compatible.
 # However, this is only used when cross-compiling.
