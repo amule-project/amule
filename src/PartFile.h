@@ -210,7 +210,6 @@ public:
 	uint8	GetCategory() const { return m_category; }
 	void	SetCategory(uint8 cat);
 
-	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	volatile bool m_bPreviewing;
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
 	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
@@ -299,6 +298,7 @@ public:
 
 	void	AllocationFinished();
 private:
+	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	//! A local list of sources that are invalid for this file.
 #ifndef CLIENT_GUI
 	CDeadSourceList	m_deadSources;
@@ -423,8 +423,10 @@ public:
 	void LoadSourceSeeds();
 	
 	// Dropping slow sources
-	
-	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller) ;
+	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller);
+
+  // Read data for sharing
+	bool ReadData(uint64 offset, byte * adr, uint32 toread);
 
 private:
 	/* downloading sources list */

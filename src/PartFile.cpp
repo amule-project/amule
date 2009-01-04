@@ -3234,6 +3234,24 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 }
 
 
+// read data for upload, return false on error
+bool CPartFile::ReadData(uint64 offset, byte * adr, uint32 toread)
+{
+	// Sanity check
+	if (offset + toread > GetFileSize()) {
+		AddDebugLogLineM(false, logPartFile, CFormat(wxT("tried to read %d bytes past eof of %s")) 
+			% (offset + toread - GetFileSize()) % GetFileName());
+		wxASSERT(false);
+		return false;
+	}
+
+	m_hpartfile.Seek(offset, wxFromStart);
+	m_hpartfile.Read(adr, toread);
+	// if it fails it throws (which the caller should catch)
+	return true;
+}
+
+
 void CPartFile::UpdateFileRatingCommentAvail()
 {
 	bool prevComment = m_hasComment;
