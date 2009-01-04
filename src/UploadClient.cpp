@@ -278,9 +278,12 @@ void CUpDownClient::CreateNextBlockPackage()
 				file.Read(filedata.get(), togo);
 				file.Close();
 			} else {
+				CPartFile* partfile = (CPartFile*)srcfile;
+				partfile->m_hpartfile.Seek(currentblock->StartOffset);
+				
 				filedata.reset(new byte[togo + 500]);
-				if (!((CPartFile*)srcfile)->ReadData(currentblock->StartOffset, filedata.get(), togo))
-					throw wxString(wxT("Failed to read from requested partfile"));
+				partfile->m_hpartfile.Read(filedata.get(), togo); 
+				// Partfile should NOT be closed!!!
 			}
 
 			//#warning Part of the above import.

@@ -235,7 +235,7 @@ CPartFile::~CPartFile()
 	// But, where does this wrong handle comes from?
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) { 
-		FlushBuffer();
+		FlushBuffer(true);
 	}
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) {
@@ -278,13 +278,13 @@ void CPartFile::CreatePartFile()
 	
 	m_gaplist.push_back(gap);
 	
-	m_PartPath = m_fullname.RemoveExt();
+	CPath partPath = m_fullname.RemoveExt();
 	bool fileCreated;
 	if (thePrefs::GetAllocFullFile()) {
-		fileCreated = m_hpartfile.Create(m_PartPath.GetRaw(), true);
+		fileCreated = m_hpartfile.Create(partPath.GetRaw(), true);
 		m_hpartfile.Close();
 	} else {
-		fileCreated = PlatformSpecific::CreateSparseFile(m_PartPath, GetFileSize());
+		fileCreated = PlatformSpecific::CreateSparseFile(partPath, GetFileSize());
 	}
 	if (!fileCreated) {
 		AddLogLineM(false,_("ERROR: Failed to create partfile)"));
@@ -357,8 +357,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		isnewstyle = (version == PARTFILE_SPLITTEDVERSION);
 		partmettype = isnewstyle ? PMT_SPLITTED : PMT_DEFAULTOLD;
 		
-		if (version == PARTFILE_VERSION) {// Do we still need this check ?
-			uint8 test[4];									// It will fail for certain files.
+		if (!isnewstyle) {
+			uint8 test[4];
 			metFile.Seek(24, wxFromStart);
 			metFile.Read(test,4);
 		
@@ -655,8 +655,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	}
 
 	// open permanent handle
-	m_PartPath = m_fullname.RemoveExt();
-	if ( !m_hpartfile.Open(m_PartPath, CFile::read_write)) {
+	CPath partFilePath = m_fullname.RemoveExt();
+	if ( !m_hpartfile.Open(partFilePath, CFile::read_write)) {
 		AddLogLineM(false, CFormat( _("Failed to open %s (%s)") )
 			% m_fullname
 			% GetFileName() );
@@ -700,13 +700,13 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	}
 
 	if (!isnewstyle) { // not for importing	
-		const time_t file_date = CPath::GetModificationTime(m_PartPath);
+		const time_t file_date = CPath::GetModificationTime(partFilePath);
 		if (m_lastDateChanged != file_date) {
 			// It's pointless to rehash an empty file, since the case
 			// where a user has zero'd a file is handled above ...
 			if (m_hpartfile.GetLength()) {
 				AddLogLineM(false, CFormat( _("WARNING: %s might be corrupted (%i)") )
-					% m_PartPath
+					% partFilePath
 					% (m_lastDateChanged - file_date) );
 				// rehash
 				SetPartFileStatus(PS_WAITINGFORHASH);
@@ -745,7 +745,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	
 	CFile file;
 	try {
-		if (!m_PartPath.FileExists()) {
+		if (!m_fullname.RemoveExt().FileExists()) {
 			throw wxString(wxT(".part file not found"));
 		}
 		
@@ -764,7 +764,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		// version
 		file.WriteUInt8(IsLargeFile() ? PARTFILE_VERSION_LARGEFILE : PARTFILE_VERSION);
 		
-		file.WriteUInt32(CPath::GetModificationTime(m_PartPath));
+		file.WriteUInt32(CPath::GetModificationTime(m_fullname.RemoveExt()));
 		// hash
 		file.WriteHash(m_abyFileHash);
 		uint16 parts = m_hashlist.size();
@@ -2340,8 +2340,9 @@ void CPartFile::Delete()
 		AddDebugLogLineM(false, logPartFile, wxT("\tRemoved .part.met"));
 	}
 
-	if (!CPath::RemoveFile(m_PartPath)) {
-		AddDebugLogLineM(true, logPartFile, CFormat(wxT("Failed to delete '%s'")) % m_PartPath);
+	CPath partFile = m_fullname.RemoveExt();
+	if (!CPath::RemoveFile(partFile)) {
+		AddDebugLogLineM(true, logPartFile, CFormat(wxT("Failed to delete '%s'")) % partFile);
 	} else {
 		AddDebugLogLineM(false, logPartFile, wxT("\tRemoved .part"));
 	}
@@ -2367,15 +2368,6 @@ void CPartFile::Delete()
 	delete this;
 }
 
-// size of a certain part, last is different, all others are PARTSIZE
-uint32 CPartFile::GetPartSize(uint16 partNumber) const 
-{ 
-	if (GetFileSize() / PARTSIZE == partNumber) 
-		return GetFileSize() % PARTSIZE; 
-	else 
-		return PARTSIZE; 
-}
-
 
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
@@ -2391,10 +2383,14 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		CMD4Hash hashresult;
-		uint64 offset = PARTSIZE * partnumber;
-		uint32 length = GetPartSize(partnumber);
+		uint64 length = PARTSIZE;
+		const uint64 offset = length * partnumber;
 		try {
 			m_hpartfile.Seek(offset, wxFromStart);
+			if (offset + PARTSIZE > m_hpartfile.GetLength()) {
+				length = m_hpartfile.GetLength() - offset;
+				wxASSERT( length <= PARTSIZE );
+			}
 			CreateHashFromFile(&m_hpartfile, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
@@ -2409,8 +2405,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 		if (GetPartCount() > 1) {
 			if (hashresult != GetPartHash(partnumber)) {
-				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Expected hash of part %d: %s")) % GetFileName() % partnumber % GetPartHash(partnumber).Encode() );
-				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Actual   hash of part %d: %s")) % GetFileName() % partnumber % hashresult.Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Expected part-hash: %s")) % GetFileName() % GetPartHash(partnumber).Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Actual part-hash: %s")) % GetFileName() % hashresult.Encode() );
 				return false;
 			} else {
 				return true;
@@ -2462,7 +2458,7 @@ void CPartFile::StopFile(bool bCancel)
 	memset(m_anStates,0,sizeof(m_anStates));
 	
 	if (!bCancel) {
-		FlushBuffer();
+		FlushBuffer(true);
 	}
 	
 	UpdateDisplayedInfo(true);
@@ -2636,10 +2632,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
 	if (KnowNeededParts && (reqstatus.size() != GetPartCount())) {
 		// Yuck. Same file but different part count? Seriously fucked up.
-		// This happens rather often with reqstatus.size() == 0. Don't log then.
-		if (reqstatus.size()) {
-			AddDebugLogLineM(false, logKnownFiles, CFormat(wxT("Impossible situation: different partcounts: %i (client) and %i (file) for %s")) % reqstatus.size() % GetPartCount() % GetFileName());
-		}
+		AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Impossible situation: different partcounts for the same part file: %i (client) and %i (file)"),reqstatus.size(),GetPartCount()));
 		return NULL;
 	}	
 	
@@ -3045,14 +3038,14 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	}
 
 	if (m_gaplist.empty()) {
-		FlushBuffer();
+		FlushBuffer(true);
 	}
 
 	// Return the length of data written to the buffer
 	return lenData;
 }
 
-void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
+void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 {
 	m_nLastBufferFlushTime = GetTickCount();
 	
@@ -3062,11 +3055,25 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 	
 	uint32 partCount = GetPartCount();
+	std::vector<bool> changedPart(partCount);
+	
 	// Remember which parts need to be checked at the end of the flush
-	std::vector<bool> changedPart(partCount, false);
+	for ( uint32 i = 0; i < partCount; ++i ) {
+		changedPart[ i ] = false;
+	}
+
 	
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
-	if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
+	uint32 newData = 0;
+
+	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+	for (; it != m_BufferedData_list.end(); ++it) {
+		PartFileBufferedData* item = *it;
+		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
+		newData += (uint32) (item->end - item->start + 1);
+	}
+	
+	if ( !CheckFreeDiskSpace( newData ) ) {
 		// Not enough free space to write the last item, bail
 		AddLogLineM(true, CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
 	
@@ -3082,49 +3089,26 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 		// This is needed a few times
 		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
-		uint32 toWrite = (uint32)(item->end - item->start + 1);
-		uint32 toWriteAll = toWrite;
-		uint64 adr = item->start;
-		byte * data = item->data;
+		uint32 lenData = (uint32)(item->end - item->start + 1);
 
+		// SLUGFILLER: SafeHash - could be more than one part
+		for (uint32 curpart = (item->start/PARTSIZE); curpart <= (item->end/PARTSIZE); ++curpart) {
+			wxASSERT(curpart < partCount);
+			changedPart[curpart] = true;
+		}
+		// SLUGFILLER: SafeHash
+		
 		// Go to the correct position in file and write block of data			
 		try {
-			// Sanity check
-			if (item->start + toWrite > GetFileSize()) {
-				wxASSERT(false);
-				throw wxString(wxT("Tried to write beyond end of file"));
-			}
-
-			uint16 partNumber = adr / PARTSIZE;
-			uint32 offsetInside = adr % PARTSIZE;
-
-			// allow writing past a part border (though that should not happen)
-			do {
-				changedPart[partNumber] = true;
-				uint32 currentToWrite = std::min(toWrite, (uint32)PARTSIZE - offsetInside);
-
-				m_hpartfile.Seek(adr);
-				m_hpartfile.Write(data, currentToWrite);
-
-				toWrite	-= currentToWrite;
-				adr		+= currentToWrite;
-				data	+= currentToWrite;
-				partNumber++;
-				offsetInside = 0;
-			} while (toWrite);
+			m_hpartfile.Seek(item->start);
+			m_hpartfile.Write(item->data, lenData);
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + e.what());
-			SetPartFileStatus(PS_ERROR);
-		} catch (const wxString& s) {
-			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + s);
-			SetPartFileStatus(PS_ERROR);
-		} catch (...) {
-			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file in FlushBuffer"));
 			SetPartFileStatus(PS_ERROR);
 		}
 
 		// Decrease buffer size
-		m_nTotalBufferData -= toWriteAll;
+		m_nTotalBufferData -= lenData;
 
 		// Release memory used by this item
 		delete [] item->data;
@@ -3144,22 +3128,35 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while truncating part-file (%s): %s"))
-				% m_PartPath % e.what());
+				% m_fullname.RemoveExt() % e.what());
 		SetPartFileStatus(PS_ERROR);
 	}
 
 
 	
 	// Check each part of the file
-	for (uint32 partNumber = 0; partNumber < partCount; ++partNumber) {
+	uint32 partRange = 0;
+	try {
+		uint64 curLength = m_hpartfile.GetLength();
+
+		partRange = (uint32)((curLength % PARTSIZE > 0) ? ((curLength % PARTSIZE) - 1) : (PARTSIZE - 1));
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logPartFile,
+			CFormat(wxT("Error while accessing part-file (%s): %s"))
+				% m_fullname.RemoveExt() % e.what());
+		SetPartFileStatus(PS_ERROR);
+	}
+	
+	wxASSERT(partRange);
+	for (int partNumber = partCount-1; partRange && partNumber >= 0; partNumber--) {
 		if (changedPart[partNumber] == false) {
+			// Any parts other than last must be full size
+			partRange = PARTSIZE - 1;
 			continue;
 		}
 
-		uint32 partRange = GetPartSize(partNumber) - 1;
-	
 		// Is this 9MB part complete
-		if (IsComplete(PARTSIZE * partNumber, PARTSIZE * partNumber + partRange)) {
+		if (IsComplete(PARTSIZE * partNumber, (PARTSIZE * (partNumber + 1)) - 1)) {
 			// Is part corrupt
 			if (!HashSinglePart(partNumber)) {
 				AddLogLineM(true, CFormat(
@@ -3170,8 +3167,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 					m_corrupted_list.push_back(partNumber);
 				}
 				// request AICH recovery data
-				// Don't if called from the AICHRecovery. It's already there and would lead to an infinite recursion.
-				if (!fromAICHRecoveryDataAvailable) { 
+				if (!bNoAICH) {
 					RequestAICHRecovery((uint16)partNumber);					
 				}
 				// Reduce transferred amount by corrupt amount
@@ -3195,9 +3191,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 					}
 				}
 			}
-		} else if ( IsCorruptedPart(partNumber) &&		// corrupted part:
-					(thePrefs::IsICHEnabled()			// old ICH:  rehash whenever we have new data hoping it will be good now
-					|| fromAICHRecoveryDataAvailable)) {// new AICH: one rehash right before performing it (maybe it's already good)
+		} else if ( IsCorruptedPart(partNumber) && (thePrefs::IsICHEnabled() || bForceICH)) {
 			// Try to recover with minimal loss
 			if (HashSinglePart(partNumber)) {
 				++m_iTotalPacketsSavedDueToICH;
@@ -3224,6 +3218,8 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				}
 			}
 		}
+		// Any parts other than last must be full size
+		partRange = PARTSIZE - 1;
 	}
 
 	// Update met file
@@ -3235,24 +3231,6 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 			CompleteFile(false);
 		}
 	}
-}
-
-
-// read data for upload, return false on error
-bool CPartFile::ReadData(uint64 offset, byte * adr, uint32 toread)
-{
-	// Sanity check
-	if (offset + toread > GetFileSize()) {
-		AddDebugLogLineM(false, logPartFile, CFormat(wxT("tried to read %d bytes past eof of %s")) 
-			% (offset + toread - GetFileSize()) % GetFileName());
-		wxASSERT(false);
-		return false;
-	}
-
-	m_hpartfile.Seek(offset, wxFromStart);
-	m_hpartfile.Read(adr, toread);
-	// if it fails it throws (which the caller should catch)
-	return true;
 }
 
 
@@ -3365,7 +3343,7 @@ uint64 CPartFile::GetNeededSpace()
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while retrieving file-length (%s): %s"))
-				% m_PartPath % e.what());
+				% m_fullname.RemoveExt() % e.what());
 		SetPartFileStatus(PS_ERROR);
 		return 0;
 	}
@@ -3517,8 +3495,23 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		return;
 	}
 
-	FlushBuffer(true);
-	uint32 length = GetPartSize(nPart);
+	FlushBuffer(true, true, true);
+	
+	uint64 length = PARTSIZE;
+
+	try {
+		if ((unsigned)(PARTSIZE * (nPart + 1)) > m_hpartfile.GetLength()){
+			length = (m_hpartfile.GetLength() - (PARTSIZE * nPart));
+			wxASSERT( length <= PARTSIZE );
+		}
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logPartFile,
+			CFormat(wxT("Error while retrieving file-length (%s): %s"))
+				% m_fullname.RemoveExt() % e.what());
+		SetPartFileStatus(PS_ERROR);
+		return;
+	}
+	
 	// if the part was already ok, it would now be complete
 	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
 		AddDebugLogLineM( false, logAICHRecovery,
@@ -3585,6 +3578,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		else{
 			AddDebugLogLineM( false, logAICHRecovery, wxString::Format( 
 				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"), nPart) );
+			// alrighty not so bad
+			EraseFirstValue(m_corrupted_list, nPart);
 			if (status == PS_EMPTY && theApp->IsRunning()){
 				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
 					// Successfully recovered part, make it available for sharing
@@ -3601,9 +3596,6 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			}
 		}
 	} // end sanity check
-	// We did the best we could. If it's still incomplete, then no need to keep
-	// bashing it with ICH. So remove it from the list of corrupted parts.
-	EraseFirstValue(m_corrupted_list, nPart);
 	// Update met file
 	SavePartFile();
 	
@@ -4018,10 +4010,9 @@ bool CPartFile::IsComplete(uint64 start, uint64 end)
 	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	for (; it != m_gaplist.end(); ++it) {
 		Gap_Struct* cur_gap = *it;
-		if (  (cur_gap->start >= start && cur_gap->end <= end)
-			||(cur_gap->start >= start && cur_gap->start <= end)
-			||(cur_gap->end <= end && cur_gap->end >= start)
-			||(start >= cur_gap->start && end <= cur_gap->end)) {
+		if ((cur_gap->start >= start && cur_gap->end <= end)||(cur_gap->start >= start 
+		&& cur_gap->start <= end)||(cur_gap->end <= end && cur_gap->end >= start)
+		||(start >= cur_gap->start && end <= cur_gap->end)) {
 			return false;	
 		}
 	}
@@ -4156,7 +4147,7 @@ CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient
 
 void CPartFile::AllocationFinished()
 {
-	if (!m_hpartfile.Open(m_PartPath, CFile::read_write)) {
+	if (!m_hpartfile.Open(GetFullName().RemoveExt(), CFile::read_write)) {
 		AddLogLineM(false, CFormat(_("ERROR: Failed to open partfile '%s'")) % GetFullName());
 		SetPartFileStatus(PS_ERROR);
 	}
