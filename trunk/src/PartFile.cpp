@@ -3054,13 +3054,8 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 	
 	uint32 partCount = GetPartCount();
-	std::vector<bool> changedPart(partCount);
-	
 	// Remember which parts need to be checked at the end of the flush
-	for ( uint32 i = 0; i < partCount; ++i ) {
-		changedPart[ i ] = false;
-	}
-
+	std::vector<bool> changedPart(partCount, false);
 	
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
 	uint32 newData = 0;
