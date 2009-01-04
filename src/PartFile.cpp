@@ -4016,9 +4016,10 @@ bool CPartFile::IsComplete(uint64 start, uint64 end)
 	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	for (; it != m_gaplist.end(); ++it) {
 		Gap_Struct* cur_gap = *it;
-		if ((cur_gap->start >= start && cur_gap->end <= end)||(cur_gap->start >= start 
-		&& cur_gap->start <= end)||(cur_gap->end <= end && cur_gap->end >= start)
-		||(start >= cur_gap->start && end <= cur_gap->end)) {
+		if (  (cur_gap->start >= start && cur_gap->end <= end)
+			||(cur_gap->start >= start && cur_gap->start <= end)
+			||(cur_gap->end <= end && cur_gap->end >= start)
+			||(start >= cur_gap->start && end <= cur_gap->end)) {
 			return false;	
 		}
 	}
