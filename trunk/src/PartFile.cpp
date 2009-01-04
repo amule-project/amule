@@ -2404,8 +2404,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 		if (GetPartCount() > 1) {
 			if (hashresult != GetPartHash(partnumber)) {
-				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Expected part-hash: %s")) % GetFileName() % GetPartHash(partnumber).Encode() );
-				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Actual part-hash: %s")) % GetFileName() % hashresult.Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Expected hash of part %d: %s")) % GetFileName() % partnumber % GetPartHash(partnumber).Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( wxT("%s: Actual   hash of part %d: %s")) % GetFileName() % partnumber % hashresult.Encode() );
 				return false;
 			} else {
 				return true;
@@ -2631,7 +2631,10 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
 	if (KnowNeededParts && (reqstatus.size() != GetPartCount())) {
 		// Yuck. Same file but different part count? Seriously fucked up.
-		AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Impossible situation: different partcounts for the same part file: %i (client) and %i (file)"),reqstatus.size(),GetPartCount()));
+		// This happens rather often with reqstatus.size() == 0. Don't log then.
+		if (reqstatus.size()) {
+			AddDebugLogLineM(false, logKnownFiles, CFormat(wxT("Impossible situation: different partcounts: %i (client) and %i (file) for %s")) % reqstatus.size() % GetPartCount() % GetFileName());
+		}
 		return NULL;
 	}	
 	
