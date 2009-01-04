@@ -337,8 +337,9 @@ private:
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
 	float 	kBpsDown;
-	CPath	m_fullname;
-	CPath	m_partmetfilename;
+	CPath	m_fullname;			// path/name of the met file
+	CPath	m_partmetfilename;	// name of the met file
+	CPath 	m_PartPath; 		// path/name of the partfile
 	bool	m_paused;
 	bool	m_stopped;
 	bool	m_insufficient;
