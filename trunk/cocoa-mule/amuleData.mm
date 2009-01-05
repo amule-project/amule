@@ -49,6 +49,8 @@
 @synthesize xfer_src_count = m_xfer_src_count;
 @synthesize a4af_src_count = m_a4af_src_count;
 
+@synthesize speed = m_speed;
+
 @synthesize size_done = m_size_done;
 @synthesize size_xfer = m_size_xfer;
 

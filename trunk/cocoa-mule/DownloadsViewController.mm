@@ -41,7 +41,8 @@
 	} else if ( [columnId compare:@"completed"] == NSOrderedSame ) {
 		value = [i convertWithPrefix: i.size_done];
 	} else if ( [columnId compare:@"speed"] == NSOrderedSame ) {
-		value = @"val-for-speed";
+		value = ( i.speed ) ?
+			[[i convertWithPrefix: i.speed] stringByAppendingString: @"/sec"] : @"";
 	} else if ( [columnId compare:@"prio"] == NSOrderedSame ) {
 		value = @"val-for-prio";
 	} else if ( [columnId compare:@"timerem"] == NSOrderedSame ) {
@@ -72,6 +73,34 @@
 - (void)awakeFromNib {
 	[m_tableview setDelegate:self];
 	[m_tableview setDataSource:self];
+	
+	//
+	// load column status
+	//
+	for (NSTableColumn *c in [m_tableview tableColumns]) {
+		NSString *columnId = [c identifier];
+		NSString *keyWidth = [NSString stringWithFormat:@"DownloadViewColumn_%@_Width", columnId];
+		int width = [[NSUserDefaults standardUserDefaults] integerForKey:keyWidth];
+		if ( width ) {
+			NSLog(@"Column %@ setting width %d\n", columnId, width);
+			[c setWidth:width];
+		}
+		NSString *keyHide = [NSString stringWithFormat:@"DownloadViewColumn_%@_Hide", columnId];
+		int hide = [[NSUserDefaults standardUserDefaults] integerForKey:keyHide];
+		[c setHidden:hide];
+	}
+}
+
+- (void)saveGui {
+	for (NSTableColumn *c in [m_tableview tableColumns]) {
+		NSString *columnId = [c identifier];
+
+		NSString *keyWidth = [NSString stringWithFormat:@"DownloadViewColumn_%@_Width", columnId];
+		[[NSUserDefaults standardUserDefaults] setInteger:c.width forKey:keyWidth];
+
+		NSString *keyHide = [NSString stringWithFormat:@"DownloadViewColumn_%@_Hide", columnId];
+		[[NSUserDefaults standardUserDefaults] setInteger:[c isHidden] forKey:keyHide];
+	}
 }
 
 @end
