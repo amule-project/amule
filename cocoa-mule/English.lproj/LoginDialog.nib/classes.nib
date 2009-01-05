@@ -28,6 +28,12 @@
 			<dict>
 				<key>m_dlg</key>
 				<string>id</string>
+				<key>m_host_field</key>
+				<string>NSTextField</string>
+				<key>m_pass_field</key>
+				<string>NSTextField</string>
+				<key>m_port_field</key>
+				<string>NSTextField</string>
 			</dict>
 			<key>SUPERCLASS</key>
 			<string>NSObject</string>

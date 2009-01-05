@@ -7,6 +7,15 @@
 		[NSBundle loadNibNamed: @"LoginDialog" owner: self];
 	}
 
+	NSString *default_host = [[NSUserDefaults standardUserDefaults] stringForKey:@"LastTargetHost"];
+	if ( default_host != nil ) {
+		[m_host_field setStringValue: default_host];
+	}
+	
+	NSString *default_port = [[NSUserDefaults standardUserDefaults] stringForKey:@"LastTargetPort"];
+	if ( default_port != nil ) {
+		[m_port_field setStringValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"LastTargetPort"]];
+	}
 	[NSApp beginSheet: m_dlg modalForWindow: window
 		modalDelegate: nil didEndSelector: nil contextInfo: nil];
 					

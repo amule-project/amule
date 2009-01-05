@@ -54,10 +54,24 @@
 	return [dlg showDlg:nil];
 }
 
+- (void)applicationWillTerminate:(NSNotification *)aNotification {
+	//
+	// Save gui state in all views
+	//
+	if ([m_dload_controller respondsToSelector:@selector(saveGui)]) {
+		[m_dload_controller performSelector:@selector(saveGui)];
+	}
+	
+	NSLog(@"Exiting ...\n");
+}
+
 -(void)awakeFromNib {
 	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 	NSString *mode = [args stringForKey:@"mode"];
 	NSLog(@"amule controller started, mode = [%@]\n", mode);
+	
+	
+	[[NSApplication sharedApplication] setDelegate:self];
 	
 	NSString *targetaddr = 0;
 	int targetport = 0;
@@ -75,9 +89,14 @@
 			// "Cancel" selected on login dialog
 			exit(0);
 		}
+		[[NSUserDefaults standardUserDefaults] setObject:targetaddr forKey:@"LastTargetHost"];
+		[[NSUserDefaults standardUserDefaults] setInteger:targetport forKey:@"LastTargetPort"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 		NSLog(@"Remote mode selected, target=%@:%d\n", targetaddr, targetport);
 	} else {
 		NSLog(@"Local mode selected - starting daemon\n");
+		targetaddr = @"127.0.0.1";
+		targetport = 4712;
 		if ( [self startDaemon] == -1 ) {
 			NSRunCriticalAlertPanel(@"Daemon startup error", 
 							@"Unable to start core daemon (amuled)",
@@ -91,6 +110,12 @@
 	m_data = [amuleData initWithConnection:m_connection];
 	[m_data retain];
 
+	//
+	// bind datastructure to GUI controllers
+	//
+	[m_dload_controller setFileSet:m_data.downloads];
+	[m_data.downloads setGuiController:m_dload_controller];
+	
 	//
 	// daemon (either local or remote) must be running by now
 	//
@@ -113,6 +138,7 @@
 	}
 
 }
+
 
 - (int)startDaemon {
 	int pid = fork();
@@ -155,7 +181,7 @@
 		// child
 		NSLog(@"Child running, calling execlp\n");
 		//execlp("/usr/bin/touch", "/usr/bin/touch", "xxxx", 0);
-		execlp("amuled", 0);
+		execlp("/Users/lfroen/prog/amule/src/amuled", "/Users/lfroen/prog/amule/src/amuled", 0);
 		NSLog(@"execlp() failed\n");
 		exit(-1);
 	}

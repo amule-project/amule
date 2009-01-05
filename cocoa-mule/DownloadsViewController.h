@@ -9,6 +9,8 @@
 	amuleFileSet *m_fileset;
 }
 
+- (void)saveGui;
+
 // TableView datasource methods
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;

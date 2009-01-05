@@ -42,6 +42,8 @@
 @property (readonly) int xfer_src_count;
 @property (readonly) int a4af_src_count;
 
+@property (readonly) int speed;
+
 @property (readonly) uint64_t size_done;
 @property (readonly) uint64_t size_xfer;
 
