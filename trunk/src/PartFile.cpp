@@ -1275,11 +1275,6 @@ bool CPartFile::IsAlreadyRequested(uint64 start, uint64 end)
 
 bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struct *result)
 {
-	Gap_Struct *firstGap;
-	Gap_Struct *currentGap;
-	uint64 end;
-	uint64 blockLimit;
-
 	// Find start of this part
 	uint64 partStart = (PARTSIZE * partNumber);
 	uint64 start = partStart;
@@ -1287,13 +1282,13 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 	// What is the end limit of this block, i.e. can't go outside part (or filesize)
 	uint64 partEnd = partStart + GetPartSize(partNumber) - 1;
 	// Loop until find a suitable gap and return true, or no more gaps and return false
+	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	while (true) {
-		firstGap = NULL;
+		Gap_Struct *firstGap = NULL;
 
 		// Find the first gap from the start position
-		std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 		for (; it != m_gaplist.end(); ++it) {
-			currentGap = *it;
+			Gap_Struct *currentGap = *it;
 			
 			// Want gaps that overlap start<->partEnd
 			if ((currentGap->start <= partEnd) && (currentGap->end >= start)) {
@@ -1310,13 +1305,9 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 		if (start < firstGap->start) {
 			start = firstGap->start;
 		}
-		// If this is not within part, exit
-		if (start > partEnd) {
-			return false;
-		}
 		// Find end, keeping within the max block size and the part limit
-		end = firstGap->end;
-		blockLimit = partStart + (BLOCKSIZE * (((start - partStart) / BLOCKSIZE) + 1)) - 1;
+		uint64 end = firstGap->end;
+		uint64 blockLimit = partStart + (BLOCKSIZE * (((start - partStart) / BLOCKSIZE) + 1)) - 1;
 		if (end > blockLimit) {
 			end = blockLimit;
 		}
