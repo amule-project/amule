@@ -32,7 +32,7 @@
 
 #include "OtherStructs.h"	// Needed for Gap_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
-
+#include "GapList.h"
 
 
 class CSearchFile;
@@ -100,9 +100,7 @@ typedef std::list<SourcenameItem> SourcenameItemList;
 
 class CPartFile : public CKnownFile {
 public:
-	typedef std::list<Gap_Struct*> CGapPtrList;
 	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
-
 	
 	CPartFile();
 #ifdef CLIENT_GUI
@@ -267,9 +265,42 @@ public:
 	const SourceSet& GetSourceList()	const { return m_SrcList; }
 	const SourceSet& GetA4AFList()		const { return m_A4AFsrclist; }
 
-	const CGapPtrList		GetGapList() const	{ return m_gaplist; }
 	const CReqBlockPtrList	GetRequestedBlockList() const { return m_requestedblocks_list; }
 
+	// LEGACY - to be removed when possible
+	class CGapPtrList {
+	public:
+		void Init(const CGapList * gaplist) { m_gaplist = gaplist; }
+		class const_iterator {
+			CGapList::const_iterator m_it;
+			Gap_Struct m_gap;
+		public:
+			const_iterator() {};
+			const_iterator(const CGapList::const_iterator& it) { m_it = it; };
+			bool operator != (const const_iterator& it) { return m_it != it.m_it; }
+			const_iterator& operator ++ () { ++ m_it; return *this; }
+			Gap_Struct * operator * () { 
+				m_gap.start = m_it.start();
+				m_gap.end = m_it.end();
+				return & m_gap; 
+			}
+		};
+		const_iterator begin() const { return const_iterator(m_gaplist->begin()); }
+		const_iterator end() const { return const_iterator(m_gaplist->end()); }
+		bool empty() const { return m_gaplist->IsComplete(); }
+		uint32 size() const { return m_gaplist->size(); }
+
+	private:
+		const CGapList * m_gaplist;
+	};
+	// this function must stay, but return the m_gaplist instead
+	const CGapPtrList& GetGapList() const { return m_gapptrlist; }
+	// meanwhile use
+	const CGapList& GetNewGapList() const { return m_gaplist; }
+	private:
+	CGapPtrList m_gapptrlist;
+	public:
+	// END LEGACY
 
 	/**
 	 * Adds a source to the list of dead sources.
@@ -311,7 +342,9 @@ private:
 	uint32	m_validSources;
 
 	void	AddGap(uint64 start, uint64 end);
+	void	AddGap(uint16 part);
 	void	FillGap(uint64 start, uint64 end);
+	void	FillGap(uint16 part);
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
 	bool	IsAlreadyRequested(uint64 start, uint64 end);
 	void	CompleteFile(bool hashingdone);
@@ -321,10 +354,6 @@ private:
 	bool	CheckFreeDiskSpace( uint64 neededSpace = 0 );
 	
 	bool	IsCorruptedPart(uint16 partnumber);
-	
-	uint32	GetTotalGapSizeInPart(uint16 uPart) const;
-
-	uint64	GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) const;	
 	
 	uint32	m_iLastPausePurge;
 	uint16	m_count;
@@ -348,7 +377,7 @@ private:
 	uint8	status;
 	uint32	lastpurgetime;
 	uint32	m_LastNoNeededCheck;
-	CGapPtrList m_gaplist;
+	CGapList m_gaplist;
 	CReqBlockPtrList m_requestedblocks_list;
 	double	percentcompleted;
 	std::list<uint16> m_corrupted_list;

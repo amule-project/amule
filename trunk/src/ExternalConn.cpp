@@ -965,7 +965,7 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
-	const CPartFile::CGapPtrList& gaplist = m_file->GetGapList();
+	const CGapList& gaplist = m_file->GetNewGapList();
 	const size_t gap_list_size = gaplist.size();
 	
 	if ( m_gap_buffer.size() < gap_list_size * 2 ) {
@@ -975,11 +975,9 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 
 	GapBuffer::iterator it = m_gap_buffer.begin();
 	
-	CPartFile::CGapPtrList::const_iterator curr_pos = gaplist.begin();
-	for (; curr_pos != gaplist.end(); ++curr_pos) {
-		Gap_Struct *curr = *curr_pos;
-		*it++ = ENDIAN_HTONLL(curr->start);
-		*it++ = ENDIAN_HTONLL(curr->end);
+	for (CGapList::const_iterator curr_pos = gaplist.begin(); curr_pos != gaplist.end(); ++curr_pos) {
+		*it++ = ENDIAN_HTONLL(curr_pos.start());
+		*it++ = ENDIAN_HTONLL(curr_pos.end());
 	}
 
 	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint64));

@@ -277,6 +277,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\GapList.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\GetTickCount.cpp"
 				>
 			</File>
@@ -514,6 +518,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\src\GapList.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

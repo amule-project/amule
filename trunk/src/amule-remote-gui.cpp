@@ -1449,29 +1449,22 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			(unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
 			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
 			
-		const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
-		unsigned reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+		const uint64 *reqparts = (const uint64 *)reqtag->GetTagData();
+		unsigned reqcount = reqtag->GetTagDataLen() / (2 * sizeof(uint64));
 		
-		// adjust size of gaplist to reqcount
 		unsigned gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
-		while ( file->m_gaplist.size() > gap_size ) {
-			file->m_gaplist.pop_front();
-		}
-		while ( file->m_gaplist.size() != gap_size ) {
-			file->m_gaplist.push_front(new Gap_Struct);
-		}
+		// clear gaplist
+		file->m_gaplist.clear();
+
+		// and refill it
 		const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();
-		
-		
-		std::list<Gap_Struct*>::iterator it = file->m_gaplist.begin();
 		for (unsigned j = 0; j < gap_size;j++) {
-			Gap_Struct* gap = *it++;
-			gap->start = ENDIAN_NTOHLL(gap_info[2*j]);
-			gap->end = ENDIAN_NTOHLL(gap_info[2*j+1]);
+			file->m_gaplist.AddGap(ENDIAN_NTOHLL(gap_info[2*j]), ENDIAN_NTOHLL(gap_info[2*j+1]));
 		}
 		
 		// adjust size of requested block list
 		while ( file->m_requestedblocks_list.size() > reqcount ) {
+			delete file->m_requestedblocks_list.front();
 			file->m_requestedblocks_list.pop_front();
 		}
 		while ( file->m_requestedblocks_list.size() != reqcount ) {
@@ -1481,8 +1474,8 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		std::list<Requested_Block_Struct*>::iterator it2 = file->m_requestedblocks_list.begin();
 		for (unsigned i = 0; i < reqcount; ++i) {
 			Requested_Block_Struct* block = *it2++;
-			block->StartOffset = ENDIAN_NTOHLL(reqparts[i].start);
-			block->EndOffset = ENDIAN_NTOHLL(reqparts[i].end);
+			block->StartOffset = ENDIAN_NTOHLL(reqparts[2*i]);
+			block->EndOffset = ENDIAN_NTOHLL(reqparts[2*i+1]);
 		}
 		// copy parts frequency
 		const unsigned char *part_info = encoder.m_part_status.Buffer();

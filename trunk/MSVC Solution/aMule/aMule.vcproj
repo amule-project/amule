@@ -339,6 +339,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\GapList.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\GetTickCount.cpp"
 				>
 			</File>
@@ -782,6 +786,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\FriendListCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\GapList.h"
 				>
 			</File>
 			<File
