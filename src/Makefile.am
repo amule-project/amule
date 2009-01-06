@@ -204,6 +204,7 @@ common_sources = \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
+	GapList.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \
 	Logger.cpp \
