@@ -188,7 +188,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */,
 			);
 			name = "cocoa-mule";
 			sourceTree = "<group>";
@@ -211,6 +210,7 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
