@@ -313,6 +313,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	m_partmetfilename = filename;
 	m_filePath = in_directory;
 	m_fullname = m_filePath.JoinPaths(m_partmetfilename);
+	m_PartPath = m_fullname.RemoveExt();
 	
 	// readfile data form part.met file
 	CPath curMetFilename = m_fullname;
@@ -651,7 +652,6 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	}
 
 	// open permanent handle
-	m_PartPath = m_fullname.RemoveExt();
 	if ( !m_hpartfile.Open(m_PartPath, CFile::read_write)) {
 		AddLogLineM(false, CFormat( _("Failed to open %s (%s)") )
 			% m_fullname
