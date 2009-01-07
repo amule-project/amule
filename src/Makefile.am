@@ -355,6 +355,7 @@ noinst_HEADERS = \
 		Friend.h \
 		FriendListCtrl.h \
 		FriendList.h \
+		GapList.h \
 		GetTickCount.h \
 		GuiEvents.h \
 		HTTPDownload.h \
