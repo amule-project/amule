@@ -48,15 +48,15 @@ public:
 	// just clear list (without gaps)
 	void clear();
 	// add a gap for a range
-	void AddGap(uint64 start, uint64 end);
+	void AddGap(uint64 gapstart, uint64 gapend);
 	// add a gap for a part
 	void AddGap(uint16 part);
 	// fill a gap for a range
-	void FillGap(uint64 start, uint64 end);
+	void FillGap(uint64 gapstart, uint64 gapend);
 	// fill a gap for a part
 	void FillGap(uint16 part);
 	// Is this range complete ?
-	bool IsComplete(uint64 start, uint64 end) const;
+	bool IsComplete(uint64 gapstart, uint64 gapend) const;
 	// Is this part complete ?
 	bool IsComplete(uint16 part) const;
 	// Is the whole file complete ?

@@ -45,37 +45,37 @@ void CGapList::Init(uint64 fileSize, bool empty)
 }
 
 
-void CGapList::AddGap(uint64 start, uint64 end)
+void CGapList::AddGap(uint64 gapstart, uint64 gapend)
 {
 	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	while (it != m_gaplist.end()) {
 		std::list<Gap_Struct*>::iterator it2 = it++;
 		Gap_Struct* cur_gap = *it2;
 	
-		if (cur_gap->start >= start && cur_gap->end <= end) {
+		if (cur_gap->start >= gapstart && cur_gap->end <= gapend) {
 			// this gap is inside the new gap - delete
 			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
-		} else if (cur_gap->start >= start && cur_gap->start <= end + 1) {
+		} else if (cur_gap->start >= gapstart && cur_gap->start <= gapend + 1) {
 			// head of this gap is in the new gap, or this gap is
 			// directly behind the new gap - extend limit and delete
-			end = cur_gap->end;
+			gapend = cur_gap->end;
 			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
-		} else if (cur_gap->end <= end && cur_gap->end >= start - 1) {
+		} else if (cur_gap->end <= gapend && cur_gap->end >= gapstart - 1) {
 			// tail of this gap is in the new gap, or this gap is
 			// directly before the new gap - extend limit and delete
-			start = cur_gap->start;
+			gapstart = cur_gap->start;
 			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
-		} else if (start >= cur_gap->start && end <= cur_gap->end){
+		} else if (gapstart >= cur_gap->start && gapend <= cur_gap->end){
 			// new gap is already inside this gap - return
 			return;
 		// now all cases of overlap are ruled out
-		} else if (cur_gap->start > start) {
+		} else if (cur_gap->start > gapstart) {
 			// this gap is the first behind the new gap -> insert before it
 			it = it2;
 			break;
@@ -83,41 +83,41 @@ void CGapList::AddGap(uint64 start, uint64 end)
 	}
 	
 	Gap_Struct* new_gap = new Gap_Struct;
-	new_gap->start = start;
-	new_gap->end = end;
+	new_gap->start = gapstart;
+	new_gap->end = gapend;
 	m_gaplist.insert(it, new_gap);
 }
 
 void CGapList::AddGap(uint16 part)
 {
-	uint64 start = part * PARTSIZE;
-	uint64 end = start + GetPartSize(part) - 1;
-	AddGap(start, end);
+	uint64 gapstart = part * PARTSIZE;
+	uint64 gapend = gapstart + GetPartSize(part) - 1;
+	AddGap(gapstart, gapend);
 }
 
-void CGapList::FillGap(uint64 start, uint64 end)
+void CGapList::FillGap(uint64 gapstart, uint64 gapend)
 {
 	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	while (it != m_gaplist.end()) {
 		std::list<Gap_Struct*>::iterator it2 = it++;
 		Gap_Struct* cur_gap = *it2;
 	
-		if (cur_gap->start >= start && cur_gap->end <= end) {
+		if (cur_gap->start >= gapstart && cur_gap->end <= gapend) {
 			// our part fills this gap completly
 			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
-		} else if (cur_gap->start >= start && cur_gap->start <= end) {
+		} else if (cur_gap->start >= gapstart && cur_gap->start <= gapend) {
 			// a part of this gap is in the part - set limit
-			cur_gap->start = end+1;
-		} else if (cur_gap->end <= end && cur_gap->end >= start) {
+			cur_gap->start = gapend+1;
+		} else if (cur_gap->end <= gapend && cur_gap->end >= gapstart) {
 			// a part of this gap is in the part - set limit
-			cur_gap->end = start-1;
-		} else if (start >= cur_gap->start && end <= cur_gap->end) {
+			cur_gap->end = gapstart-1;
+		} else if (gapstart >= cur_gap->start && gapend <= cur_gap->end) {
 			uint64 buffer = cur_gap->end;
-			cur_gap->end = start-1;
+			cur_gap->end = gapstart-1;
 			cur_gap = new Gap_Struct;
-			cur_gap->start = end+1;
+			cur_gap->start = gapend+1;
 			cur_gap->end = buffer;
 			m_gaplist.insert(++it2, cur_gap);
 			break;
@@ -127,9 +127,9 @@ void CGapList::FillGap(uint64 start, uint64 end)
 
 void CGapList::FillGap(uint16 part)
 {
-	uint64 start = part * PARTSIZE;
-	uint64 end = start + GetPartSize(part) - 1;
-	FillGap(start, end);
+	uint64 gapstart = part * PARTSIZE;
+	uint64 gapend = gapstart + GetPartSize(part) - 1;
+	FillGap(gapstart, gapend);
 }
 
 uint64 CGapList::GetGapSize() const
@@ -177,22 +177,22 @@ uint32 CGapList::GetGapSize(uint16 part) const
 	return uTotalGapSize;
 }
 
-bool CGapList::IsComplete(uint64 start, uint64 end) const
+bool CGapList::IsComplete(uint64 gapstart, uint64 gapend) const
 {
-	if (end >= m_filesize) {
-		end = m_filesize-1;
+	if (gapend >= m_filesize) {
+		gapend = m_filesize-1;
 	}
 
 	std::list<Gap_Struct*>::const_iterator it = m_gaplist.begin();
 	for (; it != m_gaplist.end(); ++it) {
 		Gap_Struct* cur_gap = *it;
-		if (  (cur_gap->start >= start && cur_gap->end <= end)
-			||(cur_gap->start >= start && cur_gap->start <= end)
-			||(cur_gap->end <= end && cur_gap->end >= start)
-			||(start >= cur_gap->start && end <= cur_gap->end)) {
+		if (  (cur_gap->start >= gapstart && cur_gap->end <= gapend)
+			||(cur_gap->start >= gapstart && cur_gap->start <= gapend)
+			||(cur_gap->end <= gapend && cur_gap->end >= gapstart)
+			||(gapstart >= cur_gap->start && gapend <= cur_gap->end)) {
 			return false;	
 		}
-		if (cur_gap->start > end) {
+		if (cur_gap->start > gapend) {
 			break;
 		}
 	}
