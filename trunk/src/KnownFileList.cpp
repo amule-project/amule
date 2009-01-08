@@ -43,7 +43,7 @@ inline bool CKnownFileList::KnownFileMatches(
 	uint64 in_size) const
 {
 	return
-		(knownFile->GetLastChangeDatetime() == in_date) &&
+		(knownFile->GetLastChangeDatetime() == (time_t)in_date) &&
 		(knownFile->GetFileSize() == in_size) &&
 		(knownFile->GetFileName() == filename);
 }

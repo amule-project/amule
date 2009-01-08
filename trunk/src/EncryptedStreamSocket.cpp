@@ -218,7 +218,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 
 	//printf("Read %i bytes on %s, socket %p\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()), this);
 	
-	if (m_nObfusicationBytesReceived == SOCKET_ERROR || m_nObfusicationBytesReceived <= 0){
+	if (m_nObfusicationBytesReceived == (uint32)SOCKET_ERROR || m_nObfusicationBytesReceived <= 0){
 		return m_nObfusicationBytesReceived;
 	}
 	
@@ -248,7 +248,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 				//printf("Not a normal header, negotiating encryption\n");
 				StartNegotiation(false);
 				const uint32 nNegRes = Negotiate((uint8*)lpBuf + nRead, m_nObfusicationBytesReceived - nRead);
-				if (nNegRes == (-1)) {
+				if (nNegRes == (uint32)(-1)) {
 					return 0;
 				}
 				nRead += nNegRes;
@@ -301,7 +301,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 		case ECS_NEGOTIATING:{
 			//printf("Negotiating on data receive\n");
 			const uint32 nRead = Negotiate((uint8*)lpBuf, m_nObfusicationBytesReceived);
-			if (nRead == (-1)) {
+			if (nRead == (uint32)(-1)) {
 				//printf("-> Encryption read error on negotiation\n");
 				return 0;
 			} else if (nRead != (uint32)m_nObfusicationBytesReceived && m_StreamCryptState != ECS_ENCRYPTING) {
