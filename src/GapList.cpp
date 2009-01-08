@@ -47,6 +47,10 @@ void CGapList::Init(uint64 fileSize, bool empty)
 
 void CGapList::AddGap(uint64 gapstart, uint64 gapend)
 {
+	if (!ArgCheck(gapstart, gapend)) {
+		return;
+	}
+
 	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	while (it != m_gaplist.end()) {
 		std::list<Gap_Struct*>::iterator it2 = it++;
@@ -97,6 +101,10 @@ void CGapList::AddGap(uint16 part)
 
 void CGapList::FillGap(uint64 gapstart, uint64 gapend)
 {
+	if (!ArgCheck(gapstart, gapend)) {
+		return;
+	}
+
 	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
 	while (it != m_gaplist.end()) {
 		std::list<Gap_Struct*>::iterator it2 = it++;
@@ -179,6 +187,10 @@ uint32 CGapList::GetGapSize(uint16 part) const
 
 bool CGapList::IsComplete(uint64 gapstart, uint64 gapend) const
 {
+	if (!ArgCheck(gapstart, gapend)) {
+		return false;
+	}
+
 	if (gapend >= m_filesize) {
 		gapend = m_filesize-1;
 	}
@@ -209,4 +221,20 @@ bool CGapList::IsComplete(uint16 part) const
 void CGapList::clear()
 {
 	DeleteContents(m_gaplist);
+}
+
+inline bool CGapList::ArgCheck(uint64 gapstart, uint64 &gapend) const
+{
+	// end < start: serious error
+	if (gapend < gapstart) {
+		wxASSERT(false);
+		return false;
+	}
+
+	// gaps shouldn't go past file anymore either
+	if (gapend >= m_filesize) {
+		wxASSERT(false);
+		gapend = m_filesize - 1;	// fix it
+	}
+	return true;
 }

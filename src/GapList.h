@@ -40,6 +40,8 @@ private:
 	uint32 m_sizeLastPart;
 	// get size of any part
 	uint32 GetPartSize(uint16 part) const { return part == m_lastPart ? m_sizeLastPart : PARTSIZE; }
+	// check arguments, clip end, false: error
+	inline bool ArgCheck(uint64 gapstart, uint64 &gapend) const;
 public:
 	// destruct
 	~CGapList() { clear(); }
