@@ -13,6 +13,8 @@ Version 2.3.0 - The river knows.
 		  in the Kad network, which is not based on our local routing table.
 		  (port from eMule v0.49b)
 		* Added another common URN ID to the Magnet link handler.
+		* Switch to the 'busy' cursor while bringing up the preferences
+		  window.
 
 	Greek:
 		* Part number is now an extra column in the download list
