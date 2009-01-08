@@ -125,7 +125,8 @@ public:
 	
 	bool    CheckShowItemInGivenCat(int inCategory);
 
-	bool	IsComplete(uint64 start, uint64 end);
+	bool	IsComplete(uint64 start, uint64 end)	{ return m_gaplist.IsComplete(start, end); }
+	bool	IsComplete(uint16 part)					{ return m_gaplist.IsComplete(part); }
 	
 	void	UpdateCompletedInfos();
 

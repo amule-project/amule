@@ -199,6 +199,13 @@ bool CGapList::IsComplete(uint64 gapstart, uint64 gapend) const
 	return true;
 }
 
+bool CGapList::IsComplete(uint16 part) const
+{
+	uint64 partstart = part * PARTSIZE;
+	uint64 partend = partstart + GetPartSize(part) - 1;
+	return IsComplete(partstart, partend);
+}
+
 void CGapList::clear()
 {
 	DeleteContents(m_gaplist);

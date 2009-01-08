@@ -684,7 +684,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	} else {
 		m_hashsetneeded = false;
 		for (size_t i = 0; i < m_hashlist.size(); ++i) {
-			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
+			if (IsComplete(i)) {
 				SetPartFileStatus(PS_READY);
 			}
 		}
@@ -1143,7 +1143,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			uint64 partStart = i * PARTSIZE;
 			uint64 partEnd   = partStart + GetPartSize(i) - 1;
 			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == GetPartHash(i)))){
-				if (IsComplete(partStart, partEnd)) {
+				if (IsComplete(i)) {
 					CMD4Hash wronghash;
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
@@ -1160,16 +1160,16 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 						% wronghash.Encode()
 						% GetPartHash(i).Encode() );
 				
-					AddGap(partStart, partEnd);
+					AddGap(i);
 					errorfound = true;
 				}
 			} else {
-				if (!IsComplete(partStart, partEnd)){
+				if (!IsComplete(i)){
 					AddLogLineM(false, CFormat( _("Found completed part (%i) in %s") )
 						% ( i + 1 )
 						% GetFileName() );
 
-					FillGap(partStart, partEnd);
+					FillGap(i);
 					RemoveBlockFromList(partStart, partEnd);
 				}
 			}						
@@ -1336,7 +1336,7 @@ void CPartFile::WritePartStatus(CMemFile* file)
 	while (done != parts){
 		uint8 towrite = 0;
 		for (uint32 i = 0;i != 8;++i) {
-			if (IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)) {
+			if (IsComplete(i)) {
 				towrite |= (1<<i);
 			}
 			++done;
@@ -2872,11 +2872,11 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	// security sanitize check to make sure we do not write anything into an already hashed complete chunk
 	const uint64 nStartChunk = start / PARTSIZE;
 	const uint64 nEndChunk = end / PARTSIZE;
-	if (IsComplete(PARTSIZE * (uint64)nStartChunk, (PARTSIZE * (uint64)(nStartChunk + 1)) - 1)) {
+	if (IsComplete(nStartChunk)) {
 		AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (start): %u-%u; File=%s")) % start % end % GetFileName());
 		return 0;
 	} else if (nStartChunk != nEndChunk) {
-		if (IsComplete(PARTSIZE * (uint64)nEndChunk, (PARTSIZE * (uint64)(nEndChunk + 1)) - 1)) {
+		if (IsComplete(nEndChunk)) {
 			AddDebugLogLineM(false, logPartFile, CFormat(wxT("Received data touches already hashed chunk - ignored (end): %u-%u; File=%s")) % start % end % GetFileName());
 			return 0;
 		}
@@ -3028,12 +3028,12 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		uint32 partRange = GetPartSize(partNumber) - 1;
 	
 		// Is this 9MB part complete
-		if (IsComplete(PARTSIZE * partNumber, PARTSIZE * partNumber + partRange)) {
+		if (IsComplete(partNumber)) {
 			// Is part corrupt
 			if (!HashSinglePart(partNumber)) {
 				AddLogLineM(true, CFormat(
 					_("Downloaded part %i is corrupt in file: %s") ) % partNumber % GetFileName() );
-				AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
+				AddGap(partNumber);
 				// add part to corrupted list, if not already there
 				if (!IsCorruptedPart(partNumber)) {
 					m_corrupted_list.push_back(partNumber);
@@ -3072,7 +3072,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				++m_iTotalPacketsSavedDueToICH;
 				
 				uint64 uMissingInPart = m_gaplist.GetGapSize(partNumber);					
-				FillGap(PARTSIZE*partNumber,(PARTSIZE*partNumber+partRange));
+				FillGap(partNumber);
 				RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
 
 				// remove from corrupted list
@@ -3348,7 +3348,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	FlushBuffer(true);
 	uint32 length = GetPartSize(nPart);
 	// if the part was already ok, it would now be complete
-	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
+	if (IsComplete(nPart)){
 		AddDebugLogLineM( false, logAICHRecovery,
 			wxString::Format( wxT("Processing AICH Recovery data: The part (%u) is already complete, canceling"), nPart ) );
 		return;
@@ -3398,7 +3398,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 
 	// ok now some sanity checks
-	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
+	if (IsComplete(nPart)){
 		// this is a bad, but it could probably happen under some rare circumstances
 		// make sure that MD4 agrres to this fact too
 		if (!HashSinglePart(nPart)){
@@ -3406,7 +3406,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 				wxString::Format(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part"), nPart));
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
-			AddGap(PARTSIZE*nPart, ((nPart*PARTSIZE)+length)-1);
+			AddGap(nPart);
 			wxASSERT( false );
 			return;
 		}
@@ -3836,11 +3836,6 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 	}
 	
 	return IsNotFiltered && IsInCat;
-}
-
-bool CPartFile::IsComplete(uint64 start, uint64 end)
-{
-	return m_gaplist.IsComplete(start, end);
 }
 
 
