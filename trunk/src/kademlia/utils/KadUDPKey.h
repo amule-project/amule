@@ -32,20 +32,14 @@
 namespace Kademlia
 {
 
-#ifdef __WXDEBUG__
-#	define	WXDEBUGONLY(x)	x
-#else
-#	define	WXDEBUGONLY(x)
-#endif
-
 class CKadUDPKey
 {
       public:
-	CKadUDPKey(uint32_t WXDEBUGONLY(zero) = 0) throw()			{ wxASSERT(zero == 0); m_key = m_ip = 0; }
+	CKadUDPKey(uint32_t WXUNUSED_UNLESS_DEBUG(zero) = 0) throw()			{ wxASSERT(zero == 0); m_key = m_ip = 0; }
 	CKadUDPKey(uint32_t key, uint32_t ip) throw()				{ m_key = key; m_ip = ip; }
 	CKadUDPKey(CFileDataIO& file)						{ ReadFromFile(file); }
 	CKadUDPKey& operator=(const CKadUDPKey& k1) throw()			{ m_key = k1.m_key; m_ip = k1.m_ip; return *this; }
-	CKadUDPKey& operator=(const uint32_t WXDEBUGONLY(zero)) throw()		{ wxASSERT(zero == 0); m_key = m_ip = 0; return *this; }
+	CKadUDPKey& operator=(const uint32_t WXUNUSED_UNLESS_DEBUG(zero)) throw()		{ wxASSERT(zero == 0); m_key = m_ip = 0; return *this; }
 	friend bool operator==(const CKadUDPKey& k1, const CKadUDPKey& k2) throw() { return k1.GetKeyValue(k1.m_ip) == k2.GetKeyValue(k2.m_ip);}
 
 	uint32_t	GetKeyValue(uint32_t myIP) const throw()		{ return (myIP == m_ip) ? m_key : 0; }
@@ -57,9 +51,6 @@ class CKadUDPKey
 	uint32_t	m_key;
 	uint32_t	m_ip;
 };
-
-// don't pollute the preprocessor namespace
-#undef WXDEBUGONLY
 
 } // namespace Kademlia
 
