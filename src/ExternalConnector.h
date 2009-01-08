@@ -165,7 +165,7 @@ protected:
 	bool		m_KeepQuiet;
 	bool		m_Verbose;
 	CCommandTree	m_commands;
-	char *		m_appname;
+	const char *	m_appname;
 
 #if !wxUSE_GUI && defined(__WXMAC__)
 	virtual wxAppTraits* CreateTraits();
