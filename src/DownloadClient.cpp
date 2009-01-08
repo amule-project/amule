@@ -436,7 +436,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 					m_downPartStatus[done] = ((toread>>i)&1)? 1:0;
 				
 					if ( m_downPartStatus[done] ) {
-						if (!m_reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
+						if (!m_reqfile->IsComplete(done)){
 							bPartsNeeded = true;
 							iNeeded++;
 						}
