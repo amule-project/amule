@@ -28,7 +28,6 @@ dist_webserver_DATA = \
 	fond_haut.png \
 	footer.php \
 	index.html \
-	kitty.gif \
 	loginfond.gif \
 	loginfond_haut.png \
 	loginlogo.jpg \
