@@ -35,11 +35,16 @@ namespace Kademlia
 class CKadUDPKey
 {
       public:
+#ifdef __WXDEBUG__
 	CKadUDPKey(uint32_t zero = 0) throw()					{ wxASSERT(zero == 0); m_key = m_ip = 0; }
+	CKadUDPKey& operator=(const uint32_t zero) throw()		{ wxASSERT(zero == 0); m_key = m_ip = 0; return *this; }
+#else
+	CKadUDPKey(uint32_t = 0) throw()						{ m_key = m_ip = 0; }
+	CKadUDPKey& operator=(const uint32_t) throw()			{ m_key = m_ip = 0; return *this; }
+#endif
 	CKadUDPKey(uint32_t key, uint32_t ip) throw()				{ m_key = key; m_ip = ip; }
 	CKadUDPKey(CFileDataIO& file)						{ ReadFromFile(file); }
 	CKadUDPKey& operator=(const CKadUDPKey& k1) throw()			{ m_key = k1.m_key; m_ip = k1.m_ip; return *this; }
-	CKadUDPKey& operator=(const uint32_t zero) throw()			{ wxASSERT(zero == 0); m_key = m_ip = 0; return *this; }
 	friend bool operator==(const CKadUDPKey& k1, const CKadUDPKey& k2) throw() { return k1.GetKeyValue(k1.m_ip) == k2.GetKeyValue(k2.m_ip);}
 
 	uint32_t	GetKeyValue(uint32_t myIP) const throw()		{ return (myIP == m_ip) ? m_key : 0; }
