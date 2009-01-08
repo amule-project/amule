@@ -11,6 +11,8 @@ Version 2.3.0 - The river knows.
 		* Extendable list-control settings save/load code
 		* Implemented an alternate method to estimate the real user count
 		  in the Kad network, which is not based on our local routing table.
+		  (port from eMule v0.49b)
+		* Added another common URN ID to the Magnet link handler.
 
 	Greek:
 		* Part number is now an extra column in the download list
