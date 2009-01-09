@@ -64,12 +64,15 @@
 	obj->m_name = stag.stringValue;;
 	
 	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
+	NSLog(@"[EC]: added partfile [%@]\n", obj->m_name);
 	[obj updateFromEC:tag];
 	
 	return obj;
 }
 
 - (void)updateFromEC:(ECTagMD5 *) tag {
+	NSLog(@"[EC]: updating partfile [%@]\n", m_name);
+	
 	m_size_done = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_DONE];
 	m_size_xfer = [tag tagInt64ByName:EC_TAG_PARTFILE_SIZE_XFER];
 	
@@ -80,6 +83,36 @@
 	m_xfer_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_XFER];
 	m_a4af_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_A4AF];
 	
+}
+
+- (NSString *)prioToString:(int)prio {
+	NSString *s = nil;
+	switch (prio) {
+		case 0:
+			s = @"Low";
+			break;
+		case 1:
+			s = @"Normal";
+			break;
+		case 2:
+			s = @"High";
+			break;
+		case 3:
+			s = @"Very High";
+			break;
+		case 4:
+			s = @"Very Low";
+			break;
+		case 5:
+			s = @"Auto";
+			break;
+		case 6:
+			s = @"PowerShare";
+			break;
+		default:
+			break;
+	}
+	return s;
 }
 
 @end
@@ -103,6 +136,10 @@
 	[m_file_dict setObject:object forKey:objKey];
 	[m_file_array addObject:object];
 	
+	[self reloadGui];
+}
+
+- (void)reloadGui {
 	if ([m_gui_controller respondsToSelector:@selector(reload)]) {
 		[m_gui_controller performSelector:@selector(reload)];
 	} else {
@@ -123,6 +160,8 @@
 	id key = [curr_obj key];
 	[m_file_dict removeObjectForKey:key];
 	[m_file_array removeObjectAtIndex:index];
+
+	[self reloadGui];
 }
 
 - (void)removeAtKey:(id)key {
@@ -140,6 +179,8 @@
 	} else {
 		NSLog(@"Internal error: object not found in array\n");
 	}
+
+	[self reloadGui];
 }
 
 - (void)setGuiController:(id)controller {
@@ -182,23 +223,31 @@
 	}
 }
 
+- (void)handleError {
+		NSRunCriticalAlertPanel(@"Daemon communication error", 
+						@"Connection with core daemon (amuled) failed",
+						@"Quit", nil,nil);
+		exit(-1);
+}
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet {
 	for (ECTag *t in packet.subtags) {
 		if ( [t isKindOfClass:[ECTagMD5 class]] ) {
 			ECTagMD5 *tag = (ECTagMD5 *)t;
-			ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
-			if ( nametag != nil ) {
-				ECTagString *stag = (ECTagString *)nametag;
-				NSString *str = stag.stringValue;
-				printf("FILE: %s\n", [str UTF8String]);
-				DownloadingFile *file = [DownloadingFile createFromEC:tag];
-
-				[m_downloads insertObject:file];
+			if ( [tag tagCount] == 0 ) {
+				//
+				// Only hash here - indication to remove the object
+				//
+				[m_downloads removeAtKey:[tag stringKey]];
 			} else {
-				DownloadingFile *file = [m_downloads objectForKey:[tag stringKey]];
-				[file updateFromEC:tag];
-				printf("FILE: no-name-received\n");
+				ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
+				if ( nametag != nil ) {
+					DownloadingFile *file = [DownloadingFile createFromEC:tag];
+					[m_downloads insertObject:file];
+				} else {
+					DownloadingFile *file = [m_downloads objectForKey:[tag stringKey]];
+					[file updateFromEC:tag];
+				}
 			}
 		} else {
 			NSLog(@"[EC] bad tag type '%s'\n", [t class]);
