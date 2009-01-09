@@ -4,6 +4,7 @@
 #import "DownloadsViewController.h"
 
 #include <unistd.h>
+#include <signal.h>
 
 @implementation AppController
 
@@ -62,6 +63,13 @@
 		[m_dload_controller performSelector:@selector(saveGui)];
 	}
 	
+	if ( m_daemon_pid ) {
+		//
+		// started in local mode - terminate daemon
+		//
+		kill(m_daemon_pid, SIGTERM);
+	}
+
 	NSLog(@"Exiting ...\n");
 }
 
@@ -75,7 +83,9 @@
 	
 	NSString *targetaddr = 0;
 	int targetport = 0;
-
+	NSString *core_pass = nil;
+	
+	m_daemon_pid = 0;
 	if ( (mode != nil) && ([mode compare:@"guitest"] == NSOrderedSame) ) {
 		[m_dload_tableview reloadData];
 		NSLog(@"Started in GUI test mode - will not connect to core");

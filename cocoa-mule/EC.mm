@@ -169,6 +169,9 @@
 	return value;
 }
 
+- (int)tagCount {
+	return [m_subtags count];
+}
 
 @end
 
@@ -648,11 +651,17 @@
 			unsigned int len = [m_rxbuf length];
 
             len = [(NSInputStream *)stream read:data_ptr + m_rx_size maxLength:len];
+#ifdef EC_RX_DEBUG
 			NSLog(@"[EC] receiving %d bytes, %d in total, %d remaining\n", len, m_rx_size, m_remaining_size);
+#endif
 			if ( len == 0 ) {
 				//
 				// Remote side must be closed connection
 				//
+				m_error = true;
+				if ( [delegate respondsToSelector:@selector(handleError)] ) {
+					[delegate handleError];
+				}
 			}
 			int total_len = len;
 			int packet_offset = 0;
@@ -670,7 +679,9 @@
 						int delta = 8 - m_rx_size;
 
 						m_remaining_size = ntohl(val32) - (len - delta);
+#ifdef EC_RX_DEBUG
 						NSLog(@"[EC] rx got flags+size, remaining count %d\n", m_remaining_size);
+#endif
 					} else {
 						m_remaining_size -= len;
 					}
@@ -690,9 +701,11 @@
 					if ( m_login_requested ) {
 						m_login_requested = false;
 						m_login_ok = packet.opcode == EC_OP_AUTH_OK;
-						NSLog(@"[EC] server reply: %@\n", m_login_ok ? @"login OK" : @"login FAILED");
+						NSLog(@"[EC] server reply to login request: %@\n", m_login_ok ? @"login OK" : @"login FAILED");
 					} else {
+#ifdef EC_RX_DEBUG
 						NSLog(@"[EC] calling delegate\n");
+#endif
 						if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
 							[delegate handlePacket: packet];
 						}

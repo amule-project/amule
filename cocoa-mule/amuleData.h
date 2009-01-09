@@ -29,6 +29,8 @@
 	uint64_t m_size_done;
 	uint64_t m_size_xfer;
 	
+	int m_prio;
+	
 	int m_speed;
 	
 }
@@ -36,6 +38,8 @@
 + (id)createFromEC:(ECTagMD5 *) tag;
 
 - (void)updateFromEC:(ECTagMD5 *) tag;
+
+- (NSString *)prioToString:(int)prio;
 
 @property (readonly) int src_count;
 @property (readonly) int non_current_src_count;
@@ -71,6 +75,8 @@
 
 - (void)setGuiController:(id)controller;
 
+- (void)reloadGui;
+
 @end
 
 @interface amuleData : NSObject {
@@ -98,6 +104,7 @@
 // Binding to EC
 //
 - (void)handlePacket:(ECPacket *) packet;
+- (void)handleError;
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet;
 - (void)handleStatusUpdate:(ECPacket *) packet;

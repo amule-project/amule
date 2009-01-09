@@ -20,6 +20,7 @@
 - (void)writeSubtagsToSocket:(NSOutputStream *) socket;
 
 - (int)getSize;
+- (int)tagCount;
 
 - (id)tagByName:(ECTagNames) tagname;
 
