@@ -81,8 +81,8 @@
 	
 	[[NSApplication sharedApplication] setDelegate:self];
 	
-	NSString *targetaddr = 0;
-	int targetport = 0;
+	m_targetaddr = 0;
+	m_targetport = 0;
 	NSString *core_pass = nil;
 	
 	m_daemon_pid = 0;
@@ -93,25 +93,26 @@
 	}	
 
 	if ( (mode != nil) && ([mode compare:@"remote"] == NSOrderedSame) ) {
-		targetaddr = @"127.0.0.1";
-		targetport = 4712;
+		m_targetaddr = @"127.0.0.1";
+		m_targetaddr = @"localhost";
+		m_targetport = 4712;
 		if (![self askCoreParams] ) {
 			// "Cancel" selected on login dialog
-			exit(0);
+			[[NSApplication sharedApplication] terminate:self];
 		}
-		[[NSUserDefaults standardUserDefaults] setObject:targetaddr forKey:@"LastTargetHost"];
-		[[NSUserDefaults standardUserDefaults] setInteger:targetport forKey:@"LastTargetPort"];
+		[[NSUserDefaults standardUserDefaults] setObject:m_targetaddr forKey:@"LastTargetHost"];
+		[[NSUserDefaults standardUserDefaults] setInteger:m_targetport forKey:@"LastTargetPort"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
-		NSLog(@"Remote mode selected, target=%@:%d\n", targetaddr, targetport);
+		NSLog(@"Remote mode selected, target=%@:%d\n", m_targetaddr, m_targetport);
 	} else {
 		NSLog(@"Local mode selected - starting daemon\n");
-		targetaddr = @"127.0.0.1";
-		targetport = 4712;
+		m_targetaddr = @"127.0.0.1";
+		m_targetport = 4712;
 		if ( [self startDaemon] == -1 ) {
 			NSRunCriticalAlertPanel(@"Daemon startup error", 
 							@"Unable to start core daemon (amuled)",
 							@"OK", nil,nil);
-			exit(-1);
+			[[NSApplication sharedApplication] terminate:self];
 		}
 	}
 	
@@ -134,7 +135,7 @@
 	//
 	for(int i = 0; i < 3; i++) {
 		sleep(1);
-		[m_connection connectToAddress:targetaddr withPort:targetport];
+		[m_connection connectToAddress:m_targetaddr withPort:m_targetport];
 		[m_connection sendLogin:@"123456"];
 		if ( !m_connection.error ) {
 			break;

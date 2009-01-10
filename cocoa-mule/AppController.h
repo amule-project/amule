@@ -14,6 +14,9 @@
 	amuleData *m_data;
 	
 	int m_daemon_pid;
+
+	NSString *m_targetaddr;
+	int m_targetport;
 }
 - (IBAction)show_Networks:(id)sender;
 - (IBAction)show_Search:(id)sender;
