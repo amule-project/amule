@@ -3562,6 +3562,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	SetFileName(CPath(tag->FileName()));
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
+	m_gaplist.Init(GetFileSize(), true);	// Init empty
 	m_partmetfilename = CPath(tag->PartMetName());
 	transferred = tag->SizeXfer();
 	percentcompleted = (100.0*completedsize) / GetFileSize();
