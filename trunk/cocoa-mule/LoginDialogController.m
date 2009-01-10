@@ -36,6 +36,11 @@
 
 - (IBAction)closeOK:(id)sender {
 	m_dlg_result = true;
+	
+	m_host = [m_host_field stringValue];
+	m_port = [m_port_field stringValue];
+	m_pass = [m_pass_field stringValue];
+	
     [NSApp stopModal];
 }
 

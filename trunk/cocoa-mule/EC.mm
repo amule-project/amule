@@ -565,12 +565,44 @@
 	[super dealloc];
 }
 
+- (bool)isIpv4Address:(NSString *) address {
+	NSArray *ar = [address componentsSeparatedByString:@"."];
+	if ( [ar count] != 4 ) {
+		return false;
+	}
+	for (NSString *s in ar) {
+		const char *p = [s UTF8String];
+		while ( *p ) {
+			if ( !isdigit(*p) ) {
+				return false;
+			}
+			p++;
+		}
+	}
+	return true;
+}
 
 - (void)connectToAddress:(NSString *) hostname withPort:(int)trgport {
 	m_error = false;
 	
-//	NSHost *host = [NSHost hostWithName:hostname];
-	NSHost *host = [NSHost hostWithAddress:hostname];
+	NSHost *host = [NSHost hostWithName:hostname];
+	NSString *addr = nil;
+	
+	//
+	// On Mac localhost has ipv6 address (linklocal), but amuled listen
+	// only on ipv4
+	//
+	for (NSString *ad in host.addresses) {
+		NSLog(@"host have address=%@ is_ipv4=%d\n", ad, [self isIpv4Address:ad]);
+		if ( [self isIpv4Address:ad] ) {
+			addr = ad;
+			break;
+		}
+	}
+	if ( addr == nil ) {
+		return;
+	}
+	host = [NSHost hostWithAddress:addr];
 
 	[NSStream getStreamsToHost:host port:trgport inputStream:&m_istream outputStream:&m_ostream];
 

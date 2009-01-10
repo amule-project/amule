@@ -9,6 +9,7 @@
     IBOutlet NSTextField *m_pass_field;
 
 	bool m_dlg_result;
+	NSString *m_host, *m_port, *m_pass;
 }
 
 - (bool)showDlg:(NSWindow *)window;
