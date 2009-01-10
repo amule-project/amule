@@ -240,9 +240,10 @@
 				//
 				[m_downloads removeAtKey:[tag stringKey]];
 			} else {
-				ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
-				if ( nametag != nil ) {
-					DownloadingFile *file = [DownloadingFile createFromEC:tag];
+				NSLog(@"[EC] filehash=[%@]\n", [tag stringKey]);
+				DownloadingFile *file = [m_downloads objectForKey:[tag stringKey]];
+				if ( file == nil ) {
+					file = [DownloadingFile createFromEC:tag];
 					[m_downloads insertObject:file];
 				} else {
 					DownloadingFile *file = [m_downloads objectForKey:[tag stringKey]];
