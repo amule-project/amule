@@ -66,7 +66,7 @@ public:
 	 * Setting this sets the width the bar which is used when it
 	 * is drawn and resets the pixel buffer to the fill color.
 	 */
-	void SetWidth(unsigned width);
+	void SetWidth(int width);
 
 	/**
 	 * Sets the height of the drawn bar.
