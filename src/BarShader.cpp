@@ -66,7 +66,7 @@ void CBarShader::SetHeight(unsigned height)
 }
 
 
-void CBarShader::SetWidth(unsigned width)
+void CBarShader::SetWidth(int width)
 {
 	if (width > 0) {
 		m_Width = width;
