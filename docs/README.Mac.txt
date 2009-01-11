@@ -42,7 +42,7 @@ There are basically four ways to download files with aMule:
 
 Setting up aMule's video preview feature:
 -----------------------------------------
-You can use a video player like VLC or Mplayer to preview incomplete downloads of video files. To set up aMule properly for this, go to Preferences -> Directories. Under "Video Player", you have to enter "/usr/bin/open -a" together with the path of your video player program.
+You can use a video player like VLC or Mplayer to preview incomplete downloads of video files. To set up aMule properly for this, go to Preferences -> General. Under "Video Player", you have to enter "/usr/bin/open -a" together with the path of your video player program.
 
 For example:
 /usr/bin/open -a "/Applications/VLC.app"
