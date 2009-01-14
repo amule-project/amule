@@ -55,6 +55,7 @@
 		B2499CCD0E7CBBF400F67575 /* Toolbar_Shared.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA40E7CBBF400F67575 /* Toolbar_Shared.png */; };
 		B2499CCE0E7CBBF400F67575 /* Toolbar_Stats.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */; };
 		B2499CCF0E7CBBF400F67575 /* Toolbar_Transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */; };
+		B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B257A4540F1A7AD800DC958E /* SearchViewController.mm */; };
 		B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */; };
 		B2CDC5AD0E9541D5009370D9 /* amuleData.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CDC5AC0E9541D5009370D9 /* amuleData.mm */; };
 		B2DD60230E7BC65400987099 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2DD60220E7BC65400987099 /* AppController.mm */; };
@@ -119,6 +120,8 @@
 		B2499CA40E7CBBF400F67575 /* Toolbar_Shared.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Shared.png; sourceTree = "<group>"; };
 		B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Stats.png; sourceTree = "<group>"; };
 		B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Transfers.png; sourceTree = "<group>"; };
+		B257A4530F1A7AD800DC958E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		B257A4540F1A7AD800DC958E /* SearchViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchViewController.mm; sourceTree = "<group>"; };
 		B29E77B50EFC357600F4C677 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/LoginDialog.nib; sourceTree = "<group>"; };
 		B2B307A20F05470200AE5E79 /* DownloadsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadsViewController.h; sourceTree = "<group>"; };
 		B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DownloadsViewController.mm; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				B2CDC5AC0E9541D5009370D9 /* amuleData.mm */,
 				B2B307A20F05470200AE5E79 /* DownloadsViewController.h */,
 				B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */,
+				B257A4530F1A7AD800DC958E /* SearchViewController.h */,
+				B257A4540F1A7AD800DC958E /* SearchViewController.mm */,
 				32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */,
 			);
 			name = Classes;
@@ -387,6 +392,7 @@
 				B2CDC5AD0E9541D5009370D9 /* amuleData.mm in Sources */,
 				B20E7E360EFD322C00EF0D8D /* LoginDialogController.m in Sources */,
 				B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */,
+				B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

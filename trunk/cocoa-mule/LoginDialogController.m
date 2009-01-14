@@ -2,6 +2,10 @@
 
 @implementation LoginDialogController
 
+@synthesize host = m_host;
+@synthesize pass = m_pass;
+@synthesize port = m_port;
+
 - (bool)showDlg:(NSWindow *)window {
 	if ( m_dlg == nil ) {
 		[NSBundle loadNibNamed: @"LoginDialog" owner: self];
@@ -38,7 +42,8 @@
 	m_dlg_result = true;
 	
 	m_host = [m_host_field stringValue];
-	m_port = [m_port_field stringValue];
+	NSString *port = [m_port_field stringValue];
+	m_port = [port intValue];
 	m_pass = [m_pass_field stringValue];
 	
     [NSApp stopModal];

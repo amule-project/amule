@@ -51,6 +51,17 @@
 @property (readonly) uint64_t size_done;
 @property (readonly) uint64_t size_xfer;
 
+@end
+
+@interface SearchFile : amuleFile {
+	int m_src_count;
+}
+
++ (id)createFromEC:(ECTagMD5 *) tag;
+
+- (void)updateFromEC:(ECTagMD5 *) tag;
+
+@property (readonly) int src_count;
 
 @end
 

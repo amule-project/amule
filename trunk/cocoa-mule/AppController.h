@@ -9,6 +9,7 @@
 	IBOutlet id m_dload_tableview;
 	
 	IBOutlet id m_dload_controller;
+	IBOutlet id m_search_controller;
 	
 	ECRemoteConnection *m_connection;
 	amuleData *m_data;
@@ -17,6 +18,7 @@
 
 	NSString *m_targetaddr;
 	int m_targetport;
+	NSString *m_corepass;
 }
 - (IBAction)show_Networks:(id)sender;
 - (IBAction)show_Search:(id)sender;

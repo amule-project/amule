@@ -79,13 +79,13 @@
 	//
 	for (NSTableColumn *c in [m_tableview tableColumns]) {
 		NSString *columnId = [c identifier];
-		NSString *keyWidth = [NSString stringWithFormat:@"DownloadViewColumn_%@_Width", columnId];
+		NSString *keyWidth = [NSString stringWithFormat:@"DownloadView.Column_%@_Width", columnId];
 		int width = [[NSUserDefaults standardUserDefaults] integerForKey:keyWidth];
 		if ( width ) {
 			NSLog(@"Column %@ setting width %d\n", columnId, width);
 			[c setWidth:width];
 		}
-		NSString *keyHide = [NSString stringWithFormat:@"DownloadViewColumn_%@_Hide", columnId];
+		NSString *keyHide = [NSString stringWithFormat:@"DownloadView.Column_%@_Hide", columnId];
 		int hide = [[NSUserDefaults standardUserDefaults] integerForKey:keyHide];
 		[c setHidden:hide];
 	}
@@ -95,10 +95,10 @@
 	for (NSTableColumn *c in [m_tableview tableColumns]) {
 		NSString *columnId = [c identifier];
 
-		NSString *keyWidth = [NSString stringWithFormat:@"DownloadViewColumn_%@_Width", columnId];
+		NSString *keyWidth = [NSString stringWithFormat:@"DownloadView.Column_%@_Width", columnId];
 		[[NSUserDefaults standardUserDefaults] setInteger:c.width forKey:keyWidth];
 
-		NSString *keyHide = [NSString stringWithFormat:@"DownloadViewColumn_%@_Hide", columnId];
+		NSString *keyHide = [NSString stringWithFormat:@"DownloadView.Column_%@_Hide", columnId];
 		[[NSUserDefaults standardUserDefaults] setInteger:[c isHidden] forKey:keyHide];
 	}
 }
