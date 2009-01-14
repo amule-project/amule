@@ -39,9 +39,6 @@
 
 - (IBAction)show_Xfers:(id)sender {
 	[m_main_tabview selectTabViewItemAtIndex: 0];
-
-	ECPacket *p = [ECPacket packetWithOpcode:EC_OP_GET_DLOAD_QUEUE];
-	[m_connection sendPacket:p];
 }
 
 -(IBAction)show_Preferences:(id)sender {
@@ -52,7 +49,14 @@
 
 - (bool)askCoreParams {
 	LoginDialogController *dlg = [[LoginDialogController alloc] init];
-	return [dlg showDlg:nil];
+	
+	bool dlgResult = [dlg showDlg:nil];
+
+	m_targetaddr = dlg.host;
+	m_targetport = dlg.port;
+	m_corepass = dlg.pass;
+	
+	return dlgResult;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -63,6 +67,14 @@
 		[m_dload_controller performSelector:@selector(saveGui)];
 	}
 	
+	//
+	// Save main window
+	//
+	[[NSUserDefaults standardUserDefaults] setInteger:[m_main_tabview indexOfTabViewItem: [m_main_tabview selectedTabViewItem] ] forKey:@"activeTab"];
+	
+	//
+	// If we have slave daemon process, terminate it
+	//
 	if ( m_daemon_pid ) {
 		//
 		// started in local mode - terminate daemon
@@ -73,7 +85,13 @@
 	NSLog(@"Exiting ...\n");
 }
 
--(void)awakeFromNib {
+- (void)restoreMainWindow {
+	int activeTab = [[NSUserDefaults standardUserDefaults] integerForKey:@"activeTab"];
+	[m_main_tabview selectTabViewItemAtIndex: activeTab];
+
+}
+
+- (void)awakeFromNib {
 	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 	NSString *mode = [args stringForKey:@"mode"];
 	NSLog(@"amule controller started, mode = [%@]\n", mode);
@@ -81,9 +99,11 @@
 	
 	[[NSApplication sharedApplication] setDelegate:self];
 	
+	[self restoreMainWindow];
+	
 	m_targetaddr = 0;
 	m_targetport = 0;
-	NSString *core_pass = nil;
+	m_corepass = nil;
 	
 	m_daemon_pid = 0;
 	if ( (mode != nil) && ([mode compare:@"guitest"] == NSOrderedSame) ) {

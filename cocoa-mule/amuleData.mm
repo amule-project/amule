@@ -117,6 +117,24 @@
 
 @end
 
+@implementation SearchFile
+
+@synthesize src_count = m_src_count;
+
++ (id)createFromEC: (ECTagMD5 *) tag {
+	SearchFile *obj = [[SearchFile alloc] init];
+	
+	obj->m_hash = [tag getMD5Data];
+	
+	[obj updateFromEC:tag];
+	
+	return obj;
+}
+
+- (void)updateFromEC:(ECTagMD5 *) tag {
+}
+@end
+
 @implementation amuleFileSet
 
 - (id)init {
