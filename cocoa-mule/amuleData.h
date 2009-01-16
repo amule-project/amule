@@ -104,8 +104,13 @@
 
 	amuleFileSet *m_downloads;
 	amuleFileSet *m_shared;
+
+	//
+	// Search info
+	//
+	bool m_search_running;
 	amuleFileSet *m_search_results;
-	
+
 	ECRemoteConnection *m_connection;
 }
 
@@ -119,6 +124,10 @@
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet;
 - (void)handleStatusUpdate:(ECPacket *) packet;
+
+- (void)startSearch:(NSString *)text searchType:(EC_SEARCH_TYPE)searchType
+	minSize:(uint64_t)minSize maxSize:(uint64_t)maxSize avail:(uint32_t)avail;
+- (void)stopSearch;
 
 @property (readonly) amuleFileSet *downloads;
 @property (readonly) amuleFileSet *shared;

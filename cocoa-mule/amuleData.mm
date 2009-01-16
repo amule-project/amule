@@ -277,4 +277,37 @@
 - (void)handleStatusUpdate:(ECPacket *) packet {
 }
 
+- (void)startSearch:(NSString *)text searchType:(EC_SEARCH_TYPE)searchType
+	minSize:(uint64_t)minSize maxSize:(uint64_t)maxSize avail:(uint32_t)avail {
+
+	ECPacket *packet = [ECPacket packetWithOpcode:EC_OP_SEARCH_START];
+
+	ECTagInt8 *searchtag = [ECTagInt8 tagFromInt8:searchType withName:EC_TAG_SEARCH_TYPE];
+
+	[searchtag.subtags addObject:[ECTagString tagFromString:text withName:EC_TAG_SEARCH_NAME]];
+	if ( minSize ) {
+		[searchtag.subtags addObject:[ECTagInt64 tagFromInt64:minSize withName:EC_TAG_SEARCH_MIN_SIZE]];
+	}
+	if ( maxSize ) {
+		[searchtag.subtags addObject:[ECTagInt64 tagFromInt64:maxSize withName:EC_TAG_SEARCH_MAX_SIZE]];
+	}
+	if ( avail ) {
+		[searchtag.subtags addObject:[ECTagInt32 tagFromInt32:avail withName:EC_TAG_SEARCH_AVAILABILITY]];
+	}
+	
+	[packet.subtags addObject:searchtag];
+	
+	[m_connection sendPacket:packet];
+	
+	m_search_running = true;
+}
+
+- (void)stopSearch {
+	ECPacket *packet = [ECPacket packetWithOpcode:EC_OP_SEARCH_STOP];
+
+	[m_connection sendPacket:packet];
+	
+	m_search_running = false;
+}
+
 @end
