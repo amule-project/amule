@@ -194,7 +194,7 @@ public:
 	void		SetIP( uint32 val );
 	uint32		GetIP() const 			{ return m_dwUserIP; }
 	bool		HasLowID() const 		{ return IsLowID(m_nUserIDHybrid); }
-	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
+	wxString	GetFullIP() const		{ return Uint32toStringIP(m_FullUserIP); }
 	uint32		GetConnectIP() const		{ return m_nConnectIP; }
 	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
 	void		SetUserIDHybrid(uint32 val);
@@ -704,7 +704,7 @@ private:
 	uint8		m_byDataCompVer;
 	bool		m_bEmuleProtocol;
 	wxString	m_Username;
-	wxString	m_FullUserIP;
+	uint32		m_FullUserIP;
 	CMD4Hash	m_UserHash;
 	bool		m_HasValidHash;
 	uint16		m_nUDPPort;
