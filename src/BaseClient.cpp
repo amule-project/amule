@@ -119,7 +119,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 			m_nConnectIP = wxUINT32_SWAP_ALWAYS(in_userid);
 		}
 		// Will be on right endianess now
-		m_FullUserIP = Uint32toStringIP(m_nConnectIP);
+		m_FullUserIP = m_nConnectIP;
 	}
 
 	m_dwServerIP = in_serverip;
@@ -243,8 +243,7 @@ void CUpDownClient::Init()
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
-		m_FullUserIP = address.IPAddress();
-		SetIP(StringIPtoUint32(m_FullUserIP));
+		SetIP(StringIPtoUint32(address.IPAddress()));
 	} else {
 		SetIP(0);
 	}
@@ -614,8 +613,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
-		m_FullUserIP = address.IPAddress();
-		SetIP(StringIPtoUint32(m_FullUserIP));
+		SetIP(StringIPtoUint32(address.IPAddress()));
 	} else {
 		throw wxString(wxT("Huh, socket failure. Avoided crash this time."));
 	}
@@ -2348,7 +2346,7 @@ void CUpDownClient::SetIP( uint32 val )
 
 	m_nConnectIP = val;
 	
-	m_FullUserIP = Uint32toStringIP(val);
+	m_FullUserIP = val;
 }
 
 

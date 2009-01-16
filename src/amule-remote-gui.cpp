@@ -1152,7 +1152,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	// User IP:Port
 	m_nConnectIP = m_dwUserIP = tag->UserIP();
 	m_nUserPort = tag->UserPort();
-	m_FullUserIP = Uint32toStringIP(m_nConnectIP);
+	m_FullUserIP = m_nConnectIP;
 
 	// Server IP:Port
 	m_dwServerIP = tag->ServerIP();
