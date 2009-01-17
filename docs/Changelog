@@ -2,6 +2,10 @@ Version 2.3.0 - The river knows.
 ----------
 2009-??-??
 
+	freddy77:
+		* Various optimizations of memory usage
+		* Read files for hashing/sharing using mapped memory
+
 	FreeToGo:
 		* Add comment to desktop file to allow autostart in Gnome
 
