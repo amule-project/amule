@@ -577,6 +577,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		restart_needed_msg += _("- Temp folder changed.\n");
 	}
 
+	if (CfgChanged(IDC_NETWORKED2K) && thePrefs::GetNetworkED2K()) {
+		restart_needed = true;
+		restart_needed_msg += _("- ED2K network enabled.\n");
+	}
+
 	if (CfgChanged(IDC_INCFILES) || CfgChanged(IDC_TEMPFILES) || m_ShareSelector->HasChanged ) {
 		theApp->sharedfiles->Reload();
 	}
