@@ -373,16 +373,15 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 
 void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
-	byte* output = new byte[togo+300];
 	uLongf newsize = togo+300;
-	uint16 result = compress2(output, &newsize, buffer, togo,9);
+	CScopedArray<byte> output(new byte[newsize]);
+	uint16 result = compress2(output.get(), &newsize, buffer, togo, 9);
 	if (result != Z_OK || togo <= newsize){
-		delete[] output;
 		CreateStandartPackets(buffer, togo, currentblock);
 		return;
 	}
 	
-	CMemFile memfile(output,newsize);
+	CMemFile memfile(output.get(), newsize);
 	
 	uint32 totalPayloadSize = 0;
 	uint32 oldSize = togo;
@@ -431,7 +430,6 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "), (isLargeBlock ? wxT("OP_COMPRESSEDPART_I64") : wxT("OP_COMPRESSEDPART"))) + GetFullIP() );
 		m_socket->SendPacket(packet,true,false, payloadSize);			
 	}
-	delete[] output;
 }
 
 
