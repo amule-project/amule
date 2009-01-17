@@ -185,6 +185,7 @@ private:
 
 
 class CSearchFile;
+class CFile;
 
 
 class CKnownFile : public CAbstractFile
@@ -331,7 +332,7 @@ protected:
 	ArrayOfCMD4Hash m_hashlist;
 	CPath	m_filePath;	
 
-	static void CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
+	static void CreateHashFromFile(CFile& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 
 	bool	m_bCommentLoaded;

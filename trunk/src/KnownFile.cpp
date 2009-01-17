@@ -50,6 +50,7 @@
 #include "ScopedPtr.h"		// Needed for CScopedArray and CScopedPtr
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "SearchFile.h"		// Needed for CSearchFile
+#include "FileArea.h"		// Needed for CFileArea
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
@@ -768,14 +769,14 @@ void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash*
 }
 
 
-void CKnownFile::CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
+void CKnownFile::CreateHashFromFile(CFile& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
 {
-	wxCHECK_RET(file && Length, wxT("No input to hash from in CreateHashFromFile"));
-	
-	std::vector<byte> buffer(Length);
-	file->Read(&buffer[0], Length);
+	wxCHECK_RET(Length, wxT("No input to hash from in CreateHashFromFile"));
 
-	CreateHashFromInput(&buffer[0], Length, Output, pShaHashOut);
+	CFileArea area;
+	area.Read(file, Length);
+ 
+	CreateHashFromInput(area.GetBuffer(), Length, Output, pShaHashOut);
 }	
 
 

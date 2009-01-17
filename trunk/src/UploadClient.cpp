@@ -45,6 +45,7 @@
 #include <common/Format.h>
 #include "ScopedPtr.h"		// Needed for CScopedArray
 #include "GuiEvents.h"		// Needed for Notify_*
+#include "FileArea.h"		// Needed for CFileArea
 
 
 //	members of CUpDownClient
@@ -211,7 +212,6 @@ void CUpDownClient::CreateNextBlockPackage()
 		return;
 	}
 
-	CFile file;
 	CPath fullname;
 	try {
 	// Buffer new data if current buffer is less than 100 KBytes
@@ -260,9 +260,10 @@ void CUpDownClient::CreateNextBlockPackage()
 			if (togo > EMBLOCKSIZE * 3) {
 				throw wxString(wxT("Client requested too large of a block."));
 			}
-		
-			CScopedArray<byte> filedata(NULL);	
+
+			CFileArea area;
 			if (!srcfile->IsPartFile()){
+				CFile file;
 				if ( !file.Open(fullname, CFile::read) ) {
 					// The file was most likely moved/deleted. However it is likely that the
 					// same is true for other files, so we recheck all shared files. 
@@ -270,16 +271,10 @@ void CUpDownClient::CreateNextBlockPackage()
 					theApp->sharedfiles->RemoveFile(srcfile);
 					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
-				}			
-			
-				file.Seek(currentblock->StartOffset, wxFromStart);
-				
-				filedata.reset(new byte[togo + 500]);
-				file.Read(filedata.get(), togo);
-				file.Close();
+				}
+				area.Read(file, togo);
 			} else {
-				filedata.reset(new byte[togo + 500]);
-				if (!((CPartFile*)srcfile)->ReadData(currentblock->StartOffset, filedata.get(), togo))
+				if (!((CPartFile*)srcfile)->ReadData(area, currentblock->StartOffset, togo))
 					throw wxString(wxT("Failed to read from requested partfile"));
 			}
 
@@ -295,9 +290,9 @@ void CUpDownClient::CreateNextBlockPackage()
 
 			// check extention to decide whether to compress or not
 			if (m_byDataCompVer == 1 && GetFiletype(srcfile->GetFileName()) != ftArchive) {
-				CreatePackedPackets(filedata.get(), togo,currentblock);
+				CreatePackedPackets(area.GetBuffer(), togo, currentblock);
 			} else {
-				CreateStandartPackets(filedata.get(), togo,currentblock);
+				CreateStandartPackets(area.GetBuffer(), togo, currentblock);
 			}
 			
 			// file statistic

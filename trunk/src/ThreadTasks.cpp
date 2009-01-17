@@ -217,7 +217,7 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(file->GetPosition(), partLength);
 	}
 
-	owner->CreateHashFromFile(file, partLength, md4Hash, aichHash);
+	owner->CreateHashFromFile(*file, partLength, md4Hash, aichHash);
 	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash

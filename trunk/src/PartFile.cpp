@@ -63,6 +63,7 @@
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "DataToText.h"		// Needed for OriginToText()
 #include "PlatformSpecific.h"	// Needed for CreateSparseFile()
+#include "FileArea.h"		// Needed for CFileArea
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
@@ -2287,7 +2288,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		uint32 length = GetPartSize(partnumber);
 		try {
 			m_hpartfile.Seek(offset, wxFromStart);
-			CreateHashFromFile(&m_hpartfile, length, &hashresult, NULL);
+			CreateHashFromFile(m_hpartfile, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
@@ -3108,7 +3109,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 
 // read data for upload, return false on error
-bool CPartFile::ReadData(uint64 offset, byte * adr, uint32 toread)
+bool CPartFile::ReadData(CFileArea & area, uint64 offset, uint32 toread)
 {
 	// Sanity check
 	if (offset + toread > GetFileSize()) {
@@ -3119,7 +3120,7 @@ bool CPartFile::ReadData(uint64 offset, byte * adr, uint32 toread)
 	}
 
 	m_hpartfile.Seek(offset, wxFromStart);
-	m_hpartfile.Read(adr, toread);
+	area.Read(m_hpartfile, toread);
 	// if it fails it throws (which the caller should catch)
 	return true;
 }
@@ -3365,7 +3366,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	CAICHHashTree htOurHash(pVerifiedHash->GetNDataSize(), pVerifiedHash->GetIsLeftBranch(), pVerifiedHash->GetNBaseSize());
 	try {
 		m_hpartfile.Seek(PARTSIZE * nPart,wxFromStart);
-		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
+		CreateHashFromFile(m_hpartfile, length, NULL, &htOurHash);
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logAICHRecovery,
 			CFormat(wxT("IO failure while hashing part-file '%s': %s"))

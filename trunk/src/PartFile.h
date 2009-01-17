@@ -459,7 +459,7 @@ public:
 	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller);
 
   // Read data for sharing
-	bool ReadData(uint64 offset, byte * adr, uint32 toread);
+	bool ReadData(class CFileArea & area, uint64 offset, uint32 toread);
 
 private:
 	/* downloading sources list */

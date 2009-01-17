@@ -319,6 +319,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\FileArea.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\FileDetailDialog.cpp"
 				>
 			</File>
@@ -762,6 +766,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\ExternalConnector.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\FileArea.h"
 				>
 			</File>
 			<File

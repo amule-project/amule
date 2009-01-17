@@ -203,6 +203,7 @@ remote_common_sources = \
 common_sources = \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
+	FileArea.cpp \
 	KnownFile.cpp \
 	GapList.cpp \
 	GetTickCount.cpp \
@@ -349,6 +350,7 @@ noinst_HEADERS = \
 		EncryptedStreamSocket.h \
 		ExternalConnector.h \
 		ExternalConn.h \
+		FileArea.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
 		FileLock.h \
