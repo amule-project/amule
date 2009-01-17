@@ -201,7 +201,7 @@ unsigned char* CFileDataIO::ReadBsob(uint8* puSize) const
 
 	*puSize = ReadUInt8();
 	
-	CScopedArray<unsigned char> bsob(new unsigned char[*puSize]);
+	CScopedArray<unsigned char> bsob(*puSize);
 	Read(bsob.get(), *puSize);
 	
 	return bsob.release();

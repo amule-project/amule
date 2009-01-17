@@ -369,7 +369,7 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
 	uLongf newsize = togo+300;
-	CScopedArray<byte> output(new byte[newsize]);
+	CScopedArray<byte> output(newsize);
 	uint16 result = compress2(output.get(), &newsize, buffer, togo, 9);
 	if (result != Z_OK || togo <= newsize){
 		CreateStandartPackets(buffer, togo, currentblock);

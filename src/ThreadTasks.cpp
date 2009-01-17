@@ -354,7 +354,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 			CAICHHash aichHash(&oldfile);
 			uint32 nHashCount = oldfile.ReadUInt16();
 			
-			CScopedArray<byte> buffer(new byte[nHashCount * CAICHHash::GetHashSize()]);
+			CScopedArray<byte> buffer(nHashCount * CAICHHash::GetHashSize());
 			
 			oldfile.Read(buffer.get(), nHashCount * CAICHHash::GetHashSize());
 			newfile.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
