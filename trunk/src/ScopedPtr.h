@@ -85,6 +85,9 @@ public:
 	/** Constructor. Note that CScopedArray takes ownership of the array. */
 	CScopedArray(TYPE* ptr);
 	
+	/** Constructor, allocating nr elements. */
+	CScopedArray(size_t nr);
+	
 	/** Frees the array owned by this instance. */
 	~CScopedArray();
 	
@@ -98,6 +101,9 @@ public:
 	
 	/** @see CScopedPtr::reset */
 	void reset(TYPE* ptr = 0);
+	
+	/** free the existing array and allocate a new one with nr elements */
+	void reset(size_t nr);
 	
 	/** @see CScopedPtr::release */
 	TYPE* release();
@@ -179,6 +185,13 @@ CScopedArray<TYPE>::CScopedArray(TYPE* ptr)
 
 	
 template <typename TYPE>
+CScopedArray<TYPE>::CScopedArray(size_t nr)
+{
+	m_ptr = new TYPE[nr];
+}
+
+
+template <typename TYPE>
 CScopedArray<TYPE>::~CScopedArray()
 {
 	delete[] m_ptr;
@@ -204,6 +217,14 @@ void CScopedArray<TYPE>::reset(TYPE* ptr)
 {
 	delete[] m_ptr;
 	m_ptr = ptr;
+}
+
+
+template <typename TYPE>
+void CScopedArray<TYPE>::reset(size_t nr)
+{
+	delete[] m_ptr;
+	m_ptr = new TYPE[nr];
 }
 
 

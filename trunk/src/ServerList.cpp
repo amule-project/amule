@@ -286,7 +286,7 @@ void CServerList::ServerStats()
 			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
 			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
-			CScopedArray<byte> pRawPacket(new byte[nPacketLen]);
+			CScopedArray<byte> pRawPacket(nPacketLen);
 			uint32 dwChallenge = (rand() << 17) | (rand() << 2) | (rand() & 0x03);
 			if (dwChallenge == 0) {
 				dwChallenge++;
