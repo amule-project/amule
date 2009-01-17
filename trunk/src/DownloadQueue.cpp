@@ -987,11 +987,11 @@ void CDownloadQueue::ProcessLocalRequests()
 		if (iSize > 0) {
 			// create one 'packet' which contains all buffered OP_GETSOURCES ED2K packets to be sent with one TCP frame
 			// server credits: (16+4)*regularfiles + (16+4+8)*largefiles +1
-			CPacket* packet = new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false);
+			CScopedPtr<CPacket> packet(new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false));
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
-			theApp->serverconnect->SendPacket(packet, true);	// Deletes `packet'.
+			theApp->serverconnect->SendPacket(packet.release(), true);	// Deletes `packet'.
 			AddDebugLogLineM(false, logDownloadQueue, wxT("Sent local sources request packet."));
 			theStats::AddUpOverheadServer(size);
 		}
