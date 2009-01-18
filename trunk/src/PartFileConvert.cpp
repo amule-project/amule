@@ -454,8 +454,6 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 	file->m_hashlist.clear();
 
-	file->m_gaplist.clear();
-
 	if (!file->LoadPartFile(thePrefs::GetTempDir(), file->GetPartMetFileName(), false)) {
 		//delete file;
 		file->Delete();

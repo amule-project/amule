@@ -25,30 +25,44 @@
 #ifndef GAPLIST_H
 #define GAPLIST_H
 
-#include "OtherStructs.h"	// for Gap_Struct
+#include <map>
 
 class CGapList {
 private:
-	// the internal gap list
-	typedef std::list<Gap_Struct*> ListType;
+	// The internal gap list:
+	// Each gap is stored as a map entry. 
+	// The first (key) is the end, the second (value) the start.
+	typedef std::map<uint64,uint64> ListType;
+	typedef ListType::iterator iterator;
 	ListType m_gaplist;
 	// size of the part file the list belongs to
 	uint64 m_filesize;
-	// number of its last part
-	uint16 m_lastPart;
+	// number of parts
+	uint16 m_iPartCount;
 	// size of the last part
 	uint32 m_sizeLastPart;
+	// total gapsize
+	uint64 m_totalGapSize;
+	// flag if it's valid
+	bool m_totalGapSizeValid;
+
+	// cache completeness of parts
+	enum ePartComplete {
+		complete,
+		incomplete,
+		unknown
+	};
+	std::vector<byte> m_partsComplete;
+
 	// get size of any part
-	uint32 GetPartSize(uint16 part) const { return part == m_lastPart ? m_sizeLastPart : PARTSIZE; }
+	uint32 GetPartSize(uint16 part) const { return part == m_iPartCount - 1 ? m_sizeLastPart : PARTSIZE; }
 	// check arguments, clip end, false: error
 	inline bool ArgCheck(uint64 gapstart, uint64 &gapend) const;
 public:
-	// destruct
-	~CGapList() { clear(); }
+	// construct
+	CGapList() { Init(0, false); } // NO MORE uninitialized variables >:(
 	// setup (and eventually clear) list, optionally as empty (one large gap)
 	void Init(uint64 fileSize, bool empty);
-	// just clear list (without gaps)
-	void clear();
 	// add a gap for a range
 	void AddGap(uint64 gapstart, uint64 gapend);
 	// add a gap for a part
@@ -60,15 +74,17 @@ public:
 	// Is this range complete ?
 	bool IsComplete(uint64 gapstart, uint64 gapend) const;
 	// Is this part complete ?
-	bool IsComplete(uint16 part) const;
+	bool IsComplete(uint16 part);
 	// Is the whole file complete ?
 	bool IsComplete() const { return m_gaplist.empty(); }
 	// number of gaps
 	uint32 size() const { return m_gaplist.size(); }
 	// size of all gaps
-	uint64 GetGapSize() const;
+	uint64 GetGapSize();
 	// size of gaps inside one part
 	uint32 GetGapSize(uint16 part) const;
+	// print list for debugging
+	void DumpList();
 
 	// Iterator class to loop through the gaps read-only
 	// Gaps are returned just as start/end value
@@ -83,9 +99,9 @@ public:
 		bool operator != (const const_iterator& it) const { return m_it != it.m_it; }
 		const_iterator& operator ++ () { ++ m_it; return *this; }
 		// get start of gap pointed to
-		uint64 start() const { return (* m_it)->start; }
+		uint64 start() const { return (* m_it).second; }
 		// get end of gap pointed to
-		uint64 end() const { return (* m_it)->end; }
+		uint64 end() const { return (* m_it).first; }
 	};
 	// begin/end iterators for looping
 	const_iterator begin() const { return const_iterator(m_gaplist.begin()); }
