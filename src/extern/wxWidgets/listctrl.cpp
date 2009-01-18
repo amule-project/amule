@@ -619,6 +619,8 @@ public:
         }
     }
 
+    void OnChildFocus(wxChildFocusEvent& event);
+    
     void DrawImage( int index, wxDC *dc, int x, int y );
     void GetImageSize( int index, int &width, int &height ) const;
     int GetTextLength( const wxString &s ) const;
@@ -1574,14 +1576,6 @@ void wxListLineData::DrawInReportMode( wxDC *dc,
         int xOld = x;
         x += width;
 
-	// Fix for a bug in wxWidgets.
-	// This has been reported as patch 1898914:
-	// http://sourceforge.net/tracker/index.php?func=detail&aid=1898914&group_id=9863&atid=309863
-	//
-        // Prevents the drawing of images into the
-        // next collumn, in case of small widths.
-        wxDCClipper clipper(*dc, xOld, rect.y, width - 8, rect.height);
-
         if ( item->HasImage() )
         {
             int ix, iy;
@@ -1906,6 +1900,19 @@ void wxListHeaderWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
                      xAligned + EXTRA_WIDTH, h / 2 - hLabel / 2 ); //HEADER_OFFSET_Y + EXTRA_HEIGHT );
 
         x += wCol;
+    }
+
+    // Fill in what's missing to the right of the columns, otherwise we will
+    // leave an unpainted area when columns are removed (and it looks better)
+    if ( x < w )
+    {
+        wxRendererNative::Get().DrawHeaderButton
+                                (
+                                    this,
+                                    dc,
+                                    wxRect(x, HEADER_OFFSET_Y, w - x, h),
+                                    0
+                                );
     }
 }
 
@@ -2257,6 +2264,7 @@ BEGIN_EVENT_TABLE(wxListMainWindow,wxScrolledWindow)
   EVT_SET_FOCUS      (wxListMainWindow::OnSetFocus)
   EVT_KILL_FOCUS     (wxListMainWindow::OnKillFocus)
   EVT_SCROLLWIN      (wxListMainWindow::OnScroll)
+  EVT_CHILD_FOCUS    (wxListMainWindow::OnChildFocus)
 END_EVENT_TABLE()
 
 void wxListMainWindow::Init()
@@ -2899,6 +2907,13 @@ void wxListMainWindow::HighlightAll( bool on )
     }
 }
 
+void wxListMainWindow::OnChildFocus(wxChildFocusEvent& WXUNUSED(event))
+{
+    // Do nothing here.  This prevents the default handler in wxScrolledWindow
+    // from needlessly scrolling the window when the edit control is
+    // dismissed.  See ticket #9563.
+}
+
 void wxListMainWindow::SendNotify( size_t line,
                                    wxEventType command,
                                    const wxPoint& point )
@@ -3399,23 +3414,9 @@ void wxListMainWindow::OnKeyDown( wxKeyEvent &event )
     wxWindow *parent = GetParent();
 
     // propagate the key event upwards
-    wxKeyEvent ke( wxEVT_KEY_DOWN );
-#if 0
-    ke.m_shiftDown = event.m_shiftDown;
-    ke.m_controlDown = event.m_controlDown;
-    ke.m_altDown = event.m_altDown;
-    ke.m_metaDown = event.m_metaDown;
-    ke.m_keyCode = event.m_keyCode;
-    ke.m_x = event.m_x;
-    ke.m_y = event.m_y;
-#else
-    // This is a fix for a bug in wxWidgets, where m_uniChar isn't
-    // set in the new event object, thus breaking GetUnicodeKey()
-    // http://sourceforge.net/tracker/index.php?func=detail&aid=1863312&group_id=9863&atid=109863
-    ke = event;
-#endif
-    ke.SetEventObject( parent );
-    if (parent->GetEventHandler()->ProcessEvent( ke )) return;
+    wxKeyEvent ke(event);
+    if (parent->GetEventHandler()->ProcessEvent( ke ))
+        return;
 
     event.Skip();
 }
@@ -3425,23 +3426,10 @@ void wxListMainWindow::OnKeyUp( wxKeyEvent &event )
     wxWindow *parent = GetParent();
 
     // propagate the key event upwards
-    wxKeyEvent ke( wxEVT_KEY_UP );
-#if 0
-    ke.m_shiftDown = event.m_shiftDown;
-    ke.m_controlDown = event.m_controlDown;
-    ke.m_altDown = event.m_altDown;
-    ke.m_metaDown = event.m_metaDown;
-    ke.m_keyCode = event.m_keyCode;
-    ke.m_x = event.m_x;
-    ke.m_y = event.m_y;
-#else
-    // This is a fix for a bug in wxWidgets, where m_uniChar isn't
-    // set in the new event object, thus breaking GetUnicodeKey()
-    // http://sourceforge.net/tracker/index.php?func=detail&aid=1863312&group_id=9863&atid=109863
-    ke = event;
-#endif
+    wxKeyEvent ke(event);
     ke.SetEventObject( parent );
-    if (parent->GetEventHandler()->ProcessEvent( ke )) return;
+    if (parent->GetEventHandler()->ProcessEvent( ke ))
+        return;
 
     event.Skip();
 }
@@ -3462,23 +3450,9 @@ void wxListMainWindow::OnChar( wxKeyEvent &event )
     }
 
     // propagate the char event upwards
-    wxKeyEvent ke( wxEVT_CHAR );
-#if 0
-    ke.m_shiftDown = event.m_shiftDown;
-    ke.m_controlDown = event.m_controlDown;
-    ke.m_altDown = event.m_altDown;
-    ke.m_metaDown = event.m_metaDown;
-    ke.m_keyCode = event.m_keyCode;
-    ke.m_x = event.m_x;
-    ke.m_y = event.m_y;
-#else
-    // This is a fix for a bug in wxWidgets, where m_uniChar isn't
-    // set in the new event object, thus breaking GetUnicodeKey()
-    // http://sourceforge.net/tracker/index.php?func=detail&aid=1863312&group_id=9863&atid=109863
-    ke = event;
-#endif
-    ke.SetEventObject( parent );
-    if (parent->GetEventHandler()->ProcessEvent( ke )) return;
+    wxKeyEvent ke(event);
+    if (parent->GetEventHandler()->ProcessEvent( ke ))
+        return;
 
     if (event.GetKeyCode() == WXK_TAB)
     {
@@ -4159,8 +4133,9 @@ wxRect wxListMainWindow::GetViewRect() const
     {
         for ( int i = 0; i < count; i++ )
         {
-            wxRect r;
-            GetItemRect(i, r);
+            // we need logical, not physical, coordinates here, so use
+            // GetLineRect() instead of GetItemRect()
+            wxRect r = GetLineRect(i);
 
             wxCoord x = r.GetRight(),
                     y = r.GetBottom();
@@ -4228,9 +4203,9 @@ void wxListMainWindow::RecalculatePositions(bool noRefresh)
     const size_t count = GetItemCount();
 
     int iconSpacing;
-    if ( HasFlag(wxLC_ICON) )
+    if ( HasFlag(wxLC_ICON) && m_normal_image_list )
         iconSpacing = m_normal_spacing;
-    else if ( HasFlag(wxLC_SMALL_ICON) )
+    else if ( HasFlag(wxLC_SMALL_ICON) && m_small_image_list )
         iconSpacing = m_small_spacing;
     else
         iconSpacing = 0;
@@ -5131,7 +5106,17 @@ void wxGenericListCtrl::SetSingleStyle( long style, bool add )
     else
         flag &= ~style;
 
-    SetWindowStyleFlag( flag );
+    // some styles can be set without recreating everything (as happens in
+    // SetWindowStyleFlag() which calls wxListMainWindow::DeleteEverything())
+    if ( !(style & ~(wxLC_HRULES | wxLC_VRULES)) )
+    {
+        Refresh();
+        wxWindow::SetWindowStyleFlag(flag);
+    }
+    else
+    {
+        SetWindowStyleFlag( flag );
+    }
 }
 
 void wxGenericListCtrl::SetWindowStyleFlag( long flag )
