@@ -622,7 +622,7 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit)
+CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType WXUNUSED(type), bool supports64bit, bool& packetUsing64bit)
 {
 	// Count the number of used parameters
 	unsigned int parametercount = 0;
