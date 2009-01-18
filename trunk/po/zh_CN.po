@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-11 01:08+0100\n"
+"POT-Creation-Date: 2009-01-18 21:44+0100\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -75,7 +75,7 @@ msgid "Password set and external connections enabled."
 msgstr "新的远程连接已被接受"
 
 #: src/amule.cpp:650 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/PrefsUnifiedDlg.cpp:657 src/SharedFilesCtrl.cpp:321
+#: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "警告"
 
@@ -86,7 +86,7 @@ msgid ""
 msgstr "对不起,由于版本变动,您的地区设置已经被变为系统默认值。"
 
 #: src/amule.cpp:698 src/amule.cpp:1331 src/CatDialog.cpp:141
-#: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:341
+#: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "信息"
@@ -501,9 +501,9 @@ msgstr ""
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:507 src/KadDlg.cpp:177 src/PartFile.cpp:909
-#: src/PartFile.cpp:917 src/PrefsUnifiedDlg.cpp:554
-#: src/PrefsUnifiedDlg.cpp:649 src/PrefsUnifiedDlg.cpp:733
+#: src/amuleDlg.cpp:507 src/KadDlg.cpp:177 src/PartFile.cpp:910
+#: src/PartFile.cpp:918 src/PrefsUnifiedDlg.cpp:554
+#: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
 msgid "Message"
 msgstr "消息"
 
@@ -766,17 +766,17 @@ msgstr "全部"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "用户总数：%s | 文件总数：%s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1306
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "无法获取用户%s的共享文件"
 
-#: src/BaseClient.cpp:1523
+#: src/BaseClient.cpp:1521
 #, fuzzy
 msgid "Searching buddy for lowid connection"
 msgstr "等待连接..."
 
-#: src/BaseClient.cpp:1720 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
+#: src/BaseClient.cpp:1718 src/BaseClient.cpp:2241 src/BaseClient.cpp:2515
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -785,42 +785,42 @@ msgstr "等待连接..."
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1429 src/DownloadListCtrl.cpp:1442
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
-#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:884
-#: src/KnownFile.cpp:890 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2508
-#: src/PartFile.cpp:2514 src/Server.cpp:160 src/Server.cpp:235
+#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
+#: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
+#: src/PartFile.cpp:2506 src/Server.cpp:160 src/Server.cpp:235
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "未知"
 
-#: src/BaseClient.cpp:1737
+#: src/BaseClient.cpp:1735
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (假冒 eMule 版本 %#x)"
 
-#: src/BaseClient.cpp:1748
+#: src/BaseClient.cpp:1746
 msgid " (Fake eMule)"
 msgstr " (假冒 eMule)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1748
 msgid "xMule (Fake eMule)"
 msgstr "xMule (假冒 eMule)"
 
-#: src/BaseClient.cpp:1789
+#: src/BaseClient.cpp:1787
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (基于 eMule v0.%u)"
 
-#: src/BaseClient.cpp:1959
+#: src/BaseClient.cpp:1957
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "昵称：%s ID：%u"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1959
 #, c-format
 msgid "Requested: %s\n"
 msgstr "已请求： %s\n"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -828,7 +828,7 @@ msgid_plural ""
 msgstr[0] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
-#: src/BaseClient.cpp:1966
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -836,11 +836,11 @@ msgid_plural ""
 msgstr[0] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
-#: src/BaseClient.cpp:1969
+#: src/BaseClient.cpp:1967
 msgid "Requested unknown file"
 msgstr "请求了未知文件"
 
-#: src/BaseClient.cpp:2242
+#: src/BaseClient.cpp:2240
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "用户 %s 位于 %s:%d，使用 %s %s %s"
@@ -1063,7 +1063,7 @@ msgid "Upload Time"
 msgstr "上传时间"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3760 src/SearchListCtrl.cpp:93
+#: src/PartFile.cpp:3751 src/SearchListCtrl.cpp:93
 msgid "Status"
 msgstr "状态"
 
@@ -1115,7 +1115,7 @@ msgstr "通过服务器连接中"
 msgid "Transferring"
 msgstr "正在传送"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1365
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1375
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "在排队"
@@ -1422,13 +1422,13 @@ msgstr "搜索结果"
 msgid "Part"
 msgstr "块"
 
-#: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:630
+#: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:628
 #: src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
 msgid "Size"
 msgstr "大小"
 
 #: src/DownloadListCtrl.cpp:191 src/OtherFunctions.cpp:697
-#: src/PartFileConvert.cpp:611 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:609 src/TransferWnd.cpp:347
 msgid "Completed"
 msgstr "已完成"
 
@@ -1437,7 +1437,7 @@ msgid "Progress"
 msgstr "进度"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3758 src/SearchListCtrl.cpp:90
+#: src/PartFile.cpp:3749 src/SearchListCtrl.cpp:90
 msgid "Sources"
 msgstr "源"
 
@@ -2339,31 +2339,31 @@ msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "已写入%d个Kad联系人"
 msgstr[1] "已写入%d个Kad联系人"
 
-#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+#: src/KnownFile.cpp:1369 src/PartFileConvert.cpp:626
 msgid "File name"
 msgstr "文件名"
 
-#: src/KnownFile.cpp:1360
+#: src/KnownFile.cpp:1370
 msgid "File size"
 msgstr "文件大小"
 
-#: src/KnownFile.cpp:1361
+#: src/KnownFile.cpp:1371
 msgid "Share ratio"
 msgstr "共享率"
 
-#: src/KnownFile.cpp:1362
+#: src/KnownFile.cpp:1372
 msgid "Uploaded"
 msgstr "已上传"
 
-#: src/KnownFile.cpp:1363
+#: src/KnownFile.cpp:1373
 msgid "Requested"
 msgstr "已请求"
 
-#: src/KnownFile.cpp:1364
+#: src/KnownFile.cpp:1374
 msgid "Accepted"
 msgstr "已接受"
 
-#: src/KnownFile.cpp:1366
+#: src/KnownFile.cpp:1376
 msgid "Complete sources"
 msgstr "完成的源"
 
@@ -2385,35 +2385,35 @@ msgstr "读取known.net文件时发生IO错误：%s"
 msgid "Error while saving known.met file: %s"
 msgstr "保存known.met文件时发生错误：%s"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3690
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3681
 msgid "Hashing"
 msgstr "正在校检"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3696
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3687
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3699
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3690
 msgid "Complete"
 msgstr "完成"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:701
-#: src/PartFile.cpp:3702 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3693 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "已暂停"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:700
-#: src/PartFile.cpp:3705 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3696 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "已出错"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:699
-#: src/PartFile.cpp:3712 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3703 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "正在下载"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:698
-#: src/PartFile.cpp:3714 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3705 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "等待中"
 
@@ -4274,7 +4274,7 @@ msgstr "启用详细调试日志。"
 msgid "Message Categories:"
 msgstr "消息分类："
 
-#: src/muuli_wdr.cpp:3323 src/PartFileConvert.cpp:723
+#: src/muuli_wdr.cpp:3323 src/PartFileConvert.cpp:721
 msgid "Waiting..."
 msgstr "等待中..."
 
@@ -4399,7 +4399,7 @@ msgstr "其它"
 msgid "Incomplete"
 msgstr "未完成"
 
-#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3719 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3710 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "已停止"
 
@@ -4455,181 +4455,181 @@ msgstr "正在保存数据块至新的单个下载文件（%u 共 %u）"
 msgid "Retrieving source downloadfile information"
 msgstr "正在获取源下载文件信息"
 
-#: src/PartFileConvert.cpp:471
+#: src/PartFileConvert.cpp:469
 msgid "Adding download and saving new partfile"
 msgstr "正在下载和保存新part文件"
 
-#: src/PartFileConvert.cpp:548
+#: src/PartFileConvert.cpp:546
 msgid "Fetching status..."
 msgstr "正在获取状态..."
 
-#: src/PartFileConvert.cpp:612
+#: src/PartFileConvert.cpp:610
 msgid "In progress"
 msgstr "正在处理"
 
-#: src/PartFileConvert.cpp:613
+#: src/PartFileConvert.cpp:611
 msgid "ERROR: Out of diskspace"
 msgstr "错误：磁盘空间不足"
 
-#: src/PartFileConvert.cpp:614
+#: src/PartFileConvert.cpp:612
 msgid "ERROR: Partmet not found"
 msgstr "错误：缺少参数"
 
-#: src/PartFileConvert.cpp:615
+#: src/PartFileConvert.cpp:613
 msgid "ERROR: IO error!"
 msgstr "错误：输入输出错误！"
 
-#: src/PartFileConvert.cpp:616
+#: src/PartFileConvert.cpp:614
 msgid "ERROR: Failed!"
 msgstr "错误：失败！"
 
-#: src/PartFileConvert.cpp:617
+#: src/PartFileConvert.cpp:615
 msgid "Queued"
 msgstr "已加入队列"
 
-#: src/PartFileConvert.cpp:618
+#: src/PartFileConvert.cpp:616
 msgid "Already downloading"
 msgstr "已经在下载"
 
-#: src/PartFileConvert.cpp:619
+#: src/PartFileConvert.cpp:617
 msgid "Unknown or bad tempfile format."
 msgstr "未知或错误的临时文件格式。"
 
-#: src/PartFileConvert.cpp:629
+#: src/PartFileConvert.cpp:627
 msgid "State"
 msgstr "状态"
 
-#: src/PartFileConvert.cpp:631
+#: src/PartFileConvert.cpp:629
 msgid "Filehash"
 msgstr "文件校验码"
 
-#: src/PartFileConvert.cpp:677
+#: src/PartFileConvert.cpp:675
 msgid "Import partfiles"
 msgstr "导入 part 文件"
 
-#: src/PartFileConvert.cpp:697
+#: src/PartFileConvert.cpp:695
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr "请选择一个目录用于搜索临时下载文件！（子目录也将被包括）"
 
-#: src/PartFileConvert.cpp:701
+#: src/PartFileConvert.cpp:699
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "要删除成功导入下载的源文件吗？"
 
-#: src/PartFileConvert.cpp:702
+#: src/PartFileConvert.cpp:700
 msgid "Remove sources?"
 msgstr "删除源？"
 
-#: src/PartFileConvert.cpp:738
+#: src/PartFileConvert.cpp:736
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr "%s (磁盘：%s)"
 
-#: src/PartFile.cpp:284
+#: src/PartFile.cpp:285
 msgid "ERROR: Failed to create partfile)"
 msgstr "错误：无法创建 part 文件)"
 
-#: src/PartFile.cpp:322
+#: src/PartFile.cpp:323
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "尝试从 %s 载入 met 文件的备份"
 
-#: src/PartFile.cpp:329
+#: src/PartFile.cpp:330
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
 msgstr "错误：无法打开part.met文件：%s ==> %s"
 
-#: src/PartFile.cpp:335
+#: src/PartFile.cpp:336
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
 msgstr "错误：part.met文件大小为0： %s ==> %s"
 
-#: src/PartFile.cpp:346
+#: src/PartFile.cpp:347
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "错误：非法的part.met文件版本：%s ==> %s"
 
-#: src/PartFile.cpp:596
+#: src/PartFile.cpp:597
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr "错误：文件 %s（%s）已损坏（标签数不对），无法读取文件。"
 
-#: src/PartFile.cpp:599
+#: src/PartFile.cpp:600
 msgid "Trying to recover file info..."
 msgstr "尝试恢复文件信息..."
 
-#: src/PartFile.cpp:614
+#: src/PartFile.cpp:615
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "尝试恢复无名文件 - 保存为 RecoveredFile.dat"
 
-#: src/PartFile.cpp:619
+#: src/PartFile.cpp:620
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "成功恢复所有文件信息 :D - 尝试使用文件信息..."
 
-#: src/PartFile.cpp:621
+#: src/PartFile.cpp:622
 msgid "Unable to recover file info :("
 msgstr "无法恢复文件：("
 
-#: src/PartFile.cpp:656
+#: src/PartFile.cpp:657
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "无法读取 %s（%s）"
 
-#: src/PartFile.cpp:704
+#: src/PartFile.cpp:705
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "警告：%s可能已损坏（%i）"
 
-#: src/PartFile.cpp:886
+#: src/PartFile.cpp:887
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "part 文件存盘时发生错误：%s（%s => %s）"
 
-#: src/PartFile.cpp:893
+#: src/PartFile.cpp:894
 #, fuzzy
 msgid "IO failure while saving partfile: "
 msgstr "part 文件存盘时发生错误：%s（%s => %s）"
 
-#: src/PartFile.cpp:906
+#: src/PartFile.cpp:907
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "无法获取%s的大小 - 正在使用%s文件。"
 
-#: src/PartFile.cpp:914
+#: src/PartFile.cpp:915
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' 文件长度为 0 - 使用 %s 文件。"
 
-#: src/PartFile.cpp:985
+#: src/PartFile.cpp:986
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s 的 part.met.seeds 文件存盘失败"
 
-#: src/PartFile.cpp:1011
+#: src/PartFile.cpp:1012
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "保存了 %i 个源给 part 文件 %s（%s）"
 msgstr[1] "保存了 %i 个源给 part 文件 %s（%s）"
 
-#: src/PartFile.cpp:1040
+#: src/PartFile.cpp:1041
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Part 文件 %s（%s）没有种子文件"
 
-#: src/PartFile.cpp:1049
+#: src/PartFile.cpp:1050
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Part 文件 %s（%s）的种子文件为空"
 
-#: src/PartFile.cpp:1105
+#: src/PartFile.cpp:1106
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "读取 part 文件的种子文件出错（%s - %s）：%s"
 
-#: src/PartFile.cpp:1123 src/PartFile.cpp:1153
+#: src/PartFile.cpp:1124 src/PartFile.cpp:1154
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4642,37 +4642,37 @@ msgstr[0] ""
 msgstr[1] ""
 "发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
 
-#: src/PartFile.cpp:1168
+#: src/PartFile.cpp:1169
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "发现了已完成的数据段 %i 在%s"
 
-#: src/PartFile.cpp:1201
+#: src/PartFile.cpp:1202
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "重新校验 %s 完成"
 
-#: src/PartFile.cpp:2123
+#: src/PartFile.cpp:2124
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "在完成文件%s时遇到意外文件错误，文件已暂停"
 
-#: src/PartFile.cpp:2150
+#: src/PartFile.cpp:2151
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "完成下载：%s"
 
-#: src/PartFile.cpp:2207
+#: src/PartFile.cpp:2208
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正在删除文件：%s "
 
-#: src/PartFile.cpp:2276
+#: src/PartFile.cpp:2268
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：无法为已下载的数据段计算校检码 - 校检码集不完整 '%s'"
 
-#: src/PartFile.cpp:2281
+#: src/PartFile.cpp:2273
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4680,34 +4680,34 @@ msgid ""
 msgstr ""
 "警告：无法生成校检码 - 校检码集不完整（%s）， 正常情况下这是不应该发生的"
 
-#: src/PartFile.cpp:2963
+#: src/PartFile.cpp:2955
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盘空间不足！暂停文件：%s"
 
-#: src/PartFile.cpp:3035
+#: src/PartFile.cpp:3027
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下载的数据段 %i 已损坏 文件： (%s)"
 
-#: src/PartFile.cpp:3081
+#: src/PartFile.cpp:3073
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修复了损坏的数据段 %i（%s），挽救数据（字节）： %s"
 
-#: src/PartFile.cpp:3692
+#: src/PartFile.cpp:3683
 msgid "Allocating"
 msgstr "正在分配"
 
-#: src/PartFile.cpp:3708
+#: src/PartFile.cpp:3699
 msgid "Insufficient disk space"
 msgstr "磁盘空间不足"
 
-#: src/PartFile.cpp:3757
+#: src/PartFile.cpp:3748
 msgid "Downloaded"
 msgstr "已下载"
 
-#: src/PartFile.cpp:3971
+#: src/PartFile.cpp:3962
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "错误：打开part文件'%s'失败"
@@ -4989,7 +4989,12 @@ msgstr "- 语言已更改。\n"
 msgid "- Temp folder changed.\n"
 msgstr "- 临时文件目录已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:644
+#: src/PrefsUnifiedDlg.cpp:582
+#, fuzzy
+msgid "- ED2K network enabled.\n"
+msgstr "全部网络都被禁用了。"
+
+#: src/PrefsUnifiedDlg.cpp:649
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -4997,7 +5002,7 @@ msgstr ""
 "eD2k和Kad网络都已被禁用，\n"
 "你至少要启用其中的一项才能连接。"
 
-#: src/PrefsUnifiedDlg.cpp:648
+#: src/PrefsUnifiedDlg.cpp:653
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5005,7 +5010,7 @@ msgstr ""
 "如果你的 UDP 端口被禁用，Kad 将不能启动。\n"
 "启动 UDP 端口或禁用 Kad。"
 
-#: src/PrefsUnifiedDlg.cpp:657
+#: src/PrefsUnifiedDlg.cpp:662
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5015,7 +5020,7 @@ msgstr ""
 "你必须现在重启aMule，\n"
 "如果现在不重启的话，出现任何问题可别怪别人。\n"
 
-#: src/PrefsUnifiedDlg.cpp:732
+#: src/PrefsUnifiedDlg.cpp:737
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5025,41 +5030,41 @@ msgstr ""
 "请输入至少一个指向有效 server.met 的网址，\n"
 "点击这个勾选框旁边的\"列表\"按钮然后输入网址。"
 
-#: src/PrefsUnifiedDlg.cpp:864
+#: src/PrefsUnifiedDlg.cpp:869
 msgid "Temporary files"
 msgstr "临时文件"
 
-#: src/PrefsUnifiedDlg.cpp:869
+#: src/PrefsUnifiedDlg.cpp:874
 msgid "Incoming files"
 msgstr "传入文件"
 
-#: src/PrefsUnifiedDlg.cpp:874
+#: src/PrefsUnifiedDlg.cpp:879
 msgid "Online Signatures"
 msgstr "在线统计"
 
-#: src/PrefsUnifiedDlg.cpp:887
+#: src/PrefsUnifiedDlg.cpp:892
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "为%s选择文件夹"
 
-#: src/PrefsUnifiedDlg.cpp:907
+#: src/PrefsUnifiedDlg.cpp:912
 msgid "Browse for videoplayer"
 msgstr "浏览寻找视频播放器"
 
-#: src/PrefsUnifiedDlg.cpp:911
+#: src/PrefsUnifiedDlg.cpp:916
 msgid "Select browser"
 msgstr "选择浏览器"
 
-#: src/PrefsUnifiedDlg.cpp:917
+#: src/PrefsUnifiedDlg.cpp:922
 #, c-format
 msgid "Executable%s"
 msgstr "可执行%s"
 
-#: src/PrefsUnifiedDlg.cpp:938
+#: src/PrefsUnifiedDlg.cpp:943
 msgid "Edit server list"
 msgstr "编辑服务器列表"
 
-#: src/PrefsUnifiedDlg.cpp:939
+#: src/PrefsUnifiedDlg.cpp:944
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5067,84 +5072,84 @@ msgstr ""
 "加入下载 server.met 文件的网址，每行只限一个网址。\n"
 " "
 
-#: src/PrefsUnifiedDlg.cpp:998
+#: src/PrefsUnifiedDlg.cpp:1003
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "刷新时间：%d秒"
 msgstr[1] "刷新时间：%d秒"
 
-#: src/PrefsUnifiedDlg.cpp:1005
+#: src/PrefsUnifiedDlg.cpp:1010
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均值图表显示时间：%d分钟"
 msgstr[1] "平均值图表显示时间：%d分钟"
 
-#: src/PrefsUnifiedDlg.cpp:1011
+#: src/PrefsUnifiedDlg.cpp:1016
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "网络连接图表缩放：%d"
 
-#: src/PrefsUnifiedDlg.cpp:1017
+#: src/PrefsUnifiedDlg.cpp:1022
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "刷新时间：%d秒"
 msgstr[1] "刷新时间：%d秒"
 
-#: src/PrefsUnifiedDlg.cpp:1023
+#: src/PrefsUnifiedDlg.cpp:1028
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "文件缓冲区大小：%d字节"
 msgstr[1] "文件缓冲区大小：%d字节"
 
-#: src/PrefsUnifiedDlg.cpp:1029
+#: src/PrefsUnifiedDlg.cpp:1034
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "上传队列长度：%d个用户"
 msgstr[1] "上传队列长度：%d个用户"
 
-#: src/PrefsUnifiedDlg.cpp:1036
+#: src/PrefsUnifiedDlg.cpp:1041
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "服务器连接刷新周期：%d分钟"
 msgstr[1] "服务器连接刷新周期：%d分钟"
 
-#: src/PrefsUnifiedDlg.cpp:1038
+#: src/PrefsUnifiedDlg.cpp:1043
 msgid "Server connection refresh interval: Disabled"
 msgstr "服务器连接刷新周期：已禁用"
 
-#: src/PrefsUnifiedDlg.cpp:1083
+#: src/PrefsUnifiedDlg.cpp:1088
 #, fuzzy
 msgid "disabled"
 msgstr "禁用"
 
-#: src/PrefsUnifiedDlg.cpp:1101
+#: src/PrefsUnifiedDlg.cpp:1106
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "发生 '%s' 事件时执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1104
+#: src/PrefsUnifiedDlg.cpp:1109
 msgid "Enable command execution on core"
 msgstr "在核心启用执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1112
+#: src/PrefsUnifiedDlg.cpp:1117
 msgid "Core command:"
 msgstr "核心命令："
 
-#: src/PrefsUnifiedDlg.cpp:1121
+#: src/PrefsUnifiedDlg.cpp:1126
 msgid "Enable command execution on GUI"
 msgstr "在图形界面端启用执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1129
+#: src/PrefsUnifiedDlg.cpp:1134
 msgid "GUI command:"
 msgstr "图形界面命令："
 
-#: src/PrefsUnifiedDlg.cpp:1138
+#: src/PrefsUnifiedDlg.cpp:1143
 msgid "The following variables will be replaced:"
 msgstr "以下变量将被替换："
 
@@ -5268,88 +5273,88 @@ msgstr "连接超时 %s（%s：%i）"
 msgid "Received late result of DNS lookup, discarding."
 msgstr ""
 
-#: src/ServerList.cpp:83
+#: src/ServerList.cpp:84
 #, c-format
 msgid "Loading server.met file: %s"
 msgstr "正在载入 server.met 文件：%s"
 
-#: src/ServerList.cpp:88
+#: src/ServerList.cpp:89
 msgid "Server.met file not found!"
 msgstr "找不到server.met 文件"
 
-#: src/ServerList.cpp:96
+#: src/ServerList.cpp:97
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
 msgstr "载入 server.met 文件 '%s' 失败，遇到未知格式。"
 
-#: src/ServerList.cpp:102
+#: src/ServerList.cpp:103
 msgid "Failed to open server.met!"
 msgstr "无法打开 server.met 文件"
 
-#: src/ServerList.cpp:113
+#: src/ServerList.cpp:114
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr "Server.met 文件损坏，发现错误的版本标记：0x%x，大小 %i"
 
-#: src/ServerList.cpp:168
+#: src/ServerList.cpp:169
 #, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "server.met 中找到%i个服务器"
 msgstr[1] "server.met 中找到%i个服务器"
 
-#: src/ServerList.cpp:170
+#: src/ServerList.cpp:171
 #, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "新增%d个服务器"
 msgstr[1] "新增%d个服务器"
 
-#: src/ServerList.cpp:191
+#: src/ServerList.cpp:192
 #, c-format
 msgid "Server not added: [%s:%d] does not specify a valid port."
 msgstr "没有添加服务器：[%s：%d] 端口无效"
 
-#: src/ServerList.cpp:207
+#: src/ServerList.cpp:208
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
 msgstr "没有添加服务器：[%s：%d] IP 地址无效"
 
-#: src/ServerList.cpp:227
+#: src/ServerList.cpp:228
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
 msgstr "没有添加服务器： 服务器列表中已有[%s：%d]"
 
-#: src/ServerList.cpp:246
+#: src/ServerList.cpp:247
 #, c-format
 msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "成功添加服务器：[%s:%d] 服务器名为 '%s'"
 
-#: src/ServerList.cpp:341
+#: src/ServerList.cpp:342
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
 msgstr "您在连接您已决定删除的服务器，请断开连接。"
 
-#: src/ServerList.cpp:628
+#: src/ServerList.cpp:629
 msgid "Failed to save server.met!"
 msgstr "无法 server.met 保存"
 
-#: src/ServerList.cpp:781
+#: src/ServerList.cpp:782
 msgid "Invalid URL"
 msgstr "无效 URL"
 
-#: src/ServerList.cpp:804
+#: src/ServerList.cpp:805
 #, c-format
 msgid "Finished to download the server list from %s"
 msgstr "从 %s 下载服务器列表完成"
 
-#: src/ServerList.cpp:806 src/ServerList.cpp:860
+#: src/ServerList.cpp:807 src/ServerList.cpp:861
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "无法从 %s 下载服务器列表"
 
-#: src/ServerList.cpp:817
+#: src/ServerList.cpp:818
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5357,21 +5362,21 @@ msgstr ""
 "addresses.dat文件内没有服务器列表地址，请粘贴一个有效服务器列表地址到该文件以"
 "自动更新服务器列表."
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:831
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "正在开始从 %s 下载服务器列表"
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:840
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr "警告：自动下载服务器列表的地址错误：%s"
 
-#: src/ServerList.cpp:843
+#: src/ServerList.cpp:844
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "addresses.dat 文件中没有有效的自动更新服务器列表URL"
 
-#: src/ServerList.cpp:936
+#: src/ServerList.cpp:937
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -6589,12 +6594,12 @@ msgstr "编辑分类"
 msgid "Remove category"
 msgstr "删除分类"
 
-#: src/UploadClient.cpp:269
+#: src/UploadClient.cpp:270
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr "打开文件(%s)失败，从共享文件列表删除。"
 
-#: src/UploadClient.cpp:711
+#: src/UploadClient.cpp:704
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "请求未知文件校检码：%s"

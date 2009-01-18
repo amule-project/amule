@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-11 01:08+0100\n"
+"POT-Creation-Date: 2009-01-18 21:44+0100\n"
 "PO-Revision-Date: 2008-08-06 16:07+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -86,7 +86,7 @@ msgid "Password set and external connections enabled."
 msgstr "Принято новое внешнее соединение"
 
 #: src/amule.cpp:650 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/PrefsUnifiedDlg.cpp:657 src/SharedFilesCtrl.cpp:321
+#: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
@@ -99,7 +99,7 @@ msgstr ""
 "умолчанию. Извините."
 
 #: src/amule.cpp:698 src/amule.cpp:1331 src/CatDialog.cpp:141
-#: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:341
+#: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Сведения"
@@ -544,9 +544,9 @@ msgstr ""
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:507 src/KadDlg.cpp:177 src/PartFile.cpp:909
-#: src/PartFile.cpp:917 src/PrefsUnifiedDlg.cpp:554
-#: src/PrefsUnifiedDlg.cpp:649 src/PrefsUnifiedDlg.cpp:733
+#: src/amuleDlg.cpp:507 src/KadDlg.cpp:177 src/PartFile.cpp:910
+#: src/PartFile.cpp:918 src/PrefsUnifiedDlg.cpp:554
+#: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
 msgid "Message"
 msgstr "Сообщение"
 
@@ -807,16 +807,16 @@ msgstr "Все"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Всего польз.: %s | Всего файлов: %s"
 
-#: src/BaseClient.cpp:1308
+#: src/BaseClient.cpp:1306
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Не удалось получить список доступных файлов от '%s'"
 
-#: src/BaseClient.cpp:1523
+#: src/BaseClient.cpp:1521
 msgid "Searching buddy for lowid connection"
 msgstr ""
 
-#: src/BaseClient.cpp:1720 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
+#: src/BaseClient.cpp:1718 src/BaseClient.cpp:2241 src/BaseClient.cpp:2515
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -825,42 +825,42 @@ msgstr ""
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1429 src/DownloadListCtrl.cpp:1442
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
-#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:884
-#: src/KnownFile.cpp:890 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2508
-#: src/PartFile.cpp:2514 src/Server.cpp:160 src/Server.cpp:235
+#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
+#: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
+#: src/PartFile.cpp:2506 src/Server.cpp:160 src/Server.cpp:235
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: src/BaseClient.cpp:1737
+#: src/BaseClient.cpp:1735
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Поддельная версия eMule %#x)"
 
-#: src/BaseClient.cpp:1748
+#: src/BaseClient.cpp:1746
 msgid " (Fake eMule)"
 msgstr " (имитация eMule)"
 
-#: src/BaseClient.cpp:1750
+#: src/BaseClient.cpp:1748
 msgid "xMule (Fake eMule)"
 msgstr "xMule (имитация eMule)"
 
-#: src/BaseClient.cpp:1789
+#: src/BaseClient.cpp:1787
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (на основе eMule v0.%u)"
 
-#: src/BaseClient.cpp:1959
+#: src/BaseClient.cpp:1957
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Псевдоним: %s ID: %u"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1959
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Запрошено: %s\n"
 
-#: src/BaseClient.cpp:1963
+#: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -872,7 +872,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
 
-#: src/BaseClient.cpp:1966
+#: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -884,11 +884,11 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
 
-#: src/BaseClient.cpp:1969
+#: src/BaseClient.cpp:1967
 msgid "Requested unknown file"
 msgstr "Запрошен неизвестный файл"
 
-#: src/BaseClient.cpp:2242
+#: src/BaseClient.cpp:2240
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Клиент %s на IP:порт %s:%d используя %s %s %s"
@@ -1115,7 +1115,7 @@ msgid "Upload Time"
 msgstr "Время загрузки"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3760 src/SearchListCtrl.cpp:93
+#: src/PartFile.cpp:3751 src/SearchListCtrl.cpp:93
 msgid "Status"
 msgstr "Состояние"
 
@@ -1167,7 +1167,7 @@ msgstr "Соединение через сервер"
 msgid "Transferring"
 msgstr "Передача"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1365
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1375
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "В очереди"
@@ -1482,13 +1482,13 @@ msgstr "Результаты поиска"
 msgid "Part"
 msgstr "Часть"
 
-#: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:630
+#: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:628
 #: src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
 msgid "Size"
 msgstr "Размер"
 
 #: src/DownloadListCtrl.cpp:191 src/OtherFunctions.cpp:697
-#: src/PartFileConvert.cpp:611 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:609 src/TransferWnd.cpp:347
 msgid "Completed"
 msgstr "Завершено"
 
@@ -1497,7 +1497,7 @@ msgid "Progress"
 msgstr "Выполнено"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3758 src/SearchListCtrl.cpp:90
+#: src/PartFile.cpp:3749 src/SearchListCtrl.cpp:90
 msgid "Sources"
 msgstr "Источники"
 
@@ -2422,32 +2422,32 @@ msgstr[0] "Записан %d Kad контакт"
 msgstr[1] "Записано %d Kad контакта"
 msgstr[2] "Записано %d Kad контактов"
 
-#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+#: src/KnownFile.cpp:1369 src/PartFileConvert.cpp:626
 msgid "File name"
 msgstr "Имя файла"
 
-#: src/KnownFile.cpp:1360
+#: src/KnownFile.cpp:1370
 msgid "File size"
 msgstr "Размер файла"
 
 # по крайней мере торренты называют его так
-#: src/KnownFile.cpp:1361
+#: src/KnownFile.cpp:1371
 msgid "Share ratio"
 msgstr "Рейтинг"
 
-#: src/KnownFile.cpp:1362
+#: src/KnownFile.cpp:1372
 msgid "Uploaded"
 msgstr "Загружено"
 
-#: src/KnownFile.cpp:1363
+#: src/KnownFile.cpp:1373
 msgid "Requested"
 msgstr "Запрошено"
 
-#: src/KnownFile.cpp:1364
+#: src/KnownFile.cpp:1374
 msgid "Accepted"
 msgstr "Разрешено"
 
-#: src/KnownFile.cpp:1366
+#: src/KnownFile.cpp:1376
 msgid "Complete sources"
 msgstr "Полных источников"
 
@@ -2471,35 +2471,35 @@ msgstr "Ошибка ввода/вывода при чтении файла know
 msgid "Error while saving known.met file: %s"
 msgstr "Ошибка при сохранении файла known.met: %s"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3690
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3681
 msgid "Hashing"
 msgstr "Хешируется"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3696
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3687
 msgid "Completing"
 msgstr "Завершается"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3699
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3690
 msgid "Complete"
 msgstr "Завершён"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:701
-#: src/PartFile.cpp:3702 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3693 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Приостановлен"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:700
-#: src/PartFile.cpp:3705 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3696 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Ошибочный"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:699
-#: src/PartFile.cpp:3712 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3703 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Загружается"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:698
-#: src/PartFile.cpp:3714 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3705 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Ожидает"
 
@@ -4414,7 +4414,7 @@ msgstr "Записывать в журнал подробные сообщени
 msgid "Message Categories:"
 msgstr "Категории сообщений:"
 
-#: src/muuli_wdr.cpp:3323 src/PartFileConvert.cpp:723
+#: src/muuli_wdr.cpp:3323 src/PartFileConvert.cpp:721
 msgid "Waiting..."
 msgstr "Ожидание..."
 
@@ -4541,7 +4541,7 @@ msgstr "все остальные"
 msgid "Incomplete"
 msgstr "Незавершенные"
 
-#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3719 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3710 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Остановлен"
 
@@ -4597,167 +4597,167 @@ msgstr "Сохраняю данные в новый монолитный фай�
 msgid "Retrieving source downloadfile information"
 msgstr "Получаем информацию по источникам"
 
-#: src/PartFileConvert.cpp:471
+#: src/PartFileConvert.cpp:469
 msgid "Adding download and saving new partfile"
 msgstr "Добавляю загрузку и сохраняю новый частично закачанный файл"
 
-#: src/PartFileConvert.cpp:548
+#: src/PartFileConvert.cpp:546
 msgid "Fetching status..."
 msgstr "Получение информации о состоянии..."
 
-#: src/PartFileConvert.cpp:612
+#: src/PartFileConvert.cpp:610
 msgid "In progress"
 msgstr "В процессе"
 
-#: src/PartFileConvert.cpp:613
+#: src/PartFileConvert.cpp:611
 msgid "ERROR: Out of diskspace"
 msgstr "ОШИБКА: Недостаточно места на диске"
 
-#: src/PartFileConvert.cpp:614
+#: src/PartFileConvert.cpp:612
 msgid "ERROR: Partmet not found"
 msgstr "ОШИБКА: Не найден файл part.met"
 
-#: src/PartFileConvert.cpp:615
+#: src/PartFileConvert.cpp:613
 msgid "ERROR: IO error!"
 msgstr "ОШИБКА: Ошибка ввода/вывода!"
 
 # знаю что звучит глупо. если есть идеи - прошу
-#: src/PartFileConvert.cpp:616
+#: src/PartFileConvert.cpp:614
 msgid "ERROR: Failed!"
 msgstr "ОШИБКА: Неудачно!"
 
-#: src/PartFileConvert.cpp:617
+#: src/PartFileConvert.cpp:615
 msgid "Queued"
 msgstr "В очереди"
 
-#: src/PartFileConvert.cpp:618
+#: src/PartFileConvert.cpp:616
 msgid "Already downloading"
 msgstr "Уже скачивается"
 
-#: src/PartFileConvert.cpp:619
+#: src/PartFileConvert.cpp:617
 msgid "Unknown or bad tempfile format."
 msgstr "Неизвестный или нарушенный формат временного файла."
 
-#: src/PartFileConvert.cpp:629
+#: src/PartFileConvert.cpp:627
 msgid "State"
 msgstr "Состояние"
 
-#: src/PartFileConvert.cpp:631
+#: src/PartFileConvert.cpp:629
 msgid "Filehash"
 msgstr "Хеш файла"
 
-#: src/PartFileConvert.cpp:677
+#: src/PartFileConvert.cpp:675
 msgid "Import partfiles"
 msgstr "Импорт частично загруженных файлов"
 
 # Полностью лучше не переводить - это титул небольшого диалога.
 # Если перевести полностью - будет маленький, но широоооокий диалог :)
-#: src/PartFileConvert.cpp:697
+#: src/PartFileConvert.cpp:695
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr "Укажите каталог для поиска незавершенных загрузок."
 
-#: src/PartFileConvert.cpp:701
+#: src/PartFileConvert.cpp:699
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Вы хотите, чтобы исходные файлы импортированных закачек были удалены?"
 
-#: src/PartFileConvert.cpp:702
+#: src/PartFileConvert.cpp:700
 msgid "Remove sources?"
 msgstr "Удалить исходные файлы?"
 
-#: src/PartFileConvert.cpp:738
+#: src/PartFileConvert.cpp:736
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr "%s (Диск: %s)"
 
-#: src/PartFile.cpp:284
+#: src/PartFile.cpp:285
 msgid "ERROR: Failed to create partfile)"
 msgstr "ОШИБКА: невозможно создать part-файл)"
 
-#: src/PartFile.cpp:322
+#: src/PartFile.cpp:323
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Попытка загрузки резервной копии файла '.met'  из %s"
 
-#: src/PartFile.cpp:329
+#: src/PartFile.cpp:330
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
 msgstr "ОШИБКА: не удалось открыть файл part.met: %s ==> %s"
 
-#: src/PartFile.cpp:335
+#: src/PartFile.cpp:336
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
 msgstr "ОШИБКА: файл part.met пуст: %s ==> %s"
 
-#: src/PartFile.cpp:346
+#: src/PartFile.cpp:347
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "ОШИБКА: неверная версия файла part.met: %s ==> %s"
 
-#: src/PartFile.cpp:596
+#: src/PartFile.cpp:597
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "ОШИБКА: %s (%s) поврежден (неверное число тегов), невозможно открыть файл."
 
-#: src/PartFile.cpp:599
+#: src/PartFile.cpp:600
 msgid "Trying to recover file info..."
 msgstr "Попытка восстановления информации о файле..."
 
-#: src/PartFile.cpp:614
+#: src/PartFile.cpp:615
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Восстановление безымянного файла - попытка восстановить его как "
 "'RecoveredFile.dat'"
 
-#: src/PartFile.cpp:619
+#: src/PartFile.cpp:620
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "Восстановлена вся возможная информация о файлах ;-))) Попытаемся ее "
 "использовать..."
 
-#: src/PartFile.cpp:621
+#: src/PartFile.cpp:622
 msgid "Unable to recover file info :("
 msgstr "Не удалось восстановить информацию о файлах :("
 
-#: src/PartFile.cpp:656
+#: src/PartFile.cpp:657
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Не удалось открыть %s (%s)"
 
-#: src/PartFile.cpp:704
+#: src/PartFile.cpp:705
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: %s возможно поврежден (%i)"
 
-#: src/PartFile.cpp:886
+#: src/PartFile.cpp:887
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "Ошибка сохранения part-файла: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:893
+#: src/PartFile.cpp:894
 #, fuzzy
 msgid "IO failure while saving partfile: "
 msgstr "Ошибка сохранения part-файла: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:906
+#: src/PartFile.cpp:907
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "Невозможно получить длину '%s' - используется файл %s"
 
-#: src/PartFile.cpp:914
+#: src/PartFile.cpp:915
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "Файл '%s' имеет размер в ноль байт - используется %s."
 
-#: src/PartFile.cpp:985
+#: src/PartFile.cpp:986
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Не удалось сохранить файл 'part.met.seeds' для %s"
 
-#: src/PartFile.cpp:1011
+#: src/PartFile.cpp:1012
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
@@ -4765,22 +4765,22 @@ msgstr[0] "Сохранен %i источник для файла %s (%s)"
 msgstr[1] "Сохранено %i источника для файла %s (%s)"
 msgstr[2] "Сохранено %i источников для файла %s (%s)"
 
-#: src/PartFile.cpp:1040
+#: src/PartFile.cpp:1041
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Файл %s (%s) не имеет сохранённых источников"
 
-#: src/PartFile.cpp:1049
+#: src/PartFile.cpp:1050
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Файл %s (%s) не имеет сохранённых источников"
 
-#: src/PartFile.cpp:1105
+#: src/PartFile.cpp:1106
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Ошибка при чтении источников частично загруженного файла (%s - %s): %s"
 
-#: src/PartFile.cpp:1123 src/PartFile.cpp:1153
+#: src/PartFile.cpp:1124 src/PartFile.cpp:1154
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4798,39 +4798,39 @@ msgstr[2] ""
 "Найдена испорченная часть (%d) в %d частях файла %s - FileResultHash |%s| "
 "FileHash |%s|"
 
-#: src/PartFile.cpp:1168
+#: src/PartFile.cpp:1169
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Найдена завершённая часть (%i) в %s"
 
-#: src/PartFile.cpp:1201
+#: src/PartFile.cpp:1202
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Завершено повторное хеширование %s"
 
-#: src/PartFile.cpp:2123
+#: src/PartFile.cpp:2124
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Неожиданная ошибка во время завершения %s. Файл приостановлен."
 
-#: src/PartFile.cpp:2150
+#: src/PartFile.cpp:2151
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Загрузка завершена: %s"
 
-#: src/PartFile.cpp:2207
+#: src/PartFile.cpp:2208
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Удаление файла: %s"
 
-#: src/PartFile.cpp:2276
+#: src/PartFile.cpp:2268
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: Не удается схэшировать загруженную часть - хэш-набор неполон "
 "для '%s'"
 
-#: src/PartFile.cpp:2281
+#: src/PartFile.cpp:2273
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4839,36 +4839,36 @@ msgstr ""
 "ОШИБКА: Не удается схэшировать загруженную часть - хэш-набор неполон (%s). "
 "Это никогда не должно происходить"
 
-#: src/PartFile.cpp:2963
+#: src/PartFile.cpp:2955
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: не достаточно свободного места на диске. Файл приостановлен: "
 "%s"
 
-#: src/PartFile.cpp:3035
+#: src/PartFile.cpp:3027
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Загруженная часть %i повреждена: %s"
 
-#: src/PartFile.cpp:3081
+#: src/PartFile.cpp:3073
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Восстановлена повреждённая часть %i для %s -> Выигрыш: %s Б"
 
-#: src/PartFile.cpp:3692
+#: src/PartFile.cpp:3683
 msgid "Allocating"
 msgstr "Выделяется место"
 
-#: src/PartFile.cpp:3708
+#: src/PartFile.cpp:3699
 msgid "Insufficient disk space"
 msgstr "Недостаточно места на диске"
 
-#: src/PartFile.cpp:3757
+#: src/PartFile.cpp:3748
 msgid "Downloaded"
 msgstr "Загружено"
 
-#: src/PartFile.cpp:3971
+#: src/PartFile.cpp:3962
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ОШИБКА: не удалось открыть частично закаченный '%s'"
@@ -5152,7 +5152,12 @@ msgstr "- Изменен язык.\n"
 msgid "- Temp folder changed.\n"
 msgstr "- Изменен временный каталог.\n"
 
-#: src/PrefsUnifiedDlg.cpp:644
+#: src/PrefsUnifiedDlg.cpp:582
+#, fuzzy
+msgid "- ED2K network enabled.\n"
+msgstr "Все сети выключены."
+
+#: src/PrefsUnifiedDlg.cpp:649
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -5160,7 +5165,7 @@ msgstr ""
 "Сети eD2k и Kad обе отключены.\n"
 "Вы не сможете подсоединиться пока не подключите хотя бы одну из них."
 
-#: src/PrefsUnifiedDlg.cpp:648
+#: src/PrefsUnifiedDlg.cpp:653
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5168,7 +5173,7 @@ msgstr ""
 "Kad не будет запущена, если UDP-порт выключен.\n"
 "Включите UDP-порт или выключите Kad."
 
-#: src/PrefsUnifiedDlg.cpp:657
+#: src/PrefsUnifiedDlg.cpp:662
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5178,7 +5183,7 @@ msgstr ""
 "Вам НЕОБХОДИМО перезапустить aMule немедленно.\n"
 "Иначе не жалуйтесь, если произойдет какая-нибудь неприятность.\n"
 
-#: src/PrefsUnifiedDlg.cpp:732
+#: src/PrefsUnifiedDlg.cpp:737
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5189,41 +5194,41 @@ msgstr ""
 "'server.met'.\n"
 "Щёлкните на кнопке \"Список\" чтобы ввести URL."
 
-#: src/PrefsUnifiedDlg.cpp:864
+#: src/PrefsUnifiedDlg.cpp:869
 msgid "Temporary files"
 msgstr "Временные файлы"
 
-#: src/PrefsUnifiedDlg.cpp:869
+#: src/PrefsUnifiedDlg.cpp:874
 msgid "Incoming files"
 msgstr "Входящие файлы"
 
-#: src/PrefsUnifiedDlg.cpp:874
+#: src/PrefsUnifiedDlg.cpp:879
 msgid "Online Signatures"
 msgstr "Online-подписи"
 
-#: src/PrefsUnifiedDlg.cpp:887
+#: src/PrefsUnifiedDlg.cpp:892
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Выберите каталог для %s"
 
-#: src/PrefsUnifiedDlg.cpp:907
+#: src/PrefsUnifiedDlg.cpp:912
 msgid "Browse for videoplayer"
 msgstr "Выбрать видео-проигрыватель"
 
-#: src/PrefsUnifiedDlg.cpp:911
+#: src/PrefsUnifiedDlg.cpp:916
 msgid "Select browser"
 msgstr "Выберите броузер"
 
-#: src/PrefsUnifiedDlg.cpp:917
+#: src/PrefsUnifiedDlg.cpp:922
 #, c-format
 msgid "Executable%s"
 msgstr "Команда запуска%s"
 
-#: src/PrefsUnifiedDlg.cpp:938
+#: src/PrefsUnifiedDlg.cpp:943
 msgid "Edit server list"
 msgstr "Редактировать список серверов"
 
-#: src/PrefsUnifiedDlg.cpp:939
+#: src/PrefsUnifiedDlg.cpp:944
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5231,7 +5236,7 @@ msgstr ""
 "Впишите сюда адреса для получения файлов 'server.met'.\n"
 "Только один URL в одной строчке."
 
-#: src/PrefsUnifiedDlg.cpp:998
+#: src/PrefsUnifiedDlg.cpp:1003
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
@@ -5239,7 +5244,7 @@ msgstr[0] "Интервал обновления: %d с"
 msgstr[1] "Интервал обновления: %d сек"
 msgstr[2] "Интервал обновления: %d сек"
 
-#: src/PrefsUnifiedDlg.cpp:1005
+#: src/PrefsUnifiedDlg.cpp:1010
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
@@ -5247,12 +5252,12 @@ msgstr[0] "Отрезок времени, охватывающийся граф�
 msgstr[1] "Отрезок времени, охватывающийся графиком: %d минут"
 msgstr[2] "Отрезок времени, охватывающийся графиком: %d минут"
 
-#: src/PrefsUnifiedDlg.cpp:1011
+#: src/PrefsUnifiedDlg.cpp:1016
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Масштаб графика соединений: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1017
+#: src/PrefsUnifiedDlg.cpp:1022
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
@@ -5260,7 +5265,7 @@ msgstr[0] "Интервал обновления: %d с"
 msgstr[1] "Интервал обновления: %d секунд"
 msgstr[2] "Интервал обновления: %d секунд"
 
-#: src/PrefsUnifiedDlg.cpp:1023
+#: src/PrefsUnifiedDlg.cpp:1028
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
@@ -5268,7 +5273,7 @@ msgstr[0] "Файловый буфер: %d Б"
 msgstr[1] "Размер буфера: %d байт"
 msgstr[2] "Размер буфера: %d байт"
 
-#: src/PrefsUnifiedDlg.cpp:1029
+#: src/PrefsUnifiedDlg.cpp:1034
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
@@ -5276,7 +5281,7 @@ msgstr[0] "Размер очереди отдачи: %d"
 msgstr[1] "Размер очереди отдачи: %d клиентов"
 msgstr[2] "Размер очереди отдачи: %d клиентов"
 
-#: src/PrefsUnifiedDlg.cpp:1036
+#: src/PrefsUnifiedDlg.cpp:1041
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
@@ -5284,38 +5289,38 @@ msgstr[0] "Частота связи с сервером: %d м"
 msgstr[1] "Интервал обновления соединения с сервером: %d минут"
 msgstr[2] "Интервал обновления соединения с сервером: %d минут"
 
-#: src/PrefsUnifiedDlg.cpp:1038
+#: src/PrefsUnifiedDlg.cpp:1043
 msgid "Server connection refresh interval: Disabled"
 msgstr "Обновление соединения с сервером: Отключено"
 
-#: src/PrefsUnifiedDlg.cpp:1083
+#: src/PrefsUnifiedDlg.cpp:1088
 #, fuzzy
 msgid "disabled"
 msgstr "выключить"
 
-#: src/PrefsUnifiedDlg.cpp:1101
+#: src/PrefsUnifiedDlg.cpp:1106
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Выполнить команду при событии  '%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1104
+#: src/PrefsUnifiedDlg.cpp:1109
 msgid "Enable command execution on core"
 msgstr "Включить выполнение команд в ядре"
 
-#: src/PrefsUnifiedDlg.cpp:1112
+#: src/PrefsUnifiedDlg.cpp:1117
 msgid "Core command:"
 msgstr "Команда ядра:"
 
 # никто ни в жизни не поймет переведенную аббревиатуру
-#: src/PrefsUnifiedDlg.cpp:1121
+#: src/PrefsUnifiedDlg.cpp:1126
 msgid "Enable command execution on GUI"
 msgstr "Включить выполнение команд в GUI"
 
-#: src/PrefsUnifiedDlg.cpp:1129
+#: src/PrefsUnifiedDlg.cpp:1134
 msgid "GUI command:"
 msgstr "Команда GUI:"
 
-#: src/PrefsUnifiedDlg.cpp:1138
+#: src/PrefsUnifiedDlg.cpp:1143
 msgid "The following variables will be replaced:"
 msgstr "Следующие переменные будут заменены:"
 
@@ -5447,32 +5452,32 @@ msgstr "Время ожидания соединения с %s (%s:%i) вышл�
 msgid "Received late result of DNS lookup, discarding."
 msgstr ""
 
-#: src/ServerList.cpp:83
+#: src/ServerList.cpp:84
 #, c-format
 msgid "Loading server.met file: %s"
 msgstr "Загружается файл 'server.met': %s"
 
-#: src/ServerList.cpp:88
+#: src/ServerList.cpp:89
 msgid "Server.met file not found!"
 msgstr "Файл 'server.met' не найден!"
 
-#: src/ServerList.cpp:96
+#: src/ServerList.cpp:97
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
 msgstr ""
 "Не удалось загрузить файл server.met '%s', потому что он имеет неправильный "
 "формат."
 
-#: src/ServerList.cpp:102
+#: src/ServerList.cpp:103
 msgid "Failed to open server.met!"
 msgstr "Не удалось открыть файл 'server.met'!"
 
-#: src/ServerList.cpp:113
+#: src/ServerList.cpp:114
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr "Файл server.met поврежден. Неверная метка версии: 0x%x, размер %i"
 
-#: src/ServerList.cpp:168
+#: src/ServerList.cpp:169
 #, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
@@ -5480,7 +5485,7 @@ msgstr[0] "В файле 'server.met' найден %i сервер"
 msgstr[1] "В файле 'server.met' найдено %i сервера"
 msgstr[2] "В файле 'server.met' найдено %i серверов"
 
-#: src/ServerList.cpp:170
+#: src/ServerList.cpp:171
 #, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
@@ -5488,54 +5493,54 @@ msgstr[0] "%d сервер добавлен"
 msgstr[1] "%d сервера добавлено"
 msgstr[2] "%d серверов добавлено"
 
-#: src/ServerList.cpp:191
+#: src/ServerList.cpp:192
 #, c-format
 msgid "Server not added: [%s:%d] does not specify a valid port."
 msgstr "Сервер не был добавлен: [%s:%d] не указывает на подходящий порт."
 
-#: src/ServerList.cpp:207
+#: src/ServerList.cpp:208
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
 msgstr "Сервер не был указан: IP адрес [%s:%d] был отфильтрован или неверен."
 
-#: src/ServerList.cpp:227
+#: src/ServerList.cpp:228
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
 msgstr ""
 "Сервер не был добавлен: сервер с совпадающим IP:порт [%s:%d] был найден в "
 "списке."
 
-#: src/ServerList.cpp:246
+#: src/ServerList.cpp:247
 #, c-format
 msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "Сервер добавлен: сервер [%s:%d] использует имя '%s'."
 
-#: src/ServerList.cpp:341
+#: src/ServerList.cpp:342
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
 msgstr ""
 "Вы соединены с сервером, который вы пытаетесь удалить. Отключитесь от него."
 
-#: src/ServerList.cpp:628
+#: src/ServerList.cpp:629
 msgid "Failed to save server.met!"
 msgstr "Не удалось сохранить файл 'server.met'."
 
-#: src/ServerList.cpp:781
+#: src/ServerList.cpp:782
 msgid "Invalid URL"
 msgstr "Неверный URL"
 
-#: src/ServerList.cpp:804
+#: src/ServerList.cpp:805
 #, c-format
 msgid "Finished to download the server list from %s"
 msgstr "Завершена загрузка списка серверов от %s"
 
-#: src/ServerList.cpp:806 src/ServerList.cpp:860
+#: src/ServerList.cpp:807 src/ServerList.cpp:861
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Не удалось получить список серверов из %s"
 
-#: src/ServerList.cpp:817
+#: src/ServerList.cpp:818
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5543,23 +5548,23 @@ msgstr ""
 "Не найдено адресов списков серверов в 'addresses.dat'. Пожалуйста, введите "
 "правильные адреса чтобы авто-обновление работало."
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:831
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "Начинаю загружать список серверов с %s"
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:840
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: неверный URL для авто-обновления серверов: %s"
 
-#: src/ServerList.cpp:843
+#: src/ServerList.cpp:844
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "Отсутствует допустимый 'server.met' файл по адресу для автоматического "
 "обновления серверов"
 
-#: src/ServerList.cpp:936
+#: src/ServerList.cpp:937
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -6805,12 +6810,12 @@ msgstr "Редакировать категорию"
 msgid "Remove category"
 msgstr "Удалить категорию"
 
-#: src/UploadClient.cpp:269
+#: src/UploadClient.cpp:270
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr "Не удалось открыть файл (%s), удаляю из списка публикуемых файлов."
 
-#: src/UploadClient.cpp:711
+#: src/UploadClient.cpp:704
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Запрошен набор хешей для неизвестного файла: %s"
