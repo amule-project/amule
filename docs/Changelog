@@ -59,6 +59,7 @@ Version 2.3.0 - The river knows.
 		* More info in the Kad tab
 		* Fixed Windows lag when opening preferences dialog
 		* Fixed finished files sometimes getting rehashed (thanks to Skolnick)
+		* Improved gaplist performance
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -1455,7 +1455,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		
 		unsigned gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
 		// clear gaplist
-		file->m_gaplist.clear();
+		file->m_gaplist.Init(file->GetFileSize(), false);
 
 		// and refill it
 		const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();

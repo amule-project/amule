@@ -26,22 +26,30 @@
 #include "Types.h"
 #include <protocol/ed2k/Constants.h>	// for PARTSIZE
 #include "GapList.h"
-#include "OtherFunctions.h"	// for DeleteContents
+
+#include "Logger.h"
+#include <common/Format.h>
 
 void CGapList::Init(uint64 fileSize, bool empty)
 {
 	m_filesize = fileSize;
-	m_lastPart = fileSize / PARTSIZE;
+	m_iPartCount = fileSize / PARTSIZE + 1;
 	m_sizeLastPart = fileSize % PARTSIZE;
 	// file with size of n * PARTSIZE
-	if (m_sizeLastPart == 0) {
+	if (m_sizeLastPart == 0 
+		&& fileSize) {  // that's only for pre-init in ctor
 		m_sizeLastPart = PARTSIZE;
-		m_lastPart--;
+		m_iPartCount--;
 	}
-	clear();
+	m_gaplist.clear();
+	m_partsComplete.clear();
 	if (empty) {
+		m_partsComplete.resize(m_iPartCount, incomplete);
 		AddGap(0, fileSize - 1);
+	} else {
+		m_partsComplete.resize(m_iPartCount, complete);
 	}
+	m_totalGapSizeValid = false;
 }
 
 
@@ -51,106 +59,160 @@ void CGapList::AddGap(uint64 gapstart, uint64 gapend)
 		return;
 	}
 
-	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+//	AddDebugLogLineN(logPartFile, CFormat(wxT("  AddGap: %5d - %5d")) % gapstart % gapend);
+
+	// mark involved part(s) as incomplete
+	uint16 partlast = gapend / PARTSIZE;
+	for (uint16 part = gapstart / PARTSIZE; part <= partlast; part++) {
+		m_partsComplete[part] = incomplete;
+	}
+	// total gap size has to be recalculated
+	m_totalGapSizeValid = false;
+
+	// find a place to start:
+	// first gap which ends >= our gap start - 1
+	// (-1 so we can join adjacent gaps)
+	iterator it = m_gaplist.lower_bound(gapstart > 0 ? gapstart - 1 : 0);
 	while (it != m_gaplist.end()) {
-		std::list<Gap_Struct*>::iterator it2 = it++;
-		Gap_Struct* cur_gap = *it2;
-	
-		if (cur_gap->start >= gapstart && cur_gap->end <= gapend) {
+		iterator it2 = it++;
+		uint64 curGapStart = it2->second;
+		uint64 curGapEnd   = it2->first;
+
+		if (curGapStart >= gapstart && curGapEnd <= gapend) {
 			// this gap is inside the new gap - delete
 			m_gaplist.erase(it2);
-			delete cur_gap;
-			continue;
-		} else if (cur_gap->start >= gapstart && cur_gap->start <= gapend + 1) {
+		} else if (curGapStart >= gapstart && curGapStart <= gapend + 1) {
 			// head of this gap is in the new gap, or this gap is
 			// directly behind the new gap - extend limit and delete
-			gapend = cur_gap->end;
+			gapend = curGapEnd;
 			m_gaplist.erase(it2);
-			delete cur_gap;
-			continue;
-		} else if (cur_gap->end <= gapend && cur_gap->end >= gapstart - 1) {
+		} else if (curGapEnd <= gapend && curGapEnd >= gapstart - 1) {
 			// tail of this gap is in the new gap, or this gap is
 			// directly before the new gap - extend limit and delete
-			gapstart = cur_gap->start;
+			gapstart = curGapStart;
 			m_gaplist.erase(it2);
-			delete cur_gap;
-			continue;
-		} else if (gapstart >= cur_gap->start && gapend <= cur_gap->end){
+		} else if (curGapStart <= gapstart && curGapEnd >= gapend) {
 			// new gap is already inside this gap - return
 			return;
 		// now all cases of overlap are ruled out
-		} else if (cur_gap->start > gapstart) {
+		} else if (curGapStart > gapstart) {
 			// this gap is the first behind the new gap -> insert before it
 			it = it2;
 			break;
 		}
 	}
-	
-	Gap_Struct* new_gap = new Gap_Struct;
-	new_gap->start = gapstart;
-	new_gap->end = gapend;
-	m_gaplist.insert(it, new_gap);
+	// for fastest insertion point to the element AFTER which we want to insert	
+	if (it != m_gaplist.begin()) {
+		--it;
+	}
+	m_gaplist.insert(it, std::pair<uint64,uint64>(gapend, gapstart));
 }
 
 void CGapList::AddGap(uint16 part)
 {
+	if (part >= m_iPartCount) {
+		wxFAIL;
+		return;
+	}
 	uint64 gapstart = part * PARTSIZE;
 	uint64 gapend = gapstart + GetPartSize(part) - 1;
 	AddGap(gapstart, gapend);
+	m_partsComplete[part] = incomplete;
 }
 
-void CGapList::FillGap(uint64 gapstart, uint64 gapend)
+void CGapList::FillGap(uint64 partstart, uint64 partend)
 {
-	if (!ArgCheck(gapstart, gapend)) {
+	if (!ArgCheck(partstart, partend)) {
 		return;
 	}
 
-	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+//	AddDebugLogLineN(logPartFile, CFormat(wxT("  FillGap: %5d - %5d")) % partstart % partend);
+
+	// mark involved part(s) to be reexamined for completeness
+	uint16 partlast = partend / PARTSIZE;
+	for (uint16 part = partstart / PARTSIZE; part <= partlast; part++) {
+		m_partsComplete[part] = unknown;
+	}
+	// also total gap size
+	m_totalGapSizeValid = false;
+
+	// find a place to start:
+	// first gap which ends >= our part start
+	iterator it = m_gaplist.lower_bound(partstart);
 	while (it != m_gaplist.end()) {
-		std::list<Gap_Struct*>::iterator it2 = it++;
-		Gap_Struct* cur_gap = *it2;
-	
-		if (cur_gap->start >= gapstart && cur_gap->end <= gapend) {
-			// our part fills this gap completly
-			m_gaplist.erase(it2);
-			delete cur_gap;
-			continue;
-		} else if (cur_gap->start >= gapstart && cur_gap->start <= gapend) {
-			// a part of this gap is in the part - set limit
-			cur_gap->start = gapend+1;
-		} else if (cur_gap->end <= gapend && cur_gap->end >= gapstart) {
-			// a part of this gap is in the part - set limit
-			cur_gap->end = gapstart-1;
-		} else if (gapstart >= cur_gap->start && gapend <= cur_gap->end) {
-			uint64 buffer = cur_gap->end;
-			cur_gap->end = gapstart-1;
-			cur_gap = new Gap_Struct;
-			cur_gap->start = gapend+1;
-			cur_gap->end = buffer;
-			m_gaplist.insert(++it2, cur_gap);
-			break;
+		iterator it2 = it++;
+		uint64 curGapStart = it2->second;
+		uint64 curGapEnd   = it2->first;
+
+		if (curGapStart >= partstart) {
+			if (curGapEnd <= partend) {
+				// our part fills this gap completly
+				m_gaplist.erase(it2);
+			} else if (curGapStart <= partend) {
+				// lower part of this gap is in the part - shrink gap:
+				//   (this is the most common case: curGapStart == partstart && curGapEnd > partend)
+				it2->second = partend + 1;
+				// end of our part was in the gap: we're done
+				break;
+			} else {
+				// gap starts behind our part end: we're done
+				break;
+			}
+		} else {
+			// curGapStart < partstart
+			if (curGapEnd > partend) {
+				// our part is completely enclosed by the gap
+				// cut it in two, leaving our part out:
+				// shrink the gap so it becomes the second gap
+				it2->second = partend + 1;
+				// insert new first gap
+				iterator it3(it2);
+				if (it3 != m_gaplist.begin()) {
+					--it3;
+				}
+				m_gaplist.insert(it3, std::pair<uint64,uint64>(partstart - 1, curGapStart));
+				// we're done
+				break;
+			} else if (curGapEnd >= partstart) {
+				// upper part of this gap is in the part - shrink gap:
+				// insert shorter gap
+				iterator it3(it2);
+				if (it3 != m_gaplist.begin()) {
+					--it3;
+				}
+				m_gaplist.insert(it3, std::pair<uint64,uint64>(partstart - 1, curGapStart));
+				// and delete the old one
+				m_gaplist.erase(it2);
+			}
+			// else: gap is before our part start (should not happen)
 		}
 	}
 }
 
 void CGapList::FillGap(uint16 part)
 {
+	if (part >= m_iPartCount) {
+		wxFAIL;
+		return;
+	}
 	uint64 gapstart = part * PARTSIZE;
 	uint64 gapend = gapstart + GetPartSize(part) - 1;
 	FillGap(gapstart, gapend);
+	m_partsComplete[part] = complete;
 }
 
-uint64 CGapList::GetGapSize() const
+uint64 CGapList::GetGapSize()
 {
-   	uint64 allgaps = 0;
+	if (!m_totalGapSizeValid) {
+		m_totalGapSizeValid = true;
+   		m_totalGapSize = 0;
 
-	std::list<Gap_Struct*>::const_iterator it = m_gaplist.begin();
-	for (; it != m_gaplist.end(); it++) {
-		Gap_Struct* cur_gap = *it;
-		allgaps += cur_gap->end - cur_gap->start + 1;
+		ListType::const_iterator it = m_gaplist.begin();
+		for (; it != m_gaplist.end(); it++) {
+			m_totalGapSize += it->first - it->second + 1;
+		}
 	}
-
-	return allgaps;
+	return m_totalGapSize;
 }
 
 uint32 CGapList::GetGapSize(uint16 part) const
@@ -159,29 +221,32 @@ uint32 CGapList::GetGapSize(uint16 part) const
 	uint64 uRangeEnd = uRangeStart + GetPartSize(part) - 1;
 	uint64 uTotalGapSize = 0;
 
-	if (uRangeEnd >= m_filesize) {
-		uRangeEnd = m_filesize - 1;
-	}
-
-	std::list<Gap_Struct*>::const_iterator it = m_gaplist.begin();
+	// find a place to start:
+	// first gap which ends >= our gap start
+	ListType::const_iterator it = m_gaplist.lower_bound(uRangeStart);
 	for (; it != m_gaplist.end(); ++it) {
-		const Gap_Struct* pGap = *it;
+		uint64 curGapStart = it->second;
+		uint64 curGapEnd   = it->first;
 
-		if (pGap->start < uRangeStart && pGap->end > uRangeEnd) {
+		if (curGapStart <= uRangeStart && curGapEnd >= uRangeEnd) {
+			// total range is in this gap
 			uTotalGapSize += uRangeEnd - uRangeStart + 1;
 			break;
-		}
-
-		if (pGap->start >= uRangeStart && pGap->start <= uRangeEnd) {
-			uint64 uEnd = (pGap->end > uRangeEnd) ? uRangeEnd : pGap->end;
-			uTotalGapSize += uEnd - pGap->start + 1;
-		} else if (pGap->end >= uRangeStart && pGap->end <= uRangeEnd) {
-			uTotalGapSize += pGap->end - uRangeStart + 1;
+		} else if (curGapStart >= uRangeStart) {
+			if (curGapStart <= uRangeEnd) {
+				// start of this gap is in our range
+				uTotalGapSize += std::min(curGapEnd, uRangeEnd) - curGapStart + 1;
+			} else {
+				// this gap starts behind our range
+				break;
+			}
+		} else if (curGapEnd >= uRangeStart && curGapEnd <= uRangeEnd) {
+			// end of this gap is in our range
+			uTotalGapSize += curGapEnd - uRangeStart + 1;
 		}
 	}
 
 	wxASSERT( uTotalGapSize <= uRangeEnd - uRangeStart + 1 );
-
 	return uTotalGapSize;
 }
 
@@ -191,36 +256,48 @@ bool CGapList::IsComplete(uint64 gapstart, uint64 gapend) const
 		return false;
 	}
 
-	if (gapend >= m_filesize) {
-		gapend = m_filesize-1;
-	}
-
-	std::list<Gap_Struct*>::const_iterator it = m_gaplist.begin();
+	// find a place to start:
+	// first gap which ends >= our gap start
+	ListType::const_iterator it = m_gaplist.lower_bound(gapstart);
 	for (; it != m_gaplist.end(); ++it) {
-		Gap_Struct* cur_gap = *it;
-		if (  (cur_gap->start >= gapstart && cur_gap->end <= gapend)
-			||(cur_gap->start >= gapstart && cur_gap->start <= gapend)
-			||(cur_gap->end <= gapend && cur_gap->end >= gapstart)
-			||(gapstart >= cur_gap->start && gapend <= cur_gap->end)) {
+		uint64 curGapStart = it->second;
+		uint64 curGapEnd   = it->first;
+
+		if (  (curGapStart >= gapstart    && curGapEnd   <= gapend)
+			||(curGapStart >= gapstart    && curGapStart <= gapend)
+			||(curGapEnd   <= gapend      && curGapEnd   >= gapstart)
+			||(gapstart    >= curGapStart && gapend      <= curGapEnd)) {
 			return false;	
 		}
-		if (cur_gap->start > gapend) {
+		if (curGapStart > gapend) {
 			break;
 		}
 	}
 	return true;
 }
 
-bool CGapList::IsComplete(uint16 part) const
+bool CGapList::IsComplete(uint16 part)
 {
-	uint64 partstart = part * PARTSIZE;
-	uint64 partend = partstart + GetPartSize(part) - 1;
-	return IsComplete(partstart, partend);
+	if (part >= m_iPartCount) {
+		wxFAIL;
+		return false;
+	}
+	ePartComplete status = (ePartComplete) m_partsComplete[part];
+	if (status == unknown) {
+		uint64 partstart = part * PARTSIZE;
+		uint64 partend = partstart + GetPartSize(part) - 1;
+		status = IsComplete(partstart, partend) ? complete : incomplete;
+		m_partsComplete[part] = status;
+	}
+	return status == complete;
 }
 
-void CGapList::clear()
+void CGapList::DumpList()
 {
-	DeleteContents(m_gaplist);
+	int i = 0;
+	for (const_iterator it = begin(); it != end(); ++it) {
+		AddDebugLogLineN(logPartFile, CFormat(wxT("  %3d: %5d - %5d")) % i++ % it.start() % it.end());
+	}
 }
 
 inline bool CGapList::ArgCheck(uint64 gapstart, uint64 &gapend) const
