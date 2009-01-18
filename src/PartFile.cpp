@@ -2260,15 +2260,6 @@ void CPartFile::Delete()
 	delete this;
 }
 
-// size of a certain part, last is different, all others are PARTSIZE
-uint32 CPartFile::GetPartSize(uint16 partNumber) const 
-{ 
-	if (GetFileSize() / PARTSIZE == partNumber) 
-		return GetFileSize() % PARTSIZE; 
-	else 
-		return PARTSIZE; 
-}
-
 
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
@@ -3571,8 +3562,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 
 	m_category = tag->FileCat();
 
-	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
-	m_SrcpartFrequency.insert(m_SrcpartFrequency.end(), m_iPartCount, 0);
+	m_SrcpartFrequency.insert(m_SrcpartFrequency.end(), GetPartCount(), 0);
 	m_iDownPriority = tag->Prio();
 	if ( m_iDownPriority >= 10 ) {
 		m_iDownPriority-= 10;

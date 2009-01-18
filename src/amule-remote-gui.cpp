@@ -1831,12 +1831,6 @@ void CKnownFile::UpdatePartsInfo()
 }
 
 
-void CKnownFile::SetFileSize(uint64 nFileSize)
-{
-	CAbstractFile::SetFileSize(nFileSize);
-}
-
-
 CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const *, uint8 /*byRequestedVersion*/, uint16 /*nRequestedOptions*/)
 {
 	wxASSERT(0);
