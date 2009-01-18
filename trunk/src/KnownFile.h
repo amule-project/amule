@@ -221,6 +221,9 @@ public:
 	// nr. of 9MB parts according the file size wrt ED2K protocol (OP_FILESTATUS)
 	inline uint16 GetED2KPartCount() const { return m_iED2KPartCount; }
 	
+	// size of a certain part, last is different, all others are PARTSIZE
+	uint32 GetPartSize(uint16 part) const { return part == m_iPartCount - 1 ? m_sizeLastPart : PARTSIZE; }
+
 	// file upload priority
 	uint8	GetUpPriority()	 const		{return m_iUpPriority;}
 	void	SetUpPriority(uint8 newUpPriority, bool bSave=true);
@@ -339,6 +342,7 @@ protected:
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;
 	uint16	m_iED2KPartHashCount;
+	uint32	m_sizeLastPart;			// size of the last part
 	uint8	m_iUpPriority;
 	bool	m_bAutoUpPriority;
 	bool	m_PublishedED2K;
