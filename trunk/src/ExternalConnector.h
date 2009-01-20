@@ -164,6 +164,7 @@ protected:
 	CMD4Hash	m_password;
 	bool		m_KeepQuiet;
 	bool		m_Verbose;
+	bool		m_interactive;
 	CCommandTree	m_commands;
 	const char *	m_appname;
 
