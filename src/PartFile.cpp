@@ -2215,7 +2215,7 @@ void CPartFile::Delete()
 	theApp->downloadqueue->RemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from download queue"));
 	Notify_DownloadCtrlRemoveFile(this);
-	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved transferwnd"));
+	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from transferwnd"));
 
 	// Kry - WTF? 
 	// eMule had same problem with lseek error ... and override with a simple 
