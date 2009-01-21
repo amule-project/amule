@@ -35,11 +35,11 @@
 class RLE_Data
 {
 public:
-	RLE_Data(int len, bool use_diff);
+	RLE_Data(int len, bool use_diff)	{ setup(len, use_diff); }
 	
 	// those constructors are for stl containers
-	RLE_Data();
-	RLE_Data(const RLE_Data &);
+	RLE_Data()	{ setup(0, 0); }
+	RLE_Data(const RLE_Data & obj)	{ setup(obj.m_len, obj.m_use_diff, obj.m_buff); }
 	RLE_Data &operator=(const RLE_Data &);
 	
 	~RLE_Data();
@@ -68,7 +68,9 @@ public:
 	const unsigned char *Buffer() { return m_buff; }
 	int Size() { return m_len; }
 
-private:	
+private:
+	void setup(int len, bool use_diff, unsigned char * content = 0);
+
 	unsigned char *m_buff, *m_enc_buff;
 	bool m_use_diff;
 	int m_len, m_enc_len;
