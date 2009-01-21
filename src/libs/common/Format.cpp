@@ -24,6 +24,8 @@
 
 #include "Format.h"
 
+#include <ctype.h>
+
 #ifndef _MSC_VER
 #	include <stdint.h>
 #endif
