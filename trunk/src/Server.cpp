@@ -125,11 +125,7 @@ CServer::CServer(CServer* pOld)
 
 CServer::~CServer()
 {
-	TagPtrList::iterator it = m_taglist.begin();
-	for ( ; it != m_taglist.end(); ++it ) {
-		delete *it;
-	}
-
+	deleteTagPtrListEntries(&m_taglist);
 	m_taglist.clear();
 }
 
