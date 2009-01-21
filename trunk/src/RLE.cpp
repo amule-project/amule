@@ -35,59 +35,42 @@
  * We can't use implementation with "control char" since this encoder
  * will process binary data - not ascii (or unicode) strings
  */
-RLE_Data::RLE_Data(int len, bool use_diff)
+void RLE_Data::setup(int len, bool use_diff, unsigned char * content)
 {
 	m_len = len;
 	m_use_diff = use_diff;
-	
-	m_buff = new unsigned char[m_len];
-	memset(m_buff, 0, m_len);
-	//
-	// in worst case 2-byte sequence encoded as 3. So, data can grow at 1/3
-	m_enc_buff = new unsigned char[m_len*4/3 + 1];
-}
 
-RLE_Data::RLE_Data()
-{
-	m_buff = 0;
-	m_enc_buff = 0;
-	m_len = 0;
-	m_use_diff = 0;
-}
-
-RLE_Data::RLE_Data(const RLE_Data &obj)
-{
-	m_len = obj.m_len;
-	m_use_diff = obj.m_use_diff;
-
-	m_buff = new unsigned char[m_len];
-	memcpy(m_buff, obj.m_buff, m_len);
-	
-	m_enc_buff = new unsigned char[m_len*4/3 + 1];
+	if (m_len) {
+		m_buff = new unsigned char[m_len];
+		if (content) {
+			memcpy(m_buff, content, m_len);
+		} else {
+			memset(m_buff, 0, m_len);
+		}
+		//
+		// in worst case 2-byte sequence encoded as 3. So, data can grow at 1/3
+		m_enc_buff = new unsigned char[m_len*4/3 + 1];
+	} else {
+		m_buff = m_enc_buff = 0;
+	}
 }
 
 RLE_Data &RLE_Data::operator=(const RLE_Data &obj)
 {
-	m_len = obj.m_len;
-	
-	m_use_diff = obj.m_use_diff;
+	if (this == &obj)
+		return *this;
 
-	m_buff = new unsigned char[m_len];
-	memcpy(m_buff, obj.m_buff, m_len);
-	
-	m_enc_buff = new unsigned char[m_len*4/3 + 1];
-	
+	delete [] m_buff;
+	delete [] m_enc_buff;
+	setup(obj.m_len, obj.m_use_diff, obj.m_buff);
+
 	return *this;
 }
 
 RLE_Data::~RLE_Data()
 {
-	if ( m_buff ) {
-		delete [] m_buff;
-	}
-	if ( m_enc_buff ) {
-		delete [] m_enc_buff;
-	}
+	delete [] m_buff;
+	delete [] m_enc_buff;
 }
 
 void RLE_Data::Realloc(int size)
