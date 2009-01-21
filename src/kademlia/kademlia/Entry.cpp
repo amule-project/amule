@@ -55,9 +55,7 @@ CKeyEntry::GlobalPublishIPMap	CKeyEntry::s_globalPublishIPs;
 ////// CEntry
 CEntry::~CEntry()
 {
-	for (TagPtrList::const_iterator it = m_taglist.begin(); it != m_taglist.end(); ++it) {
-		delete *it;
-	}
+	deleteTagPtrListEntries(&m_taglist);
 }
 
 CEntry* CEntry::Copy() const

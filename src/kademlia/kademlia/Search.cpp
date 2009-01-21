@@ -586,9 +586,7 @@ void CSearch::StorePacket()
 				CKademlia::GetUDPListener()->SendPublishSourcePacket(*from, m_target, id, taglist);
 				m_totalRequestAnswers++;
 				// Delete all tags.
-				for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
-					delete *it;
-				}
+				deleteTagPtrListEntries(&taglist);
 			} else {
 				PrepareToStop();
 			}
@@ -698,9 +696,7 @@ void CSearch::StorePacket()
 				}
 				m_totalRequestAnswers++;
 				// Delete all tags.
-				for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
-					delete *it;
-				}
+				deleteTagPtrListEntries(&taglist);
 			} else {
 				PrepareToStop();
 			}
@@ -1039,9 +1035,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
 
 	// Free tags memory
-	for (TagPtrList::iterator it = taglist.begin(); it != taglist.end(); ++it) {
-		delete (*it);
-	}	
+	deleteTagPtrListEntries(&taglist);
 	
 }
 
@@ -1257,9 +1251,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 		AddDebugLogLineM(true, logKadSearch, wxT("Exception in CSearch::PreparePacketForTags: ") + e);
 	} 
 
-	for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
-		delete *it;
-	}
+	deleteTagPtrListEntries(&taglist);
 }
 
 void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *searchTermsData)
