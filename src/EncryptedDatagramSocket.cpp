@@ -437,10 +437,6 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	wxASSERT( thePrefs::IsServerCryptLayerUDPEnabled() );
 	wxASSERT( dwBaseKey != 0 );
 	
-	uint8 byPadLen = 0;			// padding disabled for UDP currently
-	uint32 nCryptedLen = nBufLen + byPadLen + CRYPT_HEADER_WITHOUTPADDING;
-	uint8* pachCryptedBuffer = new uint8[nCryptedLen];
-	
 	uint16 nRandomKeyPart = GetRandomUint16();
 
 	uint8 achKeyData[7];
@@ -468,6 +464,10 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 		bySemiRandomNotProtocolMarker = 0x01;
 	}
 
+	uint8 byPadLen = 0;			// padding disabled for UDP currently
+	uint32 nCryptedLen = nBufLen + byPadLen + CRYPT_HEADER_WITHOUTPADDING;
+	uint8* pachCryptedBuffer = new uint8[nCryptedLen];
+	
 	pachCryptedBuffer[0] = bySemiRandomNotProtocolMarker;
 	PokeUInt16(pachCryptedBuffer + 1, nRandomKeyPart);
 
