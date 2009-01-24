@@ -5,6 +5,7 @@ Version 2.3.0 - The river knows.
 	freddy77:
 		* Various optimizations of memory usage
 		* Read files for hashing/sharing using mapped memory
+		* Fixed a small memory leak in UDP server communication.
 
 	FreeToGo:
 		* Add comment to desktop file to allow autostart in Gnome
@@ -19,11 +20,15 @@ Version 2.3.0 - The river knows.
 		* Added another common URN ID to the Magnet link handler.
 		* Switch to the 'busy' cursor while bringing up the preferences
 		  window.
+		* Fixed wxWidgets socket library initialization.
 
 	Greek:
 		* Part number is now an extra column in the download list
 		* Improvements to preferences dialogs
 		* Redesign skin selection
+
+	iz0bbz:
+		* Fixed static linking with GeoIP on MinGW/MSYS.
 
 	Kry:
 		* Fix indexes after removing GUI items
