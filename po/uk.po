@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-18 21:44+0100\n"
+"POT-Creation-Date: 2009-01-24 15:28+0100\n"
 "PO-Revision-Date: 2008-12-17 11:21+0200\n"
 "Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
@@ -352,11 +352,11 @@ msgstr "Користувачі: %s K: %s | Файли: E: %s K: %s"
 msgid "No networks selected"
 msgstr "Не вибрано жодної мережі"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "з LowID"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "з HighID"
 
@@ -802,7 +802,7 @@ msgstr "Шукається друг для lowid-з'єднання"
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
-#: src/PartFile.cpp:2506 src/Server.cpp:160 src/Server.cpp:235
+#: src/PartFile.cpp:2506 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Невідомо"
@@ -965,7 +965,7 @@ msgid "Disabled"
 msgstr "Вимкнено"
 
 #: src/ClientDetailDialog.cpp:143 src/ClientListCtrl.cpp:1027
-#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:707
+#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:708
 msgid "Connected"
 msgstr "З'єднано"
 
@@ -1430,7 +1430,7 @@ msgid "Remote Server"
 msgstr "Віддалений сервер"
 
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:192 src/muuli_wdr.cpp:3412
-#: src/SearchDlg.cpp:109 src/TextClient.cpp:704
+#: src/SearchDlg.cpp:109 src/TextClient.cpp:705
 msgid "Kad"
 msgstr "Kad"
 
@@ -1982,17 +1982,17 @@ msgstr ""
 "Всі команди розрізняють великі та малі літери.Введіть '%s <command>' щоб "
 "отримати докладну інформацію по <command>.\n"
 
-#: src/ExternalConnector.cpp:232 src/ExternalConnector.cpp:233
+#: src/ExternalConnector.cpp:233 src/ExternalConnector.cpp:234
 msgid "Exits from the application."
 msgstr "Вийти з програми."
 
-#: src/ExternalConnector.cpp:234
+#: src/ExternalConnector.cpp:235
 msgid "Show help."
 msgstr "Показати допомогу."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:237
+#: src/ExternalConnector.cpp:238
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -2000,7 +2000,7 @@ msgstr ""
 "Щоб отримати допомогу по команді, введіть 'help <command>'.\n"
 "Щоб отримати повний перелік команд, введіть ''help\".\n"
 
-#: src/ExternalConnector.cpp:258
+#: src/ExternalConnector.cpp:259
 #, c-format
 msgid ""
 "\n"
@@ -2011,48 +2011,48 @@ msgstr ""
 "Використовуйте '%s' для переліку команд\n"
 "\n"
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:289
 msgid "Syntax error!"
 msgstr "Помилка синтаксису!"
 
-#: src/ExternalConnector.cpp:291
+#: src/ExternalConnector.cpp:292
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Помилка обробки команди - не повинно ніколи такого бути! Будь, ласка, "
 "повідомте про помилку\n"
 
-#: src/ExternalConnector.cpp:294
+#: src/ExternalConnector.cpp:295
 msgid "This command should not have any parameters."
 msgstr "Ця команда не повинна мати жодного параметру."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:298
 msgid "This command must have a parameter."
 msgstr "Ця команда повинна мати параметр."
 
-#: src/ExternalConnector.cpp:300
+#: src/ExternalConnector.cpp:301
 msgid "Invalid argument."
 msgstr "Невірний аргумент."
 
-#: src/ExternalConnector.cpp:303
+#: src/ExternalConnector.cpp:304
 msgid "This is an incomplete command."
 msgstr "Це незавершена команда"
 
-#: src/ExternalConnector.cpp:312
+#: src/ExternalConnector.cpp:313
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Напишіть '%s' щоб отримати більше допомоги.\n"
 
-#: src/ExternalConnector.cpp:368
+#: src/ExternalConnector.cpp:369
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Це %s %s %s\n"
 
-#: src/ExternalConnector.cpp:370
+#: src/ExternalConnector.cpp:371
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Це %s %s\n"
 
-#: src/ExternalConnector.cpp:401
+#: src/ExternalConnector.cpp:402
 msgid ""
 "\n"
 "Creating client...\n"
@@ -2060,12 +2060,12 @@ msgstr ""
 "\n"
 "Створюється клієнт...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:408
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "З'єдання невдале. Неможливо з'єднатися з %s:%d\n"
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:422
 #, c-format
 msgid ""
 "\n"
@@ -2074,7 +2074,7 @@ msgstr ""
 "\n"
 "Добре, виходимо %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:428
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2088,47 +2088,47 @@ msgstr ""
 "\n"
 "Вихід...\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:435
 msgid "Show this help text."
 msgstr "Показати цей текст допомоги."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:438
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Хост, де запущений aMule (за замовчуванням: localhost)."
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:441
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Порт aMule для зовнішніх з'єднань (зазвичай: 4712)."
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:444
 msgid "External Connection password."
 msgstr "Пароль зовнішнього з'єднання"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:447
 msgid "Read configuration from file."
 msgstr "Читати налаштування з файлу."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:450
 msgid "Do not print any output to stdout."
 msgstr "Не друкувати нічого до stdout."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:453
 msgid "Be verbose - show also debug messages."
 msgstr "Бути докладним: показувати також всі повідомлення налагодження"
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:456
 msgid "Sets program locale (language)."
 msgstr "Вибрати локаль програми (мова)."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:459
 msgid "Write command line options to config file."
 msgstr "Записати параметри командного рядка до файлу налаштувань."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:462
 msgid "Creates config file based on aMule's config file."
 msgstr "Створити файл налаштувань оснований на файлі налаштувань aMule."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:465
 msgid "Print program version."
 msgstr "Друкувати версію програми."
 
@@ -2629,8 +2629,8 @@ msgstr "Не вибрано прізвисько!"
 msgid "ClientID: "
 msgstr "ID клієнта:"
 
-#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:702
-#: src/TextClient.cpp:715
+#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:703
+#: src/TextClient.cpp:716
 msgid "Not connected"
 msgstr "Не з'єднаний"
 
@@ -5824,7 +5824,7 @@ msgstr "Середня кількість користувачів:"
 msgid "Average Files:"
 msgstr "Всередньому файлів:"
 
-#: src/ServerWnd.cpp:268 src/TextClient.cpp:718
+#: src/ServerWnd.cpp:268 src/TextClient.cpp:719
 msgid "Not running"
 msgstr "Не запущений"
 
@@ -6180,11 +6180,11 @@ msgstr "Команда '%s' з pid '%d' завершилась з кодом с�
 msgid "Execute <str> and exit."
 msgstr "Виконати <str> та вийти."
 
-#: src/TextClient.cpp:200
+#: src/TextClient.cpp:201
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Невірний формат IP-адреси. Використовуйте xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:308
+#: src/TextClient.cpp:309
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
@@ -6192,92 +6192,92 @@ msgstr ""
 "Ця команда потребує аргумент. Вірні аргументи:  'all', назва файлу, або "
 "номер.\n"
 
-#: src/TextClient.cpp:346
+#: src/TextClient.cpp:347
 msgid "Processing by hash: "
 msgstr "Оброблюється за хешем: "
 
-#: src/TextClient.cpp:361
+#: src/TextClient.cpp:362
 msgid "Processing by filename: "
 msgstr "Оброблюється на назвою файлу: "
 
-#: src/TextClient.cpp:384
+#: src/TextClient.cpp:385
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr "Ця команда потребує аргумент. Правильний аргумент: хеш файлу.\n"
 
-#: src/TextClient.cpp:410
+#: src/TextClient.cpp:411
 msgid "Not a valid number\n"
 msgstr "Невірне число\n"
 
-#: src/TextClient.cpp:414
+#: src/TextClient.cpp:415
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Невірний хеш (довжина має бути точно 32 символи)\n"
 
-#: src/TextClient.cpp:626 src/webserver/src/WebServer.cpp:369
+#: src/TextClient.cpp:627 src/webserver/src/WebServer.cpp:369
 msgid "Request failed with an unknown error."
 msgstr "Запит невдалий з невідомою помилкою."
 
-#: src/TextClient.cpp:630
+#: src/TextClient.cpp:631
 msgid "Operation was successful."
 msgstr "Дія була вдалою."
 
-#: src/TextClient.cpp:636
+#: src/TextClient.cpp:637
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "Запит невдалий з помилкою: %s"
 
-#: src/TextClient.cpp:652
+#: src/TextClient.cpp:653
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "Фільтрування IP для клієнтів %s.\n"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "OFF"
 msgstr "Вимк."
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "ON"
 msgstr "Ввімк."
 
-#: src/TextClient.cpp:658
+#: src/TextClient.cpp:659
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "Фільтрування IP для серверів %s.\n"
 
-#: src/TextClient.cpp:663
+#: src/TextClient.cpp:664
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "Поточний рівень IP-фільтра %d.\n"
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:672
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr ""
 "Обмеження смуги пропускання: вивантаження %u кб/с, звантаження: %u кб/с.\n"
 
-#: src/TextClient.cpp:689
+#: src/TextClient.cpp:690
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:694
+#: src/TextClient.cpp:695
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "З'єднався з %s %s %s"
 
-#: src/TextClient.cpp:700
+#: src/TextClient.cpp:701
 msgid "Now connecting"
 msgstr "Не з'єднується"
 
-#: src/TextClient.cpp:709 src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/TextClient.cpp:710 src/utils/wxCas/src/wxcasframe.cpp:1061
 #: src/utils/wxCas/src/wxcasframe.cpp:1083
 msgid "firewalled"
 msgstr "за фаєрволом"
 
-#: src/TextClient.cpp:711 src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/TextClient.cpp:712 src/utils/wxCas/src/wxcasframe.cpp:1059
 #: src/utils/wxCas/src/wxcasframe.cpp:1081
 msgid "ok"
 msgstr "гаразд"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:725
 #, c-format
 msgid ""
 "\n"
@@ -6286,7 +6286,7 @@ msgstr ""
 "\n"
 "Звантаження:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:728
 #, c-format
 msgid ""
 "\n"
@@ -6295,7 +6295,7 @@ msgstr ""
 "\n"
 "Вивантаження:\t%s"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:731
 #, c-format
 msgid ""
 "\n"
@@ -6304,7 +6304,7 @@ msgstr ""
 "\n"
 "Клієнтів у черзі:\t%d\n"
 
-#: src/TextClient.cpp:733
+#: src/TextClient.cpp:734
 #, c-format
 msgid ""
 "\n"
@@ -6313,34 +6313,34 @@ msgstr ""
 "\n"
 "Всього джерел:\t%d\n"
 
-#: src/TextClient.cpp:810
+#: src/TextClient.cpp:811
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Кількість здобутків пошуку: %i\n"
 
-#: src/TextClient.cpp:823
+#: src/TextClient.cpp:824
 msgid "TODO - show progress of a search"
 msgstr "TODO - показати поступ пошуку"
 
-#: src/TextClient.cpp:829
+#: src/TextClient.cpp:830
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Отримано невідому відповідь з серверу, OpCode = %#x."
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:843
 msgid "Show short status information."
 msgstr "Показати коротку інформацію про стан."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:844
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 "Показати стан з'єднань, поточні швидкості вивантаження/звантаження, інше.\n"
 
-#: src/TextClient.cpp:845
+#: src/TextClient.cpp:846
 msgid "Show full statistics tree."
 msgstr "Показати повне дерево статистики."
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:847
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6358,11 +6358,11 @@ msgstr ""
 "Наприклад: 'statistics 5' покаже тільки 5 найбільш частих номерів для "
 "кожного типу клієнта.\n"
 
-#: src/TextClient.cpp:848
+#: src/TextClient.cpp:849
 msgid "Shut down aMule."
 msgstr "Завершити роботу aMule."
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:850
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -6372,23 +6372,23 @@ msgstr ""
 "Це також вимкне текстові клієнти, оскільки вони непридатні\n"
 "без запущеного ядра.\n"
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:852
 msgid "Reloads the given object."
 msgstr "Перезавантажується отриманий об'єкт."
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:853
 msgid "Reloads shared files list."
 msgstr "Перезавантажується перелік спільних файлів."
 
-#: src/TextClient.cpp:853
+#: src/TextClient.cpp:854
 msgid "Reloads IP Filter table from file."
 msgstr "Перезавантажується IP фільтр з файлу."
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:856
 msgid "Connect to the network."
 msgstr "З'єднання з мережею."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:857
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6402,35 +6402,35 @@ msgstr ""
 "IPv4\n"
 "або назва."
 
-#: src/TextClient.cpp:857
+#: src/TextClient.cpp:858
 msgid "Connect to eD2k only."
 msgstr "З'єднання тільки з eD2k."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:859
 msgid "Connect to Kad only."
 msgstr "З'єднання тільки з Kad."
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:861
 msgid "Disconnect from the network."
 msgstr "Від'єднано тільки від мережі."
 
-#: src/TextClient.cpp:861
+#: src/TextClient.cpp:862
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Це від'єднає від всіх мереж, до яких зараз під'єднано.\n"
 
-#: src/TextClient.cpp:862
+#: src/TextClient.cpp:863
 msgid "Disconnect from eD2k only."
 msgstr "Від'єднано тільки від eD2k."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:864
 msgid "Disconnect from Kad only."
 msgstr "Від'єднано тільки від Kad."
 
-#: src/TextClient.cpp:865
+#: src/TextClient.cpp:866
 msgid "Adds an eD2k or magnet link to core."
 msgstr "Додає eD2k-посилання або magnet-посилання до ядра."
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:867
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6451,51 +6451,51 @@ msgstr ""
 "\n"
 "Magnet-посилання повинне містити eD2k-хеш та довжину файлу.\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:869
 msgid "Set a preference value."
 msgstr "Встановити значення налаштувань."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:872
 msgid "Set IPFilter preferences."
 msgstr "Налаштувати IP-фільтри"
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "Ввімкнути IP фільтрування для клієнтів та серверів."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:874
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "Вимкнути IP фільтрування для клієнтів та серверів."
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:875
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Ввімкнути/вимкнути IP фільтрування для клієнтів."
 
-#: src/TextClient.cpp:875
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering on for clients."
 msgstr "Ввімкнути IP-фільтри для клієнтів."
 
-#: src/TextClient.cpp:876
+#: src/TextClient.cpp:877
 msgid "Turn IP filtering off for clients."
 msgstr "Вимкнути IP-фільтри для клієнтів."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:878
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Ввімкнути/вимкнути IP фільтрування для серверів."
 
-#: src/TextClient.cpp:878
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering on for servers."
 msgstr "Ввімкнути IP-фільтри для серверів."
 
-#: src/TextClient.cpp:879
+#: src/TextClient.cpp:880
 msgid "Turn IP filtering off for servers."
 msgstr "Вимкнути IP-фільтри для серверів."
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:881
 msgid "Select IP filtering level."
 msgstr "Вибрати рівні IP-фільтрування."
 
-#: src/TextClient.cpp:881
+#: src/TextClient.cpp:882
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -6503,55 +6503,55 @@ msgstr ""
 "Вірні рівні фільтрування в межах 0-255, і їх значення\n"
 "за замовчуванням(початкове) 127.\n"
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:884
 msgid "Set bandwidth limits."
 msgstr "Встановити обмеження швидкостей."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:885
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "Значення передане цій команді має бути в кб/с.\n"
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:886
 msgid "Set upload bandwidth limit."
 msgstr "Встановити обмеження швидкості вивантаження."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:888
 msgid "Set download bandwidth limit."
 msgstr "Встановити обмеження швидкості звантаження."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:891
 msgid "Get and display a preference value."
 msgstr "Отримати та відобразити значення налаштувань."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:894
 msgid "Get IPFilter preferences."
 msgstr "Отримати налаштування IP-фільтра."
 
-#: src/TextClient.cpp:894
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for both clients and servers."
 msgstr "Отримати стан IP-фільтра для клієнта і сервера."
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for clients only."
 msgstr "Отримати стан IP-фільтра тільки для клієнта."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:897
 msgid "Get IPFilter state for servers only."
 msgstr "Отримати стан IP-фільтра тільки для сервера."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:898
 msgid "Get IPFilter level."
 msgstr "Отримати рівень IP-фільтра."
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:900
 msgid "Get bandwidth limits."
 msgstr "Отримати обмеження смуги пропускання."
 
-#: src/TextClient.cpp:901
+#: src/TextClient.cpp:902
 msgid "Makes a search."
 msgstr "Робить пошук."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:903
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -6565,39 +6565,39 @@ msgstr ""
 "    KAD\n"
 "Наприклад: 'search kad file' виконає пошук файлу \"file\" в Kad.\n"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:904
 msgid "Executes a global search."
 msgstr "Виконати глобальний пошук"
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:905
 msgid "Executes a local search"
 msgstr "Виконати місцевий пошук"
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:906
 msgid "Executes a kad search"
 msgstr "Виконати пошук у Kad"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:908
 msgid "Shows the results of the last search."
 msgstr "Показати здобутки попереднього пошуку."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:909
 msgid "Returns the results of the previous search.\n"
 msgstr "Повернути здобутки попереднього пошуку.\n"
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search."
 msgstr "Показати перебіг пошуку."
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:912
 msgid "Shows the progress of a search.\n"
 msgstr "Показати перебіг пошуку.\n"
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:914
 msgid "Start downloading a file"
 msgstr "Почати звантаження файлу."
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:915
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -6607,78 +6607,78 @@ msgstr ""
 "Наприклад:  'download 12'  розпочне звантаження файлу з номером 12 "
 "попереднього пошуку.\n"
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:922
 msgid "Pause download."
 msgstr "Призупинити звантаження."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:925
 msgid "Resume download."
 msgstr "Відновити звантаження."
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:928
 msgid "Cancel download."
 msgstr "Відмінити звантаження."
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:931
 msgid "Set download priority."
 msgstr "Встановити перевагу звантаження"
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:932
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "Встановити перевагу звантаження на низьку, звичайну або автоматичну.\n"
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:933
 msgid "Set priority to low."
 msgstr "Встановити перевагу низькою."
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:934
 msgid "Set priority to normal."
 msgstr "Встановити перевагу звичайною."
 
-#: src/TextClient.cpp:934
+#: src/TextClient.cpp:935
 msgid "Set priority to high."
 msgstr "Встановити перевагу високою."
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:936
 msgid "Set priority to auto."
 msgstr "Встановити перевагу авто."
 
-#: src/TextClient.cpp:937
+#: src/TextClient.cpp:938
 msgid "Show queues/lists."
 msgstr "Показати черги/переліки."
 
-#: src/TextClient.cpp:938
+#: src/TextClient.cpp:939
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Показати чергу звантаження та вивантаження, перелік серверів або перелік "
 "спільних файлів.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:940
 msgid "Show upload queue."
 msgstr "Показати чергу вивантаження."
 
-#: src/TextClient.cpp:940
+#: src/TextClient.cpp:941
 msgid "Show download queue."
 msgstr "Показати чергу звантаження."
 
-#: src/TextClient.cpp:941
+#: src/TextClient.cpp:942
 msgid "Show log."
 msgstr "Показати часопис."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:943
 msgid "Show servers list."
 msgstr "Показати перелік серверів."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:946
 msgid "Reset log."
 msgstr "Очистити журнал."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:953
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr "Застаріла команда, використовуйте '%s' замість неї."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:954
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-18 21:44+0100\n"
+"POT-Creation-Date: 2009-01-24 15:28+0100\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -316,11 +316,11 @@ msgstr ""
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "עם מ\"ז נמוך (LowID)"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "עם מ\"ז גבוהה (HighID)"
 
@@ -753,7 +753,7 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
-#: src/PartFile.cpp:2506 src/Server.cpp:160 src/Server.cpp:235
+#: src/PartFile.cpp:2506 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "לא ידוע"
@@ -904,7 +904,7 @@ msgid "Disabled"
 msgstr ""
 
 #: src/ClientDetailDialog.cpp:143 src/ClientListCtrl.cpp:1027
-#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:707
+#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:708
 msgid "Connected"
 msgstr "מחובר"
 
@@ -1360,7 +1360,7 @@ msgid "Remote Server"
 msgstr "שרת מרוחק"
 
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:192 src/muuli_wdr.cpp:3412
-#: src/SearchDlg.cpp:109 src/TextClient.cpp:704
+#: src/SearchDlg.cpp:109 src/TextClient.cpp:705
 msgid "Kad"
 msgstr "קאד"
 
@@ -1891,23 +1891,23 @@ msgid ""
 "Type '%s <command>' to get detailed info on <command>.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:232 src/ExternalConnector.cpp:233
+#: src/ExternalConnector.cpp:233 src/ExternalConnector.cpp:234
 msgid "Exits from the application."
 msgstr ""
 
-#: src/ExternalConnector.cpp:234
+#: src/ExternalConnector.cpp:235
 msgid "Show help."
 msgstr ""
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:237
+#: src/ExternalConnector.cpp:238
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:258
+#: src/ExternalConnector.cpp:259
 #, c-format
 msgid ""
 "\n"
@@ -1915,64 +1915,64 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:289
 msgid "Syntax error!"
 msgstr ""
 
-#: src/ExternalConnector.cpp:291
+#: src/ExternalConnector.cpp:292
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:294
+#: src/ExternalConnector.cpp:295
 msgid "This command should not have any parameters."
 msgstr ""
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:298
 msgid "This command must have a parameter."
 msgstr ""
 
-#: src/ExternalConnector.cpp:300
+#: src/ExternalConnector.cpp:301
 msgid "Invalid argument."
 msgstr ""
 
-#: src/ExternalConnector.cpp:303
+#: src/ExternalConnector.cpp:304
 msgid "This is an incomplete command."
 msgstr ""
 
-#: src/ExternalConnector.cpp:312
+#: src/ExternalConnector.cpp:313
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:368
+#: src/ExternalConnector.cpp:369
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:370
+#: src/ExternalConnector.cpp:371
 #, c-format
 msgid "This is %s %s\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:401
+#: src/ExternalConnector.cpp:402
 msgid ""
 "\n"
 "Creating client...\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:408
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:422
 #, c-format
 msgid ""
 "\n"
 "Ok, exiting %s...\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:428
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -1981,47 +1981,47 @@ msgid ""
 "Exiting...\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:435
 msgid "Show this help text."
 msgstr ""
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:438
 msgid "Host where aMule is running. (default: localhost)"
 msgstr ""
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:441
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr ""
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:444
 msgid "External Connection password."
 msgstr ""
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:447
 msgid "Read configuration from file."
 msgstr ""
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:450
 msgid "Do not print any output to stdout."
 msgstr ""
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:453
 msgid "Be verbose - show also debug messages."
 msgstr ""
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:456
 msgid "Sets program locale (language)."
 msgstr ""
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:459
 msgid "Write command line options to config file."
 msgstr ""
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:462
 msgid "Creates config file based on aMule's config file."
 msgstr ""
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:465
 msgid "Print program version."
 msgstr ""
 
@@ -2510,8 +2510,8 @@ msgstr ""
 msgid "ClientID: "
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:702
-#: src/TextClient.cpp:715
+#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:703
+#: src/TextClient.cpp:716
 msgid "Not connected"
 msgstr "לא מחובר"
 
@@ -5607,7 +5607,7 @@ msgstr "ממוצע משתמשים:"
 msgid "Average Files:"
 msgstr "ממוצע קבצים:"
 
-#: src/ServerWnd.cpp:268 src/TextClient.cpp:718
+#: src/ServerWnd.cpp:268 src/TextClient.cpp:719
 msgid "Not running"
 msgstr "לא פועל"
 
@@ -5961,102 +5961,102 @@ msgstr "פקודת '%s עם pid '%d' סיים עם קוד סטטוס '%d'."
 msgid "Execute <str> and exit."
 msgstr "הרץ <str> וצא."
 
-#: src/TextClient.cpp:200
+#: src/TextClient.cpp:201
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "פורמט IP לא חוקי. התמש ב xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:308
+#: src/TextClient.cpp:309
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
 msgstr ""
 "הפקודה הזאת דורשת ארגומנט. ארגומנט חוקי יכול להיות: 'all' שם קובץ או מספר.\n"
 
-#: src/TextClient.cpp:346
+#: src/TextClient.cpp:347
 msgid "Processing by hash: "
 msgstr "מעבד על פי גיבוב: "
 
-#: src/TextClient.cpp:361
+#: src/TextClient.cpp:362
 msgid "Processing by filename: "
 msgstr "מעבד על פי שם קובץ: "
 
-#: src/TextClient.cpp:384
+#: src/TextClient.cpp:385
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr "פקודה זאת דורשת ארגומנט. ארגומנט חוקי: גיבוב של קובץ.\n"
 
-#: src/TextClient.cpp:410
+#: src/TextClient.cpp:411
 msgid "Not a valid number\n"
 msgstr "לא מספר חוקי\n"
 
-#: src/TextClient.cpp:414
+#: src/TextClient.cpp:415
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "לא גיבוב חוקי (האורך חייב להיות בדיוק 32 תווים)\n"
 
-#: src/TextClient.cpp:626 src/webserver/src/WebServer.cpp:369
+#: src/TextClient.cpp:627 src/webserver/src/WebServer.cpp:369
 msgid "Request failed with an unknown error."
 msgstr "הבקשה נכשלה עם שגיאה לא ידועה"
 
-#: src/TextClient.cpp:630
+#: src/TextClient.cpp:631
 msgid "Operation was successful."
 msgstr "הפעולה הסתיימה בהצלחה."
 
-#: src/TextClient.cpp:636
+#: src/TextClient.cpp:637
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "הבקשה נכשלה עם השגיאה הבאה: %s"
 
-#: src/TextClient.cpp:652
+#: src/TextClient.cpp:653
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "סינון IP עבור לקוחות הוא %s.\n"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "OFF"
 msgstr "מכובה"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "ON"
 msgstr "דלוק"
 
-#: src/TextClient.cpp:658
+#: src/TextClient.cpp:659
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "סינון IP עבור שרתים הוא %s.\n"
 
-#: src/TextClient.cpp:663
+#: src/TextClient.cpp:664
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "רמת סינום IP נוכחית היא %d.\n"
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:672
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:689
+#: src/TextClient.cpp:690
 msgid "eD2k"
 msgstr ""
 
-#: src/TextClient.cpp:694
+#: src/TextClient.cpp:695
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "מחובר ל %s·%s·%s"
 
-#: src/TextClient.cpp:700
+#: src/TextClient.cpp:701
 msgid "Now connecting"
 msgstr "מתחבר עכשיו"
 
-#: src/TextClient.cpp:709 src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/TextClient.cpp:710 src/utils/wxCas/src/wxcasframe.cpp:1061
 #: src/utils/wxCas/src/wxcasframe.cpp:1083
 msgid "firewalled"
 msgstr "חסום-חומתאש"
 
-#: src/TextClient.cpp:711 src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/TextClient.cpp:712 src/utils/wxCas/src/wxcasframe.cpp:1059
 #: src/utils/wxCas/src/wxcasframe.cpp:1081
 msgid "ok"
 msgstr "בסדר"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:725
 #, c-format
 msgid ""
 "\n"
@@ -6065,7 +6065,7 @@ msgstr ""
 "\n"
 "הורדה:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:728
 #, c-format
 msgid ""
 "\n"
@@ -6074,7 +6074,7 @@ msgstr ""
 "\n"
 "העלאה:\t%s"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:731
 #, c-format
 msgid ""
 "\n"
@@ -6083,7 +6083,7 @@ msgstr ""
 "\n"
 "לקוחות בתור:\t%d\n"
 
-#: src/TextClient.cpp:733
+#: src/TextClient.cpp:734
 #, c-format
 msgid ""
 "\n"
@@ -6092,33 +6092,33 @@ msgstr ""
 "\n"
 "סה\"כ מקורות:\t%d\n"
 
-#: src/TextClient.cpp:810
+#: src/TextClient.cpp:811
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "מספר תוצאות חיפוש: %i\n"
 
-#: src/TextClient.cpp:823
+#: src/TextClient.cpp:824
 msgid "TODO - show progress of a search"
 msgstr "לביצוע - הראה התקדמות של חיפוש"
 
-#: src/TextClient.cpp:829
+#: src/TextClient.cpp:830
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "התקבלה תשובה לא מוכרת מהשרת, קוד-פעולה = %#x."
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:843
 msgid "Show short status information."
 msgstr "הראה מידעה על מצב בקיצור."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:844
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "הראה מצב חיבורים, מהירות הורדה/האלכה נוכחיים וכו'.\n"
 
-#: src/TextClient.cpp:845
+#: src/TextClient.cpp:846
 msgid "Show full statistics tree."
 msgstr "הראה את עץ הסטטיסטיקה המלא."
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:847
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6135,34 +6135,34 @@ msgstr ""
 "\n"
 "דוגמא: 'statistics·5' יראה רק את חמשת הגרסאות הראשונים עבור כל סוג לקוח.\n"
 
-#: src/TextClient.cpp:848
+#: src/TextClient.cpp:849
 msgid "Shut down aMule."
 msgstr ""
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:850
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:852
 msgid "Reloads the given object."
 msgstr "טוען מחדש את האובייקט הנתון."
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:853
 msgid "Reloads shared files list."
 msgstr "טוען מחדש את רשימת הקבצים המשותפים."
 
-#: src/TextClient.cpp:853
+#: src/TextClient.cpp:854
 msgid "Reloads IP Filter table from file."
 msgstr "טוען מחדש את טבלת סינון ה IP מהקובץ."
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:856
 msgid "Connect to the network."
 msgstr "התחבר לרשת."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:857
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6175,35 +6175,35 @@ msgstr ""
 "שרת זה בלבד. ה IP חייב להיות ארבעה מספרים מופרדים בנקודות בפורמט IPv4, \n"
 "או שם שרת שניתן להמירו ל IP."
 
-#: src/TextClient.cpp:857
+#: src/TextClient.cpp:858
 msgid "Connect to eD2k only."
 msgstr ""
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:859
 msgid "Connect to Kad only."
 msgstr "התחבר רק לקאד."
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:861
 msgid "Disconnect from the network."
 msgstr "התנתק מהרשת."
 
-#: src/TextClient.cpp:861
+#: src/TextClient.cpp:862
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "פעולה זו תנתק את כל הרשתות המחוברות.\n"
 
-#: src/TextClient.cpp:862
+#: src/TextClient.cpp:863
 msgid "Disconnect from eD2k only."
 msgstr ""
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:864
 msgid "Disconnect from Kad only."
 msgstr "התנתק רק מ קאד."
 
-#: src/TextClient.cpp:865
+#: src/TextClient.cpp:866
 msgid "Adds an eD2k or magnet link to core."
 msgstr ""
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:867
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6215,51 +6215,51 @@ msgid ""
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:869
 msgid "Set a preference value."
 msgstr "הגדר ערך מועדף."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:872
 msgid "Set IPFilter preferences."
 msgstr "הגדר העדפת מסנן IP."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "הדלק סינון IP הן עבור הלקוחות והן עבור השרתים."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:874
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "כבה סינון IP הן עבור הלקוחות והן עבור השרתים."
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:875
 msgid "Enable/Disable IP filtering for clients."
 msgstr "אפשר/נטרל סינון IP עבור לקוחות."
 
-#: src/TextClient.cpp:875
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering on for clients."
 msgstr "הדלק סינון IP עבור לקוחות."
 
-#: src/TextClient.cpp:876
+#: src/TextClient.cpp:877
 msgid "Turn IP filtering off for clients."
 msgstr "כבה סינון IP עבור לקוחות."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:878
 msgid "Enable/Disable IP filtering for servers."
 msgstr "אפשר/נטרל סינון IP עבור שרתים."
 
-#: src/TextClient.cpp:878
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering on for servers."
 msgstr "הדלק סינון IP עבור שרתים."
 
-#: src/TextClient.cpp:879
+#: src/TextClient.cpp:880
 msgid "Turn IP filtering off for servers."
 msgstr "כבה סינון IP עבור שרתים."
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:881
 msgid "Select IP filtering level."
 msgstr "בחר את אמת סינון הIP."
 
-#: src/TextClient.cpp:881
+#: src/TextClient.cpp:882
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -6267,55 +6267,55 @@ msgstr ""
 "רמות סינון תקפים המ בתווך של 0-255, ברירת המחדשל (ערך התחלתי)\n"
 "הוא 127.\n"
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:884
 msgid "Set bandwidth limits."
 msgstr "קבע תיחום רוחב פס."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:885
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "הערך שמועבר לפקודות אלו חייב להיות ביחידות של ק\"ב/ש.\n"
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:886
 msgid "Set upload bandwidth limit."
 msgstr "קבע מגבלת רוחב פס בהעלאה."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:888
 msgid "Set download bandwidth limit."
 msgstr "קבע מגבלת רוחב פס בהורדה."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:891
 msgid "Get and display a preference value."
 msgstr "שלוף ותציג ערך של העדפה."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:894
 msgid "Get IPFilter preferences."
 msgstr "שלוף העדפה עבור סינון IP."
 
-#: src/TextClient.cpp:894
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for both clients and servers."
 msgstr "שלוף העדפה עבור סינון IP עבור השרתים והלקוחות."
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for clients only."
 msgstr "שלוף העדפה עבור סינון IP רק עבור הלקוחות."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:897
 msgid "Get IPFilter state for servers only."
 msgstr "שלוף העדפה עבור סינון IP רק עבור השרתים."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:898
 msgid "Get IPFilter level."
 msgstr "שלוף רמת סינון ה IP."
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:900
 msgid "Get bandwidth limits."
 msgstr "שלוף הגבלת רוחב הפס."
 
-#: src/TextClient.cpp:901
+#: src/TextClient.cpp:902
 msgid "Makes a search."
 msgstr "מבצע חיפוש."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:903
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -6329,39 +6329,39 @@ msgstr ""
 "    KAD (קאד)\n"
 "דוגמה: 'search·kad·file' יבצע חיפוש באמצעות קאד עבור הקובץ \"file\".\n"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:904
 msgid "Executes a global search."
 msgstr "הרץ חיפוש גלובלי."
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:905
 msgid "Executes a local search"
 msgstr "הרץ חיפוש מקומי"
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:906
 msgid "Executes a kad search"
 msgstr "הרץ חיפוש בקאדימליה"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:908
 msgid "Shows the results of the last search."
 msgstr "הראה את התוצאות של החיפוש האחרון."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:909
 msgid "Returns the results of the previous search.\n"
 msgstr "מחזירת את התוצאות של החיפוש האחרון.\n"
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search."
 msgstr "מראה את התקדמות החיפוש."
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:912
 msgid "Shows the progress of a search.\n"
 msgstr "מראה התקדמות של חיפוש.\n"
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:914
 msgid "Start downloading a file"
 msgstr "התחל בהורדת קובץ"
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:915
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -6370,76 +6370,76 @@ msgstr ""
 "מספר הקובץ מהחיפוש האחרון חייב להמסר.\n"
 "דוגמה: 'download·12'· יתחיל להוריד את קובץ מספר 12 מהחיפוש האחרון.\n"
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:922
 msgid "Pause download."
 msgstr "השהה הורדה."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:925
 msgid "Resume download."
 msgstr "המשך הורדה."
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:928
 msgid "Cancel download."
 msgstr "בטל הורדה."
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:931
 msgid "Set download priority."
 msgstr "קבע את העדיפות של ההורדה."
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:932
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "קבע את עדיפות ההורדה ל נמוך, נורמלי, גבוה או אוטומטי.\n"
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:933
 msgid "Set priority to low."
 msgstr "קבע את העדיפות ל 'נמוך'."
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:934
 msgid "Set priority to normal."
 msgstr "קבע את העדיפות ל 'נורמלי'."
 
-#: src/TextClient.cpp:934
+#: src/TextClient.cpp:935
 msgid "Set priority to high."
 msgstr "קבע את העדיפות ל 'גבוה'."
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:936
 msgid "Set priority to auto."
 msgstr "קבע את העדיפות ל 'אוטומטי'."
 
-#: src/TextClient.cpp:937
+#: src/TextClient.cpp:938
 msgid "Show queues/lists."
 msgstr "הראה תורים/רשימות."
 
-#: src/TextClient.cpp:938
+#: src/TextClient.cpp:939
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr "הראה תורים של הרודות/העלאות, רשימת שרתים או רשימת קבצים משותפים.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:940
 msgid "Show upload queue."
 msgstr "הראה צור העלאות"
 
-#: src/TextClient.cpp:940
+#: src/TextClient.cpp:941
 msgid "Show download queue."
 msgstr "הראה את תור ההורדות."
 
-#: src/TextClient.cpp:941
+#: src/TextClient.cpp:942
 msgid "Show log."
 msgstr "הראה יומן."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:943
 msgid "Show servers list."
 msgstr "הראה את רשימת השרתים."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:946
 msgid "Reset log."
 msgstr "אפס את הימון."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:953
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr ""
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:954
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"

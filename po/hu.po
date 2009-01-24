@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-18 21:44+0100\n"
+"POT-Creation-Date: 2009-01-24 15:28+0100\n"
 "PO-Revision-Date: 2008-07-30 19:29+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -358,11 +358,11 @@ msgstr "Felhasználók: E: %s K: %s | Fájlok: E: %s K: %s"
 msgid "No networks selected"
 msgstr "Nincs hálózat kiválasztva"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "LowID-val"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "HighID-val"
 
@@ -812,7 +812,7 @@ msgstr "Várakozás a kapcsolatra..."
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
-#: src/PartFile.cpp:2506 src/Server.cpp:160 src/Server.cpp:235
+#: src/PartFile.cpp:2506 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Ismeretlen"
@@ -965,7 +965,7 @@ msgid "Disabled"
 msgstr "Letiltva"
 
 #: src/ClientDetailDialog.cpp:143 src/ClientListCtrl.cpp:1027
-#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:707
+#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:708
 msgid "Connected"
 msgstr "Csatlakozva"
 
@@ -1436,7 +1436,7 @@ msgid "Remote Server"
 msgstr "Távoli kiszolgáló"
 
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:192 src/muuli_wdr.cpp:3412
-#: src/SearchDlg.cpp:109 src/TextClient.cpp:704
+#: src/SearchDlg.cpp:109 src/TextClient.cpp:705
 msgid "Kad"
 msgstr "Kad"
 
@@ -1989,17 +1989,17 @@ msgstr ""
 "Ha részletes infót akarsz egy <parancs>-ról, add ki a '%s <parancs>' "
 "parancsot.\n"
 
-#: src/ExternalConnector.cpp:232 src/ExternalConnector.cpp:233
+#: src/ExternalConnector.cpp:233 src/ExternalConnector.cpp:234
 msgid "Exits from the application."
 msgstr "Kilép az alkalmazásból."
 
-#: src/ExternalConnector.cpp:234
+#: src/ExternalConnector.cpp:235
 msgid "Show help."
 msgstr "Súgó megjelenítése."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:237
+#: src/ExternalConnector.cpp:238
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -2007,7 +2007,7 @@ msgstr ""
 "Ha egy parancsról kérsz súgót, használd a 'help <parancs>'-ot.\n"
 "A teljes parancslistához használd a 'help'-et.\n"
 
-#: src/ExternalConnector.cpp:258
+#: src/ExternalConnector.cpp:259
 #, c-format
 msgid ""
 "\n"
@@ -2018,48 +2018,48 @@ msgstr ""
 "A parancslistához használd a '%s'-et\n"
 "\n"
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:289
 msgid "Syntax error!"
 msgstr "Szintaktikai hiba!"
 
-#: src/ExternalConnector.cpp:291
+#: src/ExternalConnector.cpp:292
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Hiba a parancs feldolgozásában - soha sem kellene előfordulnia! Kérlek, "
 "küldd el a hibajelentést\n"
 
-#: src/ExternalConnector.cpp:294
+#: src/ExternalConnector.cpp:295
 msgid "This command should not have any parameters."
 msgstr "Ennek a parancsnak nem kellene paraméterének lennie."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:298
 msgid "This command must have a parameter."
 msgstr "Ennek a parancsnak kötelező paramétert adni."
 
-#: src/ExternalConnector.cpp:300
+#: src/ExternalConnector.cpp:301
 msgid "Invalid argument."
 msgstr "Érvénytelen paraméter."
 
-#: src/ExternalConnector.cpp:303
+#: src/ExternalConnector.cpp:304
 msgid "This is an incomplete command."
 msgstr "Ez a parancs így nem teljes."
 
-#: src/ExternalConnector.cpp:312
+#: src/ExternalConnector.cpp:313
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "A '%s' paranccsal kaphatsz bővebb segítséget.\n"
 
-#: src/ExternalConnector.cpp:368
+#: src/ExternalConnector.cpp:369
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Ez a(z) %s %s %s\n"
 
-#: src/ExternalConnector.cpp:370
+#: src/ExternalConnector.cpp:371
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Ez a(z) %s %s\n"
 
-#: src/ExternalConnector.cpp:401
+#: src/ExternalConnector.cpp:402
 msgid ""
 "\n"
 "Creating client...\n"
@@ -2067,12 +2067,12 @@ msgstr ""
 "\n"
 "Kliens létrehozása...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:408
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:422
 #, c-format
 msgid ""
 "\n"
@@ -2081,7 +2081,7 @@ msgstr ""
 "\n"
 "Ok, kilépés a %s-ből...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:428
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2095,47 +2095,47 @@ msgstr ""
 "\n"
 "Kilépés...\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:435
 msgid "Show this help text."
 msgstr "E súgó megjelenítése."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:438
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Host, ahol az aMule fut (alap: localhost)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:441
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Az aMule Távoli Elérés portja (alap: 4712)"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:444
 msgid "External Connection password."
 msgstr "Külső kapcsolat jelszava."
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:447
 msgid "Read configuration from file."
 msgstr "Konfiguráció betöltése fájlból."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:450
 msgid "Do not print any output to stdout."
 msgstr "Nem ír ki semmit a szabvány kimenetre."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:453
 msgid "Be verbose - show also debug messages."
 msgstr "Legyen bőbeszédű - mutassa a hibakeresési üzeneteket is."
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:456
 msgid "Sets program locale (language)."
 msgstr "Beállítja a program nyelvét."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:459
 msgid "Write command line options to config file."
 msgstr "A parancssori opciók konfig fájlba írása."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:462
 msgid "Creates config file based on aMule's config file."
 msgstr "Konfig fájl létrehozása az aMule konfig fájlja alapján."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:465
 msgid "Print program version."
 msgstr "A program verziójának kiírása."
 
@@ -2630,8 +2630,8 @@ msgstr "Nem lett Becenév kiválasztva!"
 msgid "ClientID: "
 msgstr "KliensID: "
 
-#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:702
-#: src/TextClient.cpp:715
+#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:703
+#: src/TextClient.cpp:716
 msgid "Not connected"
 msgstr "Nincs kapcsolódva"
 
@@ -5812,7 +5812,7 @@ msgstr "Átlagos felhasználószám:"
 msgid "Average Files:"
 msgstr "Átlagos fájlszám:"
 
-#: src/ServerWnd.cpp:268 src/TextClient.cpp:718
+#: src/ServerWnd.cpp:268 src/TextClient.cpp:719
 msgid "Not running"
 msgstr "nem fut"
 
@@ -6165,11 +6165,11 @@ msgstr "A parancs `%s' (pid=%d) befejeződött `%d' állapotkóddal."
 msgid "Execute <str> and exit."
 msgstr "Végrehajtja az <str>-t és kilép."
 
-#: src/TextClient.cpp:200
+#: src/TextClient.cpp:201
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Érvénytelen IP cím formátum. Így használd: xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:308
+#: src/TextClient.cpp:309
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
@@ -6177,93 +6177,93 @@ msgstr ""
 "Ez a parancs argumentumot igényel. Érvényes argumentumok: 'all', fájlnév "
 "vagy egy szám.\n"
 
-#: src/TextClient.cpp:346
+#: src/TextClient.cpp:347
 msgid "Processing by hash: "
 msgstr "Feldolgozás hash alapján: "
 
-#: src/TextClient.cpp:361
+#: src/TextClient.cpp:362
 msgid "Processing by filename: "
 msgstr "Feldolgozás fájlnév alapján: "
 
-#: src/TextClient.cpp:384
+#: src/TextClient.cpp:385
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
 "Ennek a parancsnak szüksége van egy argumentumra. Érvényes argumentumok: egy "
 "fájl hash.\n"
 
-#: src/TextClient.cpp:410
+#: src/TextClient.cpp:411
 msgid "Not a valid number\n"
 msgstr "Érvénytelen szám\n"
 
-#: src/TextClient.cpp:414
+#: src/TextClient.cpp:415
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Nem érvényes hash (a hossza pontosan 32 karakter kell legyen)\n"
 
-#: src/TextClient.cpp:626 src/webserver/src/WebServer.cpp:369
+#: src/TextClient.cpp:627 src/webserver/src/WebServer.cpp:369
 msgid "Request failed with an unknown error."
 msgstr "Kérés ismeretlen hibával sikertelen."
 
-#: src/TextClient.cpp:630
+#: src/TextClient.cpp:631
 msgid "Operation was successful."
 msgstr "A művelet sikeres volt."
 
-#: src/TextClient.cpp:636
+#: src/TextClient.cpp:637
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "A kérés sikertelen volt a következő hibával: %s"
 
-#: src/TextClient.cpp:652
+#: src/TextClient.cpp:653
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "Kliens IP szűrés %s van kapcsolva.\n"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "OFF"
 msgstr "KI"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "ON"
 msgstr "BE"
 
-#: src/TextClient.cpp:658
+#: src/TextClient.cpp:659
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "Kiszolgáló IP szűrés %s van kapcsolva.\n"
 
-#: src/TextClient.cpp:663
+#: src/TextClient.cpp:664
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "IP szűrő szintje jelenleg %d.\n"
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:672
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Sávszélesség korlátok: Fel: %u kB/s, Le: %u kB/s.\n"
 
-#: src/TextClient.cpp:689
+#: src/TextClient.cpp:690
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:694
+#: src/TextClient.cpp:695
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Kapcsolódva %s-hez %s %s"
 
-#: src/TextClient.cpp:700
+#: src/TextClient.cpp:701
 msgid "Now connecting"
 msgstr "Kapcsolódás folyamatban"
 
-#: src/TextClient.cpp:709 src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/TextClient.cpp:710 src/utils/wxCas/src/wxcasframe.cpp:1061
 #: src/utils/wxCas/src/wxcasframe.cpp:1083
 msgid "firewalled"
 msgstr "tűzfal mögül"
 
-#: src/TextClient.cpp:711 src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/TextClient.cpp:712 src/utils/wxCas/src/wxcasframe.cpp:1059
 #: src/utils/wxCas/src/wxcasframe.cpp:1081
 msgid "ok"
 msgstr "rendben"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:725
 #, c-format
 msgid ""
 "\n"
@@ -6272,7 +6272,7 @@ msgstr ""
 "\n"
 "Letöltés:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:728
 #, c-format
 msgid ""
 "\n"
@@ -6281,7 +6281,7 @@ msgstr ""
 "\n"
 "Feltöltés:\t%s"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:731
 #, c-format
 msgid ""
 "\n"
@@ -6290,7 +6290,7 @@ msgstr ""
 "\n"
 "Várólistás kliensek száma:\t%d\n"
 
-#: src/TextClient.cpp:733
+#: src/TextClient.cpp:734
 #, c-format
 msgid ""
 "\n"
@@ -6299,34 +6299,34 @@ msgstr ""
 "\n"
 "Összes forrás:\t%d\n"
 
-#: src/TextClient.cpp:810
+#: src/TextClient.cpp:811
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Keresés eredményeinek száma: %i\n"
 
-#: src/TextClient.cpp:823
+#: src/TextClient.cpp:824
 msgid "TODO - show progress of a search"
 msgstr "Tennivaló - keresés állapotának megjelenítése"
 
-#: src/TextClient.cpp:829
+#: src/TextClient.cpp:830
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Ismeretlen válasz érkezett a kiszolgálótól, OpCode = %#x."
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:843
 msgid "Show short status information."
 msgstr "Rövid állapot információ megjelenítése."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:844
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 "Megjeleníti a kapcsolat állapotát, aktuális fel/letöltési sebességet, stb.\n"
 
-#: src/TextClient.cpp:845
+#: src/TextClient.cpp:846
 msgid "Show full statistics tree."
 msgstr "Megjeleníti a teljes statisztika fát."
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:847
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6346,11 +6346,11 @@ msgstr ""
 "Példa: 'statistics 5' csak a leggyakoribb 5 verziót mutatja minden ügyfél\n"
 "típusból.\n"
 
-#: src/TextClient.cpp:848
+#: src/TextClient.cpp:849
 msgid "Shut down aMule."
 msgstr "Az aMule leállítása."
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:850
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -6360,23 +6360,23 @@ msgstr ""
 "Ez a szöveges klienst is le fogja állítani,\n"
 "hiszen az használhatatlan futó mag nélkül.\n"
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:852
 msgid "Reloads the given object."
 msgstr "Újratölti a megadott objektumot."
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:853
 msgid "Reloads shared files list."
 msgstr "A megosztott fájlok listáját frissíti."
 
-#: src/TextClient.cpp:853
+#: src/TextClient.cpp:854
 msgid "Reloads IP Filter table from file."
 msgstr "IP szűrő tábla újratöltése fájlból."
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:856
 msgid "Connect to the network."
 msgstr "Kapcsolódás a hálózathoz."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:857
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6391,35 +6391,35 @@ msgstr ""
 "egy\n"
 "érvényes DNS névnek kell lennie."
 
-#: src/TextClient.cpp:857
+#: src/TextClient.cpp:858
 msgid "Connect to eD2k only."
 msgstr "Kacsolódás csak az eD2k-hoz."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:859
 msgid "Connect to Kad only."
 msgstr "Kapcsolódás csak a Kad-hoz."
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:861
 msgid "Disconnect from the network."
 msgstr "Leválaszt a hálózatról."
 
-#: src/TextClient.cpp:861
+#: src/TextClient.cpp:862
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Ez leválaszt minden jelenleg kapcsolódott hálózatról.\n"
 
-#: src/TextClient.cpp:862
+#: src/TextClient.cpp:863
 msgid "Disconnect from eD2k only."
 msgstr "Leválasztás csak az eD2k-ról."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:864
 msgid "Disconnect from Kad only."
 msgstr "Csak a Kad-ról választ le."
 
-#: src/TextClient.cpp:865
+#: src/TextClient.cpp:866
 msgid "Adds an eD2k or magnet link to core."
 msgstr "Egy eD2k vagy magnet hivatkozás hozzáadása."
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:867
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6441,51 +6441,51 @@ msgstr ""
 "\n"
 "A magnet hivatkozásnak tartalmaznia kell az eD2k hash-t és a fájl hosszát.\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:869
 msgid "Set a preference value."
 msgstr "Beállítások megváltozatása."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:872
 msgid "Set IPFilter preferences."
 msgstr "IP szűrő beállítások módosítása."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "IP szűrés bekapcsolása mind a kliensek, mind a kiszolgálók részére."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:874
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "IP szűrés kikapcsolása mind a kliensek, mind a kiszolgálók részére."
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:875
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Engedélyezi/Letiltja a kliensek IP szűrését."
 
-#: src/TextClient.cpp:875
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering on for clients."
 msgstr "Kliens IP szűrés bekapcsolása."
 
-#: src/TextClient.cpp:876
+#: src/TextClient.cpp:877
 msgid "Turn IP filtering off for clients."
 msgstr "Kliens IP szűrés kikapcsolása."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:878
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Engedélyezi/Letiltja a kiszolgálók IP szűrését."
 
-#: src/TextClient.cpp:878
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering on for servers."
 msgstr "Kiszolgáló IP szűrés bekapcsolása."
 
-#: src/TextClient.cpp:879
+#: src/TextClient.cpp:880
 msgid "Turn IP filtering off for servers."
 msgstr "Kiszolgáló IP szűrés kikapcsolása."
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:881
 msgid "Select IP filtering level."
 msgstr "IP szűrési szint kiválasztása."
 
-#: src/TextClient.cpp:881
+#: src/TextClient.cpp:882
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -6494,55 +6494,55 @@ msgstr ""
 "alapértelmezett\n"
 "értéke 127.\n"
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:884
 msgid "Set bandwidth limits."
 msgstr "Sávszélességi korlátok beállítása."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:885
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "Az ezeknek a parancsoknak adott érték kilobájt/mp-ben kell legyen.\n"
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:886
 msgid "Set upload bandwidth limit."
 msgstr "Feltöltési sávszélesség beállítása."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:888
 msgid "Set download bandwidth limit."
 msgstr "Letöltési sávszélesség beállítása."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:891
 msgid "Get and display a preference value."
 msgstr "Beállítási értékek megjelenítése."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:894
 msgid "Get IPFilter preferences."
 msgstr "IP szűrő beállítások megjelenítése."
 
-#: src/TextClient.cpp:894
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for both clients and servers."
 msgstr "Az IP szűrő állapotának lekérdezése ügyfelekre és kiszolgálókra."
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for clients only."
 msgstr "IP szűrő állapotának megjelenítése csak ügyfelekre."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:897
 msgid "Get IPFilter state for servers only."
 msgstr "IP szűrő állapotának megjelenítése csak kiszolgálókra."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:898
 msgid "Get IPFilter level."
 msgstr "IP szűrő szintjének megjelenítése."
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:900
 msgid "Get bandwidth limits."
 msgstr "Sávszélességi korlátok megtekintése."
 
-#: src/TextClient.cpp:901
+#: src/TextClient.cpp:902
 msgid "Makes a search."
 msgstr "Keresést végez."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:903
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -6556,39 +6556,39 @@ msgstr ""
 "    KAD (kad)\n"
 "Például: 'search kad fájl' egy kad keresést fog indítani a \"fájl\"-ra.\n"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:904
 msgid "Executes a global search."
 msgstr "Globális keresést végez."
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:905
 msgid "Executes a local search"
 msgstr "Helyi keresést végez."
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:906
 msgid "Executes a kad search"
 msgstr "Keresés a Kad hálózaton."
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:908
 msgid "Shows the results of the last search."
 msgstr "Az utolsó keresés eredményeinek megjelenítése."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:909
 msgid "Returns the results of the previous search.\n"
 msgstr "Az előző keresés eredményeit adja vissza.\n"
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search."
 msgstr "Egy keresés állapotát jeleníti meg."
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:912
 msgid "Shows the progress of a search.\n"
 msgstr "Egy keresés állapotát jeleníti meg.\n"
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:914
 msgid "Start downloading a file"
 msgstr "Fájl letöltése."
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:915
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -6598,78 +6598,78 @@ msgstr ""
 "Pl: 'download 12' az előző keresésből a 12-es sorszámú fájlt fogja "
 "letölteni.\n"
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:922
 msgid "Pause download."
 msgstr "Letöltés szüneteltetése."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:925
 msgid "Resume download."
 msgstr "Letöltés folytatása."
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:928
 msgid "Cancel download."
 msgstr "Letöltés megszakítása."
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:931
 msgid "Set download priority."
 msgstr "Letöltési prioritás beállítása."
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:932
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "Alacsony, normál, magas vagy automatikus prioritást állít be.\n"
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:933
 msgid "Set priority to low."
 msgstr "Alacsony prioritás beállítása."
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:934
 msgid "Set priority to normal."
 msgstr "Normál prioritás beállítása."
 
-#: src/TextClient.cpp:934
+#: src/TextClient.cpp:935
 msgid "Set priority to high."
 msgstr "Magas prioritás beállítása."
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:936
 msgid "Set priority to auto."
 msgstr "Automatikus prioritás beállítása."
 
-#: src/TextClient.cpp:937
+#: src/TextClient.cpp:938
 msgid "Show queues/lists."
 msgstr "Várósorok/listák megmutatása."
 
-#: src/TextClient.cpp:938
+#: src/TextClient.cpp:939
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Megjeleníti a feltöltési/letöltési várósort, kiszolgáló listát vagy a "
 "megosztott fájlok listáját.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:940
 msgid "Show upload queue."
 msgstr "Feltöltési várósor megmutatása."
 
-#: src/TextClient.cpp:940
+#: src/TextClient.cpp:941
 msgid "Show download queue."
 msgstr "Letöltési várósor megmutatása."
 
-#: src/TextClient.cpp:941
+#: src/TextClient.cpp:942
 msgid "Show log."
 msgstr "Napló megjelenítése."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:943
 msgid "Show servers list."
 msgstr "Kiszolgáló-lista megmutatása."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:946
 msgid "Reset log."
 msgstr "Napló törlése."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:953
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr "Elavult parancs, használd a(z) '%s'-t helyette."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:954
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
