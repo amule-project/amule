@@ -33,6 +33,7 @@
 #include <common/Format.h>		// Needed for CFormat
 
 #include <common/ClientVersion.h>
+#include <common/MD5Sum.h>
 
 #include "ExternalConn.h"	// Interface declarations
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -275,6 +276,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			% ( clientName ? clientName->GetStringData() : wxString(_("Unknown")) )
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
+		const CECTag *salt = request->GetTagByName(EC_TAG_PASSWD_SALT);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef EC_VERSION_ID
 		// For SVN versions, both client and server must use SVNDATE, and they must be the same
@@ -294,13 +296,22 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
+
+				uint64_t saltValue = 0;
+				if (salt) {
+					saltValue = salt->GetInt();
+				}
+
+				AddLogLineM(false, wxT("Salt: "+wxString::Format(wxT("%ull"), saltValue)));
+
 				CMD4Hash passh;
 
-				if (!passh.Decode(thePrefs::ECPassword())) {
+				if (!passh.Decode(MD5Sum(thePrefs::ECPassword()+wxString::Format(wxT("%ull"), saltValue)).GetHash())) {
 					AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
 					response = new CECPacket(EC_OP_AUTH_FAIL);
 					response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
 				} else if (passwd && passwd->GetMD4Data() == passh) {
+					AddLogLineM(false, wxT("Success."));					
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
 					if (passwd) {
