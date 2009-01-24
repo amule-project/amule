@@ -24,9 +24,7 @@
 //
 
 #include "RemoteConnect.h"
-#include <common/MD5Sum.h>
 
-#include <wx/datetime.h> // For salt
 #include <wx/intl.h>
 
 using std::auto_ptr;
@@ -40,13 +38,10 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
 	AddTag(CECTag(EC_TAG_CLIENT_VERSION, version));
 	AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint64)EC_CURRENT_PROTOCOL_VERSION));
 
-	uint64_t salt = (uint64_t) wxDateTime::Now().GetTicks();
-
 	CMD4Hash passhash;
-	wxCHECK2(passhash.Decode(MD5Sum(pass+wxString::Format(wxT("%ull"), salt)).GetHash()), /* Do nothing. */);
-
+	wxCHECK2(passhash.Decode(pass), /* Do nothing. */);
 	AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
-	AddTag(CECTag(EC_TAG_PASSWD_SALT, salt));
+	
 
 	#ifdef EC_VERSION_ID
 	CMD4Hash versionhash;
