@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-18 21:44+0100\n"
+"POT-Creation-Date: 2009-01-24 15:28+0100\n"
 "PO-Revision-Date: 2008-07-30 01:25-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -364,11 +364,11 @@ msgstr "Χρήστες: E: %s K: %s | Αρχεία: E: %s K: %s"
 msgid "No networks selected"
 msgstr "Δεν έχουν επιλεχθεί δίκτυα"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "με Χαμηλή Προτεραιότητα"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:697
+#: src/amule.cpp:2134 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "με Υψηλή Προτεραιότητα"
 
@@ -817,7 +817,7 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
-#: src/PartFile.cpp:2506 src/Server.cpp:160 src/Server.cpp:235
+#: src/PartFile.cpp:2506 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Άγνωστο"
@@ -978,7 +978,7 @@ msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
 #: src/ClientDetailDialog.cpp:143 src/ClientListCtrl.cpp:1027
-#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:707
+#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:211 src/TextClient.cpp:708
 msgid "Connected"
 msgstr "Συνδεδεμένο"
 
@@ -1446,7 +1446,7 @@ msgid "Remote Server"
 msgstr "Απομακρυσμένος διακομιστής"
 
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:192 src/muuli_wdr.cpp:3412
-#: src/SearchDlg.cpp:109 src/TextClient.cpp:704
+#: src/SearchDlg.cpp:109 src/TextClient.cpp:705
 msgid "Kad"
 msgstr "Kad"
 
@@ -2008,17 +2008,17 @@ msgstr ""
 "Γράψτε '%s <command>' για να πάρετε λεπτομερείς πληροφορίες πάνω στην "
 "<εντολή>.\n"
 
-#: src/ExternalConnector.cpp:232 src/ExternalConnector.cpp:233
+#: src/ExternalConnector.cpp:233 src/ExternalConnector.cpp:234
 msgid "Exits from the application."
 msgstr "Κλείσιμο της εφαρμογής."
 
-#: src/ExternalConnector.cpp:234
+#: src/ExternalConnector.cpp:235
 msgid "Show help."
 msgstr "Εμφάνιση βοήθειας."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:237
+#: src/ExternalConnector.cpp:238
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -2026,7 +2026,7 @@ msgstr ""
 "Για βοήθεια πάνω σε μία εντολή, γράψτε 'help <εντολή>'.\n"
 "Για την πλήρη λίστα εντολών γράψτε 'help'.\n"
 
-#: src/ExternalConnector.cpp:258
+#: src/ExternalConnector.cpp:259
 #, c-format
 msgid ""
 "\n"
@@ -2037,48 +2037,48 @@ msgstr ""
 "Χρησιμοποιήστε '%s' για την λίστα εντολών\n"
 "\n"
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:289
 msgid "Syntax error!"
 msgstr "Συντακτικό λάθος!"
 
-#: src/ExternalConnector.cpp:291
+#: src/ExternalConnector.cpp:292
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Σφάλμα κατά την επεξεργασία της εντολής - δεν έπρεπε να συμβεί ποτέ! "
 "Παρακαλείστε να αναφέρετε σφάλμα προγράμματος\n"
 
-#: src/ExternalConnector.cpp:294
+#: src/ExternalConnector.cpp:295
 msgid "This command should not have any parameters."
 msgstr "Αυτή η εντολή δεν πρέπει να έχει παραμέτρους."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:298
 msgid "This command must have a parameter."
 msgstr "Αυτή η εντολή πρέπει να έχει παράμετρο."
 
-#: src/ExternalConnector.cpp:300
+#: src/ExternalConnector.cpp:301
 msgid "Invalid argument."
 msgstr "Άκυρο όρισμα."
 
-#: src/ExternalConnector.cpp:303
+#: src/ExternalConnector.cpp:304
 msgid "This is an incomplete command."
 msgstr "Αυτή είναι ημιτελής εντολή."
 
-#: src/ExternalConnector.cpp:312
+#: src/ExternalConnector.cpp:313
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Για περισσότερη βοήθεια, γράψτε '%s'.\n"
 
-#: src/ExternalConnector.cpp:368
+#: src/ExternalConnector.cpp:369
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Αυτό είναι %s %s %s\n"
 
-#: src/ExternalConnector.cpp:370
+#: src/ExternalConnector.cpp:371
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Αυτό είναι %s %s\n"
 
-#: src/ExternalConnector.cpp:401
+#: src/ExternalConnector.cpp:402
 msgid ""
 "\n"
 "Creating client...\n"
@@ -2086,12 +2086,12 @@ msgstr ""
 "\n"
 " Δημιουργία πελάτη...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:408
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:422
 #, c-format
 msgid ""
 "\n"
@@ -2100,7 +2100,7 @@ msgstr ""
 "\n"
 "Όλα μια χαρά, έξοδος %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:428
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2113,49 +2113,49 @@ msgstr ""
 "είτε στην γραμμή εντολών είτε προσδιορίζοντας κάποιο όταν ζητηθεί.\n"
 "Έξοδος...\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:435
 msgid "Show this help text."
 msgstr "Δείξε αυτό το αρχείο βοήθειας."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:438
 msgid "Host where aMule is running. (default: localhost)"
 msgstr ""
 "Υπολογιστής όπου το aMule τρέχει (προεπιλεγμένος: ο τοπικός υπολογιστής)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:441
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Η Θύρα του aMule για Εξωτερική σύνδεση. (προεπιλεγμένη: 4712)"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:444
 msgid "External Connection password."
 msgstr "Κωδικός εξωτερικής σύνδεσης"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:447
 msgid "Read configuration from file."
 msgstr "Διάβασε το αρχείο διευθετήσεων"
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:450
 msgid "Do not print any output to stdout."
 msgstr "Μην στέλνεις μηνύματα στην stdout."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:453
 msgid "Be verbose - show also debug messages."
 msgstr "Να είσαι αναλυτικός - δείξε και να μηνύματα αποσφαλμάτωσης"
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:456
 msgid "Sets program locale (language)."
 msgstr "Θέσε τις τοπικές ρυθμίσεις"
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:459
 msgid "Write command line options to config file."
 msgstr "Εγγραφή των παραμέτρων της γραμμής εντολών σε αρχείο."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:462
 msgid "Creates config file based on aMule's config file."
 msgstr ""
 "Δημιουργεί ένα αρχείο παραμέτρων βασισμένο στο αρχείο παραμέτρων του aMule."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:465
 msgid "Print program version."
 msgstr "Τύπωσε την έκδοση του προγράμματος."
 
@@ -2658,8 +2658,8 @@ msgstr "Δεν επιλέχτηκε παρατσούκλι!"
 msgid "ClientID: "
 msgstr "Ταυτότητα πελάτη:"
 
-#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:702
-#: src/TextClient.cpp:715
+#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:703
+#: src/TextClient.cpp:716
 msgid "Not connected"
 msgstr "Συνδεδεμένο τώρα"
 
@@ -5898,7 +5898,7 @@ msgstr "Μέσοι χρήστες:"
 msgid "Average Files:"
 msgstr "Μέσα αρχεία:"
 
-#: src/ServerWnd.cpp:268 src/TextClient.cpp:718
+#: src/ServerWnd.cpp:268 src/TextClient.cpp:719
 msgid "Not running"
 msgstr "Δεν τρέχει"
 
@@ -6257,11 +6257,11 @@ msgstr "Η εντολή `%s' με pid `%d' τελείωση με κωδικό κ
 msgid "Execute <str> and exit."
 msgstr "Εκτέλεση <str> και έξοδος."
 
-#: src/TextClient.cpp:200
+#: src/TextClient.cpp:201
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Άκυρη μορφή διεύθυνσης IP. Χρησιμοποιήστε xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:308
+#: src/TextClient.cpp:309
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
@@ -6269,95 +6269,95 @@ msgstr ""
 "Αυτή η εντολή χρειάζεται ένα όρισμα. Έγκυρα ορίσματα: 'all', όνομα αρχείου ή "
 "έναν αριθμό.\n"
 
-#: src/TextClient.cpp:346
+#: src/TextClient.cpp:347
 msgid "Processing by hash: "
 msgstr "Επεξεργασία κατά κατακερματιστή:"
 
-#: src/TextClient.cpp:361
+#: src/TextClient.cpp:362
 msgid "Processing by filename: "
 msgstr "Επεξεργασία κατά όνομα αρχείου:"
 
-#: src/TextClient.cpp:384
+#: src/TextClient.cpp:385
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
 "Αυτή η εντολή χρειάζεται ένα όρισμα. Έγκυρα ορίσματα: ένας κατακερματιστής "
 "αρχείου.\n"
 
-#: src/TextClient.cpp:410
+#: src/TextClient.cpp:411
 msgid "Not a valid number\n"
 msgstr "Άκυρος αριθμός\n"
 
-#: src/TextClient.cpp:414
+#: src/TextClient.cpp:415
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr ""
 "Δεν είναι έγκυρος κατακερματισμός (το μήκος πρέπει να είναι ακριβώς 32 "
 "χαρακτήρες)\n"
 
-#: src/TextClient.cpp:626 src/webserver/src/WebServer.cpp:369
+#: src/TextClient.cpp:627 src/webserver/src/WebServer.cpp:369
 msgid "Request failed with an unknown error."
 msgstr "Η αίτηση απέτυχε για άγνωστο λόγο"
 
-#: src/TextClient.cpp:630
+#: src/TextClient.cpp:631
 msgid "Operation was successful."
 msgstr "Η διαδικασία ολοκληρώθηκε επιτυχώς."
 
-#: src/TextClient.cpp:636
+#: src/TextClient.cpp:637
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "Η αίτηση απέτυχε με το ακόλουθο σφάλμα: %s"
 
-#: src/TextClient.cpp:652
+#: src/TextClient.cpp:653
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "Το φίλτρο IP για πελάτες είναι %s.\n"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "OFF"
 msgstr "Εκτός"
 
-#: src/TextClient.cpp:653 src/TextClient.cpp:659
+#: src/TextClient.cpp:654 src/TextClient.cpp:660
 msgid "ON"
 msgstr "Σε λειτουργία"
 
-#: src/TextClient.cpp:658
+#: src/TextClient.cpp:659
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "Το φιλτράρισμα διευθύνσεων για διακομιστές είναι %s.\n"
 
-#: src/TextClient.cpp:663
+#: src/TextClient.cpp:664
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "Το τρέχον επίπεδο IPFilter είναι %d.\n"
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:672
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Ευρυζωνικά όρια: Πάνω: %u kB/s, Κάτω: %u kB/s.\n"
 
-#: src/TextClient.cpp:689
+#: src/TextClient.cpp:690
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:694
+#: src/TextClient.cpp:695
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Συνδεδεμένο στο %s %s %s"
 
-#: src/TextClient.cpp:700
+#: src/TextClient.cpp:701
 msgid "Now connecting"
 msgstr "Συνδέεται τώρα"
 
-#: src/TextClient.cpp:709 src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/TextClient.cpp:710 src/utils/wxCas/src/wxcasframe.cpp:1061
 #: src/utils/wxCas/src/wxcasframe.cpp:1083
 msgid "firewalled"
 msgstr "βρίσκεται πίσω από τοίχο προστασίας"
 
-#: src/TextClient.cpp:711 src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/TextClient.cpp:712 src/utils/wxCas/src/wxcasframe.cpp:1059
 #: src/utils/wxCas/src/wxcasframe.cpp:1081
 msgid "ok"
 msgstr "Εντάξει"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:725
 #, c-format
 msgid ""
 "\n"
@@ -6366,7 +6366,7 @@ msgstr ""
 "\n"
 "Κατέβασμα:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:728
 #, c-format
 msgid ""
 "\n"
@@ -6375,7 +6375,7 @@ msgstr ""
 "\n"
 "Ανέβασμα:\t%s"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:731
 #, c-format
 msgid ""
 "\n"
@@ -6384,7 +6384,7 @@ msgstr ""
 "\n"
 "Πελάτες σε αναμονή:\t%d\n"
 
-#: src/TextClient.cpp:733
+#: src/TextClient.cpp:734
 #, c-format
 msgid ""
 "\n"
@@ -6393,34 +6393,34 @@ msgstr ""
 "\n"
 "Συνολικές πηγές:\t%d\n"
 
-#: src/TextClient.cpp:810
+#: src/TextClient.cpp:811
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Αριθμός αποτελεσμάτων αναζήτησης: %i\n"
 
-#: src/TextClient.cpp:823
+#: src/TextClient.cpp:824
 msgid "TODO - show progress of a search"
 msgstr "TODO - εμφάνιση πρόοδο αναζήτησης"
 
-#: src/TextClient.cpp:829
+#: src/TextClient.cpp:830
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Ελήφθη άγνωστη απάντηση από τον διακομιστή, OpCode = %#x."
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:843
 msgid "Show short status information."
 msgstr "Εμφάνιση σύντομων πληροφοριών κατάστασης."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:844
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 "Εμφάνιση κατάστασης σύνδεσης, τρέχουσες ταχύτητες ανεβοκατεβάσματος, κτλ.\n"
 
-#: src/TextClient.cpp:845
+#: src/TextClient.cpp:846
 msgid "Show full statistics tree."
 msgstr "Εμφάνιση πλήρους δέντρου στατιστικών."
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:847
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6439,11 +6439,11 @@ msgstr ""
 "Παράδειγμα: 'statistics 5' θα δείξει μόνο τις 5 πρώτες εκδόσεις του κάθε "
 "τύπου πελάτη.\n"
 
-#: src/TextClient.cpp:848
+#: src/TextClient.cpp:849
 msgid "Shut down aMule."
 msgstr "Κλείσιμο του aMule."
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:850
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -6453,23 +6453,23 @@ msgstr ""
 "Αυτό θα κλείσει και τον πελάτη κειμένου, γιατί είναι άχρηστος χωρίς έναν\n"
 "τρέχοντα πυρήνα.\n"
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:852
 msgid "Reloads the given object."
 msgstr "Επαναφορτώνει το δεδομένο αντικείμενο"
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:853
 msgid "Reloads shared files list."
 msgstr "Επαναφορτώνει τη λίστα κοινοχρήστων αρχείων."
 
-#: src/TextClient.cpp:853
+#: src/TextClient.cpp:854
 msgid "Reloads IP Filter table from file."
 msgstr "Επαναφορτώνει τον πίνακα φίλτρων IP από αρχείο"
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:856
 msgid "Connect to the network."
 msgstr "Σύνδεση στο δίκτυο."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:857
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6485,35 +6485,35 @@ msgstr ""
 "δεκαδική διεύθυνση IPv4\n"
 "ή ένα επιλύσιμο όνομα DNS."
 
-#: src/TextClient.cpp:857
+#: src/TextClient.cpp:858
 msgid "Connect to eD2k only."
 msgstr "Σύνδεση μόνο στο eD2k."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:859
 msgid "Connect to Kad only."
 msgstr "Σύνδεση μόνο στο Kad."
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:861
 msgid "Disconnect from the network."
 msgstr "Αποσύνδεση από το δίκτυο."
 
-#: src/TextClient.cpp:861
+#: src/TextClient.cpp:862
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Αυτό θα προκαλέσει αποσύνδεση από όλα τα συνδεδεμένα δίκτυα.\n"
 
-#: src/TextClient.cpp:862
+#: src/TextClient.cpp:863
 msgid "Disconnect from eD2k only."
 msgstr "Αποσύνδεση μόνο από το eD2k."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:864
 msgid "Disconnect from Kad only."
 msgstr "Αποσύνδεση μόνο από το Kad."
 
-#: src/TextClient.cpp:865
+#: src/TextClient.cpp:866
 msgid "Adds an eD2k or magnet link to core."
 msgstr "Προσθήκη ενός μαγνητικού συνδέσμου ή συνδέσμου eD2k στον πυρήνα."
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:867
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6536,51 +6536,51 @@ msgstr ""
 "Ο μαγνητικός σύνδεσμος πρέπει να περιέχει τον κατακερματισμό \n"
 " και το μέγεθος αρχείου.\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:869
 msgid "Set a preference value."
 msgstr "Θέτει την τιμή μίας προτίμησης."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:872
 msgid "Set IPFilter preferences."
 msgstr "Θέτει τις προτιμήσεις του φίλτρου IP."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "Άνοιγμα του φίλτρου IP τόσο για πελάτες όσο και για διακομιστές."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:874
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "Κλείσιμο του φίλτρου IP τόσο για πελάτες όσο και για διακομιστές."
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:875
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Ενεργοποίηση/Απενεργοποίηση του φίλτρου IP για πελάτες."
 
-#: src/TextClient.cpp:875
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering on for clients."
 msgstr "Άνοιγμα του φίλτρου IP τόσο για πελάτες."
 
-#: src/TextClient.cpp:876
+#: src/TextClient.cpp:877
 msgid "Turn IP filtering off for clients."
 msgstr "Κλείσιμο του φίλτρου IP τόσο για πελάτες."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:878
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Ενεργοποίηση/Απενεργοποίηση του φίλτρου IP για διακομιστές."
 
-#: src/TextClient.cpp:878
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering on for servers."
 msgstr "Άνοιγμα του φιλτραρίσματος IP για τους διακομιστές."
 
-#: src/TextClient.cpp:879
+#: src/TextClient.cpp:880
 msgid "Turn IP filtering off for servers."
 msgstr "Κλείσιμο του φιλτραρίσματος IP για τους διακομιστές."
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:881
 msgid "Select IP filtering level."
 msgstr "Επιλογή επιπέδου φιλτραρίσματος IP."
 
-#: src/TextClient.cpp:881
+#: src/TextClient.cpp:882
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -6589,57 +6589,57 @@ msgstr ""
 "(αρχική)\n"
 "τιμή είναι 127.\n"
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:884
 msgid "Set bandwidth limits."
 msgstr "Ρύθμιση ορίων εύρους ζώνης."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:885
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr ""
 "Η τιμή που δίνεται σε αυτές τις εντολές πρέπει να είναι σε kilobytes/"
 "δευτερόλεπτο.\n"
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:886
 msgid "Set upload bandwidth limit."
 msgstr "Θέσε το όριο εύρους ζώνης για ανέβασμα."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:888
 msgid "Set download bandwidth limit."
 msgstr "Θέσε το όριο εύρους ζώνης για κατέβασμα."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:891
 msgid "Get and display a preference value."
 msgstr "Λήψη και εμφάνιση της τιμής μίας προτίμησης."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:894
 msgid "Get IPFilter preferences."
 msgstr "Λήψη προτιμήσεων φίλτρου IP."
 
-#: src/TextClient.cpp:894
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for both clients and servers."
 msgstr "Λήψη κατάστασης φίλτρου IP για πελάτες και διακομιστές."
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for clients only."
 msgstr "Λήψη κατάστασης φίλτρου IP μόνο για πελάτες."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:897
 msgid "Get IPFilter state for servers only."
 msgstr "Λήψη κατάστασης φίλτρου IP μόνο για διακομιστές."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:898
 msgid "Get IPFilter level."
 msgstr "Λήψη επιπέδου φίλτρου IP."
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:900
 msgid "Get bandwidth limits."
 msgstr "Λήψη τον ορίων εύρους ζώνης."
 
-#: src/TextClient.cpp:901
+#: src/TextClient.cpp:902
 msgid "Makes a search."
 msgstr "Εκτελεί μία αναζήτηση."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:903
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -6654,39 +6654,39 @@ msgstr ""
 "Για παράδειγμα: 'search kad αρχειάκι' θα εκτελέσει μία αναζήτηση Kad για το "
 "αρχείο \"αρχειάκι\".\n"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:904
 msgid "Executes a global search."
 msgstr "Εκτελεί συνολική αναζήτηση."
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:905
 msgid "Executes a local search"
 msgstr "Εκτελεί τοπική αναζήτηση"
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:906
 msgid "Executes a kad search"
 msgstr "Εκτελεί αναζήτηση στο Kad"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:908
 msgid "Shows the results of the last search."
 msgstr "Δείχνει τα αποτελέσματα της τελευταίας αναζήτησης."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:909
 msgid "Returns the results of the previous search.\n"
 msgstr "Επιστρέφει τα αποτελέσματα της προηγούμενης αναζήτησης.\n"
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search."
 msgstr "Δείχνει την πρόοδο της αναζήτησης."
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:912
 msgid "Shows the progress of a search.\n"
 msgstr "Δείχνει την πρόοδο της αναζήτησης.\n"
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:914
 msgid "Start downloading a file"
 msgstr "Ξεκινά να κατεβάζει ένα αρχείο"
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:915
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -6696,79 +6696,79 @@ msgstr ""
 " Για παράδειγμα \"download 12\" θα ξεκινήσει να κατεβάζει το αρχείο υπ' "
 "αριθμό 12 της προηγούμενης αναζήτησης.\n"
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:922
 msgid "Pause download."
 msgstr "Παύση κατεβάσματος."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:925
 msgid "Resume download."
 msgstr "Συνέχιση κατεβάσματος."
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:928
 msgid "Cancel download."
 msgstr "Ακύρωση κατεβάσματος."
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:931
 msgid "Set download priority."
 msgstr "Θέσε την προτεραιότητα κατεβάσματος."
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:932
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr ""
 "Βάλτε την προτεραιότητα κατεβάσματος σε χαμηλή, κανονική, ηψηλή ή αυτόματη.\n"
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:933
 msgid "Set priority to low."
 msgstr "Θέστε χαμηλή προτεραιότητα."
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:934
 msgid "Set priority to normal."
 msgstr "Θέστε κανονική προτεραιότητα."
 
-#: src/TextClient.cpp:934
+#: src/TextClient.cpp:935
 msgid "Set priority to high."
 msgstr "Θέστε υψηλή προτεραιότητα."
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:936
 msgid "Set priority to auto."
 msgstr "Θέστε αυτόματη προτεραιότητα."
 
-#: src/TextClient.cpp:937
+#: src/TextClient.cpp:938
 msgid "Show queues/lists."
 msgstr "Δείξε τις ουρές/λίστες."
 
-#: src/TextClient.cpp:938
+#: src/TextClient.cpp:939
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Δείχνει την ουρά ανεβάσματος/κατεβάσματος, τη λίστα διακομιστών ή "
 "κοινόχρηστων αρχείων.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:940
 msgid "Show upload queue."
 msgstr "Δείξε την ουρά ανεβάσματος."
 
-#: src/TextClient.cpp:940
+#: src/TextClient.cpp:941
 msgid "Show download queue."
 msgstr "Δείξε την ουρά κατεβάσματος."
 
-#: src/TextClient.cpp:941
+#: src/TextClient.cpp:942
 msgid "Show log."
 msgstr "Δείξε τον αρχείο καταγραφής."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:943
 msgid "Show servers list."
 msgstr "Δείξε τη λίστα των διακομιστών."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:946
 msgid "Reset log."
 msgstr "Καθάρισμα αρχείου καταγραφής."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:953
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr "Δεν συνίσταται αυτή η εντολή, αντ' αυτής χρησιμοποιήστε την '%s'."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:954
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
