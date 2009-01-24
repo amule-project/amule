@@ -155,7 +155,6 @@ EC_TAG_LOG_TO_STATUS                      0x0007
 EC_TAG_BOOTSTRAP_IP                       0x0008
 EC_TAG_BOOTSTRAP_PORT                     0x0009
 EC_TAG_CLIENT_ID                          0x000A
-EC_TAG_PASSWD_SALT                        0x000B
 
 
 EC_TAG_CLIENT_NAME                        0x0100
