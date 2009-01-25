@@ -271,8 +271,6 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Set transfers as active window
 	Create_Toolbar(thePrefs::VerticalToolbar());
 	SetActiveDialog(DT_TRANSFER_WND, m_transferwnd);
-	// Prepare the dialog, sets the splitter-position
-	m_transferwnd->Prepare();
 	m_wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true );
 
 	bool override_where = (where != wxDefaultPosition);
@@ -284,6 +282,9 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		AddLogLineM( true, wxT("Error! Unable to load Preferences") );
 		return;
 	}
+
+	// Prepare the dialog, sets the splitter-position (AFTER window size is set)
+	m_transferwnd->Prepare();
 
 	m_is_safe_state = true;
 
