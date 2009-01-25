@@ -87,7 +87,10 @@ Version 2.3.0 - The river knows.
 
 Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 ----------
-2009-??
+2009-03-??
+
+	gabrielix:
+		* Compilation fix for gcc-4.3.2.
 
 	GonoszTopi:
 		* Fix compilation of Format.cpp for some platforms
