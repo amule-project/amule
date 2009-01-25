@@ -5163,9 +5163,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Temp-Verzeichnis geändert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:582
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Alle Netzwerke sind deaktiviert."
+msgstr "- ED2k-Netzwerk aktiviert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:649
 msgid ""
