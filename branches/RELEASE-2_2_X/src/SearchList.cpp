@@ -611,13 +611,16 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 
 void CSearchList::StopGlobalSearch()
 {
-	m_searchTimer.Stop();
-
 	m_currentSearch = -1;
 	delete m_searchPacket;
 	m_searchPacket = NULL;
 	m_searchInProgress = false;
 	
+	// Order is crucial here: on wx_MSW an additional event can be generated during the stop.
+	// So the packet has to be deleted first, so that OnGlobalSearchTimer() returns immediately
+	// without calling StopGlobalSearch() again.
+	m_searchTimer.Stop();
+
 	CoreNotify_Search_Update_Progress(0xffff);
 }
 
