@@ -2,6 +2,7 @@
 
 #import "LoginDialogController.h"
 #import "DownloadsViewController.h"
+#import "AddLinkDialogController.h"
 
 #include <unistd.h>
 #include <signal.h>
@@ -45,6 +46,12 @@
 }
 
 -(IBAction)show_About:(id)sender {
+}
+
+- (IBAction)addLink:(id)sender;{
+	//AddLinkDialogController *dlg = [[AddLinkDialogController alloc] init];
+	
+	bool dlgResult = [m_add_link_dlg showDlg:nil];
 }
 
 - (bool)askCoreParams {
@@ -144,8 +151,8 @@
 	//
 	// bind datastructure to GUI controllers
 	//
-	[m_dload_controller setFileSet:m_data.downloads];
-	[m_data.downloads setGuiController:m_dload_controller];
+	[m_dload_controller linkAmuleData:m_data];
+	[m_search_controller linkAmuleData:m_data];
 	
 	//
 	// daemon (either local or remote) must be running by now

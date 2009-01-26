@@ -7,6 +7,7 @@
 	IBOutlet NSTableView *m_tableview;
 	
 	amuleFileSet *m_fileset;
+	amuleData *m_amuledata;
 }
 
 - (void)saveGui;
@@ -15,7 +16,7 @@
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 
-- (void)setFileSet:(amuleFileSet *)fileset;
+- (void)linkAmuleData:(amuleData *)amuledata;
 
 - (void)reload;
 
