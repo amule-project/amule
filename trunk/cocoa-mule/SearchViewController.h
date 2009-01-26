@@ -7,8 +7,11 @@
     IBOutlet NSTextField *m_search_text;
 
 	amuleFileSet *m_fileset;
+	amuleData *m_amuledata;
 }
 
 - (IBAction)startSearch:(id)sender;
+
+- (void)linkAmuleData:(amuleData *)amuledata;
 
 @end

@@ -62,8 +62,10 @@
 	return [m_fileset count];
 }
 
-- (void)setFileSet:(amuleFileSet *)fileset {
-	m_fileset = fileset;
+- (void)linkAmuleData:(amuleData *)amuledata {
+	m_amuledata = amuledata;
+	m_fileset = m_amuledata.downloads;
+	[amuledata.downloads setGuiController:self];
 }
 
 - (void)reload {

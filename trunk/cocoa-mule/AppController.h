@@ -11,6 +11,8 @@
 	IBOutlet id m_dload_controller;
 	IBOutlet id m_search_controller;
 	
+	IBOutlet id m_add_link_dlg;
+	
 	ECRemoteConnection *m_connection;
 	amuleData *m_data;
 	
@@ -27,6 +29,8 @@
 - (IBAction)show_Xfers:(id)sender;
 - (IBAction)show_Preferences:(id)sender;
 - (IBAction)show_About:(id)sender;
+
+- (IBAction)addLink:(id)sender;
 
 - (int)startDaemon;
 

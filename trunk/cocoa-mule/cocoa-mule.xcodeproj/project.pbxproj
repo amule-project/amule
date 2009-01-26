@@ -11,6 +11,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B20467430F20DD1E00972AD8 /* AddLinkDialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20467420F20DD1E00972AD8 /* AddLinkDialogController.m */; };
 		B20E7E300EFD313400EF0D8D /* LoginDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */; };
 		B20E7E360EFD322C00EF0D8D /* LoginDialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */; };
 		B228A7A60E7C426B009B94B4 /* EC.mm in Sources */ = {isa = PBXBuildFile; fileRef = B228A7A50E7C426B009B94B4 /* EC.mm */; };
@@ -72,6 +73,8 @@
 		32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "cocoa-mule_Prefix.pch"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* cocoa-mule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cocoa-mule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B20467410F20DD1E00972AD8 /* AddLinkDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddLinkDialogController.h; sourceTree = "<group>"; };
+		B20467420F20DD1E00972AD8 /* AddLinkDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddLinkDialogController.m; sourceTree = "<group>"; };
 		B20E7E340EFD322C00EF0D8D /* LoginDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDialogController.h; sourceTree = "<group>"; };
 		B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDialogController.m; sourceTree = "<group>"; };
 		B228A7A40E7C426B009B94B4 /* EC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EC.h; sourceTree = "<group>"; };
@@ -203,6 +206,8 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				B2DD60220E7BC65400987099 /* AppController.mm */,
 				B2DD601F0E7BC62A00987099 /* AppController.h */,
+				B20467410F20DD1E00972AD8 /* AddLinkDialogController.h */,
+				B20467420F20DD1E00972AD8 /* AddLinkDialogController.m */,
 				B20E7E350EFD322C00EF0D8D /* LoginDialogController.m */,
 				B20E7E340EFD322C00EF0D8D /* LoginDialogController.h */,
 			);
@@ -393,6 +398,7 @@
 				B20E7E360EFD322C00EF0D8D /* LoginDialogController.m in Sources */,
 				B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */,
 				B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */,
+				B20467430F20DD1E00972AD8 /* AddLinkDialogController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
