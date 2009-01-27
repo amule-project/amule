@@ -113,7 +113,6 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 		if (reply->GetOpCode() != EC_OP_AUTH_OK) {
 			// Access denied!
 			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
-			DestroySocket();
 		} else {
 			m_authenticated = true;
 		}
