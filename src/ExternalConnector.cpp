@@ -405,6 +405,9 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		// ConnectToCore is blocking since m_ECClient was initialized with NULL
 		if (!m_ECClient->ConnectToCore(m_host, m_port, wxT("foobar"), m_password.Encode(), ProgName, ProgVersion)) {
 			// no connection => close gracefully
+			if (!m_ECClient->GetServerReply().IsEmpty()) {
+					Show(CFormat(wxT("%s\n")) % m_ECClient->GetServerReply());
+			}
 			Show(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % m_host % m_port);
 		} else {
 			// Authenticate ourselves
