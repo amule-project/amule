@@ -92,6 +92,9 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 	gabrielix:
 		* Compilation fix for gcc-4.3.2.
 
+	Gaznevada:
+		* Compilation fix for IRIX.
+
 	GonoszTopi:
 		* Fix compilation of Format.cpp for some platforms
 
