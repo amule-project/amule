@@ -24,10 +24,16 @@
 
 #include "Format.h"
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"
+#endif
+
 #include <ctype.h>
 
-#ifndef _MSC_VER
+#if defined HAVE_STDINT_H
 #	include <stdint.h>
+#elif defined HAVE_INTTYPES_H
+#	include <inttypes.h>
 #endif
 
 
