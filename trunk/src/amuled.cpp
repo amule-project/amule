@@ -35,7 +35,7 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, HAVE_STRERROR_R and STRERROR_R_CHAR_P
+	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, HAVE_STRERROR_R and STRERROR_R_CHAR_P, etc
 #endif
 
 // Prefer the POSIX interface to strerror_r()
@@ -68,6 +68,21 @@
 	#endif
 
 	#include <wx/unix/execute.h>
+#endif
+
+// Include the necessary headers for select(2), properly guarded
+#ifdef HAVE_SYS_SELECT_H
+#	include <sys/select.h>
+#else
+#	ifdef HAVE_SYS_TIME_H
+#		include <sys/time.h>
+#	endif
+#	ifdef HAVE_SYS_TYPES_H
+#		include <sys/types.h>
+#	endif
+#	ifdef HAVE_UNISTD_H
+#		include <unistd.h>
+#	endif
 #endif
 
 #ifndef HAVE_STRERROR_R
