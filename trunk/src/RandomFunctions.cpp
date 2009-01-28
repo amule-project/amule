@@ -31,19 +31,23 @@ static CryptoPP::AutoSeededRandomPool cryptRandomGen;
 
 const CryptoPP::AutoSeededRandomPool& GetRandomPool() { return cryptRandomGen; }
 
-uint8 GetRandomUint8()
+uint8_t GetRandomUint8()
 {
 	return cryptRandomGen.GenerateByte();
 }
 
-uint16 GetRandomUint16()
+uint16_t GetRandomUint16()
 {
-	return (uint16)cryptRandomGen.GenerateWord32(0x0000, 0xFFFF);
+	return (uint16_t)cryptRandomGen.GenerateWord32(0x0000, 0xFFFF);
 }
 
-uint32 GetRandomUint32()
+uint32_t GetRandomUint32()
 {
 	return cryptRandomGen.GenerateWord32();
 }
 
+uint64_t GetRandomUint64()
+{
+	return ((uint64_t)GetRandomUint32() << 32) + GetRandomUint32();
+}
 // File_checked_for_headers
