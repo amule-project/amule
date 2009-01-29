@@ -25,6 +25,7 @@
 #include "Logger.h"
 #include "amule.h"
 #include "Preferences.h"
+#include <sstream>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 #include <wx/sstream.h>
