@@ -89,58 +89,6 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 			LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
 			AC_MSG_RESULT([yes (version $LIBPNG_VERSION)])
 		])
-	], [
-		# Try hard to find a usable libpng
-		# Some RedHat RPMs miss libpng-config, so test for
-		# the usability with default options.
-		AC_MSG_CHECKING([for libpng >= REQUIRED_VERSION])
-		MULE_BACKUP([LIBS])
-		MULE_PREPEND([LIBS], [-lpng -lz -lm])
-		AC_RUN_IFELSE([
-			AC_LANG_PROGRAM([[
-				#include <png.h>
-				#include <stdio.h>
-
-				/* Check linking to png library */
-				void dummy() {
-					png_check_sig(NULL, 0);
-				}
-			]], [dnl Don't use double-quoting here!
-				/* png.h defines PNG_LIBPNG_VER=xyyzz */
-				FILE *f=fopen("conftestval", "w");
-				if (!f) exit(1);
-				fprintf(f, "%s", (PNG_LIBPNG_VER >= REQUIRED_VERSION_MAJOR * 10000 + REQUIRED_VERSION_MINOR * 100 + REQUIRED_VERSION_MICRO) ? "yes" : "no");
-				fclose(f);
-				f=fopen("conftestver", "w");
-				if (!f) exit(0);
-				fprintf(f, "%s", PNG_LIBPNG_VER_STRING);
-				fclose(f);
-				exit(0);
-			])
-		], [
-			AS_IF([test -f conftestval], [result=`cat conftestval`], [result=no])
-			AS_IF([test ${result:-no} = yes], [
-				AS_IF([test -f conftestver], [
-					LIBPNG_VERSION=`cat conftestver`
-					lib_version=" (version $LIBPNG_VERSION)"
-				], [
-					lib_version=
-					LIBPNG_VERSION="detected"
-				])
-			])
-			AC_MSG_RESULT([$result$lib_version])
-			LIBPNG_LIBS="-lpng -lz -lm"
-		], [
-			result=no
-			AC_MSG_RESULT([$result])
-		], [
-			AC_MSG_RESULT([cross-compilation detected, checking only the header])
-			AC_CHECK_HEADER([png.h], [
-				LIBPNG_VERSION="detected"
-				LIBPNG_LIBS="-lpng -lz -lm"
-			])
-		])
-		MULE_RESTORE([LIBS])
 	])
 
 	AS_IF([test -n "$LIBPNG_VERSION"], [$2], [$3])
