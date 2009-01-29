@@ -2220,8 +2220,9 @@ void CUpDownClient::InfoPacketsReceived()
 
 bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXUNUSED(opcode)) const
 {
-	if (m_bHelloAnswerPending){
+	if (m_bHelloAnswerPending) {
 		// this triggers way too often.. need more time to look at this -> only create a warning
+		// The reason for this is that 2 clients are connecting to each other at the same time..
 		AddDebugLogLineM( false, logClient, wxT("Handshake not finished while processing packet.") );
 		return false;
 	}
@@ -2365,23 +2366,24 @@ EUtf8Str CUpDownClient::GetUnicodeSupport() const
 }
 
 
-uint8 CUpDownClient::GetSecureIdentState() {
+uint8 CUpDownClient::GetSecureIdentState()
+{
 	if (m_SecureIdentState != IS_UNAVAILABLE) {
 		if (!SecIdentSupRec) {
 			// This can be caused by a 0.30x based client which sends the old
 			// style Hello packet, and the mule info packet, but between them they
 			// send a secure ident state packet (after a hello but before we have 
 			// the SUI capabilities). This is a misbehaving client, and somehow I
-			// Feel like ti should be dropped. But then again, it won't harm to use
+			// Feel like it should be dropped. But then again, it won't harm to use
 			// this SUI state if they are reporting no SUI (won't be used) and if 
 			// they report using SUI on the mule info packet, it's ok to use it.
-			
+
 			AddDebugLogLineM(false, logClient, wxT("A client sent secure ident state before telling us the SUI capabilities"));
 			AddDebugLogLineM(false, logClient, wxT("Client info: ") + GetClientFullInfo());
 			AddDebugLogLineM(false, logClient, wxT("This client won't be disconnected, but it should be. :P"));
 		}
 	}
-	
+
 	return m_SecureIdentState;
 }
 
