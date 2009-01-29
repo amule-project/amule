@@ -108,7 +108,7 @@ bool CThreadScheduler::AddTask(CThreadTask* task, bool overwrite)
 
 	// When terminated (on shutdown), all tasks are ignored.
 	if (s_terminated) {
-		AddDebugLogLineM(false, logThreads, wxT("Task discared: ") + task->GetDesc());
+		AddDebugLogLineM(false, logThreads, wxT("Task discarded: ") + task->GetDesc());
 		delete task;
 		return false;
 	} else if (s_scheduler == NULL) {
