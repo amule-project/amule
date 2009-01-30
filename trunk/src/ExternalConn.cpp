@@ -33,6 +33,7 @@
 #include <common/Format.h>		// Needed for CFormat
 
 #include <common/ClientVersion.h>
+#include <common/MD5Sum.h>
 
 #include "ExternalConn.h"	// Interface declarations
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -50,6 +51,7 @@
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "Statistics.h"		// Needed for theStats
 #include "KnownFileList.h"	// Needed for CKnownFileList
+#include "RandomFunctions.h"
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/UDPFirewallTester.h"
 
@@ -68,8 +70,17 @@ public:
 	virtual void WriteDoneAndQueueEmpty();
 private:
 	ECNotifier *m_ec_notifier;
-	
-	bool m_authenticated;
+
+	const CECPacket *Authenticate(const CECPacket *);
+
+	enum {
+		CONN_INIT,
+		CONN_SALT_SENT,
+		CONN_ESTABLISHED,
+		CONN_FAILED
+	} m_conn_state;
+
+	uint64_t m_passwd_salt;
 	CLoggerAccess m_LoggerAccess;
 	CPartFile_Encoder_Map	m_part_encoder;
 	CKnownFile_Encoder_Map	m_shared_encoder;
@@ -86,7 +97,8 @@ private:
 CECServerSocket::CECServerSocket(ECNotifier *notifier)
 :
 CECMuleSocket(true),
-m_authenticated(false),
+m_conn_state(CONN_INIT),
+m_passwd_salt(GetRandomUint64()),
 m_part_encoder(),
 m_shared_encoder(),
 m_obj_tagmap()
@@ -108,13 +120,18 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 {
 	const CECPacket *reply = NULL;
 
-	if (!m_authenticated) {
-		reply = ExternalConn::Authenticate(packet);
-		if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+	if (m_conn_state == CONN_FAILED) {
+		// Client didn't close the socket when authentication failed.
+		AddLogLineM(false, _("Client sent packet after authentication failed."));
+		CloseSocket();
+	}
+
+	if (m_conn_state != CONN_ESTABLISHED) {
+		reply = Authenticate(packet);
+		if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 			// Access denied!
 			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
-		} else {
-			m_authenticated = true;
+			m_conn_state = CONN_FAILED;
 		}
 	} else {
 		reply = ProcessRequest2(
@@ -249,7 +266,7 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 //
 // Authentication
 //
-CECPacket *ExternalConn::Authenticate(const CECPacket *request)
+const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 {
 	CECPacket *response;
 
@@ -264,16 +281,14 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		
 		return new CECPacket(EC_OP_AUTH_FAIL);
 	}
-	
 
-	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
+	if ((m_conn_state == CONN_INIT) && (request->GetOpCode() == EC_OP_AUTH_REQ) ) {
 		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
 		
 		AddLogLineM(false, CFormat( _("Connecting client: %s %s") )
 			% ( clientName ? clientName->GetStringData() : wxString(_("Unknown")) )
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
-		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef EC_VERSION_ID
 		// For SVN versions, both client and server must use SVNDATE, and they must be the same
@@ -293,24 +308,9 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
-				CMD4Hash passh;
-
-				if (!passh.Decode(thePrefs::ECPassword())) {
-					AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
-					response = new CECPacket(EC_OP_AUTH_FAIL);
-					response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
-				} else if (passwd && passwd->GetMD4Data() == passh) {
-					response = new CECPacket(EC_OP_AUTH_OK);
-				} else {
-					if (passwd) {
-						AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
-					} else {
-						AddLogLineM(false, wxT("EC Auth failed. Password tag missing."));					
-					}
-
-					response = new CECPacket(EC_OP_AUTH_FAIL);
-					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
-				}
+				response = new CECPacket(EC_OP_AUTH_SALT);
+				response->AddTag(CECTag(EC_TAG_PASSWD_SALT, m_passwd_salt));
+				m_conn_state = CONN_SALT_SENT;
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.") + wxString::Format(wxT("( %i != %i )"),proto_version,EC_CURRENT_PROTOCOL_VERSION)));
@@ -319,14 +319,39 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Missing protocol version tag.")));
 		}
+	} else if ((m_conn_state == CONN_SALT_SENT) && (request->GetOpCode() == EC_OP_AUTH_PASSWD)) {
+		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
+		CMD4Hash passh;
+
+		if (!passh.Decode(thePrefs::ECPassword())) {
+			AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
+			response = new CECPacket(EC_OP_AUTH_FAIL);
+			response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
+		} else {
+			wxString saltHash = MD5Sum(CFormat(wxT("%lX")) % m_passwd_salt).GetHash();
+			passh.Decode(MD5Sum(thePrefs::ECPassword().Lower() + saltHash).GetHash());
+			
+			if (passwd && passwd->GetMD4Data() == passh) {
+				response = new CECPacket(EC_OP_AUTH_OK);
+				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
+			} else {
+				if (passwd) {
+					AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
+				} else {
+					AddLogLineM(false, wxT("EC Auth failed. Password tag missing."));					
+				}
+
+				response = new CECPacket(EC_OP_AUTH_FAIL);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
+			}
+		}
 	} else {
 		response = new CECPacket(EC_OP_AUTH_FAIL);
-		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid request, you should first authenticate.")));
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid request, please authenticate first.")));
 	}
-
-	response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
-
+	
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
+		m_conn_state = CONN_ESTABLISHED;
 		AddLogLineM(false, _("Access granted."));
 	} else {
 		AddLogLineM(false, wxGetTranslation(response->GetTagByIndex(0)->GetStringData()));
