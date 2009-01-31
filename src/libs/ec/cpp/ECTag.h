@@ -141,6 +141,7 @@ class CECTag {
 		uint64_t		GetInt() const;
 		double			GetDoubleData() const;
 		std::string		GetStringDataSTL() const;
+		bool			IsString() const { return m_dataType == EC_TAGTYPE_STRING; }
 		
 		#ifdef USE_WX_EXTENSIONS
 		wxString GetStringData() const;

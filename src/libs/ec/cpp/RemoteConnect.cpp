@@ -123,7 +123,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 		m_ec_state = EC_PASSWD_SENT;
 
 		return ProcessAuthPacket(reply.get());
-	} else if (!m_notifier) {
+	} else if (m_notifier) {
 		m_ec_state = EC_CONNECT_SENT;
 	} else {
 		return false;
