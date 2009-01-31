@@ -219,7 +219,7 @@ bool CRemoteConnect::ProcessAuthPacket(const CECPacket *reply) {
 					wxString saltHash = MD5Sum(CFormat(wxT("%lX")) % passwordSalt->GetInt()).GetHash();
 					m_connectionPassword = MD5Sum(m_connectionPassword.Lower() + saltHash).GetHash();
 					m_ec_state = EC_SALT_RECEIVED;
-					result = true;
+					return true;
 				} else {
 					m_server_reply = _("External Connection: Bad reply, handshake failed. Connection closed.");
 					m_ec_state = EC_FAIL;
