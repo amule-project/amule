@@ -293,7 +293,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 #ifdef EC_VERSION_ID
 		// For SVN versions, both client and server must use SVNDATE, and they must be the same
 		CMD4Hash vhash;
-		if (not vhash.Decode(wxT(EC_VERSION_ID))) {
+		if (!vhash.Decode(wxT(EC_VERSION_ID))) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxT("Fatal error, version hash is not a valid MD4-hash.")));
 		} else if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetMD4Data() != vhash) {
@@ -353,7 +353,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
 		m_conn_state = CONN_ESTABLISHED;
 		AddLogLineM(false, _("Access granted."));
-	} else {
+	} else if (response->GetTagByIndex(0)->IsString()) {
 		AddLogLineM(false, wxGetTranslation(response->GetTagByIndex(0)->GetStringData()));
 	}
 
