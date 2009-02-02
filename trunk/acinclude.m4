@@ -153,6 +153,10 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 		MULE_PREPEND([CPPFLAGS], [-I/usr/pkg/include])
 		MULE_PREPEND([LDFLAGS], [-R/usr/pkg/lib -L/usr/pkg/lib])
 		;;
+	*irix*)
+		SYS=irix
+		MULECPPFLAGS="-D__IRIX__"
+		;;
 	*)
 		SYS=unknown
 		;;
