@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-24 15:28+0100\n"
+"POT-Creation-Date: 2009-02-02 09:45+0100\n"
 "PO-Revision-Date: 2008-08-01 00:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -62,36 +62,36 @@ msgstr "下载已完成"
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:636
+#: src/amule.cpp:638
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "退出确认"
 
-#: src/amule.cpp:639
+#: src/amule.cpp:641
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "新的远程连接已被接受"
 
-#: src/amule.cpp:650 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:652 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "警告"
 
-#: src/amule.cpp:696
+#: src/amule.cpp:698
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
 msgstr "对不起,由于版本变动,您的地区设置已经被变为系统默认值。"
 
-#: src/amule.cpp:698 src/amule.cpp:1331 src/CatDialog.cpp:141
+#: src/amule.cpp:700 src/amule.cpp:1333 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "信息"
 
-#: src/amule.cpp:780
+#: src/amule.cpp:782
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -99,26 +99,26 @@ msgstr ""
 "在服务器列表中没有任何服务器。\n"
 "需要aMule现在就下载一个新的列表吗？"
 
-#: src/amule.cpp:781
+#: src/amule.cpp:783
 msgid "Server list download"
 msgstr "服务器列表已下载"
 
-#: src/amule.cpp:797 src/amuleDlg.cpp:570 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:799 src/amuleDlg.cpp:571 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:59
 msgid "Connecting"
 msgstr "正在连接"
 
-#: src/amule.cpp:818
+#: src/amule.cpp:820
 #, fuzzy, c-format
 msgid "Using amuleweb in '%s'."
 msgstr "开启时运行Web服务器"
 
-#: src/amule.cpp:848
+#: src/amule.cpp:850
 #, c-format
 msgid "web server running on pid %d"
 msgstr "Web服务器正在运行，进程编号为%d"
 
-#: src/amule.cpp:852
+#: src/amule.cpp:854
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -128,22 +128,22 @@ msgstr ""
 "aMule版本，或者使用 --enable-webserver选项编译aMule，然后运行make install进行"
 "安装"
 
-#: src/amule.cpp:853 src/amule.cpp:974 src/amule.cpp:1342
+#: src/amule.cpp:855 src/amule.cpp:976 src/amule.cpp:1344
 #: src/amule-remote-gui.cpp:306
 msgid "ERROR"
 msgstr "错误"
 
-#: src/amule.cpp:939
+#: src/amule.cpp:941
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "无法绑定端口到指定的地址：%s"
 
-#: src/amule.cpp:966
+#: src/amule.cpp:968
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "端口 %u 已被占用，你会成为低ID。\n"
 
-#: src/amule.cpp:972
+#: src/amule.cpp:974
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -158,21 +158,21 @@ msgstr ""
 "\n"
 "请检测网络设置以确保端口可用于输入输出。"
 
-#: src/amule.cpp:1080 src/amule-remote-gui.cpp:504
+#: src/amule.cpp:1082 src/amule-remote-gui.cpp:504
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr "警告：在低ID的情况下，你不能添加你自己作为ed2k链接的源。"
 
-#: src/amule.cpp:1124
+#: src/amule.cpp:1126
 msgid "Failed to create OnlineSig File"
 msgstr "创建在线统计文件失败"
 
-#: src/amule.cpp:1132
+#: src/amule.cpp:1134
 msgid "Failed to create aMule OnlineSig File"
 msgstr "创建aMule在线统计文件失败"
 
-#: src/amule.cpp:1300
+#: src/amule.cpp:1302
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -180,30 +180,30 @@ msgstr ""
 "您所选择的地区设置在您的计算机上似乎没有安装.但无论如何，我还是会采用你所选择"
 "的地区设置。"
 
-#: src/amule.cpp:1309
+#: src/amule.cpp:1311
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "这是您第一次运行aMule %s"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1313
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "这个版本是测试版，每天更新， 而且 \n"
 
-#: src/amule.cpp:1312
+#: src/amule.cpp:1314
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "我们无法承诺它一定不会损坏任何东西或烧毁你的房子，\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1315
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "或杀死你的狗，但一般来讲它应该是安全的。\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1319
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "此版本中，以下选项因为安全问题已经被更改：\n"
 
-#: src/amule.cpp:1318
+#: src/amule.cpp:1320
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -212,7 +212,7 @@ msgstr ""
 "\n"
 "* 为进站和出站连接启用迷惑协议支持。\n"
 
-#: src/amule.cpp:1319
+#: src/amule.cpp:1321
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -220,7 +220,7 @@ msgstr ""
 "\n"
 "* 禁用从其他服务器和用户更新服务器列表。\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1322
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -233,7 +233,7 @@ msgstr ""
 "aMule为\"fake servers\" 信息的 wiki，地址是： http://wiki.amule.org。\n"
 "有一点很重要，为了让你的aMule正常工作，请从服务器列表中清除假冒服务器。"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1323
 msgid ""
 "\n"
 "\n"
@@ -244,19 +244,19 @@ msgstr ""
 "\n"
 "此外，浏览器设定已经被重设为系统默认，如有必要，请重新配置浏览器选项。\n"
 
-#: src/amule.cpp:1326
+#: src/amule.cpp:1328
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "如要获取使用信息，用户支持以及下载最新版本，请访问我们的首页\n"
 
-#: src/amule.cpp:1327
+#: src/amule.cpp:1329
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org，或我们在 irc.freenode.net 的 IRC 频道 #aMule。\n"
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1331
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "欢迎您到 http://forum.amule.org 去提交错误报告"
 
-#: src/amule.cpp:1342
+#: src/amule.cpp:1344
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -264,138 +264,138 @@ msgstr ""
 "您为在线统计文件所选择的文件夹无效！\n"
 "在您更正设置之前在线统计将被禁用。"
 
-#: src/amule.cpp:1397
+#: src/amule.cpp:1399
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "服务器名称"
 
-#: src/amule.cpp:1626
+#: src/amule.cpp:1628
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "为文件'%s'预分配磁盘空间失败：%s"
 
-#: src/amule.cpp:1750
+#: src/amule.cpp:1752
 msgid "ERROR: can't open logfile"
 msgstr "错误: 无法打开日志文件"
 
-#: src/amule.cpp:1754
+#: src/amule.cpp:1756
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "警告：日志文件为空。肯定有什么地方出错了。"
 
-#: src/amule.cpp:1772
+#: src/amule.cpp:1774
 msgid "Log has been reset"
 msgstr "记录文件已被重启"
 
-#: src/amule.cpp:1797
+#: src/amule.cpp:1799
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "服务器消息：%s"
 
-#: src/amule.cpp:1835
+#: src/amule.cpp:1837
 msgid "Failed to download the nodes list."
 msgstr "下载节点列表失败。"
 
-#: src/amule.cpp:1855
+#: src/amule.cpp:1857
 msgid "Failed to open the downloaded version check file"
 msgstr "打开已下载的版本检查文件失败"
 
-#: src/amule.cpp:1858 src/amule.cpp:1868 src/amule.cpp:1874
+#: src/amule.cpp:1860 src/amule.cpp:1870 src/amule.cpp:1876
 msgid "Corrupted version check file"
 msgstr "损坏的版本检查文件"
 
-#: src/amule.cpp:1884
+#: src/amule.cpp:1886
 msgid "You are using an outdated version of aMule!"
 msgstr "你使用的是老版本的aMule！"
 
-#: src/amule.cpp:1885
+#: src/amule.cpp:1887
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "你的aMule版本是%i.%i.%i，最新版本是 %li.%li.%li"
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1888
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "最新版本可从此下载：http://www.amule.org"
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1890
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "警告：你的 aMuled 版本太旧：%i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1892
+#: src/amule.cpp:1894
 msgid "Your copy of aMule is up to date."
 msgstr "你的aMule是最新版本。"
 
-#: src/amule.cpp:1899
+#: src/amule.cpp:1901
 msgid "Failed to download the version check file"
 msgstr "下载版本检查文件失败"
 
-#: src/amule.cpp:2059
+#: src/amule.cpp:2061
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "用户：%s | 文件：%s"
 
-#: src/amule.cpp:2060
+#: src/amule.cpp:2062
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "用户：E：%s K：%s | 文件：E：%s K：%s"
 
-#: src/amule.cpp:2069
+#: src/amule.cpp:2071
 msgid "No networks selected"
 msgstr "没有选择网络"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:698
+#: src/amule.cpp:2136 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "有低ID"
 
-#: src/amule.cpp:2134 src/TextClient.cpp:698
+#: src/amule.cpp:2136 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "有高ID"
 
-#: src/amule.cpp:2136
+#: src/amule.cpp:2138
 #, c-format
 msgid "Connected to %s %s"
 msgstr "已连接到 %s %s"
 
-#: src/amule.cpp:2139
+#: src/amule.cpp:2141
 #, c-format
 msgid "Connecting to %s"
 msgstr "正在连接到 %s"
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2143
 msgid "Disconnected from eD2k"
 msgstr "已从eD2k断开"
 
-#: src/amule.cpp:2148
+#: src/amule.cpp:2150
 msgid "Kad started."
 msgstr "Kad已启动。"
 
-#: src/amule.cpp:2150
+#: src/amule.cpp:2152
 msgid "Kad stopped."
 msgstr "Kad已停止。"
 
-#: src/amule.cpp:2157
+#: src/amule.cpp:2159
 msgid "Connected to Kad (ok)"
 msgstr "已连接至 Kad"
 
-#: src/amule.cpp:2159
+#: src/amule.cpp:2161
 msgid "Connected to Kad (firewalled)"
 msgstr "已连接至 Kad 网络(有防火墙)"
 
-#: src/amule.cpp:2162
+#: src/amule.cpp:2164
 msgid "Disconnected from Kad"
 msgstr "已断开 Kad 连接"
 
-#: src/amule.cpp:2225
+#: src/amule.cpp:2227
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr "如果在设置中禁用了 UDP 端口，Kad 网络将不能使用，没有启动。"
 
-#: src/amule.cpp:2228
+#: src/amule.cpp:2230
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 网络在设置中被禁用了，没有连接。"
 
-#: src/amuled.cpp:590
+#: src/amuled.cpp:605
 #, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
@@ -407,7 +407,7 @@ msgstr ""
 "的aMule，或使用 --ec-config选项启动amuled或在文件 ~/aMule/amule.conf 中设置选"
 "项\"AcceptExternalConnections\""
 
-#: src/amuled.cpp:593
+#: src/amuled.cpp:608
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule deamon, you "
@@ -416,15 +416,15 @@ msgid ""
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
 
-#: src/amuled.cpp:658
+#: src/amuled.cpp:673
 msgid "amuled: OnInit - starting timer"
 msgstr ""
 
-#: src/amuled.cpp:676
+#: src/amuled.cpp:691
 msgid "amuled: forking to background - see you"
 msgstr ""
 
-#: src/amuled.cpp:732
+#: src/amuled.cpp:747
 #, c-format
 msgid "ERROR: %s"
 msgstr "错误：%s"
@@ -447,100 +447,100 @@ msgstr "访问 http://www.amule.org 可查看是否有新版本"
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "致命错误：创建计时器失败"
 
-#: src/amuleDlg.cpp:487
+#: src/amuleDlg.cpp:488
 msgid "aMule remote control "
 msgstr "aMule远程控制"
 
-#: src/amuleDlg.cpp:493
+#: src/amuleDlg.cpp:494
 msgid "Snapshot:"
 msgstr "快照："
 
-#: src/amuleDlg.cpp:495
+#: src/amuleDlg.cpp:496
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr "基于eMule的“全平台”P2P客户端\n"
 
-#: src/amuleDlg.cpp:496
+#: src/amuleDlg.cpp:497
 msgid "Website: http://www.amule.org \n"
 msgstr "网站：http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:497
+#: src/amuleDlg.cpp:498
 msgid "Forum: http://forum.amule.org \n"
 msgstr "论坛：http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:498
+#: src/amuleDlg.cpp:499
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr "FAQ: http://wiki.amule.org \n"
 
-#: src/amuleDlg.cpp:499
+#: src/amuleDlg.cpp:500
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "联系邮件：admin@amule.org (管理问题) \n"
 
-#: src/amuleDlg.cpp:500
+#: src/amuleDlg.cpp:501
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr "版权所有 (C) 2003-2008 aMule 团队 \n"
 
-#: src/amuleDlg.cpp:501
+#: src/amuleDlg.cpp:502
 msgid "Part of aMule is based on \n"
 msgstr "aMule的一部分是基于 \n"
 
-#: src/amuleDlg.cpp:502
+#: src/amuleDlg.cpp:503
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia：基于异或算法的点对点路由。\n"
 
-#: src/amuleDlg.cpp:503
+#: src/amuleDlg.cpp:504
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:504
+#: src/amuleDlg.cpp:505
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:507 src/KadDlg.cpp:177 src/PartFile.cpp:910
+#: src/amuleDlg.cpp:508 src/KadDlg.cpp:177 src/PartFile.cpp:910
 #: src/PartFile.cpp:918 src/PrefsUnifiedDlg.cpp:554
 #: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
 msgid "Message"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:538
+#: src/amuleDlg.cpp:539
 #, fuzzy
 msgid "Shutting down aMule..."
 msgstr "关闭aMule。"
 
-#: src/amuleDlg.cpp:548
+#: src/amuleDlg.cpp:549
 msgid "aMule dialog destroyed"
 msgstr ""
 
-#: src/amuleDlg.cpp:702
+#: src/amuleDlg.cpp:703
 msgid "eD2k: Connecting"
 msgstr "eD2k：正在连接"
 
-#: src/amuleDlg.cpp:706
+#: src/amuleDlg.cpp:707
 msgid "eD2k: Disconnected"
 msgstr "eD2k：连接已断开"
 
-#: src/amuleDlg.cpp:712
+#: src/amuleDlg.cpp:713
 msgid "Kad: Firewalled"
 msgstr "Kad：有防火墙"
 
-#: src/amuleDlg.cpp:716
+#: src/amuleDlg.cpp:717
 msgid "Kad: Connected"
 msgstr "Kad：已连接"
 
-#: src/amuleDlg.cpp:721
+#: src/amuleDlg.cpp:722
 msgid "Kad: Connecting"
 msgstr "Kad：正在连接"
 
-#: src/amuleDlg.cpp:725
+#: src/amuleDlg.cpp:726
 msgid "Kad: Off"
 msgstr "Kad：停止"
 
-#: src/amuleDlg.cpp:771 src/DownloadListCtrl.cpp:588
+#: src/amuleDlg.cpp:772 src/DownloadListCtrl.cpp:588
 #: src/DownloadListCtrl.cpp:908 src/FriendListCtrl.cpp:278
 #: src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915 src/muuli_wdr.cpp:989
 #: src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454 src/muuli_wdr.cpp:2556
@@ -550,156 +550,156 @@ msgstr "Kad：停止"
 msgid "Cancel"
 msgstr "取消"
 
-#: src/amuleDlg.cpp:772
+#: src/amuleDlg.cpp:773
 msgid "Stop the current connection attempts"
 msgstr "终止连接尝试"
 
-#: src/amuleDlg.cpp:777 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
+#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: src/amuleDlg.cpp:778
+#: src/amuleDlg.cpp:779
 msgid "Disconnect from the currently connected networks"
 msgstr "从当前已连接的网络断开"
 
-#: src/amuleDlg.cpp:783 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
+#: src/amuleDlg.cpp:784 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
 #: src/muuli_wdr.cpp:3271 src/muuli_wdr.cpp:3454
 msgid "Connect"
 msgstr "连接"
 
-#: src/amuleDlg.cpp:784
+#: src/amuleDlg.cpp:785
 msgid "Connect to the currently enabled networks"
 msgstr "连接至当前已启用的网络"
 
-#: src/amuleDlg.cpp:842
+#: src/amuleDlg.cpp:843
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "上传：%.1f（%.1f） | 下载：%.1f（%.1f）"
 
-#: src/amuleDlg.cpp:844
+#: src/amuleDlg.cpp:845
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "上传：%.1f | 下载：%.1f"
 
-#: src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:871
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule（%s | 已连接）"
 
-#: src/amuleDlg.cpp:872
+#: src/amuleDlg.cpp:873
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule（%s | 已断开）"
 
-#: src/amuleDlg.cpp:903
+#: src/amuleDlg.cpp:904
 msgid "Do you really want to exit aMule?"
 msgstr "您确定要关闭aMule吗？"
 
-#: src/amuleDlg.cpp:904
+#: src/amuleDlg.cpp:905
 msgid "Exit confirmation"
 msgstr "退出确认"
 
-#: src/amuleDlg.cpp:1158
+#: src/amuleDlg.cpp:1159
 #, fuzzy
 msgid "Launch Command: "
 msgstr "命令：%s"
 
-#: src/amuleDlg.cpp:1217
+#: src/amuleDlg.cpp:1218
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "皮肤目录 %s 不存在"
 
-#: src/amuleDlg.cpp:1222
+#: src/amuleDlg.cpp:1223
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "警告：无法打开皮肤文件%s进行读取"
 
-#: src/amuleDlg.cpp:1323 src/amuleDlg.cpp:1484 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1324 src/amuleDlg.cpp:1485 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "网络"
 
-#: src/amuleDlg.cpp:1325
+#: src/amuleDlg.cpp:1326
 msgid "Networks window"
 msgstr "网络窗口"
 
-#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "搜索"
 
-#: src/amuleDlg.cpp:1329
+#: src/amuleDlg.cpp:1330
 msgid "Searches window"
 msgstr "查找窗口"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "传输文件"
 
-#: src/amuleDlg.cpp:1333
+#: src/amuleDlg.cpp:1334
 msgid "Files transfers window"
 msgstr "文件传输窗口"
 
-#: src/amuleDlg.cpp:1335
+#: src/amuleDlg.cpp:1336
 msgid "Shared files"
 msgstr "共享文件"
 
-#: src/amuleDlg.cpp:1337
+#: src/amuleDlg.cpp:1338
 msgid "Shared files window"
 msgstr "共享文件窗口"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:1341
+#: src/amuleDlg.cpp:1342
 msgid "Messages window"
 msgstr "消息窗口"
 
-#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 #: src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639 src/Statistics.cpp:937
 msgid "Statistics"
 msgstr "统计"
 
-#: src/amuleDlg.cpp:1345
+#: src/amuleDlg.cpp:1346
 msgid "Statistics graph window"
 msgstr "统计图表窗口"
 
-#: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
+#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "设置"
 
-#: src/amuleDlg.cpp:1350
+#: src/amuleDlg.cpp:1351
 msgid "Preferences settings window"
 msgstr "设置窗口"
 
-#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1353 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "导入"
 
-#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "part 文件导入工具"
 
-#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:3466
 #: src/utils/aLinkCreator/src/alcframe.cpp:270
 msgid "About"
 msgstr "关于"
 
-#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1359 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "关于/帮助"
 
-#: src/amuleDlg.cpp:1495
+#: src/amuleDlg.cpp:1496
 msgid "eD2k network"
 msgstr "eD2k网络"
 
-#: src/amuleDlg.cpp:1499
+#: src/amuleDlg.cpp:1500
 msgid "Kad network"
 msgstr "Kad网络"
 
-#: src/amuleDlg.cpp:1504
+#: src/amuleDlg.cpp:1505
 msgid "No network"
 msgstr "无网络"
 
@@ -776,7 +776,7 @@ msgstr "无法获取用户%s的共享文件"
 msgid "Searching buddy for lowid connection"
 msgstr "等待连接..."
 
-#: src/BaseClient.cpp:1718 src/BaseClient.cpp:2241 src/BaseClient.cpp:2515
+#: src/BaseClient.cpp:1718 src/BaseClient.cpp:2242 src/BaseClient.cpp:2517
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -784,7 +784,7 @@ msgstr "等待连接..."
 #: src/ClientListCtrl.cpp:891 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1429 src/DownloadListCtrl.cpp:1442
-#: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:275
+#: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:290
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
 #: src/PartFile.cpp:2506 src/Server.cpp:156 src/Server.cpp:231
@@ -840,7 +840,7 @@ msgstr[1] "历史运行文件统计：接受了 %d 个请求（总请求数 %d�
 msgid "Requested unknown file"
 msgstr "请求了未知文件"
 
-#: src/BaseClient.cpp:2240
+#: src/BaseClient.cpp:2241
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "用户 %s 位于 %s:%d，使用 %s %s %s"
@@ -1693,189 +1693,195 @@ msgstr "未知链接协议：%s"
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "非法eD2k链接！错误信息：%s"
 
-#: src/ExternalConn.cpp:115
+#: src/ExternalConn.cpp:125
+#, fuzzy
+msgid "Client sent packet after authentication failed."
+msgstr "登录失败。"
+
+#: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "非法登录尝试。已关闭连接。"
 
-#: src/ExternalConn.cpp:130
+#: src/ExternalConn.cpp:146
 msgid "External connection closed."
 msgstr "已关闭远程连接。"
 
-#: src/ExternalConn.cpp:166
+#: src/ExternalConn.cpp:182
 msgid "External connections disabled due to empty password!"
 msgstr "密码未设置，远程连接已被禁止"
 
-#: src/ExternalConn.cpp:191
+#: src/ExternalConn.cpp:207
 msgid "External connections disabled in config file"
 msgstr "配置文件中已禁止远程连接"
 
-#: src/ExternalConn.cpp:242
+#: src/ExternalConn.cpp:258
 msgid "New external connection accepted"
 msgstr "新的远程连接已被接受"
 
-#: src/ExternalConn.cpp:245
+#: src/ExternalConn.cpp:261
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "错误：不能接受新的远程连接"
 
-#: src/ExternalConn.cpp:264
+#: src/ExternalConn.cpp:280
 msgid "External connection refused due to empty password in preferences!"
 msgstr "由于未设置密码，远程连接已被拒绝！"
 
-#: src/ExternalConn.cpp:274
+#: src/ExternalConn.cpp:289
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "正在连接用户：%s %s"
 
-#: src/ExternalConn.cpp:276
+#: src/ExternalConn.cpp:291
 msgid "Unknown version"
 msgstr "未知版本"
 
-#: src/ExternalConn.cpp:287
+#: src/ExternalConn.cpp:301
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr "错误的远程连接版本号，可能会不兼容，请使用相同版本的核心和远程程序。"
 
-#: src/ExternalConn.cpp:292
+#: src/ExternalConn.cpp:306
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr "为了尽可能避免程序崩溃，您不能从任意的SVN版本连接到发行版本！"
 
-#: src/ExternalConn.cpp:313
-msgid "Authentication failed."
-msgstr "登录失败。"
-
-#: src/ExternalConn.cpp:317
+#: src/ExternalConn.cpp:316
 msgid "Invalid protocol version."
 msgstr "非法协议版本。"
 
-#: src/ExternalConn.cpp:321
+#: src/ExternalConn.cpp:320
 msgid "Missing protocol version tag."
 msgstr "缺失协议版本标签。"
 
-#: src/ExternalConn.cpp:325
-msgid "Invalid request, you should first authenticate."
+#: src/ExternalConn.cpp:345
+msgid "Authentication failed."
+msgstr "登录失败。"
+
+#: src/ExternalConn.cpp:350
+#, fuzzy
+msgid "Invalid request, please authenticate first."
 msgstr "无效请求，请现登录。"
 
-#: src/ExternalConn.cpp:331
+#: src/ExternalConn.cpp:355
 msgid "Access granted."
 msgstr "登录成功"
 
-#: src/ExternalConn.cpp:627
+#: src/ExternalConn.cpp:651
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "远程 Part 文件命令失败：文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:629
+#: src/ExternalConn.cpp:653
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:692 src/ExternalConn.cpp:776
+#: src/ExternalConn.cpp:716 src/ExternalConn.cpp:800
 msgid "OOPS! OpCode processing error!"
 msgstr "哇靠! OpCode处理错误！"
 
-#: src/ExternalConn.cpp:722
+#: src/ExternalConn.cpp:746
 msgid "Server not added"
 msgstr "服务器没有被添加"
 
-#: src/ExternalConn.cpp:740
+#: src/ExternalConn.cpp:764
 #, c-format
 msgid "server not found: %s"
 msgstr "找不到服务器：%s"
 
-#: src/ExternalConn.cpp:756
+#: src/ExternalConn.cpp:780
 msgid "need to define server to be removed"
 msgstr "必须定义需删除的服务器"
 
-#: src/ExternalConn.cpp:770
+#: src/ExternalConn.cpp:794
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k被设为禁用"
 
-#: src/ExternalConn.cpp:866
+#: src/ExternalConn.cpp:890
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "正在搜索，请稍等然后刷新结果！"
 
-#: src/ExternalConn.cpp:871
+#: src/ExternalConn.cpp:895
 msgid "WebSearch from remote interface makes no sense."
 msgstr "远程界面使用网络搜索没有意义。"
 
-#: src/ExternalConn.cpp:922
+#: src/ExternalConn.cpp:946
 msgid "Kad is disabled in preferences."
 msgstr "Kad被设为禁用"
 
-#: src/ExternalConn.cpp:1081
+#: src/ExternalConn.cpp:1105
 msgid "No points for graph."
 msgstr "此图没有节点"
 
-#: src/ExternalConn.cpp:1090
+#: src/ExternalConn.cpp:1114
 msgid "Your client is not configured for this detail level."
 msgstr "你的客户端没有为详细级别进行配置。"
 
-#: src/ExternalConn.cpp:1118
+#: src/ExternalConn.cpp:1142
 msgid "External Connection: shutdown requested"
 msgstr "远程连接：已请求关闭"
 
-#: src/ExternalConn.cpp:1130
+#: src/ExternalConn.cpp:1154
 msgid "Already shutting down."
 msgstr "已经在关闭。"
 
-#: src/ExternalConn.cpp:1138
+#: src/ExternalConn.cpp:1162
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "远程连接：正在添加链接 '%s'。"
 
-#: src/ExternalConn.cpp:1144
+#: src/ExternalConn.cpp:1168
 msgid "Invalid link or already on list."
 msgstr "非法链接或已经存在列表中。"
 
-#: src/ExternalConn.cpp:1230
+#: src/ExternalConn.cpp:1254
 msgid "File not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1235
+#: src/ExternalConn.cpp:1259
 msgid "Invalid file name."
 msgstr "非法文件名。"
 
-#: src/ExternalConn.cpp:1243
+#: src/ExternalConn.cpp:1267
 msgid "Unable to rename file."
 msgstr "无法重命名文件。"
 
-#: src/ExternalConn.cpp:1467
+#: src/ExternalConn.cpp:1491
 msgid "Already connected to eD2k."
 msgstr "已经连接至eD2k。"
 
-#: src/ExternalConn.cpp:1470
+#: src/ExternalConn.cpp:1494
 msgid "Connecting to eD2k..."
 msgstr "正在连接至eD2k..."
 
-#: src/ExternalConn.cpp:1478
+#: src/ExternalConn.cpp:1502
 msgid "Already connected to Kad."
 msgstr "已连接至 Kad。"
 
-#: src/ExternalConn.cpp:1481
+#: src/ExternalConn.cpp:1505
 msgid "Connecting to Kad..."
 msgstr "正在连接至 Kad..."
 
-#: src/ExternalConn.cpp:1486
+#: src/ExternalConn.cpp:1510
 msgid "All networks are disabled."
 msgstr "全部网络都被禁用了。"
 
-#: src/ExternalConn.cpp:1494
+#: src/ExternalConn.cpp:1518
 msgid "Disconnected from eD2k."
 msgstr "已从eD2k断开连接。"
 
-#: src/ExternalConn.cpp:1498
+#: src/ExternalConn.cpp:1522
 msgid "Disconnected from Kad."
 msgstr "断开 Kad。"
 
-#: src/ExternalConn.cpp:1506
+#: src/ExternalConn.cpp:1530
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "远程连接：收到非法的操作码：%#x"
 
-#: src/ExternalConn.cpp:1509
+#: src/ExternalConn.cpp:1533
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "非法的操作码（错误的协议版本？）"
 
@@ -2012,12 +2018,12 @@ msgstr ""
 "\n"
 "正在建立用户...\n"
 
-#: src/ExternalConnector.cpp:408
+#: src/ExternalConnector.cpp:411
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:422
+#: src/ExternalConnector.cpp:425
 #, c-format
 msgid ""
 "\n"
@@ -2026,7 +2032,7 @@ msgstr ""
 "\n"
 "完成，正在退出 %s...\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:431
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2039,47 +2045,47 @@ msgstr ""
 "或在命令行设置一个，或者在询问时输入。\n"
 "\n"
 
-#: src/ExternalConnector.cpp:435
+#: src/ExternalConnector.cpp:438
 msgid "Show this help text."
 msgstr "显示帮助信息。"
 
-#: src/ExternalConnector.cpp:438
+#: src/ExternalConnector.cpp:441
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "aMule正在运行的主机。(缺省：localhost)"
 
-#: src/ExternalConnector.cpp:441
+#: src/ExternalConnector.cpp:444
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMule的远程连接端口。（默认：4712）"
 
-#: src/ExternalConnector.cpp:444
+#: src/ExternalConnector.cpp:447
 msgid "External Connection password."
 msgstr "远程连接密码。"
 
-#: src/ExternalConnector.cpp:447
+#: src/ExternalConnector.cpp:450
 msgid "Read configuration from file."
 msgstr "从文件读取设置。"
 
-#: src/ExternalConnector.cpp:450
+#: src/ExternalConnector.cpp:453
 msgid "Do not print any output to stdout."
 msgstr "不打印任何信息到控制台。"
 
-#: src/ExternalConnector.cpp:453
+#: src/ExternalConnector.cpp:456
 msgid "Be verbose - show also debug messages."
 msgstr "详细显示调试信息。"
 
-#: src/ExternalConnector.cpp:456
+#: src/ExternalConnector.cpp:459
 msgid "Sets program locale (language)."
 msgstr "设置程序地区(语言)。"
 
-#: src/ExternalConnector.cpp:459
+#: src/ExternalConnector.cpp:462
 msgid "Write command line options to config file."
 msgstr "把命令行参数写入设置文件。"
 
-#: src/ExternalConnector.cpp:462
+#: src/ExternalConnector.cpp:465
 msgid "Creates config file based on aMule's config file."
 msgstr "基于aMule的设置文件建立新设置文件。"
 
-#: src/ExternalConnector.cpp:465
+#: src/ExternalConnector.cpp:468
 msgid "Print program version."
 msgstr "打印程序版本。"
 
@@ -2417,41 +2423,43 @@ msgstr "正在下载"
 msgid "Waiting"
 msgstr "等待中"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
+#: src/libs/ec/cpp/RemoteConnect.cpp:94 src/libs/ec/cpp/RemoteConnect.cpp:102
 msgid "You must specify a non-empty password."
 msgstr "您必须输入密码"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:91
+#: src/libs/ec/cpp/RemoteConnect.cpp:99
 msgid "Invalid password, not a MD5 hash!"
 msgstr "非法密码，不是合法的MD5校验码"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:136
+#: src/libs/ec/cpp/RemoteConnect.cpp:154
 msgid "Connection failure"
 msgstr "连接失败"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:192
+#: src/libs/ec/cpp/RemoteConnect.cpp:213
 msgid "EC connection failed. Empty reply."
 msgstr "远程连接失败，回复为空。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:198
-msgid "External Connection: Access denied because: "
-msgstr "远程连接：访问被拒绝，原因："
-
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
-msgid "External Connection: Access denied"
-msgstr "远程连接：请求被拒绝"
-
-#: src/libs/ec/cpp/RemoteConnect.cpp:205
-msgid "External Connection: Bad reply from server. Connection closed."
+#: src/libs/ec/cpp/RemoteConnect.cpp:224
+#, fuzzy
+msgid "External Connection: Bad reply, handshake failed. Connection closed."
 msgstr "远程连接：服务器错误回复，已断开连接。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:209
+#: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
 msgstr "成功！已连接至aMule"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:212
+#: src/libs/ec/cpp/RemoteConnect.cpp:235
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:241
+msgid "External Connection: Access denied because: "
+msgstr "远程连接：访问被拒绝，原因："
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:244
+#, fuzzy
+msgid "External Connection: Handshake failed."
+msgstr "远程连接：请求被拒绝"
 
 #: src/ListenSocket.cpp:66
 #, fuzzy
@@ -2462,11 +2470,11 @@ msgstr "CListenSocket: 正在销毁中"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "错误：无法监听TCP端口。"
 
-#: src/Logger.cpp:340
+#: src/Logger.cpp:341
 msgid "ERROR: "
 msgstr "错误："
 
-#: src/Logger.cpp:340
+#: src/Logger.cpp:341
 msgid "WARNING: "
 msgstr "警告："
 
