@@ -27,7 +27,7 @@
 #include "StringFunctions.h"
 
 #include <wx/file.h>
-#ifdef __WXMSW__
+#if defined __WXMSW__ || defined __IRIX__
 #	include <wx/ffile.h>
 #endif
 #include <wx/utils.h>
@@ -612,7 +612,7 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 		// Try to ensure that the backup gets physically written 
 		// Now - does this have any effect reopening a already closed file
 		// to flush it ???
-#ifdef __WXMSW__
+#if defined __WXMSW__ || defined __IRIX__
 		wxFFile backupFile;
 #else
 		wxFile backupFile;
