@@ -2374,7 +2374,7 @@ uint8 CUpDownClient::GetSecureIdentState()
 			// style Hello packet, and the mule info packet, but between them they
 			// send a secure ident state packet (after a hello but before we have 
 			// the SUI capabilities). This is a misbehaving client, and somehow I
-			// Feel like it should be dropped. But then again, it won't harm to use
+			// feel like it should be dropped. But then again, it won't harm to use
 			// this SUI state if they are reporting no SUI (won't be used) and if 
 			// they report using SUI on the mule info packet, it's ok to use it.
 
