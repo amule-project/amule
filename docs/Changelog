@@ -95,6 +95,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 
 	Gaznevada:
 		* Compilation fix for IRIX.
+		* Fixed file handles on IRIX.
 
 	GonoszTopi:
 		* Fix compilation of Format.cpp for some platforms
