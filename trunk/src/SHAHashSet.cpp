@@ -873,7 +873,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 		(nMostTrustedIPs >= MINUNIQUEIPS_TOTRUST && (100 * nMostTrustedIPs)/nSigningIPsTotal >= MINPERCENTAGE_TOTRUST)) {
 		//trusted
 		AddDebugLogLineM(false, logSHAHashSet, 
-			CFormat(wxT("IACH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
+			CFormat(wxT("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
 			   		wxT("We trust the Hash %s from %u client(s) (%u%%). File: %s"))
 				% (bAdded ? wxT("") : wxT("not "))
 				% m_aUntrustedHashs.size()
@@ -891,7 +891,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	} else {
 		// untrusted
 		AddDebugLogLineM(false, logSHAHashSet,
-			CFormat(wxT("IACH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
+			CFormat(wxT("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
 					wxT("Best Hash %s from %u clients (%u%%) - but we dont trust it yet. File: %s"))
 				% (bAdded ? wxT(""): wxT("not "))
 				% m_aUntrustedHashs.size()
@@ -921,7 +921,7 @@ void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
 	}
 	if( theApp->downloadqueue->IsPartFile(data.m_pPartFile)) {
 		AddDebugLogLineM(false, logSHAHashSet,
-			CFormat(wxT("IACH Request failed, Trying to ask another client (File: '%s', Part: %u, Client '%s'"))
+			CFormat(wxT("AICH Request failed, Trying to ask another client (File: '%s', Part: %u, Client '%s'"))
 				% data.m_pPartFile->GetFileName() % data.m_nPart % pClient->GetClientFullInfo());
 		data.m_pPartFile->RequestAICHRecovery(data.m_nPart);
 	}
