@@ -1179,7 +1179,7 @@ wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch wsProvid
 			URL = wxT("http://www.filehash.com/search.html?pattern=FILENAME&submit=Find");
 			break;
 		default:
-			wxASSERT(0);
+			wxFAIL;
 	}
 	URL.Replace(wxT("FILENAME"), filename);
 	

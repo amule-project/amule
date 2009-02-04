@@ -1664,7 +1664,7 @@ void CNumImageMask::DrawSegment(int id)
 			DrawHorzLine(2);
 			break;
 		default:
-			wxASSERT(0);
+			wxFAIL;
 			break;
 	}
 }

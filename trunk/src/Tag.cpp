@@ -77,7 +77,7 @@ CTag::CTag(const CTag& rTag)
 		m_pData = new unsigned char[rTag.GetBsobSize()];
 		memcpy(m_pData, rTag.GetBsob(), rTag.GetBsobSize());
 	} else {
-		wxASSERT(0);
+		wxFAIL;
 		m_uVal = 0;
 	}
 }
@@ -234,7 +234,7 @@ CTag &CTag::operator=(const CTag &rhs)
 			m_pData = p;
 			memcpy(m_pData, rhs.GetBsob(), rhs.GetBsobSize());
 		} else {
-			wxASSERT(0);
+			wxFAIL;
 			m_uVal = 0;
 		}
 	}
@@ -383,7 +383,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 				data->WriteString(*m_pstrVal,eStrEncode,0); 
 			} else {
 				printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, uType);
-				wxASSERT(0);
+				wxFAIL;
 				return false;
 			}
 			break;

@@ -47,7 +47,7 @@ wxString PriorityToStr( int priority, bool isAuto )
 		}
 	}
 
-	wxASSERT( false );
+	wxFAIL;
 
 	return _("Unknown");
 }
@@ -73,7 +73,7 @@ wxString DownloadStateToStr( int state, bool queueFull )
 		case DS_REMOTEQUEUEFULL:	return _("Remote Queue Full");
 	}
 	
-	wxASSERT( false );
+	wxFAIL;
 
 	return _("Unknown");
 }

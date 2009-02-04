@@ -313,7 +313,7 @@ ValueType CQueueEvent<ValueType>::GetValue( size_t i ) const {
 	} else if ( m_value && i == 0 ) {
 		return *m_value;
 	} else {
-		wxASSERT( false );
+		wxFAIL;
 		return ValueType();
 	}
 }
@@ -377,7 +377,7 @@ void CQueueObserver<ValueType>::ReceiveNotification( const ObservableType* o, co
 		wxASSERT(m_owner == NULL);
 		m_owner = o;
 	} else {
-		wxASSERT( false );
+		wxFAIL;
 	}
 }
 

@@ -53,7 +53,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 	switch (detail_level) {
 		case EC_DETAIL_INC_UPDATE:
 			// should not get here
-			wxASSERT(0);
+			wxFAIL;
 			break;
 		case EC_DETAIL_UPDATE:
 			if ((tmpInt = server->GetPing()) != 0) {

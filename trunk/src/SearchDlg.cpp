@@ -340,7 +340,7 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 
 		// Error
 		default:
-			wxASSERT(0);
+			wxFAIL;
 	}
 }
 
@@ -576,7 +576,7 @@ void CSearchDlg::StartNewSearch()
 			break;
 		default:
 			// Should never happen
-			wxASSERT(0);
+			wxFAIL;
 			break;
 	}
 	

@@ -460,7 +460,7 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	
 	if (i >= 128){
 		// either we have _real_ bad luck or the randomgenerator is a bit messed up
-		wxASSERT( false );
+		wxFAIL;
 		bySemiRandomNotProtocolMarker = 0x01;
 	}
 

@@ -372,7 +372,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 				m_fHashsetRequesting = 1;
 				m_reqfile->SetHashSetNeeded(false);
 			} else {
-				wxASSERT(0);
+				wxFAIL;
 			}
 		} else {
 			SendStartupLoadReq();
@@ -475,7 +475,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 				m_fHashsetRequesting = 1;
 				m_reqfile->SetHashSetNeeded(false);
 			} else {
-				wxASSERT(0);
+				wxFAIL;
 			}
 		}
 		else {
@@ -686,7 +686,7 @@ void CUpDownClient::SendBlockRequests()
 				}
 			}	else {
 				// WTF, we just freed blocks.
-				wxASSERT(0);
+				wxFAIL;
 				return;
 			}
 		} else {
@@ -749,7 +749,7 @@ void CUpDownClient::SendBlockRequests()
 						bHasLongBlocks = true;
 						if (!SupportsLargeFiles()){
 							// Requesting a large block from a client that doesn't support large files?
-							wxASSERT( false );
+							wxFAIL;
 							if (!GetSentCancelTransfer()){
 								CPacket* cancel_packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 								theStats::AddUpOverheadFileRequest(cancel_packet->GetPacketSize());
@@ -810,14 +810,14 @@ void CUpDownClient::SendBlockRequests()
 			break;
 		}
 		default:
-			wxASSERT(0);
+			wxFAIL;
 	}
 	
 	if (packet) {
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		SendPacket(packet, true, true);
 	} else {
-		wxASSERT(0);
+		wxFAIL;
 	}
 }
 

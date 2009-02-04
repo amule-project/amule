@@ -304,13 +304,13 @@ inline bool CGapList::ArgCheck(uint64 gapstart, uint64 &gapend) const
 {
 	// end < start: serious error
 	if (gapend < gapstart) {
-		wxASSERT(false);
+		wxFAIL;
 		return false;
 	}
 
 	// gaps shouldn't go past file anymore either
 	if (gapend >= m_filesize) {
-		wxASSERT(false);
+		wxFAIL;
 		gapend = m_filesize - 1;	// fix it
 	}
 	return true;

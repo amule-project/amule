@@ -325,7 +325,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
                                                         request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
                                                 case CMD_ID_RESUME:
                                                         request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
-                                                default: wxASSERT(0);
+                                                default: wxFAIL;
                                         }
 
 					// We loop through all the arguments
@@ -403,7 +403,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 							case CMD_ID_PRIORITY_AUTO:
 								hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)PR_AUTO));
 								break;
-							default: wxASSERT(0);
+							default: wxFAIL;
 						}
 						request->AddTag(hashtag);
 						request_list.push_back(request);

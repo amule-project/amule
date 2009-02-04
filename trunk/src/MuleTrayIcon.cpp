@@ -218,7 +218,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			Bar_ySize = Disconnected_Icon_size; 
 			break;
 		default:
-			wxASSERT(0);
+			wxFAIL;
 	}
 
 	// Lookup this values for speed improvement: don't draw if not needed
@@ -240,7 +240,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 					CurrentIcon = wxIcon(mule_Tr_grey_big_ico_xpm);
 					break;
 				default:
-					wxASSERT(0);
+					wxFAIL;
 			}
 		}
 

@@ -133,7 +133,7 @@ void FormatValue(CFormat& format, const CECTag* tag)
 			format = format % tag->GetDoubleData();
 			break;
 		default:
-			wxASSERT(0);
+			wxFAIL;
 	}
 }
 

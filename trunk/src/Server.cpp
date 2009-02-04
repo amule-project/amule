@@ -234,7 +234,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		} else if (tag.IsInt()) {
 			m_strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
 		} else {
-			wxASSERT(0);
+			wxFAIL;
 		}
 		break;
 		
@@ -280,7 +280,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 				users = tag.GetInt();
 			}
 		} else {
-			wxASSERT(0);
+			wxFAIL;
 		}
 	}
 	

@@ -2204,7 +2204,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 			break;
 
 		default:
-			wxASSERT(0);
+			wxFAIL;
 			break;
 	}
 }

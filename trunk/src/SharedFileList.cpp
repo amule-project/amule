@@ -88,7 +88,7 @@ public:
 
 	bool AddRef(CKnownFile* pFile) {
 		if (std::find(m_aFiles.begin(), m_aFiles.end(), pFile) != m_aFiles.end()) {
-			wxASSERT(0);
+			wxFAIL;
 			return false;
 		}
 		m_aFiles.push_back(pFile);
@@ -801,7 +801,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 			// we send 2*32 bit tags to servers, but a real 64 bit tag to other clients.
 			if (pServer) {
 				if (!pServer->SupportsLargeFilesTCP()){
-					wxASSERT( false );
+					wxFAIL;
 					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
 				}else {
 					tags.push_back(new CTagInt32(FT_FILESIZE, (uint32)cur_file->GetFileSize()));
@@ -809,7 +809,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 				}
 			} else {
 				if (!pClient->SupportsLargeFiles()) {
-					wxASSERT( false );
+					wxFAIL;
 					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
 				} else {
 					tags.push_back(new CTagInt64(FT_FILESIZE, cur_file->GetFileSize()));
