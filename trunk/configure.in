@@ -495,11 +495,13 @@ AC_CONFIG_FILES([po/Makefile.in
 AS_IF([test x$SYS = xwin32], [AC_CONFIG_FILES([version.rc])])
 AC_OUTPUT
 
+AS_IF([test -n "$svndate"], [SVN_REVISION=" ($svndate)"], [SVN_REVISION=])
+
 echo
 echo
 echo "  Configure script has finished system check."
 echo
-echo "  Configured aMule ${PACKAGE_VERSION} for '${host}'."
+echo "  Configured aMule ${PACKAGE_VERSION}${SVN_REVISION} for '${host}'."
 echo
 echo "  aMule enabled options:"
 echo 
