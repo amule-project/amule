@@ -115,7 +115,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 		uint64 nRight = m_nDataSize - nLeft;
 		if (nStartPos < nLeft) {
 			if (nStartPos + nSize > nLeft) { // sanity
-				wxASSERT ( false );
+				wxFAIL;
 				return NULL;
 			}
 			
@@ -129,7 +129,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 		} else {
 			nStartPos -= nLeft;
 			if (nStartPos + nSize > nRight) { // sanity
-				wxASSERT ( false );
+				wxFAIL;
 				return NULL;
 			}
 			
@@ -177,7 +177,7 @@ bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
 bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
 {
 	if (!m_bHashValid) {
-		wxASSERT ( false );
+		wxFAIL;
 		if (bDeleteBadTrees) {
 			if (m_pLeftTree) {
 				delete m_pLeftTree;
@@ -250,14 +250,14 @@ void CAICHHashTree::SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* 
 	wxASSERT ( nSize <= EMBLOCKSIZE );
 	CAICHHashTree* pToInsert = FindHash(nStartPos, nSize);
 	if (pToInsert == NULL) { // sanity
-		wxASSERT ( false );
+		wxFAIL;
 		AddDebugLogLineM( false, logSHAHashSet, wxT("Critical Error: Failed to Insert SHA-HashBlock, FindHash() failed!"));
 		return;
 	}
 	
 	//sanity
 	if (pToInsert->m_nBaseSize != EMBLOCKSIZE || pToInsert->m_nDataSize != nSize) {
-		wxASSERT ( false );
+		wxFAIL;
 		AddDebugLogLineM( false, logSHAHashSet, wxT("Critical Error: Logical error on values in SetBlockHashFromData"));
 		return;
 	}
@@ -293,7 +293,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 		}
 		if (nStartPos < nLeft) {
 			if (nStartPos + nSize > nLeft || !m_pRightTree->m_bHashValid) { // sanity
-				wxASSERT ( false );
+				wxFAIL;
 				return false;
 			}
 			m_pRightTree->WriteHash(fileDataOut, wHashIdent, b32BitIdent);
@@ -301,7 +301,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 		} else {
 			nStartPos -= nLeft;
 			if (nStartPos + nSize > nRight || !m_pLeftTree->m_bHashValid) { // sanity
-				wxASSERT ( false );
+				wxFAIL;
 				return false;
 			}
 			m_pLeftTree->WriteHash(fileDataOut, wHashIdent, b32BitIdent);

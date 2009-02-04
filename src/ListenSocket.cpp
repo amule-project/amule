@@ -118,7 +118,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 	if (!nErrorCode) {
 		m_nPeningConnections++;
 		if (m_nPeningConnections < 1) {
-			wxASSERT(FALSE);
+			wxFAIL;
 			m_nPeningConnections = 1;
 		}
 		if (TooManySockets(true) && !theApp->serverconnect->IsConnecting()) {

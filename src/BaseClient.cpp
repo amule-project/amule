@@ -1986,7 +1986,7 @@ bool CUpDownClient::SafeSendPacket(CPacket* packet)
 void CUpDownClient::SendPublicKeyPacket(){
 	// send our public key to the client who requested it
 	if (m_socket == NULL || credits == NULL || m_SecureIdentState != IS_KEYANDSIGNEEDED){
-		wxASSERT ( false );
+		wxFAIL;
 		return;
 	}
 	if (!theApp->CryptoAvailable())
@@ -2007,7 +2007,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 void CUpDownClient::SendSignaturePacket(){
 	// signate the public key of this client and send it
 	if (m_socket == NULL || credits == NULL || m_SecureIdentState == 0){
-		wxASSERT ( false );
+		wxFAIL;
 		return;
 	}
 
@@ -2047,7 +2047,7 @@ void CUpDownClient::SendSignaturePacket(){
 
 	uint8 siglen = theApp->clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
 	if (siglen == 0){
-		wxASSERT ( false );
+		wxFAIL;
 		return;
 	}
 	CMemFile data;
@@ -2072,7 +2072,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 
 	if (m_socket == NULL || credits == NULL || pachPacket[0] != nSize-1
 		|| nSize == 0 || nSize > 250){
-		wxASSERT ( false );
+		wxFAIL;
 		return;
 	}
 	if (!theApp->CryptoAvailable())
@@ -2098,7 +2098,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 	// here we spread the good guys from the bad ones ;)
 
 	if (m_socket == NULL || credits == NULL || nSize == 0 || nSize > 250){
-		wxASSERT ( false );
+		wxFAIL;
 		return;
 	}
 
@@ -2108,7 +2108,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 	else if (pachPacket[0] == nSize-2 && (m_bySupportSecIdent & 2) > 0) //v2
 		byChaIPKind = pachPacket[nSize-1];
 	else{
-		wxASSERT ( false );
+		wxFAIL;
 		return;
 	}
 
@@ -2169,7 +2169,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE to ") + GetFullIP() );
 		SendPacket(packet,true,true);
 	} else {
-		wxASSERT ( false );
+		wxFAIL;
 	}
 }
 

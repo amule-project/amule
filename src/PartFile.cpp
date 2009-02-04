@@ -2715,11 +2715,11 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 				bError = nCount*(4+2+4+2+16+1) != uDataSize;
 				break;
 			default:
-				wxASSERT( 0 );
+				wxFAIL;
 		}
 
 		if (bError){
-			wxASSERT( 0 );
+			wxFAIL;
 			AddDebugLogLineM(false, logPartFile, wxT("Invalid source exchange data size."));
 			return;
 		}
