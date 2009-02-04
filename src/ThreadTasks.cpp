@@ -104,7 +104,7 @@ void CHashingTask::Entry()
 	} else if (fileLength == 0) {
 		if (m_owner) {
 			// It makes no sense to try to hash empty partfiles ...
-			wxASSERT(0);
+			wxFAIL;
 		} else {
 			// Zero-size partfiles should be hashed, but not zero-sized shared-files.
 			AddDebugLogLineM( true, logHasher,
@@ -170,7 +170,7 @@ void CHashingTask::Entry()
 			knownfile->m_abyFileHash = hash;
 		} else {
 			// This should not happen!
-			wxASSERT(0);
+			wxFAIL;
 		}
 	}
 	

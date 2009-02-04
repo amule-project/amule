@@ -309,7 +309,7 @@ void* CThreadScheduler::Entry()
 				
 				CDescMap& map = m_taskDescs[task->GetType()];
 				if (!map.erase(task->GetDesc())) {
-					wxASSERT(0);
+					wxFAIL;
 				} else if (map.empty()) {
 					m_taskDescs.erase(task->GetType());
 					isLastTask = true;

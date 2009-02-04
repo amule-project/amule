@@ -464,7 +464,7 @@ CPartFile* CDownloadQueue::GetFileByIndex(unsigned int index)  const
 		return m_filelist[ index ];
 	}
 	
-	wxASSERT( false );
+	wxFAIL;
 	return NULL;
 }
 
@@ -927,7 +927,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) {
 					uint8 nPriority = cur_file->GetDownPriority();
 					if (nPriority > PR_HIGH) {
-						wxASSERT(0);
+						wxFAIL;
 						nPriority = PR_HIGH;
 					}
 

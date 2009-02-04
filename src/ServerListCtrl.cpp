@@ -508,7 +508,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 		// Only update items that have the wrong setting
 		if ( server->IsStaticMember() != isStatic ) {
 			if ( !SetStaticServer( server, isStatic ) ) {
-				wxASSERT( false );
+				wxFAIL;
 
 				return;
 			}

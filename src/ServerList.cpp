@@ -330,7 +330,7 @@ void CServerList::ServerStats()
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			theApp->serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
-			wxASSERT( false );
+			wxFAIL;
 		}
 	}
 }
@@ -524,7 +524,7 @@ struct ServerPriorityComparator {
 			case SRV_PR_HIGH:
 				return rhs->GetPreferences() != SRV_PR_HIGH;
 			default:
-				wxASSERT(0);
+				wxFAIL;
 				return false;
 		}
 	}

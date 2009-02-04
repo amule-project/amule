@@ -169,11 +169,11 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received"));
 	} else if (!ip) {
-		// wxASSERT(0);
+		// wxFAIL;
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n",
 			(const char*)unicode2char(addr.IPAddress()));
 	} else if (!port) {
-		// wxASSERT(0);
+		// wxFAIL;
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
 	} else if (theApp->clientlist->IsBannedClient(ip)) {
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Dropped packet from banned IP ") + addr.IPAddress());

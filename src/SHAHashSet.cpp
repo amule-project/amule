@@ -107,7 +107,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 		return this;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
 		// this is already the last level, cant go deeper
-		wxASSERT( false );
+		wxFAIL;
 		return NULL;
 	} else {
 		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
@@ -278,7 +278,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 		return WriteLowestLevelHashs(fileDataOut, wHashIdent, false, b32BitIdent);
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
 		// this is already the last level, cant go deeper
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	} else {
 		wHashIdent <<= 1;
@@ -288,7 +288,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 		uint64 nLeft = ( ((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
 		uint64 nRight = m_nDataSize - nLeft;
 		if (m_pLeftTree == NULL || m_pRightTree == NULL) {
-			wxASSERT( false );
+			wxFAIL;
 			return false;
 		}
 		if (nStartPos < nLeft) {
@@ -346,11 +346,11 @@ bool CAICHHashTree::WriteLowestLevelHashs(CFileDataIO* fileDataOut, uint32 wHash
 			m_Hash.Write(fileDataOut);
 			return true;
 		} else {
-			wxASSERT( false );
+			wxFAIL;
 			return false;
 		}
 	} else if (m_pLeftTree == NULL || m_pRightTree == NULL) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	} else {
 		return m_pLeftTree->WriteLowestLevelHashs(fileDataOut, wHashIdent, bNoIdent, b32BitIdent)
@@ -414,7 +414,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 		return true;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
 		// this is already the last level, cant go deeper
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	} else {
 		// adjust ident to point the path to the next node
@@ -470,11 +470,11 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 {
 	wxASSERT( m_pOwner );
 	if (m_pOwner->IsPartFile() || m_eStatus != AICH_HASHSETCOMPLETE) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	if (m_pHashTree.m_nDataSize <= EMBLOCKSIZE) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	if (!bDbgDontLoad) {
@@ -500,7 +500,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 	uint64 nCheckFilePos = fileDataOut->GetPosition();
 	if (m_pHashTree.CreatePartRecoveryData(nPartStartPos, nPartSize, fileDataOut, 0, bUse32BitIdentifier)) {
 		if (nHashsToWrite*(HASHSIZE+(bUse32BitIdentifier? 4u:2u)) != fileDataOut->GetPosition() - nCheckFilePos) {
-			wxASSERT( false );
+			wxFAIL;
 			AddDebugLogLineM( false, logSHAHashSet,
 				CFormat(wxT("Created RecoveryData has wrong length. File: %s")) % m_pOwner->GetFileName() );
 			bResult = false;
@@ -527,7 +527,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 {
 	if (/*eMule TODO !m_pOwner->IsPartFile() ||*/ !(m_eStatus == AICH_VERIFIED || m_eStatus == AICH_TRUSTED) ) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	
@@ -624,11 +624,11 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 bool CAICHHashSet::SaveHashSet()
 {
 	if (m_eStatus != AICH_HASHSETCOMPLETE) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	if ( !m_pHashTree.m_bHashValid || m_pHashTree.m_nDataSize != m_pOwner->GetFileSize()) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 
@@ -708,11 +708,11 @@ bool CAICHHashSet::SaveHashSet()
 bool CAICHHashSet::LoadHashSet()
 {
 	if (m_eStatus != AICH_HASHSETCOMPLETE) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	if ( !m_pHashTree.m_bHashValid || m_pHashTree.m_nDataSize != m_pOwner->GetFileSize() || m_pHashTree.m_nDataSize == 0) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
@@ -865,7 +865,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 		}
 	}
 	if (nMostTrustedPos == (-1) || nSigningIPsTotal == 0) {
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 	// the check if we trust any hash
@@ -937,7 +937,7 @@ void CAICHHashSet::RemoveClientAICHRequest(const CUpDownClient* pClient)
 			return;
 		}
 	}
-	wxASSERT( false );
+	wxFAIL;
 }
 
 bool CAICHHashSet::IsClientRequestPending(const CPartFile* pForFile, uint16 nPart)
@@ -957,7 +957,7 @@ CAICHRequestedData CAICHHashSet::GetAICHReqDetails(const  CUpDownClient* pClient
 			return *(it);
 		}
 	}	
-	wxASSERT( false );
+	wxFAIL;
 	CAICHRequestedData empty;
 	return empty;
 }
@@ -965,7 +965,7 @@ CAICHRequestedData CAICHHashSet::GetAICHReqDetails(const  CUpDownClient* pClient
 bool CAICHHashSet::IsPartDataAvailable(uint64 nPartStartPos)
 {
 	if (!(m_eStatus == AICH_VERIFIED || m_eStatus == AICH_TRUSTED || m_eStatus == AICH_HASHSETCOMPLETE) ) {
-		wxASSERT( false );
+		wxFAIL;
 		return false;
 	}
 	uint64 nPartSize = min<uint64>(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);

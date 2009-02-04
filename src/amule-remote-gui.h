@@ -141,7 +141,7 @@ protected:
 	virtual void HandlePacket(const CECPacket *packet)
 	{
 		switch(this->m_state) {
-			case IDLE: wxASSERT(0); // not expecting anything
+			case IDLE: wxFAIL; // not expecting anything
 			case STATUS_REQ_SENT:
 				// if derived class choose not to proceed, return - but with good status
 				this->m_state = IDLE;

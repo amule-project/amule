@@ -546,7 +546,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 								}
 							} else {
 								AddDebugLogLineN(logPartFile, wxT("Wrong gap map key while reading met file!"));
-								wxASSERT(0);
+								wxFAIL;
 							}
 							// End Changes by Slugfiller for better exception handling
 						} else {
@@ -3106,7 +3106,7 @@ bool CPartFile::ReadData(CFileArea & area, uint64 offset, uint32 toread)
 	if (offset + toread > GetFileSize()) {
 		AddDebugLogLineM(false, logPartFile, CFormat(wxT("tried to read %d bytes past eof of %s")) 
 			% (offset + toread - GetFileSize()) % GetFileName());
-		wxASSERT(false);
+		wxFAIL;
 		return false;
 	}
 
@@ -3320,7 +3320,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart)
 		}
 	}
 	if (pClient == NULL){
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 
@@ -3333,7 +3333,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart)
 void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 {
 	if (GetPartCount() < nPart){
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 
@@ -3351,7 +3351,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	CAICHHashTree* pVerifiedHash = m_pAICHHashSet->m_pHashTree.FindHash(nPart*PARTSIZE, length);
 	if (pVerifiedHash == NULL || !pVerifiedHash->GetHashValid()){
 		AddDebugLogLineM( true, logAICHRecovery, wxT("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)") );
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->GetNDataSize(), pVerifiedHash->GetIsLeftBranch(), pVerifiedHash->GetNBaseSize());
@@ -3368,7 +3368,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	
 	if (!htOurHash.GetHashValid()){
 		AddDebugLogLineM( false, logAICHRecovery, wxT("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part") );
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 
@@ -3379,7 +3379,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
 		CAICHHashTree* pOurBlock = htOurHash.FindHash(pos, nBlockSize);
 		if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->GetHashValid() || !pOurBlock->GetHashValid()){
-			wxASSERT( false );
+			wxFAIL;
 			continue;
 		}
 		if (pOurBlock->GetHash() == pVerifiedBlock->GetHash()){
@@ -3399,7 +3399,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
 			AddGap(nPart);
-			wxASSERT( false );
+			wxFAIL;
 			return;
 		}
 		else{

@@ -875,7 +875,7 @@ void CServerListRem::SaveServerMet()
 void CServerListRem::FilterServers()
 {
 	// FIXME: add code
-	//wxASSERT(0);
+	//wxFAIL;
 }
 
 
@@ -933,7 +933,7 @@ uint32 CServerListRem::GetItemID(CServer *server)
 void CServerListRem::ProcessItemUpdate(CEC_Server_Tag *, CServer *)
 {
 	// server list is always realoaded from scratch
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
@@ -962,7 +962,7 @@ void CIPFilterRem::Reload()
 void CIPFilterRem::Update(wxString WXUNUSED(url))
 {
 	// FIXME: add command
-	//wxASSERT(0);
+	//wxFAIL;
 }
 
 
@@ -1592,7 +1592,7 @@ CClientListRem::CClientListRem(CRemoteConnect *conn)
 void CClientListRem::FilterQueues()
 {
 	// FIXME: add code
-	//wxASSERT(0);
+	//wxFAIL;
 }
 
 
@@ -1756,35 +1756,35 @@ bool CUpDownClient::IsBanned() const
 void  CUpDownClient::Ban()
 {
 	// FIXME: add code
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
 void  CUpDownClient::UnBan()
 {
 	// FIXME: add code
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
 void CUpDownClient::RequestSharedFileList()
 {
 	// FIXME: add code
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
 void CKnownFile::SetFileComment(const wxString &)
 {
 	// FIXME: add code
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
 void CKnownFile::SetFileRating(unsigned char)
 {
 	// FIXME: add code
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
@@ -1802,7 +1802,7 @@ bool CUpDownClient::SwapToAnotherFile(
 	CPartFile* WXUNUSED(toFile))
 {
 	// FIXME: add code
-	wxASSERT(0);
+	wxFAIL;
 	return false;
 }
 
@@ -1813,34 +1813,34 @@ bool CUpDownClient::SwapToAnotherFile(
 //
 CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient *, uint8 /*byRequestedVersion*/, uint16 /*nRequestedOptions*/)
 {
-	wxASSERT(0);
+	wxFAIL;
 	return 0;
 }
 
 
 bool CKnownFile::LoadFromFile(const class CFileDataIO*)
 {
-	wxASSERT(0);
+	wxFAIL;
 	return false;
 }
 
 
 void CKnownFile::UpdatePartsInfo()
 {
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
 CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const *, uint8 /*byRequestedVersion*/, uint16 /*nRequestedOptions*/)
 {
-	wxASSERT(0);
+	wxFAIL;
 	return 0;
 }
 
 
 void CPartFile::UpdatePartsInfo()
 {
-	wxASSERT(0);
+	wxFAIL;
 }
 
 
@@ -1882,7 +1882,7 @@ void CPartFile::UpdateFileRatingCommentAvail()
 
 bool CPartFile::SavePartFile(bool)
 {
-	wxASSERT(0);
+	wxFAIL;
 	return false;
 }
 

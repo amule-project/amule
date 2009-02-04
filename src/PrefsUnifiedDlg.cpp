@@ -885,7 +885,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 //		break;
 
 	default:
-		wxASSERT(false);
+		wxFAIL;
 		return;
 	}
 
@@ -916,7 +916,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 			title = _("Select browser");
 			break;
 		default:
-			wxASSERT( false );
+			wxFAIL;
 			return;
 	}
 	wxString wildcard = CFormat(_("Executable%s"))

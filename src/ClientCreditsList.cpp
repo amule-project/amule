@@ -281,7 +281,7 @@ bool CClientCreditsList::CreateKeyPair()
 		AddDebugLogLineM(true, logCredits,
 			wxString(wxT("Failed to create new RSA keypair: ")) +
 			char2unicode(e.what()));
-		wxASSERT(false);
+		wxFAIL;
  		return false;
  	}
 	
@@ -376,7 +376,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 		return asink.TotalPutLength();			
 	} catch (const CryptoPP::Exception& e) {
 		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while creating signature: ")) + char2unicode(e.what()));
-		wxASSERT(false);
+		wxFAIL;
 		
 		return 0;
  	}

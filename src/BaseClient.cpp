@@ -679,7 +679,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 bool CUpDownClient::SendHelloPacket() {
 
 	if (m_socket == NULL){
-		wxASSERT(0);
+		wxFAIL;
 		return true;
 	}
 
@@ -709,7 +709,7 @@ bool CUpDownClient::SendHelloPacket() {
 void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 	if (m_socket == NULL){
-		wxASSERT(0);
+		wxFAIL;
 		return;
 	}
 
@@ -971,7 +971,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 void CUpDownClient::SendHelloAnswer()
 {
 	if (m_socket == NULL){
-		wxASSERT(0);
+		wxFAIL;
 		return;
 	}
 
@@ -1529,7 +1529,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 							SetDownloadState(DS_WAITCALLBACKKAD);
 						} else {
 							//This should never happen..
-							wxASSERT(0);
+							wxFAIL;
 						}
 					}
 				}
@@ -2397,7 +2397,7 @@ bool CUpDownClient::SendMessage(const wxString& message)
 			m_pendingMessage += wxT("\n");
 		} else {
 			// There must be a message to send
-			wxASSERT(0);
+			wxFAIL;
 		}
 		m_pendingMessage += message;		
 		return false;

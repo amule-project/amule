@@ -123,7 +123,7 @@ bool CLogger::IsEnabled( DebugType type )
 		return ( cat.IsEnabled() && thePrefs::GetVerbose() );
 	} 
 
-	wxASSERT( false );
+	wxFAIL;
 #endif
 	return false;
 }
@@ -139,7 +139,7 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 
 		cat.SetEnabled( enabled );
 	} else {
-		wxASSERT( false );
+		wxFAIL;
 	}
 }
 
@@ -178,7 +178,7 @@ void CLogger::AddLogLine(
 
 			msg = cat.GetName() + wxT(": ") + msg;
 		} else {
-			wxASSERT( false );
+			wxFAIL;
 		}
 	}
 

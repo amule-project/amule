@@ -57,7 +57,7 @@ bool CTextFile::Open(const CPath& path, EOpenMode mode)
 	} else if (mode == write) {
 		m_file.Open(path.GetRaw(), wxT("w"));
 	} else {
-		wxASSERT(0);
+		wxFAIL;
 	}
 
 	return IsOpened();

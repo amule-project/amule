@@ -387,7 +387,7 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 	// PARTSIZE*2+1    3               3               3
 
 	if (nFileSize == 0){
-		//wxASSERT(0); // Kry - Why commented out by lemonfan? it can never be 0
+		//wxFAIL; // Kry - Why commented out by lemonfan? it can never be 0
 		m_iPartCount = 0;
 		m_iED2KPartCount = 0;
 		m_iED2KPartHashCount = 0;

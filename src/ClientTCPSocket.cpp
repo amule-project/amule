@@ -102,7 +102,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 			break;
 		default:
 			// Nothing should arrive here...
-			wxASSERT(0);
+			wxFAIL;
 			break;
 	}
 }
@@ -2035,7 +2035,7 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 				case OP_ED2KV2PACKEDPROT:				
 				case OP_PACKEDPROT:
 					// Packed inside packed?
-					wxASSERT(0);
+					wxFAIL;
 					break;
 				default: {
 					theStats::AddDownOverheadOther(uRawSize);

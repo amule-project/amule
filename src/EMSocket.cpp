@@ -579,7 +579,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				} else {
 					// Just to be safe. Shouldn't happen?
 					// if we reach this point, then there's something wrong with the while condition above!
-					wxASSERT(0);
+					wxFAIL;
 					AddDebugLogLineM(true, logGeneral, wxT("EMSocket: Couldn't get a new packet! There's an error in the first while condition in EMSocket::Send()"));
 	
 					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };

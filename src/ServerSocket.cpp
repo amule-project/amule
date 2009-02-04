@@ -102,7 +102,7 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 			socket->OnSend(wxSOCKET_NOERROR);
 			break;
 		default:
-			wxASSERT(0);
+			wxFAIL;
 			break;
 	}
 	
@@ -354,7 +354,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				if (size >= 4 + 4 + 4 + 4 + 4 /* All of the above + reported ip + obfuscation port */) {
 					dwServerReportedIP = data.ReadUInt32();
 					if (::IsLowID(dwServerReportedIP)){
-						wxASSERT( false );
+						wxFAIL;
 						dwServerReportedIP = 0;
 					}
 					wxASSERT( dwServerReportedIP == new_id || ::IsLowID(new_id) );
@@ -621,7 +621,7 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 	AddDebugLogLineM(false,logServer,wxT("Trying to connect"));
 	
 	if (cur_server){
-		wxASSERT(0);
+		wxFAIL;
 		delete cur_server;
 		cur_server = NULL;
 	}

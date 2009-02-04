@@ -175,7 +175,7 @@ bool CProxyStateMachine::Start(const wxIPaddress &peerAddress, wxSocketClient *p
 	} catch (const std::bad_cast& WXUNUSED(e)) {
 		// Should process other types of wxIPAddres before quitting
 		AddDebugLogLineM(false, logProxy, wxT("(1)bad_cast exception!"));
-		wxASSERT(false);
+		wxFAIL;
 		return false;
 	}
 	
@@ -1377,7 +1377,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 				} catch (const std::bad_cast& WXUNUSED(e)) {
 					AddDebugLogLineM(false, logProxy,
 						wxT("(2)bad_cast exception!"));
-					wxASSERT(false);
+					wxFAIL;
 				}
 			}
 				break;

@@ -544,7 +544,7 @@ void CFileDataIO::WriteTag(const CTag& tag)
 				//TODO: Support more tag types
 				// With the if above, this should NEVER happen.
 				AddLogLineNS(CFormat(wxT("CFileDataIO::WriteTag: Unknown tag: type=0x%02X")) % tag.GetType());
-				wxASSERT(0);
+				wxFAIL;
 				break;
 		}				
 	} catch (...) {
