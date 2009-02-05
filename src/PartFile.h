@@ -60,14 +60,6 @@ enum EPartFileFormat {
 	PMT_BADFORMAT
 };
 
-struct PartFileBufferedData
-{
-	byte *data;						// Barry - This is the data to be written
-	uint64 start;					// Barry - This is the start offset of the data
-	uint64 end;						// Barry - This is the end offset of the data
-	Requested_Block_Struct *block;	// Barry - This is the requested block that this data relates to
-};
-
 
 class SFileRating
 {
@@ -390,8 +382,8 @@ private:
 
 	uint32		m_lastRefreshedDLDisplay;
 
-	// Barry - Buffered data to be written
-	std::list<PartFileBufferedData*> m_BufferedData_list;
+	// Buffered data to be written
+	std::list<class PartFileBufferedData*> m_BufferedData_list;
 	
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
