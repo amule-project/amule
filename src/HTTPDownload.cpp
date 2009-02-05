@@ -35,6 +35,7 @@
 #include <common/Format.h>				// Needed for CFormat
 #include "InternalEvents.h"				// Needed for CMuleInternalEvent
 #include "Preferences.h"
+#include "ScopedPtr.h"
 
 
 #ifndef AMULE_DAEMON
@@ -167,7 +168,6 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 	}
 	
 	wxHTTP* url_handler = NULL;
-	wxInputStream* url_read_stream = NULL;
 	
 	AddLogLineNS(_("HTTP download thread started"));
 	
@@ -189,9 +189,9 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		url_handler = new wxHTTP;
 		url_handler->SetProxyMode(use_proxy);
 	
-		url_read_stream = GetInputStream(&url_handler, m_url, use_proxy);
+		CScopedPtr<wxInputStream> url_read_stream(GetInputStream(&url_handler, m_url, use_proxy));
 		
-		if (!url_read_stream) {
+		if (!url_read_stream.get()) {
 			throw wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError());
 		}
 		
@@ -242,7 +242,6 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		AddLogLineNS(error); // If there's console output anyway there should also be console output on error.
 	}
 
-	delete url_read_stream;
 	if (url_handler) {
 		url_handler->Destroy();
 	}
