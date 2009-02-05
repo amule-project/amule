@@ -64,6 +64,7 @@
 #include "DataToText.h"		// Needed for OriginToText()
 #include "PlatformSpecific.h"	// Needed for CreateSparseFile()
 #include "FileArea.h"		// Needed for CFileArea
+#include "ScopedPtr.h"		// Needed for CScopedArray
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
@@ -102,6 +103,20 @@ Comment(client.GetFileComment())
 SFileRating::~SFileRating()
 {
 }
+
+
+class PartFileBufferedData
+{
+public:
+	CScopedArray<byte> data;		// This is the data to be written
+	uint64 start;					// This is the start offset of the data
+	uint64 end;						// This is the end offset of the data
+	Requested_Block_Struct *block;	// This is the requested block that this data relates to
+
+	PartFileBufferedData(byte * _data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
+		: data(_data), start(_start), end(_end), block(_block)
+	{}
+};
 
 
 typedef std::list<Chunk> ChunkList;
@@ -245,13 +260,7 @@ CPartFile::~CPartFile()
 		SavePartFile();			
 	}
 
-	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
-	for (; it != m_BufferedData_list.end(); ++it) {
-		PartFileBufferedData* item = *it;
-
-		delete[] item->data;
-		delete item;
-	}
+	DeleteContents(m_BufferedData_list);
 
 	wxASSERT(m_SrcList.empty());
 	wxASSERT(m_A4AFsrclist.empty());
@@ -2884,11 +2893,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	memcpy(buffer, data, lenData);
 
 	// Create a new buffered queue entry
-	PartFileBufferedData *item = new PartFileBufferedData;
-	item->data = buffer;
-	item->start = start;
-	item->end = end;
-	item->block = block;
+	PartFileBufferedData *item = new PartFileBufferedData(buffer, start, end, block);
 
 	// Add to the queue in the correct position (most likely the end)
 	bool added = false;
@@ -2961,7 +2966,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	// Loop through queue
 	while ( !m_BufferedData_list.empty() ) {
 		// Get top item and remove it from the queue
-		PartFileBufferedData* item = m_BufferedData_list.front();
+		CScopedPtr<PartFileBufferedData> item(m_BufferedData_list.front());
 		m_BufferedData_list.pop_front();
 
 		// This is needed a few times
@@ -2978,7 +2983,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		// Go to the correct position in file and write block of data			
 		try {
 			m_hpartfile.Seek(item->start);
-			m_hpartfile.Write(item->data, lenData);
+			m_hpartfile.Write(item->data.get(), lenData);
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + e.what());
 			SetPartFileStatus(PS_ERROR);
@@ -2986,10 +2991,6 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 		// Decrease buffer size
 		m_nTotalBufferData -= lenData;
-
-		// Release memory used by this item
-		delete [] item->data;
-		delete item;
 	}
 	
 	
