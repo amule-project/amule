@@ -54,6 +54,15 @@
 @synthesize size_done = m_size_done;
 @synthesize size_xfer = m_size_xfer;
 
+@synthesize prio = m_prio;
+
+@dynamic sprio;
+
+- (NSString *)sprio {
+	return [self prioToString: m_prio];
+}
+
+
 + (id)createFromEC: (ECTagMD5 *) tag {
 	DownloadingFile *obj = [[DownloadingFile alloc] init];
 	
@@ -82,7 +91,14 @@
 	m_non_current_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT];
 	m_xfer_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_XFER];
 	m_a4af_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_A4AF];
-	
+
+	m_prio = [tag tagInt64ByName:EC_TAG_PARTFILE_PRIO];
+	if ( m_prio > 10 ) {
+		m_auto_prio = true;
+		m_prio -= 10;
+	} else {
+		m_auto_prio = false;
+	}
 }
 
 - (NSString *)prioToString:(int)prio {
@@ -112,8 +128,12 @@
 		default:
 			break;
 	}
+	if ( m_auto_prio ) {
+		s = [s stringByAppendingString:@" (auto)"];
+	}
 	return s;
 }
+
 
 @end
 
