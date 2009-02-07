@@ -27,7 +27,7 @@
 public interface ECCodes {
 
 
-public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0200;
+public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0201;
 
 public final static int EC_FLAG_ZLIB	 = 0x00000001;
 public final static int EC_FLAG_UTF8_NUMBERS = 0x00000002;
