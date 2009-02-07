@@ -33,7 +33,7 @@ typedef uint8_t ec_tagtype_t;
 typedef uint32_t ec_taglen_t;
 
 enum ProtocolVersion {
-	EC_CURRENT_PROTOCOL_VERSION = 0x0200
+	EC_CURRENT_PROTOCOL_VERSION = 0x0201
 };
 
 enum ECFlags {

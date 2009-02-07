@@ -27,7 +27,7 @@
 namespace amule.net
 {
 public enum ProtocolVersion {
-	EC_CURRENT_PROTOCOL_VERSION = 0x0200
+	EC_CURRENT_PROTOCOL_VERSION = 0x0201
 };
 public enum ECFlags {
 	EC_FLAG_ZLIB	 = 0x00000001,
@@ -35,7 +35,7 @@ public enum ECFlags {
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
 	EC_FLAG_NOTIFY	 = 0x00008000,
-	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
+
 };
 public enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,

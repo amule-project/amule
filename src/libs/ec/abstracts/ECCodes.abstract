@@ -17,7 +17,7 @@ ec_taglen_t	uint32
 Type Enum
 Name ProtocolVersion
 DataType uint16
-EC_CURRENT_PROTOCOL_VERSION	0x0200
+EC_CURRENT_PROTOCOL_VERSION	0x0201
 [/Section]
 
 # This flags are used on the transmission layer.
