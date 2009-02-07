@@ -132,12 +132,50 @@ typedef struct {
 
 @end
 
-@interface ECLoginPacket : ECPacket {
+@interface ECLoginAuthPacket : ECPacket {
 }
 
-+ (id)loginPacket:(NSString *) password withVersion:(NSString *) version;
++ (id)loginPacket:(NSString *) password withSalt:(uint64_t) salt;
+
+- (NSString *)getMD5_Str:(NSString *) str;
 
 @end	
+
+@interface ECLoginRequestPacket : ECPacket
+{
+}
+
++ (id)loginPacket:(NSString *) version;
+
+
+@end
+
+@class ECRemoteConnection;
+
+@interface amuleLoginHandler : NSObject {
+	enum LOGIN_REQUEST_STATE {
+		LOGIN_IDLE,
+		LOGIN_REQUEST_SENT,
+		LOGIN_PASS_SENT,
+		LOGIN_OK
+	} m_state;
+	
+	ECRemoteConnection *m_connection;
+	
+	NSString *m_pass;
+}
+
++ (id)initWithConnection:(ECRemoteConnection *) connection;
+
+- (void)handlePacket:(ECPacket *) packet;
+
+- (void)usePass:(NSString *) pass;
+
+- (void)reset;
+- (bool)loginOK;
+
+@end
+
 
 @interface NSObject (ECRemoteConnection)
 - (void)handlePacket:(ECPacket *) packet;
@@ -156,10 +194,9 @@ typedef struct {
 	NSData *m_txbuf;
 	int m_tx_ptr;
 	int m_tx_size;
+		
+	amuleLoginHandler *m_login_handler;
 	
-	bool m_login_requested;
-	bool m_login_ok;
-
     id delegate;
 	
 	bool m_error;
@@ -180,4 +217,3 @@ typedef struct {
 - (id)delegate;
 
 @end
-

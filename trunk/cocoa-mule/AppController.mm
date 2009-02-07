@@ -48,10 +48,12 @@
 -(IBAction)show_About:(id)sender {
 }
 
-- (IBAction)addLink:(id)sender;{
-	//AddLinkDialogController *dlg = [[AddLinkDialogController alloc] init];
-	
+- (IBAction)addLink:(id)sender;{	
 	bool dlgResult = [m_add_link_dlg showDlg:nil];
+	if ( dlgResult ) {
+		ECPacket *packet = [ECPacket packetWithOpcode:EC_OP_ADD_LINK];
+		[m_connection sendPacket:packet];
+	}
 }
 
 - (bool)askCoreParams {

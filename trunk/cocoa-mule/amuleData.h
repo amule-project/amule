@@ -30,6 +30,7 @@
 	uint64_t m_size_xfer;
 	
 	int m_prio;
+	bool m_auto_prio;
 	
 	int m_speed;
 	
@@ -50,6 +51,9 @@
 
 @property (readonly) uint64_t size_done;
 @property (readonly) uint64_t size_xfer;
+
+@property (readonly) int prio;
+@property (copy, readonly) NSString * sprio;
 
 @end
 

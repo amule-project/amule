@@ -284,12 +284,13 @@
 + (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt64 *tag = [[ECTagInt64 alloc] init];
 	uint64_t lo, hi;
-	uint32 val32 = *((uint32_t *)(*buffer));
-	lo = ntohl(val32);
-	*buffer += 4;
 
-	val32 = *((uint32_t *)(*buffer));
+	uint32 val32 = *((uint32_t *)(*buffer));
 	hi = ntohl(val32);
+	*buffer += 4;
+	
+	val32 = *((uint32_t *)(*buffer));
+	lo = ntohl(val32);
 	*buffer += 4;
 	
 	tag->m_val = (hi << 32) | lo;
@@ -505,16 +506,62 @@
 
 @end
 
-@implementation ECLoginPacket
+@implementation ECLoginAuthPacket
 
-+ (id)loginPacket:(NSString *) password withVersion:(NSString *) version {
-	ECLoginPacket *p = [[ECLoginPacket alloc] init];
+- (NSString *)getMD5_Str:(NSString *) str {
+	CC_MD5_CTX ctx;
+	unsigned char md5data[16];
+	CC_MD5_Init(&ctx);
+	CC_MD5_Update(&ctx, [str UTF8String], [str length]);
+	CC_MD5_Final(md5data, &ctx);
+	NSString *MD5str = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+						 md5data[0], md5data[1],md5data[2],md5data[3],
+						 md5data[4],md5data[5],md5data[6],md5data[7],
+						 md5data[8],md5data[9],md5data[10],md5data[11],
+						 md5data[12],md5data[13],md5data[14],md5data[15]
+						 ];
+	return MD5str;
+}
 
-	[p initWithOpcode:EC_OP_AUTH_REQ];
++ (id)loginPacket:(NSString *) password withSalt:(uint64_t) salt {
+	ECLoginAuthPacket *p = [[ECLoginAuthPacket alloc] init];
 
-	ECTagMD5 *passtag = [ECTagMD5 tagFromString: password withName:EC_TAG_PASSWD_HASH];
+	[p initWithOpcode:EC_OP_AUTH_PASSWD];
+
+	NSString *saltStr = [NSString stringWithFormat:@"%llX", salt];
+//	CC_MD5_CTX ctx;
+//	unsigned char md5data[16];
+//	CC_MD5_Init(&ctx);
+//	CC_MD5_Update(&ctx, [saltStr UTF8String], [saltStr length]);
+//	CC_MD5_Final(md5data, &ctx);
+//	NSString *saltMD5 = [NSString stringWithFormat:@"%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x",
+//						 md5data[0], md5data[1],md5data[2],md5data[3],
+//						 md5data[4],md5data[5],md5data[6],md5data[7],
+//						 md5data[8],md5data[9],md5data[10],md5data[11],
+//						 md5data[12],md5data[13],md5data[14],md5data[15]
+//						 ];
+	NSString *saltMD5 = [p getMD5_Str: saltStr];
+	
+	NSString *newPass = [NSString stringWithFormat:@"%@%@", [p getMD5_Str: password], saltMD5];
+
+	NSLog(@"[EC] using salt=%@ saltHash=%@ newPass=%@\n", saltStr, saltMD5, newPass);
+
+	ECTagMD5 *passtag = [ECTagMD5 tagFromString: newPass withName:EC_TAG_PASSWD_HASH];
 	[p->m_subtags addObject:passtag];
 
+	return p;
+}
+
+
+@end
+
+@implementation ECLoginRequestPacket
+
++ (id)loginPacket:(NSString *) version {
+	ECLoginRequestPacket *p = [[ECLoginRequestPacket alloc] init];
+	
+	[p initWithOpcode:EC_OP_AUTH_REQ];
+	
 	ECTagString *version_tag = [ECTagString tagFromString:version withName:EC_TAG_CLIENT_VERSION];
 	[p->m_subtags addObject:version_tag];
 	
@@ -523,7 +570,7 @@
 	
 	ECTagInt64 *proto_version_tag = [ECTagInt64 tagFromInt64:EC_CURRENT_PROTOCOL_VERSION withName:EC_TAG_PROTOCOL_VERSION];
 	[p->m_subtags addObject:proto_version_tag];
-		
+	
 	return p;
 }
 
@@ -544,6 +591,8 @@
 	p->m_rxbuf = [NSMutableData dataWithLength:1024];
 	[p->m_rxbuf retain];
 	
+	p->m_login_handler = [amuleLoginHandler initWithConnection:p];
+	[p->m_login_handler retain];
 	//
 	// client only transmit commands, which are
 	// quite small in size. "big enough" buffer will do the trick
@@ -626,9 +675,10 @@
 }
 
 - (void)sendLogin:(NSString *) password {
-	m_login_requested = true;
-	m_login_ok = false;
-	ECLoginPacket *p = [ECLoginPacket loginPacket:password withVersion:@"0.1"];
+
+	[m_login_handler usePass: password];
+	
+	ECLoginRequestPacket *p = [ECLoginRequestPacket loginPacket:@"0.1"];
 	[self sendPacket:p];
 }
 
@@ -730,17 +780,16 @@
 					ECPacket *packet = [ECPacket packetFromBuffer:packet_start withLength:packet_length];
 					packet_offset += m_rx_size;
 					
-					if ( m_login_requested ) {
-						m_login_requested = false;
-						m_login_ok = packet.opcode == EC_OP_AUTH_OK;
-						NSLog(@"[EC] server reply to login request: %@\n", m_login_ok ? @"login OK" : @"login FAILED");
-					} else {
+					if ( [m_login_handler loginOK] ) {
 #ifdef EC_RX_DEBUG
 						NSLog(@"[EC] calling delegate\n");
 #endif
 						if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
 							[delegate handlePacket: packet];
 						}
+					} else {
+						NSLog(@"[EC] login handler\n");
+						[m_login_handler handlePacket: packet];
 					}
 					m_remaining_size = 8;
 					m_rx_size = 0;
@@ -768,14 +817,69 @@
 	}
 }
 
-- (void)setDelegate:(id)val
-{
+- (void)setDelegate:(id)val {
     delegate = val;
 }
 
-- (id)delegate
-{
+- (id)delegate {
     return delegate;
+}
+
+
+@end
+
+@implementation amuleLoginHandler
+
++ (id)initWithConnection:(ECRemoteConnection *) connection {
+
+	amuleLoginHandler *obj = [[amuleLoginHandler alloc] init]; 
+	obj->m_connection = connection;
+	
+	obj->m_state = LOGIN_REQUEST_SENT;
+
+	return obj;
+}
+
+- (void)usePass:(NSString *) pass {
+	m_pass = pass;
+}
+
+- (void)handlePacket:(ECPacket *) packet {
+	switch(m_state) {
+		case LOGIN_IDLE:
+			NSLog(@"[EC]: error - no packet should come until request is sent\n");
+			break;
+		case LOGIN_REQUEST_SENT:
+			if ( packet.opcode == EC_OP_AUTH_SALT ) {
+				
+				uint64_t salt = [packet tagInt64ByName:EC_TAG_PASSWD_SALT];
+				ECLoginAuthPacket *auth_packet = [ECLoginAuthPacket loginPacket:m_pass withSalt:salt];
+				[m_connection sendPacket:auth_packet];
+				
+				m_state = LOGIN_PASS_SENT;
+			} else {
+				NSLog(@"[EC]: error - expecting packet with EC_OP_AUTH_SALT, not [%d]\n", packet.opcode);
+				m_state = LOGIN_IDLE;
+			} 
+			break;
+		case LOGIN_PASS_SENT:
+			if ( packet.opcode == EC_OP_AUTH_OK ) {
+				m_state = LOGIN_OK;
+			} else {
+				NSLog(@"[EC]: error - login failed, core replied with code=[%d]\n", packet.opcode);
+			}
+			break;
+		case LOGIN_OK:
+			NSLog(@"[EC]: error - this delegate should be replaced after login completed\n");
+			break;
+	}
+}
+- (void)reset {
+	m_state = LOGIN_IDLE;
+}
+
+- (bool)loginOK {
+	return m_state == LOGIN_OK;
 }
 
 
