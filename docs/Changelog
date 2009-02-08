@@ -80,6 +80,7 @@ Version 2.3.0 - The river knows.
 		* Add option to specify amuleweb binary location
 		* Fix amuleweb progress bar display for files > 4GB
 		* Make EC authentication procedure more secure
+		* Add support for categories to ed2k
 
 	Special Thanks To:
 		* Greek for his contributions to aMule's user interface.

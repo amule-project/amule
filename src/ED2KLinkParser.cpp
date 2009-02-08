@@ -24,8 +24,8 @@
 //
 
 const int versionMajor		= 1;
-const int versionMinor		= 4;
-const int versionRevision	= 1;
+const int versionMinor		= 5;
+const int versionRevision	= 0;
 
 #include <cstdlib>
 #include <sstream>
@@ -421,6 +421,7 @@ int main(int argc, char *argv[])
 {
 	bool errors = false;
 	string config_path;
+	string category = "";
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
 
@@ -444,6 +445,7 @@ int main(int argc, char *argv[])
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
 		
 			if ( (type == "file") && checkFileLink( arg ) ) {
+				arg += category;
 				writeLink( arg, config_path );
 			} else if ( (type == "server") && checkServerLink( arg ) ) {
 				writeLink( arg, config_path );
@@ -471,6 +473,7 @@ int main(int argc, char *argv[])
 				<< "    --help, -h              Prints this help.\n"
 				<< "    --config-dir, -c        Specifies the aMule configuration directory.\n"
 				<< "    --version, -v           Displays version info.\n\n"
+				<< "    --category, -t          Add Link to category number.\n"
 				<< "    magnet:?                Causes the file to be queued for download.\n"
 				<< "    ed2k://|file|           Causes the file to be queued for download.\n"
 				<< "    ed2k://|server|         Causes the server to be listed or updated.\n"
@@ -481,6 +484,16 @@ int main(int argc, char *argv[])
 			
 		} else if (arg == "-v" || arg == "--version") {
 			std::cout << getVersion() << std::endl;
+		} else if (arg == "-t" || arg == "--category") {
+			if (i < argc - 1) {
+				if ((category == "" ) && (0 != atoi(argv[++i]))) {
+					category = ':';
+					category += argv[i];
+				}
+			} else {
+				std::cerr << "Missing mandatory argument for " << arg << std::endl;
+				errors = true;
+			}
 		} else if (arg == "-e" || arg == "--emulecollection") {
 			if (i < argc - 1) {
 				CMuleCollection my_collection;
@@ -496,7 +509,6 @@ int main(int argc, char *argv[])
 				std::cerr << "Missing mandatory argument for " << arg << std::endl;
 				errors = true;
 			}
-			std::cout << getVersion() << std::endl;
 		} else {
 			std::cerr << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
 			errors = true;
