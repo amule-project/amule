@@ -328,8 +328,11 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 	}
 
 	NotifyObservers( EventType( EventType::INSERTED, file ) );
-
-	file->SetCategory(category);
+	if (category < theApp->glob_prefs->GetCatCount()) {
+		file->SetCategory(category);
+	} else {
+		AddDebugLogLineM( false, logDownloadQueue, wxT("Tried to add download into invalid category.") );
+	}
 	Notify_DownloadCtrlAddFile( file );
 	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
 }
@@ -1033,7 +1036,11 @@ void CDownloadQueue::AddLinksFromFile()
 					continue;
 				}
 				
-				AddLink( line );
+				long category = 0;
+				if (line.AfterLast(wxT(':')).ToLong(&category) == true) {
+					line = line.BeforeLast(wxT(':'));
+				}
+				AddLink(line, category);
 			}
 		}
 
