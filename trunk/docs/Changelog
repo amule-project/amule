@@ -65,6 +65,7 @@ Version 2.3.0 - The river knows.
 		* Fixed Windows lag when opening preferences dialog
 		* Fixed finished files sometimes getting rehashed (thanks to Skolnick)
 		* Improved gaplist performance
+		* Chat captchas (receive only)
 
 	Vollstrecker:
 		* Unify copyright lines

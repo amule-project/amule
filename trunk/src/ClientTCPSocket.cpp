@@ -1819,6 +1819,23 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 			break;
 		}
+		case OP_CHATCAPTCHAREQ:
+		{
+			AddDebugLogLineN(logRemoteClient, wxT("Remote Client: OP_CHATCAPTCHAREQ from ") + m_client->GetFullIP());
+			theStats::AddDownOverheadOther(size);
+			CMemFile data_in(buffer, size);
+			m_client->ProcessCaptchaRequest(&data_in);
+			break;
+		}
+		case OP_CHATCAPTCHARES:
+		{
+			AddDebugLogLineN(logRemoteClient, wxT("Remote Client: OP_CHATCAPTCHARES from ") + m_client->GetFullIP());
+			theStats::AddDownOverheadOther(size);
+			if (size) {
+				m_client->ProcessCaptchaReqRes(buffer[0]);
+			}
+			break;
+		}
 		case OP_FWCHECKUDPREQ: { // Support required for Kadversion >= 6
 			AddDebugLogLineM(false, logRemoteClient, wxT("Remote Client: OP_FWCHECKUDPREQ from ") + m_client->GetFullIP());
 			theStats::AddDownOverheadOther(size);

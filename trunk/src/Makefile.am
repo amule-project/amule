@@ -258,6 +258,7 @@ amulegui_SOURCES += \
 endif
 
 amule_SOURCES = \
+	CaptchaDialog.cpp \
 	$(core_sources) \
 	$(gui_sources) \
 	$(ec_sources) \
@@ -322,6 +323,7 @@ noinst_HEADERS = \
 		amuleIPV4Address.h \
 		ArchSpecific.h \
 		BarShader.h \
+		CaptchaDialog.h \
 		CatDialog.h \
 		CFile.h \
 		ChatSelector.h \

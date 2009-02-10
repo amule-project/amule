@@ -75,6 +75,7 @@ public:
 	bool			SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
 	void			ConnectionResult(bool success, const wxString& message, uint64 id);
 	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
+	void			ShowCaptchaResult(uint64 id, bool ok);
 };
 
 #endif

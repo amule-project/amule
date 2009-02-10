@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\CaptchaDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\CatDialog.cpp"
 				>
 			</File>
@@ -650,6 +654,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\BarShader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\CaptchaDialog.h"
 				>
 			</File>
 			<File

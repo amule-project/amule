@@ -24,6 +24,8 @@
 //
 
 #include <wx/wx.h>
+#include <wx/mstream.h>
+
 
 #include "updownclient.h"	// Needed for CUpDownClient
 
@@ -56,6 +58,11 @@
 #include "Packet.h"		// Needed for CPacket
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList
+#ifndef AMULE_DAEMON
+#include "amuleDlg.h"		// Needed for CamuleDlg
+#include "CaptchaDialog.h"	// Needed for CCaptchaDialog
+#include "ChatWnd.h"		// Needed for CChatWnd
+#endif
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
@@ -144,6 +151,7 @@ void CUpDownClient::Init()
 	credits = NULL;
 	m_byChatstate = MS_NONE;
 	m_nKadState = KS_NONE;
+	m_nChatCaptchaState = CA_NONE;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
 	m_nTransferredUp = 0;
@@ -265,6 +273,7 @@ void CUpDownClient::Init()
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
 	m_fSupportsSourceEx2 = 0;
+	m_fSupportsCaptcha = 0;
 	m_fDirectUDPCallback = 0;
 	m_dwDirectCallbackTimeout = 0;
 
@@ -361,6 +370,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
 	m_fSupportsSourceEx2 = 0;
+	m_fSupportsCaptcha = 0;
 	m_fDirectUDPCallback = 0;
 }
 
@@ -540,7 +550,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				//   1 Large Files (includes support for 64bit tags)
 				//   4 Kad Version - will go up to version 15 only (may need to add another field at some point in the future)
 				m_fDirectUDPCallback	= (temptag.GetInt() >> 12) & 0x01;
-				// 1 captcha support
+				m_fSupportsCaptcha	    = (temptag.GetInt() >> 11) & 0x01;
 				m_fSupportsSourceEx2	= (temptag.GetInt() >> 10) & 0x01;
 				m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
 				m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
@@ -557,6 +567,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				#ifdef __PACKET_DEBUG__
 				AddLogLineNS(wxT("Hello type packet processing with eMule Misc Options 2:"));
 				AddLogLineNS(CFormat(wxT("	m_fDirectUDPCallback	= %i")) % m_fDirectUDPCallback);
+				AddLogLineNS(CFormat(wxT("	m_fSupportsCaptcha		= %i")) % m_fSupportsCaptcha);
 				AddLogLineNS(CFormat(wxT("	m_fSupportsSourceEx2	= %i")) % m_fSupportsSourceEx2);
 				AddLogLineNS(CFormat(wxT("	m_fRequiresCryptLayer	= %i")) % m_fRequiresCryptLayer);
 				AddLogLineNS(CFormat(wxT("	m_fRequestsCryptLayer	= %i")) % m_fRequestsCryptLayer);
@@ -1085,7 +1096,12 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 	const uint32 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;	
 	const uint32 uSupportsSourceEx2		= 1;
-	const uint32 uSupportsCaptcha		= 0; // No captcha support in aMule, at least for now
+#ifdef AMULE_DAEMON
+// captcha for daemon/remotegui not supported for now
+	const uint32 uSupportsCaptcha		= 0;
+#else
+	const uint32 uSupportsCaptcha		= 1;
+#endif
 	// direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
 	const uint32 uDirectUDPCallback		= (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled()
 						   && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
@@ -2501,7 +2517,8 @@ uint64 CUpDownClient::GetUploadedTotal() const
 	return credits ? credits->GetUploadedTotal() : 0;
 }
 	
-double CUpDownClient::GetScoreRatio() const {
+double CUpDownClient::GetScoreRatio() const 
+{
 	return credits ? credits->GetScoreRatio(GetIP(), theApp->CryptoAvailable()) : 0;
 }
 
@@ -2520,10 +2537,79 @@ const wxString CUpDownClient::GetServerName() const
 	return ret;
 }
 
-bool CUpDownClient::ShouldReceiveCryptUDPPackets() const {
+bool CUpDownClient::ShouldReceiveCryptUDPPackets() const 
+{
 	return (thePrefs::IsClientCryptLayerSupported() && SupportsCryptLayer() && theApp->GetPublicIP() != 0
 		&& HasValidHash() && (thePrefs::IsClientCryptLayerRequested() || RequestsCryptLayer()) );
 }
+
+#ifdef AMULE_DAEMON
+
+void CUpDownClient::ProcessCaptchaRequest(CMemFile* WXUNUSED(data)) {}
+void CUpDownClient::ProcessCaptchaReqRes(uint8 WXUNUSED(nStatus)) {}
+
+#else
+
+void CUpDownClient::ProcessCaptchaRequest(CMemFile* data)
+{
+	uint64 id = GUI_ID(GetIP(),GetUserPort());
+	// received a captcha request, check if we actually accept it (only after sending a message ourself to this client)
+	if (GetChatCaptchaState() == CA_ACCEPTING && GetChatState() != MS_NONE
+		&& theApp->amuledlg->m_chatwnd->IsIdValid(id)) {
+		// read tags (for future use)
+		uint8 nTagCount = data->ReadUInt8();
+		if (nTagCount) {
+			AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client (%s) with (%u) tags")) % GetFullIP() % nTagCount);
+			// and ignore them for now
+			for (uint32 i = 0; i < nTagCount; i++) {
+				CTag tag(*data, true);
+			}
+		}
+
+		// sanitize checks - we want a small captcha not a wallpaper
+		uint32 nSize = (uint32)(data->GetLength() - data->GetPosition());
+
+		if ( nSize > 128 && nSize < 4096 ) {
+			uint64 pos = data->GetPosition();
+			wxMemoryInputStream memstr(data->GetRawBuffer() + pos, nSize);
+			wxImage imgCaptcha(memstr, wxBITMAP_TYPE_BMP);
+
+			if (imgCaptcha.IsOk() && imgCaptcha.GetHeight() > 10 && imgCaptcha.GetHeight() < 50
+				&& imgCaptcha.GetWidth() > 10 && imgCaptcha.GetWidth() < 150 ) {
+				wxString name(GetConfigDir() + wxT("captcha.bmp"));
+				imgCaptcha.SaveFile(name, wxBITMAP_TYPE_BMP);
+				AddDebugLogLineN(logClient, CFormat(wxT("Saved captcha from (%s) to %s")) % GetFullIP() % name);
+				m_nChatCaptchaState = CA_CAPTCHARECV;
+				CCaptchaDialog * dialog = new CCaptchaDialog(theApp->amuledlg, imgCaptcha, id);
+				dialog->Show();
+
+			} else {
+				AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client, processing image failed or invalid pixel size (%s)")) % GetFullIP());
+			}
+		} else {
+			AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client, size sanitize check failed (%u) (%s)")) % nSize % GetFullIP());
+		}
+	} else {
+		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client, but don't accepting it at this time (%s)")) % GetFullIP());
+	}
+}
+
+void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
+{
+	uint64 id = GUI_ID(GetIP(),GetUserPort());
+	if (GetChatCaptchaState() == CA_SOLUTIONSENT && GetChatState() != MS_NONE
+		&& theApp->amuledlg->m_chatwnd->IsIdValid(id)) {
+		wxASSERT( nStatus < 3 );
+		m_nChatCaptchaState = CA_NONE;
+		theApp->amuledlg->m_chatwnd->ShowCaptchaResult(id, nStatus == 0);
+	}
+	else {
+		m_nChatCaptchaState = CA_NONE;
+		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha result from client, but don't accepting it at this time (%s)")) % GetFullIP());
+	}
+}
+#endif
+
 
 void CUpDownClient::SendFirewallCheckUDPRequest()
 {

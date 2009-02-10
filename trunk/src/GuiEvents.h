@@ -114,6 +114,7 @@ namespace MuleNotify
 	void ChatRefreshFriend(uint32 lastUsedIP, uint32 lastUsedPort, wxString name);
 	void ChatConnResult(bool success, uint64 id, wxString message);
 	void ChatProcessMsg(uint64 sender, wxString message);
+	void ChatSendCaptcha(wxString captcha, uint64 to_id);
 	
 	void ShowConnState(long state);
 	void ShowUserCount(wxString str);
@@ -454,6 +455,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_ChatRefreshFriend(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, val0, val1, s)
 #define Notify_ChatConnResult(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatConnResult, val0, val1, s)
 #define Notify_ChatProcessMsg(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
+#define Notify_ChatSendCaptcha(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatSendCaptcha, val0, s)
 
 // misc
 #define Notify_ShowConnState(val)			MuleNotify::DoNotify(&MuleNotify::ShowConnState, val)
