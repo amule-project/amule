@@ -97,6 +97,15 @@ enum ESourceFrom {
 	SF_SEARCH_RESULT
 };
 
+enum EChatCaptchaState{
+	CA_NONE				= 0,
+	CA_CHALLENGESENT,
+	CA_CAPTCHASOLVED,
+	CA_ACCEPTING,
+	CA_CAPTCHARECV,
+	CA_SOLUTIONSENT
+};
+
 enum ESecureIdentState{
 	IS_UNAVAILABLE		= 0,
 	IS_ALLREQUESTSSEND	= 0,
@@ -411,6 +420,10 @@ public:
 	//chat
 	uint8		GetChatState()			{ return m_byChatstate; }
 	void		SetChatState(uint8 nNewS)	{ m_byChatstate = nNewS; }
+	EChatCaptchaState GetChatCaptchaState() const					{ return (EChatCaptchaState)m_nChatCaptchaState; }
+	void			SetChatCaptchaState(EChatCaptchaState nNewS)	{ m_nChatCaptchaState = nNewS; }
+	void			ProcessCaptchaRequest(CMemFile* data);
+	void			ProcessCaptchaReqRes(uint8 nStatus);
 
 	//File Comment
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
@@ -788,6 +801,7 @@ private:
 	uint32		bytesReceivedCycle;
 	// chat
 	uint8 		m_byChatstate;
+	uint8		m_nChatCaptchaState;
 	wxString	m_strComment;
 	int8		m_iRating;
 
@@ -808,6 +822,7 @@ private:
 		m_fSupportsCryptLayer: 1,
 		m_fRequiresCryptLayer: 1,
 		m_fSupportsSourceEx2 : 1,
+		m_fSupportsCaptcha	 : 1,
 		m_fDirectUDPCallback : 1;
 
 	unsigned int

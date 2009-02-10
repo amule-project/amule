@@ -155,7 +155,8 @@ void CChatWnd::SendMessage(const wxString& message, const wxString& client_name,
 }
 
 
-void CChatWnd::CheckNewButtonsState() {
+void CChatWnd::CheckNewButtonsState()
+{
 	switch (chatselector->GetPageCount()) {
 			case 0:
 				GetParent()->FindWindow(IDC_CSEND)->Enable(false);
@@ -175,4 +176,17 @@ void CChatWnd::CheckNewButtonsState() {
 				break;
 	}
 }
+
+
+bool CChatWnd::IsIdValid(uint64 id)
+{ 
+	return chatselector->GetTabByClientID(id) >= 0;
+}
+
+
+void CChatWnd::ShowCaptchaResult(uint64 id, bool ok)
+{
+	chatselector->ShowCaptchaResult(id, ok);
+}
+
 // File_checked_for_headers

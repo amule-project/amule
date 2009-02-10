@@ -474,6 +474,16 @@ namespace MuleNotify
 	}
 	
 
+	void ChatSendCaptcha(wxString NOT_ON_DAEMON(captcha), uint64 NOT_ON_DAEMON(to_id))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_chatwnd) {
+			theApp->amuledlg->m_chatwnd->SendMessage(captcha, wxEmptyString, to_id);
+		}
+#endif
+	}
+	
+
 	void ShowConnState(long NOT_ON_DAEMON(state))
 	{
 #ifndef AMULE_DAEMON

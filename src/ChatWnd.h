@@ -54,6 +54,9 @@ public:
 	void 	ConnectionResult(bool success, const wxString& message, uint64 id);
 
 	void	SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
+
+	bool	IsIdValid(uint64 id);
+	void	ShowCaptchaResult(uint64 id, bool ok);
 		
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
