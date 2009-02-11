@@ -2576,9 +2576,6 @@ void CUpDownClient::ProcessCaptchaRequest(CMemFile* data)
 
 			if (imgCaptcha.IsOk() && imgCaptcha.GetHeight() > 10 && imgCaptcha.GetHeight() < 50
 				&& imgCaptcha.GetWidth() > 10 && imgCaptcha.GetWidth() < 150 ) {
-				wxString name(GetConfigDir() + wxT("captcha.bmp"));
-				imgCaptcha.SaveFile(name, wxBITMAP_TYPE_BMP);
-				AddDebugLogLineN(logClient, CFormat(wxT("Saved captcha from (%s) to %s")) % GetFullIP() % name);
 				m_nChatCaptchaState = CA_CAPTCHARECV;
 				CCaptchaDialog * dialog = new CCaptchaDialog(theApp->amuledlg, imgCaptcha, id);
 				dialog->Show();
