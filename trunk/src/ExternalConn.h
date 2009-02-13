@@ -243,6 +243,8 @@ class ECPartFileMsgSource : public ECUpdateMsgSource {
 			bool m_comment_changed;
 			bool m_removed;
 			bool m_finished;
+			bool m_dirty;
+			CPartFile *m_file;
 		} PARTFILE_STATUS;
 		std::map<CMD4Hash, PARTFILE_STATUS> m_dirty_status;
 	public:
@@ -263,7 +265,12 @@ class ECClientMsgSource : public ECUpdateMsgSource {
 };
 
 class ECStatusMsgSource : public ECUpdateMsgSource {
-		bool m_pending;
+		uint32 m_last_ed2k_status_sent;
+		uint32 m_last_kad_status_sent;
+		void *m_server;
+
+		uint32 GetEd2kStatus();
+		uint32 GetKadStatus();
 	public:
 		ECStatusMsgSource();
 		
@@ -282,10 +289,10 @@ class ECNotifier {
 		// designated priority for each type of update
 		//
 		enum EC_SOURCE_PRIO {
-			EC_STATUS = 0,
+			EC_PARTFILE = 0,
 			EC_SEARCH,
-			EC_PARTFILE,
 			EC_CLIENT,
+			EC_STATUS,
 			
 			EC_STATUS_LAST_PRIO
 		};

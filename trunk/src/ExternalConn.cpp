@@ -132,6 +132,8 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 			// Access denied!
 			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
 			m_conn_state = CONN_FAILED;
+		} else {
+			theApp->ECServerHandler->m_ec_notifier->Add_EC_Client(this);
 		}
 	} else {
 		reply = ProcessRequest2(
@@ -144,6 +146,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 void CECServerSocket::OnLost()
 {
 	AddLogLineM(false,_("External connection closed."));
+	theApp->ECServerHandler->m_ec_notifier->Remove_EC_Client(this);
 	DestroySocket();
 }
 
@@ -154,6 +157,8 @@ void CECServerSocket::WriteDoneAndQueueEmpty()
 		if ( packet ) {
 			SendPacket(packet);
 		}
+	} else {
+		//printf("[EC] %p: WriteDoneAndQueueEmpty but notification disabled\n", this);
 	}
 }
 
@@ -269,7 +274,7 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 {
 	CECPacket *response;
-
+	
 	if (request == NULL) {
 		response = new CECPacket(EC_OP_AUTH_FAIL);
 		return response;
@@ -281,7 +286,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 		
 		return new CECPacket(EC_OP_AUTH_FAIL);
 	}
-
+		
 	if ((m_conn_state == CONN_INIT) && (request->GetOpCode() == EC_OP_AUTH_REQ) ) {
 		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
@@ -329,6 +334,8 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 			response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
 		} else {
 			wxString saltHash = MD5Sum(CFormat(wxT("%lX")) % m_passwd_salt).GetHash();
+			wxString saltStr = CFormat(wxT("%lX")) % m_passwd_salt;
+			
 			passh.Decode(MD5Sum(thePrefs::ECPassword().Lower() + saltHash).GetHash());
 			
 			if (passwd && passwd->GetMD4Data() == passh) {
@@ -1545,13 +1552,49 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
  */
 ECStatusMsgSource::ECStatusMsgSource()
 {
+	m_last_ed2k_status_sent = 0xffffffff;
+	m_last_kad_status_sent = 0xffffffff;
+	m_server = (void *)0xffffffff;
+}
+
+uint32 ECStatusMsgSource::GetEd2kStatus()
+{
+	if ( theApp->IsConnectedED2K() ) {
+		return theApp->GetED2KID();
+	} else if ( theApp->serverconnect->IsConnecting() ) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+uint32 ECStatusMsgSource::GetKadStatus()
+{
+	if ( theApp->IsConnectedKad() ) {
+		return 1;
+	} else if ( Kademlia::CKademlia::IsFirewalled() ) {
+		return 2;
+	} else if ( Kademlia::CKademlia::IsRunning() ) {
+		return 3;
+	}
+	return 0;
 }
 
 CECPacket *ECStatusMsgSource::GetNextPacket()
 {
-	CECPacket *response = new CECPacket(EC_OP_STATS);
-	response->AddTag(CEC_ConnState_Tag(EC_DETAIL_UPDATE));
-	return response;
+	if ( (m_last_ed2k_status_sent != GetEd2kStatus()) ||
+		(m_last_kad_status_sent != GetKadStatus()) ||
+		(m_server != theApp->serverconnect->GetCurrentServer()) ) {
+
+		m_last_ed2k_status_sent = GetEd2kStatus();
+		m_last_kad_status_sent = GetKadStatus();
+		m_server = theApp->serverconnect->GetCurrentServer();
+		
+		CECPacket *response = new CECPacket(EC_OP_STATS);
+		response->AddTag(CEC_ConnState_Tag(EC_DETAIL_UPDATE));
+		return response;
+	}
+	return 0;
 }
 
 /*
@@ -1559,9 +1602,9 @@ CECPacket *ECStatusMsgSource::GetNextPacket()
 */
 ECPartFileMsgSource::ECPartFileMsgSource()
 {
-	PARTFILE_STATUS status = { true, false, false, false };
 	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
+		PARTFILE_STATUS status = { true, false, false, false, true, cur_file };
 		m_dirty_status[cur_file->GetFileHash()] = status;
 	}
 }
@@ -1570,20 +1613,15 @@ void ECPartFileMsgSource::SetDirty(CPartFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	if ( m_dirty_status.find(filehash) != m_dirty_status.end() ) {
-		//
-		// entry already present, meaning "dirty" flag is set
-		//
-		return ;
+		m_dirty_status[filehash].m_dirty = true;;
 	}
-	PARTFILE_STATUS status = { false, false, false, false };
-	m_dirty_status[filehash] = status;
 }
 
 void ECPartFileMsgSource::SetNew(CPartFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	wxASSERT ( m_dirty_status.find(filehash) == m_dirty_status.end() );
-	PARTFILE_STATUS status = { true, false, false, false };
+	PARTFILE_STATUS status = { true, false, false, false, true, file };
 	m_dirty_status[filehash] = status;
 }
 
@@ -1605,21 +1643,29 @@ void ECPartFileMsgSource::SetRemoved(CPartFile *file)
 
 CECPacket *ECPartFileMsgSource::GetNextPacket()
 {
-	if ( m_dirty_status.empty() ) {
-		return 0;
+	for(std::map<CMD4Hash, PARTFILE_STATUS>::iterator it = m_dirty_status.begin();
+		it != m_dirty_status.end(); it++) {
+		if ( it->second.m_new || it->second.m_dirty || it->second.m_removed) {
+			CMD4Hash filehash = it->first;
+			
+			CPartFile *partfile = it->second.m_file;
+
+			CECPacket *packet = new CECPacket(EC_OP_DLOAD_QUEUE);
+			if ( it->second.m_removed ) {
+				CECTag tag(EC_TAG_PARTFILE, filehash);
+				packet->AddTag(tag);
+				m_dirty_status.erase(it);
+			} else {
+				CEC_PartFile_Tag tag(partfile, it->second.m_new ? EC_DETAIL_FULL : EC_DETAIL_UPDATE);
+				packet->AddTag(tag);
+			}
+			m_dirty_status[filehash].m_new = false;
+			m_dirty_status[filehash].m_dirty = false;
+
+			return packet;
+		}
 	}
-	std::map<CMD4Hash, PARTFILE_STATUS>::iterator it = m_dirty_status.begin();
-	CMD4Hash filehash = it->first;
-	
-	CPartFile *partfile = theApp->downloadqueue->GetFileByID(filehash);
-	
-	CECPacket *packet = new CECPacket(EC_OP_DLOAD_QUEUE);
-	CEC_PartFile_Tag tag(partfile, EC_DETAIL_UPDATE);
-	packet->AddTag(tag);
-	
-	m_dirty_status.erase(it);
-	
-	return packet;
+	return 0;
 }
 
 /*
@@ -1665,16 +1711,21 @@ CECPacket *ECNotifier::GetNextPacket(ECUpdateMsgSource *msg_source_array[])
 
 CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
 {
-	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
 	//
 	// OnOutput is called for a first time before
 	// socket is registered
 	// 
-	if ( !notifier_array ) {
+	if ( m_msg_source.count(sock) ) {
+		ECUpdateMsgSource **notifier_array = m_msg_source[sock];
+		if ( !notifier_array ) {
+			return 0;
+		}
+		CECPacket *packet = GetNextPacket(notifier_array);
+		printf("[EC] next update packet; opcode=%x\n",packet ? packet->GetOpCode() : 0xff);
+		return packet;
+	} else {
 		return 0;
 	}
-	CECPacket *packet = GetNextPacket(notifier_array);
-	return packet;
 }
 
 //
@@ -1684,8 +1735,11 @@ void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); i++) {
-		ECUpdateMsgSource **notifier_array = i->second;
-		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetDirty(file);
+		CECServerSocket *sock = i->first;
+		if ( sock->HaveNotificationSupport() ) {
+			ECUpdateMsgSource **notifier_array = i->second;
+			((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetDirty(file);
+		}
 	}
 	NextPacketToSocket();
 }
@@ -1697,6 +1751,7 @@ void ECNotifier::DownloadFile_RemoveFile(CPartFile *file)
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetRemoved(file);
 	}
+	NextPacketToSocket();
 }
 
 void ECNotifier::DownloadFile_RemoveSource(CPartFile *)
@@ -1711,6 +1766,7 @@ void ECNotifier::DownloadFile_AddFile(CPartFile *file)
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetNew(file);
 	}
+	NextPacketToSocket();
 }
 
 void ECNotifier::DownloadFile_AddSource(CPartFile *)
@@ -1748,7 +1804,10 @@ void ECNotifier::NextPacketToSocket()
 		if ( sock->HaveNotificationSupport() && !sock->DataPending() ) {
 			ECUpdateMsgSource **notifier_array = i->second;
 			CECPacket *packet = GetNextPacket(notifier_array);
-			sock->SendPacket(packet);
+			if ( packet ) {
+				printf("[EC] sending update packet; opcode=%x\n",packet->GetOpCode());
+				sock->SendPacket(packet);
+			}
 		}
 	}
 }

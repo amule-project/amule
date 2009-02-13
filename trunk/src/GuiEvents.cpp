@@ -6,6 +6,7 @@
 #include "updownclient.h"
 #include "ServerList.h"
 #include "Preferences.h"
+#include "ExternalConn.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -79,8 +80,11 @@ namespace MuleNotify
 	}
 
 	
-	void DownloadCtrlUpdateItem(const void* NOT_ON_DAEMON(item))
+	void DownloadCtrlUpdateItem(const void* item)
 	{
+#ifndef CLIENT_GUI
+		theApp->ECServerHandler->m_ec_notifier->DownloadFile_SetDirty((CPartFile *)item);
+#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
@@ -224,8 +228,11 @@ namespace MuleNotify
 	}
 
 
-	void DownloadCtrlAddFile(CPartFile* NOT_ON_DAEMON(file))
+	void DownloadCtrlAddFile(CPartFile* file)
 	{
+#ifndef CLIENT_GUI
+		theApp->ECServerHandler->m_ec_notifier->DownloadFile_AddFile(file);
+#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -244,8 +251,11 @@ namespace MuleNotify
 #endif
 	}
 	
-	void DownloadCtrlRemoveFile(CPartFile* NOT_ON_DAEMON(file))
+	void DownloadCtrlRemoveFile(CPartFile* file)
 	{
+#ifndef CLIENT_GUI
+		theApp->ECServerHandler->m_ec_notifier->DownloadFile_RemoveFile(file);
+#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
