@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-02 09:45+0100\n"
+"POT-Creation-Date: 2009-02-16 15:35+0100\n"
 "PO-Revision-Date: 2008-08-06 16:07+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -544,8 +544,8 @@ msgstr ""
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:508 src/KadDlg.cpp:177 src/PartFile.cpp:910
-#: src/PartFile.cpp:918 src/PrefsUnifiedDlg.cpp:554
+#: src/amuleDlg.cpp:508 src/KadDlg.cpp:177 src/PartFile.cpp:919
+#: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:554
 #: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
 msgid "Message"
 msgstr "Сообщение"
@@ -807,16 +807,16 @@ msgstr "Все"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Всего польз.: %s | Всего файлов: %s"
 
-#: src/BaseClient.cpp:1306
+#: src/BaseClient.cpp:1322
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Не удалось получить список доступных файлов от '%s'"
 
-#: src/BaseClient.cpp:1521
+#: src/BaseClient.cpp:1537
 msgid "Searching buddy for lowid connection"
 msgstr ""
 
-#: src/BaseClient.cpp:1718 src/BaseClient.cpp:2242 src/BaseClient.cpp:2517
+#: src/BaseClient.cpp:1734 src/BaseClient.cpp:2258 src/BaseClient.cpp:2534
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -824,43 +824,43 @@ msgstr ""
 #: src/ClientListCtrl.cpp:891 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1429 src/DownloadListCtrl.cpp:1442
-#: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:290
-#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:81 src/KnownFile.cpp:894
-#: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2500
-#: src/PartFile.cpp:2506 src/Server.cpp:156 src/Server.cpp:231
+#: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:295
+#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:894
+#: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2509
+#: src/PartFile.cpp:2515 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:703 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: src/BaseClient.cpp:1735
+#: src/BaseClient.cpp:1751
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Поддельная версия eMule %#x)"
 
-#: src/BaseClient.cpp:1746
+#: src/BaseClient.cpp:1762
 msgid " (Fake eMule)"
 msgstr " (имитация eMule)"
 
-#: src/BaseClient.cpp:1748
+#: src/BaseClient.cpp:1764
 msgid "xMule (Fake eMule)"
 msgstr "xMule (имитация eMule)"
 
-#: src/BaseClient.cpp:1787
+#: src/BaseClient.cpp:1803
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (на основе eMule v0.%u)"
 
-#: src/BaseClient.cpp:1957
+#: src/BaseClient.cpp:1973
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Псевдоним: %s ID: %u"
 
-#: src/BaseClient.cpp:1959
+#: src/BaseClient.cpp:1975
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Запрошено: %s\n"
 
-#: src/BaseClient.cpp:1961
+#: src/BaseClient.cpp:1977
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -872,7 +872,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
 
-#: src/BaseClient.cpp:1964
+#: src/BaseClient.cpp:1980
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -884,14 +884,18 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
 
-#: src/BaseClient.cpp:1967
+#: src/BaseClient.cpp:1983
 msgid "Requested unknown file"
 msgstr "Запрошен неизвестный файл"
 
-#: src/BaseClient.cpp:2241
+#: src/BaseClient.cpp:2257
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Клиент %s на IP:порт %s:%d используя %s %s %s"
+
+#: src/CaptchaDialog.cpp:44
+msgid "Enter Captcha"
+msgstr ""
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -926,17 +930,29 @@ msgstr ""
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr "Сеанс чата запущен: %s (%s:%u) - %s %s"
 
-#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:297
 msgid "*** Connected to Client ***"
 msgstr "*** Соединен с клиентом ***"
 
-#: src/ChatSelector.cpp:249
+#: src/ChatSelector.cpp:260
 msgid "*** Connecting to Client ***"
 msgstr "*** Соединение с клиентом ***"
 
-#: src/ChatSelector.cpp:280
+#: src/ChatSelector.cpp:291
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Не удалость соединиться с клиентом / Соединение разорвано ***"
+
+#: src/ChatSelector.cpp:344
+msgid ""
+"*** You have passed the captcha check and the user has received your "
+"message. ***"
+msgstr ""
+
+#: src/ChatSelector.cpp:345
+msgid ""
+"*** Your response to the captcha was wrong and your message has been "
+"ignored. You can request a new captcha by sending a new message. ***"
+msgstr ""
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1115,7 +1131,7 @@ msgid "Upload Time"
 msgstr "Время загрузки"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3751 src/SearchListCtrl.cpp:93
+#: src/PartFile.cpp:3752 src/SearchListCtrl.cpp:93
 msgid "Status"
 msgstr "Состояние"
 
@@ -1497,7 +1513,7 @@ msgid "Progress"
 msgstr "Выполнено"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3749 src/SearchListCtrl.cpp:90
+#: src/PartFile.cpp:3750 src/SearchListCtrl.cpp:90
 msgid "Sources"
 msgstr "Источники"
 
@@ -1709,54 +1725,54 @@ msgstr[0] "Найден %u частично закаченный файл"
 msgstr[1] "Найдено %u частично закаченных файла"
 msgstr[2] "Найдено %u частично закаченных файлов"
 
-#: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1382
+#: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1389
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 "Файловая система каталога временных файлов не поддерживает файлы больших "
 "размеров"
 
-#: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1385
+#: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1392
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Файловая система каталога принятых файлов не поддерживает файлы больших "
 "размеров"
 
-#: src/DownloadQueue.cpp:334
+#: src/DownloadQueue.cpp:337
 #, c-format
 msgid "Downloading %s"
 msgstr "Приём %s"
 
-#: src/DownloadQueue.cpp:342
+#: src/DownloadQueue.cpp:345
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Вы уже загружаете файл '%s'"
 
-#: src/DownloadQueue.cpp:354
+#: src/DownloadQueue.cpp:357
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "У вас уже есть файл '%s'"
 
-#: src/DownloadQueue.cpp:359
+#: src/DownloadQueue.cpp:362
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Вы уже пытаетесь загрузить файл %s"
 
-#: src/DownloadQueue.cpp:1042
+#: src/DownloadQueue.cpp:1049
 #, fuzzy
 msgid "Failed to open ED2KLinks file."
 msgstr "Не удалось открыть %s (%s)"
 
-#: src/DownloadQueue.cpp:1316
+#: src/DownloadQueue.cpp:1323
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Не удается преобразовать magnet-ссылку в eD2k: %s"
 
-#: src/DownloadQueue.cpp:1324
+#: src/DownloadQueue.cpp:1331
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Неизвестный протокол ссылки: %s"
 
-#: src/DownloadQueue.cpp:1345
+#: src/DownloadQueue.cpp:1352
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Неверная eD2k ссылка! ОШИБКА: %s"
@@ -1770,40 +1786,40 @@ msgstr "Ошибка идентификации."
 msgid "Unauthorized access attempt. Connection closed."
 msgstr "Попытка неавторизированного доступа. Соединение разорвано."
 
-#: src/ExternalConn.cpp:146
+#: src/ExternalConn.cpp:148
 msgid "External connection closed."
 msgstr "Внешнее соединение закрыто."
 
-#: src/ExternalConn.cpp:182
+#: src/ExternalConn.cpp:187
 msgid "External connections disabled due to empty password!"
 msgstr "Внешние соединения выключены из-за отсутствия пароля."
 
-#: src/ExternalConn.cpp:207
+#: src/ExternalConn.cpp:212
 msgid "External connections disabled in config file"
 msgstr "Внешние соединения выключены в конфигурационном файле"
 
-#: src/ExternalConn.cpp:258
+#: src/ExternalConn.cpp:263
 msgid "New external connection accepted"
 msgstr "Принято новое внешнее соединение"
 
-#: src/ExternalConn.cpp:261
+#: src/ExternalConn.cpp:266
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ОШИБКА: невозможно принять новое внешнее соединение"
 
-#: src/ExternalConn.cpp:280
+#: src/ExternalConn.cpp:285
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Отказано во внешнем соединении из-за пустого пароля"
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:294
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Соединение с клиентом: %s %s"
 
-#: src/ExternalConn.cpp:291
+#: src/ExternalConn.cpp:296
 msgid "Unknown version"
 msgstr "Неизвестная версия"
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:306
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1811,7 +1827,7 @@ msgstr ""
 "Неверный идентификатор версии ВС. Возможна бинарная несовместимость. "
 "Используйте ядро и компонент удаленного доступа одинаковой версии."
 
-#: src/ExternalConn.cpp:306
+#: src/ExternalConn.cpp:311
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -1819,142 +1835,142 @@ msgstr ""
 "Вы не можете подсоединиться к релизной версии с произвольной SVN версии! "
 "Возможный сбой предотвращен"
 
-#: src/ExternalConn.cpp:316
+#: src/ExternalConn.cpp:321
 msgid "Invalid protocol version."
 msgstr "Недопустимая версия протокола."
 
-#: src/ExternalConn.cpp:320
+#: src/ExternalConn.cpp:325
 msgid "Missing protocol version tag."
 msgstr "Тег версии протокола отсутствует."
 
-#: src/ExternalConn.cpp:345
+#: src/ExternalConn.cpp:352
 msgid "Authentication failed."
 msgstr "Ошибка идентификации."
 
-#: src/ExternalConn.cpp:350
+#: src/ExternalConn.cpp:357
 #, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Неверный запрос, сначала пройдите идентификацию."
 
-#: src/ExternalConn.cpp:355
+#: src/ExternalConn.cpp:362
 msgid "Access granted."
 msgstr "Доступ получен."
 
-#: src/ExternalConn.cpp:651
+#: src/ExternalConn.cpp:658
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Удаленная команда PartFile не удалась: хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:653
+#: src/ExternalConn.cpp:660
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:716 src/ExternalConn.cpp:800
+#: src/ExternalConn.cpp:723 src/ExternalConn.cpp:807
 msgid "OOPS! OpCode processing error!"
 msgstr "Ошибка при выполнении OpCode."
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:753
 msgid "Server not added"
 msgstr "Сервер не добавлен"
 
-#: src/ExternalConn.cpp:764
+#: src/ExternalConn.cpp:771
 #, c-format
 msgid "server not found: %s"
 msgstr "сервер не найден: %s"
 
-#: src/ExternalConn.cpp:780
+#: src/ExternalConn.cpp:787
 msgid "need to define server to be removed"
 msgstr "необходимо выделить сервер для удаления"
 
-#: src/ExternalConn.cpp:794
+#: src/ExternalConn.cpp:801
 msgid "eD2k is disabled in preferences."
 msgstr "Сеть eD2k отключена в настройках"
 
-#: src/ExternalConn.cpp:890
+#: src/ExternalConn.cpp:897
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Поиск запущен. Ждите результатов."
 
 # Explained by Jacobo221.
-#: src/ExternalConn.cpp:895
+#: src/ExternalConn.cpp:902
 msgid "WebSearch from remote interface makes no sense."
 msgstr "При удаленном использовании aMule WWW поиск бесполезен."
 
-#: src/ExternalConn.cpp:946
+#: src/ExternalConn.cpp:953
 msgid "Kad is disabled in preferences."
 msgstr "Kad выключена в настройках."
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1112
 msgid "No points for graph."
 msgstr "В графике нет точек."
 
-#: src/ExternalConn.cpp:1114
+#: src/ExternalConn.cpp:1121
 msgid "Your client is not configured for this detail level."
 msgstr "Ваш клиент не настроен на этот уровень детализации."
 
-#: src/ExternalConn.cpp:1142
+#: src/ExternalConn.cpp:1149
 msgid "External Connection: shutdown requested"
 msgstr "Внешнее соединение: запрошено выключение"
 
-#: src/ExternalConn.cpp:1154
+#: src/ExternalConn.cpp:1161
 msgid "Already shutting down."
 msgstr "Уже завершаю работу."
 
-#: src/ExternalConn.cpp:1162
+#: src/ExternalConn.cpp:1169
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: добавляю ссылку '%s'."
 
-#: src/ExternalConn.cpp:1168
+#: src/ExternalConn.cpp:1175
 msgid "Invalid link or already on list."
 msgstr "Ссылка неверна или уже в списке."
 
-#: src/ExternalConn.cpp:1254
+#: src/ExternalConn.cpp:1261
 msgid "File not found."
 msgstr "Файл не найден."
 
-#: src/ExternalConn.cpp:1259
+#: src/ExternalConn.cpp:1266
 msgid "Invalid file name."
 msgstr "Неверное имя файла."
 
-#: src/ExternalConn.cpp:1267
+#: src/ExternalConn.cpp:1274
 msgid "Unable to rename file."
 msgstr "Невозможно переименовать файл."
 
-#: src/ExternalConn.cpp:1491
+#: src/ExternalConn.cpp:1498
 msgid "Already connected to eD2k."
 msgstr "Уже подсоединен к сети eD2k."
 
-#: src/ExternalConn.cpp:1494
+#: src/ExternalConn.cpp:1501
 msgid "Connecting to eD2k..."
 msgstr "Подсоединение к сети eD2k..."
 
-#: src/ExternalConn.cpp:1502
+#: src/ExternalConn.cpp:1509
 msgid "Already connected to Kad."
 msgstr "Уже подключен к Kad."
 
-#: src/ExternalConn.cpp:1505
+#: src/ExternalConn.cpp:1512
 msgid "Connecting to Kad..."
 msgstr "Подключаюсь к Kad..."
 
-#: src/ExternalConn.cpp:1510
+#: src/ExternalConn.cpp:1517
 msgid "All networks are disabled."
 msgstr "Все сети выключены."
 
-#: src/ExternalConn.cpp:1518
+#: src/ExternalConn.cpp:1525
 msgid "Disconnected from eD2k."
 msgstr "Отсоединен от сети eD2k."
 
-#: src/ExternalConn.cpp:1522
+#: src/ExternalConn.cpp:1529
 msgid "Disconnected from Kad."
 msgstr "Отключен от Kad."
 
-#: src/ExternalConn.cpp:1530
+#: src/ExternalConn.cpp:1537
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Внешнее соединение: получен неверный код операции: %#x"
 
-#: src/ExternalConn.cpp:1533
+#: src/ExternalConn.cpp:1540
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Неверный opcode (Возможно, не та версия протокола)"
 
@@ -2232,16 +2248,16 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Множественный выбор"
 
-#: src/HTTPDownload.cpp:55
+#: src/HTTPDownload.cpp:56
 msgid "Downloading..."
 msgstr "Принимается..."
 
-#: src/HTTPDownload.cpp:75
+#: src/HTTPDownload.cpp:76
 #, c-format
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/HTTPDownload.cpp:107
+#: src/HTTPDownload.cpp:108
 msgid "HTTP download cancelled"
 msgstr ""
 
@@ -2259,28 +2275,28 @@ msgstr "Загрузки (%i)"
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr ""
 
-#: src/HTTPDownload.cpp:250
+#: src/HTTPDownload.cpp:249
 msgid "HTTP download thread ended"
 msgstr ""
 
-#: src/HTTPDownload.cpp:330
+#: src/HTTPDownload.cpp:329
 #, c-format
 msgid "Host: %s:%i\n"
 msgstr ""
 
-#: src/HTTPDownload.cpp:332
+#: src/HTTPDownload.cpp:331
 #, c-format
 msgid "Response: %i (Error: %i)"
 msgstr ""
 
-#: src/HTTPDownload.cpp:335
+#: src/HTTPDownload.cpp:334
 #, fuzzy
 msgid "WARNING: Void response on stream creation"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: не удалось удалить оригинал '%s' после создания резервной "
 "копии."
 
-#: src/HTTPDownload.cpp:359
+#: src/HTTPDownload.cpp:358
 msgid "ERROR: Redirection code received with no URL"
 msgstr ""
 
@@ -2477,35 +2493,35 @@ msgstr "Ошибка ввода/вывода при чтении файла know
 msgid "Error while saving known.met file: %s"
 msgstr "Ошибка при сохранении файла known.met: %s"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3681
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3682
 msgid "Hashing"
 msgstr "Хешируется"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3687
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3688
 msgid "Completing"
 msgstr "Завершается"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3690
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3691
 msgid "Complete"
 msgstr "Завершён"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:701
-#: src/PartFile.cpp:3693 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3694 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Приостановлен"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:700
-#: src/PartFile.cpp:3696 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3697 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Ошибочный"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:699
-#: src/PartFile.cpp:3703 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3704 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Загружается"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:698
-#: src/PartFile.cpp:3705 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3706 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Ожидает"
 
@@ -4549,7 +4565,7 @@ msgstr "все остальные"
 msgid "Incomplete"
 msgstr "Незавершенные"
 
-#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3710 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3711 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Остановлен"
 
@@ -4680,92 +4696,92 @@ msgstr "Удалить исходные файлы?"
 msgid "%s (Disk: %s)"
 msgstr "%s (Диск: %s)"
 
-#: src/PartFile.cpp:285
+#: src/PartFile.cpp:294
 msgid "ERROR: Failed to create partfile)"
 msgstr "ОШИБКА: невозможно создать part-файл)"
 
-#: src/PartFile.cpp:323
+#: src/PartFile.cpp:332
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Попытка загрузки резервной копии файла '.met'  из %s"
 
-#: src/PartFile.cpp:330
+#: src/PartFile.cpp:339
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
 msgstr "ОШИБКА: не удалось открыть файл part.met: %s ==> %s"
 
-#: src/PartFile.cpp:336
+#: src/PartFile.cpp:345
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
 msgstr "ОШИБКА: файл part.met пуст: %s ==> %s"
 
-#: src/PartFile.cpp:347
+#: src/PartFile.cpp:356
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "ОШИБКА: неверная версия файла part.met: %s ==> %s"
 
-#: src/PartFile.cpp:597
+#: src/PartFile.cpp:606
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "ОШИБКА: %s (%s) поврежден (неверное число тегов), невозможно открыть файл."
 
-#: src/PartFile.cpp:600
+#: src/PartFile.cpp:609
 msgid "Trying to recover file info..."
 msgstr "Попытка восстановления информации о файле..."
 
-#: src/PartFile.cpp:615
+#: src/PartFile.cpp:624
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Восстановление безымянного файла - попытка восстановить его как "
 "'RecoveredFile.dat'"
 
-#: src/PartFile.cpp:620
+#: src/PartFile.cpp:629
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "Восстановлена вся возможная информация о файлах ;-))) Попытаемся ее "
 "использовать..."
 
-#: src/PartFile.cpp:622
+#: src/PartFile.cpp:631
 msgid "Unable to recover file info :("
 msgstr "Не удалось восстановить информацию о файлах :("
 
-#: src/PartFile.cpp:657
+#: src/PartFile.cpp:666
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Не удалось открыть %s (%s)"
 
-#: src/PartFile.cpp:705
+#: src/PartFile.cpp:714
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: %s возможно поврежден (%i)"
 
-#: src/PartFile.cpp:887
+#: src/PartFile.cpp:896
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "Ошибка сохранения part-файла: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:894
+#: src/PartFile.cpp:903
 #, fuzzy
 msgid "IO failure while saving partfile: "
 msgstr "Ошибка сохранения part-файла: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:907
+#: src/PartFile.cpp:916
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "Невозможно получить длину '%s' - используется файл %s"
 
-#: src/PartFile.cpp:915
+#: src/PartFile.cpp:924
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "Файл '%s' имеет размер в ноль байт - используется %s."
 
-#: src/PartFile.cpp:986
+#: src/PartFile.cpp:995
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Не удалось сохранить файл 'part.met.seeds' для %s"
 
-#: src/PartFile.cpp:1012
+#: src/PartFile.cpp:1021
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
@@ -4773,22 +4789,22 @@ msgstr[0] "Сохранен %i источник для файла %s (%s)"
 msgstr[1] "Сохранено %i источника для файла %s (%s)"
 msgstr[2] "Сохранено %i источников для файла %s (%s)"
 
-#: src/PartFile.cpp:1041
+#: src/PartFile.cpp:1050
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Файл %s (%s) не имеет сохранённых источников"
 
-#: src/PartFile.cpp:1050
+#: src/PartFile.cpp:1059
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Файл %s (%s) не имеет сохранённых источников"
 
-#: src/PartFile.cpp:1106
+#: src/PartFile.cpp:1115
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Ошибка при чтении источников частично загруженного файла (%s - %s): %s"
 
-#: src/PartFile.cpp:1124 src/PartFile.cpp:1154
+#: src/PartFile.cpp:1133 src/PartFile.cpp:1163
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4806,39 +4822,39 @@ msgstr[2] ""
 "Найдена испорченная часть (%d) в %d частях файла %s - FileResultHash |%s| "
 "FileHash |%s|"
 
-#: src/PartFile.cpp:1169
+#: src/PartFile.cpp:1178
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Найдена завершённая часть (%i) в %s"
 
-#: src/PartFile.cpp:1202
+#: src/PartFile.cpp:1211
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Завершено повторное хеширование %s"
 
-#: src/PartFile.cpp:2124
+#: src/PartFile.cpp:2133
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Неожиданная ошибка во время завершения %s. Файл приостановлен."
 
-#: src/PartFile.cpp:2151
+#: src/PartFile.cpp:2160
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Загрузка завершена: %s"
 
-#: src/PartFile.cpp:2208
+#: src/PartFile.cpp:2217
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Удаление файла: %s"
 
-#: src/PartFile.cpp:2268
+#: src/PartFile.cpp:2277
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: Не удается схэшировать загруженную часть - хэш-набор неполон "
 "для '%s'"
 
-#: src/PartFile.cpp:2273
+#: src/PartFile.cpp:2282
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4847,36 +4863,36 @@ msgstr ""
 "ОШИБКА: Не удается схэшировать загруженную часть - хэш-набор неполон (%s). "
 "Это никогда не должно происходить"
 
-#: src/PartFile.cpp:2955
+#: src/PartFile.cpp:2960
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: не достаточно свободного места на диске. Файл приостановлен: "
 "%s"
 
-#: src/PartFile.cpp:3027
+#: src/PartFile.cpp:3028
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Загруженная часть %i повреждена: %s"
 
-#: src/PartFile.cpp:3073
+#: src/PartFile.cpp:3074
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Восстановлена повреждённая часть %i для %s -> Выигрыш: %s Б"
 
-#: src/PartFile.cpp:3683
+#: src/PartFile.cpp:3684
 msgid "Allocating"
 msgstr "Выделяется место"
 
-#: src/PartFile.cpp:3699
+#: src/PartFile.cpp:3700
 msgid "Insufficient disk space"
 msgstr "Недостаточно места на диске"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3749
 msgid "Downloaded"
 msgstr "Загружено"
 
-#: src/PartFile.cpp:3962
+#: src/PartFile.cpp:3963
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ОШИБКА: не удалось открыть частично закаченный '%s'"
