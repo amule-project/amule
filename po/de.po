@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-16 15:35+0100\n"
-"PO-Revision-Date: 2008-12-28 22:26+0100\n"
+"PO-Revision-Date: 2009-02-19 15:24+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -678,7 +678,7 @@ msgstr "Datentransfer - Zeigt Up- und Downloads, Warteschlangen usw."
 
 #: src/amuleDlg.cpp:1336
 msgid "Shared files"
-msgstr "Freigegebenen Dateien"
+msgstr "Freigegebene Dateien"
 
 #: src/amuleDlg.cpp:1338
 msgid "Shared files window"
@@ -883,7 +883,7 @@ msgstr "Client %s auf IP:Port %s:%d benutzt %s %s %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Captcha eingeben"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -935,12 +935,16 @@ msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
 msgstr ""
+"*** Captcha-Überprüfung bestanden, Nachricht wurde vom Benutzer empfangen. "
+"***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Falsche Antwort zum Captcha, Nachricht wurde ignoriert. Bitte eine neue "
+"Nachrichte senden um ein neues Captcha anzufordern. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1535,7 +1539,7 @@ msgstr "Letzter Empfang"
 
 #: src/DownloadListCtrl.cpp:584
 msgid "Are you sure that you wish to delete the selected file?"
-msgstr "Wirklich die ausgewählte Dateie löschen?"
+msgstr "Wirklich die ausgewählte Datei löschen?"
 
 #: src/DownloadListCtrl.cpp:586
 msgid "Are you sure that you wish to delete the selected files?"
@@ -1771,9 +1775,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Ungültiger eD2k-Link! Fehler: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Authentifizierung fehlgeschlagen."
+msgstr "Client sendete Paket nach fehlgeschlagener Authentifizierung."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1842,9 +1845,8 @@ msgid "Authentication failed."
 msgstr "Authentifizierung fehlgeschlagen."
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
-msgstr "Ungültige Anfrage, Du solltest Dich zuerst authentifizieren."
+msgstr "Ungültige Anfrage, bitte zuerst authentifizieren."
 
 #: src/ExternalConn.cpp:362
 msgid "Access granted."
@@ -2538,9 +2540,10 @@ msgid "EC connection failed. Empty reply."
 msgstr "EC-Verbindung fehlgeschlagen. Leere Antwort."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Externe Verbindungen: Falsche Antwort vom Server. Verbindung beendet."
+msgstr ""
+"Externe Verbindungen: Falsche Antwort, Verhandlung fehlgeschlagen. "
+"Verbindung beendet."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2555,9 +2558,8 @@ msgid "External Connection: Access denied because: "
 msgstr "Externe Verbindungen: Zugriff verweigert wegen:"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Externe Verbindungen: Zugriff verweigert"
+msgstr "Externe Verbindungen: Verhandlung fehlgeschlagen."
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
@@ -3246,7 +3248,7 @@ msgstr "Aktuell"
 
 #: src/muuli_wdr.cpp:1209 src/muuli_wdr.cpp:1258 src/muuli_wdr.cpp:2813
 msgid "Running average"
-msgstr "Läuft im Schnitt"
+msgstr "gleitender Mittelwert"
 
 #: src/muuli_wdr.cpp:1220 src/muuli_wdr.cpp:1269 src/muuli_wdr.cpp:2824
 msgid "Session average"
