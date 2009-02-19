@@ -944,7 +944,7 @@ msgid ""
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
 "*** Falsche Antwort zum Captcha, Nachricht wurde ignoriert. Bitte eine neue "
-"Nachrichte senden um ein neues Captcha anzufordern. ***"
+"Nachricht senden um ein neues Captcha anzufordern. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
