@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-16 15:35+0100\n"
-"PO-Revision-Date: 2009-01-25 10:06+0200\n"
+"PO-Revision-Date: 2009-02-21 10:05+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -873,7 +873,7 @@ msgstr "Klient %s IP:Port %s:%d kasutab %s %s %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Sisesta inimtesti kontrollkood"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -923,13 +923,15 @@ msgstr "*** Kliendiga ühendumine ebaõnnestus / Ühendus kadunud ***"
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** Läbisid inimtesti ja kasutaja sai sinu sõnumi kätte. ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Sinu vastus inimtestile oli vale, sinu sõnumit ignoreeriti. Inimtesti "
+"uuesti läbimiseks saada uus sõnbum. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1745,9 +1747,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Vigane eD2k link! VIGA: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Autoriserimine ebaõnnestus"
+msgstr "Klient saatis paketi peale ebaõnnestunud autoriseerimist."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1815,7 +1816,6 @@ msgid "Authentication failed."
 msgstr "Autoriserimine ebaõnnestus"
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Vigane päring, alustuseks pead ennast autoriseerima."
 
@@ -2499,9 +2499,8 @@ msgid "EC connection failed. Empty reply."
 msgstr "EC ühendus ebaõnnestus. Tühi vastus."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Väline Ühendus: Serveri vastus vigane. Ühendus suletud."
+msgstr "Väline Ühendus: Vigane vastus, kätlemine ebaõnnestus. Ühendus suletud."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2516,9 +2515,8 @@ msgid "External Connection: Access denied because: "
 msgstr "Väline Ühendus: Ligipääs keelatud sest: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Väline Ühendus: Ligipääs keelatud"
+msgstr "Väline Ühendus: Kätlemine ebaõnnestus."
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
@@ -4379,7 +4377,7 @@ msgstr "Pea need seaded meeles"
 
 #: src/muuli_wdr.cpp:3294
 msgid "Enable Verbose Debug-Logging."
-msgstr "Võimalda inimkeelne Veajälitus-Logimine"
+msgstr "Võimalda inimkieelne Veajälitus-Logimine"
 
 #: src/muuli_wdr.cpp:3297
 msgid "Message Categories:"
@@ -5388,7 +5386,7 @@ msgstr "VIGA: Vigane socket aegumise kontrollil"
 #: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
-msgstr "Katse serveriga %s (%s:%i) ühenduda aegus."
+msgstr "Serveriga '%s (%s:%i)' ühendumise katsed aegusid."
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
@@ -7453,4 +7451,4 @@ msgstr "Nõuti väljalogimist\n"
 
 #: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
-msgstr "Töötlen päringut [ümbersuunatud]:"
+msgstr "Töötlen päringut [ümbersuunatud]: "
