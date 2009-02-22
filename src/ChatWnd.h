@@ -57,6 +57,7 @@ public:
 
 	bool	IsIdValid(uint64 id);
 	void	ShowCaptchaResult(uint64 id, bool ok);
+	void	EndSession(uint64 id);
 		
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);

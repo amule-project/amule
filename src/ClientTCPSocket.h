@@ -82,7 +82,6 @@ private:
 	bool	ProcessPacket(const byte* packet, uint32 size, uint8 opcode);
 	bool	ProcessExtPacket(const byte* packet, uint32 size, uint8 opcode);
 	bool	ProcessED2Kv2Packet(const byte* packet, uint32 size, uint8 opcode);
-	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
 	void	ResetTimeOutTimer();
 	void	SetClient(CUpDownClient* client);
 

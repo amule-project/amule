@@ -316,7 +316,7 @@ public:
 	 *
 	 * @return Success
 	 */
-	 bool	SendMessage(uint64 client_id, const wxString& message);
+	 bool	SendChatMessage(uint64 client_id, const wxString& message);
 	 
 	/**
 	 * Stops a chat session with a client.

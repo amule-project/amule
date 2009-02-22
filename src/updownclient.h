@@ -424,6 +424,15 @@ public:
 	void			SetChatCaptchaState(EChatCaptchaState nNewS)	{ m_nChatCaptchaState = nNewS; }
 	void			ProcessCaptchaRequest(CMemFile* data);
 	void			ProcessCaptchaReqRes(uint8 nStatus);
+	void			ProcessChatMessage(wxString message);
+	// message filtering
+	uint8			GetMessagesReceived() const						{ return m_cMessagesReceived; }
+	void			IncMessagesReceived()							{ m_cMessagesReceived < 255 ? ++m_cMessagesReceived : 255; }
+	uint8			GetMessagesSent() const							{ return m_cMessagesSent; }
+	void			IncMessagesSent()								{ m_cMessagesSent < 255 ? ++m_cMessagesSent : 255; }
+	bool			IsSpammer() const								{ return m_fIsSpammer; }
+	void			SetSpammer(bool bVal);
+	bool			IsMessageFiltered(const wxString& message);
 
 	//File Comment
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
@@ -527,7 +536,7 @@ public:
 	 *
 	 * @return True if sent, false if connecting
 	 */
-	bool	SendMessage(const wxString& message);
+	bool	SendChatMessage(const wxString& message);
 
 	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
 	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
@@ -800,10 +809,15 @@ private:
 	uint32		msReceivedPrev;
 	uint32		bytesReceivedCycle;
 	// chat
+	wxString	m_strComment;
 	uint8 		m_byChatstate;
 	uint8		m_nChatCaptchaState;
-	wxString	m_strComment;
+	uint8		m_cCaptchasSent;
 	int8		m_iRating;
+	uint8		m_cMessagesReceived;		// count of chatmessages he sent to me
+	uint8		m_cMessagesSent;			// count of chatmessages I sent to him
+	wxString	m_strCaptchaChallenge;
+	wxString	m_strCaptchaPendingMsg;
 
 	unsigned int
 		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
@@ -811,6 +825,7 @@ private:
 					  // if this flag is not set, we just know that we don't know 
 					  // for sure if it is enabled
 		m_fSupportsPreview   : 1,
+		m_fIsSpammer		 : 1,
 		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,

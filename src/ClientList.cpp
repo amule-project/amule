@@ -839,7 +839,7 @@ bool CClientList::IsDeadSource(const CUpDownClient* client)
 	return m_deadSources.IsDeadSource( client );
 }
 
-bool CClientList::SendMessage(uint64 client_id, const wxString& message)
+bool CClientList::SendChatMessage(uint64 client_id, const wxString& message)
 {
 	CUpDownClient* client = FindClientByIP(IP_FROM_GUI_ID(client_id), PORT_FROM_GUI_ID(client_id));
 	AddDebugLogLineM( false, logClient, wxT("Trying to Send Message.") );
@@ -847,14 +847,14 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 		AddDebugLogLineM( false, logClient, wxT("Sending.") );
 	} else {
 		AddDebugLogLineM( true, logClient, 
-			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendMessage(). Creating") ) 
+			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendChatMessage(). Creating") ) 
 				% client_id 
 				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 				% PORT_FROM_GUI_ID(client_id) );
 		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL, true, true);
 		AddClient(client);
 	}
-	return client->SendMessage(message);
+	return client->SendChatMessage(message);
 }
 
 void CClientList::SetChatState(uint64 client_id, uint8 state) {

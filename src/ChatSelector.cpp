@@ -253,7 +253,7 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	} else {
 		client->SetChatCaptchaState(CA_ACCEPTING);
 	}
-	if (theApp->clientlist->SendMessage(ci->m_client_id, message)) {
+	if (theApp->clientlist->SendChatMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
 		ci->AddText( wxT(": ") + message, COLOR_BLACK );
 	} else {

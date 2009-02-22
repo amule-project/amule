@@ -25,7 +25,7 @@
 
 #include <wx/wx.h>
 #include <wx/mstream.h>
-
+#include <wx/tokenzr.h>
 
 #include "updownclient.h"	// Needed for CUpDownClient
 
@@ -61,6 +61,7 @@
 #ifndef AMULE_DAEMON
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "CaptchaDialog.h"	// Needed for CCaptchaDialog
+#include "CaptchaGenerator.h"
 #include "ChatWnd.h"		// Needed for CChatWnd
 #endif
 #include "amule.h"		// Needed for theApp
@@ -226,6 +227,7 @@ void CUpDownClient::Init()
 	m_fAICHRequested = 0;
 	m_fSupportsLargeFiles = 0;
 	m_fExtMultiPacket = 0;
+	m_fIsSpammer = 0;
 
 	m_dwUserIP = 0;
 	m_nConnectIP = 0;
@@ -278,6 +280,11 @@ void CUpDownClient::Init()
 	m_dwDirectCallbackTimeout = 0;
 
 	m_hasbeenobfuscatinglately = false;
+
+	m_cCaptchasSent = 0;
+	m_cMessagesReceived = 0;
+	m_cMessagesSent = 0;
+
 }
 
 
@@ -1644,7 +1651,7 @@ void CUpDownClient::ConnectionEstablished()
 	if (GetChatState() == MS_CHATTING) {
 		bool result = true;
 		if (!m_pendingMessage.IsEmpty()) {
-			result = SendMessage(m_pendingMessage);
+			result = SendChatMessage(m_pendingMessage);
 		}
 		Notify_ChatConnResult(result,GUI_ID(GetIP(),GetUserPort()),m_pendingMessage);
 		m_pendingMessage.Clear();
@@ -2381,6 +2388,15 @@ EUtf8Str CUpDownClient::GetUnicodeSupport() const
 	return m_bUnicodeSupport ? utf8strRaw : utf8strNone;
 }
 
+void CUpDownClient::SetSpammer(bool bVal)
+{ 
+	if (bVal) {
+		Ban();
+	} else if (IsBanned() && m_fIsSpammer) {
+		UnBan();
+	}
+	m_fIsSpammer = bVal;
+}
 
 uint8 CUpDownClient::GetSecureIdentState()
 {
@@ -2404,8 +2420,10 @@ uint8 CUpDownClient::GetSecureIdentState()
 }
 
 
-bool CUpDownClient::SendMessage(const wxString& message)
+bool CUpDownClient::SendChatMessage(const wxString& message)
 {
+	SetSpammer(false);
+	IncMessagesSent();
 	// Already connecting?
 	if (GetChatState() == MS_CONNECTING) {
 		// Queue all messages till we're able to send them (or discard them)
@@ -2413,7 +2431,7 @@ bool CUpDownClient::SendMessage(const wxString& message)
 			m_pendingMessage += wxT("\n");
 		} else {
 			// There must be a message to send
-			wxFAIL;
+			// - except if we got disconnected. No need to assert therefore.
 		}
 		m_pendingMessage += message;		
 		return false;
@@ -2547,6 +2565,7 @@ bool CUpDownClient::ShouldReceiveCryptUDPPackets() const
 
 void CUpDownClient::ProcessCaptchaRequest(CMemFile* WXUNUSED(data)) {}
 void CUpDownClient::ProcessCaptchaReqRes(uint8 WXUNUSED(nStatus)) {}
+void CUpDownClient::ProcessChatMessage(const wxString WXUNUSED(message)) {}
 
 #else
 
@@ -2605,6 +2624,159 @@ void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
 		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha result from client, but don't accepting it at this time (%s)")) % GetFullIP());
 	}
 }
+
+void CUpDownClient::ProcessChatMessage(wxString message)
+{
+	if (IsMessageFiltered(message)) {
+		AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % GetUserName() % GetFullIP());
+		return;
+	}
+
+	// advanced spamfilter check
+	if (thePrefs::IsChatCaptchaEnabled() && !IsFriend()) {
+		// captcha checks outrank any further checks - if the captcha has been solved, we assume its no spam
+		// first check if we need to sent a captcha request to this client
+		if (GetMessagesSent() == 0 && GetMessagesReceived() == 0 && GetChatCaptchaState() != CA_CAPTCHASOLVED)
+		{
+			// we have never sent a message to this client, and no message from him has ever passed our filters
+			if (GetChatCaptchaState() != CA_CHALLENGESENT)
+			{
+				// we also aren't currently expecting a captcha response
+				if (m_fSupportsCaptcha)
+				{
+					// and he supports captcha, so send him on and store the message (without showing for now)
+					if (m_cCaptchasSent < 3) // no more than 3 tries
+					{
+						m_strCaptchaPendingMsg = message;
+						wxMemoryOutputStream memstr;
+						memstr.PutC(0); // no tags, for future use
+						CCaptchaGenerator captcha(4);
+						if (captcha.WriteCaptchaImage(memstr)){
+							m_strCaptchaChallenge = captcha.GetCaptchaText();
+							m_nChatCaptchaState = CA_CHALLENGESENT;
+							m_cCaptchasSent++;
+							CMemFile fileAnswer((byte*) memstr.GetOutputStreamBuffer()->GetBufferStart(), memstr.GetLength());
+							CPacket* packet = new CPacket(fileAnswer, OP_EMULEPROT, OP_CHATCAPTCHAREQ);
+							theStats::AddUpOverheadOther(packet->GetPacketSize());
+							AddLogLineN(CFormat(wxT("sent Captcha %s (%d)")) % m_strCaptchaChallenge % packet->GetPacketSize());
+							SafeSendPacket(packet);
+						}
+						else{
+							wxASSERT( false );
+						}
+					}
+				}
+				else
+				{
+					// client doesn't supports captchas, but we require them, tell him that its not going to work out
+					// with an answer message (will not be shown and doesn't counts as sent message)
+					if (m_cCaptchasSent < 1) // dont sent this notifier more than once
+					{
+						m_cCaptchasSent++;
+						// always sent in english
+						SendChatMessage(wxT("In order to avoid spam messages, this user requires you to solve a captcha before you can send a message to him. However your client does not supports captchas, so you will not be able to chat with this user."));
+						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchas, filtered and sent notifier (%s)")) % GetClientFullInfo());
+					} else {
+						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchs, filtered, didn't sent notifier (%s)")) % GetClientFullInfo());
+					}
+				}
+				return;
+			}
+			else //(GetChatCaptchaState() == CA_CHALLENGESENT)
+			{
+				// this message must be the answer to the captcha request we send him, lets verify
+				wxASSERT( !m_strCaptchaChallenge.IsEmpty() );
+				if (m_strCaptchaChallenge.CmpNoCase(message.Trim().Right(std::min(message.Length(), m_strCaptchaChallenge.Length()))) == 0){
+					// allright
+					AddDebugLogLineN(logClient, CFormat(wxT("Captcha solved, showing withheld message (%s)")) % GetClientFullInfo());
+					m_nChatCaptchaState = CA_CAPTCHASOLVED; // this state isn't persitent, but the messagecounter will be used to determine later if the captcha has been solved
+					// replace captchaanswer with withheld message and show it
+					message = m_strCaptchaPendingMsg;
+					m_cCaptchasSent = 0;
+					m_strCaptchaChallenge = wxEmptyString;
+					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
+					byte statusResponse = 0; // status response
+					packet->CopyToDataBuffer(0, &statusResponse, 1);
+					theStats::AddUpOverheadOther(packet->GetPacketSize());
+					SafeSendPacket(packet);
+				}
+				else{ // wrong, cleanup and ignore
+					AddDebugLogLineN(logClient, CFormat(wxT("Captcha answer failed (%s)")) % GetClientFullInfo());
+					m_nChatCaptchaState = CA_NONE;
+					m_strCaptchaChallenge = wxEmptyString;
+					m_strCaptchaPendingMsg = wxEmptyString;
+					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
+					byte statusResponse = (m_cCaptchasSent < 3)? 1 : 2; // status response
+					packet->CopyToDataBuffer(0, &statusResponse, 1);
+					theStats::AddUpOverheadOther(packet->GetPacketSize());
+					SafeSendPacket(packet);
+					return; // nothing more todo
+				}
+			}	
+		}
+	}
+
+	if (thePrefs::IsAdvancedSpamfilterEnabled() && !IsFriend()) // friends are never spammer... (but what if two spammers are friends :P )
+	{	
+		bool bIsSpam = false;
+		if (m_fIsSpammer) {
+			bIsSpam = true;
+		} else {
+
+			// first fixed criteria: If a client  sends me an URL in his first message before I response to him
+			// there is a 99,9% chance that it is some poor guy advising his leech mod, or selling you .. well you know :P
+			if (GetMessagesSent() == 0) {
+				static wxArrayString urlindicators(wxStringTokenize(wxT("http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp"), wxT("|")));
+				for (size_t pos = urlindicators.Count(); pos--;) {
+					if (message.Find(urlindicators[pos]) != wxNOT_FOUND) {
+						bIsSpam = true;
+						break;
+					}
+				}
+				// second fixed criteria: he sent me 4  or more messages and I didn't answered him once
+				if (GetMessagesReceived() > 3) {
+					bIsSpam = true;
+				}
+			}
+		}
+		if (bIsSpam) {
+			AddDebugLogLineN(logClient, CFormat(wxT("'%s' has been marked as spammer")) % GetUserName());
+			SetSpammer(true);
+			theApp->amuledlg->m_chatwnd->EndSession(GUI_ID(GetIP(),GetUserPort()));
+			return;
+		}
+	}
+
+
+	wxString logMsg = CFormat(_("New message from '%s' (IP:%s)")) % GetUserName() % GetFullIP();
+	if(thePrefs::ShowMessagesInLog()) {
+		logMsg += wxT(": ") + message;
+	}
+	AddLogLineM( true, logMsg);
+	IncMessagesReceived();
+	
+	Notify_ChatProcessMsg(GUI_ID(GetIP(), GetUserPort()), GetUserName() + wxT("|") + message);
+}
+
+bool CUpDownClient::IsMessageFiltered(const wxString& message)
+{
+	bool filtered = false;
+	// If we're chatting to the guy, we don't want to filter!
+	if (GetChatState() != MS_CHATTING) {
+		if (thePrefs::MsgOnlyFriends() && !IsFriend()) {
+			filtered = true;
+		} else if (thePrefs::MsgOnlySecure() && GetUserName().IsEmpty() ) {
+			filtered = true;
+		} else if (thePrefs::MustFilterMessages()) {
+			filtered = thePrefs::IsMessageFiltered(message);
+		}
+	}
+	if (filtered) {
+		SetSpammer(true);
+	}
+	return filtered;
+}
+
 #endif
 
 
@@ -2634,7 +2806,7 @@ void CUpDownClient::SendFirewallCheckUDPRequest()
 void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
 {
 	if (!Kademlia::CKademlia::IsRunning() || Kademlia::CKademlia::GetUDPListener() == NULL) {
-		//DebugLogWarning(_T("Ignored Kad Firewallrequest UDP because Kad is not running (%s)"), DbgGetClientInfo());
+		//DebugLogWarning(_T("Ignored Kad Firewallrequest UDP because Kad is not running (%s)"), GetClientFullInfo());
 		return;
 	}
 
@@ -2650,11 +2822,11 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
 	uint16_t remoteExternPort = data->ReadUInt16();
 	uint32_t senderKey = data->ReadUInt32();
 	if (remoteInternPort == 0) {
-		//DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), DbgGetClientInfo());
+		//DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), GetClientFullInfo());
 		return;
 	}
 // 	if (senderKey == 0)
-// 		DebugLogWarning(_T("UDP Firewallcheck requested with SenderKey == 0 (%s)"), DbgGetClientInfo());
+// 		DebugLogWarning(_T("UDP Firewallcheck requested with SenderKey == 0 (%s)"), GetClientFullInfo());
 	
 	CMemFile testPacket1;
 	testPacket1.WriteUInt8(errorAlreadyKnown ? 1 : 0);
@@ -2670,7 +2842,7 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
 		DebugSend(Kad2FirewalledUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteExternPort);
 		Kademlia::CKademlia::GetUDPListener()->SendPacket(testPacket2, KADEMLIA2_FIREWALLUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteExternPort, Kademlia::CKadUDPKey(senderKey, theApp->GetPublicIP(false)), NULL);
 	}
-	//DebugLog(_T("Answered UDP Firewallcheck request (%s)"), DbgGetClientInfo());
+	//DebugLog(_T("Answered UDP Firewallcheck request (%s)"), GetClientFullInfo());
 }
 
 void CUpDownClient::SetConnectOptions(uint8_t options, bool encryption, bool callback)

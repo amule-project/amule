@@ -259,6 +259,7 @@ endif
 
 amule_SOURCES = \
 	CaptchaDialog.cpp \
+	CaptchaGenerator.cpp \
 	$(core_sources) \
 	$(gui_sources) \
 	$(ec_sources) \
@@ -324,6 +325,7 @@ noinst_HEADERS = \
 		ArchSpecific.h \
 		BarShader.h \
 		CaptchaDialog.h \
+		CaptchaGenerator.h \
 		CatDialog.h \
 		CFile.h \
 		ChatSelector.h \

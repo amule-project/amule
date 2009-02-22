@@ -189,4 +189,9 @@ void CChatWnd::ShowCaptchaResult(uint64 id, bool ok)
 	chatselector->ShowCaptchaResult(id, ok);
 }
 
+void CChatWnd::EndSession(uint64 id)
+{
+	chatselector->EndSession(id);
+}
+
 // File_checked_for_headers

@@ -199,6 +199,8 @@ bool		CPreferences::s_FilterAllMessages;
 bool 		CPreferences::s_FilterComments;
 bool		CPreferences::s_FilterSomeMessages;
 bool		CPreferences::s_ShowMessagesInLog;
+bool		CPreferences::s_IsAdvancedSpamfilterEnabled;
+bool		CPreferences::s_IsChatCaptchaEnabled;
 bool		CPreferences::s_ShareHiddenFiles;
 bool		CPreferences::s_AutoSortDownload;
 bool		CPreferences::s_NewVersionCheck;
@@ -1158,6 +1160,10 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_MSGFILTER_WORD,	(new Cfg_Bool( wxT("/eMule/FilterWordMessages"), s_FilterSomeMessages, false )));
 	NewCfgItem(IDC_MSGWORD,		(new Cfg_Str(  wxT("/eMule/MessageFilter"), s_MessageFilterString, wxEmptyString )));
 	NewCfgItem(IDC_MSGLOG,	(new Cfg_Bool( wxT("/eMule/ShowMessagesInLog"), s_ShowMessagesInLog, true )));
+	//Todo NewCfgItem(IDC_MSGADVSPAM,	(new Cfg_Bool( wxT("/eMule/AdvancedSpamFilter"), s_IsAdvancedSpamfilterEnabled, true )));
+	//Todo NewCfgItem(IDC_MSGCAPTCHA,	(new Cfg_Bool( wxT("/eMule/MessageUseCaptchas"), s_IsChatCaptchaEnabled, true )));
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/AdvancedSpamFilter"), s_IsAdvancedSpamfilterEnabled, true ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessageUseCaptchas"), s_IsChatCaptchaEnabled, true ) );
 
 	NewCfgItem(IDC_FILTERCOMMENTS,	(new Cfg_Bool( wxT("/eMule/FilterComments"), s_FilterComments, false )));
 	NewCfgItem(IDC_COMMENTWORD,		(new Cfg_Str(  wxT("/eMule/CommentFilter"), s_CommentFilterString, wxEmptyString )));
