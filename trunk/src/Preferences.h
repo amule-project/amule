@@ -476,6 +476,8 @@ public:
 	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
 	static bool		IsMessageFiltered(const wxString& message);
 	static bool		ShowMessagesInLog()		{ return s_ShowMessagesInLog; }
+	static bool		IsAdvancedSpamfilterEnabled()	{ return s_IsAdvancedSpamfilterEnabled;}
+	static bool		IsChatCaptchaEnabled()	{ return IsAdvancedSpamfilterEnabled() && s_IsChatCaptchaEnabled; }
 	
 	static bool		FilterComments()		{ return s_FilterComments; }
 	static void		SetFilterComments(bool val)	{ s_FilterComments = val; }
@@ -722,6 +724,8 @@ protected:
 	static bool		s_FilterAllMessages;
 	static bool		s_FilterSomeMessages;
 	static bool		s_ShowMessagesInLog;
+	static bool		s_IsAdvancedSpamfilterEnabled;
+	static bool		s_IsChatCaptchaEnabled;
 
 	static bool 		s_FilterComments;
 	static wxString 	s_CommentFilterString;

@@ -789,20 +789,27 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			
-			CMemFile message_file(buffer, size);
-
-			wxString message = message_file.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
-			if (IsMessageFiltered(message, m_client)) {
-				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
-			} else {
-				wxString logMsg = CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP();
-				if(thePrefs::ShowMessagesInLog()) {
-					logMsg += wxT(": ") + message;
-				}
-				AddLogLineM( true, logMsg);
-				
-				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
+			if (size < 2) {
+				throw wxString(wxT("invalid message packet"));
 			}
+			CMemFile message_file(buffer, size);
+			uint16 length = message_file.ReadUInt16();
+			if (length + 2u != size) {
+				throw wxString(wxT("invalid message packet"));
+			}
+
+			// limit mesage length
+			static const uint16 MAX_CLIENT_MSG_LEN = 450;
+
+			if (length > MAX_CLIENT_MSG_LEN) {
+				AddDebugLogLineN(logRemoteClient, CFormat(wxT("Message from '%s' (IP:%s) exceeds limit by %u chars, truncated."))
+					% m_client->GetUserName() % m_client->GetFullIP() % (length - MAX_CLIENT_MSG_LEN));
+				length = MAX_CLIENT_MSG_LEN;
+			}					
+
+			wxString message = message_file.ReadOnlyString((m_client->GetUnicodeSupport() != utf8strNone), length);
+			m_client->ProcessChatMessage(message);
+
 			break;
 		}
 		
@@ -2099,22 +2106,6 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 	return bResult;
 }
 
-
-bool CClientTCPSocket::IsMessageFiltered(const wxString& Message, CUpDownClient* client) {
-	
-	bool filtered = false;
-	// If we're chatting to the guy, we don't want to filter!
-	if (client->GetChatState() != MS_CHATTING) {
-		if (thePrefs::MsgOnlyFriends() && !client->IsFriend()) {
-			filtered = true;
-		} else if (thePrefs::MsgOnlySecure() && client->GetUserName().IsEmpty() ) {
-			filtered = true;
-		} else if (thePrefs::MustFilterMessages()) {
-			filtered = thePrefs::IsMessageFiltered(Message);
-		}
-	}
-	return filtered;
-}
 
 SocketSentBytes CClientTCPSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
 {
