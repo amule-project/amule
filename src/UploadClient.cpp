@@ -247,8 +247,10 @@ void CUpDownClient::CreateNextBlockPackage()
 			}
 		
 			uint64 togo;
-			if (currentblock->StartOffset > currentblock->EndOffset){
-				togo = currentblock->EndOffset + (srcfile->GetFileSize() - currentblock->StartOffset);
+			if (currentblock->EndOffset >= srcfile->GetFileSize()) {
+				throw wxString(wxT("Asked for data beyond end of file"));
+			} else if (currentblock->StartOffset > currentblock->EndOffset) { 
+				throw wxString(wxT("Asked for invalid block (start > end)"));
 			} else {
 				togo = currentblock->EndOffset - currentblock->StartOffset;
 				
