@@ -798,7 +798,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				throw wxString(wxT("invalid message packet"));
 			}
 
-			// limit mesage length
+			// limit message length
 			static const uint16 MAX_CLIENT_MSG_LEN = 450;
 
 			if (length > MAX_CLIENT_MSG_LEN) {

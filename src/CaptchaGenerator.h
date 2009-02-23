@@ -37,9 +37,9 @@ class CCaptchaGenerator
 public:
 	CCaptchaGenerator(uint32 nLetterCount = 4);
 
-	void	ReGenerateCaptcha(uint32 nLetterCount = 4);
-	wxString	GetCaptchaText() const						{return m_strCaptchaText;}
-	bool	WriteCaptchaImage(wxMemoryOutputStream& file);
+	void		ReGenerateCaptcha(uint32 nLetterCount = 4);
+	wxString	GetCaptchaText() const				{ return m_strCaptchaText; }
+	bool		WriteCaptchaImage(wxMemoryOutputStream& file);
 
 
 private:

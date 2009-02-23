@@ -260,8 +260,8 @@ public:
 	bool		GetFriendSlot() const 		{ return m_bFriendSlot; }
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true)	{ m_bCommentDirty = bDirty; }
-	uint8			GetSourceExchange1Version() const				{ return m_bySourceExchange1Ver; }
-	bool			SupportsSourceExchange2() const					{ return m_fSupportsSourceEx2; }
+	uint8		GetSourceExchange1Version() const	{ return m_bySourceExchange1Ver; }
+	bool		SupportsSourceExchange2() const		{ return m_fSupportsSourceEx2; }
 	
 	bool		SafeSendPacket(CPacket* packet);
 
@@ -320,12 +320,9 @@ public:
 		return m_score;
 	}
 	uint16		m_waitingPosition;
-	uint16		GetWaitingPosition() const { return m_waitingPosition; }
+	uint16		GetWaitingPosition() const	{ return m_waitingPosition; }
 #endif
-	double		GetRating() const
-	{
-		return (double)GetScore(false, IsDownloading(), true);
-	}
+	double		GetRating() const		{ return (double)GetScore(false, IsDownloading(), true); }
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	void		CreateNextBlockPackage();
@@ -420,19 +417,19 @@ public:
 	//chat
 	uint8		GetChatState()			{ return m_byChatstate; }
 	void		SetChatState(uint8 nNewS)	{ m_byChatstate = nNewS; }
-	EChatCaptchaState GetChatCaptchaState() const					{ return (EChatCaptchaState)m_nChatCaptchaState; }
-	void			SetChatCaptchaState(EChatCaptchaState nNewS)	{ m_nChatCaptchaState = nNewS; }
-	void			ProcessCaptchaRequest(CMemFile* data);
-	void			ProcessCaptchaReqRes(uint8 nStatus);
-	void			ProcessChatMessage(wxString message);
+	EChatCaptchaState GetChatCaptchaState() const	{ return (EChatCaptchaState)m_nChatCaptchaState; }
+	void		SetChatCaptchaState(EChatCaptchaState nNewS)	{ m_nChatCaptchaState = nNewS; }
+	void		ProcessCaptchaRequest(CMemFile* data);
+	void		ProcessCaptchaReqRes(uint8 nStatus);
+	void		ProcessChatMessage(wxString message);
 	// message filtering
-	uint8			GetMessagesReceived() const						{ return m_cMessagesReceived; }
-	void			IncMessagesReceived()							{ m_cMessagesReceived < 255 ? ++m_cMessagesReceived : 255; }
-	uint8			GetMessagesSent() const							{ return m_cMessagesSent; }
-	void			IncMessagesSent()								{ m_cMessagesSent < 255 ? ++m_cMessagesSent : 255; }
-	bool			IsSpammer() const								{ return m_fIsSpammer; }
-	void			SetSpammer(bool bVal);
-	bool			IsMessageFiltered(const wxString& message);
+	uint8		GetMessagesReceived() const	{ return m_cMessagesReceived; }
+	void		IncMessagesReceived()		{ m_cMessagesReceived < 255 ? ++m_cMessagesReceived : 255; }
+	uint8		GetMessagesSent() const		{ return m_cMessagesSent; }
+	void		IncMessagesSent()		{ m_cMessagesSent < 255 ? ++m_cMessagesSent : 255; }
+	bool		IsSpammer() const		{ return m_fIsSpammer; }
+	void		SetSpammer(bool bVal);
+	bool		IsMessageFiltered(const wxString& message);
 
 	//File Comment
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
@@ -536,7 +533,7 @@ public:
 	 *
 	 * @return True if sent, false if connecting
 	 */
-	bool	SendChatMessage(const wxString& message);
+	bool		SendChatMessage(const wxString& message);
 
 	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
 	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
@@ -567,7 +564,7 @@ public:
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
 	void		ProcessFirewallCheckUDPRequest(CMemFile *data);
 	// Kad added by me
-	bool			SendBuddyPing();
+	bool		SendBuddyPing();
 	
 	/* Returns the client hash type (SO_EMULE, mldonkey, etc) */
 	int		GetHashType() const;
@@ -633,10 +630,10 @@ public:
 	
 	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
 	
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	/* Kry - Debug. See connection_reason definition comment below */
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
-	#endif
+#endif
 
 	// Encryption / Obfuscation / ConnectOptions
 	bool		SupportsCryptLayer() const			{ return m_fSupportsCryptLayer; }
@@ -825,7 +822,7 @@ private:
 					  // if this flag is not set, we just know that we don't know 
 					  // for sure if it is enabled
 		m_fSupportsPreview   : 1,
-		m_fIsSpammer		 : 1,
+		m_fIsSpammer	     : 1,
 		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,
@@ -837,7 +834,7 @@ private:
 		m_fSupportsCryptLayer: 1,
 		m_fRequiresCryptLayer: 1,
 		m_fSupportsSourceEx2 : 1,
-		m_fSupportsCaptcha	 : 1,
+		m_fSupportsCaptcha   : 1,
 		m_fDirectUDPCallback : 1;
 
 	unsigned int
@@ -895,22 +892,22 @@ private:
 	wxString	m_lastOSInfo;
 	
 	/* For buddies timeout */
-	uint32 m_nCreationTime;
+	uint32		m_nCreationTime;
 	
 	/* Calculation of last average speed */
-	uint32 m_lastaverage;
-	uint32 m_last_block_start;
+	uint32		m_lastaverage;
+	uint32		m_last_block_start;
 	
 	/* Save the encryption status for display when disconnected */
-	bool m_hasbeenobfuscatinglately;
+	bool		m_hasbeenobfuscatinglately;
 	
 	/* Kry - Debug thing. Clients created just to check their data
 	   have this string set to the reason we want to check them. 
-	   Obviously, once checked, we disconect them. Take that, sucker.
+	   Obviously, once checked, we disconnect them. Take that, sucker.
 	   This debug code is just for me I'm afraid. */
-	  #ifdef __DEBUG__
-	  wxString connection_reason;
-	  #endif
+#ifdef __DEBUG__
+	wxString	connection_reason;
+#endif
 };
 
 
