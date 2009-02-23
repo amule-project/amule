@@ -2,14 +2,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
+# Atilla ÖNTAŞ <atilla_ontas@mandriva.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-16 15:35+0100\n"
-"PO-Revision-Date: 2009-01-24 02:24+0200\n"
-"Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
-"Language-Team: Turkish <atilla_ontas@mandriva.org>\n"
+"PO-Revision-Date: 2009-02-23 19:31+0200\n"
+"Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.com>\n"
+"Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -864,7 +865,7 @@ msgstr "%s Kullanıcısı IP:Port %s:%d üzerinde ve %s %s %s kullanıyor"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Captcha Gir"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -914,13 +915,15 @@ msgstr "*** Kullanıcıya bağlantı başarısız. / Bağlantı koptu.***"
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** Captcha denetiminden geçtiniz ve kullanıcı iletinizi aldı. ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Captcha' ya cevabınız yanlıştı ve iletiniz yok sayıldı. Yeni bir ileti "
+"göndererek yeni bir captcha isteyebilirsiniz. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1729,9 +1732,9 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Geçersiz eD2k bağlantısı! HATA: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Doğrulanamadı."
+msgstr ""
+"Kimlik kanıtlamadan sonra istemci tarafından gönderilen paket başarısız."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1799,7 +1802,6 @@ msgid "Authentication failed."
 msgstr "Doğrulanamadı."
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Geçersiz istem, öncelikle doğrulatmanız lazım."
 
@@ -2485,9 +2487,8 @@ msgid "EC connection failed. Empty reply."
 msgstr "EC bağlantısı başarısız. Boş cevap."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Dış Bağlantı: Sunucudan kötü yanıt. Bağlantı kapatıldı."
+msgstr "Dış Bağlantı: Kötü yanıt. Bağlantı kapatıldı."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2502,9 +2503,8 @@ msgid "External Connection: Access denied because: "
 msgstr "Dış Bağlantı: Erişim engellendi çünkü: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Dış Bağlantı: Erişim engellendi"
+msgstr "Dış Bağlantı: Tanılama engellendi"
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
