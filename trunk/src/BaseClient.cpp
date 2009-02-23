@@ -2618,10 +2618,9 @@ void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
 		wxASSERT( nStatus < 3 );
 		m_nChatCaptchaState = CA_NONE;
 		theApp->amuledlg->m_chatwnd->ShowCaptchaResult(id, nStatus == 0);
-	}
-	else {
+	} else {
 		m_nChatCaptchaState = CA_NONE;
-		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha result from client, but don't accepting it at this time (%s)")) % GetFullIP());
+		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha result from client, but not accepting it at this time (%s)")) % GetFullIP());
 	}
 }
 
@@ -2634,19 +2633,15 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 
 	// advanced spamfilter check
 	if (thePrefs::IsChatCaptchaEnabled() && !IsFriend()) {
-		// captcha checks outrank any further checks - if the captcha has been solved, we assume its no spam
-		// first check if we need to sent a captcha request to this client
-		if (GetMessagesSent() == 0 && GetMessagesReceived() == 0 && GetChatCaptchaState() != CA_CAPTCHASOLVED)
-		{
+		// captcha checks outrank any further checks - if the captcha has been solved, we assume it's not spam
+		// first check if we need to send a captcha request to this client
+		if (GetMessagesSent() == 0 && GetMessagesReceived() == 0 && GetChatCaptchaState() != CA_CAPTCHASOLVED) {
 			// we have never sent a message to this client, and no message from him has ever passed our filters
-			if (GetChatCaptchaState() != CA_CHALLENGESENT)
-			{
+			if (GetChatCaptchaState() != CA_CHALLENGESENT) {
 				// we also aren't currently expecting a captcha response
-				if (m_fSupportsCaptcha)
-				{
-					// and he supports captcha, so send him on and store the message (without showing for now)
-					if (m_cCaptchasSent < 3) // no more than 3 tries
-					{
+				if (m_fSupportsCaptcha) {
+					// and he supports captcha, so send him one and store the message (without showing for now)
+					if (m_cCaptchasSent < 3) {	// no more than 3 tries
 						m_strCaptchaPendingMsg = message;
 						wxMemoryOutputStream memstr;
 						memstr.PutC(0); // no tags, for future use
@@ -2660,33 +2655,27 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 							theStats::AddUpOverheadOther(packet->GetPacketSize());
 							AddLogLineN(CFormat(wxT("sent Captcha %s (%d)")) % m_strCaptchaChallenge % packet->GetPacketSize());
 							SafeSendPacket(packet);
-						}
-						else{
-							wxASSERT( false );
+						} else {
+							wxFAIL;
 						}
 					}
-				}
-				else
-				{
-					// client doesn't supports captchas, but we require them, tell him that its not going to work out
-					// with an answer message (will not be shown and doesn't counts as sent message)
-					if (m_cCaptchasSent < 1) // dont sent this notifier more than once
-					{
+				} else {
+					// client doesn't support captchas, but we require them, tell him that it's not going to work out
+					// with an answer message (will not be shown and doesn't count as sent message)
+					if (m_cCaptchasSent < 1) {	// don't send this notifier more than once
 						m_cCaptchasSent++;
 						// always sent in english
 						SendChatMessage(wxT("In order to avoid spam messages, this user requires you to solve a captcha before you can send a message to him. However your client does not supports captchas, so you will not be able to chat with this user."));
 						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchas, filtered and sent notifier (%s)")) % GetClientFullInfo());
 					} else {
-						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchs, filtered, didn't sent notifier (%s)")) % GetClientFullInfo());
+						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchas, filtered, didn't send notifier (%s)")) % GetClientFullInfo());
 					}
 				}
 				return;
-			}
-			else //(GetChatCaptchaState() == CA_CHALLENGESENT)
-			{
-				// this message must be the answer to the captcha request we send him, lets verify
+			} else { // (GetChatCaptchaState() == CA_CHALLENGESENT)
+				// this message must be the answer to the captcha request we sent him, let's verify
 				wxASSERT( !m_strCaptchaChallenge.IsEmpty() );
-				if (m_strCaptchaChallenge.CmpNoCase(message.Trim().Right(std::min(message.Length(), m_strCaptchaChallenge.Length()))) == 0){
+				if (m_strCaptchaChallenge.CmpNoCase(message.Trim().Right(std::min(message.Length(), m_strCaptchaChallenge.Length()))) == 0) {
 					// allright
 					AddDebugLogLineN(logClient, CFormat(wxT("Captcha solved, showing withheld message (%s)")) % GetClientFullInfo());
 					m_nChatCaptchaState = CA_CAPTCHASOLVED; // this state isn't persitent, but the messagecounter will be used to determine later if the captcha has been solved
@@ -2699,14 +2688,13 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 					packet->CopyToDataBuffer(0, &statusResponse, 1);
 					theStats::AddUpOverheadOther(packet->GetPacketSize());
 					SafeSendPacket(packet);
-				}
-				else{ // wrong, cleanup and ignore
+				} else { // wrong, cleanup and ignore
 					AddDebugLogLineN(logClient, CFormat(wxT("Captcha answer failed (%s)")) % GetClientFullInfo());
 					m_nChatCaptchaState = CA_NONE;
 					m_strCaptchaChallenge = wxEmptyString;
 					m_strCaptchaPendingMsg = wxEmptyString;
 					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
-					byte statusResponse = (m_cCaptchasSent < 3)? 1 : 2; // status response
+					byte statusResponse = (m_cCaptchasSent < 3) ? 1 : 2; // status response
 					packet->CopyToDataBuffer(0, &statusResponse, 1);
 					theStats::AddUpOverheadOther(packet->GetPacketSize());
 					SafeSendPacket(packet);
@@ -2716,14 +2704,12 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 		}
 	}
 
-	if (thePrefs::IsAdvancedSpamfilterEnabled() && !IsFriend()) // friends are never spammer... (but what if two spammers are friends :P )
-	{	
+	if (thePrefs::IsAdvancedSpamfilterEnabled() && !IsFriend()) { // friends are never spammer... (but what if two spammers are friends :P )
 		bool bIsSpam = false;
 		if (m_fIsSpammer) {
 			bIsSpam = true;
 		} else {
-
-			// first fixed criteria: If a client  sends me an URL in his first message before I response to him
+			// first fixed criteria: If a client sends me an URL in his first message before I respond to him
 			// there is a 99,9% chance that it is some poor guy advising his leech mod, or selling you .. well you know :P
 			if (GetMessagesSent() == 0) {
 				static wxArrayString urlindicators(wxStringTokenize(wxT("http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp"), wxT("|")));
@@ -2733,7 +2719,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 						break;
 					}
 				}
-				// second fixed criteria: he sent me 4  or more messages and I didn't answered him once
+				// second fixed criteria: he sent me 4 or more messages and I didn't answer him once
 				if (GetMessagesReceived() > 3) {
 					bIsSpam = true;
 				}
@@ -2752,9 +2738,9 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 	if(thePrefs::ShowMessagesInLog()) {
 		logMsg += wxT(": ") + message;
 	}
-	AddLogLineM( true, logMsg);
+	AddLogLineM(true, logMsg);
 	IncMessagesReceived();
-	
+
 	Notify_ChatProcessMsg(GUI_ID(GetIP(), GetUserPort()), GetUserName() + wxT("|") + message);
 }
 
