@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-16 15:35+0100\n"
-"PO-Revision-Date: 2008-08-06 16:07+0300\n"
+"PO-Revision-Date: 2009-02-24 00:16+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "MIME-Version: 1.0\n"
@@ -44,46 +44,41 @@ msgid "The specified userhash is not valid!"
 msgstr "Указанный хеш пользователя недопустим."
 
 #: src/amule.cpp:221
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"Ok, выход из %s...\n"
+msgstr "Выходим из основного приложения..."
 
 #: src/amule.cpp:240
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr ""
+msgstr "Завершаем процесс amuleweb с pid `%ld' ... "
 
 #: src/amule.cpp:243
-#, fuzzy
 msgid "Killed!"
-msgstr "Неудачно"
+msgstr "Убито!"
 
 #: src/amule.cpp:247
 msgid "aMule OnExit: Terminating core."
-msgstr ""
+msgstr "aMule OnExit: Прекращаем работу ядра."
 
 #: src/amule.cpp:317
-#, fuzzy
 msgid "aMule shutdown completed."
-msgstr "Загрузка завершена"
+msgstr "выключение aMule завершено."
 
 #: src/amule.cpp:321
 msgid "Memory debug results for aMule exit:"
-msgstr ""
+msgstr "Результаты дебага памяти при выходе из aMule:"
 
 #: src/amule.cpp:638
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Подтверждение выхода"
+msgstr ""
+"\n"
+"EC конфигурация"
 
 #: src/amule.cpp:641
-#, fuzzy
 msgid "Password set and external connections enabled."
-msgstr "Принято новое внешнее соединение"
+msgstr "Пароль задан и внешние соединения разрешены."
 
 #: src/amule.cpp:652 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
@@ -124,7 +119,7 @@ msgstr "Идёт подключение"
 #: src/amule.cpp:820
 #, c-format
 msgid "Using amuleweb in '%s'."
-msgstr ""
+msgstr "Используем amuleweb в '%s'."
 
 #: src/amule.cpp:850
 #, c-format
@@ -293,9 +288,8 @@ msgstr ""
 "Online-подписи будут отключены пока вы не исправите это в настройках."
 
 #: src/amule.cpp:1399
-#, fuzzy
 msgid "Server hostname notified"
-msgstr "Имя сервера:"
+msgstr "Имя сервера подтверждено"
 
 #: src/amule.cpp:1628
 #, c-format
@@ -431,7 +425,6 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Сеть Kad выключена в настройках. Отменяю соединение."
 
 #: src/amuled.cpp:605
-#, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -451,14 +444,19 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
+"ОШИБКА: Для использования внешних соединений необходим пароль, а без внешних "
+"соединений демон aMule бесполезен. Чтобы запустить aMule-демона необходимо "
+"заполнить поле \"ECPassword\" в файле ~/.aMule/amule.conf. Запустите amuled "
+"с флагом --ec-config чтобы создать пароль. Более подробную информацию вы "
+"найдете на http://wiki.amule.org"
 
 #: src/amuled.cpp:673
 msgid "amuled: OnInit - starting timer"
-msgstr ""
+msgstr "amuled: OnInit - запускаем таймер"
 
 #: src/amuled.cpp:691
 msgid "amuled: forking to background - see you"
-msgstr ""
+msgstr "amuled: уходим в фоновый режим - до встречи"
 
 #: src/amuled.cpp:747
 #, c-format
@@ -538,7 +536,7 @@ msgstr "Kademlia: пиринговый роутинг на основе XOR-ме
 
 #: src/amuleDlg.cpp:504
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr ""
+msgstr "Copyright (c) 2002-2008 Петр Маймунков ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:505
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -551,13 +549,12 @@ msgid "Message"
 msgstr "Сообщение"
 
 #: src/amuleDlg.cpp:539
-#, fuzzy
 msgid "Shutting down aMule..."
-msgstr "Закрыть aMule."
+msgstr "Выключаем aMule..."
 
 #: src/amuleDlg.cpp:549
 msgid "aMule dialog destroyed"
-msgstr ""
+msgstr "диалоговое окно aMule уничтожено"
 
 #: src/amuleDlg.cpp:703
 msgid "eD2k: Connecting"
@@ -644,7 +641,7 @@ msgstr "Подтверждение выхода"
 
 #: src/amuleDlg.cpp:1159
 msgid "Launch Command: "
-msgstr ""
+msgstr "Команда запуска:"
 
 #: src/amuleDlg.cpp:1218
 #, c-format
@@ -754,28 +751,24 @@ msgid "aMule"
 msgstr "aMule"
 
 #: src/amule-gui.cpp:283
-#, fuzzy
 msgid "Fatal Error: Failed to create Core Timer"
-msgstr "ФАТАЛЬНАЯ ОШИБКА: не удалось создать таймер"
+msgstr "Фатальная Ошибка: не удалось создать таймер ядра"
 
 #: src/amule-remote-gui.cpp:74
 msgid "Connect to remote amule"
 msgstr "Подключиться к удалённому aMule"
 
 #: src/amule-remote-gui.cpp:257
-#, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "ФАТАЛЬНАЯ ОШИБКА: не удалось создать таймер"
+msgstr "Фатальная Ошибка: не удалось создать Poll-таймер"
 
 #: src/amule-remote-gui.cpp:281
-#, fuzzy
 msgid "Going to event loop..."
-msgstr "Попытка восстановления информации о файле..."
+msgstr "Переходим в событийный цикл..."
 
 #: src/amule-remote-gui.cpp:302
-#, fuzzy
 msgid "Connecting..."
-msgstr "Идёт подключение"
+msgstr "Подключаемся..."
 
 #: src/amule-remote-gui.cpp:306
 msgid "Connection failed "
@@ -783,15 +776,15 @@ msgstr "Попытка подключиться не удалась "
 
 #: src/amule-remote-gui.cpp:317
 msgid "Remote GUI EC event handler"
-msgstr ""
+msgstr "Обработчик событий EC удаленного GUI"
 
 #: src/amule-remote-gui.cpp:323
 msgid "Going down"
-msgstr ""
+msgstr "Выключаемся"
 
 #: src/amule-remote-gui.cpp:421
 msgid "Ready"
-msgstr ""
+msgstr "Готов"
 
 #: src/amule-remote-gui.cpp:599
 #, c-format
@@ -814,7 +807,7 @@ msgstr "Не удалось получить список доступных ф�
 
 #: src/BaseClient.cpp:1537
 msgid "Searching buddy for lowid connection"
-msgstr ""
+msgstr "Ищем друга для lowid-соединения"
 
 #: src/BaseClient.cpp:1734 src/BaseClient.cpp:2258 src/BaseClient.cpp:2534
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
@@ -895,7 +888,7 @@ msgstr "Клиент %s на IP:порт %s:%d используя %s %s %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Введите код"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -946,13 +939,15 @@ msgstr "*** Не удалость соединиться с клиентом / �
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** Код введен верно. Пользователь получил ваше сообщение. ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Код введен неверно. Ваше сообщение проигнорировано. Вы можете повторить "
+"ввод кода отправив новое сообщение. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1685,21 +1680,21 @@ msgstr "ОШИБКА: невозможно запустить видео-про�
 #: src/DownloadQueue.cpp:100
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr ""
+msgstr "Сохранаяем файл %u из %u"
 
 #: src/DownloadQueue.cpp:103
 msgid "All PartFiles Saved."
-msgstr ""
+msgstr "Все файлы сохранены."
 
 #: src/DownloadQueue.cpp:110
-#, fuzzy, c-format
+#, c-format
 msgid "Loading temp files from %s."
-msgstr "Загружается файл 'server.met': %s"
+msgstr "Загружаются файлы из %s"
 
 #: src/DownloadQueue.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "Loading PartFile %u of %u"
-msgstr "Загружаю данные из старого файла загрузки (%u из %u)"
+msgstr "Загружается файл %u из %u"
 
 #: src/DownloadQueue.cpp:152
 msgid ""
@@ -1711,7 +1706,7 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:161
 msgid "All PartFiles Loaded."
-msgstr ""
+msgstr "Все файлы загружены."
 
 #: src/DownloadQueue.cpp:164
 msgid "No part files found"
@@ -1758,9 +1753,8 @@ msgid "You are already trying to download the file %s"
 msgstr "Вы уже пытаетесь загрузить файл %s"
 
 #: src/DownloadQueue.cpp:1049
-#, fuzzy
 msgid "Failed to open ED2KLinks file."
-msgstr "Не удалось открыть %s (%s)"
+msgstr "Не удалось открыть файл ED2KLinks."
 
 #: src/DownloadQueue.cpp:1323
 #, c-format
@@ -1778,9 +1772,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Неверная eD2k ссылка! ОШИБКА: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Ошибка идентификации."
+msgstr "Клиент послал пакет после ошибки идентификации."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1848,7 +1841,6 @@ msgid "Authentication failed."
 msgstr "Ошибка идентификации."
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Неверный запрос, сначала пройдите идентификацию."
 
@@ -2112,7 +2104,7 @@ msgstr ""
 #: src/ExternalConnector.cpp:411
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr ""
+msgstr "Неудачное соединение. Невозможно соединиться с %s:%d\n"
 
 #: src/ExternalConnector.cpp:425
 #, c-format
@@ -2206,7 +2198,7 @@ msgstr "Не удалось открыть список друзей 'emfriends.
 
 #: src/FriendList.cpp:222
 msgid "CRITICAL - no client on StartChatSession"
-msgstr ""
+msgstr "КРИТИЧНО - нет клиентов на StartChatSession"
 
 #: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:499 src/muuli_wdr.cpp:2960
 msgid "Friends"
@@ -2259,76 +2251,73 @@ msgstr "( %s / %s )"
 
 #: src/HTTPDownload.cpp:108
 msgid "HTTP download cancelled"
-msgstr ""
+msgstr "загрузка HTTP отменена"
 
 #: src/HTTPDownload.cpp:172
 msgid "HTTP download thread started"
-msgstr ""
+msgstr "запущена нить загрузки HTTP"
 
 #: src/HTTPDownload.cpp:199
-#, fuzzy, c-format
+#, c-format
 msgid "Download size: %i"
-msgstr "Загрузки (%i)"
+msgstr "Размер загрузки: %i"
 
 #: src/HTTPDownload.cpp:231
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Вместо %d байт было загружено %d байт"
 
 #: src/HTTPDownload.cpp:249
 msgid "HTTP download thread ended"
-msgstr ""
+msgstr "завершена нить загрузки HTTP"
 
 #: src/HTTPDownload.cpp:329
 #, c-format
 msgid "Host: %s:%i\n"
-msgstr ""
+msgstr "Хост: %s:%i\n"
 
 #: src/HTTPDownload.cpp:331
 #, c-format
 msgid "Response: %i (Error: %i)"
-msgstr ""
+msgstr "Ответ: %i (Ошибка: %i)"
 
 #: src/HTTPDownload.cpp:334
-#, fuzzy
 msgid "WARNING: Void response on stream creation"
-msgstr ""
-"ПРЕДУПРЕЖДЕНИЕ: не удалось удалить оригинал '%s' после создания резервной "
-"копии."
+msgstr "ПРЕДУПРЕЖДЕНИЕ: пустой ответ при создании потока"
 
 #: src/HTTPDownload.cpp:358
 msgid "ERROR: Redirection code received with no URL"
-msgstr ""
+msgstr "ОШИБКА: полученный код переадресации не содержит URL"
 
 #: src/IP2Country.cpp:87
 #, c-format
 msgid "Download new GeoIP.dat from %s"
-msgstr ""
+msgstr "Загружен новый GeoIP.dat с %s"
 
 #: src/IP2Country.cpp:115
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr ""
+msgstr "Загрузка GeoIP.dat неудачна, прекращаем обновление."
 
 #: src/IP2Country.cpp:121
 msgid "Failed to remove GeoIP.dat file, aborting update."
-msgstr ""
+msgstr "Удаление GeoIP.dat неудачно, прекращаем обновление."
 
 #: src/IP2Country.cpp:127
 msgid "Failed to rename new GeoIP.dat file, aborting update."
-msgstr ""
+msgstr "Переименование нового GeoIP.dat неудачно, прекращаем обновление."
 
 #: src/IP2Country.cpp:133
 msgid "Successfully updated GeoIP.dat"
-msgstr ""
+msgstr "Обновление GeoIP.dat успешно."
 
 #: src/IP2Country.cpp:135
 msgid "Error updating GeoIP.dat"
-msgstr ""
+msgstr "Ошибка обновления GeoIP.dat"
 
 #: src/IP2Country.cpp:138
 #, c-format
 msgid "Failed to download GeoIP.dat from %s"
-msgstr ""
+msgstr "Не удалось загрузить GeoIP.dat с %s"
 
 #: src/IP2Country.cpp:157
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
@@ -2337,7 +2326,7 @@ msgstr "CIP2Country::CIP2Country(): Не удалось загрузить да�
 #: src/IP2Country.cpp:162
 #, c-format
 msgid "Loaded %d flag bitmaps."
-msgstr ""
+msgstr "Загружено %d изображений флагов."
 
 #: src/IPFilter.cpp:109
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
@@ -2406,7 +2395,7 @@ msgstr "Kad: слово запроса лишком коротко"
 #: src/kademlia/kademlia/SearchManager.cpp:134
 #, c-format
 msgid "Keyword for search: %s"
-msgstr ""
+msgstr "Ключевое слово поиска: %s"
 
 #: src/kademlia/kademlia/SearchManager.cpp:142
 msgid "Kademlia: Search keyword is already on search list: "
@@ -2542,9 +2531,10 @@ msgid "EC connection failed. Empty reply."
 msgstr "EC соединение не удалось. Пустой ответ."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Внешнее соединение: Некорректный ответ сервера. Соединение закрыто."
+msgstr ""
+"Внешнее соединение: Некорректный ответ, авторизация неудачна. Соединение "
+"закрыто."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2559,13 +2549,12 @@ msgid "External Connection: Access denied because: "
 msgstr "Внешнее Соединение: В доступе отказано по причине:"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Внешнее Соединение: В доступе отказано"
+msgstr "Внешнее Соединение: авторизация неудачна."
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
-msgstr ""
+msgstr "ListenSocket: Ok."
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
@@ -2625,7 +2614,7 @@ msgstr "Неограниченно"
 
 #: src/MuleTrayIcon.cpp:312
 msgid "Traybar-icon lost, trying to recreate ..."
-msgstr ""
+msgstr "Потеряна пиктограмма области уведомлений, попытка пересоздать..."
 
 #: src/MuleTrayIcon.cpp:332
 msgid "aMule Tray Menu"
@@ -4587,7 +4576,7 @@ msgstr "Активные"
 
 #: src/PartFileConvert.cpp:180
 msgid "Waiting for partfile convert thread to die..."
-msgstr ""
+msgstr "Ожидание завершения нити конвертации файла..."
 
 #: src/PartFileConvert.cpp:236
 #, c-format
@@ -4762,9 +4751,8 @@ msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "Ошибка сохранения part-файла: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:903
-#, fuzzy
 msgid "IO failure while saving partfile: "
-msgstr "Ошибка сохранения part-файла: %s (%s ==> %s)"
+msgstr "Ошибка ввода-вывода во время сохранения файла:"
 
 #: src/PartFile.cpp:916
 #, c-format
@@ -4910,9 +4898,8 @@ msgid "Arabic"
 msgstr "Арабский"
 
 #: src/Preferences.cpp:660
-#, fuzzy
 msgid "Asturian"
-msgstr "Эстонский"
+msgstr "Астурианский"
 
 #: src/Preferences.cpp:661
 msgid "Basque"
@@ -5044,7 +5031,7 @@ msgstr "Турецкий"
 
 #: src/Preferences.cpp:693
 msgid "Ukrainian"
-msgstr ""
+msgstr "Украинский"
 
 #: src/Preferences.cpp:880
 msgid "no options available"
@@ -5052,7 +5039,7 @@ msgstr "нет доступных опций"
 
 #: src/Preferences.cpp:1538
 msgid "Invalid category found, skipping"
-msgstr ""
+msgstr "Обнаружена неверная категория, пропускаем"
 
 #: src/Preferences.cpp:1702
 msgid ""
@@ -5067,7 +5054,7 @@ msgstr "Используется порт по умолчанию (%d)"
 #: src/Preferences.cpp:1726
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
-msgstr ""
+msgstr "Убираем несуществующую опубликованную директорию: %s"
 
 #: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:688
 msgid "Connection"
@@ -5124,17 +5111,17 @@ msgstr "Отладчик"
 #: src/PrefsUnifiedDlg.cpp:320
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
-msgstr ""
+msgstr "Не удалось подключить Cfg к widget с ID %d и ключом %s"
 
 #: src/PrefsUnifiedDlg.cpp:373
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
-msgstr ""
+msgstr "Не удалось передать данные из Cfg к Widget с ID %d и ключом %s"
 
 #: src/PrefsUnifiedDlg.cpp:477
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
-msgstr ""
+msgstr "Не удалось передать данные из Widget к Cfg с ID %d и ключом %s"
 
 #: src/PrefsUnifiedDlg.cpp:532
 msgid ""
@@ -5177,9 +5164,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Изменен временный каталог.\n"
 
 #: src/PrefsUnifiedDlg.cpp:582
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Все сети выключены."
+msgstr "- сеть eD2k включена. \n"
 
 #: src/PrefsUnifiedDlg.cpp:649
 msgid ""
@@ -5318,9 +5304,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Обновление соединения с сервером: Отключено"
 
 #: src/PrefsUnifiedDlg.cpp:1088
-#, fuzzy
 msgid "disabled"
-msgstr "выключить"
+msgstr "выключена"
 
 #: src/PrefsUnifiedDlg.cpp:1106
 #, c-format
@@ -5474,7 +5459,7 @@ msgstr "Время ожидания соединения с %s (%s:%i) вышл�
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
-msgstr ""
+msgstr "Получен старый результат поиска DNS, опускаем."
 
 #: src/ServerList.cpp:84
 #, c-format
@@ -5830,16 +5815,17 @@ msgstr "Состояние соединения:"
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
+"За брандмауэром - откройте TCP порт %d на вашем роутере или брандмауэре"
 
 #: src/ServerWnd.cpp:216
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Состояние соединения:"
+msgstr "Состояние UDP соединения:"
 
 #: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
+"За брандмауэром - откройте UDP порт %d на вашем роутере или брандмауэре"
 
 #: src/ServerWnd.cpp:222
 msgid "Firewalled state: "
@@ -5847,43 +5833,40 @@ msgstr "Состояние брандмауэра:"
 
 #: src/ServerWnd.cpp:228
 msgid "No buddy required - TCP port open"
-msgstr ""
+msgstr "Друг не требуется - TCP порт открыт"
 
 #: src/ServerWnd.cpp:230
 msgid "No buddy required - UDP port open"
-msgstr ""
+msgstr "Друг не требуется - UDP порт открыт"
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy"
 msgstr "Нет друзей"
 
 #: src/ServerWnd.cpp:236
-#, fuzzy
 msgid "Connecting to buddy"
-msgstr "Соединен с другом"
+msgstr "Соединяем с другом"
 
 #: src/ServerWnd.cpp:239
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Соединен с другом"
+msgstr "Соединяем с другом на %s"
 
 #: src/ServerWnd.cpp:249
-#, fuzzy
 msgid "Indexed sources:"
-msgstr "Найдено источников:"
+msgstr "Проиндексировано источников:"
 
 #: src/ServerWnd.cpp:251
 msgid "Indexed keywords:"
-msgstr ""
+msgstr "Ключевые слова проиндексированы:"
 
 #: src/ServerWnd.cpp:253
-#, fuzzy
 msgid "Indexed notes:"
-msgstr "Индексный файл не найден:"
+msgstr "Проиндексировано записей:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed load:"
-msgstr ""
+msgstr "Загрузки проиндексированы:"
 
 #: src/ServerWnd.cpp:258
 msgid "Average Users:"
@@ -5900,7 +5883,7 @@ msgstr "Не запущен"
 #: src/SharedFileList.cpp:324
 #, c-format
 msgid "Adding file %s to shares"
-msgstr ""
+msgstr "Добавляем файл %s к списку опубликованных"
 
 #: src/SharedFileList.cpp:352
 #, c-format
@@ -5925,14 +5908,14 @@ msgid "ERROR: Attempted to share %s"
 msgstr "ОШИБКА: попытка опубликовать %s"
 
 #: src/SharedFileList.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Shared directory not found, skipping: %s"
-msgstr "сервер не найден: %s"
+msgstr "Публикуемая директория не найдена, пропускаем: %s"
 
 #: src/SharedFileList.cpp:463
 #, c-format
 msgid "No shareable files found in directory: %s"
-msgstr ""
+msgstr "Нет публикуемых файлов в директории: %s"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -6988,7 +6971,7 @@ msgstr "Скопировать в буфер обмена"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
 msgid "Open"
-msgstr ""
+msgstr "Открыть"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -7000,7 +6983,7 @@ msgstr "Копировать полученную eD2k ссылку в буфе�
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 msgid "Save as"
-msgstr ""
+msgstr "Сохранить как"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -7017,7 +7000,7 @@ msgstr "Выберите файл для которого вы хотите по
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
 msgid "Can't open the clipboard"
-msgstr ""
+msgstr "Невозможно открыть буфер"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -7069,15 +7052,15 @@ msgstr "Идёт хеширование..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator работает для вас"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "Считаем MD4 хэш..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "Computing eD2k Hashes..."
-msgstr ""
+msgstr "Считаем eD2k хэши..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:566
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
@@ -7555,7 +7538,7 @@ msgstr "Вы не ввели пароль. Пустой пароль недоп�
 # в eMule - так и пишут: логин/логаут, но мне не нравится
 #: src/webserver/src/WebServer.cpp:1892
 msgid "Logout requested\n"
-msgstr "Запрошено отсоединение:\n"
+msgstr "Запрошено отсоединение\n"
 
 #: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
