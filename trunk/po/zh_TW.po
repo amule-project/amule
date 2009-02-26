@@ -1,5 +1,5 @@
 # aMule Translation file.
-# Copyright (c) 2003-2008 aMule Team
+# Copyright (c) 2003-2009 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Simplified Chinese translation by:
@@ -9,16 +9,19 @@
 # Traditional Chinese translation converted and updated by:
 # Wayne Su <mstarmstar@gmail.com>, 2008-2009.
 #
+# Please give any advice here:
+# http://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=12208&forum=15
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-16 15:35+0100\n"
-"PO-Revision-Date: 2009-01-20 13:23+0800\n"
+"PO-Revision-Date: 2009-02-26 18:37+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Language: Chinese\n"
@@ -849,7 +852,7 @@ msgstr "客戶端 %s：位址 %s:%d，使用 %s %s %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "輸入圖形驗證碼"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -898,13 +901,15 @@ msgstr "*** 無法連線到客戶端 / 連線中斷 ***"
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** 您已通過圖形驗證，使用者已收到您的訊息。 ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** 您輸入的驗證碼不正確，訊息將被忽略。要重傳送訊息，請重新輸入圖形驗證碼。 "
+"***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1713,9 +1718,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "無效的 eD2k 連結！錯誤：%s "
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "登入驗證失敗。"
+msgstr "客戶端在驗證失敗後傳送封包。"
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1781,7 +1785,6 @@ msgid "Authentication failed."
 msgstr "登入驗證失敗。"
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "無效的要求，請先通過登入驗證。"
 
@@ -2259,7 +2262,7 @@ msgstr "無法自 %s 下載 GeoIP.dat"
 
 #: src/IP2Country.cpp:157
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr "CIP2Country::CIP2Country()：無法載入國家資訊"
+msgstr "CIP2Country::CIP2Country()：無法載入國家資訊 ("
 
 #: src/IP2Country.cpp:162
 #, c-format
@@ -2459,9 +2462,8 @@ msgid "EC connection failed. Empty reply."
 msgstr "無法外部連線，無回應。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "外部連線：伺服器回應不正確，連線中斷。"
+msgstr "外部連線：回應不正確、訊號交換失敗，已關閉連線。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2476,9 +2478,8 @@ msgid "External Connection: Access denied because: "
 msgstr "外部連線：拒絕存取，原因："
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "外部連線：拒絕存取"
+msgstr "外部連線：訊號交換失敗"
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
@@ -7338,7 +7339,7 @@ msgstr "已要求登出\n"
 
 #: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
-msgstr "正在處理要求 [已重定向]："
+msgstr "正在處理 [已重定向] 的要求："
 
 #~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
 #~ msgstr "theApp->serverlist->GetServerByAddress() 傳回  NULL"
