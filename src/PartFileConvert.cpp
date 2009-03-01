@@ -417,7 +417,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 		}
 
 		file->CreatePartFile();
-		newfilename = file->GetFullName().RemoveExt();
+		newfilename = file->GetFullName();
 
 		file->m_hpartfile.Close();
 
@@ -425,15 +425,15 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 		UpdateGUI(92, _("Copy"));
 
-		CPath::RemoveFile(newfilename);
+		CPath::RemoveFile(newfilename.RemoveExt());
 		if (!oldfile.FileExists()) {
 			// data file does not exist. well, then create a 0 byte big one
 			CFile datafile;
-			ret = datafile.Create(newfilename);
+			ret = datafile.Create(newfilename.RemoveExt());
 		} else if (s_pfconverting->removeSource) {
-			ret = CPath::RenameFile(oldfile, newfilename);
+			ret = CPath::RenameFile(oldfile, newfilename.RemoveExt());
 		} else {
-			ret = CPath::CloneFile(oldfile, newfilename, false);
+			ret = CPath::CloneFile(oldfile, newfilename.RemoveExt(), false);
 		}
 		if (!ret) {
 			file->Delete();
