@@ -2,6 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -16,41 +17,46 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifndef DATATOTEXT_H
-#define DATATOTEXT_H
+#ifndef PARTFILECONVERTDLG_H
+#define PARTFILECONVERTDLG_H
 
-class wxString;
-class CUpDownClient;
+#include <wx/dialog.h>
+#include <wx/listctrl.h>
+#include <wx/gauge.h>
 
-// Returns the textual representation of a priority value
-wxString PriorityToStr( int priority, bool isAuto );
+struct ConvertInfo;
 
-// Returns the textual representation of download states
-wxString DownloadStateToStr( int state, bool queueFull );
+class CPartFileConvertDlg : public wxDialog
+{
+public:
+	CPartFileConvertDlg(wxWindow *parent);
 
-/**
- * @return Human-readable client software name.
- */
-const wxString GetSoftName( unsigned int software_ident );
+	static void	ShowGUI(wxWindow *parent);
+	static void	UpdateProgress(float percent, wxString text = wxEmptyString, wxString header = wxEmptyString);
+	static void	UpdateJobInfo(ConvertInfo& info);
+	static void	RemoveJobInfo(unsigned id);
+	static void	ClearInfo();
+	static void	CloseGUI();
 
-/**
- * Get "Source From" text, i.e. where we got the source from.
- *
- * @param source_from A ESourceFrom enum value.
- * @return Human-readable text for the ESourceFrom enum values.
- */
-wxString OriginToText(unsigned int source_from);
+protected:
+	wxGauge*	m_pb_current;
+	wxListCtrl*	m_joblist;
 
-/**
- * @return The textual representation of a partfile conversion state.
- */
-wxString GetConversionState(unsigned int state);
+	void	OnAddFolder(wxCommandEvent& event);
+	void	OnClose(wxCloseEvent& event);
+	void	OnCloseButton(wxCommandEvent& event);
+	void	RetrySel(wxCommandEvent& event);
+	void	RemoveSel(wxCommandEvent& event);
 
-#endif /* DATATOTEXT_H */
-// File_checked_for_headers
+	DECLARE_EVENT_TABLE()
+
+	static CPartFileConvertDlg*	s_convertgui;
+};
+
+#endif /* PARTFILECONVERTDLG_H */
