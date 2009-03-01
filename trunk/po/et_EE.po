@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 15:35+0100\n"
+"POT-Creation-Date: 2009-03-01 01:23+0100\n"
 "PO-Revision-Date: 2009-02-21 10:05+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -787,16 +787,16 @@ msgstr "Kõik"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Kokku Kasutajaid: %s | Kokku Faile: %s"
 
-#: src/BaseClient.cpp:1322
+#: src/BaseClient.cpp:1329
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 
-#: src/BaseClient.cpp:1537
+#: src/BaseClient.cpp:1544
 msgid "Searching buddy for lowid connection"
 msgstr "Otsin lowid ühenduse jaoks semu"
 
-#: src/BaseClient.cpp:1734 src/BaseClient.cpp:2258 src/BaseClient.cpp:2534
+#: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2552
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -812,35 +812,35 @@ msgstr "Otsin lowid ühenduse jaoks semu"
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: src/BaseClient.cpp:1751
+#: src/BaseClient.cpp:1758
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Valetatud eMule versioon %#x)"
 
-#: src/BaseClient.cpp:1762
+#: src/BaseClient.cpp:1769
 msgid " (Fake eMule)"
 msgstr " (Valetatud eMule)"
 
-#: src/BaseClient.cpp:1764
+#: src/BaseClient.cpp:1771
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Valetatud eMule)"
 
-#: src/BaseClient.cpp:1803
+#: src/BaseClient.cpp:1810
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (baseerub eMule v0.%u)"
 
-#: src/BaseClient.cpp:1973
+#: src/BaseClient.cpp:1980
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Kasutajanimi: %s ID: %u"
 
-#: src/BaseClient.cpp:1975
+#: src/BaseClient.cpp:1982
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Küsitud: %s\n"
 
-#: src/BaseClient.cpp:1977
+#: src/BaseClient.cpp:1984
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -850,7 +850,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
 
-#: src/BaseClient.cpp:1980
+#: src/BaseClient.cpp:1987
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -862,14 +862,24 @@ msgstr[1] ""
 "Kõikide seansside failistatistika: Aksepteeritud %d/%d päringust, %s "
 "siirdatud\n"
 
-#: src/BaseClient.cpp:1983
+#: src/BaseClient.cpp:1990
 msgid "Requested unknown file"
 msgstr "Küsiti tundmatut faili"
 
-#: src/BaseClient.cpp:2257
+#: src/BaseClient.cpp:2264
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Klient %s IP:Port %s:%d kasutab %s %s %s"
+
+#: src/BaseClient.cpp:2630
+#, c-format
+msgid "Message filtered from '%s' (IP:%s)"
+msgstr "'%s' (IP:%s) teade filtreeriti"
+
+#: src/BaseClient.cpp:2737
+#, c-format
+msgid "New message from '%s' (IP:%s)"
+msgstr "'%s' (IP:%s) saatis uue teate"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -1244,39 +1254,29 @@ msgstr "Krüpteeritud"
 msgid "Hide shared files"
 msgstr "Peida jagatud failid"
 
-#: src/ClientTCPSocket.cpp:796
-#, c-format
-msgid "Message filtered from '%s' (IP:%s)"
-msgstr "'%s' (IP:%s) teade filtreeriti"
-
-#: src/ClientTCPSocket.cpp:798
-#, c-format
-msgid "New message from '%s' (IP:%s)"
-msgstr "'%s' (IP:%s) saatis uue teate"
-
-#: src/ClientTCPSocket.cpp:820
+#: src/ClientTCPSocket.cpp:827
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr ""
 "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
 
-#: src/ClientTCPSocket.cpp:841
+#: src/ClientTCPSocket.cpp:848
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Keeldusid"
 
-#: src/ClientTCPSocket.cpp:873
+#: src/ClientTCPSocket.cpp:880
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr ""
 "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
 
-#: src/ClientTCPSocket.cpp:913
+#: src/ClientTCPSocket.cpp:920
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Keeldusid"
 
-#: src/ClientTCPSocket.cpp:938
+#: src/ClientTCPSocket.cpp:945
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -1284,38 +1284,38 @@ msgstr ""
 "Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> "
 "Kinnitasid"
 
-#: src/ClientTCPSocket.cpp:975
+#: src/ClientTCPSocket.cpp:982
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> keeldusid"
 
-#: src/ClientTCPSocket.cpp:994
+#: src/ClientTCPSocket.cpp:1001
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "Kasutaja %s (%u) jagab kataloogi %s"
 
-#: src/ClientTCPSocket.cpp:1009
+#: src/ClientTCPSocket.cpp:1016
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Kasutaja %s (%u) saatis soovimatu jagatud kataloogide nimekirja."
 
-#: src/ClientTCPSocket.cpp:1024
+#: src/ClientTCPSocket.cpp:1031
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "Kasutaja %s (%u) saatis kataloogi %s jagatud failide nimekirja"
 
-#: src/ClientTCPSocket.cpp:1031
+#: src/ClientTCPSocket.cpp:1038
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "Kasutaja %s (%u) lõpetas jagatud failide nimekirja saatmise"
 
-#: src/ClientTCPSocket.cpp:1036
+#: src/ClientTCPSocket.cpp:1043
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "Kasutaja %s (%u) saatis soovimatu jagatud failide nimekirja"
 
-#: src/ClientTCPSocket.cpp:1048
+#: src/ClientTCPSocket.cpp:1055
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
@@ -3782,7 +3782,7 @@ msgstr "Serveriühenduse värskenadamise intervall: Ei kasuta"
 msgid "Skin to use: "
 msgstr "Kasutatav rüü: "
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:827
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:829
 msgid "- default -"
 msgstr "- vaikimisi -"
 
@@ -4826,173 +4826,173 @@ msgstr "Allalaetud"
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "VIGA: Osafaili '%s' avamine ebaõnnestus"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "System default"
 msgstr "Süsteemi vaikeväärtus"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Albanian"
 msgstr "Albaania"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Arabic"
 msgstr "Araabia"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 msgid "Asturian"
 msgstr "Asturia"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:663
 msgid "Basque"
 msgstr "Baski"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:664
 msgid "Bulgarian"
 msgstr "Bulgaaria"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:665
 msgid "Catalan"
 msgstr "Kataloonia"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:666
 msgid "Chinese (Simplified)"
 msgstr "Hiina (Lihtsustatud)"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:667
 msgid "Chinese (Traditional)"
 msgstr "Hiina (Traditsiooniline)"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:668
 msgid "Croatian"
 msgstr "Kroaatia"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:669
 msgid "Czech"
 msgstr "Tšehhi"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:670
 msgid "Danish"
 msgstr "Taani"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:671
 msgid "Dutch"
 msgstr "Hollandi"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:672
 msgid "English (U.K.)"
 msgstr "Inglise (U.K.)"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:673
 msgid "Estonian"
 msgstr "Eesti"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:674
 msgid "Finnish"
 msgstr "Soome"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:675
 msgid "French"
 msgstr "Prantsuse"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:676
 msgid "Galician"
 msgstr "Galiitsia"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:677
 msgid "German"
 msgstr "Saksa"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:678
 msgid "Greek"
 msgstr "Kreeka"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:679
 msgid "Hebrew"
 msgstr "Heebrea"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:680
 msgid "Hungarian"
 msgstr "Ungari"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:681
 msgid "Italian"
 msgstr "Itaalia"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:682
 msgid "Italian (Swiss)"
 msgstr "Itaalia (Shveits)"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:683
 msgid "Japanese"
 msgstr "Jaapani"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:684
 msgid "Korean"
 msgstr "Korea"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:685
 msgid "Lithuanian"
 msgstr "Leedu"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:686
 msgid "Norwegian (Nynorsk)"
 msgstr "Norra"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:687
 msgid "Polish"
 msgstr "Poola"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:688
 msgid "Portuguese"
 msgstr "Portugali"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:689
 msgid "Portuguese (Brazilian)"
 msgstr "Portugali (Brasiilia)"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:690
 msgid "Russian"
 msgstr "Vene"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:691
 msgid "Slovenian"
 msgstr "Sloveenia"
 
-#: src/Preferences.cpp:690
+#: src/Preferences.cpp:692
 msgid "Spanish"
 msgstr "Hispaania"
 
-#: src/Preferences.cpp:691
+#: src/Preferences.cpp:693
 msgid "Swedish"
 msgstr "Rootsi"
 
-#: src/Preferences.cpp:692
+#: src/Preferences.cpp:694
 msgid "Turkish"
 msgstr "Türgi"
 
-#: src/Preferences.cpp:693
+#: src/Preferences.cpp:695
 msgid "Ukrainian"
 msgstr "Ukraina"
 
-#: src/Preferences.cpp:880
+#: src/Preferences.cpp:882
 msgid "no options available"
 msgstr "valikud puuduvad"
 
-#: src/Preferences.cpp:1538
+#: src/Preferences.cpp:1544
 msgid "Invalid category found, skipping"
 msgstr "Leidsin vigase kategooria, ignoreerin"
 
-#: src/Preferences.cpp:1702
+#: src/Preferences.cpp:1708
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP port ei saa olla suuerm kui 65532, sest serveri UDP soket on TCP+3"
 
-#: src/Preferences.cpp:1703
+#: src/Preferences.cpp:1709
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Kasutan vaikimisi porti (%d)"
 
-#: src/Preferences.cpp:1726
+#: src/Preferences.cpp:1732
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Eemaldan olematu jagatud kataloogi: %s"
@@ -6730,12 +6730,12 @@ msgstr "Muuda kategooria"
 msgid "Remove category"
 msgstr "Eemalda kategooria"
 
-#: src/UploadClient.cpp:270
+#: src/UploadClient.cpp:272
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr "Faili '%s' avamine ebaõnnestus, eemaldan jagatud failide nimekirjast."
 
-#: src/UploadClient.cpp:704
+#: src/UploadClient.cpp:706
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Tundmatu faili '%s' jaoks küsiti kontrollsummat."

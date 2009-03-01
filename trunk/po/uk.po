@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 15:35+0100\n"
+"POT-Creation-Date: 2009-03-01 01:23+0100\n"
 "PO-Revision-Date: 2008-12-17 11:21+0200\n"
 "Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
@@ -782,16 +782,16 @@ msgstr "Всі"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Вього користувачів: %s | Всього файлів: %s"
 
-#: src/BaseClient.cpp:1322
+#: src/BaseClient.cpp:1329
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Неможливо отримати спільні файли користувача %s"
 
-#: src/BaseClient.cpp:1537
+#: src/BaseClient.cpp:1544
 msgid "Searching buddy for lowid connection"
 msgstr "Шукається друг для lowid-з'єднання"
 
-#: src/BaseClient.cpp:1734 src/BaseClient.cpp:2258 src/BaseClient.cpp:2534
+#: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2552
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -807,35 +807,35 @@ msgstr "Шукається друг для lowid-з'єднання"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: src/BaseClient.cpp:1751
+#: src/BaseClient.cpp:1758
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Підробна версія eMule %#x)"
 
-#: src/BaseClient.cpp:1762
+#: src/BaseClient.cpp:1769
 msgid " (Fake eMule)"
 msgstr " (Підробний eMule)"
 
-#: src/BaseClient.cpp:1764
+#: src/BaseClient.cpp:1771
 msgid "xMule (Fake eMule)"
 msgstr "xMule (підробний eMule)"
 
-#: src/BaseClient.cpp:1803
+#: src/BaseClient.cpp:1810
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (оснований на eMule v0.%u)"
 
-#: src/BaseClient.cpp:1973
+#: src/BaseClient.cpp:1980
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Прізвисько: %s ID: %u"
 
-#: src/BaseClient.cpp:1975
+#: src/BaseClient.cpp:1982
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Запросив: %s\n"
 
-#: src/BaseClient.cpp:1977
+#: src/BaseClient.cpp:1984
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -847,7 +847,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика файлів для цієї сесії: дозволено %d з %d запитаних, %s передано\n"
 
-#: src/BaseClient.cpp:1980
+#: src/BaseClient.cpp:1987
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -859,14 +859,24 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика файлів для всіх сесій: дозволено %d з %d запитаних, %s передано\n"
 
-#: src/BaseClient.cpp:1983
+#: src/BaseClient.cpp:1990
 msgid "Requested unknown file"
 msgstr "Запитаний невідомий файл"
 
-#: src/BaseClient.cpp:2257
+#: src/BaseClient.cpp:2264
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Клієнт %s на IP:Port %s:%d використовує %s %s %s"
+
+#: src/BaseClient.cpp:2630
+#, c-format
+msgid "Message filtered from '%s' (IP:%s)"
+msgstr "Повідомлення відфільтроване від '%s' (IP:%s)"
+
+#: src/BaseClient.cpp:2737
+#, c-format
+msgid "New message from '%s' (IP:%s)"
+msgstr "Нове повідомлення від '%s' (IP:%s)"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -1243,37 +1253,27 @@ msgstr "Зашифрований"
 msgid "Hide shared files"
 msgstr "Сховати спільні файли"
 
-#: src/ClientTCPSocket.cpp:796
-#, c-format
-msgid "Message filtered from '%s' (IP:%s)"
-msgstr "Повідомлення відфільтроване від '%s' (IP:%s)"
-
-#: src/ClientTCPSocket.cpp:798
-#, c-format
-msgid "New message from '%s' (IP:%s)"
-msgstr "Нове повідомлення від '%s' (IP:%s)"
-
-#: src/ClientTCPSocket.cpp:820
+#: src/ClientTCPSocket.cpp:827
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr "Користувач %s (%u) запитав ваш перелік спільних файлів -> Дозволено"
 
-#: src/ClientTCPSocket.cpp:841
+#: src/ClientTCPSocket.cpp:848
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr "Користувач %s (%u) запитав ваш перелік спільних файлів -> Відмовлено"
 
-#: src/ClientTCPSocket.cpp:873
+#: src/ClientTCPSocket.cpp:880
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr "Користувач %s (%u) запитав ваш перелік спільних тек -> Дозволено"
 
-#: src/ClientTCPSocket.cpp:913
+#: src/ClientTCPSocket.cpp:920
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr "Користувач %s (%u) запитав ваш перелік спільних тек -> Відмовлено"
 
-#: src/ClientTCPSocket.cpp:938
+#: src/ClientTCPSocket.cpp:945
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -1281,39 +1281,39 @@ msgstr ""
 "Користувач %s (%u) запитав ваш перелік спільних файлів для теки %s -> "
 "Дозволено"
 
-#: src/ClientTCPSocket.cpp:975
+#: src/ClientTCPSocket.cpp:982
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "Користувач %s (%u) запитав ваш перелік спільних файлів для теки %s -> "
 "відмовлено"
 
-#: src/ClientTCPSocket.cpp:994
+#: src/ClientTCPSocket.cpp:1001
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "Користувач %s (%u) зробив спільною теку %s"
 
-#: src/ClientTCPSocket.cpp:1009
+#: src/ClientTCPSocket.cpp:1016
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Користувач %s (%u) надіслав незапитані спільні теки."
 
-#: src/ClientTCPSocket.cpp:1024
+#: src/ClientTCPSocket.cpp:1031
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "Користувач %s (%u) надіслав перелік спільних файлів для теки %s"
 
-#: src/ClientTCPSocket.cpp:1031
+#: src/ClientTCPSocket.cpp:1038
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "Користувач %s (%u) завершив надсилати перелік спільних файлів"
 
-#: src/ClientTCPSocket.cpp:1036
+#: src/ClientTCPSocket.cpp:1043
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "Користувач %s (%u) надіслав небажаний перелік спільних файлів"
 
-#: src/ClientTCPSocket.cpp:1048
+#: src/ClientTCPSocket.cpp:1055
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr "Користувач %s (%u) заборонив доступ до переліку спільних тек/файлів"
@@ -3799,7 +3799,7 @@ msgstr "Час оновлення з'єднання з сервером: вим�
 msgid "Skin to use: "
 msgstr "Використати шкіру: "
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:827
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:829
 msgid "- default -"
 msgstr "- за замовчуванням -"
 
@@ -4854,175 +4854,175 @@ msgstr "Звантажені"
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ПОМИЛКА: не вдалося відкрити частковий файл '%s'"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "System default"
 msgstr "Мова системи"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Albanian"
 msgstr "Албанська"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Arabic"
 msgstr "Арабська"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 #, fuzzy
 msgid "Asturian"
 msgstr "Естонська"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:663
 msgid "Basque"
 msgstr "Баскська"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:664
 msgid "Bulgarian"
 msgstr "Болгарська"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:665
 msgid "Catalan"
 msgstr "Каталонська"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:666
 msgid "Chinese (Simplified)"
 msgstr "Китайська (спрощена)"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:667
 msgid "Chinese (Traditional)"
 msgstr "Китайська (традиційна)"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:668
 msgid "Croatian"
 msgstr "Хорватська"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:669
 msgid "Czech"
 msgstr "Чеська"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:670
 msgid "Danish"
 msgstr "Данська"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:671
 msgid "Dutch"
 msgstr "Нідерландська"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:672
 msgid "English (U.K.)"
 msgstr "Англійська (Великобританія)"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:673
 msgid "Estonian"
 msgstr "Естонська"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:674
 msgid "Finnish"
 msgstr "Фінська"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:675
 msgid "French"
 msgstr "Французька"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:676
 msgid "Galician"
 msgstr "Галісійська"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:677
 msgid "German"
 msgstr "Німецька"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:678
 msgid "Greek"
 msgstr "Грецька"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:679
 msgid "Hebrew"
 msgstr "Іврит"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:680
 msgid "Hungarian"
 msgstr "Угорська"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:681
 msgid "Italian"
 msgstr "Італійська"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:682
 msgid "Italian (Swiss)"
 msgstr "Італійська (Швейцарія)"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:683
 msgid "Japanese"
 msgstr "Японська"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:684
 msgid "Korean"
 msgstr "Корейська"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:685
 msgid "Lithuanian"
 msgstr "Литовська"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:686
 msgid "Norwegian (Nynorsk)"
 msgstr "Норвезька (Нюнорск)"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:687
 msgid "Polish"
 msgstr "Польська"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:688
 msgid "Portuguese"
 msgstr "Португальська"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:689
 msgid "Portuguese (Brazilian)"
 msgstr "Португальська (Бразилія)"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:690
 msgid "Russian"
 msgstr "Російська"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:691
 msgid "Slovenian"
 msgstr "Словенська"
 
-#: src/Preferences.cpp:690
+#: src/Preferences.cpp:692
 msgid "Spanish"
 msgstr "Іспанська"
 
-#: src/Preferences.cpp:691
+#: src/Preferences.cpp:693
 msgid "Swedish"
 msgstr "Шведська"
 
-#: src/Preferences.cpp:692
+#: src/Preferences.cpp:694
 msgid "Turkish"
 msgstr "Турецька"
 
-#: src/Preferences.cpp:693
+#: src/Preferences.cpp:695
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: src/Preferences.cpp:880
+#: src/Preferences.cpp:882
 msgid "no options available"
 msgstr "немає наявних опцій"
 
-#: src/Preferences.cpp:1538
+#: src/Preferences.cpp:1544
 msgid "Invalid category found, skipping"
 msgstr "Знайдена помилкова категорія, пропущена"
 
-#: src/Preferences.cpp:1702
+#: src/Preferences.cpp:1708
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Порт TCP не може бути більшим ніж 65532, оскільки UDP-порт сервера є TCP+3"
 
-#: src/Preferences.cpp:1703
+#: src/Preferences.cpp:1709
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Буде використовуватися порт за замовчуванням (%d)"
 
-#: src/Preferences.cpp:1726
+#: src/Preferences.cpp:1732
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Усунення неіснуючих спільних тек: %s"
@@ -6787,12 +6787,12 @@ msgstr "Редагувати категорію"
 msgid "Remove category"
 msgstr "Видалити категорію"
 
-#: src/UploadClient.cpp:270
+#: src/UploadClient.cpp:272
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr "Не вдалося відкрити файл (%s), видаляю з переліку спільних файлів."
 
-#: src/UploadClient.cpp:704
+#: src/UploadClient.cpp:706
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Запитано набір хешів для невідомого файлу: %s"

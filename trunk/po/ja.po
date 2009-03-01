@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 15:35+0100\n"
+"POT-Creation-Date: 2009-03-01 01:23+0100\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -771,16 +771,16 @@ msgstr "全て"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "ユーザ合計： %s | ファイル合計： %s"
 
-#: src/BaseClient.cpp:1322
+#: src/BaseClient.cpp:1329
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "ユーザ '%s' から共有ファイルを取得することができませんでした"
 
-#: src/BaseClient.cpp:1537
+#: src/BaseClient.cpp:1544
 msgid "Searching buddy for lowid connection"
 msgstr ""
 
-#: src/BaseClient.cpp:1734 src/BaseClient.cpp:2258 src/BaseClient.cpp:2534
+#: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2552
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -796,35 +796,35 @@ msgstr ""
 msgid "Unknown"
 msgstr "不明"
 
-#: src/BaseClient.cpp:1751
+#: src/BaseClient.cpp:1758
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr "（偽のeMuleバージョン %#x）"
 
-#: src/BaseClient.cpp:1762
+#: src/BaseClient.cpp:1769
 msgid " (Fake eMule)"
 msgstr "（偽のeMule）"
 
-#: src/BaseClient.cpp:1764
+#: src/BaseClient.cpp:1771
 msgid "xMule (Fake eMule)"
 msgstr "xMule（偽のeMule）"
 
-#: src/BaseClient.cpp:1803
+#: src/BaseClient.cpp:1810
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x（eMule v0.%u に基づいています）"
 
-#: src/BaseClient.cpp:1973
+#: src/BaseClient.cpp:1980
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "NickName: %s ID: %u"
 
-#: src/BaseClient.cpp:1975
+#: src/BaseClient.cpp:1982
 #, c-format
 msgid "Requested: %s\n"
 msgstr "要求：%s\n"
 
-#: src/BaseClient.cpp:1977
+#: src/BaseClient.cpp:1984
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -832,7 +832,7 @@ msgid_plural ""
 msgstr[0] ""
 "当セッションのファイル統計： %d / %d の要求を受け入れ、%s 転送された\n"
 
-#: src/BaseClient.cpp:1980
+#: src/BaseClient.cpp:1987
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -840,14 +840,24 @@ msgid_plural ""
 msgstr[0] ""
 "全セッションのファイル統計： %d / %d の要求を受け入れ、%s 転送された\n"
 
-#: src/BaseClient.cpp:1983
+#: src/BaseClient.cpp:1990
 msgid "Requested unknown file"
 msgstr "不明なファイルが要求されました"
 
-#: src/BaseClient.cpp:2257
+#: src/BaseClient.cpp:2264
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "クライアント %s がIP：ポート %s:%d にいて、  %s %s %s を使用しています"
+
+#: src/BaseClient.cpp:2630
+#, c-format
+msgid "Message filtered from '%s' (IP:%s)"
+msgstr "%s（IP：%s）からのメッセージがフィルタされました"
+
+#: src/BaseClient.cpp:2737
+#, c-format
+msgid "New message from '%s' (IP:%s)"
+msgstr "%s（IP：%s）から新しいメッセージが届きました"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -1219,43 +1229,33 @@ msgstr "暗号化された"
 msgid "Hide shared files"
 msgstr "共有ファイルを隠す"
 
-#: src/ClientTCPSocket.cpp:796
-#, c-format
-msgid "Message filtered from '%s' (IP:%s)"
-msgstr "%s（IP：%s）からのメッセージがフィルタされました"
-
-#: src/ClientTCPSocket.cpp:798
-#, c-format
-msgid "New message from '%s' (IP:%s)"
-msgstr "%s（IP：%s）から新しいメッセージが届きました"
-
-#: src/ClientTCPSocket.cpp:820
+#: src/ClientTCPSocket.cpp:827
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ファイル・リストを要求しました -> 許可しました"
 
-#: src/ClientTCPSocket.cpp:841
+#: src/ClientTCPSocket.cpp:848
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ファイル・リストを要求しました -> 拒否しました"
 
-#: src/ClientTCPSocket.cpp:873
+#: src/ClientTCPSocket.cpp:880
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ディレクトリ・リストを要求しました -> 許可しまし"
 "た"
 
-#: src/ClientTCPSocket.cpp:913
+#: src/ClientTCPSocket.cpp:920
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ディレクトリ・リストを要求しました -> 拒否しまし"
 "た"
 
-#: src/ClientTCPSocket.cpp:938
+#: src/ClientTCPSocket.cpp:945
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -1263,39 +1263,39 @@ msgstr ""
 "ユーザ %s（%u）はあなたのディレクトリ %s の共有ファイル・リストを要求しまし"
 "た -> 許可しました"
 
-#: src/ClientTCPSocket.cpp:975
+#: src/ClientTCPSocket.cpp:982
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "ユーザ %s（%u）はあなたのディレクトリ %s の共有ファイル・リストを要求しまし"
 "た -> 拒否しました"
 
-#: src/ClientTCPSocket.cpp:994
+#: src/ClientTCPSocket.cpp:1001
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "ユーザ %s（%u）は %s のディレクトリを共有しています"
 
-#: src/ClientTCPSocket.cpp:1009
+#: src/ClientTCPSocket.cpp:1016
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "ユーザ %s（%u）は要求されていない共有ディレクトリを送りました。"
 
-#: src/ClientTCPSocket.cpp:1024
+#: src/ClientTCPSocket.cpp:1031
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "ユーザ %s（%u）はディレクトリ %s の共有ファイル・リストを送りました。"
 
-#: src/ClientTCPSocket.cpp:1031
+#: src/ClientTCPSocket.cpp:1038
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "ユーザ %s（%u）は共有ファイル・リストの送信を終了しました"
 
-#: src/ClientTCPSocket.cpp:1036
+#: src/ClientTCPSocket.cpp:1043
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "ユーザ %s（%u）は無用の共有ファイル・リストを送りました。"
 
-#: src/ClientTCPSocket.cpp:1048
+#: src/ClientTCPSocket.cpp:1055
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
@@ -3758,7 +3758,7 @@ msgstr "サーバ接続のリフレッシュ空間：無効にする"
 msgid "Skin to use: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:827
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:829
 msgid "- default -"
 msgstr ""
 
@@ -4800,175 +4800,175 @@ msgstr "ダウンロード済み"
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "エラー: 部分ファイル '%s' が開けませんでした"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "System default"
 msgstr "システムの標準設定"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Albanian"
 msgstr "アルバニア語"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Arabic"
 msgstr "アラブ語"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 #, fuzzy
 msgid "Asturian"
 msgstr "エストニア語"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:663
 msgid "Basque"
 msgstr "バスク語"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:664
 msgid "Bulgarian"
 msgstr "ブルガリア語"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:665
 msgid "Catalan"
 msgstr "カタロニア語"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:666
 msgid "Chinese (Simplified)"
 msgstr "中国語（簡体字）"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:667
 msgid "Chinese (Traditional)"
 msgstr "中国語（繁体字）"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:668
 msgid "Croatian"
 msgstr "クロアチア語"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:669
 msgid "Czech"
 msgstr "チェコ語"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:670
 msgid "Danish"
 msgstr "デンマーク語"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:671
 msgid "Dutch"
 msgstr "オランダ語"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:672
 msgid "English (U.K.)"
 msgstr "英語（U.K.）"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:673
 msgid "Estonian"
 msgstr "エストニア語"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:674
 msgid "Finnish"
 msgstr "フィンランド語"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:675
 msgid "French"
 msgstr "フランス語"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:676
 msgid "Galician"
 msgstr "ガリシア語"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:677
 msgid "German"
 msgstr "ドイツ語"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:678
 msgid "Greek"
 msgstr "ギリシア語"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:679
 msgid "Hebrew"
 msgstr "ヘブライ語"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:680
 msgid "Hungarian"
 msgstr "ハンガリー語"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:681
 msgid "Italian"
 msgstr "イタリア語"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:682
 msgid "Italian (Swiss)"
 msgstr "イタリア語（スイス）"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:683
 msgid "Japanese"
 msgstr "日本語"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:684
 msgid "Korean"
 msgstr "韓国語"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:685
 msgid "Lithuanian"
 msgstr "リトアニア語"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:686
 msgid "Norwegian (Nynorsk)"
 msgstr "ルウェー語"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:687
 msgid "Polish"
 msgstr "ポーランド語"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:688
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:689
 msgid "Portuguese (Brazilian)"
 msgstr "ポルトガル語（ブラジル）"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:690
 msgid "Russian"
 msgstr "ロシア語"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:691
 msgid "Slovenian"
 msgstr "スロベニア語"
 
-#: src/Preferences.cpp:690
+#: src/Preferences.cpp:692
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: src/Preferences.cpp:691
+#: src/Preferences.cpp:693
 msgid "Swedish"
 msgstr "スウェーデン語"
 
-#: src/Preferences.cpp:692
+#: src/Preferences.cpp:694
 msgid "Turkish"
 msgstr "トルコ語"
 
-#: src/Preferences.cpp:693
+#: src/Preferences.cpp:695
 msgid "Ukrainian"
 msgstr ""
 
-#: src/Preferences.cpp:880
+#: src/Preferences.cpp:882
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1538
+#: src/Preferences.cpp:1544
 msgid "Invalid category found, skipping"
 msgstr ""
 
-#: src/Preferences.cpp:1702
+#: src/Preferences.cpp:1708
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "サーバのUDPソケトがTCP+3であるためTCPポートを65532以上には設定できません"
 
-#: src/Preferences.cpp:1703
+#: src/Preferences.cpp:1709
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "デフォルトポートを使用します (%d)"
 
-#: src/Preferences.cpp:1726
+#: src/Preferences.cpp:1732
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr ""
@@ -6684,14 +6684,14 @@ msgstr "カテゴリを編集します"
 msgid "Remove category"
 msgstr "カテゴリを削除します"
 
-#: src/UploadClient.cpp:270
+#: src/UploadClient.cpp:272
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr ""
 "ファイル（%s）を開くことができませんでした。共有ファイルのリストから外しま"
 "す。"
 
-#: src/UploadClient.cpp:704
+#: src/UploadClient.cpp:706
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "不明なファイルのハッシュセットが要求されました： %s"
