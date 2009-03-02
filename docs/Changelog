@@ -9,6 +9,9 @@ Version 2.3.0 - The river knows.
 	FreeToGo:
 		* Add comment to desktop file to allow autostart in Gnome
 
+	Gnucco:
+		* Add option to ed2k link parser to display links in emulecollection
+
 	GonoszTopi:
 		* Various fixes to new colour code
 		* Allow user to select display of transfer rates
