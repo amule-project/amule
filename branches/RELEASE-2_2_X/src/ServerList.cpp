@@ -48,6 +48,7 @@
 #include "Statistics.h"			// Needed for theStats
 #include "Packet.h"			// Neeed for CPacket
 #include "Logger.h"
+#include "ScopedPtr.h"
 #include <common/Format.h>
 #include "IPFilter.h"
 #include <common/FileFunctions.h>	// Needed for UnpackArchive
@@ -285,13 +286,13 @@ void CServerList::ServerStats()
 			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
 			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
-			byte* pRawPacket = new byte[nPacketLen];
+			CScopedArray<byte> pRawPacket(new byte[nPacketLen]);
 			uint32 dwChallenge = (rand() << 17) | (rand() << 2) | (rand() & 0x03);
 			if (dwChallenge == 0) {
 				dwChallenge++;
 			}
 			
-			memcpy(pRawPacket, &dwChallenge, sizeof(uint32));
+			memcpy(pRawPacket.get(), &dwChallenge, sizeof(uint32));
 			for (uint32 i = 4; i < nPacketLen; i++) { // fillng up the remaining bytes with random data
 				pRawPacket[i] = (uint8)rand();
 			}
@@ -303,7 +304,7 @@ void CServerList::ServerStats()
 			AddDebugLogLineM(false, logServerUDP, CFormat(wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u")) % ping_server->GetAddress() % ping_server->GetPort());
 
 			CPacket* packet = new CPacket(pRawPacket[1], nPacketLen - 2, pRawPacket[0]);
-			packet->CopyToDataBuffer(0, pRawPacket + 2, nPacketLen - 2);
+			packet->CopyToDataBuffer(0, pRawPacket.get() + 2, nPacketLen - 2);
 			
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			theApp->serverconnect->SendUDPPacket(packet, ping_server, true, true /*raw packet*/, 12 /* Port offset is 12 for obfuscated encryption*/);
