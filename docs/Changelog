@@ -63,7 +63,6 @@ Version 2.3.0 - The river knows.
 		* Show log messages in remote gui
 		* More info in the Kad tab
 		* Fixed Windows lag when opening preferences dialog
-		* Fixed finished files sometimes getting rehashed (thanks to Skolnick)
 		* Improved gaplist performance
 		* Ported chat captchas (receive and send) 
 		  and "Advanced Chat Spam Filter" from eMule
@@ -111,6 +110,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		* Fix crash on global search on Windows
 		* Fix splitter bar position in transfer window not restored properly
 		* Caught some insane upload requests
+		* Fixed finished files sometimes getting rehashed (thanks to Skolnick)
 
 	Wuischke:
 		* Add Asturian language
