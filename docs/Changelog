@@ -20,7 +20,6 @@ Version 2.3.0 - The river knows.
 		* Added another common URN ID to the Magnet link handler.
 		* Switch to the 'busy' cursor while bringing up the preferences
 		  window.
-		* Fixed wxWidgets socket library initialization.
 
 	Greek:
 		* Part number is now an extra column in the download list
@@ -102,6 +101,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 
 	GonoszTopi:
 		* Fixed compilation of Format.cpp for some platforms.
+		* Fixed wxWidgets socket library initialization.
 		* Fixed partfile importer destroying imported data.
 		* Separated GUI and core code in partfile importer, thus fixing
 		  occasional crashes/hangs.
