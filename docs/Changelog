@@ -11,6 +11,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 
 	GonoszTopi:
 		* Fixed compilation of Format.cpp for some platforms.
+		* Fixed wxWidgets socket library initialization.
 		* Fixed partfile importer destroying imported data.
 		* Separated GUI and core code in partfile importer, thus fixing
 		  occasional crashes/hangs.

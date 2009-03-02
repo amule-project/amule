@@ -646,24 +646,6 @@ bool CamuleApp::OnInit()
 		printf("Password set and external connections enabled.\n");
 	}
 	
-	// Display notification on new version or first run
-	wxTextFile vfile( ConfigDir + wxT("lastversion") );
-	wxString newMule(wxT( VERSION ));
-	
-	// Test if there's any new version
-	if (thePrefs::CheckNewVersion()) {
-		// We use the thread base because I don't want a dialog to pop up.
-		CHTTPDownloadThread* version_check = 
-			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
-				theApp->ConfigDir + wxT("last_version_check"), HTTP_VersionCheck, false);
-		version_check->Create();
-		version_check->Run();
-	}
-
-	if ( !wxFileExists( vfile.GetName() ) ) {
-		vfile.Create();
-	}
-
 #ifndef __WXMSW__
 	if (getuid() == 0) {
 		wxString msg = 
@@ -680,6 +662,14 @@ bool CamuleApp::OnInit()
 	}
 #endif
 	
+	// Display notification on new version or first run
+	wxTextFile vfile( ConfigDir + wxT("lastversion") );
+	wxString newMule(wxT( VERSION ));
+	
+	if ( !wxFileExists( vfile.GetName() ) ) {
+		vfile.Create();
+	}
+
 	if ( vfile.Open() ) {
 		// Check if this version has been run before
 		bool found = false;
@@ -735,6 +725,16 @@ bool CamuleApp::OnInit()
 	wxString msg;
 	if (!ReinitializeNetwork(&msg)) {
 		printf("\n%s\n", (const char *)unicode2char(msg));
+	}
+
+	// Test if there's any new version
+	if (thePrefs::CheckNewVersion()) {
+		// We use the thread base because I don't want a dialog to pop up.
+		CHTTPDownloadThread* version_check = 
+			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
+				theApp->ConfigDir + wxT("last_version_check"), HTTP_VersionCheck, false);
+		version_check->Create();
+		version_check->Run();
 	}
 
 	// Create main dialog, or fork to background (daemon).
