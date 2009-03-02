@@ -376,6 +376,7 @@ void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket
 		
 		CMemFile encryptedpacket(pRawPacket + 2, uRawPacketSize - 2);
 		item.packet  = new CPacket(encryptedpacket, pRawPacket[0], pRawPacket[1]);
+		delete[] pRawPacket;
 		
 		if (delPacket) {
 			delete packet;
