@@ -25,7 +25,7 @@
 
 const int versionMajor		= 1;
 const int versionMinor		= 5;
-const int versionRevision	= 0;
+const int versionRevision	= 1;
 
 #include <cstdlib>
 #include <sstream>
@@ -478,6 +478,7 @@ int main(int argc, char *argv[])
 				<< "    ed2k://|file|           Causes the file to be queued for download.\n"
 				<< "    ed2k://|server|         Causes the server to be listed or updated.\n"
 				<< "    ed2k://|serverlist|     Causes aMule to update the current serverlist.\n\n"
+				<< "    --list, -l              Show all links of an emulecollection\n"
 				<< "    --emulecollection, -e   Loads all links of an emulecollection\n\n"
 				<< "*** NOTE: Option order is important! ***\n"
 				<< std::endl;
@@ -494,13 +495,17 @@ int main(int argc, char *argv[])
 				std::cerr << "Missing mandatory argument for " << arg << std::endl;
 				errors = true;
 			}
-		} else if (arg == "-e" || arg == "--emulecollection") {
+		} else if (arg == "-e" || arg == "--emulecollection" || arg == "-l" || arg == "--list") {
+			bool listOnly = (arg == "-l" || arg == "--list");
 			if (i < argc - 1) {
 				CMuleCollection my_collection;
 				if (my_collection.Open( /* emulecollection file */ argv[++i] ))
 				{
 					for(size_t e = 0;e < my_collection.GetFileCount();e++)
-						writeLink( my_collection.GetEd2kLink(e), config_path );
+						if (listOnly)
+							std::cout << my_collection.GetEd2kLink(e) << std::endl;
+						else
+							writeLink( my_collection.GetEd2kLink(e), config_path );
 				} else {
 					std::cerr << "Invalid emulecollection file: " << argv[i] << std::endl;
 					errors = true;
