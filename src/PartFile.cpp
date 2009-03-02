@@ -2242,6 +2242,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 
 		SetFilePath(m_fullname.GetPath());
 		SetFileName(m_fullname.GetFullName());
+		m_lastDateChanged = CPath::GetModificationTime(m_fullname);
 		
 		SetPartFileStatus(PS_COMPLETE);
 		m_paused = false;
