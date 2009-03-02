@@ -3,7 +3,7 @@
 # Create Makefile.am
 echo > Makefile.am
 echo 'EXTRA_DIST = \' >> Makefile.am
-ls *.xpm | sed -e 's/^/\t/' -e 's/$/ \\/' >> Makefile.am
+ls *.xpm | sed -e 's/^/	/' -e 's/$/ \\/' >> Makefile.am
 echo '	makeflags.sh' >> Makefile.am
 
 # Create CountryFlags.h and header
@@ -39,7 +39,7 @@ echo >> CountryFlags.h
 # Create the flag/Code vector
 echo 'static struct FlagXPMCode flagXPMCodeVector[] = {'>> CountryFlags.h
 ls *.xpm | sed -e 's/\.xpm$//;/\//s:.*/\([^/][^/]*\):\1:' | \
-	sed -e 's/[A-Za-z]*/\t{&, "&"},/' | \
+	sed -e 's/[A-Za-z]*/	{&, "&"},/' | \
 	sed -e 's/do/do_/1' |
 	sed -e 's/ht/ht_/1' |
 	sed -e 's/it/it_/1' |
