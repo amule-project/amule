@@ -2289,9 +2289,8 @@ msgid "UDP port for extended server requests (TCP+3): "
 msgstr "Порт UDP для запитів сервера (TCP+3):"
 
 #: src/PrefsUnifiedDlg.cpp:1108
-#, fuzzy
 msgid "disabled"
-msgstr "Заборонено"
+msgstr "вимкнено"
 
 #: src/PrefsUnifiedDlg.cpp:1128
 #, c-format

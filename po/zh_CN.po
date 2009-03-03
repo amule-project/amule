@@ -2027,16 +2027,15 @@ msgstr "安全"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "接口"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "代理"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "过滤："
+msgstr "过滤"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2047,9 +2046,8 @@ msgid "Online Signature"
 msgstr "在线统计"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "高级设置"
+msgstr "高级"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"

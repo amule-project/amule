@@ -1498,9 +1498,8 @@ msgid "Arabic"
 msgstr "Arabe"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonien"
+msgstr "Asturien"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
