@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-01 01:23+0100\n"
-"PO-Revision-Date: 2009-02-05 22:29+0100\n"
+"PO-Revision-Date: 2009-03-03 22:39+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -902,7 +902,7 @@ msgstr "Nouveau message de '%s' (IP : %s)"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Entrer le Captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -954,12 +954,16 @@ msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
 msgstr ""
+"*** Vous avez passé la vérification captcha et l'utilisateur a reçu votre "
+"message. ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Votre réponse captcha était fausse et votre message a été ignoré. Vous "
+"pouvez demander un nouveau captcha par l'envoi d'un nouveau message. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
