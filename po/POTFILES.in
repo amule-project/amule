@@ -62,6 +62,7 @@ src/FileDetailListCtrl.cpp
 src/KnownFile.cpp
 src/CommentDialog.cpp
 src/PartFileConvert.cpp
+src/PartFileConvertDlg.cpp
 src/OtherFunctions.cpp
 src/IPFilter.cpp
 src/StatisticsDlg.cpp
