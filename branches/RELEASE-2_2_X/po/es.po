@@ -1178,9 +1178,8 @@ msgid "Exit"
 msgstr "Salir"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Abrir"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1196,9 +1195,8 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "Copiar el enlace eD2k calculado al portapapeles"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
-msgstr "Guardar"
+msgstr "Guardar como"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1219,9 +1217,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Selecciona el archivo del que quieras calcular el enlace eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "Copiar al porta papeles"
+msgstr "Imposible abrir el portapapeles"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1273,16 +1270,15 @@ msgstr "Calculando hash..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator está trabajando para ti"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "Calculando Hash MD4..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "Conectado a eD2k..."
+msgstr "Calculando Hashes eD2k..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1485,9 +1481,8 @@ msgid "Arabic"
 msgstr "Árabe"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonio"
+msgstr "Asturiano"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -1619,7 +1614,7 @@ msgstr "Turco"
 
 #: src/Preferences.cpp:664
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucraniano"
 
 #: src/Preferences.cpp:1627 src/Preferences.cpp:1642 src/Preferences.cpp:1649
 msgid "Unable to determine selected browser!"
@@ -2056,16 +2051,15 @@ msgstr "Seguridad"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Interfaz"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Filtro:"
+msgstr "Filtros"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2076,9 +2070,8 @@ msgid "Online Signature"
 msgstr "Firma online"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Opciones avanzadas"
+msgstr "Avanzado"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2273,9 +2266,8 @@ msgid "UDP port for extended server requests (TCP+3): "
 msgstr "Puerto UDP para peticiones extendidas al servidor (TCP+3): 4665"
 
 #: src/PrefsUnifiedDlg.cpp:1108
-#, fuzzy
 msgid "disabled"
-msgstr "desactivar"
+msgstr "deshabilitado"
 
 #: src/PrefsUnifiedDlg.cpp:1128
 #, c-format
@@ -6413,9 +6405,9 @@ msgstr ""
 "Creando cliente...\n"
 
 #: src/ExternalConnector.cpp:400
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "Conexión fallida. Imposible conectar al host especificado\n"
+msgstr "Error de conexión. Imposible conectar a %s:%d\n"
 
 #: src/ExternalConnector.cpp:411
 #, c-format
