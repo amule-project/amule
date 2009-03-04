@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-03 20:08+0100\n"
+"POT-Creation-Date: 2009-03-04 13:35+0100\n"
 "PO-Revision-Date: 2007-03-12 22:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -131,7 +131,7 @@ msgstr ""
 #: src/BaseClient.cpp:1721 src/BaseClient.cpp:2243 src/BaseClient.cpp:2517
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
+#: src/ExternalConn.cpp:250 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1418
 #: src/DownloadListCtrl.cpp:1431 src/DownloadListCtrl.cpp:1442
 #: src/PartFile.cpp:2619 src/PartFile.cpp:2625 src/KnownFile.cpp:884
@@ -245,7 +245,7 @@ msgstr "Är du säker på att du vill ta bort alla servrar?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:752
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:754
 #: src/DownloadListCtrl.cpp:585 src/DownloadListCtrl.cpp:905
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:859 src/muuli_wdr.cpp:929
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:1069 src/muuli_wdr.cpp:2586
@@ -460,7 +460,7 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:662 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:667 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:657
 msgid "WARNING"
 msgstr "VARNING"
@@ -672,7 +672,7 @@ msgstr "Hämtar..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1311
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1313
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
 msgid "Preferences"
 msgstr "Inställningar"
@@ -1172,7 +1172,7 @@ msgstr "Spara"
 msgid "Save computed eD2k link to file"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1319
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1321
 #: src/muuli_wdr.cpp:3680
 msgid "About"
 msgstr "Om"
@@ -1286,7 +1286,7 @@ msgstr "Auto [No]"
 msgid "Auto [Hi]"
 msgstr "Auto [Hö]"
 
-#: src/DataToText.cpp:61 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:61 src/amuleDlg.cpp:541 src/ClientListCtrl.cpp:652
 #: src/amule.cpp:803
 msgid "Connecting"
 msgstr "Ansluter"
@@ -1643,7 +1643,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:144 src/CatDialog.cpp:142 src/CatDialog.cpp:152
 #: src/CatDialog.cpp:160 src/ServerList.cpp:342 src/amule.cpp:705
-#: src/amule.cpp:1328
+#: src/amule.cpp:1329
 msgid "Info"
 msgstr "Info"
 
@@ -1748,250 +1748,250 @@ msgstr "Är du säker på att du vill ta bort alla servrar?"
 msgid "Disabled [%s]"
 msgstr "Inaktiverad [%s]"
 
-#: src/amuleDlg.cpp:210
+#: src/amuleDlg.cpp:211
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Det här är aMule %s baserad på eMule."
 
-#: src/amuleDlg.cpp:212
+#: src/amuleDlg.cpp:213
 #, c-format
 msgid "Running on %s"
 msgstr "Kör på %s"
 
-#: src/amuleDlg.cpp:214
+#: src/amuleDlg.cpp:215
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr ""
 "Besök http://www.amule.org för att se om en ny version finns tillgänglig."
 
-#: src/amuleDlg.cpp:237
+#: src/amuleDlg.cpp:238
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr ""
 
-#: src/amuleDlg.cpp:458
+#: src/amuleDlg.cpp:459
 msgid "aMule remote control "
 msgstr ""
 
-#: src/amuleDlg.cpp:464
+#: src/amuleDlg.cpp:465
 msgid "Snapshot:"
 msgstr ""
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:467
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:468
 msgid " Website: http://www.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:469
 msgid " Forum: http://forum.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:470
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:471
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:472
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:473
 msgid " Part of aMule is based on \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:474
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:474
+#: src/amuleDlg.cpp:475
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:475
+#: src/amuleDlg.cpp:476
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:478 src/PrefsUnifiedDlg.cpp:559
-#: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:743 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:479 src/PrefsUnifiedDlg.cpp:559
+#: src/PrefsUnifiedDlg.cpp:659 src/PrefsUnifiedDlg.cpp:748 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Meddelande"
 
-#: src/amuleDlg.cpp:683
+#: src/amuleDlg.cpp:685
 msgid "eD2k: Connecting"
 msgstr ""
 
-#: src/amuleDlg.cpp:687
+#: src/amuleDlg.cpp:689
 msgid "eD2k: Disconnected"
 msgstr ""
 
-#: src/amuleDlg.cpp:693
+#: src/amuleDlg.cpp:695
 #, fuzzy
 msgid "Kad: Firewalled"
 msgstr "brandvägg"
 
-#: src/amuleDlg.cpp:697
+#: src/amuleDlg.cpp:699
 #, fuzzy
 msgid "Kad: Connected"
 msgstr "Ansluten"
 
-#: src/amuleDlg.cpp:702
+#: src/amuleDlg.cpp:704
 #, fuzzy
 msgid "Kad: Connecting"
 msgstr "Ansluter"
 
-#: src/amuleDlg.cpp:706
+#: src/amuleDlg.cpp:708
 #, fuzzy
 msgid "Kad: Off"
 msgstr " Kad: "
 
-#: src/amuleDlg.cpp:753
+#: src/amuleDlg.cpp:755
 #, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "Stoppar de aktuella anslutningsförsöken"
 
-#: src/amuleDlg.cpp:758 src/muuli_wdr.cpp:2850 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:760 src/muuli_wdr.cpp:2850 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "Koppla från"
 
-#: src/amuleDlg.cpp:759
+#: src/amuleDlg.cpp:761
 #, fuzzy
 msgid "Disconnect from the currently connected networks"
 msgstr "Koppla från nätverket."
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:3033 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:766 src/muuli_wdr.cpp:3033 src/muuli_wdr.cpp:3466
 #: src/muuli_wdr.cpp:3668 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "Anslut"
 
-#: src/amuleDlg.cpp:765
+#: src/amuleDlg.cpp:767
 #, fuzzy
 msgid "Connect to the currently enabled networks"
 msgstr "Anslut till nätverket."
 
-#: src/amuleDlg.cpp:811
+#: src/amuleDlg.cpp:813
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Upp: %.1f(%.1f) | Ner: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:813
+#: src/amuleDlg.cpp:815
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Upp: %.1f | Ner: %.1f"
 
-#: src/amuleDlg.cpp:835
+#: src/amuleDlg.cpp:837
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Ansluten)"
 
-#: src/amuleDlg.cpp:837
+#: src/amuleDlg.cpp:839
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Frånkopplad)"
 
-#: src/amuleDlg.cpp:868
+#: src/amuleDlg.cpp:870
 msgid "Do you really want to exit aMule?"
 msgstr "Vill du verkligen avsluta aMule?"
 
-#: src/amuleDlg.cpp:869
+#: src/amuleDlg.cpp:871
 msgid "Exit confirmation"
 msgstr "Bekräfta avslutning"
 
-#: src/amuleDlg.cpp:1181
+#: src/amuleDlg.cpp:1183
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr ""
 
-#: src/amuleDlg.cpp:1186
+#: src/amuleDlg.cpp:1188
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1286 src/amuleDlg.cpp:1447 src/muuli_wdr.cpp:1867
+#: src/amuleDlg.cpp:1288 src/amuleDlg.cpp:1449 src/muuli_wdr.cpp:1867
 #: src/muuli_wdr.cpp:3670
 msgid "Networks"
 msgstr "Nätverk"
 
-#: src/amuleDlg.cpp:1288
+#: src/amuleDlg.cpp:1290
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1290 src/muuli_wdr.cpp:3671
+#: src/amuleDlg.cpp:1292 src/muuli_wdr.cpp:3671
 msgid "Searches"
 msgstr "Sökningar"
 
-#: src/amuleDlg.cpp:1292
+#: src/amuleDlg.cpp:1294
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:3672
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3672
 msgid "Transfers"
 msgstr "Överföringar"
 
-#: src/amuleDlg.cpp:1296
+#: src/amuleDlg.cpp:1298
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1298
+#: src/amuleDlg.cpp:1300
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1300
+#: src/amuleDlg.cpp:1302
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1302 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1304 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
 msgid "Messages"
 msgstr "Meddelanden"
 
-#: src/amuleDlg.cpp:1304
+#: src/amuleDlg.cpp:1306
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1306 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1308 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1108 src/muuli_wdr.cpp:3676
 msgid "Statistics"
 msgstr "Statistik"
 
-#: src/amuleDlg.cpp:1308
+#: src/amuleDlg.cpp:1310
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1313
+#: src/amuleDlg.cpp:1315
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:3679
 msgid "Import"
 msgstr "Importera"
 
-#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3679
 msgid "The partfile importer tool"
 msgstr ""
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3680
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3680
 msgid "About/Help"
 msgstr "Om/Hjälp"
 
-#: src/amuleDlg.cpp:1458
+#: src/amuleDlg.cpp:1460
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1462
+#: src/amuleDlg.cpp:1464
 msgid "Kad network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1467
+#: src/amuleDlg.cpp:1469
 msgid "No network"
 msgstr ""
 
@@ -2089,159 +2089,164 @@ msgstr "- Språk ändrat.\n"
 msgid "- Temp folder changed.\n"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:607 src/muuli_wdr.cpp:116
+#: src/PrefsUnifiedDlg.cpp:587
+#, fuzzy
+msgid "- ED2K network enabled.\n"
+msgstr "Alla nätverk är inaktiverade."
+
+#: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Upp: 0.0 | Ner: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:649
+#: src/PrefsUnifiedDlg.cpp:654
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:653
+#: src/PrefsUnifiedDlg.cpp:658
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:662
+#: src/PrefsUnifiedDlg.cpp:667
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
 "If you do not restart now, don't complain if anything bad happens.\n"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:742
+#: src/PrefsUnifiedDlg.cpp:747
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:890
+#: src/PrefsUnifiedDlg.cpp:895
 msgid "Temporary files"
 msgstr "Temporära filer"
 
-#: src/PrefsUnifiedDlg.cpp:895
+#: src/PrefsUnifiedDlg.cpp:900
 msgid "Incoming files"
 msgstr "Inkommande filer"
 
-#: src/PrefsUnifiedDlg.cpp:900
+#: src/PrefsUnifiedDlg.cpp:905
 msgid "Online Signatures"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:913
+#: src/PrefsUnifiedDlg.cpp:918
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Välj en mapp för %s"
 
-#: src/PrefsUnifiedDlg.cpp:933
+#: src/PrefsUnifiedDlg.cpp:938
 msgid "Browse for videoplayer"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:937
+#: src/PrefsUnifiedDlg.cpp:942
 msgid "Select browser"
 msgstr "Välj webbläsare"
 
-#: src/PrefsUnifiedDlg.cpp:943
+#: src/PrefsUnifiedDlg.cpp:948
 #, c-format
 msgid "Executable%s"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:964
+#: src/PrefsUnifiedDlg.cpp:969
 msgid "Edit server list"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:965
+#: src/PrefsUnifiedDlg.cpp:970
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1021
+#: src/PrefsUnifiedDlg.cpp:1026
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1028
+#: src/PrefsUnifiedDlg.cpp:1033
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1034
+#: src/PrefsUnifiedDlg.cpp:1039
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1040
+#: src/PrefsUnifiedDlg.cpp:1045
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1046
+#: src/PrefsUnifiedDlg.cpp:1051
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1052
+#: src/PrefsUnifiedDlg.cpp:1057
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1059
+#: src/PrefsUnifiedDlg.cpp:1064
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1061
+#: src/PrefsUnifiedDlg.cpp:1066
 msgid "Server connection refresh interval: Disabled"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1104
+#: src/PrefsUnifiedDlg.cpp:1109
 msgid "UDP port for extended server requests (TCP+3): "
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1108
+#: src/PrefsUnifiedDlg.cpp:1113
 #, fuzzy
 msgid "disabled"
 msgstr "inaktivera"
 
-#: src/PrefsUnifiedDlg.cpp:1128
+#: src/PrefsUnifiedDlg.cpp:1133
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1131
+#: src/PrefsUnifiedDlg.cpp:1136
 msgid "Enable command execution on core"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1139
+#: src/PrefsUnifiedDlg.cpp:1144
 #, fuzzy
 msgid "Core command:"
 msgstr "Tillgängliga kommandon:\n"
 
-#: src/PrefsUnifiedDlg.cpp:1148
+#: src/PrefsUnifiedDlg.cpp:1153
 msgid "Enable command execution on GUI"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1156
+#: src/PrefsUnifiedDlg.cpp:1161
 msgid "GUI command:"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1165
+#: src/PrefsUnifiedDlg.cpp:1170
 msgid "The following variables will be replaced:"
 msgstr ""
 
@@ -2249,185 +2254,185 @@ msgstr ""
 msgid "Unauthorized access attempt. Connection closed."
 msgstr ""
 
-#: src/ExternalConn.cpp:117
+#: src/ExternalConn.cpp:116
 msgid "External connection closed."
 msgstr ""
 
-#: src/ExternalConn.cpp:144
+#: src/ExternalConn.cpp:143
 msgid "External connections disabled due to empty password!"
 msgstr ""
 
-#: src/ExternalConn.cpp:169
+#: src/ExternalConn.cpp:168
 msgid "External connections disabled in config file"
 msgstr ""
 
-#: src/ExternalConn.cpp:218
+#: src/ExternalConn.cpp:217
 msgid "New external connection accepted"
 msgstr ""
 
-#: src/ExternalConn.cpp:221
+#: src/ExternalConn.cpp:220
 msgid "ERROR: couldn't accept a new external connection"
 msgstr ""
 
-#: src/ExternalConn.cpp:240
+#: src/ExternalConn.cpp:239
 msgid "External connection refused due to empty password in preferences!"
 msgstr ""
 
-#: src/ExternalConn.cpp:250
+#: src/ExternalConn.cpp:249
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:252
+#: src/ExternalConn.cpp:251
 msgid "Unknown version"
 msgstr "Okänd version"
 
-#: src/ExternalConn.cpp:263
+#: src/ExternalConn.cpp:262
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr ""
 
-#: src/ExternalConn.cpp:268
+#: src/ExternalConn.cpp:267
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
 
-#: src/ExternalConn.cpp:289
+#: src/ExternalConn.cpp:288
 msgid "Authentication failed."
 msgstr ""
 
-#: src/ExternalConn.cpp:293
+#: src/ExternalConn.cpp:292
 msgid "Invalid protocol version."
 msgstr ""
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:296
 msgid "Missing protocol version tag."
 msgstr ""
 
-#: src/ExternalConn.cpp:301
+#: src/ExternalConn.cpp:300
 msgid "Invalid request, you should first authenticate."
 msgstr ""
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:306
 msgid "Access granted."
 msgstr ""
 
-#: src/ExternalConn.cpp:565
+#: src/ExternalConn.cpp:564
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:567
+#: src/ExternalConn.cpp:566
 #, c-format
 msgid "FileHash not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:630 src/ExternalConn.cpp:714
+#: src/ExternalConn.cpp:629 src/ExternalConn.cpp:713
 msgid "OOPS! OpCode processing error!"
 msgstr ""
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:659
 msgid "Server not added"
 msgstr ""
 
-#: src/ExternalConn.cpp:678
+#: src/ExternalConn.cpp:677
 #, c-format
 msgid "server not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:694
+#: src/ExternalConn.cpp:693
 msgid "need to define server to be removed"
 msgstr ""
 
-#: src/ExternalConn.cpp:708
+#: src/ExternalConn.cpp:707
 msgid "eD2k is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:803
 msgid "Search in progress. Refetch results in a moment!"
 msgstr ""
 
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:808
 msgid "WebSearch from remote interface makes no sense."
 msgstr ""
 
-#: src/ExternalConn.cpp:860
+#: src/ExternalConn.cpp:859
 msgid "Kad is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1020
 msgid "No points for graph."
 msgstr ""
 
-#: src/ExternalConn.cpp:1030
+#: src/ExternalConn.cpp:1029
 msgid "Your client is not configured for this detail level."
 msgstr ""
 
-#: src/ExternalConn.cpp:1058
+#: src/ExternalConn.cpp:1057
 msgid "External Connection: shutdown requested"
 msgstr ""
 
-#: src/ExternalConn.cpp:1070
+#: src/ExternalConn.cpp:1069
 msgid "Already shutting down."
 msgstr ""
 
-#: src/ExternalConn.cpp:1078
+#: src/ExternalConn.cpp:1077
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr ""
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1083
 msgid "Invalid link or already on list."
 msgstr ""
 
-#: src/ExternalConn.cpp:1169
+#: src/ExternalConn.cpp:1168
 msgid "File not found."
 msgstr "Filen hittades inte."
 
-#: src/ExternalConn.cpp:1174
+#: src/ExternalConn.cpp:1173
 msgid "Invalid file name."
 msgstr "Ogiltigt filnamn."
 
-#: src/ExternalConn.cpp:1182
+#: src/ExternalConn.cpp:1181
 msgid "Unable to rename file."
 msgstr "Kunde inte byta namn på fil."
 
-#: src/ExternalConn.cpp:1406
+#: src/ExternalConn.cpp:1405
 msgid "Already connected to eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:1409
+#: src/ExternalConn.cpp:1408
 msgid "Connecting to eD2k..."
 msgstr ""
 
-#: src/ExternalConn.cpp:1417
+#: src/ExternalConn.cpp:1416
 msgid "Already connected to Kad."
 msgstr "Redan ansluten till Kad."
 
-#: src/ExternalConn.cpp:1420
+#: src/ExternalConn.cpp:1419
 msgid "Connecting to Kad..."
 msgstr "Ansluter till Kad..."
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1424
 msgid "All networks are disabled."
 msgstr "Alla nätverk är inaktiverade."
 
-#: src/ExternalConn.cpp:1433
+#: src/ExternalConn.cpp:1432
 msgid "Disconnected from eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:1437
+#: src/ExternalConn.cpp:1436
 msgid "Disconnected from Kad."
 msgstr ""
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1444
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:1448
+#: src/ExternalConn.cpp:1447
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr ""
 
@@ -2955,26 +2960,26 @@ msgid "Connection failed "
 msgstr "Anslutningen misslyckades "
 
 #: src/amule-remote-gui.cpp:289 src/amule.cpp:851 src/amule.cpp:972
-#: src/amule.cpp:1339
+#: src/amule.cpp:1340
 msgid "ERROR"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:479 src/amule.cpp:1077
+#: src/amule-remote-gui.cpp:480 src/amule.cpp:1078
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:574
+#: src/amule-remote-gui.cpp:575
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Användare: E: %s K: %s | Filer E: %s K: %s"
 
-#: src/amule-remote-gui.cpp:632 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:633 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Alla"
 
-#: src/amule-remote-gui.cpp:870
+#: src/amule-remote-gui.cpp:871
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Totalt antal användare: %s | Totalt antal filer: %s"
@@ -3602,11 +3607,11 @@ msgstr ""
 msgid "Connected to %s %s %s"
 msgstr "Ansluten till %s %s %s"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2098
+#: src/TextClient.cpp:697 src/amule.cpp:2099
 msgid "with LowID"
 msgstr "med LowID"
 
-#: src/TextClient.cpp:697 src/amule.cpp:2098
+#: src/TextClient.cpp:697 src/amule.cpp:2099
 msgid "with HighID"
 msgstr "med HighID"
 
@@ -6181,12 +6186,12 @@ msgstr ""
 "\n"
 "Skapar klient...\n"
 
-#: src/ExternalConnector.cpp:400
+#: src/ExternalConnector.cpp:403
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:411
+#: src/ExternalConnector.cpp:414
 #, c-format
 msgid ""
 "\n"
@@ -6195,7 +6200,7 @@ msgstr ""
 "\n"
 "Ok, avslutar %s...\n"
 
-#: src/ExternalConnector.cpp:416
+#: src/ExternalConnector.cpp:419
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6204,47 +6209,47 @@ msgid ""
 "Exiting...\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:426
 msgid "Show this help text."
 msgstr "Visa den här hjälptexten."
 
-#: src/ExternalConnector.cpp:426
+#: src/ExternalConnector.cpp:429
 msgid "Host where aMule is running. (default: localhost)"
 msgstr ""
 
-#: src/ExternalConnector.cpp:429
+#: src/ExternalConnector.cpp:432
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr ""
 
-#: src/ExternalConnector.cpp:432
+#: src/ExternalConnector.cpp:435
 msgid "External Connection password."
 msgstr ""
 
-#: src/ExternalConnector.cpp:435
+#: src/ExternalConnector.cpp:438
 msgid "Read configuration from file."
 msgstr "Läs in konfiguration från fil."
 
-#: src/ExternalConnector.cpp:438
+#: src/ExternalConnector.cpp:441
 msgid "Do not print any output to stdout."
 msgstr ""
 
-#: src/ExternalConnector.cpp:441
+#: src/ExternalConnector.cpp:444
 msgid "Be verbose - show also debug messages."
 msgstr ""
 
-#: src/ExternalConnector.cpp:444
+#: src/ExternalConnector.cpp:447
 msgid "Sets program locale (language)."
 msgstr "Ställer in programlokalen (språk)."
 
-#: src/ExternalConnector.cpp:447
+#: src/ExternalConnector.cpp:450
 msgid "Write command line options to config file."
 msgstr ""
 
-#: src/ExternalConnector.cpp:450
+#: src/ExternalConnector.cpp:453
 msgid "Creates config file based on aMule's config file."
 msgstr ""
 
-#: src/ExternalConnector.cpp:453
+#: src/ExternalConnector.cpp:456
 msgid "Print program version."
 msgstr "Skriv ut programversion."
 
@@ -6754,58 +6759,58 @@ msgid ""
 "Check your network to make sure the port is open for output and input."
 msgstr ""
 
-#: src/amule.cpp:1121
+#: src/amule.cpp:1122
 msgid "Failed to create OnlineSig File"
 msgstr "Misslyckades med att skapa OnlineSig File"
 
-#: src/amule.cpp:1129
+#: src/amule.cpp:1130
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Misslyckades med att skapa aMule OnlineSig File"
 
-#: src/amule.cpp:1297
+#: src/amule.cpp:1298
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
 msgstr ""
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1307
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Det här är första gången som du kör aMule %s"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1309
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Den här versionen är en testversion, uppdaterad dagligen, och\n"
 
-#: src/amule.cpp:1309
+#: src/amule.cpp:1310
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "vi ger ingen garanti, den kommer inte att förstöra någonting, bränna,\n"
 
-#: src/amule.cpp:1310
+#: src/amule.cpp:1311
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "när ditt hus eller döda din hund. Men den *bör* vara användbar ändå.\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1315
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr ""
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1316
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
 "connections.\n"
 msgstr ""
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1317
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
 msgstr ""
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1318
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -6814,7 +6819,7 @@ msgid ""
 "aMule to work properly."
 msgstr ""
 
-#: src/amule.cpp:1318
+#: src/amule.cpp:1319
 msgid ""
 "\n"
 "\n"
@@ -6822,141 +6827,141 @@ msgid ""
 "Please configure your browser options again if needed.\n"
 msgstr ""
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "Mer information, support och nya utgåvor kan hittas på vår,\n"
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1325
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "webbplats, www.aMule.org, eller i vår IRC-kanal #aMule på irc.freenode.net.\n"
 
-#: src/amule.cpp:1326
+#: src/amule.cpp:1327
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Rapportera gärna eventuella fel på http://forum.amule.org"
 
-#: src/amule.cpp:1339
+#: src/amule.cpp:1340
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
 
-#: src/amule.cpp:1625
+#: src/amule.cpp:1626
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr ""
 
-#: src/amule.cpp:1773
+#: src/amule.cpp:1774
 msgid "ERROR: can't open logfile"
 msgstr "FEL: kan inte öppna loggfilen"
 
-#: src/amule.cpp:1777
+#: src/amule.cpp:1778
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "VARNING: loggfilen är tom. Någonting är fel."
 
-#: src/amule.cpp:1796
+#: src/amule.cpp:1797
 msgid "Log has been reset"
 msgstr "Loggen har nollställts"
 
-#: src/amule.cpp:1824
+#: src/amule.cpp:1825
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Servermeddelande: %s"
 
-#: src/amule.cpp:1862
+#: src/amule.cpp:1863
 msgid "Failed to download the nodes list."
 msgstr "Misslyckades med att hämta nodlistan."
 
-#: src/amule.cpp:1875
+#: src/amule.cpp:1876
 msgid "Failed to open the downloaded version check file"
 msgstr "Misslyckades med att öppna den hämtade versionskontrollfilen"
 
-#: src/amule.cpp:1878 src/amule.cpp:1888 src/amule.cpp:1894
+#: src/amule.cpp:1879 src/amule.cpp:1889 src/amule.cpp:1895
 msgid "Corrupted version check file"
 msgstr "Skadad versionskontrollfil"
 
-#: src/amule.cpp:1904
+#: src/amule.cpp:1905
 msgid "You are using an outdated version of aMule!"
 msgstr "Du använder en utdaterad version av aMule!"
 
-#: src/amule.cpp:1905
+#: src/amule.cpp:1906
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Din version av aMule är %i.%i.%i och den senaste versionen är %li.%li.%li"
 
-#: src/amule.cpp:1906
+#: src/amule.cpp:1907
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Den senaste versionen kan alltid hittas på http://www.amule.org"
 
-#: src/amule.cpp:1909
+#: src/amule.cpp:1910
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "VARNING: Din version av aMuled är utdaterad: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1913
+#: src/amule.cpp:1914
 msgid "Your copy of aMule is up to date."
 msgstr "Din kopia av aMule är uppdaterad."
 
-#: src/amule.cpp:1920
+#: src/amule.cpp:1921
 msgid "Failed to download the version check file"
 msgstr "Misslyckades med att hämta versionskontrollfilen"
 
-#: src/amule.cpp:2023
+#: src/amule.cpp:2024
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr ""
 
-#: src/amule.cpp:2024
+#: src/amule.cpp:2025
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr ""
 
-#: src/amule.cpp:2033
+#: src/amule.cpp:2034
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:2100
+#: src/amule.cpp:2101
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Ansluten till %s %s"
 
-#: src/amule.cpp:2103
+#: src/amule.cpp:2104
 #, c-format
 msgid "Connecting to %s"
 msgstr "Ansluter till %s"
 
-#: src/amule.cpp:2105
+#: src/amule.cpp:2106
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2112
+#: src/amule.cpp:2113
 msgid "Kad started."
 msgstr "Kad startad."
 
-#: src/amule.cpp:2114
+#: src/amule.cpp:2115
 msgid "Kad stopped."
 msgstr "Kad stoppad."
 
-#: src/amule.cpp:2121
+#: src/amule.cpp:2122
 msgid "Connected to Kad (ok)"
 msgstr "Ansluten till Kad (ok)"
 
-#: src/amule.cpp:2123
+#: src/amule.cpp:2124
 msgid "Connected to Kad (firewalled)"
 msgstr "Ansluten till Kad (brandvägg)"
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2127
 msgid "Disconnected from Kad"
 msgstr "Frånkopplad från Kad"
 
-#: src/amule.cpp:2189
+#: src/amule.cpp:2190
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 
-#: src/amule.cpp:2192
+#: src/amule.cpp:2193
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 
