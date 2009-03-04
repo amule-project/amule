@@ -143,7 +143,6 @@ m_tblist(32,32),
 m_prefsVisible(false),
 m_wndToolbar(NULL),
 m_wndTaskbarNotifier(NULL),
-m_TrayIcon(false),
 m_nActiveDialog(DT_NETWORKS_WND),
 m_is_safe_state(false),
 m_BlinkMessages(false),
@@ -369,11 +368,10 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 		
 void CamuleDlg::CreateSystray()
 {
-	wxCHECK_RET(m_TrayIcon == false,
+	wxCHECK_RET(m_wndTaskbarNotifier == NULL,
 		wxT("Systray already created"));
 
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
-	m_TrayIcon = true;
 	// This will effectively show the Tray Icon.
 	UpdateTrayIcon(0);
 }	
@@ -383,7 +381,6 @@ void CamuleDlg::RemoveSystray()
 {
 	delete m_wndTaskbarNotifier;
 	m_wndTaskbarNotifier = NULL;
-	m_TrayIcon = false;
 }
 
 
@@ -826,8 +823,8 @@ void CamuleDlg::ShowTransferRate()
 		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
-	wxASSERT(m_TrayIcon == thePrefs::UseTrayIcon());
-	if (m_TrayIcon) {
+	wxASSERT((m_wndTaskbarNotifier != NULL) == thePrefs::UseTrayIcon());
+	if (m_wndTaskbarNotifier) {
 		// set trayicon-icon
 		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
 		UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
@@ -993,7 +990,7 @@ bool CamuleDlg::SaveGUIPrefs()
 
 void CamuleDlg::DoIconize(bool iconize) 
 {
-	if (m_TrayIcon && thePrefs::DoMinToTray()) {
+	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
 		if (iconize) {
 			// Skip() will do it.
 			//Iconize(true);
@@ -1020,7 +1017,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 		if (m_prefsDialog && m_prefsDialog->IsShown()) {
 			// Veto.
 		} else {
-			if (m_TrayIcon) {
+			if (m_wndTaskbarNotifier) {
 				DoIconize(evt.Iconized());
 			}
 			evt.Skip();
