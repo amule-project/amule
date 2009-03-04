@@ -314,7 +314,7 @@ public:
 
 	void ProcessFull(const CECPacket *reply)
 	{
-		for (int i = 0;i < reply->GetTagCount();i++) {
+		for (size_t i = 0;i < reply->GetTagCount();i++) {
 			G *tag = (G *)reply->GetTagByIndex(i);
 			// initialize item data from EC tag
 			T *item = this->CreateItem(tag);
@@ -325,7 +325,7 @@ public:
 	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 	{
 		std::set<I> core_files;
-		for (int i = 0;i < reply->GetTagCount();i++) {
+		for (size_t i = 0;i < reply->GetTagCount();i++) {
 			G *tag = (G *)reply->GetTagByIndex(i);
 			if ( tag->GetTagName() != req_type ) {
 				continue;
@@ -736,7 +736,7 @@ public:
 		return ((m_ConnState & CONNECTED_KAD_OK) 
 				|| (m_ConnState & CONNECTED_KAD_FIREWALLED));
 	}
-	bool IsFirewalledKad() const { return (m_ConnState & CONNECTED_KAD_FIREWALLED); }
+	bool IsFirewalledKad() const { return (m_ConnState & CONNECTED_KAD_FIREWALLED) != 0; }
 	
 	bool IsKadRunning() const { return ((m_ConnState & CONNECTED_KAD_OK) 
 				|| (m_ConnState & CONNECTED_KAD_FIREWALLED)
