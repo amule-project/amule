@@ -5658,7 +5658,7 @@ msgstr "Server"
 
 #: src/ServerListCtrl.cpp:429
 msgid "Connect to server"
-msgstr "Connesso al server"
+msgstr "Connetti al server"
 
 #: src/ServerListCtrl.cpp:435
 msgid "Mark server as static"
