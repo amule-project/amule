@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-04 13:35+0100\n"
-"PO-Revision-Date: 2008-12-12 09:30+0100\n"
+"PO-Revision-Date: 2009-03-04 14:32+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
 "MIME-Version: 1.0\n"
@@ -1486,9 +1486,8 @@ msgid "Arabic"
 msgstr "Arabo"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estone"
+msgstr "Asturiano"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -2134,9 +2133,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Modifica della cartella Temp.\n"
 
 #: src/PrefsUnifiedDlg.cpp:587
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Tutte le reti sono disabilitate."
+msgstr "- Rete ED2K abilitata.\n"
 
 #: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
