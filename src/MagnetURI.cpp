@@ -100,7 +100,9 @@ bool CMagnetED2KConverter::CanConvertToED2K() const
 			continue;
 		}
 		if (it->first.compare(_T("xt")) == 0) {
-			if (it->second.compare(0, 9, _T("urn:ed2k:")) == 0) {
+			if ((it->second.compare(0, 9, _T("urn:ed2k:")) == 0) ||
+			    (it->second.compare(0, 13, _T("urn:ed2khash:")) == 0))
+			{
 				has_urn = true;
 				continue;
 			}
@@ -126,9 +128,13 @@ STRING CMagnetED2KConverter::GetED2KLink() const
 			dn = _T("FileName.ext");
 		}
 		Value_List urn_list = GetField(_T("xt"));
+		// Use the first ed2k-hash found.
 		for (Value_List::iterator it = urn_list.begin(); it != urn_list.end(); ++it) {
 			if (it->compare(0, 9, _T("urn:ed2k:")) == 0) {
 				hash = it->substr(9);
+				break;
+			} else if (it->compare(0, 13, _T("urn:ed2khash:")) == 0) {
+				hash = it->substr(13);
 				break;
 			}
 		}

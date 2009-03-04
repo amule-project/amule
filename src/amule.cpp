@@ -1030,6 +1030,7 @@ wxString CamuleApp::CreateMagnetLink(const CAbstractFile *f)
 
 	uri.AddField(wxT("dn"), f->GetFileName().Cleanup(false).GetPrintable());
 	uri.AddField(wxT("xt"), wxString(wxT("urn:ed2k:")) + f->GetFileHash().Encode().Lower());
+	uri.AddField(wxT("xt"), wxString(wxT("urn:ed2khash:")) + f->GetFileHash().Encode().Lower());
 	uri.AddField(wxT("xl"), wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()));
 
 	return uri.GetLink();
