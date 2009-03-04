@@ -3,26 +3,26 @@
 # This file is distributed under the terms of the GNU General Public
 # License
 #
+#
 # FIRST AUTHOR <aquatroll@ADDRESS>, 2004.
 # Mad-Soft <mad.soft@gmail.com>, 2004, 2005, 2006, 2007, 2008.
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
 # Carlos Diaz <cskyline@gmail.com>, 2007, 2008.
-# Festor Wailon Dacoba <festor90@gmail.com>, 2007.
-#
+# Festor Wailon Dacoba <festor90@gmail.com>, 2007, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-04 13:35+0100\n"
-"PO-Revision-Date: 2008-08-05 12:50+0100\n"
-"Last-Translator: Festor Wailon Dacoba <festor90@gmail.com>\n"
-"Language-Team: Spanish <mad.soft@gmail.com>\n"
+"PO-Revision-Date: 2009-03-04 20:43+0100\n"
+"Last-Translator: \n"
+"Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
@@ -2128,9 +2128,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Directorio TEMP cambiado.\n"
 
 #: src/PrefsUnifiedDlg.cpp:587
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Todas las redes están deshabilitadas."
+msgstr "- Red ED2K habilitada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
@@ -2266,9 +2265,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Intervalo de refresco de la conexión al servidor: Deshabilitado"
 
 #: src/PrefsUnifiedDlg.cpp:1109
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "Puerto UDP para peticiones extendidas al servidor (TCP+3): 4665"
+msgstr "Puerto UDP para peticiones extendidas al servidor (TCP+3): "
 
 #: src/PrefsUnifiedDlg.cpp:1113
 msgid "disabled"
