@@ -4,22 +4,23 @@
 #
 # Translation of aMule to Catalan / Valencian
 #
-# Kry <elkry@users.sourceforge.net>, 2004 - 2008
 # pukyxd <pukyxd@yahoo.com> 2004 - 2005
 # Carles Escrig (simkin) <royo@aditel.org> 2005 - 2008
+# Kry <elkry@users.sourceforge.net>, 2004 - 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-04 13:35+0100\n"
-"PO-Revision-Date: 2008-12-03 23:14+0100\n"
-"Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
-"Language-Team: Catalan\n"
+"PO-Revision-Date: 2009-03-04 20:44+0100\n"
+"Last-Translator: \n"
+"Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Language: Catalan\n"
+"X-Generator: Lokalize 0.3\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -1489,9 +1490,8 @@ msgid "Arabic"
 msgstr "Àrab"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonià"
+msgstr "Asturià"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -2140,9 +2140,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- El directori temporal ha canviat.\n"
 
 #: src/PrefsUnifiedDlg.cpp:587
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Totes les xarxes estan inhabilitades."
+msgstr "- Xarxa ED2K habilitada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
