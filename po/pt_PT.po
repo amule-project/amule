@@ -12,10 +12,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aMule 2.2.3\n"
+"Project-Id-Version: aMule 2.2.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-04 13:35+0100\n"
-"PO-Revision-Date: 2008-12-03 23:23+0000\n"
+"PO-Revision-Date: 2009-03-04 18:24+0000\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -1484,9 +1484,8 @@ msgid "Arabic"
 msgstr "Árabe"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estoniano"
+msgstr "Asturiano"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -2132,9 +2131,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- A pasta Temp foi alterada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:587
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Todas as redes estão desactivadas."
+msgstr "- Rede ED2K activada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
