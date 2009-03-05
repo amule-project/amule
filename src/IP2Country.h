@@ -44,8 +44,6 @@
 #define IP2COUNTRY_H
 
 
-#include <GeoIP.h>
-
 #include <map>
 
 #include <wx/bitmap.h>
@@ -68,7 +66,7 @@ public:
 	const CountryData& GetCountryData(const wxString& ip);
 
 private:
-	GeoIP *m_geoip;
+	struct GeoIPTag *m_geoip;
 	CountryDataMap m_CountryDataMap;
 };
 
