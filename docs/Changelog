@@ -54,7 +54,6 @@ Version 2.3.0 - The river knows.
 		* Faster progress bars with less overhead (without pens/brushes)
 		* Show log messages in remote gui
 		* More info in the Kad tab
-		* Fixed Windows lag when opening preferences dialog
 		* Improved gaplist performance
 		* Ported chat captchas (receive and send) 
 		  and "Advanced Chat Spam Filter" from eMule
@@ -118,6 +117,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		* Caught some insane upload requests
 		* Fixed finished files sometimes getting rehashed (thanks to Skolnick)
 		* Added restart warning if the ED2K network was re-enabled.
+		* Fixed Windows lag when opening preferences dialog
 
 	Wuischke:
 		* Add Asturian language
