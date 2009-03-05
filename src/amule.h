@@ -131,8 +131,8 @@ public:
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 
 	// Barry - To find out if app is running or shutting/shut down
-	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
-	const bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTTINGDOWN); }
+	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
+	bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTTINGDOWN); }
 
 	// Check ED2K and Kademlia state
 	bool IsFirewalled();
