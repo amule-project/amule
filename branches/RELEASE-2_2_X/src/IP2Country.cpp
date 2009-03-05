@@ -40,6 +40,8 @@
 // Contact: mjames@gmail.com
 //
 
+#include <GeoIP.h>
+
 #include "IP2Country.h"
 
 
