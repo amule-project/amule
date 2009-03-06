@@ -4,13 +4,13 @@
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
-# Hans <herringfish@hot.ee>, 2006, 2007, 2008.
+# Hans <herringfish@hot.ee>, 2006, 2007, 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-04 13:35+0100\n"
-"PO-Revision-Date: 2008-12-21 13:16+0200\n"
+"PO-Revision-Date: 2009-03-06 10:43+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "Väline Ühendus: Ligipääs keelatud"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:201
 msgid "External Connection: Bad reply from server. Connection closed."
-msgstr "Väline Ühendus: Serveri vastus vigane. Ühendus suletud."
+msgstr "Väline Ühendus: Serveri vigane vastus. Ühendus suletud."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "Succeeded! Connection established to aMule "
@@ -70,7 +70,7 @@ msgstr "Valmis"
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3879
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:700
 msgid "Paused"
-msgstr "Pausitud"
+msgstr "Peatatud"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3882
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:699
@@ -610,7 +610,7 @@ msgstr "Nõuti väljalogimist\n"
 
 #: src/webserver/src/WebServer.cpp:1907
 msgid "Processing request [redirected]: "
-msgstr "Töötlen päringut [ümbersuunatud]:"
+msgstr "Töötlen päringut [ümbersuunatud]: "
 
 #: src/webserver/src/WebInterface.cpp:483
 msgid "Loads template <str>"
@@ -761,7 +761,7 @@ msgstr "FTP värskendamise intervall minutites"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:296
 msgid "Validate"
-msgstr "Kinnita"
+msgstr "Kinnita/kontrolli"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
@@ -791,17 +791,17 @@ msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:120
 msgid "Maximum DL rate since wxCas is running"
-msgstr "Suurim tõmbamine alates wxCas käivitamisest"
+msgstr "Suurim Tõmbamine alates wxCas käivitamisest"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr "Absoluutselt suurim varasem tõmbamine"
+msgstr "Absoluutselt suurim Tõmbamine wxCas eelmistest käivitamistest"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:138
 #: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:2748
 #: src/muuli_wdr.cpp:2783
 msgid "Reset"
-msgstr "Unusta"
+msgstr "Algväärtusta"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
@@ -843,7 +843,7 @@ msgstr "Automaatne värskendamine on käivitatud"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:353
 msgid "Save Statistics Image"
-msgstr "Statistika kuvandi salvestamine"
+msgstr "Salvesta Statistika"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:391
 msgid "aMule Online Statistics"
@@ -964,24 +964,24 @@ msgstr " koos "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1094
 msgid "Total Download: "
-msgstr "Kokku tõmmatud: "
+msgstr "Kokku Tõmbamisi: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1096
 #: src/utils/wxCas/src/wxcasframe.cpp:1107
 msgid ", Upload: "
-msgstr ", Saadetud: "
+msgstr ", Saatmine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1105
 msgid "Session Download: "
-msgstr "Seansil tõmmatud: "
+msgstr "Seansil Tõmmatud: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1116
 msgid "Download: "
-msgstr "Tõmban: "
+msgstr "Tõmbamine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid " kB/s, Upload: "
-msgstr " kB/s, Saadan: "
+msgstr " kB/s, Saatmine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " kB/s"
@@ -989,7 +989,7 @@ msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1128
 msgid "Sharing: "
-msgstr "Jagatud: "
+msgstr "Jagamine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid " file(s), Clients on queue: "
@@ -1609,7 +1609,7 @@ msgstr "Ukraina"
 
 #: src/Preferences.cpp:1627 src/Preferences.cpp:1642 src/Preferences.cpp:1649
 msgid "Unable to determine selected browser!"
-msgstr "Ei suuda tuvastada valitud lehitsejat (browser)!"
+msgstr "Valitud lehitsejat ei suuda tuvastada!"
 
 #: src/Preferences.cpp:1680
 msgid ""
@@ -1803,7 +1803,7 @@ msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
-" eMulel põhinev, platvormist sõltumatu, p2p klient \n"
+"eMulel põhinev, platvormist sõltumatu, p2p klient \n"
 "\n"
 
 #: src/amuleDlg.cpp:468
@@ -1831,7 +1831,7 @@ msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
-" Copyright (C) 2003-2008 aMule Meeskond \n"
+" Copyright (c) 2003-2008 aMule Meeskond \n"
 "\n"
 
 #: src/amuleDlg.cpp:473
@@ -1844,7 +1844,7 @@ msgstr "Kademlia: Sõlmest-Sõlmeni ruutimine põhineb XOR meetrikal.\n"
 
 #: src/amuleDlg.cpp:475
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
-msgstr " Copyright (C) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgstr " Copyright (C) 2002-2008 Petar Maymounkov <petar@post.harvard.edu>\n"
 
 #: src/amuleDlg.cpp:476
 msgid " http://kademlia.scs.cs.nyu.edu\n"
@@ -1899,7 +1899,7 @@ msgstr "Ühenda"
 
 #: src/amuleDlg.cpp:767
 msgid "Connect to the currently enabled networks"
-msgstr "Ühendu lubatud võrguga"
+msgstr "Ühendu olemasolevate, aktiivsete võrkudega"
 
 #: src/amuleDlg.cpp:813
 #, c-format
@@ -2044,7 +2044,7 @@ msgstr "Liides"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
-msgstr "Proxy"
+msgstr "Puhverserver"
 
 #: src/PrefsUnifiedDlg.cpp:177
 msgid "Filters"
@@ -2096,7 +2096,7 @@ msgid ""
 "'Auto-update server list at startup will be disabled."
 msgstr ""
 "Sinu automaane serverinimekirja värskendamise loetelu on tühi.\n"
-"'Käivitamisel ei uuendata automaatselt serverinimekirja"
+"Käivitamisel serverinimekirja automaatselt ei uuendata."
 
 #: src/PrefsUnifiedDlg.cpp:565
 msgid ""
@@ -2156,7 +2156,7 @@ msgid ""
 msgstr ""
 "Serverite automaatse värskendamise loetelu on tühi.\n"
 "Palun sisesta vähemalt üks server.met faili asukoha kehtiv URL.\n"
-"URL sisestamiseks kliki nupule 'Loetelu'."
+"URL sisestamiseks kliki nupule 'Loend'."
 
 #: src/PrefsUnifiedDlg.cpp:895
 msgid "Temporary files"
@@ -2177,7 +2177,7 @@ msgstr "Vali %s kataloog"
 
 #: src/PrefsUnifiedDlg.cpp:938
 msgid "Browse for videoplayer"
-msgstr "Otsi filmi mängimise programmi"
+msgstr "Otsi filmi taasesitamise programmi"
 
 #: src/PrefsUnifiedDlg.cpp:942
 msgid "Select browser"
@@ -2257,12 +2257,12 @@ msgstr "UDP port serveri laiendatud päringute jaoks (TCP+3): "
 
 #: src/PrefsUnifiedDlg.cpp:1113
 msgid "disabled"
-msgstr "keelatud."
+msgstr "keelatud"
 
 #: src/PrefsUnifiedDlg.cpp:1133
 #, c-format
 msgid "Execute command on `%s' event"
-msgstr "Käivita käsk peale %s sündmust"
+msgstr "Käivita käsk peale '%s' sündmust"
 
 #: src/PrefsUnifiedDlg.cpp:1136
 msgid "Enable command execution on core"
@@ -2973,7 +2973,7 @@ msgstr "Fail"
 #: src/SearchListCtrl.cpp:579 src/muuli_wdr.cpp:370 src/muuli_wdr.cpp:1749
 #: src/muuli_wdr.cpp:2229
 msgid "Download"
-msgstr "Tõmba"
+msgstr "Tõmbamine"
 
 #: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:945
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:243 src/CatDialog.cpp:60
@@ -3221,7 +3221,7 @@ msgstr "VIGA: part.met faili on 0 suurusega: %s ==> %s"
 #: src/PartFile.cpp:351
 #, c-format
 msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
-msgstr "VIGA: Vigane versioon failist part.met : %s ==> %s"
+msgstr "VIGA: Vigane fail part.met versioon : %s ==> %s"
 
 #: src/PartFile.cpp:601
 #, c-format
@@ -3324,7 +3324,7 @@ msgstr "'%s' faili kontrollsumma arvutamine lõpetatud"
 #: src/PartFile.cpp:2239
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
-msgstr "Ootamatu viga %s lõpetamisel. Fail pausitud"
+msgstr "Ootamatu viga %s lõpetamisel. Fail peatatud"
 
 #: src/PartFile.cpp:2266
 #, c-format
@@ -3521,7 +3521,7 @@ msgstr "VIGA: Vigane socket aegumise kontrollil"
 #: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
-msgstr "Katse serveriga %s (%s:%i) ühenduda aegus."
+msgstr "Serveriga '%s (%s:%i)' ühendumise katsed aegusid."
 
 #: src/DownloadQueue.cpp:154
 msgid ""
@@ -4814,7 +4814,7 @@ msgid ""
 "and if it's a fake, you can tell that to other users of aMule."
 msgstr ""
 "Filmi puhul saad öelda tema pikkuse, tema süzee, keele ....\n"
-"ja kui see on võltsing, siis saad sellest teisi aMule kasutajaid hoiatada."
+"ja kui see on võltsing siis saad sellest teisi aMule kasutajaid hoiatada."
 
 #: src/muuli_wdr.cpp:905
 msgid "File Quality"
@@ -5140,7 +5140,7 @@ msgid ""
 "Enter your browser name here. To use the custom browser, select the Custom "
 "menu-item from the dropdown-menu above."
 msgstr ""
-"Sisesta siia oma lemmiklehitseja asukoht. Isemääratud leemiklehitseja "
+"Sisesta siia oma lemmiklehitseja asukoht. Isemääratud lemmiklehitseja "
 "kasutamiseks vali allolevast rippmenüüst Custom."
 
 #: src/muuli_wdr.cpp:1705
@@ -5165,11 +5165,11 @@ msgstr "Ribalaiuse piirid"
 
 #: src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:2238
 msgid "Upload"
-msgstr "Saatmised"
+msgstr "Saatmine"
 
 #: src/muuli_wdr.cpp:1775
 msgid "Slot Allocation"
-msgstr "Sloti määramine"
+msgstr "Määratud pesa"
 
 #: src/muuli_wdr.cpp:1792
 msgid "Standard client TCP Port:"
@@ -5242,7 +5242,7 @@ msgstr "Automaatne ühendumine käivitumisel"
 
 #: src/muuli_wdr.cpp:1916
 msgid "Reconnect on loss"
-msgstr "ühenduse kadumisel taasta ühendus"
+msgstr "Ühenduse kadumisel taasta ühendus"
 
 #: src/muuli_wdr.cpp:1920
 msgid "Show overhead bandwith"
@@ -5266,7 +5266,7 @@ msgstr "Käivitamisel värskenda automaatselt serverite nimekirja"
 
 #: src/muuli_wdr.cpp:1963
 msgid "List"
-msgstr "Loetelu"
+msgstr "Loend"
 
 #: src/muuli_wdr.cpp:1968
 msgid "Update server list when connecting to a server"
@@ -5308,7 +5308,7 @@ msgstr "AICH usaldab suvalist kontrollsummat (pole soovitatav valik)"
 
 #: src/muuli_wdr.cpp:2024
 msgid "Add files to download in pause mode"
-msgstr "Lisa failid tõmbamiseks pausitud olekus"
+msgstr "Lisa failid tõmbamiseks peatatud olekus"
 
 #: src/muuli_wdr.cpp:2027
 msgid "Add files to download with auto priority"
@@ -5328,7 +5328,7 @@ msgstr "Proovi saatmisel siirata täielikud tükid"
 
 #: src/muuli_wdr.cpp:2041
 msgid "Start next paused file when a file completed"
-msgstr "Alusta järgmise Pausitud failiga kui fail lõpetab"
+msgstr "Alusta järgmise peatatud failiga, kui fail lõpetab"
 
 #: src/muuli_wdr.cpp:2045
 msgid "From the same category"
@@ -5500,7 +5500,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2285
 msgid "Advanced Settings"
-msgstr "Muud seadistused"
+msgstr "Laiendatud seadistused"
 
 #: src/muuli_wdr.cpp:2288
 msgid "Max new connections / 5 secs"
@@ -6042,15 +6042,15 @@ msgstr "Filtreeri teateid, mis sisaldavad (loetelus kasuta eraldajana koma):"
 
 #: src/muuli_wdr.cpp:3339
 msgid "Enable Proxy"
-msgstr "Lülita Proxy sisse"
+msgstr "Kasuta puhverserverit"
 
 #: src/muuli_wdr.cpp:3340
 msgid "Enable/disable proxy support"
-msgstr "Kasuta/ärakasuta proxy tuge"
+msgstr "Kasuta/ärakasuta puhverserveri tuge"
 
 #: src/muuli_wdr.cpp:3345
 msgid "Proxy type:"
-msgstr "Proxy tüüp:"
+msgstr "Puhverserveri tüüp:"
 
 #: src/muuli_wdr.cpp:3350
 msgid "SOCKS5"
@@ -6070,23 +6070,23 @@ msgstr "SOCKS4a"
 
 #: src/muuli_wdr.cpp:3356
 msgid "The type of proxy you are connecting to"
-msgstr "Selle proxy tüüp kuhu sa ühendud"
+msgstr "Selle puhverserveri tüüp kuhu sa ühendud"
 
 #: src/muuli_wdr.cpp:3359
 msgid "Proxy host:"
-msgstr "Proxy nimi:"
+msgstr "Puhverserveri nimi:"
 
 #: src/muuli_wdr.cpp:3363
 msgid "The proxy host name"
-msgstr "Selle proxy serveri/hosti nimi "
+msgstr "Selle puhverserveri/hosti nimi "
 
 #: src/muuli_wdr.cpp:3366
 msgid "Proxy port:"
-msgstr "Proxy port:"
+msgstr "Puhverserveri port:"
 
 #: src/muuli_wdr.cpp:3370
 msgid "The proxy port"
-msgstr "Selle proxy port"
+msgstr "Selle puhverserveri pordi number"
 
 #: src/muuli_wdr.cpp:3377
 msgid "Authentication"
@@ -6102,7 +6102,7 @@ msgstr "Autoriseerimisel Kasuta/Ära kasuta kasutajanime/parooli"
 
 #: src/muuli_wdr.cpp:3391
 msgid "The username to use to connect to the proxy"
-msgstr "Proxy ühenduseks vajalik kasutajanimi"
+msgstr "Puhverserveriga ühenduseks vajalik kasutajanimi"
 
 #: src/muuli_wdr.cpp:3394
 msgid "Password:"
@@ -6110,11 +6110,11 @@ msgstr "Parool:"
 
 #: src/muuli_wdr.cpp:3398
 msgid "The password to use to connect to the proxy"
-msgstr "Proxy kasutamiseks vajalik parool"
+msgstr "Puhverserveri kasutamiseks vajalik parool"
 
 #: src/muuli_wdr.cpp:3405
 msgid "Automatic server connect without proxy"
-msgstr "Automaatne serveriga ühendumine proxyta"
+msgstr "Automaatne, ilma puhverserverita, serveriga ühendumine "
 
 #: src/muuli_wdr.cpp:3424
 msgid "Connect to:"
@@ -6134,7 +6134,7 @@ msgstr "Pea need seaded meeles"
 
 #: src/muuli_wdr.cpp:3492
 msgid "Enable Verbose Debug-Logging."
-msgstr "Võimalda inimkeelne Veajälitus-Logimine"
+msgstr "Võimalda inimkieelne Veajälitus-Logimine"
 
 #: src/muuli_wdr.cpp:3497
 msgid "Message Categories:"
@@ -6348,7 +6348,7 @@ msgstr ""
 #: src/ExternalConnector.cpp:403
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "Ühendus ebaõnnestus. Ei suuda ühenduda %s:%d\n"
+msgstr "Ühendus ebaõnnestus. Ei suuda määratud ühenduda %s:%d\n"
 
 #: src/ExternalConnector.cpp:414
 #, c-format
@@ -7174,8 +7174,7 @@ msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
-"Kui seadetes on UDP port väljalülitatud siis Kad võrku ei saa kasutada, ei "
-"ühendu."
+"Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
 
 #: src/amule.cpp:2193
 msgid "Kad network disabled on preferences, not connecting."
@@ -7188,6 +7187,3 @@ msgstr "Sõprade faili 'emfriends.met' avamine lugemiseks ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Hangin staatus(t)..."
