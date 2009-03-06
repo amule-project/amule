@@ -700,14 +700,14 @@ void CStatistics::InitStatsTree()
 	tmpRoot1->AddChild(new CStatTreeItemPeakConnections(wxTRANSLATE("Peak Connections (estimate): %i")));
 
 	s_clients = (CStatTreeItemHiddenCounter*)s_statTree->AddChild(new CStatTreeItemHiddenCounter(wxTRANSLATE("Clients"), stSortChildren | stSortByValue));
-	s_unknown = (CStatTreeItemCounter*)s_clients->AddChild(new CStatTreeItemCounter(wxString(wxTRANSLATE("Unknown")) + wxT(": %s")), 6);
+	s_unknown = (CStatTreeItemCounter*)s_clients->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Unknown: %s")), 6); 
 	//s_lowID = (CStatTreeItem*)s_clients->AddChild(new CStatTreeItem(wxTRANSLATE("LowID: %u (%.2f%% Total %.2f%% Known)")), 5);
 	//s_secIdentOnOff = (CStatTreeItem*)s_clients->AddChild(new CStatTreeItem(wxTRANSLATE("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)")), 4);
 #ifdef __DEBUG__
 	s_hasSocket = (CStatTreeItemNativeCounter*)s_clients->AddChild(new CStatTreeItemNativeCounter(wxT("HasSocket: %s")), 3);
 #endif
-	s_filtered = (CStatTreeItemNativeCounter*)s_clients->AddChild(new CStatTreeItemNativeCounter(wxString(wxTRANSLATE("Filtered")) +  wxT(": %s")), 2);
-	s_banned = (CStatTreeItemNativeCounter*)s_clients->AddChild(new CStatTreeItemNativeCounter(wxString(wxTRANSLATE("Banned")) + wxT(": %s")), 1);
+	s_filtered = (CStatTreeItemNativeCounter*)s_clients->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Filtered: %s")), 2);
+	s_banned = (CStatTreeItemNativeCounter*)s_clients->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Banned: %s")), 1);
 	s_clients->AddChild(new CStatTreeItemTotalClients(wxTRANSLATE("Total: %i Known: %i"), s_clients, s_unknown), 0x80000000);
 
 	// TODO: Use counters?
