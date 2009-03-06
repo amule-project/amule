@@ -494,13 +494,9 @@ namespace MuleNotify
 	}
 	
 
-	void ShowConnState(long NOT_ON_DAEMON(state))
+	void ShowConnState(long WXUNUSED(state))
 	{
 #ifndef AMULE_DAEMON
-#ifdef CLIENT_GUI
-		theApp->m_ConnState = state;
-#endif
-		
 		theApp->amuledlg->ShowConnectionState();
 #endif
 	}
