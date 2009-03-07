@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-04 13:35+0100\n"
+"POT-Creation-Date: 2009-03-07 23:42+0100\n"
 "PO-Revision-Date: 2008-06-08 23:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -245,7 +245,7 @@ msgstr "确定删除选中的好友吗？"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:754
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:751
 #: src/DownloadListCtrl.cpp:585 src/DownloadListCtrl.cpp:905
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:859 src/muuli_wdr.cpp:929
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:1069 src/muuli_wdr.cpp:2586
@@ -674,7 +674,7 @@ msgstr "正在下载..."
 msgid "( %s / %s )"
 msgstr "（%s / %s）"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1313
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
 msgid "Preferences"
 msgstr "设置"
@@ -1180,7 +1180,7 @@ msgstr "保存"
 msgid "Save computed eD2k link to file"
 msgstr "保存已生成的eD2k链接至文件"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1321
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1318
 #: src/muuli_wdr.cpp:3680
 msgid "About"
 msgstr "关于"
@@ -1303,7 +1303,7 @@ msgstr "自动 [普]"
 msgid "Auto [Hi]"
 msgstr "自动 [高]"
 
-#: src/DataToText.cpp:61 src/amuleDlg.cpp:541 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:61 src/amuleDlg.cpp:538 src/ClientListCtrl.cpp:652
 #: src/amule.cpp:803
 msgid "Connecting"
 msgstr "正在连接"
@@ -1761,47 +1761,47 @@ msgstr "您确定要删除已选的服务器吗？"
 msgid "Disabled [%s]"
 msgstr "已禁用 [%s]"
 
-#: src/amuleDlg.cpp:211
+#: src/amuleDlg.cpp:210
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "这是基于eMule的aMule %s。"
 
-#: src/amuleDlg.cpp:213
+#: src/amuleDlg.cpp:212
 #, c-format
 msgid "Running on %s"
 msgstr "运行于%s"
 
-#: src/amuleDlg.cpp:215
+#: src/amuleDlg.cpp:214
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "访问 http://www.amule.org 可查看是否有新版本"
 
-#: src/amuleDlg.cpp:238
+#: src/amuleDlg.cpp:237
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "致命错误：创建计时器失败"
 
-#: src/amuleDlg.cpp:459
+#: src/amuleDlg.cpp:456
 msgid "aMule remote control "
 msgstr "aMule远程控制"
 
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:462
 msgid "Snapshot:"
 msgstr "快照："
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:464
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr " 基于eMule的“全平台”P2P客户端\n"
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:465
 msgid " Website: http://www.amule.org \n"
 msgstr " 网站：http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:466
 msgid " Forum: http://forum.amule.org \n"
 msgstr " 论坛：http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:470
+#: src/amuleDlg.cpp:467
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1809,11 +1809,11 @@ msgstr ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 
-#: src/amuleDlg.cpp:471
+#: src/amuleDlg.cpp:468
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr " 联系邮件：admin@amule.org (管理问题) \n"
 
-#: src/amuleDlg.cpp:472
+#: src/amuleDlg.cpp:469
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
@@ -1821,186 +1821,186 @@ msgstr ""
 " 版权所有 (C) 2003-2008 aMule 团队 \n"
 "\n"
 
-#: src/amuleDlg.cpp:473
+#: src/amuleDlg.cpp:470
 msgid " Part of aMule is based on \n"
 msgstr " aMule的一部分是基于 \n"
 
-#: src/amuleDlg.cpp:474
+#: src/amuleDlg.cpp:471
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia：基于异或算法的点对点路由。\n"
 
-#: src/amuleDlg.cpp:475
+#: src/amuleDlg.cpp:472
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr " 版权所有 (C) 2002 Petar Maymounkov\n"
 
-#: src/amuleDlg.cpp:476
+#: src/amuleDlg.cpp:473
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:479 src/PrefsUnifiedDlg.cpp:559
+#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:559
 #: src/PrefsUnifiedDlg.cpp:659 src/PrefsUnifiedDlg.cpp:748 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:685
+#: src/amuleDlg.cpp:682
 msgid "eD2k: Connecting"
 msgstr "eD2k：正在连接"
 
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:686
 msgid "eD2k: Disconnected"
 msgstr "eD2k：连接已断开"
 
-#: src/amuleDlg.cpp:695
+#: src/amuleDlg.cpp:692
 msgid "Kad: Firewalled"
 msgstr "Kad：有防火墙"
 
-#: src/amuleDlg.cpp:699
+#: src/amuleDlg.cpp:696
 msgid "Kad: Connected"
 msgstr "Kad：已连接"
 
-#: src/amuleDlg.cpp:704
+#: src/amuleDlg.cpp:701
 msgid "Kad: Connecting"
 msgstr "Kad：正在连接"
 
-#: src/amuleDlg.cpp:708
+#: src/amuleDlg.cpp:705
 msgid "Kad: Off"
 msgstr "Kad：停止"
 
-#: src/amuleDlg.cpp:755
+#: src/amuleDlg.cpp:752
 msgid "Stop the current connection attempts"
 msgstr "终止连接尝试"
 
-#: src/amuleDlg.cpp:760 src/muuli_wdr.cpp:2850 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:757 src/muuli_wdr.cpp:2850 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: src/amuleDlg.cpp:761
+#: src/amuleDlg.cpp:758
 msgid "Disconnect from the currently connected networks"
 msgstr "从当前已连接的网络断开"
 
-#: src/amuleDlg.cpp:766 src/muuli_wdr.cpp:3033 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:763 src/muuli_wdr.cpp:3033 src/muuli_wdr.cpp:3466
 #: src/muuli_wdr.cpp:3668 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "连接"
 
-#: src/amuleDlg.cpp:767
+#: src/amuleDlg.cpp:764
 msgid "Connect to the currently enabled networks"
 msgstr "连接至当前已启用的网络"
 
-#: src/amuleDlg.cpp:813
+#: src/amuleDlg.cpp:810
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "上传：%.1f（%.1f） | 下载：%.1f（%.1f）"
 
-#: src/amuleDlg.cpp:815
+#: src/amuleDlg.cpp:812
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "上传：%.1f | 下载：%.1f"
 
-#: src/amuleDlg.cpp:837
+#: src/amuleDlg.cpp:834
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule（%s | 已连接）"
 
-#: src/amuleDlg.cpp:839
+#: src/amuleDlg.cpp:836
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule（%s | 已断开）"
 
-#: src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:867
 msgid "Do you really want to exit aMule?"
 msgstr "您确定要关闭aMule吗？"
 
-#: src/amuleDlg.cpp:871
+#: src/amuleDlg.cpp:868
 msgid "Exit confirmation"
 msgstr "退出确认"
 
-#: src/amuleDlg.cpp:1183
+#: src/amuleDlg.cpp:1180
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "皮肤目录 %s 不存在"
 
-#: src/amuleDlg.cpp:1188
+#: src/amuleDlg.cpp:1185
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "警告：无法打开皮肤文件%s进行读取"
 
-#: src/amuleDlg.cpp:1288 src/amuleDlg.cpp:1449 src/muuli_wdr.cpp:1867
+#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1867
 #: src/muuli_wdr.cpp:3670
 msgid "Networks"
 msgstr "网络"
 
-#: src/amuleDlg.cpp:1290
+#: src/amuleDlg.cpp:1287
 msgid "Networks window"
 msgstr "网络窗口"
 
-#: src/amuleDlg.cpp:1292 src/muuli_wdr.cpp:3671
+#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3671
 msgid "Searches"
 msgstr "搜索"
 
-#: src/amuleDlg.cpp:1294
+#: src/amuleDlg.cpp:1291
 msgid "Searches window"
 msgstr "查找窗口"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3672
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3672
 msgid "Transfers"
 msgstr "传输文件"
 
-#: src/amuleDlg.cpp:1298
+#: src/amuleDlg.cpp:1295
 msgid "Files transfers window"
 msgstr "文件传输窗口"
 
-#: src/amuleDlg.cpp:1300
+#: src/amuleDlg.cpp:1297
 msgid "Shared files"
 msgstr "共享文件"
 
-#: src/amuleDlg.cpp:1302
+#: src/amuleDlg.cpp:1299
 msgid "Shared files window"
 msgstr "共享文件窗口"
 
-#: src/amuleDlg.cpp:1304 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
 msgid "Messages"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:1306
+#: src/amuleDlg.cpp:1303
 msgid "Messages window"
 msgstr "消息窗口"
 
-#: src/amuleDlg.cpp:1308 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1108 src/muuli_wdr.cpp:3676
 msgid "Statistics"
 msgstr "统计"
 
-#: src/amuleDlg.cpp:1310
+#: src/amuleDlg.cpp:1307
 msgid "Statistics graph window"
 msgstr "统计图表窗口"
 
-#: src/amuleDlg.cpp:1315
+#: src/amuleDlg.cpp:1312
 msgid "Preferences settings window"
 msgstr "设置窗口"
 
-#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3679
 msgid "Import"
 msgstr "导入"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
 msgid "The partfile importer tool"
 msgstr "part 文件导入工具"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3680
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3680
 msgid "About/Help"
 msgstr "关于/帮助"
 
-#: src/amuleDlg.cpp:1460
+#: src/amuleDlg.cpp:1457
 msgid "eD2k network"
 msgstr "eD2k网络"
 
-#: src/amuleDlg.cpp:1464
+#: src/amuleDlg.cpp:1461
 msgid "Kad network"
 msgstr "Kad网络"
 
-#: src/amuleDlg.cpp:1469
+#: src/amuleDlg.cpp:1466
 msgid "No network"
 msgstr "无网络"
 
@@ -2186,89 +2186,89 @@ msgstr ""
 "加入下载 server.met 文件的网址，每行只限一个网址。\n"
 " "
 
-#: src/PrefsUnifiedDlg.cpp:1026
+#: src/PrefsUnifiedDlg.cpp:1029
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "刷新时间：%d秒"
 msgstr[1] "刷新时间：%d秒"
 
-#: src/PrefsUnifiedDlg.cpp:1033
+#: src/PrefsUnifiedDlg.cpp:1036
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均值图表显示时间：%d分钟"
 msgstr[1] "平均值图表显示时间：%d分钟"
 
-#: src/PrefsUnifiedDlg.cpp:1039
+#: src/PrefsUnifiedDlg.cpp:1042
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "网络连接图表缩放：%d"
 
-#: src/PrefsUnifiedDlg.cpp:1045
+#: src/PrefsUnifiedDlg.cpp:1048
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "刷新时间：%d秒"
 msgstr[1] "刷新时间：%d秒"
 
-#: src/PrefsUnifiedDlg.cpp:1051
+#: src/PrefsUnifiedDlg.cpp:1054
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "文件缓冲区大小：%d字节"
 msgstr[1] "文件缓冲区大小：%d字节"
 
-#: src/PrefsUnifiedDlg.cpp:1057
+#: src/PrefsUnifiedDlg.cpp:1060
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "上传队列长度：%d个用户"
 msgstr[1] "上传队列长度：%d个用户"
 
-#: src/PrefsUnifiedDlg.cpp:1064
+#: src/PrefsUnifiedDlg.cpp:1067
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "服务器连接刷新周期：%d分钟"
 msgstr[1] "服务器连接刷新周期：%d分钟"
 
-#: src/PrefsUnifiedDlg.cpp:1066
+#: src/PrefsUnifiedDlg.cpp:1069
 msgid "Server connection refresh interval: Disabled"
 msgstr "服务器连接刷新周期：已禁用"
 
-#: src/PrefsUnifiedDlg.cpp:1109
+#: src/PrefsUnifiedDlg.cpp:1112
 #, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
 msgstr "用于扩展的服务器请求的 UDP 端口 (TCP+3)：4665"
 
-#: src/PrefsUnifiedDlg.cpp:1113
+#: src/PrefsUnifiedDlg.cpp:1116
 #, fuzzy
 msgid "disabled"
 msgstr "禁用"
 
-#: src/PrefsUnifiedDlg.cpp:1133
+#: src/PrefsUnifiedDlg.cpp:1136
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "发生 '%s' 事件时执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1136
+#: src/PrefsUnifiedDlg.cpp:1139
 msgid "Enable command execution on core"
 msgstr "在核心启用执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1144
+#: src/PrefsUnifiedDlg.cpp:1147
 msgid "Core command:"
 msgstr "核心命令："
 
-#: src/PrefsUnifiedDlg.cpp:1153
+#: src/PrefsUnifiedDlg.cpp:1156
 msgid "Enable command execution on GUI"
 msgstr "在图形界面端启用执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1161
+#: src/PrefsUnifiedDlg.cpp:1164
 msgid "GUI command:"
 msgstr "图形界面命令："
 
-#: src/PrefsUnifiedDlg.cpp:1170
+#: src/PrefsUnifiedDlg.cpp:1173
 msgid "The following variables will be replaced:"
 msgstr "以下变量将被替换："
 
@@ -4127,11 +4127,11 @@ msgstr "正在连接至 %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "无法查找服务器%s的DNS记录： 无法连接！"
 
-#: src/IP2Country.cpp:99
+#: src/IP2Country.cpp:101
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country()：载入国家数据失败"
 
-#: src/IP2Country.cpp:104
+#: src/IP2Country.cpp:106
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
