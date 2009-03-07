@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-01 01:23+0100\n"
+"POT-Creation-Date: 2009-03-08 00:03+0100\n"
 "PO-Revision-Date: 2008-03-30 18:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Server list download"
 msgstr "Zerbitzari zerrenda deskargatu"
 
-#: src/amule.cpp:799 src/amuleDlg.cpp:571 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:799 src/amuleDlg.cpp:568 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:59
 msgid "Connecting"
 msgstr "Konektatzen"
@@ -439,120 +439,120 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "ERROREA: %s"
 
-#: src/amuleDlg.cpp:237
+#: src/amuleDlg.cpp:236
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Hau eMulen oinarrituriko aMule %s da."
 
-#: src/amuleDlg.cpp:239
+#: src/amuleDlg.cpp:238
 #, c-format
 msgid "Running on %s"
 msgstr "%s-n abiarazirik"
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:240
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr ""
 "Bisitatu http://www.amule.org gunea bertsio berriagorik eskuragarri dagoen "
 "jakiteko."
 
-#: src/amuleDlg.cpp:267
+#: src/amuleDlg.cpp:266
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr ""
 
-#: src/amuleDlg.cpp:488
+#: src/amuleDlg.cpp:485
 msgid "aMule remote control "
 msgstr "aMule urruneko kontrola"
 
-#: src/amuleDlg.cpp:494
+#: src/amuleDlg.cpp:491
 msgid "Snapshot:"
 msgstr "Argazkia:"
 
-#: src/amuleDlg.cpp:496
+#: src/amuleDlg.cpp:493
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:497
+#: src/amuleDlg.cpp:494
 msgid "Website: http://www.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:498
+#: src/amuleDlg.cpp:495
 msgid "Forum: http://forum.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:499
+#: src/amuleDlg.cpp:496
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:500
+#: src/amuleDlg.cpp:497
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:501
+#: src/amuleDlg.cpp:498
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:502
+#: src/amuleDlg.cpp:499
 msgid "Part of aMule is based on \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:503
+#: src/amuleDlg.cpp:500
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Parez-pareko routing-a XOR metrikan oinarritua.\n"
 
-#: src/amuleDlg.cpp:504
+#: src/amuleDlg.cpp:501
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:505
+#: src/amuleDlg.cpp:502
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:508 src/KadDlg.cpp:177 src/PartFile.cpp:919
+#: src/amuleDlg.cpp:505 src/KadDlg.cpp:177 src/PartFile.cpp:919
 #: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:554
 #: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
 msgid "Message"
 msgstr "Mezua"
 
-#: src/amuleDlg.cpp:539
+#: src/amuleDlg.cpp:536
 #, fuzzy
 msgid "Shutting down aMule..."
 msgstr "aMule Itzali."
 
-#: src/amuleDlg.cpp:549
+#: src/amuleDlg.cpp:546
 msgid "aMule dialog destroyed"
 msgstr ""
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:700
 msgid "eD2k: Connecting"
 msgstr ""
 
-#: src/amuleDlg.cpp:707
+#: src/amuleDlg.cpp:704
 msgid "eD2k: Disconnected"
 msgstr ""
 
-#: src/amuleDlg.cpp:713
+#: src/amuleDlg.cpp:710
 msgid "Kad: Firewalled"
 msgstr "Kad: Suebakirik"
 
-#: src/amuleDlg.cpp:717
+#: src/amuleDlg.cpp:714
 msgid "Kad: Connected"
 msgstr "Kad: Konektaturik"
 
-#: src/amuleDlg.cpp:722
+#: src/amuleDlg.cpp:719
 msgid "Kad: Connecting"
 msgstr "Kad: Konektatzen"
 
-#: src/amuleDlg.cpp:726
+#: src/amuleDlg.cpp:723
 msgid "Kad: Off"
 msgstr "Kad: Itzalia"
 
-#: src/amuleDlg.cpp:772 src/DownloadListCtrl.cpp:588
+#: src/amuleDlg.cpp:769 src/DownloadListCtrl.cpp:588
 #: src/DownloadListCtrl.cpp:908 src/FriendListCtrl.cpp:278
 #: src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915 src/muuli_wdr.cpp:989
 #: src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454 src/muuli_wdr.cpp:2556
@@ -562,155 +562,155 @@ msgstr "Kad: Itzalia"
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/amuleDlg.cpp:773
+#: src/amuleDlg.cpp:770
 msgid "Stop the current connection attempts"
 msgstr "Geratu uneko konexio saiakerak"
 
-#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
+#: src/amuleDlg.cpp:775 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
 msgid "Disconnect"
 msgstr "Deskonektatu"
 
-#: src/amuleDlg.cpp:779
+#: src/amuleDlg.cpp:776
 msgid "Disconnect from the currently connected networks"
 msgstr "Deskonektatu konektatutako sareetatik"
 
-#: src/amuleDlg.cpp:784 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
+#: src/amuleDlg.cpp:781 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
 #: src/muuli_wdr.cpp:3271 src/muuli_wdr.cpp:3454
 msgid "Connect"
 msgstr "Konektatu"
 
-#: src/amuleDlg.cpp:785
+#: src/amuleDlg.cpp:782
 msgid "Connect to the currently enabled networks"
 msgstr "Konektatu gaituriko sareetara"
 
-#: src/amuleDlg.cpp:843
+#: src/amuleDlg.cpp:840
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Gora: %.1f(%.1f) | Behera: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:845
+#: src/amuleDlg.cpp:842
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Gora: %.1f | Behera: %.1f"
 
-#: src/amuleDlg.cpp:871
+#: src/amuleDlg.cpp:868
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Konektaturik)"
 
-#: src/amuleDlg.cpp:873
+#: src/amuleDlg.cpp:870
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ez konektaturik)"
 
-#: src/amuleDlg.cpp:904
+#: src/amuleDlg.cpp:901
 msgid "Do you really want to exit aMule?"
 msgstr "Benetan aMule itxi egin nahi duzu?"
 
-#: src/amuleDlg.cpp:905
+#: src/amuleDlg.cpp:902
 msgid "Exit confirmation"
 msgstr "Irteera berrespena"
 
-#: src/amuleDlg.cpp:1159
+#: src/amuleDlg.cpp:1156
 msgid "Launch Command: "
 msgstr ""
 
-#: src/amuleDlg.cpp:1218
+#: src/amuleDlg.cpp:1215
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Ez dago '%s' itxura direktorioa"
 
-#: src/amuleDlg.cpp:1223
+#: src/amuleDlg.cpp:1220
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1324 src/amuleDlg.cpp:1485 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1321 src/amuleDlg.cpp:1482 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Sareak"
 
-#: src/amuleDlg.cpp:1326
+#: src/amuleDlg.cpp:1323
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Bilaketak"
 
-#: src/amuleDlg.cpp:1330
+#: src/amuleDlg.cpp:1327
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Transferentziak"
 
-#: src/amuleDlg.cpp:1334
+#: src/amuleDlg.cpp:1331
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1336
+#: src/amuleDlg.cpp:1333
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1338
+#: src/amuleDlg.cpp:1335
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Mezuak"
 
-#: src/amuleDlg.cpp:1342
+#: src/amuleDlg.cpp:1339
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 #: src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639 src/Statistics.cpp:937
 msgid "Statistics"
 msgstr "Estatistikak"
 
-#: src/amuleDlg.cpp:1346
+#: src/amuleDlg.cpp:1343
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
+#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/amuleDlg.cpp:1351
+#: src/amuleDlg.cpp:1348
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1353 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Inportatu"
 
-#: src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Zati fitxategi inportazio tresna"
 
-#: src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3466
 #: src/utils/aLinkCreator/src/alcframe.cpp:270
 msgid "About"
 msgstr "Honi Buruz"
 
-#: src/amuleDlg.cpp:1359 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "Honi Buruz/Laguntza"
 
-#: src/amuleDlg.cpp:1496
+#: src/amuleDlg.cpp:1493
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1500
+#: src/amuleDlg.cpp:1497
 msgid "Kad network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1505
+#: src/amuleDlg.cpp:1502
 msgid "No network"
 msgstr ""
 
@@ -797,7 +797,7 @@ msgstr ""
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2509
 #: src/PartFile.cpp:2515 src/Server.cpp:156 src/Server.cpp:231
-#: src/Statistics.cpp:703 src/Statistics.cpp:884
+#: src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Ezezaguna"
 
@@ -1199,8 +1199,7 @@ msgstr "Azkenez ikusia"
 msgid "Entered Queue"
 msgstr "Ilaran jarri da"
 
-#: src/ClientListCtrl.cpp:857 src/DataToText.cpp:71 src/Statistics.cpp:710
-#: src/TransferWnd.cpp:309
+#: src/ClientListCtrl.cpp:857 src/DataToText.cpp:71 src/TransferWnd.cpp:309
 msgid "Banned"
 msgstr "Ukatuak"
 
@@ -6064,9 +6063,20 @@ msgstr "Batez besteko Konexioak (ebaluazioa): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Puntako konexioak (estimazioa): %i"
 
+#: src/Statistics.cpp:703
+#, fuzzy, c-format
+msgid "Unknown: %s"
+msgstr "Ezezaguna"
+
 #: src/Statistics.cpp:709
-msgid "Filtered"
+#, fuzzy, c-format
+msgid "Filtered: %s"
 msgstr "Iragazirik"
+
+#: src/Statistics.cpp:710
+#, fuzzy, c-format
+msgid "Banned: %s"
+msgstr "Ukatuak"
 
 #: src/Statistics.cpp:711
 #, c-format

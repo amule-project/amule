@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-01 01:23+0100\n"
+"POT-Creation-Date: 2009-03-08 00:03+0100\n"
 "PO-Revision-Date: 2008-06-08 10:44+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -106,7 +106,7 @@ msgstr ""
 msgid "Server list download"
 msgstr "Serverių sąrašo siuntimas"
 
-#: src/amule.cpp:799 src/amuleDlg.cpp:571 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:799 src/amuleDlg.cpp:568 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:59
 msgid "Connecting"
 msgstr "Jungiamasi"
@@ -441,120 +441,120 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "KLAIDA: %s"
 
-#: src/amuleDlg.cpp:237
+#: src/amuleDlg.cpp:236
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "aMule %s, sukurta eMule pagrindu."
 
-#: src/amuleDlg.cpp:239
+#: src/amuleDlg.cpp:238
 #, c-format
 msgid "Running on %s"
 msgstr "Vykdoma %s sistemoje"
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:240
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr ""
 "Aplankykite http://www.amule.org ir pasitikrinkite ar nėra naujesnės "
 "versijos."
 
-#: src/amuleDlg.cpp:267
+#: src/amuleDlg.cpp:266
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "KRITINĖ KLAIDA: nepavyko sukurti laiko skaitliuko"
 
-#: src/amuleDlg.cpp:488
+#: src/amuleDlg.cpp:485
 msgid "aMule remote control "
 msgstr "aMule nuotolinio valdymo pultelis "
 
-#: src/amuleDlg.cpp:494
+#: src/amuleDlg.cpp:491
 msgid "Snapshot:"
 msgstr "Ekrano kopija:"
 
-#: src/amuleDlg.cpp:496
+#: src/amuleDlg.cpp:493
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:497
+#: src/amuleDlg.cpp:494
 msgid "Website: http://www.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:498
+#: src/amuleDlg.cpp:495
 msgid "Forum: http://forum.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:499
+#: src/amuleDlg.cpp:496
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:500
+#: src/amuleDlg.cpp:497
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:501
+#: src/amuleDlg.cpp:498
 msgid ""
 "Copyright (c) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:502
+#: src/amuleDlg.cpp:499
 msgid "Part of aMule is based on \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:503
+#: src/amuleDlg.cpp:500
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: p2p maršrutizavimas, paremtas XOR metrika.\n"
 
-#: src/amuleDlg.cpp:504
+#: src/amuleDlg.cpp:501
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:505
+#: src/amuleDlg.cpp:502
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:508 src/KadDlg.cpp:177 src/PartFile.cpp:919
+#: src/amuleDlg.cpp:505 src/KadDlg.cpp:177 src/PartFile.cpp:919
 #: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:554
 #: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
 msgid "Message"
 msgstr "Žinutė"
 
-#: src/amuleDlg.cpp:539
+#: src/amuleDlg.cpp:536
 #, fuzzy
 msgid "Shutting down aMule..."
 msgstr "Išjungti aMule."
 
-#: src/amuleDlg.cpp:549
+#: src/amuleDlg.cpp:546
 msgid "aMule dialog destroyed"
 msgstr ""
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:700
 msgid "eD2k: Connecting"
 msgstr "eD2k: jungiamasi"
 
-#: src/amuleDlg.cpp:707
+#: src/amuleDlg.cpp:704
 msgid "eD2k: Disconnected"
 msgstr "eD2k: atsijungta"
 
-#: src/amuleDlg.cpp:713
+#: src/amuleDlg.cpp:710
 msgid "Kad: Firewalled"
 msgstr "Kad: už ugniasienės"
 
-#: src/amuleDlg.cpp:717
+#: src/amuleDlg.cpp:714
 msgid "Kad: Connected"
 msgstr "Kad: prisijungta"
 
-#: src/amuleDlg.cpp:722
+#: src/amuleDlg.cpp:719
 msgid "Kad: Connecting"
 msgstr "Kad: jungiamasi"
 
-#: src/amuleDlg.cpp:726
+#: src/amuleDlg.cpp:723
 msgid "Kad: Off"
 msgstr "Kad: išjungta"
 
-#: src/amuleDlg.cpp:772 src/DownloadListCtrl.cpp:588
+#: src/amuleDlg.cpp:769 src/DownloadListCtrl.cpp:588
 #: src/DownloadListCtrl.cpp:908 src/FriendListCtrl.cpp:278
 #: src/muuli_wdr.cpp:851 src/muuli_wdr.cpp:915 src/muuli_wdr.cpp:989
 #: src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:2454 src/muuli_wdr.cpp:2556
@@ -564,155 +564,155 @@ msgstr "Kad: išjungta"
 msgid "Cancel"
 msgstr "Atšaukti"
 
-#: src/amuleDlg.cpp:773
+#: src/amuleDlg.cpp:770
 msgid "Stop the current connection attempts"
 msgstr "Nutraukti bandymus prisijungti"
 
-#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
+#: src/amuleDlg.cpp:775 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
 msgid "Disconnect"
 msgstr "Atsijungti"
 
-#: src/amuleDlg.cpp:779
+#: src/amuleDlg.cpp:776
 msgid "Disconnect from the currently connected networks"
 msgstr "Atsijungti nuo pasirinktų tinklų"
 
-#: src/amuleDlg.cpp:784 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
+#: src/amuleDlg.cpp:781 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
 #: src/muuli_wdr.cpp:3271 src/muuli_wdr.cpp:3454
 msgid "Connect"
 msgstr "Prisijungti"
 
-#: src/amuleDlg.cpp:785
+#: src/amuleDlg.cpp:782
 msgid "Connect to the currently enabled networks"
 msgstr "Prisijungti prie pasirinktų tinklų"
 
-#: src/amuleDlg.cpp:843
+#: src/amuleDlg.cpp:840
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Išs.: %.1f(%.1f) | Ats.: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:845
+#: src/amuleDlg.cpp:842
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Išs.: %.1f | Ats.: %.1f"
 
-#: src/amuleDlg.cpp:871
+#: src/amuleDlg.cpp:868
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | prisijungta)"
 
-#: src/amuleDlg.cpp:873
+#: src/amuleDlg.cpp:870
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | neprisijungta)"
 
-#: src/amuleDlg.cpp:904
+#: src/amuleDlg.cpp:901
 msgid "Do you really want to exit aMule?"
 msgstr "Ar tikrai norite baigti darbą su aMule?"
 
-#: src/amuleDlg.cpp:905
+#: src/amuleDlg.cpp:902
 msgid "Exit confirmation"
 msgstr "Baigimo patvirtinimas"
 
-#: src/amuleDlg.cpp:1159
+#: src/amuleDlg.cpp:1156
 msgid "Launch Command: "
 msgstr ""
 
-#: src/amuleDlg.cpp:1218
+#: src/amuleDlg.cpp:1215
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Išvaizdos failų aplankas %s neegzistuoja"
 
-#: src/amuleDlg.cpp:1223
+#: src/amuleDlg.cpp:1220
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "DĖMESIO: nepavyko atverti temos failo „%s“ skaitymui"
 
-#: src/amuleDlg.cpp:1324 src/amuleDlg.cpp:1485 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1321 src/amuleDlg.cpp:1482 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Tinklas"
 
-#: src/amuleDlg.cpp:1326
+#: src/amuleDlg.cpp:1323
 msgid "Networks window"
 msgstr "Tinklo langas"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Paieška"
 
-#: src/amuleDlg.cpp:1330
+#: src/amuleDlg.cpp:1327
 msgid "Searches window"
 msgstr "Paieškos langas"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Siuntimas"
 
-#: src/amuleDlg.cpp:1334
+#: src/amuleDlg.cpp:1331
 msgid "Files transfers window"
 msgstr "Failų siuntimo langas"
 
-#: src/amuleDlg.cpp:1336
+#: src/amuleDlg.cpp:1333
 msgid "Shared files"
 msgstr "Dalinami failai"
 
-#: src/amuleDlg.cpp:1338
+#: src/amuleDlg.cpp:1335
 msgid "Shared files window"
 msgstr "Dalinamų failų langas"
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Žinutės"
 
-#: src/amuleDlg.cpp:1342
+#: src/amuleDlg.cpp:1339
 msgid "Messages window"
 msgstr "Žinučių langas"
 
-#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 #: src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639 src/Statistics.cpp:937
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1346
+#: src/amuleDlg.cpp:1343
 msgid "Statistics graph window"
 msgstr "Statistikos grafikų langas"
 
-#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
+#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "Parinktys"
 
-#: src/amuleDlg.cpp:1351
+#: src/amuleDlg.cpp:1348
 msgid "Preferences settings window"
 msgstr "Parinkčių langas"
 
-#: src/amuleDlg.cpp:1353 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Įkelti"
 
-#: src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Dalinai atsiųstų failų įkėlimo įrankis"
 
-#: src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3466
 #: src/utils/aLinkCreator/src/alcframe.cpp:270
 msgid "About"
 msgstr "Apie"
 
-#: src/amuleDlg.cpp:1359 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "Apie/pagalba"
 
-#: src/amuleDlg.cpp:1496
+#: src/amuleDlg.cpp:1493
 msgid "eD2k network"
 msgstr "eD2k tinklas"
 
-#: src/amuleDlg.cpp:1500
+#: src/amuleDlg.cpp:1497
 msgid "Kad network"
 msgstr "Kad tinklas"
 
-#: src/amuleDlg.cpp:1505
+#: src/amuleDlg.cpp:1502
 msgid "No network"
 msgstr "Jokio tinklo"
 
@@ -799,7 +799,7 @@ msgstr ""
 #: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:894
 #: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2509
 #: src/PartFile.cpp:2515 src/Server.cpp:156 src/Server.cpp:231
-#: src/Statistics.cpp:703 src/Statistics.cpp:884
+#: src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Nežinoma"
 
@@ -1203,8 +1203,7 @@ msgstr "Paskutinį kartą matytas"
 msgid "Entered Queue"
 msgstr "Atsistojo į eilę"
 
-#: src/ClientListCtrl.cpp:857 src/DataToText.cpp:71 src/Statistics.cpp:710
-#: src/TransferWnd.cpp:309
+#: src/ClientListCtrl.cpp:857 src/DataToText.cpp:71 src/TransferWnd.cpp:309
 msgid "Banned"
 msgstr "Užblokuota"
 
@@ -6092,9 +6091,20 @@ msgstr "Vidutinis ryšių skaičius (apytikriai): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Daugiausia ryšių (apytikriai): %i"
 
+#: src/Statistics.cpp:703
+#, fuzzy, c-format
+msgid "Unknown: %s"
+msgstr "Dydis nežinomas"
+
 #: src/Statistics.cpp:709
-msgid "Filtered"
+#, fuzzy, c-format
+msgid "Filtered: %s"
 msgstr "Filtruota"
+
+#: src/Statistics.cpp:710
+#, fuzzy, c-format
+msgid "Banned: %s"
+msgstr "Užblokuota"
 
 #: src/Statistics.cpp:711
 #, c-format
