@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-08 00:03+0100\n"
-"PO-Revision-Date: 2009-02-23 19:31+0200\n"
-"Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.com>\n"
-"Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
+"PO-Revision-Date: 2009-03-08 23:01+0200\n"
+"Last-Translator: \n"
+"Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6042,19 +6042,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Doruk Bağlantılar (yaklaşık): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Boyut bilinmiyor"
+msgstr "Bilinmeyen: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Süzülen"
+msgstr "Süzüldü: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Engellendi"
+msgstr "Engellendi: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
