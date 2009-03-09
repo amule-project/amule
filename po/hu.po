@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-08 00:03+0100\n"
-"PO-Revision-Date: 2008-07-30 19:29+0100\n"
+"PO-Revision-Date: 2009-03-08 20:55+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -53,12 +53,11 @@ msgstr "Sikertelen"
 
 #: src/amule.cpp:247
 msgid "aMule OnExit: Terminating core."
-msgstr ""
+msgstr "aMule OnExit: Mag leállítása."
 
 #: src/amule.cpp:317
-#, fuzzy
 msgid "aMule shutdown completed."
-msgstr "Letöltés befejezve"
+msgstr "Az aMule leállítása befejezve"
 
 #: src/amule.cpp:321
 msgid "Memory debug results for aMule exit:"
@@ -72,9 +71,8 @@ msgid ""
 msgstr "Kilépés megerősítése"
 
 #: src/amule.cpp:641
-#, fuzzy
 msgid "Password set and external connections enabled."
-msgstr "Új külső kapcsolat elfogadva"
+msgstr "Jelszó beállítva, külső kapcsolatok engedélyezve."
 
 #: src/amule.cpp:652 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
@@ -520,7 +518,7 @@ msgstr "Kademlia: Egyenrangú útvonal-megállapítás a XOR metrika alapján.\n
 
 #: src/amuleDlg.cpp:501
 msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr ""
+msgstr " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:502
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -533,9 +531,8 @@ msgid "Message"
 msgstr "Üzenet"
 
 #: src/amuleDlg.cpp:536
-#, fuzzy
 msgid "Shutting down aMule..."
-msgstr "Az aMule leállítása."
+msgstr "Az aMule leállítása..."
 
 #: src/amuleDlg.cpp:546
 msgid "aMule dialog destroyed"
@@ -625,9 +622,8 @@ msgid "Exit confirmation"
 msgstr "Kilépés megerősítése"
 
 #: src/amuleDlg.cpp:1156
-#, fuzzy
 msgid "Launch Command: "
-msgstr "Parancs: %s"
+msgstr "Parancs futtatása: "
 
 #: src/amuleDlg.cpp:1215
 #, c-format
@@ -756,9 +752,8 @@ msgid "Going to event loop..."
 msgstr "Fájl infó helyreállításának megkísérlése..."
 
 #: src/amule-remote-gui.cpp:302
-#, fuzzy
 msgid "Connecting..."
-msgstr "Kapcsolódás"
+msgstr "Kapcsolódás..."
 
 #: src/amule-remote-gui.cpp:306
 msgid "Connection failed "
@@ -775,7 +770,7 @@ msgstr "Bejelentkezés"
 
 #: src/amule-remote-gui.cpp:421
 msgid "Ready"
-msgstr ""
+msgstr "Készen"
 
 #: src/amule-remote-gui.cpp:599
 #, c-format
@@ -1826,9 +1821,8 @@ msgid "Authentication failed."
 msgstr "Hitelesítés sikertelen."
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
-msgstr "Érvénytelen kérés, először hitelesítened kellene."
+msgstr "Érvénytelen kérés, először hitelesíteni kell."
 
 #: src/ExternalConn.cpp:362
 msgid "Access granted."
@@ -2239,14 +2233,12 @@ msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
 #: src/HTTPDownload.cpp:108
-#, fuzzy
 msgid "HTTP download cancelled"
-msgstr "Kijelölt(ek) letöltése"
+msgstr "HTTP letöltés megszakítva"
 
 #: src/HTTPDownload.cpp:172
-#, fuzzy
 msgid "HTTP download thread started"
-msgstr "Szinkronizációs szál elindítva."
+msgstr "HTTP letöltési szál elindítva"
 
 #: src/HTTPDownload.cpp:199
 #, fuzzy, c-format
@@ -4866,9 +4858,8 @@ msgid "Arabic"
 msgstr "Arab"
 
 #: src/Preferences.cpp:662
-#, fuzzy
 msgid "Asturian"
-msgstr "Észt"
+msgstr "Asztúriai"
 
 #: src/Preferences.cpp:663
 msgid "Basque"
@@ -5000,7 +4991,7 @@ msgstr "Török"
 
 #: src/Preferences.cpp:695
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrán"
 
 #: src/Preferences.cpp:882
 msgid "no options available"
@@ -5135,9 +5126,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Ideiglenes mappa megváltozott.\n"
 
 #: src/PrefsUnifiedDlg.cpp:582
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Minden hálózat le van tiltva."
+msgstr "- ED2K hálózat engedélyezve.\n"
 
 #: src/PrefsUnifiedDlg.cpp:649
 msgid ""
@@ -5263,9 +5253,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Kiszolgáló kapcsolat frissítési gyakorisága: Tiltva"
 
 #: src/PrefsUnifiedDlg.cpp:1088
-#, fuzzy
 msgid "disabled"
-msgstr "letilt"
+msgstr "letiltva"
 
 #: src/PrefsUnifiedDlg.cpp:1106
 #, c-format
@@ -5810,22 +5799,20 @@ msgid "Connected to buddy at %s"
 msgstr "Pajtáshoz kapcsolódva"
 
 #: src/ServerWnd.cpp:249
-#, fuzzy
 msgid "Indexed sources:"
-msgstr "Források megtartása"
+msgstr "Indexelt források:"
 
 #: src/ServerWnd.cpp:251
 msgid "Indexed keywords:"
-msgstr ""
+msgstr "Indexelt kulcsszavak:"
 
 #: src/ServerWnd.cpp:253
-#, fuzzy
 msgid "Indexed notes:"
-msgstr "Index fájl nem található: "
+msgstr "Indexelt jegyzetek:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed load:"
-msgstr ""
+msgstr "Indexelt terhelés:"
 
 #: src/ServerWnd.cpp:258
 msgid "Average Users:"
@@ -6085,19 +6072,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Legtöbb kapcsolat (becsült): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Ismeretlen méret"
+msgstr "Ismeretlen: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Kiszűrve"
+msgstr "Kiszűrve: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Kitiltott"
+msgstr "Kitiltott: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
@@ -6946,7 +6933,7 @@ msgstr "Másolás a vágólapra"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
 msgid "Open"
-msgstr ""
+msgstr "Megnyitás"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -6958,7 +6945,7 @@ msgstr "A számított eD2k hivatkozás másolása a vágólapra"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 msgid "Save as"
-msgstr ""
+msgstr "Mentés másként"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -6975,7 +6962,7 @@ msgstr "Válaszd ki a fájlt, hogy kiszámíttasd az eD2k hivatkozását"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
 msgid "Can't open the clipboard"
-msgstr ""
+msgstr "Nem tudom megnyitni a vágólapot"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -7027,15 +7014,15 @@ msgstr "Tördelőalgoritmizálás..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "Az aLinkCreator dolgozik"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "MD4 hash számítása..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "Computing eD2k Hashes..."
-msgstr ""
+msgstr "eD2k hash-ek számítása..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:566
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
