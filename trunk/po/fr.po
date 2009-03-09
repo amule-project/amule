@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-08 00:03+0100\n"
-"PO-Revision-Date: 2009-03-03 22:39+0100\n"
+"PO-Revision-Date: 2009-03-09 19:39+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -6178,19 +6178,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Maximum de connexions (estimation) : %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Taille inconnue"
+msgstr "Inconnu : %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Filtrés"
+msgstr "Filtré : %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Banni"
+msgstr "Banni : %s"
 
 #: src/Statistics.cpp:711
 #, c-format
