@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-08 00:03+0100\n"
-"PO-Revision-Date: 2009-03-05 21:42+0100\n"
+"PO-Revision-Date: 2009-03-08 23:18+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgstr "De aangegeven userhash is niet geldig!"
 
 #: src/amule.cpp:221
 msgid "Now, exiting main app..."
-msgstr "Nu, hoofdapp wordt afgesloten..."
+msgstr "Hoofdapp wordt nu afgesloten..."
 
 #: src/amule.cpp:240
 #, c-format
@@ -52,7 +52,7 @@ msgstr "Gedood!"
 
 #: src/amule.cpp:247
 msgid "aMule OnExit: Terminating core."
-msgstr "aMule OnExit: Kern afsluiten."
+msgstr "aMule OnExit: Kern wordt afgesloten."
 
 #: src/amule.cpp:317
 msgid "aMule shutdown completed."
@@ -196,7 +196,8 @@ msgstr "Dit is een test versie, dagelijks geupdatet, en\n"
 
 #: src/amule.cpp:1314
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "we geven geen garantie dat het niks kapot maakt, uw huis afbrandt,\n"
+msgstr ""
+"we geven geen garantie dat het niks kapot maakt, uw huis in brand steekt,\n"
 
 #: src/amule.cpp:1315
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
@@ -1668,7 +1669,7 @@ msgstr "PartBestand %u van %u wordt bewaard"
 
 #: src/DownloadQueue.cpp:103
 msgid "All PartFiles Saved."
-msgstr "Alle PartBetanden Bewaard."
+msgstr "Alle PartBestanden Bewaard."
 
 #: src/DownloadQueue.cpp:110
 #, c-format
@@ -1833,7 +1834,7 @@ msgstr "Toegang verleend."
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
-"PartBestands commando op afstand mislukt: BestandsHash niet gevonden: %s"
+"PartBestand-commando op afstand mislukt: BestandsHash niet gevonden: %s"
 
 #: src/ExternalConn.cpp:660
 #, c-format
@@ -4556,7 +4557,7 @@ msgstr "Actief"
 
 #: src/PartFileConvert.cpp:180
 msgid "Waiting for partfile convert thread to die..."
-msgstr "Wachten tot partbestand conversiethread sterft..."
+msgstr "Wachten tot partbestand-conversiethread sterft..."
 
 #: src/PartFileConvert.cpp:236
 #, c-format
@@ -4667,7 +4668,7 @@ msgstr "%s (Schijf: %s)"
 
 #: src/PartFile.cpp:294
 msgid "ERROR: Failed to create partfile)"
-msgstr "FOUT: Kon part-bestand niet aanmaken)"
+msgstr "FOUT: Kon partbestand niet aanmaken)"
 
 #: src/PartFile.cpp:332
 #, c-format
@@ -4752,8 +4753,8 @@ msgstr "Kon bestand part.met.seeds niet bewaren voor %s"
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
-msgstr[0] "%i bron seed voor deelbestand bewaard: %s (%s)"
-msgstr[1] "%i bron seeds voor deelbestand bewaard: %s (%s)"
+msgstr[0] "%i bron seed voor partbestand bewaard: %s (%s)"
+msgstr[1] "%i bron seeds voor partbestand bewaard: %s (%s)"
 
 #: src/PartFile.cpp:1050
 #, c-format
@@ -4856,7 +4857,7 @@ msgstr "Gedownload"
 #: src/PartFile.cpp:3963
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
-msgstr "FOUT: Openen partfile '%s' mislukt"
+msgstr "FOUT: Kon partbestand '%s' niet openen"
 
 #: src/Preferences.cpp:659
 msgid "System default"
