@@ -1,20 +1,21 @@
 # translation of nn.po to
 # Norwegian Nynorsk translations for aMule package.
-# Copyright (C) 2007, 2008 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2008, 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the aMule package.
 #
 #
 # <PleaseInsertYour@email.here>, 2007.
 #  <PleaseInsertYour@email.here>, 2007.
 # Hallvor Brunstad <Hallvor_1976@yahoo.com>, 2008.
+# Hallvor Brunstad <Hallvor_1976@yahoo.no>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-07 23:42+0100\n"
-"PO-Revision-Date: 2008-06-10 23:09+0200\n"
-"Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
-"Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
+"PO-Revision-Date: 2009-03-09 20:06+0100\n"
+"Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.no>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -526,8 +527,8 @@ msgstr[1] "Las %u kadkontaktar"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Berre %d kadkontakt tilgjengeleg, skreiv ikkje til nodes.dat"
+msgstr[1] "Berre %d kadkontaktar tilgjengelege, skreiv ikkje til nodes.dat"
 
 #: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
@@ -1265,11 +1266,11 @@ msgstr "Hashar..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator fungerer"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "Reknar ut MD4 hash..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 #, fuzzy
@@ -1612,7 +1613,7 @@ msgstr "Tyrkisk"
 
 #: src/Preferences.cpp:664
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainsk"
 
 #: src/Preferences.cpp:1627 src/Preferences.cpp:1642 src/Preferences.cpp:1649
 msgid "Unable to determine selected browser!"
@@ -2045,7 +2046,7 @@ msgstr "Tryggleik"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Grensesnitt"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
@@ -5108,7 +5109,7 @@ msgstr "Nettlesarval"
 
 #: src/muuli_wdr.cpp:1674
 msgid "System Default"
-msgstr ""
+msgstr "Standardval"
 
 #: src/muuli_wdr.cpp:1675
 msgid "Konqueror"
@@ -7029,6 +7030,11 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"I tillegg har nettlesarinnstillingane vorte nullstilt til "
+"standardinnstilling. Still inn nettlesarinnstillingane på nytt dersom det er "
+"naudsynt.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7180,49 +7186,3 @@ msgstr "Greidde ikkje å opne venelista 'emfriends.net' for lesing!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Greidde ikkje å opne venelista 'enfriends.met' for skriving!"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Hentar status..."
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->tenarliste->GetServerByAddress()·ga attende NULL"
-
-#~ msgid "Message Filter"
-#~ msgstr "Meldingsfilter"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "Draktinnstillingar"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "Kjerneinnstillingar"
-
-#~ msgid "No handler for this file type."
-#~ msgstr "Ingen handsamar for denne filtypen"
-
-#~ msgid "File was not saved"
-#~ msgstr "Fila vart ikkje lagra"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr ""
-#~ "Fila %s er for stor for Muldyret: maksimal lovleg filstorleik er 4 GB."
-
-#~ msgid "Status text"
-#~ msgstr "Statustekst"
-
-#~ msgid "Pop-up status text"
-#~ msgstr "Utsprett status tekst"
-
-#~ msgid "Please wait... "
-#~ msgstr "Vér god å vente..."
-
-#~ msgid "General Settings"
-#~ msgstr "Brukarval"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "Draktinnstillingar"
-
-#~ msgid "Remote Control"
-#~ msgstr "Fjernkontroll"
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Fann ikkje kommando for å køyre nettlesar."
