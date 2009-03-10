@@ -7,7 +7,7 @@
 # Helder Correia <helder.pereira.correia@gmail.com>, 2005
 # (special thanks to Pedro Rodrigues <fantasma_2001@yahoo.com>)
 # Helder Correia <helder.pereira.correia@gmail.com>, 2007.
-# Miguel Almeida <miguel@almeida.at>. 2008.
+# Miguel Almeida <miguel@almeida.at>, 2008.
 #
 #
 msgid ""
@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-07 23:42+0100\n"
-"PO-Revision-Date: 2009-03-04 18:24+0000\n"
+"PO-Revision-Date: 2009-03-08 01:30+0000\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -345,7 +345,7 @@ msgstr "Prioridade"
 
 #: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:91
 msgid "FileID"
-msgstr "Chave"
+msgstr "ID do Ficheiro"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -630,7 +630,7 @@ msgstr "Porto HTTP do servidor web"
 
 #: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on web server port"
-msgstr "Utilizar UPnP para transferência de portos no porto do servidor web"
+msgstr "Utilizar UPnP para configurar encaminhamento no porto do servidor web"
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -708,7 +708,7 @@ msgstr "Pasta que contém o ficheiro amulesig.dat"
 #: src/muuli_wdr.cpp:1720 src/muuli_wdr.cpp:2103 src/muuli_wdr.cpp:2114
 #: src/muuli_wdr.cpp:3248
 msgid "Browse"
-msgstr "Navegar"
+msgstr "Procurar"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:80
 msgid "Enter here the directory where your amulesig.dat file is"
@@ -1346,7 +1346,7 @@ msgstr "Fila de Espera Cheia"
 
 #: src/DataToText.cpp:64 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:669
 msgid "On Queue"
-msgstr "Na Fila de Espera"
+msgstr "Em Fila de Espera"
 
 #: src/DataToText.cpp:65 src/ClientListCtrl.cpp:661
 msgid "Transferring"
@@ -1818,7 +1818,7 @@ msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
-"Cliente p2p multiplataforma baseado no eMule \n"
+" Cliente p2p multiplataforma baseado no eMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:465
@@ -1846,7 +1846,7 @@ msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (C) 2003-2008 Equipa aMule \n"
+" Copyright (C) 2003-2008 Equipa aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:470
@@ -1855,7 +1855,7 @@ msgstr " Parte do aMule é baseado em \n"
 
 #: src/amuleDlg.cpp:471
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr "Kademlia: Roteamento peer-to-peer baseado na métrica XOR.\n"
+msgstr "Kademlia: Routing peer-to-peer baseado na métrica XOR.\n"
 
 #: src/amuleDlg.cpp:472
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
@@ -2043,7 +2043,7 @@ msgstr "Ligação"
 
 #: src/PrefsUnifiedDlg.cpp:170
 msgid "Directories"
-msgstr "Pastas"
+msgstr "Directorias"
 
 #: src/PrefsUnifiedDlg.cpp:171 src/Statistics.cpp:714
 msgid "Servers"
@@ -2677,12 +2677,12 @@ msgstr "Fontes Encontradas: %s"
 #: src/Statistics.cpp:684
 #, c-format
 msgid "Active Downloads (chunks): %s"
-msgstr "Downloads activos (pedaços): %s"
+msgstr "Downloads activos (blocos): %s"
 
 #: src/Statistics.cpp:686
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
-msgstr "Taxa UL:DL da sessão (Total): %s"
+msgstr "Razão UL:DL da sessão (Total): %s"
 
 #: src/Statistics.cpp:689
 #, c-format
@@ -2800,7 +2800,7 @@ msgstr "Total de Ficheiros: %llu"
 #: src/Statistics.cpp:724
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr "Ocupacão do Servidor: %.2f%%"
+msgstr "Ocupação dos Servidores: %.2f%%"
 
 #: src/Statistics.cpp:728
 #, c-format
@@ -2998,7 +2998,7 @@ msgstr "Ficheiro"
 #: src/SearchListCtrl.cpp:579 src/muuli_wdr.cpp:370 src/muuli_wdr.cpp:1749
 #: src/muuli_wdr.cpp:2229
 msgid "Download"
-msgstr "Transferir"
+msgstr "Download"
 
 #: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:945
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:243 src/CatDialog.cpp:60
@@ -3746,7 +3746,7 @@ msgid ""
 "Clients in queue:\t%d\n"
 msgstr ""
 "\n"
-"Clientes na fila de espera:\t%d\n"
+"Clientes em espera:\t%d\n"
 
 #: src/TextClient.cpp:733
 #, c-format
@@ -3773,15 +3773,15 @@ msgstr "Recebida resposta desconhecida do servidor, instrução %#x."
 
 #: src/TextClient.cpp:842
 msgid "Show short status information."
-msgstr "Exibir informação curta de estado."
+msgstr "Mostrar informação curta de estado."
 
 #: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr "Exibir estado da ligação, velocidade de transferência actual, etc.\n"
+msgstr "Mostrar estado da ligação, velocidade de transferência actual, etc.\n"
 
 #: src/TextClient.cpp:845
 msgid "Show full statistics tree."
-msgstr "Exibir a árvore de estatísticas completa."
+msgstr "Mostrar a árvore de estatísticas completa."
 
 #: src/TextClient.cpp:846
 msgid ""
@@ -4689,7 +4689,7 @@ msgstr "Filtro:"
 
 #: src/muuli_wdr.cpp:327
 msgid "Filter Results"
-msgstr "Resultados de Filtragem"
+msgstr "Filtrar Resultados"
 
 #: src/muuli_wdr.cpp:333
 msgid "Invert Result"
@@ -5111,7 +5111,7 @@ msgstr "Quando activado, o aMule minimiza automaticamente no arranque."
 
 #: src/muuli_wdr.cpp:1642
 msgid "Prompt on exit"
-msgstr "Confirmar à saída"
+msgstr "Confirmar fecho do programa"
 
 #: src/muuli_wdr.cpp:1644
 msgid "Makes aMule promt before exiting."
@@ -5119,22 +5119,22 @@ msgstr "Faz com que o aMule peça confirmação de saída."
 
 #: src/muuli_wdr.cpp:1647
 msgid "Enable Tray Icon"
-msgstr "Activar o ícone da bandeja do sistema"
+msgstr "Activar o ícone da área de notificação"
 
 #: src/muuli_wdr.cpp:1648
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr "Activa/desactiva o ícone da bandeja do sistema (ou barra de tarefas)."
+msgstr "Activa/desactiva o ícone da área de notificação (ou barra de tarefas)."
 
 #: src/muuli_wdr.cpp:1651
 msgid "Minimize to Tray Icon"
-msgstr "Minimizar para ícone da bandeja"
+msgstr "Minimizar para a área de notificação"
 
 #: src/muuli_wdr.cpp:1652
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
-"Se activar isto o aMule vai minimizar para a bandeja do sistema em vez de "
+"Se activar isto o aMule vai minimizar para a área de notificação em vez de "
 "para a barra de tarefas."
 
 #: src/muuli_wdr.cpp:1657
@@ -5252,7 +5252,7 @@ msgstr "desactivar"
 
 #: src/muuli_wdr.cpp:1817
 msgid "Bind Address"
-msgstr "Endereço de ligação"
+msgstr "Associar ao Endereço"
 
 #: src/muuli_wdr.cpp:1828
 msgid "UDP port for extended server requests (TCP+3): 4665"
@@ -5264,7 +5264,7 @@ msgstr "Máximo de fontes por ficheiro"
 
 #: src/muuli_wdr.cpp:1840
 msgid "Hard limit"
-msgstr "Limite rígido"
+msgstr "Limite máximo"
 
 #: src/muuli_wdr.cpp:1850
 msgid "Connection limits"
@@ -5296,15 +5296,15 @@ msgstr "Porto TCP UPnP:"
 
 #: src/muuli_wdr.cpp:1913
 msgid "Autoconnect on startup"
-msgstr "Auto-ligar no arranque"
+msgstr "Ligar automaticamente no arranque"
 
 #: src/muuli_wdr.cpp:1916
 msgid "Reconnect on loss"
-msgstr "Religar ao perder ligação"
+msgstr "Voltar a ligar se perder ligação"
 
 #: src/muuli_wdr.cpp:1920
 msgid "Show overhead bandwith"
-msgstr "Exibir sobrecarga na largura de banda"
+msgstr "Mostrar sobrecarga na largura de banda"
 
 #: src/muuli_wdr.cpp:1942
 msgid "Server Options"
@@ -5336,7 +5336,7 @@ msgstr "Actualizar a lista de servidores quando um cliente se liga"
 
 #: src/muuli_wdr.cpp:1974
 msgid "Use priority system"
-msgstr "Usar sistema de prioridades"
+msgstr "Usar o sistema de prioridades"
 
 #: src/muuli_wdr.cpp:1978
 msgid "Use smart LowID check on connect"
@@ -5348,7 +5348,7 @@ msgstr "Ligação segura"
 
 #: src/muuli_wdr.cpp:1986
 msgid "Autoconnect to servers in static list only"
-msgstr "Auto-ligar apenas aos servidores da lista estática"
+msgstr "Apenas ligar automaticamente a servidores estáticos"
 
 #: src/muuli_wdr.cpp:1989
 msgid "Set manually added servers to High Priority"
@@ -5372,7 +5372,7 @@ msgstr "Adicionar ficheiros para transferir com prioridade automática"
 
 #: src/muuli_wdr.cpp:2030
 msgid "Try to download first and last chunks first"
-msgstr "Tentar transferir o primeiro e último pedaços primeiro"
+msgstr "Tentar receber primeiro o início e o final dos ficheiros"
 
 #: src/muuli_wdr.cpp:2034
 msgid "Add new shared files with auto priority"
@@ -5384,7 +5384,7 @@ msgstr "Tentar enviar partes inteiras nos uploads"
 
 #: src/muuli_wdr.cpp:2041
 msgid "Start next paused file when a file completed"
-msgstr "Iniciar o ficheiro em pausa seguinte quando uma transferência terminar"
+msgstr "Ao terminar um ficheiro iniciar o próximo em pausa"
 
 #: src/muuli_wdr.cpp:2045
 msgid "From the same category"
@@ -5396,15 +5396,15 @@ msgstr "Guardar 10 fontes para ficheiros raros (< 20 fontes)"
 
 #: src/muuli_wdr.cpp:2054
 msgid "Disk space"
-msgstr "Espaço no disco"
+msgstr "Espaço em disco"
 
 #: src/muuli_wdr.cpp:2057
 msgid "Check disk space"
-msgstr "Verificar espaço no disco"
+msgstr "Verificar espaço em disco"
 
 #: src/muuli_wdr.cpp:2058
 msgid "Select this if you want aMule to check your disk space"
-msgstr "Seleccione se quiser que o aMule verifique o espaço no seu disco"
+msgstr "Seleccione se quiser que o aMule verifique o espaço em disco"
 
 #: src/muuli_wdr.cpp:2065
 msgid "Min disk space:"
@@ -5506,7 +5506,7 @@ msgstr "Ligações activas"
 
 #: src/muuli_wdr.cpp:2188
 msgid "Systray Icon Speedbar"
-msgstr "Barra de velocidade no ícone da bandeja de sistema"
+msgstr "Barra de velocidade no ícone da área de notificação"
 
 #: src/muuli_wdr.cpp:2189
 msgid "Kad-nodes current"
@@ -5518,7 +5518,7 @@ msgstr "Nós Kad a executar"
 
 #: src/muuli_wdr.cpp:2191
 msgid "Kad-nodes session"
-msgstr "Nós-Kad da sessão"
+msgstr "Nós Kad da sessão"
 
 #: src/muuli_wdr.cpp:2196 src/muuli_wdr.cpp:2674
 msgid "Select"
@@ -5549,9 +5549,9 @@ msgid ""
 "aMule will run fine without adjusting any of\n"
 "these settings."
 msgstr ""
-"Não altere estas preferências, a menos que saiba\n"
-"o que está a fazer, caso contrário, pode facilmente\n"
-"piorar a sua situação.\n"
+"A menos que saiba o que está a fazer, não\n"
+"altere estas preferências. Caso contrário, \n"
+"pode facilmente piorar a sua situação.\n"
 "\n"
 "O aMule correrá perfeitamente sem ajustar qualquer\n"
 "uma destas opções."
@@ -5637,7 +5637,7 @@ msgstr "Ajustes de interface diversos"
 
 #: src/muuli_wdr.cpp:2400
 msgid "Show Fast eD2k Links Handler"
-msgstr "Mostrar a entrada rápida de ligações eD2k"
+msgstr "Mostrar barra de adição rápida de ligações eD2k"
 
 #: src/muuli_wdr.cpp:2404
 msgid "Show extended info on categories tabs"
@@ -5645,7 +5645,7 @@ msgstr "Mostrar informação extra nos separadores de categorias"
 
 #: src/muuli_wdr.cpp:2408
 msgid "Show transfer rates on title"
-msgstr "Mostrar taxas de transferência no título"
+msgstr "Mostrar velocidades de transferência na barra de título"
 
 #: src/muuli_wdr.cpp:2412
 msgid "Vertical toolbar orientation"
@@ -5669,11 +5669,12 @@ msgstr "Porto do servidor web"
 
 #: src/muuli_wdr.cpp:2450
 msgid "Enable UPnP port forwarding on the web server port"
-msgstr "Activar a transferência de portos por UPnP no porto do servidor web"
+msgstr ""
+"Activar UPnP para configuração do encaminhamento no porto do servidor web"
 
 #: src/muuli_wdr.cpp:2455
 msgid "Web server UPnP TCP port"
-msgstr "Porto UPnP do servidor web"
+msgstr "Porto TCP UPnP do servidor web"
 
 #: src/muuli_wdr.cpp:2465
 msgid "Page Refresh Time (in secs)"
@@ -5685,15 +5686,15 @@ msgstr "Activar compressão Gzip"
 
 #: src/muuli_wdr.cpp:2477
 msgid "Enable Low rights User"
-msgstr "Activar utilizador restrito"
+msgstr "Activar utilizador com permissões reduzidas"
 
 #: src/muuli_wdr.cpp:2484
 msgid "Full rights password"
-msgstr "Palavra-passe de controlo total"
+msgstr "Palavra-passe para controlo total"
 
 #: src/muuli_wdr.cpp:2490
 msgid "Low rights password"
-msgstr "Palavra-passe de controlo restrito"
+msgstr "Palavra-passe para controlo reduzido"
 
 #: src/muuli_wdr.cpp:2496
 msgid "Web template"
@@ -5729,7 +5730,7 @@ msgstr "Porto TCP"
 
 #: src/muuli_wdr.cpp:2548
 msgid "Enable UPnP port forwarding on the EC port"
-msgstr "Activar a transferência de portos por UPnP no porto das LE"
+msgstr "Activar UPnP para configuração do encaminhamento no porto das LE"
 
 #: src/muuli_wdr.cpp:2583
 msgid "Click here to apply any changes made to the preferences."
@@ -5803,7 +5804,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2822
 msgid "Add server manually: Name"
-msgstr "Adicionar servidor manualmente : Nome"
+msgstr "Adicionar servidor manualmente: Nome"
 
 #: src/muuli_wdr.cpp:2826
 msgid "Enter the name of the new server here"
@@ -6081,8 +6082,7 @@ msgstr "Filtrar todas as mensagens"
 
 #: src/muuli_wdr.cpp:3280
 msgid "Filter messages from people not on your friend list"
-msgstr ""
-"Filtrar mensagens de utilizadores que não pertençam à sua lista de amigos"
+msgstr "Filtrar mensagens de utilizadores que não pertençam à lista de amigos"
 
 #: src/muuli_wdr.cpp:3283
 msgid "Filter messages from unknown clients"
@@ -6108,7 +6108,7 @@ msgstr "Filtrar comentários que contenham (usar ',' como separador):"
 
 #: src/muuli_wdr.cpp:3339
 msgid "Enable Proxy"
-msgstr "Activar o Proxy"
+msgstr "Activar Proxy"
 
 #: src/muuli_wdr.cpp:3340
 msgid "Enable/disable proxy support"
@@ -6140,7 +6140,7 @@ msgstr "O tipo de proxy ao qual está a ligar-se"
 
 #: src/muuli_wdr.cpp:3359
 msgid "Proxy host:"
-msgstr "Máquina proxy:"
+msgstr "Servidor:"
 
 #: src/muuli_wdr.cpp:3363
 msgid "The proxy host name"
@@ -6678,7 +6678,7 @@ msgstr "Ilimitado"
 
 #: src/MuleTrayIcon.cpp:330
 msgid "aMule Tray Menu"
-msgstr "Menu de bandeja do aMule"
+msgstr "Menu de Área de Notificação do aMule"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Speed limits:"
@@ -6998,8 +6998,7 @@ msgstr ""
 #: src/amule.cpp:937
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
-msgstr ""
-"Não foi possível fazer bind dos portos para o endereço especificado: %s"
+msgstr "Não foi possível associar os portos ao endereço especificado: %s"
 
 #: src/amule.cpp:964
 #, c-format
@@ -7121,7 +7120,7 @@ msgstr "em www.amule.org ou no canal de IRC #aMule em irc.freenode.net.\n"
 
 #: src/amule.cpp:1327
 msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Sinta-se à vontade para comunicar erros em http://forum.amule.org"
+msgstr "Esteja à vontade para comunicar erros para http://forum.amule.org"
 
 #: src/amule.cpp:1340
 msgid ""
@@ -7262,979 +7261,3 @@ msgstr ""
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para escrita!"
-
-#~ msgid "Fetching status..."
-#~ msgstr "A obter estado..."
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() devolveu NULL"
-
-#~ msgid "Message Filter"
-#~ msgstr "Filtro de mensagens"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "Ajustes da interface gráfica"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "Ajustes nucleares"
-
-#~ msgid "No handler for this file type."
-#~ msgstr "Não há manipulador para este tipo de ficheiro."
-
-#~ msgid "File was not saved"
-#~ msgstr "O ficheiro não foi gravado"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr ""
-#~ "O ficheiro %s é muito grande para a rede Donkey: máximo permitido é 4 GB."
-
-#~ msgid "Status text"
-#~ msgstr "Texto de estado"
-
-#~ msgid "Pop-up status text"
-#~ msgstr "Mostrar texto de estado"
-
-#~ msgid "Please wait... "
-#~ msgstr "Por favor, aguarde..."
-
-#~ msgid "General Settings"
-#~ msgstr "Preferências gerais"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "Ajustes da interface gráfica"
-
-#~ msgid "Remote Control"
-#~ msgstr "Controlo remoto"
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Não foi possível determinar o comando para executar o navegador."
-
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "Falha de Conexão EC. Resposta vazia."
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "ExternalConn: Acesso negado devido: "
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "ExternalConn: Acesso negado"
-
-#~ msgid "ExternalConn: Bad reply from server. Connection closed."
-#~ msgstr "ExternalConn: Má resposta do servidor. Conexão fechada."
-
-#~ msgid "The ed2k hash of the file."
-#~ msgstr "A chave ed2k do ficheiro."
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Copiar &ligação ED2k para a área de transferência"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "Copiar link ED2k para o clipboard (&Fonte)"
-
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr "Copiar link ED2k (Origem) (&With Crypt options)"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "Copiar link ED2k (&Hostname)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr "Copiar o link ED2k (Hostname) (Com opções &Crypt)"
-
-#~ msgid "Copy ED2k link to clipboard (&AICH info)"
-#~ msgstr "Copiar ligação ED2k para área de transferência (informação &AICH)"
-
-#~ msgid "Warning"
-#~ msgstr "Aviso"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "Erro: Não é possível escutar o porto TCP."
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "Porto do servidor HTTP"
-
-#~ msgid "Use UPnP port forwarding on webserver port"
-#~ msgstr "Utilizar UPnP para transferencia de portas na porta do servidor web"
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "Senha de acesso total para o servidor HTTP"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "Senha de convidado para o servidor HTTP"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr ""
-#~ "Carregar/guardar as preferências do servidor HTTP de/para aMule remoto"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr "Insira o ficheiro que deseja computar a ligação Ed2k"
-
-#~ msgid ""
-#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
-#~ "let aLinkCreator append the current file name"
-#~ msgstr ""
-#~ "Insira o URL que deseja adicionar Ã  ligação Ed2k: acrescente '/' no "
-#~ "final para permitir ao aLinkCreator acrescentar o nome do ficheiro "
-#~ "corrente"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "Chave de ficheiro Ed2k"
-
-#~ msgid "Ed2k link"
-#~ msgstr "Ligação Ed2k"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "Abrir um ficheiro para computar a sua ligação ED2k"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "Copiar a ligação ED2k computada para a área de transferência"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "Gravar a ligação ED2k computada para ficheiro"
-
-#~ msgid "Select the file you want to compute the ed2k link"
-#~ msgstr "Seleccione o ficheiro que deseja computar a ligação ED2k"
-
-#~ msgid "Select the file to your computed ed2k link"
-#~ msgstr "Seleccione o ficheiro para a sua ligação ED2k computada"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "aLinkCreator, o criador de ligações ED2k do aMule\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Gráficos de http://www.everaldo.com, http://www.icomania.com\n"
-#~ "e http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distribuído sob a licença GPL"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "aLinkCreator, o criador de ligações ED2k do aMule"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "Copiar a ligação ED2k para a área de transferência"
-
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Copiar as ligações ED2k para a área de transferência"
-
-#~ msgid "Fatal Error: Failed to create Timer"
-#~ msgstr "Erro grave: Falha ao criar temporizador"
-
-#~ msgid "ED2K: Connecting"
-#~ msgstr "ED2K: A conectar"
-
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "ED2K: Desconectado"
-
-#~ msgid "Warning: Unable to open skin file '%s' for read"
-#~ msgstr "Aviso: Ficheiro de tema '%s' não pode ser aberto para leitura"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "A sua lista de servidores com actualização automática está vazia.\n"
-#~ "Actualização automática de servidores no arranque será desactivada."
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "ED2K e Kad estão desactivados.\n"
-#~ "Não vai conseguir uma ligação até activar pelo menos um deles."
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Editar a lista de servidores"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "Erro: não foi possível aceitar uma nova conexão externa"
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "ED2K desactivado nas preferências."
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "ExternalConn: finalização pedida"
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "Já conectado a ED2K."
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "A conectar a ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "Desconectado de ED2K."
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "ExternalConn: código de operação inválida recebida: %#x"
-
-#~ msgid "ED2K Status:"
-#~ msgstr "Estado eD2k"
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "Taxa média de entrada (Sessão): %s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "Taxa média de saída (Sessão): %s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "Taxa máxima de entrada (Sessão): %s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "Taxa máxima de saída (Sessão): %s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "Tamanho médio de ficheiro: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "Buscas no ED2K não podem ser feitas se o ED2K não estiver ligado"
-
-#~ msgid "Error: "
-#~ msgstr "Erro: "
-
-#~ msgid "Warning: "
-#~ msgstr "Aviso: "
-
-#~ msgid "Search related files (ED2k, local server)"
-#~ msgstr "Buscar ficheiros relacionados (ED2K, servidor local)"
-
-#~ msgid "Error"
-#~ msgstr "Erro"
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr ""
-#~ "AVISO: Não se poderá adicionar a si próprio como fonte para um link ed2k "
-#~ "enquanto tiver lowid."
-
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "Por favor, defina o seu leitor de vídeo preferido nas preferências.\n"
-#~ "Entretanto, o aMule tentará usar o mplayer e obterá este aviso em cada "
-#~ "previsualização"
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "Erro: Falha ao abrir o ficheiro part.met: %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "Erro: O ficheiro part.met está vazio: %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "Erro: Versão inválida do ficheiro part.met: %s ==> %s"
-
-#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-#~ msgstr ""
-#~ "Erro: %s (%s) está corrompido (contagem de elementos errada), não é "
-#~ "possível carregar o ficheiro."
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "Aviso: %s parece estar corrompido (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "Erro inesperado ao completar %s. ficheiro em pausa"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr ""
-#~ "Aviso: Não é possível calcular a chave de uma parte recebida - conjunto "
-#~ "de chaves incompleto para '%s'"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "Erro: Impossível calcular a chave de uma parte recebida - conjunto de "
-#~ "chaves incompleto (%s). Isto nunca deveria acontecer."
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "Espaço no disco insuficiente"
-
-#~ msgid "Warning: known.met cannot be opened."
-#~ msgstr "Aviso: known.met não pode ser aberto."
-
-#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
-#~ msgstr ""
-#~ "Aviso: Lista de ficheiros conhecidos corrompida, contém cabeçalho "
-#~ "inválido."
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "ERRO! Tentado partilhar %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr ""
-#~ "Rede ED2K desactivada nas preferências, a ligaçao não vai ser feita."
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "Não houve conexões válidas na lista de servidores"
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "Erro: Socket inválido durante a verificacão"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions."
-#~ msgstr ""
-#~ "Erro: Falha em carregamento de ficheiro de salvaguarda. Procure em http://"
-#~ "forum.amule.org para soluções de recuperação .part.met. "
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "Conversão de ed2k para ímã nao pode ser feita: %s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "Ligação ed2k inválida!: Erro: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "Limites de largura de banda: Saída: %u kB/s, Entrada: %u kB/s.\n"
-
-#~ msgid "Shutdown aMule."
-#~ msgstr "Terminar o aMule."
-
-#~ msgid ""
-#~ "Shutdown the remote running core (amule/amuled).\n"
-#~ "This will also shut down the text client, since it is unusable without a\n"
-#~ "running core.\n"
-#~ msgstr ""
-#~ "Desligar o núcleo remoto em execução (amule/amuled).\n"
-#~ "O cliente em texto também será desligado, uma vez que é inútil sem um\n"
-#~ "núcleo em execução.\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "Conectar apenas a ED2K."
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "Desconectar apenas de ED2K."
-
-#~ msgid "Adds an ed2k or magnet link to core."
-#~ msgstr "Adiciona um link ed2k ou ímã para o nucleo."
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ "\n"
-#~ "The magnet link must contain the ed2k hash and file length.\n"
-#~ msgstr ""
-#~ "O link ed2k a ser adicionado pode ser:\n"
-#~ "*) link dum ficheiro (ed2k://|file|...), sera adicionado a lista de \n"
-#~ "ficheiros a serem descarregados,\n"
-#~ "*) link dum servidor (ed2k://|server|...), sera adicionado a lista \n"
-#~ "dos servidores,\n"
-#~ "*) ou um link para uma lista de servidores, todos dos quais \n"
-#~ "serão adicionados a lista dos servidores \n"
-#~ "O ímã tem de conter a chave ed2k e o tamanho do ficheiro.\n"
-
-#~ msgid "Deprecated command, now '%s'."
-#~ msgstr "Comando depreciado, agora '%s'."
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "Erro: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "Aviso: %s (%s)- %s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "Erro: Sem espaço em disco"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "Erro: Partmet não encontrado"
-
-#~ msgid "Error: IO error!"
-#~ msgstr "Erro: erro de entrada/saída!"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "Erro: Falha!"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "Link ED2K: "
-
-#~ msgid ""
-#~ "Click here to add the ed2k link in the text control to your download "
-#~ "queue."
-#~ msgstr ""
-#~ "Clique para adicionar a ligação ED2k (na caixa de texto ao lado) Ã  sua "
-#~ "lista de transferências."
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "Procura mais resultados para ED2K. Ainda não funciona com Kad."
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "Limites de largura de banda"
-
-#~ msgid "This is the standard ED2K port and cannot be disabled."
-#~ msgstr "Este é o porto ED2K padrão e não pode ser desactivado."
-
-#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
-#~ msgstr "Este porto UDP é usado para pedidos Ed2K extendidos e rede Kad"
-
-#~ msgid "Hard Limit"
-#~ msgstr "Limite rígido"
-
-#~ msgid "Connection Limits"
-#~ msgstr "Limites de conexão"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "Actualizar a lista de servidores automaticamente no arranque"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "Actualizar a lista de servidores ao conectar"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "Actualizar a lista de servidores quando um cliente conectar"
-
-#~ msgid "Disk Space"
-#~ msgstr "Espaço no disco"
-
-#~ msgid "Check Disk Space"
-#~ msgstr "Verificar espaço no disco"
-
-#~ msgid "Select this if you want aMule to check your Disk Space"
-#~ msgstr "Seleccione se quiser que o aMule verifique o espaço no seu disco"
-
-#~ msgid "Min Disk Space:"
-#~ msgstr "Espaço mínimo em disco:"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Pasta de entrada :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Pasta temporária :"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Pastas partilhadas"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "criar cópia de segurança antes de previsualizar"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Mostrar a entrada rápida de ligações ED2k"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "Parâmetros do servidor HTTP"
-
-#~ msgid "Webserver port"
-#~ msgstr "Porto do servidor HTTP"
-
-#~ msgid "Enable UPnP port forwarding on the Webserver port"
-#~ msgstr "Activar a transferência de portas UPnP na porta do servidor"
-
-#~ msgid "Webserver UPnP TCP port"
-#~ msgstr "Porta UPnP do servidor web"
-
-#~ msgid "Serverlist"
-#~ msgstr "Lista de Servidores"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Adicionar servidor manualmente : Nome"
-
-#~ msgid "No One"
-#~ msgstr "Ninguém"
-
-#~ msgid "Speed Limits:"
-#~ msgstr "Limites de Velocidade:"
-
-#~ msgid "Download Speed: %.1f"
-#~ msgstr "Velocidade de Entrada: %.1f"
-
-#~ msgid "Upload Speed: %.1f"
-#~ msgstr "Velocidade de Saida: %.1f"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "Porto TCP: %d"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "Porto TCP: Não pronto"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "Porto UDP: %d"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "Porto UDP: Não pronto"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "Ficehiros Partilhados: %d"
-
-#~ msgid "Queued Clients: %d"
-#~ msgstr "Clientes em espera: %d"
-
-#~ msgid "Upload Limit"
-#~ msgstr "Limite de saida"
-
-#~ msgid "Download Limit"
-#~ msgstr "Limite de entrada"
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "Não foi encontrado nenhuma lista de servidores em 'addresses.dat'. Por "
-#~ "favor adicionar um endereço correcto a este ficheiro para a auto-"
-#~ "actualização funcionar."
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr ""
-#~ "Aviso, localização inválida especificada para a actualização automática "
-#~ "de servidores: %s"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "servidor HTTP a executar com identificador de processo (PID) %d"
-
-#~ msgid ""
-#~ "You requested to run webserver from startup, but the amuleweb binary "
-#~ "cannot be run. Please install the package containing aMule webserver, or "
-#~ "compile aMule using --enable-webserver and run make install"
-#~ msgstr ""
-#~ "Pediu para executar o servidor HTTP no arranque, mas o executável não "
-#~ "pode ser lançado. Por favor, instale o pacote que contém o servidor HTTP "
-#~ "ou compile o aMule com --enable-webserver e execute make install"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "Desconectado de ED2K"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr ""
-#~ "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para leitura!"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr ""
-#~ "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para escrita!"
-
-#~ msgid "ERROR: Failed to open partfile)"
-#~ msgstr "EERO: falha ao abrir o ficheiro de partes)"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Can't create web socket thread\n"
-#~ msgstr "Não é possível criar o processo leve de 'socket' do servidor\n"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "Servidor HTTP: iniciado\n"
-
-#~ msgid "Not Supported"
-#~ msgstr "Não suportado"
-
-#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-#~ msgstr "Baixa identidade: %u (%.2f%% Total %.2f%% conhecido)"
-
-#~ msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-#~ msgstr "SecIdent (des)activado: %u (%.2f%%) : %u (%.2f%%)"
-
-#~ msgid ""
-#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "Estatística desta sessão: Aceites %d de %d pedidos, %s transferidos\n"
-#~ "Estatística desta sessão: Aceites %d de %d pedidos, %s transferidos\n"
-
-#~ msgid ""
-#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "Estatística de todas as sessões: Aceites %d de %d pedidos, %s "
-#~ "transferidos\n"
-#~ "Estatística de todas as sessões: Aceites %d de %d pedidos, %s "
-#~ "transferidos\n"
-
-#~ msgid ""
-#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
-#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
-#~ "FileResultHash |%s| FileHash |%s|"
-#~ msgstr ""
-#~ "Encontrada parte corrompida (%d) no ficheiro de %d partes %s - "
-#~ "FileResultHash |%s| FileHash |%s|Encontrada parte corrompida (%d) no "
-#~ "ficheiro de %d partes %s - FileResultHash |%s| FileHash |%s|"
-
-#~ msgid "Browse wav"
-#~ msgstr "Procurar WAV"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "Ficheiro WAV (*.wav)|*.wav||"
-
-#~ msgid "Use sound"
-#~ msgstr "Usar som"
-
-#~ msgid "Pop out when :"
-#~ msgstr "Notificar quando :"
-
-#~ msgid "New entry on log"
-#~ msgstr "Nova entrada no registo"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "Inicia uma nova conversa"
-
-#~ msgid "SMTP server :"
-#~ msgstr "Servidor SMTP :"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "(Des)activar"
-
-#~ msgid "Disconnect from "
-#~ msgstr "Desconectado de "
-
-#~ msgid "current server"
-#~ msgstr "servidor actual"
-
-#~ msgid " and "
-#~ msgstr " e "
-
-#~ msgid "Disconnect from any server and/or Kad"
-#~ msgstr "Desligar de qualquer servido e/ou Kad"
-
-#~ msgid " ["
-#~ msgstr " ["
-
-#~ msgid " | Kad: "
-#~ msgstr " | Kad: "
-
-#~ msgid "Client requests %u"
-#~ msgstr "Pedidos do cliente %u"
-
-#~ msgid "File block %u-%u (%d bytes):"
-#~ msgstr "Bloco do ficheiro %u-%u (%d bytes):"
-
-#~ msgid "Command: %s"
-#~ msgstr "Comando: %s"
-
-#~ msgid "Waiting for subprocess termination failed"
-#~ msgstr "A espera pelo fim do subprocesso falhou"
-
-#~ msgid "remote gui"
-#~ msgstr "interface grafica remota"
-
-#~ msgid "WARNING: You have recieved Low-ID!"
-#~ msgstr "AVISO: recebeu baixa identidade!"
-
-#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-#~ msgstr ""
-#~ "Este commando requer um argumento. Argumentos validos: chave de "
-#~ "ficheiro.\n"
-
-#~ msgid "Deprecated command, now 'Status'."
-#~ msgstr "Comando obsoleto, agora 'Status'."
-
-#~ msgid "Deprecated command, now 'Set IPFilter'."
-#~ msgstr "Comando obsoleto, agora 'Set IPFilter'."
-
-#~ msgid "Deprecated command, now 'Get IPFilter Level'."
-#~ msgstr "Comando obsoleto, agora 'Get IPFilter Level'."
-
-#~ msgid "Deprecated command, now 'Set IPFilter Level'."
-#~ msgstr "Comando obsoleto, agora 'Set IPFilter Level'."
-
-#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-#~ msgstr "Comando obsoleto, agora 'Get/Set IPFilter Level'."
-
-#~ msgid "Deprecated command, now 'Show Servers'."
-#~ msgstr "Comando obsoleto, agora 'Show Servers'."
-
-#~ msgid "Deprecated command, now 'Get BwLimits'."
-#~ msgstr "Comando obsoleto, agora 'Get BwLimits'."
-
-#~ msgid "Deprecated command, now 'Set BwLimit Up'."
-#~ msgstr "Comando obsoleto, agora 'Set BwLimit Up'."
-
-#~ msgid "Deprecated command, now 'Set BwLimit Down'."
-#~ msgstr "Comando obsoleto, agora 'Set BwLimit Down'."
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Chaves mestres dos ficheiros conhecidos foram carregados."
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Erro ao ler os contactos Kad - 0 entradas"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "     %d"
-#~ msgstr "     %d"
-
-#~ msgid ".%d"
-#~ msgstr ".%d"
-
-#~ msgid "Shows the process of a search."
-#~ msgstr "Mostra o progresso duma busca."
-
-#~ msgid "Shows the process of a search..\n"
-#~ msgstr "Mostra o progresso duma busca..\n"
-
-#~ msgid "Search warning."
-#~ msgstr "Aviso de pesquisa"
-
-#~ msgid "Keep sources"
-#~ msgstr "Guardar fontes"
-
-#~ msgid "Drop sources"
-#~ msgstr "Largar fontes"
-
-#~ msgid "Send sources to any other file before dropping (High CPU)"
-#~ msgstr ""
-#~ "Enviar fontes para outro ficheiro antes de eliminar (bom processador)"
-
-#~ msgid "Full Queue Sources Handling"
-#~ msgstr "Tratamento de fontes com fila de espera cheia"
-
-#~ msgid "High Queue Rating Sources Handling"
-#~ msgstr "Tratamento de fontes com grande fila de espera"
-
-#~ msgid "High Queue Rating value"
-#~ msgstr "Valor de grandeza de fila de espera"
-
-#~ msgid "Timer (in secs)"
-#~ msgstr "Temporizador (em segundos)"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(Min 60 / 3600 Max)"
-
-#~ msgid "Drop Full Queue Sources now"
-#~ msgstr "Descartar fontes com fila de espera cheia"
-
-#~ msgid "Drop High Queue Rating Sources now"
-#~ msgstr "Eliminar fontes com fila de espera grande"
-
-#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-#~ msgstr "Limpar as fontes (NNS, FQS e HQRS)"
-
-#~ msgid "Sources: %u"
-#~ msgstr "Fontes: %u"
-
-#~ msgid "Feedback from: %s"
-#~ msgstr "Resposta de: %s"
-
-#~ msgid "Client: aMule %s"
-#~ msgstr "Cliente: aMule %s"
-
-#~ msgid "File Name: %s"
-#~ msgstr "Nome Ficheiro: %s"
-
-#~ msgid "File size: %s"
-#~ msgstr "Tamanho Ficheiro: %s"
-
-#~ msgid "Complete Sources: %u"
-#~ msgstr "Fontes Completas: %u"
-
-#~ msgid "http://download.overnet2000.de/nodes.dat"
-#~ msgstr "http://download.overnet2000.de/nodes.dat"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname)"
-#~ msgstr "Copiar link ED2k para o clipboard (Hostname)"
-
-#~ msgid "Connecting to %s (%s - %s:%i)"
-#~ msgstr "A conectar a %s (%s - %s:%i)"
-
-#~ msgid "Minimize to trayicon"
-#~ msgstr "Minimizar para a bandeja do sistema"
-
-#~ msgid "Browse skin file"
-#~ msgstr "Procurar ficheiro de tema"
-
-#~ msgid "Use skin file to set aMule bitmaps."
-#~ msgstr "Usar ficheiro de tema para definir as imagens do aMule."
-
-#~ msgid "Skin file:"
-#~ msgstr "Ficheiro de tema:"
-
-#~ msgid "theApp.serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp.serverlist->GetServerByAddress() retornou NULL"
-
-#~ msgid "Turn IP filtering on."
-#~ msgstr "Activar filtros de IP."
-
-#~ msgid "Turn IP filtering off."
-#~ msgstr "Desactivar filtros de IP."
-
-#~ msgid "Get IPFilter state."
-#~ msgstr "Obter estado de filtragem de IP."
-
-#~ msgid "Enable IP-Filtering"
-#~ msgstr "Activar filtragem de IP"
-
-#~ msgid ""
-#~ "Enable filtering of the IPs defined in the file ~/.aMule/ipfilter.dat."
-#~ msgstr ""
-#~ "Activar a filtragem dos IPs definidos no ficheiro ~/.aMule/ipfilter.dat."
-
-#~ msgid "Local Search"
-#~ msgstr "Pesquisa local"
-
-#~ msgid "Global Search"
-#~ msgstr "Pesquisa global"
-
-#~ msgid "FileHash (WWW)"
-#~ msgstr "Chave de ficheiro"
-
-#~ msgid "Command:"
-#~ msgstr "Comando:"
-
-#~ msgid "Socks5"
-#~ msgstr "Socks5"
-
-#~ msgid "Socks4"
-#~ msgstr "Socks4"
-
-#~ msgid "WARNING: Failed to delete %s.seeds"
-#~ msgstr "AVISO: Falha ao eliminar %s.seeds"
-
-#~ msgid ""
-#~ "Downloaded:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Transferido:\n"
-#~ "%s"
-
-#~ msgid "\tStopped"
-#~ msgstr "\tParado"
-
-#~ msgid "\tRemoved from shared"
-#~ msgstr "\tRemovido das partilhas"
-
-#~ msgid "\tRemoved from download queue"
-#~ msgstr "\tRemovido da file de entrada"
-
-#~ msgid "\tRemoved transferwnd"
-#~ msgstr "\tRemovido transferwnd"
-
-#~ msgid "\tClosed"
-#~ msgstr "\tFechado"
-
-#~ msgid "\tFailed to delete '%s'"
-#~ msgstr "\tFalha ao eliminar '%s'"
-
-#~ msgid "\tRemoved .part.met"
-#~ msgstr "\tRemovido .part.met"
-
-#~ msgid "Failed to delete '%s'"
-#~ msgstr "Falha ao eliminar '%s'"
-
-#~ msgid "\tRemoved .part"
-#~ msgstr "\tRemovido .part"
-
-#~ msgid "\tRemoved .BAK"
-#~ msgstr "\tRemovido .BAK"
-
-#~ msgid "\tRemoved .seeds"
-#~ msgstr "\tRemovido .seeds"
-
-#~ msgid "Done"
-#~ msgstr "Terminado"
-
-#~ msgid "%s: Expected part-hash: %s"
-#~ msgstr "%s: Chave de parte esperada: %s"
-
-#~ msgid "%s: Actual part-hash: %s"
-#~ msgstr "%s: Chave de parte encontrada: %s"
-
-#~ msgid "Hasher: Creating new thread."
-#~ msgstr "Gerador: A criar novo processo leve."
-
-#~ msgid "Hasher: Signaling for remaining threads to terminate."
-#~ msgstr "Gerador: A pedir aos processos leves restantes para terminar."
-
-#~ msgid "Hasher: No files on queue, stopping thread."
-#~ msgstr "Gerador: Nenhum ficheiro em fila, a parar o processo leve."
-
-#~ msgid "Hasher: A thread has died."
-#~ msgstr "Gerador: Morreu um processo leve."
-
-#~ msgid "Client %s on IP:Port %s:%d using %s"
-#~ msgstr "Cliente %s no IP:Porto %s:%d usando %s"
-
-#~ msgid "Disconnect from server"
-#~ msgstr "Desconectar do servidor"
-
-#~ msgid "Connect to any server"
-#~ msgstr "Conectar com qualquer servidor"
-
-#~ msgid "aMule for Linux"
-#~ msgstr "aMule para Linux"
-
-#~ msgid "Loading ipfilter.dat files."
-#~ msgstr "A carregar ficheiros ipfilter.dat."
-
-#~ msgid "AICH Thread: Terminated."
-#~ msgstr "Processo leve AICH: Terminado."
-
-#~ msgid "AICH Thread: Masterhashes of known files have been loaded."
-#~ msgstr "Processo leve AICH: Carregadas chaves de ficheiros conhecidos."
-
-#~ msgid "AICH Thread: Starting to hash files. %li files found."
-#~ msgstr ""
-#~ "Processo leve AICH: A gerar chaves de ficheiros. %li ficheiros "
-#~ "encontrados."
-
-#~ msgid "AICH Thread: Hashing file: %s, total files left: %li"
-#~ msgstr ""
-#~ "Processo leve AICH: A gerar chave de ficheiro: %s, ficheiros restantes: %"
-#~ "li"
-
-#~ msgid "AICH Thread: No new files found."
-#~ msgstr "Processo leve AICH: Nenhum ficheiro novo encontrado."
-
-#~ msgid "KDE 3.x"
-#~ msgstr "KDE 3.x"
-
-#~ msgid "KDE 2.x / Gnome 1.2 "
-#~ msgstr "KDE 2.x / Gnome 1.2 "
-
-#~ msgid "Desktop"
-#~ msgstr "Ambiente de trabalho"
-
-#~ msgid "Jugle (WWW)"
-#~ msgstr "Jugle"
-
-#~ msgid "Downloadlist doubleclick to expand"
-#~ msgstr "Duplo clique para expandir a lista de entradas"
-
-#~ msgid "Select Window Manager"
-#~ msgstr "Seleccionar o gestor de janelas"
-
-#~ msgid ""
-#~ "Click here to select the type of systray integration you wish aMule to "
-#~ "use."
-#~ msgstr ""
-#~ "Clique para seleccionar o tipo de bandeja de sistema que deseja que o "
-#~ "aMule use."
-
-#~ msgid "Save 5 sources on rare files (< 20 sources)"
-#~ msgstr "Gravar 5 fontes em ficheiros raros (<20 fontes)"
-
-#~ msgid "Failed to open shared file (%s), rechecking list of shared files."
-#~ msgstr ""
-#~ "Erro ao abrir ficheiro partilhado (%s), a verificar a lista de ficheiros "
-#~ "partilhados."
-
-#~ msgid "Enter Password"
-#~ msgstr "Insira a Palavra-Chave"
-
-#~ msgid "Client TCP Port:"
-#~ msgstr "Porto TCP do cliente:"
-
-#~ msgid "Client UDP port: 4665"
-#~ msgstr "Porto UDP do cliente: 4665"
-
-#~ msgid "eMule extended UDP Port:"
-#~ msgstr "Porto UDP extendido do eMule:"
-
-#~ msgid "Extract Meta Data Tags"
-#~ msgstr "Extrair meta-elementos de dados"
