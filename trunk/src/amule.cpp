@@ -1093,10 +1093,11 @@ wxString CamuleApp::CreateED2kAICHLink(const CKnownFile* f)
 	wxString strURL = CreateED2kLink(f);
 	// Append the AICH info
 	if (f->HasProperAICHHashSet()) {
-	     	strURL << wxT("|h=") << f->GetAICHMasterHash() << wxT("|/");
+		strURL.RemoveLast();		// remove trailing '/'
+		strURL << wxT("h=") << f->GetAICHMasterHash() << wxT("|/");
 	}	
 
-	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|h=<AICH master hash>|/"
+	// Result is "ed2k://|file|<filename>|<size>|<hash>|h=<AICH master hash>|/"
 	return strURL;
 }
 
