@@ -1,3 +1,4 @@
+# translation of nn.po to norwegian nynorsk
 # translation of nn.po to
 # Norwegian Nynorsk translations for aMule package.
 # Copyright (C) 2007, 2008, 2009 Free Software Foundation, Inc.
@@ -13,9 +14,9 @@ msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-07 23:42+0100\n"
-"PO-Revision-Date: 2009-03-09 20:06+0100\n"
-"Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.no>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2009-03-10 16:55+0100\n"
+"Last-Translator: hallvor\n"
+"Language-Team: norwegian nynorsk <nn@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1171,9 +1172,8 @@ msgid "Exit"
 msgstr "Avslutt"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Open"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1189,7 +1189,6 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "Kopier utrekna eD2k lenkje til skrivebordet"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
 msgstr "Lagre"
 
@@ -1212,9 +1211,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Vel fila du vil rekne ut eD2k lenkje til"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "Kopiér til utklippstavle"
+msgstr "Greier ikkje opne utklippstavle"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1273,9 +1271,8 @@ msgid "Computing MD4 Hash..."
 msgstr "Reknar ut MD4 hash..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "Koplar til eD2k..."
+msgstr "Reknar ut eD2k hashar..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1425,9 +1422,8 @@ msgid "Source Seeds"
 msgstr "Kjeldefrø"
 
 #: src/DataToText.cpp:135
-#, fuzzy
 msgid "Search Result"
-msgstr "Søk"
+msgstr "Søkjeresultat"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
 #: src/OtherFunctions.cpp:696
@@ -1479,9 +1475,8 @@ msgid "Arabic"
 msgstr "Arabisk"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estisk"
+msgstr "Asturiansk"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -2053,9 +2048,8 @@ msgid "Proxy"
 msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Filter:"
+msgstr "Filter"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2066,9 +2060,8 @@ msgid "Online Signature"
 msgstr "Nettsignatur"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Avanserte innstillingar"
+msgstr "Avansert"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2123,9 +2116,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Mellombels mappe endra.\n"
 
 #: src/PrefsUnifiedDlg.cpp:587
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Alle nettverk er deaktiverte."
+msgstr "- ED2K nettverket er aktivert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
@@ -2136,7 +2128,7 @@ msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"Både eD2k og kadnettverket er dekativert.\n"
+"Både eD2k og kadnettverket er deaktivert.\n"
 "Du vil ikkje klare å kople til før du aktiverer minst eitt av dei."
 
 #: src/PrefsUnifiedDlg.cpp:658
@@ -2261,14 +2253,12 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Oppfriskingsintervall for tenarkopling: Deaktivert"
 
 #: src/PrefsUnifiedDlg.cpp:1112
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "UDP-port for utvida tenarførespurnader (TCP+3): 4665"
+msgstr "UDP-port for utvida tenarførespurnader (TCP+3): "
 
 #: src/PrefsUnifiedDlg.cpp:1116
-#, fuzzy
 msgid "disabled"
-msgstr "deaktivere"
+msgstr "deaktivert"
 
 #: src/PrefsUnifiedDlg.cpp:1136
 #, c-format
@@ -5488,11 +5478,8 @@ msgid "Line Capacities"
 msgstr "Linjekapasitet"
 
 #: src/muuli_wdr.cpp:2249
-#, fuzzy
 msgid "Note: These values are only used for statistics."
-msgstr ""
-"Merk: Desse verdiane vert\n"
-" berre nytta til statistikk."
+msgstr "Merk: Desse verdiane vert berre nytta til statistikk."
 
 #: src/muuli_wdr.cpp:2272
 msgid "!!! WARNING !!!"
@@ -6322,7 +6309,7 @@ msgstr "Denne kommandoen skulle ikkje ha nokon parameter."
 
 #: src/ExternalConnector.cpp:281
 msgid "This command must have a parameter."
-msgstr "Denne komamndoen må ha eit parameter."
+msgstr "Denne kommandoen må ha eit parameter."
 
 #: src/ExternalConnector.cpp:284
 msgid "Invalid argument."
@@ -6356,10 +6343,9 @@ msgstr ""
 "Opprettar klient...\n"
 
 #: src/ExternalConnector.cpp:403
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr ""
-"Greidde ikkje å opprette kopling. Ikkje i stand til å kople til verten\n"
+msgstr "Oppkopling feila: Greidde ikkje å opprette kopling til %s:%d\n"
 
 #: src/ExternalConnector.cpp:414
 #, c-format
