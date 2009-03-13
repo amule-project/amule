@@ -109,6 +109,10 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		  window.
 		* Ported several Kademlia fixes from eMule0.49c:
 			- Fixes on handling incoming packets with port zero.
+			- The Kad UDP firewalltest now asks several clients for
+			  its external port, avoiding to get a wrong "Open"
+			  state on NATs which change the source port on each
+			  request but behave like a Full-Cone otherwise.
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.

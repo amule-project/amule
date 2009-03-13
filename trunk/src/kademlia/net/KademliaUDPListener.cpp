@@ -727,7 +727,7 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 			wxFAIL;
 		}
 #endif
-	} else if (CKademlia::GetPrefs()->GetExternalKadPort() == 0 && contactVersion > 5) {	// do we need to find out our extern port?
+	} else if (CKademlia::GetPrefs()->FindExternKadPort(false) && contactVersion > 5) {	// do we need to find out our extern port?
 		DebugSend(Kad2Ping, ip, port);
 		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
 	}
@@ -823,7 +823,7 @@ void CKademliaUDPListener::Process2HelloResponse(const uint8_t *packetData, uint
 	}
 
 	// do we need to find out our extern port?
-	if (CKademlia::GetPrefs()->GetExternalKadPort() == 0 && contactVersion > 5) {
+	if (CKademlia::GetPrefs()->FindExternKadPort(false) && contactVersion > 5) {
 		DebugSend(Kad2Ping, ip, port);
 		SendNullPacket(KADEMLIA2_PING, ip, port, senderKey, NULL);
 	}
@@ -2217,13 +2217,12 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 		return;	// we do not actually care for its other content
 	}
 
-	if (CKademlia::GetPrefs()->GetExternalKadPort() == 0) {
+	if (CKademlia::GetPrefs()->FindExternKadPort(false)) {
 		// the reported port doesn't always have to be our true external port, esp. if we used our intern port
 		// and communicated recently with the client some routers might remember this and assign the intern port as source
 		// but this shouldn't be a problem because we prefer intern ports anyway.
 		// might have to be reviewed in later versions when more data is available
-		CKademlia::GetPrefs()->SetExternKadPort(PeekUInt16(packetData));
-		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Set external Kad Port to %u"), CKademlia::GetPrefs()->GetExternalKadPort()));
+		CKademlia::GetPrefs()->SetExternKadPort(PeekUInt16(packetData), ip);
 
 		if (CUDPFirewallTester::IsFWCheckUDPRunning()) {
 			CUDPFirewallTester::QueryNextClient();

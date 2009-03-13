@@ -2779,7 +2779,6 @@ void CUpDownClient::SendFirewallCheckUDPRequest()
 		return;
 	}
 
-	wxASSERT(Kademlia::CKademlia::GetPrefs()->GetExternalKadPort() != 0);
 	CMemFile data;
 	data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetInternKadPort());
 	data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetExternalKadPort());

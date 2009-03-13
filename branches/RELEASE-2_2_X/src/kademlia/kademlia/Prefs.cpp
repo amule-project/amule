@@ -55,6 +55,9 @@ there client on the eMule forum..
 using namespace Kademlia;
 ////////////////////////////////////////
 
+#define EXTERNAL_PORT_ASKIPS	3
+
+
 CPrefs::CPrefs()
 {
 	Init(theApp->ConfigDir + wxT("preferencesKad.dat"));
@@ -96,6 +99,8 @@ void CPrefs::Init(const wxString& filename)
 	m_statsTCPFirewalledNodes = 0;
 	m_statsKadV8LastChecked = 0;
 	m_statsKadV8Ratio = 0;
+	m_externPortIPs.reserve(EXTERNAL_PORT_ASKIPS);
+	m_externPorts.reserve(EXTERNAL_PORT_ASKIPS);
 	ReadFile();
 }
 
@@ -269,7 +274,7 @@ float CPrefs::StatsGetKadV8Ratio()
 		uint32_t nV8Contacts = 0;
 		uint32_t nNonV8Contacts = 0;
 		CKademlia::GetRoutingZone()->GetNumContacts(nV8Contacts, nNonV8Contacts, 8);
-		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"), nV8Contacts, nNonV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100));
+		AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"), nV8Contacts, nNonV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100));
 		if (nV8Contacts > 0) {
 			m_statsKadV8Ratio = ((float)nV8Contacts / (float)(nV8Contacts + nNonV8Contacts));
 		} else {
@@ -277,4 +282,45 @@ float CPrefs::StatsGetKadV8Ratio()
 		}
 	}
 	return m_statsKadV8Ratio;
+}
+
+void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
+{
+	if (FindExternKadPort(false)) {
+		for (int i = 0; i < m_externPortIPs.size(); i++) {
+			if (m_externPortIPs[i] == fromIP) {
+				return;
+			}
+		}
+		m_externPortIPs.push_back(fromIP);
+		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)));
+		// if 2 out of 3 tries result in the same external port it's fine, otherwise consider it unreliable
+		for (int i = 0; i < m_externPorts.size(); i++) {
+			if (m_externPorts[i] == port) {
+				m_externKadPort = port;
+				AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Set external Kad port to %u"), port));
+				while (m_externPortIPs.size() < EXTERNAL_PORT_ASKIPS) {
+					// add empty entries so we know the check has finished even if we asked less than max IPs
+					m_externPortIPs.push_back(0);
+				}
+				return;
+			}
+		}
+		m_externPorts.push_back(port);
+		if (!FindExternKadPort(false)) {
+			AddDebugLogLineM(false, logKadPrefs, wxT("Our external port seems unreliable, not using it for firewallchecks"));
+			m_externKadPort = 0;
+		}
+	}
+}
+
+bool CPrefs::FindExternKadPort(bool reset)
+{
+	if (!reset) {
+		return m_externPortIPs.size() < EXTERNAL_PORT_ASKIPS;
+	} else {
+		m_externPortIPs.clear();
+		m_externPorts.clear();
+		return true;
+	}
 }
