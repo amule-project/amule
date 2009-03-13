@@ -141,7 +141,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 			if (incomingPort == CKademlia::GetPrefs()->GetInternKadPort()) {
 				CKademlia::GetPrefs()->SetUseExternKadPort(false);
 				AddDebugLogLineM(false, logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using intern port"));
-			} else if (incomingPort == CKademlia::GetPrefs()->GetExternalKadPort()) {
+			} else if (incomingPort == CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != 0) {
 				CKademlia::GetPrefs()->SetUseExternKadPort(true);
 				AddDebugLogLineM(false, logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using extern port"));
 			}
