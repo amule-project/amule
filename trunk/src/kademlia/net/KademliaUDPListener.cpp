@@ -2240,7 +2240,7 @@ void CKademliaUDPListener::Process2FirewallUDP(const uint8_t *packetData, uint32
 
 	uint8_t errorCode = PeekUInt8(packetData);
 	uint16_t incomingPort = PeekUInt16(packetData + 1);
-	if (incomingPort != CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != CKademlia::GetPrefs()->GetInternKadPort()) {
+	if (incomingPort != CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != CKademlia::GetPrefs()->GetInternKadPort() || incomingPort == 0) {
 		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck on unexpected incoming port %u (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"), incomingPort));
 		CUDPFirewallTester::SetUDPFWCheckResult(false, true, ip, 0);
 	} else if (errorCode == 0) {
