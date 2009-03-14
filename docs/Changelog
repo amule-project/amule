@@ -115,6 +115,8 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 			  request but behave like a Full-Cone otherwise.
 			- Made sure a received Kad routing answer doesn't
 			  contain more contacts than requested. [Xin Sun]
+			- Kad no longer allows more than 2 IPs from the same
+			  subnet within one routing query reply (except on LANs).
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.

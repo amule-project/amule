@@ -316,6 +316,10 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 			m_responded[fromDistance] = from;
 
 			std::map<uint32_t, uint32_t> mapReceivedIPs;
+			std::map<uint32_t, uint32_t> mapReceivedSubnets;
+			// A node is not allowed to answer with contacts to itself
+			mapReceivedIPs[fromIP] = 1;
+			mapReceivedSubnets[fromIP & 0xFFFFFF00] = 1;
 			// Loop through their responses
 			for (response = results->begin(); response != results->end(); ++response) {
 				CContact *c = *response;
@@ -323,21 +327,34 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 
 				// Ignore this contact if already known or tried it.
 				if (m_possible.count(distance) > 0) {
-					// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already known client: ignore"));
+					AddDebugLogLineM(false, logKadSearch, wxT("Search result from already known client: ignore"));
 					continue;
 				}
 				if (m_tried.count(distance) > 0) {
-					// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
+					AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
 					continue;
 				}
 
 				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
 				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
 				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP(") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress())) + wxT(") in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
+					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress())) + wxT(") in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
 					continue;
 				} else {
 					mapReceivedIPs[c->GetIPAddress()] = 1;
+				}
+				// and no more than 2 IPs from the same /24 subnet
+				if (mapReceivedSubnets.count(c->GetIPAddress() & 0xFFFFFF00) > 0 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress()))) {
+					wxASSERT(mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != mapReceivedSubnets.end());
+					int subnetCount = mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
+					if (subnetCount >= 2) {
+						AddDebugLogLineM(false, logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress() & 0xFFFFFF00)) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
+						continue;
+					} else {
+						mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
+					}
+				} else {
+					mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = 1;
 				}
 
 				// Add to possible
