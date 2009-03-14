@@ -48,6 +48,9 @@ using namespace Kademlia;
 CRoutingBin::GlobalTrackingMap	CRoutingBin::s_globalContactIPs;
 CRoutingBin::GlobalTrackingMap	CRoutingBin::s_globalContactSubnets;
 
+#define MAX_CONTACTS_SUBNET	10
+#define MAX_CONTACTS_IP		1
+
 CRoutingBin::~CRoutingBin()
 {
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
@@ -78,31 +81,13 @@ bool CRoutingBin::AddContact(CContact *contact)
 	// This is supposed to add a bit of protection against several attacks and raise the resource needs (IPs) for a successful contact on the attacker side
 	// Such IPs are not banned from Kad, they still can index, search, etc so multiple KAD clients behind one IP still work
 
-	// no more than 1 KadID per IP
-	uint32_t sameIPCount = 0;
-	GlobalTrackingMap::const_iterator itIP = s_globalContactIPs.find(contact->GetIPAddress());
-	if (itIP != s_globalContactIPs.end()) {
-		sameIPCount = itIP->second;
-	}
-	if (sameIPCount >= 1) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Ignored kad contact (IP=") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress()), contact->GetUDPPort()) + wxT(") - too many contacts with the same IP (global)"));
+	if (!CheckGlobalIPLimits(contact->GetIPAddress(), contact->GetUDPPort())) {
 		return false;
 	}
 
 	// no more than 2 IPs from the same /24 netmask in one bin, except if its a LANIP (if we don't accept LANIPs they already have been filtered before)
 	if (sameSubnets >= 2 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress()))) {
 		AddDebugLogLineM(false, logKadRouting, wxT("Ignored kad contact (IP=") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress()), contact->GetUDPPort()) + wxT(") - too many contact with the same subnet in RoutingBin"));
-		return false;
-	}
-
-	//  no more than 10 IPs from the same /24 netmask global, except if its a LANIP (if we don't accept LANIPs they already have been filtered before)
-	uint32_t sameSubnetGlobalCount = 0;
-	GlobalTrackingMap::const_iterator itSubnet = s_globalContactSubnets.find(contact->GetIPAddress() & 0xFFFFFF00);
-	if (itSubnet != s_globalContactSubnets.end()) {
-		sameSubnetGlobalCount = itSubnet->second;
-	}
-	if (sameSubnetGlobalCount >= 10 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress()))) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Ignored kad contact (IP=") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress()), contact->GetUDPPort()) + wxT(") - too many contacts with the same subnet (global)"));
 		return false;
 	}
 
@@ -237,7 +222,7 @@ void CRoutingBin::AdjustGlobalTracking(uint32_t ip, bool increase)
 		sameIPCount = itIP->second;
 	}
 	if (increase) {
-		if (sameIPCount >= 1) {
+		if (sameIPCount >= MAX_CONTACTS_IP) {
 			AddDebugLogLineM(false, logKadRouting, wxT("Global IP Tracking inconsistency on increase (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
 			wxFAIL;
 		}
@@ -262,7 +247,7 @@ void CRoutingBin::AdjustGlobalTracking(uint32_t ip, bool increase)
 		sameSubnetCount = itSubnet->second;
 	}
 	if (increase) {
-		if (sameSubnetCount >= 10 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
+		if (sameSubnetCount >= MAX_CONTACTS_SUBNET && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 			AddDebugLogLineM(false, logKadRouting, wxT("Global Subnet Tracking inconsistency on increase (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT("/24)"));
 			wxFAIL;
 		}
@@ -299,8 +284,8 @@ bool CRoutingBin::ChangeContactIPAddress(CContact *contact, uint32_t newIP)
 	if (itIP != s_globalContactIPs.end()) {
 		sameIPCount = itIP->second;
 	}
-	if (sameIPCount >= 1) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Rejected kad contact update on IP change (old IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", requested IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(newIP)) + wxT(") - too many contacts with the same IP (global)"));
+	if (sameIPCount >= MAX_CONTACTS_IP) {
+		AddDebugLogLineM(false, logKadRouting, wxT("Rejected kad contact IP change on update (old IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", requested IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(newIP)) + wxT(") - too many contacts with the same IP (global)"));
 		return false;
 	}
 
@@ -311,8 +296,8 @@ bool CRoutingBin::ChangeContactIPAddress(CContact *contact, uint32_t newIP)
 		if (itGlobalSubnet != s_globalContactSubnets.end()) {
 			sameSubnetGlobalCount = itGlobalSubnet->second;
 		}
-		if (sameSubnetGlobalCount >= 10 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(newIP))) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Rejected kad contact update on IP change (old IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", requested IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(newIP)) + wxT(") - too many contacts with the same Subnet (global)"));
+		if (sameSubnetGlobalCount >= MAX_CONTACTS_SUBNET && !::IsLanIP(wxUINT32_SWAP_ALWAYS(newIP))) {
+			AddDebugLogLineM(false, logKadRouting, wxT("Rejected kad contact IP change on update (old IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", requested IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(newIP)) + wxT(") - too many contacts with the same Subnet (global)"));
 			return false;
 		}
 
@@ -325,7 +310,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact *contact, uint32_t newIP)
 			}
 		}
 		if (sameSubnets >= 2 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(newIP))) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Rejected kad contact update on IP change (old IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", requested IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(newIP)) + wxT(") - too many contacts with the same Subnet (local)"));
+			AddDebugLogLineM(false, logKadRouting, wxT("Rejected kad contact IP change on update (old IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", requested IP=") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(newIP)) + wxT(") - too many contacts with the same Subnet (local)"));
 			return false;
 		}
 	}
@@ -376,4 +361,29 @@ void CRoutingBin::SetAllContactsVerified()
 	for (ContactList::iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
 		(*it)->SetIPVerified(true);
 	}
+}
+
+bool CRoutingBin::CheckGlobalIPLimits(uint32_t ip, uint16_t port)
+{
+	// no more than 1 KadID per IP
+	uint32_t sameIPCount = 0;
+	GlobalTrackingMap::const_iterator itIP = s_globalContactIPs.find(ip);
+	if (itIP != s_globalContactIPs.end()) {
+		sameIPCount = itIP->second;
+	}
+	if (sameIPCount >= MAX_CONTACTS_IP) {
+		AddDebugLogLineM(false, logKadRouting, wxT("Ignored kad contact (IP=") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port) + wxT(") - too many contacts with the same IP (global)"));
+		return false;
+	}
+	//  no more than 10 IPs from the same /24 netmask global, except if its a LANIP (if we don't accept LANIPs they already have been filtered before)
+	uint32_t sameSubnetGlobalCount = 0;
+	GlobalTrackingMap::const_iterator itSubnet = s_globalContactSubnets.find(ip & 0xFFFFFF00);
+	if (itSubnet != s_globalContactSubnets.end()) {
+		sameSubnetGlobalCount = itSubnet->second;
+	}
+	if (sameSubnetGlobalCount >= MAX_CONTACTS_SUBNET && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
+		AddDebugLogLineM(false, logKadRouting, wxT("Ignored kad contact (IP=") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port) + wxT(") - too many contacts with the same subnet (global)"));
+		return false;
+	}
+	return true;
 }
