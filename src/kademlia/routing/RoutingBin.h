@@ -76,6 +76,8 @@ public:
 	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw();
 	void	  SetAllContactsVerified();
 
+	static bool	CheckGlobalIPLimits(uint32_t ip, uint16_t port);
+
 	bool m_dontDeleteContacts;
 
 protected:
