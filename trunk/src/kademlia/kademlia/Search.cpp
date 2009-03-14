@@ -274,15 +274,20 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 {
 	AddDebugLogLineM(false, logKadSearch, wxT("Processing search response from ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(fromIP), fromPort));
 
-	if (results) {
-		m_lastResponse = time(NULL);
-	}
-
 	ContactList::iterator response;
 	// Remember the contacts to be deleted when finished
 	for (response = results->begin(); response != results->end(); ++response) {
 		m_delete.push_back(*response);
 	}
+
+	// Make sure the node is not sending more results than we requested, which is not only a protocol violation
+	// but most likely a malicious answer
+	if (results->size() > GetRequestContactCount()) {
+		AddDebugLogLineM(false, logKadSearch, wxT("Node ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
+		return;
+	}
+
+	m_lastResponse = time(NULL);
 
 	if (m_type == NODEFWCHECKUDP) {
 		m_answers++;
@@ -1049,28 +1054,11 @@ void CSearch::SendFindValue(CContact *contact)
 
 		CMemFile packetdata(33);
 		// The number of returned contacts is based on the type of search.
-		switch(m_type){
-			case NODE:
-			case NODECOMPLETE:
-			case NODESPECIAL:
-			case NODEFWCHECKUDP:
-				packetdata.WriteUInt8(KADEMLIA_FIND_NODE);
-				break;
-			case FILE:
-			case KEYWORD:
-			case FINDSOURCE:
-			case NOTES:
-				packetdata.WriteUInt8(KADEMLIA_FIND_VALUE);
-				break;
-			case FINDBUDDY:
-			case STOREFILE:
-			case STOREKEYWORD:
-			case STORENOTES:
-				packetdata.WriteUInt8(KADEMLIA_STORE);
-				break;
-			default:
-				AddDebugLogLineM(false, logKadSearch, wxT("Invalid search type. (CSearch::sendFindValue)"));
-				return;
+		uint8_t contactCount = GetRequestContactCount();
+		if (contactCount > 0) {
+			packetdata.WriteUInt8(contactCount);
+		} else {
+			return;
 		}
 		// Put the target we want into the packet.
 		packetdata.WriteUInt128(m_target);
@@ -1260,4 +1248,29 @@ void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *sea
 	m_searchTermsData = new uint8_t [searchTermsDataSize];
 	memcpy(m_searchTermsData, searchTermsData, searchTermsDataSize);
 }
-// File_checked_for_headers
+
+uint8_t CSearch::GetRequestContactCount() const throw()
+{
+	// Returns the amount of contacts we request on routing queries based on the search type
+	switch (m_type) {
+		case NODE:
+		case NODECOMPLETE:
+		case NODESPECIAL:
+		case NODEFWCHECKUDP:
+			return KADEMLIA_FIND_NODE;
+		case FILE:
+		case KEYWORD:
+		case FINDSOURCE:
+		case NOTES:
+			return KADEMLIA_FIND_VALUE;
+		case FINDBUDDY:
+		case STOREFILE:
+		case STOREKEYWORD:
+		case STORENOTES:
+			return KADEMLIA_STORE;
+		default:
+			AddDebugLogLineM(false, logKadSearch, wxT("Invalid search type. (CSearch::GetRequestContactCount())"));
+			wxFAIL;
+			return 0;
+	}
+}

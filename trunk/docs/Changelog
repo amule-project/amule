@@ -107,12 +107,14 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		* Added another common URN ID to the Magnet link handler.
 		* Switch to the 'busy' cursor while bringing up the preferences
 		  window.
-		* Ported several Kademlia fixes from eMule0.49c:
+		* Ported several Kademlia fixes and improvements from eMule0.49c:
 			- Fixes on handling incoming packets with port zero.
 			- The Kad UDP firewalltest now asks several clients for
 			  its external port, avoiding to get a wrong "Open"
 			  state on NATs which change the source port on each
 			  request but behave like a Full-Cone otherwise.
+			- Made sure a received Kad routing answer doesn't
+			  contain more contacts than requested. [Xin Sun]
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.
