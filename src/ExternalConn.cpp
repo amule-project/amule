@@ -1787,13 +1787,16 @@ void ECNotifier::Add_EC_Client(CECServerSocket *sock)
 
 void ECNotifier::Remove_EC_Client(CECServerSocket *sock)
 {
-	ECUpdateMsgSource **notifier_array = m_msg_source[sock];
-	m_msg_source.erase(sock);
-	
-	for(int i = 0; i < EC_STATUS_LAST_PRIO; i++) {
-		delete notifier_array[i];
+	if (m_msg_source.count(sock)) {
+		ECUpdateMsgSource **notifier_array = m_msg_source[sock];
+
+		m_msg_source.erase(sock);
+		
+		for(int i = 0; i < EC_STATUS_LAST_PRIO; i++) {
+			delete notifier_array[i];
+		}
+		delete [] notifier_array;
 	}
-	delete [] notifier_array;
 }
 
 void ECNotifier::NextPacketToSocket()
