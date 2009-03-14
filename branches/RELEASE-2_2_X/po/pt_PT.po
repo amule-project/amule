@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-07 23:42+0100\n"
-"PO-Revision-Date: 2009-03-08 01:30+0000\n"
+"PO-Revision-Date: 2009-03-14 16:32+0000\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Ligação Externa: Má resposta do servidor. Ligação fechada."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:205
 msgid "Succeeded! Connection established to aMule "
-msgstr "Sucesso! Ligação ao aMule estabelecida "
+msgstr "Sucesso! Ligação estabelecida com o aMule "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:208
 msgid "Succeeded! Connection established."
@@ -1798,8 +1798,7 @@ msgstr "A correr em %s"
 
 #: src/amuleDlg.cpp:214
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr ""
-"Visite http://www.amule.org para verificar se há uma nova versão disponível."
+msgstr "Visite http://www.amule.org para verificar se há novas versões."
 
 #: src/amuleDlg.cpp:237
 msgid "FATAL ERROR: Failed to create Timer"
@@ -1807,7 +1806,7 @@ msgstr "ERRO FATAL: Falha ao criar Temporizador"
 
 #: src/amuleDlg.cpp:456
 msgid "aMule remote control "
-msgstr "Controlo remoto do aMule"
+msgstr "Controlo remoto do aMule "
 
 #: src/amuleDlg.cpp:462
 msgid "Snapshot:"
@@ -4222,8 +4221,8 @@ msgstr "CIP2Country::CIP2Country(): Carregamento dos dados do país falhou de "
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
-msgstr[0] "%d imagem de bandeira foi carregada."
-msgstr[1] "%d imagens de bandeiras foram carregadas."
+msgstr[0] "Foi carregada a imagem de %d bandeira."
+msgstr[1] "Foram carregadas %d imagens de bandeiras."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
