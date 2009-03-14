@@ -983,6 +983,7 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 	// Verify packet is expected size
 	CHECK_PACKET_EXACT_SIZE(16+1 + (16+4+2+2+1)*numContacts);
 
+	uint32_t ignoredCount = 0;
 	CScopedPtr<ContactList> results(new ContactList);
 	
 	for (uint16_t i = 0; i < numContacts; i++) {
@@ -999,10 +1000,20 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 				// the contact to the routing table. If this should be an old Kad1 contact, we won't be able to keep it, but
 				// we avoid having to send double hello packets to the 90% Kad2 nodes
 				// This is the first step of dropping Kad1 support
-				routingZone->AddUnfiltered(id, contactIP, contactPort, tport, 2, 0, verified, false, false, false);
-				results->push_back(new CContact(id, contactIP, contactPort, tport, 0, 0, false, target));
+				bool wasAdded = routingZone->AddUnfiltered(id, contactIP, contactPort, tport, 2, 0, verified, false, false, false);
+				CContact *temp = new CContact(id, contactIP, contactPort, tport, 0, 0, false, target);
+				if (wasAdded || routingZone->IsAcceptableContact(temp)) {
+					results->push_back(temp);
+				} else {
+					ignoredCount++;
+					delete temp;
+				}
 			}
 		}
+	}
+
+	if (ignoredCount > 0) {
+		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Ignored %u bad contacts in routing answer from "), ignoredCount) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 	}
 
 	CSearchManager::ProcessResponse(target, ip, port, results.release());
@@ -1052,6 +1063,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 		isFirewallUDPCheckSearch = true;
 	}
 
+	uint32_t ignoredCount = 0;
 	CScopedPtr<ContactList> results(new ContactList);
 	for (uint8_t i = 0; i < numContacts; i++) {
 		CUInt128 id = bio.ReadUInt128();
@@ -1071,11 +1083,21 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 					CUDPFirewallTester::AddPossibleTestContact(id, contactIP, contactPort, tport, target, version, 0, false);
 				} else {
 					bool verified = false;
-					routingZone->AddUnfiltered(id, contactIP, contactPort, tport, version, 0, verified, false, false, false);
-					results->push_back(new CContact(id, contactIP, contactPort, tport, version, 0, false, target));
+					bool wasAdded = routingZone->AddUnfiltered(id, contactIP, contactPort, tport, version, 0, verified, false, false, false);
+					CContact *temp = new CContact(id, contactIP, contactPort, tport, version, 0, false, target);
+					if (wasAdded || routingZone->IsAcceptableContact(temp)) {
+						results->push_back(temp);
+					} else {
+						ignoredCount++;
+						delete temp;
+					}
 				}
 			}
 		}
+	}
+
+	if (ignoredCount > 0) {
+		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Ignored %u bad contacts in routing answer from "), ignoredCount) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 	}
 
 	CSearchManager::ProcessResponse(target, ip, port, results.release());

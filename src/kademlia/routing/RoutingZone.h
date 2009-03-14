@@ -85,6 +85,9 @@ public:
 	uint32_t GetNumContacts() const throw();
 	void	 GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const;
 
+	// Check if we know a contact with the same IP or ID but not matching IP/ID and other limitations, similar checks like when adding a node to the table except allowing duplicates
+	bool	IsAcceptableContact(const CContact *toCheck) const;
+
 	// Returns a list of all contacts in all leafs of this zone.
 	void	 GetAllEntries(ContactList *result, bool emptyFirst = true) const;
 
