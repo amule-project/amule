@@ -131,6 +131,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		* Added restart warning if the ED2K network was re-enabled.
 		* Fixed Windows lag when opening preferences dialog
 		* Fixed creation of ED2K links with AICH (thanks to Archmage)
+		* Remote Gui shows a dialog box with a reason on connection failure
 
 	Wuischke:
 		* Add Asturian language
