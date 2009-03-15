@@ -27,7 +27,7 @@
 public interface ECCodes {
 
 
-public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0201;
+public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0202;
 
 public final static int EC_FLAG_ZLIB	 = 0x00000001;
 public final static int EC_FLAG_UTF8_NUMBERS = 0x00000002;
@@ -38,10 +38,10 @@ public final static int EC_FLAG_UNKNOWN_MASK = 0xff7f7f08;
 
 public final static byte EC_OP_NOOP                          = 0x01;
 public final static byte EC_OP_AUTH_REQ                      = 0x02;
-public final static byte EC_OP_AUTH_SALT                     = 0x03;
-public final static byte EC_OP_AUTH_PASSWD                   = 0x04;
-public final static byte EC_OP_AUTH_FAIL                     = 0x05;
-public final static byte EC_OP_AUTH_OK                       = 0x06;
+public final static byte EC_OP_AUTH_FAIL                     = 0x03;
+public final static byte EC_OP_AUTH_OK                       = 0x04;
+public final static byte EC_OP_AUTH_SALT                     = 0x05;
+public final static byte EC_OP_AUTH_PASSWD                   = 0x06;
 public final static byte EC_OP_FAILED                        = 0x07;
 public final static byte EC_OP_STRINGS                       = 0x08;
 public final static byte EC_OP_MISC_DATA                     = 0x09;
