@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-08 00:03+0100\n"
+"POT-Creation-Date: 2009-03-15 22:37+0100\n"
 "PO-Revision-Date: 2009-03-08 20:55+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgstr ""
 "Nyelvi beállításaid a egy konfigurációs változás miatt az alapértelmezettre "
 "lett átállítva. Bocs."
 
-#: src/amule.cpp:700 src/amule.cpp:1333 src/CatDialog.cpp:141
+#: src/amule.cpp:700 src/amule.cpp:1334 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
@@ -131,8 +131,8 @@ msgstr ""
 "vagy fordítsd az aMule-t a --enable-webserver kapcsolóval és futtasd a make "
 "install parancsot."
 
-#: src/amule.cpp:855 src/amule.cpp:976 src/amule.cpp:1344
-#: src/amule-remote-gui.cpp:306
+#: src/amule.cpp:855 src/amule.cpp:976 src/amule.cpp:1345
+#: src/amule-remote-gui.cpp:306 src/amule-remote-gui.cpp:327
 msgid "ERROR"
 msgstr "HIBA"
 
@@ -162,7 +162,7 @@ msgstr ""
 "Ellenőrízd a hálózatodat, hogy megbizonyosodj, hogy a port nyitva van kifelé "
 "és befelé egyaránt."
 
-#: src/amule.cpp:1082 src/amule-remote-gui.cpp:504
+#: src/amule.cpp:1082 src/amule-remote-gui.cpp:508
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -170,15 +170,15 @@ msgstr ""
 "FIGYELEM: Nem adhatod magad forrásként egy eD2k hivatkozáshoz amíg alacsony "
 "azonosítód (lowid) van."
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1127
 msgid "Failed to create OnlineSig File"
 msgstr "Online-Aláírás fájl létrehozása sikertelen"
 
-#: src/amule.cpp:1134
+#: src/amule.cpp:1135
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Az aMule OnlineAláírás fájl létrehozása sikertelen"
 
-#: src/amule.cpp:1302
+#: src/amule.cpp:1303
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -186,30 +186,30 @@ msgstr ""
 "A kiválasztott nyelvi beállítások úgy látszik nincsenek telepítve a gépeden. "
 "(Megjegyzés: Mindenesetre mepróbálom ezt beállítani)"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1312
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Ez az első alkalom, hogy az aMule %s-t futtatod"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1314
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Ez egy teszt verzió, naponta frissítve, és\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1315
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "nem vállalunk garanciát, hogy nem omlik össze, gyújtja fel a házad,\n"
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1316
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "vagy öli meg a kutyád. *Elvileg* nyugodtan használható.\n"
 
-#: src/amule.cpp:1319
+#: src/amule.cpp:1320
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "Az alábbiak változtak meg ebben a kiadásban biztonsági okok miatt:\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1321
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -218,7 +218,7 @@ msgstr ""
 "\n"
 "* Protokoll titkosítás engedélyezve a bejövő és kimenő kapcsolatokra.\n"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1322
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -226,7 +226,7 @@ msgstr ""
 "\n"
 "* Kiszolgáló-lista frissítése letiltva más ügyfelektől és kiszolgálóktól.\n"
 
-#: src/amule.cpp:1322
+#: src/amule.cpp:1323
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -241,7 +241,7 @@ msgstr ""
 "Fontos, hogy minden hamis kiszolgálót törölj a kiszolgáló-listádról, hagy az "
 "aMule rendesen működjön."
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1324
 msgid ""
 "\n"
 "\n"
@@ -254,21 +254,21 @@ msgstr ""
 "alapértelmezett böngészőre. Kérlek állítsd be újra a böngésző "
 "beállításaidat, ha szükséges.\n"
 
-#: src/amule.cpp:1328
+#: src/amule.cpp:1329
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Még több információ, támogatás és új kiadások találhatóak honlapunkon,\n"
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1330
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "a www.aMule.org-on, vagy az #aMule IRC csatornánkon az irc.freenode.net-en.\n"
 
-#: src/amule.cpp:1331
+#: src/amule.cpp:1332
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Nyugodtan jelezz bármilyen hibát a http://forum.amule.org-on"
 
-#: src/amule.cpp:1344
+#: src/amule.cpp:1345
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -277,128 +277,128 @@ msgstr ""
 " Az OnlineAláírás letiltásra kerül, amíg ki nem javítod azt a beállítások "
 "menüpontban."
 
-#: src/amule.cpp:1399
+#: src/amule.cpp:1400
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Kiszolgáló neve:"
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1629
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Lemezterület helyfoglalás a '%s' fájl számára sikertelen: %s"
 
-#: src/amule.cpp:1752
+#: src/amule.cpp:1753
 msgid "ERROR: can't open logfile"
 msgstr "HIBA: Nem tudom megnyitni a napló fájlt"
 
-#: src/amule.cpp:1756
+#: src/amule.cpp:1757
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "FIGYELEM: a napló üres. Valami nem stimmel."
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1775
 msgid "Log has been reset"
 msgstr "Napló törölve"
 
-#: src/amule.cpp:1799
+#: src/amule.cpp:1800
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "KiszolgálóÜzenet: %s"
 
-#: src/amule.cpp:1837
+#: src/amule.cpp:1838
 msgid "Failed to download the nodes list."
 msgstr "Csomópont-lista letöltése sikertelen."
 
-#: src/amule.cpp:1857
+#: src/amule.cpp:1858
 msgid "Failed to open the downloaded version check file"
 msgstr "Nem sikerült megnyitni a letöltött verzió-ellenőrző fájlt"
 
-#: src/amule.cpp:1860 src/amule.cpp:1870 src/amule.cpp:1876
+#: src/amule.cpp:1861 src/amule.cpp:1871 src/amule.cpp:1877
 msgid "Corrupted version check file"
 msgstr "Sérült verzió-ellenőrző fájl"
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1887
 msgid "You are using an outdated version of aMule!"
 msgstr "Az aMule egy elavult verzióját használod!"
 
-#: src/amule.cpp:1887
+#: src/amule.cpp:1888
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "A te aMule verziód %i.%i.%i, a legújabb verzió pedig %li.%li.%li"
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1889
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "A legújabb verzió mindig megtalálható a http://www.amule.org honlapon."
 
-#: src/amule.cpp:1890
+#: src/amule.cpp:1891
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "FIGYELEM: A te aMule verziód elavult: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1894
+#: src/amule.cpp:1895
 msgid "Your copy of aMule is up to date."
 msgstr "Az aMule verziód naprakész."
 
-#: src/amule.cpp:1901
+#: src/amule.cpp:1902
 msgid "Failed to download the version check file"
 msgstr "Verzió-ellenőrzés fájl letöltése sikertelen."
 
-#: src/amule.cpp:2061
+#: src/amule.cpp:2062
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Felhasználók: %s | Fájlok: %s"
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2063
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Felhasználók: E: %s K: %s | Fájlok: E: %s K: %s"
 
-#: src/amule.cpp:2071
+#: src/amule.cpp:2072
 msgid "No networks selected"
 msgstr "Nincs hálózat kiválasztva"
 
-#: src/amule.cpp:2136 src/TextClient.cpp:698
+#: src/amule.cpp:2137 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "LowID-val"
 
-#: src/amule.cpp:2136 src/TextClient.cpp:698
+#: src/amule.cpp:2137 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "HighID-val"
 
-#: src/amule.cpp:2138
+#: src/amule.cpp:2139
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Kapcsolódva ehhez %s %s"
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2142
 #, c-format
 msgid "Connecting to %s"
 msgstr "Kapcsolódás %s-hez"
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2144
 msgid "Disconnected from eD2k"
 msgstr "Leválasztva az eD2k-ról"
 
-#: src/amule.cpp:2150
+#: src/amule.cpp:2151
 msgid "Kad started."
 msgstr "Kad elindítva."
 
-#: src/amule.cpp:2152
+#: src/amule.cpp:2153
 msgid "Kad stopped."
 msgstr "Kad leállítva."
 
-#: src/amule.cpp:2159
+#: src/amule.cpp:2160
 msgid "Connected to Kad (ok)"
 msgstr "Kapcsolódva a Kad-hoz (rendben)"
 
-#: src/amule.cpp:2161
+#: src/amule.cpp:2162
 msgid "Connected to Kad (firewalled)"
 msgstr "Kapcsolódva a Kad-hoz (tűzfal mögül)"
 
-#: src/amule.cpp:2164
+#: src/amule.cpp:2165
 msgid "Disconnected from Kad"
 msgstr "Leválasztva a Kad-ról"
 
-#: src/amule.cpp:2227
+#: src/amule.cpp:2228
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -406,7 +406,7 @@ msgstr ""
 "A Kad hálózat nem használható, ha az UDP port le van tiltva a "
 "beállításokban, nem indítom."
 
-#: src/amule.cpp:2230
+#: src/amule.cpp:2231
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "A Kad hálózat le van tiltva  a beállításokban, nem kapcsolódom."
 
@@ -763,25 +763,30 @@ msgstr "Kapcsolódás sikertelen "
 msgid "Remote GUI EC event handler"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:324
 #, fuzzy
 msgid "Going down"
 msgstr "Bejelentkezés"
 
-#: src/amule-remote-gui.cpp:421
+#: src/amule-remote-gui.cpp:326 src/ExternalConnector.cpp:411
+#, c-format
+msgid "Connection Failed. Unable to connect to %s:%d\n"
+msgstr ""
+
+#: src/amule-remote-gui.cpp:425
 msgid "Ready"
 msgstr "Készen"
 
-#: src/amule-remote-gui.cpp:599
+#: src/amule-remote-gui.cpp:604
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Felhasználók: E: %s K: %s | Fájlok: E: %s K: %s"
 
-#: src/amule-remote-gui.cpp:657 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:662 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Mind"
 
-#: src/amule-remote-gui.cpp:895
+#: src/amule-remote-gui.cpp:900
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Összes felhasználó: %s | Összes fájl: %s"
@@ -2081,11 +2086,6 @@ msgid ""
 msgstr ""
 "\n"
 "Kliens létrehozása...\n"
-
-#: src/ExternalConnector.cpp:411
-#, c-format
-msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr ""
 
 #: src/ExternalConnector.cpp:425
 #, c-format

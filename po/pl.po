@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-08 00:03+0100\n"
+"POT-Creation-Date: 2009-03-15 22:37+0100\n"
 "PO-Revision-Date: 2008-10-29 18:02+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
@@ -96,7 +96,7 @@ msgstr ""
 "Twoje ustawienia lokalne zostały zmienione na domyślne systemowe w związku "
 "ze zmianą konfiguracji. Przepraszamy."
 
-#: src/amule.cpp:700 src/amule.cpp:1333 src/CatDialog.cpp:141
+#: src/amule.cpp:700 src/amule.cpp:1334 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
@@ -140,8 +140,8 @@ msgstr ""
 "sieciowy aMule lub skompiluj aMule używając --enable-webserver i uruchom "
 "make install"
 
-#: src/amule.cpp:855 src/amule.cpp:976 src/amule.cpp:1344
-#: src/amule-remote-gui.cpp:306
+#: src/amule.cpp:855 src/amule.cpp:976 src/amule.cpp:1345
+#: src/amule-remote-gui.cpp:306 src/amule-remote-gui.cpp:327
 msgid "ERROR"
 msgstr "BŁĄD"
 
@@ -171,22 +171,22 @@ msgstr ""
 "Sprawdź swoją sieć aby mieć pewność, że port jest otwarty dla wejścia i "
 "wyjścia."
 
-#: src/amule.cpp:1082 src/amule-remote-gui.cpp:504
+#: src/amule.cpp:1082 src/amule-remote-gui.cpp:508
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
 "UWAGA: Nie możesz dodać samego siebie jako źródło linku ed2k, gdy masz lowid."
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1127
 msgid "Failed to create OnlineSig File"
 msgstr "Nie udało się utworzyć pliku podpisu online"
 
-#: src/amule.cpp:1134
+#: src/amule.cpp:1135
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Nie udało się utworzyć pliku podpisu online aMule"
 
-#: src/amule.cpp:1302
+#: src/amule.cpp:1303
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -194,28 +194,28 @@ msgstr ""
 "Wybrane lokale wydają się być niezainstalowane. (Uwaga: I tak spróbuję je "
 "ustawić)"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1312
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Po raz pierwszy uruchomiłeś aMule %s"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1314
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Ta wersja jest aktualizowaną codziennie wersją testową i\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1315
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "nie dajemy żadnej gwarancji, że nie zniszczy ona niczego, nie spali twojego "
 "domu\n"
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1316
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "lub zabije twojego psa. *Powinna* ona jednak mimo wszystko działać "
 "poprawnie.\n"
 
-#: src/amule.cpp:1319
+#: src/amule.cpp:1320
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
@@ -223,7 +223,7 @@ msgstr ""
 "Następujące opcje zostały zmienione w tym wydaniu z przyczyn "
 "bezpieczeństwa:\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1321
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -233,7 +233,7 @@ msgstr ""
 "* Włączono obsługę maskowania protokołu dla połączeń przychodzących i "
 "wychodzących.\n"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1322
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -241,7 +241,7 @@ msgstr ""
 "\n"
 "* Zablokowano aktualizację listy serwerów od innych serwerów i klientów.\n"
 
-#: src/amule.cpp:1322
+#: src/amule.cpp:1323
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -255,7 +255,7 @@ msgstr ""
 "Ważne jest, abyś usunął wszystkie fałszywe serwery z twojej listy serwerów, "
 "aby aMule działał poprawnie."
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1324
 msgid ""
 "\n"
 "\n"
@@ -268,20 +268,20 @@ msgstr ""
 "domyślnych. Należy ponownie skonfigurować opcje przeglądarki w razie "
 "potrzeby.\n"
 
-#: src/amule.cpp:1328
+#: src/amule.cpp:1329
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Więcej informacji, pomoc i nowe wydania znajdziesz na naszej stronie \n"
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1330
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org lub na naszym kanale IRC: #aMule na irc.freenode.net.\n"
 
-#: src/amule.cpp:1331
+#: src/amule.cpp:1332
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Nie wahaj się zgłaszać jakichkolwiek błędów na http://forum.amule.org"
 
-#: src/amule.cpp:1344
+#: src/amule.cpp:1345
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -290,128 +290,128 @@ msgstr ""
 " Sygnatura online zostanie wyłączona dopóki nie poprawisz tego w "
 "preferencjach."
 
-#: src/amule.cpp:1399
+#: src/amule.cpp:1400
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Nazwa serwera:"
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1629
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Wstępna alokacja dysku dla pliku '%s' nie powiodła się: %s"
 
-#: src/amule.cpp:1752
+#: src/amule.cpp:1753
 msgid "ERROR: can't open logfile"
 msgstr "BŁĄD: nie mogę otworzyć pliku logów"
 
-#: src/amule.cpp:1756
+#: src/amule.cpp:1757
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "UWAGA: plik logów jest pusty. Coś jest nie tak."
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1775
 msgid "Log has been reset"
 msgstr "Logi zostały zresetowane"
 
-#: src/amule.cpp:1799
+#: src/amule.cpp:1800
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Wiadomość z serwera: %s"
 
-#: src/amule.cpp:1837
+#: src/amule.cpp:1838
 msgid "Failed to download the nodes list."
 msgstr "Pobieranie listy węzłów nie powiodło się."
 
-#: src/amule.cpp:1857
+#: src/amule.cpp:1858
 msgid "Failed to open the downloaded version check file"
 msgstr "Nie można otworzyć pobranego pliku kontroli wersji"
 
-#: src/amule.cpp:1860 src/amule.cpp:1870 src/amule.cpp:1876
+#: src/amule.cpp:1861 src/amule.cpp:1871 src/amule.cpp:1877
 msgid "Corrupted version check file"
 msgstr "Uszkodzony plik kontorli wersji"
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1887
 msgid "You are using an outdated version of aMule!"
 msgstr "Używasz przestarzałej wersji aMule!"
 
-#: src/amule.cpp:1887
+#: src/amule.cpp:1888
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Twoje wersja eMule to %i.%i.%i, najnowszą wersją jest %li.%li.%li"
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1889
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Najnowsza wersja jest zawsze dostępna na http://www.amule.org"
 
-#: src/amule.cpp:1890
+#: src/amule.cpp:1891
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "UWAGA: Twoja wersja aMule jest przestarzała: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1894
+#: src/amule.cpp:1895
 msgid "Your copy of aMule is up to date."
 msgstr "Twoja kopia aMule jest przestarzała."
 
-#: src/amule.cpp:1901
+#: src/amule.cpp:1902
 msgid "Failed to download the version check file"
 msgstr "Nie udało się pobrać pliku kontroli wersji"
 
-#: src/amule.cpp:2061
+#: src/amule.cpp:2062
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Użytkowników: %s | Plików: %s"
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2063
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Użytkowników: E: %s K: %s | Plików: E: %s K: %s"
 
-#: src/amule.cpp:2071
+#: src/amule.cpp:2072
 msgid "No networks selected"
 msgstr "Nie wybrano sieci"
 
-#: src/amule.cpp:2136 src/TextClient.cpp:698
+#: src/amule.cpp:2137 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "z LowID"
 
-#: src/amule.cpp:2136 src/TextClient.cpp:698
+#: src/amule.cpp:2137 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "z HighID"
 
-#: src/amule.cpp:2138
+#: src/amule.cpp:2139
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Połączony z %s %s"
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2142
 #, c-format
 msgid "Connecting to %s"
 msgstr "Łączenie z %s"
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2144
 msgid "Disconnected from eD2k"
 msgstr "Rozłączono z eD2k"
 
-#: src/amule.cpp:2150
+#: src/amule.cpp:2151
 msgid "Kad started."
 msgstr "Włączono Kad."
 
-#: src/amule.cpp:2152
+#: src/amule.cpp:2153
 msgid "Kad stopped."
 msgstr "Zatrzymano Kad."
 
-#: src/amule.cpp:2159
+#: src/amule.cpp:2160
 msgid "Connected to Kad (ok)"
 msgstr "Połączono z Kad (ok)"
 
-#: src/amule.cpp:2161
+#: src/amule.cpp:2162
 msgid "Connected to Kad (firewalled)"
 msgstr "Połączono z Kad (za firewallem)"
 
-#: src/amule.cpp:2164
+#: src/amule.cpp:2165
 msgid "Disconnected from Kad"
 msgstr "Rozłączono z Kad"
 
-#: src/amule.cpp:2227
+#: src/amule.cpp:2228
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -419,7 +419,7 @@ msgstr ""
 "Nie można użyć sieci Kad, jeśli port UDP jest wyłączony w preferencjach, nie "
 "włączam."
 
-#: src/amule.cpp:2230
+#: src/amule.cpp:2231
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Zablokowano sieć Kad w preferencjach, nie łączę."
 
@@ -778,24 +778,29 @@ msgstr "Nieudane połączenie "
 msgid "Remote GUI EC event handler"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:324
 msgid "Going down"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:421
+#: src/amule-remote-gui.cpp:326 src/ExternalConnector.cpp:411
+#, c-format
+msgid "Connection Failed. Unable to connect to %s:%d\n"
+msgstr "Połączenie nie powiodło się. Nie można połączyć się z %s:%d\n"
+
+#: src/amule-remote-gui.cpp:425
 msgid "Ready"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:599
+#: src/amule-remote-gui.cpp:604
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Użytkowników: E: %s K: %s | Plików E: %s K: %s"
 
-#: src/amule-remote-gui.cpp:657 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:662 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Wszystkie"
 
-#: src/amule-remote-gui.cpp:895
+#: src/amule-remote-gui.cpp:900
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Razem użytkowników: %s | Razem plików: %s"
@@ -2103,11 +2108,6 @@ msgid ""
 msgstr ""
 "\n"
 "Tworzenie klienta...\n"
-
-#: src/ExternalConnector.cpp:411
-#, c-format
-msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "Połączenie nie powiodło się. Nie można połączyć się z %s:%d\n"
 
 #: src/ExternalConnector.cpp:425
 #, c-format
