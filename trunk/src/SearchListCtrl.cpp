@@ -758,13 +758,20 @@ void CSearchListCtrl::DownloadSelected(int category)
 		}		
 	}
 	
+	// First process all selections (because they may be invalidated by UpdateResult()
+	// if list is sorted by status)
+	std::list<CSearchFile*> searchFiles;
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index > -1) {
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
+		searchFiles.push_back(file);
 		CoreNotify_Search_Add_Download(file, category);
-		UpdateResult(file);
 		UpdateAllRelativesColor(file, index);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
+	// Then update the listcontrol
+	for (std::list<CSearchFile*>::iterator it = searchFiles.begin(); it != searchFiles.end(); ++it) {
+		UpdateResult(*it);
 	}
 }
 
