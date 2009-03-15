@@ -315,12 +315,16 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
 	AddLogLineNS(_("Remote GUI EC event handler"));
-	AddLogLineM(true,evt.GetServerReply());
+	wxString reply = evt.GetServerReply();
+	AddLogLineM(true, reply);
 	if (evt.GetResult() == true) {
 		// Connected - go to next init step
 		glob_prefs->LoadRemote();
 	} else {
 		AddLogLineNS(_("Going down"));
+		wxMessageBox(
+			(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % dialog->Host() % dialog->Port()) + reply,
+			_("ERROR"), wxOK);
 		ExitMainLoop();
 	}
 }
