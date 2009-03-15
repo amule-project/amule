@@ -196,6 +196,7 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	  m_port(-1),
 	  m_KeepQuiet(false),
 	  m_Verbose(false),
+	  m_interactive(false),
 	  m_commands(*this),
 	  m_ECClient(NULL),
 	  m_InputLine(NULL),
@@ -407,11 +408,15 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			//m_ECClient->ConnectionEstablished();
 			Show(m_ECClient->GetServerReply()+wxT("\n"));
 			if (m_ECClient->IsSocketConnected()) {
-				ShowGreet();
+				if (m_interactive) {
+					ShowGreet();
+				}
 				Pre_Shell();
 				TextShell(ProgName);
 				Post_Shell();
-				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
+				if (m_interactive) {
+					Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
+				}
 			}
 		}
 		m_ECClient->DestroySocket();
