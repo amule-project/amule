@@ -57,6 +57,8 @@ Version 2.3.0 - The river knows.
 		* Improved gaplist performance
 		* Ported chat captchas (receive and send) 
 		  and "Advanced Chat Spam Filter" from eMule
+		* Allow download of multiple search results if search list 
+		  is sorted by status (thanks to DarkNRG)
 
 	Vollstrecker:
 		* Unify copyright lines
