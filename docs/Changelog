@@ -121,6 +121,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 			  subnet within one routing query reply (except on LANs).
 			- Kad routing query contacts are checked against the
 			  routing table.
+		* Implemented non-interactive mode for amulecmd/amuleweb.
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.
