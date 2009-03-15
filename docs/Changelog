@@ -134,6 +134,8 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		* Fixed Windows lag when opening preferences dialog
 		* Fixed creation of ED2K links with AICH (thanks to Archmage)
 		* Remote Gui shows a dialog box with a reason on connection failure
+		* Changed fix for wrong ordering/placing of clients in the download window
+		  so that sort order is again like in 2.2.2.
 
 	Wuischke:
 		* Add Asturian language
