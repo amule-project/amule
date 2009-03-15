@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-15 22:32+0100\n"
-"PO-Revision-Date: 2008-12-22 00:01+0100\n"
+"PO-Revision-Date: 2008-03-15 15:06+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1973,7 +1973,7 @@ msgstr "Datentransfer - Zeigt Up- und Downloads, Warteschlangen usw."
 
 #: src/amuleDlg.cpp:1297
 msgid "Shared files"
-msgstr "Freigegebenen Dateien"
+msgstr "Freigegebene Dateien"
 
 #: src/amuleDlg.cpp:1299
 msgid "Shared files window"
