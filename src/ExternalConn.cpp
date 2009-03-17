@@ -1677,9 +1677,44 @@ ECSearchMsgSource::ECSearchMsgSource()
 
 CECPacket *ECSearchMsgSource::GetNextPacket()
 {
-	return 0;
+	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
+	for(std::map<CMD4Hash, SEARCHFILE_STATUS>::iterator it = m_dirty_status.begin();
+		it != m_dirty_status.end(); it++) {
+		
+		if ( it->second.m_new ) {
+			response->AddTag(CEC_SearchFile_Tag(it->second.m_file, EC_DETAIL_FULL));
+			it->second.m_new = false;
+		} else if ( it->second.m_dirty ) {
+			response->AddTag(CEC_SearchFile_Tag(it->second.m_file, EC_DETAIL_UPDATE));
+		}
+		
+	}
+	
+	return response;
 }
 
+void ECSearchMsgSource::FlushStatus()
+{
+	m_dirty_status.clear();
+}
+
+void ECSearchMsgSource::SetDirty(CSearchFile *file)
+{
+	if ( m_dirty_status.count(file->GetFileHash()) ) {
+		m_dirty_status[file->GetFileHash()].m_dirty = true;
+	} else {
+		m_dirty_status[file->GetFileHash()].m_new = true;
+		m_dirty_status[file->GetFileHash()].m_dirty = true;
+		m_dirty_status[file->GetFileHash()].m_child_dirty = true;
+		m_dirty_status[file->GetFileHash()].m_file = file;		
+	}
+}
+
+void ECSearchMsgSource::SetChildDirty(CSearchFile *file)
+{
+	m_dirty_status[file->GetFileHash()].m_child_dirty = true;
+}
+	
 /*
  * Notification about uploading clients
  */
