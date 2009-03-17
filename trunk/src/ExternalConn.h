@@ -278,9 +278,21 @@ class ECStatusMsgSource : public ECUpdateMsgSource {
 };
 
 class ECSearchMsgSource : public ECUpdateMsgSource {
+		typedef struct {
+			bool m_new;
+			bool m_child_dirty;
+			bool m_dirty;
+			CSearchFile *m_file;
+		} SEARCHFILE_STATUS;
+		std::map<CMD4Hash, SEARCHFILE_STATUS> m_dirty_status;
 	public:
 		ECSearchMsgSource();
 		
+		void SetDirty(CSearchFile *file);
+		void SetChildDirty(CSearchFile *file);
+	
+		void FlushStatus();
+	
 		virtual CECPacket *GetNextPacket();
 };
 
