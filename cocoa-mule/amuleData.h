@@ -59,6 +59,9 @@
 
 @interface SearchFile : amuleFile {
 	int m_src_count;
+	int m_complete_src_count;
+	
+	bool m_known;
 }
 
 + (id)createFromEC:(ECTagMD5 *) tag;
@@ -66,6 +69,7 @@
 - (void)updateFromEC:(ECTagMD5 *) tag;
 
 @property (readonly) int src_count;
+@property (readonly) int complete_src_count;
 
 @end
 
@@ -127,6 +131,8 @@
 - (void)handleError;
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet;
+- (void)handleSearchUpdate:(ECPacket *) packet;
+
 - (void)handleStatusUpdate:(ECPacket *) packet;
 
 - (void)startSearch:(NSString *)text searchType:(EC_SEARCH_TYPE)searchType
