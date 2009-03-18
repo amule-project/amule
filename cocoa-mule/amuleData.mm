@@ -140,11 +140,20 @@
 @implementation SearchFile
 
 @synthesize src_count = m_src_count;
+@synthesize complete_src_count = m_complete_src_count;
 
 + (id)createFromEC: (ECTagMD5 *) tag {
 	SearchFile *obj = [[SearchFile alloc] init];
 	
 	obj->m_hash = [tag getMD5Data];
+
+	ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
+	ECTagString *stag = (ECTagString *)nametag;
+	obj->m_name = stag.stringValue;;
+
+	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
+
+	obj->m_known = ([tag tagByName: EC_TAG_KNOWNFILE] == nil) ? false : true;
 	
 	[obj updateFromEC:tag];
 	
@@ -152,6 +161,9 @@
 }
 
 - (void)updateFromEC:(ECTagMD5 *) tag {
+	m_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT];
+	m_complete_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_XFER];
+
 }
 @end
 
@@ -255,6 +267,10 @@
 			[self handleDownloadQueueUpdate: packet];
 			break;
 		}
+		case EC_OP_SEARCH_RESULTS: {
+			[self handleSearchUpdate: packet];
+			break;
+		}
 		default: {
 			NSLog(@"[EC] packet with opcode %d not handled\n", packet.opcode);
 		}
@@ -290,6 +306,22 @@
 			}
 		} else {
 			NSLog(@"[EC] bad tag type '%s'\n", [t class]);
+		}
+	}
+}
+
+- (void)handleSearchUpdate:(ECPacket *) packet {
+	for (ECTag *t in packet.subtags) {
+		if ( [t isKindOfClass:[ECTagMD5 class]] ) {
+			ECTagMD5 *tag = (ECTagMD5 *)t;
+			SearchFile *file = [m_search_results objectForKey:[tag stringKey]];
+			if ( file == nil ) {
+				file = [SearchFile createFromEC:tag];
+				[m_search_results insertObject:file];
+			} else {
+				SearchFile *file = [m_search_results objectForKey:[tag stringKey]];
+				[file updateFromEC:tag];
+			}
 		}
 	}
 }
