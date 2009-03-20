@@ -451,6 +451,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);	
 	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(false);
 	thePrefs::SetUPnPWebServerEnabled(false);
+	FindWindow(IDC_UPNP_EC_ENABLED)->Enable(false);
+	thePrefs::SetUPnPECEnabled(false);
 #endif
 
 #ifdef __DEBUG__
