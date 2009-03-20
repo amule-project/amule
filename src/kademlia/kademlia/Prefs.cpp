@@ -287,7 +287,7 @@ float CPrefs::StatsGetKadV8Ratio()
 void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 {
 	if (FindExternKadPort(false)) {
-		for (int i = 0; i < m_externPortIPs.size(); i++) {
+		for (unsigned i = 0; i < m_externPortIPs.size(); i++) {
 			if (m_externPortIPs[i] == fromIP) {
 				return;
 			}
@@ -295,7 +295,7 @@ void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 		m_externPortIPs.push_back(fromIP);
 		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)));
 		// if 2 out of 3 tries result in the same external port it's fine, otherwise consider it unreliable
-		for (int i = 0; i < m_externPorts.size(); i++) {
+		for (unsigned i = 0; i < m_externPorts.size(); i++) {
 			if (m_externPorts[i] == port) {
 				m_externKadPort = port;
 				AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Set external Kad port to %u"), port));
