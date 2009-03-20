@@ -60,6 +60,7 @@ dnl 	The file we use to discover the version of cryptopp
 dnl
 AC_DEFUN([MULE_CHECK_CRYPTOPP],
 [dnl
+AC_REQUIRE([AC_PROG_EGREP])dnl
 m4_define([MIN_CRYPTO_VERSION], [m4_ifval([$1], [$1], [5.1])])dnl
 
 	AC_ARG_WITH([crypto-prefix],
@@ -107,7 +108,7 @@ m4_define([MIN_CRYPTO_VERSION], [m4_ifval([$1], [$1], [5.1])])dnl
 	AS_IF([test $CRYPTOPP_STYLE = "unknown"], [result=no; resultstr=""], [
 		# Find out the crypto++ version and check against the minimum required
 		cryptopp_header_path="${cryptopp_includedir+$cryptopp_includedir/}$CRYPTOPP_INCLUDE_PREFIX/$cryptopp_file_with_version"
-		CRYPTOPP_VERSION_STRING=`grep "Reference Manual" $cryptopp_header_path | sed -e ['s/[^0-9]*\([0-9.]*\).*/\1/']`
+		CRYPTOPP_VERSION_STRING=`$EGREP "Reference Manual|API Reference" $cryptopp_header_path | sed -e ['s/[^0-9]*\([0-9.]*\).*/\1/']`
 		CRYPTOPP_VERSION_NUMBER=`echo $CRYPTOPP_VERSION_STRING | $AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
 		minvers=`echo MIN_CRYPTO_VERSION | $AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
 
