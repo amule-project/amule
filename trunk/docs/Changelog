@@ -122,6 +122,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 			- Kad routing query contacts are checked against the
 			  routing table.
 		* Implemented non-interactive mode for amulecmd/amuleweb.
+		* Fixed detection of crypto++ library for versions >= 5.6.0.
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.
