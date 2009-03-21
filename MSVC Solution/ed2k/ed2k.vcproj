@@ -40,10 +40,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="_DEBUG;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
-				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -117,6 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/MP"
 				Optimization="3"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
