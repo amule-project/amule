@@ -997,19 +997,21 @@ bool CamuleDlg::SaveGUIPrefs()
 	// The section where to save in in file
 	wxString section = wxT("/Razor_Preferences/");
 
-	// Main window location and size
-	int x1, y1, x2, y2;
-	GetPosition(&x1, &y1);
-	GetSize(&x2, &y2);
+	if (!IsIconized()) {
+		// Main window location and size
+		int x1, y1, x2, y2;
+		GetPosition(&x1, &y1);
+		GetSize(&x2, &y2);
 
-	// Saving window size and position
-	config->Write(section+wxT("MAIN_X_POS"), (long) x1);
-	config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
+		// Saving window size and position
+		config->Write(section+wxT("MAIN_X_POS"), (long) x1);
+		config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
 
-	config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
-	config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
+		config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
+		config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
 
-	config->Write(section+wxT("Maximized"), (long) (IsMaximized() ? 1 : 0));
+		config->Write(section+wxT("Maximized"), (long) (IsMaximized() ? 1 : 0));
+	}
 
 	// Saving sash position of splitter in server window
 	config->Write(section+wxT("SRV_SPLITTER_POS"), (long) m_srv_split_pos);
