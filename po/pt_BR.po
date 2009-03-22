@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-15 22:32+0100\n"
-"PO-Revision-Date: 2008-06-09 16:45-0300\n"
+"PO-Revision-Date: 2009-03-20 17:30-0300\n"
 "Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -531,8 +531,8 @@ msgstr[1] "Lendo %u contatos Kad"
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Somente %d contato Kad disponível, nodes.dat não escrito"
+msgstr[1] "Somente %d contatos Kad disponíveis, nodes.dat não escrito"
 
 #: src/kademlia/routing/RoutingZone.cpp:326
 #, c-format
@@ -1175,9 +1175,8 @@ msgid "Exit"
 msgstr "Sair"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:259
-#, fuzzy
 msgid "Open"
-msgstr "Opera"
+msgstr "Abrir"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
@@ -1193,9 +1192,8 @@ msgid "Copy computed eD2k link to clipboard"
 msgstr "Copiar ligação eD2k computada para a área de transferência"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
-#, fuzzy
 msgid "Save as"
-msgstr "Salvar"
+msgstr "Salvar como"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
@@ -1216,9 +1214,8 @@ msgid "Select the file you want to compute the eD2k link"
 msgstr "Selecione o arquivo que você quer computar a ligação eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:398
-#, fuzzy
 msgid "Can't open the clipboard"
-msgstr "Copiar para a Área de Transferência"
+msgstr "Não pode abrir na Área de Transferência"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1270,16 +1267,15 @@ msgstr "Criando Hash..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "aLinkCreator is working for you"
-msgstr ""
+msgstr "aLinkCreator está funcionando para você"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr ""
+msgstr "Cálculando Hash MD4..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
-#, fuzzy
 msgid "Computing eD2k Hashes..."
-msgstr "Conectando em eD2k..."
+msgstr "Cálculando Hashses eD2k..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:575
 #, c-format
@@ -1429,9 +1425,8 @@ msgid "Source Seeds"
 msgstr "Fontes de arquivo"
 
 #: src/DataToText.cpp:135
-#, fuzzy
 msgid "Search Result"
-msgstr "Pesquisas"
+msgstr "Resultado da Pesquisa"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
 #: src/OtherFunctions.cpp:696
@@ -1483,9 +1478,8 @@ msgid "Arabic"
 msgstr "Árabe"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estônia"
+msgstr "Asturiano"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -1617,7 +1611,7 @@ msgstr "Turquia"
 
 #: src/Preferences.cpp:664
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucraniano"
 
 #: src/Preferences.cpp:1627 src/Preferences.cpp:1642 src/Preferences.cpp:1649
 msgid "Unable to determine selected browser!"
@@ -2052,16 +2046,15 @@ msgstr "Segurança"
 
 #: src/PrefsUnifiedDlg.cpp:174
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 #: src/PrefsUnifiedDlg.cpp:176
 msgid "Proxy"
 msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:177
-#, fuzzy
 msgid "Filters"
-msgstr "Filtro:"
+msgstr "Filtros"
 
 #: src/PrefsUnifiedDlg.cpp:178
 msgid "Remote Controls"
@@ -2072,9 +2065,8 @@ msgid "Online Signature"
 msgstr "Assinatura Online"
 
 #: src/PrefsUnifiedDlg.cpp:180
-#, fuzzy
 msgid "Advanced"
-msgstr "Configurações Avançadas"
+msgstr "Avançado"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Events"
@@ -2129,9 +2121,8 @@ msgid "- Temp folder changed.\n"
 msgstr "-Diretório temporário alterado.\n"
 
 #: src/PrefsUnifiedDlg.cpp:587
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Todas as redes estão DESATIVADAS."
+msgstr "- Rede ED2K habilitada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
@@ -2267,12 +2258,10 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Intervalo para atualizar conexão no servidor: Desativado"
 
 #: src/PrefsUnifiedDlg.cpp:1112
-#, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
-msgstr "Porta UDP para solicitações estendidas (TCP+3):4665"
+msgstr "Porta UDP para solicitações extendidas do servidor(TCP+3):"
 
 #: src/PrefsUnifiedDlg.cpp:1116
-#, fuzzy
 msgid "disabled"
 msgstr "desativado"
 
@@ -3026,9 +3015,9 @@ msgid "ERROR"
 msgstr "ERRO"
 
 #: src/amule-remote-gui.cpp:309 src/ExternalConnector.cpp:404
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr "Conexão Falhou. Impossível conectar ao Host especificado\n"
+msgstr "Conexão Falhou. Impossível conectar em %s:%d\n"
 
 #: src/amule-remote-gui.cpp:484 src/amule.cpp:1078
 msgid ""
@@ -5509,11 +5498,8 @@ msgid "Line Capacities"
 msgstr "Capacidades de Linha"
 
 #: src/muuli_wdr.cpp:2249
-#, fuzzy
 msgid "Note: These values are only used for statistics."
-msgstr ""
-"Nota: Esses valores apenas\n"
-" são usados para estatísticas."
+msgstr "Nota: Esses valores são apenas usados para estatísticas."
 
 #: src/muuli_wdr.cpp:2272
 msgid "!!! WARNING !!!"
