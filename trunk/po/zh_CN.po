@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-15 22:37+0100\n"
+"POT-Creation-Date: 2009-03-23 01:07+0100\n"
 "PO-Revision-Date: 2009-03-06 11:29+0800\n"
 "Last-Translator: JimHu <jimhuyiwei@yahoo.com.cn>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -70,7 +70,7 @@ msgid "Password set and external connections enabled."
 msgstr "密码已设置，启用远程连接。"
 
 #: src/amule.cpp:652 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
+#: src/PrefsUnifiedDlg.cpp:664 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "警告"
 
@@ -500,8 +500,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:505 src/KadDlg.cpp:177 src/PartFile.cpp:919
-#: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:554
-#: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
+#: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:556
+#: src/PrefsUnifiedDlg.cpp:656 src/PrefsUnifiedDlg.cpp:740
 msgid "Message"
 msgstr "消息"
 
@@ -596,106 +596,106 @@ msgstr "您确定要关闭aMule吗？"
 msgid "Exit confirmation"
 msgstr "退出确认"
 
-#: src/amuleDlg.cpp:1156
+#: src/amuleDlg.cpp:1158
 msgid "Launch Command: "
 msgstr "运行命令:"
 
-#: src/amuleDlg.cpp:1215
+#: src/amuleDlg.cpp:1217
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "皮肤目录 %s 不存在"
 
-#: src/amuleDlg.cpp:1220
+#: src/amuleDlg.cpp:1222
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "警告：无法打开皮肤文件%s进行读取"
 
-#: src/amuleDlg.cpp:1321 src/amuleDlg.cpp:1482 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1323 src/amuleDlg.cpp:1484 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "网络"
 
-#: src/amuleDlg.cpp:1323
+#: src/amuleDlg.cpp:1325
 msgid "Networks window"
 msgstr "网络窗口"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "搜索"
 
-#: src/amuleDlg.cpp:1327
+#: src/amuleDlg.cpp:1329
 msgid "Searches window"
 msgstr "查找窗口"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "传输文件"
 
-#: src/amuleDlg.cpp:1331
+#: src/amuleDlg.cpp:1333
 msgid "Files transfers window"
 msgstr "文件传输窗口"
 
-#: src/amuleDlg.cpp:1333
+#: src/amuleDlg.cpp:1335
 msgid "Shared files"
 msgstr "共享文件"
 
-#: src/amuleDlg.cpp:1335
+#: src/amuleDlg.cpp:1337
 msgid "Shared files window"
 msgstr "共享文件窗口"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:1339
+#: src/amuleDlg.cpp:1341
 msgid "Messages window"
 msgstr "消息窗口"
 
-#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 #: src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639 src/Statistics.cpp:937
 msgid "Statistics"
 msgstr "统计"
 
-#: src/amuleDlg.cpp:1343
+#: src/amuleDlg.cpp:1345
 msgid "Statistics graph window"
 msgstr "统计图表窗口"
 
-#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
+#: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "设置"
 
-#: src/amuleDlg.cpp:1348
+#: src/amuleDlg.cpp:1350
 msgid "Preferences settings window"
 msgstr "设置窗口"
 
-#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "导入"
 
-#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "part 文件导入工具"
 
-#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
 #: src/utils/aLinkCreator/src/alcframe.cpp:270
 msgid "About"
 msgstr "关于"
 
-#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "关于/帮助"
 
-#: src/amuleDlg.cpp:1493
+#: src/amuleDlg.cpp:1495
 msgid "eD2k network"
 msgstr "eD2k网络"
 
-#: src/amuleDlg.cpp:1497
+#: src/amuleDlg.cpp:1499
 msgid "Kad network"
 msgstr "Kad网络"
 
-#: src/amuleDlg.cpp:1502
+#: src/amuleDlg.cpp:1504
 msgid "No network"
 msgstr "无网络"
 
@@ -4949,26 +4949,26 @@ msgstr "使用ID %d和密匙%s连接Cfg到小插件失败"
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr "通过ID %d和密匙%s把数据从Cfg转移到小插件失败"
 
-#: src/PrefsUnifiedDlg.cpp:477
+#: src/PrefsUnifiedDlg.cpp:479
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr "通过ID %d和密匙%s把数据从小插件转移到Cfg失败"
 
-#: src/PrefsUnifiedDlg.cpp:532
+#: src/PrefsUnifiedDlg.cpp:534
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr "重启aMule后设置才能生效：\n"
 
-#: src/PrefsUnifiedDlg.cpp:539
+#: src/PrefsUnifiedDlg.cpp:541
 msgid "- TCP port changed.\n"
 msgstr "- TCP端口已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:544
+#: src/PrefsUnifiedDlg.cpp:546
 msgid "- UDP port changed.\n"
 msgstr "- UDP端口已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:553
+#: src/PrefsUnifiedDlg.cpp:555
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
@@ -4976,7 +4976,7 @@ msgstr ""
 "您的自动更新服务器列表是可空的，\n"
 "启动时自动更新服务器列表功能将被禁用。"
 
-#: src/PrefsUnifiedDlg.cpp:560
+#: src/PrefsUnifiedDlg.cpp:562
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -4984,19 +4984,19 @@ msgstr ""
 "您已经启用了远程连接但还没有设置密码。\n"
 "远程连接在没有有效密码的情况下不能使用。"
 
-#: src/PrefsUnifiedDlg.cpp:572
+#: src/PrefsUnifiedDlg.cpp:574
 msgid "- Language changed.\n"
 msgstr "- 语言已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:577
+#: src/PrefsUnifiedDlg.cpp:579
 msgid "- Temp folder changed.\n"
 msgstr "- 临时文件目录已更改。\n"
 
-#: src/PrefsUnifiedDlg.cpp:582
+#: src/PrefsUnifiedDlg.cpp:584
 msgid "- ED2K network enabled.\n"
 msgstr "-ED2K网络已启用。\n"
 
-#: src/PrefsUnifiedDlg.cpp:649
+#: src/PrefsUnifiedDlg.cpp:651
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -5004,7 +5004,7 @@ msgstr ""
 "eD2k和Kad网络都已被禁用，\n"
 "你至少要启用其中的一项才能连接。"
 
-#: src/PrefsUnifiedDlg.cpp:653
+#: src/PrefsUnifiedDlg.cpp:655
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5012,7 +5012,7 @@ msgstr ""
 "如果你的 UDP 端口被禁用，Kad 将不能启动。\n"
 "启动 UDP 端口或禁用 Kad。"
 
-#: src/PrefsUnifiedDlg.cpp:662
+#: src/PrefsUnifiedDlg.cpp:664
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5022,7 +5022,7 @@ msgstr ""
 "你必须现在重启aMule，\n"
 "如果现在不重启的话，出现任何问题可别怪别人。\n"
 
-#: src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:739
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5032,41 +5032,41 @@ msgstr ""
 "请输入至少一个指向有效 server.met 的网址，\n"
 "点击这个勾选框旁边的\"列表\"按钮然后输入网址。"
 
-#: src/PrefsUnifiedDlg.cpp:869
+#: src/PrefsUnifiedDlg.cpp:871
 msgid "Temporary files"
 msgstr "临时文件"
 
-#: src/PrefsUnifiedDlg.cpp:874
+#: src/PrefsUnifiedDlg.cpp:876
 msgid "Incoming files"
 msgstr "传入文件"
 
-#: src/PrefsUnifiedDlg.cpp:879
+#: src/PrefsUnifiedDlg.cpp:881
 msgid "Online Signatures"
 msgstr "在线统计"
 
-#: src/PrefsUnifiedDlg.cpp:892
+#: src/PrefsUnifiedDlg.cpp:894
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "为%s选择文件夹"
 
-#: src/PrefsUnifiedDlg.cpp:912
+#: src/PrefsUnifiedDlg.cpp:914
 msgid "Browse for videoplayer"
 msgstr "浏览寻找视频播放器"
 
-#: src/PrefsUnifiedDlg.cpp:916
+#: src/PrefsUnifiedDlg.cpp:918
 msgid "Select browser"
 msgstr "选择浏览器"
 
-#: src/PrefsUnifiedDlg.cpp:922
+#: src/PrefsUnifiedDlg.cpp:924
 #, c-format
 msgid "Executable%s"
 msgstr "可执行%s"
 
-#: src/PrefsUnifiedDlg.cpp:943
+#: src/PrefsUnifiedDlg.cpp:945
 msgid "Edit server list"
 msgstr "编辑服务器列表"
 
-#: src/PrefsUnifiedDlg.cpp:944
+#: src/PrefsUnifiedDlg.cpp:946
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5074,83 +5074,83 @@ msgstr ""
 "加入下载 server.met 文件的网址，每行只限一个网址。\n"
 " "
 
-#: src/PrefsUnifiedDlg.cpp:1003
+#: src/PrefsUnifiedDlg.cpp:1005
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "刷新时间：%d秒"
 msgstr[1] "刷新时间：%d秒"
 
-#: src/PrefsUnifiedDlg.cpp:1010
+#: src/PrefsUnifiedDlg.cpp:1012
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均值图表显示时间：%d分钟"
 msgstr[1] "平均值图表显示时间：%d分钟"
 
-#: src/PrefsUnifiedDlg.cpp:1016
+#: src/PrefsUnifiedDlg.cpp:1018
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "网络连接图表缩放：%d"
 
-#: src/PrefsUnifiedDlg.cpp:1022
+#: src/PrefsUnifiedDlg.cpp:1024
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "刷新时间：%d秒"
 msgstr[1] "刷新时间：%d秒"
 
-#: src/PrefsUnifiedDlg.cpp:1028
+#: src/PrefsUnifiedDlg.cpp:1030
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "文件缓冲区大小：%d字节"
 msgstr[1] "文件缓冲区大小：%d字节"
 
-#: src/PrefsUnifiedDlg.cpp:1034
+#: src/PrefsUnifiedDlg.cpp:1036
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "上传队列长度：%d个用户"
 msgstr[1] "上传队列长度：%d个用户"
 
-#: src/PrefsUnifiedDlg.cpp:1041
+#: src/PrefsUnifiedDlg.cpp:1043
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "服务器连接刷新周期：%d分钟"
 msgstr[1] "服务器连接刷新周期：%d分钟"
 
-#: src/PrefsUnifiedDlg.cpp:1043
+#: src/PrefsUnifiedDlg.cpp:1045
 msgid "Server connection refresh interval: Disabled"
 msgstr "服务器连接刷新周期：已禁用"
 
-#: src/PrefsUnifiedDlg.cpp:1088
+#: src/PrefsUnifiedDlg.cpp:1090
 msgid "disabled"
 msgstr "禁用"
 
-#: src/PrefsUnifiedDlg.cpp:1106
+#: src/PrefsUnifiedDlg.cpp:1108
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "发生 '%s' 事件时执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1109
+#: src/PrefsUnifiedDlg.cpp:1111
 msgid "Enable command execution on core"
 msgstr "在核心启用执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1117
+#: src/PrefsUnifiedDlg.cpp:1119
 msgid "Core command:"
 msgstr "核心命令："
 
-#: src/PrefsUnifiedDlg.cpp:1126
+#: src/PrefsUnifiedDlg.cpp:1128
 msgid "Enable command execution on GUI"
 msgstr "在图形界面端启用执行命令"
 
-#: src/PrefsUnifiedDlg.cpp:1134
+#: src/PrefsUnifiedDlg.cpp:1136
 msgid "GUI command:"
 msgstr "图形界面命令："
 
-#: src/PrefsUnifiedDlg.cpp:1143
+#: src/PrefsUnifiedDlg.cpp:1145
 msgid "The following variables will be replaced:"
 msgstr "以下变量将被替换："
 

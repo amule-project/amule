@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-15 22:37+0100\n"
+"POT-Creation-Date: 2009-03-23 01:07+0100\n"
 "PO-Revision-Date: 2009-03-08 20:17+0100\n"
 "Last-Translator: Diego Silva Galan <diegosilvagalan@gmail.com>\n"
 "Language-Team: Català <diegosilvagalan@gmail.com>\n"
@@ -77,7 +77,7 @@ msgid "Password set and external connections enabled."
 msgstr "Contrassenya definida i connexions externes activades."
 
 #: src/amule.cpp:652 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/PrefsUnifiedDlg.cpp:662 src/SharedFilesCtrl.cpp:321
+#: src/PrefsUnifiedDlg.cpp:664 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "AVÍS"
 
@@ -532,8 +532,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:505 src/KadDlg.cpp:177 src/PartFile.cpp:919
-#: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:554
-#: src/PrefsUnifiedDlg.cpp:654 src/PrefsUnifiedDlg.cpp:738
+#: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:556
+#: src/PrefsUnifiedDlg.cpp:656 src/PrefsUnifiedDlg.cpp:740
 msgid "Message"
 msgstr "Missatge"
 
@@ -628,107 +628,107 @@ msgstr "Esteu segur que voleu eixir de l'aMule?"
 msgid "Exit confirmation"
 msgstr "Confirmació de sortida"
 
-#: src/amuleDlg.cpp:1156
+#: src/amuleDlg.cpp:1158
 msgid "Launch Command: "
 msgstr "Ordre:"
 
-#: src/amuleDlg.cpp:1215
+#: src/amuleDlg.cpp:1217
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "El directori del tema '%s' no existeix"
 
-#: src/amuleDlg.cpp:1220
+#: src/amuleDlg.cpp:1222
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 "AVÍS: No ha estat possible obrir el fitxer d'aparença '%s' per a lectura"
 
-#: src/amuleDlg.cpp:1321 src/amuleDlg.cpp:1482 src/muuli_wdr.cpp:1804
+#: src/amuleDlg.cpp:1323 src/amuleDlg.cpp:1484 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
 msgstr "Xarxes"
 
-#: src/amuleDlg.cpp:1323
+#: src/amuleDlg.cpp:1325
 msgid "Networks window"
 msgstr "Finestra de xarxes"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3457
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3457
 msgid "Searches"
 msgstr "Cerques"
 
-#: src/amuleDlg.cpp:1327
+#: src/amuleDlg.cpp:1329
 msgid "Searches window"
 msgstr "Finestra de cerques"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3458
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3458
 msgid "Transfers"
 msgstr "Transferències"
 
-#: src/amuleDlg.cpp:1331
+#: src/amuleDlg.cpp:1333
 msgid "Files transfers window"
 msgstr "Finestra de transferència de fitxers"
 
-#: src/amuleDlg.cpp:1333
+#: src/amuleDlg.cpp:1335
 msgid "Shared files"
 msgstr "Compartits"
 
-#: src/amuleDlg.cpp:1335
+#: src/amuleDlg.cpp:1337
 msgid "Shared files window"
 msgstr "Finestra de fitxers compartits"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:517 src/muuli_wdr.cpp:3098
 #: src/muuli_wdr.cpp:3461
 msgid "Messages"
 msgstr "Missatges"
 
-#: src/amuleDlg.cpp:1339
+#: src/amuleDlg.cpp:1341
 msgid "Messages window"
 msgstr "Finestra de missatges"
 
-#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
+#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 #: src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639 src/Statistics.cpp:937
 msgid "Statistics"
 msgstr "Estadístiques"
 
-#: src/amuleDlg.cpp:1343
+#: src/amuleDlg.cpp:1345
 msgid "Statistics graph window"
 msgstr "Finestra del gràfic d'estadístiques"
 
-#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
+#: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "Preferències"
 
-#: src/amuleDlg.cpp:1348
+#: src/amuleDlg.cpp:1350
 msgid "Preferences settings window"
 msgstr "Finestra dels paràmetres de configuració"
 
-#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
 msgid "Import"
 msgstr "Importa"
 
-#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3465
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3465
 msgid "The partfile importer tool"
 msgstr "Eina d'importació de fitxers de parts"
 
-#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
 #: src/utils/aLinkCreator/src/alcframe.cpp:270
 msgid "About"
 msgstr "Quant a"
 
-#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3466
+#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:3466
 msgid "About/Help"
 msgstr "Quant a / Ajuda"
 
-#: src/amuleDlg.cpp:1493
+#: src/amuleDlg.cpp:1495
 msgid "eD2k network"
 msgstr "Xarxa eD2k"
 
-#: src/amuleDlg.cpp:1497
+#: src/amuleDlg.cpp:1499
 msgid "Kad network"
 msgstr "Xarxa Kad"
 
-#: src/amuleDlg.cpp:1502
+#: src/amuleDlg.cpp:1504
 msgid "No network"
 msgstr "Cap xarxa"
 
@@ -5120,12 +5120,12 @@ msgstr "Connexió fallida entre Cfg i el giny amb ID %d i clau %s"
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr "Fallida en l'enviament de dades de Cfg al giny amb ID %d i clau %s"
 
-#: src/PrefsUnifiedDlg.cpp:477
+#: src/PrefsUnifiedDlg.cpp:479
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr "Fallida en l'enviament de dades del giny al Cfg amb ID %d i clau %s"
 
-#: src/PrefsUnifiedDlg.cpp:532
+#: src/PrefsUnifiedDlg.cpp:534
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -5133,15 +5133,15 @@ msgstr ""
 "S'ha de reiniciar l'aMule per a habilitar aquests canvis:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:539
+#: src/PrefsUnifiedDlg.cpp:541
 msgid "- TCP port changed.\n"
 msgstr "- El port TCP ha canviat.\n"
 
-#: src/PrefsUnifiedDlg.cpp:544
+#: src/PrefsUnifiedDlg.cpp:546
 msgid "- UDP port changed.\n"
 msgstr "- El port UDP ha canviat.\n"
 
-#: src/PrefsUnifiedDlg.cpp:553
+#: src/PrefsUnifiedDlg.cpp:555
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
@@ -5149,7 +5149,7 @@ msgstr ""
 "La llista d'actualització de servidors és buida.\n"
 "L'actualització de servidors a l'inici serà desactivada."
 
-#: src/PrefsUnifiedDlg.cpp:560
+#: src/PrefsUnifiedDlg.cpp:562
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -5159,19 +5159,19 @@ msgstr ""
 "Les connexions externes no poden ser habilitades a menys que s'hagi "
 "especificat una contrasenya externa vàlida."
 
-#: src/PrefsUnifiedDlg.cpp:572
+#: src/PrefsUnifiedDlg.cpp:574
 msgid "- Language changed.\n"
 msgstr "- L'idioma ha canviat.\n"
 
-#: src/PrefsUnifiedDlg.cpp:577
+#: src/PrefsUnifiedDlg.cpp:579
 msgid "- Temp folder changed.\n"
 msgstr "- El directori temporal ha canviat.\n"
 
-#: src/PrefsUnifiedDlg.cpp:582
+#: src/PrefsUnifiedDlg.cpp:584
 msgid "- ED2K network enabled.\n"
 msgstr "- Xarxa ED2K habilitada.\n"
 
-#: src/PrefsUnifiedDlg.cpp:649
+#: src/PrefsUnifiedDlg.cpp:651
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -5179,7 +5179,7 @@ msgstr ""
 "Les xarxes eD2k i Kad estan inhabilitades.\n"
 "No podreu connectar fins que n'habiliteu almenys una."
 
-#: src/PrefsUnifiedDlg.cpp:653
+#: src/PrefsUnifiedDlg.cpp:655
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5187,7 +5187,7 @@ msgstr ""
 "La xarxa Kad no s'engegarà si el port UDP està inhabilitat.\n"
 "Habiliteu el port UDP o inhabiliteu la xarxa Kad."
 
-#: src/PrefsUnifiedDlg.cpp:662
+#: src/PrefsUnifiedDlg.cpp:664
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5197,7 +5197,7 @@ msgstr ""
 "HEU de reiniciar l'aMule ara mateix.\n"
 "Si no reinicieu ara, no vos queixeu dels possibles problemes.\n"
 
-#: src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:739
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5208,41 +5208,41 @@ msgstr ""
 "Feu clic sobre el botó \"Llista\" d'aquest quadre de verificació per afegir "
 "una adreça."
 
-#: src/PrefsUnifiedDlg.cpp:869
+#: src/PrefsUnifiedDlg.cpp:871
 msgid "Temporary files"
 msgstr "Fitxers temporals"
 
-#: src/PrefsUnifiedDlg.cpp:874
+#: src/PrefsUnifiedDlg.cpp:876
 msgid "Incoming files"
 msgstr "Fitxers entrants"
 
-#: src/PrefsUnifiedDlg.cpp:879
+#: src/PrefsUnifiedDlg.cpp:881
 msgid "Online Signatures"
 msgstr "Signatures en línia"
 
-#: src/PrefsUnifiedDlg.cpp:892
+#: src/PrefsUnifiedDlg.cpp:894
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Carpeta per a %s"
 
-#: src/PrefsUnifiedDlg.cpp:912
+#: src/PrefsUnifiedDlg.cpp:914
 msgid "Browse for videoplayer"
 msgstr "Explora per a trobar un reproductor de vídeo"
 
-#: src/PrefsUnifiedDlg.cpp:916
+#: src/PrefsUnifiedDlg.cpp:918
 msgid "Select browser"
 msgstr "Selecciona navegador"
 
-#: src/PrefsUnifiedDlg.cpp:922
+#: src/PrefsUnifiedDlg.cpp:924
 #, c-format
 msgid "Executable%s"
 msgstr "Executable%s"
 
-#: src/PrefsUnifiedDlg.cpp:943
+#: src/PrefsUnifiedDlg.cpp:945
 msgid "Edit server list"
 msgstr "Edita la llista de servidors"
 
-#: src/PrefsUnifiedDlg.cpp:944
+#: src/PrefsUnifiedDlg.cpp:946
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5250,83 +5250,83 @@ msgstr ""
 "Afegiu adreces URL d'on baixar el fitxer server.met.\n"
 "Només una adreça a cada línia."
 
-#: src/PrefsUnifiedDlg.cpp:1003
+#: src/PrefsUnifiedDlg.cpp:1005
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Retard de l'actualització: %d seg"
 msgstr[1] "Retard de l'actualització: %d segs"
 
-#: src/PrefsUnifiedDlg.cpp:1010
+#: src/PrefsUnifiedDlg.cpp:1012
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Temps per al gràfic de mitjanes: %d min"
 msgstr[1] "Temps per al gràfic de mitjanes: %d mins"
 
-#: src/PrefsUnifiedDlg.cpp:1016
+#: src/PrefsUnifiedDlg.cpp:1018
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Escala del gràfic de connexions: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1022
+#: src/PrefsUnifiedDlg.cpp:1024
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Retard de l'actualització: %d seg"
 msgstr[1] "Retard de l'actualització: %d segs"
 
-#: src/PrefsUnifiedDlg.cpp:1028
+#: src/PrefsUnifiedDlg.cpp:1030
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Mida de la memòria intermèdia de fitxer: %d byte"
 msgstr[1] "Mida de la memòria intermèdia de fitxer: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:1034
+#: src/PrefsUnifiedDlg.cpp:1036
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Mida de la cua de pujada: %d client"
 msgstr[1] "Mida de la cua de pujada: %d clients"
 
-#: src/PrefsUnifiedDlg.cpp:1041
+#: src/PrefsUnifiedDlg.cpp:1043
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Interval de refresc de la connexió amb el servidor: %d minut"
 msgstr[1] "Interval de refresc de la connexió amb el servidor: %d minuts"
 
-#: src/PrefsUnifiedDlg.cpp:1043
+#: src/PrefsUnifiedDlg.cpp:1045
 msgid "Server connection refresh interval: Disabled"
 msgstr "Interval de refresc de la connexió amb el servidor: Inhabilitat"
 
-#: src/PrefsUnifiedDlg.cpp:1088
+#: src/PrefsUnifiedDlg.cpp:1090
 msgid "disabled"
 msgstr "inhabilitat"
 
-#: src/PrefsUnifiedDlg.cpp:1106
+#: src/PrefsUnifiedDlg.cpp:1108
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Executa una ordre per a l'esdeveniment '%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1109
+#: src/PrefsUnifiedDlg.cpp:1111
 msgid "Enable command execution on core"
 msgstr "Activa l'execució d'ordres al nucli"
 
-#: src/PrefsUnifiedDlg.cpp:1117
+#: src/PrefsUnifiedDlg.cpp:1119
 msgid "Core command:"
 msgstr "Odre del nucli:"
 
-#: src/PrefsUnifiedDlg.cpp:1126
+#: src/PrefsUnifiedDlg.cpp:1128
 msgid "Enable command execution on GUI"
 msgstr "Activa l'execució d'ordres a la interfície gràfica"
 
-#: src/PrefsUnifiedDlg.cpp:1134
+#: src/PrefsUnifiedDlg.cpp:1136
 msgid "GUI command:"
 msgstr "Ordre de la GUI:"
 
-#: src/PrefsUnifiedDlg.cpp:1143
+#: src/PrefsUnifiedDlg.cpp:1145
 msgid "The following variables will be replaced:"
 msgstr "Les següents variables seran reemplaçades:"
 
