@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-15 22:32+0100\n"
+"POT-Creation-Date: 2009-03-23 01:05+0100\n"
 "PO-Revision-Date: 2008-12-06 23:06-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -483,7 +483,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 "Χρειάζεται Υψηλή Προτεραιότητα για τη δημιουργία έγκυρου πηγαίου συνδέσμου"
 
-#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:667 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:669 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:657
 msgid "WARNING"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ"
@@ -699,7 +699,7 @@ msgstr "Μεταφόρτωση..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
 msgid "Preferences"
 msgstr "Προτιμήσεις"
@@ -1213,7 +1213,7 @@ msgstr "Αποθήκευση ως"
 msgid "Save computed eD2k link to file"
 msgstr "Αποθήκευση υπολογισμένου συνδέσμου eD2k σε αρχείο"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1318
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1320
 #: src/muuli_wdr.cpp:3680
 msgid "About"
 msgstr "Σχετικά"
@@ -1875,8 +1875,8 @@ msgstr "Πνευματικά δικαιώματα (C) 2002 Petar Maymounkov\n"
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:559
-#: src/PrefsUnifiedDlg.cpp:659 src/PrefsUnifiedDlg.cpp:748 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:561
+#: src/PrefsUnifiedDlg.cpp:661 src/PrefsUnifiedDlg.cpp:750 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Μύνημα"
@@ -1954,93 +1954,93 @@ msgstr "Πραγματίκα θέλετε να κλείσετε το aMule;"
 msgid "Exit confirmation"
 msgstr "Έξοδος επιβεβαίωσης"
 
-#: src/amuleDlg.cpp:1180
+#: src/amuleDlg.cpp:1182
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Ο κατάλογος των εξωτερικών εμφανίσεων '%s'  δεν υπάρχει"
 
-#: src/amuleDlg.cpp:1185
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Δεν είναι δυνατή η ανάγνωση του αρχείου εξωτερικής εμφάνισης "
 "'%s' "
 
-#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1867
+#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1867
 #: src/muuli_wdr.cpp:3670
 msgid "Networks"
 msgstr "Δίκτυα"
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1289
 msgid "Networks window"
 msgstr "Παράθυρο δικτύων"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3671
+#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3671
 msgid "Searches"
 msgstr "Αναζητήσεις"
 
-#: src/amuleDlg.cpp:1291
+#: src/amuleDlg.cpp:1293
 msgid "Searches window"
 msgstr "Παράθυρο αναζητήσεων"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3672
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3672
 msgid "Transfers"
 msgstr "Μεταφορές"
 
-#: src/amuleDlg.cpp:1295
+#: src/amuleDlg.cpp:1297
 msgid "Files transfers window"
 msgstr "Παράθηρο μεταφορών αρχείων"
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1299
 msgid "Shared files"
 msgstr "Κοινόχρηστα αρχεία"
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1301
 msgid "Shared files window"
 msgstr "Παράθυρο κοινόχρηστων αρχείων"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
 msgid "Messages"
 msgstr "Μυνήματα"
 
-#: src/amuleDlg.cpp:1303
+#: src/amuleDlg.cpp:1305
 msgid "Messages window"
 msgstr "Παράθυρο μυνημάτων"
 
-#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1108 src/muuli_wdr.cpp:3676
 msgid "Statistics"
 msgstr "Στατιστικές"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1309
 msgid "Statistics graph window"
 msgstr "Παράθυρο γραφημάτων στατιστικών"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1314
 msgid "Preferences settings window"
 msgstr "Παράθυρο ρυθμίσεων"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
 msgid "Import"
 msgstr "Εισαγωγή"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3679
 msgid "The partfile importer tool"
 msgstr "Το εργαλείο εισαγωγής ημιτελών αρχείων"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3680
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3680
 msgid "About/Help"
 msgstr "Σχετικά/Βοήθεια"
 
-#: src/amuleDlg.cpp:1457
+#: src/amuleDlg.cpp:1459
 msgid "eD2k network"
 msgstr "Δίκτυο eD2k"
 
-#: src/amuleDlg.cpp:1461
+#: src/amuleDlg.cpp:1463
 msgid "Kad network"
 msgstr "Δίκτυο Kad"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1468
 msgid "No network"
 msgstr "Κανένα δίκτυο"
 
@@ -2101,7 +2101,7 @@ msgstr "Έλεγχος σφαλμάτων προγράμματος"
 msgid "User Defined"
 msgstr "Ο χρήστης προσδιορίστηκε"
 
-#: src/PrefsUnifiedDlg.cpp:537
+#: src/PrefsUnifiedDlg.cpp:539
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -2109,15 +2109,15 @@ msgstr ""
 "το aMule πρέπει να επανεκινηθεί για να ενεργοποιηθούν αυτές οι αλλαγές: \n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:544
+#: src/PrefsUnifiedDlg.cpp:546
 msgid "- TCP port changed.\n"
 msgstr "- Άλλαξε η θύρα TCP.\n"
 
-#: src/PrefsUnifiedDlg.cpp:549
+#: src/PrefsUnifiedDlg.cpp:551
 msgid "- UDP port changed.\n"
 msgstr "- Άλλαξε η θύρα UDP.\n"
 
-#: src/PrefsUnifiedDlg.cpp:558
+#: src/PrefsUnifiedDlg.cpp:560
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
@@ -2125,7 +2125,7 @@ msgstr ""
 "Η λίστα διακομιστών αυτόματης ενημέρωσης είναι κενή.\n"
 "Η αυτόματη ενημέρωση λίστας διακομιστών κατά την εκκίνηση θα απενεργοποιηθεί."
 
-#: src/PrefsUnifiedDlg.cpp:565
+#: src/PrefsUnifiedDlg.cpp:567
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -2135,24 +2135,24 @@ msgstr ""
 "Οι εξωτερικές συνδέσεις δεν μπορούν να ενεργοποιηθούν μέχρι να προσδιοριστεί "
 "ένας έγκυρος κωδικός."
 
-#: src/PrefsUnifiedDlg.cpp:577
+#: src/PrefsUnifiedDlg.cpp:579
 msgid "- Language changed.\n"
 msgstr "- Η γλώσσα άλλαξε.\n"
 
-#: src/PrefsUnifiedDlg.cpp:582
+#: src/PrefsUnifiedDlg.cpp:584
 msgid "- Temp folder changed.\n"
 msgstr "- Ο προσωρινός κατάλογος άλλαξε.\n"
 
-#: src/PrefsUnifiedDlg.cpp:587
+#: src/PrefsUnifiedDlg.cpp:589
 #, fuzzy
 msgid "- ED2K network enabled.\n"
 msgstr "Όλα τα δίκτυα είναι απενεργοποιημένα."
 
-#: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
+#: src/PrefsUnifiedDlg.cpp:614 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Πάνω: 0.0 | Κάτω: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:654
+#: src/PrefsUnifiedDlg.cpp:656
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -2161,7 +2161,7 @@ msgstr ""
 "Δεν θα μπορέσετε να συνδεθείτε μέχρι να ενεργοποιήσετε τουλάχιστον ένα από "
 "αυτα."
 
-#: src/PrefsUnifiedDlg.cpp:658
+#: src/PrefsUnifiedDlg.cpp:660
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -2169,7 +2169,7 @@ msgstr ""
 "Το δίκτυο Kad δεν θα ξεκινήσει αν η θύρα UDP είναι απενεργοποιημένη.\n"
 "Ενεργοποιήστε τη θύρα UDP ή απενεργοποιήστε το Kad."
 
-#: src/PrefsUnifiedDlg.cpp:667
+#: src/PrefsUnifiedDlg.cpp:669
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2179,7 +2179,7 @@ msgstr ""
 "Τώρα πρέπει να επανεκινήσετε το aMule.\n"
 "Διαφορετικά μην διαμαρτυρηθείτε αν συμβεί κάτι κακό.\n"
 
-#: src/PrefsUnifiedDlg.cpp:747
+#: src/PrefsUnifiedDlg.cpp:749
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2190,41 +2190,41 @@ msgstr ""
 "met.\n"
 "Πατήστε το διπλανό κουμπί \"List\" για να βάλετε ένα URL."
 
-#: src/PrefsUnifiedDlg.cpp:895
+#: src/PrefsUnifiedDlg.cpp:897
 msgid "Temporary files"
 msgstr "Προσωρινά αρχεία"
 
-#: src/PrefsUnifiedDlg.cpp:900
+#: src/PrefsUnifiedDlg.cpp:902
 msgid "Incoming files"
 msgstr "Εισερχόμενα αρχεία"
 
-#: src/PrefsUnifiedDlg.cpp:905
+#: src/PrefsUnifiedDlg.cpp:907
 msgid "Online Signatures"
 msgstr "Συνδεδεμένες υπογραφές"
 
-#: src/PrefsUnifiedDlg.cpp:918
+#: src/PrefsUnifiedDlg.cpp:920
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Επιλέξτε κατάλογο για %s"
 
-#: src/PrefsUnifiedDlg.cpp:938
+#: src/PrefsUnifiedDlg.cpp:940
 msgid "Browse for videoplayer"
 msgstr "Αναζήτηση του βιντεοπαίχτη"
 
-#: src/PrefsUnifiedDlg.cpp:942
+#: src/PrefsUnifiedDlg.cpp:944
 msgid "Select browser"
 msgstr "Επιλογή περιηγητή"
 
-#: src/PrefsUnifiedDlg.cpp:948
+#: src/PrefsUnifiedDlg.cpp:950
 #, c-format
 msgid "Executable%s"
 msgstr "Εκτελέσιμο%s"
 
-#: src/PrefsUnifiedDlg.cpp:969
+#: src/PrefsUnifiedDlg.cpp:971
 msgid "Edit server list"
 msgstr "Επεξεργασία λίστας διακομιστών"
 
-#: src/PrefsUnifiedDlg.cpp:970
+#: src/PrefsUnifiedDlg.cpp:972
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2232,87 +2232,87 @@ msgstr ""
 "Βάλτε εδώ τη διεύθηνση για το κατέβασμα των αρχείων server.met. \n"
 "Μία διεύθηνση σε κάθε γραμμή"
 
-#: src/PrefsUnifiedDlg.cpp:1029
+#: src/PrefsUnifiedDlg.cpp:1031
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Καθυστέρηση ενημέρωσης: %d δεπτερόλεπτο"
 msgstr[1] "Καθυστέρηση ενημέρωσης: %d δεπτερόλεπτα"
 
-#: src/PrefsUnifiedDlg.cpp:1036
+#: src/PrefsUnifiedDlg.cpp:1038
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Χρόνος για μέσο γράφημα: %d λεπτό"
 msgstr[1] "Χρόνος για μέσο γράφημα: %d λεπτά"
 
-#: src/PrefsUnifiedDlg.cpp:1042
+#: src/PrefsUnifiedDlg.cpp:1044
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Κλίμακα γραφήματος συνδέσεων: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1048
+#: src/PrefsUnifiedDlg.cpp:1050
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Καθυστέρηση ενημέρωσης: %d δεπτερόλεπτο"
 msgstr[1] "Καθυστέρηση ενημέρωσης: %d δεπτερόλεπτα"
 
-#: src/PrefsUnifiedDlg.cpp:1054
+#: src/PrefsUnifiedDlg.cpp:1056
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Μέγεθος χώρου ενδιάμεσης αποθήκευση αρχείου: %d byte"
 msgstr[1] "Μέγεθος χώρου ενδιάμεσης αποθήκευση αρχείου: %d byteς"
 
-#: src/PrefsUnifiedDlg.cpp:1060
+#: src/PrefsUnifiedDlg.cpp:1062
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Μέγεθος λίστας αναμονής ανεβασμάτων: %d πελάτης"
 msgstr[1] "Μέγεθος λίστας αναμονής ανεβασμάτων: %d πελάτες"
 
-#: src/PrefsUnifiedDlg.cpp:1067
+#: src/PrefsUnifiedDlg.cpp:1069
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Διάστημα ανανέωσης της σύνδεσης σε διακομιστή: %d λεπτό"
 msgstr[1] "Διάστημα ανανέωσης της σύνδεσης σε διακομιστή: %d λεπτά"
 
-#: src/PrefsUnifiedDlg.cpp:1069
+#: src/PrefsUnifiedDlg.cpp:1071
 msgid "Server connection refresh interval: Disabled"
 msgstr "Διάστημα ανανέωσης της σύνδεσης σε διακομιστή: Απενεργοποιημένο"
 
-#: src/PrefsUnifiedDlg.cpp:1112
+#: src/PrefsUnifiedDlg.cpp:1114
 msgid "UDP port for extended server requests (TCP+3): "
 msgstr "Θύρα UDP για εκτεταμένες αιτήσεις στο διακομιστή (TCP+3):"
 
-#: src/PrefsUnifiedDlg.cpp:1116
+#: src/PrefsUnifiedDlg.cpp:1118
 msgid "disabled"
 msgstr "απενεργοποιμένο"
 
-#: src/PrefsUnifiedDlg.cpp:1136
+#: src/PrefsUnifiedDlg.cpp:1138
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Εκτέλεση εντολής κατά το γεγονός `%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1139
+#: src/PrefsUnifiedDlg.cpp:1141
 msgid "Enable command execution on core"
 msgstr "Ενεργοποίηση εκτέλεσης εντολών στον πυρήνα"
 
-#: src/PrefsUnifiedDlg.cpp:1147
+#: src/PrefsUnifiedDlg.cpp:1149
 msgid "Core command:"
 msgstr "Εντολή πυρήνα:"
 
-#: src/PrefsUnifiedDlg.cpp:1156
+#: src/PrefsUnifiedDlg.cpp:1158
 msgid "Enable command execution on GUI"
 msgstr "Ενεργοποίηση εκτέλεσης εντολών στο γραφικό περιβάλλον"
 
-#: src/PrefsUnifiedDlg.cpp:1164
+#: src/PrefsUnifiedDlg.cpp:1166
 msgid "GUI command:"
 msgstr "Εντολή γραφικού περιβάλλοντος:"
 
-#: src/PrefsUnifiedDlg.cpp:1173
+#: src/PrefsUnifiedDlg.cpp:1175
 msgid "The following variables will be replaced:"
 msgstr "Οι παρακάτω μεταβλητές θα αντικατασταθούν:"
 

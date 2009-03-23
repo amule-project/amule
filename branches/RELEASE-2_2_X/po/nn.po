@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-15 22:32+0100\n"
+"POT-Creation-Date: 2009-03-23 01:05+0100\n"
 "PO-Revision-Date: 2009-03-10 16:55+0100\n"
 "Last-Translator: hallvor\n"
 "Language-Team: norwegian nynorsk <nn@li.org>\n"
@@ -476,7 +476,7 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Du treng ein HøgID for å lage ei gangbar kjeldelenkje"
 
-#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:667 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:669 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:657
 msgid "WARNING"
 msgstr "ÅTVARING"
@@ -688,7 +688,7 @@ msgstr "Lastar ned..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
 msgid "Preferences"
 msgstr "Innstillingar"
@@ -1196,7 +1196,7 @@ msgstr "Lagre"
 msgid "Save computed eD2k link to file"
 msgstr "Lagre utrekna eD2k lenkje til fil"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1318
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1320
 #: src/muuli_wdr.cpp:3680
 msgid "About"
 msgstr "Om"
@@ -1851,8 +1851,8 @@ msgstr " Opphavsrett (c) 2002 Petar Maymounkov\n"
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:559
-#: src/PrefsUnifiedDlg.cpp:659 src/PrefsUnifiedDlg.cpp:748 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:561
+#: src/PrefsUnifiedDlg.cpp:661 src/PrefsUnifiedDlg.cpp:750 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Melding"
@@ -1930,91 +1930,91 @@ msgstr "Vil du verkeleg avslutte aMule?"
 msgid "Exit confirmation"
 msgstr "Stadfesting av avslutting"
 
-#: src/amuleDlg.cpp:1180
+#: src/amuleDlg.cpp:1182
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Skinnkatalogen '%s' finst ikkje"
 
-#: src/amuleDlg.cpp:1185
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "ÅTVARING: Greidde ikkje å opne hudfila '%s' for lesing"
 
-#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1867
+#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1867
 #: src/muuli_wdr.cpp:3670
 msgid "Networks"
 msgstr "Nettverk"
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1289
 msgid "Networks window"
 msgstr "Nettverksvindauge"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3671
+#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3671
 msgid "Searches"
 msgstr "Søk"
 
-#: src/amuleDlg.cpp:1291
+#: src/amuleDlg.cpp:1293
 msgid "Searches window"
 msgstr "Søkevindauge"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3672
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3672
 msgid "Transfers"
 msgstr "Overføringar"
 
-#: src/amuleDlg.cpp:1295
+#: src/amuleDlg.cpp:1297
 msgid "Files transfers window"
 msgstr "Filoverføringsvindauge"
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1299
 msgid "Shared files"
 msgstr "Delte filer"
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1301
 msgid "Shared files window"
 msgstr "Vindauge for delte filer"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
 msgid "Messages"
 msgstr "Meldingar"
 
-#: src/amuleDlg.cpp:1303
+#: src/amuleDlg.cpp:1305
 msgid "Messages window"
 msgstr "Meldingsvindauge"
 
-#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1108 src/muuli_wdr.cpp:3676
 msgid "Statistics"
 msgstr "Statistikk"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1309
 msgid "Statistics graph window"
 msgstr "Statistikkgrafvindauge"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1314
 msgid "Preferences settings window"
 msgstr "Innstillingsvindauge"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
 msgid "Import"
 msgstr "Importér"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3679
 msgid "The partfile importer tool"
 msgstr "Verkty for delfilimport"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3680
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3680
 msgid "About/Help"
 msgstr "Om/hjelp"
 
-#: src/amuleDlg.cpp:1457
+#: src/amuleDlg.cpp:1459
 msgid "eD2k network"
 msgstr "ed2k nettverk"
 
-#: src/amuleDlg.cpp:1461
+#: src/amuleDlg.cpp:1463
 msgid "Kad network"
 msgstr "Kad nettverk"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1468
 msgid "No network"
 msgstr "Ikkje noko nettverk"
 
@@ -2075,7 +2075,7 @@ msgstr "Melde om feil"
 msgid "User Defined"
 msgstr "Brukardefinert"
 
-#: src/PrefsUnifiedDlg.cpp:537
+#: src/PrefsUnifiedDlg.cpp:539
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -2083,15 +2083,15 @@ msgstr ""
 "aMule·treng omstart for å gjere endringane moglege:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:544
+#: src/PrefsUnifiedDlg.cpp:546
 msgid "- TCP port changed.\n"
 msgstr "-·TCP-porten endra.\n"
 
-#: src/PrefsUnifiedDlg.cpp:549
+#: src/PrefsUnifiedDlg.cpp:551
 msgid "- UDP port changed.\n"
 msgstr "-·UDP-porten endra.\n"
 
-#: src/PrefsUnifiedDlg.cpp:558
+#: src/PrefsUnifiedDlg.cpp:560
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
@@ -2099,7 +2099,7 @@ msgstr ""
 "Tenarlista for automatisk oppdatering er tom.\n"
 "Tenarlista for automatisk oppdatering ved oppstart er ikkje aktivert."
 
-#: src/PrefsUnifiedDlg.cpp:565
+#: src/PrefsUnifiedDlg.cpp:567
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -2107,23 +2107,23 @@ msgstr ""
 "Du har aktivert eksterne koplingar, men har ikkje skrive inn eit passord.\n"
 "Eksterne koplingar kan ikkje aktiverast utan eit gyldig passord."
 
-#: src/PrefsUnifiedDlg.cpp:577
+#: src/PrefsUnifiedDlg.cpp:579
 msgid "- Language changed.\n"
 msgstr "- Språk endra.\n"
 
-#: src/PrefsUnifiedDlg.cpp:582
+#: src/PrefsUnifiedDlg.cpp:584
 msgid "- Temp folder changed.\n"
 msgstr "- Mellombels mappe endra.\n"
 
-#: src/PrefsUnifiedDlg.cpp:587
+#: src/PrefsUnifiedDlg.cpp:589
 msgid "- ED2K network enabled.\n"
 msgstr "- ED2K nettverket er aktivert.\n"
 
-#: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
+#: src/PrefsUnifiedDlg.cpp:614 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Opp:·0.0·|·Ned:·0.0"
 
-#: src/PrefsUnifiedDlg.cpp:654
+#: src/PrefsUnifiedDlg.cpp:656
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -2131,7 +2131,7 @@ msgstr ""
 "Både eD2k og kadnettverket er deaktivert.\n"
 "Du vil ikkje klare å kople til før du aktiverer minst eitt av dei."
 
-#: src/PrefsUnifiedDlg.cpp:658
+#: src/PrefsUnifiedDlg.cpp:660
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -2139,7 +2139,7 @@ msgstr ""
 "Kad kan ikkje starte dersom UDP-porten er deaktivert.\n"
 "Aktivér UDP-porten eller deaktivér Kad."
 
-#: src/PrefsUnifiedDlg.cpp:667
+#: src/PrefsUnifiedDlg.cpp:669
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2149,7 +2149,7 @@ msgstr ""
 "Du MÅ starte om att aMule no.\n"
 "Ikkje klag dersom du ikkje gjer dette og du får problem.\n"
 
-#: src/PrefsUnifiedDlg.cpp:747
+#: src/PrefsUnifiedDlg.cpp:749
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2159,41 +2159,41 @@ msgstr ""
 "Vér god og fylle ut ein URL som peikar til ei gyldig server.met fil.\n"
 "Klikk på knappen \"Liste\" ved denne boksen for å skrive inn ein URL."
 
-#: src/PrefsUnifiedDlg.cpp:895
+#: src/PrefsUnifiedDlg.cpp:897
 msgid "Temporary files"
 msgstr "Mellombelse filer"
 
-#: src/PrefsUnifiedDlg.cpp:900
+#: src/PrefsUnifiedDlg.cpp:902
 msgid "Incoming files"
 msgstr "Innkomande filer"
 
-#: src/PrefsUnifiedDlg.cpp:905
+#: src/PrefsUnifiedDlg.cpp:907
 msgid "Online Signatures"
 msgstr "Nettsignaturar"
 
-#: src/PrefsUnifiedDlg.cpp:918
+#: src/PrefsUnifiedDlg.cpp:920
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Vel ei mappe for %s"
 
-#: src/PrefsUnifiedDlg.cpp:938
+#: src/PrefsUnifiedDlg.cpp:940
 msgid "Browse for videoplayer"
 msgstr "Bla etter videospelar"
 
-#: src/PrefsUnifiedDlg.cpp:942
+#: src/PrefsUnifiedDlg.cpp:944
 msgid "Select browser"
 msgstr "Vél nettlesar"
 
-#: src/PrefsUnifiedDlg.cpp:948
+#: src/PrefsUnifiedDlg.cpp:950
 #, c-format
 msgid "Executable%s"
 msgstr "Køyrbar%s"
 
-#: src/PrefsUnifiedDlg.cpp:969
+#: src/PrefsUnifiedDlg.cpp:971
 msgid "Edit server list"
 msgstr "Handsame tenarlista"
 
-#: src/PrefsUnifiedDlg.cpp:970
+#: src/PrefsUnifiedDlg.cpp:972
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2201,87 +2201,87 @@ msgstr ""
 "Skriv inn URL`en for å laste ned server.met filer.\n"
 "Berre ein URL på kvar linje."
 
-#: src/PrefsUnifiedDlg.cpp:1029
+#: src/PrefsUnifiedDlg.cpp:1031
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Oppdateringspause: %d sekund"
 msgstr[1] "Oppdateringspause: %d sekund"
 
-#: src/PrefsUnifiedDlg.cpp:1036
+#: src/PrefsUnifiedDlg.cpp:1038
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Tid for gjennomsnittleg graf: %d minutt"
 msgstr[1] "Tid for gjennomsnittleg graf; %d minutt"
 
-#: src/PrefsUnifiedDlg.cpp:1042
+#: src/PrefsUnifiedDlg.cpp:1044
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Koplingsgrafskala: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1048
+#: src/PrefsUnifiedDlg.cpp:1050
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Oppdateringsforseinking: %d sekund"
 msgstr[1] "Oppdateringsforseinking: %d sekund"
 
-#: src/PrefsUnifiedDlg.cpp:1054
+#: src/PrefsUnifiedDlg.cpp:1056
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Filbufferstorleik: %d byte"
 msgstr[1] "Filbufferstorleik: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:1060
+#: src/PrefsUnifiedDlg.cpp:1062
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Opplastingskøstorleik: %d klient"
 msgstr[1] "Opplastingskøstorleik: %d klientar"
 
-#: src/PrefsUnifiedDlg.cpp:1067
+#: src/PrefsUnifiedDlg.cpp:1069
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Oppfriskingsinterval på tenarkoplingar: %d minutt"
 msgstr[1] "Oppfriskingsinterval på tenarkoplingar: %d minutt"
 
-#: src/PrefsUnifiedDlg.cpp:1069
+#: src/PrefsUnifiedDlg.cpp:1071
 msgid "Server connection refresh interval: Disabled"
 msgstr "Oppfriskingsintervall for tenarkopling: Deaktivert"
 
-#: src/PrefsUnifiedDlg.cpp:1112
+#: src/PrefsUnifiedDlg.cpp:1114
 msgid "UDP port for extended server requests (TCP+3): "
 msgstr "UDP-port for utvida tenarførespurnader (TCP+3): "
 
-#: src/PrefsUnifiedDlg.cpp:1116
+#: src/PrefsUnifiedDlg.cpp:1118
 msgid "disabled"
 msgstr "deaktivert"
 
-#: src/PrefsUnifiedDlg.cpp:1136
+#: src/PrefsUnifiedDlg.cpp:1138
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Køyr kommando på `%s' hending"
 
-#: src/PrefsUnifiedDlg.cpp:1139
+#: src/PrefsUnifiedDlg.cpp:1141
 msgid "Enable command execution on core"
 msgstr "Aktivér kommandokøyring i kjernen"
 
-#: src/PrefsUnifiedDlg.cpp:1147
+#: src/PrefsUnifiedDlg.cpp:1149
 msgid "Core command:"
 msgstr "Kjernekommando:"
 
-#: src/PrefsUnifiedDlg.cpp:1156
+#: src/PrefsUnifiedDlg.cpp:1158
 msgid "Enable command execution on GUI"
 msgstr "Aktivér kommandokøyring på drakt"
 
-#: src/PrefsUnifiedDlg.cpp:1164
+#: src/PrefsUnifiedDlg.cpp:1166
 msgid "GUI command:"
 msgstr "Draktkommando:"
 
-#: src/PrefsUnifiedDlg.cpp:1173
+#: src/PrefsUnifiedDlg.cpp:1175
 msgid "The following variables will be replaced:"
 msgstr "Følgjande variablar vert erstatta:"
 

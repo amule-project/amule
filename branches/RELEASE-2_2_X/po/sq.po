@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-15 22:32+0100\n"
+"POT-Creation-Date: 2009-03-23 01:05+0100\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -478,7 +478,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 "Ju keni nevoje per nje ID te larte per te krijuar nje sourcelink te vlefshem"
 
-#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:667 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:669 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:657
 msgid "WARNING"
 msgstr "KUJDES"
@@ -690,7 +690,7 @@ msgstr "Duke shkarkuar..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
 msgid "Preferences"
 msgstr "Preferencat"
@@ -1201,7 +1201,7 @@ msgstr "Shpeto"
 msgid "Save computed eD2k link to file"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1318
+#: src/utils/aLinkCreator/src/alcframe.cpp:270 src/amuleDlg.cpp:1320
 #: src/muuli_wdr.cpp:3680
 msgid "About"
 msgstr "Rreth"
@@ -1858,8 +1858,8 @@ msgstr " Copyright (C) 2002 Petar Maymounkov\n"
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http:/kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:559
-#: src/PrefsUnifiedDlg.cpp:659 src/PrefsUnifiedDlg.cpp:748 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:476 src/PrefsUnifiedDlg.cpp:561
+#: src/PrefsUnifiedDlg.cpp:661 src/PrefsUnifiedDlg.cpp:750 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Mesazh"
@@ -1937,91 +1937,91 @@ msgstr "Vertet deshironi qe te dilni nga aMule?"
 msgid "Exit confirmation"
 msgstr "Konfirmimi i daljes"
 
-#: src/amuleDlg.cpp:1180
+#: src/amuleDlg.cpp:1182
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Direktoria e skin '%s' nuk ekziston"
 
-#: src/amuleDlg.cpp:1185
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1867
+#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1867
 #: src/muuli_wdr.cpp:3670
 msgid "Networks"
 msgstr "Rrjetet"
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1289
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3671
+#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3671
 msgid "Searches"
 msgstr "Kerkimet"
 
-#: src/amuleDlg.cpp:1291
+#: src/amuleDlg.cpp:1293
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3672
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3672
 msgid "Transfers"
 msgstr "Transferimet"
 
-#: src/amuleDlg.cpp:1295
+#: src/amuleDlg.cpp:1297
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1299
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1301
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:525 src/muuli_wdr.cpp:3675
 msgid "Messages"
 msgstr "Mesazhe"
 
-#: src/amuleDlg.cpp:1303
+#: src/amuleDlg.cpp:1305
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1108 src/muuli_wdr.cpp:3676
 msgid "Statistics"
 msgstr "Statistikat"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1309
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1314
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
 msgid "Import"
 msgstr "Importimi"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3679
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3679
 msgid "The partfile importer tool"
 msgstr "Veglat per importimin e pjeseve te faileve"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3680
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3680
 msgid "About/Help"
 msgstr "Rreth/Ndihme"
 
-#: src/amuleDlg.cpp:1457
+#: src/amuleDlg.cpp:1459
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1461
+#: src/amuleDlg.cpp:1463
 msgid "Kad network"
 msgstr "Rrjeti Kad"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1468
 msgid "No network"
 msgstr "Nuk ka rrjet"
 
@@ -2084,7 +2084,7 @@ msgstr "Debug"
 msgid "User Defined"
 msgstr "Te percaktuara nga perdoruesi"
 
-#: src/PrefsUnifiedDlg.cpp:537
+#: src/PrefsUnifiedDlg.cpp:539
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -2092,21 +2092,21 @@ msgstr ""
 "aMule duhet qe te ristartohet qe keto ndryshime te aplikohen:\n"
 " \n"
 
-#: src/PrefsUnifiedDlg.cpp:544
+#: src/PrefsUnifiedDlg.cpp:546
 msgid "- TCP port changed.\n"
 msgstr "Porta TCP eshte ndryshuar.\n"
 
-#: src/PrefsUnifiedDlg.cpp:549
+#: src/PrefsUnifiedDlg.cpp:551
 msgid "- UDP port changed.\n"
 msgstr "Porta UDP eshte ndryshuar.\n"
 
-#: src/PrefsUnifiedDlg.cpp:558
+#: src/PrefsUnifiedDlg.cpp:560
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:565
+#: src/PrefsUnifiedDlg.cpp:567
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -2114,30 +2114,30 @@ msgstr ""
 "Ju keni lejuar lidhjet e jashtme por nuk keni specifikuar nje fjalekalim.\n"
 "Lidhjet e jashtme nuk mund te lejohen derisa te specifikohet nje fjalekalim."
 
-#: src/PrefsUnifiedDlg.cpp:577
+#: src/PrefsUnifiedDlg.cpp:579
 msgid "- Language changed.\n"
 msgstr "- Gjuha ndryshoi.\n"
 
-#: src/PrefsUnifiedDlg.cpp:582
+#: src/PrefsUnifiedDlg.cpp:584
 msgid "- Temp folder changed.\n"
 msgstr "Kartela Temp ndryshoi.\n"
 
-#: src/PrefsUnifiedDlg.cpp:587
+#: src/PrefsUnifiedDlg.cpp:589
 #, fuzzy
 msgid "- ED2K network enabled.\n"
 msgstr "Te gjithe rrjetet jane c'aktivizuar."
 
-#: src/PrefsUnifiedDlg.cpp:612 src/muuli_wdr.cpp:116
+#: src/PrefsUnifiedDlg.cpp:614 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Larte: 0.0 | Poshte: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:654
+#: src/PrefsUnifiedDlg.cpp:656
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:658
+#: src/PrefsUnifiedDlg.cpp:660
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -2145,7 +2145,7 @@ msgstr ""
 "Kad nuk mund te filloje nqs porta juaj UDP eshte c'aktivizuar.\n"
 "Aktivizoni porten UDP ose c'aktivizoni Kad-in."
 
-#: src/PrefsUnifiedDlg.cpp:667
+#: src/PrefsUnifiedDlg.cpp:669
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2155,7 +2155,7 @@ msgstr ""
 "Ju duhet te ristartoni aMule-n tani.\n"
 "Nqs nuk e ristartoni tani mos u anko nqs te ndodh dicka e keqe.\n"
 
-#: src/PrefsUnifiedDlg.cpp:747
+#: src/PrefsUnifiedDlg.cpp:749
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2165,41 +2165,41 @@ msgstr ""
 "Ju lutem mbushni te pakten nje URL te vlefshme ne failin e server.met.\n"
 "Klikoni ne butonin \"List\" per te futur nje URL."
 
-#: src/PrefsUnifiedDlg.cpp:895
+#: src/PrefsUnifiedDlg.cpp:897
 msgid "Temporary files"
 msgstr "Failet e perkohshme"
 
-#: src/PrefsUnifiedDlg.cpp:900
+#: src/PrefsUnifiedDlg.cpp:902
 msgid "Incoming files"
 msgstr "Failet e shkarkuara"
 
-#: src/PrefsUnifiedDlg.cpp:905
+#: src/PrefsUnifiedDlg.cpp:907
 msgid "Online Signatures"
 msgstr "Firma online"
 
-#: src/PrefsUnifiedDlg.cpp:918
+#: src/PrefsUnifiedDlg.cpp:920
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Zgjidhni nje kartele per %s"
 
-#: src/PrefsUnifiedDlg.cpp:938
+#: src/PrefsUnifiedDlg.cpp:940
 msgid "Browse for videoplayer"
 msgstr "Shfletoni per nje videoplayer"
 
-#: src/PrefsUnifiedDlg.cpp:942
+#: src/PrefsUnifiedDlg.cpp:944
 msgid "Select browser"
 msgstr "Perzgjidhni shfletuesin"
 
-#: src/PrefsUnifiedDlg.cpp:948
+#: src/PrefsUnifiedDlg.cpp:950
 #, c-format
 msgid "Executable%s"
 msgstr "Te ekzekutueshme%s"
 
-#: src/PrefsUnifiedDlg.cpp:969
+#: src/PrefsUnifiedDlg.cpp:971
 msgid "Edit server list"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:970
+#: src/PrefsUnifiedDlg.cpp:972
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2207,89 +2207,89 @@ msgstr ""
 "Futni ketu URL-te per te shkarkuar failet server.met.\n"
 "Vetem nga nje URL per c'do linje."
 
-#: src/PrefsUnifiedDlg.cpp:1029
+#: src/PrefsUnifiedDlg.cpp:1031
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Intervali i azhornimit: %d sekonde"
 msgstr[1] "Intervali i azhornimit: %d sekonda"
 
-#: src/PrefsUnifiedDlg.cpp:1036
+#: src/PrefsUnifiedDlg.cpp:1038
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Koha per mesataren grafike: %d minute"
 msgstr[1] "Koha per mesataren grafike: %d minuta"
 
-#: src/PrefsUnifiedDlg.cpp:1042
+#: src/PrefsUnifiedDlg.cpp:1044
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Shkalla grafike e lidhjeve: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1048
+#: src/PrefsUnifiedDlg.cpp:1050
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Intervali i azhornimit : %d sekonde"
 msgstr[1] "Intervali i azhornimit : %d sekonda"
 
-#: src/PrefsUnifiedDlg.cpp:1054
+#: src/PrefsUnifiedDlg.cpp:1056
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Madhesia buffer e failit: %d byte"
 msgstr[1] "Madesia Buffer e failit: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:1060
+#: src/PrefsUnifiedDlg.cpp:1062
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Madhesia e radhes se ngarkimit: %d klienti"
 msgstr[1] "Madhesia e radhes se ngarkimit: %d klientet"
 
-#: src/PrefsUnifiedDlg.cpp:1067
+#: src/PrefsUnifiedDlg.cpp:1069
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Intervali i rifreskimit te lidhjeve te serverit: %d minute"
 msgstr[1] "Intervali i rifreskimit te lidhjeve te serverit: %d minuta"
 
-#: src/PrefsUnifiedDlg.cpp:1069
+#: src/PrefsUnifiedDlg.cpp:1071
 msgid "Server connection refresh interval: Disabled"
 msgstr "Intervali i rifreskimit te lidhjeve te serverit: I c'aktivizuar"
 
-#: src/PrefsUnifiedDlg.cpp:1112
+#: src/PrefsUnifiedDlg.cpp:1114
 #, fuzzy
 msgid "UDP port for extended server requests (TCP+3): "
 msgstr "Porta UDP per kerkesat e zgjeruara te serverit (TCP+3): 4665"
 
-#: src/PrefsUnifiedDlg.cpp:1116
+#: src/PrefsUnifiedDlg.cpp:1118
 #, fuzzy
 msgid "disabled"
 msgstr "c'aktivizo"
 
-#: src/PrefsUnifiedDlg.cpp:1136
+#: src/PrefsUnifiedDlg.cpp:1138
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Ekzekuto komanden ne kete ngjarje `%s' "
 
-#: src/PrefsUnifiedDlg.cpp:1139
+#: src/PrefsUnifiedDlg.cpp:1141
 msgid "Enable command execution on core"
 msgstr "Lejo ekzekutimin e komandes ne core"
 
-#: src/PrefsUnifiedDlg.cpp:1147
+#: src/PrefsUnifiedDlg.cpp:1149
 msgid "Core command:"
 msgstr "KOmanda Core:"
 
-#: src/PrefsUnifiedDlg.cpp:1156
+#: src/PrefsUnifiedDlg.cpp:1158
 msgid "Enable command execution on GUI"
 msgstr "Lejo ekzekutimin e komandes ne GUI"
 
-#: src/PrefsUnifiedDlg.cpp:1164
+#: src/PrefsUnifiedDlg.cpp:1166
 msgid "GUI command:"
 msgstr "Komanda GUI:"
 
-#: src/PrefsUnifiedDlg.cpp:1173
+#: src/PrefsUnifiedDlg.cpp:1175
 msgid "The following variables will be replaced:"
 msgstr "Variacionet qe vijojne do te rivendosen:"
 
