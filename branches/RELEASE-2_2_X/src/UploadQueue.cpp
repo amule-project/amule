@@ -73,8 +73,8 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	CClientPtrList::iterator toadd = m_waitinglist.end();
 	CClientPtrList::iterator toaddlow = m_waitinglist.end();
 	
-	sint64	bestscore = -1;
-	sint64	bestlowscore = -1;
+	uint32_t bestscore = 0;
+	uint32_t bestlowscore = 0;
 
 	CUpDownClient* newclient;
 	// select next client or use given client
@@ -109,7 +109,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 			}
 			// finished clearing
 			
-			sint64 cur_score = cur_client->GetScore(true);
+			uint32_t cur_score = cur_client->GetScore(true);
 			if (cur_score > bestscore) {
 				bestscore = cur_score;
 				toadd = tmp_it;
@@ -182,7 +182,6 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 		reqfile->statistic.AddAccepted();
 	}
 	Notify_UploadCtrlAddClient(newclient);
-
 }
 
 void CUploadQueue::Process()
