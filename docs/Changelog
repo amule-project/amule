@@ -124,6 +124,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 		* Implemented non-interactive mode for amulecmd/amuleweb.
 		* Fixed detection of crypto++ library for versions >= 5.6.0.
 		* Fixed saving wrong window position when exiting while minimized.
+		* Fixed rare case when we tried to connect to a LowID client.
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.
