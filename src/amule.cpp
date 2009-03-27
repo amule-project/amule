@@ -132,7 +132,9 @@ static void SetResourceLimits()
 {
 #ifdef HAVE_SYS_RESOURCE_H
 	UnlimitResource(RLIMIT_DATA);
+#ifndef __UCLIBC__
 	UnlimitResource(RLIMIT_FSIZE);
+#endif
 	UnlimitResource(RLIMIT_NOFILE);
 #ifdef RLIMIT_RSS
 	UnlimitResource(RLIMIT_RSS);
