@@ -5,6 +5,7 @@ Version 2.3.0 - The river knows.
 	freddy77:
 		* Various optimizations of memory usage
 		* Read files for hashing/sharing using mapped memory
+		* Fix download of files > 1GB on ucLibc
 
 	Gnucco:
 		* Add option to ed2k link parser to display links in emulecollection
