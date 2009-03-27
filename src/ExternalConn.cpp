@@ -152,7 +152,7 @@ void CECServerSocket::OnLost()
 
 void CECServerSocket::WriteDoneAndQueueEmpty()
 {
-	if ( HaveNotificationSupport() ) {
+	if ( HaveNotificationSupport() && (m_conn_state == CONN_ESTABLISHED) ) {
 		CECPacket *packet = m_ec_notifier->GetNextPacket(this);
 		if ( packet ) {
 			SendPacket(packet);
@@ -1677,6 +1677,10 @@ ECSearchMsgSource::ECSearchMsgSource()
 
 CECPacket *ECSearchMsgSource::GetNextPacket()
 {
+	if ( m_dirty_status.empty() ) {
+		return 0;
+	}
+	
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 	for(std::map<CMD4Hash, SEARCHFILE_STATUS>::iterator it = m_dirty_status.begin();
 		it != m_dirty_status.end(); it++) {
