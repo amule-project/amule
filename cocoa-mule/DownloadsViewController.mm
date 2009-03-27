@@ -44,7 +44,7 @@
 		value = ( i.speed ) ?
 			[[i convertWithPrefix: i.speed] stringByAppendingString: @"/sec"] : @"";
 	} else if ( [columnId compare:@"prio"] == NSOrderedSame ) {
-		value = @"val-for-prio";
+		value = i.sprio;
 	} else if ( [columnId compare:@"timerem"] == NSOrderedSame ) {
 		value = @"val-for-timerem";
 	} else if ( [columnId compare:@"lastcomp"] == NSOrderedSame ) {
