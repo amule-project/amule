@@ -5,8 +5,6 @@
 
 @interface AppController : NSObject {
     IBOutlet id m_main_tabview;
-
-	IBOutlet id m_dload_tableview;
 	
 	IBOutlet id m_dload_controller;
 	IBOutlet id m_search_controller;

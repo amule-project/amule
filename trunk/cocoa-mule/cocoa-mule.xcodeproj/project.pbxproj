@@ -11,7 +11,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		B203F8B20F719AE100054498 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B203F8B10F719AE100054498 /* BWToolkitFramework.framework */; };
+		B201E59A0F77F945002001E0 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B203F8B10F719AE100054498 /* BWToolkitFramework.framework */; };
 		B203F8EF0F719B4C00054498 /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B203F8B10F719AE100054498 /* BWToolkitFramework.framework */; };
 		B20467430F20DD1E00972AD8 /* AddLinkDialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20467420F20DD1E00972AD8 /* AddLinkDialogController.m */; };
 		B20E7E300EFD313400EF0D8D /* LoginDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = B20E7E2F0EFD313400EF0D8D /* LoginDialog.nib */; };
@@ -88,7 +88,7 @@
 		32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "cocoa-mule_Prefix.pch"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* cocoa-mule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cocoa-mule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B203F8B10F719AE100054498 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = ../../../bin/BWToolkit/BWToolkitFramework.framework; sourceTree = SOURCE_ROOT; };
+		B203F8B10F719AE100054498 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = ../../BWToolkit/BWToolkitFramework.framework; sourceTree = SOURCE_ROOT; };
 		B20467410F20DD1E00972AD8 /* AddLinkDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddLinkDialogController.h; sourceTree = "<group>"; };
 		B20467420F20DD1E00972AD8 /* AddLinkDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddLinkDialogController.m; sourceTree = "<group>"; };
 		B20E7E340EFD322C00EF0D8D /* LoginDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDialogController.h; sourceTree = "<group>"; };
@@ -155,8 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B201E59A0F77F945002001E0 /* BWToolkitFramework.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				B203F8B20F719AE100054498 /* BWToolkitFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +458,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../bin/BWToolkit\"",
+					"\"$(SRCROOT)/../../BWToolkit\"",
 				);
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -483,6 +484,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../bin/BWToolkit\"",
+					"\"$(SRCROOT)/../../BWToolkit\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

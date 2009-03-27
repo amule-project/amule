@@ -52,6 +52,7 @@
 	bool dlgResult = [m_add_link_dlg showDlg:nil];
 	if ( dlgResult ) {
 		ECPacket *packet = [ECPacket packetWithOpcode:EC_OP_ADD_LINK];
+		[packet.subtags addObject:[ECTagString tagFromString:[m_add_link_dlg link] withName:EC_TAG_ED2K_ID] ];
 		[m_connection sendPacket:packet];
 	}
 }
@@ -116,7 +117,6 @@
 	
 	m_daemon_pid = 0;
 	if ( (mode != nil) && ([mode compare:@"guitest"] == NSOrderedSame) ) {
-		[m_dload_tableview reloadData];
 		NSLog(@"Started in GUI test mode - will not connect to core");
 		return;
 	}	

@@ -742,7 +742,7 @@
 				//
 				m_error = true;
 				if ( [delegate respondsToSelector:@selector(handleError)] ) {
-					[delegate handleError];
+					[delegate performSelector:@selector(handleError)];
 				}
 			}
 			int total_len = len;
@@ -785,7 +785,7 @@
 						NSLog(@"[EC] calling delegate\n");
 #endif
 						if ( [delegate respondsToSelector:@selector(handlePacket:)] ) {
-							[delegate handlePacket: packet];
+							[delegate performSelector:@selector(handlePacket:) withObject:packet];
 						}
 					} else {
 						NSLog(@"[EC] login handler\n");
