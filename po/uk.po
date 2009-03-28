@@ -1844,10 +1844,10 @@ msgstr " Контакт: admin@amule.org (адміністративні пит�
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:470
@@ -7303,19 +7303,19 @@ msgstr "Неможливо відкрити перелік друзів 'emfrien
 #~ msgstr "Contact: admin@amule.org (administrative issues) \n"
 
 #~ msgid ""
-#~ "Copyright (c) 2003-2008 aMule Team \n"
+#~ "Copyright (c) 2003-2009 aMule Team \n"
 #~ "\n"
 #~ msgstr ""
-#~ "Copyright (c) 2003-2008 aMule Team \n"
+#~ "Copyright (c) 2003-2009 aMule Team \n"
 #~ "\n"
 
 #~ msgid "Part of aMule is based on \n"
 #~ msgstr "Частина aMule основана на \n"
 
 #~ msgid ""
-#~ " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+#~ " Copyright (c) 2002-2009 Petar Maymounkov ( petar@post.harvard.edu )\n"
 #~ msgstr ""
-#~ " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+#~ " Copyright (c) 2002-2009 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #~ msgid "http://kademlia.scs.cs.nyu.edu\n"
 #~ msgstr "http://kademlia.scs.cs.nyu.edu\n"

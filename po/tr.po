@@ -1830,10 +1830,10 @@ msgstr " İletişim: admin@amule.org (yönetimsel konular) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-" Copyright (C) 2003-2008 aMule Ekibi \n"
+" Copyright (C) 2003-2009 aMule Ekibi \n"
 "\n"
 
 #: src/amuleDlg.cpp:470

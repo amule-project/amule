@@ -1809,10 +1809,10 @@ msgstr " יצירת קשר: admin@amule.org (נושאים מנהליים) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-"זכוייות יוצרים (C) 2003-2008 צוות אימיול \n"
+"זכוייות יוצרים (C) 2003-2009 צוות אימיול \n"
 "\n"
 
 #: src/amuleDlg.cpp:470

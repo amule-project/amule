@@ -1843,10 +1843,10 @@ msgstr "Contautar: admin@amule.org (problemes alministrativos) \n"
 #: src/amuleDlg.cpp:469
 #, fuzzy
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (C) 2003-2008 Equipu aMule \n"
+"Copyright (C) 2003-2009 Equipu aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:470
