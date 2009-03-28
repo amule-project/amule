@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Alo Sarv <madcat_@users.sourceforge.net>
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Alo Sarv <madcat_@users.sourceforge.net>
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Timo Kujala <tiku@users.sourceforge.net>
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -81,7 +81,7 @@ uint32 GetTickCountFullRes(void) {
 
 #if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
 /**
- * Copyright (c) 2004-2008 Alo Sarv <madcat_@users.sourceforge.net>
+ * Copyright (c) 2004-2009 Alo Sarv <madcat_@users.sourceforge.net>
  * wxTimer based implementation. wxGetLocalTimeMillis() is called every 2
  * milliseconds and values stored in local variables. Upon requests for current
  * time, values of those variables are returned. This means wxGetLocalTimeMillis
@@ -131,7 +131,7 @@ uint32 GetTickCountFullRes(void) {
 
 #else
 /**
- * Copyright (c) 2003-2008 Timo Kujala <tiku@users.sourceforge.net>
+ * Copyright (c) 2003-2009 Timo Kujala <tiku@users.sourceforge.net>
  * gettimeofday() syscall based implementation. Upon request to GetTickCount(),
  * gettimeofday syscall is being used to retrieve system time and returned. This
  * means EACH GetTickCount() call will produce a new syscall, thus becoming

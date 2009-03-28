@@ -1839,10 +1839,10 @@ msgstr " Contactar: admin@amule.org (problemas administrativos) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-" Copyright (C) 2003-2008 Equipo aMule \n"
+" Copyright (C) 2003-2009 Equipo aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:470

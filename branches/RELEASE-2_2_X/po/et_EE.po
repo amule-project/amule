@@ -1828,10 +1828,10 @@ msgstr " Kontakt: admin@amule.org (administratiivsed küsimused) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-" Copyright (c) 2003-2008 aMule Meeskond \n"
+" Copyright (c) 2003-2009 aMule Meeskond \n"
 "\n"
 
 #: src/amuleDlg.cpp:470

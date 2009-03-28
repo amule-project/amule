@@ -1853,10 +1853,10 @@ msgstr "Επικοινωνία: admin@amule.org (διοικητικά θέματ
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-"Πνευματικά δικαιώματα (C) 2003-2008 η ομάδα του aMule \n"
+"Πνευματικά δικαιώματα (C) 2003-2009 η ομάδα του aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:470

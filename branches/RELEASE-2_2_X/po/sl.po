@@ -1825,10 +1825,10 @@ msgstr " Stik: admin@amule.org (administrativne zadeve) \n"
 
 #: src/amuleDlg.cpp:469
 msgid ""
-" Copyright (C) 2003-2008 aMule Team \n"
+" Copyright (C) 2003-2009 aMule Team \n"
 "\n"
 msgstr ""
-" Avtorske pravice (C) 2003-2008 aMule moštvo \n"
+" Avtorske pravice (C) 2003-2009 aMule moštvo \n"
 "\n"
 
 #: src/amuleDlg.cpp:470
@@ -7917,7 +7917,7 @@ msgstr ""
 #~ " FAQ: http://wiki.amule.org \n"
 #~ "\n"
 #~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2008 aMule Team \n"
+#~ " Copyright (C) 2003-2009 aMule Team \n"
 #~ "\n"
 #~ " Part of aMule is based on \n"
 #~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
