@@ -46,11 +46,14 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 		MULE_APPEND([CPPFLAGS], [$GEOIP_CPPFLAGS])
 		MULE_BACKUP([LDFLAGS])
 		MULE_APPEND([LDFLAGS], [$GEOIP_LDFLAGS])
+
+       		AS_IF([test x$SYS = xwin32], [OTHERLIBS="-lws2_32"])         
+
 		AC_CHECK_HEADER([GeoIP.h], [
 			AC_CHECK_LIB([GeoIP], [GeoIP_open], [
 				AC_DEFINE([SUPPORT_GEOIP], [1], [Define if you want GeoIP support.])
 				GEOIP_LIBS="-lGeoIP"
-				AS_IF([test x$SYS = xwin32], [MULE_APPEND([GEOIP_LIBS], [-lwsock32])])
+				AS_IF([test x$SYS = xwin32], [MULE_APPEND([GEOIP_LIBS], [-lws2_32])])
 				MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
 				AC_ARG_WITH([geoip-static], AS_HELP_STRING([--with-geoip-static], [Explicitly link GeoIP statically (default=no)]),
 				[
@@ -74,7 +77,7 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 			], [
 				ENABLE_IP2COUNTRY=disabled
 				MULE_WARNING([GeoIP support has been disabled because the GeoIP libraries were not found])
-			])
+			], [${OTHERLIBS:-}])
 		], [
 			ENABLE_IP2COUNTRY=disabled
 			MULE_WARNING([GeoIP support has been disabled because the GeoIP header files were not found])

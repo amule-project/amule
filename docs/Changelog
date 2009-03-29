@@ -129,6 +129,7 @@ Version 2.2.4 - The "don't know yet if there will be another 2.2" version.
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.
+		* Fixed detecting GeoIP library when building for MinGW.
 
 	Stu Redman:
 		* Fix crash on global search on Windows
