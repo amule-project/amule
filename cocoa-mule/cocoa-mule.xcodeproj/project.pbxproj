@@ -44,7 +44,6 @@
 		B2499CBF0E7CBBF400F67575 /* Client_Unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C960E7CBBF400F67575 /* Client_Unknown.png */; };
 		B2499CC00E7CBBF400F67575 /* Client_Upload.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C970E7CBBF400F67575 /* Client_Upload.png */; };
 		B2499CC10E7CBBF400F67575 /* Client_xMule.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C980E7CBBF400F67575 /* Client_xMule.png */; };
-		B2499CC20E7CBBF400F67575 /* README in Resources */ = {isa = PBXBuildFile; fileRef = B2499C990E7CBBF400F67575 /* README */; };
 		B2499CC30E7CBBF400F67575 /* Toolbar_About.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C9A0E7CBBF400F67575 /* Toolbar_About.png */; };
 		B2499CC40E7CBBF400F67575 /* Toolbar_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C9B0E7CBBF400F67575 /* Toolbar_Blink.png */; };
 		B2499CC50E7CBBF400F67575 /* Toolbar_Connect.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499C9C0E7CBBF400F67575 /* Toolbar_Connect.png */; };
@@ -59,6 +58,7 @@
 		B2499CCE0E7CBBF400F67575 /* Toolbar_Stats.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */; };
 		B2499CCF0E7CBBF400F67575 /* Toolbar_Transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */; };
 		B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B257A4540F1A7AD800DC958E /* SearchViewController.mm */; };
+		B291B8130F7E122500FF9F46 /* SourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B291B8110F7E122500FF9F46 /* SourceViewController.m */; };
 		B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */; };
 		B2CDC5AD0E9541D5009370D9 /* amuleData.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CDC5AC0E9541D5009370D9 /* amuleData.mm */; };
 		B2DD60230E7BC65400987099 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2DD60220E7BC65400987099 /* AppController.mm */; };
@@ -125,7 +125,6 @@
 		B2499C960E7CBBF400F67575 /* Client_Unknown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Client_Unknown.png; sourceTree = "<group>"; };
 		B2499C970E7CBBF400F67575 /* Client_Upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Client_Upload.png; sourceTree = "<group>"; };
 		B2499C980E7CBBF400F67575 /* Client_xMule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Client_xMule.png; sourceTree = "<group>"; };
-		B2499C990E7CBBF400F67575 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		B2499C9A0E7CBBF400F67575 /* Toolbar_About.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_About.png; sourceTree = "<group>"; };
 		B2499C9B0E7CBBF400F67575 /* Toolbar_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Blink.png; sourceTree = "<group>"; };
 		B2499C9C0E7CBBF400F67575 /* Toolbar_Connect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Connect.png; sourceTree = "<group>"; };
@@ -141,6 +140,8 @@
 		B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Transfers.png; sourceTree = "<group>"; };
 		B257A4530F1A7AD800DC958E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		B257A4540F1A7AD800DC958E /* SearchViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchViewController.mm; sourceTree = "<group>"; };
+		B291B8110F7E122500FF9F46 /* SourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceViewController.m; sourceTree = "<group>"; };
+		B291B8120F7E122500FF9F46 /* SourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceViewController.h; sourceTree = "<group>"; };
 		B29E77B50EFC357600F4C677 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/LoginDialog.nib; sourceTree = "<group>"; };
 		B2B307A20F05470200AE5E79 /* DownloadsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadsViewController.h; sourceTree = "<group>"; };
 		B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DownloadsViewController.mm; sourceTree = "<group>"; };
@@ -172,6 +173,8 @@
 				B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */,
 				B257A4530F1A7AD800DC958E /* SearchViewController.h */,
 				B257A4540F1A7AD800DC958E /* SearchViewController.mm */,
+				B291B8110F7E122500FF9F46 /* SourceViewController.m */,
+				B291B8120F7E122500FF9F46 /* SourceViewController.h */,
 				32CA4F630368D1EE00C91783 /* cocoa-mule_Prefix.pch */,
 			);
 			name = Classes;
@@ -294,7 +297,6 @@
 				B2499C960E7CBBF400F67575 /* Client_Unknown.png */,
 				B2499C970E7CBBF400F67575 /* Client_Upload.png */,
 				B2499C980E7CBBF400F67575 /* Client_xMule.png */,
-				B2499C990E7CBBF400F67575 /* README */,
 				B2499C9A0E7CBBF400F67575 /* Toolbar_About.png */,
 				B2499C9B0E7CBBF400F67575 /* Toolbar_Blink.png */,
 				B2499C9C0E7CBBF400F67575 /* Toolbar_Connect.png */,
@@ -385,7 +387,6 @@
 				B2499CBF0E7CBBF400F67575 /* Client_Unknown.png in Resources */,
 				B2499CC00E7CBBF400F67575 /* Client_Upload.png in Resources */,
 				B2499CC10E7CBBF400F67575 /* Client_xMule.png in Resources */,
-				B2499CC20E7CBBF400F67575 /* README in Resources */,
 				B2499CC30E7CBBF400F67575 /* Toolbar_About.png in Resources */,
 				B2499CC40E7CBBF400F67575 /* Toolbar_Blink.png in Resources */,
 				B2499CC50E7CBBF400F67575 /* Toolbar_Connect.png in Resources */,
@@ -418,6 +419,7 @@
 				B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */,
 				B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */,
 				B20467430F20DD1E00972AD8 /* AddLinkDialogController.m in Sources */,
+				B291B8130F7E122500FF9F46 /* SourceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
