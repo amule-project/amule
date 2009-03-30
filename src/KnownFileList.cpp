@@ -32,6 +32,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
 #include "Logger.h"
+#include "ScopedPtr.h"
 #include <common/Format.h>
 
 
@@ -93,7 +94,7 @@ bool CKnownFileList::Init()
 			wxString::Format(wxT("Reading %i known files from file format 0x%2.2x."),
 			RecordsNumber, version));
 		for (uint32 i = 0; i < RecordsNumber; i++) {
-			std::auto_ptr<CKnownFile> record(new CKnownFile());
+			CScopedPtr<CKnownFile> record(new CKnownFile());
 			if (record->LoadFromFile(&file)) {
 				AddDebugLogLineM(false, logKnownFiles,
 					CFormat(wxT("Known file read: %s")) % record->GetFileName());
