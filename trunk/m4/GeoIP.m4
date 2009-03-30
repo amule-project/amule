@@ -47,13 +47,30 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 		MULE_BACKUP([LDFLAGS])
 		MULE_APPEND([LDFLAGS], [$GEOIP_LDFLAGS])
 
-       		AS_IF([test x$SYS = xwin32], [OTHERLIBS="-lws2_32"])         
-
 		AC_CHECK_HEADER([GeoIP.h], [
+			AS_IF([test x$SYS = xwin32], [
+				AC_MSG_CHECKING([for WinSock library needed by GeoIP])
+				# Actually, we might not need any if GeoIP is linked as a .dll
+				# - but that's even harder to check for
+				AC_COMPILE_IFELSE([
+					AC_LANG_PROGRAM([[
+						#include <GeoIP.h>
+						#ifdef _WINSOCK2_H
+							I do know it's not the best approach, but at least works with MinGW stock headers.
+							(tested with w32api-3.12)
+						#endif
+					]])
+				], [
+					GEOIP_WINSOCK_LIB="-lwsock32"
+				], [
+					GEOIP_WINSOCK_LIB="-lws2_32"
+				])
+				AC_MSG_RESULT([$GEOIP_WINSOCK_LIB])
+			])
 			AC_CHECK_LIB([GeoIP], [GeoIP_open], [
 				AC_DEFINE([SUPPORT_GEOIP], [1], [Define if you want GeoIP support.])
 				GEOIP_LIBS="-lGeoIP"
-				AS_IF([test x$SYS = xwin32], [MULE_APPEND([GEOIP_LIBS], [-lws2_32])])
+				AS_IF([test x$SYS = xwin32], [MULE_APPEND([GEOIP_LIBS], [$GEOIP_WINSOCK_LIB])])
 				MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
 				AC_ARG_WITH([geoip-static], AS_HELP_STRING([--with-geoip-static], [Explicitly link GeoIP statically (default=no)]),
 				[
@@ -77,7 +94,7 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 			], [
 				ENABLE_IP2COUNTRY=disabled
 				MULE_WARNING([GeoIP support has been disabled because the GeoIP libraries were not found])
-			], [${OTHERLIBS:-}])
+			], [${GEOIP_WINSOCK_LIB:-}])
 		], [
 			ENABLE_IP2COUNTRY=disabled
 			MULE_WARNING([GeoIP support has been disabled because the GeoIP header files were not found])
