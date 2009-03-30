@@ -226,7 +226,7 @@ public:
 	bool FullReload(int cmd)
 	{
 		CECPacket req(cmd);
-		std::auto_ptr<const CECPacket> reply(this->m_conn->SendRecvPacket(&req));
+		CScopedPtr<const CECPacket> reply(this->m_conn->SendRecvPacket(&req));
 		if ( !reply.get() ) {
 			return false;
 		}
@@ -281,7 +281,7 @@ public:
 	
 		//
 		// Phase 1: request status
-		std::auto_ptr<const CECPacket> reply(this->m_conn->SendRecvPacket(&req_sts));
+		CScopedPtr<const CECPacket> reply(this->m_conn->SendRecvPacket(&req_sts));
 		if ( !reply.get() ) {
 			return false;
 		}

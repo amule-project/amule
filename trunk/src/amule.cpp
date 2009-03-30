@@ -82,6 +82,7 @@
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "UploadBandwidthThrottler.h"
 #include "UserEvents.h"
+#include "ScopedPtr.h"
 
 #ifdef ENABLE_UPNP
 #include "UPnPBase.h"			// Needed for UPnP
@@ -1580,7 +1581,7 @@ void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 	wxCHECK_RET(evt.GetResult(), wxT("No result of AICH-hashing"));
 	
 	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
-	std::auto_ptr<CKnownFile> result(evt.GetResult());
+	CScopedPtr<CKnownFile> result(evt.GetResult());
 	
 	// Check that the owner is still valid
 	if (knownfiles->IsKnownFile(owner)) {

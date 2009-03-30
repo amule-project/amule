@@ -26,10 +26,6 @@
 #define AMULE_REMOTE_GUI_CPP
 
 
-#include <memory>			// Needed for auto_ptr
-using std::auto_ptr;
-
-
 #include <wx/ipc.h>
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
@@ -67,6 +63,7 @@ using std::auto_ptr;
 #include "updownclient.h"
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "MagnetURI.h"			// Needed for CMagnetURI
+#include "ScopedPtr.h"
 
 
 CEConnectDlg::CEConnectDlg()
@@ -924,7 +921,7 @@ CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 
 void CServerListRem::DeleteItem(CServer *in_srv)
 {
-	auto_ptr<CServer> srv(in_srv);
+	CScopedPtr<CServer> srv(in_srv);
 	theApp->amuledlg->m_serverwnd->serverlistctrl->RemoveServer(srv.get());
 }
 
@@ -1043,7 +1040,7 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 
 void CSharedFilesRem::DeleteItem(CKnownFile *in_file)
 {
-	auto_ptr<CKnownFile> file(in_file);
+	CScopedPtr<CKnownFile> file(in_file);
 
 	m_enc_map.erase(file->GetFileHash());
 	
@@ -1370,7 +1367,7 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 
 void CDownQueueRem::DeleteItem(CPartFile *in_file)
 {
-	auto_ptr<CPartFile> file(in_file);
+	CScopedPtr<CPartFile> file(in_file);
 
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file.get());
 	
