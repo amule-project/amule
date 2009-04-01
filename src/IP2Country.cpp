@@ -40,10 +40,6 @@
 // Contact: mjames@gmail.com
 //
 
-#include <GeoIP.h>
-
-#include "IP2Country.h"
-
 // MSVC projects can't include files configuration dependent, so just double-check the #define
 #ifdef ENABLE_IP2COUNTRY
 
@@ -59,6 +55,9 @@
 
 #include <wx/intl.h>
 #include <wx/image.h>
+
+#include <GeoIP.h>
+#include "IP2Country.h"
 
 CIP2Country::CIP2Country()
 {
