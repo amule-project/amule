@@ -40,10 +40,6 @@
 // Contact: mjames@gmail.com
 //
 
-#include <GeoIP.h>
-
-#include "IP2Country.h"
-
 
 #include "Logger.h"			// For AddLogLineM()
 #include <common/Format.h>		// For CFormat()
@@ -57,6 +53,9 @@
 	#include <CoreFoundation/CFBundle.h>
 	#include <wx/mac/corefoundation/cfstring.h>
 #endif
+
+#include <GeoIP.h>
+#include "IP2Country.h"
 
 CIP2Country::CIP2Country()
 {
