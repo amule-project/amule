@@ -279,6 +279,7 @@ void CUpDownClient::CreateNextBlockPackage()
 				if (!((CPartFile*)srcfile)->ReadData(area, currentblock->StartOffset, togo))
 					throw wxString(wxT("Failed to read from requested partfile"));
 			}
+			area.CheckError();
 
 			//#warning Part of the above import.
 			#if 0
