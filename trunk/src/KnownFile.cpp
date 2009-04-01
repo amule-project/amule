@@ -786,6 +786,7 @@ void CKnownFile::CreateHashFromFile(CFile& file, uint32 Length, CMD4Hash* Output
 	area.Read(file, Length);
  
 	CreateHashFromInput(area.GetBuffer(), Length, Output, pShaHashOut);
+	area.CheckError();
 }	
 
 

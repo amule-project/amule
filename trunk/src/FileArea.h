@@ -24,12 +24,15 @@
 
 #include "CFile.h"		// Needed for CFile
 
+class CFileAreaSigHandler;
+
 /**
  * This class is used to optimize file read/write using mapped memory
  * if supported.
  */
 class CFileArea
 {
+friend class CFileAreaSigHandler;
 public:
 	/**
 	 * Creates a uninitialized file area.
@@ -72,6 +75,11 @@ public:
 	 */
 	byte *GetBuffer() const { return m_buffer; };
 
+	/**
+	 * Report error pending
+	 */
+	void CheckError();
+
 private:
 	//! A CFileArea is neither copyable nor assignable.
 	//@{
@@ -94,10 +102,13 @@ private:
 	 */
 	size_t m_length;
 	/**
-	 * File descriptor or 'fd_invalid' if not opened.
-	 * This file descriptor is used to write file if not mapped.
+	 * Global chain
 	 */
-	int m_fd;
+	CFileArea* m_next;
+	/**
+	 * true if error detected
+	 */
+	bool m_error;
 };
 
 #endif // FILEAREA_H
