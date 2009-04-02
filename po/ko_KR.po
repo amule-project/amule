@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -494,12 +494,12 @@ msgstr "새이름 넣으세요:"
 msgid "File rename"
 msgstr "파일 이름변경"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "파일의 올려주기를 재시작합니다: %s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "파일의 올려주기를 정지합니다: %s"
@@ -4149,11 +4149,11 @@ msgstr "%s (%s - %s:%i) %s에 연결합니다."
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "%s 서버에 대한 DNS를 해석 할 수 없음: 연결할수 없습니다!"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): 국가 정보를 읽을 수 없습니다."
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, fuzzy, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
