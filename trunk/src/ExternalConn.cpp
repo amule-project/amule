@@ -1669,6 +1669,69 @@ CECPacket *ECPartFileMsgSource::GetNextPacket()
 }
 
 /*
+ * Shared files - similar to downloading
+ */
+ECKnownFileMsgSource::ECKnownFileMsgSource()
+{
+	for (unsigned int i = 0; i < theApp->sharedfiles->GetFileCount(); i++) {
+		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
+		KNOWNFILE_STATUS status = { true, false, false, true, cur_file };
+		m_dirty_status[cur_file->GetFileHash()] = status;
+	}
+}
+
+void ECKnownFileMsgSource::SetDirty(CKnownFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	if ( m_dirty_status.find(filehash) != m_dirty_status.end() ) {
+		m_dirty_status[filehash].m_dirty = true;;
+	}
+}
+
+void ECKnownFileMsgSource::SetNew(CKnownFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	wxASSERT ( m_dirty_status.find(filehash) == m_dirty_status.end() );
+	KNOWNFILE_STATUS status = { true, false, false, true, file };
+	m_dirty_status[filehash] = status;
+}
+	
+void ECKnownFileMsgSource::SetRemoved(CKnownFile *file)
+{
+	CMD4Hash filehash = file->GetFileHash();
+	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
+	
+	m_dirty_status[filehash].m_removed = true;
+}
+
+CECPacket *ECKnownFileMsgSource::GetNextPacket()
+{
+	for(std::map<CMD4Hash, KNOWNFILE_STATUS>::iterator it = m_dirty_status.begin();
+		it != m_dirty_status.end(); it++) {
+		if ( it->second.m_new || it->second.m_dirty || it->second.m_removed) {
+			CMD4Hash filehash = it->first;
+			
+			CKnownFile *partfile = it->second.m_file;
+			
+			CECPacket *packet = new CECPacket(EC_OP_SHARED_FILES);
+			if ( it->second.m_removed ) {
+				CECTag tag(EC_TAG_PARTFILE, filehash);
+				packet->AddTag(tag);
+				m_dirty_status.erase(it);
+			} else {
+				CEC_SharedFile_Tag tag(partfile, it->second.m_new ? EC_DETAIL_FULL : EC_DETAIL_UPDATE);
+				packet->AddTag(tag);
+			}
+			m_dirty_status[filehash].m_new = false;
+			m_dirty_status[filehash].m_dirty = false;
+			
+			return packet;
+		}
+	}
+	return 0;
+}
+	
+/*
  * Notification about search status
 */
 ECSearchMsgSource::ECSearchMsgSource()
@@ -1813,6 +1876,31 @@ void ECNotifier::DownloadFile_AddSource(CPartFile *)
 	// per-partfile source list is not supported (yet), and IMHO quite useless
 }
 
+void ECNotifier::SharedFile_AddFile(CKnownFile *file)
+{
+	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
+		i != m_msg_source.end(); i++) {
+		ECUpdateMsgSource **notifier_array = i->second;
+		((ECKnownFileMsgSource *)notifier_array[EC_KNOWN])->SetNew(file);
+	}
+	NextPacketToSocket();
+}
+
+void ECNotifier::SharedFile_RemoveFile(CKnownFile *file)
+{
+	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
+		i != m_msg_source.end(); i++) {
+		ECUpdateMsgSource **notifier_array = i->second;
+		((ECKnownFileMsgSource *)notifier_array[EC_KNOWN])->SetRemoved(file);
+	}
+	NextPacketToSocket();
+}
+
+void ECNotifier::SharedFile_RemoveAllFiles()
+{
+	// need to figure out what to do here
+}
+	
 void ECNotifier::Add_EC_Client(CECServerSocket *sock)
 {
 	ECUpdateMsgSource **notifier_array = new ECUpdateMsgSource *[EC_STATUS_LAST_PRIO];
@@ -1820,6 +1908,7 @@ void ECNotifier::Add_EC_Client(CECServerSocket *sock)
 	notifier_array[EC_SEARCH] = new ECSearchMsgSource();
 	notifier_array[EC_PARTFILE] = new ECPartFileMsgSource();
 	notifier_array[EC_CLIENT] = new ECClientMsgSource();
+	notifier_array[EC_KNOWN] = new ECKnownFileMsgSource();
 
 	m_msg_source[sock] = notifier_array;
 }
