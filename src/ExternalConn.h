@@ -259,6 +259,25 @@ class ECPartFileMsgSource : public ECUpdateMsgSource {
 	
 };
 
+class ECKnownFileMsgSource : public ECUpdateMsgSource {
+		typedef struct {
+			bool m_new;
+			bool m_comment_changed;
+			bool m_removed;
+			bool m_dirty;
+			CKnownFile *m_file;
+		} KNOWNFILE_STATUS;
+		std::map<CMD4Hash, KNOWNFILE_STATUS> m_dirty_status;
+	public:
+		ECKnownFileMsgSource();
+
+		void SetDirty(CKnownFile *file);
+		void SetNew(CKnownFile *file);
+		void SetRemoved(CKnownFile *file);
+		
+		virtual CECPacket *GetNextPacket();
+};
+
 class ECClientMsgSource : public ECUpdateMsgSource {
 	public:
 		virtual CECPacket *GetNextPacket();
@@ -305,6 +324,7 @@ class ECNotifier {
 			EC_SEARCH,
 			EC_CLIENT,
 			EC_STATUS,
+			EC_KNOWN,
 			
 			EC_STATUS_LAST_PRIO
 		};
@@ -336,6 +356,10 @@ class ECNotifier {
 		void Status_QueueCount();
 		void Status_UserCount();
 		
+		void SharedFile_AddFile(CKnownFile *file);
+		void SharedFile_RemoveFile(CKnownFile *file);
+		void SharedFile_RemoveAllFiles();
+
 };
 
 
