@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -485,12 +485,12 @@ msgstr "הכנס שם חדש עבור קובץ זה"
 msgid "File rename"
 msgstr "שינוי שם לקובץ"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "ממשיך את העלאה של קובץ: %s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "משהה את העלאה של קובץ: %s"
@@ -4116,11 +4116,11 @@ msgstr "מחבר ל %s·(%s·-·%s:%i)·%s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "לא יכול לפענח כתובת השרת של %s באמצעות DNS: לא יכול להתחבר!"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): לא הצליח לטעון מידע עבור המדינה מ "
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, fuzzy, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

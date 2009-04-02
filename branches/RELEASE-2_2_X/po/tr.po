@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2008-12-04 18:59+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
@@ -495,12 +495,12 @@ msgstr "Bu dosya için yeni bir isim girin:"
 msgid "File rename"
 msgstr "Dosya yeniden adlandır"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Şu dosya için gönderimler başlatılıyor:%s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Şu dosya için gönderimler bekletiliyor: %s"
@@ -4166,11 +4166,11 @@ msgstr "%s (%s - %s:%i) adresine %s ."
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Sunucu %s için DNS çözümlenemiyor: Bağlanmak imkansız!"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Ülke verisi yükleme başarısız "
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

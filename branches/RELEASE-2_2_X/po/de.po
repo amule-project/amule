@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2008-03-15 15:06+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
@@ -499,12 +499,12 @@ msgstr "Einen neuen Namen für diese Datei eingeben:"
 msgid "File rename"
 msgstr "Datei umbenennen"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Wiederaufnahme des Hochladens der Datei '%s'."
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Aussetzen des Hochladens der Datei '%s'."
@@ -4230,11 +4230,11 @@ msgstr "Verbinde mit·%s·(%s·-·%s:%i)·%s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Konnte DNS-Namen von Server %s nicht auflösen: Kann nicht verbinden!"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country():·Misslungenes Laden von Länderdaten von "
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

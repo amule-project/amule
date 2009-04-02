@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -482,12 +482,12 @@ msgstr ""
 msgid "File rename"
 msgstr ""
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr ""
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr ""
@@ -4043,11 +4043,11 @@ msgstr ""
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr ""
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr ""
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

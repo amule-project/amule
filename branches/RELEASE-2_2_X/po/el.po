@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2008-12-06 23:06-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -505,12 +505,12 @@ msgstr "Δώστε νέο όνομα γι αυτό το αρχείο:"
 msgid "File rename"
 msgstr "Μετονομασία αρχείου"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Σύνεχεια του ανεβάσματος του αρχείου: %s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Αναστολή ανεβάσματος του αρχείου: %s"
@@ -4273,11 +4273,11 @@ msgstr ""
 "Δεν μπόρεσε να γίνει επίλυση dns για τον διακομιστή %s: Δεν είναι δυνατή ή "
 "σύνδεση!"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Αποτυχία φορτώματος δεδομένων χώρας από"
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2008-12-06 14:09+0800\n"
 "Last-Translator: mstar\n"
 "Language-Team: \n"
@@ -490,12 +490,12 @@ msgstr "請輸入新檔案名："
 msgid "File rename"
 msgstr "更改檔名"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "繼續上傳檔案：%s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "暫停上傳檔案：%s"
@@ -4143,11 +4143,11 @@ msgstr "正在連線到 %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "無法解析伺服器 %s 的 DNS 資訊：無法連線！"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country()：無法載入國家資訊"
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

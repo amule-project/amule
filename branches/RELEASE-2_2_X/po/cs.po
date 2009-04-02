@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2007-09-03 20:20+0100\n"
 "Last-Translator: David Watzke <david@watzke.cz>\n"
 "Language-Team: cs <cs@li.org>\n"
@@ -494,12 +494,12 @@ msgstr "Zadejte nový název pro tento soubor:"
 msgid "File rename"
 msgstr "Přejmenování souboru"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Obnovuji odesílání souboru %s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Zastavuji odesílání souboru %s"
@@ -4130,11 +4130,11 @@ msgstr "Připojování k %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr ""
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr ""
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-23 01:05+0100\n"
+"POT-Creation-Date: 2009-04-02 16:50+0200\n"
 "PO-Revision-Date: 2009-03-06 10:43+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -495,12 +495,12 @@ msgstr "Sisesta selle faili uus nimi:"
 msgid "File rename"
 msgstr "Faili ümbernimetamine"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:511
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Taastan faili '%s' saatmise"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:520
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Peatan faili '%s' saatmise"
@@ -4174,11 +4174,11 @@ msgstr "Ühendun %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Ei suuda masina %s dns nime lahendada: Ei saa ühenduda!"
 
-#: src/IP2Country.cpp:101
+#: src/IP2Country.cpp:100
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Riigi info laadimine ebaõnnestus "
 
-#: src/IP2Country.cpp:106
+#: src/IP2Country.cpp:105
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
