@@ -1,0 +1,284 @@
+
+                                 -----------
+                                    aMule
+                                 -----------
+                         The All-platform eD2k Client
+
+
+ About
+-------
+  aMule is a multiplatform ed2k client, fork of the eMule client, using the
+  wxWidgets class library. It was originally forked from the xMule project,
+  which in turn was forked from the lMule project. This is turn was the first
+  fork of eMule to run nativly on Linux and other Unix-like systems.
+
+
+ Installation
+--------------
+  See INSTALL file
+
+
+ Configuration:
+----------------
+  - Go to the "Preferences" tab
+
+  - Enter a nickname or leave as the default value.
+
+  - Enter the "Download Capacity" and "Upload Capacity" according to your
+    internet connection. All values in aMule are kiloBytes (kB), but your
+    Internet Service Provider's numbers are most likely kiloBits (kb). 
+    
+    8 kiloBits make up 1 kiloByte, so if your Internet Connection is 768kb
+    Downstream and 128kb Upstream (i.e. German Telekom DSL), your correct
+    values are:
+
+      Downstream: 768kb / 8 = 96kB, so you enter 96 as "Download Capacity"
+      Upstream:   128kb / 8 = 16kB, so you enter 16 as "Upload Capacity"
+
+    Anyway, these values are used to calculate the current bandwidth usage for
+    display purposes only (mainly for statistics). Nevertheless, you need to
+    know them to determine the following down/upload limits:
+
+  - Enter "Download Limit" and "Upload Limit"  (IMPORTANT!)
+    
+    Download Limit:
+        Leave this at 0, which stands for "no limit". However, if aMule uses
+        too much bandwidth and causes problems with other applications using
+        your internet connection, it would be a good idea to limit this to
+        aproximetly 80% of your downstream capacity.
+ 
+    Upload Limit:
+        It is recommended that you set this limit to around 80% of your actual
+        upstream capacity, in order to avoid degrading the performance of your
+        connection.
+
+    Setting the Upload Limit to a value less than 10 will automatically reduce
+    your Download Limit after the following schema:
+
+      Upload Limit  |  Max Download
+         >= 10      |    No limit
+          < 10      |    Upload Limit * 4
+          <  4      |    Upload Limit * 3
+          
+
+    NOTE: 56k Modem users: aMule only accepts integral values for these
+          settings, you can't enter 1.6 or whatever your sweet-spot setting
+          is. Sorry.
+
+  - "Maximum Connections":
+    As a general rule, set it to 500 - 2000.
+
+  - "Maximum Sources per File":
+    This depends on how many files you tend to download at a time, if you 
+    tend to download few files, high values are acceptable, otherwise go
+    for lower values so that all files will be able to get sources.
+
+  - Choose the directories you want to share with other users:
+    DO NOT SHARE YOUR COMPLETE HARDDISK!
+    
+    It is suggested that you either use the "Incoming" folder or a seperate
+    folder for the files you wish to share, to avoid inadvertedly sharing
+    private files.
+
+    If you share more than 200 files, you should consider that some servers
+    have a hard limit due to resource constraints, which means that you may
+    be kicked from them if you share too many files or that some of your
+    files won't be populated to the network through that server. So it is not
+    always a good idea to share lots of files.
+
+  - Other:
+    The other options are pretty self-explanatory. If you don't know what it
+    does, don't touch it as a general rule. More information on getting started
+    can be found in the aMule wiki:
+      http://www.amule.org/wiki/index.php/Getting_Started
+
+    Don't forget to connect to a server, or you probably won't download too much.
+
+
+ Basic aMule Tips
+------------------
+  * NEVER run aMule as root.
+  * If you are behind a firewall or router, be sure that the ports have been
+    opened. The default ports are 4662 (TCP). 4665 (UDP) and 4672 (UDP). If
+    these are blocked, you will receive a "LowID" which results in fewer 
+    availble sources for the files you are downloading.
+  * Obtain an appropriate server.met: e.g., if you are a dialup, using
+    a large server list is not appropiate.
+  * Set your temp and shared directories in Preferences->Directories
+    * To recursively select a certain directory, right-click over it.
+    * You should *NOT* share
+      * Your temp download directory!
+      * Your /etc directory
+      * Probably not your /var, /lib, /boot, or /usr directory
+      * Certainly make sure that any really confidential files (password files,
+        private SSH keys, credit card numbers :) are *not* shared. So generally
+        do not share your entire home directory, although you might want to
+        share some files or directories in it.
+  * Remember that you get certain download priveledges with those clients
+    (aMule, eMule, etc users) to whom you upload files, in the form of reduced
+    queue waits.
+  * Please note that compilation with optimizations is supported. However, if 
+    you pull a Gentoo, we will probably just tell you to recompile aMule and/or
+    your system with sane compiler-flags before we will attempt to address the
+    problem.
+
+
+ Obtaining your first server list
+----------------------------------
+  Use one of the following links in the "Update server.met from URL" box in 
+  the Server tab. They are apparently updated every 20 minutes.
+
+  * The current top 50 servers (these fill up fast):
+      http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download
+  * The current top 150 servers:
+      http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met
+  * The biggest list (about 300 servers) maintained by the site. Only if you
+    have a very decent connection:
+      http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met 
+  * Should maurice be down for some reasons, use this server.met instead:
+      http://www.srv1000.com/azz/server.met
+
+  If these are non-functional, simply google for 'server.met'.
+
+
+ Tranfers icons
+----------------
+  To find descriptions of the various icons found inside aMule, take a look at
+  http://www.amule.org/wiki/index.php/Getting_Started#Icons_and_What_They_Signify
+
+
+ License
+---------
+  aMule -- like eMule -- is released under the GNU General Public License. 
+  See the "COPYING" file for details.
+
+
+ Developers
+------------
+  See AUTHORS
+
+
+ FAQ:
+------
+  -- How do I know whether my ID is high or low? --
+
+  Look at the arrows at the bottom right corner, wrapping a world icon, next to
+  the server name you are connected to. If they're green, your ID is high. If
+  they're yellow, your ID is low.
+
+  
+  -- What does high and low ID mean anyway? --
+
+  When your ID is high (green arrows), everything is fine.
+  When it's low (yellow arrows), you are probably behind a firewall or a
+  router, and other clients can't connect to you directly (which is a bad
+  thing). Please read the FAQ, search our wiki or forums on how to configure
+  your firewall/router for aMule.
+
+  NOTE: you can also get a low ID when the server you connected to is too busy
+  to answer properly, or simply badly configured. When you are sure your
+  settings are ok and you SHOULD have a high ID, connect to another server.
+
+  
+  -- I'd like to search for specific file types, what filter stands for which files? --
+
+  File Type Extensions found
+  --------------------------------------------------------------------
+  Audio         .mp3 .mp2 .mpc .wav .ogg .aac .mp4 .ape .au .wma
+  Video         .avi .mpg .mpeg .ram .rm .vob .divx .mov .ogg .vivo
+  Program       .exe .com
+  Archive       .zip .rar .ace .tar.gz .tar.bz2 .Z .arj
+  CDImage       .bin .cue .iso .nrg .ccd .sub .img
+  Picture       .jpg .jpeg .bmp .gif .tif .png
+
+  
+  -- What are all those fancy colors in the download progress bar about? --
+
+  Each download in the the transfers window has a coloured bar to show current
+  file availability and progress.
+
+  * Black shows the parts of the file you already have
+  * Red indicates a part missing in all known sources
+  * Different shades of blue represent the availability of this part in the
+    sources. The darker the blue is the higher the availability
+  * Yellow denotes a part being downloaded
+  * The green bar on top shows the total download progress of this file
+
+  If you expand the download you see its sources with the corresponding
+  bar. Here the colours have a slightly different meaning:
+
+  * Black shows parts you are still missing
+  * Silver stands for parts this source is also missing
+  * Green indicates parts you already have
+  * Yellow denotes a part being uploaded to you
+
+  Learning how the progress bar works will greatly help your understanding
+  of the eD2k network.
+
+  
+  -- Where can I get more information? --
+
+  Here are some links that might be of your interest:
+
+  * aMule Wiki (documentation pages)
+      http://wiki.amule.org
+
+  * aMule forums
+      http://forum.amule.org
+
+  * eMule documents
+      http://www.emule-project.net/home/perl/help.cgi
+ 
+
+ Want to help?
+---------------
+  aMule is a free software project and requires the cooperation of its users
+  to improve the quality of the software. We welcome all contributions to the
+  project in the form of new features, bug fixes, feature requests, etc.
+
+  If you are not a programmer you can still contribute by providing good bug
+  reports  when you come accross a problem with aMule. A good bug report gives
+  the aMule Team information enough to reproduce the bug (so we can see it in
+  action) and fix it. If possible, try to isolate under which the bug occurs 
+  (eg. does it happen on some specific window, with some specific files, some
+  specific conditions etc.) and provide as much detail as you can in your
+  report.
+
+  If you are a programmer and fix a bug you observe, please send us a patch or
+  a note about how you fixed the problem.
+
+
+ IRC, Links and Contact
+-------------
+  IRC: Channel #aMule on FREENODE IRC Network (irc.freenode.net)
+
+  aMule homepage
+      http://www.amule.org
+
+  aMule related links
+      http://www.amule.org/wiki/index.php/FAQ_ed2k
+      http://www.amule.org/wiki/index.php/aMule
+      http://www.amule.org/wiki/index.php/FAQ_aMule
+      http://www.amule.org/wiki/index.php/FAQ_utils
+      http://www.amule.org/wiki/index.php/Getting_Started
+      http://www.amule.org/wiki/index.php/aMule_problems
+
+  wxWidgets toolkit homepage
+      http://www.wxwidgets.org
+
+  eMule homepage
+      http://www.emule-project.net
+
+  Contact (administrative issues only!)
+      admin@amule.org
+
+ Legal Notice
+--------------
+
+  aMule is an interface to the ed2k network. As such, the aMule developers have
+  absolutely no control or say over what is transferred on this medium and
+  cannot be held liable for any non-personal copyright infringements or other
+  illegal activities.
+
+
+-- Last modified Sun May 1 13:05:02 CEST 2005 --
