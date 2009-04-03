@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -131,7 +131,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		wxString wstrKeyword = s->m_words.front();
 
-		AddLogLineNS(CFormat(_("Keyword for search: %s")) % wstrKeyword);
+		printf("Keyword for search: %s\n",(const char*)unicode2char(wstrKeyword));
 
 		// Kry - I just decided to assume everyone is unicoded
 		// GonoszTopi - seconded
@@ -139,7 +139,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		// Verify that we are not already searching for this target.
 		if (AlreadySearchingFor(s->m_target)) {
-			throw _("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
+			throw wxT("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
 		}
 
 		s->SetSearchTermData(searchTermsDataSize, searchTermsData);
@@ -511,7 +511,9 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 	if (s == NULL) {
 		AddDebugLogLineM (false, logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResult)"));
-		deleteTagPtrListEntries(info);
+		for (TagPtrList::const_iterator tagIt = info->begin(); tagIt != info->end(); tagIt++) {
+			delete *tagIt;
+		}
 		delete info;
 	} else {
 		s->ProcessResult(answer, info);

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -45,7 +45,6 @@
 #include <common/Format.h>
 #include "ScopedPtr.h"		// Needed for CScopedArray
 #include "GuiEvents.h"		// Needed for Notify_*
-#include "FileArea.h"		// Needed for CFileArea
 
 
 //	members of CUpDownClient
@@ -208,10 +207,11 @@ void CUpDownClient::CreateNextBlockPackage()
 {
 	// See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
 	if(m_BlockRequests_queue.empty() || // There are no new blocks requested
-		((m_addedPayloadQueueSession > GetQueueSessionPayloadUp()) && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024)) { // the buffered data is large enough allready
+		m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024) { // the buffered data is large enough allready
 		return;
 	}
 
+	CFile file;
 	CPath fullname;
 	try {
 	// Buffer new data if current buffer is less than 100 KBytes
@@ -262,10 +262,9 @@ void CUpDownClient::CreateNextBlockPackage()
 			if (togo > EMBLOCKSIZE * 3) {
 				throw wxString(wxT("Client requested too large of a block."));
 			}
-
-			CFileArea area;
+		
+			CScopedArray<byte> filedata(NULL);	
 			if (!srcfile->IsPartFile()){
-				CFile file;
 				if ( !file.Open(fullname, CFile::read) ) {
 					// The file was most likely moved/deleted. However it is likely that the
 					// same is true for other files, so we recheck all shared files. 
@@ -273,13 +272,21 @@ void CUpDownClient::CreateNextBlockPackage()
 					theApp->sharedfiles->RemoveFile(srcfile);
 					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
-				}
-				area.Read(file, togo);
+				}			
+			
+				file.Seek(currentblock->StartOffset, wxFromStart);
+				
+				filedata.reset(new byte[togo + 500]);
+				file.Read(filedata.get(), togo);
+				file.Close();
 			} else {
-				if (!((CPartFile*)srcfile)->ReadData(area, currentblock->StartOffset, togo))
-					throw wxString(wxT("Failed to read from requested partfile"));
+				CPartFile* partfile = (CPartFile*)srcfile;
+				partfile->m_hpartfile.Seek(currentblock->StartOffset);
+				
+				filedata.reset(new byte[togo + 500]);
+				partfile->m_hpartfile.Read(filedata.get(), togo); 
+				// Partfile should NOT be closed!!!
 			}
-			area.CheckError();
 
 			//#warning Part of the above import.
 			#if 0
@@ -293,9 +300,9 @@ void CUpDownClient::CreateNextBlockPackage()
 
 			// check extention to decide whether to compress or not
 			if (m_byDataCompVer == 1 && GetFiletype(srcfile->GetFileName()) != ftArchive) {
-				CreatePackedPackets(area.GetBuffer(), togo, currentblock);
+				CreatePackedPackets(filedata.get(), togo,currentblock);
 			} else {
-				CreateStandartPackets(area.GetBuffer(), togo, currentblock);
+				CreateStandartPackets(filedata.get(), togo,currentblock);
 			}
 			
 			// file statistic
@@ -371,15 +378,16 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 
 void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
+	byte* output = new byte[togo+300];
 	uLongf newsize = togo+300;
-	CScopedArray<byte> output(newsize);
-	uint16 result = compress2(output.get(), &newsize, buffer, togo, 9);
+	uint16 result = compress2(output, &newsize, buffer, togo,9);
 	if (result != Z_OK || togo <= newsize){
+		delete[] output;
 		CreateStandartPackets(buffer, togo, currentblock);
 		return;
 	}
 	
-	CMemFile memfile(output.get(), newsize);
+	CMemFile memfile(output,newsize);
 	
 	uint32 totalPayloadSize = 0;
 	uint32 oldSize = togo;
@@ -428,6 +436,7 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "), (isLargeBlock ? wxT("OP_COMPRESSEDPART_I64") : wxT("OP_COMPRESSEDPART"))) + GetFullIP() );
 		m_socket->SendPacket(packet,true,false, payloadSize);			
 	}
+	delete[] output;
 }
 
 

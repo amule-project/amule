@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -24,8 +24,6 @@
 //
 
 #include <wx/wx.h>
-#include <wx/mstream.h>
-#include <wx/tokenzr.h>
 
 #include "updownclient.h"	// Needed for CUpDownClient
 
@@ -58,12 +56,6 @@
 #include "Packet.h"		// Needed for CPacket
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList
-#ifndef AMULE_DAEMON
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CaptchaDialog.h"	// Needed for CCaptchaDialog
-#include "CaptchaGenerator.h"
-#include "ChatWnd.h"		// Needed for CChatWnd
-#endif
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
@@ -127,7 +119,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 			m_nConnectIP = wxUINT32_SWAP_ALWAYS(in_userid);
 		}
 		// Will be on right endianess now
-		m_FullUserIP = m_nConnectIP;
+		m_FullUserIP = Uint32toStringIP(m_nConnectIP);
 	}
 
 	m_dwServerIP = in_serverip;
@@ -152,7 +144,6 @@ void CUpDownClient::Init()
 	credits = NULL;
 	m_byChatstate = MS_NONE;
 	m_nKadState = KS_NONE;
-	m_nChatCaptchaState = CA_NONE;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
 	m_nTransferredUp = 0;
@@ -227,7 +218,6 @@ void CUpDownClient::Init()
 	m_fAICHRequested = 0;
 	m_fSupportsLargeFiles = 0;
 	m_fExtMultiPacket = 0;
-	m_fIsSpammer = 0;
 
 	m_dwUserIP = 0;
 	m_nConnectIP = 0;
@@ -253,7 +243,8 @@ void CUpDownClient::Init()
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
-		SetIP(StringIPtoUint32(address.IPAddress()));
+		m_FullUserIP = address.IPAddress();
+		SetIP(StringIPtoUint32(m_FullUserIP));
 	} else {
 		SetIP(0);
 	}
@@ -275,16 +266,10 @@ void CUpDownClient::Init()
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
 	m_fSupportsSourceEx2 = 0;
-	m_fSupportsCaptcha = 0;
 	m_fDirectUDPCallback = 0;
 	m_dwDirectCallbackTimeout = 0;
 
 	m_hasbeenobfuscatinglately = false;
-
-	m_cCaptchasSent = 0;
-	m_cMessagesReceived = 0;
-	m_cMessagesSent = 0;
-
 }
 
 
@@ -292,7 +277,7 @@ CUpDownClient::~CUpDownClient()
 {
 	#ifdef __DEBUG__
 	if (!connection_reason.IsEmpty()) {
-		AddDebugLogLineN(logClient, wxT("Client to check for ") + connection_reason + wxT(" was deleted without connection."));
+		printf("Client to check for %s was deleted without connection.\n",(const char*)unicode2char(connection_reason));
 	}
 	#endif	
 	
@@ -377,7 +362,6 @@ void CUpDownClient::ClearHelloProperties()
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
 	m_fSupportsSourceEx2 = 0;
-	m_fSupportsCaptcha = 0;
 	m_fDirectUDPCallback = 0;
 }
 
@@ -480,7 +464,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_nUDPPort = temptag.GetInt() & 0xFFFF;
 				dwEmuleTags |= 1;
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(CFormat(wxT("Hello type packet processing with eMule ports UDP=%i KAD=%i")) % m_nUDPPort % m_nKadPort);
+				printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
 				#endif
 				break;
 				
@@ -488,7 +472,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				// 32 BUDDY IP
 				m_nBuddyIP = temptag.GetInt();
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(CFormat(wxT("Hello type packet processing with eMule BuddyIP=%u (%s)")) % m_nBuddyIP % Uint32toStringIP(m_nBuddyIP));
+				printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
 				#endif
 				break;				
 				
@@ -497,7 +481,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				// 16 BUDDY Port
 				m_nBuddyPort = (uint16)temptag.GetInt();
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(CFormat(wxT("Hello type packet processing with eMule BuddyPort=%u")) % m_nBuddyPort);
+				printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
 				#endif
 				break;
 				
@@ -528,17 +512,17 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_fSupportsPreview		= (flags >> 1*0) & 0x01;
 				dwEmuleTags |= 2;
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(wxT("Hello type packet processing with eMule Misc Options:"));
-				AddLogLineNS(CFormat(wxT("m_byUDPVer = %i")) % m_byUDPVer);
-				AddLogLineNS(CFormat(wxT("m_byDataCompVer = %i")) % m_byDataCompVer);
-				AddLogLineNS(CFormat(wxT("m_bySupportSecIdent = %i")) % m_bySupportSecIdent);
-				AddLogLineNS(CFormat(wxT("m_bySourceExchangeVer = %i")) % m_bySourceExchange1Ver);
-				AddLogLineNS(CFormat(wxT("m_byExtendedRequestsVer = %i")) % m_byExtendedRequestsVer);
-				AddLogLineNS(CFormat(wxT("m_byAcceptCommentVer = %i")) % m_byAcceptCommentVer);
-				AddLogLineNS(CFormat(wxT("m_fNoViewSharedFiles = %i")) % m_fNoViewSharedFiles);
-				AddLogLineNS(CFormat(wxT("m_bMultiPacket = %i")) % m_bMultiPacket);
-				AddLogLineNS(CFormat(wxT("m_fSupportsPreview = %i")) % m_fSharedDirectories);
-				AddLogLineNS(wxT("That's all."));
+				printf("Hello type packet processing with eMule Misc Options:\n");
+				printf("m_byUDPVer = %i\n",m_byUDPVer);
+				printf("m_byDataCompVer = %i\n",m_byDataCompVer);
+				printf("m_bySupportSecIdent = %i\n",m_bySupportSecIdent);
+				printf("m_bySourceExchangeVer = %i\n",m_bySourceExchange1Ver);
+				printf("m_byExtendedRequestsVer = %i\n",m_byExtendedRequestsVer);
+				printf("m_byAcceptCommentVer = %i\n",m_byAcceptCommentVer);
+				printf("m_fNoViewSharedFiles = %i\n",m_fNoViewSharedFiles);
+				printf("m_bMultiPacket = %i\n",m_bMultiPacket);
+				printf("m_fSupportsPreview = %i\n",m_fSharedDirectories);
+				printf("That's all.\n");
 				#endif
 				SecIdentSupRec +=  1;
 				break;
@@ -557,7 +541,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				//   1 Large Files (includes support for 64bit tags)
 				//   4 Kad Version - will go up to version 15 only (may need to add another field at some point in the future)
 				m_fDirectUDPCallback	= (temptag.GetInt() >> 12) & 0x01;
-				m_fSupportsCaptcha	    = (temptag.GetInt() >> 11) & 0x01;
+				// 1 captcha support
 				m_fSupportsSourceEx2	= (temptag.GetInt() >> 10) & 0x01;
 				m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
 				m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
@@ -572,17 +556,16 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
 			
 				#ifdef __PACKET_DEBUG__
-				AddLogLineNS(wxT("Hello type packet processing with eMule Misc Options 2:"));
-				AddLogLineNS(CFormat(wxT("	m_fDirectUDPCallback	= %i")) % m_fDirectUDPCallback);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsCaptcha		= %i")) % m_fSupportsCaptcha);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsSourceEx2	= %i")) % m_fSupportsSourceEx2);
-				AddLogLineNS(CFormat(wxT("	m_fRequiresCryptLayer	= %i")) % m_fRequiresCryptLayer);
-				AddLogLineNS(CFormat(wxT("	m_fRequestsCryptLayer	= %i")) % m_fRequestsCryptLayer);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsCryptLayer	= %i")) % m_fSupportsCryptLayer);
-				AddLogLineNS(CFormat(wxT("	m_fExtMultiPacket	= %i")) % m_fExtMultiPacket);
-				AddLogLineNS(CFormat(wxT("	m_fSupportsLargeFiles	= %i")) % m_fSupportsLargeFiles);
-				AddLogLineNS(CFormat(wxT("	KadVersion		= %u")) % m_byKadVersion);
-				AddLogLineNS(wxT("That's all."));
+				printf("Hello type packet processing with eMule Misc Options 2:\n");
+				printf("	m_fDirectUDPCallback	= %i\n", m_fDirectUDPCallback);
+				printf("	m_fSupportsSourceEx2	= %i\n", m_fSupportsSourceEx2);
+				printf("	m_fRequiresCryptLayer	= %i\n", m_fRequiresCryptLayer);
+				printf("	m_fRequestsCryptLayer	= %i\n", m_fRequestsCryptLayer);
+				printf("	m_fSupportsCryptLayer	= %i\n", m_fSupportsCryptLayer);
+				printf("	m_fExtMultiPacket	= %i\n", m_fExtMultiPacket);
+				printf("	m_fSupportsLargeFiles	= %i\n", m_fSupportsLargeFiles);
+				printf("	KadVersion		= %u\n", m_byKadVersion);
+				printf("That's all.\n");
 				#endif			
 				break;
 
@@ -631,7 +614,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
-		SetIP(StringIPtoUint32(address.IPAddress()));
+		m_FullUserIP = address.IPAddress();
+		SetIP(StringIPtoUint32(m_FullUserIP));
 	} else {
 		throw wxString(wxT("Huh, socket failure. Avoided crash this time."));
 	}
@@ -697,7 +681,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 bool CUpDownClient::SendHelloPacket() {
 
 	if (m_socket == NULL){
-		wxFAIL;
+		wxASSERT(0);
 		return true;
 	}
 
@@ -727,7 +711,7 @@ bool CUpDownClient::SendHelloPacket() {
 void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 	if (m_socket == NULL){
-		wxFAIL;
+		wxASSERT(0);
 		return;
 	}
 
@@ -989,7 +973,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 void CUpDownClient::SendHelloAnswer()
 {
 	if (m_socket == NULL){
-		wxFAIL;
+		wxASSERT(0);
 		return;
 	}
 
@@ -1102,13 +1086,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 	const uint32 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 	const uint32 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;	
-	const uint32 uSupportsSourceEx2		= 1;
-#ifdef AMULE_DAEMON
-// captcha for daemon/remotegui not supported for now
-	const uint32 uSupportsCaptcha		= 0;
-#else
-	const uint32 uSupportsCaptcha		= 1;
-#endif
+	const uint32 uSupportsSourceEx2		= 1;					
 	// direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
 	const uint32 uDirectUDPCallback		= (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled()
 						   && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
@@ -1116,7 +1094,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	CTagVarInt tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     )
 				(uDirectUDPCallback	<< 12) |
- 				(uSupportsCaptcha	<< 11) |	
+// 				(uSupportsCaptcha	<< 11) |	// No captcha support in aMule
 				(uSupportsSourceEx2	<< 10) |
 				(uRequiresCryptLayer	<<  9) |
 				(uRequestsCryptLayer	<<  8) |
@@ -1541,7 +1519,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
 					} else {
-						AddLogLineN(_("Searching buddy for lowid connection"));
+						printf("Searching buddy for lowid connection\n");
 						//Create search to find buddy.
 						Kademlia::CSearch *findSource = new Kademlia::CSearch;
 						findSource->SetSearchTypes(Kademlia::CSearch::FINDSOURCE);
@@ -1552,7 +1530,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 							SetDownloadState(DS_WAITCALLBACKKAD);
 						} else {
 							//This should never happen..
-							wxFAIL;
+							wxASSERT(0);
 						}
 					}
 				}
@@ -1578,6 +1556,8 @@ bool CUpDownClient::Connect()
 	if (!m_socket->IsOk()) {
 		// Enable or disable crypting based on our and the remote clients preference
 		if (HasValidHash() && SupportsCryptLayer() && thePrefs::IsClientCryptLayerSupported() && (RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested())){
+//			printf("Set connection encryption for socket\n");
+			//DebugLog(_T("Enabling CryptLayer on outgoing connection to client %s"), DbgGetClientInfo()); // to be removed later
 			m_socket->SetConnectionEncryption(true, GetUserHash().GetHash(), false);
 		} else {
 			m_socket->SetConnectionEncryption(false, NULL, false);
@@ -1606,8 +1586,8 @@ void CUpDownClient::ConnectionEstablished()
 	
 	#ifdef __DEBUG__
 	if (!connection_reason.IsEmpty()) {
-		AddLogLineN(CFormat(wxT("Got client info checking for %s: %s\nDisconnecting and deleting.")) % connection_reason % GetClientFullInfo());
-		connection_reason.Clear(); // So we don't re-print on destructor.
+		printf("Got client info checking for %s: %s\nDisconnecting and deleting.\n",(const char*)unicode2char(connection_reason),(const char*)unicode2char(GetClientFullInfo()));
+		connection_reason.Clear(); // So we don't re-printf on destructor.
 		Safe_Delete();
 		return;
 	}
@@ -1651,7 +1631,7 @@ void CUpDownClient::ConnectionEstablished()
 	if (GetChatState() == MS_CHATTING) {
 		bool result = true;
 		if (!m_pendingMessage.IsEmpty()) {
-			result = SendChatMessage(m_pendingMessage);
+			result = SendMessage(m_pendingMessage);
 		}
 		Notify_ChatConnResult(result,GUI_ID(GetIP(),GetUserPort()),m_pendingMessage);
 		m_pendingMessage.Clear();
@@ -1787,7 +1767,7 @@ void CUpDownClient::ReGetClientSoft()
 					(m_byCompatibleClient != 0xf0)	// Chinese leech mod
 					&& (1==1) 						// Your ad here
 					) {
-					AddLogLineNS(CFormat(wxT("Compatible client found with ET_COMPATIBLECLIENT of %x")) % m_byCompatibleClient);
+					printf("Compatible client found with ET_COMPATIBLECLIENT of %#x\n",m_byCompatibleClient);
 				}
 				#endif
 				m_clientSoftString = GetSoftName(m_clientSoft) + wxString::Format(wxT("(%#x)"),m_byCompatibleClient);
@@ -2009,7 +1989,7 @@ bool CUpDownClient::SafeSendPacket(CPacket* packet)
 void CUpDownClient::SendPublicKeyPacket(){
 	// send our public key to the client who requested it
 	if (m_socket == NULL || credits == NULL || m_SecureIdentState != IS_KEYANDSIGNEEDED){
-		wxFAIL;
+		wxASSERT ( false );
 		return;
 	}
 	if (!theApp->CryptoAvailable())
@@ -2030,7 +2010,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 void CUpDownClient::SendSignaturePacket(){
 	// signate the public key of this client and send it
 	if (m_socket == NULL || credits == NULL || m_SecureIdentState == 0){
-		wxFAIL;
+		wxASSERT ( false );
 		return;
 	}
 
@@ -2070,7 +2050,7 @@ void CUpDownClient::SendSignaturePacket(){
 
 	uint8 siglen = theApp->clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
 	if (siglen == 0){
-		wxFAIL;
+		wxASSERT ( false );
 		return;
 	}
 	CMemFile data;
@@ -2095,7 +2075,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 
 	if (m_socket == NULL || credits == NULL || pachPacket[0] != nSize-1
 		|| nSize == 0 || nSize > 250){
-		wxFAIL;
+		wxASSERT ( false );
 		return;
 	}
 	if (!theApp->CryptoAvailable())
@@ -2121,7 +2101,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 	// here we spread the good guys from the bad ones ;)
 
 	if (m_socket == NULL || credits == NULL || nSize == 0 || nSize > 250){
-		wxFAIL;
+		wxASSERT ( false );
 		return;
 	}
 
@@ -2131,7 +2111,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 	else if (pachPacket[0] == nSize-2 && (m_bySupportSecIdent & 2) > 0) //v2
 		byChaIPKind = pachPacket[nSize-1];
 	else{
-		wxFAIL;
+		wxASSERT ( false );
 		return;
 	}
 
@@ -2192,7 +2172,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE to ") + GetFullIP() );
 		SendPacket(packet,true,true);
 	} else {
-		wxFAIL;
+		wxASSERT ( false );
 	}
 }
 
@@ -2243,9 +2223,8 @@ void CUpDownClient::InfoPacketsReceived()
 
 bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXUNUSED(opcode)) const
 {
-	if (m_bHelloAnswerPending) {
+	if (m_bHelloAnswerPending){
 		// this triggers way too often.. need more time to look at this -> only create a warning
-		// The reason for this is that 2 clients are connecting to each other at the same time..
 		AddDebugLogLineM( false, logClient, wxT("Handshake not finished while processing packet.") );
 		return false;
 	}
@@ -2254,8 +2233,7 @@ bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXU
 }
 
 
-wxString CUpDownClient::GetClientFullInfo()
-{
+wxString CUpDownClient::GetClientFullInfo() {
 
 	if (m_clientVerString.IsEmpty()) {
 		ReGetClientSoft();
@@ -2308,7 +2286,7 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 		m_socket->SendPacket(packet, delpacket, controlpacket );
 		return true;
 	} else {
-		AddLogLineN(wxT("CAUGHT DEAD SOCKET IN SENDPACKET()"));
+		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
 		return false;
 	}
 }
@@ -2347,7 +2325,7 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 		}		
 		
 	} else {
-		AddLogLineNS(CFormat(wxT("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f")) % kBpsClient);
+		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f\n", kBpsClient);
 	}
 	
 	return kBpsClient;
@@ -2370,7 +2348,7 @@ void CUpDownClient::SetIP( uint32 val )
 
 	m_nConnectIP = val;
 	
-	m_FullUserIP = val;
+	m_FullUserIP = Uint32toStringIP(val);
 }
 
 
@@ -2388,42 +2366,30 @@ EUtf8Str CUpDownClient::GetUnicodeSupport() const
 	return m_bUnicodeSupport ? utf8strRaw : utf8strNone;
 }
 
-void CUpDownClient::SetSpammer(bool bVal)
-{ 
-	if (bVal) {
-		Ban();
-	} else if (IsBanned() && m_fIsSpammer) {
-		UnBan();
-	}
-	m_fIsSpammer = bVal;
-}
 
-uint8 CUpDownClient::GetSecureIdentState()
-{
+uint8 CUpDownClient::GetSecureIdentState() {
 	if (m_SecureIdentState != IS_UNAVAILABLE) {
 		if (!SecIdentSupRec) {
 			// This can be caused by a 0.30x based client which sends the old
 			// style Hello packet, and the mule info packet, but between them they
 			// send a secure ident state packet (after a hello but before we have 
 			// the SUI capabilities). This is a misbehaving client, and somehow I
-			// feel like it should be dropped. But then again, it won't harm to use
+			// Feel like ti should be dropped. But then again, it won't harm to use
 			// this SUI state if they are reporting no SUI (won't be used) and if 
 			// they report using SUI on the mule info packet, it's ok to use it.
-
+			
 			AddDebugLogLineM(false, logClient, wxT("A client sent secure ident state before telling us the SUI capabilities"));
 			AddDebugLogLineM(false, logClient, wxT("Client info: ") + GetClientFullInfo());
 			AddDebugLogLineM(false, logClient, wxT("This client won't be disconnected, but it should be. :P"));
 		}
 	}
-
+	
 	return m_SecureIdentState;
 }
 
 
-bool CUpDownClient::SendChatMessage(const wxString& message)
+bool CUpDownClient::SendMessage(const wxString& message)
 {
-	SetSpammer(false);
-	IncMessagesSent();
 	// Already connecting?
 	if (GetChatState() == MS_CONNECTING) {
 		// Queue all messages till we're able to send them (or discard them)
@@ -2431,7 +2397,7 @@ bool CUpDownClient::SendChatMessage(const wxString& message)
 			m_pendingMessage += wxT("\n");
 		} else {
 			// There must be a message to send
-			// - except if we got disconnected. No need to assert therefore.
+			wxASSERT(0);
 		}
 		m_pendingMessage += message;		
 		return false;
@@ -2535,8 +2501,7 @@ uint64 CUpDownClient::GetUploadedTotal() const
 	return credits ? credits->GetUploadedTotal() : 0;
 }
 	
-double CUpDownClient::GetScoreRatio() const 
-{
+double CUpDownClient::GetScoreRatio() const {
 	return credits ? credits->GetScoreRatio(GetIP(), theApp->CryptoAvailable()) : 0;
 }
 
@@ -2555,216 +2520,10 @@ const wxString CUpDownClient::GetServerName() const
 	return ret;
 }
 
-bool CUpDownClient::ShouldReceiveCryptUDPPackets() const 
-{
+bool CUpDownClient::ShouldReceiveCryptUDPPackets() const {
 	return (thePrefs::IsClientCryptLayerSupported() && SupportsCryptLayer() && theApp->GetPublicIP() != 0
 		&& HasValidHash() && (thePrefs::IsClientCryptLayerRequested() || RequestsCryptLayer()) );
 }
-
-#ifdef AMULE_DAEMON
-
-void CUpDownClient::ProcessCaptchaRequest(CMemFile* WXUNUSED(data)) {}
-void CUpDownClient::ProcessCaptchaReqRes(uint8 WXUNUSED(nStatus)) {}
-void CUpDownClient::ProcessChatMessage(const wxString WXUNUSED(message)) {}
-
-#else
-
-void CUpDownClient::ProcessCaptchaRequest(CMemFile* data)
-{
-	uint64 id = GUI_ID(GetIP(),GetUserPort());
-	// received a captcha request, check if we actually accept it (only after sending a message ourself to this client)
-	if (GetChatCaptchaState() == CA_ACCEPTING && GetChatState() != MS_NONE
-		&& theApp->amuledlg->m_chatwnd->IsIdValid(id)) {
-		// read tags (for future use)
-		uint8 nTagCount = data->ReadUInt8();
-		if (nTagCount) {
-			AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client (%s) with (%u) tags")) % GetFullIP() % nTagCount);
-			// and ignore them for now
-			for (uint32 i = 0; i < nTagCount; i++) {
-				CTag tag(*data, true);
-			}
-		}
-
-		// sanitize checks - we want a small captcha not a wallpaper
-		uint32 nSize = (uint32)(data->GetLength() - data->GetPosition());
-
-		if ( nSize > 128 && nSize < 4096 ) {
-			uint64 pos = data->GetPosition();
-			wxMemoryInputStream memstr(data->GetRawBuffer() + pos, nSize);
-			wxImage imgCaptcha(memstr, wxBITMAP_TYPE_BMP);
-
-			if (imgCaptcha.IsOk() && imgCaptcha.GetHeight() > 10 && imgCaptcha.GetHeight() < 50
-				&& imgCaptcha.GetWidth() > 10 && imgCaptcha.GetWidth() < 150 ) {
-				m_nChatCaptchaState = CA_CAPTCHARECV;
-				CCaptchaDialog * dialog = new CCaptchaDialog(theApp->amuledlg, imgCaptcha, id);
-				dialog->Show();
-
-			} else {
-				AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client, processing image failed or invalid pixel size (%s)")) % GetFullIP());
-			}
-		} else {
-			AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client, size sanitize check failed (%u) (%s)")) % nSize % GetFullIP());
-		}
-	} else {
-		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha request from client, but don't accepting it at this time (%s)")) % GetFullIP());
-	}
-}
-
-void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
-{
-	uint64 id = GUI_ID(GetIP(),GetUserPort());
-	if (GetChatCaptchaState() == CA_SOLUTIONSENT && GetChatState() != MS_NONE
-		&& theApp->amuledlg->m_chatwnd->IsIdValid(id)) {
-		wxASSERT( nStatus < 3 );
-		m_nChatCaptchaState = CA_NONE;
-		theApp->amuledlg->m_chatwnd->ShowCaptchaResult(id, nStatus == 0);
-	} else {
-		m_nChatCaptchaState = CA_NONE;
-		AddDebugLogLineN(logClient, CFormat(wxT("Received captcha result from client, but not accepting it at this time (%s)")) % GetFullIP());
-	}
-}
-
-void CUpDownClient::ProcessChatMessage(wxString message)
-{
-	if (IsMessageFiltered(message)) {
-		AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % GetUserName() % GetFullIP());
-		return;
-	}
-
-	// advanced spamfilter check
-	if (thePrefs::IsChatCaptchaEnabled() && !IsFriend()) {
-		// captcha checks outrank any further checks - if the captcha has been solved, we assume it's not spam
-		// first check if we need to send a captcha request to this client
-		if (GetMessagesSent() == 0 && GetMessagesReceived() == 0 && GetChatCaptchaState() != CA_CAPTCHASOLVED) {
-			// we have never sent a message to this client, and no message from him has ever passed our filters
-			if (GetChatCaptchaState() != CA_CHALLENGESENT) {
-				// we also aren't currently expecting a captcha response
-				if (m_fSupportsCaptcha) {
-					// and he supports captcha, so send him one and store the message (without showing for now)
-					if (m_cCaptchasSent < 3) {	// no more than 3 tries
-						m_strCaptchaPendingMsg = message;
-						wxMemoryOutputStream memstr;
-						memstr.PutC(0); // no tags, for future use
-						CCaptchaGenerator captcha(4);
-						if (captcha.WriteCaptchaImage(memstr)){
-							m_strCaptchaChallenge = captcha.GetCaptchaText();
-							m_nChatCaptchaState = CA_CHALLENGESENT;
-							m_cCaptchasSent++;
-							CMemFile fileAnswer((byte*) memstr.GetOutputStreamBuffer()->GetBufferStart(), memstr.GetLength());
-							CPacket* packet = new CPacket(fileAnswer, OP_EMULEPROT, OP_CHATCAPTCHAREQ);
-							theStats::AddUpOverheadOther(packet->GetPacketSize());
-							AddLogLineN(CFormat(wxT("sent Captcha %s (%d)")) % m_strCaptchaChallenge % packet->GetPacketSize());
-							SafeSendPacket(packet);
-						} else {
-							wxFAIL;
-						}
-					}
-				} else {
-					// client doesn't support captchas, but we require them, tell him that it's not going to work out
-					// with an answer message (will not be shown and doesn't count as sent message)
-					if (m_cCaptchasSent < 1) {	// don't send this notifier more than once
-						m_cCaptchasSent++;
-						// always sent in english
-						SendChatMessage(wxT("In order to avoid spam messages, this user requires you to solve a captcha before you can send a message to him. However your client does not supports captchas, so you will not be able to chat with this user."));
-						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchas, filtered and sent notifier (%s)")) % GetClientFullInfo());
-					} else {
-						AddDebugLogLineN(logClient, CFormat(wxT("Received message from client not supporting captchas, filtered, didn't send notifier (%s)")) % GetClientFullInfo());
-					}
-				}
-				return;
-			} else { // (GetChatCaptchaState() == CA_CHALLENGESENT)
-				// this message must be the answer to the captcha request we sent him, let's verify
-				wxASSERT( !m_strCaptchaChallenge.IsEmpty() );
-				if (m_strCaptchaChallenge.CmpNoCase(message.Trim().Right(std::min(message.Length(), m_strCaptchaChallenge.Length()))) == 0) {
-					// allright
-					AddDebugLogLineN(logClient, CFormat(wxT("Captcha solved, showing withheld message (%s)")) % GetClientFullInfo());
-					m_nChatCaptchaState = CA_CAPTCHASOLVED; // this state isn't persitent, but the messagecounter will be used to determine later if the captcha has been solved
-					// replace captchaanswer with withheld message and show it
-					message = m_strCaptchaPendingMsg;
-					m_cCaptchasSent = 0;
-					m_strCaptchaChallenge = wxEmptyString;
-					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
-					byte statusResponse = 0; // status response
-					packet->CopyToDataBuffer(0, &statusResponse, 1);
-					theStats::AddUpOverheadOther(packet->GetPacketSize());
-					SafeSendPacket(packet);
-				} else { // wrong, cleanup and ignore
-					AddDebugLogLineN(logClient, CFormat(wxT("Captcha answer failed (%s)")) % GetClientFullInfo());
-					m_nChatCaptchaState = CA_NONE;
-					m_strCaptchaChallenge = wxEmptyString;
-					m_strCaptchaPendingMsg = wxEmptyString;
-					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
-					byte statusResponse = (m_cCaptchasSent < 3) ? 1 : 2; // status response
-					packet->CopyToDataBuffer(0, &statusResponse, 1);
-					theStats::AddUpOverheadOther(packet->GetPacketSize());
-					SafeSendPacket(packet);
-					return; // nothing more todo
-				}
-			}	
-		}
-	}
-
-	if (thePrefs::IsAdvancedSpamfilterEnabled() && !IsFriend()) { // friends are never spammer... (but what if two spammers are friends :P )
-		bool bIsSpam = false;
-		if (m_fIsSpammer) {
-			bIsSpam = true;
-		} else {
-			// first fixed criteria: If a client sends me an URL in his first message before I respond to him
-			// there is a 99,9% chance that it is some poor guy advising his leech mod, or selling you .. well you know :P
-			if (GetMessagesSent() == 0) {
-				static wxArrayString urlindicators(wxStringTokenize(wxT("http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp"), wxT("|")));
-				for (size_t pos = urlindicators.Count(); pos--;) {
-					if (message.Find(urlindicators[pos]) != wxNOT_FOUND) {
-						bIsSpam = true;
-						break;
-					}
-				}
-				// second fixed criteria: he sent me 4 or more messages and I didn't answer him once
-				if (GetMessagesReceived() > 3) {
-					bIsSpam = true;
-				}
-			}
-		}
-		if (bIsSpam) {
-			AddDebugLogLineN(logClient, CFormat(wxT("'%s' has been marked as spammer")) % GetUserName());
-			SetSpammer(true);
-			theApp->amuledlg->m_chatwnd->EndSession(GUI_ID(GetIP(),GetUserPort()));
-			return;
-		}
-	}
-
-
-	wxString logMsg = CFormat(_("New message from '%s' (IP:%s)")) % GetUserName() % GetFullIP();
-	if(thePrefs::ShowMessagesInLog()) {
-		logMsg += wxT(": ") + message;
-	}
-	AddLogLineM(true, logMsg);
-	IncMessagesReceived();
-
-	Notify_ChatProcessMsg(GUI_ID(GetIP(), GetUserPort()), GetUserName() + wxT("|") + message);
-}
-
-bool CUpDownClient::IsMessageFiltered(const wxString& message)
-{
-	bool filtered = false;
-	// If we're chatting to the guy, we don't want to filter!
-	if (GetChatState() != MS_CHATTING) {
-		if (thePrefs::MsgOnlyFriends() && !IsFriend()) {
-			filtered = true;
-		} else if (thePrefs::MsgOnlySecure() && GetUserName().IsEmpty() ) {
-			filtered = true;
-		} else if (thePrefs::MustFilterMessages()) {
-			filtered = thePrefs::IsMessageFiltered(message);
-		}
-	}
-	if (filtered) {
-		SetSpammer(true);
-	}
-	return filtered;
-}
-
-#endif
-
 
 void CUpDownClient::SendFirewallCheckUDPRequest()
 {
@@ -2791,7 +2550,7 @@ void CUpDownClient::SendFirewallCheckUDPRequest()
 void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
 {
 	if (!Kademlia::CKademlia::IsRunning() || Kademlia::CKademlia::GetUDPListener() == NULL) {
-		//DebugLogWarning(_T("Ignored Kad Firewallrequest UDP because Kad is not running (%s)"), GetClientFullInfo());
+		//DebugLogWarning(_T("Ignored Kad Firewallrequest UDP because Kad is not running (%s)"), DbgGetClientInfo());
 		return;
 	}
 
@@ -2807,11 +2566,11 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
 	uint16_t remoteExternPort = data->ReadUInt16();
 	uint32_t senderKey = data->ReadUInt32();
 	if (remoteInternPort == 0) {
-		//DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), GetClientFullInfo());
+		//DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), DbgGetClientInfo());
 		return;
 	}
 // 	if (senderKey == 0)
-// 		DebugLogWarning(_T("UDP Firewallcheck requested with SenderKey == 0 (%s)"), GetClientFullInfo());
+// 		DebugLogWarning(_T("UDP Firewallcheck requested with SenderKey == 0 (%s)"), DbgGetClientInfo());
 	
 	CMemFile testPacket1;
 	testPacket1.WriteUInt8(errorAlreadyKnown ? 1 : 0);
@@ -2827,7 +2586,7 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
 		DebugSend(Kad2FirewalledUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteExternPort);
 		Kademlia::CKademlia::GetUDPListener()->SendPacket(testPacket2, KADEMLIA2_FIREWALLUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteExternPort, Kademlia::CKadUDPKey(senderKey, theApp->GetPublicIP(false)), NULL);
 	}
-	//DebugLog(_T("Answered UDP Firewallcheck request (%s)"), GetClientFullInfo());
+	//DebugLog(_T("Answered UDP Firewallcheck request (%s)"), DbgGetClientInfo());
 }
 
 void CUpDownClient::SetConnectOptions(uint8_t options, bool encryption, bool callback)

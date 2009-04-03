@@ -1,11 +1,10 @@
 #!/bin/sh
-# Helps bootstrapping 'aMule' when checked out from the source control system.
+# Helps bootstrapping 'aMule' when checked out from CVS.
 # Requires GNU autoconf, GNU automake and GNU which.
 
-WANT_AUTOMAKE="1.7"
-export WANT_AUTOMAKE
-(autoconf --version) >/dev/null 2>/dev/null || (echo "You need GNU autoconf to install from sources (ftp://ftp.gnu.org/gnu/autoconf/)"; exit 1) || exit 1
-(automake --version) >/dev/null 2>/dev/null || (echo "You need GNU automake 1.7 to install from sources (ftp://ftp.gnu.org/gnu/automake/)"; exit 1) || exit 1
+export WANT_AUTOMAKE="1.7"
+(autoconf --version) >/dev/null 2>/dev/null || (echo "You need GNU autoconf to install from CVS (ftp://ftp.gnu.org/gnu/autoconf/)"; exit 1) || exit 1
+(automake --version) >/dev/null 2>/dev/null || (echo "You need GNU automake 1.7 to install from CVS (ftp://ftp.gnu.org/gnu/automake/)"; exit 1) || exit 1
 
 # Do sanity checks.
 # Directory check.
@@ -44,13 +43,11 @@ rm -rf intl/*
         echo autopoint honors dataroot variable, not patching.
     else 
 	echo autopoint does not honor dataroot variable, patching.
-        sed -e '/^datadir *=/a\
-datarootdir = @datarootdir@' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
-        sed -e '/^datadir *=/a\
-datarootdir = @datarootdir@' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
+        sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\
+datadir = @datadir@/g' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
+        sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\
+datadir = @datadir@/g' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
     fi
-    sed -e '/^clean:/a\
-	rm -f *.gmo' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
 #    if [ -f Makefile -a -x config.status ]; then
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
 #    fi

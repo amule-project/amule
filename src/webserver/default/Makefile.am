@@ -1,72 +1,54 @@
 dist_webserver_DATA = \
-	amuleweb-main-dload.php \
-	amuleweb-main-kad.php \
-	amuleweb-main-log.php \
-	amuleweb-main-prefs.php \
-	amuleweb-main-search.php \
-	amuleweb-main-servers.php \
-	amuleweb-main-shared.php \
-	amuleweb-main-stats.php \
+	aMule.tmpl \
+	add_server.gif \
+	arrow_down.gif \
+	arrow_right.gif \
+	arrow_up.gif \
+	back.gif \
 	black.gif \
-	blank1x1.gif \
 	blue1.gif \
 	blue2.gif \
 	blue3.gif \
 	blue4.gif \
 	blue5.gif \
 	blue6.gif \
-	cancel.gif \
-	close.png \
-	col.png \
-	connect.gif \
-	down.png \
-	edkserv_0.png \
-	edkserv_1.png \
-	favicon.ico \
-	filter.png \
-	fond.gif \
-	fond_haut.png \
-	footer.php \
-	index.html \
-	loginfond.gif \
-	loginfond_haut.png \
-	loginlogo.jpg \
-	loginlogo.png \
-	login.php \
-	logo.png \
-	log.php \
-	maquette.dwt \
-	ok.png \
-	pause.png \
-	play.png \
+	cp_download.gif \
+	cp_kad.gif \
+	cp_search.gif \
+	cp_servers.gif \
+	cp_settings.gif \
+	cp_shared.gif \
+	cp_stats.gif \
+	emule.gif \
+	green.gif \
+	greenpercent.gif \
+	l_cancel.gif \
+	l_connect.gif \
+	l_down.gif \
+	l_ed2klink.gif \
+	l_info.gif \
+	l_pause.gif \
+	l_resume.gif \
+	l_up.gif \
+	log.gif \
+	logo.jpg \
 	red.gif \
-	refresh.png \
-	search_0.png \
-	search_1.png \
-	shared_0.png \
-	shared_1.png \
-	sheserv_0.png \
-	sheserv_1.png \
-	stats_0.png \
-	stats_1.png \
-	stats.php \
-	stats_tree.php \
-	style.css \
-	tab_bottom_left.png \
-	tab_bottom.png \
-	tab_bottom_right.png \
-	tab_left.png \
-	tab_right.png \
-	tab_top_left.png \
-	tab_top.png \
-	tab_top_right.png \
-	transf_0.png \
-	transf_1.png \
-	tree-closed.gif \
+	transparent.gif \
+	yellow.gif \
+	phpamule.png \
 	tree-leaf.gif \
 	tree-open.gif \
-	up.png \
-	yellow.gif
+	tree-closed.gif \
+	favicon.ico \
+	downloads.php \
+	preferences.php \
+	search.php \
+	servers.php \
+	shared.php \
+	stat_graphs.php \
+	stat_tree.php \
+	login.php \
+	index.php
 
 webserverdir = $(pkgdatadir)/webserver/default
 

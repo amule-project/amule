@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2006-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -57,7 +57,7 @@ bool CTextFile::Open(const CPath& path, EOpenMode mode)
 	} else if (mode == write) {
 		m_file.Open(path.GetRaw(), wxT("w"));
 	} else {
-		wxFAIL;
+		wxASSERT(0);
 	}
 
 	return IsOpened();

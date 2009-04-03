@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -102,7 +102,7 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 			socket->OnSend(wxSOCKET_NOERROR);
 			break;
 		default:
-			wxFAIL;
+			wxASSERT(0);
 			break;
 	}
 	
@@ -354,7 +354,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				if (size >= 4 + 4 + 4 + 4 + 4 /* All of the above + reported ip + obfuscation port */) {
 					dwServerReportedIP = data.ReadUInt32();
 					if (::IsLowID(dwServerReportedIP)){
-						wxFAIL;
+						wxASSERT( false );
 						dwServerReportedIP = 0;
 					}
 					wxASSERT( dwServerReportedIP == new_id || ::IsLowID(new_id) );
@@ -621,7 +621,7 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 	AddDebugLogLineM(false,logServer,wxT("Trying to connect"));
 	
 	if (cur_server){
-		wxFAIL;
+		wxASSERT(0);
 		delete cur_server;
 		cur_server = NULL;
 	}

@@ -2,7 +2,7 @@
 # This file is part of the aMule project.
 # This file is part of the libupnp library project.
 #
-# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 Kry ( elkry@sourceforge.net / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -25,9 +25,8 @@
 //
 
 
-#include <cctype>	// Needed for std::toupper()
-#include <cmath>	// Needed for cos, M_PI
-#include <string>	// Do_not_auto_remove (g++-4.0.1)
+#include <cmath> // Needed for cos, M_PI
+#include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #include <wx/datetime.h>
 
@@ -44,17 +43,12 @@
 //-------------------------------------------------------------------
 
 #include "WebSocket.h"		// Needed for StopSockets()
+#include "Color.h"		// Needed for COLORREF and RGB()
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
 //-------------------------------------------------------------------
-typedef uint32_t COLORTYPE;
-
-inline unsigned long RGB(int r, int g, int b)
-{
-	return ((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xff);
-}
 
 inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
 {
@@ -140,35 +134,48 @@ uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 }
 
 /*
- * Url string decoder
+ * Url string decoder and parser
  */
-wxString CURLDecoder::Decode(const wxString& url)
+CUrlDecodeTable::CUrlDecodeTable()
 {
-	size_t n = url.length();
-	std::vector<char> buffer(n + 1);
-	size_t i, j;
+	for (int i = 0 ; i < 256 ; i++) {
+		char fromReplace[4];		// decode URL
+		snprintf(fromReplace, sizeof(fromReplace), "%%%02x", i);
+		m_enc_l_str[i] = char2unicode(fromReplace);
 
-	for (i = 0, j = 0; i < n; i++, j++) {
-		if (url[i] == wxT('+')) {
-			buffer[j] = ' ';
-		} else if (url[i] == wxT('%') && i < n - 2) {
-			char ch1 = std::toupper(url[i+1]);
-			char ch2 = std::toupper(url[i+2]);
-			if (((ch1 >= '0' && ch1 <= '9') || (ch1 >= 'A' && ch1 <= 'F')) &&
-			    ((ch2 >= '0' && ch2 <= '9') || (ch2 >= 'A' && ch2 <= 'F'))) {
-				i += 2;
-				buffer[j] = ((ch1 > '9' ? ch1 - 'A' + 10 : ch1 - '0') << 4) | (ch2 > '9' ? ch2 - 'A' + 10 : ch2 - '0');
-			} else {
-				// Invalid %-escape sequence
-				buffer[j] = url[i];
-			}
-		} else {
-			buffer[j] = url[i];
-		}
+		snprintf(fromReplace, sizeof(fromReplace), "%%%02X", i);
+		m_enc_u_str[i] = char2unicode(fromReplace);
+
+		m_dec_str[i] = wxString::Format(wxT("%c"), i);
 	}
-	buffer[j] = '\0';
+}
 
-	return UTF82unicode(&buffer[0]);
+void CUrlDecodeTable::DecodeString(wxString &str)
+{
+	str.Replace(wxT("+"), wxT(" "));
+	for (int i = 0 ; i < 256 ; ++i) {
+		str.Replace(m_enc_l_str[i], m_dec_str[i]);
+		str.Replace(m_enc_u_str[i], m_dec_str[i]);
+	}
+	size_t n = str.Len();
+	std::vector<char> buffer(n + 1);
+	for (size_t i = 0; i < n; ++i) {
+		buffer[i] = str[i];
+	}
+	buffer[n] = 0; // Mark the end of the string
+	str = UTF82unicode(&buffer[0]);
+}
+
+CUrlDecodeTable*	CUrlDecodeTable::ms_instance;
+wxCriticalSection	CUrlDecodeTable::ms_instance_guard;
+
+CUrlDecodeTable* CUrlDecodeTable::GetInstance()
+{
+	wxCriticalSectionLocker lock(ms_instance_guard);
+	if (ms_instance == NULL) {
+		ms_instance = new CUrlDecodeTable();
+	}
+	return ms_instance;
 }
 
 CParsedUrl::CParsedUrl(const wxString &url)
@@ -185,15 +192,15 @@ CParsedUrl::CParsedUrl(const wxString &url)
 		
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
-			wxString param_val = tkz.GetNextToken();
-			wxString key = param_val.BeforeFirst('=');
-			wxString val = param_val.AfterFirst('=');
-			val = CURLDecoder::Decode(val);
-			if ( m_params.count(key) ) {
-				m_params[key] = m_params[key] + wxT("|") + val;
-			} else {
-				m_params[key] = val;
-			}
+	    	wxString param_val = tkz.GetNextToken();
+	    	wxString key = param_val.BeforeFirst('=');
+	    	wxString val = param_val.AfterFirst('=');
+	    	CUrlDecodeTable::GetInstance()->DecodeString(val);
+	    	if ( m_params.count(key) ) {
+	    		m_params[key] = m_params[key] + wxT("|") + val;
+	    	} else {
+	    		m_params[key] = val;
+	    	}
 		}
     }
 }
@@ -208,7 +215,7 @@ void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
 
 BEGIN_EVENT_TABLE(CWebServerBase, wxEvtHandler)
 	EVT_SOCKET(ID_WEBLISTENSOCKET_EVENT, CWebServerBase::OnWebSocketServerEvent)
-	EVT_SOCKET(ID_WEBCLIENTSOCKET_EVENT, CWebServerBase::OnWebSocketEvent)
+	EVT_SOCKET(ID_WEBCLIENTSOCKET_ENENT, CWebServerBase::OnWebSocketEvent)
 END_EVENT_TABLE()
 
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
@@ -294,7 +301,7 @@ void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
     	webInterface->Show(_("web client connection accepted\n"));
     } else {
     	delete client;
-    	webInterface->Show(_("ERROR: cannot accept web client connection\n"));
+    	webInterface->Show(_("ERROR: can not accept web client connection\n"));
     }
 }
 
@@ -324,6 +331,7 @@ void CWebServerBase::OnWebSocketEvent(wxSocketEvent& event)
 void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 {
 	webInterface->DebugShow(wxT("**** imgrequest: ") + Data.sURL + wxT("\n"));
+	wxMutexLocker lock(m_mutexChildren);
 
 	const CSession* session = CheckLoggedin(Data);
 
@@ -1052,14 +1060,14 @@ void CProgressImage::CreateSpan()
 		uint32 end = (gap_end / PARTSIZE) + 1;
 
 		for (uint32 i = start; i < end; i++) {
-			COLORTYPE color = RGB(255, 0, 0);
+			COLORREF color = RGB(255, 0, 0);
 			if ( part_info[i] ) {
 				int blue = 210 - ( 22 * ( part_info[i] - 1 ) );
 				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			}
 
-			uint64 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
-			uint64 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
+			uint32 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
+			uint32 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
 			
 			wxASSERT(colored_gaps_size < color_gaps_alloc);
 			
@@ -1394,7 +1402,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	//
 	// Prepare background
 	//
-	static const COLORTYPE bg_color = RGB(0x00, 0x00, 0x40);
+	static const COLORREF bg_color = RGB(0x00, 0x00, 0x40);
 	for(int i = 0; i < m_height; i++) {
 		png_bytep u_row = m_row_bg_ptrs[i];
 		for(int j = 0; j < m_width; j++) {
@@ -1404,7 +1412,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	//
 	// draw axis
 	//
-	static const COLORTYPE axis_color = RGB(0xff, 0xff, 0xff);
+	static const COLORREF axis_color = RGB(0xff, 0xff, 0xff);
 	// Y
 	for(int i = m_bottom_margin; i < m_y_axis_size; i++) {
 		png_bytep u_row = m_row_bg_ptrs[i];
@@ -1453,7 +1461,7 @@ void CDynStatisticImage::DrawImage()
 	//
 	// Now graph itself
 	//
-	static const COLORTYPE graph_color = RGB(0xff, 0x00, 0x00);
+	static const COLORREF graph_color = RGB(0xff, 0x00, 0x00);
 	int maxval = m_data->Max();
 	
 	if ( m_scale1024 ) {
@@ -1664,7 +1672,7 @@ void CNumImageMask::DrawSegment(int id)
 			DrawHorzLine(2);
 			break;
 		default:
-			wxFAIL;
+			wxASSERT(0);
 			break;
 	}
 }
@@ -1834,6 +1842,8 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {
+	wxMutexLocker lock(m_mutexChildren);
+
 	long httpOutLen;
 	char *httpOut = 0;
 	

@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -46,6 +46,11 @@ const wxString GetSoftName( unsigned int software_ident );
  * @return Human-readable text for the ESourceFrom enum values.
  */
 wxString OriginToText(unsigned int source_from);
+
+/**
+ * @return The textual representation of a partfile conversion state.
+ */
+wxString GetConversionState(unsigned int state);
 
 #endif /* DATATOTEXT_H */
 // File_checked_for_headers

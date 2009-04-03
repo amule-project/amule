@@ -138,6 +138,7 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
+	PartFileConvert.cpp \
 	SearchFile.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
@@ -161,7 +162,8 @@ core_sources = \
 
 if ENABLE_UPNP
 core_sources += \
-	UPnPBase.cpp
+	UPnPBase.cpp \
+	UPnPCompatibility.cpp
 endif
 
 gui_sources = \
@@ -174,7 +176,7 @@ gui_sources = \
 	FileDetailDialog.cpp \
 	KadDlg.cpp \
 	OScopeCtrl.cpp \
-	PartFileConvert.cpp \
+	PartFileConvertDlg.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
 	ServerWnd.cpp \
@@ -187,7 +189,6 @@ gui_sources = \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
 	MuleTrayIcon.cpp \
-	MuleColour.cpp \
 	TransferWnd.cpp 
 
 if ENABLE_IP2COUNTRY
@@ -203,9 +204,7 @@ remote_common_sources = \
 common_sources = \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
-	FileArea.cpp \
 	KnownFile.cpp \
-	GapList.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \
 	Logger.cpp \
@@ -252,14 +251,7 @@ amulegui_SOURCES = \
 	$(ec_sources) \
 	$(common_sources)
 
-if ENABLE_IP2COUNTRY
-amulegui_SOURCES += \
-	HTTPDownload.cpp
-endif
-
 amule_SOURCES = \
-	CaptchaDialog.cpp \
-	CaptchaGenerator.cpp \
 	$(core_sources) \
 	$(gui_sources) \
 	$(ec_sources) \
@@ -324,8 +316,6 @@ noinst_HEADERS = \
 		amuleIPV4Address.h \
 		ArchSpecific.h \
 		BarShader.h \
-		CaptchaDialog.h \
-		CaptchaGenerator.h \
 		CatDialog.h \
 		CFile.h \
 		ChatSelector.h \
@@ -338,6 +328,7 @@ noinst_HEADERS = \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
 		ColorFrameCtrl.h \
+		Color.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
 		Constants.h \
@@ -354,14 +345,12 @@ noinst_HEADERS = \
 		EncryptedStreamSocket.h \
 		ExternalConnector.h \
 		ExternalConn.h \
-		FileArea.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
 		FileLock.h \
 		Friend.h \
 		FriendListCtrl.h \
 		FriendList.h \
-		GapList.h \
 		GetTickCount.h \
 		GuiEvents.h \
 		HTTPDownload.h \
@@ -378,7 +367,6 @@ noinst_HEADERS = \
 		MD4Hash.h \
 		MemFile.h \
 		MuleCollection.h \
-		MuleColour.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
 		MuleNotebook.h \
@@ -396,6 +384,7 @@ noinst_HEADERS = \
 		Packet.h \
 		Parser.hpp \
 		PartFileConvert.h \
+		PartFileConvertDlg.h \
 		PartFile.h \
 		PlatformSpecific.h \
 		Preferences.h \

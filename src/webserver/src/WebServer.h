@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 Kry ( elkry@users.sourceforge.net / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -42,12 +42,19 @@
 
 #include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
 
+//class TransferredData;
+class CWSThread;
 class CWebSocket;
 class CMD4Hash;
 
 #define SESSION_TIMEOUT_SECS	300	// 5 minutes session expiration
 #define SHORT_FILENAME_LENGTH	40	// Max size of file name.
 
+//
+//uint8 GetHigherPrio(uint32 prio, bool autoprio);
+//uint8 GetHigherPrioShared(uint32 prio, bool autoprio);
+//uint8 GetLowerPrio(uint32 prio, bool autoprio);
+//uint8 GetLowerPrioShared(uint32 prio, bool autoprio);
 wxString _SpecialChars(wxString str);
 
 class CEC_PartFile_Tag;
@@ -56,12 +63,6 @@ class CEC_UpDownClient_Tag;
 class CEC_SearchFile_Tag;
 class CProgressImage;
 class CEC_KadNode_Tag;
-
-class CURLDecoder
-{
-      public:
-	static wxString	Decode(const wxString& url);
-};
 
 class DownloadFile {
 	public:
@@ -638,6 +639,20 @@ class CImageLib {
 		void RemoveImage(const wxString &name);
 };
 
+class CUrlDecodeTable {
+		static CUrlDecodeTable*		ms_instance;
+		static wxCriticalSection	ms_instance_guard;
+
+		wxString m_enc_u_str[256], m_enc_l_str[256], m_dec_str[256];
+
+		CUrlDecodeTable();
+		
+	public:
+		static CUrlDecodeTable* GetInstance();
+
+		void DecodeString(wxString &str);
+};
+
 class CParsedUrl {
 		wxString m_path, m_file;
 		std::map<wxString, wxString> m_params;
@@ -666,7 +681,7 @@ struct ThreadData {
 enum {
     // Socket handlers
     ID_WEBLISTENSOCKET_EVENT = wxID_HIGHEST+123,  // random safe ID
-    ID_WEBCLIENTSOCKET_EVENT,
+    ID_WEBCLIENTSOCKET_ENENT,
 };
 
 #ifdef ENABLE_UPNP
@@ -676,8 +691,11 @@ class CUPnPPortMapping;
 
 class CWebServerBase : public wxEvtHandler {
 	protected:
+		//CWSThread *wsThread;
 		wxSocketServer *m_webserver_socket;
 		
+		wxMutex m_mutexChildren;
+
 		ServersInfo m_ServersInfo;
 		SharedFileInfo m_SharedFileInfo;
 		DownloadFileInfo m_DownloadFileInfo;

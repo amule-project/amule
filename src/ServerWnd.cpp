@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -35,6 +35,7 @@
 #include "amule.h"			// Needed for theApp
 #include "Logger.h"
 
+#include "kademlia/kademlia/Kademlia.h"
 #include "ClientList.h"
 #include "updownclient.h"
 
@@ -204,62 +205,46 @@ void CServerWnd::UpdateKadInfo()
 	KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 
 	if (theApp->IsKadRunning()) {
-		KadInfoList->SetItem(next_row++, 1, _("Running"));
+		KadInfoList->SetItem(next_row, 1, _("Running"));
+			
+		++next_row;
 			
 		// Connection data		
+			
 		KadInfoList->InsertItem(next_row, _("Status:"));
-		KadInfoList->SetItem(next_row++, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
+		KadInfoList->SetItem(next_row, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
+		++next_row;
 		if (theApp->IsConnectedKad()) {
 			KadInfoList->InsertItem(next_row, _("Connection State:"));
-			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ? 
-				CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort() : _("OK"));
-			KadInfoList->InsertItem(next_row, _("UDP Connection State:"));
-			bool UDPFirewalled = theApp->IsFirewalledKadUDP();
-			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ? 
-				CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort() : _("OK"));
-
-			if (theApp->IsFirewalledKad() || UDPFirewalled) {
+			KadInfoList->SetItem(next_row, 1, theApp->IsFirewalledKad() ? _("Firewalled") : _("OK"));
+			++next_row;
+			#ifndef CLIENT_GUI
+			if (theApp->IsFirewalledKad()) {
 				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
-				wxString BuddyState;
-				switch ( theApp->GetBuddyStatus() )
-				{
-					case Disconnected:
-						if (!theApp->IsFirewalledKad()) {
-							BuddyState = _("No buddy required - TCP port open");
-						} else if (!UDPFirewalled) {
-							BuddyState = _("No buddy required - UDP port open");
-						} else {
-							BuddyState = _("No buddy");
-						}
-						break;
-					case Connecting:
-						BuddyState = _("Connecting to buddy");
-						break;
-					case Connected:
-						BuddyState = CFormat(_("Connected to buddy at %s")) % Uint32_16toStringIP_Port(theApp->GetBuddyIP(), theApp->GetBuddyPort());
-						break;
+				KadInfoList->SetItem(next_row, 1, theApp->clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
+				++next_row;
+				#ifdef __DEBUG__
+				if (theApp->clientlist->GetBuddy()) {
+					KadInfoList->InsertItem(next_row, wxT("Buddy address: "));
+					KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp->clientlist->GetBuddy()->GetIP(), theApp->clientlist->GetBuddy()->GetUDPPort()));
+					++next_row;		
 				}
-				KadInfoList->SetItem(next_row++, 1, BuddyState);
+				#endif
 			}
-
-			KadInfoList->InsertItem(next_row, _("IP address:"));
-			KadInfoList->SetItem(next_row++, 1, Uint32toStringIP(theApp->GetKadIPAdress()));
-
-			// Index info
-			KadInfoList->InsertItem(next_row, _("Indexed sources:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedSources());
-			KadInfoList->InsertItem(next_row, _("Indexed keywords:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedKeywords());
-			KadInfoList->InsertItem(next_row, _("Indexed notes:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedNotes());
-			KadInfoList->InsertItem(next_row, _("Indexed load:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedLoad());
-
+			uint32 KademliaUsers = Kademlia::CKademlia::GetKademliaUsers();
+			uint32 KademliaFiles = Kademlia::CKademlia::GetKademliaFiles();
+			#else 
+			uint32 KademliaUsers = theStats::GetKadUsers();
+			uint32 KademliaFiles = theStats::GetKadFiles();
+			//#warning TODO: Buddy state on remote GUI
+			/* Maybe Averages too, but that would be redundant 
+			   they are already on the status bar */
+			#endif
 			KadInfoList->InsertItem(next_row, _("Average Users:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(theApp->GetKadUsers()));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(KademliaUsers));
 			++next_row;
 			KadInfoList->InsertItem(next_row, _("Average Files:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(theApp->GetKadFiles()));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(KademliaFiles));
 			
 		} 
 			

@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -31,23 +31,19 @@ static CryptoPP::AutoSeededRandomPool cryptRandomGen;
 
 const CryptoPP::AutoSeededRandomPool& GetRandomPool() { return cryptRandomGen; }
 
-uint8_t GetRandomUint8()
+uint8 GetRandomUint8()
 {
 	return cryptRandomGen.GenerateByte();
 }
 
-uint16_t GetRandomUint16()
+uint16 GetRandomUint16()
 {
-	return (uint16_t)cryptRandomGen.GenerateWord32(0x0000, 0xFFFF);
+	return (uint16)cryptRandomGen.GenerateWord32(0x0000, 0xFFFF);
 }
 
-uint32_t GetRandomUint32()
+uint32 GetRandomUint32()
 {
 	return cryptRandomGen.GenerateWord32();
 }
 
-uint64_t GetRandomUint64()
-{
-	return ((uint64_t)GetRandomUint32() << 32) + GetRandomUint32();
-}
 // File_checked_for_headers

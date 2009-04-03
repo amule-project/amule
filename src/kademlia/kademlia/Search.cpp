@@ -1,10 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
-// Copyright (c) 2004-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -81,30 +80,10 @@ CSearch::CSearch()
 	m_searchTermsData = NULL;
 	m_searchTermsDataSize = 0;
 	m_nodeSpecialSearchRequester = NULL;
-	m_closestDistantFound = 0;
 }
 
 CSearch::~CSearch()
 {
-	// remember the closest node we found and tried to contact (if any) during this search
-	// for statistical caluclations, but only if its a certain type
-	switch (m_type) {
-		case NODECOMPLETE:
-		case FILE:
-		case KEYWORD:
-		case NOTES:
-		case STOREFILE:
-		case STOREKEYWORD:
-		case STORENOTES:
-		case FINDSOURCE: // maybe also exclude
-			if (m_closestDistantFound != 0) {
-				CKademlia::StatsAddClosestDistance(m_closestDistantFound);
-			}
-			break;
-		default: // NODE, NODESPECIAL, NODEFWCHECKUDP, FINDBUDDY
-			break;
-	}
-
 	if (m_nodeSpecialSearchRequester != NULL) {
 		// inform requester that our search failed
 		m_nodeSpecialSearchRequester->KadSearchIPByNodeIDResult(KCSR_NOTFOUND, 0, 0);
@@ -409,10 +388,6 @@ void CSearch::StorePacket()
 	CUInt128 fromDistance(possible->first);
 	CContact *from = possible->second;
 
-	if (fromDistance < m_closestDistantFound || m_closestDistantFound == 0) {
-		m_closestDistantFound = fromDistance;
-	}
-
 	// Make sure this is a valid node to store.
 	if(thePrefs::FilterLanIPs() && fromDistance.Get32BitChunk(0) > SEARCHTOLERANCE) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Not stored: filtered lan ip"));
@@ -608,7 +583,9 @@ void CSearch::StorePacket()
 				CKademlia::GetUDPListener()->SendPublishSourcePacket(*from, m_target, id, taglist);
 				m_totalRequestAnswers++;
 				// Delete all tags.
-				deleteTagPtrListEntries(&taglist);
+				for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+					delete *it;
+				}
 			} else {
 				PrepareToStop();
 			}
@@ -718,7 +695,9 @@ void CSearch::StorePacket()
 				}
 				m_totalRequestAnswers++;
 				// Delete all tags.
-				deleteTagPtrListEntries(&taglist);
+				for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+					delete *it;
+				}
 			} else {
 				PrepareToStop();
 			}
@@ -1057,7 +1036,9 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
 
 	// Free tags memory
-	deleteTagPtrListEntries(&taglist);
+	for (TagPtrList::iterator it = taglist.begin(); it != taglist.end(); ++it) {
+		delete (*it);
+	}	
 	
 }
 
@@ -1256,7 +1237,9 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 		AddDebugLogLineM(true, logKadSearch, wxT("Exception in CSearch::PreparePacketForTags: ") + e);
 	} 
 
-	deleteTagPtrListEntries(&taglist);
+	for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+		delete *it;
+	}
 }
 
 void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *searchTermsData)

@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 Froenchenko Leonid (lfroen@users.sourceforge.net)
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Angel Vidal Veiga (kry@users.sourceforge.net)
+// Copyright (c) 2004-2009 Froenchenko Leonid (lfroen@users.sourceforge.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -31,7 +31,8 @@
 
 #include "Types.h"
 #include "Constants.h"
-
+#define __need_convertinfo	// We need only the ConvertInfo struct from PartFileConvert.h
+#include "PartFileConvert.h"
 
 class CKnownFile;
 class CSearchFile;
@@ -114,7 +115,6 @@ namespace MuleNotify
 	void ChatRefreshFriend(uint32 lastUsedIP, uint32 lastUsedPort, wxString name);
 	void ChatConnResult(bool success, uint64 id, wxString message);
 	void ChatProcessMsg(uint64 sender, wxString message);
-	void ChatSendCaptcha(wxString captcha, uint64 to_id);
 	
 	void ShowConnState(long state);
 	void ShowUserCount(wxString str);
@@ -129,6 +129,15 @@ namespace MuleNotify
 	void NodesURLChanged(wxString url);
 	void ServersURLChanged(wxString url);
 
+	// Partfile conversion: Core -> GUI
+	void ConvertUpdateProgress(float percent, wxString label, wxString header);
+	void ConvertUpdateJobInfo(ConvertInfo info);
+	void ConvertRemoveJobInfo(unsigned id);
+	void ConvertClearInfos();
+	// Partfile conversion: GUI -> Core
+	void ConvertRemoveJob(unsigned id);
+	void ConvertRetryJob(unsigned id);
+	void ConvertReaddAllJobs();
 
 	//
 	// GUI -> core notification
@@ -455,7 +464,6 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_ChatRefreshFriend(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, val0, val1, s)
 #define Notify_ChatConnResult(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatConnResult, val0, val1, s)
 #define Notify_ChatProcessMsg(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
-#define Notify_ChatSendCaptcha(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatSendCaptcha, val0, s)
 
 // misc
 #define Notify_ShowConnState(val)			MuleNotify::DoNotify(&MuleNotify::ShowConnState, val)
@@ -473,6 +481,16 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_NodesURLChanged(url)			MuleNotify::DoNotify(&MuleNotify::NodesURLChanged, url)
 #define Notify_ServersURLChanged(url)			MuleNotify::DoNotify(&MuleNotify::ServersURLChanged, url)
 
+// Partfile conversion: Core -> GUI
+#define Notify_ConvertUpdateProgress(val, text)		Notify_ConvertUpdateProgressFull(val, text, wxEmptyString)
+#define Notify_ConvertUpdateProgressFull(val, text, hdr) MuleNotify::DoNotify(&MuleNotify::ConvertUpdateProgress, val, text, hdr)
+#define Notify_ConvertUpdateJobInfo(info)		MuleNotify::DoNotify(&MuleNotify::ConvertUpdateJobInfo, info)
+#define Notify_ConvertRemoveJobInfo(id)			MuleNotify::DoNotify(&MuleNotify::ConvertRemoveJobInfo, id)
+#define Notify_ConvertClearInfos()			MuleNotify::DoNotify(&MuleNotify::ConvertClearInfos)
+// Partfile conversion: GUI -> Core
+#define Notify_ConvertRemoveJob(id)			MuleNotify::DoNotify(&MuleNotify::ConvertRemoveJob, id)
+#define Notify_ConvertRetryJob(id)			MuleNotify::DoNotify(&MuleNotify::ConvertRetryJob, id)
+#define Notify_ConvertReaddAllJobs()			MuleNotify::DoNotify(&MuleNotify::ConvertReaddAllJobs)
 
 //
 // GUI -> core notification

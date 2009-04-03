@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -437,6 +437,10 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	wxASSERT( thePrefs::IsServerCryptLayerUDPEnabled() );
 	wxASSERT( dwBaseKey != 0 );
 	
+	uint8 byPadLen = 0;			// padding disabled for UDP currently
+	uint32 nCryptedLen = nBufLen + byPadLen + CRYPT_HEADER_WITHOUTPADDING;
+	uint8* pachCryptedBuffer = new uint8[nCryptedLen];
+	
 	uint16 nRandomKeyPart = GetRandomUint16();
 
 	uint8 achKeyData[7];
@@ -460,14 +464,10 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	
 	if (i >= 128){
 		// either we have _real_ bad luck or the randomgenerator is a bit messed up
-		wxFAIL;
+		wxASSERT( false );
 		bySemiRandomNotProtocolMarker = 0x01;
 	}
 
-	uint8 byPadLen = 0;			// padding disabled for UDP currently
-	uint32 nCryptedLen = nBufLen + byPadLen + CRYPT_HEADER_WITHOUTPADDING;
-	uint8* pachCryptedBuffer = new uint8[nCryptedLen];
-	
 	pachCryptedBuffer[0] = bySemiRandomNotProtocolMarker;
 	PokeUInt16(pachCryptedBuffer + 1, nRandomKeyPart);
 

@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -34,10 +34,9 @@
  
 const CryptoPP::AutoSeededRandomPool& GetRandomPool();
 
-uint8_t GetRandomUint8();
-uint16_t GetRandomUint16();
-uint32_t GetRandomUint32();
-uint64_t GetRandomUint64();
+uint8 GetRandomUint8();
+uint16 GetRandomUint16();
+uint32 GetRandomUint32();
 
 #endif // RANDOMFUNCTIONS_H
 // File_checked_for_headers

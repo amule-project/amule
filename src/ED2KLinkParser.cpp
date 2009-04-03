@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Alo Sarv ( madcat_@users.sourceforge.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 Madcat ( madcat@_@users.sf.net / sharedaemon.sf.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -24,7 +24,7 @@
 //
 
 const int versionMajor		= 1;
-const int versionMinor		= 5;
+const int versionMinor		= 4;
 const int versionRevision	= 1;
 
 #include <cstdlib>
@@ -214,7 +214,7 @@ bool isNumber( const string& str )
 		}
 	}
 
-	return str.length() > 0;
+	return str.length();
 }
 
 
@@ -421,7 +421,6 @@ int main(int argc, char *argv[])
 {
 	bool errors = false;
 	string config_path;
-	string category = "";
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
 
@@ -445,7 +444,6 @@ int main(int argc, char *argv[])
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
 		
 			if ( (type == "file") && checkFileLink( arg ) ) {
-				arg += category;
 				writeLink( arg, config_path );
 			} else if ( (type == "server") && checkServerLink( arg ) ) {
 				writeLink( arg, config_path );
@@ -473,39 +471,23 @@ int main(int argc, char *argv[])
 				<< "    --help, -h              Prints this help.\n"
 				<< "    --config-dir, -c        Specifies the aMule configuration directory.\n"
 				<< "    --version, -v           Displays version info.\n\n"
-				<< "    --category, -t          Add Link to category number.\n"
 				<< "    magnet:?                Causes the file to be queued for download.\n"
 				<< "    ed2k://|file|           Causes the file to be queued for download.\n"
 				<< "    ed2k://|server|         Causes the server to be listed or updated.\n"
 				<< "    ed2k://|serverlist|     Causes aMule to update the current serverlist.\n\n"
-				<< "    --list, -l              Show all links of an emulecollection\n"
 				<< "    --emulecollection, -e   Loads all links of an emulecollection\n\n"
 				<< "*** NOTE: Option order is important! ***\n"
 				<< std::endl;
 			
 		} else if (arg == "-v" || arg == "--version") {
 			std::cout << getVersion() << std::endl;
-		} else if (arg == "-t" || arg == "--category") {
-			if (i < argc - 1) {
-				if ((category == "" ) && (0 != atoi(argv[++i]))) {
-					category = ':';
-					category += argv[i];
-				}
-			} else {
-				std::cerr << "Missing mandatory argument for " << arg << std::endl;
-				errors = true;
-			}
-		} else if (arg == "-e" || arg == "--emulecollection" || arg == "-l" || arg == "--list") {
-			bool listOnly = (arg == "-l" || arg == "--list");
+		} else if (arg == "-e" || arg == "--emulecollection") {
 			if (i < argc - 1) {
 				CMuleCollection my_collection;
 				if (my_collection.Open( /* emulecollection file */ argv[++i] ))
 				{
 					for(size_t e = 0;e < my_collection.GetFileCount();e++)
-						if (listOnly)
-							std::cout << my_collection.GetEd2kLink(e) << std::endl;
-						else
-							writeLink( my_collection.GetEd2kLink(e), config_path );
+						writeLink( my_collection.GetEd2kLink(e), config_path );
 				} else {
 					std::cerr << "Invalid emulecollection file: " << argv[i] << std::endl;
 					errors = true;
@@ -514,6 +496,7 @@ int main(int argc, char *argv[])
 				std::cerr << "Missing mandatory argument for " << arg << std::endl;
 				errors = true;
 			}
+			std::cout << getVersion() << std::endl;
 		} else {
 			std::cerr << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
 			errors = true;

@@ -1,9 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Kry ( elkry@users.sourceforge.net / http://www.amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2008 Froenchenko Leonid (lfroen@gmail.com)
+// Copyright (c) 2003-2009 Kry ( elkry@users.sourceforge.net / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -204,7 +203,7 @@ class CObjTagMap {
 
 
 class CECServerSocket;
-class ECNotifier;
+
 
 class ExternalConn : public wxEvtHandler
 {
@@ -217,7 +216,14 @@ public:
 	~ExternalConn();
 	
 	wxSocketServer *m_ECServer;
-	ECNotifier *m_ec_notifier;
+
+	static CECPacket *ProcessRequest2(
+		const CECPacket *request,
+		CPartFile_Encoder_Map &,
+		CKnownFile_Encoder_Map &,
+		CObjTagMap &);
+	
+	static CECPacket *Authenticate(const CECPacket *);
 
 	void AddSocket(CECServerSocket *s);
 	void RemoveSocket(CECServerSocket *s);
@@ -228,140 +234,6 @@ private:
 	void OnServerEvent(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
 };
-
-class ECUpdateMsgSource {
-	public:
-		virtual ~ECUpdateMsgSource()
-		{
-		}
-		virtual CECPacket *GetNextPacket() = 0;
-};
-
-class ECPartFileMsgSource : public ECUpdateMsgSource {
-		typedef struct {
-			bool m_new;
-			bool m_comment_changed;
-			bool m_removed;
-			bool m_finished;
-			bool m_dirty;
-			CPartFile *m_file;
-		} PARTFILE_STATUS;
-		std::map<CMD4Hash, PARTFILE_STATUS> m_dirty_status;
-	public:
-		ECPartFileMsgSource();
-		
-		void SetDirty(CPartFile *file);
-		void SetNew(CPartFile *file);
-		void SetCompleted(CPartFile *file);
-		void SetRemoved(CPartFile *file);
-		
-		virtual CECPacket *GetNextPacket();
-	
-};
-
-class ECKnownFileMsgSource : public ECUpdateMsgSource {
-		typedef struct {
-			bool m_new;
-			bool m_comment_changed;
-			bool m_removed;
-			bool m_dirty;
-			CKnownFile *m_file;
-		} KNOWNFILE_STATUS;
-		std::map<CMD4Hash, KNOWNFILE_STATUS> m_dirty_status;
-	public:
-		ECKnownFileMsgSource();
-
-		void SetDirty(CKnownFile *file);
-		void SetNew(CKnownFile *file);
-		void SetRemoved(CKnownFile *file);
-		
-		virtual CECPacket *GetNextPacket();
-};
-
-class ECClientMsgSource : public ECUpdateMsgSource {
-	public:
-		virtual CECPacket *GetNextPacket();
-};
-
-class ECStatusMsgSource : public ECUpdateMsgSource {
-		uint32 m_last_ed2k_status_sent;
-		uint32 m_last_kad_status_sent;
-		void *m_server;
-
-		uint32 GetEd2kStatus();
-		uint32 GetKadStatus();
-	public:
-		ECStatusMsgSource();
-		
-		virtual CECPacket *GetNextPacket();
-};
-
-class ECSearchMsgSource : public ECUpdateMsgSource {
-		typedef struct {
-			bool m_new;
-			bool m_child_dirty;
-			bool m_dirty;
-			CSearchFile *m_file;
-		} SEARCHFILE_STATUS;
-		std::map<CMD4Hash, SEARCHFILE_STATUS> m_dirty_status;
-	public:
-		ECSearchMsgSource();
-		
-		void SetDirty(CSearchFile *file);
-		void SetChildDirty(CSearchFile *file);
-	
-		void FlushStatus();
-	
-		virtual CECPacket *GetNextPacket();
-};
-
-class ECNotifier {
-		//
-		// designated priority for each type of update
-		//
-		enum EC_SOURCE_PRIO {
-			EC_PARTFILE = 0,
-			EC_SEARCH,
-			EC_CLIENT,
-			EC_STATUS,
-			EC_KNOWN,
-			
-			EC_STATUS_LAST_PRIO
-		};
-		
-		//ECUpdateMsgSource *m_msg_source[EC_STATUS_LAST_PRIO];
-		std::map<CECServerSocket *, ECUpdateMsgSource **> m_msg_source;
-		
-		void NextPacketToSocket();
-		
-		CECPacket *GetNextPacket(ECUpdateMsgSource *msg_source_array[]);
-	public:
-		ECNotifier();
-		
-		void Add_EC_Client(CECServerSocket *sock);
-		void Remove_EC_Client(CECServerSocket *sock);
-		
-		CECPacket *GetNextPacket(CECServerSocket *sock);
-		
-		//
-		// Interface to notification macros
-		//
-		void DownloadFile_SetDirty(CPartFile *file);
-		void DownloadFile_RemoveFile(CPartFile *file);
-		void DownloadFile_RemoveSource(CPartFile *file);
-		void DownloadFile_AddFile(CPartFile *file);
-		void DownloadFile_AddSource(CPartFile *file);
-		
-		void Status_ConnectionState();
-		void Status_QueueCount();
-		void Status_UserCount();
-		
-		void SharedFile_AddFile(CKnownFile *file);
-		void SharedFile_RemoveFile(CKnownFile *file);
-		void SharedFile_RemoveAllFiles();
-
-};
-
 
 #endif // EXTERNALCONN_H
 // File_checked_for_headers

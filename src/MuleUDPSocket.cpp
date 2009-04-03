@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -169,11 +169,11 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received"));
 	} else if (!ip) {
-		// wxFAIL;
+		// wxASSERT(0);
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n",
 			(const char*)unicode2char(addr.IPAddress()));
 	} else if (!port) {
-		// wxFAIL;
+		// wxASSERT(0);
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
 	} else if (theApp->clientlist->IsBannedClient(ip)) {
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Dropped packet from banned IP ") + addr.IPAddress());

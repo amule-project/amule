@@ -5,7 +5,7 @@
 ///
 /// Author:       ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (c) 2004-2008 ThePolish ( thepolish@vipmail.ru )
+/// Copyright (C) 2004 by ThePolish
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -73,12 +73,12 @@ int alcc::OnRun ()
 
           if (hash.SetED2KHashFromFile(m_filesToHash[i], NULL))
             {
-                wxLogMessage(wxT("%s"), hash.GetED2KLink(m_flagPartHashes).c_str());
-            }
+            	wxLogMessage(wxT("%s"), hash.GetED2KLink(m_flagPartHashes).c_str());
+	    }
         }
       else
         {
-            if (m_flagVerbose)
+		 if (m_flagVerbose)
                 {
                     wxLogMessage(_("%s ---> Non existant file !\n"),m_filesToHash[i].c_str());
                 }

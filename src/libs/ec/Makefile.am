@@ -2,7 +2,7 @@ SUBDIRS = cpp
 
 # Sources
 
-MAINTAINERCLEANFILES = Makefile.in 
+MAINTAINERCLEANFILES = Makefile.in
 
 BUILT_SOURCES = ECGeneratedFiles
 
@@ -20,6 +20,3 @@ EXTRA__DIST__SUBDIRS = abstracts java		# c# cannot be included because of the # 
 include $(top_srcdir)/automake/dist-hook.am
 
 DISTCLEANFILES = $(BUILT_SOURCES)
-
-clean:
-	rm -f ECGeneratedFiles

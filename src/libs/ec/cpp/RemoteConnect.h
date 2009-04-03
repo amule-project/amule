@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Angel Vidal Veiga ( kry@users.sourceforge.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -38,12 +38,8 @@ class CECPacketHandlerBase {
 
 class CECLoginPacket : public CECPacket {
 	public:
-		CECLoginPacket(const wxString& client, const wxString& version);
-};
-
-class CECAuthPacket : public CECPacket {
-	public:
-		CECAuthPacket(const wxString& pass);
+		CECLoginPacket(const wxString &pass,
+						const wxString& client, const wxString& version);
 };
 
 //#warning Kry TODO - move to abstract layer.
@@ -54,12 +50,10 @@ private:
 		EC_INIT,         // initial state
 		EC_CONNECT_SENT, // socket connect request sent
 		EC_REQ_SENT,     // sent auth request to core, waiting for reply
-		EC_SALT_RECEIVED,// received salt from core
-		EC_PASSWD_SENT,  // sent password to core, waiting for OK
-		EC_OK,           // core replied "ok"
-		EC_FAIL          // core replied "bad"
+		EC_OK,           // core replyed "ok"
+		EC_FAIL          // core replyed "bad"
 	} m_ec_state;
-
+	
 	// fifo of handlers for on-the-air requests. all EC concept is working in fcfs
 	// order, so it is ok to assume that order of replies is same as order of requests
 	std::list<CECPacketHandlerBase *> m_req_fifo;
@@ -72,8 +66,7 @@ private:
 	wxString m_server_reply;
 	wxString m_client;
 	wxString m_version;
-
-	void WriteDoneAndQueueEmpty();	
+	
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);
@@ -384,7 +377,7 @@ public:
 
 private:
 	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
-	bool ProcessAuthPacket(const CECPacket *reply);
+	bool ConnectionEstablished(const CECPacket *reply);
 };
 
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION, wxEVT_USER_FIRST + 1000)

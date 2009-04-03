@@ -5,13 +5,13 @@
 ///
 /// Last modified by: ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (c) 2004-2008 ThePolish ( thepolish@vipmail.ru )
+/// Copyright (C) 2004 by ThePolish
 ///
-/// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+/// Copyright (C) 2004 by Phoenix
 ///
-/// Copyright (c) 2004-2008 Alo Sarv ( madcat_@users.sourceforge.net )
+/// Copyright (C) 2004 by Madcat
 ///
-/// Copyright (c) 2002-2008 Michael Buesch
+/// Copyright (C) 2002, 2003, 2004 by Michael Buesch
 /// Email: mbuesch@freenet.de
 ///
 /// The algorithm is due to Ron Rivest.  This code is based on code

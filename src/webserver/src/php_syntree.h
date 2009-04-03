@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -342,13 +342,13 @@ extern "C" {
 /*
  * lex/yacc stuff
  */
-	int phperror(char *err);
-	int phpparse();
+	int yyerror(char *err);
+	int yyparse();
 	
-	extern int pphdebug;
-	extern FILE *phpin;
-	extern char *phptext;
-	extern int phplineno;
+	extern int yydebug;
+	extern FILE *yyin;
+	extern char *yytext;
+	extern int yylineno;
 
 /* 
  * Syntax tree interface to parser

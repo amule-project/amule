@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Carlo Wood ( carlo@alinoe.com )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Carlo Wood ( carlo@alinoe.com )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -30,6 +30,10 @@
 
 #include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 
+
+// This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal
+// ipaddress structs.
+// prevent fscking dns queries
 class amuleIPV4Address : public wxIPV4address
 {
 public:
@@ -39,6 +43,7 @@ public:
 	virtual bool Hostname(const wxString& name) {
 		// Some people are sometimes fools.
 		if (name.IsEmpty()) {
+//			wxASSERT(0);
 			return false;
 		}
 		
@@ -48,6 +53,7 @@ public:
 	virtual bool Hostname(uint32 ip) {
 		// Some people are sometimes fools.
 		if (!ip) {
+//			wxASSERT(0);
 			return false;
 		}
 		

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -238,22 +238,11 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	CChatSession* ci = (CChatSession*)GetPage( usedtab );
 
 	ci->m_active = true;
-
+	
 	//#warning EC needed here.
 	
 	#ifndef CLIENT_GUI
-	CUpDownClient* client = theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id));
-
-	if (!client) {
-		wxFAIL;
-	} else if (client->GetChatCaptchaState() == CA_CAPTCHARECV) {
-		client->SetChatCaptchaState(CA_SOLUTIONSENT);
-	} else if (client->GetChatCaptchaState() == CA_SOLUTIONSENT) {
-		wxFAIL; // we responsed to a captcha but didn't heard from the client afterwards - hopefully its just lag and this message will get through
-	} else {
-		client->SetChatCaptchaState(CA_ACCEPTING);
-	}
-	if (theApp->clientlist->SendChatMessage(ci->m_client_id, message)) {
+	if (theApp->clientlist->SendMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
 		ci->AddText( wxT(": ") + message, COLOR_BLACK );
 	} else {
@@ -334,17 +323,4 @@ void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 		// Nothing to be done here.
 	}
 }
-
-
-void CChatSelector::ShowCaptchaResult(uint64 id, bool ok)
-{
-	CChatSession* ci = GetPageByClientID(id);
-	if (ci)	{
-		ci->AddText(ok
-			? _("*** You have passed the captcha check and the user has received your message. ***")
-			: _("*** Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message. ***"),
-			COLOR_RED );
-	}
-}
-
 // File_checked_for_headers

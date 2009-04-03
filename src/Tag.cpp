@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -77,7 +77,7 @@ CTag::CTag(const CTag& rTag)
 		m_pData = new unsigned char[rTag.GetBsobSize()];
 		memcpy(m_pData, rTag.GetBsob(), rTag.GetBsobSize());
 	} else {
-		wxFAIL;
+		wxASSERT(0);
 		m_uVal = 0;
 	}
 }
@@ -234,7 +234,7 @@ CTag &CTag::operator=(const CTag &rhs)
 			m_pData = p;
 			memcpy(m_pData, rhs.GetBsob(), rhs.GetBsobSize());
 		} else {
-			wxFAIL;
+			wxASSERT(0);
 			m_uVal = 0;
 		}
 	}
@@ -383,7 +383,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 				data->WriteString(*m_pstrVal,eStrEncode,0); 
 			} else {
 				printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, uType);
-				wxFAIL;
+				wxASSERT(0);
 				return false;
 			}
 			break;

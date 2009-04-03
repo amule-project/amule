@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 Mikkel Schubert ( xaignar@amule.org / http://www.amule.org )
+// Copyright (c) 2006-2009 Mikkel Schubert ( xaignar@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -108,7 +108,7 @@ bool CThreadScheduler::AddTask(CThreadTask* task, bool overwrite)
 
 	// When terminated (on shutdown), all tasks are ignored.
 	if (s_terminated) {
-		AddDebugLogLineM(false, logThreads, wxT("Task discarded: ") + task->GetDesc());
+		AddDebugLogLineM(false, logThreads, wxT("Task discared: ") + task->GetDesc());
 		delete task;
 		return false;
 	} else if (s_scheduler == NULL) {
@@ -301,7 +301,7 @@ void* CThreadScheduler::Entry()
 			// a different task, so dont remove it. That also means 
 			// that it cant be the last task of this type.
 			if (!task->m_abort) {
-				AddDebugLogLineM(false, logThreads,
+				AddLogLineM(false, logThreads,
 					CFormat(wxT("Completed task '%s%s', %u tasks remaining.")) 
 						% task->GetType()
 						% (task->GetDesc().IsEmpty() ? wxString() : (wxT(" - ") + task->GetDesc()))
@@ -309,7 +309,7 @@ void* CThreadScheduler::Entry()
 				
 				CDescMap& map = m_taskDescs[task->GetType()];
 				if (!map.erase(task->GetDesc())) {
-					wxFAIL;
+					wxASSERT(0);
 				} else if (map.empty()) {
 					m_taskDescs.erase(task->GetType());
 					isLastTask = true;
