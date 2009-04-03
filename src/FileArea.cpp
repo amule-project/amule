@@ -77,6 +77,11 @@ struct sigaction CFileAreaSigHandler::old_bus;
 
 #define PAGE_SIZE 8192u
 
+/* define MAP_ANONYMOUS for Mac OS X */
+#if defined(MAP_ANON) && !defined(MAP_ANONYMOUS)
+#define MAP_ANONYMOUS MAP_ANON
+#endif
+
 void CFileAreaSigHandler::Handler(int sig, siginfo_t *info, void *ctx)
 {
 	wxMutexLocker lock(mutex);
