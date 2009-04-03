@@ -700,14 +700,28 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
   	int fd = open("/dev/null",O_RDWR);
   	dup(fd);
   	dup(fd);
-  	int pid = fork();
+  	pid_t pid = fork();
 
 	wxASSERT(pid != -1);
 
   	if ( pid ) {
   		exit(0);
   	} else {
-		setsid();
+		pid = setsid();
+		//
+		// Create a Pid file with the Pid of the Child, so any daemon-manager
+		// can easily manage the process
+		//
+		if (!PidFile.IsEmpty()) {
+			wxString temp = wxString::Format(wxT("%d\n"), pid);
+			wxFFile ff(PidFile, wxT("w"));
+			if (!ff.Error()) {
+				ff.Write(temp);
+				ff.Close();
+			} else {
+				AddLogLineNS(_("Cannot Create Pid File"));
+			}
+		}
   	}
   	
 #endif

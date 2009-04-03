@@ -445,6 +445,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
 #ifdef AMULE_DAEMON
 	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
+	cmdline.AddOption(wxT("p"), wxT("pid-file"), wxT("After fork, create a pid-file in the given fullname file."));
 	cmdline.AddOption(wxT("c"), wxT("config-dir"), wxT("read config from <dir> instead of home"));
 	cmdline.AddSwitch(wxT("e"), wxT("ec-config"), wxT("Configure EC (External Connections)."));
 #else
@@ -496,8 +497,13 @@ bool CamuleApp::OnInit()
 	theLogger.SetEnabledStdoutLog(cmdline.Found(wxT("log-stdout")));
 #ifdef AMULE_DAEMON		
 	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
+	if ( cmdline.Found(wxT("pid-file"), &PidFile) ) {
+		// Remove any existing PidFile
+		if ( wxFileExists (PidFile) ) wxRemoveFile (PidFile);
+	}
 #else
 	enable_daemon_fork = false;
+	PidFile.Clear();
 #endif
 	
 	if (theLogger.IsEnabledStdoutLog()) {

@@ -287,6 +287,8 @@ protected:
 	long webserver_pid;
 
 	bool enable_daemon_fork;
+	wxString PidFile;
+
 	wxString server_msg;
 
 	CTimer* core_timer;
