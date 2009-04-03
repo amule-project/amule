@@ -167,6 +167,96 @@
 }
 @end
 
+@implementation SharedFile
+
+@synthesize size_xfer = m_size_xfer;
+@synthesize size_xfer_all = m_size_xfer_all;
+
+@synthesize req_count = m_req_count;
+@synthesize req_count_all = m_req_count_all;
+
+@synthesize accept_count = m_accept_count;
+@synthesize accept_count_all = m_accept_count_all;
+
+@synthesize prio = m_prio;
+
+@dynamic sprio;
+
+- (NSString *)sprio {
+	return [self prioToString: m_prio];
+}
+
++ (id)createFromEC: (ECTagMD5 *) tag {
+	SharedFile *obj = [[SharedFile alloc] init];
+
+	obj->m_hash = [tag getMD5Data];
+	
+	ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
+	ECTagString *stag = (ECTagString *)nametag;
+	obj->m_name = stag.stringValue;;
+	
+	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
+		
+	[obj updateFromEC:tag];
+	
+	return obj;
+}
+
+- (NSString *)prioToString:(int)prio {
+	NSString *s = nil;
+	switch (prio) {
+		case 0:
+			s = @"Low";
+			break;
+		case 1:
+			s = @"Normal";
+			break;
+		case 2:
+			s = @"High";
+			break;
+		case 3:
+			s = @"Very High";
+			break;
+		case 4:
+			s = @"Very Low";
+			break;
+		case 5:
+			s = @"Auto";
+			break;
+		case 6:
+			s = @"PowerShare";
+			break;
+		default:
+			break;
+	}
+	if ( m_auto_prio ) {
+		s = [s stringByAppendingString:@" (auto)"];
+	}
+	return s;
+}
+
+
+- (void)updateFromEC:(ECTagMD5 *) tag {
+	m_req_count = [tag tagInt64ByName: EC_TAG_KNOWNFILE_REQ_COUNT];
+	m_req_count_all = [tag tagInt64ByName: EC_TAG_KNOWNFILE_REQ_COUNT_ALL];
+	m_accept_count = [tag tagInt64ByName: EC_TAG_KNOWNFILE_ACCEPT_COUNT];
+	m_accept_count_all = [tag tagInt64ByName: EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL];
+	
+	m_size_xfer = [tag tagInt64ByName: EC_TAG_KNOWNFILE_XFERRED];
+	m_size_xfer_all = [tag tagInt64ByName: EC_TAG_KNOWNFILE_XFERRED_ALL];
+	
+	m_prio = [tag tagInt64ByName:EC_TAG_PARTFILE_PRIO];
+	if ( m_prio > 10 ) {
+		m_auto_prio = true;
+		m_prio -= 10;
+	} else {
+		m_auto_prio = false;
+	}
+	
+}
+
+@end
+
 @implementation amuleFileSet
 
 - (id)init {
@@ -267,6 +357,10 @@
 			[self handleDownloadQueueUpdate: packet];
 			break;
 		}
+		case EC_OP_SHARED_FILES: {
+			[self handleSharedFilesUpdate: packet];
+			break;
+		}
 		case EC_OP_SEARCH_RESULTS: {
 			[self handleSearchUpdate: packet];
 			break;
@@ -301,6 +395,32 @@
 					[m_downloads insertObject:file];
 				} else {
 					DownloadingFile *file = [m_downloads objectForKey:[tag stringKey]];
+					[file updateFromEC:tag];
+				}
+			}
+		} else {
+			NSLog(@"[EC] bad tag type '%s'\n", [t class]);
+		}
+	}
+}
+
+- (void)handleSharedFilesUpdate:(ECPacket *) packet {
+	for (ECTag *t in packet.subtags) {
+		if ( [t isKindOfClass:[ECTagMD5 class]] ) {
+			ECTagMD5 *tag = (ECTagMD5 *)t;
+			if ( [tag tagCount] == 0 ) {
+				//
+				// Only hash here - indication to remove the object
+				//
+				[m_shared removeAtKey:[tag stringKey]];
+			} else {
+				NSLog(@"[EC] filehash=[%@]\n", [tag stringKey]);
+				SharedFile *file = [m_shared objectForKey:[tag stringKey]];
+				if ( file == nil ) {
+					file = [SharedFile createFromEC:tag];
+					[m_shared insertObject:file];
+				} else {
+					SharedFile *file = [m_shared objectForKey:[tag stringKey]];
 					[file updateFromEC:tag];
 				}
 			}

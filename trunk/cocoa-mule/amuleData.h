@@ -64,12 +64,45 @@
 	bool m_known;
 }
 
+
 + (id)createFromEC:(ECTagMD5 *) tag;
 
 - (void)updateFromEC:(ECTagMD5 *) tag;
 
 @property (readonly) int src_count;
 @property (readonly) int complete_src_count;
+
+@end
+
+@interface SharedFile : amuleFile {	
+	int m_req_count;
+	int m_req_count_all;
+	int m_accept_count;
+	int m_accept_count_all;
+	
+	uint64_t m_size_xfer;
+	uint64_t m_size_xfer_all;
+	
+	int m_prio;
+	bool m_auto_prio;	
+}
+
++ (id)createFromEC:(ECTagMD5 *) tag;
+
+- (void)updateFromEC:(ECTagMD5 *) tag;
+
+- (NSString *)prioToString:(int)prio;
+
+@property (readonly) int req_count;
+@property (readonly) int req_count_all;
+@property (readonly) int accept_count;
+@property (readonly) int accept_count_all;
+
+@property (readonly) uint64_t size_xfer;
+@property (readonly) uint64_t size_xfer_all;
+
+@property (readonly) int prio;
+@property (copy, readonly) NSString * sprio;
 
 @end
 
@@ -131,6 +164,7 @@
 - (void)handleError;
 
 - (void)handleDownloadQueueUpdate:(ECPacket *) packet;
+- (void)handleSharedFilesUpdate:(ECPacket *) packet;
 - (void)handleSearchUpdate:(ECPacket *) packet;
 
 - (void)handleStatusUpdate:(ECPacket *) packet;
