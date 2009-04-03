@@ -128,6 +128,7 @@ Version 2.2.4 - The "we didn't have a .4 version since... well... long ago" vers
 		* Fixed saving wrong window position when exiting while minimized.
 		* Fixed rare case when we tried to connect to a LowID client.
 		* MSW: detect WinSock API version needed by GeoIP.
+		* Fixed libbfd sometimes depends on libintl, with help from PacoBell.
 
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.

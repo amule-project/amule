@@ -301,10 +301,6 @@ MULE_CHECK_EXCEPTIONS
 MULE_CHECK_CXXABI
 AC_LANG_POP([C++])
 
-# Check for bfd.h (to have proper backtraces without using wxExecute)
-MULE_CHECK_BFD
-MULE_CHECK_EXECINFO
-
 # Ok, we have all needed libs, now checking for other stuff
 AS_IF([test "$LEX" = "flex"], [MULE_CHECK_FLEX_EXTENDED], [HAVE_FLEX_EXTENDED=no])
 
@@ -391,6 +387,10 @@ dnl Sets gettext version.
 dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.in!
 AM_GNU_GETTEXT_VERSION(0.11.5)
 MULE_CHECK_NLS
+
+# Check for bfd.h (to have proper backtraces without using wxExecute)
+MULE_CHECK_BFD
+MULE_CHECK_EXECINFO
 
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
