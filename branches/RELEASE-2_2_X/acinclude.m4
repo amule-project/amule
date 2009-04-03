@@ -340,7 +340,7 @@ AC_DEFUN([MULE_CHECK_BFD],
 
 	AC_MSG_RESULT([$result])
 
-	AS_IF([test $result = no]),
+	AS_IF([test $result = no],
 		[AC_MSG_WARN([
 	bfd.h not found or unusable, please install binutils development
 	package if you are a developer or want to help testing aMule])
