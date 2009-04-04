@@ -280,11 +280,16 @@
 }
 
 - (void)reloadGui {
-	if ([m_gui_controller respondsToSelector:@selector(reload)]) {
-		[m_gui_controller performSelector:@selector(reload)];
+	if ([m_gui_controller respondsToSelector:@selector(reload:)]) {
+		[m_gui_controller performSelector:@selector(reload:)];
 	} else {
 		NSLog(@"Internal error: gui controller doesnt respond to 'reload'\n");
 	}
+//	if ([m_gui_controller respondsToSelector:[m_gui_controller reload]) {
+//		[m_gui_controller performSelector:@selector(reload)];
+//	} else {
+//		NSLog(@"Internal error: gui controller doesnt respond to 'reload'\n");
+//	}
 }
 
 - (id)objectAtIndex:(int)index {

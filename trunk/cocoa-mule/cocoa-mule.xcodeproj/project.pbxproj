@@ -57,6 +57,7 @@
 		B2499CCD0E7CBBF400F67575 /* Toolbar_Shared.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA40E7CBBF400F67575 /* Toolbar_Shared.png */; };
 		B2499CCE0E7CBBF400F67575 /* Toolbar_Stats.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */; };
 		B2499CCF0E7CBBF400F67575 /* Toolbar_Transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */; };
+		B253EAAB0F87465E000EC011 /* SharedFilesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B253EAA90F87465E000EC011 /* SharedFilesViewController.mm */; };
 		B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B257A4540F1A7AD800DC958E /* SearchViewController.mm */; };
 		B291B8130F7E122500FF9F46 /* SourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B291B8110F7E122500FF9F46 /* SourceViewController.m */; };
 		B2B307A40F05470200AE5E79 /* DownloadsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */; };
@@ -138,6 +139,8 @@
 		B2499CA40E7CBBF400F67575 /* Toolbar_Shared.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Shared.png; sourceTree = "<group>"; };
 		B2499CA50E7CBBF400F67575 /* Toolbar_Stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Stats.png; sourceTree = "<group>"; };
 		B2499CA60E7CBBF400F67575 /* Toolbar_Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Toolbar_Transfers.png; sourceTree = "<group>"; };
+		B253EAA90F87465E000EC011 /* SharedFilesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SharedFilesViewController.mm; sourceTree = "<group>"; };
+		B253EAAA0F87465E000EC011 /* SharedFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedFilesViewController.h; sourceTree = "<group>"; };
 		B257A4530F1A7AD800DC958E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		B257A4540F1A7AD800DC958E /* SearchViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchViewController.mm; sourceTree = "<group>"; };
 		B291B8110F7E122500FF9F46 /* SourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceViewController.m; sourceTree = "<group>"; };
@@ -171,6 +174,8 @@
 				B2CDC5AC0E9541D5009370D9 /* amuleData.mm */,
 				B2B307A20F05470200AE5E79 /* DownloadsViewController.h */,
 				B2B307A30F05470200AE5E79 /* DownloadsViewController.mm */,
+				B253EAA90F87465E000EC011 /* SharedFilesViewController.mm */,
+				B253EAAA0F87465E000EC011 /* SharedFilesViewController.h */,
 				B257A4530F1A7AD800DC958E /* SearchViewController.h */,
 				B257A4540F1A7AD800DC958E /* SearchViewController.mm */,
 				B291B8110F7E122500FF9F46 /* SourceViewController.m */,
@@ -420,6 +425,7 @@
 				B257A4550F1A7AD800DC958E /* SearchViewController.mm in Sources */,
 				B20467430F20DD1E00972AD8 /* AddLinkDialogController.m in Sources */,
 				B291B8130F7E122500FF9F46 /* SourceViewController.m in Sources */,
+				B253EAAB0F87465E000EC011 /* SharedFilesViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
