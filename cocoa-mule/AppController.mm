@@ -155,7 +155,7 @@
 	//
 	[m_dload_controller linkAmuleData:m_data];
 	[m_search_controller linkAmuleData:m_data];
-	
+	[m_shared_controller linkAmuleData:m_data];
 	//
 	// daemon (either local or remote) must be running by now
 	//
