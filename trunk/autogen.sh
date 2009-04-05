@@ -70,10 +70,10 @@ echo "Running autoconf"
 autoconf
 
 echo "Creating pixmaps Makefile.am"
-pushd $(pwd) > /dev/null
+OLDPWD="`pwd`"
 cd src/pixmaps/flags_xpm
 ./makeflags.sh
-popd > /dev/null
+cd "$OLDPWD"
 
 echo "Running automake --foreign -a -c -f"
 automake --foreign -a -c -f
