@@ -43,7 +43,7 @@
 #include <sys/mman.h>
 #endif
 
-#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO)
+#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(ENABLE_MMAP)
 
 class CFileAreaSigHandler
 {
@@ -51,6 +51,8 @@ public:
 	static void Init() {};
 	static void Add(CFileArea& area) {};
 	static void Remove(CFileArea& area) {};
+private:
+	CFileAreaSigHandler() {};
 };
 
 #else
@@ -62,6 +64,7 @@ public:
 	static void Add(CFileArea& area);
 	static void Remove(CFileArea& area);
 private:
+	CFileAreaSigHandler() {};
 	static wxMutex mutex;
 	static CFileArea *first;
 	static bool initialized;
@@ -82,27 +85,39 @@ struct sigaction CFileAreaSigHandler::old_bus;
 #define MAP_ANONYMOUS MAP_ANON
 #endif
 
+// Handle signals.
+// The idea is to replace faulted memory with zeroes and mark
+// the error in proper CFileArea
 void CFileAreaSigHandler::Handler(int sig, siginfo_t *info, void *ctx)
 {
-	wxMutexLocker lock(mutex);
-	CFileArea* cur = first;
-	while (cur) {
-		if (cur->m_mmap_buffer && info->si_addr >= cur->m_mmap_buffer && info->si_addr < cur->m_mmap_buffer + cur->m_length) {
-			cur->m_error = true;
-			char *start_addr = ((char *) info->si_addr) - (((unsigned long) info->si_addr) % PAGE_SIZE);
-			if (mmap(start_addr, PAGE_SIZE, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) == MAP_FAILED) {
-				struct sigaction* sa = (sig == SIGSEGV) ? &old_segv : &old_bus;
-				if (sa->sa_flags & SA_SIGINFO)
-					sa->sa_sigaction(sig, info, ctx);
-				else if (sa->sa_handler == SIG_DFL || sa->sa_handler == SIG_IGN)
-					abort();
-				else
-					sa->sa_handler(sig);
-			}
-			break;
+	CFileArea *cur;
+	// find the mapped section where violation occurred (if any)
+	{
+		wxMutexLocker lock(mutex);
+		cur = first;
+		while (cur) {
+			if (cur->m_mmap_buffer && info->si_addr >= cur->m_mmap_buffer && info->si_addr < cur->m_mmap_buffer + cur->m_length)
+				break;
+			cur = cur->m_next;
 		}
-		cur = cur->m_next;
 	}
+
+	// mark error if found
+	if (cur) {
+		cur->m_error = true;
+		char *start_addr = ((char *) info->si_addr) - (((unsigned long) info->si_addr) % PAGE_SIZE);
+		if (mmap(start_addr, PAGE_SIZE, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) != MAP_FAILED)
+			return;
+	}
+
+	// call old handler
+	struct sigaction* sa = (sig == SIGSEGV) ? &old_segv : &old_bus;
+	if (sa->sa_flags & SA_SIGINFO)
+		sa->sa_sigaction(sig, info, ctx);
+	else if (sa->sa_handler == SIG_DFL || sa->sa_handler == SIG_IGN)
+		abort();
+	else
+		sa->sa_handler(sig);
 }
 
 void CFileAreaSigHandler::Init()
@@ -112,6 +127,11 @@ void CFileAreaSigHandler::Init()
 	if (initialized)
 		return;
 
+	// Set our new signal handler.
+	// Note that we safe old handlers (propably wx ones) in order
+	// to be able to call them if signal not handled as desired.
+	// These handler will be removed by wx code when wx will restore
+	// old ones
 	struct sigaction sa;
 	memset(&sa, 0, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
@@ -168,8 +188,7 @@ bool CFileArea::Close()
 		delete[] m_buffer;
 		m_buffer = NULL;
 	}
-#ifdef HAVE_MMAP
-	#warning using experimental MMAP file reading
+#ifdef ENABLE_MMAP
 	if (m_mmap_buffer)
 	{
 		munmap(m_mmap_buffer, m_length);
@@ -186,7 +205,7 @@ void CFileArea::Read(const CFile& file, size_t count)
 {
 	Close();
 
-#ifdef HAVE_MMAP
+#ifdef ENABLE_MMAP
 	const uint64 pageSize = 8192u;
 	uint64 offset = file.GetPosition();
 	uint64 offStart = offset & (~(pageSize-1));
