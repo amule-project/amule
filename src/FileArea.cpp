@@ -43,7 +43,7 @@
 #include <sys/mman.h>
 #endif
 
-#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(ENABLE_MMAP)
+#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(HAVE_MMAP)
 
 class CFileAreaSigHandler
 {
@@ -188,7 +188,7 @@ bool CFileArea::Close()
 		delete[] m_buffer;
 		m_buffer = NULL;
 	}
-#ifdef ENABLE_MMAP
+#ifdef HAVE_MMAP
 	if (m_mmap_buffer)
 	{
 		munmap(m_mmap_buffer, m_length);
@@ -205,7 +205,7 @@ void CFileArea::Read(const CFile& file, size_t count)
 {
 	Close();
 
-#ifdef ENABLE_MMAP
+#ifdef HAVE_MMAP
 	const uint64 pageSize = 8192u;
 	uint64 offset = file.GetPosition();
 	uint64 offStart = offset & (~(pageSize-1));
