@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-28 19:46+0100\n"
-"PO-Revision-Date: 2008-10-29 18:02+0100\n"
+"PO-Revision-Date: 2009-04-06 10:21+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,46 +42,41 @@ msgid "The specified userhash is not valid!"
 msgstr "Wybrany skrót użytkownika jest niepoprawny!"
 
 #: src/amule.cpp:223
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"OK, wychodzę %s...\n"
+msgstr "Teraz, zakańczam główną aplikację..."
 
 #: src/amule.cpp:242
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr ""
+msgstr "Zabiłam instancję amuleweb z pid `%ld' ... "
 
 #: src/amule.cpp:245
-#, fuzzy
 msgid "Killed!"
-msgstr "Nieudane"
+msgstr "Zabite!"
 
 #: src/amule.cpp:249
 msgid "aMule OnExit: Terminating core."
-msgstr ""
+msgstr "aMule OnExit: Zakończenie jądra."
 
 #: src/amule.cpp:319
-#, fuzzy
 msgid "aMule shutdown completed."
-msgstr "Pobieranie zakończone"
+msgstr "Zamykanie aMule zakończone."
 
 #: src/amule.cpp:323
 msgid "Memory debug results for aMule exit:"
-msgstr ""
+msgstr "Wyniki debugu pamięci dla wyjścia aMule:"
 
 #: src/amule.cpp:640
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Potwierdzenie wyjścia"
+msgstr ""
+"\n"
+"Konfiguracja EC"
 
 #: src/amule.cpp:643
-#, fuzzy
 msgid "Password set and external connections enabled."
-msgstr "Nowe zewnętrzne połączenie zaakceptowane"
+msgstr "Ustawione hasło i włączone połączenia zewnętrzne."
 
 #: src/amule.cpp:654 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:664 src/SharedFilesCtrl.cpp:321
@@ -120,9 +115,9 @@ msgid "Connecting"
 msgstr "Łączenie"
 
 #: src/amule.cpp:822
-#, fuzzy, c-format
+#, c-format
 msgid "Using amuleweb in '%s'."
-msgstr "Uruchom amuleweb podczas startu"
+msgstr "Używanie amuleweb w '%s'."
 
 #: src/amule.cpp:852
 #, c-format
@@ -291,9 +286,8 @@ msgstr ""
 "preferencjach."
 
 #: src/amule.cpp:1402
-#, fuzzy
 msgid "Server hostname notified"
-msgstr "Nazwa serwera:"
+msgstr "Zawiadomiono nazwę hostu serwera"
 
 #: src/amule.cpp:1631
 #, c-format
@@ -424,7 +418,6 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Zablokowano sieć Kad w preferencjach, nie łączę."
 
 #: src/amuled.cpp:605
-#, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -444,14 +437,19 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
+"BŁĄD: Potrzebne jest ważne hasło do korzystania z zewnętrznych połączeń, a "
+"daemon aMule nie może używany być bez zewnętrznych połączeń. Aby uruchomić "
+"deamon aMule, musisz ustawić pole \"ECPassword\" w pliku ~/.aMule/amule."
+"conf~ z odpowiednią wartością. Wykonaj amuled z flagą --ec-config aby "
+"ustawić hasło. Więcej informacji można znaleźć na http://wiki.amule.org"
 
 #: src/amuled.cpp:673
 msgid "amuled: OnInit - starting timer"
-msgstr ""
+msgstr "amuled: OnInit - począwszy timer"
 
 #: src/amuled.cpp:691
 msgid "amuled: forking to background - see you"
-msgstr ""
+msgstr "amuled: rozdzielanie tła - do zobaczenia"
 
 #: src/amuled.cpp:747
 #, c-format
@@ -544,13 +542,12 @@ msgid "Message"
 msgstr "Wiadomość"
 
 #: src/amuleDlg.cpp:536
-#, fuzzy
 msgid "Shutting down aMule..."
-msgstr "Wyłącz aMule."
+msgstr "Zamykanie aMule..."
 
 #: src/amuleDlg.cpp:546
 msgid "aMule dialog destroyed"
-msgstr ""
+msgstr "dialog aMule zniszczony"
 
 #: src/amuleDlg.cpp:700
 msgid "eD2k: Connecting"
@@ -637,7 +634,7 @@ msgstr "Potwierdzenie wyjścia"
 
 #: src/amuleDlg.cpp:1158
 msgid "Launch Command: "
-msgstr ""
+msgstr "Uruchomienie polecenia: "
 
 #: src/amuleDlg.cpp:1217
 #, c-format
@@ -747,28 +744,24 @@ msgid "aMule"
 msgstr "aMule"
 
 #: src/amule-gui.cpp:283
-#, fuzzy
 msgid "Fatal Error: Failed to create Core Timer"
-msgstr "KRYTYCZNY BŁĄD: Nie udało się utworzyć Timera"
+msgstr "Krytyczny Błąd: Nie udało się utworzyć Timera Core"
 
 #: src/amule-remote-gui.cpp:74
 msgid "Connect to remote amule"
 msgstr "Podłączony do zdalnego amule"
 
 #: src/amule-remote-gui.cpp:257
-#, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "KRYTYCZNY BŁĄD: Nie udało się utworzyć Timera"
+msgstr "Krytyczny Błąd: Nie udało się utworzyć Timera Poll"
 
 #: src/amule-remote-gui.cpp:281
-#, fuzzy
 msgid "Going to event loop..."
-msgstr "Próbuję odzyskać informacje o pliku..."
+msgstr "Przechodzę do pętli wydarzenia..."
 
 #: src/amule-remote-gui.cpp:302
-#, fuzzy
 msgid "Connecting..."
-msgstr "Łączenie"
+msgstr "Łączenie..."
 
 #: src/amule-remote-gui.cpp:306
 msgid "Connection failed "
@@ -776,11 +769,11 @@ msgstr "Nieudane połączenie "
 
 #: src/amule-remote-gui.cpp:317
 msgid "Remote GUI EC event handler"
-msgstr ""
+msgstr "Zdalne GUI EC obsługi zdarzenia"
 
 #: src/amule-remote-gui.cpp:324
 msgid "Going down"
-msgstr ""
+msgstr "Zamykanie"
 
 #: src/amule-remote-gui.cpp:326 src/ExternalConnector.cpp:411
 #, c-format
@@ -789,7 +782,7 @@ msgstr "Połączenie nie powiodło się. Nie można połączyć się z %s:%d\n"
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
-msgstr ""
+msgstr "Gotowy"
 
 #: src/amule-remote-gui.cpp:604
 #, c-format
@@ -812,7 +805,7 @@ msgstr "Nieudane pobieranie udostępnionych plików od użytkownika '%s'"
 
 #: src/BaseClient.cpp:1544
 msgid "Searching buddy for lowid connection"
-msgstr ""
+msgstr "Szukam kolegi dla połączenia lowid"
 
 #: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2552
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
@@ -906,7 +899,7 @@ msgstr "Nowa wiadomość od '%s' (IP:%s)"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Wpisz Captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -957,13 +950,15 @@ msgstr "*** Nie udało się połączyć do klienta / Połączenie utracone ***"
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** Zdałeś captcha i użytkownik otrzymał twoją wiadomość. ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Twoja odpowiedz na captcha była nieprawidłowa i wiadomość ta została "
+"zignorowana. Możesz otrzymać kolejną captcha wysyłając nową wiadomość. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1687,21 +1682,21 @@ msgstr "BŁĄD: Nie udało się uruchomić zewnętrznego odtwarzacza! Komenda: `
 #: src/DownloadQueue.cpp:100
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr ""
+msgstr "Zapisywanie pliku części %u z %u"
 
 #: src/DownloadQueue.cpp:103
 msgid "All PartFiles Saved."
-msgstr ""
+msgstr "Wszystkie pliki części zapisane."
 
 #: src/DownloadQueue.cpp:110
-#, fuzzy, c-format
+#, c-format
 msgid "Loading temp files from %s."
-msgstr "Otwieram plik server.met: %s"
+msgstr "Ładowanie plików tymczasowych z %s."
 
 #: src/DownloadQueue.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "Loading PartFile %u of %u"
-msgstr "Ładowanie danych ze starego pobieranego pliku (%u z %u)"
+msgstr "Ładowanie pliku części %u z %u"
 
 #: src/DownloadQueue.cpp:152
 msgid ""
@@ -1713,7 +1708,7 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:161
 msgid "All PartFiles Loaded."
-msgstr ""
+msgstr "Wszystkie pliki części załadowane."
 
 #: src/DownloadQueue.cpp:164
 msgid "No part files found"
@@ -1756,9 +1751,8 @@ msgid "You are already trying to download the file %s"
 msgstr "Starasz się już pobierać plik %s"
 
 #: src/DownloadQueue.cpp:1049
-#, fuzzy
 msgid "Failed to open ED2KLinks file."
-msgstr "Nie udało się otworzyć: %s (%s)"
+msgstr "Nie udało się otworzyć pliku ED2KLinks."
 
 #: src/DownloadQueue.cpp:1323
 #, c-format
@@ -1776,9 +1770,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Nieprawidłowy link eD2k! BŁĄD: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Uwierzytelnianie nie powiodło się."
+msgstr "Klient wysyła pakiet po nie udanym uwierzytelnieniu."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1847,7 +1840,6 @@ msgid "Authentication failed."
 msgstr "Uwierzytelnianie nie powiodło się."
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Nieprawidłowe żądanie, najpierw musisz się uwierzytelnić."
 
@@ -2203,7 +2195,7 @@ msgstr ""
 
 #: src/FriendList.cpp:222
 msgid "CRITICAL - no client on StartChatSession"
-msgstr ""
+msgstr "KRYTYCZNE - brak klienta przy StartChatSession"
 
 #: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:499 src/muuli_wdr.cpp:2960
 msgid "Friends"
@@ -2256,44 +2248,43 @@ msgstr "( %s / %s )"
 
 #: src/HTTPDownload.cpp:108
 msgid "HTTP download cancelled"
-msgstr ""
+msgstr "Pobranie HTTP anulowane"
 
 #: src/HTTPDownload.cpp:172
 msgid "HTTP download thread started"
-msgstr ""
+msgstr "Rozpoczęte pobranie wątku HTTP"
 
 #: src/HTTPDownload.cpp:199
-#, fuzzy, c-format
+#, c-format
 msgid "Download size: %i"
-msgstr "Pobieranie (%i)"
+msgstr "Rozmiar pobierania: %i"
 
 #: src/HTTPDownload.cpp:231
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Oczekiwane %d bajtów, ale pobrane zostało %d bajtów"
 
 #: src/HTTPDownload.cpp:249
 msgid "HTTP download thread ended"
-msgstr ""
+msgstr "Zakończenie pobrania wątku HTTP"
 
 #: src/HTTPDownload.cpp:329
 #, c-format
 msgid "Host: %s:%i\n"
-msgstr ""
+msgstr "Host: %s:%i\n"
 
 #: src/HTTPDownload.cpp:331
 #, c-format
 msgid "Response: %i (Error: %i)"
-msgstr ""
+msgstr "Odpowiedź: %i (Błąd: %i)"
 
 #: src/HTTPDownload.cpp:334
-#, fuzzy
 msgid "WARNING: Void response on stream creation"
-msgstr "UWAGA: Nie można usunąć oryginału '%s' po wykonaniu kopii zapasowej"
+msgstr "UWAGA: Pusta odpowiedz przy tworzeniu strumienia"
 
 #: src/HTTPDownload.cpp:358
 msgid "ERROR: Redirection code received with no URL"
-msgstr ""
+msgstr "BŁĄD: Kod przekierowujący otrzymany bez adresu"
 
 #: src/IP2Country.cpp:87
 #, c-format
@@ -2301,9 +2292,8 @@ msgid "Download new GeoIP.dat from %s"
 msgstr "Pobierz nową GeoIP.dat z %s"
 
 #: src/IP2Country.cpp:115
-#, fuzzy
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr "Nie można usunąć pliku GeoIP.dat, przerwana aktualizacja."
+msgstr "Nie można pobrąć pliku GeoIP.dat, przerwana aktualizacja."
 
 #: src/IP2Country.cpp:121
 msgid "Failed to remove GeoIP.dat file, aborting update."
@@ -2405,7 +2395,7 @@ msgstr "Kademlia: wyszukiwana fraza jest za krótka"
 #: src/kademlia/kademlia/SearchManager.cpp:134
 #, c-format
 msgid "Keyword for search: %s"
-msgstr ""
+msgstr "Słowa kluczowe dla wyszukiwania: %s"
 
 #: src/kademlia/kademlia/SearchManager.cpp:142
 msgid "Kademlia: Search keyword is already on search list: "
@@ -2537,9 +2527,10 @@ msgid "EC connection failed. Empty reply."
 msgstr "Połączenie EC nieudane. Pusta odpowiedź."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "External Connection: Zła odpowiedź serwera. Zakończono połączenie."
+msgstr ""
+"External Connection: Zła odpowiedź serwera, brak nawiązania. Zakończono "
+"połączenie."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2554,13 +2545,12 @@ msgid "External Connection: Access denied because: "
 msgstr "External Connection: Brak dostępu z powodu: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "External Connection: Brak dostępu"
+msgstr "External Connection: Brak nawiązania"
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
-msgstr ""
+msgstr "ListenSocket: Ok."
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
@@ -2620,7 +2610,7 @@ msgstr "Nielimitowane"
 
 #: src/MuleTrayIcon.cpp:312
 msgid "Traybar-icon lost, trying to recreate ..."
-msgstr ""
+msgstr "Stracono ikonę paska zadań, próbuje odtworzyć ..."
 
 #: src/MuleTrayIcon.cpp:332
 msgid "aMule Tray Menu"
@@ -4578,7 +4568,7 @@ msgstr "Aktywny"
 
 #: src/PartFileConvert.cpp:180
 msgid "Waiting for partfile convert thread to die..."
-msgstr ""
+msgstr "Oczekiwanie na koniec wątku przemiany pliku części ..."
 
 #: src/PartFileConvert.cpp:236
 #, c-format
@@ -4751,9 +4741,8 @@ msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "BŁĄD podczas zapisywania pliku części: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:903
-#, fuzzy
 msgid "IO failure while saving partfile: "
-msgstr "BŁĄD podczas zapisywania pliku części: %s (%s ==> %s)"
+msgstr "Awaria IO podczas zapisywania pliku części:"
 
 #: src/PartFile.cpp:916
 #, c-format
@@ -4897,9 +4886,8 @@ msgid "Arabic"
 msgstr "Arabski"
 
 #: src/Preferences.cpp:662
-#, fuzzy
 msgid "Asturian"
-msgstr "Estoński"
+msgstr "Asturyjski"
 
 #: src/Preferences.cpp:663
 msgid "Basque"
@@ -5039,7 +5027,7 @@ msgstr "nie ma dostępnych opcji"
 
 #: src/Preferences.cpp:1544
 msgid "Invalid category found, skipping"
-msgstr ""
+msgstr "Znaleziono nieprawidłową kategorie, pomijam"
 
 #: src/Preferences.cpp:1708
 msgid ""
@@ -5056,7 +5044,7 @@ msgstr "Zostanie użyty domyślny port (%d)"
 #: src/Preferences.cpp:1732
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
-msgstr ""
+msgstr "Usuwam nieistniejące udostępnione katalogi: %s"
 
 #: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:688
 msgid "Connection"
@@ -5113,17 +5101,21 @@ msgstr "Debugowanie"
 #: src/PrefsUnifiedDlg.cpp:320
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
-msgstr ""
+msgstr "Błąd połączenia Cfg do widżetu z identyfikatorem %d i kluczem %s"
 
 #: src/PrefsUnifiedDlg.cpp:373
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr ""
+"Błąd przesyłania danych połączenia z Cfg do widżetu z identyfikatorem %d i "
+"kluczem %s"
 
 #: src/PrefsUnifiedDlg.cpp:479
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr ""
+"Błąd przesyłania danych połączenia z widżetu do Cfg z identyfikatorem %d i "
+"kluczem %s"
 
 #: src/PrefsUnifiedDlg.cpp:534
 msgid ""
@@ -5167,9 +5159,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Zmieniono folder tymczasowy.\n"
 
 #: src/PrefsUnifiedDlg.cpp:584
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Wszystkie sieci są wyłączone."
+msgstr "- sieć ED2K włączona.\n"
 
 #: src/PrefsUnifiedDlg.cpp:651
 msgid ""
@@ -5308,9 +5299,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Odświeżanie połączeń do serwera co: Wyłączone"
 
 #: src/PrefsUnifiedDlg.cpp:1090
-#, fuzzy
 msgid "disabled"
-msgstr "wyłącz"
+msgstr "wyłączone"
 
 #: src/PrefsUnifiedDlg.cpp:1108
 #, c-format
@@ -5459,7 +5449,7 @@ msgstr "Próba połączenia z %s (%s:%i) przedawniła się."
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
-msgstr ""
+msgstr "Otrzymano późny wynik wyszukiwania DNS, odrzucanie."
 
 #: src/ServerList.cpp:84
 #, c-format
@@ -5814,17 +5804,16 @@ msgstr "Stan połączenia:"
 #: src/ServerWnd.cpp:215
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
-msgstr ""
+msgstr "Za firewallem - otwórz port %d TCP w routerze lub firewallu"
 
 #: src/ServerWnd.cpp:216
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Stan połączenia:"
+msgstr "Stan połączenia UDP:"
 
 #: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
-msgstr ""
+msgstr "Za firewallem - otwórz port %d UDP w routerze lub firewallu"
 
 #: src/ServerWnd.cpp:222
 msgid "Firewalled state: "
@@ -5832,43 +5821,40 @@ msgstr "Stan firewalla: "
 
 #: src/ServerWnd.cpp:228
 msgid "No buddy required - TCP port open"
-msgstr ""
+msgstr "Bez wymagania kolegi - otwarty port TCP"
 
 #: src/ServerWnd.cpp:230
 msgid "No buddy required - UDP port open"
-msgstr ""
+msgstr "Bez wymagania kolegi - otwarty port UDP"
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy"
 msgstr "Brak kolegów"
 
 #: src/ServerWnd.cpp:236
-#, fuzzy
 msgid "Connecting to buddy"
-msgstr "Połączony do kolegi"
+msgstr "Łączenie do kolegi"
 
 #: src/ServerWnd.cpp:239
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Połączony do kolegi"
+msgstr "Łączenie do kolegi przy %s"
 
 #: src/ServerWnd.cpp:249
-#, fuzzy
 msgid "Indexed sources:"
-msgstr "Znaleziono źródeł :"
+msgstr "Indeksowane źródła:"
 
 #: src/ServerWnd.cpp:251
 msgid "Indexed keywords:"
-msgstr ""
+msgstr "Indeksowane słowa kluczowe:"
 
 #: src/ServerWnd.cpp:253
-#, fuzzy
 msgid "Indexed notes:"
-msgstr "Nie znaleziono pliku indeksu: "
+msgstr "Indeksowane uwagi:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed load:"
-msgstr ""
+msgstr "Załadowane indeksowania:"
 
 #: src/ServerWnd.cpp:258
 msgid "Average Users:"
@@ -5885,7 +5871,7 @@ msgstr "Nie uruchomiony"
 #: src/SharedFileList.cpp:324
 #, c-format
 msgid "Adding file %s to shares"
-msgstr ""
+msgstr "Dodawanie pliku %s do udostępnień"
 
 #: src/SharedFileList.cpp:352
 #, c-format
@@ -5909,14 +5895,14 @@ msgid "ERROR: Attempted to share %s"
 msgstr "BŁĄD: Próba udostępnienia %s"
 
 #: src/SharedFileList.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Shared directory not found, skipping: %s"
-msgstr "serwer nieznaleziony: %s"
+msgstr "Nie znaleziono katalogu udostępnionego, pomijam: %s"
 
 #: src/SharedFileList.cpp:463
 #, c-format
 msgid "No shareable files found in directory: %s"
-msgstr ""
+msgstr "Nie znaleziono plików do udostępniania w katalogu: %s"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -6131,19 +6117,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Szczytowe połączenia (szacunkowo): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Nieznany rozmiar"
+msgstr "Nieznane: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Filtrowane"
+msgstr "Filtrowane: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Zbanowany"
+msgstr "Zbanowane: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
