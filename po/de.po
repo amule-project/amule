@@ -6146,19 +6146,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Höchste Verbindungsanzahl (geschätzt): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Unbekannte Größe"
+msgstr "Unbekannt: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Gefiltert"
+msgstr "Gefiltert: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Gebannt"
+msgstr "Gebannt: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
