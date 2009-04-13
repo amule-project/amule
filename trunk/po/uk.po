@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-28 19:46+0100\n"
+"POT-Creation-Date: 2009-04-13 19:36+0200\n"
 "PO-Revision-Date: 2008-12-17 11:21+0200\n"
 "Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
@@ -36,32 +36,32 @@ msgstr "Інформація"
 msgid "The specified userhash is not valid!"
 msgstr "Визначений хеш користувача невірний"
 
-#: src/amule.cpp:223
+#: src/amule.cpp:224
 msgid "Now, exiting main app..."
 msgstr "Тепер, виходимо з головної програми..."
 
-#: src/amule.cpp:242
+#: src/amule.cpp:243
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr "Вбиваю екземпляр amuleweb з pid `%ld' ... "
 
-#: src/amule.cpp:245
+#: src/amule.cpp:246
 msgid "Killed!"
 msgstr "Вбитий!"
 
-#: src/amule.cpp:249
+#: src/amule.cpp:250
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule OnExit: Завершується core."
 
-#: src/amule.cpp:319
+#: src/amule.cpp:320
 msgid "aMule shutdown completed."
 msgstr "Завершення роботи aMule закінчене."
 
-#: src/amule.cpp:323
+#: src/amule.cpp:324
 msgid "Memory debug results for aMule exit:"
 msgstr "Наслідки зневадження пам'яті для виходу aMule:"
 
-#: src/amule.cpp:640
+#: src/amule.cpp:647
 msgid ""
 "\n"
 "EC configuration"
@@ -69,16 +69,16 @@ msgstr ""
 "\n"
 "Налаштування зовнішніх з'єднань"
 
-#: src/amule.cpp:643
+#: src/amule.cpp:650
 msgid "Password set and external connections enabled."
 msgstr "Пароль встановлений та дозволені зовнішні з'єднання."
 
-#: src/amule.cpp:654 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:661 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:664 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "ЗАСТЕРЕЖЕННЯ"
 
-#: src/amule.cpp:700
+#: src/amule.cpp:707
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -86,13 +86,13 @@ msgstr ""
 "Ваша локаль змінена на системну за замовчуванням із-за зміни налаштувань. "
 "Вибачте."
 
-#: src/amule.cpp:702 src/amule.cpp:1336 src/CatDialog.cpp:141
+#: src/amule.cpp:709 src/amule.cpp:1343 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Інфо"
 
-#: src/amule.cpp:784
+#: src/amule.cpp:791
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -100,26 +100,26 @@ msgstr ""
 "Ви не маєте жодного серверу в переліку серверів.\n"
 "Хочете, щоб aMule звантажив зараз новий?"
 
-#: src/amule.cpp:785
+#: src/amule.cpp:792
 msgid "Server list download"
 msgstr "Звантажити перелік серверів"
 
-#: src/amule.cpp:801 src/amuleDlg.cpp:568 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:808 src/amuleDlg.cpp:568 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:59
 msgid "Connecting"
 msgstr "З'єднується"
 
-#: src/amule.cpp:822
+#: src/amule.cpp:829
 #, c-format
 msgid "Using amuleweb in '%s'."
 msgstr "Використовується amuleweb у '%s'."
 
-#: src/amule.cpp:852
+#: src/amule.cpp:859
 #, c-format
 msgid "web server running on pid %d"
 msgstr "Веб-сервер запущений з %d"
 
-#: src/amule.cpp:856
+#: src/amule.cpp:863
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -129,22 +129,22 @@ msgstr ""
 "бути запущено. Будь ласка, встановіть пакунок, що містить веб-сервер aMule, "
 "зберіть aMule з --enable-webserver та виконайте make install"
 
-#: src/amule.cpp:857 src/amule.cpp:978 src/amule.cpp:1347
-#: src/amule-remote-gui.cpp:306 src/amule-remote-gui.cpp:327
+#: src/amule.cpp:864 src/amule.cpp:985 src/amule.cpp:1354
+#: src/amule-remote-gui.cpp:303 src/amule-remote-gui.cpp:324
 msgid "ERROR"
 msgstr "ПОМИЛКА"
 
-#: src/amule.cpp:943
+#: src/amule.cpp:950
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Неможливо прив'язати порт до визначеної адреси: %s"
 
-#: src/amule.cpp:970
+#: src/amule.cpp:977
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Порт %u недоступний. Ви будете мати LowID\n"
 
-#: src/amule.cpp:976
+#: src/amule.cpp:983
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -159,7 +159,7 @@ msgstr ""
 "\n"
 "Перевірте вашу мережу, щоб впевнитись, що порт відкритий."
 
-#: src/amule.cpp:1084 src/amule-remote-gui.cpp:508
+#: src/amule.cpp:1091 src/amule-remote-gui.cpp:505
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -167,15 +167,15 @@ msgstr ""
 "ЗАСТЕРЕЖЕННЯ: ви не можете додати себе як джерело для eD2k-посилання маючи "
 "LowID."
 
-#: src/amule.cpp:1129
+#: src/amule.cpp:1136
 msgid "Failed to create OnlineSig File"
 msgstr "Неможливо створити файл онлайн-підпису"
 
-#: src/amule.cpp:1137
+#: src/amule.cpp:1144
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Неможливо створити файл онлайн-підпису aMule"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1312
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -183,31 +183,31 @@ msgstr ""
 "Обрана локаль здається не встановлена. (примітка: спроба встановити її в "
 "будь-якому випадку)"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1321
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Ви запускаєте aMule %s вперше"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1323
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Це тестова версія, оновлюється щодня, та\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1324
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "ми не даємо жодної гарантії, якщо вона щось пошкодить, спалить ваш будинок,\n"
 
-#: src/amule.cpp:1318
+#: src/amule.cpp:1325
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "або вб'є собаку. Але вона *має бути* безпечною у використанні всюди.\n"
 
-#: src/amule.cpp:1322
+#: src/amule.cpp:1329
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "Наступні опції були змінені в цьому випуску з причин безпеки:\n"
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1330
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -217,7 +217,7 @@ msgstr ""
 "* Ввімкнено підтримку приховування протоколу для вхідних та вихідних "
 "з'єднань.\n"
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1331
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -225,7 +225,7 @@ msgstr ""
 "\n"
 "* Вимкнено оновлення переліку серверів від іншого серверу та клієнтів.\n"
 
-#: src/amule.cpp:1325
+#: src/amule.cpp:1332
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -239,7 +239,7 @@ msgstr ""
 "Важливо, щоб ви видалили всі підробні сервери з переліку ваших\n"
 "серверів для правильної роботи aMule."
 
-#: src/amule.cpp:1326
+#: src/amule.cpp:1333
 msgid ""
 "\n"
 "\n"
@@ -251,22 +251,22 @@ msgstr ""
 "Додатково, налаштування переглядача тенет скинуті до за замовчуванням. Будь "
 "ласка, якщо потрібно, налаштуйте його ще раз.\n"
 
-#: src/amule.cpp:1331
+#: src/amule.cpp:1338
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Більше подробиць, підтримка та нові випуски можуть бути знайдені на нашій "
 "сторінці,\n"
 
-#: src/amule.cpp:1332
+#: src/amule.cpp:1339
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "на www.aMule.org, або у нашому IRC-каналі #aMule на irc.freenode.net.\n"
 
-#: src/amule.cpp:1334
+#: src/amule.cpp:1341
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Не соромтеся повідомити про будь-які помилки на http://forum.amule.org"
 
-#: src/amule.cpp:1347
+#: src/amule.cpp:1354
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -274,127 +274,127 @@ msgstr ""
 "Тека для файлів онлайн-підпису НЕВІРНА!\n"
 "Онлайн-підпис буде ВИМКНЕНО поки ви не виправите це в налаштуваннях."
 
-#: src/amule.cpp:1402
+#: src/amule.cpp:1409
 msgid "Server hostname notified"
 msgstr "Назва сервера повідомлена"
 
-#: src/amule.cpp:1631
+#: src/amule.cpp:1638
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Не вдалося виділити місце на диску для файлу '%s': %s"
 
-#: src/amule.cpp:1755
+#: src/amule.cpp:1762
 msgid "ERROR: can't open logfile"
 msgstr "ПОМИЛКА: не можу відкрити файл часопису"
 
-#: src/amule.cpp:1759
+#: src/amule.cpp:1766
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ЗАСТЕРЕЖЕННЯ: журнал порожній. Щось негаразд."
 
-#: src/amule.cpp:1777
+#: src/amule.cpp:1784
 msgid "Log has been reset"
 msgstr "Часопис очищено"
 
-#: src/amule.cpp:1802
+#: src/amule.cpp:1809
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Повідомлення сервера: %s"
 
-#: src/amule.cpp:1840
+#: src/amule.cpp:1847
 msgid "Failed to download the nodes list."
 msgstr "Не вдалося звантажити перелік вузлів."
 
-#: src/amule.cpp:1860
+#: src/amule.cpp:1867
 msgid "Failed to open the downloaded version check file"
 msgstr "Не вдалося відкрити звантажений файл перевірки версії"
 
-#: src/amule.cpp:1863 src/amule.cpp:1873 src/amule.cpp:1879
+#: src/amule.cpp:1870 src/amule.cpp:1880 src/amule.cpp:1886
 msgid "Corrupted version check file"
 msgstr "Файл перевірки версії зіпсований"
 
-#: src/amule.cpp:1889
+#: src/amule.cpp:1896
 msgid "You are using an outdated version of aMule!"
 msgstr "Ви використовуєте застарілу версію aMule!"
 
-#: src/amule.cpp:1890
+#: src/amule.cpp:1897
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Ваша версія aMule %i.%i.%i, а остання %li.%li.%li"
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1898
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Остання версія може бути завжди знайдена на http://www.amule.org"
 
-#: src/amule.cpp:1893
+#: src/amule.cpp:1900
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "ЗАСТЕРЕЖЕННЯ: Ваша версія aMuled застаріла: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1897
+#: src/amule.cpp:1904
 msgid "Your copy of aMule is up to date."
 msgstr "Ваша копія aMule оновлена."
 
-#: src/amule.cpp:1904
+#: src/amule.cpp:1911
 msgid "Failed to download the version check file"
 msgstr "Неможливо звантажити файл перевірки версії"
 
-#: src/amule.cpp:2064
+#: src/amule.cpp:2071
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Користувачі: %s | Файли: %s"
 
-#: src/amule.cpp:2065
+#: src/amule.cpp:2072
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Користувачі: %s K: %s | Файли: E: %s K: %s"
 
-#: src/amule.cpp:2074
+#: src/amule.cpp:2081
 msgid "No networks selected"
 msgstr "Не вибрано жодної мережі"
 
-#: src/amule.cpp:2139 src/TextClient.cpp:698
+#: src/amule.cpp:2146 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "з LowID"
 
-#: src/amule.cpp:2139 src/TextClient.cpp:698
+#: src/amule.cpp:2146 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "з HighID"
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2148
 #, c-format
 msgid "Connected to %s %s"
 msgstr "З'єднано з %s %s"
 
-#: src/amule.cpp:2144
+#: src/amule.cpp:2151
 #, c-format
 msgid "Connecting to %s"
 msgstr "З'єднується з %s"
 
-#: src/amule.cpp:2146
+#: src/amule.cpp:2153
 msgid "Disconnected from eD2k"
 msgstr "Від'єднано від eD2k"
 
-#: src/amule.cpp:2153
+#: src/amule.cpp:2160
 msgid "Kad started."
 msgstr "Kad запущена."
 
-#: src/amule.cpp:2155
+#: src/amule.cpp:2162
 msgid "Kad stopped."
 msgstr "Kad зупинена."
 
-#: src/amule.cpp:2162
+#: src/amule.cpp:2169
 msgid "Connected to Kad (ok)"
 msgstr "З'єднано з Kad (все гаразд)"
 
-#: src/amule.cpp:2164
+#: src/amule.cpp:2171
 msgid "Connected to Kad (firewalled)"
 msgstr "З'єднано з Kad (за фаєрволом)"
 
-#: src/amule.cpp:2167
+#: src/amule.cpp:2174
 msgid "Disconnected from Kad"
 msgstr "Від'єднано від Kad"
 
-#: src/amule.cpp:2230
+#: src/amule.cpp:2237
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -402,7 +402,7 @@ msgstr ""
 "Мережа Kad не може бути використана якщо UDP-порт вимкнено в налаштуваннях, "
 "не починаю."
 
-#: src/amule.cpp:2233
+#: src/amule.cpp:2240
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Мережа Kad вимкнена в налаштуваннях, не з'єднуюсь."
 
@@ -440,7 +440,11 @@ msgstr "amuled: OnInit - запускається timer"
 msgid "amuled: forking to background - see you"
 msgstr "amuled: переходимо у фоновий режим - до зустрічі"
 
-#: src/amuled.cpp:747
+#: src/amuled.cpp:722
+msgid "Cannot Create Pid File"
+msgstr ""
+
+#: src/amuled.cpp:761
 #, c-format
 msgid "ERROR: %s"
 msgstr "ПОМИЛКА: %s"
@@ -736,53 +740,53 @@ msgstr "aMule"
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Жахлива помилка: не вдалося створити Core Timer"
 
-#: src/amule-remote-gui.cpp:74
+#: src/amule-remote-gui.cpp:71
 msgid "Connect to remote amule"
 msgstr "З'єднатися з віддаленим aMule"
 
-#: src/amule-remote-gui.cpp:257
+#: src/amule-remote-gui.cpp:254
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Жахлива помилка: не вдалося створити Poll Timer"
 
-#: src/amule-remote-gui.cpp:281
+#: src/amule-remote-gui.cpp:278
 msgid "Going to event loop..."
 msgstr "Переходимо до циклу обробки подій..."
 
-#: src/amule-remote-gui.cpp:302
+#: src/amule-remote-gui.cpp:299
 msgid "Connecting..."
 msgstr "З'єднання..."
 
-#: src/amule-remote-gui.cpp:306
+#: src/amule-remote-gui.cpp:303
 msgid "Connection failed "
 msgstr "З'єднання невдале "
 
-#: src/amule-remote-gui.cpp:317
+#: src/amule-remote-gui.cpp:314
 msgid "Remote GUI EC event handler"
 msgstr "Віддалений обробник подій зовнішніх з'єднань графічного інтерфейсу"
 
-#: src/amule-remote-gui.cpp:324
+#: src/amule-remote-gui.cpp:321
 msgid "Going down"
 msgstr "Вимикається"
 
-#: src/amule-remote-gui.cpp:326 src/ExternalConnector.cpp:411
+#: src/amule-remote-gui.cpp:323 src/ExternalConnector.cpp:411
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "З'єдання невдале. Неможливо з'єднатися з %s:%d\n"
 
-#: src/amule-remote-gui.cpp:425
+#: src/amule-remote-gui.cpp:422
 msgid "Ready"
 msgstr "Готовий"
 
-#: src/amule-remote-gui.cpp:604
+#: src/amule-remote-gui.cpp:601
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Користувачі: E: %s K: %s | Файли E: %s K: %s"
 
-#: src/amule-remote-gui.cpp:662 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:659 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Всі"
 
-#: src/amule-remote-gui.cpp:900
+#: src/amule-remote-gui.cpp:897
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Вього користувачів: %s | Всього файлів: %s"
@@ -805,8 +809,8 @@ msgstr "Шукається друг для lowid-з'єднання"
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1429 src/DownloadListCtrl.cpp:1442
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:295
-#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:894
-#: src/KnownFile.cpp:900 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2509
+#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:895
+#: src/KnownFile.cpp:901 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2509
 #: src/PartFile.cpp:2515 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:884
 msgid "Unknown"
@@ -1173,7 +1177,7 @@ msgstr "З'єднується через сервер"
 msgid "Transferring"
 msgstr "Передавання"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1375
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1376
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "В черзі"
@@ -2269,42 +2273,42 @@ msgstr "ЗАСТЕРЕЖЕННЯ: порожня відповідь під ча�
 msgid "ERROR: Redirection code received with no URL"
 msgstr "ПОМИЛКА: Отриманий код перенаправлення без URL-адреси"
 
-#: src/IP2Country.cpp:87
+#: src/IP2Country.cpp:92
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr "Звантажую новий GeoIP.dat з %s"
 
-#: src/IP2Country.cpp:115
+#: src/IP2Country.cpp:120
 #, fuzzy
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Неможливо видалити файл GeoIP.dat, оновлення зірване."
 
-#: src/IP2Country.cpp:121
+#: src/IP2Country.cpp:126
 msgid "Failed to remove GeoIP.dat file, aborting update."
 msgstr "Неможливо видалити файл GeoIP.dat, оновлення зірване."
 
-#: src/IP2Country.cpp:127
+#: src/IP2Country.cpp:132
 msgid "Failed to rename new GeoIP.dat file, aborting update."
 msgstr "Неможливо змінити назву нового файлу GeoIP.dat, оновлення зірване."
 
-#: src/IP2Country.cpp:133
+#: src/IP2Country.cpp:138
 msgid "Successfully updated GeoIP.dat"
 msgstr "Успішно оновлено GeoIP.dat"
 
-#: src/IP2Country.cpp:135
+#: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Помилка оновлення GeoIP.dat"
 
-#: src/IP2Country.cpp:138
+#: src/IP2Country.cpp:143
 #, c-format
 msgid "Failed to download GeoIP.dat from %s"
 msgstr "Не вдалося звантажити GeoIP.dat з %s"
 
-#: src/IP2Country.cpp:157
+#: src/IP2Country.cpp:162
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): неможливо завантажити дані країн з "
 
-#: src/IP2Country.cpp:162
+#: src/IP2Country.cpp:167
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr "Завантажено %d зображень прапорів."
@@ -2416,50 +2420,50 @@ msgstr[0] "Записано %d контакт Kad"
 msgstr[1] "Записано %d контакти Kad"
 msgstr[2] "Записано %d контактів Kad"
 
-#: src/KnownFile.cpp:1369 src/PartFileConvert.cpp:626
+#: src/KnownFile.cpp:1370 src/PartFileConvert.cpp:626
 msgid "File name"
 msgstr "Назва файлу"
 
-#: src/KnownFile.cpp:1370
+#: src/KnownFile.cpp:1371
 msgid "File size"
 msgstr "Розмір файлу"
 
-#: src/KnownFile.cpp:1371
+#: src/KnownFile.cpp:1372
 msgid "Share ratio"
 msgstr "Відношення передачі"
 
-#: src/KnownFile.cpp:1372
+#: src/KnownFile.cpp:1373
 msgid "Uploaded"
 msgstr "Вивантажено"
 
-#: src/KnownFile.cpp:1373
+#: src/KnownFile.cpp:1374
 msgid "Requested"
 msgstr "Запитано"
 
-#: src/KnownFile.cpp:1374
+#: src/KnownFile.cpp:1375
 msgid "Accepted"
 msgstr "Дозволено"
 
-#: src/KnownFile.cpp:1376
+#: src/KnownFile.cpp:1377
 msgid "Complete sources"
 msgstr "Завершених джерел"
 
-#: src/KnownFileList.cpp:79
+#: src/KnownFileList.cpp:80
 msgid "WARNING: known.met cannot be opened."
 msgstr "ЗАСТЕРЕЖЕННЯ: не можна відкрити known.met."
 
-#: src/KnownFileList.cpp:86
+#: src/KnownFileList.cpp:87
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 "ЗАСТЕРЕЖЕННЯ: Перелік відомих файлів зіпсовано, містить неприпустимий "
 "заголовок."
 
-#: src/KnownFileList.cpp:112
+#: src/KnownFileList.cpp:113
 #, c-format
 msgid "IO error while reading known.met file: %s"
 msgstr "Помилка введення-виведення під час читання файлу known.met: %s"
 
-#: src/KnownFileList.cpp:158
+#: src/KnownFileList.cpp:159
 #, c-format
 msgid "Error while saving known.met file: %s"
 msgstr "Помилка під час збереження файлу known.met: %s"
@@ -6803,7 +6807,7 @@ msgstr "Видалити категорію"
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr "Не вдалося відкрити файл (%s), видаляю з переліку спільних файлів."
 
-#: src/UploadClient.cpp:706
+#: src/UploadClient.cpp:707
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Запитано набір хешів для невідомого файлу: %s"
