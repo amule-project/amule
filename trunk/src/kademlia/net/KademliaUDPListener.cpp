@@ -2199,7 +2199,7 @@ void CKademliaUDPListener::ProcessCallbackRequest(const uint8_t *packetData, uin
 			packetdata.WriteUInt32(ip);
 			packetdata.WriteUInt16(tcp);
 			CPacket* packet = new CPacket(packetdata, OP_EMULEPROT, OP_CALLBACK);
-			DebugSend(KadCallbackReq, ip, port);
+			AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_CALLBACK to ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)));
 			buddy->GetSocket()->SendPacket(packet);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		} else {
