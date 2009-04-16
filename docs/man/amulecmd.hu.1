@@ -1,12 +1,12 @@
-.TH AMULECMD 1 "2005 március" "aMuleCmd v2.0.0" "aMule segédprogramok"
-.SH NÉV
-amulecmd \- Szöveges program, az aMule "távvezérléséhez"
-.SH ÁTTEKINTÉS
+.TH AMULECMD 1 "2005 mÃ¡rcius" "aMuleCmd v2.0.0" "aMule segÃ©dprogramok"
+.SH NÃ‰V
+amulecmd \- SzÃ¶veges program, az aMule "tÃ¡vvezÃ©rlÃ©sÃ©hez"
+.SH ÃTTEKINTÃ‰S
 .B amulecmd
-.RB [ \-h " " \fI<gép> ]
+.RB [ \-h " " \fI<gÃ©p> ]
 .RB [ \-p " " \fI<port> ]
-.RB [ \-P " " \fI<jelszó> ]
-.RB [ \-f " " \fI<fájl> ]
+.RB [ \-P " " \fI<jelszÃ³> ]
+.RB [ \-f " " \fI<fÃ¡jl> ]
 .RB [ \-l " " \fI<nyelv> ]
 .RB [ \-q ]
 .RB [ \-v ]
@@ -14,63 +14,63 @@ amulecmd \- Szöveges program, az aMule "távvezérléséhez"
 .RB [ \-c " " \fI<parancs> ]
 .PP
 .B amulecmd
-.RB [ \-f " " \fI<fájl> ]
-.B \-\-create-config-from=\fI<fájl>
+.RB [ \-f " " \fI<fÃ¡jl> ]
+.B \-\-create-config-from=\fI<fÃ¡jl>
 .PP
 .B amulecmd
 .RB [ \-\-help ]
 .RB [ \-\-version ]
-.SH LEÍRÁS
-Az \fBamulecmd\fR egy szöveges program, az aMule vezérlésre.
-Hasznos súgó érhetõ el a program indítása után a 'help' paranccsal.
-.SH OPCIÓK
+.SH LEÃRÃS
+Az \fBamulecmd\fR egy szÃ¶veges program, az aMule vezÃ©rlÃ©sre.
+Hasznos sÃºgÃ³ Ã©rhetÃµ el a program indÃ­tÃ¡sa utÃ¡n a 'help' paranccsal.
+.SH OPCIÃ“K
 .TP
-\fB\-h\fR, \fB\-\-host\fR=\fI<gép>\fR
-A gép, ahol az aMule fut (alapértelmezés: \fIlocalhost\fR).
-A \fI<gép>\fR lehet egy IP cím vagy DNS név.
+\fB\-h\fR, \fB\-\-host\fR=\fI<gÃ©p>\fR
+A gÃ©p, ahol az aMule fut (alapÃ©rtelmezÃ©s: \fIlocalhost\fR).
+A \fI<gÃ©p>\fR lehet egy IP cÃ­m vagy DNS nÃ©v.
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-Az aMule távoli elérés portja (alapértelmezés: \fI4712\fR).
+Az aMule tÃ¡voli elÃ©rÃ©s portja (alapÃ©rtelmezÃ©s: \fI4712\fR).
 .TP
-\fB\-P\fR, \fB\-\-password\fR=\fI<jelszó>\fR
-A távoli elérés jelszava.
+\fB\-P\fR, \fB\-\-password\fR=\fI<jelszÃ³>\fR
+A tÃ¡voli elÃ©rÃ©s jelszava.
 .TP
-\fB\-f\fR, \fB\-\-config\-file\fR=\fI<fájl>\fR
-A megadott konfigurációs fájlt használja.
-Az alapértelmezés a \fI~/.aMule/remote.conf\fR
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<fÃ¡jl>\fR
+A megadott konfigurÃ¡ciÃ³s fÃ¡jlt hasznÃ¡lja.
+Az alapÃ©rtelmezÃ©s a \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-l\fR, \fB\-\-locale\fR=\fI<nyelv>\fR
-Beállítja a program nyelvét.
-Lásd a \fBMEGJEGYZÉSEK\fR fejezetet a \fI<nyelv>\fR paraméter bõvebb leírásához.
+BeÃ¡llÃ­tja a program nyelvÃ©t.
+LÃ¡sd a \fBMEGJEGYZÃ‰SEK\fR fejezetet a \fI<nyelv>\fR paramÃ©ter bÃµvebb leÃ­rÃ¡sÃ¡hoz.
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-Csendes mód, semmit nem ír ki a szabvány kimenetre.
-Az \fBamulecmd\fR-t tekintve ez eléggé felesleges opció :-)
+Csendes mÃ³d, semmit nem Ã­r ki a szabvÃ¡ny kimenetre.
+Az \fBamulecmd\fR-t tekintve ez elÃ©ggÃ© felesleges opciÃ³ :-)
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-Bõbeszédû mód, a hibakeresési üzeneteket is megjeleníti.
+BÃµbeszÃ©dÃ» mÃ³d, a hibakeresÃ©si Ã¼zeneteket is megjelenÃ­ti.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-A parancssori paramétereket kiírja a konfigurációs fájlba és kilép.
+A parancssori paramÃ©tereket kiÃ­rja a konfigurÃ¡ciÃ³s fÃ¡jlba Ã©s kilÃ©p.
 .TP
 \fB\-c\fR, \fB\-\-command\fR=\fI<parancs>\fR
-Végrehajtja a megadott parancsot, úgy, mintha azt a saját parancssorába írtuk volna be, majd kilép.
+VÃ©grehajtja a megadott parancsot, Ãºgy, mintha azt a sajÃ¡t parancssorÃ¡ba Ã­rtuk volna be, majd kilÃ©p.
 .TP
-\fB\-\-create\-config\-from\fR=\fI<fájl>\fR
-Konfigurációs fájl készítése a \fI<fájl>\fR alapján, amely az aMule érvényes konfigurációs fájlja kell legyen, majd utána kilép.
+\fB\-\-create\-config\-from\fR=\fI<fÃ¡jl>\fR
+KonfigurÃ¡ciÃ³s fÃ¡jl kÃ©szÃ­tÃ©se a \fI<fÃ¡jl>\fR alapjÃ¡n, amely az aMule Ã©rvÃ©nyes konfigurÃ¡ciÃ³s fÃ¡jlja kell legyen, majd utÃ¡na kilÃ©p.
 .TP
 \fB\-\-help\fR
-Megjeleníti a súgót és kilép.
+MegjelenÃ­ti a sÃºgÃ³t Ã©s kilÃ©p.
 .TP
 \fB\-\-version\fR
-Megjeleníti a program verzióját, majd kilép.
-.SH MEGJEGYZÉSEK
-.SS Elérési utak
-Minden olyan opciónál, amely \fI<fájl>\fR paramétert kér, ha a megadott \fIfájl\fR nem tartalmaz könyvtár komponenst (vagyis tisztán csak egy fájlnév), akkor azt az aMule konfigurációs könyvtárában (\fI~/.aMule\fR) fogja keresni.
+MegjelenÃ­ti a program verziÃ³jÃ¡t, majd kilÃ©p.
+.SH MEGJEGYZÃ‰SEK
+.SS ElÃ©rÃ©si utak
+Minden olyan opciÃ³nÃ¡l, amely \fI<fÃ¡jl>\fR paramÃ©tert kÃ©r, ha a megadott \fIfÃ¡jl\fR nem tartalmaz kÃ¶nyvtÃ¡r komponenst (vagyis tisztÃ¡n csak egy fÃ¡jlnÃ©v), akkor azt az aMule konfigurÃ¡ciÃ³s kÃ¶nyvtÃ¡rÃ¡ban (\fI~/.aMule\fR) fogja keresni.
 .SS Nyelvek
-A \fB\-l\fR opció \fI<nyelv>\fR paramétere a következõ módon adható meg: \fInyelv\fR[\fB_\fITERÜLET\fR][\fB.\fIkódolás\fR][\fB@\fImódosító\fR], ahol \fInyelv\fR az elsõdleges nyelv, \fITERÜLET\fR egy nyelvváltozat/terület kódja, \fIkódolás\fR a karakter készlet kódja és a \fImódosító\fR "lehetõvé teszi, hogy a felhasználó kiválasszon egy meghatározott esetet a helyi jellemzõk adataiból egyetlen kategórián belül".
+A \fB\-l\fR opciÃ³ \fI<nyelv>\fR paramÃ©tere a kÃ¶vetkezÃµ mÃ³don adhatÃ³ meg: \fInyelv\fR[\fB_\fITERÃœLET\fR][\fB.\fIkÃ³dolÃ¡s\fR][\fB@\fImÃ³dosÃ­tÃ³\fR], ahol \fInyelv\fR az elsÃµdleges nyelv, \fITERÃœLET\fR egy nyelvvÃ¡ltozat/terÃ¼let kÃ³dja, \fIkÃ³dolÃ¡s\fR a karakter kÃ©szlet kÃ³dja Ã©s a \fImÃ³dosÃ­tÃ³\fR "lehetÃµvÃ© teszi, hogy a felhasznÃ¡lÃ³ kivÃ¡lasszon egy meghatÃ¡rozott esetet a helyi jellemzÃµk adataibÃ³l egyetlen kategÃ³riÃ¡n belÃ¼l".
 .PP
-Például, a következõ értékek mind érvényesek:
+PÃ©ldÃ¡ul, a kÃ¶vetkezÃµ Ã©rtÃ©kek mind Ã©rvÃ©nyesek:
 .br
 fr
 .br
@@ -82,33 +82,33 @@ de_DE@euro
 .br
 de_DE.iso88591@euro
 .PP
-Habár a fenieket mind elfogadja a program, mint érvényes nyelvmeghatározást, a \fIkódolás\fR és \fImódosító\fR még nem használt.
+HabÃ¡r a fenieket mind elfogadja a program, mint Ã©rvÃ©nyes nyelvmeghatÃ¡rozÃ¡st, a \fIkÃ³dolÃ¡s\fR Ã©s \fImÃ³dosÃ­tÃ³\fR mÃ©g nem hasznÃ¡lt.
 .PP
-Ráadaásként a fenti formátumhoz, megadható akár egy nyelv teljes angol megnevezése is, így például \fB\-l german\fR szintén érvényes, és egyenértékû a \fB-l de_DE\fR megadással.
+RÃ¡adaÃ¡skÃ©nt a fenti formÃ¡tumhoz, megadhatÃ³ akÃ¡r egy nyelv teljes angol megnevezÃ©se is, Ã­gy pÃ©ldÃ¡ul \fB\-l german\fR szintÃ©n Ã©rvÃ©nyes, Ã©s egyenÃ©rtÃ©kÃ» a \fB-l de_DE\fR megadÃ¡ssal.
 .PP
-Ha sem a parancssorban, sem a konfigurációs fájlban nincsen megadva a nyelv, akkor a rendszer alapértelmezett nyelvét fogja használni.
-.SH FÁJLOK
+Ha sem a parancssorban, sem a konfigurÃ¡ciÃ³s fÃ¡jlban nincsen megadva a nyelv, akkor a rendszer alapÃ©rtelmezett nyelvÃ©t fogja hasznÃ¡lni.
+.SH FÃJLOK
 ~/.aMule/remote.conf
-.SH PÉLDA
-Tipikusan az \fBamulecmd\fR elsõ indításakor létrehozunk egy konfigurációs fájlt, vagy az
+.SH PÃ‰LDA
+Tipikusan az \fBamulecmd\fR elsÃµ indÃ­tÃ¡sakor lÃ©trehozunk egy konfigurÃ¡ciÃ³s fÃ¡jlt, vagy az
 .PP
-\fBamulecmd\fR \fB\-h\fR \fIgépnév\fR \fB\-p\fR \fIport\fR \fB\-P\fR \fIjelszó\fR \fB\-w\fR
+\fBamulecmd\fR \fB\-h\fR \fIgÃ©pnÃ©v\fR \fB\-p\fR \fIport\fR \fB\-P\fR \fIjelszÃ³\fR \fB\-w\fR
 .PP
-paranccsal, vagy, ha nem akarjuk a parancssorban megadni a jelszót, akkor pl. az
+paranccsal, vagy, ha nem akarjuk a parancssorban megadni a jelszÃ³t, akkor pl. az
 .PP
-\fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/felhasználónév/.aMule/amule.conf\fR
+\fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/felhasznÃ¡lÃ³nÃ©v/.aMule/amule.conf\fR
 .PP
-paranccsal. Természetesen a fenti elérési út a helyi viszonyoknak megfelelõen változhat. A beállítások tehát elmentõdnek a \fI$HOME/.aMule/remote.conf\fR fájlba, és ezek után már elég az
+paranccsal. TermÃ©szetesen a fenti elÃ©rÃ©si Ãºt a helyi viszonyoknak megfelelÃµen vÃ¡ltozhat. A beÃ¡llÃ­tÃ¡sok tehÃ¡t elmentÃµdnek a \fI$HOME/.aMule/remote.conf\fR fÃ¡jlba, Ã©s ezek utÃ¡n mÃ¡r elÃ©g az
 .PP
 .B amulecmd
 .PP
-parancsot beírni.
-.SH HIBÁK JELENTÉSE
-A hibákat kérjük vagy a fórumon (\fIhttp://forum.amule.org/\fR), vagy a hibakövetõben (\fIhttp://bugs.amule.org/\fR) jelentsék.
-Hibákról kérjük ne írjanak levelet (e-mail-t) se a levelzési listára, se közvetlenül valamelyik fejlesztõnek.
+parancsot beÃ­rni.
+.SH HIBÃK JELENTÃ‰SE
+A hibÃ¡kat kÃ©rjÃ¼k vagy a fÃ³rumon (\fIhttp://forum.amule.org/\fR), vagy a hibakÃ¶vetÃµben (\fIhttp://bugs.amule.org/\fR) jelentsÃ©k.
+HibÃ¡krÃ³l kÃ©rjÃ¼k ne Ã­rjanak levelet (e-mail-t) se a levelzÃ©si listÃ¡ra, se kÃ¶zvetlenÃ¼l valamelyik fejlesztÃµnek.
 .SH COPYRIGHT
-Az aMule és az összes hozzá tartozó segédprogram a GNU General Public Licence védelme alatt áll.
-.SH LÁSD MÉG
+Az aMule Ã©s az Ã¶sszes hozzÃ¡ tartozÃ³ segÃ©dprogram a GNU General Public Licence vÃ©delme alatt Ã¡ll.
+.SH LÃSD MÃ‰G
 \fBamule\fR(1), \fBamuleweb\fR(1)
-.SH MAGYAR FORDÍTÁS
-Dévai Tamás <gonosztopi@amule.org>
+.SH MAGYAR FORDÃTÃS
+DÃ©vai TamÃ¡s <gonosztopi@amule.org>

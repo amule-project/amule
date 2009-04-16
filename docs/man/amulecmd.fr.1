@@ -1,9 +1,9 @@
 .TH AMULECMD 1 "Mars 2005" "aMuleCmd v2.0.0" "Outil pour aMule"
 .SH NOM
-amulecmd \- programme de contrôle d'aMule en mode texte
+amulecmd \- programme de contrÃ´le d'aMule en mode texte
 .SH SYNOPSIS
 .B amulecmd
-.RB [ \-h " " \fI<hôte> ]
+.RB [ \-h " " \fI<hÃ´te> ]
 .RB [ \-p " " \fI<port> ]
 .RB [ \-P " " \fI<motdepasse> ]
 .RB [ \-f " " \fI<chemin> ]
@@ -20,23 +20,23 @@ amulecmd \- programme de contrôle d'aMule en mode texte
 .RB [ \-\-help ]
 .RB [ \-\-version ]
 .SH DESCRIPTION
-\fBamulecmd\fR est un client en mode texte pour contrôler aMule.
-Une aide utile peut être obtenue au lancement du programme.
+\fBamulecmd\fR est un client en mode texte pour contrÃ´ler aMule.
+Une aide utile peut Ãªtre obtenue au lancement du programme.
 .TP
-\fB\-h\fR, \fB\-\-host\fR=\fI<hôte>\fR
-Hôte où aMule tourne (défaut: \fIlocalhost\fR). \fI<hôte>\fR peut être une adresse IP ou un nom DNS.
+\fB\-h\fR, \fB\-\-host\fR=\fI<hÃ´te>\fR
+HÃ´te oÃ¹ aMule tourne (dÃ©faut: \fIlocalhost\fR). \fI<hÃ´te>\fR peut Ãªtre une adresse IP ou un nom DNS.
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-Port d'aMule pour les Connexions Externes, tel que défini dans Preferences->Contrôles à Distance (défaut: \fI4712\fR).
+Port d'aMule pour les Connexions Externes, tel que dÃ©fini dans Preferences->ContrÃ´les Ã  Distance (dÃ©faut: \fI4712\fR).
 .TP
 \fB\-P\fR, \fB\-\-password\fR=\fI<motdepasse>\fR
 Mot de passe pour les Connexions Externes.
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<chemin>\fR
-Utiliser le fichier de configuration désigné. Le fichier de configuration par défaut est \fI~/.aMule/remote.conf\fR.
+Utiliser le fichier de configuration dÃ©signÃ©. Le fichier de configuration par dÃ©faut est \fI~/.aMule/remote.conf\fR.
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-N'afficher aucune sortie sur stdout. Ceci est une option complètement inutile avec \fBamulecmd\fR.
+N'afficher aucune sortie sur stdout. Ceci est une option complÃ¨tement inutile avec \fBamulecmd\fR.
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
 Mode bavard \- affiche aussi les messages de debugage.
@@ -45,10 +45,10 @@ Mode bavard \- affiche aussi les messages de debugage.
 Ecrire les options de la ligne de commande dans le fichier de configuration et quitter.
 .TP
 \fB\-c\fR, \fB\-\-command\fR=\fI<commande>\fR
-Executer la \fI<commande>\fR comme si elle avait été entrée au prompt d'amumecmd et quitter (non disponible dans la version graphique).
+Executer la \fI<commande>\fR comme si elle avait Ã©tÃ© entrÃ©e au prompt d'amumecmd et quitter (non disponible dans la version graphique).
 .TP
 \fB\-\-create\-config\-from\fR=\fI<chemin>\fR
-Créer un fichier de configuration basé sur \fI<chemin>\fR, qui doit pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
+CrÃ©er un fichier de configuration basÃ© sur \fI<chemin>\fR, qui doit pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
 .TP
 \fB\-\-help\fR
 Afficher l'aide d'utilisation et quitter.
@@ -56,11 +56,11 @@ Afficher l'aide d'utilisation et quitter.
 \fB\-\-version\fR
 Afficher les informations sur la version courante et quitter.
 .SH NOTE
-Pour toutes les options prenant en paramètre un \fI<chemin>\fR, si le \fIchemin\fR ne contient pas de répertoire (i.e. juste un nom de fichier), alors il sera considéré comme étant dans le répertoire de configuration d'aMule, \fI~/.aMule\fR.
+Pour toutes les options prenant en paramÃ¨tre un \fI<chemin>\fR, si le \fIchemin\fR ne contient pas de rÃ©pertoire (i.e. juste un nom de fichier), alors il sera considÃ©rÃ© comme Ã©tant dans le rÃ©pertoire de configuration d'aMule, \fI~/.aMule\fR.
 .SH FICHIERS
 ~/.aMule/remote.conf
 .SH EXEMPLE
-Typiquement amulecmd sera lancé la première fois de la façon suivante:
+Typiquement amulecmd sera lancÃ© la premiÃ¨re fois de la faÃ§on suivante:
 .PP
 \fBamulecmd\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-w\fR
 .PP
@@ -68,16 +68,16 @@ ou
 .PP
 \fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
 .PP
-Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fR, et les fois suivantes, vous n'aurez à taper que:
+Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fR, et les fois suivantes, vous n'aurez Ã  taper que:
 .PP
 .B amulecmd
 .PP
-Bien sûr, rien ne vous oblige à suivre cet exemple.
+Bien sÃ»r, rien ne vous oblige Ã  suivre cet exemple.
 .SH SIGNALEMENT DES BUGS
 Reportez les bugs sur notre forum (\fIhttp://forum.amule.org/\fR), ou dans notre bugtracker (\fIhttp://bugs.amule.org/\fR).
-N'utilisez ni un e-mail, ni notre liste de diffusion ni ne reportez directement un bug à un membre de notre equipe.
+N'utilisez ni un e-mail, ni notre liste de diffusion ni ne reportez directement un bug Ã  un membre de notre equipe.
 .SH COPYRIGHT
-aMule et tous les utilitaires associés sont distribués sous licence GNU General Public License.
+aMule et tous les utilitaires associÃ©s sont distribuÃ©s sous licence GNU General Public License.
 .SH VOIR AUSSI
 \fBamule\fR(1), \fBamuleweb\fR(1)
 .SH TRADUCTION
