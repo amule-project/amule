@@ -3,7 +3,7 @@
 amuleweb \- seruveur Web d'aMule
 .SH SYNOPSIS
 .B amuleweb
-.RB [ \-h " " \fI<hôte> ]
+.RB [ \-h " " \fI<hÃ´te> ]
 .RB [ \-p " " \fI<port> ]
 .RB [ \-P " " \fI<motdepasse> ]
 .RB [ \-f " " \fI<chemin> ]
@@ -31,28 +31,28 @@ amuleweb \- seruveur Web d'aMule
 .B amuleweb
 .RB [ \-\-amule\-config\-file=\fI<chemin> ]
 .SH DESCRIPTION
-\fBamuleweb\fR prend en charge l'accès à aMule à travers un navigateur Web.
-Vous pouvez le démarrer en même temps qu'\fBamule\fR(1), or séparemment, n'importe quand après.
-Les options peuvent être spécifiées par la ligne de commande ou par l'intermédiare d'un fichier de configuration.
-Les options spécifiées dans la ligne de commande ont priorité sur celles contenues dans le fichier de configuration.
+\fBamuleweb\fR prend en charge l'accÃ¨s Ã  aMule Ã  travers un navigateur Web.
+Vous pouvez le dÃ©marrer en mÃªme temps qu'\fBamule\fR(1), or sÃ©paremment, n'importe quand aprÃ¨s.
+Les options peuvent Ãªtre spÃ©cifiÃ©es par la ligne de commande ou par l'intermÃ©diare d'un fichier de configuration.
+Les options spÃ©cifiÃ©es dans la ligne de commande ont prioritÃ© sur celles contenues dans le fichier de configuration.
 .TP
-\fB\-h\fR, \fB\-\-host\fR=\fI<hôte>\fR
-Hôte où aMule tourne (défaut: \fIlocalhost\fR).
-\fI<hôte>\fR peut être une adresse IP ou un nom DNS.
+\fB\-h\fR, \fB\-\-host\fR=\fI<hÃ´te>\fR
+HÃ´te oÃ¹ aMule tourne (dÃ©faut: \fIlocalhost\fR).
+\fI<hÃ´te>\fR peut Ãªtre une adresse IP ou un nom DNS.
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-Port d'aMule pour les Connexions Externes, tel que défini dans Preferences->Contrôles à Distance (défaut: \fI4712\fR).
+Port d'aMule pour les Connexions Externes, tel que dÃ©fini dans Preferences->ContrÃ´les Ã  Distance (dÃ©faut: \fI4712\fR).
 .TP
 \fB\-P\fR, \fB\-\-password\fR=\fI<motdepasse>\fR
 Mot de passe pour les Connexions Externes.
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<chemin>\fR
-Utiliser le fichier de configuration désigné. 
-Le fichier de configuration par défaut est \fI~/.aMule/remote.conf\fR
+Utiliser le fichier de configuration dÃ©signÃ©. 
+Le fichier de configuration par dÃ©faut est \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
 N'afficher aucune sortie sur stdout.
-Il est utile d'utiliser \fB\-q\fR pour faire tourner amuleweb en service (daemon), i.e. en lançant '\fBamuleweb \-q &\fR'
+Il est utile d'utiliser \fB\-q\fR pour faire tourner amuleweb en service (daemon), i.e. en lanÃ§ant '\fBamuleweb \-q &\fR'
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
 Mode bavard \- affiche aussi les messages de debugage.
@@ -61,44 +61,44 @@ Mode bavard \- affiche aussi les messages de debugage.
 Ecrire les options de la ligne de commande dans le fichier de configuration et quitter.
 .TP
 \fB\-\-create\-config\-from\fR=\fI<chemin>\fR
-Créer un fichier de configuration basé sur \fI<chemin>\fR, qui doit pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
+CrÃ©er un fichier de configuration basÃ© sur \fI<chemin>\fR, qui doit pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
 .TP
 \fB\-t\fR, \fB\-\-template\fR=\fI<nom>\fR
-Charger le modèle nommé \fI<nom>\fR. Voir aussi la section
+Charger le modÃ¨le nommÃ© \fI<nom>\fR. Voir aussi la section
 .B PRISE EN CHARGE DES SKINS.
 .TP
 \fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
-Port HTTP du serveur Web. C'est le port sur lequel votre navigateur Web doit pointer (défault: \fI4711\fR).
+Port HTTP du serveur Web. C'est le port sur lequel votre navigateur Web doit pointer (dÃ©fault: \fI4711\fR).
 .TP
 \fB\-z\fR, \fB\-\-enable\-gzip\fR
-Activer la compression gzip dans les échanges HTTP pour diminuer l'utilisation de la bande passante.
+Activer la compression gzip dans les Ã©changes HTTP pour diminuer l'utilisation de la bande passante.
 .TP
 \fB\-Z\fR, \fB\-\-disable\-gzip\fR
-Désactiver la compression gzip (comportement par défaut).
+DÃ©sactiver la compression gzip (comportement par dÃ©faut).
 .TP
 \fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<motdepasse>\fR
-Mot de passe pour un accès complet au serveur Web.
+Mot de passe pour un accÃ¨s complet au serveur Web.
 .TP
 \fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<motdepase>\fR
-Mot de passe pour un accès restreint au seveur Web (invité).
+Mot de passe pour un accÃ¨s restreint au seveur Web (invitÃ©).
 .TP
 \fB\-a\fR, \fB\-\-allow\-guest\fR
-Autoriser l'accès aux invités.
+Autoriser l'accÃ¨s aux invitÃ©s.
 .TP
 \fB\-d\fR, \fB\-\-deny\-guest\fR
-Interdire l'accès aux invités (défaut).
+Interdire l'accÃ¨s aux invitÃ©s (dÃ©faut).
 .TP
 \fB\-L\fR, \fB\-\-load\-settings\fR
-Charger/décharger les réglages du serveur Web depuis un aMule distant.
+Charger/dÃ©charger les rÃ©glages du serveur Web depuis un aMule distant.
 Ceci permet d'ignorer les options de la ligne de commande et du fichier de configuration et charger celles\-ci depuis aMule.
-Lors de la sauvegarde des préférences, celles\-ci ne seront pas sauvegardées dasn le fichier de configuratio, mais vers aMule.
-(Bien sûr, ceci n'est valable que pour les options qui peuvent être configurées dans Preferences->Contrôle à Distance)
+Lors de la sauvegarde des prÃ©fÃ©rences, celles\-ci ne seront pas sauvegardÃ©es dasn le fichier de configuratio, mais vers aMule.
+(Bien sÃ»r, ceci n'est valable que pour les options qui peuvent Ãªtre configurÃ©es dans Preferences->ContrÃ´le Ã  Distance)
 .TP
 \fB\-\-amule\-config\-file\fR=\fI<chemin>\fR
 Chemin vers le fivhier de configuration d'aMule.
 .B NE PAS UTILISER DIRECTEMENT!
-aMule utilise cette option lorsqu'il démarre amuleweb au lancement d'aMule.
-Cette option provoque la non prise en compte des options de ligne de commande et du fichier de configuration, celles\-ci étant lues dans le fichier de configuration fourni en paramètre, et induit aussi les options \fB\-q \-L\fR
+aMule utilise cette option lorsqu'il dÃ©marre amuleweb au lancement d'aMule.
+Cette option provoque la non prise en compte des options de ligne de commande et du fichier de configuration, celles\-ci Ã©tant lues dans le fichier de configuration fourni en paramÃ¨tre, et induit aussi les options \fB\-q \-L\fR
 .TP
 \fB\-\-help\fR
 Afficher l'aide d'utilisation et quitter.
@@ -106,16 +106,16 @@ Afficher l'aide d'utilisation et quitter.
 \fB\-\-version\fR
 Afficher les informations sur la version courante et quitter.
 .SH NOTE
-Pour toutes les options prenant en paramètre un \fI<chemin>\fR, si le \fIchemin\fR ne contient pas de répertoire (i.e. juste un nom de fichier), alors il sera considéré comme étant dans le répertoire de configuration d'aMule, \fI~/.aMule\fR.
+Pour toutes les options prenant en paramÃ¨tre un \fI<chemin>\fR, si le \fIchemin\fR ne contient pas de rÃ©pertoire (i.e. juste un nom de fichier), alors il sera considÃ©rÃ© comme Ã©tant dans le rÃ©pertoire de configuration d'aMule, \fI~/.aMule\fR.
 .SH PRISE EN CHARGE DES SKINS
-\fBamuleweb\fR est capable d'afficher ses informations dans différents skins.
-Ces skins sont appelés modèles, et vous pouvez dire à amuleweb de charger un modèle spécifique par l'otion de ligne de commande \fB\-t\fR.
-Les modèles sont recherchés dans deux endroits: d'abord dans \fI~/.aMule/webserver/\fR puis dans \fI$(pkgdatadir)/webserver/\fR 
-(\fI$(pkgdatadir)\fR est le répertoire d'installation des données indépendantes de l'architecture, la plupart du temps quelque chose comme /usr/share/amule).
-Chaque modèle doit être dans un sous\-répertoire du nom du modèle, et ce répertoire doit contenir tous les fichiers dont à besoin le modèle.
-Le fichier modèle doit avoir comme nom aMule.tmpl.
+\fBamuleweb\fR est capable d'afficher ses informations dans diffÃ©rents skins.
+Ces skins sont appelÃ©s modÃ¨les, et vous pouvez dire Ã  amuleweb de charger un modÃ¨le spÃ©cifique par l'otion de ligne de commande \fB\-t\fR.
+Les modÃ¨les sont recherchÃ©s dans deux endroits: d'abord dans \fI~/.aMule/webserver/\fR puis dans \fI$(pkgdatadir)/webserver/\fR 
+(\fI$(pkgdatadir)\fR est le rÃ©pertoire d'installation des donnÃ©es indÃ©pendantes de l'architecture, la plupart du temps quelque chose comme /usr/share/amule).
+Chaque modÃ¨le doit Ãªtre dans un sous\-rÃ©pertoire du nom du modÃ¨le, et ce rÃ©pertoire doit contenir tous les fichiers dont Ã  besoin le modÃ¨le.
+Le fichier modÃ¨le doit avoir comme nom aMule.tmpl.
 .PP
-Par exemple, le modèle par défaut (nommé 'default') se trouve dans webserver/default/, et ce répertoure contient aMule.tmpl ainsi qu'un grand nombre de fichiers d'images.
+Par exemple, le modÃ¨le par dÃ©faut (nommÃ© 'default') se trouve dans webserver/default/, et ce rÃ©pertoure contient aMule.tmpl ainsi qu'un grand nombre de fichiers d'images.
 .SH FICHIERS
 ~/.aMule/remote.conf
 .br
@@ -123,7 +123,7 @@ Par exemple, le modèle par défaut (nommé 'default') se trouve dans webserver/def
 .br
 \fI$(pkgdatadir)\fR/webserver/
 .SH EXEMPLE
-Typiquement amuleweb sera lancé la première fois de la façon suivante:
+Typiquement amuleweb sera lancÃ© la premiÃ¨re fois de la faÃ§on suivante:
 .PP
 \fBamuleweb\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-s\fR \fIHTTPport\fR \fB\-A\fR \fIAdminPassword\fR \fB\-w\fR
 .PP
@@ -131,16 +131,16 @@ ou
 .PP
 \fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
 .PP
-Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fR, et les fois suivantes, vous n'aurez à taper que:
+Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fR, et les fois suivantes, vous n'aurez Ã  taper que:
 .PP
 .B amuleweb
 .PP
-Bien sûr, vous pouvez ajouter plus ou moins d'options de ligne de commande, ou vous pouvez aussi n'en spécifier aucune.
+Bien sÃ»r, vous pouvez ajouter plus ou moins d'options de ligne de commande, ou vous pouvez aussi n'en spÃ©cifier aucune.
 .SH SIGNALEMENT DES BUGS
 Reportez les bugs sur notre forum (\fIhttp://forum.amule.org/\fR), ou dans notre bugtracker (\fIhttp://bugs.amule.org/\fR).
-N'utilisez ni un e-mail, ni notre liste de diffusion ni ne reportez directement un bug à un membre de notre equipe.
+N'utilisez ni un e-mail, ni notre liste de diffusion ni ne reportez directement un bug Ã  un membre de notre equipe.
 .SH COPYRIGHT
-aMule et tous les utilitaires associés sont distribués sous licence GNU General Public License.
+aMule et tous les utilitaires associÃ©s sont distribuÃ©s sous licence GNU General Public License.
 .SH VOIR AUSSI
 \fBamule\fR(1), \fBamulecmd\fR(1)
 .SH TRADUCTION

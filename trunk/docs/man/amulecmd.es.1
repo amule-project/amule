@@ -5,8 +5,8 @@ amulecmd \- Control de aMule en modo consola basado en texto.
 .B amulecmd
 .RB [ \-h " " \fI<host> ]
 .RB [ \-p " " \fI<puerto> ]
-.RB [ \-P " " \fI<contraseÒa> ]
-.RB [ \-f " " \fI<localizaciÛn> ]
+.RB [ \-P " " \fI<contrase√±a> ]
+.RB [ \-f " " \fI<localizaci√≥n> ]
 .RB [ \-l " " \fI<lenguaje> ]
 .RB [ \-q ]
 .RB [ \-v ]
@@ -14,60 +14,60 @@ amulecmd \- Control de aMule en modo consola basado en texto.
 .RB [ \-c " " \fI<comando> ]
 .PP
 .B amulecmd
-.RB [ \-f " " \fI<localizaciÛn> ]
-.B \-\-create-config-from=\fI<localizaciÛn>
+.RB [ \-f " " \fI<localizaci√≥n> ]
+.B \-\-create-config-from=\fI<localizaci√≥n>
 .PP
 .B amulecmd
 .RB [ \-\-help ]
 .RB [ \-\-version ]
-.SH DESCRIPCI”N
+.SH DESCRIPCI√ìN
 \fBamulecmd\fR es un programa basado en texto para controlar aMule.
-Puede obtener informaciÛn ˙til al ejecutar el programa.
+Puede obtener informaci√≥n √∫til al ejecutar el programa.
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
-Host donde aMule est· siendo ejecutado (por defecto: \fIlocalhost\fR). \fI<host>\fR puede ser una IP o una direcciÛn DNS.
+Host donde aMule est√° siendo ejecutado (por defecto: \fIlocalhost\fR). \fI<host>\fR puede ser una IP o una direcci√≥n DNS.
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<puerto>\fR
 El puerto donde aMule acepta conexiones de External Connections. Puede consultarlo en Preferenciass->Controles Remotos (por defecto: \fI4712\fR)
 .TP
-\fB\-P\fR, \fB\-\-password\fR=\fI<contraseÒa>\fR
-ContraseÒa para External Connections.
+\fB\-P\fR, \fB\-\-password\fR=\fI<contrase√±a>\fR
+Contrase√±a para External Connections.
 .TP
-\fB\-f\fR, \fB\-\-config\-file\fR=\fI<localizaciÛn>\fR
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<localizaci√≥n>\fR
 Usar el archivo de configuracion indicado. Por defecto, \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
 Establece el lenguaje del programa.
-Ver la secciÛn \fBNOTAS\fR para la descripciÛn del par·metro \fI<lenguaje>\fR.
+Ver la secci√≥n \fBNOTAS\fR para la descripci√≥n del par√°metro \fI<lenguaje>\fR.
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
 No mostrar nada por consola. Carece de utilidad cuando se emplea \fBamulecmd\fR.
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-Mostrar informaciÛn adicional \- mostrar informaciÛn de depuraciÛn.
+Mostrar informaci√≥n adicional \- mostrar informaci√≥n de depuraci√≥n.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-Crear el archivo de configuraciÛn y salir.
+Crear el archivo de configuraci√≥n y salir.
 .TP
 \fB\-c\fR, \fB\-\-command\fR=\fI<comando>\fR
 Ejecutar el comando \fI<comando>\fR y salir.
 .TP
-\fB\-\-create\-config\-from\fR=\fI<localizaciÛn>\fR
-Crear el archivo de configuraciÒon bas·ndose en \fI<localizaciÛn>\fR y salir. \fI<localizaciÛn>\fR debe ser un archivo de configuraciÛn de aMule v·lido.
+\fB\-\-create\-config\-from\fR=\fI<localizaci√≥n>\fR
+Crear el archivo de configuraci√±on bas√°ndose en \fI<localizaci√≥n>\fR y salir. \fI<localizaci√≥n>\fR debe ser un archivo de configuraci√≥n de aMule v√°lido.
 .TP
 \fB\-\-help\fR
 Mostrar la ayuda y salir.
 .TP
 \fB\-\-version\fR
-Mostrar la versiÛn del programa y salir.
+Mostrar la versi√≥n del programa y salir.
 .SH NOTAS
 .SS Localizadores
-Para todas las opciones que reuieran un par·metro \fI<localizaciÛn>\fR, si la \fIlocalizaciÛn\fR no contiene el nombre de ningun directorio (por ejemplo, si es simplemente el nombre de un archivo), entonces se tomar· como directorio contenedor de ese archivo el directorio de configuraciÛn de aMule, \fI~/.aMule\fR.
+Para todas las opciones que reuieran un par√°metro \fI<localizaci√≥n>\fR, si la \fIlocalizaci√≥n\fR no contiene el nombre de ningun directorio (por ejemplo, si es simplemente el nombre de un archivo), entonces se tomar√° como directorio contenedor de ese archivo el directorio de configuraci√≥n de aMule, \fI~/.aMule\fR.
 .SS Lenguajes
 .SH ARCHIVOS
 ~/.aMule/remote.conf
 .SH EJEMPLO
-Normalmente, amulecmd se ejecutar· por primera vez de la siguiente manera:
+Normalmente, amulecmd se ejecutar√° por primera vez de la siguiente manera:
 .PP
 \fBamulecmd\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-w\fR
 .PP
@@ -75,14 +75,14 @@ o
 .PP
 \fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
 .PP
-Esto guardar· la configuraciÛn en \fI$HOME/.aMule/remote.conf\fR, de manera que en las sucesivas ejecuciones bastar· con hacer:
+Esto guardar√° la configuraci√≥n en \fI$HOME/.aMule/remote.conf\fR, de manera que en las sucesivas ejecuciones bastar√° con hacer:
 .PP
 .B amulecmd
 .PP
 Por supuesto, no es necesario seguir este ejemplo.
 .SH BUGS
-Si descubre bugs, por favor comunÌquelos en (\fIhttp://forum.amule.org/\fR), o en nuestro bugtracker (\fIhttp://bugs.amule.org/\fR).
-Por favor, no comunique bugs por e-mail, ni a nuestro maillist ni directamente a ning˙n miembro del equipo de aMule.
+Si descubre bugs, por favor comun√≠quelos en (\fIhttp://forum.amule.org/\fR), o en nuestro bugtracker (\fIhttp://bugs.amule.org/\fR).
+Por favor, no comunique bugs por e-mail, ni a nuestro maillist ni directamente a ning√∫n miembro del equipo de aMule.
 .SH COPYRIGHT
 aMule, y todas las utilidades que con el vienen, se distribuyen bajo la licencia GPL.
 .SH VER
