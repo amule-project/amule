@@ -9,6 +9,10 @@
 # Traditional Chinese translation converted and updated by:
 # Wayne Su <mstarmstar@gmail.com>, 2008-2009.
 #
+# =============================================================================
+# How to translate:
+# http://www.amule.org/wiki/index.php/Translations-tw
+#
 # Please give any advice here:
 # http://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=12208&forum=15
 #
@@ -17,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-13 19:36+0200\n"
-"PO-Revision-Date: 2009-02-26 18:37+0800\n"
+"PO-Revision-Date: 2009-04-16 17:26+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -433,7 +437,7 @@ msgstr "amuled：在背景執行 - 再見"
 
 #: src/amuled.cpp:722
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "無法建立 pid 檔案"
 
 #: src/amuled.cpp:761
 #, c-format
@@ -995,7 +999,7 @@ msgstr "%.1f kB/s"
 
 #: src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
-msgstr "失敗數"
+msgstr "失敗"
 
 #: src/ClientDetailDialog.cpp:199
 msgid "Not complete"
@@ -3091,7 +3095,7 @@ msgstr "正在下載，請稍待..."
 
 #: src/muuli_wdr.cpp:983
 msgid "Unknown size"
-msgstr "未知大小"
+msgstr "不明大小"
 
 #: src/muuli_wdr.cpp:1007
 msgid "Required Information"
@@ -4925,7 +4929,7 @@ msgstr "伺服器"
 
 #: src/PrefsUnifiedDlg.cpp:171 src/ServerListCtrl.cpp:93
 msgid "Files"
-msgstr "檔案數"
+msgstr "檔案"
 
 #: src/PrefsUnifiedDlg.cpp:172
 msgid "Security"
@@ -5433,7 +5437,7 @@ msgstr "Ping"
 
 #: src/ServerListCtrl.cpp:92
 msgid "Users"
-msgstr "使用者數"
+msgstr "使用者"
 
 #: src/ServerListCtrl.cpp:96
 msgid "Static"
@@ -5952,19 +5956,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "最高連線數 (估計值)：%i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "未知大小"
+msgstr "不明：%s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "已過濾"
+msgstr "已過濾：%s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "已封鎖"
+msgstr "已封鎖：%s"
 
 #: src/Statistics.cpp:711
 #, c-format
