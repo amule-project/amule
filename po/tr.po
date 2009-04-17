@@ -1,21 +1,20 @@
-# translation of tr.po to Turkish
-# This file is distributed under the same license as the PACKAGE package.
+# aMule translation to Turkish
+# This file is distributed under the same license as the aMule package.
 #
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: tr\n"
+"Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-13 19:36+0200\n"
-"PO-Revision-Date: 2009-03-08 23:01+0200\n"
-"Last-Translator: \n"
-"Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2009-04-17 08:49+0300\n"
+"Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
+"Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 0.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -440,7 +439,7 @@ msgstr "amuled: arkaplan çatallanıyor - görüşürüz"
 
 #: src/amuled.cpp:722
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Pid dosyası oluşturulamıyor"
 
 #: src/amuled.cpp:761
 #, c-format
@@ -2930,7 +2929,7 @@ msgstr "Durdur"
 
 #: src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1701 src/SearchListCtrl.cpp:596
 msgid "Download"
-msgstr "İndir(me)"
+msgstr "İndir"
 
 #: src/muuli_wdr.cpp:372
 msgid "Reset Fields"
@@ -7458,42 +7457,3 @@ msgstr "Çıkış istendi.\n"
 #: src/webserver/src/WebServer.cpp:1897
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
-
-#~ msgid "Firewalled"
-#~ msgstr "Güvenlik Duvarı"
-
-#~ msgid "Download new GeoIP.dat from "
-#~ msgstr "Yeni GeoIP.dat dosyasını şuradan al:"
-
-#~ msgid "Failed to download GeoIP.dat from "
-#~ msgstr "GeoIP.dat dosyası şuradan indirilemedi:"
-
-#~ msgid "Loaded %d flag bitmap."
-#~ msgid_plural "Loaded %d flag bitmaps."
-#~ msgstr[0] "%d adet bayrak bitmapi yüklendi"
-#~ msgstr[1] "%d adet bayrak bitmapi yüklendi"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr ""
-#~ "%s dosyası Donkey için fazla büyük.:İzin verilen en fazla boyu:4 GB."
-
-#~ msgid "User:"
-#~ msgstr "User:"
-
-#~ msgid "System:"
-#~ msgstr "System:"
-
-#~ msgid "No handler for this file type."
-#~ msgstr "Bu dosya türü için ilişkilendirilmiş uygulama yok."
-
-#~ msgid "File was not saved"
-#~ msgstr "Dosya kaydedilmedi."
-
-#~ msgid "Connection Failed. Unable to connect to the specified host\n"
-#~ msgstr "Belirtilen makineye bağlanılamadı.\n"
-
-#~ msgid " Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
-#~ msgstr "Copyright (C) 2002 Petar Maymounkov <petar@post.harvard.edu>\n"
