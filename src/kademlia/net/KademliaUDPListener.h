@@ -65,8 +65,8 @@ struct FetchNodeID_Struct {
 };
 
 #ifdef __DEBUG__
-#	define DebugSendF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" to ")) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port))
-#	define DebugRecvF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" from ")) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port))
+#	define DebugSendF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" to ")) + KadIPPortToString(ip, port))
+#	define DebugRecvF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" from ")) + KadIPPortToString(ip, port))
 #else
 #	define DebugSendF(what, ip, port)
 #	define DebugRecvF(what, ip, port)

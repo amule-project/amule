@@ -272,7 +272,7 @@ void CSearch::JumpStart()
 
 void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *results)
 {
-	AddDebugLogLineM(false, logKadSearch, wxT("Processing search response from ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(fromIP), fromPort));
+	AddDebugLogLineM(false, logKadSearch, wxT("Processing search response from ") + KadIPPortToString(fromIP, fromPort));
 
 	ContactList::iterator response;
 	// Remember the contacts to be deleted when finished
@@ -283,7 +283,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 	// Make sure the node is not sending more results than we requested, which is not only a protocol violation
 	// but most likely a malicious answer
 	if (results->size() > GetRequestContactCount()) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Node ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
+		AddDebugLogLineM(false, logKadSearch, wxT("Node ") + KadIPToString(fromIP) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
 		return;
 	}
 
@@ -338,7 +338,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
 				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
 				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress())) + wxT(") in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
+					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
 					continue;
 				} else {
 					mapReceivedIPs[c->GetIPAddress()] = 1;
@@ -348,7 +348,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 					wxASSERT(mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != mapReceivedSubnets.end());
 					int subnetCount = mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
 					if (subnetCount >= 2) {
-						AddDebugLogLineM(false, logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress() & 0xFFFFFF00)) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
+						AddDebugLogLineM(false, logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
 						continue;
 					} else {
 						mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
@@ -789,7 +789,7 @@ void CSearch::StorePacket()
 			// we are looking for the IP of a given NodeID, so we just check if we 0 distance and if so, report the
 			// tip to the requester
 			if (fromDistance == 0) {
-				m_nodeSpecialSearchRequester-> KadSearchIPByNodeIDResult(KCSR_SUCCEEDED, wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetTCPPort());
+				m_nodeSpecialSearchRequester->KadSearchIPByNodeIDResult(KCSR_SUCCEEDED, wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetTCPPort());
 				m_nodeSpecialSearchRequester = NULL;
 				PrepareToStop();
 			}
@@ -878,7 +878,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		case 4:
 		case 5:
 		case 6:
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), udp));
+			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + KadIPPortToString(ip, udp));
 			m_answers++;
 			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, buddyip, buddyport, byCryptOptions);
 			break;

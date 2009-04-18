@@ -440,7 +440,7 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 					// except if our IP has changed recently, we demand that the key is the same as the key we received
 					// from the packet which wants to update this contact in order to make sure this is not a try to
 					// hijack this entry
-					AddDebugLogLineM(false, logKadRouting, wxT("Sender (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(") tried to update contact entry but failed to provide the proper sender key (Sent Empty: ") + (contact->GetUDPKey().GetKeyValue(theApp->GetPublicIP(false)) == 0 ? wxT("Yes") : wxT("No")) + wxT(") for the entry (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contactUpdate->GetIPAddress())) + wxT(") - denying update"));
+					AddDebugLogLineM(false, logKadRouting, wxT("Sender (") + KadIPToString(contact->GetIPAddress()) + wxT(") tried to update contact entry but failed to provide the proper sender key (Sent Empty: ") + (contact->GetUDPKey().GetKeyValue(theApp->GetPublicIP(false)) == 0 ? wxT("Yes") : wxT("No")) + wxT(") for the entry (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(") - denying update"));
 					update = false;
 				} else if (contactUpdate->GetVersion() >= 1 && contactUpdate->GetVersion() < 6 && contactUpdate->GetReceivedHelloPacket()) {
 					// legacy kad2 contacts are allowed only to update their RefreshTimer to avoid having them hijacked/corrupted by an attacker
@@ -450,9 +450,9 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 						wxASSERT(!contact->IsIPVerified());	// legacy kad2 nodes should be unable to verify their IP on a HELLO
 						outIpVerified = contactUpdate->IsIPVerified();
 						m_bin->SetAlive(contactUpdate);
-						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Updated kad contact refreshtimer only for legacy kad2 contact (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contactUpdate->GetIPAddress())) + wxT(", %u)"), contactUpdate->GetVersion()));
+						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Updated kad contact refreshtimer only for legacy kad2 contact (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(", %u)"), contactUpdate->GetVersion()));
 					} else {
-						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Rejected value update for legacy kad2 contact (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contactUpdate->GetIPAddress())) + wxT(" -> ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
+						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Rejected value update for legacy kad2 contact (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(" -> ") + KadIPToString(contact->GetIPAddress()) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
 						update = false;
 					}
 				} else {
@@ -461,15 +461,15 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 					//debug logging stuff - remove later
 					if (contact->GetUDPKey().GetKeyValue(theApp->GetPublicIP(false)) == 0) {
 						if (contact->GetVersion() >= 6 && contact->GetType() < 2) {
-							AddDebugLogLineM(false, logKadRouting, wxT("Updating > 0.49a + type < 2 contact without valid key stored ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())));
+							AddDebugLogLineM(false, logKadRouting, wxT("Updating > 0.49a + type < 2 contact without valid key stored ") + KadIPToString(contact->GetIPAddress()));
 						}
 					} else {
-						AddDebugLogLineM(false, logKadRouting, wxT("Updating contact, passed key check ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())));
+						AddDebugLogLineM(false, logKadRouting, wxT("Updating contact, passed key check ") + KadIPToString(contact->GetIPAddress()));
 					}
 
 					if (contactUpdate->GetVersion() >= 1 && contactUpdate->GetVersion() < 6) {
 						wxASSERT(!contactUpdate->GetReceivedHelloPacket());
-						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Accepted update for legacy kad2 contact, because of first HELLO (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contactUpdate->GetIPAddress())) + wxT(" -> ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
+						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Accepted update for legacy kad2 contact, because of first HELLO (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(" -> ") + KadIPToString(contact->GetIPAddress()) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
 					}
 #endif
 					// All other nodes (Kad1, Kad2 > 0.49a with UDPKey checked or not set, first hello updates) are allowed to do full updates
@@ -874,7 +874,7 @@ bool CRoutingZone::VerifyContact(const CUInt128& id, uint32_t ip)
 		return false;
 	} else {
 		if (contact->IsIPVerified()) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Sender already verified (sender: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(")"));
+			AddDebugLogLineM(false, logKadRouting, wxT("Sender already verified (sender: ") + KadIPToString(ip) + wxT(")"));
 		} else {
 			contact->SetIPVerified(true);
 		}
