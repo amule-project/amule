@@ -207,7 +207,7 @@ void CKademlia::Process()
 		// If our UDP firewallcheck is running and we don't know our external port, we send a request every 15 seconds
 		CContact *contact = GetRoutingZone()->GetRandomContact(3, 6);
 		if (contact != NULL) {
-			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())));
+			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + KadIPToString(contact->GetIPAddress()));
 			DebugSend(Kad2Ping, contact->GetIPAddress(), contact->GetUDPPort());
 			GetUDPListener()->SendNullPacket(KADEMLIA2_PING, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &contact->GetClientID());
 		} else {
@@ -275,7 +275,7 @@ void CKademlia::Process()
 		CContact *contact = s_bootstrapList.front();
 		s_bootstrapList.pop_front();
 		m_bootstrap = now;
-		AddDebugLogLineM(false, logKadMain, wxT("Trying to bootstrap Kad from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
+		AddDebugLogLineM(false, logKadMain, wxT("Trying to bootstrap Kad from ") + KadIPToString(contact->GetIPAddress()) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
 		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion() > 1, contact->GetVersion(), &contact->GetClientID());
 		delete contact;
 	}
@@ -292,7 +292,7 @@ void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip
 			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
 	} catch (const wxString& error) {
-		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port) + wxT(':'));
+		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + KadIPPortToString(ip, port) + wxT(':'));
 		AddDebugLogLineM(false, logKadMain, error);
 		throw;
 	} catch (...) {

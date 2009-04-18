@@ -111,7 +111,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 	}
 
 	if (!requested){
-		AddDebugLogLineM(false, logKadUdpFwTester, wxT("Unrequested UDPFWCheckResult from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)));
+		AddDebugLogLineM(false, logKadUdpFwTester, wxT("Unrequested UDPFWCheckResult from ") + KadIPToString(fromIP));
 		return;
 	}
 
@@ -159,9 +159,9 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 			CSearchManager::CancelNodeFWCheckUDPSearch(); // cancel firewallnode searches if any are still active
 			return;
 		} else
-			AddDebugLogLineM(false, logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" result: Firewalled, continue testing"));
+			AddDebugLogLineM(false, logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + KadIPToString(fromIP) + wxT(" result: Firewalled, continue testing"));
 	} else {
-		AddDebugLogLineM(false, logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" cancelled"));
+		AddDebugLogLineM(false, logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + KadIPToString(fromIP) + wxT(" cancelled"));
 	}
 	QueryNextClient();
 }

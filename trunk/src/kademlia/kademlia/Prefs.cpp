@@ -293,7 +293,7 @@ void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 			}
 		}
 		m_externPortIPs.push_back(fromIP);
-		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)));
+		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + KadIPToString(fromIP));
 		// if 2 out of 3 tries result in the same external port it's fine, otherwise consider it unreliable
 		for (unsigned i = 0; i < m_externPorts.size(); i++) {
 			if (m_externPorts[i] == port) {
