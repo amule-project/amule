@@ -69,14 +69,14 @@ public:
 	void Add(const CSearchExpr* pexpr)
 	{
 		//m_aExpr.Append(pexpr->m_aExpr);
-		for (unsigned int i=0; i < pexpr->m_aExpr.Count(); ++i) {
+		for (unsigned int i=0; i < pexpr->m_aExpr.GetCount(); ++i) {
 			m_aExpr.Add(pexpr->m_aExpr[i]);
 		}
 	}
 	
 	void Concatenate(const wxString& pstrString)
 	{
-		wxASSERT( m_aExpr.Count() == 1 );
+		wxASSERT( m_aExpr.GetCount() == 1 );
 		m_aExpr[0] += ' ';
 		m_aExpr[0] += pstrString;
 	}

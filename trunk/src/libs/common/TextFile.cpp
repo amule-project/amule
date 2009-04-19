@@ -194,7 +194,7 @@ bool CTextFile::WriteLines(const wxArrayString& lines, const wxMBConv& conv)
 {
 	bool result = true;
 
-	for (size_t i = 0; i < lines.Count(); ++i) {
+	for (size_t i = 0; i < lines.GetCount(); ++i) {
 		result &= WriteLine(lines[i], conv);
 	}
 
