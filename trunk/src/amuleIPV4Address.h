@@ -36,23 +36,24 @@ public:
 	amuleIPV4Address() {}
 	amuleIPV4Address(const wxIPV4address &a) : wxIPV4address(a) {}
 
-	virtual bool Hostname(const wxString& name) {
+	virtual bool Hostname(const wxString& name)
+	{
 		// Some people are sometimes fools.
 		if (name.IsEmpty()) {
 			return false;
 		}
 		
-		return Hostname(StringIPtoUint32(name));
+		return wxIPV4address::Hostname(name);
 	}
 
-	virtual bool Hostname(uint32 ip) {
+	virtual bool Hostname(uint32 ip) 
+	{
 		// Some people are sometimes fools.
 		if (!ip) {
 			return false;
 		}
 		
-		// We have to take care that wxIPV4address's internals changed on 2.5.2
-		return GAddress_INET_SetHostAddress(m_address,wxUINT32_SWAP_ALWAYS(ip))==GSOCK_NOERROR;
+		return wxIPV4address::Hostname(Uint32toStringIP(ip));
 	}
 };
 
