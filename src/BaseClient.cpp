@@ -2713,7 +2713,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 			// there is a 99,9% chance that it is some poor guy advising his leech mod, or selling you .. well you know :P
 			if (GetMessagesSent() == 0) {
 				static wxArrayString urlindicators(wxStringTokenize(wxT("http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp"), wxT("|")));
-				for (size_t pos = urlindicators.Count(); pos--;) {
+				for (size_t pos = urlindicators.GetCount(); pos--;) {
 					if (message.Find(urlindicators[pos]) != wxNOT_FOUND) {
 						bIsSpam = true;
 						break;

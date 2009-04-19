@@ -74,7 +74,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	int iOpOr = 0;
 	int iOpNot = 0;
 
-	for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
+	for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
 		wxString str(pexpr->m_aExpr[i]);
 		if (str == SEARCHOPTOK_AND) {
 			iOpAnd++;
@@ -109,7 +109,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	// optimize search expression, if no OR nor NOT specified
 	if (iOpAnd > 0 && iOpOr == 0 && iOpNot == 0) {
 		wxString strAndTerms;
-		for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
+		for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
 			if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
 				// Minor optimization: Because we added the Kad keyword to the boolean search expression,
 				// we remove it here (and only here) again because we know that the entire search expression
@@ -122,7 +122,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 				}
 			}
 		}
-		wxASSERT( _SearchExpr.m_aExpr.Count() == 0);
+		wxASSERT( _SearchExpr.m_aExpr.GetCount() == 0);
 		_SearchExpr.m_aExpr.Add(strAndTerms);
 	} else {
 		if (pexpr->m_aExpr.GetCount() != 1 || pexpr->m_aExpr[0] != s_strCurKadKeyword)			
@@ -313,10 +313,10 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 	CMemFilePtr data = CreateSearchData(params, type, supports64bit, packetUsing64bit);
 	
 	if (data.get() == NULL) {
-		wxASSERT(_astrParserErrors.Count());
+		wxASSERT(_astrParserErrors.GetCount());
 		wxString error;
 		
-		for (unsigned int i = 0; i < _astrParserErrors.Count(); ++i) {
+		for (unsigned int i = 0; i < _astrParserErrors.GetCount(); ++i) {
 			error += _astrParserErrors[i] + wxT("\n");
 		}
 		
@@ -660,8 +660,8 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	AddLogLineNS(CFormat(wxT("Search parsing result for \"%s\": %i"))
 		% params.searchString % iParseResult);
 #endif
-	if (_astrParserErrors.Count() > 0) {
-		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
+	if (_astrParserErrors.GetCount() > 0) {
+		for (unsigned int i=0; i < _astrParserErrors.GetCount(); ++i) {
 			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
 		}
 		
@@ -676,7 +676,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	
 	#ifdef __DEBUG__
 	wxString mes(wxT("Search expression:"));
-	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++) {
+	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.GetCount(); i++) {
 		mes << wxT(" ") << _SearchExpr.m_aExpr[i];
 	}
 	AddLogLineNS(mes);
