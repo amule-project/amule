@@ -7,6 +7,7 @@
 # Vincenzo Reale <smart2128@baslug.org>, 2007.
 # Giuseppe Bilotta <giuseppe.bilotta@gmail.com>, 2007.
 # rik <rik_kornellatyahoo.com>, 2008.
+# briga <brigabrigante@yahoo.com> 2009.
 # translation of it-cvs_beta.po to
 # translation of it-cvs.po to
 # translation of it2.po to
@@ -21,8 +22,8 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-13 19:36+0200\n"
-"PO-Revision-Date: 2008-09-17 09:01+0200\n"
-"Last-Translator: rik <rik_kornellatyahoo.com>\n"
+"PO-Revision-Date: 2009-04-22 19:47+0100\n"
+"Last-Translator: Briga <brigabrigante@yahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +31,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-Country: ITALY\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -49,46 +50,41 @@ msgid "The specified userhash is not valid!"
 msgstr "L'hash utente specificato non è valido!"
 
 #: src/amule.cpp:224
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"Ok, uscita in corso da %s...\n"
+msgstr "Uscita dall'applicazione..."
 
 #: src/amule.cpp:243
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr ""
+msgstr "Sto terminando l'istanza di amuleweb con pid `%ld' ... "
 
 #: src/amule.cpp:246
-#, fuzzy
 msgid "Killed!"
-msgstr "Fallito"
+msgstr "Terminato!"
 
 #: src/amule.cpp:250
 msgid "aMule OnExit: Terminating core."
-msgstr ""
+msgstr "aMule OnExit: Chiusura core."
 
 #: src/amule.cpp:320
-#, fuzzy
 msgid "aMule shutdown completed."
-msgstr "Download completato"
+msgstr "Chiusura di aMule completa."
 
 #: src/amule.cpp:324
 msgid "Memory debug results for aMule exit:"
-msgstr ""
+msgstr "Risultati del debug della memoria per l'uscita da aMule:"
 
 #: src/amule.cpp:647
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Chiedi conferma prima di uscire"
+msgstr ""
+"\n"
+"Configurazione EC"
 
 #: src/amule.cpp:650
-#, fuzzy
 msgid "Password set and external connections enabled."
-msgstr "Accettata nuova connessione esterna"
+msgstr "Password stabilita, connessioni esterne abilitate."
 
 #: src/amule.cpp:661 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:664 src/SharedFilesCtrl.cpp:321
@@ -130,7 +126,7 @@ msgstr "Connessione in corso"
 #: src/amule.cpp:829
 #, c-format
 msgid "Using amuleweb in '%s'."
-msgstr ""
+msgstr "Utilizzando amuleweb in '%s'."
 
 #: src/amule.cpp:859
 #, c-format
@@ -297,9 +293,8 @@ msgstr ""
 "sarà stato risolto attraverso il pannello delle preferenze."
 
 #: src/amule.cpp:1409
-#, fuzzy
 msgid "Server hostname notified"
-msgstr "Nome server:"
+msgstr "Notificato il server hostname"
 
 #: src/amule.cpp:1638
 #, c-format
@@ -431,7 +426,6 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Rete Kad disattivata dalle opzioni, non mi connetto."
 
 #: src/amuled.cpp:605
-#, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -451,18 +445,24 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
+"ERRORE: Una password valida è richiesta per utilizzare connessioni esterne, "
+"ed il demone aMule non può essere usato senza connessioni esterne. Per "
+"lanciare il demone di aMule devi impostare il campo \"ECPassword\" nel file "
+"~/.aMule/amule.conf con un valore appropriato. Esegui amuled con il flag --"
+"ec-config per impostare la password. Per maggiori informazioni http://wiki."
+"amule.org"
 
 #: src/amuled.cpp:673
 msgid "amuled: OnInit - starting timer"
-msgstr ""
+msgstr "amuled: OnInit - Timer d'avvio"
 
 #: src/amuled.cpp:691
 msgid "amuled: forking to background - see you"
-msgstr ""
+msgstr "amuled: forzato in background - arrivederci"
 
 #: src/amuled.cpp:722
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Impossibile creare il file Pid"
 
 #: src/amuled.cpp:761
 #, c-format
@@ -555,13 +555,12 @@ msgid "Message"
 msgstr "Messaggio"
 
 #: src/amuleDlg.cpp:536
-#, fuzzy
 msgid "Shutting down aMule..."
-msgstr "Arresta aMule."
+msgstr "aMule in chiusura..."
 
 #: src/amuleDlg.cpp:546
 msgid "aMule dialog destroyed"
-msgstr ""
+msgstr "Finestra di aMule distrutta"
 
 #: src/amuleDlg.cpp:700
 msgid "eD2k: Connecting"
@@ -648,7 +647,7 @@ msgstr "Chiedi conferma prima di uscire"
 
 #: src/amuleDlg.cpp:1158
 msgid "Launch Command: "
-msgstr ""
+msgstr "Comando di avvio:"
 
 #: src/amuleDlg.cpp:1217
 #, c-format
@@ -758,28 +757,24 @@ msgid "aMule"
 msgstr "aMule"
 
 #: src/amule-gui.cpp:283
-#, fuzzy
 msgid "Fatal Error: Failed to create Core Timer"
-msgstr "ERRORE FATALE: Creazione Timer fallita"
+msgstr "ERRORE FATALE: Creazione del Timer principale fallita"
 
 #: src/amule-remote-gui.cpp:71
 msgid "Connect to remote amule"
 msgstr "Connessione ad aMule remoto"
 
 #: src/amule-remote-gui.cpp:254
-#, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "ERRORE FATALE: Creazione Timer fallita"
+msgstr "ERRORE FATALE: Creazione del Timer di interrogazione fallita"
 
 #: src/amule-remote-gui.cpp:278
-#, fuzzy
 msgid "Going to event loop..."
-msgstr "Tentativo di recupero informazioni sul file..."
+msgstr "Ciclo evento..."
 
 #: src/amule-remote-gui.cpp:299
-#, fuzzy
 msgid "Connecting..."
-msgstr "Connessione in corso"
+msgstr "Connessione in corso..."
 
 #: src/amule-remote-gui.cpp:303
 msgid "Connection failed "
@@ -787,11 +782,11 @@ msgstr "Connessione fallita "
 
 #: src/amule-remote-gui.cpp:314
 msgid "Remote GUI EC event handler"
-msgstr ""
+msgstr "Gestore eventi GUI EC remota"
 
 #: src/amule-remote-gui.cpp:321
 msgid "Going down"
-msgstr ""
+msgstr "Qualcosa è andato storto"
 
 #: src/amule-remote-gui.cpp:323 src/ExternalConnector.cpp:411
 #, c-format
@@ -800,7 +795,7 @@ msgstr "Connessione Fallita. Impossibile connettersi a %s:%d\n"
 
 #: src/amule-remote-gui.cpp:422
 msgid "Ready"
-msgstr ""
+msgstr "Pronto"
 
 #: src/amule-remote-gui.cpp:601
 #, c-format
@@ -823,7 +818,7 @@ msgstr "Impossibile ricevere i file condivisi dall'utente '%s'"
 
 #: src/BaseClient.cpp:1544
 msgid "Searching buddy for lowid connection"
-msgstr ""
+msgstr "Ricerca amico per connessione con ID basso"
 
 #: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2552
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
@@ -914,7 +909,7 @@ msgstr "Nuovo messaggio da '%s' (IP:%s)"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Inserisci Captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -966,12 +961,16 @@ msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
 msgstr ""
+"*** Hai superato il controllo captcha e l'utente ha ricevuto il tuo "
+"messaggio. ***"
 
 #: src/ChatSelector.cpp:345
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** La tua risposta al captcha era errata ed il tuo messaggio è stato "
+"ignorato. Puoi richiedere un nuovo captcha inviando un nuovo messaggio. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1699,21 +1698,21 @@ msgstr ""
 #: src/DownloadQueue.cpp:100
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr ""
+msgstr "Salvataggio PartFile %u di %u"
 
 #: src/DownloadQueue.cpp:103
 msgid "All PartFiles Saved."
-msgstr ""
+msgstr "Tutti i Partfile salvati."
 
 #: src/DownloadQueue.cpp:110
-#, fuzzy, c-format
+#, c-format
 msgid "Loading temp files from %s."
-msgstr "Caricamento file server.met: %s"
+msgstr "Caricamento file incompleto da: %s"
 
 #: src/DownloadQueue.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "Loading PartFile %u of %u"
-msgstr "Caricamento dati da vecchio file in download (%u su %u)"
+msgstr "Caricamento file incompleto %u di %u"
 
 #: src/DownloadQueue.cpp:152
 msgid ""
@@ -1725,7 +1724,7 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:161
 msgid "All PartFiles Loaded."
-msgstr ""
+msgstr "Tutti i PartFile caricati."
 
 #: src/DownloadQueue.cpp:164
 msgid "No part files found"
@@ -1770,9 +1769,8 @@ msgid "You are already trying to download the file %s"
 msgstr "Stai già cercando di scaricare il file '%s'"
 
 #: src/DownloadQueue.cpp:1049
-#, fuzzy
 msgid "Failed to open ED2KLinks file."
-msgstr "Impossibile aprire %s (%s)"
+msgstr "Impossibile aprire il file ED2Links."
 
 #: src/DownloadQueue.cpp:1323
 #, c-format
@@ -1790,9 +1788,9 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Collegamento eD2k invalido! ERRORE: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Autenticazione non riuscita."
+msgstr ""
+"Il clienti ha inviato un pacchetto dopo che l'autenticazione non è riuscita."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -1861,7 +1859,6 @@ msgid "Authentication failed."
 msgstr "Autenticazione non riuscita."
 
 #: src/ExternalConn.cpp:357
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Richiesta non valida, prima devi autenticarti."
 
@@ -2216,7 +2213,7 @@ msgstr ""
 
 #: src/FriendList.cpp:222
 msgid "CRITICAL - no client on StartChatSession"
-msgstr ""
+msgstr "CRITICO - nessun client in StartChatSession"
 
 #: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:499 src/muuli_wdr.cpp:2960
 msgid "Friends"
@@ -2269,45 +2266,43 @@ msgstr "( %s / %s )"
 
 #: src/HTTPDownload.cpp:108
 msgid "HTTP download cancelled"
-msgstr ""
+msgstr "Download HTTP cancellato"
 
 #: src/HTTPDownload.cpp:172
 msgid "HTTP download thread started"
-msgstr ""
+msgstr "Processo di download HTTP avviato"
 
 #: src/HTTPDownload.cpp:199
-#, fuzzy, c-format
+#, c-format
 msgid "Download size: %i"
-msgstr "Download (%i)"
+msgstr "Dimensioni download (%i)"
 
 #: src/HTTPDownload.cpp:231
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Scaricati %d bytes invece dei %d attesi"
 
 #: src/HTTPDownload.cpp:249
 msgid "HTTP download thread ended"
-msgstr ""
+msgstr "Processo di download HTTP terminato"
 
 #: src/HTTPDownload.cpp:329
 #, c-format
 msgid "Host: %s:%i\n"
-msgstr ""
+msgstr "Host: %s:%i\n"
 
 #: src/HTTPDownload.cpp:331
 #, c-format
 msgid "Response: %i (Error: %i)"
-msgstr ""
+msgstr "Risposta: %i (Errore: %i)"
 
 #: src/HTTPDownload.cpp:334
-#, fuzzy
 msgid "WARNING: Void response on stream creation"
-msgstr ""
-"ATTENZIONE: impossibile rimuovere l'originale '%s' dopo aver creato il backup"
+msgstr "ATTENZIONE: Errore nella creazione del flusso"
 
 #: src/HTTPDownload.cpp:358
 msgid "ERROR: Redirection code received with no URL"
-msgstr ""
+msgstr "ERRORE: Codice di reindirizzamento ricevuto senza URL"
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2315,9 +2310,8 @@ msgid "Download new GeoIP.dat from %s"
 msgstr "Scarico il nuovo GeoIP.dat da %s"
 
 #: src/IP2Country.cpp:120
-#, fuzzy
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr "Impossibile rimuovere il file GeoIP.dat, interrompo l'aggiornamento."
+msgstr "Errore nello scaricare GeoIP.dat, interrompo l'aggiornamento."
 
 #: src/IP2Country.cpp:126
 msgid "Failed to remove GeoIP.dat file, aborting update."
@@ -2418,7 +2412,7 @@ msgstr "Kademlia: chiave di ricerca troppo corta"
 #: src/kademlia/kademlia/SearchManager.cpp:134
 #, c-format
 msgid "Keyword for search: %s"
-msgstr ""
+msgstr "Keyword per la ricerca: %s"
 
 #: src/kademlia/kademlia/SearchManager.cpp:142
 msgid "Kademlia: Search keyword is already on search list: "
@@ -2550,7 +2544,6 @@ msgid "EC connection failed. Empty reply."
 msgstr "Connessione EC fallita. Risposta vuota."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
 msgstr ""
 "Connessione Esterna: risposta non valida dal server. Connessione chiusa."
@@ -2568,13 +2561,12 @@ msgid "External Connection: Access denied because: "
 msgstr "Connessione Esterna: Accesso negato a causa di: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Connessione Esterna: Accesso negato"
+msgstr "Connessione Esterna: errore di negoziazione."
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
-msgstr ""
+msgstr "ListenSocket: Ok."
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
@@ -2634,7 +2626,7 @@ msgstr "Illimitato"
 
 #: src/MuleTrayIcon.cpp:312
 msgid "Traybar-icon lost, trying to recreate ..."
-msgstr ""
+msgstr "Icona nella traybar persa, tentativo di creazione nuova ..."
 
 #: src/MuleTrayIcon.cpp:332
 msgid "aMule Tray Menu"
@@ -3696,6 +3688,7 @@ msgid "Add new shared files with auto priority"
 msgstr "Assegna priorità automatica ai nuovi file condivisi"
 
 #: src/muuli_wdr.cpp:1991
+#, fuzzy
 msgid "Destination folder for downloads"
 msgstr "Cartella di destinazione per i file scaricati"
 
@@ -4597,6 +4590,7 @@ msgstr "Attivo"
 #: src/PartFileConvert.cpp:180
 msgid "Waiting for partfile convert thread to die..."
 msgstr ""
+"In attesa della fine del processo di conversione del file incompleto..."
 
 #: src/PartFileConvert.cpp:236
 #, c-format
@@ -4770,9 +4764,8 @@ msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "Errore durante il salvataggio del file incompleto: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:903
-#, fuzzy
 msgid "IO failure while saving partfile: "
-msgstr "Errore durante il salvataggio del file incompleto: %s (%s ==> %s)"
+msgstr "Errore durante il salvataggio del file incompleto:"
 
 #: src/PartFile.cpp:916
 #, c-format
@@ -4915,9 +4908,8 @@ msgid "Arabic"
 msgstr "Arabo"
 
 #: src/Preferences.cpp:662
-#, fuzzy
 msgid "Asturian"
-msgstr "Estone"
+msgstr "Asturiano"
 
 #: src/Preferences.cpp:663
 msgid "Basque"
@@ -5057,7 +5049,7 @@ msgstr "nessuna opzione disponibile"
 
 #: src/Preferences.cpp:1544
 msgid "Invalid category found, skipping"
-msgstr ""
+msgstr "Trovata categoria non valida, ignorata"
 
 #: src/Preferences.cpp:1708
 msgid ""
@@ -5074,7 +5066,7 @@ msgstr "Sarà usata la porta di predefinita (%d)"
 #: src/Preferences.cpp:1732
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
-msgstr ""
+msgstr "Scartando le cartelle condivise non esistenti: %s"
 
 #: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:688
 msgid "Connection"
@@ -5131,17 +5123,17 @@ msgstr "Debug"
 #: src/PrefsUnifiedDlg.cpp:320
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
-msgstr ""
+msgstr "Insuccesso nel collegare Cfg al widget con ID %d e chiave %s"
 
 #: src/PrefsUnifiedDlg.cpp:373
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
-msgstr ""
+msgstr "Insuccesso nel trasferire dati da Cfg al widget con ID %d e chiave %s"
 
 #: src/PrefsUnifiedDlg.cpp:479
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
-msgstr ""
+msgstr "Insuccesso nel trasferire dati dal widget al Cfg con ID %d e chiave %s"
 
 #: src/PrefsUnifiedDlg.cpp:534
 msgid ""
@@ -5185,9 +5177,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Modifica della cartella Temp.\n"
 
 #: src/PrefsUnifiedDlg.cpp:584
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Tutte le reti sono disabilitate."
+msgstr "- Rete ED2K abilitata.\n"
 
 #: src/PrefsUnifiedDlg.cpp:651
 msgid ""
@@ -5319,9 +5310,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Intervallo aggiornamento connessione ai server: disabilitato"
 
 #: src/PrefsUnifiedDlg.cpp:1090
-#, fuzzy
 msgid "disabled"
-msgstr "Disattivato"
+msgstr "disattivato"
 
 #: src/PrefsUnifiedDlg.cpp:1108
 #, c-format
@@ -5476,7 +5466,7 @@ msgstr "Connessione a %s (%s:%i) non riuscita per time-out."
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
-msgstr ""
+msgstr "Risultato ricerca DNS ricevuto in ritardo, ignoro."
 
 #: src/ServerList.cpp:84
 #, c-format
@@ -5828,17 +5818,16 @@ msgstr "Stato connessione:"
 #: src/ServerWnd.cpp:215
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
-msgstr ""
+msgstr "Firewalled - apri la porta TCP %d nel tuo router o firewall"
 
 #: src/ServerWnd.cpp:216
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Stato connessione:"
+msgstr "Stato connessione UDP:"
 
 #: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
-msgstr ""
+msgstr "Firewalled - apri la porta UDP %d nel tuo router o firewall"
 
 #: src/ServerWnd.cpp:222
 msgid "Firewalled state: "
@@ -5846,39 +5835,36 @@ msgstr "Stato firewalled: "
 
 #: src/ServerWnd.cpp:228
 msgid "No buddy required - TCP port open"
-msgstr ""
+msgstr "Nessun amico richiesto - porta TCP aperta"
 
 #: src/ServerWnd.cpp:230
 msgid "No buddy required - UDP port open"
-msgstr ""
+msgstr "Nessun amico richiesto - porta UDP aperta"
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy"
 msgstr "Nessun amico"
 
 #: src/ServerWnd.cpp:236
-#, fuzzy
 msgid "Connecting to buddy"
-msgstr "Connesso all'amico"
+msgstr "In connessione all'amico"
 
 #: src/ServerWnd.cpp:239
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Connesso all'amico"
+msgstr "Connesso all'amico a %s"
 
 #: src/ServerWnd.cpp:249
-#, fuzzy
 msgid "Indexed sources:"
-msgstr "Fonti trovate:"
+msgstr "Sorgenti indicizzate:"
 
 #: src/ServerWnd.cpp:251
 msgid "Indexed keywords:"
-msgstr ""
+msgstr "Parole chiave indicizzate"
 
 #: src/ServerWnd.cpp:253
-#, fuzzy
 msgid "Indexed notes:"
-msgstr "File indice non trovato: "
+msgstr "Note indicizzate:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed load:"
@@ -5899,7 +5885,7 @@ msgstr "Non attivo"
 #: src/SharedFileList.cpp:324
 #, c-format
 msgid "Adding file %s to shares"
-msgstr ""
+msgstr "Aggiungo il file %s alle condivisioni"
 
 #: src/SharedFileList.cpp:352
 #, c-format
@@ -5921,14 +5907,14 @@ msgid "ERROR: Attempted to share %s"
 msgstr "ERRORE: Tentativo di condividere %s"
 
 #: src/SharedFileList.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Shared directory not found, skipping: %s"
-msgstr "server non trovato: %s"
+msgstr "Cartella condivisa non trovata, ignoro: %s"
 
 #: src/SharedFileList.cpp:463
 #, c-format
 msgid "No shareable files found in directory: %s"
-msgstr ""
+msgstr "Nessun file condivisibile trovato nella cartella: %s"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -6144,19 +6130,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Picco connessioni (stima): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Dimensione sconosciuta"
+msgstr "Sconosciuti: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Filtrati"
+msgstr "Filtrati: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Bannati"
+msgstr "Bannati: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
