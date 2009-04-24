@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-13 19:36+0200\n"
-"PO-Revision-Date: 2009-04-22 19:47+0100\n"
+"PO-Revision-Date: 2009-04-23 18:41+0100\n"
 "Last-Translator: Briga <brigabrigante@yahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3688,7 +3688,6 @@ msgid "Add new shared files with auto priority"
 msgstr "Assegna priorità automatica ai nuovi file condivisi"
 
 #: src/muuli_wdr.cpp:1991
-#, fuzzy
 msgid "Destination folder for downloads"
 msgstr "Cartella di destinazione per i file scaricati"
 
@@ -5868,7 +5867,7 @@ msgstr "Note indicizzate:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed load:"
-msgstr ""
+msgstr "Utilizzo indicizzato:"
 
 #: src/ServerWnd.cpp:258
 msgid "Average Users:"
