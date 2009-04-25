@@ -2286,6 +2286,12 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		// Remove the .met and see if out video player specifiation uses the magic string
 		wxString fileWithoutMet = thePrefs::GetTempDir().JoinPaths(
 			file->GetPartMetFileName().RemoveExt()).GetRaw();
+
+		// Escape the apostroph to prevent quotation problems
+		if (QUOTE == wxT("\'")) {
+			rawFileName.Replace(wxT("\'"),wxT("\\'"));
+		}
+		
 		if (!command.Replace(wxT("$file"), fileWithoutMet)) {
 			// No magic string, so we just append the filename to the player command
 			// Need to use quotes in case filename contains spaces
