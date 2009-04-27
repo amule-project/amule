@@ -2297,9 +2297,12 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		// FIXME: This is probably not going to work if the filenames are mangled ...
 		wxString rawFileName = file->GetFullName().GetRaw();
 
-		// Remove quotes in filename to prevent possible security hole
-		// (by closing the string and then passing additional arguments)
-		rawFileName.Replace(QUOTE, wxT(""));
+		if (QUOTE == wxT("\"")) {
+			rawFileName.Replace(wxT("\\"), wxT("\\\\"));
+			rawFileName.Replace(QUOTE, wxT("\\\""));
+		} else {
+			rawFileName.Replace(QUOTE, wxT("'\"'\"'"));
+		}
 
 		if (!command.Replace(wxT("$file"), rawFileName)) {
 			// No magic string, so we just append the filename to the player command
