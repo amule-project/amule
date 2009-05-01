@@ -332,6 +332,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\FileAutoClose.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\FileDetailDialog.cpp"
 				>
 			</File>
@@ -787,6 +791,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\FileArea.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\FileAutoClose.h"
 				>
 			</File>
 			<File

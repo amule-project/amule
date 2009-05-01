@@ -1429,6 +1429,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	// Former TimerProc section
 	static uint64 msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
 	uint64 msCur = theStats::GetUptimeMillis();
+	TheTime = msCur / 1000;
 
 	if (!IsRunning()) {
 		return;

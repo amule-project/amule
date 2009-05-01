@@ -90,6 +90,16 @@ public:
 	 */
 	bool Open(const CPath& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
 	bool Open(const wxString& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
+
+	/**
+	 * Reopens a file which was opened and closed before.
+	 *
+	 * @param mode The opening mode.
+	 * 
+	 * The filename used for last open is used again.
+	 * No return value - function throws on failure.
+	 */
+	void Reopen(OpenMode mode);
 	
 	/**
 	 * Calling Create is equivilant of calling open with OpenMode 'write'.
@@ -158,8 +168,6 @@ public:
 	/**
 	 * Returns the path of the currently opened file.
 	 * 
-	 * Calling this function on an closed file is
-	 * an illegal operation.
 	 */
 	const CPath& GetFilePath() const;
 	

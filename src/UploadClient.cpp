@@ -267,7 +267,7 @@ void CUpDownClient::CreateNextBlockPackage()
 
 			CFileArea area;
 			if (!srcfile->IsPartFile()){
-				CFile file;
+				CFileAutoClose file;
 				if ( !file.Open(fullname, CFile::read) ) {
 					// The file was most likely moved/deleted. However it is likely that the
 					// same is true for other files, so we recheck all shared files. 

@@ -32,7 +32,7 @@
 
 class CKnownFile;
 class CPartFile;
-class CFile;
+class CFileAutoClose;
 
 
 /**
@@ -98,7 +98,7 @@ protected:
 	 * the next part of the file. This function makes the assumption that it wont
 	 * be called for closed or EOF files.
 	 */
-	bool CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes toHash);
+	bool CreateNextPartHash(CFileAutoClose& file, CKnownFile* owner, EHashes toHash);
 
 
 	//! The path to the file to be hashed (shared or part), without filename.

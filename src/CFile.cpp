@@ -188,8 +188,6 @@ bool CFile::IsOpened() const
 
 const CPath& CFile::GetFilePath() const
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot return path of closed file."));
-
 	return m_filePath;
 }
 
@@ -267,6 +265,14 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
 	
 	return IsOpened();
+}
+
+
+void CFile::Reopen(OpenMode mode)
+{
+	if (!Open(m_filePath, mode)) {
+		throw CIOFailureException(wxString(wxT("Error reopening file")));
+	}
 }
 
 

@@ -28,7 +28,7 @@
 
 
 #include "KnownFile.h"		// Needed for CKnownFile
-#include "CFile.h"		// Needed for CFile
+#include "FileAutoClose.h"	// Needed for CFileAutoClose
 
 #include "OtherStructs.h"	// Needed for Gap_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
@@ -322,9 +322,10 @@ public:
 
 	void	AllocationFinished();
 private:
-	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
-	//! A local list of sources that are invalid for this file.
 #ifndef CLIENT_GUI
+	// partfile handle (opened on demand)
+	CFileAutoClose	m_hpartfile;
+	//! A local list of sources that are invalid for this file.
 	CDeadSourceList	m_deadSources;
 #endif
 

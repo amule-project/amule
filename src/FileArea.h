@@ -22,9 +22,10 @@
 #ifndef FILEAREA_H
 #define FILEAREA_H
 
-#include "CFile.h"		// Needed for CFile
+#include "Types.h"		// Needed for byte
 
 class CFileAreaSigHandler;
+class CFileAutoClose;
 
 /**
  * This class is used to optimize file read/write using mapped memory
@@ -62,7 +63,7 @@ public:
 	 *
 	 * At the end file is positioned past readed area.
 	 */
-	void Read(const CFile& file, size_t count);
+	void Read(CFileAutoClose& file, size_t count);
 	
 	/**
 	 * Flushes data not yet written.
@@ -105,6 +106,10 @@ private:
 	 * Global chain
 	 */
 	CFileArea* m_next;
+	/**
+	 * File handle to release
+	 */
+	CFileAutoClose * m_file;
 	/**
 	 * true if error detected
 	 */

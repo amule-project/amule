@@ -79,7 +79,7 @@ CHashingTask::CHashingTask(const CKnownFile* toAICHHash)
 
 void CHashingTask::Entry()
 {
-	CFile file;
+	CFileAutoClose file;
 
 	CPath fullPath = m_path.JoinPaths(m_filename);
 	if (!file.Open(fullPath, CFile::read)) {
@@ -145,7 +145,7 @@ void CHashingTask::Entry()
 	// This loops creates the part-hashes, loop-de-loop.
 	try {
 		while (!file.Eof() && !TestDestroy()) {
-			if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
+			if (CreateNextPartHash(file, knownfile.get(), m_toHash) == false) {
 				AddDebugLogLineM(true, logHasher,
 					CFormat(wxT("Error while hashing file, skipping: %s"))
 						% m_filename);
@@ -201,12 +201,12 @@ void CHashingTask::Entry()
 }
 
 
-bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes toHash)
+bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, CKnownFile* owner, EHashes toHash)
 {
-	wxCHECK_MSG(!file->Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
+	wxCHECK_MSG(!file.Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
 	
 	// We'll read at most PARTSIZE bytes per cycle
-	const uint64 partLength = std::min<uint64>(PARTSIZE, file->GetLength() - file->GetPosition());
+	const uint64 partLength = std::min<uint64>(PARTSIZE, file.GetLength() - file.GetPosition());
 	
 	CMD4Hash hash;
 	CMD4Hash* md4Hash = ((toHash & EH_MD4) ? &hash : NULL);
@@ -214,10 +214,10 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 
 	// Setup for AICH hashing
 	if (toHash & EH_AICH) {
-		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(file->GetPosition(), partLength);
+		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(file.GetPosition(), partLength);
 	}
 
-	owner->CreateHashFromFile(*file, partLength, md4Hash, aichHash);
+	owner->CreateHashFromFile(file, partLength, md4Hash, aichHash);
 	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash
@@ -227,7 +227,7 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 		// file i.e. will have 3 parts (see CKnownFile::SetFileSize for comments). 
 		// So we have to create the hash for the 0-size data, which will be the default
 		// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
-		if ((partLength == PARTSIZE) && file->Eof()) {
+		if ((partLength == PARTSIZE) && file.Eof()) {
 			owner->m_hashlist.push_back(CMD4Hash(g_emptyMD4Hash));
 		}
 	}
