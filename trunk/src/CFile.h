@@ -139,7 +139,7 @@ public:
 	/**
 	 * Resizes the file to the specified length.
 	 */
-	bool SetLength(size_t newLength);
+	bool SetLength(uint64 newLength);
 	
 	/**
 	 * @see CSafeFileIO::GetPosition
