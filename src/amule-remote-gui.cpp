@@ -319,9 +319,11 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 		glob_prefs->LoadRemote();
 	} else {
 		AddLogLineNS(_("Going down"));
-		wxMessageBox(
+		if (dialog) {	// can otherwise crash here on disconnect
+			wxMessageBox(
 			(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % dialog->Host() % dialog->Port()) + reply,
 			_("ERROR"), wxOK);
+		}
 		ExitMainLoop();
 	}
 }
