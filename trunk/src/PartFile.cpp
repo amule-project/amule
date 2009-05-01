@@ -241,20 +241,9 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 
 CPartFile::~CPartFile()
 {
-	
-	// Barry - Ensure all buffered data is written
-
-	// Kry - WTF? 
-	// eMule had same problem with lseek error ... and override with a simple 
-	// check for INVALID_HANDLE_VALUE (that, btw, does not exist on linux)
-	// So we just guess is < 0 on error and > 2 if ok (0 stdin, 1 stdout, 2 stderr)
-	// But, where does this wrong handle comes from?
-	
-	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) { 
+	// if it's not opened, it was completed or deleted
+	if (m_hpartfile.IsOpened()) { 
 		FlushBuffer();
-	}
-	
-	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) {
 		m_hpartfile.Close();
 		// Update met file (with current directory entry)
 		SavePartFile();			
@@ -285,7 +274,7 @@ void CPartFile::CreatePartFile()
 	m_PartPath = m_fullname.RemoveExt();
 	bool fileCreated;
 	if (thePrefs::GetAllocFullFile()) {
-		fileCreated = m_hpartfile.Create(m_PartPath.GetRaw(), true);
+		fileCreated = m_hpartfile.Create(m_PartPath, true);
 		m_hpartfile.Close();
 	} else {
 		fileCreated = PlatformSpecific::CreateSparseFile(m_PartPath, GetFileSize());
@@ -686,6 +675,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		SetPartFileStatus(PS_ERROR);
 	}
 
+	// now close the file again until needed
+	m_hpartfile.Release(true);
 	
 	// check hashcount, file status etc
 	if (GetHashCount() != GetED2KPartHashCount()){	
@@ -1573,6 +1564,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			Notify_ShowUpdateCatTabTitles();
 		}				
 	}
+
+	// release file handle if unused for some time
+	m_hpartfile.Release();
 	
 	return (uint32)(kBpsDown*1024.0);
 }
@@ -2226,11 +2220,7 @@ void CPartFile::Delete()
 	Notify_DownloadCtrlRemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from transferwnd"));
 
-	// Kry - WTF? 
-	// eMule had same problem with lseek error ... and override with a simple 
-	// check for INVALID_HANDLE_VALUE (that, btw, does not exist on linux)
-	// So we just guess is < 0 on error and > 2 if ok (0 stdin, 1 stdout, 2 stderr)
-	if (m_hpartfile.fd() > 2) {  // 0 stdin, 1 stdout, 2 stderr
+	if (m_hpartfile.IsOpened()) {
 		m_hpartfile.Close();
 	}
 
@@ -2377,6 +2367,8 @@ void CPartFile::StopPausedFile()
 				kBpsDown = 0.0;
 		}
 	}
+	// release file handle if unused for some time
+	m_hpartfile.Release();
 }
 
 
@@ -2984,13 +2976,16 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		try {
 			m_hpartfile.Seek(item->start);
 			m_hpartfile.Write(item->data.get(), lenData);
+			// Decrease buffer size
+			m_nTotalBufferData -= lenData;
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + e.what());
 			SetPartFileStatus(PS_ERROR);
+			// No need to bang your head against it again and again if it has already failed.
+			DeleteContents(m_BufferedData_list);
+			m_nTotalBufferData = 0;
+			return;
 		}
-
-		// Decrease buffer size
-		m_nTotalBufferData -= lenData;
 	}
 	
 	
@@ -3959,10 +3954,13 @@ CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient
 
 void CPartFile::AllocationFinished()
 {
+	// see if it can be opened
 	if (!m_hpartfile.Open(m_PartPath, CFile::read_write)) {
 		AddLogLineM(false, CFormat(_("ERROR: Failed to open partfile '%s'")) % GetFullName());
 		SetPartFileStatus(PS_ERROR);
 	}
+	// then close the handle again
+	m_hpartfile.Release(true);
 }
 
 #endif

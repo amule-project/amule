@@ -37,7 +37,8 @@
 #endif
 
 #include "FileArea.h"		// Interface declarations.
-#include "Logger.h"		// Needed for AddDebugLogLineM
+#include "FileAutoClose.h"	// Needed for CFileAutoClose
+#include "Logger.h"			// Needed for AddDebugLogLineM
 
 #ifdef HAVE_SYS_MMAN_H
 #include <sys/mman.h>
@@ -169,7 +170,7 @@ void CFileAreaSigHandler::Remove(CFileArea& area)
 #endif
 
 CFileArea::CFileArea()
-	: m_buffer(NULL), m_mmap_buffer(NULL), m_length(0), m_next(NULL), m_error(false)
+	: m_buffer(NULL), m_mmap_buffer(NULL), m_length(0), m_next(NULL), m_file(NULL), m_error(false)
 {
 	CFileAreaSigHandler::Init();
 }
@@ -195,13 +196,17 @@ bool CFileArea::Close()
 		// remove from list
 		CFileAreaSigHandler::Remove(*this);
 		m_mmap_buffer = NULL;
+		if (m_file) {
+			m_file->Unlock();
+			m_file = NULL;
+		}
 	}
 #endif
 	return true;
 }
 
 
-void CFileArea::Read(const CFile& file, size_t count)
+void CFileArea::Read(CFileAutoClose& file, size_t count)
 {
 	Close();
 
@@ -212,8 +217,10 @@ void CFileArea::Read(const CFile& file, size_t count)
 	uint64 offEnd = offset + count;
 	m_length = offEnd - offStart;
 	void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
-	if (p != MAP_FAILED)
-	{
+	if (p == MAP_FAILED) {
+		file.Unlock();
+	} else {
+		m_file = &file;
 		m_mmap_buffer = (byte*) p;
 		m_buffer = m_mmap_buffer + (offset - offStart);
 		file.Seek(offset + count);

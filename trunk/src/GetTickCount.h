@@ -55,5 +55,8 @@ void StartTickTimer();
 
 void StopTickTimer();
 
+// A cheap global time (in s) without any function calls updated in OnCoreTimer
+extern uint32 TheTime;
+
 #endif // GETTICKCOUNT_H
 // File_checked_for_headers

@@ -274,6 +274,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\FileAutoClose.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\Friend.cpp"
 				>
 			</File>

@@ -335,7 +335,7 @@ protected:
 	ArrayOfCMD4Hash m_hashlist;
 	CPath	m_filePath;	
 
-	static void CreateHashFromFile(CFile& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
+	static void CreateHashFromFile(class CFileAutoClose& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 
 	bool	m_bCommentLoaded;

@@ -62,7 +62,8 @@ Version 2.3.0 - The river knows.
 		  and "Advanced Chat Spam Filter" from eMule
 		* Allow download of multiple search results if search list 
 		  is sorted by status (thanks to DarkNRG)
-		* Fixed CFile::SetLength for large files 
+		* Fixed CFile::SetLength for large files
+		* Reduce file handle usage by closing part files after idle time
 
 	Vollstrecker:
 		* Unify copyright lines

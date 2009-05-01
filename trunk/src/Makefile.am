@@ -83,6 +83,8 @@ libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs
 libmuleappcore_a_SOURCES = \
 	AsyncDNS.cpp \
 	DeadSourceList.cpp \
+	FileArea.cpp \
+	FileAutoClose.cpp \
 	Scanner.cpp \
 	Parser.cpp \
 	PlatformSpecific.cpp \
@@ -203,7 +205,6 @@ remote_common_sources = \
 common_sources = \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
-	FileArea.cpp \
 	KnownFile.cpp \
 	GapList.cpp \
 	GetTickCount.cpp \
@@ -355,6 +356,7 @@ noinst_HEADERS = \
 		ExternalConnector.h \
 		ExternalConn.h \
 		FileArea.h \
+		FileAutoClose.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
 		FileLock.h \

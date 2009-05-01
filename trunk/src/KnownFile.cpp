@@ -51,6 +51,7 @@
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "SearchFile.h"		// Needed for CSearchFile
 #include "FileArea.h"		// Needed for CFileArea
+#include "FileAutoClose.h"	// Needed for CFileAutoClose
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
@@ -778,7 +779,7 @@ void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash*
 }
 
 
-void CKnownFile::CreateHashFromFile(CFile& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
+void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
 {
 	wxCHECK_RET(Length, wxT("No input to hash from in CreateHashFromFile"));
 
