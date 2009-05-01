@@ -393,18 +393,18 @@ uint64 CFile::GetAvailable() const
 }
 
 
-bool CFile::SetLength(size_t new_len)
+bool CFile::SetLength(uint64 new_len)
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
 
 #ifdef __WXMSW__
-	int result = chsize(m_fd, new_len);
+	bool result = _chsize_s(m_fd, new_len) == 0;
 #else
-	int result = ftruncate(m_fd, new_len);
+	bool result = ftruncate(m_fd, new_len) != -1;
 #endif
 
-	syscall_check((result != -1), m_filePath, wxT("truncating file"));
+	syscall_check(result, m_filePath, wxT("truncating file"));
 
-	return (result != -1);
+	return result;
 }
 // File_checked_for_headers
