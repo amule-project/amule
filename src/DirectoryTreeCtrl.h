@@ -28,6 +28,7 @@
 
 #include <wx/treectrl.h>
 #include <vector>
+#include <map>
 
 #include <common/Path.h>
 
@@ -79,7 +80,11 @@ private:
 	void OnRButtonDown(wxTreeEvent& evt);
 	void OnItemActivated(wxTreeEvent& evt);
 
-	PathList m_lstShared;
+	typedef std::pair<wxString, CPath> SharedMapItem;
+	typedef std::map<wxString, CPath> SharedMap;
+	SharedMap m_lstShared;
+	// get map key from path (normalized path)
+	static wxString GetKey(const CPath& path);
 
 	bool m_IsInit;
 	
