@@ -249,7 +249,9 @@ void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 {
 	wxCHECK_RET(list, wxT("Invalid list in GetSharedDirectories"));
 	
-	list->insert(list->end(), m_lstShared.begin(), m_lstShared.end());
+	for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); it++) {
+		list->push_back(it->second);
+	}
 }
 
 
@@ -258,11 +260,24 @@ void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 	wxCHECK_RET(list, wxT("Invalid list in SetSharedDirectories"));
 	
 	m_lstShared.clear();
-	m_lstShared.insert(m_lstShared.end(), list->begin(), list->end());
+	for (PathList::iterator it = list->begin(); it != list->end(); it++) {
+		m_lstShared.insert(SharedMapItem(GetKey(*it), *it));
+	}
 
 	if (m_IsInit) {
 		UpdateSharedDirectories();
 	}
+}
+
+
+wxString CDirectoryTreeCtrl::GetKey(const CPath& path)
+{
+	// Sanity check, see IsSameAs() in Path.cpp
+	const wxString cwd = wxGetCwd();
+	const int flags = (wxPATH_NORM_ALL | wxPATH_NORM_CASE) & ~wxPATH_NORM_ENV_VARS;
+	wxFileName fn(path.GetRaw());
+	fn.Normalize(flags, cwd);
+	return fn.GetFullPath();
 }
 
 
@@ -291,10 +306,10 @@ void CDirectoryTreeCtrl::UpdateSharedDirectories()
 
 bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 {
-	PathList::iterator it = m_lstShared.begin();
+	SharedMap::iterator it = m_lstShared.begin();
 	for (; it != m_lstShared.end(); ++it) {
 		// IsSameDir to avoid the case where 'path' itself is shared.
-		if (it->StartsWith(path) && (!it->IsSameDir(path))) {
+		if (it->second.StartsWith(path) && (!it->second.IsSameDir(path))) {
 			return true;
 		}
 	}
@@ -323,14 +338,7 @@ bool CDirectoryTreeCtrl::IsShared(const CPath& path)
 {
 	wxCHECK_MSG(path.IsOk(), false, wxT("Invalid path in IsShared"));
 
-	PathList::iterator it = m_lstShared.begin();
-	for (; it != m_lstShared.end(); ++it) {
-		if (it->IsSameDir(path)) {
-			return true;
-		}
-	}
-
-	return false;
+	return m_lstShared.find(GetKey(path)) != m_lstShared.end();
 }
 
 
@@ -342,7 +350,7 @@ void CDirectoryTreeCtrl::AddShare(const CPath& path)
 		return;
 	}
 	
-	m_lstShared.push_back(path);
+	m_lstShared.insert(SharedMapItem(GetKey(path), path));
 }
 
 
@@ -350,13 +358,7 @@ void CDirectoryTreeCtrl::DelShare(const CPath& path)
 {
 	wxCHECK_RET(path.IsOk(), wxT("Invalid path in DelShare"));
 	
-	PathList::iterator it = m_lstShared.begin();
-	for (; it != m_lstShared.end(); ++it ) {
-		if (it->IsSameDir(path)) {
-			m_lstShared.erase(it);
-			return;
-		}
-	}
+	m_lstShared.erase(GetKey(path));
 }
 
 
