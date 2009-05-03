@@ -372,7 +372,6 @@ void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 	wxTreeItemId parent = hChild;
 	while (parent != GetRootItem()) {
 		parent = GetItemParent(parent);
-		CItemData* parent_data = dynamic_cast<CItemData*>(GetItemData(parent));
 		if (add) {
 			if (GetItemImage(parent) == IMAGE_FOLDER_SUB_SHARED) {
 				// parent already marked -> so are all its parents, finished
