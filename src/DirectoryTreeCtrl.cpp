@@ -46,20 +46,19 @@ class CItemData : public wxTreeItemData
 {
 	public:
 		CItemData(const CPath& pathComponent)
-			: m_data(0)
+			: m_hasSharedSubdirectory(false)
 			, m_path(pathComponent)
 		{
 		}
 
 		~CItemData() {}
 
-		void AddCount() { m_data++; }
-		void SubCount() { m_data--; }
-		int GetCount() const { return m_data; }
 		const CPath& GetPathComponent() const { return m_path; }
+		bool GetHasShared() const { return m_hasSharedSubdirectory; }
+		void SetHasShared(bool add) { m_hasSharedSubdirectory = add; }
 	private:
-		int	m_data;
 		CPath	m_path;
+		bool	m_hasSharedSubdirectory;
 };
 
 
@@ -147,19 +146,19 @@ void CDirectoryTreeCtrl::OnItemExpanding(wxTreeEvent& evt)
 
 void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
 {
-	CheckChanged(evt.GetItem(), !IsBold(evt.GetItem()));
+	CheckChanged(evt.GetItem(), !IsBold(evt.GetItem()), false);
 	HasChanged = true;
 }
 
 
 void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 {
-	MarkChildren(evt.GetItem(), !IsBold(evt.GetItem()));
+	MarkChildren(evt.GetItem(), !IsBold(evt.GetItem()), false);
 	HasChanged = true;
 }
 
 
-void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
+void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark, bool recursed)
 {
 	// Ensure that children are added, otherwise we might only get a "." entry.
 	if (!IsExpanded(hChild) && ItemHasChildren(hChild)) {
@@ -170,13 +169,16 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
 	
 	wxTreeItemIdValue cookie;
 	wxTreeItemId hChild2 = GetFirstChild(hChild, cookie);
+	if (hChild2.IsOk()) {
+		SetHasSharedSubdirectory(hChild, mark);
+	}
 	while (hChild2.IsOk()) {
-		MarkChildren(hChild2, mark);
+		MarkChildren(hChild2, mark, true);
 
 		hChild2 = GetNextSibling(hChild2);
 	}
 
-	CheckChanged(hChild, mark);
+	CheckChanged(hChild, mark, recursed);
 }
 
 
@@ -191,11 +193,10 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 	
 	if (IsShared(fullPath)) {
 		SetItemBold(treeItem, true);
-		UpdateParentItems(treeItem, true);
 	}
 	
 	if (HasSharedSubdirectory(fullPath)) {
-		SetItemImage(treeItem, IMAGE_FOLDER_SUB_SHARED);
+		SetHasSharedSubdirectory(treeItem, true);
 	}
 	
 	if (HasSubdirectories(fullPath)) {
@@ -291,7 +292,7 @@ void CDirectoryTreeCtrl::UpdateSharedDirectories()
 	while (hChild.IsOk()) {
 		// Does this drive have shared subfolders?
 		if (HasSharedSubdirectory(GetFullPath(hChild))) { 
-			SetItemImage(hChild, IMAGE_FOLDER_SUB_SHARED);
+			SetHasSharedSubdirectory(hChild, true);
 		}
 		
 		// Is this drive shared?
@@ -318,7 +319,15 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 }
 
 
-void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
+void CDirectoryTreeCtrl::SetHasSharedSubdirectory(wxTreeItemId hItem, bool add)
+{
+	CItemData* parent_data = dynamic_cast<CItemData*>(GetItemData(hItem));
+	parent_data->SetHasShared(add);
+	SetItemImage(hItem, add ? IMAGE_FOLDER_SUB_SHARED : IMAGE_FOLDER);
+}
+
+
+void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked, bool recursed)
 {
 	if (IsBold(hItem) != bChecked) {
 		SetItemBold(hItem, bChecked);
@@ -329,7 +338,9 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 			DelShare(GetFullPath(hItem));
 		}
 
-		UpdateParentItems(hItem, bChecked);
+		if (!recursed) {
+			UpdateParentItems(hItem, bChecked);
+		}
 	}
 }
 
@@ -369,21 +380,26 @@ void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 		parent = GetItemParent(parent);
 		CItemData* parent_data = dynamic_cast<CItemData*>(GetItemData(parent));
 		if (add) {
-			parent_data->AddCount();
-			if (parent_data->GetCount()==1) {
-				SetItemImage(parent, IMAGE_FOLDER_SUB_SHARED);
+			if (parent_data->GetHasShared()) {
+				// parent already marked -> so are all its parents, finished
+				break;
+			} else {
+				SetHasSharedSubdirectory(parent, true);
 			}
 		} else {
-			switch (parent_data->GetCount()) {
-				case 0:
+			if (parent_data->GetHasShared()) {
+				// check if now there are still other shared dirs
+				if (HasSharedSubdirectory(GetFullPath(parent))) {
+					// yes, then further parents can stay red
 					break;
-				case 1:
-					SetItemImage(parent, IMAGE_FOLDER);
-				default:
-					parent_data->SubCount();
-					break;
+				} else {
+					// no, further parents have to be checked too
+					SetHasSharedSubdirectory(parent, false);
+				}
+			} else {  // should not happen (unmark child of which the parent is already unmarked
+				break;
 			}
 		}
-	};
+	}
 }
 // File_checked_for_headers

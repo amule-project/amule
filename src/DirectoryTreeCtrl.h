@@ -62,19 +62,21 @@ private:
 	// return the full path of an item (like C:\abc\somewhere\inheaven\)
 	CPath GetFullPath(wxTreeItemId hItem);
 	// check status of an item has changed
-	void CheckChanged(wxTreeItemId hItem, bool bChecked);
+	void CheckChanged(wxTreeItemId hItem, bool bChecked, bool recursed);
 	// returns true if a subdirectory of strDir is shared
 	bool HasSharedSubdirectory(const CPath& path);
 	// set shared directories according to list
 	void UpdateSharedDirectories();
 	// when sharing a directory, make all parent directories red
 	void UpdateParentItems(wxTreeItemId hChild, bool add);
+	// set color red if there's a shared subdirectory
+	void SetHasSharedSubdirectory(wxTreeItemId hItem, bool add);
 
 	// share list access
 	bool IsShared(const CPath& path);
 	void AddShare(const CPath& path);
 	void DelShare(const CPath& path);
-	void MarkChildren(wxTreeItemId hChild, bool mark);
+	void MarkChildren(wxTreeItemId hChild, bool mark, bool recursed);
 	
 	void OnItemExpanding(wxTreeEvent& evt);
 	void OnRButtonDown(wxTreeEvent& evt);

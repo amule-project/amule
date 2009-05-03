@@ -64,7 +64,8 @@ Version 2.3.0 - The river knows.
 		  is sorted by status (thanks to DarkNRG)
 		* Fixed CFile::SetLength for large files
 		* Reduce file handle usage by closing part files after idle time
-		* Speed up selection of shared directories with many subdirectories 
+		* Speed up selection of shared directories with many subdirectories,
+		  fixed red marking of folders with shared subdirectories
 
 	Vollstrecker:
 		* Unify copyright lines
