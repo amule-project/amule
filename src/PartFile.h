@@ -163,7 +163,7 @@ public:
 	int	getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
-	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block);
+	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
 	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);	
 
 	// Barry - Is archive recovery in progress
@@ -327,6 +327,8 @@ private:
 	CFileAutoClose	m_hpartfile;
 	//! A local list of sources that are invalid for this file.
 	CDeadSourceList	m_deadSources;
+
+	class CCorruptionBlackBox* m_CorruptionBlackBox;
 #endif
 
 	uint16	m_notCurrentSources;

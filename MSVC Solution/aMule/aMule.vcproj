@@ -272,6 +272,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\CorruptionBlackBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\DataToText.cpp"
 				>
 			</File>
@@ -735,6 +739,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\Constants.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\CorruptionBlackBox.h"
 				>
 			</File>
 			<File

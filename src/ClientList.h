@@ -167,6 +167,16 @@ public:
 	CUpDownClient* FindClientByIP( uint32 clientip, uint16 port );
 
 
+	/**
+	 * Finds a client with the specified ip.
+	 *
+	 * @param clientip The IP of the client to find.
+	 *
+	 * Returns the first client found if there are several with same ip.
+	 */
+	CUpDownClient* FindClientByIP( uint32 clientip );
+
+
 	//! The list-type used to store clients IPs and other information
 	typedef std::map<uint32, uint32> ClientMap;
 	

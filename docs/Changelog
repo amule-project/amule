@@ -66,6 +66,7 @@ Version 2.3.0 - The river knows.
 		* Reduce file handle usage by closing part files after idle time
 		* Speed up selection of shared directories with many subdirectories,
 		  fixed red marking of folders with shared subdirectories
+		* Ported CorruptionBlackBox from eMule
 
 	Vollstrecker:
 		* Unify copyright lines

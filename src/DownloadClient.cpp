@@ -939,7 +939,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 						return;
 					}
 					// Write to disk (will be buffered in part file class)
-					lenWritten = m_reqfile->WriteToBuffer( size - header_size, (byte*)(packet + header_size), nStartPos, nEndPos, cur_block->block );
+					lenWritten = m_reqfile->WriteToBuffer( size - header_size, (byte*)(packet + header_size), nStartPos, nEndPos, cur_block->block, this);
 				} else {
 					// Packed
 					wxASSERT( (long int)size > 0 );
@@ -977,7 +977,8 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 																	   unzipped,
 																	   nStartPos,
 																	   nEndPos,
-																	   cur_block->block );
+																	   cur_block->block,
+																	   this);
 							}
 						}
 					} else {
