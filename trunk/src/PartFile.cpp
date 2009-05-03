@@ -65,6 +65,7 @@
 #include "PlatformSpecific.h"	// Needed for CreateSparseFile()
 #include "FileArea.h"		// Needed for CFileArea
 #include "ScopedPtr.h"		// Needed for CScopedArray
+#include "CorruptionBlackBox.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
@@ -250,6 +251,7 @@ CPartFile::~CPartFile()
 	}
 
 	DeleteContents(m_BufferedData_list);
+	delete m_CorruptionBlackBox;
 
 	wxASSERT(m_SrcList.empty());
 	wxASSERT(m_A4AFsrclist.empty());
@@ -257,7 +259,6 @@ CPartFile::~CPartFile()
 
 void CPartFile::CreatePartFile()
 {
-#ifndef CLIENT_GUI
 	// use lowest free partfilenumber for free file (InterCeptor)
 	int i = 0; 
 	do { 
@@ -297,7 +298,6 @@ void CPartFile::CreatePartFile()
 	
 	SavePartFile(true);
 	SetActive(theApp->IsConnected());
-#endif
 }
 
 
@@ -2151,6 +2151,9 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 		// Ensure that completed shows the correct value
 		completedsize = GetFileSize();
 
+		// clear the blackbox to free up memory
+		m_CorruptionBlackBox->Free();
+
 		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	}
 	
@@ -2840,7 +2843,7 @@ int CPartFile::GetCommonFilePenalty()
 // Kry - transize is 32bits, no packet can be more than that (this is
 // compressed size). Even 32bits is too much imho.As for the return size,
 // look at the lenData below.
-uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint64 end, Requested_Block_Struct *block)
+uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client)
 {
 	// Increment transferred bytes counter for this file
 	transferred += transize;
@@ -2879,6 +2882,9 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 		}
 #endif
 	}
+
+	// log transferinformation in our "blackbox"
+	m_CorruptionBlackBox->TransferredData(start, end, client);
 
 	// Create copy of data as new buffer
 	byte *buffer = new byte[lenData];
@@ -3008,7 +3014,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 	
 	// Check each part of the file
-	for (uint32 partNumber = 0; partNumber < partCount; ++partNumber) {
+	for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
 		if (changedPart[partNumber] == false) {
 			continue;
 		}
@@ -3029,7 +3035,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				// request AICH recovery data
 				// Don't if called from the AICHRecovery. It's already there and would lead to an infinite recursion.
 				if (!fromAICHRecoveryDataAvailable) { 
-					RequestAICHRecovery((uint16)partNumber);					
+					RequestAICHRecovery(partNumber);					
 				}
 				// Reduce transferred amount by corrupt amount
 				m_iLostDueToCorruption += (partRange + 1);
@@ -3039,6 +3045,9 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 						wxT("Finished part %u of '%s'")) % partNumber % GetFileName());
 				}
 				
+				// tell the blackbox about the verified data
+				m_CorruptionBlackBox->VerifiedData(PARTSIZE*partNumber, PARTSIZE*partNumber + partRange);
+
 				// if this part was successfully completed (although ICH is active), remove from corrupted list
 				EraseFirstValue(m_corrupted_list, partNumber);
 				
@@ -3062,6 +3071,9 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				uint64 uMissingInPart = m_gaplist.GetGapSize(partNumber);					
 				FillGap(partNumber);
 				RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
+
+				// tell the blackbox about the verified data
+				m_CorruptionBlackBox->VerifiedData(PARTSIZE*partNumber, PARTSIZE*partNumber + partRange);
 
 				// remove from corrupted list
 				EraseFirstValue(m_corrupted_list, partNumber);
@@ -3382,8 +3394,14 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			FillGap(PARTSIZE*nPart+pos, PARTSIZE*nPart + pos + (nBlockSize-1));
 			RemoveBlockFromList(PARTSIZE*nPart, PARTSIZE*nPart + (nBlockSize-1));
 			nRecovered += nBlockSize;
+			// tell the blackbox about the verified data
+			m_CorruptionBlackBox->VerifiedData(PARTSIZE*nPart+pos, PARTSIZE*nPart + pos + (nBlockSize-1));
+		} else {
+			// inform our "blackbox" about the corrupted block which may ban clients who sent it
+			m_CorruptionBlackBox->CorruptedData(PARTSIZE*nPart+pos, PARTSIZE*nPart + pos + (nBlockSize-1));
 		}
 	}
+	m_CorruptionBlackBox->EvaluateData(nPart);
 
 	// ok now some sanity checks
 	if (IsComplete(nPart)){
@@ -3666,6 +3684,10 @@ void CPartFile::Init()
 	m_TotalSearchesKad = 0;
 
 	m_gapptrlist.Init(&m_gaplist);
+
+#ifndef CLIENT_GUI
+	m_CorruptionBlackBox = new CCorruptionBlackBox();
+#endif
 }
 
 wxString CPartFile::getPartfileStatus() const

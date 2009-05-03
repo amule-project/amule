@@ -222,6 +222,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\CorruptionBlackBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\DataToText.cpp"
 				>
 			</File>

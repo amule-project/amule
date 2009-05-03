@@ -454,6 +454,15 @@ CUpDownClient* CClientList::FindClientByIP( uint32 clientip, uint16 port )
 }
 
 
+CUpDownClient* CClientList::FindClientByIP( uint32 clientip )
+{
+	// Find all items with the specified ip
+	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( clientip );
+
+	return (range.first != range.second) ? range.first->second : NULL;
+}
+
+
 bool CClientList::IsIPAlreadyKnown(uint32_t ip)
 {
 	// Find all items with the specified ip

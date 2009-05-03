@@ -126,6 +126,7 @@ core_sources = \
 	ClientCreditsList.cpp \
 	ClientTCPSocket.cpp \
 	ClientUDPSocket.cpp \
+	CorruptionBlackBox.cpp \
 	DownloadClient.cpp \
 	DownloadQueue.cpp \
 	ECSpecialCoreTags.cpp \
@@ -342,6 +343,7 @@ noinst_HEADERS = \
 		CommentDialog.h \
 		CommentDialogLst.h \
 		Constants.h \
+		CorruptionBlackBox.h \
 		CryptoPP_Inc.h \
 		DataToText.h \
 		DeadSourceList.h \
