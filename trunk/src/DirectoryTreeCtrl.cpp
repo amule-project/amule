@@ -46,19 +46,15 @@ class CItemData : public wxTreeItemData
 {
 	public:
 		CItemData(const CPath& pathComponent)
-			: m_hasSharedSubdirectory(false)
-			, m_path(pathComponent)
+			: m_path(pathComponent)
 		{
 		}
 
 		~CItemData() {}
 
 		const CPath& GetPathComponent() const { return m_path; }
-		bool GetHasShared() const { return m_hasSharedSubdirectory; }
-		void SetHasShared(bool add) { m_hasSharedSubdirectory = add; }
 	private:
 		CPath	m_path;
-		bool	m_hasSharedSubdirectory;
 };
 
 
@@ -321,8 +317,6 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 
 void CDirectoryTreeCtrl::SetHasSharedSubdirectory(wxTreeItemId hItem, bool add)
 {
-	CItemData* parent_data = dynamic_cast<CItemData*>(GetItemData(hItem));
-	parent_data->SetHasShared(add);
 	SetItemImage(hItem, add ? IMAGE_FOLDER_SUB_SHARED : IMAGE_FOLDER);
 }
 
@@ -380,14 +374,14 @@ void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 		parent = GetItemParent(parent);
 		CItemData* parent_data = dynamic_cast<CItemData*>(GetItemData(parent));
 		if (add) {
-			if (parent_data->GetHasShared()) {
+			if (GetItemImage(parent) == IMAGE_FOLDER_SUB_SHARED) {
 				// parent already marked -> so are all its parents, finished
 				break;
 			} else {
 				SetHasSharedSubdirectory(parent, true);
 			}
 		} else {
-			if (parent_data->GetHasShared()) {
+			if (GetItemImage(parent) == IMAGE_FOLDER_SUB_SHARED) {
 				// check if now there are still other shared dirs
 				if (HasSharedSubdirectory(GetFullPath(parent))) {
 					// yes, then further parents can stay red
