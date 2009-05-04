@@ -404,7 +404,13 @@ bool CFile::SetLength(uint64 new_len)
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
 
 #ifdef __WXMSW__
+#ifdef _MSC_VER
+// MSVC has a 64bit version
 	bool result = _chsize_s(m_fd, new_len) == 0;
+#else
+// MingW has an old runtime without it
+	bool result = chsize(m_fd, new_len) == 0;
+#endif
 #else
 	bool result = ftruncate(m_fd, new_len) != -1;
 #endif
