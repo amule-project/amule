@@ -126,6 +126,11 @@ void CMuleTrayIcon::SetUploadSpeed(wxCommandEvent& event){
 					temp=GetSpeedFromString(item->GetLabel());
 				}
 				thePrefs::SetMaxUpload(temp);
+
+				#ifdef CLIENT_GUI
+				// Send preferences to core.
+				theApp->glob_prefs->SendToRemote();
+				#endif
 			}
 		}
 	}
@@ -147,6 +152,11 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 					temp=GetSpeedFromString(item->GetLabel());
 				}
 				thePrefs::SetMaxDownload(temp);
+
+				#ifdef CLIENT_GUI
+				// Send preferences to core.
+				theApp->glob_prefs->SendToRemote();
+				#endif
 			}
 		}
 	}
