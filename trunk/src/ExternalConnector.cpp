@@ -503,11 +503,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 
 	long port;
-	if (!parser.Found(wxT("port"), &port)) {
-		if (m_port == -1) {
-			m_port = 4712;
-		}
-	} else {
+	if (parser.Found(wxT("port"), &port)) {
 		m_port = port;
 	}
 
@@ -540,7 +536,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
 {
 	m_host = wxT("localhost");
-	m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), -1l);
+	m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), 4712l);
 	cfg.ReadHash(wxT("/ExternalConnect/ECPassword"), &m_password);
 	m_language = cfg.Read(wxT("/eMule/Language"), wxEmptyString);
 }
@@ -554,7 +550,7 @@ void CaMuleExternalConnector::LoadConfigFile()
 	if (m_configFile) {
 		m_language = m_configFile->Read(wxT("/Locale"), wxEmptyString);
 		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
-		m_port = m_configFile->Read(wxT("/EC/Port"), -1l);
+		m_port = m_configFile->Read(wxT("/EC/Port"), 4712l);
 		m_configFile->ReadHash(wxT("/EC/Password"), &m_password);
 	}
 }

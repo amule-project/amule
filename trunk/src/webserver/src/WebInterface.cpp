@@ -695,7 +695,7 @@ void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
 	m_AllowGuest = (cfg.Read(wxT("/WebServer/UseLowRightsUser"), 0l) == 1l);
 	cfg.ReadHash(wxT("/WebServer/Password"), &m_AdminPass);
 	cfg.ReadHash(wxT("/WebServer/PasswordLow"), &m_GuestPass);
-	m_WebserverPort = cfg.Read(wxT("/WebServer/Port"), -1l);
+	m_WebserverPort = cfg.Read(wxT("/WebServer/Port"), 4711l);
 	m_UPnPWebServerEnabled =
 		(cfg.Read(wxT("/Webserver/UPnPWebServerEnabled"), 0l) == 1l);
 	m_UPnPTCPPort = cfg.Read(wxT("/WebServer/UPnPTCPPort"), 50001l);
@@ -709,7 +709,7 @@ void CamulewebApp::LoadConfigFile()
 	CaMuleExternalConnector::LoadConfigFile();
 	if (m_configFile) {
 		wxString tmp;
-		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), -1l);
+		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), 4711l);
 		m_configFile->Read(wxT("/Webserver/UPnPWebServerEnabled"),
 			&m_UPnPWebServerEnabled, false);
 		m_UPnPTCPPort = m_configFile->Read(wxT("/WebServer/UPnPTCPPort"), 50001l);
