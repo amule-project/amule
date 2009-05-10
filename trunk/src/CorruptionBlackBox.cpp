@@ -371,6 +371,11 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
 						% CastItoXBytes(aDataCorrupt[k]) % CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])) % pEvilClient->GetClientFullInfo());
 					theApp->clientlist->AddTrackClient(pEvilClient);
 					pEvilClient->Ban();  // Identified as sender of corrupt data
+					// Stop download right away
+					pEvilClient->SetDownloadState(DS_ERROR);
+					if (pEvilClient->Disconnected(wxT("Upload of corrupted data"))) {
+						pEvilClient->Safe_Delete();
+					}
 				} else {
 					AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"))
 						% CastItoXBytes(aDataCorrupt[k]) % CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])) % Uint32toStringIP(aGuiltyClients[k]));
