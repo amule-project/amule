@@ -418,7 +418,6 @@ public:
 	uint8		GetChatState()			{ return m_byChatstate; }
 	void		SetChatState(uint8 nNewS)	{ m_byChatstate = nNewS; }
 	EChatCaptchaState GetChatCaptchaState() const	{ return (EChatCaptchaState)m_nChatCaptchaState; }
-	void		SetChatCaptchaState(EChatCaptchaState nNewS)	{ m_nChatCaptchaState = nNewS; }
 	void		ProcessCaptchaRequest(CMemFile* data);
 	void		ProcessCaptchaReqRes(uint8 nStatus);
 	void		ProcessChatMessage(wxString message);
