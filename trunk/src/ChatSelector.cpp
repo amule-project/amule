@@ -242,17 +242,6 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	//#warning EC needed here.
 	
 	#ifndef CLIENT_GUI
-	CUpDownClient* client = theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id));
-
-	if (!client) {
-		wxFAIL;
-	} else if (client->GetChatCaptchaState() == CA_CAPTCHARECV) {
-		client->SetChatCaptchaState(CA_SOLUTIONSENT);
-	} else if (client->GetChatCaptchaState() == CA_SOLUTIONSENT) {
-		wxFAIL; // we responsed to a captcha but didn't heard from the client afterwards - hopefully its just lag and this message will get through
-	} else {
-		client->SetChatCaptchaState(CA_ACCEPTING);
-	}
 	if (theApp->clientlist->SendChatMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
 		ci->AddText( wxT(": ") + message, COLOR_BLACK );

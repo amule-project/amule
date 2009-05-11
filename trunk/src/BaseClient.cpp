@@ -2422,6 +2422,14 @@ uint8 CUpDownClient::GetSecureIdentState()
 
 bool CUpDownClient::SendChatMessage(const wxString& message)
 {
+	if (GetChatCaptchaState() == CA_CAPTCHARECV) {
+		m_nChatCaptchaState = CA_SOLUTIONSENT;
+	} else if (GetChatCaptchaState() == CA_SOLUTIONSENT) {
+		wxFAIL; // we responsed to a captcha but didn't heard from the client afterwards - hopefully its just lag and this message will get through
+	} else {
+		m_nChatCaptchaState = CA_ACCEPTING;
+	}
+
 	SetSpammer(false);
 	IncMessagesSent();
 	// Already connecting?
