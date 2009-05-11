@@ -2437,6 +2437,9 @@ bool CUpDownClient::SendChatMessage(const wxString& message)
 		return false;
 	}
 	if (IsConnected()) {
+		// If we are already connected when we send the first message,
+		// we have to update the chat status.
+		SetChatState(MS_CHATTING);
 		CMemFile data;
 		data.WriteString(message, GetUnicodeSupport());
 		CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_MESSAGE);
