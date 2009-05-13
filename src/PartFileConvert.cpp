@@ -381,8 +381,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 				UpdateGUI(10 + (curindex * stepperpart), buffer);
 
 				// write the buffered data
-				file->m_hpartfile.Seek(chunkstart, wxFromStart);
-				file->m_hpartfile.Write(ba, toReadWrite);
+				file->m_hpartfile.WriteAt(ba, chunkstart, toReadWrite);
 
 				filename = finder.GetNextFile();
 			}

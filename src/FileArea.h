@@ -55,15 +55,14 @@ public:
 	 * Init area with a given piece of file.
 	 *
 	 * @param file   file to read.
+	 * @param offset seek address in file.
 	 * @param count  bytes to read.
 	 *
 	 * Initialize buffer. Buffer will contain data from current file
 	 * position for count length. Buffer will be a memory mapped area
 	 * or a allocated buffer depending on systems.
-	 *
-	 * At the end file is positioned past readed area.
 	 */
-	void Read(CFileAutoClose& file, size_t count);
+	void ReadAt(CFileAutoClose& file, uint64 offset, size_t count);
 	
 	/**
 	 * Flushes data not yet written.
