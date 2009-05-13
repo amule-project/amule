@@ -144,8 +144,8 @@ void CHashingTask::Entry()
 	
 	// This loops creates the part-hashes, loop-de-loop.
 	try {
-		while (!file.Eof() && !TestDestroy()) {
-			if (CreateNextPartHash(file, knownfile.get(), m_toHash) == false) {
+		for (uint16 part = 0; part < knownfile->GetPartCount() && !TestDestroy(); part++) {
+			if (CreateNextPartHash(file, part, knownfile.get(), m_toHash) == false) {
 				AddDebugLogLineM(true, logHasher,
 					CFormat(wxT("Error while hashing file, skipping: %s"))
 						% m_filename);
@@ -201,12 +201,13 @@ void CHashingTask::Entry()
 }
 
 
-bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, CKnownFile* owner, EHashes toHash)
+bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownFile* owner, EHashes toHash)
 {
 	wxCHECK_MSG(!file.Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
 	
+	const uint64 offset = part * PARTSIZE;
 	// We'll read at most PARTSIZE bytes per cycle
-	const uint64 partLength = std::min<uint64>(PARTSIZE, file.GetLength() - file.GetPosition());
+	const uint64 partLength = owner->GetPartSize(part);
 	
 	CMD4Hash hash;
 	CMD4Hash* md4Hash = ((toHash & EH_MD4) ? &hash : NULL);
@@ -214,10 +215,10 @@ bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, CKnownFile* owner, E
 
 	// Setup for AICH hashing
 	if (toHash & EH_AICH) {
-		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(file.GetPosition(), partLength);
+		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(offset, partLength);
 	}
 
-	owner->CreateHashFromFile(file, partLength, md4Hash, aichHash);
+	owner->CreateHashFromFile(file, offset, partLength, md4Hash, aichHash);
 	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash

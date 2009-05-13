@@ -88,14 +88,6 @@ public:
 	bool Close();
 
 	/**
-	 * Flushes data not yet written.
-	 *
-	 * Note that calling Flush on an closed file
-	 * is an illegal operation.
-	 */
-	bool Flush();
-
-	/**
 	 * @see CSafeFileIO::GetLength
 	 *
 	 * Note that calling GetLength on a closed file 
@@ -110,14 +102,6 @@ public:
 	bool SetLength(uint64 newLength);
 	
 	/**
-	 * @see CSafeFileIO::GetPosition
-	 *
-	 * Note that calling GetPosition on a closed file
-	 * is an illegal operation.
-	 */
-	uint64 GetPosition();
-	
-	/**
 	 * Returns the path of the currently opened file.
 	 * 
 	 */
@@ -129,32 +113,26 @@ public:
 	bool IsOpened() const;
 	
 	/**
-	 * Changes the file position.
-	 *
-	 * Note that seeking to an negative position is an illegal operation.
-	 * 
-	 */
-	uint64 Seek(sint64 offset, wxSeekMode from = wxFromStart);
-
-	/**
 	 * Reads 'count' bytes into 'buffer'.
 	 *
 	 * @param buffer The target buffer.
+	 * @param offset The seek address in the file.
 	 * @param count The number of bytes to read.
 	 *
 	 * See CFileDataIO::Read
 	 */
-	void Read(void* buffer, size_t count);
+	void ReadAt(void* buffer, uint64 offset, size_t count);
 
 	/**
 	 * Write 'count' bytes from 'buffer' into the file.
 	 *
 	 * @param buffer The source-data buffer.
+	 * @param offset The seek address in the file.
 	 * @param count The number of bytes to write.
 	 *
 	 * See CFileDataIO::Write
 	 */
-	void Write(const void* buffer, size_t count);
+	void WriteAt(const void* buffer, uint64 offset, size_t count);
 
 	/**
 	 * Returns true when the file-position is past or at the end of the file.

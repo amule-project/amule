@@ -2280,8 +2280,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		uint64 offset = PARTSIZE * partnumber;
 		uint32 length = GetPartSize(partnumber);
 		try {
-			m_hpartfile.Seek(offset, wxFromStart);
-			CreateHashFromFile(m_hpartfile, length, &hashresult, NULL);
+			CreateHashFromFile(m_hpartfile, offset, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
@@ -2980,8 +2979,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		
 		// Go to the correct position in file and write block of data			
 		try {
-			m_hpartfile.Seek(item->start);
-			m_hpartfile.Write(item->data.get(), lenData);
+			m_hpartfile.WriteAt(item->data.get(), item->start, lenData);
 			// Decrease buffer size
 			m_nTotalBufferData -= lenData;
 		} catch (const CIOFailureException& e) {
@@ -3118,8 +3116,7 @@ bool CPartFile::ReadData(CFileArea & area, uint64 offset, uint32 toread)
 		return false;
 	}
 
-	m_hpartfile.Seek(offset, wxFromStart);
-	area.Read(m_hpartfile, toread);
+	area.ReadAt(m_hpartfile, offset, toread);
 	// if it fails it throws (which the caller should catch)
 	return true;
 }
@@ -3364,8 +3361,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->GetNDataSize(), pVerifiedHash->GetIsLeftBranch(), pVerifiedHash->GetNBaseSize());
 	try {
-		m_hpartfile.Seek(PARTSIZE * nPart,wxFromStart);
-		CreateHashFromFile(m_hpartfile, length, NULL, &htOurHash);
+		CreateHashFromFile(m_hpartfile, PARTSIZE * nPart, length, NULL, &htOurHash);
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logAICHRecovery,
 			CFormat(wxT("IO failure while hashing part-file '%s': %s"))

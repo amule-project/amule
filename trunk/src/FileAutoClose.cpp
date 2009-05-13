@@ -28,7 +28,7 @@
 #include "Logger.h"			// Needed for AddDebugLogLineM
 
 
-static const uint32 ReleaseTime = 600;	// close file after 10 minutes of not beeing used
+static const uint32 ReleaseTime = 600;	// close file after 10 minutes of not being used
 
 CFileAutoClose::CFileAutoClose()
 	: m_mode(CFile::read),
@@ -68,14 +68,6 @@ bool CFileAutoClose::Close()
 	return state;
 }
 
-
-bool CFileAutoClose::Flush()
-{
-	Reopen();
-	return m_file.Flush();
-}
-
-	
 uint64 CFileAutoClose::GetLength() const
 {
 	return m_autoClosed ? m_size : m_file.GetLength();
@@ -97,34 +89,24 @@ bool CFileAutoClose::IsOpened() const
 	return m_autoClosed || m_file.IsOpened();
 }
 	
-uint64 CFileAutoClose::Seek(sint64 offset, wxSeekMode from)
+void CFileAutoClose::ReadAt(void* buffer, uint64 offset, size_t count)
 {
 	Reopen();
-	return m_file.Seek(offset, from);
+	m_file.Seek(offset);
+	m_file.Read(buffer, count);
 }
 
-void CFileAutoClose::Read(void* buffer, size_t count)
+void CFileAutoClose::WriteAt(const void* buffer, uint64 offset, size_t count)
 {
 	Reopen();
-	return m_file.Read(buffer, count);
-}
-
-void CFileAutoClose::Write(const void* buffer, size_t count)
-{
-	Reopen();
-	return m_file.Write(buffer, count);
+	m_file.Seek(offset);
+	m_file.Write(buffer, count);
 }
 
 bool CFileAutoClose::Eof()
 {
 	Reopen();
 	return m_file.Eof();
-}
-
-uint64 CFileAutoClose::GetPosition()
-{
-	Reopen();
-	return m_file.GetPosition();
 }
 
 int CFileAutoClose::fd()

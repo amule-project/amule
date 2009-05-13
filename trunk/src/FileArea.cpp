@@ -206,13 +206,12 @@ bool CFileArea::Close()
 }
 
 
-void CFileArea::Read(CFileAutoClose& file, size_t count)
+void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
 
 #ifdef HAVE_MMAP
 	const uint64 pageSize = 8192u;
-	uint64 offset = file.GetPosition();
 	uint64 offStart = offset & (~(pageSize-1));
 	uint64 offEnd = offset + count;
 	m_length = offEnd - offStart;
@@ -223,7 +222,6 @@ void CFileArea::Read(CFileAutoClose& file, size_t count)
 		m_file = &file;
 		m_mmap_buffer = (byte*) p;
 		m_buffer = m_mmap_buffer + (offset - offStart);
-		file.Seek(offset + count);
 
 		// add to list to catch errors correctly
 		CFileAreaSigHandler::Add(*this);
@@ -231,7 +229,7 @@ void CFileArea::Read(CFileAutoClose& file, size_t count)
 	}
 #endif
 	m_buffer = new byte[count];
-	file.Read(m_buffer, count);
+	file.ReadAt(m_buffer, offset, count);
 }
 
 bool CFileArea::Flush()

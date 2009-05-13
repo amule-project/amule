@@ -279,9 +279,7 @@ void CUpDownClient::CreateNextBlockPackage()
 					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
 				}
-				file.Seek(currentblock->StartOffset);
-
-				area.Read(file, togo);
+				area.ReadAt(file, currentblock->StartOffset, togo);
 			} else {
 				if (!((CPartFile*)srcfile)->ReadData(area, currentblock->StartOffset, togo))
 					throw wxString(wxT("Failed to read from requested partfile"));

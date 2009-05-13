@@ -779,12 +779,12 @@ void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash*
 }
 
 
-void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
+void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint64 offset, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
 {
 	wxCHECK_RET(Length, wxT("No input to hash from in CreateHashFromFile"));
 
 	CFileArea area;
-	area.Read(file, Length);
+	area.ReadAt(file, offset, Length);
  
 	CreateHashFromInput(area.GetBuffer(), Length, Output, pShaHashOut);
 	area.CheckError();
