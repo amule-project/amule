@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -27,11 +27,11 @@
 #define STATISTICSDLG_H
 
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/colour.h>
 
 #include <set>			// Needed for std::set
 
 typedef std::set<uint32_t>	NodeIdSet;
+
 
 class COScopeCtrl;
 class CStatistics;
@@ -63,12 +63,12 @@ public:
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
-	static const wxColour& getColors(unsigned num);	
+	static COLORREF getColors(unsigned num);	
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
 	COScopeCtrl* GetConnScope() { return pscopeConn; };
 
 protected:
-	static wxColour acrStat[15];
+	static COLORREF	acrStat[15];
 	COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
 	wxTreeCtrl* stattree;
 	CStatistics* m_stats;

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -893,12 +893,12 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
-		// uploading file we don't share ?! We are either out of sync with core or a shared file has been removed while uploading it
+		 // uploading file we don't share ?! We are either out of sync with core or a shared file has been removed while uploading it
 		if ( !sharedfile ) {
 			SharedFile::GetContainerInstance()->ReQuery();
 			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
 		}
-		result->str_val = strdup(sharedfile ? (const char *)unicode2UTF8(sharedfile->sFileName) : "???");
+	 result->str_val = strdup(sharedfile ? (const char *)unicode2UTF8(sharedfile->sFileName) : "???");
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);

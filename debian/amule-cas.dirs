@@ -1,4 +1,6 @@
 usr/bin
+usr/share/pixmap
+usr/share/lintian/overrides
 usr/share/cas
 usr/share/man/man1
 usr/share/man/hu/man1

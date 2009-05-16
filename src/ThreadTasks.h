@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 Mikkel Schubert ( xaignar@amule.org / http:://www.amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2006-2009 Mikkel Schubert ( xaignar@amule.org / http:://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -32,7 +32,7 @@
 
 class CKnownFile;
 class CPartFile;
-class CFileAutoClose;
+class CFile;
 
 
 /**
@@ -87,10 +87,9 @@ protected:
 	virtual void Entry();
 
 	/**
-	 * Helper function for hashing a PARTSIZE chunk of a file.
+	 * Helper function for hashing the next PARTSIZE chunk of a file.
 	 *
 	 * @param file The file to read from.
-	 * @param part The number of the part to hash.
 	 * @param owner The known- (or part) file representing that file.
 	 * @bool createAICH Specifies if AICH hash-sets should be created as well.
 	 * @return Returns false on read-errors, true otherwise.
@@ -99,7 +98,7 @@ protected:
 	 * the next part of the file. This function makes the assumption that it wont
 	 * be called for closed or EOF files.
 	 */
-	bool CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownFile* owner, EHashes toHash);
+	bool CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes toHash);
 
 
 	//! The path to the file to be hashed (shared or part), without filename.

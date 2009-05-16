@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -74,7 +74,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	int iOpOr = 0;
 	int iOpNot = 0;
 
-	for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
+	for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
 		wxString str(pexpr->m_aExpr[i]);
 		if (str == SEARCHOPTOK_AND) {
 			iOpAnd++;
@@ -109,7 +109,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	// optimize search expression, if no OR nor NOT specified
 	if (iOpAnd > 0 && iOpOr == 0 && iOpNot == 0) {
 		wxString strAndTerms;
-		for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
+		for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
 			if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
 				// Minor optimization: Because we added the Kad keyword to the boolean search expression,
 				// we remove it here (and only here) again because we know that the entire search expression
@@ -122,7 +122,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 				}
 			}
 		}
-		wxASSERT( _SearchExpr.m_aExpr.GetCount() == 0);
+		wxASSERT( _SearchExpr.m_aExpr.Count() == 0);
 		_SearchExpr.m_aExpr.Add(strAndTerms);
 	} else {
 		if (pexpr->m_aExpr.GetCount() != 1 || pexpr->m_aExpr[0] != s_strCurKadKeyword)			
@@ -313,10 +313,10 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 	CMemFilePtr data = CreateSearchData(params, type, supports64bit, packetUsing64bit);
 	
 	if (data.get() == NULL) {
-		wxASSERT(_astrParserErrors.GetCount());
+		wxASSERT(_astrParserErrors.Count());
 		wxString error;
 		
-		for (unsigned int i = 0; i < _astrParserErrors.GetCount(); ++i) {
+		for (unsigned int i = 0; i < _astrParserErrors.Count(); ++i) {
 			error += _astrParserErrors[i] + wxT("\n");
 		}
 		
@@ -483,7 +483,7 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 	bool unicoded = (sender->GetUnicodeSupport() != utf8strNone);
 	for (unsigned int i = 0; i != results; ++i){			
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, searchID, 0, 0, directory);
-		if (sender) {
+		if (sender){
 			toadd->SetClientID(sender->GetUserIDHybrid());
 			toadd->SetClientPort(sender->GetUserPort());
 		}
@@ -510,9 +510,9 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 {
 	CMemFile packet(in_packet, size);
 
-	uint32_t results = packet.ReadUInt32();
-	for (; results > 0; --results) {
-		AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
+       uint32_t results = packet.ReadUInt32();
+       for (; results > 0; --results) {
+               AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
 	}
 }
 
@@ -625,7 +625,7 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType WXUNUSED(type), bool supports64bit, bool& packetUsing64bit)
+CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit)
 {
 	// Count the number of used parameters
 	unsigned int parametercount = 0;
@@ -657,12 +657,12 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	LexFree();
 	
 #ifdef __DEBUG__
-	AddLogLineNS(CFormat(wxT("Search parsing result for \"%s\": %i"))
-		% params.searchString % iParseResult);
+	printf("Search parsing result for \"%s\": %i\n",
+		(const char*)unicode2UTF8(params.searchString),iParseResult);
 #endif
-	if (_astrParserErrors.GetCount() > 0) {
-		for (unsigned int i=0; i < _astrParserErrors.GetCount(); ++i) {
-			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
+	if (_astrParserErrors.Count() > 0) {
+		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
+			printf("Error %u: %s\n",i,(const char*)unicode2UTF8(_astrParserErrors[i]));
 		}
 		
 		return CMemFilePtr(NULL);
@@ -675,18 +675,17 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	}
 	
 	#ifdef __DEBUG__
-	wxString mes(wxT("Search expression:"));
-	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.GetCount(); i++) {
-		mes << wxT(" ") << _SearchExpr.m_aExpr[i];
+	printf("Search expression: ");
+	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++){
+		printf("%s ",(const char*)unicode2char(_SearchExpr.m_aExpr[i]));
 	}
-	AddLogLineNS(mes);
-	AddLogLineNS(CFormat(wxT("Expression count: %i")) % _SearchExpr.m_aExpr.GetCount());
+	printf("\nExpression count: %i\n",(int)_SearchExpr.m_aExpr.GetCount());
 	#endif
 
 	parametercount += _SearchExpr.m_aExpr.GetCount();
 	
 	#ifdef __DEBUG__
-	AddLogLineNS(CFormat(wxT("Parameters: %i")) % parametercount);
+	printf("Parameters: %i\n",parametercount);
 	#endif
 	
 	/* Leave the unicode comment there, please... */

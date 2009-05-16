@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 Patrizio Bassi ( hetfield@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2003-2009 Patrizio Bassi (Hetfield) ( hetfield@amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -45,7 +45,6 @@
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
 #include "Statistics.h"			// Needed for theStats
 #include <common/Format.h>			// Needed for CFormat
-#include "Logger.h"
 
 
 // Pop-up menu clickable entries
@@ -228,7 +227,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			Bar_ySize = Disconnected_Icon_size; 
 			break;
 		default:
-			wxFAIL;
+			wxASSERT(0);
 	}
 
 	// Lookup this values for speed improvement: don't draw if not needed
@@ -250,7 +249,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 					CurrentIcon = wxIcon(mule_Tr_grey_big_ico_xpm);
 					break;
 				default:
-					wxFAIL;
+					wxASSERT(0);
 			}
 		}
 
@@ -274,7 +273,9 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		int Bar_xSize = 4; 
 		int Bar_xPos = CurrentIcon.GetWidth() - 5; 
 		
-		IconWithSpeed.SetBrush(*(wxTheBrushList->FindOrCreateBrush(CStatisticsDlg::getColors(11))));
+		wxColour col= WxColourFromCr( CStatisticsDlg::getColors(11) );
+		wxBrush	brush(col);
+		IconWithSpeed.SetBrush(brush);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
@@ -319,17 +320,14 @@ void CMuleTrayIcon::UpdateTray()
 	// http://sourceforge.net/tracker/index.php?func=detail&aid=1872724&group_id=9863&atid=109863
 	if (m_iconWnd) {
 		if (wxTopLevelWindows.IndexOf((wxWindow*)m_iconWnd) == wxNOT_FOUND) {
-			AddLogLineCS(_("Traybar-icon lost, trying to recreate ..."));
+			printf("Traybar-icon lost, trying to recreate ...\n");
 			m_iconWnd = NULL;
 		}
 	}
 #endif
 
 	// Icon update and Tip update
-#ifndef __WXCOCOA__
-	if (IsOk()) 
-#endif
-	{
+	if (IsOk()) {
 		SetIcon(CurrentIcon, CurrentTip);
 	}	
 }

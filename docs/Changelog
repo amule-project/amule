@@ -1,97 +1,3 @@
-Version 2.3.0 - The river knows.
-----------
-2009-??-??
-
-	freddy77:
-		* Various optimizations of memory usage
-		* Read files for hashing/sharing using mapped memory
-		  (with custom exception handling)
-		* Fix download of files > 1GB on ucLibc
-		* Fix autogen.sh under Ubuntu
-
-	Gnucco:
-		* Add option to ed2k link parser to display links in emulecollection
-
-	GonoszTopi:
-		* Various fixes to new colour code
-		* Allow user to select display of transfer rates
-		* Extendable list-control settings save/load code
-		* Implemented an alternate method to estimate the real user count
-		  in the Kad network, which is not based on our local routing table.
-		  (port from eMule v0.49b)
-
-	Greek:
-		* Part number is now an extra column in the download list
-		* Improvements to preferences dialogs
-		* Redesign skin selection
-
-	Kry:
-		* Fix indexes after removing GUI items
-		* Resolve MSVC compilation problem with separate strings in GUI
-		* Fixes to Windows build
-		* Allow compilation with wxCocoa
-		* Replace Color.h by new class implementation MuleColour
-		* Lower class overhead and use two-level cache for pens/brushes
-		* Added aMuleCMD project for MSVC.
-		* Fixed UnitTests and aMuleCMD in MSVC to use _CONSOLE subsystem.
-		* Preferences changes
-
-	lfroen:
-		* php prefix for lex/yacc
-
-	LittleAbacus:
-		* Search results can now be sorted by "knownness" state.
-
-	morph:
-		* Patch to uniform and fix minor errors on man pages
-
-	myth:
-		* Feedback from shared files - add number of clients on queue.
-
-	Skolnick:
-		* Fixed autogen.sh for Bourne Shell
-
-	Stu Redman:
-		* Sort source list on opening and add file name to A4AF files
-		* MSVC: optional GeoIP support
-		* Faster progress bars with less overhead (without pens/brushes)
-		* Show log messages in remote gui
-		* More info in the Kad tab
-		* Improved gaplist performance
-		* Ported chat captchas (receive and send) 
-		  and "Advanced Chat Spam Filter" from eMule
-		* Allow download of multiple search results if search list 
-		  is sorted by status (thanks to DarkNRG)
-		* Fixed CFile::SetLength for large files
-		* Reduce file handle usage by closing part files after idle time
-		* Speed up selection of shared directories with many subdirectories,
-		  fixed red marking of folders with shared subdirectories
-		* Ported CorruptionBlackBox from eMule
-
-	Vollstrecker:
-		* Unify copyright lines
-		* Fixed clean and distclean targets for make
-		* Various Updates in debian/ see debian/changelog
-		* Added crash handling in command-line tools
-
-	Wuischke:
-		* Simplify browser selection
-		* Use DoIconize() for dclick on tray icon, too
-		* Fix minimizing from tray icon
-		* Add option to show chat messages in log
-		* Add option to specify amuleweb binary location
-		* Fix amuleweb progress bar display for files > 4GB
-		* Make EC authentication procedure more secure
-		* Add support for categories to ed2k
-
-	Special Thanks To:
-		* Greek for his contributions to aMule's user interface.
-		* btkaos for his important work finding the source of bugs.
-		* myth for seeing when everyone else was blind and uncovering
-		  the grandfather of all fuck-ups
-
---------------------------------------------------------------------------------
-
 Version 2.2.5 - The "never say never" version.
 ----------
 2009-05-16
@@ -158,7 +64,7 @@ Version 2.2.4 - The "we didn't have a .4 version since... well... long ago" vers
 	iz0bbz:
 		* Fixed static linking with GeoIP on MinGW/MSYS.
 		* Fixed detecting GeoIP library when building for MinGW.
-		* Compilation fix for GeoIP-1.4.6.
+		* Compilation fix with GeoIP-1.4.6.
 
 	Stu Redman:
 		* Fix crash on global search on Windows

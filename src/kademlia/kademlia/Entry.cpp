@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2008 Dévai Tamás ( gonosztopi@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2008-2009 Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -55,7 +55,9 @@ CKeyEntry::GlobalPublishIPMap	CKeyEntry::s_globalPublishIPs;
 ////// CEntry
 CEntry::~CEntry()
 {
-	deleteTagPtrListEntries(&m_taglist);
+	for (TagPtrList::const_iterator it = m_taglist.begin(); it != m_taglist.end(); ++it) {
+		delete *it;
+	}
 }
 
 CEntry* CEntry::Copy() const
@@ -327,7 +329,7 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 {
 	uint32_t count = 0;
 	bool found = false;
-	GlobalPublishIPMap::const_iterator it = s_globalPublishIPs.find(ip & 0xFFFFFF00 /* /24 netmask, take care of endian if needed */ );
+	GlobalPublishIPMap::const_iterator it = s_globalPublishIPs.find(ip & 0xFFFFFF00 /* /24 netmask, take care of endian if needed*/);
 	if (it != s_globalPublishIPs.end()) {
 		count = it->second;
 		found = true;
@@ -346,7 +348,7 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 	}
 	//LOGTODO
 	//if (!dbgReason.IsEmpty())
-	//	AddDebugLogLineM(false, logKadEntryTracking, (increase ? wxT("Adding ") : wxT("Removing ")) + KadIPToString(ip & 0xFFFFFF00) + wxT(" (") + KadIPToString(ip) + wxT(") - (") + dbgReason + wxString::Format(wxT("), new count %u"),count));
+	//	AddDebugLogLineM(false, logKadEntryTracking, (increase ? wxT("Adding ") : wxT("Removing ")) + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip & 0xFFFFFF00)) + wxT(" (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(ip)) + wxT(") - (") + dbgReason + wxString::Format(wxT("), new count %u"),count));
 }
 
 void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
@@ -381,7 +383,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			if (it->m_ip == m_uIP) {
 				refresh = true;
 				if ((time(NULL) - it->m_lastPublish) < (KADEMLIAREPUBLISHTIMES - HR2S(1))) {
-					//AddDebugLogLineM(false, logKadEntryTracking, wxT("FastRefresh publish, ip: ") + KadIPToString(m_uIP));
+					//AddDebugLogLineM(false, logKadEntryTracking, wxT("FastRefresh publish, ip: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(m_uIP)));
 					fastRefresh = true; // refreshed faster than expected, will not count into filenamepopularity index
 				}
 				it->m_lastPublish = time(NULL);
@@ -440,7 +442,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		ReCalculateTrustValue();
 	}
 // #ifdef __DEBUG__
-// 	AddDebugLogLineM(false, logKadEntryTracking, wxString(wxT("Indexed Keyword, Refresh: ")) + (refresh ? wxT("Yes") : wxT("No")) + wxT(", Current Publisher: ") + KadIPToString(m_uIP) + wxString::Format(wxT(", Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: "), m_publishingIPs->size(), m_filenames.size(), m_trustValue) + m_uSourceID.ToHexString());
+// 	AddDebugLogLineM(false, logKadEntryTracking, wxString(wxT("Indexed Keyword, Refresh: ")) + (refresh ? wxT("Yes") : wxT("No")) + wxT(", Current Publisher: ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(m_uIP)) + wxString::Format(wxT(", Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: "), m_publishingIPs->size(), m_filenames.size(), m_trustValue) + m_uSourceID.ToHexString());
 // #endif
 }
 

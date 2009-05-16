@@ -1,7 +1,7 @@
 // 
 //  This file is part of the aMule Project.
 // 
-//  Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+//  Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // 
 //  Any parts of this program derived from the xMule, lMule or eMule project,
 //  or contributed by third-party developers are copyrighted by their
@@ -27,13 +27,12 @@
 public interface ECCodes {
 
 
-public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0203;
+public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0200;
 
 public final static int EC_FLAG_ZLIB	 = 0x00000001;
 public final static int EC_FLAG_UTF8_NUMBERS = 0x00000002;
 public final static int EC_FLAG_HAS_ID	 = 0x00000004;
 public final static int EC_FLAG_ACCEPTS	 = 0x00000010;
-public final static int EC_FLAG_NOTIFY	 = 0x00008000;
 public final static int EC_FLAG_UNKNOWN_MASK = 0xff7f7f08;
 
 public final static byte EC_OP_NOOP                          = 0x01;
@@ -114,8 +113,6 @@ public final static byte EC_OP_DISCONNECT                    = 0x4B;
 public final static byte EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C;
 public final static byte EC_OP_KAD_UPDATE_FROM_URL           = 0x4D;
 public final static byte EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E;
-public final static byte EC_OP_AUTH_SALT                     = 0x4F;
-public final static byte EC_OP_AUTH_PASSWD                   = 0x50;
 
 public final static short EC_TAG_STRING                             = 0x0000;
 public final static short EC_TAG_PASSWD_HASH                        = 0x0001;
@@ -128,7 +125,6 @@ public final static short EC_TAG_LOG_TO_STATUS                      = 0x0007;
 public final static short EC_TAG_BOOTSTRAP_IP                       = 0x0008;
 public final static short EC_TAG_BOOTSTRAP_PORT                     = 0x0009;
 public final static short EC_TAG_CLIENT_ID                          = 0x000A;
-public final static short EC_TAG_PASSWD_SALT                        = 0x000B;
 public final static short EC_TAG_CLIENT_NAME                        = 0x0100;
 public final static short 	EC_TAG_CLIENT_VERSION                     = 0x0101;
 public final static short 	EC_TAG_CLIENT_MOD                         = 0x0102;
@@ -145,16 +141,6 @@ public final static short 	EC_TAG_STATS_ED2K_USERS                   = 0x0209;
 public final static short 	EC_TAG_STATS_KAD_USERS                    = 0x020A;
 public final static short 	EC_TAG_STATS_ED2K_FILES                   = 0x020B;
 public final static short 	EC_TAG_STATS_KAD_FILES                    = 0x020C;
-public final static short 	EC_TAG_STATS_LOGGER_MESSAGE               = 0x020D;
-public final static short 	EC_TAG_STATS_KAD_FIREWALLED_UDP           = 0x020E;
-public final static short 	EC_TAG_STATS_KAD_INDEXED_SOURCES          = 0x020F;
-public final static short 	EC_TAG_STATS_KAD_INDEXED_KEYWORDS         = 0x0210;
-public final static short 	EC_TAG_STATS_KAD_INDEXED_NOTES            = 0x0211;
-public final static short 	EC_TAG_STATS_KAD_INDEXED_LOAD             = 0x0212;
-public final static short 	EC_TAG_STATS_KAD_IP_ADRESS                = 0x0213;
-public final static short 	EC_TAG_STATS_BUDDY_STATUS                 = 0x0214;
-public final static short 	EC_TAG_STATS_BUDDY_IP                     = 0x0215;
-public final static short 	EC_TAG_STATS_BUDDY_PORT                   = 0x0216;
 public final static short EC_TAG_PARTFILE                           = 0x0300;
 public final static short 	EC_TAG_PARTFILE_NAME                      = 0x0301;
 public final static short 	EC_TAG_PARTFILE_PARTMETID                 = 0x0302;

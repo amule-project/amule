@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 Kry ( elkry@sourceforge.net / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -53,7 +53,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 	switch (detail_level) {
 		case EC_DETAIL_INC_UPDATE:
 			// should not get here
-			wxFAIL;
+			wxASSERT(0);
 			break;
 		case EC_DETAIL_UPDATE:
 			if ((tmpInt = server->GetPing()) != 0) {

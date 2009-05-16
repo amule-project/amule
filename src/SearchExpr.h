@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -69,14 +69,14 @@ public:
 	void Add(const CSearchExpr* pexpr)
 	{
 		//m_aExpr.Append(pexpr->m_aExpr);
-		for (unsigned int i=0; i < pexpr->m_aExpr.GetCount(); ++i) {
+		for (unsigned int i=0; i < pexpr->m_aExpr.Count(); ++i) {
 			m_aExpr.Add(pexpr->m_aExpr[i]);
 		}
 	}
 	
 	void Concatenate(const wxString& pstrString)
 	{
-		wxASSERT( m_aExpr.GetCount() == 1 );
+		wxASSERT( m_aExpr.Count() == 1 );
 		m_aExpr[0] += ' ';
 		m_aExpr[0] += pstrString;
 	}

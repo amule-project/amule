@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 1998-2008 Vadim Zeitlin ( zeitlin@dptmaths.ens-cachan.fr )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 1998 Vadim Zeitlin ( zeitlin@dptmaths.ens-cachan.fr )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -188,6 +188,8 @@ bool CFile::IsOpened() const
 
 const CPath& CFile::GetFilePath() const
 {
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot return path of closed file."));
+
 	return m_filePath;
 }
 
@@ -265,14 +267,6 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
 	
 	return IsOpened();
-}
-
-
-void CFile::Reopen(OpenMode mode)
-{
-	if (!Open(m_filePath, mode)) {
-		throw CIOFailureException(wxString(wxT("Error reopening file")));
-	}
 }
 
 
@@ -399,24 +393,18 @@ uint64 CFile::GetAvailable() const
 }
 
 
-bool CFile::SetLength(uint64 new_len)
+bool CFile::SetLength(size_t new_len)
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
 
 #ifdef __WXMSW__
-#ifdef _MSC_VER
-// MSVC has a 64bit version
-	bool result = _chsize_s(m_fd, new_len) == 0;
+	int result = chsize(m_fd, new_len);
 #else
-// MingW has an old runtime without it
-	bool result = chsize(m_fd, new_len) == 0;
-#endif
-#else
-	bool result = ftruncate(m_fd, new_len) != -1;
+	int result = ftruncate(m_fd, new_len);
 #endif
 
-	syscall_check(result, m_filePath, wxT("truncating file"));
+	syscall_check((result != -1), m_filePath, wxT("truncating file"));
 
-	return result;
+	return (result != -1);
 }
 // File_checked_for_headers

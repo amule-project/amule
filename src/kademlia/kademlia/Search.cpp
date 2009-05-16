@@ -1,10 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
-// Copyright (c) 2004-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -81,30 +80,10 @@ CSearch::CSearch()
 	m_searchTermsData = NULL;
 	m_searchTermsDataSize = 0;
 	m_nodeSpecialSearchRequester = NULL;
-	m_closestDistantFound = 0;
 }
 
 CSearch::~CSearch()
 {
-	// remember the closest node we found and tried to contact (if any) during this search
-	// for statistical caluclations, but only if its a certain type
-	switch (m_type) {
-		case NODECOMPLETE:
-		case FILE:
-		case KEYWORD:
-		case NOTES:
-		case STOREFILE:
-		case STOREKEYWORD:
-		case STORENOTES:
-		case FINDSOURCE: // maybe also exclude
-			if (m_closestDistantFound != 0) {
-				CKademlia::StatsAddClosestDistance(m_closestDistantFound);
-			}
-			break;
-		default: // NODE, NODESPECIAL, NODEFWCHECKUDP, FINDBUDDY
-			break;
-	}
-
 	if (m_nodeSpecialSearchRequester != NULL) {
 		// inform requester that our search failed
 		m_nodeSpecialSearchRequester->KadSearchIPByNodeIDResult(KCSR_NOTFOUND, 0, 0);
@@ -272,7 +251,7 @@ void CSearch::JumpStart()
 
 void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *results)
 {
-	AddDebugLogLineM(false, logKadSearch, wxT("Processing search response from ") + KadIPPortToString(fromIP, fromPort));
+	AddDebugLogLineM(false, logKadSearch, wxT("Processing search response from ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(fromIP), fromPort));
 
 	ContactList::iterator response;
 	// Remember the contacts to be deleted when finished
@@ -283,7 +262,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 	// Make sure the node is not sending more results than we requested, which is not only a protocol violation
 	// but most likely a malicious answer
 	if (results->size() > GetRequestContactCount()) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Node ") + KadIPToString(fromIP) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
+		AddDebugLogLineM(false, logKadSearch, wxT("Node ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
 		return;
 	}
 
@@ -338,7 +317,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
 				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
 				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
+					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress())) + wxT(") in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
 					continue;
 				} else {
 					mapReceivedIPs[c->GetIPAddress()] = 1;
@@ -348,7 +327,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 					wxASSERT(mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != mapReceivedSubnets.end());
 					int subnetCount = mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
 					if (subnetCount >= 2) {
-						AddDebugLogLineM(false, logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
+						AddDebugLogLineM(false, logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress() & 0xFFFFFF00)) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress())));
 						continue;
 					} else {
 						mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
@@ -408,10 +387,6 @@ void CSearch::StorePacket()
 	ContactMap::const_iterator possible = m_possible.begin();
 	CUInt128 fromDistance(possible->first);
 	CContact *from = possible->second;
-
-	if (fromDistance < m_closestDistantFound || m_closestDistantFound == 0) {
-		m_closestDistantFound = fromDistance;
-	}
 
 	// Make sure this is a valid node to store.
 	if(thePrefs::FilterLanIPs() && fromDistance.Get32BitChunk(0) > SEARCHTOLERANCE) {
@@ -608,7 +583,9 @@ void CSearch::StorePacket()
 				CKademlia::GetUDPListener()->SendPublishSourcePacket(*from, m_target, id, taglist);
 				m_totalRequestAnswers++;
 				// Delete all tags.
-				deleteTagPtrListEntries(&taglist);
+				for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+					delete *it;
+				}
 			} else {
 				PrepareToStop();
 			}
@@ -718,7 +695,9 @@ void CSearch::StorePacket()
 				}
 				m_totalRequestAnswers++;
 				// Delete all tags.
-				deleteTagPtrListEntries(&taglist);
+				for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+					delete *it;
+				}
 			} else {
 				PrepareToStop();
 			}
@@ -789,7 +768,7 @@ void CSearch::StorePacket()
 			// we are looking for the IP of a given NodeID, so we just check if we 0 distance and if so, report the
 			// tip to the requester
 			if (fromDistance == 0) {
-				m_nodeSpecialSearchRequester->KadSearchIPByNodeIDResult(KCSR_SUCCEEDED, wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetTCPPort());
+				m_nodeSpecialSearchRequester-> KadSearchIPByNodeIDResult(KCSR_SUCCEEDED, wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetTCPPort());
 				m_nodeSpecialSearchRequester = NULL;
 				PrepareToStop();
 			}
@@ -878,7 +857,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		case 4:
 		case 5:
 		case 6:
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + KadIPPortToString(ip, udp));
+			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), udp));
 			m_answers++;
 			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, buddyip, buddyport, byCryptOptions);
 			break;
@@ -1057,7 +1036,9 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
 
 	// Free tags memory
-	deleteTagPtrListEntries(&taglist);
+	for (TagPtrList::iterator it = taglist.begin(); it != taglist.end(); ++it) {
+		delete (*it);
+	}	
 	
 }
 
@@ -1256,7 +1237,9 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 		AddDebugLogLineM(true, logKadSearch, wxT("Exception in CSearch::PreparePacketForTags: ") + e);
 	} 
 
-	deleteTagPtrListEntries(&taglist);
+	for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+		delete *it;
+	}
 }
 
 void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *searchTermsData)

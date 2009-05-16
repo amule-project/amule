@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -46,7 +46,7 @@
 #include <common/TextFile.h>	// Needed for CTextFile
 
 
-#define CMuleColour(x) (wxSystemSettings::GetColour(x))
+#define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
 
 
 BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
@@ -84,20 +84,20 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 
 	m_connected = 0;
 
-	InsertColumn( COLUMN_SERVER_NAME,	_("Server Name"),	wxLIST_FORMAT_LEFT, 150, wxT("N") );
-	InsertColumn( COLUMN_SERVER_ADDR,	_("Address"),		wxLIST_FORMAT_LEFT, 140, wxT("A") );
-	InsertColumn( COLUMN_SERVER_PORT,	_("Port"),		wxLIST_FORMAT_LEFT,  25, wxT("P") );
-	InsertColumn( COLUMN_SERVER_DESC,	_("Description"),	wxLIST_FORMAT_LEFT, 150, wxT("D") );
-	InsertColumn( COLUMN_SERVER_PING,	_("Ping"),		wxLIST_FORMAT_LEFT,  25, wxT("p") );
-	InsertColumn( COLUMN_SERVER_USERS,	_("Users"),		wxLIST_FORMAT_LEFT,  40, wxT("U") );
-	InsertColumn( COLUMN_SERVER_FILES,	_("Files"),		wxLIST_FORMAT_LEFT,  45, wxT("F") );
-	InsertColumn( COLUMN_SERVER_PRIO,	_("Priority"),		wxLIST_FORMAT_LEFT,  60, wxT("r") );
-	InsertColumn( COLUMN_SERVER_FAILS,	_("Failed"),		wxLIST_FORMAT_LEFT,  40, wxT("f") );
-	InsertColumn( COLUMN_SERVER_STATIC,	_("Static"),		wxLIST_FORMAT_LEFT,  40, wxT("S") );
-	InsertColumn( COLUMN_SERVER_VERSION,	_("Version"),		wxLIST_FORMAT_LEFT,  80, wxT("V") );
+	InsertColumn( COLUMN_SERVER_NAME, _("Server Name"),	wxLIST_FORMAT_LEFT, 150);
+	InsertColumn( COLUMN_SERVER_ADDR, _("Address"),			wxLIST_FORMAT_LEFT, 140);
+	InsertColumn( COLUMN_SERVER_PORT, _("Port"),			wxLIST_FORMAT_LEFT, 25);
+	InsertColumn( COLUMN_SERVER_DESC, _("Description"),	wxLIST_FORMAT_LEFT, 150);
+	InsertColumn( COLUMN_SERVER_PING, _("Ping"),			wxLIST_FORMAT_LEFT, 25);
+	InsertColumn( COLUMN_SERVER_USERS, _("Users"),		wxLIST_FORMAT_LEFT, 40);
+	InsertColumn( COLUMN_SERVER_FILES, _("Files"),		wxLIST_FORMAT_LEFT, 45);
+	InsertColumn( COLUMN_SERVER_PRIO, _("Priority"),		wxLIST_FORMAT_LEFT, 60);
+	InsertColumn( COLUMN_SERVER_FAILS, _("Failed"),		wxLIST_FORMAT_LEFT, 40);
+	InsertColumn( COLUMN_SERVER_STATIC, _("Static"),		wxLIST_FORMAT_LEFT, 40);
+	InsertColumn( COLUMN_SERVER_VERSION, _("Version"),		wxLIST_FORMAT_LEFT, 80);
 	#ifdef __DEBUG__
-	InsertColumn( COLUMN_SERVER_TCPFLAGS,	wxT("TCP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("t") );
-	InsertColumn( COLUMN_SERVER_UDPFLAGS,	wxT("UDP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("u") );
+	InsertColumn( COLUMN_SERVER_TCPFLAGS, wxT("TCP Flags"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_UDPFLAGS, wxT("UDP Flags"),		wxLIST_FORMAT_LEFT, 80);
 	#endif
 	
 	
@@ -105,14 +105,9 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 }
 
 
-wxString CServerListCtrl::GetOldColumnOrder() const
-{
-	return wxT("N,A,P,D,p,U,F,r,f,S,V,t,u");
-}
-
-
 CServerListCtrl::~CServerListCtrl()
 {
+
 }
 
 
@@ -186,18 +181,16 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	
 		wxListItem item;
 		item.SetId( itemnr );
-		item.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
+		item.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 		SetItem( item );
 	}
 	
 	wxString serverName;
 #ifdef ENABLE_IP2COUNTRY
 	// Get the country name
-	if (theApp->amuledlg->m_IP2Country->IsEnabled()) {
-		const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
-		serverName << countrydata.Name;
-		serverName << wxT(" - ");
-	}
+	const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
+	serverName << countrydata.Name;
+	serverName << wxT(" - ");
 #endif // ENABLE_IP2COUNTRY
 	serverName << server->GetListName();
 	SetItem(itemnr, COLUMN_SERVER_NAME, serverName);
@@ -508,7 +501,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 		// Only update items that have the wrong setting
 		if ( server->IsStaticMember() != isStatic ) {
 			if ( !SetStaticServer( server, isStatic ) ) {
-				wxFAIL;
+				wxASSERT( false );
 
 				return;
 			}

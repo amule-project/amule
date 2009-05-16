@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 Mikkel Schubert ( xaignar@amule.org / http:://www.amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2006-2009 Mikkel Schubert ( xaignar@amule.org / http:://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -79,7 +79,7 @@ CHashingTask::CHashingTask(const CKnownFile* toAICHHash)
 
 void CHashingTask::Entry()
 {
-	CFileAutoClose file;
+	CFile file;
 
 	CPath fullPath = m_path.JoinPaths(m_filename);
 	if (!file.Open(fullPath, CFile::read)) {
@@ -104,7 +104,7 @@ void CHashingTask::Entry()
 	} else if (fileLength == 0) {
 		if (m_owner) {
 			// It makes no sense to try to hash empty partfiles ...
-			wxFAIL;
+			wxASSERT(0);
 		} else {
 			// Zero-size partfiles should be hashed, but not zero-sized shared-files.
 			AddDebugLogLineM( true, logHasher,
@@ -126,15 +126,15 @@ void CHashingTask::Entry()
 	
 	if ((m_toHash & EH_MD4) && (m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddDebugLogLineM( false, logHasher, CFormat( 
+		AddLogLineM( false, logHasher, CFormat( 
 			_("Starting to create MD4 and AICH hash for file: %s")) %
 			m_filename );
 	} else if ((m_toHash & EH_MD4)) {
-		AddDebugLogLineM( false, logHasher, CFormat(
+		AddLogLineM( false, logHasher, CFormat(
 			_("Starting to create MD4 hash for file: %s")) % m_filename );
 	} else if ((m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddDebugLogLineM( false, logHasher, CFormat(
+		AddLogLineM( false, logHasher, CFormat(
 			_("Starting to create AICH hash for file: %s")) % m_filename );
 	} else {
 		wxCHECK_RET(0, (CFormat(wxT("No hashes requested for file, skipping: %s"))
@@ -144,8 +144,8 @@ void CHashingTask::Entry()
 	
 	// This loops creates the part-hashes, loop-de-loop.
 	try {
-		for (uint16 part = 0; part < knownfile->GetPartCount() && !TestDestroy(); part++) {
-			if (CreateNextPartHash(file, part, knownfile.get(), m_toHash) == false) {
+		while (!file.Eof() && !TestDestroy()) {
+			if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
 				AddDebugLogLineM(true, logHasher,
 					CFormat(wxT("Error while hashing file, skipping: %s"))
 						% m_filename);
@@ -170,7 +170,7 @@ void CHashingTask::Entry()
 			knownfile->m_abyFileHash = hash;
 		} else {
 			// This should not happen!
-			wxFAIL;
+			wxASSERT(0);
 		}
 	}
 	
@@ -201,13 +201,12 @@ void CHashingTask::Entry()
 }
 
 
-bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownFile* owner, EHashes toHash)
+bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes toHash)
 {
-	wxCHECK_MSG(!file.Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
+	wxCHECK_MSG(!file->Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
 	
-	const uint64 offset = part * PARTSIZE;
 	// We'll read at most PARTSIZE bytes per cycle
-	const uint64 partLength = owner->GetPartSize(part);
+	const uint64 partLength = std::min<uint64>(PARTSIZE, file->GetLength() - file->GetPosition());
 	
 	CMD4Hash hash;
 	CMD4Hash* md4Hash = ((toHash & EH_MD4) ? &hash : NULL);
@@ -215,10 +214,10 @@ bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownF
 
 	// Setup for AICH hashing
 	if (toHash & EH_AICH) {
-		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(offset, partLength);
+		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(file->GetPosition(), partLength);
 	}
 
-	owner->CreateHashFromFile(file, offset, partLength, md4Hash, aichHash);
+	owner->CreateHashFromFile(file, partLength, md4Hash, aichHash);
 	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash
@@ -228,7 +227,7 @@ bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownF
 		// file i.e. will have 3 parts (see CKnownFile::SetFileSize for comments). 
 		// So we have to create the hash for the 0-size data, which will be the default
 		// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
-		if ((partLength == PARTSIZE) && file.Eof()) {
+		if ((partLength == PARTSIZE) && file->Eof()) {
 			owner->m_hashlist.push_back(CMD4Hash(g_emptyMD4Hash));
 		}
 	}
@@ -355,7 +354,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 			CAICHHash aichHash(&oldfile);
 			uint32 nHashCount = oldfile.ReadUInt16();
 			
-			CScopedArray<byte> buffer(nHashCount * CAICHHash::GetHashSize());
+			CScopedArray<byte> buffer(new byte[nHashCount * CAICHHash::GetHashSize()]);
 			
 			oldfile.Read(buffer.get(), nHashCount * CAICHHash::GetHashSize());
 			newfile.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
@@ -424,7 +423,7 @@ void CCompletionTask::Entry()
 	}
 
 	if (m_filename != dstName) {
-		AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
+		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
 			% m_filename % dstName);
 	}
 	
@@ -437,7 +436,7 @@ void CCompletionTask::Entry()
 	}
 
 	if (newName != targetPath.JoinPaths(dstName)) {
-		AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
+		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
 			% dstName % newName.GetFullName());
 	}
 
@@ -450,7 +449,7 @@ void CCompletionTask::Entry()
 		}
 		
 		if (!CPath::RemoveFile(partfilename)) {
-			AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
+			AddLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
 				% partfilename);
 		}
 	}
@@ -462,7 +461,7 @@ void CCompletionTask::Entry()
 
 		if (toRemove.FileExists()) {
 			if (!CPath::RemoveFile(toRemove)) {
-				AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
+				AddLogLineM(true, logPartFile, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
 			}
 		}
 	}

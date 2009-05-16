@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -61,10 +61,6 @@
 
 #include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
-
-#ifdef _MSC_VER  // silly warnings about deprecated functions
-#pragma warning(disable:4996)
-#endif
 
 //-------------------------------------------------------------------
 
@@ -205,27 +201,15 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	  m_ECClient(NULL),
 	  m_InputLine(NULL),
 	  m_NeedsConfigSave(false),
-	  m_locale(NULL),
-	  m_strFullVersion(NULL),
-	  m_strOSDescription(NULL)
+	  m_locale(NULL)
 {
-	SetAppName(wxT("aMule"));	// Do not change!
-	m_appname =
-		// Find out Application Name
-#ifdef WEBSERVERDIR
-		"amuleweb"
-#else
-		"amulecmd"
-#endif
-		;
+	SetAppName(wxT("aMule"));
 }
 
 CaMuleExternalConnector::~CaMuleExternalConnector()
 {
 	delete m_configFile;
 	delete m_locale;
-	free(m_strFullVersion);
-	free(m_strOSDescription);
 }
 
 void CaMuleExternalConnector::OnInitCommandSet()
@@ -365,10 +349,19 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		return;
 	}
 
+	wxString appName =
+		// Find out Application Name
+		#ifdef WEBSERVERDIR
+			wxT("amuleweb")
+		#else
+			wxT("amulecmd")
+		#endif
+	;
+
 	#ifdef SVNDATE
-		Show(CFormat(_("This is %s %s %s\n")) % wxString::FromAscii(m_appname) % wxT(VERSION) % wxT(SVNDATE));
+		Show(CFormat(_("This is %s %s %s\n")) % appName % wxT(VERSION) % wxT(SVNDATE));
 	#else
-		Show(CFormat(_("This is %s %s\n")) % wxString::FromAscii(m_appname) % wxT(VERSION));
+		Show(CFormat(_("This is %s %s\n")) % appName % wxT(VERSION));
 	#endif
 
 	// HostName, Port and Password
@@ -472,7 +465,15 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser)
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	if (parser.Found(wxT("version"))) {
-		printf("%s %s\n", m_appname, (const char *)unicode2char(GetMuleVersion()));
+		const char *appName =
+			// Find out Application Name
+			#ifdef WEBSERVERDIR
+				"amuleweb"
+			#else
+				"amulecmd"
+			#endif
+		;
+		printf("%s %s\n", appName, (const char *)unicode2char(GetMuleVersion()));
 		return false;
 	}
 
@@ -573,17 +574,6 @@ void CaMuleExternalConnector::SaveConfigFile()
 
 bool CaMuleExternalConnector::OnInit()
 {
-#ifndef __WXMSW__
-	// catch fatal exceptions
-	wxHandleFatalExceptions(true);
-#endif
-
-	m_strFullVersion = strdup((const char *)unicode2char(GetMuleVersion()));
-	m_strOSDescription = strdup((const char *)unicode2char(wxGetOsDescription()));
-
-	// Handle uncaught exceptions
-	InstallMuleExceptionHandler();
-
 	bool retval = wxApp::OnInit();
 	OnInitCommandSet();
 	InitCustomLanguages();
@@ -629,44 +619,5 @@ wxAppTraits* CaMuleExternalConnector::CreateTraits()
 	return new CaMuleExternalConnectorTraits;
 }
 
-#endif
-
-// Gracefully handle fatal exceptions and print backtrace if possible
-void CaMuleExternalConnector::OnFatalException()
-{
-	/* Print the backtrace */
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
-	fprintf(stderr, "A fatal error has occurred and %s has crashed.\n", m_appname);
-	fprintf(stderr, "Please assist us in fixing this problem by posting the backtrace below in our\n");
-	fprintf(stderr, "'aMule Crashes' forum and include as much information as possible regarding the\n");
-	fprintf(stderr, "circumstances of this crash. The forum is located here:\n");
-	fprintf(stderr, "    http://forum.amule.org/index.php?board=67.0\n");
-	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
-	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n\n");
-	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
-	fprintf(stderr, "Current version is: %s %s\n", m_appname, m_strFullVersion);
-	fprintf(stderr, "Running on: %s\n\n", m_strOSDescription);
-	
-	print_backtrace(1); // 1 == skip this function.
-	
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
-}
-
-#ifdef __WXDEBUG__
-void CaMuleExternalConnector::OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg)
-{
-#if !defined wxUSE_STACKWALKER || !wxUSE_STACKWALKER
-	wxString errmsg = CFormat( wxT("%s:%s:%d: Assertion '%s' failed. %s") ) % file % func % line % cond % ( msg ? msg : wxT("") );
-
-	fprintf(stderr, "Assertion failed: %s\n", (const char*)unicode2char(errmsg));
-
-	// Skip the function-calls directly related to the assert call.
-	fprintf(stderr, "\nBacktrace follows:\n");
-	print_backtrace(3);
-	fprintf(stderr, "\n");
-#else
-	wxApp::OnAssertFailure(file, line, func, cond, msg);
-#endif
-}
 #endif
 // File_checked_for_headers

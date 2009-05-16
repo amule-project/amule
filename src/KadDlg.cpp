@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -34,7 +34,7 @@
 #include "StatisticsDlg.h"
 #include "ColorFrameCtrl.h"
 #include "amuleDlg.h"
-#include "MuleColour.h"
+
 
 #ifndef CLIENT_GUI
 #include "kademlia/kademlia/Kademlia.h"
@@ -99,8 +99,8 @@ void CKadDlg::SetGraphColors()
 		m_kad_scope->SetPlotColor(CStatisticsDlg::getColors(12 + i), aTrend[i]);
 		
 		CColorFrameCtrl* ctrl = CastChild(aRes[i], CColorFrameCtrl);
-		ctrl->SetBackgroundBrushColour(CMuleColour(CStatisticsDlg::getColors(12 + i)));
-		ctrl->SetFrameBrushColour(*wxBLACK);
+		ctrl->SetBackgroundColor(CStatisticsDlg::getColors(12 + i));
+		ctrl->SetFrameColor((COLORREF)RGB(0,0,0));	
 	}
 }
 

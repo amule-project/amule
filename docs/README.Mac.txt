@@ -12,7 +12,7 @@ The heart of aMule's documentation is the aMule Wiki, which you can find at http
 
 If you run into any problems you can drop by at the aMule forum (http://forum.amule.org). A lot of questions have already been answered there, so it is always a good idea to start by searching the forum for your particular problem. If you don't find an answer to your problem you can post your problem on the forum and we will do our best to help you out.
 
-The forum and particularly the Mac subsection of the forum (http://forum.amule.org/index.php?board=49.0) are also good places to look for usage tips and to learn about recent aMule developments (especially look at the sticky threads).
+The forum and particularly the Mac subsection of the forum (http://forum.amule.org/index.php?board=49) are also good places to look for usage tips and to learn about recent aMule developments (especially look at the sticky threads).
 
 
 Right-clicking & pop-up menus on the Mac:
@@ -42,7 +42,7 @@ There are basically four ways to download files with aMule:
 
 Setting up aMule's video preview feature:
 -----------------------------------------
-You can use a video player like VLC or Mplayer to preview incomplete downloads of video files. To set up aMule properly for this, go to Preferences -> General. Under "Video Player", you have to enter "/usr/bin/open -a" together with the path of your video player program.
+You can use a video player like VLC or Mplayer to preview incomplete downloads of video files. To set up aMule properly for this, go to Preferences -> Directories. Under "Video Player", you have to enter "/usr/bin/open -a" together with the path of your video player program.
 
 For example:
 /usr/bin/open -a "/Applications/VLC.app"

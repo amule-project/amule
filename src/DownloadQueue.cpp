@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -97,17 +97,19 @@ CDownloadQueue::~CDownloadQueue()
 {
 	if ( !m_filelist.empty() ) {
 		for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
-			AddLogLineNS(CFormat(_("Saving PartFile %u of %u")) % (i + 1) % m_filelist.size());
+			printf("\rSaving PartFile %u of %u", i + 1, (unsigned int)m_filelist.size());
+			fflush(stdout);
 			delete m_filelist[i];
 		}
-		AddLogLineNS(_("All PartFiles Saved."));
+		printf("\nAll PartFiles Saved.\n");
 	}
 }
 
 
 void CDownloadQueue::LoadMetFiles(const CPath& path)
 {
-	AddLogLineNS(CFormat(_("Loading temp files from %s.")) % path.GetPrintable());
+	printf("Loading temp files from %s.\n",
+		(const char *)unicode2char(path.GetPrintable()));
 	
 	std::vector<CPath> files;
 
@@ -126,7 +128,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 
 	// Load part-files	
 	for ( size_t i = 0; i < files.size(); i++ ) {
-		AddLogLineNS(CFormat(_("Loading PartFile %u of %u")) % (i + 1) % files.size());
+		printf("\rLoading PartFile %u of %u", (unsigned int)(i + 1), (unsigned int)files.size());
 		fileName = files[i].GetFullName();
 		CPartFile *toadd = new CPartFile();
 		bool result = toadd->LoadPartFile(path, fileName) != 0;
@@ -152,13 +154,16 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 					_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
 				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName;
 			}
-			AddLogLineCS(msg);
+			AddDebugLogLineM(true, logPartFile, msg);
+			
+			// Newline so that the error stays visible.
+			printf(": %s\n", (const char*)unicode2char(msg));
 
 			// Delete the partfile object in the end.
 			delete toadd;
 		}
 	}
-	AddLogLineNS(_("All PartFiles Loaded."));
+	printf("\nAll PartFiles Loaded.\n");
 	
 	if ( GetFileCount() == 0 ) {
 		AddLogLineM(false, _("No part files found"));
@@ -328,11 +333,8 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 	}
 
 	NotifyObservers( EventType( EventType::INSERTED, file ) );
-	if (category < theApp->glob_prefs->GetCatCount()) {
-		file->SetCategory(category);
-	} else {
-		AddDebugLogLineM( false, logDownloadQueue, wxT("Tried to add download into invalid category.") );
-	}
+
+	file->SetCategory(category);
 	Notify_DownloadCtrlAddFile( file );
 	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
 }
@@ -467,7 +469,7 @@ CPartFile* CDownloadQueue::GetFileByIndex(unsigned int index)  const
 		return m_filelist[ index ];
 	}
 	
-	wxFAIL;
+	wxASSERT( false );
 	return NULL;
 }
 
@@ -930,7 +932,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) {
 					uint8 nPriority = cur_file->GetDownPriority();
 					if (nPriority > PR_HIGH) {
-						wxFAIL;
+						wxASSERT(0);
 						nPriority = PR_HIGH;
 					}
 
@@ -990,11 +992,11 @@ void CDownloadQueue::ProcessLocalRequests()
 		if (iSize > 0) {
 			// create one 'packet' which contains all buffered OP_GETSOURCES ED2K packets to be sent with one TCP frame
 			// server credits: (16+4)*regularfiles + (16+4+8)*largefiles +1
-			CScopedPtr<CPacket> packet(new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false));
+			CPacket* packet = new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
-			theApp->serverconnect->SendPacket(packet.release(), true);	// Deletes `packet'.
+			theApp->serverconnect->SendPacket(packet, true);	// Deletes `packet'.
 			AddDebugLogLineM(false, logDownloadQueue, wxT("Sent local sources request packet."));
 			theStats::AddUpOverheadServer(size);
 		}
@@ -1036,37 +1038,17 @@ void CDownloadQueue::AddLinksFromFile()
 					continue;
 				}
 				
-				long category = 0;
-				if (line.AfterLast(wxT(':')).ToLong(&category) == true) {
-					line = line.BeforeLast(wxT(':'));
-				}
-				AddLink(line, category);
+				AddLink( line );
 			}
 		}
 
 		file.Close();
 	} else {
-		AddLogLineNS(_("Failed to open ED2KLinks file."));
+		printf("Failed to open ED2KLinks file.\n");
 	}
 	
 	// Delete the file.
 	wxRemoveFile(theApp->ConfigDir +  wxT("ED2KLinks"));
-}
-
-
-void CDownloadQueue::ResetCatParts(uint8 cat)
-{
-	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
-		CPartFile* file = GetFileByIndex( i );
-		
-		if ( file->GetCategory() == cat ) {
-			// Reset the category
-			file->SetCategory( 0 );
-		} else if ( file->GetCategory() > cat ) {
-			// Set to the new position of the original category
-			file->SetCategory( file->GetCategory() - 1 );
-		}
-	}
 }
 
 

@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -98,7 +98,6 @@ class CECTag {
 		// tag for custom data: just init object, alloc buffer and return pointer
 		CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
 		// Routines for special data types.
-		CECTag(ec_tagname_t name, bool data);
 		CECTag(ec_tagname_t name, uint8_t data);
 		CECTag(ec_tagname_t name, uint16_t data);
 		CECTag(ec_tagname_t name, uint32_t data);
@@ -109,7 +108,6 @@ class CECTag {
 		CECTag(ec_tagname_t name, const CMD4Hash& data);
 		#ifdef USE_WX_EXTENSIONS
 		CECTag(ec_tagname_t name, const wxString& data);
-		CECTag(ec_tagname_t name, const wxChar* data);
 		CECTag(ec_tagname_t name, const char* data) { ConstructStringTag(name, data); }
 		#endif
 		CECTag(const CECTag& tag);
@@ -141,7 +139,6 @@ class CECTag {
 		uint64_t		GetInt() const;
 		double			GetDoubleData() const;
 		std::string		GetStringDataSTL() const;
-		bool			IsString() const { return m_dataType == EC_TAGTYPE_STRING; }
 		
 		#ifdef USE_WX_EXTENSIONS
 		wxString GetStringData() const;

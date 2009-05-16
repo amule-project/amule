@@ -6,7 +6,6 @@
 #include "updownclient.h"
 #include "ServerList.h"
 #include "Preferences.h"
-#include "ExternalConn.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -20,12 +19,23 @@
 #	include "SharedFilesCtrl.h"
 #	include "DownloadListCtrl.h"
 #	include "muuli_wdr.h"
+#	include "PartFileConvertDlg.h"
+#endif
+
+#ifndef CLIENT_GUI
+#	include "PartFileConvert.h"
 #endif
 
 #ifdef AMULE_DAEMON
 #	define NOT_ON_DAEMON(x) WXUNUSED(x)
 #else
 #	define NOT_ON_DAEMON(x) x
+#endif
+
+#ifdef CLIENT_GUI
+#	define NOT_ON_REMOTEGUI(x)	WXUNUSED(x)
+#else
+#	define NOT_ON_REMOTEGUI(x)	x
 #endif
 
 
@@ -80,11 +90,8 @@ namespace MuleNotify
 	}
 
 	
-	void DownloadCtrlUpdateItem(const void* item)
+	void DownloadCtrlUpdateItem(const void* NOT_ON_DAEMON(item))
 	{
-#ifndef CLIENT_GUI
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_SetDirty((CPartFile *)item);
-#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
@@ -107,6 +114,54 @@ namespace MuleNotify
 #endif
 	}
 
+	void ConvertUpdateProgress(float NOT_ON_DAEMON(percent), wxString NOT_ON_DAEMON(text), wxString NOT_ON_DAEMON(header))
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::UpdateProgress(percent, text, header);
+#endif
+	}
+
+	void ConvertUpdateJobInfo(ConvertInfo NOT_ON_DAEMON(info))
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::UpdateJobInfo(info);
+#endif
+	}
+
+	void ConvertRemoveJobInfo(unsigned NOT_ON_DAEMON(id))
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::RemoveJobInfo(id);
+#endif
+	}
+
+	void ConvertClearInfos()
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::ClearInfo();
+#endif
+	}
+
+	void ConvertRemoveJob(unsigned NOT_ON_REMOTEGUI(id))
+	{
+#ifndef CLIENT_GUI
+		CPartFileConvert::RemoveJob(id);
+#endif
+	}
+
+	void ConvertRetryJob(unsigned NOT_ON_REMOTEGUI(id))
+	{
+#ifndef CLIENT_GUI
+		CPartFileConvert::RetryJob(id);
+#endif
+	}
+
+	void ConvertReaddAllJobs()
+	{
+#ifndef CLIENT_GUI
+		CPartFileConvert::ReaddAllJobs();
+#endif
+	}
 
 #ifdef CLIENT_GUI
 	
@@ -228,11 +283,8 @@ namespace MuleNotify
 	}
 
 
-	void DownloadCtrlAddFile(CPartFile* file)
+	void DownloadCtrlAddFile(CPartFile* NOT_ON_DAEMON(file))
 	{
-#ifndef CLIENT_GUI
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_AddFile(file);
-#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -251,11 +303,8 @@ namespace MuleNotify
 #endif
 	}
 	
-	void DownloadCtrlRemoveFile(CPartFile* file)
+	void DownloadCtrlRemoveFile(CPartFile* NOT_ON_DAEMON(file))
 	{
-#ifndef CLIENT_GUI
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_RemoveFile(file);
-#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
@@ -484,19 +533,13 @@ namespace MuleNotify
 	}
 	
 
-	void ChatSendCaptcha(wxString NOT_ON_DAEMON(captcha), uint64 NOT_ON_DAEMON(to_id))
+	void ShowConnState(long NOT_ON_DAEMON(state))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_chatwnd) {
-			theApp->amuledlg->m_chatwnd->SendMessage(captcha, wxEmptyString, to_id);
-		}
+#ifdef CLIENT_GUI
+		theApp->m_ConnState = state;
 #endif
-	}
-	
-
-	void ShowConnState(long WXUNUSED(state))
-	{
-#ifndef AMULE_DAEMON
+		
 		theApp->amuledlg->ShowConnectionState();
 #endif
 	}

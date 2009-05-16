@@ -42,8 +42,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;&quot;$(SolutionDir)\libs\libGeoIP&quot;"
-				PreprocessorDefinitions="__DEBUG__;_DEBUG;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;"
+				PreprocessorDefinitions="__DEBUG__;_DEBUG;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -119,8 +119,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;&quot;$(SolutionDir)\libs\libGeoIP&quot;"
-				PreprocessorDefinitions="USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;;"
+				PreprocessorDefinitions="USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -208,14 +208,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\CaptchaDialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\CaptchaGenerator.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\CatDialog.cpp"
 				>
 			</File>
@@ -269,10 +261,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\CommentDialogLst.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\CorruptionBlackBox.cpp"
 				>
 			</File>
 			<File
@@ -332,14 +320,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\FileArea.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\FileAutoClose.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\FileDetailDialog.cpp"
 				>
 			</File>
@@ -360,10 +340,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\GapList.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\GetTickCount.cpp"
 				>
 			</File>
@@ -373,10 +349,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\HTTPDownload.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\IP2Country.cpp"
 				>
 			</File>
 			<File
@@ -413,10 +385,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\MuleCollection.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\MuleColour.cpp"
 				>
 			</File>
 			<File
@@ -473,6 +441,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\PartFileConvert.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\PartFileConvertDlg.cpp"
 				>
 			</File>
 			<File
@@ -670,14 +642,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\CaptchaDialog.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\CaptchaGenerator.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\CatDialog.h"
 				>
 			</File>
@@ -742,10 +706,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\CorruptionBlackBox.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\CryptoPP_Inc.h"
 				>
 			</File>
@@ -798,14 +758,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\FileArea.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\FileAutoClose.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\FileDetailDialog.h"
 				>
 			</File>
@@ -827,10 +779,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\FriendListCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\GapList.h"
 				>
 			</File>
 			<File
@@ -895,10 +843,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\MuleCollection.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\MuleColour.h"
 				>
 			</File>
 			<File
@@ -967,6 +911,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\PartFileConvert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\PartFileConvertDlg.h"
 				>
 			</File>
 			<File

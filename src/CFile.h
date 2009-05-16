@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 1998-2008 Vadim Zeitlin ( zeitlin@dptmaths.ens-cachan.fr )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 1998 Vadim Zeitlin ( zeitlin@dptmaths.ens-cachan.fr )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -31,9 +31,6 @@
 
 #include <wx/file.h>		// Needed for constants
 
-#ifdef _MSC_VER  // silly warnings about deprecated functions
-#pragma warning(disable:4996)
-#endif
 
 /**
  * This class is a modified version of the wxFile class.
@@ -90,16 +87,6 @@ public:
 	 */
 	bool Open(const CPath& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
 	bool Open(const wxString& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
-
-	/**
-	 * Reopens a file which was opened and closed before.
-	 *
-	 * @param mode The opening mode.
-	 * 
-	 * The filename used for last open is used again.
-	 * No return value - function throws on failure.
-	 */
-	void Reopen(OpenMode mode);
 	
 	/**
 	 * Calling Create is equivilant of calling open with OpenMode 'write'.
@@ -149,7 +136,7 @@ public:
 	/**
 	 * Resizes the file to the specified length.
 	 */
-	bool SetLength(uint64 newLength);
+	bool SetLength(size_t newLength);
 	
 	/**
 	 * @see CSafeFileIO::GetPosition
@@ -168,6 +155,8 @@ public:
 	/**
 	 * Returns the path of the currently opened file.
 	 * 
+	 * Calling this function on an closed file is
+	 * an illegal operation.
 	 */
 	const CPath& GetFilePath() const;
 	

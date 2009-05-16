@@ -1,9 +1,9 @@
 Source: amule
 Section: net
 Priority: optional
-Maintainer: Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>
-Build-Depends: debhelper (>= 5.0.0), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline5-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev
-Standards-Version: 3.8.0.1
+Maintainer: Vollstrecker <amule@vollstreckernet.de>
+Build-Depends: debhelper (>= 5.0.0), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline5-dev, libgeoip-dev, libupnp-dev, binutils-dev
+Standards-Version: 3.7.2.2
 
 Package: amule
 Architecture: any
@@ -52,8 +52,7 @@ Description: amule ed2k link-handler
 Package: amule-cas
 Architecture: any
 Depends: ${shlibs:Depends}, amule (= ${binary:Version}) | amule-daemon (= ${binary:Version})
-Conflicts: amule-utils (<< ${binary:Version})
-Replaces: amule-utils (<< ${binary:Version})
+Conflicts: amule-utils (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: reporting module for amule
  cas reports statistics about amule on the console
 
@@ -61,7 +60,6 @@ Package: amule-wxcas
 Architecture: any
 Depends: ${shlibs:Depends}, amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}), amule-i18n-en-gb (= ${binary:Version}) | amule-i18n
 Conflicts: amule-utils (<< ${binary:Version})
-Replaces: amule-utils (<< ${binary:Version})
 Description: reporting module for amule (graphical)
  wxcas reports statistics about amule on your desktop, using wxlib
 
@@ -85,8 +83,22 @@ Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
 Conflicts: amule-common (<< ${binary:Version}), amule (<< ${binary:Version})
 Description: the default template for the webserver
  this package contains the default template for amulewebserver
- atm the litoral theme is the default one, and the only one
- included in aMule
+
+Package: amule-theme-php-default
+Architecture: any
+Provides: amule-web-templates
+Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
+Conflicts: amule-common (<< ${binary:Version})
+Description: the default template for the webserver
+ this package contains the default php template for amulewebserver
+
+Package: amule-theme-chicane
+Architecture: any
+Provides: amule-web-templates
+Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
+Conflicts: amule-common (<< ${binary:Version}), amule (<< ${binary:Version})
+Description: a new template set for the webserver
+ this package contains a new theme for amulewebserver
 
 Package: amuleweb
 Architecture: any
@@ -118,7 +130,6 @@ Package: amule-alc
 Architecture: any
 Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n
 Conflicts: amule-utils (<< ${binary:Version})
-Replaces: amule-utils (<< ${binary:Version})
 Description: the amule-link-creator
  amule-link-creator lets you create ed2k-links and hashes for a given file.
 
@@ -126,7 +137,6 @@ Package: amule-alcc
 Architecture: any
 Depends: ${shlibs:Depends}
 Conflicts: amule-utils (<< ${binary:Version})
-Replaces: amule-utils (<< ${binary:Version})
 Description: the amule-link-creator (commandline-version)
  amule-link-creator lets you create ed2k-links and hashes for a given file
  from the commandline.
@@ -135,7 +145,6 @@ Package: amule-cmd
 Architecture: any
 Depends: ${shlibs:Depends}
 Conflicts: amule-utils (<< ${binary:Version})
-Replaces: amule-utils (<< ${binary:Version})
 Description: the amule-commandline-client
  amulecmd gives you control over a running amule-daemon or amule from
  commandline.
@@ -373,72 +382,61 @@ Description: Chinese (zh_TW) internationalized (i18n) files for amule
  This package contains the Chinese internationalized files for amule.
 
 Package: amule-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: aNOTHER eMule P2P Client debugging symbols
  this package contains the debugging symbols for the amule binary
 
 Package: amule-ed2k-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-ed2k (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: amule ed2k link-handler debugging symbols
  The debugging symbols for the ed2k binary
 
 Package: amule-cas-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-cas (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: reporting module for amule debugging symbols
  the debugging symbols for the cas binary
 
 Package: amule-wxcas-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-wxcas (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: reporting module for amule (graphical) debugging symbols
  the debugging symbols for the wxcas binary
 
 Package: amuleweb-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amuleweb (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: the webserver for amule debugging symbols
  the debugging symbols for the amuleweb binary
 
 Package: amule-remote-gui-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-remote-gui (= ${binary:Version})
 Description: the remote gui for amule debugging symbols
  the debugging symbols for the amulegui binary
 
 Package: amule-daemon-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-daemon (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: the amule daemon debugging symbols
  the debugging symbols for the amuled binary
 
 Package: amule-alc-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-alc (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: the amule-link-creator debugging symbols
  the debugging symbols for the alc binary
 
 Package: amule-alcc-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-alcc (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: the amule-link-creator (commandline-version) debugging symbols
  the debugging symbols for the alcc binary
 
 Package: amule-cmd-dbg
-Priority: extra
 Architecture: any
-Depends: ${shlibs:Depends}, amule-cmd (= ${binary:Version})
+Depends: ${shlibs:Depends}
 Description: the amule-commandline-client-dbg
  the debugging symbols for the amulecmd binary
 
@@ -447,8 +445,8 @@ Architecture: any
 Depends: amule (= ${binary:Version})
 Provides: amule-skin
 Conflicts: amule (<< ${binary:Version})
-Description: GNOME Skin files for amule
- This package contains the GNOME Skin files for amule.
+Description: Gnome Skin files for amule
+ This package contains the Gnome Skin files for amule.
 
 Package: amule-skin-kde4
 Architecture: any

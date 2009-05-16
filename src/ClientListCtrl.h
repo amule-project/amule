@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -28,7 +28,7 @@
 
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
 #include "Constants.h"			// Needed for ViewType
-#include <wx/brush.h>
+
 
 class CUpDownClient;
 
@@ -134,10 +134,6 @@ public:
 	void	ToggleView();
 
 	
-protected:
-	/// Return old column order.
-	wxString GetOldColumnOrder() const;
-
 private:
 	/**
 	 * Custom cell-drawing function.
@@ -197,11 +193,11 @@ private:
 	//! A pointer to the displayed menu, used to ensure that only one menu is displayed at a time.
 	wxMenu*		m_menu;
 
-	//! One of the two most used brushes, cached for performance reasons.
-	wxBrush	m_hilightBrush;
+	//! A pointer to one of the two most used brushes, cached for performance reasons.
+	wxBrush*	m_hilightBrush;
 	
-	//! One of the two most used brushes, cached for performance reasons.
-	wxBrush	m_hilightUnfocusBrush;
+	//! A pointer to one of the two most used brushes, cached for performance reasons.
+	wxBrush*	m_hilightUnfocusBrush;
 	
 
 	DECLARE_EVENT_TABLE()
@@ -253,11 +249,6 @@ struct CUploadingView
 	 * Helperfunction which draws a simple bar-span over the clients requested file.
 	 */
 	static void DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect &rect );
-
-	/**
-	 * Return the old column order for this view.
-	 */
-	static wxString GetOldColumnOrder();
 };
 
 
@@ -282,11 +273,6 @@ struct CQueuedView
 	 * @see CUploadingView::SortProc
 	 */
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
-
-	/**
-	 * Return the old column order for this view.
-	 */
-	static wxString GetOldColumnOrder();
 };
 
 
@@ -311,11 +297,6 @@ struct CClientsView
 	 * @see CUploadingView::SortProc
 	 */
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
-
-	/**
-	 * Return the old column order for this view.
-	 */
-	static wxString GetOldColumnOrder();
 };
 
 #endif

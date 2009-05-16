@@ -183,10 +183,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\utils\fileview\eD2kFiles.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\utils\fileview\FileView.cpp"
 				>
 			</File>

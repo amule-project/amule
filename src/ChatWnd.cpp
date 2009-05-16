@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -155,8 +155,7 @@ void CChatWnd::SendMessage(const wxString& message, const wxString& client_name,
 }
 
 
-void CChatWnd::CheckNewButtonsState()
-{
+void CChatWnd::CheckNewButtonsState() {
 	switch (chatselector->GetPageCount()) {
 			case 0:
 				GetParent()->FindWindow(IDC_CSEND)->Enable(false);
@@ -176,22 +175,4 @@ void CChatWnd::CheckNewButtonsState()
 				break;
 	}
 }
-
-
-bool CChatWnd::IsIdValid(uint64 id)
-{ 
-	return chatselector->GetTabByClientID(id) >= 0;
-}
-
-
-void CChatWnd::ShowCaptchaResult(uint64 id, bool ok)
-{
-	chatselector->ShowCaptchaResult(id, ok);
-}
-
-void CChatWnd::EndSession(uint64 id)
-{
-	chatselector->EndSession(id);
-}
-
 // File_checked_for_headers

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -551,10 +551,10 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 		while(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall < maxNumberOfBytesToSend && anErrorHasOccured == false && // don't send more than allowed. Also, there should have been no error in earlier loop
 			  (!m_control_queue.empty() || !m_standard_queue.empty() || sendbuffer != NULL) && // there must exist something to send
 			  (onlyAllowedToSendControlPacket == false || // this means we are allowed to send both types of packets, so proceed
-			   (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall > 0 && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) % minFragSize != 0) ||
-			   (sendbuffer == NULL && !m_control_queue.empty()) || // There's a control packet in queue, and we are not currently sending anything, so we will handle the control packet next
-			   (sendbuffer != NULL && m_currentPacket_is_controlpacket == true) || // We are in the progress of sending a control packet. We are always allowed to send those
-			   (sendbuffer != NULL && m_currentPacket_is_controlpacket == false && bWasLongTimeSinceSend && !m_control_queue.empty() && m_standard_queue.empty() && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize) // We have waited to long to clean the current packet (which may be a standard packet that is in the way). Proceed no matter what the value of onlyAllowedToSendControlPacket.
+			   sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall > 0 && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) % minFragSize != 0 ||
+			   sendbuffer == NULL && !m_control_queue.empty() || // There's a control packet in queue, and we are not currently sending anything, so we will handle the control packet next
+			   sendbuffer != NULL && m_currentPacket_is_controlpacket == true || // We are in the progress of sending a control packet. We are always allowed to send those
+			   sendbuffer != NULL && m_currentPacket_is_controlpacket == false && bWasLongTimeSinceSend && !m_control_queue.empty() && m_standard_queue.empty() && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize // We have waited to long to clean the current packet (which may be a standard packet that is in the way). Proceed no matter what the value of onlyAllowedToSendControlPacket.
 			  )
 			 ) {
 	
@@ -579,7 +579,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				} else {
 					// Just to be safe. Shouldn't happen?
 					// if we reach this point, then there's something wrong with the while condition above!
-					wxFAIL;
+					wxASSERT(0);
 					AddDebugLogLineM(true, logGeneral, wxT("EMSocket: Couldn't get a new packet! There's an error in the first while condition in EMSocket::Send()"));
 	
 					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
@@ -604,7 +604,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				   (
 					onlyAllowedToSendControlPacket == false || // this means we are allowed to send both types of packets, so proceed
 					m_currentPacket_is_controlpacket ||
-					(bWasLongTimeSinceSend && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize) ||
+					bWasLongTimeSinceSend && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize ||
 					(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) % minFragSize != 0
 				   ) &&
 				   anErrorHasOccured == false) {
@@ -684,7 +684,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 		}
 	}
 	
-	if(onlyAllowedToSendControlPacket && (!m_control_queue.empty() || (sendbuffer != NULL && m_currentPacket_is_controlpacket))) {
+	if(onlyAllowedToSendControlPacket && (!m_control_queue.empty() || sendbuffer != NULL && m_currentPacket_is_controlpacket)) {
 		// enter control packet send queue
 		// we might enter control packet queue several times for the same package,
 		// but that costs very little overhead. Less overhead than trying to make sure

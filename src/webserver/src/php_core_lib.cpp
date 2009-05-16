@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -24,31 +24,23 @@
 //
 
 #ifdef HAVE_CONFIG_H
-#	include "config.h"
+#      include "config.h"
 #endif
 
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #ifdef HAVE_SYS_TYPES_H
-#	include <sys/types.h>
+#      include <sys/types.h>
 #endif
 #include <regex.h>
 
-#ifdef PHP_STANDALONE_EN
-#include <map>
-#include <string>
-#include <list>
-#else
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
-#endif
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
-#ifndef PHP_STANDALONE_EN
 #include <wx/datetime.h>
-#endif
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -508,12 +500,12 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	m_server = server;
 
 	php_engine_init();
-	phpin = fopen(file, "r");
-	if ( !phpin ) {
+	yyin = fopen(file, "r");
+	if ( !yyin ) {
 		return;
 	}
 
-	phpparse();
+	yyparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
@@ -530,7 +522,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 	m_global_scope = g_global_scope;
 
 	php_set_input_buffer(php_buf, len);
-	phpparse();
+	yyparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 }
@@ -588,17 +580,14 @@ void CPhPLibContext::Print(const char *str)
 	}
 }
 
-
 CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 			const char *file, CWriteStrBuffer *buff)
 {
 	FILE *f = fopen(file, "r");
 	if ( !f ) {
-		printf("ERROR: php can not open source file [%s]\n", file);
 		return;
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
-		printf("ERROR: fseek failed on php source file [%s]\n", file); 
 		return;
 	}
 	int size = ftell(f);
@@ -628,29 +617,23 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 
-#ifndef PHP_STANDALONE_EN
+
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
 		load_session_vars("_SESSION", sess->m_vars);
-#endif
 
 		context->Execute(buff);
 
-#ifndef PHP_STANDALONE_EN
 		save_session_vars(sess->m_vars);
-#endif
 
 		delete context;
 		
 		scan_ptr = curr_code_end;
 	}
 
-#ifndef PHP_STANDALONE_EN
 	sess->m_get_vars.clear();
-#endif
 
 	delete [] buf;
 }
-
 
 /*
  * String buffer: almost same as regular 'string' class, but,

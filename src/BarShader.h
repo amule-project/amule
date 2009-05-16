@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -27,10 +27,11 @@
 #define BARSHADER_H
 
 #include "Types.h"	// Needed for uint16 and uint32
-#include "MuleColour.h"
+
 
 class wxRect;
 class wxDC;
+
 
 /**
  * The barshader class is responsible for drawing the chunk-based progress bars used in aMule.
@@ -51,7 +52,7 @@ public:
 	 * @param height The height of the area upon which the span is drawn.
 	 * @param width  The width of the area upon which the span is drawn.
 	 */
-	CBarShader(unsigned height = 1, unsigned width = 1);
+	CBarShader(uint32 height = 1, uint32 width = 1);
 
 	/**
 	 * Destructor.
@@ -75,14 +76,15 @@ public:
 	 *
 	 * Changes the height of the bar, used when it is drawn.
 	 */
-	void SetHeight(unsigned height);
+	void SetHeight( int height );
+
 
 	/**
 	 * Sets the 3D-depth of the bar
 	 *
 	 * @param depth A value in the range from 1 to 5.
 	 */
-	void Set3dDepth(unsigned depth);
+	void Set3dDepth( int depth );
 
 	/**
 	 * Sets a new filesize.
@@ -92,32 +94,28 @@ public:
 	 * Calling this function sets a new filesize, which is the virtual 
 	 * length of the bar. This function must be called before any filling.
 	 */
-	void SetFileSize(uint64 fileSize)	{ m_FileSize = fileSize; }
+	void SetFileSize(uint64 fileSize);
 
 	/**
 	 * Fills in a range with a certain color.
 	 *
 	 * @param start The starting position of the new span.
 	 * @param end The ending position of the new span. Must be larger than start.
-	 * @param colour The colour of the new span.
+	 * @param color The color of the new span.
 	 *
 	 * Calling this function fill the specified range with the specified color.
 	 * Any spans completly or partially covered by the new span are either
 	 * removed or resized. If the value of end is larger than the current
 	 * filesize, the filesize is increased to the value of end.
 	 */
-	void FillRange(uint64 start, uint64 end, const CMuleColour& colour);
+	void FillRange(uint64 start, uint64 end, uint32 color);
 
 	/**
 	 * Fill the entire bar with a span of the specified color.
 	 *
-	 * @param colour The colour of the new span.
+	 * @param color The color of the new span.
 	 */
-	void Fill(const CMuleColour& colour)
-	{
-		m_Content.clear();
-		m_Content.resize(m_Width, colour);
-	}
+	void Fill(uint32 color);
 
 	/**
 	 * Draws the bar on the specifed wxDC.
@@ -138,19 +136,34 @@ private:
 	 */
 	void BuildModifiers();
 	
+	/**
+	 * Fills a rectangle with a given color.
+	 *
+	 * @param dc The DC upon which to draw the bar.
+	 * @param rectSpan The area within the specifed DC upon which to draw.
+	 * @param color The color of the rectangle.
+	 * @param bFlat If this is true, a simple rectangle will be drawn, otherwise the modifers will be applyed to achive a 3D effect.
+	 */
+	void FillRect(wxDC* dc, const wxRect& rectSpan, uint32 color, bool bFlat);
+
+	/**
+	 * Blend in a single pixel
+	 */
+	void BlendPixel(uint32 index, uint32 color, double covered);
+
 	//! The width of the drawn bar
-	unsigned	m_Width;
+	int    m_Width;
 	//! The height of the drawn bar
-	unsigned	m_Height;
+	int    m_Height;
 	//! The virtual filesize assosiated with the bar
-	uint64	m_FileSize;
+	uint64 m_FileSize;
 	//! Pointer to array of modifers used to create 3D effect. Size is (m_Height+1)/2 when set.
-	double*	m_Modifiers;
+	double* m_Modifiers;
 	//! The current 3d level 
-	uint16	m_used3dlevel;
+	uint16 m_used3dlevel;
 
 	// color for each pixel across the width is stored here
-	std::vector<CMuleColour> m_Content;
+	std::vector<uint32> m_Content;
 };
 
 #endif
