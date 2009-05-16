@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ -z ${1} ] ; then
+
+	echo "You have to specify a language to translate into (i.e. de)."
+	exit 0
+
+fi
+
+if [ ! -e docs/man/manpages-${1}.po ] ; then
+
+	echo "The specified translation catalog doesn\`t exist"
+	echo "Make sure, that the .po-file is in docs/man"
+	exit 0
+
+fi
+
+bin=`which po4a-translate` || { echo "You don't have po4a installed"; exit 0; }
+
+${bin} -f man -m docs/man/amule.1 -p docs/man/manpages-${1}.po -l docs/man/amule.${1}.1 -L UTF8
+${bin} -f man -m docs/man/amuled.1 -p docs/man/manpages-${1}.po -l docs/man/amuled.${1}.1 -L UTF8
+${bin} -f man -m docs/man/amulecmd.1 -p docs/man/manpages-${1}.po -l docs/man/amulecmd.${1}.1 -L UTF8
+${bin} -f man -m docs/man/amulegui.1 -p docs/man/manpages-${1}.po -l docs/man/amulegui.${1}.1 -L UTF8
+${bin} -f man -m docs/man/amuleweb.1 -p docs/man/manpages-${1}.po -l docs/man/amuleweb.${1}.1 -L UTF8
+${bin} -f man -m docs/man/ed2k.1 -p docs/man/manpages-${1}.po -l docs/man/ed2k.${1}.1 -L UTF8
+${bin} -f man -m src/utils/wxCas/docs/wxcas.1 -p docs/man/manpages-${1}.po -l src/utils/wxCas/docs/wxcas.${1}.1 -L UTF8
+${bin} -f man -m src/utils/cas/docs/cas.1 -p docs/man/manpages-${1}.po -l src/utils/cas/docs/cas.${1}.1 -L UTF8
+${bin} -f man -m src/utils/xas/docs/xas.1 -p docs/man/manpages-${1}.po -l src/utils/xas/docs/xas.${1}.1 -L UTF8
