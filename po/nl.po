@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-13 19:36+0200\n"
+"POT-Creation-Date: 2009-05-16 16:34+0200\n"
 "PO-Revision-Date: 2009-03-08 23:18+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -131,7 +131,7 @@ msgstr ""
 "webserver, of compileer aMule met --enable-webserver en draai make install."
 
 #: src/amule.cpp:864 src/amule.cpp:985 src/amule.cpp:1354
-#: src/amule-remote-gui.cpp:303 src/amule-remote-gui.cpp:324
+#: src/amule-remote-gui.cpp:303 src/amule-remote-gui.cpp:325
 msgid "ERROR"
 msgstr "FOUT"
 
@@ -161,7 +161,7 @@ msgstr ""
 "Controleer uw netwerk en zorg ervoor dat de poort open is voor in- en "
 "uitgaand verkeer."
 
-#: src/amule.cpp:1091 src/amule-remote-gui.cpp:505
+#: src/amule.cpp:1091 src/amule-remote-gui.cpp:507
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -283,123 +283,123 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr "Server hostnaam geïnformeerd"
 
-#: src/amule.cpp:1638
+#: src/amule.cpp:1639
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Toewijzen schijfruimte voor bestand '%s' mislukt: %s"
 
-#: src/amule.cpp:1762
+#: src/amule.cpp:1763
 msgid "ERROR: can't open logfile"
 msgstr "FOUT: kan logbestand niet openen"
 
-#: src/amule.cpp:1766
+#: src/amule.cpp:1767
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "WAARSCHUWING: logbestand is leeg. Er is iets mis."
 
-#: src/amule.cpp:1784
+#: src/amule.cpp:1785
 msgid "Log has been reset"
 msgstr "Log is gereset"
 
-#: src/amule.cpp:1809
+#: src/amule.cpp:1810
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ServerBericht: %s"
 
-#: src/amule.cpp:1847
+#: src/amule.cpp:1848
 msgid "Failed to download the nodes list."
 msgstr "Kon nodes lijst niet downloaden."
 
-#: src/amule.cpp:1867
+#: src/amule.cpp:1868
 msgid "Failed to open the downloaded version check file"
 msgstr "Kon gedownload versie controle bestand niet openen"
 
-#: src/amule.cpp:1870 src/amule.cpp:1880 src/amule.cpp:1886
+#: src/amule.cpp:1871 src/amule.cpp:1881 src/amule.cpp:1887
 msgid "Corrupted version check file"
 msgstr "Beschadigd versie controle bestand"
 
-#: src/amule.cpp:1896
+#: src/amule.cpp:1897
 msgid "You are using an outdated version of aMule!"
 msgstr "U gebruikt een verouderde versie van aMule!"
 
-#: src/amule.cpp:1897
+#: src/amule.cpp:1898
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Uw aMule versie is %i.%i.%i en de nieuwste versie is %li.%li.%li"
 
-#: src/amule.cpp:1898
+#: src/amule.cpp:1899
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "De nieuwste versie kan altijd gevonden worden op http://www.amule.org"
 
-#: src/amule.cpp:1900
+#: src/amule.cpp:1901
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "WAARSCHUWING: Uw aMuled versie is verouderd: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1904
+#: src/amule.cpp:1905
 msgid "Your copy of aMule is up to date."
 msgstr "U heeft de nieuwste aMule versie."
 
-#: src/amule.cpp:1911
+#: src/amule.cpp:1912
 msgid "Failed to download the version check file"
 msgstr "Kon versie controle bestand niet downloaden"
 
-#: src/amule.cpp:2071
+#: src/amule.cpp:2072
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Gebruikers: %s | Bestanden: %s"
 
-#: src/amule.cpp:2072
+#: src/amule.cpp:2073
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Gebruikers: E: %s K: %s | Bestanden: E: %s K: %s"
 
-#: src/amule.cpp:2081
+#: src/amule.cpp:2082
 msgid "No networks selected"
 msgstr "Geen netwerken geselecteerd"
 
-#: src/amule.cpp:2146 src/TextClient.cpp:698
+#: src/amule.cpp:2147 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "met Laag ID"
 
-#: src/amule.cpp:2146 src/TextClient.cpp:698
+#: src/amule.cpp:2147 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "met Hoog ID"
 
-#: src/amule.cpp:2148
+#: src/amule.cpp:2149
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Verbonden met %s %s"
 
-#: src/amule.cpp:2151
+#: src/amule.cpp:2152
 #, c-format
 msgid "Connecting to %s"
 msgstr "Verbinden met %s"
 
-#: src/amule.cpp:2153
+#: src/amule.cpp:2154
 msgid "Disconnected from eD2k"
 msgstr "Verbinding verbroken met eD2K"
 
-#: src/amule.cpp:2160
+#: src/amule.cpp:2161
 msgid "Kad started."
 msgstr "Kad gestart."
 
-#: src/amule.cpp:2162
+#: src/amule.cpp:2163
 msgid "Kad stopped."
 msgstr "Kad gestopt."
 
-#: src/amule.cpp:2169
+#: src/amule.cpp:2170
 msgid "Connected to Kad (ok)"
 msgstr "Verbonden met Kad (ok)"
 
-#: src/amule.cpp:2171
+#: src/amule.cpp:2172
 msgid "Connected to Kad (firewalled)"
 msgstr "Verbonden met Kad (firewalled)"
 
-#: src/amule.cpp:2174
+#: src/amule.cpp:2175
 msgid "Disconnected from Kad"
 msgstr "Verbinding met Kad verbroken"
 
-#: src/amule.cpp:2237
+#: src/amule.cpp:2238
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -407,7 +407,7 @@ msgstr ""
 "Kad netwerk kan niet gebruikt worden als de UDP poort is uitgeschakeld in "
 "voorkeuren, wordt niet gestart."
 
-#: src/amule.cpp:2240
+#: src/amule.cpp:2241
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad netwerk is uitgeschakeld in voorkeuren, wordt niet mee verbonden."
 
@@ -534,8 +534,8 @@ msgstr " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:505 src/KadDlg.cpp:177 src/PartFile.cpp:919
-#: src/PartFile.cpp:927 src/PrefsUnifiedDlg.cpp:556
+#: src/amuleDlg.cpp:505 src/KadDlg.cpp:177 src/PartFile.cpp:910
+#: src/PartFile.cpp:918 src/PrefsUnifiedDlg.cpp:556
 #: src/PrefsUnifiedDlg.cpp:656 src/PrefsUnifiedDlg.cpp:740
 msgid "Message"
 msgstr "Bericht"
@@ -586,7 +586,7 @@ msgstr "Annuleren"
 msgid "Stop the current connection attempts"
 msgstr "Beëindig de huidige verbindingspogingen"
 
-#: src/amuleDlg.cpp:775 src/MuleTrayIcon.cpp:539 src/muuli_wdr.cpp:2697
+#: src/amuleDlg.cpp:775 src/MuleTrayIcon.cpp:549 src/muuli_wdr.cpp:2697
 msgid "Disconnect"
 msgstr "Verbreek"
 
@@ -594,7 +594,7 @@ msgstr "Verbreek"
 msgid "Disconnect from the currently connected networks"
 msgstr "Verbreek de huidige verbin"
 
-#: src/amuleDlg.cpp:781 src/MuleTrayIcon.cpp:542 src/muuli_wdr.cpp:2880
+#: src/amuleDlg.cpp:781 src/MuleTrayIcon.cpp:552 src/muuli_wdr.cpp:2880
 #: src/muuli_wdr.cpp:3271 src/muuli_wdr.cpp:3454
 msgid "Connect"
 msgstr "Verbinden"
@@ -774,25 +774,25 @@ msgstr "GUI EV gebeurtenisafhandelaar op afstand"
 msgid "Going down"
 msgstr "Wordt afgesloten"
 
-#: src/amule-remote-gui.cpp:323 src/ExternalConnector.cpp:411
+#: src/amule-remote-gui.cpp:324 src/ExternalConnector.cpp:411
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "Verbinding Mislukt. Kon niet verbinden met %s:%d\n"
 
-#: src/amule-remote-gui.cpp:422
+#: src/amule-remote-gui.cpp:424
 msgid "Ready"
 msgstr "Klaar"
 
-#: src/amule-remote-gui.cpp:601
+#: src/amule-remote-gui.cpp:603
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Gebruikers: E: %s K: %s | Bestanden E: %s K: %s"
 
-#: src/amule-remote-gui.cpp:659 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:661 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Alle"
 
-#: src/amule-remote-gui.cpp:897
+#: src/amule-remote-gui.cpp:899
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Totaal Gebruikers: %s | Totaal Bestanden: %s"
@@ -806,7 +806,7 @@ msgstr "Kon gedeelde bestanden niet ontvangen van gebruiker '%s'"
 msgid "Searching buddy for lowid connection"
 msgstr "Op zoek naar buddy voor laag id verbinding"
 
-#: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2552
+#: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2563
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:121 src/ClientListCtrl.cpp:691
@@ -815,9 +815,9 @@ msgstr "Op zoek naar buddy voor laag id verbinding"
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1429 src/DownloadListCtrl.cpp:1442
 #: src/DownloadListCtrl.cpp:1453 src/ExternalConn.cpp:295
-#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:895
-#: src/KnownFile.cpp:901 src/MuleTrayIcon.cpp:408 src/PartFile.cpp:2509
-#: src/PartFile.cpp:2515 src/Server.cpp:156 src/Server.cpp:231
+#: src/FileDetailDialog.cpp:130 src/HTTPDownload.cpp:82 src/KnownFile.cpp:896
+#: src/KnownFile.cpp:902 src/MuleTrayIcon.cpp:418 src/PartFile.cpp:2503
+#: src/PartFile.cpp:2509 src/Server.cpp:156 src/Server.cpp:231
 #: src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Onbekend"
@@ -883,12 +883,12 @@ msgstr "Aangevraagd bestand is onbekend"
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Client %s op IP:Poort %s:%d gebruikt %s %s %s"
 
-#: src/BaseClient.cpp:2630
+#: src/BaseClient.cpp:2641
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "Bericht van '%s' gefilterd (IP:%s)"
 
-#: src/BaseClient.cpp:2737
+#: src/BaseClient.cpp:2748
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "Nieuw bericht van '%s' (IP:%s)"
@@ -930,19 +930,19 @@ msgstr ""
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr "Chat-Sessie Begonnen: %s (%s:%u) - %s %s"
 
-#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:297
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
 msgid "*** Connected to Client ***"
 msgstr "*** Verbonden met Client ***"
 
-#: src/ChatSelector.cpp:260
+#: src/ChatSelector.cpp:249
 msgid "*** Connecting to Client ***"
 msgstr "*** Verbinden maken met Client ***"
 
-#: src/ChatSelector.cpp:291
+#: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kon niet Verbinden met client / Verbinding verbroken ***"
 
-#: src/ChatSelector.cpp:344
+#: src/ChatSelector.cpp:333
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
@@ -950,7 +950,7 @@ msgstr ""
 "*** U heeft de captcha controle gehaald en de gebruiker heeft uw bericht "
 "ontvangen. ***"
 
-#: src/ChatSelector.cpp:345
+#: src/ChatSelector.cpp:334
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
@@ -1134,7 +1134,7 @@ msgid "Upload Time"
 msgstr "Upload Tijd"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3752 src/SearchListCtrl.cpp:93
+#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:93
 msgid "Status"
 msgstr "Status"
 
@@ -1186,7 +1186,7 @@ msgstr "Verbinden via server"
 msgid "Transferring"
 msgstr "Overdragen"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1376
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1377
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "In wachtrij"
@@ -1487,13 +1487,13 @@ msgstr "Zoekresultaat"
 msgid "Part"
 msgstr "Part"
 
-#: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:628
+#: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:627
 #: src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
 msgid "Size"
 msgstr "Grootte"
 
 #: src/DownloadListCtrl.cpp:191 src/OtherFunctions.cpp:697
-#: src/PartFileConvert.cpp:609 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:608 src/TransferWnd.cpp:347
 msgid "Completed"
 msgstr "Compleet"
 
@@ -1502,7 +1502,7 @@ msgid "Progress"
 msgstr "Voortgang"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3750 src/SearchListCtrl.cpp:90
+#: src/PartFile.cpp:3763 src/SearchListCtrl.cpp:90
 msgid "Sources"
 msgstr "Bronnen"
 
@@ -2417,31 +2417,31 @@ msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "%d Kad contact geschreven"
 msgstr[1] "%d Kad contacten geschreven"
 
-#: src/KnownFile.cpp:1370 src/PartFileConvert.cpp:626
+#: src/KnownFile.cpp:1371 src/PartFileConvert.cpp:625
 msgid "File name"
 msgstr "Bestandsnaam"
 
-#: src/KnownFile.cpp:1371
+#: src/KnownFile.cpp:1372
 msgid "File size"
 msgstr "Bestandsgrootte"
 
-#: src/KnownFile.cpp:1372
+#: src/KnownFile.cpp:1373
 msgid "Share ratio"
 msgstr "Deel ratio"
 
-#: src/KnownFile.cpp:1373
+#: src/KnownFile.cpp:1374
 msgid "Uploaded"
 msgstr "Geüpload"
 
-#: src/KnownFile.cpp:1374
+#: src/KnownFile.cpp:1375
 msgid "Requested"
 msgstr "Aangevraagd"
 
-#: src/KnownFile.cpp:1375
+#: src/KnownFile.cpp:1376
 msgid "Accepted"
 msgstr "Geaccepteerd"
 
-#: src/KnownFile.cpp:1377
+#: src/KnownFile.cpp:1378
 msgid "Complete sources"
 msgstr "Complete bronnen"
 
@@ -2464,35 +2464,35 @@ msgstr "IO fout bij het lezen van known.met bestand: %s"
 msgid "Error while saving known.met file: %s"
 msgstr "Fout bij het bewaren van known.met bestand; %s"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3682
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3695
 msgid "Hashing"
 msgstr "Aan het hashen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3688
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3701
 msgid "Completing"
 msgstr "Voltooien"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3691
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3704
 msgid "Complete"
 msgstr "Compleet"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:701
-#: src/PartFile.cpp:3694 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3707 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Gepauzeerd"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:700
-#: src/PartFile.cpp:3697 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Foutief"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:699
-#: src/PartFile.cpp:3704 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3717 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Downloaden"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:698
-#: src/PartFile.cpp:3706 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3719 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Wachten"
 
@@ -2570,7 +2570,7 @@ msgstr "Sluit andere tabbladen"
 msgid "Cut"
 msgstr "Knippen"
 
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:426
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:425
 #: src/utils/aLinkCreator/src/alcframe.cpp:262
 msgid "Copy"
 msgstr "Kopiëren"
@@ -2588,160 +2588,160 @@ msgstr "Wissen"
 msgid "Select All"
 msgstr "Alles Selecteren"
 
-#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:143 src/MuleTrayIcon.cpp:494
-#: src/MuleTrayIcon.cpp:515
+#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:504
+#: src/MuleTrayIcon.cpp:525
 msgid "Unlimited"
 msgstr "Onbegrensd"
 
-#: src/MuleTrayIcon.cpp:312
+#: src/MuleTrayIcon.cpp:322
 msgid "Traybar-icon lost, trying to recreate ..."
 msgstr "Traybalk-pictogram kwijtgeraakt, poging tot opnieuw maken ..."
 
-#: src/MuleTrayIcon.cpp:332
+#: src/MuleTrayIcon.cpp:342
 msgid "aMule Tray Menu"
 msgstr "aMule Systeemvak Menu"
 
-#: src/MuleTrayIcon.cpp:338
+#: src/MuleTrayIcon.cpp:348
 msgid "Speed limits:"
 msgstr "Snelheid grenzen:"
 
-#: src/MuleTrayIcon.cpp:343
+#: src/MuleTrayIcon.cpp:353
 msgid "UL: None"
 msgstr "UL: Geen"
 
-#: src/MuleTrayIcon.cpp:346
+#: src/MuleTrayIcon.cpp:356
 #, c-format
 msgid "UL: %u"
 msgstr "UL: %u"
 
-#: src/MuleTrayIcon.cpp:353
+#: src/MuleTrayIcon.cpp:363
 msgid "DL: None"
 msgstr "DL: Geen"
 
-#: src/MuleTrayIcon.cpp:356
+#: src/MuleTrayIcon.cpp:366
 #, c-format
 msgid "DL: %u"
 msgstr "DL: %u"
 
-#: src/MuleTrayIcon.cpp:360
+#: src/MuleTrayIcon.cpp:370
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Download snelheid: %.1f"
 
-#: src/MuleTrayIcon.cpp:362
+#: src/MuleTrayIcon.cpp:372
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Upload snelheid: %.1f"
 
-#: src/MuleTrayIcon.cpp:368
+#: src/MuleTrayIcon.cpp:378
 msgid "Client Information"
 msgstr "Client Informatie"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:382
 #, c-format
 msgid "Nickname: %s"
 msgstr "Bijnaam: %s"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:382
 msgid "No Nickname Selected!"
 msgstr "Geen Bijnaam Geselecteerd!"
 
-#: src/MuleTrayIcon.cpp:379
+#: src/MuleTrayIcon.cpp:389
 msgid "ClientID: "
 msgstr "ClientID: "
 
-#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/TextClient.cpp:703
+#: src/MuleTrayIcon.cpp:395 src/MuleTrayIcon.cpp:409 src/TextClient.cpp:703
 #: src/TextClient.cpp:716
 msgid "Not connected"
 msgstr "Niet verbonden"
 
-#: src/MuleTrayIcon.cpp:392
+#: src/MuleTrayIcon.cpp:402
 msgid "ServerName: "
 msgstr "ServerNaam: "
 
-#: src/MuleTrayIcon.cpp:393
+#: src/MuleTrayIcon.cpp:403
 msgid "ServerIP: "
 msgstr "ServerIP: "
 
 # msgstr "Verbinden"
-#: src/MuleTrayIcon.cpp:400 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:410 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:272
 msgid "Not Connected"
 msgstr "Niet verbonden"
 
-#: src/MuleTrayIcon.cpp:408
+#: src/MuleTrayIcon.cpp:418
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:417
+#: src/MuleTrayIcon.cpp:427
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP poort: %d"
 
-#: src/MuleTrayIcon.cpp:419
+#: src/MuleTrayIcon.cpp:429
 msgid "TCP port: Not ready"
 msgstr "TCP poort: Niet gereed"
 
-#: src/MuleTrayIcon.cpp:428
+#: src/MuleTrayIcon.cpp:438
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP poort: %d"
 
-#: src/MuleTrayIcon.cpp:430
+#: src/MuleTrayIcon.cpp:440
 msgid "UDP port: Not ready"
 msgstr "UDP poort: Niet gereed"
 
-#: src/MuleTrayIcon.cpp:439
+#: src/MuleTrayIcon.cpp:449
 msgid "Online Signature: Enabled"
 msgstr "Online Handtekening: Ingeschakeld"
 
-#: src/MuleTrayIcon.cpp:442
+#: src/MuleTrayIcon.cpp:452
 msgid "Online Signature: Disabled"
 msgstr "Online Handtekening: Uitgeschakeld"
 
-#: src/MuleTrayIcon.cpp:449 src/Statistics.cpp:644
+#: src/MuleTrayIcon.cpp:459 src/Statistics.cpp:644
 #, c-format
 msgid "Uptime: %s"
 msgstr "Uptime: %s"
 
-#: src/MuleTrayIcon.cpp:455
+#: src/MuleTrayIcon.cpp:465
 #, c-format
 msgid "Shared files: %d"
 msgstr "Gedeelde bestanden: %d"
 
-#: src/MuleTrayIcon.cpp:461
+#: src/MuleTrayIcon.cpp:471
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Clients in wachtrij: %d"
 
-#: src/MuleTrayIcon.cpp:468
+#: src/MuleTrayIcon.cpp:478
 #, c-format
 msgid "Total DL: %s"
 msgstr "Totaal gedownload: %s"
 
-#: src/MuleTrayIcon.cpp:475
+#: src/MuleTrayIcon.cpp:485
 #, c-format
 msgid "Total UL: %s"
 msgstr "Totaal geupload: %s"
 
-#: src/MuleTrayIcon.cpp:486
+#: src/MuleTrayIcon.cpp:496
 msgid "Upload limit"
 msgstr "Upload grens"
 
-#: src/MuleTrayIcon.cpp:490
+#: src/MuleTrayIcon.cpp:500
 msgid "Download limit"
 msgstr "Download grens"
 
-#: src/MuleTrayIcon.cpp:550
+#: src/MuleTrayIcon.cpp:560
 msgid "Hide aMule"
 msgstr "Verberg aMule"
 
-#: src/MuleTrayIcon.cpp:553
+#: src/MuleTrayIcon.cpp:563
 msgid "Show aMule"
 msgstr "Toon aMule"
 
-#: src/MuleTrayIcon.cpp:560 src/utils/aLinkCreator/src/alcframe.cpp:234
+#: src/MuleTrayIcon.cpp:570 src/utils/aLinkCreator/src/alcframe.cpp:234
 msgid "Exit"
 msgstr "Afsluiten"
 
@@ -4414,7 +4414,7 @@ msgstr "Schakel Uitgebreid Debug-Loggen in."
 msgid "Message Categories:"
 msgstr "Bericht Categorie?n"
 
-#: src/muuli_wdr.cpp:3323 src/PartFileConvert.cpp:721
+#: src/muuli_wdr.cpp:3323 src/PartFileConvert.cpp:720
 msgid "Waiting..."
 msgstr "Wachtend..."
 
@@ -4539,7 +4539,7 @@ msgstr "alle anderen"
 msgid "Incomplete"
 msgstr "Incompleet"
 
-#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3711 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:702 src/PartFile.cpp:3724 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Gestopt"
 
@@ -4590,63 +4590,63 @@ msgstr "Data van oud download bestand wordt geladen (%u van %u)"
 msgid "Saving data block into new single download file (%u of %u)"
 msgstr "Data block wordt bewaard in nieuw enkel download bestand (%u van %u)"
 
-#: src/PartFileConvert.cpp:446
+#: src/PartFileConvert.cpp:445
 msgid "Retrieving source downloadfile information"
 msgstr "Bron downloadbestand informatie wordt opgehaald"
 
-#: src/PartFileConvert.cpp:469
+#: src/PartFileConvert.cpp:468
 msgid "Adding download and saving new partfile"
 msgstr "Download wordt toegevoegd en nieuw partbestand bewaard"
 
-#: src/PartFileConvert.cpp:546
+#: src/PartFileConvert.cpp:545
 msgid "Fetching status..."
 msgstr "Status wordt opgehaald..."
 
-#: src/PartFileConvert.cpp:610
+#: src/PartFileConvert.cpp:609
 msgid "In progress"
 msgstr "Bezig"
 
-#: src/PartFileConvert.cpp:611
+#: src/PartFileConvert.cpp:610
 msgid "ERROR: Out of diskspace"
 msgstr "FOUT: Onvoldoende schijfruimte"
 
-#: src/PartFileConvert.cpp:612
+#: src/PartFileConvert.cpp:611
 msgid "ERROR: Partmet not found"
 msgstr "FOUT: Partmet niet gevonden"
 
-#: src/PartFileConvert.cpp:613
+#: src/PartFileConvert.cpp:612
 msgid "ERROR: IO error!"
 msgstr "FOUT: IO fout!"
 
-#: src/PartFileConvert.cpp:614
+#: src/PartFileConvert.cpp:613
 msgid "ERROR: Failed!"
 msgstr "FOUT: Mislukt!"
 
-#: src/PartFileConvert.cpp:615
+#: src/PartFileConvert.cpp:614
 msgid "Queued"
 msgstr "In Wachtrij"
 
-#: src/PartFileConvert.cpp:616
+#: src/PartFileConvert.cpp:615
 msgid "Already downloading"
 msgstr "Wordt al gedownload"
 
-#: src/PartFileConvert.cpp:617
+#: src/PartFileConvert.cpp:616
 msgid "Unknown or bad tempfile format."
 msgstr "Onbekend of fout tempbestand formaat."
 
-#: src/PartFileConvert.cpp:627
+#: src/PartFileConvert.cpp:626
 msgid "State"
 msgstr "Status"
 
-#: src/PartFileConvert.cpp:629
+#: src/PartFileConvert.cpp:628
 msgid "Filehash"
 msgstr "Bestandshash"
 
-#: src/PartFileConvert.cpp:675
+#: src/PartFileConvert.cpp:674
 msgid "Import partfiles"
 msgstr "Importeer deelbestanden"
 
-#: src/PartFileConvert.cpp:695
+#: src/PartFileConvert.cpp:694
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
@@ -4654,128 +4654,128 @@ msgstr ""
 "Kies a.u.b. een map om te doorzoeken naar tijdelijke downloads! "
 "(onderliggende mappen worden meegenomen)"
 
-#: src/PartFileConvert.cpp:699
+#: src/PartFileConvert.cpp:698
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 "Wilt u dat de bron bestanden van succesvol ge?mporteerde bestanden "
 "verwijderd worden?"
 
-#: src/PartFileConvert.cpp:700
+#: src/PartFileConvert.cpp:699
 msgid "Remove sources?"
 msgstr "Verwijder bronnen?"
 
-#: src/PartFileConvert.cpp:736
+#: src/PartFileConvert.cpp:735
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr "%s (Schijf: %s)"
 
-#: src/PartFile.cpp:294
+#: src/PartFile.cpp:284
 msgid "ERROR: Failed to create partfile)"
 msgstr "FOUT: Kon partbestand niet aanmaken)"
 
-#: src/PartFile.cpp:332
+#: src/PartFile.cpp:321
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Proberen backup van met-bestand te laden van %s"
 
-#: src/PartFile.cpp:339
+#: src/PartFile.cpp:328
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
 msgstr "FOUT: Kon part.met bestand niet openen: %s ==> %s"
 
-#: src/PartFile.cpp:345
+#: src/PartFile.cpp:334
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
 msgstr "FOUT: part.met bestand heeft grootte 0: %s ==> %s"
 
-#: src/PartFile.cpp:356
+#: src/PartFile.cpp:345
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "FOUT: Ongeldige part.met bestandsversie: %s ==> %s"
 
-#: src/PartFile.cpp:606
+#: src/PartFile.cpp:595
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "FOUT: %s (%s) is beschadigd (verkeerde tagcount), kan bestand niet laden."
 
-#: src/PartFile.cpp:609
+#: src/PartFile.cpp:598
 msgid "Trying to recover file info..."
 msgstr "Poging om bestandsinfo te herstellen..."
 
-#: src/PartFile.cpp:624
+#: src/PartFile.cpp:613
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Naamloos bestand herstellen - zal proberen om het te herstellen als "
 "RecoverdFile.dat"
 
-#: src/PartFile.cpp:629
+#: src/PartFile.cpp:618
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "Alle beschikbare bestands info hersteld :D - Poging om het te gebruiken..."
 
-#: src/PartFile.cpp:631
+#: src/PartFile.cpp:620
 msgid "Unable to recover file info :("
 msgstr "Kon bestands info niet herstellen :("
 
-#: src/PartFile.cpp:666
+#: src/PartFile.cpp:655
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Kon %s (%s) niet openen"
 
-#: src/PartFile.cpp:714
+#: src/PartFile.cpp:705
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "WAARSCHUWING: %s is mogelijk beschadigd (%i)"
 
-#: src/PartFile.cpp:896
+#: src/PartFile.cpp:887
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "FOUT bij het bewaren van partbestand: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:903
+#: src/PartFile.cpp:894
 msgid "IO failure while saving partfile: "
 msgstr "IO fout bij het bewaren van partbestand: "
 
-#: src/PartFile.cpp:916
+#: src/PartFile.cpp:907
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "Kon lengte van '%s' niet bepalen - gebruik %s bestand."
 
-#: src/PartFile.cpp:924
+#: src/PartFile.cpp:915
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' heeft grootte 0 - %s bestand wordt gebruikt."
 
-#: src/PartFile.cpp:995
+#: src/PartFile.cpp:986
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Kon bestand part.met.seeds niet bewaren voor %s"
 
-#: src/PartFile.cpp:1021
+#: src/PartFile.cpp:1012
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "%i bron seed voor partbestand bewaard: %s (%s)"
 msgstr[1] "%i bron seeds voor partbestand bewaard: %s (%s)"
 
-#: src/PartFile.cpp:1050
+#: src/PartFile.cpp:1041
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Partbestand %s (%s) heeft geen seeds bestand"
 
-#: src/PartFile.cpp:1059
+#: src/PartFile.cpp:1050
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Partbestand %s (%s) heeft een leeg seeds bestand"
 
-#: src/PartFile.cpp:1115
+#: src/PartFile.cpp:1106
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Fout bij het lezen van partbestands seeds bestand (%s - %s): %s"
 
-#: src/PartFile.cpp:1133 src/PartFile.cpp:1163
+#: src/PartFile.cpp:1124 src/PartFile.cpp:1154
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4790,38 +4790,38 @@ msgstr[1] ""
 "Beschadigd deel (%d) gevonden in %d delen bestand %s - FileResultHash |%s| "
 "FileHash |%s|"
 
-#: src/PartFile.cpp:1178
+#: src/PartFile.cpp:1169
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Compleet deel (%i) gevonden in %s"
 
-#: src/PartFile.cpp:1211
+#: src/PartFile.cpp:1202
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Klaar met opnieuw hashen %s"
 
-#: src/PartFile.cpp:2133
+#: src/PartFile.cpp:2127
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Onverwachte fout tijdens het voltooien van %s. Bestand gepauzeerd"
 
-#: src/PartFile.cpp:2160
+#: src/PartFile.cpp:2157
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Klaar met downloaden: %s"
 
-#: src/PartFile.cpp:2217
+#: src/PartFile.cpp:2214
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Verwijderen van bestand: %s"
 
-#: src/PartFile.cpp:2277
+#: src/PartFile.cpp:2270
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "WAARSCHUWING: Kan gedownload deel niet hashen - incomplete hashset voor '%s'"
 
-#: src/PartFile.cpp:2282
+#: src/PartFile.cpp:2275
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4830,35 +4830,35 @@ msgstr ""
 "FOUT: Kan gedownload deel niet hashen - hashset incompleet (%s). Dit zou "
 "nooit mogen gebeuren"
 
-#: src/PartFile.cpp:2960
+#: src/PartFile.cpp:2957
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "WAARSCHUWING: Niet voldoende vrije schijfruimte! Pauzeren van bestand: %s"
 
-#: src/PartFile.cpp:3028
+#: src/PartFile.cpp:3027
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Gedownload deel %i is beschadigd in bestand: %s"
 
-#: src/PartFile.cpp:3074
+#: src/PartFile.cpp:3079
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Beschadigd deel %i van %s hersteld -> Bespaarde bytes: %s"
 
-#: src/PartFile.cpp:3684
+#: src/PartFile.cpp:3697
 msgid "Allocating"
 msgstr "Toewijzen"
 
-#: src/PartFile.cpp:3700
+#: src/PartFile.cpp:3713
 msgid "Insufficient disk space"
 msgstr "Onvoldoende schijfruimte"
 
-#: src/PartFile.cpp:3749
+#: src/PartFile.cpp:3762
 msgid "Downloaded"
 msgstr "Gedownload"
 
-#: src/PartFile.cpp:3963
+#: src/PartFile.cpp:3977
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "FOUT: Kon partbestand '%s' niet openen"
@@ -6735,31 +6735,31 @@ msgstr "Begonnen met het maken van MD4 hash voor bestand: %s"
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Begonnen met het maken van AICH hash voor bestand: %s"
 
-#: src/ThreadTasks.cpp:347
+#: src/ThreadTasks.cpp:348
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Oude AICH hashsets in '%s' worden omgezet in 64b in '%s'."
 
-#: src/ThreadTasks.cpp:426
+#: src/ThreadTasks.cpp:427
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "WAARSCHUWING: De bestandsnaam '%s' is ongeldig en is gewijzigd in '%s'."
 
-#: src/ThreadTasks.cpp:439
+#: src/ThreadTasks.cpp:440
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
 "WAARSCHUWING: Het bestand '%s' bestaat al, bestandsnaam van nieuw bestand "
 "gewijzigd in '%s'."
 
-#: src/ThreadTasks.cpp:452
+#: src/ThreadTasks.cpp:453
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "WAARSCHUWING: Kon origineel '%s' niet verwijderen na het maken van backup"
 
-#: src/ThreadTasks.cpp:464
+#: src/ThreadTasks.cpp:465
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "WAARSCHUWING: Kon %s niet verwijderen"
@@ -6794,14 +6794,14 @@ msgstr "Bewerk categorie"
 msgid "Remove category"
 msgstr "Verwijder categorie"
 
-#: src/UploadClient.cpp:272
+#: src/UploadClient.cpp:277
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr ""
 "Kon bestand niet openen (%s), wordt verwijderd uit de lijst van gedeelde "
 "bestanden."
 
-#: src/UploadClient.cpp:707
+#: src/UploadClient.cpp:718
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Hashset opgevraagd voor onbekend bestand: %s"
