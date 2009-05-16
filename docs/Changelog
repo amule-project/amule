@@ -92,6 +92,23 @@ Version 2.3.0 - The river knows.
 
 --------------------------------------------------------------------------------
 
+Version 2.2.5 - The "never say never" version.
+----------
+2009-05-16
+
+	GonoszTopi:
+		* Fixed possible security hole when previewing filenames containing single quotes
+		* Fixed default webserver port
+
+	Stu Redman:
+		* Fixed upload of the last part of a file which he broke in 2.2.4
+		* Fixed setting speed limits from remote gui's tray icon
+
+	Special Thanks To:
+		* CroMag for pointing out the upload problem
+
+--------------------------------------------------------------------------------
+
 Version 2.2.4 - The "we didn't have a .4 version since... well... long ago" version.
 ----------
 2009-04-03
