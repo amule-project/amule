@@ -266,6 +266,8 @@ void CPartFile::CreatePartFile()
 		m_partmetfilename = CPath(wxString::Format(wxT("%03i.part.met"), i));
 		m_fullname = thePrefs::GetTempDir().JoinPaths(m_partmetfilename);
 	} while (m_fullname.FileExists());
+
+	m_CorruptionBlackBox->SetPartNumber(m_partmetfilename.RemoveAllExt().GetPrintable());
 	
 	wxString strPartName = m_partmetfilename.RemoveExt().GetRaw();
 	m_taglist.push_back(CTagString(FT_PARTFILENAME, strPartName ));
@@ -310,6 +312,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	transferred = 0;
 	
 	m_partmetfilename = filename;
+	m_CorruptionBlackBox->SetPartNumber(m_partmetfilename.RemoveAllExt().GetPrintable());
 	m_filePath = in_directory;
 	m_fullname = m_filePath.JoinPaths(m_partmetfilename);
 	m_PartPath = m_fullname.RemoveExt();
@@ -2883,7 +2886,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	}
 
 	// log transferinformation in our "blackbox"
-	m_CorruptionBlackBox->TransferredData(start, end, client);
+	m_CorruptionBlackBox->TransferredData(start, end, client->GetIP());
 
 	// Create copy of data as new buffer
 	byte *buffer = new byte[lenData];
@@ -3044,7 +3047,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				}
 				
 				// tell the blackbox about the verified data
-				m_CorruptionBlackBox->VerifiedData(PARTSIZE*partNumber, PARTSIZE*partNumber + partRange);
+				m_CorruptionBlackBox->VerifiedData(true, partNumber, 0, partRange);
 
 				// if this part was successfully completed (although ICH is active), remove from corrupted list
 				EraseFirstValue(m_corrupted_list, partNumber);
@@ -3071,7 +3074,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
 
 				// tell the blackbox about the verified data
-				m_CorruptionBlackBox->VerifiedData(PARTSIZE*partNumber, PARTSIZE*partNumber + partRange);
+				m_CorruptionBlackBox->VerifiedData(true, partNumber, 0, partRange);
 
 				// remove from corrupted list
 				EraseFirstValue(m_corrupted_list, partNumber);
@@ -3391,13 +3394,13 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			RemoveBlockFromList(PARTSIZE*nPart, PARTSIZE*nPart + (nBlockSize-1));
 			nRecovered += nBlockSize;
 			// tell the blackbox about the verified data
-			m_CorruptionBlackBox->VerifiedData(PARTSIZE*nPart+pos, PARTSIZE*nPart + pos + (nBlockSize-1));
+			m_CorruptionBlackBox->VerifiedData(true, nPart, pos, pos + nBlockSize - 1);
 		} else {
 			// inform our "blackbox" about the corrupted block which may ban clients who sent it
-			m_CorruptionBlackBox->CorruptedData(PARTSIZE*nPart+pos, PARTSIZE*nPart + pos + (nBlockSize-1));
+			m_CorruptionBlackBox->VerifiedData(false, nPart, pos, pos + nBlockSize - 1);
 		}
 	}
-	m_CorruptionBlackBox->EvaluateData(nPart);
+	m_CorruptionBlackBox->EvaluateData();
 
 	// ok now some sanity checks
 	if (IsComplete(nPart)){
