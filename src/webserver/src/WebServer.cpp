@@ -353,7 +353,7 @@ void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 	const CECTag *tag = NULL;
 	if (reply) {
 		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
-			for(int i = 0; i < reply->GetTagCount(); ++i) {
+			for(uint32_t i = 0; i < reply->GetTagCount(); ++i) {
 				if (	(tag = reply->GetTagByIndex(i)) &&
 					(tag->GetTagName() == EC_TAG_STRING)) {
 					webInterface->Show(tag->GetStringData());
@@ -599,7 +599,7 @@ bool ServersInfo::ServersInfo::ReQuery()
 	//
 	// query succeded - flush existing values and refill
 	EraseAll();
-	for (int i = 0; i < srv_reply->GetTagCount(); ++i) {
+	for (uint32_t i = 0; i < srv_reply->GetTagCount(); ++i) {
 		const CECTag *tag = srv_reply->GetTagByIndex(i);
 		
 		ServerEntry Entry;
@@ -815,7 +815,7 @@ bool UploadsInfo::ReQuery()
 	//
 	// query succeded - flush existing values and refill
 	EraseAll();
-	for(int i = 0; i < up_reply->GetTagCount(); i ++) {
+	for(uint32_t i = 0; i < up_reply->GetTagCount(); i ++) {
 		
 		UploadFile curr((CEC_UpDownClient_Tag *)up_reply->GetTagByIndex(i));
 		
