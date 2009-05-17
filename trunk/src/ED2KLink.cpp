@@ -35,7 +35,7 @@
 
 #include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
-
+#include <common/Format.h>		// Needed for CFormat
 
 
 CED2KLink::CED2KLink( LinkType type )
@@ -173,7 +173,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 	wxString size = tokens.GetNextToken().Strip(wxString::both);
 	m_size = StrToULongLong(size);
 	if ((m_size == 0) || (m_size > MAX_FILE_SIZE)) {
-		throw wxString::Format(wxT("Invalid file size %i"), m_size);
+		throw wxString(CFormat(wxT("Invalid file size %i")) % m_size);
 	}
 	
 	if (!m_hash.Decode(tokens.GetNextToken().Strip(wxString::both))) {
@@ -276,7 +276,7 @@ CED2KFileLink::~CED2KFileLink()
 
 wxString CED2KFileLink::GetLink() const
 {
-	return wxT("ed2k://|file|") + m_name + wxString::Format(wxT("|%u|"), m_size) + m_hash.Encode() + wxT("|/");
+	return CFormat(wxT("ed2k://|file|%s|%u|%s|/")) % m_name % m_size % m_hash.Encode();
 }
 
 

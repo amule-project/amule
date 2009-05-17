@@ -333,7 +333,8 @@ void* UploadBandwidthThrottler::Entry()
 				bytesToSpend = 0; //realBytesToSpend/1000;
 			} else if(_I64_MAX/timeSinceLastLoop > allowedDataRate && _I64_MAX-allowedDataRate*timeSinceLastLoop > realBytesToSpend) {
 				if(timeSinceLastLoop > sleepTime + 2000) {
-					AddDebugLogLineM(false, logGeneral, wxString::Format(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims"), timeSinceLastLoop, sleepTime, sleepTime + 2000));
+					AddDebugLogLineM(false, logGeneral, CFormat(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims")) 
+						% timeSinceLastLoop % sleepTime % (sleepTime + 2000));
 		
 					timeSinceLastLoop = sleepTime + 2000;
 					lastLoopTick = thisLoopTick - timeSinceLastLoop;
@@ -412,7 +413,8 @@ void* UploadBandwidthThrottler::Entry()
 						}
 					}
 				} else {
-					AddDebugLogLineM(false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()) );
+					AddDebugLogLineM(false, logGeneral, CFormat( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"))
+						% slotCounter % m_StandardOrder_list.size());
 				}
 			}
 	
@@ -437,7 +439,8 @@ void* UploadBandwidthThrottler::Entry()
 					spentBytes += lastSpentBytes;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				} else {
-					AddDebugLogLineM(false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"), rememberedSlotCounter, m_StandardOrder_list.size()));
+					AddDebugLogLineM(false, logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"))
+						% rememberedSlotCounter % m_StandardOrder_list.size());
 				}
 
 				rememberedSlotCounter++;
@@ -454,7 +457,8 @@ void* UploadBandwidthThrottler::Entry()
 					spentBytes += lastSpentBytes;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				} else {
-					AddDebugLogLineM( false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (fully activated)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()));
+					AddDebugLogLineM(false, logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (fully activated)! Prevented usage. Index: %i Size: %i")) 
+						% slotCounter % m_StandardOrder_list.size());
 				}
 			}
 			realBytesToSpend -= spentBytes*1000;

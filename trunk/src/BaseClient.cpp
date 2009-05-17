@@ -462,7 +462,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				if (temptag.IsStr()) {
 					m_strModVersion = temptag.GetStr();
 				} else if (temptag.IsInt()) {
-					m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
+					m_strModVersion = CFormat(wxT("ModID=%u")) % temptag.GetInt();
 				} else {
 					m_strModVersion = wxT("ModID=<Unknown>");
 				}
@@ -931,7 +931,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 					if (temptag.IsStr()) {
 						m_strModVersion = temptag.GetStr();
 					} else if (temptag.IsInt()) {
-						m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
+						m_strModVersion = CFormat(wxT("ModID=%u")) % temptag.GetInt();
 					} else {
 						m_strModVersion = wxT("ModID=<Unknown>");
 					}

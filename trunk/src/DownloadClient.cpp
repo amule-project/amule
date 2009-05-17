@@ -729,7 +729,8 @@ void CUpDownClient::SendBlockRequests()
 			}
 			
 			packet = new CPacket(data, OP_ED2KV2HEADER, OP_REQUESTPARTS);
-			AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to "),(m_PendingBlocks_list.size()<m_MaxBlockRequests) ? m_PendingBlocks_list.size() : m_MaxBlockRequests) + GetFullIP() );
+			AddDebugLogLineM( false, logLocalClient, CFormat(wxT("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to %s"))
+				% (m_PendingBlocks_list.size()<m_MaxBlockRequests ? m_PendingBlocks_list.size() : m_MaxBlockRequests) % GetFullIP() );
 
 			break;
 		}
@@ -1047,9 +1048,9 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 		}
 	} catch (const CEOFException& e) {
 		wxString error = wxString(wxT("Error reading "));
-		if (packed) error += wxString::Format(wxT("packed (LU: %i) "),lenUnzipped);
-		if (packed) error += wxT("largeblocks ");
-		error += wxString::Format(wxT("data packet: RS: %i HS: %i SP: %i EP: %i BS: %i -> "),size,header_size,nStartPos,nEndPos,nBlockSize);
+		if (packed) error += CFormat(wxT("packed (LU: %i) largeblocks ")) % lenUnzipped;
+		error += CFormat(wxT("data packet: RS: %i HS: %i SP: %i EP: %i BS: %i -> "))
+					% size % header_size % nStartPos % nEndPos % nBlockSize;
 		AddDebugLogLineM(true, logRemoteClient, error + e.what());
 		return;
 	}
