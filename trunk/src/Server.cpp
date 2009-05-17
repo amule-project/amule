@@ -322,7 +322,7 @@ void CServer::SetLastDescPingedCount(bool bReset)
 
 uint32 CServer::GetServerKeyUDP(bool bForce) const
 {
-	if (m_dwIPServerKeyUDP != 0 && m_dwIPServerKeyUDP == theApp->GetPublicIP() || bForce) {
+	if ((m_dwIPServerKeyUDP != 0 && m_dwIPServerKeyUDP == theApp->GetPublicIP()) || bForce) {
 		return m_dwServerKeyUDP;
 	} else {
 		return 0;

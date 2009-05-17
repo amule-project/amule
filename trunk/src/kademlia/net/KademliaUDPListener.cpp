@@ -2178,7 +2178,7 @@ void CKademliaUDPListener::ProcessFindBuddyResponse(const uint8_t *packetData, u
 
 // KADEMLIA_CALLBACK_REQ
 // Used by Kad1.0 and Kad2.0
-void CKademliaUDPListener::ProcessCallbackRequest(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& WXUNUSED(senderKey))
+void CKademliaUDPListener::ProcessCallbackRequest(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t WXUNUSED(port), const CKadUDPKey& WXUNUSED(senderKey))
 {
 	// Verify packet is expected size
 	CHECK_PACKET_MIN_SIZE(34);
@@ -2261,7 +2261,7 @@ void CKademliaUDPListener::Process2FirewallUDP(const uint8_t *packetData, uint32
 
 	uint8_t errorCode = PeekUInt8(packetData);
 	uint16_t incomingPort = PeekUInt16(packetData + 1);
-	if (incomingPort != CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != CKademlia::GetPrefs()->GetInternKadPort() || incomingPort == 0) {
+	if ((incomingPort != CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != CKademlia::GetPrefs()->GetInternKadPort()) || incomingPort == 0) {
 		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck on unexpected incoming port %u (") + KadIPToString(ip) + wxT(")"), incomingPort));
 		CUDPFirewallTester::SetUDPFWCheckResult(false, true, ip, 0);
 	} else if (errorCode == 0) {
