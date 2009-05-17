@@ -25,22 +25,26 @@
 //
 
 #include "CorruptionBlackBox.h"
-#include "KnownFile.h"
+#include <protocol/ed2k/Constants.h>	// needed for PARTSIZE
 #include "updownclient.h"
 #include "Logger.h"
-#include "amule.h"
+#include "amule.h"				// needed for theApp
 #include "ClientList.h"
-#include <common/Format.h>	// Needed for CFormat
+#include "NetworkFunctions.h"	// needed for Uint32toStringIP
+#include <common/Format.h>		// needed for CFormat
 
 #define	 CBB_BANTHRESHOLD	32 //% max corrupted data	
 
 #ifdef __DEBUG__
-#define DEBUG_ONLY(statement) (statement)
+#define DEBUG_ONLY(statement) statement
 #else
 #define DEBUG_ONLY(statement)
 #endif
 
-CCBBRecord::CCBBRecord(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus) {
+// Record to store information which piece of data was downloaded from which client
+
+CCorruptionBlackBox::CCBBRecord::CCBBRecord(uint32 nStartPos, uint32 nEndPos, uint32 dwIP)
+{
 	if (nStartPos > nEndPos) {
 		wxASSERT( false );
 		return;
@@ -48,350 +52,224 @@ CCBBRecord::CCBBRecord(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus
 	m_nStartPos = nStartPos;
 	m_nEndPos = nEndPos;
 	m_dwIP = dwIP;
-	m_BBRStatus = BBRStatus;
 }
 
-CCBBRecord& CCBBRecord::operator=(const CCBBRecord& cv)
+// Try to merge new data to an existing record
+bool CCorruptionBlackBox::CCBBRecord::Merge(uint32 nStartPos, uint32 nEndPos, uint32 dwIP)
 {
-	m_nStartPos = cv.m_nStartPos;
-	m_nEndPos = cv.m_nEndPos;
-	m_dwIP = cv.m_dwIP;
-	m_BBRStatus = cv.m_BBRStatus;
-	return *this; 
-}
-
-bool CCBBRecord::Merge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus) {
-
-	if (m_dwIP == dwIP && m_BBRStatus == BBRStatus && (nStartPos == m_nEndPos + 1 || nEndPos + 1 == m_nStartPos)) {
+	if (m_dwIP == dwIP) {
 		if (nStartPos == m_nEndPos + 1) {
 			m_nEndPos = nEndPos;
+			return true;
 		} else if (nEndPos + 1 == m_nStartPos) {
 			m_nStartPos = nStartPos;
-		} else {
-			wxASSERT( false );
+			return true;
 		}
-
-		return true;
-	} else {
-		return false;
 	}
+	return false;
 }
 
-bool CCBBRecord::CanMerge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus) {
-
-	if (m_dwIP == dwIP && m_BBRStatus == BBRStatus && (nStartPos == m_nEndPos + 1 || nEndPos + 1 == m_nStartPos)) {
-		return true;
-	} else {
-		return false;
-	}
+// Release memory (after download completes)
+void CCorruptionBlackBox::Free()
+{
+	m_Records.clear();
+	m_goodClients.clear();
+	m_badClients.clear();
 }
 
-void CCorruptionBlackBox::Init(uint64 nFileSize) {
-	m_aaRecords.resize((nFileSize + PARTSIZE - 1) / PARTSIZE);
-}
-
-void CCorruptionBlackBox::Free() {
-	m_aaRecords.clear();
-}
-
-void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, const CUpDownClient* pSender) {
-	if (nEndPos - nStartPos >= PARTSIZE) {
-		wxASSERT( false );
-		return;
-	}
+// Store a piece of received data (don't know if it's good or bad yet).
+// Data is stored in a list for the chunk in belongs to.
+void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, uint32 senderIP)
+{
 	if (nStartPos > nEndPos) {
 		wxASSERT( false );
 		return;
 	}
-	uint32 dwSenderIP = pSender->GetIP();
-	// we store records seperated for each part, so we don't have to search all entries everytime
 	
 	// convert pos to relative block pos
 	uint16 nPart = (uint16)(nStartPos / PARTSIZE);
-	uint64 nRelStartPos = nStartPos - nPart*PARTSIZE;
-	uint64 nRelEndPos = nEndPos - nPart*PARTSIZE;
+	uint32 nRelStartPos = nStartPos - nPart*PARTSIZE;
+	uint32 nRelEndPos = nEndPos - nPart*PARTSIZE;
 	if (nRelEndPos >= PARTSIZE) {
 		// data crosses the partborder, split it
+		// (for the fun of it, this should never happen)
 		nRelEndPos = PARTSIZE-1;
-		uint64 nTmpStartPos = nPart*PARTSIZE + nRelEndPos + 1;
-		TransferredData(nTmpStartPos, nEndPos, pSender);
+		TransferredData((nPart+1)*PARTSIZE, nEndPos, senderIP);
 	}
-	if (nPart >= m_aaRecords.size()) {
-		m_aaRecords.resize(nPart+1);
+	//
+	// Let's keep things simple.
+	// We don't request data we already have.
+	// We check if received data exceeds block boundaries.
+	// -> There should not be much overlap here.
+	// So just stuff everything received into the list and only join adjacent blocks.
+	//
+	CRecordList & list = m_Records[nPart]; // this creates the entry if it doesn't exist yet
+	bool merged = false;
+	for (CRecordList::iterator it = list.begin(); it != list.end() && !merged; ++it) {
+		merged = it->Merge(nRelStartPos, nRelEndPos, senderIP);
 	}
-	int posMerge = -1;
-	uint64 ndbgRewritten = 0;
-	for (size_t i = 0; i < m_aaRecords[nPart].size(); i++) {
-		if (m_aaRecords[nPart][i].CanMerge(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE)) {
-			posMerge = i;
-		// check if there is already an pending entry and overwrite it
-		} else if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE) {
-			if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos) {
-				// old one is included in new one -> delete
-				ndbgRewritten += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart].erase(m_aaRecords[nPart].begin() + i);
-				i--;
-			} else if (m_aaRecords[nPart][i].m_nStartPos < nRelStartPos && m_aaRecords[nPart][i].m_nEndPos > nRelEndPos) {
-			    // old one includes new one
-				// check if the old one and new one have the same ip
-				if (dwSenderIP != m_aaRecords[nPart][i].m_dwIP) {
-					// different IP, means we have to split it 2 times
-					uint64 nTmpEndPos1 = m_aaRecords[nPart][i].m_nEndPos;
-					uint64 nTmpStartPos1 = nRelEndPos + 1;
-					uint64 nTmpStartPos2 = m_aaRecords[nPart][i].m_nStartPos;
-					uint64 nTmpEndPos2 = nRelStartPos - 1;
-					m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
-					m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
-					uint32 dwOldIP = m_aaRecords[nPart][i].m_dwIP;
-					m_aaRecords[nPart][i].m_dwIP = dwSenderIP;
-					m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos1,nTmpEndPos1, dwOldIP));
-					m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos2,nTmpEndPos2, dwOldIP));
-					// and are done then
-				}
-				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (1)")) % (nRelEndPos - nRelStartPos + 1));
-				return;
-			} else if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nStartPos <= nRelEndPos) {
-				// old one laps over new one on the right site
-				wxASSERT( nRelEndPos - m_aaRecords[nPart][i].m_nStartPos > 0 );
-				ndbgRewritten += nRelEndPos - m_aaRecords[nPart][i].m_nStartPos;
-				m_aaRecords[nPart][i].m_nStartPos = nRelEndPos + 1;
-			} else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos) {
-				// old one laps over new one on the left site
-				wxASSERT( m_aaRecords[nPart][i].m_nEndPos - nRelStartPos > 0 );
-				ndbgRewritten += m_aaRecords[nPart][i].m_nEndPos - nRelStartPos;
-				m_aaRecords[nPart][i].m_nEndPos = nRelStartPos - 1;
-			}
-		}
-	}
-	if (posMerge != -1) {
-		wxASSERT( m_aaRecords[nPart][posMerge].Merge(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE) );
-	} else {
-		m_aaRecords[nPart].push_back(CCBBRecord(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
-	}
-	
-	if (ndbgRewritten > 0) {
-		AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (2)")) % ndbgRewritten);
+	if (!merged) {
+		list.push_back(CCBBRecord(nRelStartPos, nRelEndPos, senderIP));
+		AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): transferred: new record for part %d (%d - %d, %s)")) 
+			% m_partNumber % nPart % nRelStartPos % nRelEndPos % Uint32toStringIP(senderIP));
 	}
 }
 
-void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos) {
-	if (nEndPos - nStartPos >= PARTSIZE) {
+// Mark a piece of data as good or bad.
+// Piece is removed from the chunk list and added to the client's record.
+void CCorruptionBlackBox::VerifiedData(bool ok, uint16 nPart, uint32 nRelStartPos, uint32 nRelEndPos) {
+	if (nRelStartPos > nRelEndPos) {
 		wxASSERT( false );
 		return;
 	}
-	// convert pos to relative block pos
-	uint16 nPart = (uint16)(nStartPos / PARTSIZE);
-	uint64 nRelStartPos = nStartPos - nPart*PARTSIZE;
-	uint64 nRelEndPos = nEndPos - nPart*PARTSIZE;
-	if (nRelEndPos >= PARTSIZE) {
-		wxASSERT( false );
-		return;
-	}
-	if (nPart >= (uint16)m_aaRecords.size()) {
-		m_aaRecords.resize(nPart+1);
-	}
-	uint64 nDbgVerifiedBytes = 0;
+
+	CRecordList & list = m_Records[nPart];
 #ifdef __DEBUG__
-	std::map<int, int> mapDebug;
+	std::map<uint32, bool> mapDebug;
+	uint32 nDbgVerifiedBytes = 0;
+	size_t listsize1 = list.size();
 #endif
-	for (size_t i= 0; i < m_aaRecords[nPart].size(); i++) {
-		if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE || m_aaRecords[nPart][i].m_BBRStatus == BBR_VERIFIED) {
-			if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos) {
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
-				DEBUG_ONLY(mapDebug[m_aaRecords[nPart][i].m_dwIP] = 1);
-			} else if (m_aaRecords[nPart][i].m_nStartPos < nRelStartPos && m_aaRecords[nPart][i].m_nEndPos > nRelEndPos) {
-			    // need to split it 2*
-				uint64 nTmpEndPos1 = m_aaRecords[nPart][i].m_nEndPos;
-				uint64 nTmpStartPos1 = nRelEndPos + 1;
-				uint64 nTmpStartPos2 = m_aaRecords[nPart][i].m_nStartPos;
-				uint64 nTmpEndPos2 = nRelStartPos - 1;
-				m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
-				m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos1, nTmpEndPos1, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos2, nTmpEndPos2, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
-				DEBUG_ONLY(mapDebug[m_aaRecords[nPart][i].m_dwIP] = 1);
-			} else if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nStartPos <= nRelEndPos) {
-				// need to split it
-				uint64 nTmpEndPos = m_aaRecords[nPart][i].m_nEndPos;
-				uint64 nTmpStartPos = nRelEndPos + 1;
-				m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
-				DEBUG_ONLY(mapDebug[m_aaRecords[nPart][i].m_dwIP] = 1);
-			} else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos) {
-				// need to split it
-				uint64 nTmpStartPos = m_aaRecords[nPart][i].m_nStartPos;
-				uint64 nTmpEndPos = nRelStartPos - 1;
-				m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
-				DEBUG_ONLY(mapDebug[m_aaRecords[nPart][i].m_dwIP] = 1);
+	for (CRecordList::iterator it1 = list.begin(); it1 != list.end();) {
+		CRecordList::iterator it = it1++;
+		uint32 & curStart = it->m_nStartPos;
+		uint32 & curEnd   = it->m_nEndPos;
+		uint32 ip = it->m_dwIP;
+		uint32 data = 0;
+		if (curStart >= nRelStartPos && curStart <= nRelEndPos) {
+			// [arg
+			//   [cur
+			if (curEnd > nRelEndPos) {
+				// [arg]
+				//   [cur]
+				data = nRelEndPos - curStart + 1;
+				curStart = nRelEndPos + 1;
+			} else {
+				// [arg    ]
+				//   [cur]
+				data = curEnd - curStart + 1;
+				list.erase(it);
 			}
+		} else if (curStart < nRelStartPos && curEnd >= nRelStartPos) {
+			//   [arg
+			// [cur
+			if (curEnd > nRelEndPos) {
+				//   [arg]
+				// [cur    ]
+				data = nRelEndPos - nRelStartPos + 1;
+				// split it: insert new block before current block
+				list.insert(it, CCBBRecord(curStart, nRelStartPos - 1, ip));
+				curStart = nRelEndPos + 1;
+			} else {
+				//   [arg]
+				// [cur]
+				data = curEnd - nRelStartPos + 1;
+				curEnd = nRelStartPos - 1;
+			}
+		// else no overlap
+		}
+		if (data) {
+			if (ok) {
+				m_goodClients[ip].m_downloaded += data;
+			} else {
+				// corrupted data records are always counted as at least blocksize or bigger
+				m_badClients[ip].m_downloaded += (data > EMBLOCKSIZE) ? data : EMBLOCKSIZE;;
+			}
+			DEBUG_ONLY(nDbgVerifiedBytes += data);
+			DEBUG_ONLY(mapDebug[ip] = 1);
 		}
 	}
+	DEBUG_ONLY(size_t listsize2 = list.size());
+	// when everything is added to the stats drop the whole record
+	if (list.empty()) {
+		m_Records.erase(nPart);
+	}
 #ifdef __DEBUG__
-	AddDebugLogLineN(logPartFile, CFormat(wxT("Found and marked %u recorded bytes of %u as verified in the CorruptionBlackBox records, %u records found, %u different clients"))
-		% nDbgVerifiedBytes % (nEndPos-nStartPos+1) % m_aaRecords[nPart].size() % mapDebug.size());
+	AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): found and marked %d recorded bytes of %d as %s in part %d, %d records found, %d records left, %d different clients"))
+		% m_partNumber % nDbgVerifiedBytes % (nRelEndPos-nRelStartPos+1) % (ok ? wxT("verified") : wxT("corrupt"))
+		% nPart % listsize1 % listsize2 % mapDebug.size());
 #endif
 }
 
-
-
-void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos) {
-	if (nEndPos - nStartPos >= EMBLOCKSIZE) {
-		wxASSERT( false );
-		return;
-	}
-	// convert pos to relative block pos
-	uint16 nPart = (uint16)(nStartPos / PARTSIZE);
-	uint64 nRelStartPos = nStartPos - nPart*PARTSIZE;
-	uint64 nRelEndPos = nEndPos - nPart*PARTSIZE;
-	if (nRelEndPos >= PARTSIZE) {
-		wxASSERT( false );
-		return;
-	}
-	if (nPart >= m_aaRecords.size()) {
-		m_aaRecords.resize(nPart+1);
-	}
-	uint64 nDbgVerifiedBytes = 0;
-	for (size_t i = 0; i < m_aaRecords[nPart].size(); i++) {
-		if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE) {
-			if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos) {
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
-			} else if (m_aaRecords[nPart][i].m_nStartPos < nRelStartPos && m_aaRecords[nPart][i].m_nEndPos > nRelEndPos) {
-			    // need to split it 2*
-				uint64 nTmpEndPos1 = m_aaRecords[nPart][i].m_nEndPos;
-				uint64 nTmpStartPos1 = nRelEndPos + 1;
-				uint64 nTmpStartPos2 = m_aaRecords[nPart][i].m_nStartPos;
-				uint64 nTmpEndPos2 = nRelStartPos - 1;
-				m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
-				m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos1, nTmpEndPos1, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos2, nTmpEndPos2, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
-			} else if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nStartPos <= nRelEndPos) {
-				// need to split it
-				uint64 nTmpEndPos = m_aaRecords[nPart][i].m_nEndPos;
-				uint64 nTmpStartPos = nRelEndPos + 1;
-				m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
-			} else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos) {
-				// need to split it
-				uint64 nTmpStartPos = m_aaRecords[nPart][i].m_nStartPos;
-				uint64 nTmpEndPos = nRelStartPos - 1;
-				m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
-				m_aaRecords[nPart].push_back(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-				nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
-				m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
-			}
-		}
-	}
-	AddDebugLogLineN(logPartFile, CFormat(wxT("Found and marked %d recorded bytes of %d as corrupted in the CorruptionBlackBox records"))
-		% nDbgVerifiedBytes % (nEndPos-nStartPos+1));
-}
-
-void CCorruptionBlackBox::EvaluateData(uint16 nPart)
+// Check all clients that uploaded corrupted data,
+// and ban them if they didn't upload enough good data too.
+void CCorruptionBlackBox::EvaluateData()
 {
-	std::vector<uint32> aGuiltyClients;
-	for (size_t i = 0; i < m_aaRecords[nPart].size(); i++)
-		if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED)
-			aGuiltyClients.push_back(m_aaRecords[nPart][i].m_dwIP);
-
-	// check if any IPs are already banned, so we can skip the test for those
-	for(size_t k = 0; k < aGuiltyClients.size();) {
-		// remove doubles
-		for(size_t y = k+1; y < aGuiltyClients.size();) {
-			if (aGuiltyClients[k] == aGuiltyClients[y]) {
-				aGuiltyClients.erase(aGuiltyClients.begin() + y);
-			} else {
-				y++;
-			}
+	CCBBClientMap::iterator it = m_badClients.begin();
+	for (; it != m_badClients.end(); ++it) {
+		uint32 ip = it->first;
+		uint64 bad = it->second.m_downloaded;
+		if (!bad) {
+			wxFAIL;		// this should not happen
+			continue;
 		}
-		if (theApp->clientlist->IsBannedClient(aGuiltyClients[k])) {
-			AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Suspicous IP (%s) is already banned, skipping recheck")) 
-				% Uint32toStringIP(aGuiltyClients[k]));
-			aGuiltyClients.erase(aGuiltyClients.begin() + k);
+		uint64 good = 0;
+		CCBBClientMap::iterator it2 = m_goodClients.find(ip);
+		if (it2 != m_goodClients.end()) {
+			good = it2->second.m_downloaded;
+		}
+
+		int nCorruptPercentage = bad * 100 / (bad + good);
+
+		if (nCorruptPercentage > CBB_BANTHRESHOLD) {
+			CUpDownClient* pEvilClient = theApp->clientlist->FindClientByIP(ip);
+			if (pEvilClient != NULL) {
+				AddLogLineN(CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
+					% m_partNumber % bad % (good + bad) % pEvilClient->GetClientFullInfo());
+				theApp->clientlist->AddTrackClient(pEvilClient);
+				pEvilClient->Ban();  // Identified as sender of corrupt data
+				// Stop download right away
+				pEvilClient->SetDownloadState(DS_BANNED);
+				if (pEvilClient->Disconnected(wxT("Upload of corrupted data"))) {
+					pEvilClient->Safe_Delete();
+				}
+			} else {
+				AddLogLineN(CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
+					% m_partNumber % bad % (good + bad) % Uint32toStringIP(ip));
+				theApp->clientlist->AddBannedClient(ip);
+			}
 		} else {
-			k++;
-		}
-	}
-	if (aGuiltyClients.size() > 0) {
-		// parse all recorded data for this file to produce a statistic for the involved clients
-		
-		// first init arrays for the statistic
-		std::vector<uint64> aDataCorrupt;
-		std::vector<uint64> aDataVerified;
-		aDataCorrupt.resize(aGuiltyClients.size());
-		aDataVerified.resize(aGuiltyClients.size());
-		for (size_t j = 0; j < aGuiltyClients.size(); j++) {
-			aDataCorrupt[j] = aDataVerified[j] = 0;
-		}
-
-		// now the parsing
-		for (size_t part = 0; part < m_aaRecords.size(); part++) {
-			for (size_t i = 0; i < m_aaRecords[part].size(); i++) {
-				for (size_t k = 0; k < aGuiltyClients.size(); k++) {
-					if (m_aaRecords[part][i].m_dwIP == aGuiltyClients[k]) {
-						if (m_aaRecords[part][i].m_BBRStatus == BBR_CORRUPTED) {
-							// corrupted data records are always counted as at least blocksize or bigger
-							uint32 corr = m_aaRecords[part][i].m_nEndPos - m_aaRecords[part][i].m_nStartPos + 1;
-							aDataCorrupt[k] += (corr > EMBLOCKSIZE) ? corr : EMBLOCKSIZE;
-						} else if (m_aaRecords[part][i].m_BBRStatus == BBR_VERIFIED) {
-							aDataVerified[k] += (m_aaRecords[part][i].m_nEndPos-m_aaRecords[part][i].m_nStartPos)+1;
-						}
-					}
-				}
-			}
-		}
-		for (size_t k = 0; k < aGuiltyClients.size(); k++) {
-			// calculate the percentage of corrupted data for each client and ban
-			// him if the limit is reached
-			int nCorruptPercentage;
-			if ((aDataVerified[k] + aDataCorrupt[k]) > 0) {
-				nCorruptPercentage = (int)(((uint64)aDataCorrupt[k]*100)/(aDataVerified[k] + aDataCorrupt[k]));
+			CUpDownClient* pSuspectClient = theApp->clientlist->FindClientByIP(ip);
+			if (pSuspectClient != NULL) {
+				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Reporting: Found client which probably sent %d of %d corrupted data, but it is within the acceptable limit, %s"))
+					% m_partNumber % bad % (good + bad) % pSuspectClient->GetClientFullInfo());
+				theApp->clientlist->AddTrackClient(pSuspectClient);
 			} else {
-				AddDebugLogLineN(logPartFile, wxT("CorruptionBlackBox: Programm Error: No records for guilty client found!"));
-				wxASSERT( false );
-				nCorruptPercentage = 0;
-			}
-			if ( nCorruptPercentage > CBB_BANTHRESHOLD) {
-
-				CUpDownClient* pEvilClient = theApp->clientlist->FindClientByIP(aGuiltyClients[k]);
-				if (pEvilClient != NULL) {
-					AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"))
-						% CastItoXBytes(aDataCorrupt[k]) % CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])) % pEvilClient->GetClientFullInfo());
-					theApp->clientlist->AddTrackClient(pEvilClient);
-					pEvilClient->Ban();  // Identified as sender of corrupt data
-					// Stop download right away
-					pEvilClient->SetDownloadState(DS_ERROR);
-					if (pEvilClient->Disconnected(wxT("Upload of corrupted data"))) {
-						pEvilClient->Safe_Delete();
-					}
-				} else {
-					AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"))
-						% CastItoXBytes(aDataCorrupt[k]) % CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])) % Uint32toStringIP(aGuiltyClients[k]));
-					theApp->clientlist->AddBannedClient(aGuiltyClients[k]);
-				}
-			} else {
-				CUpDownClient* pSuspectClient = theApp->clientlist->FindClientByIP(aGuiltyClients[k]);
-				if (pSuspectClient != NULL) {
-					AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Reporting: Found client which probably send %s of %s corrupted data, but it is within the acceptable limit, %s"))
-						% CastItoXBytes(aDataCorrupt[k]) % CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])) % pSuspectClient->GetClientFullInfo());
-					theApp->clientlist->AddTrackClient(pSuspectClient);
-				} else {
-					AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox: Reporting: Found client which probably send %s of %s corrupted data, but it is within the acceptable limit, %s"))
-						% CastItoXBytes(aDataCorrupt[k]) % CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])) % Uint32toStringIP(aGuiltyClients[k]));
-				}
+				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Reporting: Found client which probably sent %d of %d corrupted data, but it is within the acceptable limit, %s"))
+					% m_partNumber % bad % (good + bad) % Uint32toStringIP(ip));
 			}
 		}
 	}
+}
+
+// Full debug output of all data
+void CCorruptionBlackBox::DumpAll()
+{
+#ifdef __DEBUG__
+	AddDebugLogLineN(logPartFile, wxT("CBB Dump Records"));
+	std::map<uint16, CRecordList>::iterator it = m_Records.begin();
+	for (; it != m_Records.end(); ++it) {
+		uint16 block = it->first;
+		CRecordList & list = it->second;
+		for (CRecordList::iterator it2 = list.begin(); it2 != list.end(); ++it2) {
+			AddDebugLogLineN(logPartFile, CFormat(wxT("CBBD %6d %.16s %10d - %10d"))
+				% block % Uint32toStringIP(it2->m_dwIP) % it2->m_nStartPos % it2->m_nEndPos);
+		}
+	}
+	if (!m_goodClients.empty()) {
+		AddDebugLogLineN(logPartFile, wxT("CBB Dump good Clients"));
+		CCBBClientMap::iterator it3 = m_goodClients.begin();
+		for (; it3 != m_goodClients.end(); ++it3) {
+			AddDebugLogLineN(logPartFile, CFormat(wxT("CBBD %.16s good %10d"))
+				% Uint32toStringIP(it3->first) % it3->second.m_downloaded);
+		}
+	}
+	if (!m_badClients.empty()) {
+		AddDebugLogLineN(logPartFile, wxT("CBB Dump bad Clients"));
+		CCBBClientMap::iterator it3 = m_badClients.begin();
+		for (; it3 != m_badClients.end(); ++it3) {
+			AddDebugLogLineN(logPartFile, CFormat(wxT("CBBD %.16s bad %10d"))
+				% Uint32toStringIP(it3->first) % it3->second.m_downloaded);
+		}
+	}
+#endif
 }

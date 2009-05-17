@@ -1307,6 +1307,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
 		case DS_ERROR:
+		case DS_BANNED:
 			theApp->clientlist->AddDeadSource(this);
 			bDelete = true;
 	};

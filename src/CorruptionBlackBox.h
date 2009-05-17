@@ -28,52 +28,48 @@
 #define CORRUPTIONBLACKBOX_H
 
 #include "Types.h"
-#include <vector>
-
-class CUpDownClient;
-
-
-enum EBBRStatus{
-	BBR_NONE = 0,
-	BBR_VERIFIED,
-	BBR_CORRUPTED
-};
-
-
-class CCBBRecord
-{
-public:
-	CCBBRecord(uint64 nStartPos = 0, uint64 nEndPos = 0, uint32 dwIP = 0, EBBRStatus BBRStatus = BBR_NONE);
-	CCBBRecord(const CCBBRecord& cv)			{ *this = cv; }
-	CCBBRecord& operator=(const CCBBRecord& cv);
-
-	bool	Merge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus = BBR_NONE);
-	bool	CanMerge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus = BBR_NONE);
-
-	uint64	m_nStartPos;
-	uint64	m_nEndPos;
-	uint32	m_dwIP;
-	EBBRStatus 	m_BBRStatus;
-};
-
-typedef std::vector<CCBBRecord> CRecordArray;
-
+#include <list>
+#include <map>
 
 class CCorruptionBlackBox
 {
 public:
-	CCorruptionBlackBox()			{}
-	~CCorruptionBlackBox()			{}
-	void	Init(uint64 nFileSize);
-	void	Free();
-	void	TransferredData(uint64 nStartPos, uint64 nEndPos, const CUpDownClient* pSender);
-	void	VerifiedData(uint64 nStartPos, uint64 nEndPos);
-	void	CorruptedData(uint64 nStartPos, uint64 nEndPos);
-	void	EvaluateData(uint16 nPart);
-
+	void Free();
+	void TransferredData(uint64 nStartPos, uint64 nEndPos, uint32 senderIP);
+	void VerifiedData(bool ok, uint16 nPart, uint32 nRelStartPos, uint32 nRelEndPos);
+	void EvaluateData();
+	void SetPartNumber(const wxString& nr) { m_partNumber = nr; }
+	void DumpAll();
 
 private:
-	std::vector<CRecordArray> m_aaRecords;
+	// downloaded data for each part
+	class CCBBRecord
+	{
+	public:
+		CCBBRecord(uint32 nStartPos, uint32 nEndPos, uint32 dwIP);
+		bool Merge(uint32 nStartPos, uint32 nEndPos, uint32 dwIP);
+
+		// Startpos / Endpos relative to part
+		uint32	m_nStartPos;
+		uint32	m_nEndPos;
+		// IP of client
+		uint32	m_dwIP;
+	};
+	typedef std::list<CCBBRecord> CRecordList;
+	std::map<uint16, CRecordList> m_Records;
+
+	// good/bad data for each client
+	class CCBBClient
+	{
+	public:
+		CCBBClient() { m_downloaded = 0; }
+		uint64 m_downloaded;
+	};
+	typedef std::map<uint32, CCBBClient> CCBBClientMap;
+	CCBBClientMap m_goodClients, m_badClients;
+
+	// for debug prints
+	wxString m_partNumber;
 };
 
 #endif
