@@ -46,7 +46,7 @@ class CWriteStrBuffer {
 		
 		void Write(const char *s, int len = -1);
 		void CopyAll(char *dst_buffer);
-		const int Length() { return m_total_length; }
+		int Length() { return m_total_length; }
 };
 
 class CWebServerBase;

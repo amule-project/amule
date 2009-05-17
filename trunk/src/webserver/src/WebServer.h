@@ -254,7 +254,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 		{
 			std::set<I> core_files;
-			for (int i = 0;i < reply->GetTagCount();i++) {
+			for (uint32_t i = 0;i < reply->GetTagCount();i++) {
 				G *tag = (G *)reply->GetTagByIndex(i);
 		
 				core_files.insert(tag->ID());
@@ -290,7 +290,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		
 		void ProcessFull(const CECPacket *reply)
 		{
-			for (int i = 0;i < reply->GetTagCount();i++) {
+			for (uint32_t i = 0;i < reply->GetTagCount();i++) {
 				G *tag = (G *)reply->GetTagByIndex(i);
 				// initialize item data from EC tag
 				T item(tag);
