@@ -323,7 +323,7 @@ bool CKeyEntry::SearchTermsMatch(const SSearchTerm* searchTerm) const
 	return false;
 }
 
-void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& dbgReason)
+void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& WXUNUSED(dbgReason))
 {
 	uint32_t count = 0;
 	bool found = false;

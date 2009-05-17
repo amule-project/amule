@@ -898,7 +898,7 @@ bool CRoutingZone::IsAcceptableContact(const CContact *toCheck) const
 	// we use this to check KADEMLIA_RES routing answers on searches
 	CContact *duplicate = GetContact(toCheck->GetClientID());
 	if (duplicate != NULL) {
-		if (duplicate->IsIPVerified() && duplicate->GetIPAddress() != toCheck->GetIPAddress() || duplicate->GetUDPPort() != toCheck->GetUDPPort()) {
+		if ((duplicate->IsIPVerified() && duplicate->GetIPAddress() != toCheck->GetIPAddress()) || duplicate->GetUDPPort() != toCheck->GetUDPPort()) {
 			// already existing verified node with different IP
 			return false;
 		} else {

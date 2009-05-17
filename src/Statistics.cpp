@@ -844,7 +844,7 @@ uint32 GetIdFromString(const wxString& str)
                 id ^= old_id;
                 id -= old_id;
         }
-	return ((id >> 1) + id | 0x00000100) & 0x7fffffff;
+	return (((id >> 1) + id) | 0x00000100) & 0x7fffffff;
 }
 
 void CStatistics::AddKnownClient(CUpDownClient *pClient)
