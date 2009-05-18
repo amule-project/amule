@@ -360,8 +360,6 @@ std::string CECSocket::GetLastErrorMsg()
 			return "The timeout for this operation expired";
 		case EC_ERROR_MEMERR:
 			return "Memory exhausted";
-		case EC_ERROR_DUMMY:
-			return "Dummy code - should not happen";
 	}
 	ostringstream error_string;
 	error_string << "Error code " << code <<  " unknown.";

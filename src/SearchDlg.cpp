@@ -228,7 +228,7 @@ void CSearchDlg::OnFilterCheckChange(wxCommandEvent& event)
 }
 
 
-void CSearchDlg::OnSearchClosing(wxNotebookEvent& evt) 
+void CSearchDlg::OnSearchClosing(wxBookCtrlEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
 	if ( evt.GetSelection() == ((int)m_notebook->GetPageCount() - 1 ) ) {
@@ -249,7 +249,7 @@ void CSearchDlg::OnSearchClosing(wxNotebookEvent& evt)
 }
 
 
-void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
+void CSearchDlg::OnSearchPageChanged(wxBookCtrlEvent& WXUNUSED(evt))
 {
 	int selection = m_notebook->GetSelection();
 

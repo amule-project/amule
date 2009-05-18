@@ -27,6 +27,7 @@
 #define SEARCHDLG_H
 
 #include <wx/panel.h>		// Needed for wxPanel
+#include <wx/notebook.h>	// needed for wxBookCtrlEvent in wx 2.8
 
 #include "Types.h"		// Needed for uint16 and uint32
 
@@ -35,7 +36,6 @@ class CMuleNotebook;
 class CSearchListCtrl;
 class CMuleNotebookEvent;
 class wxListEvent;
-class wxNotebookEvent;
 class wxSpinEvent;
 class wxGauge;
 class CSearchFile;
@@ -149,7 +149,7 @@ private:
 	void		OnFilterCheckChange(wxCommandEvent& ev);
 	void		OnFilteringChange(wxCommandEvent& ev);
 	
-	void		OnSearchClosing(wxNotebookEvent& evt);
+	void		OnSearchClosing(wxBookCtrlEvent& evt);
 
 	void		OnBnClickedStart(wxCommandEvent& evt);
 	void		OnBnClickedStop(wxCommandEvent& evt);
@@ -158,7 +158,7 @@ private:
 	/**
 	 * Event-handler for page-chages which takes care of enabling/disabling the download button.
 	 */
-	void		OnSearchPageChanged(wxNotebookEvent& evt);
+	void		OnSearchPageChanged(wxBookCtrlEvent& evt);
 	
 	uint32		m_last_search_time;
 	
