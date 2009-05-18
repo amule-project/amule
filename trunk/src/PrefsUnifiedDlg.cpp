@@ -143,7 +143,7 @@ void SendCheckBoxEvent(wxWindow* parent, int id)
 	wxCommandEvent evt(wxEVT_COMMAND_CHECKBOX_CLICKED, id);
 	evt.SetInt(widget->IsChecked() ? 1 : 0);
 
-	parent->ProcessEvent(evt);
+	parent->GetEventHandler()->ProcessEvent(evt);
 }
 
 

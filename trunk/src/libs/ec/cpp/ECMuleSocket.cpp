@@ -133,8 +133,7 @@ int CECMuleSocket::InternalGetLastError() {
 			return EC_ERROR_TIMEDOUT;
 		case wxSOCKET_MEMERR:
 			return EC_ERROR_MEMERR;
-		case wxSOCKET_DUMMY:
-			return EC_ERROR_DUMMY;
+		default:
+			return EC_ERROR_UNKNOWN;
 	}
-	return EC_ERROR_UNKNOWN;
 }

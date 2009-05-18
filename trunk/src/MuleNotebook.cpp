@@ -149,7 +149,7 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 		evt.m_x = point.x;
 		evt.m_y = point.y;
 			
-		m_popup_widget->AddPendingEvent( evt );
+		m_popup_widget->GetEventHandler()->AddPendingEvent( evt );
 	} else {
 		wxMenu menu(_("Close"));
 		menu.Append(MP_CLOSE_TAB, wxString(_("Close tab")));

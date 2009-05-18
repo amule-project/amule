@@ -1,4 +1,3 @@
-
 //
 // This file is part of the aMule Project.
 //
@@ -511,7 +510,7 @@ public:
 				int id = m_widget->GetId();
 				int pos = slider->GetValue();
 				wxScrollEvent evt( wxEVT_SCROLL_THUMBRELEASE, id, pos );
-				m_widget->ProcessEvent( evt );
+				m_widget->GetEventHandler()->ProcessEvent( evt );
 			}
 
 			return true;
