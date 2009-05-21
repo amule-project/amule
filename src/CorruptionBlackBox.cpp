@@ -213,7 +213,7 @@ void CCorruptionBlackBox::EvaluateData()
 		if (nCorruptPercentage > CBB_BANTHRESHOLD) {
 			CUpDownClient* pEvilClient = theApp->clientlist->FindClientByIP(ip);
 			if (pEvilClient != NULL) {
-				AddLogLineN(CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
+				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
 					% m_partNumber % bad % (good + bad) % pEvilClient->GetClientFullInfo());
 				theApp->clientlist->AddTrackClient(pEvilClient);
 				pEvilClient->Ban();  // Identified as sender of corrupt data
