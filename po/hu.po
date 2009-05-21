@@ -7,15 +7,12 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-16 16:34+0200\n"
-"PO-Revision-Date: 2009-03-08 20:55+0100\n"
-"Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
-"Language-Team:  <LL@li.org>\n"
+"PO-Revision-Date: 2009-05-21 17:13+0200\n"
+"Last-Translator: marcell\n"
+"Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Hungarian\n"
-"X-Poedit-Country: HUNGARY\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/AddFriend.cpp:45
@@ -35,21 +32,17 @@ msgid "The specified userhash is not valid!"
 msgstr "A megadott felhasználói azonosító (userhash) érvénytelen!"
 
 #: src/amule.cpp:224
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"Ok, kilépés a %s-ből...\n"
+msgstr "Kilépés a fő alkalmazásból..."
 
 #: src/amule.cpp:243
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr ""
+msgstr "amuleweb instancia (pid: '%id') kivégzése ... "
 
 #: src/amule.cpp:246
-#, fuzzy
 msgid "Killed!"
-msgstr "Sikertelen"
+msgstr "Kivégezve!"
 
 #: src/amule.cpp:250
 msgid "aMule OnExit: Terminating core."
@@ -61,14 +54,15 @@ msgstr "Az aMule leállítása befejezve"
 
 #: src/amule.cpp:324
 msgid "Memory debug results for aMule exit:"
-msgstr ""
+msgstr "Memória debug eredmények az aMule bezárásáról:"
 
 #: src/amule.cpp:647
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Kilépés megerősítése"
+msgstr ""
+"\n"
+"EC beállítások"
 
 #: src/amule.cpp:650
 msgid "Password set and external connections enabled."
@@ -111,9 +105,9 @@ msgid "Connecting"
 msgstr "Kapcsolódás"
 
 #: src/amule.cpp:829
-#, fuzzy, c-format
+#, c-format
 msgid "Using amuleweb in '%s'."
-msgstr "Webkiszolgáló futtatása indításakor"
+msgstr "amuleweb használata '%s'-ben."
 
 #: src/amule.cpp:859
 #, c-format
@@ -278,9 +272,8 @@ msgstr ""
 "menüpontban."
 
 #: src/amule.cpp:1409
-#, fuzzy
 msgid "Server hostname notified"
-msgstr "Kiszolgáló neve:"
+msgstr "Szerver hostname értesítve"
 
 #: src/amule.cpp:1639
 #, c-format
@@ -411,7 +404,6 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "A Kad hálózat le van tiltva  a beállításokban, nem kapcsolódom."
 
 #: src/amuled.cpp:605
-#, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -420,7 +412,7 @@ msgid ""
 msgstr ""
 "HIBA: az aMule démon nem használható, ha a külső kapcsolatok le vannak "
 "tiltva. A Külső Kapcsolatok engedélyezéséhez használd a normál aMule-t, vagy "
-"indítsd az amuled-t a --ec-config opcióval, vagy állítsd az "
+"indítsd az amuled-t a --ec-config paraméterrel, vagy állítsd az "
 "\"AcceptExternalConnections\" kulcs értékét 1-re a ~/.aMule/amule.conf "
 "fájlban."
 
@@ -432,18 +424,24 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
+"HIBA: Egy érvényes jelszó szükséges a külső kapcsolatok használatához, és az "
+"aMule démon nem használható külső kapcsolatok nélkül. Az aMule démon "
+"futtatásához, az \"ECPassword\" nevű mezőt a ~/.aMule/amule.conf nevű "
+"fájlban egy megfelelő értékre kell állítanod. Indítsd az amuled-t a --ec-"
+"config paraméterrel, a jelszó beállításához. További információk http://wiki."
+"amule.org alatt találhatóak."
 
 #: src/amuled.cpp:673
 msgid "amuled: OnInit - starting timer"
-msgstr ""
+msgstr "amuled: OnInit - időzítő indítása"
 
 #: src/amuled.cpp:691
 msgid "amuled: forking to background - see you"
-msgstr ""
+msgstr "amuled: háttérbe való hasadás - viszlát"
 
 #: src/amuled.cpp:722
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Pid fájl létrehozása nem lehetséges"
 
 #: src/amuled.cpp:761
 #, c-format
@@ -540,7 +538,7 @@ msgstr "Az aMule leállítása..."
 
 #: src/amuleDlg.cpp:546
 msgid "aMule dialog destroyed"
-msgstr ""
+msgstr "aMule dialógus elpusztítva"
 
 #: src/amuleDlg.cpp:700
 msgid "eD2k: Connecting"
@@ -737,23 +735,20 @@ msgid "aMule"
 msgstr "aMule "
 
 #: src/amule-gui.cpp:283
-#, fuzzy
 msgid "Fatal Error: Failed to create Core Timer"
-msgstr "Végzetes hiba: Időzítő létrehozása sikertelen"
+msgstr "Végzetes hiba: a Mag Időzítőjének létrehozása sikertelen"
 
 #: src/amule-remote-gui.cpp:71
 msgid "Connect to remote amule"
 msgstr "Kapcsolódás a távoli aMule-hez"
 
 #: src/amule-remote-gui.cpp:254
-#, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "Végzetes hiba: Időzítő létrehozása sikertelen"
+msgstr "Végzetes hiba: a Lekérdezés Időzítőjének létrehozása sikertelen"
 
 #: src/amule-remote-gui.cpp:278
-#, fuzzy
 msgid "Going to event loop..."
-msgstr "Fájl infó helyreállításának megkísérlése..."
+msgstr "Esemény ciklus megkezdése..."
 
 #: src/amule-remote-gui.cpp:299
 msgid "Connecting..."
@@ -765,17 +760,16 @@ msgstr "Kapcsolódás sikertelen "
 
 #: src/amule-remote-gui.cpp:314
 msgid "Remote GUI EC event handler"
-msgstr ""
+msgstr "Távoli GUI EC esemény kezelő"
 
 #: src/amule-remote-gui.cpp:321
-#, fuzzy
 msgid "Going down"
-msgstr "Bejelentkezés"
+msgstr "Kikapcsolás folyamatban"
 
 #: src/amule-remote-gui.cpp:324 src/ExternalConnector.cpp:411
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
-msgstr ""
+msgstr "Kapcsolat sikertelen. Kapcsolat felvétel %s:%d-el nem lehetséges\n"
 
 #: src/amule-remote-gui.cpp:424
 msgid "Ready"
@@ -801,9 +795,8 @@ msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Megosztott fájlok lehozatala sikertelen a(z) '%s' felhasználótól"
 
 #: src/BaseClient.cpp:1544
-#, fuzzy
 msgid "Searching buddy for lowid connection"
-msgstr "Várakozás a kapcsolatra..."
+msgstr "Pajtás keresése lowid kapcsolatra"
 
 #: src/BaseClient.cpp:1741 src/BaseClient.cpp:2265 src/BaseClient.cpp:2563
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
@@ -888,7 +881,7 @@ msgstr "Új üzenet '%s'-től (IP:%s)"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Captcha megadása"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -940,12 +933,15 @@ msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
 msgstr ""
+"*** A captcha vizsgálaton túlestél és a felhasználó megkapta az üzenetet. ***"
 
 #: src/ChatSelector.cpp:334
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** A megadott captcha hibás volt, így az üzenet nem lett tudomásul véve. "
+"Egy új üzenet küldésével újabb captcha-t kérhetsz. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1481,7 +1477,7 @@ msgstr "Keresés eredménye"
 
 #: src/DownloadListCtrl.cpp:187
 msgid "Part"
-msgstr ""
+msgstr "Rész"
 
 #: src/DownloadListCtrl.cpp:189 src/PartFileConvert.cpp:627
 #: src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
@@ -1670,21 +1666,21 @@ msgstr "HIBA: Külső média-lejátszó indítása sikertelen! Parancs: `%s'"
 #: src/DownloadQueue.cpp:100
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr ""
+msgstr "PartFile mentése %u a(z) %u-ból"
 
 #: src/DownloadQueue.cpp:103
 msgid "All PartFiles Saved."
-msgstr ""
+msgstr "Az összes PartFile kimentve."
 
 #: src/DownloadQueue.cpp:110
-#, fuzzy, c-format
+#, c-format
 msgid "Loading temp files from %s."
-msgstr "server.met fájl betöltése: %s"
+msgstr "Temp fájlok betöltése %s-ról."
 
 #: src/DownloadQueue.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "Loading PartFile %u of %u"
-msgstr "Adat töltése a régi letöltési fájlból (%u a(z) %u-ből)"
+msgstr "PartFile betöltése %u a(z) %u-ből"
 
 #: src/DownloadQueue.cpp:152
 msgid ""
@@ -1696,7 +1692,7 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:161
 msgid "All PartFiles Loaded."
-msgstr ""
+msgstr "Az összes PartFile betöltve."
 
 #: src/DownloadQueue.cpp:164
 msgid "No part files found"
@@ -1740,9 +1736,8 @@ msgid "You are already trying to download the file %s"
 msgstr "Már próbálod letölteni a(z) '%s' fájlt."
 
 #: src/DownloadQueue.cpp:1049
-#, fuzzy
 msgid "Failed to open ED2KLinks file."
-msgstr "Nem lehet megnyitni a téma fájlt: %s"
+msgstr "ED2KLinks fájl megnyitása sikertelen."
 
 #: src/DownloadQueue.cpp:1323
 #, c-format
@@ -1760,9 +1755,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Érvénytelen eD2k hivatkozás! HIBA: %s"
 
 #: src/ExternalConn.cpp:125
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Hitelesítés sikertelen."
+msgstr "Kliens csomagot küldött sikertelen hitelesítést követően."
 
 #: src/ExternalConn.cpp:133
 msgid "Unauthorized access attempt. Connection closed."
@@ -2185,7 +2179,7 @@ msgstr ""
 
 #: src/FriendList.cpp:222
 msgid "CRITICAL - no client on StartChatSession"
-msgstr ""
+msgstr "KRITIKUS - nincsen kliens a StartChatSession-en"
 
 #: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:499 src/muuli_wdr.cpp:2960
 msgid "Friends"
@@ -2245,69 +2239,66 @@ msgid "HTTP download thread started"
 msgstr "HTTP letöltési szál elindítva"
 
 #: src/HTTPDownload.cpp:199
-#, fuzzy, c-format
+#, c-format
 msgid "Download size: %i"
-msgstr "Letöltések (%i)"
+msgstr "Letöltési méret: %i"
 
 #: src/HTTPDownload.cpp:231
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Az elvárt %d bájt helyett %d bájt lett letöltve"
 
 #: src/HTTPDownload.cpp:249
 msgid "HTTP download thread ended"
-msgstr ""
+msgstr "HTTP letöltési szál befejeződött"
 
 #: src/HTTPDownload.cpp:329
 #, c-format
 msgid "Host: %s:%i\n"
-msgstr ""
+msgstr "Gazda: %s:%i\n"
 
 #: src/HTTPDownload.cpp:331
 #, c-format
 msgid "Response: %i (Error: %i)"
-msgstr ""
+msgstr "Válasz: %i (Hiba: %i)"
 
 #: src/HTTPDownload.cpp:334
-#, fuzzy
 msgid "WARNING: Void response on stream creation"
-msgstr ""
-"FIGYELMEZTETÉS: nem lehetett a(z) '%s' eredeti fájlt törölni a biztonsági "
-"másolat létrehozása után"
+msgstr "FIGYELMEZTETÉS: Üres válasz az adatár létrehozásakor"
 
 #: src/HTTPDownload.cpp:358
 msgid "ERROR: Redirection code received with no URL"
-msgstr ""
+msgstr "HIBA: Átterelési kód érkezett URL nélkül"
 
 #: src/IP2Country.cpp:92
 #, c-format
 msgid "Download new GeoIP.dat from %s"
-msgstr ""
+msgstr "Új GeoIP.dat letöltés %s-ról"
 
 #: src/IP2Country.cpp:120
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr ""
+msgstr "GeoIP.dat fájl letöltése sikertelen, frissítés félbeszakítása."
 
 #: src/IP2Country.cpp:126
 msgid "Failed to remove GeoIP.dat file, aborting update."
-msgstr ""
+msgstr "GeoIP.dat törlése sikertelen, frissítés megszakítása."
 
 #: src/IP2Country.cpp:132
 msgid "Failed to rename new GeoIP.dat file, aborting update."
-msgstr ""
+msgstr "GeoIP.dat átnevezése sikertelen, frissítés megszakítása."
 
 #: src/IP2Country.cpp:138
 msgid "Successfully updated GeoIP.dat"
-msgstr ""
+msgstr "GeoIP.dat frissítése sikerrel járt."
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
-msgstr ""
+msgstr "Hiba a GeoIP.dat frissítése közben."
 
 #: src/IP2Country.cpp:143
 #, c-format
 msgid "Failed to download GeoIP.dat from %s"
-msgstr ""
+msgstr "GeoIP.dat letöltése %s-től sikertelen"
 
 #: src/IP2Country.cpp:162
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
@@ -2317,7 +2308,7 @@ msgstr ""
 #: src/IP2Country.cpp:167
 #, c-format
 msgid "Loaded %d flag bitmaps."
-msgstr ""
+msgstr "%d darab zászló képe betöltve."
 
 #: src/IPFilter.cpp:109
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
@@ -2384,7 +2375,7 @@ msgstr "Kademlia: a keresési kulcsszó túl rövid"
 #: src/kademlia/kademlia/SearchManager.cpp:134
 #, c-format
 msgid "Keyword for search: %s"
-msgstr ""
+msgstr "Kulcsszó a kereséshez: %s"
 
 #: src/kademlia/kademlia/SearchManager.cpp:142
 msgid "Kademlia: Search keyword is already on search list: "
@@ -2401,6 +2392,8 @@ msgstr[0] "%u Kad kapcsolat beolvasva"
 #: src/kademlia/routing/RoutingZone.cpp:282
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
+"Nincsenek kontaktusok, indítsd el a betöltési folyamatot, vagy tölts le "
+"magad egy nodes.dat fájlt."
 
 #: src/kademlia/routing/RoutingZone.cpp:300
 #, c-format
@@ -2510,9 +2503,9 @@ msgid "EC connection failed. Empty reply."
 msgstr "EC kapcsolat sikertelen. Üres válasz."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:224
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Külső kapcsolat: Rossz válasz a kiszolgálótól. Kapcsolat lezárva."
+msgstr ""
+"Külső kapcsolat: Rossz válasz, kézfogás sikertelen. Kapcsolat megszüntetve."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:232
 msgid "Succeeded! Connection established to aMule "
@@ -2527,14 +2520,12 @@ msgid "External Connection: Access denied because: "
 msgstr "Külső kapcsolat: Hozzáférés megtagadva, mert: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:244
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Külső kapcsolat: Hozzáférés megtagadva"
+msgstr "Külső kapcsolat: Kézfogás sikertelen."
 
 #: src/ListenSocket.cpp:66
-#, fuzzy
 msgid "ListenSocket: Ok."
-msgstr "CListenSocket: Törlés"
+msgstr "ListenSocket: rendben."
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
@@ -2594,7 +2585,7 @@ msgstr "Korlátlan"
 
 #: src/MuleTrayIcon.cpp:322
 msgid "Traybar-icon lost, trying to recreate ..."
-msgstr ""
+msgstr "Tálca-jelkép elveszett, újrakészítés megkisérlése ..."
 
 #: src/MuleTrayIcon.cpp:342
 msgid "aMule Tray Menu"
@@ -3412,7 +3403,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1628
 msgid "Tooltip delay time: "
-msgstr ""
+msgstr "Szóbuborék késési idő: "
 
 #: src/muuli_wdr.cpp:1636
 msgid "seconds"
@@ -3484,7 +3475,7 @@ msgstr "UDP port a kiszolgáló kérésekhez (TCP+3):"
 
 #: src/muuli_wdr.cpp:1748
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1751
 msgid "Extended UDP port (Kad / global search) "
@@ -3500,11 +3491,11 @@ msgstr "UPnP engedélyezése a router port továbbításhoz"
 
 #: src/muuli_wdr.cpp:1763
 msgid "UPnP TCP Port (Optional):"
-msgstr ""
+msgstr "UPnP TCP port (nem kötelező):"
 
 #: src/muuli_wdr.cpp:1776
 msgid "Bind local address to IP (empty for any):"
-msgstr ""
+msgstr "Lokális cím IP-hez csatolása (mindet ha üres):"
 
 #: src/muuli_wdr.cpp:1780
 msgid ""
@@ -3654,11 +3645,11 @@ msgstr "Új megosztott fájl felvétele automatikus prioritással"
 
 #: src/muuli_wdr.cpp:1991
 msgid "Destination folder for downloads"
-msgstr ""
+msgstr "Célkönyvtár a letöltéseknek"
 
 #: src/muuli_wdr.cpp:2002
 msgid "Folder for temporary download files"
-msgstr ""
+msgstr "Könyvtár az ideiglenes letöltési fájloknak"
 
 #: src/muuli_wdr.cpp:2013
 msgid "Shared folders"
@@ -3690,11 +3681,11 @@ msgstr "Kapcsolatok grafikon skálája: 100"
 
 #: src/muuli_wdr.cpp:2067
 msgid "Download graph scale:"
-msgstr ""
+msgstr "Letöltési grafikon méretaránya:"
 
 #: src/muuli_wdr.cpp:2076
 msgid "Upload graph scale:"
-msgstr ""
+msgstr "Feltöltési grafikon méretaránya:"
 
 #: src/muuli_wdr.cpp:2090
 msgid "Colours: "
@@ -3758,7 +3749,7 @@ msgstr "Kiválaszt"
 
 #: src/muuli_wdr.cpp:2121
 msgid "Tree"
-msgstr ""
+msgstr "Fa"
 
 #: src/muuli_wdr.cpp:2132
 msgid "Number of Client Versions shown (0=unlimited)"
@@ -3802,7 +3793,7 @@ msgstr "Kiszolgáló kapcsolat frissítési gyakorisága: Tiltva"
 
 #: src/muuli_wdr.cpp:2218
 msgid "Skin to use: "
-msgstr ""
+msgstr "Használt felület: "
 
 #: src/muuli_wdr.cpp:2223 src/Preferences.cpp:829
 msgid "- default -"
@@ -3838,7 +3829,7 @@ msgstr "Függőleges eszköztár elrendezés"
 
 #: src/muuli_wdr.cpp:2255
 msgid "Download Queue Files"
-msgstr ""
+msgstr "Letöltendő fájlok várakozási sora"
 
 #: src/muuli_wdr.cpp:2258
 msgid "Show progress percentage"
@@ -3875,7 +3866,7 @@ msgstr "Külső kapcsolat elfogadása"
 
 #: src/muuli_wdr.cpp:2311
 msgid "IP of the listening interface:"
-msgstr ""
+msgstr "Hallgató interfész IP-je:"
 
 #: src/muuli_wdr.cpp:2315
 msgid ""
@@ -3928,7 +3919,7 @@ msgstr "A web kiszolgáló port UPnP továbbításának engedélyezése"
 
 #: src/muuli_wdr.cpp:2397
 msgid "Web server UPnP TCP port (Optional)"
-msgstr ""
+msgstr "Web szerver UPnP TCP port (nem kötelező)"
 
 #: src/muuli_wdr.cpp:2407
 msgid "Page Refresh Time (in secs)"
@@ -4192,7 +4183,7 @@ msgstr "Lista újratöltése"
 
 #: src/muuli_wdr.cpp:2989
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
-msgstr "IP-k listájának újratöltése az ~/.aMule/ipfilter.dat fájlból"
+msgstr "IP-k listájának újratöltése a ~/.aMule/ipfilter.dat fájlból"
 
 #: src/muuli_wdr.cpp:2997
 msgid "URL:"
@@ -4260,7 +4251,7 @@ msgstr "Online aláírás frissítési gyakoriságának módosítása (mp-ben)."
 
 #: src/muuli_wdr.cpp:3072
 msgid "Save online signature file in: "
-msgstr ""
+msgstr "Online aláírási fájl kimentési helye:"
 
 #: src/muuli_wdr.cpp:3079
 msgid ""
@@ -4551,9 +4542,8 @@ msgid "Active"
 msgstr "Aktív"
 
 #: src/PartFileConvert.cpp:180
-#, fuzzy
 msgid "Waiting for partfile convert thread to die..."
-msgstr "Várakozás a kapcsolatra..."
+msgstr "Várakozás a partfile kovertáló thread befejeztére..."
 
 #: src/PartFileConvert.cpp:236
 #, c-format
@@ -4724,9 +4714,8 @@ msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "HIBA a fájlrész mentésénél: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:894
-#, fuzzy
 msgid "IO failure while saving partfile: "
-msgstr "HIBA a fájlrész mentésénél: %s (%s ==> %s)"
+msgstr "Adatforgalmi hiba a partfile mentésekor: "
 
 #: src/PartFile.cpp:907
 #, c-format
@@ -5003,7 +4992,7 @@ msgstr "nincs elérhető opció"
 
 #: src/Preferences.cpp:1544
 msgid "Invalid category found, skipping"
-msgstr ""
+msgstr "Érvénytelen kategória találva, mellőzés"
 
 #: src/Preferences.cpp:1708
 msgid ""
@@ -5019,7 +5008,7 @@ msgstr "Alapértelmezett port lesz használva (%d)"
 #: src/Preferences.cpp:1732
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
-msgstr ""
+msgstr "Nem létező megosztott könyvtár kihagyása: %s"
 
 #: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:688
 msgid "Connection"
@@ -5076,17 +5065,17 @@ msgstr "Hibakeresés"
 #: src/PrefsUnifiedDlg.cpp:320
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
-msgstr ""
+msgstr "Cfg csatolása a widget-hez (ID-je: %d, kulcsa: %s) sikertelen"
 
 #: src/PrefsUnifiedDlg.cpp:373
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
-msgstr ""
+msgstr "Adatátvitel a Cfg-ből a Widget-be (ID-je: %d, kulcsa: %s) sikertelen."
 
 #: src/PrefsUnifiedDlg.cpp:479
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
-msgstr ""
+msgstr "Adatátvitel a Widget-ből a Cfg-be (ID-je: %d, kulcsa: %s) sikertelen."
 
 #: src/PrefsUnifiedDlg.cpp:534
 msgid ""
@@ -5412,7 +5401,7 @@ msgstr "Kapcsolódási kísérlet %s-hez (%s:%i): időtúllépés."
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
-msgstr ""
+msgstr "Elkésett válasz érkezett egy DNS tudakozáshoz, figyelmen kívül hagyva."
 
 #: src/ServerList.cpp:84
 #, c-format
@@ -5765,16 +5754,19 @@ msgstr "Kapcsolat állapota:"
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
+"Tűzfal által levédve - nyisd meg a %d. TCP port-ot a routereden vagy a "
+"tűzfaladon"
 
 #: src/ServerWnd.cpp:216
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Kapcsolat állapota:"
+msgstr "UDP Kapcsolat Állapota:"
 
 #: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
+"Tűzfal által levédve - nyisd meg a %d. UDP port-ot a routereden vagy a "
+"tűzfaladon"
 
 #: src/ServerWnd.cpp:222
 msgid "Firewalled state: "
@@ -5782,25 +5774,24 @@ msgstr "Tűzfal állapot: "
 
 #: src/ServerWnd.cpp:228
 msgid "No buddy required - TCP port open"
-msgstr ""
+msgstr "Nincs szükség pajtásra - TCP port nyitva"
 
 #: src/ServerWnd.cpp:230
 msgid "No buddy required - UDP port open"
-msgstr ""
+msgstr "Nincs szükség pajtásra - UDP port nyitva"
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy"
 msgstr "Nincs pajtás"
 
 #: src/ServerWnd.cpp:236
-#, fuzzy
 msgid "Connecting to buddy"
-msgstr "Pajtáshoz kapcsolódva"
+msgstr "Kapcsolódás a pajtáshoz"
 
 #: src/ServerWnd.cpp:239
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Pajtáshoz kapcsolódva"
+msgstr "Pajtáshoz kapcsolódva %s-on"
 
 #: src/ServerWnd.cpp:249
 msgid "Indexed sources:"
@@ -5833,7 +5824,7 @@ msgstr "nem fut"
 #: src/SharedFileList.cpp:324
 #, c-format
 msgid "Adding file %s to shares"
-msgstr ""
+msgstr "Fájl %s hozzáadása a megosztásokhoz"
 
 #: src/SharedFileList.cpp:352
 #, c-format
@@ -5853,14 +5844,14 @@ msgid "ERROR: Attempted to share %s"
 msgstr "HIBA: Megpróbáltuk megosztani a(z) %s-t"
 
 #: src/SharedFileList.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Shared directory not found, skipping: %s"
-msgstr "kiszolgáló nem található: %s"
+msgstr "Megosztott könyvtár nem található, mellőzve: %s"
 
 #: src/SharedFileList.cpp:463
 #, c-format
 msgid "No shareable files found in directory: %s"
-msgstr ""
+msgstr "Nincsen megosztott fájl ebben a könyvtárban: %s"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
