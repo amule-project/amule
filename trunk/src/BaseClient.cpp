@@ -1536,9 +1536,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						bio.WriteUInt16(thePrefs::GetPort());
 						CPacket* packet = new CPacket(bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
-						// eMule FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
+						// eMule FIXME: We don't know which kadversion the buddy has, so we need to send unencrypted
 						theApp->clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i) to"),packet->GetPacketSize()) + GetFullIP());
+						AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("KadCallbackReq (size=%i) to "),packet->GetPacketSize()) + Uint32_16toStringIP_Port(GetBuddyIP(), GetBuddyPort()));
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
 					} else {
@@ -2262,7 +2262,7 @@ wxString CUpDownClient::GetClientFullInfo()
 		ReGetClientSoft();
 	}
 
-	return CFormat( _("Client %s on IP:Port %s:%d using %s %s %s") )
+	return CFormat( wxT("Client %s on IP:Port %s:%d using %s %s %s") )
 		% ( m_Username.IsEmpty() ? wxString(_("Unknown")) : m_Username )
 		% GetFullIP()
 		% GetUserPort()
