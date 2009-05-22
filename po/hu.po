@@ -38,7 +38,7 @@ msgstr "Kilépés a fő alkalmazásból..."
 #: src/amule.cpp:243
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr "amuleweb instancia (pid: '%id') kivégzése ... "
+msgstr "amuleweb instancia (pid: '%ld') kivégzése ... "
 
 #: src/amule.cpp:246
 msgid "Killed!"
