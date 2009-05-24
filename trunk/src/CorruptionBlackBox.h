@@ -38,7 +38,7 @@ public:
 	void TransferredData(uint64 nStartPos, uint64 nEndPos, uint32 senderIP);
 	void VerifiedData(bool ok, uint16 nPart, uint32 nRelStartPos, uint32 nRelEndPos);
 	void EvaluateData();
-	void SetPartNumber(const wxString& nr) { m_partNumber = nr; }
+	void SetPartFileInfo(const wxString& name, const wxString& nr) { m_fileName = name; m_partNumber = nr; }
 	void DumpAll();
 
 private:
@@ -69,6 +69,7 @@ private:
 	CCBBClientMap m_goodClients, m_badClients;
 
 	// for debug prints
+	wxString m_fileName;
 	wxString m_partNumber;
 };
 

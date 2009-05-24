@@ -474,6 +474,7 @@ public:
 	void		SetSentCancelTransfer(bool bVal)	{ m_fSentCancelTransfer = bVal; }
 
 	wxString	GetClientFullInfo();
+	wxString	GetClientShortInfo();
 
 	const wxString& GetClientOSInfo() const		{ return m_sClientOSInfo; }
 
