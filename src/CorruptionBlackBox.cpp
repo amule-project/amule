@@ -31,6 +31,7 @@
 #include "amule.h"				// needed for theApp
 #include "ClientList.h"
 #include "NetworkFunctions.h"	// needed for Uint32toStringIP
+#include "OtherFunctions.h"		// needed for CastItoXBytes
 #include <common/Format.h>		// needed for CFormat
 
 #define	 CBB_BANTHRESHOLD	32 //% max corrupted data	
@@ -212,7 +213,9 @@ void CCorruptionBlackBox::EvaluateData()
 
 		if (nCorruptPercentage > CBB_BANTHRESHOLD) {
 			CUpDownClient* pEvilClient = theApp->clientlist->FindClientByIP(ip);
+			wxString clientName;
 			if (pEvilClient != NULL) {
+				clientName = pEvilClient->GetClientShortInfo();
 				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
 					% m_partNumber % bad % (good + bad) % pEvilClient->GetClientFullInfo());
 				theApp->clientlist->AddTrackClient(pEvilClient);
@@ -223,10 +226,11 @@ void CCorruptionBlackBox::EvaluateData()
 					pEvilClient->Safe_Delete();
 				}
 			} else {
-				AddLogLineN(CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
-					% m_partNumber % bad % (good + bad) % Uint32toStringIP(ip));
+				clientName = Uint32toStringIP(ip);
 				theApp->clientlist->AddBannedClient(ip);
 			}
+			AddLogLineN(CFormat(_("Banned client %s for sending %s corrupt data of %s total for the file '%s'")) 
+				% clientName % CastItoXBytes(bad) % CastItoXBytes(good + bad) % m_fileName);
 		} else {
 			CUpDownClient* pSuspectClient = theApp->clientlist->FindClientByIP(ip);
 			if (pSuspectClient != NULL) {

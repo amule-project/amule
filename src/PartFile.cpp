@@ -267,7 +267,7 @@ void CPartFile::CreatePartFile()
 		m_fullname = thePrefs::GetTempDir().JoinPaths(m_partmetfilename);
 	} while (m_fullname.FileExists());
 
-	m_CorruptionBlackBox->SetPartNumber(m_partmetfilename.RemoveAllExt().GetPrintable());
+	m_CorruptionBlackBox->SetPartFileInfo(GetFileName().GetPrintable(), m_partmetfilename.RemoveAllExt().GetPrintable());
 	
 	wxString strPartName = m_partmetfilename.RemoveExt().GetRaw();
 	m_taglist.push_back(CTagString(FT_PARTFILENAME, strPartName ));
@@ -312,7 +312,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	transferred = 0;
 	
 	m_partmetfilename = filename;
-	m_CorruptionBlackBox->SetPartNumber(m_partmetfilename.RemoveAllExt().GetPrintable());
+	m_CorruptionBlackBox->SetPartFileInfo(GetFileName().GetPrintable(), m_partmetfilename.RemoveAllExt().GetPrintable());
 	m_filePath = in_directory;
 	m_fullname = m_filePath.JoinPaths(m_partmetfilename);
 	m_PartPath = m_fullname.RemoveExt();

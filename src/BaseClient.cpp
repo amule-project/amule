@@ -2257,7 +2257,6 @@ bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXU
 
 wxString CUpDownClient::GetClientFullInfo()
 {
-
 	if (m_clientVerString.IsEmpty()) {
 		ReGetClientSoft();
 	}
@@ -2272,8 +2271,22 @@ wxString CUpDownClient::GetClientFullInfo()
 }
 
 
+wxString CUpDownClient::GetClientShortInfo()
+{
+	if (m_clientVerString.IsEmpty()) {
+		ReGetClientSoft();
+	}
 
-void CUpDownClient::SendPublicIPRequest(){
+	return CFormat( wxT("'%s' (%s %s %s)") )
+		% ( m_Username.IsEmpty() ? wxString(_("Unknown")) : m_Username )
+		% m_clientSoftString 
+		% m_clientVerString
+		% m_strModVersion;
+}
+
+
+void CUpDownClient::SendPublicIPRequest()
+{
 	if (IsConnected()){
 		CPacket* packet = new CPacket(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
@@ -2283,7 +2296,8 @@ void CUpDownClient::SendPublicIPRequest(){
 	}
 }
 
-void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
+void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize)
+{
 	if (uSize != 4) {
 		throw wxString(wxT("Wrong Packet size on Public IP answer"));
 	}
@@ -2316,7 +2330,6 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 
 float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 {
-
 	// lfroen: in daemon it actually can happen
 		wxASSERT( m_socket );
 
@@ -2352,7 +2365,6 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 	}
 	
 	return kBpsClient;
-	
 }
 
 void CUpDownClient::SetUserIDHybrid(uint32 nUserID)
