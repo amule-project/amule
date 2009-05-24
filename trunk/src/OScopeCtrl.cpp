@@ -40,7 +40,6 @@
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
 	EVT_PAINT(COScopeCtrl::OnPaint)
 	EVT_SIZE(COScopeCtrl::OnSize)
-	EVT_TIMER(TIMER_OSCOPE,COScopeCtrl::OnTimer)
 END_EVENT_TABLE()
 
 
@@ -57,7 +56,7 @@ const wxColour crPreset [ 16 ] = {
 
 COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWindow* parent)
 	: wxControl(parent, -1, wxDefaultPosition, wxDefaultSize)
-	, timerRedraw(this, TIMER_OSCOPE)
+	, timerRedraw(this)
 {
 	// since plotting is based on a LineTo for each new point
 	// we need a starting point (i.e. a "previous" point)
@@ -78,7 +77,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
 	}
 
-	bRecreateGraph = bRecreateGrid = bStopped = false;
+	bRecreateGraph = bRecreateGrid = bRecreateAll = bStopped = false;
 	nDelayedPoints = 0;
 	sLastTimestamp = 0.0;
 	sLastPeriod = 1.0;
@@ -95,7 +94,12 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	nYGrids = 5;
 	
 	graph_type = type;
-	
+
+	// Connect the timer (dynamically, so the Controls don't have to share a common timer id)
+	Connect(timerRedraw.GetId(), wxEVT_TIMER, (wxObjectEventFunction) &COScopeCtrl::OnTimer);
+	// Don't draw background (avoid ugly flickering on wxMSW on resize)
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+
 	// Ensure that various size-constraints are calculated (via OnSize).
 	SetClientSize(GetClientSize());
 }
@@ -287,14 +291,16 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	// no real plotting work is performed here unless we are coming out of a hidden state;
 	// normally, just putting the existing bitmaps on the client to avoid flicker, 
 	// establish a memory dc and then BitBlt it to the client
-	if (bRecreateGrid || bRecreateGraph) {
-		timerRedraw.Stop();
-		
-		if (bRecreateGrid) {
-			RecreateGrid();  // this will also recreate the graph if that flag is set
-		} else if (bRecreateGraph) {
-			RecreateGraph(true);
-		}
+	wxBufferedPaintDC dc(this);
+
+	if (bRecreateAll) {
+		return;
+	}
+
+	if (bRecreateGrid) {
+		RecreateGrid();  // this will also recreate the graph if that flag is set
+	} else if (bRecreateGraph) {
+		RecreateGraph(true);
 	}
 	
 	if (nDelayedPoints) {				// we've just come out of hiding, so catch up
@@ -303,8 +309,6 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 		PlotHistory(n, true, false);	// background because the bitmap is shifted only 
 	}									// once for all delayed points together)
 	
-	wxBufferedPaintDC dc(this);
-
 	// We have assured that we have a valid and resized if needed 
 	// wxDc and bitmap. Proceed to blit.
 	dc.DrawBitmap(m_bmapGrid, 0, 0, false);
@@ -516,13 +520,10 @@ void COScopeCtrl::Stop()
 
 void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid) 
 {
-	timerRedraw.Stop();
-	timerRedraw.SetOwner(this, TIMER_OSCOPE);
-	
 	bRecreateGraph |= bInvalidateGraph;
 	bRecreateGrid |= bInvalidateGrid;
-
-	timerRedraw.Start(100);
+	bRecreateAll  |= bInvalidateGraph && bInvalidateGrid;
+	timerRedraw.Start(100, true);	// One-shot timer
 }
 
 
@@ -538,12 +539,9 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	if( !theApp->amuledlg || !theApp->amuledlg->SafeState()) {
 		return;
 	}
-	timerRedraw.Stop();
-	if (bRecreateGrid) {
-		RecreateGrid();	// this will also recreate the graph if that flag is set
-	} else if (bRecreateGraph) {
-		RecreateGraph(true);
-	}
+	bRecreateAll = false;
+	wxPaintEvent paint;
+	ProcessEvent(paint);
 }
 
 // File_checked_for_headers

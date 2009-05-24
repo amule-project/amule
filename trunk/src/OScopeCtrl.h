@@ -43,8 +43,6 @@ class wxMemoryDC;
 /////////////////////////////////////////////////////////////////////////////
 // COScopeCtrl window
 
-#define TIMER_OSCOPE 7641
-
 class COScopeCtrl : public wxControl
 {
 	friend class CStatisticsDlg;
@@ -107,7 +105,7 @@ protected:
 	void InvalidateGrid()	{ InvalidateCtrl(false, true); }
 
 private:
-	bool bRecreateGrid, bRecreateGraph, bStopped;
+	bool bRecreateGrid, bRecreateGraph, bRecreateAll, bStopped;
 	int nDelayedPoints;
 	double sLastTimestamp;
 	double sLastPeriod;
