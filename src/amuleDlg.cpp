@@ -1054,10 +1054,10 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 			// Veto.
 		} else {
 			if (m_wndTaskbarNotifier) {
-#if wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 8
-				DoIconize(evt.Iconized());
-#else
+#if wxCHECK_VERSION(2, 9, 0)
 				DoIconize(evt.IsIconized());
+#else
+				DoIconize(evt.Iconized());
 #endif
 			}
 			evt.Skip();
