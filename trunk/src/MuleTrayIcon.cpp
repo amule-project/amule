@@ -119,11 +119,11 @@ void CMuleTrayIcon::SetUploadSpeed(wxCommandEvent& event){
 			wxMenuItem* item=menu->FindItem(event.GetId());
 			if (item!=NULL) {
 				long temp;
-				if (item->GetLabel()==(_("Unlimited"))) {
+				if (item->GetItemLabelText()==(_("Unlimited"))) {
 					temp=UNLIMITED;
 				}
 				else {
-					temp=GetSpeedFromString(item->GetLabel());
+					temp=GetSpeedFromString(item->GetItemLabelText());
 				}
 				thePrefs::SetMaxUpload(temp);
 
@@ -145,11 +145,11 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 			wxMenuItem* item=menu->FindItem(event.GetId());
 			if (item!=NULL) {
 				long temp;
-				if (item->GetLabel()==(_("Unlimited"))) {
+				if (item->GetItemLabelText()==(_("Unlimited"))) {
 					temp=UNLIMITED;
 				}
 				else {
-					temp=GetSpeedFromString(item->GetLabel());
+					temp=GetSpeedFromString(item->GetItemLabelText());
 				}
 				thePrefs::SetMaxDownload(temp);
 
