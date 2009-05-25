@@ -1071,7 +1071,9 @@ void InitCustomLanguages()
 {
 	wxLanguageInfo info;
 
+#if !wxCHECK_VERSION(2, 9, 0)
 	CUSTOMLANGUAGE(wxLANGUAGE_ASTURIAN,	"ast",	0,	0,	wxLayout_LeftToRight,	"Asturian");
+#endif
 }
 
 
