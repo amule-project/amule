@@ -1338,18 +1338,15 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 			// Remove the friend linkage
 			Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
 		}
-		AddDebugLogLineM( false, logClient, wxString() <<
-			wxT("--- Deleted client \"") <<	GetClientFullInfo() <<
-			wxT("\"; Reason was ") << strReason );
 	} else {
-		AddDebugLogLineM( false, logClient, wxString() <<
-			wxT("--- Disconnected client \"") << GetClientFullInfo() <<
-			wxT("\"; Reason was ") << strReason );
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
 		m_fSentOutOfPartReqs = 0;
 	}
+	AddDebugLogLineN(logClient, CFormat(wxT("--- %s client D:%d U:%d \"%s\"; Reason was %s"))
+		% (bDelete ? wxT("Deleted") : wxT("Disconnected")) 
+		% m_nDownloadState % m_nUploadState % GetClientFullInfo() % strReason );
 	
 	return bDelete;
 }
