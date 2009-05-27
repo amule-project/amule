@@ -300,7 +300,7 @@ AC_DEFUN([MULE_CHECK_WX_SUPPORTS_LARGEFILE],
 	AC_PREPROC_IFELSE([
 		AC_LANG_SOURCE([[
 			#include <wx/wx.h>
-			#if !HAVE_LARGEFILE_SUPPORT && !defined(_LARGE_FILES) && !defined(__WXMSW__)
+			#if !HAVE_LARGEFILE_SUPPORT && !defined(_LARGE_FILES) && !wxCHECK_VERSION(2, 9, 0) && !defined(__WXMSW__)
 				#error No LargeFile support!
 			#endif
 		]])
