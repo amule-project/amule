@@ -376,10 +376,23 @@ DECLARE_APP(CamuleGuiApp)
 
 #else /* ! AMULE_DAEMON */
 
+// wxWidgets 2.8 requires special code for event handling and sockets.
+// 2.9 doesn't, so standard event loop and sockets can be used
+//
+// Windows: aMuled compiles with 2.8 (without the special code), 
+// but works only with 2.9
 
-#include <wx/apptrait.h>
+#if !wxCHECK_VERSION(2, 9, 0)
+	#ifdef __WXMSW__
+		// MSW: can't run amuled with 2.8 anyway, just get it compiled
+		#define AMULED_DUMMY
+	#else
+		#define AMULED28
+	#endif
+#endif
+
+#ifdef AMULED28
 #include <wx/socket.h>
-
 
 class CSocketSet;
 
@@ -409,20 +422,25 @@ public:
 };
 
 
+#endif // AMULED28
+
+// no AppTraits used on Windows
+#ifndef __WXMSW__
+
 typedef std::map<int, class wxEndProcessData *> EndProcessDataMap;
 
+#include <wx/apptrait.h>
 
 class CDaemonAppTraits : public wxConsoleAppTraits
 {
 private:
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
+
+#ifdef AMULED28
 	CAmuledGSocketFuncTable *m_table;
 	wxMutex m_lock;
 	std::list<wxObject *> m_sched_delete;
-#ifndef __WXMSW__
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
-#endif
-
 public:
 	CDaemonAppTraits(CAmuledGSocketFuncTable *table);
 	virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
@@ -430,50 +448,56 @@ public:
 	virtual void RemoveFromPendingDelete(wxObject *object);
 
 	void DeletePending();
+#else	// AMULED28
+public:
+	CDaemonAppTraits();
+#endif	// !AMULED28
 
-#ifndef __WXMSW__
 	virtual int WaitForChild(wxExecuteData& execData);
-#endif
+
 #ifdef __WXMAC__
 	virtual wxStandardPathsBase& GetStandardPaths();
 #endif
 };
 
-
-#ifndef __WXMSW__
-	void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
-	pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
+void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
+pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
 #endif // __WXMSW__
 
 
 class CamuleDaemonApp : public CamuleApp
 {
 private:
+#ifdef AMULED28
 	bool m_Exit;
 	CAmuledGSocketFuncTable *m_table;
-#ifndef __WXMSW__
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
-#endif // __WXMSW__
-
+#endif
 	bool OnInit();
 	int OnRun();
 	int OnExit();
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	
+#ifndef __WXMSW__
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
 public:
+	wxAppTraits *CreateTraits();
+#endif // __WXMSW__
+
+public:
+
+#ifdef AMULED28
 	CamuleDaemonApp();
 	
 	void ExitMainLoop() { m_Exit = true; }
-	
+#endif
+
 	bool CopyTextToClipboard(wxString strText);
 	
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 	
 	DECLARE_EVENT_TABLE()
-	
-	wxAppTraits *CreateTraits();
 };
 
 DECLARE_APP(CamuleDaemonApp)

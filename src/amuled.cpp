@@ -27,13 +27,6 @@
 
 #include <include/common/EventIDs.h>
 
-// amuled doesn't run on Windows.
-// To make it at least compile some code has to be excluded.
-// For a real port all usages of TODO_MSW have to be resolved !
-#ifdef __WXMSW__
-	#define TODO_MSW 1
-#endif
-
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, HAVE_STRERROR_R and STRERROR_R_CHAR_P, etc
 #endif
@@ -176,6 +169,7 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleDaemonApp)
 
+#ifdef AMULED28
 /*
  * Socket handling in wxBase
  * 
@@ -308,8 +302,6 @@ void CAmuledGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
 
 void CAmuledGSocketFuncTable::RunSelect()
 {
-#ifndef TODO_MSW
-// This is why it doesn't work on Windows
 	wxMutexLocker lock(m_lock);
 
 	int max_fd = -1;
@@ -325,8 +317,6 @@ void CAmuledGSocketFuncTable::RunSelect()
 		m_in_set->Detected(&GSocket::Detected_Read);
 		m_out_set->Detected(&GSocket::Detected_Write);
 	}
-	
-#endif
 }
 
 GSocketGUIFunctionsTable *CDaemonAppTraits::GetSocketGUIFunctionsTable()
@@ -383,17 +373,20 @@ void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
 	Uninstall_Callback(socket, GSOCK_OUTPUT);
 }
 
+#endif	// AMULED28
+
+#ifndef __WXMSW__
+
+#ifdef AMULED28
 
 CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table)
 :
 wxConsoleAppTraits(),
+m_oldSignalChildAction(),
+m_newSignalChildAction(),
 m_table(table),
 m_lock(wxMUTEX_RECURSIVE),
 m_sched_delete()
-#ifndef TODO_MSW
-,m_oldSignalChildAction(),
-m_newSignalChildAction()
-#endif
 {
 	m_lock.Unlock();
 }
@@ -432,6 +425,29 @@ void CDaemonAppTraits::DeletePending()
 	//m_sched_delete.erase(m_sched_delete.begin(), m_sched_delete.end());
 }
 
+wxAppTraits *CamuleDaemonApp::CreateTraits()
+{
+	return new CDaemonAppTraits(m_table);
+}
+
+#else	// AMULED28
+
+CDaemonAppTraits::CDaemonAppTraits()
+:
+wxConsoleAppTraits(),
+m_oldSignalChildAction(),
+m_newSignalChildAction()
+{
+}
+
+wxAppTraits *CamuleDaemonApp::CreateTraits()
+{
+	return new CDaemonAppTraits();
+}
+
+#endif	// !AMULED28
+
+#endif	// __WXMSW__
 
 #ifdef __WXMAC__
 #include <wx/stdpaths.h> // Do_not_auto_remove (guess)
@@ -443,6 +459,8 @@ wxStandardPathsBase& CDaemonAppTraits::GetStandardPaths()
 #endif
 
 
+#ifdef AMULED28
+
 CamuleDaemonApp::CamuleDaemonApp()
 :
 m_Exit(false),
@@ -451,11 +469,7 @@ m_table(new CAmuledGSocketFuncTable())
 	wxPendingEventsLocker = new wxCriticalSection;
 }
 
-
-wxAppTraits *CamuleDaemonApp::CreateTraits()
-{
-	return new CDaemonAppTraits(m_table);
-}
+#endif	// !AMULED28
 
 
 #ifndef __WXMSW__
@@ -640,6 +654,8 @@ int CamuleDaemonApp::OnRun()
 	}
 #endif // __WXMSW__
 	
+#ifdef AMULED28
+
 	while ( !m_Exit ) {
 		m_table->RunSelect();
 		ProcessPendingEvents();
@@ -649,23 +665,17 @@ int CamuleDaemonApp::OnRun()
 	// ShutDown is beeing called twice. Once here and again in OnExit().
 	ShutDown();
 
-#ifndef __WXMSW__
-	msg.Empty();
-	ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
-	if (ret == -1) {
-		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		msg << wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: ") <<
-			char2unicode(errorBuffer) <<
-			wxT(".");
-		AddLogLineM(true, msg);
-	} else {
-		msg << wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD "
-			"callback with sigaction() succeeded.");
-		AddDebugLogLineM(false, logGeneral, msg);
-	}
-#endif // __WXMSW__
-
 	return 0;
+
+#else
+
+#ifdef AMULED_DUMMY
+	return 0;
+#else
+	return wxApp::OnRun();
+#endif
+
+#endif
 }
 
 bool CamuleDaemonApp::OnInit()
@@ -731,6 +741,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 
 int CamuleDaemonApp::OnExit()
 {
+#ifdef AMULED28
 	/*
 	 * Stop all socket threads before entering
 	 * shutdown sequence.
@@ -741,8 +752,27 @@ int CamuleDaemonApp::OnExit()
 		delete clientudp;
 		clientudp = NULL;
 	}
-	
+#endif
+
 	ShutDown();
+
+#ifndef __WXMSW__
+	const int ERROR_BUFFER_LEN = 256;
+	char errorBuffer[ERROR_BUFFER_LEN];
+	wxString msg;
+	int ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
+	if (ret == -1) {
+		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
+		msg << wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: ") <<
+			char2unicode(errorBuffer) <<
+			wxT(".");
+		AddLogLineM(true, msg);
+	} else {
+		msg << wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD "
+			"callback with sigaction() succeeded.");
+		AddDebugLogLineM(false, logGeneral, msg);
+	}
+#endif // __WXMSW__
 	
 	// lfroen: delete socket threads
 	if (ECServerHandler) {
