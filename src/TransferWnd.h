@@ -27,6 +27,7 @@
 #define TRANSFERWND_H
 
 #include <wx/panel.h>	// Needed for wxPanel
+#include <wx/notebook.h>	// needed for wxBookCtrlEvent in wx 2.8
 #include "Types.h"		// Needed for uint32
 #include "OtherStructs.h"
 
@@ -35,7 +36,6 @@ class CDownloadListCtrl;
 class CMuleNotebook;
 class wxListCtrl;
 class wxSplitterEvent;
-class wxNotebookEvent;
 class wxCommandEvent;
 class wxMouseEvent;
 class wxEvent;
@@ -171,7 +171,7 @@ private:
 	/**
 	 * Event-handler for changing categories.
 	 */
-	void OnCategoryChanged(wxNotebookEvent& evt);
+	void OnCategoryChanged(wxBookCtrlEvent& evt);
 	
 	/**
 	 * Event-handler for displaying the category-popup menu.
