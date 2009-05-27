@@ -611,7 +611,7 @@ wxString CMuleListCtrl::GetTTSText(unsigned item) const
 
 void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 {
-	wxChar key = evt.GetKeyCode();
+	int key = evt.GetKeyCode();
 	if (key == 0) {
 		// We prefer GetKeyCode() to GetUnicodeKey(), in order to work
 		// around a bug in the GetUnicodeKey(), that causes values to
