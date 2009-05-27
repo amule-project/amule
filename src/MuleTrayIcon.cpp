@@ -197,6 +197,8 @@ CMuleTrayIcon::CMuleTrayIcon()
 CMuleTrayIcon::~CMuleTrayIcon() 
 {
 #ifdef __WXGTK__
+	// Issue has been fixed in wx SVN 53563, that's wx 2.8.8
+#if !wxCHECK_VERSION(2, 8, 8)
 	// FIXME: EVIL HACK: We need to ensure that the superclass doesn't
 	// try to destroy a dangling pointer. See also CMuleTrayIcon::UpdateTray
 	// for comments on this issue.
@@ -205,6 +207,7 @@ CMuleTrayIcon::~CMuleTrayIcon()
 			m_iconWnd = NULL;
 		}
 	}
+#endif
 #endif
 }
 
@@ -307,6 +310,8 @@ void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
 void CMuleTrayIcon::UpdateTray()
 {
 #ifdef __WXGTK__
+	// Issue has been fixed in wx SVN 53563, that's wx 2.8.8
+#if !wxCHECK_VERSION(2, 8, 8)
 	// FIXME: EVIL HACK: As of wxGTK-2.8.7, closing of the trayicon
 	// window (caused for instance by a crashing kicker) is not
 	// handled, with the result that the pointer to the trayicon
@@ -323,6 +328,7 @@ void CMuleTrayIcon::UpdateTray()
 			m_iconWnd = NULL;
 		}
 	}
+#endif
 #endif
 
 	// Icon update and Tip update
