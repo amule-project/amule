@@ -157,6 +157,19 @@ CFormat::CFormat(const wxChar* str)
 }
 
 
+CFormat::CFormat(const wxString& str)
+{
+	m_fieldStart = 0;
+	m_fieldLength = 0;
+	m_skipCount = 0;
+	m_format = str;
+
+	if (m_format.Length()) {
+		SetCurrentField(wxEmptyString);
+	}
+}
+
+
 bool CFormat::IsReady() const
 {
 	return (m_fieldStart == m_format.Length());
