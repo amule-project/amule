@@ -44,7 +44,7 @@ wxString MakePrintableString(const wxString& s)
 	wxString str = s;
 	unsigned c = 0;
 	for (unsigned i = 0; i < str.length(); i++) {
-		c |= str[i];
+		c |= (wxChar) str[i];
 	}
 	if (GetStringsMode() != SD_NONE) {
 		while (c <= 0xff) {
@@ -62,7 +62,7 @@ wxString MakePrintableString(const wxString& s)
 				str = tmp;
 				c = 0;
 				for (unsigned i = 0; i < str.length(); i++) {
-					c |= str[i];
+					c |= (wxChar) str[i];
 				}
 			}
 		}
