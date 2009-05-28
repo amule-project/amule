@@ -94,6 +94,15 @@ public:
 	CFormat(const wxChar* str);
 
 	/**
+	 * Constructor.
+	 * This form is required to construct from a plain char * 
+	 * with wx 2.9
+	 *
+	 * @param str The format-string to be used.
+	 */
+	CFormat(const wxString& str);
+
+	/**
 	 * Returns true if the resulting string is ready for use.
 	 *
 	 * For a string to be ready to use, all format fields must have
