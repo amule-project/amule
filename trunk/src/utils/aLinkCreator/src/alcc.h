@@ -55,13 +55,13 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 static const wxCmdLineEntryDesc cmdLineDesc[] =
   {
     {
-      wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
+      wxCMD_LINE_SWITCH, wxS("h"), wxS("help"), wxS("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
     },
-    { wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), wxT("be verbose"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
+    { wxCMD_LINE_SWITCH, wxS("v"), wxS("verbose"), wxS("be verbose"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
 
-    { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link"), wxCMD_LINE_VAL_NONE,wxCMD_LINE_PARAM_OPTIONAL },
+    { wxCMD_LINE_SWITCH, wxS("p"), wxS("parthashes"), wxS("add part-hashes to ed2k link"), wxCMD_LINE_VAL_NONE,wxCMD_LINE_PARAM_OPTIONAL },
 
-    { wxCMD_LINE_PARAM,  NULL, NULL, wxT("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE },
+    { wxCMD_LINE_PARAM,  NULL, NULL, wxS("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE },
 
     { wxCMD_LINE_NONE, NULL, NULL, NULL, wxCMD_LINE_VAL_NONE, 0 }
   };

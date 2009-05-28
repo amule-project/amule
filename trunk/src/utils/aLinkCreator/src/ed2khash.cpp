@@ -47,7 +47,7 @@
 // alcc.c and here. And remove this stupid comment :)
 //-----------------------------------------------------------------------------
 // efe, this can be put in a separete include file, if you want to reuse
-static wxCSConv aMuleConv(wxT("iso8859-1"));
+static wxCSConv aMuleConv(wxS("iso8859-1"));
 #ifdef wxUSE_UNICODE
         #define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
         #define char2unicode(x) aMuleConv.cMB2WX(x)

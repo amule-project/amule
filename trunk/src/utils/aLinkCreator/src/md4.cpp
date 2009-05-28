@@ -324,7 +324,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 
   // Open file and let wxFFile destructor close the file
   // Closing it explicitly may crash on Win32 ...
-  wxFFile file(filename, wxT("rbS"));
+  wxFFile file(filename, wxS("rbS"));
   if (! file.IsOpened())
     {
       return wxEmptyString;
@@ -376,7 +376,7 @@ wxString MD4::charToHex(const char *buf, size_t len)
 
   for (i = 0; i < len; ++i)
     {
-      hexString += wxString::Format(wxT("%02x"), 0xFF & *(buf + i));
+      hexString += wxString::Format(wxS("%02x"), 0xFF & *(buf + i));
     }
 
   // Reduce memory usage
