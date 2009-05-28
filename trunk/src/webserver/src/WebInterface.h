@@ -29,16 +29,26 @@
 
 #include "ExternalConnector.h"
 
+
+#if !wxCHECK_VERSION(2, 9, 0)
+		#define AMULEWEB28
+#endif
+
+
 class CamulewebApp
 :
 public CaMuleExternalConnector
 {
-    class CWebserverGSocketFuncTable *m_table;
 	class CWebServerBase *m_webserver;
 
+#ifdef AMULEWEB28
+	class CWebserverGSocketFuncTable *m_table;
 public:
+	wxAppTraits *CreateTraits();
 	CamulewebApp();
-	
+#endif
+
+public:
 	const wxString GetGreetingTitle();
 	void Pre_Shell();
 	void LoadConfigFile();
@@ -68,8 +78,6 @@ public:
 
 public:
 	virtual void Post_Shell();
-
-	wxAppTraits *CreateTraits();
 
 	void TextShell(const wxString &prompt);
 
