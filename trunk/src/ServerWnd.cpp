@@ -212,11 +212,13 @@ void CServerWnd::UpdateKadInfo()
 		if (theApp->IsConnectedKad()) {
 			KadInfoList->InsertItem(next_row, _("Connection State:"));
 			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ? 
-				CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort() : _("OK"));
+				wxString(CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort()) 
+				: _("OK"));
 			KadInfoList->InsertItem(next_row, _("UDP Connection State:"));
 			bool UDPFirewalled = theApp->IsFirewalledKadUDP();
 			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ? 
-				CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort() : _("OK"));
+				wxString(CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort()) 
+				: _("OK"));
 
 			if (theApp->IsFirewalledKad() || UDPFirewalled) {
 				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
