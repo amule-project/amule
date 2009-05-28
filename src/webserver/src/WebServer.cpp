@@ -51,6 +51,10 @@
 //-------------------------------------------------------------------
 typedef uint32_t COLORTYPE;
 
+#ifdef RGB
+#undef RGB
+#endif
+
 inline unsigned long RGB(int r, int g, int b)
 {
 	return ((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xff);
@@ -338,7 +342,7 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 		unsigned char* img_data = img->RequestData(img_size);
 		// This unicode2char is ok.
 		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
-	} else if (not session->m_loggedin) {
+	} else if (!session->m_loggedin) {
 		webInterface->DebugShow(wxT("**** imgrequest: failed, not logged in\n"));
 		ProcessURL(Data);
 	} else {
@@ -1853,14 +1857,14 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		filename = wxT("login.php");
 		
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
-		if (webInterface->m_AdminPass.IsEmpty() and webInterface->m_GuestPass.IsEmpty()) {
+		if (webInterface->m_AdminPass.IsEmpty() && webInterface->m_GuestPass.IsEmpty()) {
 			session->m_vars["login_error"] = "No password specified, login will not be allowed.";
 		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			session->m_loggedin = false;
 			
 			CMD4Hash PwHash;
-			if (not PwHash.Decode(MD5Sum(PwStr).GetHash())) {
+			if (!PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
 				session->m_vars["login_error"] = "Invalid password hash, please report on http://forum.amule.org";
 			} else if ( PwHash == webInterface->m_AdminPass ) {
