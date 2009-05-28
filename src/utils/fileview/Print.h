@@ -64,7 +64,9 @@ inline SDMODE GetStringsMode()	{ return g_stringDecodeMode; }
 
 wxString MakePrintableString(const wxString& str);
 
+#if !wxCHECK_VERSION(2, 9, 0)
 inline __attribute_always_inline__ std::ostream& operator<<(std::ostream& x, const wxString& y)		{ return x << (const char *)unicode2char(y); }
+#endif
 inline std::ostream& operator<<(std::ostream& x, const Kademlia::CUInt128& y)	{ return x << y.ToHexString(); }
 inline std::ostream& operator<<(std::ostream& x, const CMD4Hash& y)		{ return x << y.Encode(); }
 
