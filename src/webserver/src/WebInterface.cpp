@@ -55,7 +55,7 @@
 #	include <libintl.h>
 #endif
 
-
+#ifdef AMULEWEB28
 /*
  * Socket handling in wxBase (same as amuled)
  * 
@@ -352,15 +352,6 @@ void CWebserverAppTraits::DeletePending()
 }
 
 
-//-------------------------------------------------------------------
-IMPLEMENT_APP(CamulewebApp)
-//-------------------------------------------------------------------
-
-
-BEGIN_EVENT_TABLE(CamulewebApp, CaMuleExternalConnector)
-END_EVENT_TABLE()
-
-
 CamulewebApp::CamulewebApp() : m_table(new CWebserverGSocketFuncTable)
 {
 	wxPendingEventsLocker = new wxCriticalSection;
@@ -371,6 +362,16 @@ wxAppTraits *CamulewebApp::CreateTraits()
 {
 	return new CWebserverAppTraits(m_table);
 }
+
+#endif
+
+//-------------------------------------------------------------------
+IMPLEMENT_APP(CamulewebApp)
+//-------------------------------------------------------------------
+
+
+BEGIN_EVENT_TABLE(CamulewebApp, CaMuleExternalConnector)
+END_EVENT_TABLE()
 
 void CamulewebApp::Post_Shell()
 {
@@ -680,11 +681,15 @@ void CamulewebApp::Pre_Shell()
 
 void CamulewebApp::TextShell(const wxString &)
 {
+#ifdef AMULEWEB28
 	while (true) {
 		m_table->RunSelect();
 		ProcessPendingEvents();
 		((CWebserverAppTraits *)GetTraits())->DeletePending();
 	}
+#else
+	wxApp::OnRun();
+#endif
 }
 
 
