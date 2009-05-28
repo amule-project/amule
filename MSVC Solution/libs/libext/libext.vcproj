@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="libext"
 	ProjectGUID="{F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6}"
 	RootNamespace="MSVCExpressExtLibs"
@@ -28,9 +28,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Joining libraries"
-				CommandLine="lib /out:&quot;$(OutDir)\libext.lib&quot; /libpath:..\..\..\..\wxWidgets\lib\vc_lib wxbase28ud.lib wxbase28ud_net.lib&#x0D;&#x0A;"
-				Outputs="&quot;$(OutDir)\libext.lib&quot;"
+				Description=""
+				CommandLine=""
+				Outputs=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -71,11 +71,131 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="lib /out:..\..\$(ConfigurationName)\libext.lib &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_media.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxjpeg.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_adv.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxregexu.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_richtext.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxzlib.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_qa.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_xml.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_odbc.lib&quot; &quot;..\..\..\..\cryptopp\win32\output\release\cryptlib.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxtiff.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_net.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_core.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_gl.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxpng.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_dbgrid.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_xrc.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxexpat.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_html.lib&quot; &quot;..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_aui.lib&quot;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description=""
+				CommandLine=""
+				Outputs=""
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				LinkLibraryDependencies="true"
+				OutputFile="$(OutDir)\libext.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug29|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description=""
+				CommandLine=""
+				Outputs=""
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)\libext.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release29|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
