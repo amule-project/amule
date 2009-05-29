@@ -115,7 +115,7 @@ wxString CastItoXBytes( uint64 count )
 	else if (count < 1073741824)
 		return wxString::Format( wxT("%.2f "), (float)(uint32)count/1048576) + _("MB") ;
 	else if (count < 1099511627776LL)
-		return wxString::Format( wxT("%.2f "), (float)((uint32)(count/1024))/1048576) + _("GB") ;
+		return wxString::Format( wxT("%.3f "), (float)((uint32)(count/1024))/1048576) + _("GB") ;
 	else
 		return wxString::Format( wxT("%.3f "), (float)count/1099511627776LL) + _("TB") ;
 }
