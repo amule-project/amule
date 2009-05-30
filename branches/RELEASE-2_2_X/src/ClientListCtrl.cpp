@@ -43,6 +43,7 @@
 #include "Preferences.h"
 #include "updownclient.h"
 #include "UploadQueue.h"
+#include "TransferWnd.h"	// Needed for UpdateBottomPaneTitle
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
@@ -205,6 +206,10 @@ void CClientListCtrl::SetListView( ViewType newView )
 
 		if (newView != vtNone) {
 			LoadSettings();
+		}
+
+		if (theApp->amuledlg) {
+			theApp->amuledlg->m_transferwnd->UpdateBottomPaneTitle(newView);
 		}
 	}
 }

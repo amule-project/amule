@@ -435,9 +435,15 @@ void CTransferWnd::Prepare()
 void CTransferWnd::SwitchUploadList(wxCommandEvent& WXUNUSED(evt))
 {
  	clientlistctrl->ToggleView();
+	UpdateBottomPaneTitle(clientlistctrl->GetListView());
+}
+
+
+void CTransferWnd::UpdateBottomPaneTitle(ViewType view)
+{
 	wxStaticText* label = CastChild( wxT("uploadTitle"), wxStaticText );
  	
- 	switch ( clientlistctrl->GetListView() ) {
+ 	switch (view) {
  		case vtNone:
  			return;
  		

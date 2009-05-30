@@ -29,6 +29,7 @@
 #include <wx/panel.h>	// Needed for wxPanel
 #include "Types.h"		// Needed for uint32
 #include "OtherStructs.h"
+#include "Constants.h"		// Needed for ViewType
 
 class CClientListCtrl;
 class CDownloadListCtrl;
@@ -123,6 +124,12 @@ public:
 	 * This functions does a few tasks to ensure that the dialog is looking the right way.
 	 */
 	void	Prepare();
+
+	/**
+	 * Call this function to update the title of the bottom pane after the view
+	 * has been changed.
+	 */
+	void UpdateBottomPaneTitle(ViewType view);
 
 	//! Pointer to the download-queue.
 	CDownloadListCtrl*	downloadlistctrl;
