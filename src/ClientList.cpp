@@ -974,6 +974,7 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem)
 	if (m_KadSources.erase(torem)) {
 		if(torem == m_pBuddy) {
 			m_pBuddy = NULL;
+			m_nBuddyStatus = Disconnected;
 			Notify_ServerUpdateED2KInfo();
 		}
 	}
