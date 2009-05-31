@@ -78,6 +78,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	}
 
 	bRecreateGraph = bRecreateGrid = bRecreateAll = bStopped = false;
+	m_onPaint = false;
 	nDelayedPoints = 0;
 	sLastTimestamp = 0.0;
 	sLastPeriod = 1.0;
@@ -288,6 +289,8 @@ void COScopeCtrl::AppendPoints(double sTimestamp, const std::vector<float *> &ap
 
 void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 {
+	m_onPaint = true;
+
 	// no real plotting work is performed here unless we are coming out of a hidden state;
 	// normally, just putting the existing bitmaps on the client to avoid flicker, 
 	// establish a memory dc and then BitBlt it to the client
@@ -522,8 +525,12 @@ void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid)
 {
 	bRecreateGraph |= bInvalidateGraph;
 	bRecreateGrid |= bInvalidateGrid;
-	bRecreateAll  |= bInvalidateGraph && bInvalidateGrid;
-	timerRedraw.Start(100, true);	// One-shot timer
+	// To prevent startup problems don't start timer logic until
+	// a native OnPaint event has been generated.
+	if (m_onPaint) {
+		bRecreateAll  |= bInvalidateGraph && bInvalidateGrid;
+		timerRedraw.Start(100, true);	// One-shot timer
+	}
 }
 
 
