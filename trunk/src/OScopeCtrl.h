@@ -110,6 +110,8 @@ private:
 	double sLastTimestamp;
 	double sLastPeriod;
 	wxTimer timerRedraw;
+	bool m_onPaint;
+
 	void OnTimer(wxTimerEvent& evt);
 	void OnPaint(wxPaintEvent& evt);
 	void OnSize(wxSizeEvent& evt);
