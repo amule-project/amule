@@ -17,7 +17,7 @@
 
 #define wxLC_OWNERDRAW 0x10000
 
-class WXDLLIMPEXP_CORE wxImageList;
+#include <wx/imaglist.h>
 
 #if wxUSE_DRAG_AND_DROP
 class WXDLLEXPORT wxDropTarget;
