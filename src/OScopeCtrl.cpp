@@ -525,12 +525,15 @@ void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid)
 {
 	bRecreateGraph |= bInvalidateGraph;
 	bRecreateGrid |= bInvalidateGrid;
+	// It appears the timerRedraw logic screws up Mac, disable it there
+#ifndef __WXMAC__
 	// To prevent startup problems don't start timer logic until
 	// a native OnPaint event has been generated.
 	if (m_onPaint) {
 		bRecreateAll  |= bInvalidateGraph && bInvalidateGrid;
 		timerRedraw.Start(100, true);	// One-shot timer
 	}
+#endif
 }
 
 
