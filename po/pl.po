@@ -5,7 +5,7 @@
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Ogon <ogon@interia.pl>, 2004, 2005.
 # Mateusz Butowski <>, 2007, 2008.
-# Michał Trzebiatowski <hippie_1968@hotmail.com>, 2008.
+# Michał Trzebiatowski <hippie_1968@hotmail.com>, 2008, 2009.
 #
 #
 msgid ""
@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-16 16:34+0200\n"
-"PO-Revision-Date: 2009-04-06 10:21+0100\n"
+"PO-Revision-Date: 2009-05-20 16:53+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -453,7 +453,7 @@ msgstr "amuled: rozdzielanie tła - do zobaczenia"
 
 #: src/amuled.cpp:722
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Nie można utworzyć pliku Pid"
 
 #: src/amuled.cpp:761
 #, c-format
