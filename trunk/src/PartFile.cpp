@@ -1340,7 +1340,7 @@ void CPartFile::WritePartStatus(CMemFile* file)
 	while (done != parts){
 		uint8 towrite = 0;
 		for (uint32 i = 0;i != 8;++i) {
-			if (IsComplete(i)) {
+			if (IsComplete(done)) {
 				towrite |= (1<<i);
 			}
 			++done;
