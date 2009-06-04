@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-16 16:34+0200\n"
-"PO-Revision-Date: 2009-02-19 15:24+0100\n"
+"PO-Revision-Date: 2009-06-04 01:05+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -458,7 +458,7 @@ msgstr "amuled: Wechsele in den Hintergrund."
 
 #: src/amuled.cpp:722
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Kann keine Pid-Datei erstellen"
 
 #: src/amuled.cpp:761
 #, c-format
