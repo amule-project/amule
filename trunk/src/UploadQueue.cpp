@@ -465,9 +465,10 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 			return true;
 		}
 	} else {
+		uint32 clientScore = client->GetScore(true,true);
 		CClientPtrList::iterator it = m_waitinglist.begin();
 		for (; it != m_waitinglist.end(); ++it ) {
-			if (client->GetScore(true,true) < (*it)->GetScore(true,false)) {
+			if (clientScore < (*it)->GetScore(true,false)) {
 				return true;
 			}
 		}
