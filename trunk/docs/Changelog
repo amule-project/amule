@@ -69,6 +69,7 @@ Version 2.3.0 - The river knows.
 		* Ban clients that uploaded bad data (based on CorruptionBlackBox from eMule)
 		* Support wxWidgets 2.9
 		* amuled for Windows (with wx 2.9)
+		* Friends get recognized in the friend list control even if their IP has changed
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -162,7 +162,13 @@ CFriend* CFriendList::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 n
 				return cur_friend;
 			}
 		} else if (cur_friend->GetIP() == dwIP && cur_friend->GetPort() == nPort) {
-				return cur_friend;
+			if (!userhash.IsEmpty() && !cur_friend->HasHash() ) {
+				// Friend without hash (probably IP entered through dialog)
+				// -> save the hash
+				cur_friend->SetUserHash(userhash);
+				SaveList();
+			}
+			return cur_friend;
 		}
 	}
 

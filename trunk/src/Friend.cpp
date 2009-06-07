@@ -94,7 +94,7 @@ void	CFriend::LinkClient(CUpDownClient* client, bool unlink) {
 	m_nLastUsedPort = client->GetUserPort();
 	m_dwLastSeen = time(NULL);
 	// This will update the Link status also on GUI.
-	Notify_ChatRefreshFriend(m_dwLastUsedIP, m_nLastUsedPort, m_strName);
+	Notify_ChatRefreshFriend(this, true);
 }
 
 

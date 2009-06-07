@@ -30,6 +30,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
+#include "Friend.h"			// Needed for CFriend
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "OtherFunctions.h"
@@ -111,18 +112,22 @@ void CChatWnd::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 
 	friendlistctrl->RemoveFriend(friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort));
 }
 
-void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort)
+void CChatWnd::RefreshFriend(CFriend* Friend, bool connected)
 {
-	CDlgFriend* toupdate = friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort);
+	CDlgFriend* toupdate = friendlistctrl->FindFriend(Friend->GetUserHash(), Friend->GetIP(), Friend->GetPort());
 	if (toupdate) {
-		if (!name.IsEmpty()) {
-			toupdate->m_name = name;	
-		} 
-		
-		// If name is empty, this is a disconnection/deletion event
-		toupdate->islinked = !name.IsEmpty();
+		toupdate->m_name = Friend->GetName();	
+		toupdate->islinked = connected;
+		if (toupdate->m_ip == Friend->GetIP() && toupdate->m_port == Friend->GetPort()) {
+			chatselector->RefreshFriend(GUI_ID(toupdate->m_ip, toupdate->m_port), toupdate->m_name);
+		} else {
+			// Friend changed IP - drop Chat session
+			chatselector->EndSession(GUI_ID(toupdate->m_ip, toupdate->m_port));
+			// and update IP
+			toupdate->m_ip = Friend->GetIP();
+			toupdate->m_port = Friend->GetPort();
+		}
 		friendlistctrl->RefreshFriend(toupdate);
-		chatselector->RefreshFriend(GUI_ID(toupdate->m_ip, toupdate->m_port), toupdate->m_name);
 	}
 }
 

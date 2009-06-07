@@ -456,11 +456,11 @@ namespace MuleNotify
 	}
 
 	
-	void ChatRefreshFriend(uint32 NOT_ON_DAEMON(lastUsedIP), uint32 NOT_ON_DAEMON(lastUsedPort), wxString NOT_ON_DAEMON(name))
+	void ChatRefreshFriend(CFriend * NOT_ON_DAEMON(Friend), bool NOT_ON_DAEMON(connected))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_chatwnd) {
-			theApp->amuledlg->m_chatwnd->RefreshFriend(CMD4Hash(), name, lastUsedIP, lastUsedPort);
+			theApp->amuledlg->m_chatwnd->RefreshFriend(Friend, connected);
 		}
 #endif
 	}

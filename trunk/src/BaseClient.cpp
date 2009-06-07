@@ -315,7 +315,7 @@ CUpDownClient::~CUpDownClient()
 	
 	if (m_Friend) {
 		m_Friend->UnLinkClient();
-		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
+		Notify_ChatRefreshFriend(m_Friend, false);
 		m_Friend = NULL;
 	}
 
@@ -1336,7 +1336,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 	if (bDelete) {
 		if (m_Friend) {
 			// Remove the friend linkage
-			Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
+			Notify_ChatRefreshFriend(m_Friend, false);
 		}
 	} else {
 		m_fHashsetRequesting = 0;
