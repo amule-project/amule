@@ -48,7 +48,7 @@ public:
 	void	AddFriend(CUpDownClient* toadd);
 	void	AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
 	void	RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort);
-	void	RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
+	void	RefreshFriend(class CFriend* Friend, bool connected);
 
 	void	ProcessMessage(uint64 sender, const wxString& message);
 	void 	ConnectionResult(bool success, const wxString& message, uint64 id);

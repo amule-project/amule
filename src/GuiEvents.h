@@ -37,6 +37,7 @@ class CKnownFile;
 class CSearchFile;
 class CPartFile;
 class CServer;
+class CFriend;
 
 
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
@@ -111,7 +112,7 @@ namespace MuleNotify
 	void Search_Update_Sources(CSearchFile* result);
 	void Search_Add_Result(CSearchFile* result);
 
-	void ChatRefreshFriend(uint32 lastUsedIP, uint32 lastUsedPort, wxString name);
+	void ChatRefreshFriend(CFriend* Friend, bool connected);
 	void ChatConnResult(bool success, uint64 id, wxString message);
 	void ChatProcessMsg(uint64 sender, wxString message);
 	void ChatSendCaptcha(wxString captcha, uint64 to_id);
@@ -452,7 +453,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_Search_Add_Result(s)			MuleNotify::DoNotify(&MuleNotify::Search_Add_Result, s)
 
 // chat
-#define Notify_ChatRefreshFriend(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, val0, val1, s)
+#define Notify_ChatRefreshFriend(ptr, val)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, ptr, val)
 #define Notify_ChatConnResult(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatConnResult, val0, val1, s)
 #define Notify_ChatProcessMsg(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
 #define Notify_ChatSendCaptcha(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatSendCaptcha, val0, s)
