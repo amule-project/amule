@@ -76,7 +76,14 @@ END_EVENT_TABLE()
 
 void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 {
-	CClientTCPSocket *socket = dynamic_cast<CClientTCPSocket *>(event.GetSocket());
+	wxSocketBase* baseSocket = event.GetSocket();
+//	wxASSERT(baseSocket);	// Rather want a log message right now. Enough other wx problems. >:(
+	if (!baseSocket) {		// WTF?
+		AddDebugLogLineM(false, logClient, wxT("received bad wxSocketEvent"));
+		return;
+	}
+
+	CClientTCPSocket *socket = dynamic_cast<CClientTCPSocket *>(baseSocket);
 	wxASSERT(socket);
 	if (!socket) {
 		return;
