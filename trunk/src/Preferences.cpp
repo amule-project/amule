@@ -1322,6 +1322,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	if (s_byCryptTCPPaddingLength > 254) {
 		s_byCryptTCPPaddingLength = GetRandomUint8() % 254;
 	}
+	SetSlotAllocation(s_slotallocation);
 }
 
 

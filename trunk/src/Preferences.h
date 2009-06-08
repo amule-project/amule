@@ -319,7 +319,7 @@ public:
 
 	static void		SetMaxUpload(uint16 in);
 	static void		SetMaxDownload(uint16 in);
-	static void		SetSlotAllocation(uint16 in) 	{ s_slotallocation = in; };
+	static void		SetSlotAllocation(uint16 in) 	{ s_slotallocation = (in >= 1) ? in : 1; };
 
 	typedef std::vector<CPath> PathList;
 	PathList shareddir_list;
