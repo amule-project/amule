@@ -661,7 +661,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 	
 	if (restart_needed) {
-		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), _("WARNING"),wxICON_EXCLAMATION,this);
+		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), 
+			_("WARNING"), wxOK | wxICON_EXCLAMATION, this);
 	}
 	
 	Show(false);
