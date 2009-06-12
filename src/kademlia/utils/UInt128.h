@@ -120,8 +120,6 @@ public:
 
 	CUInt128& SetValueBE(const uint8_t *valueBE) throw();
 
-	CUInt128& SetValueRandom();
-
 	/**
 	 * Stores value used by the crypt functions.
 	 *

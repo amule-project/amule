@@ -25,19 +25,25 @@
 #ifndef RANDOMFUNCTIONS_H
 #define RANDOMFUNCTIONS_H
 
-#include "Types.h"		// Needed for uint16, uint32 and uint64
-#include "CryptoPP_Inc.h"	// Needed for Crypto functions
+#include "Types.h"			// Needed for uint16, uint32 and uint64
+#include "kademlia/utils/UInt128.h"	// Needed for CUInt128
+
+namespace CryptoPP {
+	class AutoSeededRandomPool;
+}
+const CryptoPP::AutoSeededRandomPool& GetRandomPool();
 
 /* 
  * Random numbers generation
  */
  
-const CryptoPP::AutoSeededRandomPool& GetRandomPool();
-
 uint8_t GetRandomUint8();
 uint16_t GetRandomUint16();
 uint32_t GetRandomUint32();
 uint64_t GetRandomUint64();
+namespace Kademlia {
+	CUInt128 GetRandomUint128();
+}
 
 #endif // RANDOMFUNCTIONS_H
 // File_checked_for_headers

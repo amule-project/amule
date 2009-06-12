@@ -40,7 +40,6 @@ there client on the eMule forum..
 
 #include "UInt128.h"
 
-#include "../../CryptoPP_Inc.h"
 #include "../../ArchSpecific.h"
 
 
@@ -73,15 +72,6 @@ CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
 	m_data[1] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+4));
 	m_data[2] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+8));
 	m_data[3] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+12));
-	return *this;
-}
-
-CUInt128& CUInt128::SetValueRandom()
-{
-	CryptoPP::AutoSeededRandomPool rng;
-	uint8_t randomBytes[16];
-	rng.GenerateBlock(randomBytes, 16);
-	SetValueBE(randomBytes);
 	return *this;
 }
 

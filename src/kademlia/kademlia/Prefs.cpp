@@ -49,6 +49,7 @@ there client on the eMule forum..
 #include "../../ServerList.h"
 #include "../../Logger.h"
 #include "../../ArchSpecific.h"
+#include "../../RandomFunctions.h"		// Needed for GetRandomUint128()
 
 
 ////////////////////////////////////////
@@ -72,7 +73,7 @@ CPrefs::~CPrefs()
 
 void CPrefs::Init(const wxString& filename)
 {
-	m_clientID.SetValueRandom();
+	m_clientID = GetRandomUint128();
 	m_lastContact = 0;
 	m_recheckip = 0;
 	m_firewalled = 0;
@@ -116,7 +117,7 @@ void CPrefs::ReadFile()
 			m_clientID = file.ReadUInt128();
 			// get rid of invalid kad IDs which may have been stored by older versions
 			if (m_clientID == 0)
-				m_clientID.SetValueRandom();
+				m_clientID = GetRandomUint128();
 			file.Close();
 		}
 	} catch (const CSafeIOException& e) {

@@ -46,6 +46,7 @@ there client on the eMule forum..
 #include "../routing/Contact.h"
 #include "../../MemFile.h"
 #include "../../Logger.h"
+#include "../../RandomFunctions.h"		// Needed for GetRandomUInt128()
 
 #include <wx/tokenzr.h>
 
@@ -532,8 +533,7 @@ bool CSearchManager::FindNodeSpecial(const CUInt128& id, CKadClientSearcher *req
 bool CSearchManager::FindNodeFWCheckUDP()
 {
 	CancelNodeFWCheckUDPSearch();
-	CUInt128 id;
-	id.SetValueRandom();
+	CUInt128 id(GetRandomUint128());
 	AddDebugLogLineM(false, logKadSearch, wxT("Starting NODEFWCHECKUDP Kad Search"));
 	CSearch *search = new CSearch;
 	search->SetSearchTypes(CSearch::NODEFWCHECKUDP);
