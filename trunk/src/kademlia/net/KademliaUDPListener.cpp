@@ -65,6 +65,7 @@ there client on the eMule forum..
 #include "../../Preferences.h"
 #include "../../ScopedPtr.h"
 #include "../../IPFilter.h"
+#include "../../RandomFunctions.h"		// Needed for GetRandomUint128()
 
 #include <wx/tokenzr.h>
 
@@ -2344,8 +2345,7 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	}
 	CMemFile packetdata(33);
 	packetdata.WriteUInt8(KADEMLIA_FIND_VALUE);
-	CUInt128 challenge;
-	challenge.SetValueRandom();
+	CUInt128 challenge(GetRandomUint128());
 	if (challenge == 0) {
 		// hey there is a 2^128 chance that this happens ;)
 		wxFAIL;

@@ -17,9 +17,6 @@ check_PROGRAMS = $(TESTS)
 
 # Tests for the CUInt128 class
 CUInt128Test_SOURCES = CUInt128Test.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp
-CUInt128Test_CPPFLAGS = $(AM_CPPFLAGS) $(CRYPTOPP_CPPFLAGS)
-CUInt128Test_LDFLAGS = $(AM_LDFLAGS) $(CRYPTOPP_LDFLAGS)
-CUInt128Test_LDADD = $(LDADD) $(CRYPTOPP_LIBS)
 
 # Tests for the CRangeMap class
 RangeMapTest_SOURCES = RangeMapTest.cpp
@@ -39,19 +36,11 @@ NetworkFunctionsTest_CPPFLAGS = $(AM_CPPFLAGS) -DEC_REMOTE # Needed to avoid com
 
 # Tests for the classes that implement the CFileDataIO interface
 FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp $(top_srcdir)/src/libs/common/Path.cpp
-FileDataIOTest_CPPFLAGS = $(AM_CPPFLAGS) $(CRYPTOPP_CPPFLAGS)
-FileDataIOTest_LDFLAGS = $(AM_LDFLAGS) $(CRYPTOPP_LDFLAGS)
-FileDataIOTest_LDADD = $(LDADD) $(CRYPTOPP_LIBS)
 
 # Tests for the CPath class
 PathTest_SOURCES = PathTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp
-PathTest_CPPFLAGS = $(AM_CPPFLAGS) $(CRYPTOPP_CPPFLAGS)
-PathTest_LDFLAGS = $(AM_LDFLAGS) $(CRYPTOPP_LDFLAGS)
-PathTest_LDADD = $(LDADD) $(CRYPTOPP_LIBS)
 
 # Tests for the CTextFile class
 TextFileTest_SOURCES = TextFileTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/libs/common/TextFile.cpp
-TextFileTest_CPPFLAGS = $(AM_CPPFLAGS) $(CRYPTOPP_CPPFLAGS) -DSRCDIR="$(srcdir)"
-TextFileTest_LDFLAGS = $(AM_LDFLAGS) $(CRYPTOPP_LDFLAGS)
-TextFileTest_LDADD = $(LDADD) $(CRYPTOPP_LIBS)
+TextFileTest_CPPFLAGS = $(AM_CPPFLAGS) -DSRCDIR="$(srcdir)" 
 EXTRA_DIST += TextFileTest_dos.txt TextFileTest_unix.txt
