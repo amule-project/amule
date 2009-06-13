@@ -14,6 +14,7 @@ src/ClientListCtrl.cpp
 src/ClientTCPSocket.cpp
 src/CommentDialog.cpp
 src/CommentDialogLst.cpp
+src/CorruptionBlackBox.cpp
 src/DataToText.cpp
 src/DownloadListCtrl.cpp
 src/DownloadQueue.cpp
