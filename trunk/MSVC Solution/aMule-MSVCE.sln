@@ -66,6 +66,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aMuleD", "aMuleD\aMuleD.vcp
 		{F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6} = {F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aMuleWeb", "aMuleWeb\aMuleWeb.vcproj", "{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -178,6 +180,14 @@ Global
 		{10E42FDA-AA34-4F8E-BC7C-B51EACA4E75F}.Release|Win32.Build.0 = Release|Win32
 		{10E42FDA-AA34-4F8E-BC7C-B51EACA4E75F}.Release29|Win32.ActiveCfg = Release29|Win32
 		{10E42FDA-AA34-4F8E-BC7C-B51EACA4E75F}.Release29|Win32.Build.0 = Release29|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Debug|Win32.Build.0 = Debug|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Debug29|Win32.ActiveCfg = Debug29|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Debug29|Win32.Build.0 = Debug29|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Release|Win32.ActiveCfg = Release|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Release|Win32.Build.0 = Release|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Release29|Win32.ActiveCfg = Release29|Win32
+		{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}.Release29|Win32.Build.0 = Release29|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
