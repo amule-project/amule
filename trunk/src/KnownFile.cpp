@@ -1333,7 +1333,7 @@ void CKnownFile::LoadComment()
 	m_bCommentLoaded = true;	
 	
 	#else
-	m_strComment = wxT("Comments are not allowed on remote gui yet");
+	m_strComment = wxEmptyString;
 	m_bCommentLoaded = true;
 	m_iRating =0;
 	#endif

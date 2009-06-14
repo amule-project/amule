@@ -1795,14 +1795,13 @@ void CUpDownClient::RequestSharedFileList()
 void CKnownFile::SetFileComment(const wxString &)
 {
 	// FIXME: add code
-	wxFAIL;
+	wxMessageBox(_("Comments and ratings are not supported on remote gui yet"), _("Information"), wxOK | wxICON_INFORMATION);
 }
 
 
 void CKnownFile::SetFileRating(unsigned char)
 {
 	// FIXME: add code
-	wxFAIL;
 }
 
 
