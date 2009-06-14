@@ -583,12 +583,6 @@ public:
 	uint16 accepted;
 };
 
-class CClientCreditsRem {
-	bool m_crypt_avail;
-public:
-	bool CryptoAvailable() { return m_crypt_avail; }
-};
-
 class CClientListRem {
 	CRemoteConnect *m_conn;
 
@@ -706,7 +700,6 @@ public:
 	CDownQueueRem *downloadqueue;
 	CSharedFilesRem *sharedfiles;
 	CKnownFilesRem *knownfiles;
-	CClientCreditsRem *clientcredits;
 	CClientListRem *clientlist;
 	CIPFilterRem *ipfilter;
 	CSearchListRem *searchlist;

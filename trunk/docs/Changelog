@@ -71,6 +71,7 @@ Version 2.3.0 - The river knows.
 		* amuled for Windows (with wx 2.9)
 		* Friends get recognized in the friend list control even if their IP has changed
 		* "Last Reception" in remote gui
+		* Fixed client information in remote gui
 
 	Vollstrecker:
 		* Unify copyright lines

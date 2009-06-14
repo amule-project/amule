@@ -26,8 +26,9 @@
 #define ECSPECIALTAGS_H
 
 //#warning Kry - Preferences packet derived from packet, and that's ok, but shouldn't be here because this is a tag file and forces a stupid include
-#include "ECPacket.h"	// Needed for CECPacket
-#include "../../../NetworkFunctions.h" // Needed for IsLowID
+#include "ECPacket.h"					// Needed for CECPacket
+#include "../../../NetworkFunctions.h"	// Needed for IsLowID
+#include "../../../ClientCredits.h"		// Needed for EIdentState
 
 
 #include <map>
@@ -308,6 +309,7 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint64 XferUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_TOTAL)->GetInt(); };
  		uint64 XferDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWNLOAD_TOTAL)->GetInt(); }
  		uint32 XferUpSession() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_SESSION)->GetInt(); }
+ 		uint32 XferDownSession() { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt(); }
  		
  		bool IsFriend() { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
  		
@@ -327,7 +329,12 @@ class CEC_UpDownClient_Tag : public CECTag {
 		wxString ServerName() { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_NAME)->GetStringData(); }
 		wxString SoftVerStr() { return GetTagByNameSafe(EC_TAG_CLIENT_SOFT_VER_STR)->GetStringData(); }
 		uint32 Score() { return GetTagByNameSafe(EC_TAG_CLIENT_SCORE)->GetInt(); }
+		double Rating() { return GetTagByNameSafe(EC_TAG_CLIENT_RATING)->GetDoubleData(); }
 		uint16 WaitingPosition() { return GetTagByNameSafe(EC_TAG_CLIENT_WAITING_POSITION)->GetInt(); }
+
+		EIdentState GetCurrentIdentState() { return (EIdentState) GetTagByNameSafe(EC_TAG_CLIENT_IDENT_STATE)->GetInt(); }
+		bool HasObfuscatedConnection() { return GetTagByNameSafe(EC_TAG_CLIENT_OBFUSCATED_CONNECTION)->GetInt() != 0; }
+
 };
 
 class CEC_SearchFile_Tag : public CECTag {
