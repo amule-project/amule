@@ -70,6 +70,7 @@ Version 2.3.0 - The river knows.
 		* Support wxWidgets 2.9
 		* amuled for Windows (with wx 2.9)
 		* Friends get recognized in the friend list control even if their IP has changed
+		* "Last Reception" in remote gui
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -212,6 +212,7 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 
 	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
 	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete));
+	AddTag(CECTag(EC_TAG_PARTFILE_LAST_RECV, (uint64)file->GetLastChangeDatetime()));
 
 	if (detail) {
 		Detail_Tag(file);

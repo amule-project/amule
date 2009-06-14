@@ -1432,6 +1432,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->status = tag->FileStatus();
 	
 		file->lastseencomplete = tag->LastSeenComplete();
+		file->m_lastDateChanged = tag->LastDateChanged();
 		
 		file->m_category = tag->FileCat();
 		
