@@ -283,7 +283,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 bool CamuleRemoteGuiApp::CryptoAvailable() const
 {
-	return clientcredits && clientcredits->CryptoAvailable();
+	return thePrefs::IsSecureIdentEnabled(); // good enough
 }
 
 
@@ -363,8 +363,6 @@ void CamuleRemoteGuiApp::Startup() {
 	sharedfiles	= new CSharedFilesRem(m_connect);
 	knownfiles = new CKnownFilesRem(sharedfiles);
 
-	clientcredits = new CClientCreditsRem();
-	
 	// bugfix - do this before creating the uploadqueue
 	downloadqueue = new CDownQueueRem(m_connect);
 	uploadqueue = new CUpQueueRem(m_connect);
@@ -1149,6 +1147,8 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_clientSoft = tag->ClientSoftware();
 	m_clientVersionString = GetSoftName(m_clientSoft);
 	m_clientSoftString = m_clientVersionString;
+	m_identState = tag->GetCurrentIdentState();
+	m_hasbeenobfuscatinglately = tag->HasObfuscatedConnection();
 
 	// The functions to retrieve m_clientVerString information are
 	// currently in BaseClient.cpp, which is not linked in remote-gui app.
@@ -1202,49 +1202,49 @@ uint16 CUpQueueRem::GetWaitingPosition(const CUpDownClient *client) const
 
 bool CUpDownClient::IsIdentified() const 
 {
-	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDENTIFIED);
+	return m_identState == IS_IDENTIFIED;
 }
 
 
 bool CUpDownClient::IsBadGuy() const 
 {
-	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDBADGUY);
+	return m_identState == IS_IDBADGUY;
 }
 
 
 bool CUpDownClient::SUIFailed() const 
 {
-	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDFAILED);
+	return m_identState == IS_IDFAILED;
 }
 
 
 bool CUpDownClient::SUINeeded() const 
 {
-	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDNEEDED);
+	return m_identState == IS_IDNEEDED;
 }
 
 
 bool CUpDownClient::SUINotSupported() const 
 {
-	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_NOTAVAILABLE);
+	return m_identState == IS_NOTAVAILABLE;
 }
 
 
 uint64 CUpDownClient::GetDownloadedTotal() const 
 {
-	return credits ? credits->GetDownloadedTotal() : 0;
+	return credits->GetDownloadedTotal();
 }
 
 
 uint64 CUpDownClient::GetUploadedTotal() const 
 {
-	return credits ? credits->GetUploadedTotal() : 0;
+	return credits->GetUploadedTotal();
 }
 
 
 double CUpDownClient::GetScoreRatio() const
 {
-	return credits ? credits->GetScoreRatio(GetIP(), theApp->CryptoAvailable()) : 0;
+	return credits->GetScoreRatio(GetIP(), theApp->CryptoAvailable());
 }
 
 /* End Warning */
@@ -1252,9 +1252,7 @@ double CUpDownClient::GetScoreRatio() const
 
 CUpDownClient::~CUpDownClient()
 {
-	if (credits) {
-		delete credits;
-	}
+	delete credits;
 }
 
 
@@ -1310,6 +1308,10 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	client->m_nTransferredUp = tag->XferUpSession();
 
 	credit_struct->downloaded = tag->XferDown();
+	client->m_nTransferredDown = tag->XferDownSession();
+
+	client->m_score = tag->Score();
+	client->m_rating = tag->Rating();
 }
 
 

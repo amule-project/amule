@@ -31,6 +31,7 @@
 #include <common/StringFunctions.h>
 #include "NetworkFunctions.h"
 #include "OtherStructs.h"
+#include "ClientCredits.h"	// Needed for EIdentState
 
 #include <map>
 
@@ -39,7 +40,6 @@ typedef std::vector<bool> BitVector;
 
 class CPartFile;
 class CClientTCPSocket;
-class CClientCredits;
 class CPacket;
 class CFriend;
 class CKnownFile;
@@ -310,6 +310,7 @@ public:
 				bool sysvalue,
 				bool isdownloading = false,
 				bool onlybasevalue = false) const;
+	double		GetRating() const		{ return (double)GetScore(false, IsDownloading(), true); }
 #else
 	uint32		m_score;
 	uint32		GetScore(
@@ -321,8 +322,10 @@ public:
 	}
 	uint16		m_waitingPosition;
 	uint16		GetWaitingPosition() const	{ return m_waitingPosition; }
+	double		m_rating;
+	double		GetRating() const		{ return m_rating; }
+	EIdentState	m_identState;
 #endif
-	double		GetRating() const		{ return (double)GetScore(false, IsDownloading(), true); }
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	void		CreateNextBlockPackage();
@@ -629,6 +632,8 @@ public:
 	uint32		GetCreationTime() const { return m_nCreationTime; }
 	
 	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
+
+	EIdentState	GetCurrentIdentState() const { return credits ? credits->GetCurrentIdentState(GetIP()) : IS_NOTAVAILABLE; }
 	
 #ifdef __DEBUG__
 	/* Kry - Debug. See connection_reason definition comment below */

@@ -302,7 +302,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	// General
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
-	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false)));
+	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false, client->IsDownloading(), false)));
+	AddTag(CECTag(EC_TAG_CLIENT_RATING, client->GetRating()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()));
 	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()));
@@ -324,6 +325,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
 		uint64((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
+	AddTag(CECTag(EC_TAG_CLIENT_IDENT_STATE, (uint64) client->GetCurrentIdentState()));
+	AddTag(CECTag(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, client->HasObfuscatedConnectionBeenEstablished()));
 	AddTag(CECTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime()));
 	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()));
 	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())));
