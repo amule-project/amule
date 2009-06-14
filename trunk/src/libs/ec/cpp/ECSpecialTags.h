@@ -212,6 +212,7 @@ class CEC_PartFile_Tag : public CECTag {
 
  		uint8		FileCat()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_CAT)->GetInt(); }
 		time_t		LastSeenComplete() { return (time_t)GetTagByNameSafe(EC_TAG_PARTFILE_LAST_SEEN_COMP)->GetInt(); }
+		time_t		LastDateChanged() { return (time_t)GetTagByNameSafe(EC_TAG_PARTFILE_LAST_RECV)->GetInt(); }
 
 		wxString	PartMetName()
 			{
