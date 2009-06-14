@@ -408,10 +408,13 @@ bool CamuleApp::OnInit()
 #ifndef __WXMSW__
 	// get rid of sigpipe
 	signal(SIGPIPE, SIG_IGN);
+#else
+	// Handle CTRL-Break
+	signal(SIGBREAK, OnShutdownSignal);
+#endif
 	// Handle sigint and sigterm
 	signal(SIGINT, OnShutdownSignal);
 	signal(SIGTERM, OnShutdownSignal);
-#endif
 
 #ifdef __WXMAC__
 	// For listctrl's to behave on Mac
