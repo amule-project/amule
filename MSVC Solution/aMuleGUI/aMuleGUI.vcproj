@@ -670,6 +670,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\ClientCredits.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\ClientCreditsList.h"
 				>
 			</File>
