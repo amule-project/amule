@@ -493,6 +493,10 @@ public:
 	void ExitMainLoop() { m_Exit = true; }
 #endif
 
+#ifdef AMULED_DUMMY
+	void ExitMainLoop() {}
+#endif
+
 	bool CopyTextToClipboard(wxString strText);
 	
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
