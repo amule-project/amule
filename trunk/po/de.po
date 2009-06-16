@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-13 21:46+0200\n"
-"PO-Revision-Date: 2009-06-04 01:05+0100\n"
+"PO-Revision-Date: 2009-06-16 09:36+0200\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1375,7 +1375,7 @@ msgstr[1] "%u Kommentare"
 #, c-format
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr ""
+msgstr "Client %s wurde gebannt, weil er %s korrupte Daten für %s gesamt für die Datei '%s' gesendet hat."
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
