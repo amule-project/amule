@@ -1036,9 +1036,15 @@ void CDownloadQueue::AddLinksFromFile()
 					continue;
 				}
 				
-				long category = 0;
-				if (line.AfterLast(wxT(':')).ToLong(&category) == true) {
+				unsigned long category = 0;
+				if (line.AfterLast(wxT(':')).ToULong(&category) == true) {
 					line = line.BeforeLast(wxT(':'));
+					if (category >= theApp->glob_prefs->GetCatCount()) {
+						category = 0;
+					}
+				} else { // If ToULong returns false the category still can have been changed!
+						 // This is fixed in wx 2.9
+					category = 0;
 				}
 				AddLink(line, category);
 			}
@@ -1313,7 +1319,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 }
 
 
-bool CDownloadQueue::AddLink( const wxString& link, int category )
+bool CDownloadQueue::AddLink( const wxString& link, uint8 category )
 {
 	wxString uri(link);
 
@@ -1334,7 +1340,7 @@ bool CDownloadQueue::AddLink( const wxString& link, int category )
 }
 
 
-bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
+bool CDownloadQueue::AddED2KLink( const wxString& link, uint8 category )
 {
 	wxASSERT( !link.IsEmpty() );
 	wxString URI = link;
@@ -1356,7 +1362,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 }
 
 
-bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
+bool CDownloadQueue::AddED2KLink( const CED2KLink* link, uint8 category )
 {
 	switch ( link->GetKind() ) {
 		case CED2KLink::kFile:
@@ -1375,7 +1381,7 @@ bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
 
 
 
-bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
+bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, uint8 category )
 {
 	CPartFile* file = NULL;
 	if (IsFileExisting(link->GetHashKey())) {
