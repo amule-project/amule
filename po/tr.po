@@ -1,20 +1,21 @@
-# aMule translation to Turkish
-# This file is distributed under the same license as the aMule package.
-#
+# translation of tr.po to Turkish
+# This file is distributed under the same license as the PACKAGE package.
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: aMule\n"
+"Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-13 21:46+0200\n"
-"PO-Revision-Date: 2009-04-17 08:49+0300\n"
-"Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
-"Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
+"PO-Revision-Date: 2009-06-16 07:40+0300\n"
+"Last-Translator: Atilla <atilla_ontas@mandriva.org>\n"
+"Language-Team: Turkish cooker-i18n@mandrivalinux.org\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Virtaal 0.3.1\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -462,7 +463,7 @@ msgstr "Yeni sürüm denetimi için http://www.amule.org adresini ziyaret ediniz
 
 #: src/amuleDlg.cpp:266
 msgid "FATAL ERROR: Failed to create Timer"
-msgstr "Başarısız"
+msgstr "ÖNEMLİ HATA: Zamanlayıcı oluşturulamadı"
 
 #: src/amuleDlg.cpp:485
 msgid "aMule remote control "
@@ -540,27 +541,27 @@ msgstr "aMule dialoğu imha edildi"
 
 #: src/amuleDlg.cpp:700
 msgid "eD2k: Connecting"
-msgstr "Bağlanıyor"
+msgstr "eD2k: Bağlanıyor"
 
 #: src/amuleDlg.cpp:704
 msgid "eD2k: Disconnected"
-msgstr "Bağlantı kesildi"
+msgstr "eD2k: Bağlantı kesildi"
 
 #: src/amuleDlg.cpp:710
 msgid "Kad: Firewalled"
-msgstr "Kademlia Güvenlik Duvarı"
+msgstr "Kade: Güvenlik Duvarı"
 
 #: src/amuleDlg.cpp:714
 msgid "Kad: Connected"
-msgstr "Kademlia Bağlandı"
+msgstr "Kad: Bağlandı"
 
 #: src/amuleDlg.cpp:719
 msgid "Kad: Connecting"
-msgstr "Kademlia Bağlanıyor"
+msgstr "Kad: Bağlanıyor"
 
 #: src/amuleDlg.cpp:723
 msgid "Kad: Off"
-msgstr "Kademlia"
+msgstr "Kad: Kapalı"
 
 #: src/amuleDlg.cpp:769 src/DownloadListCtrl.cpp:588
 #: src/DownloadListCtrl.cpp:908 src/FriendListCtrl.cpp:278
@@ -582,7 +583,7 @@ msgstr "Bağlantıyı Kes"
 
 #: src/amuleDlg.cpp:776
 msgid "Disconnect from the currently connected networks"
-msgstr "Bağlantıyı Kes"
+msgstr "Bağlanılmış olan ağlar ile bağlantıyı Kes"
 
 #: src/amuleDlg.cpp:781 src/MuleTrayIcon.cpp:558 src/muuli_wdr.cpp:2880
 #: src/muuli_wdr.cpp:3271 src/muuli_wdr.cpp:3454
@@ -591,7 +592,7 @@ msgstr "Bağlan"
 
 #: src/amuleDlg.cpp:782
 msgid "Connect to the currently enabled networks"
-msgstr "Bağlan"
+msgstr "Etkinleştirilmiş olan ağlara bağlan"
 
 #: src/amuleDlg.cpp:840
 #, c-format
@@ -638,19 +639,19 @@ msgstr "UYARI: Kaplama dosyası '%s' okuma için açılamıyor"
 #: src/amuleDlg.cpp:1327 src/amuleDlg.cpp:1488 src/muuli_wdr.cpp:1804
 #: src/muuli_wdr.cpp:3456
 msgid "Networks"
-msgstr "Ağ"
+msgstr "Ağlar"
 
 #: src/amuleDlg.cpp:1329
 msgid "Networks window"
-msgstr "Ağ"
+msgstr "Ağ Penceresi"
 
 #: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3457
 msgid "Searches"
-msgstr "Ara"
+msgstr "Aramalar"
 
 #: src/amuleDlg.cpp:1333
 msgid "Searches window"
-msgstr "Ara"
+msgstr "Arama Penceresi"
 
 #: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3458
 msgid "Transfers"
@@ -658,7 +659,7 @@ msgstr "Aktarımlar"
 
 #: src/amuleDlg.cpp:1337
 msgid "Files transfers window"
-msgstr "Dosyalar"
+msgstr "Dosya aktarım penceresi"
 
 #: src/amuleDlg.cpp:1339
 msgid "Shared files"
@@ -675,7 +676,7 @@ msgstr "Sohbet"
 
 #: src/amuleDlg.cpp:1345
 msgid "Messages window"
-msgstr "Sohbet"
+msgstr "Sohbet penceresi"
 
 #: src/amuleDlg.cpp:1347 src/muuli_wdr.cpp:1091 src/muuli_wdr.cpp:3462
 #: src/PrefsUnifiedDlg.cpp:174 src/Statistics.cpp:639 src/Statistics.cpp:937
@@ -684,7 +685,7 @@ msgstr "İstatistikler"
 
 #: src/amuleDlg.cpp:1349
 msgid "Statistics graph window"
-msgstr "İstatistikler"
+msgstr "İstatistik penceresi"
 
 #: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3464 src/PrefsUnifiedDlg.cpp:189
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
@@ -693,7 +694,7 @@ msgstr "Ayarlar"
 
 #: src/amuleDlg.cpp:1354
 msgid "Preferences settings window"
-msgstr "Ayarlar"
+msgstr "Ayar penceresi"
 
 #: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3465
 msgid "Import"
@@ -718,7 +719,7 @@ msgstr "eD2k ağı"
 
 #: src/amuleDlg.cpp:1503
 msgid "Kad network"
-msgstr "Kademlia"
+msgstr "Kademlia ağı"
 
 #: src/amuleDlg.cpp:1508
 msgid "No network"
@@ -1089,7 +1090,7 @@ msgstr "Dosya"
 #: src/ClientListCtrl.cpp:518 src/ClientListCtrl.cpp:850
 #: src/ClientListCtrl.cpp:1026
 msgid "Client Software"
-msgstr "Kullanıcı Yazılımı"
+msgstr "İstemci Yazılımı"
 
 #: src/ClientListCtrl.cpp:519 src/DownloadListCtrl.cpp:192
 msgid "Speed"
@@ -1193,7 +1194,7 @@ msgstr "Soruldu"
 
 #: src/ClientListCtrl.cpp:855
 msgid "Last Seen"
-msgstr "Son görülme"
+msgstr "Son Görülme"
 
 #: src/ClientListCtrl.cpp:856
 msgid "Entered Queue"
@@ -1225,11 +1226,11 @@ msgstr "Gönderilen"
 
 #: src/ClientListCtrl.cpp:1024
 msgid "Download Status"
-msgstr "Aktarım Durumu"
+msgstr "İndirme Durumu"
 
 #: src/ClientListCtrl.cpp:1025
 msgid "Transferred Down"
-msgstr "Aktarılan"
+msgstr "İndirilen"
 
 #: src/ClientListCtrl.cpp:1028
 msgid "Userhash"
@@ -1338,6 +1339,8 @@ msgstr[1] "%u adet yorum"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"%s istemcisi %s kadar veriyi %s toplamda '%s' dosyasında gönderdiği için "
+"yasaklandı."
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1580,7 +1583,7 @@ msgstr "Magnet bağlantısını panoya kopyala"
 
 #: src/DownloadListCtrl.cpp:949 src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k &link to clipboard"
-msgstr "Kopya&la"
+msgstr "eD2k bağlantısını panoya kopya&la"
 
 #: src/DownloadListCtrl.cpp:951 src/SharedFilesCtrl.cpp:173
 msgid "Copy feedback to clipboard"
@@ -1636,7 +1639,10 @@ msgstr "İndirmeler (%i)"
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
-msgstr "yukarı."
+msgstr ""
+"Her önizlemede bu uyarının gösterilemsini önlemek için,\n"
+"seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın. (öntanımlı "
+"mplayer)"
 
 #: src/DownloadListCtrl.cpp:2292
 msgid "File preview"
@@ -1670,7 +1676,9 @@ msgstr "ParçaDosyası %u %u'dan yükleniyor"
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr "Başarısız Arahttp://forum.amule.org."
+msgstr ""
+"HATA: Yedekleme dosyası yüklenemedi. .part.met kurtarma çözümleri için "
+"http://forum.amule.org adresini ziyaret edin."
 
 #: src/DownloadQueue.cpp:161
 msgid "All PartFiles Loaded."
@@ -1898,7 +1906,7 @@ msgstr "eD2k ağına zaten bağlandı."
 
 #: src/ExternalConn.cpp:1501
 msgid "Connecting to eD2k..."
-msgstr "Bağlanıyor."
+msgstr "eD2k ağına bağlanıyor..."
 
 #: src/ExternalConn.cpp:1509
 msgid "Already connected to Kad."
@@ -1906,7 +1914,7 @@ msgstr "Kad. zaten bağlı."
 
 #: src/ExternalConn.cpp:1512
 msgid "Connecting to Kad..."
-msgstr "Kad.' a bağlanıyor..."
+msgstr "Kad. ağına bağlanıyor..."
 
 #: src/ExternalConn.cpp:1517
 msgid "All networks are disabled."
@@ -1914,11 +1922,11 @@ msgstr "Bütün ağlar devre dışı"
 
 #: src/ExternalConn.cpp:1525
 msgid "Disconnected from eD2k."
-msgstr "Bağlantı kesildi."
+msgstr "eD2k ağından bağlantı kesildi."
 
 #: src/ExternalConn.cpp:1529
 msgid "Disconnected from Kad."
-msgstr "Bağlantı kesildi :Kad."
+msgstr "Kad. ağından bağlantı kesildi."
 
 #: src/ExternalConn.cpp:1537
 #, c-format
@@ -2420,7 +2428,7 @@ msgstr "Tamamlandı"
 
 #: src/KnownFileList.cpp:80
 msgid "WARNING: known.met cannot be opened."
-msgstr "UYARI."
+msgstr "UYARI: known.met açılamıyor."
 
 #: src/KnownFileList.cpp:87
 msgid "WARNING: Known file list corrupted, contains invalid header."
@@ -2438,7 +2446,7 @@ msgstr "known.met dosyası kaydedilirken hata: %s"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3698
 msgid "Hashing"
-msgstr "Adreslemesi Yapılıyor"
+msgstr "Adresleniyor"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3704
 msgid "Completing"
@@ -2518,7 +2526,7 @@ msgstr "HATA: "
 
 #: src/Logger.cpp:341
 msgid "WARNING: "
-msgstr "UYARI "
+msgstr "UYARI:"
 
 #: src/MuleNotebook.cpp:154 src/muuli_wdr.cpp:537 src/muuli_wdr.cpp:953
 #: src/muuli_wdr.cpp:1564 src/muuli_wdr.cpp:3360
@@ -2557,7 +2565,7 @@ msgstr "Temizle"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
-msgstr "Hepsini Seçiniz"
+msgstr "Tümünü Seç"
 
 #: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:510
 #: src/MuleTrayIcon.cpp:531
@@ -2717,7 +2725,7 @@ msgstr "Çıkış"
 
 #: src/muuli_wdr.cpp:69
 msgid "eD2k Link: "
-msgstr "Bağlantı "
+msgstr "eD2k Bağlantısı:"
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -2856,7 +2864,7 @@ msgstr "Belgeler"
 
 #: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:210
 msgid "Videos"
-msgstr "Görüntüler"
+msgstr "Videolar"
 
 #: src/muuli_wdr.cpp:248
 msgid "Extension"
@@ -2917,7 +2925,7 @@ msgstr "Daha Fazla"
 
 #: src/muuli_wdr.cpp:351
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
-msgstr "Ara Kademlia."
+msgstr "Daha fazla sonuç için eD2k aranır. Kad ağında henüz desteklenmiyor."
 
 #: src/muuli_wdr.cpp:358
 msgid "Stop"
@@ -3970,7 +3978,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2669
 msgid "Add server manually: Name"
-msgstr "Ekle Adı"
+msgstr "Sunucuyu elle ekle: İsim"
 
 #: src/muuli_wdr.cpp:2673
 msgid "Enter the name of the new server here"
@@ -4487,7 +4495,7 @@ msgstr "Tümü"
 
 #: src/OtherFunctions.cpp:690
 msgid "all others"
-msgstr "diğerleri"
+msgstr "Diğerleri"
 
 #: src/OtherFunctions.cpp:691 src/TransferWnd.cpp:346
 msgid "Incomplete"
@@ -5056,7 +5064,9 @@ msgstr "Parçacıktan %d Kimliği ve %s anahtarı ile Cfg' ye veri aktarılamad�
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
-msgstr "Değişikliklerin uygulanması için, aMule yeniden başlatılmalı\n"
+msgstr ""
+"Değişikliklerin uygulanması için, aMule yeniden başlatılmalı\n"
+"\n"
 
 #: src/PrefsUnifiedDlg.cpp:541
 msgid "- TCP port changed.\n"
@@ -6043,17 +6053,17 @@ msgstr "Doruk Bağlantılar (yaklaşık): %i"
 #: src/Statistics.cpp:703
 #, c-format
 msgid "Unknown: %s"
-msgstr "Bilinmeyen: %s"
+msgstr "Bilinmiyor: %s"
 
 #: src/Statistics.cpp:709
 #, c-format
 msgid "Filtered: %s"
-msgstr "Süzüldü: %s"
+msgstr "Süzülen: %s"
 
 #: src/Statistics.cpp:710
 #, c-format
 msgid "Banned: %s"
-msgstr "Engellendi: %s"
+msgstr "Engellenen: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
@@ -6169,7 +6179,7 @@ msgstr ""
 
 #: src/TextClient.cpp:347
 msgid "Processing by hash: "
-msgstr "Hash ile işleniyor: "
+msgstr "Adresleme ile işleniyor: "
 
 #: src/TextClient.cpp:362
 msgid "Processing by filename: "
@@ -6953,14 +6963,20 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aMule<thepolish@vipmail.ru>http://www.everaldo.comhttp://www.icomania."
-"comhttp://jimmac.musichall.cz/ikony.php3"
+"aLinkCreator, aMule eD2k bağlantı oluşturucusu\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Pixmapler: http://www.everaldo.com ve http://www.icomania.com\n"
+"ve http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"GPL altında dağıtılır."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
-msgstr "Adreslemesi Yapılıyor."
+msgstr "Adresleniyor."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
@@ -7453,9 +7469,3 @@ msgstr "Çıkış istendi.\n"
 #: src/webserver/src/WebServer.cpp:1901
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Kullanıcı: E: %s K: %s | Dosya E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "%s Kullanıcısı IP:Port %s:%d üzerinde ve %s %s %s kullanıyor"
