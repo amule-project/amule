@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-13 21:46+0200\n"
-"PO-Revision-Date: 2009-03-09 19:39+0100\n"
+"PO-Revision-Date: 2009-06-16 00:18+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -462,7 +462,7 @@ msgstr "amuled: passage en arrière plan - à bientôt"
 
 #: src/amuled.cpp:732
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Impossible de créer le fichier Pid"
 
 #: src/amuled.cpp:791
 #, c-format
@@ -1381,6 +1381,8 @@ msgstr[1] "%u commentaires"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"Clients bannis %s pour l'envoi %s de données corrompues de %s total pour le "
+"fichier '%s'"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
