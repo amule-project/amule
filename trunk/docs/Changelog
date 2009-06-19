@@ -72,6 +72,8 @@ Version 2.3.0 - The river knows.
 		* Friends get recognized in the friend list control even if their IP has changed
 		* "Last Reception" in remote gui
 		* Fixed client information in remote gui
+		* Don't kick friend upload, don't kick release prio uploads (unless they take more
+		  than half of the slots), and don't kick anybody else unless necessary (with GonoszTopi)
 
 	Vollstrecker:
 		* Unify copyright lines

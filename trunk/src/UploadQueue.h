@@ -56,7 +56,7 @@ public:
 
 private:
 	void	RemoveFromWaitingQueue(CClientPtrList::iterator pos);
-	bool	AcceptNewClient();
+	uint16	GetMaxSlots() const;
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 
 	CClientPtrList m_waitinglist;
@@ -66,6 +66,7 @@ private:
 	suspendlist suspended_uploads_list;  //list for suspended uploads
 	uint32	m_nLastStartUpload;
 	bool	lastupslotHighID; // VQB lowID alternation
+	bool	m_allowKicking;
 };
 
 #endif // UPLOADQUEUE_H
