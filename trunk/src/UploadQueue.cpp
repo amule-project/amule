@@ -333,8 +333,22 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		
 		if ( IsOnUploadQueue( cur_client ) ) {
 			if ( cur_client == client ) {
-				if ( client->m_bAddNextConnect && ( ( m_uploadinglist.size() < thePrefs::GetMaxUpload() ) || ( thePrefs::GetMaxUpload() == UNLIMITED ) ) ) {
+				// This is where LowID clients get their upload slot assigned.
+				// They can't be contacted if they reach top of the queue, so they are just marked for uploading.
+				// When they reconnect next time AddClientToQueue() is called, and they get their slot
+				// through the connection they initiated.
+				// Since at that time no slot is free they get assigned an extra slot,
+				// so then the number of slots exceeds the configured number by one.
+				// To prevent a further increase no more LowID clients get a slot, until 
+				// - a HighID client has got one (which happens only after two clients 
+				//   have been kicked so a slot is free again)
+				// - or there is a free slot, which means there is no HighID client on queue
+				if (client->m_bAddNextConnect) {
+					uint16 maxSlots = GetMaxSlots();
 					if (lastupslotHighID) {
+						maxSlots++;
+					}
+					if (m_uploadinglist.size() < maxSlots) {
 						client->m_bAddNextConnect = false;
 						RemoveFromWaitingQueue(client, true);
 						AddUpNextClient(client);
