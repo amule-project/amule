@@ -204,6 +204,7 @@ class CEC_PartFile_Tag : public CECTag {
   		uint64		SizeDone()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_DONE)->GetInt(); }
  		wxString	FileEd2kLink()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
  		uint8		FileStatus()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt(); }
+ 		bool		Stopped()		const { return GetTagByNameSafe(EC_TAG_PARTFILE_STOPPED)->GetInt() != 0; }
   		uint16		SourceCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt(); }
   		uint16		SourceNotCurrCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt(); }
   		uint16		SourceXferCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt(); }

@@ -190,6 +190,7 @@ enum ECTagNames {
 		EC_TAG_PARTFILE_REQ_STATUS                = 0x0314,
 		EC_TAG_PARTFILE_SOURCE_NAMES              = 0x0315,
 		EC_TAG_PARTFILE_COMMENTS                  = 0x0316,
+		EC_TAG_PARTFILE_STOPPED                   = 0x0317,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
