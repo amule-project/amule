@@ -31,7 +31,7 @@
 
 #include "../../../KnownFile.h"		// Needed for PS_*
 
-wxString CEC_PartFile_Tag::GetFileStatusString()
+wxString CEC_PartFile_Tag::GetFileStatusString() const
 {
 	uint8 nFileStatus = FileStatus();
 	
