@@ -151,17 +151,17 @@ class CECTag {
 		CMD4Hash	GetMD4Data() const;
 
 		
-		void AssignIfExist(ec_tagname_t tagname, uint8_t &target)
+		void AssignIfExist(ec_tagname_t tagname, uint8_t &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
 				EC_ASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
 				target = tag->GetInt();
 			}
 		}
-		void AssignIfExist(ec_tagname_t tagname, uint16_t &target)
+		void AssignIfExist(ec_tagname_t tagname, uint16_t &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
 				EC_ASSERT(
 					(tag->GetType() == EC_TAGTYPE_UINT16)
@@ -171,9 +171,9 @@ class CECTag {
 				target = tag->GetInt();
 			}
 		}
-		void AssignIfExist(ec_tagname_t tagname, uint32_t &target)
+		void AssignIfExist(ec_tagname_t tagname, uint32_t &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
 				EC_ASSERT(
 					(tag->GetType() == EC_TAGTYPE_UINT32)
@@ -184,31 +184,31 @@ class CECTag {
 				target = tag->GetInt();	
 			}
 		}
-		void AssignIfExist(ec_tagname_t tagname, uint64_t &target)
+		void AssignIfExist(ec_tagname_t tagname, uint64_t &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetInt();
 		}
-		void AssignIfExist(ec_tagname_t tagname, double &target)
+		void AssignIfExist(ec_tagname_t tagname, double &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetDoubleData();
 		}
-		void AssignIfExist(ec_tagname_t tagname, CMD4Hash &target)
+		void AssignIfExist(ec_tagname_t tagname, CMD4Hash &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetMD4Data();
 		}
-		void AssignIfExist(ec_tagname_t tagname, std::string &target)
+		void AssignIfExist(ec_tagname_t tagname, std::string &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetStringDataSTL();
 		}
 		
 		#ifdef USE_WX_EXTENSIONS
-		void AssignIfExist(ec_tagname_t tagname, wxString &target)
+		void AssignIfExist(ec_tagname_t tagname, wxString &target) const
 		{
-			CECTag *tag = GetTagByName(tagname);
+			const CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetStringData();
 		}		
 		#endif
