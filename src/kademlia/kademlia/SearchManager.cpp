@@ -246,10 +246,6 @@ void CSearchManager::GetWords(const wxString& str, WordList *words)
 			words->push_back(current_word);
 		}
 	}
-	// If the last word is 3 bytes long, chances are it's a file extension.
-	if(words->size() > 1 && len == 3) {
-		words->pop_back();
-	}
 }
 
 void CSearchManager::JumpStart()
