@@ -255,7 +255,7 @@ void CProxyStateMachine::ReactivateSocket()
 	// If that is not true, we are in serious trouble...
 	wxASSERT(s);
 	if (CDatagramSocketProxy *udp = s->GetUDPSocket()) {
-		// The original socket was an UDP socket
+		// The original socket was a UDP socket
 		if(m_ok) {
 			// From now on, the UDP socket can be used,
 			// remove the protection.

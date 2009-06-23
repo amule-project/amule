@@ -1076,7 +1076,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 		if (::IsGoodIPPort(hostIP, contactPort)) {
 			if (!theApp->ipfilter->IsFiltered(hostIP) && !(contactPort == 53 && version <= 5) /*No DNS Port without encryption*/) {
 				if (isFirewallUDPCheckSearch) {
-					// UDP FirewallCheck searches are special. The point is we need an IP which we didn't sent an UDP message yet
+					// UDP FirewallCheck searches are special. The point is we need an IP which we didn't sent a UDP message yet
 					// (or in the near future), so we do not try to add those contacts to our routingzone and we also don't
 					// deliver them back to the searchmanager (because he would UDP-ask them for further results), but only report
 					// them to FirewallChecker - this will of course cripple the search but thats not the point, since we only 
