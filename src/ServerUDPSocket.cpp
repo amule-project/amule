@@ -430,7 +430,7 @@ void CServerUDPSocket::SendQueue()
 					// It has been checked recently, don't re-check yet.
 					if (update->GetDNSError()) {
 						// Drop the packet, dns failed last time
-						AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that failed DNS: ")+item.addr);
+						AddDebugLogLineM(false, logServerUDP, wxT("Trying to send a UDP packet to a server host that failed DNS: ")+item.addr);
 						m_queue.pop_front();
 						continue;
 					} else {
@@ -442,7 +442,7 @@ void CServerUDPSocket::SendQueue()
 							item.ip = update->GetIP();
 							// It'll fallback to the sending.
 						} else {
-							AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that is checking DNS: ")+item.addr);
+							AddDebugLogLineM(false, logServerUDP, wxT("Trying to send a UDP packet to a server host that is checking DNS: ")+item.addr);
 							// Let the packet queued, and wait for resolution
 							// Meanwhile, send other packets.
 							m_queue.pop_front();
@@ -452,7 +452,7 @@ void CServerUDPSocket::SendQueue()
 					}
 				}
 			} else {
-				AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that is not on serverlist"));
+				AddDebugLogLineM(false, logServerUDP, wxT("Trying to send a UDP packet to a server host that is not on serverlist"));
 				// Not much we can do here, just drop the packet.
 				m_queue.pop_front();
 				continue;
@@ -461,11 +461,11 @@ void CServerUDPSocket::SendQueue()
 		
 		CServer* update = theApp->serverlist->GetServerByIPUDP(item.ip, item.port, true);
 		if (update) {
-			AddDebugLogLineM(false, logServerUDP, wxT("Sending an UDP packet to a server: ")+update->GetAddress());
+			AddDebugLogLineM(false, logServerUDP, wxT("Sending a UDP packet to a server: ")+update->GetAddress());
 			// Don't encrypt, as this is already either encrypted or refused to encrypt.
 			CMuleUDPSocket::SendPacket(packet, item.ip, item.port, false, NULL, false, 0);
 		} else {
-			AddDebugLogLineM(false, logServerUDP, wxT("Sending an UDP packet to a server no in serverlist: ")+Uint32_16toStringIP_Port(item.ip,item.port));
+			AddDebugLogLineM(false, logServerUDP, wxT("Sending a UDP packet to a server no in serverlist: ")+Uint32_16toStringIP_Port(item.ip,item.port));
 		}
 		
 		m_queue.pop_front();
