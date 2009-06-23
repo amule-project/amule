@@ -170,10 +170,10 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received"));
 	} else if (!ip) {
 		// wxFAIL;
-		AddLogLineNS(wxT("Unknown ip receiving an UDP packet! Ignoring: '") + addr.IPAddress() + wxT("'"));
+		AddLogLineNS(wxT("Unknown ip receiving a UDP packet! Ignoring: '") + addr.IPAddress() + wxT("'"));
 	} else if (!port) {
 		// wxFAIL;
-		AddLogLineNS(wxT("Unknown port receiving an UDP packet! Ignoring"));
+		AddLogLineNS(wxT("Unknown port receiving a UDP packet! Ignoring"));
 	} else if (theApp->clientlist->IsBannedClient(ip)) {
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Dropped packet from banned IP ") + addr.IPAddress());
 	} else {
