@@ -1309,13 +1309,35 @@ void CKnownFile::ClearPriority() {
 	UpdateAutoUpPriority();
 }
 
+void GuessAndRemoveExt(CPath& name)
+{
+	wxString ext = name.GetExt();
+
+	// Remove common two-part extensions, such as "tar.gz"
+	if (ext == wxT("gz") || ext == wxT("bz2")) {
+		name.RemoveExt();
+		if (name.GetExt() == wxT("tar")) {
+			name.RemoveExt();
+		}
+	// might be an extension if length == 3
+	// and also remove some common non-three-character extensions
+	} else if (ext.Length() == 3 ||
+		   ext == wxT("7z")   ||
+		   ext == wxT("jpeg") ||
+		   ext == wxT("mpeg")
+		   ) {
+		name.RemoveExt();
+	}
+}
+
 void CKnownFile::SetFileName(const CPath& filename)
 { 
 	CAbstractFile::SetFileName(filename);
-#ifndef CLIENT_GUI
-		wordlist.clear();
-		Kademlia::CSearchManager::GetWords(GetFileName().GetPrintable(), &wordlist);
-#endif
+	wordlist.clear();
+	// Don't publish extension. That'd kill the node indexing e.g. "avi".
+	CPath tmpName = GetFileName();
+	GuessAndRemoveExt(tmpName);
+	Kademlia::CSearchManager::GetWords(tmpName.GetPrintable(), &wordlist);
 }
 
 #endif // CLIENT_GUI
