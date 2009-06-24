@@ -19,6 +19,8 @@ Version 2.3.0 - The river knows.
 		* Implemented an alternate method to estimate the real user count
 		  in the Kad network, which is not based on our local routing table.
 		  (port from eMule v0.49b)
+		* Dropped assumption that last search keyword is a filename
+		  extension if length == 3.
 
 	Greek:
 		* Part number is now an extra column in the download list
@@ -41,6 +43,9 @@ Version 2.3.0 - The river knows.
 
 	LittleAbacus:
 		* Search results can now be sorted by "knownness" state.
+
+	marcell:
+		* Fixed issue #892: Show data sizes >= 1.0 GB with three digits.
 
 	morph:
 		* Patch to uniform and fix minor errors on man pages
