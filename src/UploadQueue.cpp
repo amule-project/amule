@@ -214,7 +214,7 @@ void CUploadQueue::Process()
 		
 		// It seems chatting or friend slots can get stuck at times in upload.. This needs looked into..
 		if (!cur_client->GetSocket()) {
-			RemoveFromUploadQueue(cur_client, true);
+			RemoveFromUploadQueue(cur_client);
 			if(cur_client->Disconnected(_T("CUploadQueue::Process"))){
 				cur_client->Safe_Delete();
 			}
@@ -350,7 +350,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 					}
 					if (m_uploadinglist.size() < maxSlots) {
 						client->m_bAddNextConnect = false;
-						RemoveFromWaitingQueue(client, true);
+						RemoveFromWaitingQueue(client);
 						AddUpNextClient(client);
 						lastupslotHighID = false; // LowID alternate
 						return;
@@ -447,7 +447,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 }
 
 
-bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindow)
+bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client)
 {
 	// Keep track of this client
 	theApp->clientlist->AddTrackClient(client);
@@ -456,9 +456,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindo
 			m_uploadinglist.end(), client);
 	
 	if (it != m_uploadinglist.end()) {
-		if (updatewindow) {
-			Notify_UploadCtrlRemoveClient(client);
-		}
+		Notify_UploadCtrlRemoveClient(client);
 		m_uploadinglist.erase(it);
 		theStats::RemoveUploadingClient();
 		if( client->GetTransferredUp() ) {
@@ -586,7 +584,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 		//check if the client is uploading the file we need to suspend
 		if(potential->GetUploadFileID() == filehash) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
-			RemoveFromUploadQueue(potential, true);
+			RemoveFromUploadQueue(potential);
 
 			m_waitinglist.push_back(potential);
 			theStats::AddWaitingClient();
@@ -598,16 +596,14 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 	}
 }
 
-bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client, bool updatewindow)
+bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client)
 {
 	CClientPtrList::iterator it = std::find(m_waitinglist.begin(),
 			m_waitinglist.end(), client);
 	
 	if (it != m_waitinglist.end()) {
 		RemoveFromWaitingQueue(it);
-		if (updatewindow) {
-			Notify_ShowQueueCount(m_waitinglist.size());
-		}
+		Notify_ShowQueueCount(m_waitinglist.size());
 		return true;
 	} else {
 		return false;
