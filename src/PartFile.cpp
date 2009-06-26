@@ -2219,6 +2219,8 @@ void CPartFile::Delete()
 	StopFile(true);
 	AddDebugLogLineM(false, logPartFile, wxT("\tStopped"));
 	
+	uint16 removed = theApp->uploadqueue->SuspendUpload(GetFileHash());
+	AddDebugLogLineM(false, logPartFile, CFormat(wxT("\tSuspended upload to %d clients")) % removed);
 	theApp->sharedfiles->RemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from shared"));
 	theApp->downloadqueue->RemoveFile(this);
