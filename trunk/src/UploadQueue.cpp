@@ -569,10 +569,11 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 /*
  * This function adds a file indicated by filehash to suspended_uploads_list
  */
-void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
+uint16 CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
 	AddLogLineM( false, CFormat( _("Suspending upload of file: %s" ) )
 				% filehash.Encode() );
+	uint16 removed = 0;
 
 	//Append the filehash to the list.
 	suspended_uploads_list.push_back(filehash);
@@ -592,8 +593,10 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 			potential->SendRankingInfo();
 			Notify_QlistRefreshClient(potential);
 			Notify_ShowQueueCount(m_waitinglist.size());
+			removed++;
 		}
 	}
+	return removed;
 }
 
 bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client)

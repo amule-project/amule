@@ -51,7 +51,7 @@ public:
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 
 	uint16	GetWaitingPosition(const CUpDownClient *client) const;
-	void	SuspendUpload(const CMD4Hash &);
+	uint16	SuspendUpload(const CMD4Hash &);
 	void	ResumeUpload(const CMD4Hash &);
 
 private:
