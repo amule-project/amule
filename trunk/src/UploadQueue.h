@@ -38,8 +38,8 @@ public:
 	~CUploadQueue();
 	void	Process();
 	void	AddClientToQueue(CUpDownClient* client);
-	bool	RemoveFromUploadQueue(CUpDownClient* client,bool updatewindow = true);
-	bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
+	bool	RemoveFromUploadQueue(CUpDownClient* client);
+	bool	RemoveFromWaitingQueue(CUpDownClient* client);
 	bool	IsOnUploadQueue(const CUpDownClient* client) const;
 	bool	IsDownloading(CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);

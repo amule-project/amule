@@ -631,7 +631,7 @@ uint32 CUpDownClient::SendBlockData()
         m_nCurQueueSessionPayloadUp += sentBytesPayload;
 
         if (theApp->uploadqueue->CheckForTimeOver(this)) {
-            theApp->uploadqueue->RemoveFromUploadQueue(this, true);
+            theApp->uploadqueue->RemoveFromUploadQueue(this);
 			SendOutOfPartReqsAndAddToWaitingQueue();
         } else {
             // read blocks from file and put on socket
