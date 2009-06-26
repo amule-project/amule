@@ -1707,6 +1707,9 @@ void CamuleApp::ShutDown()
 		glob_prefs->Save();
 	}
 
+	CPath configFileName = CPath(ConfigDir + wxT("amule.conf"));
+	CPath::BackupFile(configFileName, wxT(".bak"));
+
 	if (clientlist) {
 		clientlist->DeleteAll();
 	}
