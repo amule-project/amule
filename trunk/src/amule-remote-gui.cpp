@@ -319,10 +319,12 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 		glob_prefs->LoadRemote();
 	} else {
 		AddLogLineNS(_("Going down"));
-		if (dialog) {	// can otherwise crash here on disconnect
+		if (dialog) {	// connect failed
 			wxMessageBox(
 			(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % dialog->Host() % dialog->Port()) + reply,
 			_("ERROR"), wxOK);
+		} else {		// server disconnected (probably terminated) later
+			wxMessageBox(_("Connection closed - aMule has terminated probably."), _("ERROR"), wxOK);
 		}
 		ExitMainLoop();
 	}
@@ -349,6 +351,7 @@ void CamuleRemoteGuiApp::Startup() {
 		wxConfig::Get()->Write(wxT("/EC/Password"), dialog->PassHash());
 	}
 	dialog->Destroy();
+	dialog = NULL;
 	
 	m_ConnState = 0;
 	m_clientID  = 0;
