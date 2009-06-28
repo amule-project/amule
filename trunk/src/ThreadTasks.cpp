@@ -415,8 +415,8 @@ void CCompletionTask::Entry()
 			targetPath = thePrefs::GetIncomingDir();
 		}
 	}
-	
-	CPath dstName = m_filename.Cleanup(true, PlatformSpecific::CanFSHandleSpecialChars(targetPath));
+
+	CPath dstName = m_filename.Cleanup(true, !PlatformSpecific::CanFSHandleSpecialChars(targetPath));
 
 	// Avoid empty filenames ...
 	if (!dstName.IsOk()) {
