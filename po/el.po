@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-13 21:46+0200\n"
+"POT-Creation-Date: 2009-06-28 13:55+0200\n"
 "PO-Revision-Date: 2008-07-30 01:25-0600\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -23,7 +23,7 @@ msgstr "Προσθήκη φίλου"
 msgid "You have to enter a valid IP and port!"
 msgstr "Πρέπει να βάλετε σωστή IP και θύρα!"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1802
 msgid "Information"
 msgstr "Πληροφορίες"
 
@@ -61,24 +61,24 @@ msgstr "Το κατέβασμα ολοκληρώθηκε"
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:647
+#: src/amule.cpp:650
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "Έξοδος επιβεβαίωσης"
 
-#: src/amule.cpp:650
+#: src/amule.cpp:653
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "Νέα εξωτερική σύνδεση έγινε δεκτή"
 
-#: src/amule.cpp:661 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:664 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:665 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ"
 
-#: src/amule.cpp:707
+#: src/amule.cpp:710
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -86,13 +86,13 @@ msgstr ""
 "Οι τοπικές ρυθμίσεις άλλαξαν στις προεπιλεγμένες του συστήματος λόγο μιας "
 "αλλαγής παραμέτρων. Sorry!"
 
-#: src/amule.cpp:709 src/amule.cpp:1343 src/CatDialog.cpp:141
+#: src/amule.cpp:712 src/amule.cpp:1346 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:159 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Πληροφορίες"
 
-#: src/amule.cpp:791
+#: src/amule.cpp:794
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -100,26 +100,26 @@ msgstr ""
 "Δεν υπάρχουν διακομιστές στην λίστα.\n"
 "Θέλετε το aMule να κατεβάσει μία νέα λίστα τώρα;"
 
-#: src/amule.cpp:792
+#: src/amule.cpp:795
 msgid "Server list download"
 msgstr "Κατέβασμα της λίστας διακομιστών"
 
-#: src/amule.cpp:808 src/amuleDlg.cpp:568 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:811 src/amuleDlg.cpp:568 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:59
 msgid "Connecting"
 msgstr "Συνδέοντας"
 
-#: src/amule.cpp:829
+#: src/amule.cpp:832
 #, fuzzy, c-format
 msgid "Using amuleweb in '%s'."
 msgstr "Τρέξε τον διακομιστή ιστού του aΜule κατά την εκκίνηση"
 
-#: src/amule.cpp:859
+#: src/amule.cpp:862
 #, c-format
 msgid "web server running on pid %d"
 msgstr "διακομιστής ιστού τρέχει με αριθμό διεργασίας %d"
 
-#: src/amule.cpp:863
+#: src/amule.cpp:866
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -130,23 +130,24 @@ msgstr ""
 "περιέχει τον διακομιστή ιστού του aMule, ή μεταφράστε το aMule "
 "χρησιμοποιώντας την παράμετρο --enable-webserver"
 
-#: src/amule.cpp:864 src/amule.cpp:985 src/amule.cpp:1354
+#: src/amule.cpp:867 src/amule.cpp:988 src/amule.cpp:1357
 #: src/amule-remote-gui.cpp:303 src/amule-remote-gui.cpp:325
+#: src/amule-remote-gui.cpp:327
 msgid "ERROR"
 msgstr "ΣΦΑΛΜΑ"
 
-#: src/amule.cpp:950
+#: src/amule.cpp:953
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Δεν μπόρεσε να προσδέσει τις θύρες στην προσδιορισμένη διεύθυνση: %s"
 
-#: src/amule.cpp:977
+#: src/amule.cpp:980
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr ""
 "Η θύρα %u δεν είναι διαθέσιμη. Θα σας αποδωθεί LOWID (χαμηλή προτεραιότητα)\n"
 
-#: src/amule.cpp:983
+#: src/amule.cpp:986
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -162,7 +163,7 @@ msgstr ""
 "Ελέξτε το δίκτυο σας για να βεβαιωθήτε ότι η θύρα είναι ανοιχτή για είσοδο "
 "και έξοδο."
 
-#: src/amule.cpp:1091 src/amule-remote-gui.cpp:507
+#: src/amule.cpp:1094 src/amule-remote-gui.cpp:508
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -170,15 +171,15 @@ msgstr ""
 "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Δεν μπορείτε να προσθέσετε τον εαυτό σας σαν πηγή για έναν "
 "σύνδεσμο eD2k ενώ έχετε χαμηλή προτεραιότητα."
 
-#: src/amule.cpp:1136
+#: src/amule.cpp:1139
 msgid "Failed to create OnlineSig File"
 msgstr "Αποτυχία δημιουργίας αρχείου Συνδεδεμένων Υπογραφών"
 
-#: src/amule.cpp:1144
+#: src/amule.cpp:1147
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Αποτυχία δημιουργίας αρχείου Συνδεδεμένων Υπογραφών του aMule"
 
-#: src/amule.cpp:1312
+#: src/amule.cpp:1315
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -186,26 +187,26 @@ msgstr ""
 "Οι επιλεγμένες τοπικές ρυθμίσεις δεν φαίνεται να είναι εγκατεστημένες στο "
 "σύστημά σας. (Σημ. Θα προσπαθήσω να τις θέσω ούτως ή άλλως)"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1324
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Αυτή είναι η πρώτη φορά που τρέχετε το aMule %s"
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1326
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Αυτή η έκδοση είναι δοκιμαστική, και αναβαθμίζεται καθημερινά, και\n"
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1327
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "δεν δίνουμε εγγύηση ότι δεν θα χαλάσει κάτι, δεν θα κάψει το σπίτι σας,\n"
 
-#: src/amule.cpp:1325
+#: src/amule.cpp:1328
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "ή δεν θα σκοτώσει το σκύλο σας. Αλλά πρέπει να είναι ασφαλές στη χρήση\n"
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1332
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
@@ -213,7 +214,7 @@ msgstr ""
 "Οι παρακάτω επιλογές έχουν αλλάξει σε αυτήν την έκδοση για λόγους "
 "ασφαλείας: \n"
 
-#: src/amule.cpp:1330
+#: src/amule.cpp:1333
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -223,7 +224,7 @@ msgstr ""
 "* Ενεργοποιημένη υποστήριξης συσκότισης πρωτοκόλλου για εισερχόμενες και "
 "εξερχόμενες συνδέσεις. \n"
 
-#: src/amule.cpp:1331
+#: src/amule.cpp:1334
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -232,7 +233,7 @@ msgstr ""
 "* Απενεργοποίηση της ενημέρωσης της λίστας διακομιστών από άλλους "
 "διακομιστές και πελάτες.\n"
 
-#: src/amule.cpp:1332
+#: src/amule.cpp:1335
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -247,7 +248,7 @@ msgstr ""
 "Είναι σημαντικό να εκκαθαρίσετε κάθε πλαστό διακομιστή από τη λίστα σας ώστε "
 "το aMule να δουλεύει σωστά."
 
-#: src/amule.cpp:1333
+#: src/amule.cpp:1336
 msgid ""
 "\n"
 "\n"
@@ -259,22 +260,22 @@ msgstr ""
 "Επιπλέον, οι ρυθμίσεις του περιηγητή ιστοσελίδων τέθηκαν στις "
 "προσδιορισμένες συστήματος. Παρακαλώ ρυθμίστε τις ξανά αν χρειάζεται.\n"
 
-#: src/amule.cpp:1338
+#: src/amule.cpp:1341
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Περισσότερες πληροφορίες, υποστήριξη και νέες εκδόσεις μπορούν να βρεθούν "
 "στην ιστοσελίδα μας,\n"
 
-#: src/amule.cpp:1339
+#: src/amule.cpp:1342
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "στο www.aMule.org, ή στο κανάλι #aMule του IRC στο irc.freenode.net.\n"
 
-#: src/amule.cpp:1341
+#: src/amule.cpp:1344
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr ""
 "Παρακαλούμε αναφέρετε σφάλματα του προγράμματος στο http://forum.amule.org"
 
-#: src/amule.cpp:1354
+#: src/amule.cpp:1357
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -284,129 +285,129 @@ msgstr ""
 "Οι ηλεκτρονικές υπογραφές θα ΑΠΕΝΕΡΓΟΠΟΙΗΘΟΥΝ μέχρι να το φτιάξετε στις "
 "προτιμήσεις."
 
-#: src/amule.cpp:1409
+#: src/amule.cpp:1412
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Όνομα διακομιστή:"
 
-#: src/amule.cpp:1639
+#: src/amule.cpp:1642
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Η εκχώρηση χώρου για το αρχείο '%s' απέτυχε: '%s'"
 
-#: src/amule.cpp:1763
+#: src/amule.cpp:1769
 msgid "ERROR: can't open logfile"
 msgstr "ΣΦΑΛΜΑ: το αρχείο καταγραφής δεν μπορεί να ανοίξει"
 
-#: src/amule.cpp:1767
+#: src/amule.cpp:1773
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: το αρχείο καταγραφών είναι άδειο. Κάτι δεν πάει καλά."
 
-#: src/amule.cpp:1785
+#: src/amule.cpp:1791
 msgid "Log has been reset"
 msgstr "Το αρχείο καταγραφών επαναφέρθηκε στην αρχική κατάσταση"
 
-#: src/amule.cpp:1810
+#: src/amule.cpp:1816
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Μήνυμα Διακομιστή: %s"
 
-#: src/amule.cpp:1848
+#: src/amule.cpp:1854
 msgid "Failed to download the nodes list."
 msgstr "Αποτυχία κατεβάσματος της λίστας κόμβων."
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1874
 msgid "Failed to open the downloaded version check file"
 msgstr "Αποτυχία ανοίγματος του κατεβασμένου αρχείου ελέγχου έκδοσης"
 
-#: src/amule.cpp:1871 src/amule.cpp:1881 src/amule.cpp:1887
+#: src/amule.cpp:1877 src/amule.cpp:1887 src/amule.cpp:1893
 msgid "Corrupted version check file"
 msgstr "Φθαρμένο αρχείο ελέγχου έκδοσης"
 
-#: src/amule.cpp:1897
+#: src/amule.cpp:1903
 msgid "You are using an outdated version of aMule!"
 msgstr "Χρησιμοποιείται μία ξεπερασμένη έκδοση του aMule!"
 
-#: src/amule.cpp:1898
+#: src/amule.cpp:1904
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Η παρούσα έκδοση του aMule είναι %i.%i.%i και η τελευταία %li.%li.%li"
 
-#: src/amule.cpp:1899
+#: src/amule.cpp:1905
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Η τελευταία έκδοση μπορεί να βρεθεί στο http://www.amule.org"
 
-#: src/amule.cpp:1901
+#: src/amule.cpp:1907
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Η έκδοση του aMuled είναι ξεπερασμένη: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1905
+#: src/amule.cpp:1911
 msgid "Your copy of aMule is up to date."
 msgstr "Αυτό το αντίγραφο του aMule είναι σύγχρονο. "
 
-#: src/amule.cpp:1912
+#: src/amule.cpp:1918
 msgid "Failed to download the version check file"
 msgstr "Αποτυχία κατεβάσματος του αρχείου ελέγχου έκδοσης"
 
-#: src/amule.cpp:2072 src/amule-remote-gui.cpp:604
+#: src/amule.cpp:2078 src/amule-remote-gui.cpp:605
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Χρήστες: %s | Αρχεία: %s"
 
-#: src/amule.cpp:2073 src/amule-remote-gui.cpp:605
+#: src/amule.cpp:2079 src/amule-remote-gui.cpp:606
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Χρήστες: E: %s K: %s | Αρχεία: E: %s K: %s"
 
-#: src/amule.cpp:2082 src/amule-remote-gui.cpp:614
+#: src/amule.cpp:2088 src/amule-remote-gui.cpp:615
 msgid "No networks selected"
 msgstr "Δεν έχουν επιλεχθεί δίκτυα"
 
-#: src/amule.cpp:2147 src/TextClient.cpp:698
+#: src/amule.cpp:2153 src/TextClient.cpp:698
 msgid "with LowID"
 msgstr "με Χαμηλή Προτεραιότητα"
 
-#: src/amule.cpp:2147 src/TextClient.cpp:698
+#: src/amule.cpp:2153 src/TextClient.cpp:698
 msgid "with HighID"
 msgstr "με Υψηλή Προτεραιότητα"
 
-#: src/amule.cpp:2149
+#: src/amule.cpp:2155
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Σύνδεση με το %s %s"
 
-#: src/amule.cpp:2152
+#: src/amule.cpp:2158
 #, c-format
 msgid "Connecting to %s"
 msgstr "Διαδικασία σύνδεσης με %s"
 
-#: src/amule.cpp:2154
+#: src/amule.cpp:2160
 msgid "Disconnected from eD2k"
 msgstr "Αποσυνδεδεμένο από το eD2k"
 
-#: src/amule.cpp:2161
+#: src/amule.cpp:2167
 msgid "Kad started."
 msgstr "Το Kad ξεκίνησε."
 
-#: src/amule.cpp:2163
+#: src/amule.cpp:2169
 msgid "Kad stopped."
 msgstr "Το Kad είναι σταματημένο."
 
-#: src/amule.cpp:2170
+#: src/amule.cpp:2176
 msgid "Connected to Kad (ok)"
 msgstr "Συνδεδεμένο στο Kad (ΟΚ)"
 
-#: src/amule.cpp:2172
+#: src/amule.cpp:2178
 msgid "Connected to Kad (firewalled)"
 msgstr "Συνδεδεμένο στο Kad (με προστατευτικό τοίχο)"
 
-#: src/amule.cpp:2175
+#: src/amule.cpp:2181
 msgid "Disconnected from Kad"
 msgstr "Αποσυνδεδεμένο από το Kad"
 
-#: src/amule.cpp:2238
+#: src/amule.cpp:2244
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -414,7 +415,7 @@ msgstr ""
 "Το δίκτυο Kad δεν μπορεί να χρησιμοποιηθεί αν η θύρα UDP είναι "
 "απενεργοποιημένη στις προτιμήσεις. Δεν έγινε εκκίνηση."
 
-#: src/amule.cpp:2241
+#: src/amule.cpp:2247
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 "Το δίκτυο Kad είναι απενεργοποιημένο από τις προτιμήσεις. Δεν έγινε σύνδεση."
@@ -788,18 +789,26 @@ msgstr ""
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:424
+#: src/amule-remote-gui.cpp:327
+msgid "Connection closed - aMule has terminated probably."
+msgstr ""
+
+#: src/amule-remote-gui.cpp:425
 msgid "Ready"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:672 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:673 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Όλα"
 
-#: src/amule-remote-gui.cpp:910
+#: src/amule-remote-gui.cpp:911
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Συνολικοί Χρήστες: %s | Συνολικά Αρχεία: %s"
+
+#: src/amule-remote-gui.cpp:1802
+msgid "Comments and ratings are not supported on remote gui yet"
+msgstr ""
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -821,7 +830,7 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/ExternalConn.cpp:295 src/FileDetailDialog.cpp:130
 #: src/HTTPDownload.cpp:82 src/KnownFile.cpp:896 src/KnownFile.cpp:902
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2506 src/PartFile.cpp:2512
+#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2508 src/PartFile.cpp:2514
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Άγνωστο"
@@ -1128,7 +1137,7 @@ msgid "Upload Time"
 msgstr "Χρόνος ανεβάσματος"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3768 src/SearchListCtrl.cpp:93
+#: src/PartFile.cpp:3770 src/SearchListCtrl.cpp:93
 msgid "Status"
 msgstr "Κατάσταση"
 
@@ -1180,7 +1189,7 @@ msgstr "Σύνδεση μέσω διακομιστή"
 msgid "Transferring"
 msgstr "Μεταφέρεται"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1377
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:62 src/KnownFile.cpp:1399
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "Εν αναμονή"
@@ -1509,7 +1518,7 @@ msgid "Progress"
 msgstr "Πρόοδος"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:90
+#: src/PartFile.cpp:3768 src/SearchListCtrl.cpp:90
 msgid "Sources"
 msgstr "Αρ. πηγών"
 
@@ -1722,13 +1731,13 @@ msgid_plural "Found %u part files"
 msgstr[0] "Βρέθηκε %u ημιτελές αρχείο"
 msgstr[1] "Βρέθηκαν %u ημιτελή αρχεία"
 
-#: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1389
+#: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1395
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 "Το σύστημα αρχείων του προσωρινού καταλόγου δεν μπορεί να διαχειριστεί "
 "μεγάλα αρχεία."
 
-#: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1392
+#: src/DownloadQueue.cpp:225 src/DownloadQueue.cpp:1398
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Το σύστημα αρχείων του καταλόγου εισερχομένων δεν μπορεί να διαχειριστεί "
@@ -1754,22 +1763,22 @@ msgstr "Το αρχείο '%s' υπάρχει ήδη"
 msgid "You are already trying to download the file %s"
 msgstr "Ήδη προσπαθείτε να κατεβάσετε το αρχείο %s"
 
-#: src/DownloadQueue.cpp:1049
+#: src/DownloadQueue.cpp:1055
 #, fuzzy
 msgid "Failed to open ED2KLinks file."
 msgstr "Αποτυχία ανοίγματος %s (%s)"
 
-#: src/DownloadQueue.cpp:1323
+#: src/DownloadQueue.cpp:1329
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Δεν γίνεται η μετατροπή του μαγνητικού συνδέσμου σε σύνδεσμο eD2k: %s"
 
-#: src/DownloadQueue.cpp:1331
+#: src/DownloadQueue.cpp:1337
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Άγνωστο πρωτόκολλο του συνδέσμου: %s"
 
-#: src/DownloadQueue.cpp:1352
+#: src/DownloadQueue.cpp:1358
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Άκυρος σύνδεσμος eD2k! ΣΦΑΛΜΑ: %s"
@@ -2264,38 +2273,47 @@ msgstr ""
 msgid "HTTP download thread started"
 msgstr ""
 
-#: src/HTTPDownload.cpp:199
+#: src/HTTPDownload.cpp:200
+msgid "Download size not received, downloading until connection is closed"
+msgstr ""
+
+#: src/HTTPDownload.cpp:202
 #, fuzzy, c-format
 msgid "Download size: %i"
 msgstr "Κατεβασμένα (%i)"
 
-#: src/HTTPDownload.cpp:231
+#: src/HTTPDownload.cpp:236
+#, fuzzy, c-format
+msgid "Downloaded %d bytes"
+msgstr "Έχει κατεβεί"
+
+#: src/HTTPDownload.cpp:239
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr ""
 
-#: src/HTTPDownload.cpp:249
+#: src/HTTPDownload.cpp:257
 msgid "HTTP download thread ended"
 msgstr ""
 
-#: src/HTTPDownload.cpp:329
+#: src/HTTPDownload.cpp:337
 #, c-format
 msgid "Host: %s:%i\n"
 msgstr ""
 
-#: src/HTTPDownload.cpp:331
+#: src/HTTPDownload.cpp:339
 #, c-format
 msgid "Response: %i (Error: %i)"
 msgstr ""
 
-#: src/HTTPDownload.cpp:334
+#: src/HTTPDownload.cpp:342
 #, fuzzy
 msgid "WARNING: Void response on stream creation"
 msgstr ""
 "Ειδοποίηση: Δεν μπόρεσα να σβήσω το αρχικό '%s' μετά τη δημιουργία "
 "αντιγράφου ασφαλείας"
 
-#: src/HTTPDownload.cpp:358
+#: src/HTTPDownload.cpp:366
 msgid "ERROR: Redirection code received with no URL"
 msgstr ""
 
@@ -2444,31 +2462,31 @@ msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "Γράψιμο %d επαφής Kad"
 msgstr[1] "Γράψιμο %d επαφών Kad"
 
-#: src/KnownFile.cpp:1371 src/PartFileConvert.cpp:625
+#: src/KnownFile.cpp:1393 src/PartFileConvert.cpp:625
 msgid "File name"
 msgstr "Όνομα αρχείου"
 
-#: src/KnownFile.cpp:1372
+#: src/KnownFile.cpp:1394
 msgid "File size"
 msgstr "Μέγεθος αρχείου"
 
-#: src/KnownFile.cpp:1373
+#: src/KnownFile.cpp:1395
 msgid "Share ratio"
 msgstr "Λόγος μοιράσματος"
 
-#: src/KnownFile.cpp:1374
+#: src/KnownFile.cpp:1396
 msgid "Uploaded"
 msgstr "Ανέβηκε"
 
-#: src/KnownFile.cpp:1375
+#: src/KnownFile.cpp:1397
 msgid "Requested"
 msgstr "Ζητήθηκε:"
 
-#: src/KnownFile.cpp:1376
+#: src/KnownFile.cpp:1398
 msgid "Accepted"
 msgstr "Έγινε δεκτό"
 
-#: src/KnownFile.cpp:1378
+#: src/KnownFile.cpp:1400
 msgid "Complete sources"
 msgstr "Ολοκλήρωση πηγών"
 
@@ -2492,35 +2510,35 @@ msgstr "Σφάλμα εισόδου εξόδου κατά την ανάγνωσ�
 msgid "Error while saving known.met file: %s"
 msgstr "Σφάλμα κατά το αποθήκευση του αρχείου known.met: %s"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3698
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3700
 msgid "Hashing"
 msgstr "Κατακερματισμός"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3704
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3706
 msgid "Completing"
 msgstr "Ολοκληρώνεται"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3709
 msgid "Complete"
 msgstr "Ολοκληρωμένο"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:696
-#: src/PartFile.cpp:3710 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3712 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Σταματημένο"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:695
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3715 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Εσφαλμένο"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:694
-#: src/PartFile.cpp:3720 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Κατεβαίνει"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:693
-#: src/PartFile.cpp:3722 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3724 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Εν αναμονή"
 
@@ -4582,7 +4600,7 @@ msgstr "όλα τα άλλα"
 msgid "Incomplete"
 msgstr "Ημιτελές"
 
-#: src/OtherFunctions.cpp:697 src/PartFile.cpp:3727 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:697 src/PartFile.cpp:3729 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Σταματημένο"
 
@@ -4865,14 +4883,14 @@ msgstr "Ολοκλήρωση του κατεβάσματος: %s"
 msgid "Deleting file: %s"
 msgstr "Σβήσιμο αρχείου: %s"
 
-#: src/PartFile.cpp:2273
+#: src/PartFile.cpp:2275
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Δεν είναι δυνατός ο κατακερματισμός του κατεβασμένου τμήματος "
 "- του σύνολο κατακερματισμού για το '%s' είναι ημιτελές"
 
-#: src/PartFile.cpp:2278
+#: src/PartFile.cpp:2280
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4882,34 +4900,34 @@ msgstr ""
 "σύνολο κατακερματισμού για το '%s' είναι ημιτελές. Αυτό δεν πρέπει να "
 "ξανασυμβεί ποτέ"
 
-#: src/PartFile.cpp:2960
+#: src/PartFile.cpp:2962
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Μη αρκετός χώρος στο δίσκο! Παύση αρχείου: %s"
 
-#: src/PartFile.cpp:3030
+#: src/PartFile.cpp:3032
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Το κατεβασμένο τμήμα υπ. αρ. %i είναι φθαρμένο στο αρχείο: %s"
 
-#: src/PartFile.cpp:3082
+#: src/PartFile.cpp:3084
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Ανακτήθηκε φθαρμένο τεμάχιο %i για το %s -> Σωσμένα bytes: %s"
 
-#: src/PartFile.cpp:3700
+#: src/PartFile.cpp:3702
 msgid "Allocating"
 msgstr "Κατανέμει"
 
-#: src/PartFile.cpp:3716
+#: src/PartFile.cpp:3718
 msgid "Insufficient disk space"
 msgstr "Ανεπαρκής χώρος στο δίσκο"
 
-#: src/PartFile.cpp:3765
+#: src/PartFile.cpp:3767
 msgid "Downloaded"
 msgstr "Έχει κατεβεί"
 
-#: src/PartFile.cpp:3980
+#: src/PartFile.cpp:3982
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ΣΦΑΛΜΑ: Αποτυχία ανοίγματος του ημιτελούς αρχείου '%s'"
@@ -6902,12 +6920,12 @@ msgstr ""
 msgid "Hashset requested for unknown file: %s"
 msgstr "Σύνολο κατακερματισμού για άγνωστο αρχείο: %s"
 
-#: src/UploadQueue.cpp:512
+#: src/UploadQueue.cpp:565
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Συνέχεια του ανεβάσματος του αρχείου: %s"
 
-#: src/UploadQueue.cpp:521
+#: src/UploadQueue.cpp:574
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Αναστολή ανεβάσματος του αρχείου: %s"
