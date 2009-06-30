@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-28 13:55+0200\n"
-"PO-Revision-Date: 2009-02-21 10:05+0200\n"
+"PO-Revision-Date: 2009-06-30 13:46+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -449,7 +449,7 @@ msgstr "amuled: lahkun taustaprotsessiks - näeme veel"
 
 #: src/amuled.cpp:732
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Ei suuda luua PID faili"
 
 #: src/amuled.cpp:791
 #, c-format
@@ -781,7 +781,7 @@ msgstr "Ühendus ebaõnnestus. Ei suuda määratud ühenduda %s:%d\n"
 
 #: src/amule-remote-gui.cpp:327
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Ühendus suletud - aMule on ilmselt seisatud."
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
@@ -798,7 +798,7 @@ msgstr "Kokku Kasutajaid: %s | Kokku Faile: %s"
 
 #: src/amule-remote-gui.cpp:1802
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
+msgstr "Võrguversioonis pole kommmentaarid ja hinnangud veel toetatud"
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -1358,6 +1358,7 @@ msgstr[1] "%u kommentaar(i)"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"Klient %s bänniti %s riknenud info saatmise eest (kokku %s faili '%s' kohta)"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -2241,7 +2242,7 @@ msgstr "HTTP tõmbamise lõim käivitatud"
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "Tõmmatava faili suurust ei tea, tõmban ühenduse sulgemiseni"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2249,9 +2250,9 @@ msgid "Download size: %i"
 msgstr "Tõmbamise suurus: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Allalaetud"
+msgstr "Tõmmatud %d baiti"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
@@ -6070,19 +6071,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Suurim ühenduste arv (hinnang): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Suurus teadmata"
+msgstr "Tundmatu: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Filtreeritud"
+msgstr "Filtreeritud: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Blokeeritud"
+msgstr "Blokeeritud: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
@@ -7480,9 +7481,3 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1901
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]: "
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Kasutajaid: E:%s K:%s | Faile E:%s K:%s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Klient %s IP:Port %s:%d kasutab %s %s %s"
