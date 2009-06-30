@@ -21,13 +21,13 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-28 13:55+0200\n"
-"PO-Revision-Date: 2009-04-16 17:26+0800\n"
+"PO-Revision-Date: 2009-06-30 14:29+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-Country: TAIWAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -46,7 +46,7 @@ msgstr "資訊"
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
-msgstr "這個使用者雜湊值無效！"
+msgstr "這個使用者 hash 值無效！"
 
 #: src/amule.cpp:224
 msgid "Now, exiting main app..."
@@ -770,7 +770,7 @@ msgstr "無法連線到 %s:%d\n"
 
 #: src/amule-remote-gui.cpp:327
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "已關閉連線 - aMule 可能已經被終止執行了。"
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
@@ -787,7 +787,7 @@ msgstr "使用者總數：%s | 檔案總數：%s"
 
 #: src/amule-remote-gui.cpp:1802
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
+msgstr "遠端圖形介面尚未支援註解與評價功能"
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -848,7 +848,6 @@ msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "本次：共接受 %d/%d 個要求，已傳送 %s\n"
-msgstr[1] "本次：共接受 %d/%d 個要求，已傳送 %s\n"
 
 #: src/BaseClient.cpp:1985
 #, c-format
@@ -856,7 +855,6 @@ msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "總計：共接受 %d/%d 個要求，已傳送 %s\n"
-msgstr[1] "總計：共接受 %d/%d 個要求，已傳送 %s\n"
 
 #: src/BaseClient.cpp:1988
 msgid "Requested unknown file"
@@ -938,14 +936,12 @@ msgstr ""
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "積分檔已載入，有 %u 個已知客戶端"
-msgstr[1] "積分檔已載入，有 %u 個已知客戶端"
 
 #: src/ClientCreditsList.cpp:171
 #, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - %u 個客戶端的積分已過期！"
-msgstr[1] " - %u 個客戶端的積分已過期！"
 
 #: src/ClientCreditsList.cpp:315
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1233,7 +1229,7 @@ msgstr "已傳輸"
 
 #: src/ClientListCtrl.cpp:1028
 msgid "Userhash"
-msgstr "使用者雜湊值"
+msgstr "使用者 hash 值"
 
 #: src/ClientListCtrl.cpp:1029
 msgid "Encrypted"
@@ -1327,13 +1323,12 @@ msgstr "沒有註解"
 msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "%u 個註解"
-msgstr[1] "%u 個註解"
 
 #: src/CorruptionBlackBox.cpp:232
 #, c-format
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr ""
+msgstr "已封鎖客戶端 %s：因傳送 %s (總計 %s ) 損壞資料 (檔案 %s )"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1383,7 +1378,7 @@ msgstr "正在要求"
 
 #: src/DataToText.cpp:64
 msgid "Receiving hashset"
-msgstr "正在接收雜湊值組"
+msgstr "正在接收 hash 值組"
 
 #: src/DataToText.cpp:65
 msgid "No needed parts"
@@ -1685,7 +1680,6 @@ msgstr "找不到暫存檔"
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "找到 %u 個暫存檔"
-msgstr[1] "找到 %u 個暫存檔"
 
 #: src/DownloadQueue.cpp:222 src/DownloadQueue.cpp:1395
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -1812,12 +1806,12 @@ msgstr "登入成功。"
 #: src/ExternalConn.cpp:658
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr "無法執行對遠端暫存檔的指令：找不到檔案雜湊值：%s "
+msgstr "無法執行對遠端暫存檔的指令：找不到檔案 hash 值：%s "
 
 #: src/ExternalConn.cpp:660
 #, c-format
 msgid "FileHash not found: %s"
-msgstr "找不到檔案雜湊值：%s "
+msgstr "找不到檔案 hash 值：%s "
 
 #: src/ExternalConn.cpp:723 src/ExternalConn.cpp:807
 msgid "OOPS! OpCode processing error!"
@@ -2212,7 +2206,7 @@ msgstr "已開始 HTTP 下載執行緒"
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "未收到下載大小資料，持續下載至連線關閉時"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2220,9 +2214,9 @@ msgid "Download size: %i"
 msgstr "下載大小：%i "
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "已下載"
+msgstr "已下載 %d B"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
@@ -2309,14 +2303,12 @@ msgstr "無法載入 ipfilter.dat 檔案 '%s'，無法開啟檔案。"
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "已載入 %u 個 IP 區段 (從 '%s')。"
-msgstr[1] "已載入 %u 個 IP 區段 (從 '%s')。"
 
 #: src/IPFilter.cpp:334
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "放棄 %u 行錯誤資料。"
-msgstr[1] "放棄 %u 行錯誤資料。"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2367,7 +2359,6 @@ msgstr "Kad：關鍵字已在搜尋清單中："
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "讀取 %u 個 Kad 聯絡人"
-msgstr[1] "讀取 %u 個 Kad 聯絡人"
 
 #: src/kademlia/routing/RoutingZone.cpp:215
 #: src/kademlia/routing/RoutingZone.cpp:282
@@ -2379,14 +2370,12 @@ msgstr "找不到聯絡人，請設啟動節點、或下載一個 nodes.dat 檔�
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "只有 %d 個 Kad 聯絡人，nods.dat 未寫入"
-msgstr[1] "只有 %d 個 Kad 聯絡人，nods.dat 未寫入"
 
 #: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "已寫入 %d 個 Kad 聯絡人"
-msgstr[1] "已寫入 %d 個 Kad 聯絡人"
 
 #: src/KnownFile.cpp:1393 src/PartFileConvert.cpp:625
 msgid "File name"
@@ -2436,7 +2425,7 @@ msgstr "儲存 known.met 時發生錯誤：%s"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3700
 msgid "Hashing"
-msgstr "正在雜湊"
+msgstr "正在計算 hash 值"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3706
 msgid "Completing"
@@ -2472,7 +2461,7 @@ msgstr "您必須輸入密碼。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:99
 msgid "Invalid password, not a MD5 hash!"
-msgstr "無效的密碼，不是 MD5 雜湊值！"
+msgstr "無效的密碼，不是 MD5 hash 值！"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:154
 msgid "Connection failure"
@@ -2800,7 +2789,7 @@ msgstr "全球"
 
 #: src/muuli_wdr.cpp:193
 msgid "FileHash"
-msgstr "檔案雜湊值"
+msgstr "檔案 hash 值"
 
 #: src/muuli_wdr.cpp:201
 msgid "Extended Parameters"
@@ -2969,7 +2958,7 @@ msgstr "met 檔"
 
 #: src/muuli_wdr.cpp:589
 msgid "Hash :"
-msgstr "雜湊值："
+msgstr "hash 值："
 
 #: src/muuli_wdr.cpp:604
 msgid "Filesize :"
@@ -3133,7 +3122,7 @@ msgstr "使用者名稱︰"
 
 #: src/muuli_wdr.cpp:1039
 msgid "Userhash :"
-msgstr "使用者雜湊值："
+msgstr "使用者 hash 值："
 
 #: src/muuli_wdr.cpp:1051 src/muuli_wdr.cpp:2690
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
@@ -3211,7 +3200,7 @@ msgstr "使用者名稱︰"
 
 #: src/muuli_wdr.cpp:1360
 msgid "Userhash:"
-msgstr "使用者雜湊值"
+msgstr "使用者 hash 值："
 
 #: src/muuli_wdr.cpp:1383
 msgid "Client software:"
@@ -3542,7 +3531,7 @@ msgstr "啟用"
 
 #: src/muuli_wdr.cpp:1914
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr "進階 I.C.H. 信任所有雜湊值 (不建議)"
+msgstr "進階 I.C.H. 信任所有 hash 值 (不建議)"
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
@@ -4384,7 +4373,6 @@ msgstr "已停用 [%s]"
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "B"
-msgstr[1] "B"
 
 #: src/OtherFunctions.cpp:114
 msgid "kB"
@@ -4414,7 +4402,6 @@ msgstr "T"
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "B/s"
-msgstr[1] "B/s"
 
 #: src/OtherFunctions.cpp:147
 msgid "MB/s"
@@ -4549,7 +4536,7 @@ msgstr "狀態"
 
 #: src/PartFileConvert.cpp:628
 msgid "Filehash"
-msgstr "檔案雜湊值"
+msgstr "檔案 hash 值"
 
 #: src/PartFileConvert.cpp:674
 msgid "Import partfiles"
@@ -4659,7 +4646,6 @@ msgstr "無法儲存 %s 的 part.met.seeds 檔案"
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "已儲存 %i 個來源種子給暫存檔 %s (%s)"
-msgstr[1] "已儲存 %i 個來源種子給暫存檔 %s (%s)"
 
 #: src/PartFile.cpp:1044
 #, c-format
@@ -4685,9 +4671,7 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
-"找到損壞 (%d) 的 %d 個暫存檔 %s - 檔案結果雜湊值 |%s| 檔案雜湊值 |%s|"
-msgstr[1] ""
-"找到損壞 (%d) 的 %d 個暫存檔 %s - 檔案結果雜湊值 |%s| 檔案雜湊值 |%s|"
+"找到損壞 (%d) 的 %d 個暫存檔 %s - 檔案結果 hash 值 |%s| 檔案 hash 值 |%s|"
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4697,7 +4681,7 @@ msgstr "找到已完成的暫存檔 %i 在 %s"
 #: src/PartFile.cpp:1205
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "已完成的重新雜湊 %s"
+msgstr "已重新計算完成 %s 的 hash 值"
 
 #: src/PartFile.cpp:2130
 #, c-format
@@ -4717,14 +4701,15 @@ msgstr "正刪除檔案：%s "
 #: src/PartFile.cpp:2275
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "警告：無法雜湊已下載部份 - '%s' 的雜湊值組不完整"
+msgstr "警告：無法計算已下載部份的 hash 值 - '%s' 的 hash 值組不完整"
 
 #: src/PartFile.cpp:2280
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr "錯誤：無法雜湊已下載部分 - %s 的雜湊值組不完整，此狀況不該發生"
+msgstr ""
+"錯誤：無法計算已下載部分的 hash 值 - %s 的 hash 值組不完整，此狀況不該發生"
 
 #: src/PartFile.cpp:2962
 #, c-format
@@ -5123,14 +5108,12 @@ msgstr ""
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "更新延遲時間：%d 秒"
-msgstr[1] "更新延遲時間：%d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:1013
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均值圖表顯示時間：%d 分鐘"
-msgstr[1] "平均值圖表顯示時間：%d 分鐘"
 
 #: src/PrefsUnifiedDlg.cpp:1019
 #, c-format
@@ -5142,28 +5125,24 @@ msgstr "網路連線圖表比例：%d"
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "更新延遲時間：%d 秒"
-msgstr[1] "更新延遲時間：%d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:1031
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "檔案緩衝區大小：%d B"
-msgstr[1] "檔案緩衝區大小：%d Byte"
 
 #: src/PrefsUnifiedDlg.cpp:1037
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "上傳等候區大小：%d "
-msgstr[1] "上傳等候區大小：%d "
 
 #: src/PrefsUnifiedDlg.cpp:1044
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "伺服器連線更新間隔時間：%d 分鐘"
-msgstr[1] "伺服器連線更新間隔時間：%d 分鐘"
 
 #: src/PrefsUnifiedDlg.cpp:1046
 msgid "Server connection refresh interval: Disabled"
@@ -5296,7 +5275,6 @@ msgstr "%s (%s:%i) 可能已客滿。"
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "在 %d 秒後自動連線到伺服器"
-msgstr[1] "在 %d 秒後自動連線到伺服器"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -5348,14 +5326,12 @@ msgstr "server.met 檔案損壞，找到無效的版本標記：0x%x, 大小 %i"
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "在 server.met 中找到 %i 個伺服器"
-msgstr[1] "在 server.met 中找到 %i 個伺服器"
 
 #: src/ServerList.cpp:171
 #, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "已加入 %d 個伺服器"
-msgstr[1] "已加入 %d 個伺服器"
 
 #: src/ServerList.cpp:192
 #, c-format
@@ -5580,7 +5556,6 @@ msgstr "收到不明伺服器資訊 ! - 長度過短"
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "收到 %d 個新伺服器"
-msgstr[1] "收到 %d 個新伺服器"
 
 #: src/ServerSocket.cpp:542
 msgid "Saving of server-list completed."
@@ -5733,14 +5708,12 @@ msgstr "正在加入分享檔案 %s"
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "找到 %i 個已知的分享檔案"
-msgstr[1] "找到 %i 個已知的分享檔案"
 
 #: src/SharedFileList.cpp:358
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "發現 %i 個已知、%i 個不明的分享檔案"
-msgstr[1] "發現 %i 個已知、%i 個不明的分享檔案"
 
 #: src/SharedFileList.cpp:367
 #, c-format
@@ -6096,7 +6069,7 @@ msgstr "此指令需要引數，有效引數為：'all'、'檔案名' 或 '數�
 
 #: src/TextClient.cpp:347
 msgid "Processing by hash: "
-msgstr "正在依雜湊值處理："
+msgstr "正在依 hash 值處理："
 
 #: src/TextClient.cpp:362
 msgid "Processing by filename: "
@@ -6104,7 +6077,7 @@ msgstr "正在依檔名處理："
 
 #: src/TextClient.cpp:385
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr "此指令需要引數，有效引數為：'檔案雜湊值' 。\n"
+msgstr "此指令需要引數，有效引數為：'檔案 hash 值' 。\n"
 
 #: src/TextClient.cpp:411
 msgid "Not a valid number\n"
@@ -6112,7 +6085,7 @@ msgstr "不是有效的數字\n"
 
 #: src/TextClient.cpp:415
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
-msgstr "不是有效的雜湊值 (必須爲 32 個字元)\n"
+msgstr "不是有效的 hash 值 (必須爲 32 碼)\n"
 
 #: src/TextClient.cpp:627 src/webserver/src/WebServer.cpp:373
 msgid "Request failed with an unknown error."
@@ -6344,7 +6317,7 @@ msgstr ""
 "*) 伺服器連結 (ed2k://|server|...)：會被加入伺服器清單。\n"
 "*) 伺服器清單連結：裏面的所有伺服器都會被加入伺服器清單中。\n"
 "\n"
-"magnet 連結必須含有 eD2k 雜湊值與檔案大小資料。\n"
+"magnet 連結必須含有 eD2k hash 值與檔案大小資料。\n"
 
 #: src/TextClient.cpp:869
 msgid "Set a preference value."
@@ -6587,22 +6560,22 @@ msgstr "aMule 文字模式客戶端"
 #: src/ThreadTasks.cpp:130
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
-msgstr "開始爲檔案 %s 計算 MD4 和 AICH 雜湊值"
+msgstr "開始爲檔案 %s 計算 MD4 和 AICH hash 值"
 
 #: src/ThreadTasks.cpp:134
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
-msgstr "開始爲檔案 %s 計算 MD4 雜湊值"
+msgstr "開始爲檔案 %s 計算 MD4 hash 值"
 
 #: src/ThreadTasks.cpp:138
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
-msgstr "開始爲檔案 %s 計算 AICH 雜湊值"
+msgstr "開始爲檔案 %s 計算 AICH hash 值"
 
 #: src/ThreadTasks.cpp:348
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr "將 '%s' 的舊 AICH 雜湊值組轉換為 '%s' 的 64b 格式。"
+msgstr "將 '%s' 的舊 AICH hash 值組轉換為 '%s' 的 64b 格式。"
 
 #: src/ThreadTasks.cpp:427
 #, c-format
@@ -6660,7 +6633,7 @@ msgstr "無法開啟檔案 '%s'，從分享檔案清單移除。"
 #: src/UploadClient.cpp:718
 #, c-format
 msgid "Hashset requested for unknown file: %s"
-msgstr "要求不明檔案 %s 的雜湊值組"
+msgstr "要求不明檔案 %s 的 hash 值組"
 
 #: src/UploadQueue.cpp:565
 #, c-format
@@ -6691,7 +6664,7 @@ msgstr "不包含路徑的檔名。"
 
 #: src/UserEvents.h:71
 msgid "The eD2k hash of the file."
-msgstr "檔案的 eD2k 雜湊值。"
+msgstr "這個檔案的 eD2k hash 值。"
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -6728,7 +6701,7 @@ msgstr "正在處理檔案編號 %u：%s "
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "您已要求暫存檔雜湊值 (只用於超過 9.5 MB 的檔案)"
+msgstr "您已要求暫存檔 hash 值 (只用於超過 9.5 MB 的檔案)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:87
 #, c-format
@@ -6750,7 +6723,7 @@ msgstr "輸入參數"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:115
 msgid "File to Hash"
-msgstr "須雜湊的檔案"
+msgstr "須計算 hash 值的檔案"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:119
 msgid "Add Optional URLs for this file"
@@ -6774,7 +6747,7 @@ msgstr "移除"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:160
 msgid "Create link with part-hashes"
-msgstr "以暫存檔雜湊值產生連結"
+msgstr "以暫存檔 hash 值建立連結"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:166
 msgid ""
@@ -6784,11 +6757,11 @@ msgstr "協助新檔案和稀有檔案更快散播，只是會增加連結長度
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:192
 msgid "MD4 File Hash"
-msgstr "MD4 檔案雜湊值"
+msgstr "MD4 檔案 hash 值"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
 msgid "eD2k File Hash"
-msgstr "eD2k 檔案雜湊值"
+msgstr "eD2k 檔案 hash 值"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
 msgid "eD2k link"
@@ -6880,7 +6853,7 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
 #: src/utils/aLinkCreator/src/alcframe.cpp:518
 msgid "Hashing..."
-msgstr "正在雜湊..."
+msgstr "正在計算 hash 值..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
@@ -6889,11 +6862,11 @@ msgstr "aLinkCreator 正為您運作中"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 msgid "Computing MD4 Hash..."
-msgstr "計算 MD4 雜湊值中..."
+msgstr "計算 MD4 hash 值中..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:531
 msgid "Computing eD2k Hashes..."
-msgstr "計算 eD2k 雜湊值中..."
+msgstr "計算 eD2k hash 值中..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:566
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
@@ -7351,7 +7324,7 @@ msgstr "正在檢查密碼\n"
 
 #: src/webserver/src/WebServer.cpp:1868
 msgid "Password hash invalid\n"
-msgstr "密碼雜湊值無效\n"
+msgstr "密碼 hash 值無效\n"
 
 #: src/webserver/src/WebServer.cpp:1883
 msgid "Password ok\n"
