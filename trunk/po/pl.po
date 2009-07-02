@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-28 13:55+0200\n"
-"PO-Revision-Date: 2009-06-24 21:01+0100\n"
+"PO-Revision-Date: 2009-07-02 05:38+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -787,7 +787,7 @@ msgstr "Połączenie nie powiodło się. Nie można połączyć się z %s:%d\n"
 
 #: src/amule-remote-gui.cpp:327
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Połączenie zostało zamknięte - aMule prawdopodobnie zakończone."
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
@@ -804,7 +804,7 @@ msgstr "Razem użytkowników: %s | Razem plików: %s"
 
 #: src/amule-remote-gui.cpp:1802
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
+msgstr "Oceny i komentarze jeszcze nie są obsługiwane na zdalnym gui"
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -2266,7 +2266,7 @@ msgstr "Rozpoczęte pobranie wątku HTTP"
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "Nie otrzymany rozmiar pomiaru, pobieranie do zamknięcia połączenia"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2274,9 +2274,9 @@ msgid "Download size: %i"
 msgstr "Rozmiar pobierania: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Pobrano"
+msgstr "Pobrano %d bajtów"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
