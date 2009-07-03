@@ -792,7 +792,7 @@ msgstr "Verbindung fehlgeschlagen. Konnte nicht zu %s:%d verbinden\n"
 
 #: src/amule-remote-gui.cpp:327
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Verbindung getrennt - wahrscheinlich hat aMule sich beendet"
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
@@ -810,6 +810,8 @@ msgstr "Benutzer insgesamt: %s | Dateien insgesamt: %s"
 #: src/amule-remote-gui.cpp:1802
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
+"Kommentare und Bewertungen werden im Fernsteuerungs-GUI noch nicht "
+"unterstützt"
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -2276,6 +2278,7 @@ msgstr "HTTP-Download-Thread gestartet."
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
 msgstr ""
+"Downloadgröße nicht empfangen, lade herunter bis Verbindung beendet wird"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2283,9 +2286,9 @@ msgid "Download size: %i"
 msgstr "Downloadgröße: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Heruntergeladen"
+msgstr "%d Bytes heruntergeladen"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
