@@ -7,15 +7,14 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-28 13:55+0200\n"
-"PO-Revision-Date: 2009-06-16 07:40+0300\n"
+"PO-Revision-Date: 2009-07-04 02:31+0300\n"
 "Last-Translator: Atilla <atilla_ontas@mandriva.org>\n"
-"Language-Team: Turkish cooker-i18n@mandrivalinux.org\n"
+"Language-Team: Turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Virtaal 0.3.1\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -773,7 +772,7 @@ msgstr "Bağlantı Başarısız Oldu. %s:%d bağlanılamıyor\n"
 
 #: src/amule-remote-gui.cpp:327
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Bağlantı kesildi - Muhtemelen aMule sonlandırıldı."
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
@@ -790,7 +789,7 @@ msgstr "Toplam Kullanıcılar: %s | Toplam Dosyalar: %s"
 
 #: src/amule-remote-gui.cpp:1802
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
+msgstr "Uzak arayüzde yorum ve puanlama henüz desteklenmemektedir."
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -2234,7 +2233,7 @@ msgstr "HTTP aktarımı başladı"
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "İndirme boyutu alınamadı, bağlantı kesilinceye kadar indirme sürecek."
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2242,9 +2241,9 @@ msgid "Download size: %i"
 msgstr "İndirme Boyutu: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "İndirildi"
+msgstr "%d bayt indirildi."
 
 #: src/HTTPDownload.cpp:239
 #, c-format
