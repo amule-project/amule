@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-28 13:55+0200\n"
-"PO-Revision-Date: 2009-06-24 21:26+0100\n"
+"PO-Revision-Date: 2009-07-06 11:13+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -774,7 +774,7 @@ msgstr "Kapcsolat sikertelen. Kapcsolat felvétel %s:%d-el nem lehetséges\n"
 
 #: src/amule-remote-gui.cpp:327
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Kapcsolat megszünt - aMule valószínüleg befejeződött."
 
 #: src/amule-remote-gui.cpp:425
 msgid "Ready"
@@ -792,6 +792,7 @@ msgstr "Összes felhasználó: %s | Összes fájl: %s"
 #: src/amule-remote-gui.cpp:1802
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
+"Kommentárok és értékelések jelenleg nincsenek támogatva a távoli GUI-ban"
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -2247,7 +2248,7 @@ msgstr "HTTP letöltési szál elindítva"
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "Letöltés mérete nem érkezett meg, letöltés amíg a kapcsolat lezárul"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2255,11 +2256,9 @@ msgid "Download size: %i"
 msgstr "Letöltési méret: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr ""
-"Letöltve:\n"
-"%s"
+msgstr "%d bájt letöltve"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
