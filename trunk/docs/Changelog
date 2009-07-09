@@ -81,6 +81,7 @@ Version 2.3.0 - The river knows.
 		  than half of the slots), and don't kick anybody else unless necessary (with GonoszTopi)
 		* Fixed HTTP download if server transmits no content-length
 		* Fixed crash in remote gui when aMule exits
+		* Added more media file types from eMule
 
 	Vollstrecker:
 		* Unify copyright lines
