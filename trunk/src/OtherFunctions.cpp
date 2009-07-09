@@ -716,224 +716,224 @@ class CED2KFileTypes{
 public:
 	CED2KFileTypes()
 	{
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".669"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aac"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ac3"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aif"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aifc"),  ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aiff"),  ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amf"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amr"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ams"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ape"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".au"),    ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aud"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".audio"), ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cda"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".669"),   ED2KFT_AUDIO));		// 8 channel tracker module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aac"),   ED2KFT_AUDIO));		// Advanced Audio Coding File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ac3"),   ED2KFT_AUDIO));		// Audio Codec 3 File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aif"),   ED2KFT_AUDIO));		// Audio Interchange File Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aifc"),  ED2KFT_AUDIO));		// Audio Interchange File Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aiff"),  ED2KFT_AUDIO));		// Audio Interchange File Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amf"),   ED2KFT_AUDIO));		// DSMI Advanced Module Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amr"),   ED2KFT_AUDIO));		// Adaptive Multi-Rate Codec File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ams"),   ED2KFT_AUDIO));		// Extreme Tracker Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ape"),   ED2KFT_AUDIO));		// Monkey's Audio Lossless Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".au"),    ED2KFT_AUDIO));		// Audio File (Sun, Unix)
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aud"),   ED2KFT_AUDIO));		// General Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".audio"), ED2KFT_AUDIO));		// General Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cda"),   ED2KFT_AUDIO));		// CD Audio Track
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dbm"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmf"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dsm"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dts"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".far"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flac"),  ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".it"),    ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m1a"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2a"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m4a"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mdl"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".med"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mid"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".midi"),  ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mka"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mod"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmf"),   ED2KFT_AUDIO));		// Delusion Digital Music File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dsm"),   ED2KFT_AUDIO));		// Digital Sound Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dts"),   ED2KFT_AUDIO));		// DTS Encoded Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".far"),   ED2KFT_AUDIO));		// Farandole Composer Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flac"),  ED2KFT_AUDIO));		// Free Lossless Audio Codec File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".it"),    ED2KFT_AUDIO));		// Impulse Tracker Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m1a"),   ED2KFT_AUDIO));		// MPEG-1 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2a"),   ED2KFT_AUDIO));		// MPEG-2 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m4a"),   ED2KFT_AUDIO));		// MPEG-4 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mdl"),   ED2KFT_AUDIO));		// DigiTrakker Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".med"),   ED2KFT_AUDIO));		// Amiga MED Sound File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mid"),   ED2KFT_AUDIO));		// MIDI File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".midi"),  ED2KFT_AUDIO));		// MIDI File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mka"),   ED2KFT_AUDIO));		// Matroska Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mod"),   ED2KFT_AUDIO));		// Amiga Music Module File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mol"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp1"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp2"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp3"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpa"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpc"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp1"),   ED2KFT_AUDIO));		// MPEG-1 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp2"),   ED2KFT_AUDIO));		// MPEG-2 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp3"),   ED2KFT_AUDIO));		// MPEG-3 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpa"),   ED2KFT_AUDIO));		// MPEG Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpc"),   ED2KFT_AUDIO));		// Musepack Compressed Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpp"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mtm"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nst"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogg"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".okt"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psm"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ptm"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ra"),    ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmi"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".s3m"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".snd"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".stm"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ult"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".umx"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wav"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wma"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wow"),   ED2KFT_AUDIO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xm"),    ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mtm"),   ED2KFT_AUDIO));		// MultiTracker Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nst"),   ED2KFT_AUDIO));		// NoiseTracker
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogg"),   ED2KFT_AUDIO));		// Ogg Vorbis Compressed Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".okt"),   ED2KFT_AUDIO));		// Oktalyzer Module (Amiga)
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psm"),   ED2KFT_AUDIO));		// Protracker Studio Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ptm"),   ED2KFT_AUDIO));		// PolyTracker Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ra"),    ED2KFT_AUDIO));		// Real Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmi"),   ED2KFT_AUDIO));		// MIDI File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".s3m"),   ED2KFT_AUDIO));		// Scream Tracker 3 Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".snd"),   ED2KFT_AUDIO));		// Audio File (Sun, Unix)
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".stm"),   ED2KFT_AUDIO));		// Scream Tracker 2 Module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ult"),   ED2KFT_AUDIO));		// UltraTracker
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".umx"),   ED2KFT_AUDIO));		// Unreal Music Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wav"),   ED2KFT_AUDIO));		// WAVE Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wma"),   ED2KFT_AUDIO));		// Windows Media Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wow"),   ED2KFT_AUDIO));		// Grave Composer audio tracker
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xm"),    ED2KFT_AUDIO));		// Fasttracker 2 Extended Module
 
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3g2"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3gp"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3gp2"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3gpp"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".asf"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amv"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".asf"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".avi"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bik"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".divx"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dvr-ms"),ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flc"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".fli"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flic"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flv"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hdmov"), ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ifo"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m1v"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2t"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2ts"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2v"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m4b"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m4v"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mkv"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mov"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".movie"), ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp1v"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp2v"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp4"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpe"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpeg"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpg"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mps"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv1"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv2"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogm"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pva"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".qt"),    ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ram"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ratdvd"),ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rm"),    ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmm"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmvb"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rv"),    ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3g2"),   ED2KFT_VIDEO));		// 3GPP Multimedia File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3gp"),   ED2KFT_VIDEO));		// 3GPP Multimedia File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3gp2"),  ED2KFT_VIDEO));		// 3GPP Multimedia File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".3gpp"),  ED2KFT_VIDEO));		// 3GPP Multimedia File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".asf"),   ED2KFT_VIDEO));		// Advanced Systems Format (MS)
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amv"),   ED2KFT_VIDEO));		// Anime Music Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".asf"),   ED2KFT_VIDEO));		// Advanced Systems Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".avi"),   ED2KFT_VIDEO));		// Audio Video Interleave File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bik"),   ED2KFT_VIDEO));		// BINK Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".divx"),  ED2KFT_VIDEO));		// DivX-Encoded Movie File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dvr-ms"),ED2KFT_VIDEO));		// Microsoft Digital Video Recording
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flc"),   ED2KFT_VIDEO));		// FLIC Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".fli"),   ED2KFT_VIDEO));		// FLIC Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flic"),  ED2KFT_VIDEO));		// FLIC Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flv"),   ED2KFT_VIDEO));		// Flash Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hdmov"), ED2KFT_VIDEO));		// High-Definition QuickTime Movie
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ifo"),   ED2KFT_VIDEO));		// DVD-Video Disc Information File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m1v"),   ED2KFT_VIDEO));		// MPEG-1 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2t"),   ED2KFT_VIDEO));		// MPEG-2 Video Transport Stream
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2ts"),  ED2KFT_VIDEO));		// MPEG-2 Video Transport Stream
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2v"),   ED2KFT_VIDEO));		// MPEG-2 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m4b"),   ED2KFT_VIDEO));		// MPEG-4 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m4v"),   ED2KFT_VIDEO));		// MPEG-4 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mkv"),   ED2KFT_VIDEO));		// Matroska Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mov"),   ED2KFT_VIDEO));		// QuickTime Movie File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".movie"), ED2KFT_VIDEO));		// QuickTime Movie File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp1v"),  ED2KFT_VIDEO));		// QuickTime Movie File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp2v"),  ED2KFT_VIDEO));		// MPEG-1 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp4"),   ED2KFT_VIDEO));		// MPEG-2 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpe"),   ED2KFT_VIDEO));		// MPEG-4 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpeg"),  ED2KFT_VIDEO));		// MPEG Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpg"),   ED2KFT_VIDEO));		// MPEG Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mps"),   ED2KFT_VIDEO));		// MPEG Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv"),   ED2KFT_VIDEO));		// MPEG Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv1"),  ED2KFT_VIDEO));		// MPEG-1 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv2"),  ED2KFT_VIDEO));		// MPEG-2 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogm"),   ED2KFT_VIDEO));		// Ogg Media File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pva"),   ED2KFT_VIDEO));		// MPEG Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".qt"),    ED2KFT_VIDEO));		// QuickTime Movie
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ram"),   ED2KFT_VIDEO));		// Real Audio Media
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ratdvd"),ED2KFT_VIDEO));		// RatDVD Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rm"),    ED2KFT_VIDEO));		// Real Media File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmm"),   ED2KFT_VIDEO));		// Real Media File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmvb"),  ED2KFT_VIDEO));		// Real Video Variable Bit Rate File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rv"),    ED2KFT_VIDEO));		// Real Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rv9"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".smil"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".smk"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".swf"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tp"),    ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ts"),    ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vid"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".video"), ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vivo"),  ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vob"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vp6"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wm"),    ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmv"),   ED2KFT_VIDEO));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xvid"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".smil"),  ED2KFT_VIDEO));		// SMIL Presentation File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".smk"),   ED2KFT_VIDEO));		// Smacker Compressed Movie File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".swf"),   ED2KFT_VIDEO));		// Macromedia Flash Movie
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tp"),    ED2KFT_VIDEO));		// Video Transport Stream File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ts"),    ED2KFT_VIDEO));		// Video Transport Stream File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vid"),   ED2KFT_VIDEO));		// General Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".video"), ED2KFT_VIDEO));		// General Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vivo"),  ED2KFT_VIDEO));		// VivoActive Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vob"),   ED2KFT_VIDEO));		// DVD Video Object File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vp6"),   ED2KFT_VIDEO));		// TrueMotion VP6 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wm"),    ED2KFT_VIDEO));		// Windows Media Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmv"),   ED2KFT_VIDEO));		// Windows Media Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xvid"),  ED2KFT_VIDEO));		// Xvid-Encoded Video File
 
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bmp"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dcx"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".emf"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gif"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ico"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jfif"),  ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpe"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpeg"),  ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpg"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pct"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pcx"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pic"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pict"),  ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".png"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psd"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psp"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tga"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tif"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tiff"),  ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmf"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmp"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xif"),   ED2KFT_IMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xpm"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bmp"),   ED2KFT_IMAGE));		// Bitmap Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dcx"),   ED2KFT_IMAGE));		// FAXserve Fax Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".emf"),   ED2KFT_IMAGE));		// Enhanced Windows Metafile
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gif"),   ED2KFT_IMAGE));		// Graphical Interchange Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ico"),   ED2KFT_IMAGE));		// Icon File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jfif"),  ED2KFT_IMAGE));		// JPEG File Interchange Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpe"),   ED2KFT_IMAGE));		// JPEG Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpeg"),  ED2KFT_IMAGE));		// JPEG Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpg"),   ED2KFT_IMAGE));		// JPEG Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pct"),   ED2KFT_IMAGE));		// PICT Picture File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pcx"),   ED2KFT_IMAGE));		// Paintbrush Bitmap Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pic"),   ED2KFT_IMAGE));		// PICT Picture File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pict"),  ED2KFT_IMAGE));		// PICT Picture File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".png"),   ED2KFT_IMAGE));		// Portable Network Graphic
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psd"),   ED2KFT_IMAGE));		// Photoshop Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psp"),   ED2KFT_IMAGE));		// Paint Shop Pro Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tga"),   ED2KFT_IMAGE));		// Targa Graphic
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tif"),   ED2KFT_IMAGE));		// Tagged Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tiff"),  ED2KFT_IMAGE));		// Tagged Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmf"),   ED2KFT_IMAGE));		// Windows Metafile
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmp"),   ED2KFT_IMAGE));		// Windows Media Photo File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xif"),   ED2KFT_IMAGE));		// ScanSoft Pagis Extended Image Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xpm"),   ED2KFT_IMAGE));		// X-Windows Pixmap
 
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".7z"),    ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ace"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".alz"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".arc"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".arj"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bz2"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cab"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbr"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbz"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gz"),    ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hqx"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".lha"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".lzh"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".msi"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pak"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".par"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".par2"),  ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rar"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sea"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sit"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sitx"),  ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tar"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tbz2"),  ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tgz"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".uc2"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xpi"),   ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".z"),     ED2KFT_ARCHIVE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".zip"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".7z"),    ED2KFT_ARCHIVE));	// 7-Zip Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ace"),   ED2KFT_ARCHIVE));	// WinAce Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".alz"),   ED2KFT_ARCHIVE));	// ALZip Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".arc"),   ED2KFT_ARCHIVE));	// Compressed File Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".arj"),   ED2KFT_ARCHIVE));	// ARJ Compressed File Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bz2"),   ED2KFT_ARCHIVE));	// Bzip Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cab"),   ED2KFT_ARCHIVE));	// Cabinet File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbr"),   ED2KFT_ARCHIVE));	// Comic Book RAR Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbz"),   ED2KFT_ARCHIVE));	// Comic Book ZIP Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gz"),    ED2KFT_ARCHIVE));	// Gnu Zipped File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hqx"),   ED2KFT_ARCHIVE));	// BinHex 4.0 Encoded File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".lha"),   ED2KFT_ARCHIVE));	// LHARC Compressed Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".lzh"),   ED2KFT_ARCHIVE));	// LZH Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".msi"),   ED2KFT_ARCHIVE));	// Microsoft Installer File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pak"),   ED2KFT_ARCHIVE));	// PAK (Packed) File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".par"),   ED2KFT_ARCHIVE));	// Parchive Index File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".par2"),  ED2KFT_ARCHIVE));	// Parchive 2 Index File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rar"),   ED2KFT_ARCHIVE));	// WinRAR Compressed Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sea"),   ED2KFT_ARCHIVE));	// Self-Extracting Archive (Mac)
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sit"),   ED2KFT_ARCHIVE));	// Stuffit Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sitx"),  ED2KFT_ARCHIVE));	// Stuffit X Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tar"),   ED2KFT_ARCHIVE));	// Consolidated Unix File Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tbz2"),  ED2KFT_ARCHIVE));	// Tar BZip 2 Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tgz"),   ED2KFT_ARCHIVE));	// Gzipped Tar File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".uc2"),   ED2KFT_ARCHIVE));	// UltraCompressor 2 Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xpi"),   ED2KFT_ARCHIVE));	// Mozilla Installer Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".z"),     ED2KFT_ARCHIVE));	// Unix Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".zip"),   ED2KFT_ARCHIVE));	// Zipped File
 
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bat"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cmd"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".com"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".exe"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hta"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".js"),    ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jse"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".msc"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vbe"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vbs"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wsf"),   ED2KFT_PROGRAM));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wsh"),   ED2KFT_PROGRAM));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bat"),   ED2KFT_PROGRAM));	// Batch File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cmd"),   ED2KFT_PROGRAM));	// Command File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".com"),   ED2KFT_PROGRAM));	// COM File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".exe"),   ED2KFT_PROGRAM));	// Executable File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hta"),   ED2KFT_PROGRAM));	// HTML Application
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".js"),    ED2KFT_PROGRAM));	// Java Script
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jse"),   ED2KFT_PROGRAM));	// Encoded  Java Script
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".msc"),   ED2KFT_PROGRAM));	// Microsoft Common Console File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vbe"),   ED2KFT_PROGRAM));	// Encoded Visual Basic Script File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vbs"),   ED2KFT_PROGRAM));	// Visual Basic Script File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wsf"),   ED2KFT_PROGRAM));	// Windows Script File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wsh"),   ED2KFT_PROGRAM));	// Windows Scripting Host File
 
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bin"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwa"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwi"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bws"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwt"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ccd"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cue"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmg"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bin"),   ED2KFT_CDIMAGE));	// CD Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwa"),   ED2KFT_CDIMAGE));	// BlindWrite Disk Information File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwi"),   ED2KFT_CDIMAGE));	// BlindWrite CD/DVD Disc Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bws"),   ED2KFT_CDIMAGE));	// BlindWrite Sub Code File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwt"),   ED2KFT_CDIMAGE));	// BlindWrite 4 Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ccd"),   ED2KFT_CDIMAGE));	// CloneCD Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cue"),   ED2KFT_CDIMAGE));	// Cue Sheet File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmg"),   ED2KFT_CDIMAGE));	// Mac OS X Disk Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmz"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".img"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".iso"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mdf"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mds"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nrg"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sub"),   ED2KFT_CDIMAGE));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".toast"), ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".img"),   ED2KFT_CDIMAGE));	// Disk Image Data File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".iso"),   ED2KFT_CDIMAGE));	// Disc Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mdf"),   ED2KFT_CDIMAGE));	// Media Disc Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mds"),   ED2KFT_CDIMAGE));	// Media Descriptor File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nrg"),   ED2KFT_CDIMAGE));	// Nero CD/DVD Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sub"),   ED2KFT_CDIMAGE));	// Subtitle File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".toast"), ED2KFT_CDIMAGE));	// Toast Disc Image
 
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".chm"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".css"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".diz"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".doc"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dot"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hlp"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".htm"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".html"),  ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nfo"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pdf"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pps"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ppt"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ps"),    ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rtf"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".text"),  ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".txt"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wri"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xls"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xlt"),   ED2KFT_DOCUMENT));
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xml"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".chm"),   ED2KFT_DOCUMENT));	// Compiled HTML Help File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".css"),   ED2KFT_DOCUMENT));	// Cascading Style Sheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".diz"),   ED2KFT_DOCUMENT));	// Description in Zip File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".doc"),   ED2KFT_DOCUMENT));	// Document File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dot"),   ED2KFT_DOCUMENT));	// Document Template File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hlp"),   ED2KFT_DOCUMENT));	// Help File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".htm"),   ED2KFT_DOCUMENT));	// HTML File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".html"),  ED2KFT_DOCUMENT));	// HTML File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nfo"),   ED2KFT_DOCUMENT));	// Warez Information File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pdf"),   ED2KFT_DOCUMENT));	// Portable Document Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pps"),   ED2KFT_DOCUMENT));	// PowerPoint Slide Show
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ppt"),   ED2KFT_DOCUMENT));	// PowerPoint Presentation
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ps"),    ED2KFT_DOCUMENT));	// PostScript File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rtf"),   ED2KFT_DOCUMENT));	// Rich Text Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".text"),  ED2KFT_DOCUMENT));	// General Text File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".txt"),   ED2KFT_DOCUMENT));	// Text File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wri"),   ED2KFT_DOCUMENT));	// Windows Write Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xls"),   ED2KFT_DOCUMENT));	// Microsoft Excel Spreadsheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xlt"),   ED2KFT_DOCUMENT));	// Microsoft Excel Template
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xml"),   ED2KFT_DOCUMENT));	// XML File
 	}
 };
 
