@@ -29,6 +29,7 @@
 #include "ECPacket.h"					// Needed for CECPacket
 #include "../../../NetworkFunctions.h"	// Needed for IsLowID
 #include "../../../ClientCredits.h"		// Needed for EIdentState
+#include <common/Format.h>	// Needed for CFormat
 
 
 #include <map>
@@ -220,7 +221,7 @@ class CEC_PartFile_Tag : public CECTag {
 			{
 				const CECTag* tmp = GetTagByName(EC_TAG_PARTFILE_PARTMETID);
 				if (tmp) {
-					return wxString::Format(wxT("%03u.part.met"), tmp->GetInt());
+					return CFormat(wxT("%03u.part.met")) % tmp->GetInt();
 				} else {
 					return wxEmptyString;
 				}

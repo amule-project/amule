@@ -661,17 +661,15 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 					}
 					if (m_last_cmd_id == CMD_ID_GET_IPFILTER ||
 					    m_last_cmd_id == CMD_ID_GET_IPFILTER_LEVEL) {
-						s << wxString::Format(_("Current IPFilter Level is %d.\n"),
-								      ipfilterLevel->GetInt());
+						s << CFormat(_("Current IPFilter Level is %d.\n")) % ipfilterLevel->GetInt();
 					}
 				}
 				tab = response->GetTagByNameSafe(EC_TAG_PREFS_CONNECTIONS);
 				const CECTag *connMaxUL = tab->GetTagByName(EC_TAG_CONN_MAX_UL);
 				const CECTag *connMaxDL = tab->GetTagByName(EC_TAG_CONN_MAX_DL);
 				if (connMaxUL && connMaxDL) {
-					s << wxString::Format(_("Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"),
-						(uint16)connMaxUL->GetInt(),
-						(uint16)connMaxDL->GetInt());
+					s << CFormat(_("Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"))
+						% connMaxUL->GetInt() % connMaxDL->GetInt();
 				}
 			}
 			break;
@@ -728,10 +726,10 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				s <<	CFormat(_("\nUpload:\t%s")) % CastItoSpeed(tmpTag->GetInt());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
-				s << 	wxString::Format(_("\nClients in queue:\t%d\n"), tmpTag->GetInt());
+				s << 	CFormat(_("\nClients in queue:\t%d\n")) % tmpTag->GetInt();
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_TOTAL_SRC_COUNT)) != 0) {
-				s << 	wxString::Format(_("\nTotal sources:\t%d\n"), tmpTag->GetInt());
+				s << 	CFormat(_("\nTotal sources:\t%d\n")) % tmpTag->GetInt();
 			}
 			break;
 		}
@@ -774,7 +772,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				const CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED) : NULL;
 				if (tag && clientName && partfileName && partfileSizeXfer && partfileSpeed) {
 					s <<	wxT("\n") <<
-						wxString::Format(wxT("%10u "), tag->GetInt()) <<
+						CFormat(wxT("%10u ")) % tag->GetInt() <<
 						clientName->GetStringData() << wxT(" ") <<
 						partfileName->GetStringData() << wxT(" ") <<
 						CastItoXBytes(partfileSizeXfer->GetInt()) << wxT(" ") <<
@@ -808,7 +806,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 
 		case EC_OP_SEARCH_RESULTS:
 			m_Results_map.clear();
-			s << wxString::Format(_("Number of search results: %i\n"),response->GetTagCount());
+			s << CFormat(_("Number of search results: %i\n")) % response->GetTagCount();
 			for (size_t i = 0; i < response->GetTagCount(); i++) {
 				CEC_SearchFile_Tag *tag = (CEC_SearchFile_Tag *)response->GetTagByIndex(i);
 				//printf("Tag FileName: %s \n",(const char*)unicode2char(tag->FileName()));
