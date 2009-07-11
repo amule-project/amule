@@ -82,6 +82,7 @@ Version 2.3.0 - The river knows.
 		* Fixed HTTP download if server transmits no content-length
 		* Fixed crash in remote gui when aMule exits
 		* Added more media file types from eMule
+		* Fixed several cases of amulecmd printing zero on big endian machines
 
 	Vollstrecker:
 		* Unify copyright lines
