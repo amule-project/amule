@@ -38,7 +38,7 @@ namespace MuleNotify
 	void HandleNotification(const CMuleNotiferBase& ntf)
 	{
 		if (wxThread::IsMain()) {
-#if defined(AMULE_DAEMON) || defined(REMOTE_GUI)
+#if defined(AMULE_DAEMON)
 			ntf.Notify();
 #else
 			if (theApp->amuledlg) {
