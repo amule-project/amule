@@ -122,42 +122,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
 }
 
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
-	: CECTag(EC_TAG_PARTFILE, file->GetFileHash())
-{
-	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), this);
-
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), this);
-		
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024), this);
-	
-	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO, 
-		(uint64)(file->IsAutoDownPriority() ? 
-						file->GetDownPriority() + 10 : file->GetDownPriority()), this);
-
-	valuemap.CreateTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), this);
-
-	valuemap.CreateTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete, this);
-	
-	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
-
-	long l;
-	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
-		valuemap.CreateTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, this);
-	}
-
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
-
-	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
-}
-
-void CEC_PartFile_Tag::Detail_Tag(CPartFile *file)
+void CEC_PartFile_Tag::Detail_Tag(CPartFile *file, CValueMap *valuemap)
 {
 	// Tag for source names
 	CECTag sn(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) 0);
@@ -186,69 +151,68 @@ void CEC_PartFile_Tag::Detail_Tag(CPartFile *file)
 		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, its->name));
 		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) its->count));
 	}
-	AddTag(sn);
+	AddTag(sn, valuemap);
 }	
 
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail)
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail, CValueMap *valuemap)
 :
 CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
-	AddTag(CECTag(EC_TAG_PARTFILE_STOPPED, file->IsStopped()));
+	AddTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), valuemap);
+	AddTag(EC_TAG_PARTFILE_STOPPED, file->IsStopped(), valuemap);
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount()));
+	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), valuemap);
+	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), valuemap);
+	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), valuemap);
+	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), valuemap);
 		
-	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
+	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) || valuemap) {
 		
-		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred()));
-		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize()));
-		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024)));
+		AddTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), valuemap);
+		AddTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), valuemap);
+		AddTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024), valuemap);
 	}
 	
-	AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint64)(file->IsAutoDownPriority() ? 
-		file->GetDownPriority() + 10 : file->GetDownPriority())));
+	AddTag(EC_TAG_PARTFILE_PRIO, (uint64)(file->IsAutoDownPriority() ? 
+		file->GetDownPriority() + 10 : file->GetDownPriority()), valuemap);
 
-	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
-	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete));
-	AddTag(CECTag(EC_TAG_PARTFILE_LAST_RECV, (uint64)file->GetLastChangeDatetime()));
+	AddTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), valuemap);
+	AddTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete, valuemap);
+	AddTag(EC_TAG_PARTFILE_LAST_RECV, (uint64)file->GetLastChangeDatetime(), valuemap);
 
 	if (detail) {
-		Detail_Tag(file);
+		Detail_Tag(file, valuemap);
 	}
 	
-	if (file->m_CommentUpdated) {
-		// Tag for comments
-		CECTag sc(EC_TAG_PARTFILE_COMMENTS, (uint64) 0);
-	
-		const FileRatingList & list = file->GetRatingAndComments();
-		for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
-			// Tag children are evaluated by index, not by name
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
-		}
-		AddTag(sc);
-	}
+	// Tag for comments
+	CECEmptyTag sc(EC_TAG_PARTFILE_COMMENTS);
 
-	if (detail_level == EC_DETAIL_UPDATE) {
+	const FileRatingList & list = file->GetRatingAndComments();
+	for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
+		// Tag children are evaluated by index, not by name
+		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
+		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
+		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
+		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
+	}
+	AddTag(sc, valuemap);
+
+	// Would transfer just once on EC_DETAIL_INC_UPDATE, but this never changes
+	if (detail_level == EC_DETAIL_UPDATE || detail_level == EC_DETAIL_INC_UPDATE ) {
 		return;
 	}
 	
-	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable()));
+	AddTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable(), valuemap);
 
 	long l;
 	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
-		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l));
+		AddTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, valuemap);
 	}
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
+	AddTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), valuemap);
 
-	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()))));
+	AddTag(EC_TAG_PARTFILE_ED2K_LINK,
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
 }
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())

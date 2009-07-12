@@ -600,7 +600,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, COb
 		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
 
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
-		CEC_PartFile_Tag filetag(cur_file, valuemap);
+		CEC_PartFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, true, &valuemap);
 		CPartFile_Encoder &enc = encoders[cur_file];
 		enc.Encode(&filetag);
 		

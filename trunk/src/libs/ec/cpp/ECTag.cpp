@@ -24,6 +24,7 @@
 
 #include "ECTag.h"	// Needed for ECTag
 #include "ECSocket.h"	// Needed for CECSocket
+#include "ECSpecialTags.h"	// Needed for CValueMap
 
 /**********************************************************
  *							  *
@@ -32,7 +33,7 @@
  **********************************************************/
 
 //! Defines the Null tag which may be returned by GetTagByNameSafe.
-const CECTag CECTag::s_theNullTag(static_cast<NullTagConstructorSelector*>(0));
+const CECTag CECTag::s_theNullTag;
 
 //! Defines the data for the Null tag.  Large enough (16 bytes) for GetMD4Data.
 const uint32 CECTag::s_theNullTagData[4] = { 0, 0, 0, 0 };
@@ -44,7 +45,7 @@ const uint32 CECTag::s_theNullTagData[4] = { 0, 0, 0, 0 };
  * @see s_theNullTagData
  * @see GetTagByNameSafe
  */
-CECTag::CECTag(const NullTagConstructorSelector*) :
+CECTag::CECTag() :
 	m_error(0),
 	m_tagData(s_theNullTagData),
 	m_tagName(0),
@@ -366,6 +367,19 @@ CECTag& CECTag::operator=(const CECTag& rhs)
 }
 
 /**
+ * Compare operator.
+ *
+ */
+bool CECTag::operator==(const CECTag& tag) const
+{
+	return	m_dataType == tag.m_dataType
+			&& m_dataLen == tag.m_dataLen
+			&&	(m_dataLen == 0
+				|| !memcmp(m_tagData, tag.m_tagData, m_dataLen))
+			&& m_tagList == tag.m_tagList;
+}
+
+/**
  * Add a child tag to this one.
  *
  * Be very careful that this creates a copy of \e tag. Thus, the following code won't work as expected:
@@ -407,8 +421,11 @@ CECTag& CECTag::operator=(const CECTag& rhs)
  * @param tag a CECTag class instance to add.
  * @return \b true on succcess, \b false when an error occured
  */
-bool CECTag::AddTag(const CECTag& tag)
+bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 {
+	if (valuemap) {
+		return valuemap->AddTag(tag, this);
+	}
 	// cannot have more than 64k tags
 	wxASSERT(m_tagList.size() < 0xffff);
 
@@ -421,6 +438,24 @@ bool CECTag::AddTag(const CECTag& tag)
 		m_tagList.pop_back();
 #endif
 		return false;
+	}
+}
+
+void CECTag::AddTag(ec_tagname_t name, uint64_t data, CValueMap* valuemap)
+{
+	if (valuemap) {
+		valuemap->CreateTag(name, data, this);
+	} else {
+		AddTag(CECTag(name, data));
+	}
+}
+
+void CECTag::AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap)
+{
+	if (valuemap) {
+		valuemap->CreateTag(name, data, this);
+	} else {
+		AddTag(CECTag(name, data));
 	}
 }
 
