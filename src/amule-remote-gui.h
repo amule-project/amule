@@ -685,7 +685,7 @@ public:
 
 	bool CopyTextToClipboard(wxString strText);
 
-	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	virtual int ShowAlert(wxString msg, wxString title, int flags);
 
 	void ShutDown(wxCloseEvent &evt);
 

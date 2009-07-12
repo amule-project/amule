@@ -407,9 +407,9 @@ void CamuleRemoteGuiApp::Startup() {
 }
 
 
-void CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
+int CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 {
-	CamuleGuiBase::ShowAlert(msg, title, flags);
+	return CamuleGuiBase::ShowAlert(msg, title, flags);
 }
 
 

@@ -128,7 +128,7 @@ public:
 	void ServerSocketHandler(wxSocketEvent& event);
 	void UDPSocketHandler(wxSocketEvent& event);
 
-	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
+	virtual int ShowAlert(wxString msg, wxString title, int flags) = 0;
 
 	// Barry - To find out if app is running or shutting/shut down
 	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
@@ -317,7 +317,7 @@ public:
 	bool CopyTextToClipboard( wxString strText );
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	virtual int ShowAlert(wxString msg, wxString title, int flags);
 
 	void AddGuiLogLine(const wxString& line);
 protected:
@@ -343,7 +343,7 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
 	
 public:
 
-	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	virtual int ShowAlert(wxString msg, wxString title, int flags);
 
 	void ShutDown(wxCloseEvent &evt);
 
@@ -499,7 +499,7 @@ public:
 
 	bool CopyTextToClipboard(wxString strText);
 	
-	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	virtual int ShowAlert(wxString msg, wxString title, int flags);
 	
 	DECLARE_EVENT_TABLE()
 };

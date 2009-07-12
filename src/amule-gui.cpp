@@ -110,9 +110,9 @@ CamuleGuiBase::~CamuleGuiBase()
 }
 
 
-void CamuleGuiBase::ShowAlert(wxString msg, wxString title, int flags)
+int CamuleGuiBase::ShowAlert(wxString msg, wxString title, int flags)
 {
-	wxMessageBox(msg, title, flags);
+	return wxMessageBox(msg, title, flags);
 }
 
 
@@ -247,9 +247,9 @@ int CamuleGuiApp::InitGui(bool geometry_enable, wxString &geometry_string)
 }
 
 
-void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
+int CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 {
-	CamuleGuiBase::ShowAlert(msg, title, flags);
+	return CamuleGuiBase::ShowAlert(msg, title, flags);
 }
 
 

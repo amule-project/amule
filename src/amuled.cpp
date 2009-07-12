@@ -785,12 +785,14 @@ int CamuleDaemonApp::OnExit()
 }
 
 
-void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
+int CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 {
 	if ( flags | wxICON_ERROR ) {
 		title = CFormat(_("ERROR: %s")) % title;
 	}
 	AddLogLineCS(title + wxT(" ") + msg);
+
+	return 0;	// That's neither yes nor no, ok, cancel
 }
 
 // File_checked_for_headers

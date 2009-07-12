@@ -363,6 +363,7 @@ std::pair<bool, CPath> CheckMuleDirectory(const wxString& desc, const CPath& dir
 	if (directory.IsDir(CPath::readwritable)) {
 		return std::pair<bool, CPath>(true, directory);
 	} else if (directory.DirExists()) {
+		// Strings are not translated here because translation isn't up yet.
 		msg = CFormat(wxT("Permissions on the %s directory too strict!\n")
 			wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
 			wxT("permissions for the folder '%s'"))
@@ -375,11 +376,13 @@ std::pair<bool, CPath> CheckMuleDirectory(const wxString& desc, const CPath& dir
 	}
 
 	// Attempt to use fallback directory.
-	const CPath fallback = CPath(alternative);
+	const CPath fallback(alternative);
 	if (fallback.IsOk() && (directory != fallback)) {
 		msg << wxT("\nAttempting to use default directory at location \n'")
 			<< alternative << wxT("'.");
-		theApp->ShowAlert(msg, wxT("Error accessing directory."), wxICON_ERROR | wxOK);
+		if (theApp->ShowAlert(msg, wxT("Error accessing directory."), wxICON_ERROR | wxOK | wxCANCEL) == wxCANCEL) {
+			return std::pair<bool, CPath>(false, CPath(wxEmptyString));
+		}
 
 		return CheckMuleDirectory(desc, fallback, wxEmptyString);
 	} 
