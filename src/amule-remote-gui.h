@@ -263,12 +263,12 @@ public:
 	// Following are like basicly same code as in webserver. Eventually it must
 	// be same class
 	//
-	void DoRequery(int cmd, int tag)
+	void DoRequery(int cmd, int tag, EC_DETAIL_LEVEL level = EC_DETAIL_UPDATE)
 	{
 		if ( this->m_state != IDLE ) {
 			return;
 		}
-		CECPacket req_sts(cmd, m_inc_tags ? EC_DETAIL_INC_UPDATE : EC_DETAIL_UPDATE);
+		CECPacket req_sts(cmd, level);
 		this->m_conn->SendRequest(this, &req_sts);
 		this->m_state = STATUS_REQ_SENT;
 		this->m_full_req_cmd = cmd;

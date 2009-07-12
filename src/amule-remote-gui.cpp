@@ -169,12 +169,8 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		} else if (amuledlg->m_serverwnd->IsShown()) {
 			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
-			static bool firstcall = true;
-			downloadqueue->DoRequery(
-				theApp->m_FileDetailDialogActive || firstcall ?
-					EC_OP_GET_DLOAD_QUEUE_DETAIL : EC_OP_GET_DLOAD_QUEUE,
-				EC_TAG_PARTFILE);
-			firstcall = false;
+			downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE,
+				EC_TAG_PARTFILE, EC_DETAIL_INC_UPDATE);
 			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 			case vtUploading:
 				uploadqueue->ReQueryUp();
@@ -1404,52 +1400,31 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	//
 	// update status
 	//
-	if (m_inc_tags) {
-		uint32 tmpval = (uint32)(file->kBpsDown * 1024);
-		tag->SetSpeed(tmpval);
-		file->kBpsDown = tmpval / 1024.0;
-		
-		tag->SetSizeXfer(file->transferred);
-		tag->SetSizeDone(file->completedsize);
-		tag->SetSourceXferCount(file->transferingsrc);
-		tag->SetSourceNotCurrCount(file->m_notCurrentSources);
-		tag->SetSourceCount(file->m_source_count);
-		tag->SetSourceCountA4AF(file->m_a4af_source_count);
-		tag->SetFileStatus(file->status);
+	tag->Speed(&file->m_kbpsDown);
+	file->kBpsDown = file->m_kbpsDown / 1024.0;
 	
-		tag->SetLastSeenComplete(file->lastseencomplete);
-		
-		tag->SetFileCat(file->m_category);
-		
-		tag->SetPrio(file->m_iDownPriority);
+	tag->SizeXfer(&file->transferred);
+	tag->SizeDone(&file->completedsize);
+	tag->SourceXferCount(&file->transferingsrc);
+	tag->SourceNotCurrCount(&file->m_notCurrentSources);
+	tag->SourceCount(&file->m_source_count);
+	tag->SourceCountA4AF(&file->m_a4af_source_count);
+	tag->FileStatus(&file->status);
+	tag->Stopped(&file->m_stopped);
+
+	tag->LastSeenComplete(&file->lastseencomplete);
+	tag->LastDateChanged(&file->m_lastDateChanged);
+	
+	tag->FileCat(&file->m_category);
+	
+	tag->Prio(&file->m_iDownPriority);
+	if ( file->m_iDownPriority >= 10 ) {
+		file->m_iDownPriority-= 10;
+		file->m_bAutoDownPriority = true;
 	} else {
-		file->kBpsDown = tag->Speed() / 1024.0;
-	
-		if ( file->kBpsDown > 0 ) {
-			file->transferred = tag->SizeXfer();
-			file->SetCompletedSize(tag->SizeDone());
-		}
-	
-		file->transferingsrc = tag->SourceXferCount();
-		file->m_notCurrentSources = tag->SourceNotCurrCount();
-		file->m_source_count = tag->SourceCount();
-		file->m_a4af_source_count = tag->SourceCountA4AF();
-		file->status = tag->FileStatus();
-		file->m_stopped = tag->Stopped();
-	
-		file->lastseencomplete = tag->LastSeenComplete();
-		file->m_lastDateChanged = tag->LastDateChanged();
-		
-		file->m_category = tag->FileCat();
-		
-		file->m_iDownPriority = tag->Prio();
-		if ( file->m_iDownPriority >= 10 ) {
-			file->m_iDownPriority-= 10;
-			file->m_bAutoDownPriority = true;
-		} else {
-			file->m_bAutoDownPriority = false;
-		}
+		file->m_bAutoDownPriority = false;
 	}
+
 	file->percentcompleted = (100.0*file->GetCompletedSize()) / file->GetFileSize();
 	if ( file->m_iDownPriority >= 10 ) {
 		file->m_iDownPriority -= 10;

@@ -3609,7 +3609,6 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 void CPartFile::UpdateDisplayedInfo(bool force)
 {
 	uint32 curTick = ::GetTickCount();
-	m_CommentUpdated = true;
 
 	 // Wait 1.5s between each redraw
 	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE ) {
@@ -3648,7 +3647,6 @@ void CPartFile::Init()
 	
 	kBpsDown = 0.0;
 	
-	m_CommentUpdated = false;
 	m_hashsetneeded = true;
 	m_count = 0;
 	percentcompleted = 0;

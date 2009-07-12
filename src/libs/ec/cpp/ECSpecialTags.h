@@ -65,6 +65,7 @@ class CValueMap {
 		std::map<ec_tagname_t, uint64> m_map_uint64;
 		std::map<ec_tagname_t, CMD4Hash> m_map_md4;
 		std::map<ec_tagname_t, wxString> m_map_string;
+		std::map<ec_tagname_t, CECTag> m_map_tag;
 		
 		template <class T>
 		void CreateTagT(ec_tagname_t tagname, T value, std::map<ec_tagname_t, T> &map, CECTag *parent)
@@ -87,10 +88,7 @@ class CValueMap {
 			m_map_uint64 = valuemap.m_map_uint64;
 			m_map_md4 = valuemap.m_map_md4;
 			m_map_string = valuemap.m_map_string;
-		}
-		
-		~CValueMap()
-		{
+			m_map_tag = valuemap.m_map_tag;
 		}
 		
 		void CreateTag(ec_tagname_t tagname, uint8 value, CECTag *parent)
@@ -121,6 +119,17 @@ class CValueMap {
 		void CreateTag(ec_tagname_t tagname, wxString value, CECTag *parent)
 		{
 			CreateTagT<wxString>(tagname, value, m_map_string, parent);
+		}
+		
+		bool AddTag(const CECTag &tag, CECTag *parent)
+		{
+			bool ret = true;
+			ec_tagname_t tagname = tag.GetTagName();
+			if (m_map_tag.count(tagname) == 0 || m_map_tag[tagname] != tag) {
+				ret = parent->AddTag(tag);
+				m_map_tag[tagname] = tag;
+			}
+			return ret;
 		}
 };
 
@@ -189,9 +198,8 @@ class CEC_ConnState_Tag : public CECTag {
 
 class CEC_PartFile_Tag : public CECTag {
  	public:
- 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail = false);
-		CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap);
-		void Detail_Tag(CPartFile *file);
+ 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail = false, CValueMap *valuemap = NULL);
+		void Detail_Tag(CPartFile *file, CValueMap *valuemap);
  		
 		// template needs it
 		CMD4Hash		ID()	const { return GetMD4Data(); }
@@ -201,21 +209,20 @@ class CEC_PartFile_Tag : public CECTag {
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
- 		uint64		SizeXfer()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt(); }
-  		uint64		SizeDone()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_DONE)->GetInt(); }
+ 		uint64		SizeXfer(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
+  		uint64		SizeDone(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, target); }
  		wxString	FileEd2kLink()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
- 		uint8		FileStatus()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt(); }
- 		bool		Stopped()		const { return GetTagByNameSafe(EC_TAG_PARTFILE_STOPPED)->GetInt() != 0; }
-  		uint16		SourceCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt(); }
-  		uint16		SourceNotCurrCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt(); }
-  		uint16		SourceXferCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt(); }
-  		uint16		SourceCountA4AF()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt(); }
-  		uint32		Speed()		const { return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt(); }
-  		uint8		Prio()		const { return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt(); }
-
- 		uint8		FileCat()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_CAT)->GetInt(); }
-		time_t		LastSeenComplete() const { return (time_t)GetTagByNameSafe(EC_TAG_PARTFILE_LAST_SEEN_COMP)->GetInt(); }
-		time_t		LastDateChanged() const { return (time_t)GetTagByNameSafe(EC_TAG_PARTFILE_LAST_RECV)->GetInt(); }
+ 		uint8		FileStatus(uint8 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_STATUS, target); }
+ 		bool		Stopped(bool *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_STOPPED, target); }
+  		uint16		SourceCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, target); }
+  		uint16		SourceNotCurrCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, target); }
+  		uint16		SourceXferCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, target); }
+  		uint16		SourceCountA4AF(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, target); }
+  		uint32		Speed(uint32 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_SPEED, target); }
+  		uint8		Prio(uint8 *target = 0)			const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
+ 		uint8		FileCat(uint8 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_CAT, target); }
+		time_t		LastSeenComplete(time_t *target = 0)const { return AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, target); }
+		time_t		LastDateChanged(time_t *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LAST_RECV, target); }
 
 		wxString	PartMetName() const
 			{
@@ -226,30 +233,7 @@ class CEC_PartFile_Tag : public CECTag {
 					return wxEmptyString;
 				}
 			}
-		
-		void SetSizeXfer(uint64 value) const { AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, value); }
-		void SetSizeDone(uint64 value) const { AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, value); }
 
-		void SetFileEd2kLink(uint32 value) const { AssignIfExist(EC_TAG_PARTFILE_ED2K_LINK, value); }
-
-		void SetFileStatus(uint8 &value) const { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
-
-		void SetSourceCount(uint16 &value) const { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
-		void SetSourceNotCurrCount(uint16 &value) const { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
-		void SetSourceXferCount(uint16 &value) const { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
-		void SetSourceCountA4AF(uint16 &value) const { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
-
-		void SetSpeed(uint32 &value) const { AssignIfExist(EC_TAG_PARTFILE_SPEED, value); }
-		void SetPrio(uint8 &value) const { AssignIfExist(EC_TAG_PARTFILE_PRIO, value); }
-		void SetFileCat(uint8 &value) const { AssignIfExist(EC_TAG_PARTFILE_CAT, value); }
-		void SetLastSeenComplete(time_t &value) const
-			{
-				const CECTag *tag = GetTagByName(EC_TAG_PARTFILE_LAST_SEEN_COMP);
-				if ( tag ) {
-					value = tag->GetInt();
-				}
-			}
-		
 		wxString	GetFileStatusString() const;
 };
 
@@ -280,16 +264,16 @@ class CEC_SharedFile_Tag : public CECTag {
 
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
  		
- 		void SetPrio(uint8 &val) const { AssignIfExist(EC_TAG_PARTFILE_PRIO, val); }
+ 		void SetPrio(uint8 &val) const { AssignIfExist(EC_TAG_PARTFILE_PRIO, &val); }
  		
- 		void SetRequests(uint16 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, val); }
- 		void SetAllRequests(uint32 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, val); }
+ 		void SetRequests(uint16 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, &val); }
+ 		void SetAllRequests(uint32 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, &val); }
  		
- 		void SetAccepts(uint16 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, val); }
- 		void SetAllAccepts(uint32 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, val); }
+ 		void SetAccepts(uint16 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, &val); }
+ 		void SetAllAccepts(uint32 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, &val); }
  		
- 		void SetXferred(uint64 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, val); }
- 		void SetAllXferred(uint64 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, val); }
+ 		void SetXferred(uint64 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, &val); }
+ 		void SetAllXferred(uint64 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, &val); }
 };
 
 class CEC_UpDownClient_Tag : public CECTag {

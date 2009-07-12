@@ -193,7 +193,6 @@ public:
 	bool	IsStopped() const		{ return this ? m_stopped : true; }
 	bool	IsPaused() const		{ return m_paused; }
 	void	UpdateFileRatingCommentAvail();
-	bool	m_CommentUpdated;
 
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);
@@ -404,6 +403,7 @@ private:
 	
 	FileRatingList m_FileRatingList;
 #ifdef CLIENT_GUI
+	uint32 	m_kbpsDown;
 	SourcenameItemList m_SourcenameItem_list;
 public:
 	const SourcenameItemList &GetSourcenameItemList() { return m_SourcenameItem_list; }
