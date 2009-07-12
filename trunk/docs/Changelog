@@ -83,6 +83,7 @@ Version 2.3.0 - The river knows.
 		* Fixed crash in remote gui when aMule exits
 		* Added more media file types from eMule
 		* Fixed several cases of amulecmd printing zero on big endian machines
+		* Allow the user to cancel the app if Temp/Incoming is not found
 
 	Vollstrecker:
 		* Unify copyright lines
