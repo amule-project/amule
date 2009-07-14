@@ -404,6 +404,7 @@ private:
 	FileRatingList m_FileRatingList;
 #ifdef CLIENT_GUI
 	uint32 	m_kbpsDown;
+	uint8   m_iDownPriorityEC;
 	SourcenameItemList m_SourcenameItem_list;
 public:
 	const SourcenameItemList &GetSourcenameItemList() { return m_SourcenameItem_list; }
