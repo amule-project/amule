@@ -3589,6 +3589,8 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	m_category = 0;
 	
 	m_source_count = 0;
+	m_kbpsDown = 0;
+	m_iDownPriorityEC = 0;
 	m_a4af_source_count = 0;
 }
 

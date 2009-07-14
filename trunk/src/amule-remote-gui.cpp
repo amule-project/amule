@@ -1417,21 +1417,16 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	
 	tag->FileCat(&file->m_category);
 	
-	tag->Prio(&file->m_iDownPriority);
-	if ( file->m_iDownPriority >= 10 ) {
-		file->m_iDownPriority-= 10;
+	tag->Prio(&file->m_iDownPriorityEC);
+	if ( file->m_iDownPriorityEC >= 10 ) {
+		file->m_iDownPriority = file->m_iDownPriorityEC - 10;
 		file->m_bAutoDownPriority = true;
 	} else {
+		file->m_iDownPriority = file->m_iDownPriorityEC;
 		file->m_bAutoDownPriority = false;
 	}
 
 	file->percentcompleted = (100.0*file->GetCompletedSize()) / file->GetFileSize();
-	if ( file->m_iDownPriority >= 10 ) {
-		file->m_iDownPriority -= 10;
-		file->m_bAutoUpPriority = true;
-	} else {
-		file->m_bAutoUpPriority = false;
-	}
 
 	//
 	// Copy part/gap status
