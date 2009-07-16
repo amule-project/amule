@@ -170,15 +170,20 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 		
 		AddTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), valuemap);
 		AddTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), valuemap);
-		AddTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024), valuemap);
+		AddTag(EC_TAG_PARTFILE_SPEED, file->GetKBpsDown()*1024, valuemap);
 	}
 	
-	AddTag(EC_TAG_PARTFILE_PRIO, (uint64)(file->IsAutoDownPriority() ? 
+	AddTag(EC_TAG_PARTFILE_PRIO, (file->IsAutoDownPriority() ? 
 		file->GetDownPriority() + 10 : file->GetDownPriority()), valuemap);
 
 	AddTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), valuemap);
-	AddTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete, valuemap);
-	AddTag(EC_TAG_PARTFILE_LAST_RECV, (uint64)file->GetLastChangeDatetime(), valuemap);
+	AddTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, file->lastseencomplete, valuemap);
+	AddTag(EC_TAG_PARTFILE_LAST_RECV, file->GetLastChangeDatetime(), valuemap);
+	AddTag(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, file->GetDlActiveTime(), valuemap);
+
+	AddTag(EC_TAG_PARTFILE_LOST_CORRUPTION, file->GetLostDueToCorruption(), valuemap);
+	AddTag(EC_TAG_PARTFILE_GAINED_COMPRESSION, file->GetGainDueToCompression(), valuemap);
+	AddTag(EC_TAG_PARTFILE_SAVED_ICH, file->TotalPacketsSavedDueToICH(), valuemap);
 
 	if (detail) {
 		Detail_Tag(file, valuemap);

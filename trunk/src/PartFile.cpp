@@ -3571,23 +3571,11 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	SetFileSize(tag->SizeFull());
 	m_gaplist.Init(GetFileSize(), true);	// Init empty
 	m_partmetfilename = CPath(tag->PartMetName());
-	transferred = tag->SizeXfer();
-	percentcompleted = (100.0*completedsize) / GetFileSize();
-	completedsize = tag->SizeDone();
-
-	m_category = tag->FileCat();
+	m_fullname = m_partmetfilename;		// We have only the met number, so show it without path in the detail dialog.
 
 	m_SrcpartFrequency.insert(m_SrcpartFrequency.end(), GetPartCount(), 0);
-	m_iDownPriority = tag->Prio();
-	if ( m_iDownPriority >= 10 ) {
-		m_iDownPriority-= 10;
-		m_bAutoDownPriority = true;
-	} else {
-		m_bAutoDownPriority = false;
-	}
-	// FIXME: !
-	m_category = 0;
-	
+
+	// these are only in CLIENT_GUI and not covered by Init()
 	m_source_count = 0;
 	m_kbpsDown = 0;
 	m_iDownPriorityEC = 0;
