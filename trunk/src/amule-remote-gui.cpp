@@ -169,8 +169,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		} else if (amuledlg->m_serverwnd->IsShown()) {
 			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
-			downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE,
-				EC_TAG_PARTFILE, EC_DETAIL_INC_UPDATE);
+			downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE,	EC_TAG_PARTFILE);
 			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 			case vtUploading:
 				uploadqueue->ReQueryUp();

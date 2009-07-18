@@ -146,11 +146,16 @@ protected:
 				// if derived class choose not to proceed, return - but with good status
 				this->m_state = IDLE;
 				if ( this->Phase1Done(packet) ) {
-					CECPacket req_full(this->m_full_req_cmd);
+					if (this->m_inc_tags) {
+						// Incremental tags: new items always carry full info.
+						ProcessUpdate(packet, NULL, m_full_req_tag);
+					} else {
+						// Non-incremental tags: we might get partial info on new items.
+						// Collect all this items in a tag, and then request full info about them.
+						CECPacket req_full(this->m_full_req_cmd);
 				
-					ProcessUpdate(packet, &req_full, m_full_req_tag);
+						ProcessUpdate(packet, &req_full, m_full_req_tag);
 					
-					if ( !this->m_inc_tags ) {
 						// Phase 3: request full info about files we don't have yet
 						if ( req_full.GetTagCount() ) {
 							m_conn->SendRequest(this, &req_full);
@@ -166,21 +171,13 @@ protected:
 		}
 	}
 public:
-	CRemoteContainer(CRemoteConnect *conn, bool /*inc_tags*/ = false)
+	CRemoteContainer(CRemoteConnect *conn, bool inc_tags = false)
 	{
 		m_state = IDLE;
 		
 		m_conn = conn;
 		m_item_count = 0;
-		
-		// FIXME:
-		// The CRemoteContainer has two ways of transfer: with "inc_tags" or without.
-		// I found that with inc_tags the update of transferred/completed is broken,
-		// therefore I disabled them.
-		// Either the inc-tag-mode should be fixed (but I can't to that without some 
-		// more insight how it's supposed to be working), or removed alltogether.
-		//m_inc_tags = inc_tags;
-		m_inc_tags = false;
+		m_inc_tags = inc_tags;
 	}
 	
 	virtual ~CRemoteContainer()
@@ -263,12 +260,12 @@ public:
 	// Following are like basicly same code as in webserver. Eventually it must
 	// be same class
 	//
-	void DoRequery(int cmd, int tag, EC_DETAIL_LEVEL level = EC_DETAIL_UPDATE)
+	void DoRequery(int cmd, int tag)
 	{
 		if ( this->m_state != IDLE ) {
 			return;
 		}
-		CECPacket req_sts(cmd, level);
+		CECPacket req_sts(cmd, m_inc_tags ? EC_DETAIL_INC_UPDATE : EC_DETAIL_UPDATE);
 		this->m_conn->SendRequest(this, &req_sts);
 		this->m_state = STATUS_REQ_SENT;
 		this->m_full_req_cmd = cmd;
@@ -333,14 +330,20 @@ public:
 	
 			core_files.insert(tag->ID());
 			if ( m_items_hash.count(tag->ID()) ) {
+				// Item already known: update it
 				T *item = m_items_hash[tag->ID()];
 				ProcessItemUpdate(tag, item);
 			} else {
-				if ( m_inc_tags ) {
+				// New item
+				if (full_req) {
+					// Non-incremental mode: we have only partial info
+					// so we need to request full info before we can use the item
+					full_req->AddTag(CECTag(req_type, tag->ID()));
+				} else {
+					// Incremental mode: new items always carry full info,
+					// so we can add it right away
 					T *item = this->CreateItem(tag);
 					AddItem(item);
-				} else {
-					full_req->AddTag(CECTag(req_type, tag->ID()));
 				}
 			}
 		}

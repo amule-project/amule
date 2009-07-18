@@ -202,8 +202,7 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 	}
 	AddTag(sc, valuemap);
 
-	// Would transfer just once on EC_DETAIL_INC_UPDATE, but this never changes
-	if (detail_level == EC_DETAIL_UPDATE || detail_level == EC_DETAIL_INC_UPDATE ) {
+	if (detail_level == EC_DETAIL_UPDATE) {
 		return;
 	}
 	
