@@ -220,6 +220,9 @@ public:
 	// Flush & reload
 	//
 	/*
+	We usually don't keep outdated code as comments, but this blocking implementation
+	shows the overall procedure well. It had to be scattered for the event driven implementation.
+
 	bool FullReload(int cmd)
 	{
 		CECPacket req(cmd);
@@ -272,6 +275,9 @@ public:
 		this->m_full_req_tag = tag;
 	}
 	/*
+	We usually don't keep outdated code as comments, but this blocking implementation
+	shows the overall procedure well. It had to be scattered for the event driven implementation.
+
 	bool DoRequery(int cmd, int tag)
 	{
 		CECPacket req_sts(cmd, m_inc_tags ? EC_DETAIL_INC_UPDATE : EC_DETAIL_UPDATE);
