@@ -91,8 +91,8 @@ class CIPFilterTask : public CThreadTask
 public:
 	CIPFilterTask(wxEvtHandler* owner)
 		: CThreadTask(wxT("Load IPFilter"), wxEmptyString, ETP_Critical),
-		  m_owner(owner),
-		  m_storeDescriptions(false)
+		  m_storeDescriptions(false),
+		  m_owner(owner)
 	{
 	}
 	
