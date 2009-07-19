@@ -91,7 +91,8 @@ class CIPFilterTask : public CThreadTask
 public:
 	CIPFilterTask(wxEvtHandler* owner)
 		: CThreadTask(wxT("Load IPFilter"), wxEmptyString, ETP_Critical),
-		  m_owner(owner)
+		  m_owner(owner),
+		  m_storeDescriptions(false)
 	{
 	}
 	
@@ -120,6 +121,7 @@ public:
 	}
 private:
 
+	bool m_storeDescriptions;
 	
 	/**
 	 * Helper function.
@@ -141,7 +143,9 @@ private:
 				CIPFilter::rangeObject item;
 				item.AccessLevel = AccessLevel;
 #ifdef __DEBUG__
-				item.Description = Description;
+				if (m_storeDescriptions) {
+					item.Description = Description;
+				}
 #endif
 
 				m_result.insert(IPStart, IPEnd, item);
@@ -271,6 +275,10 @@ private:
 		if (!path.FileExists() /* || TestDestroy() (see CIPFilter::Reload()) */) {
 			return 0;
 		}
+
+#ifdef __DEBUG__
+		m_storeDescriptions = theLogger.IsEnabled(logIPFilter);
+#endif
 
 		const wxChar* ipfilter_files[] = {
 			wxT("ipfilter.dat"),
