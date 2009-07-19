@@ -57,8 +57,8 @@
 #include "MuleColour.h"
 #endif
 
-#include "RandomFunctions.h"
 #ifndef CLIENT_GUI
+#include "RandomFunctions.h"
 #include "PlatformSpecific.h"		// Needed for PlatformSpecific::GetMaxConnections()
 #endif
 
@@ -1185,14 +1185,15 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 /**
 	  * Obfuscation
 	  **/
-	 
+#ifndef CLIENT_GUI	 
 	NewCfgItem( IDC_SUPPORT_PO, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, true )));
 	NewCfgItem( IDC_ENABLE_PO_OUTGOING, ( new Cfg_Bool( wxT("/Obfuscation/IsCryptLayerRequested"), s_bCryptLayerRequested, true )));
 	NewCfgItem( IDC_ENFORCE_PO_INCOMING, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false )));
 	// There is no need for GUI items for this two.
 	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );	 
-	 
+#endif
+
 	/**
 	 * The following doesn't have an associated widget or section
 	 **/
@@ -1317,12 +1318,14 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 #endif
 	
 	// Now do some post-processing / sanity checking on the values we just loaded
+#ifndef CLIENT_GUI
 	CheckUlDlRatio();
 	SetPort(s_port);
 	if (s_byCryptTCPPaddingLength > 254) {
 		s_byCryptTCPPaddingLength = GetRandomUint8() % 254;
 	}
 	SetSlotAllocation(s_slotallocation);
+#endif
 }
 
 

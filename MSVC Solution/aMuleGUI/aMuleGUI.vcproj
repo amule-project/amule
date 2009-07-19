@@ -540,10 +540,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\RandomFunctions.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\RLE.cpp"
 				>
 			</File>
