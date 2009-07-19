@@ -310,20 +310,20 @@ public:
 				bool sysvalue,
 				bool isdownloading = false,
 				bool onlybasevalue = false) const;
-	double		GetRating() const		{ return (double)GetScore(false, IsDownloading(), true); }
+	uint32		GetRating() const		{ return GetScore(false, IsDownloading(), true); }
 #else
 	uint32		m_score;
 	uint32		GetScore(
 				bool WXUNUSED(sysvalue),
 				bool WXUNUSED(isdownloading) = false,
-				bool WXUNUSED(onlybasevalue) = false) const
+				bool onlybasevalue = false) const
 	{
-		return m_score;
+		return onlybasevalue ? m_rating : m_score;
 	}
 	uint16		m_waitingPosition;
 	uint16		GetWaitingPosition() const	{ return m_waitingPosition; }
-	double		m_rating;
-	double		GetRating() const		{ return m_rating; }
+	uint32		m_rating;
+	uint32		GetRating() const		{ return m_rating; }
 	EIdentState	m_identState;
 #endif
 

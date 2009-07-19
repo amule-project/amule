@@ -319,8 +319,10 @@ class CEC_UpDownClient_Tag : public CECTag {
 		wxString ServerName() const { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_NAME)->GetStringData(); }
 		wxString SoftVerStr() const { return GetTagByNameSafe(EC_TAG_CLIENT_SOFT_VER_STR)->GetStringData(); }
 		uint32 Score() const { return GetTagByNameSafe(EC_TAG_CLIENT_SCORE)->GetInt(); }
-		double Rating() const { return GetTagByNameSafe(EC_TAG_CLIENT_RATING)->GetDoubleData(); }
+		uint32 Rating() const { return GetTagByNameSafe(EC_TAG_CLIENT_RATING)->GetInt(); }
 		uint16 WaitingPosition() const { return GetTagByNameSafe(EC_TAG_CLIENT_WAITING_POSITION)->GetInt(); }
+		uint16 RemoteQueueRank() const { return GetTagByNameSafe(EC_TAG_CLIENT_REMOTE_QUEUE_RANK)->GetInt(); }
+		uint32 AskedCount() const { return GetTagByNameSafe(EC_TAG_CLIENT_ASKED_COUNT)->GetInt(); }
 
 		EIdentState GetCurrentIdentState() const { return (EIdentState) GetTagByNameSafe(EC_TAG_CLIENT_IDENT_STATE)->GetInt(); }
 		bool HasObfuscatedConnection() const { return GetTagByNameSafe(EC_TAG_CLIENT_OBFUSCATED_CONNECTION)->GetInt() != 0; }

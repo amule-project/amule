@@ -232,6 +232,8 @@ public enum ECTagNames {
 		EC_TAG_CLIENT_IDENT_STATE                 = 0x0617,
 		EC_TAG_CLIENT_OBFUSCATED_CONNECTION       = 0x0618,
 		EC_TAG_CLIENT_RATING                      = 0x0619,
+		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
+		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
