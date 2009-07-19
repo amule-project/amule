@@ -1173,6 +1173,9 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_ServerName = tag->ServerName();
 
 	m_waitingPosition = tag->WaitingPosition();
+	m_nRemoteQueueRank = tag->RemoteQueueRank();
+	m_bRemoteQueueFull = m_nRemoteQueueRank == 0xffff;
+	m_cAsked = tag->AskedCount();
 	
 	m_Friend = 0;
 	if (tag->HaveFile()) {

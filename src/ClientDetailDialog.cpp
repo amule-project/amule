@@ -78,7 +78,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DHASH, wxStaticText)->SetLabel(
 			m_client->GetUserHash().Encode());
 		CastChild(ID_DRATING, wxStaticText)->SetLabel(
-			wxString::Format(wxT("%.1f"), m_client->GetRating()));
+			wxString::Format(wxT("%u"), m_client->GetRating()));
 	} else {
 		CastChild(ID_DNAME, wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DHASH, wxStaticText)->SetLabel(_("Unknown"));

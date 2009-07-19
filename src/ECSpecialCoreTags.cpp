@@ -301,6 +301,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())));
 	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())));
 	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp->uploadqueue->GetWaitingPosition(client)));
+	AddTag(CECTag(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, client->IsRemoteQueueFull() ? (uint16)0xffff : client->GetRemoteQueueRank()));
+	AddTag(CECTag(EC_TAG_CLIENT_ASKED_COUNT, client->GetAskedCount()));
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
