@@ -21,6 +21,7 @@ Version 2.3.0 - The river knows.
 		  (port from eMule v0.49b)
 		* Dropped assumption that last search keyword is a filename
 		  extension if length == 3.
+		* Fixed obfuscated server UDP communication.
 
 	Greek:
 		* Part number is now an extra column in the download list
