@@ -445,7 +445,7 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	PokeUInt16(achKeyData + 5, nRandomKeyPart);
 	MD5Sum md5(achKeyData, sizeof(achKeyData));
 	CRC4EncryptableBuffer sendbuffer;
-	sendbuffer.SetKey(md5);
+	sendbuffer.SetKey(md5, true);
 
 	// create the semi random byte encryption header
 	uint8 bySemiRandomNotProtocolMarker = 0;
