@@ -207,7 +207,8 @@ public:
 		bool critical,
 		DebugType type,
 		const wxString &str,
-		bool toStdout = false);
+		bool toStdout = false,
+		bool toGUI = true);
 
 	// for UPnP
 	void AddLogLine(
@@ -280,7 +281,7 @@ private:
 	/**
 	 * Really output a single line
 	 */
-	void DoLine(const wxString & line, bool toStdout);
+	void DoLine(const wxString & line, bool toStdout, bool toGUI);
 
 	DECLARE_EVENT_TABLE()
 };
@@ -309,10 +310,11 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE, -1)
 class CLoggingEvent : public wxEvent
 {
 public:
-	CLoggingEvent(bool critical, bool toStdout, const wxString& msg)
+	CLoggingEvent(bool critical, bool toStdout, bool toGUI, const wxString& msg)
 		: wxEvent(-1, MULE_EVT_LOGLINE)
 		, m_critical(critical)
 		, m_stdout(toStdout)
+		, m_GUI(toGUI)
 		// Deep copy, to avoid thread-unsafe reference counting. */
 		, m_msg(msg.c_str(), msg.Length())
 	{
@@ -330,13 +332,18 @@ public:
 		return m_stdout;
 	}
 
+	bool ToGUI() const {
+		return m_GUI;
+	}
+
 	wxEvent* Clone() const {
-		return new CLoggingEvent(m_critical, m_stdout, m_msg);
+		return new CLoggingEvent(m_critical, m_stdout, m_GUI, m_msg);
 	}
 	
 private:
 	bool		m_critical;
 	bool		m_stdout;
+	bool		m_GUI;
 	wxString	m_msg;
 };
 
@@ -412,6 +419,9 @@ public:
 	#define AddDebugLogLineC(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, true, type, string)
 	#define AddLogLineC(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string)
 	#define AddLogLineCS(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string, true)
+// Macros for logging to logfile only
+	#define AddDebugLogLineF(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string, false, false)
+	#define AddLogLineF(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string, false, false)
 #endif
 
 #endif
