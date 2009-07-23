@@ -162,7 +162,8 @@ void CLogger::AddLogLine(
 	bool critical,
 	DebugType type,
 	const wxString &str,
-	bool toStdout)
+	bool toStdout,
+	bool toGUI)
 {
 	wxString msg(str);
 // handle Debug messages
@@ -186,7 +187,7 @@ void CLogger::AddLogLine(
 	msg = file.AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/')) << wxT("(") << line << wxT("): ") + msg;
 #endif
 
-	CLoggingEvent Event(critical, toStdout, msg);
+	CLoggingEvent Event(critical, toStdout, toGUI, msg);
 
 	// Try to handle events immediatly when possible (to save to file).
 	if (wxThread::IsMain()) {
@@ -271,19 +272,23 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 
 	if ( bufferline.IsEmpty() ) {
 		// If it's empty we just write a blank line with no timestamp.
-		DoLine(wxT(" \n"), evt.ToStdout());
+		DoLine(wxT(" \n"), evt.ToStdout(), evt.ToGUI());
 	} else {
 		// Split multi-line messages into individual lines
 		wxStringTokenizer tokens( bufferline, wxT("\n") );		
 		while ( tokens.HasMoreTokens() ) {
 			wxString fullline = prefix + stamp + tokens.GetNextToken() + wxT("\n");
-			DoLine(fullline, evt.ToStdout());
+			DoLine(fullline, evt.ToStdout(), evt.ToGUI());
 		}
 	}
 }
 
 
-void CLogger::DoLine(const wxString & line, bool toStdout)
+void CLogger::DoLine(const wxString & line, bool toStdout, bool
+#ifndef AMULE_DAEMON
+															 toGUI
+#endif
+																	 )
 {
 	++m_count;
 
@@ -297,7 +302,9 @@ void CLogger::DoLine(const wxString & line, bool toStdout)
 	}
 #ifndef AMULE_DAEMON
 	// write to Listcontrol
-	theApp->AddGuiLogLine(line);
+	if (toGUI) {
+		theApp->AddGuiLogLine(line);
+	}
 #endif
 }
 
