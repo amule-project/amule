@@ -78,7 +78,7 @@ AC_DEFUN([MULE_CHECK_NLS],
 	AC_ARG_WITH([language],
 		[AS_HELP_STRING([--with-language=<langs>],
 			[Specify a comma-separated list of languages you want to have installed. See po/LINGUAS for available languages])],
-		[AS_IF([test "$withval" = "all"], [LINGUAS='%UNSET%'], [LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])])
+		[AS_IF([test "$withval" != "all"], [LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])])
 
 	AM_GNU_GETTEXT([no-libtool], [need-ngettext])
 	AS_IF([test $USE_INCLUDED_LIBINTL = yes], [INCINTL=-I\${top_builddir}/intl])
