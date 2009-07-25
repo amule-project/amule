@@ -191,6 +191,7 @@ public final static short 	EC_TAG_KNOWNFILE_REQ_COUNT_ALL            = 0x0404;
 public final static short 	EC_TAG_KNOWNFILE_ACCEPT_COUNT             = 0x0405;
 public final static short 	EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL         = 0x0406;
 public final static short 	EC_TAG_KNOWNFILE_AICH_MASTERHASH          = 0x0407;
+public final static short 	EC_TAG_KNOWNFILE_FILENAME                 = 0x0408;
 public final static short EC_TAG_SERVER                             = 0x0500;
 public final static short 	EC_TAG_SERVER_NAME                        = 0x0501;
 public final static short 	EC_TAG_SERVER_DESC                        = 0x0502;
