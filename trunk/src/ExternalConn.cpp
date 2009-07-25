@@ -118,6 +118,8 @@ CECServerSocket::~CECServerSocket()
 
 const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 {
+	packet->DebugPrint(true);
+
 	const CECPacket *reply = NULL;
 
 	if (m_conn_state == CONN_FAILED) {

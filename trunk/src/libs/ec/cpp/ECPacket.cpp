@@ -57,6 +57,22 @@ bool CECPacket::WritePacket(CECSocket& socket) const
 	return true;
 }
 
+#ifdef __DEBUG__
+#include <common/Format.h>  // Needed for CFormat
+void CECPacket::DebugPrint(bool incoming) const
+{
+	wxString GetDebugNameECOpCodes(uint8 arg);
+
+	if (ECLogIsEnabled()) {
+		DoECLogLine(CFormat(wxT("%s %s %d")) % (incoming ? wxT("<") : wxT(">")) 
+			% GetDebugNameECOpCodes(m_opCode) % GetPacketLength());
+		CECTag::DebugPrint(1, false);
+	}
+}
+#else
+void CECPacket::DebugPrint(bool) const {}
+#endif
+
 /*!
  * \fn CECPacket::CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level)
  *

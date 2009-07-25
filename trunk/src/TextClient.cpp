@@ -967,4 +967,14 @@ int CamulecmdApp::OnRun()
 	ConnectAndRun(wxT("aMulecmd"), wxT(VERSION));
 	return 0;
 }
+
+// Dummy functions for EC logging
+bool ECLogIsEnabled()
+{
+	return false;
+}
+
+void DoECLogLine(const wxString &)
+{
+}
 // File_checked_for_headers

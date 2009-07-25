@@ -1984,4 +1984,16 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 	Data.pSocket->SendHttpHeaders("text/html", false, httpOutLen, 0);
 	Data.pSocket->SendData(httpOut, httpOutLen);
 }
+
+// Dummy functions for EC logging
+bool ECLogIsEnabled()
+{
+	return false;
+}
+
+void DoECLogLine(const wxString &)
+{
+}
+
+
 // File_checked_for_headers

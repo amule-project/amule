@@ -107,7 +107,9 @@ enum DebugType
 	//! Warnings/Errors related to Kad packet tracking.
 	logKadPacketTracking,
 	//! Warnings/Errors related to Kad entry tracking.
-	logKadEntryTracking
+	logKadEntryTracking,
+	//! Full log of external connection packets
+	logEC
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };

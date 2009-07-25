@@ -268,6 +268,18 @@ bool CamuleRemoteGuiApp::OnInit()
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
+	// Make a backup of the log file
+	CPath logfileName = CPath(ConfigDir + wxT("remotelogfile"));
+	if (logfileName.FileExists()) {
+		CPath::BackupFile(logfileName, wxT(".bak"));
+	}
+
+	// Open the log file
+	if (!theLogger.OpenLogfile(logfileName.GetRaw())) {
+		// use std err as last resolt to indicate problem
+		fputs("ERROR: unable to open log file\n", stderr);
+	}
+
 	bool result = ShowConnectionDialog();
 
 	AddLogLineNS(_("Going to event loop..."));

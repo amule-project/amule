@@ -305,6 +305,7 @@ bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 
 void CECSocket::SendPacket(const CECPacket *packet)
 {
+	packet->DebugPrint(false);
 	WritePacket(packet);
 	OnOutput();
 }

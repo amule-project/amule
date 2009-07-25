@@ -103,7 +103,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logUPnP,		wxT("Universal Plug and Play" ) ),
 	CDebugCategory( logKadUdpFwTester,	wxT("Kademlia UDP Firewall Tester") ),
 	CDebugCategory( logKadPacketTracking,	wxT("Kademlia Packet Tracking") ),
-	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") )
+	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") ),
+	CDebugCategory( logEC,					wxT("External Connect") )
 };
 
 
@@ -184,7 +185,9 @@ void CLogger::AddLogLine(
 	}
 
 #ifdef __DEBUG__
-	msg = file.AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/')) << wxT("(") << line << wxT("): ") + msg;
+	if (line) {
+		msg = file.AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/')) << wxT("(") << line << wxT("): ") + msg;
+	}
 #endif
 
 	CLoggingEvent Event(critical, toStdout, toGUI, msg);
@@ -267,8 +270,9 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
  					+ wxT(": ");
 #endif
 
-	// critical lines get a ! prepended, others a blank
-	wxString prefix = evt.IsCritical() ? wxT("!") : wxT(" ");
+	// critical lines get a ! prepended, ordinary lines a blank
+	// logfile-only lines get a . to prevent transmission on EC
+	wxString prefix = !evt.ToGUI() ? wxT(".") : (evt.IsCritical() ? wxT("!") : wxT(" "));
 
 	if ( bufferline.IsEmpty() ) {
 		// If it's empty we just write a blank line with no timestamp.
@@ -388,7 +392,12 @@ bool CLoggerAccess::HasString()
 		}
 		m_buffer->data()[m_pos++] = c;
 		if (c == '\n') {
-			m_ready = true;
+			if (m_buffer->data()[0] == '.') {
+				// Log-only line, skip
+				m_pos = 0;
+			} else {
+				m_ready = true;
+			}
 		}
 	}
 	return m_ready;
@@ -404,6 +413,18 @@ bool CLoggerAccess::GetString(wxString & s)
 	m_pos = 0;
 	m_ready = false;
 	return true;
+}
+
+// Functions for EC logging
+bool ECLogIsEnabled()
+{
+	return theLogger.IsEnabled(logEC);
+}
+
+void DoECLogLine(const wxString &line)
+{
+	// without file/line
+	theLogger.AddLogLine(wxEmptyString, 0, false, logStandard, line, false, false);
 }
 
 // File_checked_for_headers
