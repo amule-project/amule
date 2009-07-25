@@ -429,6 +429,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
 	m_iUpPriorityEC = tag->Prio();
 	m_AICHMasterHash = tag->GetAICHHash();
+	m_filePath = CPath(tag->FilePath());
 }
 
 CKnownFile::~CKnownFile()
