@@ -1188,11 +1188,10 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 		//
 		case EC_OP_STAT_REQ:
 			response = Get_EC_Response_StatRequest(request, m_LoggerAccess);
+			response->AddTag(CEC_ConnState_Tag(request->GetDetailLevel()));
 			break;
 		case EC_OP_GET_CONNSTATE:
-			if (!response) {
-				response = new CECPacket(EC_OP_MISC_DATA);
-			}
+			response = new CECPacket(EC_OP_MISC_DATA);
 			response->AddTag(CEC_ConnState_Tag(request->GetDetailLevel()));
 			break;
 		//
