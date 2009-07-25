@@ -92,8 +92,11 @@ public:
 	 */ 	
 	wxString StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params);
 
-	/** Stops the current search, if any is in progress. */
+	/** Stops the current global search, if any is in progress. */
 	void StopGlobalSearch();
+
+	/** Stops the current Kad search, if any is in progress. */
+	void StopKadSearch();
 
 	/** Returns the completion percentage of the current search. */
 	uint32 GetSearchProgress() const;
