@@ -315,6 +315,9 @@ public:
 	CKnownFile(CEC_SharedFile_Tag *);
 	friend class CSharedFilesRem;
 
+private:
+	uint8 m_iUpPriorityEC;
+
 protected:
 	//! The AICH master-hash, if it is known.
 	wxString	m_AICHMasterHash;

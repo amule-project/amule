@@ -243,8 +243,7 @@ class CEC_PartFile_Tag : public CECTag {
 
 class CEC_SharedFile_Tag : public CECTag {
 	public:
- 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
-		CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap);
+ 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
  		
 		// template needs it
  		CMD4Hash	ID()		const { return GetMD4Data(); }
@@ -256,28 +255,17 @@ class CEC_SharedFile_Tag : public CECTag {
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
  		wxString	FileEd2kLink()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
-  		uint8		Prio()		const { return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt(); }
- 		uint16		GetRequests()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt(); }
- 		uint16		GetAllRequests()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt(); }
+  		uint8		Prio(uint8 *target = 0)				const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
+ 		uint16		GetRequests(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, target); }
+ 		uint32		GetAllRequests(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, target); }
 
- 		uint16		GetAccepts()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt(); }
- 		uint16		GetAllAccepts()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt(); }
+ 		uint16		GetAccepts(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, target); }
+ 		uint32		GetAllAccepts(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, target); }
 
- 		uint64		GetXferred()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED)->GetInt(); }
- 		uint64		GetAllXferred()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt(); }
+ 		uint64		GetXferred(uint64 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, target); }
+ 		uint64		GetAllXferred(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, target); }
 
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
- 		
- 		void SetPrio(uint8 &val) const { AssignIfExist(EC_TAG_PARTFILE_PRIO, &val); }
- 		
- 		void SetRequests(uint16 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, &val); }
- 		void SetAllRequests(uint32 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, &val); }
- 		
- 		void SetAccepts(uint16 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, &val); }
- 		void SetAllAccepts(uint32 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, &val); }
- 		
- 		void SetXferred(uint64 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, &val); }
- 		void SetAllXferred(uint64 &val) const { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, &val); }
 };
 
 class CEC_UpDownClient_Tag : public CECTag {

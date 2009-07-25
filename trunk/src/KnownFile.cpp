@@ -427,14 +427,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
 	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
-	m_iUpPriority = tag->Prio();
-	if ( m_iUpPriority >= 10 ) {
-		m_iUpPriority-= 10;
-		m_bAutoUpPriority = true;
-	} else {
-		m_bAutoUpPriority = false;
-	}
-
+	m_iUpPriorityEC = tag->Prio();
 	m_AICHMasterHash = tag->GetAICHHash();
 }
 
