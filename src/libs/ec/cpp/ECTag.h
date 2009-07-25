@@ -159,6 +159,7 @@ class CECTag {
 		EC_IPv4_t 	GetIPv4Data() const;
 		CMD4Hash	GetMD4Data() const;
 
+		void		DebugPrint(int level, bool print_empty) const;
 		
 		bool AssignIfExist(ec_tagname_t tagname, bool *target) const
 		{

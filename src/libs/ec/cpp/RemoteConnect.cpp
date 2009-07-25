@@ -160,6 +160,7 @@ const CECPacket *CRemoteConnect::OnPacketReceived(const CECPacket *packet)
 {
 	CECPacket *next_packet = 0;
 	m_req_count--;
+	packet->DebugPrint(true);
 	switch(m_ec_state) {
 		case EC_REQ_SENT:
 			if (ProcessAuthPacket(packet)) {

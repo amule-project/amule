@@ -22,6 +22,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifdef __DEBUG__
+#define DEBUG_EC_IMPLEMENTATION
+
+#include <common/Format.h>  // Needed for CFormat
+#endif
+
 #include "ECTag.h"	// Needed for ECTag
 #include "ECSocket.h"	// Needed for CECSocket
 #include "ECSpecialTags.h"	// Needed for CValueMap
@@ -802,6 +808,37 @@ void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
 		m_error = 1;
 	}	
 }
+
+#if	__DEBUG__
+void CECTag::DebugPrint(int level, bool print_empty) const
+{
+	if (m_dataLen || print_empty) {
+		wxString space;
+		for (int i = level; i--;) space += wxT("  ");
+		wxString s1 = CFormat(wxT("%s%s %d = ")) % space % GetDebugNameECTagNames(m_tagName) % m_dataLen;
+		wxString s2;
+		switch (m_dataType) {
+			case EC_TAGTYPE_UINT8:
+			case EC_TAGTYPE_UINT16:
+			case EC_TAGTYPE_UINT32:
+			case EC_TAGTYPE_UINT64:
+				s2 = CFormat(wxT("%d")) % GetInt(); break;
+			case EC_TAGTYPE_STRING:
+				s2 = GetStringData(); break;
+			case EC_TAGTYPE_DOUBLE:
+				s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
+			case EC_TAGTYPE_HASH16:
+				s2 = GetMD4Data().Encode(); break;
+			default:
+				s2 = GetDebugNameECTagTypes(m_dataType);
+		}
+		DoECLogLine(s1 + s2);
+	}
+	for (TagList::const_iterator it = m_tagList.begin(); it != m_tagList.end(); ++it) {
+		it->DebugPrint(level + 1, true);
+	}
+}
+#endif
 
 /*!
  * \fn CMD4Hash CECTag::GetMD4Data(void) const
