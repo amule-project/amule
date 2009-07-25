@@ -35,37 +35,6 @@
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
 
 
-CDebugCategory::CDebugCategory( DebugType type, const wxString& name )
-	: m_name( name ),
-	  m_type( type )
-{
-	m_enabled = false;
-}
-
-
-bool CDebugCategory::IsEnabled() const
-{
-	return m_enabled;
-}
-
-
-void CDebugCategory::SetEnabled( bool enabled )
-{
-	m_enabled = enabled;
-}
-
-
-const wxString& CDebugCategory::GetName() const
-{
-	return m_name;
-}
-
-
-DebugType CDebugCategory::GetType() const
-{
-	return m_type;
-}
-
 CDebugCategory g_debugcats[] = {
 	CDebugCategory( logGeneral,		wxT("General") ),
 	CDebugCategory( logHasher,		wxT("Hasher") ),
@@ -112,9 +81,9 @@ const int categoryCount = sizeof( g_debugcats ) / sizeof( g_debugcats[0] );
 
 
 
-bool CLogger::IsEnabled( DebugType type )
-{
 #ifdef __DEBUG__
+bool CLogger::IsEnabled( DebugType type ) const
+{
 	int index = (int)type;
 	
 	if ( index >= 0 && index < categoryCount ) {
@@ -125,9 +94,9 @@ bool CLogger::IsEnabled( DebugType type )
 	} 
 
 	wxFAIL;
-#endif
 	return false;
 }
+#endif
 
 
 void CLogger::SetEnabled( DebugType type, bool enabled ) 
@@ -142,18 +111,6 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 	} else {
 		wxFAIL;
 	}
-}
-
-
-bool CLogger::IsEnabledStdoutLog()
-{
-	return m_StdoutLog;
-}
-
-
-void CLogger::SetEnabledStdoutLog(bool enabled)
-{
-	m_StdoutLog = enabled;
 }
 
 

@@ -128,29 +128,31 @@ public:
 	 * @param type The actual debug-category type.
 	 * @param name The user-readable name.
 	 */
-	CDebugCategory( DebugType type, const wxString& name );
+	CDebugCategory( DebugType type, const wxString& name )
+		: m_name(name), m_type(type), m_enabled(false)
+	{}
 
-	
+
 	/**
 	 * Returns true if the category is enabled.
 	 */
-	bool IsEnabled() const;
+	bool IsEnabled() const		{ return m_enabled; }
 
 	/**
 	 * Enables/Disables the category.
 	 */
-	void SetEnabled( bool );
-	
+	void SetEnabled( bool enabled )	{ m_enabled = enabled; }
+
 
 	/**
 	 * Returns the user-readable name.
 	 */
-	const wxString& GetName() const;
-	
+	const wxString& GetName() const	{ return m_name; }
+
 	/**
 	 * Returns the actual type.
 	 */
-	DebugType GetType() const;
+	DebugType GetType() const	{ return m_type; }
 
 private:
 	//! The user-readable name.
@@ -171,7 +173,11 @@ public:
 	/**
 	 * Returns true if debug-messages should be generated for a specific category.
 	 */
-	bool IsEnabled( DebugType );
+#ifdef __DEBUG__
+	bool IsEnabled( DebugType ) const;
+#else
+	bool IsEnabled( DebugType ) const 	{ return false; }
+#endif
 	
 	/**
 	 * Enables or disables debug-messages for a specific category.
@@ -181,12 +187,12 @@ public:
 	/**
 	 * Returns true if logging to stdout is enabled
 	 */
-	bool IsEnabledStdoutLog();
+	bool IsEnabledStdoutLog() const		{ return m_StdoutLog; }
 	
 	/**
 	 * Enables or disables logging to stdout.
 	 */
-	void SetEnabledStdoutLog(bool enabled);
+	void SetEnabledStdoutLog(bool enabled)	{ m_StdoutLog = enabled; }
 
 	
 	/**

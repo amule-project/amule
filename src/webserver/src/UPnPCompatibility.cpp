@@ -27,10 +27,12 @@
 #include "UPnPCompatibility.h"
 
 
-bool CLogger::IsEnabled(DebugType /*type*/)
+#ifdef __DEBUG__
+bool CLogger::IsEnabled(DebugType /*type*/) const
 {
 	return true;
 }
+#endif
 
 
 void CLogger::AddLogLine(
