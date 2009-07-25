@@ -642,6 +642,7 @@ public:
 		const CSearchList::CSearchParams& params);
 		
 	void StopGlobalSearch();
+	void StopKadSearch();
 	
 	//
 	// template

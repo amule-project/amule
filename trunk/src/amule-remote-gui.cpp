@@ -1638,6 +1638,12 @@ void CSearchListRem::StopGlobalSearch()
 }
 
 
+void CSearchListRem::StopKadSearch()
+{
+// FIXME implementation needed
+}
+
+
 void CSearchListRem::HandlePacket(const CECPacket *packet)
 {
 	if ( packet->GetOpCode() == EC_OP_SEARCH_PROGRESS ) {
