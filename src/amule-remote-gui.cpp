@@ -1085,27 +1085,18 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	for(int i = 0; i < file->GetPartCount(); ++i) {
 		file->m_AvailPartFrequency[i] = data[i];
 	}
-	if (m_inc_tags) {
-		tag->SetRequests(file->statistic.requested);
-		tag->SetAllRequests(file->statistic.alltimerequested);
-		tag->SetAccepts(file->statistic.accepted);
-		tag->SetAllAccepts(file->statistic.alltimeaccepted);
-		tag->SetXferred(file->statistic.transferred );
-		tag->SetAllXferred(file->statistic.alltimetransferred);
-		tag->SetPrio(file->m_iUpPriority);
-	} else {
-		file->statistic.requested = tag->GetRequests();
-		file->statistic.alltimerequested = tag->GetAllRequests();
-		file->statistic.accepted = tag->GetAccepts();
-		file->statistic.alltimeaccepted = tag->GetAllAccepts();
-		file->statistic.transferred = tag->GetXferred();
-		file->statistic.alltimetransferred = tag->GetAllXferred();
-		file->m_iUpPriority = tag->Prio();
-	}
-	if (file->m_iUpPriority >= 10) {
-		file->m_iUpPriority -= 10;
+	tag->GetRequests(&file->statistic.requested);
+	tag->GetAllRequests(&file->statistic.alltimerequested);
+	tag->GetAccepts(&file->statistic.accepted);
+	tag->GetAllAccepts(&file->statistic.alltimeaccepted);
+	tag->GetXferred(&file->statistic.transferred);
+	tag->GetAllXferred(&file->statistic.alltimetransferred);
+	tag->Prio(&file->m_iUpPriorityEC);
+	if (file->m_iUpPriorityEC >= 10) {
+		file->m_iUpPriority = file->m_iUpPriorityEC - 10;
 		file->m_bAutoUpPriority = true;
 	} else {
+		file->m_iUpPriority = file->m_iUpPriorityEC;
 		file->m_bAutoUpPriority = false;
 	}
 

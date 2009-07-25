@@ -483,13 +483,18 @@ CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObj
 		//
 		// Hashes of tags are maintained on "per-object" basis. So, in this mode only
 		// same kind of objects can go into particular query type.
-		// Particulary here it means that files from download queue (aka partfiles)
-		// will not ne shown as shared files. Remote gui can do combine them if wishes
+		// But files from download queue (aka partfiles) need to be listed both as downloads
+		// and as shares (with different tag content).
+		// So simply increment the object pointer - it's only a map key and never used for referencing.
 		//
-		if ( !cur_file || cur_file->IsPartFile() ) continue;
+		void * mapKey = cur_file;
+		if (!cur_file) continue;
+		if (cur_file->IsPartFile()) {
+			mapKey = (void *) ((uint64) mapKey + 1);
+		}
 
-		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
-		CEC_SharedFile_Tag filetag(cur_file, valuemap);
+		CValueMap &valuemap = tagmap.GetValueMap(mapKey);
+		CEC_SharedFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
 		CKnownFile_Encoder &enc = encoders[cur_file];
 		enc.Encode(&filetag);
 		
