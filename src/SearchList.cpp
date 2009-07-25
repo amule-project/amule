@@ -331,11 +331,12 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 			}
 		
 			// searchstring will get tokenized there
-			// The tab must be created with the Kad search ID, so seardhID is updated.
+			// The tab must be created with the Kad search ID, so searchID is updated.
 			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(
 										 params.searchString, data->GetLength(), data->GetRawBuffer(), *searchID);
 
 			*searchID = search->GetSearchID();
+			m_currentSearch = *searchID;
 		} catch (const wxString& what) {
 			AddLogLineM(true, what);
 			return _("Unexpected error while attempting Kad search: ") + what;				
@@ -611,17 +612,28 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 
 void CSearchList::StopGlobalSearch()
 {
-	m_currentSearch = -1;
-	delete m_searchPacket;
-	m_searchPacket = NULL;
-	m_searchInProgress = false;
-	
-	// Order is crucial here: on wx_MSW an additional event can be generated during the stop.
-	// So the packet has to be deleted first, so that OnGlobalSearchTimer() returns immediately
-	// without calling StopGlobalSearch() again.
-	m_searchTimer.Stop();
+	if (m_searchType == GlobalSearch) {
+		m_currentSearch = -1;
+		delete m_searchPacket;
+		m_searchPacket = NULL;
+		m_searchInProgress = false;
 
-	CoreNotify_Search_Update_Progress(0xffff);
+		// Order is crucial here: on wx_MSW an additional event can be generated during the stop.
+		// So the packet has to be deleted first, so that OnGlobalSearchTimer() returns immediately
+		// without calling StopGlobalSearch() again.
+		m_searchTimer.Stop();
+
+		CoreNotify_Search_Update_Progress(0xffff);
+	}
+}
+
+
+void CSearchList::StopKadSearch()
+{
+	if (m_searchType == KadSearch) {
+		Kademlia::CSearchManager::StopSearch(m_currentSearch, false);
+		m_currentSearch = -1;
+	}
 }
 
 
