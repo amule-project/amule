@@ -420,7 +420,11 @@ public:
 // Macro for UPnP. This is not a debug macro, but wants its category printed nevertheless (sigh).
 	#define AddLogLineU(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 // Macros for 'N'on critical logging
-	#define AddDebugLogLineN(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
+	#ifdef __DEBUG__
+		#define AddDebugLogLineN(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
+	#else
+		#define AddDebugLogLineN(type, string)	do {} while (false)
+	#endif
 	#define AddLogLineN(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string)
 	#define AddLogLineNS(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string, true)
 // Macros for 'C'ritical logging
