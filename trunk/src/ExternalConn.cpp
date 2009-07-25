@@ -1293,6 +1293,10 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 			break;
 		case EC_OP_GET_SERVER_LIST: {
 				response = new CECPacket(EC_OP_SERVER_LIST);
+				if (!thePrefs::GetNetworkED2K()) {
+					// Kad only: just send an empty list
+					break;
+				}
 				EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 				std::vector<const CServer*> servers = theApp->serverlist->CopySnapshot();
 				for (
