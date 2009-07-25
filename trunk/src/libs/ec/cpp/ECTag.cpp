@@ -817,20 +817,29 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 		for (int i = level; i--;) space += wxT("  ");
 		wxString s1 = CFormat(wxT("%s%s %d = ")) % space % GetDebugNameECTagNames(m_tagName) % m_dataLen;
 		wxString s2;
-		switch (m_dataType) {
-			case EC_TAGTYPE_UINT8:
-			case EC_TAGTYPE_UINT16:
-			case EC_TAGTYPE_UINT32:
-			case EC_TAGTYPE_UINT64:
-				s2 = CFormat(wxT("%d")) % GetInt(); break;
-			case EC_TAGTYPE_STRING:
-				s2 = GetStringData(); break;
-			case EC_TAGTYPE_DOUBLE:
-				s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
-			case EC_TAGTYPE_HASH16:
-				s2 = GetMD4Data().Encode(); break;
+		switch (m_tagName) {
+			case EC_TAG_DETAIL_LEVEL:
+				s2 = GetDebugNameEC_DETAIL_LEVEL(GetInt()); break;
+			case EC_TAG_SEARCH_TYPE:
+				s2 = GetDebugNameEC_SEARCH_TYPE(GetInt()); break;
+			case EC_TAG_STAT_VALUE_TYPE:
+				s2 = GetDebugNameEC_STATTREE_NODE_VALUE_TYPE(GetInt()); break;
 			default:
-				s2 = GetDebugNameECTagTypes(m_dataType);
+				switch (m_dataType) {
+					case EC_TAGTYPE_UINT8:
+					case EC_TAGTYPE_UINT16:
+					case EC_TAGTYPE_UINT32:
+					case EC_TAGTYPE_UINT64:
+						s2 = CFormat(wxT("%d")) % GetInt(); break;
+					case EC_TAGTYPE_STRING:
+						s2 = GetStringData(); break;
+					case EC_TAGTYPE_DOUBLE:
+						s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
+					case EC_TAGTYPE_HASH16:
+						s2 = GetMD4Data().Encode(); break;
+					default:
+						s2 = GetDebugNameECTagTypes(m_dataType);
+				}
 		}
 		DoECLogLine(s1 + s2);
 	}
