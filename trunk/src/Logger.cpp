@@ -291,7 +291,24 @@ CLoggerTarget::CLoggerTarget()
 {
 }
 
+#if wxCHECK_VERSION(2, 9, 0)
+void CLoggerTarget::DoLogText(const wxString &msg)
+{
+	// prevent infinite recursion
+	static bool recursion = false;
+	if (recursion) {
+		return;
+	}
+	recursion = true;
 
+	// This is much simpler than manually handling all wx log-types.
+	bool critical = msg.StartsWith(_("ERROR: ")) || msg.StartsWith(_("WARNING: "));
+
+	AddLogLineM(critical, msg);
+
+	recursion = false;
+}
+#else
 void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 {
 	// prevent infinite recursion
@@ -312,7 +329,7 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 
 	recursion = false;
 }
-
+#endif
 
 CLoggerAccess::CLoggerAccess()
 {
