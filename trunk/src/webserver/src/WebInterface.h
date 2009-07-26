@@ -31,7 +31,12 @@
 
 
 #if !wxCHECK_VERSION(2, 9, 0)
+	#ifdef __WXMSW__
+		// MSW: can't run amuled with 2.8 anyway, just get it compiled
+		#define AMULEWEB_DUMMY
+	#else
 		#define AMULEWEB28
+	#endif
 #endif
 
 

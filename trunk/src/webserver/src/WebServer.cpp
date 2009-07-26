@@ -26,7 +26,7 @@
 
 
 #include <cctype>	// Needed for std::toupper()
-#include <cmath>	// Needed for cos, M_PI
+#include <wx/math.h>	// Needed for cos, M_PI
 #include <string>	// Do_not_auto_remove (g++-4.0.1)
 
 #include <wx/datetime.h>
@@ -593,7 +593,7 @@ ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry>(web
 	
 }
 
-bool ServersInfo::ServersInfo::ReQuery()
+bool ServersInfo::ReQuery()
 {
 	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
 	const CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
@@ -940,7 +940,11 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0)
 {
 	m_size = 0;
 	m_name = name;
+#ifdef __WXMSW__
+	wxFFile fis(m_name, wxT("rb"));
+#else
 	wxFFile fis(m_name);
+#endif
 	// FIXME: proper logging is needed
 	if ( fis.IsOpened() ) {
 		size_t file_size = fis.Length();
@@ -1774,7 +1778,8 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	size = ftell(f);
 	char *buf = new char [size+1];
 	rewind(f);
-	fread(buf, 1, size, f);
+	// fread may actually read less if it is a CR-LF-file in Windows
+	size = fread(buf, 1, size, f);
 	buf[size] = 0;
 	fclose(f);
 	
@@ -1859,6 +1864,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
 		if (webInterface->m_AdminPass.IsEmpty() && webInterface->m_GuestPass.IsEmpty()) {
 			session->m_vars["login_error"] = "No password specified, login will not be allowed.";
+			Print(_("No password specified, login will not be allowed."));
 		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			session->m_loggedin = false;

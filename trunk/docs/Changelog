@@ -88,6 +88,7 @@ Version 2.3.0 - The river knows.
 		* Allow the user to cancel the app if Temp/Incoming is not found
 		* Show downloads as shares in remote gui
 		* Added a bunch of missing details in remote gui
+		* amuleweb for Windows (with wx 2.9)
 
 	Vollstrecker:
 		* Unify copyright lines

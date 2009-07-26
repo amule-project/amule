@@ -142,7 +142,7 @@ public:
 	//
 	// Command line processing
 	// 
-	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
+	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser, const char* appname);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 	// Exception and assert handling
