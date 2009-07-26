@@ -42,6 +42,13 @@
 
 #include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
 
+#ifdef _MSC_VER
+#define strncasecmp _strnicmp
+#define snprintf sprintf_s
+#define atoll _atoi64
+#define strdup _strdup
+#endif
+
 class CWebSocket;
 class CMD4Hash;
 

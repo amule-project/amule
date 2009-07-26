@@ -27,9 +27,11 @@
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #include <sys/types.h>
-#include <regex.h>
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
+
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
 
@@ -1040,6 +1042,11 @@ void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		php_report_error(PHP_ERROR, "'SearchFile' property [%s] is unknown", prop_name);
 	}
 }
+
+#ifndef PACKAGE_VERSION
+#include <common/ClientVersion.h>
+#define PACKAGE_VERSION (PACKAGE " " VERSION)
+#endif
 
 void amule_version(PHP_VALUE_NODE *val)
 {

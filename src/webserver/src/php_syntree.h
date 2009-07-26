@@ -33,7 +33,13 @@
 #ifndef __STDC_FORMAT_MACROS
 	#define __STDC_FORMAT_MACROS
 #endif
+
+#ifdef _MSC_VER
+typedef unsigned __int64 uint64_t;
+#define YY_NO_UNISTD_H
+#else
 #include <inttypes.h>
+#endif
 
 #if !defined PRIu64
 # if defined(__alpha__) || defined(__ia64__) || defined(__ppc64__) || defined(__x86_64__) \

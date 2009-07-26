@@ -1838,7 +1838,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				}
 				cast_value_dnum(&cond_result);
 				if ( node->type == PHP_ST_BREAK ) {
-					curr_exec_result = -cond_result.int_val;
+					curr_exec_result = -(int)(cond_result.int_val);
 				} else {
 					curr_exec_result = cond_result.int_val;
 				}

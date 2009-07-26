@@ -386,6 +386,9 @@ bool CamulewebApp::OnInit()
 	return CaMuleExternalConnector::OnInit();
 }
 
+#ifndef VERSION
+#include <common/ClientVersion.h>
+#endif
 
 int CamulewebApp::OnRun()
 {
@@ -474,11 +477,13 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		m_localTemplate = true;
 		return true;
 	}
+#ifdef WEBSERVERDIR
 	dir = wxT(WEBSERVERDIR);
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;
 	}
+#endif
 	
 	dir = wxStandardPaths::Get().GetResourcesDir();	// Returns 'aMule' when we use 'amule' elsewhere
 #if !defined(__WXMSW__) && !defined(__WXMAC__)
@@ -504,7 +509,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 {
-	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
+	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser, "amuleweb");
 	amuleweb_parser.AddOption(wxT("t"), wxT("template"), 
 		_("Loads template <str>"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
@@ -688,7 +693,11 @@ void CamulewebApp::TextShell(const wxString &)
 		((CWebserverAppTraits *)GetTraits())->DeletePending();
 	}
 #else
+
+#ifndef AMULEWEB_DUMMY
 	wxApp::OnRun();
+#endif
+
 #endif
 }
 

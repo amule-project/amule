@@ -128,7 +128,7 @@ IMPLEMENT_APP (CamulecmdApp)
 
 void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
-	CaMuleExternalConnector::OnInitCmdLine(parser);
+	CaMuleExternalConnector::OnInitCmdLine(parser, "amulecmd");
 	parser.AddOption(wxT("c"), wxT("command"), 
 		_("Execute <str> and exit."), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);

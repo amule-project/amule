@@ -66,6 +66,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aMuleD", "aMuleD\aMuleD.vcp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aMuleWeb", "aMuleWeb\aMuleWeb.vcproj", "{EC3DE6B0-0C01-4D64-928A-4ADDB09473BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{293E6133-239A-4ED4-838E-9182B07C6B35} = {293E6133-239A-4ED4-838E-9182B07C6B35}
+		{5A9EC6A5-68A3-43C8-960E-F7F03B16F1D1} = {5A9EC6A5-68A3-43C8-960E-F7F03B16F1D1}
+		{F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6} = {F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
