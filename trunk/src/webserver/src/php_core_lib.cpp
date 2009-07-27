@@ -33,23 +33,21 @@
 #	include <sys/types.h>
 #endif
 
-#include <wx/regex.h>
-
 #ifdef PHP_STANDALONE_EN
-#include <map>
-#include <string>
-#include <list>
+#	include <map>
+#	include <string>
+#	include <list>
+#	include <regex.h>
 #else
-#include "WebServer.h"
-#include <ec/cpp/ECSpecialTags.h>
+#	include "WebServer.h"
+#	include <ec/cpp/ECSpecialTags.h>
+#	include <wx/regex.h>
+#	include <wx/datetime.h>
 #endif
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
-
-#ifndef PHP_STANDALONE_EN
-#include <wx/datetime.h>
-#endif
+#include <stdarg.h>
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -315,41 +313,73 @@ void php_native_split(PHP_VALUE_NODE *result)
 		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
 		return;		
 	}
+#ifdef PHP_STANDALONE_EN
+	regex_t preg;
+	char error_buff[256];
+	int reg_result = regcomp(&preg, pattern->str_val, REG_EXTENDED);
+	if ( reg_result ) {
+		regerror(reg_result, &preg, error_buff, sizeof(error_buff));
+		php_report_error(PHP_ERROR, "Failed in regcomp: %s", error_buff);
+#else
 	wxRegEx preg;
 	if (!preg.Compile(wxString(char2unicode(pattern->str_val)), wxRE_EXTENDED)) {
 		php_report_error(PHP_ERROR, "Failed in Compile of: %s", pattern->str_val);
+#endif
 		return;
 	}
+
+#ifdef PHP_STANDALONE_EN
+	size_t nmatch = strlen(string_to_split->str_val);
+	regmatch_t *pmatch = new regmatch_t[nmatch];
+#endif
 	char *str_2_match = string_to_split->str_val;
 	char *tmp_buff = new char[strlen(string_to_split->str_val)+1];
 	
 	while ( 1 ) {
 //		printf("matching: %s\n", str_2_match);
+#ifdef PHP_STANDALONE_EN
+		reg_result = regexec(&preg, str_2_match, nmatch, pmatch, 0);
+		if ( reg_result ) {
+#else
 		if (!preg.Matches(wxString(char2unicode(str_2_match)))) {
+#endif
 			// no match
 			break;
 		}
+#ifndef PHP_STANDALONE_EN
 		// get matching position
 		size_t start, len;
 		if (!preg.GetMatch(&start, &len)) {
 			break;	// shouldn't happen
 		}
-	
+#endif	
 		/*
 		 * I will use only first match, since I don't see any sense to have more
 		 * then 1 match in split() call
 		 */
+#ifdef PHP_STANDALONE_EN
+		for(int i = 0; i < pmatch[0].rm_so; i++) {
+#else
 		for(size_t i = 0; i < start; i++) {
+#endif
 			tmp_buff[i] = str_2_match[i];
 		}
+#ifdef PHP_STANDALONE_EN
+		tmp_buff[pmatch[0].rm_so] = 0;
+#else
 		tmp_buff[start] = 0;
+#endif
 //		printf("Match added [%s]\n", tmp_buff);
 		
 		PHP_VAR_NODE *match_val = array_push_back(result);
 		match_val->value.type = PHP_VAL_STRING;
 		match_val->value.str_val = strdup(tmp_buff);
 
+#ifdef PHP_STANDALONE_EN
+		str_2_match += pmatch[0].rm_eo;
+#else
 		str_2_match += start + len;
+#endif
 	}
 
 	PHP_VAR_NODE *match_val = array_push_back(result);
@@ -357,6 +387,10 @@ void php_native_split(PHP_VALUE_NODE *result)
 	match_val->value.str_val = strdup(str_2_match);
 	
 	delete [] tmp_buff;
+#ifdef PHP_STANDALONE_EN
+	delete [] pmatch;
+	regfree(&preg);
+#endif
 }
 
 #ifdef ENABLE_NLS
