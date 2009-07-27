@@ -191,12 +191,6 @@ AC_SUBST([CAS_DEFS])dnl
 
 
 AS_IF([test x$WEB = xyes], 
-	[MULE_CHECK_REGEX(, [
-		WEB=disabled
-		MULE_WARNING([amuleweb has been disabled because configure could not find a POSIX compliant regex library.])
-	])
-])
-AS_IF([test x$WEB = xyes], 
 	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [
 		MULE_WARNING(
 			[libpng >= 1.2.0 not found.
@@ -560,17 +554,7 @@ AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,stati
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
 AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
-AS_IF([test x${ENABLE_UPNP} = xyes], [dnl
-echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
-])dnl
-if test x${WEB:-no} != xno; then
-AS_IF([test $regex_found = no], 
-	[regex_found="Not detected"],
-	[AS_IF([test -z "$REGEX_LIB"], 
-		[regex_found=system], 
-		[regex_found="standalone (in $REGEX_LIB)"])])
-echo "                                       regex                 $regex_found"
-fi
+AS_IF([test x${ENABLE_UPNP} = xyes], [echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"])
 if test ${enable_nls:-yes} = yes; then
 AS_IF([test x$USE_NLS = xno],
 	[libintl_found="Not detected"],

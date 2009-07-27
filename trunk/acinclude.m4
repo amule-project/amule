@@ -448,44 +448,6 @@ AC_DEFUN([MULE_CHECK_EXCEPTIONS],
 
 
 dnl ---------------------------------------------------------------------------
-dnl MULE_CHECK_REGEX([ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
-dnl
-dnl This function will test the existance of a POSIX compliant regex library.
-dnl ---------------------------------------------------------------------------
-AC_DEFUN([MULE_CHECK_REGEX],
-[
-	AC_CHECK_HEADERS([sys/types.h])
-	AC_MSG_CHECKING([for a POSIX compliant regex library])
-	regex_found=no
-	for REGEX_LIBS in '' -lgnurx -lregex; do
-		MULE_BACKUP([LIBS])
-		MULE_PREPEND([LIBS], [$REGEX_LIBS])
-		AC_LINK_IFELSE([
-			AC_LANG_PROGRAM([[
-				#ifdef HAVE_SYS_TYPES_H
-				#	include <sys/types.h>
-				#endif
-				#include <regex.h>
-			]], [[
-				regex_t preg;
-				regcomp(&preg, "", REG_EXTENDED);
-				regmatch_t *pmatch;
-				regexec(&preg, "", 0, pmatch, 0);
-				regfree(&preg);
-			]])
-		], [
-			MULE_RESTORE([LIBS])
-			regex_found=yes
-			break;
-		], [MULE_RESTORE([LIBS])])
-	done
-	AC_MSG_RESULT([$regex_found])
-	AS_IF([test $regex_found = yes], [$1], [$2])
-AC_SUBST([REGEX_LIBS])dnl
-])
-
-
-dnl ---------------------------------------------------------------------------
 dnl MULE_CHECK_CXXABI
 dnl
 dnl This function will test the header <cxxabi.h> and abi::__cxa_demangle()
