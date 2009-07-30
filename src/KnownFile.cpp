@@ -1309,18 +1309,19 @@ void GuessAndRemoveExt(CPath& name)
 
 	// Remove common two-part extensions, such as "tar.gz"
 	if (ext == wxT("gz") || ext == wxT("bz2")) {
-		name.RemoveExt();
+		name = name.RemoveExt();
 		if (name.GetExt() == wxT("tar")) {
-			name.RemoveExt();
+			name = name.RemoveExt();
 		}
 	// might be an extension if length == 3
 	// and also remove some common non-three-character extensions
-	} else if (ext.Length() == 3 ||
+	} else if (ext.Length() == 3  ||
 		   ext == wxT("7z")   ||
+		   ext == wxT("rm")   ||
 		   ext == wxT("jpeg") ||
 		   ext == wxT("mpeg")
 		   ) {
-		name.RemoveExt();
+		name = name.RemoveExt();
 	}
 }
 
