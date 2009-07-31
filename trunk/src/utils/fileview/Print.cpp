@@ -46,27 +46,7 @@ wxString MakePrintableString(const wxString& s)
 	for (unsigned i = 0; i < str.length(); i++) {
 		c |= (wxChar) str[i];
 	}
-	if (GetStringsMode() != SD_NONE) {
-		while (c <= 0xff) {
-			// check for utf-8 -- wx conversion sucks
-			char* buf = new char[str.length() + 1];
-			for (unsigned i = 0; i < str.length(); i++) {
-				buf[i] = str[i];
-			}
-			buf[str.length()] = '\0';
-			wxString tmp = UTF82unicode(buf);
-			delete [] buf;
-			if (tmp.empty() || tmp == str) {
-				break;
-			} else {
-				str = tmp;
-				c = 0;
-				for (unsigned i = 0; i < str.length(); i++) {
-					c |= (wxChar) str[i];
-				}
-			}
-		}
-	}
+
 	wxString retval = wxT("\"");
 
 	if (GetStringsMode() == SD_DISPLAY) {

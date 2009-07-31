@@ -54,10 +54,10 @@ enum DebugType {};
 class CLogger
 {
       public:
-	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/);
+	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/, bool /*toGUI*/);
 };
 
-void CLogger::AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/)
+void CLogger::AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/, bool /*toGUI*/)
 {
 	cout << "DebugLog: " << str << "\n";
 }
