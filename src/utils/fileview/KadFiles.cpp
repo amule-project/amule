@@ -70,7 +70,7 @@ void DecodeKeyIndexDat(const CFileDataIO& file)
 					uint32_t count;
 					cout << "\t\t\tnameCount: " << (count = file.ReadUInt32()) << '\n';
 					for (uint32_t i = 0; i < count; i++) {
-						cout << "\t\t\t\t{ " << (const char *)UTF82char(file.ReadString(true, 2));
+						cout << "\t\t\t\t{ " << MakePrintableString(file.ReadString(true, 2));
 						cout << ", " << file.ReadUInt32() << " }\n";
 					}
 					cout << "\t\t\tipCount  : " << (count = file.ReadUInt32()) << '\n';
@@ -82,11 +82,7 @@ void DecodeKeyIndexDat(const CFileDataIO& file)
 				cout << "\t\t\ttagCount : " << (uint32)(tagCount = file.ReadUInt8()) << '\n';
 				for (uint32_t it = 0; it < tagCount; it++) {
 					CTag *tag = file.ReadTag();
-					if (tag->IsStr()) {
-						cout << "\t\t\t\t" << (const char *)UTF82char(tag->GetStr()) << '\n';
-					} else {
-						cout << "\t\t\t\t" << *tag << '\n';
-					}
+					cout << "\t\t\t\t" << *tag << '\n';
 					delete tag;
 				}
 			}
@@ -115,11 +111,7 @@ void DecodeSourceIndexDat(const CFileDataIO& file)
 				cout << "\n\t\t\ttagCount: " << (tagCount = file.ReadUInt8()) << '\n';
 				for (uint32_t it = 0; it < tagCount; it++) {
 					CTag *tag = file.ReadTag();
-					if (tag->IsStr()) {
-						cout << "\t\t\t\t" << (const char *)UTF82char(tag->GetStr()) << '\n';
-					} else {
-						cout << "\t\t\t\t" << *tag << '\n';
-					}
+					cout << "\t\t\t\t" << *tag << '\n';
 					delete tag;
 				}
 			}
