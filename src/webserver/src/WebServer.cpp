@@ -1098,7 +1098,7 @@ void CProgressImage::CreateSpan()
 			}
 		} else if ( colored_gaps_size ) {
 			for(int i = 0; i < m_width; ++i) {
-				m_ColorLine[i] = colored_gaps[0].color;
+				m_ColorLine[i] = colored_gaps[1].color;
 			}
 		}
 	} else {
