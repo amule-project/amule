@@ -89,6 +89,7 @@ Version 2.3.0 - The river knows.
 		* Show downloads as shares in remote gui
 		* Added a bunch of missing details in remote gui
 		* amuleweb for Windows (with wx 2.9)
+		* Fixed amuleweb crashing on tiny downloads
 
 	Vollstrecker:
 		* Unify copyright lines
