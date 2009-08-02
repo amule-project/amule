@@ -47,6 +47,18 @@ wxString MakePrintableString(const wxString& s)
 		c |= (wxChar) str[i];
 	}
 
+	if (c <= 0xff && GetStringsMode() != SD_NONE) {
+		wxCharBuffer buf = str.To8BitData();
+		wxString test = UTF82unicode(buf.data());
+		if (!test.empty()) {
+			str = test;
+			c = 0;
+			for (unsigned i = 0; i < str.length(); i++) {
+				c |= (wxChar) str[i];
+			}
+		}
+	}
+
 	wxString retval = wxT("\"");
 
 	if (GetStringsMode() == SD_DISPLAY) {
