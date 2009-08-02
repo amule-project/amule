@@ -26,6 +26,8 @@
 #include "KadFiles.h"
 #include "Print.h"
 #include "../../SafeFile.h"
+#include "../../kademlia/kademlia/SearchManager.h"	// for CSearchManager::GetInvalidKeywordChars()
+#include <wx/tokenzr.h>
 
 void DecodePreferencesKadDat(const CFileDataIO& file)
 {
@@ -46,6 +48,44 @@ void DecodeLoadIndexDat(const CFileDataIO& file)
 	}
 }
 
+// from Kademlia.cpp
+#ifndef CRYPTOPP_ENABLE_NAMESPACE_WEAK
+#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
+#endif
+#include "../../CryptoPP_Inc.h"
+void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
+{
+	byte Output[16];
+	CryptoPP::Weak::MD4 md4_hasher;
+
+	// This should be safe - we assume rstrKeyword is ANSI anyway.
+	Unicode2CharBuf ansi_buffer(unicode2UTF8(rstrKeyword));
+	
+	md4_hasher.CalculateDigest(Output, (const byte *) (const char *) ansi_buffer, strlen(ansi_buffer));
+	
+	pKadID->SetValueBE(Output);
+}
+
+// code from CSearchManager::GetWords(const wxString& str, WordList *words)
+bool IdentifyKeyword(const Kademlia::CUInt128& keyID, const wxString& str, wxString& keyword)
+{
+	wxStringTokenizer tkz(str, Kademlia::CSearchManager::GetInvalidKeywordChars());
+	while (tkz.HasMoreTokens()) {
+		wxString current_word = tkz.GetNextToken();
+		
+		if (current_word.Length() > 2) {
+			current_word.MakeLower();
+			Kademlia::CUInt128 currentID;
+			KadGetKeywordHash(current_word, &currentID);
+			if (currentID == keyID) {
+				keyword = current_word;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 void DecodeKeyIndexDat(const CFileDataIO& file)
 {
 	uint32_t version;
@@ -59,7 +99,9 @@ void DecodeKeyIndexDat(const CFileDataIO& file)
 	cout << "\nID      : " << file.ReadUInt128();
 	cout << "\nnumKeys : " << (numKeys = file.ReadUInt32()) << '\n';
 	for (uint32_t ik = 0; ik < numKeys; ik++) {
-		cout << "\tKeyID    : " << file.ReadUInt128();
+		Kademlia::CUInt128 keyID = file.ReadUInt128();
+		bool identified = false;
+		cout << "\tKeyID    : " << keyID;
 		cout << "\n\tnumSource: " << (numSource = file.ReadUInt32()) << '\n';
 		for (uint32_t is = 0; is < numSource; is++) {
 			cout << "\t\tSourceID: " << file.ReadUInt128();
@@ -70,8 +112,14 @@ void DecodeKeyIndexDat(const CFileDataIO& file)
 					uint32_t count;
 					cout << "\t\t\tnameCount: " << (count = file.ReadUInt32()) << '\n';
 					for (uint32_t i = 0; i < count; i++) {
-						cout << "\t\t\t\t{ " << MakePrintableString(file.ReadString(true, 2));
+						wxString name = file.ReadString(true, 2);
+						cout << "\t\t\t\t{ " << MakePrintableString(name);
 						cout << ", " << file.ReadUInt32() << " }\n";
+						wxString keyword;
+						if (!identified && IdentifyKeyword(keyID, name, keyword)) {
+							cout << "\tKeyword: " << MakePrintableString(keyword) << '\n';
+							identified = true;
+						}
 					}
 					cout << "\t\t\tipCount  : " << (count = file.ReadUInt32()) << '\n';
 					for (uint32_t i = 0; i < count; i++) {
