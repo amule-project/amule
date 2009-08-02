@@ -91,8 +91,9 @@ CFriendListCtrl::~CFriendListCtrl()
 
 void CFriendListCtrl::AddFriend(CDlgFriend* toadd, bool send_to_core)
 {
-	uint32 itemnr = InsertItem(GetItemCount(), toadd->m_name);
+	uint32 itemnr = InsertItem(GetItemCount(), wxEmptyString);
 	SetItemPtrData(itemnr, reinterpret_cast<wxUIntPtr>(toadd));
+	RefreshFriend(toadd);	// set name and colour
 	
 	//#warning CORE/GUI
 	if (send_to_core) {
@@ -154,6 +155,7 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 	sint32 itemnr = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (itemnr != -1) {
 		SetItem(itemnr, 0, toupdate->m_name);
+		SetItemTextColour(itemnr, toupdate->islinked ? *wxBLUE : *wxBLACK);
 	}	
 	//#warning CORE/GUI
 	#ifndef CLIENT_GUI
@@ -370,7 +372,8 @@ void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nP
 	CDlgFriend* client = FindFriend(CMD4Hash(), dwIP, nPort);
 	if (client) {
 		client->m_hash = userhash;
-		client->islinked = new_state;	
+		client->islinked = new_state;
+		RefreshFriend(client);
 	}
 }
 
