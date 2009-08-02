@@ -722,7 +722,7 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 		CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
 		if (contact != NULL) {
 			if (contact->GetType() < 2) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("Sending (ping) challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
+				AddDebugLogLineM(false, logKadRouting, wxT("Sending (ping) challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
 			}
 		} else {
 			wxFAIL;
@@ -975,7 +975,7 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 		}
 #ifdef __DEBUG__
 		else {
-			AddDebugLogLineM(false, logClientKadUDP, wxT("Verified contact with legacy challenge (KadReq) - ") + KadIPToString(ip));
+			AddDebugLogLineM(false, logKadRouting, wxT("Verified contact with legacy challenge (KadReq) - ") + KadIPToString(ip));
 		}
 #endif
 		return;	// we do not actually care for its other content
@@ -1050,7 +1050,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 		}
 #ifdef __DEBUG__
 		else {
-			AddDebugLogLineM(false, logClientKadUDP, wxT("Verified contact with legacy challenge (Kad2Req) - ") + KadIPToString(ip));
+			AddDebugLogLineM(false, logKadRouting, wxT("Verified contact with legacy challenge (Kad2Req) - ") + KadIPToString(ip));
 		}
 #endif
 		return;	// we do not actually care for its other content
@@ -2234,7 +2234,7 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 		}
 #ifdef __DEBUG__
 		else {
-			AddDebugLogLineM(false, logClientKadUDP, wxT("Verified contact with legacy challenge (Kad2Ping) - ") + KadIPToString(ip));
+			AddDebugLogLineM(false, logKadRouting, wxT("Verified contact with legacy challenge (Kad2Ping) - ") + KadIPToString(ip));
 		}
 #endif
 		return;	// we do not actually care for its other content
@@ -2332,7 +2332,7 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
 	if (contact != NULL) {
 		if (contact->GetType() < 2) {
-			AddDebugLogLineM(false, logClientKadUDP, wxT("Sending challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
+			AddDebugLogLineM(false, logKadRouting, wxT("Sending challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
 		}
 	} else {
 		wxFAIL;
