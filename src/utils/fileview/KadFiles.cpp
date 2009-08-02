@@ -49,14 +49,15 @@ void DecodeLoadIndexDat(const CFileDataIO& file)
 }
 
 // from Kademlia.cpp
-#ifndef CRYPTOPP_ENABLE_NAMESPACE_WEAK
-#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
-#endif
 #include "../../CryptoPP_Inc.h"
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];
+#ifdef CRYPTOPP_ENABLE_NAMESPACE_WEAK
 	CryptoPP::Weak::MD4 md4_hasher;
+#else
+	CryptoPP::MD4 md4_hasher;
+#endif
 
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	Unicode2CharBuf ansi_buffer(unicode2UTF8(rstrKeyword));
