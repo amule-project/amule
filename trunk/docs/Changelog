@@ -94,6 +94,7 @@ Version 2.3.0 - The river knows.
 		* amuleweb for Windows (with wx 2.9)
 		* Fixed amuleweb crashing on tiny downloads
 		* Show connected friends in blue in the friend list
+		* Show total upload/download ratio in statistic tree
 
 	Vollstrecker:
 		* Unify copyright lines

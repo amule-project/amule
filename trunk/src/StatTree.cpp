@@ -30,12 +30,9 @@
 
 #ifndef EC_REMOTE
 
-#ifndef AMULE_DAEMON
 #include <common/Format.h>			// Needed for CFormat
 
 #define a_brackets_b(a,b) (a + wxT(" (") + b + wxT(")"))
-
-#endif /* !AMULE_DAEMON */
 
 #endif /* !EC_REMOTE */
 
@@ -538,39 +535,43 @@ void CStatTreeItemAverageSpeed::AddECValues(CECTag *tag) const
 
 /* CStatTreeItemRatio */
 
-#ifndef AMULE_DAEMON
-wxString CStatTreeItemRatio::GetDisplayString() const
+wxString CStatTreeItemRatio::GetString() const
 {
-	if (m_counter1->GetValue() && m_counter2->GetValue()) {
-		if ((*m_counter2) < (*m_counter1)) {
-			return CFormat(wxGetTranslation(m_label)) %
-				wxString::Format(wxT("%.2f : 1"),
-					(float)(*m_counter1)/(*m_counter2));
+	wxString ret;
+	double v1 = m_counter1->GetValue();
+	double v2 = m_counter2->GetValue();
+	if (v1 > 0 && v2 > 0) {
+		if (v2 < v1) {
+			ret = CFormat(wxT("%.2f : 1")) % (v1 / v2);
 		} else {
-			return CFormat(wxGetTranslation(m_label)) %
-				wxString::Format(wxT("1 : %.2f"),
-					(float)(*m_counter2)/(*m_counter1));
+			ret = CFormat(wxT("1 : %.2f")) % (v2 / v1);
+		}
+
+		if (m_totalfunc1 && m_totalfunc2) {
+			double t1 = m_totalfunc1() + v1;
+			double t2 = m_totalfunc2() + v2;
+			if (t2 < t1) {
+				ret += CFormat(wxT(" (%.2f : 1)")) % (t1 / t2);
+			} else {
+				ret += CFormat(wxT(" (1 : %.2f)")) % (t2 / t1);
+			}
 		}
 	} else {
-		return CFormat(wxGetTranslation(m_label)) % _("Not available");
+		ret = _("Not available");
 	}
+	return ret;
 }
-#endif
+
+#ifndef AMULE_DAEMON
+wxString CStatTreeItemRatio::GetDisplayString() const 
+{ 
+	return CFormat(wxGetTranslation(m_label)) % GetString();
+}
+#endif	
 
 void CStatTreeItemRatio::AddECValues(CECTag *tag) const
 {
-	wxString result;
-	if (m_counter1->GetValue() && m_counter2->GetValue()) {
-		if ((*m_counter2) < (*m_counter1)) {
-			result = wxString::Format(wxT("%.2f : 1"), (float)(*m_counter1)/(*m_counter2));
-		} else {
-			result = wxString::Format(wxT("1 : %.2f"), (float)(*m_counter2)/(*m_counter1));
-		}
-	} else {
-		result = wxTRANSLATE("Not available");
-	}
-
-	CECTag value(EC_TAG_STAT_NODE_VALUE, result);
+	CECTag value(EC_TAG_STAT_NODE_VALUE, GetString());
 	value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_STRING));
 	tag->AddTag(value);
 }

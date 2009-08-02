@@ -1025,11 +1025,15 @@ public:
 	CStatTreeItemRatio(
 		const wxString &label,
 		const CStatTreeItemCounter *cnt1,
-		const CStatTreeItemCounter* cnt2)
+		const CStatTreeItemCounter* cnt2,
+		uint64_t (*totalfunc1)() = NULL,
+		uint64_t (*totalfunc2)() = NULL)
 	:
 	CStatTreeItemBase(label, stNone),
 	m_counter1(cnt1),
-	m_counter2(cnt2) {}
+	m_counter2(cnt2),
+	m_totalfunc1(totalfunc1),
+	m_totalfunc2(totalfunc2){}
 
 #ifndef AMULE_DAEMON
 	/**
@@ -1053,6 +1057,14 @@ protected:
 
 	//! Second counter.
 	const CStatTreeItemCounter *m_counter2;
+
+	//! A function for each whose return value is the total (without current) value.
+	uint64_t (*m_totalfunc1)();
+	uint64_t (*m_totalfunc2)();
+
+private:
+	//! Formatted String for display or EC
+	wxString GetString() const;
 };
 
 
