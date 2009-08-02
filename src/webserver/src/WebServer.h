@@ -634,7 +634,8 @@ class CDynStatisticImage : public virtual CDynPngImage {
 #endif
 
 class CImageLib {
-		std::map<wxString, CAnyImage *> m_image_map;
+		typedef std::map<wxString, CAnyImage *> ImageMap;
+		ImageMap m_image_map;
 		wxString m_image_dir;
 	public:
 		CImageLib(wxString image_dir);
