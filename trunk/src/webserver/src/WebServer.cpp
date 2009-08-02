@@ -1689,26 +1689,29 @@ CImageLib::~CImageLib()
 
 void CImageLib::AddImage(CAnyImage *img, const wxString &name)
 {
-	CAnyImage *prev = m_image_map[name];
-	if ( prev ) {
-		delete prev;
+	ImageMap::iterator it = m_image_map.find(name);
+	if (it == m_image_map.end()) {
+		m_image_map[name] = img;
+	} else {
+		delete it->second;
+		it->second = img;
 	}
-	m_image_map[name] = img;
 }
 
 void CImageLib::RemoveImage(const wxString &name)
 {
-	CAnyImage *prev = m_image_map[name];
-	if ( prev ) {
-		m_image_map.erase(name);
+	ImageMap::iterator it = m_image_map.find(name);
+	if (it != m_image_map.end()) {
+		delete it->second;
+		m_image_map.erase(it);
 	}
 }
 
 CAnyImage *CImageLib::GetImage(wxString &name)
 {
-	CAnyImage *img = m_image_map[name];
-	if ( img ) {
-		return img;
+	ImageMap::iterator it = m_image_map.find(name);
+	if (it != m_image_map.end()) {
+		return it->second;
 	}
 	wxFileName filename(m_image_dir + name);
 	CFileImage *fimg = new CFileImage(filename.GetFullPath());
