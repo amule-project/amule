@@ -572,13 +572,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		} else {
 			// Source was known, but reqfile NULL.
 			source->SetRequestFile( sender );
-			if (source->GetSourceFrom() != nSourceFrom) {
-				if (source->GetSourceFrom() != SF_NONE) {
-					theStats::RemoveSourceOrigin(source->GetSourceFrom());
-					theStats::RemoveFoundSource();
-				}
-				source->SetSourceFrom(nSourceFrom);
-			}
+			source->SetSourceFrom(nSourceFrom);
 			sender->AddSource( source );
 			if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
 				sender->UpdateFileRatingCommentAvail();
