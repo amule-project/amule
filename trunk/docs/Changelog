@@ -52,6 +52,9 @@ Version 2.3.0 - The river knows.
 	morph:
 		* Patch to uniform and fix minor errors on man pages
 
+	mr_hyde:
+		* Fixed a bug in detecting and using the fallocate() function.
+
 	myth:
 		* Feedback from shared files - add number of clients on queue.
 

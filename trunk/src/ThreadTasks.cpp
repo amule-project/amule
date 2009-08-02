@@ -37,6 +37,9 @@
 #include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
 #include "PlatformSpecific.h"		// Needed for CanFSHandleSpecialChars
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"
+#endif
 
 //! This hash represents the value for an empty MD4 hashing
 const byte g_emptyMD4Hash[16] = {
@@ -485,6 +488,10 @@ void CCompletionTask::OnExit()
 // CAllocateFileTask
 
 #ifdef HAVE_FALLOCATE
+#	define _GNU_SOURCE
+#	ifdef HAVE_FCNTL_H
+#		include <fcntl.h>
+#	endif
 #	include <linux/falloc.h>
 #elif defined HAVE_SYS_FALLOCATE
 #	include <sys/syscall.h>
