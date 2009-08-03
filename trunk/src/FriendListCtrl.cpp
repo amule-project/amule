@@ -27,6 +27,7 @@
 #include "FriendListCtrl.h"	// Interface declarations
 
 #include <common/MenuIDs.h>
+#include <common/Macros.h>
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -339,11 +340,7 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event))
 }
 
 
-void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& 
-	#ifndef CLIENT_GUI
-									  event
-	#endif
-									  )
+void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& NOT_ON_REMOTEGUI(event))
 {
 	// Clean friendslots
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);

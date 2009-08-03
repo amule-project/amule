@@ -38,4 +38,35 @@
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
 
+
+// Build type specific macro
+
+#ifdef __DEBUG__
+#	define DEBUG_ONLY(x)	x
+#else
+#	define DEBUG_ONLY(x)	/* nothing */
+#endif
+
+
+// Built program specific macros
+
+#ifdef AMULE_DAEMON
+#	define ONLY_ON_DAEMON(x)	x
+#	define NOT_ON_DAEMON(x)
+#else
+#	define ONLY_ON_DAEMON(x)
+#	define NOT_ON_DAEMON(x)		x
+#endif
+
+#ifdef CLIENT_GUI
+#	define ONLY_ON_REMOTEGUI(x)	x
+#	define NOT_ON_REMOTEGUI(x)
+#else
+#	define ONLY_ON_REMOTEGUI(x)
+#	define NOT_ON_REMOTEGUI(x)	x
+#endif
+
+#define GUI_ONLY(x)	NOT_ON_DAEMON(x)
+#define CORE_ONLY(x)	NOT_ON_REMOTEGUI(x)
+
 #endif // COMMONMACROS_H
