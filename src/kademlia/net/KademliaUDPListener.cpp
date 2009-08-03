@@ -155,7 +155,7 @@ void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t p
 		// packetdata.WriteTag(CKadTagUInt(TAG_FILE_COUNT, CKademlia::GetPrefs()->GetKademliaFiles()));
 		if (kadVersion >= 6) {
 			if (cryptTargetID == NULL || *cryptTargetID == 0) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("Sending hello response to crypt enabled Kad Node which provided an empty NodeID: ") + KadIPToString(ip) + wxString::Format(wxT(" (%u)"), kadVersion));
+				AddDebugLogLineN(logClientKadUDP, wxT("Sending hello response to crypt enabled Kad Node which provided an empty NodeID: ") + KadIPToString(ip) + wxString::Format(wxT(" (%u)"), kadVersion));
 				SendPacket(packetdata, opcode, ip, port, targetKey, NULL);
 			} else {
 				SendPacket(packetdata, opcode, ip, port, targetKey, cryptTargetID);
@@ -230,9 +230,7 @@ void CKademliaUDPListener::ProcessPacket(const uint8_t* data, uint32_t lenData, 
 {
 	// we do not accept (<= 0.48a) unencrypted incoming packets from port 53 (DNS) to avoid attacks based on DNS protocol confusion
 	if (port == 53 && senderKey.IsEmpty()) {
-#ifdef __DEBUG__
-		AddDebugLogLineM(false, logKadPacketTracking, wxT("Dropping incoming unencrypted packet on port 53 (DNS), IP: ") + KadIPToString(ip));
-#endif
+		AddDebugLogLineN(logKadPacketTracking, wxT("Dropping incoming unencrypted packet on port 53 (DNS), IP: ") + KadIPToString(ip));
 		return;
 	}
 
@@ -431,7 +429,7 @@ bool CKademliaUDPListener::AddContact(const uint8_t *data, uint32_t lenData, uin
 		tport = bio.ReadUInt16();
 	}
 	bio.ReadUInt8();
-	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact with ip ") + KadIPPortToString(ip, port));
+	//AddDebugLogLineN(logKadMain, wxT("Adding a contact with ip ") + KadIPPortToString(ip, port));
 	// Ignore stated ip and port, use the address the packet came from
 	return CKademlia::GetRoutingZone()->Add(id, ip, port, tport, 0, udpKey, ipVerified, update, false, true);
 }
@@ -487,7 +485,7 @@ bool CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, ui
 	// check if we are waiting for informations (nodeid) about this client and if so inform the requester
 	for (FetchNodeIDList::iterator it = m_fetchNodeIDRequests.begin(); it != m_fetchNodeIDRequests.end(); ++it) {
 		if (it->ip == ip && it->tcpPort == tport) {
-			//AddDebugLogLineM(false, logKadMain, wxT("Result Addcontact: ") + id.ToHexString());
+			//AddDebugLogLineN(logKadMain, wxT("Result Addcontact: ") + id.ToHexString());
 			uint8_t uchID[16];
 			id.ToByteArray(uchID);
 			it->requester->KadSearchNodeIDByIPResult(KCSR_SUCCEEDED, uchID);
@@ -508,7 +506,7 @@ bool CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, ui
 	if (!udpFirewalled) {	// do not add (or update) UDP firewalled sources to our routing table
 		return CKademlia::GetRoutingZone()->Add(id, ip, port, tport, version, udpKey, ipVerified, update, false, true);
 	} else {
-		AddDebugLogLineM(false, logKadRouting, wxT("Not adding firewalled client to routing table (") + KadIPToString(ip) + wxT(")"));
+		AddDebugLogLineN(logKadRouting, wxT("Not adding firewalled client to routing table (") + KadIPToString(ip) + wxT(")"));
 		return false;
 	}
 }
@@ -526,7 +524,7 @@ void CKademliaUDPListener::AddContacts(const uint8_t *data, uint32_t lenData, ui
 		uint16_t tport = bio.ReadUInt16();
 		bio.ReadUInt8();
 		bool verified = false;
-		//AddDebugLogLineM(false, logKadMain, wxT("Adding contact(s) with ip ") + KadIPPortToString(ip, port));
+		//AddDebugLogLineN(logKadMain, wxT("Adding contact(s) with ip ") + KadIPPortToString(ip, port));
 		routingZone->Add(id, ip, port, tport, 0, 0, verified, update, false, false);
 	}
 }
@@ -616,7 +614,7 @@ void CKademliaUDPListener::ProcessBootstrapResponse(const uint8_t *packetData, u
 	CHECK_PACKET_MIN_SIZE(27);
 	CHECK_TRACKED_PACKET(KADEMLIA_BOOTSTRAP_REQ);
 
-	//AddDebugLogLineM(false, logClientKadUDP, wxT("Inc Kad1 Bootstrap packet from ") + KadIPToString(ip));
+	//AddDebugLogLineN(logClientKadUDP, wxT("Inc Kad1 Bootstrap packet from ") + KadIPToString(ip));
 	// How many contacts were given
 	CMemFile bio(packetData, lenPacket);
 	uint16_t numContacts = bio.ReadUInt16();
@@ -651,7 +649,7 @@ void CKademliaUDPListener::Process2BootstrapResponse(const uint8_t *packetData, 
 	if (CKademlia::s_bootstrapList.empty()) {
 		routingZone->Add(contactID, ip, port, tport, version, senderKey, validReceiverKey, true, false, false);
 	}
-	//AddDebugLogLineM(false, logClientKadUDP, wxT("Inc Kad2 Bootstrap packet from ") + KadIPToString(ip));
+	//AddDebugLogLineN(logClientKadUDP, wxT("Inc Kad2 Bootstrap packet from ") + KadIPToString(ip));
 
 	uint16_t numContacts = bio.ReadUInt16();
 	while (numContacts) {
@@ -697,14 +695,14 @@ void CKademliaUDPListener::ProcessHelloRequest(const uint8_t *packetData, uint32
 // Used in Kad2.0 only
 void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey, bool validReceiverKey)
 {
-	uint16_t dbgOldUDPPort = port;
+	DEBUG_ONLY( uint16_t dbgOldUDPPort = port; )
 	uint8_t contactVersion = 0;
 	CUInt128 contactID;
 	bool addedOrUpdated = AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true, true, NULL, &contactID); // might change (udp)port, validReceiverKey
 	wxASSERT(contactVersion >= 1);
 #ifdef __DEBUG__
 	if (dbgOldUDPPort != port) {
-		AddDebugLogLineM(false, logClientKadUDP, wxT("KadContact ") + KadIPToString(ip) + wxString::Format(wxT(" uses his internal (%u) instead external (%u) UDP Port"), port, dbgOldUDPPort));
+		AddDebugLogLineN(logClientKadUDP, wxT("KadContact ") + KadIPToString(ip) + wxString::Format(wxT(" uses his internal (%u) instead external (%u) UDP Port"), port, dbgOldUDPPort));
 	}
 #endif
 
@@ -722,7 +720,7 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 		CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
 		if (contact != NULL) {
 			if (contact->GetType() < 2) {
-				AddDebugLogLineM(false, logKadRouting, wxT("Sending (ping) challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
+				AddDebugLogLineN(logKadRouting, wxT("Sending (ping) challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
 			}
 		} else {
 			wxFAIL;
@@ -773,7 +771,7 @@ void CKademliaUDPListener::Process2HelloResponseAck(const uint8_t *packetData, u
 	CHECK_TRACKED_PACKET(KADEMLIA2_HELLO_RES);
 
 	if (!validReceiverKey) {
-		AddDebugLogLineM(false, logClientKadUDP, wxT("Receiver key is invalid! (sender: ") + KadIPToString(ip) + wxT(")"));
+		AddDebugLogLineN(logClientKadUDP, wxT("Receiver key is invalid! (sender: ") + KadIPToString(ip) + wxT(")"));
 		return;
 	}
 
@@ -781,13 +779,10 @@ void CKademliaUDPListener::Process2HelloResponseAck(const uint8_t *packetData, u
 	CMemFile bio(packetData, lenPacket);
 	CUInt128 remoteID = bio.ReadUInt128();
 	if (!CKademlia::GetRoutingZone()->VerifyContact(remoteID, ip)) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+		AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+	} else {
+		AddDebugLogLineN(logKadRouting, wxT("Verified contact (") + KadIPToString(ip) + wxT(") by HELLO_RES_ACK"));
 	}
-#ifdef __DEBUG__
-	else {
-		AddDebugLogLineM(false, logKadRouting, wxT("Verified contact (") + KadIPToString(ip) + wxT(") by HELLO_RES_ACK"));
-	}
-#endif
 }
 
 // KADEMLIA2_HELLO_RES
@@ -808,7 +803,7 @@ void CKademliaUDPListener::Process2HelloResponse(const uint8_t *packetData, uint
 		if (senderKey.IsEmpty()) {
 			// but we don't have a valid sender key - there is no point to reply in this case
 			// most likely a bug in the remote client
-			AddDebugLogLineM(false, logClientKadUDP, wxT("Remote client demands ACK, but didn't send any sender key! (sender: ") + KadIPToString(ip) + wxT(")"));
+			AddDebugLogLineN(logClientKadUDP, wxT("Remote client demands ACK, but didn't send any sender key! (sender: ") + KadIPToString(ip) + wxT(")"));
 		} else {
 			CMemFile packet(17);
 			packet.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
@@ -971,13 +966,10 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 	if (IsLegacyChallenge(target, ip, KADEMLIA_REQ, contactID)) {
 		// yup it is, set the contact as verified
 		if (!routingZone->VerifyContact(contactID, ip)) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+			AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+		} else {
+			AddDebugLogLineN(logKadRouting, wxT("Verified contact with legacy challenge (KadReq) - ") + KadIPToString(ip));
 		}
-#ifdef __DEBUG__
-		else {
-			AddDebugLogLineM(false, logKadRouting, wxT("Verified contact with legacy challenge (KadReq) - ") + KadIPToString(ip));
-		}
-#endif
 		return;	// we do not actually care for its other content
 	}
 
@@ -1014,7 +1006,7 @@ void CKademliaUDPListener::ProcessKademliaResponse(const uint8_t *packetData, ui
 	}
 
 	if (ignoredCount > 0) {
-		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Ignored %u bad contacts in routing answer from "), ignoredCount) + KadIPToString(ip));
+		AddDebugLogLineN(logClientKadUDP, wxString::Format(wxT("Ignored %u bad contacts in routing answer from "), ignoredCount) + KadIPToString(ip));
 	}
 
 	CSearchManager::ProcessResponse(target, ip, port, results.release());
@@ -1046,13 +1038,10 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 	if (IsLegacyChallenge(target, ip, KADEMLIA2_REQ, contactID)) {
 		// yup it is, set the contact as verified
 		if (!routingZone->VerifyContact(contactID, ip)) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+			AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+		} else {
+			AddDebugLogLineN(logKadRouting, wxT("Verified contact with legacy challenge (Kad2Req) - ") + KadIPToString(ip));
 		}
-#ifdef __DEBUG__
-		else {
-			AddDebugLogLineM(false, logKadRouting, wxT("Verified contact with legacy challenge (Kad2Req) - ") + KadIPToString(ip));
-		}
-#endif
 		return;	// we do not actually care for its other content
 	}
 	// Verify packet is expected size
@@ -1098,7 +1087,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 	}
 
 	if (ignoredCount > 0) {
-		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Ignored %u bad contacts in routing answer from "), ignoredCount) + KadIPToString(ip));
+		AddDebugLogLineN(logClientKadUDP, wxString::Format(wxT("Ignored %u bad contacts in routing answer from "), ignoredCount) + KadIPToString(ip));
 	}
 
 	CSearchManager::ProcessResponse(target, ip, port, results.release());
@@ -1118,7 +1107,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 	// the max. depth has to match our own limit for creating the search expression 
 	// (see also 'ParsedSearchExpression' and 'GetSearchPacket')
 	if (iLevel >= 24){
-		AddDebugLogLineM(false, logKadSearch, wxT("***NOTE: Search expression tree exceeds depth limit!"));
+		AddDebugLogLineN(logKadSearch, wxT("***NOTE: Search expression tree exceeds depth limit!"));
 		return NULL;
 	}
 	iLevel++;
@@ -1174,8 +1163,8 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 				return NULL;
 			}
 			return pSearchTerm;
-		} else{
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("*** Unknown boolean search operator 0x%02x (CreateSearchExpressionTree)"), boolop));
+		} else {
+			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("*** Unknown boolean search operator 0x%02x (CreateSearchExpressionTree)"), boolop));
 			return NULL;
 		}
 	} else if (op == 0x01) { // String
@@ -1233,7 +1222,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		// read integer operator
 		uint8_t mmop = bio.ReadUInt8();
 		if (mmop >= itemsof(_aOps)){
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("*** Unknown integer search op=0x%02x (CreateSearchExpressionTree)"), mmop));
+			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("*** Unknown integer search op=0x%02x (CreateSearchExpressionTree)"), mmop));
 			return NULL;
 		}
 
@@ -1246,7 +1235,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 
 		return pSearchTerm;
 	} else {
-		AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("*** Unknown search op=0x%02x (CreateSearchExpressionTree)"), op));
+		AddDebugLogLineN(logKadSearch, wxString::Format(wxT("*** Unknown search op=0x%02x (CreateSearchExpressionTree)"), op));
 		return NULL;
 	}
 }
@@ -1428,12 +1417,12 @@ void CKademliaUDPListener::ProcessPublishRequest(const uint8_t *packetData, uint
 		return;
 	}
 
-	wxString strInfo;
+	DEBUG_ONLY( wxString strInfo; )
 	uint16_t count = bio.ReadUInt16();
 	bool flag = false;
 	uint8_t load = 0;
 	while (count > 0) {
-		strInfo.Clear();
+		DEBUG_ONLY( strInfo.Clear(); )
 
 		CUInt128 target = bio.ReadUInt128();
 
@@ -1460,7 +1449,7 @@ void CKademliaUDPListener::ProcessPublishRequest(const uint8_t *packetData, uint
 					} else if (!tag->GetName().Cmp(TAG_FILENAME)) {
 						if (entry->GetCommonFileName().IsEmpty()) {
 							entry->SetFileName(tag->GetStr());
-							strInfo += CFormat(wxT("  Name=\"%s\"")) % tag->GetStr();
+							DEBUG_ONLY( strInfo += CFormat(wxT("  Name=\"%s\"")) % tag->GetStr(); )
 						}
 						delete tag;
 					} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
@@ -1472,7 +1461,7 @@ void CKademliaUDPListener::ProcessPublishRequest(const uint8_t *packetData, uint
 								wxASSERT(tag->IsInt());
 								entry->m_uSize = tag->GetInt();	
 							}
-							strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize);
+							DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize); )
 						}
 						delete tag;
 					} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
@@ -1490,9 +1479,11 @@ void CKademliaUDPListener::ProcessPublishRequest(const uint8_t *packetData, uint
 				}
 				tags--;
 			}
+#ifdef __DEBUG__
 			if (!strInfo.IsEmpty()) {
-				AddDebugLogLineM(false, logClientKadUDP, strInfo);
+				AddDebugLogLineN(logClientKadUDP, strInfo);
 			}
+#endif
 		} catch(...) {
 			//printf("Error on count %i tag %i\n",totalcount-count, totaltags-tags);
 			//DebugClientOutput(wxT("CKademliaUDPListener::processPublishRequest"),ip,port,packetData,lenPacket);
@@ -1566,11 +1557,11 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 		return;
 	}
 
-	wxString strInfo;
+	DEBUG_ONLY( wxString strInfo; )
 	uint16_t count = bio.ReadUInt16();
 	uint8_t load = 0;
 	while (count > 0) {
-		strInfo.Clear();
+		DEBUG_ONLY( strInfo.Clear(); )
 
 		CUInt128 target = bio.ReadUInt128();
 
@@ -1590,7 +1581,7 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 					if (!tag->GetName().Cmp(TAG_FILENAME)) {
 						if (entry->GetCommonFileName().IsEmpty()) {
 							entry->SetFileName(tag->GetStr());
-							strInfo += CFormat(wxT("  Name=\"%s\"")) % entry->GetCommonFileName();
+							DEBUG_ONLY( strInfo += CFormat(wxT("  Name=\"%s\"")) % entry->GetCommonFileName(); )
 						}
 						delete tag; // tag is no longer stored, but membervar is used
 					} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
@@ -1600,7 +1591,7 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 							} else {
 								entry->m_uSize = tag->GetInt();
 							}
-							strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize);
+							DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize); )
 						}
 						delete tag; // tag is no longer stored, but membervar is used
 					} else {
@@ -1610,9 +1601,11 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 				}
 				tags--;
 			}
+#ifdef __DEBUG__
 			if (!strInfo.IsEmpty()) {
-				AddDebugLogLineM(false, logClientKadUDP, strInfo);
+				AddDebugLogLineN(logClientKadUDP, strInfo);
 			}
+#endif
 		} catch(...) {
 			//DebugClientOutput(wxT("CKademliaUDPListener::Process2PublishKeyRequest"),ip,port,packetData,lenPacket);
 			delete entry;
@@ -1662,7 +1655,7 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 		return;
 	}
 
-	wxString strInfo;
+	DEBUG_ONLY( wxString strInfo; )
 	uint8_t load = 0;
 	bool flag = false;
 	CUInt128 target = bio.ReadUInt128();
@@ -1695,7 +1688,7 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 						} else {
 							entry->m_uSize = tag->GetInt();
 						}
-						strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize);
+						DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize); )
 					}
 					delete tag;
 				} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
@@ -1725,9 +1718,11 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 		if (addUDPPortTag) {
 			entry->AddTag(new CTagVarInt(TAG_SOURCEUPORT, entry->m_uUDPport));
 		}
+#ifdef __DEBUG__
 		if (!strInfo.IsEmpty()) {
-			AddDebugLogLineM(false, logClientKadUDP, strInfo);
+			AddDebugLogLineN(logClientKadUDP, strInfo);
 		}
+#endif
 	} catch(...) {
 		//DebugClientOutput(wxT("CKademliaUDPListener::Process2PublishSourceRequest"),ip,port,packetData,lenPacket);
 		delete entry;
@@ -2200,7 +2195,7 @@ void CKademliaUDPListener::ProcessCallbackRequest(const uint8_t *packetData, uin
 			packetdata.WriteUInt32(ip);
 			packetdata.WriteUInt16(tcp);
 			CPacket* packet = new CPacket(packetdata, OP_EMULEPROT, OP_CALLBACK);
-			AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_CALLBACK to ") + KadIPToString(ip));
+			AddDebugLogLineN(logLocalClient, wxT("Local Client: OP_CALLBACK to ") + KadIPToString(ip));
 			buddy->GetSocket()->SendPacket(packet);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		} else {
@@ -2230,13 +2225,10 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 	if (IsLegacyChallenge(CUInt128((uint32_t)0), ip, KADEMLIA2_PING, contactID)) {
 		// yup it is, set the contact as verified
 		if (!CKademlia::GetRoutingZone()->VerifyContact(contactID, ip)) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+			AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
+		} else {
+			AddDebugLogLineN(logKadRouting, wxT("Verified contact with legacy challenge (Kad2Ping) - ") + KadIPToString(ip));
 		}
-#ifdef __DEBUG__
-		else {
-			AddDebugLogLineM(false, logKadRouting, wxT("Verified contact with legacy challenge (Kad2Ping) - ") + KadIPToString(ip));
-		}
-#endif
 		return;	// we do not actually care for its other content
 	}
 
@@ -2263,13 +2255,13 @@ void CKademliaUDPListener::Process2FirewallUDP(const uint8_t *packetData, uint32
 	uint8_t errorCode = PeekUInt8(packetData);
 	uint16_t incomingPort = PeekUInt16(packetData + 1);
 	if ((incomingPort != CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != CKademlia::GetPrefs()->GetInternKadPort()) || incomingPort == 0) {
-		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck on unexpected incoming port %u (") + KadIPToString(ip) + wxT(")"), incomingPort));
+		AddDebugLogLineN(logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck on unexpected incoming port %u (") + KadIPToString(ip) + wxT(")"), incomingPort));
 		CUDPFirewallTester::SetUDPFWCheckResult(false, true, ip, 0);
 	} else if (errorCode == 0) {
-		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck packet from ") + KadIPToString(ip) + wxT(" with incoming port %u"), incomingPort));
+		AddDebugLogLineN(logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck packet from ") + KadIPToString(ip) + wxT(" with incoming port %u"), incomingPort));
 		CUDPFirewallTester::SetUDPFWCheckResult(true, false, ip, incomingPort);
 	} else {
-		AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck packet from ") + KadIPToString(ip) + wxT(" with incoming port %u with remote errorcode %u - ignoring result"), incomingPort, errorCode));
+		AddDebugLogLineN(logClientKadUDP, wxString::Format(wxT("Received UDP FirewallCheck packet from ") + KadIPToString(ip) + wxT(" with incoming port %u with remote errorcode %u - ignoring result"), incomingPort, errorCode));
 		CUDPFirewallTester::SetUDPFWCheckResult(false, true, ip, 0);
 	}
 }
@@ -2299,7 +2291,7 @@ bool CKademliaUDPListener::FindNodeIDByIP(CKadClientSearcher* requester, uint32_
 
 	// we will drop support for Kad1 soon, so don't bother sending two packets in case we don't know if kad2 is supported
 	// (if we know that it's not, this function isn't called in the first place)
-	AddDebugLogLineM(false, logClientKadUDP, wxT("FindNodeIDByIP: Requesting NodeID from ") + KadIPToString(ip) + wxT(" by sending Kad2HelloReq"));
+	AddDebugLogLineN(logClientKadUDP, wxT("FindNodeIDByIP: Requesting NodeID from ") + KadIPToString(ip) + wxT(" by sending Kad2HelloReq"));
 	DebugSend(Kad2HelloReq, ip, udpPort);
 	SendMyDetails(KADEMLIA2_HELLO_REQ, ip, udpPort, 1, 0, NULL, false); // todo: we send this unobfuscated, which is not perfect, see this can be avoided in the future
 	FetchNodeID_Struct sRequest = { ip, tcpPort, ::GetTickCount() + SEC2MS(60), requester };
@@ -2332,7 +2324,7 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	CContact* contact = CKademlia::GetRoutingZone()->GetContact(contactID);
 	if (contact != NULL) {
 		if (contact->GetType() < 2) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Sending challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
+			AddDebugLogLineN(logKadRouting, wxT("Sending challenge to a long known contact (should be verified already) - ") + KadIPToString(ip));
 		}
 	} else {
 		wxFAIL;

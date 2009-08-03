@@ -88,7 +88,7 @@ void CKademlia::Start(CPrefs *prefs)
 		return;
 	}
 
-	AddDebugLogLineM(false, logKadMain, wxT("Starting Kademlia"));
+	AddDebugLogLineN(logKadMain, wxT("Starting Kademlia"));
 
 	// Init jump start timer.
 	m_nextSearchJumpStart = time(NULL);
@@ -129,7 +129,7 @@ void CKademlia::Stop()
 		return;
 	}
 
-	AddDebugLogLineM(false, logKadMain, wxT("Stopping Kademlia"));
+	AddDebugLogLineN(logKadMain, wxT("Stopping Kademlia"));
 
 	// Mark Kad as being in the stop state to make sure nothing else is used.
 	m_running = false;
@@ -207,11 +207,11 @@ void CKademlia::Process()
 		// If our UDP firewallcheck is running and we don't know our external port, we send a request every 15 seconds
 		CContact *contact = GetRoutingZone()->GetRandomContact(3, 6);
 		if (contact != NULL) {
-			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + KadIPToString(contact->GetIPAddress()));
+			AddDebugLogLineN(logKadPrefs, wxT("Requesting our external port from ") + KadIPToString(contact->GetIPAddress()));
 			DebugSend(Kad2Ping, contact->GetIPAddress(), contact->GetUDPPort());
 			GetUDPListener()->SendNullPacket(KADEMLIA2_PING, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &contact->GetClientID());
 		} else {
-			AddDebugLogLineM(false, logKadMain, wxT("No valid client for requesting external port available"));
+			AddDebugLogLineN(logKadPrefs, wxT("No valid client for requesting external port available"));
 		}
 		m_externPortLookup = 15 + now;
 	}
@@ -257,7 +257,7 @@ void CKademlia::Process()
 	if (m_consolidate <= now) {
 		uint32_t mergedCount = instance->m_routingZone->Consolidate();
 		if (mergedCount) {
-			AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Kad merged %u zones"), mergedCount));
+			AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Kad merged %u zones"), mergedCount));
 		}
 		m_consolidate = MIN2S(45) + now;
 	}
@@ -275,7 +275,7 @@ void CKademlia::Process()
 		CContact *contact = s_bootstrapList.front();
 		s_bootstrapList.pop_front();
 		m_bootstrap = now;
-		AddDebugLogLineM(false, logKadMain, wxT("Trying to bootstrap Kad from ") + KadIPToString(contact->GetIPAddress()) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
+		AddDebugLogLineN(logKadMain, wxT("Trying to bootstrap Kad from ") + KadIPToString(contact->GetIPAddress()) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
 		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion() > 1, contact->GetVersion(), &contact->GetClientID());
 		delete contact;
 	}
@@ -292,11 +292,11 @@ void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip
 			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
 	} catch (const wxString& error) {
-		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + KadIPPortToString(ip, port) + wxT(':'));
-		AddDebugLogLineM(false, logKadMain, error);
+		AddDebugLogLineN(logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + KadIPPortToString(ip, port) + wxT(':'));
+		AddDebugLogLineN(logKadMain, error);
 		throw;
 	} catch (...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Unhandled exception on Kad ProcessPacket"));
+		AddDebugLogLineN(logKadMain, wxT("Unhandled exception on Kad ProcessPacket"));
 		throw;
 	}
 }

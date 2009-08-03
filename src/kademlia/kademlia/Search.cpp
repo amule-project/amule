@@ -272,7 +272,7 @@ void CSearch::JumpStart()
 
 void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *results)
 {
-	AddDebugLogLineM(false, logKadSearch, wxT("Processing search response from ") + KadIPPortToString(fromIP, fromPort));
+	AddDebugLogLineN(logKadSearch, wxT("Processing search response from ") + KadIPPortToString(fromIP, fromPort));
 
 	ContactList::iterator response;
 	// Remember the contacts to be deleted when finished
@@ -283,7 +283,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 	// Make sure the node is not sending more results than we requested, which is not only a protocol violation
 	// but most likely a malicious answer
 	if (results->size() > GetRequestContactCount()) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Node ") + KadIPToString(fromIP) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
+		AddDebugLogLineN(logKadSearch, wxT("Node ") + KadIPToString(fromIP) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
 		return;
 	}
 
@@ -297,7 +297,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 
 	// Not interested in responses for FIND_NODE, will be added to contacts by udp listener
 	if (m_type == NODE) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Node type search result, discarding."));
+		AddDebugLogLineN(logKadSearch, wxT("Node type search result, discarding."));
 		// Note that we got an answer.
 		m_answers++;
 		// We clear the possible list to force the search to stop.
@@ -327,18 +327,18 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 
 				// Ignore this contact if already known or tried it.
 				if (m_possible.count(distance) > 0) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Search result from already known client: ignore"));
+					AddDebugLogLineN(logKadSearch, wxT("Search result from already known client: ignore"));
 					continue;
 				}
 				if (m_tried.count(distance) > 0) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
+					AddDebugLogLineN(logKadSearch, wxT("Search result from already tried client: ignore"));
 					continue;
 				}
 
 				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
 				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
 				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
+					AddDebugLogLineN(logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
 					continue;
 				} else {
 					mapReceivedIPs[c->GetIPAddress()] = 1;
@@ -348,7 +348,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 					wxASSERT(mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != mapReceivedSubnets.end());
 					int subnetCount = mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
 					if (subnetCount >= 2) {
-						AddDebugLogLineM(false, logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
+						AddDebugLogLineN(logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
 						continue;
 					} else {
 						mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
@@ -391,7 +391,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 
 			// Complete node search, just increment the counter.
 			if (m_type == NODECOMPLETE || m_type == NODESPECIAL) {
-				AddDebugLogLineM(false, logKadSearch, wxString(wxT("Search result type: Node")) + (m_type == NODECOMPLETE ? wxT("Complete") : wxT("Special")));
+				AddDebugLogLineN(logKadSearch, wxString(wxT("Search result type: Node")) + (m_type == NODECOMPLETE ? wxT("Complete") : wxT("Special")));
 				m_answers++;
 			}
 			break;
@@ -415,14 +415,14 @@ void CSearch::StorePacket()
 
 	// Make sure this is a valid node to store.
 	if(thePrefs::FilterLanIPs() && fromDistance.Get32BitChunk(0) > SEARCHTOLERANCE) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Not stored: filtered lan ip"));
+		AddDebugLogLineN(logKadSearch, wxT("Not stored: filtered lan ip"));
 		return;
 	}
 
 	// What kind of search are we doing?
 	switch (m_type) {
 		case FILE: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: File"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: File"));
 			CMemFile searchTerms;
 			searchTerms.WriteUInt128(m_target);
 			if (from->GetVersion() >= 3) {
@@ -455,7 +455,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case KEYWORD: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: Keyword"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: Keyword"));
 			CMemFile searchTerms;
 			searchTerms.WriteUInt128(m_target);
 			if (from->GetVersion() >= 3) {
@@ -493,7 +493,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case NOTES: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: Notes"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: Notes"));
 			// Write complete packet.
 			CMemFile searchTerms;
 			searchTerms.WriteUInt128(m_target);
@@ -526,7 +526,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case STOREFILE: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: StoreFile"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: StoreFile"));
 			// Try to store ourselves as a source to a Node.
 			// As a safeguard, check to see if we already stored to the max nodes.
 			if (m_answers > SEARCHSTOREFILE_TOTAL) {
@@ -615,7 +615,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case STOREKEYWORD: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: StoreKeyword"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: StoreKeyword"));
 			// Try to store keywords to a Node.
 			// As a safeguard, check to see if we already stored to the max nodes.
 			if (m_answers > SEARCHSTOREKEYWORD_TOTAL) {
@@ -676,7 +676,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case STORENOTES: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: StoreNotes"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: StoreNotes"));
 			// Find file we are storing info about.
 			uint8_t fileid[16];
 			m_target.ToByteArray(fileid);
@@ -726,7 +726,7 @@ void CSearch::StorePacket()
 		}
 		case FINDBUDDY:
 		{
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: FindBuddy"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: FindBuddy"));
 			// Send a buddy request as we are firewalled.
 			// As a safeguard, check to see if we already requested the max nodes.
 			if (m_answers > SEARCHFINDBUDDY_TOTAL) {
@@ -755,7 +755,7 @@ void CSearch::StorePacket()
 		}
 		case FINDSOURCE:
 		{
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: FindSource"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: FindSource"));
 			// Try to find if this is a buddy to someone we want to contact.
 			// As a safeguard, check to see if we already requested the max nodes.
 			if (m_answers > SEARCHFINDSOURCE_TOTAL) {
@@ -796,13 +796,13 @@ void CSearch::StorePacket()
 			break;
 		 }
 		case NODECOMPLETE:
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: NodeComplete"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: NodeComplete"));
 			break;
 		case NODE:
-			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: Node"));
+			AddDebugLogLineN(logKadSearch, wxT("Search request type: Node"));
 			break;
 		default:
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result type: Unknown (%i)"),m_type));
+			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Search result type: Unknown (%i)"),m_type));
 			break;
 	}
 }
@@ -824,7 +824,7 @@ void CSearch::ProcessResult(const CUInt128& answer, TagPtrList *info)
 			ProcessResultNotes(answer, info);
 			break;
 	}
-	AddDebugLogLineM(false, logKadSearch, wxT("Got result (") + type + wxT(")"));
+	AddDebugLogLineN(logKadSearch, wxT("Got result (") + type + wxT(")"));
 }
 
 void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
@@ -878,7 +878,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		case 4:
 		case 5:
 		case 6:
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + KadIPPortToString(ip, udp));
+			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + KadIPPortToString(ip, udp));
 			m_answers++;
 			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, buddyip, buddyport, byCryptOptions);
 			break;
@@ -945,7 +945,7 @@ void CSearch::ProcessResultNotes(const CUInt128& answer, TagPtrList *info)
 		file->AddNote(entry);
 		m_answers++;
 	} else {
-		AddDebugLogLineM(false, logKadSearch, wxT("Comment received for unknown file"));
+		AddDebugLogLineN(logKadSearch, wxT("Comment received for unknown file"));
 		delete entry;
 	}
 }
@@ -1014,7 +1014,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 			uint32_t differentNames = (publishInfo & 0xFF000000) >> 24;
 			uint32_t publishersKnown = (publishInfo & 0x00FF0000) >> 16;
 			uint32_t trustValue = publishInfo & 0x0000FFFF;
-			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Received PublishInfo Tag: %u different names, %u publishers, %.2f trustvalue"), differentNames, publishersKnown, (double)trustValue/ 100.0));
+			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Received PublishInfo Tag: %u different names, %u publishers, %.2f trustvalue"), differentNames, publishersKnown, (double)trustValue/ 100.0));
 #endif
 		}
 		delete tag;
@@ -1023,7 +1023,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 
 	// If we don't have a valid filename and filesize, drop this keyword.
 	if (!bFileName || !bFileSize) {
-		AddDebugLogLineM(false, logKadSearch, wxString(wxT("No ")) + (!bFileName ? wxT("filename") : wxT("filesize")) + wxT(" on search result, ignoring"));	
+		AddDebugLogLineN(logKadSearch, wxString(wxT("No ")) + (!bFileName ? wxT("filename") : wxT("filesize")) + wxT(" on search result, ignoring"));
 		return;
 	}
 
@@ -1167,11 +1167,11 @@ void CSearch::SendFindValue(CContact *contact)
 #endif
 		}
 	} catch (const CEOFException& err) {
-		AddDebugLogLineM(true, logKadSearch, wxT("CEOFException in CSearch::SendFindValue: ") + err.what());
+		AddDebugLogLineC(logKadSearch, wxT("CEOFException in CSearch::SendFindValue: ") + err.what());
 	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineM(true, logKadSearch, wxT("CInvalidPacket Exception in CSearch::SendFindValue: ") + err.what());		
+		AddDebugLogLineC(logKadSearch, wxT("CInvalidPacket Exception in CSearch::SendFindValue: ") + err.what());
 	} catch (const wxString& e) {
-		AddDebugLogLineM(true, logKadSearch, wxT("Exception in CSearch::SendFindValue: ") + e);
+		AddDebugLogLineC(logKadSearch, wxT("Exception in CSearch::SendFindValue: ") + e);
 	}
 }
 
@@ -1249,11 +1249,11 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 			wxFAIL;
 		}
 	} catch (const CEOFException& err) {
-		AddDebugLogLineM(true, logKadSearch, wxT("CEOFException in CSearch::PreparePacketForTags: ") + err.what());
+		AddDebugLogLineC(logKadSearch, wxT("CEOFException in CSearch::PreparePacketForTags: ") + err.what());
 	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineM(true, logKadSearch, wxT("CInvalidPacket Exception in CSearch::PreparePacketForTags: ") + err.what());		
+		AddDebugLogLineC(logKadSearch, wxT("CInvalidPacket Exception in CSearch::PreparePacketForTags: ") + err.what());
 	} catch (const wxString& e) {
-		AddDebugLogLineM(true, logKadSearch, wxT("Exception in CSearch::PreparePacketForTags: ") + e);
+		AddDebugLogLineC(logKadSearch, wxT("Exception in CSearch::PreparePacketForTags: ") + e);
 	} 
 
 	deleteTagPtrListEntries(&taglist);
@@ -1286,7 +1286,7 @@ uint8_t CSearch::GetRequestContactCount() const throw()
 		case STORENOTES:
 			return KADEMLIA_STORE;
 		default:
-			AddDebugLogLineM(false, logKadSearch, wxT("Invalid search type. (CSearch::GetRequestContactCount())"));
+			AddDebugLogLineN(logKadSearch, wxT("Invalid search type. (CSearch::GetRequestContactCount())"));
 			wxFAIL;
 			return 0;
 	}

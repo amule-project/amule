@@ -207,7 +207,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 			file.Close();
 			AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", validContacts), validContacts));
 			if (!doHaveVerifiedContacts) {
-				AddDebugLogLineM(false, logKadRouting, wxT("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping."));
+				AddDebugLogLineN(logKadRouting, wxT("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping."));
 				SetAllContactsVerified();
 			}
 		}
@@ -215,7 +215,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 			AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
 		}
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
+		AddDebugLogLineN(logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
 	}
 }
 
@@ -276,7 +276,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
 			numContacts--;
 		}
 		AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", CKademlia::s_bootstrapList.size()), CKademlia::s_bootstrapList.size()));
-		AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts"), CKademlia::s_bootstrapList.size(), validContacts));
+		AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts"), CKademlia::s_bootstrapList.size(), validContacts));
 	}
 	if (CKademlia::s_bootstrapList.size() == 0) {
 		AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
@@ -287,7 +287,7 @@ void CRoutingZone::WriteFile()
 {
 	// don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finish probing
 	if (!CKademlia::s_bootstrapList.empty() && GetNumContacts() == 0) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table"));
+		AddDebugLogLineN(logKadRouting, wxT("Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table"));
 		return;
 	}
 
@@ -329,14 +329,14 @@ void CRoutingZone::WriteFile()
 		}
 		AddLogLineM(false, wxString::Format(wxPLURAL("Wrote %d Kad contact", "Wrote %d Kad contacts", count), count));
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
+		AddDebugLogLineC(logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
 	}
 }
 
 #if 0
 void CRoutingZone::WriteBootstrapFile()
 {
-	AddDebugLogLineM(true, logKadRouting, wxT("Writing special bootstrap nodes.dat - not intended for normal use"));
+	AddDebugLogLineC(logKadRouting, wxT("Writing special bootstrap nodes.dat - not intended for normal use"));
 	try {
 		// Write a saved contact list.
 		CUInt128 id;
@@ -372,12 +372,12 @@ void CRoutingZone::WriteBootstrapFile()
 				file.WriteUInt8(contact->GetVersion());
 			}
 			file.Close();
-			AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Wrote %u contacts to bootstrap file."), mapContacts.size()));
+			AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Wrote %u contacts to bootstrap file."), mapContacts.size()));
 		} else {
-			AddDebugLogLineM(true, logKadRouting, wxT("Unable to store Kad file: ") + m_filename);
+			AddDebugLogLineC(logKadRouting, wxT("Unable to store Kad file: ") + m_filename);
 		}
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(false, logKadRouting, wxT("CFileException in CRoutingZone::writeFile") + e.what());
+		AddDebugLogLineC(logKadRouting, wxT("CFileException in CRoutingZone::writeFile") + e.what());
 	}
 }
 #endif
@@ -440,7 +440,7 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 					// except if our IP has changed recently, we demand that the key is the same as the key we received
 					// from the packet which wants to update this contact in order to make sure this is not a try to
 					// hijack this entry
-					AddDebugLogLineM(false, logKadRouting, wxT("Sender (") + KadIPToString(contact->GetIPAddress()) + wxT(") tried to update contact entry but failed to provide the proper sender key (Sent Empty: ") + (contact->GetUDPKey().GetKeyValue(theApp->GetPublicIP(false)) == 0 ? wxT("Yes") : wxT("No")) + wxT(") for the entry (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(") - denying update"));
+					AddDebugLogLineN(logKadRouting, wxT("Sender (") + KadIPToString(contact->GetIPAddress()) + wxT(") tried to update contact entry but failed to provide the proper sender key (Sent Empty: ") + (contact->GetUDPKey().GetKeyValue(theApp->GetPublicIP(false)) == 0 ? wxT("Yes") : wxT("No")) + wxT(") for the entry (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(") - denying update"));
 					update = false;
 				} else if (contactUpdate->GetVersion() >= 1 && contactUpdate->GetVersion() < 6 && contactUpdate->GetReceivedHelloPacket()) {
 					// legacy kad2 contacts are allowed only to update their RefreshTimer to avoid having them hijacked/corrupted by an attacker
@@ -450,9 +450,9 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 						wxASSERT(!contact->IsIPVerified());	// legacy kad2 nodes should be unable to verify their IP on a HELLO
 						outIpVerified = contactUpdate->IsIPVerified();
 						m_bin->SetAlive(contactUpdate);
-						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Updated kad contact refreshtimer only for legacy kad2 contact (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(", %u)"), contactUpdate->GetVersion()));
+						AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Updated kad contact refreshtimer only for legacy kad2 contact (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(", %u)"), contactUpdate->GetVersion()));
 					} else {
-						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Rejected value update for legacy kad2 contact (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(" -> ") + KadIPToString(contact->GetIPAddress()) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
+						AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Rejected value update for legacy kad2 contact (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(" -> ") + KadIPToString(contact->GetIPAddress()) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
 						update = false;
 					}
 				} else {
@@ -461,15 +461,15 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 					//debug logging stuff - remove later
 					if (contact->GetUDPKey().GetKeyValue(theApp->GetPublicIP(false)) == 0) {
 						if (contact->GetVersion() >= 6 && contact->GetType() < 2) {
-							AddDebugLogLineM(false, logKadRouting, wxT("Updating > 0.49a + type < 2 contact without valid key stored ") + KadIPToString(contact->GetIPAddress()));
+							AddDebugLogLineN(logKadRouting, wxT("Updating > 0.49a + type < 2 contact without valid key stored ") + KadIPToString(contact->GetIPAddress()));
 						}
 					} else {
-						AddDebugLogLineM(false, logKadRouting, wxT("Updating contact, passed key check ") + KadIPToString(contact->GetIPAddress()));
+						AddDebugLogLineN(logKadRouting, wxT("Updating contact, passed key check ") + KadIPToString(contact->GetIPAddress()));
 					}
 
 					if (contactUpdate->GetVersion() >= 1 && contactUpdate->GetVersion() < 6) {
 						wxASSERT(!contactUpdate->GetReceivedHelloPacket());
-						AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Accepted update for legacy kad2 contact, because of first HELLO (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(" -> ") + KadIPToString(contact->GetIPAddress()) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
+						AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Accepted update for legacy kad2 contact, because of first HELLO (") + KadIPToString(contactUpdate->GetIPAddress()) + wxT(" -> ") + KadIPToString(contact->GetIPAddress()) + wxT(", %u -> %u)"), contactUpdate->GetVersion(), contact->GetVersion()));
 					}
 #endif
 					// All other nodes (Kad1, Kad2 > 0.49a with UDPKey checked or not set, first hello updates) are allowed to do full updates
@@ -874,7 +874,7 @@ bool CRoutingZone::VerifyContact(const CUInt128& id, uint32_t ip)
 		return false;
 	} else {
 		if (contact->IsIPVerified()) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Sender already verified (sender: ") + KadIPToString(ip) + wxT(")"));
+			AddDebugLogLineN(logKadRouting, wxT("Sender already verified (sender: ") + KadIPToString(ip) + wxT(")"));
 		} else {
 			contact->SetIPVerified(true);
 		}
