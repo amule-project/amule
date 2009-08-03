@@ -33,14 +33,9 @@
 #include "NetworkFunctions.h"	// needed for Uint32toStringIP
 #include "OtherFunctions.h"		// needed for CastItoXBytes
 #include <common/Format.h>		// needed for CFormat
+#include <common/Macros.h>
 
 #define	 CBB_BANTHRESHOLD	32 //% max corrupted data	
-
-#ifdef __DEBUG__
-#define DEBUG_ONLY(statement) statement
-#else
-#define DEBUG_ONLY(statement)
-#endif
 
 // Record to store information which piece of data was downloaded from which client
 

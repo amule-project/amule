@@ -25,6 +25,7 @@
 #include "Logger.h"
 #include "amule.h"
 #include "Preferences.h"
+#include <common/Macros.h>
 #include <sstream>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
@@ -245,11 +246,7 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 }
 
 
-void CLogger::DoLine(const wxString & line, bool toStdout, bool
-#ifndef AMULE_DAEMON
-															 toGUI
-#endif
-																	 )
+void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 {
 	++m_count;
 
