@@ -22,6 +22,7 @@ Version 2.3.0 - The river knows.
 		* Dropped assumption that last search keyword is a filename
 		  extension if length == 3.
 		* Fixed obfuscated server UDP communication.
+		* Fixed cross-endian Kad node verification.
 
 	Greek:
 		* Part number is now an extra column in the download list
