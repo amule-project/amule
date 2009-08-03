@@ -121,7 +121,7 @@ void CPrefs::ReadFile()
 			file.Close();
 		}
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(true, logKadPrefs, wxT("IO error while reading prefs: ") + e.what());
+		AddDebugLogLineC(logKadPrefs, wxT("IO error while reading prefs: ") + e.what());
 	}
 }
 
@@ -137,7 +137,7 @@ void CPrefs::WriteFile()
 			file.Close();
 		}
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logKadPrefs, wxT("IO failure while saving kad-prefs: ") + e.what());
+		AddDebugLogLineC(logKadPrefs, wxT("IO failure while saving kad-prefs: ") + e.what());
 	}
 }
 
@@ -197,29 +197,21 @@ void CPrefs::SetKademliaFiles()
 	uint32_t nServerAverage = theApp->serverlist->GetAvgFile();
 	uint32_t nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
-#ifdef __DEBUG__
-	wxString method;
-#endif
+	DEBUG_ONLY( wxString method; )
+
 	if (nServerAverage > nKadAverage) {
-#ifdef __DEBUG__
-		method = wxString::Format(wxT("Kad file estimate used Server avg(%u)"), nServerAverage);
-#endif
+		DEBUG_ONLY( method = wxString::Format(wxT("Kad file estimate used Server avg(%u)"), nServerAverage); )
 		nKadAverage = nServerAverage;
+	} else {
+		DEBUG_ONLY( method = wxString::Format(wxT("Kad file estimate used Kad avg(%u)"), nKadAverage); )
 	}
-#ifdef __DEBUG__
-	   else {
-		method = wxString::Format(wxT("Kad file estimate used Kad avg(%u)"), nKadAverage);
-	}
-#endif
+
 	if( nKadAverage < 108 ) {
-#ifdef __DEBUG__
-		method = wxString(wxT("Kad file estimate used default avg(108, min value)"));
-#endif
+		DEBUG_ONLY( method = wxString(wxT("Kad file estimate used default avg(108, min value)")); )
 		nKadAverage = 108;
 	}
-#ifdef ___DEBUG__
-	AddDebugLogLineM(false, logKadPrefs, method);
-#endif
+
+	AddDebugLogLineN(logKadPrefs, method);
 	m_kademliaFiles = nKadAverage * m_kademliaUsers;
 }
 
@@ -275,7 +267,7 @@ float CPrefs::StatsGetKadV8Ratio()
 		uint32_t nV8Contacts = 0;
 		uint32_t nNonV8Contacts = 0;
 		CKademlia::GetRoutingZone()->GetNumContacts(nV8Contacts, nNonV8Contacts, 8);
-		AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"), nV8Contacts, nNonV8Contacts + nV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100));
+		AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"), nV8Contacts, nNonV8Contacts + nV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100));
 		if (nV8Contacts > 0) {
 			m_statsKadV8Ratio = ((float)nV8Contacts / (float)(nV8Contacts + nNonV8Contacts));
 		} else {
@@ -294,12 +286,12 @@ void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 			}
 		}
 		m_externPortIPs.push_back(fromIP);
-		AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + KadIPToString(fromIP));
+		AddDebugLogLineN(logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + KadIPToString(fromIP));
 		// if 2 out of 3 tries result in the same external port it's fine, otherwise consider it unreliable
 		for (unsigned i = 0; i < m_externPorts.size(); i++) {
 			if (m_externPorts[i] == port) {
 				m_externKadPort = port;
-				AddDebugLogLineM(false, logKadPrefs, wxString::Format(wxT("Set external Kad port to %u"), port));
+				AddDebugLogLineN(logKadPrefs, wxString::Format(wxT("Set external Kad port to %u"), port));
 				while (m_externPortIPs.size() < EXTERNAL_PORT_ASKIPS) {
 					// add empty entries so we know the check has finished even if we asked less than max IPs
 					m_externPortIPs.push_back(0);
@@ -309,7 +301,7 @@ void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 		}
 		m_externPorts.push_back(port);
 		if (!FindExternKadPort(false)) {
-			AddDebugLogLineM(false, logKadPrefs, wxT("Our external port seems unreliable, not using it for firewallchecks"));
+			AddDebugLogLineN(logKadPrefs, wxT("Our external port seems unreliable, not using it for firewallchecks"));
 			m_externKadPort = 0;
 		}
 	}

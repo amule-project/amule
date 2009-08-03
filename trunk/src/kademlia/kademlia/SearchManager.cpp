@@ -196,12 +196,12 @@ CSearch* CSearchManager::PrepareLookup(uint32_t type, bool start, const CUInt128
 			m_searches[id] = s;
 			s->Go();
 		}
-	}catch (const CEOFException& err) {
+	} catch (const CEOFException& err) {
 		delete s;
-		AddDebugLogLineM( false, logKadSearch, wxT("CEOFException in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what());
+		AddDebugLogLineN(logKadSearch, wxT("CEOFException in CSearchManager::PrepareLookup: ") + err.what());
 		return NULL;
 	} catch (...) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearchManager::prepareLookup"));
+		AddDebugLogLineN(logKadSearch, wxT("Exception in CSearchManager::PrepareLookup"));
 		delete s;
 		throw;
 	}
@@ -483,7 +483,7 @@ void CSearchManager::ProcessResponse(const CUInt128& target, uint32_t fromIP, ui
 
 	// If this search was deleted before this response, delete contacts and abort, otherwise process them.
 	if (s == NULL) {
-		AddDebugLogLineM(false, logKadSearch,
+		AddDebugLogLineN(logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResponse)"));
 		for (ContactList::const_iterator it2 = results->begin(); it2 != results->end(); ++it2) {
 			delete *it2;
@@ -506,7 +506,7 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 
 	// If this search was deleted before these results, delete contacts and abort, otherwise process them.
 	if (s == NULL) {
-		AddDebugLogLineM (false, logKadSearch,
+		AddDebugLogLineN(logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResult)"));
 		deleteTagPtrListEntries(info);
 		delete info;
@@ -518,7 +518,7 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 bool CSearchManager::FindNodeSpecial(const CUInt128& id, CKadClientSearcher *requester)
 {
 	// Do a node lookup.
-	AddDebugLogLineM(false, logKadSearch, wxT("Starting NODESPECIAL Kad Search for ") + id.ToHexString());
+	AddDebugLogLineN(logKadSearch, wxT("Starting NODESPECIAL Kad Search for ") + id.ToHexString());
 	CSearch *search = new CSearch;
 	search->SetSearchTypes(CSearch::NODESPECIAL);
 	search->SetTargetID(id);
@@ -530,7 +530,7 @@ bool CSearchManager::FindNodeFWCheckUDP()
 {
 	CancelNodeFWCheckUDPSearch();
 	CUInt128 id(GetRandomUint128());
-	AddDebugLogLineM(false, logKadSearch, wxT("Starting NODEFWCHECKUDP Kad Search"));
+	AddDebugLogLineN(logKadSearch, wxT("Starting NODEFWCHECKUDP Kad Search"));
 	CSearch *search = new CSearch;
 	search->SetSearchTypes(CSearch::NODEFWCHECKUDP);
 	search->SetTargetID(id);

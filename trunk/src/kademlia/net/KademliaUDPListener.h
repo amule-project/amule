@@ -64,13 +64,8 @@ struct FetchNodeID_Struct {
 	CKadClientSearcher* requester;
 };
 
-#ifdef __DEBUG__
-#	define DebugSendF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" to ")) + KadIPPortToString(ip, port))
-#	define DebugRecvF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" from ")) + KadIPPortToString(ip, port))
-#else
-#	define DebugSendF(what, ip, port)
-#	define DebugRecvF(what, ip, port)
-#endif
+#define DebugSendF(what, ip, port)	AddDebugLogLineN(logClientKadUDP, what + wxString(wxT(" to ")) + KadIPPortToString(ip, port))
+#define DebugRecvF(what, ip, port)	AddDebugLogLineN(logClientKadUDP, what + wxString(wxT(" from ")) + KadIPPortToString(ip, port))
 
 #define DebugSend(what, ip, port)	DebugSendF(wxSTRINGIZE_T(what), ip, port)
 #define DebugRecv(what, ip, port)	DebugRecvF(wxSTRINGIZE_T(what), ip, port)

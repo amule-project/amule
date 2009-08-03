@@ -1,3 +1,4 @@
+
 //
 // This file is part of the aMule Project.
 //
@@ -323,7 +324,7 @@ bool CKeyEntry::SearchTermsMatch(const SSearchTerm* searchTerm) const
 	return false;
 }
 
-void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& WXUNUSED(dbgReason))
+void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& DEBUG_ONLY(dbgReason))
 {
 	uint32_t count = 0;
 	bool found = false;
@@ -344,9 +345,11 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 	} else {
 		wxFAIL;
 	}
-	//LOGTODO
-	//if (!dbgReason.IsEmpty())
-	//	AddDebugLogLineM(false, logKadEntryTracking, (increase ? wxT("Adding ") : wxT("Removing ")) + KadIPToString(ip & 0xFFFFFF00) + wxT(" (") + KadIPToString(ip) + wxT(") - (") + dbgReason + wxString::Format(wxT("), new count %u"),count));
+#ifdef __DEBUG__
+	if (!dbgReason.IsEmpty()) {
+		AddDebugLogLineN(logKadEntryTracking, (increase ? wxT("Adding ") : wxT("Removing ")) + KadIPToString(ip & 0xFFFFFF00) + wxT(" (") + KadIPToString(ip) + wxT(") - (") + dbgReason + wxString::Format(wxT("), new count %u"),count));
+	}
+#endif
 }
 
 void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
@@ -381,7 +384,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			if (it->m_ip == m_uIP) {
 				refresh = true;
 				if ((time(NULL) - it->m_lastPublish) < (KADEMLIAREPUBLISHTIMES - HR2S(1))) {
-					//AddDebugLogLineM(false, logKadEntryTracking, wxT("FastRefresh publish, ip: ") + KadIPToString(m_uIP));
+					AddDebugLogLineN(logKadEntryTracking, wxT("FastRefresh publish, ip: ") + KadIPToString(m_uIP));
 					fastRefresh = true; // refreshed faster than expected, will not count into filenamepopularity index
 				}
 				it->m_lastPublish = time(NULL);
@@ -439,9 +442,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		// since we added a new publisher, we want to (re)calculate the trust value for this entry		
 		ReCalculateTrustValue();
 	}
-// #ifdef __DEBUG__
-// 	AddDebugLogLineM(false, logKadEntryTracking, wxString(wxT("Indexed Keyword, Refresh: ")) + (refresh ? wxT("Yes") : wxT("No")) + wxT(", Current Publisher: ") + KadIPToString(m_uIP) + wxString::Format(wxT(", Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: "), m_publishingIPs->size(), m_filenames.size(), m_trustValue) + m_uSourceID.ToHexString());
-// #endif
+	AddDebugLogLineN(logKadEntryTracking, wxString(wxT("Indexed Keyword, Refresh: ")) + (refresh ? wxT("Yes") : wxT("No")) + wxT(", Current Publisher: ") + KadIPToString(m_uIP) + wxString::Format(wxT(", Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: "), m_publishingIPs->size(), m_filenames.size(), m_trustValue) + m_uSourceID.ToHexString());
 }
 
 void CKeyEntry::ReCalculateTrustValue()
@@ -476,7 +477,7 @@ void CKeyEntry::ReCalculateTrustValue()
 		if (count > 0) {
 			m_trustValue += PUBLISHPOINTSSPERSUBNET / count;
 		} else {
-			AddDebugLogLineM(false, logKadEntryTracking, wxT("Inconsistency in RecalcualteTrustValue()"));
+			AddDebugLogLineN(logKadEntryTracking, wxT("Inconsistency in RecalcualteTrustValue()"));
 			wxFAIL;
 		}
 	}
@@ -563,7 +564,7 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CFileDataIO* data)
 	ReCalculateTrustValue();
 // #ifdef __DEBUG__
 // 	if (GetTrustValue() < 1.0) {
-// 		AddDebugLogLineM(false, logKadEntryTracking, wxString::Format(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file "), nameCount, ipCount, GetTrustValue()) + m_uSourceID.ToHexString());
+// 		AddDebugLogLineN(logKadEntryTracking, wxString::Format(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file "), nameCount, ipCount, GetTrustValue()) + m_uSourceID.ToHexString());
 // 	}
 // #endif
 }
