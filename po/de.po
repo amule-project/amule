@@ -13,16 +13,13 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-03 11:49+0200\n"
-"PO-Revision-Date: 2009-06-16 09:36+0200\n"
+"PO-Revision-Date: 2009-08-03 12:16+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-Bookmarks: -1,1188,-1,-1,-1,-1,-1,-1,-1,-1\n"
-"X-Poedit-Basepath: /home/johkra/temp/aMule/trunk\n"
-"X-Poedit-SearchPath-0: /home/johkra/temp/aMule/trunk\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -7569,7 +7566,7 @@ msgstr "Anfrage verarbeiten [original]: "
 
 #: src/webserver/src/WebServer.cpp:1870
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Kein Passwort angegeben, Anmeldung wird nicht erlaubt."
 
 #: src/webserver/src/WebServer.cpp:1872
 msgid "Checking password\n"
