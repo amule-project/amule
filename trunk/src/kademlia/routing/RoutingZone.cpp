@@ -214,7 +214,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 		if (validContacts == 0) {
 			AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
 		}
-	} catch (const CSafeIOException& e) {
+	} catch (const CSafeIOException& DEBUG_ONLY(e)) {
 		AddDebugLogLineN(logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
 	}
 }
