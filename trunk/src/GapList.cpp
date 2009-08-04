@@ -278,6 +278,14 @@ bool CGapList::IsComplete(uint64 gapstart, uint64 gapend) const
 
 bool CGapList::IsComplete(uint16 part)
 {
+// There is a bug in the ED2K protocol:
+// For files of size n * PARTSIZE one part too much is transmitted in the availability bitfield.
+// Allow completion detection of this dummy part, and always report it as complete
+// (so it doesn't get asked for).
+	if (part == m_iPartCount && m_sizeLastPart == PARTSIZE) {
+		return true;
+	}
+// Remaining error check
 	if (part >= m_iPartCount) {
 		wxFAIL;
 		return false;
