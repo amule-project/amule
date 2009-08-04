@@ -196,7 +196,7 @@ CSearch* CSearchManager::PrepareLookup(uint32_t type, bool start, const CUInt128
 			m_searches[id] = s;
 			s->Go();
 		}
-	} catch (const CEOFException& err) {
+	} catch (const CEOFException& DEBUG_ONLY(err)) {
 		delete s;
 		AddDebugLogLineN(logKadSearch, wxT("CEOFException in CSearchManager::PrepareLookup: ") + err.what());
 		return NULL;
