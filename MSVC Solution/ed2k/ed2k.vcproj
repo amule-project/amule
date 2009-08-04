@@ -43,7 +43,7 @@
 				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="_DEBUG;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;USE_STD_STRING;_SCL_SECURE_NO_WARNINGS"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"

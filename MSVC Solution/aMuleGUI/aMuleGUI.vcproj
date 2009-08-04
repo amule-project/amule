@@ -806,6 +806,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\include\common\Macros.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\MagnetURI.h"
 				>
 			</File>
