@@ -47,6 +47,11 @@
 #include "PartFileConvert.h"
 #include "KadDlg.h"
 
+#ifdef __WXMSW__
+#define STYLE_FastEd2kLinks wxHSCROLL
+#else
+#define STYLE_FastEd2kLinks 0
+#endif
 
 // Implement window functions
 
@@ -69,7 +74,7 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item3 = new wxStaticText( parent, -1, _("eD2k Link: "), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item3, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, -1, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE|wxHSCROLL );
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, -1, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE|STYLE_FastEd2kLinks );
     item4->SetName( wxT("FastEd2kLinks") );
     item2->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
