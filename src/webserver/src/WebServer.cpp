@@ -332,7 +332,7 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 	const CSession* session = CheckLoggedin(Data);
 
 	// To prevent access to non-template images, we disallow use of paths in filenames.
-	wxString imgName = wxFileName::GetPathSeparator() + wxFileName(Data.parsedURL.File()).GetFullName();
+	wxString imgName = wxT("/") + wxFileName(Data.parsedURL.File()).GetFullName();
 	CAnyImage *img = m_ImageLib.GetImage(imgName);
 	
 	// Only static images are available to visitors, in order to prevent
