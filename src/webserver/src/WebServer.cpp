@@ -776,8 +776,9 @@ void DownloadFileInfo::ItemDeleted(DownloadFile *item)
 {
 #ifdef WITH_LIBPNG
 	m_ImageLib->RemoveImage(wxT("/") + item->m_Image->Name());
-#endif
+#else
 	delete item->m_Image;
+#endif
 }
 
 bool DownloadFileInfo::ReQuery()
@@ -1707,7 +1708,7 @@ void CImageLib::RemoveImage(const wxString &name)
 	}
 }
 
-CAnyImage *CImageLib::GetImage(wxString &name)
+CAnyImage *CImageLib::GetImage(const wxString &name)
 {
 	ImageMap::iterator it = m_image_map.find(name);
 	if (it != m_image_map.end()) {

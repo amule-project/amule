@@ -641,7 +641,7 @@ class CImageLib {
 		CImageLib(wxString image_dir);
 		~CImageLib();
 		
-		CAnyImage *GetImage(wxString &name);
+		CAnyImage *GetImage(const wxString &name);
 		void AddImage(CAnyImage *img, const wxString &name);
 		void RemoveImage(const wxString &name);
 };
