@@ -22,12 +22,6 @@
 #	include "muuli_wdr.h"
 #endif
 
-#ifdef AMULE_DAEMON
-#	define NOT_ON_DAEMON(x) WXUNUSED(x)
-#else
-#	define NOT_ON_DAEMON(x) x
-#endif
-
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
 
