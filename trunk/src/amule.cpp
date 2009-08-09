@@ -1718,8 +1718,16 @@ void CamuleApp::ShutDown()
 	}
 	
 	CThreadScheduler::Terminate();
-	
-	theApp->uploadBandwidthThrottler->EndThread();
+
+	// Now we have tried to delete all our clients and sockets,
+	// but wx 2.9 has only scheduled them for deletion. 
+	// Force deletion now, or it will occur when we wait for a locket mutex,
+	// and the uploadBandwidthThrottler will crash on invalid objects.
+	AddDebugLogLineN(logGeneral, wxT("Cleanup pending objects."));
+	ProcessPendingEvents();
+
+	AddDebugLogLineN(logGeneral, wxT("Terminate upload thread."));
+	uploadBandwidthThrottler->EndThread();
 
 	// Log
 	AddDebugLogLineM(false, logGeneral, wxT("CamuleApp::ShutDown() has ended."));
