@@ -21,8 +21,6 @@ Version 2.3.0 - The river knows.
 		  (port from eMule v0.49b)
 		* Dropped assumption that last search keyword is a filename
 		  extension if length == 3.
-		* Fixed obfuscated server UDP communication.
-		* Fixed cross-endian Kad node verification.
 
 	Greek:
 		* Part number is now an extra column in the download list
@@ -53,9 +51,6 @@ Version 2.3.0 - The river knows.
 	morph:
 		* Patch to uniform and fix minor errors on man pages
 
-	mr_hyde:
-		* Fixed a bug in detecting and using the fallocate() function.
-
 	myth:
 		* Feedback from shared files - add number of clients on queue.
 
@@ -85,15 +80,12 @@ Version 2.3.0 - The river knows.
 		* Fixed client information and stopped files in remote gui
 		* Don't kick friend upload, don't kick release prio uploads (unless they take more
 		  than half of the slots), and don't kick anybody else unless necessary (with GonoszTopi)
-		* Fixed HTTP download if server transmits no content-length
 		* Fixed crash in remote gui when aMule exits
 		* Added more media file types from eMule
-		* Fixed several cases of amulecmd printing zero on big endian machines
 		* Allow the user to cancel the app if Temp/Incoming is not found
 		* Show downloads as shares in remote gui
 		* Added a bunch of missing details in remote gui
 		* amuleweb for Windows (with wx 2.9)
-		* Fixed amuleweb crashing on tiny downloads
 		* Show connected friends in blue in the friend list
 		* Show total upload/download ratio in statistic tree
 
@@ -119,6 +111,27 @@ Version 2.3.0 - The river knows.
 		* btkaos for his important work finding the source of bugs.
 		* myth for seeing when everyone else was blind and uncovering
 		  the grandfather of all fuck-ups
+
+--------------------------------------------------------------------------------
+
+Version 2.2.6 - The "I won't tell you" version.
+----------
+2009-08-??
+
+	GonoszTopi:
+		* Fixed obfuscated server UDP communication.
+		* Fixed cross-endian Kad node verification.
+
+	mr_hyde:
+		* Fixed a bug in detecting and using the fallocate() function.
+
+	Sam Hocevar:
+		* Now really fixed that security issue.
+
+	Stu Redman:
+		* Fixed HTTP download if server transmits no content-length
+		* Fixed several cases of amulecmd printing zero on big endian machines
+		* Fixed amuleweb crashing on tiny downloads
 
 --------------------------------------------------------------------------------
 
