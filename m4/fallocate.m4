@@ -25,8 +25,14 @@
 AC_DEFUN([MULE_CHECK_FALLOCATE],
 [
 	AC_MSG_CHECKING([for fallocate])
+	MULE_BACKUP([CPPFLAGS])
+	MULE_APPEND([CPPFLAGS], [$WX_CPPFLAGS])
 	AC_LINK_IFELSE([
 		AC_LANG_PROGRAM([[
+			#define _GNU_SOURCE
+			#ifdef HAVE_FCNTL_H
+			#  include <fcntl.h>
+			#endif
 			#include <linux/falloc.h>
 		]], [[
 			fallocate(0, 0, 0, 0);
@@ -38,12 +44,13 @@ AC_DEFUN([MULE_CHECK_FALLOCATE],
 	], [
 		AC_MSG_RESULT([no])
 	])
+	MULE_RESTORE([CPPFLAGS])
 
 
 	AC_MSG_CHECKING([for SYS_fallocate])
 	AC_LINK_IFELSE([
 		AC_LANG_PROGRAM([[
-			#include <sys/sycall.h>
+			#include <sys/syscall.h>
 			#include <sys/types.h>
 			#include <unistd.h>
 		]], [[
