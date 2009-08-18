@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-02 16:50+0200\n"
+"POT-Creation-Date: 2009-08-18 18:52+0200\n"
 "PO-Revision-Date: 2008-12-11 22:22+0100\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -84,46 +84,46 @@ msgstr "Prenašanje"
 msgid "Waiting"
 msgstr "Na čakanju"
 
-#: src/ThreadTasks.cpp:130
+#: src/ThreadTasks.cpp:133
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Začetek ustvarjanja hasha MD4 in AICH za datoteko: %s"
 
-#: src/ThreadTasks.cpp:134
+#: src/ThreadTasks.cpp:137
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Začetek ustvarjanja hasha MD4 za datoteko: %s"
 
-#: src/ThreadTasks.cpp:138
+#: src/ThreadTasks.cpp:141
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Začetek ustvarjanja hasha AICH za datoteko: %s"
 
-#: src/ThreadTasks.cpp:347
+#: src/ThreadTasks.cpp:350
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Pretvarjanje starih hashov AICH v '%s' v 64b v '%s'."
 
-#: src/ThreadTasks.cpp:426
+#: src/ThreadTasks.cpp:429
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "OPOZORILO: Ime datoteke '%s' ni veljavno in je bilo preimenovano v '%s'."
 
-#: src/ThreadTasks.cpp:439
+#: src/ThreadTasks.cpp:442
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
 "OPOZORILO: Datoteka '%s' že obstaja, nova datoteka je preimenovana v '%s'."
 
-#: src/ThreadTasks.cpp:452
+#: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "OPOZORILO: Ni bilo mogoče odstraniti izvirnika '%s' po izdelavi varnostne "
 "kopije"
 
-#: src/ThreadTasks.cpp:464
+#: src/ThreadTasks.cpp:467
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "OPOZORILO: Ni bilo mogoče zbrisati %s"
@@ -141,11 +141,11 @@ msgstr "Ni bilo mogoče dobiti deljenih datotek od uporabnika '%s'"
 #: src/DownloadListCtrl.cpp:1431 src/DownloadListCtrl.cpp:1442
 #: src/PartFile.cpp:2619 src/PartFile.cpp:2625 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
-#: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
-#: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
+#: src/ClientListCtrl.cpp:678 src/ClientListCtrl.cpp:701
+#: src/ClientListCtrl.cpp:709 src/ClientListCtrl.cpp:872
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
-#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:406
+#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:416
 msgid "Unknown"
 msgstr "Neznano"
 
@@ -211,8 +211,8 @@ msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Odjemalec %s na IP:Vratih %s:%d uporablja %s %s %s"
 
 #: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:55
-#: src/ClientListCtrl.cpp:504 src/ClientListCtrl.cpp:829
-#: src/ClientListCtrl.cpp:997
+#: src/ClientListCtrl.cpp:509 src/ClientListCtrl.cpp:834
+#: src/ClientListCtrl.cpp:1002
 msgid "Username"
 msgstr "Uporabniško ime"
 
@@ -221,7 +221,7 @@ msgid "Friends"
 msgstr "Prijatelji"
 
 #: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1013
-#: src/ClientListCtrl.cpp:253
+#: src/ClientListCtrl.cpp:258
 msgid "Show &Details"
 msgstr "Prikaži Po&drobnosti"
 
@@ -238,7 +238,7 @@ msgid "Send &Message"
 msgstr "Pošlji &sporočilo"
 
 #: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1015
-#: src/ClientListCtrl.cpp:255
+#: src/ClientListCtrl.cpp:260
 msgid "View Files"
 msgstr "Poglej datoteke"
 
@@ -361,8 +361,8 @@ msgstr "Prenesenih podatkov"
 msgid "Share Ratio"
 msgstr "Delilno razmerje"
 
-#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:512
-#: src/ClientListCtrl.cpp:839
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:517
+#: src/ClientListCtrl.cpp:844
 msgid "Obtained Parts"
 msgstr "Dobljeni deli"
 
@@ -688,6 +688,11 @@ msgstr "Prenašanje..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
+#: src/HTTPDownload.cpp:239
+#, c-format
+msgid "Expected %d bytes, but downloaded %d bytes"
+msgstr ""
+
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
 msgid "Preferences"
@@ -945,12 +950,12 @@ msgid " Kad: "
 msgstr " Kad: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
-#: src/utils/wxCas/src/wxcasframe.cpp:1081 src/TextClient.cpp:712
+#: src/utils/wxCas/src/wxcasframe.cpp:1081 src/TextClient.cpp:710
 msgid "ok"
 msgstr "V redu"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1061
-#: src/utils/wxCas/src/wxcasframe.cpp:1083 src/TextClient.cpp:710
+#: src/utils/wxCas/src/wxcasframe.cpp:1083 src/TextClient.cpp:708
 msgid "firewalled"
 msgstr "za požarnim zidom"
 
@@ -1049,13 +1054,13 @@ msgid "HighID"
 msgstr "Visok ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
-#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:878
+#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:883
 #: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "Nizek ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:408
 msgid "Not Connected"
 msgstr "Ni povezave"
 
@@ -1167,7 +1172,7 @@ msgstr "Shrani"
 msgid "Copy to clipboard"
 msgstr "Kopiraj v odložišče"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:558
+#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:568
 msgid "Exit"
 msgstr "Izhod"
 
@@ -1309,7 +1314,7 @@ msgstr "Samod. [No]"
 msgid "Auto [Hi]"
 msgstr "Samod. [Vi]"
 
-#: src/DataToText.cpp:61 src/amuleDlg.cpp:538 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:61 src/amuleDlg.cpp:538 src/ClientListCtrl.cpp:657
 #: src/amule.cpp:803
 msgid "Connecting"
 msgstr "Povezovanje"
@@ -1318,20 +1323,20 @@ msgstr "Povezovanje"
 msgid "Asking"
 msgstr "Povpraševanje"
 
-#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:656
+#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:661
 msgid "Connecting via server"
 msgstr "Povezovanje preko strežnika"
 
 #: src/DataToText.cpp:64 src/DownloadListCtrl.cpp:1688
-#: src/ClientListCtrl.cpp:691
+#: src/ClientListCtrl.cpp:696
 msgid "Queue Full"
 msgstr "Vrsta polna"
 
-#: src/DataToText.cpp:64 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:669
+#: src/DataToText.cpp:64 src/TransferWnd.cpp:455 src/ClientListCtrl.cpp:674
 msgid "On Queue"
 msgstr "V vrsti"
 
-#: src/DataToText.cpp:65 src/ClientListCtrl.cpp:661
+#: src/DataToText.cpp:65 src/ClientListCtrl.cpp:666
 msgid "Transferring"
 msgstr "Prenašanje"
 
@@ -1360,7 +1365,7 @@ msgid "Too many Kad connections"
 msgstr "Preveč povezav Kad"
 
 #: src/DataToText.cpp:73 src/Statistics.cpp:710 src/TransferWnd.cpp:309
-#: src/ClientListCtrl.cpp:838
+#: src/ClientListCtrl.cpp:843
 msgid "Banned"
 msgstr "Izločen"
 
@@ -1392,7 +1397,7 @@ msgstr "Krajeven strežnik"
 msgid "Remote Server"
 msgstr "Oddaljen strežnik"
 
-#: src/DataToText.cpp:130 src/TextClient.cpp:705 src/muuli_wdr.cpp:197
+#: src/DataToText.cpp:130 src/TextClient.cpp:703 src/muuli_wdr.cpp:197
 #: src/muuli_wdr.cpp:3622 src/SearchDlg.cpp:109
 msgid "Kad"
 msgstr "Kad"
@@ -1680,15 +1685,15 @@ msgstr "(Neznano ime)"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Ali ste prepričani, da želite izbrisati statičen strežnik %s?"
 
-#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:907
-#: src/ClientListCtrl.cpp:1050 src/ClientListCtrl.cpp:1063
-#: src/ClientListCtrl.cpp:1069
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:912
+#: src/ClientListCtrl.cpp:1055 src/ClientListCtrl.cpp:1068
+#: src/ClientListCtrl.cpp:1074
 msgid "Yes"
 msgstr "Da"
 
-#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:909
-#: src/ClientListCtrl.cpp:1052 src/ClientListCtrl.cpp:1063
-#: src/ClientListCtrl.cpp:1069
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:914
+#: src/ClientListCtrl.cpp:1057 src/ClientListCtrl.cpp:1068
+#: src/ClientListCtrl.cpp:1074
 msgid "No"
 msgstr "Ne"
 
@@ -1881,7 +1886,7 @@ msgstr "Kad: Izklopljen"
 msgid "Stop the current connection attempts"
 msgstr "Ustavi trenutne poskuse povezovanja"
 
-#: src/amuleDlg.cpp:757 src/muuli_wdr.cpp:2850 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:757 src/muuli_wdr.cpp:2850 src/MuleTrayIcon.cpp:547
 msgid "Disconnect"
 msgstr "Prekini"
 
@@ -1890,7 +1895,7 @@ msgid "Disconnect from the currently connected networks"
 msgstr "Prekini povezavo s trenutno povezanimi omrežji"
 
 #: src/amuleDlg.cpp:763 src/muuli_wdr.cpp:3033 src/muuli_wdr.cpp:3466
-#: src/muuli_wdr.cpp:3668 src/MuleTrayIcon.cpp:540
+#: src/muuli_wdr.cpp:3668 src/MuleTrayIcon.cpp:550
 msgid "Connect"
 msgstr "Poveži"
 
@@ -2469,14 +2474,14 @@ msgstr ""
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Neveljaven 'opcode' (napačna različica protokola?)"
 
-#: src/UploadClient.cpp:271
+#: src/UploadClient.cpp:273
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr ""
 "Ni bilo mogoče odpreti datoteke (%s), odstranjevanje iz seznama deljenih "
 "datotek."
 
-#: src/UploadClient.cpp:716
+#: src/UploadClient.cpp:718
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Zahtevan je bil hashset za neznano datoteko: %s"
@@ -2498,8 +2503,8 @@ msgstr "Strežnik ni bil dodan: navedena so neveljavna vrata strežnika."
 msgid "eD2k Status:"
 msgstr "eD2k status:"
 
-#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:708
-#: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
+#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:706
+#: src/ClientListCtrl.cpp:1008 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "Povezan"
 
@@ -2559,11 +2564,11 @@ msgstr "Povprečno uporabnikov: "
 msgid "Average Files:"
 msgstr "Povprečno datotek:"
 
-#: src/ServerWnd.cpp:253 src/TextClient.cpp:719
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:717
 msgid "Not running"
 msgstr "Ne teče"
 
-#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:457
 #, c-format
 msgid "Uptime: %s"
 msgstr "Neprekinjeno delovanje: %s"
@@ -2572,7 +2577,7 @@ msgstr "Neprekinjeno delovanje: %s"
 msgid "Transfer"
 msgstr "Prenos"
 
-#: src/Statistics.cpp:648 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:467
+#: src/Statistics.cpp:648 src/TransferWnd.cpp:451 src/muuli_wdr.cpp:467
 msgid "Uploads"
 msgstr "Prenosi gor"
 
@@ -2715,7 +2720,7 @@ msgstr "Povprečnih povezav (približek): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Povezav v konici (približek): %i"
 
-#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:459 src/ClientListCtrl.cpp:257
 msgid "Clients"
 msgstr "Odjemalci"
 
@@ -2962,8 +2967,8 @@ msgstr "Naveden hash uporabnika ni veljaven!"
 msgid "Sources"
 msgstr "Viri"
 
-#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:505
-#: src/ClientListCtrl.cpp:830
+#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:510
+#: src/ClientListCtrl.cpp:835
 msgid "File"
 msgstr "Datoteka"
 
@@ -3031,11 +3036,11 @@ msgstr "Vse"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Skupno uporabnikov: %s | Skupno datotek: %s"
 
-#: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:508
+#: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:513
 msgid "Transferred"
 msgstr "Preneseno"
 
-#: src/DownloadListCtrl.cpp:193 src/ClientListCtrl.cpp:507
+#: src/DownloadListCtrl.cpp:193 src/ClientListCtrl.cpp:512
 msgid "Speed"
 msgstr "Hitrost"
 
@@ -3044,7 +3049,7 @@ msgid "Progress"
 msgstr "Potek"
 
 #: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3937
-#: src/ClientListCtrl.cpp:511
+#: src/ClientListCtrl.cpp:516
 msgid "Status"
 msgstr "Stanje"
 
@@ -3068,11 +3073,11 @@ msgstr "Ali ste prepričani, da želite zbrisati označeno datoteko?"
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Ali ste prepričani, da želite zbrisati označene datoteke?"
 
-#: src/DownloadListCtrl.cpp:845 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:845 src/ClientListCtrl.cpp:365
 msgid "Send message to user"
 msgstr "Pošlji uporabniku sporočilo"
 
-#: src/DownloadListCtrl.cpp:846 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:846 src/ClientListCtrl.cpp:365
 msgid "Message to send:"
 msgstr "Sporočilo:"
 
@@ -3136,15 +3141,15 @@ msgstr "Dodeli kategoriji"
 msgid "&Open the file"
 msgstr "&Odpri datoteko"
 
-#: src/DownloadListCtrl.cpp:1014 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1014 src/ClientListCtrl.cpp:259
 msgid "Remove from friends"
 msgstr "Odstrani iz seznama prijateljev"
 
-#: src/DownloadListCtrl.cpp:1014 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1014 src/ClientListCtrl.cpp:259
 msgid "Add to Friends"
 msgstr "Dodaj med prijatelje"
 
-#: src/DownloadListCtrl.cpp:1016 src/ClientListCtrl.cpp:256
+#: src/DownloadListCtrl.cpp:1016 src/ClientListCtrl.cpp:261
 msgid "Send message"
 msgstr "Pošlji sporočilo"
 
@@ -3156,7 +3161,7 @@ msgstr "Prenesi k tej datoteki"
 #: src/OtherFunctions.cpp:145 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1757 src/muuli_wdr.cpp:1770
 #: src/muuli_wdr.cpp:1783 src/muuli_wdr.cpp:2235 src/muuli_wdr.cpp:2244
-#: src/ClientListCtrl.cpp:634 src/ClientListCtrl.cpp:702
+#: src/ClientListCtrl.cpp:639 src/ClientListCtrl.cpp:707
 msgid "kB/s"
 msgstr "kB/s"
 
@@ -3192,7 +3197,7 @@ msgstr ""
 msgid "File preview"
 msgstr "Predogled datoteke"
 
-#: src/DownloadListCtrl.cpp:2312
+#: src/DownloadListCtrl.cpp:2320
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "NAPAKA: Ni bilo mogoče zagnati zunanjega predvajalnika!  Ukaz: `%s'"
@@ -3428,7 +3433,7 @@ msgstr ""
 msgid "File Comments"
 msgstr "Komentarji o datoteki"
 
-#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:833
+#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:838
 msgid "Rating"
 msgstr "Ocena"
 
@@ -3543,11 +3548,11 @@ msgid_plural "Found %u part files"
 msgstr[0] "Najdenih %u delnih datotek"
 msgstr[1] "Najdenih %u delnih datotek"
 
-#: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1371
+#: src/DownloadQueue.cpp:227 src/DownloadQueue.cpp:1365
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 
-#: src/DownloadQueue.cpp:230 src/DownloadQueue.cpp:1374
+#: src/DownloadQueue.cpp:230 src/DownloadQueue.cpp:1368
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 
@@ -3571,17 +3576,17 @@ msgstr "Datoteko '%s' že imate."
 msgid "You are already trying to download the file %s"
 msgstr "Datoteko %s že poskušate prenesti."
 
-#: src/DownloadQueue.cpp:1305
+#: src/DownloadQueue.cpp:1299
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1313
+#: src/DownloadQueue.cpp:1307
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Neznan protokol povezave: %s"
 
-#: src/DownloadQueue.cpp:1334
+#: src/DownloadQueue.cpp:1328
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr ""
@@ -3654,38 +3659,38 @@ msgstr "Filtriranje IP za strežnike je %s.\n"
 msgid "Current IPFilter Level is %d.\n"
 msgstr "Trenutna stopnja IP Filtra je %d.\n"
 
-#: src/TextClient.cpp:672
+#: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:690
+#: src/TextClient.cpp:688
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:695
+#: src/TextClient.cpp:693
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Povezan z %s %s %s"
 
-#: src/TextClient.cpp:698 src/amule.cpp:2100
+#: src/TextClient.cpp:696 src/amule.cpp:2100
 msgid "with LowID"
 msgstr "z Nizkim ID-jem"
 
-#: src/TextClient.cpp:698 src/amule.cpp:2100
+#: src/TextClient.cpp:696 src/amule.cpp:2100
 msgid "with HighID"
 msgstr "z Visokim ID-jem"
 
-#: src/TextClient.cpp:701
+#: src/TextClient.cpp:699
 msgid "Now connecting"
 msgstr "Povezovanje"
 
-#: src/TextClient.cpp:703 src/TextClient.cpp:716 src/MuleTrayIcon.cpp:383
-#: src/MuleTrayIcon.cpp:397
+#: src/TextClient.cpp:701 src/TextClient.cpp:714 src/MuleTrayIcon.cpp:393
+#: src/MuleTrayIcon.cpp:407
 msgid "Not connected"
 msgstr "Ni povezave"
 
-#: src/TextClient.cpp:725
+#: src/TextClient.cpp:723
 #, c-format
 msgid ""
 "\n"
@@ -3694,7 +3699,7 @@ msgstr ""
 "\n"
 "Prenos dol:\t%s"
 
-#: src/TextClient.cpp:728
+#: src/TextClient.cpp:726
 #, c-format
 msgid ""
 "\n"
@@ -3703,7 +3708,7 @@ msgstr ""
 "\n"
 "Prenos gor:\t%s"
 
-#: src/TextClient.cpp:731
+#: src/TextClient.cpp:729
 #, c-format
 msgid ""
 "\n"
@@ -3712,7 +3717,7 @@ msgstr ""
 "\n"
 "Odjemalcev v vrsti:\t%d\n"
 
-#: src/TextClient.cpp:734
+#: src/TextClient.cpp:732
 #, c-format
 msgid ""
 "\n"
@@ -3721,33 +3726,33 @@ msgstr ""
 "\n"
 "Vseh virov:\t%d\n"
 
-#: src/TextClient.cpp:811
+#: src/TextClient.cpp:809
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Število rezultatov: %i\n"
 
-#: src/TextClient.cpp:824
+#: src/TextClient.cpp:822
 msgid "TODO - show progress of a search"
 msgstr "V PRIHODNJE - prikaz poteka iskanja"
 
-#: src/TextClient.cpp:830
+#: src/TextClient.cpp:828
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Prejet neznan odgovor od strežnika, OpCode = %#x."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:841
 msgid "Show short status information."
 msgstr "Prikaži kratke informacije o stanju."
 
-#: src/TextClient.cpp:844
+#: src/TextClient.cpp:842
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "Prikaži stanje povezave, trenutne hitrosti prenosa gor/dol, itd.\n"
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:844
 msgid "Show full statistics tree."
 msgstr "Prikaži celotno statistično drevo."
 
-#: src/TextClient.cpp:847
+#: src/TextClient.cpp:845
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3766,34 +3771,34 @@ msgstr ""
 "Primer: 'statistics 5' bo prikazalo 5 najpogostejših različic vsakega tipa "
 "odjemalca.\n"
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:847
 msgid "Shut down aMule."
 msgstr "Ugasni aMule."
 
-#: src/TextClient.cpp:850
+#: src/TextClient.cpp:848
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:850
 msgid "Reloads the given object."
 msgstr "Ponovno naloži naveden objekt."
 
-#: src/TextClient.cpp:853
+#: src/TextClient.cpp:851
 msgid "Reloads shared files list."
 msgstr "Ponovno naloži seznam deljenih datotek."
 
-#: src/TextClient.cpp:854
+#: src/TextClient.cpp:852
 msgid "Reloads IP Filter table from file."
 msgstr "Ponovno naloži IP-Filtre iz datoteke."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:854
 msgid "Connect to the network."
 msgstr "Poveži se z omrežjem."
 
-#: src/TextClient.cpp:857
+#: src/TextClient.cpp:855
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3807,35 +3812,35 @@ msgstr ""
 "za povezavo samo s tem strežnikom. IP mora biti s pikami ločen\n"
 "decimalen naslov IPv4 ali razrešljivo ime DNS."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:856
 msgid "Connect to eD2k only."
 msgstr "Poveži se le z eD2k."
 
-#: src/TextClient.cpp:859
+#: src/TextClient.cpp:857
 msgid "Connect to Kad only."
 msgstr "Poveži se samo s Kad."
 
-#: src/TextClient.cpp:861
+#: src/TextClient.cpp:859
 msgid "Disconnect from the network."
 msgstr "Prekini povezavo z omrežjem."
 
-#: src/TextClient.cpp:862
+#: src/TextClient.cpp:860
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "To bo prekinilo povezavo z vsemi omrežji s katerimi ste povezani.\n"
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:861
 msgid "Disconnect from eD2k only."
 msgstr ""
 
-#: src/TextClient.cpp:864
+#: src/TextClient.cpp:862
 msgid "Disconnect from Kad only."
 msgstr "Prekini samo povezavo Kad."
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:864
 msgid "Adds an eD2k or magnet link to core."
 msgstr "Doda eD2k ali magnet povezavo v jedro."
 
-#: src/TextClient.cpp:867
+#: src/TextClient.cpp:865
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3847,105 +3852,105 @@ msgid ""
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:867
 msgid "Set a preference value."
 msgstr "Nastavitvi izbrano vrednost."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:870
 msgid "Set IPFilter preferences."
 msgstr "Nastavi IP Filter."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:871
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "Vključi filtriranje IP-jev za odjemalce in strežnike."
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:872
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "Izključi filtriranje IP-jev za odjemalce in strežnike."
 
-#: src/TextClient.cpp:875
+#: src/TextClient.cpp:873
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Omogoči/Onemogoči filtriranje IP-jev za odjemalce."
 
-#: src/TextClient.cpp:876
+#: src/TextClient.cpp:874
 msgid "Turn IP filtering on for clients."
 msgstr "Vključi filtriranje IP-jev za odjemalce."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:875
 msgid "Turn IP filtering off for clients."
 msgstr "Izključi filtriranje IP-jev za odjemalce."
 
-#: src/TextClient.cpp:878
+#: src/TextClient.cpp:876
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Omogoči/Onemogoči filtriranje IP-jev za strežnike."
 
-#: src/TextClient.cpp:879
+#: src/TextClient.cpp:877
 msgid "Turn IP filtering on for servers."
 msgstr "Vključi filtriranje IP-jev za strežnike."
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:878
 msgid "Turn IP filtering off for servers."
 msgstr "Izključi filtriranje IP-jev za strežnike."
 
-#: src/TextClient.cpp:881
+#: src/TextClient.cpp:879
 msgid "Select IP filtering level."
 msgstr "Izberite stopnjo filtriranja IP-jev."
 
-#: src/TextClient.cpp:882
+#: src/TextClient.cpp:880
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr "Veljavne stopnje filtriranja so od 0-255, privzeta stopnja je 127.\n"
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:882
 msgid "Set bandwidth limits."
 msgstr "Nastavi omejitve povezave."
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:883
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "Vrednost teh ukazov mora biti v kilobajtih/sek.\n"
 
-#: src/TextClient.cpp:886
+#: src/TextClient.cpp:884
 msgid "Set upload bandwidth limit."
 msgstr "Nastavi omejitev prenosa gor."
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:886
 msgid "Set download bandwidth limit."
 msgstr "Nastavi omejitev prenosa dol."
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:889
 msgid "Get and display a preference value."
 msgstr "Dobi in prikaži vrednost nastavitve."
 
-#: src/TextClient.cpp:894
+#: src/TextClient.cpp:892
 msgid "Get IPFilter preferences."
 msgstr "Dobi nastavitve filtriranja IP-jev."
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:893
 msgid "Get IPFilter state for both clients and servers."
 msgstr "Dobi stanje IP Filtra za odjemalce in strežnike."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:894
 msgid "Get IPFilter state for clients only."
 msgstr "Dobi stanje IP Filtra samo za odjemalce."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for servers only."
 msgstr "Dobi stanje IP Filtra samo za strežnike."
 
-#: src/TextClient.cpp:898
+#: src/TextClient.cpp:896
 msgid "Get IPFilter level."
 msgstr "Dobi stopnjo IP Filtra."
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:898
 msgid "Get bandwidth limits."
 msgstr "Dobi omejitve prenosa."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:900
 msgid "Makes a search."
 msgstr "Začne iskanje."
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:901
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3959,39 +3964,39 @@ msgstr ""
 "    KAD (kad)\n"
 "Primer: search kad datoteka' bo izvršilo kad iskanje za \"datoteka\".\n"
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:902
 msgid "Executes a global search."
 msgstr "Izvrši globalno iskanje."
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:903
 msgid "Executes a local search"
 msgstr "Izvrši krajevno iskanje."
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:904
 msgid "Executes a kad search"
 msgstr "Izvrši kad iskanje."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:906
 msgid "Shows the results of the last search."
 msgstr "Prikaže rezultate zadnjega iskanja."
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:907
 msgid "Returns the results of the previous search.\n"
 msgstr "Vrne rezultate prejšnjega iskanja.\n"
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:909
 msgid "Shows the progress of a search."
 msgstr ""
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:910
 msgid "Shows the progress of a search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:912
 msgid "Start downloading a file"
 msgstr "Začni prenašati datoteko"
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:913
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -4001,80 +4006,80 @@ msgstr ""
 "Primer: ukaz 'download 12' bo dodal na seznam prenosov datoteko št. 12 iz "
 "predhodnega iskanja.\n"
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:920
 msgid "Pause download."
 msgstr "Pavziraj prenos."
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:923
 msgid "Resume download."
 msgstr "Nadaljuj prenos."
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:926
 msgid "Cancel download."
 msgstr "Prekliči prenos."
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:929
 msgid "Set download priority."
 msgstr "Nastavi prioriteto prenosa dol."
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:930
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr ""
 "Nastavi prioriteto prenosa dol na 'Nizka', 'Normalna', 'Visoka' ali "
 "'Samodejna'.\n"
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:931
 msgid "Set priority to low."
 msgstr "Nastavi prioriteto na 'Nizka'."
 
-#: src/TextClient.cpp:934
+#: src/TextClient.cpp:932
 msgid "Set priority to normal."
 msgstr "Nastavi prioriteto na 'Normalna'."
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:933
 msgid "Set priority to high."
 msgstr "Nastavi prioriteto na 'Visoka'."
 
-#: src/TextClient.cpp:936
+#: src/TextClient.cpp:934
 msgid "Set priority to auto."
 msgstr "Nastavi prioriteto na 'Samodejna'."
 
-#: src/TextClient.cpp:938
+#: src/TextClient.cpp:936
 msgid "Show queues/lists."
 msgstr "Prikaži čakalne vrste/seznam."
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:937
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Prikaži čakalno vrsto prenosov gor/dol, seznam strežnikov ali deljenih "
 "datotek.\n"
 
-#: src/TextClient.cpp:940
+#: src/TextClient.cpp:938
 msgid "Show upload queue."
 msgstr "Prikaži čakalno vrsto prenosov gor."
 
-#: src/TextClient.cpp:941
+#: src/TextClient.cpp:939
 msgid "Show download queue."
 msgstr "Prikaži čakalno vrsto prenosov dol."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:940
 msgid "Show log."
 msgstr "Prikaži dnevnik."
 
-#: src/TextClient.cpp:943
+#: src/TextClient.cpp:941
 msgid "Show servers list."
 msgstr "Prikaži seznam strežnikov."
 
-#: src/TextClient.cpp:946
+#: src/TextClient.cpp:944
 msgid "Reset log."
 msgstr "Ponastavi dnevnik."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:951
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr ""
 
-#: src/TextClient.cpp:954
+#: src/TextClient.cpp:952
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
@@ -4711,7 +4716,7 @@ msgstr "Polno Ime :"
 #: src/muuli_wdr.cpp:1507 src/muuli_wdr.cpp:1514 src/muuli_wdr.cpp:1523
 #: src/muuli_wdr.cpp:1530 src/muuli_wdr.cpp:1539 src/muuli_wdr.cpp:1557
 #: src/muuli_wdr.cpp:1566 src/muuli_wdr.cpp:1573 src/muuli_wdr.cpp:1582
-#: src/ClientListCtrl.cpp:622
+#: src/ClientListCtrl.cpp:627
 msgid "N/A"
 msgstr "N/A"
 
@@ -6447,97 +6452,97 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "NAPAKA: %s"
 
-#: src/ClientListCtrl.cpp:257
+#: src/ClientListCtrl.cpp:262
 msgid "Unban"
 msgstr "Dovoli nazaj"
 
-#: src/ClientListCtrl.cpp:262
+#: src/ClientListCtrl.cpp:267
 msgid "Show Uploads"
 msgstr "Prikaži prenose gor"
 
-#: src/ClientListCtrl.cpp:263
+#: src/ClientListCtrl.cpp:268
 msgid "Show Queue"
 msgstr "Prikaži čakalno vrsto"
 
-#: src/ClientListCtrl.cpp:264
+#: src/ClientListCtrl.cpp:269
 msgid "Show Clients"
 msgstr "Prikaži odjemalce"
 
-#: src/ClientListCtrl.cpp:268
+#: src/ClientListCtrl.cpp:273
 msgid "Select View"
 msgstr "Izberi pogled"
 
-#: src/ClientListCtrl.cpp:506 src/ClientListCtrl.cpp:831
-#: src/ClientListCtrl.cpp:1002
+#: src/ClientListCtrl.cpp:511 src/ClientListCtrl.cpp:836
+#: src/ClientListCtrl.cpp:1007
 msgid "Client Software"
 msgstr "Program odjemalca"
 
-#: src/ClientListCtrl.cpp:509
+#: src/ClientListCtrl.cpp:514
 msgid "Waited"
 msgstr "Čakal"
 
-#: src/ClientListCtrl.cpp:510
+#: src/ClientListCtrl.cpp:515
 msgid "Upload Time"
 msgstr "Čas prenosa gor"
 
-#: src/ClientListCtrl.cpp:513
+#: src/ClientListCtrl.cpp:518
 msgid "Upload/Download"
 msgstr "Preneseno gor/dol"
 
-#: src/ClientListCtrl.cpp:514
+#: src/ClientListCtrl.cpp:519
 msgid "Remote Status"
 msgstr "Oddaljeno stanje"
 
-#: src/ClientListCtrl.cpp:694
+#: src/ClientListCtrl.cpp:699
 #, c-format
 msgid "QR: %u"
 msgstr "QR: %u"
 
-#: src/ClientListCtrl.cpp:832
+#: src/ClientListCtrl.cpp:837
 msgid "File Priority"
 msgstr "Prioriteta datoteke"
 
-#: src/ClientListCtrl.cpp:834
+#: src/ClientListCtrl.cpp:839
 msgid "Score"
 msgstr "Točke"
 
-#: src/ClientListCtrl.cpp:835
+#: src/ClientListCtrl.cpp:840
 msgid "Asked"
 msgstr "Zahteval"
 
-#: src/ClientListCtrl.cpp:836
+#: src/ClientListCtrl.cpp:841
 msgid "Last Seen"
 msgstr "Nazadnje viden"
 
-#: src/ClientListCtrl.cpp:837
+#: src/ClientListCtrl.cpp:842
 msgid "Entered Queue"
 msgstr "Vstopil v vrsto"
 
-#: src/ClientListCtrl.cpp:998
+#: src/ClientListCtrl.cpp:1003
 msgid "Upload Status"
 msgstr "Stanje prenosa gor"
 
-#: src/ClientListCtrl.cpp:999
+#: src/ClientListCtrl.cpp:1004
 msgid "Transferred Up"
 msgstr "Prenesel gor"
 
-#: src/ClientListCtrl.cpp:1000
+#: src/ClientListCtrl.cpp:1005
 msgid "Download Status"
 msgstr "Stanje prenosa dol"
 
-#: src/ClientListCtrl.cpp:1001
+#: src/ClientListCtrl.cpp:1006
 msgid "Transferred Down"
 msgstr "Prenesel dol"
 
-#: src/ClientListCtrl.cpp:1004
+#: src/ClientListCtrl.cpp:1009
 msgid "Userhash"
 msgstr "Hash uporabnika"
 
-#: src/ClientListCtrl.cpp:1005
+#: src/ClientListCtrl.cpp:1010
 msgid "Encrypted"
 msgstr "Maskiranje"
 
-#: src/ClientListCtrl.cpp:1006
+#: src/ClientListCtrl.cpp:1011
 msgid "Hide shared files"
 msgstr "Skrite deljene datoteke"
 
@@ -6597,136 +6602,136 @@ msgstr ""
 msgid "Search warning"
 msgstr "Opozorilo iskanja"
 
-#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:492
-#: src/MuleTrayIcon.cpp:513
+#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:147 src/MuleTrayIcon.cpp:502
+#: src/MuleTrayIcon.cpp:523
 msgid "Unlimited"
 msgstr "Neomejeno"
 
-#: src/MuleTrayIcon.cpp:330
+#: src/MuleTrayIcon.cpp:340
 msgid "aMule Tray Menu"
 msgstr "aMule meni sistemske vrstice"
 
-#: src/MuleTrayIcon.cpp:336
+#: src/MuleTrayIcon.cpp:346
 msgid "Speed limits:"
 msgstr "Omejitve hitrosti: "
 
-#: src/MuleTrayIcon.cpp:341
+#: src/MuleTrayIcon.cpp:351
 msgid "UL: None"
 msgstr "Gor: brez"
 
-#: src/MuleTrayIcon.cpp:344
+#: src/MuleTrayIcon.cpp:354
 #, c-format
 msgid "UL: %u"
 msgstr "Gor: %u"
 
-#: src/MuleTrayIcon.cpp:351
+#: src/MuleTrayIcon.cpp:361
 msgid "DL: None"
 msgstr "Dol: brez"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:364
 #, c-format
 msgid "DL: %u"
 msgstr "Dol: %u"
 
-#: src/MuleTrayIcon.cpp:358
+#: src/MuleTrayIcon.cpp:368
 #, c-format
 msgid "Download speed: %.1f"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:360
+#: src/MuleTrayIcon.cpp:370
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:366
+#: src/MuleTrayIcon.cpp:376
 msgid "Client Information"
 msgstr "Informacije o odjemalcu"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:380
 #, c-format
 msgid "Nickname: %s"
 msgstr "Vzdevek: %s"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:380
 msgid "No Nickname Selected!"
 msgstr "Vzdevek ni izbran!"
 
-#: src/MuleTrayIcon.cpp:377
+#: src/MuleTrayIcon.cpp:387
 msgid "ClientID: "
 msgstr "Odjemalčev ID: "
 
-#: src/MuleTrayIcon.cpp:390
+#: src/MuleTrayIcon.cpp:400
 msgid "ServerName: "
 msgstr "Ime strežnika: "
 
-#: src/MuleTrayIcon.cpp:391
+#: src/MuleTrayIcon.cpp:401
 msgid "ServerIP: "
 msgstr "IP strežnika: "
 
-#: src/MuleTrayIcon.cpp:406
+#: src/MuleTrayIcon.cpp:416
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:415
+#: src/MuleTrayIcon.cpp:425
 #, c-format
 msgid "TCP port: %d"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:417
+#: src/MuleTrayIcon.cpp:427
 msgid "TCP port: Not ready"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:426
+#: src/MuleTrayIcon.cpp:436
 #, c-format
 msgid "UDP port: %d"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:428
+#: src/MuleTrayIcon.cpp:438
 msgid "UDP port: Not ready"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:437
+#: src/MuleTrayIcon.cpp:447
 msgid "Online Signature: Enabled"
 msgstr "Spletni podpis: Omogočen"
 
-#: src/MuleTrayIcon.cpp:440
+#: src/MuleTrayIcon.cpp:450
 msgid "Online Signature: Disabled"
 msgstr "Spletni podpis: Onemogočen"
 
-#: src/MuleTrayIcon.cpp:453
+#: src/MuleTrayIcon.cpp:463
 #, c-format
 msgid "Shared files: %d"
 msgstr "Deljenih datotek: %d"
 
-#: src/MuleTrayIcon.cpp:459
+#: src/MuleTrayIcon.cpp:469
 #, c-format
 msgid "Queued clients: %d"
 msgstr ""
 
-#: src/MuleTrayIcon.cpp:466
+#: src/MuleTrayIcon.cpp:476
 #, c-format
 msgid "Total DL: %s"
 msgstr "Skupno dol: %s"
 
-#: src/MuleTrayIcon.cpp:473
+#: src/MuleTrayIcon.cpp:483
 #, c-format
 msgid "Total UL: %s"
 msgstr "Skupno gor: %s"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:494
 msgid "Upload limit"
 msgstr "Omejitev prenosa gor"
 
-#: src/MuleTrayIcon.cpp:488
+#: src/MuleTrayIcon.cpp:498
 msgid "Download limit"
 msgstr "Omejitev prenosa dol"
 
-#: src/MuleTrayIcon.cpp:548
+#: src/MuleTrayIcon.cpp:558
 msgid "Hide aMule"
 msgstr "Skrij aMule"
 
-#: src/MuleTrayIcon.cpp:551
+#: src/MuleTrayIcon.cpp:561
 msgid "Show aMule"
 msgstr "Prikaži aMule"
 
