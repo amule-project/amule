@@ -122,6 +122,9 @@ Version 2.2.6 - The "I won't tell you" version.
 		* Fixed obfuscated server UDP communication.
 		* Fixed cross-endian Kad node verification.
 
+	Marcell:
+		* Properly update transfers tab's bottom pane's title.
+
 	mr_hyde:
 		* Fixed a bug in detecting and using the fallocate() function.
 
