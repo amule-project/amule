@@ -2298,7 +2298,9 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		wxString rawFileName = file->GetFullName().GetRaw();
 
 #ifndef __WXMSW__
-		rawFileName.Replace(QUOTE, wxT("'\"'\"'"));
+		// We have to escape quote characters in the file name, otherwise arbitrary
+		// options could be passed to the player.
+		rawFileName.Replace(QUOTE, wxT("\\") QUOTE);
 #endif
 
 		if (!command.Replace(wxT("$file"), rawFileName)) {
