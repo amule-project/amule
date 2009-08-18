@@ -26,8 +26,9 @@
 #define ECSPECIALTAGS_H
 
 //#warning Kry - Preferences packet derived from packet, and that's ok, but shouldn't be here because this is a tag file and forces a stupid include
-#include "ECPacket.h"	// Needed for CECPacket
-#include "../../../NetworkFunctions.h" // Needed for IsLowID
+#include "ECPacket.h"					// Needed for CECPacket
+#include "../../../NetworkFunctions.h"	// Needed for IsLowID
+#include <common/Format.h>	// Needed for CFormat
 
 
 #include <map>
@@ -217,7 +218,7 @@ class CEC_PartFile_Tag : public CECTag {
 			{
 				CECTag* tmp = GetTagByName(EC_TAG_PARTFILE_PARTMETID);
 				if (tmp) {
-					return wxString::Format(wxT("%03u.part.met"), tmp->GetInt());
+					return CFormat(wxT("%03u.part.met")) % tmp->GetInt();
 				} else {
 					return wxEmptyString;
 				}
