@@ -251,6 +251,14 @@ WXBASE_CPPFLAGS="$WX_CPPFLAGS -DwxUSE_GUI=0"
 AC_SUBST([WXBASE_LIBS])
 AC_SUBST([WXBASE_CPPFLAGS])
 
+AS_IF([test ${need_gui} = yes -a "${WX_PORT}" = base],
+	[AC_MSG_ERROR([
+		The selected components need a wxWidgets library with GUI,
+		but your installation is base-only.  Please install a GUI
+		enabled version of wxWidgets and then retry.
+	])]
+)
+
 dnl Get flags for windres
 AC_ARG_VAR([RC], [Resource Compiler])dnl
 AC_ARG_VAR([RCFLAGS], [Resource Compiler Flags])dnl
