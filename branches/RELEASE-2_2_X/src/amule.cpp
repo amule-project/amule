@@ -531,7 +531,7 @@ bool CamuleApp::OnInit()
 		// Make a backup first.
 		wxRemoveFile(ConfigDir + wxT("amule.conf.backup"));
 		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
-		printf("Your settings have ben resetted to default values.\nOld config file has been saved as amule.conf.backup\n");
+		printf("Your settings have been reset to default values.\nOld config file has been saved as amule.conf.backup\n");
 	}
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
