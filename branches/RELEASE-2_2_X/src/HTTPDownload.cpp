@@ -196,7 +196,11 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		}
 		
 		int download_size = url_read_stream->GetSize();
-		printf("Download size: %i\n",download_size);
+		if (download_size == -1) {
+			printf("Download size not received, downloading until connection is closed\n");
+		} else {
+			printf("Download size: %i\n", download_size);
+		}
 		
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.
@@ -227,8 +231,16 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		} while (current_read && !TestDestroy());
 
 		if (current_read == 0) {
-			// Download was succesful.
-			m_result = 1;
+			if (download_size == -1) {
+				// Download was probably succesful.
+				printf("Downloaded %d bytes\n", total_read);
+				m_result = 1;
+			} else if (total_read != download_size) {
+				throw wxString(CFormat(_("Expected %d bytes, but downloaded %d bytes")) % download_size % total_read);
+			} else {
+				// Download was succesful.
+				m_result = 1;
+			}
 		}
 	} catch (const wxString& error) {
 		if (wxFileExists(m_tempfile)) {
