@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-03 11:49+0200\n"
-"PO-Revision-Date: 2009-06-30 13:46+0300\n"
+"PO-Revision-Date: 2009-08-10 13:30+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -7456,7 +7456,7 @@ msgstr "Töötlen päringut [algupärane]:"
 
 #: src/webserver/src/WebServer.cpp:1870
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Ilma paroolita logimine pole lubatud."
 
 #: src/webserver/src/WebServer.cpp:1872
 msgid "Checking password\n"
