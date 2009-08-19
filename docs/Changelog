@@ -135,6 +135,7 @@ Version 2.2.6 - The "I won't tell you" version.
 		* Fixed HTTP download if server transmits no content-length
 		* Fixed several cases of amulecmd printing zero on big endian machines
 		* Fixed amuleweb crashing on tiny downloads
+		* Added version resources to MSVC binaries
 
 --------------------------------------------------------------------------------
 
