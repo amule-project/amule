@@ -55,7 +55,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_UNICODE;UNICODE;MSVC"
+				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Remote GUI (Experimental)\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;"
 			/>
 			<Tool
@@ -132,6 +132,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Remote GUI (Experimental)\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;"
 			/>
 			<Tool
@@ -210,7 +211,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_UNICODE;UNICODE;MSVC"
+				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Remote GUI (Experimental)\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;"
 			/>
 			<Tool
@@ -287,6 +288,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Remote GUI (Experimental)\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;"
 			/>
 			<Tool
@@ -1047,6 +1049,10 @@
 			>
 			<File
 				RelativePath="..\..\amule.rc"
+				>
+			</File>
+			<File
+				RelativePath="..\version.rc"
 				>
 			</File>
 		</Filter>

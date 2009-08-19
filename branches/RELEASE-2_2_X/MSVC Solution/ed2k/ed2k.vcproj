@@ -56,6 +56,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;ED2K Links Handler\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -131,6 +132,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;ED2K Links Handler\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -214,6 +216,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\version.rc"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
