@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-18 18:52+0200\n"
-"PO-Revision-Date: 2009-03-04 14:32+0100\n"
+"PO-Revision-Date: 2009-08-19 12:06+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
 "MIME-Version: 1.0\n"
@@ -701,7 +701,7 @@ msgstr "( %s / %s )"
 #: src/HTTPDownload.cpp:239
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Attesi %d bytes, ma scaricati %d bytes"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
