@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-18 18:52+0200\n"
-"PO-Revision-Date: 2008-12-03 23:43+0100\n"
-"Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
+"PO-Revision-Date: 2009-08-19 16:31+0100\n"
+"Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -699,7 +699,7 @@ msgstr "( %s / %s )"
 #: src/HTTPDownload.cpp:239
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr "Verwachtte %d bytes, maar %d bytes gedownload"
+msgstr "%d bytes verwacht, maar %d bytes gedownload"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
@@ -7248,49 +7248,3 @@ msgstr "Kon vriendenlijst-bestand 'emfriends.met' niet lezen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Kon niet schrijven naar vriendenlijst-bestand 'emfriends.met'!"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Status wordt opgehaald..."
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() leverde NULL op"
-
-#~ msgid "Message Filter"
-#~ msgstr "Bericht Filter"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "GUI Tweaks"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "Kern Instellingen"
-
-#~ msgid "No handler for this file type."
-#~ msgstr "Geen afhandelaar voor dit bestandstype."
-
-#~ msgid "File was not saved"
-#~ msgstr "Bestand was niet bewaard"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr ""
-#~ "Het bestand %s is te groot voor de Donkey: maximum toegestaan is 4 GB."
-
-#~ msgid "Status text"
-#~ msgstr "Status text"
-
-#~ msgid "Pop-up status text"
-#~ msgstr "Pop-up status tekst"
-
-#~ msgid "Please wait... "
-#~ msgstr "Even geduld aub..."
-
-#~ msgid "General Settings"
-#~ msgstr "Algemene Instellingen"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "GUI Aanpassingen"
-
-#~ msgid "Remote Control"
-#~ msgstr "Besturing op Afstand"
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Kon het commando om de browser te starten niet bepalen."
