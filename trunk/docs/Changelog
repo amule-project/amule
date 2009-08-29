@@ -94,6 +94,7 @@ Version 2.3.0 - The river knows.
 		* Fixed clean and distclean targets for make
 		* Various Updates in debian/ see debian/changelog
 		* Added crash handling in command-line tools
+		* Fix for autoconf-2.64.
 
 	Wuischke:
 		* Simplify browser selection
