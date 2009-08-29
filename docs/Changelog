@@ -95,6 +95,7 @@ Version 2.3.0 - The river knows.
 		* Various Updates in debian/ see debian/changelog
 		* Added crash handling in command-line tools
 		* Fix for autoconf-2.64.
+		* Raised minimum wxWidgets version to 2.8.8
 
 	Wuischke:
 		* Simplify browser selection
