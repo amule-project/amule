@@ -88,6 +88,7 @@ Version 2.3.0 - The river knows.
 		* amuleweb for Windows (with wx 2.9)
 		* Show connected friends in blue in the friend list
 		* Show total upload/download ratio in statistic tree
+		* Fixed wrong search text in search dialog after deleting a tab
 
 	Vollstrecker:
 		* Unify copyright lines

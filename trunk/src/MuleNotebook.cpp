@@ -78,8 +78,15 @@ bool CMuleNotebook::DeletePage(int nPage)
 		SetSelection( GetPageCount() - 1 );
 	}
 
+	// Send a page change event to work around wx problem when newly selected page
+	// is identical with deleted page (wx sends a page change event during deletion, 
+	// but the control is still the one to be deleted at that moment).
+	if (GetPageCount()) {
+		wxNotebookEvent event( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, GetId(), nPage );
+		event.SetEventObject(this);
+		ProcessEvent( event );
+	} else {
 	// Send an event when no pages are left open
-	if ( !GetPageCount() ) {
 		wxNotebookEvent event( wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, GetId() );
 		event.SetEventObject(this);
 		ProcessEvent( event );
