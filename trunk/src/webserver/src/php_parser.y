@@ -89,7 +89,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 */
 %token FNUMBER DNUMBER STRING IDENT VARIABLE
 
-%token ECHO
+%token T_ECHO
 %token EXIT
 
 %token IF DO WHILE ENDWHILE FOR ENDFOR FOREACH ENDFOREACH
@@ -171,7 +171,7 @@ statement:
 	|	BREAK expr ';'										{ $$ = make_expr_syn_node(PHP_ST_BREAK, $2); }
 	|	RETURN ';'											{ $$ = make_expr_syn_node(PHP_ST_RET, 0); }
 	|	RETURN expr ';'										{ $$ = make_expr_syn_node(PHP_ST_RET, $2); }
-	|	ECHO expr_list ';'									{ $$ = make_expr_syn_node(PHP_ST_ECHO, $2); }
+	|	T_ECHO expr_list ';'								{ $$ = make_expr_syn_node(PHP_ST_ECHO, $2); }
 	|	UNSET '(' variable_list ')' ';'						{  }
 	|	FOREACH '(' expr AS variable ')' foreach_statement 	{
 				$$ = make_foreach_loop_syn_node($3, 0, $5, $7, 0);

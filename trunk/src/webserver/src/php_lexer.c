@@ -1104,7 +1104,7 @@ return CONTINUE;
 case 25:
 YY_RULE_SETUP
 #line 109 "php_lexer.l"
-return ECHO;
+return T_ECHO;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP

@@ -43,7 +43,7 @@
      STRING = 260,
      IDENT = 261,
      VARIABLE = 262,
-     ECHO = 263,
+     T_ECHO = 263,
      EXIT = 264,
      IF = 265,
      DO = 266,
@@ -134,7 +134,7 @@
 #define STRING 260
 #define IDENT 261
 #define VARIABLE 262
-#define ECHO 263
+#define T_ECHO 263
 #define EXIT 264
 #define IF 265
 #define DO 266

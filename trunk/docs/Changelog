@@ -124,6 +124,7 @@ Version 2.2.6 - The "I won't tell you" version.
 	GonoszTopi:
 		* Fixed obfuscated server UDP communication.
 		* Fixed cross-endian Kad node verification.
+		* Fixed name conflict in builtin PHP parser.
 
 	Marcell:
 		* Properly update transfers tab's bottom pane's title.
@@ -139,6 +140,9 @@ Version 2.2.6 - The "I won't tell you" version.
 		* Fixed several cases of amulecmd printing zero on big endian machines
 		* Fixed amuleweb crashing on tiny downloads
 		* Added version resources to MSVC binaries
+
+	Special Thanks To:
+		* stefanero and his bleeding-edge system
 
 --------------------------------------------------------------------------------
 
