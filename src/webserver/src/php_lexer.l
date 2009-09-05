@@ -106,7 +106,7 @@ EOL ("\r"|"\n"|"\r\n")
 
 "continue"		return CONTINUE;
 
-"echo"			return ECHO;
+"echo"			return T_ECHO;
 "print"			return PRINT;
 
 "new"			return NEW;
