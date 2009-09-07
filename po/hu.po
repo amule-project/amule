@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-03 11:49+0200\n"
-"PO-Revision-Date: 2009-07-06 11:13+0100\n"
+"PO-Revision-Date: 2009-09-07 11:24+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -7490,11 +7490,11 @@ msgstr "Kérés feldolgozása [eredeti]: "
 
 #: src/webserver/src/WebServer.cpp:1870
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Nincsen megadva jelszó, bejelentkezés nem lesz engedélyezve."
 
 #: src/webserver/src/WebServer.cpp:1872
 msgid "Checking password\n"
-msgstr "Jelszó ellenőrzése \n"
+msgstr "Jelszó ellenőrzése\n"
 
 #: src/webserver/src/WebServer.cpp:1877
 msgid "Password hash invalid\n"
