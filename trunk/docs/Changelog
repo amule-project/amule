@@ -104,7 +104,6 @@ Version 2.3.0 - The river knows.
 		* Fix minimizing from tray icon
 		* Add option to show chat messages in log
 		* Add option to specify amuleweb binary location
-		* Fix amuleweb progress bar display for files > 4GB
 		* Make EC authentication procedure more secure
 		* Add support for categories to ed2k
 		* Backup config file on shutdown
@@ -140,6 +139,9 @@ Version 2.2.6 - The "I won't tell you" version.
 		* Fixed several cases of amulecmd printing zero on big endian machines
 		* Fixed amuleweb crashing on tiny downloads
 		* Added version resources to MSVC binaries
+
+	Wuischke:
+		* Fix amuleweb progress bar display for files > 4GB
 
 	Special Thanks To:
 		* stefanero and his bleeding-edge system
