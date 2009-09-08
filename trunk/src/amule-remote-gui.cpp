@@ -710,7 +710,33 @@ void CPreferencesRem::SendToRemote()
 }
 
 
-Category_Struct *CPreferencesRem::CreateCategory(
+class CCatHandler : public CECPacketHandlerBase {
+	virtual void HandlePacket(const CECPacket *packet);
+};
+
+
+void CCatHandler::HandlePacket(const CECPacket *packet)
+{
+	if (packet->GetOpCode() == EC_OP_FAILED) {
+		const CECTag * catTag = packet->GetTagByName(EC_TAG_CATEGORY);
+		const CECTag * pathTag = packet->GetTagByName(EC_TAG_CATEGORY_PATH);
+		if (catTag && pathTag && catTag->GetInt() < theApp->glob_prefs->GetCatCount()) {
+			int cat = catTag->GetInt();
+			Category_Struct* cs = theApp->glob_prefs->GetCategory(cat);
+			wxMessageBox(CFormat(_("Can't create directory '%s' for category '%s', keeping directory '%s'."))
+				% cs->path.GetPrintable() % cs->title % pathTag->GetStringData(), 
+				_("ERROR"), wxOK);
+			cs->path = CPath(pathTag->GetStringData());
+			theApp->amuledlg->m_transferwnd->UpdateCategory(cat);
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->Refresh();
+		}
+	}
+	delete this;
+}
+
+
+bool CPreferencesRem::CreateCategory(
+	Category_Struct *& category,
 	const wxString& name,
 	const CPath& path,
 	const wxString& comment,
@@ -720,9 +746,9 @@ Category_Struct *CPreferencesRem::CreateCategory(
 	CECPacket req(EC_OP_CREATE_CATEGORY);
 	CEC_Category_Tag tag(0xffffffff, name, path.GetRaw(), comment, color, prio);
 	req.AddTag(tag);
-	m_conn->SendPacket(&req);
+	m_conn->SendRequest(new CCatHandler, &req);
 
-	Category_Struct *category = new Category_Struct();
+	category = new Category_Struct();
 	category->path		= path;
 	category->title		= name;
 	category->comment	= comment;
@@ -731,11 +757,11 @@ Category_Struct *CPreferencesRem::CreateCategory(
 			
 	AddCat(category);
 	
-	return category;
+	return true;
 }
 
 
-void CPreferencesRem::UpdateCategory(
+bool CPreferencesRem::UpdateCategory(
 	uint8 cat,
 	const wxString& name,
 	const CPath& path,
@@ -746,7 +772,7 @@ void CPreferencesRem::UpdateCategory(
 	CECPacket req(EC_OP_UPDATE_CATEGORY);
 	CEC_Category_Tag tag(cat, name, path.GetRaw(), comment, color, prio);
 	req.AddTag(tag);
-	m_conn->SendPacket(&req);
+	m_conn->SendRequest(new CCatHandler, &req);
 
 	Category_Struct *category = m_CatList[cat];
 	category->path		= path;
@@ -754,6 +780,8 @@ void CPreferencesRem::UpdateCategory(
 	category->comment	= comment;
 	category->color		= color;
 	category->prio		= prio;
+
+	return true;
 }
 
 

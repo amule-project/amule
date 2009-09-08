@@ -809,6 +809,14 @@ void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
 	}	
 }
 
+void CECTag::SetStringData(const wxString& s)
+{
+	if (IsString()) {
+		free((void *)m_tagData);
+		ConstructStringTag(0, (const char*)unicode2UTF8(s));
+	}
+}
+
 #if	__DEBUG__
 void CECTag::DebugPrint(int level, bool print_empty) const
 {

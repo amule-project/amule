@@ -153,6 +153,10 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 		return;
 	}
 
+	// remote gui:
+	// Pass path unchecked (and don't try to create it on the wrong machine...).
+	// It will be checked on the server, and an error message created.
+#ifndef CLIENT_GUI
 	if (!newpath.DirExists()) {
 		if (!CPath::MakeDir(newpath)) {
 			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"),
@@ -160,7 +164,8 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 			return;
 		}
 	}
-	
+#endif
+
 	// Check if we are using an existing category, and if we are, if it has
 	// been removed in the mean-while. Otherwise create new category.
 	// lfroen: The only place where it could happen, is removing category
@@ -184,8 +189,8 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	if (!m_category) {
 		// New category, or the old one is gone
-		m_category = theApp->glob_prefs->CreateCategory(
-			newname, newpath, 
+		 theApp->glob_prefs->CreateCategory(
+			m_category, newname, newpath, 
 			CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(),
 			m_colour.GetULong(),
  			CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());

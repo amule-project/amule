@@ -1618,28 +1618,21 @@ uint32 CPreferences::GetCatColor(size_t index)
 	return m_CatList[index]->color;
 }
 
-Category_Struct *CPreferences::CreateCategory(
+bool CPreferences::CreateCategory(
+	Category_Struct *& category,
 	const wxString& name,
 	const CPath& path,
 	const wxString& comment,
 	uint32 color,
 	uint8 prio)
 {
-	Category_Struct *category = new Category_Struct();
-	category->path		= path;
-	category->title		= name;
-	category->comment	= comment;
-	category->color		= color;
-	category->prio		= prio;
-			
-	AddCat(category);
-	
-	SaveCats();
-	
-	return category;
+	category = new Category_Struct();
+	category->path = thePrefs::GetIncomingDir();	// set a default in case path is invalid
+	uint32 cat = AddCat(category);
+	return UpdateCategory(cat, name, path, comment, color, prio);
 }
 
-void CPreferences::UpdateCategory(
+bool CPreferences::UpdateCategory(
 	uint8 cat, 
 	const wxString& name,
 	const CPath& path,
@@ -1649,13 +1642,21 @@ void CPreferences::UpdateCategory(
 {
 	Category_Struct *category = m_CatList[cat];
 
-	category->path			= path;
+	// return true if path is ok, false if not
+	bool ret = true;
+	if (!path.IsOk() || (!path.DirExists() && !CPath::MakeDir(path))) {
+		ret = false;
+		// keep path as it was
+	} else {
+		category->path		= path;
+	}
 	category->title			= name;
 	category->comment		= comment;
 	category->color			= color;
 	category->prio			= prio;
 	
 	SaveCats();
+	return ret;
 }
 
 

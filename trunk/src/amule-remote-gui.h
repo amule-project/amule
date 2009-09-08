@@ -96,9 +96,9 @@ class CPreferencesRem : public CPreferences, public CECPacketHandlerBase {
 public:
 	CPreferencesRem(CRemoteConnect *);
 
-	Category_Struct *CreateCategory(const wxString& name, const CPath& path,
+	bool CreateCategory(Category_Struct *& category, const wxString& name, const CPath& path,
 						const wxString& comment, uint32 color, uint8 prio);
-	void UpdateCategory(uint8 cat, const wxString& name, const CPath& path,
+	bool UpdateCategory(uint8 cat, const wxString& name, const CPath& path,
 						const wxString& comment, uint32 color, uint8 prio);
 
 	void RemoveCat(uint8 cat);

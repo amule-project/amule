@@ -1384,22 +1384,38 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 			
 		case EC_OP_CREATE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				((CEC_Category_Tag *)request->GetTagByIndex(0))->Create();
+				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetTagByIndex(0);
+				if (tag->Create()) {
+					response = new CECPacket(EC_OP_NOOP);
+				} else {
+					response = new CECPacket(EC_OP_FAILED);
+					response->AddTag(CECTag(EC_TAG_CATEGORY, theApp->glob_prefs->GetCatCount() - 1));
+					response->AddTag(CECTag(EC_TAG_CATEGORY_PATH, tag->Path()));
+				}
 				Notify_CategoryAdded();
+			} else {
+				response = new CECPacket(EC_OP_NOOP);
 			}
-			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_UPDATE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
 				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetTagByIndex(0);
-				tag->Apply();
+				if (tag->Apply()) {
+					response = new CECPacket(EC_OP_NOOP);
+				} else {
+					response = new CECPacket(EC_OP_FAILED);
+					response->AddTag(CECTag(EC_TAG_CATEGORY, tag->GetInt()));
+					response->AddTag(CECTag(EC_TAG_CATEGORY_PATH, tag->Path()));
+				}
 				Notify_CategoryUpdate(tag->GetInt());
+			} else {
+				response = new CECPacket(EC_OP_NOOP);
 			}
-			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_DELETE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
 				uint32 cat = request->GetTagByIndex(0)->GetInt();
+				// this noes not only update the gui, but actually deletes the cat
 				Notify_CategoryDelete(cat);
 			}
 			response = new CECPacket(EC_OP_NOOP);
