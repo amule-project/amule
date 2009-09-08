@@ -543,9 +543,11 @@ namespace MuleNotify
 #endif
 	}
 	
-	void CategoryDelete(uint32 NOT_ON_DAEMON(cat))
+	void CategoryDelete(uint32 cat)
 	{
-#ifndef AMULE_DAEMON
+#ifdef AMULE_DAEMON
+		theApp->glob_prefs->RemoveCat(cat);
+#else
 		if (theApp->amuledlg->m_transferwnd) {
 			theApp->amuledlg->m_transferwnd->RemoveCategory(cat);
 		}

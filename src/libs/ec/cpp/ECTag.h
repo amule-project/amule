@@ -154,6 +154,7 @@ class CECTag {
 		
 		#ifdef USE_WX_EXTENSIONS
 		wxString GetStringData() const;
+		void SetStringData(const wxString& s);
 		#endif 
 		
 		EC_IPv4_t 	GetIPv4Data() const;

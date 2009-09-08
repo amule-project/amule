@@ -140,8 +140,8 @@ class CEC_Category_Tag : public CECTag {
  		CEC_Category_Tag(uint32 cat_index, wxString name, wxString path,
 			wxString comment, uint32 color, uint8 prio);
  		
- 		void Apply();
- 		void Create();
+ 		bool Apply();
+ 		bool Create();
  		
  		wxString Name() const { return GetTagByNameSafe(EC_TAG_CATEGORY_TITLE)->GetStringData(); }
  		wxString Path() const { return GetTagByNameSafe(EC_TAG_CATEGORY_PATH)->GetStringData(); }

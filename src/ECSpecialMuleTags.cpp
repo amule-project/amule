@@ -58,14 +58,24 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, wxString name, wxString pat
 	AddTag(CECTag(EC_TAG_CATEGORY_TITLE, name));
 }
 
-void CEC_Category_Tag::Apply()
+bool CEC_Category_Tag::Apply()
 {
-	theApp->glob_prefs->UpdateCategory(GetInt(), Name(), CPath(Path()), Comment(), Color(), Prio());
+	bool ret = theApp->glob_prefs->UpdateCategory(GetInt(), Name(), CPath(Path()), Comment(), Color(), Prio());
+	if (!ret) {
+		GetTagByName(EC_TAG_CATEGORY_PATH)->SetStringData(theApp->glob_prefs->GetCatPath(GetInt()).GetRaw());
+	}
+	return ret;
 }
 
-void CEC_Category_Tag::Create()
+bool CEC_Category_Tag::Create()
 {
-	theApp->glob_prefs->CreateCategory(Name(), CPath(Path()), Comment(), Color(), Prio());
+	Category_Struct * category = NULL;
+	bool ret = theApp->glob_prefs->CreateCategory(category, Name(), CPath(Path()), Comment(), Color(), Prio());
+	if (!ret) {
+		GetTagByName(EC_TAG_CATEGORY_PATH)->SetStringData(theApp->glob_prefs->GetCatPath(
+			theApp->glob_prefs->GetCatCount() - 1).GetRaw());
+	}
+	return ret;
 }
 
 CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_details, EC_DETAIL_LEVEL cat_details) : CECPacket(EC_OP_SET_PREFERENCES, pref_details)
