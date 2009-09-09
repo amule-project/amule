@@ -2335,9 +2335,9 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 	if ( m_socket ) {
 
 		if (reducedownload) {
-			// (% to reduce * current speed) / 100 and THEN, / 10 because this
-			// gets called 10 times per second.
-			uint32 limit = (uint32)(((float)reducedownload*(kBpsClient*1024.0))/1000);
+			// (% to reduce * current speed) / 100 and THEN, / (1000 / CORE_TIMER_PERIOD)
+			// which is how often it is called per second.
+			uint32 limit = (uint32)(reducedownload * kBpsClient * 1024.0 / 100000.0 * CORE_TIMER_PERIOD);
 
 			if(limit<1024 && reducedownload >= 200) {
 				// If we're going up and this download is < 1kB, 

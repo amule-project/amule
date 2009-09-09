@@ -92,8 +92,10 @@ using MuleNotify::CMuleGUIEvent;
 
 #ifdef AMULE_DAEMON
 #define AMULE_APP_BASE wxAppConsole
+#define CORE_TIMER_PERIOD 300
 #else
 #define AMULE_APP_BASE wxApp
+#define CORE_TIMER_PERIOD 100
 #endif
 
 #define CONNECTED_ED2K (1<<0)

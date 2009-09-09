@@ -294,7 +294,7 @@ bool CamuleGuiApp::OnInit()
 	// The upload queue process loop has now been rewritten to compensate for timer errors.
 	// When adding functionality, assume that the timer is only approximately correct;
 	// for measurements, always use the system clock [::GetTickCount()].
-	core_timer->Start(100);
+	core_timer->Start(CORE_TIMER_PERIOD);
 	amuledlg->StartGuiTimer();
 
 #ifdef __WXMAC__
