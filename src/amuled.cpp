@@ -685,7 +685,7 @@ bool CamuleDaemonApp::OnInit()
 		return false;
 	}
 	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
-	core_timer->Start(300);
+	core_timer->Start(CORE_TIMER_PERIOD);
 	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
 	glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
 	

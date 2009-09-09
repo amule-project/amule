@@ -140,6 +140,7 @@ Version 2.2.6 - The "I won't tell you" version.
 		* Fixed amuleweb crashing on tiny downloads
 		* Added version resources to MSVC binaries
 		* Fixed wrong search text in search dialog after deleting a tab
+		* Fixed download limit in amuled (which was 50% of what was set)
 
 	Wuischke:
 		* Fix amuleweb progress bar display for files > 4GB
