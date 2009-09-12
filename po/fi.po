@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-18 18:52+0200\n"
-"PO-Revision-Date: 2008-12-08 20:06+0200\n"
+"PO-Revision-Date: 2009-09-12 15:22+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
@@ -687,7 +687,7 @@ msgstr "( %s / %s )"
 #: src/HTTPDownload.cpp:239
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Odotettiin %d tavua, mutta ladattiin %d tavua"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3678
@@ -1476,9 +1476,8 @@ msgid "Arabic"
 msgstr "Arabia"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Viro"
+msgstr "Asturia"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -2124,9 +2123,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Väliaikaiskansio muuttui.\n"
 
 #: src/PrefsUnifiedDlg.cpp:589
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Kaikki verkot ovat pois päältä."
+msgstr "- ED2K-verkko kytkettiin päälle.\n"
 
 #: src/PrefsUnifiedDlg.cpp:614 src/muuli_wdr.cpp:116
 msgid "Up: 0.0 | Down: 0.0"
@@ -7218,9 +7216,3 @@ msgstr "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua luettavaksi!"
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua kirjoitettavaksi!"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Haen tilannetietoa..."
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() palautti NULL"
