@@ -57,7 +57,7 @@ static wxString VersionInfo(uint8_t version, uint8_t type)
 		if (version == CREDITFILE_VERSION) {
 			verStr = wxT("CREDITFILE_VERSION");
 		}
-	} else if (type = KnownFileList) {
+	} else if (type == KnownFileList) {
 		if (version == MET_HEADER) {
 			verStr = wxT("MET_HEADER");
 		} else if (version == MET_HEADER_WITH_LARGEFILES) {
