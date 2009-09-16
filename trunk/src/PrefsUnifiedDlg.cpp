@@ -430,6 +430,14 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
 	FindWindow(IDC_COMMENTWORD)->Enable(CastChild(IDC_FILTERCOMMENTS, wxCheckBox)->IsChecked());
 
+#ifdef CLIENT_GUI
+	// Disable dirpickers unless it's a localhost connection
+	if (!theApp->m_connect->IsConnectedToLocalHost()) {
+		FindWindow(IDC_SELINCDIR)->Enable(false);	
+		FindWindow(IDC_SELTEMPDIR)->Enable(false);	
+	}
+#endif
+
 	// Protocol obfuscation
 	::SendCheckBoxEvent(this, IDC_SUPPORT_PO);
 	::SendCheckBoxEvent(this, IDC_ENABLE_PO_OUTGOING);

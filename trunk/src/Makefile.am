@@ -105,7 +105,6 @@ libmuleappgui_a_SOURCES = \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
-	DirectoryTreeCtrl.cpp \
 	EditServerListDlg.cpp \
 	extern/wxWidgets/listctrl.cpp \
 	FileDetailListCtrl.cpp \
@@ -174,6 +173,7 @@ gui_sources = \
 	CatDialog.cpp \
 	ChatSelector.cpp \
 	ClientDetailDialog.cpp \
+	DirectoryTreeCtrl.cpp \
 	FileDetailDialog.cpp \
 	KadDlg.cpp \
 	OScopeCtrl.cpp \

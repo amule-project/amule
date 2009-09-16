@@ -331,6 +331,10 @@ enum ECTagNames {
 			EC_TAG_SRCDROP_HQRS_VALUE                 = 0x1904,
 			EC_TAG_SRCDROP_AUTODROP_TIMER             = 0x1905,
 		EC_TAG_PREFS_DIRECTORIES                  = 0x1A00,
+			EC_TAG_DIRECTORIES_INCOMING               = 0x1A01,
+			EC_TAG_DIRECTORIES_TEMP                   = 0x1A02,
+			EC_TAG_DIRECTORIES_SHARED                 = 0x1A03,
+			EC_TAG_DIRECTORIES_SHARE_HIDDEN           = 0x1A04,
 		EC_TAG_PREFS_STATISTICS                   = 0x1B00,
 			EC_TAG_STATSGRAPH_WIDTH                   = 0x1B01,
 			EC_TAG_STATSGRAPH_SCALE                   = 0x1B02,
@@ -721,6 +725,10 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x1904: return wxT("EC_TAG_SRCDROP_HQRS_VALUE");
 		case 0x1905: return wxT("EC_TAG_SRCDROP_AUTODROP_TIMER");
 		case 0x1A00: return wxT("EC_TAG_PREFS_DIRECTORIES");
+		case 0x1A01: return wxT("EC_TAG_DIRECTORIES_INCOMING");
+		case 0x1A02: return wxT("EC_TAG_DIRECTORIES_TEMP");
+		case 0x1A03: return wxT("EC_TAG_DIRECTORIES_SHARED");
+		case 0x1A04: return wxT("EC_TAG_DIRECTORIES_SHARE_HIDDEN");
 		case 0x1B00: return wxT("EC_TAG_PREFS_STATISTICS");
 		case 0x1B01: return wxT("EC_TAG_STATSGRAPH_WIDTH");
 		case 0x1B02: return wxT("EC_TAG_STATSGRAPH_SCALE");

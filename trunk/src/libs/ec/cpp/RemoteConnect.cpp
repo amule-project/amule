@@ -132,6 +132,12 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	return true;
 }
 
+bool CRemoteConnect::IsConnectedToLocalHost()
+{
+	wxIPV4address addr;
+	return GetPeer(addr) ? addr.IsLocalHost() : false;
+}
+
 void CRemoteConnect::WriteDoneAndQueueEmpty()
 {
 }

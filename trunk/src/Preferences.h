@@ -491,6 +491,7 @@ public:
 	// Hidden files
 	
 	static bool ShareHiddenFiles() { return s_ShareHiddenFiles; }
+	static void SetShareHiddenFiles(bool val) { s_ShareHiddenFiles = val; }
 	
 	static bool AutoSortDownload() { return s_AutoSortDownload; } 
 	

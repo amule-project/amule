@@ -86,10 +86,13 @@ private:
 	typedef std::map<wxString, CPath> SharedMap;
 	SharedMap m_lstShared;
 	// get map key from path (normalized path)
-	static wxString GetKey(const CPath& path);
+	wxString GetKey(const CPath& path);
 
 	bool m_IsInit;
+	// Are we running the remote GUI, and from a remote location?
+	bool m_IsRemote;
 	
+	wxTreeItemId m_root;
 	
 	DECLARE_EVENT_TABLE()
 };

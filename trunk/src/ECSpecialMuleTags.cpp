@@ -280,7 +280,17 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 	}
 
 	if (selection & EC_PREFS_DIRECTORIES) {
-		//#warning TODO
+		CECEmptyTag dirPrefs(EC_TAG_PREFS_DIRECTORIES);
+		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_INCOMING, thePrefs::GetIncomingDir().GetRaw()));
+		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_TEMP, thePrefs::GetTempDir().GetRaw()));
+		size_t sharedDirs = theApp->glob_prefs->shareddir_list.size();
+		CECTag dirtag(EC_TAG_DIRECTORIES_SHARED, sharedDirs);
+		for (size_t i = 0; i < sharedDirs; i++) {
+			dirtag.AddTag(CECTag(EC_TAG_STRING, theApp->glob_prefs->shareddir_list[i].GetRaw()));
+		}
+		dirPrefs.AddTag(dirtag);
+		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_SHARE_HIDDEN, thePrefs::ShareHiddenFiles()));
+		AddTag(dirPrefs);
 	}
 
 	if (selection & EC_PREFS_STATISTICS) {
@@ -513,7 +523,20 @@ void CEC_Prefs_Packet::Apply()
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {
-		//#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_INCOMING)) != NULL) {
+			thePrefs::SetIncomingDir(CPath(oneTag->GetStringData()));
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_TEMP)) != NULL) {
+			thePrefs::SetTempDir(CPath(oneTag->GetStringData()));
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_SHARED)) != NULL) {
+			theApp->glob_prefs->shareddir_list.clear();
+			for (unsigned int i = 0; i < oneTag->GetTagCount(); i++) {
+				const CECTag *dirTag = oneTag->GetTagByIndex(i);
+				theApp->glob_prefs->shareddir_list.push_back(CPath(dirTag->GetStringData()));
+			}
+		}
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetShareHiddenFiles, EC_TAG_DIRECTORIES_SHARE_HIDDEN);
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {

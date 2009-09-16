@@ -382,6 +382,9 @@ public:
 	// Retrieves the statistics tree
 	void GetStatsTree();
 
+	// Check if connection goes to local machine
+	bool IsConnectedToLocalHost();
+
 private:
 	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
 	bool ProcessAuthPacket(const CECPacket *reply);

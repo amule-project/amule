@@ -32,6 +32,7 @@
 
 #include <common/StringFunctions.h>
 #include <common/FileFunctions.h>
+#include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
 
@@ -62,6 +63,11 @@ CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& 
 	: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree"))
 {
 	m_IsInit = false;
+#ifdef CLIENT_GUI
+	m_IsRemote = !theApp->m_connect->IsConnectedToLocalHost();
+#else
+	m_IsRemote = false;
+#endif
 }
 
 
@@ -93,34 +99,35 @@ void CDirectoryTreeCtrl::Init()
 	
 	// Create an empty root item, which we can
 	// safely append when creating a full path.
-	wxTreeItemId root = AddRoot(wxEmptyString, IMAGE_FOLDER, -1,
+	m_root = AddRoot(wxEmptyString, IMAGE_FOLDER, -1,
 					new CItemData(CPath()));
 	
-
-#ifndef __WXMSW__
-	AddChildItem(root, CPath(wxT("/")));
-#else
-	// this might take awhile, so change the cursor
-	::wxSetCursor(*wxHOURGLASS_CURSOR);
-	// retrieve bitmask of all drives available
-	uint32 drives = GetLogicalDrives();
-	drives >>= 1;
-	for (char drive = 'C'; drive <= 'Z'; drive++) {
+	if (!m_IsRemote) {
+	#ifndef __WXMSW__
+		AddChildItem(m_root, CPath(wxT("/")));
+	#else
+		// this might take awhile, so change the cursor
+		::wxSetCursor(*wxHOURGLASS_CURSOR);
+		// retrieve bitmask of all drives available
+		uint32 drives = GetLogicalDrives();
 		drives >>= 1;
-		if (! (drives & 1)) { // skip non existant drives
-			continue;
-		}
-		wxString driveStr = wxString::Format(wxT("%c:"), drive);
-		uint32 type = GetDriveType(driveStr + wxT("\\"));
+		for (char drive = 'C'; drive <= 'Z'; drive++) {
+			drives >>= 1;
+			if (! (drives & 1)) { // skip non existant drives
+				continue;
+			}
+			wxString driveStr = wxString::Format(wxT("%c:"), drive);
+			uint32 type = GetDriveType(driveStr + wxT("\\"));
 
-		// skip removable/undefined drives, share only fixed or remote drives
-		if ((type == 3 || type == 4)   // fixed drive / remote drive
-			&& CPath::DirExists(driveStr)) {
-			AddChildItem(root, CPath(driveStr));
+			// skip removable/undefined drives, share only fixed or remote drives
+			if ((type == 3 || type == 4)   // fixed drive / remote drive
+				&& CPath::DirExists(driveStr)) {
+				AddChildItem(m_root, CPath(driveStr));
+			}
 		}
+		::wxSetCursor(*wxSTANDARD_CURSOR);
+	#endif
 	}
-	::wxSetCursor(*wxSTANDARD_CURSOR);
-#endif
 
 	HasChanged = false;
 
@@ -142,15 +149,21 @@ void CDirectoryTreeCtrl::OnItemExpanding(wxTreeEvent& evt)
 
 void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
 {
-	CheckChanged(evt.GetItem(), !IsBold(evt.GetItem()), false);
-	HasChanged = true;
+	if (!m_IsRemote) {
+		CheckChanged(evt.GetItem(), !IsBold(evt.GetItem()), false);
+		HasChanged = true;
+	}
 }
 
 
 void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 {
-	MarkChildren(evt.GetItem(), !IsBold(evt.GetItem()), false);
-	HasChanged = true;
+	if (m_IsRemote) {
+		SelectItem(evt.GetItem()); // looks weird otherwise
+	} else {
+		MarkChildren(evt.GetItem(), !IsBold(evt.GetItem()), false);
+		HasChanged = true;
+	}
 }
 
 
@@ -269,6 +282,10 @@ void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 
 wxString CDirectoryTreeCtrl::GetKey(const CPath& path)
 {
+	if (m_IsRemote) {
+		return path.GetRaw();
+	}
+
 	// Sanity check, see IsSameAs() in Path.cpp
 	const wxString cwd = wxGetCwd();
 	const int flags = (wxPATH_NORM_ALL | wxPATH_NORM_CASE) & ~wxPATH_NORM_ENV_VARS;
@@ -280,6 +297,15 @@ wxString CDirectoryTreeCtrl::GetKey(const CPath& path)
 
 void CDirectoryTreeCtrl::UpdateSharedDirectories()
 {
+	// ugly hack to at least show shared dirs in remote gui
+	if (m_IsRemote) {
+		DeleteChildren(m_root);
+		for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); it++) {
+			AppendItem(m_root, it->second.GetPrintable(), IMAGE_FOLDER, -1, new CItemData(it->second));
+		}
+		return;
+	}
+
 	// Mark all shared root items (on windows this can be multiple
 	// drives, on unix there is only the root dir).
 	wxTreeItemIdValue cookie;
