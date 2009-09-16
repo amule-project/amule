@@ -125,6 +125,7 @@ Version 2.2.6 - The "I won't tell you" version.
 		* Fixed obfuscated server UDP communication.
 		* Fixed cross-endian Kad node verification.
 		* Fixed name conflict in builtin PHP parser.
+		* Fixed configure finding unwanted Crypto++ installations.
 
 	Marcell:
 		* Properly update transfers tab's bottom pane's title.
