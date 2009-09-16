@@ -1,0 +1,17 @@
+- Not specific 
+
+	- Source code tree Reorganization (Probably Kry/Xaignar/Both)
+
+	- Keep porting eMule features (low priority) (non-network!)
+
+	- Configure Stuff:
+	    + Add gtk-prefix and prefix for every lib used <- ?
+
+	- Import mldonkey partfiles.
+
+	- Remote
+            + Finish cmd line clients [working]
+
+	- Add Scheduler Tab (Being done by geeko at http://forum.amule.org/thread.php?threadid=5284 )
+ 	    + add actions menu
+	    + add time and details menu
