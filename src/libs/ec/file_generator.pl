@@ -3,8 +3,8 @@
 
 ## This file is part of the aMule Project
 ##
-## Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-## Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+## Copyright (c) 2007-2009 Angel Vidal (Kry) ( kry@amule.org )
+## Copyright (c) 2007-2009 aMule Project     ( http://www.amule-project.net )
 ##
 ## This program is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License
@@ -41,8 +41,6 @@ if ($exit_with_help) {
 
 my $folder = $ARGV[0] . "/";
 
-my @debugOut;
-
 my $numArgs = $#ARGV;
 print "Parsing $numArgs files\n";
 
@@ -55,7 +53,6 @@ sub generate_files {
 
 	my $folder = $_[0];
 	my $input_file = $_[1];
-	@debugOut = ();
 
 	open(INFO, $folder . $input_file) or die "Cannot open input file " . $input_file . " for reading: $!";		# Open the file
 
@@ -279,7 +276,7 @@ sub read_enum_content {
 				my $secondoperand = $2;
 	
 				if ($first) {
-					write_cpp_enum_start(*CPPOUTPUT, $dataname, $datatype);
+					write_cpp_enum_start(*CPPOUTPUT, $dataname);
 					write_cdash_enum_start(*CDASHFILE, $dataname);
 				}
 
@@ -387,9 +384,8 @@ sub write_cpp_bottom_guard {
 
 	my $guardname = uc($_[1]);
 
-	print OUTPUT "#ifdef DEBUG_EC_IMPLEMENTATION\n\n" . join("\n", @debugOut) . "\n#endif\t// DEBUG_EC_IMPLEMENTATION\n\n";
-
 	print OUTPUT "#endif // __" . $guardname . "_H__\n";
+
 }
 
 sub write_cpp_enum_start {
@@ -397,17 +393,13 @@ sub write_cpp_enum_start {
 	local (*OUTPUT) = $_[0];
 
 	print OUTPUT "enum " . $_[1] . " {\n";
-	
-	push @debugOut, "wxString GetDebugName$_[1]($_[2] arg)\n{\n\tswitch (arg) {";
 }
 
 sub write_cpp_enum_end {
 
 	local (*OUTPUT) = $_[0];
 
-	print OUTPUT "\n};\n";
-
-	push @debugOut, "\t\tdefault: return CFormat(wxT(\"unknown %d 0x%x\")) % arg % arg;\n\t}\n}\n";
+	print OUTPUT "\n};\n"
 }
 
 
@@ -420,11 +412,6 @@ sub write_cpp_enum_line {
 	}
 
 	print OUTPUT "\t" . $_[1] . " = " . $_[2];
-
-	my $arg = $_[1];
-	$arg =~ s/\s//g;	# remove whitespace
-	push @debugOut, "\t\tcase $_[2]: return wxT(\"$arg\");";
-
 }
 
 sub write_cpp_define_line {

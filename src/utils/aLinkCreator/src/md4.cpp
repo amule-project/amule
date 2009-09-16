@@ -5,13 +5,13 @@
 ///
 /// Last modified by: ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (c) 2004-2008 ThePolish ( thepolish@vipmail.ru )
+/// Copyright (C) 2004 by ThePolish
 ///
-/// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+/// Copyright (C) 2004 by Phoenix
 ///
-/// Copyright (c) 2004-2008 Alo Sarv ( madcat_@users.sourceforge.net )
+/// Copyright (C) 2004 by Madcat
 ///
-/// Copyright (c) 2002-2008 Michael Buesch
+/// Copyright (C) 2002, 2003, 2004 by Michael Buesch
 /// Email: mbuesch@freenet.de
 ///
 /// The algorithm is due to Ron Rivest.  This code is based on code
@@ -324,7 +324,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 
   // Open file and let wxFFile destructor close the file
   // Closing it explicitly may crash on Win32 ...
-  wxFFile file(filename, wxS("rbS"));
+  wxFFile file(filename, wxT("rbS"));
   if (! file.IsOpened())
     {
       return wxEmptyString;
@@ -376,7 +376,7 @@ wxString MD4::charToHex(const char *buf, size_t len)
 
   for (i = 0; i < len; ++i)
     {
-      hexString += wxString::Format(wxS("%02x"), 0xFF & *(buf + i));
+      hexString += wxString::Format(wxT("%02x"), 0xFF & *(buf + i));
     }
 
   // Reduce memory usage

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2005-2008 Mikkel Schubert ( xaignar@users.sourceforge.net )
-// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Mikkel Schubert ( xaignar@users.sourceforge.net )
+// Copyright (C) 2005-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -313,7 +313,7 @@ ValueType CQueueEvent<ValueType>::GetValue( size_t i ) const {
 	} else if ( m_value && i == 0 ) {
 		return *m_value;
 	} else {
-		wxFAIL;
+		wxASSERT( false );
 		return ValueType();
 	}
 }
@@ -377,7 +377,7 @@ void CQueueObserver<ValueType>::ReceiveNotification( const ObservableType* o, co
 		wxASSERT(m_owner == NULL);
 		m_owner = o;
 	} else {
-		wxFAIL;
+		wxASSERT( false );
 	}
 }
 

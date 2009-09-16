@@ -1,7 +1,7 @@
 // 
 //  This file is part of the aMule Project.
 // 
-//  Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+//  Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // 
 //  Any parts of this program derived from the xMule, lMule or eMule project,
 //  or contributed by third-party developers are copyrighted by their
@@ -27,15 +27,14 @@
 namespace amule.net
 {
 public enum ProtocolVersion {
-	EC_CURRENT_PROTOCOL_VERSION = 0x0203
+	EC_CURRENT_PROTOCOL_VERSION = 0x0200
 };
 public enum ECFlags {
 	EC_FLAG_ZLIB	 = 0x00000001,
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
-	EC_FLAG_NOTIFY	 = 0x00008000,
-	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
+
 };
 public enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,
@@ -115,9 +114,7 @@ public enum ECOpCodes {
 	EC_OP_DISCONNECT                    = 0x4B,
 	EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C,
 	EC_OP_KAD_UPDATE_FROM_URL           = 0x4D,
-	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E,
-	EC_OP_AUTH_SALT                     = 0x4F,
-	EC_OP_AUTH_PASSWD                   = 0x50
+	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E
 };
 public enum ECTagNames {
 	EC_TAG_STRING                             = 0x0000,
@@ -131,7 +128,6 @@ public enum ECTagNames {
 	EC_TAG_BOOTSTRAP_IP                       = 0x0008,
 	EC_TAG_BOOTSTRAP_PORT                     = 0x0009,
 	EC_TAG_CLIENT_ID                          = 0x000A,
-	EC_TAG_PASSWD_SALT                        = 0x000B,
 	EC_TAG_CLIENT_NAME                        = 0x0100,
 		EC_TAG_CLIENT_VERSION                     = 0x0101,
 		EC_TAG_CLIENT_MOD                         = 0x0102,
@@ -148,16 +144,6 @@ public enum ECTagNames {
 		EC_TAG_STATS_KAD_USERS                    = 0x020A,
 		EC_TAG_STATS_ED2K_FILES                   = 0x020B,
 		EC_TAG_STATS_KAD_FILES                    = 0x020C,
-		EC_TAG_STATS_LOGGER_MESSAGE               = 0x020D,
-		EC_TAG_STATS_KAD_FIREWALLED_UDP           = 0x020E,
-		EC_TAG_STATS_KAD_INDEXED_SOURCES          = 0x020F,
-		EC_TAG_STATS_KAD_INDEXED_KEYWORDS         = 0x0210,
-		EC_TAG_STATS_KAD_INDEXED_NOTES            = 0x0211,
-		EC_TAG_STATS_KAD_INDEXED_LOAD             = 0x0212,
-		EC_TAG_STATS_KAD_IP_ADRESS                = 0x0213,
-		EC_TAG_STATS_BUDDY_STATUS                 = 0x0214,
-		EC_TAG_STATS_BUDDY_IP                     = 0x0215,
-		EC_TAG_STATS_BUDDY_PORT                   = 0x0216,
 	EC_TAG_PARTFILE                           = 0x0300,
 		EC_TAG_PARTFILE_NAME                      = 0x0301,
 		EC_TAG_PARTFILE_PARTMETID                 = 0x0302,
@@ -181,11 +167,6 @@ public enum ECTagNames {
 		EC_TAG_PARTFILE_REQ_STATUS                = 0x0314,
 		EC_TAG_PARTFILE_SOURCE_NAMES              = 0x0315,
 		EC_TAG_PARTFILE_COMMENTS                  = 0x0316,
-		EC_TAG_PARTFILE_STOPPED                   = 0x0317,
-		EC_TAG_PARTFILE_DOWNLOAD_ACTIVE           = 0x0318,
-		EC_TAG_PARTFILE_LOST_CORRUPTION           = 0x0319,
-		EC_TAG_PARTFILE_GAINED_COMPRESSION        = 0x031A,
-		EC_TAG_PARTFILE_SAVED_ICH                 = 0x031B,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
@@ -194,7 +175,6 @@ public enum ECTagNames {
 		EC_TAG_KNOWNFILE_ACCEPT_COUNT             = 0x0405,
 		EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL         = 0x0406,
 		EC_TAG_KNOWNFILE_AICH_MASTERHASH          = 0x0407,
-		EC_TAG_KNOWNFILE_FILENAME                 = 0x0408,
 	EC_TAG_SERVER                             = 0x0500,
 		EC_TAG_SERVER_NAME                        = 0x0501,
 		EC_TAG_SERVER_DESC                        = 0x0502,
@@ -230,11 +210,6 @@ public enum ECTagNames {
 		EC_TAG_CLIENT_SERVER_NAME                 = 0x0614,
 		EC_TAG_CLIENT_SOFT_VER_STR                = 0x0615,
 		EC_TAG_CLIENT_WAITING_POSITION            = 0x0616,
-		EC_TAG_CLIENT_IDENT_STATE                 = 0x0617,
-		EC_TAG_CLIENT_OBFUSCATED_CONNECTION       = 0x0618,
-		EC_TAG_CLIENT_RATING                      = 0x0619,
-		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
-		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
@@ -322,10 +297,6 @@ public enum ECTagNames {
 			EC_TAG_SRCDROP_HQRS_VALUE                 = 0x1904,
 			EC_TAG_SRCDROP_AUTODROP_TIMER             = 0x1905,
 		EC_TAG_PREFS_DIRECTORIES                  = 0x1A00,
-			EC_TAG_DIRECTORIES_INCOMING               = 0x1A01,
-			EC_TAG_DIRECTORIES_TEMP                   = 0x1A02,
-			EC_TAG_DIRECTORIES_SHARED                 = 0x1A03,
-			EC_TAG_DIRECTORIES_SHARE_HIDDEN           = 0x1A04,
 		EC_TAG_PREFS_STATISTICS                   = 0x1B00,
 			EC_TAG_STATSGRAPH_WIDTH                   = 0x1B01,
 			EC_TAG_STATSGRAPH_SCALE                   = 0x1B02,

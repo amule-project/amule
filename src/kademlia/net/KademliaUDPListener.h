@@ -1,9 +1,9 @@
 //								-*- C++ -*-
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -64,8 +64,13 @@ struct FetchNodeID_Struct {
 	CKadClientSearcher* requester;
 };
 
-#define DebugSendF(what, ip, port)	AddDebugLogLineN(logClientKadUDP, what + wxString(wxT(" to ")) + KadIPPortToString(ip, port))
-#define DebugRecvF(what, ip, port)	AddDebugLogLineN(logClientKadUDP, what + wxString(wxT(" from ")) + KadIPPortToString(ip, port))
+#ifdef __DEBUG__
+#	define DebugSendF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" to ")) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port))
+#	define DebugRecvF(what, ip, port)	AddDebugLogLineM(false, logClientKadUDP, what + wxString(wxT(" from ")) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port))
+#else
+#	define DebugSendF(what, ip, port)
+#	define DebugRecvF(what, ip, port)
+#endif
 
 #define DebugSend(what, ip, port)	DebugSendF(wxSTRINGIZE_T(what), ip, port)
 #define DebugRecv(what, ip, port)	DebugRecvF(wxSTRINGIZE_T(what), ip, port)

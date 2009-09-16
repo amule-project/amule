@@ -5,9 +5,9 @@
 ///
 /// Author:       ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (c) 2004-2008 ThePolish ( thepolish@vipmail.ru )
+/// Copyright (C) 2004 by ThePolish
 ///
-/// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+/// Copyright (C) 2004 by Phoenix
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@
 // alcc.c and here. And remove this stupid comment :)
 //-----------------------------------------------------------------------------
 // efe, this can be put in a separete include file, if you want to reuse
-static wxCSConv aMuleConv(wxS("iso8859-1"));
+static wxCSConv aMuleConv(wxT("iso8859-1"));
 #ifdef wxUSE_UNICODE
         #define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
         #define char2unicode(x) aMuleConv.cMB2WX(x)

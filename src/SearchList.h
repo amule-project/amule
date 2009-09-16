@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -92,11 +92,8 @@ public:
 	 */ 	
 	wxString StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params);
 
-	/** Stops the current global search, if any is in progress. */
+	/** Stops the current search, if any is in progress. */
 	void StopGlobalSearch();
-
-	/** Stops the current Kad search, if any is in progress. */
-	void StopKadSearch();
 
 	/** Returns the completion percentage of the current search. */
 	uint32 GetSearchProgress() const;
@@ -140,8 +137,8 @@ public:
 	 * @param serverIP The IP of the server sending the results.
 	 * @param serverPort The Port of the server sending the results.
 	 */
-	void	ProcessSearchAnswer(const uint8_t* packet, uint32_t size, bool optUTF8, uint32_t serverIP, uint16_t serverPort);
-	
+	void    ProcessSearchAnswer(const uint8_t* packet, uint32_t size, bool optUTF8, uint32_t serverIP, uint16_t serverPort);
+
 	/**
 	 * Processes a search-result sent via UDP. Only one result is read from the packet.
 	 *

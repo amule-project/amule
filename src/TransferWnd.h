@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -27,15 +27,16 @@
 #define TRANSFERWND_H
 
 #include <wx/panel.h>	// Needed for wxPanel
-#include <wx/notebook.h>	// needed for wxBookCtrlEvent in wx 2.8
 #include "Types.h"		// Needed for uint32
 #include "OtherStructs.h"
+#include "Constants.h"		// Needed for ViewType
 
 class CClientListCtrl;
 class CDownloadListCtrl;
 class CMuleNotebook;
 class wxListCtrl;
 class wxSplitterEvent;
+class wxNotebookEvent;
 class wxCommandEvent;
 class wxMouseEvent;
 class wxEvent;
@@ -124,6 +125,12 @@ public:
 	 */
 	void	Prepare();
 
+	/**
+	 * Call this function to update the title of the bottom pane after the view
+	 * has been changed.
+	 */
+	void UpdateBottomPaneTitle(ViewType view);
+
 	//! Pointer to the download-queue.
 	CDownloadListCtrl*	downloadlistctrl;
 	//! Pointer to the list of clients.
@@ -171,7 +178,7 @@ private:
 	/**
 	 * Event-handler for changing categories.
 	 */
-	void OnCategoryChanged(wxBookCtrlEvent& evt);
+	void OnCategoryChanged(wxNotebookEvent& evt);
 	
 	/**
 	 * Event-handler for displaying the category-popup menu.

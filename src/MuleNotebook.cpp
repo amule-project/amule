@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Angel Vidal Veiga (kry@users.sourceforge.net)
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -156,7 +156,7 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 		evt.m_x = point.x;
 		evt.m_y = point.y;
 			
-		m_popup_widget->GetEventHandler()->AddPendingEvent( evt );
+		m_popup_widget->AddPendingEvent( evt );
 	} else {
 		wxMenu menu(_("Close"));
 		menu.Append(MP_CLOSE_TAB, wxString(_("Close tab")));

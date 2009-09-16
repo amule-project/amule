@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -244,7 +244,7 @@ wxString CastItoIShort(uint64 number);
 // Converts a number of bytes to a human readable speed value.
 wxString CastItoSpeed(uint32 bytes);
 // Converts an amount of seconds to human readable time.
-wxString CastSecondsToHM(uint32 seconds, uint16 msecs = 0);
+wxString CastSecondsToHM(uint64 seconds, uint16 msecs = 0);
 // Returns the amount of Bytes the provided size-type represents
 uint32 GetTypeSize(uint8 type);
 // Returns the string associated with a file-rating value.
@@ -357,11 +357,9 @@ inline long int make_full_ed2k_version(int a, int b, int c) {
 
 wxString GetConfigDir();
 
-#if !wxCHECK_VERSION(2, 9, 0)
-enum {
-	wxLANGUAGE_ASTURIAN	= wxLANGUAGE_USER_DEFINED + 1
-};
-#endif
+#define  wxLANGUAGE_CUSTOM 		wxLANGUAGE_USER_DEFINED+1
+#define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
+#define  wxLANGUAGE_ASTURIAN 	wxLANGUAGE_USER_DEFINED+3
 
 /**
  * Adds aMule's custom languages to db.

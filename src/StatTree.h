@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 D√©vai Tam√°s ( gonosztopi@amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 DÈvai Tam·s ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -1025,15 +1025,11 @@ public:
 	CStatTreeItemRatio(
 		const wxString &label,
 		const CStatTreeItemCounter *cnt1,
-		const CStatTreeItemCounter* cnt2,
-		uint64_t (*totalfunc1)() = NULL,
-		uint64_t (*totalfunc2)() = NULL)
+		const CStatTreeItemCounter* cnt2)
 	:
 	CStatTreeItemBase(label, stNone),
 	m_counter1(cnt1),
-	m_counter2(cnt2),
-	m_totalfunc1(totalfunc1),
-	m_totalfunc2(totalfunc2){}
+	m_counter2(cnt2) {}
 
 #ifndef AMULE_DAEMON
 	/**
@@ -1057,14 +1053,6 @@ protected:
 
 	//! Second counter.
 	const CStatTreeItemCounter *m_counter2;
-
-	//! A function for each whose return value is the total (without current) value.
-	uint64_t (*m_totalfunc1)();
-	uint64_t (*m_totalfunc2)();
-
-private:
-	//! Formatted String for display or EC
-	wxString GetString() const;
 };
 
 

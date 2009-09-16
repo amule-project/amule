@@ -3,8 +3,8 @@
 //
 // Parts of this file are based on work from pan One (http://home-3.tiscali.nl/~meost/pms/)
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -50,8 +50,6 @@
 #include "ScopedPtr.h"		// Needed for CScopedArray and CScopedPtr
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "SearchFile.h"		// Needed for CSearchFile
-#include "FileArea.h"		// Needed for CFileArea
-#include "FileAutoClose.h"	// Needed for CFileAutoClose
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
@@ -323,12 +321,70 @@ void CKnownFile::Init()
 }
 
 
+#ifdef CLIENT_GUI
+
+CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
+{
+	Init();
+	
+	SetFileName(CPath(tag->FileName()));
+	m_abyFileHash = tag->ID();
+	SetFileSize(tag->SizeFull());
+	m_iPartCount = (GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
+	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
+	m_iUpPriority = tag->Prio();
+	if ( m_iUpPriority >= 10 ) {
+		m_iUpPriority-= 10;
+		m_bAutoUpPriority = true;
+	} else {
+		m_bAutoUpPriority = false;
+	}
+
+	m_AICHMasterHash = tag->GetAICHHash();
+}
+
+CKnownFile::~CKnownFile()
+{
+}
+
+#else // ! CLIENT_GUI
+
+CKnownFile::~CKnownFile()
+{
+	SourceSet::iterator it = m_ClientUploadList.begin();
+	for ( ; it != m_ClientUploadList.end(); ++it ) {
+		(*it)->ClearUploadFileID();
+	}
+	
+	delete m_pAICHHashSet;
+}
+
+void CKnownFile::AddUploadingClient(CUpDownClient* client)
+{
+	m_ClientUploadList.insert(client);
+	
+	UpdateAutoUpPriority();
+}
+
+
+void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
+{
+	if (m_ClientUploadList.erase(client)) {
+		UpdateAutoUpPriority();
+	}
+}
+
+
+void CKnownFile::SetFilePath(const CPath& filePath)
+{
+	m_filePath = filePath;
+}
+
+
 void CKnownFile::SetFileSize(uint64 nFileSize)
 {
 	CAbstractFile::SetFileSize(nFileSize);
-#ifndef CLIENT_GUI
 	m_pAICHHashSet->SetFileSize(nFileSize);
-#endif
 	
 	// Examples of parthashs, hashsets and filehashs for different filesizes
 	// according the ed2k protocol
@@ -388,23 +444,15 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 	// PARTSIZE*2+1    3               3               3
 
 	if (nFileSize == 0){
-		//wxFAIL; // Kry - Why commented out by lemonfan? it can never be 0
+		//wxASSERT(0); // Kry - Why commented out by lemonfan? it can never be 0
 		m_iPartCount = 0;
 		m_iED2KPartCount = 0;
 		m_iED2KPartHashCount = 0;
-		m_sizeLastPart = 0;
 		return;
 	}
 
 	// nr. of data parts
-	m_iPartCount = nFileSize / PARTSIZE + 1;
-	// size of last part
-	m_sizeLastPart = nFileSize % PARTSIZE;
-	// file with size of n * PARTSIZE
-	if (m_sizeLastPart == 0) {
-		m_sizeLastPart = PARTSIZE;
-		m_iPartCount--;
-	}
+	m_iPartCount = (nFileSize + (PARTSIZE - 1)) / PARTSIZE;
 
 	// nr. of parts to be used with OP_FILESTATUS
 	m_iED2KPartCount = nFileSize / PARTSIZE + 1;
@@ -414,59 +462,6 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 	if (m_iED2KPartHashCount != 0) {
 		m_iED2KPartHashCount += 1;
 	}
-}
-
-
-#ifdef CLIENT_GUI
-
-CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
-{
-	Init();
-	
-	SetFileName(CPath(tag->FileName()));
-	m_abyFileHash = tag->ID();
-	SetFileSize(tag->SizeFull());
-	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
-	m_iUpPriorityEC = tag->Prio();
-	m_AICHMasterHash = tag->GetAICHHash();
-	m_filePath = CPath(tag->FilePath());
-}
-
-CKnownFile::~CKnownFile()
-{
-}
-
-#else // ! CLIENT_GUI
-
-CKnownFile::~CKnownFile()
-{
-	SourceSet::iterator it = m_ClientUploadList.begin();
-	for ( ; it != m_ClientUploadList.end(); ++it ) {
-		(*it)->ClearUploadFileID();
-	}
-	
-	delete m_pAICHHashSet;
-}
-
-void CKnownFile::AddUploadingClient(CUpDownClient* client)
-{
-	m_ClientUploadList.insert(client);
-	
-	UpdateAutoUpPriority();
-}
-
-
-void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
-{
-	if (m_ClientUploadList.erase(client)) {
-		UpdateAutoUpPriority();
-	}
-}
-
-
-void CKnownFile::SetFilePath(const CPath& filePath)
-{
-	m_filePath = filePath;
 }
 
 
@@ -773,15 +768,14 @@ void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash*
 }
 
 
-void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint64 offset, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
+void CKnownFile::CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
 {
-	wxCHECK_RET(Length, wxT("No input to hash from in CreateHashFromFile"));
+	wxCHECK_RET(file && Length, wxT("No input to hash from in CreateHashFromFile"));
+	
+	std::vector<byte> buffer(Length);
+	file->Read(&buffer[0], Length);
 
-	CFileArea area;
-	area.ReadAt(file, offset, Length);
- 
-	CreateHashFromInput(area.GetBuffer(), Length, Output, pShaHashOut);
-	area.CheckError();
+	CreateHashFromInput(&buffer[0], Length, Output, pShaHashOut);
 }	
 
 
@@ -906,7 +900,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
 	if (rcvstatus.size() != GetPartCount()) {
 		// Yuck. Same file but different part count? Seriously fucked up.
-		AddDebugLogLineM(false, logKnownFiles, CFormat(wxT("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)")) % rcvstatus.size() % GetPartCount());
+		AddDebugLogLineM(false, logKnownFiles, wxString::Format(wxT("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)"),rcvstatus.size(),GetPartCount()));
 		return NULL;
 	}
 
@@ -1303,36 +1297,13 @@ void CKnownFile::ClearPriority() {
 	UpdateAutoUpPriority();
 }
 
-void GuessAndRemoveExt(CPath& name)
-{
-	wxString ext = name.GetExt();
-
-	// Remove common two-part extensions, such as "tar.gz"
-	if (ext == wxT("gz") || ext == wxT("bz2")) {
-		name = name.RemoveExt();
-		if (name.GetExt() == wxT("tar")) {
-			name = name.RemoveExt();
-		}
-	// might be an extension if length == 3
-	// and also remove some common non-three-character extensions
-	} else if (ext.Length() == 3  ||
-		   ext == wxT("7z")   ||
-		   ext == wxT("rm")   ||
-		   ext == wxT("jpeg") ||
-		   ext == wxT("mpeg")
-		   ) {
-		name = name.RemoveExt();
-	}
-}
-
 void CKnownFile::SetFileName(const CPath& filename)
 { 
 	CAbstractFile::SetFileName(filename);
-	wordlist.clear();
-	// Don't publish extension. That'd kill the node indexing e.g. "avi".
-	CPath tmpName = GetFileName();
-	GuessAndRemoveExt(tmpName);
-	Kademlia::CSearchManager::GetWords(tmpName.GetPrintable(), &wordlist);
+#ifndef CLIENT_GUI
+		wordlist.clear();
+		Kademlia::CSearchManager::GetWords(GetFileName().GetPrintable(), &wordlist);
+#endif
 }
 
 #endif // CLIENT_GUI
@@ -1350,7 +1321,7 @@ void CKnownFile::LoadComment()
 	m_bCommentLoaded = true;	
 	
 	#else
-	m_strComment = wxEmptyString;
+	m_strComment = wxT("Comments are not allowed on remote gui yet");
 	m_bCommentLoaded = true;
 	m_iRating =0;
 	#endif
@@ -1375,7 +1346,7 @@ wxString CKnownFile::GetAICHMasterHash() const
 bool CKnownFile::HasProperAICHHashSet() const
 {
 #ifdef CLIENT_GUI
-	return m_AICHMasterHash.Length() != 0;
+	return m_AICHMasterHash.Length();
 #else
 	return m_pAICHHashSet->HasValidMasterHash() &&
 		(m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
@@ -1391,7 +1362,6 @@ wxString CKnownFile::GetFeedback() const
 		+ _("Uploaded") + wxT(": ") + CastItoXBytes(statistic.GetTransferred()) + wxT(" (") + CastItoXBytes(statistic.GetAllTimeTransferred()) + wxT(")\n")
 		+ _("Requested") + CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
 		+ _("Accepted") + CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
-		+ _("On Queue") + CFormat(wxT(": %u\n")) % GetQueuedCount()
 		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
 }
 // File_checked_for_headers

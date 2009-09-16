@@ -2,7 +2,5 @@ amule	ICON	"amule.ico"
 convert	ICON	"convert.ico"
 
 #ifndef MSVC
-#include "wx/msw/wx.rc"
+ #include "wx/msw/wx.rc"
 #endif
-
-

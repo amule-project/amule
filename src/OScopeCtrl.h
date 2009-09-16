@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -34,14 +34,16 @@
 #include <wx/timer.h>		// Needed for wxTimer
 #include <wx/pen.h>
 #include <wx/bitmap.h>
-#include <wx/colour.h>
 
+#include "Color.h"		// Needed for COLORREF and RGB
 #include "Statistics.h"		// Needed for StatsGraphType
 
 class wxMemoryDC;
 
 /////////////////////////////////////////////////////////////////////////////
 // COScopeCtrl window
+
+#define TIMER_OSCOPE 7641
 
 class COScopeCtrl : public wxControl
 {
@@ -55,9 +57,9 @@ public:
 	void SetRanges(float dLower, float dUpper);
 	void SetYUnits(const wxString& string,
 		const wxString& YMin = wxEmptyString, const wxString& YMax = wxEmptyString);
-	void SetBackgroundColor(const wxColour& color);
-	void SetGridColor(const wxColour& color);
-	void SetPlotColor(const wxColour& color, unsigned iTrend = 0);
+	void SetBackgroundColor(COLORREF color);
+	void SetGridColor(COLORREF color);
+	void SetPlotColor(COLORREF color, unsigned iTrend = 0);
 	float GetUpperLimit()		{ return pdsTrends[0].fUpperLimit; }
 	void Reset(double sNewPeriod);
 	void Stop();
@@ -81,7 +83,7 @@ public:
 	wxColour m_gridColour;
 
 	typedef struct PlotDataStruct {
-		wxColour crPlot;	       // data plot color  
+		COLORREF crPlot;	       // data plot color  
 		wxPen  penPlot;
 		unsigned yPrev;
 		float fPrev;
@@ -105,13 +107,11 @@ protected:
 	void InvalidateGrid()	{ InvalidateCtrl(false, true); }
 
 private:
-	bool bRecreateGrid, bRecreateGraph, bRecreateAll, bStopped;
+	bool bRecreateGrid, bRecreateGraph, bStopped;
 	int nDelayedPoints;
 	double sLastTimestamp;
 	double sLastPeriod;
 	wxTimer timerRedraw;
-	bool m_onPaint;
-
 	void OnTimer(wxTimerEvent& evt);
 	void OnPaint(wxPaintEvent& evt);
 	void OnSize(wxSizeEvent& evt);

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 D√©vai Tam√°s ( gonosztopi@amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 DÈvai Tam·s ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -30,9 +30,12 @@
 
 #ifndef EC_REMOTE
 
+#ifndef AMULE_DAEMON
 #include <common/Format.h>			// Needed for CFormat
 
 #define a_brackets_b(a,b) (a + wxT(" (") + b + wxT(")"))
+
+#endif /* !AMULE_DAEMON */
 
 #endif /* !EC_REMOTE */
 
@@ -61,7 +64,7 @@ CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STATTREE_NODE);
 
-	for (size_t i = 0; i < tag->GetTagCount(); ++i) {
+	for (int i = 0; i < tag->GetTagCount(); ++i) {
 		const CECTag *tmp = tag->GetTagByIndex(i);
 		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
 			m_children.push_back(new CStatTreeItemBase(tmp));
@@ -535,43 +538,39 @@ void CStatTreeItemAverageSpeed::AddECValues(CECTag *tag) const
 
 /* CStatTreeItemRatio */
 
-wxString CStatTreeItemRatio::GetString() const
+#ifndef AMULE_DAEMON
+wxString CStatTreeItemRatio::GetDisplayString() const
 {
-	wxString ret;
-	double v1 = m_counter1->GetValue();
-	double v2 = m_counter2->GetValue();
-	if (v1 > 0 && v2 > 0) {
-		if (v2 < v1) {
-			ret = CFormat(wxT("%.2f : 1")) % (v1 / v2);
+	if (m_counter1->GetValue() && m_counter2->GetValue()) {
+		if ((*m_counter2) < (*m_counter1)) {
+			return CFormat(wxGetTranslation(m_label)) %
+				wxString::Format(wxT("%.2f : 1"),
+					(float)(*m_counter1)/(*m_counter2));
 		} else {
-			ret = CFormat(wxT("1 : %.2f")) % (v2 / v1);
-		}
-
-		if (m_totalfunc1 && m_totalfunc2) {
-			double t1 = m_totalfunc1() + v1;
-			double t2 = m_totalfunc2() + v2;
-			if (t2 < t1) {
-				ret += CFormat(wxT(" (%.2f : 1)")) % (t1 / t2);
-			} else {
-				ret += CFormat(wxT(" (1 : %.2f)")) % (t2 / t1);
-			}
+			return CFormat(wxGetTranslation(m_label)) %
+				wxString::Format(wxT("1 : %.2f"),
+					(float)(*m_counter2)/(*m_counter1));
 		}
 	} else {
-		ret = _("Not available");
+		return CFormat(wxGetTranslation(m_label)) % _("Not available");
 	}
-	return ret;
 }
-
-#ifndef AMULE_DAEMON
-wxString CStatTreeItemRatio::GetDisplayString() const 
-{ 
-	return CFormat(wxGetTranslation(m_label)) % GetString();
-}
-#endif	
+#endif
 
 void CStatTreeItemRatio::AddECValues(CECTag *tag) const
 {
-	CECTag value(EC_TAG_STAT_NODE_VALUE, GetString());
+	wxString result;
+	if (m_counter1->GetValue() && m_counter2->GetValue()) {
+		if ((*m_counter2) < (*m_counter1)) {
+			result = wxString::Format(wxT("%.2f : 1"), (float)(*m_counter1)/(*m_counter2));
+		} else {
+			result = wxString::Format(wxT("1 : %.2f"), (float)(*m_counter2)/(*m_counter1));
+		}
+	} else {
+		result = wxTRANSLATE("Not available");
+	}
+
+	CECTag value(EC_TAG_STAT_NODE_VALUE, result);
 	value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_STRING));
 	tag->AddTag(value);
 }

@@ -2,7 +2,7 @@
 # This file is part of the aMule project.
 # This file is part of the libupnp library project.
 #
-# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,12 +52,12 @@ dnl	Test for --with-libupnp-prefix
 		[export PKG_CONFIG_PATH=$withval/lib/pkgconfig])
 
 dnl	Check for libupnp >= MIN_LIBUPNP_VERSION
-	AS_IF([test $cross_compiling = no], [
+	AS_IF([test $cross_compiling = no], [dnl
 		AC_MSG_CHECKING([for libupnp version >= MIN_LIBUPNP_VERSION])
-		AS_IF([test -n "$PKG_CONFIG"], [
-			AS_IF([$PKG_CONFIG libupnp --exists], [
+		AS_IF([test -n "$PKG_CONFIG"], [dnl
+			AS_IF([$PKG_CONFIG libupnp --exists], [dnl
 				LIBUPNP_VERSION=`$PKG_CONFIG libupnp --modversion`
-				AS_IF([$PKG_CONFIG libupnp --atleast-version=MIN_LIBUPNP_VERSION], [
+				AS_IF([$PKG_CONFIG libupnp --atleast-version=MIN_LIBUPNP_VERSION], [dnl
 					result=yes
 					resultstr=" (version $LIBUPNP_VERSION)"
 					LIBUPNP_CPPFLAGS=`$PKG_CONFIG libupnp --cflags-only-I`
@@ -65,25 +65,25 @@ dnl	Check for libupnp >= MIN_LIBUPNP_VERSION
 					LIBUPNP_LDFLAGS=`$PKG_CONFIG libupnp --libs-only-L`
 					LIBUPNP_LIBS=`$PKG_CONFIG libupnp --libs-only-other`
 					LIBUPNP_LIBS="$LIBUPNP_LIBS `$PKG_CONFIG libupnp --libs-only-l`"
-				], [
+				], [dnl
 					result=no
 					resultstr=" (version $LIBUPNP_VERSION is not new enough)"
-				])
-			], [
+				])dnl
+			], [dnl
 				result=no
 				resultstr=" (try to use --with-libupnp-prefix=PREFIX)"
-			])
-		], [
+			])dnl
+		], [dnl
 			result=no
 			resultstr=" (pkg-config not found)"
-		])
+		])dnl
 		AC_MSG_RESULT([$result$resultstr])
 		libupnp_error="libupnp >= MIN_LIBUPNP_VERSION not found$resultstr"
-	], [
+	], [dnl
 dnl Currently cross-compilation with libupnp is not supported.
 		result=no
 		libupnp_error="cross compiling"
-	])
+	])dnl
 
 dnl	Execute the right action.
 	AS_IF([test ${result:-no} = yes], [$2], [$3])

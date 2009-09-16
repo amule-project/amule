@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -226,11 +226,6 @@ public:
 
 
 	/**
-	 * Resets the category of all files with the specified category.
-	 */
-	void	ResetCatParts(uint8 cat);
-
-	/**
 	 * Sets the priority of all files with the specified category.
 	 */
 	void	SetCatPrio(uint8 cat, uint8 newprio);
@@ -265,11 +260,11 @@ public:
 	/**
 	 * Adds an ed2k or magnet link to download queue.
 	 */
-	bool	AddLink( const wxString& link, uint8 category = 0 );
+	bool	AddLink( const wxString& link, int category = 0 );
 
-	bool	AddED2KLink( const wxString& link, uint8 category = 0 );
-	bool	AddED2KLink( const CED2KLink* link, uint8 category = 0 );
-	bool	AddED2KLink( const CED2KFileLink* link, uint8 category = 0 );
+	bool	AddED2KLink( const wxString& link, int category = 0 );
+	bool	AddED2KLink( const CED2KLink* link, int category = 0 );
+	bool	AddED2KLink( const CED2KFileLink* link, int category = 0 );
 	bool	AddED2KLink( const CED2KServerLink* link );
 	bool	AddED2KLink( const CED2KServerListLink* link );
 

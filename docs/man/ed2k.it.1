@@ -1,0 +1,38 @@
+.TH ED2K "1" "Settembre 2009" "aMule ED2k link parser v1.4.1" "aMule utilities"
+.SH NAME
+ed2k \- aMule ED2k link parser
+.SH SINOPSI
+.B ed2k
+.I <ED2k_link>
+.PP
+.B ed2k
+.RB [ \-\-help ]
+.RB [ \-\-config\-dir, \-c ]
+.RB [ \-\-emulecollection, \-e ]
+.RB [ \-\-version ]
+.SH DESCRIPTION
+aMule ED2k link parser v1.4.1.
+Invia il \fI<collegamento_ED2k>\fR fornito ad aMule, per esempio lo scrive nel file ~/.aMule/ED2KLinks, che sarà controllato da aMule ogni secondo per verificare la presenza di collegamenti.
+\fBed2k\fR accetta collegamenti file, server e di elenchi server.
+.SS "Utilizzo:"
+.TP
+\fB\-\-help\fR
+Prints a short usage description.
+.TP
+\fB\-c\fR, \fB\-\-config\-dir\fR=\fI<dir>\fR 
+Specifies the aMule configuration directory. This must be writeable by the user running \fBed2k\fR.
+.TP
+\fB\-e\fR, \fB\-\-emulecollection \fI<file>\fR
+Carica tutti i collegamenti della collezione di emule passati come parametro.
+.TP
+\fB\-\-version\fR
+Mostra il numero di versione corrente.
+.SH FILE
+~/.aMule/ED2KLinks
+.SH SEGNALARE BUG
+Per piacere segnala i bug sul nostro forum (\fIhttp://forum.amule.org/\fR), oppure nel nostro bugtracker (\fIhttp://bugs.amule.org/\fR).
+Per piacere non segnalare bug tramite e-mail, tramite la nostra mailing list e neppure direttamente a qualsiasi membro della squadra.
+.SH COPYRIGHT
+aMule e tutte le sue utilità correlate sono distribuite sotto la GNU General Public License.
+.SH CONSULTA ANCHE
+\fBamule\fR(1)

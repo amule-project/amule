@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2006-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -80,9 +80,7 @@ enum HTTP_Download_File
 	//! The download is the version check file.
 	HTTP_VersionCheck,
 	//! The download is a notes.dat file (possibly compressed).
-	HTTP_NodesDat,
-	//! The download is a GeoIP database file (possibly compressed).
-	HTTP_GeoIP
+	HTTP_NodesDat
 };
 
 

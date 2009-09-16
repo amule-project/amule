@@ -1,7 +1,7 @@
 // 
 //  This file is part of the aMule Project.
 // 
-//  Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+//  Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // 
 //  Any parts of this program derived from the xMule, lMule or eMule project,
 //  or contributed by third-party developers are copyrighted by their
@@ -39,26 +39,5 @@ enum ECTagTypes {
 	EC_TAGTYPE_IPV4 = 8,
 	EC_TAGTYPE_HASH16 = 9
 };
-
-#ifdef DEBUG_EC_IMPLEMENTATION
-
-wxString GetDebugNameECTagTypes(uint8 arg)
-{
-	switch (arg) {
-		case 0: return wxT("EC_TAGTYPE_UNKNOWN");
-		case 1: return wxT("EC_TAGTYPE_CUSTOM");
-		case 2: return wxT("EC_TAGTYPE_UINT8");
-		case 3: return wxT("EC_TAGTYPE_UINT16");
-		case 4: return wxT("EC_TAGTYPE_UINT32");
-		case 5: return wxT("EC_TAGTYPE_UINT64");
-		case 6: return wxT("EC_TAGTYPE_STRING");
-		case 7: return wxT("EC_TAGTYPE_DOUBLE");
-		case 8: return wxT("EC_TAGTYPE_IPV4");
-		case 9: return wxT("EC_TAGTYPE_HASH16");
-		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
-	}
-}
-
-#endif	// DEBUG_EC_IMPLEMENTATION
 
 #endif // __ECTAGTYPES_H__

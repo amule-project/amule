@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 Kry ( elkry@sourceforge.net / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -53,7 +53,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 	switch (detail_level) {
 		case EC_DETAIL_INC_UPDATE:
 			// should not get here
-			wxFAIL;
+			wxASSERT(0);
 			break;
 		case EC_DETAIL_UPDATE:
 			if ((tmpInt = server->GetPing()) != 0) {
@@ -122,7 +122,42 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
 }
 
-void CEC_PartFile_Tag::Detail_Tag(CPartFile *file, CValueMap *valuemap)
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
+	: CECTag(EC_TAG_PARTFILE, file->GetFileHash())
+{
+	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), this);
+		
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO, 
+		(uint64)(file->IsAutoDownPriority() ? 
+						file->GetDownPriority() + 10 : file->GetDownPriority()), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete, this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
+
+	long l;
+	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
+		valuemap.CreateTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, this);
+	}
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
+}
+
+void CEC_PartFile_Tag::Detail_Tag(CPartFile *file)
 {
 	// Tag for source names
 	CECTag sn(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) 0);
@@ -151,103 +186,113 @@ void CEC_PartFile_Tag::Detail_Tag(CPartFile *file, CValueMap *valuemap)
 		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, its->name));
 		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) its->count));
 	}
-	AddTag(sn, valuemap);
+	AddTag(sn);
 }	
 
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail, CValueMap *valuemap)
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail)
 :
 CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 {
-	AddTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), valuemap);
-	AddTag(EC_TAG_PARTFILE_STOPPED, file->IsStopped(), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
-	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), valuemap);
-	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), valuemap);
-	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), valuemap);
-	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount()));
 		
-	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) || valuemap) {
+	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
 		
-		AddTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), valuemap);
-		AddTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), valuemap);
-		AddTag(EC_TAG_PARTFILE_SPEED, file->GetKBpsDown()*1024, valuemap);
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024)));
 	}
 	
-	AddTag(EC_TAG_PARTFILE_PRIO, (file->IsAutoDownPriority() ? 
-		file->GetDownPriority() + 10 : file->GetDownPriority()), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint64)(file->IsAutoDownPriority() ? 
+		file->GetDownPriority() + 10 : file->GetDownPriority())));
 
-	AddTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), valuemap);
-	AddTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, file->lastseencomplete, valuemap);
-	AddTag(EC_TAG_PARTFILE_LAST_RECV, file->GetLastChangeDatetime(), valuemap);
-	AddTag(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, file->GetDlActiveTime(), valuemap);
-
-	AddTag(EC_TAG_PARTFILE_LOST_CORRUPTION, file->GetLostDueToCorruption(), valuemap);
-	AddTag(EC_TAG_PARTFILE_GAINED_COMPRESSION, file->GetGainDueToCompression(), valuemap);
-	AddTag(EC_TAG_PARTFILE_SAVED_ICH, file->TotalPacketsSavedDueToICH(), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
+	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete));
 
 	if (detail) {
-		Detail_Tag(file, valuemap);
+		Detail_Tag(file);
 	}
 	
-	// Tag for comments
-	CECEmptyTag sc(EC_TAG_PARTFILE_COMMENTS);
-
-	const FileRatingList & list = file->GetRatingAndComments();
-	for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
-		// Tag children are evaluated by index, not by name
-		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
-		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
-		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
-		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
+	if (file->m_CommentUpdated) {
+		// Tag for comments
+		CECTag sc(EC_TAG_PARTFILE_COMMENTS, (uint64) 0);
+	
+		const FileRatingList & list = file->GetRatingAndComments();
+		for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
+			// Tag children are evaluated by index, not by name
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
+		}
+		AddTag(sc);
 	}
-	AddTag(sc, valuemap);
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 		return;
 	}
 	
-	AddTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable(), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable()));
 
 	long l;
 	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
-		AddTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, valuemap);
+		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l));
 	}
 
-	AddTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
-	AddTag(EC_TAG_PARTFILE_ED2K_LINK,
-		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()))));
 }
 
-CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
 {
-	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests(), valuemap);
-	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), valuemap);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash(), this);
 	
-	AddTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts(), valuemap);
-	AddTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts(), valuemap);
+	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
+		(uint64)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
+}
 
-	AddTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred(), valuemap);
-	AddTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred(), valuemap);
-	AddTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash(), valuemap);
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+{
+	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests()));
 	
-	AddTag(EC_TAG_PARTFILE_PRIO,
-		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), valuemap);
+	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts()));
+
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash()));
+	
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
 	
-	AddTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable(), valuemap);
-	AddTag(EC_TAG_KNOWNFILE_FILENAME, 
-		file->IsPartFile()	? wxString(CFormat(wxT("%s")) % ((CPartFile*)file)->GetPartMetFileName().RemoveExt())
-							: file->GetFilePath().GetPrintable(),
-		valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable()));
 
-	AddTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
-	AddTag(EC_TAG_PARTFILE_ED2K_LINK,
-			theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
+	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
+			theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()))));
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
@@ -256,8 +301,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	// General
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
-	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false, client->IsDownloading(), false)));
-	AddTag(CECTag(EC_TAG_CLIENT_RATING, client->GetRating()));
+	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false)));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()));
 	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()));
@@ -279,15 +323,11 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
 		uint64((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
-	AddTag(CECTag(EC_TAG_CLIENT_IDENT_STATE, (uint64) client->GetCurrentIdentState()));
-	AddTag(CECTag(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, client->HasObfuscatedConnectionBeenEstablished()));
 	AddTag(CECTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime()));
 	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()));
 	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())));
 	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())));
 	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp->uploadqueue->GetWaitingPosition(client)));
-	AddTag(CECTag(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, client->IsRemoteQueueFull() ? (uint16)0xffff : client->GetRemoteQueueRank()));
-	AddTag(CECTag(EC_TAG_CLIENT_ASKED_COUNT, client->GetAskedCount()));
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;

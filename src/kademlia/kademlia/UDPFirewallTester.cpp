@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2008 Dévai Tamás ( gonosztopi@amule.org )
-// Copyright (c) 2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2008-2009 Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (c) 2008-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2008 Merkur ( strEmail.Format("%s@%s", "devteam", "emule-project.net") / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -62,7 +62,7 @@ bool CUDPFirewallTester::IsFirewalledUDP(bool lastStateIfTesting)
 		if (!m_firewalledUDP && CKademlia::IsFirewalled() && m_testStart != 0 && ::GetTickCount() - m_testStart > MIN2MS(6)
 			&& !m_isFWVerifiedUDP /*For now we don't allow to get firewalled by timeouts if we have succeded a test before, might be changed later*/)
 		{
-			AddDebugLogLineN(logKadUdpFwTester, wxT("Timeout: Setting UDP status to firewalled after being unable to get results for 6 minutes"));
+			AddDebugLogLineM(false, logKadUdpFwTester, wxT("Timeout: Setting UDP status to firewalled after being unable to get results for 6 minutes"));
 			m_timedOut = true;
 			theApp->ShowConnectionState();
 		}
@@ -95,7 +95,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 				// Because a proper forwarded intern port is more reliable to stay open than an extern port set by the NAT, we prefer
 				// intern ports and change the setting.
 				CKademlia::GetPrefs()->SetUseExternKadPort(false);
-				AddDebugLogLineN(logKadUdpFwTester, wxString::Format(wxT("Corrected UDP firewall result: Using open internal (%u) instead of open external port"), incomingPort));
+				AddDebugLogLineM(false, logKadUdpFwTester, wxString::Format(wxT("Corrected UDP firewall result: Using open internal (%u) instead of open external port"), incomingPort));
 				theApp->ShowConnectionState();
 				return;
 			} else if (it->answered) {
@@ -111,7 +111,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 	}
 
 	if (!requested){
-		AddDebugLogLineN(logKadUdpFwTester, wxT("Unrequested UDPFWCheckResult from ") + KadIPToString(fromIP));
+		AddDebugLogLineM(false, logKadUdpFwTester, wxT("Unrequested UDPFWCheckResult from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)));
 		return;
 	}
 
@@ -140,17 +140,17 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 			// if this packet came to our internal port, explict set the interal port as used port from now on
 			if (incomingPort == CKademlia::GetPrefs()->GetInternKadPort()) {
 				CKademlia::GetPrefs()->SetUseExternKadPort(false);
-				AddDebugLogLineN(logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using intern port"));
+				AddDebugLogLineM(false, logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using intern port"));
 			} else if (incomingPort == CKademlia::GetPrefs()->GetExternalKadPort() && incomingPort != 0) {
 				CKademlia::GetPrefs()->SetUseExternKadPort(true);
-				AddDebugLogLineN(logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using extern port"));
+				AddDebugLogLineM(false, logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using extern port"));
 			}
 			theApp->ShowConnectionState();
 			return;
 		} else if (m_fwChecksFinishedUDP >= UDP_FIREWALLTEST_CLIENTSTOASK) {
 			// seems we are firewalled
 			m_testStart = 0;
-			AddDebugLogLineN(logKadUdpFwTester, wxT("New KAD Firewallstate (UDP): Firewalled"));
+			AddDebugLogLineM(false, logKadUdpFwTester, wxT("New KAD Firewallstate (UDP): Firewalled"));
 			m_firewalledUDP = true;
 			m_isFWVerifiedUDP = true;
 			m_timedOut = false;
@@ -159,9 +159,9 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 			CSearchManager::CancelNodeFWCheckUDPSearch(); // cancel firewallnode searches if any are still active
 			return;
 		} else
-			AddDebugLogLineN(logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + KadIPToString(fromIP) + wxT(" result: Firewalled, continue testing"));
+			AddDebugLogLineM(false, logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" result: Firewalled, continue testing"));
 	} else {
-		AddDebugLogLineN(logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + KadIPToString(fromIP) + wxT(" cancelled"));
+		AddDebugLogLineM(false, logKadUdpFwTester, wxT("Kad UDP firewalltest from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(fromIP)) + wxT(" cancelled"));
 	}
 	QueryNextClient();
 }

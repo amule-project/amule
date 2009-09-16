@@ -1,8 +1,8 @@
-//							-*- C++ -*-
+//
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 Mikkel Schubert ( xaignar@users.sourceforge.net )
-// Copyright (c) 2006-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2006-2009 Mikkel Schubert ( xaignar@users.sourceforge.net )
+// Copyright (c) 2006-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -40,41 +40,35 @@ class CScopedPtr
 {
 public:
 	/** Constructor. Note that CScopedPtr takes ownership of the pointer. */
-	CScopedPtr(TYPE* ptr = 0)
-		: m_ptr(ptr)
-	{}
-
+	CScopedPtr(TYPE* ptr);
+	
 	/** Frees the pointer owned by the instance. */
-	~CScopedPtr()			{ delete m_ptr; }
-
+	~CScopedPtr();
+	
+	
 	//@{
 	/** Deference operators. */
-	TYPE& operator*() const		{ return *m_ptr; }
-	TYPE* operator->() const	{ return m_ptr; }
+	TYPE& operator*() const;
+	TYPE* operator->() const;
 	//@}
-
-
+	
+	
 	/** Returns the actual pointer value. */
-	TYPE* get() const		{ return m_ptr; }
-
+	TYPE* get() const;
+	
 	/** Sets the actual pointer to a different value. The old pointer is freed. */
-	void reset(TYPE* ptr = 0)	{ delete m_ptr; m_ptr = ptr; }
-
+	void reset(TYPE* ptr = 0);
+	
 	/** Returns the actual pointer. The scoped-ptr will thereafter contain NULL. */
-	TYPE* release()
-	{
-		TYPE* ptr = m_ptr;
-		m_ptr = 0;
-		return ptr;
-	}
-
+	TYPE* release();
+	
 private:
 	//@{
 	//! A scoped pointer is neither copyable, nor assignable.
 	CScopedPtr(const CScopedPtr<TYPE>&);
 	CScopedPtr<TYPE>& operator=(const CScopedPtr<TYPE>&);
 	//@}
-
+	
 	TYPE* m_ptr;
 };
 
@@ -89,48 +83,138 @@ class CScopedArray
 {
 public:
 	/** Constructor. Note that CScopedArray takes ownership of the array. */
-	CScopedArray(TYPE* ptr = 0)
-		: m_ptr(ptr)
-	{}
-
-	/** Constructor, allocating nr elements. */
-	CScopedArray(size_t nr)			{ m_ptr = new TYPE[nr]; }
-
+	CScopedArray(TYPE* ptr);
+	
 	/** Frees the array owned by this instance. */
-	~CScopedArray()				{ delete[] m_ptr; }
-
-
+	~CScopedArray();
+	
+	
 	/** Accessor. */
-	TYPE& operator[](unsigned i) const	{ return m_ptr[i]; }
-
-
+	TYPE& operator[](unsigned i) const;
+	
+	
 	/** @see CScopedPtr::get */
-	TYPE* get() const			{ return m_ptr; }
-
+	TYPE* get() const;
+	
 	/** @see CScopedPtr::reset */
-	void reset(TYPE* ptr = 0)		{ delete[] m_ptr; m_ptr = ptr; }
-
-	/** free the existing array and allocate a new one with nr elements */
-	void reset(size_t nr)			{ delete[] m_ptr; m_ptr = new TYPE[nr]; }
-
+	void reset(TYPE* ptr = 0);
+	
 	/** @see CScopedPtr::release */
-	TYPE* release()
-	{
-		TYPE* ptr = m_ptr;
-		m_ptr = 0;
-		return ptr;
-	}
-
-
+	TYPE* release();
+	
 private:
 	//@{
 	//! A scoped array is neither copyable, nor assignable.
 	CScopedArray(const CScopedArray<TYPE>&);
 	CScopedArray<TYPE>& operator=(const CScopedArray<TYPE>&);
 	//@}
-
+	
 	TYPE* m_ptr;
 };
+
+
+
+
+////////////////////////////////////////////////////////////
+// Implementations
+
+template <typename TYPE>
+CScopedPtr<TYPE>::CScopedPtr(TYPE* ptr)
+	: m_ptr(ptr)
+{
+}
+
+
+template <typename TYPE>
+CScopedPtr<TYPE>::~CScopedPtr()
+{
+	delete m_ptr;
+}
+
+
+template <typename TYPE>
+TYPE& CScopedPtr<TYPE>::operator*() const
+{
+	return *m_ptr;
+}
+
+
+template <typename TYPE>
+TYPE* CScopedPtr<TYPE>::operator->() const
+{
+	return m_ptr;
+}
+
+
+template <typename TYPE>
+TYPE* CScopedPtr<TYPE>::get() const
+{
+	return m_ptr;
+}
+
+
+template <typename TYPE>
+void CScopedPtr<TYPE>::reset(TYPE* ptr)
+{
+	delete m_ptr;
+	m_ptr = ptr;
+}
+
+
+template <typename TYPE>
+TYPE* CScopedPtr<TYPE>::release()
+{
+	TYPE* ptr = m_ptr;
+	m_ptr = 0;
+	return ptr;
+}
+
+
+
+template <typename TYPE>
+CScopedArray<TYPE>::CScopedArray(TYPE* ptr)
+	: m_ptr(ptr)
+{
+}
+
+	
+template <typename TYPE>
+CScopedArray<TYPE>::~CScopedArray()
+{
+	delete[] m_ptr;
+}
+
+
+template <typename TYPE>
+TYPE& CScopedArray<TYPE>::operator[](unsigned i) const
+{
+	return m_ptr[i];
+}
+	
+	
+template <typename TYPE>
+TYPE* CScopedArray<TYPE>::get() const
+{
+	return m_ptr;
+}
+
+
+template <typename TYPE>
+void CScopedArray<TYPE>::reset(TYPE* ptr)
+{
+	delete[] m_ptr;
+	m_ptr = ptr;
+}
+
+
+template <typename TYPE>
+TYPE* CScopedArray<TYPE>::release()
+{
+	TYPE* ptr = m_ptr;
+	m_ptr = 0;
+	return ptr;
+}
+
 
 #endif // SCOPEDPTR_H
 // File_checked_for_headers

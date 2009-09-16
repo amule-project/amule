@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -31,7 +31,7 @@
 #include <ctype.h>
 
 #if defined HAVE_STDINT_H
-#	include <stdint.h>
+#       include <stdint.h>
 #elif defined HAVE_INTTYPES_H
 #	include <inttypes.h>
 #endif
@@ -145,19 +145,6 @@ bool isLengthChar(wxChar c)
 
 
 CFormat::CFormat(const wxChar* str)
-{
-	m_fieldStart = 0;
-	m_fieldLength = 0;
-	m_skipCount = 0;
-	m_format = str;
-
-	if (m_format.Length()) {
-		SetCurrentField(wxEmptyString);
-	}
-}
-
-
-CFormat::CFormat(const wxString& str)
 {
 	m_fieldStart = 0;
 	m_fieldLength = 0;

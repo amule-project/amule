@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2004-2009 Angel Vidal Veiga - Kry (kry@amule.org)
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -31,7 +31,7 @@
 #include <wx/socket.h>
 
 // Network ip/host handling functions
-// These functions take IPs in anti-host order
+// These functions takes IPs in anti-host order and IPs in anti-host order
 
 inline wxString Uint32toStringIP(uint32 ip)
 {
@@ -43,16 +43,6 @@ inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
 	return wxString::Format(wxT("%u.%u.%u.%u:%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),port);	
 }
 
-// These functions take IPs in host-order
-inline wxString KadIPToString(uint32_t ip)
-{
-	return wxString::Format(wxT("%u.%u.%u.%u"), (uint8_t)(ip >> 24), (uint8_t)(ip >> 16), (uint8_t)(ip >> 8), (uint8_t)ip);
-}
-
-inline wxString KadIPPortToString(uint32_t ip, uint16_t port)
-{
-	return wxString::Format(wxT("%u.%u.%u.%u:%u"), (uint8_t)(ip >> 24), (uint8_t)(ip >> 16), (uint8_t)(ip >> 8), (uint8_t)ip, port);
-}
 
 /**
  * Parses a String-IP and saves the IP in the referenced variable.

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -40,23 +40,25 @@
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
 	EVT_PAINT(COScopeCtrl::OnPaint)
 	EVT_SIZE(COScopeCtrl::OnSize)
+	EVT_TIMER(TIMER_OSCOPE,COScopeCtrl::OnTimer)
 END_EVENT_TABLE()
 
 
-const wxColour crPreset [ 16 ] = {
-	wxColour( 0xFF, 0x00, 0x00 ),  wxColour( 0xFF, 0xC0, 0xC0 ),  
-	wxColour( 0xFF, 0xFF, 0x00 ),  wxColour( 0xFF, 0xA0, 0x00 ),  
-	wxColour( 0xA0, 0x60, 0x00 ),  wxColour( 0x00, 0xFF, 0x00 ),
-	wxColour( 0x00, 0xA0, 0x00 ),  wxColour( 0x00, 0x00, 0xFF ),
-	wxColour( 0x00, 0xA0, 0xFF ),  wxColour( 0x00, 0xFF, 0xFF ),
-	wxColour( 0x00, 0xA0, 0xA0 ),  wxColour( 0xC0, 0xC0, 0xFF ),
-	wxColour( 0xFF, 0x00, 0xFF ),  wxColour( 0xA0, 0x00, 0xA0 ),
-	wxColour( 0xFF, 0xFF, 0xFF ),  wxColour( 0x80, 0x80, 0x80 )
+const COLORREF crPreset [ 16 ] = {
+	RGB( 0xFF, 0x00, 0x00 ),  RGB( 0xFF, 0xC0, 0xC0 ),  
+	RGB( 0xFF, 0xFF, 0x00 ),  RGB( 0xFF, 0xA0, 0x00 ),  
+	RGB( 0xA0, 0x60, 0x00 ),  RGB( 0x00, 0xFF, 0x00 ),
+	RGB( 0x00, 0xA0, 0x00 ),  RGB( 0x00, 0x00, 0xFF ),
+	RGB( 0x00, 0xA0, 0xFF ),  RGB( 0x00, 0xFF, 0xFF ),
+	RGB( 0x00, 0xA0, 0xA0 ),  RGB( 0xC0, 0xC0, 0xFF ),
+	RGB( 0xFF, 0x00, 0xFF ),  RGB( 0xA0, 0x00, 0xA0 ),
+	RGB( 0xFF, 0xFF, 0xFF ),  RGB( 0x80, 0x80, 0x80 )
 };
+
 
 COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWindow* parent)
 	: wxControl(parent, -1, wxDefaultPosition, wxDefaultSize)
-	, timerRedraw(this)
+	, timerRedraw(this, TIMER_OSCOPE)
 {
 	// since plotting is based on a LineTo for each new point
 	// we need a starting point (i.e. a "previous" point)
@@ -72,13 +74,12 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned i=0; i<nTrends; ++i, ++ppds){
-		ppds->crPlot = (i<15 ? crPreset[i] : *wxWHITE); 
-		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
+		ppds->crPlot = (i<15 ? crPreset[i] : RGB(255, 255, 255)); 
+		ppds->penPlot=*(wxThePenList->FindOrCreatePen(WxColourFromCr(ppds->crPlot), 1, wxSOLID));
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
 	}
 
-	bRecreateGraph = bRecreateGrid = bRecreateAll = bStopped = false;
-	m_onPaint = false;
+	bRecreateGraph = bRecreateGrid = bStopped = false;
 	nDelayedPoints = 0;
 	sLastTimestamp = 0.0;
 	sLastPeriod = 1.0;
@@ -86,7 +87,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	nYDecimals = nDecimals;
 	m_bgColour  = wxColour(  0,   0,   0) ;  // see also SetBackgroundColor
 	m_gridColour  = wxColour(  0, 255, 255) ;  // see also SetGridColor
-	brushBack = *wxBLACK_BRUSH;
+	brushBack=*(wxTheBrushList->FindOrCreateBrush(m_bgColour, wxSOLID));
 
 	strXUnits = wxT("X");  // can also be set with SetXUnits
 	strYUnits = wxT("Y");  // can also be set with SetYUnits
@@ -95,12 +96,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	nYGrids = 5;
 	
 	graph_type = type;
-
-	// Connect the timer (dynamically, so the Controls don't have to share a common timer id)
-	Connect(timerRedraw.GetId(), wxEVT_TIMER, (wxObjectEventFunction) &COScopeCtrl::OnTimer);
-	// Don't draw background (avoid ugly flickering on wxMSW on resize)
-	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-
+	
 	// Ensure that various size-constraints are calculated (via OnSize).
 	SetClientSize(GetClientSize());
 }
@@ -147,38 +143,38 @@ void COScopeCtrl::SetYUnits(const wxString& strUnits, const wxString& strMin, co
 }
 
 
-void COScopeCtrl::SetGridColor(const wxColour& cr)
+void COScopeCtrl::SetGridColor(COLORREF cr)
 {
-
-	if (cr == m_gridColour) {
+	wxColour newCol = WxColourFromCr(cr);
+	if (newCol == m_gridColour) {
 		return;
 	}
 	
-	m_gridColour = cr;
+	m_gridColour = newCol;
 	InvalidateGrid() ;
 }
 
 
-void COScopeCtrl::SetPlotColor(const wxColour& cr, unsigned iTrend)
+void COScopeCtrl::SetPlotColor(COLORREF cr, unsigned iTrend)
 {
 	PlotData_t* ppds = pdsTrends+iTrend;
 	if (ppds->crPlot == cr)
 		return;
 	ppds->crPlot = cr;
-	ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
+	ppds->penPlot=*(wxThePenList->FindOrCreatePen(WxColourFromCr(ppds->crPlot), 1, wxSOLID));
 	InvalidateGraph();
 }
 
 
-void COScopeCtrl::SetBackgroundColor(const wxColour& cr)
+void COScopeCtrl::SetBackgroundColor(COLORREF cr)
 {
-
-	if (m_bgColour == cr) {
+	wxColour newCol(WxColourFromCr(cr));
+	if (m_bgColour == newCol) {
 		return;
 	}
 
-	m_bgColour = cr;
-	brushBack= *(wxTheBrushList->FindOrCreateBrush(cr, wxSOLID));
+	m_bgColour = newCol;
+	brushBack= *(wxTheBrushList->FindOrCreateBrush(newCol, wxSOLID));
 	InvalidateCtrl() ;
 }
 
@@ -196,7 +192,7 @@ void COScopeCtrl::RecreateGrid()
 	wxMemoryDC dcGrid(m_bmapGrid);
 
 	int nCharacters ;
-	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
+	wxPen solidPen=*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
 	wxString strTemp;
 
 	// fill the grid background
@@ -289,21 +285,17 @@ void COScopeCtrl::AppendPoints(double sTimestamp, const std::vector<float *> &ap
 
 void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 {
-	m_onPaint = true;
-
 	// no real plotting work is performed here unless we are coming out of a hidden state;
 	// normally, just putting the existing bitmaps on the client to avoid flicker, 
 	// establish a memory dc and then BitBlt it to the client
-	wxBufferedPaintDC dc(this);
-
-	if (bRecreateAll) {
-		return;
-	}
-
-	if (bRecreateGrid) {
-		RecreateGrid();  // this will also recreate the graph if that flag is set
-	} else if (bRecreateGraph) {
-		RecreateGraph(true);
+	if (bRecreateGrid || bRecreateGraph) {
+		timerRedraw.Stop();
+		
+		if (bRecreateGrid) {
+			RecreateGrid();  // this will also recreate the graph if that flag is set
+		} else if (bRecreateGraph) {
+			RecreateGraph(true);
+		}
 	}
 	
 	if (nDelayedPoints) {				// we've just come out of hiding, so catch up
@@ -312,6 +304,8 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 		PlotHistory(n, true, false);	// background because the bitmap is shifted only 
 	}									// once for all delayed points together)
 	
+	wxBufferedPaintDC dc(this);
+
 	// We have assured that we have a valid and resized if needed 
 	// wxDc and bitmap. Proceed to blit.
 	dc.DrawBitmap(m_bmapGrid, 0, 0, false);
@@ -323,8 +317,9 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	// This is done last because wxMAC does't support the wxOR logical
 	// operation, preventing us from simply blitting the plot on top of
 	// the grid bitmap.
-
-	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxLONG_DASH)));
+	wxColour col(m_gridColour);
+	wxPen grPen(col, 1, wxLONG_DASH);
+	dc.SetPen(grPen);
 	for (unsigned j = 1; j < (nYGrids + 1); ++j) {
 		unsigned GridPos = (m_rectPlot.GetHeight())*j/( nYGrids + 1 ) + m_rectPlot.GetTop();
 		
@@ -523,17 +518,13 @@ void COScopeCtrl::Stop()
 
 void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid) 
 {
+	timerRedraw.Stop();
+	timerRedraw.SetOwner(this, TIMER_OSCOPE);
+	
 	bRecreateGraph |= bInvalidateGraph;
 	bRecreateGrid |= bInvalidateGrid;
-	// It appears the timerRedraw logic screws up Mac, disable it there
-#ifndef __WXMAC__
-	// To prevent startup problems don't start timer logic until
-	// a native OnPaint event has been generated.
-	if (m_onPaint) {
-		bRecreateAll  |= bInvalidateGraph && bInvalidateGrid;
-		timerRedraw.Start(100, true);	// One-shot timer
-	}
-#endif
+
+	timerRedraw.Start(100);
 }
 
 
@@ -549,9 +540,12 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	if( !theApp->amuledlg || !theApp->amuledlg->SafeState()) {
 		return;
 	}
-	bRecreateAll = false;
-	wxPaintEvent paint;
-	ProcessEvent(paint);
+	timerRedraw.Stop();
+	if (bRecreateGrid) {
+		RecreateGrid();	// this will also recreate the graph if that flag is set
+	} else if (bRecreateGraph) {
+		RecreateGraph(true);
+	}
 }
 
 // File_checked_for_headers

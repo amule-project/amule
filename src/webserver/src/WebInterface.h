@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //  
-// Copyright (c) 2004-2008 shakraw ( shakraw@users.sourceforge.net )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 shakraw ( shakraw@users.sourceforge.net )
+// Copyright (c) 2003-2009 Kry ( elkry@sourceforge.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -29,31 +29,16 @@
 
 #include "ExternalConnector.h"
 
-
-#if !wxCHECK_VERSION(2, 9, 0)
-	#ifdef __WXMSW__
-		// MSW: can't run amuled with 2.8 anyway, just get it compiled
-		#define AMULEWEB_DUMMY
-	#else
-		#define AMULEWEB28
-	#endif
-#endif
-
-
 class CamulewebApp
 :
 public CaMuleExternalConnector
 {
+    class CWebserverGSocketFuncTable *m_table;
 	class CWebServerBase *m_webserver;
 
-#ifdef AMULEWEB28
-	class CWebserverGSocketFuncTable *m_table;
 public:
-	wxAppTraits *CreateTraits();
 	CamulewebApp();
-#endif
-
-public:
+	
 	const wxString GetGreetingTitle();
 	void Pre_Shell();
 	void LoadConfigFile();
@@ -83,6 +68,8 @@ public:
 
 public:
 	virtual void Post_Shell();
+
+	wxAppTraits *CreateTraits();
 
 	void TextShell(const wxString &prompt);
 

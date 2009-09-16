@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -142,14 +142,8 @@ public:
 	//
 	// Command line processing
 	// 
-	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser, const char* appname);
+	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
-
-	// Exception and assert handling
-	void OnFatalException();
-#ifdef __WXDEBUG__
-	void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg);
-#endif
 
 	CECFileConfig*	m_configFile;
 	wxString	m_configFileName;
@@ -166,7 +160,6 @@ protected:
 	bool		m_Verbose;
 	bool		m_interactive;
 	CCommandTree	m_commands;
-	const char *	m_appname;
 
 #if !wxUSE_GUI && defined(__WXMAC__)
 	virtual wxAppTraits* CreateTraits();
@@ -180,8 +173,6 @@ private:
 	bool		m_NeedsConfigSave;
 	wxString	m_language;
 	wxLocale *	m_locale;
-	char *		m_strFullVersion;
-	char *		m_strOSDescription;
 };
 
 #endif // __EXTERNALCONNECTOR_H__

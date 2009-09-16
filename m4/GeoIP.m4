@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # This file is part of the aMule Project.
 #
-# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 #
 # Any parts of this program derived from the xMule, lMule or eMule project,
 # or contributed by third-party developers are copyrighted by their
@@ -86,18 +86,18 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 						], [
 							GEOIP_LIBS="-Wl,-Bstatic $GEOIP_LIBS -Wl,-Bdynamic"
 						], [
-							MULE_WARNING([Cannot link GeoIP statically, because your linker ($LD) does not support it.])
+							AC_MSG_WARN([Cannot link GeoIP statically, because your linker ($LD) does not support it.])
 						])
 						MULE_RESTORE([LIBS])
 					])
 				])
 			], [
 				ENABLE_IP2COUNTRY=disabled
-				MULE_WARNING([GeoIP support has been disabled because the GeoIP libraries were not found])
+				AC_MSG_WARN([GeoIP support has been disabled because the GeoIP libraries were not found])
 			], [${GEOIP_WINSOCK_LIB:-}])
 		], [
 			ENABLE_IP2COUNTRY=disabled
-			MULE_WARNING([GeoIP support has been disabled because the GeoIP header files were not found])
+			AC_MSG_WARN([GeoIP support has been disabled because the GeoIP header files were not found])
 		])
 
 		MULE_RESTORE([CPPFLAGS])

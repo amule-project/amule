@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -372,7 +372,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 				m_fHashsetRequesting = 1;
 				m_reqfile->SetHashSetNeeded(false);
 			} else {
-				wxFAIL;
+				wxASSERT(0);
 			}
 		} else {
 			SendStartupLoadReq();
@@ -436,7 +436,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 					m_downPartStatus[done] = ((toread>>i)&1)? 1:0;
 				
 					if ( m_downPartStatus[done] ) {
-						if (!m_reqfile->IsComplete(done)){
+						if (!m_reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
 							bPartsNeeded = true;
 							iNeeded++;
 						}
@@ -475,7 +475,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 				m_fHashsetRequesting = 1;
 				m_reqfile->SetHashSetNeeded(false);
 			} else {
-				wxFAIL;
+				wxASSERT(0);
 			}
 		}
 		else {
@@ -686,7 +686,7 @@ void CUpDownClient::SendBlockRequests()
 				}
 			}	else {
 				// WTF, we just freed blocks.
-				wxFAIL;
+				wxASSERT(0);
 				return;
 			}
 		} else {
@@ -729,8 +729,7 @@ void CUpDownClient::SendBlockRequests()
 			}
 			
 			packet = new CPacket(data, OP_ED2KV2HEADER, OP_REQUESTPARTS);
-			AddDebugLogLineM( false, logLocalClient, CFormat(wxT("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to %s"))
-				% (m_PendingBlocks_list.size()<m_MaxBlockRequests ? m_PendingBlocks_list.size() : m_MaxBlockRequests) % GetFullIP() );
+			AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to "),(m_PendingBlocks_list.size()<m_MaxBlockRequests) ? m_PendingBlocks_list.size() : m_MaxBlockRequests) + GetFullIP() );
 
 			break;
 		}
@@ -750,7 +749,7 @@ void CUpDownClient::SendBlockRequests()
 						bHasLongBlocks = true;
 						if (!SupportsLargeFiles()){
 							// Requesting a large block from a client that doesn't support large files?
-							wxFAIL;
+							wxASSERT( false );
 							if (!GetSentCancelTransfer()){
 								CPacket* cancel_packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 								theStats::AddUpOverheadFileRequest(cancel_packet->GetPacketSize());
@@ -811,14 +810,14 @@ void CUpDownClient::SendBlockRequests()
 			break;
 		}
 		default:
-			wxFAIL;
+			wxASSERT(0);
 	}
 	
 	if (packet) {
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		SendPacket(packet, true, true);
 	} else {
-		wxFAIL;
+		wxASSERT(0);
 	}
 }
 
@@ -940,7 +939,10 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 						return;
 					}
 					// Write to disk (will be buffered in part file class)
-					lenWritten = m_reqfile->WriteToBuffer( size - header_size, (byte*)(packet + header_size), nStartPos, nEndPos, cur_block->block, this);
+					lenWritten = m_reqfile->WriteToBuffer( size - header_size,
+														   (byte*)(packet + header_size),
+														   nStartPos, nEndPos,
+														   cur_block->block);
 				} else {
 					// Packed
 					wxASSERT( (long int)size > 0 );
@@ -978,8 +980,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 																	   unzipped,
 																	   nStartPos,
 																	   nEndPos,
-																	   cur_block->block,
-																	   this);
+																	   cur_block->block );
 							}
 						}
 					} else {
@@ -1048,9 +1049,9 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 		}
 	} catch (const CEOFException& e) {
 		wxString error = wxString(wxT("Error reading "));
-		if (packed) error += CFormat(wxT("packed (LU: %i) largeblocks ")) % lenUnzipped;
-		error += CFormat(wxT("data packet: RS: %i HS: %i SP: %i EP: %i BS: %i -> "))
-					% size % header_size % nStartPos % nEndPos % nBlockSize;
+		if (packed) error += wxString::Format(wxT("packed (LU: %i) "),lenUnzipped);
+		if (packed) error += wxT("largeblocks ");
+		error += wxString::Format(wxT("data packet: RS: %i HS: %i SP: %i EP: %i BS: %i -> "),size,header_size,nStartPos,nEndPos,nBlockSize);
 		AddDebugLogLineM(true, logRemoteClient, error + e.what());
 		return;
 	}
@@ -1185,8 +1186,8 @@ float CUpDownClient::CalculateKBpsDown()
 		} else {
 			kBpsDown = (kBpsDown * (tAverage - dt) + kBpsDownCur * dt) / tAverage;
 		}
-		//AddDebugLogLineM( false, logLocalClient, CFormat(wxT("CalculateKBpsDown %p kbps %.1f kbpsCur %.1f dt %.3f rcv %d ")) 
-		//			% this % kBpsDown  % kBpsDownCur % dt % bytesReceivedCycle);
+		AddDebugLogLineM( false, logLocalClient, CFormat(wxT("CalculateKBpsDown %p kbps %.1f kbpsCur %.1f dt %.3f rcv %d ")) 
+					% this % kBpsDown  % kBpsDownCur % dt % bytesReceivedCycle);
 		bytesReceivedCycle = 0;
 		msReceivedPrev = msCur;	
 	}

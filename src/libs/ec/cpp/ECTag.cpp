@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -22,15 +22,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef __DEBUG__
-#define DEBUG_EC_IMPLEMENTATION
-
-#include <common/Format.h>  // Needed for CFormat
-#endif
-
 #include "ECTag.h"	// Needed for ECTag
 #include "ECSocket.h"	// Needed for CECSocket
-#include "ECSpecialTags.h"	// Needed for CValueMap
 
 /**********************************************************
  *							  *
@@ -39,7 +32,7 @@
  **********************************************************/
 
 //! Defines the Null tag which may be returned by GetTagByNameSafe.
-const CECTag CECTag::s_theNullTag;
+const CECTag CECTag::s_theNullTag(static_cast<NullTagConstructorSelector*>(0));
 
 //! Defines the data for the Null tag.  Large enough (16 bytes) for GetMD4Data.
 const uint32 CECTag::s_theNullTagData[4] = { 0, 0, 0, 0 };
@@ -51,7 +44,7 @@ const uint32 CECTag::s_theNullTagData[4] = { 0, 0, 0, 0 };
  * @see s_theNullTagData
  * @see GetTagByNameSafe
  */
-CECTag::CECTag() :
+CECTag::CECTag(const NullTagConstructorSelector*) :
 	m_error(0),
 	m_tagData(s_theNullTagData),
 	m_tagName(0),
@@ -189,10 +182,6 @@ CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dyn
 {
 	ConstructStringTag(name, (const char*)unicode2UTF8(data));
 }
-CECTag::CECTag(ec_tagname_t name, const wxChar* data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
-{
-	ConstructStringTag(name, (const char*)unicode2UTF8(data));
-}
 
 /**
  * Copy constructor
@@ -241,10 +230,6 @@ CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tag
  *
  * @see GetInt()
  */
-CECTag::CECTag(ec_tagname_t name, bool data) : m_tagName(name), m_dynamic(true)
-{
-	InitInt(data);
-}
 CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
 {
 	InitInt(data);
@@ -373,19 +358,6 @@ CECTag& CECTag::operator=(const CECTag& rhs)
 }
 
 /**
- * Compare operator.
- *
- */
-bool CECTag::operator==(const CECTag& tag) const
-{
-	return	m_dataType == tag.m_dataType
-			&& m_dataLen == tag.m_dataLen
-			&&	(m_dataLen == 0
-				|| !memcmp(m_tagData, tag.m_tagData, m_dataLen))
-			&& m_tagList == tag.m_tagList;
-}
-
-/**
  * Add a child tag to this one.
  *
  * Be very careful that this creates a copy of \e tag. Thus, the following code won't work as expected:
@@ -427,11 +399,8 @@ bool CECTag::operator==(const CECTag& tag) const
  * @param tag a CECTag class instance to add.
  * @return \b true on succcess, \b false when an error occured
  */
-bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
+bool CECTag::AddTag(const CECTag& tag)
 {
-	if (valuemap) {
-		return valuemap->AddTag(tag, this);
-	}
 	// cannot have more than 64k tags
 	wxASSERT(m_tagList.size() < 0xffff);
 
@@ -444,24 +413,6 @@ bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 		m_tagList.pop_back();
 #endif
 		return false;
-	}
-}
-
-void CECTag::AddTag(ec_tagname_t name, uint64_t data, CValueMap* valuemap)
-{
-	if (valuemap) {
-		valuemap->CreateTag(name, data, this);
-	} else {
-		AddTag(CECTag(name, data));
-	}
-}
-
-void CECTag::AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap)
-{
-	if (valuemap) {
-		valuemap->CreateTag(name, data, this);
-	} else {
-		AddTag(CECTag(name, data));
 	}
 }
 
@@ -808,54 +759,6 @@ void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
 		m_error = 1;
 	}	
 }
-
-void CECTag::SetStringData(const wxString& s)
-{
-	if (IsString()) {
-		free((void *)m_tagData);
-		ConstructStringTag(0, (const char*)unicode2UTF8(s));
-	}
-}
-
-#if	__DEBUG__
-void CECTag::DebugPrint(int level, bool print_empty) const
-{
-	if (m_dataLen || print_empty) {
-		wxString space;
-		for (int i = level; i--;) space += wxT("  ");
-		wxString s1 = CFormat(wxT("%s%s %d = ")) % space % GetDebugNameECTagNames(m_tagName) % m_dataLen;
-		wxString s2;
-		switch (m_tagName) {
-			case EC_TAG_DETAIL_LEVEL:
-				s2 = GetDebugNameEC_DETAIL_LEVEL(GetInt()); break;
-			case EC_TAG_SEARCH_TYPE:
-				s2 = GetDebugNameEC_SEARCH_TYPE(GetInt()); break;
-			case EC_TAG_STAT_VALUE_TYPE:
-				s2 = GetDebugNameEC_STATTREE_NODE_VALUE_TYPE(GetInt()); break;
-			default:
-				switch (m_dataType) {
-					case EC_TAGTYPE_UINT8:
-					case EC_TAGTYPE_UINT16:
-					case EC_TAGTYPE_UINT32:
-					case EC_TAGTYPE_UINT64:
-						s2 = CFormat(wxT("%d")) % GetInt(); break;
-					case EC_TAGTYPE_STRING:
-						s2 = GetStringData(); break;
-					case EC_TAGTYPE_DOUBLE:
-						s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
-					case EC_TAGTYPE_HASH16:
-						s2 = GetMD4Data().Encode(); break;
-					default:
-						s2 = GetDebugNameECTagTypes(m_dataType);
-				}
-		}
-		DoECLogLine(s1 + s2);
-	}
-	for (TagList::const_iterator it = m_tagList.begin(); it != m_tagList.end(); ++it) {
-		it->DebugPrint(level + 1, true);
-	}
-}
-#endif
 
 /*!
  * \fn CMD4Hash CECTag::GetMD4Data(void) const

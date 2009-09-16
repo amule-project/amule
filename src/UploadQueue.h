@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -38,8 +38,8 @@ public:
 	~CUploadQueue();
 	void	Process();
 	void	AddClientToQueue(CUpDownClient* client);
-	bool	RemoveFromUploadQueue(CUpDownClient* client);
-	bool	RemoveFromWaitingQueue(CUpDownClient* client);
+	bool	RemoveFromUploadQueue(CUpDownClient* client,bool updatewindow = true);
+	bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
 	bool	IsOnUploadQueue(const CUpDownClient* client) const;
 	bool	IsDownloading(CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
@@ -51,12 +51,12 @@ public:
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 
 	uint16	GetWaitingPosition(const CUpDownClient *client) const;
-	uint16	SuspendUpload(const CMD4Hash &);
+	void	SuspendUpload(const CMD4Hash &);
 	void	ResumeUpload(const CMD4Hash &);
 
 private:
 	void	RemoveFromWaitingQueue(CClientPtrList::iterator pos);
-	uint16	GetMaxSlots() const;
+	bool	AcceptNewClient();
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 
 	CClientPtrList m_waitinglist;
@@ -66,7 +66,6 @@ private:
 	suspendlist suspended_uploads_list;  //list for suspended uploads
 	uint32	m_nLastStartUpload;
 	bool	lastupslotHighID; // VQB lowID alternation
-	bool	m_allowKicking;
 };
 
 #endif // UPLOADQUEUE_H

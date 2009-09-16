@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -33,10 +33,10 @@
 
 
 #include "Types.h"		// Needed for int32, uint16 and uint64
-#include <map>
 #ifndef __WXMSW__
+	#include <map>
 	#include <signal.h>
-//	#include <wx/unix/execute.h>
+	#include <wx/unix/execute.h>
 #endif // __WXMSW__
 
 
@@ -130,43 +130,28 @@ public:
 	void ServerSocketHandler(wxSocketEvent& event);
 	void UDPSocketHandler(wxSocketEvent& event);
 
-	virtual int ShowAlert(wxString msg, wxString title, int flags) = 0;
+	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 
 	// Barry - To find out if app is running or shutting/shut down
 	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 	bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTTINGDOWN); }
 
 	// Check ED2K and Kademlia state
-	bool IsFirewalled() const;
-	// Are we connected to at least one network?
-	bool IsConnected() const;
-	// Connection to ED2K
-	bool IsConnectedED2K() const;
-
-	// What about Kad? Is it running?
-	bool IsKadRunning() const;
-	// Connection to Kad
-	bool IsConnectedKad() const;
-	// Check Kad state (TCP)
-	bool IsFirewalledKad() const;
-	// Check Kad state (UDP)
-	bool IsFirewalledKadUDP() const;
-	// Kad stats
-	uint32	GetKadUsers() const;
-	uint32	GetKadFiles() const;
-	uint32	GetKadIndexedSources() const;
-	uint32	GetKadIndexedKeywords() const;
-	uint32	GetKadIndexedNotes() const;
-	uint32	GetKadIndexedLoad() const;
-	// True IP of machine
-	uint32	GetKadIPAdress() const;
-	// Buddy status
-	uint8	GetBuddyStatus() const;
-	uint32	GetBuddyIP() const;
-	uint32	GetBuddyPort() const;
-
+	bool IsFirewalled();
+	// Check Kad state
+	bool IsFirewalledKad();
 	// Check if we should callback this client
 	bool DoCallback( CUpDownClient *client );
+
+	// Connection to ED2K
+	bool IsConnectedED2K();
+	// Connection to Kad
+	bool IsConnectedKad();
+	// Are we connected to at least one network?
+	bool IsConnected();
+
+	// What about Kad? Is it running?
+	bool IsKadRunning();
 
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);
@@ -227,6 +212,8 @@ public:
 
 	wxString ConfigDir;
 
+	void AddLogLine(const wxString &msg);
+
 	const wxString& GetOSType() const { return OSType; }
 
 	void ShowUserCount();
@@ -246,6 +233,8 @@ public:
 	
 	bool CryptoAvailable() const;
 	
+	//! TODO: Move to CLogger
+	wxFFileOutputStream* applog;
 protected:
 	// Used to detect a previous running instance of aMule
 	wxSingleInstanceChecker*	m_singleInstance;
@@ -257,6 +246,19 @@ protected:
 	virtual void OnAssertFailure(const wxChar* file, int line,
 		const wxChar* func, const wxChar* cond, const wxChar* msg);
 #endif
+
+	/**
+	 * This class is used to contain log messages that are to be displayed
+	 * on the GUI, when it is currently impossible to do so. This is in order
+	 * to allows us to queue messages till after the dialog has been created.
+	 */
+	struct QueuedLogLine
+	{
+		//! The text line to be displayed
+		wxString 	line;
+		//! True if the line should be shown on the status bar, false otherwise.
+		bool		show;
+	};
 
 	void OnUDPDnsDone(CMuleInternalEvent& evt);
 	void OnSourceDnsDone(CMuleInternalEvent& evt);
@@ -275,6 +277,8 @@ protected:
 
 	void SetTimeOnTransfer();
 
+	std::list<QueuedLogLine> m_logLines;
+
 	APPState m_app_state;
 
 	wxString m_emulesig_path;
@@ -288,9 +292,8 @@ protected:
 
 	long webserver_pid;
 
+	bool enable_stdout_log;
 	bool enable_daemon_fork;
-	wxString PidFile;
-
 	wxString server_msg;
 
 	CTimer* core_timer;
@@ -319,16 +322,7 @@ public:
 	bool CopyTextToClipboard( wxString strText );
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-	virtual int ShowAlert(wxString msg, wxString title, int flags);
-
-	void AddGuiLogLine(const wxString& line);
-protected:
-	/**
-	 * This list is used to contain log messages that are to be displayed
-	 * on the GUI, when it is currently impossible to do so. This is in order
-	 * to allows us to queue messages till after the dialog has been created.
-	 */
-	std::list<wxString> m_logLines;
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
 };
 
 
@@ -345,9 +339,10 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
 	
 public:
 
-	virtual int ShowAlert(wxString msg, wxString title, int flags);
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	void ShutDown(wxCloseEvent &evt);
+	void OnLoggingEvent(CLoggingEvent& evt);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
@@ -378,23 +373,10 @@ DECLARE_APP(CamuleGuiApp)
 
 #else /* ! AMULE_DAEMON */
 
-// wxWidgets 2.8 requires special code for event handling and sockets.
-// 2.9 doesn't, so standard event loop and sockets can be used
-//
-// Windows: aMuled compiles with 2.8 (without the special code), 
-// but works only with 2.9
 
-#if !wxCHECK_VERSION(2, 9, 0)
-	#ifdef __WXMSW__
-		// MSW: can't run amuled with 2.8 anyway, just get it compiled
-		#define AMULED_DUMMY
-	#else
-		#define AMULED28
-	#endif
-#endif
-
-#ifdef AMULED28
+#include <wx/apptrait.h>
 #include <wx/socket.h>
+
 
 class CSocketSet;
 
@@ -424,25 +406,20 @@ public:
 };
 
 
-#endif // AMULED28
+typedef std::map<int, wxEndProcessData *> EndProcessDataMap;
 
-// no AppTraits used on Windows
-#ifndef __WXMSW__
-
-typedef std::map<int, class wxEndProcessData *> EndProcessDataMap;
-
-#include <wx/apptrait.h>
 
 class CDaemonAppTraits : public wxConsoleAppTraits
 {
 private:
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
-
-#ifdef AMULED28
 	CAmuledGSocketFuncTable *m_table;
 	wxMutex m_lock;
 	std::list<wxObject *> m_sched_delete;
+#ifndef __WXMSW__
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
+#endif
+
 public:
 	CDaemonAppTraits(CAmuledGSocketFuncTable *table);
 	virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
@@ -450,60 +427,52 @@ public:
 	virtual void RemoveFromPendingDelete(wxObject *object);
 
 	void DeletePending();
-#else	// AMULED28
-public:
-	CDaemonAppTraits();
-#endif	// !AMULED28
 
+#ifndef __WXMSW__
 	virtual int WaitForChild(wxExecuteData& execData);
-
+#endif
 #ifdef __WXMAC__
 	virtual wxStandardPathsBase& GetStandardPaths();
 #endif
 };
 
-void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
-pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
+
+#ifndef __WXMSW__
+	void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
+	pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
 #endif // __WXMSW__
 
 
 class CamuleDaemonApp : public CamuleApp
 {
 private:
-#ifdef AMULED28
 	bool m_Exit;
 	CAmuledGSocketFuncTable *m_table;
-#endif
+#ifndef __WXMSW__
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
+#endif // __WXMSW__
+
 	bool OnInit();
 	int OnRun();
 	int OnExit();
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	
-#ifndef __WXMSW__
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
 public:
-	wxAppTraits *CreateTraits();
-#endif // __WXMSW__
-
-public:
-
-#ifdef AMULED28
 	CamuleDaemonApp();
 	
 	void ExitMainLoop() { m_Exit = true; }
-#endif
-
-#ifdef AMULED_DUMMY
-	void ExitMainLoop() {}
-#endif
-
+	
 	bool CopyTextToClipboard(wxString strText);
 	
-	virtual int ShowAlert(wxString msg, wxString title, int flags);
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	
+	void OnLoggingEvent(CLoggingEvent& evt);
 	
 	DECLARE_EVENT_TABLE()
+	
+	wxAppTraits *CreateTraits();
 };
 
 DECLARE_APP(CamuleDaemonApp)

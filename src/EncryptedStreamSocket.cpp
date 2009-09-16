@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -144,7 +144,7 @@ CEncryptedStreamSocket::~CEncryptedStreamSocket()
 void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uint8* pTargetClientHash, bool bServerConnection){
 	if (m_StreamCryptState != ECS_UNKNOWN && m_StreamCryptState != ECS_NONE){
 		if (!m_StreamCryptState == ECS_NONE || bEnabled) {
-			wxFAIL;
+			wxASSERT( false );
 		}
 		return;
 	}
@@ -185,7 +185,7 @@ void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uint8*
 int CEncryptedStreamSocket::Write(const void* lpBuf, wxUint32 nBufLen){
 	//printf("Starting write for %s\n", (const char*) unicode2char(DbgGetIPString()));	
 	if (!IsEncryptionLayerReady()) {
-		wxFAIL;
+		wxASSERT(0);
 		return 0;
 	} else if (m_bServerCrypt && m_StreamCryptState == ECS_ENCRYPTING && !m_pfiSendBuffer.IsEmpty()){
 		wxASSERT( m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING );
@@ -196,7 +196,7 @@ int CEncryptedStreamSocket::Write(const void* lpBuf, wxUint32 nBufLen){
 		(void)nRes;
 		return nBufLen;	// report a full send, even if we didn't for some reason - the data is now in our buffer and will be handled later
 	}	else if (m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING) {
-		wxFAIL;
+		wxASSERT(0);
 	}
 
 	if (m_StreamCryptState == ECS_UNKNOWN) {
@@ -218,7 +218,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 
 	//printf("Read %i bytes on %s, socket %p\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()), this);
 	
-	if (m_nObfusicationBytesReceived == (uint32)SOCKET_ERROR || m_nObfusicationBytesReceived <= 0){
+	if (m_nObfusicationBytesReceived == SOCKET_ERROR || m_nObfusicationBytesReceived <= 0){
 		return m_nObfusicationBytesReceived;
 	}
 	
@@ -228,7 +228,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 		case ECS_PENDING:
 		case ECS_PENDING_SERVER:
 			//printf("Received %i bytes before sending?\n", m_nObfusicationBytesReceived);
-			wxFAIL;
+			wxASSERT( false );
 			//DebugLogError(_T("CEncryptedStreamSocket Received data before sending on outgoing connection"));
 			m_StreamCryptState = ECS_NONE;
 			return m_nObfusicationBytesReceived;
@@ -248,7 +248,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 				//printf("Not a normal header, negotiating encryption\n");
 				StartNegotiation(false);
 				const uint32 nNegRes = Negotiate((uint8*)lpBuf + nRead, m_nObfusicationBytesReceived - nRead);
-				if (nNegRes == (uint32)(-1)) {
+				if (nNegRes == (-1)) {
 					return 0;
 				}
 				nRead += nNegRes;
@@ -301,7 +301,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 		case ECS_NEGOTIATING:{
 			//printf("Negotiating on data receive\n");
 			const uint32 nRead = Negotiate((uint8*)lpBuf, m_nObfusicationBytesReceived);
-			if (nRead == (uint32)(-1)) {
+			if (nRead == (-1)) {
 				//printf("-> Encryption read error on negotiation\n");
 				return 0;
 			} else if (nRead != (uint32)m_nObfusicationBytesReceived && m_StreamCryptState != ECS_ENCRYPTING) {
@@ -322,7 +322,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 			}
 		}
 		default:
-			wxFAIL;
+			wxASSERT( false );
 			return m_nObfusicationBytesReceived;
 	}
 }
@@ -345,7 +345,7 @@ void CEncryptedStreamSocket::OnSend(int) {
 
 void CEncryptedStreamSocket::CryptPrepareSendData(uint8* pBuffer, uint32 nLen){
 	if (!IsEncryptionLayerReady()){
-		wxFAIL; // must be a bug
+		wxASSERT( false ); // must be a bug
 		return;
 	}
 	if (m_StreamCryptState == ECS_UNKNOWN){
@@ -429,7 +429,7 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
 		
 		SendNegotiatingData(fileRequest.GetRawBuffer(), (uint32)fileRequest.GetLength(), (uint32)fileRequest.GetLength());
 	} else {
-		wxFAIL;
+		wxASSERT( false );
 		m_StreamCryptState = ECS_NONE;
 		return;
 	}
@@ -444,7 +444,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 	try{
 		while (m_NegotiatingState != ONS_COMPLETE && m_nReceiveBytesWanted > 0){		
 			if (m_nReceiveBytesWanted > 512){
-				wxFAIL;
+				wxASSERT( false );
 				return 0;
 			}
 
@@ -469,7 +469,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 
 			switch (m_NegotiatingState){
 				case ONS_NONE: // would be a bug
-					wxFAIL; 
+					wxASSERT( false ); 
 					return 0;
 				case ONS_BASIC_CLIENTA_RANDOMPART: {
 					//printf("We are on ONS_BASIC_CLIENTA_RANDOMPART, create the keys on %s\n", (const char*) unicode2char(DbgGetIPString()));					
@@ -670,7 +670,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 					break;
 				}
 				default:
-					wxFAIL;
+					wxASSERT( false );
 			}
 			
 		}
@@ -680,7 +680,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 		// can only be caused by a bug in negationhandling, not by the datastream
 		//error->Delete();
 		//printf("Bug on negotiation?\n");
-		wxFAIL;
+		wxASSERT( false );
 		OnError(ERR_ENCRYPTION);
 		m_pfiReceiveBuffer.ResetData();
 		return (-1);
@@ -717,7 +717,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
 			if (m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING) {
 				m_NegotiatingState = ONS_COMPLETE;
 			} else {
-				wxFAIL;
+				wxASSERT( false );
 			}
 			m_pfiSendBuffer.Append(pBuffer, nBufLen);
 			delete[] pBuffer;
@@ -730,7 +730,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
 	if (lpBuf == NULL || bProcess){
 		// this call is for processing pending data
 		if (m_pfiSendBuffer.IsEmpty() || nStartCryptFromByte != 0){
-			wxFAIL;
+			wxASSERT( false );
 			return 0;							// or not
 		}
 		nBufLen = (uint32)m_pfiSendBuffer.GetLength();
@@ -789,7 +789,7 @@ uint8 CEncryptedStreamSocket::GetSemiRandomNotProtocolMarker() const{
 	
 	if (!bOk){
 		// either we have _real_ bad luck or the randomgenerator is a bit messed up
-		wxFAIL;
+		wxASSERT( false );
 		bySemiRandomNotProtocolMarker = 0x01;
 	}
 	return bySemiRandomNotProtocolMarker;

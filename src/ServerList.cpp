@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -286,7 +286,7 @@ void CServerList::ServerStats()
 			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
 			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
-			CScopedArray<byte> pRawPacket(nPacketLen);
+			CScopedArray<byte> pRawPacket(new byte[nPacketLen]);
 			uint32 dwChallenge = (rand() << 17) | (rand() << 2) | (rand() & 0x03);
 			if (dwChallenge == 0) {
 				dwChallenge++;
@@ -330,7 +330,7 @@ void CServerList::ServerStats()
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			theApp->serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
-			wxFAIL;
+			wxASSERT( false );
 		}
 	}
 }
@@ -524,7 +524,7 @@ struct ServerPriorityComparator {
 			case SRV_PR_HIGH:
 				return rhs->GetPreferences() != SRV_PR_HIGH;
 			default:
-				wxFAIL;
+				wxASSERT(0);
 				return false;
 		}
 	}
@@ -613,10 +613,8 @@ CServer* CServerList::GetServerByIPUDP(uint32 nIP, uint16 nUDPPort, bool bObfusc
 {
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
         CServer* const s =*it;
-		if (s->GetIP() == nIP 
-			&& (s->GetPort() == nUDPPort-4 
-				|| (bObfuscationPorts && s->GetObfuscationPortUDP() == nUDPPort) 
-				|| s->GetPort() == nUDPPort - 12))
+		if (s->GetIP() == nIP && (s->GetPort() == nUDPPort-4 ||
+			(bObfuscationPorts && (s->GetObfuscationPortUDP() == nUDPPort) || (s->GetPort() == nUDPPort - 12))))
 			return s;
 	}
 	return NULL;

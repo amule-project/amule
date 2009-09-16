@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -24,30 +24,23 @@
 //
 
 #ifdef HAVE_CONFIG_H
-#	include "config.h"
+#      include "config.h"
 #endif
 
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #ifdef HAVE_SYS_TYPES_H
-#	include <sys/types.h>
+#      include <sys/types.h>
 #endif
+#include <regex.h>
 
-#ifdef PHP_STANDALONE_EN
-#	include <map>
-#	include <string>
-#	include <list>
-#	include <regex.h>
-#else
-#	include "WebServer.h"
-#	include <ec/cpp/ECSpecialTags.h>
-#	include <wx/regex.h>
-#	include <wx/datetime.h>
-#endif
+#include "WebServer.h"
+#include <ec/cpp/ECSpecialTags.h>
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
-#include <stdarg.h>
+
+#include <wx/datetime.h>
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -147,7 +140,7 @@ bool operator<(const SortElem &o1, const SortElem &o2)
 	value_value_free(&SortElem::callback->params[0].si_var->var->value);
 	value_value_free(&SortElem::callback->params[1].si_var->var->value);
 	
-	return result.int_val != 0;
+	return result.int_val;
 }
 
 void php_native_usort(PHP_VALUE_NODE *)
@@ -313,84 +306,56 @@ void php_native_split(PHP_VALUE_NODE *result)
 		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
 		return;		
 	}
-#ifdef PHP_STANDALONE_EN
 	regex_t preg;
 	char error_buff[256];
 	int reg_result = regcomp(&preg, pattern->str_val, REG_EXTENDED);
 	if ( reg_result ) {
 		regerror(reg_result, &preg, error_buff, sizeof(error_buff));
 		php_report_error(PHP_ERROR, "Failed in regcomp: %s", error_buff);
-#else
-	wxRegEx preg;
-	if (!preg.Compile(wxString(char2unicode(pattern->str_val)), wxRE_EXTENDED)) {
-		php_report_error(PHP_ERROR, "Failed in Compile of: %s", pattern->str_val);
-#endif
 		return;
 	}
-
-#ifdef PHP_STANDALONE_EN
 	size_t nmatch = strlen(string_to_split->str_val);
 	regmatch_t *pmatch = new regmatch_t[nmatch];
-#endif
+	
 	char *str_2_match = string_to_split->str_val;
 	char *tmp_buff = new char[strlen(string_to_split->str_val)+1];
 	
 	while ( 1 ) {
 //		printf("matching: %s\n", str_2_match);
-#ifdef PHP_STANDALONE_EN
 		reg_result = regexec(&preg, str_2_match, nmatch, pmatch, 0);
 		if ( reg_result ) {
-#else
-		if (!preg.Matches(wxString(char2unicode(str_2_match)))) {
-#endif
 			// no match
 			break;
 		}
-#ifndef PHP_STANDALONE_EN
-		// get matching position
-		size_t start, len;
-		if (!preg.GetMatch(&start, &len)) {
-			break;	// shouldn't happen
-		}
-#endif	
+//		for(int i = 0; pmatch[i].rm_so >= 0; i++) {
+//			printf("match [%d] %d - %d\n", i, pmatch[i].rm_so, pmatch[i].rm_eo);
+//		}
+	
 		/*
 		 * I will use only first match, since I don't see any sense to have more
 		 * then 1 match in split() call
 		 */
-#ifdef PHP_STANDALONE_EN
 		for(int i = 0; i < pmatch[0].rm_so; i++) {
-#else
-		for(size_t i = 0; i < start; i++) {
-#endif
 			tmp_buff[i] = str_2_match[i];
 		}
-#ifdef PHP_STANDALONE_EN
 		tmp_buff[pmatch[0].rm_so] = 0;
-#else
-		tmp_buff[start] = 0;
-#endif
 //		printf("Match added [%s]\n", tmp_buff);
 		
 		PHP_VAR_NODE *match_val = array_push_back(result);
 		match_val->value.type = PHP_VAL_STRING;
 		match_val->value.str_val = strdup(tmp_buff);
 
-#ifdef PHP_STANDALONE_EN
 		str_2_match += pmatch[0].rm_eo;
-#else
-		str_2_match += start + len;
-#endif
 	}
 
 	PHP_VAR_NODE *match_val = array_push_back(result);
 	match_val->value.type = PHP_VAL_STRING;
 	match_val->value.str_val = strdup(str_2_match);
 	
-	delete [] tmp_buff;
-#ifdef PHP_STANDALONE_EN
 	delete [] pmatch;
+	delete [] tmp_buff;
+	
 	regfree(&preg);
-#endif
 }
 
 #ifdef ENABLE_NLS
@@ -535,12 +500,12 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	m_server = server;
 
 	php_engine_init();
-	phpin = fopen(file, "r");
-	if ( !phpin ) {
+	yyin = fopen(file, "r");
+	if ( !yyin ) {
 		return;
 	}
 
-	phpparse();
+	yyparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
@@ -557,7 +522,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 	m_global_scope = g_global_scope;
 
 	php_set_input_buffer(php_buf, len);
-	phpparse();
+	yyparse();
 	
 	m_syn_tree_top = g_syn_tree_top;
 }
@@ -615,24 +580,20 @@ void CPhPLibContext::Print(const char *str)
 	}
 }
 
-
 CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 			const char *file, CWriteStrBuffer *buff)
 {
 	FILE *f = fopen(file, "r");
 	if ( !f ) {
-		printf("ERROR: php can not open source file [%s]\n", file);
 		return;
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
-		printf("ERROR: fseek failed on php source file [%s]\n", file); 
 		return;
 	}
 	int size = ftell(f);
 	char *buf = new char [size+1];
 	rewind(f);
-	// fread may actually read less if it is a CR-LF-file in Windows
-	size = fread(buf, 1, size, f);
+	fread(buf, 1, size, f);
 	buf[size] = 0;
 	fclose(f);
 	char *scan_ptr = buf;
@@ -656,29 +617,23 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 
-#ifndef PHP_STANDALONE_EN
+
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
 		load_session_vars("_SESSION", sess->m_vars);
-#endif
 
 		context->Execute(buff);
 
-#ifndef PHP_STANDALONE_EN
 		save_session_vars(sess->m_vars);
-#endif
 
 		delete context;
 		
 		scan_ptr = curr_code_end;
 	}
 
-#ifndef PHP_STANDALONE_EN
 	sess->m_get_vars.clear();
-#endif
 
 	delete [] buf;
 }
-
 
 /*
  * String buffer: almost same as regular 'string' class, but,

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 Kry ( elkry@sourceforge.net / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -58,24 +58,14 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, wxString name, wxString pat
 	AddTag(CECTag(EC_TAG_CATEGORY_TITLE, name));
 }
 
-bool CEC_Category_Tag::Apply()
+void CEC_Category_Tag::Apply()
 {
-	bool ret = theApp->glob_prefs->UpdateCategory(GetInt(), Name(), CPath(Path()), Comment(), Color(), Prio());
-	if (!ret) {
-		GetTagByName(EC_TAG_CATEGORY_PATH)->SetStringData(theApp->glob_prefs->GetCatPath(GetInt()).GetRaw());
-	}
-	return ret;
+	theApp->glob_prefs->UpdateCategory(GetInt(), Name(), CPath(Path()), Comment(), Color(), Prio());
 }
 
-bool CEC_Category_Tag::Create()
+void CEC_Category_Tag::Create()
 {
-	Category_Struct * category = NULL;
-	bool ret = theApp->glob_prefs->CreateCategory(category, Name(), CPath(Path()), Comment(), Color(), Prio());
-	if (!ret) {
-		GetTagByName(EC_TAG_CATEGORY_PATH)->SetStringData(theApp->glob_prefs->GetCatPath(
-			theApp->glob_prefs->GetCatCount() - 1).GetRaw());
-	}
-	return ret;
+	theApp->glob_prefs->CreateCategory(Name(), CPath(Path()), Comment(), Color(), Prio());
 }
 
 CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_details, EC_DETAIL_LEVEL cat_details) : CECPacket(EC_OP_SET_PREFERENCES, pref_details)
@@ -280,17 +270,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 	}
 
 	if (selection & EC_PREFS_DIRECTORIES) {
-		CECEmptyTag dirPrefs(EC_TAG_PREFS_DIRECTORIES);
-		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_INCOMING, thePrefs::GetIncomingDir().GetRaw()));
-		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_TEMP, thePrefs::GetTempDir().GetRaw()));
-		size_t sharedDirs = theApp->glob_prefs->shareddir_list.size();
-		CECTag dirtag(EC_TAG_DIRECTORIES_SHARED, sharedDirs);
-		for (size_t i = 0; i < sharedDirs; i++) {
-			dirtag.AddTag(CECTag(EC_TAG_STRING, theApp->glob_prefs->shareddir_list[i].GetRaw()));
-		}
-		dirPrefs.AddTag(dirtag);
-		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_SHARE_HIDDEN, thePrefs::ShareHiddenFiles()));
-		AddTag(dirPrefs);
+		//#warning TODO
 	}
 
 	if (selection & EC_PREFS_STATISTICS) {
@@ -523,20 +503,7 @@ void CEC_Prefs_Packet::Apply()
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_INCOMING)) != NULL) {
-			thePrefs::SetIncomingDir(CPath(oneTag->GetStringData()));
-		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_TEMP)) != NULL) {
-			thePrefs::SetTempDir(CPath(oneTag->GetStringData()));
-		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_SHARED)) != NULL) {
-			theApp->glob_prefs->shareddir_list.clear();
-			for (unsigned int i = 0; i < oneTag->GetTagCount(); i++) {
-				const CECTag *dirTag = oneTag->GetTagByIndex(i);
-				theApp->glob_prefs->shareddir_list.push_back(CPath(dirTag->GetStringData()));
-			}
-		}
-		ApplyBoolean(use_tag, thisTab, thePrefs::SetShareHiddenFiles, EC_TAG_DIRECTORIES_SHARE_HIDDEN);
+		//#warning TODO
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {

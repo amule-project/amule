@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -27,11 +27,9 @@
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #include <sys/types.h>
+#include <regex.h>
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
-
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
 
@@ -299,7 +297,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	}
 	const CECTag *cats_tag = reply->GetTagCount() ? reply->GetTagByIndex(0) : 0;
 	if ( cats_tag && cats_tag->GetTagCount() ) {
-		for (uint32_t i = 0; i < cats_tag->GetTagCount(); i++) {
+		for (int i = 0; i < cats_tag->GetTagCount(); i++) {
 			const CECTag *tag = cats_tag->GetTagByIndex(i);
 			const CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
 			PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
@@ -753,7 +751,7 @@ void ecstats2php(CEC_StatTree_Node_Tag *root, PHP_VALUE_NODE *result)
 	cast_value_array(result);
 	std::string key(unicode2UTF8(root->GetDisplayString()));
 	PHP_VAR_NODE *v_key = array_get_by_str_key(result, key);
-	for (uint32_t i = 0; i < root->GetTagCount(); i++) {
+	for (int i = 0; i < root->GetTagCount(); i++) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)root->GetTagByIndex(i);
 		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
 			ecstats2php(tag, &v_key->value);
@@ -782,7 +780,7 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 	}
 	CEC_StatTree_Node_Tag *stats_root = (CEC_StatTree_Node_Tag *)response->GetTagByName(EC_TAG_STATTREE_NODE);
 	//ecstats2php(stats_root, result);
-	for (uint32_t i = 0; i < stats_root->GetTagCount(); i++) {
+	for (int i = 0; i < stats_root->GetTagCount(); i++) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)stats_root->GetTagByIndex(i);
 		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
 			ecstats2php(tag, result);
@@ -895,12 +893,12 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
-		// uploading file we don't share ?! We are either out of sync with core or a shared file has been removed while uploading it
+		 // uploading file we don't share ?! We are either out of sync with core or a shared file has been removed while uploading it
 		if ( !sharedfile ) {
 			SharedFile::GetContainerInstance()->ReQuery();
 			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
 		}
-		result->str_val = strdup(sharedfile ? (const char *)unicode2UTF8(sharedfile->sFileName) : "???");
+	 result->str_val = strdup(sharedfile ? (const char *)unicode2UTF8(sharedfile->sFileName) : "???");
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
@@ -1042,11 +1040,6 @@ void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		php_report_error(PHP_ERROR, "'SearchFile' property [%s] is unknown", prop_name);
 	}
 }
-
-#ifndef PACKAGE_VERSION
-#include <common/ClientVersion.h>
-#define PACKAGE_VERSION (PACKAGE " " VERSION)
-#endif
 
 void amule_version(PHP_VALUE_NODE *val)
 {

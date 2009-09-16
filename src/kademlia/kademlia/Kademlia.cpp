@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -50,9 +50,6 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include <protocol/kad2/Client2Client/UDP.h>
 
-#ifdef _MSC_VER  // silly warnings about deprecated functions
-#pragma warning(disable:4996)
-#endif
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -71,7 +68,6 @@ time_t		CKademlia::m_consolidate;
 time_t		CKademlia::m_externPortLookup;
 bool		CKademlia::m_running = false;
 ContactList	CKademlia::s_bootstrapList;
-std::list<uint32_t>	CKademlia::m_statsEstUsersProbes;
 
 void CKademlia::Start(CPrefs *prefs)
 {
@@ -88,7 +84,7 @@ void CKademlia::Start(CPrefs *prefs)
 		return;
 	}
 
-	AddDebugLogLineN(logKadMain, wxT("Starting Kademlia"));
+	AddDebugLogLineM(false, logKadMain, wxT("Starting Kademlia"));
 
 	// Init jump start timer.
 	m_nextSearchJumpStart = time(NULL);
@@ -129,7 +125,7 @@ void CKademlia::Stop()
 		return;
 	}
 
-	AddDebugLogLineN(logKadMain, wxT("Stopping Kademlia"));
+	AddDebugLogLineM(false, logKadMain, wxT("Stopping Kademlia"));
 
 	// Mark Kad as being in the stop state to make sure nothing else is used.
 	m_running = false;
@@ -207,11 +203,11 @@ void CKademlia::Process()
 		// If our UDP firewallcheck is running and we don't know our external port, we send a request every 15 seconds
 		CContact *contact = GetRoutingZone()->GetRandomContact(3, 6);
 		if (contact != NULL) {
-			AddDebugLogLineN(logKadPrefs, wxT("Requesting our external port from ") + KadIPToString(contact->GetIPAddress()));
+			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())));
 			DebugSend(Kad2Ping, contact->GetIPAddress(), contact->GetUDPPort());
 			GetUDPListener()->SendNullPacket(KADEMLIA2_PING, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &contact->GetClientID());
 		} else {
-			AddDebugLogLineN(logKadPrefs, wxT("No valid client for requesting external port available"));
+			AddDebugLogLineM(false, logKadMain, wxT("No valid client for requesting external port available"));
 		}
 		m_externPortLookup = 15 + now;
 	}
@@ -257,7 +253,7 @@ void CKademlia::Process()
 	if (m_consolidate <= now) {
 		uint32_t mergedCount = instance->m_routingZone->Consolidate();
 		if (mergedCount) {
-			AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Kad merged %u zones"), mergedCount));
+			AddDebugLogLineM(false, logKadRouting, wxString::Format(wxT("Kad merged %u zones"), mergedCount));
 		}
 		m_consolidate = MIN2S(45) + now;
 	}
@@ -275,7 +271,7 @@ void CKademlia::Process()
 		CContact *contact = s_bootstrapList.front();
 		s_bootstrapList.pop_front();
 		m_bootstrap = now;
-		AddDebugLogLineN(logKadMain, wxT("Trying to bootstrap Kad from ") + KadIPToString(contact->GetIPAddress()) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
+		AddDebugLogLineM(false, logKadMain, wxT("Trying to bootstrap Kad from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
 		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion() > 1, contact->GetVersion(), &contact->GetClientID());
 		delete contact;
 	}
@@ -291,12 +287,12 @@ void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip
 		if( instance && instance->m_udpListener ) {
 			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
-	} catch (const wxString& DEBUG_ONLY(error)) {
-		AddDebugLogLineN(logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + KadIPPortToString(ip, port) + wxT(':'));
-		AddDebugLogLineN(logKadMain, error);
+	} catch (const wxString& error) {
+		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port) + wxT(':'));
+		AddDebugLogLineM(false, logKadMain, error);
 		throw;
 	} catch (...) {
-		AddDebugLogLineN(logKadMain, wxT("Unhandled exception on Kad ProcessPacket"));
+		AddDebugLogLineM(false, logKadMain, wxT("Unhandled exception on Kad ProcessPacket"));
 		throw;
 	}
 }
@@ -356,94 +352,6 @@ void CKademlia::CancelClientSearch(CKadClientSearcher& fromRequester)
 
 	GetUDPListener()->ExpireClientSearch(&fromRequester);
 	CSearchManager::CancelNodeSpecial(&fromRequester);
-}
-
-void CKademlia::StatsAddClosestDistance(const CUInt128& distance)
-{
-	if (distance.Get32BitChunk(0) > 0) {
-		uint32_t toAdd = (0xFFFFFFFF / distance.Get32BitChunk(0)) / 2;
-		std::list<uint32_t>::iterator it = m_statsEstUsersProbes.begin();
-		for (; it != m_statsEstUsersProbes.end(); ++it) {
-			if (*it == toAdd) {
-				break;
-			}
-		}
-		if (it == m_statsEstUsersProbes.end()) {
-			m_statsEstUsersProbes.push_front(toAdd);
-		}
-	}
-	if (m_statsEstUsersProbes.size() > 100) {
-		m_statsEstUsersProbes.pop_back();
-	}
-}
-
-uint32_t CKademlia::CalculateKadUsersNew()
-{
-	// the idea of calculating the user count with this method is simple:
-	// whenever we do a search for any NodeID (except in certain cases where the result is not usable),
-	// we remember the distance of the closest node we found. Because we assume all NodeIDs are distributed
-	// equally, we can calculate based on this distance how "filled" the possible NodesID room is and by this
-	// calculate how many users there are. Of course this only works if we have enough samples, because
-	// each single sample will be wrong, but the average of them should produce a usable number. To avoid
-	// drifts caused by a a single (or more) really close or really far away hits, we do use median-average instead through
-
-	// doesn't work well if we have no files to index and nothing to download and the numbers seems to be a bit too low
-	// compared to our other method. So let's stay with the old one for now, but keep this here as an alternative
-
-	if (m_statsEstUsersProbes.size() < 10) {
-		return 0;
-	}
-	uint32_t median = 0;
-
-	std::list<uint32_t> medianList;
-	for (std::list<uint32_t>::iterator it1 = m_statsEstUsersProbes.begin(); it1 != m_statsEstUsersProbes.end(); ++it1) {
-		uint32_t probe = *it1;
-		bool inserted = false;
-		for (std::list<uint32_t>::iterator it2 = medianList.begin(); it2 != medianList.end(); ++it2) {
-			if (*it2 > probe) {
-				medianList.insert(it2, probe);
-				inserted = true;
-				break;
-			}
-		}
-		if (!inserted) {
-			medianList.push_back(probe);
-		}
-	}
-	// cut away 1/3 of the values - 1/6 of the top and 1/6 of the bottom  to avoid spikes having too much influence, build the average of the rest
-	std::list<uint32_t>::size_type cut = medianList.size() / 6;
-	for (std::list<uint32_t>::size_type i = 0; i != cut; ++i) {
-		medianList.pop_front();
-		medianList.pop_back();
-	}
-	uint64_t average = 0;
-	for (std::list<uint32_t>::iterator it = medianList.begin(); it != medianList.end(); ++it) {
-		average += *it;
-	}
-	median = (uint32_t)(average / medianList.size());
-
-	// LowIDModififier
-	// Modify count by assuming 20% of the users are firewalled and can't be a contact for < 0.49b nodes
-	// Modify count by actual statistics of Firewalled ratio for >= 0.49b if we are not firewalled ourself
-	// Modify count by 40% for >= 0.49b if we are firewalled ourself (the actual Firewalled count at this date on kad is 35-55%)
-	const float firewalledModifyOld = 1.20f;
-	float firewalledModifyNew = 0.0;
-	if (CUDPFirewallTester::IsFirewalledUDP(true)) {
-		firewalledModifyNew = 1.40f; // we are firewalled and can't get the real statistics, assume 40% firewalled >=0.49b nodes
-	} else if (GetPrefs()->StatsGetFirewalledRatio(true) > 0) {
-		firewalledModifyNew = 1.0 + (CKademlia::GetPrefs()->StatsGetFirewalledRatio(true)); // apply the firewalled ratio to the modify
-		wxASSERT(firewalledModifyNew > 1.0 && firewalledModifyNew < 1.90);
-	}
-	float newRatio = CKademlia::GetPrefs()->StatsGetKadV8Ratio();
-	float firewalledModifyTotal = 0.0;
-	if (newRatio > 0 && firewalledModifyNew > 0) { // weigth the old and the new modifier based on how many new contacts we have
-		firewalledModifyTotal = (newRatio * firewalledModifyNew) + ((1 - newRatio) * firewalledModifyOld);
-	} else {
-		firewalledModifyTotal = firewalledModifyOld;
-	}
-	wxASSERT(firewalledModifyTotal > 1.0 && firewalledModifyTotal < 1.90);
-
-	return (uint32_t)((float)median * firewalledModifyTotal);
 }
 
 // Global function.

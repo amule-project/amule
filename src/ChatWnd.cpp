@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -30,7 +30,6 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
-#include "Friend.h"			// Needed for CFriend
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "OtherFunctions.h"
@@ -112,22 +111,18 @@ void CChatWnd::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 
 	friendlistctrl->RemoveFriend(friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort));
 }
 
-void CChatWnd::RefreshFriend(CFriend* Friend, bool connected)
+void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort)
 {
-	CDlgFriend* toupdate = friendlistctrl->FindFriend(Friend->GetUserHash(), Friend->GetIP(), Friend->GetPort());
+	CDlgFriend* toupdate = friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort);
 	if (toupdate) {
-		toupdate->m_name = Friend->GetName();	
-		toupdate->islinked = connected;
-		if (toupdate->m_ip == Friend->GetIP() && toupdate->m_port == Friend->GetPort()) {
-			chatselector->RefreshFriend(GUI_ID(toupdate->m_ip, toupdate->m_port), toupdate->m_name);
-		} else {
-			// Friend changed IP - drop Chat session
-			chatselector->EndSession(GUI_ID(toupdate->m_ip, toupdate->m_port));
-			// and update IP
-			toupdate->m_ip = Friend->GetIP();
-			toupdate->m_port = Friend->GetPort();
-		}
+		if (!name.IsEmpty()) {
+			toupdate->m_name = name;	
+		} 
+		
+		// If name is empty, this is a disconnection/deletion event
+		toupdate->islinked = !name.IsEmpty();
 		friendlistctrl->RefreshFriend(toupdate);
+		chatselector->RefreshFriend(GUI_ID(toupdate->m_ip, toupdate->m_port), toupdate->m_name);
 	}
 }
 
@@ -160,8 +155,7 @@ void CChatWnd::SendMessage(const wxString& message, const wxString& client_name,
 }
 
 
-void CChatWnd::CheckNewButtonsState()
-{
+void CChatWnd::CheckNewButtonsState() {
 	switch (chatselector->GetPageCount()) {
 			case 0:
 				GetParent()->FindWindow(IDC_CSEND)->Enable(false);
@@ -181,22 +175,4 @@ void CChatWnd::CheckNewButtonsState()
 				break;
 	}
 }
-
-
-bool CChatWnd::IsIdValid(uint64 id)
-{ 
-	return chatselector->GetTabByClientID(id) >= 0;
-}
-
-
-void CChatWnd::ShowCaptchaResult(uint64 id, bool ok)
-{
-	chatselector->ShowCaptchaResult(id, ok);
-}
-
-void CChatWnd::EndSession(uint64 id)
-{
-	chatselector->EndSession(id);
-}
-
 // File_checked_for_headers

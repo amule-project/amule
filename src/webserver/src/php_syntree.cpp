@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2009 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -1838,7 +1838,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				}
 				cast_value_dnum(&cond_result);
 				if ( node->type == PHP_ST_BREAK ) {
-					curr_exec_result = -(int)(cond_result.int_val);
+					curr_exec_result = -cond_result.int_val;
 				} else {
 					curr_exec_result = cond_result.int_val;
 				}
@@ -1986,10 +1986,32 @@ void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 }
 
 
-int phperror(char *s)
+int yyerror(char *s)
 {
-	printf("ERROR in grammar %s after [%s] near line %d\n", s, phptext, phplineno);
+	printf("ERROR in grammar %s after [%s] near line %d\n", s, yytext, yylineno);
 	return 0;
 }
 
+#ifdef PHP_STANDALONE_EN
+
+int main(int argc, char *argv[])
+{
+	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
+
+	CWriteStrBuffer buffer;
+	
+	yydebug = 0;
+
+	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
+	
+	int size = buffer.Length();
+	char *buf = new char [size+1];
+	buffer.CopyAll(buf);
+	printf("%s", buf);
+	delete [] buf;
+	
+	return 0;
+}
+
+#endif
 // File_checked_for_headers

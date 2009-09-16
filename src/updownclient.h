@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -31,7 +31,6 @@
 #include <common/StringFunctions.h>
 #include "NetworkFunctions.h"
 #include "OtherStructs.h"
-#include "ClientCredits.h"	// Needed for EIdentState
 
 #include <map>
 
@@ -40,6 +39,7 @@ typedef std::vector<bool> BitVector;
 
 class CPartFile;
 class CClientTCPSocket;
+class CClientCredits;
 class CPacket;
 class CFriend;
 class CKnownFile;
@@ -95,15 +95,6 @@ enum ESourceFrom {
 	SF_LINK,
 	SF_SOURCE_SEEDS,
 	SF_SEARCH_RESULT
-};
-
-enum EChatCaptchaState{
-	CA_NONE				= 0,
-	CA_CHALLENGESENT,
-	CA_CAPTCHASOLVED,
-	CA_ACCEPTING,
-	CA_CAPTCHARECV,
-	CA_SOLUTIONSENT
 };
 
 enum ESecureIdentState{
@@ -203,7 +194,7 @@ public:
 	void		SetIP( uint32 val );
 	uint32		GetIP() const 			{ return m_dwUserIP; }
 	bool		HasLowID() const 		{ return IsLowID(m_nUserIDHybrid); }
-	wxString	GetFullIP() const		{ return Uint32toStringIP(m_FullUserIP); }
+	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
 	uint32		GetConnectIP() const		{ return m_nConnectIP; }
 	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
 	void		SetUserIDHybrid(uint32 val);
@@ -260,8 +251,8 @@ public:
 	bool		GetFriendSlot() const 		{ return m_bFriendSlot; }
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true)	{ m_bCommentDirty = bDirty; }
-	uint8		GetSourceExchange1Version() const	{ return m_bySourceExchange1Ver; }
-	bool		SupportsSourceExchange2() const		{ return m_fSupportsSourceEx2; }
+	uint8			GetSourceExchange1Version() const				{ return m_bySourceExchange1Ver; }
+	bool			SupportsSourceExchange2() const					{ return m_fSupportsSourceEx2; }
 	
 	bool		SafeSendPacket(CPacket* packet);
 
@@ -310,22 +301,22 @@ public:
 				bool sysvalue,
 				bool isdownloading = false,
 				bool onlybasevalue = false) const;
-	uint32		GetRating() const		{ return GetScore(false, IsDownloading(), true); }
 #else
 	uint32		m_score;
 	uint32		GetScore(
 				bool WXUNUSED(sysvalue),
 				bool WXUNUSED(isdownloading) = false,
-				bool onlybasevalue = false) const
+				bool WXUNUSED(onlybasevalue) = false) const
 	{
-		return onlybasevalue ? m_rating : m_score;
+		return m_score;
 	}
 	uint16		m_waitingPosition;
-	uint16		GetWaitingPosition() const	{ return m_waitingPosition; }
-	uint32		m_rating;
-	uint32		GetRating() const		{ return m_rating; }
-	EIdentState	m_identState;
+	uint16		GetWaitingPosition() const { return m_waitingPosition; }
 #endif
+	double		GetRating() const
+	{
+		return (double)GetScore(false, IsDownloading(), true);
+	}
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	void		CreateNextBlockPackage();
@@ -385,7 +376,7 @@ public:
 
 	const BitVector& GetPartStatus() const		{ return m_downPartStatus; }
 	const BitVector& GetUpPartStatus() const	{ return m_upPartStatus; }
-	float		GetKBpsDown() const				{ return kBpsDown; }
+	float		GetKBpsDown() const		{ return kBpsDown; }
 	float		CalculateKBpsDown();
 	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
 	uint16		GetOldRemoteQueueRank() const	{ return m_nOldRemoteQueueRank; }
@@ -420,18 +411,6 @@ public:
 	//chat
 	uint8		GetChatState()			{ return m_byChatstate; }
 	void		SetChatState(uint8 nNewS)	{ m_byChatstate = nNewS; }
-	EChatCaptchaState GetChatCaptchaState() const	{ return (EChatCaptchaState)m_nChatCaptchaState; }
-	void		ProcessCaptchaRequest(CMemFile* data);
-	void		ProcessCaptchaReqRes(uint8 nStatus);
-	void		ProcessChatMessage(wxString message);
-	// message filtering
-	uint8		GetMessagesReceived() const	{ return m_cMessagesReceived; }
-	void		IncMessagesReceived()		{ m_cMessagesReceived < 255 ? ++m_cMessagesReceived : 255; }
-	uint8		GetMessagesSent() const		{ return m_cMessagesSent; }
-	void		IncMessagesSent()		{ m_cMessagesSent < 255 ? ++m_cMessagesSent : 255; }
-	bool		IsSpammer() const		{ return m_fIsSpammer; }
-	void		SetSpammer(bool bVal);
-	bool		IsMessageFiltered(const wxString& message);
 
 	//File Comment
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
@@ -477,7 +456,6 @@ public:
 	void		SetSentCancelTransfer(bool bVal)	{ m_fSentCancelTransfer = bVal; }
 
 	wxString	GetClientFullInfo();
-	wxString	GetClientShortInfo();
 
 	const wxString& GetClientOSInfo() const		{ return m_sClientOSInfo; }
 
@@ -536,7 +514,7 @@ public:
 	 *
 	 * @return True if sent, false if connecting
 	 */
-	bool		SendChatMessage(const wxString& message);
+	bool	SendMessage(const wxString& message);
 
 	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
 	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
@@ -567,7 +545,7 @@ public:
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
 	void		ProcessFirewallCheckUDPRequest(CMemFile *data);
 	// Kad added by me
-	bool		SendBuddyPing();
+	bool			SendBuddyPing();
 	
 	/* Returns the client hash type (SO_EMULE, mldonkey, etc) */
 	int		GetHashType() const;
@@ -632,13 +610,11 @@ public:
 	uint32		GetCreationTime() const { return m_nCreationTime; }
 	
 	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
-
-	EIdentState	GetCurrentIdentState() const { return credits ? credits->GetCurrentIdentState(GetIP()) : IS_NOTAVAILABLE; }
 	
-#ifdef __DEBUG__
+	#ifdef __DEBUG__
 	/* Kry - Debug. See connection_reason definition comment below */
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
-#endif
+	#endif
 
 	// Encryption / Obfuscation / ConnectOptions
 	bool		SupportsCryptLayer() const			{ return m_fSupportsCryptLayer; }
@@ -728,7 +704,7 @@ private:
 	uint8		m_byDataCompVer;
 	bool		m_bEmuleProtocol;
 	wxString	m_Username;
-	uint32		m_FullUserIP;
+	wxString	m_FullUserIP;
 	CMD4Hash	m_UserHash;
 	bool		m_HasValidHash;
 	uint16		m_nUDPPort;
@@ -811,15 +787,9 @@ private:
 	uint32		msReceivedPrev;
 	uint32		bytesReceivedCycle;
 	// chat
-	wxString	m_strComment;
 	uint8 		m_byChatstate;
-	uint8		m_nChatCaptchaState;
-	uint8		m_cCaptchasSent;
+	wxString	m_strComment;
 	int8		m_iRating;
-	uint8		m_cMessagesReceived;		// count of chatmessages he sent to me
-	uint8		m_cMessagesSent;			// count of chatmessages I sent to him
-	wxString	m_strCaptchaChallenge;
-	wxString	m_strCaptchaPendingMsg;
 
 	unsigned int
 		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
@@ -827,7 +797,6 @@ private:
 					  // if this flag is not set, we just know that we don't know 
 					  // for sure if it is enabled
 		m_fSupportsPreview   : 1,
-		m_fIsSpammer	     : 1,
 		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,
@@ -839,7 +808,6 @@ private:
 		m_fSupportsCryptLayer: 1,
 		m_fRequiresCryptLayer: 1,
 		m_fSupportsSourceEx2 : 1,
-		m_fSupportsCaptcha   : 1,
 		m_fDirectUDPCallback : 1;
 
 	unsigned int
@@ -897,22 +865,22 @@ private:
 	wxString	m_lastOSInfo;
 	
 	/* For buddies timeout */
-	uint32		m_nCreationTime;
+	uint32 m_nCreationTime;
 	
 	/* Calculation of last average speed */
-	uint32		m_lastaverage;
-	uint32		m_last_block_start;
+	uint32 m_lastaverage;
+	uint32 m_last_block_start;
 	
 	/* Save the encryption status for display when disconnected */
-	bool		m_hasbeenobfuscatinglately;
+	bool m_hasbeenobfuscatinglately;
 	
 	/* Kry - Debug thing. Clients created just to check their data
 	   have this string set to the reason we want to check them. 
-	   Obviously, once checked, we disconnect them. Take that, sucker.
+	   Obviously, once checked, we disconect them. Take that, sucker.
 	   This debug code is just for me I'm afraid. */
-#ifdef __DEBUG__
-	wxString	connection_reason;
-#endif
+	  #ifdef __DEBUG__
+	  wxString connection_reason;
+	  #endif
 };
 
 

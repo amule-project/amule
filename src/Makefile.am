@@ -71,7 +71,9 @@ libmuleappcommon_a_SOURCES = \
 	SafeFile.cpp \
 	SHA.cpp \
 	Tag.cpp \
-	Timer.cpp
+	Timer.cpp \
+	RandomFunctions.cpp \
+	kademlia/utils/UInt128.cpp
 
 libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
@@ -81,18 +83,14 @@ libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs
 libmuleappcore_a_SOURCES = \
 	AsyncDNS.cpp \
 	DeadSourceList.cpp \
-	FileArea.cpp \
-	FileAutoClose.cpp \
 	Scanner.cpp \
 	Parser.cpp \
 	PlatformSpecific.cpp \
 	kademlia/kademlia/Entry.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
-	RandomFunctions.cpp \
 	StateMachine.cpp \
-	ThreadScheduler.cpp \
-	kademlia/utils/UInt128.cpp
+	ThreadScheduler.cpp
 
 libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
@@ -105,6 +103,7 @@ libmuleappgui_a_SOURCES = \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
+	DirectoryTreeCtrl.cpp \
 	EditServerListDlg.cpp \
 	extern/wxWidgets/listctrl.cpp \
 	FileDetailListCtrl.cpp \
@@ -125,7 +124,6 @@ core_sources = \
 	ClientCreditsList.cpp \
 	ClientTCPSocket.cpp \
 	ClientUDPSocket.cpp \
-	CorruptionBlackBox.cpp \
 	DownloadClient.cpp \
 	DownloadQueue.cpp \
 	ECSpecialCoreTags.cpp \
@@ -140,6 +138,7 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
+	PartFileConvert.cpp \
 	SearchFile.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
@@ -163,7 +162,8 @@ core_sources = \
 
 if ENABLE_UPNP
 core_sources += \
-	UPnPBase.cpp
+	UPnPBase.cpp \
+	UPnPCompatibility.cpp
 endif
 
 gui_sources = \
@@ -173,11 +173,10 @@ gui_sources = \
 	CatDialog.cpp \
 	ChatSelector.cpp \
 	ClientDetailDialog.cpp \
-	DirectoryTreeCtrl.cpp \
 	FileDetailDialog.cpp \
 	KadDlg.cpp \
 	OScopeCtrl.cpp \
-	PartFileConvert.cpp \
+	PartFileConvertDlg.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
 	ServerWnd.cpp \
@@ -190,7 +189,6 @@ gui_sources = \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
 	MuleTrayIcon.cpp \
-	MuleColour.cpp \
 	TransferWnd.cpp 
 
 if ENABLE_IP2COUNTRY
@@ -207,7 +205,6 @@ common_sources = \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
-	GapList.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \
 	Logger.cpp \
@@ -254,14 +251,7 @@ amulegui_SOURCES = \
 	$(ec_sources) \
 	$(common_sources)
 
-if ENABLE_IP2COUNTRY
-amulegui_SOURCES += \
-	HTTPDownload.cpp
-endif
-
 amule_SOURCES = \
-	CaptchaDialog.cpp \
-	CaptchaGenerator.cpp \
 	$(core_sources) \
 	$(gui_sources) \
 	$(ec_sources) \
@@ -326,8 +316,6 @@ noinst_HEADERS = \
 		amuleIPV4Address.h \
 		ArchSpecific.h \
 		BarShader.h \
-		CaptchaDialog.h \
-		CaptchaGenerator.h \
 		CatDialog.h \
 		CFile.h \
 		ChatSelector.h \
@@ -340,10 +328,10 @@ noinst_HEADERS = \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
 		ColorFrameCtrl.h \
+		Color.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
 		Constants.h \
-		CorruptionBlackBox.h \
 		CryptoPP_Inc.h \
 		DataToText.h \
 		DeadSourceList.h \
@@ -357,15 +345,12 @@ noinst_HEADERS = \
 		EncryptedStreamSocket.h \
 		ExternalConnector.h \
 		ExternalConn.h \
-		FileArea.h \
-		FileAutoClose.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
 		FileLock.h \
 		Friend.h \
 		FriendListCtrl.h \
 		FriendList.h \
-		GapList.h \
 		GetTickCount.h \
 		GuiEvents.h \
 		HTTPDownload.h \
@@ -382,7 +367,6 @@ noinst_HEADERS = \
 		MD4Hash.h \
 		MemFile.h \
 		MuleCollection.h \
-		MuleColour.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
 		MuleNotebook.h \
@@ -400,6 +384,7 @@ noinst_HEADERS = \
 		Packet.h \
 		Parser.hpp \
 		PartFileConvert.h \
+		PartFileConvertDlg.h \
 		PartFile.h \
 		PlatformSpecific.h \
 		Preferences.h \

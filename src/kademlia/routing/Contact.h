@@ -1,9 +1,9 @@
 //								-*- C++ -*-
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -81,7 +81,7 @@ public:
 
 	bool	 InUse() const throw()				{ return m_inUse > 0; }
 	void	 IncUse() throw()				{ m_inUse++; }
-	void	 DecUse() throw()				{ if (m_inUse) m_inUse--; else { wxFAIL; } }
+	void	 DecUse() throw()				{ if (m_inUse) m_inUse--; else wxFAIL; }
 
 	time_t	 GetCreatedTime() const throw()			{ return m_created; }
 

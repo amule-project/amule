@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -25,25 +25,18 @@
 #ifndef RANDOMFUNCTIONS_H
 #define RANDOMFUNCTIONS_H
 
-#include "Types.h"			// Needed for uint16, uint32 and uint64
-#include "kademlia/utils/UInt128.h"	// Needed for CUInt128
-
-namespace CryptoPP {
-	class AutoSeededRandomPool;
-}
-const CryptoPP::AutoSeededRandomPool& GetRandomPool();
+#include "Types.h"		// Needed for uint16, uint32 and uint64
+#include "CryptoPP_Inc.h"	// Needed for Crypto functions
 
 /* 
  * Random numbers generation
  */
  
-uint8_t GetRandomUint8();
-uint16_t GetRandomUint16();
-uint32_t GetRandomUint32();
-uint64_t GetRandomUint64();
-namespace Kademlia {
-	CUInt128 GetRandomUint128();
-}
+const CryptoPP::AutoSeededRandomPool& GetRandomPool();
+
+uint8 GetRandomUint8();
+uint16 GetRandomUint16();
+uint32 GetRandomUint32();
 
 #endif // RANDOMFUNCTIONS_H
 // File_checked_for_headers

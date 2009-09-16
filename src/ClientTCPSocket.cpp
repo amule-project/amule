@@ -1,8 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )//
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+//
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
 // respective authors.
@@ -76,14 +77,7 @@ END_EVENT_TABLE()
 
 void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 {
-	wxSocketBase* baseSocket = event.GetSocket();
-//	wxASSERT(baseSocket);	// Rather want a log message right now. Enough other wx problems. >:(
-	if (!baseSocket) {		// WTF?
-		AddDebugLogLineM(false, logClient, wxT("received bad wxSocketEvent"));
-		return;
-	}
-
-	CClientTCPSocket *socket = dynamic_cast<CClientTCPSocket *>(baseSocket);
+	CClientTCPSocket *socket = dynamic_cast<CClientTCPSocket *>(event.GetSocket());
 	wxASSERT(socket);
 	if (!socket) {
 		return;
@@ -109,7 +103,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 			break;
 		default:
 			// Nothing should arrive here...
-			wxFAIL;
+			wxASSERT(0);
 			break;
 	}
 }
@@ -669,7 +663,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 			theApp->uploadqueue->RemoveFromUploadQueue(m_client);
-			AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
+			if ( CLogger::IsEnabled( logClient ) ) {
+				AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
+			}
 			break;
 		}
 		
@@ -679,7 +675,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash(buffer)) {
 				theApp->uploadqueue->RemoveFromUploadQueue(m_client);
-				AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
+				if ( CLogger::IsEnabled( logClient ) ) {
+					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
+				}
 			}
 			break;
 		}
@@ -796,27 +794,16 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			
-			if (size < 2) {
-				throw wxString(wxT("invalid message packet"));
-			}
 			CMemFile message_file(buffer, size);
-			uint16 length = message_file.ReadUInt16();
-			if (length + 2u != size) {
-				throw wxString(wxT("invalid message packet"));
+
+			wxString message = message_file.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
+			if (IsMessageFiltered(message, m_client)) {
+				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+			} else {
+				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+				
+				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
 			}
-
-			// limit message length
-			static const uint16 MAX_CLIENT_MSG_LEN = 450;
-
-			if (length > MAX_CLIENT_MSG_LEN) {
-				AddDebugLogLineN(logRemoteClient, CFormat(wxT("Message from '%s' (IP:%s) exceeds limit by %u chars, truncated."))
-					% m_client->GetUserName() % m_client->GetFullIP() % (length - MAX_CLIENT_MSG_LEN));
-				length = MAX_CLIENT_MSG_LEN;
-			}					
-
-			wxString message = message_file.ReadOnlyString((m_client->GetUnicodeSupport() != utf8strNone), length);
-			m_client->ProcessChatMessage(message);
-
 			break;
 		}
 		
@@ -1833,23 +1820,6 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 			break;
 		}
-		case OP_CHATCAPTCHAREQ:
-		{
-			AddDebugLogLineN(logRemoteClient, wxT("Remote Client: OP_CHATCAPTCHAREQ from ") + m_client->GetFullIP());
-			theStats::AddDownOverheadOther(size);
-			CMemFile data_in(buffer, size);
-			m_client->ProcessCaptchaRequest(&data_in);
-			break;
-		}
-		case OP_CHATCAPTCHARES:
-		{
-			AddDebugLogLineN(logRemoteClient, wxT("Remote Client: OP_CHATCAPTCHARES from ") + m_client->GetFullIP());
-			theStats::AddDownOverheadOther(size);
-			if (size) {
-				m_client->ProcessCaptchaReqRes(buffer[0]);
-			}
-			break;
-		}
 		case OP_FWCHECKUDPREQ: { // Support required for Kadversion >= 6
 			AddDebugLogLineM(false, logRemoteClient, wxT("Remote Client: OP_FWCHECKUDPREQ from ") + m_client->GetFullIP());
 			theStats::AddDownOverheadOther(size);
@@ -1990,7 +1960,7 @@ void CClientTCPSocket::OnError(int nErrorCode)
 			strError += wxT("caused a socket blocking error.");
 		}
 	} else {
-		if (theLogger.IsEnabled(logClient) && nErrorCode != 107) {
+		if ( CLogger::IsEnabled( logClient ) && (nErrorCode != 107)) {
 			// 0    -> No Error / Disconect
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
@@ -2066,7 +2036,7 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 				case OP_ED2KV2PACKEDPROT:				
 				case OP_PACKEDPROT:
 					// Packed inside packed?
-					wxFAIL;
+					wxASSERT(0);
 					break;
 				default: {
 					theStats::AddDownOverheadOther(uRawSize);
@@ -2113,6 +2083,22 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 	return bResult;
 }
 
+
+bool CClientTCPSocket::IsMessageFiltered(const wxString& Message, CUpDownClient* client) {
+	
+	bool filtered = false;
+	// If we're chatting to the guy, we don't want to filter!
+	if (client->GetChatState() != MS_CHATTING) {
+		if (thePrefs::MsgOnlyFriends() && !client->IsFriend()) {
+			filtered = true;
+		} else if (thePrefs::MsgOnlySecure() && client->GetUserName().IsEmpty() ) {
+			filtered = true;
+		} else if (thePrefs::MustFilterMessages()) {
+			filtered = thePrefs::IsMessageFiltered(Message);
+		}
+	}
+	return filtered;
+}
 
 SocketSentBytes CClientTCPSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
 {

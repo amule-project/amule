@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 Angel Vidal Veiga ( kry@users.sourceforge.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -270,11 +270,6 @@ m_in_header(true)
 	
 }
 
-bool CECSocket::HaveNotificationSupport()
-{
-	return (m_rx_flags & EC_FLAG_NOTIFY) != 0;
-}
-
 CECSocket::~CECSocket()
 {
 	while (!m_output_queue.empty()) {
@@ -305,7 +300,6 @@ bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 
 void CECSocket::SendPacket(const CECPacket *packet)
 {
-	packet->DebugPrint(false);
 	WritePacket(packet);
 	OnOutput();
 }
@@ -361,6 +355,8 @@ std::string CECSocket::GetLastErrorMsg()
 			return "The timeout for this operation expired";
 		case EC_ERROR_MEMERR:
 			return "Memory exhausted";
+		case EC_ERROR_DUMMY:
+			return "Dummy code - should not happen";
 	}
 	ostringstream error_string;
 	error_string << "Error code " << code <<  " unknown.";
@@ -477,15 +473,6 @@ void CECSocket::OnOutput()
 			}
 		}
 	}
-	//
-	// All outstanding data sent to socket
-	//
-	WriteDoneAndQueueEmpty();
-}
-
-bool CECSocket::DataPending()
-{
-	return !m_output_queue.empty();
 }
 
 //

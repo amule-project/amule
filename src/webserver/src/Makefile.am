@@ -21,10 +21,10 @@ amuleweb_SOURCES +=  \
 endif
 
 php_parser.c: php_parser.y
-	bison --debug -t -d -v -p php -o $@ $<
+	bison --debug -t -d -v -o $@ $<
 
 php_lexer.c: php_lexer.l
-	$(LEX) -P php -o$@ $<
+	$(LEX) -o$@ $<
 
 amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a
 amuleweb_CPPFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include \
@@ -36,7 +36,7 @@ amuleweb_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY) $(LIBP
 
 amuleweb_LDFLAGS = $(MULELDFLAGS) -L../../libs/common -L../../libs/ec/cpp $(LIBPNG_LDFLAGS) $(ZLIB_LDFLAGS) $(LIBUPNP_LDFLAGS)
 amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(BFD_LIBS) $(ZLIB_LIBS) \
-	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(LIBINTL) $(LIBUPNP_LIBS)
+	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(REGEX_LIBS) $(LIBINTL) $(LIBUPNP_LIBS)
 
 noinst_HEADERS = \
 		 WebInterface.h \

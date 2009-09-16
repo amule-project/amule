@@ -1,8 +1,8 @@
 //								-*- C++ -*-
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2008 Dévai Tamás ( gonosztopi@amule.org )
-// Copyright (c) 2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2008-2009 Dévai Tamás (GonoszTopi) ( gonosztopi@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -57,7 +57,6 @@ namespace TestData {
 	static uint8_t one[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 	static uint8_t minusOne[16] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 	static uint8_t uintValue[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x12, 0x34, 0x56, 0x78 };
-	static uint8_t randomValue[16] = { 0xef, 0xac, 0xd6, 0x21, 0x99, 0x1b, 0x05, 0xbe, 0xfb, 0x97, 0xdf, 0xdd, 0xab, 0x4b, 0x88, 0xe3 };
 }
 
 DECLARE_SIMPLE(CUInt128);
@@ -233,12 +232,23 @@ TEST_M(CUInt128, SetValueUint32, wxT("SetValue(uint32_t)"))
 	ASSERT_EQUALS(a, b);
 }
 
+TEST(CUInt128, SetValueRandom)
+{
+	CUInt128 a;
+	CUInt128 b;
+
+	a.SetValueRandom();
+	b.SetValueRandom();
+	ASSERT_FALSE(a == b);
+}
+
 TEST(CUInt128, SetValueBE)
 {
-	CUInt128 a((uint8_t *)&TestData::sequence);
+	CUInt128 a;
 	CUInt128 b;
 	uint8_t buffer[16];
 
+	a.SetValueRandom();
 	a.ToByteArray((uint8_t *)&buffer);
 	b.SetValueBE((uint8_t *)&buffer);
 	ASSERT_EQUALS(a, b);
@@ -703,7 +713,8 @@ TEST_M(CUInt128, OperatorGreaterOrEqualUint32CUInt128, wxT("operator>=(uint32_t,
 
 TEST_M(CUInt128, OperatorAddCUInt128, wxT("operator+(const CUInt128&)"))
 {
-	CUInt128 a((uint8_t *)&TestData::sequence);
+	CUInt128 a;
+	a.SetValueRandom();
 
 	CUInt128 ref(a);
 	CUInt128 check(a);
@@ -723,8 +734,10 @@ TEST_M(CUInt128, OperatorAddCUInt128, wxT("operator+(const CUInt128&)"))
 
 TEST_M(CUInt128, OperatorSubtractCUInt128, wxT("operator-(const CUInt128&)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
-	CUInt128 b((uint8_t *)&TestData::sequence);
+	CUInt128 a;
+	CUInt128 b;
+	a.SetValueRandom();
+	b.SetValueRandom();
 
 	CUInt128 refa(a);
 	CUInt128 refb(b);
@@ -744,8 +757,10 @@ TEST_M(CUInt128, OperatorSubtractCUInt128, wxT("operator-(const CUInt128&)"))
 
 TEST_M(CUInt128, OperatorXorCUInt128, wxT("operator^(const CUInt128&)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
-	CUInt128 b((uint8_t *)&TestData::sequence);
+	CUInt128 a;
+	CUInt128 b;
+	a.SetValueRandom();
+	b.SetValueRandom();
 
 	CUInt128 refa(a);
 	CUInt128 refb(b);
@@ -761,7 +776,8 @@ TEST_M(CUInt128, OperatorXorCUInt128, wxT("operator^(const CUInt128&)"))
 
 TEST_M(CUInt128, OperatorAddUint32, wxT("operator+(uint32_t)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
+	CUInt128 a;
+	a.SetValueRandom();
 	uint32_t b = a.Get32BitChunk(0);
 
 	CUInt128 ref(a);
@@ -783,7 +799,8 @@ TEST_M(CUInt128, OperatorAddUint32, wxT("operator+(uint32_t)"))
 
 TEST_M(CUInt128, OperatorSubtractUint32, wxT("operator-(uint32_t)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
+	CUInt128 a;
+	a.SetValueRandom();
 	uint32_t b = a.Get32BitChunk(0);
 
 	CUInt128 ref(a);
@@ -802,7 +819,8 @@ TEST_M(CUInt128, OperatorSubtractUint32, wxT("operator-(uint32_t)"))
 
 TEST_M(CUInt128, OperatorXorUint32, wxT("operator^(uint32_t)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
+	CUInt128 a;
+	a.SetValueRandom();
 	uint32_t b = a.Get32BitChunk(0);
 
 	CUInt128 ref(a);
@@ -817,7 +835,8 @@ TEST_M(CUInt128, OperatorXorUint32, wxT("operator^(uint32_t)"))
 
 TEST_M(CUInt128, OperatorAddUint32CUInt128, wxT("operator+(uint32_t, const CUInt128&)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
+	CUInt128 a;
+	a.SetValueRandom();
 	uint32_t b = a.Get32BitChunk(0);
 
 	CUInt128 ref(a);
@@ -839,7 +858,8 @@ TEST_M(CUInt128, OperatorAddUint32CUInt128, wxT("operator+(uint32_t, const CUInt
 
 TEST_M(CUInt128, OperatorSubtractUint32CUInt128, wxT("operator-(uint32_t, const CUInt128&)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
+	CUInt128 a;
+	a.SetValueRandom();
 	uint32_t b = a.Get32BitChunk(0);
 
 	CUInt128 ref(a);
@@ -853,7 +873,8 @@ TEST_M(CUInt128, OperatorSubtractUint32CUInt128, wxT("operator-(uint32_t, const 
 
 TEST_M(CUInt128, OperatorXorUint32CUInt128, wxT("operator^(uint32_t, const CUInt128&)"))
 {
-	CUInt128 a((uint8_t *)&TestData::randomValue);
+	CUInt128 a;
+	a.SetValueRandom();
 	uint32_t b = a.Get32BitChunk(0);
 
 	CUInt128 ref(a);

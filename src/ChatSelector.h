@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -75,7 +75,6 @@ public:
 	bool			SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
 	void			ConnectionResult(bool success, const wxString& message, uint64 id);
 	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
-	void			ShowCaptchaResult(uint64 id, bool ok);
 };
 
 #endif

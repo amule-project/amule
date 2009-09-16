@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 Alo Sarv ( madcat_@users.sourceforge.net )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Timo Kujala ( tiku@users.sourceforge.net )
+// Copyright (c) 2004-2009 Alo Sarv <madcat_@users.sourceforge.net>
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Timo Kujala <tiku@users.sourceforge.net>
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -54,9 +54,6 @@ uint64 GetTickCount64();
 void StartTickTimer();
 
 void StopTickTimer();
-
-// A cheap global time (in s) without any function calls updated in OnCoreTimer
-extern uint32 TheTime;
 
 #endif // GETTICKCOUNT_H
 // File_checked_for_headers

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -91,7 +91,6 @@ class CIPFilterTask : public CThreadTask
 public:
 	CIPFilterTask(wxEvtHandler* owner)
 		: CThreadTask(wxT("Load IPFilter"), wxEmptyString, ETP_Critical),
-		  m_storeDescriptions(false),
 		  m_owner(owner)
 	{
 	}
@@ -121,7 +120,6 @@ public:
 	}
 private:
 
-	bool m_storeDescriptions;
 	
 	/**
 	 * Helper function.
@@ -143,9 +141,7 @@ private:
 				CIPFilter::rangeObject item;
 				item.AccessLevel = AccessLevel;
 #ifdef __DEBUG__
-				if (m_storeDescriptions) {
-					item.Description = Description;
-				}
+				item.Description = Description;
 #endif
 
 				m_result.insert(IPStart, IPEnd, item);
@@ -276,10 +272,6 @@ private:
 			return 0;
 		}
 
-#ifdef __DEBUG__
-		m_storeDescriptions = theLogger.IsEnabled(logIPFilter);
-#endif
-
 		const wxChar* ipfilter_files[] = {
 			wxT("ipfilter.dat"),
 			wxT("guardian.p2p"),
@@ -288,7 +280,6 @@ private:
 		};
 		
 		// Try to unpack the file, might be an archive
-
 		if (UnpackArchive(path, ipfilter_files).second != EFT_Text) {
 			AddLogLineM(true, 
 				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);

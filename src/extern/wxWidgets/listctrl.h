@@ -4,7 +4,7 @@
 // Author:      Robert Roebling
 // Created:     01/02/97
 // RCS-ID:      $Id$
-// Copyright:   Copyright (c) 1998-2008 Robert Roebling and Julian Smart
+// Copyright:   (c) 1998 Robert Roebling and Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
@@ -17,7 +17,7 @@
 
 #define wxLC_OWNERDRAW 0x10000
 
-#include <wx/imaglist.h>
+class WXDLLIMPEXP_CORE wxImageList;
 
 #if wxUSE_DRAG_AND_DROP
 class WXDLLEXPORT wxDropTarget;

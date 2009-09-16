@@ -2,8 +2,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2008 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+// Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (C) 2005-2006 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -150,7 +150,7 @@ EOL ("\r"|"\n"|"\r\n")
 
 "include" BEGIN(INCLUDE);
 <INCLUDE>[ \t]*
-<INCLUDE>\'[a-zA-Z_][a-zA-Z0-9_\.\-]*\' {
+<INCLUDE>\'[a-zA-Z_][a-zA-Z0-9_\.]*\' {
 	yytext[strlen(yytext)-1] = 0;
 	if ( php_include_stack_ptr >= MAX_INCLUDE_DEPTH ) {
 		fprintf( stderr, "WARNING: maximum include depth (which is %d) exceed", MAX_INCLUDE_DEPTH);
@@ -205,41 +205,41 @@ EOL ("\r"|"\n"|"\r\n")
 	}
 
 "$"{IDENT} {
-        phplval.exp_node = get_var_node(yytext+1);
+        yylval.exp_node = get_var_node(yytext+1);
         return VARIABLE;
 	}
 
 {IDENT} {
-        strcpy(phplval.str_val, yytext);
+        strcpy(yylval.str_val, yytext);
         return IDENT;
 	}
 
 {HEX_NUM} {
 	int val;
 	sscanf(yytext, "0x%x", &val);
-	phplval.exp_node = make_const_exp_dnum(val);
+	yylval.exp_node = make_const_exp_dnum(val);
 	return DNUMBER;
 	}
 
 {DEC_NUM} {
-	phplval.exp_node = make_const_exp_dnum(atoi(yytext));
+	yylval.exp_node = make_const_exp_dnum(atoi(yytext));
 	return DNUMBER;
 	}
 
 {FLOANUM} {
-	phplval.exp_node = make_const_exp_fnum(atof(yytext));
+	yylval.exp_node = make_const_exp_fnum(atof(yytext));
 	return FNUMBER;
 	}
 
 \"(\\.|[^\\"])*\" {
 		yytext[strlen(yytext)-1] = 0;
-		phplval.exp_node = make_const_exp_str(yytext+1, 1);
+		yylval.exp_node = make_const_exp_str(yytext+1, 1);
 		return STRING;
 }
 
 \'(\\.|[^\\'])*\' {
 		yytext[strlen(yytext)-1] = 0;
-		phplval.exp_node = make_const_exp_str(yytext+1, 0);
+		yylval.exp_node = make_const_exp_str(yytext+1, 0);
 		return STRING;
 }
 

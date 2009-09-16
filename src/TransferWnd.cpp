@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -247,7 +247,7 @@ void CTransferWnd::OnDelCategory(wxCommandEvent& WXUNUSED(event))
 void CTransferWnd::RemoveCategory(int index)
 {
 	if ( index > 0 ) {
-		theApp->downloadqueue->ResetCatParts(index);
+		downloadlistctrl->ResetCatParts(index);
 		theApp->glob_prefs->RemoveCat(index);
 		RemoveCategoryPage(index);
 		if ( theApp->glob_prefs->GetCatCount() == 1 ) {
@@ -435,9 +435,15 @@ void CTransferWnd::Prepare()
 void CTransferWnd::SwitchUploadList(wxCommandEvent& WXUNUSED(evt))
 {
  	clientlistctrl->ToggleView();
+	UpdateBottomPaneTitle(clientlistctrl->GetListView());
+}
+
+
+void CTransferWnd::UpdateBottomPaneTitle(ViewType view)
+{
 	wxStaticText* label = CastChild( wxT("uploadTitle"), wxStaticText );
  	
- 	switch ( clientlistctrl->GetListView() ) {
+ 	switch (view) {
  		case vtNone:
  			return;
  		

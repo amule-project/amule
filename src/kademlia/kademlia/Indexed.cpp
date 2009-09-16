@@ -1,9 +1,9 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne (http://www.emule-project.net)
+// Copyright (c) 2004-2009 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -234,14 +234,14 @@ void CIndexed::ReadFile()
 			m_totalIndexSource = totalSource;
 			m_totalIndexKeyword = totalKeyword;
 			m_totalIndexLoad = totalLoad;
-			AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Read %u source, %u keyword, and %u load entries"),totalSource,totalKeyword,totalLoad));
+			AddDebugLogLineM(false, logKadIndex, wxString::Format(wxT("Read %u source, %u keyword, and %u load entries"),totalSource,totalKeyword,totalLoad));
 		}
 	} catch (const CSafeIOException& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CSafeIOException in CIndexed::readFile: ") + err.what());
+		AddDebugLogLineM(true, logKadIndex, wxT("CSafeIOException in CIndexed::readFile: ") + err.what());
 	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CInvalidPacket Exception in CIndexed::readFile: ") + err.what());
+		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::readFile: ") + err.what());		
 	} catch (const wxString& e) {
-		AddDebugLogLineC(logKadIndex, wxT("Exception in CIndexed::readFile: ") + e);
+		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::readFile: ") + e);
 	}
 }
 
@@ -350,7 +350,7 @@ CIndexed::~CIndexed()
 			}
 			k_file.Close();
 		}
-		AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Wrote %u source, %u keyword, and %u load entries"), s_total, k_total, l_total));
+		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Wrote %u source, %u keyword, and %u load entries"), s_total, k_total, l_total));
 
 		for (SrcHashMap::iterator itNoteHash = m_Notes_map.begin(); itNoteHash != m_Notes_map.end(); ++itNoteHash) {
 			SrcHash* currNoteHash = itNoteHash->second;
@@ -369,11 +369,11 @@ CIndexed::~CIndexed()
 
 		m_Notes_map.clear();
 	} catch (const CSafeIOException& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CSafeIOException in CIndexed::~CIndexed: ") + err.what());
+		AddDebugLogLineM(true, logKadIndex, wxT("CSafeIOException in CIndexed::~CIndexed: ") + err.what());
 	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CInvalidPacket Exception in CIndexed::~CIndexed: ") + err.what());
+		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::~CIndexed: ") + err.what());		
 	} catch (const wxString& e) {
-		AddDebugLogLineC(logKadIndex, wxT("Exception in CIndexed::~CIndexed: ") + e);
+		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::~CIndexed: ") + e);
 	}
 }
 
@@ -468,7 +468,7 @@ void CIndexed::Clean()
 
 	m_totalIndexSource = s_Total - s_Removed;
 	m_totalIndexKeyword = k_Total - k_Removed;
-	AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Removed %u keyword out of %u and %u source out of %u"),  k_Removed, k_Total, s_Removed, s_Total));
+	AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Removed %u keyword out of %u and %u source out of %u"),  k_Removed, k_Total, s_Removed, s_Total));
 	m_lastClean = tNow + MIN2S(30);
 }
 
@@ -536,7 +536,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 				entry->MergeIPsAndFilenames(oldEntry);	// oldEntry can be NULL, that's ok and we still need to do this call in this case
 				if (oldEntry == NULL) {
 					m_totalIndexKeyword++;
-					AddDebugLogLineN(logKadIndex, wxT("Multiple sizes published for file ") + entry->m_uSourceID.ToHexString());
+					AddDebugLogLineM(false, logKadIndex, wxT("Multiple sizes published for file ") + entry->m_uSourceID.ToHexString());
 				}
 				delete oldEntry;
 				oldEntry = NULL;
@@ -752,8 +752,8 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 		// of spam entries. We could also sort by trustvalue, but we would risk to only send popular files this way
 		// on very hot keywords
 		bool onlyTrusted = true;
-		DEBUG_ONLY( uint32_t dbgResultsTrusted = 0; )
-		DEBUG_ONLY( uint32_t dbgResultsUntrusted = 0; )
+		//uint32_t dbgResultsTrusted = 0;
+		//uint32_t dbgResultsUntrusted = 0;
 
 		do {
 			for (CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin(); itSource != currKeyHash->m_Source_map.end(); ++itSource) {
@@ -768,13 +768,11 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 						} else if ((uint16_t)count < maxResults) {
 							if (!oldClient || currName->m_uSize <= OLD_MAX_FILE_SIZE) {
 								count++;
-#ifdef __DEBUG__
-								if (onlyTrusted) {
-									dbgResultsTrusted++;
-								} else {
-									dbgResultsUntrusted++;
-								}
-#endif
+								//if (onlyTrusted) {
+								//	dbgResultsTrusted++;
+								//} else {
+								//	dbgResultsUntrusted++;
+								//}
 								packetdata.WriteUInt128(currName->m_uSourceID);
 								if (kad2) {
 									currName->WriteTagListWithPublishInfo(&packetdata);
@@ -813,7 +811,8 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			}
 		} while (!onlyTrusted);
 
-		AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results"), dbgResultsTrusted, dbgResultsUntrusted));
+		// LOGTODO: Remove log
+		//AddDebugLogLineM(false, logKadIndex, wxString::Format(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results"), dbgResultsTrusted, dbgResultsUntrusted));
 
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;

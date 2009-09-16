@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -62,7 +62,6 @@ class CECPacket : protected CECEmptyTag {
 			const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
 			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt() : EC_DETAIL_FULL;
 		}
-		void DebugPrint(bool incoming) const;
 		
 	private:
 		CECPacket(const CECSocket& socket)
@@ -73,9 +72,6 @@ class CECPacket : protected CECEmptyTag {
 		bool WritePacket(CECSocket& socket) const;
 		ec_opcode_t	m_opCode;
 };
-
-bool ECLogIsEnabled();
-void DoECLogLine(const wxString &line);
 
 #endif /* ECPACKET_H */
 // File_checked_for_headers

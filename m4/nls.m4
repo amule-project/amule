@@ -1,7 +1,7 @@
 #							-*- Autoconf -*-
 # This file is part of the aMule Project.
 #
-# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
 #
 # Any parts of this program derived from the xMule, lMule or eMule project,
 # or contributed by third-party developers are copyrighted by their
@@ -78,13 +78,13 @@ AC_DEFUN([MULE_CHECK_NLS],
 	AC_ARG_WITH([language],
 		[AS_HELP_STRING([--with-language=<langs>],
 			[Specify a comma-separated list of languages you want to have installed. See po/LINGUAS for available languages])],
-		[AS_IF([test "$withval" != "all"], [LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])])
+		[AS_IF([test "$withval" = "all"], [LINGUAS='%UNSET%'], [LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])])
 
 	AM_GNU_GETTEXT([no-libtool], [need-ngettext])
 	AS_IF([test $USE_INCLUDED_LIBINTL = yes], [INCINTL=-I\${top_builddir}/intl])
 
 	AS_IF([test x$USE_NLS = xyes], [MULE_CHECK_AUTOPOINT(, [USE_NLS=no])])
-	AS_IF([test x$USE_NLS = xno -a x${enable_nls:-yes} = xyes], [MULE_WARNING([You need to install GNU gettext/gettext-tools to compile aMule with i18n support.])])
+	AS_IF([test x$USE_NLS = xno -a x${enable_nls:-yes} = xyes], [AC_MSG_WARN([You need to install GNU gettext/gettext-tools to compile aMule with i18n support.])])
 
 	AS_IF([test ${USE_NLS:-no} = yes], [
 		AC_MSG_CHECKING([for requested languages])

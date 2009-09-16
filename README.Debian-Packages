@@ -2,9 +2,8 @@ This debian rules file controls the buildprocess of the packages of aMule you ca
 dpkg-buildpackage -us -uc -b -rfakeroot
 to build them all, or you can invoke debian/rules directly with the target you want to be build. If you run
 debian/rules without a target, or with the target help, this help will be printed. Other possible targets
-are listed below, you can combine them as you need. amule-common, the packages with the skins and
-i18n-en-gb are build everytime. The Theme for the webserver get build when you build the
-webserver.
+are listed below, you can combine them as you need. amule-common, the packages with the themes for the
+webserver and i18n-en-gb are build everytime.
 
 amule			Builds the normal GUI-Version of aMule
 ed2k			Builds the ed2k-client of aMule
@@ -16,7 +15,6 @@ daemon			Builds the daemonized version of aMule
 alcc			Builds the ed2k-link-creation utility of aMule
 alc			Builds the graphical version of alcc
 amulecmd		Builds the commandline-client for controlling aMule
-xas			Enables the creation of the xas package
 amule-dbg		Creates the debugging symbols for the amule binary
 ed2k-dbg		Creates the debugging symbols for the ed2k binary
 cas-dbg			Creates the debugging symbols for the cas binary
@@ -42,11 +40,8 @@ i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, bg, 
 			If you just want en_GB, use i18n-en-only
 
 If one of the -dbg targets is choosen, the corresponding binary will be built, too. In this case,
-debugging is enabled, optimising is disabled. Is no -dbg target choosen, debugging is disabled, 
-optimising is enabled.
-
-If you choose to just build a few packages, you have to explicit activate ed2k or xas if 
-you want to get the pkg's
+debugging is enabled, profiling and optimising are disabled. Is no -dbg target choosen, debugging
+is disabled, profiling and optimising are enabled.
 
 The targets can be given in any order and combination
 

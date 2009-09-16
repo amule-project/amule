@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2009 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -27,7 +27,6 @@
 #include "FriendListCtrl.h"	// Interface declarations
 
 #include <common/MenuIDs.h>
-#include <common/Macros.h>
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -92,9 +91,8 @@ CFriendListCtrl::~CFriendListCtrl()
 
 void CFriendListCtrl::AddFriend(CDlgFriend* toadd, bool send_to_core)
 {
-	uint32 itemnr = InsertItem(GetItemCount(), wxEmptyString);
+	uint32 itemnr = InsertItem(GetItemCount(), toadd->m_name);
 	SetItemPtrData(itemnr, reinterpret_cast<wxUIntPtr>(toadd));
-	RefreshFriend(toadd);	// set name and colour
 	
 	//#warning CORE/GUI
 	if (send_to_core) {
@@ -156,7 +154,6 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 	sint32 itemnr = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (itemnr != -1) {
 		SetItem(itemnr, 0, toupdate->m_name);
-		SetItemTextColour(itemnr, toupdate->islinked ? *wxBLUE : *wxBLACK);
 	}	
 	//#warning CORE/GUI
 	#ifndef CLIENT_GUI
@@ -340,7 +337,7 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event))
 }
 
 
-void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& NOT_ON_REMOTEGUI(event))
+void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event)
 {
 	// Clean friendslots
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
@@ -359,7 +356,7 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& NOT_ON_REMOTEGUI(event))
 	#endif
 	index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (index != -1) {
-		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxOK | wxICON_ERROR, this);
+		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxICON_ERROR, this);
 	}
 }
 
@@ -369,8 +366,7 @@ void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nP
 	CDlgFriend* client = FindFriend(CMD4Hash(), dwIP, nPort);
 	if (client) {
 		client->m_hash = userhash;
-		client->islinked = new_state;
-		RefreshFriend(client);
+		client->islinked = new_state;	
 	}
 }
 
