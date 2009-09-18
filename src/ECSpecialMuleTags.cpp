@@ -283,7 +283,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		CECEmptyTag dirPrefs(EC_TAG_PREFS_DIRECTORIES);
 		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_INCOMING, thePrefs::GetIncomingDir().GetRaw()));
 		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_TEMP, thePrefs::GetTempDir().GetRaw()));
-		size_t sharedDirs = theApp->glob_prefs->shareddir_list.size();
+		uint32 sharedDirs = theApp->glob_prefs->shareddir_list.size();
 		CECTag dirtag(EC_TAG_DIRECTORIES_SHARED, sharedDirs);
 		for (size_t i = 0; i < sharedDirs; i++) {
 			dirtag.AddTag(CECTag(EC_TAG_STRING, theApp->glob_prefs->shareddir_list[i].GetRaw()));
