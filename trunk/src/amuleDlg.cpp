@@ -216,7 +216,10 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
 #endif
 
+#if !(wxCHECK_VERSION(2, 9, 0) && defined(__WXMAC__))
+	// this crashes on Mac with wx 2.9
 	SetIcon(wxICON(aMule));
+#endif
 
 	srand(time(NULL));
 
