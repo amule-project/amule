@@ -95,7 +95,11 @@
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
 		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
-		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
+		#if wxCHECK_VERSION(2, 9, 0)
+			#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
+		#else
+			#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
+		#endif
 	#endif
 	#include <wx/msgdlg.h>
 
@@ -847,7 +851,11 @@ bool CamuleApp::OnInit()
 			if (absoluteUrl) {
 				CFStringRef amulewebCfstr = CFURLCopyFileSystemPath(absoluteUrl, kCFURLPOSIXPathStyle);
 				CFRelease(absoluteUrl);
+	#if wxCHECK_VERSION(2, 9, 0)
+				amulewebPath = wxCFStringRef(amulewebCfstr).AsString(wxLocale::GetSystemEncoding());
+	#else
 				amulewebPath = wxMacCFStringHolder(amulewebCfstr).AsString(wxLocale::GetSystemEncoding());
+	#endif
 			}
 		}
 #endif
