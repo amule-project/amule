@@ -218,7 +218,7 @@ wxDialog(parent, -1, _("Preferences"),
 	m_PrefsIcons->SetMaxSize(wxSize(m_PrefsIcons->GetColumnWidth(0) + 10, -1));
 
 	// Now add the pages and calculate the minimum size
-	wxPanel * DefaultWidget;
+	wxPanel * DefaultWidget = NULL;
 	for (unsigned int i = 0; i < itemsof(pages); ++i) {
 		// Create a container widget and the contents of the page
 		wxPanel * Widget = new wxPanel(this, -1);

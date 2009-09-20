@@ -1896,6 +1896,7 @@ bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint
 				
 				uint8 numtags = data.ReadUInt8();
 				wxASSERT(numtags == 1);
+				if(numtags){}	// prevent GCC warning
 				
 				m_client->SetRemoteQueueRank(data.GetIntTagValue());
 				

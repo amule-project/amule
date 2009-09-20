@@ -707,9 +707,10 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 	for(int i_fd = 0;i_fd < 3; i_fd++) {
 		close(i_fd);
 	}
+	// Does that code make sense? Shouldn't these handles be assigned to something?
   	int fd = open("/dev/null",O_RDWR);
-  	dup(fd);
-  	dup(fd);
+	if (dup(fd)){}	// prevent GCC warning
+	if (dup(fd)){}
   	pid_t pid = fork();
 
 	wxASSERT(pid != -1);

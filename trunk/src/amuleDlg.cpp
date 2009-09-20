@@ -1134,9 +1134,6 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 void CamuleDlg::SetMessagesTool()
 {
-	int pos = m_wndToolbar->GetToolPos(ID_BUTTONMESSAGES);
-	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
-	
 	wxWindowUpdateLocker freezer(m_wndToolbar);
 #ifdef __WXCOCOA__
 	m_wndToolbar->FindById(ID_BUTTONMESSAGES)->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));	
