@@ -265,15 +265,16 @@ void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 conte
 
 void CWebSocket::SendData(const void* pData, uint32 dwDataSize) 
 {
+	const char * data = (const char*) pData;
 	if (!m_pHead) {
 		// try to send it directly
-		Write((const char*) pData, dwDataSize);
+		Write(data, dwDataSize);
 		uint32 nRes = LastCount();
 		if ((nRes < dwDataSize) && 
 			Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
 			Close();
 		} else {
-			((const char*&) pData) += nRes;
+			data += nRes;
 			dwDataSize -= nRes;
 		}
 	}
@@ -283,7 +284,7 @@ void CWebSocket::SendData(const void* pData, uint32 dwDataSize)
 		pChunk->m_pNext = NULL;
 		pChunk->m_dwSize = dwDataSize;
 		pChunk->m_pData = new char[dwDataSize];
-		memcpy(pChunk->m_pData, pData, dwDataSize);
+		memcpy(pChunk->m_pData, data, dwDataSize);
 		// push it to the end of our queue
 		pChunk->m_pToSend = pChunk->m_pData;
 		if (m_pTail) {

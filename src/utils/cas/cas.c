@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 		perror("Could not create buffer\n");
 		exit (2);
 	}
-	fread (buffer,1,lSize,amulesig);
+	if (fread(buffer,1,lSize,amulesig)){}	// // prevent GCC warning
 	fclose(amulesig);
 
 	stats[0] = strtok (buffer,"\n");

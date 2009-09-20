@@ -321,7 +321,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 #else
 		Show(prompt + wxT("$ "));
 		fflush(stdin);
-		fgets(buffer, buffer_size, stdin);
+		if (fgets(buffer, buffer_size, stdin)){}	// prevent GCC warning
 		const char *text = buffer;
 #endif /* HAVE_LIBREADLINE */
 		if ( text ) {
