@@ -53,6 +53,10 @@
 // Application implementation
 IMPLEMENT_APP ( WxCas )
 
+#ifndef PACKAGE
+#define PACKAGE "wxcas"
+#endif
+
 bool
 WxCas::OnInit ()
 {
