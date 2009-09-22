@@ -36,7 +36,11 @@
 #ifdef __WXMAC__
 	#include <CoreFoundation/CFBundle.h> // Do_not_auto_remove
 	#include <ApplicationServices/ApplicationServices.h> // Do_not_auto_remove
-	#include <wx/mac/corefoundation/cfstring.h> // Do_not_auto_remove
+	#if wxCHECK_VERSION(2, 9, 0)
+		#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
+	#else
+		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
+	#endif
 #endif
 
 
@@ -459,8 +463,13 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 							absoluteURL,
 							kCFURLPOSIXPathStyle);
 					CFRelease(absoluteURL);
-					dir = wxMacCFStringHolder(pathString).
+					#if wxCHECK_VERSION(2, 9, 0)
+						dir = wxCFStringRef(pathString).
 						AsString(wxLocale::GetSystemEncoding());
+					#else
+						dir = wxMacCFStringHolder(pathString).
+						AsString(wxLocale::GetSystemEncoding());
+					#endif
 					if (CheckDirForTemplate(dir, templateName)) {
 						templateDir = dir;
 						return true;

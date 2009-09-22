@@ -56,7 +56,11 @@
 	#include <shlobj.h>
 #elif defined(__WXMAC__)
 	#include <CoreServices/CoreServices.h>
-	#include <wx/mac/corefoundation/cfstring.h>
+	#if wxCHECK_VERSION(2, 9, 0)
+		#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
+	#else
+		#include <wx/mac/corefoundation/cfstring.h>
+	#endif
 	#include <wx/intl.h>
 #endif
 
@@ -352,7 +356,11 @@ AlcFrame::SetFileToHash()
 		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
 		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
 		CFRelease(urlRef) ;
-		browseroot = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding());
+		#if wxCHECK_VERSION(2, 9, 0)
+			browseroot = wxCFStringRef(cfString).AsString(wxLocale::GetSystemEncoding());
+		#else
+			browseroot = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding());
+		#endif
 	} else {
 		browseroot = wxFileName::GetHomeDir();
 	}
