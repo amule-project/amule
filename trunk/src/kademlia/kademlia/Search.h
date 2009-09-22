@@ -127,7 +127,7 @@ private:
 	CUInt128	m_target;
 	uint32_t	m_searchTermsDataSize;
 	uint8_t *	m_searchTermsData;
-	WordList	m_words;
+	WordList	m_words;  // list of words in the search string (populated in CSearchManager::PrepareFindKeywords)
 	wxString	m_fileName;
 	UIntList	m_fileIDs;
 	CKadClientSearcher *m_nodeSpecialSearchRequester; // used to callback result for NODESPECIAL searches

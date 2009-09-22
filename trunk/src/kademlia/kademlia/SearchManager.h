@@ -80,7 +80,7 @@ public:
 	static void ProcessResult(const CUInt128& target, const CUInt128& answer, TagPtrList *info);
 	static void ProcessPublishResult(const CUInt128& target, const uint8_t load, const bool loadResponse);
 
-	static void GetWords(const wxString& str, WordList *words);
+	static void GetWords(const wxString& str, WordList *words, bool allowDuplicates = false);
 
 	static void UpdateStats() throw();
 

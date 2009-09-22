@@ -1027,38 +1027,64 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 		return;
 	}
 
-	// TODO: Check that this result matches original criteria.
+	// the file name of the current search response is stored in "name"
+	// the list of words the user entered is stored in "m_words"
+	// so the file name now gets parsed for all the words entered by the user (even repetitive ones):
 
-	TagPtrList taglist;
+	// Step 1: Get the words of the response file name
+	WordList listFileNameWords;
+	CSearchManager::GetWords(name, &listFileNameWords, true);
 
-	if (!format.IsEmpty()) {
-		taglist.push_back(new CTagString(TAG_FILEFORMAT, format));
-	}
-	if (!artist.IsEmpty()) {
-		taglist.push_back(new CTagString(TAG_MEDIA_ARTIST, artist));
-	}
-	if (!album.IsEmpty()) {
-		taglist.push_back(new CTagString(TAG_MEDIA_ALBUM, album));
-	}
-	if (!title.IsEmpty()) {
-		taglist.push_back(new CTagString(TAG_MEDIA_TITLE, title));
-	}
-	if (length) {
-		taglist.push_back(new CTagVarInt(TAG_MEDIA_LENGTH, length));
-	}
-	if (bitrate) {
-		taglist.push_back(new CTagVarInt(TAG_MEDIA_BITRATE, bitrate));
-	}
-	if (availability) {
-		taglist.push_back(new CTagVarInt(TAG_SOURCES, availability));
+	// Step 2: Look for each entered search word in those present in the filename
+	bool bFileNameMatchesSearch = true;  // this will be set to "false", if not all search words are found in the file name
+
+	for (WordList::const_iterator itSearchWords = m_words.begin(); itSearchWords != m_words.end(); ++itSearchWords) {
+		bool bSearchWordPresent = false;
+		for (WordList::iterator itFileNameWords = listFileNameWords.begin(); itFileNameWords != listFileNameWords.end(); ++itFileNameWords) {
+			if (!itFileNameWords->CmpNoCase(*itSearchWords)) {
+				listFileNameWords.erase(itFileNameWords);  // remove not to find same word twice
+				bSearchWordPresent = true;
+				break;  // found word, go on using the next searched word
+			}
+		}
+		if (!bSearchWordPresent) {
+			bFileNameMatchesSearch = false;  // not all search words were found in the file name
+			break;
+		}
 	}
 
-	m_answers++;
-	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
+	// Step 3: Accept result only if all(!) words are found
+	if (bFileNameMatchesSearch) {
+		TagPtrList taglist;
 
-	// Free tags memory
-	deleteTagPtrListEntries(&taglist);
-	
+		if (!format.IsEmpty()) {
+			taglist.push_back(new CTagString(TAG_FILEFORMAT, format));
+		}
+		if (!artist.IsEmpty()) {
+			taglist.push_back(new CTagString(TAG_MEDIA_ARTIST, artist));
+		}
+		if (!album.IsEmpty()) {
+			taglist.push_back(new CTagString(TAG_MEDIA_ALBUM, album));
+		}
+		if (!title.IsEmpty()) {
+			taglist.push_back(new CTagString(TAG_MEDIA_TITLE, title));
+		}
+		if (length) {
+			taglist.push_back(new CTagVarInt(TAG_MEDIA_LENGTH, length));
+		}
+		if (bitrate) {
+			taglist.push_back(new CTagVarInt(TAG_MEDIA_BITRATE, bitrate));
+		}
+		if (availability) {
+			taglist.push_back(new CTagVarInt(TAG_SOURCES, availability));
+		}
+
+		m_answers++;
+		theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
+
+		// Free tags memory
+		deleteTagPtrListEntries(&taglist);
+	}
 }
 
 void CSearch::SendFindValue(CContact *contact)

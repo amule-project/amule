@@ -125,7 +125,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 		s->SetSearchTypes(CSearch::KEYWORD);
 
 		// Make sure we have a keyword list
-		GetWords(keyword, &s->m_words);
+		GetWords(keyword, &s->m_words, true);
 		if (s->m_words.size() == 0) {
 			throw wxString(_("Kademlia: search keyword too short"));
 		}
@@ -232,7 +232,7 @@ bool CSearchManager::IsFWCheckUDPSearch(const CUInt128& target)
 	return false;
 }
 
-void CSearchManager::GetWords(const wxString& str, WordList *words)
+void CSearchManager::GetWords(const wxString& str, WordList *words, bool allowDuplicates)
 {
 	size_t len = 0;
 	wxString current_word;
@@ -242,7 +242,9 @@ void CSearchManager::GetWords(const wxString& str, WordList *words)
 		
 		if ((len = current_word.Length()) > 2) {
 			current_word.MakeLower();
-			words->remove(current_word);
+			if (!allowDuplicates) {
+				words->remove(current_word);
+			}
 			words->push_back(current_word);
 		}
 	}

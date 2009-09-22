@@ -47,6 +47,8 @@ Version 2.3.0 - The river knows.
 	marcell:
 		* Fixed issue #892: Show data sizes >= 1.0 GB with three digits.
 		* Fixed search 'Stop' button not stopping Kad searches.
+		* Check Kademlia search results against original criteria.
+		* Allow Kademlia searches with repetitive keywords.
 
 	morph:
 		* Patch to uniform and fix minor errors on man pages
