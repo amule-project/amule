@@ -599,7 +599,7 @@ wxString CaMuleExternalConnector::SetLocale(const wxString& language)
 	return m_locale == NULL ? wxString() : m_locale->GetCanonicalName();
 }
 
-#if !wxUSE_GUI && defined(__WXMAC__)
+#if !wxUSE_GUI && defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
 
 #include <wx/apptrait.h> // Do_not_auto_remove
 #include <wx/stdpaths.h> // Do_not_auto_remove

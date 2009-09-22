@@ -457,7 +457,7 @@ public:
 
 	virtual int WaitForChild(wxExecuteData& execData);
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
 	virtual wxStandardPathsBase& GetStandardPaths();
 #endif
 };

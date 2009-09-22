@@ -449,7 +449,7 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 
 #endif	// __WXMSW__
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
 #include <wx/stdpaths.h> // Do_not_auto_remove (guess)
 static wxStandardPathsCF gs_stdPaths;
 wxStandardPathsBase& CDaemonAppTraits::GetStandardPaths()
