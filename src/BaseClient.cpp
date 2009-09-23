@@ -2241,7 +2241,7 @@ void CUpDownClient::InfoPacketsReceived()
 }
 
 
-bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXUNUSED(opcode)) const
+bool CUpDownClient::CheckHandshakeFinished() const
 {
 	if (m_bHelloAnswerPending) {
 		// this triggers way too often.. need more time to look at this -> only create a warning
