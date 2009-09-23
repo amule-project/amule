@@ -1089,7 +1089,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 	}
 	/*
 	if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-		// Here comes a extended packet without finishing the hanshake.
+		// Here comes an extended packet without finishing the handshake.
 		// IMHO, we should disconnect the client.
 		throw wxString(wxT("Client send extended packet before finishing handshake"));
 	}
@@ -1107,7 +1107,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_MULTIPACKET before finishing handshake"));
 			}
@@ -1262,7 +1262,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 
  			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_MULTIPACKETANSWER before finishing handshake"));
 			}
@@ -1355,7 +1355,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_SECIDENTSTATE from ") + m_client->GetFullIP() );
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_SECIDENTSTATE before finishing handshake"));
 			}								
@@ -1384,7 +1384,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_PUBLICKEY before finishing handshake"));
 			}
@@ -1396,7 +1396,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_SIGNATURE from ") + m_client->GetFullIP() );
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
 			}
@@ -1412,7 +1412,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			if (opcode == OP_COMPRESSEDPART) AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_COMPRESSEDPART from ") + m_client->GetFullIP() );
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
 			}
@@ -1473,7 +1473,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			theStats::AddDownOverheadOther(size);
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_QUEUERANKING before finishing handshake"));
 			}
@@ -1556,7 +1556,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			theStats::AddDownOverheadSourceExchange(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_ANSWERSOURCES before finishing handshake"));
 			}
@@ -1581,7 +1581,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			theStats::AddDownOverheadSourceExchange(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_ANSWERSOURCES2 before finishing handshake"));
 			}
@@ -1607,7 +1607,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			theStats::AddDownOverheadFileRequest(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_FILEDESC before finishing handshake"));
 			}
