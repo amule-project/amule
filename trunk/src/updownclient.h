@@ -471,7 +471,7 @@ public:
 
 	void		ResetFileStatusInfo();
 
-	bool		CheckHandshakeFinished(uint32 protocol, uint32 opcode) const;
+	bool		CheckHandshakeFinished() const;
 
 	bool		GetSentCancelTransfer() const	{ return m_fSentCancelTransfer; }
 	void		SetSentCancelTransfer(bool bVal)	{ m_fSentCancelTransfer = bVal; }
