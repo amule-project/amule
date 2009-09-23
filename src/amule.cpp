@@ -2038,16 +2038,16 @@ uint32	CamuleApp::GetBuddyPort() const
 	return clientlist->GetBuddy()->GetUDPPort();
 }
 
-bool CamuleApp::DoCallback( CUpDownClient *client )
+bool CamuleApp::CanDoCallback(CUpDownClient *client)
 {
-	if(Kademlia::CKademlia::IsConnected()) {
-		if(IsConnectedED2K()) {
-			if(serverconnect->IsLowID()) {
-				if(Kademlia::CKademlia::IsFirewalled()) {
+	if (Kademlia::CKademlia::IsConnected()) {
+		if (IsConnectedED2K()) {
+			if (serverconnect->IsLowID()) {
+				if (Kademlia::CKademlia::IsFirewalled()) {
 					//Both Connected - Both Firewalled
 					return false;
 				} else {
-					if(client->GetServerIP() == theApp->serverconnect->GetCurrentServer()->GetIP() &&
+					if (client->GetServerIP() == theApp->serverconnect->GetCurrentServer()->GetIP() &&
 					   client->GetServerPort() == theApp->serverconnect->GetCurrentServer()->GetPort()) {
 						// Both Connected - Server lowID, Kad Open - Client on same server
 						// We prevent a callback to the server as this breaks the protocol
@@ -2063,7 +2063,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 				return true;
 			}
 		} else {
-			if(Kademlia::CKademlia::IsFirewalled()) {
+			if (Kademlia::CKademlia::IsFirewalled()) {
 				//Only Kad Connected - Kad Firewalled
 				return false;
 			} else {
@@ -2072,8 +2072,8 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 			}
 		}
 	} else {
-		if( IsConnectedED2K() ) {
-			if( serverconnect->IsLowID() ) {
+		if (IsConnectedED2K()) {
+			if (serverconnect->IsLowID()) {
 				//Only Server Connected - Server LowID
 				return false;
 			} else {

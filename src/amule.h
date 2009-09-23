@@ -166,7 +166,7 @@ public:
 	uint32	GetBuddyPort() const;
 
 	// Check if we should callback this client
-	bool DoCallback( CUpDownClient *client );
+	bool CanDoCallback(CUpDownClient *client);
 
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);

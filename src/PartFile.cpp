@@ -1404,13 +1404,13 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					break;
 				}
 				case DS_LOWTOLOWIP: {
-					if ( cur_src->HasLowID() && !theApp->DoCallback( cur_src ) ) {
+					if (cur_src->HasLowID() && !theApp->CanDoCallback(cur_src)) {
 						// If we are almost maxed on sources,
 						// slowly remove these client to see 
 						// if we can find a better source.
-						if( 	((dwCurTick - lastpurgetime) > 30000) &&
+						if (((dwCurTick - lastpurgetime) > 30000) &&
 							(GetSourceCount() >= (thePrefs::GetMaxSourcePerFile()*.8))) {
-							RemoveSource( cur_src );
+							RemoveSource(cur_src);
 							lastpurgetime = dwCurTick;
 							break;
 						}

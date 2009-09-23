@@ -1417,7 +1417,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}
 
 	if (HasLowID()) {
-		if (!theApp->DoCallback(this)) {
+		if (!theApp->CanDoCallback(this)) {
 			//We cannot do a callback!
 			if (GetDownloadState() == DS_CONNECTING) {
 				SetDownloadState(DS_LOWTOLOWIP);
@@ -1435,7 +1435,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 
 		//We already know we are not firewalled here as the above condition already detected LowID->LowID and returned.
-		//If ANYTHING changes with the "if(!theApp->DoCallback(this))" above that will let you fall through 
+		//If ANYTHING changes with the "if(!theApp->CanDoCallback(this))" above that will let you fall through 
 		//with the condition that the source is firewalled and we are firewalled, we must
 		//recheck it before the this check..
 		if (HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp->serverconnect->IsLocalServer(GetServerIP(), GetServerPort())
@@ -1470,7 +1470,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 		// a direct callback is possible - since no other parties are involved and only one additional packet overhead 
 		// is used we basically handle it like a normal connection try, no restrictions apply
-		// we already check above with !theApp->DoCallback(this) if any callback is possible at all
+		// we already check above with !theApp->CanDoCallback(this) if any callback is possible at all
 		m_dwDirectCallbackTimeout = ::GetTickCount() + SEC2MS(45);
 		theApp->clientlist->AddDirectCallbackClient(this);
 		// TODO LOGREMOVE
