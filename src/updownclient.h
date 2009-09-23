@@ -97,7 +97,7 @@ enum ESourceFrom {
 	SF_SEARCH_RESULT
 };
 
-enum EChatCaptchaState{
+enum EChatCaptchaState {
 	CA_NONE				= 0,
 	CA_CHALLENGESENT,
 	CA_CAPTCHASOLVED,
@@ -106,21 +106,21 @@ enum EChatCaptchaState{
 	CA_SOLUTIONSENT
 };
 
-enum ESecureIdentState{
+enum ESecureIdentState {
 	IS_UNAVAILABLE		= 0,
 	IS_ALLREQUESTSSEND	= 0,
 	IS_SIGNATURENEEDED	= 1,
 	IS_KEYANDSIGNEEDED	= 2
 };
 
-enum EInfoPacketState{
+enum EInfoPacketState {
 	IP_NONE			= 0,
 	IP_EDONKEYPROTPACK	= 1,
 	IP_EMULEPROTPACK	= 2,
 	IP_BOTH			= 3
 };
 
-enum EKadState{
+enum EKadState {
 	KS_NONE,
 	KS_QUEUED_FWCHECK,
 	KS_CONNECTING_FWCHECK,
@@ -716,6 +716,7 @@ private:
 	void		SendHelloTypePacket(CMemFile* data);
 	void		SendFirewallCheckUDPRequest();
 	void		ClearHelloProperties(); // eMule 0.42
+
 	uint32		m_dwUserIP;
 	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
 	uint32		m_dwServerIP;

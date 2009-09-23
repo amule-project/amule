@@ -694,14 +694,14 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 }
 
 
-bool CUpDownClient::SendHelloPacket() {
-
-	if (m_socket == NULL){
+bool CUpDownClient::SendHelloPacket()
+{
+	if (m_socket == NULL) {
 		wxFAIL;
 		return true;
 	}
 
-	// if IP is filtered, dont greet him but disconnect...
+	// if IP is filtered, don't greet him but disconnect...
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
 	if ( theApp->ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
@@ -1253,23 +1253,25 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 	SetKadState(KS_NONE);
 	
 	if (GetUploadState() == US_UPLOADING) {
+		// sets US_NONE
 		theApp->uploadqueue->RemoveFromUploadQueue(this);
 	}
 
 	if (GetDownloadState() == DS_DOWNLOADING) {
 		SetDownloadState(DS_ONQUEUE);
-	} else{
+	} else {
 		// ensure that all possible block requests are removed from the partfile
 		ClearDownloadBlockRequests();
 
-		if ( GetDownloadState() == DS_CONNECTED ){
+		if (GetDownloadState() == DS_CONNECTED) {
+			// successfully connected, but probably didn't respond to our filerequest
 			theApp->clientlist->AddDeadSource(this);
 			theApp->downloadqueue->RemoveSource(this);
 	    }
 	}
 
 	// we had still an AICH request pending, handle it
-	if (IsAICHReqPending()){
+	if (IsAICHReqPending()) {
 		m_fAICHRequested = FALSE;
 		CAICHHashSet::ClientAICHRequestFailed(this);
 	}
@@ -1283,12 +1285,12 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 
 	//check if this client is needed in any way, if not delete it
 	bool bDelete = true;
-	switch(m_nUploadState){
+	switch (m_nUploadState) {
 		case US_ONUPLOADQUEUE:
 			bDelete = false;
 			break;
 	};
-	switch(m_nDownloadState){
+	switch (m_nDownloadState) {
 		case DS_ONQUEUE:
 		case DS_TOOMANYCONNS:
 		case DS_NONEEDEDPARTS:
@@ -1296,14 +1298,14 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 			bDelete = false;
 	};
 
-	switch(m_nUploadState){
+	switch (m_nUploadState) {
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
 		case US_ERROR:
 			theApp->clientlist->AddDeadSource(this);
 			bDelete = true;
 	};
-	switch(m_nDownloadState){
+	switch (m_nDownloadState) {
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
 		case DS_ERROR:
@@ -1313,20 +1315,22 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 	};
 
 
-	if (GetChatState() != MS_NONE){
+	// We keep chat partners in any case
+	if (GetChatState() != MS_NONE) {
 		bDelete = false;
 		m_pendingMessage.Clear();
 		Notify_ChatConnResult(false,GUI_ID(GetIP(),GetUserPort()),wxEmptyString);
 	}
 
-	if (!bFromSocket && m_socket){
+	// Delete socket
+	if (!bFromSocket && m_socket) {
 		wxASSERT (theApp->listensocket->IsValidSocket(m_socket));
 		m_socket->Safe_Delete();
 	}
 
 	SetSocket(NULL);
 
-	if (m_iFileListRequested){
+	if (m_iFileListRequested) {
 		AddLogLineM( false, CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
 		m_iFileListRequested = 0;
 	}
@@ -1391,9 +1395,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			if (Disconnected(wxT("IPFilter"))) {
 				Safe_Delete();
 				return false;
-			} else {
-				return true;
 			}
+			return true;
 		}
 
 		// for safety: check again whether that IP is banned
@@ -1413,7 +1416,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		SetKadState(KS_CONNECTING_FWCHECK_UDP);
 	}
 
-	if ( HasLowID() ) {
+	if (HasLowID()) {
 		if (!theApp->DoCallback(this)) {
 			//We cannot do a callback!
 			if (GetDownloadState() == DS_CONNECTING) {
@@ -1595,7 +1598,6 @@ bool CUpDownClient::Connect()
 
 void CUpDownClient::ConnectionEstablished()
 {
-	
 	/* Kry - First thing, check if this client was just used to retrieve 
 	   info. That's some debug thing for myself... check connection_reason
 	   definition */
@@ -2471,7 +2473,7 @@ bool CUpDownClient::SendChatMessage(const wxString& message)
 		// True to ignore "Too Many Connections"
 		TryToConnect(true);
 		return false;
-	}	
+	}
 }
 
 /* Kad stuff */
