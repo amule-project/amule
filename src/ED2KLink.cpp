@@ -158,14 +158,18 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 	  m_bAICHHashValid(false)
 {
 	// Start tokenizing after the "ed2k:://|file|" part of the link
-	wxStringTokenizer tokens(link.Mid(13), wxT("|/"), wxTOKEN_RET_EMPTY_ALL);
+	wxStringTokenizer tokens(link, wxT("|"), wxTOKEN_RET_EMPTY_ALL);
 
 	// Must at least be ed2k://|file|NAME|SIZE|HASH|/
-	if (tokens.CountTokens() < 5) {
+	if (tokens.CountTokens() < 5 
+		|| tokens.GetNextToken() != wxT("ed2k://")
+		|| tokens.GetNextToken() != wxT("file")) {
 		throw wxString(wxT("Not a valid file link"));
 	}
 
 	m_name = UnescapeHTML(tokens.GetNextToken().Strip(wxString::both));
+	// We don't want a path in the name.
+	m_name.Replace(wxT("/"), wxT("_"));
 	
 	// Note that StrToULong returns ULONG_MAX if the value is
 	// too large to be contained in a unsigned long, which means
