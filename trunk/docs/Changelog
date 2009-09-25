@@ -93,6 +93,7 @@ Version 2.3.0 - The river knows.
 		* Fixed category administration in remote gui
 		* Implement directory preferences in remote gui
 		* MSVC build for wxCas
+		* Fixed errors and crashes in handling ED2K links with '/' in them
 
 	Vollstrecker:
 		* Unify copyright lines

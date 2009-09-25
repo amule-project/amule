@@ -134,10 +134,14 @@ inline unsigned long StrToULong( const wxString& str ) {
 }
 
 inline unsigned long long StrToULongLong( const wxString& str ) {
+	Unicode2CharBuf buf = unicode2char(str);
+	if (!buf) {		// something went wrong
+		return 0;
+	}
 #ifdef _MSC_VER
-	return _atoi64(unicode2char(str));
+	return _atoi64(buf);
 #else
-	return atoll(unicode2char(str));
+	return atoll(buf);
 #endif
 }
 
