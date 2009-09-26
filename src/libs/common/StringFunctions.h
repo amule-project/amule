@@ -121,19 +121,35 @@ inline char* nstrdup(const char* src)
 // Replacements for atoi and atol that removes the need for converting
 // a string to normal chars with unicode2char. The value returned is the
 // value represented in the string or 0 if the conversion failed.
-inline long StrToLong( const wxString& str ) {
+inline long StrToLong(const wxString& str)
+{
 	long value = 0;
-	str.ToLong( &value );
+	if (!str.ToLong(&value)) {	// value may be changed even if it failes according to wx docu
+		value = 0;
+	}
 	return value;
 }
 
-inline unsigned long StrToULong( const wxString& str ) {
+inline unsigned long StrToULong(const wxString& str)
+{
 	unsigned long value = 0;
-	str.ToULong( &value );
+	if (!str.ToULong(&value)) {
+		value = 0;
+	}
 	return value;
 }
 
-inline unsigned long long StrToULongLong( const wxString& str ) {
+inline unsigned long long StrToULongLong(const wxString& str)
+{
+#if wxCHECK_VERSION(2, 9, 0)
+	unsigned long long value = 0;
+	if (!str.ToULongLong(&value)) {
+		value = 0;
+	}
+	return value;
+
+#else	// wx 2.8
+
 	Unicode2CharBuf buf = unicode2char(str);
 	if (!buf) {		// something went wrong
 		return 0;
@@ -143,6 +159,7 @@ inline unsigned long long StrToULongLong( const wxString& str ) {
 #else
 	return atoll(buf);
 #endif
+#endif	// wx 2.8
 }
 
 inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
