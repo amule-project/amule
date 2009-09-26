@@ -62,8 +62,8 @@ public:
    	{
 		hd = CreateFileA((file + "_lock").c_str(),
 			GENERIC_READ | GENERIC_WRITE, 
-			0,       // share - not shareable
-			NULL,    // security - not inheritable
+			FILE_SHARE_READ | FILE_SHARE_WRITE,		// share - shareable
+			NULL,									// security - not inheritable
 			CREATE_ALWAYS,
 			FILE_ATTRIBUTE_ARCHIVE, 
 			NULL);
