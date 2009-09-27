@@ -1,5 +1,5 @@
-# translation of tr.po to Turkish
-# This file is distributed under the same license as the PACKAGE package.
+# translation of aMule to Turkish
+# This file is distributed under the same license as the aMule package.
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.com>, 2009.
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-22 09:20+0200\n"
-"PO-Revision-Date: 2009-08-07 20:32+0300\n"
+"PO-Revision-Date: 2009-09-25 23:48+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "Arkadaş Ekle"
 
 #: src/AddFriend.cpp:61
 msgid "You have to enter a valid IP and port!"
-msgstr "Geçerli bir IP ve port girmelisiniz"
+msgstr "Geçerli bir IP ve port girmelisiniz!"
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1817
 msgid "Information"
@@ -786,7 +786,7 @@ msgstr "Tümü"
 #: src/amule-remote-gui.cpp:727
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr ""
+msgstr "'%s' dizini '%s' sınıfı için oluşturulamadı. '%s' dizini kullanılıyor."
 
 #: src/amule-remote-gui.cpp:947
 #, c-format
