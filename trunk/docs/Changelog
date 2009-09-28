@@ -21,6 +21,8 @@ Version 2.3.0 - The river knows.
 		  (port from eMule v0.49b)
 		* Dropped assumption that last search keyword is a filename
 		  extension if length == 3.
+		* Instead of counting unicode characters in a Kad search now we use the
+		  UTF-8 byte count to determine whether the keyword is allowed or not.
 
 	Greek:
 		* Part number is now an extra column in the download list
