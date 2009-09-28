@@ -60,6 +60,30 @@ public:
 	void	EndSession(uint64 id);
 		
 protected:
+	/**
+	 * Event-handler for displaying the chat-popup menu.
+	 */
+	void	OnNMRclickChatTab(wxMouseEvent& evt);
+	/**
+	 * Event-handler fo the Close item on the popup-menu.
+	 */
+	void	OnPopupClose(wxCommandEvent& evt);
+	
+	/**
+	 * Event-handler fo the CloseAll item on the popup-menu.
+	 */
+	void	OnPopupCloseAll(wxCommandEvent& evt);
+
+	/**
+	 * Event-handler fo the CloseOthers item on the popup-menu.
+	 */
+	void	OnPopupCloseOthers(wxCommandEvent& evt);
+
+	/**
+	 * Event-handler fo the AddFriend item on the popup-menu.
+	 */
+	void	OnAddFriend(wxCommandEvent& evt);
+
 	void	OnBnClickedCsend(wxCommandEvent& evt);
 	void	OnBnClickedCclose(wxCommandEvent& evt);
 	void	OnAllPagesClosed(wxNotebookEvent& evt);
@@ -67,7 +91,11 @@ protected:
 
 	DECLARE_EVENT_TABLE()
 
+	//! Variable used to ensure that the popup menu doesn't get displayed twice.
+	wxMenu* m_menu;
+	//! Pointer to the control serving as the friend list
 	CFriendListCtrl* friendlistctrl;
+	//! Pointer to the chat tabs.
 	CChatSelector*	chatselector;
 };
 

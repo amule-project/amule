@@ -76,6 +76,7 @@ public:
 	void			ConnectionResult(bool success, const wxString& message, uint64 id);
 	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
 	void			ShowCaptchaResult(uint64 id, bool ok);
+	CUpDownClient*	GetCurrentClient() const;
 };
 
 #endif

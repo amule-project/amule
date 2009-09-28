@@ -336,4 +336,19 @@ void CChatSelector::ShowCaptchaResult(uint64 id, bool ok)
 	}
 }
 
+
+CUpDownClient* CChatSelector::GetCurrentClient() const
+{
+#ifdef CLIENT_GUI
+	return NULL;
+#else
+	// Get the chat session associated with the active tab
+	CChatSession* ci = (CChatSession*)GetPage(GetSelection());
+	
+	// Get the client that the session is open to
+	return ci	? theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id))
+				: NULL;
+#endif
+}
+
 // File_checked_for_headers

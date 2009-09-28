@@ -54,6 +54,7 @@ Version 2.3.0 - The river knows.
 		* Fixed search 'Stop' button not stopping Kad searches.
 		* Check Kademlia search results against original criteria.
 		* Allow Kademlia searches with repetitive keywords.
+		* Allow adding current chat partner to friend list from tab's context menu.
 
 	morph:
 		* Patch to uniform and fix minor errors on man pages
