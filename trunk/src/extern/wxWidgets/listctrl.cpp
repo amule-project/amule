@@ -40,7 +40,7 @@
 #include <wx/renderer.h>
 #include <wx/dcbuffer.h>
 
-#if defined( __WXMAC__ ) && !defined(__WXUNIVERSAL__) && wxOSX_USE_CARBON
+#if defined( __WXMAC__ ) && !defined(__WXUNIVERSAL__) && (wxOSX_USE_CARBON || TARGET_CARBON)
     #include <wx/mac/private.h>
 #endif
 
