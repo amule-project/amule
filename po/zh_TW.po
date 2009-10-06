@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-22 09:20+0200\n"
-"PO-Revision-Date: 2009-06-30 14:29+0800\n"
+"PO-Revision-Date: 2009-10-06 11:09+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -783,7 +783,7 @@ msgstr "全部"
 #: src/amule-remote-gui.cpp:727
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr ""
+msgstr "無法建立 %s 目錄 ( %s 分類用)，繼續使用 %s 目錄。"
 
 #: src/amule-remote-gui.cpp:947
 #, c-format
@@ -7325,7 +7325,7 @@ msgstr "正在處理要求 [原始]："
 
 #: src/webserver/src/WebServer.cpp:1871
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "未輸入密碼，不允許登入。"
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Checking password\n"
