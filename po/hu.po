@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-22 09:20+0200\n"
-"PO-Revision-Date: 2009-09-07 11:24+0100\n"
+"PO-Revision-Date: 2009-10-09 21:22+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -788,6 +788,8 @@ msgstr "Mind"
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
+"A '%s' könyvtár létrehozása a '%s' kategóriához nem lehetséges, a '%s' "
+"könyvtár megtartva."
 
 #: src/amule-remote-gui.cpp:947
 #, c-format
