@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-22 09:20+0200\n"
-"PO-Revision-Date: 2009-09-11 16:34+0100\n"
+"PO-Revision-Date: 2009-10-11 22:45+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -801,6 +801,8 @@ msgstr "Wszystkie"
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
+"Nie można utworzyć katalogu '%s' dla kategorii '%s', używany jest nadal "
+"katalog '%s'."
 
 #: src/amule-remote-gui.cpp:947
 #, c-format
