@@ -25,6 +25,8 @@
 
 #include "KnownFile.h"		// Needed by PriorityToStr
 #include "updownclient.h"	// Needed by DownloadStateToStr and GetSoftName
+#define __need_convstatus	// Only the conversion status enum is needed
+#include "PartFileConvert.h"	// Needed by GetConversionState
 
 #include <protocol/ed2k/ClientSoftware.h>
 
@@ -133,6 +135,23 @@ wxString OriginToText(unsigned int source_from)
 		case SF_SEARCH_RESULT:		return wxTRANSLATE("Search Result");
 		case SF_NONE:
 		default:		return wxTRANSLATE("Unknown");
+	}
+}
+
+
+wxString GetConversionState(unsigned int state)
+{
+	switch (state) {
+		case CONV_OK			: return _("Completed");
+		case CONV_INPROGRESS		: return _("In progress");
+		case CONV_OUTOFDISKSPACE	: return _("ERROR: Out of diskspace");
+		case CONV_PARTMETNOTFOUND	: return _("ERROR: Partmet not found");
+		case CONV_IOERROR		: return _("ERROR: IO error!");
+		case CONV_FAILED		: return _("ERROR: Failed!");
+		case CONV_QUEUE			: return _("Queued");
+		case CONV_ALREADYEXISTS		: return _("Already downloading");
+		case CONV_BADFORMAT		: return _("Unknown or bad tempfile format.");
+		default: return wxT("?");
 	}
 }
 // File_checked_for_headers

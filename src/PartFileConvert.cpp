@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -27,24 +27,6 @@
 
 #include "PartFileConvert.h"
 
-#ifdef CLIENT_GUI
-
-// This allows us to compile muuli_wdr
-
-CConvertListCtrl::CConvertListCtrl(
-			 wxWindow* WXUNUSED(parent),
-			 wxWindowID WXUNUSED(winid),
-			 const wxPoint& WXUNUSED(pos),
-			 const wxSize& WXUNUSED(size),
-			 long WXUNUSED(style),
-			 const wxValidator& WXUNUSED(validator),
-			 const wxString& WXUNUSED(name))
-			 {}
-				 
-#else 
-
-// Normal compilation
-
 #include "amule.h"
 #include "DownloadQueue.h"
 #include <common/Format.h>
@@ -53,43 +35,39 @@ CConvertListCtrl::CConvertListCtrl(
 #include "Preferences.h"
 #include "SharedFileList.h"
 #include <common/FileFunctions.h>
+#include "OtherFunctions.h"
+#include "GuiEvents.h"
+#include "DataToText.h"
 
-#include <wx/stdpaths.h>
-#include "muuli_wdr.h"
+static unsigned s_nextJobId = 0;
 
-
-enum convstatus{
-	CONV_OK			= 0,
-	CONV_QUEUE,
-	CONV_INPROGRESS,
-	CONV_OUTOFDISKSPACE,
-	CONV_PARTMETNOTFOUND,
-	CONV_IOERROR,
-	CONV_FAILED,
-	CONV_BADFORMAT,
-	CONV_ALREADYEXISTS
-};
 
 struct ConvertJob {
+	unsigned	id;
 	CPath		folder;
 	CPath		filename;
 	wxString	filehash;
 	int		format;
-	int		state;
-	uint32		size;
-	uint32		spaceneeded;
+	ConvStatus	state;
+	uint32_t	size;
+	uint32_t	spaceneeded;
 	uint8		partmettype;
 	bool		removeSource;
-	ConvertJob()	{ size=0; spaceneeded=0; partmettype=PMT_UNKNOWN; removeSource = true; }
-	//~ConvertJob() {}
+	ConvertJob()	{ id=s_nextJobId++; size=0; spaceneeded=0; partmettype=PMT_UNKNOWN; removeSource=true; }
 };
+
+ConvertInfo::ConvertInfo(ConvertJob *job)
+	: id(job->id),
+	  folder(job->folder), filename(job->filename), filehash(job->filehash),
+	  state(job->state), size(job->size), spaceneeded(job->spaceneeded)
+{}
+
 
 wxThread*		CPartFileConvert::s_convertPfThread = NULL;
 std::list<ConvertJob*>	CPartFileConvert::s_jobs;
 ConvertJob*		CPartFileConvert::s_pfconverting = NULL;
 wxMutex			CPartFileConvert::s_mutex;
 
-CPartFileConvertDlg*	CPartFileConvert::s_convertgui = NULL;
 
 int CPartFileConvert::ScanFolderToAdd(const CPath& folder, bool deletesource)
 {
@@ -114,7 +92,7 @@ int CPartFileConvert::ScanFolderToAdd(const CPath& folder, bool deletesource)
 	file = finder.GetFirstFile(CDirIterator::Dir, wxT("*.*"));
 	while (file.IsOk()) {
 		ScanFolderToAdd(folder.JoinPaths(file), deletesource);
-		
+
 		file = finder.GetNextFile();
 	}
 
@@ -136,9 +114,7 @@ void CPartFileConvert::ConvertToeMule(const CPath& file, bool deletesource)
 
 	s_jobs.push_back(newjob);
 
-	if (s_convertgui) {
-		s_convertgui->AddJob(newjob);
-	}
+	Notify_ConvertUpdateJobInfo(newjob);
 
 	StartThread();
 }
@@ -153,7 +129,7 @@ void CPartFileConvert::StartThread()
 				AddDebugLogLineM( false, logPfConvert, wxT("A new thread has been created.") );
 				break;
 			case wxTHREAD_RUNNING:
-				AddDebugLogLineM( true, logPfConvert, wxT("Error, attempt to create a already running thread!") );
+				AddDebugLogLineM( true, logPfConvert, wxT("Error, attempt to create an already running thread!") );
 				break;
 			case wxTHREAD_NO_RESOURCE:
 				AddDebugLogLineM( true, logPfConvert, wxT("Error, attempt to create a thread without resources!") );
@@ -209,9 +185,9 @@ wxThread::ExitCode CPartFileConvert::Entry()
 				s_pfconverting->state = CONV_INPROGRESS;
 			}
 
-			UpdateGUI(s_pfconverting);
+			Notify_ConvertUpdateJobInfo(s_pfconverting);
 
-			int convertResult = performConvertToeMule(s_pfconverting->folder);
+			ConvStatus convertResult = performConvertToeMule(s_pfconverting->folder);
 			{
 				wxMutexLocker lock(s_mutex);
 				s_pfconverting->state = convertResult;
@@ -223,24 +199,20 @@ wxThread::ExitCode CPartFileConvert::Entry()
 
 			if (TestDestroy()) {
 				wxMutexLocker lock(s_mutex);
-				for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-					delete *it;
-				}
-				s_jobs.clear();
+				DeleteContents(s_jobs);
 				break;
 			}
 
+			Notify_ConvertUpdateJobInfo(s_pfconverting);
 
-			UpdateGUI(s_pfconverting);
-
-			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetReturncodeText(s_pfconverting->state));
+			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetConversionState(s_pfconverting->state));
 		} else {
 			break; // nothing more to do now
 		}
 	}
 
 	// clean up
-	UpdateGUI(NULL);
+	Notify_ConvertClearInfos();
 
 	if (imported) {
 		theApp->sharedfiles->PublishNextTurn();
@@ -253,7 +225,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	return NULL;
 }
 
-int CPartFileConvert::performConvertToeMule(const CPath& fileName)
+ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 {
 	wxString filepartindex, buffer;
 	unsigned fileindex;
@@ -264,11 +236,11 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 	CDirIterator finder(folder);
 
-	UpdateGUI(0, _("Reading temp folder"), true);
+	Notify_ConvertUpdateProgressFull(0, _("Reading temp folder"), s_pfconverting->folder.GetPrintable());
 
 	filepartindex = partfile.RemoveAllExt().GetRaw();
 
-	UpdateGUI(4, _("Retrieving basic information from download info file"));
+	Notify_ConvertUpdateProgress(4, _("Retrieving basic information from download info file"));
 
 	CPartFile* file = new CPartFile();
 	s_pfconverting->partmettype = file->LoadPartFile(folder, partfile, false, true);
@@ -289,7 +261,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 		s_pfconverting->filehash = file->GetFileHash().Encode();
 	}
 
-	UpdateGUI(s_pfconverting);
+	Notify_ConvertUpdateJobInfo(s_pfconverting);
 
 	if (theApp->downloadqueue->GetFileByID(file->GetFileHash())) {
 		delete file;
@@ -332,7 +304,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 				}
 			}
 
-			UpdateGUI(s_pfconverting);
+			Notify_ConvertUpdateJobInfo(s_pfconverting);
 
 			sint64 freespace = CPath::GetFreeSpaceAt(thePrefs::GetTempDir());
 			if (freespace != wxInvalidOffset) {
@@ -347,7 +319,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			file->CreatePartFile();
 			newfilename = file->GetFullName();
 
-			UpdateGUI(8, _("Creating destination file"));
+			Notify_ConvertUpdateProgress(8, _("Creating destination file"));
 
 			file->m_hpartfile.SetLength( s_pfconverting->spaceneeded );
 
@@ -358,7 +330,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 				++curindex;
 				buffer = wxString::Format(_("Loading data from old download file (%u of %u)"), curindex, partfilecount);
 
-				UpdateGUI(10 + (curindex * stepperpart), buffer);
+				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), buffer);
 
 				long l;
 				filename.GetFullName().RemoveExt().GetExt().ToLong(&l);
@@ -378,7 +350,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 				buffer = wxString::Format(_("Saving data block into new single download file (%u of %u)"), curindex, partfilecount);
 
-				UpdateGUI(10 + (curindex * stepperpart), buffer);
+				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), buffer);
 
 				// write the buffered data
 				file->m_hpartfile.WriteAt(ba, chunkstart, toReadWrite);
@@ -404,7 +376,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			s_pfconverting->spaceneeded = oldfile.GetFileSize();
 		}
 
-		UpdateGUI(s_pfconverting);
+		Notify_ConvertUpdateJobInfo(s_pfconverting);
 
 		sint64 freespace = CPath::GetFreeSpaceAt(thePrefs::GetTempDir());
 		if (freespace == wxInvalidOffset) {
@@ -422,7 +394,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 		bool ret = false;
 
-		UpdateGUI(92, _("Copy"));
+		Notify_ConvertUpdateProgress(92, _("Copy"));
 
 		CPath::RemoveFile(newfilename.RemoveExt());
 		if (!oldfile.FileExists()) {
@@ -442,7 +414,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 	}
 
-	UpdateGUI(94, _("Retrieving source downloadfile information"));
+	Notify_ConvertUpdateProgress(94, _("Retrieving source downloadfile information"));
 
 	CPath::RemoveFile(newfilename);
 	if (s_pfconverting->removeSource) {
@@ -465,7 +437,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 		file->m_iLostDueToCorruption = 0;
 	}
 
-	UpdateGUI(100, _("Adding download and saving new partfile"));
+	Notify_ConvertUpdateProgress(100, _("Adding download and saving new partfile"));
 
 	theApp->downloadqueue->AddDownload(file, thePrefs::AddNewFilesPaused(), 0);
 	file->SavePartFile();
@@ -489,309 +461,39 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 	return CONV_OK;
 }
 
-void CPartFileConvert::UpdateGUI(float percent, wxString text, bool fullinfo)
-{
-	if (!IsMain()) {
-		wxMutexGuiEnter();
-	}
+// Notification handlers
 
-	if (s_convertgui) {
-		s_convertgui->m_pb_current->SetValue((int)percent);
-		wxString buffer = wxString::Format(wxT("%.2f %%"), percent);
-		wxStaticText* percentlabel = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
-		percentlabel->SetLabel(buffer);
-
-		if (!text.IsEmpty()) {
-			dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(text);
-		}
-
-		percentlabel->GetParent()->Layout();
-
-		if (fullinfo) {
-			dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(s_pfconverting->folder.GetPrintable());
-		}
-	}
-
-	if (!IsMain()) {
-		wxMutexGuiLeave();
-	}
-}
-
-void CPartFileConvert::UpdateGUI(ConvertJob* job)
-{
-	if (!IsMain()) {
-		wxMutexGuiEnter();
-	}
-	if (s_convertgui) {
-		s_convertgui->UpdateJobInfo(job);
-	}
-	if (!IsMain()) {
-		wxMutexGuiLeave();
-	}
-}
-
-void CPartFileConvert::ShowGUI(wxWindow* parent)
-{
-	if (s_convertgui) {
-		s_convertgui->Show(true);
-		s_convertgui->Raise();
-	} else {
-		s_convertgui = new CPartFileConvertDlg(parent);
-		s_convertgui->Show(true);
-
-		wxMutexLocker lock(s_mutex);
-		if (s_pfconverting) {
-			UpdateGUI(s_pfconverting);
-			UpdateGUI(50, _("Fetching status..."), true);
-		}
-
-		// fill joblist
-		for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-			s_convertgui->AddJob(*it);
-			UpdateGUI(*it);
-		}
-	}
-}
-
-void CPartFileConvert::CloseGUI()
-{
-	if (s_convertgui) {
-		s_convertgui->Show(false);
-		s_convertgui->Destroy();
-		s_convertgui = NULL;
-	}
-}
-
-void CPartFileConvert::RemoveAllJobs()
+void CPartFileConvert::RemoveJob(unsigned id)
 {
 	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-		if (s_convertgui) {
-			s_convertgui->RemoveJob(*it);
-		}
-		delete *it;
-	}
-	s_jobs.clear();
-}
-
-void CPartFileConvert::RemoveJob(ConvertJob* job)
-{
-	wxMutexLocker lock(s_mutex);
-	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-		if (*it == job) {
-			if (s_convertgui) {
-				s_convertgui->RemoveJob(job);
-			}
+		if ((*it)->id == id && (*it)->state != CONV_INPROGRESS) {
+			ConvertJob *job = *it;
 			s_jobs.erase(it);
-			delete *it;
+			Notify_ConvertRemoveJobInfo(id);
+			delete job;
+			break;
 		}
 	}
 }
 
-void CPartFileConvert::RemoveAllSuccJobs()
+void CPartFileConvert::RetryJob(unsigned id)
 {
 	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-		if ((*it)->state == CONV_OK) {
-			if (s_convertgui) {
-				s_convertgui->RemoveJob(*it);
-			}
-			s_jobs.erase(it);
-			delete *it;
+		if ((*it)->id == id && (*it)->state != CONV_INPROGRESS && (*it)->state != CONV_OK) {
+			(*it)->state = CONV_QUEUE;
+			Notify_ConvertUpdateJobInfo(*it);
+			StartThread();
+			break;
 		}
 	}
 }
 
-wxString CPartFileConvert::GetReturncodeText(int ret)
+void CPartFileConvert::ReaddAllJobs()
 {
-	switch (ret) {
-		case CONV_OK			: return _("Completed");
-		case CONV_INPROGRESS		: return _("In progress");
-		case CONV_OUTOFDISKSPACE	: return _("ERROR: Out of diskspace");
-		case CONV_PARTMETNOTFOUND	: return _("ERROR: Partmet not found");
-		case CONV_IOERROR		: return _("ERROR: IO error!");
-		case CONV_FAILED		: return _("ERROR: Failed!");
-		case CONV_QUEUE			: return _("Queued");
-		case CONV_ALREADYEXISTS		: return _("Already downloading");
-		case CONV_BADFORMAT		: return _("Unknown or bad tempfile format.");
-		default: return wxT("?");
+	wxMutexLocker lock(s_mutex);
+	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
+		Notify_ConvertUpdateJobInfo(*it);
 	}
 }
-
-
-CConvertListCtrl::CConvertListCtrl(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
-	: wxListCtrl(parent, winid, pos, size, style, validator, name)
-{
-	InsertColumn(0, _("File name"),	wxLIST_FORMAT_LEFT, 200);
-	InsertColumn(1, _("State"),	wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(2, _("Size"),	wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(3, _("Filehash"),	wxLIST_FORMAT_LEFT, 100);
-}
-
-#ifndef __WXMSW__
-/* XPM */
-static const char * convert_xpm[] = {
-"16 16 9 1",
-" 	c None",
-".	c #B20000",
-"+	c #FF0000",
-"@	c #FF7F7F",
-"#	c #008000",
-"$	c #33B200",
-"%	c #10E500",
-"&	c #59FE4C",
-"*	c #FFB2B2",
-"        .       ",
-"       .+.      ",
-"      .+@+.     ",
-"     .+@+.      ",
-".   .+@+.#######",
-".. .+@+.  #$%%&#",
-".+.+@+.    #$%%#",
-".@+@+.    #$%$%#",
-".@@+.    #$%$#$#",
-".*@@+.  #$%$# ##",
-".......#$%$#   #",
-"      #$%$#     ",
-"     #$%$#      ",
-"    #$%$#       ",
-"     #$#        ",
-"      #         "};
-#endif /* ! __WXMSW__ */
-
-// Modeless Dialog Implementation
-// CPartFileConvertDlg dialog
-
-BEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
-	EVT_BUTTON(IDC_ADDITEM,		CPartFileConvertDlg::OnAddFolder)
-	EVT_BUTTON(IDC_RETRY,		CPartFileConvertDlg::RetrySel)
-	EVT_BUTTON(IDC_CONVREMOVE,	CPartFileConvertDlg::RemoveSel)
-	EVT_BUTTON(wxID_CANCEL,		CPartFileConvertDlg::OnCloseButton)
-	EVT_CLOSE(CPartFileConvertDlg::OnClose)
-END_EVENT_TABLE()
-
-CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
-	: wxDialog(parent, -1, _("Import partfiles"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
-{
-	convertDlg(this, true, true);
-
-	m_joblist = CastChild(IDC_JOBLIST, CConvertListCtrl);
-	m_pb_current = CastChild(IDC_CONV_PB_CURRENT, wxGauge);
-
-	SetIcon(wxICON(convert));
-
-	// for some reason, if I try to get the mutex from the dialog
-	// it will end up in a deadlock(?) and I have to kill aMule
-	CastChild(IDC_RETRY, wxButton)->Enable(false);
-	CastChild(IDC_CONVREMOVE, wxButton)->Enable(false);
-}
-
-// CPartFileConvertDlg message handlers
-
-void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
-{
-	wxString folder = ::wxDirSelector(
-		_("Please choose a folder to search for temporary downloads! (subfolders will be included)"),
-		wxStandardPaths::Get().GetDocumentsDir(), wxDD_DEFAULT_STYLE,
-		wxDefaultPosition, this);
-	if (!folder.IsEmpty()) {
-		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),
-					 _("Remove sources?"),
-					 wxYES_NO | wxCANCEL | wxICON_QUESTION, this);
-		if (reply != wxCANCEL) {
-			CPartFileConvert::ScanFolderToAdd(CPath(folder), (reply == wxYES));
-		}
-	}
-}
-
-void CPartFileConvertDlg::OnClose(wxCloseEvent& WXUNUSED(event))
-{
-	CPartFileConvert::CloseGUI();
-}
-
-void CPartFileConvertDlg::OnCloseButton(wxCommandEvent& WXUNUSED(event))
-{
-	CPartFileConvert::CloseGUI();
-}
-
-void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
-{
-	if (!job) {
-		dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(_("Waiting..."));
-		CastChild(IDC_CONV_PROZENT, wxStaticText)->SetLabel(wxEmptyString);
-		m_pb_current->SetValue(0);
-		CastChild(IDC_CONV_PB_LABEL, wxStaticText)->SetLabel(wxEmptyString);
-		return;
-	}
-
-	wxString buffer;
-
-	// search jobitem in listctrl
-	long itemnr = m_joblist->FindItem(-1, reinterpret_cast<wxUIntPtr>(job));
-	if (itemnr != -1) {
-		m_joblist->SetItem(itemnr, 0, job->filename.IsOk() ? job->folder.GetPrintable() : job->filename.GetPrintable() );
-		m_joblist->SetItem(itemnr, 1, CPartFileConvert::GetReturncodeText(job->state) );
-		if (job->size > 0) {
-			buffer = CFormat(_("%s (Disk: %s)")) % CastItoXBytes(job->size) % CastItoXBytes(job->spaceneeded);
-			m_joblist->SetItem(itemnr, 2, buffer );
-		} else {
-			m_joblist->SetItem(itemnr, 2, wxEmptyString);
-		}
-		m_joblist->SetItem(itemnr, 3, job->filehash);
-
-	} else {
-//		AddJob(job);	why???
-	}
-}
-
-void CPartFileConvertDlg::RemoveJob(ConvertJob* job)
-{
-	long itemnr = m_joblist->FindItem(-1, reinterpret_cast<wxUIntPtr>(job));
-	if (itemnr != -1) {
-		m_joblist->DeleteItem(itemnr);
-	}
-}
-
-void CPartFileConvertDlg::AddJob(ConvertJob* job)
-{
-	long ix = m_joblist->InsertItem(m_joblist->GetItemCount(), job->folder.GetPrintable());
-	if (ix != -1) {
-		m_joblist->SetItemData(ix, reinterpret_cast<wxUIntPtr>(job));
-		m_joblist->SetItem(ix, 1, CPartFileConvert::GetReturncodeText(job->state));
-	}
-}
-
-void CPartFileConvertDlg::RemoveSel(wxCommandEvent& WXUNUSED(event))
-{
-	if (m_joblist->GetSelectedItemCount() == 0) return;
-
-	long itemnr = m_joblist->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while (itemnr != -1) {
-		ConvertJob* job = (ConvertJob*)m_joblist->GetItemData(itemnr);
-		if (job->state != CONV_INPROGRESS) {
-			// this will remove the job from both gui and list
-			CPartFileConvert::RemoveJob(job);
-		}
-		itemnr = m_joblist->GetNextItem(itemnr, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	}
-}
-
-void CPartFileConvertDlg::RetrySel(wxCommandEvent& WXUNUSED(event))
-{
-	if (m_joblist->GetSelectedItemCount() == 0) return;
-
-	long itemnr = m_joblist->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while (itemnr != -1) {
-		ConvertJob* job = (ConvertJob*)m_joblist->GetItemData(itemnr);
-		wxMutexLocker lock(CPartFileConvert::s_mutex);
-		if (job->state != CONV_OK && job->state != CONV_INPROGRESS) {
-			job->state = CONV_QUEUE;
-			UpdateJobInfo(job);
-		}
-	}
-	wxMutexLocker lock(CPartFileConvert::s_mutex);
-	CPartFileConvert::StartThread();
-}
-
-#endif
-// File_checked_for_headers

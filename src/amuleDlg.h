@@ -207,9 +207,7 @@ protected:
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnAboutButton(wxCommandEvent& ev);
 	void OnPrefButton(wxCommandEvent& ev);
-#ifndef CLIENT_GUI	
 	void OnImportButton(wxCommandEvent& ev);
-#endif
 	void OnMinimize(wxIconizeEvent& evt);
 	void OnBnClickedFast(wxCommandEvent& evt);
 	void OnGUITimer(wxTimerEvent& evt);
