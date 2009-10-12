@@ -72,9 +72,7 @@
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "TerminationProcess.h"	// Needed for CTerminationProcess
 #include "TransferWnd.h"	// Needed for CTransferWnd
-#ifndef CLIENT_GUI
-#include "PartFileConvert.h"
-#endif
+#include "PartFileConvertDlg.h"
 
 #ifndef __WXMSW__
 #include "aMule.xpm"
@@ -118,9 +116,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_ABOUT, CamuleDlg::OnAboutButton)
 
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
-#ifndef CLIENT_GUI
 	EVT_TOOL(ID_BUTTONIMPORT, CamuleDlg::OnImportButton)
-#endif
 
 	EVT_TOOL(ID_BUTTONCONNECT, CamuleDlg::OnBnConnect)
 
@@ -525,14 +521,13 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 }
 
 
-#ifndef CLIENT_GUI
 void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
 {
-	if ( m_is_safe_state ) {
-		CPartFileConvert::ShowGUI(NULL);
+	if (m_is_safe_state) {
+		CPartFileConvertDlg::ShowGUI(NULL);
 	}
 }
-#endif
+
 
 CamuleDlg::~CamuleDlg()
 {
@@ -1402,9 +1397,6 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 	}
 
 	Apply_Toolbar_Skin(m_wndToolbar);		
-	#ifdef CLIENT_GUI
-		m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
-	#endif
 
 	Thaw();
 }

@@ -20,6 +20,11 @@
 #	include "SharedFilesCtrl.h"
 #	include "DownloadListCtrl.h"
 #	include "muuli_wdr.h"
+#	include "PartFileConvertDlg.h"
+#endif
+
+#ifndef CLIENT_GUI
+#	include "PartFileConvert.h"
 #endif
 
 
@@ -101,6 +106,54 @@ namespace MuleNotify
 #endif
 	}
 
+	void ConvertUpdateProgress(float NOT_ON_DAEMON(percent), wxString NOT_ON_DAEMON(text), wxString NOT_ON_DAEMON(header))
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::UpdateProgress(percent, text, header);
+#endif
+	}
+
+	void ConvertUpdateJobInfo(ConvertInfo NOT_ON_DAEMON(info))
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::UpdateJobInfo(info);
+#endif
+	}
+
+	void ConvertRemoveJobInfo(unsigned NOT_ON_DAEMON(id))
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::RemoveJobInfo(id);
+#endif
+	}
+
+	void ConvertClearInfos()
+	{
+#ifndef AMULE_DAEMON
+		CPartFileConvertDlg::ClearInfo();
+#endif
+	}
+
+	void ConvertRemoveJob(unsigned NOT_ON_REMOTEGUI(id))
+	{
+#ifndef CLIENT_GUI
+		CPartFileConvert::RemoveJob(id);
+#endif
+	}
+
+	void ConvertRetryJob(unsigned NOT_ON_REMOTEGUI(id))
+	{
+#ifndef CLIENT_GUI
+		CPartFileConvert::RetryJob(id);
+#endif
+	}
+
+	void ConvertReaddAllJobs()
+	{
+#ifndef CLIENT_GUI
+		CPartFileConvert::ReaddAllJobs();
+#endif
+	}
 
 #ifdef CLIENT_GUI
 	

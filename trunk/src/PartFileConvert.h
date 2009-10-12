@@ -17,26 +17,60 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
 #ifndef PARTFILECONVERT_H
-#define PARTFILECONVERT_H
+#if !(defined __need_convertinfo || defined __need_convstatus)
+#	define PARTFILECONVERT_H
+#endif
 
-#include <wx/dialog.h>
-#include <wx/listctrl.h>
-#include <wx/gauge.h>
+#ifndef __have_convstatus
+#define __have_convstatus
 
+enum ConvStatus {
+	CONV_OK			= 0,
+	CONV_QUEUE,
+	CONV_INPROGRESS,
+	CONV_OUTOFDISKSPACE,
+	CONV_PARTMETNOTFOUND,
+	CONV_IOERROR,
+	CONV_FAILED,
+	CONV_BADFORMAT,
+	CONV_ALREADYEXISTS
+};
+
+#endif /* convstatus */
+#undef __need_convstatus
+
+#if !defined __have_convertinfo && (defined __need_convertinfo || defined PARTFILECONVERT_H)
+#define __have_convertinfo
 
 #include "Types.h"
+#include <common/Path.h>
 
 struct ConvertJob;
-class CPartFileConvertDlg;
-class CPath;
 
+struct ConvertInfo {
+	unsigned	id;
+	CPath		folder;
+	CPath		filename;
+	wxString	filehash;
+	ConvStatus	state;
+	uint32_t	size;
+	uint32_t	spaceneeded;
+	ConvertInfo(ConvertJob *);
+};
+
+#endif /* convertinfo */
+#undef __need_convertinfo
+
+#ifdef PARTFILECONVERT_H
+
+#include <wx/thread.h>
 
 class CPartFileConvert : private wxThread
 {
@@ -46,68 +80,28 @@ public:
 	static void	StartThread();
 	static void	StopThread();
 
-	static void	ShowGUI(wxWindow *parent);
-	static void	UpdateGUI(float percent, wxString text, bool fullinfo = false);	// current file information
-	static void	UpdateGUI(ConvertJob* job); // listcontrol update
-	static void	CloseGUI();
-
-	static void	RemoveAllJobs();
-	static void	RemoveAllSuccJobs();
-	static void	RemoveJob(ConvertJob* job);
-	static wxString	GetReturncodeText(int ret);
-
-	static wxMutex	s_mutex;
+	static void	RemoveJob(unsigned id);
+	static void	RetryJob(unsigned id);
+	static void	ReaddAllJobs();
 
 private:
 	CPartFileConvert() : wxThread(wxTHREAD_DETACHED) {}
 
-	static int	performConvertToeMule(const CPath& file);
-	virtual ExitCode Entry();
+	static ConvStatus	performConvertToeMule(const CPath& file);
+	virtual ExitCode	Entry();
 
+	static wxMutex			s_mutex;
 	static wxThread*		s_convertPfThread;
 	static std::list<ConvertJob*>	s_jobs;
 	static ConvertJob*		s_pfconverting;
-
-	static CPartFileConvertDlg*	s_convertgui;
-
 };
 
-class CConvertListCtrl : public wxListCtrl
-{
-public:
-	CConvertListCtrl(
-			 wxWindow* parent,
-			 wxWindowID winid = -1,
-			 const wxPoint& pos = wxDefaultPosition,
-			 const wxSize& size = wxDefaultSize,
-			 long style = wxLC_ICON,
-			 const wxValidator& validator = wxDefaultValidator,
-			 const wxString& name = wxT("convertlistctrl"))
-			 ;
-};
+// TODO: Remove when muuli.wdr is unlocked
+#ifndef AMULE_DAEMON
+#include <wx/listctrl.h>
+typedef wxListCtrl CConvertListCtrl;
+#endif
 
-class CPartFileConvertDlg : public wxDialog
-{
-	friend class CPartFileConvert;
-public:
-	CPartFileConvertDlg(wxWindow *parent);
-
-	void	AddJob(ConvertJob* job);
-	void	RemoveJob(ConvertJob* job);
-	void	UpdateJobInfo(ConvertJob* job);
-
-protected:
-	wxGauge*		m_pb_current;
-	CConvertListCtrl*	m_joblist;
-
-	void	OnAddFolder(wxCommandEvent& event);
-	void	OnClose(wxCloseEvent& event);
-	void	OnCloseButton(wxCommandEvent& event);
-	void	RetrySel(wxCommandEvent& event);
-	void	RemoveSel(wxCommandEvent& event);
-
-	DECLARE_EVENT_TABLE()
-};
+#endif
 
 #endif /* PARTFILECONVERT_H */
-// File_checked_for_headers

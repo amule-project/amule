@@ -140,6 +140,7 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
+	PartFileConvert.cpp \
 	SearchFile.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
@@ -177,7 +178,7 @@ gui_sources = \
 	FileDetailDialog.cpp \
 	KadDlg.cpp \
 	OScopeCtrl.cpp \
-	PartFileConvert.cpp \
+	PartFileConvertDlg.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
 	ServerWnd.cpp \
@@ -400,6 +401,7 @@ noinst_HEADERS = \
 		Packet.h \
 		Parser.hpp \
 		PartFileConvert.h \
+		PartFileConvertDlg.h \
 		PartFile.h \
 		PlatformSpecific.h \
 		Preferences.h \
