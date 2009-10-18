@@ -100,6 +100,7 @@ Version 2.3.0 - The river knows.
 		* Implement directory preferences in remote gui
 		* MSVC build for wxCas
 		* Fixed errors and crashes on parsing ED2K links with '/' in them
+		* configure option --enable-fileview
 
 	Vollstrecker:
 		* Unify copyright lines

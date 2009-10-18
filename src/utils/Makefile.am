@@ -18,7 +18,11 @@ if XAS
   OPT_XAS = xas
 endif
 
-SUBDIRS = $(OPT_XAS) $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
+if FILEVIEW
+  OPT_FILEVIEW = fileview
+endif
+
+SUBDIRS = $(OPT_FILEVIEW) $(OPT_XAS) $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
 DIST_SUBDIRS = fileview xas cas wxCas aLinkCreator
 
 MAINTAINERCLEANFILES = Makefile.in

@@ -156,6 +156,13 @@ AC_ARG_ENABLE(
 		[install xas XChat2 plugin])],
 	[XAS=$enableval], [XAS=no])
 
+AC_ARG_ENABLE(
+	[fileview],
+	[AS_HELP_STRING(
+		[--enable-fileview],
+		[compile aMule file viewer for console (EXPERIMENTAL)])],
+	[FILEVIEW=$enableval], [FILEVIEW=no])
+
 # Default is yes, because they're most likely compatible.
 # However, this is only used when cross-compiling.
 AC_ARG_WITH(
@@ -450,6 +457,7 @@ AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(XAS, test x$XAS = xyes)
+AM_CONDITIONAL(FILEVIEW, test x$FILEVIEW = xyes)
 AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes)
 AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
