@@ -526,7 +526,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\PartFileConvert.cpp"
+				RelativePath="..\..\src\PartFileConvertDlg.cpp"
 				>
 			</File>
 			<File
@@ -884,7 +884,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\PartFileConvert.h"
+				RelativePath="..\..\src\PartFileConvertDlg.h"
 				>
 			</File>
 			<File
