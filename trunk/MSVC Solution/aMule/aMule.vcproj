@@ -634,6 +634,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\PartFileConvertDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\PlatformSpecific.cpp"
 				>
 			</File>
@@ -1129,6 +1133,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\PartFileConvert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\PartFileConvertDlg.h"
 				>
 			</File>
 			<File
