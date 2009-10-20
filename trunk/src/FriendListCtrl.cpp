@@ -251,6 +251,7 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 	}
 	
 	PopupMenu(menu, event.GetPosition());
+	delete menu;
 }
 
 void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {

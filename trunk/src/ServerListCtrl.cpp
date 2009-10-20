@@ -468,6 +468,7 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 
 
 	PopupMenu( serverMenu, event.GetPoint() );
+	delete serverMenu;
 }
 
 
