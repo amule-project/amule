@@ -352,6 +352,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 		theApp->serverconnect->SendPacket(searchPacket, (type == LocalSearch));
 
 		if (type == GlobalSearch) {
+			delete m_searchPacket;
 			m_searchPacket = searchPacket;
 			m_64bitSearchPacket = packetUsing64bit;
 			m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ); // will be changed later when actually sending the packet!!
