@@ -165,17 +165,8 @@ void CKnownFileList::Clear()
 {	
 	wxMutexLocker sLock(list_mut);
 
-	for (CKnownFileMap::iterator it = m_knownFileMap.begin();
-	     it != m_knownFileMap.end(); ++it) {
-		delete it->second;
-	}
-	m_knownFileMap.clear();
-
-	for (KnownFileList::iterator it = m_duplicateFileList.begin();
-	     it != m_duplicateFileList.end(); ++it) {
-		delete *it;
-	}
-	m_duplicateFileList.clear();
+	DeleteContents(m_knownFileMap);
+	DeleteContents(m_duplicateFileList);
 }
 
 

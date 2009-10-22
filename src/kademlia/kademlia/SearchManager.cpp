@@ -95,10 +95,7 @@ void CSearchManager::StopSearch(uint32_t searchID, bool delayDelete)
 void CSearchManager::StopAllSearches()
 {
 	// Stop and delete all searches.
-	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
-		delete it->second;
-	}
-	m_searches.clear();
+	DeleteContents(m_searches);
 }
 
 bool CSearchManager::StartSearch(CSearch* search)

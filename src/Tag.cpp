@@ -467,10 +467,6 @@ CTagHash::CTagHash(uint8 name, const CMD4Hash& value)
 
 void deleteTagPtrListEntries(TagPtrList* taglist)
 {
-	TagPtrList::const_iterator it;
-	for (it = taglist->begin(); it != taglist->end(); it++) {
-		delete *it;
-	}
-	taglist->clear();
+	DeleteContents(*taglist);
 }
 // File_checked_for_headers

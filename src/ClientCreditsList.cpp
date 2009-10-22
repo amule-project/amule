@@ -57,11 +57,7 @@ CClientCreditsList::CClientCreditsList()
 
 CClientCreditsList::~CClientCreditsList()
 {
-	ClientMap::iterator it = m_mapClients.begin();
-	for ( ; it != m_mapClients.end(); ++it ){
-		delete it->second;
-	}
-	m_mapClients.clear();
+	DeleteContents(m_mapClients);
 	delete static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
 }
 
@@ -143,12 +139,7 @@ void CClientCreditsList::LoadList()
 				// and will have to discard it.
 				delete newcstruct;
 				
-				// Remove already read, and possibly invalid, entries
-				ClientMap::iterator it = m_mapClients.begin();
-				for ( ; it != m_mapClients.end(); ++it ){
-					delete it->second;
-				}
-				m_mapClients.clear();
+				DeleteContents(m_mapClients);
 				
 				AddDebugLogLineM( true, logCredits,
 					wxT("WARNING: Corruptions found while reading Creditfile!") );

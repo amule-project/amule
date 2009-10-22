@@ -1445,12 +1445,7 @@ void CPreferences::Save()
 
 CPreferences::~CPreferences()
 {
-	while ( !m_CatList.empty() ) {
-		delete m_CatList.front();
-		m_CatList.erase( m_CatList.begin() );
-	}
-
-	m_CatList.clear();
+	DeleteContents(m_CatList);
 }
 
 

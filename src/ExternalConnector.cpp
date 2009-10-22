@@ -70,10 +70,7 @@
 
 CCommandTree::~CCommandTree()
 {
-	for (CmdPos_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
-		delete *it;
-	}
-	m_subcommands.clear();
+	DeleteContents(m_subcommands);
 }
 
 
