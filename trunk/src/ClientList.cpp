@@ -99,12 +99,7 @@ CClientList::CClientList()
 
 CClientList::~CClientList()
 {
-	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
-	for ( ; it != m_trackedClientsList.end(); ++it ){
-		delete it->second;
-	}
-
-	m_trackedClientsList.clear();
+	DeleteContents(m_trackedClientsList);
 
 	wxASSERT(m_clientList.empty());
 	wxASSERT(m_delete_queue.empty());

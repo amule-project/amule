@@ -41,10 +41,7 @@ using namespace Kademlia;
 
 CPacketTracking::~CPacketTracking()
 {
-	for (TrackedPacketInMap::iterator it = m_mapTrackPacketsIn.begin(); it != m_mapTrackPacketsIn.end(); ++it) {
-		delete it->second;
-	}
-	m_mapTrackPacketsIn.clear();
+	DeleteContents(m_mapTrackPacketsIn);
 }
 
 void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)

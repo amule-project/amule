@@ -132,14 +132,8 @@ void CEMSocket::ClearQueues()
 {
 	wxMutexLocker lock(m_sendLocker);
 
-	{
-		CPacketQueue::iterator it = m_control_queue.begin();
-		for (; it != m_control_queue.end(); ++it) {
-			delete *it;
-		}
-		m_control_queue.clear();
-	}
-	
+	DeleteContents(m_control_queue);
+
 	{
 		CStdPacketQueue::iterator it = m_standard_queue.begin();
 		for (; it != m_standard_queue.end(); ++it) {

@@ -72,11 +72,7 @@ CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 
 CStatTreeItemBase::~CStatTreeItemBase()
 {
-	for (std::list<CStatTreeItemBase*>::iterator it = m_children.begin();
-	     it != m_children.end(); ++it) {
-		delete *it;
-	}
-	m_children.clear();
+	DeleteContents(m_children);
 }
 
 #ifndef EC_REMOTE
