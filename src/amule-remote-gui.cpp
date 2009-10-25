@@ -229,6 +229,28 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 }
 
 
+void CamuleRemoteGuiApp::OnInitCmdLine(wxCmdLineParser& parser)
+{
+	// Handle these arguments.
+	parser.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
+	parser.AddSwitch(wxT("s"), wxT("skip"), wxT("Skip connection dialog."));
+	parser.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+}
+
+
+bool CamuleRemoteGuiApp::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+	// Show help on --help or invalid commands
+	if (parser.Found(wxT("help"))) {
+		parser.Usage();
+		return false;
+	}	
+	m_skipConnectionDialog = parser.Found(wxT("skip"));
+	parser.Found(wxT("geometry"), &m_geom_string);
+	return true;
+}
+
+
 bool CamuleRemoteGuiApp::OnInit()
 {
 	StartTickTimer();
@@ -294,11 +316,14 @@ bool CamuleRemoteGuiApp::CryptoAvailable() const
 }
 
 
-bool CamuleRemoteGuiApp::ShowConnectionDialog() {
-	
+bool CamuleRemoteGuiApp::ShowConnectionDialog()
+{
 	dialog = new CEConnectDlg;
 
-	if (dialog->ShowModal() != wxID_OK) {
+	if (m_skipConnectionDialog) {
+		wxCommandEvent evt;
+		dialog->OnOK(evt);
+	} else if (dialog->ShowModal() != wxID_OK) {
 		dialog->Destroy();
 		
 		return false;
@@ -378,23 +403,8 @@ void CamuleRemoteGuiApp::Startup() {
 	uploadqueue = new CUpQueueRem(m_connect);
 	ipfilter = new CIPFilterRem(m_connect);
 
-	// Parse cmdline arguments.
-	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
-	cmdline.AddSwitch(wxT("v"), wxT("version"),
-		wxT("Displays the current version number."));
-	cmdline.AddSwitch(wxT("h"), wxT("help"),
-		wxT("Displays this information."));
-	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
-	cmdline.Parse();
-	
-	bool geometry_enabled = false;
-	wxString geom_string;
-	if (cmdline.Found(wxT("geometry"), &geom_string)) {
-		geometry_enabled = true;
-	}
-	
 	// Create main dialog
-	InitGui(0, geom_string);
+	InitGui(0, m_geom_string);
 
 	// Forward wxLog events to CLogger
 	wxLog::SetActiveTarget(new CLoggerTarget);
