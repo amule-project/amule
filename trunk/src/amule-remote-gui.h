@@ -59,11 +59,11 @@ class CEConnectDlg : public wxDialog {
 	wxString login, passwd;
 	bool m_save_user_pass;
 	
-	void OnOK(wxCommandEvent& event);
-	
 	DECLARE_EVENT_TABLE()
 public:
 	CEConnectDlg();
+	
+	void OnOK(wxCommandEvent& event);
 	
 	wxString Host() { return host; }
 	int Port() { return port; }
@@ -667,7 +667,9 @@ public:
 };
 
 class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
-	wxTimer* poll_timer;
+	wxTimer*	poll_timer;
+	bool		m_skipConnectionDialog;
+	wxString	m_geom_string;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
@@ -681,6 +683,8 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	void OnECInitDone(wxEvent& event);
 	void OnNotifyEvent(CMuleGUIEvent& evt);
 	void OnFinishedHTTPDownload(CMuleInternalEvent& event);
+	void OnInitCmdLine(wxCmdLineParser& cmdline);
+	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 	CStatsUpdaterRem m_stats_updater;
 public:
