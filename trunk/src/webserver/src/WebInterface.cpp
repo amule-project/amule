@@ -506,7 +506,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 	
 	// template not found. reverting to default
-	const wxChar* const defaultTemplateName = wxT("php-default");
+	const wxChar* const defaultTemplateName = wxT("default");
 
 	if ( templateName == defaultTemplateName ) {
 		return false;
@@ -618,7 +618,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
 		parser.Found(wxT("template"), &m_TemplateName);
 		if (m_TemplateName.IsEmpty()) {
-			m_TemplateName = wxT("php-default");
+			m_TemplateName = wxT("default");
 		}
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
