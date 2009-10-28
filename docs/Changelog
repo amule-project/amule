@@ -8,6 +8,7 @@ Version 2.3.0 - The river knows.
 		  (with custom exception handling)
 		* Fix download of files > 1GB on ucLibc
 		* Fix autogen.sh under Ubuntu
+		* Fixed TCP obfuscation negotiation
 
 	Gnucco:
 		* Add option to ed2k link parser to display links in emulecollection
