@@ -451,7 +451,6 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 			const uint32 nToRead =  std::min(nLen - nRead, m_nReceiveBytesWanted);
 			//printf("Reading %i bytes, add from %i position on %i position\n",nToRead, nRead, (int)m_pfiReceiveBuffer.GetPosition());
 			//DumpMem(pBuffer + nRead, nToRead, wxT("Recv Buffer: "));
-			m_pfiReceiveBuffer.ResetData();
 			m_pfiReceiveBuffer.Write(pBuffer + nRead, nToRead);
 			nRead += nToRead;
 			m_nReceiveBytesWanted -= nToRead;
@@ -672,9 +671,8 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 				default:
 					wxFAIL;
 			}
-			
+			m_pfiReceiveBuffer.ResetData();
 		}
-		m_pfiReceiveBuffer.ResetData();
 		return nRead;
 	} catch(...){
 		// can only be caused by a bug in negationhandling, not by the datastream
