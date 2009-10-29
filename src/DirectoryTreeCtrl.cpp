@@ -161,7 +161,10 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 	if (m_IsRemote) {
 		SelectItem(evt.GetItem()); // looks weird otherwise
 	} else {
+		// this might take awhile, so change the cursor
+		::wxSetCursor(*wxHOURGLASS_CURSOR);
 		MarkChildren(evt.GetItem(), !IsBold(evt.GetItem()), false);
+		::wxSetCursor(*wxSTANDARD_CURSOR);
 		HasChanged = true;
 	}
 }
@@ -329,15 +332,12 @@ void CDirectoryTreeCtrl::UpdateSharedDirectories()
 
 bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 {
-	SharedMap::iterator it = m_lstShared.begin();
-	for (; it != m_lstShared.end(); ++it) {
-		// IsSameDir to avoid the case where 'path' itself is shared.
-		if (it->second.StartsWith(path) && (!it->second.IsSameDir(path))) {
-			return true;
-		}
+	SharedMap::iterator it = m_lstShared.upper_bound(GetKey(path) + wxFileName::GetPathSeparator());
+	if (it == m_lstShared.end()) {
+		return false;
 	}
-
-	return false;
+	// upper_bound() doesn't find the directory itself, so no need to check for that.
+	return it->second.StartsWith(path);
 }
 
 
