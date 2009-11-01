@@ -176,8 +176,8 @@ private:
 	//! Is it temporarily closed?
 	bool m_autoClosed;
 
-	//! Is it autoclosing disabled?
-	bool m_locked;
+	//! Autoclosing is disabled if != 0 
+	uint16 m_locked;
 
 	//! Size before it was closed.
 	uint64 m_size;

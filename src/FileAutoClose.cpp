@@ -33,7 +33,7 @@ static const uint32 ReleaseTime = 600;	// close file after 10 minutes of not bei
 CFileAutoClose::CFileAutoClose()
 	: m_mode(CFile::read),
 	  m_autoClosed(false),
-	  m_locked(false),
+	  m_locked(0),
 	  m_size(0),
 	  m_lastAccess(TheTime)
 {}
@@ -47,7 +47,7 @@ bool CFileAutoClose::Open(const CPath& path, CFile::OpenMode mode)
 {
 	m_mode = mode;
 	m_autoClosed = false;
-	m_locked = false;
+	m_locked = 0;
 	m_size = 0;
 	m_lastAccess = TheTime;
 	return m_file.Open(path, mode);
@@ -112,13 +112,15 @@ bool CFileAutoClose::Eof()
 int CFileAutoClose::fd()
 {
 	Reopen();
-	m_locked = true;
+	m_locked++;
 	return m_file.fd();
 }
 
 void CFileAutoClose::Unlock() 
 {
-	m_locked = false;
+	if (m_locked) {
+		m_locked--;
+	}
 }
 
 void CFileAutoClose::Reopen()
