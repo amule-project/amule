@@ -389,7 +389,33 @@ AC_ARG_ENABLE([mmap],
 AS_IF([test ${enable_mmap:-no} = yes], [
 	AC_CHECK_HEADERS([sys/mman.h])
 	AC_FUNC_MMAP
-	AC_CHECK_FUNCS([munmap])
+	AC_CHECK_FUNCS([munmap sysconf])
+	AS_IF([test $ac_cv_func_sysconf = yes], [
+		AC_MSG_CHECKING([for pagesize constant for sysconf])
+		AC_LINK_IFELSE([
+			AC_LANG_PROGRAM([[
+				#include <unistd.h>
+			]], [[
+				return sysconf(_SC_PAGESIZE);
+			]])
+		], [
+			AC_MSG_RESULT([_SC_PAGESIZE])
+			AC_DEFINE([HAVE__SC_PAGESIZE], [1], [Define to 1 if you have the _SC_PAGESIZE constant in <unistd.h>])
+		], [
+			AC_LINK_IFELSE([
+				AC_LANG_PROGRAM([[
+					#include <unistd.h>
+				]], [[
+					return sysconf(_SC_PAGE_SIZE);
+				]])
+			], [
+				AC_MSG_RESULT([_SC_PAGE_SIZE])
+				AC_DEFINE([HAVE__SC_PAGE_SIZE], [1], [Define to 1 if you have the _SC_PAGE_SIZE constant in <unistd.h>, but not _SC_PAGESIZE])
+			], [
+				AC_MSG_RESULT([none])
+			])
+		])
+	])
 ], [
 	# fake the result of the test for munmap() for the gettext macros
 	ac_cv_func_munmap=no
