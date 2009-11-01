@@ -113,7 +113,7 @@ void CFileAreaSigHandler::Handler(int sig, siginfo_t *info, void *ctx)
 	}
 
 	// mark error if found
-	if (cur) {
+	if (cur && gs_pageSize > 0) {
 		cur->m_error = true;
 		char *start_addr = ((char *) info->si_addr) - (((unsigned long) info->si_addr) % gs_pageSize);
 		if (mmap(start_addr, gs_pageSize, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) != MAP_FAILED)
@@ -221,18 +221,20 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	Close();
 
 #ifdef HAVE_MMAP
-	uint64 offStart = offset & (~((uint64)gs_pageSize-1));
-	uint64 offEnd = offset + count;
-	m_length = offEnd - offStart;
-	void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
-	if (p != MAP_FAILED) {
-		m_file = &file;
-		m_mmap_buffer = (byte*) p;
-		m_buffer = m_mmap_buffer + (offset - offStart);
+	if (gs_pageSize > 0) {
+		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
+		uint64 offEnd = offset + count;
+		m_length = offEnd - offStart;
+		void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
+		if (p != MAP_FAILED) {
+			m_file = &file;
+			m_mmap_buffer = (byte*) p;
+			m_buffer = m_mmap_buffer + (offset - offStart);
 
-		// add to list to catch errors correctly
-		CFileAreaSigHandler::Add(*this);
-		return;
+			// add to list to catch errors correctly
+			CFileAreaSigHandler::Add(*this);
+			return;
+		}
 	}
 	file.Unlock();
 #endif
@@ -246,7 +248,7 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 
 #ifdef HAVE_MMAP
 	uint64 offEnd = offset + count;
-	if (file.GetLength() >= offEnd) {
+	if (file.GetLength() >= offEnd && gs_pageSize > 0) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
 		m_length = offEnd - offStart;
 		void *p = mmap(NULL, m_length, PROT_READ|PROT_WRITE, MAP_SHARED, file.fd(), offStart);
