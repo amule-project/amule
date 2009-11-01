@@ -109,14 +109,17 @@ SFileRating::~SFileRating()
 class PartFileBufferedData
 {
 public:
-	CScopedArray<byte> data;		// This is the data to be written
+	CFileArea area;				// File area to be written
 	uint64 start;					// This is the start offset of the data
 	uint64 end;						// This is the end offset of the data
 	Requested_Block_Struct *block;	// This is the requested block that this data relates to
 
-	PartFileBufferedData(byte * _data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
-		: data(_data), start(_start), end(_end), block(_block)
-	{}
+	PartFileBufferedData(CFileAutoClose& file, byte * data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
+		: start(_start), end(_end), block(_block)
+	{
+		area.StartWriteAt(file, start, end-start+1);
+		memcpy(area.GetBuffer(), data, end-start+1);
+	}
 };
 
 
@@ -2890,12 +2893,8 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	// log transferinformation in our "blackbox"
 	m_CorruptionBlackBox->TransferredData(start, end, client->GetIP());
 
-	// Create copy of data as new buffer
-	byte *buffer = new byte[lenData];
-	memcpy(buffer, data, lenData);
-
 	// Create a new buffered queue entry
-	PartFileBufferedData *item = new PartFileBufferedData(buffer, start, end, block);
+	PartFileBufferedData *item = new PartFileBufferedData(m_hpartfile, data, start, end, block);
 
 	// Add to the queue in the correct position (most likely the end)
 	bool added = false;
@@ -2984,7 +2983,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		
 		// Go to the correct position in file and write block of data			
 		try {
-			m_hpartfile.WriteAt(item->data.get(), item->start, lenData);
+			item->area.FlushAt(m_hpartfile, item->start, lenData);
 			// Decrease buffer size
 			m_nTotalBufferData -= lenData;
 		} catch (const CIOFailureException& e) {

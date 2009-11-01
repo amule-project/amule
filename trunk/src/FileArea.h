@@ -63,11 +63,16 @@ public:
 	 * or a allocated buffer depending on systems.
 	 */
 	void ReadAt(CFileAutoClose& file, uint64 offset, size_t count);
-	
+
 	/**
+	 * Start a new write
+	 */
+	void StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count);
+
+        /**
 	 * Flushes data not yet written.
 	 */
-	bool Flush();
+	bool FlushAt(CFileAutoClose& file, uint64 offset, size_t count);
 
 	/**
 	 * Get buffer that contains data readed or to write.
