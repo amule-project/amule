@@ -24,6 +24,8 @@ Version 2.3.0 - The river knows.
 		  extension if length == 3.
 		* Instead of counting unicode characters in a Kad search now we use the
 		  UTF-8 byte count to determine whether the keyword is allowed or not.
+		* Use actual page size in mmap calls instead of a randomly selected
+		  number.
 
 	Greek:
 		* Part number is now an extra column in the download list
