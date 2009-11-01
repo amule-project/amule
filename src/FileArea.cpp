@@ -107,7 +107,7 @@ void CFileAreaSigHandler::Handler(int sig, siginfo_t *info, void *ctx)
 	if (cur) {
 		cur->m_error = true;
 		char *start_addr = ((char *) info->si_addr) - (((unsigned long) info->si_addr) % PAGE_SIZE);
-		if (mmap(start_addr, PAGE_SIZE, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) != MAP_FAILED)
+		if (mmap(start_addr, PAGE_SIZE, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) != MAP_FAILED)
 			return;
 	}
 
@@ -195,6 +195,7 @@ bool CFileArea::Close()
 		munmap(m_mmap_buffer, m_length);
 		// remove from list
 		CFileAreaSigHandler::Remove(*this);
+		m_buffer = NULL;
 		m_mmap_buffer = NULL;
 		if (m_file) {
 			m_file->Unlock();
@@ -216,9 +217,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	uint64 offEnd = offset + count;
 	m_length = offEnd - offStart;
 	void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
-	if (p == MAP_FAILED) {
-		file.Unlock();
-	} else {
+	if (p != MAP_FAILED) {
 		m_file = &file;
 		m_mmap_buffer = (byte*) p;
 		m_buffer = m_mmap_buffer + (offset - offStart);
@@ -227,14 +226,55 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 		CFileAreaSigHandler::Add(*this);
 		return;
 	}
+	file.Unlock();
 #endif
 	m_buffer = new byte[count];
 	file.ReadAt(m_buffer, offset, count);
 }
 
-bool CFileArea::Flush()
+void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
-	/* currently we don't support write */
+	Close();
+
+#ifdef HAVE_MMAP
+	uint64 offEnd = offset + count;
+	if (file.GetLength() >= offEnd) {
+		const uint64 pageSize = 8192u;
+		uint64 offStart = offset & (~(pageSize-1));
+		m_length = offEnd - offStart;
+		void *p = mmap(NULL, m_length, PROT_READ|PROT_WRITE, MAP_SHARED, file.fd(), offStart);
+		if (p != MAP_FAILED)
+		{
+			m_file = &file;
+			m_mmap_buffer = (byte*) p;
+			m_buffer = m_mmap_buffer + (offset - offStart);
+
+			// add to list to catch errors correctly
+			CFileAreaSigHandler::Add(*this);
+			return;
+		}
+		file.Unlock();
+	}
+#endif
+	m_buffer = new byte[count];
+}
+
+
+bool CFileArea::FlushAt(CFileAutoClose& file, uint64 offset, size_t count)
+{
+	if (!m_buffer)
+		return false;
+
+#ifdef HAVE_MMAP
+	if (m_mmap_buffer) {
+		if (msync(m_mmap_buffer, m_length, MS_SYNC))
+			return false;
+		Close();
+		return true;
+	}
+#endif
+	file.WriteAt(m_buffer, offset, count);
+	Close();
 	return true;
 }
 
