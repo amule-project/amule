@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: new_ast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-22 09:20+0200\n"
-"PO-Revision-Date: 2009-01-01 19:49+0100\n"
+"PO-Revision-Date: 2009-11-04 21:31+0100\n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: Language ast <malditoastur@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -443,7 +443,7 @@ msgstr "amuled: derivando al fondu - vémonos"
 
 #: src/amuled.cpp:732
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Nun puede Crease un Ficheru Pid"
 
 #: src/amuled.cpp:791
 #, c-format
@@ -776,7 +776,7 @@ msgstr "Fallu de conexón. Nun ye dable coneutar a %s:%d\n"
 
 #: src/amule-remote-gui.cpp:334
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Zarróse la conexón - ye dable que aMule finare."
 
 #: src/amule-remote-gui.cpp:432
 msgid "Ready"
@@ -790,6 +790,8 @@ msgstr "Toos"
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
+"Nun puede crease'l direutoriu '%s' pa la categoría '%s', calteniendo "
+"direutoriu '%s'."
 
 #: src/amule-remote-gui.cpp:947
 #, c-format
@@ -798,7 +800,7 @@ msgstr "Total Usuarios: %s | Total Ficheros: %s"
 
 #: src/amule-remote-gui.cpp:1817
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
+msgstr "Comentarios y valoraciones entá nun tán sofitaos na gui remota"
 
 #: src/BaseClient.cpp:1330
 #, c-format
@@ -893,7 +895,7 @@ msgstr "Nuevu mensax de '%s' (IP:%s)"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Inxertar Captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:243
 #: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
@@ -944,13 +946,15 @@ msgstr "*** Fallu al coneutar col veceru / Conexón perdía ***"
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** Aprobóse'l captcha, y l'usuariu recibirá'l to mensax. ***"
 
 #: src/ChatSelector.cpp:334
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** La to rempuesta al captcha nun ye correuta y el to mensax va inorase. "
+"Puedes solicitar otru captcha unviando un mensax nuevu. ***"
 
 #: src/ClientCreditsList.cpp:168
 #, c-format
@@ -1364,6 +1368,7 @@ msgstr[1] "%u comentarios"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"Veceru %s baneáu por unviar %s datos toyíos de %s en total pal ficheru '%s'"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1770,9 +1775,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Enllaz eD2k inválidu! FALLU: %s"
 
 #: src/ExternalConn.cpp:127
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Autenticación fallía"
+msgstr "El veceru unvió un paquete dempués que falló l'autenticación."
 
 #: src/ExternalConn.cpp:135
 msgid "Unauthorized access attempt. Connection closed."
@@ -1841,7 +1845,6 @@ msgid "Authentication failed."
 msgstr "Autenticación fallía"
 
 #: src/ExternalConn.cpp:359
-#, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "Solicitú non válida, tendríes d'autenticate primero."
 
@@ -2259,6 +2262,8 @@ msgstr "Descarga HTTP filu entamáu"
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
 msgstr ""
+"Nun se recibió tamañu de la descarga; descargando hasta que se zarre la "
+"conexón"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2266,9 +2271,9 @@ msgid "Download size: %i"
 msgstr "Tamañu de descarga: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Descargáu"
+msgstr "Descargaos %d bytes"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
@@ -2532,9 +2537,10 @@ msgid "EC connection failed. Empty reply."
 msgstr "La conexón EC falló. Rempuesta erma."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:231
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Conexón esterna: Rempuesta del sirvidor incorreuta. Conexón zarrada."
+msgstr ""
+"Conexón esterna: Rempuesta del sirvidor incorreuta, falló handshake. Conexón "
+"zarrada."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:239
 msgid "Succeeded! Connection established to aMule "
@@ -2549,9 +2555,8 @@ msgid "External Connection: Access denied because: "
 msgstr "Conexón esterna: Accesu denegáu, xida:"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:251
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Conexón esterna: Accesu denegáu"
+msgstr "Conexón esterna: Falló handshake."
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
@@ -5168,9 +5173,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Direutoriu TEMP camudáu.\n"
 
 #: src/PrefsUnifiedDlg.cpp:592
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Toles redes tán deshabilitaes"
+msgstr "- Rede ED2K activada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:659
 msgid ""
@@ -6115,19 +6119,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Picu de conexones (estimáu): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Tamañu desconocíu"
+msgstr "Desconocíu: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Fieltráu"
+msgstr "Filtráu: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Baneáu"
+msgstr "Baneáu: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
@@ -7507,7 +7511,7 @@ msgstr "Procesando solicitú [orixinal]: "
 
 #: src/webserver/src/WebServer.cpp:1871
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Nun s'especificó dengún password, nun se permite l'accesu."
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Checking password\n"
