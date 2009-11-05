@@ -8,6 +8,7 @@ src/BaseClient.cpp
 src/CaptchaDialog.cpp
 src/CatDialog.cpp
 src/ChatSelector.cpp
+src/ChatWnd.cpp
 src/ClientCreditsList.cpp
 src/ClientDetailDialog.cpp
 src/ClientListCtrl.cpp
@@ -43,6 +44,7 @@ src/muuli_wdr.cpp
 src/OScopeCtrl.cpp
 src/OtherFunctions.cpp
 src/PartFileConvert.cpp
+src/PartFileConvertDlg.cpp
 src/PartFile.cpp
 src/Preferences.cpp
 src/PrefsUnifiedDlg.cpp
