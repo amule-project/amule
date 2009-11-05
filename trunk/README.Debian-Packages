@@ -35,9 +35,9 @@ amule-utils-gui		Creates the Metapackage for the graphical utilities and all the
 			* alc
 			* remotegui
 			* wxcas
-i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, bg, ca, da,
-			de, es, et-ee, eu, fi, fr, gl, hr, hu, it, it-ch, ko-kr, lt, nl,
-			nn, pl, pt-br, pt-pt, ru, sl, sv, tr, zh-cn or zh-tw
+i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, ast, bg, ca, cs,
+			da, de, el, es, et-ee, eu, fi, fr, gl, he, hr, hu, it, it-ch, ja, ko-kr, lt, nl,
+			nn, pl, pt-br, pt-pt, ru, sl, sq, sv, tr, uk, zh-cn or zh-tw
 			If no i18n-package is given, all will be build.
 			If you just want en_GB, use i18n-en-only
 

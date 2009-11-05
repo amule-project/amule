@@ -4,7 +4,7 @@
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
-
+export DEB_BUILD_OPTIONS_PARALLEL=3
 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
@@ -14,6 +14,8 @@ DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 general_pkgs = "amule-common"\
 	"amule-skin-gnome"\
 	"amule-skin-kde4"\
+	"amule-skin-mac-gray"\
+	"amule-skin-priscilla"\
 	"amule-skin-tango"\
 	"amule-skin-xfce"
 
@@ -25,6 +27,7 @@ flags = ${MAKECMDGOALS}
 ifeq ("binary", "$(findstring binary, $(flags))")
 
 	WXCAS = --enable-wxcas
+	XAS = --enable-xas
 	CAS = --enable-cas
 	WEBSERVER = --enable-webserver
 	REMOTEGUI = --enable-amule-gui
@@ -38,6 +41,7 @@ ifeq ("binary", "$(findstring binary, $(flags))")
 else ifeq ("build", "$(findstring build, $(flags))")
 
 	WXCAS = --enable-wxcas
+	XAS = --enable-xas
 	CAS = --enable-cas
 	WEBSERVER = --enable-webserver
 	REMOTEGUI = --enable-amule-gui
@@ -98,8 +102,8 @@ else
 		ED2K = --disable-ed2k
 	endif
 
-	ifneq ("xas", "$(findstring xas, $(flags))")
-		XAS = --disable-xas
+	ifeq ("xas", "$(findstring xas, $(flags))")
+		XAS = --enable-xas
 	endif
 
 	#Now find out if a Metapackage should be build
@@ -122,6 +126,10 @@ else
 			LANGUAGE := $(LANGUAGE),ar
 		endif
 
+		ifeq ("i18n-ast", "$(findstring i18n-ast, $(flags))")
+			LANGUAGE := $(LANGUAGE),ast
+		endif
+
 		ifeq ("i18n-bg", "$(findstring i18n-bg, $(flags))")
 			LANGUAGE := $(LANGUAGE),bg
 		endif
@@ -130,12 +138,20 @@ else
 			LANGUAGE := $(LANGUAGE),ca
 		endif
 
+		ifeq ("i18n-cs", "$(findstring i18n-cs, $(flags))")
+			LANGUAGE := $(LANGUAGE),cs
+		endif
+
 		ifeq ("i18n-da", "$(findstring i18n-da, $(flags))")
 			LANGUAGE := $(LANGUAGE),da
 		endif
 
 		ifeq ("i18n-de", "$(findstring i18n-de, $(flags))")
 			LANGUAGE := $(LANGUAGE),de
+		endif
+
+		ifeq ("i18n-el", "$(findstring i18n-el, $(flags))")
+			LANGUAGE := $(LANGUAGE),el
 		endif
 
 		ifeq ("i18n-es", "$(findstring i18n-es, $(flags))")
@@ -162,6 +178,10 @@ else
 			LANGUAGE := $(LANGUAGE),gl
 		endif
 
+		ifeq ("i18n-he", "$(findstring i18n-he, $(flags))")
+			LANGUAGE := $(LANGUAGE),he
+		endif
+
 		ifeq ("i18n-hr", "$(findstring i18n-hr, $(flags))")
 			LANGUAGE := $(LANGUAGE),hr
 		endif
@@ -176,6 +196,10 @@ else
 
 		ifeq ("i18n-it-ch", "$(findstring i18n-it-ch, $(flags))")
 			LANGUAGE := $(LANGUAGE),it_CH
+		endif
+
+		ifeq ("i18n-ja", "$(findstring i18n-ja, $(flags))")
+			LANGUAGE := $(LANGUAGE),ja
 		endif
 
 		ifeq ("i18n-ko-kr", "$(findstring i18n-ko-kr, $(flags))")
@@ -214,12 +238,20 @@ else
 			LANGUAGE := $(LANGUAGE),sl
 		endif
 
+		ifeq ("i18n-sq", "$(findstring i18n-sq, $(flags))")
+			LANGUAGE := $(LANGUAGE),sq
+		endif
+
 		ifeq ("i18n-sv", "$(findstring i18n-sv, $(flags))")
 			LANGUAGE := $(LANGUAGE),sv
 		endif
 
 		ifeq ("i18n-tr", "$(findstring i18n-tr, $(flags))")
 			LANGUAGE := $(LANGUAGE),tr
+		endif
+
+		ifeq ("i18n-uk", "$(findstring i18n-uk, $(flags))")
+			LANGUAGE := $(LANGUAGE),uk
 		endif
 
 		ifeq ("i18n-zh-cn", "$(findstring i18n-zh-cn, $(flags))")
@@ -242,7 +274,7 @@ else
 	ifeq ("dbg", "$(findstring dbg, $(flags))")
 		DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	else
-		DEBUGGING = --disable-debug --enable-optimize --disable-profile 
+		DEBUGGING = --disable-debug --enable-optimize --enable-profile 
 	endif
 endif
 
@@ -259,9 +291,7 @@ define stage1
 	dh_installdebconf -p$(subst -stage1,,$@)
 	dh_installman -p$(subst -stage1,,$@)
 	dh_link -p$(subst -stage1,,$@)
-	if test -e debian/$(subst -stage1,,$@).override; then \
-		install --mode=644 debian/$(subst -stage1,,$@).override debian/$(subst -stage1,,$@)/usr/share/lintian/overrides/$(subst -stage1,,$@); \
-	fi
+	dh_lintian -p$(subst -stage1,,$@)
 	touch $@
 endef
 
@@ -286,7 +316,7 @@ endef
 config.status: configure
 	dh_testdir
 	CFLAGS="$(CFLAGS)" dh_auto_configure -- --host=$(DEB_HOST_GNU_TYPE)\
-		--with-ccache\
+		--enable-ccache\
 		--enable-geoip\
 		${AMULECMD}\
 		${DEBUGGING}\
@@ -341,9 +371,7 @@ amule-common: install
 		dh_installdebconf -p$$pkg; \
 		dh_installman -p$$pkg; \
 		dh_link -p$$pkg; \
-		if test -e debian/$$pkg.overrride; then \
-			install --mode=644 debian/$$pkg.override debian/$$pkg/usr/share/lintian/overrides/$$pkg; \
-		fi; \
+		dh_lintian -p$$pkg; \
 		dh_compress -X.pl -p$$pkg; \
 		dh_perl -p$$pkg; \
 		dh_makeshlibs -p$$pkg; \
@@ -457,7 +485,7 @@ amule-utils-gui: alc remotegui wxcas
 #These are empty (Space after Semicolon)
 debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg ; 
 normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas ; 
-language-packages: i18n-ar i18n-bg i18n-ca i18n-da i18n-de i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sv i18n-tr i18n-zh-cn i18n-zh-tw ; 
+language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ; 
 i18n-en-only: ; 
 
 #If we build from a svn checkout, we need to generate configure

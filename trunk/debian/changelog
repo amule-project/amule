@@ -1,3 +1,62 @@
+amule (2.2.6+svn-9854) testing; urgency=low
+
+  * Changed Naming Convention to represent the revision
+  * debian/control
+    - Versioned Build-Dep on libwxgtk2.8-dev to use minimum 2.8.8
+    - Bumped Standardsversion to 3.8.3
+    - Moved i18n-packages to Section localisation
+    - Set right Conflicts/Replaces for
+      + amule-wxcas
+      + amule-alc
+      + amule-remote-gui
+      + amule-ed2k
+      + amulecmd
+      + Added ${misc:Depends} to packages deps
+      + Bumped versioned build-dep of debhelper to >= 7
+      + Moved -dbg packages to section debug
+  * debian/amule-common.install
+    - Changed old aMule-CVS dir for docs to amule
+  * debian/rules
+    - Changed --with-ccache to --enable-ccache
+    - Re-enabled install of xas
+    - Removed the if's to install lintian overrides, use dh_lintian instead
+    - Added DEB_BUILD_OPTIONS_PARALLEL=3 for parallel building
+  * debian/clean
+    - removed compile
+  * Removed amule-ed2k.preinst
+  * Added Package
+    - amule-i18n-ast
+    - amule-i18n-cs
+    - amule-i18n-el
+    - amule-i18n-he
+    - amule-i18n-ja
+    - amule-i18n-sq
+    - amule-i18n-uk
+    - amule-skin-mac-gray
+    - amule-skin-priscilla
+  * Moved amule.override to amule.lintian-overrides
+  * Moved amule-xas.override to amule-xas.lintian-overrides
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Thu, 05 Nov 2009 11:51:28 +0200
+
+amule (2.2.6) testing; urgency=low
+
+  * New Upstream Release
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Thu, 17 Sep 2009 12:34:32 +0100
+
+amule (2.2.5) testing; urgency=low
+
+  * New Upstream Release
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Sun, 17 May 2009 11:51:31 +0200
+
+amule (2.2.4) testing; urgency=low
+
+  * New Upstream Release
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Fri, 10 Apr 2009 13:27:01 +0100
+
 amule (2.2.3) testing; urgency=low
 
   * New Upstream release
@@ -434,7 +493,7 @@ amule (2.1.1+CVS20060513-2) testing; urgency=low
   * Moved amule.xpm back to amule-common
   * Fixed typo in description of amule-dbg
   * Removed Version from dep to amule-i18n
-    Thanks to jere for reposting all three
+    Thanks to jere for reporting all three
 
  -- Vollstrecker <amule@vollstreckernet.de>  Sat, 13 May 2006  15:44:40 +0100
 
