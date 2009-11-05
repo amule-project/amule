@@ -274,7 +274,7 @@ else
 	ifeq ("dbg", "$(findstring dbg, $(flags))")
 		DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	else
-		DEBUGGING = --disable-debug --enable-optimize --enable-profile 
+		DEBUGGING = --disable-debug --enable-optimize --disable-profile 
 	endif
 endif
 
