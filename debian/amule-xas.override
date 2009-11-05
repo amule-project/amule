@@ -1,2 +1,0 @@
-amule-xas: binary-without-manpage usr/bin/autostart-xas
-amule-xas: script-not-executable ./usr/lib/xchat/plugins/xas.pl
