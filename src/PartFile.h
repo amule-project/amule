@@ -44,8 +44,6 @@ class CED2KFileLink;
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
 #define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
 
-#define	STATES_COUNT			13
-
 // Ok, eMule and aMule are building incompatible backup files because 
 // of the different name. aMule was using ".BAK" and eMule ".bak". 
 // This should fix it.
@@ -352,7 +350,6 @@ private:
 	
 	uint32	m_iLastPausePurge;
 	uint16	m_count;
-	uint16	m_anStates[STATES_COUNT];
 	uint16	transferingsrc;
 	uint64  completedsize;
 	uint64	transferred;

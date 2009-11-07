@@ -2352,7 +2352,6 @@ void CPartFile::StopFile(bool bCancel)
 	RemoveAllSources(true);
 	kBpsDown = 0.0;
 	transferingsrc = 0;
-	memset(m_anStates,0,sizeof(m_anStates));
 	
 	if (!bCancel) {
 		FlushBuffer();
@@ -2421,7 +2420,6 @@ void CPartFile::PauseFile(bool bInsufficient)
 	
 	kBpsDown = 0.0;
 	transferingsrc = 0;
-	m_anStates[DS_DOWNLOADING] = 0;
 
 	SetStatus(status);
 }
@@ -3629,8 +3627,6 @@ void CPartFile::Init()
 		m_iDownPriority = PR_NORMAL;
 		m_bAutoDownPriority = false;
 	}
-	
-	memset(m_anStates,0,sizeof(m_anStates));
 	
 	transferingsrc = 0; // new
 	
