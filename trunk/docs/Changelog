@@ -105,6 +105,7 @@ Version 2.3.0 - The river knows.
 		* Fixed errors and crashes on parsing ED2K links with '/' in them
 		* Configure option --enable-fileview
 		* Bypass amulegui connection dialog with switch -s / --skip
+		* Fixed Core Timer
 
 	Vollstrecker:
 		* Unify copyright lines
