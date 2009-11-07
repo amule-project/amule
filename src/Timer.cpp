@@ -40,20 +40,22 @@ public:
 	void* Entry() {
 		CTimerEvent evt(m_id);
 
-		uint64 lastEvent = GetTickCountFullRes();
+		uint32 lastEvent = GetTickCountFullRes();
 		do {
-			uint64 now = GetTickCountFullRes();
-			uint64 sinceLast = now - lastEvent;
-			if (sinceLast > 100 * m_period) {
+			// current time
+			uint32 now = GetTickCountFullRes();
+			// This is typically zero, because lastEvent was already incremented by one period. 
+			sint32 delta = now - lastEvent;
+			if (delta > 100 * m_period) {
 				// We're way too far behind.  Probably what really happened is
-				// the system time was adjusted backwards a bit, or (less
-				// likely) the time wrapped past the limit of a uint64.  So,
-				// the calculation of sinceLast has produced an absurd value.
-				sinceLast = 100 * m_period;
-				lastEvent = now - sinceLast;
+				// the system time was adjusted backwards a bit.  So,
+				// the calculation of delta has produced an absurd value.
+				delta = 100 * m_period;
+				lastEvent = now - delta;
 			}
 
-			unsigned long timeout = ((m_period < sinceLast) ? 0 : (m_period - sinceLast));
+			// Wait one period (adjusted by the difference just calculated)
+			sint32 timeout = ((m_period < delta) ? 0 : (m_period - delta));
 			
 			// In normal operation, we will never actually acquire the
 			// semaphore; we will always timeout.  This is used to
@@ -74,7 +76,7 @@ public:
 		return NULL;
 	}
 	
-	unsigned long	m_period;
+	sint32			m_period;
 	bool			m_oneShot;
 	wxEvtHandler*	m_owner;
 	int				m_id;
