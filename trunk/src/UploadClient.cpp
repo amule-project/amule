@@ -205,17 +205,10 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 
 void CUpDownClient::CreateNextBlockPackage()
 {
-	// See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
-	if(m_BlockRequests_queue.empty() || // There are no new blocks requested
-		((m_addedPayloadQueueSession > GetQueueSessionPayloadUp()) && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024)) { // the buffered data is large enough allready
-		return;
-	}
-
-	CPath fullname;
 	try {
-	// Buffer new data if current buffer is less than 100 KBytes
-	while ((!m_BlockRequests_queue.empty()) &&
-		(m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
+		// Buffer new data if current buffer is less than 100 KBytes
+		while (!m_BlockRequests_queue.empty()
+			   && m_addedPayloadQueueSession - m_nCurQueueSessionPayloadUp < 100*1024) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
 			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
@@ -224,28 +217,11 @@ void CUpDownClient::CreateNextBlockPackage()
 				throw wxString(wxT("requested file not found"));
 			}
 
-			if (srcfile->IsPartFile() && ((CPartFile*)srcfile)->GetStatus() != PS_COMPLETE) {
-				//#warning This seems a good idea from eMule. We must import this.
-				#if 0
-				// Do not access a part file, if it is currently moved into the incoming directory.
-				// Because the moving of part file into the incoming directory may take a noticable 
-				// amount of time, we can not wait for 'm_FileCompleteMutex' and block the main thread.
-				if (!((CPartFile*)srcfile)->m_FileCompleteMutex.Lock(0)){ // just do a quick test of the mutex's state and return if it's locked.
-					return;
-				}
-				lockFile.m_pObject = &((CPartFile*)srcfile)->m_FileCompleteMutex;
-				// If it's a part file which we are uploading the file remains locked until we've read the
-				// current block. This way the file completion thread can not (try to) "move" the file into
-				// the incoming directory.
-				#endif
+			// Check if this know file is a CPartFile. 
+			// For completed part files IsPartFile() returns false, so they are 
+			// correctly treated as plain CKnownFile.
+			CPartFile* srcPartFile = srcfile->IsPartFile() ? (CPartFile*)srcfile : NULL;
 
-				// Get the full path to the '.part' file
-				fullname = dynamic_cast<CPartFile*>(srcfile)->GetFullName().RemoveExt();
-			} else {
-				fullname = srcfile->GetFilePath().JoinPaths(srcfile->GetFileName());
-			}
-		
-			uint64 togo;
 			// THIS EndOffset points BEHIND the last byte requested
 			// (other than the offsets used in the PartFile code)
 			if (currentblock->EndOffset > srcfile->GetFileSize()) {
@@ -254,14 +230,9 @@ void CUpDownClient::CreateNextBlockPackage()
 			} else if (currentblock->StartOffset > currentblock->EndOffset) { 
 				throw wxString(CFormat(wxT("Asked for invalid block (start %d > end %d)"))
 									% currentblock->StartOffset % currentblock->EndOffset);
-			} else {
-				togo = currentblock->EndOffset - currentblock->StartOffset;
-				
-				if (srcfile->IsPartFile() && !((CPartFile*)srcfile)->IsComplete(currentblock->StartOffset,currentblock->EndOffset-1)) {
-					throw wxString(CFormat(wxT("Asked for incomplete block (%d - %d)"))
-									% currentblock->StartOffset % (currentblock->EndOffset-1));
-				}
 			}
+
+			uint64 togo = currentblock->EndOffset - currentblock->StartOffset;
 
 			if (togo > EMBLOCKSIZE * 3) {
 				throw wxString(CFormat(wxT("Client requested too large block (%d > %d)"))
@@ -269,31 +240,28 @@ void CUpDownClient::CreateNextBlockPackage()
 			}
 
 			CFileArea area;
-			if (!srcfile->IsPartFile()){
+			if (srcPartFile) {
+				if (!srcPartFile->IsComplete(currentblock->StartOffset,currentblock->EndOffset-1)) {
+					throw wxString(CFormat(wxT("Asked for incomplete block (%d - %d)"))
+									% currentblock->StartOffset % (currentblock->EndOffset-1));
+				}
+				if (!srcPartFile->ReadData(area, currentblock->StartOffset, togo)) {
+					throw wxString(wxT("Failed to read from requested partfile"));
+				}
+			} else {
 				CFileAutoClose file;
+				CPath fullname = srcfile->GetFilePath().JoinPaths(srcfile->GetFileName());
 				if ( !file.Open(fullname, CFile::read) ) {
-					// The file was most likely moved/deleted. However it is likely that the
-					// same is true for other files, so we recheck all shared files. 
+					// The file was most likely moved/deleted. So remove it from the list of shared files.
 					AddLogLineM( false, CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
 					theApp->sharedfiles->RemoveFile(srcfile);
 					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
 				}
 				area.ReadAt(file, currentblock->StartOffset, togo);
-			} else {
-				if (!((CPartFile*)srcfile)->ReadData(area, currentblock->StartOffset, togo))
-					throw wxString(wxT("Failed to read from requested partfile"));
 			}
 			area.CheckError();
 
-			//#warning Part of the above import.
-			#if 0
-			if (lockFile.m_pObject){
-				lockFile.m_pObject->Unlock(); // Unlock the (part) file as soon as we are done with accessing it.
-				lockFile.m_pObject = NULL;
-			}
-			#endif
-	
 			SetUploadFileID(srcfile);
 
 			// check extention to decide whether to compress or not
