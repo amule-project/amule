@@ -430,6 +430,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	}
 
 	uint32 tick = GetTickCount();
+	client->ClearWaitStartTime();
 	// if possible start upload right away
 	if (m_waitinglist.empty() && tick - m_nLastStartUpload >= 1000 && m_uploadinglist.size() < GetMaxSlots()) {
 		AddUpNextClient(client);
@@ -437,7 +438,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	} else {
 		m_waitinglist.push_back(client);
 		theStats::AddWaitingClient();
-		client->ClearWaitStartTime();
 		client->ClearAskedCount();
 		client->SetUploadState(US_ONUPLOADQUEUE);
 		client->SendRankingInfo();
