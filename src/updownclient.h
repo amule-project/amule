@@ -285,11 +285,7 @@ public:
 	void		SetUploadState(uint8 news);
 	uint32		GetTransferredUp() const	{ return m_nTransferredUp; }
 	uint32		GetSessionUp() const		{ return m_nTransferredUp - m_nCurSessionUp; }
-	void		ResetSessionUp() {
-						m_nCurSessionUp = m_nTransferredUp;
-						m_addedPayloadQueueSession = 0;
-						m_nCurQueueSessionPayloadUp = 0;
-					}
+	void		ResetSessionUp();
 	uint32		GetUploadDatarate() const	{ return m_nUpDatarate; }
 
 #ifndef CLIENT_GUI
