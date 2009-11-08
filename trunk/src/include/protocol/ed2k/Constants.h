@@ -75,18 +75,10 @@
 #define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
 
 // (4294967295/PARTSIZE)*PARTSIZE = ~4GB
-#ifdef _MSC_VER
-#define OLD_MAX_FILE_SIZE 4290048000ui64
-#else
 #define OLD_MAX_FILE_SIZE 4290048000ull
-#endif
 
 // = 2^38 = 256GB
-#ifdef _MSC_VER
-	#define MAX_FILE_SIZE 0x4000000000ui64
-#else
-	#define MAX_FILE_SIZE 0x4000000000ull
-#endif
+#define MAX_FILE_SIZE 0x4000000000ull
 
 const uint64 PARTSIZE		= 9728000ull;
 const uint32 BLOCKSIZE		= 184320u;
