@@ -535,8 +535,6 @@ public:
 	 */
 	bool		SendChatMessage(const wxString& message);
 
-	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
-	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
 	bool		HasBlocks() const		{ return !m_BlockRequests_queue.empty(); }
 
 	/* Source comes from? */
@@ -659,9 +657,9 @@ private:
 	CClientCredits	*credits;
 	CFriend 	*m_Friend;
 
-	uint32		m_nTransferredUp;
-	uint32		m_nCurQueueSessionPayloadUp;
-	uint32		m_addedPayloadQueueSession;
+	sint64		m_nTransferredUp;
+	sint64		m_nCurQueueSessionPayloadUp;
+	sint64		m_addedPayloadQueueSession;
 
 	struct TransferredData {
 		uint32	datalen;
