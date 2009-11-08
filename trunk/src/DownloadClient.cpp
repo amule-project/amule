@@ -154,6 +154,7 @@ bool CUpDownClient::AskForDownload()
 	m_bUDPPending = false;
 	m_dwLastAskedTime = ::GetTickCount();
 	SetDownloadState(DS_CONNECTING);
+	SetSentCancelTransfer(0);
 	return TryToConnect();
 }
 
