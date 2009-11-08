@@ -221,9 +221,9 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	Close();
 
 #ifdef HAVE_MMAP
-	if (gs_pageSize > 0) {
+	uint64 offEnd = offset + count;
+	if (gs_pageSize > 0 && offEnd < 0x100000000ull) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
-		uint64 offEnd = offset + count;
 		m_length = offEnd - offStart;
 		void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
 		if (p != MAP_FAILED) {
@@ -248,7 +248,7 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 
 #ifdef HAVE_MMAP
 	uint64 offEnd = offset + count;
-	if (file.GetLength() >= offEnd && gs_pageSize > 0) {
+	if (file.GetLength() >= offEnd && gs_pageSize > 0 && offEnd < 0x100000000ull) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
 		m_length = offEnd - offStart;
 		void *p = mmap(NULL, m_length, PROT_READ|PROT_WRITE, MAP_SHARED, file.fd(), offStart);
