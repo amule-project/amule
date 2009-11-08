@@ -606,6 +606,20 @@ void CUpDownClient::ClearWaitStartTime()
 }
 
 
+void CUpDownClient::ResetSessionUp()
+{
+	m_nCurSessionUp = m_nTransferredUp;
+	m_addedPayloadQueueSession = 0;
+	m_nCurQueueSessionPayloadUp = 0;
+	// If upload was resumed there can be a remaining payload in the socket
+	// causing (prepared - sent) getting negative. So reset the counter here.
+	if (m_socket) {
+		CEMSocket* s = m_socket;
+		s->GetSentPayloadSinceLastCallAndReset();
+	}
+}
+
+
 uint32 CUpDownClient::SendBlockData()
 {
     uint32 curTick = ::GetTickCount();
