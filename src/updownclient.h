@@ -377,6 +377,7 @@ public:
 	uint8		GetDownloadState() const	{ return m_nDownloadState; }
 	void		SetDownloadState(uint8 byNewState);
 	uint32		GetLastAskedTime() const	{ return m_dwLastAskedTime; }
+	void		ResetLastAskedTime()		{ m_dwLastAskedTime = 0; }
 
 	bool		IsPartAvailable(uint16 iPart) const
 					{ return ( iPart < m_downPartStatus.size() ) ? m_downPartStatus[iPart] : 0; }

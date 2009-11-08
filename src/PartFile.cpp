@@ -2410,6 +2410,8 @@ void CPartFile::PauseFile(bool bInsufficient)
 				cur_src->SetSentCancelTransfer( true );
 			}
 			cur_src->SetDownloadState(DS_ONQUEUE);
+			// Allow immediate reconnect on resume
+			cur_src->ResetLastAskedTime();
 		}
 	}
 
