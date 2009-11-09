@@ -227,7 +227,7 @@ common_sources = \
 # Libs
 
 core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
-gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
+gui_libs = -L. -lmuleappgui $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
 
