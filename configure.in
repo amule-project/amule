@@ -320,7 +320,6 @@ dnl ----------------------------------------------------------------------------
 dnl Start of autoscan stuff
 dnl -------------------------------------------------------------------------------
 # Checks for header files.
-AC_PATH_X
 AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
 AC_HEADER_STDC

@@ -132,7 +132,6 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 	openbsd*) 
 		SYS=openbsd
 		LIBS="$LIBS -L/usr/local/lib"
-		X11LIBS="-lX11 -L/usr/X11R6/lib"
 		MULECPPFLAGS="-D__OPENBSD__"
 		;;
 	*cygwin* | *mingw32*)
@@ -142,7 +141,6 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 	solaris*)
 		SYS=solaris
 		RESOLV_LIB="-lresolv -lnsl"
-		X11LIBS="-lX11"
 		LIBS="$LIBS -lrt"
 		;;
 	*netbsd*)
@@ -177,7 +175,6 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 	])
 
 AC_SUBST([RESOLV_LIB])dnl
-AC_SUBST([X11LIBS])dnl
 AC_SUBST([MULECPPFLAGS])dnl
 AC_SUBST([MULECFLAGS])dnl
 AC_SUBST([MULECXXFLAGS])dnl
