@@ -101,7 +101,7 @@ Version 2.3.0 - The river knows.
 		* Show total upload/download ratio in statistic tree
 		* Fixed category administration in remote gui
 		* Implement directory preferences in remote gui
-		* MSVC build for wxCas
+		* MSVC build for alcc, wxCas
 		* Fixed errors and crashes on parsing ED2K links with '/' in them
 		* Configure option --enable-fileview
 		* Bypass amulegui connection dialog with switch -s / --skip

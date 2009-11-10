@@ -44,6 +44,10 @@
 // Application implementation
 IMPLEMENT_APP (alcc)
 
+#ifndef PACKAGE
+#define PACKAGE "alcc"
+#endif
+
 /// Running Alcc
 int alcc::OnRun ()
 {
