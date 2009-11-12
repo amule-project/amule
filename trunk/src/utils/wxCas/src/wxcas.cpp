@@ -40,6 +40,8 @@
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for PACKAGE
+#else
+#define PACKAGE "amule"
 #endif
 
 #if !wxUSE_PRINTING_ARCHITECTURE
@@ -53,10 +55,6 @@
 // Application implementation
 IMPLEMENT_APP ( WxCas )
 
-#ifndef PACKAGE
-#define PACKAGE "wxcas"
-#endif
-
 bool
 WxCas::OnInit ()
 {
@@ -65,20 +63,16 @@ WxCas::OnInit ()
 	m_locale.AddCatalog( wxT( PACKAGE ) );
 
 #if wxUSE_LIBPNG
-
 	wxImage::AddHandler ( new wxPNGHandler );
 #endif
 
 #if wxUSE_LIBJPEG
-
 	wxImage::AddHandler ( new wxJPEGHandler );
 #endif
 
 #ifdef __WXMSW__
-
 	SetPrintMode ( wxPRINT_WINDOWS );
 #else
-
 	SetPrintMode ( wxPRINT_POSTSCRIPT );
 #endif
 
