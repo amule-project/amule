@@ -60,12 +60,12 @@ enum EStreamCryptState {
 
 enum ENegotiatingState {
 	ONS_NONE,
-	
+
 	ONS_BASIC_CLIENTA_RANDOMPART,
 	ONS_BASIC_CLIENTA_MAGICVALUE,
 	ONS_BASIC_CLIENTA_METHODTAGSPADLEN,
 	ONS_BASIC_CLIENTA_PADDING,
-	
+
 	ONS_BASIC_CLIENTB_MAGICVALUE,
 	ONS_BASIC_CLIENTB_METHODTAGSPADLEN,
 	ONS_BASIC_CLIENTB_PADDING,
@@ -83,74 +83,55 @@ enum EEncryptionMethods {
 	ENM_OBFUSCATION = 0x00
 };
 
-class CRC4EncryptableBuffer;
 
 class CEncryptedStreamSocket : public CSocketClientProxy
 {
 public:
-	CEncryptedStreamSocket(
-		wxSocketFlags flags = wxSOCKET_NONE,
-		const CProxyData *proxyData = NULL);
+	CEncryptedStreamSocket(wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedStreamSocket();
 
-	void SetConnectionEncryption(
-		bool bEnabled,
-		const uint8 *pTargetClientHash,
-		bool bServerConnection);
+	void SetConnectionEncryption(bool bEnabled, const uint8_t *pTargetClientHash, bool bServerConnection);
 
-	//! Indicates how many bytes were received including obfusication
+	//! Indicates how many bytes were received including obfuscation,
 	//! so that the parent knows if the receive limit was reached
-	uint32 GetRealReceivedBytes() const
-	{
-		return m_nObfusicationBytesReceived;
-	}
+	uint32_t GetRealReceivedBytes() const		{ return m_nObfusicationBytesReceived; }
 
-	bool IsObfusicating() const
-	{
-		return m_StreamCryptState == ECS_ENCRYPTING &&
-			m_EncryptionMethod == ENM_OBFUSCATION;
-	}
-	
-	bool IsServerCryptEnabledConnection() const { return m_bServerCrypt; }	
+	bool	IsObfusicating() const			{ return m_StreamCryptState == ECS_ENCRYPTING && m_EncryptionMethod == ENM_OBFUSCATION; }
+	bool	IsServerCryptEnabledConnection() const	{ return m_bServerCrypt; }
 
-	uint8	m_dbgbyEncryptionSupported;
-	uint8	m_dbgbyEncryptionRequested;
-	uint8	m_dbgbyEncryptionMethodSet;
+	uint8_t	m_dbgbyEncryptionSupported;
+	uint8_t	m_dbgbyEncryptionRequested;
+	uint8_t	m_dbgbyEncryptionMethodSet;
 
 protected:
-	int Write(const void* lpBuf, wxUint32 nBufLen);
-	int Read(void* lpBuf, wxUint32 nBufLen);
+	int	Write(const void* lpBuf, uint32_t nBufLen);
+	int	Read(void* lpBuf, uint32_t nBufLen);
 
 	virtual void OnError(int /*nErrorCode*/) {};
 	virtual void OnSend(int nErrorCode);
 
 	wxString	DbgGetIPString();
-	void		CryptPrepareSendData(uint8* pBuffer, uint32 nLen);
+	void		CryptPrepareSendData(uint8_t* pBuffer, uint32_t nLen);
 	bool		IsEncryptionLayerReady();
-	uint8		GetSemiRandomNotProtocolMarker() const;
-	
-	uint32	m_nObfusicationBytesReceived;
-	EStreamCryptState m_StreamCryptState;
-	EEncryptionMethods  m_EncryptionMethod;
-	bool m_bFullReceive;
-	bool m_bServerCrypt;
+	uint8_t		GetSemiRandomNotProtocolMarker() const;
+
+	uint32_t		m_nObfusicationBytesReceived;
+	EStreamCryptState	m_StreamCryptState;
+	EEncryptionMethods	m_EncryptionMethod;
+	bool			m_bFullReceive;
+	bool			m_bServerCrypt;
 
 private:
-	int Negotiate(const uint8* pBuffer, uint32 nLen);
-	void StartNegotiation(bool bOutgoing);
-	int SendNegotiatingData(
-		const void *lpBuf,
-		uint32 nBufLen,
-		uint32 nStartCryptFromByte = 0,
-		bool bDelaySend = false);
+	int	Negotiate(const uint8_t* pBuffer, uint32_t nLen);
+	void	StartNegotiation(bool bOutgoing);
+	int	SendNegotiatingData(const void *lpBuf, uint32_t nBufLen, uint32_t nStartCryptFromByte = 0, bool bDelaySend = false);
 
 	ENegotiatingState	m_NegotiatingState;
 	CRC4EncryptableBuffer	m_pfiReceiveBuffer;
-	uint32			m_nReceiveBytesWanted;
+	uint32_t		m_nReceiveBytesWanted;
 	CRC4EncryptableBuffer	m_pfiSendBuffer;
-	uint32			m_nRandomKeyPart;
+	uint32_t		m_nRandomKeyPart;
 	CryptoPP::Integer	m_cryptDHA;
-
 };
 
 #endif // __ENCRYPTEDSTREAMSOCKET_H__

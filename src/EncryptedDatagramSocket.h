@@ -29,14 +29,14 @@
 class CEncryptedDatagramSocket : public CDatagramSocketProxy
 {
 public:
-	CEncryptedDatagramSocket( wxIPaddress &address, wxSocketFlags flags = wxSOCKET_NONE,	const CProxyData *proxyData = NULL);
+	CEncryptedDatagramSocket(wxIPaddress &address, wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedDatagramSocket();
 
 // TODO: Make protected once the UDP socket is again its own class.
 	static int DecryptReceivedClient(uint8_t *bufIn, int bufLen, uint8_t **bufOut, uint32_t ip, uint32_t *receiverVerifyKey, uint32_t *senderVerifyKey);
 	static int EncryptSendClient(uint8_t **buf, int bufLen, const uint8_t *clientHashOrKadID, bool kad, uint32_t receiverVerifyKey, uint32_t senderVerifyKey);
 
-	static int DecryptReceivedServer(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwBaseKey, uint32 dbgIP);
-	static int EncryptSendServer(uint8** ppbyBuf, int nBufLen, uint32 dwBaseKey);
+	static int DecryptReceivedServer(uint8_t* pbyBufIn, int nBufLen, uint8_t** ppbyBufOut, uint32_t dwBaseKey, uint32_t dbgIP);
+	static int EncryptSendServer(uint8_t** ppbyBuf, int nBufLen, uint32_t dwBaseKey);
 
 };
