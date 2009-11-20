@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-05 22:41+0100\n"
-"PO-Revision-Date: 2009-10-11 22:45+0100\n"
+"PO-Revision-Date: 2009-11-19 00:35+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -972,7 +972,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:162
 msgid "Close tab"
