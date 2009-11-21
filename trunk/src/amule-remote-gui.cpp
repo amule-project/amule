@@ -195,6 +195,13 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		AddLogLineCS(wxT("WTF?")); // should not happen. :-)
 		request_step = 0;
 	}
+
+	// Check for new links once per second.
+	static uint32 lastED2KLinkCheck = 0;
+	if (GetTickCount() - lastED2KLinkCheck >= 1000) {
+		AddLinksFromFile();
+		lastED2KLinkCheck = GetTickCount();
+	}
 }
 
 
@@ -1378,10 +1385,12 @@ CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn, true)
 }
 
 
-bool CDownQueueRem::AddLink(const wxString &link, int)
+bool CDownQueueRem::AddLink(const wxString &link, uint8 cat)
 {
 	CECPacket req(EC_OP_ADD_LINK);
-	req.AddTag(CECTag(EC_TAG_STRING, link));
+	CECTag link_tag(EC_TAG_STRING, link);
+	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
+	req.AddTag(link_tag);
 	
 	m_conn->SendPacket(&req);
 	return true;

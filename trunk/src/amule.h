@@ -69,6 +69,7 @@ class CUPnPPortMapping;
 class CStatistics;
 class wxSocketEvent;
 class wxCommandEvent;
+class wxCloseEvent;
 class wxFFileOutputStream;
 class CUpDownClient;
 class CTimer;
@@ -104,7 +105,15 @@ using MuleNotify::CMuleGUIEvent;
 #define CONNECTED_KAD_FIREWALLED (1<<3)
 
 
-class CamuleApp : public AMULE_APP_BASE
+// Base class common to amule, aamuled and amulegui
+class CamuleAppCommon
+{
+public:
+	void AddLinksFromFile();
+
+};
+
+class CamuleApp : public AMULE_APP_BASE, public CamuleAppCommon
 {
 private:
 	enum APPState {

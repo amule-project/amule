@@ -205,6 +205,7 @@ remote_common_sources = \
 	NetworkFunctions.cpp 
 
 common_sources = \
+	amuleAppCommon.cpp \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \

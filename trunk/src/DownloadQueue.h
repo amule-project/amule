@@ -319,11 +319,6 @@ private:
 	void	CheckDiskspace(const CPath& path);
 
 	/**
-	 * Parses all links in the ED2KLink file and resets it.
-	 */
-	void	AddLinksFromFile();
-
-	/**
 	 * Stops performing UDP requests.
 	 */
 	void	DoStopUDPRequests();

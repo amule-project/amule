@@ -155,6 +155,13 @@ namespace MuleNotify
 #endif
 	}
 
+	void ShowGUI()
+	{
+#ifndef AMULE_DAEMON
+		theApp->amuledlg->Iconize(false);
+#endif
+	}
+	
 #ifdef CLIENT_GUI
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
@@ -277,9 +284,7 @@ namespace MuleNotify
 
 	void DownloadCtrlAddFile(CPartFile* file)
 	{
-#ifndef CLIENT_GUI
 		theApp->ECServerHandler->m_ec_notifier->DownloadFile_AddFile(file);
-#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -300,9 +305,7 @@ namespace MuleNotify
 	
 	void DownloadCtrlRemoveFile(CPartFile* file)
 	{
-#ifndef CLIENT_GUI
 		theApp->ECServerHandler->m_ec_notifier->DownloadFile_RemoveFile(file);
-#endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
@@ -565,14 +568,6 @@ namespace MuleNotify
 		}
 #endif
 	}
-	
-	void ShowGUI()
-	{
-#ifndef AMULE_DAEMON
-		theApp->amuledlg->Iconize(false);
-#endif
-	}
-	
 
 	void CategoryAdded()
 	{
