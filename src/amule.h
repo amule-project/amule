@@ -112,7 +112,7 @@ private:
 		APP_STATE_SHUTTINGDOWN,
 		APP_STATE_STARTING
 	};
-	bool CheckPassedLink(const wxString &in, wxString &out);
+	bool CheckPassedLink(const wxString &in, wxString &out, int cat);
 
 public:
 	CamuleApp();
