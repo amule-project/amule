@@ -251,11 +251,14 @@ void CFileDetailDialog::setValueForFilenameTextEdit(const wxString &s)
 
 void CFileDetailDialog::setEnableForApplyButton()
 {
-	CastChild(IDC_APPLY, wxControl)->Enable(
+	bool enabled = 
 		m_file->IsPartFile() && // Currently renaming of completed files causes problem with kad
 		m_file->GetStatus() != PS_COMPLETE &&
 		m_file->GetStatus() != PS_COMPLETING &&
-		m_filenameChanged);
+		m_filenameChanged;
+	CastChild(IDC_APPLY, wxControl)->Enable(enabled);
+	// Make OK button default so Text can be applied by hitting return
+	CastChild(enabled ? IDC_APPLY_AND_CLOSE : ID_CLOSEWNDFD, wxButton)->SetDefault();
 }
 
 
