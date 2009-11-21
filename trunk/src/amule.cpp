@@ -473,6 +473,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddOption(wxT("w"), wxT("use-amuleweb"), wxT("Specify location of amuleweb binary."));
 #endif
 	// Allow passing of links to the app
+	cmdline.AddOption(wxT("c"), wxT("category"), wxT("Set category for passed ED2K links."), wxCMD_LINE_VAL_NUMBER);
 	cmdline.AddParam(wxT("ED2K link"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
 
 	// Show help on --help or invalid commands
@@ -560,6 +561,11 @@ bool CamuleApp::OnInit()
 	size_t linksPassed = cmdline.GetParamCount();	// number of links from the command line
 	int linksActuallyPassed = 0;					// number of links that pass the syntax check
 	if (linksPassed) {
+		long cat = 0;
+		if (!cmdline.Found(wxT("c"), &cat)) {
+			cat = 0;
+		}
+
 		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
 		if (!ed2kFile.Exists()) {
 			ed2kFile.Create();
@@ -567,7 +573,7 @@ bool CamuleApp::OnInit()
 		if (ed2kFile.Open()) {
 			for (size_t i = 0; i < linksPassed; i++) {
 				wxString link;
-				if (CheckPassedLink(cmdline.GetParam(i), link)) {
+				if (CheckPassedLink(cmdline.GetParam(i), link, cat)) {
 					ed2kFile.AddLine(link);
 					linksActuallyPassed++;
 				}
@@ -915,7 +921,7 @@ bool CamuleApp::OnInit()
 	return true;
 }
 
-bool CamuleApp::CheckPassedLink(const wxString &in, wxString &out)
+bool CamuleApp::CheckPassedLink(const wxString &in, wxString &out, int cat)
 {
 	wxString link(in);
 
@@ -930,6 +936,9 @@ bool CamuleApp::CheckPassedLink(const wxString &in, wxString &out)
 	try {
 		CScopedPtr<CED2KLink> uri(CED2KLink::CreateLinkFromUrl(link));
 		out = uri.get()->GetLink();
+		if (cat && uri.get()->GetKind() == CED2KLink::kFile) {
+			out += CFormat(wxT(":%d")) % cat;
+		}
 		return true;
 	} catch ( const wxString& err ) {
 		AddLogLineCS(CFormat(wxT("Invalid eD2k link \"%s\" - ERROR: %s")) % link % err);
