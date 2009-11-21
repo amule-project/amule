@@ -1172,7 +1172,11 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 			for(unsigned int i = 0; i < request->GetTagCount();i++) {
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
-				int category = tag->GetTagByIndexSafe(0)->GetInt();
+				int category = 0;
+				const CECTag *cattag = tag->GetTagByName(EC_TAG_PARTFILE_CAT);
+				if (cattag) {
+					category = cattag->GetInt();
+				}
 				AddLogLineM(true, CFormat(_("ExternalConn: adding link '%s'.")) % link);
 				if ( theApp->downloadqueue->AddLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);

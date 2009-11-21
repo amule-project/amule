@@ -350,6 +350,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\amuleAppCommon.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\amuleDlg.cpp"
 				>
 			</File>

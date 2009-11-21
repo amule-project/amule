@@ -521,7 +521,7 @@ public:
 	//
 	void StopUDPRequests();
 	void AddFileLinkToDownload(CED2KFileLink*, uint8);
-	bool AddLink(const wxString &link, int category = 0);
+	bool AddLink(const wxString &link, uint8 category = 0);
 	void UnsetCompletedFilesExist();
 	void ResetCatParts(int cat);
 	void AddSearchToDownload(CSearchFile* toadd, uint8 category);
@@ -666,7 +666,7 @@ public:
 	uint32 GetPeakConnections() { return m_peak_connections; }
 };
 
-class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
+class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppCommon {
 	wxTimer*	poll_timer;
 	bool		m_skipConnectionDialog;
 	wxString	m_geom_string;

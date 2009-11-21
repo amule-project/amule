@@ -107,6 +107,8 @@ Version 2.3.0 - The river knows.
 		* Bypass amulegui connection dialog with switch -s / --skip
 		* Fixed Core Timer
 		* Allow passing of ED2K links by command line to amule and amuled, making ed2k program obsolete
+		* Don't ignore current category in amulegui when pasting a link
+		* Amulegui can now be controlled by ed2k 
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -31,7 +31,6 @@
 #include <common/MenuIDs.h>
 #include <common/Constants.h>
 
-#include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/utils.h>
 
 #include "Server.h"		// Needed for CServer
@@ -53,7 +52,6 @@
 #include <common/Format.h>	// Needed for CFormat
 #include "IPFilter.h"
 #include <common/FileFunctions.h>	// Needed for CDirIterator
-#include "FileLock.h"		// Needed for CFileLock
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "UserEvents.h"
 #include "MagnetURI.h"		// Needed for CMagnetED2KConverter
@@ -439,7 +437,7 @@ void CDownloadQueue::Process()
 	
 	// Check for new links once per second.
 	if ((::GetTickCount() - m_nLastED2KLinkCheck) >= 1000) {
-		AddLinksFromFile();
+		theApp->AddLinksFromFile();
 		m_nLastED2KLinkCheck = ::GetTickCount();
 	}
 }
@@ -1005,52 +1003,6 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 	wxMutexLocker lock( m_mutex );
 	
 	m_localServerReqQueue.push_back(sender);
-}
-
-
-void CDownloadQueue::AddLinksFromFile()
-{
-	const wxString fullPath = theApp->ConfigDir + wxT("ED2KLinks");
-	if (!wxFile::Exists(fullPath)) {
-		return;
-	}
-	
-	// Attempt to lock the ED2KLinks file.
-	CFileLock lock((const char*)unicode2char(fullPath));
-
-	wxTextFile file(fullPath);
-	if ( file.Open() ) {
-		for ( unsigned int i = 0; i < file.GetLineCount(); i++ ) {
-			wxString line = file.GetLine( i ).Strip( wxString::both );
-			
-			if ( !line.IsEmpty() ) {
-				// Special case! used by a secondary running mule to raise this one.
-				if ( line == wxT("RAISE_DIALOG")  ) {
-					Notify_ShowGUI();
-					continue;
-				}
-				
-				unsigned long category = 0;
-				if (line.AfterLast(wxT(':')).ToULong(&category) == true) {
-					line = line.BeforeLast(wxT(':'));
-					if (category >= theApp->glob_prefs->GetCatCount()) {
-						category = 0;
-					}
-				} else { // If ToULong returns false the category still can have been changed!
-						 // This is fixed in wx 2.9
-					category = 0;
-				}
-				AddLink(line, category);
-			}
-		}
-
-		file.Close();
-	} else {
-		AddLogLineNS(_("Failed to open ED2KLinks file."));
-	}
-	
-	// Delete the file.
-	wxRemoveFile(theApp->ConfigDir +  wxT("ED2KLinks"));
 }
 
 
