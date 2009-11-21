@@ -57,6 +57,7 @@
 #include "ClientCreditsList.h"		// Needed for CClientCreditsList
 #include "ClientList.h"			// Needed for CClientList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
+#include "ED2KLink.h"			// Needed for command line passing of links
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include <common/FileFunctions.h>	// Needed for CDirIterator
 #include "FriendList.h"			// Needed for CFriendList
@@ -471,6 +472,8 @@ bool CamuleApp::OnInit()
 	// Change webserver path, not available on Windows
 	cmdline.AddOption(wxT("w"), wxT("use-amuleweb"), wxT("Specify location of amuleweb binary."));
 #endif
+	// Allow passing of links to the app
+	cmdline.AddParam(wxT("ED2K link"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
 
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
@@ -553,6 +556,27 @@ bool CamuleApp::OnInit()
 		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
 		AddLogLineMS(false, wxT("Your settings have been reset to default values.\nThe old config file has been saved as amule.conf.backup\n"));
 	}
+
+	size_t linksPassed = cmdline.GetParamCount();	// number of links from the command line
+	int linksActuallyPassed = 0;					// number of links that pass the syntax check
+	if (linksPassed) {
+		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
+		if (!ed2kFile.Exists()) {
+			ed2kFile.Create();
+		}
+		if (ed2kFile.Open()) {
+			for (size_t i = 0; i < linksPassed; i++) {
+				wxString link;
+				if (CheckPassedLink(cmdline.GetParam(i), link)) {
+					ed2kFile.AddLine(link);
+					linksActuallyPassed++;
+				}
+			}
+			ed2kFile.Write();
+		} else {
+			AddLogLineCS(wxT("Failed to open 'ED2KFile', cannot add links."));
+		}
+	}
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
 	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
@@ -566,6 +590,11 @@ bool CamuleApp::OnInit()
 		&& m_singleInstance->IsAnotherRunning()) {
 		AddLogLineMS(true, wxT("There is an instance of aMule already running"));
 		AddLogLineNS(CFormat(wxT("(lock file: %s%s)")) % ConfigDir % wxT("muleLock"));
+		if (linksPassed) {
+			AddLogLineNS(CFormat(wxT("passed %d %s to it, finished")) % linksActuallyPassed 
+				% (linksPassed == 1 ? wxT("link") : wxT("links")));
+			return false;
+		}
 		
 		// This is very tricky. The most secure way to communicate is via ED2K links file
 		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
@@ -884,6 +913,28 @@ bool CamuleApp::OnInit()
 	CThreadScheduler::Start();
 	
 	return true;
+}
+
+bool CamuleApp::CheckPassedLink(const wxString &in, wxString &out)
+{
+	wxString link(in);
+
+	if (link.compare(0, 7, wxT("magnet:")) == 0) {
+		link = CMagnetED2KConverter(link);
+		if (link.empty()) {
+			AddLogLineCS(CFormat(wxT("Cannot convert magnet link to eD2k: %s")) % in);
+			return false;
+		}
+	}
+
+	try {
+		CScopedPtr<CED2KLink> uri(CED2KLink::CreateLinkFromUrl(link));
+		out = uri.get()->GetLink();
+		return true;
+	} catch ( const wxString& err ) {
+		AddLogLineCS(CFormat(wxT("Invalid eD2k link \"%s\" - ERROR: %s")) % link % err);
+	}
+	return false;
 }
 
 bool CamuleApp::ReinitializeNetwork(wxString* msg)
