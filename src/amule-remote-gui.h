@@ -724,9 +724,6 @@ public:
 	bool AddServer(CServer *srv, bool fromUser = false);
 
 	uint32 GetPublicIP();
-	wxString CreateMagnetLink(const CAbstractFile *f);
-	wxString CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool addcryptoptions = false);
-	wxString CreateED2kAICHLink(const CKnownFile* f);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
