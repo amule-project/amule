@@ -36,7 +36,7 @@
  */
 
 
-#ifndef EC_REMOTE	// i.e. not CLIENT_GUI
+#ifndef CLIENT_GUI
 #	define VIRTUAL virtual
 #else
 #	define VIRTUAL
@@ -48,7 +48,7 @@
 #include <wx/thread.h>		// Needed for wxMutex
 #include "Types.h" 
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 #include <wx/datetime.h>	// Needed for wxDateTime
 #include "GetTickCount.h"	// Needed for GetTickCount64()
@@ -98,7 +98,7 @@ enum EDisplayMode
 	dmBytes			///< Treat integer value as bytes count.
 };
 
-#endif /* !EC_REMOTE */
+#endif /* !CLIENT_GUI */
 
 
 class CStatTreeItemBase;
@@ -117,7 +117,7 @@ class CStatTreeItemBase
 {
 public:
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	/**
 	 * Creates an item with a constant label.
 	 *
@@ -151,7 +151,7 @@ public:
 	 */
 	VIRTUAL	~CStatTreeItemBase();
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	/**
 	 * Adds a new child node.
 	 *
@@ -181,7 +181,7 @@ public:
 	 */
 	bool HasVisibleChildren();
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 	/**
 	 * Check for a given child.
@@ -211,7 +211,7 @@ public:
 	 */
 	void GetNextVisibleChild(StatTreeItemIterator& it);
 
-#else /* EC_REMOTE */
+#else /* CLIENT_GUI */
 
 	/**
 	 * Get the first visible child.
@@ -229,14 +229,14 @@ public:
 	 */
 	void GetNextVisibleChild(StatTreeItemIterator& it) { ++it; }
 
-#endif /* !EC_REMOTE / EC_REMOTE */
+#endif /* !CLIENT_GUI / CLIENT_GUI */
 
 	/**
 	 * Check if we are past the end of child list.
 	 */
 	bool IsAtEndOfList(StatTreeItemIterator& it) { return it == m_children.end(); }
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	/**
 	 * Resorts children for the stSortByValue flag.
 	 */
@@ -244,7 +244,7 @@ public:
 #endif
 
 #ifndef AMULE_DAEMON
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	/**
 	 * Returns a string that will be displayed on the GUI tree.
 	 */
@@ -254,7 +254,7 @@ public:
 	 * Returns the associated text (GUI item label).
 	 */
 	const wxString& GetDisplayString() const { return m_label; }
-#endif /* !EC_REMOTE / EC_REMOTE */
+#endif /* !CLIENT_GUI / CLIENT_GUI */
 
 	/**
 	 * Returns the mutex used to lock the child list of this node.
@@ -275,7 +275,7 @@ public:
 	 */
 	VIRTUAL	bool IsVisible() const { return true; }
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	/**
 	 * Create an EC tag from this node (and children).
 	 *
@@ -288,7 +288,7 @@ public:
 
 protected:
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	/**
 	 * Add values to the EC tag being generated.
 	 *
@@ -300,7 +300,7 @@ protected:
 
 	//! Unformatted and untranslated label of the node. Note: On remote gui it is already formatted and translated.
 	const wxString m_label;
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 	//! Parent of this node.
 	CStatTreeItemBase *m_parent;
@@ -311,7 +311,7 @@ protected:
 
 private:
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	//! Function used when sorting children by value.
 	static bool ValueSort(const CStatTreeItemBase* a, const CStatTreeItemBase* b);
 
@@ -337,7 +337,7 @@ private:
 //
 // Anything below is only for core.
 //
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 /**
  * Simple tree item.
@@ -1194,7 +1194,7 @@ protected:
 	const CStatTreeItemCounter *m_unknown;
 };
 
-#endif /* !EC_REMOTE */
+#endif /* !CLIENT_GUI */
 
 #endif /* STATTREE_H */
 // File_checked_for_headers

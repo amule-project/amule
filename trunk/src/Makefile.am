@@ -282,7 +282,7 @@ amule_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CPPFLAGS_ONLY)
 amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 
 amulegui_DEPENDENCIES = $(common_deps) $(gui_deps)
-amulegui_CPPFLAGS = $(AM_CPPFLAGS) $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
+amulegui_CPPFLAGS = $(AM_CPPFLAGS) $(gui_flags) $(common_flags) -DCLIENT_GUI
 amulegui_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 amulegui_LDADD = $(gui_libs) $(common_libs) $(WXBASE_LIBS)
 

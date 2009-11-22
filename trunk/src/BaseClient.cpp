@@ -1723,7 +1723,7 @@ int CUpDownClient::GetHashType() const
 
 void CUpDownClient::SetSocket(CClientTCPSocket* socket)
 {
-#if defined(__DEBUG__) && !defined(EC_REMOTE)
+#if defined(__DEBUG__)
 	if (m_socket == NULL && socket != NULL) {
 		theStats::SocketAssignedToClient();
 	} else if (m_socket != NULL && socket == NULL) {

@@ -30,7 +30,7 @@
 
 #include <ec/cpp/ECTag.h>		// Needed for CECTag
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 	#ifndef AMULE_DAEMON
 		#include <common/Format.h>		// Needed for CFormat
 	#endif
@@ -56,7 +56,7 @@
 #endif /* __BSD__ */
 
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 /*----- CPreciseRateCounter -----*/
 
@@ -139,17 +139,17 @@ CPreciseRateCounter*		CStatistics::s_downOverheadRate;
 CStatTreeItemRateCounter*	CStatistics::s_uploadrate;
 CStatTreeItemRateCounter*	CStatistics::s_downloadrate;
 
-#else /* EC_REMOTE */
+#else /* CLIENT_GUI */
 
 uint64	CStatistics::s_start_time;
 uint64	CStatistics::s_statData[sdTotalItems];
 
-#endif /* !EC_REMOTE / EC_REMOTE */
+#endif /* !CLIENT_GUI / CLIENT_GUI */
 
 // Tree root
 CStatTreeItemBase*		CStatistics::s_statTree;
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 // Uptime
 CStatTreeItemTimer*		CStatistics::s_uptime;
 
@@ -925,7 +925,7 @@ void CStatistics::RemoveKnownClient(uint32 clientSoft, uint32 clientVersion, con
 	}
 }
 
-#else /* EC_REMOTE (CLIENT_GUI) */
+#else /* CLIENT_GUI */
 
 CStatistics::CStatistics(CRemoteConnect &conn)
 :
@@ -997,6 +997,6 @@ void CStatistics::UpdateStatsTree()
 	delete reply;
 }
 
-#endif /* !EC_REMOTE */
+#endif /* !CLIENT_GUI */
 
 // File_checked_for_headers

@@ -829,7 +829,11 @@ public:
 		} else {
 			folder = wxT("webserver");
 		}
+#ifdef CLIENT_GUI
+		wxString dirName(JoinPaths(GetConfigDir(wxT("remote.conf")), folder));
+#else
 		wxString dirName(JoinPaths(GetConfigDir(), folder));
+#endif
 		wxString Filename;
 		wxDir d;
 		

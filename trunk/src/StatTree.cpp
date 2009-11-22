@@ -28,22 +28,21 @@
 #include <wx/intl.h>
 #include "OtherFunctions.h"
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 #include <common/Format.h>			// Needed for CFormat
 
 #define a_brackets_b(a,b) (a + wxT(" (") + b + wxT(")"))
 
-#endif /* !EC_REMOTE */
+#endif /* !CLIENT_GUI */
 
 #include <ec/cpp/ECTag.h>			// Needed for CECTag
 
-#ifdef EC_REMOTE
+#ifdef CLIENT_GUI
 	#include <ec/cpp/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag
-#endif
 
+#else
 
-#ifndef EC_REMOTE
 uint32_t NewStatTreeItemId()
 {
 	static uint32_t lastid = 0;
@@ -54,7 +53,7 @@ uint32_t NewStatTreeItemId()
 
 /* CStatTreeItemBase */
 
-#ifdef EC_REMOTE
+#ifdef CLIENT_GUI
 CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 	: m_label(((CEC_StatTree_Node_Tag*)tag)->GetDisplayString())
 	  , m_uniqueid(tag->GetTagByNameSafe(EC_TAG_STATTREE_NODEID)->GetInt())
@@ -68,14 +67,14 @@ CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 		}
 	}
 }
-#endif /* EC_REMOTE */
+#endif /* CLIENT_GUI */
 
 CStatTreeItemBase::~CStatTreeItemBase()
 {
 	DeleteContents(m_children);
 }
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 CStatTreeItemBase* CStatTreeItemBase::AddChild(
 	CStatTreeItemBase* child,
 	uint32_t id,
@@ -101,7 +100,7 @@ CStatTreeItemBase* CStatTreeItemBase::AddChild(
 	}
 	return child;
 }
-#endif /* !EC_REMOTE */
+#endif /* !CLIENT_GUI */
 
 bool CStatTreeItemBase::HasVisibleChildren()
 {
@@ -116,7 +115,7 @@ bool CStatTreeItemBase::HasVisibleChildren()
 	return false;
 }
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 bool CStatTreeItemBase::HasChildWithId(uint32_t id)
 {
 	wxMutexLocker lock(m_lock);
@@ -142,10 +141,8 @@ CStatTreeItemBase* CStatTreeItemBase::GetChildById(uint32_t id)
 	}
 	return NULL;
 }
-#endif /* !EC_REMOTE */
 
 // Note: these functions do not lock the list, because it is already locked at the time they're called
-#ifndef EC_REMOTE
 StatTreeItemIterator CStatTreeItemBase::GetFirstVisibleChild(uint32_t max_children)
 {
 	StatTreeItemIterator it = m_children.begin();
@@ -167,12 +164,10 @@ void CStatTreeItemBase::GetNextVisibleChild(StatTreeItemIterator& it)
 	if (it != m_children.end()) ++it;
 	while (it != m_children.end() && !(*it)->IsVisible()) ++it;
 }
-#endif
 
 //
 // Anything below is only for core.
 //
-#ifndef EC_REMOTE
 
 bool CStatTreeItemBase::ValueSort(const CStatTreeItemBase* a, const CStatTreeItemBase* b)
 {
@@ -642,5 +637,5 @@ void CStatTreeItemTotalClients::AddECValues(CECTag *tag) const
 	tag->AddTag(value2);
 }
 
-#endif /* !EC_REMOTE */
+#endif /* !CLIENT_GUI */
 // File_checked_for_headers
