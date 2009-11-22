@@ -62,7 +62,7 @@ typedef struct HistoryRecord {
 } HR;
 
 
-#ifndef EC_REMOTE
+#ifndef CLIENT_GUI
 
 /**
  * Counts precise rate/average on added bytes/values.
@@ -470,7 +470,7 @@ class CStatistics {
 	static uint16 s_kadNodesCur;
 };
 
-#else /* EC_REMOTE == CLIENT_GUI */
+#else /* CLIENT_GUI */
 
 class CECPacket;
 class CRemoteConnect;
@@ -553,7 +553,7 @@ private:
 	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }
 };
 
-#endif /* !EC_REMOTE / EC_REMOTE */
+#endif /* !CLIENT_GUI / CLIENT_GUI */
 
 
 /**

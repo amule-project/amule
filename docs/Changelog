@@ -109,6 +109,7 @@ Version 2.3.0 - The river knows.
 		* Allow passing of ED2K links by command line to amule and amuled, making ed2k program obsolete
 		* Don't ignore current category in amulegui when pasting a link
 		* Amulegui can now be controlled by ed2k 
+		* EC tools (amulegui, amulecmd, amuleweb) can use a local config dir now
 
 	Vollstrecker:
 		* Unify copyright lines

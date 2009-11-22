@@ -480,7 +480,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 #endif
 
-	dir = GetConfigDir() + wxT("webserver");
+	dir = GetConfigDir(wxT("remote.conf")) + wxT("webserver");
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		m_localTemplate = true;

@@ -355,7 +355,7 @@ inline long int make_full_ed2k_version(int a, int b, int c) {
 }
 
 
-wxString GetConfigDir();
+wxString GetConfigDir(const wxString &configFile = wxT("amule.conf"));
 
 #if !wxCHECK_VERSION(2, 9, 0)
 enum {
