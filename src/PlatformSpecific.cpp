@@ -244,16 +244,17 @@ static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 
 static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 {
-	struct mnttab *entry = NULL;
+	struct mnttab entryStatic;
+	struct mnttab *entry = &entryStatic;
 	PlatformSpecific::EFSType retval = PlatformSpecific::fsOther;
-	FILE *mnttab = fopen(MNTTAB, "r");
+	FILE *fmnttab = fopen(MNTTAB, "r");
 	unsigned bestPrefixLen = 0;
 
-	if (mnttab == NULL) {
+	if (fmnttab == NULL) {
 		return PlatformSpecific::fsOther;
 	}
 
-	while (getmntent(mnttab, entry) == 0) {
+	while (getmntent(fmnttab, entry) == 0) {
 		if (entry->mnt_mountp) {
 			wxString dir = char2unicode(entry->mnt_mountp);
 			if (dir == path.GetRaw().Mid(0, dir.Length())) {
@@ -273,7 +274,7 @@ static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 			}
 		}
 	}
-	fclose(mnttab);
+	fclose(fmnttab);
 	return retval;
 }
 

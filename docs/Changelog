@@ -110,6 +110,7 @@ Version 2.3.0 - The river knows.
 		* Don't ignore current category in amulegui when pasting a link
 		* Amulegui can now be controlled by ed2k 
 		* EC tools (amulegui, amulecmd, amuleweb) can use a local config dir now
+		* Fixed crash in file system detection in Solaris
 
 	Vollstrecker:
 		* Unify copyright lines
