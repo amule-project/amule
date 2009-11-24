@@ -237,6 +237,11 @@ inline CFormat& CFormat::operator%(const CPrintable& value)
 	return *this % value.GetPrintableString();
 }
 
+#if wxCHECK_VERSION(2, 9, 0)
+#define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
+#else
+#define WXLONGLONGFMTSPEC wxLongLongFmtSpec
+#endif
 
 #endif
 // File_checked_for_headers
