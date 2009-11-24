@@ -104,7 +104,10 @@ alcc::OnExit()
 /// Parse command line
 void alcc::OnInitCmdLine(wxCmdLineParser& cmdline)
 {
-  cmdline.SetDesc(cmdLineDesc);
+	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_OPTION_HELP);
+	cmdline.AddSwitch(wxT("v"), wxT("verbose"), wxT("be verbose"));
+	cmdline.AddSwitch(wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link"));
+	cmdline.AddParam(wxT("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE);
 }
 
 /// Command line preocessing
