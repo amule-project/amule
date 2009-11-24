@@ -314,7 +314,7 @@ amulecmd_SOURCES = \
 	$(remote_common_sources)
 
 amulecmd_DEPENDENCIES = $(remote_common_deps)
-amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
+amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags)
 amulecmd_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec \
