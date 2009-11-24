@@ -185,9 +185,7 @@ public:
 	/**
 	 * Event handler for connection events.
 	 *
-	 * This function is called when a connection attempt succeeds. When CECSocket
-	 * is compiled with ECSOCKET_USE_EVENTS == 0, WaitOnConnect() should be called
-	 * for this to work.
+	 * This function is called when a connection attempt succeeds.
 	 */
 	virtual void OnConnect();
 
