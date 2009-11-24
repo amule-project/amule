@@ -26,6 +26,7 @@
 
 #include "Tag.h"				// Interface declarations
 
+#include <common/Format.h>		// Needed for WXLONGLONGFMTSPEC
 
 #include "SafeFile.h"		// Needed for CFileDataIO
 #include "MD4Hash.h"			// Needed for CMD4Hash
@@ -434,7 +435,7 @@ wxString CTag::GetFullInfo() const
 		strTag += wxString::Format(wxT("(Str%u)\""), m_uType - TAGTYPE_STR1 + 1)
 					+  *m_pstrVal + wxT("\"");
 	} else if (m_uType == TAGTYPE_UINT64) {
-		strTag += wxString::Format(wxT("(Int64)%") wxLongLongFmtSpec wxT("u"), m_uVal);
+		strTag += wxString::Format(wxT("(Int64)%") WXLONGLONGFMTSPEC wxT("u"), m_uVal);
 	} else if (m_uType == TAGTYPE_UINT32) {
 		strTag += wxString::Format(wxT("(Int32)%u"), (unsigned)m_uVal);
 	} else if (m_uType == TAGTYPE_UINT16) {

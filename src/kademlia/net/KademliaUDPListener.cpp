@@ -1461,7 +1461,7 @@ void CKademliaUDPListener::ProcessPublishRequest(const uint8_t *packetData, uint
 								wxASSERT(tag->IsInt());
 								entry->m_uSize = tag->GetInt();	
 							}
-							DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize); )
+							DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") WXLONGLONGFMTSPEC wxT("u"), entry->m_uSize); )
 						}
 						delete tag;
 					} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
@@ -1591,7 +1591,7 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 							} else {
 								entry->m_uSize = tag->GetInt();
 							}
-							DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize); )
+							DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") WXLONGLONGFMTSPEC wxT("u"), entry->m_uSize); )
 						}
 						delete tag; // tag is no longer stored, but membervar is used
 					} else {
@@ -1688,7 +1688,7 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 						} else {
 							entry->m_uSize = tag->GetInt();
 						}
-						DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_uSize); )
+						DEBUG_ONLY( strInfo += wxString::Format(wxT("  Size=%") WXLONGLONGFMTSPEC wxT("u"), entry->m_uSize); )
 					}
 					delete tag;
 				} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {

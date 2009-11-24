@@ -384,7 +384,7 @@ CFormat& CFormat::operator%(wxChar value)
 
 CFormat& CFormat::operator%(signed long long value)
 {
-	wxString field = GetIntegerField(wxLongLongFmtSpec  wxT("i"));
+	wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("i"));
 	if (!field.IsEmpty()) {
 		SetCurrentField(wxString::Format(field, value));
 	}
@@ -395,7 +395,7 @@ CFormat& CFormat::operator%(signed long long value)
 
 CFormat& CFormat::operator%(unsigned long long value)
 {
-	wxString field = GetIntegerField(wxLongLongFmtSpec  wxT("u"));
+	wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("u"));
 	if (!field.IsEmpty()) {
 		SetCurrentField(wxString::Format(field, value));
 	}
