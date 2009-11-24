@@ -338,6 +338,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\LoggerConsole.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\NetworkFunctions.cpp"
 				>
 			</File>
