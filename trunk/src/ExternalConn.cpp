@@ -490,7 +490,7 @@ CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObj
 		void * mapKey = cur_file;
 		if (!cur_file) continue;
 		if (cur_file->IsPartFile()) {
-			mapKey = (void *) ((uint64) mapKey + 1);
+			mapKey = (void *) ((char *)mapKey + 1);
 		}
 
 		CValueMap &valuemap = tagmap.GetValueMap(mapKey);
