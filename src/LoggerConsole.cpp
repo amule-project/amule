@@ -24,7 +24,10 @@
 //
 
 
-#include "UPnPCompatibility.h"
+#include <sstream>
+#include <common/StringFunctions.h>	// for char2unicode()
+
+#include "Logger.h"				// for Add(Debug)LogLineM()
 
 
 #ifdef __DEBUG__
@@ -42,6 +45,25 @@ void CLogger::AddLogLine(
 	const std::ostringstream &msg)
 {
 	AddLogLine(file, line, critical, static_cast<DebugType>(0), msg);
+}
+
+
+void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
+	bool critical,
+	DebugType /* type */,
+	const wxString &str,
+	bool /*  toStdout */,
+	bool /* toGUI */)
+{
+	std::string s;
+	if (critical) {
+		s = "Critical message: ";
+	}
+	printf("%s(%d): %s%s\n",
+		(const char *)unicode2char(file),
+		line, s.c_str(), (const char *)unicode2char(str));
 }
 
 

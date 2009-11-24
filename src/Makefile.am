@@ -310,6 +310,7 @@ endif
 amulecmd_SOURCES = \
 	TextClient.cpp \
 	ExternalConnector.cpp \
+	LoggerConsole.cpp \
 	$(remote_common_sources)
 
 amulecmd_DEPENDENCIES = $(remote_common_deps)

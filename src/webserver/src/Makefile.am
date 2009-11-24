@@ -8,6 +8,7 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/OtherFunctions.cpp \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
+	$(top_srcdir)/src/LoggerConsole.cpp \
 	php_parser.c \
 	php_lexer.c \
 	php_syntree.cpp \
@@ -16,8 +17,7 @@ amuleweb_SOURCES =  \
 
 if ENABLE_UPNP
 amuleweb_SOURCES +=  \
-	$(top_srcdir)/src/UPnPBase.cpp \
-	UPnPCompatibility.cpp
+	$(top_srcdir)/src/UPnPBase.cpp
 endif
 
 php_parser.c: php_parser.y

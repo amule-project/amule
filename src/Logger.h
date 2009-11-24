@@ -416,8 +416,6 @@ public:
 	#define AddDebugLogLineC(...) do {} while (false)
 	#define AddLogLineC(...) do {} while (false)
 	#define AddLogLineCS(...) do {} while (false)
-#elif defined(EC_REMOTE)	// amuleweb, amulecmd
-	#define AddLogLineN(string) printf("%s\n", (const char *)unicode2char(wxString(string)))
 #else
 // Macros passing critical flag (legacy)
 	#define AddDebugLogLineM(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
