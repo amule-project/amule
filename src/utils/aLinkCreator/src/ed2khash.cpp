@@ -211,12 +211,18 @@ bool Ed2kHash::SetED2KHashFromFile(const wxString& filename, MD4Hook hook)
   return SetED2KHashFromFile(wxFileName(filename), hook);
 }
 
+#if wxCHECK_VERSION(2, 9, 0)
+#define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
+#else
+#define WXLONGLONGFMTSPEC wxLongLongFmtSpec
+#endif
+
 /// Get Ed2k link
 wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* arrayOfUrls)
 {
   // Constructing ed2k basic link
   wxString ed2kLink = wxT("ed2k://|file|") + CleanFilename(m_filename)
-                      + wxString::Format(wxT("|%") wxLongLongFmtSpec wxT("u|"), m_fileSize)
+                      + wxString::Format(wxT("|%") WXLONGLONGFMTSPEC wxT("u|"), m_fileSize)
                       + m_ed2kArrayOfHashes.Last() + wxT("|");
 
 
