@@ -1194,8 +1194,8 @@ CDynProgressImage::~CDynProgressImage()
 
 wxString CDynProgressImage::GetHTML()
 {
-	// template contain %s (name) %d (width)
-	return (CFormat(m_template) % m_name % m_width).GetString();
+	// template contain %s (name) %d (width) %s (alt)
+	return (CFormat(m_template) % m_name % m_width % wxT("Progress bar")).GetString();
 }
 	
 void CDynProgressImage::DrawImage()
@@ -1268,7 +1268,7 @@ wxString CDynProgressImage::GetHTML()
 				}
 			}
 			str += (CFormat(m_template) % progresscolor[color_idx]
-				   		% (i - lastindex)).GetString();
+				   		% (i - lastindex) % wxString(progresscolor[color_idx]).BeforeLast(wxT('.'))).GetString();
 			lastindex = i;
 			lastcolor = m_ColorLine[i];
 		}
@@ -1731,7 +1731,7 @@ CAnyImage *CImageLib::GetImage(const wxString &name)
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
 	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
-	wxString img_tmpl(wxT("<img src=%s height=20 width=%d>"));
+	wxString img_tmpl(wxT("<img src=\"%s\" height=\"20\" width=\"%d\" alt=\"%s\">"));
 	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
 
 	if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.html")).GetFullPath()) ) {
