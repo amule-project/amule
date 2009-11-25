@@ -1,4 +1,5 @@
 src/AddFriend.cpp
+src/amuleAppCommon.cpp
 src/amule.cpp
 src/amuled.cpp
 src/amuleDlg.cpp
