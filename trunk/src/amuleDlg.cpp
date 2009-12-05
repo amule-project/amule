@@ -531,10 +531,6 @@ void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
 
 CamuleDlg::~CamuleDlg()
 {
-	AddLogLineN(_("Shutting down aMule..."));
-	
-	SaveGUIPrefs();
-
 	theApp->amuledlg = NULL;
 
 #ifdef ENABLE_IP2COUNTRY
@@ -903,6 +899,8 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		}
 	}
 	
+	SaveGUIPrefs();
+
 	Enable(false);
 	Show(false);
 
