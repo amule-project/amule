@@ -892,7 +892,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 {
 	// This will be here till the core close is != app close
 	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
-		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")),
+		if (wxNO == wxMessageBox(wxString(CFormat(_("Do you really want to exit %s?")) % theApp->GetMuleAppName()),
 				wxString(_("Exit confirmation")), wxYES_NO, this)) {
 			evt.Veto();
 			return;
