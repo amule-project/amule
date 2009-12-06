@@ -148,6 +148,7 @@ core_sources = \
 	ServerSocket.cpp \
 	ServerUDPSocket.cpp \
 	SharedFileList.cpp \
+	TerminationProcessAmuleweb.cpp \
 	ThreadTasks.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
@@ -221,7 +222,6 @@ common_sources = \
 	StatTree.cpp \
 	SHAHashSet.cpp \
 	TerminationProcess.cpp \
-	TerminationProcessAmuleweb.cpp \
 	UserEvents.cpp \
 	$(remote_common_sources)
 
