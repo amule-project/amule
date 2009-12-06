@@ -363,6 +363,8 @@ public:
 	static void		SetWebUPnPTCPPort(uint16 val)	{ s_nWebUPnPTCPPort = val; }
 	static const wxString&	GetWSPass() 			{ return s_sWebPassword; }
 	static void		SetWSPass(const wxString& pass)	{ s_sWebPassword = pass; }
+	static const wxString&	GetWSPath() 			{ return s_sWebPath; }
+	static void		SetWSPath(const wxString& path)	{ s_sWebPath = path; }
 	static bool		GetWSIsEnabled() 		{ return s_bWebEnabled; }
 	static void		SetWSIsEnabled(bool bEnable) 	{ s_bWebEnabled=bEnable; }
 	static bool		GetWebUseGzip() 		{ return s_bWebUseGzip; }
@@ -664,6 +666,7 @@ protected:
 
 	// Web Server [kuchin]
 	static wxString	s_sWebPassword;
+	static wxString	s_sWebPath;
 	static wxString	s_sWebLowPassword;
 	static uint16	s_nWebPort;
 	static uint16	s_nWebUPnPTCPPort;

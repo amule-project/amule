@@ -111,6 +111,9 @@ Version 2.3.0 - The river knows.
 		* Amulegui can now be controlled by ed2k 
 		* EC tools (amulegui, amulecmd, amuleweb) can use a local config dir now
 		* Fixed crash in file system detection in Solaris
+		* Fix: window size/position didn't get saved on some systems
+		* aMule, aMuled and aMulegui can take ED2K links from the command line
+		* More command line options for aMulegui
 
 	Vollstrecker:
 		* Unify copyright lines

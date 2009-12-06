@@ -680,10 +680,10 @@ int CamuleDaemonApp::OnRun()
 
 bool CamuleDaemonApp::OnInit()
 {
-	AddLogLineNS(_("amuled: OnInit - starting timer"));
 	if ( !CamuleApp::OnInit() ) {
 		return false;
 	}
+	AddLogLineNS(_("amuled: OnInit - starting timer"));
 	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
 	core_timer->Start(CORE_TIMER_PERIOD);
 	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
@@ -722,9 +722,9 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 		// Create a Pid file with the Pid of the Child, so any daemon-manager
 		// can easily manage the process
 		//
-		if (!PidFile.IsEmpty()) {
+		if (!m_PidFile.IsEmpty()) {
 			wxString temp = wxString::Format(wxT("%d\n"), pid);
-			wxFFile ff(PidFile, wxT("w"));
+			wxFFile ff(m_PidFile, wxT("w"));
 			if (!ff.Error()) {
 				ff.Write(temp);
 				ff.Close();

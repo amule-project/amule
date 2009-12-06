@@ -153,6 +153,7 @@ uint8		CPreferences::s_filterlevel;
 uint8		CPreferences::s_iFileBufferSize;
 uint8		CPreferences::s_iQueueSize;
 wxString 	CPreferences::s_datetimeformat;
+wxString	CPreferences::s_sWebPath;
 wxString	CPreferences::s_sWebPassword;
 wxString	CPreferences::s_sWebLowPassword;
 uint16		CPreferences::s_nWebPort;
@@ -829,11 +830,7 @@ public:
 		} else {
 			folder = wxT("webserver");
 		}
-#ifdef CLIENT_GUI
-		wxString dirName(JoinPaths(GetConfigDir(wxT("remote.conf")), folder));
-#else
-		wxString dirName(JoinPaths(GetConfigDir(), folder));
-#endif
+		wxString dirName(JoinPaths(GetConfigDir(theApp->m_configFile), folder));
 		wxString Filename;
 		wxDir d;
 		
@@ -1222,6 +1219,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/GeoIPEnabled"), 		s_GeoIPEnabled, true ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/GeoLiteCountryUpdateUrl"),		s_GeoIPUpdateUrl, wxT("http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz") ) );
 	wxConfigBase::Get()->DeleteEntry(wxT("/eMule/GeoIPUpdateUrl")); // get rid of the old one for a while
+
+	s_MiscList.push_back( new Cfg_Str( wxT("/WebServer/Path"),				s_sWebPath, wxT("amuleweb") ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg

@@ -235,41 +235,21 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 }
 
 
-void CamuleRemoteGuiApp::OnInitCmdLine(wxCmdLineParser& parser)
-{
-	// Handle these arguments.
-	parser.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
-	parser.AddSwitch(wxT("s"), wxT("skip"), wxT("Skip connection dialog."));
-	parser.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
-}
-
-
-bool CamuleRemoteGuiApp::OnCmdLineParsed(wxCmdLineParser& parser)
-{
-	// Show help on --help or invalid commands
-	if (parser.Found(wxT("help"))) {
-		parser.Usage();
-		return false;
-	}	
-	m_skipConnectionDialog = parser.Found(wxT("skip"));
-	parser.Found(wxT("geometry"), &m_geom_string);
-	return true;
-}
-
-
 bool CamuleRemoteGuiApp::OnInit()
 {
 	StartTickTimer();
 	amuledlg = NULL;
-	if ( !wxApp::OnInit() ) {
-		return false;
-	}
 	
 	// Get theApp
 	theApp = &wxGetApp();
 
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
+
+	// Parse cmdline arguments.
+	if (!InitCommon(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv)) {
+		return false;
+	}
 
 	// Create the polling timer
 	poll_timer = new wxTimer(this,ID_CORE_TIMER_EVENT);
@@ -279,40 +259,18 @@ bool CamuleRemoteGuiApp::OnInit()
 	}
 
 	m_connect = new CRemoteConnect(this);
-	SetAppName(wxT("aMule"));
 	
-	// Load Preferences
-	// This creates the CFG file we shall use
-	ConfigDir = GetConfigDir(wxT("remote.conf"));
-	if (!wxDirExists(ConfigDir)) {
-		wxMkdir(ConfigDir);
-	}
-
-	wxConfig::Set(new wxFileConfig(wxEmptyString, wxEmptyString,
-		ConfigDir + wxT("remote.conf")));
-
 	glob_prefs = new CPreferencesRem(m_connect);	
 	
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
-	// Make a backup of the log file
-	CPath logfileName = CPath(ConfigDir + wxT("remotelogfile"));
-	if (logfileName.FileExists()) {
-		CPath::BackupFile(logfileName, wxT(".bak"));
+	if (ShowConnectionDialog()) {
+		AddLogLineNS(_("Going to event loop..."));
+		return true;
 	}
-
-	// Open the log file
-	if (!theLogger.OpenLogfile(logfileName.GetRaw())) {
-		// use std err as last resolt to indicate problem
-		fputs("ERROR: unable to open log file\n", stderr);
-	}
-
-	bool result = ShowConnectionDialog();
-
-	AddLogLineNS(_("Going to event loop..."));
 	
-	return result;
+	return false;
 }
 
 
@@ -410,7 +368,7 @@ void CamuleRemoteGuiApp::Startup() {
 	ipfilter = new CIPFilterRem(m_connect);
 
 	// Create main dialog
-	InitGui(0, m_geom_string);
+	InitGui(m_geometryEnabled, m_geometryString);
 
 	// Forward wxLog events to CLogger
 	wxLog::SetActiveTarget(new CLoggerTarget);
@@ -574,9 +532,6 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
 
-	CPreferences::BuildItemList(theApp->ConfigDir);
-	CPreferences::LoadAllItems(wxConfigBase::Get());
-	
 	//
 	// Settings queried from remote side
 	//

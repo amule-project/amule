@@ -108,13 +108,64 @@ using MuleNotify::CMuleGUIEvent;
 // Base class common to amule, aamuled and amulegui
 class CamuleAppCommon
 {
+private:
+	// Used to detect a previous running instance of aMule
+	wxSingleInstanceChecker*	m_singleInstance;
+
+	bool		CheckPassedLink(const wxString &in, wxString &out, int cat);
+protected:
+	char		*strFullMuleVersion;
+	char		*strOSDescription;
+	wxString	OSType;
+	bool		enable_daemon_fork;
+	bool		ec_config;
+	bool		m_skipConnectionDialog;
+	bool		m_geometryEnabled;
+	wxString	m_geometryString;
+	wxString	m_logFile;
+	wxString	m_appName;
+	wxString	m_PidFile;
+
+	bool		InitCommon(int argc, wxChar ** argv);
+	void		RefreshSingleInstanceChecker();
+	bool		CheckMuleDirectory(const wxString& desc, const class CPath& directory, const wxString& alternative, class CPath& outDir);
 public:
+	wxString	ConfigDir;
+	wxString	m_configFile;
+
+	CamuleAppCommon();
+	~CamuleAppCommon();
 	void		AddLinksFromFile();
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);
 	wxString	CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool addcryptoptions = false);	
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
+	// Who am I ?
+#ifdef AMULE_DAEMON
+	bool		IsDaemon() { return true; }
+#else
+	bool		IsDaemon() { return false; }
+#endif
+
+#ifdef CLIENT_GUI
+	bool		IsRemoteGui() { return true; }
+#else
+	bool		IsRemoteGui() { return false; }
+#endif
+
+	const wxString&	GetMuleAppName() { return m_appName; }
+
 };
+
+/**
+ * Returns a description of the version of aMule being used.
+ *
+ * @return A detailed description of the aMule version, including application
+ *         name and wx information.
+ *
+ * This should become a CamuleAppCommon member once certain files get unlocked.
+ */
+#define GetFullMuleVersion() (theApp->GetMuleAppName() + wxT(" ") + GetMuleVersion())
 
 class CamuleApp : public AMULE_APP_BASE, public CamuleAppCommon
 {
@@ -124,7 +175,6 @@ private:
 		APP_STATE_SHUTTINGDOWN,
 		APP_STATE_STARTING
 	};
-	bool CheckPassedLink(const wxString &in, wxString &out, int cat);
 
 public:
 	CamuleApp();
@@ -233,8 +283,6 @@ public:
 #endif
 	void SetOSFiles(const wxString new_path);
 
-	wxString ConfigDir;
-
 	const wxString& GetOSType() const { return OSType; }
 
 	void ShowUserCount();
@@ -255,8 +303,6 @@ public:
 	bool CryptoAvailable() const;
 	
 protected:
-	// Used to detect a previous running instance of aMule
-	wxSingleInstanceChecker*	m_singleInstance;
 	
 #ifdef __WXDEBUG__
 	/**
@@ -288,16 +334,9 @@ protected:
 	wxString m_emulesig_path;
 	wxString m_amulesig_path;
 
-	char *strFullMuleVersion;
-	char *strOSDescription;
-	wxString OSType;
-
 	uint32 m_dwPublicIP;
 
 	long webserver_pid;
-
-	bool enable_daemon_fork;
-	wxString PidFile;
 
 	wxString server_msg;
 

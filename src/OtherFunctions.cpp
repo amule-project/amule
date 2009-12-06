@@ -90,20 +90,6 @@ wxString GetMuleVersion()
 }
 
 
-wxString GetFullMuleVersion()
-{
-#ifdef AMULE_DAEMON
-	wxString app = wxT("aMuled");
-#elif defined(CLIENT_GUI)
-	wxString app = wxT("Remote aMule-GUI");
-#else
-	wxString app = wxT("aMule");
-#endif
-
-	return app + wxT(" ") + GetMuleVersion();
-}
-
-
 // Formats a filesize in bytes to make it suitable for displaying
 wxString CastItoXBytes( uint64 count )
 {
