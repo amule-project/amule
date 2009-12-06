@@ -46,6 +46,7 @@
 #elif defined(__WXMSW__)
 	#include <winerror.h> // Do_not_auto_remove
 	#include <shlobj.h> // Do_not_auto_remove
+	#include <wx/msw/winundef.h>
 #endif
 
 #include "wxcascte.h"
