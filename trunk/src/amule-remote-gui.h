@@ -668,8 +668,6 @@ public:
 
 class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppCommon {
 	wxTimer*	poll_timer;
-	bool		m_skipConnectionDialog;
-	wxString	m_geom_string;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
@@ -683,8 +681,6 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppC
 	void OnECInitDone(wxEvent& event);
 	void OnNotifyEvent(CMuleGUIEvent& evt);
 	void OnFinishedHTTPDownload(CMuleInternalEvent& event);
-	void OnInitCmdLine(wxCmdLineParser& cmdline);
-	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 	CStatsUpdaterRem m_stats_updater;
 public:
@@ -704,7 +700,6 @@ public:
 	void ShutDown(wxCloseEvent &evt);
 
 	CPreferencesRem *glob_prefs;
-	wxString ConfigDir;
 
 	//
 	// Provide access to core data thru EC

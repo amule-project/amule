@@ -45,7 +45,6 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
-#include <wx/snglinst.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 
@@ -57,7 +56,6 @@
 #include "ClientCreditsList.h"		// Needed for CClientCreditsList
 #include "ClientList.h"			// Needed for CClientList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
-#include "ED2KLink.h"			// Needed for command line passing of links
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include <common/FileFunctions.h>	// Needed for CDirIterator
 #include "FriendList.h"			// Needed for CFriendList
@@ -190,7 +188,6 @@ CamuleApp::CamuleApp()
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
 	ECServerHandler = NULL;
-	m_singleInstance= NULL;
 	glob_prefs	= NULL;
 	m_statistics	= NULL;
 	uploadBandwidthThrottler = NULL;
@@ -311,13 +308,6 @@ int CamuleApp::OnExit()
 	glob_prefs = NULL;
 	CPreferences::EraseItemList();
 
-#if defined(__WXMAC__) && defined(AMULE_DAEMON)
-	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
-#else
-	delete m_singleInstance;
-#endif
-	m_singleInstance = NULL;
-
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 
@@ -353,50 +343,6 @@ int CamuleApp::InitGui(bool, wxString &)
 }
 
 
-/**
- * Checks permissions on a aMule directory, creating if needed.
- *
- * @param desc A description of the directory in question, used for error messages.
- * @param directory The directory in question.
- * @param fallback If the dir specified with 'directory' could not be created, try this instead.
- * @return The bool is false on error. The wxString contains the used path.
- */
-std::pair<bool, CPath> CheckMuleDirectory(const wxString& desc, const CPath& directory, const wxString& alternative)
-{
-	wxString msg;
-
-	if (directory.IsDir(CPath::readwritable)) {
-		return std::pair<bool, CPath>(true, directory);
-	} else if (directory.DirExists()) {
-		// Strings are not translated here because translation isn't up yet.
-		msg = CFormat(wxT("Permissions on the %s directory too strict!\n")
-			wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
-			wxT("permissions for the folder '%s'"))
-				% desc % directory;
-	} else if (CPath::MakeDir(directory)) {
-		return std::pair<bool, CPath>(true, directory);
-	} else {
-		msg << CFormat(wxT("Could not create the %s directory at '%s'."))
-			% desc % directory;
-	}
-
-	// Attempt to use fallback directory.
-	const CPath fallback(alternative);
-	if (fallback.IsOk() && (directory != fallback)) {
-		msg << wxT("\nAttempting to use default directory at location \n'")
-			<< alternative << wxT("'.");
-		if (theApp->ShowAlert(msg, wxT("Error accessing directory."), wxICON_ERROR | wxOK | wxCANCEL) == wxCANCEL) {
-			return std::pair<bool, CPath>(false, CPath(wxEmptyString));
-		}
-
-		return CheckMuleDirectory(desc, fallback, wxEmptyString);
-	} 
-	
-	theApp->ShowAlert(msg, wxT("Fatal error."), wxICON_ERROR | wxOK);
-	return std::pair<bool, CPath>(false, CPath(wxEmptyString));
-}
-
-
 //
 // Application initialization
 //
@@ -429,247 +375,24 @@ bool CamuleApp::OnInit()
 	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), 1);
 #endif
 
-	// This can't be on constructor or wx2.4.2 doesn't set it.	
-	#if !wxCHECK_VERSION(2, 9, 0)
-	SetVendorName(wxT("TikuWarez"));
-	#endif
-	SetAppName(wxT("aMule"));
-	
-	wxString FullMuleVersion = GetFullMuleVersion();
-	wxString OSDescription = wxGetOsDescription();
-	strFullMuleVersion = strdup((const char *)unicode2char(FullMuleVersion));
-	strOSDescription = strdup((const char *)unicode2char(OSDescription));
-	OSType = OSDescription.BeforeFirst( wxT(' ') );
-	if ( OSType.IsEmpty() ) {
-		OSType = wxT("Unknown");
-	}
-
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
 
-	// Parse cmdline arguments.
-	wxCmdLineParser cmdline(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv);
-
-	// Handle these arguments.
-	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
-	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
-	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
-#ifdef AMULE_DAEMON
-	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
-	cmdline.AddOption(wxT("p"), wxT("pid-file"), wxT("After fork, create a pid-file in the given fullname file."));
-	cmdline.AddOption(wxT("c"), wxT("config-dir"), wxT("read config from <dir> instead of home"));
-	cmdline.AddSwitch(wxT("e"), wxT("ec-config"), wxT("Configure EC (External Connections)."));
-#else
-	cmdline.AddOption(wxT("geometry"), wxEmptyString,
-			wxT("Sets the geometry of the app.\n")
-			wxT("\t\t\t<str> uses the same format as standard X11 apps:\n")
-			wxT("\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
-#endif
-	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
-	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
-	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
-#ifndef __WXMSW__
-	// Change webserver path, not available on Windows
-	cmdline.AddOption(wxT("w"), wxT("use-amuleweb"), wxT("Specify location of amuleweb binary."));
-#endif
-	// Allow passing of links to the app
-	cmdline.AddOption(wxT("c"), wxT("category"), wxT("Set category for passed ED2K links."), wxCMD_LINE_VAL_NUMBER);
-	cmdline.AddParam(wxT("ED2K link"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
-
-	// Show help on --help or invalid commands
-	if ( cmdline.Parse() ) {
-		return false;		
-	} else if ( cmdline.Found(wxT("help")) ) {
-		cmdline.Usage();
-		return false;
-	}	
-
-	bool ec_config = false;	
-	
-#ifdef AMULE_DAEMON
-	ec_config = cmdline.Found(wxT("ec-config"));
-	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
-		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
-			ConfigDir += wxFileName::GetPathSeparator();
-		}
-	} else {
-		ConfigDir = GetConfigDir();
-	}
-#else
-	ConfigDir = GetConfigDir();
-#endif
-
-	if ( !cmdline.Found(wxT("disable-fatal")) ) {
-#ifndef __WXMSW__
-		// catch fatal exceptions
-		wxHandleFatalExceptions(true);
-#endif
-	}
-
-	bool reset_config = cmdline.Found(wxT("reset-config"));
-	
-	theLogger.SetEnabledStdoutLog(cmdline.Found(wxT("log-stdout")));
-#ifdef AMULE_DAEMON		
-	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
-	if ( cmdline.Found(wxT("pid-file"), &PidFile) ) {
-		// Remove any existing PidFile
-		if ( wxFileExists (PidFile) ) wxRemoveFile (PidFile);
-	}
-#else
-	enable_daemon_fork = false;
-	PidFile.Clear();
-#endif
-	
-	if (theLogger.IsEnabledStdoutLog()) {
-		if ( enable_daemon_fork ) {
-			AddLogLineMS(false, wxT("Daemon will fork to background - log to stdout disabled"));
-			theLogger.SetEnabledStdoutLog(false);
-		} else {
-			AddLogLineMS(false, wxT("Logging to stdout enabled"));
-		}
-	}
-	
-	if ( cmdline.Found(wxT("version")) ) {
-		AddLogLineMS(false, CFormat(wxT("%s (OS: %s)")) % FullMuleVersion % OSType);
-		
+	if (!InitCommon(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv)) {
 		return false;
 	}
-	
-	// Default geometry of the GUI. Can be changed with a cmdline argument...
-	bool geometry_enabled = false;
-	wxString geom_string;
-#ifndef AMULE_DAEMON
-	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
-		geometry_enabled = true;
-	}
-#endif
-
-	AddLogLineMS(false, wxT("Initialising ") + FullMuleVersion);
-
-	// Ensure that "~/.aMule/" is accessible.
-	if (!CheckMuleDirectory(wxT("configuration"), CPath(ConfigDir), wxEmptyString).first) {
-		return false;
-	}
-	
-	if (reset_config) {
-		// Make a backup first.
-		wxRemoveFile(ConfigDir + wxT("amule.conf.backup"));
-		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
-		AddLogLineMS(false, wxT("Your settings have been reset to default values.\nThe old config file has been saved as amule.conf.backup\n"));
-	}
-
-	size_t linksPassed = cmdline.GetParamCount();	// number of links from the command line
-	int linksActuallyPassed = 0;					// number of links that pass the syntax check
-	if (linksPassed) {
-		long cat = 0;
-		if (!cmdline.Found(wxT("c"), &cat)) {
-			cat = 0;
-		}
-
-		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
-		if (!ed2kFile.Exists()) {
-			ed2kFile.Create();
-		}
-		if (ed2kFile.Open()) {
-			for (size_t i = 0; i < linksPassed; i++) {
-				wxString link;
-				if (CheckPassedLink(cmdline.GetParam(i), link, cat)) {
-					ed2kFile.AddLine(link);
-					linksActuallyPassed++;
-				}
-			}
-			ed2kFile.Write();
-		} else {
-			AddLogLineCS(wxT("Failed to open 'ED2KFile', cannot add links."));
-		}
-	}
-	
-#if defined(__WXMAC__) && defined(AMULE_DAEMON)
-	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
-	AddLogLineMS(true, wxT("WARNING: The check for other instances is currently disabled in amuled.\n"
-		"Please make sure that no other instance of aMule is running or your files might be corrupted.\n"));
-#else
-	AddLogLineMS(false, wxT("Checking if there is an instance already running..."));
-
-	m_singleInstance = new wxSingleInstanceChecker();
-	if (m_singleInstance->Create(wxT("muleLock"), ConfigDir)
-		&& m_singleInstance->IsAnotherRunning()) {
-		AddLogLineMS(true, wxT("There is an instance of aMule already running"));
-		AddLogLineNS(CFormat(wxT("(lock file: %s%s)")) % ConfigDir % wxT("muleLock"));
-		if (linksPassed) {
-			AddLogLineNS(CFormat(wxT("passed %d %s to it, finished")) % linksActuallyPassed 
-				% (linksPassed == 1 ? wxT("link") : wxT("links")));
-			return false;
-		}
-		
-		// This is very tricky. The most secure way to communicate is via ED2K links file
-		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
-		if (!ed2kFile.Exists()) {
-			ed2kFile.Create();
-		}
-			
-		if (ed2kFile.Open()) {
-			ed2kFile.AddLine(wxT("RAISE_DIALOG"));
-			ed2kFile.Write();
-			
-			AddLogLineMS(false, wxT("Raising current running instance."));
-		} else {
-			AddLogLineMS(true, wxT("Failed to open 'ED2KFile', cannot signal running instance."));
-		}
-			
-		return false;
-	} else {
-		AddLogLineMS(false, wxT("No other instances are running."));
-	}
-#endif
-
-	// Close standard-input
-	if ( !cmdline.Found(wxT("enable-stdin")) ) {
-		// The full daemon will close all std file-descriptors by itself,
-		// so closing it here would lead to the closing on the first open
-		// file, which is the logfile opened below
-		if (!enable_daemon_fork) {
-			close(0);
-		}
-	}
-
-	// This creates the CFG file we shall use
-	wxConfigBase* cfg = new wxFileConfig( wxEmptyString, wxEmptyString, ConfigDir + wxT("amule.conf") );
-	
-	// Set the config object as the global cfg file
-	wxConfig::Set( cfg );
-
-	// Make a backup of the log file
-	CPath logfileName = CPath(ConfigDir + wxT("logfile"));
-	if (logfileName.FileExists()) {
-		CPath::BackupFile(logfileName, wxT(".bak"));
-	}
-
-	// Open the log file
-	if (!theLogger.OpenLogfile(logfileName.GetRaw())) {
-		// use std err as last resolt to indicate problem
-		fputs("ERROR: unable to open log file\n", stderr);
-		// failure to open log is serious problem
-		return false;
-	}
-
-	// Load Preferences
-	CPreferences::BuildItemList(ConfigDir);
-	CPreferences::LoadAllItems( wxConfigBase::Get() );
 
 	glob_prefs = new CPreferences();
 
-	std::pair<bool, CPath> checkResult;
-	checkResult = CheckMuleDirectory(wxT("temp"), thePrefs::GetTempDir(), ConfigDir + wxT("Temp"));
-	if (checkResult.first) {
-		thePrefs::SetTempDir(checkResult.second);
+	CPath outDir;
+	if (CheckMuleDirectory(wxT("temp"), thePrefs::GetTempDir(), ConfigDir + wxT("Temp"), outDir)) {
+		thePrefs::SetTempDir(outDir);
 	} else {
 		return false;
 	}
 	
-	checkResult = CheckMuleDirectory(wxT("incoming"), thePrefs::GetIncomingDir(), ConfigDir + wxT("Incoming"));
-	if (checkResult.first) {
-		thePrefs::SetIncomingDir(checkResult.second);
+	if (CheckMuleDirectory(wxT("incoming"), thePrefs::GetIncomingDir(), ConfigDir + wxT("Incoming"), outDir)) {
+		thePrefs::SetIncomingDir(outDir);
 	} else {
 		return false;
 	}
@@ -788,14 +511,12 @@ bool CamuleApp::OnInit()
 	}
 
 	// Create main dialog, or fork to background (daemon).
-	InitGui(geometry_enabled, geom_string);
+	InitGui(m_geometryEnabled, m_geometryString);
 	
-#if !defined(__WXMAC__) && defined(AMULE_DAEMON)
+#ifdef AMULE_DAEMON
 	// Need to refresh wxSingleInstanceChecker after the daemon fork() !
 	if (enable_daemon_fork) {
-        	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
-	        delete m_singleInstance;
-	        m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
+		RefreshSingleInstanceChecker();
 		// No need to check IsAnotherRunning() - we've done it before.
 	}
 #endif
@@ -868,11 +589,8 @@ bool CamuleApp::OnInit()
 #ifndef __WXMSW__
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
-		wxString aMuleConfigFile = ConfigDir + wxT("amule.conf");
-		wxString amulewebPath = wxT("amuleweb");
-		if(true == cmdline.Found(wxT("use-amuleweb"), &amulewebPath)) {
-			AddLogLineNS(CFormat(_("Using amuleweb in '%s'.")) % amulewebPath);
-		}
+		wxString aMuleConfigFile = ConfigDir + m_configFile;
+		wxString amulewebPath = thePrefs::GetWSPath();
 
 #if defined(__WXMAC__) && !defined(AMULE_DAEMON)
 		// For the Mac GUI application, look for amuleweb in the bundle
@@ -919,31 +637,6 @@ bool CamuleApp::OnInit()
 	CThreadScheduler::Start();
 	
 	return true;
-}
-
-bool CamuleApp::CheckPassedLink(const wxString &in, wxString &out, int cat)
-{
-	wxString link(in);
-
-	if (link.compare(0, 7, wxT("magnet:")) == 0) {
-		link = CMagnetED2KConverter(link);
-		if (link.empty()) {
-			AddLogLineCS(CFormat(wxT("Cannot convert magnet link to eD2k: %s")) % in);
-			return false;
-		}
-	}
-
-	try {
-		CScopedPtr<CED2KLink> uri(CED2KLink::CreateLinkFromUrl(link));
-		out = uri.get()->GetLink();
-		if (cat && uri.get()->GetKind() == CED2KLink::kFile) {
-			out += CFormat(wxT(":%d")) % cat;
-		}
-		return true;
-	} catch ( const wxString& err ) {
-		AddLogLineCS(CFormat(wxT("Invalid eD2k link \"%s\" - ERROR: %s")) % link % err);
-	}
-	return false;
 }
 
 bool CamuleApp::ReinitializeNetwork(wxString* msg)
@@ -1696,7 +1389,7 @@ void CamuleApp::ShutDown()
 		glob_prefs->Save();
 	}
 
-	CPath configFileName = CPath(ConfigDir + wxT("amule.conf"));
+	CPath configFileName = CPath(ConfigDir + m_configFile);
 	CPath::BackupFile(configFileName, wxT(".bak"));
 
 	if (clientlist) {
@@ -1759,7 +1452,6 @@ void CamuleApp::SetPublicIP(const uint32 dwIP)
 
 wxString CamuleApp::GetLog(bool reset)
 {
-	ConfigDir = GetConfigDir();
 	wxFile logfile;
 	logfile.Open(ConfigDir + wxT("logfile"));
 	if ( !logfile.IsOpened() ) {
