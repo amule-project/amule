@@ -32,6 +32,8 @@ CTerminationProcessAmuleweb::CTerminationProcessAmuleweb(const wxString &cmd, lo
 CTerminationProcess(cmd),
 m_webserver_pid(webserver_pid)
 {
+	// Don't open a command window on Windows
+	Redirect();
 }
 
 

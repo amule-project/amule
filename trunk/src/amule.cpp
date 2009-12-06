@@ -244,8 +244,16 @@ int CamuleApp::OnExit()
 	if (webserver_pid) {
 		AddLogLineMS(false, CFormat(_("Killing amuleweb instance with pid `%ld' ... ")) % webserver_pid);
 		wxKillError rc;
-		wxKill(webserver_pid, wxSIGTERM, &rc);
-		AddLogLineMS(false, _("Killed!"));
+		if (wxKill(webserver_pid, wxSIGTERM, &rc) == -1) {
+			AddLogLineNS(_("Failed with SIGTERM, try with SIGKILL"));
+			if (wxKill(webserver_pid, wxSIGKILL, &rc) == -1) {
+				AddLogLineNS(_("Failed"));
+			} else {
+				AddLogLineNS(_("Killed!"));
+			}
+		} else {
+			AddLogLineNS(_("Killed!"));
+		}
 	}
 
 	if (m_app_state!=APP_STATE_STARTING) {
@@ -585,8 +593,6 @@ bool CamuleApp::OnInit()
 	theApp->amuledlg->EnableIP2Country();
 #endif
 
-	// No webserver on Win at all (yet)
-#ifndef __WXMSW__
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
 		wxString aMuleConfigFile = ConfigDir + m_configFile;
@@ -613,12 +619,18 @@ bool CamuleApp::OnInit()
 		}
 #endif
 
+#ifdef __WXMSW__
+#	define QUOTE	wxT("\"")
+#else
+#	define QUOTE	wxT("\'")
+#endif
+
 		wxString cmd =
-			wxT("'") +
+			QUOTE +
 			amulewebPath +
-			wxT("' '--amule-config-file=") +
+			QUOTE wxT(" ") QUOTE wxT("--amule-config-file=") +
 			aMuleConfigFile +
-			wxT("'");
+			QUOTE;
 		CTerminationProcessAmuleweb *p = new CTerminationProcessAmuleweb(cmd, &webserver_pid);
 		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
 		bool webserver_ok = webserver_pid > 0;
@@ -631,7 +643,6 @@ bool CamuleApp::OnInit()
 				_("ERROR"), wxOK | wxICON_ERROR);
 		}
 	}
-#endif /* ! __WXMSW__ */
 
 	// Start performing background tasks
 	CThreadScheduler::Start();

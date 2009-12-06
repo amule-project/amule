@@ -114,6 +114,7 @@ Version 2.3.0 - The river knows.
 		* Fix: window size/position didn't get saved on some systems
 		* aMule, aMuled and aMulegui can take ED2K links from the command line
 		* More command line options for aMulegui
+		* Allow webserver autostart on Windows
 
 	Vollstrecker:
 		* Unify copyright lines
