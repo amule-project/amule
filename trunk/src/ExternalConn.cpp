@@ -249,7 +249,6 @@ void ExternalConn::KillAllSockets()
 		CECServerSocket *s = *(it++);
 		s->Close();
 		s->Destroy();
-		delete s;
 	}
 }
 
