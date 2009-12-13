@@ -488,7 +488,9 @@ void CCompletionTask::OnExit()
 // CAllocateFileTask
 
 #ifdef HAVE_FALLOCATE
-#	define _GNU_SOURCE
+#	ifndef _GNU_SOURCE
+#		define _GNU_SOURCE
+#	endif
 #	ifdef HAVE_FCNTL_H
 #		include <fcntl.h>
 #	endif
