@@ -923,7 +923,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:162
 msgid "Close tab"
