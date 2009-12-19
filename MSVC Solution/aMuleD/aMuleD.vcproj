@@ -42,8 +42,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
-				PreprocessorDefinitions="_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;AMULE_DAEMON"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -56,6 +56,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Daemon\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -119,8 +120,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
-				PreprocessorDefinitions="_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;AMULE_DAEMON"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\src\zlib&quot;"
+				PreprocessorDefinitions="_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -132,6 +133,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Daemon\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -196,8 +198,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\src\zlib&quot;"
-				PreprocessorDefinitions="_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;AMULE_DAEMON"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\src\zlib&quot;"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -210,6 +212,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Daemon\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -273,8 +276,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\src\zlib&quot;"
-				PreprocessorDefinitions="_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;AMULE_DAEMON"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\src\libs&quot;;&quot;$(SolutionDir)\..\src&quot;;&quot;$(SolutionDir)\..\src\include&quot;;&quot;$(SolutionDir)\..\&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\src\zlib&quot;"
+				PreprocessorDefinitions="_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -286,6 +289,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Daemon\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"

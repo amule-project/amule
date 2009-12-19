@@ -57,6 +57,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;ED2K Links Handler\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -133,6 +134,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;ED2K Links Handler\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"

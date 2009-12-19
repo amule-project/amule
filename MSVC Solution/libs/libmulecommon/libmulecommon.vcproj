@@ -310,6 +310,50 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\..\src\include\common\ClientVersion.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Create config.h"
+						CommandLine="cd &quot;$(SolutionDir)..&quot;&#x0D;&#x0A;&quot;$(SolutionDir)makeconfig.cmd&quot;"
+						Outputs="&quot;$(SolutionDir)..\config.h&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Create config.h"
+						CommandLine="cd &quot;$(SolutionDir)..&quot;&#x0D;&#x0A;&quot;$(SolutionDir)makeconfig.cmd&quot;"
+						Outputs="&quot;$(SolutionDir)..\config.h&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug29|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Create config.h"
+						CommandLine="cd &quot;$(SolutionDir)..&quot;&#x0D;&#x0A;&quot;$(SolutionDir)makeconfig.cmd&quot;"
+						Outputs="&quot;$(SolutionDir)..\config.h&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release29|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Create config.h"
+						CommandLine="cd &quot;$(SolutionDir)..&quot;&#x0D;&#x0A;&quot;$(SolutionDir)makeconfig.cmd&quot;"
+						Outputs="&quot;$(SolutionDir)..\config.h&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\..\src\libs\common\FileFunctions.h"
 				>
 			</File>
