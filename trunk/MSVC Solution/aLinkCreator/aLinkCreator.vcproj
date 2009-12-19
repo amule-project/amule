@@ -42,8 +42,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;"
-				PreprocessorDefinitions="_DEBUG;__DEBUG__"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\&quot;"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;HAVE_CONFIG_H"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -57,7 +57,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Link Creator\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -121,8 +121,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;"
-				PreprocessorDefinitions="NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\&quot;"
+				PreprocessorDefinitions="NDEBUG;HAVE_CONFIG_H"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -134,7 +134,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Link Creator\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;;&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -199,8 +199,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud&quot;"
-				PreprocessorDefinitions="_DEBUG;__DEBUG__"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud&quot;;&quot;$(SolutionDir)\..\&quot;"
+				PreprocessorDefinitions="_DEBUG;__DEBUG__;HAVE_CONFIG_H"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -214,7 +214,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Link Creator\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -278,8 +278,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu&quot;"
-				PreprocessorDefinitions="NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu&quot;;&quot;$(SolutionDir)\..\&quot;"
+				PreprocessorDefinitions="NDEBUG;HAVE_CONFIG_H"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -291,7 +291,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\&quot;aMule Link Creator\&quot;;VER_INTERNALNAME_STR=\&quot;$(ProjectName)\&quot;;VER_ORIGINALFILENAME_STR=\&quot;$(TargetFileName)\&quot;"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets29\include&quot;;&quot;$(SolutionDir)\..&quot;;&quot;$(SolutionDir)\..\src\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
