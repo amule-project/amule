@@ -137,6 +137,13 @@ void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& parser)
 bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	m_HasCmdOnCmdLine = parser.Found(wxT("command"), &m_CmdString);
+	if (m_CmdString.Lower().StartsWith(wxT("help")))
+	{
+		OnInitCommandSet();
+		printf("%s %s\n", m_appname, (const char *)unicode2char(GetMuleVersion()));
+		Parse_Command(m_CmdString);
+		exit(0);
+	}
 	m_interactive = !m_HasCmdOnCmdLine;
 	return CaMuleExternalConnector::OnCmdLineParsed(parser);
 }

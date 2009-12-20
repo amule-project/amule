@@ -123,6 +123,7 @@ Version 2.3.0 - The river knows.
 		* Added crash handling in command-line tools
 		* Fix for autoconf-2.64.
 		* Raised minimum wxWidgets version to 2.8.8
+		* Make amulecmd help command work without connection
 
 	Wuischke:
 		* Simplify browser selection
