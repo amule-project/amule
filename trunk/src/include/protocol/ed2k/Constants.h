@@ -60,7 +60,6 @@
 // MOD Note: end
 
 #define	MAXCONPER5SEC				20
-#define	UPLOAD_CLIENT_DATARATE			3072
 #define	MAX_UP_CLIENTS_ALLOWED			250	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	DOWNLOADTIMEOUT				100000
 #define	CONSERVTIMEOUT				25000	// agelimit for pending connection attempts

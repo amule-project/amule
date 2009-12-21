@@ -282,18 +282,19 @@ void* UploadBandwidthThrottler::Entry()
 {
 	const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 	
-	uint32 lastLoopTick = ::GetTickCountFullRes();
-	sint64 realBytesToSpend = 0;
+	uint32 lastLoopTick = GetTickCountFullRes();
+	// Bytes to spend in current cycle. If we spend more this becomes negative and causes a wait next time.
+	sint32 bytesToSpend = 0;
 	uint32 allowedDataRate = 0;
 	uint32 rememberedSlotCounter = 0;
 	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
 	
 	while (m_doRun) {
-		uint32 timeSinceLastLoop = ::GetTickCountFullRes() - lastLoopTick;
+		uint32 timeSinceLastLoop = GetTickCountFullRes() - lastLoopTick;
 
-		// Get current speed from UploadSpeedSense
+		// Calculate data rate
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
-			// Try to increase the upload rate
+			// Try to increase the upload rate from UploadSpeedSense
 			allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
 		} else {
 			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
@@ -308,55 +309,38 @@ void* UploadBandwidthThrottler::Entry()
 
 
 		uint32 sleepTime;
-		if(allowedDataRate == 0 || allowedDataRate == _UI32_MAX || realBytesToSpend >= 1000) {
-			// we could send at once, but sleep a while to not suck up all cpu
-			sleepTime = extraSleepTime;
+		if (bytesToSpend < 1) {
+			// We have sent more than allowed in last cycle so we have to wait now
+			// until we can send at least 1 byte.
+			sleepTime = std::max((-bytesToSpend + 1) * 1000 / allowedDataRate + 2, // add 2 ms to allow for rounding inaccuracies
+									extraSleepTime);
 		} else {
-			// sleep for just as long as we need to get back to having one byte to send
-			sleepTime = std::max((uint32)ceil((double)(-realBytesToSpend + 1000)/allowedDataRate), extraSleepTime);
+			// We could send at once, but sleep a while to not suck up all cpu
+			sleepTime = extraSleepTime;
 		}
 
-		if(timeSinceLastLoop < sleepTime) {
+		if (timeSinceLastLoop < sleepTime) {
 			Sleep(sleepTime-timeSinceLastLoop);
 		}
 
-		const uint32 thisLoopTick = ::GetTickCountFullRes();
+		const uint32 thisLoopTick = GetTickCountFullRes();
 		timeSinceLastLoop = thisLoopTick - lastLoopTick;
-
-		// Calculate how many bytes we can spend
-		sint64 bytesToSpend = 0;
-
-		if(allowedDataRate != 0 && allowedDataRate != _UI32_MAX) {
-			// prevent overflow
-			if(timeSinceLastLoop == 0) {
-				// no time has passed, so don't add any bytes. Shouldn't happen.
-				bytesToSpend = 0; //realBytesToSpend/1000;
-			} else if(_I64_MAX/timeSinceLastLoop > allowedDataRate && _I64_MAX-allowedDataRate*timeSinceLastLoop > realBytesToSpend) {
-				if(timeSinceLastLoop > sleepTime + 2000) {
-					AddDebugLogLineM(false, logGeneral, CFormat(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims")) 
-						% timeSinceLastLoop % sleepTime % (sleepTime + 2000));
-		
-					timeSinceLastLoop = sleepTime + 2000;
-					lastLoopTick = thisLoopTick - timeSinceLastLoop;
-				}
-
-				realBytesToSpend += allowedDataRate*timeSinceLastLoop;
-
-				bytesToSpend = realBytesToSpend/1000;
-			} else {
-				realBytesToSpend = _I64_MAX;
-				bytesToSpend = _I32_MAX;
-			}
-		} else {
-			realBytesToSpend = 0; //_I64_MAX;
-			bytesToSpend = _I32_MAX;
-		}
-
 		lastLoopTick = thisLoopTick;
 
-		if(bytesToSpend >= 1) {
-			uint64 spentBytes = 0;
-			uint64 spentOverhead = 0;
+		if (timeSinceLastLoop > sleepTime + 2000) {
+			AddDebugLogLineM(false, logGeneral, CFormat(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims")) 
+				% timeSinceLastLoop % sleepTime % (sleepTime + 2000));
+
+			timeSinceLastLoop = sleepTime + 2000;
+		}
+
+		// Calculate how many bytes we can spend
+
+		bytesToSpend += (sint32) (allowedDataRate / 1000.0 * timeSinceLastLoop);
+
+		if (bytesToSpend >= 1) {
+			sint32 spentBytes = 0;
+			sint32 spentOverhead = 0;
 
 			wxMutexLocker sendLock(m_sendLocker);
 
@@ -377,38 +361,37 @@ void* UploadBandwidthThrottler::Entry()
 			}
 	
 			// Send any queued up control packets first
-			while(bytesToSpend > 0 && spentBytes < (uint64)bytesToSpend && (!m_ControlQueueFirst_list.empty() || !m_ControlQueue_list.empty())) {
+			while (spentBytes < bytesToSpend && (!m_ControlQueueFirst_list.empty() || !m_ControlQueue_list.empty())) {
 				ThrottledControlSocket* socket = NULL;
 	
-				if(!m_ControlQueueFirst_list.empty()) {
+				if (!m_ControlQueueFirst_list.empty()) {
 					socket = m_ControlQueueFirst_list.front();
 					m_ControlQueueFirst_list.pop_front();
-				} else if(!m_ControlQueue_list.empty()) {
+				} else if (!m_ControlQueue_list.empty()) {
 					socket = m_ControlQueue_list.front();
 					m_ControlQueue_list.pop_front();
 				}
 	
-				if(socket != NULL) {
+				if (socket != NULL) {
 					SocketSentBytes socketSentBytes = socket->SendControlData(bytesToSpend-spentBytes, minFragSize);
-					uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
-					spentBytes += lastSpentBytes;
+					spentBytes += socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				}
 			}
 	
 			// Check if any sockets haven't gotten data for a long time. Then trickle them a package.
-			for ( uint32 slotCounter = 0; slotCounter < m_StandardOrder_list.size(); slotCounter++) {
+			uint32 slots = m_StandardOrder_list.size();
+			for (uint32 slotCounter = 0; slotCounter < slots; slotCounter++) {
 				ThrottledFileSocket* socket = m_StandardOrder_list[ slotCounter ];
 	
-				if(socket != NULL) {
-					if(thisLoopTick-socket->GetLastCalledSend() > SEC2MS(1)) {
+				if (socket != NULL) {
+					if (thisLoopTick-socket->GetLastCalledSend() > SEC2MS(1)) {
 						// trickle
 						uint32 neededBytes = socket->GetNeededBytes();
 	
-						if(neededBytes > 0) {
+						if (neededBytes > 0) {
 							SocketSentBytes socketSentBytes = socket->SendFileAndControlData(neededBytes, minFragSize);
-							uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
-							spentBytes += lastSpentBytes;
+							spentBytes += socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 							spentOverhead += socketSentBytes.sentBytesControlPackets;
 						}
 					}
@@ -418,25 +401,23 @@ void* UploadBandwidthThrottler::Entry()
 				}
 			}
 	
-			// Equal bandwidth for all slots
-			uint32 maxSlot = m_StandardOrder_list.size();
-			if(maxSlot > 0 && allowedDataRate/maxSlot < UPLOAD_CLIENT_DATARATE) {
-				maxSlot = allowedDataRate/UPLOAD_CLIENT_DATARATE;
-			}
-
-			for(uint32 maxCounter = 0; maxCounter < std::min(maxSlot, (uint32)m_StandardOrder_list.size()) && bytesToSpend > 0 && spentBytes < (uint64)bytesToSpend; maxCounter++) {
-				if(rememberedSlotCounter >= m_StandardOrder_list.size() ||
-				   rememberedSlotCounter >= maxSlot) {
+			// Give available bandwidth to slots, starting with the one we ended with last time.
+			// There are two passes. First pass gives packets of doubleSendSize, second pass
+			// gives as much as possible.
+			// Second pass starts with the last slot of the first pass actually.
+			for (uint32 slotCounter = 0; (slotCounter < slots * 2) && spentBytes < bytesToSpend; slotCounter++) {
+				if (rememberedSlotCounter >= slots) {	// wrap around pointer
 					rememberedSlotCounter = 0;
 				}
 
+				uint32 data = (slotCounter < slots - 1)	? doubleSendSize				// pass 1
+															: (bytesToSpend - spentBytes);	// pass 2
+
 				ThrottledFileSocket* socket = m_StandardOrder_list[ rememberedSlotCounter ];
 
-				if(socket != NULL) {
-					SocketSentBytes socketSentBytes = socket->SendFileAndControlData(std::min(doubleSendSize, (uint32)(bytesToSpend-spentBytes)), doubleSendSize);
-					uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
-
-					spentBytes += lastSpentBytes;
+				if (socket != NULL) {
+					SocketSentBytes socketSentBytes = socket->SendFileAndControlData(data, doubleSendSize);
+					spentBytes += socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				} else {
 					AddDebugLogLineM(false, logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"))
@@ -446,39 +427,23 @@ void* UploadBandwidthThrottler::Entry()
 				rememberedSlotCounter++;
 			}
 
-			// Any bandwidth that hasn't been used yet are used first to last.
-			for(uint32 slotCounter = 0; slotCounter < m_StandardOrder_list.size() && bytesToSpend > 0 && spentBytes < (uint64)bytesToSpend; slotCounter++) {
-				ThrottledFileSocket* socket = m_StandardOrder_list[ slotCounter ];
+			// Do some limiting of what we keep for the next loop.
+			bytesToSpend -= spentBytes;
+			sint32 minBytesToSpend = (slots + 1) * minFragSize;
 
-				if(socket != NULL) {
-					uint32 bytesToSpendTemp = bytesToSpend-spentBytes;
-					SocketSentBytes socketSentBytes = socket->SendFileAndControlData(bytesToSpendTemp, doubleSendSize);
-					uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
-					spentBytes += lastSpentBytes;
-					spentOverhead += socketSentBytes.sentBytesControlPackets;
-				} else {
-					AddDebugLogLineM(false, logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (fully activated)! Prevented usage. Index: %i Size: %i")) 
-						% slotCounter % m_StandardOrder_list.size());
-				}
-			}
-			realBytesToSpend -= spentBytes*1000;
-
-			if(realBytesToSpend < -(((sint64)m_StandardOrder_list.size()+1)*minFragSize)*1000) {
-				sint64 newRealBytesToSpend = -(((sint64)m_StandardOrder_list.size()+1)*minFragSize)*1000;
-	
-				realBytesToSpend = newRealBytesToSpend;
+			if (bytesToSpend < - minBytesToSpend) {
+				bytesToSpend = - minBytesToSpend;
 			} else {
-				uint64 bandwidthSavedTolerance = m_StandardOrder_list.size()*512*1000;
-				if(realBytesToSpend > 0 && (uint64)realBytesToSpend > 999+bandwidthSavedTolerance) {
-					sint64 newRealBytesToSpend = 999+bandwidthSavedTolerance;
-					realBytesToSpend = newRealBytesToSpend;
+				sint32 bandwidthSavedTolerance = slots * 512 + 1;
+				if (bytesToSpend > bandwidthSavedTolerance) {
+					bytesToSpend = bandwidthSavedTolerance;
 				}
 			}
 			
 			m_SentBytesSinceLastCall += spentBytes;
 			m_SentBytesSinceLastCallOverhead += spentOverhead;
 
-			if ((spentBytes == 0) && (spentOverhead == 0)) {
+			if (spentBytes == 0) {	// spentBytes includes the overhead
 				extraSleepTime = std::min<uint32>(extraSleepTime * 5, 1000); // 1s at most
 			} else {
 				extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
