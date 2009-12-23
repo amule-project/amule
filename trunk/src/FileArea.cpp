@@ -49,8 +49,8 @@ class CFileAreaSigHandler
 {
 public:
 	static void Init() {};
-	static void Add(CFileArea& area) {};
-	static void Remove(CFileArea& area) {};
+	static void Add(CFileArea&) {};
+	static void Remove(CFileArea&) {};
 private:
 	CFileAreaSigHandler() {};
 };
@@ -242,11 +242,11 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	file.ReadAt(m_buffer, offset, count);
 }
 
+#ifdef HAVE_MMAP
 void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
 
-#ifdef HAVE_MMAP
 	uint64 offEnd = offset + count;
 	if (file.GetLength() >= offEnd && gs_pageSize > 0 && offEnd < 0x100000000ull) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
@@ -264,9 +264,15 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 		}
 		file.Unlock();
 	}
-#endif
 	m_buffer = new byte[count];
 }
+#else
+void CFileArea::StartWriteAt(CFileAutoClose&, uint64, size_t count)
+{
+	Close();
+	m_buffer = new byte[count];
+}
+#endif
 
 
 bool CFileArea::FlushAt(CFileAutoClose& file, uint64 offset, size_t count)
