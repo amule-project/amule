@@ -93,7 +93,7 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 		USEREVENTS_REPLACE_VAR( \
 			wxT("PARTITION"), \
 			wxTRANSLATE("Disk partition."), \
-			*((wxString*)object) ) \
+			wxString((wxChar*)object) ) \
 	) \
 	USEREVENTS_EVENT( \
 		ErrorOnCompletion, \
