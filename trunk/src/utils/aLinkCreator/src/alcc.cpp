@@ -54,7 +54,9 @@ int alcc::OnRun ()
   m_locale.AddCatalog(wxT(PACKAGE));
 
   wxLog::DontCreateOnDemand();
-  delete wxLog::SetActiveTarget(new wxLogStderr); // Replace printf by Log on Stderr
+  wxLogStderr * stderrLog = new wxLogStderr;
+  wxLogStderr * stdoutLog = new wxLogStderr(stdout);
+  delete wxLog::SetActiveTarget(stderrLog); // Log on Stderr
 #if wxCHECK_VERSION(2, 9, 0)  
   wxLog::SetTimestamp("");   // Disable timestamp on messages
 #else
@@ -79,7 +81,11 @@ int alcc::OnRun ()
 
           if (hash.SetED2KHashFromFile(m_filesToHash[i], NULL))
             {
+				// Print the link to stdout
+				wxLog::SetActiveTarget(stdoutLog);
                 wxLogMessage(wxT("%s"), hash.GetED2KLink(m_flagPartHashes).c_str());
+				// Everything else goes to stderr
+				wxLog::SetActiveTarget(stderrLog);
             }
         }
       else
