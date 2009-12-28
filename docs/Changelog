@@ -116,6 +116,7 @@ Version 2.3.0 - The river knows.
 		* More command line options for aMulegui
 		* Allow webserver autostart on Windows
 		* Fixed crash in "Out of space" user event handler
+		* ALCC prints links to stdout now instead of stderr
 
 	Vollstrecker:
 		* Unify copyright lines
