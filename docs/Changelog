@@ -117,6 +117,8 @@ Version 2.3.0 - The river knows.
 		* Allow webserver autostart on Windows
 		* Fixed crash in "Out of space" user event handler
 		* ALCC prints links to stdout now instead of stderr
+		* Fixed memory exhaustion on high speed uploads
+		  Thanks to RRM for endless patience!
 
 	Vollstrecker:
 		* Unify copyright lines
