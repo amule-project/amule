@@ -62,18 +62,25 @@ wxString GetMuleVersion()
 
 	
 	// Figure out the wx build-type
-	#ifdef __WXGTK__
-		#ifdef __WXGTK20__
-			ver += wxT("wxGTK2");
-		#else
-			ver += wxT("wxGTK1");
-		#endif
-	#elif defined(__WXMAC__)
-		ver += wxT("wxMac");
-	#elif defined(__WXMSW__)
-		ver += wxT("wxMSW");
+	#if   defined(__WXGTK20__)
+		ver += wxT("wxGTK2");
+	#elif defined(__WXGTK__)
+		ver += wxT("wxGTK1");
+	// 2.9 has different builds for OSX: Carbon and Cocoa
+	#elif defined(__WXOSX_CARBON__)
+		ver += wxT("wxOSX Carbon");
+	#elif defined(__WXOSX_COCOA__)
+		ver += wxT("wxOSX Cocoa");
+	// different Cocoa port, "not been updated very actively since beginning 2008"
 	#elif defined(__WXCOCOA__)
 		ver += wxT("wxCocoa");
+	// 2.8 Mac
+	#elif defined(__WXMAC__)
+		ver += wxT("wxMac");
+	#elif defined(__WXMSW__) && defined(__VISUALC__)
+		ver += wxT("wxMSW VC");
+	#elif defined(__WXMSW__)
+		ver += wxT("wxMSW");
 	#endif
 
 	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
