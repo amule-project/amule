@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-27 23:46+0100\n"
-"PO-Revision-Date: 2009-09-27 09:34+0100\n"
+"PO-Revision-Date: 2009-12-30 11:16+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -54,14 +54,14 @@ msgid "Now, exiting main app..."
 msgstr "Beende nun Hauptanwendung ..."
 
 #: src/amule.cpp:245
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "Beende amuleweb-Instanz mit pid '%ld' ..."
 
 #: src/amule.cpp:248
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr "Beende amuleweb-Instanz mit pid '%ld' ..."
+msgstr "Erzwinge Beenden der amuleweb-Instanz mit pid '%ld' ..."
 
 #: src/amule.cpp:250 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -579,9 +579,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Getrennt)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "aMule wirklich beenden?"
+msgstr "%s wirklich beenden?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
