@@ -119,6 +119,7 @@ Version 2.3.0 - The river knows.
 		* ALCC prints links to stdout now instead of stderr
 		* Fixed memory exhaustion on high speed uploads
 		  Thanks to RRM for endless patience!
+		* Fix: Language English was not recognized and so reverted to "System default" at any change
 
 	Vollstrecker:
 		* Unify copyright lines
