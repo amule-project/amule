@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-27 23:46+0100\n"
-"PO-Revision-Date: 2009-11-07 16:28+0200\n"
+"PO-Revision-Date: 2009-12-30 07:01+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgid "Now, exiting main app..."
 msgstr "Ana uygulamadan çıkılıyor..."
 
 #: src/amule.cpp:245
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "Amuleweb oturumu pid `%ld' ile öldürülüyor..."
 
@@ -564,9 +564,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Bağlantı kesildi)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "aMule'den çıkmayı gerçekten istiyor musunuz?"
+msgstr "%s üzerinden çıkmayı gerçekten istiyor musunuz?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
