@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-27 23:46+0100\n"
-"PO-Revision-Date: 2009-11-09 19:23+0100\n"
+"PO-Revision-Date: 2009-12-30 22:50+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,9 +48,9 @@ msgid "Now, exiting main app..."
 msgstr "Kilépés a fő alkalmazásból..."
 
 #: src/amule.cpp:245
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr "amuleweb instancia (pid: '%ld') kivégzése ... "
+msgstr "amuleweb instancia (pid: '%ld') bezárása ... "
 
 #: src/amule.cpp:248
 #, c-format
@@ -566,9 +566,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Nincs kapcsolat)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Biztos, hogy ki akarsz lépni az aMule-ból?"
+msgstr "Biztos, hogy ki szeretnél lépni a(z) %s alkalmazásból?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
