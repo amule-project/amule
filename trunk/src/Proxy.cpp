@@ -1070,7 +1070,7 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 		if (m_proxyData.m_enablePassword) {
 			userPass = m_proxyData.m_userName + wxT(":") + m_proxyData.m_password;
 			userPassEncoded =
-				EncodeBase64(unicode2char(userPass), PROXY_BUFFER_SIZE);
+				EncodeBase64(unicode2char(userPass), userPass.Length());
 		}
 		wxString msg;
 		
@@ -1083,9 +1083,8 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 				msg << 
 				wxT("Authorization: Basic ")       << userPassEncoded << wxT("\r\n") <<
 				wxT("Proxy-Authorization: Basic ") << userPassEncoded << wxT("\r\n");
-			} else {
-				msg << wxT("\r\n");
 			}
+			msg << wxT("\r\n");
 			break;
 			
 		case PROXY_CMD_BIND:
