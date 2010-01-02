@@ -65,103 +65,19 @@ AC_CHECK_TOOL(LD, ld)
 dnl
 dnl Add args to configure
 dnl
-AC_ARG_ENABLE(
-	[monolithic],
-	[AS_HELP_STRING(
-		[--disable-monolithic],
-		[disable building of the monolithic aMule app])],
-	[MONOLITHIC=$enableval], [MONOLITHIC=yes])
-
-AC_ARG_ENABLE(
-	[amule-daemon],
-	[AS_HELP_STRING(
-		[--enable-amule-daemon],
-		[compile aMule daemon version])],
-	[AMULE_DAEMON=$enableval], [AMULE_DAEMON=no])
-
-AC_ARG_ENABLE(
-	[amulecmd],
-	[AS_HELP_STRING(
-		[--enable-amulecmd],
-		[compile aMule command line client])],
-	[AMULECMD=$enableval], [AMULECMD=no])
-
-AC_ARG_ENABLE(
-	[webserver],
-	[AS_HELP_STRING(
-		[--enable-webserver],
-		[compile aMule WebServer])],
-	[WEB=$enableval], [WEB=no])
-
-AC_ARG_ENABLE(
-	[amule-gui],
-	[AS_HELP_STRING(
-		[--enable-amule-gui],
-		[compile aMule remote GUI (EXPERIMENTAL)])],
-	[AMULE_GUI=$enableval], [AMULE_GUI=no])
-
-AC_ARG_ENABLE(
-	[cas],
-	[AS_HELP_STRING(
-		[--enable-cas],
-		[compile C aMule Statistics])],
-	[CAS=$enableval], [CAS=no])
-
-AC_ARG_ENABLE(
-	[wxcas],
-	[AS_HELP_STRING(
-		[--enable-wxcas],
-		[compile aMule GUI Statistics])],
-	[WXCAS=$enableval], [WXCAS=no])
-
-AC_ARG_ENABLE(
-	[ed2k],
-	[AS_HELP_STRING(
-		[--disable-ed2k],
-		[don't compile aMule ed2k links handler])],
-	[ED2K=$enableval], [ED2K=yes])
-
-AC_ARG_ENABLE(
-	[alc],
-	[AS_HELP_STRING(
-		[--enable-alc],
-		[compile aMuleLinkCreator GUI version])],
-	[ALC=$enableval], [ALC=no])
-	      
-AC_ARG_ENABLE(
-	[alcc],
-	[AS_HELP_STRING(
-		[--enable-alcc],
-		[compile aMuleLinkCreator for console])],
-	[ALCC=$enableval], [ALCC=no])
-
-AC_ARG_ENABLE(
-	[monolithic],
-	[AS_HELP_STRING(
-		[--disable-monolithic],
-		[disable building of the monolithic aMule app])],
-	[MONOLITHIC=$enableval], [MONOLITHIC=yes])
-
-AC_ARG_ENABLE(
-	[upnp],
-	[AS_HELP_STRING(
-		[--disable-upnp],
-		[do not compile UPnP code])],
-	[ENABLE_UPNP=$enableval], [ENABLE_UPNP=yes])
-
-AC_ARG_ENABLE(
-	[xas],
-	[AS_HELP_STRING(
-		[--enable-xas],
-		[install xas XChat2 plugin])],
-	[XAS=$enableval], [XAS=no])
-
-AC_ARG_ENABLE(
-	[fileview],
-	[AS_HELP_STRING(
-		[--enable-fileview],
-		[compile aMule file viewer for console (EXPERIMENTAL)])],
-	[FILEVIEW=$enableval], [FILEVIEW=no])
+MULE_ARG_ENABLE([monolithic],	[yes],	[disable building of the monolithic aMule app], [MONOLITHIC])
+MULE_ARG_ENABLE([amule-daemon],	[no],	[compile aMule daemon version], [AMULE_DAEMON])
+MULE_ARG_ENABLE([amulecmd],	[no],	[compile aMule command line client], [COMPILE_CMD])
+MULE_ARG_ENABLE([webserver],	[no],	[compile aMule WebServer], [WEB])
+MULE_ARG_ENABLE([amule-gui],	[no],	[compile aMule remote GUI (EXPERIMENTAL)], [AMULE_GUI])
+MULE_ARG_ENABLE([cas],		[no],	[compile C aMule Statistics], [CAS])
+MULE_ARG_ENABLE([wxcas],	[no],	[compile aMule GUI Statistics], [WXCAS])
+MULE_ARG_ENABLE([ed2k],		[yes],	[don't compile aMule ed2k links handler], [ED2K])
+MULE_ARG_ENABLE([alc],		[no],	[compile aMuleLinkCreator GUI version], [ALC])
+MULE_ARG_ENABLE([alcc],		[no],	[compile aMuleLinkCreator for console], [ALCC])
+MULE_ARG_ENABLE([upnp],		[yes],	[do not compile UPnP code])
+MULE_ARG_ENABLE([xas],		[no],	[install xas XChat2 plugin], [XAS])
+MULE_ARG_ENABLE([fileview],	[no],	[compile aMule file viewer for console (EXPERIMENTAL)], [FILEVIEW])
 
 # Default is yes, because they're most likely compatible.
 # However, this is only used when cross-compiling.
@@ -179,7 +95,7 @@ AC_ARG_WITH(
 # Check for zlib
 MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
 
-AS_IF([test x$CAS = xyes], [
+MULE_IF_ENABLED([cas], [
 	# Check for gd
 	MULE_CHECK_GDLIB([2.0.0], [
 		CAS_DEFS="-D__GD__"
@@ -197,7 +113,7 @@ AS_IF([test x$CAS = xyes], [
 AC_SUBST([CAS_DEFS])dnl
 
 
-AS_IF([test x$WEB = xyes], 
+MULE_IF_ENABLED([webserver],
 	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [
 		MULE_WARNING(
 			[libpng >= 1.2.0 not found.
@@ -206,25 +122,12 @@ AS_IF([test x$WEB = xyes],
 	], [LIBPNG_VERSION="not_needed"])
 AC_SUBST([AMULEWEB_DEFS])dnl
 
-
 # Check for perl File::Copy
 AC_MSG_CHECKING([for File::Copy])
 AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])], [AC_MSG_ERROR([File::Copy perl module is required])])
 
-
-# Check if we need the GUI
-AC_MSG_CHECKING([whether we need the GUI])
-AS_IF([test x$MONOLITHIC = xyes], [need_gui=yes])
-AS_IF([test x$WXCAS = xyes], [need_gui=yes])
-AS_IF([test x$ALC = xyes], [need_gui=yes])
-AS_IF([test x$AMULE_GUI = xyes], [need_gui=yes])
-AS_IF([test x${need_gui:+set} != xset], [need_gui=no])
-AC_MSG_RESULT($need_gui)
-
 # Check if we need to install skins
-AS_IF([test x$MONOLITHIC = xyes], [INSTALL_SKINS=yes])
-AS_IF([test x$AMULE_GUI = xyes], [INSTALL_SKINS=yes])
-AS_IF([test x${INSTALL_SKINS:+set} != xset], [INSTALL_SKINS=no])
+MULE_IF_ENABLED_ANY([monolithic, amule-gui], [INSTALL_SKINS=yes], [INSTALL_SKINS=no])
 
 # Check for GeoIP (required for IP2Country capability)
 MULE_CHECK_GEOIP
@@ -258,13 +161,14 @@ WXBASE_CPPFLAGS="$WX_CPPFLAGS -DwxUSE_GUI=0"
 AC_SUBST([WXBASE_LIBS])
 AC_SUBST([WXBASE_CPPFLAGS])
 
-AS_IF([test ${need_gui} = yes -a "${WX_PORT}" = base],
+MULE_IF_ENABLED_ANY([monolithic, amule-gui, wxcas, alc],
+[AS_IF([test "${WX_PORT}" = base],
 	[AC_MSG_ERROR([
 		The selected components need a wxWidgets library with GUI,
 		but your installation is base-only.  Please install a GUI
 		enabled version of wxWidgets and then retry.
 	])]
-)
+)])
 
 dnl Get flags for windres
 AC_ARG_VAR([RC], [Resource Compiler])dnl
@@ -277,11 +181,11 @@ AS_IF([test ${SYS:-unknown} = win32],
 
 
 # Check for libupnp
-AS_IF([test "${ENABLE_UPNP:-yes}" = yes], [
+MULE_IF_ENABLED([upnp], [
 	LIBUPNP_CHECK(
 		[1.6.6],
 		[MULE_APPEND([LIBUPNP_CPPFLAGS], [-DENABLE_UPNP=1])],
-		[ENABLE_UPNP=disabled
+		[MULE_ENABLEVAR([upnp])=disabled
 		MULE_WARNING([UPnP code has been disabled because ${libupnp_error}.])]
 	)
 ])dnl
@@ -382,10 +286,9 @@ dnl
 AC_CHECK_FUNCS([mkdir getrlimit setrlimit getopt_long])
 
 dnl This must be *before* MULE_CHECK_NLS
-AC_ARG_ENABLE([mmap],
-	[AS_HELP_STRING([--enable-mmap], [enable using mapped memory if supported])])
+MULE_ARG_ENABLE([mmap], [no], [enable using mapped memory if supported])
 
-AS_IF([test ${enable_mmap:-no} = yes], [
+MULE_IF_ENABLED([mmap], [
 	AC_CHECK_HEADERS([sys/mman.h])
 	AC_FUNC_MMAP
 	AC_CHECK_FUNCS([munmap sysconf])
@@ -471,20 +374,8 @@ AC_SUBST([SVNDATE], [$svndate])dnl
 dnl Set up the denoiser
 MULE_DENOISER
 
-AM_CONDITIONAL(WEB, test x$WEB = xyes)
-AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
-AM_CONDITIONAL(CAS, test x$CAS = xyes)
-AM_CONDITIONAL(WXCAS, test x$WXCAS = xyes)
-AM_CONDITIONAL(ALC, test x$ALC = xyes)
-AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
-AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
-AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
-AM_CONDITIONAL(COMPILE_CMD, test x$AMULECMD = xyes)
-AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
-AM_CONDITIONAL(XAS, test x$XAS = xyes)
-AM_CONDITIONAL(FILEVIEW, test x$FILEVIEW = xyes)
-AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes)
-AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
+AM_CONDITIONAL(ENABLE_UPNP, test MULE_IS_ENABLED([upnp]))
+AM_CONDITIONAL(ENABLE_IP2COUNTRY, test MULE_IS_ENABLED([geoip]))
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
@@ -493,9 +384,7 @@ AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 AM_CONDITIONAL(INSTALL_SKINS, test x$INSTALL_SKINS = xyes)
 
 # Check for readline library
-if test x$AMULECMD = xyes -o x$WEB = xyes; then
-	VL_LIB_READLINE
-fi
+MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
 
 # DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
 
@@ -556,38 +445,38 @@ echo
 echo "  **** aMule Core ****" 
 echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
 echo "  Should aMule be compiled with i18n support?                ${USE_NLS:-no}"
-echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
-echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
-echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
-echo "  Should aMule be compiled with UPnP support?                ${ENABLE_UPNP:-yes}"
-echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-no}"
-echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
-echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
-echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
+echo "  Should aMule be compiled in debug mode?                    MULE_STATUSOF([debug])"
+echo "  Should aMule be compiled with profiling?                   MULE_STATUSOF([profile])"
+echo "  Should aMule be compiled with optimizations?               MULE_STATUSOF([optimize])"
+echo "  Should aMule be compiled with UPnP support?                MULE_STATUSOF([upnp])"
+echo "  Should aMule be compiled with IP2country support?          MULE_STATUSOF([geoip])"
+echo "  Should aMule monolithic application be built?              MULE_STATUSOF([monolithic])"
+echo "  Should aMule daemon version be built?                      MULE_STATUSOF([amule-daemon])"
+echo "  Should aMule remote gui be built? (EXPERIMENTAL)           MULE_STATUSOF([amule-gui])"
 echo "  Crypto++ library/headers style?                            ${CRYPTOPP_STYLE:-not found}"
 
 echo
 echo "  **** aMule TextClient ****"
-echo "  Should aMule Command Line Client be built?                 ${AMULECMD:-no}"
+echo "  Should aMule Command Line Client be built?                 MULE_STATUSOF([amulecmd])"
 echo
 echo "  **** aMule WebServer ****"
-echo "  Should aMule WebServer be built?                           ${WEB:-no}"
+echo "  Should aMule WebServer be built?                           MULE_STATUSOF([webserver])"
 echo
 echo "  **** aMule ED2K Links Handler ****"
-echo "  Should aMule ED2K Links Handler be built?                  ${ED2K:-yes}"
+echo "  Should aMule ED2K Links Handler be built?                  MULE_STATUSOF([ed2k])"
 echo
 echo "  **** aMuleLinkCreator ****"
-echo "  Should aMuleLinkCreator GUI version (alc) be built?        ${ALC:-no}"
-echo "  Should aMuleLinkCreator for console (alcc) be built?       ${ALCC:-no}"
+echo "  Should aMuleLinkCreator GUI version (alc) be built?        MULE_STATUSOF([alc])"
+echo "  Should aMuleLinkCreator for console (alcc) be built?       MULE_STATUSOF([alcc])"
 echo
 echo "  **** aMule Statistics ****"
-echo "  Should C aMule Statistics (CAS) be built?                  ${CAS:-no}"
-echo "  Should aMule GUI Statistics (wxCas) be built?              ${WXCAS:-no}"
-echo "  Should xas XChat2 plugin be installed?                     ${XAS:-yes}"
+echo "  Should C aMule Statistics (CAS) be built?                  MULE_STATUSOF([cas])"
+echo "  Should aMule GUI Statistics (wxCas) be built?              MULE_STATUSOF([wxcas])"
+echo "  Should xas XChat2 plugin be installed?                     MULE_STATUSOF([xas])"
 
 echo
 echo "  **** General Libraries and Tools ****"
-echo "  Should ccache support be enabled?                          ${enable_ccache:-no}"
+echo "  Should ccache support be enabled?                          MULE_STATUSOF([ccache])"
 echo "  Libraries aMule will use to build:"
 wxinfo="$WX_PORT"
 AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
@@ -595,7 +484,7 @@ AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,stati
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
 AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
-AS_IF([test x${ENABLE_UPNP} = xyes], [echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"])
+MULE_IF_ENABLED([upnp], [echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"])
 if test ${enable_nls:-yes} = yes; then
 AS_IF([test x$USE_NLS = xno],
 	[libintl_found="Not detected"],
@@ -605,7 +494,7 @@ AS_IF([test x$USE_NLS = xno],
 echo "                                       libintl               $libintl_found"
 fi
 AS_IF([test -z "${with_geoip_headers:-}${with_geoip_lib:-}"], [geoip_style=system], [geoip_style=user])
-AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [echo "                                       libGeoIP              ${geoip_style}"])
+MULE_IF_ENABLED([geoip], [echo "                                       libGeoIP              ${geoip_style}"])
 if test x$LIBPNG_VERSION != xnot_needed; then
 echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
 fi
