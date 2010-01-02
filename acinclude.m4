@@ -27,6 +27,7 @@ dnl Helper functions
 dnl ---------------------------------------------------------------------------
 m4_pattern_forbid(MULE_)dnl Check for unexpanded *MULE_* macros
 m4_pattern_allow(AMULE_)dnl Allow the *AMULE_* names
+m4_pattern_forbid(__mule_)dnl Check for unexpanded internal macros
 
 dnl MULE_APPEND(VARNAME, VALUE)
 AC_DEFUN([MULE_APPEND], [$1="$$1 $2"])
@@ -68,6 +69,26 @@ m4_define([MULE_IF],
 m4_if(m4_eval([$# > 2]), 1, [__mule_if_helper(m4_shiftn(2, $@))])m4_n([fi])])])
 
 dnl ---------------------------------------------------------------------------
+dnl __mule_print_final_warning(section, condition, message)
+dnl ---------------------------------------------------------------------------
+m4_define([__mule_print_final_warning],
+[m4_divert_push($1)dnl
+if test [$2]; then
+cat <<_MULEEOT
+
+m4_pushdef([__mule_Prefix1], [* ])dnl
+m4_pushdef([__mule_Prefix], [  ])dnl
+m4_foreach([__mule_Line], m4_quote(m4_split([$3], [
+])), [m4_text_wrap(m4_defn([__mule_Line]), __mule_Prefix, __mule_Prefix1)
+m4_define([__mule_Prefix1], __mule_Prefix)dnl
+])[]dnl
+m4_popdef([__mule_Prefix])dnl
+m4_popdef([__mule_Prefix1])dnl
+_MULEEOT
+fi
+m4_divert_pop()])
+
+dnl ---------------------------------------------------------------------------
 dnl MULE_WARNING(MESSAGE)
 dnl
 dnl Works like AC_MSG_WARN(), but the warning will be reproduced at the end of
@@ -88,30 +109,40 @@ m4_divert_pop()dnl
 
 m4_define([MULE_WARNING],
 [AC_MSG_WARN(
-m4_pushdef([_mule_Prefix], [        ])dnl
-m4_foreach([_mule_Line], m4_quote(m4_split([$1], [
+m4_pushdef([__mule_Prefix], [        ])dnl
+m4_foreach([__mule_Line], m4_quote(m4_split([$1], [
 ])), [
-m4_text_wrap(m4_defn([_mule_Line]), _mule_Prefix)])[]dnl
-m4_popdef([_mule_Prefix])dnl
+m4_text_wrap(m4_defn([__mule_Line]), __mule_Prefix)])[]dnl
+m4_popdef([__mule_Prefix])dnl
 )
 _mule_warning_[]_MULE_WARNCOUNT[]=yes
 _mule_has_warnings=yes
-m4_divert_push(_MULE_WARNINGS)dnl
-if test ${_mule_warning_[]_MULE_WARNCOUNT[]:-no} = yes; then
-cat <<_MULEEOT
-
-m4_pushdef([_mule_Prefix1], [* ])dnl
-m4_pushdef([_mule_Prefix], [  ])dnl
-m4_foreach([_mule_Line], m4_quote(m4_split([$1], [
-])), [m4_text_wrap(m4_defn([_mule_Line]), _mule_Prefix, _mule_Prefix1)
-m4_define([_mule_Prefix1], _mule_Prefix)dnl
-])[]dnl
-m4_popdef([_mule_Prefix])dnl
-m4_popdef([_mule_Prefix1])dnl
-_MULEEOT
-fi
-m4_divert_pop()dnl
+__mule_print_final_warning([_MULE_WARNINGS], [${_mule_warning_]_MULE_WARNCOUNT[:-no} = yes], [$1])dnl
 m4_define([_MULE_WARNCOUNT], incr(_MULE_WARNCOUNT))])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_DEPRECATED(OLDFLAG [, NEWFLAG])
+dnl
+dnl Marks OLDFLAG as deprecated and produces an appropriate warning. If NEWFLAG
+dnl is specified and is unset the value of OLDFLAG is assigned to NEWFLAG (i.e.
+dnl if the user specified both OLDFLAG and NEWFLAG, NEWFLAG takes precedence;
+dnl if only OLDFLAG is specified it will be redirected to NEWFLAG).
+dnl
+dnl There should be no AC_ARG_* for the deprecated flag, and if the old flag is
+dnl deprecated in favour of a new one, MULE_DEPRECATED *MUST* precede the
+dnl AC_ARG_* definition of the new flag (otherwise redirection may not work).
+dnl ---------------------------------------------------------------------------
+m4_define([_MULE_DEPRECATIONWARNINGS], [incr(_MULE_WARNINGS)])
+m4_define([__mule_display_option_name], [m4_if(m4_substr([$1], 0, 1), [-],, [--])m4_bpatsubst([$1], [_], [-])])
+m4_define([__mule_ac_option_name], [m4_bpatsubst(m4_bpatsubst(m4_bpatsubst(m4_bpatsubst([$1], [^-+], []), [-], [_]), [^disable], [enable]), [^without], [with])])
+
+m4_define([MULE_DEPRECATED],
+[if test "${__mule_ac_option_name([$1])+set}" = "set"; then
+  _mule_has_warnings=yes
+m4_ifvaln([$2], [  if test "${__mule_ac_option_name([$2]):-unset}" = "unset"; then
+    __mule_ac_option_name([$2])=$__mule_ac_option_name([$1])
+  fi])fi
+__mule_print_final_warning([_MULE_DEPRECATIONWARNINGS], ["${]__mule_ac_option_name([$1])[+set}" = set], __mule_display_option_name([$1])[ is now deprecated and ]m4_ifval([$2], [might be removed in the future without further notice. Please use ]__mule_display_option_name([$2])[ instead.], [not supported anymore.]))])
 
 dnl ---------------------------------------------------------------------------
 dnl MULE_CHECK_SYSTEM
