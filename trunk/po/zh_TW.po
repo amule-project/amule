@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-27 23:46+0100\n"
-"PO-Revision-Date: 2009-10-06 11:09+0800\n"
+"PO-Revision-Date: 2010-01-02 10:41+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgid "Now, exiting main app..."
 msgstr "正在離開主程式..."
 
 #: src/amule.cpp:245
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "正在終止 pid '%ld' 的 amuleweb 執行緒..."
 
@@ -566,9 +566,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | 已中斷連線)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "您確定要離開 aMule 嗎？"
+msgstr "您確定要離開 %s 嗎？"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
@@ -762,14 +762,15 @@ msgstr "搜尋 LowID 連線好友"
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
 #: src/ClientDetailDialog.cpp:120 src/ClientDetailDialog.cpp:121
 #: src/ClientListCtrl.cpp:691 src/ClientListCtrl.cpp:714
-#: src/ClientListCtrl.cpp:722 src/ClientListCtrl.cpp:891 src/DataToText.cpp:54
-#: src/DataToText.cpp:70 src/DataToText.cpp:80 src/DataToText.cpp:116
-#: src/DataToText.cpp:137 src/DownloadListCtrl.cpp:1429
-#: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
-#: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
-#: src/HTTPDownload.cpp:82 src/KnownFile.cpp:890 src/KnownFile.cpp:896
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2511 src/PartFile.cpp:2517
-#: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
+#: src/ClientListCtrl.cpp:722 src/ClientListCtrl.cpp:891
+#: src/DataToText.cpp:54  src/DataToText.cpp:70 src/DataToText.cpp:80
+#: src/DataToText.cpp:116  src/DataToText.cpp:137
+#: src/DownloadListCtrl.cpp:1429  src/DownloadListCtrl.cpp:1442
+#: src/DownloadListCtrl.cpp:1453  src/ExternalConn.cpp:296
+#: src/FileDetailDialog.cpp:130  src/HTTPDownload.cpp:82 src/KnownFile.cpp:890
+#: src/KnownFile.cpp:896  src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2511
+#: src/PartFile.cpp:2517  src/Server.cpp:156 src/Server.cpp:231
+#: src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "不明"
 
@@ -892,7 +893,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
-msgstr ""
+msgstr "交談"
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:162
 msgid "Close tab"
@@ -2763,7 +2764,8 @@ msgstr "搜尋"
 msgid "Name:"
 msgstr "名稱："
 
-#: src/muuli_wdr.cpp:185 src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:104
+#: src/muuli_wdr.cpp:185 src/SearchListCtrl.cpp:91
+#: src/SharedFilesCtrl.cpp:104
 msgid "Type"
 msgstr "類型"
 
@@ -2799,18 +2801,18 @@ msgstr "任何"
 msgid "Archives"
 msgstr "壓縮檔"
 
-#: src/muuli_wdr.cpp:225 src/OtherFunctions.cpp:203 src/OtherFunctions.cpp:685
-#: src/TransferWnd.cpp:358
+#: src/muuli_wdr.cpp:225 src/OtherFunctions.cpp:203
+#: src/OtherFunctions.cpp:685  src/TransferWnd.cpp:358
 msgid "Audio"
 msgstr "音樂"
 
-#: src/muuli_wdr.cpp:226 src/OtherFunctions.cpp:217 src/OtherFunctions.cpp:687
-#: src/TransferWnd.cpp:360
+#: src/muuli_wdr.cpp:226 src/OtherFunctions.cpp:217
+#: src/OtherFunctions.cpp:687  src/TransferWnd.cpp:360
 msgid "CD-Images"
 msgstr "光碟映像"
 
-#: src/muuli_wdr.cpp:227 src/OtherFunctions.cpp:224 src/OtherFunctions.cpp:688
-#: src/TransferWnd.cpp:361
+#: src/muuli_wdr.cpp:227 src/OtherFunctions.cpp:224
+#: src/OtherFunctions.cpp:688  src/TransferWnd.cpp:361
 msgid "Pictures"
 msgstr "圖片"
 
@@ -3048,7 +3050,8 @@ msgstr ""
 msgid "File Quality"
 msgstr "檔案品質"
 
-#: src/muuli_wdr.cpp:898 src/OtherFunctions.cpp:265 src/OtherFunctions.cpp:271
+#: src/muuli_wdr.cpp:898 src/OtherFunctions.cpp:265
+#: src/OtherFunctions.cpp:271
 msgid "Not rated"
 msgstr "未評價"
 
@@ -7364,3 +7367,6 @@ msgstr "正在處理 [已重定向] 的要求："
 
 #~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
 #~ msgstr "theApp->serverlist->GetServerByAddress() 傳回  NULL"
+
+#~ msgid "Do you really want to exit aMule?"
+#~ msgstr "您確定要離開 aMule 嗎？"
