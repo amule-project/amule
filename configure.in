@@ -62,9 +62,7 @@ AC_CHECK_TOOL(STRIP, strip)
 AC_CHECK_TOOL(AR, ar)
 AC_CHECK_TOOL(LD, ld)
 
-dnl
-dnl Add args to configure
-dnl
+dnl Selectable components
 MULE_ARG_ENABLE([monolithic],	[yes],	[disable building of the monolithic aMule app], [MONOLITHIC])
 MULE_ARG_ENABLE([amule-daemon],	[no],	[compile aMule daemon version], [AMULE_DAEMON])
 MULE_ARG_ENABLE([amulecmd],	[no],	[compile aMule command line client], [COMPILE_CMD])
@@ -75,7 +73,6 @@ MULE_ARG_ENABLE([wxcas],	[no],	[compile aMule GUI Statistics], [WXCAS])
 MULE_ARG_ENABLE([ed2k],		[yes],	[don't compile aMule ed2k links handler], [ED2K])
 MULE_ARG_ENABLE([alc],		[no],	[compile aMuleLinkCreator GUI version], [ALC])
 MULE_ARG_ENABLE([alcc],		[no],	[compile aMuleLinkCreator for console], [ALCC])
-MULE_ARG_ENABLE([upnp],		[yes],	[do not compile UPnP code])
 MULE_ARG_ENABLE([xas],		[no],	[install xas XChat2 plugin], [XAS])
 MULE_ARG_ENABLE([fileview],	[no],	[compile aMule file viewer for console (EXPERIMENTAL)], [FILEVIEW])
 
@@ -97,7 +94,8 @@ AC_ARG_WITH(
 # to avoid losing too much time
 
 # Check for zlib
-MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui],
+	[MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])])
 
 MULE_IF_ENABLED([cas], [
 	# Check for gd
@@ -113,9 +111,8 @@ MULE_IF_ENABLED([cas], [
 			Please try again with --with-gdlib-config=/usr/bin/gdlib-config (replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
 			If you use compiled packages check if you have devel pack installed.
 			To download the latest version check http://www.boutell.com/gd for sources.])])
-], [GDLIB_VERSION="not_needed"])
+])
 AC_SUBST([CAS_DEFS])dnl
-
 
 MULE_IF_ENABLED([webserver],
 	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [
@@ -123,47 +120,54 @@ MULE_IF_ENABLED([webserver],
 			[libpng >= 1.2.0 not found.
 			amuleweb will be compiled but file download progress bar images will NOT be generated.])
 		])
-	], [LIBPNG_VERSION="not_needed"])
+	])
 AC_SUBST([AMULEWEB_DEFS])dnl
 
 # Check for perl File::Copy
 AC_MSG_CHECKING([for File::Copy])
-AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])], [AC_MSG_ERROR([File::Copy perl module is required])])
+AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])], 
+	[MULE_WARNING(
+		[File::Copy perl module is required by the mldonkey_importer script.
+		If you want to use this script please install File::Copy from CPAN.])])
 
 # Check if we need to install skins
 MULE_IF_ENABLED_ANY([monolithic, amule-gui], [INSTALL_SKINS=yes], [INSTALL_SKINS=no])
 
 # Check for GeoIP (required for IP2Country capability)
-MULE_CHECK_GEOIP
+MULE_IF_ENABLED_ANY([monolithic, amule-gui], [MULE_CHECK_GEOIP])
 
 # Check for wx
-WX_CONFIG_OPTIONS
-WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
-# Force using a static wxWidgets library if the executable is to be linked statically.
-MULE_IF_ENABLED([static], [WX_SHARED=0])
-# Force using a unicode build of the library
-WX_UNICODE=1
-DEBUG=$WX_DEBUG
-WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS
-WX_CONFIG_CHECK([2.8.8], [wxWin=1],,, [$WXCONFIG_FLAGS])
-if test "$wxWin" != 1; then
-	AC_MSG_ERROR([
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, alc, alcc, wxcas, fileview],
+	[WX_CONFIG_OPTIONS
+	WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
+	# Force using a static wxWidgets library if the executable is to be linked statically.
+	MULE_IF_ENABLED([static], [WX_SHARED=0])
+	# Force using a unicode build of the library
+	MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, fileview], [WX_UNICODE=1])
+	DEBUG=$WX_DEBUG
+	WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS
+	WX_CONFIG_CHECK([2.8.8], [wxWin=1],,, [$WXCONFIG_FLAGS])
+	AS_IF([test "$wxWin" != 1],
+		[AC_MSG_ERROR([
 		wxWidgets must be installed on your system but wx-config 
 		script couldn't be found. Please check that wx-config is 
 		in path or specified by --with-wx-config=path flag, the 
 		directory where wxWidgets libraries are installed (returned 
 		by 'wx-config --libs' command) is in LD_LIBRARY_PATH or
 		equivalent variable and wxWidgets version is 2.8.8 or above.
-	])
-fi
-WX_DETECT_STANDARD_OPTION_VALUES
+		])]
+	)
+	WX_DETECT_STANDARD_OPTION_VALUES
 
-# We also need wxBase
-WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
-WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
-WXBASE_CPPFLAGS="$WX_CPPFLAGS -DwxUSE_GUI=0"
-AC_SUBST([WXBASE_LIBS])
-AC_SUBST([WXBASE_CPPFLAGS])
+	# We also need wxBase
+	WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
+	WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
+	WXBASE_CPPFLAGS="$WX_CPPFLAGS -DwxUSE_GUI=0"
+
+	MULERCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
+])
+AC_SUBST([WXBASE_LIBS])dnl
+AC_SUBST([WXBASE_CPPFLAGS])dnl
 
 MULE_IF_ENABLED_ANY([monolithic, amule-gui, wxcas, alc],
 [AS_IF([test "${WX_PORT}" = base],
@@ -174,17 +178,15 @@ MULE_IF_ENABLED_ANY([monolithic, amule-gui, wxcas, alc],
 	])]
 )])
 
-dnl Get flags for windres
+dnl Resource compiler for W32
 AC_ARG_VAR([RC], [Resource Compiler])dnl
 AC_ARG_VAR([RCFLAGS], [Resource Compiler Flags])dnl
-AS_IF([test ${SYS:-unknown} = win32],
-[
-	AC_CHECK_TOOL([RC], [windres], [:])
-	MULERCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
-])
+AS_IF([test ${SYS:-unknown} = win32], [AC_CHECK_TOOL([RC], [windres], [:])])
 
 
 # Check for libupnp
+MULE_ARG_ENABLE([upnp], [yes], [do not compile UPnP code])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon],, [MULE_ENABLEVAR([upnp])=no])
 MULE_IF_ENABLED([upnp], [
 	LIBUPNP_CHECK(
 		[1.6.6],
@@ -196,7 +198,8 @@ MULE_IF_ENABLED([upnp], [
 
 
 # Check for Crypto++
-MULE_CHECK_CRYPTOPP([5.1], [
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
+[MULE_CHECK_CRYPTOPP([5.1], [
 	# Check for CryptoPP >= 5.5
 	AS_IF([test $CRYPTOPP_VERSION_NUMBER -ge "5005000"], [MULE_APPEND([CRYPTOPP_CPPFLAGS], [-D__WEAK_CRYPTO__])])
 ], [
@@ -205,18 +208,20 @@ MULE_CHECK_CRYPTOPP([5.1], [
 	Please try again with --with-crypto-prefix=/my_crypto_prefix
 	(replace /my_crypto_prefix with a valid path to your crypto++
 	installation directory).])
-])
+])])
 
 dnl Checks requiring C++
-AC_LANG_PUSH([C++])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, ed2k, alc, alcc, wxcas, fileview],
+[AC_LANG_PUSH([C++])
 MULE_CHECK_GLIBCXX
-MULE_CHECK_WX_SUPPORTS_LARGEFILE
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, alc, alcc], [MULE_CHECK_WX_SUPPORTS_LARGEFILE])
 
 # Check if the compiler is broken, wrt. exceptions.
 MULE_CHECK_EXCEPTIONS
 
 MULE_CHECK_CXXABI
 AC_LANG_POP([C++])
+])
 
 # Ok, we have all needed libs, now checking for other stuff
 AS_IF([test "$LEX" = "flex"], [MULE_CHECK_FLEX_EXTENDED], [HAVE_FLEX_EXTENDED=no])
@@ -290,43 +295,7 @@ dnl
 AC_CHECK_FUNCS([mkdir getrlimit setrlimit getopt_long])
 
 dnl This must be *before* MULE_CHECK_NLS
-MULE_ARG_ENABLE([mmap], [no], [enable using mapped memory if supported])
-
-MULE_IF_ENABLED([mmap], [
-	AC_CHECK_HEADERS([sys/mman.h])
-	AC_FUNC_MMAP
-	AC_CHECK_FUNCS([munmap sysconf])
-	AS_IF([test $ac_cv_func_sysconf = yes], [
-		AC_MSG_CHECKING([for pagesize constant for sysconf])
-		AC_LINK_IFELSE([
-			AC_LANG_PROGRAM([[
-				#include <unistd.h>
-			]], [[
-				return sysconf(_SC_PAGESIZE);
-			]])
-		], [
-			AC_MSG_RESULT([_SC_PAGESIZE])
-			AC_DEFINE([HAVE__SC_PAGESIZE], [1], [Define to 1 if you have the _SC_PAGESIZE constant in <unistd.h>])
-		], [
-			AC_LINK_IFELSE([
-				AC_LANG_PROGRAM([[
-					#include <unistd.h>
-				]], [[
-					return sysconf(_SC_PAGE_SIZE);
-				]])
-			], [
-				AC_MSG_RESULT([_SC_PAGE_SIZE])
-				AC_DEFINE([HAVE__SC_PAGE_SIZE], [1], [Define to 1 if you have the _SC_PAGE_SIZE constant in <unistd.h>, but not _SC_PAGESIZE])
-			], [
-				AC_MSG_RESULT([none])
-			])
-		])
-	])
-], [
-	# fake the result of the test for munmap() for the gettext macros
-	ac_cv_func_munmap=no
-])
-
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon], [MULE_CHECK_MMAP])
 
 MULE_BACKUP([CPPFLAGS])
 MULE_APPEND([CPPFLAGS], [-D_XOPEN_SOURCE=600])
@@ -334,7 +303,7 @@ AC_FUNC_STRERROR_R
 MULE_RESTORE([CPPFLAGS])
 
 # Look for a way to preallocate disk space for files.
-MULE_CHECK_FALLOCATE
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon], [MULE_CHECK_FALLOCATE])
 
 # Checking Native Language Support
 dnl Sets gettext version.
@@ -482,13 +451,18 @@ echo
 echo "  **** General Libraries and Tools ****"
 echo "  Should ccache support be enabled?                          MULE_STATUSOF([ccache])"
 echo "  Libraries aMule will use to build:"
-wxinfo="$WX_PORT"
-AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
-AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
-echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
-echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
-AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
-MULE_IF_ENABLED([upnp], [echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, alc, alcc, wxcas, fileview], [
+	wxinfo="$WX_PORT"
+	AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
+	AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
+	echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
+])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
+	[echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"])
+MULE_IF_ENABLED([upnp], [
+	AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
+	echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
+])
 if test ${enable_nls:-yes} = yes; then
 AS_IF([test x$USE_NLS = xno],
 	[libintl_found="Not detected"],
@@ -497,12 +471,13 @@ AS_IF([test x$USE_NLS = xno],
 		[libintl_found="system"])])
 echo "                                       libintl               $libintl_found"
 fi
-AS_IF([test -z "${with_geoip_headers:-}${with_geoip_lib:-}"], [geoip_style=system], [geoip_style=user])
-MULE_IF_ENABLED([geoip], [echo "                                       libGeoIP              ${geoip_style}"])
-if test x$LIBPNG_VERSION != xnot_needed; then
-echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
-fi
-if test x$GDLIB_VERSION != xnot_needed; then
-echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
-fi
-echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
+MULE_IF_ENABLED([geoip],
+	[AS_IF([test -z "${with_geoip_headers:-}${with_geoip_lib:-}"], [geoip_style=system], [geoip_style=user])
+	MULE_IF_ENABLED_ANY([monolithic, amule-gui], 
+		[echo "                                       libGeoIP              ${geoip_style}"])])
+MULE_IF_ENABLED([webserver],
+	[echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"])
+MULE_IF_ENABLED([cas],
+	[echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui],
+	[echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"])
