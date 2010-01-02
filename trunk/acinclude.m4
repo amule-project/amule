@@ -313,7 +313,6 @@ AC_DEFUN([MULE_COMPILATION_FLAGS],
 	MULE_ARG_ENABLE([debug],	[yes],	[disable additional debugging output])
 	MULE_ARG_ENABLE([profile],	[no],	[enable code profiling])
 	MULE_ARG_ENABLE([optimize],	[no],	[enable code optimization])
-	MULE_ARG_ENABLE([static],	[no],	[produce a statically linked executable])
 
 	MULE_IF_ENABLED([debug],
 	[
@@ -333,7 +332,6 @@ AC_DEFUN([MULE_COMPILATION_FLAGS],
 	])
 
 	MULE_IF_ENABLED([optimize],	[MULE_ADDCCXXFLAG([-O2])])
-	MULE_IF_ENABLED([static],	[MULE_ADDFLAG([LD], [-static])])
 
 	MULE_ADDFLAG([CPP], [-DUSE_WX_EXTENSIONS])
 ])
