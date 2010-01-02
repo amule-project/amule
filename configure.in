@@ -79,6 +79,10 @@ MULE_ARG_ENABLE([upnp],		[yes],	[do not compile UPnP code])
 MULE_ARG_ENABLE([xas],		[no],	[install xas XChat2 plugin], [XAS])
 MULE_ARG_ENABLE([fileview],	[no],	[compile aMule file viewer for console (EXPERIMENTAL)], [FILEVIEW])
 
+# Run all the tests with static linkage if we want a statically linked binary
+MULE_ARG_ENABLE([static], [no], [produce a statically linked executable])
+MULE_IF_ENABLED([static], [MULE_APPEND([LDFLAGS], [-static])])
+
 # Default is yes, because they're most likely compatible.
 # However, this is only used when cross-compiling.
 AC_ARG_WITH(
@@ -136,7 +140,7 @@ MULE_CHECK_GEOIP
 WX_CONFIG_OPTIONS
 WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
 # Force using a static wxWidgets library if the executable is to be linked statically.
-AS_IF([test ${enable_static:-no} = yes], [WX_SHARED=0])
+MULE_IF_ENABLED([static], [WX_SHARED=0])
 # Force using a unicode build of the library
 WX_UNICODE=1
 DEBUG=$WX_DEBUG
