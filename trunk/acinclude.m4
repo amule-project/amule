@@ -571,6 +571,51 @@ AC_DEFUN([MULE_CHECK_EXECINFO],
 	])
 ])
 
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_MMAP
+dnl
+dnl Checks for mmap() and makes use of it when found.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_MMAP],
+[
+	MULE_ARG_ENABLE([mmap], [no], [enable using mapped memory if supported])
+
+	MULE_IF_ENABLED([mmap], [
+		AC_CHECK_HEADERS([sys/mman.h])
+		AC_FUNC_MMAP
+		AC_CHECK_FUNCS([munmap sysconf])
+		AS_IF([test $ac_cv_func_sysconf = yes], [
+			AC_MSG_CHECKING([for pagesize constant for sysconf])
+			AC_LINK_IFELSE([
+				AC_LANG_PROGRAM([[
+					#include <unistd.h>
+				]], [[
+					return sysconf(_SC_PAGESIZE);
+				]])
+			], [
+				AC_MSG_RESULT([_SC_PAGESIZE])
+				AC_DEFINE([HAVE__SC_PAGESIZE], [1], [Define to 1 if you have the _SC_PAGESIZE constant in <unistd.h>])
+			], [
+				AC_LINK_IFELSE([
+					AC_LANG_PROGRAM([[
+						#include <unistd.h>
+					]], [[
+						return sysconf(_SC_PAGE_SIZE);
+					]])
+				], [
+					AC_MSG_RESULT([_SC_PAGE_SIZE])
+					AC_DEFINE([HAVE__SC_PAGE_SIZE], [1], [Define to 1 if you have the _SC_PAGE_SIZE constant in <unistd.h>, but not _SC_PAGESIZE])
+				], [
+					AC_MSG_RESULT([none])
+				])
+			])
+		])
+	], [
+		# fake the result of the test for munmap() for the gettext macros
+		ac_cv_func_munmap=no
+	])
+])
+
 
 dnl ---------------------------------------------------------------------------
 dnl MULE_DENOISER
