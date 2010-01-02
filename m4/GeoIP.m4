@@ -30,11 +30,9 @@ dnl could be linked statically.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_CHECK_GEOIP],
 [
-	AC_ARG_ENABLE([geoip],
-		[AS_HELP_STRING([--enable-geoip], [compile with GeoIP IP2Country library])],
-		[ENABLE_IP2COUNTRY=$enableval], [ENABLE_IP2COUNTRY=no])
+	MULE_ARG_ENABLE([geoip], [no], [compile with GeoIP IP2Country library])
 
-	AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
+	MULE_IF_ENABLED([geoip], [
 		AC_ARG_WITH([geoip-headers],
 			AS_HELP_STRING([--with-geoip-headers=DIR], [GeoIP include files location]),
 			[GEOIP_CPPFLAGS="-I$withval"])
@@ -92,11 +90,11 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 					])
 				])
 			], [
-				ENABLE_IP2COUNTRY=disabled
+				MULE_ENABLEVAR([geoip])=disabled
 				MULE_WARNING([GeoIP support has been disabled because the GeoIP libraries were not found])
 			], [${GEOIP_WINSOCK_LIB:-}])
 		], [
-			ENABLE_IP2COUNTRY=disabled
+			MULE_ENABLEVAR([geoip])=disabled
 			MULE_WARNING([GeoIP support has been disabled because the GeoIP header files were not found])
 		])
 
