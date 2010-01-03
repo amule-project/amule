@@ -941,7 +941,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("Auto"), CMD_ID_PRIORITY_AUTO, wxTRANSLATE("Set priority to auto."), wxEmptyString, CMD_PARAM_ALWAYS);
 				  
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
-				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_NEVER);
+				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("UL"), CMD_ID_SHOW_UL, wxTRANSLATE("Show upload queue."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("DL"), CMD_ID_SHOW_DL, wxTRANSLATE("Show download queue."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Log"), CMD_ID_SHOW_LOG, wxTRANSLATE("Show log."), wxEmptyString, CMD_PARAM_NEVER);
