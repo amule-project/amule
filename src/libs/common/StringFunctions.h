@@ -76,7 +76,7 @@ enum EUtf8Str
 typedef const wxWX2MBbuf Unicode2CharBuf;
 typedef const wxMB2WXbuf Char2UnicodeBuf;
 
-inline Unicode2CharBuf unicode2char(const wxChar* x)	{ return wxConvLocal.cWX2MB(x); }
+Unicode2CharBuf unicode2char(const wxChar* x);
 inline Char2UnicodeBuf char2unicode(const char* x)	{ return wxConvLocal.cMB2WX(x); }
 
 inline Unicode2CharBuf unicode2UTF8(const wxChar* x)	{ return wxConvUTF8.cWX2MB(x); }
