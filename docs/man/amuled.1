@@ -1,46 +1,81 @@
-.TH AMULED 1 "August 2008" "aMule Daemon v2.2.2" "aMule Daemon"
+.TH AMULED 1 "January 2010" "aMule Daemon v2.2.6" "aMule Daemon"
+.als B_untranslated B
+.als RB_untranslated RB
 .SH NAME
 amuled \- the all\-platform eMule p2p client \- daemonized version
 .SH SYNOPSIS
-.B amuled
-.RB [ \-v ]
-.RB [ \-h ]
-.RB [ \-i ]
-.RB [ \-f ]
-.RB [ \-c " " \fI<dir> ]
-.RB [ \-e ]
-.RB [ \-d ]
-.RB [ \-o ]
-.RB [ \-r ]
+.B_untranslated amuled
+.RB [ \-c " " \fI<path> ]
+.RB_untranslated [ \-f ]
+.RB [ \-p " " \fI<path> ]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+.RB [ \-w " " \fI<path> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
+.RB [ \-t " " \fI<num> ]
+.RB [ eD2k-Link ]
 
+.B_untranslated amuled
+.RB_untranslated [ \-v ]
+
+.B_untranslated amuled
+.RB_untranslated [ \-h ]
 .SH DESCRIPTION
 .TP
-\fB\-v\fR, \fB\-\-version\fR
-Displays the current version number.
+\fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
+Read config from \fI<path>\fR instead of home
 .TP
-\fB\-h\fR, \fB\-\-help\fR
-Prints a short usage description.
-.TP
-\fB-i\fR, \fB\-\-enable\-stdin\fR
-Does not disable stdin.
-.TP
-\fB\-f\fR, \fB\-\-full\-daemon\fR
+.B_untranslated [ \-f\fR, \fB\-\-full\-daemon ]\fR
 Forks to background.
 .TP
-\fB\-c\fR, \fB\-\-config\-dir\fR=\fI<dir>\fR
-Reads config from <dir> instead of home.
+\fB[ \-p\fR \fI<path>\fR, \fB\-\-pid\-file\fR=\fI<path>\fR \fB]\fR
+After fork, create a pid-file in the \fI<path>\fR.
+\fI<path>\fR has to contain the filename.
 .TP
-\fB\-e\fR, \fB\-\-ec\-config\fR
-Configures EC (External Connections).
+.B_untranslated [ \-e\fR, \fB\-\-ec\-config ]\fR
+Configure EC (External Connections).
 .TP
-\fB\-d\fR, \fB\-\-disable\-fatal\fR
-Does not handle fatal exception.
-.TP
-\fB-o\fR, \fB\-\-log\-stdout\fR
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
 Prints log messages to stdout.
 .TP
-\fB-r\fR, \fB\-\-reset\-config\fR
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Resets config to default values.
+.TP
+\fB[ \-w\fR\ fI<path>\fR, \fB\-\-use\-amuleweb\fR=\fI<path>\fR \fB]\fR
+Specify location of amuleweb binary to \fI<path>\fR.
+.TP
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Does not handle fatal exception.
+.TP
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Does not disable stdin.
+.TP
+\fB[ \-t\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
+Set category for passed eD2k links to \fI<num>\fR
+.TP
+\fB[ eD2k-Link ]\fR
+Adds an eD2k-link to the core.
+.TP
+The eD2k link to be added can be:
+.2TP
+*) a file link (ed2k://|file|...), it will be added to the download queue;
+
+.2TP
+*) a server link (ed2k://|server|...), it will be added to the server list;
+
+.2TP
+*) a serverlist link, in which case all servers in the list will be added to the server list;
+
+.2TP
+*) a magnet link
+.TP
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Displays the current version number.
+.TP
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Prints a short usage description.
 .SH FILES
 ~/.aMule/*
 .SH REPORTING BUGS
@@ -49,4 +84,6 @@ Please do not report bugs in e-mail, neither to our mailing list nor directly to
 .SH COPYRIGHT
 aMule and all of its related utilities are distributed under the GNU General Public License.
 .SH SEE ALSO
-\fBalcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
+.B_untranslated alcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
+.SH AUTHOR
+This manpage was written by Vollstrecker <amule@vollstreckernet.de>

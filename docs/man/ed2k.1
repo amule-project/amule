@@ -1,32 +1,67 @@
-.TH ED2K "1" "August 2008" "aMule ED2k link parser v1.4.1" "aMule utilities"
+.TH ED2K "1" "January 2010" "aMule eD2k link parser v1.5.1" "aMule utilities"
+.als B_untranslated B
+.als RB_untranslated RB
 .SH NAME
 ed2k \- aMule ED2k link parser
 .SH SYNOPSIS
-.B ed2k
-.I <ED2k_link>
-.PP
-.B ed2k
-.RB [ \-\-help ]
-.RB [ \-\-config\-dir, \-c ]
-.RB [ \-\-emulecollection, \-e ]
-.RB [ \-\-version ]
+.B_untranslated ed2k
+.RB [ \-c " " \fI<path> ]
+.RB [ \-t " " \fI<num> ]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+.RB_untranslated <eD2k-Link>
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
 .SH DESCRIPTION
-aMule ED2k link parser v1.4.1.
-Sends the given \fI<ED2k_link>\fR to aMule, i.e. writes it to the file ~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
-\fBed2k\fR accepts file, server and serverlist links.
-.SS "Usage:"
 .TP
-\fB\-\-help\fR
+aMule eD2k link parser v1.5.1.
+Sends the given \fI<eD2k_link>\fR to aMule, i.e. writes it to the file ~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
+.TP
+\fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
+Read config from \fI<path>\fR instead of home
+.TP
+\fB[ \-t\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
+Set category for passed eD2k links to \fI<num>\fR
+.TP
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Loads all link found in the emulecollection given as \fI<ed2k-link>\fR
+.TP
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Lists all link found in the emulecollection given as \fI<ed2k-link>\fR
+.TP
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Prints a short usage description.
 .TP
-\fB\-c\fR, \fB\-\-config\-dir\fR=\fI<dir>\fR 
-Specifies the aMule configuration directory. This must be writeable by the user running \fBed2k\fR.
-.TP
-\fB\-e\fR, \fB\-\-emulecollection \fI<file>\fR
-Loads all links of the emulecollection passed as parameter.
-.TP
-\fB\-\-version\fR
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Displays the current version number.
+.TP
+.TP
+\fB[ eD2k-Link ]\fR
+Adds an eD2k-link to the core.
+.TP
+The eD2k link to be added can be:
+.2TP
+*) a file link (ed2k://|file|...), it will be added to the download queue;
+
+.2TP
+*) a server link (ed2k://|server|...), it will be added to the server list;
+
+.2TP
+*) a serverlist link, in which case all servers in the list will be added to the server list;
+
+.2TP
+*) a magnet link;
+
+.2TP
+*) an emulecollection file;
+.TP
+\fBThe order in which you give the parameters is important.\fR
+You can give more than one link, and every link can have it's own params.
+For example \fBed2k <link1> -t2 <link2>\fR will download \fI<link1>\fR in standard category and \fI<link2>\fR in category 2.
 .SH FILES
 ~/.aMule/ED2KLinks
 .SH REPORTING BUGS
@@ -35,4 +70,6 @@ Please do not report bugs in e-mail, neither to our mailing list nor directly to
 .SH COPYRIGHT
 aMule and all of its related utilities are distributed under the GNU General Public License.
 .SH SEE ALSO
-\fBamule\fR(1)
+.B_untranslated amule\fR(1)
+.SH AUTHOR
+This manpage was written by Vollstrecker <amule@vollstreckernet.de>
