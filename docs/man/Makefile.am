@@ -14,10 +14,11 @@ EXTRA_DIST = \
 	amule.fr.1 amuled.fr.1 amulecmd.fr.1 amuleweb.fr.1 ed2k.fr.1 \
 	amule.hu.1 amuled.hu.1 amulecmd.hu.1 amuleweb.hu.1 ed2k.hu.1
 
-EXTRA_DIST += \
-	manpages.pot \
-	manpages-de.po
+EXTRA_DIST += po4a.config
 
+EXTRA__DIST__SUBDIRS = po
+
+include $(top_srcdir)/automake/dist-hook.am
 include $(top_srcdir)/automake/manpages.am
 
 MAINTAINERCLEANFILES = Makefile.in
