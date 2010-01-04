@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: po 4a\n"
-"POT-Creation-Date: 2010-01-03 21:57+0100\n"
+"POT-Creation-Date: 2010-01-04 16:13+0100\n"
 "PO-Revision-Date: 2010-01-03 15:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -130,7 +130,7 @@ msgstr ""
 #. type: TP
 #: amule.1:37 amuled.1:45
 #, no-wrap
-msgid "B<[ -w>\\ fIE<lt>pathE<gt>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
+msgid "B<[ -w> I<E<lt>pathE<gt>>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
 msgstr ""
 
 #. type: Plain text
