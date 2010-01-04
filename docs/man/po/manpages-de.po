@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: manpages-de\n"
-"POT-Creation-Date: 2010-01-03 21:57+0100\n"
+"POT-Creation-Date: 2010-01-04 16:13+0100\n"
 "PO-Revision-Date: 2010-01-03 21:25+0100\n"
 "Last-Translator: Werner Mahr <werner@vollstreckernet.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -149,8 +149,8 @@ msgstr "Setzt die Konfiguration auf die Standardwerte zurück."
 #. type: TP
 #: amule.1:37 amuled.1:45
 #, no-wrap
-msgid "B<[ -w>\\ fIE<lt>pathE<gt>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
-msgstr "B<[ -w>\\ fIE<lt>PfadE<gt>, B<--use-amuleweb>=I<E<lt>PfadE<gt>> B<]>"
+msgid "B<[ -w> I<E<lt>pathE<gt>>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ -w> I<E<lt>PfadE<gt>>, B<--use-amuleweb>=I<E<lt>PfadE<gt>> B<]>"
 
 #. type: Plain text
 #: amule.1:40 amuled.1:48
