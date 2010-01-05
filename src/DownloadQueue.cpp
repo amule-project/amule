@@ -332,6 +332,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 		AddDebugLogLineM( false, logDownloadQueue, wxT("Tried to add download into invalid category.") );
 	}
 	Notify_DownloadCtrlAddFile( file );
+	theApp->searchlist->UpdateSearchFileByHash(file->GetFileHash()); 	// Update file in the search dialog if it's still open
 	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
 }
 

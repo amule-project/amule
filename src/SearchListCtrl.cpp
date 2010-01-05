@@ -27,10 +27,8 @@
 
 #include <common/MenuIDs.h>
 
-#include "amule.h"		// Needed for theApp
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
+#include "amule.h"			// Needed for theApp
 #include "KnownFileList.h"	// Needed for CKnownFileList
-#include "PartFile.h"		// Needed for CPartFile and CKnownFile
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -297,34 +295,29 @@ void CSearchListCtrl::UpdateItemColor( long index )
 		CMuleColour newcol(wxSYS_COLOUR_WINDOWTEXT);
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
-		CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(file->GetFileHash());
-		if ( !sameFile ) {
-			sameFile = theApp->knownfiles->FindKnownFileByID(file->GetFileHash());
-		}
 
 		int red		= newcol.Red();
 		int green	= newcol.Green();
 		int blue	= newcol.Blue();
 
-		if ( sameFile ) {
-			if ( sameFile->IsPartFile() ) {
-				// File is already being downloaded. Mark as red.
-				red = 255;
-			} else if ( sameFile->GetStatus() == PS_COMPLETE ) {
-				// File has already been downloaded. Mark as green.
-				green = 200;
-			} else {
-				// File has been cancelled or removed. Mark as grey.
-				red = 128;
-				green = 128;
-				blue = 128;
-			}
-		} else {
-			// File is new, colour after number of files
-			blue += file->GetSourceCount() * 5;
-			if ( blue > 255 ) {
-				blue = 255;
-			}
+		switch (file->GetDownloadStatus()) {
+			case CSearchFile::DOWNLOADED:		// File has already been downloaded. Mark as green.
+												green = 255;
+												break;
+			case CSearchFile::QUEUED:			// File is downloading.
+			case CSearchFile::QUEUEDCANCELED:	// File is downloading and has been canceled before.
+												// Mark as red
+												red = 255;
+												break;
+			case CSearchFile::CANCELED:			// File has been canceled. Mark as magenta.
+												red = 255;
+												blue = 255;
+												break;
+			default:							// File is new, colour after number of files
+												blue += file->GetSourceCount() * 5;
+												if ( blue > 255 ) {
+													blue = 255;
+												}
 		}
 
 		// don't forget to set the item data back...
@@ -332,26 +325,6 @@ void CSearchListCtrl::UpdateItemColor( long index )
 		newitem.SetId( index );
 		newitem.SetTextColour( wxColour( red, green, blue ) );
 		SetItem( newitem );	
-	}
-}
-
-
-// Update the colors of all assosiated items, which means parents and/or siblings.
-void CSearchListCtrl::UpdateAllRelativesColor(
-	CSearchFile *file,
-	long index)
-{
-	if ((file->ShowChildren() && file->HasChildren()) ||
-	    file->GetParent()) {
-		CSearchFile *parent = file->GetParent() ?
-			file->GetParent() : file;
-		const CSearchResultList &list = parent->GetChildren();
-		for (size_t j = 0; j < list.size(); ++j) {
-			UpdateItemColor(FindItem(-1, reinterpret_cast<wxUIntPtr>(list.at(j))));
-		}
-		UpdateItemColor(FindItem(-1, reinterpret_cast<wxUIntPtr>(parent)));
-	} else {		
-		UpdateItemColor(index);
 	}
 }
 
@@ -453,11 +426,7 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 		result = ((result && !m_invert) || (!result && m_invert));
 	
 		if (result && m_filterKnown) {
-			result = !theApp->downloadqueue->GetFileByID(file->GetFileHash());
-
-			if (result) {
-				result = !theApp->knownfiles->FindKnownFileByID(file->GetFileHash());
-			}
+			result = file->GetDownloadStatus() == CSearchFile::NEW;
 		}
 	}
 
@@ -702,7 +671,6 @@ void CSearchListCtrl::OnMarkAsKnown( wxCommandEvent& WXUNUSED(event) )
 		CSearchFile *searchFile = (CSearchFile *)GetItemData(index);
 		CKnownFile *knownFile(new CKnownFile(*searchFile));
 		theApp->knownfiles->SafeAddKFile(knownFile);
-		UpdateAllRelativesColor(searchFile, index);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 #endif
@@ -758,21 +726,14 @@ void CSearchListCtrl::DownloadSelected(int category)
 		}		
 	}
 	
-	// First process all selections (because they may be invalidated by UpdateResult()
-	// if list is sorted by status)
-	std::list<CSearchFile*> searchFiles;
+	// Process all selections
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index > -1) {
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
-		searchFiles.push_back(file);
 		CoreNotify_Search_Add_Download(file, category);
-		UpdateAllRelativesColor(file, index);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
-	// Then update the listcontrol
-	for (std::list<CSearchFile*>::iterator it = searchFiles.begin(); it != searchFiles.end(); ++it) {
-		UpdateResult(*it);
-	}
+	// Listcontrol gets updated by notification when download is started
 }
 
 
@@ -977,28 +938,12 @@ wxString CSearchListCtrl::GetTTSText(unsigned item) const
 
 wxString CSearchListCtrl::DetermineStatusPrintable(CSearchFile *toshow)
 {
-	wxString retVal;
-	
-	CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(toshow->GetFileHash());
-	if ( !sameFile ) {
-		sameFile = theApp->knownfiles->FindKnownFileByID(toshow->GetFileHash());
+	switch (toshow->GetDownloadStatus()) {
+		case CSearchFile::DOWNLOADED:		return _("Downloaded");	// File has already been downloaded.
+		case CSearchFile::QUEUED:									// File is downloading.
+		case CSearchFile::QUEUEDCANCELED:	return _("Queued");		// File is downloading and has been canceled before.
+		case CSearchFile::CANCELED:			return _("Canceled");	// File has been canceled.
+		default:							return _("New");		// File is new.
 	}
-
-	if ( sameFile ) {
-		if ( sameFile->IsPartFile() ) {
-			// File is already being downloaded.
-			retVal = wxT("Queued");
-		} else if ( sameFile->GetStatus() == PS_COMPLETE ) {
-			// File has already been downloaded.
-			retVal = wxT("Downloaded");
-		} else {
-			// File has been cancelled or removed.
-			retVal = wxT("Cancelled");
-		}
-	} else {
-		// File is new
-		retVal = wxT("New");
-	}
-	return retVal;
 }
 // File_checked_for_headers

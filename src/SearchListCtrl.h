@@ -107,17 +107,13 @@ public:
 	 *
 	 * @param index The zero-based index of the item.
 	 *
-	 * This function returns the color of the item based on the following:
+	 * This function sets the color of the item based on the following:
 	 *  - Downloading files are marked in red.
 	 *  - Known (shared/completed) files are marked in green.
 	 *  - New files are marked in blue depending on the number of sources.
+	 *  - Canceled files are marked in magenta.
 	 */
 	void UpdateItemColor(long index);
-
-	/**
-	 * Updates the colors of all assosiated items, which means parents and/or siblings.
-	 */
-	void UpdateAllRelativesColor(CSearchFile *file, long index);
 
 	/**
 	 * Returns the current Search Id. 

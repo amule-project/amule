@@ -100,25 +100,40 @@ public:
 	void MergeResults(const CSearchFile& other);
 
 	/** Returns the total number of sources. */
-	uint32 GetSourceCount() const;
+	uint32 GetSourceCount() const			{ return m_sourceCount; }
 	/** Returns the number of sources that have the entire file. */
-	uint32 GetCompleteSourceCount() const;
+	uint32 GetCompleteSourceCount() const	{ return m_completeSourceCount; }
 	/** Returns the ID of the search, used to select the right list when displaying. */
-	wxUIntPtr GetSearchID() const;
+	wxUIntPtr GetSearchID() const			{ return m_searchID; }
 	/** Returns true if the result is from a Kademlia search. */
-	bool IsKademlia() const;
-	
+	bool IsKademlia() const					{ return m_kademlia; }
+
+	// Possible download status of a file
+	enum DownloadStatus {
+		NEW,				// not known
+		DOWNLOADED,			// successfully downloaded or shared
+		QUEUED,				// downloading (Partfile)
+		CANCELED,			// canceled
+		QUEUEDCANCELED		// canceled once, but now downloading again
+	};
+
+	/** Returns the download status. */
+	enum DownloadStatus GetDownloadStatus() const	{ return m_downloadStatus; }
+	/** Set download status according to the global lists of knownfile, partfiles, canceledfiles. */
+	void SetDownloadStatus();
+	/** Set download status directly. */
+	void SetDownloadStatus(enum DownloadStatus s)	{ m_downloadStatus = s; }
 		
 	/** Returns the parent of this file. */
-	CSearchFile *GetParent() const;
+	CSearchFile *GetParent() const			{ return m_parent; }
 	/** Returns the list of children belonging to this file. */
-	const CSearchResultList &GetChildren() const;
+	const CSearchResultList &GetChildren() const	{ return m_children; }
 	/** Returns true if this item has children. */
-	bool HasChildren() const;
+	bool HasChildren() const				{ return !m_children.empty(); }
 	/** Returns true if children should be displayed. */
-	bool ShowChildren() const;
+	bool ShowChildren() const				{ return m_showChildren; }
 	/** Enable/Disable displaying of children (set in CSearchListCtrl). */
-	void SetShowChildren(bool show);
+	void SetShowChildren(bool show)			{ m_showChildren = show; }
 	
 	/**
 	 * Adds the given file as a child of this file.
@@ -188,6 +203,8 @@ private:
 	uint32			m_completeSourceCount;
 	//! Specifies if the result is from a kademlia search.
 	bool			m_kademlia;
+	//! The download status.
+	enum DownloadStatus m_downloadStatus;
 
 	//@{
 	//! TODO: Currently not used.
@@ -206,64 +223,6 @@ private:
 	friend class CPartFile;
 	friend class CSearchListRem;
 };
-
-
-////////////////////////////////////////////////////////////
-// Implementations
-
-
-inline uint32 CSearchFile::GetSourceCount() const
-{
-	return m_sourceCount;
-}
-
-
-inline uint32 CSearchFile::GetCompleteSourceCount() const
-{
-	return m_completeSourceCount; 
-}
-
-
-inline wxUIntPtr CSearchFile::GetSearchID() const
-{
-	return m_searchID;
-}
-
-
-inline bool CSearchFile::IsKademlia() const
-{
-	return m_kademlia;
-}
-
-
-inline CSearchFile* CSearchFile::GetParent() const
-{
-	return m_parent;
-}
-
-
-inline bool CSearchFile::ShowChildren() const
-{
-	return m_showChildren;
-}
-
-
-inline void CSearchFile::SetShowChildren(bool show)
-{
-	m_showChildren = show;
-}
-
-
-inline const CSearchResultList& CSearchFile::GetChildren() const
-{
-	return m_children;
-}
-
-
-inline bool CSearchFile::HasChildren() const
-{
-	return !m_children.empty();
-}
 
 
 #endif // SEARCHLIST_H

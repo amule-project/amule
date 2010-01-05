@@ -121,6 +121,7 @@ core_sources = \
 	RC4Encrypt.cpp \
 	amule.cpp \
 	BaseClient.cpp \
+	CanceledFileList.cpp \
 	ClientList.cpp \
 	ClientCreditsList.cpp \
 	ClientTCPSocket.cpp \
@@ -329,6 +330,7 @@ noinst_HEADERS = \
 		amuleIPV4Address.h \
 		ArchSpecific.h \
 		BarShader.h \
+		CanceledFileList.h \
 		CaptchaDialog.h \
 		CaptchaGenerator.h \
 		CatDialog.h \

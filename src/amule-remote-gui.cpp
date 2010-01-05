@@ -1585,6 +1585,7 @@ m_showChildren(false),
 m_sourceCount(0),
 m_completeSourceCount(0),
 m_kademlia(false),
+m_downloadStatus(NEW),
 m_clientID(0),
 m_clientPort(0)
 {
@@ -1628,8 +1629,19 @@ CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
 
 void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *file)
 {
-	file->m_sourceCount = tag->SourceCount();
-	file->m_completeSourceCount = tag->CompleteSourceCount();
+	uint32 sourceCount = tag->SourceCount();
+	uint32 completeSourceCount = tag->CompleteSourceCount();
+	CSearchFile::DownloadStatus status = (CSearchFile::DownloadStatus) tag->DownloadStatus();
+	if (file->m_sourceCount != sourceCount
+			|| file->m_completeSourceCount != completeSourceCount
+			|| file->m_downloadStatus != status) {
+		file->m_sourceCount = sourceCount;
+		file->m_completeSourceCount = completeSourceCount;
+		file->m_downloadStatus = status;
+		if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->UpdateResult(file);
+		}
+	}
 }
 
 

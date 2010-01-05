@@ -1017,4 +1017,20 @@ void CSearchList::KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt
 	AddToList(tempFile);
 }
 
+void CSearchList::UpdateSearchFileByHash(const CMD4Hash& hash)
+{
+	for (ResultMap::iterator it = m_results.begin(); it != m_results.end(); it++) {
+		CSearchResultList& results = it->second;
+		for (size_t i = 0; i < results.size(); ++i) {
+			CSearchFile* item = results.at(i);
+			
+			if (hash == item->GetFileHash()) {
+				// This covers only parent items,
+				// child items have to be updated separately.
+				Notify_Search_Update_Sources(item);
+			}
+		}
+	}
+}
+
 // File_checked_for_headers

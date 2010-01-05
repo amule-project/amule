@@ -53,6 +53,7 @@
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/UDPFirewallTester.h"
+#include "CanceledFileList.h"
 #include "ClientCreditsList.h"		// Needed for CClientCreditsList
 #include "ClientList.h"			// Needed for CClientList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
@@ -177,6 +178,7 @@ CamuleApp::CamuleApp()
 	clientlist	= NULL;
 	searchlist	= NULL;
 	knownfiles	= NULL;
+	canceledfiles	= NULL;
 	serverlist	= NULL;
 	serverconnect	= NULL;
 	sharedfiles	= NULL;
@@ -284,6 +286,9 @@ int CamuleApp::OnExit()
 
 	delete knownfiles;
 	knownfiles = NULL;
+
+	delete canceledfiles;
+	canceledfiles = NULL;
 
 	delete clientlist;
 	clientlist = NULL;
@@ -487,6 +492,7 @@ bool CamuleApp::OnInit()
 	friendlist	= new CFriendList();
 	searchlist	= new CSearchList();
 	knownfiles	= new CKnownFileList();
+	canceledfiles	= new CCanceledFileList;
 	serverlist	= new CServerList();
 	
 	sharedfiles	= new CSharedFileList(knownfiles);

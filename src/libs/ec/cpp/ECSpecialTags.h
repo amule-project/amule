@@ -333,7 +333,8 @@ class CEC_SearchFile_Tag : public CECTag {
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
   		uint32		SourceCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt(); }
   		uint32		CompleteSourceCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt(); }
-  		bool		AlreadyHave()	const { return GetTagByName(EC_TAG_KNOWNFILE) != 0; }
+		bool		AlreadyHave()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt() != 0; /* == CSearchFile::NEW */ }
+		uint32		DownloadStatus()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt(); }
 };
 
 class CEC_Search_Tag : public CECTag {

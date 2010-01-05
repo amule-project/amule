@@ -33,6 +33,7 @@
 #include "amule.h"
 #include "Logger.h"
 #include "ScopedPtr.h"
+#include "SearchList.h"		// Needed for UpdateSearchFileByHash
 #include <common/Format.h>
 
 
@@ -247,7 +248,11 @@ CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
 bool CKnownFileList::SafeAddKFile(CKnownFile* toadd)
 {
 	wxMutexLocker sLock(list_mut);
-	return Append(toadd);
+	bool ret = Append(toadd);
+	if (ret) {
+		theApp->searchlist->UpdateSearchFileByHash(toadd->GetFileHash());
+	}
+	return ret;
 }
 
 
