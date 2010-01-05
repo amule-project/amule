@@ -56,6 +56,7 @@ class CServerList;
 class CListenSocket;
 class CClientList;
 class CKnownFileList;
+class CCanceledFileList;
 class CSearchList;
 class CClientCreditsList;
 class CFriendList;
@@ -257,6 +258,7 @@ public:
 	CListenSocket*		listensocket;
 	CClientList*		clientlist;
 	CKnownFileList*		knownfiles;
+	CCanceledFileList*	canceledfiles;
 	CSearchList*		searchlist;
 	CClientCreditsList*	clientcredits;
 	CFriendList*		friendlist;

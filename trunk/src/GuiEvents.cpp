@@ -7,6 +7,7 @@
 #include "ServerList.h"
 #include "Preferences.h"
 #include "ExternalConn.h"
+#include "SearchFile.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -487,8 +488,9 @@ namespace MuleNotify
 #endif
 	}
 	
-	void Search_Update_Sources(CSearchFile* NOT_ON_DAEMON(result))
+	void Search_Update_Sources(CSearchFile* result)
 	{
+		result->SetDownloadStatus();
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
 			theApp->amuledlg->m_searchwnd->UpdateResult(result);

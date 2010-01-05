@@ -42,6 +42,7 @@
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
 
 #include "KnownFileList.h"	// Needed for CKnownFileList
+#include "CanceledFileList.h"
 #include "UploadQueue.h"	// Needed for CFileHash
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "Server.h"		// Needed for CServer
@@ -2142,9 +2143,16 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 		m_paused = false;
 		ClearPriority();
 		
-		// TODO: What the f*** if it is already known?
-		theApp->knownfiles->SafeAddKFile(this);
-		
+
+		// Remove from list of canceled files in case it was canceled once upon a time
+		if (theApp->canceledfiles->Remove(GetFileHash())) {
+			theApp->canceledfiles->Save();
+		}
+
+		// Mark as known (checks if it's already known),
+		// also updates search files
+		theApp->knownfiles->SafeAddKFile(this);		
+
 		// remove the file from the suspended uploads list
 		theApp->uploadqueue->ResumeUpload(GetFileHash());		
 		theApp->downloadqueue->RemoveFile(this);
@@ -2230,6 +2238,11 @@ void CPartFile::Delete()
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from download queue"));
 	Notify_DownloadCtrlRemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from transferwnd"));
+	if (theApp->canceledfiles->Add(GetFileHash())) {
+		theApp->canceledfiles->Save();
+	}
+	AddDebugLogLineM(false, logPartFile, wxT("\tAdded to canceled file list"));
+	theApp->searchlist->UpdateSearchFileByHash(GetFileHash()); 	// Update file in the search dialog if it's still open
 
 	if (m_hpartfile.IsOpened()) {
 		m_hpartfile.Close();

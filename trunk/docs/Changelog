@@ -121,6 +121,9 @@ Version 2.3.0 - The river knows.
 		  Thanks to RRM for endless patience!
 		* Fix: Language English was not recognized and so reverted to "System default" at any change
 		* Fixed printf output (unicode2char()) on consoles incapable of UTF8
+		* Keep a list of all canceled files (canceled.met) and show them in magenta in the search list
+		* Update status/color of search results on events from outside the search window
+		  (like download started from EC) and in amulegui
 
 	Vollstrecker:
 		* Unify copyright lines

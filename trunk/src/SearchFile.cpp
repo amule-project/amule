@@ -27,11 +27,15 @@
 
 #include <tags/FileTags.h>
 
+#include "amule.h"				// Needed for theApp
+#include "CanceledFileList.h"
 #include "MemFile.h"			// Needed for CMemFile
 #include "Preferences.h"		// Needed for thePrefs
 #include "GuiEvents.h"
 #include "Logger.h"
 #include "PartFile.h"			// Needed for CPartFile::CanAddSource
+#include "DownloadQueue.h"		// Needed for CDownloadQueue
+#include "KnownFileList.h"		// Needed for CKnownFileList
 
 CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID, uint32_t serverIP, uint16_t serverPort, const wxString& directory, bool kademlia)
 	: m_parent(NULL),
@@ -40,21 +44,21 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 	  m_sourceCount(0),
 	  m_completeSourceCount(0),
 	  m_kademlia(kademlia),
+	  m_downloadStatus(NEW),
 	  m_directory(directory),
 	  m_clientServerIP(serverIP),
 	  m_clientServerPort(serverPort),
 	  m_kadPublishInfo(0)
 {
 	m_abyFileHash = data.ReadHash();
+	SetDownloadStatus();
 	m_clientID = data.ReadUInt32();
 	m_clientPort = data.ReadUInt16();
 
-	if ((!m_clientID) || (!m_clientPort)) {
-		m_clientID = m_clientPort = 0;
-	} else if (!IsGoodIP(m_clientID, thePrefs::FilterLanIPs())) {
-		m_clientID = m_clientPort = 0;
+	if (!m_clientID || !m_clientPort || !IsGoodIP(m_clientID, thePrefs::FilterLanIPs())) {
+		m_clientID = 0;
+		m_clientPort = 0;
 	}
-	
 	
 	uint32 tagcount = data.ReadUInt32();
 	for (unsigned int i = 0; i < tagcount; ++i) {
@@ -97,6 +101,7 @@ CSearchFile::CSearchFile(const CSearchFile& other)
 	  m_sourceCount(other.m_sourceCount),
 	  m_completeSourceCount(other.m_completeSourceCount),
 	  m_kademlia(other.m_kademlia),
+	  m_downloadStatus(other.m_downloadStatus),
 	  m_directory(other.m_directory),
 	  m_clients(other.m_clients),
 	  m_clientID(other.m_clientID),
@@ -293,4 +298,28 @@ void CSearchFile::UpdateParent()
 
 	SetFileName((*best)->GetFileName());
 }
+
+void CSearchFile::SetDownloadStatus()
+{
+	bool isPart		= theApp->downloadqueue->GetFileByID(m_abyFileHash) != NULL;
+	bool isKnown	= theApp->knownfiles->FindKnownFileByID(m_abyFileHash) != NULL;
+	bool isCanceled	= theApp->canceledfiles->IsCanceledFile(m_abyFileHash);
+
+	if (isCanceled && isPart) {
+		m_downloadStatus = QUEUEDCANCELED;
+	} else if (isCanceled) {
+		m_downloadStatus = CANCELED;
+	} else if (isPart) {
+		m_downloadStatus = QUEUED;
+	} else if (isKnown) {
+		m_downloadStatus = DOWNLOADED;
+	} else {
+		m_downloadStatus = NEW;
+	}
+	// Update status of children too
+	for (CSearchResultList::iterator it = m_children.begin(); it != m_children.end(); it++) {
+		Notify_Search_Update_Sources(*it);
+	}
+}
+
 // File_checked_for_headers

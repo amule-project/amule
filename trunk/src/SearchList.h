@@ -166,6 +166,8 @@ public:
 	 */
 	void	KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt128 *fileID, const wxString& name, uint64_t size, const wxString& type, uint32_t kadPublishInfo, const TagPtrList& taglist);
 	
+	/** Update a certain search result in all lists */
+	void UpdateSearchFileByHash(const CMD4Hash& hash);
 	
 private:
 	/** Event-handler for global searches. */

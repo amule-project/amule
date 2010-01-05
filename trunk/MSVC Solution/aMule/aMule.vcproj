@@ -370,6 +370,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\CanceledFileList.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\CaptchaDialog.cpp"
 				>
 			</File>
@@ -833,6 +837,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\BarShader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\CanceledFileList.h"
 				>
 			</File>
 			<File

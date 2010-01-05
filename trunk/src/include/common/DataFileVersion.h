@@ -45,4 +45,8 @@ enum KnownFileListVersions {
 	MET_HEADER_WITH_LARGEFILES	= 0x0F
 };
 
+enum CanceledFileListVersions {
+	CANCELEDFILE_VERSION	= 0x21
+};
+
 #endif // DATAFILEVERSION_H

@@ -347,6 +347,7 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, (uint32)file->GetDownloadStatus()));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
@@ -354,9 +355,6 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
-	if ( theApp->sharedfiles->GetFileByID(file->GetFileHash()) ) {
-		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
-	}
 }
 
 CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) : CECTag(EC_TAG_SEARCHFILE, file->GetFileHash())
@@ -369,8 +367,6 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) :
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
-	if ( theApp->sharedfiles->GetFileByID(file->GetFileHash()) ) {
-		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
-	}
+	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, (uint32)file->GetDownloadStatus(), this);
 }
 // File_checked_for_headers

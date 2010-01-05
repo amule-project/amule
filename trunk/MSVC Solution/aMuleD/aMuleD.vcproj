@@ -358,6 +358,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\CanceledFileList.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\CFile.cpp"
 				>
 			</File>
