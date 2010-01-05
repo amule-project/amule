@@ -3101,7 +3101,7 @@ msgstr "Letzter Empfang"
 
 #: src/DownloadListCtrl.cpp:581
 msgid "Are you sure that you wish to delete the selected file?"
-msgstr "Wirklich die ausgewählte Dateie löschen?"
+msgstr "Wirklich die ausgewählte Datei löschen?"
 
 #: src/DownloadListCtrl.cpp:583
 msgid "Are you sure that you wish to delete the selected files?"
