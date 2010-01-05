@@ -527,7 +527,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
     uint32 sentStandardPacketBytesThisCall = 0;
     uint32 sentControlPacketBytesThisCall = 0;
 	
-    if (byConnected == ES_CONNECTED && IsEncryptionLayerReady() && !m_bBusy) {
+    if (byConnected == ES_CONNECTED && IsEncryptionLayerReady() && (!m_bBusy || onlyAllowedToSendControlPacket)) {
 
 		//printf("* Internal attemptto send on %p\n", this);
 		
