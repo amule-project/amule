@@ -1,6 +1,7 @@
-.TH AMULECMD 1 "January 2010" "aMuleCmd v2.2.6" "aMule utilities"
+.TH AMULECMD 1 "January 2010" "aMuleCmd v2.3.0" "aMule utilities"
 .als B_untranslated B
 .als RB_untranslated RB
+.als SS_untranslated SS
 .SH NAME
 amulecmd \- Console-based program to control aMule
 .SH SYNOPSIS
@@ -23,7 +24,7 @@ amulecmd \- Console-based program to control aMule
 .B_untranslated amulecmd
 .RB_untranslated [ \-\-help ]
 .SH DESCRIPTION
-.B_untranslated amulecmd
+.B amulecmd
 is a console-based client to control aMule.
 .TP
 \fB[ \-h\fR \fI<host>\fR, \fB\-\-host\fR=\fI<host>\fR \fB]\fR
@@ -49,7 +50,7 @@ show also debug messages.
 .TP
 \fB[ \-l\fR \fI<lang>\fR, \fB\-\-locale\fR=\fI<lang>\fR \fB]\fR
 Sets program locale (language).
-See section \fBLANGUAGES\fR for the description of the \fI<lang>\fR parameter.
+See the \fBNOTES\fR section for the description of the \fI<lang>\fR parameter.
 .TP
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
 Write command line options to config file and exit
@@ -58,7 +59,7 @@ Write command line options to config file and exit
 Execute \fI<command>\fR as if it was entered at amulecmd's prompt and exit.
 .TP
 \fB[ \-\-create\-config\-from\fR=\fI<path>\fR \fB]\fR
-Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit
+Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
 .TP
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Displays the current version number.
@@ -67,26 +68,25 @@ Displays the current version number.
 Prints a short usage description.
 .SH COMMANDS
 All commands are case insensitive.
-.SS \fBAdd\fR \fI<eD2k-link>\fR \fB|\fR \fI<magnet-link>\fR
-Adds an eD2k-link or an magnet-link to the core.
-.TP
+.SS Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
+Adds an eD2k-link or a magnet-link to the core.
+
 The eD2k link to be added can be:
-.2TP
-*) a file link (ed2k://|file|...), it will be added to the download queue;
+.RS 3
+.IP \(bu 2
+a file link (ed2k://|file|...), it will be added to the download queue;
+.IP \(bu 2
+a server link (ed2k://|server|...), it will be added to the server list;
+.IP \(bu 2
+a serverlist link, in which case all servers in the list will be added to the server list.
+.RE
 
-.2TP
-*) a server link (ed2k://|server|...), it will be added to the server list;
-
-.2TP
-*) a serverlist link, in which case all servers in the list will be added to the server list;
-
-.TP
 The magnet link must contain the eD2k hash and file length.
-.TP
+
 This command must have an argument.
-.SS \fBCancel\fR \fI<hash>\fR \fB|\fR \fI<number>\fR
+.SS Cancel \fI<hash>\fP | \fI<number>\fP
 Cancels the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fIshow\fR.
-.SS \fBConnect\fR \fB[\fR \fIkad\fR \fB|\fR \fIed2k\fR \fB|\fR \fI<ip|name>\fR \fB]\fR
+.SS Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Connect to the network.
 
 This will connect to all networks that are enabled in Preferences.
@@ -97,11 +97,10 @@ connect to that server only. The IP must be a dotted decimal IPv4 address, or a
 resolvable DNS name.
 
 When giving kad, it connects to Kad only.
-.SS \fBDisconnect\fR \fB[\fR \fI<ed2k>\fR \fB|\fR \fI<kad>\fR \fB]\FR
-
+.SS_untranslated Disconnect [ \fI<ed2k>\fP | \fI<kad>\fP ]
 Disconnect from all networks you are connected to, or just disconnect from the
 specified network.
-.SS \fBDownload\fR \fI<number>\fR
+.SS Download \fI<number>\fP
 Start downloading a file.
 
 The \fI<number>\fR of a file from the last search has to be given.
@@ -109,187 +108,156 @@ Example: 'download 12' will start to download the file with the number 12 of the
 previous search.
 
 This command must have an argument.
-.SS \fBExit\fR
+.SS_untranslated Exit
 Disconnect from amule/amuled and quit amulecmd.
-.SS \fBGet\fR \fI<value>\fR
-.TP
+.SS Get \fI<what>\fP
 Get and display a preference value.
-.TP
-This command is incomplete, available values are listed below.
-.TP
-Available values:
-.2TP
-BwLimits
-\[u0009] Get
-bandwidth limits.
 
-.2TP
-IPFilter
-\[u0009] Get
-IPFilter preferences.
-.SS \fBHelp [\fR \fI<command>\fR \fB]\fR
+This command is incomplete, available values are listed below.
+
+Available values for \fI<what>\fR:
+.RS
+.IP BwLimits 10
+Get bandwidth limits.
+.IP IPFilter 10
+Get IPFilter preferences.
+.RE
+.SS Help [ \fI<command>\fP ]
 Prints a short usage description.
 If called without parameter, it shows a list of available commands.
 If called with \fI<command>\fR, it shows a short description of the given command.
-.SS \fBPause\fR \fI<hash>\fR \fB|\fR \fI<number>\fR
+.SS Pause \fI<hash>\fP | \fI<number>\fP
 Pauses the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fIshow\fR.
-.SS \fBPriority\fR \fI<priority>\fR
-.TP
+.SS Priority \fI<priority>\fP
 Set priority of a download to Low, Normal, High or Auto.
-.TP
+
 This command must have an argument.
-.TP
+
 This command is incomplete, available values are listed below.
-.TP
+
 Available values:
-.2TP
-Auto
-\[u0009] Set priority to auto.
-
-.2TP
-High
-\[u0009] Set priority to high.
-
-.2TP
-Low
-\[u0009] Set priority to low.
-
-.2TP
-Normal
-\[u0009] Set priority to normal.
-.SS \fBProgress\fR
+.RS
+.IP Auto 10
+Set priority to auto.
+.IP High 10
+Set priority to high.
+.IP Low 10
+Set priority to low.
+.IP Normal 10
+Set priority to normal.
+.RE
+.SS_untranslated Progress
 Shows the progress of an on\-going search.
 
 This command can't have an argument.
-.SS \fBQuit\fR
-Exits the App.
-
-This command can't have an argument.
-.SS \fBReload\fR \fI<object>\fR
-.TP
+.SS_untranslated Quit
+A synonim of the 'Exit' command.
+.SS Reload \fI<what>\fP
 Reloads a given object.
-.TP
-This command is incomplete, available values are listed below.
-.TP
-Available values:
-.2TP
-BwLimits
-\[u0009] Reload
-bandwidth limits.
 
-.2TP
-IPFilter
-\[u0009] Reload
-IPFilter preferences.
-.SS \fBReset\fR
+This command is incomplete, available values are listed below.
+
+Available values for \fI<what>\fR:
+.RS
+.IP BwLimits 10
+Reload bandwidth limits.
+.IP IPFilter 10
+Reload IPFilter preferences.
+.RE
+.SS_untranslated Reset
 Reset the log.
 
 This command can't have an argument.
-.SS Results\fR
+.SS_untranslated Results
 Shows you the results of the last search.
 
 This command can't have an argument.
-.SS \fBResume\fR \fI<hash>\fR \fB|\fR \fI<number>\fR
+.SS Resume \fI<hash>\fP | \fI<number>\fP
 Resumes the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fIshow\fR.
-.SS \fBSearch\fR \fIglobal\fR \fB|\fR \fIkad\fR \fB|\fR \fIlocal\fR \fI<file>\fR
+.SS Search \fIglobal\fP | \fIkad\fP | \fIlocal\fP \fI<file>\fR
 Makes a search for the given \fI<file>\fR. A searchtype and a file to search is mandatory to do this.
-\fIExample\fR 'search kad amule' performs a kad search for amule.
-.TP
-Available values:
-.2TP
-global
-\[u0009] performs a global search
+Example: 'search kad amule' performs a kad search for amule.
 
-.2TP
-kad
-\[u0009] performs a search on kad network
-
-.2TP
-local
-\[u0009] performs a local search
-.SS \fBSet\fR \fI<value>\fR
+Available search types:
+.RS
+.IP global 10
+performs a global search
+.IP kad 10
+performs a search on kad network
+.IP local 10
+performs a local search
+.RE
+.SS Set \fI<what>\fR
 Sets a given preferences value.
 
 This command is incomplete, available values are listed below.
-.TP
-Available values:
-.2TP
-BwLimits
-\[u0009] Set
-bandwidth limits.
 
-.2TP
-IPFilter
-\[u0009] Set
-IPFilter preferences.
-.SS \fBShow\fR \fIDL\fR \fB|\fR \fILog\fR \fB|\fR \fIServers\fR \fB|\fR \fIUL\fR
+Available values:
+.RS
+.IP BwLimits 10
+Set bandwidth limits.
+.IP IPFilter 10
+Set IPFilter preferences.
+.RE
+.SS_untranslated Show \fIDL\fP | \fILog\fP | \fIServers\fP | \fIUL\fP
 Shows upload/download queue, servers list or shared files list.
 
 This command must have an argument.
 
 This command is incomplete, available values are listed below.
-.TP
+
 Available values:
-.2TP
-DL
-\[u0009] Show download queue.
-
-.2TP
-Log
-\[u0009] Show log.
-
-.2TP
-Servers
-\[u0009] Show servers list.
-
-.2TP
-UL
-\[u0009] Show upload queue.
-.SS \fBShutdown\fR
+.RS
+.IP DL 10
+Show download queue.
+.IP Log 10
+Show log.
+.IP Servers 10
+Show servers list.
+.IP UL 10
+Show upload queue.
+.RE
+.SS_untranslated Shutdown
 Shutdown the remote running core (amule/amuled).
 This will also shut down the text client, since it is unusable without a running core.
 
 This command can't have an argument.
-.SS \fBStatistics\fR <number>
+.SS Statistics [ \fI<number>\fP ]
 Show statistics tree.
 
-The optional \fInumber\fR in the range of 0-255 can be passed as argument to this
+The optional \fI<number>\fR in the range of 0-255 can be passed as argument to this
 command, which tells how many entries of the client version subtree should be
 shown. Passing 0, or omitting it means 'unlimited'.
 
-\fIExample:\fR 'statistics 5' will show only the top 5 versions for each client
+Example: 'statistics 5' will show only the top 5 versions for each client
 type.
-.SS \fBStatus\fR
+.SS_untranslated Status
 Show connection status, current up/download speeds, etc.
-
 .SH NOTES
 .SS Paths
 For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
 directory part (i.e. just a plain filename), then it is considered to be under
 the aMule configuration directory, \fI~/.aMule\fR.
-.SS LANGUAGES
+.SS Languages
 The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
 where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory,
 \fIencoding\fR is the character set to use and \fImodifier\fR
 allows the user to select a specific instance of localization data within a
 single category.
-.TP
+
 For example, the following strings are valid:
-.2TP
-de
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
 
-.2TP
-de_DE
-
-.2TP
-de_DE.iso88591
-
-.2TP
-de_DE@euro
-
-.2TP
-de_DE.iso88591@euro
-.P
 Though all the above strings are accepted as valid language definitions,
 \fIencoding\fR and \fImodifier\fR are yet unused.
 

@@ -2,14 +2,14 @@
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
-ed2k \- aMule ED2k link parser
+ed2k \- aMule eD2k link parser
 .SH SYNOPSIS
 .B_untranslated ed2k
 .RB [ \-c " " \fI<path> ]
 .RB [ \-t " " \fI<num> ]
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-l ]
-.RB_untranslated <eD2k-Link>
+.I <eD2k-Link>
 
 .B_untranslated ed2k
 .RB_untranslated [ \-h ]
@@ -17,8 +17,6 @@ ed2k \- aMule ED2k link parser
 .B_untranslated ed2k
 .RB_untranslated [ \-v ]
 .SH DESCRIPTION
-.TP
-aMule eD2k link parser v1.5.1.
 Sends the given \fI<eD2k_link>\fR to aMule, i.e. writes it to the file ~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
 .TP
 \fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
@@ -39,26 +37,23 @@ Prints a short usage description.
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Displays the current version number.
 .TP
-.TP
 \fB[ eD2k-Link ]\fR
 Adds an eD2k-link to the core.
-.TP
+.PP
 The eD2k link to be added can be:
-.2TP
-*) a file link (ed2k://|file|...), it will be added to the download queue;
+.RS 3
+.IP \(bu 2
+a file link (ed2k://|file|...), it will be added to the download queue;
+.IP \(bu 2
+a server link (ed2k://|server|...), it will be added to the server list;
+.IP \(bu 2
+a serverlist link, in which case all servers in the list will be added to the server list;
+.IP \(bu 2
+a magnet link;
+.IP \(bu 2
+an emulecollection file.
+.RE
 
-.2TP
-*) a server link (ed2k://|server|...), it will be added to the server list;
-
-.2TP
-*) a serverlist link, in which case all servers in the list will be added to the server list;
-
-.2TP
-*) a magnet link;
-
-.2TP
-*) an emulecollection file;
-.TP
 \fBThe order in which you give the parameters is important.\fR
 You can give more than one link, and every link can have it's own params.
 For example \fBed2k <link1> -t2 <link2>\fR will download \fI<link1>\fR in standard category and \fI<link2>\fR in category 2.
