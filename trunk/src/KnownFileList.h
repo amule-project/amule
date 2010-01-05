@@ -72,6 +72,8 @@ private:
 	typedef std::list<CKnownFile*> KnownFileList;
 	KnownFileList	m_duplicateFileList;
 	CKnownFileMap	m_knownFileMap;
+	// The filename "known.met"
+	wxString	m_filename;
 };
 
 #endif // KNOWNFILELIST_H
