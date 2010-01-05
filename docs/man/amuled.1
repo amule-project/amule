@@ -1,4 +1,4 @@
-.TH AMULED 1 "January 2010" "aMule Daemon v2.2.6" "aMule Daemon"
+.TH AMULED 1 "January 2010" "aMule Daemon v2.3.0" "aMule Daemon"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
@@ -55,27 +55,26 @@ Does not disable stdin.
 \fB[ \-t\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
 Set category for passed eD2k links to \fI<num>\fR
 .TP
-\fB[ eD2k-Link ]\fR
-Adds an eD2k-link to the core.
-.TP
-The eD2k link to be added can be:
-.2TP
-*) a file link (ed2k://|file|...), it will be added to the download queue;
-
-.2TP
-*) a server link (ed2k://|server|...), it will be added to the server list;
-
-.2TP
-*) a serverlist link, in which case all servers in the list will be added to the server list;
-
-.2TP
-*) a magnet link
-.TP
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Displays the current version number.
 .TP
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Prints a short usage description.
+.TP
+\fB[ eD2k-Link ]\fR
+Adds an eD2k-link to the core.
+.PP
+The eD2k link to be added can be:
+.RS 3
+.IP \(bu 2
+a file link (ed2k://|file|...), it will be added to the download queue;
+.IP \(bu 2
+a server link (ed2k://|server|...), it will be added to the server list;
+.IP \(bu 2
+a serverlist link, in which case all servers in the list will be added to the server list;
+.IP \(bu 2
+a magnet link.
+.RE
 .SH FILES
 ~/.aMule/*
 .SH REPORTING BUGS

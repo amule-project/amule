@@ -1,4 +1,4 @@
-.TH AMULEWEB 1 "January 2010" "aMule webserver v2.2.6" "aMule utilities"
+.TH AMULEWEB 1 "January 2010" "aMule webserver v2.3.0" "aMule utilities"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
@@ -67,7 +67,7 @@ show also debug messages.
 .TP
 \fB[ \-l\fR \fI<lang>\fR, \fB\-\-locale\fR=\fI<lang>\fR \fB]\fR
 Sets program locale (language).
-See section \fBLANGUAGES\fR for the description of the \fI<lang>\fR parameter.
+See the \fBNOTES\fR section for the description of the \fI<lang>\fR parameter.
 .TP
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
 Write command line options to config file and exit
@@ -117,7 +117,7 @@ Disable PHP interpreter (deprecated)
 Recompiles PHP pages on each request.
 .TP
 \fB[ \-\-create\-config\-from\fR=\fI<path>\fR \fB]\fR
-Creates config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
+Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
 .TP
 .B_untranslated [ \-\-help ]\fR
 Prints a short usage description.
@@ -135,29 +135,26 @@ This option causes all other command-line and config-file settings to be ignored
 For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
 directory part (i.e. just a plain filename), then it is considered to be under
 the aMule configuration directory, \fI~/.aMule\fR.
-.SS LANGUAGES
+.SS Languages
 The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
 where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory,
 \fIencoding\fR is the character set to use and \fImodifier\fR
 allows the user to select a specific instance of localization data within a
 single category.
-.TP
+
 For example, the following strings are valid:
-.2TP
-de
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
 
-.2TP
-de_DE
-
-.2TP
-de_DE.iso88591
-
-.2TP
-de_DE@euro
-
-.2TP
-de_DE.iso88591@euro
-.P
 Though all the above strings are accepted as valid language definitions,
 \fIencoding\fR and \fImodifier\fR are yet unused.
 
@@ -172,14 +169,11 @@ These skins are called templates, and you can make amuleweb load a specific temp
 Templates are searched in two places: first in \fI~/.aMule/webserver/\fR and then in \fI/usr/share/amule/webserver/\fR if you installed with \-\-prefix=/usr.
 .PP
 Each template must be in a subdirectory of the template name, and this directory must contain all files the template needs.
-The actual template filename must be aMule.tmpl.
-.PP
-For example, the default template (named 'default') is in webserver/default/, and this directory contains aMule.tmpl amongst a lot of image files.
 .SH FILES
 ~/.aMule/remote.conf
-
+.br
 ~/.aMule/webserver/
-
+.br
 \fI$(pkgdatadir)\fR/webserver/
 .SH EXAMPLE
 Typically amuleweb will be first run as:

@@ -1,4 +1,4 @@
-.TH AMULE 1 "January 2010" "aMule v2.2.6" "aMule"
+.TH AMULE 1 "January 2010" "aMule v2.3.0" "aMule"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
@@ -13,7 +13,7 @@ amule \- the all\-platform eMule p2p client
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
 .RB [ \-t " " \fI<num> ]
-.RB_untranslated [ eD2k-Link ]
+.RB [ eD2k-Link ]
 
 .B_untranslated amule
 .RB_untranslated [ \-v ]
@@ -55,19 +55,18 @@ Prints a short usage description.
 .TP
 \fB[ eD2k-Link ]\fR
 Adds an eD2k-link to the core.
-.TP
+.PP
 The eD2k link to be added can be:
-.2TP
-*) a file link (ed2k://|file|...), it will be added to the download queue;
-
-.2TP
-*) a server link (ed2k://|server|...), it will be added to the server list;
-
-.2TP
-*) a serverlist link, in which case all servers in the list will be added to the server list;
-
-.2TP
-*) a magnet link;
+.RS 3
+.IP \(bu 2
+a file link (ed2k://|file|...), it will be added to the download queue;
+.IP \(bu 2
+a server link (ed2k://|server|...), it will be added to the server list;
+.IP \(bu 2
+a serverlist link, in which case all servers in the list will be added to the server list;
+.IP \(bu 2
+a magnet link.
+.RE
 .SH NOTES
 .SS Paths
 For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
