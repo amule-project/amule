@@ -1,0 +1,3 @@
+PO4A-HEADER:mode=after;position=^\.TH;beginboundary=^FakePo4aBoundary
+.SH MAGYAR FORDÍTÁS
+Dévai Tamás <gonosztopi@amule.org>
