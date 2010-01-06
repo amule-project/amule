@@ -6,6 +6,7 @@ src/amuleDlg.cpp
 src/amule-gui.cpp
 src/amule-remote-gui.cpp
 src/BaseClient.cpp
+src/CanceledFileList.cpp
 src/CaptchaDialog.cpp
 src/CatDialog.cpp
 src/ChatSelector.cpp

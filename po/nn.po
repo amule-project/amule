@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-27 23:46+0100\n"
+"POT-Creation-Date: 2010-01-06 01:07+0100\n"
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -28,7 +28,7 @@ msgstr "Legg til ein kamerat"
 msgid "You have to enter a valid IP and port!"
 msgstr "Du må skrive inn ein gangbar IP og port!"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1712
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1724
 msgid "Information"
 msgstr "Informasjon"
 
@@ -49,58 +49,58 @@ msgstr ""
 "ÅTVARING: Du kan ikkje leggje deg sjølv til som kjelde for ei eD2k lenkje "
 "medan du har ein lågid."
 
-#: src/amule.cpp:226
+#: src/amule.cpp:228
 #, fuzzy
 msgid "Now, exiting main app..."
 msgstr ""
 "\n"
 "Ok,·avsluttar·%s...\n"
 
-#: src/amule.cpp:245
+#: src/amule.cpp:247
 #, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr ""
 
-#: src/amule.cpp:248
+#: src/amule.cpp:250
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr ""
 
-#: src/amule.cpp:250 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:252 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Mislukka"
 
-#: src/amule.cpp:256
+#: src/amule.cpp:258
 msgid "aMule OnExit: Terminating core."
 msgstr ""
 
-#: src/amule.cpp:319
+#: src/amule.cpp:324
 #, fuzzy
 msgid "aMule shutdown completed."
 msgstr "Nedlasting fullført"
 
-#: src/amule.cpp:323
+#: src/amule.cpp:328
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:419
+#: src/amule.cpp:424
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "Stadfesting av avslutting"
 
-#: src/amule.cpp:422
+#: src/amule.cpp:427
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "Ny ekstern kopling akseptert"
 
-#: src/amule.cpp:433 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:438 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:673 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "ÅTVARING"
 
-#: src/amule.cpp:479
+#: src/amule.cpp:484
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -108,13 +108,13 @@ msgstr ""
 "Dine lokale innstilingar har vorte endra til opprinnelege "
 "systeminnstillingar på grunn av konfigurasjonsending. Beklager."
 
-#: src/amule.cpp:481 src/amule.cpp:1035 src/CatDialog.cpp:141
+#: src/amule.cpp:486 src/amule.cpp:1041 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Info"
 
-#: src/amule.cpp:561
+#: src/amule.cpp:567
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -122,21 +122,21 @@ msgstr ""
 "Du har ingen tenarar i tenarlista.\n"
 "Vil du at aMule skal laste ned ei ny liste no?"
 
-#: src/amule.cpp:562
+#: src/amule.cpp:568
 msgid "Server list download"
 msgstr "Nedlasting av tenarliste"
 
-#: src/amule.cpp:578 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:584 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:61
 msgid "Connecting"
 msgstr "Koplar til"
 
-#: src/amule.cpp:634
+#: src/amule.cpp:640
 #, c-format
 msgid "web server running on pid %d"
 msgstr "vevtenar køyrer på pid %d"
 
-#: src/amule.cpp:638
+#: src/amule.cpp:644
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -146,23 +146,23 @@ msgstr ""
 "køyrast. Installer pakken som inneheld vevtenaren til aMule, eller kompiler "
 "aMule med --enable-webserver og køyr make install"
 
-#: src/amule.cpp:639 src/amule.cpp:759 src/amule.cpp:1046
+#: src/amule.cpp:645 src/amule.cpp:765 src/amule.cpp:1052
 #: src/amule-remote-gui.cpp:299 src/amule-remote-gui.cpp:321
 #: src/amule-remote-gui.cpp:323 src/amule-remote-gui.cpp:622
 msgid "ERROR"
 msgstr "FEIL"
 
-#: src/amule.cpp:724
+#: src/amule.cpp:730
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Greidde ikkje å knyte portar til adressa: %s"
 
-#: src/amule.cpp:751
+#: src/amule.cpp:757
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port·%u er ikkje tilgjengeleg. Du vil få LågID\n"
 
-#: src/amule.cpp:757
+#: src/amule.cpp:763
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -178,15 +178,15 @@ msgstr ""
 "Sjekk nettverket ditt for å vere viss på at porten er open for inn- og "
 "utgåande trafikk."
 
-#: src/amule.cpp:836
+#: src/amule.cpp:842
 msgid "Failed to create OnlineSig File"
 msgstr "Greidde ikkje å lage OnlineSigfil"
 
-#: src/amule.cpp:844
+#: src/amule.cpp:850
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Greidde ikkje å lage aMule si OnlineSigfil."
 
-#: src/amule.cpp:1012
+#: src/amule.cpp:1018
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -194,39 +194,39 @@ msgstr ""
 "Dei valte lokale innstillingane ser ikkje ut til å vere installerte på "
 "maskina di. (Merk: Eg freistar å setje dei likevel)"
 
-#: src/amule.cpp:1021
+#: src/amule.cpp:1027
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Dette er første gongen du køyrer aMule %s"
 
-#: src/amule.cpp:1023
+#: src/amule.cpp:1029
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Denne utgåva er ei testutgåve, oppdatert dagleg, og\n"
 
-#: src/amule.cpp:1024
+#: src/amule.cpp:1030
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "vi gir ingen garanti for skade eller nedbrenning av huset ditt,\n"
 
-#: src/amule.cpp:1025
+#: src/amule.cpp:1031
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "eller drep hunden din. Men det *burde* vere trygt å nytte uansett.\n"
 
-#: src/amule.cpp:1030
+#: src/amule.cpp:1036
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Meir informasjon, brukarstøtte og nye utgåver kan verte funne på heimesida "
 "vår.\n"
 
-#: src/amule.cpp:1031
+#: src/amule.cpp:1037
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "på www.aMule.org, eller på IRC-kanalen vår #aMule·på·irc.freenode.net.\n"
 
-#: src/amule.cpp:1033
+#: src/amule.cpp:1039
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Vér god å rapportere feil til http://forum.amule.org"
 
-#: src/amule.cpp:1046
+#: src/amule.cpp:1052
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -234,128 +234,128 @@ msgstr ""
 "Mappa spesifisert for nettsignaturar er UGANGBAR!\n"
 " Nettsignaturar vert DEAKTIVERT fram til du ordnar det i innstillingar."
 
-#: src/amule.cpp:1101
+#: src/amule.cpp:1107
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Tenarnamn:"
 
-#: src/amule.cpp:1331
+#: src/amule.cpp:1337
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Henting av diskplass for fila '%s' mislukka: %s"
 
-#: src/amule.cpp:1459
+#: src/amule.cpp:1465
 msgid "ERROR: can't open logfile"
 msgstr "FEIL: Greier ikkje å opne loggfila"
 
-#: src/amule.cpp:1463
+#: src/amule.cpp:1469
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ÅTVARING: loggfila er tom. Noko er gale."
 
-#: src/amule.cpp:1481
+#: src/amule.cpp:1487
 msgid "Log has been reset"
 msgstr "Loggen har vorte nullstilt"
 
-#: src/amule.cpp:1506
+#: src/amule.cpp:1512
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Tenarmelding: %s"
 
-#: src/amule.cpp:1544
+#: src/amule.cpp:1550
 msgid "Failed to download the nodes list."
 msgstr "Klarte ikkje å laste ned nodelista."
 
-#: src/amule.cpp:1564
+#: src/amule.cpp:1570
 msgid "Failed to open the downloaded version check file"
 msgstr "Klarte ikkje å opne den nedlaste utgåvesjekkfila"
 
-#: src/amule.cpp:1567 src/amule.cpp:1577 src/amule.cpp:1583
+#: src/amule.cpp:1573 src/amule.cpp:1583 src/amule.cpp:1589
 msgid "Corrupted version check file"
 msgstr "Korrupt utgåvesjekkfil"
 
-#: src/amule.cpp:1593
+#: src/amule.cpp:1599
 msgid "You are using an outdated version of aMule!"
 msgstr "Du nyttar ei utdatert utgåve av aMule!"
 
-#: src/amule.cpp:1594
+#: src/amule.cpp:1600
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Di utgåve av aMule er %i.%i.%i og den siste utgåva er %li.%li.%li"
 
-#: src/amule.cpp:1595
+#: src/amule.cpp:1601
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Den siste utgåva finst alltid på http://www.amule.org"
 
-#: src/amule.cpp:1597
+#: src/amule.cpp:1603
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "ÅTVARING: Utgåva di av aMule er utdatert: %i.%i.%i·<·%li.%li.%li"
 
-#: src/amule.cpp:1601
+#: src/amule.cpp:1607
 msgid "Your copy of aMule is up to date."
 msgstr "Utgåva di av aMule er oppdatert."
 
-#: src/amule.cpp:1608
+#: src/amule.cpp:1614
 msgid "Failed to download the version check file"
 msgstr "Klarte ikkje å laste ned utgåvesjekkfila"
 
-#: src/amule.cpp:1768 src/amule-remote-gui.cpp:508
+#: src/amule.cpp:1774 src/amule-remote-gui.cpp:508
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Brukarar: %s | Filer: %s"
 
-#: src/amule.cpp:1769 src/amule-remote-gui.cpp:509
+#: src/amule.cpp:1775 src/amule-remote-gui.cpp:509
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Brukarar: E %s K: %s | Filer: E: %s K: %s"
 
-#: src/amule.cpp:1778 src/amule-remote-gui.cpp:518
+#: src/amule.cpp:1784 src/amule-remote-gui.cpp:518
 msgid "No networks selected"
 msgstr "Ingen valde nettverk"
 
-#: src/amule.cpp:1843 src/TextClient.cpp:703
+#: src/amule.cpp:1849 src/TextClient.cpp:703
 msgid "with LowID"
 msgstr "med LågID"
 
-#: src/amule.cpp:1843 src/TextClient.cpp:703
+#: src/amule.cpp:1849 src/TextClient.cpp:703
 msgid "with HighID"
 msgstr "med HøgID"
 
-#: src/amule.cpp:1845
+#: src/amule.cpp:1851
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Tilkopla %s·%s"
 
-#: src/amule.cpp:1848
+#: src/amule.cpp:1854
 #, c-format
 msgid "Connecting to %s"
 msgstr "Koplar til %s"
 
-#: src/amule.cpp:1850
+#: src/amule.cpp:1856
 msgid "Disconnected from eD2k"
 msgstr "Fråkopla eD2k"
 
-#: src/amule.cpp:1857
+#: src/amule.cpp:1863
 msgid "Kad started."
 msgstr "Kad starta"
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1865
 msgid "Kad stopped."
 msgstr "Kad stogga."
 
-#: src/amule.cpp:1866
+#: src/amule.cpp:1872
 msgid "Connected to Kad (ok)"
 msgstr "Tilkopla Kad (ok)"
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1874
 msgid "Connected to Kad (firewalled)"
 msgstr "Tilkopla Kad (brannmura)"
 
-#: src/amule.cpp:1871
+#: src/amule.cpp:1877
 msgid "Disconnected from Kad"
 msgstr "Fråkopla Kad"
 
-#: src/amule.cpp:1934
+#: src/amule.cpp:1940
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -363,7 +363,7 @@ msgstr ""
 "Kad kan ikkje nyttast dersom UDP-porten er deaktivert i innstillingar. "
 "Startar ikkje."
 
-#: src/amule.cpp:1937
+#: src/amule.cpp:1943
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad-nettverket er deaktivert i innstillingar. Koplar ikkje til."
 
@@ -479,8 +479,8 @@ msgstr ""
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:504 src/KadDlg.cpp:177 src/PartFile.cpp:916
-#: src/PartFile.cpp:924 src/PrefsUnifiedDlg.cpp:564
+#: src/amuleDlg.cpp:504 src/KadDlg.cpp:177 src/PartFile.cpp:917
+#: src/PartFile.cpp:925 src/PrefsUnifiedDlg.cpp:564
 #: src/PrefsUnifiedDlg.cpp:664 src/PrefsUnifiedDlg.cpp:749
 msgid "Message"
 msgstr "Melding"
@@ -747,7 +747,7 @@ msgstr ""
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Brukarar totalt:·%s·|·Filer totalt:·%s"
 
-#: src/amule-remote-gui.cpp:1712
+#: src/amule-remote-gui.cpp:1724
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
 
@@ -771,7 +771,7 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
 #: src/HTTPDownload.cpp:82 src/KnownFile.cpp:890 src/KnownFile.cpp:896
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2511 src/PartFile.cpp:2517
+#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Ukjend"
@@ -840,12 +840,32 @@ msgstr "Melding filtrért frå '%s'·(IP:%s)"
 msgid "New message from '%s' (IP:%s)"
 msgstr "Ny melding frå '%s'·(IP:%s)"
 
+#: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
+#, fuzzy, c-format
+msgid "WARNING: %s cannot be opened."
+msgstr "ÅTVARING: known.met let seg ikkje opne."
+
+#: src/CanceledFileList.cpp:61
+#, fuzzy
+msgid "WARNING: Canceled file list corrupted, contains invalid header."
+msgstr "ÅTVARING: Kjendfillista er korrupt; inneheld ugangbar overskrift."
+
+#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
+#, fuzzy, c-format
+msgid "IO error while reading %s file: %s"
+msgstr "IO feil underlesing av known.met fila: %s"
+
+#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
+#, fuzzy, c-format
+msgid "Error while saving %s file: %s"
+msgstr "Feil under lagring av known.met fila: %s"
+
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
 msgstr ""
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
-#: src/SearchListCtrl.cpp:598 src/TransferWnd.cpp:336
+#: src/SearchListCtrl.cpp:567 src/TransferWnd.cpp:336
 msgid "Category"
 msgstr "Kategori"
 
@@ -1063,7 +1083,7 @@ msgid "Username"
 msgstr "Brukarnamn"
 
 #: src/ClientListCtrl.cpp:517 src/ClientListCtrl.cpp:849
-#: src/SearchListCtrl.cpp:595
+#: src/SearchListCtrl.cpp:564
 msgid "File"
 msgstr "Fil"
 
@@ -1089,7 +1109,7 @@ msgid "Upload Time"
 msgstr "Opplastingstid"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3755 src/SearchListCtrl.cpp:93
+#: src/PartFile.cpp:3768 src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "Status"
 
@@ -1128,7 +1148,7 @@ msgstr "I/T"
 #: src/ClientListCtrl.cpp:652 src/ClientListCtrl.cpp:720
 #: src/DownloadListCtrl.cpp:1316 src/DownloadListCtrl.cpp:1620
 #: src/muuli_wdr.cpp:1707 src/muuli_wdr.cpp:1716 src/muuli_wdr.cpp:1725
-#: src/muuli_wdr.cpp:2073 src/muuli_wdr.cpp:2082 src/OtherFunctions.cpp:131
+#: src/muuli_wdr.cpp:2073 src/muuli_wdr.cpp:2082 src/OtherFunctions.cpp:138
 #: src/StatisticsDlg.cpp:100 src/StatisticsDlg.cpp:102
 msgid "kB/s"
 msgstr "kB/s"
@@ -1292,7 +1312,7 @@ msgid "File Comments"
 msgstr "Filkommentarar"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:188
-#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:88
+#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:86
 #: src/SharedFilesCtrl.cpp:102
 msgid "File Name"
 msgstr "Filnamn"
@@ -1442,7 +1462,7 @@ msgid "Search Result"
 msgstr ""
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:191
-#: src/OtherFunctions.cpp:678 src/TransferWnd.cpp:347
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:347
 msgid "Completed"
 msgstr "Ferdig"
 
@@ -1466,7 +1486,7 @@ msgstr "FEIL: Mislukka IO!"
 msgid "ERROR: Failed!"
 msgstr "FEIL: Mislukka!"
 
-#: src/DataToText.cpp:151
+#: src/DataToText.cpp:151 src/SearchListCtrl.cpp:944
 msgid "Queued"
 msgstr "I kø"
 
@@ -1483,7 +1503,7 @@ msgid "Part"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:189 src/PartFileConvertDlg.cpp:95
-#: src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
+#: src/SearchListCtrl.cpp:87 src/SharedFilesCtrl.cpp:103
 msgid "Size"
 msgstr "Storleik"
 
@@ -1492,7 +1512,7 @@ msgid "Progress"
 msgstr "Framdrift"
 
 #: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3753 src/SearchListCtrl.cpp:90
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Kjelder"
 
@@ -1702,46 +1722,46 @@ msgid_plural "Found %u part files"
 msgstr[0] "Fann %u delfil"
 msgstr[1] "Fann %u delfiler"
 
-#: src/DownloadQueue.cpp:220 src/DownloadQueue.cpp:1341
+#: src/DownloadQueue.cpp:220 src/DownloadQueue.cpp:1342
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr "Filsystemet for mellombelse filer greier ikkje å handsame store filer."
 
-#: src/DownloadQueue.cpp:223 src/DownloadQueue.cpp:1344
+#: src/DownloadQueue.cpp:223 src/DownloadQueue.cpp:1345
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Filsystemet i mappa for innkomande filer greier ikkje å handsame store filer."
 
-#: src/DownloadQueue.cpp:335
+#: src/DownloadQueue.cpp:336
 #, c-format
 msgid "Downloading %s"
 msgstr "Lastar ned %s"
 
-#: src/DownloadQueue.cpp:343
+#: src/DownloadQueue.cpp:344
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Du freistar allereie nedlasting av fila '%s'"
 
-#: src/DownloadQueue.cpp:355
+#: src/DownloadQueue.cpp:356
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Du har allereie fila: '%s'"
 
-#: src/DownloadQueue.cpp:360
+#: src/DownloadQueue.cpp:361
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Du freistar allereie nedlasting av fila %s"
 
-#: src/DownloadQueue.cpp:1275
+#: src/DownloadQueue.cpp:1276
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Kan ikkje konvertere magnetlenkje til eD2k: %s"
 
-#: src/DownloadQueue.cpp:1283
+#: src/DownloadQueue.cpp:1284
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Ukjend lenkjeprotokoll for: %s"
 
-#: src/DownloadQueue.cpp:1304
+#: src/DownloadQueue.cpp:1305
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Ugangbar eD2k lenkje! FEIL: %s"
@@ -2436,53 +2456,39 @@ msgstr "Godkjend"
 msgid "Complete sources"
 msgstr "Komplette kjelder"
 
-#: src/KnownFileList.cpp:80
-msgid "WARNING: known.met cannot be opened."
-msgstr "ÅTVARING: known.met let seg ikkje opne."
-
-#: src/KnownFileList.cpp:87
+#: src/KnownFileList.cpp:89
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 
-#: src/KnownFileList.cpp:113
-#, c-format
-msgid "IO error while reading known.met file: %s"
-msgstr "IO feil underlesing av known.met fila: %s"
-
-#: src/KnownFileList.cpp:159
-#, c-format
-msgid "Error while saving known.met file: %s"
-msgstr "Feil under lagring av known.met fila: %s"
-
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3685
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3698
 msgid "Hashing"
 msgstr "Hashar"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3691
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3704
 msgid "Completing"
 msgstr "Ferdigstiller"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3694
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3707
 msgid "Complete"
 msgstr "Ferdig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:682
-#: src/PartFile.cpp:3697 src/TransferWnd.cpp:351
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:689
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:681
-#: src/PartFile.cpp:3700 src/TransferWnd.cpp:350
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:688
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Feilaktig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:680
-#: src/PartFile.cpp:3707 src/TransferWnd.cpp:349
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:687
+#: src/PartFile.cpp:3720 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Lastar ned"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:679
-#: src/PartFile.cpp:3709 src/TransferWnd.cpp:348
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:686
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Ventar"
 
@@ -2802,7 +2808,7 @@ msgstr "Søk"
 msgid "Name:"
 msgstr "Namn:"
 
-#: src/muuli_wdr.cpp:185 src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:104
+#: src/muuli_wdr.cpp:185 src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:104
 msgid "Type"
 msgstr "Sort"
 
@@ -2830,38 +2836,38 @@ msgstr "Filtrerer"
 msgid "File Type"
 msgstr "Filtype"
 
-#: src/muuli_wdr.cpp:223 src/OtherFunctions.cpp:245
+#: src/muuli_wdr.cpp:223 src/OtherFunctions.cpp:252
 msgid "Any"
 msgstr "Alle"
 
-#: src/muuli_wdr.cpp:224 src/OtherFunctions.cpp:210
+#: src/muuli_wdr.cpp:224 src/OtherFunctions.cpp:217
 msgid "Archives"
 msgstr "Arkiv"
 
-#: src/muuli_wdr.cpp:225 src/OtherFunctions.cpp:203 src/OtherFunctions.cpp:685
+#: src/muuli_wdr.cpp:225 src/OtherFunctions.cpp:210 src/OtherFunctions.cpp:692
 #: src/TransferWnd.cpp:358
 msgid "Audio"
 msgstr "Lyd"
 
-#: src/muuli_wdr.cpp:226 src/OtherFunctions.cpp:217 src/OtherFunctions.cpp:687
+#: src/muuli_wdr.cpp:226 src/OtherFunctions.cpp:224 src/OtherFunctions.cpp:694
 #: src/TransferWnd.cpp:360
 msgid "CD-Images"
 msgstr "CD-bilete"
 
-#: src/muuli_wdr.cpp:227 src/OtherFunctions.cpp:224 src/OtherFunctions.cpp:688
+#: src/muuli_wdr.cpp:227 src/OtherFunctions.cpp:231 src/OtherFunctions.cpp:695
 #: src/TransferWnd.cpp:361
 msgid "Pictures"
 msgstr "Bilete"
 
-#: src/muuli_wdr.cpp:228 src/OtherFunctions.cpp:238
+#: src/muuli_wdr.cpp:228 src/OtherFunctions.cpp:245
 msgid "Programs"
 msgstr "Program"
 
-#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:231
+#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:238
 msgid "Texts"
 msgstr "Tekstar"
 
-#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:196
+#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:203
 msgid "Videos"
 msgstr "Videoar"
 
@@ -2882,11 +2888,11 @@ msgid "KB"
 msgstr "KB"
 
 #: src/muuli_wdr.cpp:266 src/muuli_wdr.cpp:289 src/muuli_wdr.cpp:1954
-#: src/OtherFunctions.cpp:102
+#: src/OtherFunctions.cpp:109
 msgid "MB"
 msgstr "MB"
 
-#: src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290 src/OtherFunctions.cpp:104
+#: src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290 src/OtherFunctions.cpp:111
 msgid "GB"
 msgstr "GB"
 
@@ -2930,7 +2936,7 @@ msgstr "Søkjer etter fleire resultat på eD2k. Ikkje støtta for Kad enno."
 msgid "Stop"
 msgstr "Stopp"
 
-#: src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1701 src/SearchListCtrl.cpp:596
+#: src/muuli_wdr.cpp:365 src/muuli_wdr.cpp:1701 src/SearchListCtrl.cpp:565
 msgid "Download"
 msgstr "Nedlasting"
 
@@ -3085,27 +3091,27 @@ msgstr ""
 msgid "File Quality"
 msgstr "Filkvalitet"
 
-#: src/muuli_wdr.cpp:898 src/OtherFunctions.cpp:265 src/OtherFunctions.cpp:271
+#: src/muuli_wdr.cpp:898 src/OtherFunctions.cpp:272 src/OtherFunctions.cpp:278
 msgid "Not rated"
 msgstr "Ikkje gitt verdi"
 
-#: src/muuli_wdr.cpp:899 src/OtherFunctions.cpp:266
+#: src/muuli_wdr.cpp:899 src/OtherFunctions.cpp:273
 msgid "Invalid / Corrupt / Fake"
 msgstr "Ugyldig / Korrupt /Falsk"
 
-#: src/muuli_wdr.cpp:900 src/OtherFunctions.cpp:267
+#: src/muuli_wdr.cpp:900 src/OtherFunctions.cpp:274
 msgid "Poor"
 msgstr "Dårleg"
 
-#: src/muuli_wdr.cpp:901 src/OtherFunctions.cpp:268
+#: src/muuli_wdr.cpp:901 src/OtherFunctions.cpp:275
 msgid "Fair"
 msgstr "Middels"
 
-#: src/muuli_wdr.cpp:902 src/OtherFunctions.cpp:269
+#: src/muuli_wdr.cpp:902 src/OtherFunctions.cpp:276
 msgid "Good"
 msgstr "God"
 
-#: src/muuli_wdr.cpp:903 src/OtherFunctions.cpp:270
+#: src/muuli_wdr.cpp:903 src/OtherFunctions.cpp:277
 msgid "Excellent"
 msgstr "Utmerka"
 
@@ -3769,7 +3775,7 @@ msgstr "Oppfriskingsintervall for tenarkopling: Deaktiver"
 msgid "Skin to use: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:829
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:832
 msgid "- default -"
 msgstr ""
 
@@ -4422,91 +4428,91 @@ msgstr "Innstillingsvalsvindauge"
 msgid "Disabled [%s]"
 msgstr "Deaktivert [%s]"
 
-#: src/OtherFunctions.cpp:98
+#: src/OtherFunctions.cpp:105
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "byte"
 msgstr[1] "bytes"
 
-#: src/OtherFunctions.cpp:100
+#: src/OtherFunctions.cpp:107
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:106
+#: src/OtherFunctions.cpp:113
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:116
+#: src/OtherFunctions.cpp:123
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:118
+#: src/OtherFunctions.cpp:125
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:120
+#: src/OtherFunctions.cpp:127
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:122
+#: src/OtherFunctions.cpp:129
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:129
+#: src/OtherFunctions.cpp:136
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "byte/sek"
 msgstr[1] "bytes/sek"
 
-#: src/OtherFunctions.cpp:133
+#: src/OtherFunctions.cpp:140
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:143 src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:150 src/OtherFunctions.cpp:154
 msgid "secs"
 msgstr "sekund"
 
-#: src/OtherFunctions.cpp:154
+#: src/OtherFunctions.cpp:161
 msgid "mins"
 msgstr "minutt"
 
-#: src/OtherFunctions.cpp:160 src/OtherFunctions.cpp:168
+#: src/OtherFunctions.cpp:167 src/OtherFunctions.cpp:175
 msgid "hours"
 msgstr "timar"
 
-#: src/OtherFunctions.cpp:165
+#: src/OtherFunctions.cpp:172
 msgid "Days"
 msgstr "Dagar"
 
-#: src/OtherFunctions.cpp:675
+#: src/OtherFunctions.cpp:682
 msgid "all"
 msgstr "alle"
 
-#: src/OtherFunctions.cpp:676
+#: src/OtherFunctions.cpp:683
 msgid "all others"
 msgstr "alle andre"
 
-#: src/OtherFunctions.cpp:677 src/TransferWnd.cpp:346
+#: src/OtherFunctions.cpp:684 src/TransferWnd.cpp:346
 msgid "Incomplete"
 msgstr "Uferdig"
 
-#: src/OtherFunctions.cpp:683 src/PartFile.cpp:3714 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3727 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Stogga"
 
-#: src/OtherFunctions.cpp:684 src/TransferWnd.cpp:357
+#: src/OtherFunctions.cpp:691 src/TransferWnd.cpp:357
 msgid "Video"
 msgstr "Video"
 
-#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:359
+#: src/OtherFunctions.cpp:693 src/TransferWnd.cpp:359
 msgid "Archive"
 msgstr "Arkiv"
 
-#: src/OtherFunctions.cpp:689 src/TransferWnd.cpp:362
+#: src/OtherFunctions.cpp:696 src/TransferWnd.cpp:362
 msgid "Text"
 msgstr "Tekst"
 
-#: src/OtherFunctions.cpp:690 src/TransferWnd.cpp:353
+#: src/OtherFunctions.cpp:697 src/TransferWnd.cpp:353
 msgid "Active"
 msgstr "Aktiv"
 
@@ -4583,110 +4589,110 @@ msgstr "Vil du slette kjeldefilene til vellukka importerte nedlastingar?"
 msgid "Remove sources?"
 msgstr "Ta bort kjelder?"
 
-#: src/PartFile.cpp:289
+#: src/PartFile.cpp:290
 msgid "ERROR: Failed to create partfile)"
 msgstr "FEIL: Greidde ikkje å lage delfil"
 
-#: src/PartFile.cpp:327
+#: src/PartFile.cpp:328
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Freistar å laste tryggleikskopi av met-fila frå %s"
 
-#: src/PartFile.cpp:334
+#: src/PartFile.cpp:335
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
 msgstr "Feil: Greidde ikkje å opne mart.met fila: %s ==> %s"
 
-#: src/PartFile.cpp:340
+#: src/PartFile.cpp:341
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
 msgstr "FEIL: part.met fila har ein storleik på 0: %s ==> %s"
 
-#: src/PartFile.cpp:351
+#: src/PartFile.cpp:352
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr ""
 
-#: src/PartFile.cpp:601
+#: src/PartFile.cpp:602
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "FEIL: %s (%s) er korrupt (feil merkelappstal), greidde ikkje å laste fila."
 
-#: src/PartFile.cpp:604
+#: src/PartFile.cpp:605
 msgid "Trying to recover file info..."
 msgstr "Freistar å hente fram att filinformasjon..."
 
-#: src/PartFile.cpp:619
+#: src/PartFile.cpp:620
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "Attskaper fil utan namn - freistar å attskape ho som RecoverdFile.dat"
 
-#: src/PartFile.cpp:624
+#: src/PartFile.cpp:625
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "Attskapte all tilgjengeleg filinformasjon :D - Freistar å nytte den..."
 
-#: src/PartFile.cpp:626
+#: src/PartFile.cpp:627
 msgid "Unable to recover file info :("
 msgstr "Ikkje i stand til å attskape filinformasjon :("
 
-#: src/PartFile.cpp:661
+#: src/PartFile.cpp:662
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Greidde ikkje å opne %s·(%s)"
 
-#: src/PartFile.cpp:711
+#: src/PartFile.cpp:712
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "ÅTVARING: %s kan vere korrupt (%i)"
 
-#: src/PartFile.cpp:893
+#: src/PartFile.cpp:894
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "FEIL under lagring av delfila: %s·(%s·==>·%s)"
 
-#: src/PartFile.cpp:900
+#: src/PartFile.cpp:901
 #, fuzzy
 msgid "IO failure while saving partfile: "
 msgstr "FEIL under lagring av delfila: %s·(%s·==>·%s)"
 
-#: src/PartFile.cpp:913
+#: src/PartFile.cpp:914
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "Greidde ikkje å hente lengda på '%s' - nyttar %s fila."
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:922
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s'·er 0 i storleik på ein eller annan måte·-·nyttar·%s·fila."
 
-#: src/PartFile.cpp:992
+#: src/PartFile.cpp:993
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Greidde ikkje å lagre part.met.seeds fila for %s"
 
-#: src/PartFile.cpp:1018
+#: src/PartFile.cpp:1019
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "Lagra %i kjeldefrø for delfila: %s (%s)"
 msgstr[1] "Lagra %i kjeldefrø for delfila: %s (%s)"
 
-#: src/PartFile.cpp:1047
+#: src/PartFile.cpp:1048
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Delfila %s·(%s) manglar kjeldefil"
 
-#: src/PartFile.cpp:1056
+#: src/PartFile.cpp:1057
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Delfila ·%s·(%s) har ei ugangbar kjeldefil"
 
-#: src/PartFile.cpp:1112
+#: src/PartFile.cpp:1113
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Feil i lesing av delfila si kjeldefil (%s·-·%s):·%s"
 
-#: src/PartFile.cpp:1130 src/PartFile.cpp:1160
+#: src/PartFile.cpp:1131 src/PartFile.cpp:1161
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4700,39 +4706,39 @@ msgstr[1] ""
 "Fann korrupt del (%d) i %d deler i fila %s - Filresultathash |%s| Filhash |%"
 "s|"
 
-#: src/PartFile.cpp:1175
+#: src/PartFile.cpp:1176
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Fann ferdig del (%i)·i·%s"
 
-#: src/PartFile.cpp:1208
+#: src/PartFile.cpp:1209
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Ferdig med omhashing av %s"
 
-#: src/PartFile.cpp:2133
+#: src/PartFile.cpp:2134
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Uventa feil ved fullføring av %s. Sette fila på pause"
 
-#: src/PartFile.cpp:2163
+#: src/PartFile.cpp:2171
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Ferdig med å laste ned: %s"
 
-#: src/PartFile.cpp:2220
+#: src/PartFile.cpp:2228
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Slettar fila: %s"
 
-#: src/PartFile.cpp:2278
+#: src/PartFile.cpp:2291
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "ÅTVARING: Greier ikkje å hashe nedlasta del - hashsett ikkje komplett for '%"
 "s'"
 
-#: src/PartFile.cpp:2283
+#: src/PartFile.cpp:2296
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4741,34 +4747,34 @@ msgstr ""
 "FEIL: Greier ikkje å hashe nedlasta del - hashsett ikkje komplett (%s). "
 "Dette burde aldri skje"
 
-#: src/PartFile.cpp:2961
+#: src/PartFile.cpp:2974
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "ÅTVARING: Ikkje nok ledig diskplass! Set fila %s på pause"
 
-#: src/PartFile.cpp:3031
+#: src/PartFile.cpp:3044
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Nedlasta del %i er korrupt i fila: %s"
 
-#: src/PartFile.cpp:3083
+#: src/PartFile.cpp:3096
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Attskapte korrupt del %i·for·%s·->·Lagra bytes:·%s"
 
-#: src/PartFile.cpp:3687
+#: src/PartFile.cpp:3700
 msgid "Allocating"
 msgstr "Hentar plass"
 
-#: src/PartFile.cpp:3703
+#: src/PartFile.cpp:3716
 msgid "Insufficient disk space"
 msgstr "Ikkje nok diskplass"
 
-#: src/PartFile.cpp:3752
+#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:942
 msgid "Downloaded"
 msgstr "Lasta ned"
 
-#: src/PartFile.cpp:3967
+#: src/PartFile.cpp:3980
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "Feil: Greidde ikkje opne delfila '%s'"
@@ -4922,26 +4928,26 @@ msgstr "Tyrkisk"
 msgid "Ukrainian"
 msgstr ""
 
-#: src/Preferences.cpp:882
+#: src/Preferences.cpp:885
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1545
+#: src/Preferences.cpp:1548
 msgid "Invalid category found, skipping"
 msgstr ""
 
-#: src/Preferences.cpp:1710
+#: src/Preferences.cpp:1713
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP port kan ikkje vere høgare enn 65532 fordi tenaren si UDPkopling er TCP+3"
 
-#: src/Preferences.cpp:1711
+#: src/Preferences.cpp:1714
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Standardport vert nytta (%d)"
 
-#: src/Preferences.cpp:1734
+#: src/Preferences.cpp:1737
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr ""
@@ -5223,7 +5229,7 @@ msgstr "Min storleik må vere mindre enn maks storleik. Maks storleik ignorert."
 msgid "Search warning"
 msgstr "Søkeåtvaring"
 
-#: src/SearchDlg.cpp:648 src/SearchListCtrl.cpp:599
+#: src/SearchDlg.cpp:648 src/SearchListCtrl.cpp:568
 msgid "Main"
 msgstr "Hovud"
 
@@ -5239,25 +5245,34 @@ msgstr "eD2k søk kan ikkje gjennomførast dersom eD2k ikkje er tilkopla"
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Uventa feil oppstod under søk på Kad: "
 
-#: src/SearchListCtrl.cpp:92 src/SharedFilesCtrl.cpp:106
+#: src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:106
 msgid "FileID"
 msgstr "FilID"
 
-#: src/SearchListCtrl.cpp:605
+#: src/SearchListCtrl.cpp:574
 msgid "Download in category"
 msgstr "Nedlasting i kategori"
 
-#: src/SearchListCtrl.cpp:611
+#: src/SearchListCtrl.cpp:580
 msgid "Search related files (eD2k, local server)"
 msgstr "Søk beslekta filer (eD2k, lokal tenar)"
 
-#: src/SearchListCtrl.cpp:616
+#: src/SearchListCtrl.cpp:585
 msgid "Mark as known file"
 msgstr "Merk som kjend fil"
 
-#: src/SearchListCtrl.cpp:620 src/ServerListCtrl.cpp:454
+#: src/SearchListCtrl.cpp:589 src/ServerListCtrl.cpp:454
 msgid "Copy eD2k link to clipboard"
 msgstr "Kopier eD2k lenkje til skrivebordet"
+
+#: src/SearchListCtrl.cpp:945
+#, fuzzy
+msgid "Canceled"
+msgstr "Avbryt"
+
+#: src/SearchListCtrl.cpp:946
+msgid "New"
+msgstr ""
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -6756,16 +6771,16 @@ msgstr "Diskpartisjon,"
 msgid "Error on completion"
 msgstr "Feil ved ferdigstilling"
 
-#: src/utils/aLinkCreator/src/alcc.cpp:72
+#: src/utils/aLinkCreator/src/alcc.cpp:74
 #, c-format
 msgid "Processing file number %u: %s"
 msgstr "Handsamar filnummer %u: %s"
 
-#: src/utils/aLinkCreator/src/alcc.cpp:76
+#: src/utils/aLinkCreator/src/alcc.cpp:78
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
 msgstr "Du har spurt etter delhashar (Berre brukt på filer > 9,5 MB)"
 
-#: src/utils/aLinkCreator/src/alcc.cpp:89
+#: src/utils/aLinkCreator/src/alcc.cpp:95
 #, c-format
 msgid "%s ---> Non existant file !\n"
 msgstr "%s·--->·Fila finst ikkje·!\n"
@@ -7642,9 +7657,6 @@ msgstr "Handsamar etterspurnad [omdirigert]: "
 
 #~ msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
 #~ msgstr "FEIL: Ugangbar part.met filutgåve: %s ==> %s"
-
-#~ msgid "WARNING: Knownfile list corrupted, contains invalid header."
-#~ msgstr "ÅTVARING: Kjendfillista er korrupt; inneheld ugangbar overskrift."
 
 #~ msgid "Makes aMule promt before exiting."
 #~ msgstr "Får aMule til å be om stadfesting før avslutting."
