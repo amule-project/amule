@@ -16,7 +16,7 @@ amulecmd \- Console-based program to control aMule
 .RB { " " [ \-w ] " " | " " [ \-c " " \fI<command> ] " " }
 
 .B_untranslated amulecmd
-.RB [ \-\-create\-config\-from " " \fI<path> ]
+.RB [ \-\-create\-config\-from = \fI<path> ]
 
 .B_untranslated amulecmd
 .RB_untranslated [ \-\-version ]
@@ -82,38 +82,32 @@ a serverlist link, in which case all servers in the list will be added to the se
 .RE
 
 The magnet link must contain the eD2k hash and file length.
-
-This command must have an argument.
 .SS Cancel \fI<hash>\fP | \fI<number>\fP
-Cancels the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fIshow\fR.
+Cancels the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
 .SS Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Connect to the network.
 
 This will connect to all networks that are enabled in Preferences.
 
-When giving ed2k as parameter, it connects only to eD2k-network to servers in your
+When giving ed2k as parameter, it connects only to eD2k-network, to servers in your
 serverlist. You may also optionally specify a server address in IP:Port form, to
 connect to that server only. The IP must be a dotted decimal IPv4 address, or a
 resolvable DNS name.
 
 When giving kad, it connects to Kad only.
-.SS_untranslated Disconnect [ \fI<ed2k>\fP | \fI<kad>\fP ]
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Disconnect from all networks you are connected to, or just disconnect from the
 specified network.
 .SS Download \fI<number>\fP
 Start downloading a file.
 
 The \fI<number>\fR of a file from the last search has to be given.
-Example: 'download 12' will start to download the file with the number 12 of the
+Example: `download 12' will start to download the file with the number 12 of the
 previous search.
-
-This command must have an argument.
 .SS_untranslated Exit
 Disconnect from amule/amuled and quit amulecmd.
 .SS Get \fI<what>\fP
 Get and display a preference value.
-
-This command is incomplete, available values are listed below.
 
 Available values for \fI<what>\fR:
 .RS
@@ -127,86 +121,68 @@ Prints a short usage description.
 If called without parameter, it shows a list of available commands.
 If called with \fI<command>\fR, it shows a short description of the given command.
 .SS Pause \fI<hash>\fP | \fI<number>\fP
-Pauses the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fIshow\fR.
-.SS Priority \fI<priority>\fP
-Set priority of a download to Low, Normal, High or Auto.
+Pauses the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
+.SS Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
+Set priority of a download specified by \fI<hash>\fR or \fI<number>\fR.
 
-This command must have an argument.
-
-This command is incomplete, available values are listed below.
-
-Available values:
+Available values for \fI<priority>\fR:
 .RS
 .IP Auto 10
-Set priority to auto.
+Automatic priority.
 .IP High 10
-Set priority to high.
+High priority.
 .IP Low 10
-Set priority to low.
+Low priority.
 .IP Normal 10
-Set priority to normal.
+Normal priority.
 .RE
 .SS_untranslated Progress
 Shows the progress of an on\-going search.
-
-This command can't have an argument.
 .SS_untranslated Quit
-A synonim of the 'Exit' command.
+A synonim of the \fBexit\fR command.
 .SS Reload \fI<what>\fP
 Reloads a given object.
 
-This command is incomplete, available values are listed below.
-
 Available values for \fI<what>\fR:
 .RS
-.IP BwLimits 10
-Reload bandwidth limits.
+.IP Shared 10
+Reload shared files list.
 .IP IPFilter 10
-Reload IPFilter preferences.
+Reload IP filter tables.
 .RE
 .SS_untranslated Reset
 Reset the log.
-
-This command can't have an argument.
 .SS_untranslated Results
 Shows you the results of the last search.
-
-This command can't have an argument.
 .SS Resume \fI<hash>\fP | \fI<number>\fP
-Resumes the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fIshow\fR.
-.SS Search \fIglobal\fP | \fIkad\fP | \fIlocal\fP \fI<file>\fR
-Makes a search for the given \fI<file>\fR. A searchtype and a file to search is mandatory to do this.
-Example: 'search kad amule' performs a kad search for amule.
+Resumes the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
+.SS Search \fI<type>\fP \fI<keyword>\fR
+Makes a search for the given \fI<keyword>\fR. A search type and a keyword to search is mandatory to do this.
+Example: `search kad amule' performs a kad search for `amule'.
 
 Available search types:
 .RS
-.IP global 10
-performs a global search
-.IP kad 10
-performs a search on kad network
-.IP local 10
-performs a local search
+.IP Global 10
+Performs a global search.
+.IP Kad 10
+Performs a search on the Kademlia network.
+.IP Local 10
+Performs a local search.
 .RE
 .SS Set \fI<what>\fR
 Sets a given preferences value.
 
-This command is incomplete, available values are listed below.
-
-Available values:
+Available values for \fI<what>\fR:
 .RS
 .IP BwLimits 10
 Set bandwidth limits.
 .IP IPFilter 10
 Set IPFilter preferences.
 .RE
-.SS_untranslated Show \fIDL\fP | \fILog\fP | \fIServers\fP | \fIUL\fP
+.SS Show \fI<what>\fR
 Shows upload/download queue, servers list or shared files list.
 
-This command must have an argument.
-
-This command is incomplete, available values are listed below.
-
-Available values:
+Available values for \fI<what>\fR:
 .RS
 .IP DL 10
 Show download queue.
@@ -220,16 +196,14 @@ Show upload queue.
 .SS_untranslated Shutdown
 Shutdown the remote running core (amule/amuled).
 This will also shut down the text client, since it is unusable without a running core.
-
-This command can't have an argument.
 .SS Statistics [ \fI<number>\fP ]
 Show statistics tree.
 
 The optional \fI<number>\fR in the range of 0-255 can be passed as argument to this
 command, which tells how many entries of the client version subtree should be
-shown. Passing 0, or omitting it means 'unlimited'.
+shown. Passing 0, or omitting it means `unlimited'.
 
-Example: 'statistics 5' will show only the top 5 versions for each client
+Example: `statistics 5' will show only the top 5 versions for each client
 type.
 .SS_untranslated Status
 Show connection status, current up/download speeds, etc.
@@ -262,7 +236,7 @@ Though all the above strings are accepted as valid language definitions,
 \fIencoding\fR and \fImodifier\fR are yet unused.
 
 In addition to the format above, you can also specify full language names in
-English - so \fB\-l german\fR is also valid and is equal to \fB-l de_DE\fR.
+English - so \fB\-l german\fR is also valid and is equal to \fB\-l de_DE\fR.
 
 When no locale is defined, either on command-line or in config file, system
 default language will be used.
