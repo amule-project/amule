@@ -82,7 +82,13 @@ bool CMuleNotebook::DeletePage(int nPage)
 	// is identical with deleted page (wx sends a page change event during deletion, 
 	// but the control is still the one to be deleted at that moment).
 	if (GetPageCount()) {
-		wxNotebookEvent event( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, GetId(), nPage );
+		// Select the tab that took the place of the one we just deleted.
+		int page = nPage;
+		// Except if we deleted the last one - then select the one that is last now.
+		if (page == GetPageCount()) {
+			page--;
+		}
+		wxNotebookEvent event( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, GetId(), page );
 		event.SetEventObject(this);
 		ProcessEvent( event );
 	} else {
