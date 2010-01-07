@@ -125,7 +125,8 @@ enum ECOpCodes {
 	EC_OP_KAD_UPDATE_FROM_URL           = 0x4D,
 	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E,
 	EC_OP_AUTH_SALT                     = 0x4F,
-	EC_OP_AUTH_PASSWD                   = 0x50
+	EC_OP_AUTH_PASSWD                   = 0x50,
+	EC_OP_IPFILTER_UPDATE               = 0x51
 };
 
 enum ECTagNames {
@@ -516,6 +517,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x4E: return wxT("EC_OP_KAD_BOOTSTRAP_FROM_IP");
 		case 0x4F: return wxT("EC_OP_AUTH_SALT");
 		case 0x50: return wxT("EC_OP_AUTH_PASSWD");
+		case 0x51: return wxT("EC_OP_IPFILTER_UPDATE");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }
