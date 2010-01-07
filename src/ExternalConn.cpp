@@ -1333,6 +1333,13 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 			theApp->ipfilter->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+
+		case EC_OP_IPFILTER_UPDATE: {
+			wxString url = request->GetTagByIndexSafe(0)->GetStringData();
+			theApp->ipfilter->Update(url);
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		}
 		//
 		// Search
 		//

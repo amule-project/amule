@@ -140,6 +140,8 @@ EC_OP_KAD_BOOTSTRAP_FROM_IP         0x4E
 
 EC_OP_AUTH_SALT                     0x4F
 EC_OP_AUTH_PASSWD                   0x50
+
+EC_OP_IPFILTER_UPDATE               0x51
 [/Section]
 
 [Section Content]

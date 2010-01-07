@@ -116,6 +116,7 @@ public final static byte EC_OP_KAD_UPDATE_FROM_URL           = 0x4D;
 public final static byte EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E;
 public final static byte EC_OP_AUTH_SALT                     = 0x4F;
 public final static byte EC_OP_AUTH_PASSWD                   = 0x50;
+public final static byte EC_OP_IPFILTER_UPDATE               = 0x51;
 
 public final static short EC_TAG_STRING                             = 0x0000;
 public final static short EC_TAG_PASSWD_HASH                        = 0x0001;

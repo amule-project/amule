@@ -904,10 +904,12 @@ void CIPFilterRem::Reload()
 }
 
 
-void CIPFilterRem::Update(wxString WXUNUSED(url))
+void CIPFilterRem::Update(wxString url)
 {
-	// FIXME: add command
-	//wxFAIL;
+	CECPacket req(EC_OP_IPFILTER_UPDATE);
+	req.AddTag(CECTag(EC_TAG_STRING, url));
+	
+	m_conn->SendPacket(&req);
 }
 
 

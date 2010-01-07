@@ -124,6 +124,7 @@ Version 2.3.0 - The river knows.
 		* Keep a list of all canceled files (canceled.met) and show them in magenta in the search list
 		* Update status/color of search results on events from outside the search window
 		  (like download started from EC) and in amulegui
+		* Enable update of IP filter list through remote GUI
 
 	Vollstrecker:
 		* Unify copyright lines

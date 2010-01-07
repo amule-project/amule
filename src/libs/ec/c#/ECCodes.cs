@@ -117,7 +117,8 @@ public enum ECOpCodes {
 	EC_OP_KAD_UPDATE_FROM_URL           = 0x4D,
 	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E,
 	EC_OP_AUTH_SALT                     = 0x4F,
-	EC_OP_AUTH_PASSWD                   = 0x50
+	EC_OP_AUTH_PASSWD                   = 0x50,
+	EC_OP_IPFILTER_UPDATE               = 0x51
 };
 public enum ECTagNames {
 	EC_TAG_STRING                             = 0x0000,
