@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-06 01:07+0100\n"
-"PO-Revision-Date: 2009-12-30 22:50+0100\n"
+"PO-Revision-Date: 2010-01-06 19:48+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -837,25 +837,25 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Új üzenet '%s'-től (IP:%s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "FIGYELEM: known.met nem nyitható meg."
+msgstr "FIGYELEM: %s nem nyitható meg."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"FIGYELEM: Az ismert fájlok listája sérült, érvénytelen fejlécet tartalmaz."
+"FIGYELEM: A megszakított fájlok listája sérült, érvénytelen fejlécet "
+"tartalmaz."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "IO hiba a known.met fájl olvasása közben: %s"
+msgstr "IO hiba a %s fájl olvasása közben: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Hiba a known.met fájl mentése közben: %s"
+msgstr "Hiba a %s fájl mentése közben: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -5295,13 +5295,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "eD2k hivatkozás másolása a vágólapra"
 
 #: src/SearchListCtrl.cpp:945
-#, fuzzy
 msgid "Canceled"
-msgstr "Mégsem"
+msgstr "Megszakítva"
 
 #: src/SearchListCtrl.cpp:946
 msgid "New"
-msgstr ""
+msgstr "Új"
 
 #: src/ServerConnect.cpp:69
 msgid ""
