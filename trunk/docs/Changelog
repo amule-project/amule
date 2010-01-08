@@ -134,6 +134,8 @@ Version 2.3.0 - The river knows.
 		* Fix for autoconf-2.64.
 		* Raised minimum wxWidgets version to 2.8.8
 		* Make amulecmd help command work without connection
+		* New translation concept for manpages
+		* KDE Plasma applet to show stats
 
 	Wuischke:
 		* Simplify browser selection
