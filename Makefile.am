@@ -36,6 +36,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-amule-gui \
 	--enable-cas \
 	--enable-wxcas \
+	--enable-plasmamule \
 	--enable-alc \
 	--enable-alcc
 

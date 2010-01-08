@@ -1,0 +1,32 @@
+m4_define([DISABLE_PLASMAMULE], [MULE_ENABLEVAR([plasmamule])=disabled])
+
+AC_DEFUN([PLASMAMULE_CHECKS],
+[
+	CHECK_MOC_VERSION
+	AS_IF([test "${QT_MOC}" = "not found"], [DISABLE_PLASMAMULE])
+
+	MULE_IF_ENABLED([plasmamule],
+	[
+		CHECK_QT_HEADERS
+		AS_IF([test -z "${QT_CORE_CXXFLAGS}"], [DISABLE_PLASMAMULE])
+	])
+
+	MULE_IF_ENABLED([plasmamule],
+	[
+		KDE_CONFIG_CHECK
+		AS_IF([test "${KDE4_CONFIG}" = "not found"], [DISABLE_PLASMAMULE])
+	])
+
+	MULE_IF_ENABLED([plasmamule],
+	[
+		KDE_HEADER_CHECK
+		AS_IF([test -z ${KDE_HEADER_DIR}], [DISABLE_PLASMAMULE])
+	])
+
+	MULE_IF_ENABLED([plasmamule],
+	[
+		KDE_SERVICE_PATH_CHECK
+		KDE_MODULE_PATH_CHECK
+		KDE_ICON_PATH_CHECK
+	])
+])

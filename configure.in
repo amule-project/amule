@@ -75,10 +75,14 @@ MULE_ARG_ENABLE([alc],		[no],	[compile aMuleLinkCreator GUI version], [ALC])
 MULE_ARG_ENABLE([alcc],		[no],	[compile aMuleLinkCreator for console], [ALCC])
 MULE_ARG_ENABLE([xas],		[no],	[install xas XChat2 plugin], [XAS])
 MULE_ARG_ENABLE([fileview],	[no],	[compile aMule file viewer for console (EXPERIMENTAL)], [FILEVIEW])
+MULE_ARG_ENABLE([plasmamule],	[no],	[compile aMule plasma applet and engine])
 
 # Run all the tests with static linkage if we want a statically linked binary
 MULE_ARG_ENABLE([static], [no], [produce a statically linked executable])
 MULE_IF_ENABLED([static], [MULE_APPEND([LDFLAGS], [-static])])
+
+KDE_CONFIG_OPTIONS
+QT_CONFIG_OPTIONS
 
 # Default is yes, because they're most likely compatible.
 # However, this is only used when cross-compiling.
@@ -352,6 +356,8 @@ AC_SUBST([SVNDATE], [$svndate])dnl
 dnl Set up the denoiser
 MULE_DENOISER
 
+MULE_IF_ENABLED([plasmamule], [PLASMAMULE_CHECKS])
+
 AM_CONDITIONAL(ENABLE_UPNP, test MULE_IS_ENABLED([upnp]))
 AM_CONDITIONAL(ENABLE_IP2COUNTRY, test MULE_IS_ENABLED([geoip]))
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
@@ -360,6 +366,7 @@ AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 AM_CONDITIONAL(INSTALL_SKINS, test x$INSTALL_SKINS = xyes)
+AM_CONDITIONAL(PLASMAMULE, test MULE_IS_ENABLED([plasmamule]))
 
 # Check for readline library
 MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
@@ -389,6 +396,7 @@ AC_CONFIG_FILES([Makefile
 		 src/utils/cas/Makefile
 		 src/utils/cas/docs/Makefile
 		 src/utils/fileview/Makefile
+		 src/utils/plasmamule/Makefile
 		 src/utils/wxCas/Makefile
 		 src/utils/wxCas/docs/Makefile
 		 src/utils/wxCas/src/Makefile
@@ -451,6 +459,7 @@ echo "  **** aMule Statistics ****"
 echo "  Should C aMule Statistics (CAS) be built?                  MULE_STATUSOF([cas])"
 echo "  Should aMule GUI Statistics (wxCas) be built?              MULE_STATUSOF([wxcas])"
 echo "  Should xas XChat2 plugin be installed?                     MULE_STATUSOF([xas])"
+echo "  Should plasmaMule plasma-applet be build?                  MULE_STATUSOF([plasmamule])"
 
 echo
 echo "  **** General Libraries and Tools ****"
@@ -486,3 +495,12 @@ MULE_IF_ENABLED([cas],
 	[echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui],
 	[echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"])
+MULE_IF_ENABLED([plasmamule],
+[echo "                                       qt-moc                ${QT_MOC} ${QT_MOC_VERSION}"
+echo "                                       qt-core-libs          ${QT_CORE_LIBS}"
+echo "                                       qt-gui-libs           ${QT_GUI_LIBS}"
+echo "                                       kde4-config           ${KDE4_CONFIG} (${KDE_CONF_VER})"
+echo "                                       kde-headers           ${KDE_HEADER_DIR}"
+echo "                                       kde-services-path     ${KDE_SERVICE_PATH}"
+echo "                                       kde-module-path       ${KDE_MODULE_PATH}"
+echo "                                       kde-icon-path         ${KDE_ICON_PATH}"])
