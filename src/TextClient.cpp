@@ -74,7 +74,8 @@ enum {
 	CMD_ID_DISCONNECT_ED2K,
 	CMD_ID_DISCONNECT_KAD,
 	CMD_ID_RELOAD_SHARED,
-	CMD_ID_RELOAD_IPFILTER,
+	CMD_ID_RELOAD_IPFILTER_LOCAL,
+	CMD_ID_RELOAD_IPFILTER_NET,
 	CMD_ID_SET_IPFILTER_ON,
 	CMD_ID_SET_IPFILTER_OFF,
  	CMD_ID_SET_IPFILTER_CLIENTS_ON,
@@ -247,8 +248,14 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(new CECPacket(EC_OP_SHAREDFILES_RELOAD));
 			break;
 
-		case CMD_ID_RELOAD_IPFILTER:
+		case CMD_ID_RELOAD_IPFILTER_LOCAL:
 			request_list.push_back(new CECPacket(EC_OP_IPFILTER_RELOAD));
+			break;
+
+		case CMD_ID_RELOAD_IPFILTER_NET:
+			request = new CECPacket(EC_OP_IPFILTER_UPDATE);
+			request->AddTag(EC_TAG_STRING, args);
+			request_list.push_back(request);
 			break;
 
 		case CMD_ID_SET_IPFILTER_ON:
@@ -856,7 +863,10 @@ void CamulecmdApp::OnInitCommandSet()
 
 	tmp = m_commands.AddCommand(wxT("Reload"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Reloads the given object."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Shared"), CMD_ID_RELOAD_SHARED, wxTRANSLATE("Reloads shared files list."), wxEmptyString, CMD_PARAM_NEVER);
-	tmp->AddCommand(wxT("IPFilter"), CMD_ID_RELOAD_IPFILTER, wxTRANSLATE("Reloads IP Filter table from file."), wxEmptyString, CMD_PARAM_NEVER);
+
+	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ID_RELOAD_IPFILTER_LOCAL, wxTRANSLATE("Reload IP Filter table."), wxEmptyString, CMD_PARAM_OPTIONAL);
+	tmp2->AddCommand(wxT("File"), CMD_ID_RELOAD_IPFILTER_LOCAL, wxTRANSLATE("Reload current IP Filter table."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp2->AddCommand(wxT("Net"), CMD_ID_RELOAD_IPFILTER_NET, wxTRANSLATE("Update IP Filter table from URL."), wxEmptyString, CMD_PARAM_OPTIONAL);
 
 	tmp = m_commands.AddCommand(wxT("Connect"), CMD_ID_CONNECT, wxTRANSLATE("Connect to the network."),
 				    wxTRANSLATE("This will connect to all networks that are enabled in Preferences.\nYou may also optionally specify a server address in IP:Port form, to connect to\nthat server only. The IP must be a dotted decimal IPv4 address,\nor a resolvable DNS name."), CMD_PARAM_OPTIONAL);
