@@ -512,10 +512,12 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 		// Sort by file-hash
 		case ID_SEARCH_COL_FILEID:
 			result = CmpAny(file2->GetFileHash(), file1->GetFileHash());
+			break;
 		
 		// Sort by file status
 		case ID_SEARCH_COL_STATUS:
 			result = CmpAny(DetermineStatusPrintable(file2), DetermineStatusPrintable(file1));
+			break;
 	}
 
 	return modifier * result;
