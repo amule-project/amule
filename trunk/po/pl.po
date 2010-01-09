@@ -5,7 +5,7 @@
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Ogon <ogon@interia.pl>, 2004, 2005.
 # Mateusz Butowski <>, 2007, 2008.
-# Michał Trzebiatowski <hippie_1968@hotmail.com>, 2008, 2009.
+# Michał Trzebiatowski <hippie_1968@hotmail.com>, 2008, 2009, 2010.
 #
 #
 msgid ""
@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-06 01:07+0100\n"
-"PO-Revision-Date: 2009-11-19 00:35+0100\n"
+"PO-Revision-Date: 2010-01-09 17:48+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -57,9 +57,9 @@ msgid "Now, exiting main app..."
 msgstr "Teraz, zakańczam główną aplikację..."
 
 #: src/amule.cpp:247
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr "Zabiłam instancję amuleweb z pid `%ld' ... "
+msgstr "Zakańczam instancję amuleweb z pid `%ld' ... "
 
 #: src/amule.cpp:250
 #, c-format
@@ -577,9 +577,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Rozłączony)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Czy na pewno chcesz opuścić aMule?"
+msgstr "Czy na pewno chcesz opuścić %s?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
@@ -856,25 +856,25 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nowa wiadomość od '%s' (IP:%s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "UWAGA: known.met nie może być otwarty."
+msgstr "UWAGA: %s nie może być otwarty."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"OSTRZEŻENIE: Znana lista plików uszkodzona, zawiera nieprawidłowy nagłówek."
+"OSTRZEŻENIE: Anulowana lista plików uszkodzona, zawiera nieprawidłowy "
+"nagłówek."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "Błąd IO podczas odczytu pliku known.met: %s"
+msgstr "Błąd IO podczas odczytu pliku %s: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Błąd podczas zapisywania pliku known.met: %s"
+msgstr "Błąd podczas zapisywania pliku %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -5346,13 +5346,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Skopiuj link eD2k do schowka"
 
 #: src/SearchListCtrl.cpp:945
-#, fuzzy
 msgid "Canceled"
-msgstr "Anuluj"
+msgstr "Anulowane"
 
 #: src/SearchListCtrl.cpp:946
 msgid "New"
-msgstr ""
+msgstr "Nowy"
 
 #: src/ServerConnect.cpp:69
 msgid ""
