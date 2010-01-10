@@ -271,8 +271,7 @@ class CEC_SharedFile_Tag : public CECTag {
 
 class CEC_UpDownClient_Tag : public CECTag {
 	public:
-		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level);
-		CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMap &valuemap);
+		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, uint32 userID, CValueMap* valuemap);
 
 		uint32 ID() const { return GetInt(); }
 		
@@ -282,24 +281,25 @@ class CEC_UpDownClient_Tag : public CECTag {
  		bool HaveFile() const { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
  		wxString ClientName() const { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
- 		uint32 SpeedUp() const { return GetTagByNameSafe(EC_TAG_CLIENT_UP_SPEED)->GetInt(); }
- 		uint32 SpeedDown() const { return GetTagByNameSafe(EC_TAG_CLIENT_DOWN_SPEED)->GetInt(); }
+ 		uint32 SpeedUp(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UP_SPEED, target); }
+ 		float SpeedDown(float *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWN_SPEED, target); }
  		
- 		uint64 XferUp() const { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_TOTAL)->GetInt(); };
- 		uint64 XferDown() const { return GetTagByNameSafe(EC_TAG_CLIENT_DOWNLOAD_TOTAL)->GetInt(); }
- 		uint32 XferUpSession() const { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_SESSION)->GetInt(); }
- 		uint32 XferDownSession() const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt(); }
+ 		uint64 XferUp(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_TOTAL, target); };
+ 		uint64 XferDown(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_TOTAL, target); }
+ 		uint64 XferUpSession(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_SESSION, target); }
+ 		uint64 XferDownSession(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
  		
  		bool IsFriend() const { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
  		
  		uint8 ClientSoftware() const { return GetTagByNameSafe(EC_TAG_CLIENT_SOFTWARE)->GetInt(); }
  		
- 		uint8 ClientState() const { return GetTagByNameSafe(EC_TAG_CLIENT_STATE)->GetInt(); }
+ 		uint8 ClientUploadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_STATE, target); }
+ 		uint8 ClientDownloadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_STATE, target); }
  		
- 		uint32 WaitTime() const { return GetTagByNameSafe(EC_TAG_CLIENT_WAIT_TIME)->GetInt(); }
- 		uint32 XferTime() const { return GetTagByNameSafe(EC_TAG_CLIENT_XFER_TIME)->GetInt(); }
- 		uint32 LastReqTime() const { return GetTagByNameSafe(EC_TAG_CLIENT_LAST_TIME)->GetInt(); }
- 		uint32 QueueTime() const { return GetTagByNameSafe(EC_TAG_CLIENT_QUEUE_TIME)->GetInt(); }
+ 		uint32 WaitTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAIT_TIME, target); }
+ 		uint32 XferTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_XFER_TIME, target); }
+ 		uint32 LastReqTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_LAST_TIME, target); }
+ 		uint32 QueueTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_QUEUE_TIME, target); }
 		uint8 GetSourceFrom() const { return GetTagByNameSafe(EC_TAG_CLIENT_FROM)->GetInt(); }
 		uint32 UserIP() const { return GetTagByNameSafe(EC_TAG_CLIENT_USER_IP)->GetInt(); }
 		uint16 UserPort() const { return GetTagByNameSafe(EC_TAG_CLIENT_USER_PORT)->GetInt(); }
@@ -307,21 +307,20 @@ class CEC_UpDownClient_Tag : public CECTag {
 		uint16 ServerPort() const { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_PORT)->GetInt(); }
 		wxString ServerName() const { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_NAME)->GetStringData(); }
 		wxString SoftVerStr() const { return GetTagByNameSafe(EC_TAG_CLIENT_SOFT_VER_STR)->GetStringData(); }
-		uint32 Score() const { return GetTagByNameSafe(EC_TAG_CLIENT_SCORE)->GetInt(); }
-		uint32 Rating() const { return GetTagByNameSafe(EC_TAG_CLIENT_RATING)->GetInt(); }
-		uint16 WaitingPosition() const { return GetTagByNameSafe(EC_TAG_CLIENT_WAITING_POSITION)->GetInt(); }
-		uint16 RemoteQueueRank() const { return GetTagByNameSafe(EC_TAG_CLIENT_REMOTE_QUEUE_RANK)->GetInt(); }
-		uint32 AskedCount() const { return GetTagByNameSafe(EC_TAG_CLIENT_ASKED_COUNT)->GetInt(); }
+		uint32 Score(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_SCORE, target); }
+		uint32 Rating(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_RATING, target); }
+		uint16 WaitingPosition(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAITING_POSITION, target); }
+		uint16 RemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, target); }
+		uint32 AskedCount(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_ASKED_COUNT, target); }
 
-		EIdentState GetCurrentIdentState() const { return (EIdentState) GetTagByNameSafe(EC_TAG_CLIENT_IDENT_STATE)->GetInt(); }
-		bool HasObfuscatedConnection() const { return GetTagByNameSafe(EC_TAG_CLIENT_OBFUSCATED_CONNECTION)->GetInt() != 0; }
+		EIdentState GetCurrentIdentState(EIdentState * target = 0) const { return (EIdentState) AssignIfExist(EC_TAG_CLIENT_IDENT_STATE, (uint32 *) target); }
+		bool HasObfuscatedConnection(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, target); }
 
 };
 
 class CEC_SearchFile_Tag : public CECTag {
 	public:
-		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level);
-		CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap);
+		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
 
 		// template needs it
  		CMD4Hash	ID()	const { return GetMD4Data(); }
@@ -331,10 +330,10 @@ class CEC_SearchFile_Tag : public CECTag {
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
-  		uint32		SourceCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt(); }
-  		uint32		CompleteSourceCount()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt(); }
+  		uint32		SourceCount(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, target); }
+  		uint32		CompleteSourceCount(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, target); }
 		bool		AlreadyHave()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt() != 0; /* == CSearchFile::NEW */ }
-		uint32		DownloadStatus()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt(); }
+		uint32		DownloadStatus(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_STATUS, target); }
 };
 
 class CEC_Search_Tag : public CECTag {

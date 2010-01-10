@@ -171,7 +171,7 @@ protected:
 		}
 	}
 public:
-	CRemoteContainer(CRemoteConnect *conn, bool inc_tags = false)
+	CRemoteContainer(CRemoteConnect *conn, bool inc_tags)
 	{
 		m_state = IDLE;
 		

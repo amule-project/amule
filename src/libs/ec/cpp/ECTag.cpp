@@ -197,38 +197,9 @@ CECTag::CECTag(ec_tagname_t name, const wxChar* data) : m_tagName(name), m_dynam
 /**
  * Copy constructor
  */
-CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tagName ), m_dynamic( tag.m_dynamic ), m_haschildren( tag.m_haschildren )
+CECTag::CECTag(const CECTag& tag)
 {
-	m_error = 0;
-	m_dataLen = tag.m_dataLen;
-	m_dataType = tag.m_dataType;
-	if (m_dataLen != 0) {
-		if (m_dynamic) {
-			m_tagData = malloc(m_dataLen);
-			if (m_tagData != NULL) {
-				memcpy((void *)m_tagData, tag.m_tagData, m_dataLen);
-			} else {
-				m_dataLen = 0;
-				m_error = 1;
-				return;
-			}
-		} else {
-			m_tagData = tag.m_tagData;
-		}
-	} else m_tagData = NULL;
-	if (!tag.m_tagList.empty()) {
-		m_tagList.reserve(tag.m_tagList.size());
-		for (TagList::size_type i=0; i<tag.m_tagList.size(); i++) {
-			m_tagList.push_back(tag.m_tagList[i]);
-			if (m_tagList.back().m_error != 0) {
-				m_error = m_tagList.back().m_error;
-#ifndef KEEP_PARTIAL_PACKETS
-				m_tagList.pop_back();
-#endif
-				break;
-			}
-		}
-	}
+	*this = tag;
 }
 
 /**
@@ -348,25 +319,45 @@ CECTag::~CECTag(void)
  * handle m_dynamic and m_tagData.  This wouldn't be necessary if m_tagData
  * was a smart pointer (Hi, Kry!).
  */
-CECTag& CECTag::operator=(const CECTag& rhs)
+CECTag& CECTag::operator=(const CECTag& tag)
 {
-	if (&rhs != this)
-	{
-		// This is a trick to reuse the implementation of the copy constructor
-		// so we don't have to duplicate it here.  temp is constructed as a
-		// copy of rhs, which properly handles m_dynamic and m_tagData.  Then
-		// temp's members are swapped for this object's members.  So,
-		// effectively, this object has been made a copy of rhs, which is the
-		// point.  Then temp is destroyed as it goes out of scope, so its
-		// destructor cleans up whatever data used to belong to this object.
-		CECTag temp(rhs);
-		std::swap(m_error,	temp.m_error);
-		std::swap(m_tagData,	temp.m_tagData);
-		std::swap(m_tagName,	temp.m_tagName);
-		std::swap(m_dataLen,	temp.m_dataLen);
-		std::swap(m_dynamic,	temp.m_dynamic);
-		std::swap(m_tagList,	temp.m_tagList);
-		std::swap(m_state,	temp.m_state);
+	if (&tag != this) {
+		m_state = tag.m_state;
+		m_tagName = tag.m_tagName;
+		m_dynamic = tag.m_dynamic;
+		m_haschildren = tag.m_haschildren;
+		m_error = 0;
+		m_dataLen = tag.m_dataLen;
+		m_dataType = tag.m_dataType;
+		if (m_dataLen != 0) {
+			if (m_dynamic) {
+				m_tagData = malloc(m_dataLen);
+				if (m_tagData != NULL) {
+					memcpy((void *)m_tagData, tag.m_tagData, m_dataLen);
+				} else {	// Nice try, but it will crash anyway when out of memory...
+					m_dataLen = 0;
+					m_error = 1;
+					return *this;
+				}
+			} else {
+				m_tagData = tag.m_tagData;
+			}
+		} else {
+			m_tagData = NULL;
+		}
+		if (!tag.m_tagList.empty()) {
+			m_tagList.reserve(tag.m_tagList.size());
+			for (TagList::size_type i=0; i<tag.m_tagList.size(); i++) {
+				m_tagList.push_back(tag.m_tagList[i]);
+				if (m_tagList.back().m_error != 0) {
+					m_error = m_tagList.back().m_error;
+	#ifndef KEEP_PARTIAL_PACKETS
+					m_tagList.pop_back();
+	#endif
+					break;
+				}
+			}
+		}
 	}
 
 	return *this;

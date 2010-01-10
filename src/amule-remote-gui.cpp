@@ -790,7 +790,7 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
  */
 CServerListRem::CServerListRem(CRemoteConnect *conn)
 :
-CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
+CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn, false)
 {
 }
 
@@ -1057,7 +1057,7 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
  */
 CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn, int viewtype)
 :
-CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
+CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn, true)
 {
 	m_viewtype = viewtype;
 }
@@ -1068,12 +1068,9 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_bRemoteQueueFull = false;
 	m_nUserIDHybrid = tag->ID();
 	m_Username = tag->ClientName();
-	m_score = tag->Score();
 	m_clientSoft = tag->ClientSoftware();
 	m_clientVersionString = GetSoftName(m_clientSoft);
 	m_clientSoftString = m_clientVersionString;
-	m_identState = tag->GetCurrentIdentState();
-	m_hasbeenobfuscatinglately = tag->HasObfuscatedConnection();
 
 	// The functions to retrieve m_clientVerString information are
 	// currently in BaseClient.cpp, which is not linked in remote-gui app.
@@ -1099,11 +1096,6 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_nServerPort = tag->ServerPort();
 	m_ServerName = tag->ServerName();
 
-	m_waitingPosition = tag->WaitingPosition();
-	m_nRemoteQueueRank = tag->RemoteQueueRank();
-	m_bRemoteQueueFull = m_nRemoteQueueRank == 0xffff;
-	m_cAsked = tag->AskedCount();
-	
 	m_Friend = 0;
 	if (tag->HaveFile()) {
 		CMD4Hash filehash = tag->FileID();
@@ -1213,33 +1205,42 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	CEC_UpDownClient_Tag *tag,
 	CUpDownClient *client)
 {
-	uint16 state = tag->ClientState();
+	tag->GetCurrentIdentState(&client->m_identState);
+	tag->HasObfuscatedConnection(&client->m_hasbeenobfuscatinglately);
+
+	tag->WaitingPosition(&client->m_waitingPosition);
+	tag->RemoteQueueRank(&client->m_nRemoteQueueRank);
+	client->m_bRemoteQueueFull = client->m_nRemoteQueueRank == 0xffff;
+	tag->AskedCount(&client->m_cAsked);
 	
-	client->m_nDownloadState = state & 0xff;
-	client->m_nUploadState = (state >> 8) & 0xff;
+	tag->ClientDownloadState(&client->m_nDownloadState);
+	tag->ClientUploadState(&client->m_nUploadState);
 	
-	client->m_nUpDatarate = tag->SpeedUp();
+	tag->SpeedUp(&client->m_nUpDatarate);
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
-		client->kBpsDown = tag->SpeedDown() / 1024.0;
+		tag->SpeedDown(&client->kBpsDown);
 	} else {
 		client->kBpsDown = 0;
 	}
 
-	client->m_WaitTime = tag->WaitTime();
-	client->m_UpStartTimeDelay = tag->XferTime();
-	client->m_dwLastUpRequest = tag->LastReqTime();
-	client->m_WaitStartTime = tag->QueueTime();
+	tag->WaitTime(&client->m_WaitTime);
+	tag->XferTime(&client->m_UpStartTimeDelay);
+	tag->LastReqTime(&client->m_dwLastUpRequest);
+	tag->QueueTime(&client->m_WaitStartTime);
 	
 	CreditStruct *credit_struct =
 		(CreditStruct *)client->credits->GetDataStruct();
-	credit_struct->uploaded = tag->XferUp();
-	client->m_nTransferredUp = tag->XferUpSession();
+	tag->XferUp(&credit_struct->uploaded);
+	tag->XferUpSession(&client->m_nTransferredUp);
 
-	credit_struct->downloaded = tag->XferDown();
-	client->m_nTransferredDown = tag->XferDownSession();
+	tag->XferDown(&credit_struct->downloaded);
+	tag->XferDownSession(&client->m_nTransferredDown);
 
 	client->m_score = tag->Score();
 	client->m_rating = tag->Rating();
+
+	theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client,
+		theApp->amuledlg->m_transferwnd->clientlistctrl->GetListView());	// Fixme, Listview shouldn't be required as parameter
 }
 
 
@@ -1524,7 +1525,7 @@ void CClientListRem::FilterQueues()
 }
 
 
-CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn)
+CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn, true)
 {
 	m_curr_search = -1;
 }
@@ -1631,15 +1632,16 @@ CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
 
 void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *file)
 {
-	uint32 sourceCount = tag->SourceCount();
-	uint32 completeSourceCount = tag->CompleteSourceCount();
-	CSearchFile::DownloadStatus status = (CSearchFile::DownloadStatus) tag->DownloadStatus();
+	uint32 sourceCount = file->m_sourceCount;
+	uint32 completeSourceCount = file->m_completeSourceCount;
+	CSearchFile::DownloadStatus status = file->m_downloadStatus;
+	tag->SourceCount(&file->m_sourceCount);
+	tag->CompleteSourceCount(&file->m_completeSourceCount);
+	tag->DownloadStatus((uint32 *) &file->m_downloadStatus);
+
 	if (file->m_sourceCount != sourceCount
 			|| file->m_completeSourceCount != completeSourceCount
 			|| file->m_downloadStatus != status) {
-		file->m_sourceCount = sourceCount;
-		file->m_completeSourceCount = completeSourceCount;
-		file->m_downloadStatus = status;
 		if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
 			theApp->amuledlg->m_searchwnd->UpdateResult(file);
 		}
