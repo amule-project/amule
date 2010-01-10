@@ -209,7 +209,7 @@ public:
 	void		SetUserIDHybrid(uint32 val);
 	uint16_t	GetUserPort() const		{ return m_nUserPort; }
 	void		SetUserPort(uint16_t port)	{ m_nUserPort = port; }
-	uint32		GetTransferredDown() const	{ return m_nTransferredDown; }
+	uint64		GetTransferredDown() const	{ return m_nTransferredDown; }
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
 	void		SetServerIP(uint32 nIP)		{ m_dwServerIP = nIP; }
 	uint16		GetServerPort()	const		{ return m_nServerPort; }
@@ -657,7 +657,7 @@ private:
 	CClientCredits	*credits;
 	CFriend 	*m_Friend;
 
-	sint64		m_nTransferredUp;
+	uint64		m_nTransferredUp;
 	sint64		m_nCurQueueSessionPayloadUp;
 	sint64		m_addedPayloadQueueSession;
 
@@ -788,7 +788,7 @@ private:
 	uint16		m_nPartCount;
 	uint32		m_dwLastAskedTime;
 	wxString	m_clientFilename;
-	uint32		m_nTransferredDown;
+	uint64		m_nTransferredDown;
 	uint32		m_nLastBlockOffset;   // Patch for show parts that you download [Cax2]
 	uint16		m_cShowDR;
 	uint32		m_dwLastBlockReceived;

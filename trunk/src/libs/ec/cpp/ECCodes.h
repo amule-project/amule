@@ -229,7 +229,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_UPLOAD_SESSION              = 0x0609,
 		EC_TAG_CLIENT_UPLOAD_TOTAL                = 0x060A,
 		EC_TAG_CLIENT_DOWNLOAD_TOTAL              = 0x060B,
-		EC_TAG_CLIENT_STATE                       = 0x060C,
+		EC_TAG_CLIENT_DOWNLOAD_STATE              = 0x060C,
 		EC_TAG_CLIENT_UP_SPEED                    = 0x060D,
 		EC_TAG_CLIENT_DOWN_SPEED                  = 0x060E,
 		EC_TAG_CLIENT_FROM                        = 0x060F,
@@ -245,6 +245,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_RATING                      = 0x0619,
 		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
 		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
+		EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
@@ -624,7 +625,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0609: return wxT("EC_TAG_CLIENT_UPLOAD_SESSION");
 		case 0x060A: return wxT("EC_TAG_CLIENT_UPLOAD_TOTAL");
 		case 0x060B: return wxT("EC_TAG_CLIENT_DOWNLOAD_TOTAL");
-		case 0x060C: return wxT("EC_TAG_CLIENT_STATE");
+		case 0x060C: return wxT("EC_TAG_CLIENT_DOWNLOAD_STATE");
 		case 0x060D: return wxT("EC_TAG_CLIENT_UP_SPEED");
 		case 0x060E: return wxT("EC_TAG_CLIENT_DOWN_SPEED");
 		case 0x060F: return wxT("EC_TAG_CLIENT_FROM");
@@ -640,6 +641,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0619: return wxT("EC_TAG_CLIENT_RATING");
 		case 0x061A: return wxT("EC_TAG_CLIENT_REMOTE_QUEUE_RANK");
 		case 0x061B: return wxT("EC_TAG_CLIENT_ASKED_COUNT");
+		case 0x061C: return wxT("EC_TAG_CLIENT_UPLOAD_STATE");
 		case 0x0700: return wxT("EC_TAG_SEARCHFILE");
 		case 0x0701: return wxT("EC_TAG_SEARCH_TYPE");
 		case 0x0702: return wxT("EC_TAG_SEARCH_NAME");

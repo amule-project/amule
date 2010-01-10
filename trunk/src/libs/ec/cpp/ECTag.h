@@ -265,6 +265,19 @@ class CECTag {
 			return ret;
 		}
 
+		float AssignIfExist(ec_tagname_t tagname, float *target) const
+		{
+			float ret = 0.0;
+			const CECTag *tag = GetTagByName(tagname);
+			if (tag) {
+				ret = tag->GetDoubleData();
+				if (target) {
+					*target = ret;
+				}
+			}
+			return ret;
+		}
+
 		CMD4Hash AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const
 		{
 			CMD4Hash ret;

@@ -386,7 +386,7 @@ static void AddLoggerTag(CECPacket *response, CLoggerAccess &LoggerAccess)
 	}
 }
 
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &LoggerAccess)
+static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &LoggerAccess)
 {
 	CECPacket *response = new CECPacket(EC_OP_STATS);
 
@@ -440,7 +440,7 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerAccess &
 	return response;
 }
 
-CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_Encoder_Map &encoders)
+static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_Encoder_Map &encoders)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
@@ -471,7 +471,7 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 	return response;
 }
 
-CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObjTagMap &tagmap)
+static CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
 
@@ -502,93 +502,43 @@ CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObj
 	return response;
 }
 
-CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
+static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjTagMap &tagmap, int op)
 {
-	wxASSERT(request->GetOpCode() == EC_OP_GET_WAIT_QUEUE);
-	
-	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
+	CECPacket *response = new CECPacket(op);
 	
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 
 	//
 	// request can contain list of queried items
+	// (not for incremental update of course)
 	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 
-	const CClientPtrList& uploading = theApp->uploadqueue->GetWaitingList();
-	CClientPtrList::const_iterator it = uploading.begin();
-	for (; it != uploading.end(); ++it) {
+	std::set<uint32> idSet;
+
+	const CClientPtrList& clients = (op == EC_OP_WAIT_QUEUE)	? theApp->uploadqueue->GetWaitingList()
+																: theApp->uploadqueue->GetUploadingList();
+	CClientPtrList::const_iterator it = clients.begin();
+	for (; it != clients.end(); ++it) {
 		CUpDownClient* cur_client = *it;
 
-		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
+		if (!cur_client) {	// shouldn't happen
 			continue;
 		}
-		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
-		
-		response->AddTag(cli_tag);
-	}
+		// Sometimes clients can have the same ID. Make sure we transmit something unique.
+		uint32 id = cur_client->GetUserIDHybrid();
+		while (idSet.count(id)) {
+			id++;
+		}
+		idSet.insert(id);
 
-	return response;
-}
-
-CECPacket *Get_EC_Response_GetWaitQueue(CObjTagMap &tagmap)
-{
-	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
-	
-	const CClientPtrList& uploading = theApp->uploadqueue->GetWaitingList();
-	CClientPtrList::const_iterator it = uploading.begin();
-	for (; it != uploading.end(); ++it) {
-		CUpDownClient* cur_client = *it;
-
-		CValueMap &valuemap = tagmap.GetValueMap(cur_client);
-		CEC_UpDownClient_Tag cli_tag(cur_client, valuemap);
-		
-		response->AddTag(cli_tag);
-	}
-
-	return response;
-}
-
-CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
-{
-	wxASSERT(request->GetOpCode() == EC_OP_GET_ULOAD_QUEUE);
-	
-	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
-	
-	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
-
-	//
-	// request can contain list of queried items
-	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
-	
-
-	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
-	CClientPtrList::const_iterator it = uploading.begin();
-	for (; it != uploading.end(); ++it) {
-		CUpDownClient* cur_client = *it;
-
-		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
+		if (!queryitems.empty() && !queryitems.count(id)) {
 			continue;
 		}
-		
-		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
-		response->AddTag(cli_tag);
-	}
-	
-	return response;
-}	
-
-
-CECPacket *Get_EC_Response_GetUpQueue(CObjTagMap &tagmap)
-{
-	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
-
-	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
-	CClientPtrList::const_iterator it = uploading.begin();
-	for (; it != uploading.end(); ++it) {
-		CUpDownClient* cur_client = *it;
-
-		CValueMap &valuemap = tagmap.GetValueMap(cur_client);
-		CEC_UpDownClient_Tag cli_tag(cur_client, valuemap);
+		CValueMap *valuemap = NULL;
+		if (detail_level == EC_DETAIL_INC_UPDATE) {
+			valuemap = &tagmap.GetValueMap(cur_client);
+		}
+		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level, id, valuemap);
 		
 		response->AddTag(cli_tag);
 	}
@@ -597,7 +547,7 @@ CECPacket *Get_EC_Response_GetUpQueue(CObjTagMap &tagmap)
 }
 
 
-CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, CObjTagMap &tagmap)
+static CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, CObjTagMap &tagmap)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -615,7 +565,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, COb
 	return 	response;
 }
 
-CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders, bool detail = false)
+static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders, bool detail = false)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -647,7 +597,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_
 }
 
 
-CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
+static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 
@@ -736,7 +686,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
+static CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 
@@ -763,7 +713,7 @@ CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Server(const CECPacket *request)
+static CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 	const CECTag *srv_tag = request->GetTagByIndex(0);
@@ -815,7 +765,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
+static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 		
@@ -836,7 +786,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
+static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 
@@ -845,12 +795,12 @@ CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
 		CValueMap &valuemap = tagmap.GetValueMap(sf);
-		response->AddTag(CEC_SearchFile_Tag(sf, valuemap));
+		response->AddTag(CEC_SearchFile_Tag(sf, EC_DETAIL_INC_UPDATE, &valuemap));
 	}
 	return response;
 }
 
-CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
+static CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
 	for (unsigned int i = 0;i < request->GetTagCount();i++) {
@@ -862,14 +812,14 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Search_Stop(const CECPacket *WXUNUSED(request))
+static CECPacket *Get_EC_Response_Search_Stop(const CECPacket *WXUNUSED(request))
 {
 	CECPacket *reply = new CECPacket(EC_OP_MISC_DATA);
 	theApp->searchlist->StopGlobalSearch();
 	return reply;
 }
 
-CECPacket *Get_EC_Response_Search(const CECPacket *request)
+static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
 	wxString response;
 	
@@ -916,7 +866,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	return reply;
 }
 
-CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
+static CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_NOOP);
 	for (unsigned int i = 0;i < request->GetTagCount();i++) {
@@ -939,7 +889,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
+static CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 {
 	CECPacket *response;
 	if (thePrefs::GetNetworkKademlia()) {
@@ -1093,7 +1043,7 @@ void CKnownFile_Encoder::Encode(CECTag *parent)
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
 }
 
-CECPacket *GetStatsGraphs(const CECPacket *request)
+static CECPacket *GetStatsGraphs(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 
@@ -1223,18 +1173,10 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
-			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetUpQueue(objmap);
-			} else {
-				response = Get_EC_Response_GetUpQueue(request);
-			}
+			response = Get_EC_Response_GetClientQueue(request, objmap, EC_OP_ULOAD_QUEUE);
 			break;
 		case EC_OP_GET_WAIT_QUEUE:
-			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetWaitQueue(objmap);
-			} else {
-				response = Get_EC_Response_GetWaitQueue(request);
-			}
+			response = Get_EC_Response_GetClientQueue(request, objmap, EC_OP_WAIT_QUEUE);
 			break;
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:

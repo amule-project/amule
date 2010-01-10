@@ -255,7 +255,7 @@ EC_TAG_CLIENT                             0x0600
 	EC_TAG_CLIENT_UPLOAD_SESSION              0x0609
 	EC_TAG_CLIENT_UPLOAD_TOTAL                0x060A
 	EC_TAG_CLIENT_DOWNLOAD_TOTAL              0x060B
-	EC_TAG_CLIENT_STATE                       0x060C
+	EC_TAG_CLIENT_DOWNLOAD_STATE              0x060C
 	EC_TAG_CLIENT_UP_SPEED                    0x060D
 	EC_TAG_CLIENT_DOWN_SPEED                  0x060E
 	EC_TAG_CLIENT_FROM                        0x060F
@@ -271,6 +271,7 @@ EC_TAG_CLIENT                             0x0600
 	EC_TAG_CLIENT_RATING                      0x0619
 	EC_TAG_CLIENT_REMOTE_QUEUE_RANK           0x061A
 	EC_TAG_CLIENT_ASKED_COUNT                 0x061B
+	EC_TAG_CLIENT_UPLOAD_STATE                0x061C
 
 EC_TAG_SEARCHFILE                         0x0700
 	EC_TAG_SEARCH_TYPE                        0x0701
