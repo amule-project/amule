@@ -1147,6 +1147,18 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	}
 #endif
 
+	// There is a theoretical chance that the core time function can recurse:
+	// if an event function gets blocked on a mutex (communicating with the 
+	// UploadBandwidthThrottler) wx spawns a new event loop and processes more events.
+	// If CPU load gets high a new core timer event could be generated before the last
+	// one was finished and so recursion could occur, which would be bad.
+	// Detect this and do an early return then.
+	static bool recurse = false;
+	if (recurse) {
+		return;
+	}
+	recurse = true;
+
 	uploadqueue->Process();
 	downloadqueue->Process();
 	//theApp->clientcredits->Process();
@@ -1234,6 +1246,8 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	// Recomended by lugdunummaster himself - from emule 0.30c
 	serverconnect->KeepConnectionAlive();
 
+	// Disarm recursion protection
+	recurse = false;
 }
 
 
