@@ -4,13 +4,13 @@
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
-# Hans <herringfish@hot.ee>, 2006, 2007, 2008, 2009.
+# Hans <herringfish@hot.ee>, 2006, 2007, 2008, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 10:53+0100\n"
-"PO-Revision-Date: 2009-12-15 13:09+0200\n"
+"PO-Revision-Date: 2010-01-11 09:00+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,7 @@ msgid "Now, exiting main app..."
 msgstr "Ok, lahkun põhiprogrammist..."
 
 #: src/amule.cpp:247
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "Mõrvan amuleweb tegelase, protsessi id `%ld' ... "
 
@@ -572,9 +572,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ühenduseta)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Kas sa tõesti tahad aMule'st väljuda?"
+msgstr "Kas sa tõesti tahad %s'st väljuda?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
@@ -845,25 +845,24 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "'%s' (IP:%s) saatis uue teate"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "HOIATUS: known.met faili ei saa avada."
+msgstr "HOIATUS: %s faili ei saa avada."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"HOIATUS: Tuttavate failde loetelu on riknenud, sisaldab riknenud päist."
+"HOIATUS: Katkestatud failde loetelu on riknenud, sisaldab riknenud päist."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "IO viga known.met faili lugemisel: %s"
+msgstr "IO viga %s faili lugemisel: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "VIGA: tekkis known.met faili salvestamisel: %s"
+msgstr "VIGA: tekkis %s faili salvestamisel: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -5288,13 +5287,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Kopeeri eD2k link lõikepuhvrisse"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
-msgstr "Loobu"
+msgstr "Loobutud"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Uus"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -6340,33 +6338,28 @@ msgstr ""
 "Seiskab ka tekstikliendi, kuna see on kasutu ilma töötava tuumata.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
-msgstr ".Taaslaeb määratud objekti."
+msgstr "Määratud objekt taaslaadimine."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
-msgstr "Taaslaeb jagatud failide loetelu."
+msgstr "Jagatud failide loetelu taaslaadimine."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "Lae IP Filter failist uuesti."
+msgstr "IP Filteri taaslaadimine."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "Vali IP Filtreerimise tase."
+msgstr "Lae preagune IP filtreerimise tabel uuesti."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "Lae IP Filter failist uuesti."
+msgstr "Uuenda IP filtrit URL'ist."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Kui URL puudub siis kasutatakseseadetes määratud URL'i."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
@@ -6409,9 +6402,8 @@ msgid "Disconnect from Kad only."
 msgstr "Lõpeta ühendus ainult Kad võrguga."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
-msgstr "Lisab tuumale eD2k või magnet lingi."
+msgstr "Lisa tuumale eD2k või magnet link."
 
 #: src/TextClient.cpp:883
 msgid ""
@@ -6437,9 +6429,8 @@ msgid "Set a preference value."
 msgstr "Määra seade väärtus."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
-msgstr "Määra IPFiltri seaded."
+msgstr "Määra IP filtri seaded."
 
 #: src/TextClient.cpp:889
 msgid "Turn IP filtering on for both clients and servers."
@@ -6507,38 +6498,32 @@ msgid "Get and display a preference value."
 msgstr "Hangi ja näita atribuudi väärtus."
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
-msgstr "Hangi IPFiltri seaded."
+msgstr "Hangi IP filtri seaded."
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
-msgstr "Hangi IPFiltri olek nii klientide kui ka serverite kohta."
+msgstr "Hangi IP filtri olek nii klientide kui ka serverite kohta."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
-msgstr "Hangi IPFiltri olek ainult klientide kohta."
+msgstr "Hangi IP filtri olek ainult klientide kohta."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
-msgstr "Hangi IPFiltri olek ainult serverite kohta."
+msgstr "Hangi IP filtri olek ainult serverite kohta."
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "Vali IP Filtreerimise tase."
+msgstr "Vali IP filtreerimise tase."
 
 #: src/TextClient.cpp:916
 msgid "Get bandwidth limits."
 msgstr "Kehtiv Ribalaiuse piirang"
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
-msgstr "Käivitab otsingu kad võrgust."
+msgstr "Käivita otsing."
 
 #: src/TextClient.cpp:919
 msgid ""
@@ -6555,39 +6540,32 @@ msgstr ""
 "Näide: 'search kad fail' otsib \"fail\" kad võrgust.\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
-msgstr "Käivitab globaalse otsingu."
+msgstr "Käivita globaalne otsing."
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
-msgstr "Käivitab lokaalse otsingu."
+msgstr "Käivita lokaalne otsing."
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Käivitab otsingu kad võrgust."
+msgstr "Käivita otsing kad võrgust."
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
-msgstr "Näitab viimase otsingu tulemusi."
+msgstr "Näita viimase otsingu tulemusi."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
-msgstr "Tagastab eelmise otsingu tulemuse.\n"
+msgstr "Tagasta eelmise otsingu tulemuse.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
-msgstr "Näitab otsingu edenemist."
+msgstr "Näita otsingu edenemist."
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
-msgstr "Näitab otsingu edenemist.\n"
+msgstr "Näita otsingu edenemist.\n"
 
 #: src/TextClient.cpp:930
 msgid "Start downloading a file"
@@ -6643,10 +6621,9 @@ msgid "Show queues/lists."
 msgstr "Näita järjekorda/nimekirja."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
-"Näitab saatmise/tõmbamise järjekorda, serveri jagatud failide loetelu.\n"
+"Näita saatmise/tõmbamise järjekorda, serveri jagatud failide loetelu.\n"
 
 #: src/TextClient.cpp:956
 msgid "Show upload queue."
@@ -7482,21 +7459,3 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1911
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]: "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Kehtiv IPFilteri Tase."
-
-#~ msgid "Makes a search."
-#~ msgstr "Teostab otsingu."
-
-#~ msgid "Killed!"
-#~ msgstr "Tapetud!"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "Kasutan amulewebi '%s'."
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "Seiskan aMule ..."
-
-#~ msgid "Failed with SIGTERM, try with SIGKILL"
-#~ msgstr "SIGTERM ebaõnnestus, proovi SIGKILL"
