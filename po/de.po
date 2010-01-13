@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 10:53+0100\n"
-"PO-Revision-Date: 2009-12-30 11:16+0100\n"
+"PO-Revision-Date: 2010-01-13 11:20+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -854,25 +854,25 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Neue Nachricht von '%s' (IP:%s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "WARNUNG: Datei 'known.met' kann nicht geöffnet werden."
+msgstr "WARNUNG: Datei '%s' kann nicht geöffnet werden."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"WARNUNG: Liste der bekannten Dateien korrumpiert, enthält ungültigen Header."
+"WARNUNG: Liste der abgebrochenen Dateien korrumpiert, enthält ungültigen "
+"Header."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "IO-Fehler während des Lesens der 'known.met': %s"
+msgstr "IO-Fehler während des Lesens der Datei '%s': %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Fehler während des Speicherns der 'known.met': %s"
+msgstr "Fehler während des Speicherns der Datei '%s': %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -5371,13 +5371,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Kopiere eD2k-Verweis in die Zwischenablage"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
-msgstr "Abbruch"
+msgstr "Abgebrochen"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -6438,33 +6437,29 @@ msgstr ""
 "ohne laufenden Kern (core) nicht verwendbar ist.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
-msgstr "Neuladen des angegebenen Objekts."
+msgstr "Neu laden des angegebenen Objekts."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
 msgstr "Liste freigegebener Dateien neu laden."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "IP-Filtertabelle von Datei neu laden."
+msgstr "IP-Filtertabelle neu laden."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "IP-Filterstufe auswählen."
+msgstr "Aktuelle IP-Filtertabelle neu laden."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "IP-Filtertabelle von Datei neu laden."
+msgstr "IP-Filtertabelle von URL aktualisieren."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
 msgstr ""
+"Wenn keine URL eingetragen wird, wird die URL aus den Einstellungen benutzt."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
@@ -6508,7 +6503,6 @@ msgid "Disconnect from Kad only."
 msgstr "Nur von Kad trennen."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
 msgstr "Sendet einen eD2k- oder Magnet-Verweis an den Kern."
 
@@ -6539,9 +6533,8 @@ msgid "Set a preference value."
 msgstr "Einstellwert festlegen."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
-msgstr "IP-Filtereinstellungen festlegen."
+msgstr "IP-Filter-Einstellungen festlegen."
 
 #: src/TextClient.cpp:889
 msgid "Turn IP filtering on for both clients and servers."
@@ -6608,38 +6601,32 @@ msgid "Get and display a preference value."
 msgstr "Einstellungswert holen und anzeigen."
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
-msgstr "IP-Filtereinstellungen holen."
+msgstr "IP-Filter-Einstellungen holen."
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
 msgstr "Hole IP-Filter-Status für Clients und Server."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
 msgstr "Hole IP-Filter-Status nur für Clients."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
 msgstr "Hole IP-Filter-Status nur für Server."
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "IP-Filterstufe auswählen."
+msgstr "IP-Filterstufe holen."
 
 #: src/TextClient.cpp:916
 msgid "Get bandwidth limits."
 msgstr "Bandbreiteneinstellungen holen."
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
-msgstr "Vollzieht eine Kade-Suche."
+msgstr "Suche ausführen."
 
 #: src/TextClient.cpp:919
 msgid ""
@@ -6656,39 +6643,32 @@ msgstr ""
 "Beispiel: 'search kad Datei' führt eine kad Suche für \"Datei\" aus.\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
-msgstr "Vollzieht eine globale Suche."
+msgstr "Globale Suche ausführen."
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
-msgstr "Vollzieht eine lokale Suche."
+msgstr "Lokale Suche ausführen."
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Vollzieht eine Kade-Suche."
+msgstr "Kad-Suche ausführen."
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
-msgstr "Zeigt die Ergebnisse der letzten Suche an."
+msgstr "Zeige die Ergebnisse der letzten Suche an."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
-msgstr "Holt die Ergebnisse der vorhergehenden Suche.\n"
+msgstr "Hole die Ergebnisse der vorhergehenden Suche.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
-msgstr "Zeigt den Fortschritt einer Suche."
+msgstr "Zeige den Fortschritt einer Suche."
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
-msgstr "Zeigt den Fortschritt einer Suche.\n"
+msgstr "Zeige den Fortschritt einer Suche.\n"
 
 #: src/TextClient.cpp:930
 msgid "Start downloading a file"
@@ -6747,7 +6727,6 @@ msgid "Show queues/lists."
 msgstr "Warteschlangen/Listen zeigen."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Upload-/Download-Warteschlange, Serverliste, oder Liste freigegebener "
