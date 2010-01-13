@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 10:53+0100\n"
-"PO-Revision-Date: 2010-01-06 19:48+0100\n"
+"PO-Revision-Date: 2010-01-13 21:07+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -6359,33 +6359,28 @@ msgstr ""
 "hiszen az használhatatlan futó mag nélkül.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
-msgstr "Újratölti a megadott objektumot."
+msgstr "A megadott objektum újratöltése."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
-msgstr "A megosztott fájlok listáját frissíti."
+msgstr "A megosztott fájlok listájának újratöltése."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "IP szűrő tábla újratöltése fájlból."
+msgstr "Az IP szűrő tábla újratöltése."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "IP szűrési szint kiválasztása."
+msgstr "Az aktuális IP szűrő tábla újratöltése."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "IP szűrő tábla újratöltése fájlból."
+msgstr "IP szűrő tábla frissítése URL-ról."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Ha nincs megadva URL, a beállításokban megadott URL lesz használva."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
@@ -6431,9 +6426,8 @@ msgid "Disconnect from Kad only."
 msgstr "Csak a Kad-ról választ le."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
-msgstr "Egy eD2k vagy magnet hivatkozás hozzáadása."
+msgstr "Egy eD2k vagy magnet hivatkozás hozzáadása a maghoz."
 
 #: src/TextClient.cpp:883
 msgid ""
@@ -6459,12 +6453,11 @@ msgstr ""
 
 #: src/TextClient.cpp:885
 msgid "Set a preference value."
-msgstr "Beállítások megváltozatása."
+msgstr "Egy beállítási érték megadása."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
-msgstr "IP szűrő beállítások módosítása."
+msgstr "IP szűrő beállítások megadása."
 
 #: src/TextClient.cpp:889
 msgid "Turn IP filtering on for both clients and servers."
@@ -6532,38 +6525,32 @@ msgid "Get and display a preference value."
 msgstr "Beállítási értékek megjelenítése."
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
-msgstr "IP szűrő beállítások megjelenítése."
+msgstr "IP szűrő beállítások lekérdezése."
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
-msgstr "Az IP szűrő állapotának lekérdezése ügyfelekre és kiszolgálókra."
+msgstr "Az IP szűrő állapotának lekérdezése ügyfelek és kiszolgálók számára."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
-msgstr "IP szűrő állapotának megjelenítése csak ügyfelekre."
+msgstr "IP szűrő állapotának lekérdezése csak ügyfeleknek."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
-msgstr "IP szűrő állapotának megjelenítése csak kiszolgálókra."
+msgstr "IP szűrő állapotának lekérdezése csak kiszolgálóknak."
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "IP szűrési szint kiválasztása."
+msgstr "IP szűrési szint lekérdezése."
 
 #: src/TextClient.cpp:916
 msgid "Get bandwidth limits."
 msgstr "Sávszélességi korlátok megtekintése."
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
-msgstr "Keresés a Kad hálózaton."
+msgstr "Keresés végrehajtása."
 
 #: src/TextClient.cpp:919
 msgid ""
@@ -6580,39 +6567,32 @@ msgstr ""
 "Például: 'search kad fájl' egy kad keresést fog indítani a \"fájl\"-ra.\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
-msgstr "Globális keresést végez."
+msgstr "Globális keresés végrehajtása."
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
-msgstr "Helyi keresést végez."
+msgstr "Helyi keresés végrehajtása."
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Keresés a Kad hálózaton."
+msgstr "Kad hálózaton való keresés végrehajtása."
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
 msgstr "Az utolsó keresés eredményeinek megjelenítése."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
-msgstr "Az előző keresés eredményeit adja vissza.\n"
+msgstr "Az előző keresés eredményeinek visszaadása.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
-msgstr "Egy keresés állapotát jeleníti meg."
+msgstr "Egy keresés állapotának megjelenítése."
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
-msgstr "Egy keresés állapotát jeleníti meg.\n"
+msgstr "Egy keresés állapotának megjelenítése.\n"
 
 #: src/TextClient.cpp:930
 msgid "Start downloading a file"
@@ -6669,11 +6649,10 @@ msgid "Show queues/lists."
 msgstr "Várósorok/listák megmutatása."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
-"Megjeleníti a feltöltési/letöltési várósort, kiszolgáló listát vagy a "
-"megosztott fájlok listáját.\n"
+"Feltöltési/letöltési várósor, kiszolgáló lista vagy a megosztott fájlok "
+"listájának megjelenítése.\n"
 
 #: src/TextClient.cpp:956
 msgid "Show upload queue."
