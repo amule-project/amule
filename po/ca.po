@@ -4,24 +4,25 @@
 #
 # Translation of aMule to Catalan / Valencian
 #
+# Main translation:
 # pukyxd <pukyxd@yahoo.com> 2004 - 2005
-# Carles Escrig (simkin) <royo@aditel.org> 2005 - 2008
-# Kry <elkry@users.sourceforge.net>, 2004 - 2008.
-# Diego Silva Galan <diegosilvagalan@gmail.com>, 2009.
+# simkin <royo@aditel.org> 2005 - 2010
+#
+# Contributors:
+# Kry <elkry@users.sourceforge.net>, Diego Silva Galan <diegosilvagalan@gmail.com>, sergei manolo <sergei.saz@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 10:53+0100\n"
-"PO-Revision-Date: 2009-03-08 20:17+0100\n"
-"Last-Translator: Diego Silva Galan <diegosilvagalan@gmail.com>\n"
-"Language-Team: Català <diegosilvagalan@gmail.com>\n"
+"PO-Revision-Date: 2010-01-15 03:38+0200\n"
+"Last-Translator: simkin <simkin@ono.com>\n"
+"Language-Team: Català\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Language: Catalan\n"
-"X-Generator: Lokalize 0.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -56,9 +57,9 @@ msgid "Now, exiting main app..."
 msgstr "Sortint del programa..."
 
 #: src/amule.cpp:247
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr "Aturant procés amuleweb amb pid `%ld' ... "
+msgstr "S'està aturant el procés amuleweb amb pid `%ld' ... "
 
 #: src/amule.cpp:250
 #, c-format
@@ -402,7 +403,7 @@ msgstr "amuled: Bifurcant-se a segon pla - adeu siau"
 
 #: src/amuled.cpp:732
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "No s'ha pogut crear el fitxer Pid"
 
 #: src/amuled.cpp:791
 #, c-format
@@ -573,9 +574,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Desconnectat)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Esteu segur que voleu eixir de l'aMule?"
+msgstr "Esteu segur que voleu eixir de %s?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
@@ -732,7 +733,7 @@ msgstr "Connexió fallida. No ha estat possible connectar-se a %s:%d\n"
 
 #: src/amule-remote-gui.cpp:323
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "S'ha tancat la connexió - segurament l'aMule s'ha terminat."
 
 #: src/amule-remote-gui.cpp:406
 msgid "Ready"
@@ -746,6 +747,8 @@ msgstr "Tots"
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
+"No s'ha pogut crear el directori '%s' per a la categoria '%s', es mantindrà "
+"el directori '%s'."
 
 #: src/amule-remote-gui.cpp:840
 #, c-format
@@ -754,7 +757,7 @@ msgstr "Usuaris Totals: %s | Fitxers Totals: %s"
 
 #: src/amule-remote-gui.cpp:1728
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
+msgstr "Encara no es poden fer comentaris ni valoracions al client remot"
 
 #: src/BaseClient.cpp:1334
 #, c-format
@@ -848,25 +851,25 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nou missatge de '%s' (IP:%s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "AVÍS: No es pot obrir el fitxer known.met."
+msgstr "AVÍS: No es pot obrir %s."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"ALERTA: Llista de fitxers coneguts malmesa, conté una capçalera no vàlida."
+"AVÍS: La llista dels fitxers cancel·lats és malmesa, conté una capçalera no "
+"vàlida."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "Error d'E/S metre es llegia el fitxer known.met: %s"
+msgstr "Error d'E/S metre es llegia el fitxer %s: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Error mentre es desava el fitxer known.met: %s"
+msgstr "Error mentre es desava el fitxer %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -935,7 +938,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
-msgstr ""
+msgstr "Xat"
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:168
 msgid "Close tab"
@@ -1360,6 +1363,8 @@ msgstr[1] "%u comentaris"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"S'ha expulsat el client %s per haver enviat %s dades corruptes d'un total de "
+"%s del fitxer '%s'"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Lo]"
@@ -2284,7 +2289,7 @@ msgstr "S'ha iniciat el fil de descàrrega HTTP."
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "No s'ha rebut la mida, descarregant fins que la connexió es tanqui"
 
 #: src/HTTPDownload.cpp:202
 #, c-format
@@ -2292,9 +2297,9 @@ msgid "Download size: %i"
 msgstr "Mida descarrega: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Baixat"
+msgstr "S'han baixat %d bytes"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
@@ -2479,7 +2484,7 @@ msgstr "Mida"
 
 #: src/KnownFile.cpp:1390
 msgid "Share ratio"
-msgstr "Rati"
+msgstr "Ràtio"
 
 #: src/KnownFile.cpp:1391
 msgid "Uploaded"
@@ -3843,7 +3848,7 @@ msgstr "Mostra informació estesa a les pestanyes de les categories"
 
 #: src/muuli_wdr.cpp:2238
 msgid "Show transfer rates on title"
-msgstr "Mostra els ratis de transferència al títol"
+msgstr "Mostra les velocitats de transferència al títol"
 
 #: src/muuli_wdr.cpp:2241
 msgid "Before application name"
@@ -5347,13 +5352,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Copia l'enllaç eD2k al porta-retalls"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
-msgstr "Cancel·la"
+msgstr "Cancel·lat"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Nou"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -5908,7 +5912,7 @@ msgstr "Dades transferides"
 
 #: src/SharedFilesCtrl.cpp:110
 msgid "Share Ratio"
-msgstr "Rati"
+msgstr "Ràtio"
 
 #: src/SharedFilesCtrl.cpp:112
 msgid "Complete Sources"
@@ -6052,27 +6056,27 @@ msgstr "Baixades actives (trossos): %s"
 #: src/Statistics.cpp:686
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
-msgstr "Rati PU:BA de la sessió (total): %s"
+msgstr "Raó PU:BA de la sessió (total): %s"
 
 #: src/Statistics.cpp:689
 #, c-format
 msgid "Average download rate (Session): %s"
-msgstr "Rati de baixada mitjà (Sessió): %s"
+msgstr "Raó de baixada mitjana (Sessió): %s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Average upload rate (Session): %s"
-msgstr "Rati de pujada mitjà (Sessió): %s"
+msgstr "Raó de pujada mitjana (Sessió): %s"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Max download rate (Session): %s"
-msgstr "Rati de baixada màxim (Sessió): %s"
+msgstr "Raó de baixada màxima (Sessió): %s"
 
 #: src/Statistics.cpp:692
 #, c-format
 msgid "Max upload rate (Session): %s"
-msgstr "Rati de pujada màxim (Sessió): %s"
+msgstr "Raó de pujada màxima (Sessió): %s"
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -6110,19 +6114,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Pic de connexions (aprox.): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Mida desconeguda"
+msgstr "Desconegut: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Filtrats"
+msgstr "Filtrat: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Expulsats"
+msgstr "Expulsat: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
@@ -6421,33 +6425,28 @@ msgstr ""
 "haver un nucli en execució.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
 msgstr "Recarrega l'objecte donat."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
 msgstr "Recarrega la llista de fitxers compartits."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "Recarrega la taula de filtrat IP des del fitxer."
+msgstr "Recarrega la taula de filtrat IP."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "Selecciona el nivell de filtratge IP."
+msgstr "Recarrega la taula de filtrat IP actual."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "Recarrega la taula de filtrat IP des del fitxer."
+msgstr "Recarrega la taula de filtrat IP des d'una URL."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Si s'omet l'URL s'usa l'URL de les preferències."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
@@ -6493,7 +6492,6 @@ msgid "Disconnect from Kad only."
 msgstr "Desconnecta només de Kad."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
 msgstr "Afegeix un enllaç magnet o eD2k al nucli."
 
@@ -6524,7 +6522,6 @@ msgid "Set a preference value."
 msgstr "Defineix un valor de configuració."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
 msgstr "Defineix les preferències del filtrat IP."
 
@@ -6594,27 +6591,22 @@ msgid "Get and display a preference value."
 msgstr "Obté i mostra un valor de les preferències."
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
 msgstr "Obté les preferències del filtratge IP."
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
 msgstr "Obtenir l'estat del filtre IP per a clients i servidors"
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
 msgstr "Obtenir l'estat del filtre IP només per a clients"
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
 msgstr "Obtenir l'estat del filtre IP només per a servidors"
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
 msgstr "Selecciona el nivell de filtratge IP."
 
@@ -6623,9 +6615,8 @@ msgid "Get bandwidth limits."
 msgstr "Obté els límits d'ample de banda."
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
-msgstr "Realitza una cerca kad"
+msgstr "Realitza una cerca"
 
 #: src/TextClient.cpp:919
 msgid ""
@@ -6642,37 +6633,30 @@ msgstr ""
 "Exemple:'search kad fitxer' executarà una cerca kad per a \"fitxer\".\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
 msgstr "Realitza una cerca global"
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
 msgstr "Realitza una cerca local"
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
 msgstr "Realitza una cerca kad"
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
 msgstr "Mostra els resultats de l'última cerca."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
 msgstr "Retorna els resultats de la cerca anterior.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
 msgstr "Mostra el progrés d'una cerca."
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
 msgstr "Mostra el progrés d'una cerca.\n"
 
@@ -6731,7 +6715,6 @@ msgid "Show queues/lists."
 msgstr "Mostra les cues/llistes."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Mostra la cua de pujades/baixades, la llista de servidors o la llista de "
@@ -7179,11 +7162,11 @@ msgstr "wxCas, Estadístiques en línia de l'aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:120
 msgid "Maximum DL rate since wxCas is running"
-msgstr "Rati de BA màxim des que el wxCas funciona"
+msgstr "Raó de BA màxima des que el wxCas funciona"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr "Màxim absolut de rati de BA històric del wxCas"
+msgstr "Velocitat màxima de BA des que s'usa l'wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
@@ -7553,7 +7536,7 @@ msgstr "S'està processant la petició [original]: "
 
 #: src/webserver/src/WebServer.cpp:1871
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "No s'ha especificat cap contrasenya, no es permetrà la identificació."
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Checking password\n"
