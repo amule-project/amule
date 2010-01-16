@@ -511,7 +511,7 @@ bool CamuleApp::OnInit()
 	}
 
 	// Test if there's any new version
-	if (thePrefs::CheckNewVersion()) {
+	if (thePrefs::GetCheckNewVersion()) {
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check = 
 			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),

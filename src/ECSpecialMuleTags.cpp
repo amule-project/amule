@@ -96,6 +96,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		user_prefs.AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
 		user_prefs.AddTag(CECTag(EC_TAG_USER_HASH, thePrefs::GetUserHash()));
 		user_prefs.AddTag(CECTag(EC_TAG_USER_HOST, thePrefs::GetYourHostname()));
+		user_prefs.AddTag(CECTag(EC_TAG_GENERAL_CHECK_NEW_VERSION, thePrefs::GetCheckNewVersion()));
 		AddTag(user_prefs);
 	}
 
@@ -389,6 +390,9 @@ void CEC_Prefs_Packet::Apply()
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HOST)) != NULL) {
 			thePrefs::SetYourHostname(oneTag->GetStringData());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_GENERAL_CHECK_NEW_VERSION)) != NULL) {
+			thePrefs::SetCheckNewVersion(oneTag->GetInt() != 0);
 		}
 	}
 

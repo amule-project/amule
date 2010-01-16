@@ -258,6 +258,7 @@ public enum ECTagNames {
 			EC_TAG_USER_NICK                          = 0x1201,
 			EC_TAG_USER_HASH                          = 0x1202,
 			EC_TAG_USER_HOST                          = 0x1203,
+			EC_TAG_GENERAL_CHECK_NEW_VERSION          = 0x1204,
 		EC_TAG_PREFS_CONNECTIONS                  = 0x1300,
 			EC_TAG_CONN_DL_CAP                        = 0x1301,
 			EC_TAG_CONN_UL_CAP	                  = 0x1302,
