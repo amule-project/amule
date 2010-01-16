@@ -125,6 +125,7 @@ Version 2.3.0 - The river knows.
 		* Update status/color of search results on events from outside the search window
 		  (like download started from EC) and in amulegui
 		* Enable update of IP filter list through aMulegui and aMulecmd
+		* Enable setting of "Check for new version on startup" through aMulegui
 
 	Vollstrecker:
 		* Unify copyright lines

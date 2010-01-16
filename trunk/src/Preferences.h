@@ -499,7 +499,8 @@ public:
 	
 	// Version check
 	
-	static bool CheckNewVersion() { return s_NewVersionCheck; }
+	static bool GetCheckNewVersion() { return s_NewVersionCheck; }
+	static void SetCheckNewVersion(bool val) { s_NewVersionCheck = val; }
 
 	// Networks
 	static bool GetNetworkKademlia()		{ return s_ConnectToKad; }

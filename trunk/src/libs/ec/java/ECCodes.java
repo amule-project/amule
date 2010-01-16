@@ -255,6 +255,7 @@ public final static short 	EC_TAG_PREFS_GENERAL                      = 0x1200;
 public final static short 		EC_TAG_USER_NICK                          = 0x1201;
 public final static short 		EC_TAG_USER_HASH                          = 0x1202;
 public final static short 		EC_TAG_USER_HOST                          = 0x1203;
+public final static short 		EC_TAG_GENERAL_CHECK_NEW_VERSION          = 0x1204;
 public final static short 	EC_TAG_PREFS_CONNECTIONS                  = 0x1300;
 public final static short 		EC_TAG_CONN_DL_CAP                        = 0x1301;
 public final static short 		EC_TAG_CONN_UL_CAP	                  = 0x1302;
