@@ -237,6 +237,7 @@ public enum ECTagNames {
 		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
 		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
 		EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C,
+		EC_TAG_CLIENT_EXT_PROTOCOL                = 0x061D,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,

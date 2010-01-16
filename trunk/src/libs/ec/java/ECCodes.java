@@ -234,6 +234,7 @@ public final static short 	EC_TAG_CLIENT_RATING                      = 0x0619;
 public final static short 	EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A;
 public final static short 	EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B;
 public final static short 	EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C;
+public final static short 	EC_TAG_CLIENT_EXT_PROTOCOL                = 0x061D;
 public final static short EC_TAG_SEARCHFILE                         = 0x0700;
 public final static short 	EC_TAG_SEARCH_TYPE                        = 0x0701;
 public final static short 	EC_TAG_SEARCH_NAME                        = 0x0702;

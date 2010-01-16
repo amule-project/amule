@@ -315,7 +315,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 
 		EIdentState GetCurrentIdentState(EIdentState * target = 0) const { return (EIdentState) AssignIfExist(EC_TAG_CLIENT_IDENT_STATE, (uint32 *) target); }
 		bool HasObfuscatedConnection(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, target); }
-
+		bool HasExtendedProtocol(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_EXT_PROTOCOL, target); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {
