@@ -1071,6 +1071,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_clientSoft = tag->ClientSoftware();
 	m_clientVersionString = GetSoftName(m_clientSoft);
 	m_clientSoftString = m_clientVersionString;
+	m_bEmuleProtocol = false;
 
 	// The functions to retrieve m_clientVerString information are
 	// currently in BaseClient.cpp, which is not linked in remote-gui app.
@@ -1207,6 +1208,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 {
 	tag->GetCurrentIdentState(&client->m_identState);
 	tag->HasObfuscatedConnection(&client->m_hasbeenobfuscatinglately);
+	tag->HasExtendedProtocol(&client->m_bEmuleProtocol);
 
 	tag->WaitingPosition(&client->m_waitingPosition);
 	tag->RemoteQueueRank(&client->m_nRemoteQueueRank);
