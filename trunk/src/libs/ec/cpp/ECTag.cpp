@@ -345,6 +345,7 @@ CECTag& CECTag::operator=(const CECTag& tag)
 		} else {
 			m_tagData = NULL;
 		}
+		m_tagList.clear();
 		if (!tag.m_tagList.empty()) {
 			m_tagList.reserve(tag.m_tagList.size());
 			for (TagList::size_type i=0; i<tag.m_tagList.size(); i++) {
@@ -370,6 +371,7 @@ CECTag& CECTag::operator=(const CECTag& tag)
 bool CECTag::operator==(const CECTag& tag) const
 {
 	return	m_dataType == tag.m_dataType
+			&& m_tagName == tag.m_tagName
 			&& m_dataLen == tag.m_dataLen
 			&&	(m_dataLen == 0
 				|| !memcmp(m_tagData, tag.m_tagData, m_dataLen))
