@@ -1238,8 +1238,8 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->XferDown(&credit_struct->downloaded);
 	tag->XferDownSession(&client->m_nTransferredDown);
 
-	client->m_score = tag->Score();
-	client->m_rating = tag->Rating();
+	tag->Score(&client->m_score);
+	tag->Rating(&client->m_rating);
 
 	theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client,
 		theApp->amuledlg->m_transferwnd->clientlistctrl->GetListView());	// Fixme, Listview shouldn't be required as parameter
