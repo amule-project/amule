@@ -95,7 +95,7 @@ class EC_IPv4_t {
 
 class CECTag {
 	public:
-		CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
+		CECTag(ec_tagname_t name, unsigned int length, const void *data);
 		// tag for custom data: just init object, alloc buffer and return pointer
 		CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
 		// Routines for special data types.
@@ -326,46 +326,45 @@ class CECTag {
 		enum BuildState {
 			bsName,
 			bsType,
+			bsTypeChld,
 			bsLength,
 			bsLengthChld,
 			bsChildCnt,
 			bsChildren,
 			bsData1,
 			bsData2,
-			bsFinished
+			bsFinished,
+			bsError
 		};
 
 		CECTag(const CECSocket&)
-			: m_error(0), m_tagData(NULL), m_state(bsName), m_dataLen(0), m_dataType(EC_TAGTYPE_UNKNOWN), m_dynamic(true), m_haschildren(false)
+			: m_state(bsName), m_dataType(EC_TAGTYPE_UNKNOWN), m_dataLen(0), m_tagData(NULL)
 			{}
 
 		bool		ReadFromSocket(CECSocket& socket);
 		bool		WriteTag(CECSocket& socket) const;
 		bool		ReadChildren(CECSocket& socket);
 		bool		WriteChildren(CECSocket& socket) const;
-		int		m_error;
-		const void *	m_tagData;
 
-		BuildState	m_state;
+		BuildState	m_state;	// This is only used while a Tag is being read from a socket.
 
 		bool		IsOk() const { return m_state == bsFinished; }
+		bool		HasError() const { return m_state == bsError; }
 
 	private:
 		// To init. the automatic int data
 		void InitInt(uint64_t data);
 
 		ec_tagname_t	m_tagName;
+		ec_tagtype_t	m_dataType;
 		ec_taglen_t		m_dataLen;
-		mutable ec_tagtype_t	m_dataType;
-		bool		m_dynamic;
+		char *			m_tagData;
+		void NewData()	{ m_tagData = new char[m_dataLen]; }
 
 		typedef std::vector<CECTag> TagList;
 		TagList m_tagList;
 		
-		bool m_haschildren;
-
 		static const CECTag s_theNullTag;
-		static const uint32_t s_theNullTagData[4];
 		
 		// To be used by the string constructors.
 		void ConstructStringTag(ec_tagname_t name, const std::string& data);
@@ -380,7 +379,7 @@ class CECTag {
  */
 class CECEmptyTag : public CECTag {
 	public:
-		CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, NULL, false) {}
+		CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, (const void *) NULL) {}
 	protected:
 		CECEmptyTag(const CECSocket& socket) : CECTag(socket) {}
 };
