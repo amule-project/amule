@@ -800,8 +800,8 @@ const CECPacket *CECSocket::ReadPacket()
 	packet = new CECPacket(*this);
 	packet->ReadFromSocket(*this);
 	
-	if (packet->m_error != 0) {
-		cout << "ReadPacket: error " << packet->m_error << "in packet read" << endl;
+	if (packet->HasError()) {
+		cout << "ReadPacket: error in packet read" << endl;
 		delete packet;
 		packet = NULL;
 		CloseSocket();
