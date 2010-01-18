@@ -24,9 +24,6 @@
 //
 
 
-#define AMULE_CPP
-
-
 #include "amule.h"			// Interface declarations.
 
 #include <csignal>
@@ -120,6 +117,12 @@
 # define RLIMIT_RESOURCE __rlimit_resource
 #else
 # define RLIMIT_RESOURCE int
+#endif
+
+#ifdef AMULE_DAEMON
+CamuleDaemonApp *theApp;
+#else
+CamuleGuiApp *theApp;
 #endif
 
 static void UnlimitResource(RLIMIT_RESOURCE resType)

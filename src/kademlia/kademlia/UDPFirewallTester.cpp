@@ -24,8 +24,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#define need_UDP_FIREWALLTEST_CLIENTSTOASK
-
 #include "UDPFirewallTester.h"
 #include "../utils/UInt128.h"
 #include "../utils/KadUDPKey.h"
