@@ -406,11 +406,7 @@ public:
 
 
 DECLARE_APP(CamuleGuiApp)
-#ifdef AMULE_CPP
-	CamuleGuiApp *theApp;
-#else
-	extern CamuleGuiApp *theApp;
-#endif
+extern CamuleGuiApp *theApp;
 
 
 #else /* !CLIENT_GUI */
@@ -556,11 +552,7 @@ public:
 };
 
 DECLARE_APP(CamuleDaemonApp)
-#ifdef AMULE_CPP
-	CamuleDaemonApp *theApp;
-#else
-	extern CamuleDaemonApp *theApp;
-#endif
+extern CamuleDaemonApp *theApp;
 
 #endif /* ! AMULE_DAEMON */
 

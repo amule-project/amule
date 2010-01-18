@@ -84,10 +84,6 @@ class CUDPFirewallTester
 	static UsedClientList	m_usedTestClients;
 };
 
-#ifndef need_UDP_FIREWALLTEST_CLIENTSTOASK
-#	undef UDP_FIREWALLTEST_CLIENTSTOASK
-#endif
-
 } // namespace Kademlia
 
 #endif /* KADEMLIA_KADEMLIA_UDPFIREWALLTESTER */
