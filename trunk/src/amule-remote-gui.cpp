@@ -1284,9 +1284,22 @@ void CDownQueueRem::StopUDPRequests()
 }
 
 
-void CDownQueueRem::ResetCatParts(int)
+void CDownQueueRem::ResetCatParts(int cat)
 {
-	// called when category being deleted. Command will be performed on remote side
+	// Called when category is deleted. Command will be performed on the remote side,
+	// but files still should be updated here right away, or drawing errors (colour not available)
+	// will happen.
+	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
+		CPartFile* file = GetFileByIndex( i );
+		
+		if ( file->GetCategory() == cat ) {
+			// Reset the category
+			file->SetCategory( 0 );
+		} else if ( file->GetCategory() > cat ) {
+			// Set to the new position of the original category
+			file->SetCategory( file->GetCategory() - 1 );
+		}
+	}
 }
 
 

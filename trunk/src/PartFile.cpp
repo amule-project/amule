@@ -3605,6 +3605,12 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 { 
 	return m_FileRatingList; 
 }
+
+void CPartFile::SetCategory(uint8 cat)
+{
+	m_category = cat; 
+}
+
 #endif // !CLIENT_GUI
 
 
