@@ -518,7 +518,7 @@ bool CamuleApp::OnInit()
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check = 
 			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
-				theApp->ConfigDir + wxT("last_version_check"), HTTP_VersionCheck, false);
+				theApp->ConfigDir + wxT("last_version_check"), theApp->ConfigDir + wxT("last_version"), HTTP_VersionCheck, false);
 		version_check->Create();
 		version_check->Run();
 	}
@@ -1547,7 +1547,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 			CheckNewVersion(event.GetExtraLong());
 			break;
 		case HTTP_NodesDat:
-			if (event.GetExtraLong() != -1) {
+			if (event.GetExtraLong() == HTTP_Success) {
 				
 				wxString file = ConfigDir + wxT("nodes.dat");
 				if (wxFileExists(file)) {
@@ -1563,8 +1563,10 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 				Kademlia::CKademlia::Start();
 				theApp->ShowConnectionState();
 				
+			} else if (event.GetExtraLong() == HTTP_Skipped) {
+				AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("nodes.dat"));
 			} else {
-				AddLogLineM(true, _("Failed to download the nodes list."));
+				AddLogLineC(_("Failed to download the nodes list."));
 			}
 			break;
 #ifdef ENABLE_IP2COUNTRY
@@ -1579,7 +1581,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 
 void CamuleApp::CheckNewVersion(uint32 result)
 {	
-	if (result == 1) {
+	if (result == HTTP_Success) {
 		wxString filename = ConfigDir + wxT("last_version_check");
 		wxTextFile file;
 		
@@ -1628,7 +1630,7 @@ void CamuleApp::CheckNewVersion(uint32 result)
 		file.Close();
 		wxRemoveFile(filename);
 	} else {
-		AddLogLineM(true, _("Failed to download the version check file") );
+		AddLogLineM(true, _("Failed to download the version check file"));
 	}	
 	
 }
@@ -1985,7 +1987,7 @@ void CamuleApp::UpdateNotesDat(const wxString& url)
 {
 	wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
 		
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, HTTP_NodesDat);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, theApp->ConfigDir + wxT("nodes.dat"), HTTP_NodesDat);
 	downloader->Create();
 	downloader->Run();
 }

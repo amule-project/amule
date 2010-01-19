@@ -786,7 +786,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 	}
 	URLUpdate = strURL;
 	wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_ServerMet);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, strTempFilename, theApp->ConfigDir + wxT("server.met"), HTTP_ServerMet);
 	downloader->Create();
 	downloader->Run();
 }
@@ -794,7 +794,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 
 void CServerList::DownloadFinished(uint32 result) 
 {
-	if(result == 1) {
+	if(result == HTTP_Success) {
 		const CPath tempFilename = CPath(theApp->ConfigDir + wxT("server.met.download"));
 
 		// curl succeeded. proceed with server.met loading
@@ -803,10 +803,11 @@ void CServerList::DownloadFinished(uint32 result)
 
 		// So, file is loaded and merged, and also saved
 		CPath::RemoveFile(tempFilename);
-		AddLogLineM(true, CFormat(
-			_("Finished to download the server list from %s")) % URLUpdate);
+		AddLogLineN(CFormat(_("Finished downloading the server list from %s")) % URLUpdate);
+	} else if (result == HTTP_Skipped) {
+		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("server.met"));
 	} else {
-		AddLogLineM(true, CFormat( _("Failed to download the server list from %s") ) % URLUpdate);
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("server.met") % URLUpdate);
 	}
 }
 
@@ -832,7 +833,7 @@ void CServerList::AutoUpdate()
 			AddLogLineM(true, CFormat(
 				_("Start downloading server list from %s")) % URI);
 			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(
-				URI, strTempFilename, HTTP_ServerMetAuto);
+				URI, strTempFilename, theApp->ConfigDir + wxT("server.met"), HTTP_ServerMetAuto);
 			downloader->Create();
 			downloader->Run();
 		

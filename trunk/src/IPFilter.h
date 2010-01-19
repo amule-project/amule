@@ -115,6 +115,8 @@ private:
 		uint8		AccessLevel;
 	};
 
+	//! The URL from which the IP filter was downloaded
+	wxString m_URL;
 	
 	//! The is the type of map used to store the IPs.
 	typedef CRangeMap<rangeObject, uint32> IPMap;

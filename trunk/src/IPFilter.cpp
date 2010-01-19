@@ -325,14 +325,12 @@ private:
 					
 					if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
 						discardedCount++;
-						AddDebugLogLineM(false, logIPFilter, wxT(
-							"Invalid line found while reading ipfilter file: ") + line);
+						AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
 					}
 				}
 			}
 		} else {
-			AddLogLineM(true, CFormat(_(
-				"Failed to load ipfilter.dat file '%s', could not open file.")) % file);
+			AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
 			return 0;
 		}
 
@@ -346,7 +344,7 @@ private:
 	}
 	
 private:
-	wxEvtHandler*		m_owner;	
+	wxEvtHandler*		m_owner;
 	CIPFilter::IPMap	m_result;
 };
 
@@ -459,8 +457,10 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 void CIPFilter::Update(const wxString& strURL)
 {
 	if (!strURL.IsEmpty()) {
+		m_URL = strURL;
+
 		wxString filename = theApp->ConfigDir + wxT("ipfilter.download");
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, filename, HTTP_IPFilter);
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, theApp->ConfigDir + wxT("ipfilter.dat"), HTTP_IPFilter);
 
 		downloader->Create();
 		downloader->Run();
@@ -470,30 +470,30 @@ void CIPFilter::Update(const wxString& strURL)
 
 void CIPFilter::DownloadFinished(uint32 result)
 {
-	if (result == 1) {
+	if (result == HTTP_Success) {
 		// download succeeded. proceed with ipfilter loading
 		wxString newDat = theApp->ConfigDir + wxT("ipfilter.download");
 		wxString oldDat = theApp->ConfigDir + wxT("ipfilter.dat");
 
 		if (wxFileExists(oldDat)) {
 			if (!wxRemoveFile(oldDat)) {
-				AddDebugLogLineM(true, logIPFilter,
-					wxT("Failed to remove ipfilter.dat file, aborting update."));
+				AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % wxT("ipfilter.dat"));
 				return;
 			}
 		}
 
 		if (!wxRenameFile(newDat, oldDat)) {
-			AddDebugLogLineM(true, logIPFilter,
-				wxT("Failed to rename new ipfilter.dat file, aborting update."));
+			AddLogLineC(CFormat(_("Failed to rename new %s file, aborting update.")) % wxT("ipfilter.dat"));
 			return;
 		}
 
 		// Reload both ipfilter files
 		Reload();
+		AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("ipfilter.dat"));
+	} else if (result == HTTP_Skipped) {
+		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("ipfilter.dat"));
 	} else {
-		AddDebugLogLineM(true, logIPFilter,
-			wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("ipfilter.dat") % m_URL);
 	}
 }
 
