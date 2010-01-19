@@ -90,7 +90,7 @@ void CIP2Country::Enable()
 void CIP2Country::Update()
 {
 	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBaseName + wxT(".download"), HTTP_GeoIP);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBaseName + wxT(".download"), m_DataBaseName, HTTP_GeoIP);
 	downloader->Create();
 	downloader->Run();
 }
@@ -105,7 +105,7 @@ void CIP2Country::Disable()
 
 void CIP2Country::DownloadFinished(uint32 result)
 {
-	if (result == 1) {
+	if (result == HTTP_Success) {
 		Disable();
 		// download succeeded. Switch over to new database.
 		wxString newDat = m_DataBaseName + wxT(".download");
@@ -117,30 +117,32 @@ void CIP2Country::DownloadFinished(uint32 result)
 		};
 
 		if (UnpackArchive(CPath(newDat), geoip_files).second == EFT_Error) {
-			AddLogLineM(false, _("Download of GeoIP.dat file failed, aborting update."));
+			AddLogLineC(_("Download of GeoIP.dat file failed, aborting update."));
 			return;
 		}
 
 		if (wxFileExists(m_DataBaseName)) {
 			if (!wxRemoveFile(m_DataBaseName)) {
-				AddLogLineM(false, _("Failed to remove GeoIP.dat file, aborting update."));
+				AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % wxT("GeoIP.dat"));
 				return;
 			}
 		}
 
 		if (!wxRenameFile(newDat, m_DataBaseName)) {
-			AddLogLineM(false,	_("Failed to rename new GeoIP.dat file, aborting update."));
+			AddLogLineC(CFormat(_("Failed to rename %s file, aborting update.")) % wxT("GeoIP.dat"));
 			return;
 		}
 
 		Enable();
 		if (m_geoip) {
-		  AddLogLineM(false, _("Successfully updated GeoIP.dat"));
+			AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("GeoIP.dat"));
 		} else {
-		  AddLogLineM(false, _("Error updating GeoIP.dat"));
+			AddLogLineC(_("Error updating GeoIP.dat"));
 		}
+ 	} else if (result == HTTP_Skipped) {
+ 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("GeoIP.dat"));
 	} else {
-		AddLogLineM(false, CFormat(_("Failed to download GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("GeoIP.dat") % thePrefs::GetGeoIPUpdateUrl());
 		// if it failed and there is no database, turn it off
 		if (!wxFileExists(m_DataBaseName)) {
 			thePrefs::SetGeoIPEnabled(false);
@@ -159,11 +161,11 @@ void CIP2Country::LoadFlags()
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
 		} else {
-			AddLogLineM(true, _("CIP2Country::CIP2Country(): Failed to load country data from ") + countrydata.Name);
+			AddLogLineM(true, CFormat(_("Failed to load country data for '%s'.")) % countrydata.Name);
 			continue;
 		}
 	}
-	
+
 	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());  // there's never just one - no plural needed
 }
 

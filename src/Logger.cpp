@@ -74,7 +74,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logKadUdpFwTester,	wxT("Kademlia UDP Firewall Tester") ),
 	CDebugCategory( logKadPacketTracking,	wxT("Kademlia Packet Tracking") ),
 	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") ),
-	CDebugCategory( logEC,					wxT("External Connect") )
+	CDebugCategory( logEC,			wxT("External Connect") ),
+	CDebugCategory( logHTTP,		wxT("HTTP") )
 };
 
 
