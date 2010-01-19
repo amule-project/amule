@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the aMule package.
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Tapio Rantala <tapio.rantala@iki.fi>, 2007-2008.
+# Tapio Rantala <tapio.rantala@nomovok.com>, 2010.
 #
 #
 msgid ""
@@ -10,8 +11,8 @@ msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 10:53+0100\n"
-"PO-Revision-Date: 2008-09-19 01:57+0300\n"
-"Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
+"PO-Revision-Date: 2010-01-19 17:34+0200\n"
+"Last-Translator: Tapio Rantala <tapio.rantala@nomovok.com>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,9 +36,8 @@ msgid "The specified userhash is not valid!"
 msgstr "Annettu käyttäjätarkiste ei ole kelvollinen!"
 
 #: src/amuleAppCommon.cpp:128
-#, fuzzy
 msgid "Failed to open ED2KLinks file."
-msgstr "Avaaminen epäonnistui: %s (%s)"
+msgstr "ED2KLinks-tiedoston avaus epäonnistui."
 
 #: src/amuleAppCommon.cpp:188
 msgid ""
@@ -47,21 +47,18 @@ msgstr ""
 "VAROITUS: Et voi lisätä itseäsi lähteeksi eD2k-linkkiin kun sinulla on LowID."
 
 #: src/amule.cpp:228
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"Ok, suljen %s...\n"
+msgstr "Pääohjelmaa suljetaan..."
 
 #: src/amule.cpp:247
 #, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr ""
+msgstr "Lopetetaan amulewebin instanssi prosessinumerolla `%ld' ... "
 
 #: src/amule.cpp:250
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr ""
+msgstr "Tuhotaan amulewebin instanssi prosessinumerolla `%ld' ... "
 
 #: src/amule.cpp:252 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -69,28 +66,27 @@ msgstr "Epäonnistunut"
 
 #: src/amule.cpp:258
 msgid "aMule OnExit: Terminating core."
-msgstr ""
+msgstr "aMulen poistuessa: Lopetetaan ydin."
 
 #: src/amule.cpp:324
-#, fuzzy
 msgid "aMule shutdown completed."
-msgstr "Lataus valmistunut"
+msgstr "aMule sammutettu."
 
 #: src/amule.cpp:328
 msgid "Memory debug results for aMule exit:"
-msgstr ""
+msgstr "Muistin virheiden etsinnän tulokset aMulen sulkeutuessa:"
 
 #: src/amule.cpp:424
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Lopettamisen varmistus"
+msgstr ""
+"\n"
+"Etäyhteyksien asetukset"
 
 #: src/amule.cpp:427
-#, fuzzy
 msgid "Password set and external connections enabled."
-msgstr "Uusi etäyhteys hyväksytty"
+msgstr "Salasana asetettu ja etäyhteydet sallittu."
 
 #: src/amule.cpp:438 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:673 src/SharedFilesCtrl.cpp:321
@@ -117,7 +113,7 @@ msgid ""
 "Do you want aMule to download a new list now?"
 msgstr ""
 "Palvelinlistallasi ei ole palvelimia.\n"
-"Haluatko että aMule lataa uuden listan nyt?"
+"Haluatko että aMule hakee uuden listan nyt?"
 
 #: src/amule.cpp:568
 msgid "Server list download"
@@ -126,7 +122,7 @@ msgstr "Palvelinlistan lataus"
 #: src/amule.cpp:584 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:61
 msgid "Connecting"
-msgstr "Yhdistää"
+msgstr "Yhdistetään"
 
 #: src/amule.cpp:640
 #, c-format
@@ -195,7 +191,7 @@ msgstr ""
 #: src/amule.cpp:1027
 #, c-format
 msgid "This is the first time you run aMule %s"
-msgstr "Tämä on ensimmäinen kerta kun käynnistät aMule %s"
+msgstr "Tämä on ensimmäinen kerta kun käynnistät aMulen version %s"
 
 #: src/amule.cpp:1029
 msgid "This version is a testing version, updated daily, and\n"
@@ -218,7 +214,7 @@ msgstr ""
 #: src/amule.cpp:1037
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"http://www.aMule.org, tai IRC-kanavaltamme #aMule palvelimella irc.freenode."
+"http://www.aMule.org tai IRC-kanavaltamme #aMule palvelimella irc.freenode."
 "net (englanniksi).\n"
 
 #: src/amule.cpp:1039
@@ -234,9 +230,8 @@ msgstr ""
 " Online-Signeeraus kytketään pois päältä kunnes korjaat asian asetuksista."
 
 #: src/amule.cpp:1107
-#, fuzzy
 msgid "Server hostname notified"
-msgstr "Palvelimen nimi:"
+msgstr "Palvelimen verkkonimi ilmoitettu"
 
 #: src/amule.cpp:1351
 #, c-format
@@ -367,7 +362,6 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad-verkko estetty asetuksissa, ei yhdistetä."
 
 #: src/amuled.cpp:619
-#, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -375,9 +369,9 @@ msgid ""
 "the file ~/.aMule/amule.conf"
 msgstr ""
 "VIRHE: aMule-taustaprosessia ei voida käyttää kun etäyhteydet ovat poissa "
-"päältä. Etäyhteyksien päälle kytkemiseksi käytä normaalia aMulea, käynnistä "
-"amuled parametrilla --ec-config tai aseta avain \"AcceptExternalConnections"
-"\" arvoon 1 tiedostossa ~/.aMule/amule.conf"
+"päältä. Etäyhteydet voidaan kytkeä päälle normaalista aMulesta, "
+"käynnistämällä amuled parametrilla --ec-config tai asettamalla avain "
+"\"AcceptExternalConnections\" arvoon 1 tiedostossa ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:622
 msgid ""
@@ -387,18 +381,24 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
+"VIRHE: Kelvollinen salasana vaaditaan etäyhteyksien käyttämiseksi ja aMule-"
+"taustaprosessia ei voida käyttää ilman etäyhteyksiä. Käynnistääksesi aMule-"
+"taustaprosessin sinun pitää asettaa kenttään \"ECPassword\" tiedostossa ~/."
+"aMule/amule.conf kelvollinen arvo. Käynnistä amuled parametrilla --ec-config "
+"asettaaksesi salasanan. Lisää tiedoa löytyy osoitteesta at http://wiki.amule."
+"org"
 
 #: src/amuled.cpp:686
 msgid "amuled: OnInit - starting timer"
-msgstr ""
+msgstr "amuled: käynnistettäessä - käynnistän ajastimen"
 
 #: src/amuled.cpp:701
 msgid "amuled: forking to background - see you"
-msgstr ""
+msgstr "amuled: haaroitun taustalle - nähdään"
 
 #: src/amuled.cpp:732
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Ei voitu luoda prosessinumerotiedostoa"
 
 #: src/amuled.cpp:791
 #, c-format
@@ -494,11 +494,11 @@ msgstr "Viesti"
 
 #: src/amuleDlg.cpp:540
 msgid "aMule dialog destroyed"
-msgstr ""
+msgstr "aMulen dialogi tuhottu"
 
 #: src/amuleDlg.cpp:694
 msgid "eD2k: Connecting"
-msgstr "eD2k: Yhdistää"
+msgstr "eD2k: Yhdistetään"
 
 #: src/amuleDlg.cpp:698
 msgid "eD2k: Disconnected"
@@ -514,7 +514,7 @@ msgstr "Kad: Yhdistety"
 
 #: src/amuleDlg.cpp:713
 msgid "Kad: Connecting"
-msgstr "Kad: Yhdistää"
+msgstr "Kad: Yhdistetään"
 
 #: src/amuleDlg.cpp:717
 msgid "Kad: Off"
@@ -572,9 +572,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ei yhdistetty)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Haluatko varmasti sulkea aMulen?"
+msgstr "Haluatko varmasti sulkea %sn?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
@@ -582,7 +582,7 @@ msgstr "Lopettamisen varmistus"
 
 #: src/amuleDlg.cpp:1155
 msgid "Launch Command: "
-msgstr ""
+msgstr "Suorita komento: "
 
 #: src/amuleDlg.cpp:1214
 #, c-format
@@ -692,28 +692,24 @@ msgid "aMule"
 msgstr "aMule"
 
 #: src/amule-gui.cpp:283
-#, fuzzy
 msgid "Fatal Error: Failed to create Core Timer"
-msgstr "KRIITTINEN VIRHE: Ajastimen luominen epäonnistui"
+msgstr "Kriittinen virhe: Ytimen ajastimen luominen epäonnistui"
 
 #: src/amule-remote-gui.cpp:70
 msgid "Connect to remote amule"
 msgstr "Yhdistä etä-aMuleen"
 
 #: src/amule-remote-gui.cpp:257
-#, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "KRIITTINEN VIRHE: Ajastimen luominen epäonnistui"
+msgstr "Kriittinen virhe: Kyselyajastimen luominen epäonnistui"
 
 #: src/amule-remote-gui.cpp:269
-#, fuzzy
 msgid "Going to event loop..."
-msgstr "Yritän palauttaa tiedoston tietoja..."
+msgstr "Siirrytään tapahtumasilmukkaan..."
 
 #: src/amule-remote-gui.cpp:295
-#, fuzzy
 msgid "Connecting..."
-msgstr "Yhdistää"
+msgstr "Yhdistetään..."
 
 #: src/amule-remote-gui.cpp:299
 msgid "Connection failed "
@@ -721,11 +717,11 @@ msgstr "Yhdistäminen epäonnistui "
 
 #: src/amule-remote-gui.cpp:310
 msgid "Remote GUI EC event handler"
-msgstr ""
+msgstr "Graafisen etäkäyttöliittymän tapahtumakäsittelijä"
 
 #: src/amule-remote-gui.cpp:317
 msgid "Going down"
-msgstr ""
+msgstr "Suljen"
 
 #: src/amule-remote-gui.cpp:320 src/ExternalConnector.cpp:400
 #, c-format
@@ -734,11 +730,11 @@ msgstr "Yhdistäminen epäonnistui. Ei saatu yhteyttä %s:%d\n"
 
 #: src/amule-remote-gui.cpp:323
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Yhteys suljettu - aMule on varmaankin lopetettu."
 
 #: src/amule-remote-gui.cpp:406
 msgid "Ready"
-msgstr ""
+msgstr "Valmis"
 
 #: src/amule-remote-gui.cpp:574 src/TransferWnd.cpp:341
 msgid "All"
@@ -747,7 +743,7 @@ msgstr "Kaikki"
 #: src/amule-remote-gui.cpp:620
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr ""
+msgstr "Ei voida luoda kansiota '%s' luokalle '%s', pidän kansion '%s'."
 
 #: src/amule-remote-gui.cpp:840
 #, c-format
@@ -757,6 +753,8 @@ msgstr "Käyttäjiä yhteensä: %s | Tiedostoja yhteensä: %s"
 #: src/amule-remote-gui.cpp:1728
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
+"Kommentit ja luokitukset eivät ole vielä tuettuja graafisessa "
+"etäkäyttöliittymässä"
 
 #: src/BaseClient.cpp:1334
 #, c-format
@@ -765,7 +763,7 @@ msgstr "Jaettujen tiedostojen listaus käyttäjältä '%s' ei onnistunut"
 
 #: src/BaseClient.cpp:1545
 msgid "Searching buddy for lowid connection"
-msgstr ""
+msgstr "Etsitään kaveria lowid-yhteydelle"
 
 #: src/BaseClient.cpp:1741 src/BaseClient.cpp:2264 src/BaseClient.cpp:2280
 #: src/BaseClient.cpp:2575 src/ClientDetailDialog.cpp:83
@@ -817,7 +815,9 @@ msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
+"Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s siirretty\n"
 msgstr[1] ""
+"Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s siirretty\n"
 
 #: src/BaseClient.cpp:1987
 #, c-format
@@ -825,7 +825,11 @@ msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
+"Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
+"siirretty\n"
 msgstr[1] ""
+"Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
+"siirretty\n"
 
 #: src/BaseClient.cpp:1990
 msgid "Requested unknown file"
@@ -842,30 +846,29 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Viesti käyttäjältä '%s' (IP:%s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "VAROITUS: Tiedostoa known.met ei voida avata."
+msgstr "VAROITUS: Tiedostoa %s ei voida avata."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"VAROITUS: Tunnettujen tiedostojen lista on turmeltunut, sisältää epäkelvon "
+"VAROITUS: Peruutettujen latausten lista on turmeltunut, sisältää epäkelvon "
 "otsakkeen."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "IO-virhe luettaessa tiedostoa known.met: %s"
+msgstr "IO-virhe luettaessa tiedostoa %s: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Virhe tallennettaessa tiedostoa known.met: %s"
+msgstr "Virhe tallennettaessa tiedostoa %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Syötä kuvavarmennus"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:956 src/muuli_wdr.cpp:238
 #: src/SearchListCtrl.cpp:569 src/TransferWnd.cpp:336
@@ -904,7 +907,7 @@ msgstr "*** Yhdistetty asiakkaaseen ***"
 
 #: src/ChatSelector.cpp:249
 msgid "*** Connecting to Client ***"
-msgstr "*** Yhdistää asiakkaaseen ***"
+msgstr "*** Yhdistetään asiakkaaseen ***"
 
 #: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
@@ -914,17 +917,19 @@ msgstr "*** Asiakkaaseen yhdistäminen epäonnistui / Yhteys katkesi ***"
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
-msgstr ""
+msgstr "*** Läpäisit kuvavarmennuksen ja käyttäjä on saanut viestisi. ***"
 
 #: src/ChatSelector.cpp:334
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
+"*** Vastauksesi kuvavarmennukseen on väärä ja viestisi on jätetty "
+"huomioimatta. Voit yrittää uudestaan lähettämällä uuden viestin. ***"
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
-msgstr ""
+msgstr "Keskustelu"
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:168
 msgid "Close tab"
@@ -947,8 +952,8 @@ msgstr "Lisää kavereihin"
 #, c-format
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
-msgstr[0] "Pisteytystiedosto ladattu, %u tunnettu asiakas"
-msgstr[1] "Pisteytystiedosto ladattu, %u tunnettua asiakasta"
+msgstr[0] "Pisteytystiedosto avattu, %u tunnettu asiakas"
+msgstr[1] "Pisteytystiedosto avattu, %u tunnettua asiakasta"
 
 #: src/ClientCreditsList.cpp:162
 #, c-format
@@ -1004,7 +1009,7 @@ msgstr "Yhteys katkaistu"
 #: src/ClientDetailDialog.cpp:168 src/ClientDetailDialog.cpp:173
 #, c-format
 msgid "%.1f kB/s"
-msgstr "%.1f KiB/s"
+msgstr "%.1f KB/s"
 
 #: src/ClientDetailDialog.cpp:199
 msgid "Not complete"
@@ -1152,11 +1157,11 @@ msgstr "Ei saatavilla"
 #: src/muuli_wdr.cpp:2073 src/muuli_wdr.cpp:2082 src/OtherFunctions.cpp:138
 #: src/StatisticsDlg.cpp:100 src/StatisticsDlg.cpp:102
 msgid "kB/s"
-msgstr "KiB/s"
+msgstr "KB/s"
 
 #: src/ClientListCtrl.cpp:674 src/DataToText.cpp:63
 msgid "Connecting via server"
-msgstr "Yhdistää serverin kautta"
+msgstr "Yhdistetään serverin kautta"
 
 #: src/ClientListCtrl.cpp:679 src/DataToText.cpp:65
 msgid "Transferring"
@@ -1339,6 +1344,8 @@ msgstr[1] "%u kommenttia"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"Estettiin asiakas %s, lähetti korruptoitunutta dataa %s yhteismäärästä %s "
+"tiedostolle '%s'"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Lo]"
@@ -1404,7 +1411,7 @@ msgstr "Liian monta yhteyttä"
 
 #: src/DataToText.cpp:71
 msgid "Connecting via Kad"
-msgstr "Yhdistää Kadiin"
+msgstr "Yhdistetään Kadilla"
 
 #: src/DataToText.cpp:72
 msgid "Too many Kad connections"
@@ -1685,33 +1692,33 @@ msgstr "VIRHE: Ulkoista mediatoistinta ei voitu käynnistää! Komento: `%s'"
 #: src/DownloadQueue.cpp:98
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr ""
+msgstr "Tallennetaan osatiedostoa %u / %u"
 
 #: src/DownloadQueue.cpp:101
 msgid "All PartFiles Saved."
-msgstr ""
+msgstr "Kaikki osatiedostot tallennettu."
 
 #: src/DownloadQueue.cpp:108
-#, fuzzy, c-format
+#, c-format
 msgid "Loading temp files from %s."
-msgstr "Lataan tiedostoa server.met: %s"
+msgstr "Lataan väliaikaistiedostoja kohteesta %s."
 
 #: src/DownloadQueue.cpp:127
-#, fuzzy, c-format
+#, c-format
 msgid "Loading PartFile %u of %u"
-msgstr "Lataan tiedot vanhasta lataustiedostosta (%u %u:sta)"
+msgstr "Lataan osatiedostoa %u %u:sta"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
-"VIRHE: Varmuuskopiotiedostoa ei saatu ladattua.  Katso sivuilta http://forum."
+"VIRHE: Varmuuskopiotiedostoa ei saatu avattua.  Katso sivuilta http://forum."
 "amule.org ratkaisuja .part.met -palautukseen."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
-msgstr ""
+msgstr "Kaikki osatiedostot avattu."
 
 #: src/DownloadQueue.cpp:162
 msgid "No part files found"
@@ -1770,9 +1777,8 @@ msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Virheellinen eD2k-linkki! VIRHE: %s"
 
 #: src/ExternalConn.cpp:127
-#, fuzzy
 msgid "Client sent packet after authentication failed."
-msgstr "Tunnistautuminen epäonnistui."
+msgstr "Asiakas lähetti paketin tunnistautumisen epäonnistumisen jälkeen."
 
 #: src/ExternalConn.cpp:135
 msgid "Unauthorized access attempt. Connection closed."
@@ -1840,9 +1846,8 @@ msgid "Authentication failed."
 msgstr "Tunnistautuminen epäonnistui."
 
 #: src/ExternalConn.cpp:358
-#, fuzzy
 msgid "Invalid request, please authenticate first."
-msgstr "Epäkelpo pyyntö, sinun pitäisi ensin tunnistautua."
+msgstr "Epäkelpo pyyntö, tunnistaudu ensin."
 
 #: src/ExternalConn.cpp:363
 msgid "Access granted."
@@ -1935,7 +1940,7 @@ msgstr "eD2k on jo yhdistetty."
 
 #: src/ExternalConn.cpp:1482
 msgid "Connecting to eD2k..."
-msgstr "Yhdistää eD2k..."
+msgstr "Yhdistetään eD2k..."
 
 #: src/ExternalConn.cpp:1490
 msgid "Already connected to Kad."
@@ -1943,7 +1948,7 @@ msgstr "Kad on jo yhdistetty."
 
 #: src/ExternalConn.cpp:1493
 msgid "Connecting to Kad..."
-msgstr "Yhdistää Kadiin..."
+msgstr "Yhdistetään Kadiin..."
 
 #: src/ExternalConn.cpp:1498
 msgid "All networks are disabled."
@@ -2131,7 +2136,7 @@ msgstr "Näytä tämä ohje."
 
 #: src/ExternalConnector.cpp:432
 msgid "Host where aMule is running. (default: localhost)"
-msgstr "Isäntäkone jossa aMule on käynnissä. (oletus: localhost)"
+msgstr "Verkkonimi koneelle jossa aMule on käynnissä. (oletus: localhost)"
 
 #: src/ExternalConnector.cpp:435
 msgid "aMule's port for External Connection. (default: 4712)"
@@ -2182,7 +2187,7 @@ msgstr "%.2f%% valmiina"
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
 #, c-format
 msgid "%.2f kB/s"
-msgstr "%.2f KiB/s"
+msgstr "%.2f KB/s"
 
 #: src/FriendList.cpp:120
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
@@ -2195,7 +2200,7 @@ msgstr ""
 
 #: src/FriendList.cpp:228
 msgid "CRITICAL - no client on StartChatSession"
-msgstr ""
+msgstr "KRIITTINEN - ei asiakasta keskustelun aloituksessa"
 
 #: src/FriendListCtrl.cpp:229 src/muuli_wdr.cpp:499 src/muuli_wdr.cpp:2960
 msgid "Friends"
@@ -2248,64 +2253,61 @@ msgstr "( %s / %s )"
 
 #: src/HTTPDownload.cpp:108
 msgid "HTTP download cancelled"
-msgstr ""
+msgstr "HTTP-lataus peruutettu"
 
 #: src/HTTPDownload.cpp:172
 msgid "HTTP download thread started"
-msgstr ""
+msgstr "HTTP-lataussäie käynnistetty"
 
 #: src/HTTPDownload.cpp:200
 msgid "Download size not received, downloading until connection is closed"
-msgstr ""
+msgstr "Latauksen kokoa ei saatu, ladataan kunnes yhteys suljetaan"
 
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid "Download size: %i"
-msgstr "Lataukset (%i)"
+msgstr "Latauksen koko: %i"
 
 #: src/HTTPDownload.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Ladattu"
+msgstr "Ladattu %d tavua"
 
 #: src/HTTPDownload.cpp:239
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr ""
+msgstr "Odotettiin %d tavua, mutta ladattiin %d tavua"
 
 #: src/HTTPDownload.cpp:257
 msgid "HTTP download thread ended"
-msgstr ""
+msgstr "HTTP-lataussäie päättyi"
 
 #: src/HTTPDownload.cpp:337
 #, c-format
 msgid "Host: %s:%i\n"
-msgstr ""
+msgstr "Verkkonimi: %s:%i\n"
 
 #: src/HTTPDownload.cpp:339
 #, c-format
 msgid "Response: %i (Error: %i)"
-msgstr ""
+msgstr "Vastaus: %i (Virhe: %i)"
 
 #: src/HTTPDownload.cpp:342
-#, fuzzy
 msgid "WARNING: Void response on stream creation"
-msgstr ""
-"VAROITUS: Alkuperäistä '%s' ei voitu poistaa varmuuskopion valmistuttua"
+msgstr "VAROITUS: Tyhjä vastaus yhteyttä muodostaessa"
 
 #: src/HTTPDownload.cpp:366
 msgid "ERROR: Redirection code received with no URL"
-msgstr ""
+msgstr "VIRHE: Uudelleenohjauksen koodi vastaanotettu ilman URLia"
 
 #: src/IP2Country.cpp:92
 #, c-format
 msgid "Download new GeoIP.dat from %s"
-msgstr "Lataa uusi GeoIP.dat osoitteesta %s"
+msgstr "Hae uusi GeoIP.dat osoitteesta %s"
 
 #: src/IP2Country.cpp:120
-#, fuzzy
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr "GeoIP.dat-tiedoston poisto epäonnistui, keskeytän päivittämisen"
+msgstr "GeoIP.dat-tiedoston lataus epäonnistui, keskeytän päivittämisen."
 
 #: src/IP2Country.cpp:126
 msgid "Failed to remove GeoIP.dat file, aborting update."
@@ -2333,12 +2335,12 @@ msgstr "GeoIP.dat-tiedoston lataus epäonnistui osoitteesta %s"
 #: src/IP2Country.cpp:162
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr ""
-"CIP2Country::CIP2Country(): Maatietojen lataaminen epäonnistui lähteestä  "
+"CIP2Country::CIP2Country(): Maatietojen avaaminen epäonnistui kohteesta  "
 
 #: src/IP2Country.cpp:167
 #, c-format
 msgid "Loaded %d flag bitmaps."
-msgstr "Ladattiin %d lippukuvaa."
+msgstr "Avattiin %d lippukuvaa."
 
 #: src/IPFilter.cpp:110
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
@@ -2347,13 +2349,13 @@ msgstr "Lataan IP-suodattimet 'ipfilter.dat' sekä 'ipfilter_static.dat'."
 #: src/IPFilter.cpp:294
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr "Ipfilter.dat-tiedoston '%s' lataaminen epäonnistui, muoto tuntematon."
+msgstr "Ipfilter.dat-tiedoston '%s' avaaminen epäonnistui, muoto tuntematon."
 
 #: src/IPFilter.cpp:335
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
-"Ipfilter.dat-tiedoston '%s' lataaminen epäonnistui, tiedostoa ei voitu avata."
+"Ipfilter.dat-tiedoston '%s' avaaminen epäonnistui, tiedostoa ei voitu avata."
 
 #: src/IPFilter.cpp:340
 #, c-format
@@ -2408,7 +2410,7 @@ msgstr "Kademlia: hakusana on liian lyhyt"
 #: src/kademlia/kademlia/SearchManager.cpp:132
 #, c-format
 msgid "Keyword for search: %s"
-msgstr ""
+msgstr "Avainsana hakuun: %s"
 
 #: src/kademlia/kademlia/SearchManager.cpp:140
 msgid "Kademlia: Search keyword is already on search list: "
@@ -2431,8 +2433,9 @@ msgstr "Ei kontakteja, käytä yhdistämisapua tai hae nodes.dat-tiedosto."
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] ""
+msgstr[0] "Vain %d Kad-kontakti saatavilla, tiedostoa nodes.dat ei tallennettu"
 msgstr[1] ""
+"Vain %d Kad-kontaktia saatavilla, tiedostoa nodes.dat ei tallennettu"
 
 #: src/kademlia/routing/RoutingZone.cpp:330
 #, c-format
@@ -2524,9 +2527,8 @@ msgid "EC connection failed. Empty reply."
 msgstr "Etäyhteysyritys epäonnistui. Vastaus oli tyhjä."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:231
-#, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr "Etäyhteys: Epäkelpo vastaus palvelimelta. Yhteys suljettu."
+msgstr "Etäyhteys: Epäkelpo vastaus, kättely epäonnistui. Yhteys suljettu."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:239
 msgid "Succeeded! Connection established to aMule "
@@ -2541,13 +2543,12 @@ msgid "External Connection: Access denied because: "
 msgstr "Etäyhteys: Pääsy evättiin: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:251
-#, fuzzy
 msgid "External Connection: Handshake failed."
-msgstr "Etäyhteys: Pääsy evättiin"
+msgstr "Etäyhteys: Kättely epäonnistui"
 
 #: src/ListenSocket.cpp:66
 msgid "ListenSocket: Ok."
-msgstr ""
+msgstr "KuunteluPistukka: Ok."
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
@@ -2595,7 +2596,7 @@ msgstr "Rajoittamaton"
 
 #: src/MuleTrayIcon.cpp:327
 msgid "Traybar-icon lost, trying to recreate ..."
-msgstr ""
+msgstr "Tehtäväpalkin kuvake katosi, yritän uudelleenluoda..."
 
 #: src/MuleTrayIcon.cpp:348
 msgid "aMule Tray Menu"
@@ -2902,16 +2903,16 @@ msgstr "Tavua"
 
 #: src/muuli_wdr.cpp:265 src/muuli_wdr.cpp:288
 msgid "KB"
-msgstr "KiB"
+msgstr "KB"
 
 #: src/muuli_wdr.cpp:266 src/muuli_wdr.cpp:289 src/muuli_wdr.cpp:1954
 #: src/OtherFunctions.cpp:109
 msgid "MB"
-msgstr "MiB"
+msgstr "MB"
 
 #: src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290 src/OtherFunctions.cpp:111
 msgid "GB"
-msgstr "GiB"
+msgstr "GB"
 
 #: src/muuli_wdr.cpp:277
 msgid "Max Size"
@@ -3885,7 +3886,6 @@ msgstr ""
 "Tyhjä tai 0.0.0.0 tarkoittaa kaikkia verkkoliitäntöjä."
 
 #: src/muuli_wdr.cpp:2323 src/muuli_wdr.cpp:2384
-#, fuzzy
 msgid "TCP port:"
 msgstr "TCP-portti:"
 
@@ -4370,11 +4370,11 @@ msgstr "Yhdistettävän välityspalvelimen tyyppi"
 
 #: src/muuli_wdr.cpp:3197
 msgid "Proxy host:"
-msgstr "Isäntänimi:"
+msgstr "Välityspalvelin:"
 
 #: src/muuli_wdr.cpp:3201
 msgid "The proxy host name"
-msgstr "Välityspalvelimen isäntänimi"
+msgstr "Välityspalvelimen verkkonimi"
 
 #: src/muuli_wdr.cpp:3204
 msgid "Proxy port:"
@@ -4473,11 +4473,11 @@ msgstr[1] "tavua"
 
 #: src/OtherFunctions.cpp:107
 msgid "kB"
-msgstr "KiB"
+msgstr "KB"
 
 #: src/OtherFunctions.cpp:113
 msgid "TB"
-msgstr "TiB"
+msgstr "TB"
 
 #: src/OtherFunctions.cpp:123
 msgid "k"
@@ -4503,7 +4503,7 @@ msgstr[1] "tavua/s"
 
 #: src/OtherFunctions.cpp:140
 msgid "MB/s"
-msgstr "MiB/s"
+msgstr "MB/s"
 
 #: src/OtherFunctions.cpp:150 src/OtherFunctions.cpp:154
 msgid "secs"
@@ -4555,7 +4555,7 @@ msgstr "Aktiivinen"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
-msgstr ""
+msgstr "Odotellaan osatiedostojen muuntosäikeen päättymistä..."
 
 #: src/PartFileConvert.cpp:208
 #, c-format
@@ -4564,7 +4564,7 @@ msgstr "Tuon %s: %s"
 
 #: src/PartFileConvert.cpp:239
 msgid "Reading temp folder"
-msgstr "Luen väliaikaishakemistoa"
+msgstr "Luen väliaikaiskansiota"
 
 #: src/PartFileConvert.cpp:243
 msgid "Retrieving basic information from download info file"
@@ -4635,7 +4635,7 @@ msgstr "VIRHE: osatiedoston luominen epäonnistui)"
 #: src/PartFile.cpp:328
 #, c-format
 msgid "Trying to load backup of met-file from %s"
-msgstr "Yritän ladata met-tiedoston varmuuskopion kohteesta %s"
+msgstr "Yritän avata met-tiedoston varmuuskopion kohteesta %s"
 
 #: src/PartFile.cpp:335
 #, c-format
@@ -4656,8 +4656,7 @@ msgstr "VIRHE: Epäkelpo part.met-tiedoston versio: %s ==> %s"
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
-"VIRHE: %s (%s) on turmeltunut (väärä tunnistemäärä), tiedostoa ei voitu "
-"ladata."
+"VIRHE: %s (%s) on turmeltunut (väärä tagimäärä), tiedostoa ei voitu avata."
 
 #: src/PartFile.cpp:605
 msgid "Trying to recover file info..."
@@ -4692,9 +4691,8 @@ msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "VIRHE osatiedostoa tallennettaessa: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:901
-#, fuzzy
 msgid "IO failure while saving partfile: "
-msgstr "VIRHE osatiedostoa tallennettaessa: %s (%s ==> %s)"
+msgstr "IO-virhe osatiedostoa tallennettaessa: "
 
 #: src/PartFile.cpp:914
 #, c-format
@@ -4742,7 +4740,11 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
+"Turmeltunut osa (%d) %d osasta tiedostossa %s - Tiedostotulostarkiste |%s| "
+"Tiedostotarkiste |%s|"
 msgstr[1] ""
+"Turmeltunut osa (%d) %d osasta tiedostossa %s - Tiedostotulostarkiste |%s| "
+"Tiedostotarkiste |%s|"
 
 #: src/PartFile.cpp:1176
 #, c-format
@@ -4767,7 +4769,7 @@ msgstr "Lataus suoritettu: %s"
 #: src/PartFile.cpp:2228
 #, c-format
 msgid "Deleting file: %s"
-msgstr "Poistan tiedoston: %s"
+msgstr "Poistetaan tiedosto: %s"
 
 #: src/PartFile.cpp:2291
 #, c-format
@@ -4798,7 +4800,8 @@ msgstr "Ladattu osa %i on turmeltunut tiedostossa: %s"
 #: src/PartFile.cpp:3096
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-msgstr "ICH: Palautettu turmeltunut osa %i kohteessa %s -> Säästetyt tavut: %s"
+msgstr ""
+"ICH: Ennallistettu turmeltunut osa %i kohteessa %s -> Säästetyt tavut: %s"
 
 #: src/PartFile.cpp:3700
 msgid "Allocating"
@@ -4830,9 +4833,8 @@ msgid "Arabic"
 msgstr "Arabia"
 
 #: src/Preferences.cpp:662
-#, fuzzy
 msgid "Asturian"
-msgstr "Viro"
+msgstr "Asturia"
 
 #: src/Preferences.cpp:663
 msgid "Basque"
@@ -4972,14 +4974,14 @@ msgstr "vaihtoehtoja ei saatavilla"
 
 #: src/Preferences.cpp:1548
 msgid "Invalid category found, skipping"
-msgstr ""
+msgstr "Löytyi epäkelpo luokka, ohitetaan"
 
 #: src/Preferences.cpp:1713
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
-"TCP-portti ei voi olla korkeampi kuin 65532 koska serverin käyttämä UDP "
-"socket on TCP+3"
+"TCP-portti ei voi olla korkeampi kuin 65532 koska serverin käyttämä UDP-"
+"pistukka on TCP+3"
 
 #: src/Preferences.cpp:1714
 #, c-format
@@ -4989,7 +4991,7 @@ msgstr "Käytetään oletusporttia (%d)"
 #: src/Preferences.cpp:1737
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
-msgstr ""
+msgstr "Unohdetaan olematon jaettu kansio: %s"
 
 #: src/PrefsUnifiedDlg.cpp:168 src/Statistics.cpp:688
 msgid "Connection"
@@ -5046,24 +5048,27 @@ msgstr "Debuggaus"
 #: src/PrefsUnifiedDlg.cpp:320
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
-msgstr ""
+msgstr "Asetuksen kytkeminen widgettiin epäonnistui ID:llä %d ja avaimella %s"
 
 #: src/PrefsUnifiedDlg.cpp:373
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr ""
+"Datan siirtäminen asetuksesta widgettiin epäonnistui ID:llä %d ja avaimella %"
+"s"
 
 #: src/PrefsUnifiedDlg.cpp:487
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr ""
+"Datan siirtäminen widgetistä asetukseen epäonnistui ID:llä %d ja avaimella %s"
 
 #: src/PrefsUnifiedDlg.cpp:542
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr ""
-"aMule on käynnistettävä uudestaan näiden muutosten voimaansaattamiseksi:\n"
+"aMule on käynnistettävä uudelleen näiden muutosten voimaansaattamiseksi:\n"
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:549
@@ -5099,9 +5104,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Väliaikaiskansio muuttui.\n"
 
 #: src/PrefsUnifiedDlg.cpp:592
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Kaikki verkot ovat pois päältä."
+msgstr "- ED2K-verkko käytössä.\n"
 
 #: src/PrefsUnifiedDlg.cpp:659
 msgid ""
@@ -5234,9 +5238,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Palvelinyhteyden päivitysväli: Ei käytössä"
 
 #: src/PrefsUnifiedDlg.cpp:1099
-#, fuzzy
 msgid "disabled"
-msgstr "Poissa käytöstä"
+msgstr "poissa käytöstä"
 
 #: src/PrefsUnifiedDlg.cpp:1117
 #, c-format
@@ -5310,20 +5313,19 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Kopioi eD2k-linkki leikepöydälle"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
-msgstr "Peruuta"
+msgstr "Peruutettu"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Uusi"
 
 #: src/ServerConnect.cpp:69
 msgid ""
 "Failed to connect to all obfuscated servers listed. Making another pass "
 "without obfuscation."
 msgstr ""
-"Kätketyt yhteysyritykset palvelimille epäonnistuivat. Yritetään uudestaan "
+"Kätketyt yhteysyritykset palvelimille epäonnistuivat. Yritetään uudelleen "
 "ilman kätkemistä."
 
 #: src/ServerConnect.cpp:74
@@ -5388,7 +5390,7 @@ msgstr "Yhdistäminen kohteeseen %s (%s:%i) epäonnistui."
 
 #: src/ServerConnect.cpp:450
 msgid "ERROR: Socket invalid at timeout check"
-msgstr "VIRHE: Socket virheellinen aikakatkaisutarkistuksessa"
+msgstr "VIRHE: Pistukka virheellinen aikakatkaisutarkistuksessa"
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -5397,7 +5399,7 @@ msgstr "Yhteysyritys kohteeseen %s (%s:%i) aikakatkaistiin."
 
 #: src/ServerConnect.cpp:633
 msgid "Received late result of DNS lookup, discarding."
-msgstr ""
+msgstr "Vastaanotettiin myöhästynyt vastaus DNS-kyselyyn, ohitetaan."
 
 #: src/ServerList.cpp:84
 #, c-format
@@ -5411,7 +5413,7 @@ msgstr "Tiedostoa server.met ei löytynyt!"
 #: src/ServerList.cpp:97
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr "Server.met-tiedoston '%s' lataus epäonnistui, tuntematon muotoilu."
+msgstr "Server.met-tiedoston '%s' avaaminen epäonnistui, tuntematon muotoilu."
 
 #: src/ServerList.cpp:103
 msgid "Failed to open server.met!"
@@ -5690,7 +5692,7 @@ msgstr "Odottamaton virhe käsiteltäessä pakettia palvelimelta: %s"
 #: src/ServerSocket.cpp:646 src/ServerSocket.cpp:650
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
-msgstr "Ei voitu luoda DNS-selvittäjää yhdistäessä %s"
+msgstr "Ei voitu luoda DNS-selvityssäiettä kohteeseen %s yhdistämiseen"
 
 #: src/ServerSocket.cpp:729
 #, c-format
@@ -5704,7 +5706,7 @@ msgstr "käyttää protokollan kätkentää."
 #: src/ServerSocket.cpp:748
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
-msgstr "Yhdistää %s (%s - %s:%i) %s"
+msgstr "Yhdistetään %s (%s - %s:%i) %s"
 
 #: src/ServerSocket.cpp:760
 #, c-format
@@ -5713,7 +5715,7 @@ msgstr "Ei voitu selvittää dns-nimeä palvelimelle %s: Ei voida yhdistää!"
 
 #: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
-msgstr "Palvelinta ei lisätty: IP:tä tai isäntänimeä ei annettu."
+msgstr "Palvelinta ei lisätty: IP:tä tai verkkonimeä ei annettu."
 
 #: src/ServerWnd.cpp:108
 msgid "Server not added: Invalid server-port specified."
@@ -5746,17 +5748,16 @@ msgstr "Yhteyden tila:"
 #: src/ServerWnd.cpp:215
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
-msgstr ""
+msgstr "Palomuurattu - avaa TCP-portti %d reitittimestä tai palomuurista"
 
 #: src/ServerWnd.cpp:217
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Yhteyden tila:"
+msgstr "UDP-yhteyden tila:"
 
 #: src/ServerWnd.cpp:220
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
-msgstr ""
+msgstr "Palomuurattu - avaa UDP-portti %d reitittimestä tai palomuurista"
 
 #: src/ServerWnd.cpp:224
 msgid "Firewalled state: "
@@ -5764,43 +5765,40 @@ msgstr "Palomuurattu tilanne: "
 
 #: src/ServerWnd.cpp:230
 msgid "No buddy required - TCP port open"
-msgstr ""
+msgstr "Kaveria ei vaadita - TCP-portti auki"
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - UDP port open"
-msgstr ""
+msgstr "Kaveria ei vaadita - UDP-portti auki"
 
 #: src/ServerWnd.cpp:234
 msgid "No buddy"
 msgstr "Ei kaveria"
 
 #: src/ServerWnd.cpp:238
-#, fuzzy
 msgid "Connecting to buddy"
-msgstr "Yhdistetty kaveriin"
+msgstr "Yhdistetään kaveriin"
 
 #: src/ServerWnd.cpp:241
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Yhdistetty kaveriin"
+msgstr "Yhdistetty kaveriin osoitteessa %s"
 
 #: src/ServerWnd.cpp:251
-#, fuzzy
 msgid "Indexed sources:"
-msgstr "Löydetyt lähteet :"
+msgstr "Indeksoidut lähteet:"
 
 #: src/ServerWnd.cpp:253
 msgid "Indexed keywords:"
-msgstr ""
+msgstr "Indeksoidut avainsanat:"
 
 #: src/ServerWnd.cpp:255
-#, fuzzy
 msgid "Indexed notes:"
-msgstr "Indeksitiedostoa ei löydetty: "
+msgstr "Indeksoidut huomautukset:"
 
 #: src/ServerWnd.cpp:257
 msgid "Indexed load:"
-msgstr ""
+msgstr "Indeksoitu kuorma:"
 
 #: src/ServerWnd.cpp:260
 msgid "Average Users:"
@@ -5817,7 +5815,7 @@ msgstr "Ei käynnissä"
 #: src/SharedFileList.cpp:324
 #, c-format
 msgid "Adding file %s to shares"
-msgstr ""
+msgstr "Lisään tiedoston %s jaettaviin"
 
 #: src/SharedFileList.cpp:352
 #, c-format
@@ -5839,14 +5837,14 @@ msgid "ERROR: Attempted to share %s"
 msgstr "VIRHE: Yritettiin jakaa %s"
 
 #: src/SharedFileList.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Shared directory not found, skipping: %s"
-msgstr "palvelinta ei löytynyt: %s"
+msgstr "Jaettua kansiota ei löytynyt, hypätään yli: %s"
 
 #: src/SharedFileList.cpp:463
 #, c-format
 msgid "No shareable files found in directory: %s"
-msgstr ""
+msgstr "Jaettavia tiedostoja ei löytynyt kansiosta: %s"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -5902,11 +5900,11 @@ msgstr "Kopioi eD2k-linkki leikepöydälle (Lähde) (Kryptaustiedoilla)"
 
 #: src/SharedFilesCtrl.cpp:170
 msgid "Copy eD2k link to clipboard (&Hostname)"
-msgstr "Kopioi eD2k-linkki leikepöydälle (Isäntänimi)"
+msgstr "Kopioi eD2k-linkki leikepöydälle (Verkkonimi)"
 
 #: src/SharedFilesCtrl.cpp:171
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Kopioi eD2k-linkki leikepöydälle (Isäntänimi) (Kyptaustiedoilla)"
+msgstr "Kopioi eD2k-linkki leikepöydälle (Verkkonimi) (Kyptaustiedoilla)"
 
 #: src/SharedFilesCtrl.cpp:172
 msgid "Copy eD2k link to clipboard (&AICH info)"
@@ -5956,7 +5954,7 @@ msgid "Kad Overhead (Packets): %s"
 msgstr "Kad-otsikkoja (Paketteja): %s"
 
 #: src/Statistics.cpp:660 src/Statistics.cpp:681
-#, fuzzy, c-format
+#, c-format
 msgid "Crypt overhead (UDP): %s"
 msgstr "Kryptauksen otsikkoja (UDP): %s"
 
@@ -6061,19 +6059,19 @@ msgid "Peak Connections (estimate): %i"
 msgstr "Yhteyksiä enimmillään (arvio): %i"
 
 #: src/Statistics.cpp:703
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Koko on tuntematon"
+msgstr "Tuntematon: %s"
 
 #: src/Statistics.cpp:709
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Suodatettu"
+msgstr "Suodatettu: %s"
 
 #: src/Statistics.cpp:710
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Estetty"
+msgstr "Estetty: %s"
 
 #: src/Statistics.cpp:711
 #, c-format
@@ -6249,7 +6247,7 @@ msgstr "Nykyinen IP-suodatustaso on %d.\n"
 #: src/TextClient.cpp:685
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "Kaistarajoitukset: Ylös: %u KiB/s, Alas: %u KiB/s.\n"
+msgstr "Kaistarajoitukset: Ylös: %u KB/s, Alas: %u KB/s.\n"
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
@@ -6370,37 +6368,32 @@ msgstr ""
 "suoritettavaa ydintä.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
 msgstr "Lataa uudelleen annetun kohteen."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
-msgstr "Lataa uudelleen jaettujen tiedostojen listan."
+msgstr "Lataa uudelleen lista jaetuista tiedostoista."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "Lataa uudelleen IP-suodatustaulukon tiedostosta."
+msgstr "Lataa uudelleen IP-suodatustaulukko."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "Valitse IP-suodatuksen taso."
+msgstr "Lataa nykyinen IP-suodatustaulukko uudelleen."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "Lataa uudelleen IP-suodatustaulukon tiedostosta."
+msgstr "Päivittää IP-suodatustaulukon URLista."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Mikäli URL jätetään pois, käytetään URLia asetuksista."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
-msgstr "Yhdistää verkkoon."
+msgstr "Yhdistä verkkoon."
 
 #: src/TextClient.cpp:873
 msgid ""
@@ -6440,7 +6433,6 @@ msgid "Disconnect from Kad only."
 msgstr "Katkaise vain Kad-yhteys."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
 msgstr "Lisää eD2k- tai magnet-linkin ytimelle."
 
@@ -6468,9 +6460,8 @@ msgid "Set a preference value."
 msgstr "Aseta haluamasi asetukset."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
-msgstr "Aseta IP-suodatusasetukset."
+msgstr "Aseta IP-suodatuksen asetukset."
 
 #: src/TextClient.cpp:889
 msgid "Turn IP filtering on for both clients and servers."
@@ -6538,38 +6529,32 @@ msgid "Get and display a preference value."
 msgstr "Näytä asetuksen arvo."
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
 msgstr "Hae IP-suodatuksen asetukset."
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
 msgstr "Hae IP-suodatuksen tila sekä asiakkaille että palvelimille."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
 msgstr "Hae IP-suodatuksen tila asiakkaille."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
 msgstr "Hae IP-suodatuksen tila palvelimille."
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "Valitse IP-suodatuksen taso."
+msgstr "Hae IP-suodatuksen taso."
 
 #: src/TextClient.cpp:916
 msgid "Get bandwidth limits."
 msgstr "Hae kaistankäytön rajat."
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
-msgstr "Suorittaa kad-haun"
+msgstr "Suorittaa haun"
 
 #: src/TextClient.cpp:919
 msgid ""
@@ -6586,37 +6571,30 @@ msgstr ""
 "Esimerkki: 'search kad tiedosto' suorittaa kad-haun nimellä \"tiedosto\".\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
 msgstr "Suorittaa haun kaikkialta."
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
 msgstr "Suorittaa haun paikallisesti"
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
 msgstr "Suorittaa kad-haun"
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
 msgstr "Näyttää viimeisimmän haun tulokset."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
 msgstr "Näyttää edellisen haun tulokset.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
 msgstr "Näyttää haun edistymisen."
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
 msgstr "Näyttää haun edistymisen.\n"
 
@@ -6677,7 +6655,6 @@ msgid "Show queues/lists."
 msgstr "Näytä jonot/listaukset."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Näyttää lähetys/latausjonon, palvelinlistan tai jaettujen tiedostojen "
@@ -6869,7 +6846,7 @@ msgstr "Käsittelee tiedostoa numero %u: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:78
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "Olet pyytänyt osatarkisteita (Vain tiedostoille jotka ovat > 9.5 MiB)"
+msgstr "Olet pyytänyt osatarkisteita (Vain tiedostoille jotka ovat > 9.5 MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:95
 #, c-format
@@ -7095,22 +7072,22 @@ msgstr "%.0f B"
 #: src/utils/wxCas/src/onlinesig.cpp:342
 #, c-format
 msgid "%.2f KB"
-msgstr "%.2f KiB"
+msgstr "%.2f KB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:345
 #, c-format
 msgid "%.2f MB"
-msgstr "%.2f MiB"
+msgstr "%.2f MB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:348
 #, c-format
 msgid "%.2f GB"
-msgstr "%.2f GiB"
+msgstr "%.2f GB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:351
 #, c-format
 msgid "%.2f TB"
-msgstr "%.2f TiB"
+msgstr "%.2f TB"
 
 #: src/utils/wxCas/src/wxcas.cpp:83
 msgid "wxCas, aMule Online Statistics"
@@ -7292,11 +7269,11 @@ msgstr "Lataus: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1113
 msgid " kB/s, Upload: "
-msgstr " KiB/s, Lähetys: "
+msgstr " KB/s, Lähetys: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1115
 msgid " kB/s"
-msgstr " KiB/s"
+msgstr " KB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1123
 msgid "Sharing: "
@@ -7490,7 +7467,7 @@ msgstr "Käsittelee pyyntöä [alkuperäinen]: "
 
 #: src/webserver/src/WebServer.cpp:1871
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Salasanaa ei annettu, kirjautumista ei sallita"
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Checking password\n"
@@ -7519,108 +7496,3 @@ msgstr "Uloskirjautumista pyydetty\n"
 #: src/webserver/src/WebServer.cpp:1911
 msgid "Processing request [redirected]: "
 msgstr "Käsittelee pyyntöä [uudelleenohjattu]: "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Hae IP-suodatuksen taso."
-
-#~ msgid "Makes a search."
-#~ msgstr "Tekee haun."
-
-#, fuzzy
-#~ msgid "Killed!"
-#~ msgstr "Epäonnistunut"
-
-#, fuzzy
-#~ msgid "Shutting down aMule..."
-#~ msgstr "Sammuta aMule."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr ""
-#~ "Seuraavat asetukset on muutettu tähän julkaisuun turvallisuussyistä:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Lisätty protokollan kätkemisen tuki saapuville sekä lähteville "
-#~ "yhteyksille.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Estetty palvelinlistan päivittäminen muilta palvelimilta ja "
-#~ "asiakkailta.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Saadaksesi lisätietoa näiden muutosten syistä, etsi\n"
-#~ "aMulen wikistä osoitteessa http://wiki.amule.org \"fake servers\"-"
-#~ "tietoa.\n"
-#~ "On tärkeää että puhdistat palvelinlistaltasi huijauspalvelimet jotta "
-#~ "aMule toimii oikein."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Lisäksi, selaimen asetukset on nollattu järjestelmän oletukseen. Ole hyvä "
-#~ "ja konfiguroi selaimen asetukset uudelleen mikäli tarpeellista.\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Haen tilannetietoa..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Käyttäjiä E: %s K: %s | Tiedostoja E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Asiakas %s IP:Portti %s:%d ohjelmalla %s %s %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() palautti NULL"
-
-#~ msgid "Firewalled"
-#~ msgstr "Palomuurattu"
-
-#~ msgid ""
-#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s "
-#~ "siirretty\n"
-#~ "Tiedostotilasto tästä sessiosta: Hyväksytty %d / %d pyynnöstä, %s "
-#~ "siirretty\n"
-
-#~ msgid ""
-#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
-#~ "siirretty\n"
-#~ "Tiedostotilasto kaikista sessioista: Hyväksytty %d / %d pyynnöstä, %s "
-#~ "siirretty\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
-#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
-#~ "FileResultHash |%s| FileHash |%s|"
-#~ msgstr ""
-#~ "Turmeltunut osa (%d) kohteen %d osatiedostossa %s - Tiedostotulostarkiste "
-#~ "|%s| Tiedostotarkiste |%s|Turmeltunut osa (%d) kohteen %d osatiedostossa %"
-#~ "s - Tiedostotulostarkiste |%s| Tiedostotarkiste |%s|"
