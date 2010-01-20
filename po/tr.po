@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 10:53+0100\n"
-"PO-Revision-Date: 2009-12-30 07:01+0200\n"
+"PO-Revision-Date: 2010-01-20 01:58+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -836,24 +836,23 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "'%s' kullanıcısından yeni ileti geldi (IP: %s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "UYARI: known.met açılamıyor."
+msgstr "UYARI: %s açılamıyor."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
-msgstr "UYARI: Bilinen dosya listesi bozuk. Geçersiz başlık içeriyor."
+msgstr "UYARI: İptal edilen dosya listesi bozuk. Geçersiz başlık içeriyor."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "known.met dosyası okumada IO hatası: %s"
+msgstr "%s dosyası okumada IO hatası: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "known.met dosyası kaydedilirken hata: %s"
+msgstr "%s dosyası kaydedilirken hata: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -5281,13 +5280,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "eD2k bağlantısını panoya kopyala"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
-msgstr "İptal"
+msgstr "İptal edildi"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Yeni"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -6339,33 +6337,28 @@ msgstr ""
 "bir işe yaramayacaktır.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
 msgstr "Verilen nesne yeniden yükleniyor."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
 msgstr "Paylaşılmış dosya listesini yeniden yükler."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
 msgstr "Dosyadan IP süzgeci tablosunu yeniden yükler."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
 msgstr "IP süzme seviyesini seçiniz."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
 msgstr "Dosyadan IP süzgeci tablosunu yeniden yükler."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Bir URL verilmediyse ayarlarda belirlenen URL kullanılır."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
@@ -6409,7 +6402,6 @@ msgid "Disconnect from Kad only."
 msgstr "Sadece Kad'dan bağlantıyı kes."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
 msgstr "Çekirdeğe bir eD2k veya magnet bağlantısı ekler."
 
@@ -6437,7 +6429,6 @@ msgid "Set a preference value."
 msgstr "Bir ayar değeri girin."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
 msgstr "IP Süzgeci ayarları girin"
 
@@ -6506,27 +6497,22 @@ msgid "Get and display a preference value."
 msgstr "Bir ayar değerini al ve göster"
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
 msgstr "IP Süzgeci ayarlarını al"
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
 msgstr "Hem kullanıcılar hem de sunucular için IP süzgeci durumunu al."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
 msgstr "Sadece kullanıcılar için IP süzgeci durumunu al."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
 msgstr "Sadece sunucular için IP süzgeci durumunu al."
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
 msgstr "IP süzme seviyesini seçiniz."
 
@@ -6535,7 +6521,6 @@ msgid "Get bandwidth limits."
 msgstr "Bağlantı sınırlarını al."
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
 msgstr "Kad. araması yapar."
 
@@ -6554,37 +6539,30 @@ msgstr ""
 "Örnek:'kad dosyası ara' \"dosya\" için bir kad araması gerçekleştirir.\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
 msgstr "Genel arama yapar."
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
 msgstr "Sunucuda arama yapar."
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
 msgstr "Kad. araması yapar."
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
 msgstr "Son arama sonuçlarını gösterir."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
 msgstr "Önceki aramanın sonuçlarına döner.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
 msgstr "Bir aramanın işleyişini göster"
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
 msgstr "Bir aramanın işleyişini gösterir.\n"
 
@@ -6643,7 +6621,6 @@ msgid "Show queues/lists."
 msgstr "Sıra/liste göster."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Gönderme/indirme sırasını,sunucu listesini veya paylaşılmış dosya listesini "
