@@ -1189,7 +1189,8 @@ upnpDiscovery:
 		if (ret != UPNP_E_SUCCESS) {
 			msg << "Error retrieving device description from " <<
 				d_event->Location << ": " <<
-				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) << ".";
+				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) <<
+				"(" << ret << ").";
 			AddDebugLogLineM(true, logUPnP, msg);
 		} else {
 			msg2 << "Retrieving device description from " <<
