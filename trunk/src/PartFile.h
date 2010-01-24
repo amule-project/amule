@@ -404,7 +404,7 @@ private:
 	uint8   m_iDownPriorityEC;
 	SourcenameItemList m_SourcenameItem_list;
 public:
-	const SourcenameItemList &GetSourcenameItemList() { return m_SourcenameItem_list; }
+	SourcenameItemList &GetSourcenameItemList() { return m_SourcenameItem_list; }
 	void ClearSourcenameItemList() { m_SourcenameItem_list.clear(); }
 	void AddSourcenameItemList(const wxString &name, long count) { m_SourcenameItem_list.push_back(SourcenameItem(name, count)); }
 #endif

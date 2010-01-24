@@ -196,6 +196,7 @@ enum ECTagNames {
 		EC_TAG_PARTFILE_LOST_CORRUPTION           = 0x0319,
 		EC_TAG_PARTFILE_GAINED_COMPRESSION        = 0x031A,
 		EC_TAG_PARTFILE_SAVED_ICH                 = 0x031B,
+		EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS       = 0x031C,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
@@ -594,6 +595,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0319: return wxT("EC_TAG_PARTFILE_LOST_CORRUPTION");
 		case 0x031A: return wxT("EC_TAG_PARTFILE_GAINED_COMPRESSION");
 		case 0x031B: return wxT("EC_TAG_PARTFILE_SAVED_ICH");
+		case 0x031C: return wxT("EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS");
 		case 0x0400: return wxT("EC_TAG_KNOWNFILE");
 		case 0x0401: return wxT("EC_TAG_KNOWNFILE_XFERRED");
 		case 0x0402: return wxT("EC_TAG_KNOWNFILE_XFERRED_ALL");

@@ -184,6 +184,7 @@ public final static short 	EC_TAG_PARTFILE_DOWNLOAD_ACTIVE           = 0x0318;
 public final static short 	EC_TAG_PARTFILE_LOST_CORRUPTION           = 0x0319;
 public final static short 	EC_TAG_PARTFILE_GAINED_COMPRESSION        = 0x031A;
 public final static short 	EC_TAG_PARTFILE_SAVED_ICH                 = 0x031B;
+public final static short 	EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS       = 0x031C;
 public final static short EC_TAG_KNOWNFILE                          = 0x0400;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED                  = 0x0401;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402;

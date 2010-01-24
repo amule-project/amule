@@ -123,13 +123,19 @@ class CValueMap {
 		
 		bool AddTag(const CECTag &tag, CECTag *parent)
 		{
-			bool ret = true;
+			bool ret = false;
 			ec_tagname_t tagname = tag.GetTagName();
 			if (m_map_tag.count(tagname) == 0 || m_map_tag[tagname] != tag) {
-				ret = parent->AddTag(tag);
+				parent->AddTag(tag);
 				m_map_tag[tagname] = tag;
+				ret = true;
 			}
 			return ret;
+		}
+
+		void ForgetTag(ec_tagname_t tagname)
+		{
+			m_map_tag.erase(tagname);
 		}
 };
 
