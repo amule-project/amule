@@ -83,7 +83,7 @@ bool CMuleNotebook::DeletePage(int nPage)
 	// but the control is still the one to be deleted at that moment).
 	if (GetPageCount()) {
 		// Select the tab that took the place of the one we just deleted.
-		int page = nPage;
+		size_t page = nPage;
 		// Except if we deleted the last one - then select the one that is last now.
 		if (page == GetPageCount()) {
 			page--;
