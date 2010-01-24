@@ -125,7 +125,8 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 void CEC_PartFile_Tag::Detail_Tag(CPartFile *file, CValueMap *valuemap)
 {
 	// Tag for source names
-	CECTag sn(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) 0);
+	CECEmptyTag sn(EC_TAG_PARTFILE_SOURCE_NAMES);
+	CECEmptyTag snc(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS);
 	SourcenameItemList sil;
 	const CPartFile::SourceSet &sources = file->GetSourceList();
 	for (CPartFile::SourceSet::const_iterator it = sources.begin(); it != sources.end(); ++it) {
@@ -149,9 +150,14 @@ void CEC_PartFile_Tag::Detail_Tag(CPartFile *file, CValueMap *valuemap)
 	for (SourcenameItemList::const_iterator its = sil.begin() ; its != sil.end(); ++its ) {
 		// Tag children are evaluated by index, not by name
 		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, its->name));
-		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) its->count));
+		snc.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS, (uint64) its->count));
 	}
-	AddTag(sn, valuemap);
+	if (AddTag(sn, valuemap) && valuemap) {
+		// If there was a change in the list of names,
+		// make sure that the counts are updated too.
+		valuemap->ForgetTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS);
+	}
+	AddTag(snc, valuemap);
 }	
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail, CValueMap *valuemap)

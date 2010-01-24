@@ -187,6 +187,7 @@ public enum ECTagNames {
 		EC_TAG_PARTFILE_LOST_CORRUPTION           = 0x0319,
 		EC_TAG_PARTFILE_GAINED_COMPRESSION        = 0x031A,
 		EC_TAG_PARTFILE_SAVED_ICH                 = 0x031B,
+		EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS       = 0x031C,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
