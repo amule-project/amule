@@ -230,6 +230,8 @@ class CEC_PartFile_Tag : public CECTag {
 		time_t		LastSeenComplete(time_t *target = 0)const { return AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, target); }
 		time_t		LastDateChanged(time_t *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LAST_RECV, target); }
 		uint32		DownloadActiveTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, target); }
+		uint16		AvailablePartCount(uint16 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_AVAILABLE_PARTS, target); }
+
 		uint64		GetLostDueToCorruption(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LOST_CORRUPTION, target); }
 		uint64		GetGainDueToCompression(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_GAINED_COMPRESSION, target); }
 		uint32		TotalPacketsSavedDueToICH(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SAVED_ICH, target); }
