@@ -1362,6 +1362,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	tag->LastSeenComplete(&file->lastseencomplete);
 	tag->LastDateChanged(&file->m_lastDateChanged);
 	tag->DownloadActiveTime(&file->m_nDlActiveTime);
+	tag->AvailablePartCount(&file->m_availablePartsCount);
 
 	tag->GetLostDueToCorruption(&file->m_iLostDueToCorruption);
 	tag->GetGainDueToCompression(&file->m_iGainDueToCompression);
