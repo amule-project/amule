@@ -249,7 +249,8 @@ CECTag::CECTag(ec_tagname_t name, double data) : m_tagName(name)
 {
 	std::ostringstream double_str;
 	double_str << data;
-	const char * double_chr = double_str.str().c_str();
+	std::string double_string = double_str.str();
+	const char * double_chr = double_string.c_str();
 	m_dataLen = (ec_taglen_t)strlen(double_chr) + 1;
 	NewData();
 	memcpy(m_tagData, double_chr, m_dataLen);
@@ -357,7 +358,8 @@ bool CECTag::operator==(const CECTag& tag) const
  * \endcode
  *
  * @param tag a CECTag class instance to add.
- * @return \b true on succcess, \b false when an error occured
+ * @return \b true if tag was really added, 
+ * \b false when there was an error or it was omitted through valuemap.
  */
 bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 {
