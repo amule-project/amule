@@ -68,12 +68,16 @@ AC_DEFUN([KDE_HEADER_CHECK],
 AC_DEFUN([KDE_SERVICE_PATH_CHECK],
 [
 	AC_MSG_CHECKING(for kde4 services Path)
+	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
+	[
+		KDE_IN_HOME="yes"
+	])
 	AS_IF([test ${KDE_IN_HOME} = "yes"],
 	[
-		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | grep /home`
+		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | grep /home | head -1`
 	],
 	[
-		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | grep /usr`
+		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | grep /usr | head -1`
 	])
 	AC_MSG_RESULT(${KDE_SERVICE_PATH})
 	AC_SUBST(KDE_SERVICE_PATH)
@@ -82,12 +86,16 @@ AC_DEFUN([KDE_SERVICE_PATH_CHECK],
 AC_DEFUN([KDE_MODULE_PATH_CHECK],
 [
 	AC_MSG_CHECKING(for kde4 plugins Path)
+	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
+	[
+		KDE_IN_HOME="yes"
+	])
 	AS_IF([test ${KDE_IN_HOME} = "yes"],
 	[
-		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | grep /home`
+		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | grep /home | head -1`
 	],
 	[
-		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | grep /usr`
+		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | grep /usr | head -1`
 	])
 	AC_MSG_RESULT(${KDE_MODULE_PATH})
 	AC_SUBST(KDE_MODULE_PATH)
@@ -96,6 +104,10 @@ AC_DEFUN([KDE_MODULE_PATH_CHECK],
 AC_DEFUN([KDE_ICON_PATH_CHECK],
 [
 	AC_MSG_CHECKING(for kde4 icons Path)
+	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
+	[
+		KDE_IN_HOME="yes"
+	])
 	AS_IF([test ${KDE_IN_HOME} = "yes"],
 	[
 		KDE_ICON_PATH=`${KDE4_CONFIG} --path icon | tr ":" "\n" | grep /home | head -1`
