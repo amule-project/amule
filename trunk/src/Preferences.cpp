@@ -823,13 +823,14 @@ public:
 		wxString folder;
 		int flags = wxDIR_DIRS;
 		wxString filespec = wxEmptyString;
+		wxString defaultSelection = _("- default -");
 //#warning there has to be a better way...
 		if ( GetKey() == wxT("/SkinGUIOptions/Skin") ) {
 			folder = wxT("skins");
 			m_is_skin = true;
 			flags = wxDIR_FILES;
 			filespec = wxT("*.zip");
-			skinSelector->Append(_("- default -"));
+			skinSelector->Append(defaultSelection);
 		} else {
 			folder = wxT("webserver");
 		}
@@ -888,6 +889,9 @@ public:
 		int id = skinSelector->FindString(m_value);
 		if ( id == wxNOT_FOUND ) {
 			id = 0;
+			if (m_is_skin) {
+				m_value = defaultSelection;
+			}
 		}
 		skinSelector->SetSelection(id);
 
