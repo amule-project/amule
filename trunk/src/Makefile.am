@@ -115,6 +115,11 @@ libmuleappgui_a_SOURCES = \
 	MuleCollection.cpp \
 	muuli_wdr.cpp 
 
+if ENABLE_IP2COUNTRY
+libmuleappgui_a_SOURCES += \
+	IP2Country.cpp
+endif
+
 libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(GEOIP_CPPFLAGS)
 
 core_sources = \
@@ -195,11 +200,6 @@ gui_sources = \
 	MuleTrayIcon.cpp \
 	MuleColour.cpp \
 	TransferWnd.cpp 
-
-if ENABLE_IP2COUNTRY
-gui_sources += \
-	IP2Country.cpp
-endif
 
 
 remote_common_sources = \

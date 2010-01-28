@@ -62,7 +62,7 @@ typedef std::map<wxString, CountryData> CountryDataMap;
 
 class CIP2Country {
 public:
-	CIP2Country();
+	CIP2Country(const wxString& configDir);
 	~CIP2Country();
 	const CountryData& GetCountryData(const wxString& ip);
 	void Enable();

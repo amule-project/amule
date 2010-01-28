@@ -43,13 +43,6 @@
 // MSVC projects can't include files configuration dependent, so just double-check the #define
 #ifdef ENABLE_IP2COUNTRY
 
-#ifdef _MSC_VER
-// MSVC needs it here, MingW needs it below
-#include <GeoIP.h>
-#include "IP2Country.h"
-#endif
-
-#include "amule.h"			// For theApp
 #include "Preferences.h"	// For thePrefs
 #include "CFile.h"			// For CPath
 #include "HTTPDownload.h"
@@ -62,13 +55,20 @@
 #include <wx/intl.h>
 #include <wx/image.h>
 
+#ifdef _MSC_VER
+// Block unnecessary includes from GeoIP.h
+#define _WINDOWS_
+#define _WINSOCK2API_
+#define _WS2TCPIP_H_
+#endif
+
 #include <GeoIP.h>
 #include "IP2Country.h"
 
-CIP2Country::CIP2Country()
+CIP2Country::CIP2Country(const wxString& configDir)
 {
 	m_geoip = NULL;
-	m_DataBaseName = theApp->ConfigDir + wxT("GeoIP.dat");
+	m_DataBaseName = configDir + wxT("GeoIP.dat");
 	if (m_CountryDataMap.empty()) {
 // this must go to enable - when all usages of GetCountryData() (ClientListCtrl, DownloadListCtrl) are surrounded with an IsEnabled()
 // right now, flags are loaded even when it's disabled
