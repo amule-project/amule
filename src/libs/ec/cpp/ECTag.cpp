@@ -166,6 +166,7 @@ CECTag::CECTag(ec_tagname_t name, const wxChar* data) : m_tagName(name)
  */
 CECTag::CECTag(const CECTag& tag)
 {
+	m_tagData = NULL;
 	*this = tag;
 }
 
@@ -279,6 +280,7 @@ CECTag& CECTag::operator=(const CECTag& tag)
 		m_tagName = tag.m_tagName;
 		m_dataLen = tag.m_dataLen;
 		m_dataType = tag.m_dataType;
+		delete [] m_tagData;
 		if (m_dataLen != 0) {
 			NewData();
 			memcpy(m_tagData, tag.m_tagData, m_dataLen);
