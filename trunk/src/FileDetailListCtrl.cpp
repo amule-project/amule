@@ -26,7 +26,6 @@
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD
 #include "FileDetailListCtrl.h"	// Interface declarations
 
-#define LVCFMT_LEFT wxLIST_FORMAT_LEFT
 #define wxLIST_STATE_DESELECTED 0x0000
 
 BEGIN_EVENT_TABLE(CFileDetailListCtrl, CMuleListCtrl)
@@ -40,8 +39,8 @@ CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoi
 	SetSortFunc(SortProc);
 	
 	// Initial sorting: Sources descending
-	InsertColumn(0, _("File Name"), LVCFMT_LEFT, 370);
-	InsertColumn(1, _("Sources"), LVCFMT_LEFT, 70);
+	InsertColumn(0, _("File Name"), wxLIST_FORMAT_LEFT, 370);
+	InsertColumn(1, _("Sources"), wxLIST_FORMAT_LEFT, 70);
 	
 	SetSorting(1, CMuleListCtrl::SORT_DES);
 

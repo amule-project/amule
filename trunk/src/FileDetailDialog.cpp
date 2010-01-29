@@ -143,9 +143,6 @@ void CFileDetailDialog::UpdateData()
 
 // CFileDetailDialog message handlers
 
-#define LVCFMT_LEFT wxLIST_FORMAT_LEFT
-
-
 void CFileDetailDialog::FillSourcenameList()
 {
 	CFileDetailListCtrl* pmyListCtrl; 
