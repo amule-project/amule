@@ -4183,7 +4183,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2951
 msgid "Accept only obfuscated connections"
-msgstr "Aktzeptiere ausschließlich verschleierte Verbindungen"
+msgstr "Akzeptiere ausschließlich verschleierte Verbindungen"
 
 #: src/muuli_wdr.cpp:2952
 msgid ""
