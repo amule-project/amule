@@ -152,11 +152,11 @@ CECTag::CECTag(ec_tagname_t name, const std::string& data) : m_tagName(name)
  *
  * @see GetStringData()
  */
-CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name)
+CECTag::CECTag(ec_tagname_t name, const wxString& data)
 {
 	ConstructStringTag(name, (const char*)unicode2UTF8(data));
 }
-CECTag::CECTag(ec_tagname_t name, const wxChar* data) : m_tagName(name)
+CECTag::CECTag(ec_tagname_t name, const wxChar* data)
 {
 	ConstructStringTag(name, (const char*)unicode2UTF8(data));
 }
@@ -655,8 +655,9 @@ double CECTag::GetDoubleData(void) const
 }
 
 
-void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
+void CECTag::ConstructStringTag(ec_tagname_t name, const std::string& data)
 {
+	m_tagName = name;
 	m_dataLen = (ec_taglen_t)strlen(data.c_str()) + 1;
 	NewData();
 	memcpy(m_tagData, data.c_str(), m_dataLen);
@@ -667,7 +668,7 @@ void CECTag::SetStringData(const wxString& s)
 {
 	if (IsString()) {
 		delete [] m_tagData;
-		ConstructStringTag(0, (const char*)unicode2UTF8(s));
+		ConstructStringTag(m_tagName, (const char*)unicode2UTF8(s));
 	}
 }
 
