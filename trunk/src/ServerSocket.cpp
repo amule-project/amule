@@ -546,7 +546,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_CALLBACKREQUESTED"));
 				
 				theStats::AddDownOverheadServer(size);
-				if (size == 6) {
+				if (size >= 6) {
 					CMemFile data(packet,size);
 					uint32 dwIP = data.ReadUInt32();
 					uint16 nPort = data.ReadUInt16();
