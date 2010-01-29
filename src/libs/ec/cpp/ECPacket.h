@@ -65,9 +65,7 @@ class CECPacket : protected CECEmptyTag {
 		void DebugPrint(bool incoming) const;
 		
 	private:
-		CECPacket(const CECSocket& socket)
-			: CECEmptyTag(socket)
-			{}
+		CECPacket()	: CECEmptyTag() {}
 
 		bool ReadFromSocket(CECSocket& socket);
 		bool WritePacket(CECSocket& socket) const;

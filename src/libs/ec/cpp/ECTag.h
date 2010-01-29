@@ -111,9 +111,9 @@ class CECTag {
 		#ifdef USE_WX_EXTENSIONS
 		CECTag(ec_tagname_t name, const wxString& data);
 		CECTag(ec_tagname_t name, const wxChar* data);
+		#endif
 		CECTag(ec_tagname_t name, const char* data) { ConstructStringTag(name, data); }
 		CECTag();
-		#endif
 		CECTag(const CECTag& tag);
 		~CECTag(void);
 
@@ -323,33 +323,10 @@ class CECTag {
 
 		uint8_t GetType() const { return m_dataType; }
 
-		enum BuildState {
-			bsName,
-			bsType,
-			bsTypeChld,
-			bsLength,
-			bsLengthChld,
-			bsChildCnt,
-			bsChildren,
-			bsData1,
-			bsData2,
-			bsFinished,
-			bsError
-		};
-
-		CECTag(const CECSocket&)
-			: m_state(bsName), m_dataType(EC_TAGTYPE_UNKNOWN), m_dataLen(0), m_tagData(NULL)
-			{}
-
 		bool		ReadFromSocket(CECSocket& socket);
 		bool		WriteTag(CECSocket& socket) const;
 		bool		ReadChildren(CECSocket& socket);
 		bool		WriteChildren(CECSocket& socket) const;
-
-		BuildState	m_state;	// This is only used while a Tag is being read from a socket.
-
-		bool		IsOk() const { return m_state == bsFinished; }
-		bool		HasError() const { return m_state == bsError; }
 
 	private:
 		// To init. the automatic int data
@@ -379,9 +356,7 @@ class CECTag {
  */
 class CECEmptyTag : public CECTag {
 	public:
-		CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, (const void *) NULL) {}
-	protected:
-		CECEmptyTag(const CECSocket& socket) : CECTag(socket) {}
+		CECEmptyTag(ec_tagname_t name = 0) : CECTag(name, 0, (const void *) NULL) {}
 };
 
 #endif /* ECTAG_H */
