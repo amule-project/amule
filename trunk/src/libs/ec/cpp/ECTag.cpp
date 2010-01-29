@@ -276,7 +276,6 @@ CECTag::~CECTag(void)
 CECTag& CECTag::operator=(const CECTag& tag)
 {
 	if (&tag != this) {
-		m_state = tag.m_state;
 		m_tagName = tag.m_tagName;
 		m_dataLen = tag.m_dataLen;
 		m_dataType = tag.m_dataType;
@@ -292,13 +291,6 @@ CECTag& CECTag::operator=(const CECTag& tag)
 			m_tagList.reserve(tag.m_tagList.size());
 			for (TagList::size_type i=0; i<tag.m_tagList.size(); i++) {
 				m_tagList.push_back(tag.m_tagList[i]);
-				if (m_tagList.back().HasError()) {
-					m_state = bsError;
-	#ifndef KEEP_PARTIAL_PACKETS
-					m_tagList.pop_back();
-	#endif
-					break;
-				}
 			}
 		}
 	}
@@ -361,7 +353,7 @@ bool CECTag::operator==(const CECTag& tag) const
  *
  * @param tag a CECTag class instance to add.
  * @return \b true if tag was really added, 
- * \b false when there was an error or it was omitted through valuemap.
+ * \b false when it was omitted through valuemap.
  */
 bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 {
@@ -372,15 +364,7 @@ bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 	wxASSERT(m_tagList.size() < 0xffff);
 
 	m_tagList.push_back(tag);
-	if (m_tagList.back().HasError()) {
-		m_state = bsError;
-#ifndef KEEP_PARTIAL_PACKETS
-		m_tagList.pop_back();
-#endif
-		return false;
-	} else {
-		return true;
-	}
+	return true;
 }
 
 void CECTag::AddTag(ec_tagname_t name, uint64_t data, CValueMap* valuemap)
@@ -403,74 +387,37 @@ void CECTag::AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap
 
 bool CECTag::ReadFromSocket(CECSocket& socket)
 {
-	if (m_state == bsName) {
-		ec_tagname_t tmp_tagName;
-		if (!socket.ReadNumber(&tmp_tagName, sizeof(ec_tagname_t))) {
-			m_tagName = 0;
-			return false;
-		} else {
-			m_tagName = tmp_tagName >> 1;
-			m_state = (tmp_tagName & 0x01) ? bsTypeChld : bsType;
-		}
+	ec_tagname_t tmp_tagName;
+	if (!socket.ReadNumber(&tmp_tagName, sizeof(ec_tagname_t))) {
+		return false;
+	}
+	m_tagName = tmp_tagName >> 1;
+	bool hasChildren = (tmp_tagName & 0x01) != 0;
+	
+	if (!socket.ReadNumber(&m_dataType, sizeof(ec_tagtype_t))) {
+		return false;
 	}
 	
-	if (m_state == bsType || m_state == bsTypeChld) {
-		ec_tagtype_t type;
-		if (!socket.ReadNumber(&type, sizeof(ec_tagtype_t))) {
-			m_dataType = EC_TAGTYPE_UNKNOWN;
-			return false;
-		} else {
-			m_dataType = type;
-			m_state = (m_state == bsTypeChld) ? bsLengthChld : bsLength;
-		}
+	if (!socket.ReadNumber(&m_dataLen, sizeof(ec_taglen_t))) {
+		return false;
+	}
+
+	if (hasChildren && !ReadChildren(socket)) {
+		return false;
 	}
 	
-	if (m_state == bsLength || m_state == bsLengthChld) {
-		ec_taglen_t tagLen;
-		if (!socket.ReadNumber(&tagLen, sizeof(ec_taglen_t))) {
-			return false;
-		} else {
-			m_dataLen = tagLen;
-			if (m_state == bsLength) {
-				m_state = bsData1;
-			} else {
-				m_state = bsChildCnt;
-			}
-		}
-	}
-	
-	if (m_state == bsChildCnt || m_state == bsChildren) {
-		if (!ReadChildren(socket)) {
+	unsigned int tmp_len = m_dataLen;
+	m_dataLen = 0;
+	m_dataLen = tmp_len - GetTagLen();
+	if (m_dataLen > 0) {
+		NewData();
+		if (!socket.ReadBuffer(m_tagData, m_dataLen)) {
 			return false;
 		}
+	} else {
+		m_tagData = NULL;
 	}
-	
-	if (m_state == bsData1) {
-		unsigned int tmp_len = m_dataLen;
-		m_dataLen = 0;
-		m_dataLen = tmp_len - GetTagLen();
-		if (m_dataLen > 0) {
-			NewData();
-			m_state = bsData2;
-		} else {
-			m_tagData = NULL;
-			m_state = bsFinished;
-		}
-	}
-	
-	if (m_state == bsData2) {
-		if (m_tagData != NULL) {
-			if (!socket.ReadBuffer(m_tagData, m_dataLen)) {
-				return false;
-			} else {
-				m_state = bsFinished;
-			}
-		} else {
-			m_state = bsError;
-			return false;
-		}
-	}
-	
+
 	return true;
 }
 
@@ -501,39 +448,21 @@ bool CECTag::WriteTag(CECSocket& socket) const
 
 bool CECTag::ReadChildren(CECSocket& socket)
 {
-	if (m_state == bsChildCnt) {
-		uint16 tmp_tagCount;
-		if (!socket.ReadNumber(&tmp_tagCount, sizeof(uint16))) {
-			return false;
-		} else {
-			m_tagList.clear();
-			if (tmp_tagCount > 0) {
-				m_tagList.reserve(tmp_tagCount);
-				for (int i=0; i<tmp_tagCount; i++) {
-					m_tagList.push_back(CECTag(socket));
-				}
-				m_state = bsChildren;
-			} else {
-				m_state = bsData1;
-			}
-		}
+	uint16 tmp_tagCount;
+	if (!socket.ReadNumber(&tmp_tagCount, sizeof(uint16))) {
+		return false;
 	}
-	
-	if (m_state == bsChildren) {
-		for (unsigned int i=0; i<m_tagList.size(); i++) {
+	m_tagList.clear();
+	if (tmp_tagCount > 0) {
+		m_tagList.reserve(tmp_tagCount);
+		for (int i=0; i<tmp_tagCount; i++) {
+			m_tagList.push_back(CECTag());
 			CECTag& tag = m_tagList[i];
-			if (!tag.IsOk()) {
-				if (!tag.ReadFromSocket(socket)) {
-					if (tag.HasError()) {
-						m_state = bsError;
-					}
-					return false;
-				}
+			if (!tag.ReadFromSocket(socket)) {
+				return false;
 			}
 		}
-		m_state = bsData1;
 	}
-	
 	return true;
 }
 

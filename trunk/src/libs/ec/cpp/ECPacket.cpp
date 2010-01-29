@@ -33,20 +33,8 @@
 
 bool CECPacket::ReadFromSocket(CECSocket& socket)
 {
-	if (m_state == bsName) {
-		if (!socket.ReadNumber(&m_opCode, sizeof(ec_opcode_t))) {
-			return false;
-		} else {
-			m_state = bsChildCnt;
-		}
-	}
-	if (m_state == bsChildCnt || m_state == bsChildren) {
-		if (!ReadChildren(socket)) {
-			return false;
-		}
-	}
-	m_state = bsFinished;
-	return true;
+	return socket.ReadNumber(&m_opCode, sizeof(ec_opcode_t))
+		&& ReadChildren(socket);
 }
 
 

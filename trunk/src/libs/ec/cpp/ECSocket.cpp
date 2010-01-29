@@ -797,10 +797,9 @@ const CECPacket *CECSocket::ReadPacket()
 	}
 
 	m_curr_rx_data->ToZlib(m_z);
-	packet = new CECPacket(*this);
-	packet->ReadFromSocket(*this);
+	packet = new CECPacket();
 	
-	if (packet->HasError()) {
+	if (!packet->ReadFromSocket(*this)) {
 		cout << "ReadPacket: error in packet read" << endl;
 		delete packet;
 		packet = NULL;
