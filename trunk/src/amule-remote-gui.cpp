@@ -23,9 +23,6 @@
 //
 
 
-#define AMULE_REMOTE_GUI_CPP
-
-
 #include <wx/ipc.h>
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
@@ -1872,6 +1869,7 @@ bool CPartFile::SavePartFile(bool)
 	return false;
 }
 
+CamuleRemoteGuiApp *theApp;
 
 //
 // since gui is not linked with amule.cpp - define events here

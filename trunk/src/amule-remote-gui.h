@@ -783,12 +783,8 @@ public:
 };
 
 DECLARE_APP(CamuleRemoteGuiApp)
-#ifdef AMULE_REMOTE_GUI_CPP
-	CamuleRemoteGuiApp *theApp;
-#else
-	extern CamuleRemoteGuiApp *theApp;
-#endif
 
+extern CamuleRemoteGuiApp *theApp;
 
 #endif /* AMULE_REMOTE_GUI_H */
 
