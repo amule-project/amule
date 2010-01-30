@@ -1094,6 +1094,9 @@ bool CClientList::IsKadFirewallCheckIP(uint32 ip) const
 void CClientList::AddDirectCallbackClient(CUpDownClient* toAdd)
 {
 	wxASSERT(toAdd->GetDirectCallbackTimeout() != 0);
+	if (toAdd->HasBeenDeleted()) {
+		return;
+	}
 	for (DirectCallbackList::const_iterator it = m_currentDirectCallbacks.begin(); it != m_currentDirectCallbacks.end(); ++it) {
 		if (*it == toAdd) {
 			wxFAIL; // might happen very rarely on multiple connection tries, could be fixed in the client class, till then it's not much of a problem though

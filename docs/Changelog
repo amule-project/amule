@@ -127,6 +127,7 @@ Version 2.3.0 - The river knows.
 		  (like download started from EC) and in amulegui
 		* Enable update of IP filter list through aMulegui and aMulecmd
 		* Enable setting of "Check for new version on startup" through aMulegui
+		* Fixed crash in CClientList::ProcessDirectCallbackList that had been around for ages (hopefully)
 
 	Vollstrecker:
 		* Unify copyright lines
