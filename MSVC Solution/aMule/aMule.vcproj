@@ -640,6 +640,38 @@
 			<File
 				RelativePath="..\..\src\Parser.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4065"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4065"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug29|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4065"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release29|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4065"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\PartFile.cpp"
@@ -724,6 +756,38 @@
 			<File
 				RelativePath="..\..\src\Scanner.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4003"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4003"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug29|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4003"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release29|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4003"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\SearchDlg.cpp"
