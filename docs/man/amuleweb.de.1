@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULEWEB 1 "Januar 2010" "aMule webserver v2.2.6" "aMule Hilfsprogramme"
+.TH AMULEWEB 1 "Januar 2010" "aMule Webserver v2.3.0" "aMule Hilfsprogramme"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
@@ -28,7 +28,7 @@ amuleweb \- aMule Webserver
 .RB_untranslated [ \-N ]
 
 .B_untranslated amuleweb
-[\fB\-\-create\-config\-from=\fP\fI<Pfad>\fP]
+[\fB\-\-create\-config\-from\fP=\fI<Pfad>\fP]
 
 .B_untranslated amuleweb
 .RB_untranslated [ \-\-help ]
@@ -37,7 +37,7 @@ amuleweb \- aMule Webserver
 .RB_untranslated [ \-\-version ]
 
 .B_untranslated amuleweb
-[\fB\-\-amule\-config\-file=\fP\fI<Pfad>\fP]
+[\fB\-\-amule\-config\-file\fP=\fI<Pfad>\fP]
 
 .SH BESCHREIBUNG
 \fBamuleweb\fP ermöglicht dir den Zugriff auf amule(d) per Webbrowser. Man kann
@@ -62,14 +62,14 @@ Benutzt die angegebene Konfigurationsdatei. Die Standardkonfigurationsdatei
 ist \fI~/.aMule/remote.conf\fP
 .TP 
 .B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
-Do not print any output to stdout.
+Keine Ausgabe auf stdout ausgeben.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
 Sei gesprächig \- Gebe auch Debuggingausgaben aus
 .TP 
 \fB[ \-l\fP \fI<Sprache>\fP, \fB\-\-locale\fP=\fI<Sprache>\fP \fB]\fP
-Setzt die Locale (Sprache) des Programms. Siehe Abschnitt \fBSPRACHEN\fP für
-die Beschreibung des \fI<Sprache>\fP Parameter.
+Setzt die Lokale (Sprache) des Programms.  Siehe Abschnitt \fBANMERKUNGEN\fP
+für die Beschreibung des \fI<Sprache>\fP Parameters.
 .TP 
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
 Schreibe die Kommandozeilenoptionen in die Konfigurationsdatei und kehre zur
@@ -123,9 +123,8 @@ Deaktiviert den PHP Interpreter (veraltet)
 Erstellt die PHP\-Seiten bei jedem Aufruf neu
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<Pfad>\fP \fB]\fP
-Erstellt eine Konfigurationsdatei basierend auf \fI<Pfad>\fP, welche
-auf eine gültige aMule Konfigurationsdatei verweisen muss, und kehre zur
-Shell zurück.
+Konfigurationsdatei basierend auf \fI<Pfad>\fP, welche auf eine gültige
+aMule Konfigurationsdatei verweisen muss, erstellen und danach beenden.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Gibt eine kurze Nutzungsbeschreibung aus.
@@ -144,29 +143,26 @@ Für alle Optionen die ein \fI<Pfad>\fP Argument erwarten, wenn der
 \fIPfad\fP kein Verzeichnis enthält(z.B. nur einen Dateinamen), dann wird
 angenommen, diese Datei liegt um aMule\-Konfigurationsverzeichnis,
 \fI~/.aMule\fP.
-.SS SPRACHEN
+.SS Sprachen
 Der \fI<Sprache>\fP Parameter der \fB\-l\fP Option hat folgende Form:
 \fIsprache\fP[\fB_\fP\fISPRACHE\fP][\fB.\fP\fIkodierung\fP][\fB@\fP\fImodifikation\fP] wobei
 \fIsprache\fP die eigentliche Sprache, \fISPRACHE\fP das Gebiet, \fIkodierung\fP den
 zu nutzenden Zeichensatz und \fImodifikation\fP eine bestimmte Untergruppe in
 diesem darstellt.
-.TP 
+
 Zum Besispiel sind die folgenden Zeichenketten gültig:
-.2TP
-de
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
 
-.2TP
-de_DE
-
-.2TP
-de_DE.iso88591
-
-.2TP
-de_DE@euro
-
-.2TP
-de_DE.iso88591@euro
-.P
 Alle oben genannten Zeicheketten werden als gültige Sprachdefinitionen
 akzeptiert, \fIKODIERUNG\fP und \fIzusatz\fP werden zur Zeit nicht genutzt.
 
@@ -184,18 +180,13 @@ werden in 2 verschiedenen Orten gesucht: zuerst in \fI~/.aMule/webserver/\fP
 und dann in \fI/usr/share/amule/webserver/\fP wenn du mit \-\-prefix=/usr
 installiert hast.
 .PP
-Jedes Template muss in einem Unterverzeichnis mit dem Templatenamen liegen,
-welches alle Dateien enthält die das Template benötigt.. Das eigentlich
-Template muss den Namen aMule.tmpl targen.
-.PP
-Zum Beispiel, das Standardtemplate (Name: 'default') liegt in
-webserver/default/. Das Verzeichnis enthält aMule.tmpl und viele
-Bilddateien.
+Jedes Template muss in einem Unterverzeichnis des Templatenamens liegen,
+welches alle Dateien enthält, die das Template benötigt.
 .SH DATEIEN
 ~/.aMule/remote.conf
-
+.br
 ~/.aMule/webserver/
-
+.br
 \fI$(pkgdatadir)\fP/webserver/
 .SH BEISPIEL
 Typischerweise wird amuleweb als erstes folgendermaßen gestartet:

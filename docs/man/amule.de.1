@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULE 1 "Januar 2010" "aMule v2.2.6" aMule
+.TH AMULE 1 "Januar 2010" "aMule v2.3.0" aMule
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
@@ -16,8 +16,7 @@ amule \- der alle\-Plattformen eMule p2p Client
 [\fB\-w\fP \fI<Pfad>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
-[\fB\-t\fP \fI<Num>\fP]
-.RB_untranslated [ eD2k-Link ]
+[\fB\-t\fP \fI<num>\fP] [\fBeD2k\-Verweis\fP]
 
 .B_untranslated amule
 .RB_untranslated [ \-v ]
@@ -41,7 +40,7 @@ Schreibt Log\-Meldungen auf die Standardausgabe.
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Setzt die Konfiguration auf die Standardwerte zurück.
 .TP 
-\fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
+\fB[ \-w\fP \fI<Pfad>\fP, \fB\-\-use\-amuleweb\fP=\fI<Pfad>\fP \fB]\fP
 Setzt den Ort der ausführbaren Datei von amuleweb auf \fI<Pfad>\fP.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
@@ -61,22 +60,21 @@ Gibt eine kurze Nutzungsbeschreibung aus.
 .TP 
 \fB[ eD2k\-Link ]\fP
 Fügt einen eD2k\-Verweis zur Downloadliste hinzu.
-.TP 
+.PP
 Der eD2k\-Verweis darf enthalten:
-.2TP
-*) einen Link zu einer Datei (ed2k://|file|...), diese wird den Downloads
-hinzugefügt,
-
-.2TP
-*) einen Link zu einem Server (ed2k://|server|...), dieser wird der
-Serverliste hinzugefügt,
-
-.2TP
-*) einen Serverlisten\-Verweis, in diesem Fall werden alle Server dieser
-Liste der Serverliste hinzugefügt;
-
-.2TP
-*) ein Magnet Verweis;
+.RS 3
+.IP \(bu 2
+ein Link zu einer Datei (ed2k://|file|...), dieser wird Downloadliste
+hinzugefügt;
+.IP \(bu 2
+ein Link zu einem Server (ed2k://|server|...), dieser wird der Serverliste
+hinzugefügt;
+.IP \(bu 2
+ein Serverlisten\-Verweis, in diesem Fall werden alle Server dieser Liste der
+Serverliste hinzugefügt;
+.IP \(bu 2
+ein Magnet Verweis.
+.RE
 .SH ANMERKUNGEN
 .SS Pfade
 Für alle Optionen die ein \fI<Pfad>\fP Argument erwarten, wenn der
