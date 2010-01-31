@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-12 10:53+0100\n"
+"POT-Creation-Date: 2010-01-31 23:46+0100\n"
 "PO-Revision-Date: 2004-04-08 00:30+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
@@ -23,7 +23,7 @@ msgstr "Dodaj prijatelja"
 msgid "You have to enter a valid IP and port!"
 msgstr "Ukucaj vazecu IP adresu i port!"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1728
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1764
 msgid "Information"
 msgstr ""
 
@@ -42,109 +42,109 @@ msgid ""
 "lowid."
 msgstr ""
 
-#: src/amule.cpp:228
+#: src/amule.cpp:231
 msgid "Now, exiting main app..."
-msgstr ""
-
-#: src/amule.cpp:247
-#, c-format
-msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr ""
 
 #: src/amule.cpp:250
 #, c-format
+msgid "Terminating amuleweb instance with pid `%ld' ... "
+msgstr ""
+
+#: src/amule.cpp:253
+#, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr ""
 
-#: src/amule.cpp:252 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:255 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Neuspjesno"
 
-#: src/amule.cpp:258
+#: src/amule.cpp:261
 msgid "aMule OnExit: Terminating core."
 msgstr ""
 
-#: src/amule.cpp:324
+#: src/amule.cpp:327
 msgid "aMule shutdown completed."
 msgstr ""
 
-#: src/amule.cpp:328
+#: src/amule.cpp:331
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:424
+#: src/amule.cpp:427
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "Potvrda izlaza"
 
-#: src/amule.cpp:427
+#: src/amule.cpp:430
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "Nova vanjska veza prihvacena\n"
 
-#: src/amule.cpp:438 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:441 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:673 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr ""
 
-#: src/amule.cpp:484
+#: src/amule.cpp:487
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
 msgstr ""
 
-#: src/amule.cpp:486 src/amule.cpp:1041 src/CatDialog.cpp:141
+#: src/amule.cpp:489 src/amule.cpp:1044 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Info"
 
-#: src/amule.cpp:567
+#: src/amule.cpp:570
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
 msgstr ""
 
-#: src/amule.cpp:568
+#: src/amule.cpp:571
 msgid "Server list download"
 msgstr ""
 
-#: src/amule.cpp:584 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:587 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:61
 msgid "Connecting"
 msgstr "Spajanje"
 
-#: src/amule.cpp:640
+#: src/amule.cpp:643
 #, c-format
 msgid "web server running on pid %d"
 msgstr ""
 
-#: src/amule.cpp:644
+#: src/amule.cpp:647
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
-#: src/amule.cpp:645 src/amule.cpp:765 src/amule.cpp:1052
-#: src/amule-remote-gui.cpp:299 src/amule-remote-gui.cpp:321
-#: src/amule-remote-gui.cpp:323 src/amule-remote-gui.cpp:622
+#: src/amule.cpp:648 src/amule.cpp:768 src/amule.cpp:1055
+#: src/amule-remote-gui.cpp:296 src/amule-remote-gui.cpp:318
+#: src/amule-remote-gui.cpp:320 src/amule-remote-gui.cpp:619
 msgid "ERROR"
 msgstr ""
 
-#: src/amule.cpp:730
+#: src/amule.cpp:733
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr ""
 
-#: src/amule.cpp:757
+#: src/amule.cpp:760
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr ""
 
-#: src/amule.cpp:763
+#: src/amule.cpp:766
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -154,184 +154,190 @@ msgid ""
 "Check your network to make sure the port is open for output and input."
 msgstr ""
 
-#: src/amule.cpp:842
+#: src/amule.cpp:845
 msgid "Failed to create OnlineSig File"
 msgstr ""
 
-#: src/amule.cpp:850
+#: src/amule.cpp:853
 msgid "Failed to create aMule OnlineSig File"
 msgstr ""
 
-#: src/amule.cpp:1018
+#: src/amule.cpp:1021
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
 msgstr ""
 
-#: src/amule.cpp:1027
+#: src/amule.cpp:1030
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr ""
 
-#: src/amule.cpp:1029
+#: src/amule.cpp:1032
 msgid "This version is a testing version, updated daily, and\n"
 msgstr ""
 
-#: src/amule.cpp:1030
+#: src/amule.cpp:1033
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "ne dajemo nikakvu garanciju da nece nista unistiti, tvoju kucu zapaliti, \n"
 
-#: src/amule.cpp:1031
+#: src/amule.cpp:1034
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 
-#: src/amule.cpp:1036
+#: src/amule.cpp:1039
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 
-#: src/amule.cpp:1037
+#: src/amule.cpp:1040
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 
-#: src/amule.cpp:1039
+#: src/amule.cpp:1042
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr ""
 
-#: src/amule.cpp:1052
+#: src/amule.cpp:1055
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
 
-#: src/amule.cpp:1107
+#: src/amule.cpp:1110
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "Ime servera :"
 
-#: src/amule.cpp:1351
+#: src/amule.cpp:1354
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr ""
 
-#: src/amule.cpp:1479
+#: src/amule.cpp:1482
 msgid "ERROR: can't open logfile"
 msgstr ""
 
-#: src/amule.cpp:1483
+#: src/amule.cpp:1486
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr ""
 
-#: src/amule.cpp:1501
+#: src/amule.cpp:1504
 msgid "Log has been reset"
 msgstr ""
 
-#: src/amule.cpp:1526
+#: src/amule.cpp:1529
 #, c-format
 msgid "ServerMessage: %s"
 msgstr ""
 
-#: src/amule.cpp:1564
+#: src/amule.cpp:1567 src/IP2Country.cpp:143 src/IPFilter.cpp:494
+#: src/ServerList.cpp:808
+#, c-format
+msgid "Skipped download of %s, because requested file is not newer."
+msgstr ""
+
+#: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
 msgstr ""
 
-#: src/amule.cpp:1584
+#: src/amule.cpp:1589
 msgid "Failed to open the downloaded version check file"
 msgstr ""
 
-#: src/amule.cpp:1587 src/amule.cpp:1597 src/amule.cpp:1603
+#: src/amule.cpp:1592 src/amule.cpp:1602 src/amule.cpp:1608
 msgid "Corrupted version check file"
 msgstr ""
 
-#: src/amule.cpp:1613
+#: src/amule.cpp:1618
 msgid "You are using an outdated version of aMule!"
 msgstr ""
 
-#: src/amule.cpp:1614
+#: src/amule.cpp:1619
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1615
+#: src/amule.cpp:1620
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr ""
 
-#: src/amule.cpp:1617
+#: src/amule.cpp:1622
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1621
+#: src/amule.cpp:1626
 msgid "Your copy of aMule is up to date."
 msgstr ""
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1633
 msgid "Failed to download the version check file"
 msgstr ""
 
-#: src/amule.cpp:1788 src/amule-remote-gui.cpp:508
+#: src/amule.cpp:1793 src/amule-remote-gui.cpp:505
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr ""
 
-#: src/amule.cpp:1789 src/amule-remote-gui.cpp:509
+#: src/amule.cpp:1794 src/amule-remote-gui.cpp:506
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr ""
 
-#: src/amule.cpp:1798 src/amule-remote-gui.cpp:518
+#: src/amule.cpp:1803 src/amule-remote-gui.cpp:515
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:1863 src/TextClient.cpp:710
+#: src/amule.cpp:1868 src/TextClient.cpp:710
 msgid "with LowID"
 msgstr ""
 
-#: src/amule.cpp:1863 src/TextClient.cpp:710
+#: src/amule.cpp:1868 src/TextClient.cpp:710
 msgid "with HighID"
 msgstr ""
 
-#: src/amule.cpp:1865
+#: src/amule.cpp:1870
 #, c-format
 msgid "Connected to %s %s"
 msgstr ""
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1873
 #, c-format
 msgid "Connecting to %s"
 msgstr ""
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1875
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:1877
+#: src/amule.cpp:1882
 msgid "Kad started."
 msgstr ""
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1884
 msgid "Kad stopped."
 msgstr ""
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1891
 msgid "Connected to Kad (ok)"
 msgstr ""
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1893
 msgid "Connected to Kad (firewalled)"
 msgstr ""
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1896
 msgid "Disconnected from Kad"
 msgstr ""
 
-#: src/amule.cpp:1954
+#: src/amule.cpp:1959
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 
-#: src/amule.cpp:1957
+#: src/amule.cpp:1962
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 
@@ -655,65 +661,65 @@ msgstr ""
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Fatalna greska: Neuspjesno stvaranje tajmera"
 
-#: src/amule-remote-gui.cpp:70
+#: src/amule-remote-gui.cpp:67
 msgid "Connect to remote amule"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:257
+#: src/amule-remote-gui.cpp:254
 #, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Fatalna greska: Neuspjesno stvaranje tajmera"
 
-#: src/amule-remote-gui.cpp:269
+#: src/amule-remote-gui.cpp:266
 msgid "Going to event loop..."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:295
+#: src/amule-remote-gui.cpp:292
 #, fuzzy
 msgid "Connecting..."
 msgstr "Spajanje"
 
-#: src/amule-remote-gui.cpp:299
+#: src/amule-remote-gui.cpp:296
 msgid "Connection failed "
 msgstr ""
 
-#: src/amule-remote-gui.cpp:310
+#: src/amule-remote-gui.cpp:307
 msgid "Remote GUI EC event handler"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:317
+#: src/amule-remote-gui.cpp:314
 msgid "Going down"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:320 src/ExternalConnector.cpp:400
+#: src/amule-remote-gui.cpp:317 src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:320
 msgid "Connection closed - aMule has terminated probably."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:406
+#: src/amule-remote-gui.cpp:403
 #, fuzzy
 msgid "Ready"
 msgstr "Ponovno ucitati"
 
-#: src/amule-remote-gui.cpp:574 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:571 src/TransferWnd.cpp:341
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:620
+#: src/amule-remote-gui.cpp:617
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:840
+#: src/amule-remote-gui.cpp:837
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:1728
+#: src/amule-remote-gui.cpp:1764
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
 
@@ -737,7 +743,7 @@ msgstr "ceka na spajanje..."
 #: src/DataToText.cpp:137 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
-#: src/HTTPDownload.cpp:82 src/KnownFile.cpp:890 src/KnownFile.cpp:896
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:890 src/KnownFile.cpp:896
 #: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
@@ -1071,7 +1077,7 @@ msgid "Upload Time"
 msgstr "Vriejeme uploada"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3768 src/SearchListCtrl.cpp:91
+#: src/PartFile.cpp:3774 src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "Status"
 
@@ -1272,7 +1278,7 @@ msgid "File Comments"
 msgstr "Komentari fajla"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:188
-#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:86
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:86
 #: src/SharedFilesCtrl.cpp:102
 msgid "File Name"
 msgstr "Ime fajla"
@@ -1471,8 +1477,8 @@ msgstr "Velicina"
 msgid "Progress"
 msgstr "Napredak"
 
-#: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
+#: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:43
+#: src/PartFile.cpp:3772 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Izvori"
 
@@ -2153,64 +2159,61 @@ msgstr ""
 msgid "Multiple selection"
 msgstr ""
 
-#: src/HTTPDownload.cpp:56
+#: src/HTTPDownload.cpp:57
 msgid "Downloading..."
 msgstr "Downloading..."
 
-#: src/HTTPDownload.cpp:76
+#: src/HTTPDownload.cpp:77
 #, c-format
 msgid "( %s / %s )"
 msgstr ""
 
-#: src/HTTPDownload.cpp:108
+#: src/HTTPDownload.cpp:109
 #, fuzzy
 msgid "HTTP download cancelled"
 msgstr "Istinska sirina pojasa downloada"
 
-#: src/HTTPDownload.cpp:172
-msgid "HTTP download thread started"
-msgstr ""
-
-#: src/HTTPDownload.cpp:200
-msgid "Download size not received, downloading until connection is closed"
-msgstr ""
-
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
-msgid "Download size: %i"
-msgstr "Downloads (%i)"
+#, c-format
+msgid "Unable to create destination file %s for download!"
+msgstr ""
 
-#: src/HTTPDownload.cpp:236
+#: src/HTTPDownload.cpp:207
+msgid "The URL to download can't be empty"
+msgstr ""
+
+#: src/HTTPDownload.cpp:229
+#, c-format
+msgid "The URL %s returned: %i - Error (%i)!"
+msgstr ""
+
+#: src/HTTPDownload.cpp:256
+msgid "Critical error while writing downloaded file"
+msgstr ""
+
+#: src/HTTPDownload.cpp:271
 #, fuzzy, c-format
 msgid "Downloaded %d bytes"
 msgstr "Downloaded:"
 
-#: src/HTTPDownload.cpp:239
+#: src/HTTPDownload.cpp:275
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr ""
 
-#: src/HTTPDownload.cpp:257
+#: src/HTTPDownload.cpp:324
+msgid ""
+"Invalid URL for HTTP download or HTTP redirection (did you forget "
+"'http://' ?)"
+msgstr ""
+
+#: src/HTTPDownload.cpp:367
 #, fuzzy
-msgid "HTTP download thread ended"
-msgstr "Istinska sirina pojasa downloada"
+msgid "Unable to connect to HTTP download server"
+msgstr "Nisi povezan sa serverom!"
 
-#: src/HTTPDownload.cpp:337
-#, c-format
-msgid "Host: %s:%i\n"
-msgstr ""
-
-#: src/HTTPDownload.cpp:339
-#, c-format
-msgid "Response: %i (Error: %i)"
-msgstr ""
-
-#: src/HTTPDownload.cpp:342
-msgid "WARNING: Void response on stream creation"
-msgstr ""
-
-#: src/HTTPDownload.cpp:366
-msgid "ERROR: Redirection code received with no URL"
+#: src/HTTPDownload.cpp:388
+msgid "Invalid response from HTTP download server"
 msgstr ""
 
 #: src/IP2Country.cpp:92
@@ -2222,32 +2225,36 @@ msgstr ""
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:126
-msgid "Failed to remove GeoIP.dat file, aborting update."
+#: src/IP2Country.cpp:126 src/IPFilter.cpp:480
+#, c-format
+msgid "Failed to remove %s file, aborting update."
 msgstr ""
 
 #: src/IP2Country.cpp:132
-msgid "Failed to rename new GeoIP.dat file, aborting update."
+#, c-format
+msgid "Failed to rename %s file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:138
-msgid "Successfully updated GeoIP.dat"
+#: src/IP2Country.cpp:138 src/IPFilter.cpp:492
+#, c-format
+msgid "Successfully updated %s"
 msgstr ""
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:143
-#, c-format
-msgid "Failed to download GeoIP.dat from %s"
-msgstr ""
+#: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
+#, fuzzy, c-format
+msgid "Failed to download %s from %s"
+msgstr "Neuspio download serverliste od %s"
 
-#: src/IP2Country.cpp:162
-msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr ""
+#: src/IP2Country.cpp:164
+#, fuzzy, c-format
+msgid "Failed to load country data for '%s'."
+msgstr "Neuspjesno citanje kreditnog fajla"
 
-#: src/IP2Country.cpp:167
+#: src/IP2Country.cpp:169
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
@@ -2261,24 +2268,29 @@ msgstr ""
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 
-#: src/IPFilter.cpp:335
+#: src/IPFilter.cpp:333
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 
-#: src/IPFilter.cpp:340
+#: src/IPFilter.cpp:338
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/IPFilter.cpp:342
+#: src/IPFilter.cpp:340
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] ""
 msgstr[1] ""
+
+#: src/IPFilter.cpp:486
+#, c-format
+msgid "Failed to rename new %s file, aborting update."
+msgstr ""
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2382,35 +2394,35 @@ msgstr ""
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3698
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3704
 msgid "Hashing"
 msgstr "Hashing"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3704
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3710
 msgid "Completing"
 msgstr "Zavrsavanje"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3713
 msgid "Complete"
 msgstr "Zavrseno"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3710 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3716 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Pausirano"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3719 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Sa greskom"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3720 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3726 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Downloading"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:686
-#: src/PartFile.cpp:3722 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Cekanje"
 
@@ -2459,11 +2471,11 @@ msgstr ""
 msgid "ERROR: Could not listen to TCP port."
 msgstr ""
 
-#: src/Logger.cpp:302 src/Logger.cpp:323
+#: src/Logger.cpp:303 src/Logger.cpp:324
 msgid "ERROR: "
 msgstr ""
 
-#: src/Logger.cpp:302 src/Logger.cpp:323
+#: src/Logger.cpp:303 src/Logger.cpp:324
 msgid "WARNING: "
 msgstr ""
 
@@ -3683,7 +3695,7 @@ msgstr "Interval obnavljanja veze servera: onemoguceno"
 msgid "Skin to use: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:832
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:826
 msgid "- default -"
 msgstr ""
 
@@ -4383,7 +4395,7 @@ msgstr "svi drugi"
 msgid "Incomplete"
 msgstr "Nedovrseno"
 
-#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3727 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3733 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Stopirano"
 
@@ -4643,19 +4655,19 @@ msgstr ""
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3700
+#: src/PartFile.cpp:3706
 msgid "Allocating"
 msgstr ""
 
-#: src/PartFile.cpp:3716
+#: src/PartFile.cpp:3722
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:944
 msgid "Downloaded"
 msgstr ""
 
-#: src/PartFile.cpp:3980
+#: src/PartFile.cpp:3986
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
@@ -4809,25 +4821,25 @@ msgstr ""
 msgid "Ukrainian"
 msgstr ""
 
-#: src/Preferences.cpp:885
+#: src/Preferences.cpp:886
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1548
+#: src/Preferences.cpp:1552
 msgid "Invalid category found, skipping"
 msgstr ""
 
-#: src/Preferences.cpp:1713
+#: src/Preferences.cpp:1717
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 
-#: src/Preferences.cpp:1714
+#: src/Preferences.cpp:1718
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr ""
 
-#: src/Preferences.cpp:1737
+#: src/Preferences.cpp:1741
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr ""
@@ -5287,37 +5299,37 @@ msgstr "Neuspjelo spasavanje server.met!"
 msgid "Invalid URL"
 msgstr "Neispravna URL"
 
-#: src/ServerList.cpp:807
-#, c-format
-msgid "Finished to download the server list from %s"
-msgstr ""
+#: src/ServerList.cpp:806
+#, fuzzy, c-format
+msgid "Finished downloading the server list from %s"
+msgstr "Neuspio download serverliste od %s"
 
-#: src/ServerList.cpp:809 src/ServerList.cpp:863
-#, c-format
-msgid "Failed to download the server list from %s"
-msgstr ""
-
-#: src/ServerList.cpp:820
+#: src/ServerList.cpp:821
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
 msgstr ""
 
-#: src/ServerList.cpp:833
+#: src/ServerList.cpp:834
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:842
+#: src/ServerList.cpp:843
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 
-#: src/ServerList.cpp:846
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 
-#: src/ServerList.cpp:939
+#: src/ServerList.cpp:864
+#, c-format
+msgid "Failed to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:940
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -7237,6 +7249,14 @@ msgid "Processing request [redirected]: "
 msgstr ""
 
 #, fuzzy
+#~ msgid "Download size: %i"
+#~ msgstr "Downloads (%i)"
+
+#, fuzzy
+#~ msgid "HTTP download thread ended"
+#~ msgstr "Istinska sirina pojasa downloada"
+
+#, fuzzy
 #~ msgid "Killed!"
 #~ msgstr "Neuspjesno"
 
@@ -7618,9 +7638,6 @@ msgstr ""
 #~ msgid "Connect to any server"
 #~ msgstr "Spoji sa bilo kojim serverom"
 
-#~ msgid "You are not connected to a server!"
-#~ msgstr "Nisi povezan sa serverom!"
-
 #~ msgid "This ed2k link is invalid (%s)"
 #~ msgstr "Ovaj ed2k link nije vazeci (%s)"
 
@@ -7692,9 +7709,6 @@ msgstr ""
 
 #~ msgid "*** Disconnected"
 #~ msgstr "*** Veza prekinuta"
-
-#~ msgid "Failed to load creditfile"
-#~ msgstr "Neuspjesno citanje kreditnog fajla"
 
 #~ msgid "Failed to save creditfile"
 #~ msgstr "Neuspjesno spasavanje kreditnog fajla"
@@ -8352,9 +8366,6 @@ msgstr ""
 
 #~ msgid "Unable to retrieve serverlist"
 #~ msgstr "Nije u stanju pronaci server listu"
-
-#~ msgid "Failed to download the serverlist from %s"
-#~ msgstr "Neuspio download serverliste od %s"
 
 #~ msgid "Failed to load server.met!"
 #~ msgstr "Neuspjelo ucitavanje server.met!"

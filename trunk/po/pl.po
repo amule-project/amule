@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-12 10:53+0100\n"
+"POT-Creation-Date: 2010-01-31 23:46+0100\n"
 "PO-Revision-Date: 2010-01-09 17:48+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
@@ -33,7 +33,7 @@ msgstr "Dodaj znajomego"
 msgid "You have to enter a valid IP and port!"
 msgstr "Musisz wpisać poprawne IP oraz port!"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1728
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1764
 msgid "Information"
 msgstr "Informacje"
 
@@ -52,37 +52,37 @@ msgid ""
 msgstr ""
 "UWAGA: Nie możesz dodać samego siebie jako źródło linku ed2k, gdy masz lowid."
 
-#: src/amule.cpp:228
+#: src/amule.cpp:231
 msgid "Now, exiting main app..."
 msgstr "Teraz, zakańczam główną aplikację..."
 
-#: src/amule.cpp:247
+#: src/amule.cpp:250
 #, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "Zakańczam instancję amuleweb z pid `%ld' ... "
 
-#: src/amule.cpp:250
+#: src/amule.cpp:253
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr "Zabiłam instancję amuleweb z pid `%ld' ... "
 
-#: src/amule.cpp:252 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:255 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Nieudane"
 
-#: src/amule.cpp:258
+#: src/amule.cpp:261
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule OnExit: Zakończenie jądra."
 
-#: src/amule.cpp:324
+#: src/amule.cpp:327
 msgid "aMule shutdown completed."
 msgstr "Zamykanie aMule zakończone."
 
-#: src/amule.cpp:328
+#: src/amule.cpp:331
 msgid "Memory debug results for aMule exit:"
 msgstr "Wyniki debugu pamięci dla wyjścia aMule:"
 
-#: src/amule.cpp:424
+#: src/amule.cpp:427
 msgid ""
 "\n"
 "EC configuration"
@@ -90,16 +90,16 @@ msgstr ""
 "\n"
 "Konfiguracja EC"
 
-#: src/amule.cpp:427
+#: src/amule.cpp:430
 msgid "Password set and external connections enabled."
 msgstr "Ustawione hasło i włączone połączenia zewnętrzne."
 
-#: src/amule.cpp:438 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:441 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:673 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "UWAGA"
 
-#: src/amule.cpp:484
+#: src/amule.cpp:487
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -107,13 +107,13 @@ msgstr ""
 "Twoje ustawienia lokalne zostały zmienione na domyślne systemowe w związku "
 "ze zmianą konfiguracji. Przepraszamy."
 
-#: src/amule.cpp:486 src/amule.cpp:1041 src/CatDialog.cpp:141
+#: src/amule.cpp:489 src/amule.cpp:1044 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Informacje"
 
-#: src/amule.cpp:567
+#: src/amule.cpp:570
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -121,21 +121,21 @@ msgstr ""
 "Nie masz żadnego serwera na twojej liście serwerów.\n"
 "Czy chcesz, żeby aMule pobrał nową listę teraz?"
 
-#: src/amule.cpp:568
+#: src/amule.cpp:571
 msgid "Server list download"
 msgstr "Pobieranie listy serwerów"
 
-#: src/amule.cpp:584 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:587 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:61
 msgid "Connecting"
 msgstr "Łączenie"
 
-#: src/amule.cpp:640
+#: src/amule.cpp:643
 #, c-format
 msgid "web server running on pid %d"
 msgstr "serwer sieciowy uruchomiony na pid %d"
 
-#: src/amule.cpp:644
+#: src/amule.cpp:647
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -146,23 +146,23 @@ msgstr ""
 "sieciowy aMule lub skompiluj aMule używając --enable-webserver i uruchom "
 "make install"
 
-#: src/amule.cpp:645 src/amule.cpp:765 src/amule.cpp:1052
-#: src/amule-remote-gui.cpp:299 src/amule-remote-gui.cpp:321
-#: src/amule-remote-gui.cpp:323 src/amule-remote-gui.cpp:622
+#: src/amule.cpp:648 src/amule.cpp:768 src/amule.cpp:1055
+#: src/amule-remote-gui.cpp:296 src/amule-remote-gui.cpp:318
+#: src/amule-remote-gui.cpp:320 src/amule-remote-gui.cpp:619
 msgid "ERROR"
 msgstr "BŁĄD"
 
-#: src/amule.cpp:730
+#: src/amule.cpp:733
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Nie można było powiązać portów z określonym adresem: %s"
 
-#: src/amule.cpp:757
+#: src/amule.cpp:760
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port %u jest niedostępny. Będziesz mieć LowID\n"
 
-#: src/amule.cpp:763
+#: src/amule.cpp:766
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -178,15 +178,15 @@ msgstr ""
 "Sprawdź swoją sieć aby mieć pewność, że port jest otwarty dla wejścia i "
 "wyjścia."
 
-#: src/amule.cpp:842
+#: src/amule.cpp:845
 msgid "Failed to create OnlineSig File"
 msgstr "Nie udało się utworzyć pliku podpisu online"
 
-#: src/amule.cpp:850
+#: src/amule.cpp:853
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Nie udało się utworzyć pliku podpisu online aMule"
 
-#: src/amule.cpp:1018
+#: src/amule.cpp:1021
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -194,41 +194,41 @@ msgstr ""
 "Wybrane lokale wydają się być niezainstalowane. (Uwaga: I tak spróbuję je "
 "ustawić)"
 
-#: src/amule.cpp:1027
+#: src/amule.cpp:1030
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Po raz pierwszy uruchomiłeś aMule %s"
 
-#: src/amule.cpp:1029
+#: src/amule.cpp:1032
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Ta wersja jest aktualizowaną codziennie wersją testową i\n"
 
-#: src/amule.cpp:1030
+#: src/amule.cpp:1033
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "nie dajemy żadnej gwarancji, że nie zniszczy ona niczego, nie spali twojego "
 "domu\n"
 
-#: src/amule.cpp:1031
+#: src/amule.cpp:1034
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "lub zabije twojego psa. *Powinna* ona jednak mimo wszystko działać "
 "poprawnie.\n"
 
-#: src/amule.cpp:1036
+#: src/amule.cpp:1039
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Więcej informacji, pomoc i nowe wydania znajdziesz na naszej stronie \n"
 
-#: src/amule.cpp:1037
+#: src/amule.cpp:1040
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org lub na naszym kanale IRC: #aMule na irc.freenode.net.\n"
 
-#: src/amule.cpp:1039
+#: src/amule.cpp:1042
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Nie wahaj się zgłaszać jakichkolwiek błędów na http://forum.amule.org"
 
-#: src/amule.cpp:1052
+#: src/amule.cpp:1055
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -237,127 +237,133 @@ msgstr ""
 " Sygnatura online zostanie wyłączona dopóki nie poprawisz tego w "
 "preferencjach."
 
-#: src/amule.cpp:1107
+#: src/amule.cpp:1110
 msgid "Server hostname notified"
 msgstr "Zawiadomiono nazwę hostu serwera"
 
-#: src/amule.cpp:1351
+#: src/amule.cpp:1354
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Wstępna alokacja dysku dla pliku '%s' nie powiodła się: %s"
 
-#: src/amule.cpp:1479
+#: src/amule.cpp:1482
 msgid "ERROR: can't open logfile"
 msgstr "BŁĄD: nie mogę otworzyć pliku logów"
 
-#: src/amule.cpp:1483
+#: src/amule.cpp:1486
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "UWAGA: plik logów jest pusty. Coś jest nie tak."
 
-#: src/amule.cpp:1501
+#: src/amule.cpp:1504
 msgid "Log has been reset"
 msgstr "Logi zostały zresetowane"
 
-#: src/amule.cpp:1526
+#: src/amule.cpp:1529
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Wiadomość z serwera: %s"
 
-#: src/amule.cpp:1564
+#: src/amule.cpp:1567 src/IP2Country.cpp:143 src/IPFilter.cpp:494
+#: src/ServerList.cpp:808
+#, c-format
+msgid "Skipped download of %s, because requested file is not newer."
+msgstr ""
+
+#: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
 msgstr "Pobieranie listy węzłów nie powiodło się."
 
-#: src/amule.cpp:1584
+#: src/amule.cpp:1589
 msgid "Failed to open the downloaded version check file"
 msgstr "Nie można otworzyć pobranego pliku kontroli wersji"
 
-#: src/amule.cpp:1587 src/amule.cpp:1597 src/amule.cpp:1603
+#: src/amule.cpp:1592 src/amule.cpp:1602 src/amule.cpp:1608
 msgid "Corrupted version check file"
 msgstr "Uszkodzony plik kontorli wersji"
 
-#: src/amule.cpp:1613
+#: src/amule.cpp:1618
 msgid "You are using an outdated version of aMule!"
 msgstr "Używasz przestarzałej wersji aMule!"
 
-#: src/amule.cpp:1614
+#: src/amule.cpp:1619
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Twoje wersja eMule to %i.%i.%i, najnowszą wersją jest %li.%li.%li"
 
-#: src/amule.cpp:1615
+#: src/amule.cpp:1620
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Najnowsza wersja jest zawsze dostępna na http://www.amule.org"
 
-#: src/amule.cpp:1617
+#: src/amule.cpp:1622
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "UWAGA: Twoja wersja aMule jest przestarzała: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1621
+#: src/amule.cpp:1626
 msgid "Your copy of aMule is up to date."
 msgstr "Twoja kopia aMule jest przestarzała."
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1633
 msgid "Failed to download the version check file"
 msgstr "Nie udało się pobrać pliku kontroli wersji"
 
-#: src/amule.cpp:1788 src/amule-remote-gui.cpp:508
+#: src/amule.cpp:1793 src/amule-remote-gui.cpp:505
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Użytkowników: %s | Plików: %s"
 
-#: src/amule.cpp:1789 src/amule-remote-gui.cpp:509
+#: src/amule.cpp:1794 src/amule-remote-gui.cpp:506
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Użytkowników: E: %s K: %s | Plików: E: %s K: %s"
 
-#: src/amule.cpp:1798 src/amule-remote-gui.cpp:518
+#: src/amule.cpp:1803 src/amule-remote-gui.cpp:515
 msgid "No networks selected"
 msgstr "Nie wybrano sieci"
 
-#: src/amule.cpp:1863 src/TextClient.cpp:710
+#: src/amule.cpp:1868 src/TextClient.cpp:710
 msgid "with LowID"
 msgstr "z LowID"
 
-#: src/amule.cpp:1863 src/TextClient.cpp:710
+#: src/amule.cpp:1868 src/TextClient.cpp:710
 msgid "with HighID"
 msgstr "z HighID"
 
-#: src/amule.cpp:1865
+#: src/amule.cpp:1870
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Połączony z %s %s"
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1873
 #, c-format
 msgid "Connecting to %s"
 msgstr "Łączenie z %s"
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1875
 msgid "Disconnected from eD2k"
 msgstr "Rozłączono z eD2k"
 
-#: src/amule.cpp:1877
+#: src/amule.cpp:1882
 msgid "Kad started."
 msgstr "Włączono Kad."
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1884
 msgid "Kad stopped."
 msgstr "Zatrzymano Kad."
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1891
 msgid "Connected to Kad (ok)"
 msgstr "Połączono z Kad (ok)"
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1893
 msgid "Connected to Kad (firewalled)"
 msgstr "Połączono z Kad (za firewallem)"
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1896
 msgid "Disconnected from Kad"
 msgstr "Rozłączono z Kad"
 
-#: src/amule.cpp:1954
+#: src/amule.cpp:1959
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -365,7 +371,7 @@ msgstr ""
 "Nie można użyć sieci Kad, jeśli port UDP jest wyłączony w preferencjach, nie "
 "włączam."
 
-#: src/amule.cpp:1957
+#: src/amule.cpp:1962
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Zablokowano sieć Kad w preferencjach, nie łączę."
 
@@ -700,64 +706,64 @@ msgstr "aMule"
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Krytyczny Błąd: Nie udało się utworzyć Timera Core"
 
-#: src/amule-remote-gui.cpp:70
+#: src/amule-remote-gui.cpp:67
 msgid "Connect to remote amule"
 msgstr "Podłączony do zdalnego amule"
 
-#: src/amule-remote-gui.cpp:257
+#: src/amule-remote-gui.cpp:254
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Krytyczny Błąd: Nie udało się utworzyć Timera Poll"
 
-#: src/amule-remote-gui.cpp:269
+#: src/amule-remote-gui.cpp:266
 msgid "Going to event loop..."
 msgstr "Przechodzę do pętli wydarzenia..."
 
-#: src/amule-remote-gui.cpp:295
+#: src/amule-remote-gui.cpp:292
 msgid "Connecting..."
 msgstr "Łączenie..."
 
-#: src/amule-remote-gui.cpp:299
+#: src/amule-remote-gui.cpp:296
 msgid "Connection failed "
 msgstr "Nieudane połączenie "
 
-#: src/amule-remote-gui.cpp:310
+#: src/amule-remote-gui.cpp:307
 msgid "Remote GUI EC event handler"
 msgstr "Zdalne GUI EC obsługi zdarzenia"
 
-#: src/amule-remote-gui.cpp:317
+#: src/amule-remote-gui.cpp:314
 msgid "Going down"
 msgstr "Zamykanie"
 
-#: src/amule-remote-gui.cpp:320 src/ExternalConnector.cpp:400
+#: src/amule-remote-gui.cpp:317 src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "Połączenie nie powiodło się. Nie można połączyć się z %s:%d\n"
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:320
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Połączenie zostało zamknięte - aMule prawdopodobnie zakończone."
 
-#: src/amule-remote-gui.cpp:406
+#: src/amule-remote-gui.cpp:403
 msgid "Ready"
 msgstr "Gotowy"
 
-#: src/amule-remote-gui.cpp:574 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:571 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Wszystkie"
 
-#: src/amule-remote-gui.cpp:620
+#: src/amule-remote-gui.cpp:617
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 "Nie można utworzyć katalogu '%s' dla kategorii '%s', używany jest nadal "
 "katalog '%s'."
 
-#: src/amule-remote-gui.cpp:840
+#: src/amule-remote-gui.cpp:837
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Razem użytkowników: %s | Razem plików: %s"
 
-#: src/amule-remote-gui.cpp:1728
+#: src/amule-remote-gui.cpp:1764
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr "Oceny i komentarze jeszcze nie są obsługiwane na zdalnym gui"
 
@@ -780,7 +786,7 @@ msgstr "Szukam kolegi dla połączenia lowid"
 #: src/DataToText.cpp:137 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
-#: src/HTTPDownload.cpp:82 src/KnownFile.cpp:890 src/KnownFile.cpp:896
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:890 src/KnownFile.cpp:896
 #: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
@@ -1129,7 +1135,7 @@ msgid "Upload Time"
 msgstr "Czas wysyłania"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3768 src/SearchListCtrl.cpp:91
+#: src/PartFile.cpp:3774 src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "Status"
 
@@ -1340,7 +1346,7 @@ msgid "File Comments"
 msgstr "Komentarze pliku"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:188
-#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:86
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:86
 #: src/SharedFilesCtrl.cpp:102
 msgid "File Name"
 msgstr "Nazwa pliku"
@@ -1541,8 +1547,8 @@ msgstr "Rozmiar"
 msgid "Progress"
 msgstr "Postęp"
 
-#: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
+#: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:43
+#: src/PartFile.cpp:3772 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Źródła"
 
@@ -2264,63 +2270,61 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Wybór wielu"
 
-#: src/HTTPDownload.cpp:56
+#: src/HTTPDownload.cpp:57
 msgid "Downloading..."
 msgstr "Pobieranie..."
 
-#: src/HTTPDownload.cpp:76
+#: src/HTTPDownload.cpp:77
 #, c-format
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/HTTPDownload.cpp:108
+#: src/HTTPDownload.cpp:109
 msgid "HTTP download cancelled"
 msgstr "Pobranie HTTP anulowane"
 
-#: src/HTTPDownload.cpp:172
-msgid "HTTP download thread started"
-msgstr "Rozpoczęte pobranie wątku HTTP"
-
-#: src/HTTPDownload.cpp:200
-msgid "Download size not received, downloading until connection is closed"
-msgstr "Nie otrzymany rozmiar pomiaru, pobieranie do zamknięcia połączenia"
-
 #: src/HTTPDownload.cpp:202
-#, c-format
-msgid "Download size: %i"
-msgstr "Rozmiar pobierania: %i"
+#, fuzzy, c-format
+msgid "Unable to create destination file %s for download!"
+msgstr "Folder docelowy dla pobrań"
 
-#: src/HTTPDownload.cpp:236
+#: src/HTTPDownload.cpp:207
+msgid "The URL to download can't be empty"
+msgstr ""
+
+#: src/HTTPDownload.cpp:229
+#, c-format
+msgid "The URL %s returned: %i - Error (%i)!"
+msgstr ""
+
+#: src/HTTPDownload.cpp:256
+msgid "Critical error while writing downloaded file"
+msgstr ""
+
+#: src/HTTPDownload.cpp:271
 #, c-format
 msgid "Downloaded %d bytes"
 msgstr "Pobrano %d bajtów"
 
-#: src/HTTPDownload.cpp:239
+#: src/HTTPDownload.cpp:275
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr "Oczekiwane %d bajtów, ale pobrane zostało %d bajtów"
 
-#: src/HTTPDownload.cpp:257
-msgid "HTTP download thread ended"
-msgstr "Zakończenie pobrania wątku HTTP"
+#: src/HTTPDownload.cpp:324
+msgid ""
+"Invalid URL for HTTP download or HTTP redirection (did you forget "
+"'http://' ?)"
+msgstr ""
 
-#: src/HTTPDownload.cpp:337
-#, c-format
-msgid "Host: %s:%i\n"
-msgstr "Host: %s:%i\n"
+#: src/HTTPDownload.cpp:367
+#, fuzzy
+msgid "Unable to connect to HTTP download server"
+msgstr "Połącz ponownie z serwerem"
 
-#: src/HTTPDownload.cpp:339
-#, c-format
-msgid "Response: %i (Error: %i)"
-msgstr "Odpowiedź: %i (Błąd: %i)"
-
-#: src/HTTPDownload.cpp:342
-msgid "WARNING: Void response on stream creation"
-msgstr "UWAGA: Pusta odpowiedz przy tworzeniu strumienia"
-
-#: src/HTTPDownload.cpp:366
-msgid "ERROR: Redirection code received with no URL"
-msgstr "BŁĄD: Kod przekierowujący otrzymany bez adresu"
+#: src/HTTPDownload.cpp:388
+msgid "Invalid response from HTTP download server"
+msgstr ""
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2331,33 +2335,37 @@ msgstr "Pobierz nową GeoIP.dat z %s"
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Nie można pobrąć pliku GeoIP.dat, przerwana aktualizacja."
 
-#: src/IP2Country.cpp:126
-msgid "Failed to remove GeoIP.dat file, aborting update."
+#: src/IP2Country.cpp:126 src/IPFilter.cpp:480
+#, fuzzy, c-format
+msgid "Failed to remove %s file, aborting update."
 msgstr "Nie można usunąć pliku GeoIP.dat, przerwana aktualizacja."
 
 #: src/IP2Country.cpp:132
-msgid "Failed to rename new GeoIP.dat file, aborting update."
+#, fuzzy, c-format
+msgid "Failed to rename %s file, aborting update."
 msgstr ""
 "Nie można zmienić nazwy nowego pliku GeoIP.dat, przerwana aktualizacja."
 
-#: src/IP2Country.cpp:138
-msgid "Successfully updated GeoIP.dat"
+#: src/IP2Country.cpp:138 src/IPFilter.cpp:492
+#, fuzzy, c-format
+msgid "Successfully updated %s"
 msgstr "Pomyślnie zaktualizowane GeoIP.dat"
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Błąd aktualizacji GeoIP.dat"
 
-#: src/IP2Country.cpp:143
-#, c-format
-msgid "Failed to download GeoIP.dat from %s"
+#: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
+#, fuzzy, c-format
+msgid "Failed to download %s from %s"
 msgstr "Nie powiodło się pobranie GeoIP.dat z %s"
 
-#: src/IP2Country.cpp:162
-msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr "CIP2Country::CIP2Country(): Nie udało się załadować danych kraju z "
+#: src/IP2Country.cpp:164
+#, fuzzy, c-format
+msgid "Failed to load country data for '%s'."
+msgstr "Nie powiodło się pobranie GeoIP.dat z %s"
 
-#: src/IP2Country.cpp:167
+#: src/IP2Country.cpp:169
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr "Załadowano %d flag bitmapy."
@@ -2371,12 +2379,12 @@ msgstr "Ładowanie filtrów IP 'ipfilter.dat' i 'ipfilter_static.dat'."
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Ładowanie pliku ipfilter.dat nieudane '%s', napotkano nieznany format."
 
-#: src/IPFilter.cpp:335
+#: src/IPFilter.cpp:333
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "Ładowanie pliku ipfilter.dat nieudane '%s', nie można otworzyć pliku."
 
-#: src/IPFilter.cpp:340
+#: src/IPFilter.cpp:338
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
@@ -2384,13 +2392,19 @@ msgstr[0] "Załadowano %u zakres IP z '%s'."
 msgstr[1] "Załadowano %u zakresy IP z '%s'."
 msgstr[2] "Załadowano %u zakresów IP z '%s'."
 
-#: src/IPFilter.cpp:342
+#: src/IPFilter.cpp:340
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "%u niepoprawna linia została odrzucona."
 msgstr[1] "%u niepoprawne linie zostały odrzucone."
 msgstr[2] "%u niepoprawnych linii zostało odrzuconych."
+
+#: src/IPFilter.cpp:486
+#, fuzzy, c-format
+msgid "Failed to rename new %s file, aborting update."
+msgstr ""
+"Nie można zmienić nazwy nowego pliku GeoIP.dat, przerwana aktualizacja."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2500,35 +2514,35 @@ msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 "OSTRZEŻENIE: Znana lista plików uszkodzona, zawiera nieprawidłowy nagłówek."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3698
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3704
 msgid "Hashing"
 msgstr "Tworzenie skrótu"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3704
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3710
 msgid "Completing"
 msgstr "Zakańczanie"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3713
 msgid "Complete"
 msgstr "Ukończono"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3710 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3716 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Wstrzymano"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3719 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Błędne"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3720 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3726 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "Pobieranie"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:686
-#: src/PartFile.cpp:3722 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Czeka"
 
@@ -2578,11 +2592,11 @@ msgstr "ListenSocket: Ok."
 msgid "ERROR: Could not listen to TCP port."
 msgstr "BŁĄD: nie można nasłuchiwać na porcie TCP."
 
-#: src/Logger.cpp:302 src/Logger.cpp:323
+#: src/Logger.cpp:303 src/Logger.cpp:324
 msgid "ERROR: "
 msgstr "BŁĄD: "
 
-#: src/Logger.cpp:302 src/Logger.cpp:323
+#: src/Logger.cpp:303 src/Logger.cpp:324
 msgid "WARNING: "
 msgstr "OSTRZEŻENIE: "
 
@@ -3830,7 +3844,7 @@ msgstr "Odświeżanie połączeń do serwera co: Wyłączone"
 msgid "Skin to use: "
 msgstr "Skóra do użycia:"
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:832
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:826
 msgid "- default -"
 msgstr "- domyślnie -"
 
@@ -4556,7 +4570,7 @@ msgstr "wszystkie inne"
 msgid "Incomplete"
 msgstr "Niekompletne"
 
-#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3727 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3733 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Zatrzymany"
 
@@ -4830,19 +4844,19 @@ msgstr "Pobrana część %i jest uszkodzona w pliku: %s"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Odzyskano uszkodzoną część %i dla %s -> Zapisanych bajtów: %s"
 
-#: src/PartFile.cpp:3700
+#: src/PartFile.cpp:3706
 msgid "Allocating"
 msgstr "Alokuję"
 
-#: src/PartFile.cpp:3716
+#: src/PartFile.cpp:3722
 msgid "Insufficient disk space"
 msgstr "Niewystarczająca ilość przestrzeni dyskowej"
 
-#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:944
 msgid "Downloaded"
 msgstr "Pobrano"
 
-#: src/PartFile.cpp:3980
+#: src/PartFile.cpp:3986
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "BŁĄD: Nie udało się otworzyć pliku części '%s'"
@@ -4995,27 +5009,27 @@ msgstr "Turecki"
 msgid "Ukrainian"
 msgstr "Ukraiński"
 
-#: src/Preferences.cpp:885
+#: src/Preferences.cpp:886
 msgid "no options available"
 msgstr "nie ma dostępnych opcji"
 
-#: src/Preferences.cpp:1548
+#: src/Preferences.cpp:1552
 msgid "Invalid category found, skipping"
 msgstr "Znaleziono nieprawidłową kategorie, pomijam"
 
-#: src/Preferences.cpp:1713
+#: src/Preferences.cpp:1717
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Port TCP nie może być większy niż 65532, gdyż gniazdo UDP serwera będzie TCP"
 "+3"
 
-#: src/Preferences.cpp:1714
+#: src/Preferences.cpp:1718
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Zostanie użyty domyślny port (%d)"
 
-#: src/Preferences.cpp:1737
+#: src/Preferences.cpp:1741
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Usuwam nieistniejące udostępnione katalogi: %s"
@@ -5511,17 +5525,12 @@ msgstr "Nie udało się zapisać server.met!"
 msgid "Invalid URL"
 msgstr "Nieprawidłowy URL"
 
-#: src/ServerList.cpp:807
-#, c-format
-msgid "Finished to download the server list from %s"
+#: src/ServerList.cpp:806
+#, fuzzy, c-format
+msgid "Finished downloading the server list from %s"
 msgstr "Zakończono pobieranie listy serwerów z %s"
 
-#: src/ServerList.cpp:809 src/ServerList.cpp:863
-#, c-format
-msgid "Failed to download the server list from %s"
-msgstr "Nie udało się pobrać listy serwerów z %s"
-
-#: src/ServerList.cpp:820
+#: src/ServerList.cpp:821
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5529,22 +5538,27 @@ msgstr ""
 "Brak wpisu listy adresów serwerów w 'addresses.dat'. Wklej prawidłową listę "
 "adresów do tego pliku, aby automatycznie zaktualizować listę twoich serwerów"
 
-#: src/ServerList.cpp:833
+#: src/ServerList.cpp:834
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "Rozpocznij pobieranie listy serwerów z %s"
 
-#: src/ServerList.cpp:842
+#: src/ServerList.cpp:843
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "UWAGA: określono nieprawidłowo adres URL dla autoaktualizacji serwerów: %s"
 
-#: src/ServerList.cpp:846
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "Niepoprawny url do auto-pobierania serwer.met w adresses.dat"
 
-#: src/ServerList.cpp:939
+#: src/ServerList.cpp:864
+#, c-format
+msgid "Failed to download the server list from %s"
+msgstr "Nie udało się pobrać listy serwerów z %s"
+
+#: src/ServerList.cpp:940
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -7556,6 +7570,33 @@ msgstr "Zażądano wylogowania\n"
 #: src/webserver/src/WebServer.cpp:1911
 msgid "Processing request [redirected]: "
 msgstr "Przetwarzam żądanie (przekierowane): "
+
+#~ msgid "HTTP download thread started"
+#~ msgstr "Rozpoczęte pobranie wątku HTTP"
+
+#~ msgid "Download size not received, downloading until connection is closed"
+#~ msgstr "Nie otrzymany rozmiar pomiaru, pobieranie do zamknięcia połączenia"
+
+#~ msgid "Download size: %i"
+#~ msgstr "Rozmiar pobierania: %i"
+
+#~ msgid "HTTP download thread ended"
+#~ msgstr "Zakończenie pobrania wątku HTTP"
+
+#~ msgid "Host: %s:%i\n"
+#~ msgstr "Host: %s:%i\n"
+
+#~ msgid "Response: %i (Error: %i)"
+#~ msgstr "Odpowiedź: %i (Błąd: %i)"
+
+#~ msgid "WARNING: Void response on stream creation"
+#~ msgstr "UWAGA: Pusta odpowiedz przy tworzeniu strumienia"
+
+#~ msgid "ERROR: Redirection code received with no URL"
+#~ msgstr "BŁĄD: Kod przekierowujący otrzymany bez adresu"
+
+#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
+#~ msgstr "CIP2Country::CIP2Country(): Nie udało się załadować danych kraju z "
 
 #~ msgid "Get IPFilter level."
 #~ msgstr "Pobierz poziom IPFilter."
