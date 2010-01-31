@@ -614,7 +614,7 @@ msgstr ""
 #: amulecmd.1:85
 #, no-wrap
 msgid "Cancel I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr "Cancel I<E<lt>PfrüfsummeE<gt> | I<E<lt>NummerE<gt>>"
+msgstr "Cancel I<E<lt>PfrüfsummeE<gt>> | I<E<lt>NummerE<gt>>"
 
 # type: Plain text
 #. type: Plain text

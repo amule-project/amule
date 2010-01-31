@@ -3,9 +3,10 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULECMD 1 "Januar 2010" "aMuleCmd v2.2.6" "aMule Hilfsprogramme"
+.TH AMULECMD 1 "Januar 2010" "aMuleCmd v2.3.0" "aMule Hilfsprogramme"
 .als B_untranslated B
 .als RB_untranslated RB
+.als SS_untranslated SS
 .SH NAME
 amulecmd \- Konsolenbasiertes Programm um aMule zu steuern
 .SH SYNTAX
@@ -18,7 +19,7 @@ amulecmd \- Konsolenbasiertes Programm um aMule zu steuern
 \fI<Befehl>\fP]\fB \fP}
 
 .B_untranslated amulecmd
-[\fB\-\-create\-config\-from\fP \fI<Pfad>\fP]
+[\fB\-\-create\-config\-from\fP=\fI<Pfad>\fP]
 
 .B_untranslated amulecmd
 .RB_untranslated [ \-\-version ]
@@ -26,8 +27,7 @@ amulecmd \- Konsolenbasiertes Programm um aMule zu steuern
 .B_untranslated amulecmd
 .RB_untranslated [ \-\-help ]
 .SH BESCHREIBUNG
-.B_untranslated amulecmd
-ist ein Konsolenprogramm zur Steuerung von aMule.
+\fBamulecmd\fP ist ein Konsolenprogramm zur Steuerung von aMule.
 .TP 
 \fB[ \-h\fP \fI<Host>\fP, \fB\-\-host\fP=\fI<Host>\fP \fB]\fP
 Der Rechner auf dem aMule läuft (Standard: \fIlocalhost\fP).  \fI<Host>\fP
@@ -45,14 +45,14 @@ Benutzt die angegebene Konfigurationsdatei. Die Standardkonfigurationsdatei
 ist \fI~/.aMule/remote.conf\fP
 .TP 
 .B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
-Do not print any output to stdout.
+Keine Ausgabe auf stdout ausgeben.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
 Sei gesprächig \- Gebe auch Debuggingausgaben aus
 .TP 
 \fB[ \-l\fP \fI<Sprache>\fP, \fB\-\-locale\fP=\fI<Sprache>\fP \fB]\fP
-Setzt die Locale (Sprache) des Programms. Siehe Abschnitt \fBSPRACHEN\fP für
-die Beschreibung des \fI<Sprache>\fP Parameter.
+Setzt die Lokale (Sprache) des Programms.  Siehe Abschnitt \fBANMERKUNGEN\fP
+für die Beschreibung des \fI<Sprache>\fP Parameters.
 .TP 
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
 Schreibe die Kommandozeilenoptionen in die Konfigurationsdatei und kehre zur
@@ -63,9 +63,8 @@ Führe \fI<Befehl>\fP aus, als wäre es auf amulecmd's
 Eingabeaufforderung eingegeben worden, und beende dich.
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<Pfad>\fP \fB]\fP
-Erstellt eine Konfigurationsdatei basierend auf \fI<Pfad>\fP, welche
-auf eine gültige amule Konfigurationsdatei verweisen muss, und kehre zur
-Shell zurück.
+Konfigurationsdatei basierend auf \fI<Pfad>\fP, welche auf eine gültige
+aMule Konfigurationsdatei verweisen muss, erstellen und danach beenden.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Zeigt die derzeitige Versionsnummer an.
@@ -74,220 +73,185 @@ Zeigt die derzeitige Versionsnummer an.
 Gibt eine kurze Nutzungsbeschreibung aus.
 .SH BEFEHLE
 Alle Befehle können groß oder klein geschrieben werden.
-.SS "Add\fR \fP\fI<eD2k\-Verweis>\fP\fR \fP|\fR \fP\fI<Magnet\-Verweis>\fP"
-Fügt einen eD2k\- oder Magnetverweis der Donwloadliste hinzu.
-.TP 
+.SS "Add \fI<eD2k\-Verweis>\fP | \fI<Magnet\-Verweis>\fP"
+Fügt einen eD2k\- oder Magnetverweis dem Kern hinzu.
+
 Der eD2k\-Verweis darf enthalten:
-.2TP
-*) einen Link zu einer Datei (ed2k://|file|...), diese wird den Downloads
-hinzugefügt,
+.RS 3
+.IP \(bu 2
+ein Link zu einer Datei (ed2k://|file|...), dieser wird Downloadliste
+hinzugefügt;
+.IP \(bu 2
+ein Link zu einem Server (ed2k://|server|...), dieser wird der Serverliste
+hinzugefügt;
+.IP \(bu 2
+eine Serverlisten\-Verweis, in diesem Fall werden alle Server dieser Liste
+der Serverliste hinzugefügt.
+.RE
 
-.2TP
-*) einen Link zu einem Server (ed2k://|server|...), dieser wird der
-Serverliste hinzugefügt,
-
-.2TP
-*) einen Serverlisten\-Verweis, in diesem Fall werden alle Server dieser
-Liste der Serverliste hinzugefügt;
-
-.TP 
 Der Magnet Verweis muss die eD2k Prüfsumme und die Dateigröße enthalten.
-.TP 
-Dieser Befehl muss ein Argument übergeben bekommen.
-.SS "Cancel\fR \fP\fI<Pfrüfsumme>\fP\fR \fP|\fR \fP\fI<Nummer>\fP"
-Bricht den Download der mit \fI<Prüfsumme>\fP oder \fI<Nummer>\fP
-angegeben wurde ab. Benutze \fIshow\fP um diese Werte zu erfahren.
-.SS "Connect\fR \fP[\fR \fP\fIkad\fP\fR \fP|\fR \fP\fIed2k\fP\fR \fP|\fR \fP\fI<IP|Name>\fP\fR \fP]"
+.SS "Cancel \fI<Pfrüfsumme>\fP | \fI<Nummer>\fP"
+Bricht den Download, der mit \fI<Prüfsumme>\fP oder \fI<Nummer>\fP
+angegeben wurde, ab. Benutze \fBshow\fP um den Wert zu erfahren.
+.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<IP|Name>\fP ]"
 Verbindung zu einem Netzwerk aufbauen.
 
 Die Verbindung wird zu allen Netzwerken aufgebaut, die in den Einstellungen
 aktiviert wurden.
 
 Wenn ed2k als Parameter übergeben wird, wird nur eine Verbindung zum
-eD2k\-Netzwerk und zu Servern aus der Serverliste aufgebaut. Man kann
+eD2k\-Netzwerk und zu Servern aus der Serverliste aufgebaut. Man kann auch
 optional einen Server in der Form IP:Port angeben, um nur zu diesem Server
-eine Verbindung aufzubauen. Die IP muss entweder eine IPv4\-Adresse, oder ein
-auflösbarer DNS\-Name sein.
+eine Verbindung aufzubauen. Die IP muss entweder eine durch Punkte getrennte
+dezimale IPv4\-Adresse, oder ein auflösbarer DNS\-Name sein.
 
 Wenn kad angegeben wird, wird ausschließlich eine kad\-Verbindung aufgebaut.
-.SS "Disconnect\fR \fP[\fR \fP\fI<ed2k>\fP\fR \fP|\fR \fP\fI<kad>\fP\fR \fP]\FR"
-
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Trennt die Verbindung zu allen Netzwerken mit denen du verbunden bist, oder
 nur zu dem, welches angegeben wurde.
-.SS "Download\fR \fP\fI<Nummer>\fP"
+.SS "Download \fI<Nummer>\fP"
 Startet den Download einer Datei
 
 Die \fI<Nummer>\fP einer Datei aus der letzten Suche muss angegeben
-werden.  Beispiel: 'download 12' startet den Download der Datei die in der
+werden.  Beispiel: 'download 12' startet den Download der Datei, die in der
 letzten Suche die Nummer 12 hatte.
-
-Dieser Befehl muss ein Argument übergeben bekommen.
-.SS Exit
+.SS_untranslated Exit
 Verbindung zu amule/amuled trennen und amulecmd beenden.
-.SS "Get\fR \fP\fI<Wert>\fP"
-.TP 
+.SS "Get \fI<Wert>\fP"
 Liest eine Option und zeigt sie an.
-.TP 
-Dieser Befehl ist unvollständig, mögliche Werte sind nachfolgend aufgeführt.
-.TP 
-Verfügbare Werte:
-.2TP
-BwLimits \[u0009] Holt die Bandbreiten Beschränkungen.
 
-.2TP
-IPFilter \[u0009] Holt die IPFilter Einstellungen.
-.SS "Help [\fR \fP\fI<Befehl>\fP\fR \fP]"
+Verfügbare Werte für \fI<Was>\fP:
+.RS
+.IP BwLimits 10
+Bandbreitenbeschränkungen abfragen.
+.IP IPFilter 10
+IPFilter Einstellungen abfragen.
+.RE
+.SS "Help [ \fI<Befehl>\fP ]"
 Gibt eine kurze Nutzungsübersicht aus.  Wenn ohne Parameter aufgerufen,
 zeigt es eine Liste der verfügbaren Befehle an.  Wenn mit
 \fI<Befehl>\fPaufgerufen, zeigt es eine Kurzbeschreibung diese Befehls
 an.
-.SS "Pause\fR \fP\fI<Prüfsumme>\fP\fR \fP|\fR \fP\fI<Nummer>\fP"
+.SS "Pause \fI<Prüfsumme>\fP | \fI<Nummer>\fP"
 Pausiert den Download der mit \fI<Prüfsumme>\fP oder
-\fI<Numner>\fP angegeben wurde. Nutze \fIshow\fP um diese Werte zu
+\fI<Numner>\fP angegeben wurde. Benutze \fBshow\fP um den Wert zu
 erfahren.
-.SS "Priority\fR \fP\fI<Priorität>\fP"
-.TP 
-Setzt die Priorität eines Downloads auf Niedrig, Normal, Hoch oder Auto.
-.TP 
-Dieser Befehl muss ein Argument übergeben bekommen.
-.TP 
-Dieser Befehl ist unvollständig, mögliche Werte sind nachfolgend aufgeführt.
-.TP 
-Verfügbare Werte:
-.2TP
-Auto \[u0009] Setzt die Priorität auf Auto.
+.SS "Priority  \fI<Priorität>\fP \fI<Prüfsummer>\fP | \fI<Nummer>\fP"
+Setzt die Priorität für den Download der mit \fI<Prüfsumme>\fP oder
+\fI<Nummer>\fP angegeben wurde.
 
-.2TP
-High \[u0009] Setzt die Priorität auf Hoch.
-
-.2TP
-Low \[u0009] Setzt die Priorität auf Niedrig.
-
-.2TP
-Normal \[u0009] Setzt die Priorität auf Normal.
-.SS Progress
+Verfügbare Werte für \fI<Priorität>\fP:
+.RS
+.IP Auto 10
+Automatische Priorität.
+.IP High 10
+Hohe Priorität.
+.IP Low 10
+Niedrige Priorität.
+.IP Normal 10
+Normale Priorität.
+.RE
+.SS_untranslated Progress
 Zeigt den Fortschritt einer laufenden Suche an.
-
-Dieser Befehl kann keine Argumente übernehmen.
-.SS Quit
-Beendet das Programm.
-
-Dieser Befehl kann keine Argumente übernehmen.
-.SS "Reload\fR \fP\fI<Objekt>\fP"
-.TP 
+.SS_untranslated Quit
+Synonim für den \fBexit\fP Befehl.
+.SS "Reload \fI<Was>\fP"
 Aktualisiert das angegebene Objekt.
-.TP 
-Dieser Befehl ist unvollständig, mögliche Werte sind nachfolgend aufgeführt.
-.TP 
-Verfügbare Werte:
-.2TP
-BwLimits \[u0009] Aktualisiert die Bandbreitenbeschränkungen.
 
-.2TP
-IPFilter \[u0009] Aktualisiert die IPFilter Einstellungen.
-.SS Reset
+Verfügbare Werte für \fI<Was>\fP:
+.RS
+.IP Shared 10
+Liste der freigegebenen Dateien neu laden.
+.IP IPFilter 10
+IP Filter Tabellen neu laden.
+.RE
+.SS_untranslated Reset
 Setzt das Log zurück.
-
-Dieser Befehl kann keine Argumente übernehmen.
-.SS Results
+.SS_untranslated Results
 Zeigt die Resultate der letzten Suche an.
-
-Dieser Befehl kann keine Argumente übernehmen.
-.SS "Resume\fR \fP\fI<Prüfsumme>\fP\fR \fP|\fR \fP\fI<Nummer>\fP"
+.SS "Resume \fI<Prüfsumme>\fP | \fI<Nummer>\fP"
 Setzt den Download der mit \fI<Prüfsumme>\fP oder \fI<Nummer>\fP
-angegeben wurde fort. Nutze \fIshow\fP um diese Werte zu erfahren.
-.SS "Search\fR \fP\fIglobal\fP\fR \fP|\fR \fP\fIkad\fP\fR \fP|\fR \fP\fIlocal\fP\fR \fP\fI<Datei>\fP"
-Startet eine Suche nach \fI<Datei>\fP. Ein Suchtyp und eine Datei
-müssen  angegeben werden.  \fIBeispiel\fP 'search kad amule' startet eine
-kda\-Suche nach amule.
-.TP 
-Verfügbare Werte:
-.2TP
-global \[u0009] startet eine Globale Suche
+angegeben wurde fort. Nutze \fBshow\fP, um den Wert zu erfahren.
+.SS "Search \fI<Typ>\fP \fI<Schlüsselwort>\fP"
+Startet eine Suche nach dem angegebenenI \fI<Schlüsselwort>\fP. Ein
+Suchtyp und ein Schlüsselwort müssen angegeben werden. Beispiel: 'search kad
+amule' startet eine kad\-Suche nach 'amule'.
 
-.2TP
-kad \[u0009] startet eine Suche im Kad\-Netzwerk
-
-.2TP
-local \[u0009] startet eine lokale Suche
-.SS "Set\fR \fP\fI<Wert>\fP"
+Verfügbare Suchtypen:
+.RS
+.IP Global 10
+Führt eine globale Suche durch.
+.IP Kad 10
+Führt eine Suche im Kad\-Netzwerk durch.
+.IP Local 10
+Führt eine lokale Suche durch.
+.RE
+.SS "Set \fI<Was>\fP"
 Setzt die angegebene Option.
 
-Dieser Befehl ist unvollständig, mögliche Werte sind nachfolgend aufgeführt.
-.TP 
-Verfügbare Werte:
-.2TP
-BwLimits \[u0009] Setzt die Bandbreitenbeschränkung.
-
-.2TP
-IPFilter \[u0009] Setzt die IPFilter Einstellungen.
-.SS "Show\fR \fP\fIDL\fP\fR \fP|\fR \fP\fILog\fP\fR \fP|\fR \fP\fIServers\fP\fR \fP|\fR \fP\fIUL\fP"
+Verfügbare Werte für \fI<Was>\fP:
+.RS
+.IP BwLimits 10
+Setzt die Bandbreitenbeschränkungen.
+.IP IPFilter 10
+IPFilter Einstellungen setzen.
+.RE
+.SS "Show \fI<Was>\fP"
 Zeigt upload/download Warteschlange, Serverliste oder die Liste der
 freigegebenen Dateien an.
 
-Dieser Befehl muss ein Argument übergeben bekommen.
-
-Dieser Befehl ist unvollständig, mögliche Werte sind nachfolgend aufgeführt.
-.TP 
-Verfügbare Werte:
-.2TP
-DL \[u0009] Zeigt die Downloadwarteschlange an.
-
-.2TP
-Log \[u0009] Zeigt das Journal an.
-
-.2TP
-Servers \[u0009] Zeigt die Serverliste an.
-
-.2TP
-UL \[u0009] Zeigt die Uploadwarteschlange an.
-.SS Shutdown
+Verfügbare Werte für \fI<Was>\fP:
+.RS
+.IP DL 10
+Downloadwarteschlange anzeigen.
+.IP Log 10
+Log anzeigen.
+.IP Servers 10
+Serverliste anzeigen.
+.IP UL 10
+Uploadwarteschlange anzeigen.
+.RE
+.SS_untranslated Shutdown
 Beendet das Programm (amule/amuled) zu dem du verbunden bist. Dies beendet
 auch den Textclient, da er ohne Verbindung nicht zu gebrauchen ist.
-
-Dieser Befehl kann keine Argumente übernehmen.
-.SS "Statistics\fR <Nummer>\fP"
+.SS "Statistics [ \fI<Nummer>\fP ]"
 Zeigt die Statistiken an.
 
-Die optionale \fINummer\fP im Bereich von 0\-255 kann als Argument diesem
-Befehel übergeben werden. Sie gibt an, wie viele Einträge der
-Clientversionsliste angezeigt werden sollen. 0, oder keine Angabe bedeutet
-\&'unbegrenzt'.
+Die optionale \fI<Nummer>\fP im Bereich von 0\-255 kann als Argument
+diesem Befehel übergeben werden. Sie gibt an, wie viele Einträge der
+Clientversionsliste angezeigt werden sollen. Der Wert 0, oder keine Angabe
+bedeutet 'unbegrenzt'.
 
-\fIBeispiel:\fP 'statistics 5' zeigt die höchsten 5 der einzelnen
-Clientversionen an.
-.SS Status
+Beispiel: 'statistics 5' zeigt nur die oberen 5 Versionen der einzelnen
+Clienttypen an.
+.SS_untranslated Status
 Zeigt den Verbindungsstatus, aktuelle Up/Downloadgeschindigkeiten, etc. an.
-
 .SH ANMERKUNGEN
 .SS Pfade
 Für alle Optionen die ein \fI<Pfad>\fP Argument erwarten, wenn der
 \fIPfad\fP kein Verzeichnis enthält(z.B. nur einen Dateinamen), dann wird
 angenommen, diese Datei liegt um aMule\-Konfigurationsverzeichnis,
 \fI~/.aMule\fP.
-.SS SPRACHEN
+.SS Sprachen
 Der \fI<Sprache>\fP Parameter der \fB\-l\fP Option hat folgende Form:
 \fIsprache\fP[\fB_\fP\fISPRACHE\fP][\fB.\fP\fIkodierung\fP][\fB@\fP\fImodifikation\fP] wobei
 \fIsprache\fP die eigentliche Sprache, \fISPRACHE\fP das Gebiet, \fIkodierung\fP den
 zu nutzenden Zeichensatz und \fImodifikation\fP eine bestimmte Untergruppe in
 diesem darstellt.
-.TP 
+
 Zum Besispiel sind die folgenden Zeichenketten gültig:
-.2TP
-de
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
 
-.2TP
-de_DE
-
-.2TP
-de_DE.iso88591
-
-.2TP
-de_DE@euro
-
-.2TP
-de_DE.iso88591@euro
-.P
 Alle oben genannten Zeicheketten werden als gültige Sprachdefinitionen
 akzeptiert, \fIKODIERUNG\fP und \fIzusatz\fP werden zur Zeit nicht genutzt.
 

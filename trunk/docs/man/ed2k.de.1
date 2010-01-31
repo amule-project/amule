@@ -7,13 +7,13 @@
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME
-ed2k \- aMule ED2k link parser
+ed2k \- aMule ED2k Verweis\-Parser
 .SH SYNTAX
 .B_untranslated ed2k
 [\fB\-c\fP \fI<Pfad>\fP] [\fB\-t\fP \fI<Num>\fP]
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-l ]
-.RB_untranslated <eD2k-Link>
+\fI<eD2k\-Verweis>\fP
 
 .B_untranslated ed2k
 .RB_untranslated [ \-h ]
@@ -21,8 +21,6 @@ ed2k \- aMule ED2k link parser
 .B_untranslated ed2k
 .RB_untranslated [ \-v ]
 .SH BESCHREIBUNG
-.TP 
-aMule eD2k Verweis parser v1.5.1.
 Sendet den übergebenen \fI<eD2k_Verweis>\fP an aMule, d.h. schreibt ihn
 in Datei ~/.aMule/ED2KLinks, welche von aMule sekündlich auf neue Einträge
 geprüft wird.
@@ -47,33 +45,30 @@ Gibt eine kurze Nutzungsbeschreibung aus.
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Zeigt die derzeitige Versionsnummer an.
 .TP 
-.TP 
 \fB[ eD2k\-Link ]\fP
 Fügt einen eD2k\-Verweis zur Downloadliste hinzu.
-.TP 
+.PP
 Der eD2k\-Verweis darf enthalten:
-.2TP
-*) einen Link zu einer Datei (ed2k://|file|...), diese wird den Downloads
-hinzugefügt,
+.RS 3
+.IP \(bu 2
+ein Link zu einer Datei (ed2k://|file|...), dieser wird Downloadliste
+hinzugefügt;
+.IP \(bu 2
+ein Link zu einem Server (ed2k://|server|...), dieser wird der Serverliste
+hinzugefügt;
+.IP \(bu 2
+ein Serverlisten\-Verweis, in diesem Fall werden alle Server dieser Liste der
+Serverliste hinzugefügt;
+.IP \(bu 2
+ein Magnetverweis;
+.IP \(bu 2
+eine emulecollection Datei.
+.RE
 
-.2TP
-*) einen Link zu einem Server (ed2k://|server|...), dieser wird der
-Serverliste hinzugefügt,
-
-.2TP
-*) einen Serverlisten\-Verweis, in diesem Fall werden alle Server dieser
-Liste der Serverliste hinzugefügt;
-
-.2TP
-*) ein Magnet Verweis;
-
-.2TP
-*) eine emulecollection Datei;
-.TP 
-\fBDie Reihenfolge in der die Parameter angegeben werden ist wichtig.\fP
-Due kannst mehr als einen Verweis übergeben, und jeder dieser Verweise hat
-seine eigenen Parameter.  Zum Beispiel \fBed2k <Verweis1> \-t2
-<Verweis2>\fP lädt \fI<Verweis1>\fP in der Standard Kategorie und
+\fBDie Reihenfolge in der du die Parameter angibst, ist entscheidend.\fP Du
+kannst mehr als einen Verweis übergeben und jeder Verweis kann seine eigenen
+Parameter haben.  Zum Beispiel \fBed2k <Verweis1> \-t2
+<Verweis2>\fP lädt \fI<Verweis1>\fP in der Standardkategorie und
 \fI<Verweis2>\fP in Kategorie 2 herunter.
 .SH DATEIEN
 ~/.aMule/ED2KLinks
