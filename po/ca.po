@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-12 10:53+0100\n"
+"POT-Creation-Date: 2010-01-31 23:46+0100\n"
 "PO-Revision-Date: 2010-01-15 03:38+0200\n"
 "Last-Translator: simkin <simkin@ono.com>\n"
 "Language-Team: Català\n"
@@ -32,7 +32,7 @@ msgstr "Afegeix un amic"
 msgid "You have to enter a valid IP and port!"
 msgstr "Heu d'introduir una IP i port vàlids!"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1728
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1764
 msgid "Information"
 msgstr "Informació"
 
@@ -52,37 +52,37 @@ msgstr ""
 "AVÍS: No us podeu afegir com a font per a un enllaç eD2k mentre teniu ID "
 "Baixa."
 
-#: src/amule.cpp:228
+#: src/amule.cpp:231
 msgid "Now, exiting main app..."
 msgstr "Sortint del programa..."
 
-#: src/amule.cpp:247
+#: src/amule.cpp:250
 #, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "S'està aturant el procés amuleweb amb pid `%ld' ... "
 
-#: src/amule.cpp:250
+#: src/amule.cpp:253
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
 msgstr "Aturant procés amuleweb amb pid `%ld' ... "
 
-#: src/amule.cpp:252 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:255 src/ClientDetailDialog.cpp:196 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Fallades"
 
-#: src/amule.cpp:258
+#: src/amule.cpp:261
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule Sortida: Finalitzant nucli."
 
-#: src/amule.cpp:324
+#: src/amule.cpp:327
 msgid "aMule shutdown completed."
 msgstr "Aturada aMule completada."
 
-#: src/amule.cpp:328
+#: src/amule.cpp:331
 msgid "Memory debug results for aMule exit:"
 msgstr "Resultat de la depuració de la memòria a la sortida de l'aMule:"
 
-#: src/amule.cpp:424
+#: src/amule.cpp:427
 msgid ""
 "\n"
 "EC configuration"
@@ -90,16 +90,16 @@ msgstr ""
 "\n"
 "Configuració EC"
 
-#: src/amule.cpp:427
+#: src/amule.cpp:430
 msgid "Password set and external connections enabled."
 msgstr "Contrassenya definida i connexions externes activades."
 
-#: src/amule.cpp:438 src/KadDlg.cpp:167 src/KadDlg.cpp:173
+#: src/amule.cpp:441 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/PrefsUnifiedDlg.cpp:673 src/SharedFilesCtrl.cpp:321
 msgid "WARNING"
 msgstr "AVÍS"
 
-#: src/amule.cpp:484
+#: src/amule.cpp:487
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -107,13 +107,13 @@ msgstr ""
 "S'ha establert l'idioma Predeterminat del Sistema a causa d'un canvi de "
 "configuració. Disculpeu."
 
-#: src/amule.cpp:486 src/amule.cpp:1041 src/CatDialog.cpp:141
+#: src/amule.cpp:489 src/amule.cpp:1044 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:342
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Informació"
 
-#: src/amule.cpp:567
+#: src/amule.cpp:570
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -121,21 +121,21 @@ msgstr ""
 "No teniu cap servidor a la llista de servidors.\n"
 "Voleu que l'aMule baixi una llista nova?"
 
-#: src/amule.cpp:568
+#: src/amule.cpp:571
 msgid "Server list download"
 msgstr "Baixada de la llista de servidors"
 
-#: src/amule.cpp:584 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
+#: src/amule.cpp:587 src/amuleDlg.cpp:562 src/ClientListCtrl.cpp:670
 #: src/DataToText.cpp:61
 msgid "Connecting"
 msgstr "Connectant"
 
-#: src/amule.cpp:640
+#: src/amule.cpp:643
 #, c-format
 msgid "web server running on pid %d"
 msgstr "servidor web executant-se al pid %d"
 
-#: src/amule.cpp:644
+#: src/amule.cpp:647
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -146,23 +146,23 @@ msgstr ""
 "servidor web de l'aMule, o compileu l'aMule usant la opció --enable-"
 "webserver i executeu make install"
 
-#: src/amule.cpp:645 src/amule.cpp:765 src/amule.cpp:1052
-#: src/amule-remote-gui.cpp:299 src/amule-remote-gui.cpp:321
-#: src/amule-remote-gui.cpp:323 src/amule-remote-gui.cpp:622
+#: src/amule.cpp:648 src/amule.cpp:768 src/amule.cpp:1055
+#: src/amule-remote-gui.cpp:296 src/amule-remote-gui.cpp:318
+#: src/amule-remote-gui.cpp:320 src/amule-remote-gui.cpp:619
 msgid "ERROR"
 msgstr "ERROR"
 
-#: src/amule.cpp:730
+#: src/amule.cpp:733
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "No s'han pogut vincular els ports a l'adreça especificada: %s"
 
-#: src/amule.cpp:757
+#: src/amule.cpp:760
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "El port %u no està disponible. Tindreu ID BAIXA\n"
 
-#: src/amule.cpp:763
+#: src/amule.cpp:766
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -178,15 +178,15 @@ msgstr ""
 "Comproveu la configuració de la xarxa per a assegurar-vos que el port està "
 "obert."
 
-#: src/amule.cpp:842
+#: src/amule.cpp:845
 msgid "Failed to create OnlineSig File"
 msgstr "No s'ha pogut crear el fitxer de la signatura en línia"
 
-#: src/amule.cpp:850
+#: src/amule.cpp:853
 msgid "Failed to create aMule OnlineSig File"
 msgstr "No s'ha pogut crear el fitxer de la signatura en línia de l'aMule"
 
-#: src/amule.cpp:1018
+#: src/amule.cpp:1021
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -194,37 +194,37 @@ msgstr ""
 "L'idioma seleccionat no està instal·lat al PC. (Nota: s'intentarà establir "
 "igualment)"
 
-#: src/amule.cpp:1027
+#: src/amule.cpp:1030
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "És la primera vegada que executeu l'aMule %s"
 
-#: src/amule.cpp:1029
+#: src/amule.cpp:1032
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Aquesta és una versió de prova, actualitzada diàriament, i\n"
 
-#: src/amule.cpp:1030
+#: src/amule.cpp:1033
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "no podem garantir que no trenqui res, cremi casa vostra,\n"
 
-#: src/amule.cpp:1031
+#: src/amule.cpp:1034
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "o mati al gos. Tanmateix el seu ús *hauria* de ser segur.\n"
 
-#: src/amule.cpp:1036
+#: src/amule.cpp:1039
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Podeu trobar més informació, ajuda i noves versions a la nostra pàgina web,\n"
 
-#: src/amule.cpp:1037
+#: src/amule.cpp:1040
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org, o al nostre canal IRC #aMule de irc.freenode.net.\n"
 
-#: src/amule.cpp:1039
+#: src/amule.cpp:1042
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Podeu informar de qualsevol error a http://forum.amule.org"
 
-#: src/amule.cpp:1052
+#: src/amule.cpp:1055
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -234,128 +234,134 @@ msgstr ""
 " S'INHABILITARÀ la signatura en línia fins que ho resolgueu a les "
 "preferències."
 
-#: src/amule.cpp:1107
+#: src/amule.cpp:1110
 msgid "Server hostname notified"
 msgstr "Nom del servidor notificat"
 
-#: src/amule.cpp:1351
+#: src/amule.cpp:1354
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "La preassignació d'espai per al fitxer '%s' ha fallat: %s"
 
-#: src/amule.cpp:1479
+#: src/amule.cpp:1482
 msgid "ERROR: can't open logfile"
 msgstr "ERROR: no es pot obrir el fitxer de registre"
 
-#: src/amule.cpp:1483
+#: src/amule.cpp:1486
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "AVÍS: el fitxer de registre està buit. Alguna cosa no va bé."
 
-#: src/amule.cpp:1501
+#: src/amule.cpp:1504
 msgid "Log has been reset"
 msgstr "S'ha reiniciat el registre"
 
-#: src/amule.cpp:1526
+#: src/amule.cpp:1529
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Missatge del servidor: %s"
 
-#: src/amule.cpp:1564
+#: src/amule.cpp:1567 src/IP2Country.cpp:143 src/IPFilter.cpp:494
+#: src/ServerList.cpp:808
+#, c-format
+msgid "Skipped download of %s, because requested file is not newer."
+msgstr ""
+
+#: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
 msgstr "No s'ha pogut baixar la llista de nodes."
 
-#: src/amule.cpp:1584
+#: src/amule.cpp:1589
 msgid "Failed to open the downloaded version check file"
 msgstr "No s'ha pogut obrir el fitxer de comprovació de versió"
 
-#: src/amule.cpp:1587 src/amule.cpp:1597 src/amule.cpp:1603
+#: src/amule.cpp:1592 src/amule.cpp:1602 src/amule.cpp:1608
 msgid "Corrupted version check file"
 msgstr "Fitxer de comprovació de versió corrupte"
 
-#: src/amule.cpp:1613
+#: src/amule.cpp:1618
 msgid "You are using an outdated version of aMule!"
 msgstr "Esteu usant una versió antiga de l'aMule!"
 
-#: src/amule.cpp:1614
+#: src/amule.cpp:1619
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "La vostra versió de l'aMule és %i.%i.%i i l'última versió és %li.%li.%li"
 
-#: src/amule.cpp:1615
+#: src/amule.cpp:1620
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Sempre podeu trobar l'última versió a http://www.amule.org"
 
-#: src/amule.cpp:1617
+#: src/amule.cpp:1622
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "AVÍS: La vostra versió d'aMuled és antiga: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1621
+#: src/amule.cpp:1626
 msgid "Your copy of aMule is up to date."
 msgstr "La vostra versió de l'aMule és l'última."
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1633
 msgid "Failed to download the version check file"
 msgstr "No s'ha pogut baixar el fitxer de comprovació de versió"
 
-#: src/amule.cpp:1788 src/amule-remote-gui.cpp:508
+#: src/amule.cpp:1793 src/amule-remote-gui.cpp:505
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Usuaris: %s | Fitxers: %s"
 
-#: src/amule.cpp:1789 src/amule-remote-gui.cpp:509
+#: src/amule.cpp:1794 src/amule-remote-gui.cpp:506
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Usuaris: E: %s K: %s | Fitxers: E: %s K: %s"
 
-#: src/amule.cpp:1798 src/amule-remote-gui.cpp:518
+#: src/amule.cpp:1803 src/amule-remote-gui.cpp:515
 msgid "No networks selected"
 msgstr "No s'han seleccionat xarxes"
 
-#: src/amule.cpp:1863 src/TextClient.cpp:710
+#: src/amule.cpp:1868 src/TextClient.cpp:710
 msgid "with LowID"
 msgstr "amb ID Baixa"
 
-#: src/amule.cpp:1863 src/TextClient.cpp:710
+#: src/amule.cpp:1868 src/TextClient.cpp:710
 msgid "with HighID"
 msgstr "amb ID Alta"
 
-#: src/amule.cpp:1865
+#: src/amule.cpp:1870
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Connectat a %s %s"
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1873
 #, c-format
 msgid "Connecting to %s"
 msgstr "S'està connectant a %s"
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1875
 msgid "Disconnected from eD2k"
 msgstr "Desconnectat de eD2k"
 
-#: src/amule.cpp:1877
+#: src/amule.cpp:1882
 msgid "Kad started."
 msgstr "S'ha engegat la xarxa Kad."
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1884
 msgid "Kad stopped."
 msgstr "S'ha aturat la xarxa Kad."
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1891
 msgid "Connected to Kad (ok)"
 msgstr "Connectat a Kad (ok)"
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1893
 msgid "Connected to Kad (firewalled)"
 msgstr "Connectat a Kad (tallafocs)"
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1896
 msgid "Disconnected from Kad"
 msgstr "Desconnectat de Kad"
 
-#: src/amule.cpp:1954
+#: src/amule.cpp:1959
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -363,7 +369,7 @@ msgstr ""
 "No es pot usar la xarxa Kad si el port UDP està inhabilitat a les "
 "preferències, no s'engegarà."
 
-#: src/amule.cpp:1957
+#: src/amule.cpp:1962
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "La xarxa Kad està inhabilitada a les preferències, no es connectarà."
 
@@ -698,64 +704,64 @@ msgstr "aMule"
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Error Fatal: Ha fallat la creació del Core Timer"
 
-#: src/amule-remote-gui.cpp:70
+#: src/amule-remote-gui.cpp:67
 msgid "Connect to remote amule"
 msgstr "Connecta a l'amule remot"
 
-#: src/amule-remote-gui.cpp:257
+#: src/amule-remote-gui.cpp:254
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Error Fatal: Ha fallat la creació del Poll Timer"
 
-#: src/amule-remote-gui.cpp:269
+#: src/amule-remote-gui.cpp:266
 msgid "Going to event loop..."
 msgstr "S'està executant un bucle..."
 
-#: src/amule-remote-gui.cpp:295
+#: src/amule-remote-gui.cpp:292
 msgid "Connecting..."
 msgstr "Connectant..."
 
-#: src/amule-remote-gui.cpp:299
+#: src/amule-remote-gui.cpp:296
 msgid "Connection failed "
 msgstr "La connexió ha fallat "
 
-#: src/amule-remote-gui.cpp:310
+#: src/amule-remote-gui.cpp:307
 msgid "Remote GUI EC event handler"
 msgstr "Gestor d'esdeveniments de la IGU EC Remota  "
 
-#: src/amule-remote-gui.cpp:317
+#: src/amule-remote-gui.cpp:314
 msgid "Going down"
 msgstr "Aturant"
 
-#: src/amule-remote-gui.cpp:320 src/ExternalConnector.cpp:400
+#: src/amule-remote-gui.cpp:317 src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "Connexió fallida. No ha estat possible connectar-se a %s:%d\n"
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:320
 msgid "Connection closed - aMule has terminated probably."
 msgstr "S'ha tancat la connexió - segurament l'aMule s'ha terminat."
 
-#: src/amule-remote-gui.cpp:406
+#: src/amule-remote-gui.cpp:403
 msgid "Ready"
 msgstr "A punt"
 
-#: src/amule-remote-gui.cpp:574 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:571 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Tots"
 
-#: src/amule-remote-gui.cpp:620
+#: src/amule-remote-gui.cpp:617
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 "No s'ha pogut crear el directori '%s' per a la categoria '%s', es mantindrà "
 "el directori '%s'."
 
-#: src/amule-remote-gui.cpp:840
+#: src/amule-remote-gui.cpp:837
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuaris Totals: %s | Fitxers Totals: %s"
 
-#: src/amule-remote-gui.cpp:1728
+#: src/amule-remote-gui.cpp:1764
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr "Encara no es poden fer comentaris ni valoracions al client remot"
 
@@ -778,7 +784,7 @@ msgstr "Buscant amic per connexió amb ID Baixa"
 #: src/DataToText.cpp:137 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
 #: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
-#: src/HTTPDownload.cpp:82 src/KnownFile.cpp:890 src/KnownFile.cpp:896
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:890 src/KnownFile.cpp:896
 #: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
@@ -1124,7 +1130,7 @@ msgid "Upload Time"
 msgstr "Temps pujant"
 
 #: src/ClientListCtrl.cpp:523 src/DownloadListCtrl.cpp:196
-#: src/PartFile.cpp:3768 src/SearchListCtrl.cpp:91
+#: src/PartFile.cpp:3774 src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "Estat"
 
@@ -1338,7 +1344,7 @@ msgid "File Comments"
 msgstr "Comentaris del Fitxer"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:188
-#: src/FileDetailListCtrl.cpp:43 src/SearchListCtrl.cpp:86
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:86
 #: src/SharedFilesCtrl.cpp:102
 msgid "File Name"
 msgstr "Fitxer"
@@ -1539,8 +1545,8 @@ msgstr "Mida"
 msgid "Progress"
 msgstr "Progrés"
 
-#: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:44
-#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
+#: src/DownloadListCtrl.cpp:194 src/FileDetailListCtrl.cpp:43
+#: src/PartFile.cpp:3772 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Fonts"
 
@@ -2270,63 +2276,61 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Selecció múltiple"
 
-#: src/HTTPDownload.cpp:56
+#: src/HTTPDownload.cpp:57
 msgid "Downloading..."
 msgstr "S'està baixant..."
 
-#: src/HTTPDownload.cpp:76
+#: src/HTTPDownload.cpp:77
 #, c-format
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/HTTPDownload.cpp:108
+#: src/HTTPDownload.cpp:109
 msgid "HTTP download cancelled"
 msgstr "Descàrrega HTTP cancel·lada"
 
-#: src/HTTPDownload.cpp:172
-msgid "HTTP download thread started"
-msgstr "S'ha iniciat el fil de descàrrega HTTP."
-
-#: src/HTTPDownload.cpp:200
-msgid "Download size not received, downloading until connection is closed"
-msgstr "No s'ha rebut la mida, descarregant fins que la connexió es tanqui"
-
 #: src/HTTPDownload.cpp:202
-#, c-format
-msgid "Download size: %i"
-msgstr "Mida descarrega: %i"
+#, fuzzy, c-format
+msgid "Unable to create destination file %s for download!"
+msgstr "Carpeta on desar les descàrregues"
 
-#: src/HTTPDownload.cpp:236
+#: src/HTTPDownload.cpp:207
+msgid "The URL to download can't be empty"
+msgstr ""
+
+#: src/HTTPDownload.cpp:229
+#, c-format
+msgid "The URL %s returned: %i - Error (%i)!"
+msgstr ""
+
+#: src/HTTPDownload.cpp:256
+msgid "Critical error while writing downloaded file"
+msgstr ""
+
+#: src/HTTPDownload.cpp:271
 #, c-format
 msgid "Downloaded %d bytes"
 msgstr "S'han baixat %d bytes"
 
-#: src/HTTPDownload.cpp:239
+#: src/HTTPDownload.cpp:275
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr "Esperats %d bytes, però %d bytes descarregats."
 
-#: src/HTTPDownload.cpp:257
-msgid "HTTP download thread ended"
-msgstr "Fil de Descàrrega HTTP "
+#: src/HTTPDownload.cpp:324
+msgid ""
+"Invalid URL for HTTP download or HTTP redirection (did you forget "
+"'http://' ?)"
+msgstr ""
 
-#: src/HTTPDownload.cpp:337
-#, c-format
-msgid "Host: %s:%i\n"
-msgstr "Servidor: %s:%i\n"
+#: src/HTTPDownload.cpp:367
+#, fuzzy
+msgid "Unable to connect to HTTP download server"
+msgstr "Reconnecta amb el servidor"
 
-#: src/HTTPDownload.cpp:339
-#, c-format
-msgid "Response: %i (Error: %i)"
-msgstr "Resposta: %i (Error: %i)"
-
-#: src/HTTPDownload.cpp:342
-msgid "WARNING: Void response on stream creation"
-msgstr "AVÍS: Resposta buida en la creació del flux."
-
-#: src/HTTPDownload.cpp:366
-msgid "ERROR: Redirection code received with no URL"
-msgstr "ERROR: Codi de redirecció rebut sense URL"
+#: src/HTTPDownload.cpp:388
+msgid "Invalid response from HTTP download server"
+msgstr ""
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2337,35 +2341,38 @@ msgstr "Baixant nou GeoIP.dat de %s"
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Baixada del fitxer GeoIP.dat fallida, actualització interrompuda."
 
-#: src/IP2Country.cpp:126
-msgid "Failed to remove GeoIP.dat file, aborting update."
+#: src/IP2Country.cpp:126 src/IPFilter.cpp:480
+#, fuzzy, c-format
+msgid "Failed to remove %s file, aborting update."
 msgstr "Fallada a l'esborrar GeoIP.dat, actualització interrompuda."
 
 #: src/IP2Country.cpp:132
-msgid "Failed to rename new GeoIP.dat file, aborting update."
+#, fuzzy, c-format
+msgid "Failed to rename %s file, aborting update."
 msgstr ""
 "Fallada al canviar de nom el nou fitxer GeoIP.dat, actualització "
 "interrompuda."
 
-#: src/IP2Country.cpp:138
-msgid "Successfully updated GeoIP.dat"
+#: src/IP2Country.cpp:138 src/IPFilter.cpp:492
+#, fuzzy, c-format
+msgid "Successfully updated %s"
 msgstr "Actualització GeoIP.dat correcta."
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Error actualitzant GeoIP.dat"
 
-#: src/IP2Country.cpp:143
-#, c-format
-msgid "Failed to download GeoIP.dat from %s"
+#: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
+#, fuzzy, c-format
+msgid "Failed to download %s from %s"
 msgstr "Descarregar GeoIP.dat de %s fallida"
 
-#: src/IP2Country.cpp:162
-msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr ""
-"CIP2Country::CIP2Country(): No s'han pogut carregar les dades del país des de"
+#: src/IP2Country.cpp:164
+#, fuzzy, c-format
+msgid "Failed to load country data for '%s'."
+msgstr "Descarregar GeoIP.dat de %s fallida"
 
-#: src/IP2Country.cpp:167
+#: src/IP2Country.cpp:169
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr "Carregat %d senyaladors de mapa de bits."
@@ -2382,26 +2389,33 @@ msgstr ""
 "No s'ha pogut carregar el fitxer ipfilter.dat '%s', s'ha trobat un format "
 "desconegut."
 
-#: src/IPFilter.cpp:335
+#: src/IPFilter.cpp:333
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "No s'ha pogut carregar el fitxer ipfilter.dat '%s', ha estat impossible "
 "obrir el fitxer."
 
-#: src/IPFilter.cpp:340
+#: src/IPFilter.cpp:338
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "S'ha carregat %u rang IP des de '%s'."
 msgstr[1] "S'han carregat %u rangs IP des de '%s'."
 
-#: src/IPFilter.cpp:342
+#: src/IPFilter.cpp:340
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "S'ha descartat %u línia malformada."
 msgstr[1] "S'han descartat %u línies malformades."
+
+#: src/IPFilter.cpp:486
+#, fuzzy, c-format
+msgid "Failed to rename new %s file, aborting update."
+msgstr ""
+"Fallada al canviar de nom el nou fitxer GeoIP.dat, actualització "
+"interrompuda."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2507,35 +2521,35 @@ msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 "ALERTA: Llista de fitxers coneguts malmesa, conté una capçalera no vàlida."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3698
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3704
 msgid "Hashing"
 msgstr "Resumint"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3704
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3710
 msgid "Completing"
 msgstr "Completant"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3713
 msgid "Complete"
 msgstr "Complet"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3710 src/TransferWnd.cpp:351
+#: src/PartFile.cpp:3716 src/TransferWnd.cpp:351
 msgid "Paused"
 msgstr "Pausat"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3719 src/TransferWnd.cpp:350
 msgid "Erroneous"
 msgstr "Erroni"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3720 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3726 src/TransferWnd.cpp:349
 msgid "Downloading"
 msgstr "S'està baixant"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/OtherFunctions.cpp:686
-#: src/PartFile.cpp:3722 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
 msgid "Waiting"
 msgstr "Esperant"
 
@@ -2585,11 +2599,11 @@ msgstr "ListenSocket: Ok."
 msgid "ERROR: Could not listen to TCP port."
 msgstr "ERROR: No s'ha pogut escoltar el port TCP."
 
-#: src/Logger.cpp:302 src/Logger.cpp:323
+#: src/Logger.cpp:303 src/Logger.cpp:324
 msgid "ERROR: "
 msgstr "ERROR: "
 
-#: src/Logger.cpp:302 src/Logger.cpp:323
+#: src/Logger.cpp:303 src/Logger.cpp:324
 msgid "WARNING: "
 msgstr "AVÍS: "
 
@@ -3834,7 +3848,7 @@ msgstr "Interval de refresc de la connexió amb el servidor: Inhabilitat"
 msgid "Skin to use: "
 msgstr "Aparença a usar:"
 
-#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:832
+#: src/muuli_wdr.cpp:2223 src/Preferences.cpp:826
 msgid "- default -"
 msgstr "- defecte -"
 
@@ -4569,7 +4583,7 @@ msgstr "tota la resta"
 msgid "Incomplete"
 msgstr "Incomplet"
 
-#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3727 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3733 src/TransferWnd.cpp:352
 msgid "Stopped"
 msgstr "Aturat"
 
@@ -4844,19 +4858,19 @@ msgstr "Corrupció a la part baixada %i del fitxer: %s"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: S'ha recuperat la part corrupta %i de %s -> Bytes desats: %s"
 
-#: src/PartFile.cpp:3700
+#: src/PartFile.cpp:3706
 msgid "Allocating"
 msgstr "Assignant"
 
-#: src/PartFile.cpp:3716
+#: src/PartFile.cpp:3722
 msgid "Insufficient disk space"
 msgstr "Espai en disc insuficient"
 
-#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:944
 msgid "Downloaded"
 msgstr "Baixat"
 
-#: src/PartFile.cpp:3980
+#: src/PartFile.cpp:3986
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ERROR: No s'ha pogut obrir el fitxer part '%s'"
@@ -5009,27 +5023,27 @@ msgstr "Turc"
 msgid "Ukrainian"
 msgstr "Ucranià"
 
-#: src/Preferences.cpp:885
+#: src/Preferences.cpp:886
 msgid "no options available"
 msgstr "No hi ha opcions disponibles"
 
-#: src/Preferences.cpp:1548
+#: src/Preferences.cpp:1552
 msgid "Invalid category found, skipping"
 msgstr "Categoria invàlida trobada, omitint"
 
-#: src/Preferences.cpp:1713
+#: src/Preferences.cpp:1717
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "El port TCP no pot ser més gran que 65532 puix el sòcol UDP del servidor és "
 "TCP+3"
 
-#: src/Preferences.cpp:1714
+#: src/Preferences.cpp:1718
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "S'usarà el port per defecte (%d)"
 
-#: src/Preferences.cpp:1737
+#: src/Preferences.cpp:1741
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Ignorant carpeta compartida inexistent: %s"
@@ -5519,17 +5533,12 @@ msgstr "No s'ha pogut desar el server.met"
 msgid "Invalid URL"
 msgstr "Adreça invàlida"
 
-#: src/ServerList.cpp:807
-#, c-format
-msgid "Finished to download the server list from %s"
+#: src/ServerList.cpp:806
+#, fuzzy, c-format
+msgid "Finished downloading the server list from %s"
 msgstr "S'ha acabat de baixar la llista de servidors des de %s"
 
-#: src/ServerList.cpp:809 src/ServerList.cpp:863
-#, c-format
-msgid "Failed to download the server list from %s"
-msgstr "No s'ha pogut baixar la llista de servidors des de %s"
-
-#: src/ServerList.cpp:820
+#: src/ServerList.cpp:821
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5538,24 +5547,29 @@ msgstr ""
 "dat'. Enganxeu una adreça cap a una llista de servidors vàlida a aquest "
 "fitxer per a que es pugui actualitzar automàticament la llista de servidors"
 
-#: src/ServerList.cpp:833
+#: src/ServerList.cpp:834
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "Comença a baixar la llista de servidors des de %s"
 
-#: src/ServerList.cpp:842
+#: src/ServerList.cpp:843
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "AVÍS: s'ha especificat una URL invàlida per a l'actualització automàtica de "
 "servidors: %s"
 
-#: src/ServerList.cpp:846
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "No s'ha trobat una URL per a baixar un server.met al fitxer addresses.dat"
 
-#: src/ServerList.cpp:939
+#: src/ServerList.cpp:864
+#, c-format
+msgid "Failed to download the server list from %s"
+msgstr "No s'ha pogut baixar la llista de servidors des de %s"
+
+#: src/ServerList.cpp:940
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -7566,6 +7580,35 @@ msgstr "Eixida sol·licitada\n"
 #: src/webserver/src/WebServer.cpp:1911
 msgid "Processing request [redirected]: "
 msgstr "S'està processant la petició [redirigit]: "
+
+#~ msgid "HTTP download thread started"
+#~ msgstr "S'ha iniciat el fil de descàrrega HTTP."
+
+#~ msgid "Download size not received, downloading until connection is closed"
+#~ msgstr "No s'ha rebut la mida, descarregant fins que la connexió es tanqui"
+
+#~ msgid "Download size: %i"
+#~ msgstr "Mida descarrega: %i"
+
+#~ msgid "HTTP download thread ended"
+#~ msgstr "Fil de Descàrrega HTTP "
+
+#~ msgid "Host: %s:%i\n"
+#~ msgstr "Servidor: %s:%i\n"
+
+#~ msgid "Response: %i (Error: %i)"
+#~ msgstr "Resposta: %i (Error: %i)"
+
+#~ msgid "WARNING: Void response on stream creation"
+#~ msgstr "AVÍS: Resposta buida en la creació del flux."
+
+#~ msgid "ERROR: Redirection code received with no URL"
+#~ msgstr "ERROR: Codi de redirecció rebut sense URL"
+
+#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
+#~ msgstr ""
+#~ "CIP2Country::CIP2Country(): No s'han pogut carregar les dades del país "
+#~ "des de"
 
 #~ msgid "Get IPFilter level."
 #~ msgstr "Obté el nivell del filtratge IP."
