@@ -47,7 +47,9 @@
 #endif
 
 // Prefer the POSIX interface to strerror_r()
+#ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE	600
+#endif
 #include <string.h>			// Do_not_auto_remove
 
 #include <wx/utils.h>
