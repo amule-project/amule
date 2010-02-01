@@ -122,6 +122,7 @@ class CECTag {
 		bool		operator!=(const CECTag& tag) const	{ return !(*this == tag); }
 		bool		AddTag(const CECTag& tag, CValueMap* valuemap = NULL);
 		void		AddTag(ec_tagname_t name, uint64_t data, CValueMap* valuemap = NULL);
+		void		AddTag(ec_tagname_t name, const CMD4Hash& data, CValueMap* valuemap);
 		#ifdef USE_WX_EXTENSIONS
 		void		AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap = NULL);
 		#endif
@@ -148,6 +149,7 @@ class CECTag {
 		
 		// Retrieving special data types
 		uint64_t		GetInt() const;
+		bool			IsInt() const { return m_dataType >= EC_TAGTYPE_UINT8 && m_dataType <= EC_TAGTYPE_UINT64; }
 		double			GetDoubleData() const;
 		std::string		GetStringDataSTL() const;
 		bool			IsString() const { return m_dataType == EC_TAGTYPE_STRING; }

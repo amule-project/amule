@@ -385,6 +385,15 @@ void CECTag::AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap
 	}
 }
 
+void CECTag::AddTag(ec_tagname_t name, const CMD4Hash& data, CValueMap* valuemap)
+{
+	if (valuemap) {
+		valuemap->CreateTag(name, data, this);
+	} else {
+		AddTag(CECTag(name, data));
+	}
+}
+
 bool CECTag::ReadFromSocket(CECSocket& socket)
 {
 	ec_tagname_t tmp_tagName;
