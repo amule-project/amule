@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-01-30 14:12+0100\n"
+"PO-Revision-Date: 2010-02-01 15:20+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -273,7 +273,7 @@ msgstr "Messaggio del server: %s"
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "Download saltato di %s, poichè il file richiesto non è il più recente."
 
 #: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
@@ -2306,16 +2306,16 @@ msgstr "Cartella di destinazione per i file scaricati"
 
 #: src/HTTPDownload.cpp:207
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "L'URL per scaricare non può essere vuoto."
 
 #: src/HTTPDownload.cpp:229
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "L'URL %s ha risposto: %i - Errore (%i)!"
 
 #: src/HTTPDownload.cpp:256
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Errore critico durante la scrittura del file scaricato."
 
 #: src/HTTPDownload.cpp:271
 #, fuzzy, c-format
@@ -2332,6 +2332,7 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"URL non valido per il download o il redirect HTTP (hai inserito 'http://' ?)"
 
 #: src/HTTPDownload.cpp:367
 #, fuzzy
@@ -2340,7 +2341,7 @@ msgstr "Riconnetti al server"
 
 #: src/HTTPDownload.cpp:388
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "Risposta non valida dal server HTTP"
 
 #: src/IP2Country.cpp:92
 #, c-format
