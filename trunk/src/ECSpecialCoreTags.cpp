@@ -213,12 +213,9 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 		return;
 	}
 	
-	AddTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable(), valuemap);
+	AddTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), valuemap);
 
-	long l;
-	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
-		AddTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, valuemap);
-	}
+	AddTag(EC_TAG_PARTFILE_PARTMETID, file->GetPartMetNumber(), valuemap);
 
 	AddTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), valuemap);
 

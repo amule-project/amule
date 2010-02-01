@@ -212,6 +212,7 @@ class CEC_PartFile_Tag : public CECTag {
 
  		CMD4Hash	FileHash()	const { return GetMD4Data(); }
 		wxString	FileHashString() const { return GetMD4Data().Encode(); }
+		uint16		PartMetID()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_PARTMETID)->GetInt(); }
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
@@ -237,14 +238,10 @@ class CEC_PartFile_Tag : public CECTag {
 		uint32		TotalPacketsSavedDueToICH(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SAVED_ICH, target); }
 
 		wxString	PartMetName() const
-			{
-				const CECTag* tmp = GetTagByName(EC_TAG_PARTFILE_PARTMETID);
-				if (tmp) {
-					return CFormat(wxT("%03u.part.met")) % tmp->GetInt();
-				} else {
-					return wxEmptyString;
-				}
-			}
+		{
+			uint16 id = PartMetID();
+			return id ? (CFormat(wxT("%03u.part.met")) % id) : wxEmptyString;
+		}
 
 		wxString	GetFileStatusString() const;
 };

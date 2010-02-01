@@ -133,6 +133,7 @@ public:
 #endif
 	virtual void	UpdatePartsInfo();
 	const CPath& GetPartMetFileName() const { return m_partmetfilename; }
+	uint16	GetPartMetNumber() const;
 	uint64	GetTransferred() const		{ return transferred; }
 	const CPath& GetFullName() const	{ return m_fullname; }
 	float	GetKBpsDown() const			{ return kBpsDown; }
