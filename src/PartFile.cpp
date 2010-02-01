@@ -3881,6 +3881,14 @@ uint32 CPartFile::GetDlActiveTime() const
 	return nDlActiveTime;
 }
 
+
+uint16 CPartFile::GetPartMetNumber() const
+{
+	long nr;
+	return m_partmetfilename.RemoveAllExt().GetRaw().ToLong(&nr) ? nr : 0;
+}
+
+
 #ifndef CLIENT_GUI
 
 uint8 CPartFile::GetStatus(bool ignorepause) const
