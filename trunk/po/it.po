@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2009-04-23 18:41+0100\n"
-"Last-Translator: Briga <brigabrigante@yahoo.com>\n"
+"PO-Revision-Date: 2010-01-30 14:12+0100\n"
+"Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -749,7 +749,7 @@ msgstr "Connessione Fallita. Impossibile connettersi a %s:%d\n"
 
 #: src/amule-remote-gui.cpp:320
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Connessione persa - aMule verrà chiuso."
 
 #: src/amule-remote-gui.cpp:403
 msgid "Ready"
@@ -763,6 +763,8 @@ msgstr "Tutto"
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
+"Impossibile creare la directory '%s' per la categoria '%s', verrà mantenuta "
+"la directory '%s'."
 
 #: src/amule-remote-gui.cpp:837
 #, c-format
@@ -772,6 +774,7 @@ msgstr "Utenti totali: %s | File totali: %s"
 #: src/amule-remote-gui.cpp:1764
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
+"I Commenti e i Ratings non sono ancora supportati nell'interfaccia remota."
 
 #: src/BaseClient.cpp:1334
 #, c-format
@@ -953,7 +956,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:168
 msgid "Close tab"
@@ -1380,6 +1383,8 @@ msgstr[1] "%u commenti"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"Client %s bannato per aver spedito %s dati corrotti di %s totali, per il "
+"file '%s'"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Lo]"
@@ -5372,7 +5377,7 @@ msgstr "Annulla"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Nuovo"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -6454,7 +6459,7 @@ msgstr "Ricarica il filtro IP da file."
 
 #: src/TextClient.cpp:870
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Se l'URL è omesso verrà utilizzato quello inserito nelle Preferenze."
 
 #: src/TextClient.cpp:872
 msgid "Connect to the network."
@@ -7553,7 +7558,7 @@ msgstr "Elaborazione richiesta [originale]: "
 
 #: src/webserver/src/WebServer.cpp:1871
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Nessuna password specificata, login fallito."
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Checking password\n"
