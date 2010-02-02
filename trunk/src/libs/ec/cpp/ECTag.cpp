@@ -709,6 +709,21 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 						s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
 					case EC_TAGTYPE_HASH16:
 						s2 = GetMD4Data().Encode(); break;
+					case EC_TAGTYPE_CUSTOM:
+						if (m_dataLen == 0) {
+							s2 = wxT("empty");
+						} else {
+							// Make a hex dump (limited to maxOutput)
+							const int maxOutput = 50;
+							for (uint32 i = 0; i < m_dataLen; i++) {
+								if (i == maxOutput) {
+									s2 += wxT("...");
+									break;
+								}
+								s2 += CFormat(wxT("%02X ")) % (unsigned char) m_tagData[i];
+							}
+						}
+						break;
 					default:
 						s2 = GetDebugNameECTagTypes(m_dataType);
 				}
