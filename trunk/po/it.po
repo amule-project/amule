@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-02-01 15:20+0100\n"
+"PO-Revision-Date: 2010-02-02 19:27+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgid "Now, exiting main app..."
 msgstr "Uscita dall'applicazione..."
 
 #: src/amule.cpp:250
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
 msgstr "Sto terminando l'istanza di amuleweb con pid `%ld' ... "
 
@@ -591,9 +591,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Disconnesso)"
 
 #: src/amuleDlg.cpp:895
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Vuoi veramente uscire da aMule?"
+msgstr "Vuoi veramente uscire da %s?"
 
 #: src/amuleDlg.cpp:896
 msgid "Exit confirmation"
@@ -868,26 +868,25 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nuovo messaggio da '%s' (IP:%s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "ATTENZIONE: known.met non può essere aperto."
+msgstr "ATTENZIONE: %s non può essere aperto."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
 "ATTENZIONE: la lista dei file conosciuti è danneggiata, contiene "
 "un'intestazione non valida."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "Errore IO durante la lettura del file known.met: %s"
+msgstr "Errore IO durante la lettura del file %s: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Errore nel salvataggio del file known.met: %s"
+msgstr "Errore nel salvataggio del file %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -2300,9 +2299,9 @@ msgid "HTTP download cancelled"
 msgstr "Download HTTP cancellato"
 
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Cartella di destinazione per i file scaricati"
+msgstr "Impossibile creare il file di destinazione %s per il download!"
 
 #: src/HTTPDownload.cpp:207
 msgid "The URL to download can't be empty"
@@ -2318,9 +2317,9 @@ msgid "Critical error while writing downloaded file"
 msgstr "Errore critico durante la scrittura del file scaricato."
 
 #: src/HTTPDownload.cpp:271
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Scaricato"
+msgstr "Scaricato %d bytes"
 
 #: src/HTTPDownload.cpp:275
 #, c-format
@@ -2335,9 +2334,8 @@ msgstr ""
 "URL non valido per il download o il redirect HTTP (hai inserito 'http://' ?)"
 
 #: src/HTTPDownload.cpp:367
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Riconnetti al server"
+msgstr "Impossibile connettersi al server HTTP"
 
 #: src/HTTPDownload.cpp:388
 msgid "Invalid response from HTTP download server"
@@ -2353,34 +2351,33 @@ msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Errore nello scaricare GeoIP.dat, interrompo l'aggiornamento."
 
 #: src/IP2Country.cpp:126 src/IPFilter.cpp:480
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "Impossibile rimuovere il file GeoIP.dat, interrompo l'aggiornamento."
+msgstr "Impossibile rimuovere il file %s, aggiornamento interrotto."
 
 #: src/IP2Country.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr ""
-"Impossibile rinominare il nuovo file GeoIP.dat, interrompo l'aggiornamento."
+msgstr "Impossibile rinominare il nuovo file %s, aggiornamento interrotto."
 
 #: src/IP2Country.cpp:138 src/IPFilter.cpp:492
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "GeoIP.dat aggiornato con successo"
+msgstr "%s aggiornato con successo"
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Errore durante l'aggiornamento di GeoIP.dat"
 
 #: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "Impossibile scaricare GeoIP.dat da %s"
+msgstr "Impossibile scaricare %s da %s"
 
 #: src/IP2Country.cpp:164
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Impossibile scaricare GeoIP.dat da %s"
+msgstr "Impossibile caricare dati locali da '%s'."
 
 #: src/IP2Country.cpp:169
 #, c-format
@@ -2418,10 +2415,9 @@ msgstr[0] "%u riga non valida è stata scartata."
 msgstr[1] "%u righe non valide sono state scartate."
 
 #: src/IPFilter.cpp:486
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
-msgstr ""
-"Impossibile rinominare il nuovo file GeoIP.dat, interrompo l'aggiornamento."
+msgstr "Impossibile rinominare il nuovo file %s,  aggiornamento interrotto."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -5372,7 +5368,6 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Copia il collegamento eD2k negli appunti"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
 msgstr "Annulla"
 
@@ -5539,7 +5534,7 @@ msgid "Invalid URL"
 msgstr "URL non valido"
 
 #: src/ServerList.cpp:806
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Terminato il download della lista dei server da %s"
 
@@ -6434,27 +6429,22 @@ msgstr ""
 "core in esecuzione.\n"
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Reload the given object."
 msgstr "Ricarica l'oggetto."
 
 #: src/TextClient.cpp:865
-#, fuzzy
 msgid "Reload shared files list."
 msgstr "Ricarica la lista dei file condivisi."
 
 #: src/TextClient.cpp:867
-#, fuzzy
 msgid "Reload IP filtering table."
 msgstr "Ricarica il filtro IP da file."
 
 #: src/TextClient.cpp:868
-#, fuzzy
 msgid "Reload current IP filtering table."
 msgstr "Seleziona il livello del filtraggio degli IP."
 
 #: src/TextClient.cpp:869
-#, fuzzy
 msgid "Update IP filtering table from URL."
 msgstr "Ricarica il filtro IP da file."
 
@@ -6506,7 +6496,6 @@ msgid "Disconnect from Kad only."
 msgstr "Disconnetti solo dalla rete Kad."
 
 #: src/TextClient.cpp:882
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
 msgstr "Aggiungi un link eD2k o un magnet link al core."
 
@@ -6537,7 +6526,6 @@ msgid "Set a preference value."
 msgstr "Imposta un valore delle preferenze."
 
 #: src/TextClient.cpp:888
-#, fuzzy
 msgid "Set IP filtering preferences."
 msgstr "Imposta le preferenze del Filtro IP."
 
@@ -6607,27 +6595,22 @@ msgid "Get and display a preference value."
 msgstr "Visualizza un'impostazione delle preferenze."
 
 #: src/TextClient.cpp:910
-#, fuzzy
 msgid "Get IP filtering preferences."
 msgstr "Visualizza impostazioni del filtro IP."
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
 msgstr "Ottieni stato del filtro IP per client e server."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Get IP filtering state for clients only."
 msgstr "Ottieni stato del filtro IP per i client."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Get IP filtering state for servers only."
 msgstr "Ottieni stato del filtro IP per i server."
 
 #: src/TextClient.cpp:914
-#, fuzzy
 msgid "Get IP filtering level."
 msgstr "Seleziona il livello del filtraggio degli IP."
 
@@ -6636,9 +6619,8 @@ msgid "Get bandwidth limits."
 msgstr "Visualizza limita di banda."
 
 #: src/TextClient.cpp:918
-#, fuzzy
 msgid "Execute a search."
-msgstr "Effettua una ricerca su Kad"
+msgstr "Effettua una ricerca."
 
 #: src/TextClient.cpp:919
 msgid ""
@@ -6655,37 +6637,30 @@ msgstr ""
 "Esempio: 'search kad file' cercherà \"file\" nella rete Kad.\n"
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Execute a global search."
 msgstr "Effettua una ricerca globale."
 
 #: src/TextClient.cpp:921
-#, fuzzy
 msgid "Execute a local search"
 msgstr "Effettua una ricerca locale"
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Effettua una ricerca su Kad"
+msgstr "Effettua una ricerca sulla rete Kad"
 
 #: src/TextClient.cpp:924
-#, fuzzy
 msgid "Show the results of the last search."
 msgstr "Mostra risultati dell'ultima ricerca."
 
 #: src/TextClient.cpp:925
-#, fuzzy
 msgid "Return the results of the previous search.\n"
-msgstr "Rende i risultati della ricerca precedente.\n"
+msgstr "Restituisce i risultati della ricerca precedente.\n"
 
 #: src/TextClient.cpp:927
-#, fuzzy
 msgid "Show the progress of a search."
 msgstr "Mostra lo stato d'avanzamento della ricerca."
 
 #: src/TextClient.cpp:928
-#, fuzzy
 msgid "Show the progress of a search.\n"
 msgstr "Mostra lo stato d'avanzamento della ricerca.\n"
 
@@ -6744,7 +6719,6 @@ msgid "Show queues/lists."
 msgstr "Mostra code/liste."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Mostra la coda di upload/download, la lista dei server o la lista dei file "
