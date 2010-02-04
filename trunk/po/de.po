@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-01-13 11:20+0100\n"
+"PO-Revision-Date: 2010-02-04 21:00+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -264,7 +264,7 @@ msgstr "Servernachricht: %s"
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "Lade %s nicht herunter, weil die angeforderte Datei nicht neuer ist."
 
 #: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
@@ -2292,22 +2292,22 @@ msgid "HTTP download cancelled"
 msgstr "HTTP-Download abgebrochen"
 
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Zielverzeichnis für Downloads."
+msgstr "Kann Zieldatei %s für Download nicht erstellen."
 
 #: src/HTTPDownload.cpp:207
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "Die Download-URL kann nicht leer sein."
 
 #: src/HTTPDownload.cpp:229
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "Die URL %s antwortet mit %i - Fehler (%i)!"
 
 #: src/HTTPDownload.cpp:256
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Kritischer Fehler während des Schreibens der heruntergeladenen Datei."
 
 #: src/HTTPDownload.cpp:271
 #, c-format
@@ -2324,15 +2324,16 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"Ungültige URL für HTTP-Download oder HTTP-Weiterleitung ('http://' "
+"vergessen?)"
 
 #: src/HTTPDownload.cpp:367
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Wiederverbinden mit Server"
+msgstr "Kann nicht zu HTTP-Downloadserver verbinden."
 
 #: src/HTTPDownload.cpp:388
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "Ungültige Antwort von HTTP-Downloadserver"
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2346,37 +2347,36 @@ msgstr ""
 "Aktualisierung ab."
 
 #: src/IP2Country.cpp:126 src/IPFilter.cpp:480
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr ""
-"Das Entfernen der GeoIP.dat-Datei ist fehlgeschlagen, breche Aktualisierung "
-"ab."
+"Das Entfernen der %s-Datei ist fehlgeschlagen, breche Aktualisierung ab."
 
 #: src/IP2Country.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr ""
-"Das Umbennenen der neuen GeoIP.dat-Datei ist fehlgeschlagen, breche "
-"Aktualisierung ab."
+"Das Umbennenen der neuen %s-Datei ist fehlgeschlagen, breche Aktualisierung "
+"ab."
 
 #: src/IP2Country.cpp:138 src/IPFilter.cpp:492
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "GeoIP.dat erfolgreich aktualisiert."
+msgstr "%s erfolgreich aktualisiert."
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Fehler beim aktualisieren der Datei GeoIP.dat"
 
 #: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "Herunterladen der Datei GeoIP.dat von %s fehlgeschlagen."
+msgstr "Herunterladen der Datei %s von %s fehlgeschlagen."
 
 #: src/IP2Country.cpp:164
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Herunterladen der Datei GeoIP.dat von %s fehlgeschlagen."
+msgstr "Herunterladen der Länderdaten von %s fehlgeschlagen."
 
 #: src/IP2Country.cpp:169
 #, c-format
@@ -2414,11 +2414,11 @@ msgstr[0] "%u fehlerhafte Zeile wurden ignoriert."
 msgstr[1] "%u fehlerhafte Zeilen wurden ignoriert."
 
 #: src/IPFilter.cpp:486
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
 msgstr ""
-"Das Umbennenen der neuen GeoIP.dat-Datei ist fehlgeschlagen, breche "
-"Aktualisierung ab."
+"Das Umbennenen der neuen %s-Datei ist fehlgeschlagen, breche Aktualisierung "
+"ab."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -5555,7 +5555,7 @@ msgid "Invalid URL"
 msgstr "Ungültige URL"
 
 #: src/ServerList.cpp:806
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Download der Serverliste von %s beendet"
 
