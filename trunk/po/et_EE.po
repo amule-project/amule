@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-01-11 09:00+0200\n"
+"PO-Revision-Date: 2010-01-20 09:15+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -264,7 +264,7 @@ msgstr "Serveri teade: %s"
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "Fail %s jäeti vahele, sest soovitud fail pole uuem."
 
 #: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
@@ -2259,22 +2259,22 @@ msgid "HTTP download cancelled"
 msgstr "HTTP allalaadimine katkestatud"
 
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Tõmmatavate failide kataloog"
+msgstr "Ei suuda luua sihtkoha faili %s."
 
 #: src/HTTPDownload.cpp:207
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "Tõmbamise URL ei saa olla tühi."
 
 #: src/HTTPDownload.cpp:229
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "URL %s ütles: %i - VIGA (%i)!"
 
 #: src/HTTPDownload.cpp:256
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Kriitiline viga tõmmatud faili salvestamisel"
 
 #: src/HTTPDownload.cpp:271
 #, c-format
@@ -2291,15 +2291,16 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"Vigane link HTTP tõmbamiseks või HTTP ümbersuunamine (ega sa unustanud "
+"lisada 'http://' ?)"
 
 #: src/HTTPDownload.cpp:367
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Taasühendu serveriga"
+msgstr "Ei suuda ühenduda HTTP serveriga"
 
 #: src/HTTPDownload.cpp:388
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "HTTP serveri vigane vastus"
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2311,33 +2312,33 @@ msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "GeoIP.dat faili tõmbamine ebaõnnastus, katkestan uuendamise."
 
 #: src/IP2Country.cpp:126 src/IPFilter.cpp:480
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "GeoIP.dat faili eemaldamine ebaõnnastus, katkestan uuendamise."
+msgstr "Faili %s eemaldamine ebaõnnastus, katkestan uuendamise."
 
 #: src/IP2Country.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr "GeoIP.dat faili ümbernimetamine ebaõnnestus, katkestan uuendamise."
+msgstr "Faili %s ümbernimetamine ebaõnnestus, katkestan uuendamise."
 
 #: src/IP2Country.cpp:138 src/IPFilter.cpp:492
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "GeoIP.dat uuendamine õnnestus"
+msgstr "%s uuendamine õnnestus"
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "GeoIP.dat uuendamise viga"
 
 #: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "GeoIP.dat faili tõmbamine aadressilt %s ebaõnnestus"
+msgstr "Faili %s tõmbamine aadressilt %s ebaõnnestus"
 
 #: src/IP2Country.cpp:164
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "GeoIP.dat faili tõmbamine aadressilt %s ebaõnnestus"
+msgstr "'%s' riigiinfo laadimine ebaõnnestus."
 
 #: src/IP2Country.cpp:169
 #, c-format
@@ -2375,9 +2376,9 @@ msgstr[0] "ignoreeritud %u vigast rida."
 msgstr[1] "ignoreeritud %u vigast rida."
 
 #: src/IPFilter.cpp:486
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
-msgstr "GeoIP.dat faili ümbernimetamine ebaõnnestus, katkestan uuendamise."
+msgstr "Faili %s ümbernimetamine ebaõnnestus, katkestan uuendamise."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -5461,7 +5462,7 @@ msgid "Invalid URL"
 msgstr "Vigane URL"
 
 #: src/ServerList.cpp:806
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Serverite nimekirja tõmbamine aadressilt %s lõpetatud"
 
@@ -7472,30 +7473,3 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1911
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]: "
-
-#~ msgid "HTTP download thread started"
-#~ msgstr "HTTP tõmbamise lõim käivitatud"
-
-#~ msgid "Download size not received, downloading until connection is closed"
-#~ msgstr "Tõmmatava faili suurust ei tea, tõmban ühenduse sulgemiseni"
-
-#~ msgid "Download size: %i"
-#~ msgstr "Tõmbamise suurus: %i"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "HTTP tõmbamise lõim lõpetatud"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Masin: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Vastus: %i (Viga: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "HOIATUS: Kehtetu vastus voo tekitamisel"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "VIGA: Ümbresuunamine ilma sihtkoha aadressita"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country(): Riigi info laadimine ebaõnnestus "
