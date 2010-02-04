@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-02-03 00:22+0200\n"
+"PO-Revision-Date: 2010-02-03 22:12+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Basque <debian-l10n-eu@debian.lists.org>\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgstr "Emandako erabiltzaile egiaztapena ez da baliozkoa!"
 
 #: src/amuleAppCommon.cpp:128
 msgid "Failed to open ED2KLinks file."
-msgstr "Huts ED2KLinks fitxategia irekitzerakoan"
+msgstr "Huts ED2KLinks fitxategia irekitzerakoan."
 
 #: src/amuleAppCommon.cpp:188
 msgid ""
@@ -70,7 +70,7 @@ msgstr "aMule irteten: Muina ixten."
 
 #: src/amule.cpp:327
 msgid "aMule shutdown completed."
-msgstr "aMule itzaltzea osaturik"
+msgstr "aMule itzaltzea osaturik."
 
 #: src/amule.cpp:331
 msgid "Memory debug results for aMule exit:"
@@ -137,7 +137,7 @@ msgid ""
 msgstr ""
 "Abioan web-zerbitzaria exekutatzea eskatu duzu, baina amuleweb bitarra ezin "
 "da exekutatu. Mesedez instalatu amule web zerbitzaria duen paketea edo "
-"konpilatu ezazu amule --enable-webserver erabilian eta make install egin."
+"konpilatu ezazu amule --enable-webserver erabilian eta make install egin"
 
 #: src/amule.cpp:648 src/amule.cpp:768 src/amule.cpp:1055
 #: src/amule-remote-gui.cpp:296 src/amule-remote-gui.cpp:318
@@ -184,7 +184,7 @@ msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
 msgstr ""
-"Aukeratutako lokalak ez dirudi zure sisteman instalaturik (Oharra: Hala ere "
+"Aukeratutako lokalak ez dirudi zure sisteman instalaturik. (Oharra: Hala ere "
 "erabiltzen saiatuko da)"
 
 #: src/amule.cpp:1030
@@ -203,7 +203,7 @@ msgstr "ez gara ezer apurtu, zure etxea erre, edo zure zakurra akatzen\n"
 #: src/amule.cpp:1034
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
-"badu ere kargu egingo, baina erabiltzeko ziurra izan *beharko* litzateke.\n"
+"badu ere kargu egingo. Baina erabiltzeko ziurra izan *beharko* litzateke.\n"
 
 #: src/amule.cpp:1039
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -257,7 +257,7 @@ msgstr "ZerbitzariMezua: %s"
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "%s-ren deskarga baztertua, eskatutako fitxategia ez da berria eta."
 
 #: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
@@ -389,7 +389,7 @@ msgstr ""
 "aMule deabrua ezin da erabili kanpo konexiorik gabe. aMule deabrua "
 "abiarazteko \"ECPassword\" eremua dagokion balioarekin ezarri behar duzu ~/."
 "aMule/amule.conf fitxategian. Exekutatu amule --ec-config banderarekin "
-"pasahitza ezartzeko. Argibide gehiago http://wiki.amule.org gunean."
+"pasahitza ezartzeko. Argibide gehiago http://wiki.amule.org gunean"
 
 #: src/amuled.cpp:686
 msgid "amuled: OnInit - starting timer"
@@ -695,7 +695,7 @@ msgstr "aMule"
 
 #: src/amule-gui.cpp:283
 msgid "Fatal Error: Failed to create Core Timer"
-msgstr "Errore konponezina. Akats ordutegi nagusia sortzerakoan"
+msgstr "Errore konponezina: Akats ordutegi nagusia sortzerakoan"
 
 #: src/amule-remote-gui.cpp:67
 msgid "Connect to remote amule"
@@ -703,7 +703,7 @@ msgstr "Urruneko amulera konektatu"
 
 #: src/amule-remote-gui.cpp:254
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "Errore konponezina. Akats ilara ordutegia sortzerakoan"
+msgstr "Errore konponezina: Akats ilara ordutegia sortzerakoan"
 
 #: src/amule-remote-gui.cpp:266
 msgid "Going to event loop..."
@@ -732,7 +732,7 @@ msgstr "Konexioak huts egin du. Ezin da %s-ra konektatu:%d\n"
 
 #: src/amule-remote-gui.cpp:320
 msgid "Connection closed - aMule has terminated probably."
-msgstr "Konexioa itxita - aMule itxi egin da ziurrenik,"
+msgstr "Konexioa itxita - aMule itxi egin da ziurrenik."
 
 #: src/amule-remote-gui.cpp:403
 msgid "Ready"
@@ -756,8 +756,7 @@ msgstr "Guztira Erab: %s | Guztira Fitxategiak: %s"
 
 #: src/amule-remote-gui.cpp:1764
 msgid "Comments and ratings are not supported on remote gui yet"
-msgstr ""
-"Iruzkinak eta botazioak ez dira onartzen urruneko interfazean oraindik."
+msgstr "Iruzkinak eta botazioak ez dira onartzen urruneko interfazean oraindik"
 
 #: src/BaseClient.cpp:1334
 #, c-format
@@ -893,7 +892,7 @@ msgstr "Kategoria izen bat ezarri behar duzu!"
 
 #: src/CatDialog.cpp:150
 msgid "You must specify a path for the category!"
-msgstr "Kategoria bide bat ezarri behar duzu!!"
+msgstr "Kategoriarentzat bide bat ezarri behar duzu!"
 
 #: src/CatDialog.cpp:162
 msgid ""
@@ -1529,7 +1528,7 @@ msgstr "Dagoeneko deskargatzen"
 
 #: src/DataToText.cpp:153
 msgid "Unknown or bad tempfile format."
-msgstr "Aldiroko fitxategia formatu ezezagun edo okerrekoa"
+msgstr "Aldiroko fitxategia formatu ezezagun edo okerrekoa."
 
 #: src/DownloadListCtrl.cpp:187
 msgid "Part"
@@ -1703,7 +1702,7 @@ msgid ""
 msgstr ""
 "Ohar hau aurreikuspen bakoitzean agertzea saihesteko,\n"
 "ezarri zure bideo erreproduzigailu gogokoena hobespen leihoan (lehenetsia "
-"mplayer da)"
+"mplayer da)."
 
 #: src/DownloadListCtrl.cpp:2292
 msgid "File preview"
@@ -1943,7 +1942,7 @@ msgstr "Dagoeneko irteten."
 #: src/ExternalConn.cpp:1129
 #, c-format
 msgid "ExternalConn: adding link '%s'."
-msgstr "KanpoKonexioa: '%s' lotura gehitzen"
+msgstr "KanpoKonexioa: '%s' lotura gehitzen."
 
 #: src/ExternalConn.cpp:1135
 msgid "Invalid link or already on list."
@@ -1983,7 +1982,7 @@ msgstr "Sare guztiak ezgaiturik daude."
 
 #: src/ExternalConn.cpp:1506
 msgid "Disconnected from eD2k."
-msgstr "eD2k-tik deskonektatua"
+msgstr "eD2k-tik deskonektatua."
 
 #: src/ExternalConn.cpp:1510
 msgid "Disconnected from Kad."
@@ -2057,7 +2056,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:222 src/ExternalConnector.cpp:223
 msgid "Exits from the application."
-msgstr "Aplikazioa utzi"
+msgstr "Aplikaziotik ateratzen da."
 
 #: src/ExternalConnector.cpp:224
 msgid "Show help."
@@ -2104,7 +2103,7 @@ msgstr "Komando honek parametro bat eduki beharko luke."
 
 #: src/ExternalConnector.cpp:290
 msgid "Invalid argument."
-msgstr "Argumentu baliogabea"
+msgstr "Argumentu baliogabea."
 
 #: src/ExternalConnector.cpp:293
 msgid "This is an incomplete command."
@@ -2162,7 +2161,7 @@ msgstr "Laguntza testu hau bistarazi."
 
 #: src/ExternalConnector.cpp:432
 msgid "Host where aMule is running. (default: localhost)"
-msgstr "aMule abiarazirik duen ostalaria (lehenetsia: localhost)"
+msgstr "aMule abiarazirik duen ostalaria. (lehenetsia: localhost)"
 
 #: src/ExternalConnector.cpp:435
 msgid "aMule's port for External Connection. (default: 4712)"
@@ -2284,22 +2283,22 @@ msgid "HTTP download cancelled"
 msgstr "HTTP deskarga utzia"
 
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Deskargentzat helburu karpeta"
+msgstr "Ezin da helburu fitxategia sortu %s deskargarentzat!"
 
 #: src/HTTPDownload.cpp:207
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "Deskargatzeko URLa ezin da hutsik egon"
 
 #: src/HTTPDownload.cpp:229
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "%s URL-aren erantzuna: %i - Errorea (%i)!"
 
 #: src/HTTPDownload.cpp:256
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Errore larria deskargatutako fitxategia idazterakoan"
 
 #: src/HTTPDownload.cpp:271
 #, c-format
@@ -2316,15 +2315,16 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"Okerreko URLa HTTP deskarga edo HTTP berbideraketarako ('http://' ahaztu al "
+"duzu?)"
 
 #: src/HTTPDownload.cpp:367
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Zerbitzarira birkonektatu"
+msgstr "Ezin da HTTP deskarga zerbitzaria konektatu"
 
 #: src/HTTPDownload.cpp:388
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "Okerreko erantzuna HTTP deskarga zerbitzaritik"
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2336,33 +2336,33 @@ msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "GeoIP.dat deskargak huts egin du eguneraketa baztertzen."
 
 #: src/IP2Country.cpp:126 src/IPFilter.cpp:480
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "Huts GeoIP.dat fitxategia ezabatzean, eguneraketa baztertzen."
+msgstr "Huts %s fitxategia ezabatzean, eguneraketa baztertzen."
 
 #: src/IP2Country.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr "Huts GeoIP.dat fitxategia berrizendatzean, eguneraketa baztertzen."
+msgstr "Huts %s fitxategia berrizendatzean, eguneraketa baztertzen."
 
 #: src/IP2Country.cpp:138 src/IPFilter.cpp:492
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "GeoIP.dat behar bezala bertsio-berritu da"
+msgstr "%s behar bezala eguneratu da"
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Huts GeoIP.dat deskargatzean"
 
 #: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "Huts GeoIP.dat %s-tik deskargatzean"
+msgstr "Huts %s %s-tik deskargatzean"
 
 #: src/IP2Country.cpp:164
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Huts GeoIP.dat %s-tik deskargatzean"
+msgstr "Huts '%s'-ren estatu datuak kargatzean."
 
 #: src/IP2Country.cpp:169
 #, c-format
@@ -2402,9 +2402,9 @@ msgstr[0] "Gaizki eratutako lerro %u alde batetara utzi da."
 msgstr[1] "Gaizki eratutako %u lerro alde batetara utzi dira."
 
 #: src/IPFilter.cpp:486
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
-msgstr "Huts GeoIP.dat fitxategia berrizendatzean, eguneraketa baztertzen."
+msgstr "Huts %s fitxategi berria berrizendatzean, eguneraketa baztertzen."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2850,7 +2850,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:124
 msgid "Not Connected ..."
-msgstr "Ez konektaturik..."
+msgstr "Ez konektaturik ..."
 
 #: src/muuli_wdr.cpp:125
 msgid "Currently connected server."
@@ -3028,7 +3028,7 @@ msgstr "Bidali"
 
 #: src/muuli_wdr.cpp:533
 msgid "Sends the specified message."
-msgstr "Ezarritako mezua bidali"
+msgstr "Zehaztutako mezua bidali."
 
 #: src/muuli_wdr.cpp:538
 msgid "Close this chat-session."
@@ -3187,7 +3187,7 @@ msgstr "Berritu"
 
 #: src/muuli_wdr.cpp:977
 msgid "Downloading, please wait ..."
-msgstr "Deskargatzen, itxoin mesedez..."
+msgstr "Deskargatzen, itxoin mesedez ..."
 
 #: src/muuli_wdr.cpp:983
 msgid "Unknown size"
@@ -3515,7 +3515,7 @@ msgstr "TCP ataka estandarra "
 
 #: src/muuli_wdr.cpp:1742
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr "Hau eD2k ataka estandarra da eta ezin da ezgaitu"
+msgstr "Hau eD2k ataka estandarra da eta ezin da ezgaitu."
 
 #: src/muuli_wdr.cpp:1745
 msgid "UDP port for server requests (TCP+3):"
@@ -3664,7 +3664,7 @@ msgid ""
 "fragmentation"
 msgstr ""
 "Fitxategi berrientzat fitxategi bakoitzarentzat disko leku osoa "
-"aurresleitzen du, honek fragmentazioa murrizten du."
+"aurresleitzen du, honek fragmentazioa murrizten du"
 
 #: src/muuli_wdr.cpp:1946
 msgid "Stop downloads when free disk space reaches "
@@ -3818,7 +3818,7 @@ msgid ""
 msgstr ""
 "Ezarpen hauek ez aldatu ez badakizu zer egiten\n"
 "ari zaren, bestela normalean gauzak daudenak\n"
-"baino okerrago geratuko dira zuretzat\n"
+"baino okerrago geratuko dira zuretzat.\n"
 "\n"
 "Amulek ondo funtzionatu beharko luke ezarpen\n"
 "hauek aldatu gabe."
@@ -3922,7 +3922,7 @@ msgid ""
 msgstr ""
 "Idatzi hemen a.b.c.d formatuan entzun behar den interfazearen baliozko ip "
 "helbidea. Eremu huts batek edo 0.0.0.0 ezartzeak edozein interfazetan "
-"entzutea eragingo du"
+"entzutea eragingo du."
 
 #: src/muuli_wdr.cpp:2323 src/muuli_wdr.cpp:2384
 msgid "TCP port:"
@@ -4026,11 +4026,11 @@ msgstr "Garbitu"
 
 #: src/muuli_wdr.cpp:2606 src/muuli_wdr.cpp:2631
 msgid "Click this button to reset the log."
-msgstr "Botoi hau klikatu erregistroa garbitzeko"
+msgstr "Botoi hau klikatu erregistroa garbitzeko."
 
 #: src/muuli_wdr.cpp:2653
 msgid "Click on this button to update the servers list from URL ..."
-msgstr "Klik egin botoi honetan zerbitzari zerrenda URL-tik eguneratzeko ....."
+msgstr "Klik egin botoi honetan zerbitzari zerrenda URL-tik eguneratzeko ..."
 
 #: src/muuli_wdr.cpp:2657
 msgid "Server list"
@@ -4042,11 +4042,11 @@ msgid ""
 "update the list of known servers."
 msgstr ""
 "Idatzi server.met fitxategiaren URL bat hemen eta gero ezkerreko botoia "
-"sakatu zerbitzari ezagunen zerrenda eguneratzeko"
+"sakatu zerbitzari ezagunen zerrenda eguneratzeko."
 
 #: src/muuli_wdr.cpp:2669
 msgid "Add server manually: Name"
-msgstr "Gehitu zerbitzari eskuz: Izena"
+msgstr "Gehitu zerbitzaria eskuz: Izena"
 
 #: src/muuli_wdr.cpp:2673
 msgid "Enter the name of the new server here"
@@ -4086,7 +4086,7 @@ msgstr "Kad Argb"
 
 #: src/muuli_wdr.cpp:2770
 msgid "Click on this button to update the nodes list from URL ..."
-msgstr "Klikatu botoi honetan nodo zerrenda URL honetatik eguneratzeko ...."
+msgstr "Klikatu botoi honetan nodo zerrenda URL honetatik eguneratzeko ..."
 
 #: src/muuli_wdr.cpp:2774
 msgid "Nodes (0)"
@@ -4181,8 +4181,8 @@ msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
-"Aukera honek Amulek nahasitako konexioak Bakerik onartzea eragiten du. "
-"Jatorri gutxiago izango dituzu baina zure trafiko guztia nahasia egongo da."
+"Aukera honek Amulek nahasitako konexioak bakarrik onartzea eragiten du. "
+"Jatorri gutxiago izango dituzu baina zure trafiko guztia nahasia egongo da"
 
 #: src/muuli_wdr.cpp:2959
 msgid "Everybody"
@@ -4295,7 +4295,7 @@ msgstr "Eguneratu maiztasuna (Seg):"
 
 #: src/muuli_wdr.cpp:3063
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr "Aldatu linean sinadura eguneraketa aldia (segundotan)"
+msgstr "Aldatu linean sinadura eguneraketa aldia (segundotan)."
 
 #: src/muuli_wdr.cpp:3072
 msgid "Save online signature file in: "
@@ -4360,7 +4360,7 @@ msgstr "Erabiltzaile izena: "
 
 #: src/muuli_wdr.cpp:3167
 msgid "The username to use to connect to the proxy"
-msgstr "Proxy-ra konektatzeko erabiliko den erabiltzaile izena."
+msgstr "Proxy-ra konektatzeko erabiliko den erabiltzaile izena"
 
 #: src/muuli_wdr.cpp:3170
 msgid "Password:"
@@ -4368,7 +4368,7 @@ msgstr "Pasahitza:"
 
 #: src/muuli_wdr.cpp:3174
 msgid "The password to use to connect to the proxy"
-msgstr "Proxy-ra konektatzeko erabiliko den pasahitza."
+msgstr "Proxy-ra konektatzeko erabiliko den pasahitza"
 
 #: src/muuli_wdr.cpp:3177
 msgid "Enable Proxy"
@@ -4648,8 +4648,8 @@ msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr ""
-"Mesedez ezarri aldiroko fitxategiak bilatuko diren karpeta (azpikarpetak ere "
-"arakatuko dira)"
+"Mesedez ezarri aldiroko fitxategiak bilatuko diren karpeta! (azpikarpetak "
+"ere arakatuko dira)"
 
 #: src/PartFileConvertDlg.cpp:206
 msgid ""
@@ -5083,19 +5083,17 @@ msgstr "Arazpena"
 #: src/PrefsUnifiedDlg.cpp:320
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
-msgstr "Huts %d IDa eta %s gakoaz konfiguraziotik programara konektatzean."
+msgstr "Huts %d IDa eta %s gakoaz konfiguraziotik programara konektatzean"
 
 #: src/PrefsUnifiedDlg.cpp:373
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
-msgstr ""
-"Huts %d IDa eta %s gakoaz konfiguraziotik programara datuak bidaltzean."
+msgstr "Huts %d IDa eta %s gakoaz konfiguraziotik programara datuak bidaltzean"
 
 #: src/PrefsUnifiedDlg.cpp:487
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
-msgstr ""
-"Huts %d IDa eta %s gakoaz programatik konfiguraziora datuak bidaltzean."
+msgstr "Huts %d IDa eta %s gakoaz programatik konfiguraziora datuak bidaltzean"
 
 #: src/PrefsUnifiedDlg.cpp:542
 msgid ""
@@ -5364,7 +5362,7 @@ msgstr ""
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
 msgstr ""
-"Huts zerrendako zerbitzari guztietara konektatzen saiatzerakoan, berriz "
+"Huts zerrendako zerbitzari guztietara konektatzen saiatzerakoan. Berriz "
 "hasiko nahiz."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
@@ -5518,7 +5516,7 @@ msgid "Invalid URL"
 msgstr "URL Baliogabea"
 
 #: src/ServerList.cpp:806
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Amaituta zerbitzari zerrenda %s-tik deskargatzeaz"
 
@@ -5529,7 +5527,7 @@ msgid ""
 msgstr ""
 "Ez da zerbitzari zerrenda helbideri aurkitu 'addresses.dat' fitxategian. "
 "Mesedez itsatsi zerbitzari zerrenda erabilgarri bat fitxategi honetan "
-"zerbitzari-zerrenda eguneratu ahal izateko."
+"zerbitzari-zerrenda eguneratu ahal izateko"
 
 #: src/ServerList.cpp:834
 #, c-format
@@ -5558,7 +5556,7 @@ msgid ""
 "server!"
 msgstr ""
 "Zerbitzari lokala IPIragazkiak iragazirik dago, beste zerbitzari batetara "
-"birkonektatzen."
+"birkonektatzen!"
 
 #: src/ServerListCtrl.cpp:87
 msgid "Server Name"
@@ -5598,7 +5596,7 @@ msgid ""
 "first. The server was NOT deleted."
 msgstr ""
 "Ezabatu naian zauden zerbitzarira konektaturik zaude. Mesedez deskonektatu "
-"zaitez aurretik. Zerbitzaria EZ da ezabatuko"
+"zaitez aurretik. Zerbitzaria EZ da ezabatuko."
 
 #: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
@@ -5607,7 +5605,7 @@ msgstr "(Izen ezezaguna)"
 #: src/ServerListCtrl.cpp:154
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
-msgstr "Ziur al zaude %s zerbitzari tinkoa ezabatu nahi duzula?"
+msgstr "Ziur al zaude %s zerbitzari tinkoa ezabatu nahi duzula"
 
 #: src/ServerListCtrl.cpp:353
 #, c-format
@@ -5705,7 +5703,7 @@ msgstr "\tArgibide gehiagorako begiratu http://wiki.amule.org"
 
 #: src/ServerSocket.cpp:478
 msgid "Unknown server info received! - too short"
-msgstr "Zerbitzari argibide ezezaguna jasoa - laburregia"
+msgstr "Zerbitzari argibide ezezaguna jasoa! - laburregia"
 
 #: src/ServerSocket.cpp:539
 #, c-format
@@ -6218,7 +6216,7 @@ msgstr "<str> exekutatu eta irten."
 
 #: src/TextClient.cpp:209
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
-msgstr "IP Formatu baliogabea erabili xxx.xxx.xxx.xxx:xxxx\n"
+msgstr "IP Formatu baliogabea. Erabili xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:323
 msgid ""
@@ -6226,7 +6224,7 @@ msgid ""
 "number.\n"
 msgstr ""
 "Komando honek argumentu bat behar du. Baliozko argumentuak: 'all' fitxategi-"
-"izena edo zenbaki bat\n"
+"izena edo zenbaki bat.\n"
 
 #: src/TextClient.cpp:361
 msgid "Processing by hash: "
@@ -6823,7 +6821,7 @@ msgstr "Ezabatu kategoria"
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr ""
-"Huts fitxategia irekitzean (%s), partekatutako fitxategi zerrendatik kentzen"
+"Huts fitxategia irekitzean (%s), partekatutako fitxategi zerrendatik kentzen."
 
 #: src/UploadClient.cpp:700
 #, c-format
@@ -6936,7 +6934,7 @@ msgid ""
 "aLinkCreator append the current file name"
 msgstr ""
 "Sartu hemen eD2k loturara gehitzea nahi duzun URLa: Gehitu / amaieran "
-"aLinkCreator-ek uneko fitxategi izena gehitzeko."
+"aLinkCreator-ek uneko fitxategi izena gehitzeko"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:153
 msgid "Remove"
@@ -7009,7 +7007,7 @@ msgstr "Ezin da arbela ireki"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:415
 msgid "Nothing to copy for now !"
-msgstr "Kopiatzeko ezer ez oraingoz!"
+msgstr "Kopiatzeko ezer ez oraingoz !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:442
 msgid "Select the file to your computed eD2k link"
@@ -7026,7 +7024,7 @@ msgstr "Mesedez idatzi fitxategi izen bat"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:465
 msgid "Nothing to save for now !"
-msgstr "Gordetzeko ezer ez oraingoz!"
+msgstr "Gordetzeko ezer ez oraingoz !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:474
 msgid ""
@@ -7278,7 +7276,7 @@ msgstr " konektatzen..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1030
 msgid " is doing something strange, check it !"
-msgstr " zerbait arraroa egiten ari da, araka ezazu!"
+msgstr " zerbait arraroa egiten ari da, araka ezazu !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1051
 msgid " is connected to "
@@ -7333,7 +7331,7 @@ msgstr "Partekatuak: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1125
 msgid " file(s), Clients on queue: "
-msgstr " fitxategi. Bezeroak ilaran: "
+msgstr " fitxategi, bezero ilaran: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
 msgid "Time: "
@@ -7574,6 +7572,9 @@ msgstr "Eskakizuna prozesatzen [berbidalia]: "
 #~ msgid "ERROR: Redirection code received with no URL"
 #~ msgstr "ERROREA: Berbideraketa kodea jasoa URL gabe"
 
+#~ msgid "Successfully updated GeoIP.dat"
+#~ msgstr "GeoIP.dat behar bezala bertsio-berritu da"
+
 #~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 #~ msgstr ""
 #~ "CIP2Country::CIP2Country(): Huts herrialde datuak hemendik kargatzean: "
@@ -7647,11 +7648,6 @@ msgstr "Eskakizuna prozesatzen [berbidalia]: "
 
 #~ msgid "Firewalled"
 #~ msgstr "Suebakirik"
-
-#~ msgid "Loaded %d flag bitmap."
-#~ msgid_plural "Loaded %d flag bitmaps."
-#~ msgstr[0] "bandera bitmapa %d kargaturik"
-#~ msgstr[1] "%d bandera bitmapa kargaturik"
 
 #~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
 #~ msgstr "%s fitxategia edonkey-rentzat handiegia da, onarpen muga 4GB da."
