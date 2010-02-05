@@ -559,6 +559,11 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 					}
 					
 					CUpDownClient* client = theApp->clientlist->FindClientByIP(dwIP,nPort);
+
+					if (!client) {
+						client = new CUpDownClient(nPort,dwIP,0,0,0, true, true);
+						theApp->clientlist->AddClient(client);
+					}
 					if (size >= 23 && client->HasValidHash()){
 						if (client->GetUserHash() != achUserHash){
 							AddDebugLogLineM(false, logServer, wxT("Reported Userhash from OP_CALLBACKREQUESTED differs with our stored hash"));
@@ -574,13 +579,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						client->SetConnectOptions(byCryptOptions, true, false);
 					}
 					
-					if (client) {
-						client->TryToConnect();
-					} else {
-						client = new CUpDownClient(nPort,dwIP,0,0,0, true, true);
-						theApp->clientlist->AddClient(client);
-						client->TryToConnect();
-					}
+					client->TryToConnect();
 				}
 				break;
 			}
