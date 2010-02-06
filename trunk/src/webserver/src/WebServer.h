@@ -160,7 +160,7 @@ class UploadFile {
 class SearchFile {
 	public:
 		wxString sFileName;
-		unsigned long lFileSize;
+		uint64 lFileSize;
 		CMD4Hash  nHash;
 		wxString  sHash;
 		long lSourceCount;

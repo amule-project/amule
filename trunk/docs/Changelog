@@ -128,6 +128,7 @@ Version 2.3.0 - The river knows.
 		* Enable update of IP filter list through aMulegui and aMulecmd
 		* Enable setting of "Check for new version on startup" through aMulegui
 		* Fixed crash in CClientList::ProcessDirectCallbackList that had been around for ages (hopefully)
+		* Fixed size of large files in aMuleweb's search results
 
 	Vollstrecker:
 		* Unify copyright lines
