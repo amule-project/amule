@@ -24,6 +24,7 @@
 
 #include "RLE.h"
 #include "ArchSpecific.h"
+#include "ScopedPtr.h"
 
 
 /*
@@ -35,21 +36,21 @@
  * We can't use implementation with "control char" since this encoder
  * will process binary data - not ascii (or unicode) strings
  */
-void RLE_Data::setup(int len, bool use_diff, unsigned char * content)
+void RLE_Data::setup(int len, bool use_diff, uint8 * content)
 {
 	m_len = len;
 	m_use_diff = use_diff;
 
 	if (m_len) {
-		m_buff = new unsigned char[m_len];
+		m_buff = new uint8[m_len];
 		if (content) {
 			memcpy(m_buff, content, m_len);
 		} else {
 			memset(m_buff, 0, m_len);
 		}
 		//
-		// in worst case 2-byte sequence encoded as 3. So, data can grow at 1/3
-		m_enc_buff = new unsigned char[m_len*4/3 + 1];
+		// in worst case 2-byte sequence encoded as 3. So, data can grow by 50%
+		m_enc_buff = new uint8[m_len*3/2 + 1];
 	} else {
 		m_buff = m_enc_buff = 0;
 	}
@@ -79,7 +80,7 @@ void RLE_Data::Realloc(int size)
 		return;
 	}
 
-	unsigned char *buff = new unsigned char[size];
+	uint8 *buff = new uint8[size];
 	if ( size > m_len ) {
 		memset(buff + m_len, 0, size - m_len);
 		memcpy(buff, m_buff, m_len);
@@ -89,20 +90,14 @@ void RLE_Data::Realloc(int size)
 	delete [] m_buff;
 	m_buff = buff;
 	
-	buff = new unsigned char[size*4/3 + 1];
-	if ( size > m_len ) {
-		memset(buff + m_len*4/3 + 1, 0, (size - m_len)*4/3);
-		memcpy(buff, m_enc_buff, m_len*4/3 + 1);
-	} else {
-		memcpy(buff, m_enc_buff, size*4/3 + 1);
-	}
+	// m_enc_buff doesn't need to be copied over
 	delete [] m_enc_buff;
-	m_enc_buff = buff;
+	m_enc_buff = new uint8[size*3/2 + 1];
 
 	m_len = size;
 }
 
-const unsigned char *RLE_Data::Decode(const unsigned char *buff, int len)
+const uint8 *RLE_Data::Decode(const uint8 *buff, int len)
 {
 	//
 	// Open RLE
@@ -139,12 +134,75 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff, int len)
 		for (int k = 0; k < m_len; k++) {
 			m_buff[k] ^= m_enc_buff[k];
 		}
+		return m_buff;
+	} else {
+		return m_enc_buff;
 	}
-		
-	return m_buff;
 }
 
-void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned char *partdata, int partlen)
+const uint8 * RLE_Data::Encode(const uint8 *data, int &outlen)
+{
+	//
+	// calculate difference from prev
+	//
+	if ( m_use_diff ) {
+		for (int i = 0; i < m_len; i++) {
+			m_buff[i] ^= data[i];
+		}
+	} else {
+		memcpy(m_buff, data, m_len);
+	}
+	
+	//
+	// now RLE
+	//
+	int i = 0, j = 0;
+	while ( i != m_len ) {
+		uint8 curr_val = m_buff[i];
+		int seq_start = i;
+		while ( (i != m_len) && (curr_val == m_buff[i]) && ((i - seq_start) < 0xff)) {
+			i++;
+		}
+		if (i - seq_start > 1) {
+			// if there's 2 or more equal vals - put it twice in stream
+			m_enc_buff[j++] = curr_val;
+			m_enc_buff[j++] = curr_val;
+			m_enc_buff[j++] = i - seq_start;
+		} else {
+			// single value - put it as is
+			m_enc_buff[j++] = curr_val;
+		}
+	}
+
+	outlen = j;
+	
+	//
+	// If using differential encoder, remember current data for
+	// later use
+	if ( m_use_diff ) {
+		memcpy(m_buff, data, m_len);
+	}
+	
+	return m_enc_buff;
+}
+
+const uint8 * RLE_Data::Encode(const ArrayOfUInts16 &data, int &outlen)
+{
+	// To encode, first copy the UInts16 to a uint8 array
+	// and limit them to 0xff.
+	// The encoded size is always m_len.
+	int size = (int) data.size();
+	CScopedPtr<uint8> buf(new uint8[m_len]);
+	uint8 * bufPtr = buf.get();
+
+	for (int i = 0; i < m_len; i++) {
+		uint16 ui = (i < size) ? data[i] : 0;
+		bufPtr[i] = (ui > 0xff) ? 0xff : (uint8) ui;
+	}
+	return Encode(bufPtr, outlen);
+}
+
+void PartFileEncoderData::Decode(uint8 *gapdata, int gaplen, uint8 *partdata, int partlen)
 {
 	m_part_status.Decode(partdata, partlen);
 
@@ -156,28 +214,5 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 	m_gap_status.Decode(gapdata, gaplen - sizeof(uint32));
 }
 
-unsigned char RLE_Data_BV::m_buff[256];
-
-RLE_Data_BV::RLE_Data_BV(int len) : m_last_buff(len)
-{
-}
-
-int RLE_Data_BV::Encode(std::vector<bool> &data)
-{
-	unsigned char *curr = m_buff;
-	std::vector<bool>::const_iterator i = data.begin();
-	std::vector<bool>::const_iterator j = m_last_buff.begin();
-	while( i != data.end() ) {
-		unsigned char count = 0;
-		while ( (i != data.end()) && ( (*i ^ *j) == false) ) {
-			count++;
-			i++;
-			j++;
-		}
-		*curr++ = count;
-	}
-	m_last_buff = data;
-	return 0;
-}
 
 // File_checked_for_headers
