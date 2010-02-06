@@ -967,9 +967,9 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		*it++ = ENDIAN_HTONLL(curr_pos.end());
 	}
 
-	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint64));
 	int gap_enc_size = 0;
-	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)&m_gap_buffer[0], gap_enc_size);
+	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)&m_gap_buffer[0], 
+											gap_list_size*2*sizeof(uint64),	gap_enc_size);
 
 	int part_enc_size;
 	const unsigned char *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);

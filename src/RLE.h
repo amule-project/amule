@@ -44,17 +44,15 @@ public:
 	
 	~RLE_Data();
 	
-	const unsigned char *Encode(unsigned char *data, int &outlen)
+	const uint8 *Encode(const uint8 *data, int &outlen);
+	const uint8 *Encode(const uint8 *data, int inlen, int &outlen)
 	{
-		return EncodeT<unsigned char *>(data, m_len, outlen);
+		Realloc(inlen);
+		return Encode(data, outlen);
 	}
+	const uint8 *Encode(const ArrayOfUInts16 &data, int &outlen);
 	
-	const unsigned char *Encode(ArrayOfUInts16 &data, int &outlen)
-	{
-		return EncodeT<ArrayOfUInts16>(data, data.size(), outlen);
-	}
-	
-	const unsigned char *Decode(const unsigned char *data, int len);	
+	const uint8 *Decode(const uint8 *data, int len);	
 	
 	void ResetEncoder()
 	{
@@ -65,105 +63,22 @@ public:
 	void Realloc(int size);
 	
 	// decoder will need access to data
-	const unsigned char *Buffer() { return m_buff; }
+	const uint8 *Buffer() { return m_buff; }
 	int Size() { return m_len; }
 
 private:
-	void setup(int len, bool use_diff, unsigned char * content = 0);
-
-	unsigned char *m_buff, *m_enc_buff;
+	void setup(int len, bool use_diff, uint8 * content = 0);
+	
+	// Encode: source data (original or diff in diff mode)
+	// Decode: store last data (differential only)
+	uint8 *m_buff;
+	// Encode: stores packed data
+	// Decode: input gets unpacked here
+	uint8 *m_enc_buff;
+	// Unpacked size
+	int m_len;
+	// Use differential encoding
 	bool m_use_diff;
-	int m_len, m_enc_len;
-	
-	// data is bounded by srclen. everything above considered == 0
-	template <class T> const unsigned char *EncodeT(T &buff, int srclen, int &outlen)
-	{
-		//
-		// calculate difference from prev
-		//
-		if ( m_use_diff ) {
-			for (int i = 0; i < m_len; i++) {
-				m_buff[i] ^= (i < srclen ) ? ((unsigned char)buff[i]) : 0;
-			}
-		} else {
-			//
-			// can't use memcpy - in case of generic class T this
-			// will rely on "operator []" implementation
-			for(int i = 0; i < m_len;i++) {
-				m_buff[i] = (i < srclen ) ? ((unsigned char)buff[i]) : 0;
-			}
-		}
-		
-		//
-		// now RLE
-		//
-		int i = 0, j = 0;
-		while ( i != m_len ) {
-			unsigned char curr_val = m_buff[i];
-			int seq_start = i;
-			while ( (i != m_len) && (curr_val == m_buff[i]) && ((i - seq_start) < 0xff)) {
-				i++;
-			}
-			if (i - seq_start > 1) {
-				// if there's 2 or more equal vals - put it twice in stream
-				m_enc_buff[j++] = curr_val;
-				m_enc_buff[j++] = curr_val;
-				m_enc_buff[j++] = i - seq_start;
-			} else {
-				// single value - put it as is
-				m_enc_buff[j++] = curr_val;
-			}
-		}
-
-		outlen = j;
-		
-		//
-		// If using differential encoder, remember current data for
-		// later use
-		if ( m_use_diff ) {
-			//
-			// can't use memcpy - in case of generic class T this
-			// will rely on "operator []" implementation
-			for(int k = 0; k < m_len;k++) {
-				m_buff[k] = (k < srclen ) ? ((unsigned char)buff[k]) : 0;
-			}
-		}
-		
-		return m_enc_buff;
-	}
-};
-
-
-/*
- * Another implementation of RLE, optimized for bit-vector. In this RLE flavor we
- * have only 2 values, so we don't need to transmit the value itself. Since most
- * of the time, bitmap will contail all zeros with few 1's, only zeros will be encoded.
- * Meaning that '0000110010000' is encoded as '4024'
- */
-class RLE_Data_BV
-{
-public:
-	RLE_Data_BV(int len);
-	RLE_Data_BV();
-	RLE_Data_BV(const RLE_Data_BV &);
-	
-	~RLE_Data_BV();
-	
-	RLE_Data_BV &operator=(const RLE_Data_BV &);
-	
-	int Encode(std::vector<bool> &data);
-	void Decode(unsigned char *data, int datalen, std::vector<bool> &outbuff);
-	
-	const unsigned char *Buffer() { return m_buff; }
-private:
-	// maximum file size in amule is 4G since it uses uint32 as filesize. So, it
-	// can be up to 4Gb/PARTSIZE=442 parts. Worst case is 1/0 interleaving,
-	// producing 221 byte RLE encoded output.
-	static unsigned char m_buff[256];
-
-	std::vector<bool> m_last_buff;
-	
-	void Realloc(int size);
 };
 
 
