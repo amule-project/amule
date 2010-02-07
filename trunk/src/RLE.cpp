@@ -79,9 +79,18 @@ void RLE_Data::Realloc(int size)
 	if ( size == m_len ) {
 		return;
 	}
-
+	if (size == 0) {
+		delete [] m_buff;
+		delete [] m_enc_buff;
+		m_buff = 0;
+		m_enc_buff = 0;
+		m_len = 0;
+		return;
+	}
 	uint8 *buff = new uint8[size];
-	if ( size > m_len ) {
+	if (m_len == 0) {
+		memset(buff, 0, size);
+	} else if ( size > m_len ) {
 		memset(buff + m_len, 0, size - m_len);
 		memcpy(buff, m_buff, m_len);
 	} else {
@@ -103,30 +112,34 @@ const uint8 *RLE_Data::Decode(const uint8 *buff, int len)
 	// Open RLE
 	//
 
-	int i = 0, j = 0;
-	while ( j != m_len ) {
-
-		if ( i < (len -1) ) {
-			if (buff[i+1] == buff[i]) {
-				// this is sequence
-				memset(m_enc_buff + j, buff[i], buff[i + 2]);
-				j += buff[i + 2];
+	// If data exceeds the buffer, switch to counting only.
+	// Then resize and make a second pass.
+	for (bool overrun = true; overrun;) {
+		overrun = false;
+		int j = 0;
+		for (int i = 0; i < len;) {
+			if (i < len - 2 && buff[i+1] == buff[i]) {
+				// This is a sequence.
+				uint8 seqLen = buff[i + 2];
+				if (j + seqLen <= m_len) {
+					memset(m_enc_buff + j, buff[i], seqLen);
+				}
+				j += seqLen;
 				i += 3;
 			} else {
-				// this is single byte
-				m_enc_buff[j++] = buff[i++];
+				// This is a single byte.
+				if (j < m_len) {
+					m_enc_buff[j] = buff[i];
+				}
+				j++;
+				i++;
 			}
-		} else {
-			// only 1 byte left in encoded data - it can't be sequence
-			m_enc_buff[j++] = buff[i++];
-			// if there's no more data, but buffer end is not reached,
-			// it must be error in some point
-			if ( j != m_len ) {
-				printf("RLE_Data: decoding error. %d bytes decoded to %d instead of %d\n", len, j, m_len);
-			}
-			break;
 		}
-	}	
+		if (j != m_len) {
+			overrun = j > m_len;	// overrun, make a second pass
+			Realloc(j);				// size has changed, adjust
+		}
+	}
 	//
 	// Recreate data from diff
 	//
@@ -140,8 +153,14 @@ const uint8 *RLE_Data::Decode(const uint8 *buff, int len)
 	}
 }
 
-const uint8 * RLE_Data::Encode(const uint8 *data, int &outlen)
+const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen)
 {
+	Realloc(inlen);		// adjust size if necessary
+
+	if (m_len == 0) {
+		outlen = 0;
+		return NULL;
+	}
 	//
 	// calculate difference from prev
 	//
@@ -190,22 +209,23 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts16 &data, int &outlen)
 {
 	// To encode, first copy the UInts16 to a uint8 array
 	// and limit them to 0xff.
-	// The encoded size is always m_len.
+	// The encoded size is the size of data.
 	int size = (int) data.size();
-	CScopedPtr<uint8> buf(new uint8[m_len]);
+	if (size == 0) {
+		return Encode(0, 0, outlen);
+	}
+	CScopedPtr<uint8> buf(new uint8[size]);
 	uint8 * bufPtr = buf.get();
 
-	for (int i = 0; i < m_len; i++) {
-		uint16 ui = (i < size) ? data[i] : 0;
+	for (int i = 0; i < size; i++) {
+		uint16 ui = data[i];
 		bufPtr[i] = (ui > 0xff) ? 0xff : (uint8) ui;
 	}
-	return Encode(bufPtr, outlen);
+	return Encode(bufPtr, size, outlen);
 }
 
-void PartFileEncoderData::Decode(uint8 *gapdata, int gaplen, uint8 *partdata, int partlen)
+void PartFileEncoderData::DecodeGaps(uint8 *gapdata, int gaplen)
 {
-	m_part_status.Decode(partdata, partlen);
-
 	// in a first dword - real size
 	uint32 gapsize = ENDIAN_NTOHL( RawPeekUInt32( gapdata ) );
 	gapdata += sizeof(uint32);

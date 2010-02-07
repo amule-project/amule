@@ -43,13 +43,9 @@ public:
 	RLE_Data &operator=(const RLE_Data &);
 	
 	~RLE_Data();
-	
-	const uint8 *Encode(const uint8 *data, int &outlen);
-	const uint8 *Encode(const uint8 *data, int inlen, int &outlen)
-	{
-		Realloc(inlen);
-		return Encode(data, outlen);
-	}
+
+	const uint8 *Encode(const uint8 *data, int inlen, int &outlen);
+
 	const uint8 *Encode(const ArrayOfUInts16 &data, int &outlen);
 	
 	const uint8 *Decode(const uint8 *data, int len);	
@@ -100,11 +96,11 @@ public:
 	
 	//
 	// decoder side - can be used everywhere
-	void Decode(unsigned char *gapdata, int gaplen, unsigned char *partdata, int partlen);
+	void DecodeParts(uint8 *partdata, int partlen) { m_part_status.Decode(partdata, partlen); }
+	void DecodeGaps(uint8 *gapdata, int gaplen);
 	
-	PartFileEncoderData() { }
-	PartFileEncoderData(int part_count, int gap_count) :
-		m_part_status(part_count, true), m_gap_status(gap_count*sizeof(uint64), true)
+	PartFileEncoderData() :
+		m_part_status(0, true), m_gap_status(0, true)
 	{
 	}
 		

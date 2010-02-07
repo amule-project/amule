@@ -916,16 +916,9 @@ static CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 CPartFile_Encoder::GapBuffer CPartFile_Encoder::m_gap_buffer(128);
 
 // encoder side
-CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) :
-	m_enc_data(file->GetPartCount(), file->GetGapList().size() * 2)
+CPartFile_Encoder::CPartFile_Encoder(CPartFile *file)
 {
 	m_file = file;
-}
-
-// decoder side
-CPartFile_Encoder::CPartFile_Encoder(int size): m_enc_data(size, 0)
-{
-	m_file = 0;
 }
 
 CPartFile_Encoder::~CPartFile_Encoder()
@@ -952,6 +945,17 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
+	//
+	// Source part frequencies
+	//
+	// These are not always populated, don't send a tag in this case
+	//
+	if (!m_file->m_SrcpartFrequency.empty()) {
+		int part_enc_size;
+		const uint8 *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
+		parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+	}
+
 	const CGapList& gaplist = m_file->GetNewGapList();
 	const size_t gap_list_size = gaplist.size();
 	
@@ -971,11 +975,6 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)&m_gap_buffer[0], 
 											gap_list_size*2*sizeof(uint64),	gap_enc_size);
 
-	int part_enc_size;
-	const unsigned char *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
-
-
-	parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
 	
 	//
 	// Put data inside of tag in following order:
@@ -1037,10 +1036,12 @@ CKnownFile_Encoder &CKnownFile_Encoder::operator=(const CKnownFile_Encoder &obj)
 
 void CKnownFile_Encoder::Encode(CECTag *parent)
 {
-	int part_enc_size;
-	const unsigned char *part_enc_data = m_enc_data.Encode(m_file->m_AvailPartFrequency, part_enc_size);
-
-	parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+	// Don't add tag if available parts aren't populated yet.
+	if (!m_file->m_AvailPartFrequency.empty()) {
+		int part_enc_size;
+		const uint8 *part_enc_data = m_enc_data.Encode(m_file->m_AvailPartFrequency, part_enc_size);
+		parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+	}
 }
 
 static CECPacket *GetStatsGraphs(const CECPacket *request)

@@ -691,8 +691,6 @@ DownloadFile::DownloadFile(CEC_PartFile_Tag *tag)
 	fCompleted = (100.0*lFileCompleted) / lFileSize;
 	wxtLastSeenComplete = wxDateTime( tag->LastSeenComplete() );
 	
-	m_Encoder = PartFileEncoderData( (lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
-
 	ProcessUpdate(tag);							
 }
 
@@ -727,11 +725,14 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
-	if (gaptag && parttag && reqtag) {
-		m_Encoder.Decode(
-			(unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
-			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
 
+	if (gaptag) {
+		m_Encoder.DecodeGaps((uint8 *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+	}
+	if (parttag) {
+		m_Encoder.DecodeParts((uint8 *)parttag->GetTagData(), parttag->GetTagDataLen());
+	}
+	if (reqtag) {
 		const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
 		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
 		m_ReqParts.resize(reqcount);
@@ -1062,7 +1063,7 @@ void CProgressImage::CreateSpan()
 
 		for (uint32 i = start; i < end; i++) {
 			COLORTYPE color = RGB(255, 0, 0);
-			if ( part_info[i] ) {
+			if (part_info && part_info[i]) {
 				int blue = 210 - ( 22 * ( part_info[i] - 1 ) );
 				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			}
