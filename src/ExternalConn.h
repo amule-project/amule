@@ -76,14 +76,10 @@ class CFileEncoderMap : public std::map<T *, E> {
 };
 
 /*!
- * PartStatus strings are quite long - RLE encoding will help.
+ * PartStatus strings and gap lists are quite long - RLE encoding will help.
  * 
  * Instead of sending each time full part-status string, send
  * RLE encoded difference from previous one.
- * 
- * However, gap status is different - it's already kind of RLE
- * encoding, so futher compression will help a litter (Shannon
- * theorem). Instead, calculate diff between list of gaps.
  */
 class CPartFile_Encoder {
 		//
@@ -105,12 +101,9 @@ class CPartFile_Encoder {
 		// encoder side
 		CPartFile_Encoder(CPartFile *file);
 		
-		// decoder side
-		CPartFile_Encoder(int size);
-
 		~CPartFile_Encoder();
 		
-		// stl side :)
+		// stl / decoder side :)
 		CPartFile_Encoder();
 		
 		CPartFile_Encoder(const CPartFile_Encoder &obj);

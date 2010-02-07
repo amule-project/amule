@@ -999,12 +999,13 @@ CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
 void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
 {
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-	const unsigned char *data =
-		m_enc_map[file->GetFileHash()].Decode(
-			(unsigned char *)parttag->GetTagData(),
-			parttag->GetTagDataLen());
-	for(int i = 0; i < file->GetPartCount(); ++i) {
-		file->m_AvailPartFrequency[i] = data[i];
+	if (parttag) {
+		const uint8 *data =	m_enc_map[file->GetFileHash()].Decode(
+				(uint8 *)parttag->GetTagData(),
+				parttag->GetTagDataLen());
+		for(int i = 0; i < file->GetPartCount(); ++i) {
+			file->m_AvailPartFrequency[i] = data[i];
+		}
 	}
 	tag->GetRequests(&file->statistic.requested);
 	tag->GetAllRequests(&file->statistic.alltimerequested);
@@ -1315,7 +1316,7 @@ void CDownQueueRem::OnConnectionState(bool)
 CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 {
 	CPartFile *file = new CPartFile(tag);
-	m_enc_map[file->GetFileHash()] = PartFileEncoderData(file->GetPartCount(), 10);
+	m_enc_map[file->GetFileHash()] = PartFileEncoderData();
 	ProcessItemUpdate(tag, file);
 	
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -1384,49 +1385,52 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
-	if (gaptag && parttag && reqtag) {
+	if (gaptag || parttag || reqtag) {
 		wxASSERT(m_enc_map.count(file->GetFileHash()));
 		
 		PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
-		encoder.Decode(
-			(unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
-			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
-			
-		const uint64 *reqparts = (const uint64 *)reqtag->GetTagData();
-		unsigned reqcount = reqtag->GetTagDataLen() / (2 * sizeof(uint64));
-		
-		unsigned gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
-		// clear gaplist
-		file->m_gaplist.Init(file->GetFileSize(), false);
 
-		// and refill it
-		const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();
-		for (unsigned j = 0; j < gap_size;j++) {
-			file->m_gaplist.AddGap(ENDIAN_NTOHLL(gap_info[2*j]), ENDIAN_NTOHLL(gap_info[2*j+1]));
-		}
-		
-		// adjust size of requested block list
-		while ( file->m_requestedblocks_list.size() > reqcount ) {
-			delete file->m_requestedblocks_list.front();
-			file->m_requestedblocks_list.pop_front();
-		}
-		while ( file->m_requestedblocks_list.size() != reqcount ) {
-			file->m_requestedblocks_list.push_front(new Requested_Block_Struct);
-		}
+		if (gaptag) {
+			encoder.DecodeGaps((uint8 *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+			unsigned gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
+			// clear gaplist
+			file->m_gaplist.Init(file->GetFileSize(), false);
 
-		std::list<Requested_Block_Struct*>::iterator it2 = file->m_requestedblocks_list.begin();
-		for (unsigned i = 0; i < reqcount; ++i) {
-			Requested_Block_Struct* block = *it2++;
-			block->StartOffset = ENDIAN_NTOHLL(reqparts[2*i]);
-			block->EndOffset = ENDIAN_NTOHLL(reqparts[2*i+1]);
+			// and refill it
+			const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();
+			if (gap_info)
+			for (unsigned j = 0; j < gap_size;j++) {
+				file->m_gaplist.AddGap(ENDIAN_NTOHLL(gap_info[2*j]), ENDIAN_NTOHLL(gap_info[2*j+1]));
+			}
 		}
-		// copy parts frequency
-		const unsigned char *part_info = encoder.m_part_status.Buffer();
-		for(int i = 0; i < file->GetPartCount(); ++i) {
-			file->m_SrcpartFrequency[i] = part_info[i];
+		if (parttag) {
+			encoder.DecodeParts((uint8 *)parttag->GetTagData(), parttag->GetTagDataLen());
+			// copy parts frequency
+			const uint8 *part_info = encoder.m_part_status.Buffer();
+			wxASSERT(file->GetPartCount() == encoder.m_part_status.Size());
+			for(int i = 0; i < file->GetPartCount(); ++i) {
+				file->m_SrcpartFrequency[i] = part_info[i];
+			}
 		}
-	} else {
-		AddLogLineNS(CFormat(wxT("ERROR: %X %X %X")) % (size_t)gaptag % (size_t)parttag % (size_t)reqtag);
+		if (reqtag) {
+			const uint64 *reqparts = (const uint64 *)reqtag->GetTagData();
+			unsigned reqcount = reqtag->GetTagDataLen() / (2 * sizeof(uint64));
+			// adjust size of requested block list
+			while ( file->m_requestedblocks_list.size() > reqcount ) {
+				delete file->m_requestedblocks_list.front();
+				file->m_requestedblocks_list.pop_front();
+			}
+			while ( file->m_requestedblocks_list.size() != reqcount ) {
+				file->m_requestedblocks_list.push_front(new Requested_Block_Struct);
+			}
+
+			std::list<Requested_Block_Struct*>::iterator it2 = file->m_requestedblocks_list.begin();
+			for (unsigned i = 0; i < reqcount; ++i) {
+				Requested_Block_Struct* block = *it2++;
+				block->StartOffset = ENDIAN_NTOHLL(reqparts[2*i]);
+				block->EndOffset = ENDIAN_NTOHLL(reqparts[2*i+1]);
+			}
+		}
 	}
 	
 	// Get source names and counts
