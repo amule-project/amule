@@ -122,7 +122,9 @@ typedef std::list<CKnownFile*> CKnownFilePtrList;
 typedef std::list<CUpDownClient*> CClientPtrList;
 //@}
 
+typedef std::vector<uint8>  ArrayOfUInts8;
 typedef std::vector<uint16> ArrayOfUInts16;
+typedef std::vector<uint64> ArrayOfUInts64;
 
 /* This is the Evil Void String For Returning On Const References From Hell */
 // IT MEANS I WANT TO USE IT EVERYWHERE. DO NOT MOVE IT. 

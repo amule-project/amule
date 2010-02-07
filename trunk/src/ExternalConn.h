@@ -83,18 +83,10 @@ class CFileEncoderMap : public std::map<T *, E> {
  */
 class CPartFile_Encoder {
 		//
-		// List of gaps sent to particular client. Since clients
-		// can request lists in different time, they can get
-		// different results
+		// RLE encoded data
+		// PartFileEncoderData class is used for decode only,
+		// while CPartFile_Encoder is used for encode only.
 		PartFileEncoderData m_enc_data;
-		
-		// gaps are also RLE encoded, but list have variable size by it's nature.
-		// so realloc buffer when needed.
-		// This buffer only needed on core-side, where list is turned into array
-		// before passing to RLE. Decoder will just use RLE internal buffer
-		// Buffer can be static, since it is accessed with mutex locked
-		typedef std::vector<uint64> GapBuffer;
-		static GapBuffer m_gap_buffer;
 		
 		CPartFile *m_file;
 	public:
@@ -103,10 +95,10 @@ class CPartFile_Encoder {
 		
 		~CPartFile_Encoder();
 		
-		// stl / decoder side :)
+		// stl side :)
 		CPartFile_Encoder();
 		
-		CPartFile_Encoder(const CPartFile_Encoder &obj);
+		CPartFile_Encoder(const CPartFile_Encoder &obj) { *this = obj; }
 
 		CPartFile_Encoder &operator=(const CPartFile_Encoder &obj);
 		

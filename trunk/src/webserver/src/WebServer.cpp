@@ -727,7 +727,7 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
 
 	if (gaptag) {
-		m_Encoder.DecodeGaps((uint8 *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+		m_Encoder.DecodeGaps(gaptag, m_Gaps);
 	}
 	if (parttag) {
 		m_Encoder.DecodeParts((uint8 *)parttag->GetTagData(), parttag->GetTagDataLen());
@@ -992,58 +992,22 @@ CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFi
 		CAnyImage(width, height), m_template(tmpl)
 {
 	m_file = file;
-
-	m_gap_buf_size = m_gap_alloc_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint64));
-	m_gap_buf = new Gap_Struct[m_gap_alloc_size];
-	
 	m_ColorLine = new uint32[m_width];
 }
 
 CProgressImage::~CProgressImage()
 {
-	delete [] m_gap_buf;
 	delete [] m_ColorLine;
-}
-
-void CProgressImage::ReallocGapBuffer()
-{
-	int size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint64));
-	if ( size == m_gap_alloc_size ) {
-		return;
-	}
-	if ( (size > m_gap_alloc_size) || (size < m_gap_alloc_size/2) ) {
-		m_gap_buf_size = m_gap_alloc_size = size;
-		delete [] m_gap_buf;
-		m_gap_buf = new Gap_Struct[m_gap_alloc_size];
-	} else {
-		m_gap_buf_size = size;
-	}
-}
-
-void CProgressImage::InitSortedGaps()
-{
-	ReallocGapBuffer();
-
-	const uint64 *gap_info = (const uint64 *)m_file->m_Encoder.m_gap_status.Buffer();
-	m_gap_buf_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint64));
-	
-	//memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
-	for (int j = 0; j < m_gap_buf_size;j++) {
-		uint64 gap_start = ENDIAN_NTOHLL(gap_info[2*j]);
-		uint64 gap_end = ENDIAN_NTOHLL(gap_info[2*j+1]);
-		m_gap_buf[j].start = gap_start;
-		m_gap_buf[j].end = gap_end;
-	}
-	qsort(m_gap_buf, m_gap_buf_size, 2*sizeof(uint64), compare_gaps);
 }
 
 void CProgressImage::CreateSpan()
 {
-	// Step 1: sort gaps list in accending order
-	InitSortedGaps();
+	// Step 1: get gap list
+	const Gap_Struct * gap_list = (const Gap_Struct *) &(m_file->m_Gaps[0]);
+	int gap_list_size = m_file->m_Gaps.size() / 2;
 	
 	// allocate for worst case !
-	int color_gaps_alloc = 2 * (2*m_gap_buf_size + m_file->lFileSize / PARTSIZE + 1);
+	int color_gaps_alloc = 2 * (2 * gap_list_size + m_file->lFileSize / PARTSIZE + 1);
 	Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
 	
 	// Step 2: combine gap and part status information
@@ -1054,9 +1018,9 @@ void CProgressImage::CreateSpan()
 	colored_gaps[0].start = 0;
 	colored_gaps[0].end = 0;
 	colored_gaps[0].color = 0xffffffff;
-	for (int j = 0; j < m_gap_buf_size;j++) {
-		uint64 gap_start = m_gap_buf[j].start;
-		uint64 gap_end = m_gap_buf[j].end;
+	for (int j = 0; j < gap_list_size;j++) {
+		uint64 gap_start = gap_list[j].start;
+		uint64 gap_end = gap_list[j].end;
 
 		uint32 start = gap_start / PARTSIZE;
 		uint32 end = (gap_end / PARTSIZE) + 1;
@@ -1122,11 +1086,6 @@ void CProgressImage::CreateSpan()
 		}
 	}
 	delete [] colored_gaps;
-}
-
-int CProgressImage::compare_gaps(const void *g1, const void *g2)
-{
-	return ((const Gap_Struct *)g1)->start - ((const Gap_Struct *)g2)->start;
 }
 
 #ifdef WITH_LIBPNG

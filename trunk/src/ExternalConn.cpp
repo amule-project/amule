@@ -912,9 +912,6 @@ static CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 	return response;
 }
 
-// init with some default size
-CPartFile_Encoder::GapBuffer CPartFile_Encoder::m_gap_buffer(128);
-
 // encoder side
 CPartFile_Encoder::CPartFile_Encoder(CPartFile *file)
 {
@@ -929,11 +926,6 @@ CPartFile_Encoder::~CPartFile_Encoder()
 CPartFile_Encoder::CPartFile_Encoder()
 {
 	m_file = 0;
-}
-
-CPartFile_Encoder::CPartFile_Encoder(const CPartFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
-{
-	m_file = obj.m_file;
 }
 
 CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
@@ -956,54 +948,42 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
 	}
 
+	//
+	// Gaps
+	//
 	const CGapList& gaplist = m_file->GetNewGapList();
 	const size_t gap_list_size = gaplist.size();
+	ArrayOfUInts64 gaps;
+	gaps.reserve(gap_list_size * 2);
 	
-	if ( m_gap_buffer.size() < gap_list_size * 2 ) {
-		m_gap_buffer.clear();
-		m_gap_buffer.resize(gap_list_size * 2);
-	} 
-
-	GapBuffer::iterator it = m_gap_buffer.begin();
-	
-	for (CGapList::const_iterator curr_pos = gaplist.begin(); curr_pos != gaplist.end(); ++curr_pos) {
-		*it++ = ENDIAN_HTONLL(curr_pos.start());
-		*it++ = ENDIAN_HTONLL(curr_pos.end());
+	for (CGapList::const_iterator curr_pos = gaplist.begin(); 
+			curr_pos != gaplist.end(); ++curr_pos) {
+		gaps.push_back(curr_pos.start());
+		gaps.push_back(curr_pos.end());
 	}
 
 	int gap_enc_size = 0;
-	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)&m_gap_buffer[0], 
-											gap_list_size*2*sizeof(uint64),	gap_enc_size);
+	const uint8 *gap_enc_data = m_enc_data.m_gap_status.Encode(gaps, gap_enc_size);
 
-	
-	//
-	// Put data inside of tag in following order:
-	// [num_of_gaps] [gap_enc_data]
-	//
-	unsigned char *tagdata;
-	CECTag etag(EC_TAG_PARTFILE_GAP_STATUS,
-		sizeof(uint32) + gap_enc_size, (void **)&tagdata);
-
-	// real number of gaps - so remote size can realloc
-	RawPokeUInt32( tagdata, ENDIAN_HTONL( gap_list_size ) );
-	tagdata += sizeof(uint32);
-	memcpy(tagdata, gap_enc_data, gap_enc_size);
-
+	CECTag etag(EC_TAG_PARTFILE_GAP_STATUS, gap_enc_size, (void *)gap_enc_data);
 	parent->AddTag(etag);
 	
-	it = m_gap_buffer.begin();
-
+	//
+	// Requested blocks
+	//
+	// that's the next thing to go
+	ArrayOfUInts64 req_buffer;
 	const CPartFile::CReqBlockPtrList& requestedblocks = m_file->GetRequestedBlockList();
 	CPartFile::CReqBlockPtrList::const_iterator curr_pos2 = requestedblocks.begin();
 
-	wxASSERT(m_gap_buffer.size() >= requestedblocks.size() * 2);
 	for ( ; curr_pos2 != requestedblocks.end(); ++curr_pos2 ) {
 		Requested_Block_Struct* block = *curr_pos2;
-		*it++ = ENDIAN_HTONLL(block->StartOffset);
-		*it++ = ENDIAN_HTONLL(block->EndOffset);
+		req_buffer.push_back(ENDIAN_HTONLL(block->StartOffset));
+		req_buffer.push_back(ENDIAN_HTONLL(block->EndOffset));
 	}
+	if (!req_buffer.empty())
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
-		requestedblocks.size() * 2 * sizeof(uint64), (void *)&m_gap_buffer[0]));
+		requestedblocks.size() * 2 * sizeof(uint64), (void *)&req_buffer[0]));
 }
 
 // encoder side
