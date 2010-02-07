@@ -95,6 +95,7 @@ class DownloadFile {
 		CProgressImage *m_Image;
 		PartFileEncoderData m_Encoder;
 		std::vector<Gap_Struct> m_ReqParts;
+		ArrayOfUInts64	m_Gaps;
 
 		// container require this		
 		static class DownloadFileInfo *GetContainerInstance();
@@ -456,16 +457,6 @@ class CProgressImage : public virtual CAnyImage {
 		DownloadFile *m_file;
 		
 		wxString m_template;
-		
-		//
-		// sorted list of gaps
-		int m_gap_buf_size, m_gap_alloc_size;
-		Gap_Struct *m_gap_buf;
-		
-		void ReallocGapBuffer();
-		void InitSortedGaps();
-		// for qsort
-		static int compare_gaps(const void *, const void *);
 		
 		//
 		// Turn list of gaps, partstatus into array of color strips

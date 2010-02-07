@@ -1391,16 +1391,15 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
 
 		if (gaptag) {
-			encoder.DecodeGaps((uint8 *)gaptag->GetTagData(), gaptag->GetTagDataLen());
-			unsigned gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
+			ArrayOfUInts64 gaps;
+			encoder.DecodeGaps(gaptag, gaps);
+			int gap_size = gaps.size() / 2;
 			// clear gaplist
 			file->m_gaplist.Init(file->GetFileSize(), false);
 
 			// and refill it
-			const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();
-			if (gap_info)
-			for (unsigned j = 0; j < gap_size;j++) {
-				file->m_gaplist.AddGap(ENDIAN_NTOHLL(gap_info[2*j]), ENDIAN_NTOHLL(gap_info[2*j+1]));
+			for (int j = 0; j < gap_size; j++) {
+				file->m_gaplist.AddGap(gaps[2*j], gaps[2*j+1]);
 			}
 		}
 		if (parttag) {
