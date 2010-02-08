@@ -961,12 +961,15 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 
 	for ( ; curr_pos2 != requestedblocks.end(); ++curr_pos2 ) {
 		Requested_Block_Struct* block = *curr_pos2;
-		req_buffer.push_back(ENDIAN_HTONLL(block->StartOffset));
-		req_buffer.push_back(ENDIAN_HTONLL(block->EndOffset));
+		req_buffer.push_back(block->StartOffset);
+		req_buffer.push_back(block->EndOffset);
 	}
-	if (!req_buffer.empty())
-	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
-		requestedblocks.size() * 2 * sizeof(uint64), (void *)&req_buffer[0]));
+	int req_enc_size = 0;
+	const uint8 *req_enc_data = m_enc_data.m_req_status.Encode(req_buffer, req_enc_size, changed);
+	if (changed) {
+		parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS, req_enc_size, (void *)req_enc_data));
+	}
+	delete[] req_enc_data;
 }
 
 void CKnownFile_Encoder::Encode(CECTag *parent)
