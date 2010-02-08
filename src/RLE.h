@@ -43,8 +43,6 @@ public:
 	
 	~RLE_Data();
 
-	const uint8 *Encode(const uint8 *data, int inlen, int &outlen, bool &changed);
-
 	const uint8 *Encode(const ArrayOfUInts16 &data, int &outlen, bool &changed);
 	const uint8 *Encode(const ArrayOfUInts64 &data, int &outlen, bool &changed);
 	
@@ -68,7 +66,20 @@ private:
 	// change size of internal buffers
 	// returns true if size was changed
 	bool Realloc(int size);
-	
+
+	//
+	// Encode some raw data
+	//
+	// data:	block to encode
+	// inlen:	number of bytes to encode. May be zero, then data can also be 0.
+	// outlen:	here the number of encoded bytes gets stored (0 if inlen is 0)
+	// changed:	becomes true if the size has changed or a change in the data occured,
+	//          so the differential data (before encoding) is not all zero
+	//
+	// return:	new buffer with encoded data, must be deleted after use!
+	//
+	const uint8 *Encode(const uint8 *data, int inlen, int &outlen, bool &changed);
+
 	// Encode: source data (original or diff in diff mode)
 	// Decode: store decoded data
 	uint8 *m_buff;
@@ -84,21 +95,22 @@ private:
  */
 class PartFileEncoderData {
 public:
+	// number of sources for each part for progress bar colouring
 	RLE_Data m_part_status;
+	// gap list
 	RLE_Data m_gap_status;
+	// blocks requested for download
+	RLE_Data m_req_status;
 	
 	//
 	// Encoder may reset history if full info requested
-	void ResetEncoder()
-	{
-		m_part_status.ResetEncoder();
-		m_gap_status.ResetEncoder();
-	}
+	void ResetEncoder();
 	
 	//
 	// decoder side - can be used everywhere
 	void DecodeParts(uint8 *partdata, int partlen) { m_part_status.Decode(partdata, partlen); }
 	void DecodeGaps(const class CECTag * tag, ArrayOfUInts64 &outdata);
+	void DecodeReqs(const class CECTag * tag, ArrayOfUInts64 &outdata);
 };
 
 #endif

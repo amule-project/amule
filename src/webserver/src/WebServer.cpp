@@ -733,12 +733,13 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		m_Encoder.DecodeParts((uint8 *)parttag->GetTagData(), parttag->GetTagDataLen());
 	}
 	if (reqtag) {
-		const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
-		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+		ArrayOfUInts64 reqs;
+		m_Encoder.DecodeReqs(reqtag, reqs);
+		int reqcount = reqs.size() / 2;
 		m_ReqParts.resize(reqcount);
 		for (int i = 0; i < reqcount;i++) {
-			m_ReqParts[i].start = ENDIAN_NTOHLL(reqparts[i].start);
-			m_ReqParts[i].end   = ENDIAN_NTOHLL(reqparts[i].end);
+			m_ReqParts[i].start = reqs[2*i];
+			m_ReqParts[i].end   = reqs[2*i+1];
 		}
 	}
 }

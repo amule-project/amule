@@ -1412,22 +1412,18 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			}
 		}
 		if (reqtag) {
-			const uint64 *reqparts = (const uint64 *)reqtag->GetTagData();
-			unsigned reqcount = reqtag->GetTagDataLen() / (2 * sizeof(uint64));
-			// adjust size of requested block list
-			while ( file->m_requestedblocks_list.size() > reqcount ) {
-				delete file->m_requestedblocks_list.front();
-				file->m_requestedblocks_list.pop_front();
-			}
-			while ( file->m_requestedblocks_list.size() != reqcount ) {
-				file->m_requestedblocks_list.push_front(new Requested_Block_Struct);
-			}
+			ArrayOfUInts64 reqs;
+			encoder.DecodeReqs(reqtag, reqs);
+			int req_size = reqs.size() / 2;
+			// clear reqlist
+			DeleteContents(file->m_requestedblocks_list);
 
-			std::list<Requested_Block_Struct*>::iterator it2 = file->m_requestedblocks_list.begin();
-			for (unsigned i = 0; i < reqcount; ++i) {
-				Requested_Block_Struct* block = *it2++;
-				block->StartOffset = ENDIAN_NTOHLL(reqparts[2*i]);
-				block->EndOffset = ENDIAN_NTOHLL(reqparts[2*i+1]);
+			// and refill it
+			for (int j = 0; j < req_size; j++) {
+				Requested_Block_Struct* block = new Requested_Block_Struct;
+				block->StartOffset = reqs[2*j];
+				block->EndOffset   = reqs[2*j+1];
+				file->m_requestedblocks_list.push_back(block);
 			}
 		}
 	}

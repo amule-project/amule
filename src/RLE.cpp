@@ -263,9 +263,21 @@ void RLE_Data::Decode(const uint8 *data, int len, ArrayOfUInts64 &outdata)
 	}
 }
 
+void PartFileEncoderData::ResetEncoder()
+{
+	m_part_status.ResetEncoder();
+	m_gap_status.ResetEncoder();
+	m_req_status.ResetEncoder();
+}
+
 void PartFileEncoderData::DecodeGaps(const CECTag * tag, ArrayOfUInts64 &outdata)
 {
 	m_gap_status.Decode((uint8 *)tag->GetTagData(), tag->GetTagDataLen(), outdata);
+}
+
+void PartFileEncoderData::DecodeReqs(const CECTag * tag, ArrayOfUInts64 &outdata)
+{
+	m_req_status.Decode((uint8 *)tag->GetTagData(), tag->GetTagDataLen(), outdata);
 }
 
 
