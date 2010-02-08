@@ -49,10 +49,8 @@ void RLE_Data::setup(int len, bool use_diff, uint8 * content)
 			memset(m_buff, 0, m_len);
 		}
 		//
-		// in worst case 2-byte sequence encoded as 3. So, data can grow by 50%
-		m_enc_buff = new uint8[m_len*3/2 + 1];
 	} else {
-		m_buff = m_enc_buff = 0;
+		m_buff = 0;
 	}
 }
 
@@ -62,7 +60,6 @@ RLE_Data &RLE_Data::operator=(const RLE_Data &obj)
 		return *this;
 
 	delete [] m_buff;
-	delete [] m_enc_buff;
 	setup(obj.m_len, obj.m_use_diff, obj.m_buff);
 
 	return *this;
@@ -71,21 +68,18 @@ RLE_Data &RLE_Data::operator=(const RLE_Data &obj)
 RLE_Data::~RLE_Data()
 {
 	delete [] m_buff;
-	delete [] m_enc_buff;
 }
 
-void RLE_Data::Realloc(int size)
+bool RLE_Data::Realloc(int size)
 {
 	if ( size == m_len ) {
-		return;
+		return false;
 	}
 	if (size == 0) {
 		delete [] m_buff;
-		delete [] m_enc_buff;
 		m_buff = 0;
-		m_enc_buff = 0;
 		m_len = 0;
-		return;
+		return true;
 	}
 	uint8 *buff = new uint8[size];
 	if (m_len == 0) {
@@ -99,11 +93,8 @@ void RLE_Data::Realloc(int size)
 	delete [] m_buff;
 	m_buff = buff;
 	
-	// m_enc_buff doesn't need to be copied over
-	delete [] m_enc_buff;
-	m_enc_buff = new uint8[size*3/2 + 1];
-
 	m_len = size;
+	return true;
 }
 
 const uint8 *RLE_Data::Decode(const uint8 *buff, int len)
@@ -156,9 +147,9 @@ const uint8 *RLE_Data::Decode(const uint8 *buff, int len)
 	return m_buff;
 }
 
-const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen)
+const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen, bool &changed)
 {
-	Realloc(inlen);		// adjust size if necessary
+	changed = Realloc(inlen);		// adjust size if necessary
 
 	if (m_len == 0) {
 		outlen = 0;
@@ -170,14 +161,20 @@ const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen)
 	if ( m_use_diff ) {
 		for (int i = 0; i < m_len; i++) {
 			m_buff[i] ^= data[i];
+			if (m_buff[i]) {
+				changed = true;
+			}
 		}
 	} else {
 		memcpy(m_buff, data, m_len);
+		changed = true;
 	}
 	
 	//
 	// now RLE
 	//
+	// In worst case 2-byte sequence is encoded as 3. So, data can grow by 50%.
+	uint8 * enc_buff = new uint8[m_len * 3/2 + 1];
 	int i = 0, j = 0;
 	while ( i != m_len ) {
 		uint8 curr_val = m_buff[i];
@@ -187,12 +184,12 @@ const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen)
 		}
 		if (i - seq_start > 1) {
 			// if there's 2 or more equal vals - put it twice in stream
-			m_enc_buff[j++] = curr_val;
-			m_enc_buff[j++] = curr_val;
-			m_enc_buff[j++] = i - seq_start;
+			enc_buff[j++] = curr_val;
+			enc_buff[j++] = curr_val;
+			enc_buff[j++] = i - seq_start;
 		} else {
 			// single value - put it as is
-			m_enc_buff[j++] = curr_val;
+			enc_buff[j++] = curr_val;
 		}
 	}
 
@@ -205,17 +202,17 @@ const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen)
 		memcpy(m_buff, data, m_len);
 	}
 	
-	return m_enc_buff;
+	return enc_buff;
 }
 
-const uint8 * RLE_Data::Encode(const ArrayOfUInts16 &data, int &outlen)
+const uint8 * RLE_Data::Encode(const ArrayOfUInts16 &data, int &outlen, bool &changed)
 {
 	// To encode, first copy the UInts16 to a uint8 array
 	// and limit them to 0xff.
 	// The encoded size is the size of data.
 	int size = (int) data.size();
 	if (size == 0) {
-		return Encode(0, 0, outlen);
+		return Encode(0, 0, outlen, changed);
 	}
 	CScopedPtr<uint8> buf(new uint8[size]);
 	uint8 * bufPtr = buf.get();
@@ -224,10 +221,10 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts16 &data, int &outlen)
 		uint16 ui = data[i];
 		bufPtr[i] = (ui > 0xff) ? 0xff : (uint8) ui;
 	}
-	return Encode(bufPtr, size, outlen);
+	return Encode(bufPtr, size, outlen, changed);
 }
 
-const uint8 * RLE_Data::Encode(const ArrayOfUInts64 &data, int &outlen)
+const uint8 * RLE_Data::Encode(const ArrayOfUInts64 &data, int &outlen, bool &changed)
 {
 	// uint64 is copied to a uint8 buffer
 	// first all low bytes, then all second low bytes and so on
@@ -236,7 +233,7 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts64 &data, int &outlen)
 	// 8A8B7A7B6A6B5A5B0404030300000000
 	int size = (int) data.size();
 	if (size == 0) {
-		return Encode(0, 0, outlen);
+		return Encode(0, 0, outlen, changed);
 	}
 	CScopedPtr<uint8> buf(new uint8[size * 8]);
 	uint8 * bufPtr = buf.get();
@@ -247,7 +244,7 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts64 &data, int &outlen)
 			u >>= 8;
 		}
 	}
-	return Encode(bufPtr, size * 8, outlen);
+	return Encode(bufPtr, size * 8, outlen, changed);
 }
 
 void RLE_Data::Decode(const uint8 *data, int len, ArrayOfUInts64 &outdata)

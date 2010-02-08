@@ -921,8 +921,12 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	//
 	if (!m_file->m_SrcpartFrequency.empty()) {
 		int part_enc_size;
-		const uint8 *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
-		parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+		bool changed;
+		const uint8 *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size, changed);
+		if (changed) {
+			parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+		}
+		delete[] part_enc_data;
 	}
 
 	//
@@ -940,10 +944,12 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	}
 
 	int gap_enc_size = 0;
-	const uint8 *gap_enc_data = m_enc_data.m_gap_status.Encode(gaps, gap_enc_size);
-
-	CECTag etag(EC_TAG_PARTFILE_GAP_STATUS, gap_enc_size, (void *)gap_enc_data);
-	parent->AddTag(etag);
+	bool changed;
+	const uint8 *gap_enc_data = m_enc_data.m_gap_status.Encode(gaps, gap_enc_size, changed);
+	if (changed) {
+		parent->AddTag(CECTag(EC_TAG_PARTFILE_GAP_STATUS, gap_enc_size, (void *)gap_enc_data));
+	}
+	delete[] gap_enc_data;
 	
 	//
 	// Requested blocks
@@ -968,8 +974,12 @@ void CKnownFile_Encoder::Encode(CECTag *parent)
 	// Don't add tag if available parts aren't populated yet.
 	if (!m_file->m_AvailPartFrequency.empty()) {
 		int part_enc_size;
-		const uint8 *part_enc_data = m_enc_data.Encode(m_file->m_AvailPartFrequency, part_enc_size);
-		parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+		bool changed;
+		const uint8 *part_enc_data = m_enc_data.Encode(m_file->m_AvailPartFrequency, part_enc_size, changed);
+		if (changed) {
+			parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+		}
+		delete[] part_enc_data;
 	}
 }
 
