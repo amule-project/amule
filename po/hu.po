@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-01-13 21:07+0100\n"
-"Last-Translator: Balla Marcell <bmk@chello.hu>\n"
+"PO-Revision-Date: 2010-02-08 22:13+0100\n"
+"Last-Translator: Balla Marcell <marcell@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -255,7 +255,7 @@ msgstr "KiszolgálóÜzenet: %s"
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "A %s letöltése kihagyva, mert a kívánt fájl nem újjabb."
 
 #: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
@@ -2268,22 +2268,22 @@ msgid "HTTP download cancelled"
 msgstr "HTTP letöltés megszakítva"
 
 #: src/HTTPDownload.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Célkönyvtár a letöltéseknek"
+msgstr "A letöltéshez szükséges %s célfájl létrehozása sikertelen!"
 
 #: src/HTTPDownload.cpp:207
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "A letöltendő URL nem lehet üres"
 
 #: src/HTTPDownload.cpp:229
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "Az %s URL válasza: %i - Hiba (%i)!"
 
 #: src/HTTPDownload.cpp:256
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Súlyos hiba a letöltött fájl írásakor"
 
 #: src/HTTPDownload.cpp:271
 #, c-format
@@ -2300,15 +2300,16 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"Érvénytelen URL a HTTP letöltéshez, vagy a HTTP továbbításhoz (elfelejtetted "
+"a 'http://'-t ?)"
 
 #: src/HTTPDownload.cpp:367
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Nem vagy csatlakozva kiszolgálóhoz!"
+msgstr "A HTTP letöltési szerverhez való kapcsolódás sikertelen"
 
 #: src/HTTPDownload.cpp:388
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "Érvénytelen válasz a HTTP letöltési szervertől"
 
 #: src/IP2Country.cpp:92
 #, c-format
@@ -2320,33 +2321,33 @@ msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "GeoIP.dat fájl letöltése sikertelen, frissítés félbeszakítása."
 
 #: src/IP2Country.cpp:126 src/IPFilter.cpp:480
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "GeoIP.dat törlése sikertelen, frissítés megszakítása."
+msgstr "%s fájl törlése sikertelen, frissítés megszakítása."
 
 #: src/IP2Country.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr "GeoIP.dat átnevezése sikertelen, frissítés megszakítása."
+msgstr "%s fájl átnevezése sikertelen, frissítés megszakítása."
 
 #: src/IP2Country.cpp:138 src/IPFilter.cpp:492
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "GeoIP.dat frissítése sikerrel járt."
+msgstr "%s frissítése sikerrel járt."
 
 #: src/IP2Country.cpp:140
 msgid "Error updating GeoIP.dat"
 msgstr "Hiba a GeoIP.dat frissítése közben."
 
 #: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "GeoIP.dat letöltése %s-től sikertelen"
+msgstr "%s letöltése %s-től sikertelen"
 
 #: src/IP2Country.cpp:164
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "GeoIP.dat letöltése %s-től sikertelen"
+msgstr "'%s' ország adatainak betöltése sikertelen."
 
 #: src/IP2Country.cpp:169
 #, c-format
@@ -2380,9 +2381,9 @@ msgid_plural "%u malformed lines were discarded."
 msgstr[0] "%u hibás sor lett eldobva."
 
 #: src/IPFilter.cpp:486
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
-msgstr "GeoIP.dat átnevezése sikertelen, frissítés megszakítása."
+msgstr "Új %s fájl átnevezése sikertelen, frissítés megszakítása."
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -5473,9 +5474,9 @@ msgid "Invalid URL"
 msgstr "Érvénytelen URL"
 
 #: src/ServerList.cpp:806
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
-msgstr "Kiszolgáló lista letöltése %s-ről befejeződött."
+msgstr "Kiszolgáló lista letöltése %s-ről befejeződött"
 
 #: src/ServerList.cpp:821
 msgid ""
