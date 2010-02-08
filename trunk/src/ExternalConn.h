@@ -91,16 +91,7 @@ class CPartFile_Encoder {
 		CPartFile *m_file;
 	public:
 		// encoder side
-		CPartFile_Encoder(CPartFile *file);
-		
-		~CPartFile_Encoder();
-		
-		// stl side :)
-		CPartFile_Encoder();
-		
-		CPartFile_Encoder(const CPartFile_Encoder &obj) { *this = obj; }
-
-		CPartFile_Encoder &operator=(const CPartFile_Encoder &obj);
+		CPartFile_Encoder(CPartFile *file = 0) { m_file = file; }
 		
 		// encode - take data from m_file
 		void Encode(CECTag *parent_tag);
@@ -120,15 +111,8 @@ class CKnownFile_Encoder {
 		RLE_Data m_enc_data;
 		CKnownFile *m_file;
 	public:
-		CKnownFile_Encoder(CKnownFile *file);
-		~CKnownFile_Encoder();
+		CKnownFile_Encoder(CKnownFile *file = 0) { m_file = file; }
 
-		// stl side :)
-		CKnownFile_Encoder();
-		
-		CKnownFile_Encoder(const CKnownFile_Encoder &obj);
-
-		CKnownFile_Encoder &operator=(const CKnownFile_Encoder &obj);
 		// encode - take data from m_file
 		void Encode(CECTag *parent_tag);
 
