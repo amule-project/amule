@@ -43,10 +43,10 @@ public:
 	
 	~RLE_Data();
 
-	const uint8 *Encode(const uint8 *data, int inlen, int &outlen);
+	const uint8 *Encode(const uint8 *data, int inlen, int &outlen, bool &changed);
 
-	const uint8 *Encode(const ArrayOfUInts16 &data, int &outlen);
-	const uint8 *Encode(const ArrayOfUInts64 &data, int &outlen);
+	const uint8 *Encode(const ArrayOfUInts16 &data, int &outlen, bool &changed);
+	const uint8 *Encode(const ArrayOfUInts64 &data, int &outlen, bool &changed);
 	
 	const uint8 *Decode(const uint8 *data, int len);
 	void Decode(const uint8 *data, int len, ArrayOfUInts64 &outdata);
@@ -66,14 +66,12 @@ private:
 	void setup(int len, bool use_diff, uint8 * content = 0);
 
 	// change size of internal buffers
-	void Realloc(int size);
+	// returns true if size was changed
+	bool Realloc(int size);
 	
 	// Encode: source data (original or diff in diff mode)
-	// Decode: store last data (differential only)
+	// Decode: store decoded data
 	uint8 *m_buff;
-	// Encode: stores packed data
-	// Decode: input gets unpacked here
-	uint8 *m_enc_buff;
 	// Unpacked size
 	int m_len;
 	// Use differential encoding
