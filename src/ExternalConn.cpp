@@ -912,29 +912,6 @@ static CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 	return response;
 }
 
-// encoder side
-CPartFile_Encoder::CPartFile_Encoder(CPartFile *file)
-{
-	m_file = file;
-}
-
-CPartFile_Encoder::~CPartFile_Encoder()
-{
-}
-		
-// stl side :)
-CPartFile_Encoder::CPartFile_Encoder()
-{
-	m_file = 0;
-}
-
-CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
-{
-	m_file = obj.m_file;
-	m_enc_data = obj.m_enc_data;
-	return *this;
-}
-
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
 	//
@@ -984,34 +961,6 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	if (!req_buffer.empty())
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
 		requestedblocks.size() * 2 * sizeof(uint64), (void *)&req_buffer[0]));
-}
-
-// encoder side
-CKnownFile_Encoder::CKnownFile_Encoder(CKnownFile *file) :
-	m_enc_data(file->GetPartCount(), true)
-{
-	m_file = file;
-}
-
-CKnownFile_Encoder::CKnownFile_Encoder()
-{
-	m_file = 0;
-}
-
-CKnownFile_Encoder::~CKnownFile_Encoder()
-{
-}
-
-CKnownFile_Encoder::CKnownFile_Encoder(const CKnownFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
-{
-	m_file = obj.m_file;
-}
-
-CKnownFile_Encoder &CKnownFile_Encoder::operator=(const CKnownFile_Encoder &obj)
-{
-	m_file = obj.m_file;
-	m_enc_data = obj.m_enc_data;
-	return *this;
 }
 
 void CKnownFile_Encoder::Encode(CECTag *parent)

@@ -35,10 +35,9 @@
 class RLE_Data
 {
 public:
-	RLE_Data(int len, bool use_diff)	{ setup(len, use_diff); }
+	RLE_Data(int len = 0, bool use_diff = true)	{ setup(len, use_diff); }
 	
 	// those constructors are for stl containers
-	RLE_Data()	{ setup(0, 0); }
 	RLE_Data(const RLE_Data & obj)	{ setup(obj.m_len, obj.m_use_diff, obj.m_buff); }
 	RLE_Data &operator=(const RLE_Data &);
 	
@@ -102,24 +101,6 @@ public:
 	// decoder side - can be used everywhere
 	void DecodeParts(uint8 *partdata, int partlen) { m_part_status.Decode(partdata, partlen); }
 	void DecodeGaps(const class CECTag * tag, ArrayOfUInts64 &outdata);
-	
-	PartFileEncoderData() :
-		m_part_status(0, true), m_gap_status(0, true)
-	{
-	}
-		
-	// for stl
-	PartFileEncoderData(const PartFileEncoderData &obj) :
-		m_part_status(obj.m_part_status), m_gap_status(obj.m_gap_status)
-	{
-	}
-	
-	PartFileEncoderData &operator=(const PartFileEncoderData &obj)
-	{
-		m_part_status = obj.m_part_status;
-		m_gap_status = obj.m_gap_status;
-		return *this;
-	}
 };
 
 #endif
