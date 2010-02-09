@@ -255,7 +255,7 @@ msgstr "KiszolgálóÜzenet: %s"
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr "A %s letöltése kihagyva, mert a kívánt fájl nem újjabb."
+msgstr "A %s letöltése kihagyva, mert a kívánt fájl nem újabb."
 
 #: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
