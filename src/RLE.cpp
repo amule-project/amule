@@ -70,6 +70,13 @@ RLE_Data::~RLE_Data()
 	delete [] m_buff;
 }
 
+void RLE_Data::ResetEncoder()
+{
+	delete m_buff;
+	m_len = 0;
+	m_buff = 0;
+}
+
 bool RLE_Data::Realloc(int size)
 {
 	if ( size == m_len ) {
@@ -263,11 +270,14 @@ void RLE_Data::Decode(const uint8 *data, int len, ArrayOfUInts64 &outdata)
 	}
 }
 
-void PartFileEncoderData::ResetEncoder()
+void PartFileEncoderData::DecodeParts(const CECTag * tag, ArrayOfUInts16 &outdata)
 {
-	m_part_status.ResetEncoder();
-	m_gap_status.ResetEncoder();
-	m_req_status.ResetEncoder();
+	const uint8 * buf = m_part_status.Decode((uint8 *)tag->GetTagData(), tag->GetTagDataLen());
+	int size = m_part_status.Size();
+	outdata.resize(size);
+	for (int i = 0; i < size; i++) {
+		outdata[i] = buf[i];
+	}
 }
 
 void PartFileEncoderData::DecodeGaps(const CECTag * tag, ArrayOfUInts64 &outdata)

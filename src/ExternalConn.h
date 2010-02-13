@@ -80,14 +80,11 @@ class CFileEncoderMap : public std::map<T *, E> {
  * 
  * Instead of sending each time full part-status string, send
  * RLE encoded difference from previous one.
+ *
+ * PartFileEncoderData class is used for decode only,
+ * while CPartFile_Encoder is used for encode only.
  */
-class CPartFile_Encoder {
-		//
-		// RLE encoded data
-		// PartFileEncoderData class is used for decode only,
-		// while CPartFile_Encoder is used for encode only.
-		PartFileEncoderData m_enc_data;
-		
+class CPartFile_Encoder : public PartFileEncoderData {
 		CPartFile *m_file;
 	public:
 		// encoder side
@@ -95,11 +92,9 @@ class CPartFile_Encoder {
 		
 		// encode - take data from m_file
 		void Encode(CECTag *parent_tag);
-		
-		void ResetEncoder()
-		{
-			m_enc_data.ResetEncoder();
-		}
+
+		// Encoder may reset history if full info requested
+		void ResetEncoder();
 };
 
 typedef CFileEncoderMap<CPartFile , CPartFile_Encoder, CDownloadQueue> CPartFile_Encoder_Map;

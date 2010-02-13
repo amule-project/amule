@@ -1403,13 +1403,9 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			}
 		}
 		if (parttag) {
-			encoder.DecodeParts((uint8 *)parttag->GetTagData(), parttag->GetTagDataLen());
-			// copy parts frequency
-			const uint8 *part_info = encoder.m_part_status.Buffer();
-			wxASSERT(file->GetPartCount() == encoder.m_part_status.Size());
-			for(int i = 0; i < file->GetPartCount(); ++i) {
-				file->m_SrcpartFrequency[i] = part_info[i];
-			}
+			encoder.DecodeParts(parttag, file->m_SrcpartFrequency);
+			// sanity check
+			wxASSERT (file->m_SrcpartFrequency.size() == file->GetPartCount());
 		}
 		if (reqtag) {
 			ArrayOfUInts64 reqs;
