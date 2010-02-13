@@ -49,13 +49,8 @@ public:
 	const uint8 *Decode(const uint8 *data, int len);
 	void Decode(const uint8 *data, int len, ArrayOfUInts64 &outdata);
 	
-	void ResetEncoder()
-	{
-		if (m_len) {
-			memset(m_buff, 0, m_len);
-		}
-	}
-	
+	void ResetEncoder();
+
 	// decoder will need access to data
 	const uint8 *Buffer() const	{ return m_buff; }
 	int Size() const	{ return m_len; }
@@ -94,21 +89,18 @@ private:
  * Data difference is different for each EC client
  */
 class PartFileEncoderData {
-public:
+protected:
 	// number of sources for each part for progress bar colouring
 	RLE_Data m_part_status;
 	// gap list
 	RLE_Data m_gap_status;
 	// blocks requested for download
 	RLE_Data m_req_status;
-	
-	//
-	// Encoder may reset history if full info requested
-	void ResetEncoder();
-	
+
+public:
 	//
 	// decoder side - can be used everywhere
-	void DecodeParts(uint8 *partdata, int partlen) { m_part_status.Decode(partdata, partlen); }
+	void DecodeParts(const class CECTag * tag, ArrayOfUInts16 &outdata);
 	void DecodeGaps(const class CECTag * tag, ArrayOfUInts64 &outdata);
 	void DecodeReqs(const class CECTag * tag, ArrayOfUInts64 &outdata);
 };

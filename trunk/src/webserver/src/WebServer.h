@@ -94,6 +94,7 @@ class DownloadFile {
 		
 		CProgressImage *m_Image;
 		PartFileEncoderData m_Encoder;
+		ArrayOfUInts16 m_PartInfo;
 		std::vector<Gap_Struct> m_ReqParts;
 		ArrayOfUInts64	m_Gaps;
 

@@ -730,7 +730,7 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		m_Encoder.DecodeGaps(gaptag, m_Gaps);
 	}
 	if (parttag) {
-		m_Encoder.DecodeParts((uint8 *)parttag->GetTagData(), parttag->GetTagDataLen());
+		m_Encoder.DecodeParts(parttag, m_PartInfo);
 	}
 	if (reqtag) {
 		ArrayOfUInts64 reqs;
@@ -1012,7 +1012,6 @@ void CProgressImage::CreateSpan()
 	Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
 	
 	// Step 2: combine gap and part status information
-	const unsigned char *part_info = m_file->m_Encoder.m_part_status.Buffer();
 	
 	// Init first item to dummy info, so we will always have "previous" item
 	int colored_gaps_size = 0;
@@ -1028,8 +1027,8 @@ void CProgressImage::CreateSpan()
 
 		for (uint32 i = start; i < end; i++) {
 			COLORTYPE color = RGB(255, 0, 0);
-			if (part_info && part_info[i]) {
-				int blue = 210 - ( 22 * ( part_info[i] - 1 ) );
+			if (m_file->m_PartInfo.size() > i && m_file->m_PartInfo[i]) {
+				int blue = 210 - ( 22 * ( m_file->m_PartInfo[i] - 1 ) );
 				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			}
 
