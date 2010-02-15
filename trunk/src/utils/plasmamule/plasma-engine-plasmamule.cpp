@@ -26,8 +26,9 @@
 #include <kdebug.h>
 #include <knotification.h>
 #include <plasma/datacontainer.h>
+
+#include <QtDBus/QDBusInterface>
 #include <QDir>
-#include <QFile>
 #include <QTimer>
 
 PlasmaMuleEngine::PlasmaMuleEngine (QObject* parent, const QVariantList& args)
@@ -44,46 +45,96 @@ bool PlasmaMuleEngine::sourceRequestEvent (const QString &name)
 
 QStringList PlasmaMuleEngine::sources() const
 {
-	return QStringList() << "os_active"
+	return QStringList() << "categories"
+		<< "clients_in_up_queue"
 		<< "config_found"
+		<< "dbus_registerred"
+		<< "down_speed"
 		<< "ed2k_state"
 		<< "ed2k_server_name"
 		<< "ed2k_server_ip"
 		<< "ed2k_server_port"
 		<< "ed2k_id_high_low"
 		<< "kad_status"
-		<< "down_speed"
-		<< "up_speed"
-		<< "clients_in_up_queue"
-		<< "shared_files_count"
 		<< "nickname"
-		<< "total_bytes_downloaded"
-		<< "total_bytes_uploaded"
-		<< "version"
+		<< "os_active"
 		<< "session_bytes_downloaded"
 		<< "session_bytes_uploaded"
-		<< "uptime";
+		<< "shared_files_count"
+		<< "total_bytes_downloaded"
+		<< "total_bytes_uploaded"
+		<< "up_speed"
+		<< "uptime"
+		<< "version";
 }
 
 void PlasmaMuleEngine::init ()
 {
-	QDir Dir;
-	QStringList tempIncomingDirs;
-	QStringList cleanedIncomingDirs;
-	QStringList::const_iterator constIterator;
-	QString Home = Dir.homePath();
+	Home = QDir::homePath();
 
-	if (!m_timer)
-	{
-		QTimer *timer = new QTimer(this);
-		connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
-		timer->start(60000);
-		m_timer = TRUE;
-	}
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+	timer->start(60000);
+	m_timer = TRUE;
+	setData(I18N_NOOP("uptime"), 0);
+
 	if (!Home.endsWith("/"))
 	{
 		Home += "/";
 	}
+
+	regDbus();
+	initVals();
+}
+
+void PlasmaMuleEngine::regDbus ()
+{
+	new EngineAdaptor(this);
+	QDBusConnection dbus = QDBusConnection::sessionBus();
+	dbus.registerObject("/Link", this);
+	kDebug() << "Registerred dbus: " << dbus.registerService("org.amule.engine");
+}
+
+void PlasmaMuleEngine::engine_add_link (const QString &link, const int &category)
+{
+	kDebug() << "Received Link " << link << " with cat " << category;
+
+	QString link_to_write;
+
+	if (link.startsWith("ed2k:") || link.startsWith("magnet:"))
+	{
+		link_to_write = link;
+	} else {
+		KNotification::event(KNotification::Notification, QString("%1 can't be handled by now.").arg(link));
+		return;
+	}
+
+	if (category > 0)
+	{
+		link_to_write.append(QString(":%1").arg(category));
+	}
+
+	QFile link_file (Home + ".aMule/ED2KLinks");
+
+	if (link_file.exists() && !link_file.open (QIODevice::WriteOnly | QIODevice::Append))
+	{
+		KNotification::event(KNotification::Notification, QString("Problem opening %1 for writing").arg(link_file.fileName()));
+		return;
+	}
+
+	QTextStream out (&link_file);
+	out << link_to_write << "\n";
+	link_file.close();
+	KNotification::event(KNotification::Notification, QString("Downloading %1").arg(link));
+}
+
+void PlasmaMuleEngine::initVals ()
+{
+	QStringList categories;
+	QStringList tempIncomingDirs;
+	QStringList cleanedIncomingDirs;
+	QStringList::const_iterator constIterator;
+
 	QFile config_file (Home + ".aMule/amule.conf");
 
 	if (!config_file.open (QIODevice::ReadOnly | QIODevice::Text))
@@ -92,10 +143,12 @@ void PlasmaMuleEngine::init ()
 		return;
 	}
 
+	categories.append ("default");
+
 	QTextStream in (&config_file);
-	while (!in.atEnd ())
+	while (!in.atEnd())
 	{
-		QString line = in.readLine ();
+		QString line = in.readLine();
 		if (line.startsWith ("OnlineSignature="))
 		{
 			if (line.remove (0,line.indexOf ("=")+1) == "1")
@@ -107,20 +160,25 @@ void PlasmaMuleEngine::init ()
 			setData(I18N_NOOP ("os_active"), m_OSActive);
 		} else if (line.contains ("OSDirectory"))
 		{
-			m_OSFile = line.remove (0,line.indexOf ("=")+1) + "amulesig.dat";
+			m_OSFile.setFileName(line.remove (0,line.indexOf ("=")+1) + "amulesig.dat");
 		} else if (line.contains ("Incoming"))
 		{
 			if (!tempIncomingDirs.contains(line.remove (0,line.indexOf ("=")+1)))
 			{
 				tempIncomingDirs.append(line.remove (0,line.indexOf ("=")+1));
 			}
+		} else if (line.startsWith ("Title"))
+		{
+			categories.append (line.remove (0,line.indexOf ("=")+1));
 		}
         }
 
-	if (m_OSActive && !m_dirwatcher.contains(m_OSFile))
+	setData(I18N_NOOP ("categories"), categories);
+
+	if (m_OSActive && !m_dirwatcher.contains(m_OSFile.fileName()))
 	{
-		kDebug() << "Registering: " << m_OSFile << " for monitoring";
-		m_dirwatcher.addFile (m_OSFile);
+		kDebug() << "Registering: " << m_OSFile.fileName() << " for monitoring";
+		m_dirwatcher.addFile (m_OSFile.fileName());
 		connect (&m_dirwatcher, SIGNAL (dirty (const QString &)), SLOT (file_changed (const QString&)));
 		connect (&m_dirwatcher, SIGNAL (created (const QString &)), SLOT (new_file (const QString&)));
 	}
@@ -150,11 +208,12 @@ void PlasmaMuleEngine::init ()
 	config_file.close ();
 	setName("plasmamule");
 	setData(I18N_NOOP ("config_found"), TRUE);
+	scheduleSourcesUpdated();
 }
 
 void PlasmaMuleEngine::file_changed (const QString &path)
 {
-	if (path == m_OSFile)
+	if (path == m_OSFile.fileName())
 	{
 		kDebug() << "Rereading " << path;
 		updateSourceEvent ("dummy");
@@ -163,24 +222,25 @@ void PlasmaMuleEngine::file_changed (const QString &path)
 
 void PlasmaMuleEngine::new_file (const QString &path)
 {
-	kDebug() << "File " << path << "was created";
-	KNotification::event(KNotification::Notification, QString("Finished Download of %1").arg(path));
+	if (path != m_OSFile.fileName())
+	{
+		kDebug() << "File " << path << "was created";
+		KNotification::event(KNotification::Notification, QString("Finished Download of %1").arg(path));
+	}
 }
 
 void PlasmaMuleEngine::timeout()
 {
-	init();
-	scheduleSourcesUpdated();
+	initVals();
 }
 
 bool PlasmaMuleEngine::updateSourceEvent(const QString &name)
 {
 	Q_UNUSED (name)
 
-	QFile file (m_OSFile);
-	if (file.open (QIODevice::ReadOnly | QIODevice::Text) && m_OSActive)
+	if (m_OSFile.open (QIODevice::ReadOnly | QIODevice::Text) && m_OSActive)
 	{
-		QTextStream in (&file);
+		QTextStream in (&m_OSFile);
 		setData(I18N_NOOP("ed2k_state"), in.readLine().toInt());
 		setData(I18N_NOOP("ed2k_server_name"), in.readLine());
 		setData(I18N_NOOP("ed2k_server_ip"), in.readLine());
@@ -198,7 +258,7 @@ bool PlasmaMuleEngine::updateSourceEvent(const QString &name)
 		setData(I18N_NOOP("session_bytes_downloaded"), in.readLine().toLongLong());
 		setData(I18N_NOOP("session_bytes_uploaded"), in.readLine().toLongLong());
 		setData(I18N_NOOP("uptime"), in.readLine().toInt());
-		file.close();
+		m_OSFile.close();
 		scheduleSourcesUpdated();
 		return true;
 	} else {
@@ -207,5 +267,19 @@ bool PlasmaMuleEngine::updateSourceEvent(const QString &name)
 }
 
 K_EXPORT_PLASMA_DATAENGINE(plasmamule, PlasmaMuleEngine)
+
+EngineAdaptor::EngineAdaptor(QObject *parent): QDBusAbstractAdaptor(parent)
+{
+	setAutoRelaySignals(true);
+}
+
+EngineAdaptor::~EngineAdaptor()
+{
+}
+
+void EngineAdaptor::engine_add_link(const QString &link, const int &category)
+{
+	QMetaObject::invokeMethod(parent(), "engine_add_link", Q_ARG(QString, link), Q_ARG(int, category));
+}
 
 #include "plasma-engine-plasmamule.moc"

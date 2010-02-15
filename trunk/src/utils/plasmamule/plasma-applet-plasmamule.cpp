@@ -29,11 +29,14 @@
 #include <plasma/theme.h>
 #include <plasma/version.h>
 
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
+
 #include <QFontMetrics>
+#include <QMenu>
 #include <QPainter>
 #include <QSizeF>
 #include <QStringList>
-#include <QTime>
 
 K_EXPORT_PLASMA_APPLET(plasma-applet-plasmamule, PlasmaMuleApplet)
 
@@ -47,7 +50,7 @@ PlasmaMuleApplet::PlasmaMuleApplet(QObject *parent, const QVariantList &args)
 	setBackgroundHints(TranslucentBackground);
 	setMinimumSize(200, 200);
 	setMaximumSize(300, 300);
-
+	setAcceptDrops(TRUE);
 }
 
 PlasmaMuleApplet::~PlasmaMuleApplet()
@@ -106,7 +109,8 @@ void PlasmaMuleApplet::paintInterface(QPainter *painter,
 		minutes=time/60;
 		time=time%60;
 
-		runtime = QTime (hours, minutes, time).toString(Qt::ISODate);
+		runtime = QString("%1:%2:%3").arg(hours, 2, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0')).arg(time, 2, 10, QLatin1Char('0'));
+
 		if (days)
 		{
 			if (days = 1)
@@ -187,7 +191,7 @@ QString PlasmaMuleApplet::calcSize (qlonglong in_size)
 	int unit=0;
 	double size;
 	QStringList units;
-	units << "Bytes" << "KBs" << "MBs" << "GBs" << "TBs" << "PBs" << "BBs" << "ZBs" << "YBs";
+	units << "Bytes" << "kBs" << "MBs" << "GBs" << "TBs" << "PBs" << "BBs" << "ZBs" << "YBs";
 
 	while (in_size >1023)
 	{
@@ -221,8 +225,17 @@ void PlasmaMuleApplet::onSourceRemoved(const QString& source)
 
 void PlasmaMuleApplet::dataUpdated(const QString& source, const Plasma::DataEngine::Data &data)
 {
+	if (data.isEmpty())
+	{
+		return;
+	}
+
 	bool needs_update = FALSE;
-	kDebug() << "Updating data";
+	kDebug() << "Updating data" << data;
+	if (data["categories"].toStringList() != m_categories && data.contains("categories"))
+	{
+		m_categories = data["categories"].toStringList();
+	}
 	if (data["os_active"].toBool() != m_os_active && data.contains("os_active"))
 	{
 		m_os_active = data["os_active"].toBool();
@@ -324,6 +337,41 @@ void PlasmaMuleApplet::dataUpdated(const QString& source, const Plasma::DataEngi
 		kDebug() << "Updating view";
 		update();
 	}
+}
+
+void PlasmaMuleApplet::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
+{
+	kDebug() << "Dragged Data detected " << event;
+	if (event->mimeData()->hasUrls())
+	{
+		event->acceptProposedAction();
+	}
+}
+
+void PlasmaMuleApplet::dropEvent(QGraphicsSceneDragDropEvent * event)
+{
+	QStringList::const_iterator constIterator;
+
+	event->acceptProposedAction();
+
+	QMenu *menu = new QMenu;
+
+	for (constIterator = m_categories.constBegin(); constIterator != m_categories.constEnd(); constIterator++)
+	{
+		menu->addAction(*constIterator);
+		if (constIterator != m_categories.constEnd())
+		{
+			menu->addSeparator();
+		}
+	}
+
+	QAction *cat_selection = menu->exec(QCursor::pos());
+
+	QDBusConnection bus = QDBusConnection::sessionBus();
+	QDBusInterface *interface = new QDBusInterface("org.amule.engine", "/Link", "org.amule.engine", bus, this);
+	interface->call("engine_add_link", event->mimeData()->text(), m_categories.indexOf(cat_selection->text()));
+	kDebug() << "Sent Link " << event->mimeData()->text() << "with cat " << m_categories.indexOf(cat_selection->text());
+	delete menu;
 }
 
 #include "plasma-applet-plasmamule.moc"
