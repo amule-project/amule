@@ -138,8 +138,9 @@ class CECTag {
 		CECTag*			GetTagByName(ec_tagname_t name);
 		const CECTag*	GetTagByNameSafe(ec_tagname_t name) const;
 		
-		size_t		GetTagCount(void) const { return m_tagList.size(); }
-		const void *	GetTagData(void) const { 
+		size_t			GetTagCount() const { return m_tagList.size(); }
+		bool			HasChildTags() const { return !m_tagList.empty(); }
+		const void *	GetTagData() const { 
 			EC_ASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
 			return m_tagData; 
 		}
@@ -359,6 +360,19 @@ class CECTag {
 class CECEmptyTag : public CECTag {
 	public:
 		CECEmptyTag(ec_tagname_t name = 0) : CECTag(name, 0, (const void *) NULL) {}
+};
+
+/**
+ * An integer TAG
+ *
+ * This is just to easily overcome ctor ambiguity. It's prettier to write
+ *		CECIntTag(name, some_value)
+ * instead of
+ *		CECTag(name, (uint64)value)
+ */
+class CECIntTag : public CECTag {
+	public:
+		CECIntTag(ec_tagname_t name, uint64 data) : CECTag(name, data) {}
 };
 
 #endif /* ECTAG_H */

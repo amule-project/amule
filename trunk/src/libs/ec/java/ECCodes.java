@@ -111,7 +111,6 @@ public final static byte EC_OP_KAD_START                     = 0x48;
 public final static byte EC_OP_KAD_STOP                      = 0x49;
 public final static byte EC_OP_CONNECT                       = 0x4A;
 public final static byte EC_OP_DISCONNECT                    = 0x4B;
-public final static byte EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C;
 public final static byte EC_OP_KAD_UPDATE_FROM_URL           = 0x4D;
 public final static byte EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E;
 public final static byte EC_OP_AUTH_SALT                     = 0x4F;

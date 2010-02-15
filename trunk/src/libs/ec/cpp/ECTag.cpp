@@ -714,7 +714,7 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 							s2 = wxT("empty");
 						} else {
 							// Make a hex dump (limited to maxOutput)
-							const int maxOutput = 50;
+							const uint32 maxOutput = 50;
 							for (uint32 i = 0; i < m_dataLen; i++) {
 								if (i == maxOutput) {
 									s2 += wxT("...");

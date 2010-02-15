@@ -204,8 +204,7 @@ class CEC_ConnState_Tag : public CECTag {
 
 class CEC_PartFile_Tag : public CECTag {
  	public:
- 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail = false, CValueMap *valuemap = NULL);
-		void Detail_Tag(CPartFile *file, CValueMap *valuemap);
+ 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
  		
 		// template needs it
 		CMD4Hash		ID()	const { return GetMD4Data(); }

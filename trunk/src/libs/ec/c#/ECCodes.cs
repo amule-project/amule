@@ -35,7 +35,7 @@ public enum ECFlags {
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
 	EC_FLAG_NOTIFY	 = 0x00008000,
-
+	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
 };
 public enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,
@@ -113,7 +113,6 @@ public enum ECOpCodes {
 	EC_OP_KAD_STOP                      = 0x49,
 	EC_OP_CONNECT                       = 0x4A,
 	EC_OP_DISCONNECT                    = 0x4B,
-	EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C,
 	EC_OP_KAD_UPDATE_FROM_URL           = 0x4D,
 	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E,
 	EC_OP_AUTH_SALT                     = 0x4F,

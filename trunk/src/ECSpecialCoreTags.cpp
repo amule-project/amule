@@ -122,45 +122,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
 }
 
-void CEC_PartFile_Tag::Detail_Tag(CPartFile *file, CValueMap *valuemap)
-{
-	// Tag for source names
-	CECEmptyTag sn(EC_TAG_PARTFILE_SOURCE_NAMES);
-	CECEmptyTag snc(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS);
-	SourcenameItemList sil;
-	const CPartFile::SourceSet &sources = file->GetSourceList();
-	for (CPartFile::SourceSet::const_iterator it = sources.begin(); it != sources.end(); ++it) {
-		CUpDownClient *cur_src = *it; 
-		if (cur_src->GetRequestFile() != file || cur_src->GetClientFilename().Length() == 0) {
-			continue;
-		}
-			
-		bool found = false;
-		for (SourcenameItemList::iterator its = sil.begin() ; its != sil.end(); ++its ) {
-			if (its->name == cur_src->GetClientFilename()) {
-				its->count++;
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			sil.push_back(SourcenameItem(cur_src->GetClientFilename(), 1));
-		}
-	}
-	for (SourcenameItemList::const_iterator its = sil.begin() ; its != sil.end(); ++its ) {
-		// Tag children are evaluated by index, not by name
-		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, its->name));
-		snc.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS, (uint64) its->count));
-	}
-	if (AddTag(sn, valuemap) && valuemap) {
-		// If there was a change in the list of names,
-		// make sure that the counts are updated too.
-		valuemap->ForgetTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS);
-	}
-	AddTag(snc, valuemap);
-}	
-
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail, CValueMap *valuemap)
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
 :
 CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 {
@@ -192,10 +154,6 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 	AddTag(EC_TAG_PARTFILE_GAINED_COMPRESSION, file->GetGainDueToCompression(), valuemap);
 	AddTag(EC_TAG_PARTFILE_SAVED_ICH, file->TotalPacketsSavedDueToICH(), valuemap);
 
-	if (detail) {
-		Detail_Tag(file, valuemap);
-	}
-	
 	// Tag for comments
 	CECEmptyTag sc(EC_TAG_PARTFILE_COMMENTS);
 
