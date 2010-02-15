@@ -275,12 +275,13 @@ class CEC_SharedFile_Tag : public CECTag {
 
 class CEC_UpDownClient_Tag : public CECTag {
 	public:
-		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, uint32 userID, CValueMap* valuemap);
+		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, CValueMap* valuemap);
 
 		uint32 ID() const { return GetInt(); }
 		
  		CMD4Hash FileID() const { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data(); }
- 		CMD4Hash UserID() const { return GetTagByNameSafe(EC_TAG_CLIENT_HASH)->GetMD4Data(); }
+ 		CMD4Hash UserHash() const { return GetTagByNameSafe(EC_TAG_CLIENT_HASH)->GetMD4Data(); }
+ 		uint32 UserID(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_USER_ID, target); }
  		
  		bool HaveFile() const { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 

@@ -25,6 +25,7 @@ noinst_HEADERS =  \
 		ECSpecialTags.h \
 		ECCodes.h \
 		ECTagTypes.h \
+		ECID.h \
 		RemoteConnect.h
 
 MAINTAINERCLEANFILES = Makefile.in

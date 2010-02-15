@@ -513,8 +513,6 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 	// (not for incremental update of course)
 	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 
-	std::set<uint32> idSet;
-
 	const CClientPtrList& clients = (op == EC_OP_WAIT_QUEUE)	? theApp->uploadqueue->GetWaitingList()
 																: theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = clients.begin();
@@ -524,21 +522,14 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 		if (!cur_client) {	// shouldn't happen
 			continue;
 		}
-		// Sometimes clients can have the same ID. Make sure we transmit something unique.
-		uint32 id = cur_client->GetUserIDHybrid();
-		while (idSet.count(id)) {
-			id++;
-		}
-		idSet.insert(id);
-
-		if (!queryitems.empty() && !queryitems.count(id)) {
+		if (!queryitems.empty() && !queryitems.count(cur_client->ECID())) {
 			continue;
 		}
 		CValueMap *valuemap = NULL;
 		if (detail_level == EC_DETAIL_INC_UPDATE) {
 			valuemap = &tagmap.GetValueMap(cur_client);
 		}
-		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level, id, valuemap);
+		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level, valuemap);
 		
 		response->AddTag(cli_tag);
 	}
