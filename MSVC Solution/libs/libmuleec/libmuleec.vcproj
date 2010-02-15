@@ -314,6 +314,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\libs\ec\cpp\ECID.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\libs\ec\cpp\ECMuleSocket.h"
 				>
 			</File>

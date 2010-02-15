@@ -1061,10 +1061,10 @@ CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn, true)
 }
 
 
-CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
+CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 {
 	m_bRemoteQueueFull = false;
-	m_nUserIDHybrid = tag->ID();
+	m_nUserIDHybrid = tag->UserID();
 	m_Username = tag->ClientName();
 	m_clientSoft = tag->ClientSoftware();
 	m_clientVersionString = GetSoftName(m_clientSoft);
@@ -1083,7 +1083,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_fullClientVerString = m_clientSoftString + wxT(" ") + m_clientVerString;
 
 	// User hash
-	m_UserHash = tag->UserID();
+	m_UserHash = tag->UserHash();
 
 	// User IP:Port
 	m_nConnectIP = m_dwUserIP = tag->UserIP();
@@ -1196,7 +1196,7 @@ void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 
 uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 {
-	return client->GetUserIDHybrid();
+	return client->ECID();
 }
 
 
@@ -1204,6 +1204,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	CEC_UpDownClient_Tag *tag,
 	CUpDownClient *client)
 {
+	tag->UserID(&client->m_nUserIDHybrid);
 	tag->GetCurrentIdentState(&client->m_identState);
 	tag->HasObfuscatedConnection(&client->m_hasbeenobfuscatinglately);
 	tag->HasExtendedProtocol(&client->m_bEmuleProtocol);

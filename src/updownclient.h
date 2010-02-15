@@ -32,6 +32,7 @@
 #include "NetworkFunctions.h"
 #include "OtherStructs.h"
 #include "ClientCredits.h"	// Needed for EIdentState
+#include <ec/cpp/ECID.h>	// Needed for CECID
 
 #include <map>
 
@@ -148,7 +149,7 @@ enum ClientState
 // This is fixed on ed2k v1, but can be any number on ED2Kv2
 #define STANDARD_BLOCKS_REQUEST 3
 
-class CUpDownClient
+class CUpDownClient : public CECID
 {
 	friend class CClientList;
 	friend class CUpDownClientListRem;

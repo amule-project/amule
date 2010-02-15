@@ -248,6 +248,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
 		EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C,
 		EC_TAG_CLIENT_EXT_PROTOCOL                = 0x061D,
+		EC_TAG_CLIENT_USER_ID                     = 0x061E,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
@@ -647,6 +648,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x061B: return wxT("EC_TAG_CLIENT_ASKED_COUNT");
 		case 0x061C: return wxT("EC_TAG_CLIENT_UPLOAD_STATE");
 		case 0x061D: return wxT("EC_TAG_CLIENT_EXT_PROTOCOL");
+		case 0x061E: return wxT("EC_TAG_CLIENT_USER_ID");
 		case 0x0700: return wxT("EC_TAG_SEARCHFILE");
 		case 0x0701: return wxT("EC_TAG_SEARCH_TYPE");
 		case 0x0702: return wxT("EC_TAG_SEARCH_NAME");

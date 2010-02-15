@@ -212,12 +212,13 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 			theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
 }
 
-CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, uint32 userID, CValueMap *valuemap) :
-	CECTag(EC_TAG_CLIENT, userID)
+CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap) :
+	CECTag(EC_TAG_CLIENT, client->ECID())
 {
 	// General
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_USER_ID, client->GetUserIDHybrid()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false, client->IsDownloading(), false)), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_RATING, client->GetRating()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()), valuemap);
