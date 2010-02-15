@@ -556,7 +556,7 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encode
 		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
 
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
-		CEC_PartFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, true, &valuemap);
+		CEC_PartFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
 		CPartFile_Encoder &enc = encoders[cur_file];
 		enc.Encode(&filetag);
 		
@@ -565,7 +565,7 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encode
 	return 	response;
 }
 
-static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders, bool detail = false)
+static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -583,7 +583,7 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPa
 			continue;
 		}
 
-		CEC_PartFile_Tag filetag(cur_file, detail_level, detail);
+		CEC_PartFile_Tag filetag(cur_file, detail_level);
 		
 		CPartFile_Encoder &enc = encoders[cur_file];
 		if ( detail_level != EC_DETAIL_UPDATE ) {
@@ -954,7 +954,6 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	//
 	// Requested blocks
 	//
-	// that's the next thing to go
 	ArrayOfUInts64 req_buffer;
 	const CPartFile::CReqBlockPtrList& requestedblocks = m_file->GetRequestedBlockList();
 	CPartFile::CReqBlockPtrList::const_iterator curr_pos2 = requestedblocks.begin();
@@ -970,6 +969,70 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS, req_enc_size, (void *)req_enc_data));
 	}
 	delete[] req_enc_data;
+
+	//
+	// Source names
+	//
+	// First count occurrence of all source names
+	//
+	CECEmptyTag sourceNames(EC_TAG_PARTFILE_SOURCE_NAMES);
+	typedef std::map<wxString, int> strIntMap;
+	strIntMap nameMap;
+	const CPartFile::SourceSet &sources = m_file->GetSourceList();
+	for (CPartFile::SourceSet::const_iterator it = sources.begin(); it != sources.end(); ++it) {
+		CUpDownClient *cur_src = *it; 
+		if (cur_src->GetRequestFile() != m_file || cur_src->GetClientFilename().Length() == 0) {
+			continue;
+		}
+		const wxString &name = cur_src->GetClientFilename();
+		strIntMap::iterator itm = nameMap.find(name);
+		if (itm == nameMap.end()) {
+			nameMap[name] = 1;
+		} else {
+			itm->second++;
+		}
+	}
+	//
+	// Go through our last list
+	//
+	for (SourcenameItemMap::iterator it1 = m_sourcenameItemMap.begin(); it1 != m_sourcenameItemMap.end();) {
+		SourcenameItemMap::iterator it2 = it1++;
+		strIntMap::iterator itm = nameMap.find(it2->second.name);
+		if (itm == nameMap.end()) {
+			// name doesn't exist anymore, tell client to forget it
+			CECTag tag(EC_TAG_PARTFILE_SOURCE_NAMES, it2->first);
+			tag.AddTag(CECIntTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS, 0));
+			sourceNames.AddTag(tag);
+			// and forget it
+			m_sourcenameItemMap.erase(it2);
+		} else {
+			// update count if it changed
+			if (it2->second.count != itm->second) {
+				CECTag tag(EC_TAG_PARTFILE_SOURCE_NAMES, it2->first);
+				tag.AddTag(CECIntTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS, itm->second));
+				sourceNames.AddTag(tag);
+				it2->second.count = itm->second;
+			}
+			// remove it from nameMap so that only new names are left there
+			nameMap.erase(itm);
+		}
+	}
+	//
+	// Add new names
+	//
+	for (strIntMap::iterator it3 = nameMap.begin(); it3 != nameMap.end(); it3++) {
+		int id = ++m_sourcenameID;
+		CECIntTag tag(EC_TAG_PARTFILE_SOURCE_NAMES, id);
+		tag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, it3->first));
+		tag.AddTag(CECIntTag(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS, it3->second));
+		sourceNames.AddTag(tag);
+		// remember it
+		m_sourcenameItemMap[id] = SourcenameItem(it3->first, it3->second);
+	}
+	if (sourceNames.HasChildTags()) {
+		parent->AddTag(sourceNames);
+	}
+
 }
 
 void CPartFile_Encoder::ResetEncoder()
@@ -1112,14 +1175,6 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 				response = Get_EC_Response_GetDownloadQueue(enc_part_map, objmap);
 			} else {
 				response = Get_EC_Response_GetDownloadQueue(request, enc_part_map);
-			}
-			break;
-		// transmit source names and comments only if file detail dialog is open	
-		case EC_OP_GET_DLOAD_QUEUE_DETAIL:
-			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetDownloadQueue(enc_part_map, objmap);
-			} else {
-				response = Get_EC_Response_GetDownloadQueue(request, enc_part_map, true);
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:

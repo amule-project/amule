@@ -1426,35 +1426,22 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	
 	// Get source names and counts
 	CECTag *srcnametag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
-	CECTag *srccounttag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS);
-	// Full update (names and counts)
 	if (srcnametag) {
+		SourcenameItemMap &map = file->GetSourcenameItemMap();
 		size_t max = srcnametag->GetTagCount();
-		// Some sanity checks (this shouldn't go wrong)
-		if (!srccounttag) {
-			AddLogLineN(wxT("Source names missing counts - too old core ?"));
-		} else if (srccounttag->GetTagCount() != max) {
-			AddLogLineN(CFormat(wxT("%d source names and %d source counts - should not happen.")) 
-				% max % srccounttag->GetTagCount());
-		} else {
-			file->ClearSourcenameItemList();
-			for (size_t i = 0; i < max; i++) {
-				wxString name = srcnametag->GetTagByIndex(i)->GetStringData();
-				long count = srccounttag->GetTagByIndex(i)->GetInt();
-				file->AddSourcenameItemList(name, count);
-			}
-		}
-	// Only counts updated
-	} else if (srccounttag) {
-		size_t max = srccounttag->GetTagCount();
-		SourcenameItemList &list = file->GetSourcenameItemList();
-		if (list.size() != max) {
-			AddLogLineN(CFormat(wxT("%d source items and %d source counts - should not happen.")) 
-				% list.size() % max);
-		} else {
-			SourcenameItemList::iterator it = list.begin();
-			for (size_t i = 0; i < max; i++, it++) {
-				it->count = srccounttag->GetTagByIndex(i)->GetInt();
+		for (size_t i = 0; i < max; i++) {
+			CECTag *ntag = srcnametag->GetTagByIndex(i);
+			uint32 key = ntag->GetInt();
+			int count = ntag->GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS)->GetInt();
+			if (count == 0) {
+				map.erase(key);
+			} else {
+				SourcenameItem &item = map[key];
+				item.count = count;
+				CECTag *nametag = ntag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
+				if (nametag) {
+					item.name = nametag->GetStringData();
+				}
 			}
 		}
 	}

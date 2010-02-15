@@ -121,7 +121,6 @@ enum ECOpCodes {
 	EC_OP_KAD_STOP                      = 0x49,
 	EC_OP_CONNECT                       = 0x4A,
 	EC_OP_DISCONNECT                    = 0x4B,
-	EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C,
 	EC_OP_KAD_UPDATE_FROM_URL           = 0x4D,
 	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E,
 	EC_OP_AUTH_SALT                     = 0x4F,
@@ -517,7 +516,6 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x49: return wxT("EC_OP_KAD_STOP");
 		case 0x4A: return wxT("EC_OP_CONNECT");
 		case 0x4B: return wxT("EC_OP_DISCONNECT");
-		case 0x4C: return wxT("EC_OP_GET_DLOAD_QUEUE_DETAIL");
 		case 0x4D: return wxT("EC_OP_KAD_UPDATE_FROM_URL");
 		case 0x4E: return wxT("EC_OP_KAD_BOOTSTRAP_FROM_IP");
 		case 0x4F: return wxT("EC_OP_AUTH_SALT");

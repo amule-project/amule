@@ -158,9 +158,9 @@ void CFileDetailDialog::FillSourcenameList()
 
 	// update
 #ifdef CLIENT_GUI
-	const SourcenameItemList &sources = m_file->GetSourcenameItemList();
-	for (SourcenameItemList::const_iterator it = sources.begin(); it != sources.end(); ++it) {
-		const SourcenameItem &cur_src = *it;
+	const SourcenameItemMap &sources = m_file->GetSourcenameItemMap();
+	for (SourcenameItemMap::const_iterator it = sources.begin(); it != sources.end(); ++it) {
+		const SourcenameItem &cur_src = it->second;
 		itempos = pmyListCtrl->FindItem(-1,cur_src.name);
 		if (itempos == -1) {
 			int itemid = pmyListCtrl->InsertItem(0, cur_src.name);

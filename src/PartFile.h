@@ -79,14 +79,14 @@ class SourcenameItem
 {
 public:
 	wxString	name;
-	long		count;
+	int			count;
 public:
-	SourcenameItem(const wxString &n, long c)
+	SourcenameItem(const wxString &n = EmptyString, int c = 0)
 	:
 	name(n), count(c) {}
 };
 
-typedef std::list<SourcenameItem> SourcenameItemList;
+typedef std::map<uint32,SourcenameItem> SourcenameItemMap;
 
 class CPartFile : public CKnownFile {
 public:
@@ -403,11 +403,9 @@ private:
 #ifdef CLIENT_GUI
 	uint32 	m_kbpsDown;
 	uint8   m_iDownPriorityEC;
-	SourcenameItemList m_SourcenameItem_list;
+	SourcenameItemMap m_SourcenameItemMap;
 public:
-	SourcenameItemList &GetSourcenameItemList() { return m_SourcenameItem_list; }
-	void ClearSourcenameItemList() { m_SourcenameItem_list.clear(); }
-	void AddSourcenameItemList(const wxString &name, long count) { m_SourcenameItem_list.push_back(SourcenameItem(name, count)); }
+	SourcenameItemMap &GetSourcenameItemMap() { return m_SourcenameItemMap; }
 #endif
 public:
 	const FileRatingList &GetFileRatingList() { return m_FileRatingList; }

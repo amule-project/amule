@@ -34,6 +34,7 @@
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
 #include "RLE.h"	// for RLE
 #include "DownloadQueue.h"
+#include "PartFile.h"			// for SourcenameItemMap
 
 class wxSocketServer;
 class wxSocketEvent;
@@ -86,9 +87,11 @@ class CFileEncoderMap : public std::map<T *, E> {
  */
 class CPartFile_Encoder : public PartFileEncoderData {
 		CPartFile *m_file;
+		SourcenameItemMap m_sourcenameItemMap;
+		int m_sourcenameID;
 	public:
 		// encoder side
-		CPartFile_Encoder(CPartFile *file = 0) { m_file = file; }
+		CPartFile_Encoder(CPartFile *file = 0) { m_file = file; m_sourcenameID = 0; }
 		
 		// encode - take data from m_file
 		void Encode(CECTag *parent_tag);
