@@ -24,14 +24,17 @@
 #ifndef PLASMAMULENGINE_H
 #define PLASMAMULENGINE_H
 
-#include <plasma/dataengine.h>
-#include <QStringList>
 #include <kdirwatch.h>
+#include <plasma/dataengine.h>
+
+#include <QtDBus/QtDBus>
+#include <QFile>
+#include <QStringList>
 
 class PlasmaMuleEngine : public Plasma::DataEngine
 {
-    // required since Plasma::DataEngine inherits QObject
-    Q_OBJECT
+
+	Q_OBJECT
 
 	public:
 		PlasmaMuleEngine(QObject* parent, const QVariantList& args);
@@ -39,19 +42,47 @@ class PlasmaMuleEngine : public Plasma::DataEngine
 		void init ();
 
 	public Q_SLOTS:
-		void file_changed (const QString &path);
-		void new_file (const QString &path);
-		void timeout ();
+		Q_SCRIPTABLE void engine_add_link (const QString &link, const int &category);
 
 	protected:
 		bool sourceRequestEvent(const QString& name);
 		bool updateSourceEvent(const QString& name);
 
+	protected Q_SLOTS:
+		void file_changed (const QString &path);
+		void new_file (const QString &path);
+		void timeout ();
+
 	private:
+		void initVals ();
+		void regDbus ();
+
 		bool m_OSActive, m_timer;
-		QString m_OSFile;
 		KDirWatch m_dirwatcher;
+		QFile m_OSFile;
 		QStringList m_incoming_dirs;
+		QString Home;
+};
+
+class EngineAdaptor: public QDBusAbstractAdaptor
+{
+	Q_OBJECT
+	Q_CLASSINFO("D-Bus Interface", "org.amule.engine")
+	Q_CLASSINFO("D-Bus Introspection", ""
+	"  <interface name=\"org.amule.engine\" >\n"
+	"    <method name=\"engine_add_link\" >\n"
+	"      <arg direction=\"in\" type=\"as\" name=\"link\" />\n"
+	"      <arg direction=\"in\" type=\"i\" name=\"category\" />\n"
+	"    </method>\n"
+	"  </interface>\n"
+        "")
+
+	public:
+		EngineAdaptor(QObject *parent);
+		virtual ~EngineAdaptor();
+
+	public Q_SLOTS:
+		void engine_add_link(const QString &link, const int &category);
 };
 
 #endif // PLASMAMULENGINE_H
