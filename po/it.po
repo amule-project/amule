@@ -8,6 +8,7 @@
 # Giuseppe Bilotta <giuseppe.bilotta@gmail.com>, 2007.
 # rik <rik_kornellatyahoo.com>, 2008.
 # briga <brigabrigante@yahoo.com> 2009.
+# Giuliano Manzitti <giuliano1979@hotmail.com> 2010.
 # translation of it-cvs_beta.po to
 # translation of it-cvs.po to
 # translation of it2.po to
@@ -22,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-31 23:46+0100\n"
-"PO-Revision-Date: 2010-02-02 19:27+0100\n"
+"PO-Revision-Date: 2010-02-15 04:50+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -458,7 +459,7 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
-" Client p2p multipiattaforma basato su eMule \n"
+"Client p2p multipiattaforma basato su eMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:493
@@ -1350,7 +1351,8 @@ msgstr "L'utente %s (%u) ha inviato una lista di file condivisi non richiesta"
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
-"L'utente %s (%u) ha negato l'accesso alla lista dei file e cartellecondivisi"
+"L'utente %s (%u) ha negato l'accesso alla lista dei file e delle cartelle "
+"condivise"
 
 #: src/CommentDialog.cpp:34 src/CommentDialogLst.cpp:47
 msgid "File Comments"
@@ -2502,7 +2504,7 @@ msgstr "Dimensione file"
 
 #: src/KnownFile.cpp:1390
 msgid "Share ratio"
-msgstr "Share ratio"
+msgstr "Rapporto condivisione"
 
 #: src/KnownFile.cpp:1391
 msgid "Uploaded"
@@ -2645,7 +2647,7 @@ msgstr "Illimitato"
 
 #: src/MuleTrayIcon.cpp:327
 msgid "Traybar-icon lost, trying to recreate ..."
-msgstr "Icona nella traybar persa, tentativo di creazione nuova ..."
+msgstr "Icona nella traybar persa, tentativo di ricrearla ..."
 
 #: src/MuleTrayIcon.cpp:348
 msgid "aMule Tray Menu"
@@ -2784,11 +2786,11 @@ msgstr "Limite di scaricamento"
 
 #: src/MuleTrayIcon.cpp:566
 msgid "Hide aMule"
-msgstr "Nascondi"
+msgstr "Nascondi aMule"
 
 #: src/MuleTrayIcon.cpp:569
 msgid "Show aMule"
-msgstr "Mostra"
+msgstr "Mostra aMule"
 
 #: src/MuleTrayIcon.cpp:576 src/utils/aLinkCreator/src/alcframe.cpp:238
 msgid "Exit"
@@ -3021,7 +3023,7 @@ msgstr "Rimuovi download completati"
 
 #: src/muuli_wdr.cpp:456
 msgid "Shows Upload / Up-queue"
-msgstr "Mostra Upload / Coda Upload / Client"
+msgstr "Mostra Upload / Coda Upload"
 
 #: src/muuli_wdr.cpp:459 src/muuli_wdr.cpp:1965 src/Statistics.cpp:648
 #: src/TransferWnd.cpp:445
@@ -6970,7 +6972,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:196
 msgid "MD4 File Hash"
-msgstr "Hash MD4"
+msgstr "Hash del File MD4"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:208
 msgid "eD2k File Hash"
