@@ -436,14 +436,14 @@ void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uin
 		ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)opt_arg));
 	} else if (cmd == wxT("prioup")) {
-		DownloadFile *file = m_DownloadFileInfo.GetByID(fileHash);
+		DownloadFile *file = m_DownloadFileInfo.GetByHash(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 				GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
 		}
 	} else if (cmd == wxT("priodown")) {
-		DownloadFile *file = m_DownloadFileInfo.GetByID(fileHash);
+		DownloadFile *file = m_DownloadFileInfo.GetByHash(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
@@ -678,9 +678,9 @@ bool SharedFileInfo::ReQuery()
 }
 
 
-DownloadFile::DownloadFile(CEC_PartFile_Tag *tag)
+DownloadFile::DownloadFile(CEC_PartFile_Tag *tag) : CECID(tag->ID())
 {
-	nHash = tag->ID();
+	nHash = tag->FileHash();
 	sFileName = _SpecialChars(tag->FileName());
 	lFileSize = tag->SizeFull();
 	sFileHash = nHash.Encode();
@@ -752,7 +752,7 @@ DownloadFileInfo *DownloadFile::GetContainerInstance()
 DownloadFileInfo *DownloadFileInfo::m_This = 0;
 
 DownloadFileInfo::DownloadFileInfo(CamulewebApp *webApp, CImageLib *imlib) :
-	UpdatableItemsContainer<DownloadFile, CEC_PartFile_Tag, CMD4Hash>(webApp)
+	UpdatableItemsContainer<DownloadFile, CEC_PartFile_Tag, uint32>(webApp)
 {
 	m_This = this;
 	m_ImageLib = imlib;
@@ -781,6 +781,18 @@ void DownloadFileInfo::ItemDeleted(DownloadFile *item)
 #else
 	delete item->m_Image;
 #endif
+}
+
+DownloadFile * DownloadFileInfo::GetByHash(const CMD4Hash &fileHash)
+{
+	DownloadFile * ret = 0;
+	for (ItemsMap::iterator it = m_items_hash.begin(); it != m_items_hash.end(); it++) {
+		if (it->second->nHash == fileHash) {
+			ret = it->second;
+			break;
+		}
+	}
+	return ret;
 }
 
 bool DownloadFileInfo::ReQuery()

@@ -35,6 +35,7 @@
 #include "KnownFile.h"
 #include "RLE.h"
 #include "OtherStructs.h"
+#include <ec/cpp/ECID.h>	// Needed for CECID
 
 #ifdef ENABLE_UPNP
 #	include "UPnPBase.h"
@@ -70,7 +71,7 @@ class CURLDecoder
 	static wxString	Decode(const wxString& url);
 };
 
-class DownloadFile {
+class DownloadFile : public CECID {
 	public:
 		wxString	sFileName;
 		uint8		nFileStatus;
@@ -102,7 +103,7 @@ class DownloadFile {
 		static class DownloadFileInfo *GetContainerInstance();
 		DownloadFile(CEC_PartFile_Tag *);
 		void ProcessUpdate(CEC_PartFile_Tag *);
-		CMD4Hash ID() { return nHash; }
+		uint32 ID() { return ECID(); }
 };
 
 class SharedFile {
@@ -238,7 +239,8 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		// need duplicate list with a map, so check "do we already have"
 		// will take O(log(n)) instead of O(n)
 		// map will contain pointers to items in list 
-		std::map<I, T *> m_items_hash;
+		typedef std::map<I, T *> ItemsMap;
+		ItemsMap m_items_hash;
 	public:
 		UpdatableItemsContainer(CamulewebApp *webApp) : ItemsContainer<T>(webApp)
 		{
@@ -389,7 +391,7 @@ class SearchInfo : public UpdatableItemsContainer<SearchFile, CEC_SearchFile_Tag
 
 
 class CImageLib;
-class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, CEC_PartFile_Tag, CMD4Hash> {
+class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, CEC_PartFile_Tag, uint32> {
 		CImageLib *m_ImageLib;
 		
 		// parameters of progress images
@@ -404,6 +406,8 @@ class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, CEC_PartFi
 		void LoadImageParams(wxString &tpl, int width, int height);
 		
 		virtual bool ReQuery();
+
+		DownloadFile * GetByHash(const CMD4Hash &fileHash);
 
 		// container requirements
 		void ItemInserted(DownloadFile *item);

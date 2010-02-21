@@ -35,6 +35,7 @@
 #include <common/Path.h>
 
 #include "kademlia/kademlia/Indexed.h"
+#include <ec/cpp/ECID.h>	// Needed for CECID
 
 
 #ifdef CLIENT_GUI
@@ -188,11 +189,12 @@ class CSearchFile;
 class CFile;
 
 
-class CKnownFile : public CAbstractFile
+class CKnownFile : public CAbstractFile, public CECID
 {
 friend class CHashingTask;
 public:
 	CKnownFile();
+	CKnownFile(uint32 ecid);
 	explicit CKnownFile(const CSearchFile &searchFile);
 
 	virtual ~CKnownFile();

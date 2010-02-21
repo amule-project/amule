@@ -496,13 +496,13 @@ public:
 	uint16 GetWaitingPosition(const CUpDownClient *client) const;
 };
 
-class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
+class CDownQueueRem : public CRemoteContainer<CPartFile, uint32, CEC_PartFile_Tag> {
 	std::map<CMD4Hash, PartFileEncoderData> m_enc_map;
 public:
 	CDownQueueRem(CRemoteConnect *);
 	
 	uint32 GetFileCount() { return GetCount(); }
-	CPartFile* GetFileByID(const CMD4Hash& id) { return GetByID(id); }
+	CPartFile* GetFileByID(uint32 id) { return GetByID(id); }
 	CPartFile* GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
 	
 	bool IsPartFile(const CKnownFile* totest) const;
@@ -531,7 +531,7 @@ public:
 	//
 	CPartFile *CreateItem(CEC_PartFile_Tag *);
 	void DeleteItem(CPartFile *);
-	CMD4Hash GetItemID(CPartFile *);
+	uint32 GetItemID(CPartFile *);
 	void ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *);
 	bool Phase1Done(const CECPacket *);
 };
