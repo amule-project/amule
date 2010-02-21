@@ -497,7 +497,7 @@ public:
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, uint32, CEC_PartFile_Tag> {
-	std::map<CMD4Hash, PartFileEncoderData> m_enc_map;
+	std::map<uint32, PartFileEncoderData> m_enc_map;
 public:
 	CDownQueueRem(CRemoteConnect *);
 	
@@ -536,8 +536,8 @@ public:
 	bool Phase1Done(const CECPacket *);
 };
 
-class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
-	std::map<CMD4Hash, RLE_Data> m_enc_map;
+class CSharedFilesRem : public CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag> {
+	std::map<uint32, RLE_Data> m_enc_map;
 	
 	virtual void HandlePacket(const CECPacket *);
 	
@@ -549,7 +549,7 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 public:
 	CSharedFilesRem(CRemoteConnect *);
 	
-	CKnownFile *GetFileByID(CMD4Hash id) { return GetByID(id); }
+	CKnownFile *GetFileByID(uint32 id) { return GetByID(id); }
 
 	void SetFilePrio(CKnownFile *file, uint8 prio);
 
@@ -565,7 +565,7 @@ public:
 	//
 	CKnownFile *CreateItem(CEC_SharedFile_Tag *);
 	void DeleteItem(CKnownFile *);
-	CMD4Hash GetItemID(CKnownFile *);
+	uint32 GetItemID(CKnownFile *);
 	void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
 	bool Phase1Done(const CECPacket *);
 };
@@ -582,7 +582,7 @@ public:
 		accepted = 0;
 	}
 	
-	CKnownFile *FindKnownFileByID(const CMD4Hash& id)
+	CKnownFile *FindKnownFileByID(uint32 id)
 	{
 		return m_shared_files->GetByID(id); 
 	}

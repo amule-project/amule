@@ -420,12 +420,12 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 
 #ifdef CLIENT_GUI
 
-CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
+CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 {
 	Init();
 	
 	SetFileName(CPath(tag->FileName()));
-	m_abyFileHash = tag->ID();
+	m_abyFileHash = tag->FileHash();
 	SetFileSize(tag->SizeFull());
 	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
 	m_iUpPriorityEC = tag->Prio();
