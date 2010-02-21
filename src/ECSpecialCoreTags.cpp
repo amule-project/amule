@@ -183,7 +183,8 @@ CECTag(EC_TAG_PARTFILE, file->ECID())
 		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
 }
 
-CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
+: CECTag(EC_TAG_KNOWNFILE, file->ECID())
 {
 	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), valuemap);
@@ -198,11 +199,15 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(EC_TAG_PARTFILE_PRIO,
 		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), valuemap);
 
+	AddTag(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW, file->m_nCompleteSourcesCountLo, valuemap);
+	AddTag(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH, file->m_nCompleteSourcesCountHi, valuemap);
+
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
 	
 	AddTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable(), valuemap);
+	AddTag(EC_TAG_PARTFILE_HASH, file->GetFileHash(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_FILENAME, 
 		file->IsPartFile()	? wxString(CFormat(wxT("%s")) % ((CPartFile*)file)->GetPartMetFileName().RemoveExt())
 							: file->GetFilePath().GetPrintable(),
@@ -261,7 +266,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()), valuemap);
-		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()), valuemap);
+		AddTag(CECTag(EC_TAG_KNOWNFILE, file->ECID()), valuemap);
 	}
 	
 }

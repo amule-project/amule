@@ -913,7 +913,7 @@ void CIPFilterRem::Update(wxString url)
 /*
  * Shared files list
  */
-CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>(conn, true)
+CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag>(conn, true)
 {
 	m_rename_file = NULL;
 }
@@ -961,7 +961,7 @@ void CSharedFilesRem::HandlePacket(const CECPacket *packet)
 		m_rename_file->SetFileName(CPath(m_new_name));
 		m_rename_file = NULL;
 	} else if (packet->GetOpCode() != EC_OP_FAILED) {
-		CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>::HandlePacket(packet);
+		CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag>::HandlePacket(packet);
 	}
 }
 
@@ -970,7 +970,7 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 {
 	CKnownFile *file = new CKnownFile(tag);
 
-	m_enc_map[file->GetFileHash()] = RLE_Data(file->GetPartCount(), true);
+	m_enc_map[file->ECID()] = RLE_Data(file->GetPartCount(), true);
 
 	ProcessItemUpdate(tag, file);
 	
@@ -984,15 +984,15 @@ void CSharedFilesRem::DeleteItem(CKnownFile *in_file)
 {
 	CScopedPtr<CKnownFile> file(in_file);
 
-	m_enc_map.erase(file->GetFileHash());
+	m_enc_map.erase(file->ECID());
 	
 	theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file.get());
 }
 
 
-CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
+uint32 CSharedFilesRem::GetItemID(CKnownFile *file)
 {
-	return file->GetFileHash();
+	return file->ECID();
 }
 
 
@@ -1000,7 +1000,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 {
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	if (parttag) {
-		const uint8 *data =	m_enc_map[file->GetFileHash()].Decode(
+		const uint8 *data =	m_enc_map[file->ECID()].Decode(
 				(uint8 *)parttag->GetTagData(),
 				parttag->GetTagDataLen());
 		for(int i = 0; i < file->GetPartCount(); ++i) {
@@ -1021,6 +1021,8 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 		file->m_iUpPriority = file->m_iUpPriorityEC;
 		file->m_bAutoUpPriority = false;
 	}
+	tag->GetCompleteSourcesLow(&file->m_nCompleteSourcesCountLo);
+	tag->GetCompleteSourcesHigh(&file->m_nCompleteSourcesCountHi);
 
 	theApp->knownfiles->requested += file->statistic.requested;
 	theApp->knownfiles->transferred += file->statistic.transferred;
@@ -1097,8 +1099,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 
 	m_Friend = 0;
 	if (tag->HaveFile()) {
-		CMD4Hash filehash = tag->FileID();
-		m_uploadingfile = theApp->sharedfiles->GetByID(filehash);
+		m_uploadingfile = theApp->sharedfiles->GetByID(tag->FileID());
 	} else {
 		m_uploadingfile = NULL;
 	}
@@ -1314,7 +1315,7 @@ void CDownQueueRem::OnConnectionState(bool)
 CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 {
 	CPartFile *file = new CPartFile(tag);
-	m_enc_map[file->GetFileHash()] = PartFileEncoderData();
+	m_enc_map[file->ECID()] = PartFileEncoderData();
 	ProcessItemUpdate(tag, file);
 	
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -1328,7 +1329,7 @@ void CDownQueueRem::DeleteItem(CPartFile *in_file)
 
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file.get());
 	
-	m_enc_map.erase(file->GetFileHash());
+	m_enc_map.erase(file->ECID());
 }
 
 
@@ -1384,9 +1385,9 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
 	if (gaptag || parttag || reqtag) {
-		wxASSERT(m_enc_map.count(file->GetFileHash()));
+		wxASSERT(m_enc_map.count(file->ECID()));
 		
-		PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
+		PartFileEncoderData &encoder = m_enc_map[file->ECID()];
 
 		if (gaptag) {
 			ArrayOfUInts64 gaps;

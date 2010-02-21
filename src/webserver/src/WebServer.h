@@ -106,7 +106,7 @@ class DownloadFile : public CECID {
 		uint32 ID() { return ECID(); }
 };
 
-class SharedFile {
+class SharedFile : public CECID {
 	public:
 		wxString	sFileName;
 		uint64		lFileSize;
@@ -126,7 +126,7 @@ class SharedFile {
 		static class SharedFileInfo *GetContainerInstance();
 		SharedFile(CEC_SharedFile_Tag *);
 		void ProcessUpdate(CEC_SharedFile_Tag *);
-		CMD4Hash ID() { return nHash; }
+		uint32 ID() { return ECID(); }
 };
 
 class ServerEntry {
@@ -144,7 +144,7 @@ class ServerEntry {
 		uint32 ID() { return nServerIP; }
 };
 
-class UploadFile {
+class UploadFile : public CECID {
 	public:
 		wxString  sUserName;
 		uint32 nTransferredUp;
@@ -152,12 +152,11 @@ class UploadFile {
 		uint32 nSpeed;
 		//
 		// Don't need filename - sharedfiles already have it
-		CMD4Hash  nHash;
 
 		UploadFile(CEC_UpDownClient_Tag *tag);
 		
 		static class UploadsInfo *GetContainerInstance();
-		CMD4Hash ID() { return nHash; }
+		uint32 ID() { return ECID(); }
 };
 
 class SearchFile {
@@ -239,8 +238,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		// need duplicate list with a map, so check "do we already have"
 		// will take O(log(n)) instead of O(n)
 		// map will contain pointers to items in list 
-		typedef std::map<I, T *> ItemsMap;
-		ItemsMap m_items_hash;
+		std::map<I, T *> m_items_hash;
 	public:
 		UpdatableItemsContainer(CamulewebApp *webApp) : ItemsContainer<T>(webApp)
 		{
@@ -258,6 +256,19 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 			// avoid creating nodes
 			return m_items_hash.count(id) ? m_items_hash[id] : NULL;
 		}
+
+		T * GetByHash(const CMD4Hash &fileHash)
+		{
+			T * ret = 0;
+			for (typename std::map<I, T *>::iterator it = m_items_hash.begin(); it != m_items_hash.end(); it++) {
+				if (it->second->nHash == fileHash) {
+					ret = it->second;
+					break;
+				}
+			}
+			return ret;
+		}
+
 		/*!
 		 * Process answer of update request, create list of new items for
 		 * full request later. Also remove items that no longer exist in core
@@ -368,7 +379,7 @@ class ServersInfo : public ItemsContainer<ServerEntry> {
 };
 
 
-class SharedFileInfo : public UpdatableItemsContainer<SharedFile, CEC_SharedFile_Tag, CMD4Hash> {
+class SharedFileInfo : public UpdatableItemsContainer<SharedFile, CEC_SharedFile_Tag, uint32> {
 	public:
 		// can be only one instance.
 		static SharedFileInfo *m_This;
@@ -406,8 +417,6 @@ class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, CEC_PartFi
 		void LoadImageParams(wxString &tpl, int width, int height);
 		
 		virtual bool ReQuery();
-
-		DownloadFile * GetByHash(const CMD4Hash &fileHash);
 
 		// container requirements
 		void ItemInserted(DownloadFile *item);

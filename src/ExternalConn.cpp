@@ -449,14 +449,14 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnow
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
-	CTagSet<CMD4Hash, EC_TAG_KNOWNFILE> queryitems(request);
+	CTagSet<uint32, EC_TAG_KNOWNFILE> queryitems(request);
 
 	encoders.UpdateEncoders(theApp->sharedfiles);
 	
 	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
 		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
 
-		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->GetFileHash())) ) {
+		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->ECID())) ) {
 			continue;
 		}
 
@@ -875,6 +875,7 @@ static CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 			cur_file->SetAutoUpPriority(0);
 			cur_file->SetUpPriority(prio);
 		}
+		Notify_SharedFilesUpdateItem(cur_file);
 	}
 
 	return response;
@@ -1035,11 +1036,15 @@ void CPartFile_Encoder::ResetEncoder()
 
 void CKnownFile_Encoder::Encode(CECTag *parent)
 {
+	// Reference to the availability list
+	const ArrayOfUInts16& list = m_file->IsPartFile() ?
+		((CPartFile*)m_file)->m_SrcpartFrequency :
+		m_file->m_AvailPartFrequency;
 	// Don't add tag if available parts aren't populated yet.
-	if (!m_file->m_AvailPartFrequency.empty()) {
+	if (!list.empty()) {
 		int part_enc_size;
 		bool changed;
-		const uint8 *part_enc_data = m_enc_data.Encode(m_file->m_AvailPartFrequency, part_enc_size, changed);
+		const uint8 *part_enc_data = m_enc_data.Encode(list, part_enc_size, changed);
 		if (changed) {
 			parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
 		}

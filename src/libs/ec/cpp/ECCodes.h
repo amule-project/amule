@@ -207,6 +207,8 @@ enum ECTagNames {
 		EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL         = 0x0406,
 		EC_TAG_KNOWNFILE_AICH_MASTERHASH          = 0x0407,
 		EC_TAG_KNOWNFILE_FILENAME                 = 0x0408,
+		EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW     = 0x0409,
+		EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH    = 0x040A,
 	EC_TAG_SERVER                             = 0x0500,
 		EC_TAG_SERVER_NAME                        = 0x0501,
 		EC_TAG_SERVER_DESC                        = 0x0502,
@@ -608,6 +610,8 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0406: return wxT("EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL");
 		case 0x0407: return wxT("EC_TAG_KNOWNFILE_AICH_MASTERHASH");
 		case 0x0408: return wxT("EC_TAG_KNOWNFILE_FILENAME");
+		case 0x0409: return wxT("EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW");
+		case 0x040A: return wxT("EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH");
 		case 0x0500: return wxT("EC_TAG_SERVER");
 		case 0x0501: return wxT("EC_TAG_SERVER_NAME");
 		case 0x0502: return wxT("EC_TAG_SERVER_DESC");

@@ -391,14 +391,14 @@ void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint3
 		ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
 		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)opt_arg));
 	} else if ( cmd == wxT("prioup") ) {
-		SharedFile *file = m_SharedFileInfo.GetByID(fileHash);
+		SharedFile *file = m_SharedFileInfo.GetByHash(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 				GetHigherPrioShared(file->nFilePriority, file->bFileAutoPriority)));
 		}
 	} else if ( cmd == wxT("priodown") ) {
-		SharedFile *file = m_SharedFileInfo.GetByID(fileHash);
+		SharedFile *file = m_SharedFileInfo.GetByHash(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
@@ -628,12 +628,12 @@ bool ServersInfo::ReQuery()
 }
 
 
-SharedFile::SharedFile(CEC_SharedFile_Tag *tag)
+SharedFile::SharedFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 {
 		sFileName = _SpecialChars(tag->FileName());
 		lFileSize = tag->SizeFull();
 		sED2kLink = _SpecialChars(tag->FileEd2kLink());
-		nHash = tag->ID();
+		nHash = tag->FileHash();
 		
 		ProcessUpdate(tag);
 }
@@ -664,7 +664,7 @@ SharedFileInfo *SharedFile::GetContainerInstance()
 SharedFileInfo *SharedFileInfo::m_This = 0;
 
 SharedFileInfo::SharedFileInfo(CamulewebApp *webApp) :
-	UpdatableItemsContainer<SharedFile, CEC_SharedFile_Tag, CMD4Hash>(webApp)
+	UpdatableItemsContainer<SharedFile, CEC_SharedFile_Tag, uint32>(webApp)
 {
 	m_This = this;
 }
@@ -783,18 +783,6 @@ void DownloadFileInfo::ItemDeleted(DownloadFile *item)
 #endif
 }
 
-DownloadFile * DownloadFileInfo::GetByHash(const CMD4Hash &fileHash)
-{
-	DownloadFile * ret = 0;
-	for (ItemsMap::iterator it = m_items_hash.begin(); it != m_items_hash.end(); it++) {
-		if (it->second->nHash == fileHash) {
-			ret = it->second;
-			break;
-		}
-	}
-	return ret;
-}
-
 bool DownloadFileInfo::ReQuery()
 {
 	DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
@@ -803,9 +791,8 @@ bool DownloadFileInfo::ReQuery()
 }
 
 
-UploadFile::UploadFile(CEC_UpDownClient_Tag *tag)
+UploadFile::UploadFile(CEC_UpDownClient_Tag *tag) : CECID(tag->FileID())
 {
-	nHash = tag->FileID();
 	sUserName = _SpecialChars(tag->ClientName());
 	nSpeed = tag->SpeedUp();
 	nTransferredUp = tag->XferUp();

@@ -250,10 +250,10 @@ class CEC_SharedFile_Tag : public CECTag {
  		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
  		
 		// template needs it
- 		CMD4Hash	ID()		const { return GetMD4Data(); }
+ 		uint32		ID()		const { return GetInt(); }
 		
- 		CMD4Hash	FileHash()	const { return GetMD4Data(); }
-		wxString	FileHashString() const { return GetMD4Data().Encode(); }
+ 		CMD4Hash	FileHash()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_HASH)->GetMD4Data(); }
+		wxString	FileHashString() const { return FileHash().Encode(); }
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		wxString	FilePath()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_FILENAME)->GetStringData(); }
@@ -270,6 +270,9 @@ class CEC_SharedFile_Tag : public CECTag {
  		uint64		GetXferred(uint64 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, target); }
  		uint64		GetAllXferred(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, target); }
 
+ 		uint16		GetCompleteSourcesLow(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW, target); }
+ 		uint16		GetCompleteSourcesHigh(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH, target); }
+
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
 };
 
@@ -279,7 +282,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 
 		uint32 ID() const { return GetInt(); }
 		
- 		CMD4Hash FileID() const { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data(); }
+ 		uint32 FileID() const { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetInt(); }
  		CMD4Hash UserHash() const { return GetTagByNameSafe(EC_TAG_CLIENT_HASH)->GetMD4Data(); }
  		uint32 UserID(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_USER_ID, target); }
  		
