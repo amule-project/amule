@@ -101,7 +101,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	// User ID
 	CastChild(ID_DID, wxStaticText)->SetLabel(
-		CFormat(wxT("%u (%s)")) % ENDIAN_NTOHL(m_client->GetIP()) % (m_client->HasLowID() ? _("LowID") : _("HighID")));
+		CFormat(wxT("%u (%s)")) % m_client->GetUserIDHybrid() % (m_client->HasLowID() ? _("LowID") : _("HighID")));
 
 	// Client IP/Port
 	CastChild(ID_DIP, wxStaticText)->SetLabel(
