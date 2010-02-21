@@ -3574,12 +3574,12 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 
 #else   // CLIENT_GUI
 
-CPartFile::CPartFile(CEC_PartFile_Tag *tag)
+CPartFile::CPartFile(CEC_PartFile_Tag *tag) : CKnownFile(tag->ID())
 {
 	Init();
 	
 	SetFileName(CPath(tag->FileName()));
-	m_abyFileHash = tag->ID();
+	m_abyFileHash = tag->FileHash();
 	SetFileSize(tag->SizeFull());
 	m_gaplist.Init(GetFileSize(), true);	// Init empty
 	m_partmetfilename = CPath(tag->PartMetName());

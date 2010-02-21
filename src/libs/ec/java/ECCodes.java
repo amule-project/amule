@@ -185,6 +185,7 @@ public final static short 	EC_TAG_PARTFILE_GAINED_COMPRESSION        = 0x031A;
 public final static short 	EC_TAG_PARTFILE_SAVED_ICH                 = 0x031B;
 public final static short 	EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS       = 0x031C;
 public final static short 	EC_TAG_PARTFILE_AVAILABLE_PARTS           = 0x031D;
+public final static short 	EC_TAG_PARTFILE_HASH                      = 0x031E;
 public final static short EC_TAG_KNOWNFILE                          = 0x0400;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED                  = 0x0401;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402;

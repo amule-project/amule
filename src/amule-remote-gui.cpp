@@ -1099,9 +1099,6 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	if (tag->HaveFile()) {
 		CMD4Hash filehash = tag->FileID();
 		m_uploadingfile = theApp->sharedfiles->GetByID(filehash);
-		if (!m_uploadingfile) {
-			m_uploadingfile = theApp->downloadqueue->GetByID(filehash);
-		}
 	} else {
 		m_uploadingfile = NULL;
 	}
@@ -1260,7 +1257,7 @@ m_up_list(conn, vtUploading), m_wait_list(conn, vtQueued)
 
 CDownQueueRem::CDownQueueRem(CRemoteConnect *conn)
 :
-CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn, true)
+CRemoteContainer<CPartFile, uint32, CEC_PartFile_Tag>(conn, true)
 {
 }
 
@@ -1335,9 +1332,9 @@ void CDownQueueRem::DeleteItem(CPartFile *in_file)
 }
 
 
-CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
+uint32 CDownQueueRem::GetItemID(CPartFile *file)
 {
-	return file->GetFileHash();
+	return file->ECID();
 }
 
 

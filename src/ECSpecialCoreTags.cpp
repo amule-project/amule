@@ -124,7 +124,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
 :
-CECTag(EC_TAG_PARTFILE, file->GetFileHash())
+CECTag(EC_TAG_PARTFILE, file->ECID())
 {
 	AddTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), valuemap);
 	AddTag(EC_TAG_PARTFILE_STOPPED, file->IsStopped(), valuemap);
@@ -172,6 +172,8 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 	}
 	
 	AddTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), valuemap);
+
+	AddTag(EC_TAG_PARTFILE_HASH, file->GetFileHash(), valuemap);
 
 	AddTag(EC_TAG_PARTFILE_PARTMETID, file->GetPartMetNumber(), valuemap);
 

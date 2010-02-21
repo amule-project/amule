@@ -273,9 +273,11 @@ void CAbstractFile::AddNote(Kademlia::CEntry *)
 CKnownFile::CKnownFile()
 {
 	Init();
-	
-	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
-	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
+}
+
+CKnownFile::CKnownFile(uint32 ecid) : CECID(ecid)
+{
+	Init();
 }
 
 
@@ -292,9 +294,6 @@ CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
 
 	// Use CKnownFile::SetFileSize()
 	SetFileSize(searchFile.GetFileSize());
-	
-	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
-	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 }
 
 
@@ -314,6 +313,8 @@ void CKnownFile::Init()
 	m_lastPublishTimeKadNotes = 0;
 	m_lastBuddyIP = 0;
 	m_lastDateChanged = 0;
+	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
+	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 
 	statistic.fileParent = this;
 

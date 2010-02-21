@@ -563,14 +563,14 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPa
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
-	CTagSet<CMD4Hash, EC_TAG_PARTFILE> queryitems(request);
+	CTagSet<uint32, EC_TAG_PARTFILE> queryitems(request);
 	
 	encoders.UpdateEncoders(theApp->downloadqueue);
 
 	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
 	
-		if ( !queryitems.empty() && !queryitems.count(cur_file->GetFileHash()) ) {
+		if ( !queryitems.empty() && !queryitems.count(cur_file->ECID()) ) {
 			continue;
 		}
 
