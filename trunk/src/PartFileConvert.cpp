@@ -170,11 +170,9 @@ wxThread::ExitCode CPartFileConvert::Entry()
 			wxMutexLocker lock(s_mutex);
 			s_pfconverting = NULL;
 			for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-				s_pfconverting = *it;
-				if (s_pfconverting->state == CONV_QUEUE) {
+				if ((*it)->state == CONV_QUEUE) {
+					s_pfconverting = *it;
 					break;
-				} else {
-					s_pfconverting = NULL;
 				}
 			}
 		}
@@ -197,15 +195,15 @@ wxThread::ExitCode CPartFileConvert::Entry()
 				++imported;
 			}
 
+			Notify_ConvertUpdateJobInfo(s_pfconverting);
+
+			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetConversionState(s_pfconverting->state));
+
 			if (TestDestroy()) {
 				wxMutexLocker lock(s_mutex);
 				DeleteContents(s_jobs);
 				break;
 			}
-
-			Notify_ConvertUpdateJobInfo(s_pfconverting);
-
-			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetConversionState(s_pfconverting->state));
 		} else {
 			break; // nothing more to do now
 		}
@@ -284,8 +282,6 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 				filePath.GetFullName().RemoveExt().GetExt().ToLong(&l);
 				fileindex = (unsigned)l;
 				filePath = finder.GetNextFile();
-				// GonoszTopi - why the hell does eMule need this??
-				//if (fileindex == 0) continue;
 				if (fileindex > maxindex) maxindex = fileindex;
 			}
 			float stepperpart;
@@ -296,7 +292,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 					if (maxindex * PARTSIZE <= s_pfconverting->size) {
 						s_pfconverting->spaceneeded = maxindex * PARTSIZE;
 					} else {
-						s_pfconverting->spaceneeded = ((s_pfconverting->size / PARTSIZE) * PARTSIZE) + (s_pfconverting->size % PARTSIZE);
+						s_pfconverting->spaceneeded = s_pfconverting->size;
 					}
 				} else {
 					stepperpart = 80.0f;
@@ -382,7 +378,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 		if (freespace == wxInvalidOffset) {
 			delete file;
 			return CONV_IOERROR;
-		} else if (!s_pfconverting->removeSource && (freespace < s_pfconverting->spaceneeded)) {
+		} else if (freespace < s_pfconverting->spaceneeded) {
 			delete file;
 			return CONV_OUTOFDISKSPACE;
 		}
@@ -431,7 +427,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 		return CONV_BADFORMAT;
 	}
 
-	if (s_pfconverting->partmettype == PMT_NEWOLD || s_pfconverting->partmettype == PMT_SPLITTED ) {
+	if (s_pfconverting->partmettype == PMT_NEWOLD || s_pfconverting->partmettype == PMT_SPLITTED) {
 		file->SetCompletedSize(file->transferred);
 		file->m_iGainDueToCompression = 0;
 		file->m_iLostDueToCorruption = 0;
