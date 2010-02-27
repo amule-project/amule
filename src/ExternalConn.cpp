@@ -134,7 +134,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 			// Access denied!
 			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
 			m_conn_state = CONN_FAILED;
-		} else {
+		} else if (HaveNotificationSupport()) {
 			theApp->ECServerHandler->m_ec_notifier->Add_EC_Client(this);
 		}
 	} else {
