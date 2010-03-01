@@ -221,7 +221,7 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts16 &data, int &outlen, bool &ch
 	if (size == 0) {
 		return Encode(0, 0, outlen, changed);
 	}
-	CScopedPtr<uint8> buf(new uint8[size]);
+	CScopedArray<uint8> buf(size);
 	uint8 * bufPtr = buf.get();
 
 	for (int i = 0; i < size; i++) {
@@ -242,7 +242,7 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts64 &data, int &outlen, bool &ch
 	if (size == 0) {
 		return Encode(0, 0, outlen, changed);
 	}
-	CScopedPtr<uint8> buf(new uint8[size * 8]);
+	CScopedArray<uint8> buf(size * 8);
 	uint8 * bufPtr = buf.get();
 	for (int i = 0; i < size; i++) {
 		uint64 u = data[i];
