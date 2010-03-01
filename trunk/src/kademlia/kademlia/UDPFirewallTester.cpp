@@ -81,6 +81,11 @@ bool CUDPFirewallTester::IsFirewalledUDP(bool lastStateIfTesting)
 
 void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled, uint32_t fromIP, uint16_t incomingPort)
 {
+	// can be called on shutdown after KAD has been stopped
+	if (!CKademlia::IsRunning()) {
+		return;
+	}
+
 	// check if we actually requested a firewallcheck from this client
 	bool requested = false;
 	for (UsedClientList::iterator it = m_usedTestClients.begin(); it != m_usedTestClients.end(); ++it) {
