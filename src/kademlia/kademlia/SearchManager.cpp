@@ -47,6 +47,7 @@ there client on the eMule forum..
 #include "../../MemFile.h"
 #include "../../Logger.h"
 #include "../../RandomFunctions.h"		// Needed for GetRandomUInt128()
+#include "../../OtherFunctions.h"		// Needed for DeleteContents()
 
 #include <wx/tokenzr.h>
 
@@ -488,14 +489,11 @@ void CSearchManager::ProcessResponse(const CUInt128& target, uint32_t fromIP, ui
 	if (s == NULL) {
 		AddDebugLogLineN(logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResponse)"));
-		for (ContactList::const_iterator it2 = results->begin(); it2 != results->end(); ++it2) {
-			delete *it2;
-		}
-		delete results;
-		return;
+		DeleteContents(*results);
 	} else {
 		s->ProcessResponse(fromIP, fromPort, results);
 	}
+	delete results;
 }
 
 void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answer, TagPtrList *info)
@@ -511,11 +509,11 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 	if (s == NULL) {
 		AddDebugLogLineN(logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResult)"));
-		deleteTagPtrListEntries(info);
-		delete info;
 	} else {
 		s->ProcessResult(answer, info);
 	}
+	deleteTagPtrListEntries(info);
+	delete info;
 }
 
 bool CSearchManager::FindNodeSpecial(const CUInt128& id, CKadClientSearcher *requester)
