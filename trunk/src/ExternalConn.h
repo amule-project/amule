@@ -302,8 +302,12 @@ class ECNotifier {
 		void NextPacketToSocket();
 		
 		CECPacket *GetNextPacket(ECUpdateMsgSource *msg_source_array[]);
+		// Make class non assignable
+		void operator=(const ECNotifier&);
+		ECNotifier(const ECNotifier&);
 	public:
 		ECNotifier();
+		~ECNotifier();
 		
 		void Add_EC_Client(CECServerSocket *sock);
 		void Remove_EC_Client(CECServerSocket *sock);
