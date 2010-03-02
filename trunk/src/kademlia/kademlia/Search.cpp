@@ -291,7 +291,6 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 
 	if (m_type == NODEFWCHECKUDP) {
 		m_answers++;
-		delete results;
 		return;
 	}
 
@@ -302,7 +301,6 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 		m_answers++;
 		// We clear the possible list to force the search to stop.
 		m_possible.clear();
-		delete results;
 		return;
 	}
 
@@ -397,7 +395,6 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 			break;
 		}
 	}
-	delete results;
 }
 
 void CSearch::StorePacket()
@@ -866,10 +863,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		} else if (!tag->GetName().Cmp(TAG_ENCRYPTION)) {
 			byCryptOptions = (uint8)tag->GetInt();
 		}
-
-		delete tag;
 	}
-	delete info;
 
 	// Process source based on its type. Currently only one method is needed to process all types.
 	switch( type ) {
@@ -900,28 +894,24 @@ void CSearch::ProcessResultNotes(const CUInt128& answer, TagPtrList *info)
 	bool bFilterComment = false;
 
 	// Loop through tags and pull wanted into. Currently we only keep Filename, Rating, Comment.
-	for (TagPtrList::const_iterator it = info->begin(); it != info->end(); ++it) {
+	for (TagPtrList::iterator it = info->begin(); it != info->end(); ++it) {
 		CTag *tag = *it;
 		if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
 			entry->m_uIP = tag->GetInt();
-			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
 			entry->m_uTCPport = tag->GetInt();
-			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_FILENAME)) {
 			entry->SetFileName(tag->GetStr());
-			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_DESCRIPTION)) {
 			wxString strComment(tag->GetStr());
 			bFilterComment = thePrefs::IsMessageFiltered(strComment);
 			entry->AddTag(tag);
+			*it = NULL;	// Prevent actual data being freed
 		} else if (!tag->GetName().Cmp(TAG_FILERATING)) {
 			entry->AddTag(tag);
-		} else {
-			delete tag;
+			*it = NULL;	// Prevent actual data being freed
 		}
 	}
-	delete info;
 
 	if (bFilterComment) {
 		delete entry;
@@ -1017,9 +1007,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Received PublishInfo Tag: %u different names, %u publishers, %.2f trustvalue"), differentNames, publishersKnown, (double)trustValue/ 100.0));
 #endif
 		}
-		delete tag;
 	}
-	delete info;
 
 	// If we don't have a valid filename and filesize, drop this keyword.
 	if (!bFileName || !bFileSize) {
