@@ -101,6 +101,7 @@ private:
 	void ProcessKademliaRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
 	void ProcessKademliaResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
 	void ProcessSearchRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
+	void ProcessSearchResponse		(CMemFile &bio);
 	void ProcessSearchResponse		(const uint8_t* packetData, uint32_t lenPacket);
 	void ProcessPublishRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
 	void ProcessPublishResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);

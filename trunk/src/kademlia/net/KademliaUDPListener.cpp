@@ -1313,18 +1313,12 @@ void CKademliaUDPListener::Process2SearchSourceRequest(const uint8_t *packetData
 	CKademlia::GetIndexed()->SendValidSourceResult(target, ip, port, true, startPosition, fileSize, senderKey);
 }
 
-// KADEMLIA_SEARCH_RES
-// Used in Kad1.0 only
-void CKademliaUDPListener::ProcessSearchResponse(const uint8_t *packetData, uint32_t lenPacket)
+void CKademliaUDPListener::ProcessSearchResponse(CMemFile& bio)
 {
-	// Verify packet is expected size
-	CHECK_PACKET_MIN_SIZE(37);
-
 	// What search does this relate to
-	CMemFile bio(packetData, lenPacket);
 	CUInt128 target = bio.ReadUInt128();
 
-	// How many results.. Not supported yet..
+	// How many results..
 	uint16_t count = bio.ReadUInt16();
 	while (count > 0) {
 		// What is the answer
@@ -1340,7 +1334,6 @@ void CKademliaUDPListener::ProcessSearchResponse(const uint8_t *packetData, uint
 		try {
 			bio.ReadTagPtrList(tags, true/*bOptACP*/);
 		} catch(...) {
-			//DebugClientOutput(wxT("CKademliaUDPListener::processSearchResponse"),ip,port,packetData,lenPacket);
 			deleteTagPtrListEntries(tags);
 			delete tags;
 			tags = NULL;
@@ -1349,6 +1342,19 @@ void CKademliaUDPListener::ProcessSearchResponse(const uint8_t *packetData, uint
 		CSearchManager::ProcessResult(target, answer, tags);
 		count--;
 	}
+}
+
+
+// KADEMLIA_SEARCH_RES
+// Used in Kad1.0 only
+void CKademliaUDPListener::ProcessSearchResponse(const uint8_t *packetData, uint32_t lenPacket)
+{
+	// Verify packet is expected size
+	CHECK_PACKET_MIN_SIZE(37);
+
+	// What search does this relate to
+	CMemFile bio(packetData, lenPacket);
+	ProcessSearchResponse(bio);
 }
 
 // KADEMLIA2_SEARCH_RES
@@ -1360,33 +1366,7 @@ void CKademliaUDPListener::Process2SearchResponse(const uint8_t *packetData, uin
 	// Who sent this packet.
 	CUInt128 source = bio.ReadUInt128();
 
-	// What search does this relate to
-	CUInt128 target = bio.ReadUInt128();
-
-	// Total results.
-	uint16_t count = bio.ReadUInt16();
-	while (count > 0) {
-		// What is the answer
-		CUInt128 answer = bio.ReadUInt128();
-
-		// Get info about answer
-		// NOTE: this is the one and only place in Kad where we allow string conversion to local code page in
-		// case we did not receive an UTF8 string. this is for backward compatibility for search results which are
-		// supposed to be 'viewed' by user only and not feed into the Kad engine again!
-		// If that tag list is once used for something else than for viewing, special care has to be taken for any
-		// string conversion!
-		TagPtrList* tags = new TagPtrList;
-		try {
-			bio.ReadTagPtrList(tags, true);
-		} catch(...) {
-			deleteTagPtrListEntries(tags);
-			delete tags;
-			tags = NULL;
-			throw;
-		}
-		CSearchManager::ProcessResult(target, answer, tags);
-		count--;
-	}
+	ProcessSearchResponse(bio);
 }
 
 // KADEMLIA_PUBLISH_REQ
@@ -1827,32 +1807,7 @@ void CKademliaUDPListener::ProcessSearchNotesResponse(const uint8_t *packetData,
 
 	// What search does this relate to
 	CMemFile bio(packetData, lenPacket);
-	CUInt128 target = bio.ReadUInt128();
-
-	uint16_t count = bio.ReadUInt16();
-	while (count > 0) {
-		// What is the answer
-		CUInt128 answer = bio.ReadUInt128();
-
-		// Get info about answer
-		// NOTE: this is the one and only place in Kad where we allow string conversion to local code page in
-		// case we did not receive an UTF8 string. this is for backward compatibility for search results which are 
-		// supposed to be 'viewed' by user only and not feed into the Kad engine again!
-		// If that tag list is once used for something else than for viewing, special care has to be taken for any
-		// string conversion!
-		TagPtrList* tags = new TagPtrList;
-		try {
-			bio.ReadTagPtrList(tags, true/*bOptACP*/);
-		} catch(...){
-			//DebugClientOutput(wxT("CKademliaUDPListener::processSearchNotesResponse"),ip,port,packetData,lenPacket);
-			deleteTagPtrListEntries(tags);
-			delete tags;
-			tags = NULL;
-			throw;
-		}
-		CSearchManager::ProcessResult(target, answer, tags);
-		count--;
-	}
+	ProcessSearchResponse(bio);
 }
 
 // KADEMLIA_PUBLISH_NOTES_REQ
