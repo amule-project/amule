@@ -62,7 +62,7 @@ struct utf8_table {
 	uint32_t  lval;
 };
 
-static struct utf8_table utf8_table[] =
+static const struct utf8_table utf8_table[] =
 {
     {0x80,  0x00,   0*6,    0x7F,           0,         /* 1 byte sequence */},
     {0xE0,  0xC0,   1*6,    0x7FF,          0x80,      /* 2 byte sequence */},
@@ -77,7 +77,7 @@ int utf8_mbtowc(uint32_t *p, const unsigned char *s, int n)
 {
 	uint32_t l;
 	int c0, c, nc;
-	struct utf8_table *t;
+	const struct utf8_table *t;
 
 	nc = 0;
 	c0 = *s;
@@ -106,7 +106,7 @@ int utf8_wctomb(unsigned char *s, uint32_t wc, int maxlen)
 {
 	uint32_t l;
 	int c, nc;
-	struct utf8_table *t;
+	const struct utf8_table *t;
 
 	l = wc;
 	nc = 0;
