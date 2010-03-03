@@ -325,9 +325,10 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 		CMD4Hash passh;
 
 		if (!passh.Decode(thePrefs::ECPassword())) {
-			AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
+			wxString err = wxTRANSLATE("Authentication failed: invalid hash specified as EC password.");
+			AddLogLineM(false, wxString(wxGetTranslation(err)) + wxT(" ") + thePrefs::ECPassword());
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
+			response->AddTag(CECTag(EC_TAG_STRING, err));				
 		} else {
 			wxString saltHash = MD5Sum(CFormat(wxT("%lX")) % m_passwd_salt).GetHash();
 			wxString saltStr = CFormat(wxT("%lX")) % m_passwd_salt;
@@ -338,14 +339,16 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				response = new CECPacket(EC_OP_AUTH_OK);
 				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
 			} else {
+				wxString err;
 				if (passwd) {
-					AddLogLineM(false, wxT("EC Auth failed: wrong password"));
+					err = wxTRANSLATE("Authentication failed: wrong password.");
 				} else {
-					AddLogLineM(false, wxT("EC Auth failed: password tag missing."));					
+					err = wxTRANSLATE("Authentication failed: missing password.");
 				}
 
 				response = new CECPacket(EC_OP_AUTH_FAIL);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
+				response->AddTag(CECTag(EC_TAG_STRING, err));
+				AddLogLineM(false, wxGetTranslation(err));
 			}
 		}
 	} else {
