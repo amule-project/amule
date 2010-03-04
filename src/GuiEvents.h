@@ -27,7 +27,7 @@
 #ifndef GUIEVENTS_H
 #define GUIEVENTS_H
 
-#include <wx/app.h>
+#include <wx/event.h>
 
 #include "Types.h"
 #include "Constants.h"

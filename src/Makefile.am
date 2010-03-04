@@ -63,6 +63,7 @@ libmuleappcommon_a_SOURCES = \
 	CFile.cpp \
 	DataToText.cpp \
 	ED2KLink.cpp \
+	GapList.cpp \
 	MagnetURI.cpp \
 	MemFile.cpp \
 	NetworkFunctions.cpp \
@@ -83,15 +84,18 @@ libmuleappcore_a_SOURCES = \
 	DeadSourceList.cpp \
 	FileArea.cpp \
 	FileAutoClose.cpp \
+	Friend.cpp \
 	Scanner.cpp \
 	Parser.cpp \
 	PlatformSpecific.cpp \
-	kademlia/kademlia/Entry.cpp \
-	kademlia/kademlia/SearchManager.cpp \
-	kademlia/routing/RoutingBin.cpp \
 	RandomFunctions.cpp \
+	RC4Encrypt.cpp \
 	StateMachine.cpp \
 	ThreadScheduler.cpp \
+	kademlia/kademlia/Entry.cpp \
+	kademlia/kademlia/SearchManager.cpp \
+	kademlia/routing/Contact.cpp \
+	kademlia/routing/RoutingBin.cpp \
 	kademlia/utils/UInt128.cpp
 
 libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
@@ -123,7 +127,6 @@ endif
 libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(GEOIP_CPPFLAGS)
 
 core_sources = \
-	RC4Encrypt.cpp \
 	amule.cpp \
 	BaseClient.cpp \
 	CanceledFileList.cpp \
@@ -139,7 +142,6 @@ core_sources = \
 	EncryptedStreamSocket.cpp \
 	EncryptedDatagramSocket.cpp \
 	ExternalConn.cpp \
-	Friend.cpp \
 	FriendList.cpp \
 	HTTPDownload.cpp \
 	IPFilter.cpp \
@@ -166,7 +168,6 @@ core_sources = \
 	kademlia/kademlia/UDPFirewallTester.cpp \
 	kademlia/net/KademliaUDPListener.cpp \
 	kademlia/net/PacketTracking.cpp \
-	kademlia/routing/Contact.cpp \
 	kademlia/routing/RoutingZone.cpp
 
 if ENABLE_UPNP
@@ -211,7 +212,6 @@ common_sources = \
 	ClientCredits.cpp \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
-	GapList.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \
 	Logger.cpp \
