@@ -41,19 +41,19 @@ class CPacket {
 public:
 	CPacket(CPacket &p);
 	CPacket(uint8 protocol);
-	CPacket(byte* header); // only used for receiving packets
+	CPacket(byte* header, byte *buf); // only used for receiving packets
 	CPacket(const CMemFile& datafile, uint8 protocol, uint8 ucOpcode);
 	CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF = true);
 	CPacket(byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
 	~CPacket();
 	
-	void 			AllocDataBuffer();	
 	byte*			GetHeader();
 	byte*			GetUDPHeader();
 	byte*			GetPacket();
 	byte*			DetachPacket();
 	uint32 			GetRealPacketSize() const	{ return size + 6; }
+	static uint32		GetPacketSizeFromHeader(const byte* rawHeader);
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
 	void			PackPacket();
