@@ -63,6 +63,7 @@ CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& 
 	: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree"))
 {
 	m_IsInit = false;
+	HasChanged = false;
 #ifdef CLIENT_GUI
 	m_IsRemote = !theApp->m_connect->IsConnectedToLocalHost();
 #else
