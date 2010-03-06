@@ -35,9 +35,10 @@
 #include "UploadBandwidthThrottler.h"
 #include "Logger.h"
 #include "Preferences.h"
+#include "ScopedPtr.h"
 
 
-const uint32 MAX_SIZE = 2000000;
+const uint32 MAX_PACKET_SIZE = 2000000;
 
 CEMSocket::CEMSocket(const CProxyData *ProxyData)
 	: CEncryptedStreamSocket(wxSOCKET_NOWAIT, ProxyData)
@@ -151,7 +152,7 @@ void CEMSocket::ClearQueues()
 	pendingHeaderSize = 0;
 
 	// Download partial packet
-	delete pendingPacket;
+	delete[] pendingPacket;
 	pendingPacket = NULL;
 	pendingPacketSize = 0;
 
@@ -182,9 +183,6 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode))
 
 void CEMSocket::OnReceive(int nErrorCode)
 {
-	// the 2 meg size was taken from another place
-	static byte GlobalReadBuffer[MAX_SIZE];
-
 	if(nErrorCode) {
 		uint32 error = LastError(); 
 		if (error != wxSOCKET_WOULDBLOCK) {
@@ -200,144 +198,95 @@ void CEMSocket::OnReceive(int nErrorCode)
 		byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
 	}
 
-	// CPU load improvement
-	if(downloadLimitEnable == true && downloadLimit == 0){
-		pendingOnReceive = true;
-		return;
-	}
-
-	// Remark: an overflow can not occur here
-	uint32 readMax = sizeof(GlobalReadBuffer) - pendingHeaderSize; 
-	if((downloadLimitEnable == true) && (readMax > downloadLimit)) {
-		readMax = downloadLimit;
-	}
-
-	
-	// We attempt to read up to 2 megs at a time (minus whatever is in our internal read buffer)
 	uint32 ret;
-
-	{
-		wxMutexLocker lock(m_sendLocker);
-		ret = Read(GlobalReadBuffer + pendingHeaderSize, readMax);
-		if (Error() || (ret == 0)) {
-			if (LastError() == wxSOCKET_WOULDBLOCK) {
-				pendingOnReceive = true;
-			}
+	do {
+		// CPU load improvement
+		if (downloadLimitEnable && downloadLimit == 0){
+			pendingOnReceive = true;
 			return;
 		}
-	}
-	
-	
-	// Bandwidth control
-	if(downloadLimitEnable == true){
-		// Update limit
-		downloadLimit -= GetRealReceivedBytes();
-	}
 
-	// CPU load improvement
-	// Detect if the socket's buffer is empty (or the size did match...)
-	pendingOnReceive = (ret == readMax);
-
-	// Copy back the partial header into the global read buffer for processing
-	if(pendingHeaderSize > 0) {
-  		memcpy(GlobalReadBuffer, pendingHeader, pendingHeaderSize);
-		ret += pendingHeaderSize;
-		pendingHeaderSize = 0;
-	}
-
-	byte* rptr = GlobalReadBuffer; // floating index initialized with begin of buffer
-	const byte* rend = GlobalReadBuffer + ret; // end of buffer
-
-	// Loop, processing packets until we run out of them
-	while((rend - rptr >= PACKET_HEADER_SIZE) ||
-	      ((pendingPacket != NULL) && (rend - rptr > 0 ))){ 
-
-		// Two possibilities here: 
-		//
-		// 1. There is no pending incoming packet
-		// 2. There is already a partial pending incoming packet
-		//
-		// It's important to remember that emule exchange two kinds of packet
-		// - The control packet
-		// - The data packet for the transport of the block
-		// 
-		// The biggest part of the traffic is done with the data packets. 
-		// The default size of one block is 10240 bytes (or less if compressed), but the
-		// maximal size for one packet on the network is 1300 bytes. It's the reason
-		// why most of the Blocks are splitted before to be sent. 
-		//
-		// Conclusion: When the download limit is disabled, this method can be at least 
-		// called 8 times (10240/1300) by the lower layer before a splitted packet is 
-		// rebuild and transferred to the above layer for processing.
-		//
-		// The purpose of this algorithm is to limit the amount of data exchanged between buffers
-
-		if(pendingPacket == NULL){
-			pendingPacket = new CPacket(rptr); // Create new packet container. 
-			rptr += 6;                        // Only the header is initialized so far
-
-			// Bugfix We still need to check for a valid protocol
-			// Remark: the default eMule v0.26b had removed this test......
-			switch (pendingPacket->GetProtocol()){
-				case OP_EDONKEYPROT:
-				case OP_PACKEDPROT:
-				case OP_EMULEPROT:
-				case OP_ED2KV2HEADER:
-				case OP_ED2KV2PACKEDPROT:
-					break;
-				default:
-					delete pendingPacket;
-					pendingPacket = NULL;
-					OnError(ERR_WRONGHEADER);
-					return;
-			}
-
-			// Security: Check for buffer overflow (2MB)
-			if(pendingPacket->GetPacketSize() > sizeof(GlobalReadBuffer)) {
-				delete pendingPacket;
-				pendingPacket = NULL;
+		uint32 readMax;
+		byte *buf;
+		if (pendingHeaderSize < PACKET_HEADER_SIZE) {
+			delete[] pendingPacket;
+			pendingPacket = NULL;
+			buf = pendingHeader + pendingHeaderSize;
+			readMax = PACKET_HEADER_SIZE - pendingHeaderSize;
+		} else if (pendingPacket == NULL) {
+			pendingPacketSize = 0;
+			readMax = CPacket::GetPacketSizeFromHeader(pendingHeader);
+			if (readMax > MAX_PACKET_SIZE) {
+				pendingHeaderSize = 0;
 				OnError(ERR_TOOBIG);
 				return;
 			}
-
-			// Init data buffer
-			pendingPacket->AllocDataBuffer();
-			pendingPacketSize = 0;
+			pendingPacket = new byte[readMax + 1];
+			buf = pendingPacket;
+		} else {
+			buf = pendingPacket + pendingPacketSize;
+			readMax = CPacket::GetPacketSizeFromHeader(pendingHeader) - pendingPacketSize;
 		}
 
-		// Bytes ready to be copied into packet's internal buffer
-		wxASSERT(rptr <= rend);
-		uint32 toCopy = ((pendingPacket->GetPacketSize() - pendingPacketSize) < (uint32)(rend - rptr)) ? 
-					(pendingPacket->GetPacketSize() - pendingPacketSize) : (uint32)(rend - rptr);
+		if (downloadLimitEnable && readMax > downloadLimit) {
+			readMax = downloadLimit;
+		}
 
-		// Copy Bytes from Global buffer to packet's internal buffer
-		pendingPacket->CopyToDataBuffer(pendingPacketSize, rptr, toCopy);
-		pendingPacketSize += toCopy;
-		rptr += toCopy;
-		
-		// Check if packet is complet
-		wxASSERT(pendingPacket->GetPacketSize() >= pendingPacketSize);
-		if(pendingPacket->GetPacketSize() == pendingPacketSize) {
-			// Process packet
-			bool bPacketResult = PacketReceived(pendingPacket);
-			delete pendingPacket;	
-			pendingPacket = NULL;
-			pendingPacketSize = 0;
-			
-			if (!bPacketResult) {
+		ret = 0;
+		if (readMax) {
+			wxMutexLocker lock(m_sendLocker);
+			ret = Read(buf, readMax);
+			if (Error() || (ret == 0)) {
+				if (LastError() == wxSOCKET_WOULDBLOCK) {
+					pendingOnReceive = true;
+				}
 				return;
 			}
 		}
-	}
 
-	// Finally, if there is any data left over, save it for next time
-	wxASSERT(rptr <= rend);
-	wxASSERT(rend - rptr < PACKET_HEADER_SIZE);
-	if(rptr != rend) {
-		// Keep the partial head
-		pendingHeaderSize = rend - rptr;
-		memcpy(pendingHeader, rptr, pendingHeaderSize);
-	}	
+		// Bandwidth control
+		if (downloadLimitEnable) {
+			// Update limit
+			if (ret >= downloadLimit) {
+				downloadLimit = 0;
+			} else {
+				downloadLimit -= ret;
+			}
+		}
+
+		// CPU load improvement
+		// Detect if the socket's buffer is empty (or the size did match...)
+		pendingOnReceive = (ret == readMax);
+
+		if (pendingHeaderSize >= PACKET_HEADER_SIZE) {
+			pendingPacketSize += ret;
+			if (pendingPacketSize >= CPacket::GetPacketSizeFromHeader(pendingHeader)) {
+				CScopedPtr<CPacket> packet(new CPacket(pendingHeader, pendingPacket));
+				pendingPacket = NULL;
+				pendingPacketSize = 0;
+				pendingHeaderSize = 0;
+
+				// Bugfix We still need to check for a valid protocol
+				// Remark: the default eMule v0.26b had removed this test......
+				switch (packet->GetProtocol()){
+					case OP_EDONKEYPROT:
+					case OP_PACKEDPROT:
+					case OP_EMULEPROT:
+					case OP_ED2KV2HEADER:
+					case OP_ED2KV2PACKEDPROT:
+						break;
+					default:
+						OnError(ERR_WRONGHEADER);
+						return;
+				}
+
+				// Process packet
+				PacketReceived(packet.get());
+			}
+		} else {
+			pendingHeaderSize += ret;
+		}
+	} while (ret && pendingHeaderSize >= PACKET_HEADER_SIZE);
 }
 
 

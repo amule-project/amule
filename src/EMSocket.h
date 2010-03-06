@@ -40,7 +40,7 @@ class CPacket;
 #define	ES_CONNECTED		0x01
 
 
-const sint32 PACKET_HEADER_SIZE	= 6;
+const uint32 PACKET_HEADER_SIZE	= 6;
 
 
 class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket
@@ -102,12 +102,11 @@ private:
 	bool	pendingOnReceive;
 
 	// Download partial header
-	// actually, this holds only 'PACKET_HEADER_SIZE-1' bytes.
 	byte	pendingHeader[PACKET_HEADER_SIZE];
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
-	CPacket* pendingPacket;
+	byte*	pendingPacket;
 	uint32  pendingPacketSize;
 
 	// Upload control

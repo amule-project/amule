@@ -76,7 +76,7 @@ CPacket::CPacket(uint8 protocol)
 }
 
 // only used for receiving packets
-CPacket::CPacket(byte* rawHeader)
+CPacket::CPacket(byte* rawHeader, byte *buf)
 {
 	memset(head, 0, sizeof head);
 	Header_Struct* header = (Header_Struct*)rawHeader;
@@ -89,7 +89,7 @@ CPacket::CPacket(byte* rawHeader)
 	m_bFromPF 	= false;
 	tempbuffer	= NULL;
 	completebuffer 	= NULL;
-	pBuffer 	= NULL;
+	pBuffer 	= buf;
 }
 
 CPacket::CPacket(const CMemFile& datafile, uint8 protocol, uint8 ucOpcode)
@@ -165,10 +165,13 @@ CPacket::~CPacket()
 	}
 }
 
-void CPacket::AllocDataBuffer(void)
+uint32 CPacket::GetPacketSizeFromHeader(const byte* rawHeader)
 {
-	wxASSERT(completebuffer == NULL);
-	pBuffer = new byte[size + 1];
+	Header_Struct* header = (Header_Struct*)rawHeader;
+	uint32 size = ENDIAN_SWAP_32(header->packetlength);
+	if (size < 1 || size >= 0x7ffffff0u)
+		return 0;
+	return size - 1;
 }
 
 void CPacket::CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n)
