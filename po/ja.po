@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 23:46+0100\n"
+"POT-Creation-Date: 2010-03-07 11:56+0100\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -23,7 +23,7 @@ msgstr "仲間を追加する"
 msgid "You have to enter a valid IP and port!"
 msgstr "正当なIPとポートを入力しなければなりません！"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1764
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1740
 msgid "Information"
 msgstr "情報"
 
@@ -252,7 +252,7 @@ msgstr "ログはリセットされました"
 msgid "ServerMessage: %s"
 msgstr "サーバ・メッセージ：%s"
 
-#: src/amule.cpp:1567 src/IP2Country.cpp:143 src/IPFilter.cpp:494
+#: src/amule.cpp:1567 src/IP2Country.cpp:146 src/IPFilter.cpp:494
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
@@ -365,7 +365,7 @@ msgstr ""
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kadネットワークは設定で無効にされているため、接続はしません。"
 
-#: src/amuled.cpp:619
+#: src/amuled.cpp:621
 #, fuzzy
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
@@ -378,7 +378,7 @@ msgstr ""
 "ec-configで起動させるか、あるいはファイル~/.aMule/amule.confの中でキー"
 "\"AcceptExternalConnections\"を１に設定してください。"
 
-#: src/amuled.cpp:622
+#: src/amuled.cpp:624
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule deamon, you "
@@ -387,19 +387,19 @@ msgid ""
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
 
-#: src/amuled.cpp:686
+#: src/amuled.cpp:688
 msgid "amuled: OnInit - starting timer"
 msgstr ""
 
-#: src/amuled.cpp:701
+#: src/amuled.cpp:703
 msgid "amuled: forking to background - see you"
 msgstr ""
 
-#: src/amuled.cpp:732
+#: src/amuled.cpp:734
 msgid "Cannot Create Pid File"
 msgstr ""
 
-#: src/amuled.cpp:791
+#: src/amuled.cpp:793
 #, c-format
 msgid "ERROR: %s"
 msgstr "エラー： %s"
@@ -740,12 +740,7 @@ msgstr "全て"
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:837
-#, c-format
-msgid "Total Users: %s | Total Files: %s"
-msgstr "ユーザ合計： %s | ファイル合計： %s"
-
-#: src/amule-remote-gui.cpp:1764
+#: src/amule-remote-gui.cpp:1740
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
 
@@ -767,8 +762,8 @@ msgstr ""
 #: src/DataToText.cpp:70 src/DataToText.cpp:80 src/DataToText.cpp:116
 #: src/DataToText.cpp:137 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
-#: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
-#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:890 src/KnownFile.cpp:896
+#: src/ExternalConn.cpp:291 src/FileDetailDialog.cpp:130
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:891 src/KnownFile.cpp:897
 #: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
@@ -1151,7 +1146,7 @@ msgstr "サーバ経由に接続中"
 msgid "Transferring"
 msgstr "転送中"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:64 src/KnownFile.cpp:1394
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:64 src/KnownFile.cpp:1395
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "キューに入っています"
@@ -1768,44 +1763,40 @@ msgstr ""
 msgid "Client sent packet after authentication failed."
 msgstr "認証に失敗しました。"
 
-#: src/ExternalConn.cpp:135
-msgid "Unauthorized access attempt. Connection closed."
-msgstr "不正アクセスの試みがなされました。接続は閉じました。"
-
-#: src/ExternalConn.cpp:150
+#: src/ExternalConn.cpp:146
 msgid "External connection closed."
 msgstr "外部接続は終了しました。"
 
-#: src/ExternalConn.cpp:189
+#: src/ExternalConn.cpp:185
 msgid "External connections disabled due to empty password!"
 msgstr "外部接続は空パスワードのため無効にしました！"
 
-#: src/ExternalConn.cpp:214
+#: src/ExternalConn.cpp:210
 msgid "External connections disabled in config file"
 msgstr "外部接続を設定ファイルに無効しました"
 
-#: src/ExternalConn.cpp:264
+#: src/ExternalConn.cpp:260
 msgid "New external connection accepted"
 msgstr "新しい外部接続を認められました"
 
-#: src/ExternalConn.cpp:267
+#: src/ExternalConn.cpp:263
 msgid "ERROR: couldn't accept a new external connection"
 msgstr ""
 
-#: src/ExternalConn.cpp:286
+#: src/ExternalConn.cpp:281
 msgid "External connection refused due to empty password in preferences!"
 msgstr "個人設定に空欄のパスワードがあるため、外部接続を拒否しました！"
 
-#: src/ExternalConn.cpp:295
+#: src/ExternalConn.cpp:290
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "クライアントを接続中： %s %s"
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:292
 msgid "Unknown version"
 msgstr "不明なバージョン"
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:302
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1813,7 +1804,7 @@ msgstr ""
 "間違ったECバージョンID。バイナリ不互換性の可能性があります。同じスナップ"
 "ショットの コアとリモートを使用してください。"
 
-#: src/ExternalConn.cpp:312
+#: src/ExternalConn.cpp:307
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -1821,65 +1812,84 @@ msgstr ""
 "クラッシュを防ぐため、SVNバージョンからリリースバージョンへの接続はできませ"
 "ん！"
 
-#: src/ExternalConn.cpp:322
+#: src/ExternalConn.cpp:317
 msgid "Invalid protocol version."
 msgstr "無効なプロトコルバージョン。"
 
-#: src/ExternalConn.cpp:326
+#: src/ExternalConn.cpp:321
 msgid "Missing protocol version tag."
 msgstr "プロトコルバージョンタグがありません。"
 
-#: src/ExternalConn.cpp:353
-msgid "Authentication failed."
+#: src/ExternalConn.cpp:328
+msgid "Authentication failed: invalid hash specified as EC password."
+msgstr ""
+
+#: src/ExternalConn.cpp:344
+#, fuzzy
+msgid "Authentication failed: wrong password."
 msgstr "認証に失敗しました。"
 
-#: src/ExternalConn.cpp:358
+#: src/ExternalConn.cpp:346
+#, fuzzy
+msgid "Authentication failed: missing password."
+msgstr "認証に失敗しました。"
+
+#: src/ExternalConn.cpp:356
 #, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "無効なリクエストです。先に認証をしてください。"
 
-#: src/ExternalConn.cpp:363
+#: src/ExternalConn.cpp:361
 msgid "Access granted."
 msgstr "アクセスを認められました。"
 
-#: src/ExternalConn.cpp:614
+#: src/ExternalConn.cpp:369
+#, fuzzy, c-format
+msgid "Sent error message \"%s\" to client."
+msgstr "知らないクライアントからのメッセージをフィルタする"
+
+#: src/ExternalConn.cpp:372
+msgid "Unauthorized access attempt. Connection closed."
+msgstr "不正アクセスの試みがなされました。接続は閉じました。"
+
+#: src/ExternalConn.cpp:613
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "リモート部分ファイルコマンドが失敗しました：ファイルハッシュは見付かりません"
 "でした： %s"
 
-#: src/ExternalConn.cpp:616
+#: src/ExternalConn.cpp:615
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "ファイルハッシュは見付かりませんでした： %s"
 
-#: src/ExternalConn.cpp:679 src/ExternalConn.cpp:763
+#: src/ExternalConn.cpp:678 src/ExternalConn.cpp:762
 msgid "OOPS! OpCode processing error!"
 msgstr "あら！OpCode処理エラーが発生しました！"
 
-#: src/ExternalConn.cpp:709
+#: src/ExternalConn.cpp:708
 msgid "Server not added"
 msgstr "サーバは追加しませんでした"
 
-#: src/ExternalConn.cpp:727
+#: src/ExternalConn.cpp:726
 #, c-format
 msgid "server not found: %s"
 msgstr "サーバは見付かりませんでした： %s"
 
-#: src/ExternalConn.cpp:743
+#: src/ExternalConn.cpp:742
 msgid "need to define server to be removed"
 msgstr "削除したいサーバを定義しなければなりません"
 
-#: src/ExternalConn.cpp:757
+#: src/ExternalConn.cpp:756
 msgid "eD2k is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:853
+#: src/ExternalConn.cpp:852
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "検索中です。あと少しで結果をもう一度取ってきます！"
 
-#: src/ExternalConn.cpp:858
+#: src/ExternalConn.cpp:857
 msgid "WebSearch from remote interface makes no sense."
 msgstr "リモートインタフェイスからWebSearchする意味がありません。"
 
@@ -1887,77 +1897,77 @@ msgstr "リモートインタフェイスからWebSearchする意味がありま
 msgid "Kad is disabled in preferences."
 msgstr "Kadは個人設定に無効されています。"
 
-#: src/ExternalConn.cpp:1068
+#: src/ExternalConn.cpp:1085
 msgid "No points for graph."
 msgstr "グラフを表示するための点がありません。"
 
-#: src/ExternalConn.cpp:1077
+#: src/ExternalConn.cpp:1094
 msgid "Your client is not configured for this detail level."
 msgstr "あなたのクライアントはこの詳細段階には設定されていません。"
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1122
 msgid "External Connection: shutdown requested"
 msgstr ""
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1134
 msgid "Already shutting down."
 msgstr "既にシャットダウン中です。"
 
-#: src/ExternalConn.cpp:1129
+#: src/ExternalConn.cpp:1146
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn：次のリンクを追加中です： '%s'。"
 
-#: src/ExternalConn.cpp:1135
+#: src/ExternalConn.cpp:1152
 msgid "Invalid link or already on list."
 msgstr "不正なリンク、またはリンクがすでにリストに入っています。"
 
-#: src/ExternalConn.cpp:1212
+#: src/ExternalConn.cpp:1221
 msgid "File not found."
 msgstr "ファイルは見付かりませんでした。"
 
-#: src/ExternalConn.cpp:1217
+#: src/ExternalConn.cpp:1226
 msgid "Invalid file name."
 msgstr "不正なファイル名。"
 
-#: src/ExternalConn.cpp:1225
+#: src/ExternalConn.cpp:1234
 msgid "Unable to rename file."
 msgstr "ファイルを改名できません。"
 
-#: src/ExternalConn.cpp:1479
+#: src/ExternalConn.cpp:1488
 msgid "Already connected to eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:1482
+#: src/ExternalConn.cpp:1491
 msgid "Connecting to eD2k..."
 msgstr ""
 
-#: src/ExternalConn.cpp:1490
+#: src/ExternalConn.cpp:1499
 msgid "Already connected to Kad."
 msgstr "すでにKadに接続しています。"
 
-#: src/ExternalConn.cpp:1493
+#: src/ExternalConn.cpp:1502
 msgid "Connecting to Kad..."
 msgstr "Kadに接続中です…"
 
-#: src/ExternalConn.cpp:1498
+#: src/ExternalConn.cpp:1507
 msgid "All networks are disabled."
 msgstr "全てのネットワークが無効になっています。"
 
-#: src/ExternalConn.cpp:1506
+#: src/ExternalConn.cpp:1515
 msgid "Disconnected from eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:1510
+#: src/ExternalConn.cpp:1519
 msgid "Disconnected from Kad."
 msgstr "Kadから切断しています。"
 
-#: src/ExternalConn.cpp:1518
+#: src/ExternalConn.cpp:1527
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:1521
+#: src/ExternalConn.cpp:1530
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "不正なOpCode（プロトコルバージョンが違いますか？）"
 
@@ -2284,45 +2294,45 @@ msgstr "サーバへ再接続する"
 msgid "Invalid response from HTTP download server"
 msgstr ""
 
-#: src/IP2Country.cpp:92
+#: src/IP2Country.cpp:95
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr ""
 
-#: src/IP2Country.cpp:120
+#: src/IP2Country.cpp:123
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:126 src/IPFilter.cpp:480
+#: src/IP2Country.cpp:129 src/IPFilter.cpp:480
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:132
+#: src/IP2Country.cpp:135
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:138 src/IPFilter.cpp:492
+#: src/IP2Country.cpp:141 src/IPFilter.cpp:492
 #, c-format
 msgid "Successfully updated %s"
 msgstr ""
 
-#: src/IP2Country.cpp:140
+#: src/IP2Country.cpp:143
 msgid "Error updating GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
+#: src/IP2Country.cpp:148 src/IPFilter.cpp:496 src/ServerList.cpp:810
 #, fuzzy, c-format
 msgid "Failed to download %s from %s"
 msgstr "サーバリストを%sからダウンロードするのに失敗しました"
 
-#: src/IP2Country.cpp:164
+#: src/IP2Country.cpp:167
 #, fuzzy, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "サーバリストを%sからダウンロードするのに失敗しました"
 
-#: src/IP2Country.cpp:169
+#: src/IP2Country.cpp:172
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
@@ -2392,16 +2402,16 @@ msgstr "そうすると、現在のノードがなくなり、Kademliaへの接�
 msgid "Continue?"
 msgstr "続けますか？"
 
-#: src/kademlia/kademlia/SearchManager.cpp:127
+#: src/kademlia/kademlia/SearchManager.cpp:128
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: 検索キーワードが短すぎます"
 
-#: src/kademlia/kademlia/SearchManager.cpp:132
+#: src/kademlia/kademlia/SearchManager.cpp:133
 #, c-format
 msgid "Keyword for search: %s"
 msgstr ""
 
-#: src/kademlia/kademlia/SearchManager.cpp:140
+#: src/kademlia/kademlia/SearchManager.cpp:141
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
@@ -2429,31 +2439,31 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "%d個のKadコンタクトを書き込みました"
 
-#: src/KnownFile.cpp:1388 src/PartFileConvertDlg.cpp:93
+#: src/KnownFile.cpp:1389 src/PartFileConvertDlg.cpp:93
 msgid "File name"
 msgstr "ファイル名"
 
-#: src/KnownFile.cpp:1389
+#: src/KnownFile.cpp:1390
 msgid "File size"
 msgstr "ファイルサイズ"
 
-#: src/KnownFile.cpp:1390
+#: src/KnownFile.cpp:1391
 msgid "Share ratio"
 msgstr "共有比"
 
-#: src/KnownFile.cpp:1391
+#: src/KnownFile.cpp:1392
 msgid "Uploaded"
 msgstr "アップロード済み"
 
-#: src/KnownFile.cpp:1392
+#: src/KnownFile.cpp:1393
 msgid "Requested"
 msgstr "要求済み"
 
-#: src/KnownFile.cpp:1393
+#: src/KnownFile.cpp:1394
 msgid "Accepted"
 msgstr "受付済み"
 
-#: src/KnownFile.cpp:1395
+#: src/KnownFile.cpp:1396
 msgid "Complete sources"
 msgstr "ソース完了"
 
@@ -2556,7 +2566,7 @@ msgstr "閉じる"
 msgid "Cut"
 msgstr "カット"
 
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:397
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:393
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Copy"
 msgstr "コピー"
@@ -4531,39 +4541,39 @@ msgstr "アクティブ"
 msgid "Waiting for partfile convert thread to die..."
 msgstr ""
 
-#: src/PartFileConvert.cpp:208
+#: src/PartFileConvert.cpp:200
 #, c-format
 msgid "Importing %s: %s"
 msgstr "%s：%sをインポートします"
 
-#: src/PartFileConvert.cpp:239
+#: src/PartFileConvert.cpp:237
 msgid "Reading temp folder"
 msgstr "一時フォルダを読み中です"
 
-#: src/PartFileConvert.cpp:243
+#: src/PartFileConvert.cpp:241
 msgid "Retrieving basic information from download info file"
 msgstr "基本情報をダウンロード情報ファイルから取ってきます"
 
-#: src/PartFileConvert.cpp:322
+#: src/PartFileConvert.cpp:318
 msgid "Creating destination file"
 msgstr "当てファイルを作成中です"
 
-#: src/PartFileConvert.cpp:331
+#: src/PartFileConvert.cpp:327
 #, c-format
 msgid "Loading data from old download file (%u of %u)"
 msgstr "古いダウンロード・ファイル（%uから%u）からデータをロード中です"
 
-#: src/PartFileConvert.cpp:351
+#: src/PartFileConvert.cpp:347
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
 msgstr ""
 "データ・ブロックを一つの新しいダウンロード・ファイル（%uから%u）に纏め中です"
 
-#: src/PartFileConvert.cpp:417
+#: src/PartFileConvert.cpp:413
 msgid "Retrieving source downloadfile information"
 msgstr "ソース・ダウンロードファイル情報を取ってきます"
 
-#: src/PartFileConvert.cpp:440
+#: src/PartFileConvert.cpp:436
 msgid "Adding download and saving new partfile"
 msgstr "ダウンロードを追加して、新しい部分ファイルを保存中です"
 
@@ -4780,7 +4790,7 @@ msgstr ""
 msgid "Downloaded"
 msgstr "ダウンロード済み"
 
-#: src/PartFile.cpp:3986
+#: src/PartFile.cpp:3994
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "エラー: 部分ファイル '%s' が開けませんでした"
@@ -5619,40 +5629,40 @@ msgstr[0] "%d個の新しいサーバを受信しました"
 msgid "Saving of server-list completed."
 msgstr "サーバ・リストの保存を終了しました。"
 
-#: src/ServerSocket.cpp:593
+#: src/ServerSocket.cpp:592
 msgid "Server rejected last command"
 msgstr "サーバは最後のコマンドを断りました"
 
-#: src/ServerSocket.cpp:603 src/ServerSocket.cpp:605
+#: src/ServerSocket.cpp:602 src/ServerSocket.cpp:604
 #, c-format
 msgid "Bogus packet received from server: %s"
 msgstr "サーバ%sから偽造のパケットが届きました"
 
-#: src/ServerSocket.cpp:607
+#: src/ServerSocket.cpp:606
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
 msgstr "サーバ%sのパケットを処理する時に未処理例外エラーが発生しました"
 
-#: src/ServerSocket.cpp:646 src/ServerSocket.cpp:650
+#: src/ServerSocket.cpp:645 src/ServerSocket.cpp:649
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
 msgstr "%sに接続するためのDNS解決スレッドを作成せきません。"
 
-#: src/ServerSocket.cpp:729
+#: src/ServerSocket.cpp:728
 #, c-format
 msgid "Server IP %s (%s) is filtered.  Not connecting."
 msgstr "IPアドレス%sのサーバ%sはフィルタリングされています。接続はしません。"
 
-#: src/ServerSocket.cpp:739
+#: src/ServerSocket.cpp:738
 msgid "using protocol obfuscation."
 msgstr "難読化プロトコルを使用しています。"
 
-#: src/ServerSocket.cpp:748
+#: src/ServerSocket.cpp:747
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
 msgstr "%s（%s - %s：%i）%sへ接続中です。"
 
-#: src/ServerSocket.cpp:760
+#: src/ServerSocket.cpp:759
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "%sに接続するためのDNSは解決できませんでした：接続はできません！"
@@ -7381,65 +7391,68 @@ msgstr ""
 msgid "Request failed with the following error: %s."
 msgstr "次のエラーによって要求が失敗しました： %s。"
 
-#: src/webserver/src/WebServer.cpp:1742
+#: src/webserver/src/WebServer.cpp:1701
 msgid "Index file not found: "
 msgstr "インデックスファイルが見付かりませんでした： "
 
-#: src/webserver/src/WebServer.cpp:1820
+#: src/webserver/src/WebServer.cpp:1779
 msgid "Session expired - requesting login\n"
 msgstr "セッション有効期限が切れました - ログインを要求しています\n"
 
-#: src/webserver/src/WebServer.cpp:1825
+#: src/webserver/src/WebServer.cpp:1784
 msgid "Session ok, logged in\n"
 msgstr "セッションOK、ログインしています\n"
 
-#: src/webserver/src/WebServer.cpp:1827
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session ok, not logged in\n"
 msgstr "セッションOK、ログインしていません\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1791
 msgid "No session opened - will request login\n"
 msgstr "セッションが開いていません - ログインを要求します\n"
 
-#: src/webserver/src/WebServer.cpp:1841
+#: src/webserver/src/WebServer.cpp:1800
 msgid "Session created - requesting login\n"
 msgstr "セッションを作成しました - ログインを要求しています\n"
 
-#: src/webserver/src/WebServer.cpp:1856
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Processing request [original]: "
 msgstr "要求を処理中です [original]: "
 
-#: src/webserver/src/WebServer.cpp:1871
+#: src/webserver/src/WebServer.cpp:1830
 msgid "No password specified, login will not be allowed."
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1832
 msgid "Checking password\n"
 msgstr "パスワードをチェック中です\n"
 
-#: src/webserver/src/WebServer.cpp:1878
+#: src/webserver/src/WebServer.cpp:1837
 msgid "Password hash invalid\n"
 msgstr "パスワードのハッシュが無効です\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1852
 msgid "Password ok\n"
 msgstr "パスワードOKです\n"
 
-#: src/webserver/src/WebServer.cpp:1895
+#: src/webserver/src/WebServer.cpp:1854
 msgid "Password bad\n"
 msgstr "パスワードが正しくありません\n"
 
-#: src/webserver/src/WebServer.cpp:1898
+#: src/webserver/src/WebServer.cpp:1857
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "パスワードを入力しませんでした。空のパスワードは許可されていません。\n"
 
-#: src/webserver/src/WebServer.cpp:1906
+#: src/webserver/src/WebServer.cpp:1865
 msgid "Logout requested\n"
 msgstr "ログアウトが要求されました\n"
 
-#: src/webserver/src/WebServer.cpp:1911
+#: src/webserver/src/WebServer.cpp:1870
 msgid "Processing request [redirected]: "
 msgstr "要求を処理中です [変更しました]： "
+
+#~ msgid "Total Users: %s | Total Files: %s"
+#~ msgstr "ユーザ合計： %s | ファイル合計： %s"
 
 #, fuzzy
 #~ msgid "HTTP download thread started"
