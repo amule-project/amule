@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 23:46+0100\n"
+"POT-Creation-Date: 2010-03-07 11:56+0100\n"
 "PO-Revision-Date: 2009-02-24 00:16+0300\n"
 "Last-Translator: Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -35,7 +35,7 @@ msgstr "Добавить в друзья"
 msgid "You have to enter a valid IP and port!"
 msgstr "Вы должны ввести правильный IP-адрес и порт."
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1764
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1740
 msgid "Information"
 msgstr "Информация"
 
@@ -266,7 +266,7 @@ msgstr "Журнал был очищен"
 msgid "ServerMessage: %s"
 msgstr "Сообщение сервера: %s"
 
-#: src/amule.cpp:1567 src/IP2Country.cpp:143 src/IPFilter.cpp:494
+#: src/amule.cpp:1567 src/IP2Country.cpp:146 src/IPFilter.cpp:494
 #: src/ServerList.cpp:808
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
@@ -383,7 +383,7 @@ msgstr ""
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Сеть Kad выключена в настройках. Отменяю соединение."
 
-#: src/amuled.cpp:619
+#: src/amuled.cpp:621
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -395,7 +395,7 @@ msgstr ""
 "запустите amuled с параметром --ec-config, или установите ключ "
 "\"AcceptExternalConnections\" равным 1 в файле ~/.aMule/amule.conf"
 
-#: src/amuled.cpp:622
+#: src/amuled.cpp:624
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule deamon, you "
@@ -409,19 +409,19 @@ msgstr ""
 "с флагом --ec-config чтобы создать пароль. Более подробную информацию вы "
 "найдете на http://wiki.amule.org"
 
-#: src/amuled.cpp:686
+#: src/amuled.cpp:688
 msgid "amuled: OnInit - starting timer"
 msgstr "amuled: OnInit - запускаем таймер"
 
-#: src/amuled.cpp:701
+#: src/amuled.cpp:703
 msgid "amuled: forking to background - see you"
 msgstr "amuled: уходим в фоновый режим - до встречи"
 
-#: src/amuled.cpp:732
+#: src/amuled.cpp:734
 msgid "Cannot Create Pid File"
 msgstr ""
 
-#: src/amuled.cpp:791
+#: src/amuled.cpp:793
 #, c-format
 msgid "ERROR: %s"
 msgstr "Ошибка: %s"
@@ -764,12 +764,7 @@ msgstr "Все"
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:837
-#, c-format
-msgid "Total Users: %s | Total Files: %s"
-msgstr "Всего польз.: %s | Всего файлов: %s"
-
-#: src/amule-remote-gui.cpp:1764
+#: src/amule-remote-gui.cpp:1740
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr ""
 
@@ -791,8 +786,8 @@ msgstr "Ищем друга для lowid-соединения"
 #: src/DataToText.cpp:70 src/DataToText.cpp:80 src/DataToText.cpp:116
 #: src/DataToText.cpp:137 src/DownloadListCtrl.cpp:1429
 #: src/DownloadListCtrl.cpp:1442 src/DownloadListCtrl.cpp:1453
-#: src/ExternalConn.cpp:296 src/FileDetailDialog.cpp:130
-#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:890 src/KnownFile.cpp:896
+#: src/ExternalConn.cpp:291 src/FileDetailDialog.cpp:130
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:891 src/KnownFile.cpp:897
 #: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
@@ -1191,7 +1186,7 @@ msgstr "Соединение через сервер"
 msgid "Transferring"
 msgstr "Передача"
 
-#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:64 src/KnownFile.cpp:1394
+#: src/ClientListCtrl.cpp:687 src/DataToText.cpp:64 src/KnownFile.cpp:1395
 #: src/TransferWnd.cpp:449
 msgid "On Queue"
 msgstr "В очереди"
@@ -1812,44 +1807,40 @@ msgstr "Неверная eD2k ссылка! ОШИБКА: %s"
 msgid "Client sent packet after authentication failed."
 msgstr "Клиент послал пакет после ошибки идентификации."
 
-#: src/ExternalConn.cpp:135
-msgid "Unauthorized access attempt. Connection closed."
-msgstr "Попытка неавторизированного доступа. Соединение разорвано."
-
-#: src/ExternalConn.cpp:150
+#: src/ExternalConn.cpp:146
 msgid "External connection closed."
 msgstr "Внешнее соединение закрыто."
 
-#: src/ExternalConn.cpp:189
+#: src/ExternalConn.cpp:185
 msgid "External connections disabled due to empty password!"
 msgstr "Внешние соединения выключены из-за отсутствия пароля."
 
-#: src/ExternalConn.cpp:214
+#: src/ExternalConn.cpp:210
 msgid "External connections disabled in config file"
 msgstr "Внешние соединения выключены в конфигурационном файле"
 
-#: src/ExternalConn.cpp:264
+#: src/ExternalConn.cpp:260
 msgid "New external connection accepted"
 msgstr "Принято новое внешнее соединение"
 
-#: src/ExternalConn.cpp:267
+#: src/ExternalConn.cpp:263
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ОШИБКА: невозможно принять новое внешнее соединение"
 
-#: src/ExternalConn.cpp:286
+#: src/ExternalConn.cpp:281
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Отказано во внешнем соединении из-за пустого пароля"
 
-#: src/ExternalConn.cpp:295
+#: src/ExternalConn.cpp:290
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Соединение с клиентом: %s %s"
 
-#: src/ExternalConn.cpp:297
+#: src/ExternalConn.cpp:292
 msgid "Unknown version"
 msgstr "Неизвестная версия"
 
-#: src/ExternalConn.cpp:307
+#: src/ExternalConn.cpp:302
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1857,7 +1848,7 @@ msgstr ""
 "Неверный идентификатор версии ВС. Возможна бинарная несовместимость. "
 "Используйте ядро и компонент удаленного доступа одинаковой версии."
 
-#: src/ExternalConn.cpp:312
+#: src/ExternalConn.cpp:307
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
@@ -1865,63 +1856,82 @@ msgstr ""
 "Вы не можете подсоединиться к релизной версии с произвольной SVN версии! "
 "Возможный сбой предотвращен"
 
-#: src/ExternalConn.cpp:322
+#: src/ExternalConn.cpp:317
 msgid "Invalid protocol version."
 msgstr "Недопустимая версия протокола."
 
-#: src/ExternalConn.cpp:326
+#: src/ExternalConn.cpp:321
 msgid "Missing protocol version tag."
 msgstr "Тег версии протокола отсутствует."
 
-#: src/ExternalConn.cpp:353
-msgid "Authentication failed."
+#: src/ExternalConn.cpp:328
+msgid "Authentication failed: invalid hash specified as EC password."
+msgstr ""
+
+#: src/ExternalConn.cpp:344
+#, fuzzy
+msgid "Authentication failed: wrong password."
 msgstr "Ошибка идентификации."
 
-#: src/ExternalConn.cpp:358
+#: src/ExternalConn.cpp:346
+#, fuzzy
+msgid "Authentication failed: missing password."
+msgstr "Ошибка идентификации."
+
+#: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
 msgstr "Неверный запрос, сначала пройдите идентификацию."
 
-#: src/ExternalConn.cpp:363
+#: src/ExternalConn.cpp:361
 msgid "Access granted."
 msgstr "Доступ получен."
 
-#: src/ExternalConn.cpp:614
+#: src/ExternalConn.cpp:369
+#, fuzzy, c-format
+msgid "Sent error message \"%s\" to client."
+msgstr "Фильтровать сообщения от неизвестных клиентов"
+
+#: src/ExternalConn.cpp:372
+msgid "Unauthorized access attempt. Connection closed."
+msgstr "Попытка неавторизированного доступа. Соединение разорвано."
+
+#: src/ExternalConn.cpp:613
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Удаленная команда PartFile не удалась: хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:616
+#: src/ExternalConn.cpp:615
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Хеш файла не найден: %s"
 
-#: src/ExternalConn.cpp:679 src/ExternalConn.cpp:763
+#: src/ExternalConn.cpp:678 src/ExternalConn.cpp:762
 msgid "OOPS! OpCode processing error!"
 msgstr "Ошибка при выполнении OpCode."
 
-#: src/ExternalConn.cpp:709
+#: src/ExternalConn.cpp:708
 msgid "Server not added"
 msgstr "Сервер не добавлен"
 
-#: src/ExternalConn.cpp:727
+#: src/ExternalConn.cpp:726
 #, c-format
 msgid "server not found: %s"
 msgstr "сервер не найден: %s"
 
-#: src/ExternalConn.cpp:743
+#: src/ExternalConn.cpp:742
 msgid "need to define server to be removed"
 msgstr "необходимо выделить сервер для удаления"
 
-#: src/ExternalConn.cpp:757
+#: src/ExternalConn.cpp:756
 msgid "eD2k is disabled in preferences."
 msgstr "Сеть eD2k отключена в настройках"
 
-#: src/ExternalConn.cpp:853
+#: src/ExternalConn.cpp:852
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Поиск запущен. Ждите результатов."
 
 # Explained by Jacobo221.
-#: src/ExternalConn.cpp:858
+#: src/ExternalConn.cpp:857
 msgid "WebSearch from remote interface makes no sense."
 msgstr "При удаленном использовании aMule WWW поиск бесполезен."
 
@@ -1929,77 +1939,77 @@ msgstr "При удаленном использовании aMule WWW поис�
 msgid "Kad is disabled in preferences."
 msgstr "Kad выключена в настройках."
 
-#: src/ExternalConn.cpp:1068
+#: src/ExternalConn.cpp:1085
 msgid "No points for graph."
 msgstr "В графике нет точек."
 
-#: src/ExternalConn.cpp:1077
+#: src/ExternalConn.cpp:1094
 msgid "Your client is not configured for this detail level."
 msgstr "Ваш клиент не настроен на этот уровень детализации."
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1122
 msgid "External Connection: shutdown requested"
 msgstr "Внешнее соединение: запрошено выключение"
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1134
 msgid "Already shutting down."
 msgstr "Уже завершаю работу."
 
-#: src/ExternalConn.cpp:1129
+#: src/ExternalConn.cpp:1146
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: добавляю ссылку '%s'."
 
-#: src/ExternalConn.cpp:1135
+#: src/ExternalConn.cpp:1152
 msgid "Invalid link or already on list."
 msgstr "Ссылка неверна или уже в списке."
 
-#: src/ExternalConn.cpp:1212
+#: src/ExternalConn.cpp:1221
 msgid "File not found."
 msgstr "Файл не найден."
 
-#: src/ExternalConn.cpp:1217
+#: src/ExternalConn.cpp:1226
 msgid "Invalid file name."
 msgstr "Неверное имя файла."
 
-#: src/ExternalConn.cpp:1225
+#: src/ExternalConn.cpp:1234
 msgid "Unable to rename file."
 msgstr "Невозможно переименовать файл."
 
-#: src/ExternalConn.cpp:1479
+#: src/ExternalConn.cpp:1488
 msgid "Already connected to eD2k."
 msgstr "Уже подсоединен к сети eD2k."
 
-#: src/ExternalConn.cpp:1482
+#: src/ExternalConn.cpp:1491
 msgid "Connecting to eD2k..."
 msgstr "Подсоединение к сети eD2k..."
 
-#: src/ExternalConn.cpp:1490
+#: src/ExternalConn.cpp:1499
 msgid "Already connected to Kad."
 msgstr "Уже подключен к Kad."
 
-#: src/ExternalConn.cpp:1493
+#: src/ExternalConn.cpp:1502
 msgid "Connecting to Kad..."
 msgstr "Подключаюсь к Kad..."
 
-#: src/ExternalConn.cpp:1498
+#: src/ExternalConn.cpp:1507
 msgid "All networks are disabled."
 msgstr "Все сети выключены."
 
-#: src/ExternalConn.cpp:1506
+#: src/ExternalConn.cpp:1515
 msgid "Disconnected from eD2k."
 msgstr "Отсоединен от сети eD2k."
 
-#: src/ExternalConn.cpp:1510
+#: src/ExternalConn.cpp:1519
 msgid "Disconnected from Kad."
 msgstr "Отключен от Kad."
 
-#: src/ExternalConn.cpp:1518
+#: src/ExternalConn.cpp:1527
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Внешнее соединение: получен неверный код операции: %#x"
 
-#: src/ExternalConn.cpp:1521
+#: src/ExternalConn.cpp:1530
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Неверный opcode (Возможно, не та версия протокола)"
 
@@ -2328,45 +2338,45 @@ msgstr "Восстановить соединение с сервером"
 msgid "Invalid response from HTTP download server"
 msgstr ""
 
-#: src/IP2Country.cpp:92
+#: src/IP2Country.cpp:95
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr "Загружен новый GeoIP.dat с %s"
 
-#: src/IP2Country.cpp:120
+#: src/IP2Country.cpp:123
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Загрузка GeoIP.dat неудачна, прекращаем обновление."
 
-#: src/IP2Country.cpp:126 src/IPFilter.cpp:480
+#: src/IP2Country.cpp:129 src/IPFilter.cpp:480
 #, fuzzy, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "Удаление GeoIP.dat неудачно, прекращаем обновление."
 
-#: src/IP2Country.cpp:132
+#: src/IP2Country.cpp:135
 #, fuzzy, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr "Переименование нового GeoIP.dat неудачно, прекращаем обновление."
 
-#: src/IP2Country.cpp:138 src/IPFilter.cpp:492
+#: src/IP2Country.cpp:141 src/IPFilter.cpp:492
 #, fuzzy, c-format
 msgid "Successfully updated %s"
 msgstr "Обновление GeoIP.dat успешно."
 
-#: src/IP2Country.cpp:140
+#: src/IP2Country.cpp:143
 msgid "Error updating GeoIP.dat"
 msgstr "Ошибка обновления GeoIP.dat"
 
-#: src/IP2Country.cpp:145 src/IPFilter.cpp:496 src/ServerList.cpp:810
+#: src/IP2Country.cpp:148 src/IPFilter.cpp:496 src/ServerList.cpp:810
 #, fuzzy, c-format
 msgid "Failed to download %s from %s"
 msgstr "Не удалось загрузить GeoIP.dat с %s"
 
-#: src/IP2Country.cpp:164
+#: src/IP2Country.cpp:167
 #, fuzzy, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "Не удалось загрузить GeoIP.dat с %s"
 
-#: src/IP2Country.cpp:169
+#: src/IP2Country.cpp:172
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr "Загружено %d изображений флагов."
@@ -2436,16 +2446,16 @@ msgstr "Это удалит используемые в данный момен�
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: src/kademlia/kademlia/SearchManager.cpp:127
+#: src/kademlia/kademlia/SearchManager.cpp:128
 msgid "Kademlia: search keyword too short"
 msgstr "Kad: слово запроса лишком коротко"
 
-#: src/kademlia/kademlia/SearchManager.cpp:132
+#: src/kademlia/kademlia/SearchManager.cpp:133
 #, c-format
 msgid "Keyword for search: %s"
 msgstr "Ключевое слово поиска: %s"
 
-#: src/kademlia/kademlia/SearchManager.cpp:140
+#: src/kademlia/kademlia/SearchManager.cpp:141
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: ключевое слово поиска уже в списке поиска:"
 
@@ -2481,32 +2491,32 @@ msgstr[0] "Записан %d Kad контакт"
 msgstr[1] "Записано %d Kad контакта"
 msgstr[2] "Записано %d Kad контактов"
 
-#: src/KnownFile.cpp:1388 src/PartFileConvertDlg.cpp:93
+#: src/KnownFile.cpp:1389 src/PartFileConvertDlg.cpp:93
 msgid "File name"
 msgstr "Имя файла"
 
-#: src/KnownFile.cpp:1389
+#: src/KnownFile.cpp:1390
 msgid "File size"
 msgstr "Размер файла"
 
 # по крайней мере торренты называют его так
-#: src/KnownFile.cpp:1390
+#: src/KnownFile.cpp:1391
 msgid "Share ratio"
 msgstr "Рейтинг"
 
-#: src/KnownFile.cpp:1391
+#: src/KnownFile.cpp:1392
 msgid "Uploaded"
 msgstr "Загружено"
 
-#: src/KnownFile.cpp:1392
+#: src/KnownFile.cpp:1393
 msgid "Requested"
 msgstr "Запрошено"
 
-#: src/KnownFile.cpp:1393
+#: src/KnownFile.cpp:1394
 msgid "Accepted"
 msgstr "Разрешено"
 
-#: src/KnownFile.cpp:1395
+#: src/KnownFile.cpp:1396
 msgid "Complete sources"
 msgstr "Полных источников"
 
@@ -2611,7 +2621,7 @@ msgstr "Закрыть"
 msgid "Cut"
 msgstr "Вырезать"
 
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:397
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:393
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Copy"
 msgstr "Копировать"
@@ -4600,39 +4610,39 @@ msgstr "Активные"
 msgid "Waiting for partfile convert thread to die..."
 msgstr "Ожидание завершения нити конвертации файла..."
 
-#: src/PartFileConvert.cpp:208
+#: src/PartFileConvert.cpp:200
 #, c-format
 msgid "Importing %s: %s"
 msgstr "Импортируется %s: %s"
 
-#: src/PartFileConvert.cpp:239
+#: src/PartFileConvert.cpp:237
 msgid "Reading temp folder"
 msgstr "Чтение из временного каталога"
 
-#: src/PartFileConvert.cpp:243
+#: src/PartFileConvert.cpp:241
 msgid "Retrieving basic information from download info file"
 msgstr "Извлекаю основную информацию из информационного файла загрузки"
 
-#: src/PartFileConvert.cpp:322
+#: src/PartFileConvert.cpp:318
 msgid "Creating destination file"
 msgstr "Создаю целевой файл"
 
-#: src/PartFileConvert.cpp:331
+#: src/PartFileConvert.cpp:327
 #, c-format
 msgid "Loading data from old download file (%u of %u)"
 msgstr "Загружаю данные из старого файла загрузки (%u из %u)"
 
-#: src/PartFileConvert.cpp:351
+#: src/PartFileConvert.cpp:347
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
 msgstr "Сохраняю данные в новый монолитный файл загрузки (%u из %u)"
 
 # не уверен что верно
-#: src/PartFileConvert.cpp:417
+#: src/PartFileConvert.cpp:413
 msgid "Retrieving source downloadfile information"
 msgstr "Получаем информацию по источникам"
 
-#: src/PartFileConvert.cpp:440
+#: src/PartFileConvert.cpp:436
 msgid "Adding download and saving new partfile"
 msgstr "Добавляю загрузку и сохраняю новый частично закачанный файл"
 
@@ -4865,7 +4875,7 @@ msgstr "Недостаточно места на диске"
 msgid "Downloaded"
 msgstr "Загружено"
 
-#: src/PartFile.cpp:3986
+#: src/PartFile.cpp:3994
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ОШИБКА: не удалось открыть частично закаченный '%s'"
@@ -5735,40 +5745,40 @@ msgstr[2] "Получено %d новых серверов"
 msgid "Saving of server-list completed."
 msgstr "Сохранение списка серверов завершено."
 
-#: src/ServerSocket.cpp:593
+#: src/ServerSocket.cpp:592
 msgid "Server rejected last command"
 msgstr "Сервер отклонил последнюю команду"
 
-#: src/ServerSocket.cpp:603 src/ServerSocket.cpp:605
+#: src/ServerSocket.cpp:602 src/ServerSocket.cpp:604
 #, c-format
 msgid "Bogus packet received from server: %s"
 msgstr "Подложный пакет получен от сервера: %s"
 
-#: src/ServerSocket.cpp:607
+#: src/ServerSocket.cpp:606
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
 msgstr "Неизвестная ошибка при обработке пакета от сервера: %s"
 
-#: src/ServerSocket.cpp:646 src/ServerSocket.cpp:650
+#: src/ServerSocket.cpp:645 src/ServerSocket.cpp:649
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
 msgstr "Невозможно создать поток разрешения DNS для соединения с %s"
 
-#: src/ServerSocket.cpp:729
+#: src/ServerSocket.cpp:728
 #, c-format
 msgid "Server IP %s (%s) is filtered.  Not connecting."
 msgstr "IP адрес сервера %s (%s) запрещен фильтром.  Соединение отменено."
 
-#: src/ServerSocket.cpp:739
+#: src/ServerSocket.cpp:738
 msgid "using protocol obfuscation."
 msgstr "использую вуалирование протокола."
 
-#: src/ServerSocket.cpp:748
+#: src/ServerSocket.cpp:747
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
 msgstr "Установка соединения с %s (%s - %s:%i) %s"
 
-#: src/ServerSocket.cpp:760
+#: src/ServerSocket.cpp:759
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Не удалось разрешить DNS для сервера %s: Невозможно подключиться."
@@ -7525,66 +7535,69 @@ msgstr "ОШИБКА: невозможно принять соединение w
 msgid "Request failed with the following error: %s."
 msgstr "Запрос не удался из-за следующей ошибки: %s."
 
-#: src/webserver/src/WebServer.cpp:1742
+#: src/webserver/src/WebServer.cpp:1701
 msgid "Index file not found: "
 msgstr "Индексный файл не найден:"
 
-#: src/webserver/src/WebServer.cpp:1820
+#: src/webserver/src/WebServer.cpp:1779
 msgid "Session expired - requesting login\n"
 msgstr "Сессия просрочена - запрашиваю логин\n"
 
-#: src/webserver/src/WebServer.cpp:1825
+#: src/webserver/src/WebServer.cpp:1784
 msgid "Session ok, logged in\n"
 msgstr "Сессия в порядке, авторизован\n"
 
-#: src/webserver/src/WebServer.cpp:1827
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session ok, not logged in\n"
 msgstr "Сессия в порядке, не авторизован\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1791
 msgid "No session opened - will request login\n"
 msgstr "Нет открытых сессий - буду запрашивать логин\n"
 
-#: src/webserver/src/WebServer.cpp:1841
+#: src/webserver/src/WebServer.cpp:1800
 msgid "Session created - requesting login\n"
 msgstr "Сессия открыта - запрашиваю логин\n"
 
-#: src/webserver/src/WebServer.cpp:1856
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Processing request [original]: "
 msgstr "Обрабатываю запрос [исходный]:"
 
-#: src/webserver/src/WebServer.cpp:1871
+#: src/webserver/src/WebServer.cpp:1830
 msgid "No password specified, login will not be allowed."
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1832
 msgid "Checking password\n"
 msgstr "Проверяю пароль\n"
 
-#: src/webserver/src/WebServer.cpp:1878
+#: src/webserver/src/WebServer.cpp:1837
 msgid "Password hash invalid\n"
 msgstr "Хеш пароля неверен\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1852
 msgid "Password ok\n"
 msgstr "Пароль верен\n"
 
-#: src/webserver/src/WebServer.cpp:1895
+#: src/webserver/src/WebServer.cpp:1854
 msgid "Password bad\n"
 msgstr "Неверный пароль\n"
 
-#: src/webserver/src/WebServer.cpp:1898
+#: src/webserver/src/WebServer.cpp:1857
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Вы не ввели пароль. Пустой пароль недопустим.\n"
 
 # в eMule - так и пишут: логин/логаут, но мне не нравится
-#: src/webserver/src/WebServer.cpp:1906
+#: src/webserver/src/WebServer.cpp:1865
 msgid "Logout requested\n"
 msgstr "Запрошено отсоединение\n"
 
-#: src/webserver/src/WebServer.cpp:1911
+#: src/webserver/src/WebServer.cpp:1870
 msgid "Processing request [redirected]: "
 msgstr "Обрабатываю запрос [перенаправленный]:"
+
+#~ msgid "Total Users: %s | Total Files: %s"
+#~ msgstr "Всего польз.: %s | Всего файлов: %s"
 
 #~ msgid "HTTP download thread started"
 #~ msgstr "запущена нить загрузки HTTP"
