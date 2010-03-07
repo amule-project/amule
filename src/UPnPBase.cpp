@@ -23,6 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"		// Needed for ENABLE_UPNP
+#endif
+
+#ifdef ENABLE_UPNP
+
 #define UPNP_C
 
 #include "UPnPBase.h"
@@ -1572,5 +1578,4 @@ void CUPnPControlPoint::Unsubscribe(CUPnPService &service)
 	}
 }
 
-
-// File_checked_for_headers
+#endif /* ENABLE_UPNP */
