@@ -40,7 +40,10 @@
 // Contact: mjames@gmail.com
 //
 
-// MSVC projects can't include files configuration dependent, so just double-check the #define
+#ifdef HAVE_CONFIG_H
+#	include "config.h"		// Needed for ENABLE_IP2COUNTRY
+#endif
+
 #ifdef ENABLE_IP2COUNTRY
 
 #include "Preferences.h"	// For thePrefs

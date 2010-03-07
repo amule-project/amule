@@ -9,16 +9,12 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
 	$(top_srcdir)/src/LoggerConsole.cpp \
+	$(top_srcdir)/src/UPnPBase.cpp \
 	php_parser.c \
 	php_lexer.c \
 	php_syntree.cpp \
 	php_amule_lib.cpp \
 	php_core_lib.cpp
-
-if ENABLE_UPNP
-amuleweb_SOURCES +=  \
-	$(top_srcdir)/src/UPnPBase.cpp
-endif
 
 php_parser.c: php_parser.y
 	bison --debug -t -d -v -p php -o $@ $<

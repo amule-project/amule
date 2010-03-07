@@ -92,6 +92,7 @@ libmuleappcore_a_SOURCES = \
 	RC4Encrypt.cpp \
 	StateMachine.cpp \
 	ThreadScheduler.cpp \
+	UPnPBase.cpp \
 	kademlia/kademlia/Entry.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/Contact.cpp \
@@ -112,17 +113,13 @@ libmuleappgui_a_SOURCES = \
 	EditServerListDlg.cpp \
 	extern/wxWidgets/listctrl.cpp \
 	FileDetailListCtrl.cpp \
+	IP2Country.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
 	MuleCollection.cpp \
 	muuli_wdr.cpp 
-
-if ENABLE_IP2COUNTRY
-libmuleappgui_a_SOURCES += \
-	IP2Country.cpp
-endif
 
 libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(GEOIP_CPPFLAGS)
 
@@ -170,10 +167,6 @@ core_sources = \
 	kademlia/net/PacketTracking.cpp \
 	kademlia/routing/RoutingZone.cpp
 
-if ENABLE_UPNP
-core_sources += \
-	UPnPBase.cpp
-endif
 
 gui_sources = \
 	amule-gui.cpp \
@@ -253,14 +246,10 @@ common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 
 amulegui_SOURCES = \
 	amule-remote-gui.cpp \
+	HTTPDownload.cpp \
 	$(gui_sources) \
 	$(ec_sources) \
 	$(common_sources)
-
-if ENABLE_IP2COUNTRY
-amulegui_SOURCES += \
-	HTTPDownload.cpp
-endif
 
 amule_SOURCES = \
 	CaptchaDialog.cpp \
