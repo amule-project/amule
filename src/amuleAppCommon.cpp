@@ -253,11 +253,11 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 #else
 	// Change webserver path. This is also a config option, so this switch will go at some time.
 	cmdline.AddOption(wxT("w"), wxT("use-amuleweb"), wxT("Specify location of amuleweb binary."));
+#endif
 #ifndef __WXMSW__
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Do not handle fatal exception."));
 // Keep stdin open to run valgrind --gen_suppressions
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Do not disable stdin."));
-#endif
 #endif
 
 	// Allow passing of links to the app
