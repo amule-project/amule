@@ -832,11 +832,6 @@ void CServerListRem::UpdateUserFileStatus(CServer *server)
 	if (server) {
 		m_TotalUser = server->GetUsers();
 		m_TotalFile = server->GetFiles();
-		
-		wxString buffer = 
-			CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(m_TotalUser) % CastItoIShort(m_TotalFile);
-		
-		Notify_ShowUserCount(buffer);
 	}
 }
 
