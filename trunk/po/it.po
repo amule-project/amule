@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-07 11:56+0100\n"
-"PO-Revision-Date: 2010-02-15 04:50+0100\n"
+"PO-Revision-Date: 2010-03-11 14:59+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1880,16 +1880,15 @@ msgstr "Tag versione di protocollo mancante."
 #: src/ExternalConn.cpp:328
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
+"Autenticazione fallita: l'hash specificato come password EC non è valido."
 
 #: src/ExternalConn.cpp:344
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Autenticazione non riuscita."
+msgstr "Autenticazione fallita: password errata."
 
 #: src/ExternalConn.cpp:346
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Autenticazione non riuscita."
+msgstr "Autenticazione fallita: devi inserire la password."
 
 #: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
@@ -1900,9 +1899,9 @@ msgid "Access granted."
 msgstr "Accesso consentito."
 
 #: src/ExternalConn.cpp:369
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Filtra i messaggi da client sconosciuti"
+msgstr "Invia il messaggio di errore \"%s\" al client."
 
 #: src/ExternalConn.cpp:372
 msgid "Unauthorized access attempt. Connection closed."
