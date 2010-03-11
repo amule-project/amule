@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-07 11:56+0100\n"
-"PO-Revision-Date: 2010-02-13 05:13+0200\n"
+"PO-Revision-Date: 2010-03-11 00:13+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -1831,16 +1831,16 @@ msgstr "Kayıp protokol sürüm eki."
 #: src/ExternalConn.cpp:328
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
+"Kimlik doğrulama başarısız oldu: EC paorlası olarak geçersiz adreleme "
+"girildi."
 
 #: src/ExternalConn.cpp:344
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Doğrulanamadı."
+msgstr "Kimlik doğrulama başarısız oldu: yanlış parola."
 
 #: src/ExternalConn.cpp:346
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Doğrulanamadı."
+msgstr "Kimlik doğrulama başarısız oldu: kayıp parola."
 
 #: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
@@ -1851,9 +1851,9 @@ msgid "Access granted."
 msgstr "Giriş izni verildi."
 
 #: src/ExternalConn.cpp:369
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Bilinmeyen yazılımlardan gelenleri süz."
+msgstr "\"%s\"  hata iletisi makineye gönderildi."
 
 #: src/ExternalConn.cpp:372
 msgid "Unauthorized access attempt. Connection closed."
