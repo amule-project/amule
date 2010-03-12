@@ -1879,7 +1879,7 @@ msgstr "Authentifizierung fehlgeschlagen: falsches Passwort."
 
 #: src/ExternalConn.cpp:346
 msgid "Authentication failed: missing password."
-msgstr "Authentifizierung fehlgeschlagen: fehlenes Passwort."
+msgstr "Authentifizierung fehlgeschlagen: fehlendes Passwort."
 
 #: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
