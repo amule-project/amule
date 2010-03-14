@@ -85,7 +85,8 @@ void CCommentDialogLst::UpdateList()
 	int count = 0;
 	ClearList();
  
-	const FileRatingList &list = m_file->GetRatingAndComments();
+	FileRatingList list;
+	m_file->GetRatingAndComments(list);
 	for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
 		if (!thePrefs::IsCommentFiltered(it->Comment)) {
 			m_list->InsertItem(count, it->UserName);

@@ -3556,20 +3556,18 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 	}
 }
 
-const FileRatingList &CPartFile::GetRatingAndComments()
+void CPartFile::GetRatingAndComments(FileRatingList & list) const
 {
-	m_FileRatingList.clear();
+	list.clear();
 	// This can be pre-processed, but is it worth the CPU?
-	CPartFile::SourceSet::iterator it = m_SrcList.begin();
+	CPartFile::SourceSet::const_iterator it = m_SrcList.begin();
 	for ( ; it != m_SrcList.end(); ++it ) {
 		CUpDownClient *cur_src = *it;
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {
 			// AddDebugLogLineM(false, logPartFile, wxString(wxT("found a comment for ")) << GetFileName());
-			m_FileRatingList.push_back(SFileRating(*cur_src));
+			list.push_back(SFileRating(*cur_src));
 		}
 	}
-
-	return m_FileRatingList; 
 }
 
 #else   // CLIENT_GUI
@@ -3601,9 +3599,9 @@ CPartFile::~CPartFile()
 {
 }
 
-const FileRatingList &CPartFile::GetRatingAndComments() 
+void CPartFile::GetRatingAndComments(FileRatingList & list) const
 { 
-	return m_FileRatingList; 
+	list = m_FileRatingList; 
 }
 
 void CPartFile::SetCategory(uint8 cat)

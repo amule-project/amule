@@ -157,7 +157,8 @@ CECTag(EC_TAG_PARTFILE, file->ECID())
 	// Tag for comments
 	CECEmptyTag sc(EC_TAG_PARTFILE_COMMENTS);
 
-	const FileRatingList & list = file->GetRatingAndComments();
+	FileRatingList list;
+	file->GetRatingAndComments(list);
 	for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
 		// Tag children are evaluated by index, not by name
 		sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
