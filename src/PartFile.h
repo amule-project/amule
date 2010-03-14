@@ -316,7 +316,7 @@ public:
 	uint16	GetMaxSourcePerFileSoft() const;
 	uint16	GetMaxSourcePerFileUDP() const;		 
 
-	const FileRatingList &GetRatingAndComments();
+	void GetRatingAndComments(FileRatingList & list) const;
 
 	void	AllocationFinished();
 private:
@@ -398,9 +398,14 @@ private:
 	bool		m_hashsetneeded;
 	uint32		m_lastsearchtime;
 	bool		m_localSrcReqQueued;
-	
-	FileRatingList m_FileRatingList;
+
 #ifdef CLIENT_GUI
+	FileRatingList m_FileRatingList;
+	const FileRatingList &GetFileRatingList() { return m_FileRatingList; }
+	void ClearFileRatingList() { m_FileRatingList.clear(); }
+	void AddFileRatingList(const wxString & u, const wxString & f, sint16 r, const wxString & c) { 
+	       m_FileRatingList.push_back(SFileRating(u, f, r, c)); }
+
 	uint32 	m_kbpsDown;
 	uint8   m_iDownPriorityEC;
 	SourcenameItemMap m_SourcenameItemMap;
@@ -408,11 +413,6 @@ public:
 	SourcenameItemMap &GetSourcenameItemMap() { return m_SourcenameItemMap; }
 #endif
 public:
-	const FileRatingList &GetFileRatingList() { return m_FileRatingList; }
-	void ClearFileRatingList() { m_FileRatingList.clear(); }
-	void AddFileRatingList(const wxString & u, const wxString & f, sint16 r, const wxString & c) { 
-	       m_FileRatingList.push_back(SFileRating(u, f, r, c)); }
-
 	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }
 	void SetHashSetNeeded(bool value)			{ m_hashsetneeded = value; }
 	
