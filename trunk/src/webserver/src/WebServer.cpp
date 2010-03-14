@@ -1874,15 +1874,20 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	session->m_vars["content_type"] = "text/html";
 	
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
-	if ( req_file.Find(wxT(".html")) != -1 ) {
+	if (req_file.EndsWith(wxT(".html"))) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
-	} else if ( req_file.Find(wxT(".php")) != -1 ) {
+	} else if (req_file.EndsWith(wxT(".php"))) {
 		httpOut = ProcessPhpRequest(unicode2char(req_file), session, httpOutLen);
-	} else if ( req_file.Find(wxT(".css")) != -1 ) {
+	} else if (req_file.EndsWith(wxT(".css"))) {
 		session->m_vars["content_type"] = "text/css";
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
-	} else if ( req_file.Find(wxT(".js")) != -1 ) {
+	} else if (req_file.EndsWith(wxT(".js"))) {
 		session->m_vars["content_type"] = "text/javascript";
+		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
+	} else if (	req_file.EndsWith(wxT(".dtd"))
+				|| req_file.EndsWith(wxT(".xsd"))
+				|| req_file.EndsWith(wxT(".xsl"))) {
+		session->m_vars["content_type"] = "text/xml";
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else {
 		httpOut = GetErrorPage("aMuleweb doesn't handle the requested file type ", httpOutLen);
