@@ -248,8 +248,11 @@ CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
 
 bool CKnownFileList::SafeAddKFile(CKnownFile* toadd)
 {
-	wxMutexLocker sLock(list_mut);
-	bool ret = Append(toadd);
+	bool ret;
+	{
+		wxMutexLocker sLock(list_mut);
+		ret = Append(toadd);
+	}
 	if (ret) {
 		theApp->searchlist->UpdateSearchFileByHash(toadd->GetFileHash());
 	}
