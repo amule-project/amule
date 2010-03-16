@@ -129,7 +129,6 @@ Version 2.3.0 - The river knows.
 		* Enable setting of "Check for new version on startup" through aMulegui
 		* Fixed crash in CClientList::ProcessDirectCallbackList that had been around for ages (hopefully)
 		* Fixed size of large files in aMuleweb's search results
-		* Fixed deadlock when a file completed that was still in the search list (thanks to btkaos)
 
 	Vollstrecker:
 		* Unify copyright lines
