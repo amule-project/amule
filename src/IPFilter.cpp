@@ -38,6 +38,7 @@
 #include "ThreadScheduler.h"		// Needed for CThreadScheduler and CThreadTask
 #include "ClientList.h"			// Needed for CClientList
 #include "ServerList.h"			// Needed for CServerList
+#include <common/Macros.h>		// Needed for DEBUG_ONLY()
 
 
 ////////////////////////////////////////////////////////////
@@ -136,7 +137,7 @@ private:
 	 * ranges where the AccessLevel is not within the range 0..255, or
 	 * where IPEnd < IPstart not inserted.
 	 */	
-	bool AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
+	bool AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& DEBUG_ONLY(Description))
 	{
 		if (AccessLevel < 256) {
 			if (IPStart <= IPEnd) {

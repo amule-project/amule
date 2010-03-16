@@ -119,7 +119,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 	// (those limits are not meant to be fine to be used by normal usage, but only supposed to be a flood detection)
 
 	uint32_t allowedPacketsPerMinute;
-	const uint8_t dbgOrgOpcode = opcode;
+	DEBUG_ONLY( const uint8_t dbgOrgOpcode = opcode; )
 
 	switch (opcode) {
 		case KADEMLIA_BOOTSTRAP_REQ:
@@ -256,7 +256,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 void CPacketTracking::InTrackListCleanup()
 {
 	const uint32_t currentTick = ::GetTickCount();
-	const uint32_t dbgOldSize = m_mapTrackPacketsIn.size();
+	DEBUG_ONLY( const uint32_t dbgOldSize = m_mapTrackPacketsIn.size(); )
 	lastTrackInCleanup = currentTick;
 	for (TrackedPacketInMap::iterator it = m_mapTrackPacketsIn.begin(); it != m_mapTrackPacketsIn.end();) {
 		TrackedPacketInMap::iterator it2 = it++;

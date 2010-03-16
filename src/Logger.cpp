@@ -117,8 +117,8 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 
 
 void CLogger::AddLogLine(
-	const wxString &file,
-	int line,
+	const wxString& DEBUG_ONLY(file),
+	int DEBUG_ONLY(line),
 	bool critical,
 	DebugType type,
 	const wxString &str,
