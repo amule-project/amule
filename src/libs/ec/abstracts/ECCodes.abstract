@@ -141,6 +141,8 @@ EC_OP_AUTH_SALT                     0x4F
 EC_OP_AUTH_PASSWD                   0x50
 
 EC_OP_IPFILTER_UPDATE               0x51
+
+EC_OP_GET_UPDATE                    0x52
 [/Section]
 
 [Section Content]
@@ -221,6 +223,7 @@ EC_TAG_PARTFILE                           0x0300
 	EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS       0x031C
 	EC_TAG_PARTFILE_AVAILABLE_PARTS           0x031D
 	EC_TAG_PARTFILE_HASH                      0x031E
+	EC_TAG_PARTFILE_SHARED                    0x031F
 
 EC_TAG_KNOWNFILE                          0x0400
 	EC_TAG_KNOWNFILE_XFERRED                  0x0401

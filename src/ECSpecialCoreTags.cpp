@@ -122,9 +122,9 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
 }
 
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
+CEC_PartFile_Tag::CEC_PartFile_Tag(const CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
 :
-CECTag(EC_TAG_PARTFILE, file->ECID())
+CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 {
 	AddTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), valuemap);
 	AddTag(EC_TAG_PARTFILE_STOPPED, file->IsStopped(), valuemap);
@@ -171,21 +171,13 @@ CECTag(EC_TAG_PARTFILE, file->ECID())
 	if (detail_level == EC_DETAIL_UPDATE) {
 		return;
 	}
-	
-	AddTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), valuemap);
-
-	AddTag(EC_TAG_PARTFILE_HASH, file->GetFileHash(), valuemap);
 
 	AddTag(EC_TAG_PARTFILE_PARTMETID, file->GetPartMetNumber(), valuemap);
-
-	AddTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), valuemap);
-
-	AddTag(EC_TAG_PARTFILE_ED2K_LINK,
-		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
 }
 
-CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
-: CECTag(EC_TAG_KNOWNFILE, file->ECID())
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, 
+									   CValueMap *valuemap, ec_tagname_t name)
+: CECTag(name, file->ECID())
 {
 	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), valuemap);

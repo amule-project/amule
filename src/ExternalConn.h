@@ -39,89 +39,6 @@
 class wxSocketServer;
 class wxSocketEvent;
 
-//
-// T - type of item
-// E - type of encoder
-// C - type of container in theApp
-template <class T, class E, class C>
-class CFileEncoderMap : public std::map<T *, E> {
-	public:
-		void UpdateEncoders(C *container)
-		{
-			// check if encoder contains files that no longer in container
-			// or, we have new files without encoder yet
-			std::set<T *> curr_files, dead_files;
-			for (unsigned int i = 0; i < container->GetFileCount(); i++) {
-				// cast for case of 'const'
-				T *cur_file = (T *)container->GetFileByIndex(i);
-				curr_files.insert(cur_file);
-				if ( this->count(cur_file) == 0 ) {
-					this->operator [](cur_file) = E(cur_file);
-				}
-			}
-			//
-			// curr_files set is created to minimize lookup time in download queue,
-			// since GetFileByID have loop inside leading to O(n), in this case
-			// it will mean O(n^2)
-			typename std::map<T *, E>::iterator i;
-			for(i = this->begin(); i != this->end(); i++) {
-				if ( curr_files.count(i->first) == 0 ) {
-					dead_files.insert(i->first);
-				}
-			}
-			typename std::set<T *>::iterator j;
-			for(j = dead_files.begin(); j != dead_files.end(); j++) {
-				this->erase(*j);
-			}
-		}
-};
-
-/*!
- * PartStatus strings and gap lists are quite long - RLE encoding will help.
- * 
- * Instead of sending each time full part-status string, send
- * RLE encoded difference from previous one.
- *
- * PartFileEncoderData class is used for decode only,
- * while CPartFile_Encoder is used for encode only.
- */
-class CPartFile_Encoder : public PartFileEncoderData {
-		CPartFile *m_file;
-		SourcenameItemMap m_sourcenameItemMap;
-		int m_sourcenameID;
-	public:
-		// encoder side
-		CPartFile_Encoder(CPartFile *file = 0) { m_file = file; m_sourcenameID = 0; }
-		
-		// encode - take data from m_file
-		void Encode(CECTag *parent_tag);
-
-		// Encoder may reset history if full info requested
-		void ResetEncoder();
-};
-
-typedef CFileEncoderMap<CPartFile , CPartFile_Encoder, CDownloadQueue> CPartFile_Encoder_Map;
-
-/*
- * Encode 'obtained parts' info to be sent to remote gui
- */
-class CKnownFile_Encoder {
-		RLE_Data m_enc_data;
-		CKnownFile *m_file;
-	public:
-		CKnownFile_Encoder(CKnownFile *file = 0) { m_file = file; }
-
-		// encode - take data from m_file
-		void Encode(CECTag *parent_tag);
-
-		void ResetEncoder()
-		{
-			m_enc_data.ResetEncoder();
-		}
-};
-
-typedef CFileEncoderMap<CKnownFile , CKnownFile_Encoder, CSharedFileList> CKnownFile_Encoder_Map;
-
 template <class T, ec_tagname_t OP>
 class CTagSet : public std::set<T> {
 		void InSet(const CECTag *tag, uint32)
@@ -146,9 +63,9 @@ class CTagSet : public std::set<T> {
 
 
 class CObjTagMap {
-		std::map<void *, CValueMap> m_obj_map;
+		std::map<const void *, CValueMap> m_obj_map;
 	public:
-		CValueMap &GetValueMap(void *object)
+		CValueMap &GetValueMap(const void *object)
 		{
 			return m_obj_map[object];
 		}

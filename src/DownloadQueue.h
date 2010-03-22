@@ -246,6 +246,11 @@ public:
 	uint16	GetFileCount() const;
 
 	/**
+	 * Makes a copy of the file list.
+	 */
+	void	CopyFileList(std::vector<CPartFile*>& out_list) const;
+
+	/**
 	 * Returns the current number of downloading files.
 	 */
 	uint16	GetDownloadingFileCount() const;

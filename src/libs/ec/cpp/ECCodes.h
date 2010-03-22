@@ -125,7 +125,8 @@ enum ECOpCodes {
 	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E,
 	EC_OP_AUTH_SALT                     = 0x4F,
 	EC_OP_AUTH_PASSWD                   = 0x50,
-	EC_OP_IPFILTER_UPDATE               = 0x51
+	EC_OP_IPFILTER_UPDATE               = 0x51,
+	EC_OP_GET_UPDATE                    = 0x52
 };
 
 enum ECTagNames {
@@ -198,6 +199,7 @@ enum ECTagNames {
 		EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS       = 0x031C,
 		EC_TAG_PARTFILE_AVAILABLE_PARTS           = 0x031D,
 		EC_TAG_PARTFILE_HASH                      = 0x031E,
+		EC_TAG_PARTFILE_SHARED                    = 0x031F,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
@@ -525,6 +527,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x4F: return wxT("EC_OP_AUTH_SALT");
 		case 0x50: return wxT("EC_OP_AUTH_PASSWD");
 		case 0x51: return wxT("EC_OP_IPFILTER_UPDATE");
+		case 0x52: return wxT("EC_OP_GET_UPDATE");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }
@@ -601,6 +604,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x031C: return wxT("EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS");
 		case 0x031D: return wxT("EC_TAG_PARTFILE_AVAILABLE_PARTS");
 		case 0x031E: return wxT("EC_TAG_PARTFILE_HASH");
+		case 0x031F: return wxT("EC_TAG_PARTFILE_SHARED");
 		case 0x0400: return wxT("EC_TAG_KNOWNFILE");
 		case 0x0401: return wxT("EC_TAG_KNOWNFILE_XFERRED");
 		case 0x0402: return wxT("EC_TAG_KNOWNFILE_XFERRED_ALL");

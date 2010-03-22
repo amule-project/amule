@@ -202,52 +202,10 @@ class CEC_ConnState_Tag : public CECTag {
 		bool	IsKadRunning()	const { return (GetInt() & 0x10) != 0; }
 };
 
-class CEC_PartFile_Tag : public CECTag {
- 	public:
- 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
- 		
-		// template needs it
-		uint32		ID()	const { return GetInt(); }
-
- 		CMD4Hash	FileHash()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_HASH)->GetMD4Data(); }
-		wxString	FileHashString() const { return FileHash().Encode(); }
-		uint16		PartMetID()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_PARTMETID)->GetInt(); }
-
- 		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
- 		uint64		SizeXfer(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
-  		uint64		SizeDone(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, target); }
- 		wxString	FileEd2kLink()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
- 		uint8		FileStatus(uint8 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_STATUS, target); }
- 		bool		Stopped(bool *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_STOPPED, target); }
-  		uint16		SourceCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, target); }
-  		uint16		SourceNotCurrCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, target); }
-  		uint16		SourceXferCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, target); }
-  		uint16		SourceCountA4AF(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, target); }
-  		uint32		Speed(uint32 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_SPEED, target); }
-  		uint8		Prio(uint8 *target = 0)			const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
- 		uint8		FileCat(uint8 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_CAT, target); }
-		time_t		LastSeenComplete(time_t *target = 0)const { return AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, target); }
-		time_t		LastDateChanged(time_t *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LAST_RECV, target); }
-		uint32		DownloadActiveTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, target); }
-		uint16		AvailablePartCount(uint16 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_AVAILABLE_PARTS, target); }
-
-		uint64		GetLostDueToCorruption(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LOST_CORRUPTION, target); }
-		uint64		GetGainDueToCompression(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_GAINED_COMPRESSION, target); }
-		uint32		TotalPacketsSavedDueToICH(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SAVED_ICH, target); }
-
-		wxString	PartMetName() const
-		{
-			uint16 id = PartMetID();
-			return id ? (CFormat(wxT("%03u.part.met")) % id) : wxEmptyString;
-		}
-
-		wxString	GetFileStatusString() const;
-};
-
 class CEC_SharedFile_Tag : public CECTag {
 	public:
- 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
+ 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, 
+							CValueMap *valuemap = NULL, ec_tagname_t name = EC_TAG_KNOWNFILE);
  		
 		// template needs it
  		uint32		ID()		const { return GetInt(); }
@@ -274,6 +232,42 @@ class CEC_SharedFile_Tag : public CECTag {
  		uint16		GetCompleteSourcesHigh(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH, target); }
 
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
+};
+
+class CEC_PartFile_Tag : public CEC_SharedFile_Tag {
+ 	public:
+ 		CEC_PartFile_Tag(const CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
+ 		
+		uint16		PartMetID()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_PARTMETID)->GetInt(); }
+
+ 		uint64		SizeXfer(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
+  		uint64		SizeDone(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, target); }
+ 		uint8		FileStatus(uint8 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_STATUS, target); }
+ 		bool		Stopped(bool *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_STOPPED, target); }
+  		uint16		SourceCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, target); }
+  		uint16		SourceNotCurrCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, target); }
+  		uint16		SourceXferCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, target); }
+  		uint16		SourceCountA4AF(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, target); }
+  		uint32		Speed(uint32 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_SPEED, target); }
+  		uint8		Prio(uint8 *target = 0)			const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
+ 		uint8		FileCat(uint8 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_CAT, target); }
+		time_t		LastSeenComplete(time_t *target = 0)const { return AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, target); }
+		time_t		LastDateChanged(time_t *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LAST_RECV, target); }
+		uint32		DownloadActiveTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, target); }
+		uint16		AvailablePartCount(uint16 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_AVAILABLE_PARTS, target); }
+ 		bool		Shared(bool *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_SHARED, target); }
+
+		uint64		GetLostDueToCorruption(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LOST_CORRUPTION, target); }
+		uint64		GetGainDueToCompression(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_GAINED_COMPRESSION, target); }
+		uint32		TotalPacketsSavedDueToICH(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SAVED_ICH, target); }
+
+		wxString	PartMetName() const
+		{
+			uint16 id = PartMetID();
+			return id ? (CFormat(wxT("%03u.part.met")) % id) : wxEmptyString;
+		}
+
+		wxString	GetFileStatusString() const;
 };
 
 class CEC_UpDownClient_Tag : public CECTag {
