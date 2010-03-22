@@ -3590,6 +3590,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag) : CKnownFile(tag->ID())
 	m_kbpsDown = 0;
 	m_iDownPriorityEC = 0;
 	m_a4af_source_count = 0;
+	m_isShared = false;
 }
 
 /*

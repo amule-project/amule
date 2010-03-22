@@ -56,6 +56,141 @@
 #include "kademlia/kademlia/UDPFirewallTester.h"
 
 
+//-------------------- File_Encoder --------------------
+
+
+/*
+ * Encode 'obtained parts' info to be sent to remote gui
+ */
+class CKnownFile_Encoder {
+	// number of sources for each part for progress bar colouring
+	RLE_Data m_enc_data;
+protected:
+	const CKnownFile *m_file;
+public:
+	CKnownFile_Encoder(const CKnownFile *file = 0) { m_file = file; }
+
+	virtual ~CKnownFile_Encoder() {}
+
+	virtual void Encode(CECTag *parent_tag);
+
+	virtual void ResetEncoder()
+	{
+		m_enc_data.ResetEncoder();
+	}
+
+	virtual void SetShared() { }
+	virtual bool IsShared() { return true; }
+	virtual bool IsDownload() { return m_file->IsPartFile(); }
+	const CKnownFile * GetFile() { return m_file; }
+};
+
+/*!
+ * PartStatus strings and gap lists are quite long - RLE encoding will help.
+ * 
+ * Instead of sending each time full part-status string, send
+ * RLE encoded difference from previous one.
+ *
+ * PartFileEncoderData class is used for decode only,
+ * while CPartFile_Encoder is used for encode only.
+ */
+class CPartFile_Encoder : public CKnownFile_Encoder {
+	// blocks requested for download
+	RLE_Data m_req_status;
+	// gap list
+	RLE_Data m_gap_status;
+	// source names
+	SourcenameItemMap m_sourcenameItemMap;
+	// counter for unique source name ids
+	int m_sourcenameID;
+	// not all part files are shared (only when at least one part is complete)
+	bool m_shared;
+
+	// cast inherited member to CPartFile
+	CPartFile * m_PartFile() { wxASSERT(m_file->IsPartFile()); return (CPartFile *)m_file; }
+public:
+	// encoder side
+	CPartFile_Encoder(const CPartFile *file = 0) : CKnownFile_Encoder(file)
+	{ 
+		m_sourcenameID = 0;
+		m_shared = false;
+	}
+
+	virtual ~CPartFile_Encoder() {}
+	
+	// encode - take data from m_file
+	virtual void Encode(CECTag *parent_tag);
+
+	// Encoder may reset history if full info requested
+	virtual void ResetEncoder();
+
+	virtual void SetShared() { m_shared = true; }
+	virtual bool IsShared() { return m_shared; }
+	virtual bool IsDownload() { return true; }
+};
+
+class CFileEncoderMap : public std::map<uint32, CKnownFile_Encoder*> {
+	typedef std::set<uint32> IDSet;
+public:
+	~CFileEncoderMap();
+	void UpdateEncoders();
+};
+
+CFileEncoderMap::~CFileEncoderMap()
+{
+	// DeleteContents() causes infinite recursion here!
+	for (iterator it = begin(); it != end(); it++) {
+		delete it->second;
+	}
+}
+
+// Check if encoder contains files that are no longer used
+// or if we have new files without encoder yet.
+void CFileEncoderMap::UpdateEncoders()
+{
+	IDSet curr_files, dead_files;
+	// Downloads
+	std::vector<CPartFile*> downloads;
+	theApp->downloadqueue->CopyFileList(downloads);
+	for (uint32 i = downloads.size(); i--;) {
+		uint32 id = downloads[i]->ECID();
+		curr_files.insert(id);
+		if (!count(id)) {
+			(*this)[id] = new CPartFile_Encoder(downloads[i]);
+		}
+	}
+	// Shares
+	std::vector<CKnownFile*> shares;
+	theApp->sharedfiles->CopyFileList(shares);
+	for (uint32 i = shares.size(); i--;) {
+		uint32 id = shares[i]->ECID();
+		if (shares[i]->IsPartFile()) {	// we already have it
+			(*this)[id]->SetShared();
+			continue;
+		}
+		curr_files.insert(id);
+		if (!count(id)) {
+			(*this)[id] = new CKnownFile_Encoder(shares[i]);
+		}
+	}
+	// Check for removed files, and store them in a set for deletion.
+	// (std::map documentation is unclear if a construct like
+	//		iterator to_del = it++; erase(to_del) ;
+	// works or invalidates it too.)
+	for (iterator it = begin(); it != end(); it++) {
+		if (!curr_files.count(it->first)) {
+			dead_files.insert(it->first);
+		}
+	}
+	// then delete them
+	for (IDSet::iterator it = dead_files.begin(); it != dead_files.end(); it++) {
+		iterator it2 = find(*it);
+		delete it2->second;
+		erase(it2);
+	}
+}
+
+
 //-------------------- CECServerSocket --------------------
 
 class CECServerSocket : public CECMuleSocket
@@ -82,15 +217,9 @@ private:
 
 	uint64_t m_passwd_salt;
 	CLoggerAccess m_LoggerAccess;
-	CPartFile_Encoder_Map	m_part_encoder;
-	CKnownFile_Encoder_Map	m_shared_encoder;
+	CFileEncoderMap	m_FileEncoder;
 	CObjTagMap		m_obj_tagmap;
-	CECPacket *ProcessRequest2(
-		const CECPacket *request,
-		CPartFile_Encoder_Map &,
-		CKnownFile_Encoder_Map &,
-		CObjTagMap &);
-	
+	CECPacket *ProcessRequest2(const CECPacket *request);
 };
 
 
@@ -98,10 +227,7 @@ CECServerSocket::CECServerSocket(ECNotifier *notifier)
 :
 CECMuleSocket(true),
 m_conn_state(CONN_INIT),
-m_passwd_salt(GetRandomUint64()),
-m_part_encoder(),
-m_shared_encoder(),
-m_obj_tagmap()
+m_passwd_salt(GetRandomUint64())
 {
 	wxASSERT(theApp->ECServerHandler);
 	theApp->ECServerHandler->AddSocket(this);
@@ -134,8 +260,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 		// 2) verify password
 		reply = Authenticate(packet);
 	} else {
-		reply = ProcessRequest2(
-			packet, m_part_encoder, m_shared_encoder, m_obj_tagmap);
+		reply = ProcessRequest2(packet);
 	}
 	return reply;
 }
@@ -448,7 +573,7 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 	return response;
 }
 
-static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_Encoder_Map &encoders)
+static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFileEncoderMap &encoders)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
@@ -459,7 +584,7 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnow
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_KNOWNFILE> queryitems(request);
 
-	encoders.UpdateEncoders(theApp->sharedfiles);
+	encoders.UpdateEncoders();
 	
 	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
 		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
@@ -469,43 +594,38 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnow
 		}
 
 		CEC_SharedFile_Tag filetag(cur_file, detail_level);
-		CKnownFile_Encoder &enc = encoders[cur_file];
+		CKnownFile_Encoder *enc = encoders[cur_file->ECID()];
 		if ( detail_level != EC_DETAIL_UPDATE ) {
-			enc.ResetEncoder();
+			enc->ResetEncoder();
 		}
-		enc.Encode(&filetag);
+		enc->Encode(&filetag);
 		response->AddTag(filetag);
 	}
 	return response;
 }
 
-static CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObjTagMap &tagmap)
+static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
 
-	encoders.UpdateEncoders(theApp->sharedfiles);
-	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
-		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
-		
-		//
-		// Hashes of tags are maintained on "per-object" basis. So, in this mode only
-		// same kind of objects can go into particular query type.
-		// But files from download queue (aka partfiles) need to be listed both as downloads
-		// and as shares (with different tag content).
-		// So simply increment the object pointer - it's only a map key and never used for referencing.
-		//
-		void * mapKey = cur_file;
-		if (!cur_file) continue;
+	encoders.UpdateEncoders();
+	for (CFileEncoderMap::iterator it = encoders.begin(); it != encoders.end(); ++it) {
+		const CKnownFile *cur_file = it->second->GetFile();
+		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
 		if (cur_file->IsPartFile()) {
-			mapKey = (void *) ((char *)mapKey + 1);
-		}
+			CEC_PartFile_Tag filetag((const CPartFile*) cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
+			// Add information if partfile is shared
+			filetag.AddTag(EC_TAG_PARTFILE_SHARED, it->second->IsShared(), &valuemap);
 
-		CValueMap &valuemap = tagmap.GetValueMap(mapKey);
-		CEC_SharedFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
-		CKnownFile_Encoder &enc = encoders[cur_file];
-		enc.Encode(&filetag);
-		
-		response->AddTag(filetag);
+			CPartFile_Encoder * enc = (CPartFile_Encoder *) encoders[cur_file->ECID()];
+			enc->Encode(&filetag);
+			response->AddTag(filetag);
+		} else {
+			CEC_SharedFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
+			CKnownFile_Encoder * enc = encoders[cur_file->ECID()];
+			enc->Encode(&filetag);
+			response->AddTag(filetag);
+		}
 	}
 	return response;
 }
@@ -546,25 +666,7 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 }
 
 
-static CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, CObjTagMap &tagmap)
-{	
-	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
-
-	encoders.UpdateEncoders(theApp->downloadqueue);
-	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
-
-		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
-		CEC_PartFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
-		CPartFile_Encoder &enc = encoders[cur_file];
-		enc.Encode(&filetag);
-		
-		response->AddTag(filetag);
-	}	
-	return 	response;
-}
-
-static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders)
+static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFileEncoderMap &encoders)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -573,7 +675,7 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPa
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_PARTFILE> queryitems(request);
 	
-	encoders.UpdateEncoders(theApp->downloadqueue);
+	encoders.UpdateEncoders();
 
 	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
@@ -584,15 +686,15 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPa
 
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
 		
-		CPartFile_Encoder &enc = encoders[cur_file];
+		CPartFile_Encoder * enc = (CPartFile_Encoder *) encoders[cur_file->ECID()];
 		if ( detail_level != EC_DETAIL_UPDATE ) {
-			enc.ResetEncoder();
+			enc->ResetEncoder();
 		}
-		enc.Encode(&filetag);
+		enc->Encode(&filetag);
 
 		response->AddTag(filetag);
 	}
-	return 	response;
+	return response;
 }
 
 
@@ -917,22 +1019,12 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	//
 	// Source part frequencies
 	//
-	// These are not always populated, don't send a tag in this case
-	//
-	if (!m_file->m_SrcpartFrequency.empty()) {
-		int part_enc_size;
-		bool changed;
-		const uint8 *part_enc_data = m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size, changed);
-		if (changed) {
-			parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
-		}
-		delete[] part_enc_data;
-	}
+	CKnownFile_Encoder::Encode(parent);
 
 	//
 	// Gaps
 	//
-	const CGapList& gaplist = m_file->GetNewGapList();
+	const CGapList& gaplist = m_PartFile()->GetNewGapList();
 	const size_t gap_list_size = gaplist.size();
 	ArrayOfUInts64 gaps;
 	gaps.reserve(gap_list_size * 2);
@@ -955,7 +1047,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	// Requested blocks
 	//
 	ArrayOfUInts64 req_buffer;
-	const CPartFile::CReqBlockPtrList& requestedblocks = m_file->GetRequestedBlockList();
+	const CPartFile::CReqBlockPtrList& requestedblocks = m_PartFile()->GetRequestedBlockList();
 	CPartFile::CReqBlockPtrList::const_iterator curr_pos2 = requestedblocks.begin();
 
 	for ( ; curr_pos2 != requestedblocks.end(); ++curr_pos2 ) {
@@ -978,7 +1070,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	CECEmptyTag sourceNames(EC_TAG_PARTFILE_SOURCE_NAMES);
 	typedef std::map<wxString, int> strIntMap;
 	strIntMap nameMap;
-	const CPartFile::SourceSet &sources = m_file->GetSourceList();
+	const CPartFile::SourceSet &sources = m_PartFile()->GetSourceList();
 	for (CPartFile::SourceSet::const_iterator it = sources.begin(); it != sources.end(); ++it) {
 		CUpDownClient *cur_src = *it; 
 		if (cur_src->GetRequestFile() != m_file || cur_src->GetClientFilename().Length() == 0) {
@@ -1037,13 +1129,16 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 
 void CPartFile_Encoder::ResetEncoder()
 {
-	m_part_status.ResetEncoder();
+	CKnownFile_Encoder::ResetEncoder();
 	m_gap_status.ResetEncoder();
 	m_req_status.ResetEncoder();
 }
 
 void CKnownFile_Encoder::Encode(CECTag *parent)
 {
+	//
+	// Source part frequencies
+	//
 	// Reference to the availability list
 	const ArrayOfUInts16& list = m_file->IsPartFile() ?
 		((CPartFile*)m_file)->m_SrcpartFrequency :
@@ -1102,8 +1197,7 @@ static CECPacket *GetStatsGraphs(const CECPacket *request)
 	return response;
 }
 
-CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
-	CPartFile_Encoder_Map &enc_part_map, CKnownFile_Encoder_Map &enc_shared_map, CObjTagMap &objmap)
+CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 {
 
 	if ( !request ) {
@@ -1168,24 +1262,28 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 		//
 		//
 		case EC_OP_GET_SHARED_FILES:
-			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetSharedFiles(enc_shared_map, objmap);
-			} else {
-				response = Get_EC_Response_GetSharedFiles(request, enc_shared_map);
+			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetSharedFiles(request, m_FileEncoder);
 			}
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
+			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetDownloadQueue(request, m_FileEncoder);
+			}
+			break;
+		//
+		// This will evolve into an update-all for inc tags
+		//
+		case EC_OP_GET_UPDATE:
 			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetDownloadQueue(enc_part_map, objmap);
-			} else {
-				response = Get_EC_Response_GetDownloadQueue(request, enc_part_map);
+				response = Get_EC_Response_GetUpdate(m_FileEncoder, m_obj_tagmap);
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
-			response = Get_EC_Response_GetClientQueue(request, objmap, EC_OP_ULOAD_QUEUE);
+			response = Get_EC_Response_GetClientQueue(request, m_obj_tagmap, EC_OP_ULOAD_QUEUE);
 			break;
 		case EC_OP_GET_WAIT_QUEUE:
-			response = Get_EC_Response_GetClientQueue(request, objmap, EC_OP_WAIT_QUEUE);
+			response = Get_EC_Response_GetClientQueue(request, m_obj_tagmap, EC_OP_WAIT_QUEUE);
 			break;
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
@@ -1307,7 +1405,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 
 		case EC_OP_SEARCH_RESULTS:
 			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_Search_Results(objmap);
+				response = Get_EC_Response_Search_Results(m_obj_tagmap);
 			} else {
 				response = Get_EC_Response_Search_Results(request);
 			}
@@ -1522,13 +1620,12 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request,
 				response = new CECPacket(EC_OP_NOOP);
 			}
 			break;
-
-		default:
-			AddLogLineM(false, wxString::Format(_("External Connection: invalid opcode received: %#x"), request->GetOpCode()));
-			wxFAIL;
-			response = new CECPacket(EC_OP_FAILED);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
-			break;
+	}
+	if (!response) {
+		AddLogLineM(false, wxString::Format(_("External Connection: invalid opcode received: %#x"), request->GetOpCode()));
+		wxFAIL;
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
 	}
 	return response;
 }

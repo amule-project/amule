@@ -408,9 +408,11 @@ private:
 
 	uint32 	m_kbpsDown;
 	uint8   m_iDownPriorityEC;
+	bool	m_isShared;
 	SourcenameItemMap m_SourcenameItemMap;
 public:
-	SourcenameItemMap &GetSourcenameItemMap() { return m_SourcenameItemMap; }
+	bool	IsShared() const					{ return m_isShared; }
+	SourcenameItemMap &GetSourcenameItemMap()	{ return m_SourcenameItemMap; }
 #endif
 public:
 	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }

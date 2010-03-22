@@ -127,6 +127,7 @@ protected:
 	std::map<I, T *> m_items_hash;
 	
 	// for GetByIndex
+	// fixme, remove this when GUI is unlocked (replace with iterator)
 	std::vector<T *> m_idx_items;
 	
 	// .size() is O(N) operation in stl
@@ -184,6 +185,10 @@ public:
 	{
 	}
 	
+	typedef typename std::list<T *>::iterator iterator;
+	iterator begin() { return m_items.begin(); }
+	iterator end() { return m_items.end(); }
+
 	uint32 GetCount()
 	{
 		return m_item_count;
@@ -211,8 +216,8 @@ public:
 	
 	void Flush()
 	{
-		m_items.erase(this->m_items.begin(), this->m_items.end());
-		m_items_hash.erase(this->m_items_hash.begin(), this->m_items_hash.end());
+		m_items.clear();
+		m_items_hash.clear();
 		m_item_count = 0;
 	}
 			
@@ -320,12 +325,32 @@ public:
 		for (size_t i = 0;i < reply->GetTagCount();i++) {
 			G *tag = (G *)reply->GetTagByIndex(i);
 			// initialize item data from EC tag
-			T *item = this->CreateItem(tag);
-			AddItem(item);
+			AddItem(CreateItem(tag));
 		}
 	}
 
-	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
+	void RemoveItem(iterator & it)
+	{
+		I item_id = GetItemID(*it);
+		// remove item from m_idx_items
+		for(int idx = 0;idx < m_item_count;idx++) {
+			if ( this->GetItemID(m_idx_items[idx]) == item_id ) {
+				m_idx_items[idx] = m_idx_items[m_item_count-1];
+				break;
+			}
+		}
+		// reduce count
+		m_item_count--;
+		// remove from map
+		m_items_hash.erase(item_id);
+		// item may contain data that need to be freed externally, before
+		// dtor is called and memory freed
+		DeleteItem(*it);
+
+		m_items.erase(it);
+	}
+
+	virtual void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 	{
 		std::set<I> core_files;
 		for (size_t i = 0;i < reply->GetTagCount();i++) {
@@ -348,37 +373,14 @@ public:
 				} else {
 					// Incremental mode: new items always carry full info,
 					// so we can add it right away
-					T *item = this->CreateItem(tag);
-					AddItem(item);
+					AddItem(CreateItem(tag));
 				}
 			}
 		}
-		std::list<I> del_ids;
-		for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
-			I item_id = GetItemID(*j);
-			if ( core_files.count(item_id) == 0 ) {
-				del_ids.push_back(item_id);
-			}
-		}
-		for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); j++) {
-			for(int idx = 0;idx < m_item_count;idx++) {
-				if ( this->GetItemID(m_idx_items[idx]) == *j ) {
-					m_idx_items[idx] = m_idx_items[m_item_count-1];
-					break;
-				}
-			}
-			m_item_count--;
-			m_items_hash.erase(*j);
-			for(typename std::list<T *>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
-				if ( *j == GetItemID(*k) ) {
-					// item may contain data that need to be freed externally, before
-					// dtor is called and memory freed
-					this->DeleteItem(*k);
-
-					this->m_items.erase(k);
-
-					break;
-				}
+		for(iterator it = begin(); it != end();) {
+			iterator it2 = it++;
+			if ( core_files.count(GetItemID(*it2)) == 0 ) {
+				RemoveItem(it2);
 			}
 		}
 	}
@@ -505,9 +507,6 @@ public:
 	CPartFile* GetFileByID(uint32 id) { return GetByID(id); }
 	CPartFile* GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
 	
-	bool IsPartFile(const CKnownFile* totest) const;
-	void OnConnectionState(bool bConnected);
-	
 	//
 	// User actions
 	//
@@ -519,7 +518,7 @@ public:
 	//
 	// Actions
 	//
-	void StopUDPRequests();
+	void StopUDPRequests() {}
 	void AddFileLinkToDownload(CED2KFileLink*, uint8);
 	bool AddLink(const wxString &link, uint8 category = 0);
 	void UnsetCompletedFilesExist();
@@ -568,6 +567,7 @@ public:
 	uint32 GetItemID(CKnownFile *);
 	void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
 	bool Phase1Done(const CECPacket *);
+	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type);
 };
 
 class CKnownFilesRem {

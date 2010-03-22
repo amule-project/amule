@@ -161,11 +161,13 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	}
 	case 2:
 		if (amuledlg->m_sharedfileswnd->IsShown()) {
-			sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
+			// update both downloads and shared files
+			sharedfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 		} else if (amuledlg->m_serverwnd->IsShown()) {
 			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
-			downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE,	EC_TAG_PARTFILE);
+			// update both downloads and shared files
+			sharedfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 			case vtUploading:
 				uploadqueue->ReQueryUp();
@@ -370,7 +372,7 @@ void CamuleRemoteGuiApp::Startup() {
 	// Forward wxLog events to CLogger
 	wxLog::SetActiveTarget(new CLoggerTarget);
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
-	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
+	sharedfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 
 	// Start the Poll Timer
 	poll_timer->Start(1000);	
@@ -1047,6 +1049,37 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
 	m_conn->SendPacket(&req);
 }
 
+void CSharedFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
+{
+	// First update download list
+	theApp->downloadqueue->ProcessUpdate(reply, NULL, EC_TAG_PARTFILE);
+
+	std::set<uint32> core_files;
+	for (size_t i = 0;i < reply->GetTagCount();i++) {
+		CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *)reply->GetTagByIndex(i);
+		uint32 id = tag->ID();
+		CPartFile* partfile = theApp->downloadqueue->GetFileByID(id);
+		// Skip file if it is a partfile that isn't shared
+		if (partfile && !partfile->IsShared()) {
+			continue;
+		}
+		core_files.insert(id);
+		if ( m_items_hash.count(id) ) {
+			// Item already known: update it
+			ProcessItemUpdate(tag, m_items_hash[id]);
+		} else {
+			AddItem(CreateItem(tag));
+		}
+	}
+	for(iterator it = begin(); it != end();) {
+		iterator it2 = it++;
+		if ( core_files.count(GetItemID(*it2)) == 0 ) {
+			RemoveItem(it2);
+		}
+	}
+}
+
+
 /*
  * List of uploading and waiting clients.
  */
@@ -1270,19 +1303,13 @@ bool CDownQueueRem::AddLink(const wxString &link, uint8 cat)
 }
 
 
-void CDownQueueRem::StopUDPRequests()
-{
-	// have no idea what is it about
-}
-
-
 void CDownQueueRem::ResetCatParts(int cat)
 {
 	// Called when category is deleted. Command will be performed on the remote side,
 	// but files still should be updated here right away, or drawing errors (colour not available)
 	// will happen.
-	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
-		CPartFile* file = GetFileByIndex( i );
+	for (iterator it = begin(); it != end(); it++) {
+		CPartFile* file = *it;
 		
 		if ( file->GetCategory() == cat ) {
 			// Reset the category
@@ -1292,18 +1319,6 @@ void CDownQueueRem::ResetCatParts(int cat)
 			file->SetCategory( file->GetCategory() - 1 );
 		}
 	}
-}
-
-
-bool CDownQueueRem::IsPartFile(const CKnownFile *) const
-{
-	// hope i understand it right
-	return true;
-}
-
-
-void CDownQueueRem::OnConnectionState(bool)
-{
 }
 
 
@@ -1355,6 +1370,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	tag->LastDateChanged(&file->m_lastDateChanged);
 	tag->DownloadActiveTime(&file->m_nDlActiveTime);
 	tag->AvailablePartCount(&file->m_availablePartsCount);
+	tag->Shared(&file->m_isShared);
 
 	tag->GetLostDueToCorruption(&file->m_iLostDueToCorruption);
 	tag->GetGainDueToCompression(&file->m_iGainDueToCompression);
