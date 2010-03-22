@@ -59,7 +59,7 @@ public:
 	void	CreateOfferedFilePacket(CKnownFile* cur_file, CMemFile* files, CServer* pServer, CUpDownClient* pClient);
 	size_t	GetCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
 	size_t  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
-	void	CopyFileList(std::vector<CKnownFile*>& out_list);
+	void	CopyFileList(std::vector<CKnownFile*>& out_list) const;
 	void	UpdateItem(CKnownFile* toupdate);
 	unsigned	AddFilesFromDirectory(const CPath& directory);
 	void    GetSharedFilesByDirectory(const wxString& directory, CKnownFilePtrList& list);

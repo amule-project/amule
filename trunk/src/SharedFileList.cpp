@@ -572,13 +572,13 @@ short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
 }
 
 
-void CSharedFileList::CopyFileList(std::vector<CKnownFile*>& out_list)
+void CSharedFileList::CopyFileList(std::vector<CKnownFile*>& out_list) const
 {
 	wxMutexLocker lock(list_mut);
 
 	out_list.reserve(m_Files_map.size());
 	for (
-		CKnownFileMap::iterator it = m_Files_map.begin();
+		CKnownFileMap::const_iterator it = m_Files_map.begin();
 		it != m_Files_map.end();
 		++it
 		) {
