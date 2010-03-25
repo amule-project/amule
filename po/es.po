@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-07 11:56+0100\n"
-"PO-Revision-Date: 2010-02-21 14:32+0100\n"
+"PO-Revision-Date: 2010-03-21 19:13+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -1866,16 +1866,15 @@ msgstr "Marcador de versión de protocolo inexistente."
 #: src/ExternalConn.cpp:328
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
+"Autentificación fallída: hash inválido especificado como contraseña EC."
 
 #: src/ExternalConn.cpp:344
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Autentificación fallida."
+msgstr "Autentificación fallida: contraseña incorrecta."
 
 #: src/ExternalConn.cpp:346
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Autentificación fallida."
+msgstr "Autentificación fallida: falta contraseña."
 
 #: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
@@ -1886,9 +1885,9 @@ msgid "Access granted."
 msgstr "Acceso concedido."
 
 #: src/ExternalConn.cpp:369
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Filtrar mensajes de clientes desconocidos"
+msgstr "Mensaje \"%s\" de error enviado al cliente."
 
 #: src/ExternalConn.cpp:372
 msgid "Unauthorized access attempt. Connection closed."
