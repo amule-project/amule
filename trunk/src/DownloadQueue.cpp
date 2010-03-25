@@ -182,11 +182,7 @@ void CDownloadQueue::CopyFileList(std::vector<CPartFile*>& out_list) const
 	wxMutexLocker lock(m_mutex);
 
 	out_list.reserve(m_filelist.size());
-	for (
-		FileQueue::const_iterator it = m_filelist.begin();
-		it != m_filelist.end();
-		++it
-		) {
+	for (FileQueue::const_iterator it = m_filelist.begin(); it != m_filelist.end(); ++it) {
 		out_list.push_back(*it);
 	}
 }
