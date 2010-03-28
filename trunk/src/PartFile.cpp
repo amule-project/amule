@@ -3572,7 +3572,7 @@ void CPartFile::GetRatingAndComments(FileRatingList & list) const
 
 #else   // CLIENT_GUI
 
-CPartFile::CPartFile(CEC_PartFile_Tag *tag) : CKnownFile(tag->ID())
+CPartFile::CPartFile(CEC_PartFile_Tag *tag) : CKnownFile(tag)
 {
 	Init();
 	

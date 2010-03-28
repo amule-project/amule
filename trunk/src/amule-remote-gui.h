@@ -126,10 +126,6 @@ protected:
 	std::list<T *> m_items;
 	std::map<I, T *> m_items_hash;
 	
-	// for GetByIndex
-	// fixme, remove this when GUI is unlocked (replace with iterator)
-	std::vector<T *> m_idx_items;
-	
 	// .size() is O(N) operation in stl
 	int m_item_count;
 	
@@ -198,8 +194,6 @@ public:
 	{
 		m_items.push_back(item);
 		m_items_hash[GetItemID(item)] = item;
-		m_idx_items.resize(m_item_count+1);
-		m_idx_items[m_item_count] = item;
 		m_item_count++;
 	}
 
@@ -208,12 +202,7 @@ public:
 		// avoid creating nodes
 		return m_items_hash.count(id) ? m_items_hash[id] : NULL;
 	}
-	
-	T *GetByIndex(int index)
-	{
-		return ( (index >= 0) && (index < m_item_count) ) ? m_idx_items[index] : NULL;
-	}
-	
+
 	void Flush()
 	{
 		m_items.clear();
@@ -332,13 +321,6 @@ public:
 	void RemoveItem(iterator & it)
 	{
 		I item_id = GetItemID(*it);
-		// remove item from m_idx_items
-		for(int idx = 0;idx < m_item_count;idx++) {
-			if ( this->GetItemID(m_idx_items[idx]) == item_id ) {
-				m_idx_items[idx] = m_idx_items[m_item_count-1];
-				break;
-			}
-		}
 		// reduce count
 		m_item_count--;
 		// remove from map
@@ -498,14 +480,14 @@ public:
 	uint16 GetWaitingPosition(const CUpDownClient *client) const;
 };
 
-class CDownQueueRem : public CRemoteContainer<CPartFile, uint32, CEC_PartFile_Tag> {
-	std::map<uint32, PartFileEncoderData> m_enc_map;
+class CDownQueueRem : public std::map<uint32, CPartFile*> {
+	CRemoteConnect *m_conn;
 public:
-	CDownQueueRem(CRemoteConnect *);
+	CDownQueueRem(CRemoteConnect * conn) { m_conn = conn; }
 	
-	uint32 GetFileCount() { return GetCount(); }
-	CPartFile* GetFileByID(uint32 id) { return GetByID(id); }
-	CPartFile* GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
+	CPartFile* GetFileByID(uint32 id);
+	CPartFile* GetFileByIndex(unsigned int idx);	// to be deleted when GUI is unlocked!
+	uint32 GetFileCount() { return size(); }	// this too !
 	
 	//
 	// User actions
@@ -524,31 +506,14 @@ public:
 	void UnsetCompletedFilesExist();
 	void ResetCatParts(int cat);
 	void AddSearchToDownload(CSearchFile* toadd, uint8 category);
-	
-	//
-	// template
-	//
-	CPartFile *CreateItem(CEC_PartFile_Tag *);
-	void DeleteItem(CPartFile *);
-	uint32 GetItemID(CPartFile *);
-	void ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *);
-	bool Phase1Done(const CECPacket *);
 };
 
-class CSharedFilesRem : public CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag> {
-	std::map<uint32, RLE_Data> m_enc_map;
-	
-	virtual void HandlePacket(const CECPacket *);
-	
-	//
-	// For file renaming operation
-	//
-	CKnownFile* m_rename_file;
-	wxString m_new_name;
+class CSharedFilesRem  : public std::map<uint32, CKnownFile*> {
+	CRemoteConnect *m_conn;
 public:
-	CSharedFilesRem(CRemoteConnect *);
+	CSharedFilesRem(CRemoteConnect * conn);
 	
-	CKnownFile *GetFileByID(uint32 id) { return GetByID(id); }
+	CKnownFile *GetFileByID(uint32 id);
 
 	void SetFilePrio(CKnownFile *file, uint8 prio);
 
@@ -558,38 +523,32 @@ public:
 	void AddFilesFromDirectory(const CPath&);
 	void Reload(bool sendtoserver = true, bool firstload = false);
 	bool RenameFile(CKnownFile* file, const CPath& newName);
-
-	//
-	// template
-	//
-	CKnownFile *CreateItem(CEC_SharedFile_Tag *);
-	void DeleteItem(CKnownFile *);
-	uint32 GetItemID(CKnownFile *);
-	void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
-	bool Phase1Done(const CECPacket *);
-	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type);
 };
 
-class CKnownFilesRem {
-	CSharedFilesRem *m_shared_files;
+class CKnownFilesRem : public CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag> {
+	CKnownFile * CreateKnownFile(CEC_SharedFile_Tag *tag, CKnownFile *file = NULL);
+	CPartFile  * CreatePartFile(CEC_PartFile_Tag *tag);
+
 public:
-	CKnownFilesRem(CSharedFilesRem *shared)
-	{
-		m_shared_files = shared;
-		
-		requested = 0;
-		transferred = 0;
-		accepted = 0;
-	}
+	CKnownFilesRem(CRemoteConnect * conn);
 	
-	CKnownFile *FindKnownFileByID(uint32 id)
-	{
-		return m_shared_files->GetByID(id); 
-	}
+	CKnownFile *FindKnownFileByID(uint32 id) { return GetByID(id); }
 
 	uint16 requested;
 	uint32 transferred;
 	uint16 accepted;
+
+	//
+	// template
+	//
+	CKnownFile *CreateItem(CEC_SharedFile_Tag *) { wxFAIL; return NULL; }	// unused, required by template
+	void DeleteItem(CKnownFile *);
+	uint32 GetItemID(CKnownFile *);
+	void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
+	bool Phase1Done(const CECPacket *) { return true; }
+	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type);
+
+	void ProcessItemUpdatePartfile(CEC_PartFile_Tag *, CPartFile *);
 };
 
 class CClientListRem {
