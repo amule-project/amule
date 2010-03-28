@@ -1511,12 +1511,7 @@ CPartFile* CDownQueueRem::GetFileByIndex(unsigned int idx)
 	if (it == end()) {
 		return NULL;
 	}
-	it++;
-	if (it == end()) {
-		return NULL;
-	} else {
-		return it->second;
-	}
+	return (it++)->second;
 }
 
 
