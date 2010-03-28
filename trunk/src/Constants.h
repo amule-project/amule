@@ -85,6 +85,33 @@ enum HTTP_Download_File
 	HTTP_GeoIP
 };
 
+// KnownFile constants
+
+#define	PS_READY			0
+#define	PS_EMPTY			1
+#define PS_WAITINGFORHASH		2
+#define PS_HASHING			3
+#define PS_ERROR			4
+#define	PS_INSUFFICIENT			5
+#define	PS_UNKNOWN			6
+#define PS_PAUSED			7
+#define PS_COMPLETING			8
+#define PS_COMPLETE			9
+#define PS_ALLOCATING			10
+
+
+#define PR_VERYLOW			4 // I Had to change this because
+					  // it didn't save negative number
+					  // correctly.. Had to modify the
+					  // sort function for this change..
+#define PR_LOW				0 //*
+#define PR_NORMAL			1 // Don't change this - needed for
+					  // edonkey clients and server!
+#define PR_HIGH				2 //*
+#define PR_VERYHIGH			3
+#define PR_AUTO				5
+#define PR_POWERSHARE			6 //added for powershare (deltaHF)
+
 
 #endif
 // File_checked_for_headers
