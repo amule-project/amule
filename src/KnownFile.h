@@ -40,6 +40,7 @@
 
 #ifdef CLIENT_GUI
 #include <ec/cpp/ECSpecialTags.h>
+#include "RLE.h"			// Needed for RLE_Data, PartFileEncoderData
 #endif
 
 #include "Constants.h"		// Needed for PS_*, PR_*
@@ -65,7 +66,7 @@ typedef vector<CTag> ArrayOfCTag;
 class CFileStatistic
 {
 	friend class CKnownFile;
-	friend class CSharedFilesRem;
+	friend class CKnownFilesRem;
 
 public:
 	CFileStatistic();
@@ -178,6 +179,7 @@ public:
 	const CPath& GetFilePath() const { return m_filePath; }
 	
 	virtual	bool	IsPartFile() const	{return false;}
+	virtual bool	IsCPartFile() const	{ return false; }
 	virtual bool	LoadFromFile(const CFileDataIO* file);	//load date, hashset and tags from a .met file
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
 	bool	WriteToFile(CFileDataIO* file);	
@@ -290,7 +292,8 @@ public:
 
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);
-	friend class CSharedFilesRem;
+	friend class CKnownFilesRem;
+	RLE_Data m_partStatus;
 
 private:
 	uint8 m_iUpPriorityEC;

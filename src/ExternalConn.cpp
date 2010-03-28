@@ -107,7 +107,7 @@ class CPartFile_Encoder : public CKnownFile_Encoder {
 	bool m_shared;
 
 	// cast inherited member to CPartFile
-	CPartFile * m_PartFile() { wxASSERT(m_file->IsPartFile()); return (CPartFile *)m_file; }
+	CPartFile * m_PartFile() { wxASSERT(m_file->IsCPartFile()); return (CPartFile *)m_file; }
 public:
 	// encoder side
 	CPartFile_Encoder(const CPartFile *file = 0) : CKnownFile_Encoder(file)
@@ -612,7 +612,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	for (CFileEncoderMap::iterator it = encoders.begin(); it != encoders.end(); ++it) {
 		const CKnownFile *cur_file = it->second->GetFile();
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
-		if (cur_file->IsPartFile()) {
+		if (cur_file->IsCPartFile()) {
 			CEC_PartFile_Tag filetag((const CPartFile*) cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
 			// Add information if partfile is shared
 			filetag.AddTag(EC_TAG_PARTFILE_SHARED, it->second->IsShared(), &valuemap);

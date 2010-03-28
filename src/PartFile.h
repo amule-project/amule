@@ -107,6 +107,7 @@ public:
 	virtual bool LoadFromFile(const CFileDataIO* WXUNUSED(file)) { return false; }
 	bool	WriteToFile(CFileDataIO* WXUNUSED(file))	{ return false; }
 	bool	IsPartFile() const		{ return !(status == PS_COMPLETE); }
+	bool	IsCPartFile() const		{ return true; }
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(const CPath& in_directory, const CPath& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
@@ -413,6 +414,7 @@ private:
 public:
 	bool	IsShared() const					{ return m_isShared; }
 	SourcenameItemMap &GetSourcenameItemMap()	{ return m_SourcenameItemMap; }
+	PartFileEncoderData m_PartFileEncoderData;
 #endif
 public:
 	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }
@@ -460,7 +462,7 @@ private:
 	uint32	m_LastSearchTimeKad;
 	uint8	m_TotalSearchesKad;
 
-friend class CDownQueueRem;
+friend class CKnownFilesRem;
 friend class CPartFileConvert;
 };
 

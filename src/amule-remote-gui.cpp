@@ -162,12 +162,12 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	case 2:
 		if (amuledlg->m_sharedfileswnd->IsShown()) {
 			// update both downloads and shared files
-			sharedfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
+			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 		} else if (amuledlg->m_serverwnd->IsShown()) {
 			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
 			// update both downloads and shared files
-			sharedfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
+			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 			case vtUploading:
 				uploadqueue->ReQueryUp();
@@ -359,7 +359,7 @@ void CamuleRemoteGuiApp::Startup() {
 	serverlist = new CServerListRem(m_connect);
 	
 	sharedfiles	= new CSharedFilesRem(m_connect);
-	knownfiles = new CKnownFilesRem(sharedfiles);
+	knownfiles = new CKnownFilesRem(m_connect);
 
 	// bugfix - do this before creating the uploadqueue
 	downloadqueue = new CDownQueueRem(m_connect);
@@ -372,7 +372,7 @@ void CamuleRemoteGuiApp::Startup() {
 	// Forward wxLog events to CLogger
 	wxLog::SetActiveTarget(new CLoggerTarget);
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
-	sharedfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
+	knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 
 	// Start the Poll Timer
 	poll_timer->Start(1000);	
@@ -878,8 +878,8 @@ void CServerListRem::ProcessItemUpdate(CEC_Server_Tag *, CServer *)
 
 void CServerListRem::ReloadControl()
 {
-	for(uint32 i = 0;i < GetCount(); i++) {
-		CServer *srv = GetByIndex(i);
+	for(iterator it = begin(); it != end(); it++) {
+		CServer *srv = *it;
 		theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(srv);
 	}
 }
@@ -910,9 +910,9 @@ void CIPFilterRem::Update(wxString url)
 /*
  * Shared files list
  */
-CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag>(conn, true)
+CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn)
 {
-	m_rename_file = NULL;
+	m_conn = conn;
 }
 
 
@@ -944,60 +944,38 @@ bool CSharedFilesRem::RenameFile(CKnownFile* file, const CPath& newName)
 	request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 	request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, strNewName));
 
-	m_conn->SendRequest(this, &request);
-	m_rename_file = file;
-	m_new_name = strNewName;
+	m_conn->SendPacket(&request);
 	
 	return true;
 }
 
 
-void CSharedFilesRem::HandlePacket(const CECPacket *packet)
+void CKnownFilesRem::DeleteItem(CKnownFile * file)
 {
-	if (m_rename_file && (packet->GetOpCode() == EC_OP_NOOP)) {
-		m_rename_file->SetFileName(CPath(m_new_name));
-		m_rename_file = NULL;
-	} else if (packet->GetOpCode() != EC_OP_FAILED) {
-		CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag>::HandlePacket(packet);
+	uint32 id = file->ECID();
+	if (theApp->sharedfiles->count(id)) {
+		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file);
+		theApp->sharedfiles->erase(id);
 	}
+	if (theApp->downloadqueue->count(id)) {
+		theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile((CPartFile *) file);
+		theApp->downloadqueue->erase(id);
+	}
+	delete file;
 }
 
 
-CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
-{
-	CKnownFile *file = new CKnownFile(tag);
-
-	m_enc_map[file->ECID()] = RLE_Data(file->GetPartCount(), true);
-
-	ProcessItemUpdate(tag, file);
-	
-	theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(file);
-	
-	return file;
-}
-
-
-void CSharedFilesRem::DeleteItem(CKnownFile *in_file)
-{
-	CScopedPtr<CKnownFile> file(in_file);
-
-	m_enc_map.erase(file->ECID());
-	
-	theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file.get());
-}
-
-
-uint32 CSharedFilesRem::GetItemID(CKnownFile *file)
+uint32 CKnownFilesRem::GetItemID(CKnownFile *file)
 {
 	return file->ECID();
 }
 
 
-void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
+void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
 {
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	if (parttag) {
-		const uint8 *data =	m_enc_map[file->ECID()].Decode(
+		const uint8 *data =	file->m_partStatus.Decode(
 				(uint8 *)parttag->GetTagData(),
 				parttag->GetTagDataLen());
 		for(int i = 0; i < file->GetPartCount(); ++i) {
@@ -1021,20 +999,15 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	tag->GetCompleteSourcesLow(&file->m_nCompleteSourcesCountLo);
 	tag->GetCompleteSourcesHigh(&file->m_nCompleteSourcesCountHi);
 
-	theApp->knownfiles->requested += file->statistic.requested;
-	theApp->knownfiles->transferred += file->statistic.transferred;
-	theApp->knownfiles->accepted += file->statistic.transferred;
+	requested += file->statistic.requested;
+	transferred += file->statistic.transferred;
+	accepted += file->statistic.transferred;
 	
 	theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
-}
 
-bool CSharedFilesRem::Phase1Done(const CECPacket *)
-{
-	theApp->knownfiles->requested = 0;
-	theApp->knownfiles->transferred = 0;
-	theApp->knownfiles->accepted = 0;
-	
-	return true;
+	if (file->IsPartFile()) {
+		ProcessItemUpdatePartfile((CEC_PartFile_Tag *) tag, (CPartFile *) file);
+	}
 }
 
 void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
@@ -1049,34 +1022,51 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
 	m_conn->SendPacket(&req);
 }
 
-void CSharedFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
+void CKnownFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
 {
-	// First update download list
-	theApp->downloadqueue->ProcessUpdate(reply, NULL, EC_TAG_PARTFILE);
+	requested = 0;
+	transferred = 0;
+	accepted = 0;
 
 	std::set<uint32> core_files;
 	for (size_t i = 0;i < reply->GetTagCount();i++) {
 		CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *)reply->GetTagByIndex(i);
 		uint32 id = tag->ID();
-		CPartFile* partfile = theApp->downloadqueue->GetFileByID(id);
-		// Skip file if it is a partfile that isn't shared
-		if (partfile && !partfile->IsShared()) {
-			continue;
-		}
 		core_files.insert(id);
 		if ( m_items_hash.count(id) ) {
 			// Item already known: update it
 			ProcessItemUpdate(tag, m_items_hash[id]);
 		} else {
-			AddItem(CreateItem(tag));
+			CKnownFile * newFile;
+			if (tag->GetTagName() == EC_TAG_PARTFILE) {
+				CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
+				ProcessItemUpdate(tag, file);
+				(*theApp->downloadqueue)[id] = file;
+				theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
+				newFile = file;
+			} else {
+				newFile = new CKnownFile(tag);
+				ProcessItemUpdate(tag, newFile);
+				(*theApp->sharedfiles)[id] = newFile;
+				theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(newFile);
+			}
+			AddItem(newFile);
 		}
 	}
+	// remove items no longer present
 	for(iterator it = begin(); it != end();) {
 		iterator it2 = it++;
-		if ( core_files.count(GetItemID(*it2)) == 0 ) {
-			RemoveItem(it2);
+		if (!core_files.count(GetItemID(*it2))) {
+			RemoveItem(it2);	// This calls DeleteItem, where it is removed from lists and views.
 		}
 	}
+}
+
+CKnownFilesRem::CKnownFilesRem(CRemoteConnect * conn) : CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag>(conn, true)
+{
+	requested = 0;
+	transferred = 0;
+	accepted = 0;
 }
 
 
@@ -1127,7 +1117,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 
 	m_Friend = 0;
 	if (tag->HaveFile()) {
-		m_uploadingfile = theApp->sharedfiles->GetByID(tag->FileID());
+		m_uploadingfile = theApp->knownfiles->GetByID(tag->FileID());
 	} else {
 		m_uploadingfile = NULL;
 	}
@@ -1284,13 +1274,6 @@ m_up_list(conn, vtUploading), m_wait_list(conn, vtQueued)
  */
 
 
-CDownQueueRem::CDownQueueRem(CRemoteConnect *conn)
-:
-CRemoteContainer<CPartFile, uint32, CEC_PartFile_Tag>(conn, true)
-{
-}
-
-
 bool CDownQueueRem::AddLink(const wxString &link, uint8 cat)
 {
 	CECPacket req(EC_OP_ADD_LINK);
@@ -1309,7 +1292,7 @@ void CDownQueueRem::ResetCatParts(int cat)
 	// but files still should be updated here right away, or drawing errors (colour not available)
 	// will happen.
 	for (iterator it = begin(); it != end(); it++) {
-		CPartFile* file = *it;
+		CPartFile* file = it->second;
 		
 		if ( file->GetCategory() == cat ) {
 			// Reset the category
@@ -1322,34 +1305,8 @@ void CDownQueueRem::ResetCatParts(int cat)
 }
 
 
-CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
-{
-	CPartFile *file = new CPartFile(tag);
-	m_enc_map[file->ECID()] = PartFileEncoderData();
-	ProcessItemUpdate(tag, file);
-	
-	theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
-	return file;
-}
 
-
-void CDownQueueRem::DeleteItem(CPartFile *in_file)
-{
-	CScopedPtr<CPartFile> file(in_file);
-
-	theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file.get());
-	
-	m_enc_map.erase(file->ECID());
-}
-
-
-uint32 CDownQueueRem::GetItemID(CPartFile *file)
-{
-	return file->ECID();
-}
-
-
-void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
+void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile *file)
 {
 	//
 	// update status
@@ -1396,9 +1353,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
 	if (gaptag || parttag || reqtag) {
-		wxASSERT(m_enc_map.count(file->ECID()));
-		
-		PartFileEncoderData &encoder = m_enc_map[file->ECID()];
+		PartFileEncoderData &encoder = file->m_PartFileEncoderData;
 
 		if (gaptag) {
 			ArrayOfUInts64 gaps;
@@ -1472,12 +1427,13 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	}
 		
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(file);
-}
 
-
-bool CDownQueueRem::Phase1Done(const CECPacket *)
-{
-	return true;
+	// If file is shared check if it is already listed in shared files.
+	// If not, add it and show it.
+	if (file->IsShared() && !theApp->sharedfiles->count(file->ECID())) {
+		(*theApp->sharedfiles)[file->ECID()] = file;
+		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(file);
+	}
 }
 
 
@@ -1519,7 +1475,7 @@ void CDownQueueRem::AutoPrio(CPartFile *file, bool flag)
 void CDownQueueRem::Category(CPartFile *file, uint8 cat)
 {
 	CECPacket req(EC_OP_PARTFILE_SET_CAT);
-	file->m_category = cat;
+	file->SetCategory(cat);
 	
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
@@ -1537,6 +1493,27 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 	req.AddTag(hashtag);
 	
 	m_conn->SendPacket(&req);
+}
+
+
+// This is an ugly hack and to be deleted when GUI is unlocked!
+// (replacing iterate-by-index with iteration)
+// It will only work for linear iteration starting with 0 (as used in CTransferWnd::UpdateCategory)
+CPartFile* CDownQueueRem::GetFileByIndex(unsigned int idx)
+{
+	static CDownQueueRem::iterator it;
+	if (idx == 0) {
+		it = begin();
+	}
+	if (it == end()) {
+		return NULL;
+	}
+	it++;
+	if (it == end()) {
+		return NULL;
+	} else {
+		return it->second;
+	}
 }
 
 
