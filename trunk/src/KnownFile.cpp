@@ -428,7 +428,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 	m_abyFileHash = tag->FileHash();
 	SetFileSize(tag->SizeFull());
 	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
-	m_iUpPriorityEC = tag->Prio();
+	m_iUpPriorityEC = tag->UpPrio();
 	m_AICHMasterHash = tag->GetAICHHash();
 	m_filePath = CPath(tag->FilePath());
 }

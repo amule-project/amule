@@ -647,7 +647,7 @@ void SharedFile::ProcessUpdate(CEC_SharedFile_Tag *tag)
 	nFileAccepts = tag->GetAccepts();
 	nFileAllTimeAccepts = tag->GetAllAccepts();
 	sFileHash = nHash.Encode();
-	nFilePriority = tag->Prio();
+	nFilePriority = tag->UpPrio();
 	if ( nFilePriority >= 10 ) {
 		bFileAutoPriority = true;
 		nFilePriority -= 10;
@@ -700,7 +700,7 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		return;
 	}
 	
-	lFilePrio = tag->Prio();
+	lFilePrio = tag->DownPrio();
 	if ( lFilePrio >= 10 ) {
 		lFilePrio -= 10;
 		bFileAutoPriority = true;

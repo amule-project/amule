@@ -218,7 +218,7 @@ class CEC_SharedFile_Tag : public CECTag {
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
  		wxString	FileEd2kLink()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
-  		uint8		Prio(uint8 *target = 0)				const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
+  		uint8		UpPrio(uint8 *target = 0)			const { return AssignIfExist(EC_TAG_KNOWNFILE_PRIO, target); }
  		uint16		GetRequests(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, target); }
  		uint32		GetAllRequests(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, target); }
 
@@ -249,7 +249,7 @@ class CEC_PartFile_Tag : public CEC_SharedFile_Tag {
   		uint16		SourceXferCount(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, target); }
   		uint16		SourceCountA4AF(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, target); }
   		uint32		Speed(uint32 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_SPEED, target); }
-  		uint8		Prio(uint8 *target = 0)			const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
+  		uint8		DownPrio(uint8 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_PRIO, target); }
  		uint8		FileCat(uint8 *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_CAT, target); }
 		time_t		LastSeenComplete(time_t *target = 0)const { return AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, target); }
 		time_t		LastDateChanged(time_t *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LAST_RECV, target); }

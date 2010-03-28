@@ -189,7 +189,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash(), valuemap);
 	
-	AddTag(EC_TAG_PARTFILE_PRIO,
+	AddTag(EC_TAG_KNOWNFILE_PRIO,
 		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), valuemap);
 
 	AddTag(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW, file->m_nCompleteSourcesCountLo, valuemap);
