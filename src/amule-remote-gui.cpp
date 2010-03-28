@@ -998,6 +998,9 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 	}
 	tag->GetCompleteSourcesLow(&file->m_nCompleteSourcesCountLo);
 	tag->GetCompleteSourcesHigh(&file->m_nCompleteSourcesCountHi);
+	tag->GetCompleteSources(&file->m_nCompleteSourcesCount);
+
+	tag->GetOnQueue(&file->m_queuedCount);
 
 	requested += file->statistic.requested;
 	transferred += file->statistic.transferred;

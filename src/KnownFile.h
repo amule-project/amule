@@ -209,7 +209,11 @@ public:
 	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
 	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
 	void	UpdateAutoUpPriority();
-	size_t	GetQueuedCount() const {return m_ClientUploadList.size();}
+#ifdef CLIENT_GUI
+	uint16	GetQueuedCount() const { return m_queuedCount; }
+#else
+	uint16	GetQueuedCount() const { return (uint16) m_ClientUploadList.size(); }
+#endif
 
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
@@ -296,7 +300,8 @@ public:
 	RLE_Data m_partStatus;
 
 private:
-	uint8 m_iUpPriorityEC;
+	uint8	m_iUpPriorityEC;
+	uint16	m_queuedCount;
 
 protected:
 	//! The AICH master-hash, if it is known.

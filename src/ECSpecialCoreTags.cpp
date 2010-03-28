@@ -194,6 +194,9 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 	AddTag(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW, file->m_nCompleteSourcesCountLo, valuemap);
 	AddTag(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH, file->m_nCompleteSourcesCountHi, valuemap);
+	AddTag(EC_TAG_KNOWNFILE_COMPLETE_SOURCES, file->m_nCompleteSourcesCount, valuemap);
+
+	AddTag(EC_TAG_KNOWNFILE_ON_QUEUE, file->GetQueuedCount(), valuemap);
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;

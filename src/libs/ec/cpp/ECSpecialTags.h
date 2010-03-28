@@ -230,6 +230,9 @@ class CEC_SharedFile_Tag : public CECTag {
 
  		uint16		GetCompleteSourcesLow(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW, target); }
  		uint16		GetCompleteSourcesHigh(uint16 *target = 0)	const { return AssignIfExist(EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH, target); }
+ 		uint16		GetCompleteSources(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_COMPLETE_SOURCES, target); }
+
+		uint16		GetOnQueue(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_ON_QUEUE, target); }
 
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
 };
