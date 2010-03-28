@@ -431,6 +431,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 	m_iUpPriorityEC = tag->UpPrio();
 	m_AICHMasterHash = tag->GetAICHHash();
 	m_filePath = CPath(tag->FilePath());
+	m_queuedCount = 0;
 }
 
 CKnownFile::~CKnownFile()
