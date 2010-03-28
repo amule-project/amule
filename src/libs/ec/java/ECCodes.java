@@ -199,6 +199,7 @@ public final static short 	EC_TAG_KNOWNFILE_AICH_MASTERHASH          = 0x0407;
 public final static short 	EC_TAG_KNOWNFILE_FILENAME                 = 0x0408;
 public final static short 	EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW     = 0x0409;
 public final static short 	EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH    = 0x040A;
+public final static short 	EC_TAG_KNOWNFILE_PRIO                     = 0x040B;
 public final static short EC_TAG_SERVER                             = 0x0500;
 public final static short 	EC_TAG_SERVER_NAME                        = 0x0501;
 public final static short 	EC_TAG_SERVER_DESC                        = 0x0502;

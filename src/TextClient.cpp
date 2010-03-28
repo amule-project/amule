@@ -765,10 +765,10 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 							((int)tag->SourceXferCount() ? wxString::Format(wxT("(%2.2i) - "),(int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
 						tag->GetFileStatusString();
 						s << wxT(" - ") << tag->PartMetName();
-                                                if (tag->Prio() < 10) {
-                                                        s << wxT(" - ") << PriorityToStr((int)tag->Prio(), 0);
+                                                if (tag->DownPrio() < 10) {
+                                                        s << wxT(" - ") << PriorityToStr((int)tag->DownPrio(), 0);
                                                 } else {
-                                                        s << wxT(" - ") << PriorityToStr((tag->Prio() - 10), 1);
+                                                        s << wxT(" - ") << PriorityToStr((tag->DownPrio() - 10), 1);
                                                 }
 						if ( tag->SourceXferCount() > 0) {
 							s << wxT(" - ") + CastItoSpeed(tag->Speed());

@@ -988,7 +988,7 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 	tag->GetAllAccepts(&file->statistic.alltimeaccepted);
 	tag->GetXferred(&file->statistic.transferred);
 	tag->GetAllXferred(&file->statistic.alltimetransferred);
-	tag->Prio(&file->m_iUpPriorityEC);
+	tag->UpPrio(&file->m_iUpPriorityEC);
 	if (file->m_iUpPriorityEC >= 10) {
 		file->m_iUpPriority = file->m_iUpPriorityEC - 10;
 		file->m_bAutoUpPriority = true;
@@ -1335,7 +1335,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 
 	tag->FileCat(&file->m_category);
 	
-	tag->Prio(&file->m_iDownPriorityEC);
+	tag->DownPrio(&file->m_iDownPriorityEC);
 	if ( file->m_iDownPriorityEC >= 10 ) {
 		file->m_iDownPriority = file->m_iDownPriorityEC - 10;
 		file->m_bAutoDownPriority = true;

@@ -236,6 +236,7 @@ EC_TAG_KNOWNFILE                          0x0400
 	EC_TAG_KNOWNFILE_FILENAME                 0x0408
 	EC_TAG_KNOWNFILE_COMPLETE_SOURCES_LOW     0x0409
 	EC_TAG_KNOWNFILE_COMPLETE_SOURCES_HIGH    0x040A
+	EC_TAG_KNOWNFILE_PRIO                     0x040B
 
 EC_TAG_SERVER                             0x0500
 	EC_TAG_SERVER_NAME                        0x0501
