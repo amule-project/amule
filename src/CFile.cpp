@@ -255,13 +255,16 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 		Close();	
 	}
 	
+	m_filePath = fileName;
 
-	
+	// Windows needs wide character file names
+#ifdef __WXMSW__
+	m_fd = _wopen(fileName.GetRaw().c_str(), flags, accessMode);
+#else
 	Unicode2CharBuf tmpFileName = filename2char(fileName.GetRaw());
 	wxASSERT_MSG(tmpFileName, wxT("Convertion failed in CFile::Open"));
-
-	m_filePath = fileName;
 	m_fd = open(tmpFileName, flags, accessMode);
+#endif
 	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
 	
 	return IsOpened();
