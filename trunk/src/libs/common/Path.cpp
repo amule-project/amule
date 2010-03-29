@@ -270,11 +270,17 @@ CPath::CPath(const wxString& filename)
 		// saved as UTF8, even if the system is not unicode enabled,
 		// preserving the original filename till the user has fixed
 		// his system ...
+#ifdef __WXMSW__
+		// Magic fails on Windows where we always work with wide char file names.
+		m_filesystem = DeepCopy(filename);
+		m_printable = m_filesystem;
+#else
 		fn = wxConvUTF8.cWC2MB(filename);
 		m_filesystem = wxConvFile.cMB2WC(fn);
 
 		// There's no need to try to unmangle the filename here.
 		m_printable = DeepCopy(filename);
+#endif
 	}
 
 	wxASSERT(m_filesystem.Length());

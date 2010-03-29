@@ -130,6 +130,7 @@ Version 2.3.0 - The river knows.
 		* Fixed crash in CClientList::ProcessDirectCallbackList that had been around for ages (hopefully)
 		* Fixed size of large files in aMuleweb's search results
 		* Show completed downloads in aMulegui
+		* Fixed international file names on Windows
 
 	Vollstrecker:
 		* Unify copyright lines
