@@ -49,8 +49,8 @@ public:
  
 	size_t InternalLastCount() { return wxSocketClient::LastCount(); };
 	bool InternalWaitOnConnect(long secs = -1, long msecs = 0) { return wxSocketClient::WaitOnConnect(secs,msecs); };
-	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForRead(secs,msecs); };
-	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForWrite(secs,msecs); };
+	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForWrite(secs,msecs); };
+	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForRead(secs,msecs); };
 	
 	bool InternalError() { return wxSocketClient::Error(); }
 	void InternalClose() { wxSocketClient::Close(); }
