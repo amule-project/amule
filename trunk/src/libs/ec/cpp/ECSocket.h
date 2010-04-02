@@ -71,7 +71,7 @@ private:
 	const bool m_use_events;
 	
 	// Output related data
-	std::deque<CQueuedData *> m_output_queue;
+	std::list<CQueuedData *> m_output_queue;
 
 	// zlib (deflation) buffers
 	std::vector<unsigned char> m_in_ptr;
@@ -211,7 +211,7 @@ public:
 	bool DataPending();
  private:
 	const CECPacket *ReadPacket();
-	void WritePacket(const CECPacket *packet);
+	uint32 WritePacket(const CECPacket *packet);
 
 	// These 4 methods are to be used by CECPacket & CECTag
 	bool	ReadNumber(void *buffer, size_t len);

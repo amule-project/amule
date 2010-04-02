@@ -62,7 +62,7 @@ class CECPacket : protected CECEmptyTag {
 			const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
 			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt() : EC_DETAIL_FULL;
 		}
-		void DebugPrint(bool incoming) const;
+		void DebugPrint(bool incoming, uint32 trueSize = 0) const;
 		
 	private:
 		CECPacket()	: CECEmptyTag() {}

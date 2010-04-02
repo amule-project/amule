@@ -47,18 +47,25 @@ bool CECPacket::WritePacket(CECSocket& socket) const
 
 #ifdef __DEBUG__
 #include <common/Format.h>  // Needed for CFormat
-void CECPacket::DebugPrint(bool incoming) const
+void CECPacket::DebugPrint(bool incoming, uint32 trueSize) const
 {
 	wxString GetDebugNameECOpCodes(uint8 arg);
 
 	if (ECLogIsEnabled()) {
-		DoECLogLine(CFormat(wxT("%s %s %d")) % (incoming ? wxT("<") : wxT(">")) 
-			% GetDebugNameECOpCodes(m_opCode) % GetPacketLength());
+		uint32 size = GetPacketLength() + sizeof(ec_opcode_t) + 2;	// full length incl. header
+
+		if (trueSize == 0 || size == trueSize) {
+			DoECLogLine(CFormat(wxT("%s %s %d")) % (incoming ? wxT("<") : wxT(">")) 
+				% GetDebugNameECOpCodes(m_opCode) % size);
+		} else {
+			DoECLogLine(CFormat(wxT("%s %s %d (compressed: %d)")) % (incoming ? wxT("<") : wxT(">")) 
+				% GetDebugNameECOpCodes(m_opCode) % size % trueSize);
+		}
 		CECTag::DebugPrint(1, false);
 	}
 }
 #else
-void CECPacket::DebugPrint(bool) const {}
+void CECPacket::DebugPrint(bool, uint32) const {}
 #endif
 
 /*!
