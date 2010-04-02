@@ -386,7 +386,7 @@ public:
 	bool IsConnectedToLocalHost();
 
 private:
-	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet, uint32 trueSize);
 	bool ProcessAuthPacket(const CECPacket *reply);
 };
 
