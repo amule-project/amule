@@ -255,7 +255,6 @@ size_t CQueuedData::GetUnreadDataLength() const
 CECSocket::CECSocket(bool use_events)
 :
 m_use_events(use_events),
-m_output_queue(),
 m_in_ptr(EC_SOCKET_BUFFER_SIZE),
 m_out_ptr(EC_SOCKET_BUFFER_SIZE),
 m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
@@ -305,8 +304,8 @@ bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 
 void CECSocket::SendPacket(const CECPacket *packet)
 {
-	packet->DebugPrint(false);
-	WritePacket(packet);
+	uint32 len = WritePacket(packet);
+	packet->DebugPrint(false, len);
 	OnOutput();
 }
 
@@ -458,27 +457,34 @@ void CECSocket::OnOutput()
 			delete data;
 		}
 		if (SocketError()) {
-			if (WouldBlock()) {
-				if ( m_use_events ) {
-					return;
-				} else {
-					if ( !WaitSocketWrite(10, 0) ) {
-						if (WouldBlock()) {
-							continue;
-						} else {
-							OnError();
-							break;
-						}
-	                		}
-				}
-			} else {
+			if (!WouldBlock()) {
+				// real error, abort
 				OnError();
 				return;
+			}
+			// Now it's just a blocked socket.
+			if ( m_use_events ) {
+				// Event driven logic: return, OnOutput() will be called again later
+				return;
+			}
+			// Syncronous call: wait (for max 10 secs)
+			if ( !WaitSocketWrite(10, 0) ) {
+				// Still not through ?
+				if (WouldBlock()) {
+					// WouldBlock() is only EAGAIN or EWOULD_BLOCK, 
+					// and those shouldn't create an infinite wait.
+					// So give it another chance.
+					continue;
+				} else {
+					OnError();
+					break;
+				}
 			}
 		}
 	}
 	//
 	// All outstanding data sent to socket
+	// (used for push clients)
 	//
 	WriteDoneAndQueueEmpty();
 }
@@ -694,11 +700,17 @@ bool CECSocket::FlushBuffers()
 // Packet I/O
 //
 
-void CECSocket::WritePacket(const CECPacket *packet)
+uint32 CECSocket::WritePacket(const CECPacket *packet)
 {
 	if (SocketError() && !WouldBlock()) {
 		OnError();
-		return;
+		return 0;
+	}
+	// Check if output queue is empty. If not, memorize the current end.
+	std::list<CQueuedData*>::iterator outputStart = m_output_queue.begin();
+	uint32 outputQueueSize = m_output_queue.size();
+	for (uint32 i = 1; i < outputQueueSize; i++) {
+		outputStart++;
 	}
 
 	uint32_t flags = 0x20;
@@ -729,40 +741,38 @@ void CECSocket::WritePacket(const CECPacket *packet)
 	uint32_t tmp_flags = ENDIAN_HTONL(flags/* | EC_FLAG_ACCEPTS*/);
 	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
 	
-/*	uint32_t tmp_accepts_flags = ENDIAN_HTONL(m_my_flags);
-	WriteBufferToSocket(&tmp_accepts_flags, sizeof(uint32));*/
-
 	// preallocate 4 bytes in buffer for packet length
 	uint32_t packet_len = 0;
 	WriteBufferToSocket(&packet_len, sizeof(uint32));
 	
 	packet->WritePacket(*this);
 
+	// Finalize zlib compression and move current data to outout queue
 	FlushBuffers();
 
+	// find the beginning of our data in the output queue
+	if (outputQueueSize) {
+		outputStart++;
+	} else {
+		outputStart = m_output_queue.begin();
+	}
 	// now calculate actual size of data
-	wxASSERT(m_curr_tx_data->GetDataLength() < 0xFFFFFFFF);
-	packet_len = (uint32_t)m_curr_tx_data->GetDataLength();
-	for(std::deque<CQueuedData*>::iterator i = m_output_queue.begin(); i != m_output_queue.end(); i++) {
-		wxASSERT(( packet_len + m_curr_tx_data->GetDataLength()) < 0xFFFFFFFF);
-		packet_len += (uint32_t)(*i)->GetDataLength();
+	for(std::list<CQueuedData*>::iterator it = outputStart; it != m_output_queue.end(); it++) {
+		packet_len += (uint32_t)(*it)->GetDataLength();
 	}
 	// 4 flags and 4 length are not counted
 	packet_len -= 8;
-	// now write actual length @ offset 4
-	packet_len = ENDIAN_HTONL(packet_len);
-	
-	CQueuedData *first_buff = m_output_queue.front();
-	if ( !first_buff ) first_buff = m_curr_tx_data.get();
-	first_buff->WriteAt(&packet_len, sizeof(uint32_t), sizeof(uint32_t));
+	// now write actual length at offset 4
+	uint32 packet_len_E = ENDIAN_HTONL(packet_len);
+	(*outputStart)->WriteAt(&packet_len_E, 4, 4);
 	
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = deflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
 			ShowZError(zerror, &m_z);
-			return;
 		}
 	}
+	return packet_len;
 }
 
 

@@ -131,6 +131,7 @@ Version 2.3.0 - The river knows.
 		* Fixed size of large files in aMuleweb's search results
 		* Show completed downloads in aMulegui
 		* Fixed international file names on Windows
+		* Fixed hangup of EC connection in aMulegui
 
 	Vollstrecker:
 		* Unify copyright lines
