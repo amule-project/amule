@@ -596,7 +596,14 @@ namespace MuleNotify
 	void CategoryDelete(uint32 cat)
 	{
 #ifdef AMULE_DAEMON
-		theApp->glob_prefs->RemoveCat(cat);
+		if (cat > 0) {
+			theApp->downloadqueue->ResetCatParts(cat);
+			theApp->glob_prefs->RemoveCat(cat);
+			if ( theApp->glob_prefs->GetCatCount() == 1 ) {
+				thePrefs::SetAllcatType(0);
+			}
+			theApp->glob_prefs->SaveCats();
+		}
 #else
 		if (theApp->amuledlg->m_transferwnd) {
 			theApp->amuledlg->m_transferwnd->RemoveCategory(cat);
