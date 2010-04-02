@@ -132,6 +132,7 @@ Version 2.3.0 - The river knows.
 		* Show completed downloads in aMulegui
 		* Fixed international file names on Windows
 		* Fixed hangup of EC connection in aMulegui
+		* Fixed category deletion in aMuled
 
 	Vollstrecker:
 		* Unify copyright lines
