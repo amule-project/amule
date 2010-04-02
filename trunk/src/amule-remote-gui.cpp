@@ -1044,8 +1044,13 @@ void CKnownFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
 			if (tag->GetTagName() == EC_TAG_PARTFILE) {
 				CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
 				ProcessItemUpdate(tag, file);
-				(*theApp->downloadqueue)[id] = file;
-				theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
+				// GUI doesn't allow clear finished files well at the moment, 
+				// so don't show finished files for now until GUI gets unlocked.
+				// Files completing while GUI is open will still show.
+				if (file->IsPartFile()) {
+					(*theApp->downloadqueue)[id] = file;
+					theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
+				}
 				newFile = file;
 			} else {
 				newFile = new CKnownFile(tag);
