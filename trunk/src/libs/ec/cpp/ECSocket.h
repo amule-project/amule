@@ -150,7 +150,7 @@ public:
 	 * @note This function won't be called for packets received via the
 	 * SendRecvPacket() function.
 	 */
-	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet, uint32 trueSize);
 
 	/**
 	 * Get a message describing the error.

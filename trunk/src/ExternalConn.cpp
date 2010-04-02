@@ -199,7 +199,7 @@ public:
 	CECServerSocket(ECNotifier *notifier);
 	virtual ~CECServerSocket();
 
-	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet, uint32 trueSize);
 	virtual void OnLost();
 
 	virtual void WriteDoneAndQueueEmpty();
@@ -242,9 +242,9 @@ CECServerSocket::~CECServerSocket()
 }
 
 
-const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
+const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet, uint32 trueSize)
 {
-	packet->DebugPrint(true);
+	packet->DebugPrint(true, trueSize);
 
 	const CECPacket *reply = NULL;
 
