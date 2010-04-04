@@ -95,6 +95,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 
 CSearchFile::CSearchFile(const CSearchFile& other)
 	: CAbstractFile(other),
+	  CECID(),	// create a new ID for now
 	  m_parent(other.m_parent),
 	  m_showChildren(other.m_showChildren),
 	  m_searchID(other.m_searchID),

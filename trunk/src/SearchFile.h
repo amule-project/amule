@@ -56,7 +56,7 @@ typedef std::vector<CSearchFile*> CSearchResultList;
  * TODO: Client ID/Port are currently not used.
  * TODO: Directories are currently not used.
  */
-class CSearchFile : public CAbstractFile
+class CSearchFile : public CAbstractFile, public CECID
 {	
 public:
 	/** Constructor used to create results on the remote GUI. */
