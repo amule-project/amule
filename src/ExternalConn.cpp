@@ -611,7 +611,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	encoders.UpdateEncoders();
 	for (CFileEncoderMap::iterator it = encoders.begin(); it != encoders.end(); ++it) {
 		const CKnownFile *cur_file = it->second->GetFile();
-		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
+		CValueMap &valuemap = tagmap.GetValueMap(cur_file->ECID());
 		if (cur_file->IsCPartFile()) {
 			CEC_PartFile_Tag filetag((const CPartFile*) cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
 			// Add information if partfile is shared
@@ -655,7 +655,7 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 		}
 		CValueMap *valuemap = NULL;
 		if (detail_level == EC_DETAIL_INC_UPDATE) {
-			valuemap = &tagmap.GetValueMap(cur_client);
+			valuemap = &tagmap.GetValueMap(cur_client->ECID());
 		}
 		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level, valuemap);
 		
@@ -895,7 +895,7 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
-		CValueMap &valuemap = tagmap.GetValueMap(sf);
+		CValueMap &valuemap = tagmap.GetValueMap(sf->ECID());
 		response->AddTag(CEC_SearchFile_Tag(sf, EC_DETAIL_INC_UPDATE, &valuemap));
 	}
 	return response;

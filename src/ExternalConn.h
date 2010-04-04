@@ -63,26 +63,16 @@ class CTagSet : public std::set<T> {
 
 
 class CObjTagMap {
-		std::map<const void *, CValueMap> m_obj_map;
+		std::map<uint32, CValueMap> m_obj_map;
 	public:
-		CValueMap &GetValueMap(const void *object)
+		CValueMap &GetValueMap(uint32 ECID)
 		{
-			return m_obj_map[object];
+			return m_obj_map[ECID];
 		}
 		
 		size_t size()
 		{
 			return m_obj_map.size();
-		}
-		
-		void RemoveDeleted(std::set<void *>& WXUNUSED(current_set))
-		{/*
-			for(std::map<void *, CValueMap>::iterator i = m_obj_map.begin(); i != m_obj_map.end(); i++) {
-				if ( !current_set.count(i->first) ) {
-					m_obj_map.erase(i->first);
-				}
-			}
-			*/
 		}
 };
 
