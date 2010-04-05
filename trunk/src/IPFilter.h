@@ -87,6 +87,18 @@ public:
 	 */
 	void	DownloadFinished(uint32 result);
 	
+	/**
+	 * True once initial startup has finished (stays true while reloading later).
+	 */
+	bool	IsReady() const { return m_ready; }
+	
+	/**
+	 * These functions are called to tell the filter to start networks once it 
+	 * has finished loading.
+	 */
+	void	StartKADWhenReady() { m_startKADWhenReady = true; }
+	void	ConnectToAnyServerWhenReady() { m_connectToAnyServerWhenReady = true; }
+	
 private:
 	/** Handles the result of loading the dat-files. */
 	void	OnIPFilterEvent(CIPFilterEvent&);
@@ -106,6 +118,12 @@ private:
 
 	//! Mutex used to ensure thread-safety of this class
 	mutable wxMutex	m_mutex;
+
+	// false if loading (on startup only)
+	bool m_ready;
+	// flags to start networks after loading
+	bool m_startKADWhenReady;
+	bool m_connectToAnyServerWhenReady;
 
 	friend class CIPFilterEvent;
 	friend class CIPFilterTask;

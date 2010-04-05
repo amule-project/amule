@@ -539,15 +539,17 @@ bool CamuleApp::OnInit()
 	// and the UBT constructor creates a thread.
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	
+	// Start performing background tasks
+	// This will start loading the IP filter. It will start right away.
+	// Log is confusing, because log entries from background will only be printed
+	// once foreground becomes idle, and that will only be after loading 
+	// of the partfiles has finished.
+	CThreadScheduler::Start();
+	
 	// These must be initialized after the gui is loaded.
 	serverlist->Init();
 	downloadqueue->LoadMetFiles(thePrefs::GetTempDir());
 	sharedfiles->Reload();
-	
-	if (thePrefs::IPFilterAutoLoad()) {
-		ipfilter->Update(thePrefs::IPFilterURL());
-	}	
-
 	
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
@@ -584,7 +586,10 @@ bool CamuleApp::OnInit()
 	
 	// Autoconnect if that option is enabled
 	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
-		AddLogLineM(true, _("Connecting"));
+		if (theApp->ipfilter->IsReady()) {
+			// If it's not ready it will connect later, so don't print it now.
+			AddLogLineC(_("Connecting"));
+		}
 		if (thePrefs::GetNetworkED2K()) {
 			theApp->serverconnect->ConnectToAnyServer();
 		}
@@ -649,9 +654,6 @@ bool CamuleApp::OnInit()
 		}
 	}
 
-	// Start performing background tasks
-	CThreadScheduler::Start();
-	
 	return true;
 }
 
@@ -1954,7 +1956,11 @@ void CamuleApp::StartKad()
 	if (!Kademlia::CKademlia::IsRunning() && thePrefs::GetNetworkKademlia()) {
 		// Kad makes no sense without the Client-UDP socket.
 		if (!thePrefs::IsUDPDisabled()) {
-			Kademlia::CKademlia::Start();
+			if (theApp->ipfilter->IsReady()) {
+				Kademlia::CKademlia::Start();
+			} else {
+				theApp->ipfilter->StartKADWhenReady();
+			}
 		} else {
 			AddLogLineM(true,_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
 		}

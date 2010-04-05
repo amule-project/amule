@@ -45,6 +45,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "GuiEvents.h"		// Needed for Notify_*
+#include "IPFilter.h"		// Needed for theApp->ipfilter->IsReady()
 #include <common/Format.h>
 
 
@@ -86,6 +87,11 @@ void CServerConnect::ConnectToAnyServer(bool prioSort, bool bNoCrypt)
 {
 	if (!thePrefs::GetNetworkED2K()){
 		AddLogLineM(true,_("eD2k network disabled on preferences, not connecting."));
+		return;
+	}
+	if (!theApp->ipfilter->IsReady()) {
+		// do it later when ipfilter is up
+		theApp->ipfilter->ConnectToAnyServerWhenReady();
 		return;
 	}
 
