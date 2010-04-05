@@ -328,10 +328,10 @@ class CEC_SearchFile_Tag : public CECTag {
 		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
 
 		// template needs it
- 		CMD4Hash	ID()	const { return GetMD4Data(); }
+ 		uint32		ID()	const { return GetInt(); }
 
- 		CMD4Hash	FileHash()	const { return GetMD4Data(); }
-		wxString	FileHashString() const { return GetMD4Data().Encode(); }
+ 		CMD4Hash	FileHash()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_HASH)->GetMD4Data(); }
+		wxString	FileHashString() const { return FileHash().Encode(); }
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }

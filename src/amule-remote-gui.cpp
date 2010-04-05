@@ -1533,7 +1533,7 @@ void CClientListRem::FilterQueues()
 }
 
 
-CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn, true)
+CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag>(conn, true)
 {
 	m_curr_search = -1;
 }
@@ -1584,13 +1584,14 @@ void CSearchListRem::HandlePacket(const CECPacket *packet)
 	if ( packet->GetOpCode() == EC_OP_SEARCH_PROGRESS ) {
 		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt());
 	} else {
-		CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>::HandlePacket(packet);
+		CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag>::HandlePacket(packet);
 	}
 }
 
 
 CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
 :
+CECID(tag->ID()),
 m_parent(NULL),
 m_showChildren(false),
 m_sourceCount(0),
@@ -1598,10 +1599,11 @@ m_completeSourceCount(0),
 m_kademlia(false),
 m_downloadStatus(NEW),
 m_clientID(0),
-m_clientPort(0)
+m_clientPort(0),
+m_kadPublishInfo(0)
 {
 	SetFileName(CPath(tag->FileName()));
-	m_abyFileHash = tag->ID();
+	m_abyFileHash = tag->FileHash();
 	SetFileSize(tag->SizeFull());
 	
 	m_searchID = theApp->searchlist->m_curr_search;
@@ -1632,9 +1634,9 @@ void CSearchListRem::DeleteItem(CSearchFile *file)
 }
 
 
-CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
+uint32 CSearchListRem::GetItemID(CSearchFile *file)
 {
-	return file->GetFileHash();
+	return file->ECID();
 }
 
 

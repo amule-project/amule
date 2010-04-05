@@ -159,7 +159,7 @@ class UploadFile : public CECID {
 		uint32 ID() { return ECID(); }
 };
 
-class SearchFile {
+class SearchFile : public CECID {
 	public:
 		wxString sFileName;
 		uint64 lFileSize;
@@ -172,7 +172,7 @@ class SearchFile {
 		
 		void ProcessUpdate(CEC_SearchFile_Tag *);
 		static class SearchInfo *GetContainerInstance();
-		CMD4Hash ID() { return nHash; }
+		uint32 ID() { return ECID(); }
 };
 
 
@@ -390,7 +390,7 @@ class SharedFileInfo : public UpdatableItemsContainer<SharedFile, CEC_SharedFile
 
 };
 
-class SearchInfo : public UpdatableItemsContainer<SearchFile, CEC_SearchFile_Tag, CMD4Hash> {
+class SearchInfo : public UpdatableItemsContainer<SearchFile, CEC_SearchFile_Tag, uint32> {
 	public:
 		static SearchInfo *m_This;
 		

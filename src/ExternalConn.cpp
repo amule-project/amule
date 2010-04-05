@@ -873,13 +873,13 @@ static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
-	CTagSet<CMD4Hash, EC_TAG_SEARCHFILE> queryitems(request);
+	CTagSet<uint32, EC_TAG_SEARCHFILE> queryitems(request);
 
 	const CSearchResultList& list = theApp->searchlist->GetSearchResults(0xffffffff);
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
-		if ( !queryitems.empty() && !queryitems.count(sf->GetFileHash()) ) {
+		if ( !queryitems.empty() && !queryitems.count(sf->ECID()) ) {
 			continue;
 		}
 		response->AddTag(CEC_SearchFile_Tag(sf, detail_level));
@@ -897,6 +897,16 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 		CSearchFile* sf = *it++;
 		CValueMap &valuemap = tagmap.GetValueMap(sf->ECID());
 		response->AddTag(CEC_SearchFile_Tag(sf, EC_DETAIL_INC_UPDATE, &valuemap));
+		/* Here we could add the children, if amulegui were able to merge them.
+		if (sf->HasChildren()) {
+			const CSearchResultList& children = sf->GetChildren();
+			for (size_t i = 0; i < children.size(); ++i) {
+				CSearchFile* sfc = children.at(i);
+				CValueMap &valuemap1 = tagmap.GetValueMap(sfc->ECID());
+				response->AddTag(CEC_SearchFile_Tag(sfc, EC_DETAIL_INC_UPDATE, &valuemap1));
+			}
+		}
+		*/
 	}
 	return response;
 }
