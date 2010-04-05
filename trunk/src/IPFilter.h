@@ -29,11 +29,8 @@
 #include <wx/event.h>	// Needed for wxEvent
 
 #include "Types.h"	// Needed for uint8, uint16 and uint32
-#include "RangeMap.h"	// Needed for CRangeMap
-
 
 class CIPFilterEvent;
-
 
 /**
  * This class represents a list of IPs that should not be accepted
@@ -64,11 +61,6 @@ public:
 	 * Note: IP2Test must be in anti-host order (BE on LE platform, LE on BE platform).
 	 */
 	bool	IsFiltered( uint32 IP2test, bool isServer = false );
-	bool	IsFilteredOld(uint32 IP2test, bool isServer, bool bench);
-	bool	IsFilteredNew(uint32 IP2test, bool isServer, bool bench);
-
-	void	Benchmark(bool checkall);
-
 	
 	/**
 	 * Returns the number of banned ranges.
@@ -99,40 +91,18 @@ private:
 	/** Handles the result of loading the dat-files. */
 	void	OnIPFilterEvent(CIPFilterEvent&);
 	
-	/**
-	 * This structure is used to contain the range-data in the rangemap.
-	 */
-	struct rangeObject
-	{
-		bool operator==( const rangeObject& other ) const {
-			return AccessLevel == other.AccessLevel;
-		}
-
-// Since descriptions are only used for debugging messages, there 
-// is no need to keep them in memory when running a non-debug build.
-#ifdef __DEBUG__
-		//! Contains the user-description of the range.
-		wxString	Description;
-#endif
-		
-		//! The AccessLevel for this filter.
-		uint8		AccessLevel;
-	};
-
 	//! The URL from which the IP filter was downloaded
 	wxString m_URL;
 	
-	//! The is the type of map used to store the IPs.
-	typedef CRangeMap<rangeObject, uint32> IPMap;
-	
-	//! The map of IP-ranges
-	IPMap m_iplist;
-
 	// The IP ranges
 	typedef std::vector<uint32> RangeIPs;
 	RangeIPs m_rangeIPs;
 	typedef std::vector<uint16> RangeLengths;
 	RangeLengths m_rangeLengths;
+	// Name for each range. This usually stays empty for memory reasons,
+	// except if IP-Filter debugging is active.
+	typedef std::vector<wxString> RangeNames;
+	RangeNames m_rangeNames;
 
 	//! Mutex used to ensure thread-safety of this class
 	mutable wxMutex	m_mutex;

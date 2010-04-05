@@ -133,6 +133,7 @@ Version 2.3.0 - The river knows.
 		* Fixed international file names on Windows
 		* Fixed hangup of EC connection in aMulegui
 		* Fixed category deletion in aMuled
+		* Improved memory usage and speed of IP filter
 
 	Vollstrecker:
 		* Unify copyright lines
