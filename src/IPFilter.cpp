@@ -39,6 +39,7 @@
 #include "ClientList.h"			// Needed for CClientList
 #include "ServerList.h"			// Needed for CServerList
 #include <common/Macros.h>		// Needed for DEBUG_ONLY()
+#include "RandomFunctions.h"	// Needed for Benchmark
 
 
 ////////////////////////////////////////////////////////////
@@ -54,11 +55,14 @@ DEFINE_EVENT_TYPE(MULE_EVT_IPFILTER_LOADED)
 class CIPFilterEvent : public wxEvent
 {
 public:
-	CIPFilterEvent(CIPFilter::IPMap& result) 
+	CIPFilterEvent(CIPFilter::IPMap& result, CIPFilter::RangeIPs rangeIPs, CIPFilter::RangeLengths rangeLengths) 
 		: wxEvent(-1, MULE_EVT_IPFILTER_LOADED)
 	{
-		// Avoid needles copying
+		// Avoid needless copying
 		std::swap(result, m_result);
+		// Physically copy the vectors, this will hopefully resize them back to their needed capacity.
+		m_rangeIPs = rangeIPs;
+		m_rangeLengths = rangeLengths;
 	}
 	
 	/** @see wxEvent::Clone */
@@ -67,6 +71,8 @@ public:
 	}
 	
 	CIPFilter::IPMap m_result;
+	CIPFilter::RangeIPs m_rangeIPs;
+	CIPFilter::RangeLengths m_rangeLengths;
 };
 
 
@@ -117,13 +123,75 @@ public:
 
 		LoadFromFile(theApp->ConfigDir + wxT("ipfilter_static.dat"));
 
-		CIPFilterEvent evt(m_result);
-		wxPostEvent(m_owner, evt);
+		uint8 accessLevel = thePrefs::GetIPFilterLevel();
+		uint32 size = m_result.size();
+		// Reserve a little more so we don't have to resize the vector later.
+		// (Map ranges can exist that have to be stored in several parts.)
+		// Extra memory will be freed in the end.
+		m_rangeIPs.reserve(size + 1000);
+		m_rangeLengths.reserve(size + 1000);
+		for (CIPFilter::IPMap::iterator it = m_result.begin(); it != m_result.end(); ++it) {
+			if (it->AccessLevel < accessLevel) {
+				// Calculate range "length"
+				// (which is included-end - start and thus length - 1)
+				// Encoding:
+				// 0      - 0x7fff	same
+				// 0x8000 - 0xffff	0xfff	- 0x07ffffff
+				// that means: remove msb, shift left by 12 bit, add 0xfff
+				// so it can cover 8 consecutive class A nets
+				// larger ranges (or theoretical ranges with uneven ends) have to be split
+				uint32 startIP = it.keyStart();
+				uint32 realLength = it.keyEnd() - it.keyStart() + 1;
+				while (realLength) {
+					m_rangeIPs.push_back(startIP);
+					uint32 curLength = realLength;
+					uint16 pushLength;
+					if (realLength <= 0x8000) {
+						pushLength = realLength - 1;
+					} else {
+						if (curLength >= 0x08000000) {
+							// range to big, limit
+							curLength = 0x08000000;
+						} else {
+							// cut off LSBs
+							curLength &= 0x07FFF000;
+						}
+						pushLength = ((curLength - 1) >> 12) | 0x8000;
+					}
+					m_rangeLengths.push_back(pushLength);
+					realLength -= curLength;
+					if (realLength) {
+						AddDebugLogLineN(logIPFilter, CFormat(wxT("Split range %s - %s %04X")) 
+							% KadIPToString(startIP) % KadIPToString(it.keyEnd()) % realLength );
+					}
+					startIP += curLength;
+				}
+			}
+		}
+		AddDebugLogLineN(logIPFilter, CFormat(wxT("Ranges in map: %d  blocked ranges %d")) % size % m_rangeIPs.size());
+/*
+		for (uint32 i = 0; i < m_rangeIPs.size(); i++) {
+			uint32 start = m_rangeIPs[i];
+			uint32 curLength = m_rangeLengths[i];
+			if (curLength >= 0x8000) {
+				curLength = ((curLength & 0x7fff) << 12) + 0xfff;
+			}
+			AddLogLineF( CFormat(wxT("%s - %s")) % KadIPToString(start) % KadIPToString(start + curLength) );
+		}
+*/
+		CIPFilterEvent evt(m_result, m_rangeIPs, m_rangeLengths);
+		// stay in foreground for now
+		//wxPostEvent(m_owner, evt);
+		((CIPFilter*)m_owner)->OnIPFilterEvent(evt);
 	}
 private:
 
 	bool m_storeDescriptions;
-	
+
+	// the generated filter
+	CIPFilter::RangeIPs m_rangeIPs;
+	CIPFilter::RangeLengths m_rangeLengths;
+
 	/**
 	 * Helper function.
 	 *
@@ -428,14 +496,24 @@ uint32 CIPFilter::BanCount() const
 
 bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 {
-	if ((thePrefs::IsFilteringClients() && !isServer) || (thePrefs::IsFilteringServers() && isServer)) {
-		wxMutexLocker lock(m_mutex);
+	if ((!thePrefs::IsFilteringClients() && !isServer) || (!thePrefs::IsFilteringServers() && isServer)) {
+		return false;
+	}
+	wxMutexLocker lock(m_mutex);
+	return IsFilteredNew(IPTest, isServer, false);
+}
+
+bool CIPFilter::IsFilteredOld(uint32 IPTest, bool isServer, bool bench)
+{
 
 		// The IP needs to be in host order
 		IPMap::iterator it = m_iplist.find_range(wxUINT32_SWAP_ALWAYS(IPTest));
 
 		if (it != m_iplist.end()) {
 			if (it->AccessLevel < thePrefs::GetIPFilterLevel()) {
+				if (bench) {
+					return true;
+				}
 #ifdef __DEBUG__
 				AddDebugLogLineM(false, logIPFilter, wxString(wxT("Filtered IP (AccLvl: ")) << (long)it->AccessLevel << wxT("): ")
 						<< Uint32toStringIP(IPTest) << wxT(" (") << it->Description + wxT(")"));
@@ -449,11 +527,89 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 				return true;
 			}
 		}
-	}
 
 	return false;
 }
 
+bool CIPFilter::IsFilteredNew(uint32 IPTest, bool isServer, bool bench)
+{
+	// The IP needs to be in host order
+	uint32 ip = wxUINT32_SWAP_ALWAYS(IPTest);
+	int imin = 0;
+	int imax = m_rangeIPs.size() - 1;
+	bool found = false;
+	while (imin <= imax) {
+		int i = (imin + imax) / 2;
+		uint32 curIP = m_rangeIPs[i];
+		if (curIP <= ip) {
+			uint32 curLength = m_rangeLengths[i];
+			if (curLength >= 0x8000) {
+				curLength = ((curLength & 0x7fff) << 12) + 0xfff;
+			}
+			if (curIP + curLength >= ip) {
+				found = true;
+				break;
+			}
+		}
+		if (curIP > ip) {
+			imax = i - 1;
+		} else {
+			imin = i + 1;
+		}
+	}
+	if (found) {
+		if (bench) {
+			return true;
+		}
+		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s")) % Uint32toStringIP(IPTest));
+		if (isServer) {
+			theStats::AddFilteredServer();
+		} else {
+			theStats::AddFilteredClient();
+		}
+		return true;
+	}
+	return false;
+}
+
+void CIPFilter::Benchmark(bool checkall)
+{
+	if (checkall) {
+		// go through all 4 GB of adresses
+		for (uint64 ip = 0; ip <= 0xffffffff; ip++) {
+			bool res = IsFilteredNew(ip, false, true);
+			if (res != IsFilteredOld(ip, false, true)) {
+				AddLogLineN(CFormat(wxT("wrong result %d for %s")) % res % Uint32toStringIP(ip));
+			}
+		}
+		AddLogLineN(wxT("finished! :-)"));
+		return;
+	}
+
+	const int NR = 1000000;
+	std::vector<uint32> ips;
+	std::vector<bool> results;
+	ips.reserve(NR);
+	results.reserve(NR);
+	// create random IPs
+	for (int i = 0; i < NR; i++) {
+		ips.push_back(GetRandomUint32());
+	}
+	// Old filter
+	uint32 time1 = GetTickCountFullRes();
+	for (int i = 0; i < NR; i++) {
+		results.push_back(IsFilteredOld(ips[i], false, true));
+	}
+	uint32 time2 = GetTickCountFullRes();
+	// New filter
+	for (int i = 0; i < NR; i++) {
+		if (results[i] != IsFilteredNew(ips[i], false, true)) {
+			AddLogLineN(CFormat(wxT("wrong result %d for %s")) % !results[i] % Uint32toStringIP(ips[i]));
+		}
+	}
+	uint32 time3 = GetTickCountFullRes();
+	AddLogLineN( CFormat(wxT("Time old: %.3f  Time new: %.3f")) % ((time2-time1) / 1000.0) % ((time3-time2) / 1000.0) );
+}
 
 void CIPFilter::Update(const wxString& strURL)
 {
@@ -504,6 +660,8 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 	{
 		wxMutexLocker lock(m_mutex);
 		std::swap(m_iplist, evt.m_result);
+		std::swap(m_rangeIPs, evt.m_rangeIPs);
+		std::swap(m_rangeLengths, evt.m_rangeLengths);
 	}
 	
 	if (thePrefs::IsFilteringClients()) {

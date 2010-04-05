@@ -603,7 +603,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->SetOSFiles( widget->GetValue() );
 	}
 
-	if (CfgChanged(IDC_IPFCLIENTS) || CfgChanged(IDC_IPFSERVERS) || CfgChanged(ID_IPFILTERLEVEL)) {
+	if (CfgChanged(IDC_IPFCLIENTS) || CfgChanged(IDC_IPFSERVERS)) {
 		if (thePrefs::IsFilteringClients()) {
 			theApp->clientlist->FilterQueues();
 		}
@@ -612,6 +612,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		}
 	}
 
+	if (CfgChanged(ID_IPFILTERLEVEL)) {
+		theApp->ipfilter->Reload();
+	}
+	
 	if (thePrefs::GetShowRatesOnTitle()) {
 		// This avoids a 5 seconds delay to show the title
 		theApp->amuledlg->ShowTransferRate();
