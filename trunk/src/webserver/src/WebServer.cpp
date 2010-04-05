@@ -855,7 +855,7 @@ SearchInfo *SearchFile::GetContainerInstance()
 SearchInfo *SearchInfo::m_This = 0;
 
 SearchInfo::SearchInfo(CamulewebApp *webApp) :
-	UpdatableItemsContainer<SearchFile, CEC_SearchFile_Tag, CMD4Hash>(webApp)
+	UpdatableItemsContainer<SearchFile, CEC_SearchFile_Tag, uint32>(webApp)
 {
 	m_This = this;
 }

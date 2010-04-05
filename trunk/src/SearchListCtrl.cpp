@@ -209,7 +209,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	if (toshow->GetClientsCount()) {
 		temp += wxString::Format(wxT(" [%d]"), toshow->GetClientsCount());
 	}
-#ifdef __DEBUG__
+#if defined(__DEBUG__) && !defined(CLIENT_GUI)
 	if (toshow->GetKadPublishInfo() == 0) {
 		temp += wxT(" | -");
 	} else {
@@ -262,7 +262,7 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 		if (toupdate->GetClientsCount()) {
 			temp += wxString::Format(wxT(" [%d]"), toupdate->GetClientsCount());
 		}
-#ifdef __DEBUG__
+#if defined(__DEBUG__) && !defined(CLIENT_GUI)
 		if (toupdate->GetKadPublishInfo() == 0) {
 			temp += wxT(" | -");
 		} else {

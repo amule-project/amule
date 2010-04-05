@@ -581,7 +581,7 @@ public:
 	void Update(wxString strURL = wxEmptyString);
 };
 
-class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag> {
+class CSearchListRem : public CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag> {
 	virtual void HandlePacket(const CECPacket *);
 public:
 	CSearchListRem(CRemoteConnect *);
@@ -608,7 +608,7 @@ public:
 	//
 	CSearchFile *CreateItem(CEC_SearchFile_Tag *);
 	void DeleteItem(CSearchFile *);
-	CMD4Hash GetItemID(CSearchFile *);
+	uint32 GetItemID(CSearchFile *);
 	void ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *);
 	bool Phase1Done(const CECPacket *);
 };
