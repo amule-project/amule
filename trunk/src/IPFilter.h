@@ -64,6 +64,10 @@ public:
 	 * Note: IP2Test must be in anti-host order (BE on LE platform, LE on BE platform).
 	 */
 	bool	IsFiltered( uint32 IP2test, bool isServer = false );
+	bool	IsFilteredOld(uint32 IP2test, bool isServer, bool bench);
+	bool	IsFilteredNew(uint32 IP2test, bool isServer, bool bench);
+
+	void	Benchmark(bool checkall);
 
 	
 	/**
@@ -123,6 +127,12 @@ private:
 	
 	//! The map of IP-ranges
 	IPMap m_iplist;
+
+	// The IP ranges
+	typedef std::vector<uint32> RangeIPs;
+	RangeIPs m_rangeIPs;
+	typedef std::vector<uint16> RangeLengths;
+	RangeLengths m_rangeLengths;
 
 	//! Mutex used to ensure thread-safety of this class
 	mutable wxMutex	m_mutex;
