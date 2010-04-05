@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-07 11:56+0100\n"
-"PO-Revision-Date: 2010-01-20 09:15+0200\n"
-"Last-Translator: Hans <herringfish@hot.ee>\n"
-"Language-Team:  <et@li.org>\n"
+"PO-Revision-Date: 2010-03-10 11:22+0200\n"
+"Last-Translator: \n"
+"Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -1840,17 +1840,15 @@ msgstr "Puudub protokolli versiooni märgis"
 
 #: src/ExternalConn.cpp:328
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
+msgstr "Autoriseerimine ebaõnnestus: EC parooliks on määratud vigane räsi."
 
 #: src/ExternalConn.cpp:344
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Autoriserimine ebaõnnestus"
+msgstr "Autoriserimine ebaõnnestus: vale parool."
 
 #: src/ExternalConn.cpp:346
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Autoriserimine ebaõnnestus"
+msgstr "Autoriserimine ebaõnnestus: parool puudub."
 
 #: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
@@ -1861,9 +1859,9 @@ msgid "Access granted."
 msgstr "Ligipääs Lubatud."
 
 #: src/ExternalConn.cpp:369
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Filtreeri tundmatute klientide teateid"
+msgstr "Veateade \"%s\" kliendile saadetud."
 
 #: src/ExternalConn.cpp:372
 msgid "Unauthorized access attempt. Connection closed."
