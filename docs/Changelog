@@ -134,6 +134,7 @@ Version 2.3.0 - The river knows.
 		* Fixed hangup of EC connection in aMulegui
 		* Fixed category deletion in aMuled
 		* Improved memory usage and speed of IP filter
+		* Load IP filter in the background on startup
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -200,7 +200,10 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 				!in_server->HasDynIP() &&
 				(
 					!IsGoodIP( in_server->GetIP(), thePrefs::FilterLanIPs() ) ||
-					theApp->ipfilter->IsFiltered( in_server->GetIP(), true )
+					(	// don't test for filtered while ipfilter is still loading,
+						// it will be filtered when filter loading is finished
+						theApp->ipfilter->IsReady()
+						&& theApp->ipfilter->IsFiltered(in_server->GetIP(), true))
 				)
 	          ) {
 		if ( fromUser ) {

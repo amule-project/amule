@@ -40,6 +40,7 @@
 #include "ServerList.h"			// Needed for CServerList
 #include <common/Macros.h>		// Needed for DEBUG_ONLY()
 #include "RangeMap.h"			// Needed for CRangeMap
+#include "ServerConnect.h"		// Needed for ConnectToAnyServer()
 
 
 ////////////////////////////////////////////////////////////
@@ -103,6 +104,7 @@ public:
 	{
 	}
 	
+private:
 	void Entry() {
 		wxStandardPathsBase &spb(wxStandardPaths::Get());
 #ifdef __WXMSW__
@@ -114,7 +116,7 @@ public:
 #endif
 		wxString systemwideFile(JoinPaths(dataDir,wxT("ipfilter.dat")));
 
-		AddLogLineM(false, _("Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
+		AddLogLineN(_("Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
 		if ( !LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat")) &&
 		     thePrefs::UseIPFilterSystem() ) {
 			LoadFromFile(systemwideFile);
@@ -177,26 +179,10 @@ public:
 			}
 		}
 		AddDebugLogLineN(logIPFilter, CFormat(wxT("Ranges in map: %d  blocked ranges %d")) % size % m_rangeIPs.size());
-/*
-		for (uint32 i = 0; i < m_rangeIPs.size(); i++) {
-			uint32 start = m_rangeIPs[i];
-			uint32 curLength = m_rangeLengths[i];
-			if (curLength >= 0x8000) {
-				curLength = ((curLength & 0x7fff) << 12) + 0xfff;
-			}
-			wxString name;
-			if (m_storeDescriptions) {
-				name = m_rangeNames[i];
-			}
-			AddLogLineF(CFormat(wxT("%s - %s %s")) % KadIPToString(start) % KadIPToString(start + curLength) % name);
-		}
-*/
+
 		CIPFilterEvent evt(m_rangeIPs, m_rangeLengths, m_rangeNames);
-		// stay in foreground for now
-		//wxPostEvent(m_owner, evt);
-		((CIPFilter*)m_owner)->OnIPFilterEvent(evt);
+		wxPostEvent(m_owner, evt);
 	}
-private:
 
 	/**
 	 * This structure is used to contain the range-data in the rangemap.
@@ -381,7 +367,7 @@ private:
 	{
 		const CPath path = CPath(file);
 
-		if (!path.FileExists() /* || TestDestroy() (see CIPFilter::Reload()) */) {
+		if (!path.FileExists() || TestDestroy()) {
 			return 0;
 		}
 
@@ -417,10 +403,9 @@ private:
 			while (!readFile.Eof()) {
 				wxString line = readFile.GetNextLine();
 
-				/* See CIPFilter::Reload()
-				  if (TestDestroy()) {
+				if (TestDestroy()) {
 					return 0;
-				} else */ if (func && (*this.*func)(line)) {
+				} else if (func && (*this.*func)(line)) {
 					filtercount++;
 				} else if (ProcessPeerGuardianLine(line)) {
 					func = &CIPFilterTask::ProcessPeerGuardianLine;
@@ -481,7 +466,11 @@ void CreateDummyFile(const wxString& filename, const wxString& text)
 }
 
 
-CIPFilter::CIPFilter()
+CIPFilter::CIPFilter() :
+	m_ready(false),
+	m_startKADWhenReady(false),
+	m_connectToAnyServerWhenReady(false)
+
 {
 	// Setup dummy files for the curious user.
 	const wxString normalDat = theApp->ConfigDir + wxT("ipfilter.dat");
@@ -502,23 +491,18 @@ CIPFilter::CIPFilter()
 
 	CreateDummyFile(staticDat, staticMsg);
 
-	Reload();
+	if (thePrefs::IPFilterAutoLoad()) {
+		Update(thePrefs::IPFilterURL());
+	} else {
+		Reload();
+	}
 }
 
 
 void CIPFilter::Reload()
 {
 	// We keep the current filter till the new one has been loaded.
-	//CThreadScheduler::AddTask(new CIPFilterTask(this));
-	
-	// This procedure cannot be run as a task, 
-	// wxArchiveFSHandler::FindFirst() will eventually call wxExecute(),
-	// and this can only be done from the main task.
-	//
-	// This way, We call the Entry() routine manually and comment out the
-	// calls to TestDestroy().
-	CIPFilterTask ipf_task(this);
-	ipf_task.Entry();
+	CThreadScheduler::AddTask(new CIPFilterTask(this));
 }
 
 
@@ -534,6 +518,12 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 {
 	if ((!thePrefs::IsFilteringClients() && !isServer) || (!thePrefs::IsFilteringServers() && isServer)) {
 		return false;
+	}
+	if (!m_ready) {
+		// Somebody connected before we even started the networks.
+		// Filter is not up yet, so block him.
+		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s because filter isn't ready yet.")) % Uint32toStringIP(IPTest));
+		return true;
 	}
 	wxMutexLocker lock(m_mutex);
 	// The IP needs to be in host order
@@ -626,13 +616,30 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 		std::swap(m_rangeIPs, evt.m_rangeIPs);
 		std::swap(m_rangeLengths, evt.m_rangeLengths);
 		std::swap(m_rangeNames, evt.m_rangeNames);
+		m_ready = true;
 	}
+	if (theApp->IsOnShutDown()) {
+		return;
+	}
+	AddLogLineN(_("IP filter is ready"));
 	
 	if (thePrefs::IsFilteringClients()) {
 		theApp->clientlist->FilterQueues();
 	}
 	if (thePrefs::IsFilteringServers()) {
 		theApp->serverlist->FilterServers();
+	}
+	// Now start networks we didn't start earlier
+	if (m_connectToAnyServerWhenReady || m_startKADWhenReady) {
+		AddLogLineC(_("Connecting"));
+	}
+	if (m_connectToAnyServerWhenReady) {
+		m_connectToAnyServerWhenReady = false;
+		theApp->serverconnect->ConnectToAnyServer();
+	}
+	if (m_startKADWhenReady) {
+		m_startKADWhenReady = false;
+		theApp->StartKad();
 	}
 }
 
