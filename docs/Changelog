@@ -135,6 +135,7 @@ Version 2.3.0 - The river knows.
 		* Fixed category deletion in aMuled
 		* Improved memory usage and speed of IP filter
 		* Load IP filter in the background on startup
+		* Show when a Kad search is finished in aMulegui (remove '!')
 
 	Vollstrecker:
 		* Unify copyright lines
