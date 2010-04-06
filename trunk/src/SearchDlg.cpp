@@ -460,7 +460,7 @@ void CSearchDlg::KadSearchEnd(uint32 id)
 	for (int i = 0; i < nPages; ++i) {
 		CSearchListCtrl* page =
 			dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
-		if (page->GetSearchId() == id) {
+		if (page->GetSearchId() == id || id == 0) {	// 0: just update all pages (there is only one KAD search running at a time anyway)
 			wxString rest;
 			if (m_notebook->GetPageText(i).StartsWith(wxT("!"),&rest)) {
 				m_notebook->SetPageText(i,rest);

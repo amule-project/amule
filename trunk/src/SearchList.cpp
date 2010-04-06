@@ -337,6 +337,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 
 			*searchID = search->GetSearchID();
 			m_currentSearch = *searchID;
+			m_KadSearchFinished = false;
 		} catch (const wxString& what) {
 			AddLogLineM(true, what);
 			return _("Unexpected error while attempting Kad search: ") + what;				
@@ -380,7 +381,12 @@ void CSearchList::LocalSearchEnd()
 
 uint32 CSearchList::GetSearchProgress() const
 {
-	if (m_searchInProgress == false) {
+	if (m_searchType == KadSearch) {
+		// We cannot measure the progress of Kad searches.
+		// But we can tell when they are over.
+		return m_KadSearchFinished ? 0xfffe : 0;
+	}
+	if (m_searchInProgress == false) {	// true only for ED2K search
 		// No search, no progress ;)
 		return 0;
 	}
@@ -392,14 +398,11 @@ uint32 CSearchList::GetSearchProgress() const
 		case GlobalSearch:
 			return 100 - (m_serverQueue.GetRemaining() * 100) 
 					/ theApp->serverlist->GetServerCount();
-
-		case KadSearch:
-			// We cannot measure the progress of Kad searches.
-			return 0;
 		
 		default:
-			wxCHECK(false, 0);
+			wxFAIL;
 	}
+	return 0;
 }
 
 

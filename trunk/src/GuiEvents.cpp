@@ -8,6 +8,7 @@
 #include "Preferences.h"
 #include "ExternalConn.h"
 #include "SearchFile.h"
+#include "SearchList.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -72,6 +73,9 @@ namespace MuleNotify
 			if (val == 0xffff) {
 				// Global search ended
 				theApp->amuledlg->m_searchwnd->ResetControls();
+			} else if (val == 0xfffe) {
+				// Kad search ended
+				theApp->amuledlg->m_searchwnd->KadSearchEnd(0);
 			} else {
 				theApp->amuledlg->m_searchwnd->UpdateProgress(val);
 			}
@@ -486,6 +490,7 @@ namespace MuleNotify
 			theApp->amuledlg->m_searchwnd->KadSearchEnd(id);
 		}
 #endif
+		theApp->searchlist->SetKadSearchFinished();
 	}
 	
 	void Search_Update_Sources(CSearchFile* result)

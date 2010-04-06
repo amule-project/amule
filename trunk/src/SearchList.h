@@ -169,6 +169,9 @@ public:
 	/** Update a certain search result in all lists */
 	void UpdateSearchFileByHash(const CMD4Hash& hash);
 	
+	/** Mark current KAD search as finished */
+	void SetKadSearchFinished() { m_KadSearchFinished = true; }
+	
 private:
 	/** Event-handler for global searches. */
 	void OnGlobalSearchTimer(CTimerEvent& evt);
@@ -209,6 +212,9 @@ private:
 
 	//! Does the current search packet contain 64bit values?
 	bool		m_64bitSearchPacket;
+
+	//! If the current search is a KAD search this signals if it is finished.
+	bool		m_KadSearchFinished;
 
 	//! Queue of servers to ask when doing global searches.
 	//! TODO: Replace with 'cookie' system.
