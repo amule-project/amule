@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-07 11:56+0100\n"
-"PO-Revision-Date: 2010-02-08 22:13+0100\n"
+"PO-Revision-Date: 2010-04-07 09:35+0100\n"
 "Last-Translator: Balla Marcell <marcell@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1845,17 +1845,15 @@ msgstr "Hiányzó protokoll verzió azonosító."
 
 #: src/ExternalConn.cpp:328
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
+msgstr "Hitelesítés sikertelen: az EC jelszóként megadott hash érvénytelen."
 
 #: src/ExternalConn.cpp:344
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Hitelesítés sikertelen."
+msgstr "Hitelesítés sikertelen: rossz jelszó."
 
 #: src/ExternalConn.cpp:346
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Hitelesítés sikertelen."
+msgstr "Hitelesítés sikertelen: hiányzó jelszó."
 
 #: src/ExternalConn.cpp:356
 msgid "Invalid request, please authenticate first."
@@ -1866,9 +1864,9 @@ msgid "Access granted."
 msgstr "Hozzáférés elfogadva."
 
 #: src/ExternalConn.cpp:369
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Ismeretlen kliensektől érkező üzenetek kiszűrése"
+msgstr "Hibaüzenet elküldve a \"%s\" klienshez."
 
 #: src/ExternalConn.cpp:372
 msgid "Unauthorized access attempt. Connection closed."
