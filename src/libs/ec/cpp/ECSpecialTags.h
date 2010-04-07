@@ -121,13 +121,13 @@ class CValueMap {
 			CreateTagT<wxString>(tagname, value, m_map_string, parent);
 		}
 		
-		bool AddTag(const CECTag &tag, CECTag *parent)
+		bool AddTag(CECTag &tag, CECTag *parent)
 		{
 			bool ret = false;
 			ec_tagname_t tagname = tag.GetTagName();
 			if (m_map_tag.count(tagname) == 0 || m_map_tag[tagname] != tag) {
-				parent->AddTag(tag);
 				m_map_tag[tagname] = tag;
+				parent->AddTag(tag);
 				ret = true;
 			}
 			return ret;

@@ -314,16 +314,17 @@ bool CECTag::operator==(const CECTag& tag) const
 }
 
 /**
- * Add a child tag to this one.
+ * Add a child tag to this one. The tag argument is reset to an empty tag.
  *
- * Be very careful that this creates a copy of \e tag. Thus, the following code won't work as expected:
+ * Be very careful that this method swallows the content of \e tag, leaving \e tag empty. 
+ * Thus, the following code won't work as expected:
  * \code
  * {
  *	CECPacket *p = new CECPacket(whatever);
  *	CECTag *t1 = new CECTag(whatever);
  *	CECTag *t2 = new CECTag(whatever);
- *	p.AddTag(*t1);
- *	t1.AddTag(*t2);	// t2 won't be part of p !!!
+ *	p->AddTag(*t1);
+ *	t1->AddTag(*t2);	// t2 won't be part of p !!!
  * }
  * \endcode
  *
@@ -334,10 +335,10 @@ bool CECTag::operator==(const CECTag& tag) const
  *	CECPacket *p = new CECPacket(whatever);
  *	CECTag *t1 = new CECTag(whatever);
  *	CECTag *t2 = new CECTag(whatever);
- *	t1.AddTag(*t2);
- *	delete t2;	// we can safely delete t2 here, because t1 holds a copy
- *	p.AddTag(*t1);
- *	delete t1;	// now p holds a copy of both t1 and t2
+ *	t1->AddTag(*t2);
+ *	delete t2;	// we can safely delete the now empty t2 here, because t1 holds its content
+ *	p->AddTag(*t1);
+ *	delete t1;	// now p holds the content of both t1 and t2
  * }
  * \endcode
  *
@@ -348,7 +349,7 @@ bool CECTag::operator==(const CECTag& tag) const
  *	CECPacket *p = new CECPacket(whatever);
  *	CECTag t1(whatever);
  *	t1.AddTag(CECTag(whatever));	// t2 is now created on-the-fly
- *	p.AddTag(t1);	// now p holds a copy of both t1 and t2
+ *	p->AddTag(t1);	// now p holds a copy of both t1 and t2
  * }
  * \endcode
  *
@@ -356,7 +357,7 @@ bool CECTag::operator==(const CECTag& tag) const
  * @return \b true if tag was really added, 
  * \b false when it was omitted through valuemap.
  */
-bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
+bool CECTag::AddTag(CECTag& tag, CValueMap* valuemap)
 {
 	if (valuemap) {
 		return valuemap->AddTag(tag, this);
@@ -364,7 +365,10 @@ bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 	// cannot have more than 64k tags
 	wxASSERT(m_tagList.size() < 0xffff);
 
-	m_tagList.push_back(tag);
+	// First add an empty tag.
+	m_tagList.push_back(CECEmptyTag());
+	// Then exchange the data. The original tag will be destroyed right after this call anyway.
+	tag.swap(m_tagList.back());
 	return true;
 }
 
@@ -393,6 +397,15 @@ void CECTag::AddTag(ec_tagname_t name, const CMD4Hash& data, CValueMap* valuemap
 	} else {
 		AddTag(CECTag(name, data));
 	}
+}
+
+void CECTag::swap(CECTag& t2)
+{
+	std::swap(m_tagName, t2.m_tagName);
+	std::swap(m_dataType, t2.m_dataType);
+	std::swap(m_dataLen, t2.m_dataLen);
+	std::swap(m_tagData, t2.m_tagData);
+	std::swap(m_tagList, t2.m_tagList);
 }
 
 bool CECTag::ReadFromSocket(CECSocket& socket)
