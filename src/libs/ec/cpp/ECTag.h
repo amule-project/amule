@@ -120,7 +120,7 @@ class CECTag {
 		CECTag&		operator=(const CECTag& rhs);
 		bool		operator==(const CECTag& tag) const;
 		bool		operator!=(const CECTag& tag) const	{ return !(*this == tag); }
-		bool		AddTag(CECTag& tag, CValueMap* valuemap = NULL);
+		bool		AddTag(const CECTag& tag, CValueMap* valuemap = NULL);
 		void		AddTag(ec_tagname_t name, uint64_t data, CValueMap* valuemap = NULL);
 		void		AddTag(ec_tagname_t name, const CMD4Hash& data, CValueMap* valuemap);
 		#ifdef USE_WX_EXTENSIONS
