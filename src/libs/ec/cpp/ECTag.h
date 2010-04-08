@@ -166,161 +166,18 @@ class CECTag {
 		void		DebugPrint(int level, bool print_empty) const;
 		void		swap(CECTag & t);
 		
-		bool AssignIfExist(ec_tagname_t tagname, bool *target) const
-		{
-			bool ret = false;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetInt() > 0;
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		uint8_t AssignIfExist(ec_tagname_t tagname, uint8_t *target) const
-		{
-			uint8_t ret = 0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				EC_ASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
-				ret = tag->GetInt();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		uint16_t AssignIfExist(ec_tagname_t tagname, uint16_t *target) const
-		{
-			uint16_t ret = 0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				EC_ASSERT(
-					(tag->GetType() == EC_TAGTYPE_UINT16)
-					|| (tag->GetType() == EC_TAGTYPE_UINT8)
-					|| (m_dataType == EC_TAGTYPE_UNKNOWN)
-				);
-				ret = tag->GetInt();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		uint32_t AssignIfExist(ec_tagname_t tagname, uint32_t *target) const
-		{
-			uint32_t ret = 0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				EC_ASSERT(
-					(tag->GetType() == EC_TAGTYPE_UINT32)
-					|| (tag->GetType() == EC_TAGTYPE_UINT16)
-					|| (tag->GetType() == EC_TAGTYPE_UINT8)
-					|| (m_dataType == EC_TAGTYPE_UNKNOWN)
-				);
-				ret = tag->GetInt();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		uint64_t AssignIfExist(ec_tagname_t tagname, uint64_t *target) const
-		{
-			uint64_t ret = 0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetInt();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		time_t AssignIfExist(ec_tagname_t tagname, time_t *target) const
-		{
-			time_t ret = 0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetInt();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		double AssignIfExist(ec_tagname_t tagname, double *target) const
-		{
-			double ret = 0.0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetDoubleData();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		float AssignIfExist(ec_tagname_t tagname, float *target) const
-		{
-			float ret = 0.0;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetDoubleData();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		CMD4Hash AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const
-		{
-			CMD4Hash ret;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetMD4Data();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-
-		std::string AssignIfExist(ec_tagname_t tagname, std::string *target) const
-		{
-			std::string ret;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetStringDataSTL();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}
-		
+		bool AssignIfExist(ec_tagname_t tagname, bool *target) const;
+		uint8_t AssignIfExist(ec_tagname_t tagname, uint8_t *target) const;
+		uint16_t AssignIfExist(ec_tagname_t tagname, uint16_t *target) const;
+		uint32_t AssignIfExist(ec_tagname_t tagname, uint32_t *target) const;
+		uint64_t AssignIfExist(ec_tagname_t tagname, uint64_t *target) const;
+		time_t AssignIfExist(ec_tagname_t tagname, time_t *target) const;
+		double AssignIfExist(ec_tagname_t tagname, double *target) const;
+		float AssignIfExist(ec_tagname_t tagname, float *target) const;
+		CMD4Hash AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const;
+		std::string AssignIfExist(ec_tagname_t tagname, std::string *target) const;
 		#ifdef USE_WX_EXTENSIONS
-		wxString AssignIfExist(ec_tagname_t tagname, wxString *target) const
-		{
-			wxString ret;
-			const CECTag *tag = GetTagByName(tagname);
-			if (tag) {
-				ret = tag->GetStringData();
-				if (target) {
-					*target = ret;
-				}
-			}
-			return ret;
-		}		
+		wxString AssignIfExist(ec_tagname_t tagname, wxString *target) const;
 		#endif
 		
 	protected:
