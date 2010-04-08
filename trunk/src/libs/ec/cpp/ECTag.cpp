@@ -631,7 +631,7 @@ CMD4Hash CECTag::GetMD4Data() const
 /**
  * Returns an EC_IPv4_t class.
  *
- * This function takes care of the enadianness of the port number.
+ * This function takes care of the endianness of the port number.
  *
  * @return EC_IPv4_t class.
  *
@@ -697,6 +697,165 @@ void CECTag::SetStringData(const wxString& s)
 		ConstructStringTag(m_tagName, (const char*)unicode2UTF8(s));
 	}
 }
+
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, bool *target) const
+{
+	bool ret = false;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetInt() > 0;
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+uint8_t CECTag::AssignIfExist(ec_tagname_t tagname, uint8_t *target) const
+{
+	uint8_t ret = 0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		EC_ASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+		ret = tag->GetInt();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+uint16_t CECTag::AssignIfExist(ec_tagname_t tagname, uint16_t *target) const
+{
+	uint16_t ret = 0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		EC_ASSERT(
+			(tag->GetType() == EC_TAGTYPE_UINT16)
+			|| (tag->GetType() == EC_TAGTYPE_UINT8)
+			|| (m_dataType == EC_TAGTYPE_UNKNOWN)
+		);
+		ret = tag->GetInt();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+uint32_t CECTag::AssignIfExist(ec_tagname_t tagname, uint32_t *target) const
+{
+	uint32_t ret = 0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		EC_ASSERT(
+			(tag->GetType() == EC_TAGTYPE_UINT32)
+			|| (tag->GetType() == EC_TAGTYPE_UINT16)
+			|| (tag->GetType() == EC_TAGTYPE_UINT8)
+			|| (m_dataType == EC_TAGTYPE_UNKNOWN)
+		);
+		ret = tag->GetInt();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+uint64_t CECTag::AssignIfExist(ec_tagname_t tagname, uint64_t *target) const
+{
+	uint64_t ret = 0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetInt();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+time_t CECTag::AssignIfExist(ec_tagname_t tagname, time_t *target) const
+{
+	time_t ret = 0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetInt();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+double CECTag::AssignIfExist(ec_tagname_t tagname, double *target) const
+{
+	double ret = 0.0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetDoubleData();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+float CECTag::AssignIfExist(ec_tagname_t tagname, float *target) const
+{
+	float ret = 0.0;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetDoubleData();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+CMD4Hash CECTag::AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const
+{
+	CMD4Hash ret;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetMD4Data();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+std::string CECTag::AssignIfExist(ec_tagname_t tagname, std::string *target) const
+{
+	std::string ret;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetStringDataSTL();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}
+
+#ifdef USE_WX_EXTENSIONS
+wxString CECTag::AssignIfExist(ec_tagname_t tagname, wxString *target) const
+{
+	wxString ret;
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		ret = tag->GetStringData();
+		if (target) {
+			*target = ret;
+		}
+	}
+	return ret;
+}		
+#endif
+
 
 #if	__DEBUG__
 void CECTag::DebugPrint(int level, bool print_empty) const
