@@ -166,18 +166,18 @@ class CECTag {
 		void		DebugPrint(int level, bool print_empty) const;
 		void		swap(CECTag & t);
 		
-		bool AssignIfExist(ec_tagname_t tagname, bool *target) const;
-		uint8_t AssignIfExist(ec_tagname_t tagname, uint8_t *target) const;
-		uint16_t AssignIfExist(ec_tagname_t tagname, uint16_t *target) const;
-		uint32_t AssignIfExist(ec_tagname_t tagname, uint32_t *target) const;
-		uint64_t AssignIfExist(ec_tagname_t tagname, uint64_t *target) const;
-		time_t AssignIfExist(ec_tagname_t tagname, time_t *target) const;
-		double AssignIfExist(ec_tagname_t tagname, double *target) const;
-		float AssignIfExist(ec_tagname_t tagname, float *target) const;
-		CMD4Hash AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const;
-		std::string AssignIfExist(ec_tagname_t tagname, std::string *target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, bool *target) const;
+		uint8_t		AssignIfExist(ec_tagname_t tagname, uint8_t *target) const;
+		uint16_t	AssignIfExist(ec_tagname_t tagname, uint16_t *target) const;
+		uint32_t	AssignIfExist(ec_tagname_t tagname, uint32_t *target) const;
+		uint64_t	AssignIfExist(ec_tagname_t tagname, uint64_t *target) const;
+		time_t		AssignIfExist(ec_tagname_t tagname, time_t *target) const;
+		double		AssignIfExist(ec_tagname_t tagname, double *target) const;
+		float		AssignIfExist(ec_tagname_t tagname, float *target) const;
+		CMD4Hash	AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const;
+		std::string	AssignIfExist(ec_tagname_t tagname, std::string *target) const;
 		#ifdef USE_WX_EXTENSIONS
-		wxString AssignIfExist(ec_tagname_t tagname, wxString *target) const;
+		wxString	AssignIfExist(ec_tagname_t tagname, wxString *target) const;
 		#endif
 		
 	protected:
