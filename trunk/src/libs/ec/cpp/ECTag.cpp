@@ -357,7 +357,7 @@ bool CECTag::operator==(const CECTag& tag) const
  * @return \b true if tag was really added, 
  * \b false when it was omitted through valuemap.
  */
-bool CECTag::AddTag(CECTag& tag, CValueMap* valuemap)
+bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 {
 	if (valuemap) {
 		return valuemap->AddTag(tag, this);
@@ -368,7 +368,10 @@ bool CECTag::AddTag(CECTag& tag, CValueMap* valuemap)
 	// First add an empty tag.
 	m_tagList.push_back(CECEmptyTag());
 	// Then exchange the data. The original tag will be destroyed right after this call anyway.
-	tag.swap(m_tagList.back());
+	// UGLY - GCC allows a reference to an in place constructed object only to be passed as const.
+	// So pass it the way it wants it and then cheat and cast it back to non-const. :-/
+	CECTag& wtag = const_cast<CECTag&>(tag);
+	wtag.swap(m_tagList.back());
 	return true;
 }
 

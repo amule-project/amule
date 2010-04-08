@@ -121,7 +121,7 @@ class CValueMap {
 			CreateTagT<wxString>(tagname, value, m_map_string, parent);
 		}
 		
-		bool AddTag(CECTag &tag, CECTag *parent)
+		bool AddTag(const CECTag &tag, CECTag *parent)
 		{
 			bool ret = false;
 			ec_tagname_t tagname = tag.GetTagName();
