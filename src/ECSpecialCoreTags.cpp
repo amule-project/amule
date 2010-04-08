@@ -138,7 +138,7 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 		
 		AddTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), valuemap);
 		AddTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), valuemap);
-		AddTag(EC_TAG_PARTFILE_SPEED, file->GetKBpsDown()*1024, valuemap);
+		AddTag(EC_TAG_PARTFILE_SPEED, (uint64_t)(file->GetKBpsDown()*1024), valuemap);
 	}
 	
 	AddTag(EC_TAG_PARTFILE_PRIO, (file->IsAutoDownPriority() ? 
