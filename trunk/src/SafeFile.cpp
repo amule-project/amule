@@ -468,12 +468,14 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			}
 
 			default:
-				throw wxString(wxT("Invalid Kad tag type on packet"));
+				throw wxString(CFormat(wxT("Invalid Kad tag type; type=0x%02x name=%s\n")) % type % name);
 		}
-	} catch (...) {
-		AddLogLineNS(CFormat(wxT("Invalid Kad tag; type=0x%02x name=%s\n"))
-			% type % name);
+	} catch(const CMuleException& e) {
+		AddLogLineN(e.what());
 		delete retVal;
+		throw;
+	} catch(const wxString& e) {
+		AddLogLineN(e);
 		throw;
 	}
 	
