@@ -52,8 +52,8 @@ class CTagSet : public std::set<T> {
 	public:
 		CTagSet(const CECPacket *request) : std::set<T>()
 		{
-			for (unsigned int i = 0;i < request->GetTagCount();i++) {
-				const CECTag *tag = request->GetTagByIndex(i);
+			for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+				const CECTag *tag = & *it;
 				if ( tag->GetTagName() == OP ) {
 					this->InSet(tag, T());
 				}

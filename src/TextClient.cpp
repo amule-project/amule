@@ -332,15 +332,15 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				const CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 
 				if (reply_all) { 
-                                        switch(CmdId) {
-                                                case CMD_ID_PAUSE:
-                                                        request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
-                                                case CMD_ID_CANCEL:
-                                                        request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
-                                                case CMD_ID_RESUME:
-                                                        request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
-                                                default: wxFAIL;
-                                        }
+					switch(CmdId) {
+						case CMD_ID_PAUSE:
+								request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
+						case CMD_ID_CANCEL:
+								request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
+						case CMD_ID_RESUME:
+								request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
+						default: wxFAIL;
+					}
 
 					// We loop through all the arguments
 					while(argsTokenizer.HasMoreTokens()) {
@@ -349,33 +349,29 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 						// If the user requested all, then we select all files and exit the loop
 						// since there is little point to add anything more to "everything"
 						if( token == wxT("all") ) {
-							for (size_t i = 0; i < reply_all->GetTagCount(); i++) {
-	                                                	const CECTag *tag = reply_all->GetTagByIndex(i);
-	                                                	if (tag) {
-	                                                        	request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
-	                                                	}
-								break;
+							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); it++) {
+								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *) & *it;
+								request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
 							}
-	                                        } else if ( hash.Decode(token.Trim(false).Trim(true)) ) {
+							break;
+						} else if ( hash.Decode(token.Trim(false).Trim(true)) ) {
 							if ( !hash.IsEmpty() ) {
 								Show(_("Processing by hash: "+token+wxT("\n")));
 								request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
 							}
 						} else {
 							 // Go through the dl queue and look at each filename
-							for (size_t i = 0; i < reply_all->GetTagCount(); i++) {
-								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply_all->GetTagByIndex(i);
-								if (tag) {
-									wxString partmetname = tag->PartMetName();
+							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); it++) {
+								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *) & *it;
+								wxString partmetname = tag->PartMetName();
 
-									// We check for filename, XXX.pat.met, XXX.part, XXX
-									if( tag->FileName() == token ||
+								// We check for filename, XXX.pat.met, XXX.part, XXX
+								if( tag->FileName() == token ||
 									partmetname == token ||
 									partmetname.Truncate(partmetname.Len()-4) == token ||
 									partmetname.Truncate(partmetname.Len()-5) == token) {
-										Show(_("Processing by filename: "+token+wxT("\n")));
-										request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
-									}	
+									Show(_("Processing by filename: "+token+wxT("\n")));
+									request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
 								}		
 							}	
 						} // End of filename check else	
@@ -623,8 +619,8 @@ wxString StatTree2Text(CEC_StatTree_Node_Tag *tree, int depth)
 		return wxEmptyString;
 	}
 	wxString result = wxString(wxChar(' '), depth) + tree->GetDisplayString() + wxT("\n");
-	for (size_t i = 0; i < tree->GetTagCount(); ++i) {
-		CEC_StatTree_Node_Tag *tmp = (CEC_StatTree_Node_Tag*)tree->GetTagByIndex(i);
+	for (CECTag::const_iterator it = tree->begin(); it != tree->end(); it++) {
+		CEC_StatTree_Node_Tag *tmp = (CEC_StatTree_Node_Tag*) & *it;
 		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
 			result += StatTree2Text(tmp, depth + 1);
 		}
@@ -645,15 +641,13 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			s << _("Operation was successful.");
 			break;
 		case EC_OP_FAILED:
-			if (response->GetTagCount()) {
-				const CECTag *tag = response->GetTagByIndex(0);
-				if (tag) {
+			{
+				const CECTag *tag = response->GetFirstTagSafe();
+				if (tag->IsString()) {
 					s <<	CFormat(_("Request failed with the following error: %s")) % wxGetTranslation(tag->GetStringData());
 				} else {
 					s << msgFailedUnknown;
 				}
-			} else {
-				s << msgFailedUnknown;
 			}
 			break;
 		case EC_OP_SET_PREFERENCES:
@@ -688,12 +682,9 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_STRINGS:
-			for (size_t i = 0; i < response->GetTagCount(); ++i) {
-				const CECTag *tag = response->GetTagByIndex(i);
-				if (tag) {
-					s << tag->GetStringData() << wxT("\n");
-				} else {
-				}
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+				const CECTag &tag = *it;
+				s << tag.GetStringData() << wxT("\n");
 			}
 			break;
 		case EC_OP_STATS: {
@@ -748,10 +739,8 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			break;
 		}
 		case EC_OP_DLOAD_QUEUE:
-			for (size_t i = 0; i < response->GetTagCount(); ++i) {
-				CEC_PartFile_Tag *tag =
-					(CEC_PartFile_Tag *)response->GetTagByIndex(i);
-				if (tag) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+				CEC_PartFile_Tag *tag =	(CEC_PartFile_Tag *) & *it;
 					uint64 filesize, donesize;
 					filesize = tag->SizeFull();
 					donesize = tag->SizeDone();
@@ -774,17 +763,16 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 							s << wxT(" - ") + CastItoSpeed(tag->Speed());
 						}
 					s << wxT("\n");
-				}
 			}
 			break;
 		case EC_OP_ULOAD_QUEUE:
-			for (size_t i = 0; i < response->GetTagCount(); ++i) {
-				const CECTag *tag = response->GetTagByIndex(i);
-				const CECTag *clientName = tag ? tag->GetTagByName(EC_TAG_CLIENT_NAME) : NULL;
-				const CECTag *partfileName = tag ? tag->GetTagByName(EC_TAG_PARTFILE_NAME) : NULL;
-				const CECTag *partfileSizeXfer = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER) : NULL;
-				const CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED) : NULL;
-				if (tag && clientName && partfileName && partfileSizeXfer && partfileSpeed) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+				const CECTag *tag = & *it;
+				const CECTag *clientName = tag->GetTagByName(EC_TAG_CLIENT_NAME);
+				const CECTag *partfileName = tag->GetTagByName(EC_TAG_PARTFILE_NAME);
+				const CECTag *partfileSizeXfer = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER);
+				const CECTag *partfileSpeed = tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED);
+				if (clientName && partfileName && partfileSizeXfer && partfileSpeed) {
 					s <<	wxT("\n") <<
 						CFormat(wxT("%10u ")) % tag->GetInt() <<
 						clientName->GetStringData() << wxT(" ") <<
@@ -795,20 +783,17 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_LOG:
-			for (size_t i = 0; i < response->GetTagCount(); ++i) {
-				const CECTag *tag = response->GetTagByIndex(i);
-				if (tag) {
-					s << tag->GetStringData() << wxT("\n");
-				} else {
-				}
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+				const CECTag &tag = *it;
+				s << tag.GetStringData() << wxT("\n");
 			}
 			break;
 		case EC_OP_SERVER_LIST:
-			for (size_t i = 0; i < response->GetTagCount(); i++) {
-				const CECTag *tag = response->GetTagByIndex(i);
-				const CECTag *serverName = tag ? tag->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
-				if (tag && serverName) {
-					wxString ip = tag->GetIPv4Data().StringIP();
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+				const CECTag &tag = *it;
+				const CECTag *serverName = tag.GetTagByName(EC_TAG_SERVER_NAME);
+				if (serverName) {
+					wxString ip = tag.GetIPv4Data().StringIP();
 					ip.Append(' ', 24 - ip.Length());
 					s << ip << serverName->GetStringData() << wxT("\n");
 				}
@@ -819,19 +804,18 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			break;
 
 		case EC_OP_SEARCH_RESULTS:
+		{
+			int i = 0;
 			m_Results_map.clear();
 			s << CFormat(_("Number of search results: %i\n")) % response->GetTagCount();
-			for (size_t i = 0; i < response->GetTagCount(); i++) {
-				CEC_SearchFile_Tag *tag = (CEC_SearchFile_Tag *)response->GetTagByIndex(i);
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+				CEC_SearchFile_Tag *tag = (CEC_SearchFile_Tag *) & *it;
 				//printf("Tag FileName: %s \n",(const char*)unicode2char(tag->FileName()));
-				//if (tag != NULL)
-					m_Results_map[i] = new SearchFile(tag);
-				//const CECTag *tag = response->GetTagByIndex(i);
-				
+				m_Results_map[i++] = new SearchFile(tag);
 			}
 			ShowResults(m_Results_map);
 			break;
-
+		}
 		case EC_OP_SEARCH_PROGRESS:
 			s << _("TODO - show progress of a search");
 			// gives compilation error!!

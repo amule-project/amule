@@ -490,8 +490,8 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 		}
 	} else if (response->GetOpCode() == EC_OP_AUTH_FAIL) {
 		// Log message sent to client
-		if (response->GetTagByIndex(0)->IsString()) {
-			AddLogLineM(false, CFormat(_("Sent error message \"%s\" to client.")) % wxGetTranslation(response->GetTagByIndex(0)->GetStringData()));
+		if (response->GetFirstTagSafe()->IsString()) {
+			AddLogLineM(false, CFormat(_("Sent error message \"%s\" to client.")) % wxGetTranslation(response->GetFirstTagSafe()->GetStringData()));
 		}
 		// Access denied!
 		AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
@@ -703,12 +703,12 @@ static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	CECPacket *response = NULL;
 
 	// request can contain multiple files.
-	for (unsigned int i = 0; i < request->GetTagCount(); ++i) {
-		const CECTag *hashtag = request->GetTagByIndex(i);
+	for (CECPacket::const_iterator it1 = request->begin(); it1 != request->end(); it1++) {
+		const CECTag &hashtag = *it1;
 
-		wxASSERT(hashtag->GetTagName() == EC_TAG_PARTFILE);
+		wxASSERT(hashtag.GetTagName() == EC_TAG_PARTFILE);
 
-		CMD4Hash hash = hashtag->GetMD4Data();
+		CMD4Hash hash = hashtag.GetMD4Data();
 		CPartFile *pfile = theApp->downloadqueue->GetFileByID( hash );
 		
 		if ( !pfile ) {
@@ -755,7 +755,7 @@ static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				pfile->StopFile();
 				break;
 			case EC_OP_PARTFILE_PRIO_SET: {
-					uint8 prio = hashtag->GetTagByIndexSafe(0)->GetInt();
+					uint8 prio = hashtag.GetFirstTagSafe()->GetInt();
 					if ( prio == PR_AUTO ) {
 						pfile->SetAutoDownPriority(1);
 					} else {
@@ -772,7 +772,7 @@ static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				break;
 
 			case EC_OP_PARTFILE_SET_CAT:
-				pfile->SetCategory(hashtag->GetTagByIndexSafe(0)->GetInt());
+				pfile->SetCategory(hashtag.GetFirstTagSafe()->GetInt());
 				break;
 
 			default:
@@ -791,7 +791,7 @@ static CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 
-	const CECTag *srv_tag = request->GetTagByIndex(0);
+	const CECTag *srv_tag = request->GetFirstTagSafe();
 
 	wxString full_addr = srv_tag->GetTagByName(EC_TAG_SERVER_ADDRESS)->GetStringData();
 	wxString name = srv_tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
@@ -817,7 +817,7 @@ static CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 static CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = NULL;
-	const CECTag *srv_tag = request->GetTagByIndex(0);
+	const CECTag *srv_tag = request->GetFirstTagSafe();
 	CServer *srv = 0;
 	if ( srv_tag ) {
 		srv = theApp->serverlist->GetServerByIPTCP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().m_port);
@@ -914,10 +914,10 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 static CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
-	for (unsigned int i = 0;i < request->GetTagCount();i++) {
-		const CECTag *tag = request->GetTagByIndex(i);
-		CMD4Hash hash = tag->GetMD4Data();
-		uint8 category = tag->GetTagByIndexSafe(0)->GetInt();
+	for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+		const CECTag &tag = *it;
+		CMD4Hash hash = tag.GetMD4Data();
+		uint8 category = tag.GetFirstTagSafe()->GetInt();
 		theApp->searchlist->AddFileToDownloadByHash(hash, category);
 	}
 	return response;
@@ -934,7 +934,7 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
 	wxString response;
 	
-	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
+	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetFirstTagSafe();
 	theApp->searchlist->RemoveResults(0xffffffff);
 
 	CSearchList::CSearchParams params;
@@ -980,10 +980,10 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 static CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_NOOP);
-	for (unsigned int i = 0;i < request->GetTagCount();i++) {
-		const CECTag *tag = request->GetTagByIndex(i);
-		CMD4Hash hash = tag->GetMD4Data();
-		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt();
+	for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+		const CECTag &tag = *it;
+		CMD4Hash hash = tag.GetMD4Data();
+		uint8 prio = tag.GetFirstTagSafe()->GetInt();
 		CKnownFile* cur_file = theApp->sharedfiles->GetFileByID(hash);
 		if ( !cur_file ) {
 			continue;
@@ -1010,7 +1010,7 @@ static CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 			Kademlia::CKademlia::Start();
 			theApp->ShowConnectionState();
 		}
-		const CECTag *addrtag = request->GetTagByIndex(0);
+		const CECTag *addrtag = request->GetFirstTagSafe();
 		if ( addrtag ) {
 			uint32 ip = addrtag->GetIPv4Data().IP();
 			uint16 port = addrtag->GetIPv4Data().m_port;
@@ -1239,11 +1239,11 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			}
 			break;
 		case EC_OP_ADD_LINK: 
-			for(unsigned int i = 0; i < request->GetTagCount();i++) {
-				const CECTag *tag = request->GetTagByIndex(i);
-				wxString link = tag->GetStringData();
+			for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+				const CECTag &tag = *it;
+				wxString link = tag.GetStringData();
 				int category = 0;
-				const CECTag *cattag = tag->GetTagByName(EC_TAG_PARTFILE_CAT);
+				const CECTag *cattag = tag.GetTagByName(EC_TAG_PARTFILE_CAT);
 				if (cattag) {
 					category = cattag->GetInt();
 				}
@@ -1375,7 +1375,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			}
 			break;
 		case EC_OP_SERVER_UPDATE_FROM_URL: {
-			wxString url = request->GetTagByIndexSafe(0)->GetStringData();
+			wxString url = request->GetFirstTagSafe()->GetStringData();
 
 			// Save the new url, and update the UI (if not amuled).
 			Notify_ServersURLChanged(url);
@@ -1394,7 +1394,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 
 		case EC_OP_IPFILTER_UPDATE: {
-			wxString url = request->GetTagByIndexSafe(0)->GetStringData();
+			wxString url = request->GetFirstTagSafe()->GetStringData();
 			if (url == wxEmptyString) {
 				url = thePrefs::IPFilterURL();
 			}
@@ -1456,7 +1456,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			
 		case EC_OP_CREATE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetTagByIndex(0);
+				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetFirstTagSafe();
 				if (tag->Create()) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
@@ -1471,7 +1471,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_UPDATE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetTagByIndex(0);
+				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetFirstTagSafe();
 				if (tag->Apply()) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
@@ -1486,7 +1486,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_DELETE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				uint32 cat = request->GetTagByIndex(0)->GetInt();
+				uint32 cat = request->GetFirstTagSafe()->GetInt();
 				// this noes not only update the gui, but actually deletes the cat
 				Notify_CategoryDelete(cat);
 			}
@@ -1570,7 +1570,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_KAD_UPDATE_FROM_URL: {
-			wxString url = request->GetTagByIndexSafe(0)->GetStringData();
+			wxString url = request->GetFirstTagSafe()->GetStringData();
 
 			// Save the new url, and update the UI (if not amuled).
 			Notify_NodesURLChanged(url);
@@ -1581,8 +1581,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		}
 		case EC_OP_KAD_BOOTSTRAP_FROM_IP:
-			theApp->BootstrapKad(request->GetTagByIndexSafe(0)->GetInt(),
-			                     request->GetTagByIndexSafe(1)->GetInt());
+			theApp->BootstrapKad(request->GetTagByNameSafe(EC_TAG_BOOTSTRAP_IP)->GetInt(),
+			                     request->GetTagByNameSafe(EC_TAG_BOOTSTRAP_PORT)->GetInt());
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 

@@ -276,8 +276,8 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 		{
 			std::set<I> core_files;
-			for (uint32_t i = 0;i < reply->GetTagCount();i++) {
-				G *tag = (G *)reply->GetTagByIndex(i);
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+				G *tag = (G *) & *it;
 		
 				core_files.insert(tag->ID());
 				if ( m_items_hash.count(tag->ID()) ) {
@@ -312,8 +312,8 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		
 		void ProcessFull(const CECPacket *reply)
 		{
-			for (uint32_t i = 0;i < reply->GetTagCount();i++) {
-				G *tag = (G *)reply->GetTagByIndex(i);
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+				G *tag = (G *) & *it;
 				// initialize item data from EC tag
 				T item(tag);
 				T *real_ptr = AddItem(item);
@@ -342,7 +342,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 			delete reply;
 		
 			// Phase 3: request full info about files we don't have yet
-			if ( req_full.GetTagCount() ) {
+			if ( req_full.HasChildTags() ) {
 				reply = this->m_webApp->SendRecvMsg_v2(&req_full);
 				if ( !reply ) {
 					return false;

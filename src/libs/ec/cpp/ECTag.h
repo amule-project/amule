@@ -127,12 +127,7 @@ class CECTag {
 		void		AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap = NULL);
 		#endif
 
-		const CECTag*	GetTagByIndex(size_t index) const
-			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
-		CECTag*		GetTagByIndex(size_t index)
-			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
-		const CECTag*	GetTagByIndexSafe(size_t index) const
-			{ const CECTag* result = GetTagByIndex(index); return result ? result : &s_theNullTag; }
+		const CECTag*	GetFirstTagSafe() const { return m_tagList.empty() ? &s_theNullTag : & *m_tagList.begin(); }
 		
 		const CECTag*	GetTagByName(ec_tagname_t name) const;
 		CECTag*			GetTagByName(ec_tagname_t name);
@@ -179,7 +174,7 @@ class CECTag {
 		#ifdef USE_WX_EXTENSIONS
 		wxString	AssignIfExist(ec_tagname_t tagname, wxString *target) const;
 		#endif
-		
+
 	protected:
 
 		uint8_t GetType() const { return m_dataType; }
@@ -199,13 +194,19 @@ class CECTag {
 		char *			m_tagData;
 		void NewData()	{ m_tagData = new char[m_dataLen]; }
 
-		typedef std::vector<CECTag> TagList;
+		typedef std::list<CECTag> TagList;
 		TagList m_tagList;
 		
 		static const CECTag s_theNullTag;
 		
 		// To be used by the string constructors.
 		void ConstructStringTag(ec_tagname_t name, const std::string& data);
+
+	public:
+		// Iteration through child tags
+		typedef TagList::const_iterator const_iterator;
+		const_iterator begin()	const { return m_tagList.begin(); }
+		const_iterator end()	const { return m_tagList.end(); }
 };
 
 

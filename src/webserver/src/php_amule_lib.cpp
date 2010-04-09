@@ -297,12 +297,12 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	if ( !reply ) {
 		return ;
 	}
-	const CECTag *cats_tag = reply->GetTagCount() ? reply->GetTagByIndex(0) : 0;
-	if ( cats_tag && cats_tag->GetTagCount() ) {
-		for (uint32_t i = 0; i < cats_tag->GetTagCount(); i++) {
-			const CECTag *tag = cats_tag->GetTagByIndex(i);
-			const CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
-			PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
+	const CECTag *cats_tag = reply->GetFirstTagSafe();
+	if (cats_tag->HasChildTags()) {
+		int i = 0;
+		for (CECTag::const_iterator it = cats_tag->begin(); it != cats_tag->end(); it++) {
+			const CECTag *categoryTitle = it->GetTagByName(EC_TAG_CATEGORY_TITLE);
+			PHP_VAR_NODE *cat = array_get_by_int_key(result, i++);
 			value_value_free(&cat->value);
 			cat->value.type = PHP_VAL_STRING;
 			cat->value.str_val = strdup(unicode2UTF8(categoryTitle->GetStringData()));
@@ -402,7 +402,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)0xffffffff));
 	const CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
-	if ( !reply || !reply->GetTagCount()) {
+	if ( !reply || !reply->HasChildTags()) {
 		return ;
 	}
 	const CECTag *cattag = 0;
@@ -618,7 +618,7 @@ void php_get_log(PHP_VALUE_NODE *result)
 	CECPacket req(EC_OP_GET_LOG);
 	const CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if (response) {
-		wxString serverInfoString(_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData()));
+		wxString serverInfoString(_SpecialChars(response->GetFirstTagSafe()->GetStringData()));
 		delete response;
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(serverInfoString));
@@ -648,7 +648,7 @@ void php_get_serverinfo(PHP_VALUE_NODE *result)
 	CECPacket req(EC_OP_GET_SERVERINFO);
 	const CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if (response) {
-		wxString serverInfoString(_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData()));
+		wxString serverInfoString(_SpecialChars(response->GetFirstTagSafe()->GetStringData()));
 		delete response;
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(serverInfoString));
@@ -753,8 +753,8 @@ void ecstats2php(CEC_StatTree_Node_Tag *root, PHP_VALUE_NODE *result)
 	cast_value_array(result);
 	std::string key(unicode2UTF8(root->GetDisplayString()));
 	PHP_VAR_NODE *v_key = array_get_by_str_key(result, key);
-	for (uint32_t i = 0; i < root->GetTagCount(); i++) {
-		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)root->GetTagByIndex(i);
+	for (CECTag::const_iterator it = root->begin(); it != root->end(); it++) {
+		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
 		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
 			ecstats2php(tag, &v_key->value);
 		}
@@ -782,8 +782,8 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 	}
 	CEC_StatTree_Node_Tag *stats_root = (CEC_StatTree_Node_Tag *)response->GetTagByName(EC_TAG_STATTREE_NODE);
 	//ecstats2php(stats_root, result);
-	for (uint32_t i = 0; i < stats_root->GetTagCount(); i++) {
-		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)stats_root->GetTagByIndex(i);
+	for (CECTag::const_iterator it = stats_root->begin(); it != stats_root->end(); it++) {
+		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
 		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
 			ecstats2php(tag, result);
 		}

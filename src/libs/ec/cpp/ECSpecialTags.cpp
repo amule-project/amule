@@ -149,10 +149,9 @@ wxString CEC_StatTree_Node_Tag::GetDisplayString() const
 		}
 	}
 	CFormat label(my_label);
-	for (size_t i = 0; i < GetTagCount(); ++i) {
-		const CECTag *tmp = GetTagByIndex(i);
-		if (tmp->GetTagName() == EC_TAG_STAT_NODE_VALUE) {
-			FormatValue(label, tmp);
+	for (const_iterator it = begin(); it != end(); it++) {
+		if (it->GetTagName() == EC_TAG_STAT_NODE_VALUE) {
+			FormatValue(label, &*it);
 		}
 	}
 	return label.GetString();
