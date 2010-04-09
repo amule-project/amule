@@ -288,14 +288,10 @@ CECTag& CECTag::operator=(const CECTag& tag)
 			m_tagData = NULL;
 		}
 		m_tagList.clear();
-		if (!tag.m_tagList.empty()) {
-			m_tagList.reserve(tag.m_tagList.size());
-			for (TagList::size_type i=0; i<tag.m_tagList.size(); i++) {
-				m_tagList.push_back(tag.m_tagList[i]);
-			}
+		for (const_iterator it = tag.begin(); it != tag.end(); it++) {
+			m_tagList.push_back(*it);
 		}
 	}
-
 	return *this;
 }
 
@@ -479,14 +475,11 @@ bool CECTag::ReadChildren(CECSocket& socket)
 		return false;
 	}
 	m_tagList.clear();
-	if (tmp_tagCount > 0) {
-		m_tagList.reserve(tmp_tagCount);
-		for (int i=0; i<tmp_tagCount; i++) {
-			m_tagList.push_back(CECTag());
-			CECTag& tag = m_tagList[i];
-			if (!tag.ReadFromSocket(socket)) {
-				return false;
-			}
+	for (int i = 0; i < tmp_tagCount; i++) {
+		m_tagList.push_back(CECTag());
+		CECTag& tag = m_tagList.back();
+		if (!tag.ReadFromSocket(socket)) {
+			return false;
 		}
 	}
 	return true;
@@ -497,10 +490,8 @@ bool CECTag::WriteChildren(CECSocket& socket) const
 	wxASSERT(m_tagList.size() < 0xFFFF);
     uint16 tmp = (uint16)m_tagList.size();
 	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
-	if (!m_tagList.empty()) {
-		for (TagList::size_type i=0; i<m_tagList.size(); i++) {
-			if (!m_tagList[i].WriteTag(socket)) return false;
-		}
+	for (const_iterator it = begin(); it != end(); it++) {
+		if (!it->WriteTag(socket)) return false;
 	}
 	return true;
 }
@@ -513,8 +504,9 @@ bool CECTag::WriteChildren(CECSocket& socket) const
  */
 const CECTag* CECTag::GetTagByName(ec_tagname_t name) const
 {
-	for (TagList::size_type i=0; i<m_tagList.size(); i++)
-		if (m_tagList[i].m_tagName == name) return &m_tagList[i];
+	for (const_iterator it = begin(); it != end(); it++) {
+		if (it->m_tagName == name) return & *it;
+	}
 	return NULL;
 }
 
@@ -526,8 +518,9 @@ const CECTag* CECTag::GetTagByName(ec_tagname_t name) const
  */
 CECTag* CECTag::GetTagByName(ec_tagname_t name)
 {
-	for (TagList::size_type i=0; i<m_tagList.size(); i++)
-		if (m_tagList[i].m_tagName == name) return &m_tagList[i];
+	for (TagList::iterator it = m_tagList.begin(); it != m_tagList.end(); it++) {
+		if (it->m_tagName == name) return & *it;
+	}
 	return NULL;
 }
 
@@ -556,9 +549,9 @@ const CECTag* CECTag::GetTagByNameSafe(ec_tagname_t name) const
 uint32 CECTag::GetTagLen(void) const
 {
 	uint32 length = m_dataLen;
-	for (TagList::size_type i=0; i<m_tagList.size(); i++) {
-		length += m_tagList[i].GetTagLen();
-		length += sizeof(ec_tagname_t) + sizeof(ec_tagtype_t) + sizeof(ec_taglen_t) + ((m_tagList[i].GetTagCount() > 0) ? 2 : 0);
+	for (const_iterator it = begin(); it != end(); it++) {
+		length += it->GetTagLen();
+		length += sizeof(ec_tagname_t) + sizeof(ec_tagtype_t) + sizeof(ec_taglen_t) + (it->HasChildTags() ? 2 : 0);
 	}
 	return length;
 }

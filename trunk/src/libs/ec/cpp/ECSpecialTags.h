@@ -235,6 +235,8 @@ class CEC_SharedFile_Tag : public CECTag {
 		uint16		GetOnQueue(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_ON_QUEUE, target); }
 
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
+	private:
+		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };
 
 class CEC_PartFile_Tag : public CEC_SharedFile_Tag {
@@ -321,6 +323,8 @@ class CEC_UpDownClient_Tag : public CECTag {
 		EIdentState GetCurrentIdentState(EIdentState * target = 0) const { return (EIdentState) AssignIfExist(EC_TAG_CLIENT_IDENT_STATE, (uint32 *) target); }
 		bool HasObfuscatedConnection(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, target); }
 		bool HasExtendedProtocol(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_EXT_PROTOCOL, target); }
+	private:
+		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };
 
 class CEC_SearchFile_Tag : public CECTag {
@@ -339,6 +343,8 @@ class CEC_SearchFile_Tag : public CECTag {
   		uint32		CompleteSourceCount(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, target); }
 		bool		AlreadyHave()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt() != 0; /* == CSearchFile::NEW */ }
 		uint32		DownloadStatus(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_STATUS, target); }
+	private:
+		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };
 
 class CEC_Search_Tag : public CECTag {

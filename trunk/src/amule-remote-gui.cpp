@@ -557,15 +557,16 @@ void CPreferencesRem::HandlePacket(const CECPacket *packet)
 {
 	((CEC_Prefs_Packet *)packet)->Apply();
 
-	if ( packet->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
-		for (size_t i = 0; i < packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
-			const CECTag *cat_tag = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
+	const CECTag *cat_tags = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES);
+	if (cat_tags) {
+		for (CECTag::const_iterator it = cat_tags->begin(); it != cat_tags->end(); it++) {
+			const CECTag &cat_tag = *it;
 			Category_Struct *cat = new Category_Struct;
-			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
-			cat->path = CPath(cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData());
-			cat->comment = cat_tag->GetTagByName(EC_TAG_CATEGORY_COMMENT)->GetStringData();
-			cat->color =  cat_tag->GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt();
-			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt();
+			cat->title = cat_tag.GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
+			cat->path = CPath(cat_tag.GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData());
+			cat->comment = cat_tag.GetTagByName(EC_TAG_CATEGORY_COMMENT)->GetStringData();
+			cat->color =  cat_tag.GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt();
+			cat->prio = cat_tag.GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt();
 			theApp->glob_prefs->AddCat(cat);
 		}
 	} else {
@@ -1032,8 +1033,8 @@ void CKnownFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
 	accepted = 0;
 
 	std::set<uint32> core_files;
-	for (size_t i = 0;i < reply->GetTagCount();i++) {
-		CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *)reply->GetTagByIndex(i);
+	for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+		CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) & *it;
 		uint32 id = tag->ID();
 		core_files.insert(id);
 		if ( m_items_hash.count(id) ) {
@@ -1401,17 +1402,15 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	CECTag *srcnametag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
 	if (srcnametag) {
 		SourcenameItemMap &map = file->GetSourcenameItemMap();
-		size_t max = srcnametag->GetTagCount();
-		for (size_t i = 0; i < max; i++) {
-			CECTag *ntag = srcnametag->GetTagByIndex(i);
-			uint32 key = ntag->GetInt();
-			int count = ntag->GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS)->GetInt();
+		for (CECTag::const_iterator it = srcnametag->begin(); it != srcnametag->end(); it++) {
+			uint32 key = it->GetInt();
+			int count = it->GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS)->GetInt();
 			if (count == 0) {
 				map.erase(key);
 			} else {
 				SourcenameItem &item = map[key];
 				item.count = count;
-				CECTag *nametag = ntag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
+				const CECTag *nametag = it->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
 				if (nametag) {
 					item.name = nametag->GetStringData();
 				}
@@ -1423,12 +1422,11 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	CECTag *commenttag = tag->GetTagByName(EC_TAG_PARTFILE_COMMENTS);
 	if (commenttag) {
 		file->ClearFileRatingList();
-		int max = commenttag->GetTagCount();
-		for (int i = 0; i < max - 3; ) {
-			wxString u = commenttag->GetTagByIndex(i++)->GetStringData();
-			wxString f = commenttag->GetTagByIndex(i++)->GetStringData();
-			int r = commenttag->GetTagByIndex(i++)->GetInt();
-			wxString c = commenttag->GetTagByIndex(i++)->GetStringData();
+		for (CECTag::const_iterator it = commenttag->begin(); it != commenttag->end(); ) {
+			wxString u = (it++)->GetStringData();
+			wxString f = (it++)->GetStringData();
+			int r = (it++)->GetInt();
+			wxString c = (it++)->GetStringData();
 			file->AddFileRatingList(u, f, r, c);
 		}
 		file->UpdateFileRatingCommentAvail();
@@ -1582,7 +1580,7 @@ void CSearchListRem::StopKadSearch()
 void CSearchListRem::HandlePacket(const CECPacket *packet)
 {
 	if ( packet->GetOpCode() == EC_OP_SEARCH_PROGRESS ) {
-		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt());
+		CoreNotify_Search_Update_Progress(packet->GetFirstTagSafe()->GetInt());
 	} else {
 		CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag>::HandlePacket(packet);
 	}

@@ -535,9 +535,8 @@ void CEC_Prefs_Packet::Apply()
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_SHARED)) != NULL) {
 			theApp->glob_prefs->shareddir_list.clear();
-			for (unsigned int i = 0; i < oneTag->GetTagCount(); i++) {
-				const CECTag *dirTag = oneTag->GetTagByIndex(i);
-				theApp->glob_prefs->shareddir_list.push_back(CPath(dirTag->GetStringData()));
+			for (CECTag::const_iterator it = oneTag->begin(); it != oneTag->end(); it++) {
+				theApp->glob_prefs->shareddir_list.push_back(CPath(it->GetStringData()));
 			}
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetShareHiddenFiles, EC_TAG_DIRECTORIES_SHARE_HIDDEN);

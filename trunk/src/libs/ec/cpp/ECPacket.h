@@ -49,11 +49,14 @@ class CECPacket : protected CECEmptyTag {
 		}
 		
 		using CECTag::AddTag;
-		using CECTag::GetTagByIndex;
-		using CECTag::GetTagByIndexSafe;
 		using CECTag::GetTagByName;
 		using CECTag::GetTagByNameSafe;
 		using CECTag::GetTagCount;
+		using CECTag::GetFirstTagSafe;
+		using CECTag::HasChildTags;
+		using CECTag::const_iterator;
+		using CECTag::begin;
+		using CECTag::end;
 
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32_t		GetPacketLength(void) const { return CECTag::GetTagLen(); }

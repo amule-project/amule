@@ -357,15 +357,15 @@ void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 	const CECTag *tag = NULL;
 	if (reply) {
 		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
-			for(uint32_t i = 0; i < reply->GetTagCount(); ++i) {
-				if (	(tag = reply->GetTagByIndex(i)) &&
-					(tag->GetTagName() == EC_TAG_STRING)) {
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+				tag = & *it;
+				if (tag->GetTagName() == EC_TAG_STRING) {
 					webInterface->Show(tag->GetStringData());
 				}
 			}
 		} else if (reply->GetOpCode() == EC_OP_FAILED) {
-			if (	reply->GetTagCount() &&
-				(tag = reply->GetTagByIndex(0)) ) {
+			tag = reply->GetFirstTagSafe();
+			if (tag->IsString()) {
 				webInterface->Show(
 					CFormat(_("Request failed with the following error: %s.")) %
 					wxString(wxGetTranslation(tag->GetStringData())));
@@ -603,8 +603,8 @@ bool ServersInfo::ReQuery()
 	//
 	// query succeded - flush existing values and refill
 	EraseAll();
-	for (uint32_t i = 0; i < srv_reply->GetTagCount(); ++i) {
-		const CECTag *tag = srv_reply->GetTagByIndex(i);
+	for (CECPacket::const_iterator it = srv_reply->begin(); it != srv_reply->end(); it++) {
+		const CECTag *tag = & *it;
 		
 		ServerEntry Entry;
 		Entry.sServerName =
@@ -821,9 +821,9 @@ bool UploadsInfo::ReQuery()
 	//
 	// query succeded - flush existing values and refill
 	EraseAll();
-	for(uint32_t i = 0; i < up_reply->GetTagCount(); i ++) {
+	for (CECPacket::const_iterator it = up_reply->begin(); it != up_reply->end(); it++) {
 		
-		UploadFile curr((CEC_UpDownClient_Tag *)up_reply->GetTagByIndex(i));
+		UploadFile curr((CEC_UpDownClient_Tag *) & *it);
 		
 		AddItem(curr);
 	}

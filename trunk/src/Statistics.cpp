@@ -973,8 +973,8 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 
 	const CECTag * LoggerTag = stats->GetTagByName(EC_TAG_STATS_LOGGER_MESSAGE);
 	if (LoggerTag) {
-		for (size_t i = 0; i < LoggerTag->GetTagCount(); i++) {
-			theApp->AddRemoteLogLine(LoggerTag->GetTagByIndex(i)->GetStringData());
+		for (CECTag::const_iterator it = LoggerTag->begin(); it != LoggerTag->end(); it++) {
+			theApp->AddRemoteLogLine(it->GetStringData());
 		}
 	}
 }

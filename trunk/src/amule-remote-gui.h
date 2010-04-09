@@ -154,7 +154,7 @@ protected:
 						ProcessUpdate(packet, &req_full, m_full_req_tag);
 					
 						// Phase 3: request full info about files we don't have yet
-						if ( req_full.GetTagCount() ) {
+						if ( req_full.HasChildTags() ) {
 							m_conn->SendRequest(this, &req_full);
 							this->m_state = FULL_REQ_SENT;
 						}
@@ -311,8 +311,8 @@ public:
 
 	void ProcessFull(const CECPacket *reply)
 	{
-		for (size_t i = 0;i < reply->GetTagCount();i++) {
-			G *tag = (G *)reply->GetTagByIndex(i);
+		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+			G *tag = (G *) & *it;
 			// initialize item data from EC tag
 			AddItem(CreateItem(tag));
 		}
@@ -335,8 +335,8 @@ public:
 	virtual void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 	{
 		std::set<I> core_files;
-		for (size_t i = 0;i < reply->GetTagCount();i++) {
-			G *tag = (G *)reply->GetTagByIndex(i);
+		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+			G *tag = (G *) & *it;
 			if ( tag->GetTagName() != req_type ) {
 				continue;
 			}
