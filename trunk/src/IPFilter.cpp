@@ -491,7 +491,7 @@ CIPFilter::CIPFilter() :
 
 	CreateDummyFile(staticDat, staticMsg);
 
-	if (thePrefs::IPFilterAutoLoad()) {
+	if (thePrefs::IPFilterAutoLoad() && !thePrefs::IPFilterURL().IsEmpty()) {
 		Update(thePrefs::IPFilterURL());
 	} else {
 		Reload();
@@ -598,13 +598,17 @@ void CIPFilter::DownloadFinished(uint32 result)
 			return;
 		}
 
-		// Reload both ipfilter files
-		Reload();
 		AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("ipfilter.dat"));
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("ipfilter.dat"));
 	} else {
 		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("ipfilter.dat") % m_URL);
+	}
+
+	// reload on success, or if we reloaded on startup and download failed
+	if (result == HTTP_Success || !m_ready) {
+		// Reload both ipfilter files
+		Reload();
 	}
 }
 
