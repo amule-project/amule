@@ -207,7 +207,7 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 		m_wr_ptr += sock->GetLastCount();
 		read_rem -= sock->GetLastCount();
 
-		if (sock->SocketError() && !sock->WouldBlock()) {
+		if (sock->SocketRealError()) {
 				break;
 		}
 	} while (read_rem);
@@ -263,7 +263,7 @@ m_rx_flags(0),
 m_tx_flags(0),
 m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS | EC_FLAG_ACCEPTS),
 // setup initial state: 4 flags + 4 length
-m_bytes_needed(8),
+m_bytes_needed(EC_HEADER_SIZE),
 m_in_header(true)
 {
 	
@@ -285,20 +285,7 @@ CECSocket::~CECSocket()
 
 bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 {
-	bool res;
-#if wxCHECK_VERSION(2, 8, 8)
-	res = InternalConnect(ip, port, !m_use_events);
-#else
-	res = InternalConnect(ip, port, false);
-	if ( !m_use_events ) {
-		res = WaitSocketConnect(10, 0) && InternalIsConnected();
-		if ( res ) {
-			OnConnect();
-		} else {
-			OnLost();
-		}
-	}
-#endif
+	bool res = InternalConnect(ip, port, !m_use_events);
 	return !SocketError() && res;
 }
 
@@ -312,22 +299,14 @@ void CECSocket::SendPacket(const CECPacket *packet)
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
 	SendPacket(packet);
-	m_curr_rx_data->ReadFromSocketAll(this, 2 * sizeof(uint32_t));
-	if (SocketError() && !WouldBlock()) {
+	m_curr_rx_data->ReadFromSocketAll(this, EC_HEADER_SIZE);
+	// This is a synchronous read, so WouldBlock is an error too.
+	if (SocketError() || !ReadHeader()) {
 		OnError();
 		return 0;
 	}
-
-	m_curr_rx_data->Read(&m_rx_flags, sizeof(m_rx_flags));
-	m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
-	m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
-	m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
-	
-	if ( m_curr_rx_data->GetLength() < (m_curr_packet_len+2*sizeof(uint32_t)) ) {
-		m_curr_rx_data.reset(new CQueuedData(m_curr_packet_len));
-	}
 	m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len);
-	if (SocketError() && !WouldBlock()) {
+	if (SocketError()) {
 		OnError();
 		return 0;
 	}
@@ -366,6 +345,16 @@ std::string CECSocket::GetLastErrorMsg()
 	return error_string.str();
 }
 
+bool CECSocket::SocketRealError() 
+{ 
+	bool ret = false;
+	if (InternalError()) {
+		int lastError = InternalGetLastError();
+		ret = lastError != EC_ERROR_NOERROR && lastError != EC_ERROR_WOULDBLOCK;
+	}
+	return ret;
+}
+
 void CECSocket::OnError()
 {
 #ifdef __DEBUG__
@@ -388,63 +377,35 @@ void CECSocket::OnInput()
 {
 	size_t bytes_rx = 0;
 	do {
-		if (m_curr_rx_data.get()) {
-			m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
-		} else {
-			return;
-		}
-		if (SocketError() && !WouldBlock()) {
+		m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
+		if (SocketRealError()) {
 			OnError();
 			// socket already disconnected in this point
-			m_curr_rx_data.reset(0);
 			return;
 		}
 		bytes_rx = GetLastCount();
 		m_bytes_needed -= bytes_rx;
-	} while (m_bytes_needed && bytes_rx);
 	
-	if (!m_bytes_needed) {
-		if (m_in_header) {
-			m_in_header = false;
-			m_curr_rx_data->Read(&m_rx_flags, sizeof(m_rx_flags));
-			m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
-			if (m_rx_flags & EC_FLAG_ACCEPTS) {
-				// Client sends its capabilities, update the internal mask.
-				m_curr_rx_data->Read(&m_my_flags, sizeof(m_my_flags));
-				m_my_flags = ENDIAN_NTOHL(m_my_flags);
-				//printf("Reading accepts mask: %x\n", m_my_flags);
-				wxASSERT(m_my_flags & 0x20);
-				// There has to be 4 more bytes. THERE HAS TO BE, DAMN IT.
-				m_curr_rx_data->ReadFromSocketAll(this, sizeof(m_curr_packet_len));
-			}
-			m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
-			m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
-			m_bytes_needed = m_curr_packet_len;
-			// packet bigger that 16Mb looks more like broken request
-			if (m_bytes_needed > 16*1024*1024) {
-				CloseSocket();
-				return;
-			}
-			size_t needed_size = m_bytes_needed + ((m_rx_flags & EC_FLAG_ACCEPTS) ? 12 : 8);
-			if (!m_curr_rx_data.get() ||
-			    m_curr_rx_data->GetLength() < needed_size) {
-				m_curr_rx_data.reset(new CQueuedData(needed_size));
-			}
-			//#warning Kry TODO: Read packet?
-		} else {
-			//m_curr_rx_data->DumpMem();
-			std::auto_ptr<const CECPacket> packet(ReadPacket());
-			m_curr_rx_data->Rewind();
-			if (packet.get()) {
-				std::auto_ptr<const CECPacket> reply(OnPacketReceived(packet.get(), m_curr_packet_len));
-				if (reply.get()) {
-					SendPacket(reply.get());
+		if (m_bytes_needed == 0) {
+			if (m_in_header) {
+				m_in_header = false;
+				if (!ReadHeader()) {
+					return;
 				}
+			} else {
+				std::auto_ptr<const CECPacket> packet(ReadPacket());
+				m_curr_rx_data->Rewind();
+				if (packet.get()) {
+					std::auto_ptr<const CECPacket> reply(OnPacketReceived(packet.get(), m_curr_packet_len));
+					if (reply.get()) {
+						SendPacket(reply.get());
+					}
+				}
+				m_bytes_needed = EC_HEADER_SIZE;
+				m_in_header = true;
 			}
-			m_bytes_needed = 8;
-			m_in_header = true;
 		}
-	}
+	} while (bytes_rx);
 }
 
 void CECSocket::OnOutput()
@@ -552,6 +513,39 @@ void ShowZError(int zerror, z_streamp strm)
 	printf("ZLib error message: %s\n", strm->msg);
 	printf("zstream state:\n\tnext_in=%p\n\tavail_in=%u\n\ttotal_in=%lu\n\tnext_out=%p\n\tavail_out=%u\n\ttotal_out=%lu\n",
 		strm->next_in, strm->avail_in, strm->total_in, strm->next_out, strm->avail_out, strm->total_out);
+}
+
+
+bool CECSocket::ReadHeader()
+{
+	m_curr_rx_data->Read(&m_rx_flags, 4);
+	m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
+	m_curr_rx_data->Read(&m_curr_packet_len, 4);
+	m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
+	m_bytes_needed = m_curr_packet_len;
+	// packet bigger that 16Mb looks more like broken request
+	if (m_bytes_needed > 16*1024*1024) {
+		CloseSocket();
+		return false;
+	}
+	m_curr_rx_data->Rewind();
+	size_t currLength = m_curr_rx_data->GetLength();
+	// resize input buffer if
+	// a) too small or
+	if (currLength < m_bytes_needed
+	// b) way too large (free data again after receiving huge packets)
+		|| m_bytes_needed + EC_SOCKET_BUFFER_SIZE * 10 < currLength) {
+		// Client socket: IsAuthorized() is always true
+		// Server socket: do not allow growing of internal buffers before succesfull login.
+		// Otherwise sending a simple header with bogus length of 16MB-1 will crash an embedded
+		// client with memory exhaustion.
+		if (!IsAuthorized()) {
+			CloseSocket();
+			return false;
+		}
+		m_curr_rx_data.reset(new CQueuedData(m_bytes_needed));
+	}
+	return true;
 }
 
 
@@ -702,7 +696,7 @@ bool CECSocket::FlushBuffers()
 
 uint32 CECSocket::WritePacket(const CECPacket *packet)
 {
-	if (SocketError() && !WouldBlock()) {
+	if (SocketRealError()) {
 		OnError();
 		return 0;
 	}
@@ -738,7 +732,7 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 		}
 	}
 
-	uint32_t tmp_flags = ENDIAN_HTONL(flags/* | EC_FLAG_ACCEPTS*/);
+	uint32_t tmp_flags = ENDIAN_HTONL(flags);
 	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
 	
 	// preallocate 4 bytes in buffer for packet length
@@ -760,8 +754,8 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 	for(std::list<CQueuedData*>::iterator it = outputStart; it != m_output_queue.end(); it++) {
 		packet_len += (uint32_t)(*it)->GetDataLength();
 	}
-	// 4 flags and 4 length are not counted
-	packet_len -= 8;
+	// header size is not counted
+	packet_len -= EC_HEADER_SIZE;
 	// now write actual length at offset 4
 	uint32 packet_len_E = ENDIAN_HTONL(packet_len);
 	(*outputStart)->WriteAt(&packet_len_E, 4, 4);

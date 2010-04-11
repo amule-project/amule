@@ -220,6 +220,8 @@ private:
 	CFileEncoderMap	m_FileEncoder;
 	CObjTagMap		m_obj_tagmap;
 	CECPacket *ProcessRequest2(const CECPacket *request);
+
+	virtual bool IsAuthorized() { return m_conn_state == CONN_ESTABLISHED; }
 };
 
 

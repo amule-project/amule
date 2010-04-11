@@ -68,6 +68,7 @@ class CECSocket{
 
 private:
 	static const unsigned int EC_SOCKET_BUFFER_SIZE = 2048;
+	static const unsigned int EC_HEADER_SIZE = 8;
 	const bool m_use_events;
 	
 	// Output related data
@@ -198,6 +199,7 @@ public:
 	void SocketRead(void* ptr, size_t len) { InternalRead(ptr,len); }
 	void SocketWrite(const void* ptr, size_t len) { InternalWrite(ptr,len); }
 	bool SocketError() { return InternalError() && GotError(); }
+	bool SocketRealError();
 
 	size_t GetLastCount() { return InternalLastCount(); }
 	bool WaitSocketConnect(long secs = -1, long msecs = 0) { return InternalWaitOnConnect(secs,msecs); }
@@ -216,6 +218,7 @@ public:
 	// These 4 methods are to be used by CECPacket & CECTag
 	bool	ReadNumber(void *buffer, size_t len);
 	bool	ReadBuffer(void *buffer, size_t len);
+	bool	ReadHeader();
 
 	bool	WriteNumber(const void *buffer, size_t len);
 	bool	WriteBuffer(const void *buffer, size_t len);
@@ -245,6 +248,9 @@ public:
 	
 	virtual bool InternalIsConnected() = 0;
 	virtual void InternalDestroy() = 0;
+
+	// Was login succesfull ?
+	virtual bool IsAuthorized() { return true; }
 };
 
 
