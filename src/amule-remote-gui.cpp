@@ -259,7 +259,10 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	m_connect = new CRemoteConnect(this);
 	
-	glob_prefs = new CPreferencesRem(m_connect);	
+	glob_prefs = new CPreferencesRem(m_connect);
+	long enableZLIB;
+	wxConfig::Get()->Read(wxT("/EC/ZLIB"), &enableZLIB, 1);
+	m_connect->SetCapabilities(enableZLIB != 0, true, false);	// ZLIB, UTF8 numbers, notification
 	
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));

@@ -261,17 +261,13 @@ m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
 m_curr_tx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
 m_rx_flags(0),
 m_tx_flags(0),
-m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS | EC_FLAG_ACCEPTS),
 // setup initial state: 4 flags + 4 length
 m_bytes_needed(EC_HEADER_SIZE),
-m_in_header(true)
+m_in_header(true),
+m_my_flags(0x20),
+m_haveNotificationSupport(false)
 {
 	
-}
-
-bool CECSocket::HaveNotificationSupport()
-{
-	return (m_rx_flags & EC_FLAG_NOTIFY) != 0;
 }
 
 CECSocket::~CECSocket()
@@ -299,14 +295,15 @@ void CECSocket::SendPacket(const CECPacket *packet)
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
 	SendPacket(packet);
-	m_curr_rx_data->ReadFromSocketAll(this, EC_HEADER_SIZE);
-	// This is a synchronous read, so WouldBlock is an error too.
-	if (SocketError() || !ReadHeader()) {
+	
+	if (m_curr_rx_data->ReadFromSocketAll(this, EC_HEADER_SIZE) != EC_HEADER_SIZE
+		|| SocketError()		// This is a synchronous read, so WouldBlock is an error too.
+		|| !ReadHeader()) {
 		OnError();
 		return 0;
 	}
-	m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len);
-	if (SocketError()) {
+	if (m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len) != m_curr_packet_len
+		|| SocketError()) {
 		OnError();
 		return 0;
 	}
@@ -709,7 +706,8 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 
 	uint32_t flags = 0x20;
 
-	if ( packet->GetPacketLength() > EC_MAX_UNCOMPRESSED ) {
+	if (packet->GetPacketLength() > EC_MAX_UNCOMPRESSED
+		&& ((m_my_flags & EC_FLAG_ZLIB) > 0)) {
 		flags |= EC_FLAG_ZLIB;
 	} else {
 		flags |= EC_FLAG_UTF8_NUMBERS;

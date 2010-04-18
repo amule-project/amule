@@ -162,6 +162,7 @@ protected:
 	long	 	m_port;
 	wxString 	m_host;
 	CMD4Hash	m_password;
+	bool		m_ZLIB;
 	bool		m_KeepQuiet;
 	bool		m_Verbose;
 	bool		m_interactive;

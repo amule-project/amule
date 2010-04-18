@@ -34,7 +34,8 @@ using std::auto_ptr;
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION)
 
-CECLoginPacket::CECLoginPacket(const wxString& client, const wxString& version)
+CECLoginPacket::CECLoginPacket(const wxString& client, const wxString& version,
+							   bool canZLIB, bool canUTF8numbers, bool canNotify)
 :
 CECPacket(EC_OP_AUTH_REQ)
 {
@@ -48,6 +49,13 @@ CECPacket(EC_OP_AUTH_REQ)
 	AddTag(CECTag(EC_TAG_VERSION_ID, versionhash));
 	#endif
 
+	// Send capabilities:
+	// support ZLIB compression
+	if (canZLIB)		AddTag(CECEmptyTag(EC_TAG_CAN_ZLIB));
+	// support encoding of integers as UTF-8
+	if (canUTF8numbers) AddTag(CECEmptyTag(EC_TAG_CAN_UTF8_NUMBERS));
+	// client accepts push messages
+	if (canNotify)		AddTag(CECEmptyTag(EC_TAG_CAN_NOTIFY));
 }
 
 CECAuthPacket::CECAuthPacket(const wxString& pass)
@@ -76,8 +84,20 @@ m_req_count(0),
 // This is not mean to be absolute limit, because we can't drop requests
 // out of calling context; it is just signal to application to slow down
 m_req_fifo_thr(20),
-m_notifier(evt_handler)
+m_notifier(evt_handler),
+m_canZLIB(false),
+m_canUTF8numbers(false),
+m_canNotify(false)
 {
+}
+
+void CRemoteConnect::SetCapabilities(bool canZLIB, bool canUTF8numbers, bool canNotify)
+{ 
+	m_canZLIB = canZLIB;
+	m_my_flags |= canZLIB ? EC_FLAG_ZLIB : 0;
+	m_canUTF8numbers = canUTF8numbers;
+	m_my_flags |= canUTF8numbers ? EC_FLAG_UTF8_NUMBERS : 0;
+	m_canNotify = canNotify;
 }
 
 bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
@@ -110,7 +130,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Service(port);
 
 	if (ConnectSocket(addr)) {
-		CECLoginPacket login_req(m_client, m_version);
+		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
 
 		std::auto_ptr<const CECPacket> getSalt(SendRecvPacket(&login_req));
 		m_ec_state = EC_REQ_SENT;
@@ -145,7 +165,7 @@ void CRemoteConnect::WriteDoneAndQueueEmpty()
 void CRemoteConnect::OnConnect() {
 	if (m_notifier) {
 		wxASSERT(m_ec_state == EC_CONNECT_SENT);
-		CECLoginPacket login_req(m_client, m_version);
+		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
 		CECSocket::SendPacket(&login_req);
 		
 		m_ec_state = EC_REQ_SENT;

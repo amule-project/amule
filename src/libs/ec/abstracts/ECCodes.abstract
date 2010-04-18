@@ -27,9 +27,6 @@ Name ECFlags
 DataType uint32
 EC_FLAG_ZLIB		0x00000001
 EC_FLAG_UTF8_NUMBERS	0x00000002
-EC_FLAG_HAS_ID		0x00000004
-EC_FLAG_ACCEPTS		0x00000010
-EC_FLAG_NOTIFY		0x00008000
 EC_FLAG_UNKNOWN_MASK	0xff7f7f08
 [/Section]
 
@@ -162,6 +159,9 @@ EC_TAG_BOOTSTRAP_IP                       0x0008
 EC_TAG_BOOTSTRAP_PORT                     0x0009
 EC_TAG_CLIENT_ID                          0x000A
 EC_TAG_PASSWD_SALT                        0x000B
+EC_TAG_CAN_ZLIB                           0x000C
+EC_TAG_CAN_UTF8_NUMBERS                   0x000D
+EC_TAG_CAN_NOTIFY                         0x000E
 
 
 EC_TAG_CLIENT_NAME                        0x0100
