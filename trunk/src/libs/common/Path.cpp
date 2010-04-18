@@ -23,8 +23,7 @@
 //
 
 #include "Path.h"
-#include "MuleDebug.h"
-#include "StringFunctions.h"
+#include "StringFunctions.h"		// Needed for filename2char()
 
 #include <wx/file.h>
 #if defined __WXMSW__ || defined __IRIX__
@@ -36,7 +35,7 @@
 
 // This is required in order to ensure that wx can "handle" filenames
 // using a different encoding than the current system-wide setting. If
-// this is not done, such filenames will fail during convertion to/from
+// this is not done, such filenames will fail during conversion to/from
 // multibyte (as in cWC2MB/cMB2WC).
 #if !wxUSE_GUI && !defined(__WXMSW__)
 void* setFNConv()
@@ -58,7 +57,7 @@ static void* s_foo = setFNConv();
 // Windows has case-insensitive paths, so we use a
 // case-insensitive cmp for that platform. TODO:
 // Perhaps it would be better to simply lowercase
-// m_filesystem in the contructor ...
+// m_filesystem in the constructor ...
 #ifdef __WXMSW__
 	#define PATHCMP(a, b)		wxStricmp(a, b)
 	#define PATHNCMP(a, b, n)	wxStrnicmp(a, b, n)
@@ -548,7 +547,7 @@ CPath CPath::RemoveAllExt() const
 {
 	CPath last, current = RemoveExt();
 
-	// Loop untill all extensions are removed
+	// Loop until all extensions are removed
 	do {
 		last = current;
 
@@ -616,8 +615,6 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 
 	if (CPath::CloneFile(src, dst, true)) {
 		// Try to ensure that the backup gets physically written 
-		// Now - does this have any effect reopening a already closed file
-		// to flush it ???
 #if defined __WXMSW__ || defined __IRIX__
 		wxFFile backupFile;
 #else
@@ -680,3 +677,79 @@ sint64 CPath::GetFreeSpaceAt(const CPath& path)
 	return wxInvalidOffset;
 }
 
+
+wxString CPath::TruncatePath(size_t length, bool isFilePath) const
+{
+	wxString file = GetPrintable();
+
+	// Check if there's anything to do
+	if (file.Length() <= length) {
+		return file;
+	}
+
+	// If the path is a file name, then prefer to remove from the path, rather than the filename
+	if (isFilePath) {
+		wxString path = wxFileName(file).GetPath();
+		file          = wxFileName(file).GetFullName();
+
+		if (path.Length() >= length) {
+			path.Clear();
+		} else if (file.Length() >= length) {
+			path.Clear();
+		} else {
+			// Minus 6 for "[...]" + separator
+			int pathlen = (int)(length - file.Length() - 6);
+
+			if (pathlen > 0) {
+				path = wxT("[...]") + path.Right( pathlen );
+			} else {
+				path.Clear();
+			}
+		}
+
+		file = ::JoinPaths(path, file);
+	}
+
+	if (file.Length() > length) {
+		if (length > 5) {		
+			file = file.Left(length - 5) + wxT("[...]");
+		} else {
+			file.Clear();
+		}
+	}
+
+	return file;
+}
+
+
+wxString StripSeparators(wxString path, wxString::stripType type)
+{
+	wxASSERT((type == wxString::leading) || (type == wxString::trailing));
+	const wxString seps = wxFileName::GetPathSeparators();
+
+	while (!path.IsEmpty()) {
+		size_t pos = ((type == wxString::leading) ? 0 : path.Length() - 1);
+
+		if (seps.Contains(path.GetChar(pos))) {
+			path.Remove(pos, 1);
+		} else {
+			break;
+		}
+	}
+
+	return path;
+}
+
+
+wxString JoinPaths(const wxString& path, const wxString& file)
+{
+	if (path.IsEmpty()) {
+		return file;
+	} else if (file.IsEmpty()) {
+		return path;
+	}
+
+	return StripSeparators(path, wxString::trailing)
+	   + wxFileName::GetPathSeparator()
+	   + StripSeparators(file, wxString::leading);
+}
