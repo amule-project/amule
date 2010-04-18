@@ -32,6 +32,8 @@
 using namespace std;
 
 #include "ECPacket.h"		// Needed for CECPacket
+#include "../../../Logger.h"
+#include <common/Format.h>	// Needed for CFormat
 
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
@@ -199,6 +201,7 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 	do {
 		// Give socket a 10 sec chance to recv more data.
 		if ( !sock->WaitSocketRead(10, 0) ) {
+			AddDebugLogLineN(logEC, wxT("ReadFromSocketAll: socket is blocking"));
 			break;
 		}
 
@@ -208,7 +211,8 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 		read_rem -= sock->GetLastCount();
 
 		if (sock->SocketRealError()) {
-				break;
+			AddDebugLogLineN(logEC, wxT("ReadFromSocketAll: socket error"));
+			break;
 		}
 	} while (read_rem);
 
@@ -300,11 +304,13 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 		|| SocketError()		// This is a synchronous read, so WouldBlock is an error too.
 		|| !ReadHeader()) {
 		OnError();
+		AddDebugLogLineN(logEC, wxT("SendRecvPacket: error"));
 		return 0;
 	}
 	if (m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len) != m_curr_packet_len
 		|| SocketError()) {
 		OnError();
+		AddDebugLogLineN(logEC, wxT("SendRecvPacket: error"));
 		return 0;
 	}
 	const CECPacket *reply = ReadPacket();
@@ -376,6 +382,7 @@ void CECSocket::OnInput()
 	do {
 		m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
 		if (SocketRealError()) {
+			AddDebugLogLineN(logEC, wxT("OnInput: socket error"));
 			OnError();
 			// socket already disconnected in this point
 			return;
@@ -387,6 +394,7 @@ void CECSocket::OnInput()
 			if (m_in_header) {
 				m_in_header = false;
 				if (!ReadHeader()) {
+					AddDebugLogLineN(logEC, wxT("OnInput: header error"));
 					return;
 				}
 			} else {
@@ -397,6 +405,8 @@ void CECSocket::OnInput()
 					if (reply.get()) {
 						SendPacket(reply.get());
 					}
+				} else {
+					AddDebugLogLineN(logEC, wxT("OnInput: no packet"));
 				}
 				m_bytes_needed = EC_HEADER_SIZE;
 				m_in_header = true;
@@ -417,6 +427,7 @@ void CECSocket::OnOutput()
 		if (SocketError()) {
 			if (!WouldBlock()) {
 				// real error, abort
+				AddDebugLogLineN(logEC, wxT("OnOutput: socket error"));
 				OnError();
 				return;
 			}
@@ -434,6 +445,7 @@ void CECSocket::OnOutput()
 					// So give it another chance.
 					continue;
 				} else {
+					AddDebugLogLineN(logEC, wxT("OnOutput: socket error in sync wait"));
 					OnError();
 					break;
 				}
@@ -462,6 +474,8 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len)
 
 	if (m_curr_rx_data->GetUnreadDataLength() < required_len) {
 		// need more data that we have. Looks like nothing will help here
+		AddDebugLogLineN(logEC, CFormat(wxT("ReadBufferFromSocket: not enough data (%d < %d)")) 
+			% m_curr_rx_data->GetUnreadDataLength() % required_len);
 		return 0;
 	}
 	m_curr_rx_data->Read(buffer, required_len);
@@ -510,6 +524,7 @@ void ShowZError(int zerror, z_streamp strm)
 	printf("ZLib error message: %s\n", strm->msg);
 	printf("zstream state:\n\tnext_in=%p\n\tavail_in=%u\n\ttotal_in=%lu\n\tnext_out=%p\n\tavail_out=%u\n\ttotal_out=%lu\n",
 		strm->next_in, strm->avail_in, strm->total_in, strm->next_out, strm->avail_out, strm->total_out);
+	AddDebugLogLineN(logEC, wxT("ZLib error"));
 }
 
 
@@ -522,6 +537,7 @@ bool CECSocket::ReadHeader()
 	m_bytes_needed = m_curr_packet_len;
 	// packet bigger that 16Mb looks more like broken request
 	if (m_bytes_needed > 16*1024*1024) {
+		AddDebugLogLineN(logEC, CFormat(wxT("ReadHeader: packet too big: %d")) % m_bytes_needed);
 		CloseSocket();
 		return false;
 	}
@@ -537,10 +553,14 @@ bool CECSocket::ReadHeader()
 		// Otherwise sending a simple header with bogus length of 16MB-1 will crash an embedded
 		// client with memory exhaustion.
 		if (!IsAuthorized()) {
+			AddDebugLogLineN(logEC, CFormat(wxT("ReadHeader: resize (%d -> %d) on non autorized socket")) % currLength % m_bytes_needed);
 			CloseSocket();
 			return false;
 		}
 		m_curr_rx_data.reset(new CQueuedData(m_bytes_needed));
+	}
+	if (ECLogIsEnabled()) {
+		DoECLogLine(CFormat(wxT("< %d ...")) % m_bytes_needed);
 	}
 	return true;
 }
@@ -608,6 +628,7 @@ bool CECSocket::ReadBuffer(void *buffer, size_t len)
 		if ( !m_z.avail_in ) {
 			// no reason for this situation: all packet should be
 			// buffered by now
+			AddDebugLogLineN(logEC, wxT("ReadBuffer: ZLib error"));
 			return false;
 		}
 		m_z.avail_out = (uInt)len;
@@ -615,12 +636,19 @@ bool CECSocket::ReadBuffer(void *buffer, size_t len)
 		int zerror = inflate(&m_z, Z_SYNC_FLUSH);
 		if ((zerror != Z_OK) && (zerror != Z_STREAM_END)) {
 			ShowZError(zerror, &m_z);
+			AddDebugLogLineN(logEC, wxT("ReadBuffer: ZLib error"));
 			return false;
 		}
 		return true;
 	} else {
 		// using uncompressed buffered i/o
-		return ReadBufferFromSocket(buffer, len) == len;
+		size_t read = ReadBufferFromSocket(buffer, len);
+		if (read == len) {
+			return true;
+		} else {
+			AddDebugLogLineN(logEC, CFormat(wxT("ReadBuffer: %d < %d")) % read % len);
+			return false;
+		}
 	}
 }
 
@@ -646,6 +674,7 @@ bool CECSocket::WriteBuffer(const void *buffer, size_t len)
 				    m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
 					int zerror = deflate(&m_z, Z_NO_FLUSH);
 					if ( zerror != Z_OK ) {
+						AddDebugLogLineN(logEC, wxT("WriteBuffer: ZLib error"));
 						ShowZError(zerror, &m_z);
 						return false;
 					}
@@ -673,6 +702,7 @@ bool CECSocket::FlushBuffers()
 		    m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
 			int zerror = deflate(&m_z, Z_FINISH);
 			if ( zerror == Z_STREAM_ERROR ) {
+				AddDebugLogLineN(logEC, wxT("FlushBuffers: ZLib error"));
 				ShowZError(zerror, &m_z);
 				return false;
 			}
@@ -761,6 +791,7 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = deflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
+			AddDebugLogLineN(logEC, wxT("WritePacket: ZLib error"));
 			ShowZError(zerror, &m_z);
 		}
 	}
@@ -776,6 +807,7 @@ const CECPacket *CECSocket::ReadPacket()
 	
 	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
 		// Protocol error - other end might use an older protocol
+		AddDebugLogLineN(logEC, wxT("ReadPacket: protocol error"));
 		cout << "ReadPacket: packet have invalid flags " << flags << endl;
 		CloseSocket();
 		return 0;
@@ -791,6 +823,7 @@ const CECPacket *CECSocket::ReadPacket()
 	    
 		int zerror = inflateInit(&m_z);
 		if (zerror != Z_OK) {
+			AddDebugLogLineN(logEC, wxT("ReadPacket: zlib error"));
 			ShowZError(zerror, &m_z);
 			cout << "ReadPacket: failed zlib init" << endl;
 			CloseSocket();
@@ -802,6 +835,7 @@ const CECPacket *CECSocket::ReadPacket()
 	packet = new CECPacket();
 	
 	if (!packet->ReadFromSocket(*this)) {
+		AddDebugLogLineN(logEC, wxT("ReadPacket: error in packet read"));
 		cout << "ReadPacket: error in packet read" << endl;
 		delete packet;
 		packet = NULL;
@@ -811,6 +845,7 @@ const CECPacket *CECSocket::ReadPacket()
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = inflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
+			AddDebugLogLineN(logEC, wxT("ReadPacket: zlib error"));
 			ShowZError(zerror, &m_z);
 			cout << "ReadPacket: failed zlib free" << endl;
 			CloseSocket();
