@@ -38,7 +38,8 @@ class CECPacketHandlerBase {
 
 class CECLoginPacket : public CECPacket {
 	public:
-		CECLoginPacket(const wxString& client, const wxString& version);
+		CECLoginPacket(const wxString& client, const wxString& version,
+						bool canZLIB = true, bool canUTF8numbers = true, bool canNotify = false);
 };
 
 class CECAuthPacket : public CECPacket {
@@ -73,10 +74,16 @@ private:
 	wxString m_client;
 	wxString m_version;
 
+	bool m_canZLIB;
+	bool m_canUTF8numbers;
+	bool m_canNotify;
+
 	void WriteDoneAndQueueEmpty();	
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);
+
+	void SetCapabilities(bool canZLIB, bool canUTF8numbers, bool canNotify);
 
 	bool ConnectToCore(
 		const wxString &host, int port,

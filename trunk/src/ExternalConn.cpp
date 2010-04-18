@@ -439,6 +439,23 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				response = new CECPacket(EC_OP_AUTH_SALT);
 				response->AddTag(CECTag(EC_TAG_PASSWD_SALT, m_passwd_salt));
 				m_conn_state = CONN_SALT_SENT;
+				//
+				// So far ok, check capabilities of client
+				//
+				bool canZLIB = false, canUTF8numbers = false;
+				if (request->GetTagByName(EC_TAG_CAN_ZLIB)) {
+					canZLIB = true;
+					m_my_flags |= EC_FLAG_ZLIB;
+				}
+				if (request->GetTagByName(EC_TAG_CAN_UTF8_NUMBERS)) {
+					canUTF8numbers = true;
+					m_my_flags |= EC_FLAG_UTF8_NUMBERS;
+				}
+				m_haveNotificationSupport = request->GetTagByName(EC_TAG_CAN_NOTIFY) != NULL;
+				AddLogLineN(CFormat(_("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s") )
+					% (canZLIB ? _("yes") : _("no"))
+					% (canUTF8numbers ? _("yes") : _("no"))
+					% (m_haveNotificationSupport ? _("yes") : _("no")));
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.") + wxString::Format(wxT("( %i != %i )"),proto_version,EC_CURRENT_PROTOCOL_VERSION)));

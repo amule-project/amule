@@ -83,14 +83,16 @@ private:
 	// This transfer only
 	uint32_t m_rx_flags;
 	uint32_t m_tx_flags;
-	uint32_t m_my_flags;
 	size_t m_bytes_needed;
 	bool m_in_header;
 	
 	
 	uint32_t m_curr_packet_len;
 	z_stream m_z;
-	
+
+protected:
+	uint32_t m_my_flags;
+	bool m_haveNotificationSupport;
 public:
 	CECSocket(bool use_events);
 	virtual ~CECSocket();
@@ -99,7 +101,7 @@ public:
 
 	void CloseSocket() { InternalClose(); }
 
-	bool HaveNotificationSupport();
+	bool HaveNotificationSupport() const { return m_haveNotificationSupport; }
 		
 	/**
 	 * Sends an EC packet and returns immediately.

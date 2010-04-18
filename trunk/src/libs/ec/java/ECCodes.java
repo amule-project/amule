@@ -31,9 +31,6 @@ public final static short EC_CURRENT_PROTOCOL_VERSION = 0x0203;
 
 public final static int EC_FLAG_ZLIB	 = 0x00000001;
 public final static int EC_FLAG_UTF8_NUMBERS = 0x00000002;
-public final static int EC_FLAG_HAS_ID	 = 0x00000004;
-public final static int EC_FLAG_ACCEPTS	 = 0x00000010;
-public final static int EC_FLAG_NOTIFY	 = 0x00008000;
 public final static int EC_FLAG_UNKNOWN_MASK = 0xff7f7f08;
 
 public final static byte EC_OP_NOOP                          = 0x01;
@@ -130,6 +127,9 @@ public final static short EC_TAG_BOOTSTRAP_IP                       = 0x0008;
 public final static short EC_TAG_BOOTSTRAP_PORT                     = 0x0009;
 public final static short EC_TAG_CLIENT_ID                          = 0x000A;
 public final static short EC_TAG_PASSWD_SALT                        = 0x000B;
+public final static short EC_TAG_CAN_ZLIB                           = 0x000C;
+public final static short EC_TAG_CAN_UTF8_NUMBERS                   = 0x000D;
+public final static short EC_TAG_CAN_NOTIFY                         = 0x000E;
 public final static short EC_TAG_CLIENT_NAME                        = 0x0100;
 public final static short 	EC_TAG_CLIENT_VERSION                     = 0x0101;
 public final static short 	EC_TAG_CLIENT_MOD                         = 0x0102;

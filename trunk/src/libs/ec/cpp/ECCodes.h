@@ -39,9 +39,6 @@ enum ProtocolVersion {
 enum ECFlags {
 	EC_FLAG_ZLIB	 = 0x00000001,
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
-	EC_FLAG_HAS_ID	 = 0x00000004,
-	EC_FLAG_ACCEPTS	 = 0x00000010,
-	EC_FLAG_NOTIFY	 = 0x00008000,
 	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
 };
 
@@ -142,6 +139,9 @@ enum ECTagNames {
 	EC_TAG_BOOTSTRAP_PORT                     = 0x0009,
 	EC_TAG_CLIENT_ID                          = 0x000A,
 	EC_TAG_PASSWD_SALT                        = 0x000B,
+	EC_TAG_CAN_ZLIB                           = 0x000C,
+	EC_TAG_CAN_UTF8_NUMBERS                   = 0x000D,
+	EC_TAG_CAN_NOTIFY                         = 0x000E,
 	EC_TAG_CLIENT_NAME                        = 0x0100,
 		EC_TAG_CLIENT_VERSION                     = 0x0101,
 		EC_TAG_CLIENT_MOD                         = 0x0102,
@@ -439,9 +439,6 @@ wxString GetDebugNameECFlags(uint32 arg)
 	switch (arg) {
 		case 0x00000001: return wxT("EC_FLAG_ZLIB");
 		case 0x00000002: return wxT("EC_FLAG_UTF8_NUMBERS");
-		case 0x00000004: return wxT("EC_FLAG_HAS_ID");
-		case 0x00000010: return wxT("EC_FLAG_ACCEPTS");
-		case 0x00008000: return wxT("EC_FLAG_NOTIFY");
 		case 0xff7f7f08: return wxT("EC_FLAG_UNKNOWN_MASK");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
@@ -550,6 +547,9 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0009: return wxT("EC_TAG_BOOTSTRAP_PORT");
 		case 0x000A: return wxT("EC_TAG_CLIENT_ID");
 		case 0x000B: return wxT("EC_TAG_PASSWD_SALT");
+		case 0x000C: return wxT("EC_TAG_CAN_ZLIB");
+		case 0x000D: return wxT("EC_TAG_CAN_UTF8_NUMBERS");
+		case 0x000E: return wxT("EC_TAG_CAN_NOTIFY");
 		case 0x0100: return wxT("EC_TAG_CLIENT_NAME");
 		case 0x0101: return wxT("EC_TAG_CLIENT_VERSION");
 		case 0x0102: return wxT("EC_TAG_CLIENT_MOD");

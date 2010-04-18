@@ -137,6 +137,7 @@ Version 2.3.0 - The river knows.
 		* Load IP filter in the background on startup
 		* Show when a Kad search is finished in aMulegui (remove '!')
 		* Fixed "pause/cancel/resume all" in aMulecmd
+		* EC ZLIB compression can now be turned off in remote.conf with EC/ZLIB=0
 
 	Vollstrecker:
 		* Unify copyright lines
