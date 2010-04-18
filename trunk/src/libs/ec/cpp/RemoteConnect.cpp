@@ -94,9 +94,13 @@ m_canNotify(false)
 void CRemoteConnect::SetCapabilities(bool canZLIB, bool canUTF8numbers, bool canNotify)
 { 
 	m_canZLIB = canZLIB;
-	m_my_flags |= canZLIB ? EC_FLAG_ZLIB : 0;
+	if (canZLIB) {
+		m_my_flags |= EC_FLAG_ZLIB;
+	}
 	m_canUTF8numbers = canUTF8numbers;
-	m_my_flags |= canUTF8numbers ? EC_FLAG_UTF8_NUMBERS : 0;
+	if (canUTF8numbers) {
+		m_my_flags |= EC_FLAG_UTF8_NUMBERS;
+	}
 	m_canNotify = canNotify;
 }
 
