@@ -148,8 +148,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	// File Name
 	const CKnownFile* file = m_client->GetUploadFile();
 	if (file) {
-		wxString filename = MakeStringEscaped(
-			TruncateFilename(file->GetFileName(), 60));
+		wxString filename = MakeStringEscaped(file->GetFileName().TruncatePath(60));
 		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(filename);
 	} else {
 		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(wxT("-"));

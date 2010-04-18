@@ -76,7 +76,8 @@ CFileDetailDialog::~CFileDetailDialog()
 	m_timer.Stop();
 }
 
-void CFileDetailDialog::OnTimer(wxTimerEvent& WXUNUSED(evt)) {
+void CFileDetailDialog::OnTimer(wxTimerEvent& WXUNUSED(evt))
+{
 	UpdateData();
 }
 
@@ -88,10 +89,8 @@ void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
 void CFileDetailDialog::UpdateData()
 {
 	wxString bufferS;
-	CastChild(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(
-		TruncateFilename(m_file->GetFileName(),60)));
-	CastChild(IDC_METFILE,wxStaticText)->SetLabel(MakeStringEscaped(
-		TruncateFilename(m_file->GetFullName(),60,true)));
+	CastChild(IDC_FNAME,   wxStaticText)->SetLabel(MakeStringEscaped(m_file->GetFileName().TruncatePath(60)));
+	CastChild(IDC_METFILE, wxStaticText)->SetLabel(MakeStringEscaped(m_file->GetFullName().TruncatePath(60, true)));
 
 	wxString tmp = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
 	if (tmp.Length() < 3) {

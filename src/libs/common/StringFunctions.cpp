@@ -23,12 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
-#define STRINGFUNCTIONS_CPP
-
-
 #include "StringFunctions.h"
-#include "Path.h"
 
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/uri.h>		// Needed for wxURI
@@ -66,6 +61,7 @@ Unicode2CharBuf unicode2char(const wxChar* s)
 	return buf;
 }
 
+
 static byte base16Chars[17] = "0123456789ABCDEF";
 
 wxString URLEncode(const wxString& sIn)
@@ -89,83 +85,6 @@ wxString URLEncode(const wxString& sIn)
 	}
 
 	return sOut;
-}
-
-wxString TruncateFilename(const CPath& filename, size_t length, bool isFilePath)
-{
-	wxString file = filename.GetPrintable();
-
-	// Check if there's anything to do
-	if (file.Length() <= length)
-		return file;
-	
-	// If the filename is a path, then prefer to remove from the path, rather than the filename
-	if ( isFilePath ) {
-		wxString path = wxFileName(file).GetPath();
-		file          = wxFileName(file).GetFullName();
-
-		if ( path.Length() >= length ) {
-			path.Clear();
-		} else if ( file.Length() >= length ) {
-			path.Clear();
-		} else {
-			// Minus 6 for "[...]" + separator
-			int pathlen = (int)(length - file.Length() - 6);
-			
-			if ( pathlen > 0 ) {
-				path = wxT("[...]") + path.Right( pathlen );
-			} else {
-				path.Clear();
-			}
-		}
-		
-		file = JoinPaths(path, file);
-	}
-
-	if ( file.Length() > length ) {
-		if ( length > 5 ) {		
-			file = file.Left( length - 5 ) + wxT("[...]");
-		} else {
-			file.Clear();
-		}
-	}
-	
-
-	return file;
-}
-
-
-
-wxString StripSeparators(wxString path, wxString::stripType type)
-{
-	wxASSERT((type == wxString::leading) || (type == wxString::trailing));
-	const wxString seps = wxFileName::GetPathSeparators();
-
-	while (!path.IsEmpty()) {
-		size_t pos = ((type == wxString::leading) ? 0 : path.Length() - 1);
-
-		if (seps.Contains(path.GetChar(pos))) {
-			path.Remove(pos, 1);
-		} else {
-			break;
-		}
-	}
-	
-	return path;
-}
-
-
-wxString JoinPaths(const wxString& path, const wxString& file)
-{
-	if (path.IsEmpty()) {
-		return file;
-	} else if (file.IsEmpty()) {
-		return path;
-	} 
-
-	return StripSeparators(path, wxString::trailing)
-	   + wxFileName::GetPathSeparator()
-	   + StripSeparators(file, wxString::leading);
 }
 
 
@@ -341,6 +260,3 @@ size_t CSimpleTokenizer::tokenCount() const
 {
 	return m_count;
 }
-
-
-// File_checked_for_headers

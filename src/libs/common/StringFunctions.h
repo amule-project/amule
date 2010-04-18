@@ -29,8 +29,6 @@
 
 #include "../../Types.h"		// Needed for uint16 and uint32
 
-class CPath;
-
 
 // UTF8 types: No UTF8, BOM prefix, or Raw UTF8
 enum EUtf8Str
@@ -193,31 +191,6 @@ inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 /***************** Non-inlines **********************/
 /****************************************************/
 
-/**
- * Truncates a filename to the specified length.
- *
- * @param filename The original filename.
- * @param length The max length of the resulting filename.
- * @param isFilePath If true, then the path will be truncated rather than the filename if possible.
- * @return The truncated filename.
- */
-wxString TruncateFilename(const CPath& filename, size_t length, bool isFilePath = false);
-
-/**
- * Strips all path separators from the specified end of a path.
- *
- * Note: type must be either leading or trailing.
- */
-wxString StripSeparators(wxString path, wxString::stripType type);
-
-
-/**
- * Joins two path with the operating system specific path-separator.
- *
- * If any of the parameters are empty, the other parameter is
- * returned unchanged.
- */
-wxString JoinPaths(const wxString& path, const wxString& file);
 
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(const wxString& sIn);
