@@ -1280,7 +1280,7 @@ void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *sea
 	memcpy(m_searchTermsData, searchTermsData, searchTermsDataSize);
 }
 
-uint8_t CSearch::GetRequestContactCount() const throw()
+uint8_t CSearch::GetRequestContactCount() const
 {
 	// Returns the amount of contacts we request on routing queries based on the search type
 	switch (m_type) {

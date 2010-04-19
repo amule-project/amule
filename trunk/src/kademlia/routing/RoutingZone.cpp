@@ -530,7 +530,7 @@ CContact *CRoutingZone::GetContact(uint32_t ip, uint16_t port, bool tcpPort) con
 	}
 }
 
-CContact *CRoutingZone::GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw()
+CContact *CRoutingZone::GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const
 {
 	if (IsLeaf()) {
 		return m_bin->GetRandomContact(maxType, minKadVersion);
@@ -704,7 +704,7 @@ bool CRoutingZone::OnBigTimer() const
 //This is used when we find a leaf and want to know what this sample looks like.
 //We fall back two levels and take a sample to try to minimize any areas of the 
 //tree that will give very bad results.
-uint32_t CRoutingZone::EstimateCount() const throw()
+uint32_t CRoutingZone::EstimateCount() const
 {
 	if (!IsLeaf()) {
 		return 0;
@@ -833,7 +833,7 @@ uint32_t CRoutingZone::GetNumContacts() const throw()
 	}
 }
 
-void CRoutingZone::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const
+void CRoutingZone::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const throw()
 {
 	if (IsLeaf()) {
 		m_bin->GetNumContacts(nInOutContacts, nInOutFilteredContacts, minVersion);

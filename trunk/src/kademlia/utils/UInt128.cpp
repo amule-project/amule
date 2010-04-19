@@ -47,7 +47,7 @@ there client on the eMule forum..
 using namespace Kademlia;
 ////////////////////////////////////////
 
-CUInt128::CUInt128(const CUInt128 &value, uint32_t numBits) throw()
+CUInt128::CUInt128(const CUInt128 &value, uint32_t numBits)
 {
 	// Copy the whole uint32s
 	uint32_t numULONGs = numBits / 32;
@@ -102,9 +102,9 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	return str;
 }
 
-void CUInt128::ToByteArray(uint8_t *b) const throw()
+void CUInt128::ToByteArray(uint8_t *b) const
 {
-	wxASSERT(b != NULL);
+	wxCHECK_RET(b != NULL, wxT("Destination buffer missing."));
 
 	RawPokeUInt32(b,      wxUINT32_SWAP_ON_LE(m_data[0]));
 	RawPokeUInt32(b + 4,  wxUINT32_SWAP_ON_LE(m_data[1]));
@@ -112,9 +112,9 @@ void CUInt128::ToByteArray(uint8_t *b) const throw()
 	RawPokeUInt32(b + 12, wxUINT32_SWAP_ON_LE(m_data[3]));
 }
 
-void CUInt128::StoreCryptValue(uint8_t *buf) const throw()
+void CUInt128::StoreCryptValue(uint8_t *buf) const
 {
-	wxASSERT(buf != NULL);
+	wxCHECK_RET(buf != NULL, wxT("Destination buffer missing."));
 
 	RawPokeUInt32(buf,      wxUINT32_SWAP_ON_BE(m_data[0]));
 	RawPokeUInt32(buf + 4,  wxUINT32_SWAP_ON_BE(m_data[1]));
