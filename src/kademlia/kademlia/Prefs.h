@@ -116,7 +116,7 @@ public:
 	bool	 FindExternKadPort(bool reset = false);
 
 	static uint8_t	GetMyConnectOptions(bool encryption = true, bool callback = true);
-	static uint32_t GetUDPVerifyKey(uint32_t targetIP) throw();
+	static uint32_t GetUDPVerifyKey(uint32_t targetIP);
 
 	// Statistics
 	void	StatsIncUDPFirewalledNodes(bool firewalled) throw()	{ firewalled ? ++m_statsUDPFirewalledNodes : ++m_statsUDPOpenNodes; }

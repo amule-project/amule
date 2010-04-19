@@ -112,7 +112,7 @@ private:
 	void PrepareToStop() throw();
 	void StorePacket();
 
-	uint8_t	GetRequestContactCount() const throw();
+	uint8_t	GetRequestContactCount() const;
 
 	bool		m_stopping;
 	time_t		m_created;

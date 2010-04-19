@@ -152,7 +152,7 @@ CContact *CRoutingBin::GetContact(uint32_t ip, uint16_t port, bool tcpPort) cons
 	return NULL;
 }
 
-void CRoutingBin::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const
+void CRoutingBin::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const throw()
 {
 	// count all nodes which meet the search criteria and also report those who don't
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
@@ -331,7 +331,7 @@ void CRoutingBin::PushToBottom(CContact *contact)
 	m_entries.push_back(contact);
 }
 
-CContact *CRoutingBin::GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw()
+CContact *CRoutingBin::GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const
 {
 	if (m_entries.empty()) {
 		return NULL;

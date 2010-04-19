@@ -407,7 +407,7 @@ void CSearchManager::UpdateStats() throw()
 	uint8_t m_totalNotes = 0;
 	uint8_t m_totalStoreNotes = 0;
 		
-	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
+	for (SearchMap::const_iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 		switch(it->second->GetSearchTypes()){
 			case CSearch::FILE: {
 				m_totalFile++;

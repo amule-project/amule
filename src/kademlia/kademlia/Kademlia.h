@@ -66,14 +66,14 @@ public:
 	static void Stop();
  
 	static CPrefs *			GetPrefs() throw()		{ if (instance == NULL || instance->m_prefs == NULL) return NULL; else return instance->m_prefs; }
-	static CRoutingZone *		GetRoutingZone() throw()	{ wxCHECK(instance && instance->m_routingZone, NULL); return instance->m_routingZone; }
-	static CKademliaUDPListener *	GetUDPListener() throw()	{ wxCHECK(instance && instance->m_udpListener, NULL); return instance->m_udpListener; }
-	static CIndexed *		GetIndexed() throw()		{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
+	static CRoutingZone *		GetRoutingZone()		{ wxCHECK(instance && instance->m_routingZone, NULL); return instance->m_routingZone; }
+	static CKademliaUDPListener *	GetUDPListener()		{ wxCHECK(instance && instance->m_udpListener, NULL); return instance->m_udpListener; }
+	static CIndexed *		GetIndexed()			{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
 	static bool			IsRunning() throw()		{ return m_running; }
 	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
 	static bool			IsFirewalled() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() : true; }
 	static void			RecheckFirewalled();
-	static uint32_t			GetKademliaUsers(bool newMethod = false) throw()
+	static uint32_t			GetKademliaUsers(bool newMethod = false)
 		{ return instance && instance->m_prefs ? (newMethod ? CalculateKadUsersNew() : instance->m_prefs->GetKademliaUsers()) : 0; }
 	static uint32_t			GetKademliaFiles() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaFiles() : 0; }
 	static uint32_t			GetTotalStoreKey() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreKey() : 0; }
