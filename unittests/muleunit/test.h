@@ -301,7 +301,7 @@ inline wxString StringFrom(signed long long value)
 
 
 /**
- * Requires that an assertion of a certain type is raised.
+ * Requires that an exception of a certain type is raised.
  */
 #define ASSERT_RAISES_M(type, call, message) \
 	try { \

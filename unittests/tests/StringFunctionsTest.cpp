@@ -1,33 +1,9 @@
 #include <muleunit/test.h>
 #include <common/StringFunctions.h>
 
-#include <wx/filename.h>
-
 using namespace muleunit;
 
 DECLARE_SIMPLE(StringFunctions)
-
-
-///////////////////////////////////////////////////////////
-// Tests for the JoinPaths function
-
-TEST(StringFunctions, JoinPaths)
-{
-	const wxString seps = wxFileName::GetPathSeparators();
-	const wxString sep = wxFileName::GetPathSeparator();
-
-	for (size_t i = 0; i < seps.Length(); ++i) {
-		const wxString cur_sep = seps.Mid(i, 1);
-		
-		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a"), wxT("b")));
-		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a") + cur_sep, wxT("b")));
-		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a"), cur_sep + wxT("b")));
-		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a") + cur_sep, cur_sep + wxT("b")));
-		ASSERT_EQUALS(wxT("a"), JoinPaths(wxT("a"), wxEmptyString));
-		ASSERT_EQUALS(wxT("b"), JoinPaths(wxEmptyString, wxT("b")));
-		ASSERT_EQUALS(wxEmptyString, JoinPaths(wxEmptyString, wxEmptyString));
-	}
-}
 
 
 ///////////////////////////////////////////////////////////

@@ -64,6 +64,27 @@ wxString StringFrom(const CPath& prt)
 }
 
 
+DECLARE_SIMPLE(GenericPathFunctions)
+
+TEST(GenericPathFunctions, JoinPaths)
+{
+	const wxString seps = wxFileName::GetPathSeparators();
+	const wxString sep = wxFileName::GetPathSeparator();
+
+	for (size_t i = 0; i < seps.Length(); ++i) {
+		const wxString cur_sep = seps.Mid(i, 1);
+
+		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a"), wxT("b")));
+		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a") + cur_sep, wxT("b")));
+		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a"), cur_sep + wxT("b")));
+		ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a") + cur_sep, cur_sep + wxT("b")));
+		ASSERT_EQUALS(wxT("a"), JoinPaths(wxT("a"), wxEmptyString));
+		ASSERT_EQUALS(wxT("b"), JoinPaths(wxEmptyString, wxT("b")));
+		ASSERT_EQUALS(wxEmptyString, JoinPaths(wxEmptyString, wxEmptyString));
+	}
+}
+
+
 DECLARE_SIMPLE(CPath)
 
 TEST(CPath, DefaultConstructor)
@@ -240,7 +261,7 @@ TEST(CPath, JoinPaths)
 	const CPath expected1 = Norm(wxT("/home/amule/"));
 	const CPath expected2 = Norm(wxT("/home/amule"));
 
-	// Note: Just a few checks, as ::JoinPaths is tested in StringFunctionTests.cpp
+	// Note: Just a few checks, as ::JoinPaths is tested above
 	ASSERT_EQUALS(expected1, Norm(wxT("/home")).JoinPaths(Norm(wxT("amule/"))));
 	ASSERT_EQUALS(expected1, Norm(wxT("/home")).JoinPaths(Norm(wxT("/amule/"))));
 	ASSERT_EQUALS(expected1, Norm(wxT("/home/")).JoinPaths(Norm(wxT("/amule/"))));
@@ -373,3 +394,27 @@ TEST(CPath, Extensions)
 	ASSERT_EQUALS(Norm(wxT("/home/amule.zod")), initial.RemoveAllExt().AppendExt(wxT(".zod")));
 }
 
+TEST(CPath, TruncatePath)
+{
+	const CPath testPath = Norm(wxT("/home/amule/truncate"));
+
+	ASSERT_EQUALS(Norm(wxT("/home/amule/truncate")).GetPrintable(), testPath.TruncatePath(21));
+	ASSERT_EQUALS(Norm(wxT("/home/amule/truncate")).GetPrintable(), testPath.TruncatePath(20));
+	ASSERT_EQUALS(Norm(wxT("/home/amule/tr[...]")).GetPrintable(), testPath.TruncatePath(19));
+	ASSERT_EQUALS(Norm(wxT("/h[...]")).GetPrintable(), testPath.TruncatePath(7));
+	ASSERT_EQUALS(Norm(wxT("/[...]")).GetPrintable(), testPath.TruncatePath(6));
+	ASSERT_EQUALS(wxEmptyString, testPath.TruncatePath(5));
+	ASSERT_EQUALS(wxEmptyString, testPath.TruncatePath(4));
+
+	ASSERT_EQUALS(Norm(wxT("/home/amule/truncate")).GetPrintable(), testPath.TruncatePath(21, true));
+	ASSERT_EQUALS(Norm(wxT("/home/amule/truncate")).GetPrintable(), testPath.TruncatePath(20, true));
+	ASSERT_EQUALS(Norm(wxT("[...]amule/truncate")).GetPrintable(), testPath.TruncatePath(19, true));
+	ASSERT_EQUALS(Norm(wxT("[...]e/truncate")).GetPrintable(), testPath.TruncatePath(15, true));
+	ASSERT_EQUALS(wxT("truncate"), testPath.TruncatePath(14, true));
+	ASSERT_EQUALS(wxT("truncate"), testPath.TruncatePath(13, true));
+	ASSERT_EQUALS(wxT("truncate"), testPath.TruncatePath(9, true));
+	ASSERT_EQUALS(wxT("truncate"), testPath.TruncatePath(8, true));
+	ASSERT_EQUALS(wxT("tr[...]"), testPath.TruncatePath(7, true));
+	ASSERT_EQUALS(wxT("t[...]"), testPath.TruncatePath(6, true));
+	ASSERT_EQUALS(wxEmptyString, testPath.TruncatePath(5, true));
+}

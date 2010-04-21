@@ -60,8 +60,8 @@ const wxString& TestCase::getName() const
 
 bool TestCase::run()
 {
-	Printf(wxT("\nRunning test-collection \"%s\" with %u test-cases:"),
-		m_name.c_str(), m_tests.size());
+	Printf(wxT("\nRunning test-collection \"") + m_name + wxT("\" with %u test-cases:"),
+		m_tests.size());
 
 	bool failures = false;
 	
@@ -69,7 +69,7 @@ bool TestCase::run()
 	for (; it != m_tests.end(); ++it) {
 		Test* test = *it;
 		
-		Printf(wxT("\tTest \"%s\" "), test->getTestName().c_str());
+		Printf(wxT("\tTest \"") + test->getTestName() + wxT("\" "));
 
 		bool wasSetup = false;
 		try {
