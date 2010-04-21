@@ -1,6 +1,6 @@
 #include <muleunit/test.h>
 #include <common/Format.h>
-#include <limits.h>
+#include <limits>
 
 #include <Types.h>
 
