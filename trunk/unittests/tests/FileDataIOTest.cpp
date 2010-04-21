@@ -766,7 +766,6 @@ TEST(CFile, Constructor)
 		ASSERT_RAISES(CRunTimeException, file.GetLength());
 		ASSERT_RAISES(CRunTimeException, file.GetPosition());
 		ASSERT_RAISES(CRunTimeException, file.SetLength(13));
-		ASSERT_RAISES(CRunTimeException, file.GetFilePath());
 		ASSERT_RAISES(CRunTimeException, file.Flush());
 		ASSERT_RAISES(CRunTimeException, file.Close());
 		ASSERT_TRUE(!file.IsOpened());

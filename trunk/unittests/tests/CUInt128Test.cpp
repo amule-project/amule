@@ -111,9 +111,7 @@ TEST(CUInt128, Get32BitChunk)
 	ASSERT_EQUALS(0x04050607u, test.Get32BitChunk(1));
 	ASSERT_EQUALS(0x08090a0bu, test.Get32BitChunk(2));
 	ASSERT_EQUALS(0x0c0d0e0fu, test.Get32BitChunk(3));
-#if wxCHECK_VERSION(2, 8, 8)
-	ASSERT_RAISES(CAssertFailureException, test.Get32BitChunk(4));
-#endif
+	ASSERT_EQUALS(0u, test.Get32BitChunk(4));
 }
 
 TEST_M(CUInt128, OperatorEqualsCUInt128, wxT("operator==(const CUInt128&)"))
@@ -209,10 +207,14 @@ TEST(CUInt128, Set32BitChunk)
 	test.Set32BitChunk(2, 0x08090a0bu);
 	test.Set32BitChunk(3, 0x0c0d0e0fu);
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
-#if wxCHECK_VERSION(2, 8, 8)
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, test.Set32BitChunk(4, 0));
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
 #endif
+
+	CAssertOff null;
+	test.Set32BitChunk(4, 0);
+	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
 }
 
 TEST_M(CUInt128, SetValueCUInt128, wxT("SetValue(const CUInt128&)"))
@@ -511,6 +513,9 @@ TEST(CUInt128, GetBitNumber)
 	test <<= 127;
 	ASSERT_TRUE(test.GetBitNumber(0) == 1);
 	ASSERT_TRUE(test.GetBitNumber(127) == 0);
+
+	CUInt128 test2(true);
+	ASSERT_EQUALS(0u, test2.GetBitNumber(128));
 }
 
 TEST(CUInt128, SetBitNumber)
@@ -525,9 +530,14 @@ TEST(CUInt128, SetBitNumber)
 	ASSERT_EQUALS(2, test);
 	test.SetBitNumber(0, 1);
 	ASSERT_EQUALS(0x80000000u, test.Get32BitChunk(0));
-#if wxCHECK_VERSION(2, 8, 8)
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, test.SetBitNumber(128, 0));
 #endif
+
+	CAssertOff null;
+	test.SetValueBE((uint8_t *)&TestData::sequence);
+	test.SetBitNumber(128, 1);
+	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
 }
 
 TEST_M(CUInt128, OperatorNotEqualCUInt128, wxT("operator!=(const CUInt128&)"))

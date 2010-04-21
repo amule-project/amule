@@ -9,7 +9,7 @@ DECLARE_SIMPLE(NetworkFunctions)
 
 TEST(NetworkFunctions, StringIPtoUint32)
 {
-	unsigned char values[] = { 0, 1, 127, 254, 255 };
+	unsigned int values[] = { 0, 1, 127, 254, 255 };
 	const wxChar whitespace[] = { wxT(' '), wxT('\t'), wxT('\n') };
 	int items = itemsof(values);
 	int whites = 2;

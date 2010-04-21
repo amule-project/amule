@@ -13,8 +13,6 @@ using namespace muleunit;
 #define MIN(x) std::numeric_limits<x>::min()
 #define MAX(x) std::numeric_limits<x>::max()
 
-// Needs reentrant wxOnAssert, which is missing in pre-2.8.8.
-#if wxCHECK_VERSION(2, 8, 8)
 
 DECLARE(Format)
 	// Less is valid for the string type, so we need a cut
@@ -69,7 +67,9 @@ TEST(Format, ConstructorAndGetString)
 		// Simple string with one format field
 		CFormat fmt4(wxT("a %i c"));
 		ASSERT_FALSE(fmt4.IsReady());
+#ifdef __WXDEBUG__
 		ASSERT_RAISES(CAssertFailureException, fmt4.GetString());
+#endif
 
 		CAssertOff null;
 		ASSERT_EQUALS(wxT("a %i c"), fmt4.GetString());
@@ -96,7 +96,9 @@ TEST(Format, SetStringAndGetString)
 	// Simple string with one format field
 	format = CFormat(wxT("a %i c"));
 	ASSERT_FALSE(format.IsReady());
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, format.GetString());
+#endif
 
 	CAssertOff null;
 	ASSERT_EQUALS(wxT("a %i c"), format.GetString());
@@ -115,15 +117,19 @@ TEST(Format, SetStringAndGetString)
 	
 
 
-//! Test the two boundries and a middle value of the specificed format
+//! Test the two boundaries and a middle value of the specificed format
 #define STANDARD_TYPE_TESTS(cformat, wxformat, type) \
 	STANDARD_TEST(cformat, wxformat, MIN(type)); \
 	STANDARD_TEST(cformat, wxformat, (type)(MAX(type) / 2)); \
 	STANDARD_TEST(cformat, wxformat, MAX(type)); \
 
+// In wx >= 2.9 wxChar represents a Unicode code point, thus its maximum value
+// is 1114111 (0x10ffff).
 TEST(Format, InjectwxChar)
 {
-	STANDARD_TYPE_TESTS(wxT("c"), wxT("c"), wxChar);
+	STANDARD_TEST(wxT("c"), wxT("c"), MIN(wxChar));
+	STANDARD_TEST(wxT("c"), wxT("c"), (wxChar)(std::min<wxChar>(MAX(wxChar), 0x10ffff) / 2));
+	STANDARD_TEST(wxT("c"), wxT("c"), (std::min<wxChar>(MAX(wxChar), 0x10ffff)));
 }
 
 
@@ -305,6 +311,7 @@ TEST(Format, EscapedPercentageSign)
 
 TEST(Format, MalformedFields)
 {
+#ifdef __WXDEBUG__
 	{
 		// Incomplete format string
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%")));
@@ -319,6 +326,7 @@ TEST(Format, MalformedFields)
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%.qs")) % wxT(""));
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%.-10s")) % wxT(""));
 	}
+#endif
 
 	{
 		CAssertOff null;
@@ -345,7 +353,9 @@ TEST(Format, NotReady)
 {
 	CFormat fmt(wxT("-- %s - %d"));
 	ASSERT_FALSE(fmt.IsReady());
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, fmt.GetString());
+#endif
 
 	{
 		CAssertOff null;
@@ -355,7 +365,9 @@ TEST(Format, NotReady)
 	fmt % wxT("foo");
 
 	ASSERT_FALSE(fmt.IsReady());
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, fmt.GetString());
+#endif
 
 	{
 		CAssertOff null;
@@ -371,6 +383,7 @@ TEST(Format, NotReady)
 
 TEST(Format, WrongTypes)
 {
+#ifdef __WXDEBUG__
 	{
 		// Entirely wrong types:
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%s")) % 1);
@@ -384,6 +397,7 @@ TEST(Format, WrongTypes)
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%d")) % 1.0f);
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%d")) % wxT("1"));
 	}
+#endif
 
 	{
 		CAssertOff null;
@@ -397,12 +411,14 @@ TEST(Format, WrongTypes)
 
 TEST(Format, NotSupported)
 {
+#ifdef __WXDEBUG__
 	{
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%*d")) % 1);
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%*s")) % wxT(""));
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%p")) % wxT(""));
 		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%n")) % wxT(""));
 	}
+#endif
 
 	{		
 		CAssertOff null;
@@ -422,16 +438,22 @@ TEST(Format, Overfeeding)
 	fmt % 1 % 2;
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
-		
+
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, fmt % 1);
+#endif
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, fmt % 1.0f);
+#endif
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 
+#ifdef __WXDEBUG__
 	ASSERT_RAISES(CAssertFailureException, fmt % wxT("1"));
+#endif
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 }
@@ -484,5 +506,3 @@ TEST(Format, Printable)
 		ASSERT_EQUALS(wxT("-10"), fmt.GetString());
 	}
 }
-
-#endif

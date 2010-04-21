@@ -58,8 +58,7 @@ namespace muleunit {
 
 
 CTestFailureException::CTestFailureException(const wxString& msg, const wxChar* file, long lineNumber)
-	: m_message(msg.ToAscii())
-	, m_bt(new BTList(g_backtrace))
+	: m_bt(new BTList(g_backtrace)), m_message(msg.ToAscii())
 {
 	m_bt->snapshot.push_back(BTEntry(file, lineNumber, msg));
 }
@@ -78,11 +77,7 @@ void CTestFailureException::PrintBT() const
 	for (; it != m_bt->snapshot.end(); ++it) {
 		indent += ' ';
 
-		Printf(wxT("%s%s:%i -- %s"), 
-			wxString(indent.c_str(), wxConvLocal).c_str(),
-			it->file.c_str(),
-			it->line,
-			it->msg.c_str());
+		Printf(indent + it->file + wxT(":%i -- ") + it->msg, it->line);
 	}
 }
 
