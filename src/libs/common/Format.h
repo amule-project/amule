@@ -25,15 +25,7 @@
 #ifndef FORMAT_H
 #define FORMAT_H
 
-
 #include "MuleDebug.h"
-
-#ifdef __GNUC__
-    #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
-#else
-    /* Assume that other compilers don't have this bug */
-    #define GCC_VERSION	99999
-#endif
 
 
 /**
@@ -123,19 +115,19 @@ public:
 	 */
 	// \{
 	CFormat& operator%(wxChar value);
-	CFormat& operator%(signed short value);
-	CFormat& operator%(unsigned short value);
-	CFormat& operator%(signed int value);
-	CFormat& operator%(unsigned int value);
-	CFormat& operator%(signed long value);
-	CFormat& operator%(unsigned long value);
+	CFormat& operator%(signed short value)		{ return *this % (signed long long)value; }
+	CFormat& operator%(unsigned short value)	{ return *this % (unsigned long long)value; }
+	CFormat& operator%(signed int value)		{ return *this % (signed long long)value; }
+	CFormat& operator%(unsigned int value)		{ return *this % (unsigned long long)value; }
+	CFormat& operator%(signed long value)		{ return *this % (signed long long)value; }
+	CFormat& operator%(unsigned long value)		{ return *this % (unsigned long long)value; }
 	CFormat& operator%(signed long long value);
-	CFormat& operator%(unsigned long long value);	
+	CFormat& operator%(unsigned long long value);
 	CFormat& operator%(double value);
-	CFormat& operator%(const wxChar* value);
+	CFormat& operator%(const wxChar* value)		{ return *this % wxString(value); }
 	CFormat& operator%(const wxString& value);
-	CFormat& operator%(const CPrintable& value);	
-	CFormat& operator%(void * value);	
+	CFormat& operator%(const CPrintable& value)	{ return *this % value.GetPrintableString(); }
+	CFormat& operator%(void * value);
 	// \}
 
 
@@ -187,55 +179,6 @@ private:
 	wxString	m_result;
 };
 
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-inline CFormat& CFormat::operator%(signed short value)
-{
-	return *this % (signed long long)value;
-}
-
-
-inline CFormat& CFormat::operator%(unsigned short value)
-{
-	return *this % (unsigned long long)value;
-}
-
-
-inline CFormat& CFormat::operator%(signed int value)
-{
-	return *this % (signed long long)value;
-}
-
-
-inline CFormat& CFormat::operator%(unsigned int value)
-{
-	return *this % (unsigned long long)value;
-}
-
-
-inline CFormat& CFormat::operator%(signed long value)
-{
-	return *this % (signed long long)value;
-}
-
-
-inline CFormat& CFormat::operator%(unsigned long value)
-{
-	return *this % (unsigned long long)value;
-}
-
-
-inline CFormat& CFormat::operator%(const wxChar* val)
-{
-	return *this % wxString(val);
-}
-
-inline CFormat& CFormat::operator%(const CPrintable& value)
-{
-	return *this % value.GetPrintableString();
-}
 
 #if wxCHECK_VERSION(2, 9, 0)
 #define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
