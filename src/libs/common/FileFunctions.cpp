@@ -96,10 +96,11 @@ EFileType GuessFiletype(const wxString& file)
 	if (!archive.IsOpened()) {
 		return EFT_Error;
 	}
-	char head[10] = {0};
+	static const uint8 UTF8bom[3] = {0xEF, 0xBB, 0xBF};
+	uint8 head[10] = {0, 0};
 	int read = archive.Read(head, std::min<off_t>(10, archive.Length()));
 
-	if (read == wxInvalidOffset) {
+	if (read == wxInvalidOffset || read == 0) {
 		return EFT_Unknown;
 	} else if ((head[0] == 'P') && (head[1] == 'K')) {
 		// Zip-archives have a header of "PK".
@@ -115,7 +116,9 @@ EFileType GuessFiletype(const wxString& file)
 	// Check at most the first ten chars, if all are printable, 
 	// then we can probably assume it is ascii text-file.
 	for (int i = 0; i < read; ++i) {
-		if (!isprint(head[i]) && !isspace(head[i])) {
+		if (!(		isprint(head[i]) 
+				||	isspace(head[i])
+				||	(i < 3 && head[i] == UTF8bom[i]))) {
 			return EFT_Unknown;
 		}
 	}
