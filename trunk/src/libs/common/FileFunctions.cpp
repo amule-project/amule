@@ -105,10 +105,10 @@ EFileType GuessFiletype(const wxString& file)
 	} else if ((head[0] == 'P') && (head[1] == 'K')) {
 		// Zip-archives have a header of "PK".
 		return EFT_Zip;
-	} else if (head[0] == '\x1F' && head[1] == '\x8B') {
+	} else if (head[0] == 0x1F && head[1] == 0x8B) {
 		// Gzip-archives have a header of 0x1F8B
 		return EFT_GZip;
-	} else if (head[0] == '\xE0' || head[0] == '\x0E') {
+	} else if (head[0] == 0xE0 || head[0] == 0x0E) {
 		// MET files have either of these headers
 		return EFT_Met;
 	}
