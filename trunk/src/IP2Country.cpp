@@ -169,7 +169,7 @@ void CIP2Country::LoadFlags()
 		}
 	}
 
-	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());  // there's never just one - no plural needed
+	AddDebugLogLineN(logGeneral, CFormat(wxT("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());  // there's never just one - no plural needed
 }
 
 
