@@ -787,7 +787,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 		AddLogLineM(true, _("Invalid URL"));
 		return;
 	}
-	URLUpdate = strURL;
+	m_URLUpdate = strURL;
 	wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
 	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, strTempFilename, theApp->ConfigDir + wxT("server.met"), HTTP_ServerMet);
 	downloader->Create();
@@ -806,11 +806,11 @@ void CServerList::DownloadFinished(uint32 result)
 
 		// So, file is loaded and merged, and also saved
 		CPath::RemoveFile(tempFilename);
-		AddLogLineN(CFormat(_("Finished downloading the server list from %s")) % URLUpdate);
+		AddLogLineN(CFormat(_("Finished downloading the server list from %s")) % m_URLUpdate);
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("server.met"));
 	} else {
-		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("server.met") % URLUpdate);
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("server.met") % m_URLUpdate);
 	}
 }
 
@@ -830,7 +830,7 @@ void CServerList::AutoUpdate()
 		// We use wxURL to validate the URI
 		if ( wxURL( URI ).GetError() == wxURL_NOERR ) {
 			// Ok, got a valid URI
-			URLAutoUpdate = URI;
+			m_URLUpdate = URI;
 			wxString strTempFilename =
 				theApp->ConfigDir + wxT("server_auto.met");
 			AddLogLineM(true, CFormat(
@@ -853,8 +853,7 @@ void CServerList::AutoUpdate()
 
 void CServerList::AutoDownloadFinished(uint32 result) 
 {
-	
-	if (result == 1) {
+	if (result == HTTP_Success) {
 		CPath tempFilename = CPath(theApp->ConfigDir + wxT("server_auto.met"));
 		
 		// curl succeeded. proceed with server.met loading
@@ -864,17 +863,15 @@ void CServerList::AutoDownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		CPath::RemoveFile(tempFilename);
 	} else {
-		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % URLUpdate);
+		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % m_URLUpdate);
 	}
 	
 	++current_url_index;
 	
-
 	if (current_url_index < theApp->glob_prefs->adresses_list.GetCount()) {		
 		// Next!	
 		AutoUpdate();
 	}
-	
 }
 
 
