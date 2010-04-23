@@ -557,7 +557,12 @@ bool CECSocket::ReadHeader()
 			CloseSocket();
 			return false;
 		}
-		m_curr_rx_data.reset(new CQueuedData(m_bytes_needed));
+		// Don't make buffer smaller than EC_SOCKET_BUFFER_SIZE
+		size_t bufSize = m_bytes_needed;
+		if (bufSize < EC_SOCKET_BUFFER_SIZE) {
+			bufSize = EC_SOCKET_BUFFER_SIZE;
+		}
+		m_curr_rx_data.reset(new CQueuedData(bufSize));
 	}
 	if (ECLogIsEnabled()) {
 		DoECLogLine(CFormat(wxT("< %d ...")) % m_bytes_needed);
