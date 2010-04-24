@@ -79,13 +79,6 @@ CEntry* CEntry::Copy() const
 	return entry;
 }
 
-uint64_t CEntry::GetIntTagValue(const wxString& tagname, bool includeVirtualTags) const
-{
-	uint64_t result = 0;
-	GetIntTagValue(tagname, result, includeVirtualTags);
-	return result;
-}
-
 bool CEntry::GetIntTagValue(const wxString& tagname, uint64_t& value, bool includeVirtualTags) const
 {
 	for (TagPtrList::const_iterator it = m_taglist.begin(); it != m_taglist.end(); ++it) {
@@ -374,8 +367,6 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		}
 		// update the global track map below
 	} else {
-		delete m_publishingIPs; // should be always NULL, already ASSERTed above if not
-
 		// merge the tracked IPs, add this one if not already on the list
 		m_publishingIPs = fromEntry->m_publishingIPs;
 		fromEntry->m_publishingIPs = NULL;	
