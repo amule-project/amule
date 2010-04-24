@@ -76,7 +76,6 @@ public:
 	virtual CEntry*	Copy() const;
 	virtual bool	IsKeyEntry() const throw()	{ return false; }
 	
-	uint64_t GetIntTagValue(const wxString& tagname, bool includeVirtualTags = true) const;
 	bool	 GetIntTagValue(const wxString& tagname, uint64_t& value, bool includeVirtualTags = true) const;
 	wxString GetStrTagValue(const wxString& tagname) const;
 
