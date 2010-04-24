@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-12 09:03+0200\n"
-"PO-Revision-Date: 2010-04-07 09:35+0100\n"
+"PO-Revision-Date: 2010-04-24 18:26+0100\n"
 "Last-Translator: Balla Marcell <marcell@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2363,7 +2363,6 @@ msgid "Loaded %d flag bitmaps."
 msgstr "%d darab zászló képe betöltve."
 
 #: src/IPFilter.cpp:119
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "IP-szűrők 'ipfilter.dat' és 'ipfilter_static.dat' betöltése."
 
@@ -2395,9 +2394,8 @@ msgid "Failed to rename new %s file, aborting update."
 msgstr "Új %s fájl átnevezése sikertelen, frissítés megszakítása."
 
 #: src/IPFilter.cpp:628
-#, fuzzy
 msgid "IP filter is ready"
-msgstr "IP szűrő %s.\n"
+msgstr "IP szűrő készen áll"
 
 #: src/KadDlg.cpp:132
 #, c-format
