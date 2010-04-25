@@ -560,7 +560,7 @@ bool CamuleApp::OnInit()
 	m_app_state = APP_STATE_RUNNING;
 	
 	// Kry - Load the sources seeds on app init
-	if (thePrefs::GetSrcSeedsOn()) {
+	if (thePrefs::GetSrcSeedsOn() && ipfilter->IsReady()) {
 		downloadqueue->LoadSourceSeeds();
 	}
 	
@@ -588,7 +588,7 @@ bool CamuleApp::OnInit()
 	
 	// Autoconnect if that option is enabled
 	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
-		if (theApp->ipfilter->IsReady()) {
+		if (ipfilter->IsReady()) {
 			// If it's not ready it will connect later, so don't print it now.
 			AddLogLineC(_("Connecting"));
 		}
@@ -1958,10 +1958,10 @@ void CamuleApp::StartKad()
 	if (!Kademlia::CKademlia::IsRunning() && thePrefs::GetNetworkKademlia()) {
 		// Kad makes no sense without the Client-UDP socket.
 		if (!thePrefs::IsUDPDisabled()) {
-			if (theApp->ipfilter->IsReady()) {
+			if (ipfilter->IsReady()) {
 				Kademlia::CKademlia::Start();
 			} else {
-				theApp->ipfilter->StartKADWhenReady();
+				ipfilter->StartKADWhenReady();
 			}
 		} else {
 			AddLogLineM(true,_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
