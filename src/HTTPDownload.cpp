@@ -168,6 +168,8 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filena
 	} else {
 		m_hasdate = false;
 	}
+	wxMutexLocker lock(s_allThreadsMutex);
+	s_allThreads.insert(this);
 }
 
 
@@ -309,6 +311,8 @@ void CHTTPDownloadThread::OnExit()
 	evt.SetInt((int)m_file_id);
 	evt.SetExtraLong((long)m_result);
 	wxPostEvent(wxTheApp, evt);
+	wxMutexLocker lock(s_allThreadsMutex);
+	s_allThreads.erase(this);
 }
 
 
@@ -422,5 +426,20 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 
 	return url_read_stream;
 }
+
+void CHTTPDownloadThread::StopAll()
+{
+	ThreadSet allThreads;
+	{
+		wxMutexLocker lock(s_allThreadsMutex);
+		std::swap(allThreads, s_allThreads);
+	}
+	for (ThreadSet::iterator it = allThreads.begin(); it != allThreads.end(); it++) {
+		(*it)->Stop();
+	}
+}
+
+CHTTPDownloadThread::ThreadSet CHTTPDownloadThread::s_allThreads;
+wxMutex CHTTPDownloadThread::s_allThreadsMutex;
 
 // File_checked_for_headers

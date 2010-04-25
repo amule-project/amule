@@ -138,6 +138,7 @@ Version 2.3.0 - The river knows.
 		* Show when a Kad search is finished in aMulegui (remove '!')
 		* Fixed "pause/cancel/resume all" in aMulecmd
 		* EC ZLIB compression can now be turned off in remote.conf with EC/ZLIB=0
+		* Terminate HTTP downloads on exit
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -30,6 +30,7 @@
 #include "GuiEvents.h"		// Needed for HTTP_Download_File
 #include "MuleThread.h"		// Needed for CMuleThread
 #include <wx/datetime.h>	// Needed for wxDateTime
+#include <set>
 
 class wxEvtHandler;
 class wxHTTP;
@@ -47,6 +48,7 @@ public:
 	/** Note: wxChar* is used to circumvent the thread-unsafe wxString reference counting. */
 	CHTTPDownloadThread(const wxChar* url, const wxChar* filename, const wxChar* oldfilename, HTTP_Download_File file_id, bool showDialog = true);
 
+	static void StopAll();
 private:
 	ExitCode		Entry();
 	virtual void 		OnExit();
@@ -60,6 +62,9 @@ private:
 	int			m_error;	//! Additional error code (@see wxProtocol class)
 	HTTP_Download_File	m_file_id;
 	wxEvtHandler*		m_companion;
+	typedef std::set<CHTTPDownloadThread *>	ThreadSet;
+	static ThreadSet	s_allThreads;
+	static wxMutex		s_allThreadsMutex;
 
 	wxInputStream* GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy);
 	static wxString FormatDateHTTP(const wxDateTime& date);
