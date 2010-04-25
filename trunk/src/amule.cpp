@@ -1391,6 +1391,9 @@ void CamuleApp::ShutDown()
 
 	OnlineSig(true); // Added By Bouc7
 
+	// Exit HTTP downloads
+	CHTTPDownloadThread::StopAll();
+
 	// Exit thread scheduler and upload thread
 	CThreadScheduler::Terminate();
 
