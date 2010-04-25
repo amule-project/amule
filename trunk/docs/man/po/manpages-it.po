@@ -909,7 +909,7 @@ msgstr ""
 #: amulecmd.1:159
 #, no-wrap
 msgid "Search I<E<lt>typeE<gt>> I<E<lt>keywordE<gt>>"
-msgstr "Cerca I<E<lt>tipoE<gt>> I<E<lt>parola-chiaveE<gt>>"
+msgstr "Search I<E<lt>tipoE<gt>> I<E<lt>parola-chiaveE<gt>>"
 
 # type: Plain text
 #. type: Plain text
