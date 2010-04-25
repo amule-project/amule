@@ -547,7 +547,9 @@ bool CamuleApp::OnInit()
 	CThreadScheduler::Start();
 	
 	// These must be initialized after the gui is loaded.
-	serverlist->Init();
+	if (thePrefs::GetNetworkED2K()) {
+		serverlist->Init();
+	}
 	downloadqueue->LoadMetFiles(thePrefs::GetTempDir());
 	sharedfiles->Reload();
 	
