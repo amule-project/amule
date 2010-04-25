@@ -1506,8 +1506,9 @@ void CPreferences::SaveCats()
 
 		cfg->Write( wxT("/General/Count"), (long)(m_CatList.size() - 1) );
 
-		for ( size_t i = 1; i < m_CatList.size(); i++ ) {
-			cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
+		uint32 maxcat = m_CatList.size();
+		for (uint32 i = 1; i < maxcat; i++) {
+			cfg->SetPath(CFormat(wxT("/Cat#%i")) % i);
 
 			cfg->Write( wxT("Title"),	m_CatList[i]->title );
 			cfg->Write( wxT("Incoming"),	CPath::ToUniv(m_CatList[i]->path) );
@@ -1515,6 +1516,8 @@ void CPreferences::SaveCats()
 			cfg->Write( wxT("Color"),	wxString::Format(wxT("%u"), m_CatList[i]->color) );
 			cfg->Write( wxT("Priority"),	(int)m_CatList[i]->prio );
 		}
+		// remove deleted cats from config
+		while (cfg->DeleteGroup(CFormat(wxT("/Cat#%i")) % maxcat++));
 		
 		cfg->Flush();
 	}
