@@ -41,6 +41,7 @@
 #include <common/Macros.h>		// Needed for DEBUG_ONLY()
 #include "RangeMap.h"			// Needed for CRangeMap
 #include "ServerConnect.h"		// Needed for ConnectToAnyServer()
+#include "DownloadQueue.h"		// Needed for theApp->downloadqueue
 
 
 ////////////////////////////////////////////////////////////
@@ -97,28 +98,37 @@ typedef void (wxEvtHandler::*MuleIPFilterEventFunction)(CIPFilterEvent&);
 class CIPFilterTask : public CThreadTask
 {
 public:
-	CIPFilterTask(wxEvtHandler* owner)
+	CIPFilterTask(wxEvtHandler* owner, bool block = false)
 		: CThreadTask(wxT("Load IPFilter"), wxEmptyString, ETP_Critical),
 		  m_storeDescriptions(false),
 		  m_owner(owner)
 	{
+		if (block) {
+			LockBlockDuringUpdate();
+		}
 	}
+
+	void LockBlockDuringUpdate()	{ m_blockDuringUpdate.Lock(); }
+	void UnlockBlockDuringUpdate()	{ m_blockDuringUpdate.Unlock(); }
 	
 private:
-	void Entry() {
-		wxStandardPathsBase &spb(wxStandardPaths::Get());
-#ifdef __WXMSW__
-		wxString dataDir(spb.GetPluginsDir());
-#elif defined(__WXMAC__)
-		wxString dataDir(spb.GetDataDir());
-#else
-		wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
-#endif
-		wxString systemwideFile(JoinPaths(dataDir,wxT("ipfilter.dat")));
-
+	void Entry()
+	{
+		// Block thread while there is still an update going on
+		LockBlockDuringUpdate();
 		AddLogLineN(_("Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
 		if ( !LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat")) &&
 		     thePrefs::UseIPFilterSystem() ) {
+			// Load from system wide IP filter file
+			wxStandardPathsBase &spb(wxStandardPaths::Get());
+#ifdef __WXMSW__
+			wxString dataDir(spb.GetPluginsDir());
+#elif defined(__WXMAC__)
+			wxString dataDir(spb.GetDataDir());
+#else
+			wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+#endif
+			wxString systemwideFile(JoinPaths(dataDir,wxT("ipfilter.dat")));
 			LoadFromFile(systemwideFile);
 		}
 
@@ -217,6 +227,8 @@ private:
 	wxEvtHandler*		m_owner;
 	// temporary map for filter generation
 	IPMap				m_result;
+	// Mutex to block thread during active update
+	wxMutex				m_blockDuringUpdate;
 
 	/**
 	 * Helper function.
@@ -263,7 +275,7 @@ private:
 	 *
 	 * The IPs returned by this function are in host order, not network order.
 	 */
-	bool m_inet_atoh(const wxString &str, uint32& ipA, uint32& ipB)
+	bool ReadIPRange(const wxString &str, uint32& ipA, uint32& ipB)
 	{
 		wxString first = str.BeforeFirst(wxT('-'));
 		wxString second = str.Mid(first.Len() + 1);
@@ -307,7 +319,7 @@ private:
 		uint32 IPEnd   = 0;
 
 		// This will also fail if the line is commented out
-		if (!m_inet_atoh(first, IPStart, IPEnd)) {
+		if (!ReadIPRange(first, IPStart, IPEnd)) {
 			return false;
 		}
 
@@ -349,7 +361,7 @@ private:
 		uint32 IPStart = 0;
 		uint32 IPEnd   = 0;
 
-		if (!m_inet_atoh(IPRange ,IPStart, IPEnd)) {
+		if (!ReadIPRange(IPRange ,IPStart, IPEnd)) {
 			return false;
 		}
 
@@ -469,8 +481,8 @@ void CreateDummyFile(const wxString& filename, const wxString& text)
 CIPFilter::CIPFilter() :
 	m_ready(false),
 	m_startKADWhenReady(false),
-	m_connectToAnyServerWhenReady(false)
-
+	m_connectToAnyServerWhenReady(false),
+	m_ipFilterTask(NULL)
 {
 	// Setup dummy files for the curious user.
 	const wxString normalDat = theApp->ConfigDir + wxT("ipfilter.dat");
@@ -492,6 +504,18 @@ CIPFilter::CIPFilter() :
 	CreateDummyFile(staticDat, staticMsg);
 
 	if (thePrefs::IPFilterAutoLoad() && !thePrefs::IPFilterURL().IsEmpty()) {
+		//
+		// We want to update the filter on startup.
+		// If we create a CThreadTask now it will be the first to be processed.
+		// But if we start a download thread first other thread tasks started meanwhile
+		// will be processed first, and can take a long time (like AICH hashing).
+		// During this time filter won't be active, and thus networks won't be started.
+		//
+		// So start a new task now and block it until update is finished.
+		// Then unblock it.
+		//
+		m_ipFilterTask = new CIPFilterTask(this, true);
+		CThreadScheduler::AddTask(m_ipFilterTask);
 		Update(thePrefs::IPFilterURL());
 	} else {
 		Reload();
@@ -523,6 +547,11 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 		// Somebody connected before we even started the networks.
 		// Filter is not up yet, so block him.
 		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s because filter isn't ready yet.")) % Uint32toStringIP(IPTest));
+		if (isServer) {
+			theStats::AddFilteredServer();
+		} else {
+			theStats::AddFilteredClient();
+		}
 		return true;
 	}
 	wxMutexLocker lock(m_mutex);
@@ -586,27 +615,28 @@ void CIPFilter::DownloadFinished(uint32 result)
 		wxString newDat = theApp->ConfigDir + wxT("ipfilter.download");
 		wxString oldDat = theApp->ConfigDir + wxT("ipfilter.dat");
 
-		if (wxFileExists(oldDat)) {
-			if (!wxRemoveFile(oldDat)) {
-				AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % wxT("ipfilter.dat"));
-				return;
-			}
-		}
-
-		if (!wxRenameFile(newDat, oldDat)) {
+		if (wxFileExists(oldDat) && !wxRemoveFile(oldDat)) {
+			AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % wxT("ipfilter.dat"));
+			result = HTTP_Error;
+		} else if (!wxRenameFile(newDat, oldDat)) {
 			AddLogLineC(CFormat(_("Failed to rename new %s file, aborting update.")) % wxT("ipfilter.dat"));
-			return;
+			result = HTTP_Error;
+		} else {
+			AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("ipfilter.dat"));
 		}
-
-		AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("ipfilter.dat"));
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("ipfilter.dat"));
 	} else {
 		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("ipfilter.dat") % m_URL);
 	}
 
-	// reload on success, or if we reloaded on startup and download failed
-	if (result == HTTP_Success || !m_ready) {
+	if (m_ipFilterTask) {
+	// If we updated during startup, there is already a task waiting to load the filter.
+	// Trigger it to continue.
+		m_ipFilterTask->UnlockBlockDuringUpdate();
+		m_ipFilterTask = NULL;
+	// reload on success, or if filter is not up yet (shouldn't happen)
+	} else if (result == HTTP_Success || !m_ready) {
 		// Reload both ipfilter files
 		Reload();
 	}
@@ -644,6 +674,9 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 	if (m_startKADWhenReady) {
 		m_startKADWhenReady = false;
 		theApp->StartKad();
+	}
+	if (thePrefs::GetSrcSeedsOn()) {
+		theApp->downloadqueue->LoadSourceSeeds();
 	}
 }
 
