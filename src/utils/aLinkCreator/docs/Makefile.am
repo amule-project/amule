@@ -6,7 +6,8 @@ EXTRA_DIST = \
 	alc.es.1 alcc.es.1 \
 	alc.eu.1 alcc.eu.1 \
 	alcc.fr.1 \
-	alc.hu.1 alcc.hu.1
+	alc.hu.1 alcc.hu.1 \
+	alc.it.1 alcc.it.1
 
 include $(top_srcdir)/automake/manpages.am
 
