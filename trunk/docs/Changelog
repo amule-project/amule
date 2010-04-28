@@ -11,7 +11,9 @@ Version 2.3.0 - The river knows.
 		* Fixed TCP obfuscation negotiation
 
 	Gnucco:
-		* Add option to ed2k link parser to display links in emulecollection
+		* Add option to ed2k link parser to display links in
+		  emulecollection
+		* Added test case for the CTag class
 
 	GonoszTopi:
 		* Various fixes to new colour code
