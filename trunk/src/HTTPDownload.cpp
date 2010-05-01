@@ -225,7 +225,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		if (!url_read_stream.get()) {
 			if (m_response == 304) {
 				m_result = HTTP_Skipped;
-				return 0;
+				throw wxString(wxEmptyString);
 			} else {
 				m_result = HTTP_Error;
 				throw wxString(CFormat(_("The URL %s returned: %i - Error (%i)!")) % m_url % m_response % m_error);
@@ -284,7 +284,9 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
-		AddLogLineC(error);
+		if (error != wxEmptyString) {
+			AddLogLineC(error);
+		}
 	}
 
 	if (url_handler) {
