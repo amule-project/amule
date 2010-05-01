@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-12 09:03+0200\n"
-"PO-Revision-Date: 2010-02-05 17:07+0100\n"
+"PO-Revision-Date: 2010-05-01 00:50+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1862,16 +1862,15 @@ msgstr "Brak znacznika wersji protokołu."
 #: src/ExternalConn.cpp:455
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
+"Uwierzytelnianie nie powiodło się: nieprawidłowy skrót podany jako hasło EC."
 
 #: src/ExternalConn.cpp:471
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Uwierzytelnianie nie powiodło się."
+msgstr "Uwierzytelnianie nie powiodło się: nieprawidłowe hasło."
 
 #: src/ExternalConn.cpp:473
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Uwierzytelnianie nie powiodło się."
+msgstr "Uwierzytelnianie nie powiodło się: brak hasła."
 
 #: src/ExternalConn.cpp:483
 msgid "Invalid request, please authenticate first."
@@ -1882,9 +1881,9 @@ msgid "Access granted."
 msgstr "Dostęp udzielony."
 
 #: src/ExternalConn.cpp:496
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Filtruj wiadomości od nieznanych klientów"
+msgstr "Wyślij wiadomość błędu \"%s\" do klienta."
 
 #: src/ExternalConn.cpp:499
 msgid "Unauthorized access attempt. Connection closed."
@@ -2383,7 +2382,6 @@ msgid "Loaded %d flag bitmaps."
 msgstr "Załadowano %d flag bitmapy."
 
 #: src/IPFilter.cpp:119
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Ładowanie filtrów IP 'ipfilter.dat' i 'ipfilter_static.dat'."
 
@@ -2420,7 +2418,7 @@ msgstr "Nie można załadować danych kraju dla '%s'."
 
 #: src/IPFilter.cpp:628
 msgid "IP filter is ready"
-msgstr ""
+msgstr "Filtr IP jest gotowy"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -3650,7 +3648,7 @@ msgstr "Włączone"
 
 #: src/muuli_wdr.cpp:1914
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr "Zaawansowane I.C.H. ufa każdemu hashu (nie zalecane)"
+msgstr "Zaawansowane I.C.H. ufa każdemu skrótu (nie zalecane)"
 
 #: src/muuli_wdr.cpp:1922
 msgid "Add files to download in pause mode"
