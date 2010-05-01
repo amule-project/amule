@@ -126,6 +126,8 @@ private:
 	bool m_connectToAnyServerWhenReady;
 	// Filter task waiting for update
 	class CIPFilterTask * m_ipFilterTask;
+	// Is the filter just a dummy?
+	bool m_filterIsDummy;
 
 	friend class CIPFilterEvent;
 	friend class CIPFilterTask;

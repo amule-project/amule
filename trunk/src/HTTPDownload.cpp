@@ -161,12 +161,11 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filena
 	}
 	// Get the date on which the original file was last modified
 	// But first: check if the file exists!
-	wxFileName origFile = wxFileName(oldfilename);
-	if (origFile.FileExists()) {
-		m_hasdate = true;
-		m_lastmodified = origFile.GetModificationTime();
-	} else {
-		m_hasdate = false;
+	if (oldfilename) {
+		wxFileName origFile = wxFileName(oldfilename);
+		if (origFile.FileExists()) {
+			m_lastmodified = origFile.GetModificationTime();
+		}
 	}
 	wxMutexLocker lock(s_allThreadsMutex);
 	s_allThreads.insert(this);
@@ -213,7 +212,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		url_handler->SetProxyMode(use_proxy);
 
 		// Build a conditional get request if the last modified date of the file being updated is known
-		if (m_hasdate) {
+		if (m_lastmodified.IsValid()) {
 			// Set a flag in the HTTP header that we only download if the file is newer.
 			// see: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
 			AddDebugLogLineN(logHTTP, wxT("If-Modified-Since: ") + FormatDateHTTP(m_lastmodified));
@@ -408,7 +407,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 		if (!new_location.IsEmpty()) {
 			(*url_handler) = new wxHTTP;
 			(*url_handler)->SetProxyMode(proxy);
-			if (m_hasdate) {
+			if (m_lastmodified.IsValid()) {
 				// Set a flag in the HTTP header that we only download if the file is newer.
 				// see: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
 				(*url_handler)->SetHeader(wxT("If-Modified-Since"), FormatDateHTTP(m_lastmodified));
