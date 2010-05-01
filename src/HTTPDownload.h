@@ -55,7 +55,6 @@ private:
 
 	wxString		m_url;
 	wxString		m_tempfile;
-	bool			m_hasdate;	//! Flag whether the last modified date is known
 	wxDateTime		m_lastmodified;	//! Date on which the file being updated was last modified.
 	int			m_result;
 	int			m_response;	//! HTTP response code (e.g. 200)

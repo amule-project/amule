@@ -465,7 +465,7 @@ END_EVENT_TABLE()
  * This function creates a text-file containing the specified text, 
  * but only if the file does not already exist.
  */
-void CreateDummyFile(const wxString& filename, const wxString& text)
+static bool CreateDummyFile(const wxString& filename, const wxString& text)
 {
 	// Create template files
 	if (!wxFileExists(filename)) {
@@ -473,8 +473,10 @@ void CreateDummyFile(const wxString& filename, const wxString& text)
 
 		if (file.Open(filename, CTextFile::write)) {
 			file.WriteLine(text);
+			return true;
 		}
 	}
+	return false;
 }
 
 
@@ -491,7 +493,7 @@ CIPFilter::CIPFilter() :
 		<< wxT("# through the auto-update functionality. Do not save ipfilter-\n")
 		<< wxT("# ranges here that should not be overwritten by aMule.\n");
 
-	CreateDummyFile(normalDat, normalMsg);
+	m_filterIsDummy = CreateDummyFile(normalDat, normalMsg);
 	
 	const wxString staticDat = theApp->ConfigDir + wxT("ipfilter_static.dat");
 	const wxString staticMsg = wxString()
@@ -600,7 +602,12 @@ void CIPFilter::Update(const wxString& strURL)
 		m_URL = strURL;
 
 		wxString filename = theApp->ConfigDir + wxT("ipfilter.download");
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, theApp->ConfigDir + wxT("ipfilter.dat"), HTTP_IPFilter);
+		wxString oldfilename = theApp->ConfigDir + wxT("ipfilter.dat");
+		const wxChar * ofn = NULL;
+		if (!m_filterIsDummy) {
+			ofn = oldfilename;
+		}
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, ofn, HTTP_IPFilter);
 
 		downloader->Create();
 		downloader->Run();
