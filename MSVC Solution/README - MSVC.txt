@@ -35,15 +35,16 @@ and give you a warning about redefined symbols, go to the properties on the cryp
 the "Configuration Properties"->"C/C++"->"Code generation"->"Runtime library" to "Multithreaded DLL (/MD)"
  in the release build or "Multithreaded Debug DLL (/MDd)" for the debug build. 
 
-There are four solutions:
-1) aMule-MSVCE.sln
+There are 7 solutions:
+1) aMule-MSVCE.sln (aMule-MSVC10E.sln for Visual Studio 2010)
    which includes aMule, aMule tools and aMule's internal libs
-2) aMule-MSVCE-ExtLibs.sln
+2) aMule-MSVCE-ExtLibs.sln (aMule-MSVC10E-ExtLibs.sln for Visual Studio 2010)
    includes only wxWidgets and Crypto++ and builds a single library libext.lib from them. You must first build this solution before building aMule-MSVCE.sln
-3) aMule-MSVCE-ExtLibs29.sln
+3) aMule-MSVCE-ExtLibs29.sln (aMule-MSVC10E-ExtLibs29.sln for Visual Studio 2010)
    same but using wxWidgets 2.9
 4) aMule-MSVC.sln
    includes everything and is organized in folders. It only works with the commercial edition of MSVC and is outdated now.
+
 
 The Debug/Release configs build against wxWidgets 2.8 (stable), Debug29/Release29 configs build against wxWidgets 2.9 (unstable)
 
