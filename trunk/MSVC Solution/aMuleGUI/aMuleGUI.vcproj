@@ -732,10 +732,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\Color.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\ColorFrameCtrl.h"
 				>
 			</File>
@@ -964,14 +960,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\resource1.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\RLE.h"
 				>
 			</File>
@@ -1081,10 +1069,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\UploadBandwidthThrottler.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\UPnP.h"
 				>
 			</File>
 			<File

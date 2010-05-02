@@ -1004,10 +1004,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\Color.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\ColorFrameCtrl.h"
 				>
 			</File>
@@ -1437,10 +1433,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\UploadQueue.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\UPnP.h"
 				>
 			</File>
 			<File
