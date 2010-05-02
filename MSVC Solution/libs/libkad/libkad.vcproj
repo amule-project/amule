@@ -372,10 +372,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\kademlia\utils\LittleEndian.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\kademlia\routing\Maps.h"
 				>
 			</File>
@@ -401,10 +397,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\kademlia\kademlia\SearchManager.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\kademlia\kademlia\Tag.h"
 				>
 			</File>
 			<File
