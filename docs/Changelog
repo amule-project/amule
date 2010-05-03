@@ -142,6 +142,7 @@ Version 2.3.0 - The river knows.
 		* EC ZLIB compression can now be turned off in remote.conf with EC/ZLIB=0
 		* Terminate HTTP downloads on exit
 		* Projects for Visual Studio 2010
+		* Fixed crash in http download
 
 	Vollstrecker:
 		* Unify copyright lines
