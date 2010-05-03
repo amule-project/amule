@@ -65,7 +65,7 @@ private:
 	static ThreadSet	s_allThreads;
 	static wxMutex		s_allThreadsMutex;
 
-	wxInputStream* GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy);
+	wxInputStream* GetInputStream(wxHTTP * & url_handler, const wxString& location, bool proxy);
 	static wxString FormatDateHTTP(const wxDateTime& date);
 };
 
