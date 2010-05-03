@@ -415,14 +415,14 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 			url_read_stream = GetInputStream(url_handler, new_location, proxy);
 		} else {
 			AddDebugLogLineC(logHTTP, wxT("ERROR: Redirection code received with no URL"));
-			url_handler = NULL;
+			(*url_handler) = NULL;
 			url_read_stream = NULL;
 		}
 	} else if (m_response == 304) {		// "Not Modified"
 		delete url_read_stream;
 		(*url_handler)->Destroy();
 		url_read_stream = NULL;
-		url_handler = NULL;
+		(*url_handler) = NULL;
 	}
 
 	return url_read_stream;
