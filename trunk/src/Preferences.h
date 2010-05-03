@@ -541,6 +541,10 @@ public:
 	static void				SetGeoIPEnabled(bool v)	{s_GeoIPEnabled = v;}
 	static const wxString&	GetGeoIPUpdateUrl()		{return s_GeoIPUpdateUrl;}
 
+	// HTTP download
+	static wxString	GetLastHTTPDownloadURL(uint8 t);
+	static void		SetLastHTTPDownloadURL(uint8 t, const wxString& val);
+
 protected:
 	static	int32 GetRecommendedMaxConnections();
 

@@ -493,7 +493,10 @@ CIPFilter::CIPFilter() :
 		<< wxT("# through the auto-update functionality. Do not save ipfilter-\n")
 		<< wxT("# ranges here that should not be overwritten by aMule.\n");
 
-	m_filterIsDummy = CreateDummyFile(normalDat, normalMsg);
+	if (CreateDummyFile(normalDat, normalMsg)) {
+		// redownload if user deleted file
+		thePrefs::SetLastHTTPDownloadURL(HTTP_IPFilter, wxEmptyString);
+	}
 	
 	const wxString staticDat = theApp->ConfigDir + wxT("ipfilter_static.dat");
 	const wxString staticMsg = wxString()
@@ -603,11 +606,7 @@ void CIPFilter::Update(const wxString& strURL)
 
 		wxString filename = theApp->ConfigDir + wxT("ipfilter.download");
 		wxString oldfilename = theApp->ConfigDir + wxT("ipfilter.dat");
-		const wxChar * ofn = NULL;
-		if (!m_filterIsDummy) {
-			ofn = oldfilename;
-		}
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, ofn, HTTP_IPFilter);
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, oldfilename, HTTP_IPFilter);
 
 		downloader->Create();
 		downloader->Run();

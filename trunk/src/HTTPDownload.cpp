@@ -140,7 +140,7 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN)
 #endif
 
 
-CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filename, const wxChar* oldfilename, HTTP_Download_File file_id, bool showDialog)
+CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& filename, const wxString& oldfilename, HTTP_Download_File file_id, bool showDialog)
 #ifdef AMULE_DAEMON
 	: CMuleThread(wxTHREAD_DETACHED),
 #else
@@ -160,10 +160,11 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filena
 #endif
 	}
 	// Get the date on which the original file was last modified
-	// But first: check if the file exists!
-	if (oldfilename) {
+	// Only if it's the same URL we used for the last download and if the file exists.
+	if (thePrefs::GetLastHTTPDownloadURL(file_id) == url) {
 		wxFileName origFile = wxFileName(oldfilename);
 		if (origFile.FileExists()) {
+			AddDebugLogLineN(logHTTP, CFormat(wxT("URL %s matches and file %s exists, only download if newer")) % url % oldfilename);
 			m_lastmodified = origFile.GetModificationTime();
 		}
 	}
@@ -224,6 +225,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		if (!url_read_stream.get()) {
 			if (m_response == 304) {
 				m_result = HTTP_Skipped;
+				AddDebugLogLineN(logHTTP, wxT("Skipped download because requested file is not newer."));
 				throw wxString(wxEmptyString);
 			} else {
 				m_result = HTTP_Error;
@@ -286,6 +288,10 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		if (error != wxEmptyString) {
 			AddLogLineC(error);
 		}
+	}
+
+	if (m_result == HTTP_Success) {
+		thePrefs::SetLastHTTPDownloadURL(m_file_id, m_url);
 	}
 
 	if (url_handler) {
