@@ -46,7 +46,7 @@ class CHTTPDownloadThread : public CMuleThread
 {
 public:
 	/** Note: wxChar* is used to circumvent the thread-unsafe wxString reference counting. */
-	CHTTPDownloadThread(const wxChar* url, const wxChar* filename, const wxChar* oldfilename, HTTP_Download_File file_id, bool showDialog = true);
+	CHTTPDownloadThread(const wxString& url, const wxString& filename, const wxString& oldfilename, HTTP_Download_File file_id, bool showDialog = true);
 
 	static void StopAll();
 private:

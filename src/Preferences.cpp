@@ -1790,4 +1790,18 @@ bool CPreferences::IsCommentFiltered(const wxString& comment)
 	return false;
 }
 
+wxString CPreferences::GetLastHTTPDownloadURL(uint8 t)
+{
+	wxConfigBase* cfg = wxConfigBase::Get();
+	wxString key = CFormat(wxT("/HTTPDownload/URL_%d")) % t;
+	return cfg->Read(key, wxEmptyString);
+}
+
+void CPreferences::SetLastHTTPDownloadURL(uint8 t, const wxString& val)
+{
+	wxConfigBase* cfg = wxConfigBase::Get();
+	wxString key = CFormat(wxT("/HTTPDownload/URL_%d")) % t;
+	cfg->Write(key, val);
+}
+
 // File_checked_for_headers
