@@ -1,22 +1,22 @@
-// 
+//
 //  This file is part of the aMule Project.
-// 
+//
 //  Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// 
+//
 //  Any parts of this program derived from the xMule, lMule or eMule project,
 //  or contributed by third-party developers are copyrighted by their
 //  respective authors.
-// 
+//
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
 //  (at your option) any later version.
-// 
+//
 //  This program is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
-//  
+//
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -200,6 +200,8 @@ enum ECTagNames {
 		EC_TAG_PARTFILE_AVAILABLE_PARTS           = 0x031D,
 		EC_TAG_PARTFILE_HASH                      = 0x031E,
 		EC_TAG_PARTFILE_SHARED                    = 0x031F,
+		EC_TAG_PARTFILE_HASHED_PART_COUNT         = 0x0320,
+		EC_TAG_PARTFILE_PART_COUNT                = 0x0321,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
@@ -608,6 +610,8 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x031D: return wxT("EC_TAG_PARTFILE_AVAILABLE_PARTS");
 		case 0x031E: return wxT("EC_TAG_PARTFILE_HASH");
 		case 0x031F: return wxT("EC_TAG_PARTFILE_SHARED");
+		case 0x0320: return wxT("EC_TAG_PARTFILE_HASHED_PART_COUNT");
+		case 0x0321: return wxT("EC_TAG_PARTFILE_PART_COUNT");
 		case 0x0400: return wxT("EC_TAG_KNOWNFILE");
 		case 0x0401: return wxT("EC_TAG_KNOWNFILE_XFERRED");
 		case 0x0402: return wxT("EC_TAG_KNOWNFILE_XFERRED_ALL");
