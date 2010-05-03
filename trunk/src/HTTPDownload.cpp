@@ -220,7 +220,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			url_handler->SetHeader(wxT("If-Modified-Since"), FormatDateHTTP(m_lastmodified));
 		}
 
-		CScopedPtr<wxInputStream> url_read_stream(GetInputStream(&url_handler, m_url, use_proxy));
+		CScopedPtr<wxInputStream> url_read_stream(GetInputStream(url_handler, m_url, use_proxy));
 
 		if (!url_read_stream.get()) {
 			if (m_response == 304) {
@@ -324,7 +324,7 @@ void CHTTPDownloadThread::OnExit()
 
 
 //! This function's purpose is to handle redirections in a proper way.
-wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy)
+wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const wxString& location, bool proxy)
 {
 	if (TestDestroy()) {
 		return NULL;
@@ -374,17 +374,17 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 	wxIPV4address addr;
 	addr.Hostname(host);
 	addr.Service(port);
-	if (!(*url_handler)->Connect(addr, true)) {
+	if (!url_handler->Connect(addr, true)) {
 		throw wxString(_("Unable to connect to HTTP download server"));		
 	}
 
-	wxInputStream* url_read_stream = (*url_handler)->GetInputStream(url);
+	wxInputStream* url_read_stream = url_handler->GetInputStream(url);
 
 	/* store the HTTP response code */
-	m_response = (*url_handler)->GetResponse();
+	m_response = url_handler->GetResponse();
 
 	/* store the HTTP error code */
-	m_error = (*url_handler)->GetError();
+	m_error = url_handler->GetError();
 
 	AddDebugLogLineN(logHTTP, CFormat(wxT("Host: %s:%i\n")) % host % port);
 	AddDebugLogLineN(logHTTP, CFormat(wxT("URL: %s\n")) % url);
@@ -407,28 +407,28 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 		// We have to remove the current stream.
 		delete url_read_stream;
 
-		wxString new_location = (*url_handler)->GetHeader(wxT("Location"));
+		wxString new_location = url_handler->GetHeader(wxT("Location"));
 
-		(*url_handler)->Destroy();
+		url_handler->Destroy();
 		if (!new_location.IsEmpty()) {
-			(*url_handler) = new wxHTTP;
-			(*url_handler)->SetProxyMode(proxy);
+			url_handler = new wxHTTP;
+			url_handler->SetProxyMode(proxy);
 			if (m_lastmodified.IsValid()) {
 				// Set a flag in the HTTP header that we only download if the file is newer.
 				// see: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
-				(*url_handler)->SetHeader(wxT("If-Modified-Since"), FormatDateHTTP(m_lastmodified));
+				url_handler->SetHeader(wxT("If-Modified-Since"), FormatDateHTTP(m_lastmodified));
 			}
 			url_read_stream = GetInputStream(url_handler, new_location, proxy);
 		} else {
 			AddDebugLogLineC(logHTTP, wxT("ERROR: Redirection code received with no URL"));
-			(*url_handler) = NULL;
+			url_handler = NULL;
 			url_read_stream = NULL;
 		}
 	} else if (m_response == 304) {		// "Not Modified"
 		delete url_read_stream;
-		(*url_handler)->Destroy();
+		url_handler->Destroy();
 		url_read_stream = NULL;
-		(*url_handler) = NULL;
+		url_handler = NULL;
 	}
 
 	return url_read_stream;
