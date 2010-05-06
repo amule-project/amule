@@ -1413,7 +1413,7 @@
 					"-lwx_base_carbonud-2.8",
 				);
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.4;
 				VALID_ARCHS = "i386 ppc";
 			};
 			name = Debug;
@@ -1464,7 +1464,7 @@
 					"-lwx_base_carbonud-2.8",
 				);
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.4;
 				VALID_ARCHS = "i386 ppc";
 			};
 			name = Release;
