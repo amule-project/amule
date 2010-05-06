@@ -1198,7 +1198,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C01FCF4B08A954540054247B /* Debug */ = {
+		4875E6EA1192DCF9004ABCD5 /* Deployment Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-I../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-2.8",
+					"-I../../wxWidgets-2.8/include",
+					"-I../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L/../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"-lwx_macud_richtext-2.8",
+					"-lwx_macud_aui-2.8",
+					"-lwx_macud_xrc-2.8",
+					"-lwx_macud_qa-2.8",
+					"-lwx_macud_html-2.8",
+					"-lwx_macud_adv-2.8",
+					"-lwx_macud_core-2.8",
+					"-lwx_base_carbonud_xml-2.8",
+					"-lwx_base_carbonud_net-2.8",
+					"-lwx_base_carbonud-2.8",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "i386 ppc";
+			};
+			name = "Deployment Debug";
+		};
+		4875E6EB1192DCF9004ABCD5 /* Deployment Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1281,9 +1334,94 @@
 				SDKROOT = macosx10.4;
 				VALID_ARCHS = "ppc i386";
 			};
-			name = Debug;
+			name = "Deployment Debug";
 		};
-		C01FCF4C08A954540054247B /* Release */ = {
+		C01FCF4B08A954540054247B /* Development Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WX_EXTENSIONS;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-I../../",
+					"-I../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-static-2.8",
+					"-I../../wxWidgets-2.8/include",
+					"-I../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../cryptopp/",
+					"-lcryptopp",
+					"-L../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"../../wxWidgets-2.8/lib/libwx_macud_richtext-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_macud_aui-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_macud_xrc-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_macud_qa-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_macud_html-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_macud_adv-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_macud_core-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_base_carbonud_xml-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_base_carbonud_net-2.8.a",
+					"../../wxWidgets-2.8/lib/libwx_base_carbonud-2.8.a",
+					"-framework",
+					WebKit,
+					"-lwxregexud-2.8",
+					"-lwxexpatd-2.8",
+					"-lwxtiffd-2.8",
+					"-lwxjpegd-2.8",
+					"-lwxpngd-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
+			};
+			name = "Development Debug";
+		};
+		C01FCF4C08A954540054247B /* Deployment Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1363,12 +1501,12 @@
 				SDKROOT = macosx10.4;
 				VALID_ARCHS = "ppc i386";
 			};
-			name = Release;
+			name = "Deployment Release";
 		};
-		C01FCF4F08A954540054247B /* Debug */ = {
+		C01FCF4F08A954540054247B /* Development Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THREADSAFE_STATICS = NO;
@@ -1416,12 +1554,12 @@
 				SDKROOT = macosx10.4;
 				VALID_ARCHS = "i386 ppc";
 			};
-			name = Debug;
+			name = "Development Debug";
 		};
-		C01FCF5008A954540054247B /* Release */ = {
+		C01FCF5008A954540054247B /* Deployment Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THREADSAFE_STATICS = NO;
 				GCC_VERSION = 4.0;
@@ -1467,7 +1605,7 @@
 				SDKROOT = macosx10.4;
 				VALID_ARCHS = "i386 ppc";
 			};
-			name = Release;
+			name = "Deployment Release";
 		};
 /* End XCBuildConfiguration section */
 
@@ -1475,20 +1613,22 @@
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "aMule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4B08A954540054247B /* Debug */,
-				C01FCF4C08A954540054247B /* Release */,
+				C01FCF4B08A954540054247B /* Development Debug */,
+				4875E6EB1192DCF9004ABCD5 /* Deployment Debug */,
+				C01FCF4C08A954540054247B /* Deployment Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Deployment Release";
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "aMule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4F08A954540054247B /* Debug */,
-				C01FCF5008A954540054247B /* Release */,
+				C01FCF4F08A954540054247B /* Development Debug */,
+				4875E6EA1192DCF9004ABCD5 /* Deployment Debug */,
+				C01FCF5008A954540054247B /* Deployment Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Deployment Release";
 		};
 /* End XCConfigurationList section */
 	};
