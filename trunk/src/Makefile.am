@@ -525,6 +525,6 @@ CLEANFILES = *-version.rc
 endif
 
 
-EXTRA__DIST__SUBDIRS = include kademlia remote-gui.net
+EXTRA__DIST__SUBDIRS = include kademlia
 include $(top_srcdir)/automake/dist-hook.am
 
