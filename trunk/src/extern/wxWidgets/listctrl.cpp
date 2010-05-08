@@ -2724,18 +2724,6 @@ void wxListMainWindow::Thaw()
 
 void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 {
-    // wxBufferedPaintDC falls over in the case of dimensions that
-    // are zero, as cann happen when a splitter is moved so that 
-    // the entire window is hidden (e.g. on the transfers window).
-    //
-    // This has been reported as patch #1899643:
-    // http://sourceforge.net/tracker/index.php?func=detail&aid=1899643&group_id=9863&atid=309863
-    wxSize size = GetClientSize();
-    if ((size.x <= 0) || (size.y <= 0)) {
-	wxPaintDC dc(this);
-	return;
-    }
-
     // Note: a wxPaintDC must be constructed even if no drawing is
     // done (a Windows requirement).
     wxBufferedPaintDC dc( this );
@@ -2743,6 +2731,10 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
     // Ensure an uniform background color, as to avoid differences between
     // the automatically cleared parts and the rest of the canvas.
     dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
+
+    // We need to clear the DC manually, since we intercept BG-erase events.
+    // Clearing must be done first thing because caching of the double-buffering causes artifacts otherwise.
+    dc.Clear();
 
     if ( m_freezeCount )
         return;
@@ -2752,9 +2744,6 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
         return;
 
     PrepareDC( dc );
-
-    // We need to clear the DC manually, since we intercept BG-erase events.
-    dc.Clear();
 
     // IsEmpty is checked now, after clearing, to avoid garbage on empty lists.
     if ( IsEmpty() ) {
