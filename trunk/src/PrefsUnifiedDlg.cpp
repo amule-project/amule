@@ -603,13 +603,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->SetOSFiles( widget->GetValue() );
 	}
 
-	if (CfgChanged(IDC_IPFCLIENTS) || CfgChanged(IDC_IPFSERVERS)) {
-		if (thePrefs::IsFilteringClients()) {
-			theApp->clientlist->FilterQueues();
-		}
-		if (thePrefs::IsFilteringServers()) {
-			theApp->serverlist->FilterServers();
-		}
+	if (CfgChanged(IDC_IPFCLIENTS) && thePrefs::IsFilteringClients()) {
+		theApp->clientlist->FilterQueues();
+	}
+
+	if (CfgChanged(IDC_IPFSERVERS) && thePrefs::IsFilteringServers()) {
+		theApp->serverlist->FilterServers();
 	}
 
 	if (CfgChanged(ID_IPFILTERLEVEL)) {
