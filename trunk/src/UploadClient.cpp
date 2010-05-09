@@ -143,7 +143,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		// a 15 min bonus while you are in the first 15 min :)
 		// (to avoid 20 sec downloads) after this the score won't raise anymore 
 		fBaseValue = (float)(m_dwUploadTime-GetWaitStartTime());
-		wxASSERT( m_dwUploadTime > GetWaitStartTime()); // Obviously
+		wxASSERT(fBaseValue >= 0); // Obviously
 		fBaseValue += (float)(::GetTickCount() - m_dwUploadTime > 900000)? 900000:1800000;
 		fBaseValue /= 1000;
 	}
