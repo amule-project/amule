@@ -411,9 +411,9 @@ public:
 
 	// Ip filter 
 	static bool		IsFilteringClients()		{ return s_IPFilterClients; }
-	static void		SetFilteringClients(bool val)	{ s_IPFilterClients = val; }
+	static void		SetFilteringClients(bool val);
 	static bool		IsFilteringServers()		{ return s_IPFilterServers; }
-	static void		SetFilteringServers(bool val)	{ s_IPFilterServers = val; }
+	static void		SetFilteringServers(bool val);
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
 	static void		SetIPFilterLevel(uint8 level);
 	static bool		IPFilterAutoLoad()		{ return s_IPFilterAutoLoad; }

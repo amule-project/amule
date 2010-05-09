@@ -62,6 +62,11 @@
 #include "PlatformSpecific.h"		// Needed for PlatformSpecific::GetMaxConnections()
 #endif
 
+// Needed for IP filtering prefs
+#include "ClientList.h"
+#include "ServerList.h"
+#include "IPFilter.h"
+
 #define DEFAULT_TCP_PORT 4662
 #define DEFAULT_UDP_PORT 4672
 
@@ -1693,25 +1698,35 @@ wxString CPreferences::GetBrowser()
 	return cmd;
 }
 
-
-#include "ClientList.h"
-#include "ServerList.h"
-void CPreferences::SetIPFilterLevel(uint8 level)
+void CPreferences::SetFilteringClients(bool val)
 {
-	if (level != s_filterlevel) {
-		// We only need to recheck if the new level is more restrictive
-		bool filter = level > s_filterlevel;
-		
-		// Set the new access-level
-		s_filterlevel = level;
-		
-		if ( filter ) {
+	if (val != s_IPFilterClients) {
+		s_IPFilterClients = val;
+		if (val) {
 			theApp->clientlist->FilterQueues();
+		}
+	}
+}
+
+void CPreferences::SetFilteringServers(bool val)
+{
+	if (val != s_IPFilterServers) {
+		s_IPFilterServers = val;
+		if (val) {
 			theApp->serverlist->FilterServers();
 		}
 	}
 }
 
+void CPreferences::SetIPFilterLevel(uint8 level)
+{
+	if (level != s_filterlevel) {
+		// Set the new access-level
+		s_filterlevel = level;
+		// and reload the filter
+		theApp->ipfilter->Reload();
+	}
+}
 
 void CPreferences::SetPort(uint16 val)
 { 
