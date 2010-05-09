@@ -213,6 +213,10 @@ CamuleApp::CamuleApp()
 	
 	// Apprently needed for *BSD
 	SetResourceLimits();
+
+#ifdef _MSC_VER
+	_CrtSetDbgFlag(0);		// Disable useless memleak debugging
+#endif
 }
 
 CamuleApp::~CamuleApp()
