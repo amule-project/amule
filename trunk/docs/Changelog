@@ -38,6 +38,8 @@ Version 2.3.0 - The river knows.
 		* Fixed file locking between ed2k and aMule on Windows
 
 	Kry:
+		* Fix list double-buffering causing artifacts on refresh and when
+		  showing a context menu.
 		* Fix indexes after removing GUI items
 		* Resolve MSVC compilation problem with separate strings in GUI
 		* Fixes to Windows build
