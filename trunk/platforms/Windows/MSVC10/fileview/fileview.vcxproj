@@ -19,27 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DBADF72E-2572-403F-B0D6-AC8C9B3ECCFE}</ProjectGuid>
-    <RootNamespace>libkad</RootNamespace>
+    <ProjectGuid>{02A90868-EC36-4EA2-8D46-3B0BB33AEAC6}</ProjectGuid>
+    <RootNamespace>fileview</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -62,23 +62,23 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;$(SolutionDir)\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -87,30 +87,46 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;$(SolutionDir)\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;$(SolutionDir)\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -119,57 +135,62 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;$(SolutionDir)\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\kademlia\routing\Contact.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\Entry.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\Indexed.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\Kademlia.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\net\KademliaUDPListener.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\net\PacketTracking.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\Prefs.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\routing\RoutingBin.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\routing\RoutingZone.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\Search.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\SearchManager.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp" />
-    <ClCompile Include="..\..\..\src\kademlia\utils\UInt128.cpp" />
+    <ClCompile Include="..\..\..\..\src\CFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\fileview\eD2kFiles.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\fileview\FileView.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\fileview\KadFiles.cpp" />
+    <ClCompile Include="..\..\..\..\src\OtherFunctions.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\fileview\Print.cpp" />
+    <ClCompile Include="..\..\..\..\src\SafeFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\Tag.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\kademlia\routing\Contact.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Defines.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Entry.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Error.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Indexed.h" />
-    <ClInclude Include="..\..\..\src\kademlia\utils\KadClientSearcher.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Kademlia.h" />
-    <ClInclude Include="..\..\..\src\kademlia\net\KademliaUDPListener.h" />
-    <ClInclude Include="..\..\..\src\kademlia\utils\KadUDPKey.h" />
-    <ClInclude Include="..\..\..\src\kademlia\routing\Maps.h" />
-    <ClInclude Include="..\..\..\src\kademlia\net\PacketTracking.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Prefs.h" />
-    <ClInclude Include="..\..\..\src\kademlia\routing\RoutingBin.h" />
-    <ClInclude Include="..\..\..\src\kademlia\routing\RoutingZone.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\Search.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\SearchManager.h" />
-    <ClInclude Include="..\..\..\src\kademlia\kademlia\UDPFirewallTester.h" />
-    <ClInclude Include="..\..\..\src\kademlia\utils\UInt128.h" />
+    <ClInclude Include="..\..\..\..\src\utils\fileview\eD2kFiles.h" />
+    <ClInclude Include="..\..\..\..\src\utils\fileview\KadFiles.h" />
+    <ClInclude Include="..\..\..\..\src\utils\fileview\Print.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libmulecommon\libmulecommon.vcxproj">
+    <ProjectReference Include="..\libs\libext\libext.vcxproj">
+      <Project>{f8c2c7f5-cbf1-46c1-81c9-22ad406b52c6}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\libmulecommon\libmulecommon.vcxproj">
       <Project>{293e6133-239a-4ed4-838e-9182b07c6b35}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5A9EC6A5-68A3-43C8-960E-F7F03B16F1D1}</ProjectGuid>
-    <RootNamespace>libmuleec</RootNamespace>
+    <ProjectGuid>{DBADF72E-2572-403F-B0D6-AC8C9B3ECCFE}</ProjectGuid>
+    <RootNamespace>libkad</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,10 +70,14 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\src\zlib;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -88,7 +92,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;$(SolutionDir)\..\..\;$(SolutionDir)\..\..\wxWidgets\src\zlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -98,10 +102,14 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\src\zlib;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -116,7 +124,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src\include;$(SolutionDir)\..\..\;$(SolutionDir)\..\..\wxWidgets29\src\zlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -126,24 +134,39 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECMuleSocket.cpp" />
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECPacket.cpp" />
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECSocket.cpp" />
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECSpecialTags.cpp" />
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECTag.cpp" />
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\RemoteConnect.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\routing\Contact.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\Entry.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\Indexed.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\Kademlia.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\net\KademliaUDPListener.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\net\PacketTracking.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\Prefs.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\routing\RoutingBin.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\routing\RoutingZone.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\Search.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\SearchManager.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\kademlia\utils\UInt128.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECCodes.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECFileConfig.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECID.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECMuleSocket.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECPacket.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECSocket.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECSpecialTags.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECTag.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECTagTypes.h" />
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\RemoteConnect.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\routing\Contact.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Defines.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Entry.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Error.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Indexed.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\utils\KadClientSearcher.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Kademlia.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\net\KademliaUDPListener.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\utils\KadUDPKey.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\routing\Maps.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\net\PacketTracking.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Prefs.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\routing\RoutingBin.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\routing\RoutingZone.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\Search.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\SearchManager.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.h" />
+    <ClInclude Include="..\..\..\..\..\src\kademlia\utils\UInt128.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libmulecommon\libmulecommon.vcxproj">
