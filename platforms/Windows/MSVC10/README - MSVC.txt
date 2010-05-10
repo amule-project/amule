@@ -1,7 +1,8 @@
-How to build aMule with Visual Studio
+How to build aMule with Visual Studio 2010 Express Edition
+
 See also http://www.amule.org/wiki/index.php/HowTo_compile_with_Visual_Studio
 
-This solution for Microsoft's Visual Studio 2008 has been configured to be as easy as possible to set up. 
+This solution for Microsoft's Visual Studio 2010 has been configured to be as easy as possible to set up. 
 
 However, given the size of the aMule project and the libraries it uses, along with limitations in the way Visual Studio works,
 a couple of items must be setup separately. Additionally, some source code files might need patching due to incompatibilities 
@@ -35,15 +36,14 @@ and give you a warning about redefined symbols, go to the properties on the cryp
 the "Configuration Properties"->"C/C++"->"Code generation"->"Runtime library" to "Multithreaded DLL (/MD)"
  in the release build or "Multithreaded Debug DLL (/MDd)" for the debug build. 
 
-There are four solutions:
-1) aMule-MSVCE.sln
+There are 3 solutions:
+1) aMule-MSVC10E.sln
    which includes aMule, aMule tools and aMule's internal libs
-2) aMule-MSVCE-ExtLibs.sln
+2) aMule-MSVC10E-ExtLibs.sln
    includes only wxWidgets and Crypto++ and builds a single library libext.lib from them. You must first build this solution before building aMule-MSVCE.sln
-3) aMule-MSVCE-ExtLibs29.sln
+3) aMule-MSVC10E-ExtLibs29.sln
    same but using wxWidgets 2.9
-4) aMule-MSVC.sln
-   includes everything and is organized in folders. It only works with the commercial edition of MSVC and is outdated now.
+
 
 The Debug/Release configs build against wxWidgets 2.8 (stable), Debug29/Release29 configs build against wxWidgets 2.9 (unstable)
 

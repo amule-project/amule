@@ -77,7 +77,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets\src\zlib;$(SolutionDir)\libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -88,7 +88,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"Graphical aMule Statistics\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,7 +104,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets\src\zlib;$(SolutionDir)\libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -114,7 +114,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"Graphical aMule Statistics\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -132,7 +132,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets29\src\zlib;$(SolutionDir)\libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -143,7 +143,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"Graphical aMule Statistics\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -159,7 +159,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets29\src\zlib;$(SolutionDir)\libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -169,7 +169,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"Graphical aMule Statistics\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -184,28 +184,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\utils\wxCas\src\linuxmon.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\onlinesig.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\wxcas.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\wxcascte.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\wxcasframe.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\wxcaspix.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\wxcasprefs.cpp" />
-    <ClCompile Include="..\..\src\utils\wxCas\src\wxcasprint.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\linuxmon.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\onlinesig.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\wxcas.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\wxcascte.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\wxcasframe.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\wxcaspix.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\wxcasprefs.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\wxCas\src\wxcasprint.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\utils\wxCas\src\linuxmon.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\onlinesig.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\wxcas.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\wxcascte.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\wxcasframe.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\wxcaspix.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\wxcasprefs.h" />
-    <ClInclude Include="..\..\src\utils\wxCas\src\wxcasprint.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\linuxmon.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\onlinesig.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\wxcas.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\wxcascte.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\wxcasframe.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\wxcaspix.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\wxcasprefs.h" />
+    <ClInclude Include="..\..\..\..\src\utils\wxCas\src\wxcasprint.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\version.rc" />
-    <ResourceCompile Include="..\..\src\utils\wxCas\wxcas.rc" />
+    <ResourceCompile Include="..\..\..\..\src\utils\wxCas\wxcas.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libs\libext\libext.vcxproj">

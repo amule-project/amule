@@ -60,7 +60,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"ED2K Links Handler\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -86,7 +86,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"ED2K Links Handler\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -101,14 +101,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\ED2KLinkParser.cpp" />
-    <ClCompile Include="..\..\src\MagnetURI.cpp" />
-    <ClCompile Include="..\..\src\MuleCollection.cpp" />
+    <ClCompile Include="..\..\..\..\src\ED2KLinkParser.cpp" />
+    <ClCompile Include="..\..\..\..\src\MagnetURI.cpp" />
+    <ClCompile Include="..\..\..\..\src\MuleCollection.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\FileLock.h" />
-    <ClInclude Include="..\..\src\MagnetURI.h" />
-    <ClInclude Include="..\..\src\MuleCollection.h" />
+    <ClInclude Include="..\..\..\..\src\FileLock.h" />
+    <ClInclude Include="..\..\..\..\src\MagnetURI.h" />
+    <ClInclude Include="..\..\..\..\src\MuleCollection.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\version.rc" />

@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EC3DE6B0-0C01-4D64-928A-4ADDB09472BA}</ProjectGuid>
-    <RootNamespace>aMuleCMD</RootNamespace>
+    <ProjectGuid>{FF560C5D-4369-4DEF-B2EC-6F507D554DB5}</ProjectGuid>
+    <RootNamespace>aLinkCreator</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -77,8 +77,9 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -87,13 +88,13 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Text Client\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Link Creator\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -104,8 +105,8 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets\include;$(SolutionDir)\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -113,13 +114,13 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Text Client\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Link Creator\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -132,8 +133,9 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets29\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -142,13 +144,13 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Text Client\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Link Creator\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -159,8 +161,8 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\wxWidgets29\include;$(SolutionDir)\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)\..\src\libs;$(SolutionDir)\..\src;$(SolutionDir)\..\src\include;$(SolutionDir)\..\;$(SolutionDir)\..\..\wxWidgets29\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -168,13 +170,13 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Text Client\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(SolutionDir)\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Link Creator\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -184,19 +186,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\ExternalConnector.cpp" />
-    <ClCompile Include="..\..\src\LoggerConsole.cpp" />
-    <ClCompile Include="..\..\src\NetworkFunctions.cpp" />
-    <ClCompile Include="..\..\src\OtherFunctions.cpp" />
-    <ClCompile Include="..\..\src\TextClient.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\alc.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\alcframe.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\alcpix.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\ed2khash.cpp" />
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\md4.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\ExternalConnector.h" />
-    <ClInclude Include="..\..\src\NetworkFunctions.h" />
-    <ClInclude Include="..\..\src\OtherFunctions.h" />
-    <ClInclude Include="..\..\src\TextClient.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alc.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alcc.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alcframe.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alcpix.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\bithelp.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\ed2khash.h" />
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\md4.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="..\..\..\..\src\utils\aLinkCreator\alc.rc" />
     <ResourceCompile Include="..\version.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -206,10 +212,6 @@
     </ProjectReference>
     <ProjectReference Include="..\libs\libmulecommon\libmulecommon.vcxproj">
       <Project>{293e6133-239a-4ed4-838e-9182b07c6b35}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\libs\libmuleec\libmuleec.vcxproj">
-      <Project>{5a9ec6a5-68a3-43c8-960e-f7f03b16f1d1}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
