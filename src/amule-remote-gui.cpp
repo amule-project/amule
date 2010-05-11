@@ -1261,8 +1261,8 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->Score(&client->m_score);
 	tag->Rating(&client->m_rating);
 
-	theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client,
-		theApp->amuledlg->m_transferwnd->clientlistctrl->GetListView());	// Fixme, Listview shouldn't be required as parameter
+	//theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client,
+	//	theApp->amuledlg->m_transferwnd->clientlistctrl->GetListView());	// Fixme, Listview shouldn't be required as parameter
 }
 
 
