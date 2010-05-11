@@ -66,7 +66,6 @@ libmuleappcommon_a_SOURCES = \
 	GapList.cpp \
 	MagnetURI.cpp \
 	MemFile.cpp \
-	NetworkFunctions.cpp \
 	Packet.cpp \
 	RLE.cpp \
 	SafeFile.cpp \
@@ -174,6 +173,7 @@ gui_sources = \
 	AddFriend.cpp \
 	CatDialog.cpp \
 	ChatSelector.cpp \
+	GenericClientListCtrl.cpp \
 	ClientDetailDialog.cpp \
 	DirectoryTreeCtrl.cpp \
 	FileDetailDialog.cpp \
@@ -187,7 +187,8 @@ gui_sources = \
 	StatisticsDlg.cpp \
 	SearchListCtrl.cpp \
 	DownloadListCtrl.cpp \
-	ClientListCtrl.cpp \
+	SourceListCtrl.cpp \
+	SharedFilePeersListCtrl.cpp \
 	FriendListCtrl.cpp \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
@@ -329,7 +330,7 @@ noinst_HEADERS = \
 		ClientCredits.h \
 		ClientCreditsList.h \
 		ClientDetailDialog.h \
-		ClientListCtrl.h \
+		SharedFilePeersListCtrl.h \
 		ClientList.h \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
@@ -361,6 +362,7 @@ noinst_HEADERS = \
 		FriendList.h \
 		GapList.h \
 		GetTickCount.h \
+		GenericClientListCtrl.h \
 		GuiEvents.h \
 		HTTPDownload.h \
 		inetdownload.h \
@@ -424,6 +426,7 @@ noinst_HEADERS = \
 		SharedFileList.h \
 		SharedFilesCtrl.h \
 		SharedFilesWnd.h \
+		SourceListCtrl.h \
 		StateMachine.h \
 		StatisticsDlg.h \
 		Statistics.h \

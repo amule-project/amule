@@ -41,7 +41,7 @@
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "CatDialog.h"			// Needed for CCatDialog
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
-#include "ClientListCtrl.h"		// Needed for CClientListCtrl
+#include "SourceListCtrl.h"		// Needed for CSourceListCtrl
 #include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"			// Needed for ID_CATEGORIES
 #include "SearchDlg.h"			// Needed for CSearchDlg->UpdateCatChoice()
@@ -56,10 +56,9 @@ BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,	CTransferWnd::OnCategoryChanged)
 	
- 	EVT_SPLITTER_SASH_POS_CHANGING(ID_SPLATTER, CTransferWnd::OnSashPositionChanging)
+ 	EVT_SPLITTER_SASH_POS_CHANGING(ID_DOWNLOADSSPLATTER, CTransferWnd::OnSashPositionChanging)
 
 	EVT_BUTTON(ID_BTNCLRCOMPL,		CTransferWnd::OnBtnClearDownloads)
- 	EVT_BUTTON(ID_BTNSWITCHUP, 		CTransferWnd::SwitchUploadList)
  	EVT_BUTTON(ID_CLIENTTOGGLE,		CTransferWnd::OnToggleClientList)
 
 	EVT_MENU_RANGE(MP_CAT_SET0, MP_CAT_SET0 + 15, CTransferWnd::OnSetDefaultCat)
@@ -85,7 +84,7 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	content->Show(this, true);
 
 	downloadlistctrl = CastChild( wxT("downloadList"), CDownloadListCtrl );
-	clientlistctrl   = CastChild( ID_CLIENTLIST, CClientListCtrl );
+	clientlistctrl   = CastChild( ID_CLIENTLIST, CSourceListCtrl );
 	m_dlTab          = CastChild( ID_CATEGORIES, CMuleNotebook );
 	
 	CMuleNotebook* nb = CastChild( ID_CATEGORIES, CMuleNotebook );
@@ -103,7 +102,6 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 
 	m_menu = NULL;
 	m_splitter = 0;
-
 	
 	wxConfigBase *config = wxConfigBase::Get();
 	
@@ -126,7 +124,7 @@ CTransferWnd::~CTransferWnd()
 {
 	wxConfigBase *config = wxConfigBase::Get();
 
-	if ( clientlistctrl->GetListView() == vtNone ) {
+	if ( !clientlistctrl->GetShowing() ) {
 		// Save the splitter position
 		config->Write( wxT("/GUI/TransferWnd/Splitter"), m_splitter );
 	
@@ -306,11 +304,13 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
+#if 0
 	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theStats::GetBannedCount(), _("Banned") );
 	wxStaticText* label = CastChild( ID_CLIENTCOUNT, wxStaticText );
 	
 	label->SetLabel( str );
 	label->GetParent()->Layout();
+#endif
 }
 
 
@@ -407,7 +407,7 @@ void CTransferWnd::Prepare()
 	int header_height = s_clientlistHeader->GetSize().GetHeight();
 	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
 	
-	if ( clientlistctrl->GetListView() == vtNone ) {
+	if ( !clientlistctrl->GetShowing() ) {
 		int height = splitter->GetWindow1()->GetSize().GetHeight();
 	    	height += splitter->GetWindow2()->GetSize().GetHeight();
 	
@@ -431,46 +431,15 @@ void CTransferWnd::Prepare()
 	}
 }
 
-
-void CTransferWnd::SwitchUploadList(wxCommandEvent& WXUNUSED(evt))
-{
- 	clientlistctrl->ToggleView();
-	wxStaticText* label = CastChild( wxT("uploadTitle"), wxStaticText );
- 	
- 	switch ( clientlistctrl->GetListView() ) {
- 		case vtNone:
- 			return;
- 		
- 		case vtUploading:
- 			label->SetLabel( _("Uploads") );
- 			break;
- 			
- 		case vtQueued:
- 			label->SetLabel( _("On Queue") );
- 			break;
- 
- 		case vtClients:
- 			label->SetLabel( _("Clients") );
- 			break;
- 	}
-
-	label->GetParent()->Layout();
-}
-
-
 void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 {
 	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
 	wxBitmapButton*   button = CastChild( ID_CLIENTTOGGLE, wxBitmapButton );
 
-	// Keeps track of what was last selected.
-	static ViewType lastView = vtNone;
-		
-		
-	if ( clientlistctrl->GetListView() == vtNone ) {
+	if ( !clientlistctrl->GetShowing() ) {
 		splitter->SetSashPosition( m_splitter );		
 		
-		clientlistctrl->SetListView( lastView );
+		clientlistctrl->SetShowing( true );
 		
 		button->SetBitmapLabel( amuleDlgImages( 10 ) );
 		button->SetBitmapFocus( amuleDlgImages( 10 ) );
@@ -478,8 +447,7 @@ void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 
 		m_splitter = 0;
 	} else {
-		lastView = clientlistctrl->GetListView();
-		clientlistctrl->SetListView( vtNone );
+		clientlistctrl->SetShowing( false );
 	
 		int pos = splitter->GetSashPosition();
 	
@@ -495,8 +463,6 @@ void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 		button->SetBitmapFocus( amuleDlgImages( 11 ) );
 		button->SetBitmapSelected( amuleDlgImages( 11 ) );
 	}
-
-	FindWindow(ID_BTNSWITCHUP)->Enable( clientlistctrl->GetListView() != vtNone );
 }
 
 
@@ -512,7 +478,7 @@ void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		int height = splitter->GetWindow1()->GetSize().GetHeight();
 		    height += splitter->GetWindow2()->GetSize().GetHeight();
 
-		if ( clientlistctrl->GetListView() == vtNone ) {
+		if ( !clientlistctrl->GetShowing() ) {
 			if ( height - evt.GetSashPosition() < header_height * 2 ) {
 				evt.Veto();
 			} else {

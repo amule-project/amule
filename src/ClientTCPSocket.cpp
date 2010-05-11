@@ -323,7 +323,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			// Socket might die on ConnectionEstablished somehow. Check it.
 			if (m_client) {					
-				Notify_UploadCtrlRefreshClient( m_client );
+				Notify_SharedCtrlRefreshClient( m_client , AVAILABLE_SOURCE);
 			}
 			
 			break;
@@ -388,7 +388,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				theApp->clientlist->AddClient(m_client);
 				m_client->SetCommentDirty();
 			}
-			Notify_UploadCtrlRefreshClient( m_client );
+			Notify_SharedCtrlRefreshClient( m_client, AVAILABLE_SOURCE );
 			// send a response packet with standart informations
 			if ((m_client->GetHashType() == SO_EMULE) && !bIsMuleHello) {
 				m_client->SendMuleInfoPacket(false);				

@@ -18,10 +18,11 @@
 #	include "TransferWnd.h"
 #	include "SharedFilesWnd.h"
 #	include "ServerListCtrl.h"
-#	include "ClientListCtrl.h"
+#	include "SourceListCtrl.h"
 #	include "SharedFilesCtrl.h"
 #	include "DownloadListCtrl.h"
 #	include "muuli_wdr.h"
+#	include "SharedFilePeersListCtrl.h"
 #	include "PartFileConvertDlg.h"
 #endif
 
@@ -297,43 +298,12 @@ namespace MuleNotify
 #endif
 	}
 
-	void DownloadCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), DownloadItemType NOT_ON_DAEMON(type))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
-			if (owner->ShowSources()) {
-				theApp->amuledlg->m_transferwnd->downloadlistctrl->AddSource(owner, source, type);
-			}
-		}
-#endif
-	}
-	
 	void DownloadCtrlRemoveFile(CPartFile* file)
 	{
 		theApp->ECServerHandler->m_ec_notifier->DownloadFile_RemoveFile(file);
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
-		}
-#endif
-	}
-	
-	void DownloadCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
-			if ((owner == NULL) || owner->ShowSources()) {
-				theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveSource(source, owner);
-			}
-		}
-#endif
-	}
-	
-	void DownloadCtrlHideSource(CPartFile* NOT_ON_DAEMON(file))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
-			theApp->amuledlg->m_transferwnd->downloadlistctrl->ShowSources(file, false);
 		}
 #endif
 	}
@@ -347,30 +317,56 @@ namespace MuleNotify
 #endif
 	}
 	
-	
-	void ClientCtrlAddClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
+	void SourceCtrlUpdateSource(CUpDownClient* source, SourceItemType type)
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
-			theApp->amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, type);
+			theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateItem(source, type);
 		}
 #endif
 	}
 	
-	void ClientCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
+	void SourceCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
-			theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client, type);
+			theApp->amuledlg->m_transferwnd->clientlistctrl->AddSource(owner, source, type);
 		}
 #endif
 	}
 	
-	void ClientCtrlRemoveClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
+	void SourceCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
-			theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, type);
+			theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveSource(source, owner);
+		}
+#endif
+	}
+	
+	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType type)
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->AddSource(owner, source, type);
+		}
+#endif
+	}
+	
+	void SharedCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), SourceItemType type)
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->UpdateItem(client, type);
+		}
+#endif
+	}
+	
+	void SharedCtrlRemoveClient(const CKnownFile* NOT_ON_DAEMON(owner), const CUpDownClient* NOT_ON_DAEMON(source))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->RemoveSource(source, owner);
 		}
 #endif
 	}

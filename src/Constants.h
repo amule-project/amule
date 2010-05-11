@@ -42,20 +42,6 @@ enum ViewType
 };
 
 
-//! These types specifies the char. of a given item on the CDownloadListCtrl
-enum DownloadItemType
-{
-	//! A CPartFile object
-	FILE_TYPE,
-	//! A source which is currently queued for another file.
-	A4AF_SOURCE,
-	//! A source which has not yet been contacted.
-	UNAVAILABLE_SOURCE,
-	//! A source which is currently queued for this file.
-	AVAILABLE_SOURCE
-};
-
-
 // lfroen : custom events for core internal messages
 // 'cause - there's no wxCommand etc in wxBase
 enum Core_Event_ID 
@@ -85,6 +71,17 @@ enum HTTP_Download_File
 	HTTP_GeoIP
 };
 
+//! Source types for source showing list.
+enum SourceItemType
+{
+	//! A source which is currently queued for another file.
+	A4AF_SOURCE,
+	//! A source which has not yet been contacted.
+	UNAVAILABLE_SOURCE,
+	//! A source which is currently queued for this file.
+	AVAILABLE_SOURCE
+};
+	
 // KnownFile constants
 
 #define	PS_READY			0

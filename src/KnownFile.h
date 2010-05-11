@@ -260,7 +260,7 @@ public:
 	uint16 m_nCompleteSourcesCountLo;
 	uint16 m_nCompleteSourcesCountHi;
 	
-	// Maybe find a common place for this typedef?
+	// Common for part and known files.
 	typedef std::set<CUpDownClient*> SourceSet;
 	SourceSet m_ClientUploadList;
 	ArrayOfUInts16 m_AvailPartFrequency;
@@ -293,6 +293,8 @@ public:
 
 	virtual wxString GetFeedback() const;
 
+	void	SetShowSources( bool val )	{ m_showSources = val; }
+	bool	ShowSources()				const { return m_showSources; }
 
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);
@@ -342,6 +344,7 @@ protected:
 	uint32	m_lastPublishTimeKadNotes;
 	uint32	m_lastBuddyIP;
 
+	bool	m_showSources;
 private:
 	/** Common initializations for constructors. */
 	void Init();

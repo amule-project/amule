@@ -63,13 +63,21 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 //! Overloaded version of CmpAny for use with wxStrings.
 inline int CmpAny(const wxString& ArgA, const wxString& ArgB)
 {
-	return ArgA.CmpNoCase( ArgB );
+	if (ArgA.IsEmpty() && !ArgB.IsEmpty()) {
+		return -1;
+	} else if (!ArgA.IsEmpty() && ArgB.IsEmpty()) {
+		return 1;
+	} else if (ArgA.IsEmpty() && ArgB.IsEmpty()) {
+		return 0;
+	} else {
+		return ArgA.CmpNoCase( ArgB );
+	}
 }
 
 //! Overloaded version of CmpAny for use with C-Strings (Unicoded).
 inline int CmpAny(const wxChar* ArgA, const wxChar* ArgB)
 {
-	return wxString( ArgA ).CmpNoCase( ArgB );
+	return CmpAny(wxString( ArgA ), wxString( ArgB ));
 }
 
 

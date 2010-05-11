@@ -552,7 +552,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 					// Try to add a request for the other file
 					if ( (*it)->AddRequestForAnotherFile(sender)) {
 						// Add it to downloadlistctrl
-						Notify_DownloadCtrlAddSource(sender, *it, A4AF_SOURCE);
+						Notify_SourceCtrlAddSource(sender, *it, A4AF_SOURCE);
 					}
 				}
 				
@@ -588,7 +588,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 				sender->UpdateFileRatingCommentAvail();
 			}
 			
-			Notify_DownloadCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
+			Notify_SourceCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
 		}
 	} else {
 		// Unknown client, add it to the clients list
@@ -601,7 +601,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 			sender->UpdateFileRatingCommentAvail();
 		}
 	
-		Notify_DownloadCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
+		Notify_SourceCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
 	}
 }
 
@@ -646,7 +646,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	if ( file ) {
 		if ( file != sender ) {
 			if ( source->AddRequestForAnotherFile( sender ) ) {
-				Notify_DownloadCtrlAddSource( sender, source, A4AF_SOURCE );
+				Notify_SourceCtrlAddSource( sender, source, A4AF_SOURCE );
 			}
 		}
 	} else {
@@ -658,7 +658,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 
 		source->SetSourceFrom(SF_PASSIVE);
 		sender->AddSource( source );
-		Notify_DownloadCtrlAddSource( sender, source, UNAVAILABLE_SOURCE);
+		Notify_SourceCtrlAddSource( sender, source, UNAVAILABLE_SOURCE);
 	}
 }
 
@@ -673,6 +673,10 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		
 		// Remove from source-list
 		if ( cur_file->DelSource( toremove ) ) {
+			
+			// Remove from sourcelist widget
+			Notify_SourceCtrlRemoveSource(toremove, cur_file);
+			
 			cur_file->RemoveDownloadingSource(toremove);
 			removed = true;
 			if ( bDoStatsUpdate ) {
@@ -691,9 +695,6 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	
 	toremove->SetRequestFile( NULL );
 	toremove->SetDownloadState(DS_NONE);
-
-	// Remove from downloadlist widget
-	Notify_DownloadCtrlRemoveSource(toremove, (CPartFile*)NULL);
 	toremove->ResetFileStatusInfo();
 
 	return removed;
@@ -717,9 +718,9 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 	wxMutexLocker lock( m_mutex );
 
 	for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
-		const CPartFile::SourceSet& set = m_filelist[i]->GetSourceList();
+		const CKnownFile::SourceSet& set = m_filelist[i]->GetSourceList();
 		
-		for ( CPartFile::SourceSet::const_iterator it = set.begin(); it != set.end(); it++ ) {
+		for ( CKnownFile::SourceSet::const_iterator it = set.begin(); it != set.end(); it++ ) {
 			if ( (*it)->GetIP() == dwIP && (*it)->GetUDPPort() == nUDPPort ) {
 				return *it;
 			}

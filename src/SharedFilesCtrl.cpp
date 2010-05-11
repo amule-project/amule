@@ -56,7 +56,6 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_PRIOAUTO,		CSharedFilesCtrl::OnSetPriorityAuto )
 
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
-	EVT_MENU( MP_RAZORSTATS, 		CSharedFilesCtrl::OnGetRazorStats )
 	EVT_MENU( MP_ADDCOLLECTION,		CSharedFilesCtrl::OnAddCollection )
 	EVT_MENU( MP_GETMAGNETLINK,		CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
@@ -155,10 +154,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_RENAME, _("Rename"));
 		m_menu->AppendSeparator();
-/* Commented out while it's gone
-		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
-		m_menu->AppendSeparator();
-*/
+
 		if (file->GetFileName().GetExt() == wxT("emulecollection")) {
 			m_menu->Append( MP_ADDCOLLECTION, _("Add files in collection to transfer list"));
 			m_menu->AppendSeparator();
@@ -679,17 +675,6 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxR
 	dc->SetPen( old_pen );
 	dc->SetBrush( old_brush );
 }
-
-void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
-{
-	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( item );
-	
-		theApp->amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
-	}
-}
-
 
 void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 {

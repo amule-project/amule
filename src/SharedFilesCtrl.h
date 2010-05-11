@@ -165,11 +165,6 @@ private:
 	 * Event-handler for the Create ED2K/Magnet URI items.
 	 */
 	void	OnCreateURI( wxCommandEvent& event );
-	
-	/**
-	 * Event handler for get-razorback stats menu item
-	 */	 
-	void OnGetRazorStats( wxCommandEvent& evt );
 	 
 	/**
 	 * Event-handler for the Edit Comment menu item.

@@ -299,6 +299,7 @@ CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
 
 void CKnownFile::Init() 
 {
+	m_showSources = false;
 	m_nCompleteSourcesTime = time(NULL);
 	m_nCompleteSourcesCount = 0;
 	m_nCompleteSourcesCountLo = 0;
@@ -454,6 +455,19 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
 	m_ClientUploadList.insert(client);
 	
+	SourceItemType type = UNAVAILABLE_SOURCE;
+	switch (client->GetUploadState()) {
+		case US_UPLOADING:
+		case US_ONUPLOADQUEUE:
+			type = AVAILABLE_SOURCE;
+			break;
+		default: {
+			// Any other state is UNAVAILABLE_SOURCE by default.
+		}
+	}
+
+	Notify_SharedCtrlAddClient(this, client, type);
+	
 	UpdateAutoUpPriority();
 }
 
@@ -461,6 +475,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 {
 	if (m_ClientUploadList.erase(client)) {
+		Notify_SharedCtrlRemoveClient(this, client);
 		UpdateAutoUpPriority();
 	}
 }

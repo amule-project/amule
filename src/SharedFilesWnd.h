@@ -31,9 +31,10 @@
 
 class CKnownFile;
 class CSharedFilesCtrl;
+class CSharedFilePeersListCtrl;
 class wxListEvent;
 class wxGauge;
-
+class wxSplitterEvent;
 
 /**
  * This class represents the window containing the list of shared files.
@@ -68,7 +69,12 @@ public:
 
 	//! Pointer to the widget containing the list of shared files.
 	CSharedFilesCtrl* sharedfilesctrl;
-
+	
+	//! Pointer to the list of clients.
+	CSharedFilePeersListCtrl*	peerslistctrl;
+	
+	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
+	int m_splitter;
 private:
 	/**
 	 * Event-handler for reloading the list of shared files.
@@ -76,10 +82,19 @@ private:
 	void OnBtnReloadShared(wxCommandEvent &evt);
 
 	/**
-	 * Event-handler for showing details about a shared file.
+	 * Event-handler for showing details about a shared file(s).
 	 */
-	void OnItemActivated(wxListEvent& evt);
+	void OnItemSelectionChanged(wxListEvent& evt);
 
+	/**
+	 * Event-handler for the list-toggle button.
+	 */
+	void OnToggleClientList( wxCommandEvent& event );
+
+	/**
+	 * Event-handler for for changes in the sash divider position.
+	 */
+	void OnSashPositionChanging(wxSplitterEvent& evt);
 
 	//! Pointer to the gauge used for showing requests ratio.
 	wxGauge* m_bar_requests;

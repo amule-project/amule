@@ -31,7 +31,7 @@
 #include "Types.h"		// Needed for uint32
 #include "OtherStructs.h"
 
-class CClientListCtrl;
+class CSourceListCtrl;
 class CDownloadListCtrl;
 class CMuleNotebook;
 class wxListCtrl;
@@ -40,8 +40,6 @@ class wxCommandEvent;
 class wxMouseEvent;
 class wxEvent;
 class wxMenu;
-
-
 
 /**
  * This class takes care of managing the lists and other controls contained 
@@ -127,7 +125,7 @@ public:
 	//! Pointer to the download-queue.
 	CDownloadListCtrl*	downloadlistctrl;
 	//! Pointer to the list of clients.
-	CClientListCtrl*	clientlistctrl;
+	CSourceListCtrl*	clientlistctrl;
 	
 	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
 	int m_splitter;
@@ -184,7 +182,7 @@ private:
 	void OnToggleClientList( wxCommandEvent& event );
     
 	/**
-	 * Event-handler for automatic show/hide of the clientlistctrl.
+	 * Event-handler for changes in the sash divider position.
 	 */
 	void OnSashPositionChanging(wxSplitterEvent& evt);
 

@@ -473,7 +473,7 @@ void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempre
 	
 	m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
 	
-	Notify_QlistRefreshClient(this);
+	Notify_SharedCtrlRefreshClient(this, AVAILABLE_SOURCE);
 }
 
 
@@ -650,7 +650,7 @@ uint32 CUpDownClient::SendBlockData()
 	m_cSendblock++;
 	if (m_cSendblock == 30){
 		m_cSendblock = 0;
-		Notify_UploadCtrlRefreshClient(this);
+		Notify_SharedCtrlRefreshClient(this, AVAILABLE_SOURCE);
 	}
 
     return sentBytesCompleteFile + sentBytesPartFile;
@@ -737,13 +737,16 @@ void CUpDownClient::ClearUploadBlockRequests()
 	DeleteContents(m_DoneBlocks_list);
 }
 
+uint16 CUpDownClient::GetRankingInfo() const {
+	return theApp->uploadqueue->GetWaitingPosition(this);
+}
 
 void CUpDownClient::SendRankingInfo(){
 	if (!ExtProtocolAvailable()) {
 		return;
 	}
 
-	uint16 nRank = theApp->uploadqueue->GetWaitingPosition(this);
+	uint16 nRank = GetRankingInfo();
 	if (!nRank) {
 		return;
 	}
@@ -805,7 +808,7 @@ void CUpDownClient::Ban(){
 	SetUploadState(US_BANNED);
 	
 	Notify_ShowQueueCount(theStats::GetWaitingUserCount());
-	Notify_QlistRefreshClient(this);
+	Notify_SharedCtrlRefreshClient(this, UNAVAILABLE_SOURCE);
 }
 
 bool CUpDownClient::IsBanned() const
