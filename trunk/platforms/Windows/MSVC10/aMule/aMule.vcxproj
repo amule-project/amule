@@ -209,7 +209,6 @@
     <ClCompile Include="..\..\..\..\src\ClientCreditsList.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientDetailDialog.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientList.cpp" />
-    <ClCompile Include="..\..\..\..\src\ClientListCtrl.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientTCPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientUDPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\ColorFrameCtrl.cpp" />
@@ -238,6 +237,7 @@
     <ClCompile Include="..\..\..\..\src\FriendList.cpp" />
     <ClCompile Include="..\..\..\..\src\FriendListCtrl.cpp" />
     <ClCompile Include="..\..\..\..\src\GapList.cpp" />
+    <ClCompile Include="..\..\..\..\src\GenericClientListCtrl.cpp" />
     <ClCompile Include="..\..\..\..\src\GetTickCount.cpp" />
     <ClCompile Include="..\..\..\..\src\GuiEvents.cpp" />
     <ClCompile Include="..\..\..\..\src\HTTPDownload.cpp" />
@@ -272,6 +272,8 @@
     <ClCompile Include="..\..\..\..\src\PartFile.cpp" />
     <ClCompile Include="..\..\..\..\src\PartFileConvert.cpp" />
     <ClCompile Include="..\..\..\..\src\PartFileConvertDlg.cpp" />
+    <ClCompile Include="..\..\..\..\src\SharedFilePeersListCtrl.cpp" />
+    <ClCompile Include="..\..\..\..\src\SourceListCtrl.cpp" />
     <ClCompile Include="..\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -343,7 +345,6 @@
     <ClInclude Include="..\..\..\..\src\ClientCreditsList.h" />
     <ClInclude Include="..\..\..\..\src\ClientDetailDialog.h" />
     <ClInclude Include="..\..\..\..\src\ClientList.h" />
-    <ClInclude Include="..\..\..\..\src\ClientListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\ClientTCPSocket.h" />
     <ClInclude Include="..\..\..\..\src\ClientUDPSocket.h" />
     <ClInclude Include="..\..\..\..\src\ColorFrameCtrl.h" />
@@ -357,6 +358,7 @@
     <ClInclude Include="..\..\..\..\src\DirectoryTreeCtrl.h" />
     <ClInclude Include="..\..\..\..\src\DownloadListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\DownloadQueue.h" />
+    <ClInclude Include="..\..\..\..\src\GenericClientListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />
     <ClInclude Include="..\..\..\..\src\EditServerListDlg.h" />
@@ -410,6 +412,8 @@
     <ClInclude Include="..\..\..\..\src\PartFile.h" />
     <ClInclude Include="..\..\..\..\src\PartFileConvert.h" />
     <ClInclude Include="..\..\..\..\src\PartFileConvertDlg.h" />
+    <ClInclude Include="..\..\..\..\src\SharedFilePeersListCtrl.h" />
+    <ClInclude Include="..\..\..\..\src\SourceListCtrl.h" />
     <ClInclude Include="..\PCH.h" />
     <ClInclude Include="..\..\..\..\src\PlatformSpecific.h" />
     <ClInclude Include="..\..\..\..\src\Preferences.h" />
