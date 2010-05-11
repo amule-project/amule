@@ -59,7 +59,7 @@ CSourceListCtrl::~CSourceListCtrl()
 
 int CSourceListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
-	return CGenericClientListCtrl::SortProc(param1, param2, s_sources_column_info[sortData & CMuleListCtrl::COLUMN_MASK].cid | sortData & CMuleListCtrl::SORT_DES);
+	return CGenericClientListCtrl::SortProc(param1, param2, s_sources_column_info[sortData & CMuleListCtrl::COLUMN_MASK].cid | (sortData & CMuleListCtrl::SORT_DES));
 }
 
 // File_checked_for_headers

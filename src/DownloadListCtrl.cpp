@@ -583,7 +583,7 @@ void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 	}	
 }
 
-void CDownloadListCtrl::OnItemSelectionChanged( wxListEvent& evt )
+void CDownloadListCtrl::OnItemSelectionChanged( wxListEvent& )
 {	
 	if (!IsSorting()) {
 		CKnownFileVector filesVector;
