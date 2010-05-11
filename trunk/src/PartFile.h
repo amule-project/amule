@@ -150,7 +150,7 @@ public:
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
-	void	SetNotCurrentSourcesCount(uint16 new_count)	{ m_notCurrentSources = new_count; };	
+	//void	SetNotCurrentSourcesCount(uint16 new_count)	{ m_notCurrentSources = new_count; };	
 	uint16	GetValidSourcesCount() const	{ return m_validSources; };
 	
 	uint64	GetNeededSpace();
@@ -249,11 +249,6 @@ public:
 
 	ArrayOfUInts16	m_SrcpartFrequency;
 
-	void	SetShowSources( bool val )	{ m_showSources = val; }
-	bool	ShowSources()				const { return m_showSources; }
-
-	typedef std::set<CUpDownClient*> SourceSet;
-	
 	const SourceSet& GetSourceList()	const { return m_SrcList; }
 	const SourceSet& GetA4AFList()		const { return m_A4AFsrclist; }
 
@@ -331,8 +326,6 @@ private:
 #endif
 
 	uint16	m_notCurrentSources;
-
-	bool	m_showSources;
 	
 	uint32	m_validSources;
 

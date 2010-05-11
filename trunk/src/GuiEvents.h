@@ -85,16 +85,17 @@ namespace MuleNotify
 	void SharedFilesUpdateItem(CKnownFile* file);
 
 	void DownloadCtrlUpdateItem(const void* item);
+	void SourceCtrlUpdateSource(CUpDownClient* source, SourceItemType type);
 	void DownloadCtrlAddFile(CPartFile* file);
-	void DownloadCtrlAddSource(CPartFile* owner, CUpDownClient* source, DownloadItemType type);
+	void SourceCtrlAddSource(CPartFile* owner, CUpDownClient* source, SourceItemType type);
 	void DownloadCtrlRemoveFile(CPartFile* file);
-	void DownloadCtrlRemoveSource(const CUpDownClient* source, const CPartFile* owner);
+	void SourceCtrlRemoveSource(const CUpDownClient* source, const CPartFile* owner);
 	void DownloadCtrlHideSource(CPartFile* file);
 	void DownloadCtrlSort();
 
-	void ClientCtrlAddClient(CUpDownClient* client, ViewType type);
-	void ClientCtrlRefreshClient(CUpDownClient* client, ViewType type);
-	void ClientCtrlRemoveClient(CUpDownClient* client, ViewType type);
+	void SharedCtrlAddClient(CKnownFile* owner, CUpDownClient* client, SourceItemType type);
+	void SharedCtrlRefreshClient(CUpDownClient* client, SourceItemType type);
+	void SharedCtrlRemoveClient(const CKnownFile* owner, const CUpDownClient* client);
 
 	void ServerAdd(CServer* server);
 	void ServerRemove(CServer* server);
@@ -422,26 +423,18 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // download ctrl
 #define Notify_DownloadCtrlUpdateItem(ptr)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlUpdateItem, ptr)
 #define Notify_DownloadCtrlAddFile(file)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddFile, file)
-#define Notify_DownloadCtrlAddSource(p0, p1, val)	MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddSource, p0, p1, val)
 #define Notify_DownloadCtrlRemoveFile(file)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveFile, file)
-#define Notify_DownloadCtrlRemoveSource(ptr0, ptr1)	MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveSource, ptr0, ptr1)
-#define Notify_DownloadCtrlHideSource(ptr)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlHideSource, ptr)
 #define Notify_DownloadCtrlSort()			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlSort)
 
+// source ctrl
+#define Notify_SourceCtrlUpdateSource(ptr, val)		MuleNotify::DoNotify(&MuleNotify::SourceCtrlUpdateSource, ptr, val)
+#define Notify_SourceCtrlAddSource(p0, p1, val)	MuleNotify::DoNotify(&MuleNotify::SourceCtrlAddSource, p0, p1, val)
+#define Notify_SourceCtrlRemoveSource(ptr0, ptr1)	MuleNotify::DoNotify(&MuleNotify::SourceCtrlRemoveSource, ptr0, ptr1)
+
 // upload ctrl
-#define Notify_UploadCtrlAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtUploading)
-#define Notify_UploadCtrlRefreshClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtUploading)
-#define Notify_UploadCtrlRemoveClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtUploading)
-
-// client ctrl
-#define Notify_ClientCtrlAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtClients)
-#define Notify_ClientCtrlRefreshClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtClients)
-#define Notify_ClientCtrlRemoveClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtClients)
-
-// queue list
-#define Notify_QlistAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtQueued)
-#define Notify_QlistRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtQueued)
-#define Notify_QlistRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtQueued)
+#define Notify_SharedCtrlAddClient(p0, p1, val)			MuleNotify::DoNotify(&MuleNotify::SharedCtrlAddClient, p0, p1, val)
+#define Notify_SharedCtrlRefreshClient(ptr, val)		MuleNotify::DoNotify(&MuleNotify::SharedCtrlRefreshClient, ptr, val)
+#define Notify_SharedCtrlRemoveClient(p0, p1)		MuleNotify::DoNotify(&MuleNotify::SharedCtrlRemoveClient, p0, p1)
 
 // server
 #define Notify_ServerAdd(ptr)				MuleNotify::DoNotify(&MuleNotify::ServerAdd, ptr)

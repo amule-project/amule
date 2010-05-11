@@ -59,6 +59,7 @@ BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
 	EVT_LIST_ITEM_SELECTED(-1,		CMuleListCtrl::OnItemSelected)
+	EVT_LIST_ITEM_DESELECTED(-1,	CMuleListCtrl::OnItemSelected)
 	EVT_LIST_DELETE_ITEM(-1,		CMuleListCtrl::OnItemDeleted)
 	EVT_LIST_DELETE_ALL_ITEMS(-1,	CMuleListCtrl::OnAllItemsDeleted)
 	EVT_CHAR(						CMuleListCtrl::OnChar)
@@ -77,6 +78,7 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 	m_sort_func = NULL;
 	m_tts_time = 0;
 	m_tts_item = -1;
+	m_isSorting = false;
 
 	if (imgList.GetImageCount() == 0) {
 		imgList.Add(wxBitmap(sort_dn_xpm));
@@ -340,18 +342,14 @@ int CMuleListCtrl::CompareItems(wxUIntPtr item1, wxUIntPtr item2)
 	return CmpAny(item1, item2);
 }
 
-
-MuleListCtrlCompare	g_sort_func = NULL;
-CMuleListCtrl*		g_sort_list = NULL;
-
-
-int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long)
+int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long data)
 {
-	const CSortingList& orders = g_sort_list->m_sort_orders;
+	MuleSortData* sortdata = (MuleSortData*) data;
+	const CSortingList& orders = sortdata->m_sort_orders;
 	
 	CSortingList::const_iterator it = orders.begin();
 	for (; it != orders.end(); ++it) {
-		int result = g_sort_func(item1, item2, it->first | it->second);
+		int result = sortdata->m_sort_func(item1, item2, it->first | it->second);
 		if (result != 0) {
 			return result;
 		}
@@ -361,26 +359,44 @@ int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long)
 	return CmpAny(item1, item2);
 }
 
-
 void CMuleListCtrl::SortList()
 {
-	wxCHECK_RET(g_sort_func == NULL, wxT("Sort-function already set"));
-	wxCHECK_RET(g_sort_list == NULL, wxT("Sort-list already set"));
+	if (!IsSorting() && (m_sort_func && GetColumnCount())) {
+
+		m_isSorting = true;
 	
-	if (m_sort_func && GetColumnCount()) {
 		// Positions are likely to be invalid after sorting.
 		ResetTTS();
 		
-		g_sort_func = m_sort_func;
-		g_sort_list = this;
+		MuleSortData sortdata(m_sort_orders, m_sort_func);
 		
-		SortItems(SortProc, 0);
+		// Store the current selected items
+		ItemDataList selectedItems = GetSelectedItems();
+		// Store the focused item
+		long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
+		wxUIntPtr focused = (pos == -1) ? NULL : GetItemData(pos);
+		
+		SortItems(SortProc, (long int)&sortdata);
+		
+		// Re-select the selected items.
+		for (int i = 0; i < selectedItems.size(); ++i) {
+			long it_pos = FindItem(-1, selectedItems[i]);
+			if (it_pos != -1) {
+				SetItemState(it_pos, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+			}
+		}
+		
+		// Set focus on item if any was focused
+		if (focused) {
+			long it_pos = FindItem(-1, focused);
+			if (it_pos != -1) {
+				SetItemState(it_pos, wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED);
+			}
+		}
 
-		g_sort_func = NULL;
-		g_sort_list = NULL;
+		m_isSorting = false;
 	}
 }
-
 
 CMuleListCtrl::ItemDataList CMuleListCtrl::GetSelectedItems() const
 {
@@ -441,14 +457,6 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
   		return;
 	}
 
-	// Get the currently focused item
-	long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
-	wxUIntPtr item = 0;
-	if (pos != -1) {
-		item = GetItemData(pos);
-	}
-
-
 	unsigned sort_order = 0;
 	if (m_sort_orders.front().first == (unsigned)evt.GetColumn()) {
 		// Same column as before, flip the sort-order
@@ -473,19 +481,11 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 				sort_order = it->second;
 				break;
 			}
-		}	
-	}
-	
-	SetSorting(evt.GetColumn(), sort_order);
-	
-	
-	// Set focus on item if any was focused
-	if (item != 0) {
-		long it_pos = FindItem(-1, item);
-		if (it_pos != -1) {
-			SetItemState(it_pos,wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
 		}
 	}
+	
+	
+	SetSorting(evt.GetColumn(), sort_order);	
 }
 
 
@@ -694,15 +694,19 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 
 void CMuleListCtrl::OnItemSelected(wxListEvent& evt)
 {
-	// We reset the current TTS session if the user manually changes the selection
-	if (m_tts_item != evt.GetIndex()) {
-		ResetTTS();
+	if (IsSorting()) {
+		// Selection/Deselection that happened while sorting.
+		evt.Veto();
+	} else {
+			// We reset the current TTS session if the user manually changes the selection
+		if (m_tts_item != evt.GetIndex()) {
+			ResetTTS();
 
-		// The item is changed so that the next TTS starts from the selected item.
-		m_tts_item = evt.GetIndex();
+			// The item is changed so that the next TTS starts from the selected item.
+			m_tts_item = evt.GetIndex();
+		}
+		evt.Skip();
 	}
-
-	evt.Skip();
 }
 
 

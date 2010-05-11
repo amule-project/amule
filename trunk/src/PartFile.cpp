@@ -2213,7 +2213,7 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 		for( SourceSet::iterator it = m_A4AFsrclist.begin(); it != m_A4AFsrclist.end(); ) {
 			CUpDownClient* cur_src = *it++;
 			if ( cur_src->DeleteFileRequest( this ) ) {
-				Notify_DownloadCtrlRemoveSource(cur_src, this);
+				Notify_SourceCtrlRemoveSource(cur_src, this);
 			}
 		}
 		m_A4AFsrclist.clear();
@@ -3628,7 +3628,6 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 
 void CPartFile::Init()
 {
-	m_showSources = false;
 	m_lastsearchtime = 0;
 	lastpurgetime = ::GetTickCount();
 	m_paused = false;

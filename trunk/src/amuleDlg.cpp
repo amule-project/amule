@@ -54,7 +54,7 @@
 #include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "ClientListCtrl.h"	// Needed for CClientListCtrl
+#include "SourceListCtrl.h"	// Needed for CSourceListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "KadDlg.h"		// Needed for CKadDlg
@@ -109,7 +109,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_TOOL(ID_BUTTONNETWORKS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSEARCH, CamuleDlg::OnToolBarButton)
-	EVT_TOOL(ID_BUTTONTRANSFER, CamuleDlg::OnToolBarButton)
+	EVT_TOOL(ID_BUTTONDOWNLOADS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSHARED, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONMESSAGES, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSTATISTICS, CamuleDlg::OnToolBarButton)
@@ -269,7 +269,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Set transfers as active window
 	Create_Toolbar(thePrefs::VerticalToolbar());
 	SetActiveDialog(DT_TRANSFER_WND, m_transferwnd);
-	m_wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true );
+	m_wndToolbar->ToggleTool(ID_BUTTONDOWNLOADS, true );
 
 	bool override_where = (where != wxDefaultPosition);
 	bool override_size = (
@@ -414,7 +414,7 @@ void CamuleDlg::RemoveSystray()
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
-	static int lastbutton = ID_BUTTONTRANSFER;
+	static int lastbutton = ID_BUTTONDOWNLOADS;
 
 	// Kry - just if the GUI is ready for it
 	if ( m_is_safe_state ) {
@@ -445,7 +445,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					SetActiveDialog(DT_SEARCH_WND, m_searchwnd);
 					break;
 
-				case ID_BUTTONTRANSFER:
+				case ID_BUTTONDOWNLOADS:
 					SetActiveDialog(DT_TRANSFER_WND, m_transferwnd);
 					// Prepare the dialog, sets the splitter-position
 					m_transferwnd->Prepare();
@@ -1324,10 +1324,10 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 		_("Searches"), m_tblist.GetBitmap(5),
 		wxNullBitmap, wxITEM_CHECK,
 		_("Searches window"));
-	wndToolbar->AddTool(ID_BUTTONTRANSFER,
-		_("Transfers"), m_tblist.GetBitmap(4),
+	wndToolbar->AddTool(ID_BUTTONDOWNLOADS,
+		_("Downloads"), m_tblist.GetBitmap(4),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Files transfers window"));
+		_("Downloads window"));
 	wndToolbar->AddTool(ID_BUTTONSHARED,
 		_("Shared files"), m_tblist.GetBitmap(6),
 		wxNullBitmap, wxITEM_CHECK,
@@ -1354,7 +1354,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 		wxNullBitmap, wxITEM_NORMAL,
 		_("About/Help"));
 	
-	wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true);
+	wndToolbar->ToggleTool(ID_BUTTONDOWNLOADS, true);
 
 	// Needed for non-GTK platforms, where the
 	// items don't get added immediatly.
@@ -1405,7 +1405,7 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 	wxFrame::OnSize(evt);	
 	if (m_transferwnd && m_transferwnd->clientlistctrl) {
 		// Transfer window's splitter set again if it's hidden.
-		if (m_transferwnd->clientlistctrl->GetListView() == vtNone) {
+		if (!m_transferwnd->clientlistctrl->GetShowing()) {
 			int height = m_transferwnd->clientlistctrl->GetSize().GetHeight();
 			wxSplitterWindow* splitter =
 				CastChild(wxT("splitterWnd"), wxSplitterWindow);

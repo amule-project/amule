@@ -179,8 +179,8 @@ void CFileDetailDialog::FillSourcenameList()
 		} 
 	}
 #else // CLIENT_GUI
-	const CPartFile::SourceSet& sources = m_file->GetSourceList();
-	CPartFile::SourceSet::const_iterator it = sources.begin();
+	const CKnownFile::SourceSet& sources = m_file->GetSourceList();
+	CKnownFile::SourceSet::const_iterator it = sources.begin();
 	for ( ; it != sources.end(); ++it ) {
 		const CUpDownClient &cur_src = **it; 
 		if (cur_src.GetRequestFile() != m_file ||

@@ -181,7 +181,6 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	if (reqfile) {
 		reqfile->statistic.AddAccepted();
 	}
-	Notify_UploadCtrlAddClient(newclient);
 }
 
 void CUploadQueue::Process()
@@ -358,9 +357,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 				}
 
 				client->SendRankingInfo();
-				Notify_QlistRefreshClient(client);
+				Notify_SharedCtrlRefreshClient(client, AVAILABLE_SOURCE);
 				return;
-
 			} else {
 				// Hash-clash, remove unidentified clients (possibly both)
 				
@@ -441,7 +439,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		client->ClearAskedCount();
 		client->SetUploadState(US_ONUPLOADQUEUE);
 		client->SendRankingInfo();
-		Notify_QlistAddClient(client);
+		//Notify_QlistAddClient(client);
 		Notify_ShowQueueCount(m_waitinglist.size());
 	}
 }
@@ -456,7 +454,6 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client)
 			m_uploadinglist.end(), client);
 	
 	if (it != m_uploadinglist.end()) {
-		Notify_UploadCtrlRemoveClient(client);
 		m_uploadinglist.erase(it);
 		theStats::RemoveUploadingClient();
 		if( client->GetTransferredUp() ) {
@@ -591,7 +588,7 @@ uint16 CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 			theStats::AddWaitingClient();
 			potential->SetUploadState(US_ONUPLOADQUEUE);
 			potential->SendRankingInfo();
-			Notify_QlistRefreshClient(potential);
+			Notify_SharedCtrlRefreshClient(potential, AVAILABLE_SOURCE);
 			Notify_ShowQueueCount(m_waitinglist.size());
 			removed++;
 		}
@@ -622,7 +619,7 @@ void CUploadQueue::RemoveFromWaitingQueue(CClientPtrList::iterator pos)
 	if( todelete->IsBanned() ) {
 		todelete->UnBan();
 	}
-	Notify_QlistRemoveClient(todelete);
+	//Notify_QlistRemoveClient(todelete);
 	todelete->SetUploadState(US_NONE);
 }
 

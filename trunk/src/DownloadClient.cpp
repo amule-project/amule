@@ -1369,7 +1369,19 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 	
 		// And finnaly trigger an event if there's any reason
 		if ( update ) {
-			Notify_DownloadCtrlUpdateItem(this);
+			SourceItemType type = A4AF_SOURCE;
+			switch (GetDownloadState()) {
+				case DS_DOWNLOADING:
+				case DS_ONQUEUE:
+					// We will send A4AF, which will be checked.
+					break;
+				default:
+					type = UNAVAILABLE_SOURCE;
+					break;
+			}
+			
+			Notify_SourceCtrlUpdateSource(this, type );
+			Notify_SharedCtrlRefreshClient(this, AVAILABLE_SOURCE);
 		}
 				
 		m_lastRefreshedDLDisplay = curTick;
@@ -1449,7 +1461,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 			
 			// remove this client from the A4AF list of our new m_reqfile
 			if ( SwapTo->RemoveA4AFSource( this ) ) {
-				Notify_DownloadCtrlRemoveSource(this, SwapTo);
+				Notify_SourceCtrlRemoveSource(this, SwapTo);
 			}
 
 			m_reqfile->RemoveDownloadingSource( this );
@@ -1464,9 +1476,9 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 				// Avoid swapping to this file for a while
 				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount(); 
 							
-				Notify_DownloadCtrlAddSource(m_reqfile, this, A4AF_SOURCE);
+				Notify_SourceCtrlAddSource(m_reqfile, this, A4AF_SOURCE);
 			} else {
-				Notify_DownloadCtrlRemoveSource( this, m_reqfile );
+				Notify_SourceCtrlRemoveSource( this, m_reqfile );
 			}
 		
 			SetDownloadState(DS_NONE);
@@ -1481,7 +1493,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 
 			SwapTo->AddSource( this );
 		
-			Notify_DownloadCtrlAddSource(SwapTo, this, UNAVAILABLE_SOURCE);
+			Notify_SourceCtrlAddSource(SwapTo, this, UNAVAILABLE_SOURCE);
 
 			// Remove the new reqfile from the list of other files
 			m_A4AF_list.erase( target );

@@ -113,7 +113,7 @@ void CClientList::AddClient( CUpDownClient* toadd )
 		// Update the client-state
 		toadd->m_clientState = CS_LISTED;
 	
- 		Notify_ClientCtrlAddClient( toadd );
+ 		//Notify_ClientCtrlAddClient( toadd );
 	
 		// We always add the ID/ptr pair, regardles of the actual ID value
 		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), toadd ) );
@@ -539,7 +539,7 @@ void CClientList::ProcessDeleteQueue()
 		theApp->uploadqueue->RemoveFromWaitingQueue( toremove );
 		theApp->downloadqueue->RemoveSource( toremove );
 	
-		Notify_ClientCtrlRemoveClient( toremove );
+		//Notify_ClientCtrlRemoveClient( toremove );
 
 		delete toremove;
 	}

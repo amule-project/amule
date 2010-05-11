@@ -296,6 +296,10 @@ CUpDownClient::~CUpDownClient()
 	}
 	#endif	
 	
+	// For security, remove it from the lists unconditionally.
+	Notify_SharedCtrlRemoveClient((CKnownFile*)NULL, this);
+	Notify_SourceCtrlRemoveSource(this, (CPartFile*)NULL);
+	
 	if (m_lastClientSoft == SO_UNKNOWN) {
 		theStats::RemoveUnknownClient();
 	} else if (m_lastClientSoft != (uint32)(-1)) {
@@ -1266,7 +1270,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 		if (GetDownloadState() == DS_CONNECTED) {
 			// successfully connected, but probably didn't respond to our filerequest
 			theApp->clientlist->AddDeadSource(this);
-			theApp->downloadqueue->RemoveSource(this);
 	    }
 	}
 
@@ -1283,19 +1286,26 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 		m_reqfile->SetHashSetNeeded(true);
 	}
 
+	SourceItemType source_type = UNAVAILABLE_SOURCE;
+	SourceItemType peer_type = UNAVAILABLE_SOURCE;
+	
 	//check if this client is needed in any way, if not delete it
 	bool bDelete = true;
 	switch (m_nUploadState) {
 		case US_ONUPLOADQUEUE:
 			bDelete = false;
+			peer_type = AVAILABLE_SOURCE;
 			break;
 	};
+	
 	switch (m_nDownloadState) {
 		case DS_ONQUEUE:
+			source_type = A4AF_SOURCE; // Will be checked.		
 		case DS_TOOMANYCONNS:
 		case DS_NONEEDEDPARTS:
 		case DS_LOWTOLOWIP:
 			bDelete = false;
+			break;
 	};
 
 	switch (m_nUploadState) {
@@ -1305,6 +1315,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 			theApp->clientlist->AddDeadSource(this);
 			bDelete = true;
 	};
+
 	switch (m_nDownloadState) {
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
@@ -1335,7 +1346,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 		m_iFileListRequested = 0;
 	}
 
-	Notify_ClientCtrlRefreshClient( this );
 
 	if (bDelete) {
 		if (m_Friend) {
@@ -1343,6 +1353,9 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 			Notify_ChatRefreshFriend(m_Friend, false);
 		}
 	} else {
+		Notify_SharedCtrlRefreshClient( this, peer_type);
+		Notify_SourceCtrlUpdateSource( this, source_type);
+		
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;

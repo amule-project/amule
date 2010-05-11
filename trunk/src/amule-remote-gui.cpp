@@ -40,7 +40,7 @@
 #include "amule.h"			// Interface declarations.
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "ClientCredits.h"
-#include "ClientListCtrl.h"
+#include "SourceListCtrl.h"
 #include "DataToText.h"			// Needed for GetSoftName()
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "GuiEvents.h"
@@ -168,17 +168,8 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		} else if (amuledlg->m_transferwnd->IsShown()) {
 			// update both downloads and shared files
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
-			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
-			case vtUploading:
-				uploadqueue->ReQueryUp();
-				break;
-			case vtQueued:
-				uploadqueue->ReQueryWait();
-				break;
-			case vtClients:
-				break;
-			case vtNone:
-				break;
+			if (amuledlg->m_transferwnd->clientlistctrl->GetShowing()) {
+				// Kry_GUI Request the client list.
 			}
 			amuledlg->m_transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
 		} else if (amuledlg->m_searchwnd->IsShown()) {
@@ -1127,6 +1118,9 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_nServerPort = tag->ServerPort();
 	m_ServerName = tag->ServerName();
 
+	// TODO: GUI_REWORK
+	m_rankingInfo = 0;
+	
 	m_Friend = 0;
 	if (tag->HaveFile()) {
 		m_uploadingfile = theApp->knownfiles->GetByID(tag->FileID());
@@ -1208,7 +1202,7 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 	CUpDownClient *client = new CUpDownClient(tag);
 	ProcessItemUpdate(tag, client);
 	
-	theApp->amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, (ViewType)m_viewtype);
+	//theApp->amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, (ViewType)m_viewtype);
 	
 	return client;
 }
@@ -1216,8 +1210,7 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 
 void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 {
-	theApp->amuledlg->m_transferwnd->clientlistctrl->
-		RemoveClient(client, (ViewType)m_viewtype);
+	//theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, (ViewType)m_viewtype);
 	delete client;
 }
 

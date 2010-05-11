@@ -221,6 +221,11 @@ public:
 	 */
 	bool DeleteColumn(int WXUNUSED(col))	{ wxFAIL; return false; }
 
+	/**
+	 * Indicates if we're in the process of sorting.
+	 */
+	bool IsSorting() const { return m_isSorting; }
+	
 protected:
 
 	/**
@@ -395,6 +400,14 @@ private:
 	typedef std::pair<unsigned, unsigned> CColPair;
 	typedef std::list<CColPair> CSortingList;
 
+	class MuleSortData {
+	public:
+		MuleSortData(CSortingList sort_orders, MuleListCtrlCompare sort_func) : m_sort_orders(sort_orders), m_sort_func(sort_func) { };
+		
+		CSortingList m_sort_orders;
+		MuleListCtrlCompare m_sort_func;
+	};	
+	
 	//! This list contains in order the columns sequence to sort by.
 	CSortingList m_sort_orders;
 
@@ -443,6 +456,9 @@ private:
 	/// Container for column names, sorted by column index.
 	ColNameList	m_column_names;
 
+	// True while sorting.
+	bool m_isSorting;
+	
 	DECLARE_EVENT_TABLE()
 };
 
