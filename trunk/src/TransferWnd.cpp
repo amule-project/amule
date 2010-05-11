@@ -302,7 +302,7 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 }
 
 
-void CTransferWnd::ShowQueueCount(uint32 number)
+void CTransferWnd::ShowQueueCount(uint32 /*number*/)
 {
 #if 0
 	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theStats::GetBannedCount(), _("Banned") );

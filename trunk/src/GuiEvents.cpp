@@ -317,7 +317,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SourceCtrlUpdateSource(CUpDownClient* source, SourceItemType type)
+	void SourceCtrlUpdateSource(CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
@@ -344,7 +344,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType type)
+	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
@@ -353,7 +353,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SharedCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), SourceItemType type)
+	void SharedCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {

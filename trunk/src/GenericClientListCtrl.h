@@ -59,7 +59,7 @@ enum GenericColumnEnum {
 
 struct CGenericClientListCtrlColumn {
 	GenericColumnEnum cid;
-	wxChar* name;
+	wxString name;
 	int width;
 };
 
