@@ -292,7 +292,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 	
 	// The stored vector is sorted, as it the received one, so we can use binary_search
 
-	for (int i = 0; i < m_knownfiles.size(); ++i) {
+	for (unsigned i = 0; i < m_knownfiles.size(); ++i) {
 		// Files that are not in the new list must have show set to false.
 		if (!std::binary_search(files.begin(), files.end(), m_knownfiles[i])) {
 			m_knownfiles[i]->SetShowSources( false );
@@ -303,7 +303,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 	// that function is just a inline setter, so any way to prevent it would be wasteful,
 	// but this must be reviewed if that fact changes.
 
-	for (int i = 0; i < files.size(); ++i) {
+	for (unsigned i = 0; i < files.size(); ++i) {
 		files[i]->SetShowSources( true );
 	}
 	
@@ -321,7 +321,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 		}
 	}
 	
-	for (int i = 0; i < files.size(); ++i) {
+	for (unsigned i = 0; i < files.size(); ++i) {
 		
 		// Only those that weren't showing already
 		if (!std::binary_search(m_knownfiles.begin(), m_knownfiles.end(), files[i])) {
@@ -417,7 +417,7 @@ ItemList GetSelectedItems( CGenericClientListCtrl* list )
 void CGenericClientListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 {
 	
-	for (int i =0; i < m_knownfiles.size(); ++i) {
+	for (unsigned i = 0; i < m_knownfiles.size(); ++i) {
 		wxCHECK_RET(m_knownfiles[i]->IsPartFile(), wxT("File is not a partfile when swapping sources"));
 	}
 
@@ -542,10 +542,10 @@ void CGenericClientListCtrl::OnMouseMiddleClick(wxListEvent& evt)
 void CGenericClientListCtrl::OnKeyPressed( wxKeyEvent& event )
 {
 	// No actions right now.
-	switch (event.GetKeyCode()) {
-		default:
+	//switch (event.GetKeyCode()) {
+	//	default:
 			event.Skip();
-	}
+	//}
 }
 
 
@@ -746,7 +746,7 @@ void CGenericClientListCtrl::DrawClientItem(
 				const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
 				dc->DrawBitmap(countrydata.Flag,
 					rect.x + 40, rect.y + 5,
-					wxIMAGELIST_DRAW_TRANSPARENT);
+					wxIMAGELIST_DRAW_TRANSPARENT != 0);
 				
 				userName << countrydata.Name;
 				

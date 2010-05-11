@@ -379,7 +379,7 @@ void CMuleListCtrl::SortList()
 		SortItems(SortProc, (long int)&sortdata);
 		
 		// Re-select the selected items.
-		for (int i = 0; i < selectedItems.size(); ++i) {
+		for (unsigned i = 0; i < selectedItems.size(); ++i) {
 			long it_pos = FindItem(-1, selectedItems[i]);
 			if (it_pos != -1) {
 				SetItemState(it_pos, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
