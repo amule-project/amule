@@ -1263,7 +1263,7 @@ wxString CDynProgressImage::GetHTML()
 				if ( lastcolor & PBAR_COLOR_GREEN ) { // green
 					color_idx = 2;
 				} else {
-					if ( lastcolor & PBAR_COLOR_BLUE ) ) { // red
+					if ( lastcolor & PBAR_COLOR_BLUE ) { // red
 						color_idx = 3;
 					} else {
 						color_idx = 1;
