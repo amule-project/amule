@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -44,8 +44,8 @@ class CED2KFileLink;
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
 #define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
 
-// Ok, eMule and aMule are building incompatible backup files because 
-// of the different name. aMule was using ".BAK" and eMule ".bak". 
+// Ok, eMule and aMule are building incompatible backup files because
+// of the different name. aMule was using ".BAK" and eMule ".bak".
 // This should fix it.
 #define   PARTMET_BAK_EXT wxT(".bak")
 
@@ -91,17 +91,17 @@ typedef std::map<uint32,SourcenameItem> SourcenameItemMap;
 class CPartFile : public CKnownFile {
 public:
 	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
-	
+
 	CPartFile();
 #ifdef CLIENT_GUI
 	CPartFile(CEC_PartFile_Tag *tag);
-#else 
+#else
 	virtual void	SetFileName(const CPath& filename);
 #endif
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
 	CPartFile(const CED2KFileLink* fileLink);
 	virtual ~CPartFile();
-	
+
 	bool	CreateFromFile(wxString WXUNUSED(directory), wxString WXUNUSED(filename), void* WXUNUSED(pvProgressParam)) {return false;}// not supported in this class
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool LoadFromFile(const CFileDataIO* WXUNUSED(file)) { return false; }
@@ -111,14 +111,18 @@ public:
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(const CPath& in_directory, const CPath& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
+
+	/** Called simultanously for each part of a file being hashed. */
+	void    PartFileHashProgress(uint16 partshashed);
+
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
-	
+
 	bool    CheckShowItemInGivenCat(int inCategory);
 
 	bool	IsComplete(uint64 start, uint64 end)	{ return m_gaplist.IsComplete(start, end); }
 	bool	IsComplete(uint16 part)					{ return m_gaplist.IsComplete(part); }
-	
+
 	void	UpdateCompletedInfos();
 
 	bool	GetNextRequestedBlock(CUpDownClient* sender, std::vector<Requested_Block_Struct*>& toadd, uint16& count);
@@ -139,6 +143,8 @@ public:
 	const CPath& GetFullName() const	{ return m_fullname; }
 	float	GetKBpsDown() const			{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
+	uint16  GetHashedPartCount() const  { return m_HashedPartCount; }
+	void    SetHashedPartCount(uint16 hashedPartCount) { m_HashedPartCount = hashedPartCount; }
 
 #ifndef CLIENT_GUI
 	uint16	GetSourceCount() const		{ return (uint16)m_SrcList.size(); }
@@ -152,11 +158,11 @@ public:
 	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
 	//void	SetNotCurrentSourcesCount(uint16 new_count)	{ m_notCurrentSources = new_count; };	
 	uint16	GetValidSourcesCount() const	{ return m_validSources; };
-	
+
 	uint64	GetNeededSpace();
-	
+
 	virtual wxString GetFeedback() const;
-	
+
 	wxString getPartfileStatus() const; //<<--9/21/02
 	sint32	getTimeRemaining() const; //<<--9/21/02
 	time_t	lastseencomplete;
@@ -164,7 +170,7 @@ public:
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
-	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);	
+	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);
 
 	// Barry - Is archive recovery in progress
 	volatile bool m_bRecoveringArchive;
@@ -196,7 +202,7 @@ public:
 
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);
-	
+
 	uint8	GetCategory() const { return m_category; }
 	void	SetCategory(uint8 cat);
 
@@ -209,13 +215,13 @@ public:
 	void	SetActive(bool bActive);
 	uint32	GetDlActiveTime() const;
 	bool	GetInsufficient() const		{ return m_insufficient; }
-	
-	void	CompleteFileEnded(bool errorOccured, const CPath& newname);	
+
+	void	CompleteFileEnded(bool errorOccured, const CPath& newname);
 
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
 
 	void	RequestAICHRecovery(uint16 nPart);
-	void	AICHRecoveryDataAvailable(uint16 nPart);	
+	void	AICHRecoveryDataAvailable(uint16 nPart);
 
 	/**
 	 * This function is used to update source-counts.
@@ -223,11 +229,11 @@ public:
 	 * @param oldState The old state of the client, or -1 to ignore.
 	 * @param newState The new state of the client, or -1 to ignore.
 	 *
-	 * Call this function for a client belonging to this file, which has changed 
-	 * its state. The value -1 can be used to make the function ignore one of 
+	 * Call this function for a client belonging to this file, which has changed
+	 * its state. The value -1 can be used to make the function ignore one of
 	 * the two states.
 	 *
-	 * AddSource and DelSource takes care of calling this function when a source is 
+	 * AddSource and DelSource takes care of calling this function when a source is
 	 * removed, so there's no need to call this function when calling either of those.
 	 */
 	void	ClientStateChanged( int oldState, int newState );
@@ -241,7 +247,7 @@ public:
 	 * @param client The clients whoose available parts should be considered.
 	 * @param increment If true, the counts are incremented, otherwise they are decremented.
 	 *
-	 * This functions updates the frequency list of file-parts, using the clients 
+	 * This functions updates the frequency list of file-parts, using the clients
 	 * parts-status. This function should be called by clients every time they update their
 	 * parts-status, or when they are added or removed from the file.
 	 */
@@ -273,11 +279,11 @@ public:
 	 * sources and should not be added to the partfile.
 	 */
 	bool		IsDeadSource(const CUpDownClient* client);
-	
+
 	/* Kad Stuff */
 	uint16	GetMaxSources() const;
 	uint16	GetMaxSourcePerFileSoft() const;
-	uint16	GetMaxSourcePerFileUDP() const;		 
+	uint16	GetMaxSourcePerFileUDP() const;
 
 	void GetRatingAndComments(FileRatingList & list) const;
 
@@ -293,7 +299,7 @@ private:
 #endif
 
 	uint16	m_notCurrentSources;
-	
+
 	uint32	m_validSources;
 
 	void	AddGap(uint64 start, uint64 end);
@@ -307,15 +313,15 @@ private:
 	void	Init();
 
 	bool	CheckFreeDiskSpace( uint64 neededSpace = 0 );
-	
+
 	bool	IsCorruptedPart(uint16 partnumber);
-	
+
 	uint32	m_iLastPausePurge;
 	uint16	m_count;
 	uint16	transferingsrc;
 	uint64  completedsize;
 	uint64	transferred;
-	
+
 	uint64	m_iLostDueToCorruption;
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
@@ -339,13 +345,16 @@ private:
 	uint32	m_ClientSrcAnswered;
 	bool	m_bPercentUpdated;
 
+	//! Number of parts of the file that have been hashed (when a download is finished)
+	uint16 m_HashedPartCount;
+
 	void	PerformFileComplete();
 
 	uint32		m_lastRefreshedDLDisplay;
 
 	// Buffered data to be written
 	std::list<class PartFileBufferedData*> m_BufferedData_list;
-	
+
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
 
@@ -364,7 +373,7 @@ private:
 	FileRatingList m_FileRatingList;
 	const FileRatingList &GetFileRatingList() { return m_FileRatingList; }
 	void ClearFileRatingList() { m_FileRatingList.clear(); }
-	void AddFileRatingList(const wxString & u, const wxString & f, sint16 r, const wxString & c) { 
+	void AddFileRatingList(const wxString & u, const wxString & f, sint16 r, const wxString & c) {
 	       m_FileRatingList.push_back(SFileRating(u, f, r, c)); }
 
 	uint32 	m_kbpsDown;
@@ -379,9 +388,9 @@ public:
 public:
 	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }
 	void SetHashSetNeeded(bool value)			{ m_hashsetneeded = value; }
-	
+
 	uint64  GetCompletedSize() const			{ return completedsize; }
-	void	SetCompletedSize(uint64 size)		{ completedsize = size; }	
+	void	SetCompletedSize(uint64 size)		{ completedsize = size; }
 
 	bool IsLocalSrcRequestQueued() const		{ return m_localSrcReqQueued; }
 	void SetLocalSrcRequestQueued(bool value) 	{ m_localSrcReqQueued = value; }
@@ -391,27 +400,27 @@ public:
 
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
-	
+
 //	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
 
 	void AddDownloadingSource(CUpDownClient* client);
-          
+
 	void RemoveDownloadingSource(CUpDownClient* client);
 	void SetStatus(uint8 in);
 	void StopPausedFile();
 
-	// [sivka / Tarod] Imported from eMule 0.30c (Creteil) ... 
+	// [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
 	void SetA4AFAuto(bool in)		{ m_is_A4AF_auto = in; }
 	bool IsA4AFAuto() const			{ return m_is_A4AF_auto; }
-	
+
 	// Kry -Sources seeds
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
-	
+
 	// Dropping slow sources
 	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller);
 
-  // Read data for sharing
+    // Read data for sharing
 	bool ReadData(class CFileArea & area, uint64 offset, uint32 toread);
 
 private:

@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -66,7 +66,7 @@ class CValueMap {
 		std::map<ec_tagname_t, CMD4Hash> m_map_md4;
 		std::map<ec_tagname_t, wxString> m_map_string;
 		std::map<ec_tagname_t, CECTag> m_map_tag;
-		
+
 		template <class T>
 		void CreateTagT(ec_tagname_t tagname, T value, std::map<ec_tagname_t, T> &map, CECTag *parent)
 		{
@@ -79,7 +79,7 @@ class CValueMap {
 		CValueMap()
 		{
 		}
-		
+
 		CValueMap(const CValueMap &valuemap)
 		{
 			m_map_uint8 = valuemap.m_map_uint8;
@@ -90,37 +90,37 @@ class CValueMap {
 			m_map_string = valuemap.m_map_string;
 			m_map_tag = valuemap.m_map_tag;
 		}
-		
+
 		void CreateTag(ec_tagname_t tagname, uint8 value, CECTag *parent)
 		{
 			CreateTagT<uint8>(tagname, value, m_map_uint8, parent);
 		}
-		
+
 		void CreateTag(ec_tagname_t tagname, uint16 value, CECTag *parent)
 		{
 			CreateTagT<uint16>(tagname, value, m_map_uint16, parent);
 		}
-		
+
 		void CreateTag(ec_tagname_t tagname, uint32 value, CECTag *parent)
 		{
 			CreateTagT<uint32>(tagname, value, m_map_uint32, parent);
 		}
-		
+
 		void CreateTag(ec_tagname_t tagname, uint64 value, CECTag *parent)
 		{
 			CreateTagT<uint64>(tagname, value, m_map_uint64, parent);
 		}
-		
+
 		void CreateTag(ec_tagname_t tagname, CMD4Hash value, CECTag *parent)
 		{
 			CreateTagT<CMD4Hash>(tagname, value, m_map_md4, parent);
 		}
-		
+
 		void CreateTag(ec_tagname_t tagname, wxString value, CECTag *parent)
 		{
 			CreateTagT<wxString>(tagname, value, m_map_string, parent);
 		}
-		
+
 		bool AddTag(const CECTag &tag, CECTag *parent)
 		{
 			bool ret = false;
@@ -145,16 +145,16 @@ class CEC_Category_Tag : public CECTag {
  		// for create-upate commands
  		CEC_Category_Tag(uint32 cat_index, wxString name, wxString path,
 			wxString comment, uint32 color, uint8 prio);
- 		
+
  		bool Apply();
  		bool Create();
- 		
+
  		wxString Name() const { return GetTagByNameSafe(EC_TAG_CATEGORY_TITLE)->GetStringData(); }
  		wxString Path() const { return GetTagByNameSafe(EC_TAG_CATEGORY_PATH)->GetStringData(); }
  		wxString Comment() const { return GetTagByNameSafe(EC_TAG_CATEGORY_COMMENT)->GetStringData(); }
  		uint8 Prio() const { return GetTagByNameSafe(EC_TAG_CATEGORY_PRIO)->GetInt(); }
  		uint32 Color() const { return GetTagByNameSafe(EC_TAG_CATEGORY_COLOR)->GetInt(); }
- 		
+
 };
 
 class CEC_Prefs_Packet : public CECPacket {
@@ -167,7 +167,7 @@ class CEC_Prefs_Packet : public CECPacket {
 class CEC_Server_Tag : public CECTag {
  	public:
  		CEC_Server_Tag(const CServer *, EC_DETAIL_LEVEL);
- 		
+
  		wxString ServerName() const { return GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData(); }
  		wxString ServerDesc() const { return GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData(); }
 
@@ -180,7 +180,7 @@ class CEC_Server_Tag : public CECTag {
  		uint32 GetFiles() const { return GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt(); }
  		uint32 GetUsers() const { return GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt(); }
  		uint32 GetMaxUsers() const { return GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt(); }
- 		
+
  		// we're not using incremental update on server list,
  		// but template code needs it
  		uint32 ID() const { return 0; }
@@ -204,14 +204,15 @@ class CEC_ConnState_Tag : public CECTag {
 
 class CEC_SharedFile_Tag : public CECTag {
 	public:
- 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, 
+ 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level,
 							CValueMap *valuemap = NULL, ec_tagname_t name = EC_TAG_KNOWNFILE);
- 		
+
 		// template needs it
  		uint32		ID()		const { return GetInt(); }
-		
+
  		CMD4Hash	FileHash()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_HASH)->GetMD4Data(); }
 		wxString	FileHashString() const { return FileHash().Encode(); }
+		uint16		PartMetID()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_PARTMETID)->GetInt(); }
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		wxString	FilePath()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_FILENAME)->GetStringData(); }
@@ -236,14 +237,15 @@ class CEC_SharedFile_Tag : public CECTag {
 
 		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
 	private:
-		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
+		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore!
 };
 
 class CEC_PartFile_Tag : public CEC_SharedFile_Tag {
  	public:
  		CEC_PartFile_Tag(const CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
- 		
+
 		uint16		PartMetID()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_PARTMETID)->GetInt(); }
+		uint16      FileHashedPartCount(uint16 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_HASHED_PART_COUNT, target); }
 
  		uint64		SizeXfer(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
   		uint64		SizeDone(uint64 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, target); }
@@ -280,29 +282,29 @@ class CEC_UpDownClient_Tag : public CECTag {
 		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, CValueMap* valuemap);
 
 		uint32 ID() const { return GetInt(); }
-		
+
  		uint32 FileID() const { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetInt(); }
  		CMD4Hash UserHash() const { return GetTagByNameSafe(EC_TAG_CLIENT_HASH)->GetMD4Data(); }
  		uint32 UserID(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_USER_ID, target); }
- 		
+
  		bool HaveFile() const { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
  		wxString ClientName() const { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
  		uint32 SpeedUp(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UP_SPEED, target); }
  		float SpeedDown(float *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWN_SPEED, target); }
- 		
+
  		uint64 XferUp(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_TOTAL, target); };
  		uint64 XferDown(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_TOTAL, target); }
  		uint64 XferUpSession(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_SESSION, target); }
  		uint64 XferDownSession(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
- 		
+
  		bool IsFriend() const { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
- 		
+
  		uint8 ClientSoftware() const { return GetTagByNameSafe(EC_TAG_CLIENT_SOFTWARE)->GetInt(); }
- 		
+
  		uint8 ClientUploadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_STATE, target); }
  		uint8 ClientDownloadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_STATE, target); }
- 		
+
  		uint32 WaitTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAIT_TIME, target); }
  		uint32 XferTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_XFER_TIME, target); }
  		uint32 LastReqTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_LAST_TIME, target); }
@@ -324,7 +326,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 		bool HasObfuscatedConnection(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, target); }
 		bool HasExtendedProtocol(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_EXT_PROTOCOL, target); }
 	private:
-		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
+		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore!
 };
 
 class CEC_SearchFile_Tag : public CECTag {
@@ -344,7 +346,7 @@ class CEC_SearchFile_Tag : public CECTag {
 		bool		AlreadyHave()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt() != 0; /* == CSearchFile::NEW */ }
 		uint32		DownloadStatus(uint32 *target = 0)	const { return AssignIfExist(EC_TAG_PARTFILE_STATUS, target); }
 	private:
-		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
+		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore!
 };
 
 class CEC_Search_Tag : public CECTag {
@@ -352,7 +354,7 @@ class CEC_Search_Tag : public CECTag {
 		// search request
 		CEC_Search_Tag(const wxString &name, EC_SEARCH_TYPE search_type, const wxString &file_type,
 			const wxString &extension, uint32 avail, uint64 min_size, uint64 max_size);
-			
+
 		wxString SearchText() const { return GetTagByNameSafe(EC_TAG_SEARCH_NAME)->GetStringData(); }
 		EC_SEARCH_TYPE SearchType() const { return (EC_SEARCH_TYPE)GetInt(); }
 		uint64 MinSize() const { return GetTagByNameSafe(EC_TAG_SEARCH_MIN_SIZE)->GetInt(); }

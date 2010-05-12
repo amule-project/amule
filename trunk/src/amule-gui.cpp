@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -68,7 +68,7 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_MULE_TIMER(ID_CORE_TIMER_EVENT, CamuleGuiApp::OnCoreTimer)
 
 	EVT_MULE_NOTIFY(CamuleGuiApp::OnNotifyEvent)
-	
+
 	// Async dns handling
 	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
 
@@ -76,9 +76,12 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	EVT_MULE_INTERNAL(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleGuiApp::OnServerDnsDone)
 
+    // Hashing proceeded notifier
+	EVT_MULE_HASHING_PROCEEDED(CamuleGuiApp::OnProgressHashing)
+
 	// Hash ended notifier
-	EVT_MULE_HASHING(CamuleGuiApp::OnFinishedHashing)
-	EVT_MULE_AICH_HASHING(CamuleGuiApp::OnFinishedAICHHashing)
+	EVT_MULE_HASHING_COMPLETED(CamuleGuiApp::OnFinishedHashing)
+	EVT_MULE_AICH_HASHING_COMPLETED(CamuleGuiApp::OnFinishedAICHHashing)
 
 	// File completion ended notifier
 	EVT_MULE_FILE_COMPLETED(CamuleGuiApp::OnFinishedCompletion)
@@ -182,7 +185,7 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 			}
 		}
 	}
-	
+
 	// Should default/last-used position be overridden?
 #ifdef SVNDATE
 	#ifdef CLIENT_GUI
@@ -218,7 +221,7 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 		wxTheClipboard->SetData(new wxTextDataObject(strText));
 		wxTheClipboard->Close();
 	}
-	
+
 	return ClipBoardOpen;
 }
 
@@ -256,13 +259,13 @@ int CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 int CamuleGuiApp::OnExit()
 {
 	delete core_timer;
-	
-	return CamuleApp::OnExit();	
+
+	return CamuleApp::OnExit();
 }
 
 
 void CamuleGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
-{		
+{
 	amuledlg->DlgShutDown();
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
