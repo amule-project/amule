@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,6 +55,14 @@ typedef uint32_t COLORTYPE;
 #undef RGB
 #endif
 
+//-------------------------------------------------------------------
+#define PBAR_COLOR_BLUE       RGB( 255,   0,   0 )
+#define PBAR_COLOR_LIGHTBLUE  RGB( 255, 208,   0 )
+#define PBAR_COLOR_GREEN      RGB(   0, 255,   0 )
+#define PBAR_COLOR_RED        RGB(   0,   0, 255 )
+#define PBAR_COLOR_BLACK      RGB(   0,   0,   0 )
+
+// actually the color values are stored as BGR
 inline unsigned long RGB(int r, int g, int b)
 {
 	return ((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xff);
@@ -184,9 +192,9 @@ CParsedUrl::CParsedUrl(const wxString &url)
 
 	if ( url.Find('?') != -1 ) {
 		m_file.Truncate(m_file.Find('?'));
-		
+
 		wxString params = url.AfterFirst('?');
-		
+
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
 			wxString param_val = tkz.GetNextToken();
@@ -221,7 +229,7 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_ImageLib(templateDir)
 {
 	webInterface = webApp;
-	
+
 	//
 	// Init stat graphs
 #ifdef WITH_LIBPNG
@@ -234,7 +242,7 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_ImageLib.AddImage(new CDynStatisticImage(200, false, m_Stats.KadCount()),
 		wxT("/amule_stats_kad.png"));
 #endif
-	
+
 	m_upnpEnabled = webInterface->m_UPnPWebServerEnabled;
 	m_upnpTCPPort = webInterface->m_UPnPTCPPort;
 
@@ -265,7 +273,7 @@ void CWebServerBase::StartServer()
 	wxIPV4address addr;
 	addr.AnyAddress();
 	addr.Service(webInterface->m_WebserverPort);
-	
+
 	m_webserver_socket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
 	m_webserver_socket->SetEventHandler(*this, ID_WEBLISTENSOCKET_EVENT);
 	m_webserver_socket->SetNotify(wxSOCKET_CONNECTION_FLAG);
@@ -293,7 +301,7 @@ void CWebServerBase::StopServer()
 void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
 {
 	CWebSocket *client = new CWebSocket(this);
-	
+
     if ( m_webserver_socket->AcceptWith(*client, false) ) {
     	webInterface->Show(_("web client connection accepted\n"));
     } else {
@@ -334,7 +342,7 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 	// To prevent access to non-template images, we disallow use of paths in filenames.
 	wxString imgName = wxT("/") + wxFileName(Data.parsedURL.File()).GetFullName();
 	CAnyImage *img = m_ImageLib.GetImage(imgName);
-	
+
 	// Only static images are available to visitors, in order to prevent
 	// information leakage, but still allowing images on the login page.
 	if (img && (session->m_loggedin || dynamic_cast<CFileImage*>(img))) {
@@ -385,7 +393,7 @@ void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint3
 	CECPacket *ec_cmd = 0;
 	CMD4Hash fileHash;
 	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
-	
+
 	CECTag hashtag(EC_TAG_KNOWNFILE, fileHash);
 	if (cmd == wxT("prio")) {
 		ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
@@ -405,7 +413,7 @@ void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint3
 				GetLowerPrioShared(file->nFilePriority, file->bFileAutoPriority)));
 		}
 	}
-	
+
 	if ( ec_cmd ) {
 		ec_cmd->AddTag(hashtag);
 		Send_Discard_V2_Request(ec_cmd);
@@ -424,7 +432,7 @@ void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uin
 	CECPacket *ec_cmd = 0;
 	CMD4Hash fileHash;
 	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
-	
+
 	CECTag hashtag(EC_TAG_PARTFILE, fileHash);
 	if (cmd == wxT("pause")) {
 		ec_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
@@ -462,7 +470,7 @@ void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 {
 	CMD4Hash fileHash;
 	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
-	
+
 	CECPacket ec_cmd(EC_OP_DOWNLOAD_SEARCH_RESULT);
 	CECTag link_tag(EC_TAG_KNOWNFILE, fileHash);
 
@@ -477,13 +485,13 @@ void CWebServerBase::Send_AddServer_Cmd(wxString addr, wxString port, wxString n
 
 	addr.Trim();
 	port.Trim();
-	
+
 	CECTag srv_tag(EC_TAG_SERVER, addr + wxT(":") + port);
 	srv_tag.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, addr + wxT(":") + port));
 	srv_tag.AddTag(CECTag(EC_TAG_SERVER_NAME, name));
-	
+
 	ec_cmd.AddTag(srv_tag);
-	
+
 	Send_Discard_V2_Request(&ec_cmd);
 }
 
@@ -541,7 +549,7 @@ int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *sour
 	if (err != Z_OK) {
 		return err;
 	}
-	
+
 	snprintf((char*)dest, *destLen, "%c%c%c%c%c%c%c%c%c%c", gz_magic[0], gz_magic[1],
 		Z_DEFLATED, 0 /*flags*/, 0,0,0,0 /*time*/, 0 /*xflags*/, 255);
 
@@ -570,13 +578,13 @@ int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *sour
 	*(((Bytef*) dest)+10+stream.total_out+7) = (Bytef)(( sourceLen >>24) &	0xFF);
 	// return  destLength
 	*destLen = 10 + stream.total_out + 8;
-	
+
 	return err;
 }
 
 
 
-/* 
+/*
  * Item container implementation
  */
 
@@ -590,7 +598,7 @@ ServersInfo *ServersInfo::m_This = 0;
 ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry>(webApp)
 {
 	m_This = this;
-	
+
 }
 
 bool ServersInfo::ReQuery()
@@ -605,7 +613,7 @@ bool ServersInfo::ReQuery()
 	EraseAll();
 	for (CECPacket::const_iterator it = srv_reply->begin(); it != srv_reply->end(); it++) {
 		const CECTag *tag = & *it;
-		
+
 		ServerEntry Entry;
 		Entry.sServerName =
 			_SpecialChars(tag->GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData());
@@ -623,7 +631,7 @@ bool ServersInfo::ReQuery()
 		AddItem(Entry);
 	}
 	delete srv_reply;
-	
+
 	return true;
 }
 
@@ -634,7 +642,7 @@ SharedFile::SharedFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 		lFileSize = tag->SizeFull();
 		sED2kLink = _SpecialChars(tag->FileEd2kLink());
 		nHash = tag->FileHash();
-		
+
 		ProcessUpdate(tag);
 }
 
@@ -688,10 +696,13 @@ DownloadFile::DownloadFile(CEC_PartFile_Tag *tag) : CECID(tag->ID())
 	lFileCompleted = tag->SizeDone();
 	lFileTransferred = tag->SizeXfer();
 	lFileSpeed = tag->Speed();
-	fCompleted = (100.0*lFileCompleted) / lFileSize;
+	fCompleted = (100.0 * lFileCompleted) / lFileSize;
 	wxtLastSeenComplete = wxDateTime( tag->LastSeenComplete() );
-	
-	ProcessUpdate(tag);							
+
+	m_PartCount = lFileSize / PARTSIZE + 1;
+	m_HashedPartCount = tag->FileHashedPartCount();
+
+	ProcessUpdate(tag);
 }
 
 void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
@@ -699,7 +710,7 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	if (!tag) {
 		return;
 	}
-	
+
 	lFilePrio = tag->DownPrio();
 	if ( lFilePrio >= 10 ) {
 		lFilePrio -= 10;
@@ -708,12 +719,48 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		bFileAutoPriority = false;
 	}
 	nCat = tag->FileCat();
-	
-	nFileStatus = tag->FileStatus();
+
+    CECTag *file_status_tag = tag->GetTagByName(EC_TAG_PARTFILE_STATUS);
+    if(file_status_tag) {
+        nFileStatus = tag->FileStatus();
+        printf("ProcessUpdate (%s) file status changed to %d.\n", (const char *)unicode2char(sFileName), nFileStatus);
+    }
 	lSourceCount = tag->SourceCount();
 	lNotCurrentSourceCount = tag->SourceNotCurrCount();
 	lTransferringSourceCount = tag->SourceXferCount();
 	lSourceCountA4AF = tag->SourceCountA4AF();
+
+    // TODO: update of tags for hashing does not occur like expected. also the status changes to 0 and 1 sometimes.
+    //       find out why and how the status changes? maybe it's not in the update and status gets assigned with 0 then. dunno :-X
+    if(nFileStatus == PS_HASHING) {
+        CECTag *hash_count_tag = tag->GetTagByName(EC_TAG_PARTFILE_HASHED_PART_COUNT);
+        if(hash_count_tag) {
+            m_HashedPartCount = tag->FileHashedPartCount();
+            printf("ProcessUpdate (%s) updated HPC to %d.\n", (const char *)unicode2char(sFileName), m_HashedPartCount);
+        }
+    } else {
+        CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+        CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+        CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+
+        if (gaptag) {
+            m_Encoder.DecodeGaps(gaptag, m_Gaps);
+        }
+        if (parttag) {
+            m_Encoder.DecodeParts(parttag, m_PartInfo);
+        }
+        if (reqtag) {
+            ArrayOfUInts64 reqs;
+            m_Encoder.DecodeReqs(reqtag, reqs);
+            int reqcount = reqs.size() / 2;
+            m_ReqParts.resize(reqcount);
+            for (int i = 0; i < reqcount;i++) {
+                m_ReqParts[i].start = reqs[2*i];
+                m_ReqParts[i].end   = reqs[2*i+1];
+            }
+        }
+    }
+
 	if ( lTransferringSourceCount > 0 ) {
 		lFileCompleted = tag->SizeDone();
 		lFileTransferred = tag->SizeXfer();
@@ -721,26 +768,6 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		fCompleted = (100.0*lFileCompleted) / lFileSize;
 	} else {
 		lFileSpeed = 0;
-	}
-	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
-
-	if (gaptag) {
-		m_Encoder.DecodeGaps(gaptag, m_Gaps);
-	}
-	if (parttag) {
-		m_Encoder.DecodeParts(parttag, m_PartInfo);
-	}
-	if (reqtag) {
-		ArrayOfUInts64 reqs;
-		m_Encoder.DecodeReqs(reqtag, reqs);
-		int reqcount = reqs.size() / 2;
-		m_ReqParts.resize(reqcount);
-		for (int i = 0; i < reqcount;i++) {
-			m_ReqParts[i].start = reqs[2*i];
-			m_ReqParts[i].end   = reqs[2*i+1];
-		}
 	}
 }
 
@@ -786,7 +813,7 @@ void DownloadFileInfo::ItemDeleted(DownloadFile *item)
 bool DownloadFileInfo::ReQuery()
 {
 	DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
-	
+
 	return true;
 }
 
@@ -822,13 +849,13 @@ bool UploadsInfo::ReQuery()
 	// query succeded - flush existing values and refill
 	EraseAll();
 	for (CECPacket::const_iterator it = up_reply->begin(); it != up_reply->end(); it++) {
-		
+
 		UploadFile curr((CEC_UpDownClient_Tag *) & *it);
-		
+
 		AddItem(curr);
 	}
 	delete up_reply;
-	
+
 	return true;
 }
 
@@ -863,18 +890,18 @@ SearchInfo::SearchInfo(CamulewebApp *webApp) :
 bool SearchInfo::ReQuery()
 {
 	DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
-	
+
 	return true;
 }
 
 
 /*!
  * Image classes:
- * 
+ *
  * CFileImage: simply represent local file
  * CDynProgressImage: dynamically generated from gap info
  */
- 
+
 CAnyImage::CAnyImage(int size)
 {
 	m_size = 0;
@@ -970,7 +997,7 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0)
 /*!
  * "Modifiers" for 3D look of progress bar. Those modifiers must be substracted from
  * image (with saturation), values, and not multiplied, as amule doesn for some reason.
- * 
+ *
  */
 CImage3D_Modifiers::CImage3D_Modifiers(int width)
 {
@@ -1002,98 +1029,116 @@ CProgressImage::~CProgressImage()
 
 void CProgressImage::CreateSpan()
 {
-	// Step 1: get gap list
-	const Gap_Struct * gap_list = (const Gap_Struct *) &(m_file->m_Gaps[0]);
-	int gap_list_size = m_file->m_Gaps.size() / 2;
-	
-	// allocate for worst case !
-	int color_gaps_alloc = 2 * (2 * gap_list_size + m_file->lFileSize / PARTSIZE + 1);
-	Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
-	
-	// Step 2: combine gap and part status information
-	
-	// Init first item to dummy info, so we will always have "previous" item
-	int colored_gaps_size = 0;
-	colored_gaps[0].start = 0;
-	colored_gaps[0].end = 0;
-	colored_gaps[0].color = 0xffffffff;
-	for (int j = 0; j < gap_list_size;j++) {
-		uint64 gap_start = gap_list[j].start;
-		uint64 gap_end = gap_list[j].end;
+    if( m_file->nFileStatus == PS_HASHING ) {
+        if( !m_file ) {
+            printf("CreateSpan (%s): m_file points to NULL.\n", (const char *)unicode2char(m_file->sFileName));
+        } else if ( m_file->m_PartCount == 0 ) {
+            printf("CreateSpan (%s): divide by zero part count.");
+        } else {
+            int green_pixel_count = m_width * m_file->m_HashedPartCount / m_file->m_PartCount;
+            // If the file is being hashed, we set the progress bar in two steps:
+            // first: left side becomes green signaling the hash progress
+            for(int i = 0; i < green_pixel_count; ++i) {
+                m_ColorLine[i] = PBAR_COLOR_GREEN;
+            }
+            // second: right side becomes black signaling the remaining parts to hash
+            for(int i = green_pixel_count; i < m_width; ++i) {
+                m_ColorLine[i] = PBAR_COLOR_BLACK;
+            }
+        }
+    } else {
+        // Step 1: get gap list
+        const Gap_Struct * gap_list = (const Gap_Struct *) &(m_file->m_Gaps[0]);
+        int gap_list_size = m_file->m_Gaps.size() / 2;
 
-		uint32 start = gap_start / PARTSIZE;
-		uint32 end = (gap_end / PARTSIZE) + 1;
+        // allocate for worst case !
+        int color_gaps_alloc = 2 * (2 * gap_list_size + m_file->lFileSize / PARTSIZE + 1);
+        Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
 
-		for (uint32 i = start; i < end; i++) {
-			COLORTYPE color = RGB(255, 0, 0);
-			if (m_file->m_PartInfo.size() > i && m_file->m_PartInfo[i]) {
-				int blue = 210 - ( 22 * ( m_file->m_PartInfo[i] - 1 ) );
-				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
-			}
+        // Step 2: combine gap and part status information
 
-			uint64 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
-			uint64 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
-			
-			wxASSERT(colored_gaps_size < color_gaps_alloc);
-			
-			if ( (colored_gaps[colored_gaps_size].end == fill_gap_begin) &&
-				(colored_gaps[colored_gaps_size].color == color) ) {
-				colored_gaps[colored_gaps_size].end = fill_gap_end;
-			} else {
-				colored_gaps_size++;
-				colored_gaps[colored_gaps_size].start = fill_gap_begin;
-				colored_gaps[colored_gaps_size].end = fill_gap_end;
-				colored_gaps[colored_gaps_size].color = color;
-			}
-		}
-		
-	}
-	//
-	// Now line rendering
-	for(int i = 0; i < m_width; ++i) {
-		m_ColorLine[i] = 0x0;
-	}	
-	if (m_file->lFileSize < (uint32)m_width) {
-		//
-		// if file is that small, draw it in single step
-		//
-		if (m_file->m_ReqParts.size()) {
-			for(int i = 0; i < m_width; ++i) {
-				m_ColorLine[i] = RGB(255, 208, 0);
-			}
-		} else if ( colored_gaps_size ) {
-			for(int i = 0; i < m_width; ++i) {
-				m_ColorLine[i] = colored_gaps[1].color;
-			}
-		}
-	} else {
-		uint32 factor = m_file->lFileSize / m_width;
-		for(int i = 1; i <= colored_gaps_size;i++) {
-			uint32 start = colored_gaps[i].start / factor;
-			uint32 end = colored_gaps[i].end / factor;
-			for(uint32 j = start; j < end; j++) {
-				m_ColorLine[j] = colored_gaps[i].color;
-			}
-		}
-		// overwrite requested parts
-		for(uint32 i = 0; i < m_file->m_ReqParts.size(); i++) {
-			uint32 start = m_file->m_ReqParts[i].start / factor;
-			uint32 end = m_file->m_ReqParts[i].end / factor;
-			for(uint32 j = start; j < end; j++) {
-				m_ColorLine[j] = RGB(255, 208, 0);
-			}
-		}
-	}
-	delete [] colored_gaps;
+        // Init first item to dummy info, so we will always have "previous" item
+        int colored_gaps_size = 0;
+        colored_gaps[0].start = 0;
+        colored_gaps[0].end = 0;
+        colored_gaps[0].color = 0xffffffff;
+
+        for (int j = 0; j < gap_list_size;j++) {
+            uint64 gap_start = gap_list[j].start;
+            uint64 gap_end = gap_list[j].end;
+
+            uint32 start = gap_start / PARTSIZE;
+            uint32 end = (gap_end / PARTSIZE) + 1;
+
+            for (uint32 i = start; i < end; i++) {
+                COLORTYPE color = PBAR_COLOR_BLUE;
+                if (m_file->m_PartInfo.size() > i && m_file->m_PartInfo[i]) {
+                    int blue = 210 - ( 22 * ( m_file->m_PartInfo[i] - 1 ) );
+                    color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
+                }
+
+                uint64 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
+                uint64 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
+
+                wxASSERT(colored_gaps_size < color_gaps_alloc);
+
+                if ( (colored_gaps[colored_gaps_size].end == fill_gap_begin) &&
+                    (colored_gaps[colored_gaps_size].color == color) ) {
+                    colored_gaps[colored_gaps_size].end = fill_gap_end;
+                } else {
+                    colored_gaps_size++;
+                    colored_gaps[colored_gaps_size].start = fill_gap_begin;
+                    colored_gaps[colored_gaps_size].end = fill_gap_end;
+                    colored_gaps[colored_gaps_size].color = color;
+                }
+            }
+        }
+        //
+        // Now line rendering
+        for(int i = 0; i < m_width; ++i) {
+            m_ColorLine[i] = 0x0;
+        }
+        if (m_file->lFileSize < (uint32)m_width) {
+            //
+            // if file is that small, draw it in single step
+            //
+            if (m_file->m_ReqParts.size()) {
+                for(int i = 0; i < m_width; ++i) {
+                    m_ColorLine[i] = PBAR_COLOR_LIGHTBLUE;;
+                }
+            } else if ( colored_gaps_size ) {
+                for(int i = 0; i < m_width; ++i) {
+                    m_ColorLine[i] = colored_gaps[1].color;
+                }
+            }
+        } else {
+            uint32 factor = m_file->lFileSize / m_width;
+            for(int i = 1; i <= colored_gaps_size;i++) {
+                uint32 start = colored_gaps[i].start / factor;
+                uint32 end = colored_gaps[i].end / factor;
+                for(uint32 j = start; j < end; j++) {
+                    m_ColorLine[j] = colored_gaps[i].color;
+                }
+            }
+            // overwrite requested parts
+            for(uint32 i = 0; i < m_file->m_ReqParts.size(); i++) {
+                uint32 start = m_file->m_ReqParts[i].start / factor;
+                uint32 end = m_file->m_ReqParts[i].end / factor;
+                for(uint32 j = start; j < end; j++) {
+                    m_ColorLine[j] = PBAR_COLOR_LIGHTBLUE;
+                }
+            }
+        }
+        delete [] colored_gaps;
+    } // end of else: status is not PS_HASHING
 }
 
 #ifdef WITH_LIBPNG
 
 CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 {
-	
 	//
-	// Allocate array of "row pointers" - libpng need it in this form
+	// Allocate array of "row pointers" - libpng needs it in this form
 	// Fill it also with the image data
 	//
 	m_img_data = new png_byte[3*m_width*m_height];
@@ -1102,7 +1147,7 @@ CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 	for (int i = 0; i < m_height;i++) {
 		m_row_ptrs[i] = &m_img_data[3*m_width*i];
 	}
-	
+
 }
 
 CDynPngImage::~CDynPngImage()
@@ -1128,13 +1173,13 @@ unsigned char *CDynPngImage::RequestData(int &size)
 	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
 		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 	png_set_write_fn(png_ptr, this, png_write_fn, 0);
-	
+
 	m_size = 0;
 	png_write_info(png_ptr, info_ptr);
 	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
 	png_write_end(png_ptr, 0);
 	png_destroy_write_struct(&png_ptr, &info_ptr);
-	
+
 	return CAnyImage::RequestData(size);
 }
 
@@ -1156,13 +1201,13 @@ wxString CDynProgressImage::GetHTML()
 	// template contain %s (name) %d (width) %s (alt)
 	return (CFormat(m_template) % m_name % m_width % wxT("Progress bar")).GetString();
 }
-	
+
 void CDynProgressImage::DrawImage()
 {
 	CreateSpan();
 
 	for(int i = 0; i < m_height; i++) {
-			memset(m_row_ptrs[i], 0, 3*m_width);
+        memset(m_row_ptrs[i], 0, 3*m_width);
 	}
 	for(int i = 0; i < m_height/2; i++) {
 		png_bytep u_row = m_row_ptrs[i];
@@ -1189,26 +1234,25 @@ CDynProgressImage::CDynProgressImage(int width, int height, wxString &tmpl, Down
 	CProgressImage(width, height, tmpl, file)
 {
 	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
-	
 }
-
 
 wxString CDynProgressImage::GetHTML()
 {
 	static wxChar *progresscolor[12] = {
 		wxT("transparent.gif"), wxT("black.gif"), wxT("yellow.gif"), wxT("red.gif"),
 		wxT("blue1.gif"),       wxT("blue2.gif"), wxT("blue3.gif"),  wxT("blue4.gif"),
-		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif") };
-		
+		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif")
+    };
+
 	CreateSpan();
-	
+
 	wxString str;
 	uint32 lastcolor = m_ColorLine[0];
 	int lastindex = 0;
 	for(int i = 0; i < m_width; i++) {
 		if ( (lastcolor != m_ColorLine[i]) || (i == (m_width - 1)) ) {
 			int color_idx = -1;
-			if ( lastcolor & RGB(0, 0, 0xff) ) { // blue
+			if ( lastcolor & PBAR_COLOR_RED ) { // blue
 				int green = (lastcolor >> 8) & 0xff;
 				// reverse calculation:  green = 210 - ( 22 * ( part_info[i] - 1 ) )
 				wxASSERT( !green || (green < 211) );
@@ -1216,10 +1260,10 @@ wxString CDynProgressImage::GetHTML()
 				// now calculate it same way as PartFile did
 				color_idx = (color_idx > 10) ? 9 : (4 + color_idx / 2);
 			} else {
-				if ( lastcolor & RGB(0, 0xff, 0) ) { // yellow
+				if ( lastcolor & PBAR_COLOR_GREEN ) { // green
 					color_idx = 2;
 				} else {
-					if ( lastcolor & RGB(0xff, 0, 0) ) { // red
+					if ( lastcolor & PBAR_COLOR_BLUE ) ) { // red
 						color_idx = 3;
 					} else {
 						color_idx = 1;
@@ -1274,7 +1318,7 @@ void CStatsData::PushSample(uint32 sample)
 	m_start_index = (m_start_index + 1) % m_size;
 	m_end_index = (m_end_index + 1) % m_size;
 	m_data[m_start_index] = sample;
-	
+
 	if ( m_max_value < sample ) {
 		m_max_value = sample;
 	}
@@ -1286,7 +1330,7 @@ CStatsCollection::CStatsCollection(int size, CamulewebApp *iface)
 	m_up_speed = new CStatsData(size);
 	m_conn_number = new CStatsData(size);
 	m_kad_count = new CStatsData(size);
-	
+
 	m_iface = iface;
 	m_LastTimeStamp = 0.0;
 	m_size = size;
@@ -1304,13 +1348,13 @@ void CStatsCollection::ReQuery()
 	CECPacket request(EC_OP_GET_STATSGRAPHS);
 
 	request.AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)m_size));
-	
+
 	uint16 m_nGraphScale = 1;
 	request.AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
 	if (m_LastTimeStamp > 0.0) {
 		request.AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_LastTimeStamp));
 	}
-	
+
 	const CECPacket *response = m_iface->SendRecvMsg_v2(&request);
 
 	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
@@ -1336,20 +1380,20 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 {
 	m_data = data;
 	m_scale1024 = scale1024;
-	
+
 	// actual name doesn't matter, just make it unique
 	m_name = wxString::Format(wxT("dyn_%ld_stat.png"), (unsigned long int) data);
-	
+
 	m_num_font_w_size = 8;
 	m_num_font_h_size = 16;
-	
+
 	// leave enough space for 4 digit number
 	int img_delta = m_num_font_w_size / 4;
 	m_left_margin = 4*(m_num_font_w_size + img_delta) + img_delta;
 	// leave enough space for number height
 	m_bottom_margin = m_num_font_h_size;
-	
-	
+
+
 	m_y_axis_size = m_height - m_bottom_margin;
 	// allocate storage for background. Using 1 chunk to speed up
 	// the rendering
@@ -1358,7 +1402,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	for(int i = 0; i < m_height; i++) {
 		m_row_bg_ptrs[i] = &m_background[i*m_width*3];
 	}
-	
+
 	//
 	// Prepare background
 	//
@@ -1384,7 +1428,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 		set_rgb_color_val(m_row_bg_ptrs[m_y_axis_size - 0]+3*j, axis_color, 0);
 		set_rgb_color_val(m_row_bg_ptrs[m_y_axis_size - 1]+3*j, axis_color, 0);
 	}
-	
+
 	// horisontal grid
 	int v_grid_size = m_y_axis_size / 4;
 	for(int i = m_y_axis_size - v_grid_size; i >= v_grid_size; i -= v_grid_size) {
@@ -1395,7 +1439,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 			}
 		}
 	}
-	
+
 	//
 	// Pre-create masks for digits
 	//
@@ -1417,13 +1461,13 @@ void CDynStatisticImage::DrawImage()
 {
 	// copy background first
 	memcpy(m_img_data, m_background, m_width*m_height*3);
-	
+
 	//
 	// Now graph itself
 	//
 	static const COLORTYPE graph_color = RGB(0xff, 0x00, 0x00);
 	int maxval = m_data->Max();
-	
+
 	if ( m_scale1024 ) {
 		if ( maxval > 1024 ) {
 			maxval /= 1024;
@@ -1449,7 +1493,7 @@ void CDynStatisticImage::DrawImage()
 	int img_delta = m_num_font_w_size / 4;
 	// Number "0" is always there
 	m_digits[0]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, m_y_axis_size-m_num_font_h_size-5);
-	
+
 	//
 	// When data is scaled down, axis are scaled UP and viceversa
 	int y_axis_max = m_y_axis_size;
@@ -1470,7 +1514,7 @@ void CDynStatisticImage::DrawImage()
 	}
 	// --X-
 	if ( y_axis_max > 9 ) {
-		m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs, 
+		m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs,
 			3*img_delta+2*m_num_font_w_size, img_delta);
 	}
 	// ---X
@@ -1523,7 +1567,7 @@ void CDynStatisticImage::DrawImage()
 unsigned char *CDynStatisticImage::RequestData(int &size)
 {
 	DrawImage();
-	
+
 	return CDynPngImage::RequestData(size);
 }
 
@@ -1544,13 +1588,13 @@ CNumImageMask::CNumImageMask(int number, int width, int height)
 	m_h_segsize = width;
 	m_height = height;
 	m_width = width;
-	
+
 	m_row_mask_ptrs = new png_bytep[m_height];
 	for(int i = 0; i < m_height; i++) {
 		m_row_mask_ptrs[i] = new png_byte[3*m_width];
 		memset(m_row_mask_ptrs[i], 0x00, 3*m_width);
 	}
-	
+
 	int seg_status = m_num_to_7_decode[number];
 	for(int i = 0; i < 7; i++) {
 		if ( seg_status & (1 << i) ) {
@@ -1598,7 +1642,7 @@ void CNumImageMask::DrawVertLine(int offx, int offy)
 
 /*
  * Segment id decoding defined as following
- * 
+ *
  *   ---- 0 ----
  *   |         |
  *   1         2
@@ -1684,13 +1728,15 @@ CAnyImage *CImageLib::GetImage(const wxString &name)
 	}
 }
 
-/* 
+/*
  * Script-based webserver
  */
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
 	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
 	wxString img_tmpl(wxT("<img src=\"%s\" height=\"20\" width=\"%d\" alt=\"%s\">"));
+
+	// progress bars have a size of 200 x 20
 	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
 
 	if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.html")).GetFullPath()) ) {
@@ -1698,7 +1744,7 @@ CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templat
 	} else if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.php")).GetFullPath()) ) {
 		m_index = wxT("index.php");
 	} else {
-		webInterface->Show(_("Index file not found: ") + 
+		webInterface->Show(_("Index file not found: ") +
 			wxFileName(m_wwwroot, wxT("index.{html,php}")).GetFullPath() + wxT("\n"));
 	}
 }
@@ -1714,7 +1760,7 @@ char *CScriptWebServer::GetErrorPage(const char *message, long &size)
 		"<html><title> Error -%s </title></html>", message);
 
 	size = strlen(buf);
-	
+
 	return buf;
 }
 
@@ -1722,9 +1768,9 @@ char *CScriptWebServer::Get_404_Page(long &size)
 {
 		char *buf = new char [1024];
 		strcpy(buf, "<html><title> Error - requested page not found </title></html>");
-		
+
 		size = strlen(buf);
-		
+
 		return buf;
 }
 
@@ -1745,7 +1791,7 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	size = fread(buf, 1, size, f);
 	buf[size] = 0;
 	fclose(f);
-	
+
 	return buf;
 }
 
@@ -1758,13 +1804,13 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 
 	CWriteStrBuffer buffer;
 	CPhpFilter(this, sess, filename, &buffer);
-	
+
 	size = buffer.Length();
 	char *buf = new char [size+1];
 	buffer.CopyAll(buf);
-	
+
 	fclose(f);
-	
+
 	return buf;
 }
 
@@ -1808,7 +1854,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	long httpOutLen;
 	char *httpOut = 0;
-	
+
 	// Strip out any path-component to prevent information leakage.
 	wxString filename = wxFileName(Data.parsedURL.File()).GetFullName();
 
@@ -1823,7 +1869,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	session->m_vars["login_error"] = "";
 	if ( !session->m_loggedin ) {
 		filename = wxT("login.php");
-		
+
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
 		if (webInterface->m_AdminPass.IsEmpty() && webInterface->m_GuestPass.IsEmpty()) {
 			session->m_vars["login_error"] = "No password specified, login will not be allowed.";
@@ -1831,7 +1877,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			session->m_loggedin = false;
-			
+
 			CMD4Hash PwHash;
 			if (!PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
@@ -1846,7 +1892,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			} else {
 				session->m_vars["login_error"] = "Password incorrect, please try again.";
 			}
-			
+
 			if ( session->m_loggedin ) {
 				filename = m_index;
 				Print(_("Password ok\n"));
@@ -1868,11 +1914,11 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	}
 
 	Print(_("Processing request [redirected]: ") + filename + wxT("\n"));
-	
+
 	session->m_vars["auto_refresh"] = (const char *)unicode2char(
 		wxString::Format(wxT("%d"), webInterface->m_PageRefresh));
 	session->m_vars["content_type"] = "text/html";
-	
+
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if (req_file.EndsWith(wxT(".html"))) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
@@ -1892,14 +1938,14 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	} else {
 		httpOut = GetErrorPage("aMuleweb doesn't handle the requested file type ", httpOutLen);
 	}
-	
+
 	bool isUseGzip = webInterface->m_UseGzip;
 
 	if (isUseGzip)	{
 		bool bOk = false;
 		uLongf destLen = httpOutLen + 1024;
 		char *gzipOut = new char[destLen];
-		if( GzipCompress((Bytef*)gzipOut, &destLen, 
+		if( GzipCompress((Bytef*)gzipOut, &destLen,
 		   (const Bytef*)httpOut, httpOutLen, Z_DEFAULT_COMPRESSION) == Z_OK) {
 			bOk = true;
 		}
@@ -1912,7 +1958,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			delete[] gzipOut;
 		}
 	}
-		
+
 	if ( httpOut ) {
 		Data.pSocket->SendHttpHeaders(session->m_vars["content_type"].c_str(), isUseGzip, httpOutLen, Data.SessionID);
 		Data.pSocket->SendData(httpOut, httpOutLen);
