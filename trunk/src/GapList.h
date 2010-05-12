@@ -79,6 +79,8 @@ public:
 	bool IsComplete() const { return m_gaplist.empty(); }
 	// number of gaps
 	uint32 size() const { return m_gaplist.size(); }
+	// no gaps ?
+	bool empty() const { return m_gaplist.empty(); }
 	// size of all gaps
 	uint64 GetGapSize();
 	// size of gaps inside one part

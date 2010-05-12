@@ -30,7 +30,7 @@
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
 
-#include "OtherStructs.h"	// Needed for Gap_Struct
+#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
 #include "GapList.h"
 
@@ -254,40 +254,7 @@ public:
 
 	const CReqBlockPtrList	GetRequestedBlockList() const { return m_requestedblocks_list; }
 
-	// LEGACY - to be removed when possible
-	class CGapPtrList {
-	public:
-		void Init(const CGapList * gaplist) { m_gaplist = gaplist; }
-		class const_iterator {
-			CGapList::const_iterator m_it;
-			Gap_Struct m_gap;
-		public:
-			const_iterator() {};
-			const_iterator(const CGapList::const_iterator& it) { m_it = it; };
-			bool operator != (const const_iterator& it) { return m_it != it.m_it; }
-			const_iterator& operator ++ () { ++ m_it; return *this; }
-			Gap_Struct * operator * () { 
-				m_gap.start = m_it.start();
-				m_gap.end = m_it.end();
-				return & m_gap; 
-			}
-		};
-		const_iterator begin() const { return const_iterator(m_gaplist->begin()); }
-		const_iterator end() const { return const_iterator(m_gaplist->end()); }
-		bool empty() const { return m_gaplist->IsComplete(); }
-		uint32 size() const { return m_gaplist->size(); }
-
-	private:
-		const CGapList * m_gaplist;
-	};
-	// this function must stay, but return the m_gaplist instead
-	const CGapPtrList& GetGapList() const { return m_gapptrlist; }
-	// meanwhile use
-	const CGapList& GetNewGapList() const { return m_gaplist; }
-	private:
-	CGapPtrList m_gapptrlist;
-	public:
-	// END LEGACY
+	const CGapList& GetGapList() const { return m_gaplist; }
 
 	/**
 	 * Adds a source to the list of dead sources.

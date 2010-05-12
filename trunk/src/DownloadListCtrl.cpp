@@ -1261,23 +1261,22 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	}
 	
 	// Part availability ( of missing parts )
-	const CPartFile::CGapPtrList& gaplist = file->GetGapList();
-	CPartFile::CGapPtrList::const_iterator it = gaplist.begin();
+	const CGapList& gaplist = file->GetGapList();
+	CGapList::const_iterator it = gaplist.begin();
 	uint64 lastGapEnd = 0;
 	CMuleColour colour;
 	
 	for (; it != gaplist.end(); ++it) {
-		Gap_Struct* gap = *it;
-
+		
 		// Start position
-		uint32 start = ( gap->start / PARTSIZE );
+		uint32 start = ( it.start() / PARTSIZE );
 		// fill the Have-Part (between this gap and the last)
-		if (gap->start) {
-		  s_ChunkBar.FillRange(lastGapEnd + 1, gap->start - 1,  bFlat ? crFlatHave : crHave);
+		if (it.start()) {
+		  s_ChunkBar.FillRange(lastGapEnd + 1, it.start() - 1,  bFlat ? crFlatHave : crHave);
 		}
-		lastGapEnd = gap->end;
+		lastGapEnd = it.end();
 		// End position
-		uint32 end   = ( gap->end / PARTSIZE ) + 1;
+		uint32 end   = ( it.end() / PARTSIZE ) + 1;
 
 		// Avoid going past the filesize. Dunno if this can happen, but the old code did check.
 		if ( end > file->GetPartCount() ) {
@@ -1297,8 +1296,8 @@ void CDownloadListCtrl::DrawFileStatusBar(
 				colour.Blend(50);
 			}
 			
-			uint64 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
-			uint64 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) - 1 );
+			uint64 gap_begin = ( i == start   ? it.start() : PARTSIZE * i );
+			uint64 gap_end   = ( i == end - 1 ? it.end()   : PARTSIZE * ( i + 1 ) - 1 );
 		
 			s_ChunkBar.FillRange( gap_begin, gap_end,  colour);
 		}

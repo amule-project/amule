@@ -3686,8 +3686,6 @@ void CPartFile::Init()
 	m_LastSearchTimeKad = 0;
 	m_TotalSearchesKad = 0;
 
-	m_gapptrlist.Init(&m_gaplist);
-
 #ifndef CLIENT_GUI
 	m_CorruptionBlackBox = new CCorruptionBlackBox();
 #endif
