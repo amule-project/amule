@@ -1055,7 +1055,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	//
 	// Gaps
 	//
-	const CGapList& gaplist = m_PartFile()->GetNewGapList();
+	const CGapList& gaplist = m_PartFile()->GetGapList();
 	const size_t gap_list_size = gaplist.size();
 	ArrayOfUInts64 gaps;
 	gaps.reserve(gap_list_size * 2);
