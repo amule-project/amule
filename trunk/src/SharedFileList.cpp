@@ -342,11 +342,13 @@ void CSharedFileList::FindSharedFiles()
 	sharedPaths.sort();
 	sharedPaths.unique();
 
+	filelist->PrepareIndex();
 	unsigned addedFiles = 0;
 	std::list<CPath>::iterator it = sharedPaths.begin();
 	for (; it != sharedPaths.end(); ++it) {
 		addedFiles += AddFilesFromDirectory(*it);
 	}
+	filelist->ReleaseIndex();
 	
 	if (addedFiles == 0) {
 		AddLogLineM(false, wxString::Format(wxPLURAL("Found %i known shared file", "Found %i known shared files", GetCount()), GetCount()));

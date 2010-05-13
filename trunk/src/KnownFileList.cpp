@@ -57,6 +57,8 @@ CKnownFileList::CKnownFileList()
 	requested = 0;
 	transferred = 0;
 	m_filename = wxT("known.met");
+	m_knownSizeMap = NULL;
+	m_duplicateSizeMap = NULL;
 	Init();
 }
 
@@ -169,6 +171,7 @@ void CKnownFileList::Clear()
 
 	DeleteContents(m_knownFileMap);
 	DeleteContents(m_duplicateFileList);
+	ReleaseIndex();
 }
 
 
@@ -179,11 +182,22 @@ CKnownFile* CKnownFileList::FindKnownFile(
 {
 	wxMutexLocker sLock(list_mut);
 	
-	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
-	     it != m_knownFileMap.end(); ++it) {
-		CKnownFile *cur_file = it->second;
-		if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
-			return cur_file;
+	if (m_knownSizeMap) {
+		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
+		p = m_knownSizeMap->equal_range((uint32) in_size);
+		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; it++) {
+			CKnownFile *cur_file = it->second;
+			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+				return cur_file;
+			}
+		}
+	} else {
+		for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
+			 it != m_knownFileMap.end(); ++it) {
+			CKnownFile *cur_file = it->second;
+			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+				return cur_file;
+			}
 		}
 	}
 
@@ -196,11 +210,22 @@ CKnownFile *CKnownFileList::IsOnDuplicates(
 	uint32 in_date,
 	uint64 in_size) const
 {
-	for (KnownFileList::const_iterator it = m_duplicateFileList.begin();
-	     it != m_duplicateFileList.end(); ++it) {
-		CKnownFile *cur_file = *it;
-		if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
-			return cur_file;
+	if (m_duplicateSizeMap) {
+		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
+		p = m_duplicateSizeMap->equal_range((uint32) in_size);
+		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; it++) {
+			CKnownFile *cur_file = it->second;
+			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+				return cur_file;
+			}
+		}
+	} else {
+		for (KnownFileList::const_iterator it = m_duplicateFileList.begin();
+			 it != m_duplicateFileList.end(); ++it) {
+			CKnownFile *cur_file = *it;
+			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+				return cur_file;
+			}
 		}
 	}
 	return NULL;
@@ -296,6 +321,30 @@ bool CKnownFileList::Append(CKnownFile *Record)
 		
 		return false;
 	}
+}
+
+// Make an index by size to speed up FindKnownFile
+// Size modulo 2^32 is enough here
+void CKnownFileList::PrepareIndex()
+{
+	ReleaseIndex();
+	m_knownSizeMap = new KnownFileSizeMap;
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin(); it != m_knownFileMap.end(); it++) {
+		m_knownSizeMap->insert(std::pair<uint32, CKnownFile*>((uint32) it->second->GetFileSize(), it->second));
+	}
+	m_duplicateSizeMap = new KnownFileSizeMap;
+	for (KnownFileList::const_iterator it = m_duplicateFileList.begin(); it != m_duplicateFileList.end(); it++) {
+		m_duplicateSizeMap->insert(std::pair<uint32, CKnownFile*>((uint32) (*it)->GetFileSize(), *it));
+	}
+}
+
+
+void CKnownFileList::ReleaseIndex()
+{
+	delete m_knownSizeMap;
+	delete m_duplicateSizeMap;
+	m_knownSizeMap = NULL;
+	m_duplicateSizeMap = NULL;
 }
 
 // File_checked_for_headers
