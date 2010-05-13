@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,7 +43,7 @@
 
 //! This hash represents the value for an empty MD4 hashing
 const byte g_emptyMD4Hash[16] = {
-	0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31,
+	0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
 	0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
 
@@ -58,9 +58,9 @@ CHashingTask::CHashingTask(const CPath& path, const CPath& filename, const CPart
 	  m_toHash((EHashes)(EH_MD4 | EH_AICH)),
 	  m_owner(part)
 {
-	// We can only create the AICH hashset if the file is a knownfile or
+	// We can only create the AICH hashset if the file is a knownfile or 
 	// if the partfile is complete, since the MD4 hashset is checked first,
-	// so that the AICH hashset only gets assigned if the MD4 hashset
+	// so that the AICH hashset only gets assigned if the MD4 hashset 
 	// matches what we expected. Due to the rareity of post-completion
 	// corruptions, this gives us a nice speedup in most cases.
 	if (part && !part->GetGapList().empty()) {
@@ -90,7 +90,7 @@ void CHashingTask::Entry()
 			CFormat(wxT("Warning, failed to open file, skipping: %s")) % fullPath);
 		return;
 	}
-
+	
 	uint64 fileLength = 0;
 	try {
 		fileLength = file.GetLength();
@@ -113,10 +113,10 @@ void CHashingTask::Entry()
 			AddDebugLogLineM( true, logHasher,
 				CFormat(wxT("Warning, 0-size file, skipping: %s")) % fullPath);
 		}
-
+		
 		return;
 	}
-
+	
 	// For thread-safety, results are passed via a temporary file object.
 	CScopedPtr<CKnownFile> knownfile(new CKnownFile());
 	knownfile->m_filePath = m_path;
@@ -126,10 +126,10 @@ void CHashingTask::Entry()
 	knownfile->m_AvailPartFrequency.insert(
 		knownfile->m_AvailPartFrequency.begin(),
 		knownfile->GetPartCount(), 0);
-
+	
 	if ((m_toHash & EH_MD4) && (m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddDebugLogLineM( false, logHasher, CFormat(
+		AddDebugLogLineM( false, logHasher, CFormat( 
 			_("Starting to create MD4 and AICH hash for file: %s")) %
 			m_filename );
 	} else if ((m_toHash & EH_MD4)) {
@@ -143,8 +143,8 @@ void CHashingTask::Entry()
 		wxCHECK_RET(0, (CFormat(wxT("No hashes requested for file, skipping: %s"))
 			% m_filename).GetString());
 	}
-
-
+	
+	
 	// This loops creates the part-hashes, loop-de-loop.
 	try {
 		for (uint16 part = 0; part < knownfile->GetPartCount() && !TestDestroy(); part++) {
@@ -152,12 +152,8 @@ void CHashingTask::Entry()
 				AddDebugLogLineM(true, logHasher,
 					CFormat(wxT("Error while hashing file, skipping: %s"))
 						% m_filename);
-
+			
 				return;
-			}
-			else {
-                CHashingProgressEvent evt(MULE_EVT_HASHING_PROCEEDED, m_owner, part + 1);
-                wxPostEvent(wxTheApp, evt);
 			}
 		}
 	} catch (const CSafeIOException& e) {
@@ -180,7 +176,7 @@ void CHashingTask::Entry()
 			wxFAIL;
 		}
 	}
-
+	
 	// Did we create a AICH hashset?
 	if ((m_toHash & EH_AICH) && !TestDestroy()) {
 		CAICHHashSet* AICHHashSet = knownfile->GetAICHHashset();
@@ -195,14 +191,14 @@ void CHashingTask::Entry()
 			}
 		}
 	}
-
+	
 	if ((m_toHash == EH_AICH) && !TestDestroy()) {
-		CHashingFinishedEvent evt(MULE_EVT_AICH_HASHING_COMPLETED, knownfile.release(), m_owner);
-
+		CHashingEvent evt(MULE_EVT_AICH_HASHING, knownfile.release(), m_owner);
+		
 		wxPostEvent(wxTheApp, evt);
 	} else if (!TestDestroy()) {
-		CHashingFinishedEvent evt(MULE_EVT_HASHING_COMPLETED, knownfile.release(), m_owner);
-
+		CHashingEvent evt(MULE_EVT_HASHING, knownfile.release(), m_owner);
+		
 		wxPostEvent(wxTheApp, evt);
 	}
 }
@@ -211,11 +207,11 @@ void CHashingTask::Entry()
 bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownFile* owner, EHashes toHash)
 {
 	wxCHECK_MSG(!file.Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
-
+	
 	const uint64 offset = part * PARTSIZE;
 	// We'll read at most PARTSIZE bytes per cycle
 	const uint64 partLength = owner->GetPartSize(part);
-
+	
 	CMD4Hash hash;
 	CMD4Hash* md4Hash = ((toHash & EH_MD4) ? &hash : NULL);
 	CAICHHashTree* aichHash = NULL;
@@ -226,15 +222,15 @@ bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownF
 	}
 
 	owner->CreateHashFromFile(file, offset, partLength, md4Hash, aichHash);
-
+	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash
 		owner->m_hashlist.push_back(hash);
-
-		// This is because of the ed2k implementation for parts. A 2 * PARTSIZE
-		// file i.e. will have 3 parts (see CKnownFile::SetFileSize for comments).
+	
+		// This is because of the ed2k implementation for parts. A 2 * PARTSIZE 
+		// file i.e. will have 3 parts (see CKnownFile::SetFileSize for comments). 
 		// So we have to create the hash for the 0-size data, which will be the default
-		// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0
+		// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
 		if ((partLength == PARTSIZE) && file.Eof()) {
 			owner->m_hashlist.push_back(CMD4Hash(g_emptyMD4Hash));
 		}
@@ -247,7 +243,7 @@ bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownF
 void CHashingTask::OnLastTask()
 {
 	if (GetType() == wxT("Hashing")) {
-		// To prevent rehashing in case of crashes, we
+		// To prevent rehashing in case of crashes, we 
 		// explicity save the list of hashed files here.
 		theApp->knownfiles->Save();
 
@@ -269,13 +265,13 @@ CAICHSyncTask::CAICHSyncTask()
 void CAICHSyncTask::Entry()
 {
 	ConvertToKnown2ToKnown264();
-
+	
 	AddDebugLogLineM( false, logAICHThread, wxT("Syncronization thread started.") );
-
+	
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
 	const CPath fullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
-
+	
 	CFile file;
 	if (!file.Open(fullpath, (fullpath.FileExists() ? CFile::read_write : CFile::write))) {
 		AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open 'known2_64.met' file!") );
@@ -290,7 +286,7 @@ void CAICHSyncTask::Entry()
 			if (file.ReadUInt8() != KNOWN2_MET_VERSION) {
 				throw CEOFException(wxT("Invalid met-file header found, removing file."));
 			}
-
+			
 			uint64 nExistingSize = file.GetLength();
 			while (file.GetPosition() < nExistingSize) {
 				// Read the next hash
@@ -310,10 +306,10 @@ void CAICHSyncTask::Entry()
 		file.SetLength(nLastVerifiedPos);
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logAICHThread, wxT("IO failure while reading hashlist (Aborting): ") + e.what());
-
-		return;
+		
+		return;		
 	}
-
+	
 	AddDebugLogLineM( false, logAICHThread, wxT("Masterhashes of known files have been loaded.") );
 
 	// Now we check that all files which are in the sharedfilelist have a
@@ -329,7 +325,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 
 	const CPath oldfullpath = CPath(theApp->ConfigDir + OLD_KNOWN2_MET_FILENAME);
 	const CPath newfullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
-
+	
 	if (newfullpath.FileExists() || !oldfullpath.FileExists()) {
 		// In this case, there is nothing that we need to do.
 		return false;
@@ -340,7 +336,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 
 	if (!oldfile.Open(oldfullpath, CFile::read)) {
 		AddDebugLogLineM(true, logAICHThread, wxT("Failed to open 'known2.met' file."));
-
+		
 		// else -> known2.met also doesn't exists, so nothing to convert
 		return false;
 	}
@@ -348,7 +344,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 
 	if (!newfile.Open(newfullpath, CFile::write_excl)) {
 		AddDebugLogLineM(true, logAICHThread, wxT("Failed to create 'known2_64.met' file."));
-
+		
 		return false;
 	}
 
@@ -357,13 +353,13 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 
 	try {
 		newfile.WriteUInt8(KNOWN2_MET_VERSION);
-
+		
 		while (newfile.GetPosition() < oldfile.GetLength()) {
 			CAICHHash aichHash(&oldfile);
 			uint32 nHashCount = oldfile.ReadUInt16();
-
+			
 			CScopedArray<byte> buffer(nHashCount * CAICHHash::GetHashSize());
-
+			
 			oldfile.Read(buffer.get(), nHashCount * CAICHHash::GetHashSize());
 			newfile.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
 			newfile.WriteUInt32(nHashCount);
@@ -377,7 +373,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 		AddDebugLogLineM(true, logAICHThread, wxT("IO error while converting 'known2.met' file: ") + e.what());
 		return false;
 	}
-
+	
 	// FIXME LARGE FILES (uncomment)
 	//DeleteFile(oldfullpath);
 
@@ -403,12 +399,12 @@ CCompletionTask::CCompletionTask(const CPartFile* file)
 	wxASSERT(m_metPath.IsOk());
 	wxASSERT(m_owner);
 }
-
+	
 
 void CCompletionTask::Entry()
 {
 	CPath targetPath;
-
+   
 	{
 #ifndef AMULE_DAEMON
 		// Prevent the preference values from changing underneeth us.
@@ -416,7 +412,7 @@ void CCompletionTask::Entry()
 #else
 		//#warning Thread-safety needed
 #endif
-
+		
 		targetPath = theApp->glob_prefs->GetCategory(m_category)->path;
 		if (!targetPath.DirExists()) {
 			targetPath = thePrefs::GetIncomingDir();
@@ -434,7 +430,7 @@ void CCompletionTask::Entry()
 		AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
 			% m_filename % dstName);
 	}
-
+	
 	// Avoid saving to an already existing filename
 	CPath newName = targetPath.JoinPaths(dstName);
 	for (unsigned count = 0; newName.FileExists(); ++count) {
@@ -455,14 +451,14 @@ void CCompletionTask::Entry()
 			m_error = true;
 			return;
 		}
-
+		
 		if (!CPath::RemoveFile(partfilename)) {
 			AddDebugLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
 				% partfilename);
 		}
 	}
 
-	// Removes the various other data-files
+	// Removes the various other data-files	
 	const wxChar* otherMetExt[] = { wxT(""), PARTMET_BAK_EXT, wxT(".seeds"), NULL };
 	for (size_t i = 0; otherMetExt[i]; ++i) {
 		CPath toRemove = m_metPath.AppendExt(otherMetExt[i]);
@@ -482,7 +478,7 @@ void CCompletionTask::OnExit()
 {
 	// Notify the app that the completion has finished for this file.
 	CCompletionEvent evt(m_error, m_owner, m_newName);
-
+	
 	wxPostEvent(wxTheApp, evt);
 }
 
@@ -609,44 +605,12 @@ void CAllocateFileTask::OnExit()
 
 
 ////////////////////////////////////////////////////////////
-// CHashingProgressEvent
+// CHashingEvent
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING_PROCEEDED)
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING)
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING)
 
-CHashingProgressEvent::CHashingProgressEvent(wxEventType type, const CKnownFile* owner, uint16 partshashed)
-	: wxEvent(-1, type),
-	  m_owner(owner),
-	  m_HashedPartCount(partshashed)
-{
-}
-
-
-wxEvent* CHashingProgressEvent::Clone() const
-{
-	return new CHashingProgressEvent(GetEventType(), m_owner, m_HashedPartCount);
-}
-
-
-const CKnownFile* CHashingProgressEvent::GetOwner() const
-{
-	return m_owner;
-}
-
-
-uint16 CHashingProgressEvent::GetHashedPartCount() const
-{
-    return m_HashedPartCount;
-}
-
-
-
-////////////////////////////////////////////////////////////
-// CHashingFinishedEvent
-
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING_COMPLETED)
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING_COMPLETED)
-
-CHashingFinishedEvent::CHashingFinishedEvent(wxEventType type, CKnownFile* result, const CKnownFile* owner)
+CHashingEvent::CHashingEvent(wxEventType type, CKnownFile* result, const CKnownFile* owner)
 	: wxEvent(-1, type),
 	  m_owner(owner),
 	  m_result(result)
@@ -654,19 +618,19 @@ CHashingFinishedEvent::CHashingFinishedEvent(wxEventType type, CKnownFile* resul
 }
 
 
-wxEvent* CHashingFinishedEvent::Clone() const
+wxEvent* CHashingEvent::Clone() const
 {
-	return new CHashingFinishedEvent(GetEventType(), m_result, m_owner);
+	return new CHashingEvent(GetEventType(), m_result, m_owner);
 }
 
 
-const CKnownFile* CHashingFinishedEvent::GetOwner() const
+const CKnownFile* CHashingEvent::GetOwner() const
 {
 	return m_owner;
 }
 
 
-CKnownFile* CHashingFinishedEvent::GetResult() const
+CKnownFile* CHashingEvent::GetResult() const
 {
 	return m_result;
 }
@@ -700,12 +664,12 @@ bool CCompletionEvent::ErrorOccured() const
 	return m_error;
 }
 
-
+	
 const CPartFile* CCompletionEvent::GetOwner() const
 {
 	return m_owner;
 }
-
+	
 
 const CPath& CCompletionEvent::GetFullPath() const
 {

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -108,7 +108,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 			(theApp->IsConnectedKad() ? 0x04 : 0x00)
 			|
 			(Kademlia::CKademlia::IsFirewalled() ? 0x08 : 0x00)
-			|
+			| 
 			(Kademlia::CKademlia::IsRunning() ? 0x10 : 0x00)
 		))
 {
@@ -119,7 +119,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 		AddTag(CECTag(EC_TAG_ED2K_ID, theApp->GetED2KID()));
 	}
 
-	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));
+	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(const CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)
@@ -133,15 +133,15 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), valuemap);
 	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), valuemap);
 	AddTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), valuemap);
-
+		
 	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) || valuemap) {
-
+		
 		AddTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), valuemap);
 		AddTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), valuemap);
 		AddTag(EC_TAG_PARTFILE_SPEED, (uint64_t)(file->GetKBpsDown()*1024), valuemap);
 	}
-
-	AddTag(EC_TAG_PARTFILE_PRIO, (file->IsAutoDownPriority() ?
+	
+	AddTag(EC_TAG_PARTFILE_PRIO, (file->IsAutoDownPriority() ? 
 		file->GetDownPriority() + 10 : file->GetDownPriority()), valuemap);
 
 	AddTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), valuemap);
@@ -168,29 +168,27 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 	}
 	AddTag(sc, valuemap);
 
-    if (file->GetStatus() == PS_HASHING) {
-        AddTag(EC_TAG_PARTFILE_HASHED_PART_COUNT, file->GetHashedPartCount(), valuemap);
-    }
-
 	if (detail_level == EC_DETAIL_UPDATE) {
 		return;
 	}
+
+	AddTag(EC_TAG_PARTFILE_PARTMETID, file->GetPartMetNumber(), valuemap);
 }
 
-CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level,
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, 
 									   CValueMap *valuemap, ec_tagname_t name)
 : CECTag(name, file->ECID())
 {
 	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), valuemap);
-
+	
 	AddTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts(), valuemap);
 
 	AddTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash(), valuemap);
-
+	
 	AddTag(EC_TAG_KNOWNFILE_PRIO,
 		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), valuemap);
 
@@ -203,10 +201,10 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
-
+	
 	AddTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable(), valuemap);
 	AddTag(EC_TAG_PARTFILE_HASH, file->GetFileHash(), valuemap);
-	AddTag(EC_TAG_KNOWNFILE_FILENAME,
+	AddTag(EC_TAG_KNOWNFILE_FILENAME, 
 		file->IsPartFile()	? wxString(CFormat(wxT("%s")) % ((CPartFile*)file)->GetPartMetFileName().RemoveExt())
 							: file->GetFilePath().GetPrintable(),
 		valuemap);
@@ -234,7 +232,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_SERVER_IP, client->GetServerIP()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SERVER_PORT, client->GetServerPort()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SERVER_NAME, client->GetServerName()), valuemap);
-
+	
 	// Transfers to Client
 	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate()), valuemap);
 	if (client->GetDownloadState() == DS_DOWNLOADING || valuemap) {
@@ -244,7 +242,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferredDown()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal()), valuemap);
-
+	
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_STATE, client->GetUploadState()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_STATE, client->GetDownloadState()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_IDENT_STATE, (uint64) client->GetCurrentIdentState()), valuemap);
@@ -257,7 +255,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp->uploadqueue->GetWaitingPosition(client)), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, client->IsRemoteQueueFull() ? (uint16)0xffff : client->GetRemoteQueueRank()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_ASKED_COUNT, client->GetAskedCount()), valuemap);
-
+	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
@@ -266,7 +264,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()), valuemap);
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->ECID()), valuemap);
 	}
-
+	
 }
 
 //
