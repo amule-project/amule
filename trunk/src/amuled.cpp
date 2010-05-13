@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -74,7 +74,7 @@
 
 #ifndef __WXMSW__
 	#ifdef  HAVE_SYS_WAIT_H
-		#include <sys/wait.h> // Do_not_auto_remove
+		#include <sys/wait.h> // Do_not_auto_remove 
 	#endif
 
 	#include <wx/unix/execute.h>
@@ -131,7 +131,7 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	//
 	// Socket handlers
 	//
-
+	
 	// Listen Socket
 	EVT_SOCKET(ID_LISTENSOCKET_EVENT, CamuleDaemonApp::ListenSocketHandler)
 
@@ -150,18 +150,15 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 
 	// Async dns handling
 	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleDaemonApp::OnUDPDnsDone)
-
+	
 	EVT_MULE_INTERNAL(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleDaemonApp::OnSourceDnsDone)
 
 	EVT_MULE_INTERNAL(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleDaemonApp::OnServerDnsDone)
 
-    // Hashing proceeded notifier
-	EVT_MULE_HASHING_PROCEEDED(CamuleDaemonApp::OnProgressHashing)
-
 	// Hash ended notifier
-	EVT_MULE_HASHING_COMPLETED(CamuleDaemonApp::OnFinishedHashing)
-	EVT_MULE_AICH_HASHING_COMPLETED(CamuleDaemonApp::OnFinishedAICHHashing)
-
+	EVT_MULE_HASHING(CamuleDaemonApp::OnFinishedHashing)
+	EVT_MULE_AICH_HASHING(CamuleDaemonApp::OnFinishedAICHHashing)
+	
 	// File completion ended notifier
 	EVT_MULE_FILE_COMPLETED(CamuleDaemonApp::OnFinishedCompletion)
 
@@ -177,7 +174,7 @@ IMPLEMENT_APP(CamuleDaemonApp)
 #ifdef AMULED28
 /*
  * Socket handling in wxBase
- *
+ * 
  */
 class CSocketSet {
 		int m_count;
@@ -190,9 +187,9 @@ class CSocketSet {
 		void AddSocket(GSocket *);
 		void RemoveSocket(GSocket *);
 		void FillSet(int &max_fd);
-
+		
 		void Detected(void (GSocket::*func)());
-
+		
 		fd_set *Set() { return &m_set; }
 };
 
@@ -209,7 +206,7 @@ CSocketSet::CSocketSet()
 void CSocketSet::AddSocket(GSocket *socket)
 {
 	wxASSERT(socket);
-
+	
 	int fd = socket->m_fd;
 
 	if ( fd == -1 ) {
@@ -217,7 +214,7 @@ void CSocketSet::AddSocket(GSocket *socket)
 	}
 
 	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
-
+	
 	if ( m_gsocks[fd] ) {
 		return;
 	}
@@ -230,15 +227,15 @@ void CSocketSet::AddSocket(GSocket *socket)
 void CSocketSet::RemoveSocket(GSocket *socket)
 {
 	wxASSERT(socket);
-
+	
 	int fd = socket->m_fd;
 
 	if ( fd == -1 ) {
 		return;
 	}
-
+	
 	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
-
+	
 	int i = m_fd_idx[fd];
 	if ( i == 0xffff ) {
 		return;
@@ -279,7 +276,7 @@ CAmuledGSocketFuncTable::CAmuledGSocketFuncTable() : m_lock(wxMUTEX_RECURSIVE)
 {
 	m_in_set = new CSocketSet;
 	m_out_set = new CSocketSet;
-
+	
 	m_lock.Unlock();
 }
 
@@ -316,7 +313,7 @@ void CAmuledGSocketFuncTable::RunSelect()
 	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = 10000; // 10ms
-
+	
 	int result = select(max_fd + 1, m_in_set->Set(), m_out_set->Set(), 0, &tv);
 	if ( result > 0 ) {
 		m_in_set->Detected(&GSocket::Detected_Read);
@@ -497,8 +494,8 @@ int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 		result = AmuleWaitPid(execData.pid, &status, 0, &msg);
 		if (result == -1 || (!WIFEXITED(status) && !WIFSIGNALED(status))) {
 			msg << wxT(" Waiting for subprocess termination failed.");
-			AddDebugLogLineM(false, logGeneral, msg);
-		}
+			AddDebugLogLineM(false, logGeneral, msg);			
+		}	
 	} else {
 		/** wxEXEC_ASYNC */
 		// Give the process a chance to start or forked child to exit
@@ -517,7 +514,7 @@ int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 			status = execData.pid;
 		} else {
 			// if result != 0, then either waitpid() failed (result == -1)
-			// and there is nothing we can do, or the child has changed
+			// and there is nothing we can do, or the child has changed 
 			// status, which means it is probably dead.
 			status = 0;
 		}
@@ -634,7 +631,7 @@ int CamuleDaemonApp::OnRun()
 	char errorBuffer[ERROR_BUFFER_LEN];
 	wxString msg;
 
-	// Process the return code of dead children so that we do not create
+	// Process the return code of dead children so that we do not create 
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
 	// actualy calls wxHandleProcessTermination() in console applications.
 	// We do our best here.
@@ -658,7 +655,7 @@ int CamuleDaemonApp::OnRun()
 		AddDebugLogLineM(false, logGeneral, msg);
 	}
 #endif // __WXMSW__
-
+	
 #ifdef AMULED28
 
 	while ( !m_Exit ) {
@@ -666,7 +663,7 @@ int CamuleDaemonApp::OnRun()
 		ProcessPendingEvents();
 		((CDaemonAppTraits *)GetTraits())->DeletePending();
 	}
-
+	
 	// ShutDown is beeing called twice. Once here and again in OnExit().
 	ShutDown();
 
@@ -693,7 +690,7 @@ bool CamuleDaemonApp::OnInit()
 	core_timer->Start(CORE_TIMER_PERIOD);
 	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
 	glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
-
+	
 	return true;
 }
 
@@ -738,7 +735,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 			}
 		}
   	}
-
+  	
 #endif
 	return 0;
 }
@@ -778,14 +775,14 @@ int CamuleDaemonApp::OnExit()
 		AddDebugLogLineM(false, logGeneral, msg);
 	}
 #endif // __WXMSW__
-
+	
 	// lfroen: delete socket threads
 	if (ECServerHandler) {
 		ECServerHandler = 0;
 	}
 
 	delete core_timer;
-
+	
 	return CamuleApp::OnExit();
 }
 

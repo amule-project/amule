@@ -167,10 +167,10 @@ function formCommandSubmit(command)
 </script>
 <body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('images/transf_1.png','images/shared_1.png','images/search_1.png','images/edkserv_1.png','images/sheserv_1.png','images/stats_1.png')">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr valign="top">
+  <tr valign="top"> 
     <td width="143" height="64"><img src="images/logo.png" width="143" height="64"></td>
     <td width="100%" height="64" align="right" background="images/fond_haut.png"> <table border="0" cellspacing="0" cellpadding="0">
-        <tr>
+        <tr> 
           <td><a href="amuleweb-main-dload.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('transfert','','images/transf_1.png',1)"><img src="images/transf_0.png" alt="transfert" name="transfert" width="52" height="50" border="0"></a></td>
           <td><a href="amuleweb-main-shared.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('shared','','images/shared_1.png',1)"><img src="images/shared_0.png" alt="shared" name="shared" width="52" height="50" border="0"></a></td>
           <td><a href="amuleweb-main-search.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('search','','images/search_1.png',1)"><img src="images/search_0.png" alt="search" name="search" width="52" height="50" border="0"></a></td>
@@ -186,12 +186,12 @@ function formCommandSubmit(command)
         </tr>
       </table></td>
   </tr>
-  <tr align="center" valign="top">
+  <tr align="center" valign="top"> 
     <td colspan="2"><form action="amuleweb-main-dload.php" method="post" name="mainform">
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
           <tr>
       <td align="center"><table border="0" cellpadding="0" cellspacing="0">
-          <tr>
+          <tr> 
             <td><input type="hidden" name="command"></td>
             <td><a href="javascript:formCommandSubmit('pause');" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="images/pause.png" alt="pause" border="0" onLoad=""></a></td>
             <td><a href="javascript:formCommandSubmit('resume');" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img img name="resume" src="images/play.png" alt="resume" border="0" onLoad=""></a></td>
@@ -199,10 +199,10 @@ function formCommandSubmit(command)
         		<td><a href="javascript:formCommandSubmit('priodown');" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img img name="priodown" src="images/down.png" alt="priodown" border="0" onLoad=""></a></td>
         		<td><a href="javascript:formCommandSubmit('cancel');" onClick="MM_nbGroup('down','group1','cancel','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img img name="cancel" src="images/close.png" alt="cancel" border="0" onLoad=""></a></td>
       <td><table border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td>
+                <tr> 
+                  <td> 
                     <?php
-        	$all_status = array("all", "Waiting", "Paused", "Downloading");
+        	$all_status = array("all", "Waiting", "Paused", "Downloading");	
  			if ( $HTTP_GET_VARS["command"] == "filter") {
  				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
  				$_SESSION["filter_cat"] = $HTTP_GET_VARS["category"];
@@ -227,7 +227,7 @@ function formCommandSubmit(command)
                   			<td><a href="javascript:formCommandSubmit('filter');" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="images/filter.png" border="0" alt="Apply" name="resume" border="0" onload=""></a></td>
                   <td>&nbsp;</td>
                   <td>&nbsp;</td>
-                  <td>
+                  <td> 
                     <?php
 		 	if ($_SESSION["guest_login"] != 0) {
 				echo "<b>&nbsp;You logged in as guest - commands are disabled</b>";
@@ -239,12 +239,12 @@ function formCommandSubmit(command)
           </tr>
         </table></td>
     </tr>
-    <tr>
+    <tr> 
       <td height="10" align="center"> </td>
     </tr>
-    <tr>
+    <tr> 
       <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0"> <caption>
-          DOWNLOAD
+          DOWNLOAD 
           </caption>
   <tr>
     <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
@@ -254,8 +254,8 @@ function formCommandSubmit(command)
   <tr>
     <td width="24" background="images/tab_left.png">&nbsp;</td>
     <td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-
-          <tr>
+                     
+          <tr> 
                   <th>&nbsp;</th>
                   <th><a href="amuleweb-main-dload.php?sort=name">File name</a></th>
                   <th><a href="amuleweb-main-dload.php?sort=size">Size</a></th>
@@ -283,14 +283,10 @@ function formCommandSubmit(command)
 
 		function StatusString($file)
 		{
-            // Status could be defined with PHP's define() function if it would be implemented in the phplib of aMule
-            // Implementation would go in "php_core_lib.cpp" (see: php_init_core_lib() there)
-			if ( $file->status == 7 ) {  // PS_PAUSED
+			if ( $file->status == 7 ) {
 				return "Paused";
 			} elseif ( $file->src_count_xfer > 0 ) {
 				return "Downloading";
-			} elseif ($file->status == 3 ) {  // PS_HASHING
-                return "Hashing";
 			} else {
 				return "Waiting";
 			}
@@ -306,7 +302,7 @@ function formCommandSubmit(command)
 			}
 			return $result;
 		}
-
+		
 		//
 		// declare it here, before any function reffered it in "global"
 		//
@@ -315,7 +311,7 @@ function formCommandSubmit(command)
 		function my_cmp($a, $b)
 		{
 			global $sort_order, $sort_reverse;
-
+			
 			switch ( $sort_order) {
 				case "size": $result = $a->size > $b->size; break;
 				case "size_done": $result = $a->size_done > $b->size_done; break;
@@ -356,7 +352,7 @@ function formCommandSubmit(command)
 		}
 		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "all";
 		if ( $_SESSION["filter_cat"] == "") $_SESSION["filter_cat"] = "all";
-
+		
 		$downloads = amule_load_vars("downloads");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
@@ -389,17 +385,17 @@ function formCommandSubmit(command)
 		foreach ($downloads as $file) {
 			$filter_status_result = ($_SESSION["filter_status"] == "all") or
 				($_SESSION["filter_status"] == StatusString($file));
-
+				
 			$filter_cat_result = ($_SESSION["filter_cat"] == "all") or
 				($cat_idx[ $_SESSION["filter_cat"] ] == $file->category);
 
 			if ( $filter_status_result and $filter_cat_result) {
 				print "<tr>";
-
+	
 				echo "<td class='texte' height='22'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
-
+	
 				echo "<td class='texte' height='22'>", $file->short_name, "</td>";
-
+				
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size), "</td>";
 
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size_done), "&nbsp;(",
@@ -408,7 +404,7 @@ function formCommandSubmit(command)
 				echo "<td class='texte' height='22' align='center'>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
 
 				echo "<td class='texte' height='22' align='center' align='center'>", $file->progress, "</td>";
-
+	
 				echo "<td class='texte' height='22' align='center'>";
 				if ( $file->src_count_not_curr != 0 ) {
 					echo $file->src_count - $file->src_count_not_curr, " / ";
@@ -418,11 +414,11 @@ function formCommandSubmit(command)
 					echo "+ ", $file->src_count_a4af;
 				}
 				echo "</td>";
-
+	
 				echo "<td class='texte' height='22' align='center'>", StatusString($file), "</td>";
-
+				
 				echo "<td class='texte' height='22' align='center'>", PrioString($file), "</td>";
-
+				
 				print "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
 			}
 		}
@@ -440,18 +436,18 @@ function formCommandSubmit(command)
   </table>
 </form>
       <table width="100%" border="0" cellspacing="0" cellpadding="0"><caption>
-        UPLOAD
+        UPLOAD 
         </caption>
-        <tr>
+        <tr> 
           <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
           <td background="images/tab_top.png">&nbsp;</td>
           <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
         </tr>
-        <tr>
+        <tr> 
           <td width="24" background="images/tab_left.png">&nbsp;</td>
           <td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="doad-table">
-
-        <tr>
+              
+        <tr> 
                 <td>&nbsp;</td>
                 <th>File Name</th>
                 <th>Username</th>
@@ -479,13 +475,13 @@ function formCommandSubmit(command)
 			$uploads = amule_load_vars("uploads");
 			foreach ($uploads as $file) {
 				echo "<tr>";
-
+	
 				echo "<td class='texte' height='22' align='center'>", "</td>";
-
+				
 				echo "<td class='texte' height='22'>", $file->short_name, "</td>";
 
 				echo "<td class='texte' height='22' align='center'>", $file->user_name, "</td>";
-
+	
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_up), "</td>";
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_down), "</td>";
 				echo "<td class='texte' height='22' align='center'>", "</td>";
@@ -498,21 +494,21 @@ function formCommandSubmit(command)
       </table></td>
           <td width="24" background="images/tab_right.png">&nbsp;</td>
         </tr>
-        <tr>
+        <tr> 
           <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
           <td background="images/tab_bottom.png">&nbsp;</td>
           <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
         </tr>
       </table>
-
+      
     </td>
   </tr>
-  <tr valign="bottom">
+  <tr valign="bottom"> 
     <td height="25" colspan="2"> <table width="100%" height="40" border="0" cellpadding="0" cellspacing="0">
-        <tr align="center" valign="middle">
-          <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">ed2klink</iframe>
+        <tr align="center" valign="middle"> 
+          <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">ed2klink</iframe> 
           </td>
-          <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe>
+          <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 
           </td>
         </tr>
       </table></td>

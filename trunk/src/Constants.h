@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -27,16 +27,16 @@
 
 //! This enum lists the views currently supported by the CClientListCtrl class.
 enum ViewType
-{
+{ 
 	//! The "neutral" state, where nothing is displayed.
 	vtNone = 0,
-
+	
 	//! Clients which are received files are displayed.
 	vtUploading = 1,
-
+	
 	//! Clients which are queued for files are displayed.
 	vtQueued = 2,
-
+	
 	//! All clients are displayed.
 	vtClients = 3
 };
@@ -44,10 +44,10 @@ enum ViewType
 
 // lfroen : custom events for core internal messages
 // 'cause - there's no wxCommand etc in wxBase
-enum Core_Event_ID
+enum Core_Event_ID 
 {
 	HTTP_DOWNLOAD_FINISHED = 1,
-
+	
 	SOURCE_DNS_DONE,
 	UDP_DNS_DONE,
 	SERVER_DNS_DONE
@@ -55,7 +55,7 @@ enum Core_Event_ID
 
 
 //! These IDs are used when a download is initiated via the HTTPThread.
-enum HTTP_Download_File
+enum HTTP_Download_File 
 {
 	//! The download is a ipfilter.dat file (possibly compressed).
 	HTTP_IPFilter = 1,
@@ -81,11 +81,12 @@ enum SourceItemType
 	//! A source which is currently queued for this file.
 	AVAILABLE_SOURCE
 };
+	
+// KnownFile constants
 
-// PartFile status constants
 #define	PS_READY			0
 #define	PS_EMPTY			1
-//#define PS_WAITINGFORHASH		2
+#define PS_WAITINGFORHASH		2
 #define PS_HASHING			3
 #define PS_ERROR			4
 #define	PS_INSUFFICIENT			5

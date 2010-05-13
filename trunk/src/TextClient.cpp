@@ -17,12 +17,12 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
-
+	
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for VERSION
@@ -130,8 +130,8 @@ IMPLEMENT_APP (CamulecmdApp)
 void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(parser, "amulecmd");
-	parser.AddOption(wxT("c"), wxT("command"),
-		_("Execute <str> and exit."),
+	parser.AddOption(wxT("c"), wxT("command"), 
+		_("Execute <str> and exit."), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 }
 
@@ -179,7 +179,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			CmdId = CMD_ID_GET_IPFILTER_STATE;
 		}
 	}
-
+	
 	switch (CmdId) {
 		case CMD_ID_STATUS:
 			request_list.push_back(new CECPacket(EC_OP_STAT_REQ, EC_DETAIL_CMD));
@@ -331,7 +331,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				const CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 
-				if (reply_all) {
+				if (reply_all) { 
 					switch(CmdId) {
 						case CMD_ID_PAUSE:
 								request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
@@ -345,7 +345,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					// We loop through all the arguments
 					while(argsTokenizer.HasMoreTokens()) {
 						token=argsTokenizer.GetNextToken();
-
+						
 						// If the user requested all, then we select all files and exit the loop
 						// since there is little point to add anything more to "everything"
 						if( token == wxT("all") ) {
@@ -372,9 +372,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 									partmetname.Truncate(partmetname.Len()-5) == token) {
 									Show(_("Processing by filename: "+token+wxT("\n")));
 									request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
-								}
-							}
-						} // End of filename check else
+								}		
+							}	
+						} // End of filename check else	
 					} // End of argument token loop
 
 				request_list.push_back(request);
@@ -423,7 +423,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					}
 				} else {
 						Show(_("Not a valid hash (length should be exactly 32 chars)\n"));
-						return 0;
+						return 0;					
 				}
 			}
 			break;
@@ -510,13 +510,13 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if (search_type != EC_SEARCH_GLOBAL && search_type != EC_SEARCH_LOCAL){
 				search_type = EC_SEARCH_KAD;
 			}
-			if (!args.IsEmpty())
-			{
-				wxString search = args;
+			if (!args.IsEmpty()) 
+			{	
+				wxString search = args; 
 				wxString type =  wxT("");
-				wxString extention = wxT("");
-				uint32 avail = 0;
-				uint32 min_size = 0;
+				wxString extention = wxT(""); 
+				uint32 avail = 0; 
+				uint32 min_size = 0; 
 				uint32 max_size = 0;
 
 				request = new CECPacket(EC_OP_SEARCH_START);
@@ -527,7 +527,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SEARCH:
 			printf("No search type defined.\nType 'help search' to get more help.\n");
 			break;
-
+			
 
 		case CMD_ID_SEARCH_RESULTS:
 			request_list.push_back(new CECPacket(EC_OP_SEARCH_RESULTS, EC_DETAIL_FULL));
@@ -538,8 +538,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_DOWNLOAD:
-			if (!args.IsEmpty())
-			{
+			if (!args.IsEmpty()) 
+			{	
 				unsigned long int id = 0;
 				if (args.ToULong(&id) == true && id < m_Results_map.size()) {
 
@@ -557,7 +557,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				}
 			}
 			break;
-
+		
 		default:
 			return CMD_ERR_PROCESS_CMD;
 	}
@@ -594,19 +594,19 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 	unsigned int nr_max = 5;
 	unsigned long int id = 0;
 	wxString output, name, sources, mb , kb;
-
+	
 	printf("Nr.    Filename:                                                                        Size(MB):  Sources: \n");
 	printf("-----------------------------------------------------------------------------------------------------------\n");
 
 	for( std::map<unsigned long int,SearchFile*>::iterator iter = results_map.begin(); iter != results_map.end(); iter++ ) {
     		id = (*iter).first;
 		SearchFile* file = (*iter).second;
-
-		output.Printf(wxT("%i.      "), id);
-		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);
+		
+		output.Printf(wxT("%i.      "), id);		
+		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);		
 		mb.Printf(wxT("     %d"), file->lFileSize/1024/1024);
 		kb.Printf(wxT(".%d"), file->lFileSize/1024%1024);
-		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);
+		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);	
 		printf("%s     %ld\n",(const char*)unicode2char(output), file->lSourceCount );
  	}
 }
@@ -742,30 +742,26 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
 				CEC_PartFile_Tag *tag =	(CEC_PartFile_Tag *) & *it;
 					uint64 filesize, donesize;
-					float percent;
 					filesize = tag->SizeFull();
 					donesize = tag->SizeDone();
-					if (tag->FileStatus() != PS_HASHING) {
-					    percent = (float)donesize / (float)filesize * 100.0;
-					} else {
-                        // if the file is being hashed: print the percentage of the hashing process that's completed
-                        uint16 partCount = filesize / PARTSIZE + 1;
-					    percent = (float)tag->FileHashedPartCount() / (float)partCount * 100.0;
-					}
-					s << tag->FileHashString() << wxT(" ") << tag->FileName();
-                    s << CFormat(wxT("\n\t [%.1f%%] %4u/%4u ")) % percent % (tag->SourceCount() - tag->SourceNotCurrCount()) % tag->SourceCount();
-                    s << (tag->SourceCountA4AF() ? CFormat(wxT("+%2.2u ")) % tag->SourceCountA4AF() : CFormat(wxT("    ")));
-                    s << (tag->SourceXferCount() ? CFormat(wxT("(%2.2u) - ")) % tag->SourceXferCount() : CFormat(wxT("     - ")));
-                    s << tag->GetFileStatusString();
-                    s << wxT(" - ") << tag->PartMetName();
-                    if (tag->DownPrio() < 10) {
-                        s << wxT(" - ") << PriorityToStr(tag->DownPrio(), 0);
-                    } else {
-                        s << wxT(" - ") << PriorityToStr((tag->DownPrio() - 10), 1);
-                    }
-                    if ( tag->SourceXferCount() > 0) {
-                        s << wxT(" - ") + CastItoSpeed(tag->Speed());
-                    }
+					s <<	tag->FileHashString() << wxT(" ") <<
+						tag->FileName() <<
+						wxString::Format(wxT("\n\t [%.1f%%] %4i/%4i "),
+							((float)donesize) / ((float)filesize)*100.0,
+							(int)tag->SourceCount() - (int)tag->SourceNotCurrCount(),
+							(int)tag->SourceCount()) <<
+							((int)tag->SourceCountA4AF() ? wxString::Format(wxT("+%2.2i "),(int)tag->SourceCountA4AF()) : wxString(wxT("    "))) <<
+							((int)tag->SourceXferCount() ? wxString::Format(wxT("(%2.2i) - "),(int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
+						tag->GetFileStatusString();
+						s << wxT(" - ") << tag->PartMetName();
+                                                if (tag->DownPrio() < 10) {
+                                                        s << wxT(" - ") << PriorityToStr((int)tag->DownPrio(), 0);
+                                                } else {
+                                                        s << wxT(" - ") << PriorityToStr((tag->DownPrio() - 10), 1);
+                                                }
+						if ( tag->SourceXferCount() > 0) {
+							s << wxT(" - ") + CastItoSpeed(tag->Speed());
+						}
 					s << wxT("\n");
 			}
 			break;
@@ -854,7 +850,7 @@ void CamulecmdApp::OnInitCommandSet()
 
 	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ID_RELOAD_IPFILTER_LOCAL, wxTRANSLATE("Reload IP filtering table."), wxEmptyString, CMD_PARAM_OPTIONAL);
 	tmp2->AddCommand(wxT("File"), CMD_ID_RELOAD_IPFILTER_LOCAL, wxTRANSLATE("Reload current IP filtering table."), wxEmptyString, CMD_PARAM_NEVER);
-	tmp2->AddCommand(wxT("Net"), CMD_ID_RELOAD_IPFILTER_NET, wxTRANSLATE("Update IP filtering table from URL."),
+	tmp2->AddCommand(wxT("Net"), CMD_ID_RELOAD_IPFILTER_NET, wxTRANSLATE("Update IP filtering table from URL."), 
 					wxTRANSLATE("If URL is omitted the URL from the preferences is used."), CMD_PARAM_OPTIONAL);
 
 	tmp = m_commands.AddCommand(wxT("Connect"), CMD_ID_CONNECT, wxTRANSLATE("Connect to the network."),
@@ -938,7 +934,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("Normal"), CMD_ID_PRIORITY_NORMAL, wxTRANSLATE("Set priority to normal."), wxEmptyString, CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("High"), CMD_ID_PRIORITY_HIGH, wxTRANSLATE("Set priority to high."), wxEmptyString, CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("Auto"), CMD_ID_PRIORITY_AUTO, wxTRANSLATE("Set priority to auto."), wxEmptyString, CMD_PARAM_ALWAYS);
-
+				  
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
 				    wxTRANSLATE("Show upload/download queue, server list or shared files list.\n"), CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("UL"), CMD_ID_SHOW_UL, wxTRANSLATE("Show upload queue."), wxEmptyString, CMD_PARAM_NEVER);
