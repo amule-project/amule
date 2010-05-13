@@ -145,6 +145,7 @@ Version 2.3.0 - The river knows.
 		* Terminate HTTP downloads on exit
 		* Projects for Visual Studio 2010
 		* Fixed crash in http download
+		* Speed boost for reload of shared files with large list of known files
 
 	Vollstrecker:
 		* Unify copyright lines

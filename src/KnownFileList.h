@@ -48,6 +48,8 @@ public:
 		uint64 in_size);
 	CKnownFile* FindKnownFileByID(const CMD4Hash& hash);
 	bool	IsKnownFile(const CKnownFile* file);
+	void	PrepareIndex();
+	void	ReleaseIndex();
 
 	uint16 requested;
 	uint32 transferred;
@@ -74,6 +76,10 @@ private:
 	CKnownFileMap	m_knownFileMap;
 	// The filename "known.met"
 	wxString	m_filename;
+	// Speed up shared files reload
+	typedef std::multimap<uint32, CKnownFile*> KnownFileSizeMap;
+	KnownFileSizeMap * m_knownSizeMap;
+	KnownFileSizeMap * m_duplicateSizeMap;
 };
 
 #endif // KNOWNFILELIST_H
