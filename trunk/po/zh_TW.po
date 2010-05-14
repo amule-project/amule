@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-12 09:03+0200\n"
-"PO-Revision-Date: 2010-03-02 13:28+0800\n"
+"PO-Revision-Date: 2010-05-10 23:53+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -439,7 +439,7 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
-"源自 eMule 的跨平台 P2P 客戶端程式\n"
+"源自 eMule 的「跨平台」P2P 客戶端程式\n"
 "\n"
 
 #: src/amuleDlg.cpp:493
@@ -1809,17 +1809,15 @@ msgstr "缺少協定版本標記。"
 
 #: src/ExternalConn.cpp:455
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
+msgstr "驗證失敗：指定無效的 hash 值做為外部連線密碼。"
 
 #: src/ExternalConn.cpp:471
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "登入驗證失敗。"
+msgstr "驗證失敗：密碼錯誤。"
 
 #: src/ExternalConn.cpp:473
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "登入驗證失敗。"
+msgstr "驗證失敗：沒有密碼。"
 
 #: src/ExternalConn.cpp:483
 msgid "Invalid request, please authenticate first."
@@ -1830,9 +1828,9 @@ msgid "Access granted."
 msgstr "登入成功。"
 
 #: src/ExternalConn.cpp:496
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "過濾來自不明客戶端的訊息"
+msgstr "傳送錯誤訊息「%s」給客戶端。"
 
 #: src/ExternalConn.cpp:499
 msgid "Unauthorized access attempt. Connection closed."
@@ -2162,7 +2160,7 @@ msgstr "檔案詳細資訊"
 #: src/FileDetailDialog.cpp:114
 #, c-format
 msgid "%.2f%% done"
-msgstr "%.2f%%"
+msgstr "完成 %.2f%%"
 
 #: src/FileDetailDialog.cpp:116 src/utils/wxCas/src/wxcasframe.cpp:1144
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
@@ -2321,7 +2319,6 @@ msgid "Loaded %d flag bitmaps."
 msgstr "已載入 %d 個國旗圖片。"
 
 #: src/IPFilter.cpp:119
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "正在載入 IP 過濾檔 ipfilter.dat 與 ipfilter_static.dat 。"
 
@@ -2354,7 +2351,7 @@ msgstr "無法重新命名新的 %s 檔案，停止更新。"
 
 #: src/IPFilter.cpp:628
 msgid "IP filter is ready"
-msgstr ""
+msgstr "IP 過濾表已備妥"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -4238,7 +4235,7 @@ msgstr "自動不經代理伺服器連線到伺服器"
 
 #: src/muuli_wdr.cpp:3157
 msgid "Enable authentication"
-msgstr "啓用登入驗證："
+msgstr "啓用登入驗證"
 
 #: src/muuli_wdr.cpp:3158
 msgid "Enable/disable username/password authentication"
@@ -6436,7 +6433,7 @@ msgstr ""
 "    LOCAL\n"
 "    KAD\n"
 "\n"
-"例如：「 search kad 檔案 」將在 Kad 網路搜尋檔案。\n"
+"例如：「 search kad 關鍵字 」將在 Kad 網路搜尋該「關鍵字」。\n"
 
 #: src/TextClient.cpp:904
 msgid "Execute a global search."
@@ -7530,3 +7527,9 @@ msgstr "正在處理 [已重定向] 的要求："
 
 #~ msgid "Shows upload/download queue, server list or shared files list.\n"
 #~ msgstr "顯示上傳/下載等候區，伺服器清單或分享檔案清單。\n"
+
+#~ msgid "Authentication failed."
+#~ msgstr "登入驗證失敗。"
+
+#~ msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
+#~ msgstr "正在載入 IP 過濾檔 ipfilter.dat 與 ipfilter_static.dat 。"
