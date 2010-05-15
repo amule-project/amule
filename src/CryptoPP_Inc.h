@@ -35,10 +35,12 @@
 	#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #endif
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for CRYPTOPP_INCLUDE_PREFIX
-#else
-	#define CRYPTOPP_INCLUDE_PREFIX	cryptopp
+#ifndef CRYPTOPP_INCLUDE_PREFIX
+	#ifdef HAVE_CONFIG_H
+		#include "config.h"	// Needed for CRYPTOPP_INCLUDE_PREFIX
+	#else
+		#define CRYPTOPP_INCLUDE_PREFIX	cryptopp
+	#endif
 #endif
 
 #define noinline	noinline
