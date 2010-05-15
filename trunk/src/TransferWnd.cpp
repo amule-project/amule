@@ -108,13 +108,7 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	// Check if the clientlist is hidden
 	bool show = true;
 	config->Read( wxT("/GUI/TransferWnd/ShowClientList"), &show, true );
-
-	if ( !show ) {
-		// Disable the client-list
-		wxCommandEvent event;
-		OnToggleClientList( event );	
-	}
-
+	clientlistctrl->SetShowing(show);
 	// Load the last used splitter position
 	m_splitter = config->Read( wxT("/GUI/TransferWnd/Splitter"), 463l );
 }
@@ -404,30 +398,26 @@ void CTransferWnd::UpdateCatTabTitles()
 
 void CTransferWnd::Prepare()
 {
-	int header_height = s_clientlistHeader->GetSize().GetHeight();
 	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+	int height = splitter->GetSize().GetHeight();
+	int header_height = s_clientlistHeader->GetSize().GetHeight();	
 	
-	if ( !clientlistctrl->GetShowing() ) {
-		int height = splitter->GetWindow1()->GetSize().GetHeight();
-	    	height += splitter->GetWindow2()->GetSize().GetHeight();
-	
-		splitter->SetSashPosition( height - header_height );
-	} else if ( m_splitter ) {
-		// Some sainity checking
+	if ( m_splitter ) {
+		// Some sanity checking
 		if ( m_splitter < 90 ) {
 			m_splitter = 90;
-		} else {
-			int height = splitter->GetWindow1()->GetSize().GetHeight();
-		    	height += splitter->GetWindow2()->GetSize().GetHeight();
-		
-			if ( height - header_height * 2 < m_splitter ) {
-				m_splitter = height - header_height * 2;
-			}
+		} else if ( m_splitter > height - header_height * 2 ) {
+			m_splitter = height - header_height * 2;
 		}
-		
 		splitter->SetSashPosition( m_splitter );
-
 		m_splitter = 0;
+	}
+
+	if ( !clientlistctrl->GetShowing() ) {
+		// use a toggle event to close it (calculate size, change button)
+		clientlistctrl->SetShowing( true );	// so it will be toggled to false
+		wxCommandEvent evt1;
+		OnToggleClientList( evt1 );
 	}
 }
 
@@ -438,59 +428,67 @@ void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 
 	if ( !clientlistctrl->GetShowing() ) {
 		splitter->SetSashPosition( m_splitter );		
+		m_splitter = 0;
 		
 		clientlistctrl->SetShowing( true );
 		
 		button->SetBitmapLabel( amuleDlgImages( 10 ) );
 		button->SetBitmapFocus( amuleDlgImages( 10 ) );
 		button->SetBitmapSelected( amuleDlgImages( 10 ) );
-
-		m_splitter = 0;
+		button->SetBitmapHover( amuleDlgImages( 10 ) );
 	} else {
 		clientlistctrl->SetShowing( false );
 	
-		int pos = splitter->GetSashPosition();
+		m_splitter = splitter->GetSashPosition();
 	
 		// Add the height of the listctrl to the top-window
-		int height  = clientlistctrl->GetSize().GetHeight();
-		height += splitter->GetWindow1()->GetSize().GetHeight();
+		int height = clientlistctrl->GetSize().GetHeight()
+					 + splitter->GetWindow1()->GetSize().GetHeight();
 	
 		splitter->SetSashPosition( height );
 		
-		m_splitter = pos;
-
 		button->SetBitmapLabel( amuleDlgImages( 11 ) );
 		button->SetBitmapFocus( amuleDlgImages( 11 ) );
 		button->SetBitmapSelected( amuleDlgImages( 11 ) );
+		button->SetBitmapHover( amuleDlgImages( 11 ) );
 	}
 }
 
 
 void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 {
-	int header_height = s_clientlistHeader->GetSize().GetHeight();
-	
 	if ( evt.GetSashPosition() < 90 ) {
 		evt.SetSashPosition( 90 );
 	} else {
 		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
+		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CTransferWnd::OnSashPositionChanging"));
 			
-		int height = splitter->GetWindow1()->GetSize().GetHeight();
-		    height += splitter->GetWindow2()->GetSize().GetHeight();
+		int height = splitter->GetSize().GetHeight();
+		int header_height = s_clientlistHeader->GetSize().GetHeight();	
+		int mousey = wxGetMousePosition().y - splitter->GetScreenRect().GetTop();
 
 		if ( !clientlistctrl->GetShowing() ) {
-			if ( height - evt.GetSashPosition() < header_height * 2 ) {
+			// lower window hidden
+			if ( height - mousey < header_height * 2 ) {
+				// no moving down if already hidden
 				evt.Veto();
 			} else {
+				// show it
+				m_splitter = mousey;	// prevent jumping if it was minimized and is then shown by dragging the sash
 				wxCommandEvent event;
 				OnToggleClientList( event );
 			}
 		} else {
-			if ( height - evt.GetSashPosition() < header_height * 2 ) {
-				evt.SetSashPosition( height - header_height );
-
+			// lower window showing
+			if ( height - mousey < header_height * 2 ) {
+				// hide it
 				wxCommandEvent event;
 				OnToggleClientList( event );
+			} else {
+				// normal resize
+				// If several events queue up, setting the sash to the current mouse position
+				// will speed up things and make sash moving more smoothly.
+				evt.SetSashPosition( mousey );
 			}
 		}
 	}

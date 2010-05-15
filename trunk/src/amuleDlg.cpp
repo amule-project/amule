@@ -376,6 +376,11 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	// we have to refresh it once it is visible again
 	dlg->Refresh( true );
 	dlg->SetFocus();
+	
+	if ( type == DT_SHARED_WND ) {
+		// set up splitter now that window sizes are defined
+		m_sharedfileswnd->Prepare();
+	}
 }
 
 
