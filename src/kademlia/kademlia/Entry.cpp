@@ -539,14 +539,18 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CFileDataIO* data)
 	wxASSERT(m_publishingIPs == NULL);
 	m_publishingIPs = new PublishingIPList();
 	uint32_t ipCount = data->ReadUInt32();
+#ifdef __WXDEBUG__
 	uint32_t dbgLastTime = 0;
+#endif
 	for (uint32_t i = 0; i < ipCount; i++) {
 		sPublishingIP toAdd;
 		toAdd.m_ip = data->ReadUInt32();
 		wxASSERT(toAdd.m_ip != 0);
 		toAdd.m_lastPublish = data->ReadUInt32();
+#ifdef __WXDEBUG__
 		wxASSERT(dbgLastTime <= (uint32_t)toAdd.m_lastPublish); // should always be sorted oldest first
 		dbgLastTime = toAdd.m_lastPublish;
+#endif
 
 		AdjustGlobalPublishTracking(toAdd.m_ip, true, wxEmptyString);
 
