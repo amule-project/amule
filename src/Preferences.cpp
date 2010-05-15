@@ -150,7 +150,6 @@ bool		CPreferences::s_bDAP;
 bool		CPreferences::s_bUAP;
 uint8_t		CPreferences::s_showRatesOnTitle;
 wxString	CPreferences::s_VideoPlayer;
-bool		CPreferences::s_moviePreviewBackup;
 bool		CPreferences::s_showAllNotCats;
 bool		CPreferences::s_msgonlyfriends;
 bool		CPreferences::s_msgsecure;
@@ -1136,7 +1135,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * External Apps
 	 */
 	NewCfgItem(IDC_VIDEOPLAYER,	(new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxEmptyString )));
-	NewCfgItem(IDC_VIDEOBACKUP,	(new Cfg_Bool( wxT("/eMule/VideoPreviewBackupped"), s_moviePreviewBackup, true )));
 
 	/**
 	 * Statistics
