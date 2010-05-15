@@ -1594,6 +1594,9 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 
     item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
+    wxStaticText *item27 = new wxStaticText( parent, IDC_PREVIEW_NOTE, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
     item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     if (set_sizer)

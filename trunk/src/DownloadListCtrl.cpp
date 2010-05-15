@@ -1381,34 +1381,39 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		command = thePrefs::GetVideoPlayer();
 	}
 
+	wxString partFile;	// File name with full path
+	wxString partName;	// File name only, without path
+
 	// Check if we are (pre)viewing a completed file or not
 	if (file->GetStatus() != PS_COMPLETE) {
 		// Remove the .met and see if out video player specifiation uses the magic string
-		wxString fileWithoutMet = thePrefs::GetTempDir().JoinPaths(
-			file->GetPartMetFileName().RemoveExt()).GetRaw();
-		
-		if (!command.Replace(wxT("$file"), fileWithoutMet)) {
-			// No magic string, so we just append the filename to the player command
-			// Need to use quotes in case filename contains spaces
-			command << wxT(" ") << QUOTE << fileWithoutMet << QUOTE;
-		}
+		partName = file->GetPartMetFileName().RemoveExt().GetRaw();
+		partFile = thePrefs::GetTempDir().JoinPaths(file->GetPartMetFileName().RemoveExt()).GetRaw();
 	} else {
 		// This is a complete file
 		// FIXME: This is probably not going to work if the filenames are mangled ...
-		wxString rawFileName = file->GetFullName().GetRaw();
+		partName = file->GetFileName().GetRaw();
+		partFile = file->GetFullName().GetRaw();
+	}
 
-#ifndef __WXMSW__
-		// We have to escape quote characters in the file name, otherwise arbitrary
-		// options could be passed to the player.
-		rawFileName.Replace(QUOTE, wxT("\\") QUOTE);
-#endif
-
-		if (!command.Replace(wxT("$file"), rawFileName)) {
+	// Compatibility with old behaviour
+	if (!command.Replace(wxT("$file"), wxT("%PARTFILE"))) {
+		if ((command.Find(wxT("%PARTFILE")) == wxNOT_FOUND) && (command.Find(wxT("%PARTNAME")) == wxNOT_FOUND)) {
 			// No magic string, so we just append the filename to the player command
 			// Need to use quotes in case filename contains spaces
-			command << wxT(" ") << QUOTE << rawFileName << QUOTE;
+			command << wxT(" ") << QUOTE << wxT("%PARTFILE") << QUOTE;
 		}
 	}
+
+#ifndef __WXMSW__
+	// We have to escape quote characters in the file name, otherwise arbitrary
+	// options could be passed to the player.
+	partFile.Replace(QUOTE, wxT("\\") QUOTE);
+	partName.Replace(QUOTE, wxT("\\") QUOTE);
+#endif
+
+	command.Replace(wxT("%PARTFILE"), partFile);
+	command.Replace(wxT("%PARTNAME"), partName);
 
 	// We can't use wxShell here, it blocks the app
 	CTerminationProcess *p = new CTerminationProcess(command);
