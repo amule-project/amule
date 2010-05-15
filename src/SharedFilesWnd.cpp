@@ -39,6 +39,7 @@ BEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
 	EVT_LIST_ITEM_SELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_LIST_ITEM_DESELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_BUTTON( ID_BTNRELSHARED,			CSharedFilesWnd::OnBtnReloadShared )
+ 	EVT_BUTTON(ID_SHAREDCLIENTTOGGLE,		CSharedFilesWnd::OnToggleClientList)
 	
 	EVT_SPLITTER_SASH_POS_CHANGING(ID_SHARESSPLATTER, CSharedFilesWnd::OnSashPositionChanging)
 END_EVENT_TABLE()
@@ -56,6 +57,7 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	peerslistctrl   = CastChild( ID_SHAREDCLIENTLIST, CSharedFilePeersListCtrl );
 	wxASSERT(sharedfilesctrl);
 	wxASSERT(peerslistctrl);
+	m_prepared		= false;
 	
 	m_splitter = 0;	
 	
@@ -64,15 +66,9 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	// Check if the clientlist is hidden
 	bool show = true;
 	config->Read( wxT("/GUI/SharedWnd/ShowClientList"), &show, true );
-
-	if ( !show ) {
-		// Disable the client-list
-		wxCommandEvent event;
-		OnToggleClientList( event );
-	}
-
+	peerslistctrl->SetShowing(show);
 	// Load the last used splitter position
-	m_splitter = config->Read( wxT("/GUI/SharedWnd/Splitter"), 463l );	
+	m_splitter = config->Read( wxT("/GUI/SharedWnd/Splitter"), 463l );
 }
 
 
@@ -205,40 +201,65 @@ void CSharedFilesWnd::RemoveAllSharedFiles() {
 	SelectionUpdated();
 }
 
+void CSharedFilesWnd::Prepare()
+{
+	if (m_prepared) {
+		return;
+	}
+	m_prepared = true;
+	wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
+	int height = splitter->GetSize().GetHeight();
+	int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();	
+	
+	if ( m_splitter ) {
+		// Some sanity checking
+		if ( m_splitter < 90 ) {
+			m_splitter = 90;
+		} else if ( m_splitter > height - header_height * 2 ) {
+			m_splitter = height - header_height * 2;
+		}
+		splitter->SetSashPosition( m_splitter );
+		m_splitter = 0;
+	}
+
+	if ( !peerslistctrl->GetShowing() ) {
+		// use a toggle event to close it (calculate size, change button)
+		peerslistctrl->SetShowing( true );	// so it will be toggled to false
+		wxCommandEvent evt1;
+		OnToggleClientList( evt1 );
+	}
+}
+
 void CSharedFilesWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 {
 	wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
 	wxBitmapButton*   button = CastChild( ID_SHAREDCLIENTTOGGLE, wxBitmapButton );
 	
-	wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CSharedFilesWnd::OnToggleClientList"));
-	wxCHECK_RET(button, wxT("ERROR: NULL button in CSharedFilesWnd::OnToggleClientList"));
-
 	if ( !peerslistctrl->GetShowing() ) {
 		splitter->SetSashPosition( m_splitter );
+		m_splitter = 0;
 		
 		peerslistctrl->SetShowing( true );
 		
 		button->SetBitmapLabel( amuleDlgImages( 10 ) );
 		button->SetBitmapFocus( amuleDlgImages( 10 ) );
 		button->SetBitmapSelected( amuleDlgImages( 10 ) );
-
-		m_splitter = 0;
+		button->SetBitmapHover( amuleDlgImages( 10 ) );
 	} else {
 		peerslistctrl->SetShowing( false );
 	
-		int pos = splitter->GetSashPosition();
+		m_splitter = splitter->GetSashPosition();
 	
 		// Add the height of the listctrl to the top-window
-		int height  = peerslistctrl->GetSize().GetHeight();
-		height += splitter->GetWindow1()->GetSize().GetHeight();
+		int height = peerslistctrl->GetSize().GetHeight()
+					 + splitter->GetWindow1()->GetSize().GetHeight();
 	
 		splitter->SetSashPosition( height );
-		
-		m_splitter = pos;
 
 		button->SetBitmapLabel( amuleDlgImages( 11 ) );
 		button->SetBitmapFocus( amuleDlgImages( 11 ) );
 		button->SetBitmapSelected( amuleDlgImages( 11 ) );
+		button->SetBitmapHover( amuleDlgImages( 11 ) );
 	}
 }
 
@@ -248,26 +269,34 @@ void CSharedFilesWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		evt.SetSashPosition( 90 );
 	} else {
 		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
-		
 		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CSharedFilesWnd::OnSashPositionChanging"));
 		
 		int height = splitter->GetSize().GetHeight();
-
 		int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();	
+		int mousey = wxGetMousePosition().y - splitter->GetScreenRect().GetTop();
 
 		if ( !peerslistctrl->GetShowing() ) {
-			if ( height - evt.GetSashPosition() < header_height * 1.5 ) {
+			// lower window hidden
+			if ( height - mousey < header_height * 2 ) {
+				// no moving down if already hidden
 				evt.Veto();
 			} else {
-				wxCommandEvent event;
-				OnToggleClientList( event );
+				// show it
+				m_splitter = mousey;	// prevent jumping if it was minimized and is then shown by dragging the sash
+				wxCommandEvent evt1;
+				OnToggleClientList( evt1 );
 			}
 		} else {
-			if ( height - evt.GetSashPosition() < header_height * 1.5 ) {
-				evt.SetSashPosition( height - header_height );
-
-				wxCommandEvent event;
-				OnToggleClientList( event );
+			// lower window showing
+			if ( height - mousey < header_height * 2 ) {
+				// hide it
+				wxCommandEvent evt1;
+				OnToggleClientList( evt1 );
+			} else {
+				// normal resize
+				// If several events queue up, setting the sash to the current mouse position
+				// will speed up things and make sash moving more smoothly.
+				evt.SetSashPosition( mousey );
 			}
 		}
 	}

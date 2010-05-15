@@ -146,6 +146,7 @@ Version 2.3.0 - The river knows.
 		* Fixed crash in http download
 		* Speed boost for reload of shared files with large list of known files
 		* Resolve MSVC compilation problem with separate strings in GUI
+		* Fixed splitter bars in download and share view
 
 	Vollstrecker:
 		* Unify copyright lines

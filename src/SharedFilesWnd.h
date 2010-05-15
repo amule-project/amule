@@ -67,6 +67,13 @@ public:
 	 */
 	void RemoveAllSharedFiles();
 
+	/**
+	 * Call this function before displaying the dialog.
+	 *
+	 * This functions does a few tasks to ensure that the dialog is looking the right way.
+	 */
+	void	Prepare();
+
 	//! Pointer to the widget containing the list of shared files.
 	CSharedFilesCtrl* sharedfilesctrl;
 	
@@ -102,6 +109,8 @@ private:
 	wxGauge* m_bar_accepted;
 	//! Pointer to the gauge used for showing the transferred ratio.
 	wxGauge* m_bar_transfer;
+	//! Pointer to the gauge used for showing the transferred ratio.
+	bool	m_prepared;
 
 	
 	DECLARE_EVENT_TABLE()
