@@ -44,7 +44,6 @@
 #include "MuleGifCtrl.h"
 #include "ChatSelector.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
-#include "PartFileConvert.h"
 #include "KadDlg.h"
 #include "SharedFilePeersListCtrl.h"
 
@@ -3258,7 +3257,7 @@ wxSizer *convertDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CConvertListCtrl *item7 = new CConvertListCtrl( parent, IDC_JOBLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    wxListCtrl *item7 = new wxListCtrl( parent, IDC_JOBLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxFlexGridSizer *item8 = new wxFlexGridSizer( 4, 0, 0 );
