@@ -1594,9 +1594,6 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 
     item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item27 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create backup for preview"), wxDefaultPosition, wxDefaultSize, 0 );
-    item22->Add( item27, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
     item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     if (set_sizer)

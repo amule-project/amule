@@ -306,7 +306,6 @@ public:
 
 	static bool		IsSafeServerConnectEnabled()	{ return s_safeServerConnect; }
 	static void		SetSafeServerConnectEnabled(bool val) { s_safeServerConnect = val; }
-	static bool		IsMoviePreviewBackup()		{ return s_moviePreviewBackup; }
 	
 	static bool		IsCheckDiskspaceEnabled()			{ return s_checkDiskspace; }
 	static void		SetCheckDiskspaceEnabled(bool val)	{ s_checkDiskspace = val; }
@@ -656,7 +655,6 @@ protected:
 	static uint8_t	s_showRatesOnTitle;	// 0=no, 1=after app name, 2=before app name
 
 	static wxString	s_VideoPlayer;
-	static bool	s_moviePreviewBackup;
 	static bool	s_showAllNotCats;
 	
 	static bool	s_msgonlyfriends;
