@@ -262,6 +262,11 @@ wxDialog(parent, -1, _("Preferences"),
 			m_IndexServerTab = i;
 			m_ServerWidget = Widget;
 		}
+		else if (pages[i].m_function == PreferencesaMuleTweaksTab) {
+			wxStaticText *txt = CastChild(IDC_AMULE_TWEAKS_WARNING, wxStaticText);
+			// Do not wrap this line, Windows _() can't handle wrapped strings
+			txt->SetLabel(_("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."));
+		}
 #ifdef __DEBUG__
 		else if (pages[i].m_function == PreferencesDebug) {
 			int count = theLogger.GetDebugCategoryCount();

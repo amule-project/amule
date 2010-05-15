@@ -137,12 +137,6 @@ private:
 	DECLARE_EVENT_TABLE()
 };
 
-// Make source compatible to wx 2.8 without 2.6 backward compatibility
-// This hack should be moved to muuli where it belongs as soon (TM) as it gets unlocked.
-#ifndef wxGA_PROGRESSBAR
-#define wxGA_PROGRESSBAR 0
-#endif
-
 #endif
 
 // File_checked_for_headers

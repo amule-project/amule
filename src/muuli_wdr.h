@@ -268,207 +268,208 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit = TRUE, bool
 #define IDC_CLIENTVERSIONS 10188
 wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_MAXCON5SEC 10189
-#define IDC_FILEBUFFERSIZE_STATIC 10190
-#define IDC_FILEBUFFERSIZE 10191
-#define IDC_QUEUESIZE_STATIC 10192
-#define IDC_QUEUESIZE 10193
-#define IDC_SERVERKEEPALIVE_LABEL 10194
-#define IDC_SERVERKEEPALIVE 10195
+#define IDC_AMULE_TWEAKS_WARNING 10189
+#define IDC_MAXCON5SEC 10190
+#define IDC_FILEBUFFERSIZE_STATIC 10191
+#define IDC_FILEBUFFERSIZE 10192
+#define IDC_QUEUESIZE_STATIC 10193
+#define IDC_QUEUESIZE 10194
+#define IDC_SERVERKEEPALIVE_LABEL 10195
+#define IDC_SERVERKEEPALIVE 10196
 wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_SKIN 10196
-#define IDC_FED2KLH 10197
-#define IDC_EXTCATINFO 10198
-#define IDC_SHOWRATEONTITLE 10199
-#define IDC_RATESBEFORETITLE 10200
-#define IDC_RATESAFTERTITLE 10201
-#define IDC_SHOWOVERHEAD 10202
-#define IDC_VERTTOOLBAR 10203
-#define IDC_PERCENT 10204
-#define IDC_PROGBAR 10205
-#define IDC_3DDEPTH 10206
-#define IDC_AUTOSORT 10207
+#define IDC_SKIN 10197
+#define IDC_FED2KLH 10198
+#define IDC_EXTCATINFO 10199
+#define IDC_SHOWRATEONTITLE 10200
+#define IDC_RATESBEFORETITLE 10201
+#define IDC_RATESAFTERTITLE 10202
+#define IDC_SHOWOVERHEAD 10203
+#define IDC_VERTTOOLBAR 10204
+#define IDC_PERCENT 10205
+#define IDC_PROGBAR 10206
+#define IDC_3DDEPTH 10207
+#define IDC_AUTOSORT 10208
 wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_EXT_CONN_ACCEPT 10208
-#define IDC_EXT_CONN_IP 10209
-#define IDC_EXT_CONN_TCP_PORT 10210
-#define IDC_UPNP_EC_ENABLED 10211
-#define IDC_EXT_CONN_PASSWD 10212
-#define IDC_ENABLE_WEB 10213
-#define IDC_WEBTEMPLATE 10214
-#define IDC_WEB_PASSWD 10215
-#define IDC_ENABLE_WEB_LOW 10216
-#define IDC_WEB_PASSWD_LOW 10217
-#define IDC_WEB_PORT 10218
-#define IDC_UPNP_WEBSERVER_ENABLED 10219
-#define IDC_WEBUPNPTCPPORT 10220
-#define IDC_WEB_REFRESH_TIMEOUT 10221
-#define IDC_WEB_GZIP 10222
+#define IDC_EXT_CONN_ACCEPT 10209
+#define IDC_EXT_CONN_IP 10210
+#define IDC_EXT_CONN_TCP_PORT 10211
+#define IDC_UPNP_EC_ENABLED 10212
+#define IDC_EXT_CONN_PASSWD 10213
+#define IDC_ENABLE_WEB 10214
+#define IDC_WEBTEMPLATE 10215
+#define IDC_WEB_PASSWD 10216
+#define IDC_ENABLE_WEB_LOW 10217
+#define IDC_WEB_PASSWD_LOW 10218
+#define IDC_WEB_PORT 10219
+#define IDC_UPNP_WEBSERVER_ENABLED 10220
+#define IDC_WEBUPNPTCPPORT 10221
+#define IDC_WEB_REFRESH_TIMEOUT 10222
+#define IDC_WEB_GZIP 10223
 wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *prefs_sizer;
-#define ID_PREFSLISTCTRL 10223
-#define ID_PREFS_OK_TOP 10224
-#define ID_PREFS_CANCEL_TOP 10225
+#define ID_PREFSLISTCTRL 10224
+#define ID_PREFS_OK_TOP 10225
+#define ID_PREFS_CANCEL_TOP 10226
 wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_TITLE 10226
-#define IDC_COMMENT 10227
-#define IDC_INCOMING 10228
-#define IDC_BROWSE 10229
-#define IDC_PRIOCOMBO 10230
-#define ID_BOX_CATCOLOR 10231
-#define IDC_CATCOLOR 10232
+#define IDC_TITLE 10227
+#define IDC_COMMENT 10228
+#define IDC_INCOMING 10229
+#define IDC_BROWSE 10230
+#define IDC_PRIOCOMBO 10231
+#define ID_BOX_CATCOLOR 10232
+#define IDC_CATCOLOR 10233
 wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_DOWNLOADSSPLATTER 10233
+#define ID_DOWNLOADSSPLATTER 10234
 wxSizer *transferDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_SERVERINFO 10234
-#define ID_BTN_RESET_SERVER 10235
+#define ID_SERVERINFO 10235
+#define ID_BTN_RESET_SERVER 10236
 wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_LOGVIEW 10236
-#define ID_BTN_RESET 10237
+#define ID_LOGVIEW 10237
+#define ID_BTN_RESET 10238
 wxSizer *aMuleLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_UPDATELIST 10238
-#define IDC_SERVERLISTURL 10239
-#define IDC_SERVERNAME 10240
-#define IDC_IPADDRESS 10241
-#define IDC_SPORT 10242
-#define ID_ADDTOLIST 10243
-#define IDC_ED2KDISCONNECT 10244
-#define ID_SERVERLIST 10245
+#define ID_UPDATELIST 10239
+#define IDC_SERVERLISTURL 10240
+#define IDC_SERVERNAME 10241
+#define IDC_IPADDRESS 10242
+#define IDC_SPORT 10243
+#define ID_ADDTOLIST 10244
+#define IDC_ED2KDISCONNECT 10245
+#define ID_SERVERLIST 10246
 wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_SRVLOG_NOTEBOOK 10246
+#define ID_SRVLOG_NOTEBOOK 10247
 wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_UPDATEKADLIST 10247
-#define IDC_NODESLISTURL 10248
-#define ID_KADSCOPE 10249
-#define ID_NODE_IP1 10250
-#define ID_NODE_IP2 10251
-#define ID_NODE_IP3 10252
-#define ID_NODE_IP4 10253
-#define ID_NODE_PORT 10254
-#define ID_NODECONNECT 10255
-#define ID_KNOWNNODECONNECT 10256
-#define ID_KADDISCONNECT 10257
+#define ID_UPDATEKADLIST 10248
+#define IDC_NODESLISTURL 10249
+#define ID_KADSCOPE 10250
+#define ID_NODE_IP1 10251
+#define ID_NODE_IP2 10252
+#define ID_NODE_IP3 10253
+#define ID_NODE_IP4 10254
+#define ID_NODE_PORT 10255
+#define ID_NODECONNECT 10256
+#define ID_KNOWNNODECONNECT 10257
+#define ID_KADDISCONNECT 10258
 wxSizer *KadDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_ED2KINFO 10258
+#define ID_ED2KINFO 10259
 wxSizer *ED2K_Info( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_SECIDENT 10259
-#define IDC_SUPPORT_PO 10260
-#define IDC_ENABLE_PO_OUTGOING 10261
-#define IDC_ENFORCE_PO_INCOMING 10262
-#define IDC_SEESHARES 10263
-#define IDC_IPFCLIENTS 10264
-#define IDC_IPFSERVERS 10265
-#define IDC_IPFRELOAD 10266
-#define IDC_IPFILTERURL 10267
-#define IDC_IPFILTERUPDATE 10268
-#define IDC_AUTOIPFILTER 10269
-#define ID_IPFILTERLEVEL 10270
-#define IDC_FILTERLAN 10271
-#define IDC_PARANOID 10272
-#define IDC_IPFILTERSYS 10273
+#define IDC_SECIDENT 10260
+#define IDC_SUPPORT_PO 10261
+#define IDC_ENABLE_PO_OUTGOING 10262
+#define IDC_ENFORCE_PO_INCOMING 10263
+#define IDC_SEESHARES 10264
+#define IDC_IPFCLIENTS 10265
+#define IDC_IPFSERVERS 10266
+#define IDC_IPFRELOAD 10267
+#define IDC_IPFILTERURL 10268
+#define IDC_IPFILTERUPDATE 10269
+#define IDC_AUTOIPFILTER 10270
+#define ID_IPFILTERLEVEL 10271
+#define IDC_FILTERLAN 10272
+#define IDC_PARANOID 10273
+#define IDC_IPFILTERSYS 10274
 wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_ONLINESIG 10274
-#define IDC_OSUPDATE 10275
-#define IDC_OSDIR 10276
-#define IDC_SELOSDIR 10277
+#define IDC_ONLINESIG 10275
+#define IDC_OSUPDATE 10276
+#define IDC_OSDIR 10277
+#define IDC_SELOSDIR 10278
 wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_MSGFILTER 10278
-#define IDC_MSGFILTER_ALL 10279
-#define IDC_MSGFILTER_NONFRIENDS 10280
-#define IDC_MSGFILTER_NONSECURE 10281
-#define IDC_MSGFILTER_WORD 10282
-#define IDC_MSGWORD 10283
-#define IDC_MSGLOG 10284
-#define IDC_FILTERCOMMENTS 10285
-#define IDC_COMMENTWORD 10286
+#define IDC_MSGFILTER 10279
+#define IDC_MSGFILTER_ALL 10280
+#define IDC_MSGFILTER_NONFRIENDS 10281
+#define IDC_MSGFILTER_NONSECURE 10282
+#define IDC_MSGFILTER_WORD 10283
+#define IDC_MSGWORD 10284
+#define IDC_MSGLOG 10285
+#define IDC_FILTERCOMMENTS 10286
+#define IDC_COMMENTWORD 10287
 wxSizer *PreferencesFilteringTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY 10287
-#define ID_PROXY_ENABLE_PASSWORD 10288
-#define ID_PROXY_USER 10289
-#define ID_PROXY_PASSWORD 10290
-#define ID_PROXY_ENABLE_PROXY 10291
-#define ID_PROXY_TYPE 10292
-#define ID_PROXY_NAME 10293
-#define ID_PROXY_PORT 10294
+#define ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY 10288
+#define ID_PROXY_ENABLE_PASSWORD 10289
+#define ID_PROXY_USER 10290
+#define ID_PROXY_PASSWORD 10291
+#define ID_PROXY_ENABLE_PROXY 10292
+#define ID_PROXY_TYPE 10293
+#define ID_PROXY_NAME 10294
+#define ID_PROXY_PORT 10295
 wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_REMOTE_HOST 10295
-#define ID_REMOTE_PORT 10296
-#define ID_EC_LOGIN 10297
-#define ID_EC_PASSWD 10298
-#define ID_EC_SAVE 10299
+#define ID_REMOTE_HOST 10296
+#define ID_REMOTE_PORT 10297
+#define ID_EC_LOGIN 10298
+#define ID_EC_PASSWD 10299
+#define ID_EC_SAVE 10300
 wxSizer *CoreConnect( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_VERBOSEDEBUG 10300
-#define ID_DEBUGCATS 10301
+#define ID_VERBOSEDEBUG 10301
+#define ID_DEBUGCATS 10302
 wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *IDC_CURJOB;
-#define IDC_CONV_PB_LABEL 10302
-#define IDC_CONV_PROZENT 10303
-#define IDC_CONV_PB_CURRENT 10304
-#define IDC_JOBLIST 10305
-#define IDC_ADDITEM 10306
-#define IDC_RETRY 10307
-#define IDC_CONVREMOVE 10308
+#define IDC_CONV_PB_LABEL 10303
+#define IDC_CONV_PROZENT 10304
+#define IDC_CONV_PB_CURRENT 10305
+#define IDC_JOBLIST 10306
+#define IDC_ADDITEM 10307
+#define IDC_RETRY 10308
+#define IDC_CONVREMOVE 10309
 wxSizer *convertDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_KADINFO 10309
+#define ID_KADINFO 10310
 wxSizer *Kad_Info( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *m_networknotebooksizer;
-#define ID_NETNOTEBOOK 10310
+#define ID_NETNOTEBOOK 10311
 wxSizer *NetDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *IDC_PREFS_EVENTS_PAGE;
-#define IDC_EVENTLIST 10311
+#define IDC_EVENTLIST 10312
 wxSizer *PreferencesEventsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *s_sharedfilespeerHeader;
-#define ID_SHAREDCLIENTTOGGLE 10312
-#define ID_LINE 10313
-#define IDC_SREQUESTED 10314
-#define IDC_SREQUESTED2 10315
-#define IDC_SACCEPTED 10316
-#define IDC_SACCEPTED2 10317
-#define IDC_STRANSFERRED 10318
-#define IDC_STRANSFERRED2 10319
-#define ID_SHAREDCLIENTLIST 10320
+#define ID_SHAREDCLIENTTOGGLE 10313
+#define ID_LINE 10314
+#define IDC_SREQUESTED 10315
+#define IDC_SREQUESTED2 10316
+#define IDC_SACCEPTED 10317
+#define IDC_SACCEPTED2 10318
+#define IDC_STRANSFERRED 10319
+#define IDC_STRANSFERRED2 10320
+#define ID_SHAREDCLIENTLIST 10321
 wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_BTNRELSHARED 10321
-#define ID_SHFILELIST 10322
+#define ID_BTNRELSHARED 10322
+#define ID_SHFILELIST 10323
 wxSizer *sharedfilesTopDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10323
-#define ID_BUTTONNETWORKS 10324
-#define ID_BUTTONSEARCH 10325
-#define ID_BUTTONDOWNLOADS 10326
-#define ID_BUTTONSHARED 10327
-#define ID_BUTTONMESSAGES 10328
-#define ID_BUTTONSTATISTICS 10329
-#define ID_BUTTONNEWPREFERENCES 10330
-#define ID_BUTTONIMPORT 10331
-#define ID_ABOUT 10332
+#define ID_BUTTONCONNECT 10324
+#define ID_BUTTONNETWORKS 10325
+#define ID_BUTTONSEARCH 10326
+#define ID_BUTTONDOWNLOADS 10327
+#define ID_BUTTONSHARED 10328
+#define ID_BUTTONMESSAGES 10329
+#define ID_BUTTONSTATISTICS 10330
+#define ID_BUTTONNEWPREFERENCES 10331
+#define ID_BUTTONIMPORT 10332
+#define ID_ABOUT 10333
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

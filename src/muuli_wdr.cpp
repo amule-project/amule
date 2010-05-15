@@ -47,6 +47,11 @@
 #include "KadDlg.h"
 #include "SharedFilePeersListCtrl.h"
 
+// Make source compatible to wx 2.8 without 2.6 backward compatibility
+#ifndef wxGA_PROGRESSBAR
+#define wxGA_PROGRESSBAR 0
+#endif
+
 
 // Implement window functions
 
@@ -2078,9 +2083,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item2->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
     item1->Add( item2, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, 
-        _("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."),
-        wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+    wxStaticText *item3 = new wxStaticText( parent, IDC_AMULE_TWEAKS_WARNING, wxT(""), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item3->SetForegroundColour( *wxRED );
     item1->Add( item3, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
@@ -2801,9 +2804,7 @@ item9->SetName(wxT("kadScope"));
 
     item20->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item37 = new wxButton( parent, ID_KNOWNNODECONNECT, 
-        _("Bootstrap from \nknown clients"),
-        wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton *item37 = new wxButton( parent, ID_KNOWNNODECONNECT, _("Bootstrap from known clients"), wxDefaultPosition, wxDefaultSize, 0 );
     item20->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item20->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );

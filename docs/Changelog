@@ -41,7 +41,6 @@ Version 2.3.0 - The river knows.
 		* Fix list double-buffering causing artifacts on refresh and when
 		  showing a context menu.
 		* Fix indexes after removing GUI items
-		* Resolve MSVC compilation problem with separate strings in GUI
 		* Fixes to Windows build
 		* Allow compilation with wxCocoa
 		* Replace Color.h by new class implementation MuleColour
@@ -146,6 +145,7 @@ Version 2.3.0 - The river knows.
 		* Projects for Visual Studio 2010
 		* Fixed crash in http download
 		* Speed boost for reload of shared files with large list of known files
+		* Resolve MSVC compilation problem with separate strings in GUI
 
 	Vollstrecker:
 		* Unify copyright lines
