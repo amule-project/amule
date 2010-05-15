@@ -96,12 +96,6 @@ private:
 	static ConvertJob*		s_pfconverting;
 };
 
-// TODO: Remove when muuli.wdr is unlocked
-#ifndef AMULE_DAEMON
-#include <wx/listctrl.h>
-typedef wxListCtrl CConvertListCtrl;
-#endif
-
 #endif
 
 #endif /* PARTFILECONVERT_H */
