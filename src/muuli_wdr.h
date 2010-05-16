@@ -452,24 +452,26 @@ extern wxSizer *s_sharedfilespeerHeader;
 #define ID_SHAREDCLIENTLIST 10321
 wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_BTNRELSHARED 10322
-#define ID_SHFILELIST 10323
+#define ID_BTN_SHARED_ALL 10322
+#define ID_BTN_SHARED_ONLY_UL 10323
+#define ID_BTNRELSHARED 10324
+#define ID_SHFILELIST 10325
 wxSizer *sharedfilesTopDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10324
-#define ID_BUTTONNETWORKS 10325
-#define ID_BUTTONSEARCH 10326
-#define ID_BUTTONDOWNLOADS 10327
-#define ID_BUTTONSHARED 10328
-#define ID_BUTTONMESSAGES 10329
-#define ID_BUTTONSTATISTICS 10330
-#define ID_BUTTONNEWPREFERENCES 10331
-#define ID_BUTTONIMPORT 10332
-#define ID_ABOUT 10333
+#define ID_BUTTONCONNECT 10326
+#define ID_BUTTONNETWORKS 10327
+#define ID_BUTTONSEARCH 10328
+#define ID_BUTTONDOWNLOADS 10329
+#define ID_BUTTONSHARED 10330
+#define ID_BUTTONMESSAGES 10331
+#define ID_BUTTONSTATISTICS 10332
+#define ID_BUTTONNEWPREFERENCES 10333
+#define ID_BUTTONIMPORT 10334
+#define ID_ABOUT 10335
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

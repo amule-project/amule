@@ -3468,26 +3468,34 @@ wxSizer *sharedfilesTopDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxFlexGridSizer *item1 = new wxFlexGridSizer( 3, 0, 0 );
+    wxFlexGridSizer *item1 = new wxFlexGridSizer( 5, 0, 0 );
     item1->AddGrowableCol( 0 );
+    item1->AddGrowableCol( 1 );
+    item1->AddGrowableCol( 2 );
 
     wxStaticText *item2 = new wxStaticText( parent, -1, _("Shared files"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->SetName( wxT("sharedFilesLabel") );
     item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Reload:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->SetName( wxT("sharedFilesLabel") );
-    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxButton *item3 = new wxButton( parent, ID_BTN_SHARED_ALL, _("All shared files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxBitmapButton *item4 = new wxBitmapButton( parent, ID_BTNRELSHARED, amuleDlgImages( 18 ), wxDefaultPosition, wxSize(32,32) );
-    item4->SetToolTip( _("Reload your shared files") );
-    item1->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    wxButton *item4 = new wxButton( parent, ID_BTN_SHARED_ONLY_UL, _("Only files currently uploading"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticText *item5 = new wxStaticText( parent, -1, _("Reload:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetName( wxT("sharedFilesLabel") );
+    item1->Add( item5, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNRELSHARED, amuleDlgImages( 18 ), wxDefaultPosition, wxSize(32,32) );
+    item6->SetToolTip( _("Reload your shared files") );
+    item1->Add( item6, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    CSharedFilesCtrl *item5 = new CSharedFilesCtrl( parent, ID_SHFILELIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item5->SetName( wxT("sharedFilesCt") );
-    item0->Add( item5, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CSharedFilesCtrl *item7 = new CSharedFilesCtrl( parent, ID_SHFILELIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    item7->SetName( wxT("sharedFilesCt") );
+    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
