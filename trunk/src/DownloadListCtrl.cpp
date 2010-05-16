@@ -651,8 +651,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 	m_menu->Append(MP_VIEW, _("Preview"));
 	m_menu->Append(MP_METINFO, _("Show file &details"));
-	m_menu->Append(MP_VIEWFILECOMMENTS,
-		_("Show all comments"));
+	m_menu->Append(MP_VIEWFILECOMMENTS, _("Show all comments"));
 	//-----------------------------------------------------
 	m_menu->AppendSeparator();
 	//-----------------------------------------------------
@@ -665,7 +664,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 	//-----------------------------------------------------
 	m_menu->AppendSeparator();
 	//-----------------------------------------------------	
-	// Add dinamic entries
+	// Add dynamic entries
 	wxMenu *cats = new wxMenu(_("Category"));
 	if (theApp->glob_prefs->GetCatCount() > 1) {
 		for (uint32 i = 0; i < theApp->glob_prefs->GetCatCount(); i++) {
@@ -702,12 +701,11 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		canStop = canPause = canCancel = fileResumable = false;
 	}
 
-	wxMenu* menu = m_menu;
-	menu->Enable( MP_CANCEL,	canCancel );
-	menu->Enable( MP_PAUSE,		canPause );
-	menu->Enable( MP_STOP,		canStop );
-	menu->Enable( MP_RESUME, 	fileResumable );
-	menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
+	m_menu->Enable( MP_CANCEL,	canCancel );
+	m_menu->Enable( MP_PAUSE,	canPause );
+	m_menu->Enable( MP_STOP,	canStop );
+	m_menu->Enable( MP_RESUME, 	fileResumable );
+	m_menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
 
 	wxString view;
 	if (file->IsPartFile() && (file->GetStatus() != PS_COMPLETE)) {
@@ -716,10 +714,14 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 	} else if ( file->GetStatus() == PS_COMPLETE ) {
 		view = _("&Open the file");
 	}
-	menu->SetLabel(MP_VIEW, view);
-	menu->Enable(MP_VIEW, file->PreviewAvailable() );
+	m_menu->SetLabel(MP_VIEW, view);
+	m_menu->Enable(MP_VIEW, file->PreviewAvailable());
 
-	menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
+	FileRatingList ratingList;
+	item->GetFile()->GetRatingAndComments(ratingList);
+	m_menu->Enable(MP_VIEWFILECOMMENTS, !ratingList.empty());
+
+	m_menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
 
 	int priority = file->IsAutoDownPriority() ? PR_AUTO : file->GetDownPriority();
 	
@@ -728,7 +730,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 	priomenu->Check( MP_PRIOLOW,	priority == PR_LOW );
 	priomenu->Check( MP_PRIOAUTO,	priority == PR_AUTO );
 
-	menu->Enable( MP_MENU_EXTD, canPause );
+	m_menu->Enable( MP_MENU_EXTD, canPause );
 
 	PopupMenu(m_menu, evt.GetPoint());	
 	delete m_menu;
