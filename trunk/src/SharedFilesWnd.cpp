@@ -104,6 +104,8 @@ void CSharedFilesWnd::SelectionUpdated()
 		m_bar_accepted->SetRange( lAccepted );
 		m_bar_transfer->SetRange( lTransferred / 1024 );
 		
+		CKnownFileVector fileVector;
+		
 		if ( !sharedfilesctrl->GetSelectedItemCount() ) {
 			// Requests
 			m_bar_requests->SetValue( 0 );
@@ -119,6 +121,7 @@ void CSharedFilesWnd::SelectionUpdated()
 			m_bar_transfer->SetValue( 0 );
 			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("- /") );
 			CastChild(IDC_STRANSFERRED2, wxStaticText)->SetLabel( wxT("- /") );
+			
 		} else {
 			// Create a total statistic for the selected item(s)
 			uint32 session_requests = 0;
@@ -129,7 +132,7 @@ void CSharedFilesWnd::SelectionUpdated()
 			uint64 all_transferred = 0;
 			
 			long index = -1;
-			CKnownFileVector fileVector;
+
 			fileVector.reserve(sharedfilesctrl->GetSelectedItemCount());
 			
 			while ( (index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED )) != -1) {
@@ -149,8 +152,7 @@ void CSharedFilesWnd::SelectionUpdated()
 				}
 			};
 
-			std::sort(fileVector.begin(), fileVector.end());
-			this->peerslistctrl->ShowSources(fileVector);				
+			std::sort(fileVector.begin(), fileVector.end());			
 			
 			// Requests
 			session_requests = session_requests > lRequested ? lRequested : session_requests;
@@ -171,6 +173,9 @@ void CSharedFilesWnd::SelectionUpdated()
 			CastChild(IDC_STRANSFERRED2, wxStaticText)->SetLabel( CastItoXBytes( all_transferred ) + wxT(" /"));
 		}
 	
+		this->peerslistctrl->ShowSources(fileVector);
+		
+		Refresh();
 		Layout();
 	}
 }
