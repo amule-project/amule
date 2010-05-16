@@ -225,6 +225,8 @@ private:
 	
 	void RawAddSource(CKnownFile* owner, CUpDownClient* source, SourceItemType type);
 	void RawRemoveSource( ListItems::iterator& it );
+
+	virtual bool IsShowingDownloadSources() const = 0;
 };
 
 #endif

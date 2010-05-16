@@ -334,7 +334,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 				
 				CKnownFile::SourceSet::const_iterator it;
 			
-				if (file->IsPartFile()) {
+				if (IsShowingDownloadSources()) {
 					const CKnownFile::SourceSet& normSources = (dynamic_cast<CPartFile*>( file ))->GetSourceList();
 					const CKnownFile::SourceSet& a4afSources = (dynamic_cast<CPartFile*>( file ))->GetA4AFList();
 						

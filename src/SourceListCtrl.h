@@ -58,6 +58,8 @@ private:
 
 	static int wxCALLBACK SourceSortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 	
+	bool IsShowingDownloadSources() const { return true; }
+	
 	DECLARE_EVENT_TABLE()
 };
 
