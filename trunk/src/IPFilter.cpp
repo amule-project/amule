@@ -423,9 +423,9 @@ private:
 					if (func) {
 						processed_ok = (*this.*func)(line);
 					} else {
-						if (processed_ok = ProcessPeerGuardianLine(line)) {
+						if ((processed_ok = ProcessPeerGuardianLine(line))) {
 							func = &CIPFilterTask::ProcessPeerGuardianLine;
-						} else if (processed_ok = ProcessAntiP2PLine(line)) {
+						} else if ((processed_ok = ProcessAntiP2PLine(line))) {
 							func = &CIPFilterTask::ProcessAntiP2PLine;
 						}
 					}
