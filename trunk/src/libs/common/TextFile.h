@@ -35,6 +35,8 @@ class CPath;
 /** Criteria used when reading an entire file to an array of strings. */
 enum EReadTextFile
 {
+	/** Do not filter anything */
+	txtReadAll = 0,	
 	/** Do not return empty lines. Can be combined with txtStripWhiteSpace */
 	txtIgnoreEmptyLines = 1,
 	/** Do not return lines starting with a '#' */
@@ -96,10 +98,10 @@ public:
 	 *
 	 * Note that GetNextLine will return an empty string if the file has reached
 	 * EOF, or if the file is closed, or not readable. However, empty lines in
-	 * the file will also be returned, so this cannot be used to test for EOF.
+	 * the file will also be returned unless otherwise specified, so this cannot be used to test for EOF.
 	 * Instead, use the function Eof().
 	 **/
-	wxString	GetNextLine(const wxMBConv& conv = wxConvLibc);
+	wxString	GetNextLine(EReadTextFile flags = txtReadAll, const wxMBConv& conv = wxConvLibc, bool* result = NULL);
 
 	/** 
 	 * Writes the line to a writable file, returning true on success.
