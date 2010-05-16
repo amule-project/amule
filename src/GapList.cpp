@@ -30,7 +30,7 @@
 #include "Logger.h"
 #include <common/Format.h>
 
-void CGapList::Init(uint64 fileSize, bool empty)
+void CGapList::Init(uint64 fileSize, bool isEmpty)
 {
 	m_filesize = fileSize;
 	m_iPartCount = fileSize / PARTSIZE + 1;
@@ -43,7 +43,7 @@ void CGapList::Init(uint64 fileSize, bool empty)
 	}
 	m_gaplist.clear();
 	m_partsComplete.clear();
-	if (empty) {
+	if (isEmpty) {
 		m_partsComplete.resize(m_iPartCount, incomplete);
 		AddGap(0, fileSize - 1);
 	} else {
