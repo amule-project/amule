@@ -250,7 +250,6 @@ void CFileDetailDialog::setValueForFilenameTextEdit(const wxString &s)
 void CFileDetailDialog::setEnableForApplyButton()
 {
 	bool enabled = 
-		m_file->IsPartFile() && // Currently renaming of completed files causes problem with kad
 		m_file->GetStatus() != PS_COMPLETE &&
 		m_file->GetStatus() != PS_COMPLETING &&
 		m_filenameChanged;
