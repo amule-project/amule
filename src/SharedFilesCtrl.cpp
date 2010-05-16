@@ -312,9 +312,9 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 	wxString URIs;
 
 	if ( event.GetId() == MP_GETSOURCEED2KLINK || event.GetId() == MP_GETCRYPTSOURCEDED2KLINK) {
-		if ( !theApp->IsConnectedED2K() || theApp->serverconnect->IsLowID() ) {
+		if ( !(	(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())
+				|| (theApp->IsConnectedKad() && !theApp->IsFirewalledKad() ))) {
 			wxMessageBox(_("You need a HighID to create a valid sourcelink"), _("WARNING"), wxOK | wxICON_ERROR, this);
-
 			return;
 		}
 	}
