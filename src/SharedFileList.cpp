@@ -132,7 +132,9 @@ public:
 	CPublishKeywordList();
 	~CPublishKeywordList();
 
+	void AddKeyword(const wxString& keyword, CKnownFile *file);
 	void AddKeywords(CKnownFile* pFile);
+	void RemoveKeyword(const wxString& keyword, CKnownFile *file);
 	void RemoveKeywords(CKnownFile* pFile);
 	void RemoveAllKeywords();
 
@@ -202,20 +204,40 @@ CPublishKeyword* CPublishKeywordList::FindKeyword(const wxString& rstrKeyword, C
 	return NULL;
 }
 
+void CPublishKeywordList::AddKeyword(const wxString& keyword, CKnownFile *file)
+{
+	CPublishKeyword* pubKw = FindKeyword(keyword);
+	if (pubKw == NULL) {
+		pubKw = new CPublishKeyword(keyword);
+		m_lstKeywords.push_back(pubKw);
+		SetNextPublishTime(0);
+	}
+	pubKw->AddRef(file);
+}
+
 void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
 {
 	const Kademlia::WordList& wordlist = pFile->GetKadKeywords();
 
 	Kademlia::WordList::const_iterator it;
 	for (it = wordlist.begin(); it != wordlist.end(); ++it) {
-		const wxString& strKeyword = *it;
-		CPublishKeyword* pPubKw = FindKeyword(strKeyword);
-		if (pPubKw == NULL) {
-			pPubKw = new CPublishKeyword(strKeyword);
-			m_lstKeywords.push_back(pPubKw);
+		AddKeyword(*it, pFile);
+	}
+}
+
+void CPublishKeywordList::RemoveKeyword(const wxString& keyword, CKnownFile *file)
+{
+	CKeyWordList::iterator pos;
+	CPublishKeyword* pubKw = FindKeyword(keyword, &pos);
+	if (pubKw != NULL) {
+		if (pubKw->RemoveRef(file) == 0) {
+			if (pos == m_posNextKeyword) {
+				++m_posNextKeyword;
+			}
+			m_lstKeywords.erase(pos);
+			delete pubKw;
 			SetNextPublishTime(0);
 		}
-		pPubKw->AddRef(pFile);
 	}
 }
 
@@ -224,19 +246,7 @@ void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
 	const Kademlia::WordList& wordlist = pFile->GetKadKeywords();
 	Kademlia::WordList::const_iterator it;
 	for (it = wordlist.begin(); it != wordlist.end(); ++it) {
-		const wxString& strKeyword = *it;
-		CKeyWordList::iterator pos;
-		CPublishKeyword* pPubKw = FindKeyword(strKeyword, &pos);
-		if (pPubKw != NULL) {
-			if (pPubKw->RemoveRef(pFile) == 0) {
-				if (pos == m_posNextKeyword) {
-					++m_posNextKeyword;
-				}
-				m_lstKeywords.erase(pos);
-				delete pPubKw;
-				SetNextPublishTime(0);
-			}
-		}
+		RemoveKeyword(*it, pFile);
 	}
 }
 
@@ -1038,25 +1048,47 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 			return true;
 		}
 	} else {
-//#warning Renaming of completed files causes problems on kad. Enable when reviewed.
-#if 0
-		wxString oldPath = JoinPaths(file->GetFilePath(), file->GetFileName());
-		wxString newPath = JoinPaths(file->GetFilePath(), newName);
+		CPath oldPath = file->GetFilePath().JoinPaths(file->GetFileName());
+		CPath newPath = file->GetFilePath().JoinPaths(newName);
 
-		if (UTF8_MoveFile(oldPath, newPath)) {
-			RemoveKeywords(file);
+		if (CPath::RenameFile(oldPath, newPath)) {
+			// Must create a copy of the word list because:
+			// 1) it will be reset on SetFileName()
+			// 2) we will want to edit it
+			Kademlia::WordList oldwords = file->GetKadKeywords();
 			file->SetFileName(newName);
-			AddKeywords(file);
 			theApp->knownfiles->Save();
 			UpdateItem(file);
 			RepublishFile(file);
+
+			const Kademlia::WordList& newwords = file->GetKadKeywords();
+			Kademlia::WordList::iterator itold;
+			Kademlia::WordList::const_iterator itnew;
+			// compare keywords in old and new names
+			for (itnew = newwords.begin(); itnew != newwords.end(); ++itnew) {
+				for (itold = oldwords.begin(); itold != oldwords.end(); ++itold) {
+					if (*itold == *itnew) {
+						break;
+					}
+				}
+				if (itold != oldwords.end()) {
+					// Remove keyword from old name which also exist in new name
+					oldwords.erase(itold);
+				} else {
+					// This is a new keyword not present in the old name
+					m_keywords->AddKeyword(*itnew, file);
+				}
+			}
+			// Remove all remaining old keywords not present in the new name
+			for (itold = oldwords.begin(); itold != oldwords.end(); ++itold) {
+				m_keywords->RemoveKeyword(*itold, file);
+			}
 
 			Notify_DownloadCtrlUpdateItem(file);
 			Notify_SharedFilesUpdateItem(file);
 			
 			return true;
 		}
-#endif
 	}
 	
 	return false;
