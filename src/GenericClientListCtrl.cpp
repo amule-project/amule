@@ -1137,44 +1137,48 @@ void CGenericClientListCtrl::DrawSourceStatusBar(
 
 	CPartFile* reqfile = source->GetRequestFile();
 
-	s_StatusBar.SetFileSize( reqfile->GetFileSize() );
+	s_StatusBar.SetFileSize( reqfile ? reqfile->GetFileSize() : 1);
 	s_StatusBar.SetHeight(rect.height);
 	s_StatusBar.SetWidth(rect.width);
 	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
 
-	// Barry - was only showing one part from client, even when reserved bits from 2 parts
-	wxString gettingParts = source->ShowDownloadingParts();
+	if (reqfile) {
+		// Barry - was only showing one part from client, even when reserved bits from 2 parts
+		wxString gettingParts = source->ShowDownloadingParts();
 
-	const BitVector& partStatus = source->GetPartStatus();
+		const BitVector& partStatus = source->GetPartStatus();
 
-	uint64 uEnd = 0;
-	for ( uint64 i = 0; i < partStatus.size(); i++ ) {
-		uint64 uStart = PARTSIZE * i;
-		uEnd = wxMin(reqfile->GetFileSize(), uStart + PARTSIZE) - 1;
+		uint64 uEnd = 0;
+		for ( uint64 i = 0; i < partStatus.size(); i++ ) {
+			uint64 uStart = PARTSIZE * i;
+			uEnd = wxMin(reqfile->GetFileSize(), uStart + PARTSIZE) - 1;
 
-		CMuleColour colour;
-		if (!partStatus[i]) {
-			colour = bFlat ? crFlatNeither : crNeither;
-		} else if ( reqfile->IsComplete(uStart, uEnd)) {
-			colour = bFlat ? crFlatBoth : crBoth;
-		} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
-				source->GetLastBlockOffset() <= uEnd &&
-				source->GetLastBlockOffset() >= uStart) {
-			colour = crPending;
-		} else if (gettingParts.GetChar((uint16)i) == 'Y') {
-			colour = crNextPending;
-		} else {
-			colour = bFlat ? crFlatClientOnly : crClientOnly;
+			CMuleColour colour;
+			if (!partStatus[i]) {
+				colour = bFlat ? crFlatNeither : crNeither;
+			} else if ( reqfile->IsComplete(uStart, uEnd)) {
+				colour = bFlat ? crFlatBoth : crBoth;
+			} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
+					source->GetLastBlockOffset() <= uEnd &&
+					source->GetLastBlockOffset() >= uStart) {
+				colour = crPending;
+			} else if (gettingParts.GetChar((uint16)i) == 'Y') {
+				colour = crNextPending;
+			} else {
+				colour = bFlat ? crFlatClientOnly : crClientOnly;
+			}
+
+			if ( source->GetRequestFile()->IsStopped() ) {
+				colour.Blend(50);
+			}
+
+			s_StatusBar.FillRange(uStart, uEnd, colour);
 		}
-
-		if ( source->GetRequestFile()->IsStopped() ) {
-			colour.Blend(50);
-		}
-
-		s_StatusBar.FillRange(uStart, uEnd, colour);
+		// fill the rest (if partStatus is empty)
+		s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, bFlat ? crFlatNeither : crNeither);
+	} else {
+		s_StatusBar.FillRange(0, 1, bFlat ? crFlatNeither : crNeither);
 	}
-	// fill the rest (if partStatus is empty)
-	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, bFlat ? crFlatNeither : crNeither);
 
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }
