@@ -417,10 +417,10 @@ private:
 					return 0;
 				}
 				
-				wxString line = readFile.GetNextLine();
+				bool result = true;
+				wxString line = readFile.GetNextLine(txtReadDefault /*Ignores comments, empty and whitespaces*/, wxConvLibc, &result);
 				
-				// Comments and empty lines are ignored as soon as possible
-				if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
+				if (result) {
 					bool processed_ok = false;
 					
 					if (func) {
@@ -436,12 +436,8 @@ private:
 					if (processed_ok) {
 						filtercount++;					
 					} else {
-						// It may be a padded comment or line with just spaces.
-						line = line.Strip(wxString::both);
-						if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
-							discardedCount++;
-							AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
-						}
+						discardedCount++;
+						AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
 					}
 				}
 			}
