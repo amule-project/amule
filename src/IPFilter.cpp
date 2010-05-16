@@ -413,25 +413,35 @@ private:
 			ParseFunc func = NULL;
 
 			while (!readFile.Eof()) {
-				wxString line = readFile.GetNextLine();
-
 				if (TestDestroy()) {
 					return 0;
-				} else if (func && (*this.*func)(line)) {
-					filtercount++;
-				} else if (ProcessPeerGuardianLine(line)) {
-					func = &CIPFilterTask::ProcessPeerGuardianLine;
-					filtercount++;
-				} else if (ProcessAntiP2PLine(line)) {
-					func = &CIPFilterTask::ProcessAntiP2PLine;
-					filtercount++;
-				} else {
-					// Comments and empty lines are ignored
-					line = line.Strip(wxString::both);
+				}
+				
+				wxString line = readFile.GetNextLine();
+				
+				// Comments and empty lines are ignored as soon as possible
+				if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
+					bool processed_ok = false;
 					
-					if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
-						discardedCount++;
-						AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
+					if (func) {
+						processed_ok = (*this.*func)(line);
+					} else {
+						if (processed_ok = ProcessPeerGuardianLine(line)) {
+							func = &CIPFilterTask::ProcessPeerGuardianLine;
+						} else if (processed_ok = ProcessAntiP2PLine(line)) {
+							func = &CIPFilterTask::ProcessAntiP2PLine;
+						}
+					}
+					
+					if (processed_ok) {
+						filtercount++;					
+					} else {
+						// It may be a padded comment or line with just spaces.
+						line = line.Strip(wxString::both);
+						if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
+							discardedCount++;
+							AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
+						}
 					}
 				}
 			}
