@@ -3363,11 +3363,10 @@ wxSizer *PreferencesEventsTab( wxWindow *parent, bool call_fit, bool set_sizer )
 wxSizer *s_sharedfilespeerHeader;
 wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, _("Statistics and queued clients for selected file(s)") );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, _("Statistics and queued clients for selected file(s) : Session / All time") );
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxFlexGridSizer *item2 = new wxFlexGridSizer( 4, 0, 0 );
-    item2->AddGrowableCol( 0 );
     item2->AddGrowableCol( 1 );
     item2->AddGrowableCol( 2 );
     item2->AddGrowableCol( 3 );
@@ -3376,83 +3375,64 @@ wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBitmapButton *item3 = new wxBitmapButton( parent, ID_SHAREDCLIENTTOGGLE, amuleDlgImages( 10 ), wxDefaultPosition, wxDefaultSize );
     item2->Add( item3, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item4 = new wxStaticText( parent, -1, _("Requested"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item4, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxFlexGridSizer *item4 = new wxFlexGridSizer( 3, 0, 0 );
+    item4->AddGrowableCol( 1 );
+    item4->AddGrowableCol( 2 );
 
-    wxStaticText *item5 = new wxStaticText( parent, -1, _("Active Uploads"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item5, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item5 = new wxStaticText( parent, -1, _("Requested"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item5, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, -1, _("Transferred"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item6, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, IDC_SREQUESTED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetForegroundColour( *wxBLUE );
+    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item7 = new wxStaticText( parent, -1, _("Session / All time / % of total files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item7, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    item2->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxFlexGridSizer *item8 = new wxFlexGridSizer( 4, 0, 0 );
+    wxFlexGridSizer *item7 = new wxFlexGridSizer( 3, 0, 0 );
 
-    wxStaticLine *item9 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item8->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticText *item8 = new wxStaticText( parent, -1, _("Active Uploads"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item8, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item10 = new wxStaticText( parent, IDC_SREQUESTED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->SetForegroundColour( *wxBLUE );
-    item8->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, IDC_SACCEPTED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->SetForegroundColour( *wxBLUE );
+    item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, IDC_SREQUESTED2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetForegroundColour( *wxBLUE );
-    item8->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item2->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxGauge *item12 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,-1), 0 );
-    item12->SetName( wxT("popbar") );
-    item8->Add( item12, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
 
-    item2->Add( item8, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item11 = new wxStaticText( parent, -1, _("Transferred"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item11, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxFlexGridSizer *item13 = new wxFlexGridSizer( 4, 0, 0 );
+    wxStaticText *item12 = new wxStaticText( parent, IDC_STRANSFERRED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetForegroundColour( *wxBLUE );
+    item10->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticLine *item14 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item13->Add( item14, 0, wxALIGN_CENTER|wxALL, 5 );
+    item2->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, IDC_SACCEPTED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetForegroundColour( *wxBLUE );
-    item13->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item13 = new wxStaticText( parent, -1, _("% of total files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item16 = new wxStaticText( parent, IDC_SACCEPTED2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetForegroundColour( *wxBLUE );
-    item13->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxGauge *item14 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,18), 0 );
+    item14->SetName( wxT("popbar") );
+    item2->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxGauge *item17 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,-1), 0 );
-    item17->SetName( wxT("popbarAccept") );
-    item13->Add( item17, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxTOP, 5 );
+    wxGauge *item15 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,18), 0 );
+    item15->SetName( wxT("popbarAccept") );
+    item2->Add( item15, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    item2->Add( item13, 0, wxALIGN_CENTER, 5 );
-
-    wxFlexGridSizer *item18 = new wxFlexGridSizer( 4, 0, 0 );
-
-    wxStaticLine *item19 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item18->Add( item19, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxStaticText *item20 = new wxStaticText( parent, IDC_STRANSFERRED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetForegroundColour( *wxBLUE );
-    item18->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item21 = new wxStaticText( parent, IDC_STRANSFERRED2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->SetForegroundColour( *wxBLUE );
-    item18->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxGauge *item22 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,-1), 0 );
-    item22->SetName( wxT("popbarTrans") );
-    item18->Add( item22, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxTOP, 5 );
-
-    item2->Add( item18, 0, wxALIGN_CENTER, 5 );
+    wxGauge *item16 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,18), 0 );
+    item16->SetName( wxT("popbarTrans") );
+    item2->Add( item16, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticLine *item23 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
-    item0->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticLine *item17 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
+    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CSharedFilePeersListCtrl *item24 = new CSharedFilePeersListCtrl( parent, ID_SHAREDCLIENTLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item24->SetName( wxT("sharedFilesSrcCt") );
-    item0->Add( item24, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CSharedFilePeersListCtrl *item18 = new CSharedFilePeersListCtrl( parent, ID_SHAREDCLIENTLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    item18->SetName( wxT("sharedFilesSrcCt") );
+    item0->Add( item18, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
