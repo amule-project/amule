@@ -109,18 +109,15 @@ void CSharedFilesWnd::SelectionUpdated()
 		if ( !sharedfilesctrl->GetSelectedItemCount() ) {
 			// Requests
 			m_bar_requests->SetValue( 0 );
-			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( wxT("- /") );
-			CastChild(IDC_SREQUESTED2, wxStaticText)->SetLabel( wxT("- /") );
+			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( wxT("- / -") );
 
 			// Accepted requets
 			m_bar_accepted->SetValue( 0 );
-			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel( wxT("- /") );
-			CastChild(IDC_SACCEPTED2, wxStaticText)->SetLabel( wxT("- /") );
+			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel( wxT("- / -") );
 
 			// Transferred
 			m_bar_transfer->SetValue( 0 );
-			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("- /") );
-			CastChild(IDC_STRANSFERRED2, wxStaticText)->SetLabel( wxT("- /") );
+			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("- / -") );
 			
 		} else {
 			// Create a total statistic for the selected item(s)
@@ -154,23 +151,32 @@ void CSharedFilesWnd::SelectionUpdated()
 
 			std::sort(fileVector.begin(), fileVector.end());			
 			
+			// Store text lengths, and layout() when the texts have grown
+			static uint32 lReq = 0, lAcc = 0, lTrans = 0;
 			// Requests
 			session_requests = session_requests > lRequested ? lRequested : session_requests;
 			m_bar_requests->SetValue( session_requests );
-			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( wxString::Format(wxT("%u /"), session_requests ) );
-			CastChild(IDC_SREQUESTED2, wxStaticText)->SetLabel( wxString::Format(wxT("%u /"), all_requests ) );
+			wxString labelReq = CFormat(wxT("%d / %d")) % session_requests % all_requests;
+			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel(labelReq);
 		
 			// Accepted requets
 			session_accepted = session_accepted > lAccepted ? lAccepted : session_accepted;
 			m_bar_accepted->SetValue( session_accepted );
-			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel( wxString::Format(wxT("%u /"), session_accepted ) );
-			CastChild(IDC_SACCEPTED2, wxStaticText)->SetLabel( wxString::Format(wxT("%u /"), all_accepted ) );
+			wxString labelAcc = CFormat(wxT("%d / %d")) % session_accepted % all_accepted;
+			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel(labelAcc);
 
 			// Transferred
 			session_transferred = session_transferred > lTransferred ? lTransferred : session_transferred;
 			m_bar_transfer->SetValue( session_transferred / 1024 );
-			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( CastItoXBytes( session_transferred ) + wxT(" /"));
-			CastChild(IDC_STRANSFERRED2, wxStaticText)->SetLabel( CastItoXBytes( all_transferred ) + wxT(" /"));
+			wxString labelTrans = CastItoXBytes( session_transferred ) + wxT(" / ") + CastItoXBytes( all_transferred );
+			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel(labelTrans);
+
+			if (labelReq.Len() > lReq || labelAcc.Len() > lAcc || labelTrans.Len() > lTrans) {
+				lReq = labelReq.Len();
+				lAcc = labelAcc.Len();
+				lTrans = labelTrans.Len();
+				s_sharedfilespeerHeader->Layout();
+			}
 		}
 	
 		this->peerslistctrl->ShowSources(fileVector);
