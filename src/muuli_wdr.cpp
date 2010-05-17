@@ -489,62 +489,17 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxBoxSizer *item0 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
-
-    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticBitmap *item4 = new wxStaticBitmap( parent, -1, amuleDlgImages( 14 ), wxDefaultPosition, wxDefaultSize );
-    item3->Add( item4, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item5 = new wxStaticText( parent, -1, _("Friends"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Add( item5, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
-
-    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item1->Add( item6, 1, wxFIXED_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
-
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-    wxStaticBox *item8 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
-
-    wxBoxSizer *item9 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticBitmap *item10 = new wxStaticBitmap( parent, -1, amuleDlgImages( 15 ), wxDefaultPosition, wxDefaultSize );
-    item9->Add( item10, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item11 = new wxStaticText( parent, -1, _("Messages"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item7->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    CChatSelector *item12 = new CChatSelector(parent, IDC_CHATSELECTOR,wxDefaultPosition,wxSize(200,32),0L);
-    wxASSERT( item12 );
-    item7->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 0 );
-
-    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
-
-    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, IDC_CMESSAGE, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
-    item14->Enable( false );
-    item13->Add( item14, 1, wxALIGN_CENTER, 5 );
-
-    wxButton *item15 = new wxButton( parent, IDC_CSEND, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetToolTip( _("Sends the specified message.") );
-    item15->Enable( false );
-    item13->Add( item15, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    wxButton *item16 = new wxButton( parent, IDC_CCLOSE, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetToolTip( _("Close this chat-session.") );
-    item16->Enable( false );
-    item13->Add( item16, 0, wxALIGN_CENTER, 5 );
-
-    item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
-
-    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxSplitterWindow *item2 = new wxSplitterWindow( parent, ID_MESSAGESPLATTER, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+    item2->SetMinimumPaneSize( 20 );
+    wxPanel *item3 = new wxPanel( item2, -1 );
+    messagePageFriends( item3, FALSE, TRUE );
+    wxPanel *item4 = new wxPanel( item2, -1 );
+    messagePageMessages( item4, FALSE, TRUE );
+    item2->SplitVertically( item3, item4 );
+    item0->Add( item2, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -3476,6 +3431,79 @@ wxSizer *sharedfilesTopDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     CSharedFilesCtrl *item7 = new CSharedFilesCtrl( parent, ID_SHFILELIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
     item7->SetName( wxT("sharedFilesCt") );
     item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
+wxSizer *messagePageFriends( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleDlgImages( 14 ), wxDefaultPosition, wxDefaultSize );
+    item1->Add( item2, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item3 = new wxStaticText( parent, -1, _("Friends"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
+
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    CFriendListCtrl *item4 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,150), wxLC_REPORT|wxSUNKEN_BORDER );
+    item0->Add( item4, 1, wxFIXED_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
+wxSizer *messagePageMessages( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleDlgImages( 15 ), wxDefaultPosition, wxDefaultSize );
+    item1->Add( item2, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item3 = new wxStaticText( parent, -1, _("Messages"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    CChatSelector *item4 = new CChatSelector(parent, IDC_CHATSELECTOR,wxDefaultPosition,wxSize(200,32),0L);
+    wxASSERT( item4 );
+    item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 0 );
+
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
+
+    CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_CMESSAGE, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item6->Enable( false );
+    item5->Add( item6, 1, wxALIGN_CENTER, 5 );
+
+    wxButton *item7 = new wxButton( parent, IDC_CSEND, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->SetToolTip( _("Sends the specified message.") );
+    item7->Enable( false );
+    item5->Add( item7, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxButton *item8 = new wxButton( parent, IDC_CCLOSE, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->SetToolTip( _("Close this chat-session.") );
+    item8->Enable( false );
+    item5->Add( item8, 0, wxALIGN_CENTER, 5 );
+
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
     if (set_sizer)
     {

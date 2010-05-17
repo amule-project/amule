@@ -148,7 +148,8 @@ Version 2.3.0 - The river knows.
 		* Resolve MSVC compilation problem with separate strings in GUI
 		* Fixed splitter bars in download and share view
 		* Allowed creation of ED2K source links in KAD-only mode
-
+		* Make friendlist in chat window resizable
+		
 	Vollstrecker:
 		* Unify copyright lines
 		* Fixed clean and distclean targets for make
