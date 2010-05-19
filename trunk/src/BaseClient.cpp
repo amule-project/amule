@@ -1841,6 +1841,9 @@ void CUpDownClient::ReGetClientSoft()
 				case SO_AMULE:
 				case SO_LXMULE:
 				case SO_HYDRANODE:
+				case SO_MLDONKEY:
+				case SO_NEW_MLDONKEY:
+				case SO_NEW2_MLDONKEY:					
 					// Kry - xMule started sending correct version tags on 1.9.1b.
 					// It only took them 4 months, and being told by me and the
 					// eMule+ developers, so I think they're slowly getting smarter.
