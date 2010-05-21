@@ -200,6 +200,7 @@
     <ClCompile Include="..\..\..\..\src\ClientList.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientTCPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientUDPSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp" />
     <ClCompile Include="..\..\..\..\src\kademlia\routing\Contact.cpp" />
     <ClCompile Include="..\..\..\..\src\CorruptionBlackBox.cpp" />
     <ClCompile Include="..\..\..\..\src\DataToText.cpp" />

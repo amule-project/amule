@@ -490,6 +490,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\IPFilterScanner.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\kademlia\kademlia\Kademlia.cpp"
 				>
 			</File>

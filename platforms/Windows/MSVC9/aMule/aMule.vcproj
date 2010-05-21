@@ -558,6 +558,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\IPFilterScanner.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\KadDlg.cpp"
 				>
 			</File>
@@ -1149,6 +1153,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\IPFilter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\IPFilterScanner.h"
 				>
 			</File>
 			<File

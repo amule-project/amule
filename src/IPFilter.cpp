@@ -24,8 +24,10 @@
 //
 
 #include <wx/stdpaths.h>		// Needed for GetDataDir
+#include <wx/ffile.h>
 
 #include "IPFilter.h"			// Interface declarations.
+#include "IPFilterScanner.h"	// Interface for flexer
 #include "Preferences.h"		// Needed for thePrefs
 #include "amule.h"			// Needed for theApp
 #include "Statistics.h"			// Needed for theStats
@@ -157,6 +159,7 @@ private:
 				// larger ranges (or theoretical ranges with uneven ends) have to be split
 				uint32 startIP = it.keyStart();
 				uint32 realLength = it.keyEnd() - it.keyStart() + 1;
+				std::string * descp = 0;
 				while (realLength) {
 					m_rangeIPs.push_back(startIP);
 					uint32 curLength = realLength;
@@ -176,19 +179,28 @@ private:
 					m_rangeLengths.push_back(pushLength);
 #ifdef __DEBUG__
 					if (m_storeDescriptions) {
-						m_rangeNames.push_back(it->Description);
+						// std::string has no ref counting, so swap it
+						// (it's used so we need half the space than wxString with wide chars)
+						if (descp) {
+							// we split the range so we have to duplicate it
+							m_rangeNames.push_back(*descp);
+						} else {
+							// push back empty string and swap
+							m_rangeNames.push_back(std::string());
+							descp = & * m_rangeNames.rbegin();
+							std::swap(*descp, it->Description);
+						}
 					}
 #endif
 					realLength -= curLength;
-					if (realLength) {
-						AddDebugLogLineN(logIPFilter, CFormat(wxT("Split range %s - %s %04X")) 
-							% KadIPToString(startIP) % KadIPToString(it.keyEnd()) % realLength );
-					}
 					startIP += curLength;
 				}
 			}
 		}
-		AddDebugLogLineN(logIPFilter, CFormat(wxT("Ranges in map: %d  blocked ranges %d")) % size % m_rangeIPs.size());
+		// Numbers are probably different:
+		// - ranges from map that are not blocked because of their level are not added to the table
+		// - some ranges from the map have to be split for the table
+		AddDebugLogLineN(logIPFilter, CFormat(wxT("Ranges in map: %d  blocked ranges in table: %d")) % size % m_rangeIPs.size());
 
 		CIPFilterEvent evt(m_rangeIPs, m_rangeLengths, m_rangeNames);
 		wxPostEvent(m_owner, evt);
@@ -207,7 +219,7 @@ private:
 // is no need to keep them in memory when running a non-debug build.
 #ifdef __DEBUG__
 		//! Contains the user-description of the range.
-		wxString	Description;
+		std::string	Description;
 #endif
 		
 		//! The AccessLevel for this filter.
@@ -243,7 +255,7 @@ private:
 	 * ranges where the AccessLevel is not within the range 0..255, or
 	 * where IPEnd < IPstart not inserted.
 	 */	
-	bool AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& DEBUG_ONLY(Description))
+	bool AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const char* DEBUG_ONLY(Description))
 	{
 		if (AccessLevel < 256) {
 			if (IPStart <= IPEnd) {
@@ -265,108 +277,6 @@ private:
 	}
 
 
-	/**
-	 * Helper function.
-	 * 
-	 * @param str A string representation of an IP-range in the format "<ip>-<ip>".
-	 * @param ipA The target of the first IP in the range.
-	 * @param ipB The target of the second IP in the range.
-	 * @return True if the parsing succeded, false otherwise (results will be invalid).
-	 *
-	 * The IPs returned by this function are in host order, not network order.
-	 */
-	bool ReadIPRange(const wxString &str, uint32& ipA, uint32& ipB)
-	{
-		wxString first = str.BeforeFirst(wxT('-'));
-		wxString second = str.Mid(first.Len() + 1);
-
-		bool result = StringIPtoUint32(first, ipA) && StringIPtoUint32(second, ipB);
-
-		// StringIPtoUint32 saves the ip in anti-host order, but in order
-		// to be able to make relational comparisons, we need to convert
-		// it back to host-order.
-		ipA = wxUINT32_SWAP_ALWAYS(ipA);
-		ipB = wxUINT32_SWAP_ALWAYS(ipB);
-		
-		return result;
-	}
-
-
-	/**
-	 * Helper-function for processing the PeerGuardian format.
-	 *
-	 * @return True if the line was valid, false otherwise.
-	 * 
-	 * This function will correctly parse files that follow the folllowing
-	 * format for specifying IP-ranges (whitespace is optional):
-	 *  <IPStart> - <IPEnd> , <AccessLevel> , <Description>
-	 */
-	bool ProcessPeerGuardianLine(const wxString& sLine)
-	{
-		CSimpleTokenizer tkz(sLine, wxT(','));
-		
-		wxString first	= tkz.next();
-		wxString second	= tkz.next();
-		wxString third  = tkz.remaining().Strip(wxString::both);
-
-		// If there were less than two tokens, fail
-		if (tkz.tokenCount() != 2) {
-			return false;
-		}
-
-		// Convert string IP's to host order IP numbers
-		uint32 IPStart = 0;
-		uint32 IPEnd   = 0;
-
-		// This will also fail if the line is commented out
-		if (!ReadIPRange(first, IPStart, IPEnd)) {
-			return false;
-		}
-
-		// Second token is Access Level, default is 0.
-		unsigned long AccessLevel = 0;
-		if (!second.Strip(wxString::both).ToULong(&AccessLevel) || AccessLevel >= 255) {
-			return false;
-		}
-
-		// Add the filter
-		return AddIPRange(IPStart, IPEnd, AccessLevel, third);
-	}
-
-
-	/**
-	 * Helper-function for processing the AntiP2P format.
-	 *
-	 * @return True if the line was valid, false otherwise.
-	 * 
-	 * This function will correctly parse files that follow the folllowing
-	 * format for specifying IP-ranges (whitespace is optional):
-	 *  <Description> : <IPStart> - <IPEnd>
-	 */
-	bool ProcessAntiP2PLine(const wxString& sLine)
-	{
-		// Extract description (first) and IP-range (second) form the line
-		int pos = sLine.Find(wxT(':'), true);
-		if (pos == -1) {
-			return false;
-		}
-
-		wxString Description = sLine.Left(pos).Strip(wxString::trailing);
-		wxString IPRange     = sLine.Right(sLine.Len() - pos - 1);
-
-		// Convert string IP's to host order IP numbers
-		uint32 IPStart = 0;
-		uint32 IPEnd   = 0;
-
-		if (!ReadIPRange(IPRange ,IPStart, IPEnd)) {
-			return false;
-		}
-
-		// Add the filter
-		return AddIPRange(IPStart, IPEnd, 0, Description);
-	}
-
-	
 	/**
 	 * Loads a IP-list from the specified file, can be text or zip.
 	 *
@@ -400,54 +310,32 @@ private:
 		}
 		
 		int filtercount = 0;
-		int discardedCount = 0;
-		
-		CTextFile readFile;
-		if (readFile.Open(path, CTextFile::read)) {
-			// Function pointer-type of the parse-functions we can use
-			typedef bool (CIPFilterTask::*ParseFunc)(const wxString&);
-
-			ParseFunc func = NULL;
-
-			while (!readFile.Eof()) {
-				if (TestDestroy()) {
-					return 0;
-				}
-				
-				bool result = true;
-				wxString line = readFile.GetNextLine(txtReadDefault /*Ignores comments, empty and whitespaces*/, wxConvLibc, &result);
-				
-				if (result) {
-					bool processed_ok = false;
-					
-					if (func) {
-						processed_ok = (*this.*func)(line);
-					} else {
-						if ((processed_ok = ProcessPeerGuardianLine(line))) {
-							func = &CIPFilterTask::ProcessPeerGuardianLine;
-						} else if ((processed_ok = ProcessAntiP2PLine(line))) {
-							func = &CIPFilterTask::ProcessAntiP2PLine;
-						}
-					}
-					
-					if (processed_ok) {
-						filtercount++;					
-					} else {
-						discardedCount++;
-						AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
-					}
-				}
+		yyip_Bad = 0;
+		wxFFile readFile;
+		if (readFile.Open(path.GetRaw())) {
+			yyip_Line = 1;
+			yyiprestart(readFile.fp());
+			uint32 IPStart = 0;
+			uint32 IPEnd   = 0;
+			uint32 IPAccessLevel = 0;
+			char * IPDescription;
+			uint32 time1 = GetTickCountFullRes();
+			while (yyiplex(IPStart, IPEnd, IPAccessLevel, IPDescription)) {
+				AddIPRange(IPStart, IPEnd, IPAccessLevel, IPDescription);
+				filtercount++;
 			}
+			uint32 time2 = GetTickCountFullRes();
+			AddDebugLogLineN(logIPFilter, CFormat(wxT("time for lexer: %.3f")) % ((time2-time1) / 1000.0));
 		} else {
 			AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
 			return 0;
 		}
 
-		AddLogLineM(false,
-			( CFormat(wxPLURAL("Loaded %u IP-range from '%s'.", "Loaded %u IP-ranges from '%s'.", filtercount)) % filtercount % file )
-			+ wxT(" ") +
-			( CFormat(wxPLURAL("%u malformed line was discarded.", "%u malformed lines were discarded.", discardedCount)) % discardedCount )
-		);
+		wxString msg = CFormat(wxPLURAL("Loaded %u IP-range from '%s'.", "Loaded %u IP-ranges from '%s'.", filtercount)) % filtercount % file;
+		if (yyip_Bad) {
+			msg << wxT(" ") << ( CFormat(wxPLURAL("%u malformed line was discarded.", "%u malformed lines were discarded.", yyip_Bad)) % yyip_Bad );
+		}
+		AddLogLineN(msg);
 
 		return filtercount;
 	}
@@ -590,7 +478,8 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 	}
 	if (found) {
 		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s%s")) % Uint32toStringIP(IPTest)
-			% (i < (int)m_rangeNames.size() ? (wxT(" (") + m_rangeNames[i] + wxT(")")) : wxString(wxEmptyString)));
+			% (i < (int)m_rangeNames.size() ? (wxT(" (") + wxString(char2unicode(m_rangeNames[i].c_str())) + wxT(")")) 
+											: wxString(wxEmptyString)));
 		if (isServer) {
 			theStats::AddFilteredServer();
 		} else {

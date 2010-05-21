@@ -243,6 +243,7 @@
     <ClCompile Include="..\..\..\..\src\HTTPDownload.cpp" />
     <ClCompile Include="..\..\..\..\src\IP2Country.cpp" />
     <ClCompile Include="..\..\..\..\src\IPFilter.cpp" />
+    <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp" />
     <ClCompile Include="..\..\..\..\src\KadDlg.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFile.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFileList.cpp" />
@@ -359,6 +360,7 @@
     <ClInclude Include="..\..\..\..\src\DownloadListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\DownloadQueue.h" />
     <ClInclude Include="..\..\..\..\src\GenericClientListCtrl.h" />
+    <ClInclude Include="..\..\..\..\src\IPFilterScanner.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />
     <ClInclude Include="..\..\..\..\src\EditServerListDlg.h" />

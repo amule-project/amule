@@ -113,7 +113,7 @@ private:
 	RangeLengths m_rangeLengths;
 	// Name for each range. This usually stays empty for memory reasons,
 	// except if IP-Filter debugging is active.
-	typedef std::vector<wxString> RangeNames;
+	typedef std::vector<std::string> RangeNames;
 	RangeNames m_rangeNames;
 
 	//! Mutex used to ensure thread-safety of this class
