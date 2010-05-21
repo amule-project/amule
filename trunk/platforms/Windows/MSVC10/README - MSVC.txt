@@ -74,3 +74,7 @@ Studio won't allow it. Change this lines to be a single-line quoted text. In the
 
 And that should be it. Feel free to ask in the aMule forum at forum.amule.org, "Compilation problems" section if you have further
 doubts.
+
+If you want to run aMule from inside Visual Studio, always set
+_NO_DEBUG_HEAP=1
+in Properties / Debugging / Environment!

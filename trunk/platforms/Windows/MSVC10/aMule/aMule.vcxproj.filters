@@ -375,6 +375,9 @@
     <ClCompile Include="..\..\..\..\src\SourceListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PCH.h">
@@ -774,6 +777,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\SourceListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\IPFilterScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
