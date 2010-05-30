@@ -146,8 +146,8 @@ WS		[ \t\r]*
 		yyip_Line++;
 	}
 
-^.{1,500}			{ 
-		/* Bad line (limit size not to choke scanner on binary files */
+^.			{ 
+		/* Bad line */
 		yyip_Bad++;
 		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("error in line %d: %s")) % yyip_Line % wxString(char2unicode(yytext)));
 	}
