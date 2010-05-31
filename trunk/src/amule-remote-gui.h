@@ -486,8 +486,6 @@ public:
 	CDownQueueRem(CRemoteConnect * conn) { m_conn = conn; }
 	
 	CPartFile* GetFileByID(uint32 id);
-	CPartFile* GetFileByIndex(unsigned int idx);	// to be deleted when GUI is unlocked!
-	uint32 GetFileCount() { return size(); }	// this too !
 	
 	//
 	// User actions

@@ -1498,22 +1498,6 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 }
 
 
-// This is an ugly hack and to be deleted when GUI is unlocked!
-// (replacing iterate-by-index with iteration)
-// It will only work for linear iteration starting with 0 (as used in CTransferWnd::UpdateCategory)
-CPartFile* CDownQueueRem::GetFileByIndex(unsigned int idx)
-{
-	static CDownQueueRem::iterator it;
-	if (idx == 0) {
-		it = begin();
-	}
-	if (it == end()) {
-		return NULL;
-	}
-	return (it++)->second;
-}
-
-
 CClientListRem::CClientListRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
