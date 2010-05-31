@@ -453,6 +453,17 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	return true;
 }
 
+/**
+ * Returns a description of the version of aMule being used.
+ *
+ * @return A detailed description of the aMule version, including application
+ *         name and wx information.
+ */
+const wxString CamuleAppCommon::GetFullMuleVersion() const
+{
+	return GetMuleAppName() + wxT(" ") + GetMuleVersion();
+}
+
 bool CamuleAppCommon::CheckPassedLink(const wxString &in, wxString &out, int cat)
 {
 	wxString link(in);

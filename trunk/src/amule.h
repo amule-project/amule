@@ -143,30 +143,20 @@ public:
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	// Who am I ?
 #ifdef AMULE_DAEMON
-	bool		IsDaemon() { return true; }
+	bool		IsDaemon() const { return true; }
 #else
-	bool		IsDaemon() { return false; }
+	bool		IsDaemon() const { return false; }
 #endif
 
 #ifdef CLIENT_GUI
-	bool		IsRemoteGui() { return true; }
+	bool		IsRemoteGui() const { return true; }
 #else
-	bool		IsRemoteGui() { return false; }
+	bool		IsRemoteGui() const { return false; }
 #endif
 
-	const wxString&	GetMuleAppName() { return m_appName; }
-
+	const wxString&	GetMuleAppName() const { return m_appName; }
+	const wxString	GetFullMuleVersion() const;
 };
-
-/**
- * Returns a description of the version of aMule being used.
- *
- * @return A detailed description of the aMule version, including application
- *         name and wx information.
- *
- * This should become a CamuleAppCommon member once certain files get unlocked.
- */
-#define GetFullMuleVersion() (theApp->GetMuleAppName() + wxT(" ") + GetMuleVersion())
 
 class CamuleApp : public AMULE_APP_BASE, public CamuleAppCommon
 {
