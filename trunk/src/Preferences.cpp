@@ -914,7 +914,7 @@ CPreferences::CPreferences()
 {
 	srand( wxGetLocalTimeMillis().GetLo() ); // we need random numbers sometimes
 
-	// load preferences.dat or set standart values
+	// load preferences.dat or set standard values
 	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
 	CFile preffile;
 	if (wxFileExists(fullpath)) {
