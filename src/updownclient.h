@@ -767,7 +767,7 @@ private:
 	uint32		m_lastRefreshedDLDisplay;
 
 	//upload
-	void CreateStandartPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	void CreateStandardPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	void CreatePackedPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 
 	uint8		m_nUploadState;

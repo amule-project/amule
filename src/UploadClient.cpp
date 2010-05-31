@@ -268,7 +268,7 @@ void CUpDownClient::CreateNextBlockPackage()
 			if (m_byDataCompVer == 1 && GetFiletype(srcfile->GetFileName()) != ftArchive) {
 				CreatePackedPackets(area.GetBuffer(), togo, currentblock);
 			} else {
-				CreateStandartPackets(area.GetBuffer(), togo, currentblock);
+				CreateStandardPackets(area.GetBuffer(), togo, currentblock);
 			}
 			
 			// file statistic
@@ -298,7 +298,7 @@ void CUpDownClient::CreateNextBlockPackage()
 }
 
 
-void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
+void CUpDownClient::CreateStandardPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
 	uint32 nPacketSize;
 
@@ -352,7 +352,7 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 	CScopedArray<byte> output(newsize);
 	uint16 result = compress2(output.get(), &newsize, buffer, togo, 9);
 	if (result != Z_OK || togo <= newsize){
-		CreateStandartPackets(buffer, togo, currentblock);
+		CreateStandardPackets(buffer, togo, currentblock);
 		return;
 	}
 	
