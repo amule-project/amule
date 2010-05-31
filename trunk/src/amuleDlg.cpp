@@ -39,7 +39,6 @@
 #include <wx/zipstrm.h>
 #include <wx/sysopt.h>
 #include <wx/wupdlock.h>	// Needed for wxWindowUpdateLocker
-#include <wx/utils.h>		// Needed for wxBusyCursor
 
 #include <common/EventIDs.h>
 
@@ -514,7 +513,6 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if (m_is_safe_state) {
-		wxBusyCursor busyCursor;
 		if (m_prefsDialog == NULL) {
 			m_prefsDialog = new PrefsUnifiedDlg(this);
 		}

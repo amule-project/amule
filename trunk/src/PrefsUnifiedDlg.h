@@ -122,6 +122,7 @@ protected:
 	void OnRateLimitChanged( wxSpinEvent& event );
 	void OnTCPClientPortChange(wxSpinEvent& event);
 	void OnUserEventSelected(wxListEvent& event);
+	void OnLanguageChoice(wxCommandEvent &event);
 	void CreateEventPanels(const int idx, const wxString& vars, wxWindow* parent);
 
 	void OnInitDialog( wxInitDialogEvent& evt );

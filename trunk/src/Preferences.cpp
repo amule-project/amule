@@ -35,6 +35,7 @@
 #include <wx/stdpaths.h>
 #include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
+#include <wx/utils.h>		// Needed for wxBusyCursor
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
@@ -83,6 +84,7 @@ CProxyData	CPreferences::s_ProxyData;
 
 /* The rest, organize it! */
 wxString	CPreferences::s_nick;
+Cfg_Lang_Base * CPreferences::s_cfgLang;
 uint16		CPreferences::s_maxupload;
 uint16		CPreferences::s_maxdownload;
 uint16		CPreferences::s_slotallocation;
@@ -657,7 +659,8 @@ typedef struct {
 /**
  * The languages aMule has translation for.
  *
- * Add new languages here, as this list overrides the one defined in muuli.wdr
+ * Add new languages here. 
+ * Then activate the test code in Cfg_Lang::UpdateChoice below!
  */
 static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_DEFAULT,				true,	wxEmptyString,	wxTRANSLATE("System default") },
@@ -703,12 +706,14 @@ static LangInfo aMuleLanguages[] = {
 
 typedef Cfg_Int<int> Cfg_PureInt;
 
-class Cfg_Lang : public Cfg_PureInt
+class Cfg_Lang : public Cfg_PureInt, public Cfg_Lang_Base
 {
 public:
 	Cfg_Lang()
 		: Cfg_PureInt( wxEmptyString, m_selection, 0 )
 	{
+		m_languagesReady = false;
+		m_changePos = 0;
 	}
 
 	virtual void LoadFromFile(wxConfigBase* WXUNUSED(cfg)) {}
@@ -740,19 +745,34 @@ public:
 
 	virtual bool TransferToWindow()
 	{
-		wxChoice *langSelector = dynamic_cast<wxChoice*>(m_widget);
-		// clear existing list
-		langSelector->Clear();
+		m_langSelector = dynamic_cast<wxChoice*>(m_widget);	// doesn't work in ctor!
+		if (m_languagesReady) {
+			FillChoice();
+		} else {
+			int wxId = StrLang2wx(thePrefs::GetLanguageID());
+			m_langSelector->Clear();
+			m_selection = 0;
+			for (uint32 i = 0; i < itemsof(aMuleLanguages); i++) {
+				if ( aMuleLanguages[i].id == wxId ) {
+					m_langSelector->Append(wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]"));
+					break;
+				}
+			}
+			m_langSelector->Append(_("Change Language"));
+			m_changePos = m_langSelector->GetCount() - 1;
+		}
 
-		m_selection = 0;
-		int wxId = StrLang2wx(thePrefs::GetLanguageID());
+		return Cfg_PureInt::TransferToWindow();
+	}
 
-		// Find available languages and translate them
-		// Todo: replace the dropdown with a static text and a button "change"
-		// and move the dropdown to a popup window opened by the button.
-		// Language is changed rarely, and the go-through-all locales takes a considerable
-		// time when the settings dialog is opened for the first time.
-		if (aMuleLanguages[0].displayname == wxEmptyString) {
+	virtual void UpdateChoice(int pos)
+	{
+		if (!m_languagesReady && pos == m_changePos) {
+			// Find available languages and translate them.
+			// This is only done when the user selects "Change Language"
+			// Language is changed rarely, and the go-through-all locales takes a considerable
+			// time when the settings dialog is opened for the first time.
+			wxBusyCursor busyCursor;
 			aMuleLanguages[0].displayname = wxGetTranslation(aMuleLanguages[0].name);
 			for (unsigned int i = 1; i < itemsof(aMuleLanguages); ++i) {
 				if (wxLocale::IsAvailable(aMuleLanguages[i].id)) {
@@ -764,34 +784,55 @@ public:
 					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(wxT(PACKAGE))) {
 						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]");
 						aMuleLanguages[i].available = true;
+#if 0
+						// Check for language problems
+						// Activate this code temporarily after messing with the languages!
+						int wxid = StrLang2wx(wxLang2Str(aMuleLanguages[i].id));
+						if (wxid != aMuleLanguages[i].id) {
+							AddDebugLogLineN(logGeneral, CFormat(wxT("Language problem for %s : aMule id %d != wx id %d"))
+								% aMuleLanguages[i].name % aMuleLanguages[i].id % wxid);
+						}
+#endif
 					}
 				}
 			}
 			// Restore original locale
 			wxLocale tmpLocale;
 			InitLocale(tmpLocale, theApp->m_locale.GetLanguage());
+			FillChoice();
+			m_langSelector->SetSelection(m_selection);
+			m_languagesReady = true;
 		}
+	}
 
+protected:
+	int	m_selection;
+
+private:
+	void FillChoice()
+	{
+		int wxId = StrLang2wx(thePrefs::GetLanguageID());
+		m_langSelector->Clear();
 		// Add all available languages and find the index of the selected language.
 		for ( unsigned int i = 0, j = 0; i < itemsof(aMuleLanguages); i++) {
 			if (aMuleLanguages[i].available) {
-				langSelector->Append(aMuleLanguages[i].displayname);
+				m_langSelector->Append(aMuleLanguages[i].displayname);
 				if ( aMuleLanguages[i].id == wxId ) {
 					m_selection = j;
 				}
 				j++;
 			}
 		}
-
-		return Cfg_PureInt::TransferToWindow();
 	}
 
-
-protected:
-	int	m_selection;
+	bool m_languagesReady;	// true: all translations calculated
+	int	 m_changePos;
+	wxChoice * m_langSelector;
 };
 
 #endif /* ! AMULE_DAEMON */
+ 
+void Cfg_Lang_Base::UpdateChoice(int) {}	// dummy
 
 class Cfg_Skin : public Cfg_Str
 {
@@ -971,7 +1012,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	NewCfgItem(IDC_NICK,		(new Cfg_Str(  wxT("/eMule/Nick"), s_nick, wxT("http://www.aMule.org") )));
 #ifndef AMULE_DAEMON
-	NewCfgItem(IDC_LANGUAGE,	(new Cfg_Lang()));
+	Cfg_Lang * cfgLang = new Cfg_Lang();
+	s_cfgLang = cfgLang;
+	NewCfgItem(IDC_LANGUAGE,	cfgLang);
 #endif
 
 	/**

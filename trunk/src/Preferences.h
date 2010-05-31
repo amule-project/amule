@@ -151,6 +151,10 @@ private:
 };
 
 
+class Cfg_Lang_Base {
+public:
+	virtual void UpdateChoice(int pos);
+};
 
 const int cntStatColors = 15;
 
@@ -180,6 +184,7 @@ public:
 	static void		SetDeadServer(bool val)		{ s_deadserver = val; }
 	static const wxString&	GetUserNick()			{ return s_nick; }
 	static void		SetUserNick(const wxString& nick) { s_nick = nick; }
+	static Cfg_Lang_Base * GetCfgLang()		{ return s_cfgLang; }
 
 	static const wxString&	GetAddress()			{ return s_Addr; }
 	static uint16		GetPort()			{ return s_port; }
@@ -570,6 +575,8 @@ protected:
 	static wxString	s_nick;
 	
 	static CMD4Hash s_userhash;
+
+	static Cfg_Lang_Base * s_cfgLang;
 
 ////////////// CONNECTION
 	static uint16	s_maxupload;
