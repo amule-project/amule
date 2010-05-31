@@ -155,9 +155,13 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 		uint16 files = 0;
 		uint16 download = 0;
 		
+#ifdef CLIENT_GUI
+		for (CDownQueueRem::const_iterator it = theApp->downloadqueue->begin(); it != theApp->downloadqueue->end(); ++it) {
+			CPartFile *cur_file = it->second;
+#else
 		for ( unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); ++i ) {
 			CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
-			
+#endif
 			if ( cur_file && cur_file->CheckShowItemInGivenCat(index) ) {
 				files++;
 				
