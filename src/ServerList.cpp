@@ -432,7 +432,9 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 
 CServerList::~CServerList()
 {
-	SaveServerMet();
+	if (thePrefs::GetNetworkED2K()) {
+		SaveServerMet();
+	}
 	while ( !m_servers.empty() ) {
 		delete m_servers.back();
 		m_servers.pop_back();
