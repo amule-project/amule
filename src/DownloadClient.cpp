@@ -49,6 +49,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "GuiEvents.h"		// Needed for Notify_*
+#include "UploadQueue.h"	// Needed for CUploadQueue
 
 
 #ifdef __MULE_UNUSED_CODE__
@@ -1388,6 +1389,29 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 	}
 }
 
+uint8 CUpDownClient::GetObfuscationStatus() const
+{
+	uint8 ret = OBST_UNDEFINED;
+	if (thePrefs::IsClientCryptLayerSupported()) {
+		if (SupportsCryptLayer()) {
+			if ((RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested()) && HasObfuscatedConnectionBeenEstablished()) {
+				ret = OBST_ENABLED;
+			} else {
+				ret = OBST_SUPPORTED;
+			}
+		} else {
+			ret = OBST_NOT_SUPPORTED;
+		}
+	} else {
+		ret = OBST_DISABLED;
+	}
+	return ret;
+}
+
+uint16 CUpDownClient::GetUploadQueueWaitingPosition() const
+{
+	return theApp->uploadqueue->GetWaitingPosition(this);
+}
 
 // IgnoreNoNeeded = will switch to files of which this source has no needed parts (if no better fiels found)
 // ignoreSuspensions = ignore timelimit for A4Af jumping

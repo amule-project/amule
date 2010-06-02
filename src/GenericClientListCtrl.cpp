@@ -734,7 +734,7 @@ void CGenericClientListCtrl::DrawClientItem(
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}
 							
-				if (client->HasObfuscatedConnectionBeenEstablished()) {
+				if (client->GetObfuscationStatus() == OBST_ENABLED) {
 					// the "¿" except it's a key
 					m_ImageList.Draw(Client_Encryption_Smiley, *dc, point2.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);					

@@ -36,7 +36,7 @@ class CECSocket;
 /**
  * High level EC packet handler class
  */
-class CECPacket : protected CECEmptyTag {
+class CECPacket : public CECEmptyTag {
 	friend class CECSocket;
 	public:
 		CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_FULL)
@@ -48,16 +48,6 @@ class CECPacket : protected CECEmptyTag {
 			}
 		}
 		
-		using CECTag::AddTag;
-		using CECTag::GetTagByName;
-		using CECTag::GetTagByNameSafe;
-		using CECTag::GetTagCount;
-		using CECTag::GetFirstTagSafe;
-		using CECTag::HasChildTags;
-		using CECTag::const_iterator;
-		using CECTag::begin;
-		using CECTag::end;
-
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32_t		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 		EC_DETAIL_LEVEL GetDetailLevel() const

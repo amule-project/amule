@@ -3610,6 +3610,19 @@ void CPartFile::SetCategory(uint8 cat)
 	m_category = cat; 
 }
 
+
+bool CPartFile::AddSource(CUpDownClient* client)
+{
+	return m_SrcList.insert(client).second != 0;
+}
+
+	
+bool CPartFile::DelSource(CUpDownClient* client)
+{
+	return m_SrcList.erase(client) != 0;
+}
+
+
 #endif // !CLIENT_GUI
 
 

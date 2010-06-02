@@ -123,18 +123,12 @@ bool CClientDetailDialog::OnInitDialog() {
 
 	// Obfuscation
 	wxString buffer;
-	if (thePrefs::IsClientCryptLayerSupported()) {
-		if (m_client->SupportsCryptLayer()) {
-			if ((m_client->RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested()) && m_client->HasObfuscatedConnectionBeenEstablished()) {
-				buffer = _("Enabled");
-			} else {
-				buffer = _("Supported");
-			}
-		} else {
-			buffer = _("Not supported");
-		}
-	} else {
-		buffer = _("Disabled");
+	switch (m_client->GetObfuscationStatus()) {
+		case OBST_ENABLED:			buffer = _("Enabled"); break;
+		case OBST_SUPPORTED:		buffer = _("Supported"); break;
+		case OBST_NOT_SUPPORTED:	buffer = _("Not supported"); break;
+		case OBST_DISABLED:			buffer = _("Disabled"); break;
+		default:					buffer = _("Unknown"); break;
 	}
 	CastChild(IDT_OBFUSCATION, wxStaticText)->SetLabel(buffer);
 
@@ -214,7 +208,7 @@ bool CClientDetailDialog::OnInitDialog() {
 			wxString::Format(_("%u (QR: %u)"),
 				m_client->GetScore(
 					false, m_client->IsDownloading(), false),
-			theApp->uploadqueue->GetWaitingPosition(m_client)));		
+			m_client->GetUploadQueueWaitingPosition()));		
 	} else {
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
 	}

@@ -791,7 +791,7 @@ bool DownloadFileInfo::ReQuery()
 }
 
 
-UploadFile::UploadFile(CEC_UpDownClient_Tag *tag) : CECID(tag->FileID())
+UploadFile::UploadFile(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 {
 	sUserName = _SpecialChars(tag->ClientName());
 	nSpeed = tag->SpeedUp();

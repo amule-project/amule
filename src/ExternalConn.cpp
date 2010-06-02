@@ -648,6 +648,16 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 			response->AddTag(filetag);
 		}
 	}
+	// Add clients
+	CECEmptyTag clients(EC_TAG_CLIENT);
+	const CClientList::IDMap& clientList = theApp->clientlist->GetClientList();
+	for (CClientList::IDMap::const_iterator it = clientList.begin(); it != clientList.end(); it++) {
+		const CUpDownClient* cur_client = it->second;
+		CValueMap &valuemap = tagmap.GetValueMap(cur_client->ECID());
+		clients.AddTag(CEC_UpDownClient_Tag(cur_client, EC_DETAIL_INC_UPDATE, &valuemap));
+	}
+	response->AddTag(clients);
+
 	return response;
 }
 
@@ -662,8 +672,7 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 	// (not for incremental update of course)
 	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 
-	const CClientPtrList& clients = (op == EC_OP_WAIT_QUEUE)	? theApp->uploadqueue->GetWaitingList()
-																: theApp->uploadqueue->GetUploadingList();
+	const CClientPtrList& clients = theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = clients.begin();
 	for (; it != clients.end(); ++it) {
 		CUpDownClient* cur_client = *it;
@@ -1312,9 +1321,6 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
 			response = Get_EC_Response_GetClientQueue(request, m_obj_tagmap, EC_OP_ULOAD_QUEUE);
-			break;
-		case EC_OP_GET_WAIT_QUEUE:
-			response = Get_EC_Response_GetClientQueue(request, m_obj_tagmap, EC_OP_WAIT_QUEUE);
 			break;
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:

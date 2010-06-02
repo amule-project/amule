@@ -332,7 +332,7 @@ public:
 		m_items.erase(it);
 	}
 
-	virtual void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
+	virtual void ProcessUpdate(const CECTag *reply, CECPacket *full_req, int req_type)
 	{
 		std::set<I> core_files;
 		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
@@ -452,12 +452,12 @@ public:
 };
 
 class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
-	int m_viewtype;
 public:
-	CUpDownClientListRem(CRemoteConnect *, int viewtype);
+	CUpDownClientListRem(CRemoteConnect *);
 
 	const CClientPtrList& GetList() const { return m_items; };
 
+	void FilterQueues();
 	//
 	// template
 	//
@@ -465,19 +465,6 @@ public:
 	void DeleteItem(CUpDownClient *);
 	uint32 GetItemID(CUpDownClient *);
 	void ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *);
-};
-
-class CUpQueueRem {
-	CUpDownClientListRem m_up_list, m_wait_list;
-public:
-	CUpQueueRem(CRemoteConnect *);
-	
-	void ReQueryUp() { m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_CLIENT); }
-	void ReQueryWait() { m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_CLIENT); }
-
-	const CClientPtrList& GetWaitingList() const { return m_wait_list.GetList(); }
-	const CClientPtrList& GetUploadingList() const { return m_up_list.GetList(); }
-	uint16 GetWaitingPosition(const CUpDownClient *client) const;
 };
 
 class CDownQueueRem : public std::map<uint32, CPartFile*> {
@@ -544,27 +531,9 @@ public:
 	uint32 GetItemID(CKnownFile *);
 	void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
 	bool Phase1Done(const CECPacket *) { return true; }
-	void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type);
+	void ProcessUpdate(const CECTag *reply, CECPacket *full_req, int req_type);
 
 	void ProcessItemUpdatePartfile(CEC_PartFile_Tag *, CPartFile *);
-};
-
-class CClientListRem {
-	CRemoteConnect *m_conn;
-
-	//
-	// map of user_ID -> client
-	std::multimap<uint32, CUpDownClient*> m_client_list;
-public:
-	CClientListRem(CRemoteConnect *);
-	
-	const std::multimap<uint32, CUpDownClient*>& GetClientList() { return m_client_list; }
-	
-	//
-	// Actions
-	//
-	void AddClient(CUpDownClient *);
-	void FilterQueues();
 };
 
 class CIPFilterRem {
@@ -662,11 +631,10 @@ public:
 	// Provide access to core data thru EC
 	CServerConnectRem *serverconnect;
 	CServerListRem *serverlist;
-	CUpQueueRem *uploadqueue;
 	CDownQueueRem *downloadqueue;
 	CSharedFilesRem *sharedfiles;
 	CKnownFilesRem *knownfiles;
-	CClientListRem *clientlist;
+	CUpDownClientListRem *clientlist;
 	CIPFilterRem *ipfilter;
 	CSearchListRem *searchlist;
 	CListenSocketRem *listensocket;
