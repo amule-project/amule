@@ -168,6 +168,61 @@ namespace MuleNotify
 #endif
 	}
 	
+	void SourceCtrlUpdateSource(CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateItem(source, type);
+		}
+#endif
+	}
+	
+	void SourceCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl->AddSource(owner, source, type);
+		}
+#endif
+	}
+	
+	void SourceCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveSource(source, owner);
+		}
+#endif
+	}
+	
+	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->AddSource(owner, source, type);
+		}
+#endif
+	}
+	
+	void SharedCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), SourceItemType NOT_ON_DAEMON(type))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->UpdateItem(client, type);
+		}
+#endif
+	}
+	
+	void SharedCtrlRemoveClient(const CKnownFile* NOT_ON_DAEMON(owner), const CUpDownClient* NOT_ON_DAEMON(source))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->RemoveSource(source, owner);
+		}
+#endif
+	}
+	
+	
 #ifdef CLIENT_GUI
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
@@ -316,61 +371,6 @@ namespace MuleNotify
 		}
 #endif
 	}
-	
-	void SourceCtrlUpdateSource(CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
-			theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateItem(source, type);
-		}
-#endif
-	}
-	
-	void SourceCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
-			theApp->amuledlg->m_transferwnd->clientlistctrl->AddSource(owner, source, type);
-		}
-#endif
-	}
-	
-	void SourceCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
-			theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveSource(source, owner);
-		}
-#endif
-	}
-	
-	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
-			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->AddSource(owner, source, type);
-		}
-#endif
-	}
-	
-	void SharedCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), SourceItemType NOT_ON_DAEMON(type))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
-			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->UpdateItem(client, type);
-		}
-#endif
-	}
-	
-	void SharedCtrlRemoveClient(const CKnownFile* NOT_ON_DAEMON(owner), const CUpDownClient* NOT_ON_DAEMON(source))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
-			theApp->amuledlg->m_sharedfileswnd->peerslistctrl->RemoveSource(source, owner);
-		}
-#endif
-	}
-	
 	
 	void ServerAdd(CServer* NOT_ON_DAEMON(server))
 	{

@@ -348,16 +348,14 @@ void CamuleRemoteGuiApp::Startup() {
 	serverconnect = new CServerConnectRem(m_connect);
 	m_statistics = new CStatistics(*m_connect);
 	
-	clientlist = new CClientListRem(m_connect);
+	clientlist = new CUpDownClientListRem(m_connect);
 	searchlist = new CSearchListRem(m_connect);
 	serverlist = new CServerListRem(m_connect);
 	
 	sharedfiles	= new CSharedFilesRem(m_connect);
 	knownfiles = new CKnownFilesRem(m_connect);
 
-	// bugfix - do this before creating the uploadqueue
 	downloadqueue = new CDownQueueRem(m_connect);
-	uploadqueue = new CUpQueueRem(m_connect);
 	ipfilter = new CIPFilterRem(m_connect);
 
 	// Create main dialog
@@ -1020,7 +1018,7 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
 	m_conn->SendPacket(&req);
 }
 
-void CKnownFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
+void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 {
 	requested = 0;
 	transferred = 0;
@@ -1028,32 +1026,38 @@ void CKnownFilesRem::ProcessUpdate(const CECPacket *reply, CECPacket *, int)
 
 	std::set<uint32> core_files;
 	for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
-		CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) & *it;
-		uint32 id = tag->ID();
-		core_files.insert(id);
-		if ( m_items_hash.count(id) ) {
-			// Item already known: update it
-			ProcessItemUpdate(tag, m_items_hash[id]);
-		} else {
-			CKnownFile * newFile;
-			if (tag->GetTagName() == EC_TAG_PARTFILE) {
-				CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
-				ProcessItemUpdate(tag, file);
-				// GUI doesn't allow clear finished files well at the moment, 
-				// so don't show finished files for now until GUI gets unlocked.
-				// Files completing while GUI is open will still show.
-				if (file->IsPartFile()) {
-					(*theApp->downloadqueue)[id] = file;
-					theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
-				}
-				newFile = file;
+		const CECTag * curTag = &*it;
+		ec_tagname_t tagname = curTag->GetTagName();
+		if (tagname == EC_TAG_CLIENT) {
+			theApp->clientlist->ProcessUpdate(curTag, NULL, EC_TAG_CLIENT);
+		} else if (tagname == EC_TAG_KNOWNFILE || tagname == EC_TAG_PARTFILE) {
+			CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) curTag;
+			uint32 id = tag->ID();
+			core_files.insert(id);
+			if ( m_items_hash.count(id) ) {
+				// Item already known: update it
+				ProcessItemUpdate(tag, m_items_hash[id]);
 			} else {
-				newFile = new CKnownFile(tag);
-				ProcessItemUpdate(tag, newFile);
-				(*theApp->sharedfiles)[id] = newFile;
-				theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(newFile);
+				CKnownFile * newFile;
+				if (tag->GetTagName() == EC_TAG_PARTFILE) {
+					CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
+					ProcessItemUpdate(tag, file);
+					// GUI doesn't allow clear finished files well at the moment, 
+					// so don't show finished files for now until GUI gets unlocked.
+					// Files completing while GUI is open will still show.
+					if (file->IsPartFile()) {
+						(*theApp->downloadqueue)[id] = file;
+						theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
+					}
+					newFile = file;
+				} else {
+					newFile = new CKnownFile(tag);
+					ProcessItemUpdate(tag, newFile);
+					(*theApp->sharedfiles)[id] = newFile;
+					theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(newFile);
+				}
+				AddItem(newFile);
 			}
-			AddItem(newFile);
 		}
 	}
 	// remove items no longer present
@@ -1076,66 +1080,42 @@ CKnownFilesRem::CKnownFilesRem(CRemoteConnect * conn) : CRemoteContainer<CKnownF
 /*
  * List of uploading and waiting clients.
  */
-CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn, int viewtype)
+CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn)
 :
 CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn, true)
 {
-	m_viewtype = viewtype;
 }
 
 
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 {
+	// Clients start up empty, then get asked for their data.
+	// So all data here is processed in ProcessItemUpdate and thus updatable.
 	m_bRemoteQueueFull = false;
-	m_nUserIDHybrid = tag->UserID();
-	m_Username = tag->ClientName();
-	m_clientSoft = tag->ClientSoftware();
-	m_clientVersionString = GetSoftName(m_clientSoft);
-	m_clientSoftString = m_clientVersionString;
+	m_nUserIDHybrid = 0;
+	m_clientSoft = 0;
 	m_bEmuleProtocol = false;
 
-	// The functions to retrieve m_clientVerString information are
-	// currently in BaseClient.cpp, which is not linked in remote-gui app.
-	// So, in the meantime, we use a tag sent from core.
-	m_clientVerString = tag->SoftVerStr();
-	m_strModVersion = wxEmptyString;
-	wxString clientModString;
-	if (!clientModString.IsEmpty()) {
-		m_clientVerString += wxT(" - ") + clientModString;
-	}
-	m_fullClientVerString = m_clientSoftString + wxT(" ") + m_clientVerString;
-
-	// User hash
-	m_UserHash = tag->UserHash();
-
 	// User IP:Port
-	m_nConnectIP = m_dwUserIP = tag->UserIP();
-	m_nUserPort = tag->UserPort();
-	m_FullUserIP = m_nConnectIP;
+	m_nConnectIP = 0;
+	m_dwUserIP = 0;
+	m_nUserPort = 0;
+	m_FullUserIP = 0;
 
 	// Server IP:Port
-	m_dwServerIP = tag->ServerIP();
-	m_nServerPort = tag->ServerPort();
-	m_ServerName = tag->ServerName();
+	m_dwServerIP = 0;
+	m_nServerPort = 0;
 
-	// TODO: GUI_REWORK
-	m_rankingInfo = 0;
+	m_rankingInfo = 0;	// TODO: GUI_REWORK (position in UL queue)
+	m_nSourceFrom = SF_NONE;
+	m_nKadPort = 0;
 	
 	m_Friend = 0;
-	if (tag->HaveFile()) {
-		m_uploadingfile = theApp->knownfiles->GetByID(tag->FileID());
-	} else {
-		m_uploadingfile = NULL;
-	}
-
 	m_nCurSessionUp = 0;
+	m_reqfile = NULL;
+	m_uploadingfile = NULL;
 
 	credits = new CClientCredits(new CreditStruct());
-}
-
-uint16 CUpQueueRem::GetWaitingPosition(const CUpDownClient *client) const
-{
-	return client->GetWaitingPosition();
 }
 
 /* Warning: do common base */
@@ -1201,8 +1181,9 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 {
 	CUpDownClient *client = new CUpDownClient(tag);
 	ProcessItemUpdate(tag, client);
-	
-	//theApp->amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, (ViewType)m_viewtype);
+	if (client->m_reqfile) {
+		Notify_SourceCtrlAddSource(client->m_reqfile, client, A4AF_SOURCE);
+	}
 	
 	return client;
 }
@@ -1210,7 +1191,11 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 
 void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 {
-	//theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, (ViewType)m_viewtype);
+	if (client->m_reqfile) {
+		Notify_SourceCtrlRemoveSource(client, client->m_reqfile);
+		client->m_reqfile->DelSource(client);
+		client->m_reqfile = NULL;
+	}
 	delete client;
 }
 
@@ -1225,14 +1210,50 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	CEC_UpDownClient_Tag *tag,
 	CUpDownClient *client)
 {
+	if (!tag->HasChildTags()) {
+		return;		// speed exit for clients without any change
+	}
 	tag->UserID(&client->m_nUserIDHybrid);
+	tag->ClientName(&client->m_Username);
+	// Client Software
+	bool sw_updated = false;
+	if (tag->ClientSoftware(client->m_clientSoft)) {
+		client->m_clientVersionString = GetSoftName(client->m_clientSoft);
+		client->m_clientSoftString = client->m_clientVersionString;
+		sw_updated = true;
+	}
+	if (tag->SoftVerStr(client->m_clientVerString) || sw_updated) {
+		if (client->m_clientVersionString == _("Unknown")) {
+			client->m_fullClientVerString = client->m_clientVersionString;
+		} else {
+			client->m_fullClientVerString = client->m_clientVersionString + wxT(" ") + client->m_clientVerString;
+		}
+	}
+	// User hash
+	tag->UserHash(&client->m_UserHash);
+
+	// User IP:Port
+	if (tag->UserIP(client->m_dwUserIP)) {
+		client->m_nConnectIP = client->m_dwUserIP;
+		client->m_FullUserIP = client->m_dwUserIP;
+	}
+	tag->UserPort(&client->m_nUserPort);
+
+	// Server IP:Port
+	tag->ServerIP(&client->m_dwServerIP);
+	tag->ServerPort(&client->m_nServerPort);
+	tag->ServerName(&client->m_ServerName);
+
+	tag->KadPort(client->m_nKadPort);
+
 	tag->GetCurrentIdentState(&client->m_identState);
-	tag->HasObfuscatedConnection(&client->m_hasbeenobfuscatinglately);
+	tag->ObfuscationStatus(client->m_obfuscationStatus);
 	tag->HasExtendedProtocol(&client->m_bEmuleProtocol);
 
 	tag->WaitingPosition(&client->m_waitingPosition);
 	tag->RemoteQueueRank(&client->m_nRemoteQueueRank);
 	client->m_bRemoteQueueFull = client->m_nRemoteQueueRank == 0xffff;
+	tag->OldRemoteQueueRank(&client->m_nOldRemoteQueueRank);
 	tag->AskedCount(&client->m_cAsked);
 	
 	tag->ClientDownloadState(&client->m_nDownloadState);
@@ -1245,10 +1266,10 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		client->kBpsDown = 0;
 	}
 
-	tag->WaitTime(&client->m_WaitTime);
-	tag->XferTime(&client->m_UpStartTimeDelay);
-	tag->LastReqTime(&client->m_dwLastUpRequest);
-	tag->QueueTime(&client->m_WaitStartTime);
+	//tag->WaitTime(&client->m_WaitTime);
+	//tag->XferTime(&client->m_UpStartTimeDelay);
+	//tag->LastReqTime(&client->m_dwLastUpRequest);
+	//tag->QueueTime(&client->m_WaitStartTime);
 	
 	CreditStruct *credit_struct =
 		(CreditStruct *)client->credits->GetDataStruct();
@@ -1261,15 +1282,41 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->Score(&client->m_score);
 	tag->Rating(&client->m_rating);
 
-	//theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client,
-	//	theApp->amuledlg->m_transferwnd->clientlistctrl->GetListView());	// Fixme, Listview shouldn't be required as parameter
-}
+	uint8 sourceFrom = 0;
+	if (tag->GetSourceFrom(sourceFrom)) {
+		client->m_nSourceFrom = (ESourceFrom)sourceFrom;
+	}
 
-
-CUpQueueRem::CUpQueueRem(CRemoteConnect *conn)
-:
-m_up_list(conn, vtUploading), m_wait_list(conn, vtQueued)
-{
+	uint32 fileID;
+	bool notified = false;
+	if (tag->RequestFile(fileID)) {
+		if (client->m_reqfile) {
+			Notify_SourceCtrlRemoveSource(client, client->m_reqfile);
+			client->m_reqfile->DelSource(client);
+			client->m_reqfile = NULL;
+		}
+		CKnownFile * kf = theApp->knownfiles->GetByID(fileID);
+		if (kf && kf->IsCPartFile()) {
+			client->m_reqfile = (CPartFile *) kf;
+			client->m_reqfile->AddSource(client);
+			Notify_SourceCtrlAddSource(client->m_reqfile, client, A4AF_SOURCE);
+			notified = true;
+		}
+	}
+	if (!notified && client->m_reqfile && client->m_reqfile->ShowSources()) {
+		SourceItemType type = A4AF_SOURCE;
+		switch (client->GetDownloadState()) {
+			case DS_DOWNLOADING:
+			case DS_ONQUEUE:
+				// We will send A4AF, which will be checked.
+				break;
+			default:
+				type = UNAVAILABLE_SOURCE;
+				break;
+		}
+			
+		Notify_SourceCtrlUpdateSource(client, type);
+	}
 }
 
 
@@ -1498,13 +1545,7 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 }
 
 
-CClientListRem::CClientListRem(CRemoteConnect *conn)
-{
-	m_conn = conn;
-}
-
-
-void CClientListRem::FilterQueues()
+void CUpDownClientListRem::FilterQueues()
 {
 	// FIXME: add code
 	//wxFAIL;

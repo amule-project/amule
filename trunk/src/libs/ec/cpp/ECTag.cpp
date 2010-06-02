@@ -705,6 +705,16 @@ bool CECTag::AssignIfExist(ec_tagname_t tagname, bool *target) const
 	return ret;
 }
 
+bool CECTag::AssignIfExist(ec_tagname_t tagname, bool &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetInt() > 0;
+		return true;
+	}
+	return false;
+}
+
 uint8_t CECTag::AssignIfExist(ec_tagname_t tagname, uint8_t *target) const
 {
 	uint8_t ret = 0;
@@ -717,6 +727,17 @@ uint8_t CECTag::AssignIfExist(ec_tagname_t tagname, uint8_t *target) const
 		}
 	}
 	return ret;
+}
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, uint8_t &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		EC_ASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+		target = tag->GetInt();
+		return true;
+	}
+	return false;
 }
 
 uint16_t CECTag::AssignIfExist(ec_tagname_t tagname, uint16_t *target) const
@@ -735,6 +756,21 @@ uint16_t CECTag::AssignIfExist(ec_tagname_t tagname, uint16_t *target) const
 		}
 	}
 	return ret;
+}
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, uint16_t &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		EC_ASSERT(
+			(tag->GetType() == EC_TAGTYPE_UINT16)
+			|| (tag->GetType() == EC_TAGTYPE_UINT8)
+			|| (m_dataType == EC_TAGTYPE_UNKNOWN)
+		);
+		target = tag->GetInt();
+		return true;
+	}
+	return false;
 }
 
 uint32_t CECTag::AssignIfExist(ec_tagname_t tagname, uint32_t *target) const
@@ -756,6 +792,22 @@ uint32_t CECTag::AssignIfExist(ec_tagname_t tagname, uint32_t *target) const
 	return ret;
 }
 
+bool CECTag::AssignIfExist(ec_tagname_t tagname, uint32_t &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		EC_ASSERT(
+			(tag->GetType() == EC_TAGTYPE_UINT32)
+			|| (tag->GetType() == EC_TAGTYPE_UINT16)
+			|| (tag->GetType() == EC_TAGTYPE_UINT8)
+			|| (m_dataType == EC_TAGTYPE_UNKNOWN)
+		);
+		target = tag->GetInt();
+		return true;
+	}
+	return false;
+}
+
 uint64_t CECTag::AssignIfExist(ec_tagname_t tagname, uint64_t *target) const
 {
 	uint64_t ret = 0;
@@ -767,6 +819,16 @@ uint64_t CECTag::AssignIfExist(ec_tagname_t tagname, uint64_t *target) const
 		}
 	}
 	return ret;
+}
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, uint64_t &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetInt();
+		return true;
+	}
+	return false;
 }
 
 time_t CECTag::AssignIfExist(ec_tagname_t tagname, time_t *target) const
@@ -782,6 +844,16 @@ time_t CECTag::AssignIfExist(ec_tagname_t tagname, time_t *target) const
 	return ret;
 }
 
+bool CECTag::AssignIfExist(ec_tagname_t tagname, time_t &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetInt();
+		return true;
+	}
+	return false;
+}
+
 double CECTag::AssignIfExist(ec_tagname_t tagname, double *target) const
 {
 	double ret = 0.0;
@@ -793,6 +865,16 @@ double CECTag::AssignIfExist(ec_tagname_t tagname, double *target) const
 		}
 	}
 	return ret;
+}
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, double &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetDoubleData();
+		return true;
+	}
+	return false;
 }
 
 float CECTag::AssignIfExist(ec_tagname_t tagname, float *target) const
@@ -808,6 +890,16 @@ float CECTag::AssignIfExist(ec_tagname_t tagname, float *target) const
 	return ret;
 }
 
+bool CECTag::AssignIfExist(ec_tagname_t tagname, float &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetDoubleData();
+		return true;
+	}
+	return false;
+}
+
 CMD4Hash CECTag::AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const
 {
 	CMD4Hash ret;
@@ -819,6 +911,16 @@ CMD4Hash CECTag::AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const
 		}
 	}
 	return ret;
+}
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, CMD4Hash &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetMD4Data();
+		return true;
+	}
+	return false;
 }
 
 std::string CECTag::AssignIfExist(ec_tagname_t tagname, std::string *target) const
@@ -834,6 +936,16 @@ std::string CECTag::AssignIfExist(ec_tagname_t tagname, std::string *target) con
 	return ret;
 }
 
+bool CECTag::AssignIfExist(ec_tagname_t tagname, std::string &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetStringDataSTL();
+		return true;
+	}
+	return false;
+}
+
 #ifdef USE_WX_EXTENSIONS
 wxString CECTag::AssignIfExist(ec_tagname_t tagname, wxString *target) const
 {
@@ -846,6 +958,16 @@ wxString CECTag::AssignIfExist(ec_tagname_t tagname, wxString *target) const
 		}
 	}
 	return ret;
+}
+
+bool CECTag::AssignIfExist(ec_tagname_t tagname, wxString &target) const
+{
+	const CECTag *tag = GetTagByName(tagname);
+	if (tag) {
+		target = tag->GetStringData();
+		return true;
+	}
+	return false;
 }		
 #endif
 

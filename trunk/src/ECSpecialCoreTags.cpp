@@ -246,15 +246,18 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_STATE, client->GetUploadState()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_STATE, client->GetDownloadState()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_IDENT_STATE, (uint64) client->GetCurrentIdentState()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, client->HasObfuscatedConnectionBeenEstablished()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_EXT_PROTOCOL, client->ExtProtocolAvailable()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())), valuemap);
+	// These are not needed atm. Keep them for now, maybe columns get reintroduced in client view.
+	//AddTag(CECTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime()), valuemap);
+	//AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()), valuemap);
+	//AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())), valuemap);
+	//AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp->uploadqueue->GetWaitingPosition(client)), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, client->IsRemoteQueueFull() ? (uint16)0xffff : client->GetRemoteQueueRank()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK, client->GetOldRemoteQueueRank()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_ASKED_COUNT, client->GetAskedCount()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_OBFUSCATION_STATUS, client->GetObfuscationStatus()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_KAD_PORT, client->GetKadPort()), valuemap);
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
@@ -262,9 +265,12 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()), valuemap);
-		AddTag(CECTag(EC_TAG_KNOWNFILE, file->ECID()), valuemap);
+		AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_FILE, file->ECID()), valuemap);
+	} else {
+		AddTag(CECIntTag(EC_TAG_CLIENT_UPLOAD_FILE, 0), valuemap);
 	}
-	
+	const CPartFile* pfile = client->GetRequestFile();
+	AddTag(CECTag(EC_TAG_CLIENT_REQUEST_FILE, pfile ? pfile->ECID() : 0), valuemap);
 }
 
 //

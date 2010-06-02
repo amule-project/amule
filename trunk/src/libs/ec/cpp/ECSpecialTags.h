@@ -281,13 +281,10 @@ class CEC_UpDownClient_Tag : public CECTag {
 
 		uint32 ID() const { return GetInt(); }
 		
- 		uint32 FileID() const { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetInt(); }
- 		CMD4Hash UserHash() const { return GetTagByNameSafe(EC_TAG_CLIENT_HASH)->GetMD4Data(); }
+ 		CMD4Hash UserHash(CMD4Hash * target = 0) const { return AssignIfExist(EC_TAG_CLIENT_HASH, target); }
  		uint32 UserID(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_USER_ID, target); }
  		
- 		bool HaveFile() const { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
-
- 		wxString ClientName() const { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
+ 		wxString ClientName(wxString *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_NAME, target); }
  		uint32 SpeedUp(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UP_SPEED, target); }
  		float SpeedDown(float *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWN_SPEED, target); }
  		
@@ -298,31 +295,38 @@ class CEC_UpDownClient_Tag : public CECTag {
  		
  		bool IsFriend() const { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
  		
- 		uint8 ClientSoftware() const { return GetTagByNameSafe(EC_TAG_CLIENT_SOFTWARE)->GetInt(); }
+ 		bool ClientSoftware(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_SOFTWARE, target); }
+		bool SoftVerStr(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_SOFT_VER_STR, target); }
  		
  		uint8 ClientUploadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_STATE, target); }
  		uint8 ClientDownloadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_STATE, target); }
  		
- 		uint32 WaitTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAIT_TIME, target); }
- 		uint32 XferTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_XFER_TIME, target); }
- 		uint32 LastReqTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_LAST_TIME, target); }
- 		uint32 QueueTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_QUEUE_TIME, target); }
-		uint8 GetSourceFrom() const { return GetTagByNameSafe(EC_TAG_CLIENT_FROM)->GetInt(); }
-		uint32 UserIP() const { return GetTagByNameSafe(EC_TAG_CLIENT_USER_IP)->GetInt(); }
-		uint16 UserPort() const { return GetTagByNameSafe(EC_TAG_CLIENT_USER_PORT)->GetInt(); }
-		uint32 ServerIP() const { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_IP)->GetInt(); }
-		uint16 ServerPort() const { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_PORT)->GetInt(); }
-		wxString ServerName() const { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_NAME)->GetStringData(); }
-		wxString SoftVerStr() const { return GetTagByNameSafe(EC_TAG_CLIENT_SOFT_VER_STR)->GetStringData(); }
+ 		//uint32 WaitTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAIT_TIME, target); }
+ 		//uint32 XferTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_XFER_TIME, target); }
+ 		//uint32 LastReqTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_LAST_TIME, target); }
+ 		//uint32 QueueTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_QUEUE_TIME, target); }
+		bool GetSourceFrom(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_FROM, target); }
+
+		bool   UserIP(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_USER_IP, target); }
+		uint16 UserPort(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_USER_PORT, target); }
+		uint32 ServerIP(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_SERVER_IP, target); }
+		uint16 ServerPort(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_SERVER_PORT, target); }
+		wxString ServerName(wxString *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_SERVER_NAME, target); }
+		bool KadPort(uint16 &target) const { return AssignIfExist(EC_TAG_CLIENT_KAD_PORT, target); }
+
 		uint32 Score(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_SCORE, target); }
 		uint32 Rating(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_RATING, target); }
 		uint16 WaitingPosition(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAITING_POSITION, target); }
 		uint16 RemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, target); }
+		uint16 OldRemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK, target); }
 		uint32 AskedCount(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_ASKED_COUNT, target); }
 
 		EIdentState GetCurrentIdentState(EIdentState * target = 0) const { return (EIdentState) AssignIfExist(EC_TAG_CLIENT_IDENT_STATE, (uint32 *) target); }
-		bool HasObfuscatedConnection(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATED_CONNECTION, target); }
+		bool ObfuscationStatus(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATION_STATUS, target); }
 		bool HasExtendedProtocol(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_EXT_PROTOCOL, target); }
+
+		bool UploadFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_FILE, target); }
+		bool RequestFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_REQUEST_FILE, target); }
 	private:
 		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };

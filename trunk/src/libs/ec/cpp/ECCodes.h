@@ -57,7 +57,6 @@ enum ECOpCodes {
 	EC_OP_STATS                         = 0x0C,
 	EC_OP_GET_DLOAD_QUEUE               = 0x0D,
 	EC_OP_GET_ULOAD_QUEUE               = 0x0E,
-	EC_OP_GET_WAIT_QUEUE                = 0x0F,
 	EC_OP_GET_SHARED_FILES              = 0x10,
 	EC_OP_SHARED_SET_PRIO               = 0x11,
 	EC_OP_PARTFILE_REMOVE_NO_NEEDED     = 0x12,
@@ -75,7 +74,6 @@ enum ECOpCodes {
 	EC_OP_PARTFILE_SET_CAT              = 0x1E,
 	EC_OP_DLOAD_QUEUE                   = 0x1F,
 	EC_OP_ULOAD_QUEUE                   = 0x20,
-	EC_OP_WAIT_QUEUE                    = 0x21,
 	EC_OP_SHARED_FILES                  = 0x22,
 	EC_OP_SHAREDFILES_RELOAD            = 0x23,
 	EC_OP_SHAREDFILES_ADD_DIRECTORY     = 0x24,
@@ -251,13 +249,18 @@ enum ECTagNames {
 		EC_TAG_CLIENT_SOFT_VER_STR                = 0x0615,
 		EC_TAG_CLIENT_WAITING_POSITION            = 0x0616,
 		EC_TAG_CLIENT_IDENT_STATE                 = 0x0617,
-		EC_TAG_CLIENT_OBFUSCATED_CONNECTION       = 0x0618,
+		EC_TAG_CLIENT_OBFUSCATION_STATUS          = 0x0618,
 		EC_TAG_CLIENT_RATING                      = 0x0619,
 		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
 		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
 		EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C,
 		EC_TAG_CLIENT_EXT_PROTOCOL                = 0x061D,
 		EC_TAG_CLIENT_USER_ID                     = 0x061E,
+		EC_TAG_CLIENT_UPLOAD_FILE                 = 0x061F,
+		EC_TAG_CLIENT_REQUEST_FILE                = 0x0620,
+		EC_TAG_CLIENT_A4AF_FILES                  = 0x0621,
+		EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK       = 0x0622,
+		EC_TAG_CLIENT_KAD_PORT                    = 0x0623,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
@@ -462,7 +465,6 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x0C: return wxT("EC_OP_STATS");
 		case 0x0D: return wxT("EC_OP_GET_DLOAD_QUEUE");
 		case 0x0E: return wxT("EC_OP_GET_ULOAD_QUEUE");
-		case 0x0F: return wxT("EC_OP_GET_WAIT_QUEUE");
 		case 0x10: return wxT("EC_OP_GET_SHARED_FILES");
 		case 0x11: return wxT("EC_OP_SHARED_SET_PRIO");
 		case 0x12: return wxT("EC_OP_PARTFILE_REMOVE_NO_NEEDED");
@@ -480,7 +482,6 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x1E: return wxT("EC_OP_PARTFILE_SET_CAT");
 		case 0x1F: return wxT("EC_OP_DLOAD_QUEUE");
 		case 0x20: return wxT("EC_OP_ULOAD_QUEUE");
-		case 0x21: return wxT("EC_OP_WAIT_QUEUE");
 		case 0x22: return wxT("EC_OP_SHARED_FILES");
 		case 0x23: return wxT("EC_OP_SHAREDFILES_RELOAD");
 		case 0x24: return wxT("EC_OP_SHAREDFILES_ADD_DIRECTORY");
@@ -660,13 +661,18 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0615: return wxT("EC_TAG_CLIENT_SOFT_VER_STR");
 		case 0x0616: return wxT("EC_TAG_CLIENT_WAITING_POSITION");
 		case 0x0617: return wxT("EC_TAG_CLIENT_IDENT_STATE");
-		case 0x0618: return wxT("EC_TAG_CLIENT_OBFUSCATED_CONNECTION");
+		case 0x0618: return wxT("EC_TAG_CLIENT_OBFUSCATION_STATUS");
 		case 0x0619: return wxT("EC_TAG_CLIENT_RATING");
 		case 0x061A: return wxT("EC_TAG_CLIENT_REMOTE_QUEUE_RANK");
 		case 0x061B: return wxT("EC_TAG_CLIENT_ASKED_COUNT");
 		case 0x061C: return wxT("EC_TAG_CLIENT_UPLOAD_STATE");
 		case 0x061D: return wxT("EC_TAG_CLIENT_EXT_PROTOCOL");
 		case 0x061E: return wxT("EC_TAG_CLIENT_USER_ID");
+		case 0x061F: return wxT("EC_TAG_CLIENT_UPLOAD_FILE");
+		case 0x0620: return wxT("EC_TAG_CLIENT_REQUEST_FILE");
+		case 0x0621: return wxT("EC_TAG_CLIENT_A4AF_FILES");
+		case 0x0622: return wxT("EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK");
+		case 0x0623: return wxT("EC_TAG_CLIENT_KAD_PORT");
 		case 0x0700: return wxT("EC_TAG_SEARCHFILE");
 		case 0x0701: return wxT("EC_TAG_SEARCH_TYPE");
 		case 0x0702: return wxT("EC_TAG_SEARCH_NAME");

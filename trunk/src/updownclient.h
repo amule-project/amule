@@ -146,6 +146,15 @@ enum ClientState
 	CS_DYING
 };
 
+// Obfuscation status
+enum EObfuscationState {
+	OBST_UNDEFINED = 0,
+	OBST_ENABLED,
+	OBST_SUPPORTED,
+	OBST_NOT_SUPPORTED,
+	OBST_DISABLED
+};
+
 // This is fixed on ed2k v1, but can be any number on ED2Kv2
 #define STANDARD_BLOCKS_REQUEST 3
 
@@ -290,14 +299,14 @@ public:
 	uint32		GetUploadDatarate() const	{ return m_nUpDatarate; }
 
 #ifndef CLIENT_GUI
-	uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
+	//uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
 	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
 	uint32		GetWaitStartTime() const;
 #else
-	uint32		m_WaitTime, m_UpStartTimeDelay, m_WaitStartTime;
-	uint32		GetWaitTime() const		{ return m_WaitTime; }
-	uint32		GetUpStartTimeDelay() const	{ return m_UpStartTimeDelay; }
-	uint32		GetWaitStartTime() const	{ return m_WaitStartTime; }
+	//uint32		m_WaitTime, m_UpStartTimeDelay, m_WaitStartTime;
+	//uint32		GetWaitTime() const		{ return m_WaitTime; }
+	//uint32		GetUpStartTimeDelay() const	{ return m_UpStartTimeDelay; }
+	//uint32		GetWaitStartTime() const	{ return m_WaitStartTime; }
 #endif
 
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
@@ -308,6 +317,8 @@ public:
 				bool isdownloading = false,
 				bool onlybasevalue = false) const;
 	uint32		GetRating() const		{ return GetScore(false, IsDownloading(), true); }
+	uint8		GetObfuscationStatus() const;
+	uint16		GetUploadQueueWaitingPosition() const;
 #else
 	uint32		m_score;
 	uint32		GetScore(
@@ -318,10 +329,12 @@ public:
 		return onlybasevalue ? m_rating : m_score;
 	}
 	uint16		m_waitingPosition;
-	uint16		GetWaitingPosition() const	{ return m_waitingPosition; }
+	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
 	uint32		m_rating;
 	uint32		GetRating() const		{ return m_rating; }
 	EIdentState	m_identState;
+	uint8		GetObfuscationStatus() const { return m_obfuscationStatus; }
+	uint8		m_obfuscationStatus;
 #endif
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);

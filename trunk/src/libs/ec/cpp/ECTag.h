@@ -161,6 +161,9 @@ class CECTag {
 		void		DebugPrint(int level, bool print_empty) const;
 		void		swap(CECTag & t);
 		
+		// If tag exists, return its value and store it in target (if target != NULL)
+		// Else return safe value and don't touch target
+		// Allows for one function for old and new style.
 		bool		AssignIfExist(ec_tagname_t tagname, bool *target) const;
 		uint8_t		AssignIfExist(ec_tagname_t tagname, uint8_t *target) const;
 		uint16_t	AssignIfExist(ec_tagname_t tagname, uint16_t *target) const;
@@ -173,6 +176,22 @@ class CECTag {
 		std::string	AssignIfExist(ec_tagname_t tagname, std::string *target) const;
 		#ifdef USE_WX_EXTENSIONS
 		wxString	AssignIfExist(ec_tagname_t tagname, wxString *target) const;
+		#endif
+
+		// If tag exists, return true and store it in target
+		// Else return false and don't touch target
+		bool		AssignIfExist(ec_tagname_t tagname, bool &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, uint8_t &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, uint16_t &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, uint32_t &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, uint64_t &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, time_t &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, double &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, float &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, CMD4Hash &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, std::string &target) const;
+		#ifdef USE_WX_EXTENSIONS
+		bool		AssignIfExist(ec_tagname_t tagname, wxString &target) const;
 		#endif
 
 	protected:
