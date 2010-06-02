@@ -975,6 +975,15 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 			file->m_AvailPartFrequency[i] = data[i];
 		}
 	}
+	wxString fileName;
+	if (tag->FileName(fileName)) {
+		file->SetFileName(CPath(fileName));
+	}
+	if (tag->FilePath(fileName)) {
+		file->m_filePath = CPath(fileName);
+	}
+	tag->UpPrio(&file->m_iUpPriorityEC);
+	tag->GetAICHHash(file->m_AICHMasterHash);
 	tag->GetRequests(&file->statistic.requested);
 	tag->GetAllRequests(&file->statistic.alltimerequested);
 	tag->GetAccepts(&file->statistic.accepted);
