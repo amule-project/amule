@@ -1346,10 +1346,11 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_RENAME_FILE: {
 			CMD4Hash fileHash = request->GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data();
-			CKnownFile* file = theApp->knownfiles->FindKnownFileByID(fileHash);
 			wxString newName = request->GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData();
+			// search first in downloadqueue - it might be in known files as well
+			CKnownFile* file = theApp->downloadqueue->GetFileByID(fileHash);
 			if (!file) {
-				file = theApp->downloadqueue->GetFileByID(fileHash);
+				file = theApp->knownfiles->FindKnownFileByID(fileHash);
 			}
 			if (!file) {
 				response = new CECPacket(EC_OP_FAILED);

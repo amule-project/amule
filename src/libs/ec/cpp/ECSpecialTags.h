@@ -214,7 +214,9 @@ class CEC_SharedFile_Tag : public CECTag {
 		wxString	FileHashString() const { return FileHash().Encode(); }
 
  		wxString	FileName()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		bool		FileName(wxString &target)	const { return AssignIfExist(EC_TAG_PARTFILE_NAME, target); }
  		wxString	FilePath()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_FILENAME)->GetStringData(); }
+ 		bool		FilePath(wxString &target)	const { return AssignIfExist(EC_TAG_KNOWNFILE_FILENAME, target); }
  		uint64		SizeFull()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt(); }
  		wxString	FileEd2kLink()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
@@ -234,7 +236,7 @@ class CEC_SharedFile_Tag : public CECTag {
 
 		uint16		GetOnQueue(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_ON_QUEUE, target); }
 
-		wxString	GetAICHHash()	const { return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
+		bool		GetAICHHash(wxString &target)	const { return AssignIfExist(EC_TAG_KNOWNFILE_AICH_MASTERHASH, target); }
 	private:
 		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };
