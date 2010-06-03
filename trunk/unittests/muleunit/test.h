@@ -26,7 +26,7 @@
 
 #include <wx/string.h>
 #include <list>
-
+#include <string>
 
 
 /**
