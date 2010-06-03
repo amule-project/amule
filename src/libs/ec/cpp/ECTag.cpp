@@ -66,11 +66,12 @@ CECTag::CECTag() :
  */
 CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data) : m_tagName(name)
 {
-	m_dataLen = length;
 	if (data) {
 		NewData();
+		m_dataLen = length;
 		memcpy(m_tagData, data, m_dataLen);
 	} else {
+		m_dataLen = 0;
 		m_tagData = NULL;
 	}
 	m_dataType = EC_TAGTYPE_CUSTOM;
