@@ -67,10 +67,11 @@ CECTag::CECTag() :
 CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data) : m_tagName(name)
 {
 	if (data) {
-		NewData();
 		m_dataLen = length;
+		NewData();
 		memcpy(m_tagData, data, m_dataLen);
 	} else {
+		wxASSERT(length == 0);
 		m_dataLen = 0;
 		m_tagData = NULL;
 	}
