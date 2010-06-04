@@ -275,6 +275,7 @@
     <ClInclude Include="..\..\..\..\src\amuleDlg.h" />
     <ClInclude Include="..\..\..\..\src\ArchSpecific.h" />
     <ClInclude Include="..\..\..\..\src\BarShader.h" />
+    <ClInclude Include="..\..\..\..\src\BitVector.h" />
     <ClInclude Include="..\..\..\..\src\CatDialog.h" />
     <ClInclude Include="..\..\..\..\src\CFile.h" />
     <ClInclude Include="..\..\..\..\src\ChatSelector.h" />

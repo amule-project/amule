@@ -42,6 +42,7 @@
 #include <common/Path.h>
 #include "MD4Hash.h"
 #include "Logger.h"
+#include "BitVector.h"		// Needed for BitVector
 
 #include "OtherFunctions.h"	// Interface declarations
 
@@ -1205,5 +1206,9 @@ CMD4Hash password;
 
 return password.Encode();
 }
+
+
+const uint8 BitVector::s_posMask[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+const uint8 BitVector::s_negMask[] = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F};
 
 // File_checked_for_headers
