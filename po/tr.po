@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 13:55+0200\n"
+"POT-Creation-Date: 2010-06-04 23:48+0200\n"
 "PO-Revision-Date: 2010-04-20 02:13+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
@@ -532,7 +532,7 @@ msgstr "İptal"
 msgid "Stop the current connection attempts"
 msgstr "Durdur"
 
-#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:555 src/muuli_wdr.cpp:2571
+#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:521 src/muuli_wdr.cpp:2571
 msgid "Disconnect"
 msgstr "Bağlantıyı Kes"
 
@@ -540,7 +540,7 @@ msgstr "Bağlantıyı Kes"
 msgid "Disconnect from the currently connected networks"
 msgstr "Bağlanılmış olan ağlar ile bağlantıyı Kes"
 
-#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:558 src/muuli_wdr.cpp:2754
+#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:524 src/muuli_wdr.cpp:2754
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3526
 msgid "Connect"
 msgstr "Bağlan"
@@ -755,7 +755,7 @@ msgstr "'%s' dizini '%s' sınıfı için oluşturulamadı. '%s' dizini kullanıl
 #: src/DownloadListCtrl.cpp:1049 src/DownloadListCtrl.cpp:1060
 #: src/ExternalConn.cpp:418 src/FileDetailDialog.cpp:129
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:903 src/KnownFile.cpp:909
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/MuleTrayIcon.cpp:390 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Bilinmiyor"
@@ -1320,7 +1320,7 @@ msgstr "Boyut"
 msgid "Transferred"
 msgstr "Aktarıldı"
 
-#: src/DownloadListCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:163 src/SourceListCtrl.cpp:29
 msgid "Speed"
 msgstr "Hız"
 
@@ -1340,7 +1340,8 @@ msgid "Priority"
 msgstr "Öncelik"
 
 #: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
-#: src/SearchListCtrl.cpp:91
+#: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
+#: src/SourceListCtrl.cpp:34
 msgid "Status"
 msgstr "Durum"
 
@@ -2347,7 +2348,8 @@ msgstr "Dosya"
 msgid "Share ratio"
 msgstr "Paylaşım oranı"
 
-#: src/KnownFile.cpp:1404
+#: src/KnownFile.cpp:1404 src/SharedFilePeersListCtrl.cpp:31
+#: src/SourceListCtrl.cpp:30
 msgid "Uploaded"
 msgstr "Gönderilen"
 
@@ -2478,159 +2480,155 @@ msgstr "Temizle"
 msgid "Select All"
 msgstr "Tümünü Seç"
 
-#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:510
-#: src/MuleTrayIcon.cpp:531
+#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:476
+#: src/MuleTrayIcon.cpp:497
 msgid "Unlimited"
 msgstr "Sınırsız"
 
-#: src/MuleTrayIcon.cpp:327
-msgid "Traybar-icon lost, trying to recreate ..."
-msgstr "Sistem tablası simgesi kayboldu, yeniden oluşturulma deneniyor..."
-
-#: src/MuleTrayIcon.cpp:348
+#: src/MuleTrayIcon.cpp:314
 msgid "aMule Tray Menu"
 msgstr "aMule Sistem Tablası Menüsü"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:320
 msgid "Speed limits:"
 msgstr "Hız:"
 
-#: src/MuleTrayIcon.cpp:359
+#: src/MuleTrayIcon.cpp:325
 msgid "UL: None"
 msgstr "GÖN: Yok"
 
-#: src/MuleTrayIcon.cpp:362
+#: src/MuleTrayIcon.cpp:328
 #, c-format
 msgid "UL: %u"
 msgstr "GÖN: %u"
 
-#: src/MuleTrayIcon.cpp:369
+#: src/MuleTrayIcon.cpp:335
 msgid "DL: None"
 msgstr "İND: Yok"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:338
 #, c-format
 msgid "DL: %u"
 msgstr "İND: %u"
 
-#: src/MuleTrayIcon.cpp:376
+#: src/MuleTrayIcon.cpp:342
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Aktarım hızı: %.1f"
 
-#: src/MuleTrayIcon.cpp:378
+#: src/MuleTrayIcon.cpp:344
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Gönderme hızı: %.1f"
 
-#: src/MuleTrayIcon.cpp:384
+#: src/MuleTrayIcon.cpp:350
 msgid "Client Information"
 msgstr "Yazılım Bilgisi"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 #, c-format
 msgid "Nickname: %s"
 msgstr "Rumuz: %s"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 msgid "No Nickname Selected!"
 msgstr "Rumuz Seçilmedi!"
 
-#: src/MuleTrayIcon.cpp:395
+#: src/MuleTrayIcon.cpp:361
 msgid "ClientID: "
 msgstr "KullanıcıID: "
 
-#: src/MuleTrayIcon.cpp:401 src/MuleTrayIcon.cpp:415 src/TextClient.cpp:706
+#: src/MuleTrayIcon.cpp:367 src/MuleTrayIcon.cpp:381 src/TextClient.cpp:706
 #: src/TextClient.cpp:719
 msgid "Not connected"
 msgstr "Bağlı değil"
 
-#: src/MuleTrayIcon.cpp:408
+#: src/MuleTrayIcon.cpp:374
 msgid "ServerName: "
 msgstr "Sunucu Adı:"
 
-#: src/MuleTrayIcon.cpp:409
+#: src/MuleTrayIcon.cpp:375
 msgid "ServerIP: "
 msgstr "SunucuIP:"
 
-#: src/MuleTrayIcon.cpp:416 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:382 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:272
 msgid "Not Connected"
 msgstr "Bağlanmadı"
 
-#: src/MuleTrayIcon.cpp:424
+#: src/MuleTrayIcon.cpp:390
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:433
+#: src/MuleTrayIcon.cpp:399
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP port: %d"
 
-#: src/MuleTrayIcon.cpp:435
+#: src/MuleTrayIcon.cpp:401
 msgid "TCP port: Not ready"
 msgstr "TCP port: Hazır değil"
 
-#: src/MuleTrayIcon.cpp:444
+#: src/MuleTrayIcon.cpp:410
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP port: %d"
 
-#: src/MuleTrayIcon.cpp:446
+#: src/MuleTrayIcon.cpp:412
 msgid "UDP port: Not ready"
 msgstr "UDP port: Hazır değil"
 
-#: src/MuleTrayIcon.cpp:455
+#: src/MuleTrayIcon.cpp:421
 msgid "Online Signature: Enabled"
 msgstr "Çevrim içi İmza: Etkin"
 
-#: src/MuleTrayIcon.cpp:458
+#: src/MuleTrayIcon.cpp:424
 msgid "Online Signature: Disabled"
 msgstr "Çevrim içi İmza: Devre dışı"
 
-#: src/MuleTrayIcon.cpp:465 src/Statistics.cpp:644
+#: src/MuleTrayIcon.cpp:431 src/Statistics.cpp:644
 #, c-format
 msgid "Uptime: %s"
 msgstr "Çalışma Süresi: %s"
 
-#: src/MuleTrayIcon.cpp:471
+#: src/MuleTrayIcon.cpp:437
 #, c-format
 msgid "Shared files: %d"
 msgstr "Paylaşılan dosyalar: %d"
 
-#: src/MuleTrayIcon.cpp:477
+#: src/MuleTrayIcon.cpp:443
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Sıraya giren kullanıcılar: %d"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Total DL: %s"
 msgstr "Toplam İND: %s"
 
-#: src/MuleTrayIcon.cpp:491
+#: src/MuleTrayIcon.cpp:457
 #, c-format
 msgid "Total UL: %s"
 msgstr "Toplam GÖN: %s"
 
-#: src/MuleTrayIcon.cpp:502
+#: src/MuleTrayIcon.cpp:468
 msgid "Upload limit"
 msgstr "Gönderim sınırı"
 
-#: src/MuleTrayIcon.cpp:506
+#: src/MuleTrayIcon.cpp:472
 msgid "Download limit"
 msgstr "Aktarım sınırı"
 
-#: src/MuleTrayIcon.cpp:566
+#: src/MuleTrayIcon.cpp:532
 msgid "Hide aMule"
 msgstr "aMule'yi Gizle"
 
-#: src/MuleTrayIcon.cpp:569
+#: src/MuleTrayIcon.cpp:535
 msgid "Show aMule"
 msgstr "aMule'yi Göster"
 
-#: src/MuleTrayIcon.cpp:576 src/utils/aLinkCreator/src/alcframe.cpp:238
+#: src/MuleTrayIcon.cpp:542 src/utils/aLinkCreator/src/alcframe.cpp:238
 msgid "Exit"
 msgstr "Çıkış"
 
@@ -4692,6 +4690,7 @@ msgid "Insufficient disk space"
 msgstr "Yetersiz disk alanı"
 
 #: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "İndirildi"
 
@@ -5456,7 +5455,8 @@ msgstr "Kullanıcılar"
 msgid "Static"
 msgstr "Statik Sunucu"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
+#: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
+#: src/SourceListCtrl.cpp:32 src/Statistics.cpp:871
 msgid "Version"
 msgstr "Sürüm"
 
@@ -5764,6 +5764,35 @@ msgstr "Paylaşılan dizin bulunamadı, atlanıyor: %s"
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr "Dizinde paylaşılabilir dosya bulunamadı: %s"
+
+#: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
+#, fuzzy
+msgid "User Name"
+msgstr "Kullanıcı adı"
+
+#: src/SharedFilePeersListCtrl.cpp:30
+#, fuzzy
+msgid "Download Speed"
+msgstr "İndirme Hızı"
+
+#: src/SharedFilePeersListCtrl.cpp:32
+#, fuzzy
+msgid "Upload Speed"
+msgstr "Gönderim Hızı"
+
+#: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
+#, fuzzy
+msgid "Available Parts"
+msgstr "Uygun:"
+
+#: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
+#, fuzzy
+msgid "Queue Rank"
+msgstr "Sıraya girdi"
+
+#: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
+msgid "Origin"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -7425,6 +7454,9 @@ msgstr "Çıkış istendi.\n"
 #: src/webserver/src/WebServer.cpp:1870
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
+
+#~ msgid "Traybar-icon lost, trying to recreate ..."
+#~ msgstr "Sistem tablası simgesi kayboldu, yeniden oluşturulma deneniyor..."
 
 #~ msgid "Transfers"
 #~ msgstr "Aktarımlar"

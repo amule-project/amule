@@ -60,7 +60,9 @@ src/ServerListCtrl.cpp
 src/ServerSocket.cpp
 src/ServerWnd.cpp
 src/SharedFileList.cpp
+src/SharedFilePeersListCtrl.cpp
 src/SharedFilesCtrl.cpp
+src/SourceListCtrl.cpp
 src/Statistics.cpp
 src/StatisticsDlg.cpp
 src/StatTree.cpp
