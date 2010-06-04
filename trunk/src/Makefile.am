@@ -322,6 +322,7 @@ noinst_HEADERS = \
 		amuleIPV4Address.h \
 		ArchSpecific.h \
 		BarShader.h \
+		BitVector.h \
 		CanceledFileList.h \
 		CaptchaDialog.h \
 		CaptchaGenerator.h \

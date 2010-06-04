@@ -335,6 +335,7 @@
     <ClInclude Include="..\..\..\..\src\ArchSpecific.h" />
     <ClInclude Include="..\..\..\..\src\AsyncDNS.h" />
     <ClInclude Include="..\..\..\..\src\BarShader.h" />
+    <ClInclude Include="..\..\..\..\src\BitVector.h" />
     <ClInclude Include="..\..\..\..\src\CanceledFileList.h" />
     <ClInclude Include="..\..\..\..\src\CaptchaDialog.h" />
     <ClInclude Include="..\..\..\..\src\CaptchaGenerator.h" />
