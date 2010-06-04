@@ -188,6 +188,7 @@ CMuleTrayIcon::CMuleTrayIcon()
 {
 	Old_Icon = -1;
 	Old_SpeedSize = 0xFFFF; // must be > any possible one.
+
 	// Create the background icons (speed improvement)
 	HighId_Icon_size = wxIcon(mule_TrayIcon_big_ico_xpm).GetHeight();
 	LowId_Icon_size = wxIcon(mule_Tr_yellow_big_ico_xpm).GetHeight();
@@ -196,19 +197,6 @@ CMuleTrayIcon::CMuleTrayIcon()
 
 CMuleTrayIcon::~CMuleTrayIcon() 
 {
-#ifdef __WXGTK__
-	// Issue has been fixed in wx SVN 53563, that's wx 2.8.8
-#if !wxCHECK_VERSION(2, 8, 8)
-	// FIXME: EVIL HACK: We need to ensure that the superclass doesn't
-	// try to destroy a dangling pointer. See also CMuleTrayIcon::UpdateTray
-	// for comments on this issue.
-	if (m_iconWnd) {
-		if (wxTopLevelWindows.IndexOf((wxWindow*)m_iconWnd) == wxNOT_FOUND) {
-			m_iconWnd = NULL;
-		}
-	}
-#endif
-#endif
 }
 
 /****************************************************/
@@ -309,28 +297,6 @@ void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
 
 void CMuleTrayIcon::UpdateTray()
 {
-#ifdef __WXGTK__
-	// Issue has been fixed in wx SVN 53563, that's wx 2.8.8
-#if !wxCHECK_VERSION(2, 8, 8)
-	// FIXME: EVIL HACK: As of wxGTK-2.8.7, closing of the trayicon
-	// window (caused for instance by a crashing kicker) is not
-	// handled, with the result that the pointer to the trayicon
-	// window becomes a dangling pointer. Since we have access to
-	// the pointer, and it's created as a top-level window, it's
-	// relatively easy to force the recreation of a valid window.
-	// Ugly as hell though ....
-	//
-	// This has been repported as bug #1872724:
-	// http://sourceforge.net/tracker/index.php?func=detail&aid=1872724&group_id=9863&atid=109863
-	if (m_iconWnd) {
-		if (wxTopLevelWindows.IndexOf((wxWindow*)m_iconWnd) == wxNOT_FOUND) {
-			AddLogLineCS(_("Traybar-icon lost, trying to recreate ..."));
-			m_iconWnd = NULL;
-		}
-	}
-#endif
-#endif
-
 	// Icon update and Tip update
 #ifndef __WXCOCOA__
 	if (IsOk()) 
