@@ -260,7 +260,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_KAD_PORT, client->GetKadPort()), valuemap);
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
-			return;
+		return;
 	}
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
@@ -271,6 +271,23 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	}
 	const CPartFile* pfile = client->GetRequestFile();
 	AddTag(CECTag(EC_TAG_CLIENT_REQUEST_FILE, pfile ? pfile->ECID() : 0), valuemap);
+
+	if (detail_level != EC_DETAIL_INC_UPDATE) {
+		return;
+	}
+	if (pfile) {
+		const BitVector & partStatus = client->GetPartStatus();
+		if (partStatus.size() == pfile->GetPartCount()) {
+			if (partStatus.AllTrue()) {
+				// send just an empty tag for a full source
+				AddTag(CECEmptyTag(EC_TAG_CLIENT_PART_STATUS), valuemap);
+			} else {
+				AddTag(CECTag(EC_TAG_CLIENT_PART_STATUS, partStatus.SizeBuffer(), partStatus.GetBuffer()), valuemap);
+			}
+		}
+		AddTag(CECTag(EC_TAG_CLIENT_NEXT_REQUESTED_PART, client->GetNextRequestedPart()), valuemap);
+		AddTag(CECTag(EC_TAG_CLIENT_LAST_DOWNLOADING_PART, client->GetLastDownloadingPart()), valuemap);
+	}
 }
 
 //

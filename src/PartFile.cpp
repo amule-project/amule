@@ -2600,7 +2600,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 			if ( KnowNeededParts ) {
 				// only send sources which have needed parts for this client
 				for (int x = 0; x < GetPartCount(); ++x) {
-					if (srcstatus[x] && !reqstatus[x]) {
+					if (srcstatus.get(x) && !reqstatus.get(x)) {
 						bNeeded = true;
 						break;
 					}
@@ -2613,7 +2613,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 					continue;
 				}
 				for (int x = 0; x < GetPartCount(); ++x){
-					if (srcstatus[x]) {
+					if (srcstatus.get(x)) {
 						bNeeded = true;
 						break;
 					}
@@ -3543,13 +3543,13 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 	
 	if ( increment ) {
 		for ( unsigned int i = 0; i < size; i++ ) {
-			if ( freq[i] ) {
+			if ( freq.get(i) ) {
 				m_SrcpartFrequency[i]++;
 			}
 		}
 	} else {
 		for ( unsigned int i = 0; i < size; i++ ) {
-			if ( freq[i] ) {
+			if ( freq.get(i) ) {
 				m_SrcpartFrequency[i]--;
 			}
 		}

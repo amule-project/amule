@@ -974,7 +974,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 				}
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
-						if ( srcstatus.at(x) && !rcvstatus.at(x) ) {
+						if ( srcstatus.get(x) && !rcvstatus.get(x) ) {
 							// We know the receiving client needs
 							// a chunk from this client.
 							bNeeded = true;
@@ -1002,7 +1002,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 					continue;
 				}
 				for (int x = 0; x < GetPartCount(); x++ ) {
-					if ( srcstatus.at(x) ) {
+					if ( srcstatus.get(x) ) {
 						// this client has at least one chunk
 						bNeeded = true;
 						break;
@@ -1297,13 +1297,13 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 	
 	if ( increment ) {
 		for ( unsigned int i = 0; i < size; ++i ) {
-			if ( freq[i] ) {
+			if ( freq.get(i) ) {
 				m_AvailPartFrequency[i]++;
 			}
 		}
 	} else {
 		for ( unsigned int i = 0; i < size; ++i ) {
-			if ( freq[i] ) {
+			if ( freq.get(i) ) {
 				m_AvailPartFrequency[i]--;
 			}
 		}
@@ -1407,4 +1407,9 @@ wxString CKnownFile::GetFeedback() const
 		+ _("On Queue") + CFormat(wxT(": %u\n")) % GetQueuedCount()
 		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
 }
+
+
+const uint8 BitVector::s_posMask[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+const uint8 BitVector::s_negMask[] = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F};
+
 // File_checked_for_headers

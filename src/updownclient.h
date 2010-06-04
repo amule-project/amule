@@ -37,7 +37,129 @@
 #include <map>
 
 
-typedef std::vector<bool> BitVector;
+//
+// Packed bit vector
+//
+class BitVector {
+public:
+	BitVector()
+	{
+		m_bits	= 0;
+		m_bytes = 0;
+		m_allTrue = 0;
+		m_vector = NULL;
+	}
+
+	~BitVector() { clear();	}
+
+	// number of bits
+	uint32 size() const	{ return m_bits; }
+
+	// is it empty?
+	bool empty() const { return m_bits == 0; }
+
+	// get bit at index
+	bool get(uint32 idx) const
+	{
+		if (idx >= m_bits) {
+			wxFAIL;
+			return false;
+		}
+		return (m_vector[idx / 8] & s_posMask[idx & 7]) != 0;
+	}
+
+	// set bit at index
+	void set(uint32 idx, bool value)
+	{
+		if (idx >= m_bits) {
+			wxFAIL;
+			return;
+		}
+		uint32 bidx = idx / 8;
+		if (value) {
+			m_vector[bidx] = m_vector[bidx] | s_posMask[idx & 7];
+			// If it was not all true before, then we don't know now.
+			if (m_allTrue == 0) {
+				m_allTrue = 2;
+			}
+		} else {
+			m_vector[bidx] = m_vector[bidx] & s_negMask[idx & 7];
+			m_allTrue = 0;
+		}
+	}
+
+	// set number of bits to zero and free memory
+	void clear()
+	{
+		m_bits	= 0;
+		m_bytes = 0;
+		m_allTrue = 0;
+		delete[] m_vector;
+		m_vector = NULL;
+	}
+
+	// set number of bits and initialize them with value
+	void setsize(uint32 newsize, bool value)
+	{
+		if (newsize == 0) {
+			clear();
+			return;
+		}
+		m_bits = newsize;
+		m_bytes = newsize / 8;
+		if (newsize & 7) {
+			m_bytes++;
+		}
+		delete[] m_vector;
+		m_vector = new uint8[m_bytes];
+		memset(m_vector, value ? 0xFF : 0, m_bytes);
+		m_allTrue = value ? 1 : 0;
+	}
+
+	// are all bits true ?
+	bool AllTrue() const
+	{
+		if (m_allTrue == 2) {
+			// don't know, have to check
+			bool foundFalse = false;
+			uint32 lastByte = m_bytes;
+			if (m_bits & 7) {
+				// uneven: check bits of last byte individually
+				lastByte--;
+				for (uint32 i = m_bits & 0xfffffff8; !foundFalse && i < m_bits; i++) {
+					foundFalse = !get(i);
+				}
+			}
+			// check bytewise
+			for (uint32 i = 0; !foundFalse && i < lastByte; i++) {
+				foundFalse = m_vector[i] != 0xff;
+			}
+			// This is really just a caching of information, 
+			// so m_allTrue is mutable and AllTrue() still const.
+			m_allTrue = foundFalse ? 0 : 1;
+		}
+		return m_allTrue == 1;
+	}
+
+	// set all bits to true
+	void SetAllTrue() { if (m_bytes) { memset(m_vector, 0xFF, m_bytes); } }
+
+	// handling of the internal buffer (for EC)
+	// get size
+	uint32 SizeBuffer() const { return m_bytes; }
+	// get buffer
+	const void* GetBuffer() const { return m_vector; }
+	// set buffer
+	void SetBuffer(const void* src) { memcpy(m_vector, src, m_bytes); m_allTrue = 2; }
+
+private:
+	uint32	m_bits;			// number of bits
+	uint32	m_bytes;		// number of bytes in the vector
+	uint8 *	m_vector;		// the storage
+	mutable uint8 m_allTrue;// All true ? 0: no  1: yes  2: don't know
+	static const uint8 s_posMask[]; // = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}; implemented in KnownFile.cpp
+	static const uint8 s_negMask[]; // = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F};
+};
 
 class CPartFile;
 class CClientTCPSocket;
@@ -319,6 +441,7 @@ public:
 	uint32		GetRating() const		{ return GetScore(false, IsDownloading(), true); }
 	uint8		GetObfuscationStatus() const;
 	uint16		GetUploadQueueWaitingPosition() const;
+	uint16		GetNextRequestedPart() const;
 #else
 	uint32		m_score;
 	uint32		GetScore(
@@ -335,6 +458,8 @@ public:
 	EIdentState	m_identState;
 	uint8		GetObfuscationStatus() const { return m_obfuscationStatus; }
 	uint8		m_obfuscationStatus;
+	uint16		m_nextRequestedPart;
+	uint16		GetNextRequestedPart() const { return m_nextRequestedPart; }
 #endif
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
@@ -396,9 +521,9 @@ public:
 	void		ResetLastAskedTime()		{ m_dwLastAskedTime = 0; }
 
 	bool		IsPartAvailable(uint16 iPart) const
-					{ return ( iPart < m_downPartStatus.size() ) ? m_downPartStatus[iPart] : 0; }
+					{ return ( iPart < m_downPartStatus.size() ) ? m_downPartStatus.get(iPart) : 0; }
 	bool		IsUpPartAvailable(uint16 iPart) const 
-					{ return ( iPart < m_upPartStatus.size() ) ? m_upPartStatus[iPart] : 0;}
+					{ return ( iPart < m_upPartStatus.size() ) ? m_upPartStatus.get(iPart) : 0;}
 
 	const BitVector& GetPartStatus() const		{ return m_downPartStatus; }
 	const BitVector& GetUpPartStatus() const	{ return m_upPartStatus; }
@@ -480,8 +605,6 @@ public:
 
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int 		unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
-	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
-	wxString	ShowDownloadingParts() const;
 	void 		UpdateDisplayedInfo(bool force = false);
 	int 		GetFileListRequested() const 	{ return m_iFileListRequested; }
 	void 		SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
@@ -614,7 +737,7 @@ public:
 	/* Returns a pointer to the credits, only for hash purposes */
 	void*		GetCreditsHash() const { return (void*)credits; }
 	
-	uint32		GetLastBlockOffset() const { return m_nLastBlockOffset; }
+	uint16		GetLastDownloadingPart() const { return m_lastDownloadingPart; }
 	
 	bool		GetOSInfoSupport() const { return m_fOsInfoSupport; }
 	
@@ -809,7 +932,7 @@ private:
 	uint32		m_dwLastAskedTime;
 	wxString	m_clientFilename;
 	uint64		m_nTransferredDown;
-	uint32		m_nLastBlockOffset;   // Patch for show parts that you download [Cax2]
+	uint16		m_lastDownloadingPart;   // last Part that was downloading
 	uint16		m_cShowDR;
 	uint32		m_dwLastBlockReceived;
 	uint16		m_nRemoteQueueRank;

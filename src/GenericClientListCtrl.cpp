@@ -1137,34 +1137,41 @@ void CGenericClientListCtrl::DrawSourceStatusBar(
 
 	CPartFile* reqfile = source->GetRequestFile();
 
-	s_StatusBar.SetFileSize( reqfile ? reqfile->GetFileSize() : 1);
 	s_StatusBar.SetHeight(rect.height);
 	s_StatusBar.SetWidth(rect.width);
 	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
+	const BitVector& partStatus = source->GetPartStatus();
 
-	if (reqfile) {
-		// Barry - was only showing one part from client, even when reserved bits from 2 parts
-		wxString gettingParts = source->ShowDownloadingParts();
+	if (reqfile && reqfile->GetPartCount() == partStatus.size()) {
+		s_StatusBar.SetFileSize(reqfile->GetFileSize());
+		uint16 lastDownloadingPart = source->GetDownloadState() == DS_DOWNLOADING 
+									? source->GetLastDownloadingPart() : 0xffff;
+		uint16 nextRequestedPart = source->GetNextRequestedPart();
 
-		const BitVector& partStatus = source->GetPartStatus();
-
-		uint64 uEnd = 0;
-		for ( uint64 i = 0; i < partStatus.size(); i++ ) {
+		for ( uint16 i = 0; i < partStatus.size(); i++ ) {
 			uint64 uStart = PARTSIZE * i;
-			uEnd = wxMin(reqfile->GetFileSize(), uStart + PARTSIZE) - 1;
+			uint64 uEnd = uStart + reqfile->GetPartSize(i) - 1;
 
 			CMuleColour colour;
-			if (!partStatus[i]) {
+			if (!partStatus.get(i)) {
+				// client does not have this part
+				// light grey
 				colour = bFlat ? crFlatNeither : crNeither;
-			} else if ( reqfile->IsComplete(uStart, uEnd)) {
+			} else if ( reqfile->IsComplete(i)) {
+				// completed part
+				// green
 				colour = bFlat ? crFlatBoth : crBoth;
-			} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
-					source->GetLastBlockOffset() <= uEnd &&
-					source->GetLastBlockOffset() >= uStart) {
+			} else if (lastDownloadingPart == i) {
+				// downloading part
+				// yellow
 				colour = crPending;
-			} else if (gettingParts.GetChar((uint16)i) == 'Y') {
+			} else if (nextRequestedPart == i) {
+				// requested part
+				// light yellow
 				colour = crNextPending;
 			} else {
+				// client has this part, we need it
+				// black
 				colour = bFlat ? crFlatClientOnly : crClientOnly;
 			}
 
@@ -1174,9 +1181,8 @@ void CGenericClientListCtrl::DrawSourceStatusBar(
 
 			s_StatusBar.FillRange(uStart, uEnd, colour);
 		}
-		// fill the rest (if partStatus is empty)
-		s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, bFlat ? crFlatNeither : crNeither);
 	} else {
+		s_StatusBar.SetFileSize(1);
 		s_StatusBar.FillRange(0, 1, bFlat ? crFlatNeither : crNeither);
 	}
 

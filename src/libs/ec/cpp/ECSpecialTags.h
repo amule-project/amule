@@ -326,6 +326,8 @@ class CEC_UpDownClient_Tag : public CECTag {
 		EIdentState GetCurrentIdentState(EIdentState * target = 0) const { return (EIdentState) AssignIfExist(EC_TAG_CLIENT_IDENT_STATE, (uint32 *) target); }
 		bool ObfuscationStatus(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATION_STATUS, target); }
 		bool HasExtendedProtocol(bool *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_EXT_PROTOCOL, target); }
+		bool NextRequestedPart(uint16 &target) const { return AssignIfExist(EC_TAG_CLIENT_NEXT_REQUESTED_PART, target); }
+		bool LastDownloadingPart(uint16 &target) const { return AssignIfExist(EC_TAG_CLIENT_LAST_DOWNLOADING_PART, target); }
 
 		bool UploadFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_FILE, target); }
 		bool RequestFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_REQUEST_FILE, target); }
