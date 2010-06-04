@@ -13,7 +13,6 @@ src/ChatSelector.cpp
 src/ChatWnd.cpp
 src/ClientCreditsList.cpp
 src/ClientDetailDialog.cpp
-src/ClientListCtrl.cpp
 src/ClientTCPSocket.cpp
 src/CommentDialog.cpp
 src/CommentDialogLst.cpp
@@ -27,6 +26,7 @@ src/FileDetailDialog.cpp
 src/FileDetailListCtrl.cpp
 src/FriendList.cpp
 src/FriendListCtrl.cpp
+src/GenericClientListCtrl.cpp
 src/HTTPDownload.cpp
 src/IP2Country.cpp
 src/IPFilter.cpp
