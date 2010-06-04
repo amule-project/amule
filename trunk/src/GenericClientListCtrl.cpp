@@ -718,8 +718,8 @@ void CGenericClientListCtrl::DrawClientItem(
 					// Has credits, draw the gold star
 					m_ImageList.Draw(Client_CreditsYellow_Smiley, *dc, point2.x, point.y, 
 						wxIMAGELIST_DRAW_TRANSPARENT );
-				}	else if ( client->ExtProtocolAvailable() ) {
-					// Ext protocol -> Draw the '+'
+				}	else if ( !client->ExtProtocolAvailable() ) {
+					// No Ext protocol -> Draw the '-'
 					m_ImageList.Draw(Client_ExtendedProtocol_Smiley, *dc, point2.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);
 				}
