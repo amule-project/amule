@@ -25,16 +25,16 @@
 
 
 static CGenericClientListCtrlColumn s_sources_column_info[] = { 
-	{ ColumnUserName, wxT("User Name"), 260 },
-	{ ColumnUserDownloaded, wxT("Downloaded"), 65 },
-	{ ColumnUserSpeedDown, wxT("Download Speed"), 65 },
-	{ ColumnUserUploaded, wxT("Uploaded"), 65 },
-	{ ColumnUserSpeedUp, wxT("Upload Speed"), 65 },
-	{ ColumnUserProgress, wxT("Available parts"), 170 },
-	{ ColumnUserVersion, wxT("Version"), 50 },
-	{ ColumnUserQueueRankLocal, wxT("Queue Rank"), 55 },
-	{ ColumnUserStatus, wxT("Status"), 70 },
-	{ ColumnUserOrigin, wxT("Origin"), 110}
+	{ ColumnUserName, _("User name"), 260 },
+	{ ColumnUserDownloaded, _("Downloaded"), 65 },
+	{ ColumnUserSpeedDown, _("Download speed"), 65 },
+	{ ColumnUserUploaded, _("Uploaded"), 65 },
+	{ ColumnUserSpeedUp, _("Upload speed"), 65 },
+	{ ColumnUserProgress, _("Available parts"), 170 },
+	{ ColumnUserVersion, _("Version"), 50 },
+	{ ColumnUserQueueRankLocal, _("Queue rank"), 55 },
+	{ ColumnUserStatus, _("Status"), 70 },
+	{ ColumnUserOrigin, _("Origin"), 110}
 };
 
 BEGIN_EVENT_TABLE(CSharedFilePeersListCtrl, CGenericClientListCtrl)
