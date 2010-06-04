@@ -355,8 +355,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 		m_nPartCount = m_reqfile->GetPartCount();
 		
 		m_reqfile->UpdatePartsFrequency( this, false );	// Decrement
-		m_downPartStatus.clear();
-		m_downPartStatus.resize( m_nPartCount, 1 );
+		m_downPartStatus.setsize( m_nPartCount, 1 );
 		m_reqfile->UpdatePartsFrequency( this, true );	// Increment
 		
 		m_bCompleteSource = true;
@@ -405,7 +404,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 	if (!nED2KPartCount)
 	{
 		m_nPartCount = m_reqfile->GetPartCount();
-		m_downPartStatus.resize( m_nPartCount, 1);
+		m_downPartStatus.setsize( m_nPartCount, 1);
 		bPartsNeeded = true;
 		m_bCompleteSource = true;
 	}
@@ -427,7 +426,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 		m_nPartCount = m_reqfile->GetPartCount();
 
 		m_bCompleteSource = false;
-		m_downPartStatus.resize( m_nPartCount, 0 );
+		m_downPartStatus.setsize( m_nPartCount, 0 );
 		uint16 done = 0;
 	
 		try {
@@ -435,9 +434,10 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 				uint8 toread = data->ReadUInt8();
 			
 				for ( uint8 i = 0;i < 8; i++ ) {
-					m_downPartStatus[done] = ((toread>>i)&1)? 1:0;
+					bool status = ((toread>>i)&1)? 1:0;
+					m_downPartStatus.set(done, status);
 				
-					if ( m_downPartStatus[done] ) {
+					if (status) {
 						if (!m_reqfile->IsComplete(done)){
 							bPartsNeeded = true;
 							iNeeded++;
@@ -927,7 +927,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 				}
 		   
 				// Remember this start pos, used to draw part downloading in list
-				m_nLastBlockOffset = nStartPos;
+				m_lastDownloadingPart = nStartPos / PARTSIZE;
 	
 				// Occasionally packets are duplicated, no point writing it twice
 				// This will be 0 in these cases, or the length written otherwise
@@ -1335,18 +1335,20 @@ void CUpDownClient::UDPReaskForDownload()
 }
 
 
-//! Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
-wxString CUpDownClient::ShowDownloadingParts() const
+// Get the next part that is requested
+uint16 CUpDownClient::GetNextRequestedPart() const
 {
-	// Initialise to all N's
-	wxString Parts(wxT('N'), m_nPartCount);
+	uint16 part = 0xffff;
 
 	std::list<Pending_Block_Struct*>::const_iterator it = m_PendingBlocks_list.begin();
 	for (; it != m_PendingBlocks_list.end(); ++it) {
-		Parts.SetChar(((*it)->block->StartOffset / PARTSIZE), 'Y');
+		part = (*it)->block->StartOffset / PARTSIZE;
+		if (part != m_lastDownloadingPart) {
+			break;
+		}
 	}
 	
-	return Parts;
+	return part;
 }
 
 

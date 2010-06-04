@@ -1123,6 +1123,8 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_nCurSessionUp = 0;
 	m_reqfile = NULL;
 	m_uploadingfile = NULL;
+	m_lastDownloadingPart = 0xffff;
+	m_nextRequestedPart = 0xffff;
 
 	credits = new CClientCredits(new CreditStruct());
 }
@@ -1291,6 +1293,9 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->Score(&client->m_score);
 	tag->Rating(&client->m_rating);
 
+	tag->NextRequestedPart(client->m_nextRequestedPart);
+	tag->LastDownloadingPart(client->m_lastDownloadingPart);
+
 	uint8 sourceFrom = 0;
 	if (tag->GetSourceFrom(sourceFrom)) {
 		client->m_nSourceFrom = (ESourceFrom)sourceFrom;
@@ -1303,15 +1308,30 @@ void CUpDownClientListRem::ProcessItemUpdate(
 			Notify_SourceCtrlRemoveSource(client, client->m_reqfile);
 			client->m_reqfile->DelSource(client);
 			client->m_reqfile = NULL;
+			client->m_downPartStatus.clear();
 		}
 		CKnownFile * kf = theApp->knownfiles->GetByID(fileID);
 		if (kf && kf->IsCPartFile()) {
 			client->m_reqfile = (CPartFile *) kf;
 			client->m_reqfile->AddSource(client);
+			client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
 			Notify_SourceCtrlAddSource(client->m_reqfile, client, A4AF_SOURCE);
 			notified = true;
 		}
 	}
+
+	// Part status
+	CECTag * partStatusTag = tag->GetTagByName(EC_TAG_CLIENT_PART_STATUS);
+	if (partStatusTag) {
+		if (partStatusTag->GetTagDataLen() == 0) {
+			// empty tag means full source
+			client->m_downPartStatus.SetAllTrue();
+		} else if (partStatusTag->GetTagDataLen() == client->m_downPartStatus.SizeBuffer()) {
+			client->m_downPartStatus.SetBuffer(partStatusTag->GetTagData());
+		}
+		notified = false;
+	}
+
 	if (!notified && client->m_reqfile && client->m_reqfile->ShowSources()) {
 		SourceItemType type = A4AF_SOURCE;
 		switch (client->GetDownloadState()) {
@@ -1770,13 +1790,6 @@ void CKnownFile::SetFileComment(const wxString &)
 void CKnownFile::SetFileRating(unsigned char)
 {
 	// FIXME: add code
-}
-
-
-// I don't think it will be implemented - too match data transfer. But who knows ?
-wxString CUpDownClient::ShowDownloadingParts() const
-{
-	return wxEmptyString;
 }
 
 

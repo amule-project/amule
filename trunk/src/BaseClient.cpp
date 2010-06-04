@@ -236,7 +236,7 @@ void CUpDownClient::Init()
 	m_fNeedOurPublicIP = false;
 	m_bHashsetRequested = false;
 
-	m_nLastBlockOffset = 0;
+	m_lastDownloadingPart = 0;
 
 	m_uploadingfile = NULL;
 
