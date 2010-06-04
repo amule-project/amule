@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 13:55+0200\n"
+"POT-Creation-Date: 2010-06-04 23:48+0200\n"
 "PO-Revision-Date: 2008-07-03 12:01+0100\n"
 "Last-Translator: Festor Wailon Dacoba <festor90@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -549,7 +549,7 @@ msgstr "Cancelar"
 msgid "Stop the current connection attempts"
 msgstr "Deter a tentativa actual de conexión"
 
-#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:555 src/muuli_wdr.cpp:2571
+#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:521 src/muuli_wdr.cpp:2571
 msgid "Disconnect"
 msgstr "Desconectado"
 
@@ -557,7 +557,7 @@ msgstr "Desconectado"
 msgid "Disconnect from the currently connected networks"
 msgstr "Desconectar da rede."
 
-#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:558 src/muuli_wdr.cpp:2754
+#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:524 src/muuli_wdr.cpp:2754
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3526
 msgid "Connect"
 msgstr "Conectar"
@@ -776,7 +776,7 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1049 src/DownloadListCtrl.cpp:1060
 #: src/ExternalConn.cpp:418 src/FileDetailDialog.cpp:129
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:903 src/KnownFile.cpp:909
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/MuleTrayIcon.cpp:390 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Descoñecido"
@@ -1351,7 +1351,7 @@ msgstr "Tamaño"
 msgid "Transferred"
 msgstr "Transferido"
 
-#: src/DownloadListCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:163 src/SourceListCtrl.cpp:29
 msgid "Speed"
 msgstr "Velocidade"
 
@@ -1371,7 +1371,8 @@ msgid "Priority"
 msgstr "Prioridade"
 
 #: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
-#: src/SearchListCtrl.cpp:91
+#: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
+#: src/SourceListCtrl.cpp:34
 msgid "Status"
 msgstr "Estado"
 
@@ -2383,7 +2384,8 @@ msgstr "Tamaño do arquivo"
 msgid "Share ratio"
 msgstr "Relación subida/baixada"
 
-#: src/KnownFile.cpp:1404
+#: src/KnownFile.cpp:1404 src/SharedFilePeersListCtrl.cpp:31
+#: src/SourceListCtrl.cpp:30
 msgid "Uploaded"
 msgstr "Subido"
 
@@ -2516,159 +2518,155 @@ msgstr "Limpar"
 msgid "Select All"
 msgstr "Seleccionar todo"
 
-#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:510
-#: src/MuleTrayIcon.cpp:531
+#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:476
+#: src/MuleTrayIcon.cpp:497
 msgid "Unlimited"
 msgstr "Ilimitado"
 
-#: src/MuleTrayIcon.cpp:327
-msgid "Traybar-icon lost, trying to recreate ..."
-msgstr ""
-
-#: src/MuleTrayIcon.cpp:348
+#: src/MuleTrayIcon.cpp:314
 msgid "aMule Tray Menu"
 msgstr "Menú aMule"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:320
 msgid "Speed limits:"
 msgstr "Límites de velocidade:"
 
-#: src/MuleTrayIcon.cpp:359
+#: src/MuleTrayIcon.cpp:325
 msgid "UL: None"
 msgstr "SU: Ningunha"
 
-#: src/MuleTrayIcon.cpp:362
+#: src/MuleTrayIcon.cpp:328
 #, c-format
 msgid "UL: %u"
 msgstr "UL: %u"
 
-#: src/MuleTrayIcon.cpp:369
+#: src/MuleTrayIcon.cpp:335
 msgid "DL: None"
 msgstr "DE: Ningunha"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:338
 #, c-format
 msgid "DL: %u"
 msgstr "DE: %u"
 
-#: src/MuleTrayIcon.cpp:376
+#: src/MuleTrayIcon.cpp:342
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Velocidade de baixada: %.1f"
 
-#: src/MuleTrayIcon.cpp:378
+#: src/MuleTrayIcon.cpp:344
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Velocidade de subida: %.1f"
 
-#: src/MuleTrayIcon.cpp:384
+#: src/MuleTrayIcon.cpp:350
 msgid "Client Information"
 msgstr "Información de cliente"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 #, c-format
 msgid "Nickname: %s"
 msgstr "Alcume: %s"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 msgid "No Nickname Selected!"
 msgstr "Non seleccionou un alcume!"
 
-#: src/MuleTrayIcon.cpp:395
+#: src/MuleTrayIcon.cpp:361
 msgid "ClientID: "
 msgstr "ID de cliente: "
 
-#: src/MuleTrayIcon.cpp:401 src/MuleTrayIcon.cpp:415 src/TextClient.cpp:706
+#: src/MuleTrayIcon.cpp:367 src/MuleTrayIcon.cpp:381 src/TextClient.cpp:706
 #: src/TextClient.cpp:719
 msgid "Not connected"
 msgstr "Non conectado"
 
-#: src/MuleTrayIcon.cpp:408
+#: src/MuleTrayIcon.cpp:374
 msgid "ServerName: "
 msgstr "Nome do servidor: "
 
-#: src/MuleTrayIcon.cpp:409
+#: src/MuleTrayIcon.cpp:375
 msgid "ServerIP: "
 msgstr "IP de servidor :"
 
-#: src/MuleTrayIcon.cpp:416 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:382 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:272
 msgid "Not Connected"
 msgstr "Non conectado"
 
-#: src/MuleTrayIcon.cpp:424
+#: src/MuleTrayIcon.cpp:390
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:433
+#: src/MuleTrayIcon.cpp:399
 #, c-format
 msgid "TCP port: %d"
 msgstr "Porto TCP:  %d"
 
-#: src/MuleTrayIcon.cpp:435
+#: src/MuleTrayIcon.cpp:401
 msgid "TCP port: Not ready"
 msgstr "Porto TCP: Non está listo aínda"
 
-#: src/MuleTrayIcon.cpp:444
+#: src/MuleTrayIcon.cpp:410
 #, c-format
 msgid "UDP port: %d"
 msgstr "Porto UDP: %d"
 
-#: src/MuleTrayIcon.cpp:446
+#: src/MuleTrayIcon.cpp:412
 msgid "UDP port: Not ready"
 msgstr "Porto UDP: Non está listo aínda"
 
-#: src/MuleTrayIcon.cpp:455
+#: src/MuleTrayIcon.cpp:421
 msgid "Online Signature: Enabled"
 msgstr "Sinatura Online: Activada"
 
-#: src/MuleTrayIcon.cpp:458
+#: src/MuleTrayIcon.cpp:424
 msgid "Online Signature: Disabled"
 msgstr "Sinatura Online: Desactivada"
 
-#: src/MuleTrayIcon.cpp:465 src/Statistics.cpp:644
+#: src/MuleTrayIcon.cpp:431 src/Statistics.cpp:644
 #, c-format
 msgid "Uptime: %s"
 msgstr "Tempo de execución: %s"
 
-#: src/MuleTrayIcon.cpp:471
+#: src/MuleTrayIcon.cpp:437
 #, c-format
 msgid "Shared files: %d"
 msgstr "Arquivos compartidos: %d"
 
-#: src/MuleTrayIcon.cpp:477
+#: src/MuleTrayIcon.cpp:443
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Clientes na cola: %d"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Total DL: %s"
 msgstr "Total DE: %s"
 
-#: src/MuleTrayIcon.cpp:491
+#: src/MuleTrayIcon.cpp:457
 #, c-format
 msgid "Total UL: %s"
 msgstr "Total SU: %s"
 
-#: src/MuleTrayIcon.cpp:502
+#: src/MuleTrayIcon.cpp:468
 msgid "Upload limit"
 msgstr "Límite de subida"
 
-#: src/MuleTrayIcon.cpp:506
+#: src/MuleTrayIcon.cpp:472
 msgid "Download limit"
 msgstr "Límite de descarga"
 
-#: src/MuleTrayIcon.cpp:566
+#: src/MuleTrayIcon.cpp:532
 msgid "Hide aMule"
 msgstr "Ocultar aMule"
 
-#: src/MuleTrayIcon.cpp:569
+#: src/MuleTrayIcon.cpp:535
 msgid "Show aMule"
 msgstr "Mostrar aMule"
 
-#: src/MuleTrayIcon.cpp:576 src/utils/aLinkCreator/src/alcframe.cpp:238
+#: src/MuleTrayIcon.cpp:542 src/utils/aLinkCreator/src/alcframe.cpp:238
 msgid "Exit"
 msgstr "Saír"
 
@@ -4746,6 +4744,7 @@ msgid "Insufficient disk space"
 msgstr "Espazo no disco insuficiente"
 
 #: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "Descargado"
 
@@ -5518,7 +5517,8 @@ msgstr "Usuarios"
 msgid "Static"
 msgstr "Estático"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
+#: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
+#: src/SourceListCtrl.cpp:32 src/Statistics.cpp:871
 msgid "Version"
 msgstr "Versión"
 
@@ -5829,6 +5829,35 @@ msgstr "servidor non atopado: %s"
 #: src/SharedFileList.cpp:475
 #, c-format
 msgid "No shareable files found in directory: %s"
+msgstr ""
+
+#: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
+#, fuzzy
+msgid "User Name"
+msgstr "Nome de usuario"
+
+#: src/SharedFilePeersListCtrl.cpp:30
+#, fuzzy
+msgid "Download Speed"
+msgstr "Velocidade de descarga"
+
+#: src/SharedFilePeersListCtrl.cpp:32
+#, fuzzy
+msgid "Upload Speed"
+msgstr "Velocidade de subida"
+
+#: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
+#, fuzzy
+msgid "Available Parts"
+msgstr "Dispoñible:"
+
+#: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
+#, fuzzy
+msgid "Queue Rank"
+msgstr "En cola"
+
+#: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
+msgid "Origin"
 msgstr ""
 
 #: src/SharedFilesCtrl.cpp:106

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 13:55+0200\n"
+"POT-Creation-Date: 2010-06-04 23:48+0200\n"
 "PO-Revision-Date: 2010-03-10 11:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
@@ -540,7 +540,7 @@ msgstr "Loobu"
 msgid "Stop the current connection attempts"
 msgstr "Lõpeta käimasolevad ühenduskatsed"
 
-#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:555 src/muuli_wdr.cpp:2571
+#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:521 src/muuli_wdr.cpp:2571
 msgid "Disconnect"
 msgstr "Ühendu lahti"
 
@@ -548,7 +548,7 @@ msgstr "Ühendu lahti"
 msgid "Disconnect from the currently connected networks"
 msgstr "Lõpeta ühendus ühendatud võrkudega"
 
-#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:558 src/muuli_wdr.cpp:2754
+#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:524 src/muuli_wdr.cpp:2754
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3526
 msgid "Connect"
 msgstr "Ühenda"
@@ -764,7 +764,7 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1049 src/DownloadListCtrl.cpp:1060
 #: src/ExternalConn.cpp:418 src/FileDetailDialog.cpp:129
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:903 src/KnownFile.cpp:909
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/MuleTrayIcon.cpp:390 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "Teadmata"
@@ -1331,7 +1331,7 @@ msgstr "Suurus"
 msgid "Transferred"
 msgstr "Siiratud"
 
-#: src/DownloadListCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:163 src/SourceListCtrl.cpp:29
 msgid "Speed"
 msgstr "Kiirus"
 
@@ -1351,7 +1351,8 @@ msgid "Priority"
 msgstr "Prioriteet"
 
 #: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
-#: src/SearchListCtrl.cpp:91
+#: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
+#: src/SourceListCtrl.cpp:34
 msgid "Status"
 msgstr "Olek"
 
@@ -2354,7 +2355,8 @@ msgstr "Faili suurus"
 msgid "Share ratio"
 msgstr "Üles- ja allalaadimise suhe"
 
-#: src/KnownFile.cpp:1404
+#: src/KnownFile.cpp:1404 src/SharedFilePeersListCtrl.cpp:31
+#: src/SourceListCtrl.cpp:30
 msgid "Uploaded"
 msgstr "Üleslaaditud"
 
@@ -2486,159 +2488,155 @@ msgstr "Puhasta"
 msgid "Select All"
 msgstr "Vali kõik"
 
-#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:510
-#: src/MuleTrayIcon.cpp:531
+#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:476
+#: src/MuleTrayIcon.cpp:497
 msgid "Unlimited"
 msgstr "Piiramatu"
 
-#: src/MuleTrayIcon.cpp:327
-msgid "Traybar-icon lost, trying to recreate ..."
-msgstr "Tööriistaribe ikoon on kadunud, proovin taastada ...."
-
-#: src/MuleTrayIcon.cpp:348
+#: src/MuleTrayIcon.cpp:314
 msgid "aMule Tray Menu"
 msgstr "aMule Riba Menüü"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:320
 msgid "Speed limits:"
 msgstr "Kiiruse piirangud:"
 
-#: src/MuleTrayIcon.cpp:359
+#: src/MuleTrayIcon.cpp:325
 msgid "UL: None"
 msgstr "ÜL: puudub"
 
-#: src/MuleTrayIcon.cpp:362
+#: src/MuleTrayIcon.cpp:328
 #, c-format
 msgid "UL: %u"
 msgstr "ÜL: %u"
 
-#: src/MuleTrayIcon.cpp:369
+#: src/MuleTrayIcon.cpp:335
 msgid "DL: None"
 msgstr "AL: pole"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:338
 #, c-format
 msgid "DL: %u"
 msgstr "AL: %u"
 
-#: src/MuleTrayIcon.cpp:376
+#: src/MuleTrayIcon.cpp:342
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Tõmbamise kiirus: %.1f"
 
-#: src/MuleTrayIcon.cpp:378
+#: src/MuleTrayIcon.cpp:344
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Saatmise kiirus: %.1f"
 
-#: src/MuleTrayIcon.cpp:384
+#: src/MuleTrayIcon.cpp:350
 msgid "Client Information"
 msgstr "Kliendi informatsioon"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 #, c-format
 msgid "Nickname: %s"
 msgstr "Hüüdnimi: %s"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 msgid "No Nickname Selected!"
 msgstr "Hüüdnime pole valitud!"
 
-#: src/MuleTrayIcon.cpp:395
+#: src/MuleTrayIcon.cpp:361
 msgid "ClientID: "
 msgstr "KliendiID: "
 
-#: src/MuleTrayIcon.cpp:401 src/MuleTrayIcon.cpp:415 src/TextClient.cpp:706
+#: src/MuleTrayIcon.cpp:367 src/MuleTrayIcon.cpp:381 src/TextClient.cpp:706
 #: src/TextClient.cpp:719
 msgid "Not connected"
 msgstr "Pole ühendatud"
 
-#: src/MuleTrayIcon.cpp:408
+#: src/MuleTrayIcon.cpp:374
 msgid "ServerName: "
 msgstr "Serveri nimi: "
 
-#: src/MuleTrayIcon.cpp:409
+#: src/MuleTrayIcon.cpp:375
 msgid "ServerIP: "
 msgstr "ServeriIP: "
 
-#: src/MuleTrayIcon.cpp:416 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:382 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:272
 msgid "Not Connected"
 msgstr "Pole ühendust"
 
-#: src/MuleTrayIcon.cpp:424
+#: src/MuleTrayIcon.cpp:390
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:433
+#: src/MuleTrayIcon.cpp:399
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP port: %d"
 
-#: src/MuleTrayIcon.cpp:435
+#: src/MuleTrayIcon.cpp:401
 msgid "TCP port: Not ready"
 msgstr "TCP port: Pole valmis"
 
-#: src/MuleTrayIcon.cpp:444
+#: src/MuleTrayIcon.cpp:410
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP port: %d"
 
-#: src/MuleTrayIcon.cpp:446
+#: src/MuleTrayIcon.cpp:412
 msgid "UDP port: Not ready"
 msgstr "UDP port: Pole valmis"
 
-#: src/MuleTrayIcon.cpp:455
+#: src/MuleTrayIcon.cpp:421
 msgid "Online Signature: Enabled"
 msgstr "Online Allkiri: Lubatud"
 
-#: src/MuleTrayIcon.cpp:458
+#: src/MuleTrayIcon.cpp:424
 msgid "Online Signature: Disabled"
 msgstr "Online Allkiri: Keelatud"
 
-#: src/MuleTrayIcon.cpp:465 src/Statistics.cpp:644
+#: src/MuleTrayIcon.cpp:431 src/Statistics.cpp:644
 #, c-format
 msgid "Uptime: %s"
 msgstr "Elus juba: %s"
 
-#: src/MuleTrayIcon.cpp:471
+#: src/MuleTrayIcon.cpp:437
 #, c-format
 msgid "Shared files: %d"
 msgstr "Jagatud failid: %d"
 
-#: src/MuleTrayIcon.cpp:477
+#: src/MuleTrayIcon.cpp:443
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Kliente sabas: %d"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Total DL: %s"
 msgstr "Kokku AL: %s"
 
-#: src/MuleTrayIcon.cpp:491
+#: src/MuleTrayIcon.cpp:457
 #, c-format
 msgid "Total UL: %s"
 msgstr "Kokku ÜL: %s"
 
-#: src/MuleTrayIcon.cpp:502
+#: src/MuleTrayIcon.cpp:468
 msgid "Upload limit"
 msgstr "Saatmise limiit"
 
-#: src/MuleTrayIcon.cpp:506
+#: src/MuleTrayIcon.cpp:472
 msgid "Download limit"
 msgstr "Tõmbamise limiit"
 
-#: src/MuleTrayIcon.cpp:566
+#: src/MuleTrayIcon.cpp:532
 msgid "Hide aMule"
 msgstr "Peida aMule"
 
-#: src/MuleTrayIcon.cpp:569
+#: src/MuleTrayIcon.cpp:535
 msgid "Show aMule"
 msgstr "Näita aMule"
 
-#: src/MuleTrayIcon.cpp:576 src/utils/aLinkCreator/src/alcframe.cpp:238
+#: src/MuleTrayIcon.cpp:542 src/utils/aLinkCreator/src/alcframe.cpp:238
 msgid "Exit"
 msgstr "Välju"
 
@@ -4699,6 +4697,7 @@ msgid "Insufficient disk space"
 msgstr "Ebapiisav kettaruum"
 
 #: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "Allalaetud"
 
@@ -5465,7 +5464,8 @@ msgstr "Kasutajad"
 msgid "Static"
 msgstr "Staatiline"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
+#: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
+#: src/SourceListCtrl.cpp:32 src/Statistics.cpp:871
 msgid "Version"
 msgstr "Versioon"
 
@@ -5773,6 +5773,35 @@ msgstr "Jagatud kataloogi ei leitud, jätan vahele: %s"
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr "Kataloogis '%s' pole jagatavaid faile"
+
+#: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
+#, fuzzy
+msgid "User Name"
+msgstr "Kasutaja nimi"
+
+#: src/SharedFilePeersListCtrl.cpp:30
+#, fuzzy
+msgid "Download Speed"
+msgstr "Tõmbamise kiirus"
+
+#: src/SharedFilePeersListCtrl.cpp:32
+#, fuzzy
+msgid "Upload Speed"
+msgstr "Saatmise kiirus"
+
+#: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
+#, fuzzy
+msgid "Available Parts"
+msgstr "Saadaval :"
+
+#: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
+#, fuzzy
+msgid "Queue Rank"
+msgstr "Järjekorras"
+
+#: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
+msgid "Origin"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -7421,6 +7450,9 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1870
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]: "
+
+#~ msgid "Traybar-icon lost, trying to recreate ..."
+#~ msgstr "Tööriistaribe ikoon on kadunud, proovin taastada ...."
 
 #~ msgid "Transfers"
 #~ msgstr "Liiklus"

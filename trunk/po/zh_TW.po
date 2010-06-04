@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 13:55+0200\n"
+"POT-Creation-Date: 2010-06-04 23:48+0200\n"
 "PO-Revision-Date: 2010-05-10 23:53+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -534,7 +534,7 @@ msgstr "取消"
 msgid "Stop the current connection attempts"
 msgstr "停止連線作業"
 
-#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:555 src/muuli_wdr.cpp:2571
+#: src/amuleDlg.cpp:772 src/MuleTrayIcon.cpp:521 src/muuli_wdr.cpp:2571
 msgid "Disconnect"
 msgstr "中斷連線"
 
@@ -542,7 +542,7 @@ msgstr "中斷連線"
 msgid "Disconnect from the currently connected networks"
 msgstr "中斷已連線的網路"
 
-#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:558 src/muuli_wdr.cpp:2754
+#: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:524 src/muuli_wdr.cpp:2754
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3526
 msgid "Connect"
 msgstr "連線"
@@ -757,7 +757,7 @@ msgstr "無法建立 %s 目錄 ( %s 分類用)，繼續使用 %s 目錄。"
 #: src/DownloadListCtrl.cpp:1049 src/DownloadListCtrl.cpp:1060
 #: src/ExternalConn.cpp:418 src/FileDetailDialog.cpp:129
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:903 src/KnownFile.cpp:909
-#: src/MuleTrayIcon.cpp:424 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/MuleTrayIcon.cpp:390 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:156 src/Server.cpp:231 src/Statistics.cpp:884
 msgid "Unknown"
 msgstr "不明"
@@ -1304,7 +1304,7 @@ msgstr "大小"
 msgid "Transferred"
 msgstr "已傳輸"
 
-#: src/DownloadListCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:163 src/SourceListCtrl.cpp:29
 msgid "Speed"
 msgstr "速度"
 
@@ -1324,7 +1324,8 @@ msgid "Priority"
 msgstr "優先等級"
 
 #: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
-#: src/SearchListCtrl.cpp:91
+#: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
+#: src/SourceListCtrl.cpp:34
 msgid "Status"
 msgstr "狀態"
 
@@ -2308,7 +2309,8 @@ msgstr "檔案大小"
 msgid "Share ratio"
 msgstr "分享率"
 
-#: src/KnownFile.cpp:1404
+#: src/KnownFile.cpp:1404 src/SharedFilePeersListCtrl.cpp:31
+#: src/SourceListCtrl.cpp:30
 msgid "Uploaded"
 msgstr "已上傳"
 
@@ -2439,159 +2441,155 @@ msgstr "清除"
 msgid "Select All"
 msgstr "全選"
 
-#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:510
-#: src/MuleTrayIcon.cpp:531
+#: src/MuleTrayIcon.cpp:122 src/MuleTrayIcon.cpp:148 src/MuleTrayIcon.cpp:476
+#: src/MuleTrayIcon.cpp:497
 msgid "Unlimited"
 msgstr "無限制"
 
-#: src/MuleTrayIcon.cpp:327
-msgid "Traybar-icon lost, trying to recreate ..."
-msgstr "狀態列圖示遺失，正在重新建立..."
-
-#: src/MuleTrayIcon.cpp:348
+#: src/MuleTrayIcon.cpp:314
 msgid "aMule Tray Menu"
 msgstr "aMule 狀態列選單"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:320
 msgid "Speed limits:"
 msgstr "速度限制："
 
-#: src/MuleTrayIcon.cpp:359
+#: src/MuleTrayIcon.cpp:325
 msgid "UL: None"
 msgstr "上傳：無"
 
-#: src/MuleTrayIcon.cpp:362
+#: src/MuleTrayIcon.cpp:328
 #, c-format
 msgid "UL: %u"
 msgstr "上傳：%u"
 
-#: src/MuleTrayIcon.cpp:369
+#: src/MuleTrayIcon.cpp:335
 msgid "DL: None"
 msgstr "下載：無"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:338
 #, c-format
 msgid "DL: %u"
 msgstr "下載：%u"
 
-#: src/MuleTrayIcon.cpp:376
+#: src/MuleTrayIcon.cpp:342
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "下載速度：%.1f"
 
-#: src/MuleTrayIcon.cpp:378
+#: src/MuleTrayIcon.cpp:344
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "上傳速度：%.1f"
 
-#: src/MuleTrayIcon.cpp:384
+#: src/MuleTrayIcon.cpp:350
 msgid "Client Information"
 msgstr "客戶端資訊"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 #, c-format
 msgid "Nickname: %s"
 msgstr "暱稱：%s"
 
-#: src/MuleTrayIcon.cpp:388
+#: src/MuleTrayIcon.cpp:354
 msgid "No Nickname Selected!"
 msgstr "未選取暱稱！"
 
-#: src/MuleTrayIcon.cpp:395
+#: src/MuleTrayIcon.cpp:361
 msgid "ClientID: "
 msgstr "客戶端 ID："
 
-#: src/MuleTrayIcon.cpp:401 src/MuleTrayIcon.cpp:415 src/TextClient.cpp:706
+#: src/MuleTrayIcon.cpp:367 src/MuleTrayIcon.cpp:381 src/TextClient.cpp:706
 #: src/TextClient.cpp:719
 msgid "Not connected"
 msgstr "未連線"
 
-#: src/MuleTrayIcon.cpp:408
+#: src/MuleTrayIcon.cpp:374
 msgid "ServerName: "
 msgstr "伺服器名稱："
 
-#: src/MuleTrayIcon.cpp:409
+#: src/MuleTrayIcon.cpp:375
 msgid "ServerIP: "
 msgstr "伺服器 IP："
 
-#: src/MuleTrayIcon.cpp:416 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:382 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:272
 msgid "Not Connected"
 msgstr "未連線"
 
-#: src/MuleTrayIcon.cpp:424
+#: src/MuleTrayIcon.cpp:390
 #, c-format
 msgid "IP: %s"
 msgstr "IP：%s"
 
-#: src/MuleTrayIcon.cpp:433
+#: src/MuleTrayIcon.cpp:399
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP 埠：%d"
 
-#: src/MuleTrayIcon.cpp:435
+#: src/MuleTrayIcon.cpp:401
 msgid "TCP port: Not ready"
 msgstr "TCP 埠：尚未就緒"
 
-#: src/MuleTrayIcon.cpp:444
+#: src/MuleTrayIcon.cpp:410
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP 埠：%d"
 
-#: src/MuleTrayIcon.cpp:446
+#: src/MuleTrayIcon.cpp:412
 msgid "UDP port: Not ready"
 msgstr "UDP 埠：尚未就緒"
 
-#: src/MuleTrayIcon.cpp:455
+#: src/MuleTrayIcon.cpp:421
 msgid "Online Signature: Enabled"
 msgstr "線上簽名識別：啟用"
 
-#: src/MuleTrayIcon.cpp:458
+#: src/MuleTrayIcon.cpp:424
 msgid "Online Signature: Disabled"
 msgstr "線上簽名識別：停用"
 
-#: src/MuleTrayIcon.cpp:465 src/Statistics.cpp:644
+#: src/MuleTrayIcon.cpp:431 src/Statistics.cpp:644
 #, c-format
 msgid "Uptime: %s"
 msgstr "已執行時間：%s"
 
-#: src/MuleTrayIcon.cpp:471
+#: src/MuleTrayIcon.cpp:437
 #, c-format
 msgid "Shared files: %d"
 msgstr "已分享檔案：%d"
 
-#: src/MuleTrayIcon.cpp:477
+#: src/MuleTrayIcon.cpp:443
 #, c-format
 msgid "Queued clients: %d"
 msgstr "等候中客戶端：%d"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Total DL: %s"
 msgstr "總下載：%s"
 
-#: src/MuleTrayIcon.cpp:491
+#: src/MuleTrayIcon.cpp:457
 #, c-format
 msgid "Total UL: %s"
 msgstr "總上傳：%s"
 
-#: src/MuleTrayIcon.cpp:502
+#: src/MuleTrayIcon.cpp:468
 msgid "Upload limit"
 msgstr "上傳限制"
 
-#: src/MuleTrayIcon.cpp:506
+#: src/MuleTrayIcon.cpp:472
 msgid "Download limit"
 msgstr "下載限制"
 
-#: src/MuleTrayIcon.cpp:566
+#: src/MuleTrayIcon.cpp:532
 msgid "Hide aMule"
 msgstr "隱藏 aMule"
 
-#: src/MuleTrayIcon.cpp:569
+#: src/MuleTrayIcon.cpp:535
 msgid "Show aMule"
 msgstr "顯示 aMule"
 
-#: src/MuleTrayIcon.cpp:576 src/utils/aLinkCreator/src/alcframe.cpp:238
+#: src/MuleTrayIcon.cpp:542 src/utils/aLinkCreator/src/alcframe.cpp:238
 msgid "Exit"
 msgstr "離開"
 
@@ -4597,6 +4595,7 @@ msgid "Insufficient disk space"
 msgstr "磁碟空間不足"
 
 #: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "已下載"
 
@@ -5340,7 +5339,8 @@ msgid "Static"
 msgstr "靜態"
 
 #
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
+#: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
+#: src/SourceListCtrl.cpp:32 src/Statistics.cpp:871
 msgid "Version"
 msgstr "版本"
 
@@ -5643,6 +5643,35 @@ msgstr "找不到分享目錄，略過：%s"
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr "目錄中找不到可分享的檔案：%s"
+
+#: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
+#, fuzzy
+msgid "User Name"
+msgstr "使用者名稱"
+
+#: src/SharedFilePeersListCtrl.cpp:30
+#, fuzzy
+msgid "Download Speed"
+msgstr "下載速度"
+
+#: src/SharedFilePeersListCtrl.cpp:32
+#, fuzzy
+msgid "Upload Speed"
+msgstr "上傳速度"
+
+#: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
+#, fuzzy
+msgid "Available Parts"
+msgstr "可用："
+
+#: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
+#, fuzzy
+msgid "Queue Rank"
+msgstr "待處理"
+
+#: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
+msgid "Origin"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -7283,6 +7312,9 @@ msgstr "已要求登出\n"
 #: src/webserver/src/WebServer.cpp:1870
 msgid "Processing request [redirected]: "
 msgstr "正在處理 [已重定向] 的要求："
+
+#~ msgid "Traybar-icon lost, trying to recreate ..."
+#~ msgstr "狀態列圖示遺失，正在重新建立..."
 
 #~ msgid "Transfers"
 #~ msgstr "檔案傳輸"
