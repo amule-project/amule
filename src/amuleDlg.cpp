@@ -1319,43 +1319,16 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->AddTool(ID_BUTTONCONNECT, wxT("..."), m_tblist.GetBitmap(0));
 
 	wndToolbar->AddSeparator();
-	wndToolbar->AddTool(ID_BUTTONNETWORKS,
-		_("Networks"), m_tblist.GetBitmap(3),
-		wxNullBitmap, wxITEM_CHECK,
-		_("Networks window"));
-	wndToolbar->AddTool(ID_BUTTONSEARCH,
-		_("Searches"), m_tblist.GetBitmap(5),
-		wxNullBitmap, wxITEM_CHECK,
-		_("Searches window"));
-	wndToolbar->AddTool(ID_BUTTONDOWNLOADS,
-		_("Downloads"), m_tblist.GetBitmap(4),
-		wxNullBitmap, wxITEM_CHECK,
-		_("Downloads window"));
-	wndToolbar->AddTool(ID_BUTTONSHARED,
-		_("Shared files"), m_tblist.GetBitmap(6),
-		wxNullBitmap, wxITEM_CHECK,
-		_("Shared files window"));
-	wndToolbar->AddTool(ID_BUTTONMESSAGES,
-		_("Messages"), m_tblist.GetBitmap(7),
-		wxNullBitmap, wxITEM_CHECK,
-		_("Messages window"));
-	wndToolbar->AddTool(ID_BUTTONSTATISTICS,
-		_("Statistics"), m_tblist.GetBitmap(8),
-		wxNullBitmap, wxITEM_CHECK,
-		_("Statistics graph window"));
+	wndToolbar->AddTool(ID_BUTTONNETWORKS, _("Networks"), m_tblist.GetBitmap(3), wxNullBitmap, wxITEM_CHECK, _("Networks Window"));
+	wndToolbar->AddTool(ID_BUTTONSEARCH, _("Searches"), m_tblist.GetBitmap(5), wxNullBitmap, wxITEM_CHECK, _("Searches Window"));
+	wndToolbar->AddTool(ID_BUTTONDOWNLOADS, _("Downloads"), m_tblist.GetBitmap(4), wxNullBitmap, wxITEM_CHECK, _("Downloads Window"));
+	wndToolbar->AddTool(ID_BUTTONSHARED, _("Shared files"), m_tblist.GetBitmap(6), wxNullBitmap, wxITEM_CHECK, _("Shared Files Window"));
+	wndToolbar->AddTool(ID_BUTTONMESSAGES, _("Messages"), m_tblist.GetBitmap(7), wxNullBitmap, wxITEM_CHECK, _("Messages Window"));
+	wndToolbar->AddTool(ID_BUTTONSTATISTICS, _("Statistics"), m_tblist.GetBitmap(8), wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window"));
 	wndToolbar->AddSeparator();
-	wndToolbar->AddTool(ID_BUTTONNEWPREFERENCES,
-		_("Preferences"), m_tblist.GetBitmap(9),
-		wxNullBitmap, wxITEM_NORMAL,
-		_("Preferences settings window"));
-	wndToolbar->AddTool(ID_BUTTONIMPORT,
-		_("Import"), m_tblist.GetBitmap(10),
-		wxNullBitmap, wxITEM_NORMAL,
-		_("The partfile importer tool"));
-	wndToolbar->AddTool(ID_ABOUT,
-		_("About"), m_tblist.GetBitmap(11),
-		wxNullBitmap, wxITEM_NORMAL,
-		_("About/Help"));
+	wndToolbar->AddTool(ID_BUTTONNEWPREFERENCES, _("Preferences"), m_tblist.GetBitmap(9), wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window"));
+	wndToolbar->AddTool(ID_BUTTONIMPORT, _("Import"), m_tblist.GetBitmap(10), wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool"));
+	wndToolbar->AddTool(ID_ABOUT, _("About"), m_tblist.GetBitmap(11), wxNullBitmap, wxITEM_NORMAL, _("About/Help"));
 	
 	wndToolbar->ToggleTool(ID_BUTTONDOWNLOADS, true);
 
