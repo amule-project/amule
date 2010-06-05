@@ -292,7 +292,7 @@ class CStr < SanityCheck
 
 	def parse_file(file, lines) 
 		results = lines.select do |line| 
-			if line.text =~ /c_str\(\)/ 
+			if line.text =~ /c_str\(\)/ and line.text !~ /char2unicode\(/
 				true
 			else
 				line.text =~ /GetData\(\)/ and line.text =~ /(wxT\(|wxString|_\()/
