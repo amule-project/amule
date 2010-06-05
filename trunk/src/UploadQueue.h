@@ -47,7 +47,6 @@ public:
 	const CClientPtrList& GetWaitingList() const { return m_waitinglist; }
 	const CClientPtrList& GetUploadingList() const { return m_uploadinglist; }
 	
-	CUpDownClient* GetWaitingClientByIP(uint32 dwIP);
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 
 	uint16	GetWaitingPosition(const CUpDownClient *client) const;

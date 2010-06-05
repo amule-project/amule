@@ -24,8 +24,8 @@
 //
 
 
-#ifndef TERMINATIONPROCESSAMULEWEB
-#define TERMINATIONPROCESSAMULEWEB
+#ifndef TERMINATIONPROCESSAMULEWEB_H
+#define TERMINATIONPROCESSAMULEWEB_H
 
 
 #include "TerminationProcess.h"	// for CTerminationProcess
@@ -44,5 +44,5 @@ public:
 };
 
 
-#endif // TERMINATIONPROCESSAMULEWEB
+#endif // TERMINATIONPROCESSAMULEWEB_H
 

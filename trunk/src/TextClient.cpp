@@ -513,8 +513,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if (!args.IsEmpty()) 
 			{	
 				wxString search = args; 
-				wxString type =  wxT("");
-				wxString extention = wxT(""); 
+				wxString type;
+				wxString extention; 
 				uint32 avail = 0; 
 				uint32 min_size = 0; 
 				uint32 max_size = 0;

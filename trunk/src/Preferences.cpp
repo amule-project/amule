@@ -784,7 +784,7 @@ public:
 					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(wxT(PACKAGE))) {
 						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]");
 						aMuleLanguages[i].available = true;
-#if 0
+/*
 						// Check for language problems
 						// Activate this code temporarily after messing with the languages!
 						int wxid = StrLang2wx(wxLang2Str(aMuleLanguages[i].id));
@@ -792,7 +792,7 @@ public:
 							AddDebugLogLineN(logGeneral, CFormat(wxT("Language problem for %s : aMule id %d != wx id %d"))
 								% aMuleLanguages[i].name % aMuleLanguages[i].id % wxid);
 						}
-#endif
+*/
 					}
 				}
 			}
@@ -868,7 +868,7 @@ public:
 
 		wxString folder;
 		int flags = wxDIR_DIRS;
-		wxString filespec = wxEmptyString;
+		wxString filespec;
 		wxString defaultSelection = _("- default -");
 //#warning there has to be a better way...
 		if ( GetKey() == wxT("/SkinGUIOptions/Skin") ) {

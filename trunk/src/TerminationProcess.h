@@ -24,8 +24,8 @@
 //
 
 
-#ifndef TERMINATIONPROCESS
-#define TERMINATIONPROCESS
+#ifndef TERMINATIONPROCESS_H
+#define TERMINATIONPROCESS_H
 
 
 #include <wx/process.h>
@@ -44,5 +44,5 @@ private:
 };
 
 
-#endif // TERMINATIONPROCESS
+#endif // TERMINATIONPROCESS_H
 
