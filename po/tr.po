@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 23:48+0200\n"
-"PO-Revision-Date: 2010-04-20 02:13+0200\n"
+"PO-Revision-Date: 2010-06-05 03:43+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -615,9 +615,8 @@ msgid "Downloads"
 msgstr "İndirmeler"
 
 #: src/amuleDlg.cpp:1333
-#, fuzzy
 msgid "Downloads window"
-msgstr "Aktarılıyor"
+msgstr "İndirme penceresi"
 
 #: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3411
 msgid "Shared files"
@@ -1665,9 +1664,9 @@ msgid "Sent error message \"%s\" to client."
 msgstr "\"%s\"  hata iletisi makineye gönderildi."
 
 #: src/ExternalConn.cpp:518
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Yetkilendirilmemiş giriş denemesi. Bağlantı kesildi."
+msgstr "%s üzerinden yetkilendirilmemiş giriş denemesi. Bağlantı kesildi."
 
 #: src/ExternalConn.cpp:745
 #, c-format
@@ -2093,14 +2092,12 @@ msgid "QR: %u (%i)"
 msgstr "SR: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy
 msgid "QR: ???"
-msgstr "SR: %u"
+msgstr "SR: ???"
 
 #: src/GenericClientListCtrl.cpp:906
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Bekleyen Gönderimler: %s"
+msgstr "Gönderme slotu için bekleniyor"
 
 #: src/GenericClientListCtrl.cpp:908
 #, c-format
@@ -2108,14 +2105,12 @@ msgid "QR: %u"
 msgstr "SR: %u"
 
 #: src/GenericClientListCtrl.cpp:911
-#, fuzzy
 msgid "Uploading"
-msgstr "Gönderme"
+msgstr "Gönderiliyor"
 
 #: src/GenericClientListCtrl.cpp:913
-#, fuzzy
 msgid "None"
-msgstr "Hiç kimse"
+msgstr "Yok"
 
 #: src/GenericClientListCtrl.cpp:923
 msgid "Asked for another file"
@@ -2857,9 +2852,8 @@ msgid "Clears completed downloads"
 msgstr "Tamamlanan aktarımları temizler."
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Tamamlandı"
+msgstr "Dosya kaynakları"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:169
 msgid "General"
@@ -3918,11 +3912,8 @@ msgid "Port:"
 msgstr "Port:"
 
 #: src/muuli_wdr.cpp:2762
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Bilinen kullanıcılardan\n"
-"Ön Yükleme"
+msgstr "Bilinen kullanıcılardan Ön Yükleme"
 
 #: src/muuli_wdr.cpp:2767
 msgid "Disconnect Kad"
@@ -4263,30 +4254,29 @@ msgstr "Olay Türleri"
 #: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Seçili dosya(lar) için kuyruktaki istemciler ve istatistikler: Oturum / "
+"Bütün zamanlar"
 
 #: src/muuli_wdr.cpp:3348
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Aktif Göndermeler:"
+msgstr "Etkin Göndermeler"
 
 #: src/muuli_wdr.cpp:3368
 #, c-format
 msgid "% of total files"
-msgstr ""
+msgstr "Toplam dosyaların % o kadarı"
 
 #: src/muuli_wdr.cpp:3415
-#, fuzzy
 msgid "All shared files"
-msgstr "Paylaşılan dosyaları gizle"
+msgstr "Paylaşılan bütün dosyalar"
 
 #: src/muuli_wdr.cpp:3418
 msgid "Only files currently uploading"
-msgstr ""
+msgstr "Şu anda sadece gönderilen dosyalar"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Reload:"
-msgstr "Listeyi yeniden yükle"
+msgstr "Yeniden yükle"
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload your shared files"
@@ -4317,9 +4307,8 @@ msgid "Searches Window"
 msgstr "Arama Penceresi"
 
 #: src/muuli_wdr.cpp:3530
-#, fuzzy
 msgid "Downloads Window"
-msgstr "Aktarılıyor"
+msgstr "İndirme Penceresi"
 
 #: src/muuli_wdr.cpp:3532 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:727
 msgid "Shared Files"
@@ -4824,9 +4813,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portekizce (Brezilya)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "Arnavutça"
+msgstr "Rumence"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4853,9 +4841,8 @@ msgid "Ukrainian"
 msgstr "Ukraynaca"
 
 #: src/Preferences.cpp:761
-#, fuzzy
 msgid "Change Language"
-msgstr "Dil: "
+msgstr "Dili Değiştirin "
 
 #: src/Preferences.cpp:932
 msgid "no options available"
@@ -4939,6 +4926,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"Şu değişkenler kullanılacak:\n"
+"    %PARTFILE - dosyanın tam yolu\n"
+"    %PARTNAME - dosyanın sadece adı"
 
 #: src/PrefsUnifiedDlg.cpp:271
 msgid ""
@@ -5766,33 +5756,28 @@ msgid "No shareable files found in directory: %s"
 msgstr "Dizinde paylaşılabilir dosya bulunamadı: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
-#, fuzzy
 msgid "User Name"
-msgstr "Kullanıcı adı"
+msgstr "Kullanıcı Adı"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
 msgstr "İndirme Hızı"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
-msgstr "Gönderim Hızı"
+msgstr "Gönderme Hızı"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
-#, fuzzy
 msgid "Available Parts"
-msgstr "Uygun:"
+msgstr "Erişilebilir Parçalar"
 
 #: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
-#, fuzzy
 msgid "Queue Rank"
-msgstr "Sıraya girdi"
+msgstr "Kuyruk Sırası"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Köken"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
