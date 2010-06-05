@@ -23,6 +23,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifndef ENCRYPTEDDATAGRAMSOCKET_H
+#define ENCRYPTEDDATAGRAMSOCKET_H
+
 #include "Proxy.h"
 #include "Types.h"
 
@@ -40,3 +43,5 @@ public:
 	static int EncryptSendServer(uint8_t** ppbyBuf, int nBufLen, uint32_t dwBaseKey);
 
 };
+
+#endif

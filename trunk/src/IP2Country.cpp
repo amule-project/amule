@@ -71,7 +71,8 @@
 CIP2Country::CIP2Country(const wxString& configDir)
 {
 	m_geoip = NULL;
-	m_DataBaseName = configDir + wxT("GeoIP.dat");
+	m_DataBaseName = wxT("GeoIP.dat");
+	m_DataBasePath = configDir + m_DataBaseName;
 	if (m_CountryDataMap.empty()) {
 // this must go to enable - when all usages of GetCountryData() (ClientListCtrl, DownloadListCtrl) are surrounded with an IsEnabled()
 // right now, flags are loaded even when it's disabled
@@ -82,18 +83,18 @@ CIP2Country::CIP2Country(const wxString& configDir)
 void CIP2Country::Enable()
 {
 	Disable();
-	if (!CPath::FileExists(m_DataBaseName)) {
+	if (!CPath::FileExists(m_DataBasePath)) {
 		Update();
 		return;
 	}
 
-	m_geoip = GeoIP_open(unicode2char(m_DataBaseName), GEOIP_STANDARD);
+	m_geoip = GeoIP_open(unicode2char(m_DataBasePath), GEOIP_STANDARD);
 }
 
 void CIP2Country::Update()
 {
 	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBaseName + wxT(".download"), m_DataBaseName, HTTP_GeoIP);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBasePath + wxT(".download"), m_DataBasePath, HTTP_GeoIP);
 	downloader->Create();
 	downloader->Run();
 }
@@ -111,11 +112,11 @@ void CIP2Country::DownloadFinished(uint32 result)
 	if (result == HTTP_Success) {
 		Disable();
 		// download succeeded. Switch over to new database.
-		wxString newDat = m_DataBaseName + wxT(".download");
+		wxString newDat = m_DataBasePath + wxT(".download");
 
 		// Try to unpack the file, might be an archive
 		const wxChar* geoip_files[] = {
-			wxT("GeoIP.dat"),
+			m_DataBaseName,
 			NULL
 		};
 
@@ -124,30 +125,30 @@ void CIP2Country::DownloadFinished(uint32 result)
 			return;
 		}
 
-		if (wxFileExists(m_DataBaseName)) {
-			if (!wxRemoveFile(m_DataBaseName)) {
-				AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % wxT("GeoIP.dat"));
+		if (wxFileExists(m_DataBasePath)) {
+			if (!wxRemoveFile(m_DataBasePath)) {
+				AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % m_DataBaseName);
 				return;
 			}
 		}
 
-		if (!wxRenameFile(newDat, m_DataBaseName)) {
-			AddLogLineC(CFormat(_("Failed to rename %s file, aborting update.")) % wxT("GeoIP.dat"));
+		if (!wxRenameFile(newDat, m_DataBasePath)) {
+			AddLogLineC(CFormat(_("Failed to rename %s file, aborting update.")) % m_DataBaseName);
 			return;
 		}
 
 		Enable();
 		if (m_geoip) {
-			AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("GeoIP.dat"));
+			AddLogLineN(CFormat(_("Successfully updated %s")) % m_DataBaseName);
 		} else {
 			AddLogLineC(_("Error updating GeoIP.dat"));
 		}
  	} else if (result == HTTP_Skipped) {
- 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("GeoIP.dat"));
+ 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % m_DataBaseName);
 	} else {
-		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("GeoIP.dat") % thePrefs::GetGeoIPUpdateUrl());
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % m_DataBaseName % thePrefs::GetGeoIPUpdateUrl());
 		// if it failed and there is no database, turn it off
-		if (!wxFileExists(m_DataBaseName)) {
+		if (!wxFileExists(m_DataBasePath)) {
 			thePrefs::SetGeoIPEnabled(false);
 		}
 	}

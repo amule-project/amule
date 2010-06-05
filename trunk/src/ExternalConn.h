@@ -43,11 +43,11 @@ template <class T, ec_tagname_t OP>
 class CTagSet : public std::set<T> {
 		void InSet(const CECTag *tag, uint32)
 		{
-			this->insert(tag->GetInt());
+			this->insert(tag->GetInt());		// don't remove this->
 		}
-		void InSet(const CECTag *tag, CMD4Hash)
+		void InSet(const CECTag *tag, const CMD4Hash&)
 		{
-			this->insert(tag->GetMD4Data());
+			this->insert(tag->GetMD4Data());	// don't remove this->
 		}
 	public:
 		CTagSet(const CECPacket *request) : std::set<T>()
@@ -55,7 +55,7 @@ class CTagSet : public std::set<T> {
 			for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
 				const CECTag *tag = & *it;
 				if ( tag->GetTagName() == OP ) {
-					this->InSet(tag, T());
+					InSet(tag, T());
 				}
 			}
 		}
@@ -229,10 +229,6 @@ class ECNotifier {
 		void DownloadFile_RemoveSource(CPartFile *file);
 		void DownloadFile_AddFile(CPartFile *file);
 		void DownloadFile_AddSource(CPartFile *file);
-		
-		void Status_ConnectionState();
-		void Status_QueueCount();
-		void Status_UserCount();
 		
 		void SharedFile_AddFile(CKnownFile *file);
 		void SharedFile_RemoveFile(CKnownFile *file);

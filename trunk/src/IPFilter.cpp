@@ -508,24 +508,25 @@ void CIPFilter::Update(const wxString& strURL)
 
 void CIPFilter::DownloadFinished(uint32 result)
 {
+	wxString datName = wxT("ipfilter.dat");
 	if (result == HTTP_Success) {
 		// download succeeded. proceed with ipfilter loading
 		wxString newDat = theApp->ConfigDir + wxT("ipfilter.download");
-		wxString oldDat = theApp->ConfigDir + wxT("ipfilter.dat");
+		wxString oldDat = theApp->ConfigDir + datName;
 
 		if (wxFileExists(oldDat) && !wxRemoveFile(oldDat)) {
-			AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % wxT("ipfilter.dat"));
+			AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % datName);
 			result = HTTP_Error;
 		} else if (!wxRenameFile(newDat, oldDat)) {
-			AddLogLineC(CFormat(_("Failed to rename new %s file, aborting update.")) % wxT("ipfilter.dat"));
+			AddLogLineC(CFormat(_("Failed to rename new %s file, aborting update.")) % datName);
 			result = HTTP_Error;
 		} else {
-			AddLogLineN(CFormat(_("Successfully updated %s")) % wxT("ipfilter.dat"));
+			AddLogLineN(CFormat(_("Successfully updated %s")) % datName);
 		}
 	} else if (result == HTTP_Skipped) {
-		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("ipfilter.dat"));
+		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % datName);
 	} else {
-		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("ipfilter.dat") % m_URL);
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % datName % m_URL);
 	}
 
 	if (m_ipFilterTask) {

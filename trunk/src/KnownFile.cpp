@@ -1363,7 +1363,7 @@ void CKnownFile::LoadComment()
 	m_bCommentLoaded = true;	
 	
 	#else
-	m_strComment = wxEmptyString;
+	m_strComment.Clear();
 	m_bCommentLoaded = true;
 	m_iRating =0;
 	#endif

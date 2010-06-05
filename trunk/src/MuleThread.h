@@ -32,7 +32,9 @@ class CMuleThread : public wxThread
 {
 public:
 	//! @see wxThread::wxThread
-	CMuleThread(wxThreadKind kind = wxTHREAD_DETACHED);
+	CMuleThread(wxThreadKind kind = wxTHREAD_DETACHED)
+		: wxThread(kind),
+		m_stop(false) {}
 
 	/**
 	 * Stops the thread.
@@ -45,44 +47,27 @@ public:
 	 *
 	 * @see wxThread::Delete
 	 */
-	void Stop();
+	void Stop()
+	{
+		m_stop = true;
+		if (IsDetached()) {
+			Delete();
+		} else {
+			Wait();
+		}
+	}
 
 	//! Returns true if Delete or Stop has been called.
-	virtual bool TestDestroy();
+	virtual bool TestDestroy()
+	{
+		// m_stop is checked last, because some functionality is
+		// dependant upon wxThread::TestDestroy() being called,
+		// for instance Pause().
+		return wxThread::TestDestroy() || m_stop;
+	}
 private:
 	//! Is set if Stop is called.
 	bool	m_stop;
 };
-
-
-
-////////////////////////////////////////////////////////////
-// Implementations
-
-inline CMuleThread::CMuleThread(wxThreadKind kind)
-	: wxThread(kind)
-	, m_stop(false)
-{
-}
-
-
-inline void CMuleThread::Stop()
-{
-	m_stop = true;
-	if (IsDetached()) {
-		Delete();
-	} else {
-		Wait();
-	}
-}
-
-
-inline bool CMuleThread::TestDestroy()
-{
-	// m_stop is checked last, because some functionality is
-	// dependant upon wxThread::TestDestroy() being called,
-	// for instance Pause().
-	return wxThread::TestDestroy() || m_stop;
-}
 
 #endif
