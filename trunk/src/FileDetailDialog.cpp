@@ -440,12 +440,9 @@ void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 	CFileDetailListCtrl* pmyListCtrl;
 	pmyListCtrl = CastChild( IDC_LISTCTRLFILENAMES, CFileDetailListCtrl );
 	if (pmyListCtrl->GetSelectedItemCount() > 0) {
-		long pos=-1;
-		for(;;) {
-			pos=pmyListCtrl->GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if(pos==-1) {
-				break;
-			}
+		// get first selected item (there is only one)
+		long pos = pmyListCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		if (pos != -1) {	// shouldn't happen, we checked if something is selected
 			setValueForFilenameTextEdit(pmyListCtrl->GetItemText(pos));
 		}
 	}
@@ -453,17 +450,7 @@ void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 
 void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& WXUNUSED(evt))
 {
-	CFileDetailListCtrl* pmyListCtrl;
-	pmyListCtrl = CastChild( IDC_LISTCTRLFILENAMES, CFileDetailListCtrl );
-	if (pmyListCtrl->GetSelectedItemCount() > 0) {
-		long pos=-1;
-		for(;;) {
-			pos=pmyListCtrl->GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if(pos==-1) {
-				break;
-			}
-			setValueForFilenameTextEdit(pmyListCtrl->GetItemText(pos));
-		}
-	}
+	wxCommandEvent ev;
+	OnBnClickedTakeOver(ev);
 }
 // File_checked_for_headers
