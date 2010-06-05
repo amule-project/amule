@@ -67,18 +67,15 @@ void CFileDetailListCtrl::OnSelect(wxListEvent& event)
 {
 	// Damn wxLC_SINGLE_SEL does not work! So we have to care for single selection ourselfs:
 	long realpos = event.m_itemIndex;
-	long pos=-1;
-	for(;;) {
+	long pos = -1;
+	do {
 		// Loop through all selected items
-		pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-		if(pos==-1) {
-			// No more selected items left
-			break;
-		} else if (pos != realpos) {
+		pos = GetNextItem(pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		if (pos != realpos && pos != -1) {
 			// Deselect all items except the one we have just clicked
 			SetItemState(pos, wxLIST_STATE_DESELECTED, wxLIST_STATE_SELECTED);
 		}
-	}
+	} while (pos != -1);
 
 	event.Skip();
 }
