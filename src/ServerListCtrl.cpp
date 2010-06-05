@@ -272,7 +272,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_TCPFLAGS, flags );
 	
 	/* UDP */
-	flags = wxEmptyString;
+	flags.Clear();
 	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES) {
 		flags += wxT("g");
 	}

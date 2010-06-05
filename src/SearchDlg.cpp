@@ -92,7 +92,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 
 	m_notebook = CastChild( ID_NOTEBOOK, CMuleNotebook );
 
-#if defined(__WXMAC__)
+#ifdef __WXMAC__
 	//#warning TODO: restore the image list if/when wxMac supports locating the image
 #else
 	// Initialise the image list
@@ -515,7 +515,7 @@ void CSearchDlg::StartNewSearch()
 		params.availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
 
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
-		case 0:	params.typeText = wxEmptyString;	break;
+		case 0:	params.typeText.Clear();	break;
 		case 1:	params.typeText = ED2KFTSTR_ARCHIVE;	break;
 		case 2: params.typeText = ED2KFTSTR_AUDIO;	break;
 		case 3:	params.typeText = ED2KFTSTR_CDIMAGE;	break;

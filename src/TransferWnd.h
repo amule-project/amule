@@ -104,12 +104,6 @@ public:
 	void	ShowQueueCount(uint32 number);
 	
 	/**
-	 * This function switches between showing the upload-queue and the list of
-	 * client who are currently recieving files.
-	 */
-	void	SwitchUploadList(wxCommandEvent& evt);
-	
-	/**
 	 * Helper-function which updates the displayed titles of all existing categories.
 	 */
 	void	UpdateCatTabTitles();
