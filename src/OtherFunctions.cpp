@@ -86,7 +86,7 @@ wxString GetMuleVersion()
 
 	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
 
-#if defined(__WXDEBUG__)
+#ifdef __WXDEBUG__
 	ver += wxT(" (Debugging)");
 #endif
 	
@@ -1094,7 +1094,7 @@ wxString GetConfigDir(const wxString &configFileBase)
 		const wxString configFile = JoinPaths(configDir, configFileBase);
 
 		if (CPath::DirExists(configDir) && CPath::FileExists(configFile)) {
-			AddLogLineN(CFormat(wxT("Using configDir: %s")) % configDir);
+			AddLogLineN(CFormat(_("Using config dir: %s")) % configDir);
 
 			configPath = configDir;
 		} else {

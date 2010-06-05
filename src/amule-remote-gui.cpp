@@ -181,7 +181,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		request_step = 0;
 		break;
 	default:
-		AddLogLineCS(wxT("WTF?")); // should not happen. :-)
+		wxFAIL;
 		request_step = 0;
 	}
 

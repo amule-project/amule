@@ -44,7 +44,7 @@ CCaptchaGenerator::CCaptchaGenerator(uint32 nLetterCount)
 void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
 {
 	static wxString schCaptchaContent = wxT("ABCDEFGHJKLMNPQRSTUVWXYZ123456789"); 
-	m_strCaptchaText = wxT("");
+	m_strCaptchaText.Clear();
 	// Bitmap must be created with full depth, or it will fail on GTK
 	wxBitmap pimgResult(LETTERSIZE + (nLetterCount-1)*CROWDEDSIZE, 36);
 	wxMemoryDC dc(pimgResult);

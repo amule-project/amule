@@ -75,6 +75,7 @@ private:
 	struct GeoIPTag *m_geoip;
 	CountryDataMap m_CountryDataMap;
 	wxString m_DataBaseName;
+	wxString m_DataBasePath;
 
 	void LoadFlags();
 };

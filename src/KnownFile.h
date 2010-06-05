@@ -122,7 +122,6 @@ public:
 	uint32 GetIntTagValue(uint8 tagname) const;
 	uint32 GetIntTagValue(const wxString& tagname) const;
 	bool GetIntTagValue(uint8 tagname, uint32& ruValue) const;
-	void SetIntTagValue(uint8 tagname, uint32 ruValue) const;
 	const wxString& GetStrTagValue(uint8 tagname) const;
 	const wxString& GetStrTagValue(const wxString& tagname) const;
 	const CTag *GetTag(const wxString& tagname) const;
@@ -141,7 +140,6 @@ public:
 	bool	HasComment() const		{ return m_hasComment; }
 	bool	HasRating() const		{ return (m_iUserRating != 0); }
 	int8	UserRating() const 		{ return m_iUserRating; }
-	void	UpdateFileRatingCommentAvail();
 
 protected:
 	//! CAbstractFile is not assignable.

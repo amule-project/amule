@@ -285,7 +285,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
-		if (error != wxEmptyString) {
+		if (!error.IsEmpty()) {
 			AddLogLineC(error);
 		}
 	}

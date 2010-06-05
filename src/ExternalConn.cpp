@@ -470,7 +470,8 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 
 		if (!passh.Decode(thePrefs::ECPassword())) {
 			wxString err = wxTRANSLATE("Authentication failed: invalid hash specified as EC password.");
-			AddLogLineM(false, wxString(wxGetTranslation(err)) + wxT(" ") + thePrefs::ECPassword());
+			AddLogLineN(wxString(wxGetTranslation(err)) 
+						+ wxT(" ") + thePrefs::ECPassword());
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, err));				
 		} else {
@@ -1423,7 +1424,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 
 		case EC_OP_IPFILTER_UPDATE: {
 			wxString url = request->GetFirstTagSafe()->GetStringData();
-			if (url == wxEmptyString) {
+			if (url.IsEmpty()) {
 				url = thePrefs::IPFilterURL();
 			}
 			theApp->ipfilter->Update(url);

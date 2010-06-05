@@ -175,7 +175,8 @@ void CLogger::AddLogLine(
 		const CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT(type == cat.GetType());
 
-		AddLogLine(file, line, critical, logStandard, cat.GetName() + wxT(": ") + char2unicode(msg.str().c_str()));
+		AddLogLine(file, line, critical, logStandard, 
+			cat.GetName() + wxT(": ") + char2unicode(msg.str().c_str()));
 	}
 }
 
@@ -212,7 +213,7 @@ void CLogger::CloseLogfile()
 {
 	delete applog;
 	applog = NULL;
-	m_LogfileName = wxT("");
+	m_LogfileName.Clear();
 }
 
 
@@ -274,7 +275,7 @@ void CLogger::FlushApplog()
 		wxStringInputStream stream(m_ApplogBuf);
 		(*applog) << stream;
 		applog->Sync();
-		m_ApplogBuf = wxEmptyString;
+		m_ApplogBuf.Clear();
 	}
 }
 

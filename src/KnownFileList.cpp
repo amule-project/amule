@@ -104,15 +104,14 @@ bool CKnownFileList::Init()
 					CFormat(wxT("Known file read: %s")) % record->GetFileName());
 				Append(record.release());
 			} else {
-				AddLogLineM(true,
-					wxT("Failed to load entry in knownfilelist, file may be corrupt"));
+				AddLogLineC(_("Failed to load entry in known file list, file may be corrupt"));
 			}
 		}
 		AddDebugLogLineM(false, logKnownFiles, wxT("Finished reading known files"));
 	
 		return true;
 	} catch (const CInvalidPacket& e) {
-		AddLogLineM(true, wxT("Invalid entry in knownfilelist, file may be corrupt: ") + e.what());
+		AddLogLineC(_("Invalid entry in known file list, file may be corrupt: ") + e.what());
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(true, CFormat(_("IO error while reading %s file: %s")) % m_filename % e.what());
 	}	

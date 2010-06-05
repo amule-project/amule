@@ -50,7 +50,6 @@ public:
 	virtual ~CEMSocket();
 	
 	virtual void 	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
-    bool    HasQueues();
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};
 	uint8	GetConState()	{return byConnected;}
 	void	SetDownloadLimit(uint32 limit);
