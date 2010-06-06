@@ -20,18 +20,23 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
-
 #include "plasma-applet-plasmamule.h"
+#include "plasmamule-dbus.h"
 
+#include <kaboutapplicationdialog.h>
+#include <kaboutdata.h>
 #include <kdebug.h>
+#include <kicon.h>
+#include <kplugininfo.h>
+#include <krun.h>
+#include <kservice.h>
 
 #include <plasma/svg.h>
 #include <plasma/theme.h>
 #include <plasma/version.h>
 
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusInterface>
-
+#include <QApplication>
+#include <QClipboard>
 #include <QFontMetrics>
 #include <QMenu>
 #include <QPainter>
@@ -45,12 +50,13 @@ PlasmaMuleApplet::PlasmaMuleApplet(QObject *parent, const QVariantList &args)
 	m_svg(this)
 {
 	QString path = __IMG_PATH__;
-	path.append( "amule_applet.svg");
+	path.append( "application-x-emulecollection.svg");
 	m_svg.setImagePath(path);
 	setBackgroundHints(TranslucentBackground);
 	setMinimumSize(200, 200);
 	setMaximumSize(300, 300);
 	setAcceptDrops(TRUE);
+	setHasConfigurationInterface(FALSE);
 }
 
 PlasmaMuleApplet::~PlasmaMuleApplet()
@@ -232,9 +238,13 @@ void PlasmaMuleApplet::dataUpdated(const QString& source, const Plasma::DataEngi
 
 	bool needs_update = FALSE;
 	kDebug() << "Updating data" << data;
-	if (data["categories"].toStringList() != m_categories && data.contains("categories"))
+	if (data["cat_dirs"].toStringList() != m_catDirs && data.contains("cat_dirs"))
 	{
-		m_categories = data["categories"].toStringList();
+		m_catDirs = data["cat_dirs"].toStringList();
+	}
+	if (data["cat_names"].toStringList() != m_catNames && data.contains("cat_names"))
+	{
+		m_catNames = data["cat_names"].toStringList();
 	}
 	if (data["os_active"].toBool() != m_os_active && data.contains("os_active"))
 	{
@@ -356,22 +366,148 @@ void PlasmaMuleApplet::dropEvent(QGraphicsSceneDragDropEvent * event)
 
 	QMenu *menu = new QMenu;
 
-	for (constIterator = m_categories.constBegin(); constIterator != m_categories.constEnd(); constIterator++)
+	if (m_catNames.count() == 1)
 	{
-		menu->addAction(*constIterator);
-		if (constIterator != m_categories.constEnd())
+		sendLinkToEngine (event->mimeData()->text(), 0, this);
+	} else {
+		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
 		{
-			menu->addSeparator();
+			menu->addAction(*constIterator);
+			if (constIterator != m_catNames.constEnd())
+			{
+				menu->addSeparator();
+			}
+		}
+
+		QAction *cat_selection = menu->exec(QCursor::pos());
+		if (cat_selection)
+		{
+				sendLinkToEngine (event->mimeData()->text(), m_catNames.indexOf(cat_selection->text()), this);
 		}
 	}
 
-	QAction *cat_selection = menu->exec(QCursor::pos());
-
-	QDBusConnection bus = QDBusConnection::sessionBus();
-	QDBusInterface *interface = new QDBusInterface("org.amule.engine", "/Link", "org.amule.engine", bus, this);
-	interface->call("engine_add_link", event->mimeData()->text(), m_categories.indexOf(cat_selection->text()));
-	kDebug() << "Sent Link " << event->mimeData()->text() << "with cat " << m_categories.indexOf(cat_selection->text());
 	delete menu;
+}
+
+void PlasmaMuleApplet::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
+{
+	QStringList::const_iterator constIterator;
+	QMenu menu;
+
+	if (m_catDirs.count() == 1)
+	{
+		menu.addAction (KIcon("folder"), QString("Default"));
+	} else {
+		QMenu *open_sub_menu = menu.addMenu("Open Incoming");
+		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
+		{
+			open_sub_menu->addAction(KIcon("folder"), "Folder for " + *constIterator);
+			if (constIterator != m_catNames.constEnd())
+			{
+				open_sub_menu->addSeparator();
+			}
+		}
+		menu.addSeparator();
+	}
+
+	QClipboard* clipboard = QApplication::clipboard();
+
+	if (!clipboard->text(QClipboard::Clipboard).isEmpty() || !clipboard->text(QClipboard::Selection).isEmpty())
+	{
+		if (m_catDirs.count() == 1)
+		{
+			if (!clipboard->text(QClipboard::Clipboard).isEmpty())
+			{
+				menu.addAction(KIcon("arrow-down-double"), "Download Link from Clipboard");
+
+				if (!clipboard->text(QClipboard::Selection).isEmpty())
+				{
+					menu.addSeparator();
+				}
+			}
+
+			if (!clipboard->text(QClipboard::Selection).isEmpty())
+			{
+				menu.addAction(KIcon("arrow-down-double"), "Download Link from Selection");
+			}
+		} else 	{
+			QMenu *download_sub_menu = menu.addMenu("Download Link");
+
+			for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
+			{
+				if (!clipboard->text(QClipboard::Clipboard).isEmpty())
+				{
+					download_sub_menu->addAction(KIcon("arrow-down-double"), "Clipboard->" + *constIterator);
+
+					if (!clipboard->text(QClipboard::Selection).isEmpty())
+					{
+						download_sub_menu->addSeparator();
+					}
+				}
+
+				if (!clipboard->text(QClipboard::Selection).isEmpty())
+				{
+					download_sub_menu->addAction(KIcon("arrow-down-double"), "Selection->" + *constIterator);
+				}
+
+				if (constIterator != m_catNames.constEnd())
+				{
+				download_sub_menu->addSeparator();
+				}
+			}
+		}
+	}
+
+	menu.addSeparator();
+	menu.addAction(KIcon("documentinfo"), "About");
+
+	QAction* selectedItem = menu.exec(QCursor::pos());
+	if (selectedItem)
+	{
+		if (selectedItem->text() == "About")
+		{
+			KPluginInfo* service = new KPluginInfo (KService::serviceByDesktopName ("plasma-applet-plasmamule"));
+			KAboutData* aboutData = new KAboutData (service->name().toUtf8(),
+				service->name().toUtf8(),
+				ki18n(service->pluginName().toUtf8()),
+				service->version().toUtf8(),
+				ki18n(service->comment().toUtf8()),
+				KAboutData::License_GPL_V3,
+				ki18n(QByteArray()),
+				ki18n(QByteArray()),
+				service->website().toLatin1(),
+				service->email().toLatin1());
+			aboutData->addAuthor (ki18n(service->author().toUtf8()),
+				ki18n(QByteArray()),
+				service->email().toLatin1(),
+				service->website().toLatin1());
+			aboutData->setTranslator(ki18nc ("NAME OF TRANSLATORS", "Your names"),
+				ki18nc("EMAIL OF TRANSLATORS", "Your emails"));
+			aboutData->setProgramIconName (service->icon());
+
+			KAboutApplicationDialog* about = new KAboutApplicationDialog(aboutData);
+			about->exec();
+		} else if (selectedItem->text().startsWith("Folder for"))
+		{
+			kDebug() << "Opening Folder " << m_catDirs.at(m_catNames.indexOf(selectedItem->text().remove("Folder for ")));
+			KUrl url(m_catDirs.at(m_catNames.indexOf(selectedItem->text().remove("Folder for "))) + "/");
+                	(void) new KRun( url, 0, true );
+		} else if (selectedItem->text().startsWith("Download"))
+		{
+			if (selectedItem->text().remove("Download Link from ") == "Clipboard")
+			{
+				sendLinkToEngine (clipboard->text(QClipboard::Clipboard), 0, this);
+			} else {
+				sendLinkToEngine (clipboard->text(QClipboard::Selection), 0, this);
+			}
+		} else if (selectedItem->text().startsWith("Clipboard->"))
+		{
+			sendLinkToEngine (clipboard->text(QClipboard::Clipboard), m_catNames.indexOf(selectedItem->text().remove("Clipboard->")), this);
+		} else if (selectedItem->text().startsWith("Selection->"))
+		{
+			sendLinkToEngine (clipboard->text(QClipboard::Selection), m_catNames.indexOf(selectedItem->text().remove("Selection->")), this);
+		}
+	}
 }
 
 #include "plasma-applet-plasmamule.moc"

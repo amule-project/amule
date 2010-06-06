@@ -200,6 +200,11 @@ MAKEFLAGS=-w -s
 	echo "Generating $(@F)"
 		b 4
 	}
+	/\.moc$/ {
+		i\
+	echo "Compiling meta objects $(@)"
+		b 4
+	}
 	/\.$(OBJEXT)$/ {
 		i\
 	echo "Compiling $(<F)"
@@ -342,6 +347,7 @@ MAKEFLAGS=-w -s
 			H
 			g
 			s/.*$(DESTDIR)\([^;" ][^;" ]*\).*/	echo "Installing \1"; \\/
+			s/$(modulesdir)$$dir/$(modulesdir)/
 			P
 			g
 			s/[^\n]*//

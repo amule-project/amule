@@ -37,9 +37,7 @@ class PlasmaMuleApplet : public Plasma::Applet
 		PlasmaMuleApplet(QObject *parent, const QVariantList &args);
 		~PlasmaMuleApplet();
 
-		void paintInterface(QPainter *painter,
-			const QStyleOptionGraphicsItem *option,
-			const QRect& contentsRect);
+		void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
 		void init();
 		
 	public Q_SLOTS:
@@ -48,14 +46,15 @@ class PlasmaMuleApplet : public Plasma::Applet
 		void dataUpdated(const QString&, const Plasma::DataEngine::Data&);
 
 	protected:
-		void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
-		void dropEvent(QGraphicsSceneDragDropEvent * event);
+		void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
+		void dropEvent(QGraphicsSceneDragDropEvent *event);
+		void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 	private:
 		void connectToEngine();
 
 		QString calcSize (qlonglong);
-		QStringList m_categories;
+		QStringList m_catDirs, m_catNames;
 		int m_ed2k_state, m_ed2k_server_port, m_kad_status, m_clients_in_up_queue, m_shared_files_count, m_uptime;
 		QString  m_ed2k_id_high_low, m_ed2k_server_name, m_ed2k_server_ip, m_nickname, m_version;
 		double m_down_speed, m_up_speed;

@@ -25,8 +25,15 @@ AC_DEFUN([PLASMAMULE_CHECKS],
 
 	MULE_IF_ENABLED([plasmamule],
 	[
-		KDE_SERVICE_PATH_CHECK
-		KDE_MODULE_PATH_CHECK
-		KDE_ICON_PATH_CHECK
+		AS_IF([test -e `$BUILD_CC -print-file-name=libplasma.so` &&
+			test -e `$BUILD_CC -print-file-name=libkdecore.so`],
+			[
+				KDE_APPLNK_PATH_CHECK
+				KDE_SERVICE_PATH_CHECK
+				KDE_MODULE_PATH_CHECK
+				KDE_ICON_PATH_CHECK
+				KDE_MIME_PATH_CHECK
+			],
+			[DISABLE_PLASMAMULE])
 	])
 ])

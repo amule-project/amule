@@ -1,0 +1,12 @@
+[Desktop Entry]
+Exec=plasmamule-engine-feeder %U
+Type=Application
+Name=file- and linkhandler for plasmamule
+Name[de]=Datei und Linkhandler für plasmamule
+Comment=Sends ed2k://, magnet:// or *.emulecollection to the engine
+Comment[de]=Sendet ed2k://, magnet:// oder *.emulecollection zur engine
+Icon=application-x-emulecollection
+MimeType=application/x-emulecollection;
+NoDisplay=true
+StartupNotify=false
+StartupWMClas=false

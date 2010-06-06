@@ -49,24 +49,25 @@ AC_DEFUN([KDE_HEADER_CHECK],
 	AC_MSG_CHECKING(for kde4 headers)
 	[KDE_HEADER_DIR=`${KDE4_CONFIG} --path include`]
 
-	AS_IF([test -f ${KDE_HEADER_DIR+kdirwatch.h}],
+	AS_IF([test -f ${KDE_HEADER_DIR}kdirwatch.h],
 	[
-		AS_IF([test -f ${KDE_HEADER_DIR+plasma/dataengine.h}],
+		AS_IF([test -f ${KDE_HEADER_DIR}plasma/dataengine.h],
 		[
-			AC_MSG_RESULT($KDE_HEADER_DIR)
+			AC_MSG_RESULT(${KDE_HEADER_DIR})
 		],
 		[
 			AC_MSG_RESULT(not found)
 		])
 	],
 	[
-		AC_MSG_RESULT(not found)
+		AC_MSG_RESULT(not found2)
 	])
 	AC_SUBST(KDE_HEADER_DIR)
 ])
 
 AC_DEFUN([KDE_SERVICE_PATH_CHECK],
 [
+	AC_REQUIRE([AC_PROG_EGREP])
 	AC_MSG_CHECKING(for kde4 services Path)
 	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
 	[
@@ -74,7 +75,7 @@ AC_DEFUN([KDE_SERVICE_PATH_CHECK],
 	])
 	AS_IF([test ${KDE_IN_HOME} = "yes"],
 	[
-		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | grep /home | head -1`
+		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | $EGREP '(/home|/root)' | head -1`
 	],
 	[
 		KDE_SERVICE_PATH=`${KDE4_CONFIG} --path services | tr ":" "\n" | grep /usr | head -1`
@@ -85,6 +86,7 @@ AC_DEFUN([KDE_SERVICE_PATH_CHECK],
 
 AC_DEFUN([KDE_MODULE_PATH_CHECK],
 [
+	AC_REQUIRE([AC_PROG_EGREP])
 	AC_MSG_CHECKING(for kde4 plugins Path)
 	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
 	[
@@ -92,7 +94,7 @@ AC_DEFUN([KDE_MODULE_PATH_CHECK],
 	])
 	AS_IF([test ${KDE_IN_HOME} = "yes"],
 	[
-		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | grep /home | head -1`
+		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | $EGREP '(/home|/root)' | head -1`
 	],
 	[
 		KDE_MODULE_PATH=`${KDE4_CONFIG} --path module | tr ":" "\n" | grep /usr | head -1`
@@ -103,6 +105,7 @@ AC_DEFUN([KDE_MODULE_PATH_CHECK],
 
 AC_DEFUN([KDE_ICON_PATH_CHECK],
 [
+	AC_REQUIRE([AC_PROG_EGREP])
 	AC_MSG_CHECKING(for kde4 icons Path)
 	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
 	[
@@ -110,11 +113,70 @@ AC_DEFUN([KDE_ICON_PATH_CHECK],
 	])
 	AS_IF([test ${KDE_IN_HOME} = "yes"],
 	[
-		KDE_ICON_PATH=`${KDE4_CONFIG} --path icon | tr ":" "\n" | grep /home | head -1`
+		KDE_ICON_PATH=`${KDE4_CONFIG} --path icon | tr ":" "\n" | $EGREP '(/home|/root)' | head -1`
 	],
 	[
 		KDE_ICON_PATH=`${KDE4_CONFIG} --path icon | tr ":" "\n" | grep /usr | head -1`
 	])
+	KDE_ICON_PATH=${KDE_ICON_PATH}hicolor/scalable/mimetypes/
 	AC_MSG_RESULT(${KDE_ICON_PATH})
 	AC_SUBST(KDE_ICON_PATH)
+])
+
+AC_DEFUN([KDE_MIME_PATH_CHECK],
+[
+	AC_REQUIRE([AC_PROG_EGREP])
+	AC_MSG_CHECKING(for location for mime-type installation)
+	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
+	[
+		KDE_IN_HOME="yes"
+	])
+	AS_IF([test ${KDE_IN_HOME} = "yes"],
+	[
+		KDE_MIME_PATH=`${KDE4_CONFIG} --path xdgdata-mime | tr ":" "\n" | $EGREP '(/home|/root)' | head -1`
+	],
+	[
+		AS_IF([test -n ${prefix}],
+		[
+			KDE_MIME_PATH=`${KDE4_CONFIG} --path xdgdata-mime | tr ":" "\n" | grep ${prefix} | head -1`
+			AS_IF([test -n ${KDE_MIME_PATH}],
+			[
+				KDE_MIME_PATH=`${KDE4_CONFIG} --path xdgdata-mime | tr ":" "\n" | $EGREP -v '(/home|/root)' | head -1`
+			])
+		],
+		[
+			KDE_MIME_PATH=`${KDE4_CONFIG} --path xdgdata-mime | tr ":" "\n" | $EGREP -v '(/home|/root)' | head -1`
+		])
+	])
+	AC_MSG_RESULT(${KDE_MIME_PATH})
+	AC_SUBST(KDE_MIME_PATH)
+])
+
+AC_DEFUN([KDE_APPLNK_PATH_CHECK],
+[
+	AC_REQUIRE([AC_PROG_EGREP])
+	AC_MSG_CHECKING(for kde4 applinks Path)
+	AS_IF([test `echo ${prefix} | grep home | wc -l` == 1],
+	[
+		KDE_IN_HOME="yes"
+	])
+	AS_IF([test ${KDE_IN_HOME} = "yes"],
+	[
+		KDE_APPLNK_PATH=`${KDE4_CONFIG} --path xdgdata-apps | tr ":" "\n" | $EGREP '(/home|/root)' | head -1`
+	],
+	[
+		AS_IF([test -n ${prefix}],
+		[
+			KDE_APPLNK_PATH=`${KDE4_CONFIG} --path xdgdata-apps | tr ":" "\n" | grep ${prefix} | head -1`
+			AS_IF([test -n ${KDE_APPLNK_PATH}],
+			[
+				KDE_APPLNK_PATH=`${KDE4_CONFIG} --path xdgdata-apps | tr ":" "\n" | grep -vE '(/home|/root)' | head -1`
+			])
+		],
+		[
+			KDE_APPLNK_PATH=`${KDE4_CONFIG} --path xdgdata-apps | tr ":" "\n" | grep -vE '(/home|/root)' | head -1`
+		])
+	])
+	AC_MSG_RESULT(${KDE_APPLNK_PATH})
+	AC_SUBST(KDE_APPLNK_PATH)
 ])
