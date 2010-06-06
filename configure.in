@@ -369,9 +369,6 @@ AM_CONDITIONAL(PLASMAMULE, test MULE_IS_ENABLED([plasmamule]))
 # Check for readline library
 MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
 
-AS_IF([test ${PLASMAMULE:-no} = yes],
-[PLASMAMULE_CHECKS])
-
 # DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
 
 MULE_CHECK_CCACHE
@@ -508,4 +505,4 @@ echo "                                       kde-icon-path         ${KDE_ICON_PA
 echo "                                       kde-mime-path         ${KDE_MIME_PATH}"
 echo "                                       kde-applinks-path     ${KDE_APPLNK_PATH}"
 echo "  **** You have to run kbuildsycoca after installing to let plasma know the changes ****"
-echo "  **** You have to run \"update-mime-database ${KDE_MIME_PATH} to register the mimetype ****"])
+echo "  **** You have to run \"update-mime-database ${KDE_MIME_PATH}\" to register the mimetype ****"])
