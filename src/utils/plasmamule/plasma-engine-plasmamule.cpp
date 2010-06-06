@@ -22,14 +22,19 @@
 //
 
 #include "plasma-engine-plasmamule.h"
+#include "qt-emc.h"
 
 #include <kdebug.h>
 #include <knotification.h>
+
+#include <kio/scheduler.h>
+
 #include <plasma/datacontainer.h>
 
-#include <QtDBus/QDBusInterface>
 #include <QDir>
 #include <QTimer>
+
+#include <QtDBus/QDBusInterface>
 
 PlasmaMuleEngine::PlasmaMuleEngine (QObject* parent, const QVariantList& args)
 	: Plasma::DataEngine (parent, args)
@@ -45,10 +50,10 @@ bool PlasmaMuleEngine::sourceRequestEvent (const QString &name)
 
 QStringList PlasmaMuleEngine::sources() const
 {
-	return QStringList() << "categories"
+	return QStringList() << "cat_dirs"
+		<< "cat_names"
 		<< "clients_in_up_queue"
 		<< "config_found"
-		<< "dbus_registerred"
 		<< "down_speed"
 		<< "ed2k_state"
 		<< "ed2k_server_name"
@@ -95,55 +100,121 @@ void PlasmaMuleEngine::regDbus ()
 	kDebug() << "Registerred dbus: " << dbus.registerService("org.amule.engine");
 }
 
-void PlasmaMuleEngine::engine_add_link (const QString &link, const int &category)
+void PlasmaMuleEngine::downloadFinished (KIO::Job* job,const QByteArray& data)
+{
+
+	int index = downloadsJobs.indexOf(job);
+
+	if (data.length() == 0)
+	{
+		KNotification::event(KNotification::Notification, QString("Download of %1 failed.").arg(downloadsNames.at(index)));
+		return;
+	}
+
+	kDebug() << QString("Finished download of %1").arg(downloadsNames.at(index));
+
+	QString downloadFileName(QString("/tmp/plasmamule-download-%1.emulecollection").arg(qrand()));
+
+	QFile downloadFile(downloadFileName);
+
+	if (!downloadFile.open (QIODevice::WriteOnly | QIODevice::Append))
+	{
+		KNotification::event(KNotification::Notification, QString("%1 can't be written to temp-file.").arg(downloadsNames.at(index)));
+		return;
+	}
+
+	QDataStream out(&downloadFile);
+	out.writeRawData(data, data.length());
+	downloadFile.close();
+
+	engine_add_link (downloadFileName, downloadsCategories.at(index), downloadsNames.at(index));
+
+	downloadFile.remove();
+}
+
+void PlasmaMuleEngine::engine_add_link (const QString &link, const int &category, const QString &printname)
 {
 	kDebug() << "Received Link " << link << " with cat " << category;
 
 	QString link_to_write;
 
+	
 	if (link.startsWith("ed2k:") || link.startsWith("magnet:"))
 	{
 		link_to_write = link;
-	} else {
-		KNotification::event(KNotification::Notification, QString("%1 can't be handled by now.").arg(link));
-		return;
-	}
 
-	if (category > 0)
+		if (category > 0)
+		{
+			link_to_write.append(QString(":%1").arg(category));
+		}
+
+		link_to_write.append("\n");
+	} else if (link.contains(".emulecollection") && KUrl(link).isLocalFile())
 	{
-		link_to_write.append(QString(":%1").arg(category));
+		qtEmc* collection = new qtEmc(link);
+		if (collection->isValid())
+		{
+			QStringList links = collection->getLinks();
+			for (QStringList::const_iterator constIterator = links.constBegin(); constIterator != links.constEnd(); constIterator++)
+			{
+				link_to_write.append(*constIterator);
+
+				if (category > 0)
+				{
+					link_to_write.append(QString(":%1").arg(category));
+				}
+
+				link_to_write.append("\n");
+			}
+		} else {
+			KNotification::event(KNotification::Notification, collection->getErrorMessage());
+		}
+
+		delete collection;
+	} else {
+		KIO::TransferJob *job = KIO::get(KUrl(link));
+		connect (job, SIGNAL(data(KIO::Job *, const QByteArray&)), this,
+			SLOT(downloadFinished(KIO::Job *,const QByteArray&)));
+		kDebug() << QString("Starting download of %1").arg(printname);
+		downloadsCategories.append(category);
+		downloadsJobs.append(job);
+		downloadsNames.append(printname);
+		return;
 	}
 
 	QFile link_file (Home + ".aMule/ED2KLinks");
 
-	if (link_file.exists() && !link_file.open (QIODevice::WriteOnly | QIODevice::Append))
+	if (!link_file.open (QIODevice::WriteOnly | QIODevice::Append))
 	{
 		KNotification::event(KNotification::Notification, QString("Problem opening %1 for writing").arg(link_file.fileName()));
 		return;
 	}
 
 	QTextStream out (&link_file);
-	out << link_to_write << "\n";
+	out << link_to_write;
+	out.flush();
 	link_file.close();
-	KNotification::event(KNotification::Notification, QString("Downloading %1").arg(link));
+
+	KNotification::event(KNotification::Notification, QString("Downloading %1").arg(printname));
+
 }
 
 void PlasmaMuleEngine::initVals ()
 {
-	QStringList categories;
+	QStringList catDir;
+	QStringList catName;
 	QStringList tempIncomingDirs;
 	QStringList cleanedIncomingDirs;
 	QStringList::const_iterator constIterator;
 
 	QFile config_file (Home + ".aMule/amule.conf");
 
+	catName.append("Default");
 	if (!config_file.open (QIODevice::ReadOnly | QIODevice::Text))
 	{
 		setData(I18N_NOOP ("config_found"), FALSE);
 		return;
 	}
-
-	categories.append ("default");
 
 	QTextStream in (&config_file);
 	while (!in.atEnd())
@@ -157,23 +228,28 @@ void PlasmaMuleEngine::initVals ()
 			} else {
 				m_OSActive = FALSE;
 			}
+
 			setData(I18N_NOOP ("os_active"), m_OSActive);
 		} else if (line.contains ("OSDirectory"))
 		{
 			m_OSFile.setFileName(line.remove (0,line.indexOf ("=")+1) + "amulesig.dat");
+
 		} else if (line.contains ("Incoming"))
 		{
 			if (!tempIncomingDirs.contains(line.remove (0,line.indexOf ("=")+1)))
 			{
 				tempIncomingDirs.append(line.remove (0,line.indexOf ("=")+1));
 			}
+
+			catDir.append(line.remove (0,line.indexOf ("=")+1));
 		} else if (line.startsWith ("Title"))
 		{
-			categories.append (line.remove (0,line.indexOf ("=")+1));
+			catName.append(line.remove (0,line.indexOf ("=")+1));
 		}
         }
 
-	setData(I18N_NOOP ("categories"), categories);
+	setData(I18N_NOOP ("cat_names"), catName);
+	setData(I18N_NOOP ("cat_dirs"), catDir);
 
 	if (m_OSActive && !m_dirwatcher.contains(m_OSFile.fileName()))
 	{
@@ -279,7 +355,7 @@ EngineAdaptor::~EngineAdaptor()
 
 void EngineAdaptor::engine_add_link(const QString &link, const int &category)
 {
-	QMetaObject::invokeMethod(parent(), "engine_add_link", Q_ARG(QString, link), Q_ARG(int, category));
+	QMetaObject::invokeMethod(parent(), "engine_add_link", Q_ARG(QString, link), Q_ARG(int, category), Q_ARG(QString, link));
 }
 
 #include "plasma-engine-plasmamule.moc"

@@ -356,9 +356,6 @@ AC_SUBST([SVNDATE], [$svndate])dnl
 dnl Set up the denoiser
 MULE_DENOISER
 
-AS_IF([test ${PLASMAMULE:-no} = yes],
-[PLASMAMULE_CHECKS])
-
 MULE_IF_ENABLED([plasmamule], [PLASMAMULE_CHECKS])
 
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
@@ -371,6 +368,9 @@ AM_CONDITIONAL(PLASMAMULE, test MULE_IS_ENABLED([plasmamule]))
 
 # Check for readline library
 MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
+
+AS_IF([test ${PLASMAMULE:-no} = yes],
+[PLASMAMULE_CHECKS])
 
 # DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
 
@@ -505,4 +505,7 @@ echo "                                       kde-headers           ${KDE_HEADER_
 echo "                                       kde-services-path     ${KDE_SERVICE_PATH}"
 echo "                                       kde-module-path       ${KDE_MODULE_PATH}"
 echo "                                       kde-icon-path         ${KDE_ICON_PATH}"
-echo "  **** You have to run kbuildsycoca after installing to let plasma know the changes ****"])
+echo "                                       kde-mime-path         ${KDE_MIME_PATH}"
+echo "                                       kde-applinks-path     ${KDE_APPLNK_PATH}"
+echo "  **** You have to run kbuildsycoca after installing to let plasma know the changes ****"
+echo "  **** You have to run \"update-mime-database ${KDE_MIME_PATH} to register the mimetype ****"])

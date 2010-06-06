@@ -25,6 +25,9 @@
 #define PLASMAMULENGINE_H
 
 #include <kdirwatch.h>
+
+#include <kio/jobclasses.h>
+
 #include <plasma/dataengine.h>
 
 #include <QtDBus/QtDBus>
@@ -42,13 +45,14 @@ class PlasmaMuleEngine : public Plasma::DataEngine
 		void init ();
 
 	public Q_SLOTS:
-		Q_SCRIPTABLE void engine_add_link (const QString &link, const int &category);
+		Q_SCRIPTABLE void engine_add_link (const QString &link, const int &category, const QString &printname);
 
 	protected:
 		bool sourceRequestEvent(const QString& name);
 		bool updateSourceEvent(const QString& name);
 
 	protected Q_SLOTS:
+		void downloadFinished (KIO::Job *,const QByteArray&);
 		void file_changed (const QString &path);
 		void new_file (const QString &path);
 		void timeout ();
@@ -58,9 +62,12 @@ class PlasmaMuleEngine : public Plasma::DataEngine
 		void regDbus ();
 
 		bool m_OSActive, m_timer;
+
 		KDirWatch m_dirwatcher;
 		QFile m_OSFile;
-		QStringList m_incoming_dirs;
+		QList<int> downloadsCategories; 
+		QList<void*> downloadsJobs; 
+		QStringList m_incoming_dirs, downloadsNames;
 		QString Home;
 };
 

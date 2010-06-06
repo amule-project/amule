@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+	<mime-type type="application/x-emulecollection">
+		<comment>Collection of eD2k-links</comment>
+		<comment xml:lang="de">eD2k Link Sammlung</comment>
+
+		<glob pattern="*.emulecollection"/>
+	</mime-type>
+</mime-info>
