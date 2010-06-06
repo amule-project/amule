@@ -1155,7 +1155,20 @@ int StrLang2wx(const wxString& language)
 	if (!lang.IsEmpty()) {
 		const wxLanguageInfo *lng = wxLocale::FindLanguageInfo(lang);
 		if (lng) {
-			return lng->Language;
+			int language = lng->Language;
+			// Traditional Chinese: original Chinese, used in Taiwan, Hong Kong and Macau.
+			// Simplified Chinese: simplified Chinese characters used in Mainland China since 1950s, and in some other places such as Singapore and Malaysia.
+			//
+			// Chinese (Traditional) contains zh_TW, zh_HK and zh_MO (but there are differences in some words). 
+			// Because of most Traditional Chinese user are in Taiwan, zh_TW becomes the representation of Traditional Chinese.
+			// Chinese (Simplified) contains zh_CN, zh_SG and zh_MY. In the same reason, zh_CN becomes the representation of Simplified Chinese.
+			// (see http://forum.amule.org/index.php?topic=13208.msg98043#msg98043 )
+			//
+			// wx maps "Traditional Chinese" to "Chinese" however. This must me corrected:
+			if (language == wxLANGUAGE_CHINESE) {
+				language = wxLANGUAGE_CHINESE_TRADITIONAL;
+			}
+			return language;
 		} else {
 			return wxLANGUAGE_DEFAULT;
 		}
