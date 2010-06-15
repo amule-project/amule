@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 23:48+0200\n"
+"POT-Creation-Date: 2010-06-15 08:48+0200\n"
 "PO-Revision-Date: 2010-03-10 11:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
@@ -27,7 +27,7 @@ msgstr "Lisa Sõber"
 msgid "You have to enter a valid IP and port!"
 msgstr "Pead sisestama kehtiva IP ja pordi!"
 
-#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1766
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67 src/amule-remote-gui.cpp:1786
 msgid "Information"
 msgstr "Informatsioon"
 
@@ -121,7 +121,7 @@ msgid "Server list download"
 msgstr "Serverite nimekiri tõmmatud"
 
 #: src/amule.cpp:601 src/amuleDlg.cpp:565 src/DataToText.cpp:61
-#: src/IPFilter.cpp:566
+#: src/IPFilter.cpp:567
 msgid "Connecting"
 msgstr "Ühendun"
 
@@ -260,7 +260,7 @@ msgstr "Log on nullitud"
 msgid "ServerMessage: %s"
 msgstr "Serveri teade: %s"
 
-#: src/amule.cpp:1582 src/IP2Country.cpp:146 src/IPFilter.cpp:526
+#: src/amule.cpp:1582 src/IP2Country.cpp:147 src/IPFilter.cpp:527
 #: src/ServerList.cpp:813
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
@@ -600,94 +600,94 @@ msgstr "Rüüde kataloogi  '%s' ei eksiteeri"
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "HOIATUS: Ei suuda rüüfaili '%s' lugemiseks avada"
 
-#: src/amuleDlg.cpp:1323 src/amuleDlg.cpp:1481 src/muuli_wdr.cpp:1680
+#: src/amuleDlg.cpp:1322 src/amuleDlg.cpp:1454 src/muuli_wdr.cpp:1680
 #: src/muuli_wdr.cpp:3528
 msgid "Networks"
 msgstr "Võrgud"
 
-#: src/amuleDlg.cpp:1325
-msgid "Networks window"
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3528
+msgid "Networks Window"
 msgstr "Võrgud"
 
-#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3529
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3529
 msgid "Searches"
 msgstr "Otsingud"
 
-#: src/amuleDlg.cpp:1329
-msgid "Searches window"
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3529
+msgid "Searches Window"
 msgstr "Otsingu aken"
 
-#: src/amuleDlg.cpp:1331 src/DownloadListCtrl.cpp:618 src/muuli_wdr.cpp:426
+#: src/amuleDlg.cpp:1324 src/DownloadListCtrl.cpp:618 src/muuli_wdr.cpp:426
 #: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3530 src/Statistics.cpp:669
 msgid "Downloads"
 msgstr "Tõmbamised"
 
-#: src/amuleDlg.cpp:1333
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3530
 #, fuzzy
-msgid "Downloads window"
+msgid "Downloads Window"
 msgstr "Tõmban"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3411
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3411
 msgid "Shared files"
 msgstr "Jagatud failid"
 
-#: src/amuleDlg.cpp:1337
-msgid "Shared files window"
-msgstr "Jagatud failide aken"
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3532
+msgid "Shared Files Window"
+msgstr "Jagatud failide Aken"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:2970 src/muuli_wdr.cpp:3481
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:2970 src/muuli_wdr.cpp:3481
 #: src/muuli_wdr.cpp:3533
 msgid "Messages"
 msgstr "Teated"
 
-#: src/amuleDlg.cpp:1341
-msgid "Messages window"
-msgstr "Teadete aken"
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3533
+msgid "Messages Window"
+msgstr "Teadete Aken"
 
-#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:3534 src/PrefsUnifiedDlg.cpp:176
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3534 src/PrefsUnifiedDlg.cpp:176
 #: src/Statistics.cpp:639 src/Statistics.cpp:937
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1345
-msgid "Statistics graph window"
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3534
+msgid "Statistics Graph Window"
 msgstr "Statistiliste graafikute aken"
 
-#: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3536 src/PrefsUnifiedDlg.cpp:191
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3536 src/PrefsUnifiedDlg.cpp:191
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "Seaded"
 
-#: src/amuleDlg.cpp:1350
-msgid "Preferences settings window"
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3536
+msgid "Preferences Settings Window"
 msgstr "Seadete aken"
 
-#: src/amuleDlg.cpp:1352 src/muuli_wdr.cpp:3537
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3537
 msgid "Import"
 msgstr "Impordi"
 
-#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:3537
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3537
 msgid "The partfile importer tool"
 msgstr "Osafailide importimise tööriist"
 
-#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:3538
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3538
 #: src/utils/aLinkCreator/src/alcframe.cpp:274
 msgid "About"
 msgstr "Info"
 
-#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:3538
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3538
 msgid "About/Help"
 msgstr "Info/Appi"
 
-#: src/amuleDlg.cpp:1492
+#: src/amuleDlg.cpp:1465
 msgid "eD2k network"
 msgstr "eD2k võrk"
 
-#: src/amuleDlg.cpp:1496
+#: src/amuleDlg.cpp:1469
 msgid "Kad network"
 msgstr "Kad võrk"
 
-#: src/amuleDlg.cpp:1501
+#: src/amuleDlg.cpp:1474
 msgid "No network"
 msgstr "Võrk puudub"
 
@@ -754,7 +754,7 @@ msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 "Ei suuda luua kataloogi '%s' '%s' kategooria jaoks, säilitan '%s' kataloogi."
 
-#: src/amule-remote-gui.cpp:1235 src/BaseClient.cpp:1754
+#: src/amule-remote-gui.cpp:1237 src/BaseClient.cpp:1754
 #: src/BaseClient.cpp:2280 src/BaseClient.cpp:2296 src/BaseClient.cpp:2591
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
@@ -769,7 +769,7 @@ msgstr ""
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: src/amule-remote-gui.cpp:1766
+#: src/amule-remote-gui.cpp:1786
 msgid "Comments and ratings are not supported on remote gui yet"
 msgstr "Võrguversioonis pole kommmentaarid ja hinnangud veel toetatud"
 
@@ -856,12 +856,12 @@ msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
 "HOIATUS: Katkestatud failde loetelu on riknenud, sisaldab riknenud päist."
 
-#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:117
+#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:116
 #, c-format
 msgid "IO error while reading %s file: %s"
 msgstr "IO viga %s faili lugemisel: %s"
 
-#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:163
+#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:162
 #, c-format
 msgid "Error while saving %s file: %s"
 msgstr "VIGA: tekkis %s faili salvestamisel: %s"
@@ -1282,7 +1282,7 @@ msgid "Search Result"
 msgstr "Otsingu tulemus"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:345
+#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:345
 msgid "Completed"
 msgstr "Valmis"
 
@@ -1469,7 +1469,7 @@ msgstr "Faili ümbernimetamine"
 #: src/DownloadListCtrl.cpp:924 src/GenericClientListCtrl.cpp:779
 #: src/GenericClientListCtrl.cpp:787 src/muuli_wdr.cpp:1583
 #: src/muuli_wdr.cpp:1592 src/muuli_wdr.cpp:1601 src/muuli_wdr.cpp:1949
-#: src/muuli_wdr.cpp:1958 src/OtherFunctions.cpp:138 src/StatisticsDlg.cpp:100
+#: src/muuli_wdr.cpp:1958 src/OtherFunctions.cpp:139 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102
 msgid "kB/s"
 msgstr "kB/s"
@@ -1651,146 +1651,146 @@ msgstr "Puudub protokolli versiooni märgis"
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr "Autoriseerimine ebaõnnestus: EC parooliks on määratud vigane räsi."
 
-#: src/ExternalConn.cpp:488
+#: src/ExternalConn.cpp:489
 msgid "Authentication failed: wrong password."
 msgstr "Autoriserimine ebaõnnestus: vale parool."
 
-#: src/ExternalConn.cpp:490
+#: src/ExternalConn.cpp:491
 msgid "Authentication failed: missing password."
 msgstr "Autoriserimine ebaõnnestus: parool puudub."
 
-#: src/ExternalConn.cpp:500
+#: src/ExternalConn.cpp:501
 msgid "Invalid request, please authenticate first."
 msgstr "Vigane päring, alustuseks pead ennast autoriseerima."
 
-#: src/ExternalConn.cpp:505
+#: src/ExternalConn.cpp:506
 msgid "Access granted."
 msgstr "Ligipääs Lubatud."
 
-#: src/ExternalConn.cpp:513
+#: src/ExternalConn.cpp:514
 #, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "Veateade \"%s\" kliendile saadetud."
 
-#: src/ExternalConn.cpp:518
+#: src/ExternalConn.cpp:519
 #, fuzzy, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "Autoriseerimata ligipääsukatse. Ühendus suletud."
 
-#: src/ExternalConn.cpp:745
+#: src/ExternalConn.cpp:746
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Kaug OsaFaili käsk ebaõnnestus: Faili kontrollsummat ei leidnud: %s"
 
-#: src/ExternalConn.cpp:747
+#: src/ExternalConn.cpp:748
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Faili '%s' kontrollsummat ei leitud"
 
-#: src/ExternalConn.cpp:810 src/ExternalConn.cpp:894
+#: src/ExternalConn.cpp:811 src/ExternalConn.cpp:895
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! OpCode töötlemise viga!"
 
-#: src/ExternalConn.cpp:840
+#: src/ExternalConn.cpp:841
 msgid "Server not added"
 msgstr "Serverit ei lisatud"
 
-#: src/ExternalConn.cpp:858
+#: src/ExternalConn.cpp:859
 #, c-format
 msgid "server not found: %s"
 msgstr "serverit ei leidnud: %s"
 
-#: src/ExternalConn.cpp:874
+#: src/ExternalConn.cpp:875
 msgid "need to define server to be removed"
 msgstr "eemaldatav server on vaja määrata"
 
-#: src/ExternalConn.cpp:888
+#: src/ExternalConn.cpp:889
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k on seadetes väljalülitatud."
 
-#: src/ExternalConn.cpp:994
+#: src/ExternalConn.cpp:995
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Otsing on käimas. Varsti näed tulemusi!"
 
-#: src/ExternalConn.cpp:999
+#: src/ExternalConn.cpp:1000
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Web Otsing kaugtöökohast ei oma mõtet."
 
-#: src/ExternalConn.cpp:1051
+#: src/ExternalConn.cpp:1052
 msgid "Kad is disabled in preferences."
 msgstr "Kad on seadetes väljalülitatud."
 
-#: src/ExternalConn.cpp:1220
+#: src/ExternalConn.cpp:1221
 msgid "No points for graph."
 msgstr "Graafiku jaoks pole punkte."
 
-#: src/ExternalConn.cpp:1229
+#: src/ExternalConn.cpp:1230
 msgid "Your client is not configured for this detail level."
 msgstr "Sinu klient pole seadistatud sellise detailsuse astme jaoks."
 
-#: src/ExternalConn.cpp:1256
+#: src/ExternalConn.cpp:1257
 msgid "External Connection: shutdown requested"
 msgstr "Väline Ühendus: nõutakse seiskamist"
 
-#: src/ExternalConn.cpp:1268
+#: src/ExternalConn.cpp:1269
 msgid "Already shutting down."
 msgstr "Juba sulgun..."
 
-#: src/ExternalConn.cpp:1280
+#: src/ExternalConn.cpp:1281
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Väline ühendus: lisan lingi '%s'."
 
-#: src/ExternalConn.cpp:1286
+#: src/ExternalConn.cpp:1287
 msgid "Invalid link or already on list."
 msgstr "Vigane link või on juba loetelus."
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1358
 msgid "File not found."
 msgstr "Faili ei leitud."
 
-#: src/ExternalConn.cpp:1362
+#: src/ExternalConn.cpp:1363
 msgid "Invalid file name."
 msgstr "Vigane failinimi."
 
-#: src/ExternalConn.cpp:1370
+#: src/ExternalConn.cpp:1371
 msgid "Unable to rename file."
 msgstr "Ei suuda faili ringinimetada."
 
-#: src/ExternalConn.cpp:1624
+#: src/ExternalConn.cpp:1625
 msgid "Already connected to eD2k."
 msgstr "Juba ühendatud eD2k võrku."
 
-#: src/ExternalConn.cpp:1627
+#: src/ExternalConn.cpp:1628
 msgid "Connecting to eD2k..."
 msgstr "Ühendun eD2k..."
 
-#: src/ExternalConn.cpp:1635
+#: src/ExternalConn.cpp:1636
 msgid "Already connected to Kad."
 msgstr "Juba ühendatud Kad võrku."
 
-#: src/ExternalConn.cpp:1638
+#: src/ExternalConn.cpp:1639
 msgid "Connecting to Kad..."
 msgstr "Ühendun Kad..."
 
-#: src/ExternalConn.cpp:1643
+#: src/ExternalConn.cpp:1644
 msgid "All networks are disabled."
 msgstr "Kõik võrgud on väljalülitatud."
 
-#: src/ExternalConn.cpp:1651
+#: src/ExternalConn.cpp:1652
 msgid "Disconnected from eD2k."
 msgstr "eD2k ühendus katkestatud."
 
-#: src/ExternalConn.cpp:1655
+#: src/ExternalConn.cpp:1656
 msgid "Disconnected from Kad."
 msgstr "Kad ühendus katkestatud."
 
-#: src/ExternalConn.cpp:1663
+#: src/ExternalConn.cpp:1664
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Väline Ühendus: sain vigase opkoodi: %#x"
 
-#: src/ExternalConn.cpp:1666
+#: src/ExternalConn.cpp:1667
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Vigane opcode (vale protokolli versioon?)"
 
@@ -2186,40 +2186,40 @@ msgstr "Ei suuda ühenduda HTTP serveriga"
 msgid "Invalid response from HTTP download server"
 msgstr "HTTP serveri vigane vastus"
 
-#: src/IP2Country.cpp:95
+#: src/IP2Country.cpp:96
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr "Tõmban uut GeoIP.dat faili aadressilt %s"
 
-#: src/IP2Country.cpp:123
+#: src/IP2Country.cpp:124
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "GeoIP.dat faili tõmbamine ebaõnnastus, katkestan uuendamise."
 
-#: src/IP2Country.cpp:129 src/IPFilter.cpp:517
+#: src/IP2Country.cpp:130 src/IPFilter.cpp:518
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "Faili %s eemaldamine ebaõnnastus, katkestan uuendamise."
 
-#: src/IP2Country.cpp:135
+#: src/IP2Country.cpp:136
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr "Faili %s ümbernimetamine ebaõnnestus, katkestan uuendamise."
 
-#: src/IP2Country.cpp:141 src/IPFilter.cpp:523
+#: src/IP2Country.cpp:142 src/IPFilter.cpp:524
 #, c-format
 msgid "Successfully updated %s"
 msgstr "%s uuendamine õnnestus"
 
-#: src/IP2Country.cpp:143
+#: src/IP2Country.cpp:144
 msgid "Error updating GeoIP.dat"
 msgstr "GeoIP.dat uuendamise viga"
 
-#: src/IP2Country.cpp:148 src/IPFilter.cpp:528 src/ServerList.cpp:815
+#: src/IP2Country.cpp:149 src/IPFilter.cpp:529 src/ServerList.cpp:815
 #, c-format
 msgid "Failed to download %s from %s"
 msgstr "Faili %s tõmbamine aadressilt %s ebaõnnestus"
 
-#: src/IP2Country.cpp:167
+#: src/IP2Country.cpp:168
 #, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "'%s' riigiinfo laadimine ebaõnnestus."
@@ -2255,12 +2255,12 @@ msgid_plural "%u malformed lines were discarded."
 msgstr[0] "ignoreeritud %u vigast rida."
 msgstr[1] "ignoreeritud %u vigast rida."
 
-#: src/IPFilter.cpp:520
+#: src/IPFilter.cpp:521
 #, c-format
 msgid "Failed to rename new %s file, aborting update."
 msgstr "Faili %s ümbernimetamine ebaõnnestus, katkestan uuendamise."
 
-#: src/IPFilter.cpp:556
+#: src/IPFilter.cpp:557
 msgid "IP filter is ready"
 msgstr ""
 
@@ -2377,6 +2377,14 @@ msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 "HOIATUS: Tuttavate failde loetelu on riknenud, sisaldab riknenud päist."
 
+#: src/KnownFileList.cpp:107
+msgid "Failed to load entry in known file list, file may be corrupt"
+msgstr ""
+
+#: src/KnownFileList.cpp:114
+msgid "Invalid entry in known file list, file may be corrupt: "
+msgstr ""
+
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
 msgstr "Räsin"
@@ -2389,22 +2397,22 @@ msgstr "Lõpetatud"
 msgid "Complete"
 msgstr "Valmis"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:689
+#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:690
 #: src/PartFile.cpp:3725 src/TransferWnd.cpp:349
 msgid "Paused"
 msgstr "Peatatud"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:688
+#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:689
 #: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
 msgid "Erroneous"
 msgstr "Vigane"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:687
+#: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:688
 #: src/PartFile.cpp:3735 src/TransferWnd.cpp:347
 msgid "Downloading"
 msgstr "Tõmban"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:686
+#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:687
 #: src/PartFile.cpp:3737 src/TransferWnd.cpp:346
 msgid "Waiting"
 msgstr "Ootan"
@@ -2453,11 +2461,11 @@ msgstr "ListenSocket: Ok."
 msgid "ERROR: Could not listen to TCP port."
 msgstr "VIGA: Ei suuda kuulata TCP porti."
 
-#: src/Logger.cpp:303 src/Logger.cpp:324
+#: src/Logger.cpp:304 src/Logger.cpp:325
 msgid "ERROR: "
 msgstr "VIGA: "
 
-#: src/Logger.cpp:303 src/Logger.cpp:324
+#: src/Logger.cpp:304 src/Logger.cpp:325
 msgid "WARNING: "
 msgstr "HOIATUS: "
 
@@ -2746,38 +2754,38 @@ msgstr "Filtreerimine"
 msgid "File Type"
 msgstr "Faili tüüp"
 
-#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:252
+#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:253
 msgid "Any"
 msgstr "Suvaline"
 
-#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:217
+#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:218
 msgid "Archives"
 msgstr "Archiwum"
 
-#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:210 src/OtherFunctions.cpp:692
+#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:211 src/OtherFunctions.cpp:693
 #: src/TransferWnd.cpp:356
 msgid "Audio"
 msgstr "Muusika"
 
-#: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:224 src/OtherFunctions.cpp:694
+#: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:225 src/OtherFunctions.cpp:695
 #: src/TransferWnd.cpp:358
 msgid "CD-Images"
 msgstr "CD-Image"
 
-#: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:231 src/OtherFunctions.cpp:695
+#: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:232 src/OtherFunctions.cpp:696
 #: src/TransferWnd.cpp:359
 msgid "Pictures"
 msgstr "Pildid"
 
-#: src/muuli_wdr.cpp:234 src/OtherFunctions.cpp:245
+#: src/muuli_wdr.cpp:234 src/OtherFunctions.cpp:246
 msgid "Programs"
 msgstr "Programmid"
 
-#: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:238
+#: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:239
 msgid "Texts"
 msgstr "Tekst"
 
-#: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:203
+#: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:204
 msgid "Videos"
 msgstr "Filmid"
 
@@ -2798,11 +2806,11 @@ msgid "KB"
 msgstr "KB"
 
 #: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1830
-#: src/OtherFunctions.cpp:109
+#: src/OtherFunctions.cpp:110
 msgid "MB"
 msgstr "MB"
 
-#: src/muuli_wdr.cpp:273 src/muuli_wdr.cpp:296 src/OtherFunctions.cpp:111
+#: src/muuli_wdr.cpp:273 src/muuli_wdr.cpp:296 src/OtherFunctions.cpp:112
 msgid "GB"
 msgstr "GB"
 
@@ -3000,27 +3008,27 @@ msgstr ""
 msgid "File Quality"
 msgstr "Faili kavliteet"
 
-#: src/muuli_wdr.cpp:856 src/OtherFunctions.cpp:272 src/OtherFunctions.cpp:278
+#: src/muuli_wdr.cpp:856 src/OtherFunctions.cpp:273 src/OtherFunctions.cpp:279
 msgid "Not rated"
 msgstr "Pole hinnatud"
 
-#: src/muuli_wdr.cpp:857 src/OtherFunctions.cpp:273
+#: src/muuli_wdr.cpp:857 src/OtherFunctions.cpp:274
 msgid "Invalid / Corrupt / Fake"
 msgstr "Vigane / Vigastatud / Pole õige"
 
-#: src/muuli_wdr.cpp:858 src/OtherFunctions.cpp:274
+#: src/muuli_wdr.cpp:858 src/OtherFunctions.cpp:275
 msgid "Poor"
 msgstr "Halb"
 
-#: src/muuli_wdr.cpp:859 src/OtherFunctions.cpp:275
+#: src/muuli_wdr.cpp:859 src/OtherFunctions.cpp:276
 msgid "Fair"
 msgstr "Hea"
 
-#: src/muuli_wdr.cpp:860 src/OtherFunctions.cpp:276
+#: src/muuli_wdr.cpp:860 src/OtherFunctions.cpp:277
 msgid "Good"
 msgstr "Keskpärane"
 
-#: src/muuli_wdr.cpp:861 src/OtherFunctions.cpp:277
+#: src/muuli_wdr.cpp:861 src/OtherFunctions.cpp:278
 msgid "Excellent"
 msgstr "Väga hea"
 
@@ -4279,8 +4287,7 @@ msgid "Active Uploads"
 msgstr "Aktiivsed saatmised :"
 
 #: src/muuli_wdr.cpp:3368
-#, c-format
-msgid "% of total files"
+msgid "percent of total files"
 msgstr ""
 
 #: src/muuli_wdr.cpp:3415
@@ -4317,131 +4324,107 @@ msgstr "Sulge see vestlus-seanss."
 msgid "Connect to any server and/or Kad"
 msgstr "Ühendu suvalise serveri ja/või Kad võrguga"
 
-#: src/muuli_wdr.cpp:3528
-msgid "Networks Window"
-msgstr "Võrgud"
-
-#: src/muuli_wdr.cpp:3529
-msgid "Searches Window"
-msgstr "Otsingu aken"
-
-#: src/muuli_wdr.cpp:3530
-#, fuzzy
-msgid "Downloads Window"
-msgstr "Tõmban"
-
 #: src/muuli_wdr.cpp:3532 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:727
 msgid "Shared Files"
 msgstr "Jagatud failid"
-
-#: src/muuli_wdr.cpp:3532
-msgid "Shared Files Window"
-msgstr "Jagatud failide Aken"
-
-#: src/muuli_wdr.cpp:3533
-msgid "Messages Window"
-msgstr "Teadete Aken"
-
-#: src/muuli_wdr.cpp:3534
-msgid "Statistics Graph Window"
-msgstr "Statistiliste graafikute aken"
-
-#: src/muuli_wdr.cpp:3536
-msgid "Preferences Settings Window"
-msgstr "Seadete aken"
 
 #: src/OScopeCtrl.cpp:246
 #, c-format
 msgid "Disabled [%s]"
 msgstr "Eemaldatud [%s]"
 
-#: src/OtherFunctions.cpp:105
+#: src/OtherFunctions.cpp:106
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "baiti"
 msgstr[1] "baiti"
 
-#: src/OtherFunctions.cpp:107
+#: src/OtherFunctions.cpp:108
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:113
+#: src/OtherFunctions.cpp:114
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:123
+#: src/OtherFunctions.cpp:124
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:125
+#: src/OtherFunctions.cpp:126
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:127
+#: src/OtherFunctions.cpp:128
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:129
+#: src/OtherFunctions.cpp:130
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:136
+#: src/OtherFunctions.cpp:137
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "baiti/sek"
 msgstr[1] "baiti/sek"
 
-#: src/OtherFunctions.cpp:140
+#: src/OtherFunctions.cpp:141
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:150 src/OtherFunctions.cpp:154
+#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:155
 msgid "secs"
 msgstr "sek"
 
-#: src/OtherFunctions.cpp:161
+#: src/OtherFunctions.cpp:162
 msgid "mins"
 msgstr "min"
 
-#: src/OtherFunctions.cpp:167 src/OtherFunctions.cpp:175
+#: src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:176
 msgid "hours"
 msgstr "tundi"
 
-#: src/OtherFunctions.cpp:172
+#: src/OtherFunctions.cpp:173
 msgid "Days"
 msgstr "päev(a)"
 
-#: src/OtherFunctions.cpp:682
+#: src/OtherFunctions.cpp:683
 msgid "all"
 msgstr "kõik"
 
-#: src/OtherFunctions.cpp:683
+#: src/OtherFunctions.cpp:684
 msgid "all others"
 msgstr "kõik teised"
 
-#: src/OtherFunctions.cpp:684 src/TransferWnd.cpp:344
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:344
 msgid "Incomplete"
 msgstr "Poolik"
 
-#: src/OtherFunctions.cpp:690 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
 msgid "Stopped"
 msgstr "Peatatud"
 
-#: src/OtherFunctions.cpp:691 src/TransferWnd.cpp:355
+#: src/OtherFunctions.cpp:692 src/TransferWnd.cpp:355
 msgid "Video"
 msgstr "Film"
 
-#: src/OtherFunctions.cpp:693 src/TransferWnd.cpp:357
+#: src/OtherFunctions.cpp:694 src/TransferWnd.cpp:357
 msgid "Archive"
 msgstr "Arhiiv"
 
-#: src/OtherFunctions.cpp:696 src/TransferWnd.cpp:360
+#: src/OtherFunctions.cpp:697 src/TransferWnd.cpp:360
 msgid "Text"
 msgstr "Tekst"
 
-#: src/OtherFunctions.cpp:697 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:698 src/TransferWnd.cpp:351
 msgid "Active"
 msgstr "Aktiivne"
+
+#: src/OtherFunctions.cpp:1097
+#, c-format
+msgid "Using config dir: %s"
+msgstr ""
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -6729,7 +6712,7 @@ msgstr "Eemalda kategooria"
 msgid "Failed to open file (%s), removing from list of shared files."
 msgstr "Faili '%s' avamine ebaõnnestus, eemaldan jagatud failide nimekirjast."
 
-#: src/UploadClient.cpp:700
+#: src/UploadClient.cpp:699
 #, c-format
 msgid "Hashset requested for unknown file: %s"
 msgstr "Tundmatu faili '%s' jaoks küsiti kontrollsummat."
@@ -7450,6 +7433,28 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1870
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]: "
+
+#~ msgid "Networks window"
+#~ msgstr "Võrgud"
+
+#~ msgid "Searches window"
+#~ msgstr "Otsingu aken"
+
+#, fuzzy
+#~ msgid "Downloads window"
+#~ msgstr "Tõmban"
+
+#~ msgid "Shared files window"
+#~ msgstr "Jagatud failide aken"
+
+#~ msgid "Messages window"
+#~ msgstr "Teadete aken"
+
+#~ msgid "Statistics graph window"
+#~ msgstr "Statistiliste graafikute aken"
+
+#~ msgid "Preferences settings window"
+#~ msgstr "Seadete aken"
 
 #~ msgid "Traybar-icon lost, trying to recreate ..."
 #~ msgstr "Tööriistaribe ikoon on kadunud, proovin taastada ...."
