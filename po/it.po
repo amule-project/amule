@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-15 08:48+0200\n"
-"PO-Revision-Date: 2010-04-12 19:35+0100\n"
+"PO-Revision-Date: 2010-06-15 15:33+0100\n"
 "Last-Translator: Giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -637,9 +637,8 @@ msgid "Downloads"
 msgstr "Download"
 
 #: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3530
-#, fuzzy
 msgid "Downloads Window"
-msgstr "Download in corso"
+msgstr "Finestra Downloads"
 
 #: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3411
 msgid "Shared files"
@@ -1713,9 +1712,9 @@ msgid "Sent error message \"%s\" to client."
 msgstr "Invia il messaggio di errore \"%s\" al client."
 
 #: src/ExternalConn.cpp:519
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Tentativo di accesso non autorizzato. Connessione chiusa."
+msgstr "Tentativo di accesso non autorizzato da %s. Connessione chiusa."
 
 #: src/ExternalConn.cpp:746
 #, c-format
@@ -2144,14 +2143,12 @@ msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy
 msgid "QR: ???"
-msgstr "QR: %u"
+msgstr "QR: ???"
 
 #: src/GenericClientListCtrl.cpp:906
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Upload in attesa: %s"
+msgstr "Upload in attesa:"
 
 #: src/GenericClientListCtrl.cpp:908
 #, c-format
@@ -2159,12 +2156,10 @@ msgid "QR: %u"
 msgstr "QR: %u"
 
 #: src/GenericClientListCtrl.cpp:911
-#, fuzzy
 msgid "Uploading"
-msgstr "Upload"
+msgstr "Caricamento"
 
 #: src/GenericClientListCtrl.cpp:913
-#, fuzzy
 msgid "None"
 msgstr "Nessuno"
 
@@ -2424,10 +2419,14 @@ msgstr ""
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
+"Impossibile caricare la voce nella lista di file conosciuti, il file "
+"potrebbe essere corrotto:"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
+"Voce non valida nella lista di file conosciuti, il file potrebbe essere "
+"corrotto:"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
@@ -2919,9 +2918,8 @@ msgid "Clears completed downloads"
 msgstr "Rimuovi download completati"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Fonti complete"
+msgstr "File sorgente:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:169
 msgid "General"
@@ -3992,11 +3990,8 @@ msgid "Port:"
 msgstr "Porta:"
 
 #: src/muuli_wdr.cpp:2762
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Bootstrap da\n"
-"client noti"
+msgstr "Bootstrap da client noti"
 
 #: src/muuli_wdr.cpp:2767
 msgid "Disconnect Kad"
@@ -4338,29 +4333,27 @@ msgstr "Tipi di evento"
 #: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Statistiche e client in coda per i(l) file selezionati(o) : Sessione / Totale"
 
 #: src/muuli_wdr.cpp:3348
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Upload attivi:"
+msgstr "Upload attivi"
 
 #: src/muuli_wdr.cpp:3368
 msgid "percent of total files"
-msgstr ""
+msgstr "percentuale di file totali"
 
 #: src/muuli_wdr.cpp:3415
-#, fuzzy
 msgid "All shared files"
-msgstr "Non mostrare file condivisi"
+msgstr "File condivisi"
 
 #: src/muuli_wdr.cpp:3418
 msgid "Only files currently uploading"
-msgstr ""
+msgstr "Solo file attualmente in caricamento"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Reload:"
-msgstr "Ricarica lista"
+msgstr "Ricarica lista:"
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload your shared files"
@@ -4482,7 +4475,7 @@ msgstr "Attivo"
 #: src/OtherFunctions.cpp:1097
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Directory di configurazione in uso: %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4882,9 +4875,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portoghese (brasiliano)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "Albanese"
+msgstr "Rumeno"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4911,9 +4903,8 @@ msgid "Ukrainian"
 msgstr "Ucraino"
 
 #: src/Preferences.cpp:761
-#, fuzzy
 msgid "Change Language"
-msgstr "Lingua: "
+msgstr "Lingua"
 
 #: src/Preferences.cpp:932
 msgid "no options available"
@@ -4998,6 +4989,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"Le seguenti variabili saranno sostituite:\n"
+"    %PARTFILE - percorso completo del file\n"
+"    %PARTNAME - solamente il nome del file"
 
 #: src/PrefsUnifiedDlg.cpp:271
 msgid ""
@@ -5832,33 +5826,28 @@ msgid "No shareable files found in directory: %s"
 msgstr "Nessun file condivisibile trovato nella cartella: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
-#, fuzzy
 msgid "User Name"
 msgstr "Nome utente"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
 msgstr "Velocità download"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
 msgstr "Velocità upload"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
-#, fuzzy
 msgid "Available Parts"
-msgstr "Disponibili:"
+msgstr "Parti disponibili"
 
 #: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
-#, fuzzy
 msgid "Queue Rank"
-msgstr "In coda"
+msgstr "Punteggio in coda"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Origine"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
