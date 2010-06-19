@@ -1270,6 +1270,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 		if (GetDownloadState() == DS_CONNECTED) {
 			// successfully connected, but probably didn't respond to our filerequest
 			theApp->clientlist->AddDeadSource(this);
+			theApp->downloadqueue->RemoveSource(this);
 	    }
 	}
 
