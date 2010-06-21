@@ -908,7 +908,12 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 			SharedFile::GetContainerInstance()->ReQuery();
 			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->ID());
 		}
-		wxString short_name(sharedfile->sFileName.Length() > 60 ? (sharedfile->sFileName.Left(60) + (wxT(" ..."))) : sharedfile->sFileName);
+		wxString short_name;
+		if (sharedfile) {
+			short_name = sharedfile->sFileName.Length() > 60 ? (sharedfile->sFileName.Left(60) + (wxT(" ..."))) : sharedfile->sFileName;
+		} else {
+			short_name = wxT("???");
+		}
 		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "user_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
