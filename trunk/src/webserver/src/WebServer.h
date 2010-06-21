@@ -144,14 +144,14 @@ class ServerEntry {
 		uint32 ID() { return nServerIP; }
 };
 
+// This is a client we are uploading to, not a file
 class UploadFile : public CECID {
 	public:
 		wxString  sUserName;
 		uint32 nTransferredUp;
 		uint32 nTransferredDown;
 		uint32 nSpeed;
-		//
-		// Don't need filename - sharedfiles already have it
+		uint32 nUploadFile;		// ECID of shared file uploading to client
 
 		UploadFile(CEC_UpDownClient_Tag *tag);
 		
