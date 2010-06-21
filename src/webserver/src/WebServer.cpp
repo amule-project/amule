@@ -797,6 +797,8 @@ UploadFile::UploadFile(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	nSpeed = tag->SpeedUp();
 	nTransferredUp = tag->XferUp();
 	nTransferredDown = tag->XferDown();
+	nUploadFile = 0;
+	tag->UploadFile(nUploadFile);
 }
 
 UploadsInfo *UploadFile::GetContainerInstance()

@@ -894,19 +894,19 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	result->type = PHP_VAL_INT;
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->ID());
+		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nUploadFile);
 		// uploading file we don't share ?! We are either out of sync with core or a shared file has been removed while uploading it
 		if ( !sharedfile ) {
 			SharedFile::GetContainerInstance()->ReQuery();
-			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->ID());
+			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nUploadFile);
 		}
 		result->str_val = strdup(sharedfile ? (const char *)unicode2UTF8(sharedfile->sFileName) : "???");
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->ID());
+		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nUploadFile);
 		if ( !sharedfile ) {
 			SharedFile::GetContainerInstance()->ReQuery();
-			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->ID());
+			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nUploadFile);
 		}
 		wxString short_name;
 		if (sharedfile) {
