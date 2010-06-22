@@ -124,8 +124,8 @@ private:
 	// flags to start networks after loading
 	bool m_startKADWhenReady;
 	bool m_connectToAnyServerWhenReady;
-	// Filter task waiting for update
-	class CIPFilterTask * m_ipFilterTask;
+	// should update be performed after filter is loaded ?
+	bool m_updateAfterLoading;
 
 	friend class CIPFilterEvent;
 	friend class CIPFilterTask;

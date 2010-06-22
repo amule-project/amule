@@ -100,24 +100,16 @@ typedef void (wxEvtHandler::*MuleIPFilterEventFunction)(CIPFilterEvent&);
 class CIPFilterTask : public CThreadTask
 {
 public:
-	CIPFilterTask(wxEvtHandler* owner, bool block = false)
+	CIPFilterTask(wxEvtHandler* owner)
 		: CThreadTask(wxT("Load IPFilter"), wxEmptyString, ETP_Critical),
 		  m_storeDescriptions(false),
 		  m_owner(owner)
 	{
-		if (block) {
-			LockBlockDuringUpdate();
-		}
 	}
 
-	void LockBlockDuringUpdate()	{ m_blockDuringUpdate.Lock(); }
-	void UnlockBlockDuringUpdate()	{ m_blockDuringUpdate.Unlock(); }
-	
 private:
 	void Entry()
 	{
-		// Block thread while there is still an update going on
-		LockBlockDuringUpdate();
 		AddLogLineN(_("Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
 		if ( !LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat")) &&
 		     thePrefs::UseIPFilterSystem() ) {
@@ -239,8 +231,6 @@ private:
 	wxEvtHandler*		m_owner;
 	// temporary map for filter generation
 	IPMap				m_result;
-	// Mutex to block thread during active update
-	wxMutex				m_blockDuringUpdate;
 
 	/**
 	 * Helper function.
@@ -374,8 +364,7 @@ static bool CreateDummyFile(const wxString& filename, const wxString& text)
 CIPFilter::CIPFilter() :
 	m_ready(false),
 	m_startKADWhenReady(false),
-	m_connectToAnyServerWhenReady(false),
-	m_ipFilterTask(NULL)
+	m_connectToAnyServerWhenReady(false)
 {
 	// Setup dummy files for the curious user.
 	const wxString normalDat = theApp->ConfigDir + wxT("ipfilter.dat");
@@ -399,23 +388,11 @@ CIPFilter::CIPFilter() :
 
 	CreateDummyFile(staticDat, staticMsg);
 
-	if (thePrefs::IPFilterAutoLoad() && !thePrefs::IPFilterURL().IsEmpty()) {
-		//
-		// We want to update the filter on startup.
-		// If we create a CThreadTask now it will be the first to be processed.
-		// But if we start a download thread first other thread tasks started meanwhile
-		// will be processed first, and can take a long time (like AICH hashing).
-		// During this time filter won't be active, and thus networks won't be started.
-		//
-		// So start a new task now and block it until update is finished.
-		// Then unblock it.
-		//
-		m_ipFilterTask = new CIPFilterTask(this, true);
-		CThreadScheduler::AddTask(m_ipFilterTask);
-		Update(thePrefs::IPFilterURL());
-	} else {
-		Reload();
-	}
+	// First load currently available filter, so network connect is possible right after
+	// (in case filter download takes some time).
+	Reload();
+	// Check if update should be done only after that.
+	m_updateAfterLoading = thePrefs::IPFilterAutoLoad() && !thePrefs::IPFilterURL().IsEmpty();
 }
 
 
@@ -529,14 +506,8 @@ void CIPFilter::DownloadFinished(uint32 result)
 		AddLogLineC(CFormat(_("Failed to download %s from %s")) % datName % m_URL);
 	}
 
-	if (m_ipFilterTask) {
-	// If we updated during startup, there is already a task waiting to load the filter.
-	// Trigger it to continue.
-		m_ipFilterTask->UnlockBlockDuringUpdate();
-		m_ipFilterTask = NULL;
-	// reload on success, or if filter is not up yet (shouldn't happen)
-	} else if (result == HTTP_Success || !m_ready) {
-		// Reload both ipfilter files
+	if (result == HTTP_Success) {
+		// Reload both ipfilter files on success
 		Reload();
 	}
 }
@@ -576,6 +547,11 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 	}
 	if (thePrefs::GetSrcSeedsOn()) {
 		theApp->downloadqueue->LoadSourceSeeds();
+	}
+	// Trigger filter update if configured
+	if (m_updateAfterLoading) {
+		m_updateAfterLoading = false;
+		Update(thePrefs::IPFilterURL());
 	}
 }
 
