@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-15 08:48+0200\n"
-"PO-Revision-Date: 2010-04-24 18:26+0100\n"
-"Last-Translator: Balla Marcell <marcell@amule.org>\n"
+"PO-Revision-Date: 2010-06-22 16:35+0100\n"
+"Last-Translator: Balla Marcell <balla.marcell@chello.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,8 +95,8 @@ msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
 msgstr ""
-"Nyelvi beállításaid a egy konfigurációs változás miatt az alapértelmezettre "
-"lett átállítva. Bocs."
+"Nyelvi beállításaid egy konfigurációs változás miatt az alapértelmezettre "
+"lettek átállítva. Bocs."
 
 #: src/amule.cpp:497 src/amule.cpp:1056 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:345
@@ -617,9 +617,8 @@ msgid "Downloads"
 msgstr "Letöltések"
 
 #: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3530
-#, fuzzy
 msgid "Downloads Window"
-msgstr "Letöltés alatt"
+msgstr "Letöltések ablaka"
 
 #: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3411
 msgid "Shared files"
@@ -1678,9 +1677,9 @@ msgid "Sent error message \"%s\" to client."
 msgstr "Hibaüzenet elküldve a \"%s\" klienshez."
 
 #: src/ExternalConn.cpp:519
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Jogosulatlan hozzáférési kísérlet. Kapcsolat lezárva."
+msgstr "Jogosulatlan hozzáférési kísérlet %s részéről. Kapcsolat lezárva."
 
 #: src/ExternalConn.cpp:746
 #, c-format
@@ -2110,14 +2109,12 @@ msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy
 msgid "QR: ???"
-msgstr "QR: %u"
+msgstr "QR: ???"
 
 #: src/GenericClientListCtrl.cpp:906
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Várakozó feltöltések: %s"
+msgstr "Várakozás feltöltési slot-ra"
 
 #: src/GenericClientListCtrl.cpp:908
 #, c-format
@@ -2125,14 +2122,12 @@ msgid "QR: %u"
 msgstr "QR: %u"
 
 #: src/GenericClientListCtrl.cpp:911
-#, fuzzy
 msgid "Uploading"
-msgstr "Feltöltés"
+msgstr "Feltöltés alatt"
 
 #: src/GenericClientListCtrl.cpp:913
-#, fuzzy
 msgid "None"
-msgstr "Senki"
+msgstr "Egyik sem"
 
 #: src/GenericClientListCtrl.cpp:923
 msgid "Asked for another file"
@@ -2384,10 +2379,13 @@ msgstr ""
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
+"Bejegyzés betöltése az ismert fájlok listájából sikertelen, hiba lehet a "
+"fájlban"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
+"Érvénytelen bejegyzés az ismert fájlok listájában, hiba lehet a fájlban: "
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
@@ -2881,9 +2879,8 @@ msgid "Clears completed downloads"
 msgstr "Befejeződött letöltések törlése"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Teljes források"
+msgstr "Fájl források:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:169
 msgid "General"
@@ -3948,11 +3945,8 @@ msgid "Port:"
 msgstr "Port:"
 
 #: src/muuli_wdr.cpp:2762
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Indítás ismert \n"
-"kliensektől"
+msgstr "Indítás ismert kliensektől"
 
 #: src/muuli_wdr.cpp:2767
 msgid "Disconnect Kad"
@@ -4295,29 +4289,28 @@ msgstr "Esemény típusok"
 #: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Statisztikák és várakozó kliensek a kiválasztott fájl(ok)hoz: Folyamat / "
+"Valaha"
 
 #: src/muuli_wdr.cpp:3348
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Aktív feltöltések száma :"
+msgstr "Aktív feltöltések"
 
 #: src/muuli_wdr.cpp:3368
 msgid "percent of total files"
-msgstr ""
+msgstr "összes fájl százaléka"
 
 #: src/muuli_wdr.cpp:3415
-#, fuzzy
 msgid "All shared files"
-msgstr "Megosztott fájlok elrejtése"
+msgstr "Összes megosztott fájl"
 
 #: src/muuli_wdr.cpp:3418
 msgid "Only files currently uploading"
-msgstr ""
+msgstr "Csak feltöltés alatt álló fájlokat"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Reload:"
-msgstr "Lista újratöltése"
+msgstr "Újratöltés:"
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload your shared files"
@@ -4437,7 +4430,7 @@ msgstr "Aktív"
 #: src/OtherFunctions.cpp:1097
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Konfigurációk könyvtára: %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4826,9 +4819,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugál (Brazíliai)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "Albán"
+msgstr "Román"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4855,9 +4847,8 @@ msgid "Ukrainian"
 msgstr "Ukrán"
 
 #: src/Preferences.cpp:761
-#, fuzzy
 msgid "Change Language"
-msgstr "Nyelv"
+msgstr "Nyelv megváltoztatása"
 
 #: src/Preferences.cpp:932
 msgid "no options available"
@@ -4941,6 +4932,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"A következő változók helyettesítve lesznek:\n"
+"    %PARTFILE - teljes út a fájlhoz\n"
+"    %PARTNAME - csak a fájl neve"
 
 #: src/PrefsUnifiedDlg.cpp:271
 msgid ""
@@ -5771,33 +5765,28 @@ msgid "No shareable files found in directory: %s"
 msgstr "Nincsen megosztott fájl ebben a könyvtárban: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
-#, fuzzy
 msgid "User Name"
 msgstr "Felhasználói név"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
 msgstr "Letöltési sebesség"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
 msgstr "Feltöltési sebesség"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
-#, fuzzy
 msgid "Available Parts"
-msgstr "Elérhető :"
+msgstr "Elérhető részek"
 
 #: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
-#, fuzzy
 msgid "Queue Rank"
-msgstr "Várólistán"
+msgstr "Várólista helyezés"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Eredet"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
