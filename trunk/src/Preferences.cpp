@@ -1563,7 +1563,7 @@ void CPreferences::SaveCats()
 			cfg->Write( wxT("Priority"),	(int)m_CatList[i]->prio );
 		}
 		// remove deleted cats from config
-		while (cfg->DeleteGroup(CFormat(wxT("/Cat#%i")) % maxcat++));
+		while (cfg->DeleteGroup(CFormat(wxT("/Cat#%i")) % maxcat++)) {}
 		
 		cfg->Flush();
 	}
