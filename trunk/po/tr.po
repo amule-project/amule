@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-15 08:48+0200\n"
-"PO-Revision-Date: 2010-06-05 03:43+0200\n"
+"PO-Revision-Date: 2010-06-29 07:41+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -2366,11 +2366,12 @@ msgstr "UYARI: Bilinen dosya listesi bozuk. Geçersiz başlık içeriyor."
 
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
-msgstr ""
+msgstr "Bilinen dosyalar listesinden girdi yüklenemedi. Dosya bozuk olabilir"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
+"Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir:"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
@@ -4270,9 +4271,8 @@ msgid "Active Uploads"
 msgstr "Etkin Göndermeler"
 
 #: src/muuli_wdr.cpp:3368
-#, fuzzy
 msgid "percent of total files"
-msgstr "Toplam dosyaların % o kadarı"
+msgstr "Toplam dosyaların yüzdesi"
 
 #: src/muuli_wdr.cpp:3415
 msgid "All shared files"
@@ -4406,7 +4406,7 @@ msgstr "Etkin"
 #: src/OtherFunctions.cpp:1097
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Kullanılan yapılandırma dizini: %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
