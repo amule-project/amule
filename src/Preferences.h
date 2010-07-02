@@ -498,9 +498,10 @@ public:
 	
 	static bool ShareHiddenFiles() { return s_ShareHiddenFiles; }
 	static void SetShareHiddenFiles(bool val) { s_ShareHiddenFiles = val; }
-	
-	static bool AutoSortDownload() { return s_AutoSortDownload; } 
-	
+
+	static bool AutoSortDownload()		{ return s_AutoSortDownload; }
+	static bool AutoSortDownload(bool val)	{ bool tmp = s_AutoSortDownload; s_AutoSortDownload = val; return tmp; }
+
 	// Version check
 	
 	static bool GetCheckNewVersion() { return s_NewVersionCheck; }
