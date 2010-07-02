@@ -110,27 +110,37 @@ wxChar HexToDec( const wxString& hex )
 }
 
 
-wxString UnescapeHTML( const wxString& str )
+wxString UnescapeHTML(const wxString& str)
 {
-	wxString result;
-	result.Alloc( str.Len() );
-	
-	for ( size_t i = 0; i < str.Len(); ++i ) {
-		if ( str.GetChar(i) == wxT('%') && ( i + 2 < str.Len() ) ) {
-			wxChar unesc = HexToDec( str.Mid( i + 1, 2 ) );
+	size_t len = str.length();
+	wxWritableCharBuffer buf = str.char_str(wxConvUTF8);
 
-			if ( unesc ) {
+	// Work around wxWritableCharBuffer's operator[] not being writable
+	char *buffer = (char *)buf;
+
+	size_t j = 0;
+	for (size_t i = 0; i < len; ++i, ++j) {
+		if (buffer[i] == '%' && (len > i + 2)) {
+			wxChar unesc = HexToDec(str.Mid(i + 1, 2));
+			if (unesc) {
 				i += 2;
-
-				result += unesc;
+				buffer[j] = (char)unesc;
 			} else {
 				// If conversion failed, then we just add the escape-code
 				// and continue past it like nothing happened.
-				result += str.at(i);
+				buffer[j] = buffer[i];
 			}
 		} else {
-			result += str.at(i);
+			buffer[j] = buffer[i];
 		}
+	}
+	buffer[j] = '\0';
+
+	// Try to interpret the result as UTF-8
+	wxString result(buffer, wxConvUTF8);
+	if (len > 0 && result.length() == 0) {
+		// Fall back to ISO-8859-1
+		result = wxString(buffer, wxConvISO8859_1);
 	}
 
 	return result;
