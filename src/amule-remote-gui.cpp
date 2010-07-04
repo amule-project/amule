@@ -1301,6 +1301,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		client->m_nSourceFrom = (ESourceFrom)sourceFrom;
 	}
 
+	// Download client
 	uint32 fileID;
 	bool notified = false;
 	if (tag->RequestFile(fileID)) {
@@ -1345,6 +1346,21 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		}
 			
 		Notify_SourceCtrlUpdateSource(client, type);
+	}
+
+	// Upload client
+	if (tag->UploadFile(fileID)) {
+		if (client->m_uploadingfile) {
+			client->m_uploadingfile->RemoveUploadingClient(client);	// this notifies
+			client->m_uploadingfile = NULL;
+			//client->m_downPartStatus.clear();
+		}
+		CKnownFile * kf = theApp->knownfiles->GetByID(fileID);
+		if (kf) {
+			client->m_uploadingfile = kf;
+			client->m_uploadingfile->AddUploadingClient(client);	// this notifies
+			//client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
+		}
 	}
 }
 
