@@ -199,6 +199,7 @@ enum ECTagNames {
 		EC_TAG_PARTFILE_HASH                      = 0x031E,
 		EC_TAG_PARTFILE_SHARED                    = 0x031F,
 		EC_TAG_PARTFILE_HASHED_PART_COUNT         = 0x0320,
+		EC_TAG_PARTFILE_A4AFAUTO                  = 0x0321,
 	EC_TAG_KNOWNFILE                          = 0x0400,
 		EC_TAG_KNOWNFILE_XFERRED                  = 0x0401,
 		EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402,
@@ -614,6 +615,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x031E: return wxT("EC_TAG_PARTFILE_HASH");
 		case 0x031F: return wxT("EC_TAG_PARTFILE_SHARED");
 		case 0x0320: return wxT("EC_TAG_PARTFILE_HASHED_PART_COUNT");
+		case 0x0321: return wxT("EC_TAG_PARTFILE_A4AFAUTO");
 		case 0x0400: return wxT("EC_TAG_KNOWNFILE");
 		case 0x0401: return wxT("EC_TAG_KNOWNFILE_XFERRED");
 		case 0x0402: return wxT("EC_TAG_KNOWNFILE_XFERRED_ALL");

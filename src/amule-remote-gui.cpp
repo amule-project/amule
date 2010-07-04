@@ -1425,6 +1425,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	tag->DownloadActiveTime(&file->m_nDlActiveTime);
 	tag->AvailablePartCount(&file->m_availablePartsCount);
 	tag->Shared(&file->m_isShared);
+	tag->A4AFAuto(file->m_is_A4AF_auto);
 
 	tag->GetLostDueToCorruption(&file->m_iLostDueToCorruption);
 	tag->GetGainDueToCompression(&file->m_iGainDueToCompression);

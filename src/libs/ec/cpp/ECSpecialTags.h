@@ -263,6 +263,7 @@ class CEC_PartFile_Tag : public CEC_SharedFile_Tag {
 		uint32		DownloadActiveTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, target); }
 		uint16		AvailablePartCount(uint16 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_AVAILABLE_PARTS, target); }
  		bool		Shared(bool *target = 0)		const { return AssignIfExist(EC_TAG_PARTFILE_SHARED, target); }
+ 		bool		A4AFAuto(bool &target)			const { return AssignIfExist(EC_TAG_PARTFILE_A4AFAUTO, target); }
 
 		uint64		GetLostDueToCorruption(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_LOST_CORRUPTION, target); }
 		uint64		GetGainDueToCompression(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_GAINED_COMPRESSION, target); }

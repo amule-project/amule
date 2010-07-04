@@ -153,6 +153,7 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 	AddTag(EC_TAG_PARTFILE_LOST_CORRUPTION, file->GetLostDueToCorruption(), valuemap);
 	AddTag(EC_TAG_PARTFILE_GAINED_COMPRESSION, file->GetGainDueToCompression(), valuemap);
 	AddTag(EC_TAG_PARTFILE_SAVED_ICH, file->TotalPacketsSavedDueToICH(), valuemap);
+	AddTag(EC_TAG_PARTFILE_A4AFAUTO, file->IsA4AFAuto(), valuemap);
 
 	// Tag for comments
 	CECEmptyTag sc(EC_TAG_PARTFILE_COMMENTS);
