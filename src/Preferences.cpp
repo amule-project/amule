@@ -1597,7 +1597,7 @@ void CPreferences::LoadCats()
 		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
 		newcat->path  = CPath::FromUniv(cfg->Read(wxT("Incoming"), wxEmptyString));
 
-		// Some sainity checking
+		// Some sanity checking
 		if ( newcat->title.IsEmpty() || !newcat->path.IsOk() ) {
 			AddLogLineN(_("Invalid category found, skipping"));
 			
