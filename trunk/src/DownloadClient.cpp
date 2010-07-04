@@ -1440,8 +1440,8 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 		A4AFList::iterator it = m_A4AF_list.find( toFile );
 		if ( it != m_A4AF_list.end() ) {
 
-			// We force ignoring of noneeded flag and timestamps
-			if ( IsValidSwapTarget( it, true, true ) ) {
+			// We force ignoring of timestamps
+			if ( IsValidSwapTarget( it, bIgnoreNoNeeded, true ) ) {
 				// Set the target
 				target = it;
 			}
