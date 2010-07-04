@@ -419,34 +419,6 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 }
 
 
-#ifdef CLIENT_GUI
-
-CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
-{
-	Init();
-	
-	m_abyFileHash = tag->FileHash();
-	SetFileSize(tag->SizeFull());
-	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
-	m_queuedCount = 0;
-}
-
-CKnownFile::~CKnownFile()
-{
-}
-
-#else // ! CLIENT_GUI
-
-CKnownFile::~CKnownFile()
-{
-	SourceSet::iterator it = m_ClientUploadList.begin();
-	for ( ; it != m_ClientUploadList.end(); ++it ) {
-		(*it)->ClearUploadFileID();
-	}
-	
-	delete m_pAICHHashSet;
-}
-
 void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
 	m_ClientUploadList.insert(client);
@@ -474,6 +446,40 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 		Notify_SharedCtrlRemoveClient(this, client);
 		UpdateAutoUpPriority();
 	}
+}
+
+
+#ifdef CLIENT_GUI
+
+CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
+{
+	Init();
+	
+	m_abyFileHash = tag->FileHash();
+	SetFileSize(tag->SizeFull());
+	m_AvailPartFrequency.insert(m_AvailPartFrequency.end(), m_iPartCount, 0);
+	m_queuedCount = 0;
+}
+
+CKnownFile::~CKnownFile()
+{
+}
+
+void CKnownFile::UpdateAutoUpPriority() 
+{
+}
+
+
+#else // ! CLIENT_GUI
+
+CKnownFile::~CKnownFile()
+{
+	SourceSet::iterator it = m_ClientUploadList.begin();
+	for ( ; it != m_ClientUploadList.end(); ++it ) {
+		(*it)->ClearUploadFileID();
+	}
+	
+	delete m_pAICHHashSet;
 }
 
 
