@@ -1480,7 +1480,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 	// Try to swap if we found a valid target
 	if ( target != m_A4AF_list.end() ) {
 		
-		// Sainity check, if reqfile doesn't own the source, then something
+		// Sanity check, if reqfile doesn't own the source, then something
 		// is wrong and the swap cannot proceed.
 		if ( m_reqfile->DelSource( this ) ) {
 			CPartFile* SwapTo = target->first;

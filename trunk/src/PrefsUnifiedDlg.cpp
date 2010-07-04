@@ -1081,7 +1081,7 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 
 void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 {
-	// Here we do immediate sainity checking of the up/down ratio,
+	// Here we do immediate sanity checking of the up/down ratio,
 	// so that the user can see if his choice is illegal
 
 	// We only do checks if the rate is limited
