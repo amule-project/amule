@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-15 08:48+0200\n"
-"PO-Revision-Date: 2010-03-10 11:22+0200\n"
+"PO-Revision-Date: 2010-07-02 13:46+0300\n"
 "Last-Translator: \n"
 "Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -623,9 +623,8 @@ msgid "Downloads"
 msgstr "Tõmbamised"
 
 #: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3530
-#, fuzzy
 msgid "Downloads Window"
-msgstr "Tõmban"
+msgstr "Tõmbamised"
 
 #: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3411
 msgid "Shared files"
@@ -1673,9 +1672,9 @@ msgid "Sent error message \"%s\" to client."
 msgstr "Veateade \"%s\" kliendile saadetud."
 
 #: src/ExternalConn.cpp:519
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Autoriseerimata ligipääsukatse. Ühendus suletud."
+msgstr "Autoriseerimata pääsukatse %s. Ühendus suletud."
 
 #: src/ExternalConn.cpp:746
 #, c-format
@@ -2101,14 +2100,12 @@ msgid "QR: %u (%i)"
 msgstr "JK: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy
 msgid "QR: ???"
-msgstr "JK: %u"
+msgstr "JK: ???"
 
 #: src/GenericClientListCtrl.cpp:906
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Ootel saatmised: %s"
+msgstr "Ootan saatmise slotti"
 
 #: src/GenericClientListCtrl.cpp:908
 #, c-format
@@ -2116,12 +2113,10 @@ msgid "QR: %u"
 msgstr "JK: %u"
 
 #: src/GenericClientListCtrl.cpp:911
-#, fuzzy
 msgid "Uploading"
-msgstr "Saatmine"
+msgstr "Saadan"
 
 #: src/GenericClientListCtrl.cpp:913
-#, fuzzy
 msgid "None"
 msgstr "Mitte keegi"
 
@@ -2225,7 +2220,6 @@ msgid "Failed to load country data for '%s'."
 msgstr "'%s' riigiinfo laadimine ebaõnnestus."
 
 #: src/IPFilter.cpp:121
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Laen IP-filtrid 'ipfilter.dat' ja 'ipfilter_static.dat'."
 
@@ -2262,7 +2256,7 @@ msgstr "Faili %s ümbernimetamine ebaõnnestus, katkestan uuendamise."
 
 #: src/IPFilter.cpp:557
 msgid "IP filter is ready"
-msgstr ""
+msgstr "IP filter on lähtestatud"
 
 #: src/KadDlg.cpp:85
 msgid ""
@@ -2379,11 +2373,11 @@ msgstr ""
 
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
-msgstr ""
+msgstr "Tuntud falide loetelu laadimine ebaõnnestus, fail võib olla vigane"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
-msgstr ""
+msgstr "Tuntud falide loetelus vigane kirje, fail võib olla vigane: "
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
@@ -2871,9 +2865,8 @@ msgid "Clears completed downloads"
 msgstr "Puhastab lõpetatud tõmbamised"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Täielikke allikaid"
+msgstr "Faili allikad:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:169
 msgid "General"
@@ -3934,11 +3927,8 @@ msgid "Port:"
 msgstr "Port:"
 
 #: src/muuli_wdr.cpp:2762
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Tuntud klientide \n"
-"Bootstrap"
+msgstr "Tuntud klientide Bootstrap"
 
 #: src/muuli_wdr.cpp:2767
 msgid "Disconnect Kad"
@@ -4280,29 +4270,27 @@ msgstr "Sündmuse tüübid"
 #: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Statistika ja järjekorras kliendid valitud faili(de) kohta : Sessioon / Kokku"
 
 #: src/muuli_wdr.cpp:3348
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Aktiivsed saatmised :"
+msgstr "Aktiivsed saatmised"
 
 #: src/muuli_wdr.cpp:3368
 msgid "percent of total files"
-msgstr ""
+msgstr "% kogufailidest"
 
 #: src/muuli_wdr.cpp:3415
-#, fuzzy
 msgid "All shared files"
-msgstr "Peida jagatud failid"
+msgstr "Kõik jagatud failid"
 
 #: src/muuli_wdr.cpp:3418
 msgid "Only files currently uploading"
-msgstr ""
+msgstr "Ainult failid käimasolevast saatmisest"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Reload:"
-msgstr "Lae loetelu uuesti"
+msgstr "Taaslae:"
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload your shared files"
@@ -4424,7 +4412,7 @@ msgstr "Aktiivne"
 #: src/OtherFunctions.cpp:1097
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Kasutan seadete kataloogi: %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4814,9 +4802,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugali (Brasiilia)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "Albaania"
+msgstr "Rumeenia"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4843,9 +4830,8 @@ msgid "Ukrainian"
 msgstr "Ukraina"
 
 #: src/Preferences.cpp:761
-#, fuzzy
 msgid "Change Language"
-msgstr "Keel: "
+msgstr "Muuda keel"
 
 #: src/Preferences.cpp:932
 msgid "no options available"
@@ -4928,6 +4914,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"Järgmised muutujad asendatakse:\n"
+"   %PARTFILE - fail täis rada\n"
+"   %PARTNAME - faili nimi"
 
 #: src/PrefsUnifiedDlg.cpp:271
 msgid ""
@@ -5758,33 +5747,28 @@ msgid "No shareable files found in directory: %s"
 msgstr "Kataloogis '%s' pole jagatavaid faile"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
-#, fuzzy
 msgid "User Name"
 msgstr "Kasutaja nimi"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
 msgstr "Tõmbamise kiirus"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
 msgstr "Saatmise kiirus"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
-#, fuzzy
 msgid "Available Parts"
-msgstr "Saadaval :"
+msgstr "Saadaval osi"
 
 #: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
-#, fuzzy
 msgid "Queue Rank"
 msgstr "Järjekorras"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Allikas"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -7440,9 +7424,8 @@ msgstr "Töötlen päringut [ümbersuunatud]: "
 #~ msgid "Searches window"
 #~ msgstr "Otsingu aken"
 
-#, fuzzy
 #~ msgid "Downloads window"
-#~ msgstr "Tõmban"
+#~ msgstr "Tõmbamised"
 
 #~ msgid "Shared files window"
 #~ msgstr "Jagatud failide aken"
@@ -7455,9 +7438,6 @@ msgstr "Töötlen päringut [ümbersuunatud]: "
 
 #~ msgid "Preferences settings window"
 #~ msgstr "Seadete aken"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Tööriistaribe ikoon on kadunud, proovin taastada ...."
 
 #~ msgid "Transfers"
 #~ msgstr "Liiklus"
@@ -7528,8 +7508,22 @@ msgstr "Töötlen päringut [ümbersuunatud]: "
 #~ msgid "Encrypted"
 #~ msgstr "Krüpteeritud"
 
+#~ msgid ""
+#~ "Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s"
+#~ msgstr ""
+#~ "Kliendi võimalused : ZLIB: %s UTF8 numbrid: %s Tõukamise märgend: %s"
+
+#~ msgid "yes"
+#~ msgstr "jah"
+
+#~ msgid "no"
+#~ msgstr "ei"
+
 #~ msgid "Loaded %d flag bitmaps."
 #~ msgstr "Laetud %d riigilipu pilti."
+
+#~ msgid "Traybar-icon lost, trying to recreate ..."
+#~ msgstr "Tööriistaribe ikoon on kadunud, proovin taastada ...."
 
 #~ msgid "Shows Upload / Up-queue"
 #~ msgstr "Näita saatmisi/saba"
