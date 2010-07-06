@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-15 08:48+0200\n"
-"PO-Revision-Date: 2010-05-10 23:53+0800\n"
+"PO-Revision-Date: 2010-07-06 20:31+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -65,12 +65,12 @@ msgstr "正在離開主程式..."
 #: src/amule.cpp:258
 #, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr "正在終止 pid '%ld' 的 amuleweb 執行緒..."
+msgstr "正在終止 pid %ld 的 amuleweb 執行緒..."
 
 #: src/amule.cpp:261
 #, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr "正在終止 pid '%ld' 的 amuleweb 執行緒..."
+msgstr "正在終止 pid %ld 的 amuleweb 執行緒..."
 
 #: src/amule.cpp:263 src/ClientDetailDialog.cpp:189 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -617,9 +617,8 @@ msgid "Downloads"
 msgstr "下載"
 
 #: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3530
-#, fuzzy
 msgid "Downloads Window"
-msgstr "正在下載"
+msgstr "下載 視窗"
 
 #: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3411
 msgid "Shared files"
@@ -1642,9 +1641,9 @@ msgid "Sent error message \"%s\" to client."
 msgstr "傳送錯誤訊息「%s」給客戶端。"
 
 #: src/ExternalConn.cpp:519
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "發現試圖非法登入。已關閉連線。"
+msgstr "%s 試圖非法登入，已關閉連線。"
 
 #: src/ExternalConn.cpp:746
 #, c-format
@@ -2068,14 +2067,12 @@ msgid "QR: %u (%i)"
 msgstr "QR：%u (%i)"
 
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy
 msgid "QR: ???"
-msgstr "QR：%u"
+msgstr "QR：???"
 
 #: src/GenericClientListCtrl.cpp:906
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "等候中：%s"
+msgstr "正在等待上傳位置"
 
 #: src/GenericClientListCtrl.cpp:908
 #, c-format
@@ -2083,12 +2080,10 @@ msgid "QR: %u"
 msgstr "QR：%u"
 
 #: src/GenericClientListCtrl.cpp:911
-#, fuzzy
 msgid "Uploading"
-msgstr "上傳"
+msgstr "正在上傳"
 
 #: src/GenericClientListCtrl.cpp:913
-#, fuzzy
 msgid "None"
 msgstr "無"
 
@@ -2332,11 +2327,11 @@ msgstr "警告：已知檔案清單損壞，內有無效標頭。"
 
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
-msgstr ""
+msgstr "無法載入已知檔案清單內的項目，檔案可能有損壞"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
-msgstr ""
+msgstr "已知檔案清單內有無效的項目，檔案可能有損壞："
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
@@ -2819,9 +2814,8 @@ msgid "Clears completed downloads"
 msgstr "清除已完成的檔案"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "完整來源"
+msgstr "檔案來源："
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:169
 msgid "General"
@@ -2926,7 +2920,7 @@ msgstr "檔案名稱"
 
 #: src/muuli_wdr.cpp:775
 msgid "Takeover"
-msgstr "接管"
+msgstr "取用"
 
 #: src/muuli_wdr.cpp:785
 msgid "Cleanup"
@@ -3568,7 +3562,7 @@ msgstr "樹狀"
 
 #: src/muuli_wdr.cpp:2008
 msgid "Number of Client Versions shown (0=unlimited)"
-msgstr "顯示客戶端版本的數量 ('0' 代表不限制)"
+msgstr "顯示客戶端版本的數量 ( 0 代表不限制)"
 
 #: src/muuli_wdr.cpp:2036
 msgid "!!! WARNING !!!"
@@ -3865,7 +3859,6 @@ msgid "Port:"
 msgstr "埠："
 
 #: src/muuli_wdr.cpp:2762
-#, fuzzy
 msgid "Bootstrap from known clients"
 msgstr "從已知客戶端啓動"
 
@@ -4189,34 +4182,31 @@ msgstr "事件種類"
 
 #: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
-msgstr ""
+msgstr "已選取的檔案的統計資料與等候區客戶端數：本次 / 總計"
 
 #: src/muuli_wdr.cpp:3348
-#, fuzzy
 msgid "Active Uploads"
-msgstr "目前上傳數："
+msgstr "目前上傳數"
 
 #: src/muuli_wdr.cpp:3368
 msgid "percent of total files"
-msgstr ""
+msgstr "% (所有檔案)"
 
 #: src/muuli_wdr.cpp:3415
-#, fuzzy
 msgid "All shared files"
-msgstr "隱藏分享檔案"
+msgstr "所有分享的檔案"
 
 #: src/muuli_wdr.cpp:3418
 msgid "Only files currently uploading"
-msgstr ""
+msgstr "只有目前正在上傳的檔案"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Reload:"
-msgstr "重載入清單"
+msgstr "重新載入："
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload your shared files"
-msgstr "重新載入分享檔案"
+msgstr "重新載入分享的檔案"
 
 #: src/muuli_wdr.cpp:3496
 msgid "Send"
@@ -4332,7 +4322,7 @@ msgstr "啟動"
 #: src/OtherFunctions.cpp:1097
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "使用設定目錄：%s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4712,9 +4702,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙語 (巴西)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "阿爾巴尼亞語"
+msgstr "羅馬尼亞語"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4741,9 +4730,8 @@ msgid "Ukrainian"
 msgstr "烏克蘭語"
 
 #: src/Preferences.cpp:761
-#, fuzzy
 msgid "Change Language"
-msgstr "語言："
+msgstr "變更語言"
 
 #: src/Preferences.cpp:932
 msgid "no options available"
@@ -4826,6 +4814,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"可使用以下變數：\n"
+"    %PARTFILE - 檔案的完整路徑\n"
+"    %PARTNAME - 只有檔案名稱"
 
 #: src/PrefsUnifiedDlg.cpp:271
 msgid ""
@@ -4837,8 +4828,8 @@ msgid ""
 "these settings."
 msgstr ""
 " \n"
-"如果您不清楚以下設定的意義，則請不要隨意變更，\n"
-"否則可能匯弄巧成拙。\n"
+"如果您不清楚以下設定的意義，就請不要隨意變更，\n"
+"否則可能會弄巧成拙。\n"
 "\n"
 "即使不變更這些設定，aMule 一樣可以正常運作。"
 
@@ -5628,33 +5619,28 @@ msgid "No shareable files found in directory: %s"
 msgstr "目錄中找不到可分享的檔案：%s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
-#, fuzzy
 msgid "User Name"
 msgstr "使用者名稱"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
 msgstr "下載速度"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
 msgstr "上傳速度"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
-#, fuzzy
 msgid "Available Parts"
-msgstr "可用："
+msgstr "可取得的部份"
 
 #: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
-#, fuzzy
 msgid "Queue Rank"
-msgstr "待處理"
+msgstr "等候排名"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "來源"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -5985,7 +5971,7 @@ msgstr "無"
 #: src/TerminationProcess.cpp:48
 #, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
-msgstr "指令「 %s 」(pid '%d') 的傳回值爲「%d」。 "
+msgstr "指令「 %s 」(pid %d) 的傳回值爲「%d」。 "
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
@@ -5999,7 +5985,7 @@ msgstr "IP 格式無效。請使用 xxx.xxx.xxx.xxx:xxxx\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "此指令需要引數，有效引數為：'all'、'檔案名' 或 '數字'。\n"
+msgstr "此指令需要引數，有效引數為：「all」、「檔案名」或「數字」。\n"
 
 #: src/TextClient.cpp:359
 msgid "Processing by hash: "
