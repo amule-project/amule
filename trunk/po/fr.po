@@ -1,5 +1,5 @@
 # aMule i18n resource file.
-# Copyright (C) 2004 - 2009 aMule Team
+# Copyright (C) 2004 - 2010 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Translation of aMule to French
@@ -10,14 +10,15 @@
 # Guillaume <guilo19@free.fr>, 2007.
 # Carlos Diaz <cskyline@gmail.com>, 2008.
 # Youpla <Youpla@boum.fr>, 2008.
-# Dylan Aïssi <bob.dybian@gmail.com>, 2008, 2009.
+# Dylan Aïssi <bob.dybian@gmail.com>, 2008, 2010.
+# Olivier Sannier <obones att altern dott org>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-15 08:48+0200\n"
-"PO-Revision-Date: 2009-11-17 16:34+0100\n"
-"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"PO-Revision-Date: 2010-07-06 02:03+0100\n"
+"Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,9 +60,9 @@ msgid "Now, exiting main app..."
 msgstr "Et maintenant on quitte l'application principal..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr "Mise à mort de l'instance amuleweb avec le pid '%ld'..."
+msgstr "Interruption de l'instance amuleweb avec le pid `%ld' ..."
 
 #: src/amule.cpp:261
 #, c-format
@@ -270,7 +271,7 @@ msgstr "ServerMessage : %s"
 #: src/ServerList.cpp:813
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "Saut du téléchargement de %s, car le fichier demandé n'est pas récent."
 
 #: src/amule.cpp:1584
 msgid "Failed to download the nodes list."
@@ -592,9 +593,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Déconnecté)"
 
 #: src/amuleDlg.cpp:898
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Voulez-vous vraiment quitter aMule ?"
+msgstr "Voulez-vous vraiment quitter %s ?"
 
 #: src/amuleDlg.cpp:899
 msgid "Exit confirmation"
@@ -638,9 +639,8 @@ msgid "Downloads"
 msgstr "Téléchargements"
 
 #: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3530
-#, fuzzy
 msgid "Downloads Window"
-msgstr "En téléchargement"
+msgstr "Fenêtre des Téléchargements"
 
 #: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3411
 msgid "Shared files"
@@ -867,26 +867,25 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nouveau message de '%s' (IP : %s)"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "AVERTISSEMENT : known.met n'a pas pu être ouvert."
+msgstr "AVERTISSEMENT : %s n'a pas pu être ouvert."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"AVERTISSEMENT: La liste de fichiers connus est corrompue, elle contient des "
-"entêtes invalides."
+"AVERTISSEMENT : Annulation de la liste des fichiers corrompus, elle contient "
+"des entêtes invalides."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:116
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "Erreur d'E/S lors de la lecture du fichier known.met : %s"
+msgstr "Erreur d'E/S lors de la lecture du fichier %s : %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:162
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Erreur lors de la sauvegarde du fichier known.met : %s"
+msgstr "Erreur lors de la sauvegarde du fichier %s : %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -1694,16 +1693,15 @@ msgstr "L'étiquette de la version du protocole est manquante."
 #: src/ExternalConn.cpp:472
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
+"Authentification échoué : hachage spécifié comme mot de passe invalide."
 
 #: src/ExternalConn.cpp:489
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "L'authentification a échoué."
+msgstr "Authentification échoué : mot de passe erroné."
 
 #: src/ExternalConn.cpp:491
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "L'authentification a échoué."
+msgstr "Authentification échoué : mot de passe manquant."
 
 #: src/ExternalConn.cpp:501
 msgid "Invalid request, please authenticate first."
@@ -1714,14 +1712,14 @@ msgid "Access granted."
 msgstr "Accès autorisé."
 
 #: src/ExternalConn.cpp:514
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Filtrer les messages des clients inconnus"
+msgstr "Envoi du message d'erreur \"%s\" au client."
 
 #: src/ExternalConn.cpp:519
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Tentative d'accès non autorisé : Connexion fermée."
+msgstr "Tentative d'accès non autorisé de %s. Connexion fermée."
 
 #: src/ExternalConn.cpp:746
 #, c-format
@@ -2156,14 +2154,12 @@ msgid "QR: %u (%i)"
 msgstr "QR : %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy
 msgid "QR: ???"
-msgstr "QR : %u"
+msgstr "QR: ???"
 
 #: src/GenericClientListCtrl.cpp:906
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Envois en Attente : %s"
+msgstr "Attente d'un slot d'émission"
 
 #: src/GenericClientListCtrl.cpp:908
 #, c-format
@@ -2171,14 +2167,12 @@ msgid "QR: %u"
 msgstr "QR : %u"
 
 #: src/GenericClientListCtrl.cpp:911
-#, fuzzy
 msgid "Uploading"
-msgstr "Émission"
+msgstr "Uploading"
 
 #: src/GenericClientListCtrl.cpp:913
-#, fuzzy
 msgid "None"
-msgstr "Personne"
+msgstr "Aucun"
 
 #: src/GenericClientListCtrl.cpp:923
 msgid "Asked for another file"
@@ -2198,22 +2192,23 @@ msgid "HTTP download cancelled"
 msgstr "Téléchargement HTTP annulé"
 
 #: src/HTTPDownload.cpp:204
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Dossier de destination des téléchargements"
+msgstr ""
+"Impossible de créer le fichier de destination %s pour le téléchargement!"
 
 #: src/HTTPDownload.cpp:209
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "L'URL de téléchargement ne peut pas être vide"
 
 #: src/HTTPDownload.cpp:232
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "L'URL %s retourne : %i - Erreur (%i)!"
 
 #: src/HTTPDownload.cpp:259
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Erreur critique lors de l'écriture du fichier téléchargé"
 
 #: src/HTTPDownload.cpp:274
 #, c-format
@@ -2230,15 +2225,16 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"URL invalide pour le téléchargement HTTP ou la redirection HTTP (avez-vous "
+"oublié 'http://' ?)"
 
 #: src/HTTPDownload.cpp:378
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Re-connexion au serveur"
+msgstr "impossible de se connecter au serveur de téléchargement HTTP"
 
 #: src/HTTPDownload.cpp:399
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "Réponse invalide du serveur de téléchargement HTTP"
 
 #: src/IP2Country.cpp:96
 #, c-format
@@ -2250,39 +2246,37 @@ msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Échec du téléchargement du fichier GeoIP.dat, mise à jour annulée."
 
 #: src/IP2Country.cpp:130 src/IPFilter.cpp:518
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "Impossible de supprimer le fichier GeoIP.dat, mise à jour annulée."
+msgstr "Impossible de supprimer le fichier %s, abandon de la mise à jour."
 
 #: src/IP2Country.cpp:136
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr ""
-"Impossible de renommer le nouveau fichier GeoIP.dat, mise à jour annulée."
+msgstr "Impossible de renommer le fichier %s, abandon de la mise à jour."
 
 #: src/IP2Country.cpp:142 src/IPFilter.cpp:524
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "Réussite de la mise à jour de GeoIP.dat"
+msgstr "Mise à jour réussite de %s"
 
 #: src/IP2Country.cpp:144
 msgid "Error updating GeoIP.dat"
 msgstr "Erreur lors de la mise à jour de GeoIP.dat"
 
 #: src/IP2Country.cpp:149 src/IPFilter.cpp:529 src/ServerList.cpp:815
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "Impossible de télécharger le fichier GeoIP.dat à partir de %s"
+msgstr "Échec du téléchargement %s de %s"
 
 #: src/IP2Country.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Impossible de télécharger le fichier GeoIP.dat à partir de %s"
+msgstr "Échec du chargement des données des pays pour '%s'."
 
 #: src/IPFilter.cpp:121
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
-msgstr "Chargement des filtres IP 'ipfilter.dat' et 'ipfilter_static.dat'."
+msgstr "Chargements des filtres IP 'ipfilter.dat' et 'ipfilter_static.dat'."
 
 #: src/IPFilter.cpp:308
 #, c-format
@@ -2311,14 +2305,14 @@ msgstr[0] "%u ligne malformée a été mise de coté."
 msgstr[1] "%u lignes malformées ont été mises de coté."
 
 #: src/IPFilter.cpp:521
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
 msgstr ""
-"Impossible de renommer le nouveau fichier GeoIP.dat, mise à jour annulée."
+"Impossible de renommer le nouveau fichier %s, abandon de la mise à jour."
 
 #: src/IPFilter.cpp:557
 msgid "IP filter is ready"
-msgstr ""
+msgstr "IP filter est prêt"
 
 #: src/KadDlg.cpp:85
 msgid ""
@@ -2441,10 +2435,14 @@ msgstr ""
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
+"Échec du chargement de l'entrée dans la liste des fichiers connus, le "
+"fichier est peut être corrompu"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
+"Entrée invalide dans la liste des fichiers connus, le fichier est peut être "
+"corrompu :"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
 msgid "Hashing"
@@ -2938,9 +2936,8 @@ msgid "Clears completed downloads"
 msgstr "Effacer les téléchargements terminés"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Sources complètes"
+msgstr "Sources du fichier :"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:169
 msgid "General"
@@ -4015,11 +4012,8 @@ msgid "Port:"
 msgstr "Port :"
 
 #: src/muuli_wdr.cpp:2762
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Amorçage depuis\n"
-"les clients connus"
+msgstr "Amorçage depuis les clients connus"
 
 #: src/muuli_wdr.cpp:2767
 msgid "Disconnect Kad"
@@ -4365,29 +4359,28 @@ msgstr "Types d'événements"
 #: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Statistiques et clients en attente pour le(s) fichier(s) sélectionné(s) : "
+"Session / Tous les temps"
 
 #: src/muuli_wdr.cpp:3348
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Envois actifs :"
+msgstr "Envois Actifs"
 
 #: src/muuli_wdr.cpp:3368
 msgid "percent of total files"
-msgstr ""
+msgstr "pour cent du total de fichiers"
 
 #: src/muuli_wdr.cpp:3415
-#, fuzzy
 msgid "All shared files"
-msgstr "Cacher les fichiers partagés."
+msgstr "Tout les fichiers partagés"
 
 #: src/muuli_wdr.cpp:3418
 msgid "Only files currently uploading"
-msgstr ""
+msgstr "Seulement les fichiers en cours d'émission"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Reload:"
-msgstr "Recharger la liste"
+msgstr "Recharger :"
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload your shared files"
@@ -4509,7 +4502,7 @@ msgstr "Actif"
 #: src/OtherFunctions.cpp:1097
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Utilisation du répertoire de config : %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4914,9 +4907,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugais (Brésilien)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "Albanais"
+msgstr "Roumain"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4943,9 +4935,8 @@ msgid "Ukrainian"
 msgstr "Ukrainien"
 
 #: src/Preferences.cpp:761
-#, fuzzy
 msgid "Change Language"
-msgstr "Langue"
+msgstr "Changer de Langue"
 
 #: src/Preferences.cpp:932
 msgid "no options available"
@@ -5030,6 +5021,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"Les variables suivantes seront remplacées : \n"
+"    %PARTFILE - chemin complet vers le fichier\n"
+"    %PARTNAME - nom du fichier seulement"
 
 #: src/PrefsUnifiedDlg.cpp:271
 msgid ""
@@ -5324,13 +5318,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Copier le lien eD2k dans le presse-papiers"
 
 #: src/SearchListCtrl.cpp:947
-#, fuzzy
 msgid "Canceled"
-msgstr "Annuler"
+msgstr "Annulé"
 
 #: src/SearchListCtrl.cpp:948
 msgid "New"
-msgstr ""
+msgstr "Nouveau"
 
 #: src/ServerConnect.cpp:70
 msgid ""
@@ -5494,7 +5487,7 @@ msgid "Invalid URL"
 msgstr "URL invalide"
 
 #: src/ServerList.cpp:811
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Téléchargement terminé de la liste de serveur depuis %s"
 
@@ -5884,33 +5877,28 @@ msgid "No shareable files found in directory: %s"
 msgstr "Aucun fichier partageable trouvé dans le répertoire : %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:27
-#, fuzzy
 msgid "User Name"
-msgstr "Nom d'utilisateur"
+msgstr "Nom d'Utilisateur"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
-msgstr "Vitesse de réception"
+msgstr "Vitesse de Réception"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
-msgstr "Vitesse d'émission"
+msgstr "Vitesse d'Émission"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:31
-#, fuzzy
 msgid "Available Parts"
-msgstr "Disponibles :"
+msgstr "Parties Disponibles"
 
 #: src/SharedFilePeersListCtrl.cpp:35 src/SourceListCtrl.cpp:33
-#, fuzzy
 msgid "Queue Rank"
-msgstr "Mis en file d'attente"
+msgstr "Rang dans la file d'attente"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Origine"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -6445,38 +6433,33 @@ msgid ""
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
-"Arrêter le coeur distant actif (amule/amuled).\n"
+"Arrêter le noyau distant actif (amule/amuled).\n"
 "Ceci coupera aussi le clien texte, puisqu'il est\n"
-"inutilisable sans coeur actif.\n"
+"inutilisable sans noyau actif.\n"
 
 #: src/TextClient.cpp:848
-#, fuzzy
 msgid "Reload the given object."
 msgstr "Recharge l'objet donné."
 
 #: src/TextClient.cpp:849
-#, fuzzy
 msgid "Reload shared files list."
 msgstr "Recharge la liste des fichiers partagés."
 
 #: src/TextClient.cpp:851
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "Recharge la table IPFilter depuis le fichier."
+msgstr "Recharge la table de filtrage d'IP."
 
 #: src/TextClient.cpp:852
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "Choisir le niveau de filtrage IP."
+msgstr "Recharge la table actuelle de filtrage d'IP."
 
 #: src/TextClient.cpp:853
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "Recharge la table IPFilter depuis le fichier."
+msgstr "Mise à jour de la table de filtrage d'IP depuis l'URL."
 
 #: src/TextClient.cpp:854
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Si l'URL est omis l'URL des préférences est utilisé."
 
 #: src/TextClient.cpp:856
 msgid "Connect to the network."
@@ -6523,9 +6506,8 @@ msgid "Disconnect from Kad only."
 msgstr "Se déconnecter de Kad uniquement."
 
 #: src/TextClient.cpp:866
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
-msgstr "Ajoute un lien eD2k ou magnétique au coeur."
+msgstr "Ajoute un lien eD2k ou magnétique au noyau."
 
 #: src/TextClient.cpp:867
 msgid ""
@@ -6554,9 +6536,8 @@ msgid "Set a preference value."
 msgstr "Changer une valeur des préférences."
 
 #: src/TextClient.cpp:872
-#, fuzzy
 msgid "Set IP filtering preferences."
-msgstr "Changer une préférence IPFilter."
+msgstr "Définir les préférences de filtrage d'IP."
 
 #: src/TextClient.cpp:873
 msgid "Turn IP filtering on for both clients and servers."
@@ -6624,38 +6605,32 @@ msgid "Get and display a preference value."
 msgstr "Afficher une valeur des préférences."
 
 #: src/TextClient.cpp:894
-#, fuzzy
 msgid "Get IP filtering preferences."
-msgstr "Voir les préférences d'IPFilter."
+msgstr "Obtenir les préférences de filtrage IP."
 
 #: src/TextClient.cpp:895
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
-msgstr "Voir le statut d'IPFilter concernant les clients et les serveurs."
+msgstr "Obtenir le statut du filtrage d'IP pour les clients et les serveurs."
 
 #: src/TextClient.cpp:896
-#, fuzzy
 msgid "Get IP filtering state for clients only."
-msgstr "Voir le statut d'IPFilter concernant les clients uniquement."
+msgstr "Obtenir le statut du filtrage d'IP pour les clients seulement."
 
 #: src/TextClient.cpp:897
-#, fuzzy
 msgid "Get IP filtering state for servers only."
-msgstr "Voir le statut d'IPFilter concernant les serveurs uniquement."
+msgstr "Obtenir le statut du filtrage d'IP pour les serveurs seulement."
 
 #: src/TextClient.cpp:898
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "Choisir le niveau de filtrage IP."
+msgstr "Obtenir le niveau de filtrage IP."
 
 #: src/TextClient.cpp:900
 msgid "Get bandwidth limits."
 msgstr "Voir les limites de bande passante."
 
 #: src/TextClient.cpp:902
-#, fuzzy
 msgid "Execute a search."
-msgstr "Exécute une recherche Kad."
+msgstr "Effectuer une recherche"
 
 #: src/TextClient.cpp:903
 msgid ""
@@ -6673,37 +6648,30 @@ msgstr ""
 "\".\n"
 
 #: src/TextClient.cpp:904
-#, fuzzy
 msgid "Execute a global search."
-msgstr "Exécute une recherche globale."
+msgstr "Effectuer une recherche globale"
 
 #: src/TextClient.cpp:905
-#, fuzzy
 msgid "Execute a local search"
-msgstr "Exécute une recherche locale."
+msgstr "Effectuer une recherche locale"
 
 #: src/TextClient.cpp:906
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Exécute une recherche Kad."
+msgstr "Effectuer une recherche Kad"
 
 #: src/TextClient.cpp:908
-#, fuzzy
 msgid "Show the results of the last search."
 msgstr "Montre les résultats de la dernière recherche."
 
 #: src/TextClient.cpp:909
-#, fuzzy
 msgid "Return the results of the previous search.\n"
-msgstr "Retourne les résultats de la recherche précédente.\n"
+msgstr "Retourne les résultats de la précédente recherche.\n"
 
 #: src/TextClient.cpp:911
-#, fuzzy
 msgid "Show the progress of a search."
 msgstr "Affiche la progression de la recherche."
 
 #: src/TextClient.cpp:912
-#, fuzzy
 msgid "Show the progress of a search.\n"
 msgstr "Affiche la progression de la recherche.\n"
 
@@ -6763,11 +6731,10 @@ msgid "Show queues/lists."
 msgstr "Montrer les files d'attente/listes."
 
 #: src/TextClient.cpp:939
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
-"Montre la file d'attente des envois/réception, la liste des serveurs ou la "
-"liste de fichiers partagés.\n"
+"Montrer la file d'attente des envois/réceptions, la liste des serveurs ou la "
+"liste des fichiers partagés.\n"
 
 #: src/TextClient.cpp:940
 msgid "Show upload queue."
