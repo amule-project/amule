@@ -431,7 +431,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 		// For release versions, we don't want to allow connections from any arbitrary SVN client.
 		if (request->GetTagByName(EC_TAG_VERSION_ID)) { 
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary SVN version! *sigh* possible crash prevented")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented")));
 #endif
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt();

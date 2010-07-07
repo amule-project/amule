@@ -59,7 +59,7 @@ wxString GetMuleVersion()
 {
 	wxString ver(wxT(VERSION));
 	
-	ver += wxT(" using ");
+	ver += wxT(" compiled with ");
 
 	
 	// Figure out the wx build-type
