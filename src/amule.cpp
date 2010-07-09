@@ -567,11 +567,6 @@ bool CamuleApp::OnInit()
 	// The user can start pressing buttons like mad if he feels like it.
 	m_app_state = APP_STATE_RUNNING;
 	
-	// Kry - Load the sources seeds on app init
-	if (thePrefs::GetSrcSeedsOn() && ipfilter->IsReady()) {
-		downloadqueue->LoadSourceSeeds();
-	}
-	
 	if (!serverlist->GetServerCount() && thePrefs::GetNetworkED2K()) {
 		// There are no servers and ED2K active -> ask for download.
 		// As we cannot ask in amuled, we just update there
@@ -595,17 +590,15 @@ bool CamuleApp::OnInit()
 	
 	
 	// Autoconnect if that option is enabled
-	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
-		if (ipfilter->IsReady()) {
-			// If it's not ready it will connect later, so don't print it now.
-			AddLogLineC(_("Connecting"));
-		}
+	if (thePrefs::DoAutoConnect()) {
+		// IP filter is still loading and will be finished on event.
+		// Tell it to autoconnect.
 		if (thePrefs::GetNetworkED2K()) {
-			theApp->serverconnect->ConnectToAnyServer();
+			ipfilter->ConnectToAnyServerWhenReady();
 		}
-
-		StartKad();
-
+		if (thePrefs::GetNetworkKademlia()) {
+			ipfilter->StartKADWhenReady();
+		}
 	}
 
 	// Enable GeoIP
