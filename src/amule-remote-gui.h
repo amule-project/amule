@@ -546,6 +546,7 @@ public:
 	//
 	void Reload();
 	void Update(wxString strURL = wxEmptyString);
+	bool IsReady() const { return true; }
 };
 
 class CSearchListRem : public CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag> {

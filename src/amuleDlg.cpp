@@ -72,6 +72,7 @@
 #include "TerminationProcess.h"	// Needed for CTerminationProcess
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "PartFileConvertDlg.h"
+#include "IPFilter.h"
 
 #ifndef __WXMSW__
 #include "aMule.xpm"
@@ -547,8 +548,10 @@ CamuleDlg::~CamuleDlg()
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
 
-	bool disconnect = (theApp->IsConnectedED2K() || theApp->serverconnect->IsConnecting()) 
-						#ifndef CLIENT_GUI
+	bool disconnect = (theApp->IsConnectedED2K() || theApp->serverconnect->IsConnecting())
+						#ifdef CLIENT_GUI
+						|| theApp->IsConnectedKad()		// there's no Kad running state atm
+						#else
 						|| (Kademlia::CKademlia::IsRunning())
 						#endif
 						;	
@@ -782,6 +785,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 		m_wndToolbar->InsertTool(0, toolbarTool);
 		m_wndToolbar->Realize();
+		m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 
 		s_oldState = currentState;
 	}
@@ -1483,7 +1487,7 @@ void CamuleDlg::DoNetworkRearrange()
 	m_wndToolbar->InsertTool(2, toolbarTool);
 	
 	m_wndToolbar->EnableTool(ID_BUTTONNETWORKS, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
-	m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
+	m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 	
 	m_wndToolbar->Realize();
 	

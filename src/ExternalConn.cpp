@@ -1032,29 +1032,6 @@ static CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	return response;
 }
 
-static CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
-{
-	CECPacket *response;
-	if (thePrefs::GetNetworkKademlia()) {
-		response = new CECPacket(EC_OP_NOOP);
-		if ( !Kademlia::CKademlia::IsRunning() ) {
-			Kademlia::CKademlia::Start();
-			theApp->ShowConnectionState();
-		}
-		const CECTag *addrtag = request->GetFirstTagSafe();
-		if ( addrtag ) {
-			uint32 ip = addrtag->GetIPv4Data().IP();
-			uint16 port = addrtag->GetIPv4Data().m_port;
-			Kademlia::CKademlia::Bootstrap(ip, port, true);
-		}
-	} else {
-		response = new CECPacket(EC_OP_FAILED);
-		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
-	}
-
-	return response;
-}
-
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
 	//
@@ -1592,10 +1569,20 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		// Kad
 		//
 		case EC_OP_KAD_START:
-			response = Get_EC_Response_Kad_Connect(request);
+			if (thePrefs::GetNetworkKademlia()) {
+				response = new CECPacket(EC_OP_NOOP);
+				if ( !Kademlia::CKademlia::IsRunning() ) {
+					Kademlia::CKademlia::Start();
+					theApp->ShowConnectionState();
+				}
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
+			}
 			break;
 		case EC_OP_KAD_STOP:
 			theApp->StopKad();
+			theApp->ShowConnectionState();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_KAD_UPDATE_FROM_URL: {
@@ -1610,13 +1597,20 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		}
 		case EC_OP_KAD_BOOTSTRAP_FROM_IP:
-			theApp->BootstrapKad(request->GetTagByNameSafe(EC_TAG_BOOTSTRAP_IP)->GetInt(),
-			                     request->GetTagByNameSafe(EC_TAG_BOOTSTRAP_PORT)->GetInt());
-			response = new CECPacket(EC_OP_NOOP);
+			if (thePrefs::GetNetworkKademlia()) {
+				theApp->BootstrapKad(request->GetTagByNameSafe(EC_TAG_BOOTSTRAP_IP)->GetInt(),
+									 request->GetTagByNameSafe(EC_TAG_BOOTSTRAP_PORT)->GetInt());
+				theApp->ShowConnectionState();
+				response = new CECPacket(EC_OP_NOOP);
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
+			}
 			break;
 
 		//
 		// Networks
+		// These requests are currently used only in the text client
 		//
 		case EC_OP_CONNECT:
 			if (thePrefs::GetNetworkED2K()) {
@@ -1639,7 +1633,9 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to Kad...")));
 				}
 			}
-			if (!response) {
+			if (response) {
+				theApp->ShowConnectionState();
+			} else {
 				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("All networks are disabled.")));
 			}
@@ -1655,6 +1651,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 					theApp->StopKad();
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from Kad.")));
 				}
+				theApp->ShowConnectionState();
 			} else {
 				response = new CECPacket(EC_OP_NOOP);
 			}
