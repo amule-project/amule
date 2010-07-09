@@ -134,8 +134,9 @@ void php_native_kad_connect(PHP_VALUE_NODE *)
 	cast_value_dnum(&si->var->value);
 	unsigned int ipport = si->var->value.int_val;
 
-	CECPacket req(EC_OP_KAD_START);
-	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, EC_IPv4_t(ipaddr, ipport)));
+	CECPacket req(EC_OP_KAD_BOOTSTRAP_FROM_IP);
+	req.AddTag(CECTag(EC_TAG_BOOTSTRAP_IP, ipaddr));
+	req.AddTag(CECTag(EC_TAG_BOOTSTRAP_PORT, ipport));
 	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
 }
 
