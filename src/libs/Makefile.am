@@ -1,3 +1,11 @@
-SUBDIRS = ec common
+SUBDIRS =
+
+if COMPILE_LIB_COMMON
+SUBDIRS += common
+endif
+
+if COMPILE_LIB_EC
+SUBDIRS += ec
+endif
 
 MAINTAINERCLEANFILES = Makefile.in

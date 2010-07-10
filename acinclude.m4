@@ -167,6 +167,9 @@ dnl ---------------------------------------------------------------------------
 m4_define([MULE_IS_ENABLED],
 [m4_ifdef(__mule_arg_default([$1]), __mule_arg_value([$1])[ = yes], [m4_fatal([Unknown feature `$1'!])])])
 
+m4_define([MULE_IS_ENABLED_ANY], [__mule_if_multi([$1], [-o])])
+m4_define([MULE_IS_ENABLED_ALL], [__mule_if_multi([$1], [-a])])
+
 dnl ---------------------------------------------------------------------------
 dnl MULE_ENABLEVAR(FEATURE)
 dnl
