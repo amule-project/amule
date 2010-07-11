@@ -20,13 +20,15 @@ while (<sln>) {
 	if (/^Project.*, \"(.+)\", (\".+\")/) {
 		my ($path, $guid) = ($1, $2);
 		next unless $path =~ /\\wxWidgets/;
+		$path =~ s-\\-/-g;
 		print "fix $path\n";
-		open(prj, $path) or die;
+		open(prj, $path) or die "$path $!";
 		my @content = <prj>;
 		close prj;
 		foreach (@content) {
 			if (/ProjectGUID=/) {
 				$_ = "\tProjectGUID=$guid\n";
+				print $_;
 				last;
 			}
 		}
