@@ -150,7 +150,8 @@ Version 2.3.0 - The river knows.
 		* Allowed creation of ED2K source links in KAD-only mode
 		* Make friendlist in chat window resizable
 		* Removed lag (caused by language pref) when opening preferences dialog
-		* "Swap all A4AF to this (auto)" doesn't block sources with no needed parts any more 
+		* "Swap all A4AF to this (auto)" doesn't block sources with no needed parts any more
+		* Don't lock up in an infinite loop if all servers are not resolvable or blocked by IP filter
 
 	Vollstrecker:
 		* Unify copyright lines

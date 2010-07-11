@@ -110,6 +110,7 @@ private:
 	bool	connected;
 	int8	max_simcons;
 	bool	m_bTryObfuscated;
+	bool	m_recurseTryAnotherConnectionrequest;
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
 	CServerUDPSocket*	serverudpsocket;

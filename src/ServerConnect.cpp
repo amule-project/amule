@@ -54,6 +54,9 @@
 
 void CServerConnect::TryAnotherConnectionrequest()
 {
+	if (m_recurseTryAnotherConnectionrequest) {
+		return;
+	}
 	if ( connectionattemps.size() < (unsigned)(( thePrefs::IsSafeServerConnectEnabled()) ? 1 : 2) ) {
 	
 		CServer*  next_server = used_list->GetNextServer(m_bTryObfuscated);
@@ -66,6 +69,7 @@ void CServerConnect::TryAnotherConnectionrequest()
 
 		if (!next_server) {
 			if ( connectionattemps.empty() ) {
+				m_recurseTryAnotherConnectionrequest = true;
 				if (m_bTryObfuscated && !thePrefs::IsClientCryptLayerRequired()){
 					AddLogLineM(true, _("Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."));					
 					// try all servers on the non-obfuscated port next
@@ -75,6 +79,7 @@ void CServerConnect::TryAnotherConnectionrequest()
 					AddLogLineM(true, _("Failed to connect to all servers listed. Making another pass."));
 					ConnectToAnyServer( false );
 				}
+				m_recurseTryAnotherConnectionrequest = false;
 			}
 			return;
 		}
@@ -513,6 +518,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	connected = false;
 	clientid = 0;
 	singleconnecting = false;
+	m_recurseTryAnotherConnectionrequest = false;
 
 	// initalize socket for udp packets
 	if (thePrefs::GetNetworkED2K()) {
