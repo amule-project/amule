@@ -15,50 +15,50 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\utils\aLinkCreator\src\alc.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\alc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\aLinkCreator\src\alcframe.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\alcframe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\aLinkCreator\src\alcpix.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\alcpix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\aLinkCreator\src\ed2khash.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\ed2khash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\aLinkCreator\src\md4.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\aLinkCreator\src\md4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\alc.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\alcc.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alcc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\alcframe.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alcframe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\alcpix.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\alcpix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\bithelp.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\bithelp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\ed2khash.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\ed2khash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\aLinkCreator\src\md4.h">
+    <ClInclude Include="..\..\..\..\src\utils\aLinkCreator\src\md4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\src\utils\aLinkCreator\alc.rc">
+    <ResourceCompile Include="..\version.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="..\version.rc">
+    <ResourceCompile Include="..\..\..\..\src\utils\aLinkCreator\alc.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

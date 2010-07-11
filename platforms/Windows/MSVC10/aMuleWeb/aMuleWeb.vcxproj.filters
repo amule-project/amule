@@ -15,72 +15,72 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\ExternalConnector.cpp">
+    <ClCompile Include="..\..\..\..\src\ExternalConnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\LoggerConsole.cpp">
+    <ClCompile Include="..\..\..\..\src\LoggerConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\NetworkFunctions.cpp">
+    <ClCompile Include="..\..\..\..\src\NetworkFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OtherFunctions.cpp">
+    <ClCompile Include="..\..\..\..\src\OtherFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\php_amule_lib.cpp">
+    <ClCompile Include="..\..\..\..\src\webserver\src\php_amule_lib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\php_core_lib.cpp">
+    <ClCompile Include="..\..\..\..\src\webserver\src\php_core_lib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\php_lexer.c">
+    <ClCompile Include="..\..\..\..\src\webserver\src\php_lexer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\php_parser.c">
+    <ClCompile Include="..\..\..\..\src\webserver\src\php_parser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\php_syntree.cpp">
+    <ClCompile Include="..\..\..\..\src\webserver\src\php_syntree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\RLE.cpp">
+    <ClCompile Include="..\..\..\..\src\RLE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\WebInterface.cpp">
+    <ClCompile Include="..\..\..\..\src\webserver\src\WebInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\WebServer.cpp">
+    <ClCompile Include="..\..\..\..\src\webserver\src\WebServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\webserver\src\WebSocket.cpp">
+    <ClCompile Include="..\..\..\..\src\webserver\src\WebSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\ExternalConnector.h">
+    <ClInclude Include="..\..\..\..\src\ExternalConnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\NetworkFunctions.h">
+    <ClInclude Include="..\..\..\..\src\NetworkFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\OtherFunctions.h">
+    <ClInclude Include="..\..\..\..\src\OtherFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\webserver\src\php_core_lib.h">
+    <ClInclude Include="..\..\..\..\src\webserver\src\php_core_lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\webserver\src\php_parser.h">
+    <ClInclude Include="..\..\..\..\src\webserver\src\php_parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\webserver\src\php_syntree.h">
+    <ClInclude Include="..\..\..\..\src\webserver\src\php_syntree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\webserver\src\WebInterface.h">
+    <ClInclude Include="..\..\..\..\src\webserver\src\WebInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\webserver\src\WebServer.h">
+    <ClInclude Include="..\..\..\..\src\webserver\src\WebServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\webserver\src\WebSocket.h">
+    <ClInclude Include="..\..\..\..\src\webserver\src\WebSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
