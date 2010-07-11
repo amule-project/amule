@@ -423,9 +423,15 @@ wxString CamuleRemoteGuiApp::GetServerLog(bool)
 }
 
 
-bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
+bool CamuleRemoteGuiApp::AddServer(CServer * server, bool)
 {
-	// #warning TODO: Add remote command
+	CECPacket req(EC_OP_SERVER_ADD);
+	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, CFormat(wxT("%s:%d")) % server->GetAddress() % server->GetPort()));
+	req.AddTag(CECTag(EC_TAG_SERVER_NAME, server->GetListName()));
+	m_connect->SendPacket(&req);
+
+	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
+
 	return true;
 }
 

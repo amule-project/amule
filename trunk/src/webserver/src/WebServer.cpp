@@ -475,14 +475,8 @@ void CWebServerBase::Send_AddServer_Cmd(wxString addr, wxString port, wxString n
 {
 	CECPacket ec_cmd(EC_OP_SERVER_ADD);
 
-	addr.Trim();
-	port.Trim();
-	
-	CECTag srv_tag(EC_TAG_SERVER, addr + wxT(":") + port);
-	srv_tag.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, addr + wxT(":") + port));
-	srv_tag.AddTag(CECTag(EC_TAG_SERVER_NAME, name));
-	
-	ec_cmd.AddTag(srv_tag);
+	ec_cmd.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, addr.Trim() + wxT(":") + port.Trim()));
+	ec_cmd.AddTag(CECTag(EC_TAG_SERVER_NAME, name));
 	
 	Send_Discard_V2_Request(&ec_cmd);
 }

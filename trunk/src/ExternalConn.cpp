@@ -822,10 +822,8 @@ static CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 
-	const CECTag *srv_tag = request->GetFirstTagSafe();
-
-	wxString full_addr = srv_tag->GetTagByName(EC_TAG_SERVER_ADDRESS)->GetStringData();
-	wxString name = srv_tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+	wxString full_addr = request->GetTagByNameSafe(EC_TAG_SERVER_ADDRESS)->GetStringData();
+	wxString name = request->GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData();
 	
 	wxString s_ip = full_addr.Left(full_addr.Find(':'));
 	wxString s_port = full_addr.Mid(full_addr.Find(':') + 1);
