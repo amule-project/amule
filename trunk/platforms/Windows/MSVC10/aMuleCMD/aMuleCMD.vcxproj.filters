@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\ExternalConnector.cpp">
+    <ClCompile Include="..\..\..\..\src\ExternalConnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\LoggerConsole.cpp">
+    <ClCompile Include="..\..\..\..\src\LoggerConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\NetworkFunctions.cpp">
+    <ClCompile Include="..\..\..\..\src\NetworkFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OtherFunctions.cpp">
+    <ClCompile Include="..\..\..\..\src\OtherFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TextClient.cpp">
+    <ClCompile Include="..\..\..\..\src\TextClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\ExternalConnector.h">
+    <ClInclude Include="..\..\..\..\src\ExternalConnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\NetworkFunctions.h">
+    <ClInclude Include="..\..\..\..\src\NetworkFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\OtherFunctions.h">
+    <ClInclude Include="..\..\..\..\src\OtherFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TextClient.h">
+    <ClInclude Include="..\..\..\..\src\TextClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15,42 +15,42 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\CFile.cpp">
+    <ClCompile Include="..\..\..\..\src\CFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\fileview\eD2kFiles.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\fileview\eD2kFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\fileview\FileView.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\fileview\FileView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\fileview\KadFiles.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\fileview\KadFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OtherFunctions.cpp">
+    <ClCompile Include="..\..\..\..\src\OtherFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utils\fileview\Print.cpp">
+    <ClCompile Include="..\..\..\..\src\utils\fileview\Print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\SafeFile.cpp">
+    <ClCompile Include="..\..\..\..\src\SafeFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Tag.cpp">
+    <ClCompile Include="..\..\..\..\src\Tag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kademlia\utils\UInt128.cpp">
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\utils\fileview\eD2kFiles.h">
+    <ClInclude Include="..\..\..\..\src\utils\fileview\eD2kFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\fileview\KadFiles.h">
+    <ClInclude Include="..\..\..\..\src\utils\fileview\KadFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utils\fileview\Print.h">
+    <ClInclude Include="..\..\..\..\src\utils\fileview\Print.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
