@@ -7,26 +7,30 @@
 # When you then open your solution, all GUIDs are updated.
 #
 # To avoid this:
-# 1) Open and close wx.dsw, creating the .vcproj
-# 2) Run this script. It will replace the new GUIDs in the wx vcproj by the old ones from the aMule-MSVCE-ExtLibs.sln .
-# 3) Now load aMule-MSVCE-ExtLibs.sln. It won't be changed anymore.
+# 1) Open and close wx.dsw with VS9 to convert to wx.sln (VS10 can't open them)
+# 2) Open and close wx.sln, creating the .vcxproj
+# 3) Run this script. It will replace the new GUIDs in the wx vcxproj by the old ones from the aMule-MSVC10E-ExtLibs.sln .
+# 4) Now load aMule-MSVCE-ExtLibs.sln. It won't be changed anymore.
 #
 
 use strict;
 
-open(sln, 'aMule-MSVCE-ExtLibs.sln');
-#Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxregex", "..\..\wxWidgets\build\msw\wx_wxregex.vcproj", "{B4ACF599-824F-4806-8390-414B2DF64922}"
+open(sln, 'aMule-MSVC10E-ExtLibs.sln') or die $!;
+#Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxregex", "..\..\..\..\wxWidgets\build\msw\wx_wxregex.vcxproj", "{A960D0AD-C20E-4FD6-B477-6509232C7D94}"
+#    <ProjectGuid>{B499DD81-BCA2-42D8-986C-E0FBAAC25B13}</ProjectGuid>
 while (<sln>) {
-	if (/^Project.*, \"(.+)\", (\".+\")/) {
+	if (/^Project.*, \"(.+)\", \"(.+)\"/) {
 		my ($path, $guid) = ($1, $2);
 		next unless $path =~ /\\wxWidgets/;
+		$path =~ s-\\-/-g;
 		print "fix $path\n";
-		open(prj, $path) or die;
+		open(prj, $path) or die "$path $!";
 		my @content = <prj>;
 		close prj;
 		foreach (@content) {
-			if (/ProjectGUID=/) {
-				$_ = "\tProjectGUID=$guid\n";
+			if (/<ProjectGuid>/) {
+				$_ = "    <ProjectGuid>$guid</ProjectGuid>\n";
+				print $_;
 				last;
 			}
 		}
