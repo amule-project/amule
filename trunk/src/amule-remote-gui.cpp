@@ -1121,7 +1121,12 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_dwServerIP = 0;
 	m_nServerPort = 0;
 
-	m_rankingInfo = 0;	// TODO: GUI_REWORK (position in UL queue)
+	m_waitingPosition = 0;
+	m_score = 0;
+	m_rating = 0;
+	m_identState = IS_NOTAVAILABLE;
+	m_obfuscationStatus = 0;
+
 	m_nSourceFrom = SF_NONE;
 	m_nKadPort = 0;
 	

@@ -366,12 +366,6 @@ public:
 	void		ClearUploadFileID()		{ m_requpfileid.Clear(); m_uploadingfile = NULL;};
 	uint32		SendBlockData();
 	void		ClearUploadBlockRequests();
-#ifndef CLIENT_GUI
-	uint16 GetRankingInfo() const;
-#else
-	uint16 m_rankingInfo;
-	uint16 GetRankingInfo() const { return m_rankingInfo; }
-#endif
 	void		SendRankingInfo();
 	void		SendCommentInfo(CKnownFile *file);
 	bool 		IsDifferentPartBlock() const;
