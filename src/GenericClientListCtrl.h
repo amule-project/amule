@@ -54,6 +54,8 @@ enum GenericColumnEnum {
 	ColumnUserQueueRankRemote,
 	ColumnUserStatus,
 	ColumnUserOrigin,
+	ColumnUserFileNameDownload,
+	ColumnUserFileNameUpload,
 	ColumnInvalid
 };
 

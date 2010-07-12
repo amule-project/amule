@@ -934,7 +934,28 @@ void CGenericClientListCtrl::DrawClientItem(
 			buffer = wxGetTranslation(OriginToText(client->GetSourceFrom()));
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			break;
-		}	
+		}
+		// Local file name to identify on multi select
+		case ColumnUserFileNameDownload: {
+			const CPartFile * pf = client->GetRequestFile();
+			if (pf) {
+				buffer = pf->GetFileName().GetPrintable();
+			} else {
+				buffer = wxT("???");
+			}
+			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			break;
+		}
+		case ColumnUserFileNameUpload: {
+			const CKnownFile * kf = client->GetUploadFile();
+			if (kf) {
+				buffer = kf->GetFileName().GetPrintable();
+			} else {
+				buffer = wxT("???");
+			}
+			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			break;
+		}
 	}
 }
 
@@ -1099,6 +1120,34 @@ int CGenericClientListCtrl::Compare(
 		case ColumnUserOrigin:
 			return CmpAny(client1->GetSourceFrom(), client2->GetSourceFrom());
 		
+		// Sort by local filename (download)
+		case ColumnUserFileNameDownload: {
+			wxString buffer1, buffer2;
+			const CPartFile * pf1 = client1->GetRequestFile();
+			if (pf1) {
+				buffer1 = pf1->GetFileName().GetPrintable();
+			}
+			const CPartFile * pf2 = client2->GetRequestFile();
+			if (pf2) {
+				buffer2 = pf2->GetFileName().GetPrintable();
+			}
+			return CmpAny(buffer1, buffer2);
+		}
+
+		// Sort by local filename (upload)
+		case ColumnUserFileNameUpload: {
+			wxString buffer1, buffer2;
+			const CKnownFile * kf1 = client1->GetUploadFile();
+			if (kf1) {
+				buffer1 = kf1->GetFileName().GetPrintable();
+			}
+			const CKnownFile * kf2 = client2->GetUploadFile();
+			if (kf2) {
+				buffer2 = kf2->GetFileName().GetPrintable();
+			}
+			return CmpAny(buffer1, buffer2);
+		}
+
 		default:
 			return 0;
 	}
