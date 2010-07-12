@@ -1410,11 +1410,6 @@ uint8 CUpDownClient::GetObfuscationStatus() const
 	return ret;
 }
 
-uint16 CUpDownClient::GetUploadQueueWaitingPosition() const
-{
-	return theApp->uploadqueue->GetWaitingPosition(this);
-}
-
 // IgnoreNoNeeded = will switch to files of which this source has no needed parts (if no better fiels found)
 // ignoreSuspensions = ignore timelimit for A4Af jumping
 // bRemoveCompletely = do not readd the file which the source is swapped from to the A4AF lists (needed if deleting or stopping a file)

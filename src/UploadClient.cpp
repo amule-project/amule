@@ -736,7 +736,8 @@ void CUpDownClient::ClearUploadBlockRequests()
 	DeleteContents(m_DoneBlocks_list);
 }
 
-uint16 CUpDownClient::GetRankingInfo() const {
+uint16 CUpDownClient::GetUploadQueueWaitingPosition() const
+{
 	return theApp->uploadqueue->GetWaitingPosition(this);
 }
 
@@ -745,7 +746,7 @@ void CUpDownClient::SendRankingInfo(){
 		return;
 	}
 
-	uint16 nRank = GetRankingInfo();
+	uint16 nRank = GetUploadQueueWaitingPosition();
 	if (!nRank) {
 		return;
 	}

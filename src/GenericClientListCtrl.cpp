@@ -901,7 +901,7 @@ void CGenericClientListCtrl::DrawClientItem(
 		case ColumnUserQueueRankLocal:	
 			if (item->GetType() != A4AF_SOURCE) {
 				if (client->GetUploadState() == US_ONUPLOADQUEUE ) {
-					uint16 nRank = client->GetRankingInfo();
+					uint16 nRank = client->GetUploadQueueWaitingPosition();
 					if (nRank == 0) {
 						buffer = _("Waiting for upload slot");
 					} else {
@@ -1073,8 +1073,8 @@ int CGenericClientListCtrl::Compare(
 				return client1->GetUploadState() - client2->GetUploadState();
 			}
 
-			uint16 rank1 = client1->GetRankingInfo();
-			uint16 rank2 = client2->GetRankingInfo();
+			uint16 rank1 = client1->GetUploadQueueWaitingPosition();
+			uint16 rank2 = client2->GetUploadQueueWaitingPosition();
 			// Placing items on queue before items on full queues
 			if ( !rank1 ) {
 				if ( !rank2 ) {
