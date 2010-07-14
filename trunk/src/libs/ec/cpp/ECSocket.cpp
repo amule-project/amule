@@ -35,7 +35,7 @@ using namespace std;
 #include "../../../Logger.h"
 #include <common/Format.h>	// Needed for CFormat
 
-#define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
+#define EC_COMPRESSION_LEVEL	Z_DEFAULT_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
 
 #ifndef __GNUC__
