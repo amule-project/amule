@@ -164,6 +164,9 @@ Version 2.3.0 - The river knows.
 		* New translation concept for manpages
 		* KDE Plasma applet to show stats
 
+	woutermense:
+		* Fix 'break/continue [n]' PHP implementation
+
 	Wuischke:
 		* Simplify browser selection
 		* Use DoIconize() for dclick on tray icon, too

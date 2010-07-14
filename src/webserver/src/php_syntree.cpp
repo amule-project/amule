@@ -1831,8 +1831,10 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 			case PHP_ST_CONTINUE:
 			case PHP_ST_BREAK:
 				if (  node->node_expr ) {
+					// 'break' or 'continue' used with an argument
 					php_expr_eval(node->node_expr, &cond_result);
 				} else {
+					// without an argument break or continue just 1 loop
 					cond_result.type = PHP_VAL_INT;
 					cond_result.int_val = 1;
 				}
@@ -1853,12 +1855,29 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					cond_result.int_val = 1;
 				}
 				while ( cond_result.int_val ) {
+					// evaluate code within while loop
 					curr_exec_result = php_execute(node->node_while.code, 0);
+					// if 'break' was used
 					if ( curr_exec_result < 0 ) {
+						// decrease number of loops to break
+						curr_exec_result++;
+						// and break current loop
 						break;
 					}
-					php_expr_eval(node->node_while.cond, &cond_result);
-					cast_value_bool(&cond_result);
+					// normal execution of loop or continue
+					if ( curr_exec_result == 0 || curr_exec_result == 1 ) {
+						curr_exec_result = 0;
+						// evaluate 'while' loop conditions
+						php_expr_eval(node->node_while.cond, &cond_result);
+						cast_value_bool(&cond_result);
+					}
+					// if 'continue' was used with an argument > 1
+					if ( curr_exec_result > 1 ) {
+						// decrease number of loops to skip
+						curr_exec_result--;
+						// and break current loop
+						break;
+					}
 				}
 				break;
 			case PHP_ST_FOR:
@@ -1867,12 +1886,22 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				cast_value_bool(&cond_result);
 				while ( cond_result.int_val ) {
 					curr_exec_result = php_execute(node->node_for.code, 0);
+					// handle 'break' and 'continue' 
 					if ( curr_exec_result < 0 ) {
+						curr_exec_result++;
 						break;
 					}
-					php_expr_eval(node->node_for.do_next, &cond_result);
-					php_expr_eval(node->node_for.cond, &cond_result);
-					cast_value_bool(&cond_result);
+					if ( curr_exec_result == 0 || curr_exec_result == 1 ) {
+						curr_exec_result = 0;
+						// evaluate 'for' loop conditions
+						php_expr_eval(node->node_for.do_next, &cond_result);
+						php_expr_eval(node->node_for.cond, &cond_result);
+						cast_value_bool(&cond_result);
+					}
+					if ( curr_exec_result > 1 ) {
+						curr_exec_result--;
+						break;
+					}
 				}
 				break;
 			case PHP_ST_FOREACH: {
@@ -1899,6 +1928,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 						PHP_VALUE_NODE *curr_value = &array->array[*array->current]->value;
 						value_value_assign(&i_val->var->value, curr_value);
 						curr_exec_result = php_execute(node->node_foreach.code, 0);
+						// clean up
 						if ( i_key ) {
 							value_value_free(&i_key->var->value);
 						}
@@ -1906,31 +1936,50 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 							value_value_assign(curr_value, &i_val->var->value);
 						}
 						value_value_free(&i_val->var->value);
+						// handle 'break' and 'continue' 
 						if ( curr_exec_result < 0 ) {
+							curr_exec_result++;
 							break;
 						}
-						array->current++;
+						if ( curr_exec_result == 0 || curr_exec_result == 1 ) {
+							curr_exec_result = 0;
+							// next element
+							array->current++;
+						}
+						if ( curr_exec_result > 1 ) {
+							curr_exec_result--;
+							break;
+						}
 					}
 				}
 				break;
 			case PHP_ST_SWITCH: {
 					PHP_SYN_NODE *cur_exec = 0;
+					// evaluate switch argument
 					php_expr_eval(node->node_switch.cond, &cond_result);
+					// loop through list of case statements
 					PHP_EXP_NODE *curr = node->node_switch.case_list;
 					while (curr) {
 						PHP_VALUE_NODE cur_value, cmp_result;
 						cur_value.type = cmp_result.type = PHP_VAL_NONE;
+						// TODO make amuleweb not crash when 'default' is used
 						php_expr_eval(curr->exp_node->tree_node.left, &cur_value);
 
+						// switch argument equal to case argument?
 						php_eval_compare(PHP_OP_EQ, &cur_value, &cond_result, &cmp_result);
 						if ( cmp_result.int_val ) {
+							// execute code and rest of case statements
 							cur_exec = (PHP_SYN_NODE *)curr->exp_node->tree_node.syn_right;
 							break;
 						}
 						curr = curr->next;
 					}
 					if ( cur_exec ) {
-						php_execute(cur_exec, result);
+						curr_exec_result = php_execute(cur_exec, result);
+						// break
+						if (curr_exec_result < 0) curr_exec_result++;
+						// continue
+						if (curr_exec_result > 0) curr_exec_result--;
 					}
 				}
 				break;
