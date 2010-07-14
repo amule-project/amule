@@ -86,7 +86,7 @@ public:
 
 	static bool AlreadySearchingFor(const CUInt128& target) throw() { return m_searches.count(target) > 0; }
 
-	static const wxChar* GetInvalidKeywordChars() { return wxT(" ()[]{}<>,._-!?:;\\/"); }
+	static const wxChar* GetInvalidKeywordChars() { return wxT(" ()[]{}<>,._-!?:;\\/\""); }
 
 	static void CancelNodeFWCheckUDPSearch();
 	static bool FindNodeFWCheckUDP();
