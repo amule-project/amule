@@ -182,6 +182,12 @@ private:
 	 */
 	void	DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
 
+	/**
+	 * @see CMuleListCtrl::GetTTSText
+	 * Just a dummy
+	 */
+	virtual wxString GetTTSText(unsigned item) const { return wxEmptyString; }
+
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamColumnSort);
 	
 	// Event-handlers for clients.
