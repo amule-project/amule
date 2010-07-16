@@ -69,7 +69,6 @@ void CUpDownClient::SetUploadState(uint8 eNewState)
 	}
 }
 
-#ifndef CLIENT_GUI
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
@@ -159,7 +158,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	}
 	return (uint32)fBaseValue;
 }
-#endif
+
 
 // Checks if it is next requested block from another chunk of the actual file or from another file 
 // 
