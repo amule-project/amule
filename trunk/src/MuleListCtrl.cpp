@@ -647,8 +647,8 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 	m_tts_text.Append(wxTolower(key));
 
 	// May happen if the subclass does not forward deletion events.
+	// Or rather when single-char-repeated (see below) wraps around, so don't assert.
 	if (m_tts_item >= GetItemCount()) {
-		wxASSERT(0);
 		m_tts_item = -1;
 	}
 	
