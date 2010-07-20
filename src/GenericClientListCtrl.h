@@ -186,7 +186,7 @@ private:
 	 * @see CMuleListCtrl::GetTTSText
 	 * Just a dummy
 	 */
-	virtual wxString GetTTSText(unsigned item) const { return wxEmptyString; }
+	virtual wxString GetTTSText(unsigned) const { return wxEmptyString; }
 
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamColumnSort);
 	
