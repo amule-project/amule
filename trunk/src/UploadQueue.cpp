@@ -114,7 +114,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 				bestscore = cur_score;
 				toadd = tmp_it;
 			} else {
-				cur_score = cur_client->GetScore(false);
+				cur_score = cur_client->GetScore();
 				if ((cur_score > bestlowscore) && !cur_client->m_bAddNextConnect){
 					bestlowscore = cur_score;
 					toaddlow = tmp_it;
@@ -510,10 +510,10 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 			kickHim = true;
 		}
 	} else {
-		uint32 clientScore = client->GetScore(true,true);
+		uint32 clientScore = client->GetScore();
 		CClientPtrList::iterator it = m_waitinglist.begin();
 		for (; it != m_waitinglist.end(); ++it ) {
-			if (clientScore < (*it)->GetScore(true,false)) {
+			if (clientScore < (*it)->GetScore(true)) {
 				kickHim = true;
 				break;
 			}
@@ -535,10 +535,10 @@ uint16 CUploadQueue::GetWaitingPosition(const CUpDownClient *client) const
 	}
 
 	uint16 rank = 1;
-	const uint32 myscore = client->GetScore(false);
+	const uint32 myscore = client->GetScore();
 	CClientPtrList::const_iterator it = m_waitinglist.begin();
 	for (; it != m_waitinglist.end(); ++it) {
-		if ((*it)->GetScore(false) > myscore) {
+		if ((*it)->GetScore() > myscore) {
 			rank++;
 		}
 	}
