@@ -223,8 +223,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_USER_ID, client->GetUserIDHybrid()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false, client->IsDownloading(), false)), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_RATING, client->GetRating()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_RATING, client->GetScore(false, true)), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()), valuemap);

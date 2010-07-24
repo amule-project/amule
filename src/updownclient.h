@@ -312,26 +312,22 @@ public:
 
 #ifndef CLIENT_GUI
 	uint32		GetScore(
-				bool sysvalue,
-				bool isdownloading = false,
+				bool sysvalue = false,
 				bool onlybasevalue = false) const;
-	uint32		GetRating() const		{ return GetScore(false, IsDownloading(), true); }
 	uint8		GetObfuscationStatus() const;
 	uint16		GetUploadQueueWaitingPosition() const;
 	uint16		GetNextRequestedPart() const;
 #else
 	uint32		m_score;
+	uint32		m_rating;
 	uint32		GetScore(
-				bool WXUNUSED(sysvalue),
-				bool WXUNUSED(isdownloading) = false,
+				bool WXUNUSED(sysvalue) = false,
 				bool onlybasevalue = false) const
 	{
 		return onlybasevalue ? m_rating : m_score;
 	}
 	uint16		m_waitingPosition;
 	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
-	uint32		m_rating;
-	uint32		GetRating() const		{ return m_rating; }
 	EIdentState	m_identState;
 	uint8		GetObfuscationStatus() const { return m_obfuscationStatus; }
 	uint8		m_obfuscationStatus;

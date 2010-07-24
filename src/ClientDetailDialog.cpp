@@ -78,7 +78,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DHASH, wxStaticText)->SetLabel(
 			m_client->GetUserHash().Encode());
 		CastChild(ID_DRATING, wxStaticText)->SetLabel(
-			wxString::Format(wxT("%u"), m_client->GetRating()));
+			wxString::Format(wxT("%u"), m_client->GetScore(false, true)));
 	} else {
 		CastChild(ID_DNAME, wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DHASH, wxStaticText)->SetLabel(_("Unknown"));
@@ -206,9 +206,8 @@ bool CClientDetailDialog::OnInitDialog() {
 	if (m_client->GetUploadState() != US_NONE) {
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
 			wxString::Format(_("%u (QR: %u)"),
-				m_client->GetScore(
-					false, m_client->IsDownloading(), false),
-			m_client->GetUploadQueueWaitingPosition()));		
+				m_client->GetScore(),
+				m_client->GetUploadQueueWaitingPosition()));		
 	} else {
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
 	}
