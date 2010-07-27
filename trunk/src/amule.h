@@ -279,7 +279,7 @@ public:
 
 	void ShowUserCount();
 
-	void ShowConnectionState();
+	void ShowConnectionState(bool forceUpdate = false);
 
 	void StartKad();
 	void StopKad();

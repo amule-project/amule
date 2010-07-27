@@ -1836,7 +1836,7 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 }
 
 
-void CamuleApp::ShowConnectionState()
+void CamuleApp::ShowConnectionState(bool forceUpdate)
 {
 	static uint8 old_state = (1<<7); // This flag doesn't exist
 	
@@ -1857,8 +1857,6 @@ void CamuleApp::ShowConnectionState()
 			state |= CONNECTED_KAD_NOT;
 		}
 	}
-	
-	Notify_ShowConnState(state);
 	
 	if (old_state != state) {
 		// Get the changed value 
@@ -1911,7 +1909,7 @@ void CamuleApp::ShowConnectionState()
 	}
 	
 	ShowUserCount();
-	Notify_ShowConnState(state);
+	Notify_ShowConnState(forceUpdate);
 }
 
 
