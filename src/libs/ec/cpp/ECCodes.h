@@ -251,7 +251,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_WAITING_POSITION            = 0x0616,
 		EC_TAG_CLIENT_IDENT_STATE                 = 0x0617,
 		EC_TAG_CLIENT_OBFUSCATION_STATUS          = 0x0618,
-		EC_TAG_CLIENT_RATING                      = 0x0619,
+		EC_TAG_CLIENT_CURRENTLYUNUSED1            = 0x0619,
 		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
 		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
 		EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C,
@@ -667,7 +667,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0616: return wxT("EC_TAG_CLIENT_WAITING_POSITION");
 		case 0x0617: return wxT("EC_TAG_CLIENT_IDENT_STATE");
 		case 0x0618: return wxT("EC_TAG_CLIENT_OBFUSCATION_STATUS");
-		case 0x0619: return wxT("EC_TAG_CLIENT_RATING");
+		case 0x0619: return wxT("EC_TAG_CLIENT_CURRENTLYUNUSED1");
 		case 0x061A: return wxT("EC_TAG_CLIENT_REMOTE_QUEUE_RANK");
 		case 0x061B: return wxT("EC_TAG_CLIENT_ASKED_COUNT");
 		case 0x061C: return wxT("EC_TAG_CLIENT_UPLOAD_STATE");

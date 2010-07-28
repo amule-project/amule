@@ -152,6 +152,7 @@ Version 2.3.0 - The river knows.
 		* Removed lag (caused by language pref) when opening preferences dialog
 		* "Swap all A4AF to this (auto)" doesn't block sources with no needed parts any more
 		* Don't lock up in an infinite loop if all servers are not resolvable or blocked by IP filter
+		* Clients now always get uploaded a full chunk (removed setting)
 
 	Vollstrecker:
 		* Unify copyright lines

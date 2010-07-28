@@ -280,9 +280,6 @@ public:
 	static void		SetVerbose(bool val)		{ s_bVerbose = val; }
 	static bool		GetPreviewPrio()		{ return s_bpreviewprio; }
 	static void		SetPreviewPrio(bool in)		{ s_bpreviewprio = in; }
-	static bool		TransferFullChunks()		{ return s_btransferfullchunks; }
-	static void		SetTransferFullChunks( bool m_bintransferfullchunks ) 
-					{s_btransferfullchunks = m_bintransferfullchunks; }
 	static bool		StartNextFile()			{ return s_bstartnextfile; }
 	static bool		StartNextFileSame()		{ return s_bstartnextfilesame; }
 	static void		SetStartNextFile(bool val)	{ s_bstartnextfile = val; }
@@ -653,7 +650,6 @@ protected:
 	static wxString	s_yourHostname;
 	static bool	s_bVerbose;
 	static bool	s_bmanualhighprio;
-	static bool	s_btransferfullchunks;
 	static bool	s_bstartnextfile;
 	static bool	s_bstartnextfilesame;	
 	static bool	s_bshowoverhead;

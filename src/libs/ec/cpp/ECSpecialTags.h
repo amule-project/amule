@@ -318,7 +318,6 @@ class CEC_UpDownClient_Tag : public CECTag {
 		bool KadPort(uint16 &target) const { return AssignIfExist(EC_TAG_CLIENT_KAD_PORT, target); }
 
 		uint32 Score(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_SCORE, target); }
-		uint32 Rating(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_RATING, target); }
 		uint16 WaitingPosition(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAITING_POSITION, target); }
 		uint16 RemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, target); }
 		uint16 OldRemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK, target); }

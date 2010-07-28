@@ -1417,10 +1417,10 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     item51->SetForegroundColour( *wxBLUE );
     item47->Add( item51, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item52 = new wxStaticText( parent, -1, _("Rating (total):"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item52 = new wxStaticText( parent, -1, _("Queue rank:"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item52, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item53 = new wxStaticText( parent, ID_DRATING, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item53 = new wxStaticText( parent, ID_QUEUERANK, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item53->SetForegroundColour( *wxBLUE );
     item47->Add( item53, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
@@ -1841,12 +1841,8 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Uploads") );
     wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_FULLCHUNKTRANS, _("Try to transfer full chunks to all uploads"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetValue( TRUE );
+    wxCheckBox *item20 = new wxCheckBox( parent, IDC_UAP, _("Add new shared files with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
     item18->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 0 );
-
-    wxCheckBox *item21 = new wxCheckBox( parent, IDC_UAP, _("Add new shared files with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 0 );
 
     item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
 

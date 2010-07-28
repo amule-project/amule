@@ -499,32 +499,16 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 	}
 
 	// Ordinary slots
-	bool kickHim = false;
-
-	if (thePrefs::TransferFullChunks()) {
-		// "Transfer full chunks": drop client after 10 MB upload, or after an hour.
-		// (so average UL speed should at least be 2.84 kB/s)
-		// We don't track what he is downloading, but if it's all from one chunk he gets it.
-		if (client->GetUpStartTimeDelay() > 3600000 	// time: 1h
-			|| client->GetSessionUp() > 10485760) {		// data: 10MB
-			kickHim = true;
-		}
-	} else {
-		uint32 clientScore = client->GetScore();
-		CClientPtrList::iterator it = m_waitinglist.begin();
-		for (; it != m_waitinglist.end(); ++it ) {
-			if (clientScore < (*it)->GetScore(true)) {
-				kickHim = true;
-				break;
-			}
-		}
-	}
-
-	if (kickHim) {
+	// "Transfer full chunks": drop client after 10 MB upload, or after an hour.
+	// (so average UL speed should at least be 2.84 kB/s)
+	// We don't track what he is downloading, but if it's all from one chunk he gets it.
+	if (client->GetUpStartTimeDelay() > 3600000 	// time: 1h
+		|| client->GetSessionUp() > 10485760) {		// data: 10MB
 		m_allowKicking = false;		// kick max one client per cycle
+		return true;
 	}
 	
-	return kickHim;
+	return false;
 }
 
 
