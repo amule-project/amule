@@ -311,21 +311,13 @@ public:
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 
 #ifndef CLIENT_GUI
-	uint32		GetScore(
-				bool sysvalue = false,
-				bool onlybasevalue = false) const;
+	uint32		GetScore(bool sysvalue = false) const;
 	uint8		GetObfuscationStatus() const;
 	uint16		GetUploadQueueWaitingPosition() const;
 	uint16		GetNextRequestedPart() const;
 #else
 	uint32		m_score;
-	uint32		m_rating;
-	uint32		GetScore(
-				bool WXUNUSED(sysvalue) = false,
-				bool onlybasevalue = false) const
-	{
-		return onlybasevalue ? m_rating : m_score;
-	}
+	uint32		GetScore(bool WXUNUSED(sysvalue) = false) const	{ return m_score; }
 	uint16		m_waitingPosition;
 	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
 	EIdentState	m_identState;

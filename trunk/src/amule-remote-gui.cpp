@@ -1123,7 +1123,6 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 
 	m_waitingPosition = 0;
 	m_score = 0;
-	m_rating = 0;
 	m_identState = IS_NOTAVAILABLE;
 	m_obfuscationStatus = 0;
 
@@ -1302,7 +1301,6 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->XferDownSession(&client->m_nTransferredDown);
 
 	tag->Score(&client->m_score);
-	tag->Rating(&client->m_rating);
 
 	tag->NextRequestedPart(client->m_nextRequestedPart);
 	tag->LastDownloadingPart(client->m_lastDownloadingPart);

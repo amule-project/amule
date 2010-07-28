@@ -69,8 +69,7 @@ void CUpDownClient::SetUploadState(uint8 eNewState)
 	}
 }
 
-uint32 CUpDownClient::GetScore(	bool sysvalue,				// true: return zero for lowID client (unless it's connected)
-								bool onlybasevalue) const	// true: ignore time and file upload priority
+uint32 CUpDownClient::GetScore(	bool sysvalue )	const	// true: return zero for lowID client (unless it's connected)
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
 	if (m_Username.IsEmpty()) {
@@ -103,57 +102,47 @@ uint32 CUpDownClient::GetScore(	bool sysvalue,				// true: return zero for lowID
 		return 0;
 	}	
 
-	// calculate score, based on waitingtime and other factors
-	float fBaseValue;
-	if (onlybasevalue) {
-		fBaseValue = 100;
-	} else if (!IsDownloading()) {
-		fBaseValue = (float)(::GetTickCount()-GetWaitStartTime())/1000;
-	} else {
-		// we dont want one client to download forever
-		// the first 15 min downloadtime counts as 15 min waitingtime and you get
-		// a 15 min bonus while you are in the first 15 min :)
-		// (to avoid 20 sec downloads) after this the score won't raise anymore 
-		fBaseValue = (float)(m_dwUploadTime-GetWaitStartTime());
-		wxASSERT(fBaseValue >= 0); // Obviously
-		fBaseValue += (float)(::GetTickCount() - m_dwUploadTime > 900000)? 900000:1800000;
-		fBaseValue /= 1000;
+	// score applies only to waiting clients, not to downloading clients
+	if (IsDownloading()) {
+		return 0;
 	}
+
+	// calculate score, based on waitingtime and other factors
+	float fBaseValue = (float)(::GetTickCount()-GetWaitStartTime())/1000;
 	
 	fBaseValue *= GetScoreRatio();	// credits
 	
-	if (!onlybasevalue) {
-		// Take file upload priority into account
-		//
-		// One yet unsolved problem here:
-		// sometimes a client asks for 2 files and there is no way to decide, which file the 
-		// client finally gets. so it could happen that he is queued first because of a 
-		// high prio file, but then asks for something completely different.
-		float filepriority;
-		switch (pFile->GetUpPriority()) {
-			case PR_POWERSHARE:
-				filepriority = 250.0f; 
-				break;
-			case PR_VERYHIGH:
-				filepriority = 1.8f;
-				break;
-			case PR_HIGH:
-				filepriority = 0.9f;
-				break;
-			case PR_LOW:
-				filepriority = 0.6f;
-				break;
-			case PR_VERYLOW:
-				filepriority = 0.2f;
-				break;
-			case PR_NORMAL:
-			default:
-				filepriority = 0.7f;
-				break;
-		}
-		fBaseValue *= filepriority;
+	// Take file upload priority into account
+	//
+	// One yet unsolved problem here:
+	// sometimes a client asks for 2 files and there is no way to decide, which file the 
+	// client finally gets. so it could happen that he is queued first because of a 
+	// high prio file, but then asks for something completely different.
+	float filepriority;
+	switch (pFile->GetUpPriority()) {
+		case PR_POWERSHARE:
+			filepriority = 250.0f; 
+			break;
+		case PR_VERYHIGH:
+			filepriority = 1.8f;
+			break;
+		case PR_HIGH:
+			filepriority = 0.9f;
+			break;
+		case PR_LOW:
+			filepriority = 0.6f;
+			break;
+		case PR_VERYLOW:
+			filepriority = 0.2f;
+			break;
+		case PR_NORMAL:
+		default:
+			filepriority = 0.7f;
+			break;
 	}
-	if( (IsEmuleClient() || GetClientSoft() < 10) && m_byEmuleVersion <= 0x19) {
+	fBaseValue *= filepriority;
+
+	if ( (IsEmuleClient() || GetClientSoft() < 10) && m_byEmuleVersion <= 0x19) {
 		fBaseValue *= 0.5f;
 	}
 	return (uint32)fBaseValue;
