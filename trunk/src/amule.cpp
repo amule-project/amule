@@ -1347,7 +1347,7 @@ void CamuleApp::OnFinishedAllocation(CAllocFinishedEvent& evt)
 	wxCHECK_RET(file, wxT("Allocation finished event sent for unspecified file"));
 	wxASSERT_MSG(downloadqueue->IsPartFile(file), wxT("CAllocFinishedEvent for unknown partfile"));
 
-	file->SetPartFileStatus(PS_EMPTY);
+	file->SetStatus(PS_EMPTY);
 
 	if (evt.Succeeded()) {
 		if (evt.IsPaused()) {
