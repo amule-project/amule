@@ -103,7 +103,6 @@ public:
 	virtual ~CPartFile();
 	
 	bool	CreateFromFile(wxString WXUNUSED(directory), wxString WXUNUSED(filename), void* WXUNUSED(pvProgressParam)) {return false;}// not supported in this class
-	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool LoadFromFile(const CFileDataIO* WXUNUSED(file)) { return false; }
 	bool	WriteToFile(CFileDataIO* WXUNUSED(file))	{ return false; }
 	bool	IsPartFile() const		{ return !(status == PS_COMPLETE); }

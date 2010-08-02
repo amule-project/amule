@@ -288,13 +288,13 @@ void CPartFile::CreatePartFile()
 	}
 	if (!fileCreated) {
 		AddLogLineM(false,_("ERROR: Failed to create partfile)"));
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 	}
 
 	SetFilePath(thePrefs::GetTempDir());
 			
 	if (thePrefs::GetAllocFullFile()) {
-		SetPartFileStatus(PS_ALLOCATING);
+		SetStatus(PS_ALLOCATING);
 		CThreadScheduler::AddTask(new CAllocateFileTask(this, thePrefs::AddNewFilesPaused()));
 	} else {
 		AllocationFinished();
@@ -665,7 +665,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		return false;
 	}
 	
-	SetPartFileStatus(PS_EMPTY);
+	SetStatus(PS_EMPTY);
 
 	try {
 		// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
@@ -679,7 +679,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		// SLUGFILLER: SafeHash
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Error while accessing partfile \"%s\": %s") ) % GetFileName() % e.what());
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 	}
 
 	// now close the file again until needed
@@ -693,7 +693,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		m_hashsetneeded = false;
 		for (size_t i = 0; i < m_hashlist.size(); ++i) {
 			if (IsComplete(i)) {
-				SetPartFileStatus(PS_READY);
+				SetStatus(PS_READY);
 			}
 		}
 	}
@@ -713,7 +713,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 					% m_PartPath
 					% (m_lastDateChanged - file_date) );
 				// rehash
-				SetPartFileStatus(PS_WAITINGFORHASH);
+				SetStatus(PS_WAITINGFORHASH);
 			
 				CPath partFileName = m_partmetfilename.RemoveExt();
 				CThreadScheduler::AddTask(new CHashingTask(m_filePath, partFileName, this));
@@ -1508,7 +1508,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		// swap No needed partfiles if possible
 
 		if (((old_trans==0) && (transferingsrc>0)) || ((old_trans>0) && (transferingsrc==0))) {
-			SetPartFileStatus(status);
+			SetStatus(status);
 		}
 	
 		// Kad source search		
@@ -2100,7 +2100,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 	AddDebugLogLineM( false, logPartFile, wxString( wxT("CPartFile::CompleteFile: Hash ") ) + ( bIsHashingDone ? wxT("done") : wxT("not done") ) );
 			  
 	if (!bIsHashingDone) {
-		SetPartFileStatus(PS_COMPLETING);
+		SetStatus(PS_COMPLETING);
 		kBpsDown = 0.0;
 
 		CPath partFile = m_partmetfilename.RemoveExt();
@@ -2109,7 +2109,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 	} else {
 		StopFile();
 		m_is_A4AF_auto=false;
-		SetPartFileStatus(PS_COMPLETING);
+		SetStatus(PS_COMPLETING);
 		// guess I was wrong about not need to spaw a thread ...
 		// It is if the temp and incoming dirs are on different
 		// partitions/drives and the file is large...[oz]
@@ -2130,7 +2130,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 {	
 	if (errorOccured) {
 		m_paused = true;
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 		AddLogLineM(true, CFormat( _("Unexpected error while completing %s. File paused") )% GetFileName() );
 	} else {
 		m_fullname = newname;
@@ -2139,7 +2139,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 		SetFileName(m_fullname.GetFullName());
 		m_lastDateChanged = CPath::GetModificationTime(m_fullname);
 		
-		SetPartFileStatus(PS_COMPLETE);
+		SetStatus(PS_COMPLETE);
 		m_paused = false;
 		ClearPriority();
 		
@@ -2305,7 +2305,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
-			SetPartFileStatus(PS_ERROR);
+			SetStatus(PS_ERROR);
 			return false;
 		} catch (const CEOFException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
@@ -2353,7 +2353,7 @@ void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 
 void CPartFile::StopFile(bool bCancel)
 {
-	// Kry - Need to set it here to get into SetPartFileStatus(status) correctly
+	// Kry - Need to set it here to get into SetStatus(status) correctly
 	m_stopped = true; 
 	
 	// Barry - Need to tell any connected clients to stop sending the file
@@ -3001,7 +3001,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 			m_nTotalBufferData -= lenData;
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + e.what());
-			SetPartFileStatus(PS_ERROR);
+			SetStatus(PS_ERROR);
 			// No need to bang your head against it again and again if it has already failed.
 			DeleteContents(m_BufferedData_list);
 			m_nTotalBufferData = 0;
@@ -3023,7 +3023,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while truncating part-file (%s): %s"))
 				% m_PartPath % e.what());
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 	}
 
 
@@ -3223,18 +3223,6 @@ void CPartFile::RemoveDownloadingSource(CUpDownClient* client)
 }
 
 
-void CPartFile::SetPartFileStatus(uint8 newstatus)
-{
-	status=newstatus;
-	
-	if (thePrefs::GetAllcatType()) {
-		Notify_DownloadCtrlUpdateItem(this);
-	}
-
-	Notify_DownloadCtrlSort();
-}
-
-
 uint64 CPartFile::GetNeededSpace()
 {
 	try {
@@ -3249,13 +3237,15 @@ uint64 CPartFile::GetNeededSpace()
 		AddDebugLogLineM(true, logPartFile,
 			CFormat(wxT("Error while retrieving file-length (%s): %s"))
 				% m_PartPath % e.what());
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 		return 0;
 	}
 }
 
 void CPartFile::SetStatus(uint8 in)
 {
+	// PAUSED and INSUFFICIENT have extra flag variables m_paused and m_insufficient
+	// - they are never to be stored in status
 	wxASSERT( in != PS_PAUSED && in != PS_INSUFFICIENT );
 	
 	status = in;
@@ -3266,6 +3256,7 @@ void CPartFile::SetStatus(uint8 in)
 		if ( thePrefs::ShowCatTabInfos() ) {
 			Notify_ShowUpdateCatTabTitles();
 		}
+		Notify_DownloadCtrlSort();
 	}
 }
 
@@ -3383,7 +3374,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		AddDebugLogLineM(true, logAICHRecovery,
 			CFormat(wxT("IO failure while hashing part-file '%s': %s"))
 				% m_hpartfile.GetFilePath() % e.what());
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 		return;
 	}
 	
@@ -3630,12 +3621,11 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 {
 	uint32 curTick = ::GetTickCount();
 
-	 // Wait 1.5s between each redraw
-	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE ) {
-		 Notify_DownloadCtrlUpdateItem(this);
+	// Wait 1.5s between each redraw
+	if (force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
+		Notify_DownloadCtrlUpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}
-	
 }
 
 
@@ -4001,7 +3991,7 @@ void CPartFile::AllocationFinished()
 	// see if it can be opened
 	if (!m_hpartfile.Open(m_PartPath, CFile::read_write)) {
 		AddLogLineM(false, CFormat(_("ERROR: Failed to open partfile '%s'")) % GetFullName());
-		SetPartFileStatus(PS_ERROR);
+		SetStatus(PS_ERROR);
 	}
 	// then close the handle again
 	m_hpartfile.Release(true);
