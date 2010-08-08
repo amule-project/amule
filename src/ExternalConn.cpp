@@ -977,6 +977,7 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	
 	EC_SEARCH_TYPE search_type = search_request->SearchType();
 	SearchType core_search_type = LocalSearch;
+	uint32 op = EC_OP_FAILED;
 	switch (search_type) {
 		case EC_SEARCH_GLOBAL:
 			core_search_type = GlobalSearch;
@@ -990,7 +991,8 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			if (!error.IsEmpty()) {
 				response = error;
 			} else {
-				response = wxTRANSLATE("Search in progress. Refetch results in a moment!");			
+				response = wxTRANSLATE("Search in progress. Refetch results in a moment!");
+				op = EC_OP_STRINGS;
 			}
 			break;
 		}
@@ -999,7 +1001,7 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			break;
 	}
 	
-	CECPacket *reply = new CECPacket(EC_OP_FAILED);
+	CECPacket *reply = new CECPacket(op);
 	// error or search in progress
 	reply->AddTag(CECTag(EC_TAG_STRING, response));
 		
