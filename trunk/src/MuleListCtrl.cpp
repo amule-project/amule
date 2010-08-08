@@ -374,7 +374,7 @@ void CMuleListCtrl::SortList()
 		ItemDataList selectedItems = GetSelectedItems();
 		// Store the focused item
 		long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
-		wxUIntPtr focused = (pos == -1) ? NULL : GetItemData(pos);
+		wxUIntPtr focused = (pos == -1) ? 0 : GetItemData(pos);
 		
 		SortItems(SortProc, (long int)&sortdata);
 		
