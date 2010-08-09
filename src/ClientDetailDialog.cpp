@@ -204,7 +204,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(
 			wxString::Format(wxT("%u"), m_client->GetUploadQueueWaitingPosition()));
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
-			wxString::Format(_("%u"), m_client->GetScore()));		
+			wxString::Format(wxT("%u"), m_client->GetScore()));		
 	} else {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(wxT("-"));
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
