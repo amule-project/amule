@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-01 08:47+0200\n"
-"PO-Revision-Date: 2010-06-15 15:33+0100\n"
+"PO-Revision-Date: 2010-08-04 14:27+0100\n"
 "Last-Translator: Giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1050,7 +1050,7 @@ msgstr "Non disponibile"
 #: src/ClientDetailDialog.cpp:207
 #, c-format
 msgid "%u"
-msgstr ""
+msgstr "%u"
 
 #: src/ClientTCPSocket.cpp:834
 #, c-format
@@ -1669,7 +1669,6 @@ msgstr ""
 "binaria. Usare core e client remoto dello stesso snapshot."
 
 #: src/ExternalConn.cpp:434
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
@@ -3249,9 +3248,8 @@ msgid "Secure ident:"
 msgstr "Identificazione sicura:"
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "Punteggio in coda"
+msgstr "Punteggio in coda:"
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -5847,9 +5845,8 @@ msgid "Origin"
 msgstr "Origine"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "Nome file"
+msgstr "Nome file locale"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
