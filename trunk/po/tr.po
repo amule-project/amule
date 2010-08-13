@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-01 08:47+0200\n"
-"PO-Revision-Date: 2010-06-29 07:41+0200\n"
+"PO-Revision-Date: 2010-08-13 05:37+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -1017,7 +1017,7 @@ msgstr "Uygun değil."
 #: src/ClientDetailDialog.cpp:207
 #, c-format
 msgid "%u"
-msgstr ""
+msgstr "%u"
 
 #: src/ClientTCPSocket.cpp:834
 #, c-format
@@ -1620,13 +1620,12 @@ msgstr ""
 "ve uzak kullanınız."
 
 #: src/ExternalConn.cpp:434
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
-"Keyfi bir SVN sürümden dengeli bir sürüme bağlanamazsınız! muhtemel bir kaza "
-"önlendi"
+"Bir geliştirme sürümünden dengeli bir sürüme bağlanamazsınız! *muhtemel* bir "
+"çökme önlendi"
 
 #: src/ExternalConn.cpp:461
 msgid "Invalid protocol version."
@@ -3192,9 +3191,8 @@ msgid "Secure ident:"
 msgstr "Güvenli Kimlik:"
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "Kuyruk Sırası"
+msgstr "Kuyruk sırası:"
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -5762,9 +5760,8 @@ msgid "Origin"
 msgstr "Köken"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "Dosya Adı"
+msgstr "Yerel Dosya Adı"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
