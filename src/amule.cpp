@@ -526,7 +526,7 @@ bool CamuleApp::OnInit()
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check = 
 			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
-				theApp->ConfigDir + wxT("last_version_check"), theApp->ConfigDir + wxT("last_version"), HTTP_VersionCheck, false);
+				theApp->ConfigDir + wxT("last_version_check"), theApp->ConfigDir + wxT("last_version"), HTTP_VersionCheck, false, true);
 		version_check->Create();
 		version_check->Run();
 	}
@@ -1997,7 +1997,7 @@ void CamuleApp::UpdateNotesDat(const wxString& url)
 {
 	wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
 		
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, theApp->ConfigDir + wxT("nodes.dat"), HTTP_NodesDat);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, theApp->ConfigDir + wxT("nodes.dat"), HTTP_NodesDat, true, false);
 	downloader->Create();
 	downloader->Run();
 }

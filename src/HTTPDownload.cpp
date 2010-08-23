@@ -140,7 +140,8 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN)
 #endif
 
 
-CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& filename, const wxString& oldfilename, HTTP_Download_File file_id, bool showDialog)
+CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& filename, const wxString& oldfilename, HTTP_Download_File file_id,
+										bool showDialog, bool checkDownloadNewer)
 #ifdef AMULE_DAEMON
 	: CMuleThread(wxTHREAD_DETACHED),
 #else
@@ -161,7 +162,7 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& fi
 	}
 	// Get the date on which the original file was last modified
 	// Only if it's the same URL we used for the last download and if the file exists.
-	if (thePrefs::GetLastHTTPDownloadURL(file_id) == url) {
+	if (checkDownloadNewer && thePrefs::GetLastHTTPDownloadURL(file_id) == url) {
 		wxFileName origFile = wxFileName(oldfilename);
 		if (origFile.FileExists()) {
 			AddDebugLogLineN(logHTTP, CFormat(wxT("URL %s matches and file %s exists, only download if newer")) % url % oldfilename);
