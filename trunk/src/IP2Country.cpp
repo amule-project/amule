@@ -94,7 +94,7 @@ void CIP2Country::Enable()
 void CIP2Country::Update()
 {
 	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBasePath + wxT(".download"), m_DataBasePath, HTTP_GeoIP);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBasePath + wxT(".download"), m_DataBasePath, HTTP_GeoIP, true, true);
 	downloader->Create();
 	downloader->Run();
 }
