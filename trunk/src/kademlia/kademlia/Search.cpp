@@ -338,7 +338,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
 				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
 				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
-					AddDebugLogLineN(logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
+					AddDebugLogLineN(logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad2Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
 					continue;
 				} else {
 					mapReceivedIPs[c->GetIPAddress()] = 1;
@@ -348,7 +348,7 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 					wxASSERT(mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != mapReceivedSubnets.end());
 					int subnetCount = mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
 					if (subnetCount >= 2) {
-						AddDebugLogLineN(logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad(2)Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
+						AddDebugLogLineN(logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad2Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
 						continue;
 					} else {
 						mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
@@ -667,8 +667,7 @@ void CSearch::StorePacket()
 					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 					wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
 				} else {
-					DebugSend(KadPublishReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+					wxFAIL;
 				}
 			}
 			m_totalRequestAnswers++;
@@ -712,8 +711,7 @@ void CSearch::StorePacket()
 					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 					wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
 				} else {
-					DebugSend(KadPublishNotesReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+					wxFAIL;
 				}
 				m_totalRequestAnswers++;
 				// Delete all tags.
@@ -1143,44 +1141,7 @@ void CSearch::SendFindValue(CContact *contact)
 			}
 #endif
 		} else {
-			CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_REQ, contact->GetIPAddress(), contact->GetUDPPort(), 0, NULL);
-#ifdef __DEBUG__
-			switch (m_type) {
-				case NODE:
-					DebugSendF(wxT("KadReq(Node)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case NODECOMPLETE:
-					DebugSendF(wxT("KadReq(NodeComplete)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case NODESPECIAL:
-					DebugSendF(wxT("KadReq(NodeSpecial)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case NODEFWCHECKUDP:
-					DebugSendF(wxT("KadReq(NodeFWCheckUDP)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case FILE:
-					DebugSendF(wxT("KadReq(File)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case KEYWORD:
-					DebugSendF(wxT("KadReq(Keyword)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case STOREFILE:
-					DebugSendF(wxT("KadReq(StoreFile)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case STOREKEYWORD:
-					DebugSendF(wxT("KadReq(StoreKeyword)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case STORENOTES:
-					DebugSendF(wxT("KadReq(StoreNotes)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				case NOTES:
-					DebugSendF(wxT("KadReq(Notes)"), contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-				default:
-					DebugSend(KadReq, contact->GetIPAddress(), contact->GetUDPPort());
-					break;
-			}
-#endif
+			wxFAIL;
 		}
 	} catch (const CEOFException& err) {
 		AddDebugLogLineC(logKadSearch, wxT("CEOFException in CSearch::SendFindValue: ") + err.what());
@@ -1201,14 +1162,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 		if (file && bio) {
 			// Name, Size
 			taglist.push_back(new CTagString(TAG_FILENAME, file->GetFileName().GetPrintable()));
-			if (file->IsLargeFile()) {
-				// TODO: As soon as we drop Kad1 support, we should switch to Int64 tags (we could do now already for kad2 nodes only but no advantage in that)
-				uint8_t size64[sizeof(uint64_t)];
-				PokeUInt64(size64, file->GetFileSize());
-				taglist.push_back(new CTagBsob(TAG_FILESIZE, size64, sizeof(uint64_t)));	
-			} else {
-				taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
-			}
+			taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
 			taglist.push_back(new CTagVarInt(TAG_SOURCES, file->m_nCompleteSourcesCount));
 
 			// eD2K file type (Audio, Video, ...)

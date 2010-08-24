@@ -95,8 +95,6 @@ public:
 	uint8_t	 GetVersion() const throw()			{ return m_version; }
 	void	 SetVersion(uint8_t value) throw()		{ m_version = value; }
 
-	bool	 CheckIfKad2() throw()				{ return m_checkKad2 ? m_checkKad2 = false, true : false; }
-
 	const CKadUDPKey& GetUDPKey() const throw()		{ return m_udpKey; }
 	void	 SetUDPKey(const CKadUDPKey& key) throw()	{ m_udpKey = key; }
 
@@ -118,7 +116,6 @@ private:
 	time_t		m_created;
 	uint32_t	m_inUse;
 	uint8_t		m_version;
-	bool		m_checkKad2;
 	bool		m_ipVerified;
 	bool		m_receivedHelloPacket;
 	CKadUDPKey	m_udpKey;

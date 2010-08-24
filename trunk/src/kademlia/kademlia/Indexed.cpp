@@ -732,16 +732,14 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32_t timet)
 	return true;
 }
 
-void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, bool kad2, uint16_t startPosition, const CKadUDPKey& senderKey)
+void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey)
 {
 	KeyHash* currKeyHash = NULL;
 	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID);
 	if (itKeyHash != m_Keyword_map.end()) {
 		currKeyHash = itKeyHash->second;
 		CMemFile packetdata(1024 * 50);
-		if (kad2) {
-			packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
-		}
+		packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 		packetdata.WriteUInt128(keyID);
 		packetdata.WriteUInt16(50);
 		const uint16_t maxResults = 300;
@@ -776,23 +774,12 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 								}
 #endif
 								packetdata.WriteUInt128(currName->m_uSourceID);
-								if (kad2) {
-									currName->WriteTagListWithPublishInfo(&packetdata);
-								} else {
-									currName->WriteTagList(&packetdata);
-								}
+								currName->WriteTagListWithPublishInfo(&packetdata);
 								if (count % 50 == 0) {
-									if (kad2) {
-										DebugSend(Kad2SearchRes, ip, port);
-										CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
-									} else {
-										DebugSend(KadSearchRes, ip, port);
-										CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
-									}
+									DebugSend(Kad2SearchRes, ip, port);
+									CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 									packetdata.Reset();
-									if (kad2) {
-										packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
-									}
+									packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 									packetdata.WriteUInt128(keyID);
 									packetdata.WriteUInt16(50);
 								}
@@ -818,33 +805,24 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;
 			if (countLeft) {
-				if (kad2) {
-					packetdata.Seek(16 + 16);
-					packetdata.WriteUInt16(countLeft);
-					DebugSend(Kad2SearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
-				} else {
-					packetdata.Seek(16);
-					packetdata.WriteUInt16(countLeft);
-					DebugSend(KadSearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
-				}
+				packetdata.Seek(16 + 16);
+				packetdata.WriteUInt16(countLeft);
+				DebugSend(Kad2SearchRes, ip, port);
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 			}
 		}
 	}
 	Clean();
 }
 
-void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey)
+void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey)
 {
 	SrcHash* currSrcHash = NULL;
 	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if (itSrcHash != m_Sources_map.end()) {
 		currSrcHash = itSrcHash->second;
 		CMemFile packetdata(1024*50);
-		if (kad2) {
-			packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
-		}
+		packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 		packetdata.WriteUInt128(keyID);
 		packetdata.WriteUInt16(50);
 		uint16_t maxResults = 300;
@@ -862,17 +840,10 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 						currName->WriteTagList(&packetdata);
 						count++;
 						if (count % 50 == 0) {
-							if (kad2) {
-								DebugSend(Kad2SearchRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
-							} else {
-								DebugSend(KadSearchRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
-							}
+							DebugSend(Kad2SearchRes, ip, port);
+							CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 							packetdata.Reset();
-							if (kad2) {
-								packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
-							}
+							packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 							packetdata.WriteUInt128(keyID);
 							packetdata.WriteUInt16(50);
 						}
@@ -886,33 +857,24 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;
 			if (countLeft) {
-				if (kad2) {
-					packetdata.Seek(16 + 16);
-					packetdata.WriteUInt16(countLeft);
-					DebugSend(Kad2SearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
-				} else {
-					packetdata.Seek(16);
-					packetdata.WriteUInt16(countLeft);
-					DebugSend(KadSearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
-				}
+				packetdata.Seek(16 + 16);
+				packetdata.WriteUInt16(countLeft);
+				DebugSend(Kad2SearchRes, ip, port);
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 			}
 		}
 	}
 	Clean();
 }
 
-void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint64_t fileSize, const CKadUDPKey& senderKey)
+void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint64_t fileSize, const CKadUDPKey& senderKey)
 {
 	SrcHash* currNoteHash = NULL;
 	SrcHashMap::iterator itNote = m_Notes_map.find(keyID);
 	if (itNote != m_Notes_map.end()) {
 		currNoteHash = itNote->second;		
 		CMemFile packetdata(1024*50);
-		if (kad2) {
-			packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
-		}
+		packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 		packetdata.WriteUInt128(keyID);
 		packetdata.WriteUInt16(50);
 		uint16_t maxResults = 150;
@@ -928,17 +890,10 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 						currName->WriteTagList(&packetdata);
 						count++;
 						if (count % 50 == 0) {
-							if (kad2) {
-								DebugSend(Kad2SearchRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
-							} else {
-								DebugSend(KadSearchNotesRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_NOTES_RES, ip, port, senderKey, NULL);
-							}
+							DebugSend(Kad2SearchRes, ip, port);
+							CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 							packetdata.Reset();
-							if (kad2) {
-								packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
-							}
+							packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 							packetdata.WriteUInt128(keyID);
 							packetdata.WriteUInt16(50);
 						}
@@ -951,17 +906,10 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 
 		uint16_t countLeft = count % 50;
 		if (countLeft) {
-			if (kad2) {
-				packetdata.Seek(16 + 16);
-				packetdata.WriteUInt16(countLeft);
-				DebugSend(Kad2SearchRes, ip, port);
-				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
-			} else {
-				packetdata.Seek(16);
-				packetdata.WriteUInt16(countLeft);
-				DebugSend(KadSearchNotesRes, ip, port);
-				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_NOTES_RES, ip, port, senderKey, NULL);
-			}
+			packetdata.Seek(16 + 16);
+			packetdata.WriteUInt16(countLeft);
+			DebugSend(Kad2SearchRes, ip, port);
+			CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 		}
 	}
 }

@@ -1989,7 +1989,7 @@ void CamuleApp::BootstrapKad(uint32 ip, uint16 port)
 		theApp->ShowConnectionState();
 	}
 	
-	Kademlia::CKademlia::Bootstrap(ip, port, true);
+	Kademlia::CKademlia::Bootstrap(ip, port);
 }
 
 
