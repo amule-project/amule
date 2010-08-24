@@ -167,20 +167,20 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 						numContacts = file.ReadUInt32();
 					}
 				}
+			} else {
+				// Don't read version 0 nodes.dat files, because they can't tell the kad version of the contacts stored.
+				AddLogLineC(_("Failed to read nodes.dat file - too old. This version (0) is not supported anymore."));
+				numContacts = 0;
 			}
+			DEBUG_ONLY( unsigned kad1Count = 0; )
 			if (numContacts != 0 && numContacts * 25 <= (file.GetLength() - file.GetPosition())) {
 				for (uint32_t i = 0; i < numContacts; i++) {
 					CUInt128 id = file.ReadUInt128();
 					uint32_t ip = file.ReadUInt32();
 					uint16_t udpPort = file.ReadUInt16();
 					uint16_t tcpPort = file.ReadUInt16();
-					uint8_t type = 0;
 					uint8_t contactVersion = 0;
-					if (fileVersion >= 1) {
-						contactVersion = file.ReadUInt8();
-					} else {
-						type = file.ReadUInt8();
-					}
+					contactVersion = file.ReadUInt8();
 					CKadUDPKey kadUDPKey;
 					bool verified = false;
 					if (fileVersion >= 2) {
@@ -191,7 +191,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 						}
 					}
 					// IP appears valid
-					if (type < 4) {
+					if (contactVersion > 1) {
 						if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),udpPort)) {
 							if (!theApp->ipfilter->IsFiltered(wxUINT32_SWAP_ALWAYS(ip)) &&
 							    !(udpPort == 53 && contactVersion <= 5 /*No DNS Port without encryption*/)) {
@@ -201,11 +201,18 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 								}
 							}
 						}
+					} else {
+						DEBUG_ONLY( kad1Count++; )
 					}
 				}
 			}
 			file.Close();
 			AddLogLineM(false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", validContacts), validContacts));
+#ifdef __DEBUG__
+			if (kad1Count > 0) {
+				AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Ignored %u kad1 "), kad1Count) + (kad1Count > 1 ? wxT("contacts"): wxT("contact")) + wxT(" in nodes.dat file."));
+			}
+#endif
 			if (!doHaveVerifiedContacts) {
 				AddDebugLogLineN(logKadRouting, wxT("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping."));
 				SetAllContactsVerified();
