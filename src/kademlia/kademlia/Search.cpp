@@ -82,6 +82,7 @@ CSearch::CSearch()
 	m_searchTermsDataSize = 0;
 	m_nodeSpecialSearchRequester = NULL;
 	m_closestDistantFound = 0;
+	m_requestedMoreNodesContact = NULL;
 }
 
 CSearch::~CSearch()
@@ -236,15 +237,42 @@ void CSearch::PrepareToStop() throw()
 
 void CSearch::JumpStart()
 {
+	// If we had a response within the last 3 seconds, no need to jumpstart the search.
+	if ((time_t)(m_lastResponse + SEC(3)) > time(NULL)) {
+		return;
+	}
+
 	// If we ran out of contacts, stop search.
 	if (m_possible.empty()) {
 		PrepareToStop();
 		return;
 	}
 
-	// If we had a response within the last 3 seconds, no need to jumpstart the search.
-	if ((time_t)(m_lastResponse + SEC(3)) > time(NULL)) {
-		return;
+	// Is this a find lookup and are the best two (=KADEMLIA_FIND_VALUE) nodes dead/unreachable?
+	// In this case try to discover more close nodes before using our other results
+	// The reason for this is that we may not have found the closest node alive due to results being limited to 2 contacts,
+	// which could very well have been the duplicates of our dead closest nodes
+	bool lookupCloserNodes = false;
+	if (m_requestedMoreNodesContact == NULL && GetRequestContactCount() == KADEMLIA_FIND_VALUE && m_tried.size() >= 3 * KADEMLIA_FIND_VALUE) {
+		ContactMap::const_iterator it = m_tried.begin();
+		lookupCloserNodes = true;
+		for (unsigned i = 0; i < KADEMLIA_FIND_VALUE; i++) {
+			if (m_responded.count(it->first) > 0) {
+				lookupCloserNodes = false;
+				break;
+			}
+			++it;
+		}
+		if (lookupCloserNodes) {
+			while (it != m_tried.end()) {
+				if (m_responded.count(it->first) > 0) {
+					AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Best %d nodes for lookup (id=%x) were unreachable or dead, reasking closest for more"), KADEMLIA_FIND_VALUE, GetSearchID()));
+					SendFindValue(it->second, true);
+					return;
+				}
+				++it;
+			}
+		}
 	}
 
 	// Search for contacts that can be used to jumpstart a stalled search.
@@ -282,14 +310,26 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 		m_delete.push_back(*response);
 	}
 
+	m_lastResponse = time(NULL);
+
+	// Find contact that is responding.
+	CUInt128 fromDistance(0u);
+	CContact *fromContact = NULL;
+	for (ContactMap::const_iterator it = m_tried.begin(); it != m_tried.end(); ++it) {
+		CContact *tmpContact = it->second;
+		if ((tmpContact->GetIPAddress() == fromIP) && (tmpContact->GetUDPPort() == fromPort)) {
+			fromDistance = it->first;
+			fromContact = tmpContact;
+			break;
+		}
+	}
+
 	// Make sure the node is not sending more results than we requested, which is not only a protocol violation
 	// but most likely a malicious answer
-	if (results->size() > GetRequestContactCount()) {
+	if (results->size() > GetRequestContactCount() && !(m_requestedMoreNodesContact == fromContact && results->size() <= KADEMLIA_FIND_VALUE_MORE)) {
 		AddDebugLogLineN(logKadSearch, wxT("Node ") + KadIPToString(fromIP) + wxT(" sent more contacts than requested on a routing query, ignoring response"));
 		return;
 	}
-
-	m_lastResponse = time(NULL);
 
 	if (m_type == NODEFWCHECKUDP) {
 		m_answers++;
@@ -306,95 +346,95 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 		return;
 	}
 
-	// Find contact that is responding.
-	for (ContactMap::const_iterator tried = m_tried.begin(); tried != m_tried.end(); ++tried) {
-		CUInt128 fromDistance(tried->first);
-		CContact *from = tried->second;
+	if (fromContact != NULL) {
+		bool providedCloserContacts = false;
+		std::map<uint32_t, unsigned> receivedIPs;
+		std::map<uint32_t, unsigned> receivedSubnets;
+		// A node is not allowed to answer with contacts to itself
+		receivedIPs[fromIP] = 1;
+		receivedSubnets[fromIP & 0xFFFFFF00] = 1;
+		// Loop through their responses
+		for (ContactList::iterator it = results->begin(); it != results->end(); ++it) {
+			// Get next result
+			CContact *c = *it;
+			// calc distance this result is to the target
+			CUInt128 distance(c->GetClientID() ^ m_target);
 
-		if ((from->GetIPAddress() == fromIP) && (from->GetUDPPort() == fromPort)) {
-			// Add to list of people who responded
-			m_responded[fromDistance] = from;
+			if (distance < fromDistance) {
+				providedCloserContacts = true;
+			}
 
-			std::map<uint32_t, uint32_t> mapReceivedIPs;
-			std::map<uint32_t, uint32_t> mapReceivedSubnets;
-			// A node is not allowed to answer with contacts to itself
-			mapReceivedIPs[fromIP] = 1;
-			mapReceivedSubnets[fromIP & 0xFFFFFF00] = 1;
-			// Loop through their responses
-			for (response = results->begin(); response != results->end(); ++response) {
-				CContact *c = *response;
-				CUInt128 distance(c->GetClientID() ^ m_target);
+			// Ignore this contact if already known or tried it.
+			if (m_possible.count(distance) > 0) {
+				AddDebugLogLineN(logKadSearch, wxT("Search result from already known client: ignore"));
+				continue;
+			}
+			if (m_tried.count(distance) > 0) {
+				AddDebugLogLineN(logKadSearch, wxT("Search result from already tried client: ignore"));
+				continue;
+			}
 
-				// Ignore this contact if already known or tried it.
-				if (m_possible.count(distance) > 0) {
-					AddDebugLogLineN(logKadSearch, wxT("Search result from already known client: ignore"));
-					continue;
-				}
-				if (m_tried.count(distance) > 0) {
-					AddDebugLogLineN(logKadSearch, wxT("Search result from already tried client: ignore"));
-					continue;
-				}
-
-				// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
-				// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
-				if (mapReceivedIPs.count(c->GetIPAddress()) > 0) {
-					AddDebugLogLineN(logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad2Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
-					continue;
-				} else {
-					mapReceivedIPs[c->GetIPAddress()] = 1;
-				}
+			// We only accept unique IPs in the answer, having multiple IDs pointing to one IP in the routing tables
+			// is no longer allowed since eMule0.49a, aMule-2.2.1 anyway
+			if (receivedIPs.count(c->GetIPAddress()) > 0) {
+				AddDebugLogLineN(logKadSearch, wxT("Multiple KadIDs pointing to same IP (") + KadIPToString(c->GetIPAddress()) + wxT(") in Kad2Res answer - ignored, sent by ") + KadIPToString(fromContact->GetIPAddress()));
+				continue;
+			} else {
+				receivedIPs[c->GetIPAddress()] = 1;
+			}
 				// and no more than 2 IPs from the same /24 subnet
-				if (mapReceivedSubnets.count(c->GetIPAddress() & 0xFFFFFF00) > 0 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress()))) {
-					wxASSERT(mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != mapReceivedSubnets.end());
-					int subnetCount = mapReceivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
-					if (subnetCount >= 2) {
-						AddDebugLogLineN(logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad2Res answer - ignored, sent by ") + KadIPToString(from->GetIPAddress()));
-						continue;
-					} else {
-						mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
-					}
+			if (receivedSubnets.count(c->GetIPAddress() & 0xFFFFFF00) > 0 && !::IsLanIP(wxUINT32_SWAP_ALWAYS(c->GetIPAddress()))) {
+				wxASSERT(receivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00) != receivedSubnets.end());
+				int subnetCount = receivedSubnets.find(c->GetIPAddress() & 0xFFFFFF00)->second;
+				if (subnetCount >= 2) {
+					AddDebugLogLineN(logKadSearch, wxT("More than 2 KadIDs pointing to same subnet (") + KadIPToString(c->GetIPAddress() & 0xFFFFFF00) + wxT("/24) in Kad2Res answer - ignored, sent by ") + KadIPToString(fromContact->GetIPAddress()));
+					continue;
 				} else {
-					mapReceivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = 1;
+					receivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = subnetCount + 1;
 				}
+			} else {
+				receivedSubnets[c->GetIPAddress() & 0xFFFFFF00] = 1;
+			}
 
-				// Add to possible
-				m_possible[distance] = c;
+			// Add to possible
+			m_possible[distance] = c;
 
-				// Verify if the result is closer to the target than the one we just checked.
-				if (distance < fromDistance) {
-					// The top ALPHA_QUERY of results are used to determin if we send a request.
-					bool top = false;
-					if (m_best.size() < ALPHA_QUERY) {
-						top = true;
+			// Verify if the result is closer to the target than the one we just checked.
+			if (distance < fromDistance) {
+				// The top ALPHA_QUERY of results are used to determine if we send a request.
+				bool top = false;
+				if (m_best.size() < ALPHA_QUERY) {
+					top = true;
+					m_best[distance] = c;
+				} else {
+					ContactMap::iterator worst = m_best.end();
+					--worst;
+					if (distance < worst->first) {
+						// Prevent having more than ALPHA_QUERY within the Best list.
+						m_best.erase(worst);
 						m_best[distance] = c;
-					} else {
-						ContactMap::iterator it = m_best.end();
-						--it;
-						if (distance < it->first) {
-							// Prevent having more than ALPHA_QUERY within the Best list.
-							m_best.erase(it);
-							m_best[distance] = c;
-							top = true;
-						}
-					}
-
-					if (top) {
-						// We determined this contact is a candidate for a request.
-						// Add to tried
-						m_tried[distance] = c;
-						// Send the KadID so other side can check if I think it has the right KadID.
-						// Send request
-						SendFindValue(c);
+						top = true;
 					}
 				}
-			}
 
-			// Complete node search, just increment the counter.
-			if (m_type == NODECOMPLETE || m_type == NODESPECIAL) {
-				AddDebugLogLineN(logKadSearch, wxString(wxT("Search result type: Node")) + (m_type == NODECOMPLETE ? wxT("Complete") : wxT("Special")));
-				m_answers++;
+				if (top) {
+					// We determined this contact is a candidate for a request.
+					// Add to tried
+					m_tried[distance] = c;
+					// Send the KadID so other side can check if I think it has the right KadID.
+					// Send request
+					SendFindValue(c);
+				}
 			}
-			break;
+		}
+
+		// Add to list of people who responded.
+		m_responded[fromDistance] = providedCloserContacts;
+
+		// Complete node search, just increment the counter.
+		if (m_type == NODECOMPLETE || m_type == NODESPECIAL) {
+			AddDebugLogLineN(logKadSearch, wxString(wxT("Search result type: Node")) + (m_type == NODECOMPLETE ? wxT("Complete") : wxT("Special")));
+			m_answers++;
 		}
 	}
 }
@@ -1075,7 +1115,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	}
 }
 
-void CSearch::SendFindValue(CContact *contact)
+void CSearch::SendFindValue(CContact *contact, bool reaskMore)
 {
 	// Found a node that we think has contacts closer to our target.
 	try {
@@ -1086,11 +1126,23 @@ void CSearch::SendFindValue(CContact *contact)
 		CMemFile packetdata(33);
 		// The number of returned contacts is based on the type of search.
 		uint8_t contactCount = GetRequestContactCount();
+
+		if (reaskMore) {
+			if (m_requestedMoreNodesContact == NULL) {
+				m_requestedMoreNodesContact = contact;
+				wxASSERT(contactCount == KADEMLIA_FIND_VALUE);
+				contactCount = KADEMLIA_FIND_VALUE_MORE;
+			} else {
+				wxFAIL;
+			}
+		}
+
 		if (contactCount > 0) {
 			packetdata.WriteUInt8(contactCount);
 		} else {
 			return;
 		}
+
 		// Put the target we want into the packet.
 		packetdata.WriteUInt128(m_target);
 		// Add the ID of the contact we're contacting for sanity checks on the other end.
