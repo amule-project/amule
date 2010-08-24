@@ -276,7 +276,7 @@ void CKademlia::Process()
 		s_bootstrapList.pop_front();
 		m_bootstrap = now;
 		AddDebugLogLineN(logKadMain, wxT("Trying to bootstrap Kad from ") + KadIPToString(contact->GetIPAddress()) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
-		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion() > 1, contact->GetVersion(), &contact->GetClientID());
+		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion(), &contact->GetClientID());
 		delete contact;
 	}
 

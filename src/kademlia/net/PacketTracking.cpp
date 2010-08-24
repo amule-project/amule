@@ -66,17 +66,13 @@ void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)
 bool CPacketTracking::IsTrackedOutListRequestPacket(uint8_t opcode) throw()
 {
 	switch (opcode) {
-	 case KADEMLIA_BOOTSTRAP_REQ:
 	 case KADEMLIA2_BOOTSTRAP_REQ:
-	 case KADEMLIA_HELLO_REQ:
 	 case KADEMLIA2_HELLO_REQ:
 	 case KADEMLIA2_HELLO_RES:
-	 case KADEMLIA_REQ:
 	 case KADEMLIA2_REQ:
 	 case KADEMLIA_SEARCH_NOTES_REQ:
 	 case KADEMLIA2_SEARCH_NOTES_REQ:
 	 case KADEMLIA_PUBLISH_REQ:
-	 case KADEMLIA_PUBLISH_NOTES_REQ:
 	 case KADEMLIA2_PUBLISH_KEY_REQ:
 	 case KADEMLIA2_PUBLISH_SOURCE_REQ:
 	 case KADEMLIA2_PUBLISH_NOTES_REQ:
@@ -122,44 +118,30 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 	DEBUG_ONLY( const uint8_t dbgOrgOpcode = opcode; )
 
 	switch (opcode) {
-		case KADEMLIA_BOOTSTRAP_REQ:
-			opcode = KADEMLIA2_BOOTSTRAP_REQ;
 		case KADEMLIA2_BOOTSTRAP_REQ:
 			allowedPacketsPerMinute = 2;
 			break;
-		case KADEMLIA_HELLO_REQ:
-			opcode = KADEMLIA2_HELLO_REQ; 
 		case KADEMLIA2_HELLO_REQ:
 			allowedPacketsPerMinute = 3;
 			break;
-		case KADEMLIA_REQ:
-			opcode = KADEMLIA2_REQ;
 		case KADEMLIA2_REQ:
 			allowedPacketsPerMinute = 10;
 			break;
-		case KADEMLIA_SEARCH_NOTES_REQ:
-			opcode = KADEMLIA2_SEARCH_NOTES_REQ;
 		case KADEMLIA2_SEARCH_NOTES_REQ:
 			allowedPacketsPerMinute = 3;
 			break;
-		case KADEMLIA_SEARCH_REQ:
-			opcode = KADEMLIA2_SEARCH_KEY_REQ;
 		case KADEMLIA2_SEARCH_KEY_REQ:
 			allowedPacketsPerMinute = 3;
 			break;
 		case KADEMLIA2_SEARCH_SOURCE_REQ:
 			allowedPacketsPerMinute = 3;
 			break;
-		case KADEMLIA_PUBLISH_REQ:
-			opcode = KADEMLIA2_PUBLISH_KEY_REQ;
 		case KADEMLIA2_PUBLISH_KEY_REQ:
 			allowedPacketsPerMinute = 3;
 			break;
 		case KADEMLIA2_PUBLISH_SOURCE_REQ:
 			allowedPacketsPerMinute = 2;
 			break;
-		case KADEMLIA_PUBLISH_NOTES_REQ:
-			opcode = KADEMLIA2_PUBLISH_NOTES_REQ;
 		case KADEMLIA2_PUBLISH_NOTES_REQ:
 			allowedPacketsPerMinute = 2;
 			break;
@@ -178,7 +160,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 			allowedPacketsPerMinute = 2;
 			break;
 		default:
-			// not any request packets, so its a response packet - no further checks on this point
+			// not any request packets, so it's a response packet - no further checks on this point
 			return true;
 	}
 

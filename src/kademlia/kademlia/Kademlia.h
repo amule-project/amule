@@ -82,12 +82,12 @@ public:
 	static uint32_t			GetTotalFile() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalFile() : 0; }
 	static bool			GetPublish() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetPublish() : false; }
 	static uint32_t			GetIPAddress() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
-	static void Bootstrap(uint32_t ip, uint16_t port, bool kad2)
+	static void Bootstrap(uint32_t ip, uint16_t port)
 	{
 		time_t now = time(NULL);
 		if (instance && instance->m_udpListener && !IsConnected() && now - m_bootstrap > 10) {
 			m_bootstrap = now;
-			instance->m_udpListener->Bootstrap(ip, port, kad2);
+			instance->m_udpListener->Bootstrap(ip, port);
 		}
 	}
 

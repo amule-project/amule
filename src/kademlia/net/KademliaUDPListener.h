@@ -75,7 +75,7 @@ class CKademliaUDPListener : public CPacketTracking
 {
 public:
 	~CKademliaUDPListener();
-	void Bootstrap(uint32_t ip, uint16_t port, bool kad2, uint8_t kadVersion = 0, const CUInt128* cryptTargetID = NULL);
+	void Bootstrap(uint32_t ip, uint16_t port, uint8_t kadVersion = 0, const CUInt128* cryptTargetID = NULL);
 	void FirewalledCheck(uint32_t ip, uint16_t port, const CKadUDPKey& senderKey, uint8_t kadVersion);
 	void SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t port, uint8_t kadVersion, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID, bool requestAckPacket);
 	void SendNullPacket(uint8_t opcode, uint32_t ip, uint16_t port, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID);
@@ -90,25 +90,12 @@ private:
 	static void Free(SSearchTerm* pSearchTerms);
 
 	// Kad1.0
-	bool AddContact (const uint8_t* data, uint32_t lenData, uint32_t ip, uint16_t port, uint16_t tport, const CKadUDPKey& key, bool& ipVerified, bool update, CUInt128* outContactID);
-	void AddContacts(const uint8_t* data, uint32_t lenData, uint16_t numContacts, bool update);
-	void SendLegacyChallenge(uint32_t ip, uint16_t port, const CUInt128& contactID, bool kad2);
+	void SendLegacyChallenge(uint32_t ip, uint16_t port, const CUInt128& contactID);
 
-	void ProcessBootstrapRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
-	void ProcessBootstrapResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);
-	void ProcessHelloRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
-	void ProcessHelloResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
-	void ProcessKademliaRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
-	void ProcessKademliaResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
-	void ProcessSearchRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
 	void ProcessSearchResponse		(CMemFile &bio);
 	void ProcessSearchResponse		(const uint8_t* packetData, uint32_t lenPacket);
-	void ProcessPublishRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
 	void ProcessPublishResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);
-	void ProcessSearchNotesRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
 	void ProcessSearchNotesResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);
-	void ProcessPublishNotesRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port);
-	void ProcessPublishNotesResponse	(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip);
 	void ProcessFirewalledRequest		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
 	void ProcessFirewalledResponse		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, const CKadUDPKey& senderKey);
 	void ProcessFirewalledAckResponse	(uint32_t lenPacket);

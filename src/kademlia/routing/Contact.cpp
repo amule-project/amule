@@ -63,7 +63,6 @@ CContact::CContact(const CUInt128 &clientID, uint32_t ip, uint16_t udpPort, uint
 	  m_created(m_lastTypeSet),
 	  m_inUse(0),
 	  m_version(version),
-	  m_checkKad2(true),
 	  m_ipVerified(ipVerified),
 	  m_receivedHelloPacket(false),
 	  m_udpKey(key)

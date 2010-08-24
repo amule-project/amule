@@ -690,8 +690,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 		m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 	}
 
-	if( GetKadPort() ) {
-		Kademlia::CKademlia::Bootstrap(wxUINT32_SWAP_ALWAYS(GetIP()), GetKadPort(), GetKadVersion() > 1);
+	if (GetKadPort() && GetKadVersion() > 1) {
+		Kademlia::CKademlia::Bootstrap(wxUINT32_SWAP_ALWAYS(GetIP()), GetKadPort());
 	}
 
 	return bIsMule;
