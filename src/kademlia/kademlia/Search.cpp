@@ -125,7 +125,9 @@ CSearch::~CSearch()
 
 	// Delete any temp contacts...
 	for (ContactList::const_iterator it = m_delete.begin(); it != m_delete.end(); ++it) {
-		delete *it;
+		if (!(*it)->InUse()) {
+			delete *it;
+		}
 	}
 
 	// Check if this search was containing an overload node and adjust time of next time we use that node.
@@ -1216,12 +1218,6 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 				taglist.push_back(new CTagString(TAG_FILETYPE, strED2KFileType));
 			}
 			
-// 			// file format (filename extension)
-// 			const wxString strExt = file->GetFileName().GetExt();
-// 			if (!strExt.IsEmpty()) {
-// 				taglist.push_back(new CTagString(TAG_FILEFORMAT, strExt));
-// 			}
-
 			// additional meta data (Artist, Album, Codec, Length, ...)
 			// only send verified meta data to nodes
 			if (file->GetMetaDataVer() > 0) {

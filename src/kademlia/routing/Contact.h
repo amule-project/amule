@@ -81,7 +81,7 @@ public:
 
 	bool	 InUse() const throw()				{ return m_inUse > 0; }
 	void	 IncUse() throw()				{ m_inUse++; }
-	void	 DecUse() throw()				{ if (m_inUse) m_inUse--; else { wxFAIL; } }
+	void	 DecUse()					{ if (m_inUse) m_inUse--; else { wxFAIL; } }
 
 	time_t	 GetCreatedTime() const throw()			{ return m_created; }
 
