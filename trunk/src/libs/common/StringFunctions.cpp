@@ -28,6 +28,8 @@
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/uri.h>		// Needed for wxURI
 
+#include <cstring>		// Needed for std::strlen()
+
 // Implementation of the non-inlines
 
 //
@@ -112,12 +114,12 @@ wxChar HexToDec( const wxString& hex )
 
 wxString UnescapeHTML(const wxString& str)
 {
-	size_t len = str.length();
 	wxWritableCharBuffer buf = str.char_str(wxConvUTF8);
 
 	// Work around wxWritableCharBuffer's operator[] not being writable
 	char *buffer = (char *)buf;
 
+	size_t len = std::strlen(buffer);
 	size_t j = 0;
 	for (size_t i = 0; i < len; ++i, ++j) {
 		if (buffer[i] == '%' && (len > i + 2)) {
