@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-01 08:47+0200\n"
+"POT-Creation-Date: 2010-09-01 01:14+0200\n"
 "PO-Revision-Date: 2010-01-15 03:38+0200\n"
 "Last-Translator: simkin <simkin@ono.com>\n"
 "Language-Team: Català\n"
@@ -1035,11 +1035,6 @@ msgstr "Verificat - OK"
 msgid "Not Available"
 msgstr "No disponible"
 
-#: src/ClientDetailDialog.cpp:207
-#, c-format
-msgid "%u"
-msgstr ""
-
 #: src/ClientTCPSocket.cpp:834
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
@@ -1357,7 +1352,7 @@ msgid "Progress"
 msgstr "Progrés"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3781 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Fonts"
 
@@ -1367,7 +1362,7 @@ msgstr "Fonts"
 msgid "Priority"
 msgstr "Prioritat"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3773
 #: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
 #: src/SourceListCtrl.cpp:34
 msgid "Status"
@@ -1737,89 +1732,89 @@ msgstr "és necessari definir el servidor a esborrar"
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k és inhabilitada a les preferències."
 
-#: src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:994
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Cerca en procés. S'obtindran resultats en un moment!"
 
-#: src/ExternalConn.cpp:998
+#: src/ExternalConn.cpp:1000
 msgid "WebSearch from remote interface makes no sense."
 msgstr "La recerca web des de la interfície remota no té sentit."
 
-#: src/ExternalConn.cpp:1196
+#: src/ExternalConn.cpp:1198
 msgid "No points for graph."
 msgstr "Cap punt per al gràfic."
 
-#: src/ExternalConn.cpp:1205
+#: src/ExternalConn.cpp:1207
 msgid "Your client is not configured for this detail level."
 msgstr "El vostre client no està configurat per a aquest nivell de detall."
 
-#: src/ExternalConn.cpp:1232
+#: src/ExternalConn.cpp:1234
 msgid "External Connection: shutdown requested"
 msgstr "Connexió externa: s'ha demanat l'aturada"
 
-#: src/ExternalConn.cpp:1244
+#: src/ExternalConn.cpp:1246
 msgid "Already shutting down."
 msgstr "Ja s'està aturant."
 
-#: src/ExternalConn.cpp:1256
+#: src/ExternalConn.cpp:1258
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: afegint l'enllaç '%s'"
 
-#: src/ExternalConn.cpp:1262
+#: src/ExternalConn.cpp:1264
 msgid "Invalid link or already on list."
 msgstr "L'enllaç és invàlid o ja és present a la llista."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1335
 msgid "File not found."
 msgstr "No s'ha trobat el fitxer."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1340
 msgid "Invalid file name."
 msgstr "Nom de fitxer invàlid."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1348
 msgid "Unable to rename file."
 msgstr "No s'ha pogut canviar el nom del fitxer."
 
-#: src/ExternalConn.cpp:1578 src/ExternalConn.cpp:1605
+#: src/ExternalConn.cpp:1580 src/ExternalConn.cpp:1607
 msgid "Kad is disabled in preferences."
 msgstr "Kad està inhabilitada a les preferències."
 
-#: src/ExternalConn.cpp:1617
+#: src/ExternalConn.cpp:1619
 msgid "Already connected to eD2k."
 msgstr "Ja esteu connectat a eD2k."
 
-#: src/ExternalConn.cpp:1620
+#: src/ExternalConn.cpp:1622
 msgid "Connecting to eD2k..."
 msgstr "Connectant a eD2k..."
 
-#: src/ExternalConn.cpp:1628
+#: src/ExternalConn.cpp:1630
 msgid "Already connected to Kad."
 msgstr "Ja esteu connectat a Kad."
 
-#: src/ExternalConn.cpp:1631
+#: src/ExternalConn.cpp:1633
 msgid "Connecting to Kad..."
 msgstr "S'està connectant a Kad..."
 
-#: src/ExternalConn.cpp:1638
+#: src/ExternalConn.cpp:1640
 msgid "All networks are disabled."
 msgstr "Totes les xarxes estan inhabilitades."
 
-#: src/ExternalConn.cpp:1646
+#: src/ExternalConn.cpp:1648
 msgid "Disconnected from eD2k."
 msgstr "Desconnectat de eD2k."
 
-#: src/ExternalConn.cpp:1650
+#: src/ExternalConn.cpp:1652
 msgid "Disconnected from Kad."
 msgstr "Desconnectat de Kad."
 
-#: src/ExternalConn.cpp:1659
+#: src/ExternalConn.cpp:1661
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Connexió externa: s'ha rebut un codi d'opció invàlid: %#x"
 
-#: src/ExternalConn.cpp:1662
+#: src/ExternalConn.cpp:1664
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Codi d'opció invàlid (versió de protocol errònia?)"
 
@@ -2175,46 +2170,46 @@ msgstr "( %s / %s )"
 msgid "HTTP download cancelled"
 msgstr "Descàrrega HTTP cancel·lada"
 
-#: src/HTTPDownload.cpp:204
+#: src/HTTPDownload.cpp:205
 #, fuzzy, c-format
 msgid "Unable to create destination file %s for download!"
 msgstr "Carpeta on desar les descàrregues"
 
-#: src/HTTPDownload.cpp:209
+#: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
 msgstr ""
 
-#: src/HTTPDownload.cpp:232
+#: src/HTTPDownload.cpp:233
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
 msgstr ""
 
-#: src/HTTPDownload.cpp:259
+#: src/HTTPDownload.cpp:260
 msgid "Critical error while writing downloaded file"
 msgstr ""
 
-#: src/HTTPDownload.cpp:274
+#: src/HTTPDownload.cpp:275
 #, c-format
 msgid "Downloaded %d bytes"
 msgstr "S'han baixat %d bytes"
 
-#: src/HTTPDownload.cpp:278
+#: src/HTTPDownload.cpp:279
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr "Esperats %d bytes, però %d bytes descarregats."
 
-#: src/HTTPDownload.cpp:335
+#: src/HTTPDownload.cpp:336
 msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
 
-#: src/HTTPDownload.cpp:378
+#: src/HTTPDownload.cpp:379
 #, fuzzy
 msgid "Unable to connect to HTTP download server"
 msgstr "Reconnecta amb el servidor"
 
-#: src/HTTPDownload.cpp:399
+#: src/HTTPDownload.cpp:400
 msgid "Invalid response from HTTP download server"
 msgstr ""
 
@@ -2354,28 +2349,34 @@ msgstr "Paraula clau de cerca: %s"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: Paraula clau de cerca ja es troba a la llista de cerca: "
 
-#: src/kademlia/routing/RoutingZone.cpp:208
-#: src/kademlia/routing/RoutingZone.cpp:278
+#: src/kademlia/routing/RoutingZone.cpp:172
+msgid ""
+"Failed to read nodes.dat file - too old. This version (0) is not supported "
+"anymore."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:210
+#: src/kademlia/routing/RoutingZone.cpp:285
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "S'ha llegit %u contacte Kad"
 msgstr[1] "S'han llegit %u contactes Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
-#: src/kademlia/routing/RoutingZone.cpp:282
+#: src/kademlia/routing/RoutingZone.cpp:222
+#: src/kademlia/routing/RoutingZone.cpp:289
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
 "No es troben contactes, si us plau reinicia o baixa un nou fitxer nodes.dat."
 
-#: src/kademlia/routing/RoutingZone.cpp:300
+#: src/kademlia/routing/RoutingZone.cpp:307
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Només %d contacte Kad disponible, nodes.dat no es pot escriure"
 msgstr[1] "Només %d contactes Kad disponibles, nodes.dat no es pot escriure"
 
-#: src/kademlia/routing/RoutingZone.cpp:330
+#: src/kademlia/routing/RoutingZone.cpp:337
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2424,35 +2425,35 @@ msgstr ""
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3703
 msgid "Hashing"
 msgstr "Resumint"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3719
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3709
 msgid "Completing"
 msgstr "Completant"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3722
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3712
 msgid "Complete"
 msgstr "Complet"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:690
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3715 src/TransferWnd.cpp:349
 msgid "Paused"
 msgstr "Pausat"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3718 src/TransferWnd.cpp:348
 msgid "Erroneous"
 msgstr "Erroni"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3735 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3725 src/TransferWnd.cpp:347
 msgid "Downloading"
 msgstr "S'està baixant"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3737 src/TransferWnd.cpp:346
+#: src/PartFile.cpp:3727 src/TransferWnd.cpp:346
 msgid "Waiting"
 msgstr "Esperant"
 
@@ -4453,7 +4454,7 @@ msgstr "tota la resta"
 msgid "Incomplete"
 msgstr "Incomplet"
 
-#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3732 src/TransferWnd.cpp:350
 msgid "Stopped"
 msgstr "Aturat"
 
@@ -4733,20 +4734,20 @@ msgstr "Corrupció a la part baixada %i del fitxer: %s"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: S'ha recuperat la part corrupta %i de %s -> Bytes desats: %s"
 
-#: src/PartFile.cpp:3715
+#: src/PartFile.cpp:3705
 msgid "Allocating"
 msgstr "Assignant"
 
-#: src/PartFile.cpp:3731
+#: src/PartFile.cpp:3721
 msgid "Insufficient disk space"
 msgstr "Espai en disc insuficient"
 
-#: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3770 src/SearchListCtrl.cpp:944
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "Baixat"
 
-#: src/PartFile.cpp:4003
+#: src/PartFile.cpp:3993
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ERROR: No s'ha pogut obrir el fitxer part '%s'"
