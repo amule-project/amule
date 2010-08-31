@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-01 08:47+0200\n"
+"POT-Creation-Date: 2010-09-01 01:14+0200\n"
 "PO-Revision-Date: 2008-06-08 10:44+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -1023,11 +1023,6 @@ msgstr "Praėjo patikrinimą"
 msgid "Not Available"
 msgstr "Nepasiekiama"
 
-#: src/ClientDetailDialog.cpp:207
-#, c-format
-msgid "%u"
-msgstr ""
-
 #: src/ClientTCPSocket.cpp:834
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
@@ -1335,7 +1330,7 @@ msgid "Progress"
 msgstr "Eiga"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3781 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Šaltiniai"
 
@@ -1345,7 +1340,7 @@ msgstr "Šaltiniai"
 msgid "Priority"
 msgstr "Prioritetas"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3773
 #: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
 #: src/SourceListCtrl.cpp:34
 msgid "Status"
@@ -1712,89 +1707,89 @@ msgstr "Nurodykite serverį, kurį pašalinti"
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k išjungtas parinktyse."
 
-#: src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:994
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Ieškoma. Tuoj bus gauti rezultatai!"
 
-#: src/ExternalConn.cpp:998
+#: src/ExternalConn.cpp:1000
 msgid "WebSearch from remote interface makes no sense."
 msgstr "www paieška iš nutolusios programos neturi prasmės."
 
-#: src/ExternalConn.cpp:1196
+#: src/ExternalConn.cpp:1198
 msgid "No points for graph."
 msgstr "Grafikui nėra duomenų."
 
-#: src/ExternalConn.cpp:1205
+#: src/ExternalConn.cpp:1207
 msgid "Your client is not configured for this detail level."
 msgstr "Šis klientas nesuderintas pateikti tiek detalių."
 
-#: src/ExternalConn.cpp:1232
+#: src/ExternalConn.cpp:1234
 msgid "External Connection: shutdown requested"
 msgstr "Išorinis ryšys: gautas prašymas išjungti"
 
-#: src/ExternalConn.cpp:1244
+#: src/ExternalConn.cpp:1246
 msgid "Already shutting down."
 msgstr "Jau išsijungiama."
 
-#: src/ExternalConn.cpp:1256
+#: src/ExternalConn.cpp:1258
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Išoriniai ryšiai: įdedama nuoroda %s."
 
-#: src/ExternalConn.cpp:1262
+#: src/ExternalConn.cpp:1264
 msgid "Invalid link or already on list."
 msgstr "Klaidinga nuoroda arba failas sąraše jau yra."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1335
 msgid "File not found."
 msgstr "Failas nerastas."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1340
 msgid "Invalid file name."
 msgstr "Klaidingas failo pavadinimas."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1348
 msgid "Unable to rename file."
 msgstr "Nepavyko pervadinti failo."
 
-#: src/ExternalConn.cpp:1578 src/ExternalConn.cpp:1605
+#: src/ExternalConn.cpp:1580 src/ExternalConn.cpp:1607
 msgid "Kad is disabled in preferences."
 msgstr "Kademlia išjungta parinktyse."
 
-#: src/ExternalConn.cpp:1617
+#: src/ExternalConn.cpp:1619
 msgid "Already connected to eD2k."
 msgstr "Prie eD2k jau prisijungta."
 
-#: src/ExternalConn.cpp:1620
+#: src/ExternalConn.cpp:1622
 msgid "Connecting to eD2k..."
 msgstr "Jungiamasi prie eD2k..."
 
-#: src/ExternalConn.cpp:1628
+#: src/ExternalConn.cpp:1630
 msgid "Already connected to Kad."
 msgstr "Prie Kademlia jau prisijungta."
 
-#: src/ExternalConn.cpp:1631
+#: src/ExternalConn.cpp:1633
 msgid "Connecting to Kad..."
 msgstr "Jungiamsi prie Kademlia..."
 
-#: src/ExternalConn.cpp:1638
+#: src/ExternalConn.cpp:1640
 msgid "All networks are disabled."
 msgstr "Visi tinklai išjungti."
 
-#: src/ExternalConn.cpp:1646
+#: src/ExternalConn.cpp:1648
 msgid "Disconnected from eD2k."
 msgstr "Atsijungta nuo eD2k."
 
-#: src/ExternalConn.cpp:1650
+#: src/ExternalConn.cpp:1652
 msgid "Disconnected from Kad."
 msgstr "Atsijungta nuo Kademlia."
 
-#: src/ExternalConn.cpp:1659
+#: src/ExternalConn.cpp:1661
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Išorinis ryšys: gautas klaidingas opcode: %#x"
 
-#: src/ExternalConn.cpp:1662
+#: src/ExternalConn.cpp:1664
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Klaidingas opcode (bloga protokolo versija?)"
 
@@ -2146,46 +2141,46 @@ msgstr "( %s / %s )"
 msgid "HTTP download cancelled"
 msgstr ""
 
-#: src/HTTPDownload.cpp:204
+#: src/HTTPDownload.cpp:205
 #, fuzzy, c-format
 msgid "Unable to create destination file %s for download!"
 msgstr "DĖMESIO: nepavyko atverti temos failo „%s“ skaitymui"
 
-#: src/HTTPDownload.cpp:209
+#: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
 msgstr ""
 
-#: src/HTTPDownload.cpp:232
+#: src/HTTPDownload.cpp:233
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
 msgstr ""
 
-#: src/HTTPDownload.cpp:259
+#: src/HTTPDownload.cpp:260
 msgid "Critical error while writing downloaded file"
 msgstr ""
 
-#: src/HTTPDownload.cpp:274
+#: src/HTTPDownload.cpp:275
 #, fuzzy, c-format
 msgid "Downloaded %d bytes"
 msgstr "Atsiųsta"
 
-#: src/HTTPDownload.cpp:278
+#: src/HTTPDownload.cpp:279
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr ""
 
-#: src/HTTPDownload.cpp:335
+#: src/HTTPDownload.cpp:336
 msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
 
-#: src/HTTPDownload.cpp:378
+#: src/HTTPDownload.cpp:379
 #, fuzzy
 msgid "Unable to connect to HTTP download server"
 msgstr "Prisijungti prie serverio iš naujo"
 
-#: src/HTTPDownload.cpp:399
+#: src/HTTPDownload.cpp:400
 msgid "Invalid response from HTTP download server"
 msgstr ""
 
@@ -2321,8 +2316,14 @@ msgstr ""
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:208
-#: src/kademlia/routing/RoutingZone.cpp:278
+#: src/kademlia/routing/RoutingZone.cpp:172
+msgid ""
+"Failed to read nodes.dat file - too old. This version (0) is not supported "
+"anymore."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:210
+#: src/kademlia/routing/RoutingZone.cpp:285
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -2330,12 +2331,12 @@ msgstr[0] "Nuskaitytas %u Kad kontaktas"
 msgstr[1] "Nuskaityti %u Kad kontaktai"
 msgstr[2] "Nuskaityta %u Kad kontaktų"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
-#: src/kademlia/routing/RoutingZone.cpp:282
+#: src/kademlia/routing/RoutingZone.cpp:222
+#: src/kademlia/routing/RoutingZone.cpp:289
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
 
-#: src/kademlia/routing/RoutingZone.cpp:300
+#: src/kademlia/routing/RoutingZone.cpp:307
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
@@ -2343,7 +2344,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:330
+#: src/kademlia/routing/RoutingZone.cpp:337
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2392,35 +2393,35 @@ msgstr ""
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3703
 msgid "Hashing"
 msgstr "Vykdoma maiša"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3719
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3709
 msgid "Completing"
 msgstr "Patvirtinama"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3722
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3712
 msgid "Complete"
 msgstr "Baigta"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:690
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3715 src/TransferWnd.cpp:349
 msgid "Paused"
 msgstr "Pristabdyta"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3718 src/TransferWnd.cpp:348
 msgid "Erroneous"
 msgstr "Klaidinga"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3735 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3725 src/TransferWnd.cpp:347
 msgid "Downloading"
 msgstr "Atsiunčiama"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3737 src/TransferWnd.cpp:346
+#: src/PartFile.cpp:3727 src/TransferWnd.cpp:346
 msgid "Waiting"
 msgstr "Laukiama"
 
@@ -4407,7 +4408,7 @@ msgstr "Visa kita"
 msgid "Incomplete"
 msgstr "Neužbaigtos"
 
-#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3732 src/TransferWnd.cpp:350
 msgid "Stopped"
 msgstr "Sustabdyta"
 
@@ -4688,20 +4689,20 @@ msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "Klaidų taisymo įrankis: atstatyta sugadinta dalis %i %s –> išgelbėta %s baitų"
 
-#: src/PartFile.cpp:3715
+#: src/PartFile.cpp:3705
 msgid "Allocating"
 msgstr "Paskiriama vieta"
 
-#: src/PartFile.cpp:3731
+#: src/PartFile.cpp:3721
 msgid "Insufficient disk space"
 msgstr "Nepakanka laisvos vietos"
 
-#: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3770 src/SearchListCtrl.cpp:944
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "Atsiųsta"
 
-#: src/PartFile.cpp:4003
+#: src/PartFile.cpp:3993
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "KLAIDA: nepavyko atverti dalių failo „%s“"

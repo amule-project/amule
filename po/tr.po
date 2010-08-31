@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-01 08:47+0200\n"
+"POT-Creation-Date: 2010-09-01 01:14+0200\n"
 "PO-Revision-Date: 2010-08-13 05:37+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
@@ -1014,11 +1014,6 @@ msgstr "İncelendi - Tamam"
 msgid "Not Available"
 msgstr "Uygun değil."
 
-#: src/ClientDetailDialog.cpp:207
-#, c-format
-msgid "%u"
-msgstr "%u"
-
 #: src/ClientTCPSocket.cpp:834
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
@@ -1327,7 +1322,7 @@ msgid "Progress"
 msgstr "İşlem"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3781 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Kaynaklar"
 
@@ -1337,7 +1332,7 @@ msgstr "Kaynaklar"
 msgid "Priority"
 msgstr "Öncelik"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3773
 #: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
 #: src/SourceListCtrl.cpp:34
 msgid "Status"
@@ -1698,89 +1693,89 @@ msgstr "çıkarılacak sunucunun tanımlanması gerekli"
 msgid "eD2k is disabled in preferences."
 msgstr "pasifleştirilmiş."
 
-#: src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:994
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Arama sürüyor.Bir dakikaya sonuçlanır!"
 
-#: src/ExternalConn.cpp:998
+#: src/ExternalConn.cpp:1000
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Uzak arayüzden Web araması yapmak anlamsız."
 
-#: src/ExternalConn.cpp:1196
+#: src/ExternalConn.cpp:1198
 msgid "No points for graph."
 msgstr "Grafik için hiç nokta yok."
 
-#: src/ExternalConn.cpp:1205
+#: src/ExternalConn.cpp:1207
 msgid "Your client is not configured for this detail level."
 msgstr "Yazılımınız bu ayrıntı düzeyi için yapılandırılmamış."
 
-#: src/ExternalConn.cpp:1232
+#: src/ExternalConn.cpp:1234
 msgid "External Connection: shutdown requested"
 msgstr "Bağlantı kapat"
 
-#: src/ExternalConn.cpp:1244
+#: src/ExternalConn.cpp:1246
 msgid "Already shutting down."
 msgstr "Zaten kapatılıyor."
 
-#: src/ExternalConn.cpp:1256
+#: src/ExternalConn.cpp:1258
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Dışarıdan Bağ.:'%s' bağlantısı ekleniyor."
 
-#: src/ExternalConn.cpp:1262
+#: src/ExternalConn.cpp:1264
 msgid "Invalid link or already on list."
 msgstr "Geçersiz bağlantı veya zaten listede mevcut."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1335
 msgid "File not found."
 msgstr "Dosya bulunamadı."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1340
 msgid "Invalid file name."
 msgstr "Geçersiz dosya adı."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1348
 msgid "Unable to rename file."
 msgstr "Dosya yeniden adlandırılamıyor."
 
-#: src/ExternalConn.cpp:1578 src/ExternalConn.cpp:1605
+#: src/ExternalConn.cpp:1580 src/ExternalConn.cpp:1607
 msgid "Kad is disabled in preferences."
 msgstr "Kad. ayarlarda devre dışı bırakılmış."
 
-#: src/ExternalConn.cpp:1617
+#: src/ExternalConn.cpp:1619
 msgid "Already connected to eD2k."
 msgstr "eD2k ağına zaten bağlandı."
 
-#: src/ExternalConn.cpp:1620
+#: src/ExternalConn.cpp:1622
 msgid "Connecting to eD2k..."
 msgstr "eD2k ağına bağlanıyor..."
 
-#: src/ExternalConn.cpp:1628
+#: src/ExternalConn.cpp:1630
 msgid "Already connected to Kad."
 msgstr "Kad. zaten bağlı."
 
-#: src/ExternalConn.cpp:1631
+#: src/ExternalConn.cpp:1633
 msgid "Connecting to Kad..."
 msgstr "Kad. ağına bağlanıyor..."
 
-#: src/ExternalConn.cpp:1638
+#: src/ExternalConn.cpp:1640
 msgid "All networks are disabled."
 msgstr "Bütün ağlar devre dışı"
 
-#: src/ExternalConn.cpp:1646
+#: src/ExternalConn.cpp:1648
 msgid "Disconnected from eD2k."
 msgstr "eD2k ağından bağlantı kesildi."
 
-#: src/ExternalConn.cpp:1650
+#: src/ExternalConn.cpp:1652
 msgid "Disconnected from Kad."
 msgstr "Kad. ağından bağlantı kesildi."
 
-#: src/ExternalConn.cpp:1659
+#: src/ExternalConn.cpp:1661
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Dış Bağlantı: geçersiz opcode alındı: %#x"
 
-#: src/ExternalConn.cpp:1662
+#: src/ExternalConn.cpp:1664
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Geçersiz opcode (yanlış protokol sürümü mü?)"
 
@@ -2128,35 +2123,35 @@ msgstr "( %s / %s )"
 msgid "HTTP download cancelled"
 msgstr "HTTP aktarımı iptal edildi"
 
-#: src/HTTPDownload.cpp:204
+#: src/HTTPDownload.cpp:205
 #, c-format
 msgid "Unable to create destination file %s for download!"
 msgstr "İndirme için hedef %s dosyası oluşturulamıyor!"
 
-#: src/HTTPDownload.cpp:209
+#: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
 msgstr "İndirme bağlantısı boş olamaz."
 
-#: src/HTTPDownload.cpp:232
+#: src/HTTPDownload.cpp:233
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
 msgstr "%s bağlantı adresi dönüşü: %i - Hata (%i)!"
 
-#: src/HTTPDownload.cpp:259
+#: src/HTTPDownload.cpp:260
 msgid "Critical error while writing downloaded file"
 msgstr "İndirilen dosyanın yazımında önemli bir hata oluştu"
 
-#: src/HTTPDownload.cpp:274
+#: src/HTTPDownload.cpp:275
 #, c-format
 msgid "Downloaded %d bytes"
 msgstr "%d bayt indirildi."
 
-#: src/HTTPDownload.cpp:278
+#: src/HTTPDownload.cpp:279
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr "%d bayt bekleniyordu; fakat %d bayt indirildi"
 
-#: src/HTTPDownload.cpp:335
+#: src/HTTPDownload.cpp:336
 msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
@@ -2164,11 +2159,11 @@ msgstr ""
 "HTTP aktarım veya HTTP yönlendirme için geçersiz bağlantı adresi ( 'http://' "
 "yazmayı unuttunuz mu?)"
 
-#: src/HTTPDownload.cpp:378
+#: src/HTTPDownload.cpp:379
 msgid "Unable to connect to HTTP download server"
 msgstr "HTTP indirme sunucusuna bağlanılamıyor"
 
-#: src/HTTPDownload.cpp:399
+#: src/HTTPDownload.cpp:400
 msgid "Invalid response from HTTP download server"
 msgstr "HTTP indirme sunucusundan geçersiz yanıt alındı"
 
@@ -2301,29 +2296,35 @@ msgstr "Arama için anahtar kelime: %s"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: Arama anahtar sözcüğü zaten arama listesinde var. "
 
-#: src/kademlia/routing/RoutingZone.cpp:208
-#: src/kademlia/routing/RoutingZone.cpp:278
+#: src/kademlia/routing/RoutingZone.cpp:172
+msgid ""
+"Failed to read nodes.dat file - too old. This version (0) is not supported "
+"anymore."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:210
+#: src/kademlia/routing/RoutingZone.cpp:285
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "%u adet Kademlia bağlantısı okundu"
 msgstr[1] "%u adet Kademlia bağlantısı okundu"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
-#: src/kademlia/routing/RoutingZone.cpp:282
+#: src/kademlia/routing/RoutingZone.cpp:222
+#: src/kademlia/routing/RoutingZone.cpp:289
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
 "Hiç bağlantı bulunamadı. Lütfen, ön yükleme veya nodest.dat dosyası "
 "indirmeyi deneyin."
 
-#: src/kademlia/routing/RoutingZone.cpp:300
+#: src/kademlia/routing/RoutingZone.cpp:307
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Sadece %d Kad bağlantısı var. Nodes.dat yazılamadı"
 msgstr[1] "Sadece %d adet Kad bağlantısı var. Nodes.dat yazılamadı"
 
-#: src/kademlia/routing/RoutingZone.cpp:330
+#: src/kademlia/routing/RoutingZone.cpp:337
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2372,35 +2373,35 @@ msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 "Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir:"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3703
 msgid "Hashing"
 msgstr "Adresleniyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3719
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3709
 msgid "Completing"
 msgstr "Tamamlanıyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3722
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3712
 msgid "Complete"
 msgstr "Tamamlandı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:690
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3715 src/TransferWnd.cpp:349
 msgid "Paused"
 msgstr "Duraklatıldı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3718 src/TransferWnd.cpp:348
 msgid "Erroneous"
 msgstr "Hatalı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3735 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3725 src/TransferWnd.cpp:347
 msgid "Downloading"
 msgstr "Aktarılıyor"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3737 src/TransferWnd.cpp:346
+#: src/PartFile.cpp:3727 src/TransferWnd.cpp:346
 msgid "Waiting"
 msgstr "Bekliyor"
 
@@ -4378,7 +4379,7 @@ msgstr "Diğerleri"
 msgid "Incomplete"
 msgstr "Tamamlanmamış"
 
-#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3732 src/TransferWnd.cpp:350
 msgid "Stopped"
 msgstr "Durduruldu"
 
@@ -4650,20 +4651,20 @@ msgstr ""
 "ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen miktar: "
 "%s bayt"
 
-#: src/PartFile.cpp:3715
+#: src/PartFile.cpp:3705
 msgid "Allocating"
 msgstr "Ayrılıyor"
 
-#: src/PartFile.cpp:3731
+#: src/PartFile.cpp:3721
 msgid "Insufficient disk space"
 msgstr "Yetersiz disk alanı"
 
-#: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3770 src/SearchListCtrl.cpp:944
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "İndirildi"
 
-#: src/PartFile.cpp:4003
+#: src/PartFile.cpp:3993
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "HATA: Parça dosyası '%s' açılamıyor"
@@ -7423,6 +7424,9 @@ msgstr "Çıkış istendi.\n"
 #: src/webserver/src/WebServer.cpp:1866
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
+
+#~ msgid "%u"
+#~ msgstr "%u"
 
 #~ msgid "%u (QR: %u)"
 #~ msgstr "%u (SR: %u)"

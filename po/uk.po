@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-01 08:47+0200\n"
+"POT-Creation-Date: 2010-09-01 01:14+0200\n"
 "PO-Revision-Date: 2008-12-17 11:21+0200\n"
 "Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
@@ -1026,11 +1026,6 @@ msgstr "Перевірено - добре"
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: src/ClientDetailDialog.cpp:207
-#, c-format
-msgid "%u"
-msgstr ""
-
 #: src/ClientTCPSocket.cpp:834
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
@@ -1342,7 +1337,7 @@ msgid "Progress"
 msgstr "Перебіг"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3781 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Джерела"
 
@@ -1352,7 +1347,7 @@ msgstr "Джерела"
 msgid "Priority"
 msgstr "Перевага"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3773
 #: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
 #: src/SourceListCtrl.cpp:34
 msgid "Status"
@@ -1718,89 +1713,89 @@ msgstr "потрібно визначити сервер для видаленн
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k вимкнена у налаштуваннях"
 
-#: src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:994
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Пошук просувається. За мить отримаю здобутки!"
 
-#: src/ExternalConn.cpp:998
+#: src/ExternalConn.cpp:1000
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Веб-пошук через віддалений інтерфейс не має сенсу. "
 
-#: src/ExternalConn.cpp:1196
+#: src/ExternalConn.cpp:1198
 msgid "No points for graph."
 msgstr "Немає точок для графіку."
 
-#: src/ExternalConn.cpp:1205
+#: src/ExternalConn.cpp:1207
 msgid "Your client is not configured for this detail level."
 msgstr "Ваш клієнт не налаштований для такого рівня подробиць."
 
-#: src/ExternalConn.cpp:1232
+#: src/ExternalConn.cpp:1234
 msgid "External Connection: shutdown requested"
 msgstr "Зовнішнє з'єднання: запит на вимкнення"
 
-#: src/ExternalConn.cpp:1244
+#: src/ExternalConn.cpp:1246
 msgid "Already shutting down."
 msgstr "Вже вимикається."
 
-#: src/ExternalConn.cpp:1256
+#: src/ExternalConn.cpp:1258
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Зовнішнє з'єднання: додається посилання '%s'"
 
-#: src/ExternalConn.cpp:1262
+#: src/ExternalConn.cpp:1264
 msgid "Invalid link or already on list."
 msgstr "Недопустиме посилання або вже в переліку."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1335
 msgid "File not found."
 msgstr "Файл не знайдено."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1340
 msgid "Invalid file name."
 msgstr "Недопустима назва файлу."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1348
 msgid "Unable to rename file."
 msgstr "Неможливо змінити назву файлу."
 
-#: src/ExternalConn.cpp:1578 src/ExternalConn.cpp:1605
+#: src/ExternalConn.cpp:1580 src/ExternalConn.cpp:1607
 msgid "Kad is disabled in preferences."
 msgstr "Kad вимкнена в налаштуваннях."
 
-#: src/ExternalConn.cpp:1617
+#: src/ExternalConn.cpp:1619
 msgid "Already connected to eD2k."
 msgstr "Вже з'єднано з eD2k"
 
-#: src/ExternalConn.cpp:1620
+#: src/ExternalConn.cpp:1622
 msgid "Connecting to eD2k..."
 msgstr "З'єднується з eD2k..."
 
-#: src/ExternalConn.cpp:1628
+#: src/ExternalConn.cpp:1630
 msgid "Already connected to Kad."
 msgstr "Вже з'єднано з Kad."
 
-#: src/ExternalConn.cpp:1631
+#: src/ExternalConn.cpp:1633
 msgid "Connecting to Kad..."
 msgstr "З'єднується з Kad"
 
-#: src/ExternalConn.cpp:1638
+#: src/ExternalConn.cpp:1640
 msgid "All networks are disabled."
 msgstr "Всі мережі вимкнені."
 
-#: src/ExternalConn.cpp:1646
+#: src/ExternalConn.cpp:1648
 msgid "Disconnected from eD2k."
 msgstr "Від'єднується від eD2k."
 
-#: src/ExternalConn.cpp:1650
+#: src/ExternalConn.cpp:1652
 msgid "Disconnected from Kad."
 msgstr "Від'єднується від Kad."
 
-#: src/ExternalConn.cpp:1659
+#: src/ExternalConn.cpp:1661
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Зовнішнє з'єднання: отримано недопустимий opcode: %#x"
 
-#: src/ExternalConn.cpp:1662
+#: src/ExternalConn.cpp:1664
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Недопустимий opcode (невірна версія протоколу?)"
 
@@ -2153,46 +2148,46 @@ msgstr "( %s / %s )"
 msgid "HTTP download cancelled"
 msgstr "HTTP завантаження скасоване"
 
-#: src/HTTPDownload.cpp:204
+#: src/HTTPDownload.cpp:205
 #, fuzzy, c-format
 msgid "Unable to create destination file %s for download!"
 msgstr "Тека призначення для звантажень"
 
-#: src/HTTPDownload.cpp:209
+#: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
 msgstr ""
 
-#: src/HTTPDownload.cpp:232
+#: src/HTTPDownload.cpp:233
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
 msgstr ""
 
-#: src/HTTPDownload.cpp:259
+#: src/HTTPDownload.cpp:260
 msgid "Critical error while writing downloaded file"
 msgstr ""
 
-#: src/HTTPDownload.cpp:274
+#: src/HTTPDownload.cpp:275
 #, fuzzy, c-format
 msgid "Downloaded %d bytes"
 msgstr "Звантажені"
 
-#: src/HTTPDownload.cpp:278
+#: src/HTTPDownload.cpp:279
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr ""
 
-#: src/HTTPDownload.cpp:335
+#: src/HTTPDownload.cpp:336
 msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
 
-#: src/HTTPDownload.cpp:378
+#: src/HTTPDownload.cpp:379
 #, fuzzy
 msgid "Unable to connect to HTTP download server"
 msgstr "Перез'єднатись з сервером"
 
-#: src/HTTPDownload.cpp:399
+#: src/HTTPDownload.cpp:400
 msgid "Invalid response from HTTP download server"
 msgstr ""
 
@@ -2328,8 +2323,14 @@ msgstr "Ключове слово для пошуку: %s"
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: пошукове слово вже в переліку пошуку: "
 
-#: src/kademlia/routing/RoutingZone.cpp:208
-#: src/kademlia/routing/RoutingZone.cpp:278
+#: src/kademlia/routing/RoutingZone.cpp:172
+msgid ""
+"Failed to read nodes.dat file - too old. This version (0) is not supported "
+"anymore."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:210
+#: src/kademlia/routing/RoutingZone.cpp:285
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -2337,14 +2338,14 @@ msgstr[0] "Прочитано %u контакт Kad"
 msgstr[1] "Прочитано %u контакти Kad"
 msgstr[2] "Прочитано %u контактів Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
-#: src/kademlia/routing/RoutingZone.cpp:282
+#: src/kademlia/routing/RoutingZone.cpp:222
+#: src/kademlia/routing/RoutingZone.cpp:289
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
 "Не знайдено жодного контакту, будь ласка, здійсніть початковий запуск або "
 "звантажте файл nodes.dat"
 
-#: src/kademlia/routing/RoutingZone.cpp:300
+#: src/kademlia/routing/RoutingZone.cpp:307
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
@@ -2352,7 +2353,7 @@ msgstr[0] "Тільки %d контакт Kad доступний, nodes.dat не
 msgstr[1] "Тільки %d контакти Kad доступні, nodes.dat не записано"
 msgstr[2] "Тільки %d контактів Kad доступні, nodes.dat не записано"
 
-#: src/kademlia/routing/RoutingZone.cpp:330
+#: src/kademlia/routing/RoutingZone.cpp:337
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2403,36 +2404,36 @@ msgstr ""
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3703
 msgid "Hashing"
 msgstr "Обчислюється хеш"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3719
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3709
 msgid "Completing"
 msgstr "Завершується"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3722
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3712
 msgid "Complete"
 msgstr "Завершений"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:690
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3715 src/TransferWnd.cpp:349
 msgid "Paused"
 msgstr "Призупинений"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3718 src/TransferWnd.cpp:348
 msgid "Erroneous"
 msgstr "Помилковий"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3735 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3725 src/TransferWnd.cpp:347
 msgid "Downloading"
 msgstr "Звантажується"
 
 # файл
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3737 src/TransferWnd.cpp:346
+#: src/PartFile.cpp:3727 src/TransferWnd.cpp:346
 msgid "Waiting"
 msgstr "Очікує"
 
@@ -4422,7 +4423,7 @@ msgstr "всі інші"
 msgid "Incomplete"
 msgstr "Незавершені"
 
-#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3732 src/TransferWnd.cpp:350
 msgid "Stopped"
 msgstr "Зупинені"
 
@@ -4699,20 +4700,20 @@ msgstr "Звантажена частина %i зіпсована в файлі:
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "Р.О.П.: відновлено зіпсовану частину %i для %s -> Збережено байт: %s"
 
-#: src/PartFile.cpp:3715
+#: src/PartFile.cpp:3705
 msgid "Allocating"
 msgstr "Виділяється"
 
-#: src/PartFile.cpp:3731
+#: src/PartFile.cpp:3721
 msgid "Insufficient disk space"
 msgstr "Не вистачає місця на диску"
 
-#: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3770 src/SearchListCtrl.cpp:944
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "Звантажені"
 
-#: src/PartFile.cpp:4003
+#: src/PartFile.cpp:3993
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ПОМИЛКА: не вдалося відкрити частковий файл '%s'"

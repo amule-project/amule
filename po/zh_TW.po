@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-01 08:47+0200\n"
+"POT-Creation-Date: 2010-09-01 01:14+0200\n"
 "PO-Revision-Date: 2010-07-06 20:31+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -1005,11 +1005,6 @@ msgstr "驗證通過"
 msgid "Not Available"
 msgstr "N/A"
 
-#: src/ClientDetailDialog.cpp:207
-#, c-format
-msgid "%u"
-msgstr ""
-
 #: src/ClientTCPSocket.cpp:834
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
@@ -1311,7 +1306,7 @@ msgid "Progress"
 msgstr "進度"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3781 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3771 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "來源"
 
@@ -1321,7 +1316,7 @@ msgstr "來源"
 msgid "Priority"
 msgstr "優先等級"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3783
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3773
 #: src/SearchListCtrl.cpp:91 src/SharedFilePeersListCtrl.cpp:36
 #: src/SourceListCtrl.cpp:34
 msgid "Status"
@@ -1676,89 +1671,89 @@ msgstr "必須指定要刪除的伺服器"
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k 網路已在偏好設定中被停用了。"
 
-#: src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:994
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "搜尋中，請稍候！"
 
-#: src/ExternalConn.cpp:998
+#: src/ExternalConn.cpp:1000
 msgid "WebSearch from remote interface makes no sense."
 msgstr "從遠端界面使用網頁搜尋功能沒有意義。"
 
-#: src/ExternalConn.cpp:1196
+#: src/ExternalConn.cpp:1198
 msgid "No points for graph."
 msgstr "此圖沒有參考點。"
 
-#: src/ExternalConn.cpp:1205
+#: src/ExternalConn.cpp:1207
 msgid "Your client is not configured for this detail level."
 msgstr "您的客戶端並沒有設定此細部等級。"
 
-#: src/ExternalConn.cpp:1232
+#: src/ExternalConn.cpp:1234
 msgid "External Connection: shutdown requested"
 msgstr "外部連線：必須關閉"
 
-#: src/ExternalConn.cpp:1244
+#: src/ExternalConn.cpp:1246
 msgid "Already shutting down."
 msgstr "已經在關閉中。"
 
-#: src/ExternalConn.cpp:1256
+#: src/ExternalConn.cpp:1258
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "外部連線：正在加入連結 %s 。"
 
-#: src/ExternalConn.cpp:1262
+#: src/ExternalConn.cpp:1264
 msgid "Invalid link or already on list."
 msgstr "無效連結或已在清單中。"
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1335
 msgid "File not found."
 msgstr "找不到檔案。"
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1340
 msgid "Invalid file name."
 msgstr "無效的檔名。"
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1348
 msgid "Unable to rename file."
 msgstr "無法重新命名。"
 
-#: src/ExternalConn.cpp:1578 src/ExternalConn.cpp:1605
+#: src/ExternalConn.cpp:1580 src/ExternalConn.cpp:1607
 msgid "Kad is disabled in preferences."
 msgstr "Kad 網路已在偏好設定中被停用了。"
 
-#: src/ExternalConn.cpp:1617
+#: src/ExternalConn.cpp:1619
 msgid "Already connected to eD2k."
 msgstr "eD2k 網路已連線。"
 
-#: src/ExternalConn.cpp:1620
+#: src/ExternalConn.cpp:1622
 msgid "Connecting to eD2k..."
 msgstr "eD2k 連線中..."
 
-#: src/ExternalConn.cpp:1628
+#: src/ExternalConn.cpp:1630
 msgid "Already connected to Kad."
 msgstr "Kad 網路已連線。"
 
-#: src/ExternalConn.cpp:1631
+#: src/ExternalConn.cpp:1633
 msgid "Connecting to Kad..."
 msgstr "Kad 連線中..."
 
-#: src/ExternalConn.cpp:1638
+#: src/ExternalConn.cpp:1640
 msgid "All networks are disabled."
 msgstr "所有網路都被停用了。"
 
-#: src/ExternalConn.cpp:1646
+#: src/ExternalConn.cpp:1648
 msgid "Disconnected from eD2k."
 msgstr "已中斷 eD2k 網路連線。"
 
-#: src/ExternalConn.cpp:1650
+#: src/ExternalConn.cpp:1652
 msgid "Disconnected from Kad."
 msgstr "已中斷 Kad 網路連線。"
 
-#: src/ExternalConn.cpp:1659
+#: src/ExternalConn.cpp:1661
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "外部連線：接收到無效的指令碼 - %#x"
 
-#: src/ExternalConn.cpp:1662
+#: src/ExternalConn.cpp:1664
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "無效的指令碼（協定版本錯誤？）"
 
@@ -2104,45 +2099,45 @@ msgstr "( %s / %s )"
 msgid "HTTP download cancelled"
 msgstr "已取消 HTTP 下載"
 
-#: src/HTTPDownload.cpp:204
+#: src/HTTPDownload.cpp:205
 #, c-format
 msgid "Unable to create destination file %s for download!"
 msgstr "無法建立要下載的目標檔案 %s ！"
 
-#: src/HTTPDownload.cpp:209
+#: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
 msgstr "要下載的網址不可空白"
 
-#: src/HTTPDownload.cpp:232
+#: src/HTTPDownload.cpp:233
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
 msgstr "網址 %s 傳回：%i - 錯誤 (%i)！"
 
-#: src/HTTPDownload.cpp:259
+#: src/HTTPDownload.cpp:260
 msgid "Critical error while writing downloaded file"
 msgstr "寫入下載檔案時發生重大錯誤"
 
-#: src/HTTPDownload.cpp:274
+#: src/HTTPDownload.cpp:275
 #, c-format
 msgid "Downloaded %d bytes"
 msgstr "已下載 %d B"
 
-#: src/HTTPDownload.cpp:278
+#: src/HTTPDownload.cpp:279
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
 msgstr "原預計 %d B，但實際下載了 %d B"
 
-#: src/HTTPDownload.cpp:335
+#: src/HTTPDownload.cpp:336
 msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr "無效的 HTTP 下載網址或 HTTP 轉址 (您是否忘了在前面加「http://」？"
 
-#: src/HTTPDownload.cpp:378
+#: src/HTTPDownload.cpp:379
 msgid "Unable to connect to HTTP download server"
 msgstr "無法連線到 HTTP 下載伺服器"
 
-#: src/HTTPDownload.cpp:399
+#: src/HTTPDownload.cpp:400
 msgid "Invalid response from HTTP download server"
 msgstr "HTTP 下載伺服器傳來無效的回應"
 
@@ -2268,25 +2263,31 @@ msgstr "搜尋的關鍵字：%s "
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kad：關鍵字已在搜尋清單中："
 
-#: src/kademlia/routing/RoutingZone.cpp:208
-#: src/kademlia/routing/RoutingZone.cpp:278
+#: src/kademlia/routing/RoutingZone.cpp:172
+msgid ""
+"Failed to read nodes.dat file - too old. This version (0) is not supported "
+"anymore."
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:210
+#: src/kademlia/routing/RoutingZone.cpp:285
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "讀取 %u 個 Kad 聯絡人"
 
-#: src/kademlia/routing/RoutingZone.cpp:215
-#: src/kademlia/routing/RoutingZone.cpp:282
+#: src/kademlia/routing/RoutingZone.cpp:222
+#: src/kademlia/routing/RoutingZone.cpp:289
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr "找不到聯絡人，請設啟動節點、或下載一個 nodes.dat 檔案。"
 
-#: src/kademlia/routing/RoutingZone.cpp:300
+#: src/kademlia/routing/RoutingZone.cpp:307
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "只有 %d 個 Kad 聯絡人，nods.dat 未寫入"
 
-#: src/kademlia/routing/RoutingZone.cpp:330
+#: src/kademlia/routing/RoutingZone.cpp:337
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2333,35 +2334,35 @@ msgstr "無法載入已知檔案清單內的項目，檔案可能有損壞"
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr "已知檔案清單內有無效的項目，檔案可能有損壞："
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3713
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3703
 msgid "Hashing"
 msgstr "正在計算 hash 值"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3719
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3709
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3722
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3712
 msgid "Complete"
 msgstr "完成"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:690
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3715 src/TransferWnd.cpp:349
 msgid "Paused"
 msgstr "已暫停"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:689
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:348
+#: src/PartFile.cpp:3718 src/TransferWnd.cpp:348
 msgid "Erroneous"
 msgstr "錯誤的"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:53 src/OtherFunctions.cpp:688
-#: src/PartFile.cpp:3735 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3725 src/TransferWnd.cpp:347
 msgid "Downloading"
 msgstr "正在下載"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:687
-#: src/PartFile.cpp:3737 src/TransferWnd.cpp:346
+#: src/PartFile.cpp:3727 src/TransferWnd.cpp:346
 msgid "Waiting"
 msgstr "正在等候"
 
@@ -4296,7 +4297,7 @@ msgstr "其它"
 msgid "Incomplete"
 msgstr "不完整"
 
-#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3742 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:691 src/PartFile.cpp:3732 src/TransferWnd.cpp:350
 msgid "Stopped"
 msgstr "已停止"
 
@@ -4556,20 +4557,20 @@ msgstr "已下載的部份 %i 已損壞 (檔案：%s)"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：已修復損壞的部份 %i (%s) -> 救回 %s"
 
-#: src/PartFile.cpp:3715
+#: src/PartFile.cpp:3705
 msgid "Allocating"
 msgstr "正在分配"
 
-#: src/PartFile.cpp:3731
+#: src/PartFile.cpp:3721
 msgid "Insufficient disk space"
 msgstr "磁碟空間不足"
 
-#: src/PartFile.cpp:3780 src/SearchListCtrl.cpp:944
+#: src/PartFile.cpp:3770 src/SearchListCtrl.cpp:944
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:28
 msgid "Downloaded"
 msgstr "已下載"
 
-#: src/PartFile.cpp:4003
+#: src/PartFile.cpp:3993
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "錯誤：無法開啟暫存檔 %s"
