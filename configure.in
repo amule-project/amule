@@ -27,6 +27,8 @@
 AC_INIT([aMule],[SVN],[admin@amule.org])
 AM_INIT_AUTOMAKE
 
+AC_PREREQ(2.59)
+
 AC_CONFIG_SRCDIR([src/amule.cpp])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE

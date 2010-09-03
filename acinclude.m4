@@ -85,8 +85,8 @@ dnl Works like AC_MSG_WARN(), but the warning will be reproduced at the end of
 dnl the configure run. An empty line is prepended at the final output and a
 dnl newline is appended for free.
 dnl ---------------------------------------------------------------------------
-m4_define([_MULE_WARNINGS],
-	[m4_ifdef([_m4_divert(BODY)], incr(_m4_divert(BODY)), [5000])])
+m4_ifndef([_MULE_WARNINGS],[
+m4_define([_m4_divert(_MULE_WARNINGS)], m4_incr(_m4_divert([BODY])))])
 m4_define([_MULE_WARNCOUNT], [0])
 
 m4_divert_push(_MULE_WARNINGS)dnl

@@ -164,6 +164,7 @@ Version 2.3.0 - The river knows.
 		* Make amulecmd help command work without connection
 		* New translation concept for manpages
 		* KDE Plasma applet to show stats
+		* Fix warnings with latest autoconf (2.67)
 
 	woutermense:
 		* Fix 'break/continue [n]' PHP implementation
