@@ -449,10 +449,14 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_ADDLINK:
-			if (args.compare(0, 7, wxT("ed2k://")) == 0) {
+			if (args.StartsWith(wxT("ed2k://"))) {
 				//aMule doesn't like AICH links without |/| in front of h=
 				if (args.Find(wxT("|h=")) > -1 && args.Find(wxT("|/|h=")) == -1) {
 					args.Replace(wxT("|h="),wxT("|/|h="));
+				}
+				// repair links where | is replaced with %7C (Firefox)
+				if (args.StartsWith(wxT("ed2k://%7C"))) {
+					args.Replace(wxT("%7C"),wxT("|"));
 				}
 			}
 			request = new CECPacket(EC_OP_ADD_LINK);
