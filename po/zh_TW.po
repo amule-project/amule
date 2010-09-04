@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-09-01 01:14+0200\n"
-"PO-Revision-Date: 2010-07-06 20:31+0800\n"
+"PO-Revision-Date: 2010-09-04 23:36+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1518,12 +1518,12 @@ msgstr "設定存放新進檔案的目錄，檔案系統不支援大容量檔案
 #: src/DownloadQueue.cpp:347
 #, c-format
 msgid "Downloading %s"
-msgstr "正在下載 %s"
+msgstr "下載 %s"
 
 #: src/DownloadQueue.cpp:355
 #, c-format
 msgid "You are already trying to download the file '%s'"
-msgstr "您已經在下載檔案 %s"
+msgstr "您已經在下載檔案 %s 了"
 
 #: src/DownloadQueue.cpp:367
 #, c-format
@@ -1533,7 +1533,7 @@ msgstr "您已經有檔案 %s"
 #: src/DownloadQueue.cpp:372
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr "您已經在下載檔案 %s "
+msgstr "您已經在下載檔案 %s 了"
 
 #: src/DownloadQueue.cpp:1288
 #, c-format
@@ -1596,11 +1596,11 @@ msgstr ""
 "式。"
 
 #: src/ExternalConn.cpp:434
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
-msgstr "為了避免系統受損害，您不能用開發中版本 (SVN) 連線到正式發行版"
+msgstr ""
+"您不能用開發中版本 (SVN) 連線到正式發行版，這是為了避免系統遭受不確定的損害"
 
 #: src/ExternalConn.cpp:461
 msgid "Invalid protocol version."
@@ -2267,7 +2267,7 @@ msgstr "Kad：關鍵字已在搜尋清單中："
 msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
-msgstr ""
+msgstr "無法讀取 nodes.dat 檔案 - 版本 (0) 太舊，已經不再支援了。"
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -3145,9 +3145,8 @@ msgid "Secure ident:"
 msgstr "安全驗證："
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "等候排名"
+msgstr "等候排名："
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -3816,7 +3815,7 @@ msgstr "伺服器資訊"
 
 #: src/muuli_wdr.cpp:2607
 msgid "ED2K Info"
-msgstr "ED2K 資訊"
+msgstr "eD2k 資訊"
 
 #: src/muuli_wdr.cpp:2611
 msgid "Kad Info"
@@ -5641,9 +5640,8 @@ msgid "Origin"
 msgstr "來源"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "檔案名稱"
+msgstr "本地檔案名稱"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
