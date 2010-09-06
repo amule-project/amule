@@ -453,8 +453,7 @@ void CSearch::StorePacket()
 	}
 
 	// Make sure this is a valid node to store.
-	if(thePrefs::FilterLanIPs() && fromDistance.Get32BitChunk(0) > SEARCHTOLERANCE) {
-		AddDebugLogLineN(logKadSearch, wxT("Not stored: filtered lan ip"));
+	if (fromDistance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()))) {
 		return;
 	}
 
