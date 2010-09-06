@@ -1023,7 +1023,7 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 	distance.XOR(file);
 
 	// Shouldn't LAN IPs already be filtered?
-	if (thePrefs::FilterLanIPs() && distance.Get32BitChunk(0) > SEARCHTOLERANCE) {
+	if (distance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 		return;
 	}
 
@@ -1121,7 +1121,7 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 	CUInt128 distance(CKademlia::GetPrefs()->GetKadID());
 	distance.XOR(file);
 
-	if (thePrefs::FilterLanIPs() && distance.Get32BitChunk(0) > SEARCHTOLERANCE) {
+	if (distance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 		return;
 	}
 
@@ -1302,7 +1302,7 @@ void CKademliaUDPListener::Process2PublishNotesRequest(const uint8_t *packetData
 	distance.XOR(target);
 
 	// Shouldn't LAN IPs already be filtered?
-	if (thePrefs::FilterLanIPs() && distance.Get32BitChunk(0) > SEARCHTOLERANCE) {
+	if (distance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 		return;
 	}
 
