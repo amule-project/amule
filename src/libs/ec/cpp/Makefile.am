@@ -1,4 +1,4 @@
-AM_CPPFLAGS = $(MULECPPFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(WX_CPPFLAGS) $(ZLIB_CPPFLAGS)
+AM_CPPFLAGS = $(MULECPPFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(WXBASE_CPPFLAGS) $(ZLIB_CPPFLAGS)
 AM_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 
 EXTRA_DIST = gen_ECVersion
