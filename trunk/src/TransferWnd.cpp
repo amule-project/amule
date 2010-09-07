@@ -92,7 +92,7 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	nb->SetPopupHandler( this );
 	
 	// Set default category
-	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
+	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatFilter());
 	theApp->glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
 	
 	// Show default + userdefined categories
@@ -247,7 +247,7 @@ void CTransferWnd::RemoveCategory(int index)
 		theApp->glob_prefs->RemoveCat(index);
 		RemoveCategoryPage(index);
 		if ( theApp->glob_prefs->GetCatCount() == 1 ) {
-			thePrefs::SetAllcatType(0);
+			thePrefs::SetAllcatFilter( acfAll );
 		}
 		theApp->glob_prefs->SaveCats();
 		theApp->amuledlg->m_searchwnd->UpdateCatChoice();
@@ -287,8 +287,8 @@ void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 
 void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 {
-	thePrefs::SetAllcatType( event.GetId() - MP_CAT_SET0 );
-	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle( thePrefs::GetAllcatType() );
+	thePrefs::SetAllcatFilter( static_cast<AllCategoryFilter>(event.GetId() - MP_CAT_SET0) );
+	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle( thePrefs::GetAllcatFilter() );
 	
 	UpdateCategory( 0 );
 	

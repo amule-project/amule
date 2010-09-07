@@ -3797,54 +3797,54 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 
 	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==GetCategory()));
 
-	switch (thePrefs::GetAllcatType()) {
-		case 1:
+	switch (thePrefs::GetAllcatFilter()) {
+		case acfAllOthers:
 			IsNotFiltered = GetCategory() == 0 || inCategory > 0;
 			break;
-		case 2:
+		case acfIncomplete:
 			IsNotFiltered = IsPartFile();
 			break;
-		case 3:
+		case acfCompleted:
 			IsNotFiltered = !IsPartFile();
 			break;
-		case 4:
+		case acfWaiting:
 			IsNotFiltered = 
 				(GetStatus() == PS_READY || GetStatus() == PS_EMPTY) &&
 				GetTransferingSrcCount() == 0;
 			break;
-		case 5:
+		case acfDownloading:
 			IsNotFiltered =
 				(GetStatus() == PS_READY || GetStatus()==PS_EMPTY) &&
 				GetTransferingSrcCount() > 0;
 			break;
-		case 6:
+		case acfErroneous:
 			IsNotFiltered = GetStatus() == PS_ERROR;
 			break;
-		case 7:
+		case acfPaused:
 			IsNotFiltered = GetStatus() == PS_PAUSED && !IsStopped();
 			break;
-		case 8:
+		case acfStopped:
 			IsNotFiltered = IsStopped();
 			break;
-		case 9:
+		case acfVideo:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftVideo;
 			break;
-		case 10:
+		case acfAudio:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftAudio;
 			break;
-		case 11:
+		case acfArchive:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftArchive;
 			break;
-		case 12:
+		case acfCDImages:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftCDImage;
 			break;
-		case 13:
+		case acfPictures:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftPicture;
 			break;
-		case 14:
+		case acfText:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftText;
 			break;
-		case 15:
+		case acfActive:
 			IsNotFiltered = !IsStopped() && GetStatus() != PS_PAUSED;
 			break;
 	}

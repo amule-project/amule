@@ -31,7 +31,8 @@
 #include <protocol/ed2k/Client2Server/UDP.h>
 #include "../../OtherFunctions.h"
 #include "../../Friend.h"			// Needed for FF_NAME
-#include ".././KnownFile.h"			// Needed for PR_*
+#include "../../KnownFile.h"		// Needed for PR_*
+#include "../../NetworkFunctions.h"	// Needed for Uint32toStringIP
 
 #include <cctype>
 #include <map>
@@ -82,11 +83,6 @@ wxString MakePrintableString(const wxString& s)
 
 	retval += wxT("\"");
 	return retval;
-}
-
-static inline wxString Uint32toStringIP(uint32_t ip)
-{
-	return wxString::Format(wxT("%u.%u.%u.%u"), (uint8_t)ip, (uint8_t)(ip>>8), (uint8_t)(ip>>16), (uint8_t)(ip>>24));	
 }
 
 std::ostream& operator<<(std::ostream& x, const CTimeT& y)
