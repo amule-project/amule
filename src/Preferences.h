@@ -39,10 +39,29 @@ class CPreferences;
 class wxConfigBase;
 class wxWindow;
 
-enum EViewSharedFilesAccess{
+enum EViewSharedFilesAccess {
 	vsfaEverybody = 0,
 	vsfaFriends = 1,
 	vsfaNobody = 2
+};
+
+enum AllCategoryFilter {
+	acfAll = 0,
+	acfAllOthers,
+	acfIncomplete,
+	acfCompleted,
+	acfWaiting,
+	acfDownloading,
+	acfErroneous,
+	acfPaused,
+	acfStopped,
+	acfVideo,
+	acfAudio,
+	acfArchive,
+	acfCDImages,
+	acfPictures,
+	acfText,
+	acfActive
 };
 
 /**
@@ -353,8 +372,9 @@ public:
 	bool			UpdateCategory(uint8 cat, const wxString& name, const CPath& path,
 						const wxString& comment, uint32 color, uint8 prio);
 
-	static uint32		GetAllcatType() 		{ return s_allcatType; }
-	static void		SetAllcatType(uint32 in)	{ s_allcatType = in; }
+	static AllCategoryFilter	GetAllcatFilter() 		{ return s_allcatFilter; }
+	static void		SetAllcatFilter(AllCategoryFilter in)	{ s_allcatFilter = in; }
+	
 	static bool		ShowAllNotCats() 		{ return s_showAllNotCats; }
 
 	// WebServer
@@ -684,7 +704,7 @@ protected:
 	static wxString s_WebTemplate;
 
 	static bool	s_showCatTabInfos;
-	static uint32	s_allcatType;
+	static AllCategoryFilter s_allcatFilter;
 	
 	// Madcat - Sources Dropping Tweaks
 	static uint8	s_NoNeededSources; // 0: Keep, 1: Drop, 2:Swap

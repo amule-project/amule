@@ -601,7 +601,7 @@ namespace MuleNotify
 			theApp->downloadqueue->ResetCatParts(cat);
 			theApp->glob_prefs->RemoveCat(cat);
 			if ( theApp->glob_prefs->GetCatCount() == 1 ) {
-				thePrefs::SetAllcatType(0);
+				thePrefs::SetAllcatFilter( acfAll );
 			}
 			theApp->glob_prefs->SaveCats();
 		}

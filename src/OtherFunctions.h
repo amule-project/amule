@@ -29,6 +29,7 @@
 #include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
+#include "Preferences.h"	// Needed for AllCategoryFilter enumeration
 
 #include <algorithm>		// Needed for std::for_each	// Do_not_auto_remove (mingw-gcc-3.4.5)
 
@@ -259,7 +260,7 @@ wxString GetFiletypeByName(const CPath& filename, bool translated = true);
 
 
 // Returns the name associated with a category value.
-wxString GetCatTitle(int catid);
+wxString GetCatTitle(AllCategoryFilter cat);
 
 /* Other */
 

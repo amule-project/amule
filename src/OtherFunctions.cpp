@@ -677,25 +677,25 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 
 
 // Returns the text assosiated with a category type
-wxString GetCatTitle(int catid)
+wxString GetCatTitle(AllCategoryFilter cat)
 {
-	switch (catid) {
-		case 0:	 return _("all");
-		case 1:  return _("all others");
-		case 2:  return _("Incomplete");
-		case 3:  return _("Completed");
-		case 4:  return _("Waiting");
-		case 5:  return _("Downloading");
-		case 6:  return _("Erroneous");
-		case 7:  return _("Paused");
-		case 8:  return _("Stopped");		
-		case 9:  return _("Video");
-		case 10: return _("Audio");
-		case 11: return _("Archive");
-		case 12: return _("CD-Images");
-		case 13: return _("Pictures");
-		case 14: return _("Text");
-		case 15: return _("Active");		
+	switch (cat) {
+		case acfAll:	 	 return _("all");
+		case acfAllOthers:   return _("all others");
+		case acfIncomplete:	 return _("Incomplete");
+		case acfCompleted:	 return _("Completed");
+		case acfWaiting:	 return _("Waiting");
+		case acfDownloading: return _("Downloading");
+		case acfErroneous:	 return _("Erroneous");
+		case acfPaused:		 return _("Paused");
+		case acfStopped:	 return _("Stopped");		
+		case acfVideo:		 return _("Video");
+		case acfAudio:		 return _("Audio");
+		case acfArchive:	 return _("Archive");
+		case acfCDImages:	 return _("CD-Images");
+		case acfPictures:	 return _("Pictures");
+		case acfText:		 return _("Text");
+		case acfActive:		 return _("Active");		
 		default: return wxT("?");
 	}
 }

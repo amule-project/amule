@@ -169,7 +169,7 @@ uint32		CPreferences::s_nWebPageRefresh;
 bool		CPreferences::s_bWebLowEnabled;
 wxString	CPreferences::s_WebTemplate;
 bool		CPreferences::s_showCatTabInfos;
-uint32		CPreferences::s_allcatType;
+AllCategoryFilter CPreferences::s_allcatFilter;
 uint8		CPreferences::s_NoNeededSources;
 bool		CPreferences::s_DropFullQueueSources;
 bool		CPreferences::s_DropHighQueueRankingSources;
@@ -1257,7 +1257,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),			s_yourHostname, wxEmptyString ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),		s_datetimeformat, wxT("%A, %x, %X") ) );
 
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/AllcatType"),			s_allcatType, 0 ) );
+	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/AllcatType"),			s_allcatFilter, 0 ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ShowAllNotCats"),		s_showAllNotCats, false ) );
 
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
@@ -1544,7 +1544,7 @@ void CPreferences::SaveCats()
 		wxConfigBase* cfg = wxConfigBase::Get();
 
 		// Save the main cat.
-		cfg->Write( wxT("/eMule/AllcatType"), (int)s_allcatType);
+		cfg->Write( wxT("/eMule/AllcatType"), (int)s_allcatFilter);
 		
 		// The first category is the default one and should not be counted
 

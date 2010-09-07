@@ -688,7 +688,7 @@ bool CamuleDaemonApp::OnInit()
 	AddLogLineNS(_("amuled: OnInit - starting timer"));
 	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
 	core_timer->Start(CORE_TIMER_PERIOD);
-	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
+	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatFilter());
 	glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
 	
 	return true;
