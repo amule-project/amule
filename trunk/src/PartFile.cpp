@@ -3791,65 +3791,70 @@ bool CPartFile::PreviewAvailable()
 
 bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 {
-	// easy normal cases
-	bool IsInCat;
-	bool IsNotFiltered = true;
+	// first check if item belongs in this cat in principle
+	if (inCategory > 0 && inCategory != GetCategory()) {
+		return false;
+	}
 
-	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==GetCategory()));
+	// if yes apply filter
+	bool show = true;
 
 	switch (thePrefs::GetAllcatFilter()) {
 		case acfAllOthers:
-			IsNotFiltered = GetCategory() == 0 || inCategory > 0;
+			show = GetCategory() == 0 || inCategory > 0;
 			break;
 		case acfIncomplete:
-			IsNotFiltered = IsPartFile();
+			show = IsPartFile();
 			break;
 		case acfCompleted:
-			IsNotFiltered = !IsPartFile();
+			show = !IsPartFile();
 			break;
 		case acfWaiting:
-			IsNotFiltered = 
+			show = 
 				(GetStatus() == PS_READY || GetStatus() == PS_EMPTY) &&
 				GetTransferingSrcCount() == 0;
 			break;
 		case acfDownloading:
-			IsNotFiltered =
-				(GetStatus() == PS_READY || GetStatus()==PS_EMPTY) &&
+			show =
+				(GetStatus() == PS_READY || GetStatus() == PS_EMPTY) &&
 				GetTransferingSrcCount() > 0;
 			break;
 		case acfErroneous:
-			IsNotFiltered = GetStatus() == PS_ERROR;
+			show = GetStatus() == PS_ERROR;
 			break;
 		case acfPaused:
-			IsNotFiltered = GetStatus() == PS_PAUSED && !IsStopped();
+			show = GetStatus() == PS_PAUSED && !IsStopped();
 			break;
 		case acfStopped:
-			IsNotFiltered = IsStopped();
+			show = IsStopped();
 			break;
 		case acfVideo:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftVideo;
+			show = GetFiletype(GetFileName()) == ftVideo;
 			break;
 		case acfAudio:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftAudio;
+			show = GetFiletype(GetFileName()) == ftAudio;
 			break;
 		case acfArchive:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftArchive;
+			show = GetFiletype(GetFileName()) == ftArchive;
 			break;
 		case acfCDImages:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftCDImage;
+			show = GetFiletype(GetFileName()) == ftCDImage;
 			break;
 		case acfPictures:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftPicture;
+			show = GetFiletype(GetFileName()) == ftPicture;
 			break;
 		case acfText:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftText;
+			show = GetFiletype(GetFileName()) == ftText;
 			break;
 		case acfActive:
-			IsNotFiltered = !IsStopped() && GetStatus() != PS_PAUSED;
+			show = !IsStopped() && GetStatus() != PS_PAUSED;
+			break;
+		default:
+			show = true;
 			break;
 	}
 	
-	return IsNotFiltered && IsInCat;
+	return show;
 }
 
 
