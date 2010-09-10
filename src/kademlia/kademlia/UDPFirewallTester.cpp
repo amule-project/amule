@@ -29,7 +29,6 @@
 #include "../utils/KadUDPKey.h"
 #include "../routing/RoutingZone.h"
 #include <common/Macros.h>
-#include "Kademlia.h"
 #include "Prefs.h"
 #include "SearchManager.h"
 #include "../../Logger.h"
@@ -55,7 +54,10 @@ CUDPFirewallTester::UsedClientList	CUDPFirewallTester::m_usedTestClients;
 
 
 bool CUDPFirewallTester::IsFirewalledUDP(bool lastStateIfTesting)
-{ 
+{
+	if (CKademlia::IsRunningInLANMode()) {
+		return false;
+	}
 	if (!m_timedOut && IsFWCheckUDPRunning()) {
 		if (!m_firewalledUDP && CKademlia::IsFirewalled() && m_testStart != 0 && ::GetTickCount() - m_testStart > MIN2MS(6)
 			&& !m_isFWVerifiedUDP /*For now we don't allow to get firewalled by timeouts if we have succeded a test before, might be changed later*/)

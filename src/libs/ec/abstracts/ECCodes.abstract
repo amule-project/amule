@@ -189,6 +189,7 @@ EC_TAG_STATS_UL_SPEED                     0x0200
 	EC_TAG_STATS_BUDDY_STATUS                 0x0214
 	EC_TAG_STATS_BUDDY_IP                     0x0215
 	EC_TAG_STATS_BUDDY_PORT                   0x0216
+	EC_TAG_STATS_KAD_IN_LAN_MODE              0x0217
 
 EC_TAG_PARTFILE                           0x0300
 	EC_TAG_PARTFILE_NAME                      0x0301

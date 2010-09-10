@@ -913,3 +913,12 @@ bool CRoutingZone::IsAcceptableContact(const CContact *toCheck) const
 	// if the node is not yet known, check if our IP limitations would hit
 	return CRoutingBin::CheckGlobalIPLimits(toCheck->GetIPAddress(), toCheck->GetUDPPort());
 }
+
+bool CRoutingZone::HasOnlyLANNodes() const throw()
+{
+	if (IsLeaf()) {
+		return m_bin->HasOnlyLANNodes();
+	} else {
+		return m_subZones[0]->HasOnlyLANNodes() && m_subZones[1]->HasOnlyLANNodes();
+	}
+}

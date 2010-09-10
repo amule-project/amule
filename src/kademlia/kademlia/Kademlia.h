@@ -36,12 +36,13 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
+#include "Prefs.h"
+
 #ifndef __KAD_KADEMLIA_H__
 #define __KAD_KADEMLIA_H__
 
 #include <map>
 #include "../utils/UInt128.h"
-#include "Prefs.h"
 #include "../routing/Maps.h"
 #include "../net/KademliaUDPListener.h"
 #include <common/Macros.h>
@@ -71,7 +72,8 @@ public:
 	static CIndexed *		GetIndexed()			{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
 	static bool			IsRunning() throw()		{ return m_running; }
 	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
-	static bool			IsFirewalled() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() : true; }
+	static bool			IsFirewalled()
+		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() && !IsRunningInLANMode() : true; }
 	static void			RecheckFirewalled();
 	static uint32_t			GetKademliaUsers(bool newMethod = false)
 		{ return instance && instance->m_prefs ? (newMethod ? CalculateKadUsersNew() : instance->m_prefs->GetKademliaUsers()) : 0; }
@@ -100,6 +102,7 @@ public:
 	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
 	static bool FindIPByNodeID(CKadClientSearcher& requester, const uint8_t *nodeID);
 	static void CancelClientSearch(CKadClientSearcher& fromRequester);
+	static bool IsRunningInLANMode();
 
 	static ContactList	s_bootstrapList;
 
@@ -119,7 +122,9 @@ private:
 	static time_t	m_bootstrap;
 	static time_t	m_consolidate;
 	static time_t	m_externPortLookup;
+	static time_t	m_lanModeCheck;
 	static bool	m_running;
+	static bool	m_lanMode;
 	static std::list<uint32_t>	m_statsEstUsersProbes;
 
 	CPrefs *		m_prefs;

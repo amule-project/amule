@@ -107,7 +107,7 @@ public:
 	bool	GetFindBuddy() throw()				{ return m_findBuddy ? m_findBuddy = false, true : false; }
 	void	SetFindBuddy(bool val = true) throw()		{ m_findBuddy = val; }
 
-	bool	GetUseExternKadPort() const throw()		{ return m_useExternKadPort; }
+	bool	GetUseExternKadPort() const;
 	void	SetUseExternKadPort(bool val) throw()		{ m_useExternKadPort = val; }
 
 	uint16_t GetExternalKadPort() const throw()		{ return m_externKadPort; }
@@ -166,6 +166,13 @@ private:
 };
 
 } // End namespace
+
+#include "Kademlia.h"
+
+inline bool Kademlia::CPrefs::GetUseExternKadPort() const
+{
+	return m_useExternKadPort && !Kademlia::CKademlia::IsRunningInLANMode();
+}
 
 #endif //__PREFS_H__
 // File_checked_for_headers

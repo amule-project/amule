@@ -25,6 +25,7 @@
 //
 
 #include "PacketTracking.h"
+#include "../kademlia/Kademlia.h"
 #include "../../amule.h"
 #include "../../Logger.h"
 #include "../../OtherFunctions.h"
@@ -201,6 +202,10 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 			it->m_count++;
 			// remember only for easier cleanup
 			trackEntry->m_lastExpire = std::max(trackEntry->m_lastExpire, it->m_firstAdded + SEC2MS(secondsPerPacket) * it->m_count);
+
+			if (CKademlia::IsRunningInLANMode() && ::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
+				return true;	// no flood detection in LAN mode
+			}
 
 			// now the actual check if this request is allowed
 			if (it->m_count > allowedPacketsPerMinute * 5) {

@@ -495,6 +495,7 @@ enum StatDataIndex {
 	sdBuddyStatus,
 	sdBuddyIP,
 	sdBuddyPort,
+	sdKadInLanMode,
 
 	sdTotalItems
 };
@@ -543,6 +544,7 @@ private:
 	static	uint8	GetBuddyStatus()		{ return s_statData[sdBuddyStatus]; }
 	static	uint32	GetBuddyIP()			{ return s_statData[sdBuddyIP]; }
 	static	uint32	GetBuddyPort()			{ return s_statData[sdBuddyPort]; }
+	static	bool	IsKadRunningInLanMode()	{ return s_statData[sdKadInLanMode] != 0; }
 
 	static	void	UpdateStats(const CECPacket* stats);
 

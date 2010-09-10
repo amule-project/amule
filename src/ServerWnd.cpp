@@ -196,28 +196,28 @@ void CServerWnd::UpdateED2KInfo()
 void CServerWnd::UpdateKadInfo()
 {
 	wxListCtrl* KadInfoList = CastChild( ID_KADINFO, wxListCtrl );
-	
+
 	int next_row = 0;
-	
+
 	KadInfoList->DeleteAllItems();
-	
+
 	KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 
 	if (theApp->IsKadRunning()) {
-		KadInfoList->SetItem(next_row++, 1, _("Running"));
-			
-		// Connection data		
+		KadInfoList->SetItem(next_row++, 1, (theApp->IsKadRunningInLanMode() ? _("Running in LAN mode") : _("Running")));
+
+		// Connection data
 		KadInfoList->InsertItem(next_row, _("Status:"));
 		KadInfoList->SetItem(next_row++, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
 		if (theApp->IsConnectedKad()) {
 			KadInfoList->InsertItem(next_row, _("Connection State:"));
-			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ? 
-				wxString(CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort()) 
+			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ?
+				wxString(CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort())
 				: wxString(_("OK")));
 			KadInfoList->InsertItem(next_row, _("UDP Connection State:"));
 			bool UDPFirewalled = theApp->IsFirewalledKadUDP();
-			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ? 
-				wxString(CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort()) 
+			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ?
+				wxString(CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort())
 				: wxString(_("OK")));
 
 			if (theApp->IsFirewalledKad() || UDPFirewalled) {
@@ -262,14 +262,12 @@ void CServerWnd::UpdateKadInfo()
 			++next_row;
 			KadInfoList->InsertItem(next_row, _("Average Files:"));
 			KadInfoList->SetItem(next_row, 1, CastItoIShort(theApp->GetKadFiles()));
-			
-		} 
-			
+		}
 	} else {
 		// No data
 		KadInfoList->SetItem(next_row, 1, _("Not running"));
 	}
-	
+
 	// Fit the width of the columns
 	KadInfoList->SetColumnWidth(0, -1);
 	KadInfoList->SetColumnWidth(1, -1);
