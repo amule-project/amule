@@ -205,6 +205,8 @@ public:
 	bool IsFirewalledKad() const;
 	// Check Kad state (UDP)
 	bool IsFirewalledKadUDP() const;
+	// Check Kad state (LAN mode)
+	bool IsKadRunningInLanMode() const;
 	// Kad stats
 	uint32	GetKadUsers() const;
 	uint32	GetKadFiles() const;

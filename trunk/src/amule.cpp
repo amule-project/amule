@@ -1688,6 +1688,11 @@ bool CamuleApp::IsKadRunning() const
 	return Kademlia::CKademlia::IsRunning();
 }
 
+bool CamuleApp::IsKadRunningInLanMode() const
+{
+	return Kademlia::CKademlia::IsRunningInLANMode();
+}
+
 // Kad stats
 uint32 CamuleApp::GetKadUsers() const
 {

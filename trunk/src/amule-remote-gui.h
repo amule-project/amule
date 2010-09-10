@@ -670,6 +670,7 @@ public:
 
 	// Check Kad state (UDP)
 	bool IsFirewalledKadUDP() const		{ return theStats::IsFirewalledKadUDP(); }
+	bool IsKadRunningInLanMode() const	{ return theStats::IsKadRunningInLanMode(); }
 	// Kad stats
 	uint32 GetKadUsers() const			{ return theStats::GetKadUsers(); }
 	uint32 GetKadFiles() const			{ return theStats::GetKadFiles(); }

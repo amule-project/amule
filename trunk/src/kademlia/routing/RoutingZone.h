@@ -99,6 +99,7 @@ public:
 	uint32_t GetBootstrapContacts(ContactList *results, uint32_t maxRequired) const;
 
 	uint32_t EstimateCount() const;
+	bool	 HasOnlyLANNodes() const throw();
 
 	time_t	 m_nextBigTimer;
 	time_t	 m_nextSmallTimer;

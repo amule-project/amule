@@ -27,6 +27,7 @@
 #ifndef KADEMLIA_KADEMLIA_UDPFIREWALLTESTER_H
 #define KADEMLIA_KADEMLIA_UDPFIREWALLTESTER_H
 
+#include "Kademlia.h"
 #include "../routing/Contact.h"
 #include <list>
 
@@ -49,8 +50,8 @@ class CUDPFirewallTester
 	static bool	IsFirewalledUDP(bool lastStateIfTesting); // Are we UDP firewalled - if unknown open is assumed unless onlyVerified == true
 	static void	SetUDPFWCheckResult(bool succeeded, bool testCancelled, uint32_t fromIP, uint16_t incomingPort);
 	static void	ReCheckFirewallUDP(bool setUnverified);
-	static bool	IsFWCheckUDPRunning() throw()		{ return m_fwChecksFinishedUDP < UDP_FIREWALLTEST_CLIENTSTOASK; }
-	static bool	IsVerified() throw()			{ return m_isFWVerifiedUDP; }
+	static bool	IsFWCheckUDPRunning() throw()		{ return m_fwChecksFinishedUDP < UDP_FIREWALLTEST_CLIENTSTOASK && !CKademlia::IsRunningInLANMode(); }
+	static bool	IsVerified() throw()			{ return m_isFWVerifiedUDP || CKademlia::IsRunningInLANMode(); }
 
 	static void	AddPossibleTestContact(const CUInt128& clientID, uint32_t ip, uint16_t port, uint16_t tport, const CUInt128& target, uint8_t version, const CKadUDPKey& udpKey, bool ipVerified)
 	{

@@ -75,6 +75,7 @@ public:
 	void	  PushToBottom(CContact *contact); // puts an existing contact from X to the end of the list
 	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const;
 	void	  SetAllContactsVerified();
+	bool	  HasOnlyLANNodes() const throw();
 
 	static bool	CheckGlobalIPLimits(uint32_t ip, uint16_t port);
 

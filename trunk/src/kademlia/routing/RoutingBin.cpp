@@ -387,3 +387,13 @@ bool CRoutingBin::CheckGlobalIPLimits(uint32_t ip, uint16_t DEBUG_ONLY(port))
 	}
 	return true;
 }
+
+bool CRoutingBin::HasOnlyLANNodes() const throw()
+{
+	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
+		if (!::IsLanIP(wxUINT32_SWAP_ALWAYS((*it)->GetIPAddress()))) {
+			return false;
+		}
+	}
+	return true;
+}

@@ -154,6 +154,7 @@ public final static short 	EC_TAG_STATS_KAD_IP_ADRESS                = 0x0213;
 public final static short 	EC_TAG_STATS_BUDDY_STATUS                 = 0x0214;
 public final static short 	EC_TAG_STATS_BUDDY_IP                     = 0x0215;
 public final static short 	EC_TAG_STATS_BUDDY_PORT                   = 0x0216;
+public final static short 	EC_TAG_STATS_KAD_IN_LAN_MODE              = 0x0217;
 public final static short EC_TAG_PARTFILE                           = 0x0300;
 public final static short 	EC_TAG_PARTFILE_NAME                      = 0x0301;
 public final static short 	EC_TAG_PARTFILE_PARTMETID                 = 0x0302;

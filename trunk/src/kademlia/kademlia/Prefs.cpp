@@ -40,7 +40,6 @@ there client on the eMule forum..
 
 #include <common/MD5Sum.h>
 
-#include "Kademlia.h"
 #include "Indexed.h"
 #include "UDPFirewallTester.h"
 #include "../routing/RoutingZone.h"
@@ -310,7 +309,7 @@ void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 bool CPrefs::FindExternKadPort(bool reset)
 {
 	if (!reset) {
-		return m_externPortIPs.size() < EXTERNAL_PORT_ASKIPS;
+		return m_externPortIPs.size() < EXTERNAL_PORT_ASKIPS && !CKademlia::IsRunningInLANMode();
 	} else {
 		m_externPortIPs.clear();
 		m_externPorts.clear();
