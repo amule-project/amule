@@ -466,7 +466,7 @@ bool CKademlia::IsRunningInLANMode()
 		uint32_t count = GetRoutingZone()->GetNumContacts();
 		// Limit to 256 nodes, if we have more we don't want to use the LAN mode which is assuming we use a small home LAN
 		// (otherwise we might need to do firewallcheck, external port requests etc after all)
-		if (count = 0 || count > 256) {
+		if (count == 0 || count > 256) {
 			m_lanMode = false;
 		} else {
 			if (GetRoutingZone()->HasOnlyLANNodes()) {
