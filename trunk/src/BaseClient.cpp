@@ -1242,7 +1242,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 		theApp->clientlist->RemoveDirectCallback(this);
 		m_dwDirectCallbackTimeout = 0;
 		theApp->clientlist->AddDeadSource(this);
-		AddDebugLogLineN(logClient, wxT("Direct callback failed to client ") + GetUserHash().Encode() + wxT(" on ip ") + GetFullIP());
+		AddDebugLogLineN(logClient, wxT("Direct callback failed to client on ip ") + Uint32toStringIP(GetConnectIP()));
 	}
 
 	if (GetKadState() == KS_QUEUED_FWCHECK_UDP || GetKadState() == KS_CONNECTING_FWCHECK_UDP) {
@@ -1479,7 +1479,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	
 	if (HasLowID() && SupportsDirectUDPCallback() && thePrefs::GetEffectiveUDPPort() != 0 && GetConnectIP() != 0) { // LOWID with DirectCallback
 		if (m_dwDirectCallbackTimeout != 0) {
-			AddDebugLogLineN(logClient, wxT("ERROR: Trying Direct UDP Callback while already trying to connect to client ") + GetUserHash().Encode());
+			AddDebugLogLineN(logClient, wxT("ERROR: Trying Direct UDP Callback while already trying to connect to client on ip ") + Uint32toStringIP(GetConnectIP()));
 			return true;	// We're already trying a direct connection to this client
 		}
 		// a direct callback is possible - since no other parties are involved and only one additional packet overhead 
@@ -1487,7 +1487,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		// we already check above with !theApp->CanDoCallback(this) if any callback is possible at all
 		m_dwDirectCallbackTimeout = ::GetTickCount() + SEC2MS(45);
 		theApp->clientlist->AddDirectCallbackClient(this);
-		AddDebugLogLineN(logClient, wxString::Format(wxT("Direct Callback on port %u to client "), GetKadPort()) + GetConnectIP());
+		AddDebugLogLineN(logClient, wxString::Format(wxT("Direct Callback on port %u to client on ip "), GetKadPort()) + Uint32toStringIP(GetConnectIP()));
 
 		CMemFile data;
 		data.WriteUInt16(thePrefs::GetPort()); // needs to know our port
@@ -1636,7 +1636,7 @@ void CUpDownClient::ConnectionEstablished()
 	if (m_dwDirectCallbackTimeout != 0){
 		theApp->clientlist->RemoveDirectCallback(this);
 		m_dwDirectCallbackTimeout = 0;
-		AddDebugLogLineN(logClient, wxT("Direct Callback succeeded, connection established to ") + GetConnectIP());
+		AddDebugLogLineN(logClient, wxT("Direct Callback succeeded, connection established to ") + Uint32toStringIP(GetConnectIP()));
 	}
 
 	switch (GetKadState()) {
