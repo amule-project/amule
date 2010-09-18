@@ -304,7 +304,7 @@ void CServerList::ServerStats()
 			ping_server->SetLastPinged(tNow);
 			ping_server->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
 			
-			AddDebugLogLineM(false, logServerUDP, CFormat(wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u")) % ping_server->GetAddress() % ping_server->GetPort());
+			AddDebugLogLineN(logServerUDP, CFormat(wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u")) % ping_server->GetAddress() % ping_server->GetPort());
 
 			CPacket* packet = new CPacket(pRawPacket[1], nPacketLen - 2, pRawPacket[0]);
 			packet->CopyToDataBuffer(0, pRawPacket.get() + 2, nPacketLen - 2);
@@ -315,9 +315,9 @@ void CServerList::ServerStats()
 			// our obfsucation ping request was not answered, so probably the server doesn'T supports obfuscation
 			// continue with a normal request
 			if (ping_server->GetCryptPingReplyPending() && thePrefs::IsServerCryptLayerUDPEnabled()) {
-				AddDebugLogLineM(false, logServerUDP, wxT("CryptPing failed for server ") + ping_server->GetListName());
+				AddDebugLogLineN(logServerUDP, wxT("CryptPing failed for server ") + ping_server->GetListName());
 			} else if (thePrefs::IsServerCryptLayerUDPEnabled()) {
-				AddDebugLogLineM(false, logServerUDP, wxT("CryptPing skipped because our public IP is unknown for server ") + ping_server->GetListName());
+				AddDebugLogLineN(logServerUDP, wxT("CryptPing skipped because our public IP is unknown for server ") + ping_server->GetListName());
 			}
 			
 			ping_server->SetCryptPingReplyPending(false);			

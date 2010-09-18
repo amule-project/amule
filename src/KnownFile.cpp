@@ -916,7 +916,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 		if (GetFileName().IsOk()) {
 			file2 = GetFileName().GetPrintable();
 		}
-		AddDebugLogLineM(false, logKnownFiles, wxT("File missmatch on source packet (K) Sending: ") + file1 + wxT("  From: ") + file2);
+		AddDebugLogLineN(logKnownFiles, wxT("File mismatch on source packet (K) Sending: ") + file1 + wxT("  From: ") + file2);
 		return NULL;
 	}
 
@@ -925,7 +925,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
 	if (rcvstatus.size() != GetPartCount()) {
 		// Yuck. Same file but different part count? Seriously fucked up.
-		AddDebugLogLineM(false, logKnownFiles, CFormat(wxT("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)")) % rcvstatus.size() % GetPartCount());
+		AddDebugLogLineN(logKnownFiles, CFormat(wxT("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)")) % rcvstatus.size() % GetPartCount());
 		return NULL;
 	}
 
@@ -942,13 +942,13 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 
 		// we don't support any special SX2 options yet, reserved for later use
 		if (nRequestedOptions != 0) {
-			AddDebugLogLineM(false, logKnownFiles, CFormat(wxT("Client requested unknown options for SourceExchange2: %u")) % nRequestedOptions);
+			AddDebugLogLineN(logKnownFiles, CFormat(wxT("Client requested unknown options for SourceExchange2: %u")) % nRequestedOptions);
 		}
 	} else {
 		byUsedVersion = forClient->GetSourceExchange1Version();
 		bIsSX2Packet = false;
 		if (forClient->SupportsSourceExchange2()) {
-			AddDebugLogLineM(false, logKnownFiles, wxT("Client which announced to support SX2 sent SX1 packet instead"));
+			AddDebugLogLineN(logKnownFiles, wxT("Client which announced to support SX2 sent SX1 packet instead"));
 		}
 	}
 	

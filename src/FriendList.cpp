@@ -120,9 +120,9 @@ void CFriendList::LoadList()
 			AddLogLineM(false, _("Failed to open friend list file 'emfriends.met' for reading!"));
 		}
 	} catch (const CInvalidPacket& e) {
-		AddDebugLogLineM(true, logGeneral, wxT("Invalid entry in friend list, file may be corrupt: ") + e.what());		
+		AddDebugLogLineC(logGeneral, wxT("Invalid entry in friend list, file may be corrupt: ") + e.what());
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(true, logGeneral, wxT("IO error while reading 'emfriends.met': ") + e.what());
+		AddDebugLogLineC(logGeneral, wxT("IO error while reading 'emfriends.met': ") + e.what());
 	}
 	
 }
@@ -140,7 +140,7 @@ void CFriendList::SaveList()
 				(*it)->WriteToFile(&file);
 			}
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logGeneral, wxT("IO failure while saving 'emfriends.met': ") + e.what());
+			AddDebugLogLineC(logGeneral, wxT("IO failure while saving 'emfriends.met': ") + e.what());
 		}
 	} else {
 		AddLogLineM(false, _("Failed to open friend list file 'emfriends.met' for writing!"));

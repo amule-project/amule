@@ -94,20 +94,20 @@ bool CKnownFileList::Init()
 		
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
-		AddDebugLogLineM(false, logKnownFiles,
+		AddDebugLogLineN(logKnownFiles,
 			wxString::Format(wxT("Reading %i known files from file format 0x%2.2x."),
 			RecordsNumber, version));
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			CScopedPtr<CKnownFile> record(new CKnownFile());
 			if (record->LoadFromFile(&file)) {
-				AddDebugLogLineM(false, logKnownFiles,
+				AddDebugLogLineN(logKnownFiles,
 					CFormat(wxT("Known file read: %s")) % record->GetFileName());
 				Append(record.release());
 			} else {
 				AddLogLineC(_("Failed to load entry in known file list, file may be corrupt"));
 			}
 		}
-		AddDebugLogLineM(false, logKnownFiles, wxT("Finished reading known files"));
+		AddDebugLogLineN(logKnownFiles, wxT("Finished reading known files"));
 	
 		return true;
 	} catch (const CInvalidPacket& e) {
@@ -314,7 +314,7 @@ bool CKnownFileList::Append(CKnownFile *Record)
 			}
 		}
 	} else {
-		AddDebugLogLineM(false, logGeneral,
+		AddDebugLogLineN(logGeneral,
 			CFormat(wxT("%s is 0-size, not added")) %
 			Record->GetFileName());
 		

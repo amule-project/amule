@@ -364,7 +364,7 @@ void ExternalConn::RemoveSocket(CECServerSocket *s)
 
 void ExternalConn::KillAllSockets()
 {
-	AddDebugLogLineM(false, logGeneral,
+	AddDebugLogLineN(logGeneral,
 		CFormat(wxT("ExternalConn::KillAllSockets(): %d sockets to destroy.")) %
 			socket_list.size());
 	SocketSet::iterator it = socket_list.begin();
@@ -1508,7 +1508,11 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_ADDDEBUGLOGLINE:
-			AddDebugLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), logGeneral, request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData() );
+			if (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL) {
+				AddDebugLogLineC(logGeneral, request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData());
+			} else {
+				AddDebugLogLineN(logGeneral, request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData());
+			}
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_GET_LOG:

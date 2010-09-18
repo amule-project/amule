@@ -421,14 +421,14 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 		CPath fullPath = directory.JoinPaths(fname);
 	
 		if (!fullPath.FileExists()) {
-			AddDebugLogLineM(false, logKnownFiles,
+			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Shared file does not exist (possibly a broken link): %s")) % fullPath);
 			
 			fname = SharedDir.GetNextFile();
 			continue;
 		}
 
-		AddDebugLogLineM(false, logKnownFiles,
+		AddDebugLogLineN(logKnownFiles,
 			CFormat(wxT("Found shared file: %s")) % fullPath);
 
 		time_t fdate = CPath::GetModificationTime(fullPath);
@@ -436,7 +436,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 
 		// This will also catch files with too strict permissions.
 		if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
-			AddDebugLogLineM(false, logKnownFiles,
+			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Failed to retrive modification time or size for '%s', skipping.")) % fullPath);
 			
 			fname = SharedDir.GetNextFile();
@@ -448,19 +448,19 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 		if (toadd) {
 			knownFiles++;
 			if (AddFile(toadd)) {
-				AddDebugLogLineM(false, logKnownFiles,
+				AddDebugLogLineN(logKnownFiles,
 					CFormat(wxT("Added known file '%s' to shares"))
 						% fname);
 
 				toadd->SetFilePath(directory);
 			} else {
-				AddDebugLogLineM(false, logKnownFiles,
+				AddDebugLogLineN(logKnownFiles,
 					CFormat(wxT("File already shared, skipping: %s"))
 						% fname);
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
-			AddDebugLogLineM(false, logKnownFiles,
+			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Hashing new unknown shared file '%s'")) % fname);
 			
 			if (CThreadScheduler::AddTask(new CHashingTask(directory, fname))) {

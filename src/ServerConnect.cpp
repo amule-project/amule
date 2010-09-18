@@ -606,7 +606,7 @@ void CServerConnect::KeepConnectionAlive()
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
-		AddDebugLogLineM(false, logServer, wxT("Refreshing server connection"));
+		AddDebugLogLineN(logServer, wxT("Refreshing server connection"));
  	}
 }
 
