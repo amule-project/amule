@@ -402,14 +402,13 @@ public:
  * These macros should be used when logging. The 
  * AddLogLineM macro will simply call one of the
  * two CLogger::AddLogLine functions depending on
- * parameters, but AddDebugLogLineM will only log
+ * parameters, but AddDebugLogLine* will only log
  * a message if the message is either critical or
  * the specified debug-type is enabled in the 
  * preferences.
  * AddLogLineMS will also always print to stdout.
  */
 #if defined(MULEUNIT)
-	#define AddDebugLogLineM(...) do {} while (false)
 	#define AddLogLineM(...) do {} while (false)
 	#define AddLogLineMS(...) do {} while (false)
 	#define AddDebugLogLineN(...) do {} while (false)
@@ -420,7 +419,6 @@ public:
 	#define AddLogLineCS(...) do {} while (false)
 #else
 // Macros passing critical flag (legacy)
-	#define AddDebugLogLineM(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 	#define AddLogLineM(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string)
 	#define AddLogLineMS(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string, true)
 // Macro for UPnP. This is not a debug macro, but wants its category printed nevertheless (sigh).

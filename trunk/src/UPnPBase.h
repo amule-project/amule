@@ -190,7 +190,7 @@ CXML_List<T, XML_ELEMENT_NAME, XML_LIST_NAME>::CXML_List(
 	std::ostringstream msg;
 	msg << "\n    " << XML_LIST_NAME << ": " <<
 		i << " " << XML_ELEMENT_NAME << "s.";
-	AddDebugLogLineM(false, logUPnP, msg);
+	AddDebugLogLineN(logUPnP, msg);
 }
 
 

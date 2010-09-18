@@ -240,7 +240,7 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	try {
 		newfile = new CPartFile(toadd);
 	} catch (const CInvalidPacket& WXUNUSED(e)) {
-		AddDebugLogLineM(true, logDownloadQueue, wxT("Search-result contained invalid tags, could not add"));
+		AddDebugLogLineC(logDownloadQueue, wxT("Search-result contained invalid tags, could not add"));
 	}
 	
 	if ( newfile && newfile->GetStatus() != PS_ERROR ) {
@@ -340,7 +340,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 	if (category < theApp->glob_prefs->GetCatCount()) {
 		file->SetCategory(category);
 	} else {
-		AddDebugLogLineM( false, logDownloadQueue, wxT("Tried to add download into invalid category.") );
+		AddDebugLogLineN( logDownloadQueue, wxT("Tried to add download into invalid category.") );
 	}
 	Notify_DownloadCtrlAddFile( file );
 	theApp->searchlist->UpdateSearchFileByHash(file->GetFileHash()); 	// Update file in the search dialog if it's still open
@@ -514,7 +514,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	// if we block loopbacks at this point it should prevent us from connecting to ourself
 	if ( source->HasValidHash() ) {
 		if ( source->GetUserHash() == thePrefs::GetUserHash() ) {
-			AddDebugLogLineM( false, logDownloadQueue, wxT("Tried to add source with matching hash to your own.") );
+			AddDebugLogLineN( logDownloadQueue, wxT("Tried to add source with matching hash to your own.") );
 			source->Safe_Delete();
 			return;
 		}
@@ -628,7 +628,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	if (!source->HasLowID()) {
 		uint32 nClientIP = wxUINT32_SWAP_ALWAYS(source->GetUserIDHybrid());
 		if (!IsGoodIP(nClientIP, thePrefs::FilterLanIPs())) { // check for 0-IP, localhost and LAN addresses
-			AddDebugLogLineM(false, logIPFilter, wxT("Ignored already known source with IP=%s") + Uint32toStringIP(nClientIP));
+			AddDebugLogLineN(logIPFilter, wxT("Ignored already known source with IP=%s") + Uint32toStringIP(nClientIP));
 			return;
 		}
 	}	
@@ -794,7 +794,7 @@ bool CDownloadQueue::SendNextUDPPacket()
  			
 			if ( ( status == PS_READY || status == PS_EMPTY ) && file->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP() ) {
 				if (file->IsLargeFile() && !m_udpserver->SupportsLargeFilesUDP()) {
-					AddDebugLogLineM(false, logDownloadQueue, wxT("UDP Request for sources on a large file ignored: server doesn't support it")); 	
+					AddDebugLogLineN(logDownloadQueue, wxT("UDP Request for sources on a large file ignored: server doesn't support it"));
 				} else {
 					++m_cRequestsSentToServer;
 					hashlist.WriteHash( file->GetFileHash() );
@@ -948,7 +948,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				} else {
 					it = m_localServerReqQueue.erase(it);
 					cur_file->SetLocalSrcRequestQueued(false);
-					AddDebugLogLineM( false, logDownloadQueue,
+					AddDebugLogLineN(logDownloadQueue,
 						CFormat(wxT("Local server source request for file '%s' not sent because of status '%s'"))
 							% cur_file->GetFileName() % cur_file->getPartfileStatus());
 				}
@@ -962,9 +962,9 @@ void CDownloadQueue::ProcessLocalRequests()
 				iFiles++;
 
 				if (!bServerSupportsLargeFiles && cur_file->IsLargeFile()) {
-					AddDebugLogLineM(false, logDownloadQueue, wxT("TCP Request for sources on a large file ignored: server doesn't support it"));
+					AddDebugLogLineN(logDownloadQueue, wxT("TCP Request for sources on a large file ignored: server doesn't support it"));
 				} else {
-					AddDebugLogLineM(false, logDownloadQueue,
+					AddDebugLogLineN(logDownloadQueue,
 						CFormat(wxT("Creating local sources request packet for '%s'")) % cur_file->GetFileName());
 					// create request packet
 					CMemFile data(16 + (cur_file->IsLargeFile() ? 8 : 4));
@@ -1000,7 +1000,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
 			theApp->serverconnect->SendPacket(packet.release(), true);	// Deletes `packet'.
-			AddDebugLogLineM(false, logDownloadQueue, wxT("Sent local sources request packet."));
+			AddDebugLogLineN(logDownloadQueue, wxT("Sent local sources request packet."));
 			theStats::AddUpOverheadServer(size);
 		}
 
@@ -1427,31 +1427,31 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 
 void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8_t type, uint32_t ip, uint16_t tcp, uint16_t udp, uint32_t buddyip, uint16_t buddyport, uint8_t byCryptOptions)
 {
-	AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
+	AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
 
 	//Safety measure to make sure we are looking for these sources
 	CPartFile* temp = GetFileByKadFileSearchID(searchID);
 	if( !temp ) {
-		AddDebugLogLineM(false, logKadSearch, wxT("This is not the file we're looking for..."));
+		AddDebugLogLineN(logKadSearch, wxT("This is not the file we're looking for..."));
 		return;
 	}
 
 	//Do we need more sources?
 	if(!(!temp->IsStopped() && thePrefs::GetMaxSourcePerFile() > temp->GetSourceCount())) {
-		AddDebugLogLineM(false, logKadSearch, wxT("No more sources needed for this file"));
+		AddDebugLogLineN(logKadSearch, wxT("No more sources needed for this file"));
 		return;
 	}
 
 	uint32_t ED2KID = wxUINT32_SWAP_ALWAYS(ip);
 
 	if (theApp->ipfilter->IsFiltered(ED2KID)) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Source ip got filtered"));
-		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2KID));
+		AddDebugLogLineN(logKadSearch, wxT("Source ip got filtered"));
+		AddDebugLogLineN(logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2KID));
 		return;
 	}
 
 	if( (ip == Kademlia::CKademlia::GetIPAddress() || ED2KID == theApp->GetED2KID()) && tcp == thePrefs::GetPort()) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Trying to add myself as source, ignore"));
+		AddDebugLogLineN(logKadSearch, wxT("Trying to add myself as source, ignore"));
 		return;
 	}
 
@@ -1461,12 +1461,12 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 		case 1: {
 			// NonFirewalled users
 			if(!tcp) {
-				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
+				AddDebugLogLineN(logKadSearch, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
 				return;
 			}
 			if (!IsGoodIP(ED2KID,thePrefs::FilterLanIPs())) {
-				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("%s got filtered")) % Uint32toStringIP(ED2KID));
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, filtered")) % Uint32toStringIP(ED2KID));
+				AddDebugLogLineN(logKadSearch, CFormat(wxT("%s got filtered")) % Uint32toStringIP(ED2KID));
+				AddDebugLogLineN(logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, filtered")) % Uint32toStringIP(ED2KID));
 				return;
 			}
 			ctemp = new CUpDownClient(tcp, ip, 0, 0, temp, false, true);
@@ -1510,7 +1510,7 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 			}
 
 			if ((byCryptOptions & 0x08) == 0){
-				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Received Kad source type 6 (direct callback) which has the direct callback flag not set (%s)")) % Uint32toStringIP(ED2KID));
+				AddDebugLogLineN(logKadSearch, CFormat(wxT("Received Kad source type 6 (direct callback) which has the direct callback flag not set (%s)")) % Uint32toStringIP(ED2KID));
 				break;
 			}
 
@@ -1528,7 +1528,7 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 		// add encryption settings
 		ctemp->SetConnectOptions(byCryptOptions);
 
-		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ED2KID, ctemp->GetUserPort()) % type);
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ED2KID, ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
 	}
 }

@@ -32,7 +32,7 @@
 #include "amule.h"			// Needed for theApp
 #include "Statistics.h"			// Needed for theStats
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
-#include "Logger.h"			// Needed for AddDebugLogLineM
+#include "Logger.h"			// Needed for AddDebugLogLine{C,N}
 #include <common/Format.h>		// Needed for CFormat
 #include <common/StringFunctions.h>	// Needed for CSimpleTokenizer
 #include <common/FileFunctions.h>	// Needed for UnpackArchive

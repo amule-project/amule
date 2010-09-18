@@ -198,7 +198,7 @@ void CClientCredits::Verified(uint32 dwForIP)
 			// in order to save this client, set 1 byte
 			m_pCredits->downloaded = 1;
 			m_pCredits->uploaded = 1; 
-			AddDebugLogLineM( false, logCredits, wxT("Credits deleted due to new SecureIdent") );
+			AddDebugLogLineN( logCredits, wxT("Credits deleted due to new SecureIdent") );
 		}
 	}
 	m_identState = IS_IDENTIFIED;

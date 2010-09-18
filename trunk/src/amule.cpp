@@ -1279,7 +1279,7 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 		static uint64 bytecount;
 
 		if (knownfiles->SafeAddKFile(result)) {
-			AddDebugLogLineM(false, logKnownFiles,
+			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Safe adding file to sharedlist: %s")) % result->GetFileName());
 			sharedfiles->SafeAddKFile(result);
 
@@ -1287,7 +1287,7 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 			bytecount += result->GetFileSize();
 			// If we have added 30 files or files with a total size of ~300mb
 			if ( ( filecount == 30 ) || ( bytecount >= 314572800 ) ) {
-				AddDebugLogLineM(false, logKnownFiles, wxT("Failsafe for crash on file hashing creation"));
+				AddDebugLogLineN(logKnownFiles, wxT("Failsafe for crash on file hashing creation"));
 				if ( m_app_state != APP_STATE_SHUTTINGDOWN ) {
 					knownfiles->Save();
 					filecount = 0;
@@ -1295,7 +1295,7 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 				}
 			}
 		} else {
-			AddDebugLogLineM(false, logKnownFiles,
+			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("File not added to sharedlist: %s")) % result->GetFileName());
 			delete result;
 		}
@@ -1378,7 +1378,7 @@ void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 void CamuleApp::ShutDown()
 {
 	// Log
-	AddDebugLogLineM(false, logGeneral, wxT("CamuleApp::ShutDown() has started."));
+	AddDebugLogLineN(logGeneral, wxT("CamuleApp::ShutDown() has started."));
 
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTTINGDOWN;
@@ -1441,7 +1441,7 @@ void CamuleApp::ShutDown()
 	}
 	
 	// Log
-	AddDebugLogLineM(false, logGeneral, wxT("CamuleApp::ShutDown() has ended."));
+	AddDebugLogLineN(logGeneral, wxT("CamuleApp::ShutDown() has ended."));
 }
 
 
@@ -1602,7 +1602,7 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			wxString versionLine = file.GetFirstLine();
 			wxStringTokenizer tkz(versionLine, wxT("."));
 			
-			AddDebugLogLineM(false, logGeneral, wxString(wxT("Running: ")) + wxT(VERSION) + wxT(", Version check: ") + versionLine);
+			AddDebugLogLineN(logGeneral, wxString(wxT("Running: ")) + wxT(VERSION) + wxT(", Version check: ") + versionLine);
 			
 			long fields[] = {0, 0, 0};
 			for (int i = 0; i < 3; ++i) {

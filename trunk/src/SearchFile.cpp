@@ -193,13 +193,13 @@ void CSearchFile::AddChild(CSearchFile* file)
 	if (GetChildren().empty()) {
 		// Merging duplicate names instead of adding a new one
 		if (file->GetFileName() == GetFileName()) {
-			AddDebugLogLineM( false, logSearch, CFormat(wxT("Merged results for '%s'")) % GetFileName());
+			AddDebugLogLineN(logSearch, CFormat(wxT("Merged results for '%s'")) % GetFileName());
 			MergeResults(*file);
 			delete file;
 			return;
 		} else {
 			// The first child will always be the first result we received.
-			AddDebugLogLineM(false, logSearch, CFormat(wxT("Created initial child for result '%s'")) % GetFileName());
+			AddDebugLogLineN(logSearch, CFormat(wxT("Created initial child for result '%s'")) % GetFileName());
 			m_children.push_back(new CSearchFile(*this));
 			m_children.back()->m_parent = this;
 		}

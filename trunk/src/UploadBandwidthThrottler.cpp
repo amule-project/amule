@@ -328,7 +328,7 @@ void* UploadBandwidthThrottler::Entry()
 		lastLoopTick = thisLoopTick;
 
 		if (timeSinceLastLoop > sleepTime + 2000) {
-			AddDebugLogLineM(false, logGeneral, CFormat(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims")) 
+			AddDebugLogLineN(logGeneral, CFormat(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims")) 
 				% timeSinceLastLoop % sleepTime % (sleepTime + 2000));
 
 			timeSinceLastLoop = sleepTime + 2000;
@@ -396,7 +396,7 @@ void* UploadBandwidthThrottler::Entry()
 						}
 					}
 				} else {
-					AddDebugLogLineM(false, logGeneral, CFormat( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"))
+					AddDebugLogLineN(logGeneral, CFormat( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"))
 						% slotCounter % m_StandardOrder_list.size());
 				}
 			}
@@ -420,7 +420,7 @@ void* UploadBandwidthThrottler::Entry()
 					spentBytes += socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				} else {
-					AddDebugLogLineM(false, logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"))
+					AddDebugLogLineN(logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"))
 						% rememberedSlotCounter % m_StandardOrder_list.size());
 				}
 

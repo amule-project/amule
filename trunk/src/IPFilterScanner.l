@@ -149,7 +149,7 @@ WS		[ \t\r]*
 ^.			{ 
 		/* Bad line */
 		yyip_Bad++;
-		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("error in line %d: %s")) % yyip_Line % wxString(char2unicode(yytext)));
+		AddDebugLogLineN(logIPFilter, CFormat(wxT("error in line %d: %s")) % yyip_Line % wxString(char2unicode(yytext)));
 	}
 
 %%

@@ -178,12 +178,12 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 		// Test is we are asking same file and same part
 		if ( last_done_part != next_requested_part) { 
 			different_part = true;
-			AddDebugLogLineM(false, logClient, wxT("Session ended due to new chunk."));
+			AddDebugLogLineN(logClient, wxT("Session ended due to new chunk."));
 		}
 	
 		if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0) { 
 			different_part = true;
-			AddDebugLogLineM(false, logClient, wxT("Session ended due to different file."));
+			AddDebugLogLineN(logClient, wxT("Session ended due to different file."));
 		}
 	} 
 
@@ -272,13 +272,13 @@ void CUpDownClient::CreateNextBlockPackage()
 
 		return;
 	} catch (const wxString& error) {
-		AddDebugLogLineM(false, logClient, 
+		AddDebugLogLineN(logClient, 
 			CFormat(wxT("Client '%s' (%s) caused error while creating packet (%s) - disconnecting client"))
 				% GetUserName() % GetFullIP() % error);
 	} catch (const CIOFailureException& error) {
-		AddDebugLogLineM(true, logClient, wxT("IO failure while reading requested file: ") + error.what());
+		AddDebugLogLineC(logClient, wxT("IO failure while reading requested file: ") + error.what());
 	} catch (const CEOFException& WXUNUSED(error)) {
-		AddDebugLogLineM(true, logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
+		AddDebugLogLineC(logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
 	}
 	
 	// Error occured.	
@@ -326,7 +326,7 @@ void CUpDownClient::CreateStandardPackets(const byte* buffer, uint32 togo, Reque
 		CPacket* packet = new CPacket(data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? (uint8)OP_SENDINGPART_I64 : (uint8)OP_SENDINGPART));	
 		theStats::AddUpOverheadFileRequest(16 + 2 * (bLargeBlocks ? 8 :4));
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
-		AddDebugLogLineM(false, logLocalClient, 
+		AddDebugLogLineN(logLocalClient, 
 			CFormat(wxT("Local Client: %s to %s"))
 				% (bLargeBlocks ? wxT("OP_SENDINGPART_I64") : wxT("OP_SENDINGPART")) % GetFullIP() );
 		m_socket->SendPacket(packet,true,false, nPacketSize);
@@ -390,7 +390,7 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		// put packet directly on socket
 		theStats::AddUpOverheadFileRequest(24);
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
-		AddDebugLogLineM(false, logLocalClient, 
+		AddDebugLogLineN(logLocalClient, 
 			CFormat(wxT("Local Client: %s to %s"))
 				% (isLargeBlock ? wxT("OP_COMPRESSEDPART_I64") : wxT("OP_COMPRESSEDPART")) % GetFullIP() );
 		m_socket->SendPacket(packet,true,false, payloadSize);			
@@ -499,7 +499,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock)
 {
 	if (GetUploadState() != US_UPLOADING) {
-		AddDebugLogLineM(false, logRemoteClient, wxT("UploadClient: Client tried to add requested block when not in upload slot! Prevented requested blocks from being added."));
+		AddDebugLogLineN(logRemoteClient, wxT("UploadClient: Client tried to add requested block when not in upload slot! Prevented requested blocks from being added."));
 		delete reqblock;
 		return;
 	}
@@ -658,7 +658,7 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
 	// Send this inmediately, don't queue.
 	CPacket* pPacket = new CPacket(OP_OUTOFPARTREQS, 0, OP_EDONKEYPROT);
 	theStats::AddUpOverheadFileRequest(pPacket->GetPacketSize());
-	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_OUTOFPARTREQS to ") + GetFullIP() );
+	AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_OUTOFPARTREQS to ") + GetFullIP() );
 	SendPacket(pPacket, true, true);
 	
 	theApp->uploadqueue->AddClientToQueue(this);
@@ -692,13 +692,13 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	
 	if ( !file->GetHashCount() ) {
 		if (from_dq) {
-			AddDebugLogLineM(false, logRemoteClient, wxT("Requested hashset could not be found"));	
+			AddDebugLogLineN(logRemoteClient, wxT("Requested hashset could not be found"));
 			return;
 		} else {
 			file = theApp->downloadqueue->GetFileByID(forfileid);
 			if (!(file && file->GetHashCount())) {
-				AddDebugLogLineM(false, logRemoteClient, wxT("Requested hashset could not be found"));	
-				return;				
+				AddDebugLogLineN(logRemoteClient, wxT("Requested hashset could not be found"));
+				return;
 			}
 		}
 	}	
@@ -712,7 +712,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	}
 	CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_HASHSETANSWER);	
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HASHSETANSWER to ") + GetFullIP());
+	AddDebugLogLineN(logLocalClient, wxT("Local Client: OP_HASHSETANSWER to ") + GetFullIP());
 	SendPacket(packet,true,true);
 }
 
@@ -746,7 +746,7 @@ void CUpDownClient::SendRankingInfo(){
 	data.WriteUInt32(0); data.WriteUInt32(0); data.WriteUInt16(0);
 	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_QUEUERANKING);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
-	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_QUEUERANKING to ") + GetFullIP());
+	AddDebugLogLineN(logLocalClient, wxT("Local Client: OP_QUEUERANKING to ") + GetFullIP());
 	SendPacket(packet,true,true);
 }
 
@@ -772,7 +772,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	
 	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_FILEDESC);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
-	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_FILEDESC to ") + GetFullIP());	
+	AddDebugLogLineN(logLocalClient, wxT("Local Client: OP_FILEDESC to ") + GetFullIP());
 	SendPacket(packet,true);
 }
 
@@ -791,7 +791,7 @@ void CUpDownClient::Ban(){
 	theApp->clientlist->AddTrackClient(this);
 	theApp->clientlist->AddBannedClient( GetIP() );
 	
-	AddDebugLogLineM( false, logClient, wxT("Client '") + GetUserName() + wxT("' seems to be an aggressive client and is banned from the uploadqueue"));
+	AddDebugLogLineN(logClient, wxT("Client '") + GetUserName() + wxT("' seems to be an aggressive client and is banned from the uploadqueue"));
 	
 	SetUploadState(US_BANNED);
 	
@@ -820,7 +820,7 @@ void CUpDownClient::CheckForAggressive()
 		
 		// Is the client EVIL?
 		if ( m_Aggressiveness >= 10 && (!IsBanned() && m_nDownloadState != DS_DOWNLOADING )) {
-			AddDebugLogLineM( false, logClient, CFormat( wxT("Aggressive client banned (score: %d): %s -- %s -- %s") ) 
+			AddDebugLogLineN(logClient, CFormat( wxT("Aggressive client banned (score: %d): %s -- %s -- %s") )
 				% m_Aggressiveness
 				% m_Username
 				% m_strModVersion
@@ -876,7 +876,7 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 	}
 	
 	for (unsigned int i = 0; i < itemsof(auStartOffsets); i++) {
-		AddDebugLogLineM(false, logClient,
+		AddDebugLogLineN(logClient,
 			CFormat(wxT("Client %s requests %d File block %d-%d (%d bytes):"))
 				% GetFullIP() % i % auStartOffsets[i] % auEndOffsets[i] 
 				% (auEndOffsets[i] - auStartOffsets[i]));
@@ -889,7 +889,7 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 			AddReqBlock(reqblock);
 		} else {
 			if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-				AddDebugLogLineM(false, logClient, wxT("Client request is invalid!"));
+				AddDebugLogLineN(logClient, wxT("Client request is invalid!"));
 			}
 		}
 	}	
@@ -908,12 +908,12 @@ void CUpDownClient::ProcessRequestPartsPacketv2(const CMemFile& data) {
 			// We have to do +1, because the block matching uses that.
 			reqblock->EndOffset = data.GetIntTagValue() + 1;
 			if ((reqblock->StartOffset || reqblock->EndOffset) && (reqblock->StartOffset > reqblock->EndOffset)) {
-				AddDebugLogLineM(false, logClient, CFormat(wxT("Client %s request is invalid! %d / %d"))
+				AddDebugLogLineN(logClient, CFormat(wxT("Client %s request is invalid! %d / %d"))
 					% GetFullIP() % reqblock->StartOffset % reqblock->EndOffset);
 				throw wxString(wxT("Client request is invalid!"));
 			}
 			
-			AddDebugLogLineM(false, logClient,
+			AddDebugLogLineN(logClient,
 				CFormat(wxT("Client %s requests %d File block %d-%d (%d bytes):"))
 					% GetFullIP() % i % reqblock->StartOffset % reqblock->EndOffset
 					% (reqblock->EndOffset - reqblock->StartOffset));

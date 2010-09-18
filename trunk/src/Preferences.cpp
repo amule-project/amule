@@ -963,7 +963,7 @@ CPreferences::CPreferences()
 				preffile.ReadUInt8(); // Version. Value is not used.
 				s_userhash = preffile.ReadHash();
 			} catch (const CSafeIOException& e) {
-				AddDebugLogLineM(true, logGeneral,
+				AddDebugLogLineC(logGeneral,
 					wxT("Error while reading userhash: ") + e.what());
 			}
 		}
@@ -1480,7 +1480,7 @@ void CPreferences::Save()
 			preffile.WriteUInt8(PREFFILE_VERSION);
 			preffile.WriteHash(s_userhash);
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logGeneral, wxT("IO failure while saving user-hash: ") + e.what());
+			AddDebugLogLineC(logGeneral, wxT("IO failure while saving user-hash: ") + e.what());
 		}
 	}
 

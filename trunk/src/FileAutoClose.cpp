@@ -25,7 +25,7 @@
 
 #include "FileAutoClose.h"
 #include "GetTickCount.h"	// for TheTime
-#include "Logger.h"			// Needed for AddDebugLogLineM
+#include "Logger.h"			// Needed for AddDebugLogLineN
 
 
 static const uint32 ReleaseTime = 600;	// close file after 10 minutes of not being used

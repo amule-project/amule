@@ -188,7 +188,7 @@ bool UnpackGZipFile(const wxString& file)
 	bool write = false;
 
 #ifdef __WXMAC__
-	// AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
+	// AddDebugLogLineN( logFileIO, wxT("Reading gzip stream") );
 
 	gzFile inputFile = gzopen(filename2char(file), "rb");
 	if (inputFile != NULL) {
@@ -196,7 +196,7 @@ bool UnpackGZipFile(const wxString& file)
 
 		while (int bytesRead = gzread(inputFile, buffer, sizeof(buffer))) {
 			if (bytesRead > 0) {
-				// AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"), bytesRead) );
+				// AddDebugLogLineN( logFileIO, wxString::Format(wxT("Read %u bytes"), bytesRead) );
 				target.Write(buffer, bytesRead);
 			} else if (bytesRead < 0) {
 				wxString errString;
@@ -208,20 +208,20 @@ bool UnpackGZipFile(const wxString& file)
 					errString = wxString::FromAscii(gzerrstr);
 				}
 				
-				// AddDebugLogLineM( false, logFileIO, wxT("Error reading gzip stream (") + errString + wxT(")") );
+				// AddDebugLogLineN( logFileIO, wxT("Error reading gzip stream (") + errString + wxT(")") );
 				write = false;
 				break;
 			}
 		}
 
-		// AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
+		// AddDebugLogLineN( logFileIO, wxT("End reading gzip stream") );
 		gzclose(inputFile);
 	} else {
-		// AddDebugLogLineM( false, logFileIO, wxT("Error opening gzip file (") + wxString(wxSysErrorMsg()) + wxT(")") );
+		// AddDebugLogLineN( logFileIO, wxT("Error opening gzip file (") + wxString(wxSysErrorMsg()) + wxT(")") );
 	}
 #else
 	{
-		// AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
+		// AddDebugLogLineN( logFileIO, wxT("Reading gzip stream") );
 
 		wxFileInputStream source(file);
 		wxZlibInputStream inputStream(source);
@@ -229,7 +229,7 @@ bool UnpackGZipFile(const wxString& file)
 		while (!inputStream.Eof()) {
 			inputStream.Read(buffer, sizeof(buffer));
 
-			// AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"),inputStream.LastRead()) );
+			// AddDebugLogLineN( logFileIO, wxString::Format(wxT("Read %u bytes"),inputStream.LastRead()) );
 			if (inputStream.LastRead()) {
 				target.Write(buffer, inputStream.LastRead());
 			} else {
@@ -237,7 +237,7 @@ bool UnpackGZipFile(const wxString& file)
 			}
 		};
 
-		// AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
+		// AddDebugLogLineN( logFileIO, wxT("End reading gzip stream") );
 
 		write = inputStream.IsOk() || inputStream.Eof();
 	}
@@ -245,7 +245,7 @@ bool UnpackGZipFile(const wxString& file)
 
 	if (write) {
 		target.Commit();
-		// AddDebugLogLineM( false, logFileIO, wxT("Commited gzip stream") );
+		// AddDebugLogLineN( logFileIO, wxT("Commited gzip stream") );
 	}
 
 	return write;

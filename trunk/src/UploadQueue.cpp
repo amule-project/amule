@@ -165,7 +165,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	} else {
 		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ, 0, OP_EDONKEYPROT);
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ to ") + newclient->GetFullIP() );
+		AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ to ") + newclient->GetFullIP() );
 		newclient->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
 	}
@@ -422,7 +422,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		// he's already downloading and wants probably only another file
 		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ, 0, OP_EDONKEYPROT);
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ to ") + client->GetFullIP() );
+		AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ to ") + client->GetFullIP() );
 		client->SendPacket(packet,true);
 		return;
 	}

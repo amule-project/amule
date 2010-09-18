@@ -25,7 +25,7 @@
 
 
 #include "CFile.h"		// Interface declarations.
-#include "Logger.h"		// Needed for AddDebugLogLineM
+#include "Logger.h"		// Needed for AddDebugLogLineC
 #include <common/Path.h>	// Needed for CPath
 
 
@@ -135,7 +135,7 @@ inline void syscall_check(
 	const wxString& what)
 {
 	if (!check) {
-		AddDebugLogLineM(true, logCFile,
+		AddDebugLogLineC(logCFile,
 			CFormat(wxT("Error when %s (%s): %s"))
 				% what % filePath % wxSysErrorMsg());
 	}

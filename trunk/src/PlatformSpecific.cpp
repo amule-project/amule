@@ -74,12 +74,12 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 		FILE_ATTRIBUTE_ARCHIVE, 
 		NULL);
 	if (hd == INVALID_HANDLE_VALUE) {
-		AddDebugLogLineM(true, logPartFile, CFormat(wxT("converting %s to sparse failed (OPEN): %s ")) % name % SystemError());
+		AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (OPEN): %s ")) % name % SystemError());
 		return false;
 	}
 
 	if (!DeviceIoControl(hd, FSCTL_SET_SPARSE, NULL, 0, NULL, 0, &dwReturnedBytes, NULL)) {
-		AddDebugLogLineM(true, logPartFile, CFormat(wxT("converting %s to sparse failed (SET_SPARSE): %s ")) % name % SystemError());
+		AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (SET_SPARSE): %s ")) % name % SystemError());
 	} else {
 		// FILE_ZERO_DATA_INFORMATION is not defined here
 		struct {
@@ -93,9 +93,9 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 		
 		// zero the data
 		if (!DeviceIoControl(hd, FSCTL_SET_ZERO_DATA, (LPVOID) &fzdi, sizeof(fzdi), NULL, 0, &dwReturnedBytes, NULL)) {
-			AddDebugLogLineM(true, logPartFile, CFormat(wxT("converting %s to sparse failed (ZERO): %s")) % name % SystemError());
+			AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (ZERO): %s")) % name % SystemError());
 		} else if (!SetFilePointerEx(hd, largo, NULL, FILE_BEGIN) || !SetEndOfFile(hd)) {
-			AddDebugLogLineM(true, logPartFile, CFormat(wxT("converting %s to sparse failed (SEEK): %s")) % name % SystemError());
+			AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (SEEK): %s")) % name % SystemError());
 		}
 	}
 	CloseHandle(hd);
