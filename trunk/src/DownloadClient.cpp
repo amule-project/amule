@@ -266,7 +266,8 @@ void CUpDownClient::SendFileRequest()
 		}		
 		CPacket* packet = new CPacket(dataFileReq, OP_EMULEPROT, (SupportExtMultiPacket() ? OP_MULTIPACKET_EXT : OP_MULTIPACKET));
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-		AddDebugLogLineN(logLocalClient, wxString::Format(wxT("Local Client: %s "), (SupportExtMultiPacket() ? wxT("OP_MULTIPACKET_EXT (") : wxT("OP_MULTIPACKET (") )) + sent_opcodes + wxT(") to ") + GetFullIP());
+		AddDebugLogLineN(logLocalClient, CFormat(wxT("Local Client: %s (%s) to %s"))
+			% (SupportExtMultiPacket() ? wxT("OP_MULTIPACKET_EXT") : wxT("OP_MULTIPACKET")) % sent_opcodes % GetFullIP());
 		SendPacket(packet, true);
 	} else {
 		//This is extended information
@@ -809,7 +810,7 @@ void CUpDownClient::SendBlockRequests()
 				}
 			}	
 			packet = new CPacket(data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
-			AddDebugLogLineN( logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bHasLongBlocks ? wxT("OP_REQUESTPARTS_I64") : wxT("OP_REQUESTPARTS"))) + GetFullIP() );
+			AddDebugLogLineN(logLocalClient, CFormat(wxT("Local Client: %s to %s")) % (bHasLongBlocks ? wxT("OP_REQUESTPARTS_I64") : wxT("OP_REQUESTPARTS")) % GetFullIP());
 			break;
 		}
 		default:
@@ -1148,9 +1149,9 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZi
 		wxString strZipError;
 		
 		if ( zS->msg ) {
-			strZipError = wxString::Format(wxT(" %d '"), err) + wxString::FromAscii(zS->msg) + wxT("'");
+			strZipError = CFormat(wxT(" %d '%s'")) % err % wxString::FromAscii(zS->msg);
 		} else if (err != Z_OK) {
-			strZipError = wxString::Format(wxT(" %d"), err);
+			strZipError = CFormat(wxT(" %d")) % err;
 		}
 		
 		AddDebugLogLineN(logZLib,

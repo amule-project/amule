@@ -232,7 +232,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 				m_strVersion = tag.GetStr();
 			}
 		} else if (tag.IsInt()) {
-			m_strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
+			m_strVersion = CFormat(wxT("%u.%u")) % (tag.GetInt() >> 16) % (tag.GetInt() & 0xFFFF);
 		} else {
 			wxFAIL;
 		}

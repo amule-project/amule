@@ -1022,47 +1022,47 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	switch ( event.GetId() ) {
 	case IDC_SLIDER:
 		id = IDC_SLIDERINFO;
-		label = wxString::Format( wxPLURAL("Update delay: %d second", "Update delay: %d seconds", event.GetPosition()), event.GetPosition() );
+		label = CFormat(wxPLURAL("Update delay: %d second", "Update delay: %d seconds", event.GetPosition())) % event.GetPosition();
 		theApp->amuledlg->m_statisticswnd->SetUpdatePeriod(event.GetPosition());
 		theApp->amuledlg->m_kademliawnd->SetUpdatePeriod(event.GetPosition());
 		break;
 
 	case IDC_SLIDER3:
 		id = IDC_SLIDERINFO3;
-		label = wxString::Format( wxPLURAL("Time for average graph: %d minute", "Time for average graph: %d minutes", event.GetPosition()), event.GetPosition() );
+		label = CFormat(wxPLURAL("Time for average graph: %d minute", "Time for average graph: %d minutes", event.GetPosition())) % event.GetPosition();
 		theApp->m_statistics->SetAverageMinutes(event.GetPosition());
 		break;
 
 	case IDC_SLIDER4:
 		id = IDC_SLIDERINFO4;
-		label = wxString::Format( _("Connections Graph Scale: %d"), event.GetPosition() );
-		theApp->amuledlg->m_statisticswnd->GetConnScope()->SetRanges(0,event.GetPosition());
+		label = CFormat(_("Connections Graph Scale: %d")) % event.GetPosition();
+		theApp->amuledlg->m_statisticswnd->GetConnScope()->SetRanges(0, event.GetPosition());
 		break;
 
 	case IDC_SLIDER2:
 		id = IDC_SLIDERINFO2;
-		label = wxString::Format( wxPLURAL("Update delay : %d second", "Update delay : %d seconds", event.GetPosition()), event.GetPosition() );
+		label = CFormat(wxPLURAL("Update delay : %d second", "Update delay : %d seconds", event.GetPosition())) % event.GetPosition();
 		break;
 
 	case IDC_FILEBUFFERSIZE:
 		id = IDC_FILEBUFFERSIZE_STATIC;
 		// Yes, it seems odd to add the singular form here, but other languages might need to know the number to select the appropriate translation
-		label = wxString::Format( wxPLURAL("File Buffer Size: %d byte", "File Buffer Size: %d bytes", event.GetPosition() * 15000), event.GetPosition() * 15000 );
+		label = CFormat(wxPLURAL("File Buffer Size: %d byte", "File Buffer Size: %d bytes", event.GetPosition() * 15000)) % (event.GetPosition() * 15000);
 		break;
 
 	case IDC_QUEUESIZE:
 		id = IDC_QUEUESIZE_STATIC;
 		// Yes, it seems odd to add the singular form here, but other languages might need to know the number to select the appropriate translation
-		label = wxString::Format( wxPLURAL("Upload Queue Size: %d client", "Upload Queue Size: %d clients", event.GetPosition() * 100), event.GetPosition() * 100 );
+		label = CFormat(wxPLURAL("Upload Queue Size: %d client", "Upload Queue Size: %d clients", event.GetPosition() * 100)) % (event.GetPosition() * 100);
 		break;
 
 	case IDC_SERVERKEEPALIVE:
 		id = IDC_SERVERKEEPALIVE_LABEL;
 
 		if ( event.GetPosition() ) {
-			label = wxString::Format( wxPLURAL("Server connection refresh interval: %d minute", "Server connection refresh interval: %d minutes", event.GetPosition()), event.GetPosition() );
+			label = CFormat(wxPLURAL("Server connection refresh interval: %d minute", "Server connection refresh interval: %d minutes", event.GetPosition())) % event.GetPosition();
 		} else {
-			label = wxString::Format( _("Server connection refresh interval: Disabled") );
+			label = _("Server connection refresh interval: Disabled");
 		}
 		break;
 

@@ -24,6 +24,7 @@
 
 
 #include "StringFunctions.h"
+#include "Format.h"		// Needed for CFormat
 
 #include "MD5Sum.h"		// Interface declarations.
 
@@ -69,7 +70,7 @@ wxString MD5Sum::Calculate(const uint8* buffer, size_t len)
 	m_sHash.Clear();
 	for (int i = 0; i < 16; ++i) {
 		wxString sT;
-		sT = wxString::Format(wxT("%02x"), digest[i]);
+		sT = CFormat(wxT("%02x")) % digest[i];
 		m_sHash += sT;
 	}
 

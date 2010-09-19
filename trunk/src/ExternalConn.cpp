@@ -322,13 +322,11 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
 		if (m_ECServer->Ok()) {
-			msgLocal = wxT("*** TCP socket (ECServer) listening on ") + ip + 
-				wxString::Format(wxT(":%d"), port);
+			msgLocal = CFormat(wxT("*** TCP socket (ECServer) listening on %s:%d")) % ip % port;
 			*msg += msgLocal + wxT("\n");
 			AddLogLineM(false, msgLocal);
 		} else {
-			msgLocal = wxT("Could not listen for external connections at ") + ip + 
-				wxString::Format(wxT(":%d!"), port);
+			msgLocal = CFormat(wxT("Could not listen for external connections at %s:%d!")) % ip % port;
 			*msg += msgLocal + wxT("\n");
 			AddLogLineM(false, msgLocal);
 		}
@@ -458,7 +456,8 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 					% (m_haveNotificationSupport ? wxT("yes") : wxT("no")));
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.") + wxString::Format(wxT("( %i != %i )"),proto_version,EC_CURRENT_PROTOCOL_VERSION)));
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")
+					+ CFormat(wxT("( %i != %i )")) % proto_version % EC_CURRENT_PROTOCOL_VERSION));
 			}
 		} else {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -1663,7 +1662,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 	}
 	if (!response) {
-		AddLogLineM(false, wxString::Format(_("External Connection: invalid opcode received: %#x"), request->GetOpCode()));
+		AddLogLineN(CFormat(_("External Connection: invalid opcode received: %#x")) % request->GetOpCode());
 		wxFAIL;
 		response = new CECPacket(EC_OP_FAILED);
 		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));

@@ -265,7 +265,7 @@ void CKademlia::Process()
 	if (m_consolidate <= now) {
 		uint32_t mergedCount = instance->m_routingZone->Consolidate();
 		if (mergedCount) {
-			AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Kad merged %u zones"), mergedCount));
+			AddDebugLogLineN(logKadRouting, CFormat(wxT("Kad merged %u zones")) % mergedCount);
 		}
 		m_consolidate = MIN2S(45) + now;
 	}
@@ -283,7 +283,8 @@ void CKademlia::Process()
 		CContact *contact = s_bootstrapList.front();
 		s_bootstrapList.pop_front();
 		m_bootstrap = now;
-		AddDebugLogLineN(logKadMain, wxT("Trying to bootstrap Kad from ") + KadIPToString(contact->GetIPAddress()) + wxT(", Distance: ") + contact->GetDistance().ToHexString() + wxString::Format(wxT(" Version: %u, %u contacts left"), contact->GetVersion(), s_bootstrapList.size()));
+		AddDebugLogLineN(logKadMain, CFormat(wxT("Trying to bootstrap Kad from %s, Distance: %s Version: %u, %u contacts left"))
+			% KadIPToString(contact->GetIPAddress()) % contact->GetDistance().ToHexString() % contact->GetVersion() % s_bootstrapList.size());
 		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion(), &contact->GetClientID());
 		delete contact;
 	}
@@ -300,7 +301,8 @@ void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip
 			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
 	} catch (const wxString& DEBUG_ONLY(error)) {
-		AddDebugLogLineN(logKadMain, wxString::Format(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from "), lenData) + KadIPPortToString(ip, port) + wxT(':'));
+		AddDebugLogLineN(logKadMain, CFormat(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from %s:"))
+			% lenData % KadIPPortToString(ip, port));
 		AddDebugLogLineN(logKadMain, error);
 		throw;
 	} catch (...) {

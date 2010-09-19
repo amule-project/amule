@@ -433,7 +433,7 @@ void CCompletionTask::Entry()
 	// Avoid saving to an already existing filename
 	CPath newName = targetPath.JoinPaths(dstName);
 	for (unsigned count = 0; newName.FileExists(); ++count) {
-		wxString postfix = wxString::Format(wxT("(%u)"), count);
+		wxString postfix = CFormat(wxT("(%u)")) % count;
 
 		newName = targetPath.JoinPaths(dstName.AddPostfix(postfix));
 	}

@@ -871,7 +871,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	} else {
 		if (IsConnectedED2K()) {
 
-			temp = wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort());
+			temp = CFormat(wxT("%d")) % serverconnect->GetCurrentServer()->GetPort();
 			
 			// We are online
 			emulesig_string =
@@ -930,25 +930,25 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		emulesig_string += wxT("\xA");
 
 		// Datarate for downloads
-		temp = wxString::Format(wxT("%.1f"), theStats::GetDownloadRate() / 1024.0);
+		temp = CFormat(wxT("%.1f")) % (theStats::GetDownloadRate() / 1024.0);
 
 		emulesig_string += temp + wxT("|");
 		amulesig_out.AddLine(temp);
 
 		// Datarate for uploads
-		temp = wxString::Format(wxT("%.1f"), theStats::GetUploadRate() / 1024.0);
+		temp = CFormat(wxT("%.1f")) % (theStats::GetUploadRate() / 1024.0);
 
 		emulesig_string += temp + wxT("|");
 		amulesig_out.AddLine(temp);
 
 		// Number of users waiting for upload
-		temp = wxString::Format(wxT("%d"), theStats::GetWaitingUserCount());
+		temp = CFormat(wxT("%d")) % theStats::GetWaitingUserCount();
 
 		emulesig_string += temp; 
 		amulesig_out.AddLine(temp);
 
 		// Number of shared files (not on eMule)
-		amulesig_out.AddLine(wxString::Format(wxT("%d"), theStats::GetSharedFileCount()));
+		amulesig_out.AddLine(CFormat(wxT("%d")) % theStats::GetSharedFileCount());
 	}
 
 	// eMule signature finished here. Write the line to the wxTextFile.
@@ -1623,22 +1623,22 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			long newVer = make_full_ed2k_version(fields[0], fields[1], fields[2]);
 			
 			if (curVer < newVer) {
-				AddLogLineM(true, _("You are using an outdated version of aMule!"));
-				AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2]));
-				AddLogLineM(false, _("The latest version can always be found at http://www.amule.org"));
+				AddLogLineC(_("You are using an outdated version of aMule!"));
+				AddLogLineN(CFormat(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li")) % VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
+				AddLogLineN(_("The latest version can always be found at http://www.amule.org"));
 				#ifdef AMULE_DAEMON
-				AddLogLineMS(true, CFormat(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"))
+				AddLogLineCS(CFormat(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"))
 					% VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
 				#endif
 			} else {
-				AddLogLineM(false, _("Your copy of aMule is up to date."));
+				AddLogLineN(_("Your copy of aMule is up to date."));
 			}
 		}
 		
 		file.Close();
 		wxRemoveFile(filename);
 	} else {
-		AddLogLineM(true, _("Failed to download the version check file"));
+		AddLogLineC(_("Failed to download the version check file"));
 	}	
 	
 }

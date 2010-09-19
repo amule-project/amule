@@ -1334,7 +1334,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	m_scale1024 = scale1024;
 	
 	// actual name doesn't matter, just make it unique
-	m_name = wxString::Format(wxT("dyn_%ld_stat.png"), (unsigned long int) data);
+	m_name = CFormat(wxT("dyn_%p_stat.png")) % data;
 	
 	m_num_font_w_size = 8;
 	m_num_font_h_size = 16;
@@ -1866,7 +1866,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	Print(_("Processing request [redirected]: ") + filename + wxT("\n"));
 	
 	session->m_vars["auto_refresh"] = (const char *)unicode2char(
-		wxString::Format(wxT("%d"), webInterface->m_PageRefresh));
+		wxString(CFormat(wxT("%d")) % webInterface->m_PageRefresh));
 	session->m_vars["content_type"] = "text/html";
 	
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());

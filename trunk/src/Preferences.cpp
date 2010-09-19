@@ -1277,7 +1277,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  
-		wxString str = wxString::Format(wxT("/eMule/StatColor%i"),i);
+		wxString str = CFormat(wxT("/eMule/StatColor%i")) % i;
 		s_MiscList.push_back( new Cfg_Colour( str, CStatisticsDlg::acrStat[i] ) );
 	}
 #endif
@@ -1557,7 +1557,7 @@ void CPreferences::SaveCats()
 			cfg->Write( wxT("Title"),	m_CatList[i]->title );
 			cfg->Write( wxT("Incoming"),	CPath::ToUniv(m_CatList[i]->path) );
 			cfg->Write( wxT("Comment"),	m_CatList[i]->comment );
-			cfg->Write( wxT("Color"),	wxString::Format(wxT("%u"), m_CatList[i]->color) );
+			cfg->Write( wxT("Color"),	wxString(CFormat(wxT("%u")) % m_CatList[i]->color));
 			cfg->Write( wxT("Priority"),	(int)m_CatList[i]->prio );
 		}
 		// remove deleted cats from config
@@ -1588,7 +1588,7 @@ void CPreferences::LoadCats()
 	long max = cfg->Read( wxT("/General/Count"), 0l );
 
 	for ( int i = 1; i <= max ; i++ ) {
-		cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
+		cfg->SetPath(CFormat(wxT("/Cat#%i")) % i);
 
 		Category_Struct* newcat = new Category_Struct;
 
@@ -1772,8 +1772,8 @@ void CPreferences::SetPort(uint16 val)
 	// Warning: Check for +3, because server UDP is TCP+3
 	
 	if (val +3 > 65535) {
-		AddLogLineM(true, _("TCP port can't be higher than 65532 due to server UDP socket being TCP+3"));
-		AddLogLineM(false, wxString::Format(_("Default port will be used (%d)"),DEFAULT_TCP_PORT));
+		AddLogLineC(_("TCP port can't be higher than 65532 due to server UDP socket being TCP+3"));
+		AddLogLineN(CFormat(_("Default port will be used (%d)")) % DEFAULT_TCP_PORT);
 		s_port = DEFAULT_TCP_PORT;
 	} else {
 		s_port = val;

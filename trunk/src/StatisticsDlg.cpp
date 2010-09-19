@@ -144,7 +144,7 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 		case 8:  case 9:  case 10:
 				(*ppscope)->SetPlotColor(cr, iTrend);
 				if ((ctrl = CastChild(iRes, CColorFrameCtrl)) == NULL) {
-					throw wxString::Format(wxT("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n"),iRes);
+					throw wxString(CFormat(wxT("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n")) % iRes);
 				}
 				ctrl->SetBackgroundBrushColour(cr);
 				ctrl->SetFrameBrushColour(*wxBLACK);
@@ -185,7 +185,7 @@ void CStatisticsDlg::UpdateStatGraphs(const uint32 peakconnections, const GraphU
 		nScalePrev = nScale;
 		wxStaticText* label = CastChild( ID_ACTIVEC, wxStaticText );
 		
-		label->SetLabel(wxString::Format(_("Active connections (1:%u)"), nScale));
+		label->SetLabel(CFormat(_("Active connections (1:%u)")) % nScale);
 		label->GetParent()->Layout();
 		
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);

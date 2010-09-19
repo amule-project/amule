@@ -171,7 +171,7 @@ void CServerWnd::UpdateED2KInfo()
 
 		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
-		ED2KInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp->GetED2KID()));
+		ED2KInfoList->SetItem(2, 1, CFormat(wxT("%u")) % theApp->GetED2KID());
 		
 		ED2KInfoList->InsertItem(3, wxEmptyString);		
 

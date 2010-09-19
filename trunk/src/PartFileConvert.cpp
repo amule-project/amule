@@ -324,7 +324,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			while (filename.IsOk()) {
 				// stats
 				++curindex;
-				buffer = wxString::Format(_("Loading data from old download file (%u of %u)"), curindex, partfilecount);
+				buffer = CFormat(_("Loading data from old download file (%u of %u)")) % curindex % partfilecount;
 
 				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), buffer);
 
@@ -344,7 +344,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 				inputfile.Read(ba, toReadWrite);
 				inputfile.Close();
 
-				buffer = wxString::Format(_("Saving data block into new single download file (%u of %u)"), curindex, partfilecount);
+				buffer = CFormat(_("Saving data block into new single download file (%u of %u)")) % curindex % partfilecount;
 
 				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), buffer);
 

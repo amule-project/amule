@@ -31,6 +31,7 @@
 
 #include "MuleDebug.h"			// Interface declaration
 #include "StringFunctions.h"		// Needed for unicode2char
+#include "Format.h"			// Needed for CFormat
 
 #ifdef HAVE_EXECINFO
 #	include <execinfo.h>
@@ -125,7 +126,7 @@ public:
 
 	void OnStackFrame(const wxStackFrame& frame)
 	{
-		wxString btLine = wxString::Format(wxT("[%u] "), frame.GetLevel());
+		wxString btLine = CFormat(wxT("[%u] ")) % frame.GetLevel();
 		wxString filename = frame.GetName();
 
 		if (!filename.IsEmpty()) {
@@ -137,7 +138,7 @@ public:
 #endif
 			        + wxT(")");
 		} else {
-			btLine += wxString::Format(wxT("0x%lx"), frame.GetAddress());
+			btLine += CFormat(wxT("%p")) % frame.GetAddress();
 		}
 
 		if (frame.HasSourceLocation()) {
@@ -147,7 +148,7 @@ public:
 #else
 				frame.GetFileName().AfterLast(wxT('/'))
 #endif
-			        + wxString::Format(wxT(":%u"),frame.GetLine());
+			        + CFormat(wxT(":%u")) % frame.GetLine();
 		} else {
 			btLine += wxT(" (Unknown file/line)");
 		}
@@ -401,7 +402,7 @@ wxString get_backtrace(unsigned n)
 				funcname[i] = demangled;
 			}
 			out.Insert(wxConvCurrent->cMB2WX(s_function_name),i*2);
-			out.Insert(wxConvCurrent->cMB2WX(s_file_name) + wxString::Format(wxT(":%u"), s_line_number),i*2+1);
+			out.Insert(wxConvCurrent->cMB2WX(s_file_name) + (CFormat(wxT(":%u")) % s_line_number),i*2+1);
 		} else {
 			out.Insert(wxT("??"),i*2);
 			out.Insert(wxT("??"),i*2+1);

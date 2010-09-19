@@ -41,6 +41,7 @@ there client on the eMule forum..
 #include "UInt128.h"
 
 #include "../../ArchSpecific.h"
+#include <common/Format.h>	// Needed for CFormat
 
 
 ////////////////////////////////////////
@@ -79,8 +80,9 @@ wxString CUInt128::ToHexString() const
 {
 	wxString str;
 
-	for (int i = 0; i < 4; ++i)
-		str.Append(wxString::Format(wxT("%08X"), m_data[i]));
+	for (int i = 0; i < 4; ++i) {
+		str.Append(CFormat(wxT("%08X")) % m_data[i]);
+	}
 
 	return str;
 }
@@ -88,11 +90,12 @@ wxString CUInt128::ToHexString() const
 wxString CUInt128::ToBinaryString(bool trim) const
 {
 	wxString str;
+	str.Alloc(128);
 	int b;
 	for (int i = 0; i < 128; ++i) {
 		b = GetBitNumber(i);
 		if ((!trim) || (b != 0)) {
-			str.Append(wxString::Format(wxT("%d"), b));
+			str.Append(b ? wxT("1") : wxT("0"));
 			trim = false;
 		}
 	}

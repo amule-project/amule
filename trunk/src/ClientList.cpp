@@ -1064,7 +1064,7 @@ void CClientList::CleanUpClientList()
 #endif
 			}
 		}
-		AddDebugLogLineN(logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
+		AddDebugLogLineN(logClient, CFormat(wxT("Cleaned ClientList, removed %i not used known clients")) % cDeleted);
 	}
 }
 

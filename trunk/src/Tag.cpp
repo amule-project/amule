@@ -178,7 +178,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				} else {
 					// Since we cannot determine the length of this tag, we
 					// simply have to abort reading the file.
-					throw CInvalidPacket(wxString::Format(wxT("Unknown tag type encounted %x, cannot proceed!"),m_uType));
+					throw CInvalidPacket(CFormat(wxT("Unknown tag type encounted %x, cannot proceed!")) % m_uType);
 				}
 		}
 	} catch (...) {
@@ -417,14 +417,14 @@ wxString CTag::GetFullInfo() const
 	if (!m_Name.IsEmpty()) {
 		// Special case: Kad tags, and some ED2k tags ...
 		if (m_Name.Length() == 1) {
-			strTag = wxString::Format(wxT("0x%02X"), m_Name[0]);
+			strTag = CFormat(wxT("0x%02X")) % (unsigned)m_Name[0];
 		} else {
 			strTag = wxT('\"');
 			strTag += m_Name;
 			strTag += wxT('\"');
 		}
 	} else {
-		strTag = wxString::Format(wxT("0x%02X"), m_uName);
+		strTag = CFormat(wxT("0x%02X")) % m_uName;
 	}
 	strTag += wxT("=");
 	if (m_uType == TAGTYPE_STRING) {
@@ -432,24 +432,24 @@ wxString CTag::GetFullInfo() const
 		strTag += *m_pstrVal;
 		strTag += wxT("\"");
 	} else if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
-		strTag += wxString::Format(wxT("(Str%u)\""), m_uType - TAGTYPE_STR1 + 1)
+		strTag += CFormat(wxT("(Str%u)\"")) % (m_uType - TAGTYPE_STR1 + 1)
 					+  *m_pstrVal + wxT("\"");
 	} else if (m_uType == TAGTYPE_UINT64) {
-		strTag += wxString::Format(wxT("(Int64)%") WXLONGLONGFMTSPEC wxT("u"), m_uVal);
+		strTag += CFormat(wxT("(Int64)%u")) % m_uVal;
 	} else if (m_uType == TAGTYPE_UINT32) {
-		strTag += wxString::Format(wxT("(Int32)%u"), (unsigned)m_uVal);
+		strTag += CFormat(wxT("(Int32)%u")) % m_uVal;
 	} else if (m_uType == TAGTYPE_UINT16) {
-		strTag += wxString::Format(wxT("(Int16)%u"), (unsigned)m_uVal);
+		strTag += CFormat(wxT("(Int16)%u")) % m_uVal;
 	} else if (m_uType == TAGTYPE_UINT8) {
-		strTag += wxString::Format(wxT("(Int8)%u"), (unsigned)m_uVal);
+		strTag += CFormat(wxT("(Int8)%u")) % m_uVal;
 	} else if (m_uType == TAGTYPE_FLOAT32) {
-		strTag += wxString::Format(wxT("(Float32)%f"), m_fVal);
+		strTag += CFormat(wxT("(Float32)%f")) % m_fVal;
 	} else if (m_uType == TAGTYPE_BLOB) {
-		strTag += wxString::Format(wxT("(Blob)%u"), m_nSize);
+		strTag += CFormat(wxT("(Blob)%u")) % m_nSize;
 	} else if (m_uType == TAGTYPE_BSOB) {
-		strTag += wxString::Format(wxT("(Bsob)%u"), m_nSize);
+		strTag += CFormat(wxT("(Bsob)%u")) % m_nSize;
 	} else {
-		strTag += wxString::Format(wxT("Type=%u"), m_uType);
+		strTag += CFormat(wxT("Type=%u")) % m_uType;
 	}
 	return strTag;
 }

@@ -718,7 +718,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 		// can easily manage the process
 		//
 		if (!m_PidFile.IsEmpty()) {
-			wxString temp = wxString::Format(wxT("%d\n"), pid);
+			wxString temp = CFormat(wxT("%d\n")) % pid;
 			wxFFile ff(m_PidFile, wxT("w"));
 			if (!ff.Error()) {
 				ff.Write(temp);

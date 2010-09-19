@@ -325,9 +325,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 							ConnPort = data.ReadUInt32();
 							cur_server->SetPort(ConnPort);
 							if (cur_server->GetAuxPortsList().IsEmpty()) {
-								cur_server->SetAuxPortsList(wxString::Format(wxT("%u"), rport));
-//							} else {
-//								cur_server->SetAuxPortsList(wxString::Format(wxT("%u"), rport) + wxT(",") + cur_server->GetAuxPortsList());
+								cur_server->SetAuxPortsList(CFormat(wxT("%u")) % rport);
 							}
 						}
 					} else {
@@ -339,9 +337,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						if (ConnPort) {
 							pServer->SetPort(ConnPort);
 							if (pServer->GetAuxPortsList().IsEmpty()) {
-								pServer->SetAuxPortsList(wxString::Format(wxT("%u"), pServer->GetConnPort()));
-//							} else {
-//								pServer->SetAuxPortsList(wxString::Format(wxT("%u"), pServer->GetConnPort()) + wxT(",") + pServer->GetAuxPortsList());
+								pServer->SetAuxPortsList(CFormat(wxT("%u")) % pServer->GetConnPort());
 							}
 							Notify_ServerRefresh(pServer);
 							Notify_ServerUpdateED2KInfo();
@@ -414,7 +410,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 
 				theApp->ShowConnectionState();
 
-				AddLogLineM(false, wxString::Format(_("New clientid is %u"),new_id));
+				AddLogLineN(CFormat(_("New clientid is %u")) % new_id);
 				if (::IsLowID(new_id)) {
 					AddLogLineM(true,  _("WARNING: You have received Low-ID!"));
 					AddLogLineM(false, _("\tMost likely this is because you're behind a firewall or router."));
@@ -441,7 +437,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 			}
 			case OP_FOUNDSOURCES_OBFU:			
 			case OP_FOUNDSOURCES: {
-				AddDebugLogLineN(logServer, wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
+				AddDebugLogLineN(logServer, CFormat(wxT("ServerMsg - OP_FoundSources; sources = %u")) % packet[16]);
 				theStats::AddDownOverheadServer(size);
 				CMemFile sources(packet,size);
 				CMD4Hash fileid = sources.ReadHash();
@@ -536,7 +532,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				}
 				delete servers;
 				if (addcount) {
-					AddLogLineM(false, wxString::Format(wxPLURAL("Received %d new server", "Received %d new servers", addcount), addcount));
+					AddLogLineN(CFormat(wxPLURAL("Received %d new server", "Received %d new servers", addcount)) % addcount);
 				}
 				theApp->serverlist->SaveServerMet();
 				AddLogLineM(false, _("Saving of server-list completed."));
@@ -593,9 +589,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				break;
 			}
 			default:
-				AddDebugLogLineN( logPacketErrors,
-					wxString::Format( wxT("Unknown server packet with OPcode %x"), opcode )
-				);
+				AddDebugLogLineN(logPacketErrors, CFormat(wxT("Unknown server packet with OPcode %x")) % opcode);
 		}
 		return true;
 	} catch (const CInvalidPacket& e) {
@@ -657,18 +651,20 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
 {
-	AddDebugLogLineN(logServer, wxT("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
+	AddDebugLogLineN(logServer, CFormat(wxT("Error in serversocket: %s(%s:%i): %u"))
+		% cur_server->GetListName() % cur_server->GetFullIP() % cur_server->GetPort() % (int)nErrorCode);
 	SetConnectionState(CS_DISCONNECTED);
 }
 
 
 bool CServerSocket::PacketReceived(CPacket* packet)
 {
-	AddDebugLogLineN(logServer, wxString::Format(wxT("Server: Packet Received: Prot %x, Opcode %x, Length %u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
+	AddDebugLogLineN(logServer, CFormat(wxT("Server: Packet Received: Prot %x, Opcode %x, Length %u")) % packet->GetProtocol() % packet->GetOpCode() % packet->GetPacketSize());
 	
 	if (packet->GetProtocol() == OP_PACKEDPROT) {
 		if (!packet->UnPackPacket(250000)){
-			AddDebugLogLineN(logZLib, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+			AddDebugLogLineN(logZLib, CFormat(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"))
+				% packet->GetProtocol() % packet->GetOpCode() % packet->GetPacketSize());
 			theStats::AddDownOverheadServer(packet->GetPacketSize());
 			return true;
 		}
@@ -679,7 +675,8 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 	if (packet->GetProtocol() == OP_EDONKEYPROT) {
 		ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 	} else {
-		AddDebugLogLineN(logServer, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+		AddDebugLogLineN(logServer, CFormat(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"))
+			% packet->GetProtocol() % packet->GetOpCode() % packet->GetPacketSize());
 		theStats::AddDownOverheadServer(packet->GetPacketSize());
 	}
 	
@@ -752,7 +749,8 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 				% useObfuscation
 			);
 			
-			AddDebugLogLineN(logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
+			AddDebugLogLineN(logServer, CFormat(wxT("Server %s(%s) Port %i"))
+				% cur_server->GetAddress() % Uint32toStringIP(ip) % cur_server->GetConnPort());
 			Connect(addr, false);
 		}
 	} else {

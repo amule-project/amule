@@ -651,7 +651,7 @@ bool CAICHHashSet::SaveHashSet()
 				return false;
 			}
 			
-			AddDebugLogLineN(logSHAHashSet, wxString::Format(wxT("Met file is version 0x%2.2x."),header));
+			AddDebugLogLineN(logSHAHashSet, CFormat(wxT("Met file is version 0x%2.2x.")) % header);
 		} else {
 			file.WriteUInt8(KNOWN2_MET_VERSION);
 			// Update the recorded size, in order for the sanity check below to work.
@@ -694,7 +694,7 @@ bool CAICHHashSet::SaveHashSet()
 			AddDebugLogLineC(logSHAHashSet, wxT("Failed to save HashSet: Calculated and real size of hashset differ!"));
 			return false;
 		}
-		AddDebugLogLineN(logSHAHashSet, wxString::Format(wxT("Sucessfully saved eMuleAC Hashset, %u Hashes + 1 Masterhash written"), nHashCount));
+		AddDebugLogLineN(logSHAHashSet, CFormat(wxT("Successfully saved eMuleAC Hashset, %u Hashs + 1 Masterhash written")) % nHashCount);
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineC(logSHAHashSet, wxT("IO error while saving AICH HashSet: ") + e.what());
 		return false;

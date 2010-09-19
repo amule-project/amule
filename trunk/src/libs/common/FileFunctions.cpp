@@ -196,7 +196,7 @@ bool UnpackGZipFile(const wxString& file)
 
 		while (int bytesRead = gzread(inputFile, buffer, sizeof(buffer))) {
 			if (bytesRead > 0) {
-				// AddDebugLogLineN( logFileIO, wxString::Format(wxT("Read %u bytes"), bytesRead) );
+				// AddDebugLogLineN(logFileIO, CFormat(wxT("Read %u bytes")) % bytesRead);
 				target.Write(buffer, bytesRead);
 			} else if (bytesRead < 0) {
 				wxString errString;
@@ -229,7 +229,7 @@ bool UnpackGZipFile(const wxString& file)
 		while (!inputStream.Eof()) {
 			inputStream.Read(buffer, sizeof(buffer));
 
-			// AddDebugLogLineN( logFileIO, wxString::Format(wxT("Read %u bytes"),inputStream.LastRead()) );
+			// AddDebugLogLineN(logFileIO, CFormat(wxT("Read %u bytes")) % inputStream.LastRead());
 			if (inputStream.LastRead()) {
 				target.Write(buffer, inputStream.LastRead());
 			} else {

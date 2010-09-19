@@ -124,7 +124,7 @@ void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, byte* buffer, si
 					break;
 
 				default:
-					AddDebugLogLineN(logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"), protocol));
+					AddDebugLogLineN(logClientUDP, CFormat(wxT("Unknown opcode on received packet: 0x%x")) % protocol);
 			}
 		} catch (const wxString& e) {
 			AddDebugLogLineN(logClientUDP, wxT("Error while parsing UDP packet: ") + e);

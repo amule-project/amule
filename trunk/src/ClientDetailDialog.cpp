@@ -102,15 +102,13 @@ bool CClientDetailDialog::OnInitDialog() {
 
 	// Client IP/Port
 	CastChild(ID_DIP, wxStaticText)->SetLabel(
-		m_client->GetFullIP() +
-		wxString::Format(wxT(":%i"), m_client->GetUserPort()));
+		CFormat(wxT("%s:%i")) % m_client->GetFullIP() % m_client->GetUserPort());
 	
 	// Server IP/Port/Name
 	if (m_client->GetServerIP()) {
 		wxString srvaddr = Uint32toStringIP(m_client->GetServerIP());
 		CastChild(ID_DSIP, wxStaticText)->SetLabel(
-			srvaddr +
-			wxString::Format(wxT(":%i"),m_client->GetServerPort()));
+			CFormat(wxT("%s:%i")) % srvaddr % m_client->GetServerPort());
 		CastChild(ID_DSNAME, wxStaticText)->SetLabel(
 			m_client->GetServerName());
 	} else {
@@ -155,13 +153,11 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	// Average Upload Rate
 	CastChild(ID_DAVUR, wxStaticText)->SetLabel(
-		wxString::Format(_("%.1f kB/s"),
-			m_client->GetKBpsDown()));
+		CFormat(_("%.1f %s")) % m_client->GetKBpsDown() % _("kB/s"));
 	
 	// Average Download Rate
 	CastChild(ID_DAVDR, wxStaticText)->SetLabel(
-		wxString::Format(_("%.1f kB/s"),
-			m_client->GetUploadDatarate() / 1024.0f));
+		CFormat(_("%.1f %s")) % (m_client->GetUploadDatarate() / 1024.0f) % _("kB/s"));
 	
 	// Total Upload
 	CastChild(ID_DUPTOTAL, wxStaticText)->SetLabel(
@@ -173,8 +169,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	// DL/UP Modifier
 	CastChild(ID_DRATIO, wxStaticText)->SetLabel(
-		wxString::Format(wxT("%.1f"),
-			(float)m_client->GetScoreRatio()));
+		CFormat(wxT("%.1f")) % m_client->GetScoreRatio());
 	
 	// Secure Ident
 	if (theApp->CryptoAvailable()) {
@@ -202,9 +197,9 @@ bool CClientDetailDialog::OnInitDialog() {
 	// Queue Score
 	if (m_client->GetUploadState() != US_NONE) {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(
-			wxString::Format(wxT("%u"), m_client->GetUploadQueueWaitingPosition()));
+			CFormat(wxT("%u")) % m_client->GetUploadQueueWaitingPosition());
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
-			wxString::Format(wxT("%u"), m_client->GetScore()));		
+			CFormat(wxT("%u")) % m_client->GetScore());		
 	} else {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(wxT("-"));
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
