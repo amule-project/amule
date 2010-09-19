@@ -143,7 +143,7 @@ void CKadDlg::UpdateGraph(const GraphUpdateInfo& update)
 	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
 	wxCHECK_RET(label, wxT("Failed to find kad-nodes label"));
 
-	label->SetLabel(wxString::Format(_("Nodes (%u)"), nodeCount));
+	label->SetLabel(CFormat(_("Nodes (%u)")) % nodeCount);
 	label->GetParent()->Layout();
 }
 

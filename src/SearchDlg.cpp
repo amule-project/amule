@@ -589,9 +589,9 @@ void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 				size_t hidden = page->GetHiddenItemCount();
 
 				if (hidden) {
-					searchtxt += wxString::Format(wxT(" (%u/%u)"), shown, shown + hidden);
+					searchtxt += CFormat(wxT(" (%u/%u)")) % shown % (shown + hidden);
 				} else {
-					searchtxt += wxString::Format(wxT(" (%u)"), shown);
+					searchtxt += CFormat(wxT(" (%u)")) % shown;
 				}
 
 				m_notebook->SetPageText(i, searchtxt);

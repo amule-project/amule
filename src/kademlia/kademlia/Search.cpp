@@ -266,7 +266,7 @@ void CSearch::JumpStart()
 		if (lookupCloserNodes) {
 			while (it != m_tried.end()) {
 				if (m_responded.count(it->first) > 0) {
-					AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Best %d nodes for lookup (id=%x) were unreachable or dead, reasking closest for more"), KADEMLIA_FIND_VALUE, GetSearchID()));
+					AddDebugLogLineN(logKadSearch, CFormat(wxT("Best %d nodes for lookup (id=%x) were unreachable or dead, reasking closest for more")) % KADEMLIA_FIND_VALUE % GetSearchID());
 					SendFindValue(it->second, true);
 					return;
 				}
@@ -838,7 +838,7 @@ void CSearch::StorePacket()
 			AddDebugLogLineN(logKadSearch, wxT("Search request type: Node"));
 			break;
 		default:
-			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Search result type: Unknown (%i)"),m_type));
+			AddDebugLogLineN(logKadSearch, CFormat(wxT("Search result type: Unknown (%i)")) % m_type);
 			break;
 	}
 }
@@ -911,7 +911,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		case 4:
 		case 5:
 		case 6:
-			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Trying to add a source type %i, ip "), type) + KadIPPortToString(ip, udp));
+			AddDebugLogLineN(logKadSearch, CFormat(wxT("Trying to add a source type %i, ip %s")) % type % KadIPPortToString(ip, udp));
 			m_answers++;
 			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, buddyip, buddyport, byCryptOptions);
 			break;
@@ -1043,7 +1043,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 			uint32_t differentNames = (publishInfo & 0xFF000000) >> 24;
 			uint32_t publishersKnown = (publishInfo & 0x00FF0000) >> 16;
 			uint32_t trustValue = publishInfo & 0x0000FFFF;
-			AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Received PublishInfo Tag: %u different names, %u publishers, %.2f trustvalue"), differentNames, publishersKnown, (double)trustValue/ 100.0));
+			AddDebugLogLineN(logKadSearch, CFormat(wxT("Received PublishInfo Tag: %u different names, %u publishers, %.2f trustvalue")) % differentNames % publishersKnown % ((double)trustValue/ 100.0));
 #endif
 		}
 	}
@@ -1249,7 +1249,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 						if (pTag->IsInt() && pTag->GetInt() == 0) {
 							continue;
 						}
-						wxString szKadTagName = wxString::Format(wxT("%c"),pTag->GetNameID());					
+						wxString szKadTagName = CFormat(wxT("%c")) % pTag->GetNameID();
 						if (pTag->IsStr()) {
 							taglist.push_back(new CTagString(szKadTagName, pTag->GetStr()));
 						} else {

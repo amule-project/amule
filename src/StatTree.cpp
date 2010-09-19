@@ -227,7 +227,7 @@ wxString CStatTreeItemSimple::GetDisplayString() const
 				case dmBytes:	return CFormat(wxGetTranslation(m_label)) % CastItoXBytes(m_intvalue);
 				default:	return CFormat(wxGetTranslation(m_label)) % m_intvalue;
 			}
-		case vtFloat:	return wxString::Format(wxGetTranslation(m_label), m_floatvalue);
+		case vtFloat:	return CFormat(wxGetTranslation(m_label)) % m_floatvalue;
 		case vtString:	return CFormat(wxGetTranslation(m_label)) % m_stringvalue;
 		default:	return wxGetTranslation(m_label);
 	}
@@ -303,8 +303,7 @@ wxString CStatTreeItemCounterTmpl<_Tp>::GetDisplayString() const
 	} else {
 		wxString result = CFormat(wxT("%u")) % m_value;
 		if ((m_flags & stShowPercent) && m_parent) {
-			result.append(wxString::Format(wxT(" (%.2f%%)"),
-				((double)m_value / ((CStatTreeItemCounterTmpl<_Tp>*)m_parent)->m_value) * 100.0));
+			result += CFormat(wxT(" (%.2f%%)")) % (((double)m_value / ((CStatTreeItemCounterTmpl<_Tp>*)m_parent)->m_value) * 100.0);
 		}
 		return label % result;
 	}
@@ -362,7 +361,7 @@ void CStatTreeItemUlDlCounter::AddECValues(CECTag *tag) const
 #ifndef AMULE_DAEMON
 wxString CStatTreeItemCounterMax::GetDisplayString() const
 {
-	return wxString::Format(wxGetTranslation(m_label), m_value);
+	return CFormat(wxGetTranslation(m_label)) % m_value;
 }
 #endif
 
@@ -590,10 +589,7 @@ wxString CStatTreeItemMaxConnLimitReached::GetDisplayString() const
 {
 	if (m_count) {
 		return CFormat(wxGetTranslation(m_label)) %
-			(wxString::Format(wxT("%i : "), m_count) +
-				m_time.FormatISODate() +
-				wxT(" ") +
-				m_time.FormatISOTime());
+			CFormat(wxT("%i : %s %s")) % m_count % m_time.FormatISODate() % m_time.FormatISOTime();
 	} else {
 		return CFormat(wxGetTranslation(m_label)) % _("Never");
 	}
@@ -604,10 +600,7 @@ void CStatTreeItemMaxConnLimitReached::AddECValues(CECTag *tag) const
 {
 	wxString result;
 	if (m_count) {
-		result = wxString::Format(wxT("%i : "), m_count) +
-			m_time.FormatISODate() +
-			wxT(" ") +
-			m_time.FormatISOTime();
+		result = CFormat(wxT("%i : %s %s")) % m_count % m_time.FormatISODate() % m_time.FormatISOTime();
 	} else {
 		result = wxTRANSLATE("Never");
 	}

@@ -838,9 +838,9 @@ void CamuleDlg::ShowTransferRate()
 	wxString buffer;
 	if( thePrefs::ShowOverhead() )
 	{
-		buffer = wxString::Format(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, theStats::GetUpOverheadRate() / 1024.0, kBpsDown, theStats::GetDownOverheadRate() / 1024.0);
+		buffer = CFormat(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)")) % kBpsUp % (theStats::GetUpOverheadRate() / 1024.0) % kBpsDown % (theStats::GetDownOverheadRate() / 1024.0);
 	} else {
-		buffer = wxString::Format(_("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		buffer = CFormat(_("Up: %.1f | Down: %.1f")) % kBpsUp % kBpsDown;
 	}
 	buffer.Truncate(50); // Max size 50
 
@@ -850,7 +850,7 @@ void CamuleDlg::ShowTransferRate()
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = wxString::Format(wxT("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		wxString UpDownSpeed = CFormat(wxT("Up: %.1f | Down: %.1f")) % kBpsUp % kBpsDown;
 		if (thePrefs::GetShowRatesOnTitle() == 1) {
 			SetTitle(theApp->m_FrameTitle + wxT(" -- ") + UpDownSpeed);
 		} else {

@@ -243,7 +243,7 @@ void CClientTCPSocket::OnClose(int nErrorCode)
 	wxASSERT(theApp->listensocket->IsValidSocket(this));
 	CEMSocket::OnClose(nErrorCode);
 	if (nErrorCode) {
-		Disconnect(wxString::Format(wxT("Closed: %u"), nErrorCode));
+		Disconnect(CFormat(wxT("Closed: %u")) % nErrorCode);
 	} else {
 		Disconnect(wxT("Close"));
 	}
@@ -1068,7 +1068,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 		
 		default:
 			theStats::AddDownOverheadOther(size);
-			AddDebugLogLineN( logRemoteClient, wxString::Format(wxT("Edonkey packet: unknown opcode: %i %x from "), opcode, opcode) + m_client->GetFullIP());
+			AddDebugLogLineN(logRemoteClient, CFormat(wxT("Edonkey packet: unknown opcode: %i %x from %s")) % opcode % opcode % m_client->GetFullIP());
 			return false;
 	}
 	
@@ -1870,7 +1870,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 		}
 		default:
 			theStats::AddDownOverheadOther(size);
-			AddDebugLogLineN( logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x from "),opcode,opcode) + m_client->GetFullIP());
+			AddDebugLogLineN(logRemoteClient, CFormat(wxT("eMule packet : unknown opcode: %i %x from %s")) % opcode % opcode % m_client->GetFullIP());
 			break;
 	}
 	
@@ -1915,10 +1915,10 @@ bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint
 
 			default:
 				theStats::AddDownOverheadOther(size);
-				AddDebugLogLineN( logRemoteClient, wxString::Format(wxT("ED2Kv2 packet : unknown opcode: %i %x from "), opcode, opcode) + m_client->GetFullIP());
+				AddDebugLogLineN(logRemoteClient, CFormat(wxT("ED2Kv2 packet : unknown opcode: %i %x from %s")) % opcode % opcode % m_client->GetFullIP());
 		}
 	} catch (...) {
-		AddDebugLogLineN( logRemoteClient, wxString::Format(wxT("ED2Kv2 packet is corrupt at pos %i! opcode: %i %x from "),data.GetPosition(), opcode, opcode) + m_client->GetFullIP());
+		AddDebugLogLineN(logRemoteClient, CFormat(wxT("ED2Kv2 packet is corrupt at pos %i! opcode: %i %x from %s")) % data.GetPosition() % opcode % opcode % m_client->GetFullIP());
 		throw;
 	}
 	
@@ -1996,17 +1996,15 @@ void CClientTCPSocket::OnError(int nErrorCode)
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
 				if (!m_client->GetUserName().IsEmpty()) {
-					strError = wxT("OnError: Client '") + m_client->GetUserName() +
-						wxT("' (IP:") + m_client->GetFullIP() + 
-						wxString::Format(wxT(") caused an error: %u. Disconnecting client!"), nErrorCode);
+					strError = CFormat(wxT("OnError: Client '%s' (IP:%s) caused an error: %u. Disconnecting client!"))
+						% m_client->GetUserName() % m_client->GetFullIP() % nErrorCode;
 				} else {
-					strError = wxT("OnError: Unknown client (IP:") + 
-					m_client->GetFullIP() + 
-					wxString::Format(wxT(") caused an error: %u. Disconnecting client!"), nErrorCode);
+					strError = CFormat(wxT("OnError: Unknown client (IP:%s) caused an error: %u. Disconnecting client!"))
+						% m_client->GetFullIP() % nErrorCode;
 				}
 			} else {
-				strError = wxString::Format(wxT("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
-					nErrorCode);
+				strError = CFormat(wxT("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"))
+					% nErrorCode;
 			}
 		} else {
 			strError = wxT("Error 107 (Transport endpoint is not connected)");
@@ -2040,16 +2038,12 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 			(packet->GetProtocol() == OP_ED2KV2PACKEDPROT)) {
 				
 			if (!packet->UnPackPacket()) {
-				AddDebugLogLineN( logZLib, wxT("Failed to decompress client TCP packet."));
+				AddDebugLogLineN(logZLib, wxT("Failed to decompress client TCP packet."));
 				bResult = false;
 				process = false;
 			} else {
-				AddDebugLogLineN(logRemoteClient,
-					wxString::Format(wxT("Packet unpacked, new protocol %x, opcode %x, size %u"), 
-						packet->GetProtocol(),
-						packet->GetOpCode(),
-						packet->GetPacketSize())
-				);
+				AddDebugLogLineN(logRemoteClient, CFormat(wxT("Packet unpacked, new protocol %x, opcode %x, size %u")) 
+					% packet->GetProtocol() % packet->GetOpCode() % packet->GetPacketSize());
 			}
 		}
 		

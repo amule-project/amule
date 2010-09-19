@@ -458,10 +458,9 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 
 void CSharedFilesCtrl::ShowFilesCount()
 {
-	wxString str = wxString::Format(_("Shared Files (%i)"), GetItemCount());
 	wxStaticText* label = CastByName( wxT("sharedFilesLabel"), GetParent(), wxStaticText );
 	
-	label->SetLabel( str );
+	label->SetLabel(CFormat(_("Shared Files (%i)")) % GetItemCount());
 	label->GetParent()->Layout();
 }
 
@@ -547,15 +546,15 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					break;
 				
 				case ID_SHARED_COL_REQ:
-					textBuffer = wxString::Format(wxT("%u (%u)"),
-							file->statistic.GetRequests(),
-							file->statistic.GetAllTimeRequests());
+					textBuffer = CFormat(wxT("%u (%u)"))
+							% file->statistic.GetRequests()
+							% file->statistic.GetAllTimeRequests();
 					break;
 
 				case ID_SHARED_COL_AREQ:
-					textBuffer = wxString::Format(wxT("%u (%u)"),
-							file->statistic.GetAccepts(),
-							file->statistic.GetAllTimeAccepts());
+					textBuffer = CFormat(wxT("%u (%u)"))
+							% file->statistic.GetAccepts()
+							% file->statistic.GetAllTimeAccepts();
 					break;
 
 				case ID_SHARED_COL_TRA:
@@ -564,8 +563,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					break;
 					
 				case ID_SHARED_COL_RTIO:
-					textBuffer = wxString::Format(wxT("%.2f"),
-							(double)file->statistic.GetAllTimeTransferred() / file->GetFileSize() );
+					textBuffer = CFormat(wxT("%.2f")) %	((double)file->statistic.GetAllTimeTransferred() / file->GetFileSize());
 					break;
 				
 				case ID_SHARED_COL_PART:
@@ -580,16 +578,14 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 				case ID_SHARED_COL_CMPL:
 					if ( file->m_nCompleteSourcesCountLo == 0 ) {
 						if ( file->m_nCompleteSourcesCountHi ) {
-							textBuffer = wxString::Format(wxT("< %u"), file->m_nCompleteSourcesCountHi );
+							textBuffer = CFormat(wxT("< %u")) % file->m_nCompleteSourcesCountHi;
 						} else {
 							textBuffer = wxT("0");
 						}
 					} else if (file->m_nCompleteSourcesCountLo == file->m_nCompleteSourcesCountHi) {
-						textBuffer = wxString::Format(wxT("%u"), file->m_nCompleteSourcesCountLo);
+						textBuffer = CFormat(wxT("%u")) % file->m_nCompleteSourcesCountLo;
 					} else {
-						textBuffer = wxString::Format(wxT("%u - %u"),
-								file->m_nCompleteSourcesCountLo,
-								file->m_nCompleteSourcesCountHi);
+						textBuffer = CFormat(wxT("%u - %u")) % file->m_nCompleteSourcesCountLo % file->m_nCompleteSourcesCountHi;
 					}
 					
 					break;				

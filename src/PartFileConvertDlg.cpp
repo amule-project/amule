@@ -130,7 +130,7 @@ void CPartFileConvertDlg::UpdateProgress(float percent, wxString text, wxString 
 {
 	if (s_convertgui) {
 		s_convertgui->m_pb_current->SetValue((int)percent);
-		wxString buffer = wxString::Format(wxT("%.2f %%"), percent);
+		wxString buffer = CFormat(wxT("%.2f %%")) % percent;
 		wxStaticText* percentlabel = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
 		percentlabel->SetLabel(buffer);
 

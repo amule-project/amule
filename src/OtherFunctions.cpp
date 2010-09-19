@@ -84,14 +84,14 @@ wxString GetMuleVersion()
 		ver += wxT("wxMSW");
 	#endif
 
-	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
+	ver += CFormat(wxT(" v%d.%d.%d")) % wxMAJOR_VERSION % wxMINOR_VERSION % wxRELEASE_NUMBER;
 
 #ifdef __WXDEBUG__
 	ver += wxT(" (Debugging)");
 #endif
 	
 #ifdef SVNDATE
-	ver += wxString::Format( wxT(" (Snapshot: %s)"), wxT(SVNDATE));
+	ver += CFormat(wxT(" (Snapshot: %s)")) % wxT(SVNDATE);
 #endif
 	
 	return ver;
@@ -103,15 +103,15 @@ wxString CastItoXBytes( uint64 count )
 {
 
 	if (count < 1024)
-		return wxString::Format( wxT("%u "), (unsigned)count) + wxPLURAL("byte", "bytes", count) ;
+		return CFormat(wxT("%u ")) % count + wxPLURAL("byte", "bytes", count) ;
 	else if (count < 1048576)
-		return wxString::Format( wxT("%u "), (unsigned)count >> 10) + _("kB") ;
+		return CFormat(wxT("%u ")) % (count >> 10) + _("kB") ;
 	else if (count < 1073741824)
-		return wxString::Format( wxT("%.2f "), (float)(uint32)count/1048576) + _("MB") ;
+		return CFormat(wxT("%.2f ")) % ((float)(uint32)count/1048576) + _("MB") ;
 	else if (count < 1099511627776LL)
-		return wxString::Format( wxT("%.3f "), (float)((uint32)(count/1024))/1048576) + _("GB") ;
+		return CFormat(wxT("%.3f ")) % ((float)((uint32)(count/1024))/1048576) + _("GB") ;
 	else
-		return wxString::Format( wxT("%.3f "), (float)count/1099511627776LL) + _("TB") ;
+		return CFormat(wxT("%.3f ")) % ((float)count/1099511627776LL) + _("TB") ;
 }
 
 
@@ -119,26 +119,26 @@ wxString CastItoIShort(uint64 count)
 {
 
 	if (count < 1000)
-		return wxString::Format(wxT("%u"), (uint32)count);
+		return CFormat(wxT("%u")) % count;
 	else if (count < 1000000)
-		return wxString::Format(wxT("%.0f"),(float)(uint32)count/1000) + _("k") ;
+		return CFormat(wxT("%.0f")) % ((float)(uint32)count/1000) + _("k") ;
 	else if (count < 1000000000)
-		return wxString::Format(wxT("%.2f"),(float)(uint32)count/1000000) + _("M") ;
+		return CFormat(wxT("%.2f")) % ((float)(uint32)count/1000000) + _("M") ;
 	else if (count < 1000000000000LL)
-		return wxString::Format(wxT("%.2f"),(float)((uint32)(count/1000))/1000000) + _("G") ;
+		return CFormat(wxT("%.2f")) % ((float)((uint32)(count/1000))/1000000) + _("G") ;
 	else
-		return wxString::Format(wxT("%.2f"),(float)count/1000000000000LL) + _("T");
+		return CFormat(wxT("%.2f")) % ((float)count/1000000000000LL) + _("T");
 }
 
 
 wxString CastItoSpeed(uint32 bytes)
 {
 	if (bytes < 1024)
-		return wxString::Format(wxT("%u "), bytes) + wxPLURAL("byte/sec", "bytes/sec", bytes);
+		return CFormat(wxT("%u ")) % bytes + wxPLURAL("byte/sec", "bytes/sec", bytes);
 	else if (bytes < 1048576)
-		return wxString::Format(wxT("%.2f "), bytes / 1024.0) + _("kB/s");
+		return CFormat(wxT("%.2f ")) % (bytes / 1024.0) + _("kB/s");
 	else
-		return wxString::Format(wxT("%.2f "), bytes / 1048576.0) + _("MB/s");
+		return CFormat(wxT("%.2f ")) % (bytes / 1048576.0) + _("MB/s");
 }
 
 
@@ -147,33 +147,21 @@ wxString CastSecondsToHM(uint32 count, uint16 msecs)
 {
 	if (count < 60) {
 		if (!msecs) {
-			return wxString::Format(
-				wxT("%02u %s"), count, _("secs"));
+			return CFormat(wxT("%02u %s")) % count % _("secs");
 		} else {
-			return wxString::Format(
-				wxT("%.3f %s"),
-				(count + ((float)msecs/1000)), _("secs"));
+			return CFormat(wxT("%.3f %s"))
+				% (count + ((float)msecs/1000)) % _("secs");
 		}
 	} else if (count < 3600) {
-		return wxString::Format(
-			wxT("%u:%02u %s"), 
-			count/60,
-			(count % 60),
-			_("mins"));
+		return CFormat(wxT("%u:%02u %s")) 
+			% (count/60) % (count % 60) % _("mins");
 	} else if (count < 86400) {
-		return wxString::Format(
-			wxT("%u:%02u %s"),
-			count/3600,
-			(count % 3600)/60,
-			_("hours"));
+		return CFormat(wxT("%u:%02u %s"))
+			% (count/3600) % ((count % 3600)/60) % _("hours");
 	} else {
-		return wxString::Format(
-			wxT("%u %s %02u:%02u %s"), 
-			count/86400,
-			_("Days"),
-			(count % 86400)/3600,
-			(count % 3600)/60,
-			_("hours"));
+		return CFormat(wxT("%u %s %02u:%02u %s"))
+			% (count/86400) % _("Days")
+			% ((count % 86400)/3600) % ((count % 3600)/60) % _("hours");
 	}
 }
 
@@ -1017,10 +1005,10 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 		result += msg + wxT(" - ok=") + ( ok ? wxT("true, ") : wxT("false, ") );
 	}
 
-	result += wxString::Format( wxT("%d bytes\n"), n );
+	result += CFormat(wxT("%d bytes\n")) % n;
 	for ( int i = 0; i < lines; ++i) {
 		// Show address
-		result += wxString::Format( wxT("%08x  "), i * 16 );
+		result += CFormat(wxT("%08x  ")) % (i * 16);
 		
 		// Show two columns of hex-values
 		for ( int j = 0; j < 2; ++j) {
@@ -1028,7 +1016,7 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 				int pos = 16 * i + 8 * j + k;
 				
 				if ( pos < n ) {
-					result += wxString::Format( wxT("%02x "), p[pos] );
+					result += CFormat(wxT("%02x ")) % p[pos];
 				} else {
 					result += wxT("   ");
 				}

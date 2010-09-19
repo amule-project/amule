@@ -1487,7 +1487,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		// we already check above with !theApp->CanDoCallback(this) if any callback is possible at all
 		m_dwDirectCallbackTimeout = ::GetTickCount() + SEC2MS(45);
 		theApp->clientlist->AddDirectCallbackClient(this);
-		AddDebugLogLineN(logClient, wxString::Format(wxT("Direct Callback on port %u to client on ip "), GetKadPort()) + Uint32toStringIP(GetConnectIP()));
+		AddDebugLogLineN(logClient, CFormat(wxT("Direct Callback on port %u to client on ip %s")) % GetKadPort() % Uint32toStringIP(GetConnectIP()));
 
 		CMemFile data;
 		data.WriteUInt16(thePrefs::GetPort()); // needs to know our port
@@ -1551,7 +1551,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						CPacket* packet = new CPacket(bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
 						// eMule FIXME: We don't know which kadversion the buddy has, so we need to send unencrypted
 						theApp->clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-						AddDebugLogLineN(logClientKadUDP, wxString::Format(wxT("KadCallbackReq (size=%i) to "),packet->GetPacketSize()) + Uint32_16toStringIP_Port(GetBuddyIP(), GetBuddyPort()));
+						AddDebugLogLineN(logClientKadUDP, CFormat(wxT("KadCallbackReq (size=%i) to %s")) % packet->GetPacketSize() % Uint32_16toStringIP_Port(GetBuddyIP(), GetBuddyPort()));
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
 					} else {
@@ -1767,7 +1767,7 @@ void CUpDownClient::ReGetClientSoft()
 		}
 		// Isn't xMule annoying?
 		if ((m_clientSoft == SO_LXMULE) && (GetMuleVersion() > 0x26) && (GetMuleVersion() != 0x99)) {
-			m_clientSoftString += wxString::Format(_(" (Fake eMule version %#x)"),GetMuleVersion());
+			m_clientSoftString += CFormat(_(" (Fake eMule version %#x)")) % GetMuleVersion();
 		}
 		if ((m_clientSoft == SO_EMULE) && 
 			(
@@ -1802,7 +1802,7 @@ void CUpDownClient::ReGetClientSoft()
 					AddLogLineNS(CFormat(wxT("Compatible client found with ET_COMPATIBLECLIENT of %x")) % m_byCompatibleClient);
 				}
 				#endif
-				m_clientSoftString = GetSoftName(m_clientSoft) + wxString::Format(wxT("(%#x)"),m_byCompatibleClient);
+				m_clientSoftString = CFormat(wxT("%s(%#x)")) % GetSoftName(m_clientSoft) % m_byCompatibleClient;
 			} else {
 				// If we step here, it might mean 2 things:
 				// a eMule
@@ -1819,14 +1819,14 @@ void CUpDownClient::ReGetClientSoft()
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			switch (m_clientSoft) {
 				case SO_AMULE:
-					m_clientVerString = wxString::Format(_("1.x (based on eMule v0.%u)"), nClientMinVersion);
+					m_clientVerString = CFormat(_("1.x (based on eMule v0.%u)")) % nClientMinVersion;
 					break;
 				case SO_LPHANT:
 					m_clientVerString = wxT("< v0.05");
 					break;
 				default:
 					clientModString = GetClientModString();
-					m_clientVerString = wxString::Format(wxT("v0.%u"), nClientMinVersion);
+					m_clientVerString = CFormat(wxT("v0.%u")) % nClientMinVersion;
 					break;
 			}
 		} else {
@@ -1848,23 +1848,23 @@ void CUpDownClient::ReGetClientSoft()
 					// eMule+ developers, so I think they're slowly getting smarter.
 					// They are based on our implementation, so we use the same format
 					// for the version string.
-					m_clientVerString =  wxString::Format(wxT("v%u.%u.%u"), nClientMajVersion, nClientMinVersion, nClientUpVersion);
+					m_clientVerString = CFormat(wxT("v%u.%u.%u")) % nClientMajVersion % nClientMinVersion % nClientUpVersion;
 					break;
 				case SO_LPHANT:
-					m_clientVerString =  wxString::Format(wxT(" v%u.%.2u%c"), nClientMajVersion-1, nClientMinVersion, 'a' + nClientUpVersion);
+					m_clientVerString = CFormat(wxT(" v%u.%.2u%c")) % (nClientMajVersion-1) % nClientMinVersion % ('a' + nClientUpVersion);
 					break;
 				case SO_EMULEPLUS:
-					m_clientVerString =  wxString::Format(wxT("v%u"), nClientMajVersion);
+					m_clientVerString = CFormat(wxT("v%u")) % nClientMajVersion;
 					if(nClientMinVersion != 0) {
-						m_clientVerString +=  wxString::Format(wxT(".%u"), nClientMinVersion);
+						m_clientVerString += CFormat(wxT(".%u")) % nClientMinVersion;
 					}
 					if(nClientUpVersion != 0) {
-						m_clientVerString +=  wxString::Format(wxT("%c"), 'a' + nClientUpVersion - 1);
+						m_clientVerString += CFormat(wxT("%c")) % ('a' + nClientUpVersion - 1);
 					}
 					break;
 				default:
 					clientModString = GetClientModString();
-					m_clientVerString =  wxString::Format(wxT("v%u.%u%c"), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
+					m_clientVerString = CFormat(wxT("v%u.%u%c")) % nClientMajVersion % nClientMinVersion % ('a' + nClientUpVersion);
 					break;
 			}
 		}
@@ -1912,27 +1912,27 @@ void CUpDownClient::ReGetClientSoft()
 		}
 		m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 		if (nClientUpVersion) {
-			m_clientVerString = wxString::Format(wxT("v%u.%u.%u"), nClientMajVersion, nClientMinVersion, nClientUpVersion);
+			m_clientVerString = CFormat(wxT("v%u.%u.%u")) % nClientMajVersion % nClientMinVersion % nClientUpVersion;
 		} else {
-			m_clientVerString = wxString::Format(wxT("v%u.%u"), nClientMajVersion, nClientMinVersion);
+			m_clientVerString = CFormat(wxT("v%u.%u")) % nClientMajVersion % nClientMinVersion;
 		}
 	} else if (m_bIsML || (iHashType == SO_MLDONKEY)) {
 		m_clientSoft = SO_MLDONKEY;
 		m_clientSoftString = GetSoftName(m_clientSoft);
 		uint32 nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-		m_clientVerString = wxString::Format(wxT("v0.%u"), nClientMinVersion);
+		m_clientVerString = CFormat(wxT("v0.%u")) % nClientMinVersion;
 	} else if (iHashType == SO_OLDEMULE) {
 		m_clientSoft = SO_OLDEMULE;
 		m_clientSoftString = GetSoftName(m_clientSoft);
 		uint32 nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-		m_clientVerString = wxString::Format(wxT("v0.%u"), nClientMinVersion);
+		m_clientVerString = CFormat(wxT("v0.%u")) % nClientMinVersion;
 	} else {
 		m_clientSoft = SO_EDONKEY;
 		m_clientSoftString = GetSoftName(m_clientSoft);
 		m_nClientVersion *= 10;
-		m_clientVerString = wxString::Format(wxT("v%u.%u"), m_nClientVersion / 100000, (m_nClientVersion / 1000) % 100);
+		m_clientVerString = CFormat(wxT("v%u.%u")) % (m_nClientVersion / 100000) % ((m_nClientVersion / 1000) % 100);
 	}
 
 	m_clientVersionString = m_clientVerString;

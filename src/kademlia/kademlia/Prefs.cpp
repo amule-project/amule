@@ -199,10 +199,10 @@ void CPrefs::SetKademliaFiles()
 	DEBUG_ONLY( wxString method; )
 
 	if (nServerAverage > nKadAverage) {
-		DEBUG_ONLY( method = wxString::Format(wxT("Kad file estimate used Server avg(%u)"), nServerAverage); )
+		DEBUG_ONLY( method = CFormat(wxT("Kad file estimate used Server avg(%u)")) % nServerAverage; )
 		nKadAverage = nServerAverage;
 	} else {
-		DEBUG_ONLY( method = wxString::Format(wxT("Kad file estimate used Kad avg(%u)"), nKadAverage); )
+		DEBUG_ONLY( method = CFormat(wxT("Kad file estimate used Kad avg(%u)")) % nKadAverage; )
 	}
 
 	if( nKadAverage < 108 ) {
@@ -266,7 +266,8 @@ float CPrefs::StatsGetKadV8Ratio()
 		uint32_t nV8Contacts = 0;
 		uint32_t nNonV8Contacts = 0;
 		CKademlia::GetRoutingZone()->GetNumContacts(nV8Contacts, nNonV8Contacts, 8);
-		AddDebugLogLineN(logKadRouting, wxString::Format(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"), nV8Contacts, nNonV8Contacts + nV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100));
+		AddDebugLogLineN(logKadRouting, CFormat(wxT("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%"))
+			% nV8Contacts % (nNonV8Contacts + nV8Contacts) % (StatsGetFirewalledRatio(true) * 100) % (StatsGetFirewalledRatio(false) * 100));
 		if (nV8Contacts > 0) {
 			m_statsKadV8Ratio = ((float)nV8Contacts / (float)(nV8Contacts + nNonV8Contacts));
 		} else {
@@ -285,12 +286,12 @@ void CPrefs::SetExternKadPort(uint16_t port, uint32_t fromIP)
 			}
 		}
 		m_externPortIPs.push_back(fromIP);
-		AddDebugLogLineN(logKadPrefs, wxString::Format(wxT("Received possible external Kad port %u from "), port) + KadIPToString(fromIP));
+		AddDebugLogLineN(logKadPrefs, CFormat(wxT("Received possible external Kad port %u from %s")) % port % KadIPToString(fromIP));
 		// if 2 out of 3 tries result in the same external port it's fine, otherwise consider it unreliable
 		for (unsigned i = 0; i < m_externPorts.size(); i++) {
 			if (m_externPorts[i] == port) {
 				m_externKadPort = port;
-				AddDebugLogLineN(logKadPrefs, wxString::Format(wxT("Set external Kad port to %u"), port));
+				AddDebugLogLineN(logKadPrefs, CFormat(wxT("Set external Kad port to %u")) % port);
 				while (m_externPortIPs.size() < EXTERNAL_PORT_ASKIPS) {
 					// add empty entries so we know the check has finished even if we asked less than max IPs
 					m_externPortIPs.push_back(0);

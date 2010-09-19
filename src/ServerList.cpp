@@ -111,7 +111,7 @@ bool CServerList::LoadServerMet(const CPath& path)
 		byte version = servermet.ReadUInt8();
 		
 		if (version != 0xE0 && version != MET_HEADER) {
-			AddLogLineM(true, wxString::Format(_("Server.met file corrupt, found invalid versiontag: 0x%x, size %i"), version, sizeof(version)));
+			AddLogLineC(CFormat(_("Server.met file corrupt, found invalid versiontag: 0x%x, size %i")) % version % sizeof(version));
 			Notify_ServerThaw();
 			return false;
 		}
@@ -166,9 +166,9 @@ bool CServerList::LoadServerMet(const CPath& path)
 		Notify_ServerThaw();
     
 		if (!merge) {
-			AddLogLineM(true, wxString::Format(wxPLURAL("%i server in server.met found", "%i servers in server.met found", fservercount), fservercount));
+			AddLogLineC(CFormat(wxPLURAL("%i server in server.met found", "%i servers in server.met found", fservercount)) % fservercount);
 		} else {
-			AddLogLineM(true, wxString::Format(wxPLURAL("%d server added", "%d servers added", iAddCount), iAddCount));
+			AddLogLineC(CFormat(wxPLURAL("%d server added", "%d servers added", iAddCount)) % iAddCount);
 		}
 	} catch (const CInvalidPacket& err) {
 		AddLogLineM(true, wxT("Error: the file server.met is corrupted: ") + err.what());

@@ -267,7 +267,7 @@ void CPartFile::CreatePartFile()
 	int i = 0; 
 	do { 
 		++i; 
-		m_partmetfilename = CPath(wxString::Format(wxT("%03i.part.met"), i));
+		m_partmetfilename = CPath(CFormat(wxT("%03i.part.met")) % i);
 		m_fullname = thePrefs::GetTempDir().JoinPaths(m_partmetfilename);
 	} while (m_fullname.FileExists());
 
@@ -846,7 +846,7 @@ bool CPartFile::SavePartFile(bool Initial)
 				if (!strCorruptedParts.IsEmpty()) {
 					strCorruptedParts += wxT(",");
 				}
-				strCorruptedParts += wxString::Format(wxT("%u"), (unsigned)uCorruptedPart);
+				strCorruptedParts += CFormat(wxT("%u")) % uCorruptedPart;
 			}
 			wxASSERT( !strCorruptedParts.IsEmpty() );
 			
@@ -878,12 +878,12 @@ bool CPartFile::SavePartFile(bool Initial)
 		// gaps
 		unsigned i_pos = 0;
 		for (CGapList::const_iterator it = m_gaplist.begin(); it != m_gaplist.end(); ++it) {
-			wxString tagName = wxString::Format(wxT(" %u"), i_pos);
+			wxString tagName = CFormat(wxT(" %u")) % i_pos;
 			
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
 			tagName[0] = FT_GAPSTART;
-			CTagIntSized(tagName, it.start()		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
+			CTagIntSized(tagName, it.start(),	IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
 			
 			tagName[0] = FT_GAPEND;
 			CTagIntSized(tagName, it.end() + 1, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
@@ -1658,9 +1658,9 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 
 			if ((thePrefs::IsClientCryptLayerRequested() && (byCryptOptions & 0x01/*supported*/) > 0 && (byCryptOptions & 0x80) == 0)
 				|| (thePrefs::IsClientCryptLayerSupported() && (byCryptOptions & 0x02/*requested*/) > 0 && (byCryptOptions & 0x80) == 0)) {
-				AddDebugLogLineN(logPartFile, wxString::Format(wxT("Server didn't provide UserHash for source %u, even if it was expected to (or local obfuscationsettings changed during serverconnect"), userid));
+				AddDebugLogLineN(logPartFile, CFormat(wxT("Server didn't provide UserHash for source %u, even if it was expected to (or local obfuscationsettings changed during serverconnect")) % userid);
 			} else if (!thePrefs::IsClientCryptLayerRequested() && (byCryptOptions & 0x02/*requested*/) == 0 && (byCryptOptions & 0x80) != 0) {
-				AddDebugLogLineN(logPartFile, wxString::Format(wxT("Server provided UserHash for source %u, even if it wasn't expected to (or local obfuscationsettings changed during serverconnect"), userid));
+				AddDebugLogLineN(logPartFile, CFormat(wxT("Server provided UserHash for source %u, even if it wasn't expected to (or local obfuscationsettings changed during serverconnect")) % userid);
 			}
 		}
 			
@@ -3350,9 +3350,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	FlushBuffer(true);
 	uint32 length = GetPartSize(nPart);
 	// if the part was already ok, it would now be complete
-	if (IsComplete(nPart)){
-		AddDebugLogLineN( logAICHRecovery,
-			wxString::Format( wxT("Processing AICH Recovery data: The part (%u) is already complete, canceling"), nPart ) );
+	if (IsComplete(nPart)) {
+		AddDebugLogLineN(logAICHRecovery, CFormat(wxT("Processing AICH Recovery data: The part (%u) is already complete, canceling")) % nPart);
 		return;
 	}
 	
@@ -3405,30 +3404,29 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	m_CorruptionBlackBox->EvaluateData();
 
 	// ok now some sanity checks
-	if (IsComplete(nPart)){
+	if (IsComplete(nPart)) {
 		// this is bad, but it could probably happen under some rare circumstances
 		// make sure that MD4 agrees to this fact too
-		if (!HashSinglePart(nPart)){
-			AddDebugLogLineN( logAICHRecovery,
-				wxString::Format(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part"), nPart));
+		if (!HashSinglePart(nPart)) {
+			AddDebugLogLineN(logAICHRecovery, 
+				CFormat(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part")) % nPart);
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
 			AddGap(nPart);
 			wxFAIL;
 			return;
-		}
-		else{
-			AddDebugLogLineN( logAICHRecovery, wxString::Format(
-				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"), nPart) );
-			if (status == PS_EMPTY && theApp->IsRunning()){
-				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
+		} else {
+			AddDebugLogLineN(logAICHRecovery,
+				CFormat(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees")) % nPart);
+			if (status == PS_EMPTY && theApp->IsRunning()) {
+				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
 					// Successfully recovered part, make it available for sharing
 					SetStatus(PS_READY);
 					theApp->sharedfiles->SafeAddKFile(this);
 				}
 			}
 
-			if (theApp->IsRunning()){
+			if (theApp->IsRunning()) {
 				// Is this file finished?
 				if (m_gaplist.IsComplete()) {
 					CompleteFile(false);
@@ -3764,8 +3762,8 @@ wxString CPartFile::GetFeedback() const
 {
 	wxString retval = CKnownFile::GetFeedback();
 	if (GetStatus() != PS_COMPLETE) {
-		retval += wxString(_("Downloaded")) + wxT(": ") + CastItoXBytes(GetCompletedSize()) + wxString::Format(wxT(" (%.2f%%)\n"), GetPercentCompleted())
-			+ _("Sources") + CFormat(wxT(": %u\n")) % GetSourceCount();
+		retval += CFormat(wxT("%s: %s (%.2f%%)\n%s: %u\n"))
+			% _("Downloaded") % CastItoXBytes(GetCompletedSize()) % GetPercentCompleted() % _("Sources") % GetSourceCount();
 	}
 	return retval + _("Status") + wxT(": ") + getPartfileStatus() + wxT("\n");
 }

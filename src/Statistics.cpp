@@ -119,7 +119,7 @@ void CStatTreeItemRateCounter::AddECValues(CECTag* tag) const
 #ifndef AMULE_DAEMON
 wxString CStatTreeItemPeakConnections::GetDisplayString() const
 {
-	return wxString::Format(wxGetTranslation(m_label), theStats::GetPeakConnections());
+	return CFormat(wxGetTranslation(m_label)) % theStats::GetPeakConnections();
 }
 #endif
 

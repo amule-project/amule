@@ -339,7 +339,8 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 	}
 #ifdef __DEBUG__
 	if (!dbgReason.IsEmpty()) {
-		AddDebugLogLineN(logKadEntryTracking, (increase ? wxT("Adding ") : wxT("Removing ")) + KadIPToString(ip & 0xFFFFFF00) + wxT(" (") + KadIPToString(ip) + wxT(") - (") + dbgReason + wxString::Format(wxT("), new count %u"),count));
+		AddDebugLogLineN(logKadEntryTracking, CFormat(wxT("%s %s (%s) - (%s), new count %u"))
+			% (increase ? wxT("Adding") : wxT("Removing")) % KadIPToString(ip & 0xFFFFFF00) % KadIPToString(ip) % dbgReason % count);
 	}
 #endif
 }
@@ -432,7 +433,8 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		// since we added a new publisher, we want to (re)calculate the trust value for this entry		
 		ReCalculateTrustValue();
 	}
-	AddDebugLogLineN(logKadEntryTracking, wxString(wxT("Indexed Keyword, Refresh: ")) + (refresh ? wxT("Yes") : wxT("No")) + wxT(", Current Publisher: ") + KadIPToString(m_uIP) + wxString::Format(wxT(", Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: "), m_publishingIPs->size(), m_filenames.size(), m_trustValue) + m_uSourceID.ToHexString());
+	AddDebugLogLineN(logKadEntryTracking, CFormat(wxT("Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: %s"))
+		% (refresh ? wxT("Yes") : wxT("No")) % KadIPToString(m_uIP) % m_publishingIPs->size() % m_filenames.size() % m_trustValue % m_uSourceID.ToHexString());
 }
 
 void CKeyEntry::ReCalculateTrustValue()
@@ -558,7 +560,8 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CFileDataIO* data)
 	ReCalculateTrustValue();
 // #ifdef __DEBUG__
 // 	if (GetTrustValue() < 1.0) {
-// 		AddDebugLogLineN(logKadEntryTracking, wxString::Format(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file "), nameCount, ipCount, GetTrustValue()) + m_uSourceID.ToHexString());
+// 		AddDebugLogLineN(logKadEntryTracking,CFormat(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file %s"))
+// 			% nameCount % ipCount % GetTrustValue() % m_uSourceID.ToHexString());
 // 	}
 // #endif
 }

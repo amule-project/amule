@@ -234,7 +234,7 @@ void CIndexed::ReadFile()
 			m_totalIndexSource = totalSource;
 			m_totalIndexKeyword = totalKeyword;
 			m_totalIndexLoad = totalLoad;
-			AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Read %u source, %u keyword, and %u load entries"),totalSource,totalKeyword,totalLoad));
+			AddDebugLogLineN(logKadIndex, CFormat(wxT("Read %u source, %u keyword, and %u load entries")) % totalSource % totalKeyword % totalLoad);
 		}
 	} catch (const CSafeIOException& err) {
 		AddDebugLogLineC(logKadIndex, wxT("CSafeIOException in CIndexed::readFile: ") + err.what());
@@ -350,7 +350,7 @@ CIndexed::~CIndexed()
 			}
 			k_file.Close();
 		}
-		AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Wrote %u source, %u keyword, and %u load entries"), s_total, k_total, l_total));
+		AddDebugLogLineN(logKadIndex, CFormat(wxT("Wrote %u source, %u keyword, and %u load entries")) % s_total % k_total % l_total);
 
 		for (SrcHashMap::iterator itNoteHash = m_Notes_map.begin(); itNoteHash != m_Notes_map.end(); ++itNoteHash) {
 			SrcHash* currNoteHash = itNoteHash->second;
@@ -468,7 +468,7 @@ void CIndexed::Clean()
 
 	m_totalIndexSource = s_Total - s_Removed;
 	m_totalIndexKeyword = k_Total - k_Removed;
-	AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Removed %u keyword out of %u and %u source out of %u"),  k_Removed, k_Total, s_Removed, s_Total));
+	AddDebugLogLineN(logKadIndex, CFormat(wxT("Removed %u keyword out of %u and %u source out of %u")) % k_Removed % k_Total % s_Removed % s_Total);
 	m_lastClean = tNow + MIN2S(30);
 }
 
@@ -800,7 +800,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			}
 		} while (!onlyTrusted);
 
-		AddDebugLogLineN(logKadIndex, wxString::Format(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results"), dbgResultsTrusted, dbgResultsUntrusted));
+		AddDebugLogLineN(logKadIndex, CFormat(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results")) % dbgResultsTrusted % dbgResultsUntrusted);
 
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;

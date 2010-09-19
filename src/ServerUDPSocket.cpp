@@ -94,8 +94,7 @@ void CServerUDPSocket::OnPacketReceived(uint32 serverip, uint16 serverport, byte
 		CMemFile data(pBuffer + 2, nPayLoadLen - 2);
 		ProcessPacket(data, opcode, serverip, serverport);
 	} else {
-		AddDebugLogLineN(logServerUDP,
-			wxString::Format( wxT("Received invalid packet, protocol (0x%x) and opcode (0x%x)"), protocol, opcode ));
+		AddDebugLogLineN(logServerUDP, CFormat(wxT("Received invalid packet, protocol (0x%x) and opcode (0x%x)")) % protocol % opcode);
 			
 		theStats::AddDownOverheadOther(length);
 	}
@@ -174,14 +173,14 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
  			case OP_GLOBSERVSTATRES:{
 				// Reviewed with 0.47c
 				if (!update) {
-					throw wxString(wxT("Unknown server on a OP_GLOBSERVSTATRES packet (") + Uint32toStringIP(ip) + wxString::Format(wxT(":%d)"), port-4));
+					throw wxString(CFormat(wxT("Unknown server on a OP_GLOBSERVSTATRES packet (%s:%d)")) % Uint32toStringIP(ip) % (port-4));
 				}
-				if( size < 12) {
-					throw(wxString(wxString::Format(wxT("Invalid OP_GLOBSERVSTATRES packet (size=%u)"),size)));
+				if (size < 12) {
+					throw wxString(CFormat(wxT("Invalid OP_GLOBSERVSTATRES packet (size=%u)")) % size);
 				}
 				uint32 challenge = packet.ReadUInt32();
 				if (challenge != update->GetChallenge()) {
-					throw(wxString(wxString::Format(wxT("Invalid challenge on OP_GLOBSERVSTATRES packet (0x%x != 0x%x)"),challenge,update->GetChallenge())));
+					throw wxString(CFormat(wxT("Invalid challenge on OP_GLOBSERVSTATRES packet (0x%x != 0x%x)")) % challenge % update->GetChallenge());
 				}
 				
 				update->SetChallenge(0);
@@ -291,8 +290,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 									if (tag.IsStr()) {
 										update->SetVersion(tag.GetStr());
 									} else if (tag.IsInt()) {
-										wxString strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
-										update->SetVersion(strVersion);
+										update->SetVersion(CFormat(wxT("%u.%u")) % (tag.GetInt() >> 16) % (tag.GetInt() & 0xFFFF));
 									}
 									break;
 								case ST_AUXPORTSLIST:
@@ -318,8 +316,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 				break;
 			}
 			default:
-				AddDebugLogLineC( logServerUDP,
-					wxString::Format( wxT("Unknown Server UDP opcode %x"), opcode ) );
+				AddDebugLogLineC(logServerUDP, CFormat(wxT("Unknown Server UDP opcode %x")) % opcode);
 		}
 	} catch (const wxString& error) {
 		AddDebugLogLineN(logServerUDP, wxT("Error while processing incoming UDP Packet: ") + error);

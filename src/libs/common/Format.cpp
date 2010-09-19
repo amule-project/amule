@@ -96,7 +96,7 @@ bool isTypeChar(wxChar c)
 		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
 		case wxT('g'):		// Use shorter %e or %f
 		case wxT('G'):		// Use shorter %E or %f
-		case wxT('p'):		// Not supported, still needs to be caught though
+		case wxT('p'):		// Pointer
 		case wxT('n'):		// Not supported, still needs to be caught though
 			return true;
 	}
@@ -384,9 +384,13 @@ CFormat& CFormat::operator%(wxChar value)
 
 CFormat& CFormat::operator%(signed long long value)
 {
-	wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("i"));
-	if (!field.IsEmpty()) {
-		SetCurrentField(wxString::Format(field, value));
+	if (GetCurrentField().EndsWith(wxT("c"))) {
+		SetCurrentField(wxString::Format(GetCurrentField(), (wxChar)value));
+	} else {
+		wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("i"));
+		if (!field.IsEmpty()) {
+			SetCurrentField(wxString::Format(field, value));
+		}
 	}
 
 	return *this;
@@ -395,9 +399,13 @@ CFormat& CFormat::operator%(signed long long value)
 
 CFormat& CFormat::operator%(unsigned long long value)
 {
-	wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("u"));
-	if (!field.IsEmpty()) {
-		SetCurrentField(wxString::Format(field, value));
+	if (GetCurrentField().EndsWith(wxT("c"))) {
+		SetCurrentField(wxString::Format(GetCurrentField(), (wxChar)value));
+	} else {
+		wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("u"));
+		if (!field.IsEmpty()) {
+			SetCurrentField(wxString::Format(field, value));
+		}
 	}
 
 	return *this;

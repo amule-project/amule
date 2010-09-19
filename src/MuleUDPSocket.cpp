@@ -134,9 +134,8 @@ const unsigned UDP_BUFFER_SIZE = 16384;
 
 void CMuleUDPSocket::OnReceive(int errorCode)
 {
-	AddDebugLogLineN(logMuleUDP, wxString::Format(
-		wxT("Got UDP callback for read: Error %i Socket state %i"),
-		errorCode, Ok() ? 1 : 0));
+	AddDebugLogLineN(logMuleUDP, CFormat(wxT("Got UDP callback for read: Error %i Socket state %i"))
+		% errorCode % Ok());
 	
 	char buffer[UDP_BUFFER_SIZE];
 	wxIPV4address addr;

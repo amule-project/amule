@@ -204,11 +204,10 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem(itemnr, COLUMN_SERVER_ADDR, server->GetAddress());
 	if (server->GetAuxPortsList().IsEmpty()) {
 		SetItem( itemnr, COLUMN_SERVER_PORT,
-			wxString::Format(wxT("%u"), server->GetPort()));
+			CFormat(wxT("%u")) % server->GetPort());
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_PORT,
-			wxString::Format(wxT("%u ("),
-				server->GetPort()) + server->GetAuxPortsList() + wxT(")") );
+			CFormat(wxT("%u (%s)")) % server->GetPort() % server->GetAuxPortsList());
 	}
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
@@ -221,14 +220,14 @@ void CServerListCtrl::RefreshServer( CServer* server )
 
 	if ( server->GetUsers() ) {
 		SetItem( itemnr, COLUMN_SERVER_USERS,
-			wxString::Format( wxT("%u"), server->GetUsers() ) );
+			CFormat(wxT("%u")) % server->GetUsers());
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_USERS, wxEmptyString );
 	}
 
 	if ( server->GetFiles() ) {
 		SetItem( itemnr, COLUMN_SERVER_FILES,
-			wxString::Format( wxT("%u"), server->GetFiles() ) );
+			CFormat(wxT("%u")) % server->GetFiles());
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_FILES, wxEmptyString );
 	}
@@ -240,7 +239,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		default:		SetItem(itemnr, COLUMN_SERVER_PRIO, wxT("---"));	// this should never happen
 	}
 
-	SetItem( itemnr, COLUMN_SERVER_FAILS, wxString::Format( wxT("%u"),server->GetFailedCount() ) );
+	SetItem( itemnr, COLUMN_SERVER_FAILS, CFormat(wxT("%u")) % server->GetFailedCount());
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 
@@ -373,7 +372,7 @@ void CServerListCtrl::ShowServerCount()
 	wxStaticText* label = CastByName( wxT("serverListLabel"), GetParent(), wxStaticText );
 
 	if ( label ) {
-		label->SetLabel( wxString::Format( _("Servers (%i)"), GetItemCount() ) );
+		label->SetLabel(CFormat(_("Servers (%i)")) % GetItemCount());
 		label->GetParent()->Layout();
 	}
 }
@@ -544,7 +543,7 @@ void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
 		
-		URL += wxT("ed2k://|server|") + server->GetFullIP() + wxString::Format(wxT("|%d|"), server->GetPort()) + wxT("/\n");		
+		URL += CFormat(wxT("ed2k://|server|%s|%d|/\n"))	% server->GetFullIP() % server->GetPort();
 		
 		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}

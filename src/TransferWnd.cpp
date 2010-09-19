@@ -171,7 +171,7 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 			}
 		}
 		
-		label += wxString::Format(wxT(" (%u/%u)"), download, files );
+		label += CFormat(wxT(" (%u/%u)")) % download % files;
 	}
 	
 	m_dlTab->SetPageText( index, label );
@@ -303,7 +303,7 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 void CTransferWnd::ShowQueueCount(uint32 /*number*/)
 {
 #if 0
-	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theStats::GetBannedCount(), _("Banned") );
+	wxString str = CFormat(wxT("%u (%u %s)")) % number % theStats::GetBannedCount() % _("Banned");
 	wxStaticText* label = CastChild( ID_CLIENTCOUNT, wxStaticText );
 	
 	label->SetLabel( str );

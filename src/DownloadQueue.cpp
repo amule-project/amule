@@ -159,9 +159,9 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 	AddLogLineNS(_("All PartFiles Loaded."));
 	
 	if ( GetFileCount() == 0 ) {
-		AddLogLineM(false, _("No part files found"));
+		AddLogLineN(_("No part files found"));
 	} else {
-		AddLogLineM(false, wxString::Format(wxPLURAL("Found %u part file", "Found %u part files", GetFileCount()), GetFileCount()) );
+		AddLogLineN(CFormat(wxPLURAL("Found %u part file", "Found %u part files", GetFileCount())) % GetFileCount());
 
 		DoSortByPriority();
 		CheckDiskspace( path );
@@ -1427,7 +1427,7 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 
 void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8_t type, uint32_t ip, uint16_t tcp, uint16_t udp, uint32_t buddyip, uint16_t buddyport, uint8_t byCryptOptions)
 {
-	AddDebugLogLineN(logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
+	AddDebugLogLineN(logKadSearch, CFormat(wxT("Search result sources (type %i)")) % type);
 
 	//Safety measure to make sure we are looking for these sources
 	CPartFile* temp = GetFileByKadFileSearchID(searchID);

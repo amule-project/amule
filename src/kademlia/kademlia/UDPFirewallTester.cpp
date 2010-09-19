@@ -100,7 +100,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 				// Because a proper forwarded intern port is more reliable to stay open than an extern port set by the NAT, we prefer
 				// intern ports and change the setting.
 				CKademlia::GetPrefs()->SetUseExternKadPort(false);
-				AddDebugLogLineN(logKadUdpFwTester, wxString::Format(wxT("Corrected UDP firewall result: Using open internal (%u) instead of open external port"), incomingPort));
+				AddDebugLogLineN(logKadUdpFwTester, CFormat(wxT("Corrected UDP firewall result: Using open internal (%u) instead of open external port")) % incomingPort);
 				theApp->ShowConnectionState();
 				return;
 			} else if (it->answered) {

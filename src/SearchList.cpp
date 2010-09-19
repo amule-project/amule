@@ -685,7 +685,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	}
 
 	if (iParseResult != 0) {
-		_astrParserErrors.Add(wxString::Format(wxT("Undefined error %i on search expression"),iParseResult));
+		_astrParserErrors.Add(CFormat(wxT("Undefined error %i on search expression")) % iParseResult);
 	
 		return CMemFilePtr(NULL);
 	}

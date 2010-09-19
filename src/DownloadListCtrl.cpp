@@ -925,8 +925,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		// Speed
 		case ColumnSpeed:
 			if ( file->GetTransferingSrcCount() ) {
-				text = wxString::Format( wxT("%.1f "), file->GetKBpsDown() ) +
-					_("kB/s");
+				text = CFormat(wxT("%.1f %s")) % file->GetKBpsDown() % _("kB/s");
 			}
 			break;
 	
@@ -977,7 +976,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 					// to avoid Format doing roundings
 					float percent = floor( file->GetPercentCompleted() * 10.0f ) / 10.0f;
 				
-					wxString buffer = wxString::Format( wxT("%.1f%%"), percent );
+					wxString buffer = CFormat(wxT("%.1f%%")) % percent;
 					int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
 					
@@ -1003,17 +1002,17 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			uint16 sc = file->GetSourceCount();
 			uint16 ncsc = file->GetNotCurrentSourcesCount();
 			if ( ncsc ) {
-				text = wxString::Format( wxT("%i/%i" ), sc - ncsc, sc );
+				text = CFormat(wxT("%i/%i")) % (sc - ncsc) % sc;
 			} else {
-				text = wxString::Format( wxT("%i"), sc );
+				text = CFormat(wxT("%i")) % sc;
 			}
 	
 			if ( file->GetSrcA4AFCount() ) {
-				text += wxString::Format( wxT("+%i"), file->GetSrcA4AFCount() );
+				text += CFormat(wxT("+%i")) % file->GetSrcA4AFCount();
 			}
 	
 			if ( file->GetTransferingSrcCount() ) {
-				text += wxString::Format( wxT(" (%i)"), file->GetTransferingSrcCount() );
+				text += CFormat(wxT(" (%i)")) % file->GetTransferingSrcCount();
 			}
 	
 			break;
@@ -1227,7 +1226,7 @@ void CDownloadListCtrl::ShowFilesCount( int diff )
 	
 	wxStaticText* label = CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText );
 
-	label->SetLabel( wxString::Format( _("Downloads (%i)"), m_filecount ) );
+	label->SetLabel(CFormat(_("Downloads (%i)")) % m_filecount);
 	label->GetParent()->Layout();
 }
 

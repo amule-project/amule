@@ -68,7 +68,6 @@ protected:
  *
  * CFormat lacks the following capabilities:
  *  * The "*" width-modifier, because only one argument is fed at a time.
- *  * The "p" type, could be implemented using void* or templates.
  *  * The "n" type, just unsafe, wont be implemented.
  *  * The Long Double type, which is extremly slow and shouldn't be used.
  *

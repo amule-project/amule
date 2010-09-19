@@ -202,18 +202,21 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SetItem(newid, ID_SEARCH_COL_SIZE, CastItoXBytes( toshow->GetFileSize() ) );
 
 	// Source count
-	wxString temp = wxString::Format(wxT("%d"), toshow->GetSourceCount());
+	wxString temp = CFormat(wxT("%d")) % toshow->GetSourceCount();
 	if (toshow->GetCompleteSourceCount()) {
-		temp += wxString::Format(wxT(" (%d)"), toshow->GetCompleteSourceCount());
+		temp += CFormat(wxT(" (%d)")) % toshow->GetCompleteSourceCount();
 	}
 	if (toshow->GetClientsCount()) {
-		temp += wxString::Format(wxT(" [%d]"), toshow->GetClientsCount());
+		temp += CFormat(wxT(" [%d]")) % toshow->GetClientsCount();
 	}
 #if defined(__DEBUG__) && !defined(CLIENT_GUI)
 	if (toshow->GetKadPublishInfo() == 0) {
 		temp += wxT(" | -");
 	} else {
-		temp += wxString::Format(wxT(" | N:%u, P:%u, T:%0.2f"), (toshow->GetKadPublishInfo() & 0xFF000000) >> 24, (toshow->GetKadPublishInfo() & 0x00FF0000) >> 16, (toshow->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
+		temp += CFormat(wxT(" | N:%u, P:%u, T:%0.2f"))
+			% ((toshow->GetKadPublishInfo() & 0xFF000000) >> 24)
+			% ((toshow->GetKadPublishInfo() & 0x00FF0000) >> 16)
+			% ((toshow->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
 	}
 #endif
 	SetItem( newid, ID_SEARCH_COL_SOURCES, temp );
@@ -255,18 +258,21 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 		// Update the filename, which may be changed in case of multiple variants.
 		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName().GetPrintable());
 
-		wxString temp = wxString::Format(wxT("%d"), toupdate->GetSourceCount());
+		wxString temp = CFormat(wxT("%d")) % toupdate->GetSourceCount();
 		if (toupdate->GetCompleteSourceCount()) {
-			temp += wxString::Format(wxT(" (%d)"), toupdate->GetCompleteSourceCount());
+			temp += CFormat(wxT(" (%d)")) % toupdate->GetCompleteSourceCount();
 		}
 		if (toupdate->GetClientsCount()) {
-			temp += wxString::Format(wxT(" [%d]"), toupdate->GetClientsCount());
+			temp += CFormat(wxT(" [%d]")) % toupdate->GetClientsCount();
 		}
 #if defined(__DEBUG__) && !defined(CLIENT_GUI)
 		if (toupdate->GetKadPublishInfo() == 0) {
 			temp += wxT(" | -");
 		} else {
-			temp += wxString::Format(wxT(" | N:%u, P:%u, T:%0.2f"), (toupdate->GetKadPublishInfo() & 0xFF000000) >> 24, (toupdate->GetKadPublishInfo() & 0x00FF0000) >> 16, (toupdate->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
+			temp += CFormat(wxT(" | N:%u, P:%u, T:%0.2f"))
+				% ((toupdate->GetKadPublishInfo() & 0xFF000000) >> 24)
+				% ((toupdate->GetKadPublishInfo() & 0x00FF0000) >> 16)
+				% ((toupdate->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
 		}
 #endif
 		SetItem(index, ID_SEARCH_COL_SOURCES, temp);

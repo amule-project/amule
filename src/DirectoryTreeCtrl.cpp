@@ -117,7 +117,7 @@ void CDirectoryTreeCtrl::Init()
 			if (! (drives & 1)) { // skip non existant drives
 				continue;
 			}
-			wxString driveStr = wxString::Format(wxT("%c:"), drive);
+			wxString driveStr = CFormat(wxT("%c:")) % drive;
 			uint32 type = GetDriveType(driveStr + wxT("\\"));
 
 			// skip removable/undefined drives, share only fixed or remote drives

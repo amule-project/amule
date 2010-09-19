@@ -98,29 +98,27 @@ void CFileDetailDialog::UpdateData()
 	}
 
 	CastChild(IDC_FHASH,wxStaticText)->SetLabel(m_file->GetFileHash().Encode());
-	bufferS = wxString::Format(wxT("%llu bytes ("), m_file->GetFileSize())
-			+ CastItoXBytes(m_file->GetFileSize())
-			+ wxT(")");
+	bufferS = CFormat(wxT("%u bytes (%s)")) % m_file->GetFileSize() % CastItoXBytes(m_file->GetFileSize());
 	CastChild(IDC_FSIZE,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
-	bufferS = wxString::Format(wxT("%i (%i)"),m_file->GetPartCount(),m_file->GetHashCount());
+	bufferS = CFormat(wxT("%i (%i)")) % m_file->GetPartCount() % m_file->GetHashCount();
 	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_TRANSFERRED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransferred()));
 	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()));
 	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()));
 	CastChild(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	CastChild(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
-	bufferS = wxString::Format(_("%.2f%% done"),m_file->GetPercentCompleted());
+	bufferS = CFormat(_("%.2f%% done")) % m_file->GetPercentCompleted();
 	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS);
-	bufferS = wxString::Format(_("%.2f kB/s"),(float)m_file->GetKBpsDown());
+	bufferS = CFormat(_("%.2f %s")) % m_file->GetKBpsDown() % _("kB/s");
 	CastChild(IDC_DATARATE,wxControl)->SetLabel(bufferS);
-	bufferS = wxString::Format(wxT("%i"),m_file->GetSourceCount());
+	bufferS = CFormat(wxT("%i")) % m_file->GetSourceCount();
 	CastChild(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
-	bufferS = wxString::Format(wxT("%i"),m_file->GetTransferingSrcCount());
+	bufferS = CFormat(wxT("%i")) % m_file->GetTransferingSrcCount();
 	CastChild(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
-	bufferS = wxString::Format(wxT("%i (%.1f%%)"),
-		m_file->GetAvailablePartCount(),
-		((m_file->GetAvailablePartCount() * 100.0f)/ m_file->GetPartCount()));
+	bufferS = CFormat(wxT("%i (%.1f%%)"))
+		% m_file->GetAvailablePartCount()
+		% ((m_file->GetAvailablePartCount() * 100.0)/ m_file->GetPartCount());
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 	bufferS = CastSecondsToHM(m_file->GetDlActiveTime());
 	CastChild(IDC_DLACTIVETIME, wxControl)->SetLabel(bufferS);
@@ -214,7 +212,7 @@ void CFileDetailDialog::FillSourcenameList()
 			pmyListCtrl->DeleteItem(i);
 			i--;  // PA: one step back is enough, no need to go back to 0
 		} else {
-			pmyListCtrl->SetItem(i, 1, wxString::Format(wxT("%li"), item->count));
+			pmyListCtrl->SetItem(i, 1, CFormat(wxT("%i")) % item->count);
 		}
 	}
 

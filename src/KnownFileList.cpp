@@ -94,9 +94,8 @@ bool CKnownFileList::Init()
 		
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
-		AddDebugLogLineN(logKnownFiles,
-			wxString::Format(wxT("Reading %i known files from file format 0x%2.2x."),
-			RecordsNumber, version));
+		AddDebugLogLineN(logKnownFiles, CFormat(wxT("Reading %i known files from file format 0x%2.2x."))
+			% RecordsNumber % version);
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			CScopedPtr<CKnownFile> record(new CKnownFile());
 			if (record->LoadFromFile(&file)) {
