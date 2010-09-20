@@ -925,7 +925,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		// Speed
 		case ColumnSpeed:
 			if ( file->GetTransferingSrcCount() ) {
-				text = CFormat(wxT("%.1f %s")) % file->GetKBpsDown() % _("kB/s");
+				text = CFormat(_("%.1f kB/s")) % file->GetKBpsDown();
 			}
 			break;
 	

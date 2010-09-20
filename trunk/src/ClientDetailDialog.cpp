@@ -153,11 +153,11 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	// Average Upload Rate
 	CastChild(ID_DAVUR, wxStaticText)->SetLabel(
-		CFormat(_("%.1f %s")) % m_client->GetKBpsDown() % _("kB/s"));
+		CFormat(_("%.1f kB/s")) % m_client->GetKBpsDown());
 	
 	// Average Download Rate
 	CastChild(ID_DAVDR, wxStaticText)->SetLabel(
-		CFormat(_("%.1f %s")) % (m_client->GetUploadDatarate() / 1024.0f) % _("kB/s"));
+		CFormat(_("%.1f kB/s")) % (m_client->GetUploadDatarate() / 1024.0f));
 	
 	// Total Upload
 	CastChild(ID_DUPTOTAL, wxStaticText)->SetLabel(

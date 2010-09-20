@@ -775,15 +775,14 @@ void CGenericClientListCtrl::DrawClientItem(
 			break;
 		case ColumnUserSpeedDown:
 			if (item->GetType() != A4AF_SOURCE && client->GetKBpsDown() > 0.001) {
-				buffer = CFormat(wxT("%.1f %s")) % client->GetKBpsDown() % _("kB/s");
+				buffer = CFormat(_("%.1f kB/s")) % client->GetKBpsDown();
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
 		case ColumnUserSpeedUp:
 			// Datarate is in bytes.
 			if (item->GetType() != A4AF_SOURCE && client->GetUploadDatarate() > 1024) {
-				buffer = CFormat(wxT("%.1f %s"))
-						% (client->GetUploadDatarate() / 1024.0) % _("kB/s");
+				buffer = CFormat(_("%.1f kB/s")) % (client->GetUploadDatarate() / 1024.0);
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
