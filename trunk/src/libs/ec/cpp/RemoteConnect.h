@@ -100,8 +100,8 @@ public:
 	virtual void OnConnect(); // To override connection events
 	virtual void OnLost(); // To override close events
 
-	void SendRequest(CECPacketHandlerBase *handler, CECPacket *request);
-	void SendPacket(CECPacket *request);
+	void SendRequest(CECPacketHandlerBase *handler, const CECPacket *request);
+	void SendPacket(const CECPacket *request);
 	
 	/********************* EC API ********************/
 	

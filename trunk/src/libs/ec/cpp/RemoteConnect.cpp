@@ -225,14 +225,14 @@ const CECPacket *CRemoteConnect::OnPacketReceived(const CECPacket *packet, uint3
  * Our requests are served by core in FCFS order. And core always replies. So, even
  * if we're not interested in reply, we preserve place in request fifo.
  */
-void CRemoteConnect::SendRequest(CECPacketHandlerBase *handler, CECPacket *request)
+void CRemoteConnect::SendRequest(CECPacketHandlerBase *handler, const CECPacket *request)
 {
 	m_req_count++;
 	m_req_fifo.push_back(handler);
 	CECSocket::SendPacket(request);
 }
 
-void CRemoteConnect::SendPacket(CECPacket *request)
+void CRemoteConnect::SendPacket(const CECPacket *request)
 {
 	SendRequest(0, request);
 }
