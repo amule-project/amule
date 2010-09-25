@@ -572,6 +572,11 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		std::list<CECPacket *>::iterator it = request_list.begin();
 		while ( it != request_list.end() ) {
 			CECPacket *curr = *it++;
+			if (curr->GetOpCode() == EC_OP_SHUTDOWN) {
+				SendPacket(curr);
+				delete curr;
+				return CMD_ID_QUIT;
+			}
 			const CECPacket *reply = SendRecvMsg_v2(curr);
 			delete curr;
 			if ( reply ) {
@@ -582,10 +587,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		request_list.resize(0);
 	}
 
-	if (CmdId == CMD_ID_SHUTDOWN)
-		return CMD_ID_QUIT;
-	else
-		return CMD_OK;
+	return CMD_OK;
 }
 
  /*
