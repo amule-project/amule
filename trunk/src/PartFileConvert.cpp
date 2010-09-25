@@ -197,7 +197,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 
 			Notify_ConvertUpdateJobInfo(s_pfconverting);
 
-			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetConversionState(s_pfconverting->state));
+			AddLogLineC(CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetConversionState(s_pfconverting->state));
 
 			if (TestDestroy()) {
 				wxMutexLocker lock(s_mutex);

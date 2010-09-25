@@ -146,8 +146,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 					% toadd->GetFileHash().Encode() % fileName;
 			} else {
 				// If result is false, then reading of both the primary and the backup .met failed
-				AddLogLineM(false, 
-					_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
+				AddLogLineN(_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
 				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName;
 			}
 			AddLogLineCS(msg);
@@ -228,10 +227,10 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 
 	if (toadd->GetFileSize() > OLD_MAX_FILE_SIZE) {
 		if (!PlatformSpecific::CanFSHandleLargeFiles(thePrefs::GetTempDir())) {
-			AddLogLineM(true, _("Filesystem for Temp directory cannot handle large files."));
+			AddLogLineC(_("Filesystem for Temp directory cannot handle large files."));
 			return;
 		} else if (!PlatformSpecific::CanFSHandleLargeFiles(theApp->glob_prefs->GetCatPath(category))) {
-			AddLogLineM(true, _("Filesystem for Incoming directory cannot handle large files."));
+			AddLogLineC(_("Filesystem for Incoming directory cannot handle large files."));
 			return;
 		}
 	}
@@ -344,7 +343,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 	}
 	Notify_DownloadCtrlAddFile( file );
 	theApp->searchlist->UpdateSearchFileByHash(file->GetFileHash()); 	// Update file in the search dialog if it's still open
-	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
+	AddLogLineC(CFormat(_("Downloading %s")) % file->GetFileName() );
 }
 
 
@@ -352,7 +351,7 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 {
 	if (CKnownFile* file = theApp->sharedfiles->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
-			AddLogLineM(true, CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
+			AddLogLineC(CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
 		} else {
 			// Check if the file exists, since otherwise the user is forced to 
 			// manually reload the shares to download a file again.
@@ -364,12 +363,12 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 				return false;
 			}
 			
-			AddLogLineM(true, CFormat( _("You already have the file '%s'") ) % file->GetFileName());
+			AddLogLineC(CFormat( _("You already have the file '%s'") ) % file->GetFileName());
 		}
 		
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		AddLogLineM(true, CFormat( _("You are already trying to download the file %s") ) % file->GetFileName());
+		AddLogLineC(CFormat( _("You are already trying to download the file %s") ) % file->GetFileName());
 		return true;
 	}
 	
@@ -1285,7 +1284,7 @@ bool CDownloadQueue::AddLink( const wxString& link, uint8 category )
 	if (link.compare(0, 7, wxT("magnet:")) == 0) {
 		uri = CMagnetED2KConverter(link);
 		if (uri.empty()) {
-			AddLogLineM(true, CFormat(_("Cannot convert magnet link to eD2k: %s")) % link);
+			AddLogLineC(CFormat(_("Cannot convert magnet link to eD2k: %s")) % link);
 			return false;
 		}
 	}
@@ -1293,7 +1292,7 @@ bool CDownloadQueue::AddLink( const wxString& link, uint8 category )
 	if (uri.compare(0, 7, wxT("ed2k://")) == 0) {
 		return AddED2KLink(uri, category);
 	} else {
-		AddLogLineM(true, CFormat(_("Unknown protocol of link: %s")) % link);
+		AddLogLineC(CFormat(_("Unknown protocol of link: %s")) % link);
 		return false;
 	}
 }
@@ -1314,7 +1313,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, uint8 category )
 
 		return AddED2KLink( uri.get(), category );
 	} catch ( const wxString& err ) {
-		AddLogLineM( true, CFormat( _("Invalid eD2k link! ERROR: %s")) % err);
+		AddLogLineC(CFormat( _("Invalid eD2k link! ERROR: %s")) % err);
 	}
 	
 	return false;
@@ -1351,10 +1350,10 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, uint8 category )
 	} else {
 		if (link->GetSize() > OLD_MAX_FILE_SIZE) {
 			if (!PlatformSpecific::CanFSHandleLargeFiles(thePrefs::GetTempDir())) {
-				AddLogLineM(true, _("Filesystem for Temp directory cannot handle large files."));
+				AddLogLineC(_("Filesystem for Temp directory cannot handle large files."));
 				return false;
 			} else if (!PlatformSpecific::CanFSHandleLargeFiles(theApp->glob_prefs->GetCatPath(category))) {
-				AddLogLineM(true, _("Filesystem for Incoming directory cannot handle large files."));
+				AddLogLineC(_("Filesystem for Incoming directory cannot handle large files."));
 				return false;
 			}
 		}

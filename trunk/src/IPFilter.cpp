@@ -294,8 +294,7 @@ private:
 		// Try to unpack the file, might be an archive
 
 		if (UnpackArchive(path, ipfilter_files).second != EFT_Text) {
-			AddLogLineM(true, 
-				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
+			AddLogLineC(CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
 			return 0;
 		}
 		
@@ -317,7 +316,7 @@ private:
 			uint32 time2 = GetTickCountFullRes();
 			AddDebugLogLineN(logIPFilter, CFormat(wxT("time for lexer: %.3f")) % ((time2-time1) / 1000.0));
 		} else {
-			AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
+			AddLogLineC(CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
 			return 0;
 		}
 

@@ -287,7 +287,7 @@ void CPartFile::CreatePartFile()
 		fileCreated = PlatformSpecific::CreateSparseFile(m_PartPath, GetFileSize());
 	}
 	if (!fileCreated) {
-		AddLogLineM(false,_("ERROR: Failed to create partfile)"));
+		AddLogLineN(_("ERROR: Failed to create partfile)"));
 		SetStatus(PS_ERROR);
 	}
 
@@ -325,20 +325,20 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	CPath curMetFilename = m_fullname;
 	if (from_backup) {
 		curMetFilename = curMetFilename.AppendExt(PARTMET_BAK_EXT);
-		AddLogLineM(false, CFormat( _("Trying to load backup of met-file from %s") )
+		AddLogLineN(CFormat( _("Trying to load backup of met-file from %s") )
 			% curMetFilename );
 	}
 	
 	try {
 		CFile metFile(curMetFilename, CFile::read);
 		if (!metFile.IsOpened()) {
-			AddLogLineM(false, CFormat( _("ERROR: Failed to open part.met file: %s ==> %s") )
+			AddLogLineN(CFormat( _("ERROR: Failed to open part.met file: %s ==> %s") )
 				% curMetFilename
 				% GetFileName() );
 
 			return false;
 		} else if (metFile.GetLength() == 0) {
-			AddLogLineM(false, CFormat( _("ERROR: part.met file is 0 size: %s ==> %s") )
+			AddLogLineN(CFormat( _("ERROR: part.met file is 0 size: %s ==> %s") )
 				% m_partmetfilename
 				% GetFileName() );
 			
@@ -349,7 +349,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
 			//if (version == 83) return ImportShareazaTempFile(...)
-			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met file version: %s ==> %s") )
+			AddLogLineN(CFormat( _("ERROR: Invalid part.met file version: %s ==> %s") )
 				% m_partmetfilename 
 				% GetFileName() );
 			return false;
@@ -588,7 +588,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			}
 		}			
 	} catch (const CInvalidPacket& e) {
-		AddLogLineM(true, CFormat(wxT("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
+		AddLogLineC(CFormat(wxT("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
 			% m_partmetfilename
 			% GetFileName()
 			% e.what());
@@ -599,10 +599,10 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			% e.what() );
 		return false;
 	} catch (const CEOFException& WXUNUSED(e)) {
-		AddLogLineM(true, CFormat( _("ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
+		AddLogLineC(CFormat( _("ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
 			% m_partmetfilename
 			% GetFileName() );
-		AddLogLineM(true, _("Trying to recover file info..."));
+		AddLogLineC(_("Trying to recover file info..."));
 		
 		// Safe file is that who have 
 		// - FileSize
@@ -616,15 +616,14 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			// -Filename
 			if (!GetFileName().IsOk()) {
 				// Not critical, let's put a random filename.
-				AddLogLineM(true, _(
+				AddLogLineC(_(
 					"Recovering no-named file - will try to recover it as RecoveredFile.dat"));
 				SetFileName(CPath(wxT("RecoveredFile.dat")));
 			}
 		
-			AddLogLineM(true,
-				_("Recovered all available file info :D - Trying to use it..."));
+			AddLogLineC(_("Recovered all available file info :D - Trying to use it..."));
 		} else {
-			AddLogLineM(true, _("Unable to recover file info :("));
+			AddLogLineC(_("Unable to recover file info :("));
 			return false;			
 		}		
 	}
@@ -659,7 +658,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 
 	// open permanent handle
 	if ( !m_hpartfile.Open(m_PartPath, CFile::read_write)) {
-		AddLogLineM(false, CFormat( _("Failed to open %s (%s)") )
+		AddLogLineN(CFormat( _("Failed to open %s (%s)") )
 			% m_fullname
 			% GetFileName() );
 		return false;
@@ -709,7 +708,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			// It's pointless to rehash an empty file, since the case
 			// where a user has zero'd a file is handled above ...
 			if (m_hpartfile.GetLength()) {
-				AddLogLineM(false, CFormat( _("WARNING: %s might be corrupted (%i)") )
+				AddLogLineN(CFormat( _("WARNING: %s might be corrupted (%i)") )
 					% m_PartPath
 					% (m_lastDateChanged - file_date) );
 				// rehash
@@ -990,7 +989,7 @@ void CPartFile::SaveSourceSeeds()
 	CFile file;
 	file.Create(seedsPath, true);
 	if (!file.IsOpened()) {
-		AddLogLineM(false, CFormat( _("Failed to save part.met.seeds file for %s") )
+		AddLogLineN(CFormat( _("Failed to save part.met.seeds file for %s") )
 			% m_fullname);
 		return;
 	}	
@@ -1016,7 +1015,7 @@ void CPartFile::SaveSourceSeeds()
 		/* v2: Added to keep track of too old seeds */
 		file.WriteUInt32(wxDateTime::Now().GetTicks());
 		
-		AddLogLineM(false, CFormat( wxPLURAL("Saved %i source seed for partfile: %s (%s)", "Saved %i source seeds for partfile: %s (%s)", n_sources) )
+		AddLogLineN(CFormat( wxPLURAL("Saved %i source seed for partfile: %s (%s)", "Saved %i source seeds for partfile: %s (%s)", n_sources) )
 			% n_sources
 			% m_fullname
 			% GetFileName());
@@ -1045,7 +1044,7 @@ void CPartFile::LoadSourceSeeds()
 	
 	CFile file(seedsPath, CFile::read);
 	if (!file.IsOpened()) {
-		AddLogLineM(false, CFormat( _("Partfile %s (%s) has no seeds file") )
+		AddLogLineN(CFormat( _("Partfile %s (%s) has no seeds file") )
 			% m_partmetfilename
 			% GetFileName() );
 		return;
@@ -1054,7 +1053,7 @@ void CPartFile::LoadSourceSeeds()
 		
 	try {
 		if (file.GetLength() <= 1) {
-			AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
+			AddLogLineN(CFormat( _("Partfile %s (%s) has a void seeds file") )
 				% m_partmetfilename
 				% GetFileName() );
 			return;
@@ -1110,7 +1109,7 @@ void CPartFile::LoadSourceSeeds()
 		}
 	
 	} catch (const CSafeIOException& e) {
-		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
+		AddLogLineN(CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
 				% GetFileName()
 				% e.what() );		
@@ -1126,8 +1125,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, GetFileSize()-1)){
 			if (result->GetFileHash() != GetFileHash()){
-				AddLogLineM(false,
-					CFormat(wxPLURAL(
+				AddLogLineN(CFormat(wxPLURAL(
 						"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|",
 						"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|",
 						0)
@@ -1156,8 +1154,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
 			
-					AddLogLineM(false,
-						CFormat(wxPLURAL(
+					AddLogLineN(CFormat(wxPLURAL(
 							"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|",
 							"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|",
 							GetED2KPartHashCount())
@@ -1173,7 +1170,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 				}
 			} else {
 				if (!IsComplete(i)){
-					AddLogLineM(false, CFormat( _("Found completed part (%i) in %s") )
+					AddLogLineN(CFormat( _("Found completed part (%i) in %s") )
 						% ( i + 1 )
 						% GetFileName() );
 
@@ -1206,7 +1203,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			return;
 		}
 		else {
-			AddLogLineM(false, CFormat( _("Finished rehashing %s") ) % GetFileName());
+			AddLogLineN(CFormat( _("Finished rehashing %s") ) % GetFileName());
 		}
 	}
 	else{
@@ -2131,7 +2128,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 	if (errorOccured) {
 		m_paused = true;
 		SetStatus(PS_ERROR);
-		AddLogLineM(true, CFormat( _("Unexpected error while completing %s. File paused") )% GetFileName() );
+		AddLogLineC(CFormat( _("Unexpected error while completing %s. File paused") )% GetFileName() );
 	} else {
 		m_fullname = newname;
 
@@ -2168,7 +2165,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 		// clear the blackbox to free up memory
 		m_CorruptionBlackBox->Free();
 
-		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
+		AddLogLineC(CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	}
 	
 	theApp->downloadqueue->StartNextFile(this);	
@@ -2225,7 +2222,7 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 
 void CPartFile::Delete()
 {
-	AddLogLineM(false, CFormat(_("Deleting file: %s")) % GetFileName());
+	AddLogLineN(CFormat(_("Deleting file: %s")) % GetFileName());
 	// Barry - Need to tell any connected clients to stop sending the file
 	StopFile(true);
 	AddDebugLogLineN(logPartFile, wxT("\tStopped"));
@@ -2287,13 +2284,12 @@ void CPartFile::Delete()
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
-		AddLogLineM(true,
-			CFormat( _("WARNING: Unable to hash downloaded part - hashset incomplete for '%s'") )
+		AddLogLineC(CFormat( _("WARNING: Unable to hash downloaded part - hashset incomplete for '%s'") )
 				% GetFileName() );
 		m_hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
-		AddLogLineM(true, CFormat( _("ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % GetFileName() );
+		AddLogLineC(CFormat( _("ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % GetFileName() );
 		m_hashsetneeded = true;
 		return true;		
 	} else {
@@ -2303,12 +2299,12 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		try {
 			CreateHashFromFile(m_hpartfile, offset, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
-			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+			AddLogLineC(CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
 			SetStatus(PS_ERROR);
 			return false;
 		} catch (const CEOFException& e) {
-			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+			AddLogLineC(CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
 			return false;
 		}
@@ -2968,7 +2964,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
 	if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
 		// Not enough free space to write the last item, bail
-		AddLogLineM(true, CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
+		AddLogLineC(CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
 	
 		PauseFile( true );
 		return;
@@ -3037,7 +3033,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		if (IsComplete(partNumber)) {
 			// Is part corrupt
 			if (!HashSinglePart(partNumber)) {
-				AddLogLineM(true, CFormat(
+				AddLogLineC(CFormat(
 					_("Downloaded part %i is corrupt in file: %s") ) % partNumber % GetFileName() );
 				AddGap(partNumber);
 				// add part to corrupted list, if not already there
@@ -3090,7 +3086,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				// remove from corrupted list
 				EraseFirstValue(m_corrupted_list, partNumber);
 				
-				AddLogLineM(true, CFormat( _("ICH: Recovered corrupted part %i for %s -> Saved bytes: %s") )
+				AddLogLineC(CFormat( _("ICH: Recovered corrupted part %i for %s -> Saved bytes: %s") )
 					% partNumber
 					% GetFileName()
 					% CastItoXBytes(uMissingInPart));
@@ -3990,7 +3986,7 @@ void CPartFile::AllocationFinished()
 {
 	// see if it can be opened
 	if (!m_hpartfile.Open(m_PartPath, CFile::read_write)) {
-		AddLogLineM(false, CFormat(_("ERROR: Failed to open partfile '%s'")) % GetFullName());
+		AddLogLineN(CFormat(_("ERROR: Failed to open partfile '%s'")) % GetFullName());
 		SetStatus(PS_ERROR);
 	}
 	// then close the handle again

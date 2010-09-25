@@ -93,7 +93,7 @@ void CIP2Country::Enable()
 
 void CIP2Country::Update()
 {
-	AddLogLineM(false,CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
+	AddLogLineN(CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
 	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBasePath + wxT(".download"), m_DataBasePath, HTTP_GeoIP, true, true);
 	downloader->Create();
 	downloader->Run();
@@ -165,7 +165,7 @@ void CIP2Country::LoadFlags()
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
 		} else {
-			AddLogLineM(true, CFormat(_("Failed to load country data for '%s'.")) % countrydata.Name);
+			AddLogLineC(CFormat(_("Failed to load country data for '%s'.")) % countrydata.Name);
 			continue;
 		}
 	}

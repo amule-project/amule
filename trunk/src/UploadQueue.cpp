@@ -543,7 +543,7 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 	if ( it != suspended_uploads_list.end() )
 		suspended_uploads_list.erase( it );
 	
-	AddLogLineM( false, CFormat( _("Resuming uploads of file: %s" ) )
+	AddLogLineN(CFormat( _("Resuming uploads of file: %s" ) )
 				% filehash.Encode() );
 }
 
@@ -552,7 +552,7 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
  */
 uint16 CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
-	AddLogLineM( false, CFormat( _("Suspending upload of file: %s" ) )
+	AddLogLineN(CFormat( _("Suspending upload of file: %s" ) )
 				% filehash.Encode() );
 	uint16 removed = 0;
 

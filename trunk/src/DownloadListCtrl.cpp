@@ -1427,8 +1427,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	bool ok = ret > 0;
 	if (!ok) {
 		delete p;
-		AddLogLineM( true,
-			CFormat( _("ERROR: Failed to execute external media-player! Command: `%s'") ) %
+		AddLogLineC(CFormat( _("ERROR: Failed to execute external media-player! Command: `%s'") ) %
 			command );
 	}
 }

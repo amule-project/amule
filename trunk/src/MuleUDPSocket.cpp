@@ -77,7 +77,7 @@ void CMuleUDPSocket::CreateSocket()
 		AddDebugLogLineC(logMuleUDP, wxT("Failed to create valid ") + m_name);
 		DestroySocket();
 	} else {
-		AddLogLineM(false, wxString(wxT("Created ")) << m_name << wxT(" at port ") << m_addr.Service());
+		AddLogLineN(wxString(wxT("Created ")) << m_name << wxT(" at port ") << m_addr.Service());
 	}
 }
 

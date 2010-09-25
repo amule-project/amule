@@ -409,8 +409,6 @@ public:
  * AddLogLineMS will also always print to stdout.
  */
 #if defined(MULEUNIT)
-	#define AddLogLineM(...) do {} while (false)
-	#define AddLogLineMS(...) do {} while (false)
 	#define AddDebugLogLineN(...) do {} while (false)
 	#define AddLogLineN(...) do {} while (false)
 	#define AddLogLineNS(...) do {} while (false)
@@ -418,9 +416,6 @@ public:
 	#define AddLogLineC(...) do {} while (false)
 	#define AddLogLineCS(...) do {} while (false)
 #else
-// Macros passing critical flag (legacy)
-	#define AddLogLineM(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string)
-	#define AddLogLineMS(critical, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, logStandard, string, true)
 // Macro for UPnP. This is not a debug macro, but wants its category printed nevertheless (sigh).
 	#define AddLogLineU(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 // Macros for 'N'on critical logging

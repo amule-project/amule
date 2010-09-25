@@ -185,7 +185,7 @@ wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source
 		}
 		strURL << wxT("|/");
 	} else if (add_source) {
-		AddLogLineM(true, _("WARNING: You can't add yourself as a source for an eD2k link while having a lowid."));
+		AddLogLineC(_("WARNING: You can't add yourself as a source for an eD2k link while having a lowid."));
 	}
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
@@ -319,14 +319,14 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 	if (theLogger.IsEnabledStdoutLog()) {
 		if ( enable_daemon_fork ) {
-			AddLogLineMS(false, wxT("Daemon will fork to background - log to stdout disabled"));
+			AddLogLineNS(wxT("Daemon will fork to background - log to stdout disabled"));
 			theLogger.SetEnabledStdoutLog(false);
 		} else {
-			AddLogLineMS(false, wxT("Logging to stdout enabled"));
+			AddLogLineNS(wxT("Logging to stdout enabled"));
 		}
 	}
 	
-	AddLogLineMS(false, wxT("Initialising ") + FullMuleVersion);
+	AddLogLineNS(wxT("Initialising ") + FullMuleVersion);
 
 	// Ensure that "~/.aMule/" is accessible.
 	CPath outDir;
@@ -338,7 +338,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		// Make a backup first.
 		wxRemoveFile(ConfigDir + m_configFile + wxT(".backup"));
 		wxRenameFile(ConfigDir + m_configFile, ConfigDir + m_configFile + wxT(".backup"));
-		AddLogLineMS(false, CFormat(wxT("Your settings have been reset to default values.\nThe old config file has been saved as %s.backup\n")) % m_configFile);
+		AddLogLineNS(CFormat(wxT("Your settings have been reset to default values.\nThe old config file has been saved as %s.backup\n")) % m_configFile);
 	}
 
 	size_t linksPassed = cmdline.GetParamCount();	// number of links from the command line

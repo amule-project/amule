@@ -219,7 +219,7 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 			}
 		}
 		if (validContacts == 0) {
-			AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
+			AddLogLineC(_("No contacts found, please bootstrap, or download a nodes.dat file."));
 		}
 	} catch (const CSafeIOException& DEBUG_ONLY(e)) {
 		AddDebugLogLineN(logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
@@ -286,7 +286,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
 		AddDebugLogLineN(logKadRouting, CFormat(wxT("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts")) % CKademlia::s_bootstrapList.size() % validContacts);
 	}
 	if (CKademlia::s_bootstrapList.size() == 0) {
-		AddLogLineM(true, _("No contacts found, please bootstrap, or download a nodes.dat file."));
+		AddLogLineC(_("No contacts found, please bootstrap, or download a nodes.dat file."));
 	}
 }
 

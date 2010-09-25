@@ -51,14 +51,14 @@ bool CCanceledFileList::Init()
 	}
 
 	if (!file.Open(fullpath)) {
-		AddLogLineM(true, CFormat(_("WARNING: %s cannot be opened.")) % m_filename);
+		AddLogLineC(CFormat(_("WARNING: %s cannot be opened.")) % m_filename);
 		return false;
 	}
 	
 	try {
 		uint8 version = file.ReadUInt8();
 		if (version != CANCELEDFILE_VERSION) {
-			AddLogLineM(true, _("WARNING: Canceled file list corrupted, contains invalid header."));
+			AddLogLineC(_("WARNING: Canceled file list corrupted, contains invalid header."));
 			return false;
 		}
 		
@@ -78,7 +78,7 @@ bool CCanceledFileList::Init()
 	
 		return true;
 	} catch (const CSafeIOException& e) {
-		AddLogLineM(true, CFormat(_("IO error while reading %s file: %s")) % m_filename % e.what());
+		AddLogLineC(CFormat(_("IO error while reading %s file: %s")) % m_filename % e.what());
 	}	
 	
 	return false;
@@ -101,7 +101,7 @@ void CCanceledFileList::Save()
 			file.Write(it->GetHash(), 16);
 		}
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, CFormat(_("Error while saving %s file: %s")) % m_filename % e.what());
+		AddLogLineC(CFormat(_("Error while saving %s file: %s")) % m_filename % e.what());
 	}
 }
 

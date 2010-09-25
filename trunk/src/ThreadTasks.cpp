@@ -348,7 +348,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 		return false;
 	}
 
-	AddLogLineM(false, CFormat(_("Converting old AICH hashsets in '%s' to 64b in '%s'."))
+	AddLogLineN(CFormat(_("Converting old AICH hashsets in '%s' to 64b in '%s'."))
 			% OLD_KNOWN2_MET_FILENAME % KNOWN2_MET_FILENAME);
 
 	try {

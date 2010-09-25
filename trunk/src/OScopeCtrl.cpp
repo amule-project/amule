@@ -470,7 +470,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 			}
 		} catch(std::bad_alloc) {
 			// Failed memory allocation
-			AddLogLineM(true, wxString(
+			AddLogLineC(wxString(
 				wxT("Error: COScopeCtrl::PlotHistory: Insuficient memory, cntPoints == ")) <<
 				cntPoints << wxT("."));
 			for (i = 0; i < nTrends; ++i) {
