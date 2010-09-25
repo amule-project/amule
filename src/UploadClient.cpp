@@ -241,7 +241,7 @@ void CUpDownClient::CreateNextBlockPackage()
 				CPath fullname = srcfile->GetFilePath().JoinPaths(srcfile->GetFileName());
 				if ( !file.Open(fullname, CFile::read) ) {
 					// The file was most likely moved/deleted. So remove it from the list of shared files.
-					AddLogLineM( false, CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
+					AddLogLineN(CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
 					theApp->sharedfiles->RemoveFile(srcfile);
 					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
@@ -684,7 +684,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	if ( !file ) {
 		from_dq = true;
 		if ((file = theApp->downloadqueue->GetFileByID(forfileid)) == NULL) {
-			AddLogLineM(false, CFormat( _("Hashset requested for unknown file: %s") ) % forfileid.Encode() );
+			AddLogLineN(CFormat( _("Hashset requested for unknown file: %s") ) % forfileid.Encode() );
 		
 			return;
 		}

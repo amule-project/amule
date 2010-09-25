@@ -230,14 +230,14 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	SetSizer(s_main, true);
 
 	m_serverwnd = new CServerWnd(p_cnt, m_srv_split_pos);
-	AddLogLineM(false, wxEmptyString);
-	AddLogLineM(false, wxT(" - ") +
+	AddLogLineN(wxEmptyString);
+	AddLogLineN(wxT(" - ") +
 		CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion());
-	AddLogLineM(false, wxT("   ") +
+	AddLogLineN(wxT("   ") +
 		CFormat(_("Running on %s")) % wxGetOsDescription());
-	AddLogLineM(false, wxT(" - ") +
+	AddLogLineN(wxT(" - ") +
 		wxString(_("Visit http://www.amule.org to check if a new version is available.")));
-	AddLogLineM(false, wxEmptyString);
+	AddLogLineN(wxEmptyString);
 
 #ifdef ENABLE_IP2COUNTRY
 	m_GeoIPavailable = true;
@@ -262,7 +262,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
 	if (!gui_timer) {
-		AddLogLineM(false, _("FATAL ERROR: Failed to create Timer"));
+		AddLogLineN(_("FATAL ERROR: Failed to create Timer"));
 		exit(1);
 	}
 
@@ -277,7 +277,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		(dlg_size.y != DEFAULT_SIZE_Y) );
 	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
-		AddLogLineM( true, wxT("Error! Unable to load Preferences") );
+		AddLogLineC(wxT("Error! Unable to load Preferences") );
 		return;
 	}
 
@@ -471,7 +471,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 				// This shouldn't happen, but just in case
 				default:
-					AddLogLineM( true, wxT("Unknown button triggered CamuleApp::OnToolBarButton().") );
+					AddLogLineC(wxT("Unknown button triggered CamuleApp::OnToolBarButton().") );
 					break;
 			}
 		}
@@ -565,7 +565,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 			}
 		} else {		
 			//connect if not currently connected
-			AddLogLineM(true, _("Connecting"));
+			AddLogLineC(_("Connecting"));
 			theApp->serverconnect->ConnectToAnyServer();
 		}
 	} else {
@@ -1217,12 +1217,12 @@ bool CamuleDlg::Check_and_Init_Skin()
 
 	m_skinFileName.Assign(skinFileName);
 	if (!m_skinFileName.FileExists()) {
-		AddLogLineM(true, CFormat(
+		AddLogLineC(CFormat(
 			_("Skin directory '%s' does not exist")) %
 			skinFileName );
 		ret = false;
 	} else if (!m_skinFileName.IsFileReadable()) {
-		AddLogLineM(true, CFormat(
+		AddLogLineC(CFormat(
 			_("WARNING: Unable to open skin file '%s' for read")) %
 			skinFileName);
 		ret = false;
@@ -1255,14 +1255,12 @@ void CamuleDlg::Add_Skin_Icon(
 		if ( it != cat.end() ) {
 			zip.OpenEntry(*it->second);
 			if ( !new_image.LoadFile(zip,wxBITMAP_TYPE_PNG) ) {
-				AddLogLineM(false,
-					wxT("Warning: Error loading icon for ") +
+				AddLogLineN(wxT("Warning: Error loading icon for ") +
 						iconName);
 				useSkins = false;
 			}
 		}else {
-				AddLogLineM(false,
-					wxT("Warning: Can't load icon for ") +
+				AddLogLineN(wxT("Warning: Can't load icon for ") +
 						iconName);
 				useSkins = false;
 		}

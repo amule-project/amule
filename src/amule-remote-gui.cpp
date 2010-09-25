@@ -302,7 +302,7 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
 	AddLogLineNS(_("Remote GUI EC event handler"));
 	wxString reply = evt.GetServerReply();
-	AddLogLineM(true, reply);
+	AddLogLineC(reply);
 	if (evt.GetResult() == true) {
 		// Connected - go to next init step
 		glob_prefs->LoadRemote();

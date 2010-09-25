@@ -349,7 +349,7 @@ bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 
 	CTextFile file;
 	if (!file.Open(filename, CTextFile::write)) {
-		AddLogLineM( false, CFormat( _("Failed to open '%s'") ) % filename );
+		AddLogLineN(CFormat( _("Failed to open '%s'") ) % filename );
 		return false;
 	}
 

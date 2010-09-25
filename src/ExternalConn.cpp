@@ -252,7 +252,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet, uint
 
 	if (m_conn_state == CONN_FAILED) {
 		// Client didn't close the socket when authentication failed.
-		AddLogLineM(false, _("Client sent packet after authentication failed."));
+		AddLogLineN(_("Client sent packet after authentication failed."));
 		CloseSocket();
 	}
 
@@ -270,7 +270,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet, uint
 
 void CECServerSocket::OnLost()
 {
-	AddLogLineM(false,_("External connection closed."));
+	AddLogLineN(_("External connection closed."));
 	theApp->ECServerHandler->m_ec_notifier->Remove_EC_Client(this);
 	DestroySocket();
 }
@@ -309,7 +309,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		// We must have a valid password, otherwise we will not allow EC connections
 		if (thePrefs::ECPassword().IsEmpty()) {
 			*msg += wxT("External connections disabled due to empty password!\n");
-			AddLogLineM(true, _("External connections disabled due to empty password!"));
+			AddLogLineC(_("External connections disabled due to empty password!"));
 			return;
 		}
 		
@@ -324,15 +324,15 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		if (m_ECServer->Ok()) {
 			msgLocal = CFormat(wxT("*** TCP socket (ECServer) listening on %s:%d")) % ip % port;
 			*msg += msgLocal + wxT("\n");
-			AddLogLineM(false, msgLocal);
+			AddLogLineN(msgLocal);
 		} else {
 			msgLocal = CFormat(wxT("Could not listen for external connections at %s:%d!")) % ip % port;
 			*msg += msgLocal + wxT("\n");
-			AddLogLineM(false, msgLocal);
+			AddLogLineN(msgLocal);
 		}
 	} else {
 		*msg += wxT("External connections disabled in config file\n");
-		AddLogLineM(false,_("External connections disabled in config file"));
+		AddLogLineN(_("External connections disabled in config file"));
 	}
 	m_ec_notifier = new ECNotifier();
 }
@@ -382,10 +382,10 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 	// non-blocking accept (although if we got here, there
 	// should ALWAYS be a pending connection).
 	if ( m_ECServer->AcceptWith(*sock, false) ) {
-		AddLogLineM(false, _("New external connection accepted"));
+		AddLogLineN(_("New external connection accepted"));
 	} else {
 		delete sock;
-		AddLogLineM(false, _("ERROR: couldn't accept a new external connection"));
+		AddLogLineN(_("ERROR: couldn't accept a new external connection"));
 	}
 	
 }
@@ -403,7 +403,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 
 	// Password must be specified if we are to allow remote connections
 	if ( thePrefs::ECPassword().IsEmpty() ) {
-		AddLogLineM(true, _("External connection refused due to empty password in preferences!"));	
+		AddLogLineC(_("External connection refused due to empty password in preferences!"));	
 		
 		return new CECPacket(EC_OP_AUTH_FAIL);
 	}
@@ -412,7 +412,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
 		
-		AddLogLineM(false, CFormat( _("Connecting client: %s %s") )
+		AddLogLineN(CFormat( _("Connecting client: %s %s") )
 			% ( clientName ? clientName->GetStringData() : wxString(_("Unknown")) )
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
@@ -492,7 +492,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, err));
-				AddLogLineM(false, wxGetTranslation(err));
+				AddLogLineN(wxGetTranslation(err));
 			}
 		}
 	} else {
@@ -502,7 +502,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 	
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
 		m_conn_state = CONN_ESTABLISHED;
-		AddLogLineM(false, _("Access granted."));
+		AddLogLineN(_("Access granted."));
 		// Establish notification handler if client supports it
 		if (HaveNotificationSupport()) {
 			theApp->ECServerHandler->m_ec_notifier->Add_EC_Client(this);
@@ -510,12 +510,12 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 	} else if (response->GetOpCode() == EC_OP_AUTH_FAIL) {
 		// Log message sent to client
 		if (response->GetFirstTagSafe()->IsString()) {
-			AddLogLineM(false, CFormat(_("Sent error message \"%s\" to client.")) % wxGetTranslation(response->GetFirstTagSafe()->GetStringData()));
+			AddLogLineN(CFormat(_("Sent error message \"%s\" to client.")) % wxGetTranslation(response->GetFirstTagSafe()->GetStringData()));
 		}
 		// Access denied!
 		amuleIPV4Address address;
 		GetPeer(address);
-		AddLogLineM(false, CFormat(_("Unauthorized access attempt from %s. Connection closed.")) % address.IPAddress() );
+		AddLogLineN(CFormat(_("Unauthorized access attempt from %s. Connection closed.")) % address.IPAddress() );
 		m_conn_state = CONN_FAILED;
 	}
 
@@ -743,7 +743,7 @@ static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 		CPartFile *pfile = theApp->downloadqueue->GetFileByID( hash );
 		
 		if ( !pfile ) {
-			AddLogLineM(false,CFormat(_("Remote PartFile command failed: FileHash not found: %s")) % hash.Encode());
+			AddLogLineN(CFormat(_("Remote PartFile command failed: FileHash not found: %s")) % hash.Encode());
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING, CFormat(wxString(wxTRANSLATE("FileHash not found: %s"))) % hash.Encode()));
 			//return response;
@@ -1231,7 +1231,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		case EC_OP_SHUTDOWN:
 			if (!theApp->IsOnShutDown()) {
 				response = new CECPacket(EC_OP_NOOP);
-				AddLogLineM(true, _("External Connection: shutdown requested"));
+				AddLogLineC(_("External Connection: shutdown requested"));
 #ifndef AMULE_DAEMON
 				{
 					wxCloseEvent evt;
@@ -1255,7 +1255,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 				if (cattag) {
 					category = cattag->GetInt();
 				}
-				AddLogLineM(true, CFormat(_("ExternalConn: adding link '%s'.")) % link);
+				AddLogLineC(CFormat(_("ExternalConn: adding link '%s'.")) % link);
 				if ( theApp->downloadqueue->AddLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
@@ -1503,7 +1503,11 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		// Logging
 		//
 		case EC_OP_ADDLOGLINE:
-			AddLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData() );
+			if (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL) {
+				AddLogLineC(request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData());
+			} else {
+				AddLogLineN(request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData());
+			}
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_ADDDEBUGLOGLINE:

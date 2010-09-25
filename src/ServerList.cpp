@@ -81,12 +81,12 @@ bool CServerList::Init()
 
 bool CServerList::LoadServerMet(const CPath& path)
 {
-	AddLogLineM(false, CFormat(_("Loading server.met file: %s")) % path);
+	AddLogLineN(CFormat(_("Loading server.met file: %s")) % path);
 	
 	bool merge = !m_servers.empty();
 	
 	if (!path.FileExists()) {
-		AddLogLineM(false, _("Server.met file not found!"));
+		AddLogLineN(_("Server.met file not found!"));
 		return false;
 	}
 
@@ -94,13 +94,13 @@ bool CServerList::LoadServerMet(const CPath& path)
 	const wxChar* mets[] = { wxT("server.met"), NULL };
 	// Try to unpack the file, might be an archive
 	if (UnpackArchive(path, mets).second != EFT_Met) {
-		AddLogLineM(true, CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % path);
+		AddLogLineC(CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % path);
 		return false;
 	}	
 
 	CFile servermet(path, CFile::read);
 	if ( !servermet.IsOpened() ){ 
-		AddLogLineM( false, _("Failed to open server.met!") );
+		AddLogLineN(_("Failed to open server.met!") );
 		return false;
 	}
 
@@ -171,11 +171,11 @@ bool CServerList::LoadServerMet(const CPath& path)
 			AddLogLineC(CFormat(wxPLURAL("%d server added", "%d servers added", iAddCount)) % iAddCount);
 		}
 	} catch (const CInvalidPacket& err) {
-		AddLogLineM(true, wxT("Error: the file server.met is corrupted: ") + err.what());
+		AddLogLineC(wxT("Error: the file server.met is corrupted: ") + err.what());
 		Notify_ServerThaw();
 		return false;
 	} catch (const CSafeIOException& err) {
-		AddLogLineM(true, wxT("IO error while reading 'server.met': ") + err.what());
+		AddLogLineC(wxT("IO error while reading 'server.met': ") + err.what());
 		Notify_ServerThaw();
 		return false;
 	}
@@ -188,8 +188,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 {
 	if ( !in_server->GetPort() ) {
 		if ( fromUser ) {
-			AddLogLineM( true,
-				CFormat( _("Server not added: [%s:%d] does not specify a valid port.") )
+			AddLogLineC(CFormat( _("Server not added: [%s:%d] does not specify a valid port.") )
 					% in_server->GetAddress()
 					% in_server->GetPort()
 			);
@@ -207,8 +206,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 				)
 	          ) {
 		if ( fromUser ) {
-			AddLogLineM( true,
-				CFormat( _("Server not added: The IP of [%s:%d] is filtered or invalid.") )
+			AddLogLineC(CFormat( _("Server not added: The IP of [%s:%d] is filtered or invalid.") )
 					% in_server->GetAddress()
 					% in_server->GetPort()
 			);
@@ -227,8 +225,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	
 	if (test_server) {
 		if ( fromUser ) {
-			AddLogLineM( true,
-				CFormat( _("Server not added: Server with matching IP:Port [%s:%d] found in list.") )
+			AddLogLineC(CFormat( _("Server not added: Server with matching IP:Port [%s:%d] found in list.") )
 					% in_server->GetAddress()
 					% in_server->GetPort()
 			);
@@ -246,8 +243,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	NotifyObservers( EventType( EventType::INSERTED, in_server ) );
 
 	if ( fromUser ) {
-		AddLogLineM( true,
-			CFormat( _("Server added: Server at [%s:%d] using the name '%s'.") )
+		AddLogLineC(CFormat( _("Server added: Server at [%s:%d] using the name '%s'.") )
 				% in_server->GetAddress()
 				% in_server->GetPort()
 				% in_server->GetListName()
@@ -633,7 +629,7 @@ bool CServerList::SaveServerMet()
 	
 	CFile servermet( newservermet, CFile::write );
 	if (!servermet.IsOpened()) {
-		AddLogLineM(false,_("Failed to save server.met!"));
+		AddLogLineN(_("Failed to save server.met!"));
 		return false;
 	}
 
@@ -749,7 +745,7 @@ bool CServerList::SaveServerMet()
 			
 		}
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, wxT("IO failure while writing 'server.met': ") + e.what());
+		AddLogLineC(wxT("IO failure while writing 'server.met': ") + e.what());
 		return false;
 	}
 	
@@ -786,7 +782,7 @@ void CServerList::RemoveDeadServers()
 void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 {
 	if (strURL.Find(wxT("://")) == -1) {
-		AddLogLineM(true, _("Invalid URL"));
+		AddLogLineC(_("Invalid URL"));
 		return;
 	}
 	m_URLUpdate = strURL;
@@ -823,7 +819,7 @@ void CServerList::AutoUpdate()
 	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
 	
 	if (!url_count) {
-		AddLogLineM(true, _("No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"));
+		AddLogLineC(_("No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"));
 		return;
 	}
 	// Do current URL. Callback function will take care of the others.
@@ -835,7 +831,7 @@ void CServerList::AutoUpdate()
 			m_URLUpdate = URI;
 			wxString strTempFilename =
 				theApp->ConfigDir + wxT("server_auto.met");
-			AddLogLineM(true, CFormat(
+			AddLogLineC(CFormat(
 				_("Start downloading server list from %s")) % URI);
 			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(
 				URI, strTempFilename, theApp->ConfigDir + wxT("server.met"), HTTP_ServerMetAuto, false, false);
@@ -844,12 +840,12 @@ void CServerList::AutoUpdate()
 		
 			return;
 		} else {
-			AddLogLineM(true, CFormat(
+			AddLogLineC(CFormat(
 				_("WARNING: invalid URL specified for auto-updating of servers: %s") ) % URI);
 		}
 		current_url_index++;
 	}
-	AddLogLineM(true, _("No valid server.met auto-download url on addresses.dat"));
+	AddLogLineC(_("No valid server.met auto-download url on addresses.dat"));
 }
 
 
@@ -865,7 +861,7 @@ void CServerList::AutoDownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		CPath::RemoveFile(tempFilename);
 	} else {
-		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % m_URLUpdate);
+		AddLogLineC(CFormat(_("Failed to download the server list from %s") ) % m_URLUpdate);
 	}
 	
 	++current_url_index;
@@ -939,7 +935,7 @@ void CServerList::FilterServers()
 		
 		if (theApp->ipfilter->IsFiltered(server->GetIP(), true)) {
 			if (server == theApp->serverconnect->GetCurrentServer()) {
-				AddLogLineM(true, _("Local server is filtered by the IPFilters, reconnecting to a different server!"));
+				AddLogLineC(_("Local server is filtered by the IPFilters, reconnecting to a different server!"));
 				theApp->serverconnect->Disconnect();
 				RemoveServer(server);
 				theApp->serverconnect->ConnectToAnyServer();

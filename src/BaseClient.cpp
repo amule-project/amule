@@ -1343,7 +1343,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 	SetSocket(NULL);
 
 	if (m_iFileListRequested) {
-		AddLogLineM( false, CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
+		AddLogLineN(CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
 		m_iFileListRequested = 0;
 	}
 
@@ -2665,7 +2665,7 @@ void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
 void CUpDownClient::ProcessChatMessage(wxString message)
 {
 	if (IsMessageFiltered(message)) {
-		AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % GetUserName() % GetFullIP());
+		AddLogLineC(CFormat(_("Message filtered from '%s' (IP:%s)")) % GetUserName() % GetFullIP());
 		return;
 	}
 
@@ -2776,7 +2776,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 	if(thePrefs::ShowMessagesInLog()) {
 		logMsg += wxT(": ") + message;
 	}
-	AddLogLineM(true, logMsg);
+	AddLogLineC(logMsg);
 	IncMessagesReceived();
 
 	Notify_ChatProcessMsg(GUI_ID(GetIP(), GetUserPort()), GetUserName() + wxT("|") + message);

@@ -301,9 +301,11 @@ void CLoggerTarget::DoLogText(const wxString &msg)
 	recursion = true;
 
 	// This is much simpler than manually handling all wx log-types.
-	bool critical = msg.StartsWith(_("ERROR: ")) || msg.StartsWith(_("WARNING: "));
-
-	AddLogLineM(critical, msg);
+	if (msg.StartsWith(_("ERROR: ")) || msg.StartsWith(_("WARNING: "))) {
+		AddLogLineC(msg);
+	} else {
+		AddLogLineN(msg);
+	}
 
 	recursion = false;
 }
@@ -322,9 +324,11 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	wxString str(msg);
 	
 	// This is much simpler than manually handling all wx log-types.
-	bool critical = str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "));
-
-	AddLogLineM(critical, str);
+	if (str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "))) {
+		AddLogLineC(str);
+	} else {
+		AddLogLineN(str);
+	}
 
 	recursion = false;
 }

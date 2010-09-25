@@ -256,7 +256,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddLogLineM(false, CFormat( _("ERROR: %s (%s) - %s") )
+						AddLogLineN(CFormat( _("ERROR: %s (%s) - %s") )
 							% servername
 							% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort())
 							% message.Mid(5,message.Len()).Trim(wxT(" :")));
@@ -271,7 +271,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddLogLineM(false, CFormat( _("WARNING: %s (%s) - %s") )
+						AddLogLineN(CFormat( _("WARNING: %s (%s) - %s") )
 							% servername
 							% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort())
 							% message.Mid(5,message.Len()).Trim(wxT(" :")));
@@ -412,9 +412,9 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 
 				AddLogLineN(CFormat(_("New clientid is %u")) % new_id);
 				if (::IsLowID(new_id)) {
-					AddLogLineM(true,  _("WARNING: You have received Low-ID!"));
-					AddLogLineM(false, _("\tMost likely this is because you're behind a firewall or router."));
-					AddLogLineM(false, _("\tFor more information, please refer to http://wiki.amule.org"));
+					AddLogLineC(_("WARNING: You have received Low-ID!"));
+					AddLogLineN(_("\tMost likely this is because you're behind a firewall or router."));
+					AddLogLineN(_("\tFor more information, please refer to http://wiki.amule.org"));
 				}
 								
 				theApp->downloadqueue->ResetLocalServerRequests();
@@ -471,7 +471,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 
 				theStats::AddDownOverheadServer(size);
 				if (size<38) {
-					AddLogLineM(false, _("Unknown server info received! - too short"));
+					AddLogLineN(_("Unknown server info received! - too short"));
 					// throw wxString(wxT("Unknown server info received!"));
 					break;
 				}
@@ -535,7 +535,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 					AddLogLineN(CFormat(wxPLURAL("Received %d new server", "Received %d new servers", addcount)) % addcount);
 				}
 				theApp->serverlist->SaveServerMet();
-				AddLogLineM(false, _("Saving of server-list completed."));
+				AddLogLineN(_("Saving of server-list completed."));
 				break;
 			}
 			case OP_CALLBACKREQUESTED: {
@@ -585,7 +585,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 			}
 			case OP_REJECT: {
 				AddDebugLogLineN(logServer, wxT("Server: OP_REJECT"));
-				AddLogLineM(false, _("Server rejected last command"));
+				AddLogLineN(_("Server rejected last command"));
 				break;
 			}
 			default:
@@ -593,11 +593,11 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 		}
 		return true;
 	} catch (const CInvalidPacket& e) {
-		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
+		AddLogLineN(CFormat( _("Bogus packet received from server: %s") ) % e.what());
 	} catch (const CEOFException& e) {
-		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
+		AddLogLineN(CFormat( _("Bogus packet received from server: %s") ) % e.what());
 	} catch (const wxString& error) {
-		AddLogLineM(false,CFormat( _("Unhandled error while processing packet from server: %s") ) % error);
+		AddLogLineN(CFormat( _("Unhandled error while processing packet from server: %s") ) % error);
 	}
 
 	// Don't disconnect because of wrong sources.
@@ -636,11 +636,11 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
 			if ( dns->Run() != wxTHREAD_NO_ERROR ) {
 				dns->Delete();
-				AddLogLineM(false, CFormat( _("Cannot create DNS solving thread for connecting to %s") ) % cur_server->GetAddress());
+				AddLogLineN(CFormat( _("Cannot create DNS solving thread for connecting to %s") ) % cur_server->GetAddress());
 			}
 		} else {
 			dns->Delete();
-			AddLogLineM(false, CFormat( _("Cannot create DNS solving thread for connecting to %s") ) % cur_server->GetAddress());
+			AddLogLineN(CFormat( _("Cannot create DNS solving thread for connecting to %s") ) % cur_server->GetAddress());
 		}
 	} else {
 		// Nothing to solve, we already have the IP
@@ -722,7 +722,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	m_IsSolving = false;
 	if (ip) {
 		if (theApp->ipfilter->IsFiltered(ip, true)) {
-			AddLogLineM(true, CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
+			AddLogLineC(CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
 				% Uint32toStringIP(ip) % cur_server->GetAddress() );
 			OnConnect(wxSOCKET_INVADDR);
 		} else {
@@ -741,7 +741,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 			
 			addr.Service(nPort);			
 			
-			AddLogLineM(false, CFormat( _("Connecting to %s (%s - %s:%i) %s") )
+			AddLogLineN(CFormat( _("Connecting to %s (%s - %s:%i) %s") )
 				% cur_server->GetListName()
 				% cur_server->GetAddress()
 				% cur_server->GetFullIP()
@@ -754,7 +754,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 			Connect(addr, false);
 		}
 	} else {
-		AddLogLineM(true, CFormat( _("Could not solve dns for server %s: Unable to connect!") )
+		AddLogLineC(CFormat( _("Could not solve dns for server %s: Unable to connect!") )
 			% cur_server->GetAddress() );
 		OnConnect(wxSOCKET_NOHOST);
 	}

@@ -339,7 +339,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 			m_currentSearch = *searchID;
 			m_KadSearchFinished = false;
 		} catch (const wxString& what) {
-			AddLogLineM(true, what);
+			AddLogLineC(what);
 			return _("Unexpected error while attempting Kad search: ") + what;				
 		}
 	} else {

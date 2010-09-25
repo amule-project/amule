@@ -236,7 +236,7 @@ CamuleApp::~CamuleApp()
 int CamuleApp::OnExit()
 {
 	if (m_app_state!=APP_STATE_STARTING) {
-		AddLogLineMS(false, _("Now, exiting main app..."));
+		AddLogLineNS(_("Now, exiting main app..."));
 	}
 
 	// From wxWidgets docs, wxConfigBase:
@@ -266,7 +266,7 @@ int CamuleApp::OnExit()
 	}
 
 	if (m_app_state!=APP_STATE_STARTING) {
-		AddLogLineMS(false, _("aMule OnExit: Terminating core."));
+		AddLogLineNS(_("aMule OnExit: Terminating core."));
 	}
 
 	delete serverlist;
@@ -370,7 +370,7 @@ bool CamuleApp::OnInit()
 {
 #if wxUSE_MEMORY_TRACING
 	// any text before call of Localize_mule needs not to be translated.
-	AddLogLineMS(false, wxT("Checkpoint set on app init for memory debug"));
+	AddLogLineNS(wxT("Checkpoint set on app init for memory debug"));
 	wxDebugContext::SetCheckpoint();
 #endif
 
@@ -432,10 +432,10 @@ bool CamuleApp::OnInit()
 
 	// Configure EC for amuled when invoked with ec-config
 	if (ec_config) {
-		AddLogLineMS(false, _("\nEC configuration"));
+		AddLogLineNS(_("\nEC configuration"));
 		thePrefs::SetECPass(GetPassword());
 		thePrefs::EnableExternalConnections(true);
-		AddLogLineMS(false, _("Password set and external connections enabled."));
+		AddLogLineNS(_("Password set and external connections enabled."));
 	}
 	
 #ifndef __WXMSW__
@@ -517,8 +517,8 @@ bool CamuleApp::OnInit()
 	// Creates all needed listening sockets
 	wxString msg;
 	if (!ReinitializeNetwork(&msg)) {
-		AddLogLineMS(false, wxT("\n"));
-		AddLogLineMS(false, msg);
+		AddLogLineNS(wxT("\n"));
+		AddLogLineNS(msg);
 	}
 
 	// Test if there's any new version
@@ -648,7 +648,7 @@ bool CamuleApp::OnInit()
 		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
 		bool webserver_ok = webserver_pid > 0;
 		if (webserver_ok) {
-			AddLogLineM(true, CFormat(_("web server running on pid %d")) % webserver_pid);
+			AddLogLineC(CFormat(_("web server running on pid %d")) % webserver_pid);
 		} else {
 			delete p;
 			ShowAlert(_(
@@ -686,9 +686,9 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 			wxT("preferences for the new value.\n");
 		*msg << err;
 
-		AddLogLineM( false, wxEmptyString );
-		AddLogLineM( true, err );
-		AddLogLineM( false, wxEmptyString );
+		AddLogLineN(wxEmptyString );
+		AddLogLineC(err );
+		AddLogLineN(wxEmptyString );
 
 		ok = false;
 	}
@@ -709,9 +709,9 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 			wxT("preferences for the new value\n");
 		*msg << err;
 
-		AddLogLineM( false, wxEmptyString );
-		AddLogLineM( true, err );
-		AddLogLineM( false, wxEmptyString );
+		AddLogLineN(wxEmptyString );
+		AddLogLineC(err );
+		AddLogLineN(wxEmptyString );
 		
 		ok = false;
 	}
@@ -735,7 +735,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		myaddr[1].AnyAddress();
 	} else if (!myaddr[1].Hostname(thePrefs::GetAddress())) {
 		myaddr[1].AnyAddress();
-		AddLogLineM(true, CFormat(_("Could not bind ports to the specified address: %s"))
+		AddLogLineC(CFormat(_("Could not bind ports to the specified address: %s"))
 			% thePrefs::GetAddress());				
 	}
 
@@ -765,7 +765,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		err = CFormat(_("Port %u is not available. You will be LOWID\n")) %
 			(unsigned int)(thePrefs::GetPort());
 		*msg << err;
-		AddLogLineM(true, err);
+		AddLogLineC(err);
 		err.Clear();
 		err = CFormat(
 			_("Port %u is not available!\n\nThis means that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input.")) % 
@@ -815,7 +815,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		} catch(CUPnPException &e) {
 			wxString error_msg;
 			error_msg << e.what();
-			AddLogLineM(true, error_msg);
+			AddLogLineC(error_msg);
 			fprintf(stderr, "%s\n", (const char *)unicode2char(error_msg));
 		}
 	}
@@ -847,7 +847,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	
 	// Open both files if needed
 	if ( !emulesig_out.Create( m_emulesig_path) ) {
-		AddLogLineM(true, _("Failed to create OnlineSig File"));
+		AddLogLineC(_("Failed to create OnlineSig File"));
 		// Will never try again.
 		m_amulesig_path.Clear();
 		m_emulesig_path.Clear();
@@ -855,7 +855,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}
 
 	if ( !amulesig_out.Create(m_amulesig_path) ) {
-		AddLogLineM(true, _("Failed to create aMule OnlineSig File"));
+		AddLogLineC(_("Failed to create aMule OnlineSig File"));
 		// Will never try again.
 		m_amulesig_path.Clear();
 		m_emulesig_path.Clear();
@@ -1023,7 +1023,7 @@ void CamuleApp::Localize_mule()
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 	if (!m_locale.IsOk()) {
-		AddLogLineM(false,_("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
+		AddLogLineN(_("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
 	}
 }
 
@@ -1112,7 +1112,7 @@ void CamuleApp::OnSourceDnsDone(CMuleInternalEvent& evt)
 
 void CamuleApp::OnServerDnsDone(CMuleInternalEvent& evt)
 {
-	AddLogLineMS(false, _("Server hostname notified"));
+	AddLogLineNS(_("Server hostname notified"));
 	serverconnect->OnServerHostnameResolved(evt.GetClientData(), evt.GetExtraLong());
 }
 
@@ -1356,7 +1356,7 @@ void CamuleApp::OnFinishedAllocation(CAllocFinishedEvent& evt)
 			file->ResumeFile();
 		}
 	} else {
-		AddLogLineM(false, CFormat(_("Disk space preallocation for file '%s' failed: %s")) % file->GetFileName() % wxString(UTF82unicode(std::strerror(evt.GetResult()))));
+		AddLogLineN(CFormat(_("Disk space preallocation for file '%s' failed: %s")) % file->GetFileName() % wxString(UTF82unicode(std::strerror(evt.GetResult()))));
 		file->StopFile();
 	}
 
@@ -1509,7 +1509,7 @@ wxString CamuleApp::GetLog(bool reset)
 	if ( reset ) {
 		theLogger.CloseLogfile();
 		if (theLogger.OpenLogfile(ConfigDir + wxT("logfile"))) {
-			AddLogLineM(false, _("Log has been reset"));
+			AddLogLineN(_("Log has been reset"));
 		}
 	}
 	return str;
@@ -1534,7 +1534,7 @@ wxString CamuleApp::GetDebugLog(bool reset)
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	server_msg += msg + wxT("\n");
-	AddLogLineM(false, CFormat(_("ServerMessage: %s")) % msg);
+	AddLogLineN(CFormat(_("ServerMessage: %s")) % msg);
 }
 
 
@@ -1594,10 +1594,10 @@ void CamuleApp::CheckNewVersion(uint32 result)
 		wxTextFile file;
 		
 		if (!file.Open(filename)) {
-			AddLogLineM(true, _("Failed to open the downloaded version check file") );
+			AddLogLineC(_("Failed to open the downloaded version check file") );
 			return;
 		} else if (!file.GetLineCount()) {
-			AddLogLineM(true, _("Corrupted version check file"));
+			AddLogLineC(_("Corrupted version check file"));
 		} else {
 			wxString versionLine = file.GetFirstLine();
 			wxStringTokenizer tkz(versionLine, wxT("."));
@@ -1607,13 +1607,13 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			long fields[] = {0, 0, 0};
 			for (int i = 0; i < 3; ++i) {
 				if (!tkz.HasMoreTokens()) {
-					AddLogLineM(true, _("Corrupted version check file"));
+					AddLogLineC(_("Corrupted version check file"));
 					return;
 				} else {
 					wxString token = tkz.GetNextToken();
 					
 					if (!token.ToLong(&fields[i])) {
-						AddLogLineM(true, _("Corrupted version check file"));
+						AddLogLineC(_("Corrupted version check file"));
 						return;
 					}
 				}
@@ -1878,33 +1878,33 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 				// We connected to some server
 				const wxString id = theApp->serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
 
-				AddLogLineM(true, CFormat(_("Connected to %s %s")) % connected_server % id);
+				AddLogLineC(CFormat(_("Connected to %s %s")) % connected_server % id);
 			} else {
 				if ( theApp->serverconnect->IsConnecting() ) {
-					AddLogLineM(true, CFormat(_("Connecting to %s")) % connected_server);
+					AddLogLineC(CFormat(_("Connecting to %s")) % connected_server);
 				} else {
-					AddLogLineM(true, _("Disconnected from eD2k"));
+					AddLogLineC(_("Disconnected from eD2k"));
 				}
 			}
 		}
 		
 		if (changed_flags & CONNECTED_KAD_NOT) {
 			if (state & CONNECTED_KAD_NOT) {
-				AddLogLineM(true, _("Kad started."));
+				AddLogLineC(_("Kad started."));
 			} else {
-				AddLogLineM(true, _("Kad stopped."));
+				AddLogLineC(_("Kad stopped."));
 			}
 		}
 		
 		if (changed_flags & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 			if (state & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 				if (state & CONNECTED_KAD_OK) {
-					AddLogLineM(true, _("Connected to Kad (ok)"));
+					AddLogLineC(_("Connected to Kad (ok)"));
 				} else {
-					AddLogLineM(true, _("Connected to Kad (firewalled)"));
+					AddLogLineC(_("Connected to Kad (firewalled)"));
 				}
 			} else {
-				AddLogLineM(true, _("Disconnected from Kad"));
+				AddLogLineC(_("Disconnected from Kad"));
 			}
 		}
 		
@@ -1971,10 +1971,10 @@ void CamuleApp::StartKad()
 				ipfilter->StartKADWhenReady();
 			}
 		} else {
-			AddLogLineM(true,_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
+			AddLogLineC(_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
 		}
 	} else if (!thePrefs::GetNetworkKademlia()) {
-		AddLogLineM(true,_("Kad network disabled on preferences, not connecting."));
+		AddLogLineC(_("Kad network disabled on preferences, not connecting."));
 	}
 }
 

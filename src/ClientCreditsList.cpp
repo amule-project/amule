@@ -302,7 +302,7 @@ void CClientCreditsList::InitalizeCrypting()
 				CreateKeyPair();
  			}
  		} else {
-			AddLogLineM( false, _("No 'cryptkey.dat' file found, creating.") );
+			AddLogLineN(_("No 'cryptkey.dat' file found, creating.") );
  			CreateKeyPair();
  		}
 			

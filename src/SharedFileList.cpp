@@ -361,13 +361,13 @@ void CSharedFileList::FindSharedFiles()
 	filelist->ReleaseIndex();
 	
 	if (addedFiles == 0) {
-		AddLogLineM(false, CFormat(wxPLURAL("Found %i known shared file", "Found %i known shared files", GetCount())) % GetCount());
+		AddLogLineN(CFormat(wxPLURAL("Found %i known shared file", "Found %i known shared files", GetCount())) % GetCount());
 
 		// Make sure the AICH-hashes are up to date.
 		CThreadScheduler::AddTask(new CAICHSyncTask());
 	} else {	
 		// New files, AICH thread will be run at the end of the hashing thread.
-		AddLogLineM(false, CFormat(wxPLURAL("Found %i known shared file, %i unknown", "Found %i known shared files, %i unknown", GetCount())) % GetCount() % addedFiles);
+		AddLogLineN(CFormat(wxPLURAL("Found %i known shared file, %i unknown", "Found %i known shared files, %i unknown", GetCount())) % GetCount() % addedFiles);
 	}
 }
 
@@ -376,7 +376,7 @@ void CSharedFileList::FindSharedFiles()
 bool CheckDirectory(const wxString& a, const CPath& b)
 {
 	if (CPath(a).IsSameDir(b)) {
-		AddLogLineM(true, CFormat( _("ERROR: Attempted to share %s") ) % a);
+		AddLogLineC(CFormat( _("ERROR: Attempted to share %s") ) % a);
 
 		return true;
 	}

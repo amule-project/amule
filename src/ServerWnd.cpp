@@ -100,12 +100,12 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	long port = StrToULong( CastChild( IDC_SPORT, wxTextCtrl )->GetValue() );
 
 	if ( serveraddr.IsEmpty() ) {
-		AddLogLineM( true, _("Server not added: No IP or hostname specified."));
+		AddLogLineC(_("Server not added: No IP or hostname specified."));
 		return;
 	}
 	
 	if ( port <= 0 || port > 65535 ) {
-		AddLogLineM( true, _("Server not added: Invalid server-port specified."));
+		AddLogLineC(_("Server not added: Invalid server-port specified."));
 		return;
 	}
   
