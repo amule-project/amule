@@ -101,10 +101,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 				continue;
 			} 
 
-			suspendlist::iterator it2 = std::find( suspended_uploads_list.begin(),
-			                                      suspended_uploads_list.end(),
-			                                      cur_client->GetUploadFileID() );
-			if (cur_client->IsBanned() || it2 != suspended_uploads_list.end() ) { // Banned client or suspended upload ?
+			if (cur_client->IsBanned() || IsSuspended(cur_client->GetUploadFileID())) { // Banned client or suspended upload ?
 			        continue;
 			}
 			// finished clearing
@@ -128,8 +125,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 		}
 
 		if (bestlowscore > bestscore){
-			newclient = *toaddlow;
-			newclient->m_bAddNextConnect = true;
+			(*toaddlow)->m_bAddNextConnect = true;
 		}
 
 		if (toadd == m_waitinglist.end()) {
@@ -141,12 +137,10 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 		RemoveFromWaitingQueue(toadd);
 		Notify_ShowQueueCount(m_waitinglist.size());
 	} else {
-		//prevent another potential access of a suspended upload
+		// Check if requested file is suspended or not shared (maybe deleted recently)
 
-		suspendlist::iterator it = std::find( suspended_uploads_list.begin(),
-		                                      suspended_uploads_list.end(),
-		                                      directadd->GetUploadFileID() );
-		if ( it != suspended_uploads_list.end() ) {
+		if (IsSuspended(directadd->GetUploadFileID())
+			|| !theApp->sharedfiles->GetFileByID(directadd->GetUploadFileID())) {
 			return;
 		} else {
 			newclient = directadd;
@@ -536,46 +530,55 @@ uint16 CUploadQueue::GetWaitingPosition(const CUpDownClient *client) const
  */
 void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 {
-	//Find the position of the filehash in the list and remove it.
-	suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
-			                              suspended_uploads_list.end(),
-			                              filehash );
-	if ( it != suspended_uploads_list.end() )
-		suspended_uploads_list.erase( it );
-	
+	suspendedUploadsSet.erase(filehash);
 	AddLogLineN(CFormat( _("Resuming uploads of file: %s" ) )
 				% filehash.Encode() );
 }
 
 /*
- * This function adds a file indicated by filehash to suspended_uploads_list
+ * This function stops upload of a file indicated by filehash.
+ *
+ * a) teminate == false:
+ *    File is suspended while a download completes. Then it is resumed after completion,
+ *    so it makes sense to keep the client. Such files are kept in suspendedUploadsSet.
+ * b) teminate == true:
+ *    File is deleted. Then the client is not added to the waiting list.
+ *    Waiting clients are swept out with next run of AddUpNextClient,
+ *    because their file is not shared anymore.
  */
-uint16 CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
+uint16 CUploadQueue::SuspendUpload(const CMD4Hash& filehash, bool terminate)
 {
 	AddLogLineN(CFormat( _("Suspending upload of file: %s" ) )
 				% filehash.Encode() );
 	uint16 removed = 0;
 
 	//Append the filehash to the list.
-	suspended_uploads_list.push_back(filehash);
-	wxString base16hash = filehash.Encode();
+	if (!terminate) {
+		suspendedUploadsSet.insert(filehash);
+	}
 
 	CClientPtrList::iterator it = m_uploadinglist.begin();
 	while (it != m_uploadinglist.end()) {
 		CUpDownClient *potential = *it++;
 		//check if the client is uploading the file we need to suspend
-		if(potential->GetUploadFileID() == filehash) {
-			//remove the unlucky client from the upload queue and add to the waiting queue
+		if (potential->GetUploadFileID() == filehash) {
+			// remove the unlucky client from the upload queue
 			RemoveFromUploadQueue(potential);
-
-			m_waitinglist.push_back(potential);
-			theStats::AddWaitingClient();
-			potential->SetUploadState(US_ONUPLOADQUEUE);
-			potential->SendRankingInfo();
-			Notify_SharedCtrlRefreshClient(potential, AVAILABLE_SOURCE);
-			Notify_ShowQueueCount(m_waitinglist.size());
+			// if suspend isn't permanent add it to the waiting queue
+			if (terminate) {
+				potential->SetUploadState(US_NONE);
+			} else {
+				m_waitinglist.push_back(potential);
+				theStats::AddWaitingClient();
+				potential->SetUploadState(US_ONUPLOADQUEUE);
+				potential->SendRankingInfo();
+				Notify_SharedCtrlRefreshClient(potential, AVAILABLE_SOURCE);
+			}
 			removed++;
 		}
+	}
+	if (removed) {
+		Notify_ShowQueueCount(m_waitinglist.size());
 	}
 	return removed;
 }

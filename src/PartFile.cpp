@@ -2175,7 +2175,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 void CPartFile::PerformFileComplete()
 {
 	// add this file to the suspended uploads list
-	theApp->uploadqueue->SuspendUpload(GetFileHash());
+	theApp->uploadqueue->SuspendUpload(GetFileHash(), false);
 	FlushBuffer();
 
 	// close permanent handle
@@ -2227,7 +2227,7 @@ void CPartFile::Delete()
 	StopFile(true);
 	AddDebugLogLineN(logPartFile, wxT("\tStopped"));
 	
-	uint16 removed = theApp->uploadqueue->SuspendUpload(GetFileHash());
+	uint16 removed = theApp->uploadqueue->SuspendUpload(GetFileHash(), true);
 	AddDebugLogLineN(logPartFile, CFormat(wxT("\tSuspended upload to %d clients")) % removed);
 	theApp->sharedfiles->RemoveFile(this);
 	AddDebugLogLineN(logPartFile, wxT("\tRemoved from shared"));
