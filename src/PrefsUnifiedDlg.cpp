@@ -562,6 +562,19 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		restart_needed_msg += _("- UDP port changed.\n");
 	}
 
+	if (CfgChanged(IDC_EXT_CONN_TCP_PORT)) {
+		restart_needed = true;
+		restart_needed_msg += _("- External connect port changed.\n");
+	}
+	if (CfgChanged(IDC_EXT_CONN_ACCEPT)) {
+		restart_needed = true;
+		restart_needed_msg += _("- External connect acceptance changed.\n");
+	}
+	if (CfgChanged(IDC_EXT_CONN_IP)) {
+		restart_needed = true;
+		restart_needed_msg += _("- External connect interface changed.\n");
+	}
+
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
 	
