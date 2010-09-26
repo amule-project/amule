@@ -203,6 +203,8 @@ public:
 	virtual void OnLost();
 
 	virtual void WriteDoneAndQueueEmpty();
+
+	void	ResetLog() { m_LoggerAccess.Reset(); }
 private:
 	ECNotifier *m_ec_notifier;
 
@@ -370,6 +372,16 @@ void ExternalConn::KillAllSockets()
 		CECServerSocket *s = *(it++);
 		s->Close();
 		s->Destroy();
+	}
+}
+
+
+void ExternalConn::ResetAllLogs()
+{
+	SocketSet::iterator it = socket_list.begin();
+	while (it != socket_list.end()) {
+		CECServerSocket *s = *(it++);
+		s->ResetLog();
 	}
 }
 

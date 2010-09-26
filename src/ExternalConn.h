@@ -96,6 +96,7 @@ public:
 	void AddSocket(CECServerSocket *s);
 	void RemoveSocket(CECServerSocket *s);
 	void KillAllSockets();
+	void ResetAllLogs();
 
 private:
 	// event handlers (these functions should _not_ be virtual)

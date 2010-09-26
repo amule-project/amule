@@ -388,6 +388,10 @@ public:
 	CLoggerAccess();
 	~CLoggerAccess();
 	//
+	// Reset (used when logfile is cleared)
+	//
+	void Reset();
+	//
 	// get a String (if there is one)
 	//
 	bool GetString(wxString & s);
