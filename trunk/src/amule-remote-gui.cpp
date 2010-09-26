@@ -411,8 +411,13 @@ uint32 CamuleRemoteGuiApp::GetPublicIP()
 }
 
 
-wxString CamuleRemoteGuiApp::GetLog(bool)
+wxString CamuleRemoteGuiApp::GetLog(bool reset)
 {
+	if (reset) {
+		amuledlg->ResetLog(ID_LOGVIEW);
+		CECPacket req(EC_OP_RESET_LOG);
+		m_connect->SendPacket(&req);
+	}
 	return wxEmptyString;
 }
 

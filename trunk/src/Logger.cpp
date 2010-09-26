@@ -338,6 +338,14 @@ CLoggerAccess::CLoggerAccess()
 {
 	m_bufferlen = 4096;
 	m_buffer = new wxCharBuffer(m_bufferlen);
+	m_logfile = NULL;
+	Reset();
+}
+
+
+void CLoggerAccess::Reset()
+{
+	delete m_logfile;
 	m_logfile = new wxFFileInputStream(theLogger.GetLogfileName());
 	m_pos = 0;
 	m_ready = false;

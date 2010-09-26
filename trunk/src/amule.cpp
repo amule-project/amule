@@ -1511,6 +1511,7 @@ wxString CamuleApp::GetLog(bool reset)
 		if (theLogger.OpenLogfile(ConfigDir + wxT("logfile"))) {
 			AddLogLineN(_("Log has been reset"));
 		}
+		ECServerHandler->ResetAllLogs();
 	}
 	return str;
 }
