@@ -1762,8 +1762,10 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 	if (level != s_filterlevel) {
 		// Set the new access-level
 		s_filterlevel = level;
+#ifndef CLIENT_GUI
 		// and reload the filter
 		theApp->ipfilter->Reload();
+#endif
 	}
 }
 
