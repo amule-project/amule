@@ -413,17 +413,17 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		reqfile->statistic.AddRequest();
 	}
 
-	// TODO find better ways to cap the list
-	if (m_waitinglist.size() >= (thePrefs::GetQueueSize())) {
-		return;
-	}
-
 	if (client->IsDownloading()) {
 		// he's already downloading and wants probably only another file
 		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ, 0, OP_EDONKEYPROT);
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ to ") + client->GetFullIP() );
 		client->SendPacket(packet,true);
+		return;
+	}
+
+	// TODO find better ways to cap the list
+	if (m_waitinglist.size() >= (thePrefs::GetQueueSize())) {
 		return;
 	}
 
