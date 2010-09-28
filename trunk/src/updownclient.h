@@ -310,16 +310,15 @@ public:
 
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 
+	uint32		GetScore() const	{ return m_score; }
+	uint32		CalculateScore()	{ m_score = CalculateScoreInternal(); return m_score; }
+	void		ClearScore()		{ m_score = 0; }
+	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
+	void		SetUploadQueueWaitingPosition(uint16 pos)	{ m_waitingPosition = pos; }
 #ifndef CLIENT_GUI
-	uint32		GetScore(bool sysvalue = false) const;
 	uint8		GetObfuscationStatus() const;
-	uint16		GetUploadQueueWaitingPosition() const;
 	uint16		GetNextRequestedPart() const;
 #else
-	uint32		m_score;
-	uint32		GetScore(bool WXUNUSED(sysvalue) = false) const	{ return m_score; }
-	uint16		m_waitingPosition;
-	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
 	EIdentState	m_identState;
 	uint8		GetObfuscationStatus() const { return m_obfuscationStatus; }
 	uint8		m_obfuscationStatus;
@@ -764,6 +763,7 @@ private:
 	//upload
 	void CreateStandardPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	void CreatePackedPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	uint32 CalculateScoreInternal();
 
 	uint8		m_nUploadState;
 	uint32		m_dwUploadTime;
@@ -773,6 +773,8 @@ private:
 	uint16		m_nUpPartCount;
 	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
+	uint32		m_score;
+	uint16		m_waitingPosition;
 
 	//! This vector contains the avilability of parts for the file that the user
 	//! is requesting. When changing it, be sure to call CKnownFile::UpdatePartsFrequency
