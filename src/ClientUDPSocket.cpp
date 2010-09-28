@@ -219,7 +219,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 						}
 					}
 					
-					data_out.WriteUInt16(theApp->uploadqueue->GetWaitingPosition(sender));
+					data_out.WriteUInt16(sender->GetUploadQueueWaitingPosition());
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_REASKACK to ") + sender->GetFullIP());

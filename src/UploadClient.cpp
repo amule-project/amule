@@ -69,7 +69,7 @@ void CUpDownClient::SetUploadState(uint8 eNewState)
 	}
 }
 
-uint32 CUpDownClient::GetScore(	bool sysvalue )	const	// true: return zero for lowID client (unless it's connected)
+uint32 CUpDownClient::CalculateScoreInternal()
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
 	if (m_Username.IsEmpty()) {
@@ -97,10 +97,6 @@ uint32 CUpDownClient::GetScore(	bool sysvalue )	const	// true: return zero for l
 
 	if (IsBanned())
 		return 0;
-
-	if (sysvalue && HasLowID() && !IsConnected()){
-		return 0;
-	}	
 
 	// score applies only to waiting clients, not to downloading clients
 	if (IsDownloading()) {
@@ -722,11 +718,6 @@ void CUpDownClient::ClearUploadBlockRequests()
 	FlushSendBlocks();
 	DeleteContents(m_BlockRequests_queue);
 	DeleteContents(m_DoneBlocks_list);
-}
-
-uint16 CUpDownClient::GetUploadQueueWaitingPosition() const
-{
-	return theApp->uploadqueue->GetWaitingPosition(this);
 }
 
 void CUpDownClient::SendRankingInfo(){

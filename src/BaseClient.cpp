@@ -212,6 +212,8 @@ void CUpDownClient::Init()
 	m_fSharedDirectories = 0;
 	m_lastPartAsked = 0xffff;
 	m_nUpCompleteSourcesCount= 0;
+	m_waitingPosition = 0;
+	m_score = 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_bHelloAnswerPending = false;
 	m_fSentCancelTransfer = 0;

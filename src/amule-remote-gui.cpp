@@ -1126,8 +1126,6 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_dwServerIP = 0;
 	m_nServerPort = 0;
 
-	m_waitingPosition = 0;
-	m_score = 0;
 	m_identState = IS_NOTAVAILABLE;
 	m_obfuscationStatus = 0;
 
