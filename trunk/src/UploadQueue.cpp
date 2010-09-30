@@ -112,6 +112,7 @@ CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 				// swap them
 				*it2 = *it1;
 				*it1 = cur_client;
+				it2--;
 			} else {
 				// no need to check further since list is already sorted
 				break;
