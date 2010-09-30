@@ -271,7 +271,7 @@ void CUploadQueue::Process()
 	}
 
 	// Periodically resort queue if it doesn't happen anyway
-	if ((sint32) (tick - m_lastSort) > 120000) { // 2 min
+	if ((sint32) (tick - m_lastSort) > MIN2MS(2)) {
 		SortGetBestClient(true);
 	}
 }
