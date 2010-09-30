@@ -401,7 +401,7 @@ namespace MuleNotify
 	//@}
 
 	/**
-	 * The same as above, but these functions will always sent an event,
+	 * The same as above, but these functions will always send an event,
 	 * even from the main thread.
 	 */
 	void HandleNotificationAlways(const CMuleNotiferBase& ntf);
