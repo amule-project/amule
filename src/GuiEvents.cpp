@@ -9,6 +9,7 @@
 #include "ExternalConn.h"
 #include "SearchFile.h"
 #include "SearchList.h"
+#include "IPFilter.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -52,7 +53,15 @@ namespace MuleNotify
 			wxPostEvent(wxTheApp, evt);
 		}
 	}
-	
+
+
+	void HandleNotificationAlways(const CMuleNotiferBase& ntf)
+	{
+		CMuleGUIEvent evt(ntf.Clone());
+		wxPostEvent(wxTheApp, evt);
+	}
+
+
 	void Search_Add_Download(CSearchFile* file, uint8 category)
 	{
 		theApp->downloadqueue->AddSearchToDownload(file, category);
@@ -706,6 +715,17 @@ namespace MuleNotify
 	{
 		theApp->downloadqueue->SetCatStatus(cat, newstatus);
 	}
+
+	void IPFilter_Reload()
+	{
+		theApp->ipfilter->Reload();
+	}
+
+	void IPFilter_Update(wxString url)
+	{
+		theApp->ipfilter->Update(url);
+	}
+
 
 #endif	// #ifdef CLIENT_GUI
 }

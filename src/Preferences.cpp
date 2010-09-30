@@ -66,7 +66,7 @@
 // Needed for IP filtering prefs
 #include "ClientList.h"
 #include "ServerList.h"
-#include "IPFilter.h"
+#include "GuiEvents.h"
 
 #define DEFAULT_TCP_PORT 4662
 #define DEFAULT_UDP_PORT 4672
@@ -1764,7 +1764,7 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 		s_filterlevel = level;
 #ifndef CLIENT_GUI
 		// and reload the filter
-		theApp->ipfilter->Reload();
+		NotifyAlways_IPFilter_Reload();
 #endif
 	}
 }

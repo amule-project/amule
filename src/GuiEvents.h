@@ -167,6 +167,11 @@ namespace MuleNotify
 	void Download_Set_Cat_Prio(uint8 cat, uint8 newprio);
 	void Download_Set_Cat_Status(uint8 cat, int newstatus);
 
+	//
+	// Notifications that always create an event
+	//
+	void IPFilter_Reload();
+	void IPFilter_Update(wxString url);
 
 	////////////////////////////////////////////////////////////
 	// Notification utilities
@@ -394,6 +399,28 @@ namespace MuleNotify
 		HandleNotification(CMuleNotifier3<A1A, A2A, A3A>(func, arg1, arg2, arg3));
 	}
 	//@}
+
+	/**
+	 * The same as above, but these functions will always sent an event,
+	 * even from the main thread.
+	 */
+	void HandleNotificationAlways(const CMuleNotiferBase& ntf);
+	
+	inline void DoNotifyAlways(void (*func)()) {
+		HandleNotificationAlways(CMuleNotifier0(func));
+	}
+	template <typename A1A, typename A1B>
+	inline void DoNotifyAlways(void (*func)(A1A), A1B arg1) {
+		HandleNotificationAlways(CMuleNotifier1<A1A>(func, arg1));
+	}
+	template <typename A1A, typename A1B, typename A2A, typename A2B>
+	inline void DoNotifyAlways(void (*func)(A1A, A2A), A1B arg1, A2B arg2) {
+		HandleNotificationAlways(CMuleNotifier2<A1A, A2A>(func, arg1, arg2));
+	}
+	template <typename A1A, typename A1B, typename A2A, typename A2B, typename A3A, typename A3B>
+	inline void DoNotifyAlways(void (*func)(A1A, A2A, A3A), A1B arg1, A2B arg2, A3B arg3) {
+		HandleNotificationAlways(CMuleNotifier3<A1A, A2A, A3A>(func, arg1, arg2, arg3));
+	}
 }
 
 
@@ -516,6 +543,14 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // download queue
 #define CoreNotify_Download_Set_Cat_Prio(cat, pri)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Prio, cat, pri)
 #define CoreNotify_Download_Set_Cat_Status(cat, st)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Status, cat, st)
+
+//
+// Notifications that always create an event
+//
+
+// IP filter
+#define NotifyAlways_IPFilter_Reload()			MuleNotify::DoNotifyAlways(&MuleNotify::IPFilter_Reload)
+#define NotifyAlways_IPFilter_Update(url)		MuleNotify::DoNotifyAlways(&MuleNotify::IPFilter_Update, url)
 
 #endif // __GUIEVENTS_H__
 

@@ -44,7 +44,6 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "amule.h"		// Needed for theApp
 #include "SearchList.h"		// Needed for GetSearchResults
-#include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "Logger.h"
@@ -1407,7 +1406,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		// IPFilter
 		//
 		case EC_OP_IPFILTER_RELOAD:
-			theApp->ipfilter->Reload();
+			NotifyAlways_IPFilter_Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 
@@ -1416,7 +1415,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			if (url.IsEmpty()) {
 				url = thePrefs::IPFilterURL();
 			}
-			theApp->ipfilter->Update(url);
+			NotifyAlways_IPFilter_Update(url);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		}
