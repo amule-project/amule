@@ -26,8 +26,10 @@
 #ifndef COMMONMENUIDS_H
 #define COMMONMENUIDS_H
 
+#include <wx/defs.h>	// To access wxID_HIGHEST menu item constant
+
 enum {
-	MP_MESSAGE = 11000, // Random start ID that doesn't conflict with wxDesigner
+	MP_MESSAGE = wxID_HIGHEST + 1, // Start ID at next free value (defined by wx)
 	MP_DETAIL,
 	MP_ADDFRIEND,
 	MP_REMOVEFRIEND,
@@ -120,11 +122,32 @@ enum {
 	MP_LISTCOL_14,
 	MP_LISTCOL_15,
 
+	MP_ASSIGNCAT 	= MP_LISTCOL_15   + 1,   // reserve some for categories (about 100)
+	MP_CAT_SET0		= MP_ASSIGNCAT    + 100, // reserve some for change all-cats (about 50)
+	MP_SWITCHCTRL_0 = MP_CAT_SET0     + 50,
+	MP_SWITCHCTRL_9	= MP_SWITCHCTRL_0 + 9,
 
-	MP_ASSIGNCAT = 10800, // reserve some for categories!
-	MP_CAT_SET0 = 10900, // reserve some for change all-cats (about 50)
-	MP_SWITCHCTRL_0 = 10950,
-	MP_SWITCHCTRL_9	= 10959
+// Pop-up menu clickable entries
+	TRAY_MENU_INFO = 0,
+	TRAY_MENU_CLIENTINFO = 0,
+	TRAY_MENU_CLIENTINFO_ITEM = MP_SWITCHCTRL_9 + 1,  // continue from MP_SWITCHCTRL_9
+	TRAY_MENU_DISCONNECT,
+	TRAY_MENU_CONNECT,
+	TRAY_MENU_HIDE,
+	TRAY_MENU_SHOW,
+	TRAY_MENU_EXIT,
+	UPLOAD_ITEM1,
+	UPLOAD_ITEM2,
+	UPLOAD_ITEM3,
+	UPLOAD_ITEM4,
+	UPLOAD_ITEM5,
+	UPLOAD_ITEM6,
+	DOWNLOAD_ITEM1,
+	DOWNLOAD_ITEM2,
+	DOWNLOAD_ITEM3,
+	DOWNLOAD_ITEM4,
+	DOWNLOAD_ITEM5,
+	DOWNLOAD_ITEM6
 };
 
 #endif // COMMONMENUIDS_H
