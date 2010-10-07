@@ -38,39 +38,15 @@
 #include <wx/menu.h>
 
 #include "amule.h" 			// Needed for theApp
-#include "amuleDlg.h" 			// Needed for IsShown
-#include "Preferences.h"		// Needed for thePrefs
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "amuleDlg.h" 		// Needed for IsShown
+#include "Preferences.h"	// Needed for thePrefs
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "Server.h"			// Needed for CServer
-#include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
-#include "Statistics.h"			// Needed for theStats
-#include <common/Format.h>			// Needed for CFormat
+#include "StatisticsDlg.h"	// Needed for CStatisticsDlg::getColors()
+#include "Statistics.h"		// Needed for theStats
+#include <common/Format.h>	// Needed for CFormat
 #include "Logger.h"
-
-
-// Pop-up menu clickable entries
-enum {
-	TRAY_MENU_INFO = 0,
-	TRAY_MENU_CLIENTINFO=0,
-	TRAY_MENU_CLIENTINFO_ITEM = 13007,
-	TRAY_MENU_DISCONNECT,
-	TRAY_MENU_CONNECT,
-	TRAY_MENU_HIDE,
-	TRAY_MENU_SHOW,
-	TRAY_MENU_EXIT,
-	UPLOAD_ITEM1=12340,
-	UPLOAD_ITEM2=12341,
-	UPLOAD_ITEM3=12342,
-	UPLOAD_ITEM4=12343,
-	UPLOAD_ITEM5=12344,
-	UPLOAD_ITEM6=12345,
-	DOWNLOAD_ITEM1=54320,
-	DOWNLOAD_ITEM2=54321,
-	DOWNLOAD_ITEM3=54322,
-	DOWNLOAD_ITEM4=54323,
-	DOWNLOAD_ITEM5=54324,
-	DOWNLOAD_ITEM6=54325
-};
+#include <common/MenuIDs.h>	// Needed to access menu item constants
 
 /****************************************************/
 /******************* Event Table ********************/
