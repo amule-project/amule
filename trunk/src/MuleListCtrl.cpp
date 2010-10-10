@@ -248,7 +248,7 @@ void CMuleListCtrl::LoadSettings()
 			wxString name = token.BeforeFirst(wxT(':'));
 			long width = StrToLong(token.AfterFirst(wxT(':')));
 			int col = GetColumnIndex(name);
-			if (col > 0) {
+			if (col >= 0) {
 				SetColumnWidth(col, width);
 			}
 		}
