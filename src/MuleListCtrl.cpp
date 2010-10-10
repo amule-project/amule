@@ -111,20 +111,20 @@ long CMuleListCtrl::InsertColumn(long col, const wxString& heading, int format, 
 
 		// Check for uniqueness of names.
 		for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
-			if (name == it->second) {
+			if (name == it->name) {
 				wxFAIL_MSG(wxT("Column name \"") + name + wxT("\" is not unique!"));
 			}
 		}
 #endif
 		// Insert name at position col.
 		ColNameList::iterator it = m_column_names.begin();
-		while (it != m_column_names.end() && it->first < col) {
+		while (it != m_column_names.end() && it->index < col) {
 			++it;
 		}
-		m_column_names.insert(it, ColNameEntry(col, name));
+		m_column_names.insert(it, ColNameEntry(col, width, name));
 		while (it != m_column_names.end()) {
 			++it;
-			++(it->first);
+			++(it->index);
 		}
 	}
 
@@ -268,18 +268,28 @@ void CMuleListCtrl::LoadSettings()
 const wxString& CMuleListCtrl::GetColumnName(int index) const
 {
 	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
-		if (it->first == index) {
-			return it->second;
+		if (it->index == index) {
+			return it->name;
 		}
 	}
 	return EmptyString;
 }
 
+int CMuleListCtrl::GetColumnDefaultWidth(int index) const
+{
+	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+		if (it->index == index) {
+			return it->defaultWidth;
+		}
+	}
+	return wxLIST_AUTOSIZE;
+}
+
 int CMuleListCtrl::GetColumnIndex(const wxString& name) const
 {
 	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
-		if (it->second == name) {
-			return it->first;
+		if (it->name == name) {
+			return it->index;
 		}
 	}
 	return -1;
@@ -442,7 +452,7 @@ void CMuleListCtrl::OnMenuSelected( wxCommandEvent& evt )
 	if (GetColumnWidth(col) > COL_SIZE_MIN) {
 		SetColumnWidth(col, 0);
 	} else {
-		SetColumnWidth(col, wxLIST_AUTOSIZE);
+		SetColumnWidth(col, GetColumnDefaultWidth(col));
 	}	
 }
 

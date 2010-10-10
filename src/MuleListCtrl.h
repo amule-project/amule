@@ -422,6 +422,16 @@ private:
 	const wxString& GetColumnName(int column) const;
 
 	/**
+	 * Get the column default width by index.
+	 *
+	 * @param[in] column Index of the column whose name we're looking for.
+	 *
+	 * @return The column default width or wx default width if index is invalid
+	 * (out of range), or the column name hasn't been set.
+	 */
+	int GetColumnDefaultWidth(int column) const;
+
+	/**
 	 * Get column index by name.
 	 *
 	 * @param[in] name Internal name of the colunm whose index is needed.
@@ -448,8 +458,16 @@ private:
 	 */
 	void ParseOldConfigEntries(const wxString& sortOrders, const wxString& columnWidths);
 
-	/// This pair contains a column index and its name.
-	typedef std::pair<int, wxString>	ColNameEntry;
+	/// This class contains a column index, its default width and its name.
+	class ColNameEntry {
+	public:
+		int index;
+		int	defaultWidth;
+		wxString name;
+		ColNameEntry(int _index, int _defaultWidth, const wxString& _name) 
+			:	index(_index), defaultWidth(_defaultWidth), name(_name) {}
+	};
+
 	/// This list contains the colunms' names.
 	typedef std::list<ColNameEntry>		ColNameList;
 
