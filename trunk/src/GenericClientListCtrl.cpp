@@ -94,9 +94,9 @@ private:
 #define m_ImageList theApp->amuledlg->m_imagelist
 
 BEGIN_EVENT_TABLE(CGenericClientListCtrl, CMuleListCtrl)
-	EVT_LIST_ITEM_ACTIVATED(ID_CLIENTLIST,	CGenericClientListCtrl::OnItemActivated)
-	EVT_LIST_ITEM_RIGHT_CLICK(ID_CLIENTLIST, CGenericClientListCtrl::OnMouseRightClick)
-	EVT_LIST_ITEM_MIDDLE_CLICK(ID_CLIENTLIST, CGenericClientListCtrl::OnMouseMiddleClick)
+	EVT_LIST_ITEM_ACTIVATED(wxID_ANY,	CGenericClientListCtrl::OnItemActivated)
+	EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY, CGenericClientListCtrl::OnMouseRightClick)
+	EVT_LIST_ITEM_MIDDLE_CLICK(wxID_ANY, CGenericClientListCtrl::OnMouseMiddleClick)
 
 	EVT_CHAR( CGenericClientListCtrl::OnKeyPressed )
 
