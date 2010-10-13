@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-01 02:06+0200\n"
-"PO-Revision-Date: 2010-08-13 05:37+0200\n"
+"PO-Revision-Date: 2010-10-13 13:02+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -2295,6 +2295,8 @@ msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
 msgstr ""
+"Nodes.dat dosyası okunamadı- dosya çok eski. Bu sürüm (0) artık "
+"desteklenmiyor."
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -4960,19 +4962,16 @@ msgid "- UDP port changed.\n"
 msgstr "- UDP Portu değişti.\n"
 
 #: src/PrefsUnifiedDlg.cpp:567
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Dışarıdan bağlantı kesildi."
+msgstr "- Dışarıdan bağlantı portu değişti.\n"
 
 #: src/PrefsUnifiedDlg.cpp:571
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Yeni dışarıdan bağlantı kabul edildi"
+msgstr "- Dışarıdan bağlantı kabul edilme işlemi değişti.\n"
 
 #: src/PrefsUnifiedDlg.cpp:575
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Dışarıdan bağlantı kesildi."
+msgstr "- Dışarıdan bağlantı arayüzü değişti.\n"
 
 #: src/PrefsUnifiedDlg.cpp:584
 msgid ""
@@ -5640,9 +5639,8 @@ msgid "Kademlia Status:"
 msgstr "Kademlia Durumu:"
 
 #: src/ServerWnd.cpp:207
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "%s üzerinde çalışıyor"
+msgstr "LAN kipinde çalışıyor"
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
@@ -6266,12 +6264,11 @@ msgstr "Arama sonuçları sayısı:%i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Arama süreci: %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "İşlem yüzdesini göster"
+msgstr "Arama süreci görüntülünemiyor"
 
 #: src/TextClient.cpp:837
 #, c-format
