@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-01 02:06+0200\n"
-"PO-Revision-Date: 2010-09-07 19:42+0100\n"
+"PO-Revision-Date: 2010-10-13 15:39+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -5039,19 +5039,16 @@ msgid "- UDP port changed.\n"
 msgstr "- Modifica della porta UDP.\n"
 
 #: src/PrefsUnifiedDlg.cpp:567
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Connessione esterna chiusa."
+msgstr "- Porta della connessione esterna modificata. \n"
 
 #: src/PrefsUnifiedDlg.cpp:571
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Accettata nuova connessione esterna"
+msgstr "- Accetta connessione esterna modificata. \n"
 
 #: src/PrefsUnifiedDlg.cpp:575
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Connessione esterna chiusa."
+msgstr "- Interfaccia connessione esterna modificata. \n"
 
 #: src/PrefsUnifiedDlg.cpp:584
 msgid ""
@@ -5727,9 +5724,8 @@ msgid "Kademlia Status:"
 msgstr "Stato Kademlia:"
 
 #: src/ServerWnd.cpp:207
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "In esecuzione su %s"
+msgstr "Esecuzione in modalità LAN"
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
@@ -6349,12 +6345,11 @@ msgstr "Totale risultati della ricerca: %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Avanzamento ricerca: %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Mostra la percentuale di avanzamento"
+msgstr "Avanzamento ricerca non disponibile"
 
 #: src/TextClient.cpp:837
 #, c-format
