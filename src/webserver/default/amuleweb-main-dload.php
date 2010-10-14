@@ -6,7 +6,7 @@
 	if ( $_SESSION["auto_refresh"] > 0 ) {
 		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"], '">';
 	}
-?><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+?><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <script language="JavaScript" type="text/JavaScript">
 <!--
