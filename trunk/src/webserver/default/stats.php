@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>amule control page</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragmas" content="no-cache">
 <?php
 	if ( $_SESSION["auto_refresh"] > 0 ) {
