@@ -97,7 +97,7 @@ CSharedFilesWnd::~CSharedFilesWnd()
 		// Save the visible status of the list
 		config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
 	}
-	config->Write(wxT("/GUI/SharedWnd/ClientShowMode"), m_clientShow);
+	config->Write(wxT("/GUI/SharedWnd/ClientShowMode"), (int)m_clientShow);
 }
 
 
