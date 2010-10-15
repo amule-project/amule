@@ -25,6 +25,7 @@
 
 #include <wx/config.h>
 #include <wx/gauge.h>		// Do_not_auto_remove (win32)
+#include <wx/radiobox.h>
 
 #include "SharedFilesWnd.h"	// Interface declarations
 #include "SharedFilesCtrl.h"
@@ -33,6 +34,7 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "amule.h"			// Needed for theApp
+#include "UploadQueue.h"	// Needed for theApp->uploadqueue
 
 
 BEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
@@ -40,6 +42,7 @@ BEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
 	EVT_LIST_ITEM_DESELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_BUTTON( ID_BTNRELSHARED,			CSharedFilesWnd::OnBtnReloadShared )
  	EVT_BUTTON(ID_SHAREDCLIENTTOGGLE,		CSharedFilesWnd::OnToggleClientList)
+	EVT_RADIOBOX(ID_SHOW_CLIENTS_MODE,		CSharedFilesWnd::OnSelectClientsMode)
 	
 	EVT_SPLITTER_SASH_POS_CHANGING(ID_SHARESSPLATTER, CSharedFilesWnd::OnSashPositionChanging)
 END_EVENT_TABLE()
@@ -53,6 +56,7 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	m_bar_requests	= CastChild( wxT("popbar"), wxGauge );
 	m_bar_accepted	= CastChild( wxT("popbarAccept"), wxGauge );
 	m_bar_transfer	= CastChild( wxT("popbarTrans"), wxGauge );
+	m_radioClientMode = CastChild( ID_SHOW_CLIENTS_MODE, wxRadioBox );
 	sharedfilesctrl = CastChild( wxT("sharedFilesCt"), CSharedFilesCtrl );
 	peerslistctrl   = CastChild( ID_SHAREDCLIENTLIST, CSharedFilePeersListCtrl );
 	wxASSERT(sharedfilesctrl);
@@ -69,6 +73,8 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	peerslistctrl->SetShowing(show);
 	// Load the last used splitter position
 	m_splitter = config->Read( wxT("/GUI/SharedWnd/Splitter"), 463l );
+	m_clientShow = (EClientShow) config->Read(wxT("/GUI/SharedWnd/ClientShowMode"), ClientShowSelected);
+	m_radioClientMode->SetSelection(m_clientShow);
 }
 
 
@@ -90,7 +96,8 @@ CSharedFilesWnd::~CSharedFilesWnd()
 		
 		// Save the visible status of the list
 		config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
-	}	
+	}
+	config->Write(wxT("/GUI/SharedWnd/ClientShowMode"), m_clientShow);
 }
 
 
@@ -106,7 +113,37 @@ void CSharedFilesWnd::SelectionUpdated()
 		
 		CKnownFileVector fileVector;
 		
-		if ( !sharedfilesctrl->GetSelectedItemCount() ) {
+		// Create a total statistic for the selected item(s)
+		uint32 session_requests = 0;
+		uint32 session_accepted = 0;
+		uint64 session_transferred = 0;
+		uint32 all_requests = 0;
+		uint32 all_accepted = 0;
+		uint64 all_transferred = 0;
+		
+		long index = -1;
+		int filter = (m_clientShow == ClientShowSelected) ? wxLIST_STATE_SELECTED : wxLIST_STATE_DONTCARE;
+		while ( (index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, filter)) != -1) {
+			CKnownFile* file = (CKnownFile*)sharedfilesctrl->GetItemData( index );
+			wxASSERT(file);
+				
+			// Bars are always for selected files
+			if (sharedfilesctrl->GetItemState(index, wxLIST_STATE_SELECTED)) {
+				session_requests   += file->statistic.GetRequests();
+				session_accepted   += file->statistic.GetAccepts();
+				session_transferred += file->statistic.GetTransferred();
+			
+				all_requests   += file->statistic.GetAllTimeRequests();
+				all_accepted   += file->statistic.GetAllTimeAccepts();
+				all_transferred += file->statistic.GetAllTimeTransferred();
+			}
+					
+			if (m_clientShow != ClientShowUploading) {
+				fileVector.push_back(file);
+			}
+		}
+
+		if (fileVector.empty()) {
 			// Requests
 			m_bar_requests->SetValue( 0 );
 			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( wxT("- / -") );
@@ -120,35 +157,6 @@ void CSharedFilesWnd::SelectionUpdated()
 			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("- / -") );
 			
 		} else {
-			// Create a total statistic for the selected item(s)
-			uint32 session_requests = 0;
-			uint32 session_accepted = 0;
-			uint64 session_transferred = 0;
-			uint32 all_requests = 0;
-			uint32 all_accepted = 0;
-			uint64 all_transferred = 0;
-			
-			long index = -1;
-
-			fileVector.reserve(sharedfilesctrl->GetSelectedItemCount());
-			
-			while ( (index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED )) != -1) {
-				if ( sharedfilesctrl->GetItemState( index, wxLIST_STATE_SELECTED ) ) {
-					CKnownFile* file = (CKnownFile*)sharedfilesctrl->GetItemData( index );
-					wxASSERT(file);
-					
-					session_requests   += file->statistic.GetRequests();
-					session_accepted   += file->statistic.GetAccepts();
-					session_transferred += file->statistic.GetTransferred();
-			
-					all_requests   += file->statistic.GetAllTimeRequests();
-					all_accepted   += file->statistic.GetAllTimeAccepts();
-					all_transferred += file->statistic.GetAllTimeTransferred();
-					
-					fileVector.push_back(file);
-				}
-			};
-
 			std::sort(fileVector.begin(), fileVector.end());			
 			
 			// Store text lengths, and layout() when the texts have grown
@@ -179,7 +187,16 @@ void CSharedFilesWnd::SelectionUpdated()
 			}
 		}
 	
-		this->peerslistctrl->ShowSources(fileVector);
+		if (m_clientShow == ClientShowUploading) {
+			// The GenericClientListCtrl is designed to show clients associated with a KnownFile.
+			// So the uploadqueue carries a special known file with all ongoing uploads in its upload list.
+			// This is a hack, but easier than trying to bend the class into a shape it was not intended for
+			// to show all clients currently uploading.
+#ifndef CLIENT_GUI
+			fileVector.push_back(theApp->uploadqueue->GetAllUploadingKnownFile());
+#endif
+		}
+		peerslistctrl->ShowSources(fileVector);
 		
 		Refresh();
 		Layout();
@@ -312,4 +329,16 @@ void CSharedFilesWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		}
 	}
 }
+
+
+void CSharedFilesWnd::OnSelectClientsMode(wxCommandEvent& WXUNUSED(evt))
+{
+	EClientShow clientShowLast = m_clientShow;
+	m_clientShow = (EClientShow) m_radioClientMode->GetSelection();
+
+	if (m_clientShow != clientShowLast) {
+		SelectionUpdated();
+	}
+}
+
 // File_checked_for_headers

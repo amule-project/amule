@@ -35,6 +35,7 @@ class CSharedFilePeersListCtrl;
 class wxListEvent;
 class wxGauge;
 class wxSplitterEvent;
+class wxRadioBox;
 
 /**
  * This class represents the window containing the list of shared files.
@@ -99,9 +100,14 @@ private:
 	void OnToggleClientList( wxCommandEvent& event );
 
 	/**
-	 * Event-handler for for changes in the sash divider position.
+	 * Event-handler for changes in the sash divider position.
 	 */
 	void OnSashPositionChanging(wxSplitterEvent& evt);
+
+	/**
+	 * Event-handler for changes in the clients mode radio box.
+	 */
+	void OnSelectClientsMode( wxCommandEvent& WXUNUSED(evt) );
 
 	//! Pointer to the gauge used for showing requests ratio.
 	wxGauge* m_bar_requests;
@@ -109,8 +115,20 @@ private:
 	wxGauge* m_bar_accepted;
 	//! Pointer to the gauge used for showing the transferred ratio.
 	wxGauge* m_bar_transfer;
-	//! Pointer to the gauge used for showing the transferred ratio.
+	//! Pointer to the radio box selecting the client mode.
+	wxRadioBox* m_radioClientMode;
+	//! Flag if window has been prepared
 	bool	m_prepared;
+
+	/**
+	 * Mode which clients are shown
+	 */
+	enum EClientShow {
+		ClientShowAll = 0,
+		ClientShowSelected,
+		ClientShowUploading
+	};
+	EClientShow m_clientShow;
 
 	
 	DECLARE_EVENT_TABLE()
