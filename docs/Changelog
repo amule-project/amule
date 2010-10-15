@@ -154,6 +154,7 @@ Version 2.3.0 - The river knows.
 		* Don't lock up in an infinite loop if all servers are not resolvable or blocked by IP filter
 		* Clients now always get uploaded a full chunk (removed setting)
 		* amulecmd fixes ed2k links where '|' has been replaced with '%7C'
+		* Fixed multi line stdin redirected as batch into amulecmd
 
 	Vollstrecker:
 		* Unify copyright lines
