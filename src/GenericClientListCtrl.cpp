@@ -626,13 +626,13 @@ void CGenericClientListCtrl::DrawClientItem(
 	switch (nColumn) {
 		// Client name + various icons
 		case ColumnUserName: {
-			wxRect cur_rec = rect;
-			// +3 is added by OnDrawItem()... so take it off
-			// Kry - eMule says +1, so I'm trusting it
-			wxPoint point( cur_rec.GetX(), cur_rec.GetY()+1 );
+			// Point will get shifted per drawing.
+
+			wxPoint point( rect.GetX(), rect.GetY() );
+
+			uint8 image = Client_Grey_Smiley;
 
 			if (item->GetType() != A4AF_SOURCE) {
-				uint8 image = 0;
 				
 				switch (client->GetDownloadState()) {
 					case DS_CONNECTING:
@@ -654,23 +654,25 @@ void CGenericClientListCtrl::DrawClientItem(
 						break;
 					case DS_NONEEDEDPARTS:
 					case DS_LOWTOLOWIP:
-						image = Client_Grey_Smiley;
+						image = Client_Grey_Smiley; // Redundant
 						break;
 					default: // DS_NONE i.e.
 						image = Client_White_Smiley;
 					}
 
-					m_ImageList.Draw(image, *dc, point.x, point.y,
-						wxIMAGELIST_DRAW_TRANSPARENT);
 				} else {
-					m_ImageList.Draw(Client_Grey_Smiley, *dc, point.x, point.y,
-						wxIMAGELIST_DRAW_TRANSPARENT);
+					// Default (Client_Grey_Smiley)
 				}
 
-				cur_rec.x += 20;
-				wxPoint point2( cur_rec.GetX(), cur_rec.GetY() + 1 );
+				wxSize bitmapsize = m_ImageList.GetBitmap(image).GetSize();
 
-				uint8 clientImage;
+				m_ImageList.Draw(image, *dc, point.x, point.y + (rect.GetHeight() - bitmapsize.GetHeight())/2, wxIMAGELIST_DRAW_TRANSPARENT);
+
+				// Next
+
+				point.x += bitmapsize.GetWidth() + 2 /*Padding*/; 
+
+				uint8 clientImage = Client_Unknown;
 				
 				if ( client->IsFriend() ) {
 					clientImage = Client_Friend_Smiley;
@@ -706,47 +708,58 @@ void CGenericClientListCtrl::DrawClientItem(
 							// cDonkey, Compatible, Unknown
 							// No icon for those yet.
 							// Using the eMule one + '?'
-							clientImage = Client_Unknown;
+							// Which is a faillback to the default (Client_Unknown)
 							break;
 					}
 				}
 
-				m_ImageList.Draw(clientImage, *dc, point2.x, point.y,
-					wxIMAGELIST_DRAW_TRANSPARENT);
+				bitmapsize = m_ImageList.GetBitmap(clientImage).GetSize();
+				int realY = point.y + (rect.GetHeight() - bitmapsize.GetHeight())/2;
+				m_ImageList.Draw(clientImage, *dc, point.x, realY, wxIMAGELIST_DRAW_TRANSPARENT);
 
 				if (client->GetScoreRatio() > 1) {
 					// Has credits, draw the gold star
-					m_ImageList.Draw(Client_CreditsYellow_Smiley, *dc, point2.x, point.y, 
+					m_ImageList.Draw(Client_CreditsYellow_Smiley, *dc, point.x, realY, 
 						wxIMAGELIST_DRAW_TRANSPARENT );
 				}	else if ( !client->ExtProtocolAvailable() ) {
 					// No Ext protocol -> Draw the '-'
-					m_ImageList.Draw(Client_ExtendedProtocol_Smiley, *dc, point2.x, point.y,
+					m_ImageList.Draw(Client_ExtendedProtocol_Smiley, *dc, point.x, realY,
 						wxIMAGELIST_DRAW_TRANSPARENT);
 				}
 
 				if (client->IsIdentified()) {
 					// the 'v'
-					m_ImageList.Draw(Client_SecIdent_Smiley, *dc, point2.x, point.y,
+					m_ImageList.Draw(Client_SecIdent_Smiley, *dc, point.x, realY,
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				} else if (client->IsBadGuy()) {
 					// the 'X'
-					m_ImageList.Draw(Client_BadGuy_Smiley, *dc, point2.x, point.y,
+					m_ImageList.Draw(Client_BadGuy_Smiley, *dc, point.x, realY,
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}
 							
 				if (client->GetObfuscationStatus() == OBST_ENABLED) {
 					// the "¿" except it's a key
-					m_ImageList.Draw(Client_Encryption_Smiley, *dc, point2.x, point.y,
+					m_ImageList.Draw(Client_Encryption_Smiley, *dc, point.x, realY,
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}				
 				
+				// Next
+
+				point.x += bitmapsize.GetWidth() + 2 /*Padding*/; 
+
+				dc->DrawBitmap(
+
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
 				// Draw the flag
 				const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
+
+				bitmapsize = countrydata.Flag.GetSize();
+				realY = point.y + (rect.GetHeight() - bitmapsize.GetHeight())/2;
+
 				dc->DrawBitmap(countrydata.Flag,
-					rect.x + 40, rect.y + 5,
-					wxIMAGELIST_DRAW_TRANSPARENT != 0);
+					point.x, realY,
+					true);
 				
 				userName << countrydata.Name;
 				
