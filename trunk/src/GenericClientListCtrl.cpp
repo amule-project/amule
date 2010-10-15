@@ -747,8 +747,6 @@ void CGenericClientListCtrl::DrawClientItem(
 
 				point.x += bitmapsize.GetWidth() + 2 /*Padding*/; 
 
-				dc->DrawBitmap(
-
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
 				// Draw the flag
