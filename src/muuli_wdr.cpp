@@ -3361,7 +3361,7 @@ wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item2->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, -1, _("percent of total files"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item13 = new wxStaticText( parent, -1, _("Percent of total files"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxGauge *item14 = new wxGauge( parent, -1, 100, wxDefaultPosition, wxSize(200,18), 0 );
