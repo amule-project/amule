@@ -462,6 +462,9 @@ void CSharedFilesCtrl::ShowFilesCount()
 	
 	label->SetLabel(CFormat(_("Shared Files (%i)")) % GetItemCount());
 	label->GetParent()->Layout();
+	// If file list was updated, the "selection" is involved too, if we chose to show clients for all files.
+	// So update client list here too.
+	theApp->amuledlg->m_sharedfileswnd->SelectionUpdated();
 }
 
 

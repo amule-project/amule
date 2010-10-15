@@ -66,6 +66,7 @@ CUploadQueue::CUploadQueue()
 	m_lastSort = 0;
 	lastupslotHighID = true;
 	m_allowKicking = true;
+	m_allUploadingKnownFile = new CKnownFile;
 }
 
 
@@ -213,6 +214,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 
 	theApp->uploadBandwidthThrottler->AddToStandardList(m_uploadinglist.size(), newclient->GetSocket());
 	m_uploadinglist.push_back(newclient);
+	m_allUploadingKnownFile->AddUploadingClient(newclient);
 	theStats::AddUploadingClient();
 
 	// Statistic
@@ -220,6 +222,8 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	if (reqfile) {
 		reqfile->statistic.AddAccepted();
 	}
+
+	Notify_SharedCtrlRefreshClient(newclient, AVAILABLE_SOURCE);
 }
 
 void CUploadQueue::Process()
@@ -306,6 +310,7 @@ CUploadQueue::~CUploadQueue()
 {
 	wxASSERT(m_waitinglist.empty());
 	wxASSERT(m_uploadinglist.empty());
+	delete m_allUploadingKnownFile;
 }
 
 
@@ -501,6 +506,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client)
 	
 	if (it != m_uploadinglist.end()) {
 		m_uploadinglist.erase(it);
+		m_allUploadingKnownFile->RemoveUploadingClient(client);
 		theStats::RemoveUploadingClient();
 		if( client->GetTransferredUp() ) {
 			theStats::AddSuccessfulUpload();

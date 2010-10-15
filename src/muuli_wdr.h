@@ -444,35 +444,34 @@ extern wxSizer *s_sharedfilespeerHeader;
 #define ID_SHAREDCLIENTLIST 10313
 wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_BTN_SHARED_ALL 10314
-#define ID_BTN_SHARED_ONLY_UL 10315
-#define ID_BTNRELSHARED 10316
-#define ID_SHFILELIST 10317
+#define ID_SHOW_CLIENTS_MODE 10314
+#define ID_BTNRELSHARED 10315
+#define ID_SHFILELIST 10316
 wxSizer *sharedfilesTopDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_FRIENDLIST 10318
+#define ID_FRIENDLIST 10317
 wxSizer *messagePageFriends( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_CHATSELECTOR 10319
-#define IDC_CMESSAGE 10320
-#define IDC_CSEND 10321
-#define IDC_CCLOSE 10322
+#define IDC_CHATSELECTOR 10318
+#define IDC_CMESSAGE 10319
+#define IDC_CSEND 10320
+#define IDC_CCLOSE 10321
 wxSizer *messagePageMessages( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10323
-#define ID_BUTTONNETWORKS 10324
-#define ID_BUTTONSEARCH 10325
-#define ID_BUTTONDOWNLOADS 10326
-#define ID_BUTTONSHARED 10327
-#define ID_BUTTONMESSAGES 10328
-#define ID_BUTTONSTATISTICS 10329
-#define ID_BUTTONNEWPREFERENCES 10330
-#define ID_BUTTONIMPORT 10331
-#define ID_ABOUT 10332
+#define ID_BUTTONCONNECT 10322
+#define ID_BUTTONNETWORKS 10323
+#define ID_BUTTONSEARCH 10324
+#define ID_BUTTONDOWNLOADS 10325
+#define ID_BUTTONSHARED 10326
+#define ID_BUTTONMESSAGES 10327
+#define ID_BUTTONSTATISTICS 10328
+#define ID_BUTTONNEWPREFERENCES 10329
+#define ID_BUTTONIMPORT 10330
+#define ID_ABOUT 10331
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

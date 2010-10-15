@@ -30,6 +30,7 @@
 #include <set>
 
 class CUpDownClient;
+class CKnownFile;
 
 class CUploadQueue
 {
@@ -51,6 +52,7 @@ public:
 
 	uint16	SuspendUpload(const CMD4Hash &, bool terminate);
 	void	ResumeUpload(const CMD4Hash &);
+	CKnownFile* GetAllUploadingKnownFile() { return m_allUploadingKnownFile; }
 
 private:
 	void	RemoveFromWaitingQueue(CClientPtrList::iterator pos);
@@ -67,6 +69,8 @@ private:
 	uint32	m_lastSort;
 	bool	lastupslotHighID; // VQB lowID alternation
 	bool	m_allowKicking;
+	// This KnownFile collects all currently uploading clients for display in the upload list control
+	CKnownFile * m_allUploadingKnownFile;
 };
 
 #endif // UPLOADQUEUE_H
