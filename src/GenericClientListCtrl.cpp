@@ -664,7 +664,7 @@ void CGenericClientListCtrl::DrawClientItem(
 					// Default (Client_Grey_Smiley)
 				}
 
-				wxBitmap& bitmap = m_ImageList.GetBitmap(image);
+				wxBitmap bitmap = m_ImageList.GetBitmap(image);
 
 				m_ImageList.Draw(image, *dc, point.x, point.y + (rect.GetHeight() - bitmap.GetHeight())/2, wxIMAGELIST_DRAW_TRANSPARENT);
 
