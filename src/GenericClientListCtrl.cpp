@@ -664,13 +664,13 @@ void CGenericClientListCtrl::DrawClientItem(
 					// Default (Client_Grey_Smiley)
 				}
 
-				wxSize bitmapsize = m_ImageList.GetBitmap(image).GetSize();
+				wxBitmap& bitmap = m_ImageList.GetBitmap(image);
 
-				m_ImageList.Draw(image, *dc, point.x, point.y + (rect.GetHeight() - bitmapsize.GetHeight())/2, wxIMAGELIST_DRAW_TRANSPARENT);
+				m_ImageList.Draw(image, *dc, point.x, point.y + (rect.GetHeight() - bitmap.GetHeight())/2, wxIMAGELIST_DRAW_TRANSPARENT);
 
 				// Next
 
-				point.x += bitmapsize.GetWidth() + 2 /*Padding*/; 
+				point.x += bitmap.GetWidth() + 2 /*Padding*/; 
 
 				uint8 clientImage = Client_Unknown;
 				
@@ -713,8 +713,8 @@ void CGenericClientListCtrl::DrawClientItem(
 					}
 				}
 
-				bitmapsize = m_ImageList.GetBitmap(clientImage).GetSize();
-				int realY = point.y + (rect.GetHeight() - bitmapsize.GetHeight())/2;
+				bitmap = m_ImageList.GetBitmap(clientImage);
+				int realY = point.y + (rect.GetHeight() - bitmap.GetHeight())/2;
 				m_ImageList.Draw(clientImage, *dc, point.x, realY, wxIMAGELIST_DRAW_TRANSPARENT);
 
 				if (client->GetScoreRatio() > 1) {
@@ -745,15 +745,14 @@ void CGenericClientListCtrl::DrawClientItem(
 				
 				// Next
 
-				point.x += bitmapsize.GetWidth() + 2 /*Padding*/; 
+				point.x += bitmap.GetWidth() + 2 /*Padding*/; 
 
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
 				// Draw the flag
 				const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
 
-				bitmapsize = countrydata.Flag.GetSize();
-				realY = point.y + (rect.GetHeight() - bitmapsize.GetHeight())/2;
+				realY = point.y + (rect.GetHeight() - countrydata.Flag.GetHeight())/2;
 
 				dc->DrawBitmap(countrydata.Flag,
 					point.x, realY,
@@ -762,13 +761,17 @@ void CGenericClientListCtrl::DrawClientItem(
 				userName << countrydata.Name;
 				
 				userName << wxT(" - ");
+
+				point.x += countrydata.Flag.GetWidth() + 2 /*Padding*/; 
 #endif // ENABLE_IP2COUNTRY
 				if (client->GetUserName().IsEmpty()) {
 					userName << wxT("?");
 				} else {
 					userName << client->GetUserName();
 				}
-				dc->DrawText(userName, rect.GetX() + 60, rect.GetY());
+
+
+				dc->DrawText(userName, point.x, rect.GetY());
 			}
 			break;
 
