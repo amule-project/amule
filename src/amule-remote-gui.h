@@ -705,6 +705,8 @@ public:
 	uint32 m_clientID;
 
 	wxLocale	m_locale;
+	// This KnownFile collects all currently uploading clients for display in the upload list control
+	CKnownFile * m_allUploadingKnownFile;
 
 	DECLARE_EVENT_TABLE()
 };

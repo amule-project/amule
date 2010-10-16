@@ -192,7 +192,9 @@ void CSharedFilesWnd::SelectionUpdated()
 			// So the uploadqueue carries a special known file with all ongoing uploads in its upload list.
 			// This is a hack, but easier than trying to bend the class into a shape it was not intended for
 			// to show all clients currently uploading.
-#ifndef CLIENT_GUI
+#ifdef CLIENT_GUI
+			fileVector.push_back(theApp->m_allUploadingKnownFile);
+#else
 			fileVector.push_back(theApp->uploadqueue->GetAllUploadingKnownFile());
 #endif
 		}
