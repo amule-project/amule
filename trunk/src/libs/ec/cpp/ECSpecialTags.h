@@ -301,8 +301,8 @@ class CEC_UpDownClient_Tag : public CECTag {
  		bool ClientSoftware(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_SOFTWARE, target); }
 		bool SoftVerStr(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_SOFT_VER_STR, target); }
  		
- 		uint8 ClientUploadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_STATE, target); }
- 		uint8 ClientDownloadState(uint8 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_STATE, target); }
+ 		bool ClientUploadState(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_STATE, target); }
+ 		bool ClientDownloadState(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_DOWNLOAD_STATE, target); }
  		
  		//uint32 WaitTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAIT_TIME, target); }
  		//uint32 XferTime(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_XFER_TIME, target); }

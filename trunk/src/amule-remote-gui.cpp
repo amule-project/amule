@@ -222,6 +222,7 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 		amuledlg->Destroy();
 		amuledlg = NULL;
 	}
+	delete m_allUploadingKnownFile;
 }
 
 
@@ -357,6 +358,8 @@ void CamuleRemoteGuiApp::Startup() {
 
 	downloadqueue = new CDownQueueRem(m_connect);
 	ipfilter = new CIPFilterRem(m_connect);
+
+	m_allUploadingKnownFile = new CKnownFile;
 
 	// Create main dialog
 	InitGui(m_geometryEnabled, m_geometryString);
@@ -1280,8 +1283,14 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->OldRemoteQueueRank(&client->m_nOldRemoteQueueRank);
 	tag->AskedCount(&client->m_cAsked);
 	
-	tag->ClientDownloadState(&client->m_nDownloadState);
-	tag->ClientUploadState(&client->m_nUploadState);
+	tag->ClientDownloadState(client->m_nDownloadState);
+	if (tag->ClientUploadState(client->m_nUploadState)) {
+		if (client->m_nUploadState == US_UPLOADING) {
+			theApp->m_allUploadingKnownFile->AddUploadingClient(client);
+		} else {
+			theApp->m_allUploadingKnownFile->RemoveUploadingClient(client);
+		}
+	}
 	
 	tag->SpeedUp(&client->m_nUpDatarate);
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
@@ -1361,9 +1370,11 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	}
 
 	// Upload client
+	notified = false;
 	if (tag->UploadFile(fileID)) {
 		if (client->m_uploadingfile) {
 			client->m_uploadingfile->RemoveUploadingClient(client);	// this notifies
+			notified = true;
 			client->m_uploadingfile = NULL;
 			//client->m_downPartStatus.clear();
 		}
@@ -1371,8 +1382,22 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		if (kf) {
 			client->m_uploadingfile = kf;
 			client->m_uploadingfile->AddUploadingClient(client);	// this notifies
+			notified = true;
 			//client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
 		}
+	}
+
+	if (!notified && client->m_uploadingfile 
+		&& (client->m_uploadingfile->ShowSources() || (client->m_nUploadState == US_UPLOADING))) {
+			// notify if KnowFile is selected, or if it's uploading (in case clients are in show uploading mode)
+		SourceItemType type = UNAVAILABLE_SOURCE;
+		switch (client->GetUploadState()) {
+			case US_UPLOADING:
+			case US_ONUPLOADQUEUE:
+				type = AVAILABLE_SOURCE;
+				break;
+		}
+		Notify_SharedCtrlRefreshClient(client, type);
 	}
 }
 
