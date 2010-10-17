@@ -290,12 +290,12 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 {	
 	Freeze();
 	
-	// The stored vector is sorted, as it the received one, so we can use binary_search
+	// The stored vector is sorted, as is the received one, so we can use binary_search
 
 	for (unsigned i = 0; i < m_knownfiles.size(); ++i) {
 		// Files that are not in the new list must have show set to false.
 		if (!std::binary_search(files.begin(), files.end(), m_knownfiles[i])) {
-			m_knownfiles[i]->SetShowSources( false );
+			SetShowSources(m_knownfiles[i], false);
 		}
 	}
 	
@@ -304,7 +304,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 	// but this must be reviewed if that fact changes.
 
 	for (unsigned i = 0; i < files.size(); ++i) {
-		files[i]->SetShowSources( true );
+		SetShowSources(files[i], true);
 	}
 	
 	// We must cleanup sources that are not in the received files. 

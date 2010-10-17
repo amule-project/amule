@@ -300,6 +300,7 @@ CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
 void CKnownFile::Init() 
 {
 	m_showSources = false;
+	m_showPeers = false;
 	m_nCompleteSourcesTime = time(NULL);
 	m_nCompleteSourcesCount = 0;
 	m_nCompleteSourcesCountLo = 0;

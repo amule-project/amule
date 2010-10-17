@@ -292,7 +292,9 @@ public:
 	virtual wxString GetFeedback() const;
 
 	void	SetShowSources( bool val )	{ m_showSources = val; }
-	bool	ShowSources()				const { return m_showSources; }
+	bool	ShowSources() const			{ return m_showSources; }
+	void	SetShowPeers( bool val )	{ m_showPeers = val; }
+	bool	ShowPeers()	const			{ return m_showPeers; }
 
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);
@@ -343,6 +345,7 @@ protected:
 	uint32	m_lastBuddyIP;
 
 	bool	m_showSources;
+	bool	m_showPeers;
 private:
 	/** Common initializations for constructors. */
 	void Init();

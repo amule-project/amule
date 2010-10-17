@@ -1356,7 +1356,7 @@ uint16 CUpDownClient::GetNextRequestedPart() const
 void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
 	uint32 curTick = ::GetTickCount();
-	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
+	if (force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
 		// Check if we actually need to notify of changes
 		bool update = m_reqfile && m_reqfile->ShowSources();
 		
@@ -1373,11 +1373,12 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 	
 		// And finnaly trigger an event if there's any reason
 		if ( update ) {
-			SourceItemType type = A4AF_SOURCE;
+			SourceItemType type;
 			switch (GetDownloadState()) {
 				case DS_DOWNLOADING:
 				case DS_ONQUEUE:
 					// We will send A4AF, which will be checked.
+					type = A4AF_SOURCE;
 					break;
 				default:
 					type = UNAVAILABLE_SOURCE;
@@ -1385,6 +1386,10 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 			}
 			
 			Notify_SourceCtrlUpdateSource(this, type );
+		}
+
+		// Shared files view
+		if (m_uploadingfile && m_uploadingfile->ShowPeers()) {
 			Notify_SharedCtrlRefreshClient(this, AVAILABLE_SOURCE);
 		}
 				
