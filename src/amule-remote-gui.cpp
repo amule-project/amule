@@ -1355,11 +1355,12 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	}
 
 	if (!notified && client->m_reqfile && client->m_reqfile->ShowSources()) {
-		SourceItemType type = A4AF_SOURCE;
+		SourceItemType type;
 		switch (client->GetDownloadState()) {
 			case DS_DOWNLOADING:
 			case DS_ONQUEUE:
 				// We will send A4AF, which will be checked.
+				type = A4AF_SOURCE;
 				break;
 			default:
 				type = UNAVAILABLE_SOURCE;
@@ -1388,13 +1389,16 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	}
 
 	if (!notified && client->m_uploadingfile 
-		&& (client->m_uploadingfile->ShowSources() || (client->m_nUploadState == US_UPLOADING))) {
+		&& (client->m_uploadingfile->ShowPeers() || (client->m_nUploadState == US_UPLOADING))) {
 			// notify if KnowFile is selected, or if it's uploading (in case clients are in show uploading mode)
-		SourceItemType type = UNAVAILABLE_SOURCE;
+		SourceItemType type;
 		switch (client->GetUploadState()) {
 			case US_UPLOADING:
 			case US_ONUPLOADQUEUE:
 				type = AVAILABLE_SOURCE;
+				break;
+			default:
+				type = UNAVAILABLE_SOURCE;
 				break;
 		}
 		Notify_SharedCtrlRefreshClient(client, type);

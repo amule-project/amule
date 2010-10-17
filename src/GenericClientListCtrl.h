@@ -188,6 +188,11 @@ private:
 	 */
 	virtual wxString GetTTSText(unsigned) const { return wxEmptyString; }
 
+	/**
+	 * Set "show sources" or "show peers" flag in Known File
+	 */
+	virtual void SetShowSources(CKnownFile *, bool) const = 0;
+
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamColumnSort);
 	
 	// Event-handlers for clients.

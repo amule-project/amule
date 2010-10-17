@@ -56,6 +56,8 @@ public:
 private:
 	virtual CamuleDlg::DialogType GetParentDialog() { return CamuleDlg::DT_TRANSFER_WND; }
 
+	virtual void SetShowSources(CKnownFile * f, bool b) const;
+
 	static int wxCALLBACK SourceSortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 	
 	bool IsShowingDownloadSources() const { return true; }

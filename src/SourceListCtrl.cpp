@@ -22,6 +22,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 #include "SourceListCtrl.h"
+#include "KnownFile.h"
 
 static CGenericClientListCtrlColumn s_sources_column_info[] = { 
 	{ ColumnUserName,		wxTRANSLATE("User Name"),	260 },
@@ -61,6 +62,11 @@ CSourceListCtrl::~CSourceListCtrl()
 int CSourceListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
 	return CGenericClientListCtrl::SortProc(param1, param2, s_sources_column_info[sortData & CMuleListCtrl::COLUMN_MASK].cid | (sortData & CMuleListCtrl::SORT_DES));
+}
+
+void CSourceListCtrl::SetShowSources(CKnownFile * f, bool b) const
+{
+	f->SetShowSources(b);
 }
 
 // File_checked_for_headers

@@ -22,7 +22,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 #include "SharedFilePeersListCtrl.h"
-
+#include "KnownFile.h"		// Do_not_auto_remove
 
 static CGenericClientListCtrlColumn s_sources_column_info[] = { 
 	{ ColumnUserName,		wxTRANSLATE("User Name"),	260 },
@@ -63,6 +63,11 @@ CSharedFilePeersListCtrl::~CSharedFilePeersListCtrl()
 int CSharedFilePeersListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
 	return CGenericClientListCtrl::SortProc(param1, param2, s_sources_column_info[sortData & CMuleListCtrl::COLUMN_MASK].cid | (sortData & CMuleListCtrl::SORT_DES));
+}
+
+void CSharedFilePeersListCtrl::SetShowSources(CKnownFile * f, bool b) const
+{
+	f->SetShowPeers(b);
 }
 
 // File_checked_for_headers
