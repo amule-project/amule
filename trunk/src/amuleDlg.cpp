@@ -67,6 +67,7 @@
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
+#include "SharedFilePeersListCtrl.h" // Needed for CSharedFilePeersListCtrl
 #include "Statistics.h"		// Needed for theStats
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "TerminationProcess.h"	// Needed for CTerminationProcess
@@ -1113,6 +1114,8 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		}
 		if (thePrefs::AutoSortDownload()) {
 			m_transferwnd->downloadlistctrl->SortList();
+			m_transferwnd->clientlistctrl->SortList();
+			m_sharedfileswnd->peerslistctrl->SortList();
 		}
 	}
 	
