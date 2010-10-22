@@ -1,6 +1,6 @@
 Version 2.3.0 - The river knows.
 ----------
-2009-??-??
+2010-??-??
 
 	freddy77:
 		* Various optimizations of memory usage
@@ -68,6 +68,10 @@ Version 2.3.0 - The river knows.
 
 	myth:
 		* Feedback from shared files - add number of clients on queue.
+
+	Phoenix:
+		* Fixed assertion when trying to preview files smaller than
+		256 K.
 
 	Skolnick:
 		* Fixed autogen.sh for Bourne Shell
