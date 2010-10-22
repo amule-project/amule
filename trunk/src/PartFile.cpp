@@ -3775,9 +3775,12 @@ sint32 CPartFile::getTimeRemaining() const
 
 bool CPartFile::PreviewAvailable()
 {
+	const uint64 minSizeForPreview = 256 * 1024;
 	FileType type = GetFiletype(GetFileName());
 
-	return (((type == ftVideo) || (type == ftAudio)) && IsComplete(0, 256*1024));
+	return (type == ftVideo || type == ftAudio) &&
+	       GetFileSize() >= minSizeForPreview &&
+	       IsComplete(0, minSizeForPreview);
 }
 
 bool CPartFile::CheckShowItemInGivenCat(int inCategory)
