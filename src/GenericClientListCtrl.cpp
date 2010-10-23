@@ -584,8 +584,17 @@ void CGenericClientListCtrl::OnDrawItem(
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
 	// Various constant values we use
-	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
+	const int iTextOffset = (( rect.GetHeight() - dc->GetCharHeight() ) / 2) + 1 /* Fixes rounding in the centering math, much easier than floor() */;
 	const int iOffset = 4;
+	wxASSERT(m_ImageList.GetImageCount() > 0);
+	int imageListBitmapYOffset = 0;
+	int imageListBitmapXSize = 0;
+	if (m_ImageList.GetSize(0, imageListBitmapXSize, imageListBitmapYOffset)) {
+		imageListBitmapXSize += 2; // Padding.
+		imageListBitmapYOffset = ((rect.GetHeight() - imageListBitmapYOffset) / 2) + 1 /* Fixes rounding like above */;
+	} else {
+		wxASSERT(0);
+	}
 
 	wxRect cur_rec( iOffset, rect.y, 0, rect.height );
 	
@@ -597,17 +606,11 @@ void CGenericClientListCtrl::OnDrawItem(
 			// Make a copy of the current rectangle so we can apply specific tweaks
 			wxRect target_rec = cur_rec;
 			target_rec.width = columnwidth - 2*iOffset;
-			
+
 			GenericColumnEnum cid = m_columndata.columns[i].cid;
 			
-			if ( cid != ColumnUserProgress ) {
-				// Text column
-				// will ensure that text is about in the middle ;)
-				target_rec.y += iTextOffset;
-			}
-
 			// Draw the item
-			DrawClientItem(dc, cid, target_rec, content);
+			DrawClientItem(dc, cid, target_rec, content, iTextOffset, imageListBitmapYOffset, imageListBitmapXSize);
 		}
 		
 		// Increment to the next column
@@ -615,8 +618,7 @@ void CGenericClientListCtrl::OnDrawItem(
 	}
 }
 
-void CGenericClientListCtrl::DrawClientItem(
-	wxDC* dc, int nColumn, const wxRect& rect, ClientCtrlItem_Struct* item ) const
+void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect& rect, ClientCtrlItem_Struct* item, int iTextOffset, int iBitmapOffset, int iBitmapXSize ) const
 {
 	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight() );
 	wxString buffer;
@@ -664,13 +666,11 @@ void CGenericClientListCtrl::DrawClientItem(
 					// Default (Client_Grey_Smiley)
 				}
 
-				wxBitmap bitmap = m_ImageList.GetBitmap(image);
-
-				m_ImageList.Draw(image, *dc, point.x, point.y + (rect.GetHeight() - bitmap.GetHeight())/2, wxIMAGELIST_DRAW_TRANSPARENT);
+				m_ImageList.Draw(image, *dc, point.x, point.y + iBitmapOffset, wxIMAGELIST_DRAW_TRANSPARENT);
 
 				// Next
 
-				point.x += bitmap.GetWidth() + 2 /*Padding*/; 
+				point.x += iBitmapXSize; 
 
 				uint8 clientImage = Client_Unknown;
 				
@@ -713,8 +713,7 @@ void CGenericClientListCtrl::DrawClientItem(
 					}
 				}
 
-				bitmap = m_ImageList.GetBitmap(clientImage);
-				int realY = point.y + (rect.GetHeight() - bitmap.GetHeight())/2;
+				int realY = point.y + iBitmapOffset;
 				m_ImageList.Draw(clientImage, *dc, point.x, realY, wxIMAGELIST_DRAW_TRANSPARENT);
 
 				if (client->GetScoreRatio() > 1) {
@@ -745,14 +744,14 @@ void CGenericClientListCtrl::DrawClientItem(
 				
 				// Next
 
-				point.x += bitmap.GetWidth() + 2 /*Padding*/; 
+				point.x += iBitmapXSize; 
 
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
-				// Draw the flag
+				// Draw the flag. Size can't be precached.
 				const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
 
-				realY = point.y + (rect.GetHeight() - countrydata.Flag.GetHeight())/2;
+				realY = point.y + (rect.GetHeight() - countrydata.Flag.GetHeight())/2 + 1 /* floor() */;
 
 				dc->DrawBitmap(countrydata.Flag,
 					point.x, realY,
@@ -770,34 +769,33 @@ void CGenericClientListCtrl::DrawClientItem(
 					userName << client->GetUserName();
 				}
 
-
-				dc->DrawText(userName, point.x, rect.GetY());
+				dc->DrawText(userName, point.x, rect.GetY() + iTextOffset);
 			}
 			break;
 
 		case ColumnUserDownloaded:
 			if (item->GetType() != A4AF_SOURCE && client->GetTransferredDown()) {
 				buffer = CastItoXBytes(client->GetTransferredDown());
-				dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
 		case ColumnUserUploaded:
 			if (item->GetType() != A4AF_SOURCE && client->GetTransferredUp()) {
 				buffer = CastItoXBytes(client->GetTransferredUp());
-				dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
 		case ColumnUserSpeedDown:
 			if (item->GetType() != A4AF_SOURCE && client->GetKBpsDown() > 0.001) {
 				buffer = CFormat(_("%.1f kB/s")) % client->GetKBpsDown();
-				dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
 		case ColumnUserSpeedUp:
 			// Datarate is in bytes.
 			if (item->GetType() != A4AF_SOURCE && client->GetUploadDatarate() > 1024) {
 				buffer = CFormat(_("%.1f kB/s")) % (client->GetUploadDatarate() / 1024.0);
-				dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
 		case ColumnUserProgress:
@@ -874,7 +872,7 @@ void CGenericClientListCtrl::DrawClientItem(
 			break;
 
 		case ColumnUserVersion: {
-				dc->DrawText(client->GetClientVerString(), rect.GetX(), rect.GetY());
+				dc->DrawText(client->GetClientVerString(), rect.GetX(), rect.GetY() + iTextOffset);
 				break;
 			}
 
@@ -903,7 +901,7 @@ void CGenericClientListCtrl::DrawClientItem(
 						buffer = _("QR: ???");
 					}
 				}
-				dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 				if (qrDiff) {
 					dc->SetTextForeground(savedColour);
 				}
@@ -924,7 +922,7 @@ void CGenericClientListCtrl::DrawClientItem(
 				} else {
 					buffer = _("None");
 				}
-				dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
 		case ColumnUserStatus:
@@ -939,12 +937,12 @@ void CGenericClientListCtrl::DrawClientItem(
 						% client->GetRequestFile()->GetFileName();
 				}
 			}
-			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
 		// Source comes from?
 		case ColumnUserOrigin: {
 			buffer = wxGetTranslation(OriginToText(client->GetSourceFrom()));
-			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
 		}
 		// Local file name to identify on multi select
@@ -955,7 +953,7 @@ void CGenericClientListCtrl::DrawClientItem(
 			} else {
 				buffer = wxT("???");
 			}
-			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
 		}
 		case ColumnUserFileNameUpload: {
@@ -965,7 +963,7 @@ void CGenericClientListCtrl::DrawClientItem(
 			} else {
 				buffer = wxT("???");
 			}
-			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
 		}
 	}
