@@ -240,6 +240,11 @@ wxDialog(parent, -1, _("Preferences"),
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 			#endif /* __WXMSW__ */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
+		} else if (pages[i].m_function == PreferencesGuiTweaksTab) {
+			#ifndef ENABLE_IP2COUNTRY
+				CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(false);
+				thePrefs::SetGeoIPEnabled(false);
+			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
@@ -690,6 +695,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	
 	if (CfgChanged(IDC_NETWORKKAD) || CfgChanged(IDC_NETWORKED2K)) {
 		theApp->amuledlg->DoNetworkRearrange();
+	}
+	
+	if (CfgChanged(IDC_SHOW_COUNTRY_FLAGS)) {
+		theApp->amuledlg->EnableIP2Country();
 	}
 	
 	if (restart_needed) {
