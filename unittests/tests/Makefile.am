@@ -16,7 +16,7 @@ check_PROGRAMS = $(TESTS)
 
 
 # Tests for the CUInt128 class
-CUInt128Test_SOURCES = CUInt128Test.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp
+CUInt128Test_SOURCES = CUInt128Test.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/libs/common/Format.cpp
 
 # Tests for the CRangeMap class
 RangeMapTest_SOURCES = RangeMapTest.cpp
