@@ -801,20 +801,22 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
-				// Draw the flag. Size can't be precached.
-				const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
+				if (theApp->amuledlg->m_IP2Country->IsEnabled() && thePrefs::IsGeoIPEnabled()) {
+					// Draw the flag. Size can't be precached.
+					const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
 
-				realY = point.y + (rect.GetHeight() - countrydata.Flag.GetHeight())/2 + 1 /* floor() */;
+					realY = point.y + (rect.GetHeight() - countrydata.Flag.GetHeight())/2 + 1 /* floor() */;
 
-				dc->DrawBitmap(countrydata.Flag,
-					point.x, realY,
-					true);
+					dc->DrawBitmap(countrydata.Flag,
+						point.x, realY,
+						true);
 				
-				userName << countrydata.Name;
+					userName << countrydata.Name;
 				
-				userName << wxT(" - ");
+					userName << wxT(" - ");
 
-				point.x += countrydata.Flag.GetWidth() + 2 /*Padding*/; 
+					point.x += countrydata.Flag.GetWidth() + 2 /*Padding*/;
+				}
 #endif // ENABLE_IP2COUNTRY
 				if (client->GetUserName().IsEmpty()) {
 					userName << wxT("?");
