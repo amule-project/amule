@@ -468,11 +468,17 @@ private:
 			:	index(_index), defaultWidth(_defaultWidth), name(_name) {}
 	};
 
-	/// This list contains the colunms' names.
+	/// This list contains the columns' names.
 	typedef std::list<ColNameEntry>		ColNameList;
 
 	/// Container for column names, sorted by column index.
 	ColNameList	m_column_names;
+
+	/// This vector contains a cache of the columns' sizes.
+	typedef std::vector<int>		ColSizeVector;
+	
+	/// Container for column sizes cache.
+	ColSizeVector	m_column_sizes;
 
 	// True while sorting.
 	bool m_isSorting;

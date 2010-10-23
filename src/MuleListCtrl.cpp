@@ -159,13 +159,15 @@ void CMuleListCtrl::SaveSettings()
 
 	// Save column widths. ATM this is also used to signify hidden columns.
 	wxString buffer;
-	for (int i = 0; i < GetColumnCount(); ++i) {
+	for (unsigned int i = 0; i < GetColumnCount(); ++i) {
 		wxString columnName = GetColumnName(i);
 		if (!columnName.IsEmpty()) {
 			if (!buffer.IsEmpty()) {
 				buffer << wxT(",");
 			}
-			buffer << columnName << wxT(":") << GetColumnWidth(i);
+			int currentwidth = GetColumnWidth(i);
+			int savedsize = (m_column_sizes.size() && (i <= (m_column_sizes.size() - 1))) ? m_column_sizes[i] : 0;
+			buffer << columnName << wxT(":") << ((currentwidth > 0) ? currentwidth : (-1 * savedsize));
 		}
 	}
 
@@ -247,9 +249,13 @@ void CMuleListCtrl::LoadSettings()
 			wxString token = tkz.GetNextToken();
 			wxString name = token.BeforeFirst(wxT(':'));
 			long width = StrToLong(token.AfterFirst(wxT(':')));
-			int col = GetColumnIndex(name);
+			unsigned int col = GetColumnIndex(name);
 			if (col >= 0) {
-				SetColumnWidth(col, width);
+				if (col >= m_column_sizes.size()) {
+					m_column_sizes.resize(col + 1, 0);
+				}
+				m_column_sizes[col] = abs(width);
+				SetColumnWidth(col, (width > 0) ? width : 0);
 			}
 		}
 	}
@@ -447,12 +453,18 @@ void CMuleListCtrl::OnColumnRClick(wxListEvent& evt)
 
 void CMuleListCtrl::OnMenuSelected( wxCommandEvent& evt )
 {
-	int col = evt.GetId() - MP_LISTCOL_1;
+	unsigned int col = evt.GetId() - MP_LISTCOL_1;
+
+	if (col >= m_column_sizes.size()) {
+		m_column_sizes.resize(col + 1, 0);
+	}
 
 	if (GetColumnWidth(col) > COL_SIZE_MIN) {
+		m_column_sizes[col] = GetColumnWidth(col);
 		SetColumnWidth(col, 0);
 	} else {
-		SetColumnWidth(col, GetColumnDefaultWidth(col));
+		int oldsize = m_column_sizes[col];
+		SetColumnWidth(col, (oldsize > 0) ? oldsize : GetColumnDefaultWidth(col));
 	}	
 }
 

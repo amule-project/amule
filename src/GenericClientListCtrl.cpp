@@ -134,6 +134,59 @@ m_columndata(0, NULL)
 	m_clientcount = 0;
 }
 
+wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
+{
+	wxString name = wxEmptyString;
+
+	switch (cid) {
+		case ColumnUserName:
+			name = wxT("N");
+			break;
+		case ColumnUserDownloaded:
+			name = wxT("D");
+			break;
+		case ColumnUserUploaded:
+			name = wxT("U");
+			break;
+		case ColumnUserSpeedDown:
+			name = wxT("S");
+			break;
+		case ColumnUserSpeedUp:
+			name = wxT("s");
+			break;
+		case ColumnUserProgress:
+			name = wxT("P");
+			break;
+		case ColumnUserVersion:
+			name = wxT("V");
+			break;
+		case ColumnUserQueueRankLocal:
+			name = wxT("Q");
+			break;
+		case ColumnUserQueueRankRemote:
+			name = wxT("q");
+			break;
+		case ColumnUserStatus:
+			name = wxT("T");
+			break;
+		case ColumnUserOrigin:
+			name = wxT("O");
+			break;
+		case ColumnUserFileNameDownload:
+			name = wxT("F");
+			break;
+		case ColumnUserFileNameUpload:
+			name = wxT("f");
+			break;
+		case ColumnInvalid:
+		default:
+			wxASSERT(0);
+			break;
+	}
+
+	return name;
+}
+
 void CGenericClientListCtrl::InitColumnData()
 {
 	if (!m_columndata.n_columns) {
@@ -141,7 +194,7 @@ void CGenericClientListCtrl::InitColumnData()
 	}
 	
 	for (int i = 0; i < m_columndata.n_columns; ++i) { 
-		InsertColumn( i, wxGetTranslation(m_columndata.columns[i].name), wxLIST_FORMAT_LEFT, m_columndata.columns[i].width);
+		InsertColumn( i, wxGetTranslation(m_columndata.columns[i].title), wxLIST_FORMAT_LEFT, m_columndata.columns[i].width, TranslateCIDToName(m_columndata.columns[i].cid));
 	}
 
 	LoadSettings();	
