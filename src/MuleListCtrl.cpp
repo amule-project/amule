@@ -159,14 +159,14 @@ void CMuleListCtrl::SaveSettings()
 
 	// Save column widths. ATM this is also used to signify hidden columns.
 	wxString buffer;
-	for (unsigned int i = 0; i < GetColumnCount(); ++i) {
+	for (int i = 0; i < GetColumnCount(); ++i) {
 		wxString columnName = GetColumnName(i);
 		if (!columnName.IsEmpty()) {
 			if (!buffer.IsEmpty()) {
 				buffer << wxT(",");
 			}
 			int currentwidth = GetColumnWidth(i);
-			int savedsize = (m_column_sizes.size() && (i <= (m_column_sizes.size() - 1))) ? m_column_sizes[i] : 0;
+			int savedsize = (m_column_sizes.size() && (i < (int) m_column_sizes.size())) ? m_column_sizes[i] : 0;
 			buffer << columnName << wxT(":") << ((currentwidth > 0) ? currentwidth : (-1 * savedsize));
 		}
 	}
