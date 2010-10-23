@@ -175,7 +175,7 @@ private:
 	/**
 	 * Draws a client item.
 	 */
-	void	DrawClientItem( wxDC* dc, int nColumn, const wxRect& rect, ClientCtrlItem_Struct* item ) const;
+	void	DrawClientItem( wxDC* dc, int nColumn, const wxRect& rect, ClientCtrlItem_Struct* item, int iTextOffset, int iBitmapOffset, int iBitmapXSize ) const;
 
 	/**
 	 * Draws the download status (chunk) bar for a client.
