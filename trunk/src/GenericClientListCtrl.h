@@ -61,7 +61,7 @@ enum GenericColumnEnum {
 
 struct CGenericClientListCtrlColumn {
 	GenericColumnEnum cid;
-	wxString name;
+	wxString title;
 	int width;
 };
 
@@ -192,6 +192,12 @@ private:
 	 * Set "show sources" or "show peers" flag in Known File
 	 */
 	virtual void SetShowSources(CKnownFile *, bool) const = 0;
+
+	/**
+	 * Translate the CID to a unique string for saving column sizes
+	 * @see CMuleListCtrl::InsertColumn
+	 */
+	wxString TranslateCIDToName(GenericColumnEnum cid);
 
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamColumnSort);
 	
