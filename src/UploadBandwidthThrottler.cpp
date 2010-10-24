@@ -289,7 +289,7 @@ void* UploadBandwidthThrottler::Entry()
 	uint32 rememberedSlotCounter = 0;
 	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
 	
-	while (m_doRun) {
+	while (m_doRun && !TestDestroy()) {
 		uint32 timeSinceLastLoop = GetTickCountFullRes() - lastLoopTick;
 
 		// Calculate data rate
@@ -321,6 +321,11 @@ void* UploadBandwidthThrottler::Entry()
 
 		if (timeSinceLastLoop < sleepTime) {
 			Sleep(sleepTime-timeSinceLastLoop);
+		}
+
+		// Check after sleep in case the thread has been signaled to end
+		if (!m_doRun || TestDestroy()) {
+			break;
 		}
 
 		const uint32 thisLoopTick = GetTickCountFullRes();
