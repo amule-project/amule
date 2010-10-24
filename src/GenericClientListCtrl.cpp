@@ -157,6 +157,9 @@ wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 		case ColumnUserProgress:
 			name = wxT("P");
 			break;
+		case ColumnUserAvailable:
+			name = wxT("A");
+			break;
 		case ColumnUserVersion:
 			name = wxT("V");
 			break;
@@ -166,9 +169,6 @@ wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 		case ColumnUserQueueRankRemote:
 			name = wxT("q");
 			break;
-		case ColumnUserStatus:
-			name = wxT("T");
-			break;
 		case ColumnUserOrigin:
 			name = wxT("O");
 			break;
@@ -177,6 +177,9 @@ wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 			break;
 		case ColumnUserFileNameUpload:
 			name = wxT("f");
+			break;
+		case ColumnUserFileNameDownloadRemote:
+			name = wxT("R");
 			break;
 		case ColumnInvalid:
 		default:
@@ -932,10 +935,10 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			}
 
 		case ColumnUserQueueRankRemote: {
+			sint16 qrDiff = 0;
+			wxColour savedColour = dc->GetTextForeground();	
 			// We only show the queue rank for sources actually queued for that file
 			if (	item->GetType() != A4AF_SOURCE && client->GetDownloadState() == DS_ONQUEUE ) {
-				sint16 qrDiff = 0;
-				wxColour savedColour = dc->GetTextForeground();					
 				if (client->IsRemoteQueueFull()) {
 					buffer = _("Queue Full");
 				} else {
@@ -951,15 +954,27 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 						if ( qrDiff > 0 ) {
 							dc->SetTextForeground(*wxRED);
 						}
-						buffer = CFormat(_("QR: %u (%i)")) % client->GetRemoteQueueRank() % qrDiff;
+						buffer = CFormat(_("On Queue: %u (%i)")) % client->GetRemoteQueueRank() % qrDiff;
 					} else {
-						buffer = _("QR: ???");
+						buffer = _("On Queue");
 					}
 				}
-				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
-				if (qrDiff) {
-					dc->SetTextForeground(savedColour);
+			} else {
+				if (item->GetType() != A4AF_SOURCE) {
+					buffer = DownloadStateToStr( client->GetDownloadState(), 
+						client->IsRemoteQueueFull() );
+				} else {
+					buffer = _("Asked for another file");
+					if (	client->GetRequestFile() &&
+						client->GetRequestFile()->GetFileName().IsOk()) {
+						buffer += CFormat(wxT(" (%s)")) 
+							% client->GetRequestFile()->GetFileName();
+					}
 				}
+			}
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
+			if (qrDiff) {
+				dc->SetTextForeground(savedColour);
 			}
 			break;
 		}
@@ -970,27 +985,15 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 					if (nRank == 0) {
 						buffer = _("Waiting for upload slot");
 					} else {
-						buffer = CFormat(_("QR: %u")) % nRank;
+						buffer = CFormat(_("On Queue: %u")) % nRank;
 					}
 				} else if (client->GetUploadState() == US_UPLOADING) {
 					buffer = _("Uploading");
 				} else {
 					buffer = _("None");
 				}
-				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
-			}
-			break;
-		case ColumnUserStatus:
-			if (item->GetType() != A4AF_SOURCE) {
-				buffer = DownloadStateToStr( client->GetDownloadState(), 
-					client->IsRemoteQueueFull() );
 			} else {
 				buffer = _("Asked for another file");
-				if (	client->GetRequestFile() &&
-					client->GetRequestFile()->GetFileName().IsOk()) {
-					buffer += CFormat(wxT(" (%s)")) 
-						% client->GetRequestFile()->GetFileName();
-				}
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
@@ -1006,7 +1009,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			if (pf) {
 				buffer = pf->GetFileName().GetPrintable();
 			} else {
-				buffer = wxT("???");
+				buffer = wxT("[Unknown]");
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
@@ -1016,9 +1019,28 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			if (kf) {
 				buffer = kf->GetFileName().GetPrintable();
 			} else {
-				buffer = wxT("???");
+				buffer = wxT("[Unknown]");
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
+			break;
+		}
+		case ColumnUserFileNameDownloadRemote: {
+			bool nameMissmatch = false;
+			wxColour savedColour = dc->GetTextForeground();
+			if (client->GetClientFilename().IsEmpty()) {
+				buffer = wxT("[Unknown]");
+			} else {
+				buffer = client->GetClientFilename();
+				const CPartFile * pf = client->GetRequestFile();
+				if (pf && (pf->GetFileName().GetPrintable().CmpNoCase(buffer) != 0)) {
+					nameMissmatch = true;
+					dc->SetTextForeground(*wxRED);
+				}
+			}
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
+			if (nameMissmatch) {
+				dc->SetTextForeground(savedColour);
+			}
 			break;
 		}
 	}
@@ -1165,19 +1187,6 @@ int CGenericClientListCtrl::Compare(
 						return  0;
 					}
 				}
-			}
-		}
-
-		// Sort by state
-		case ColumnUserStatus: {
-			if (client1->GetDownloadState() == client2->GetDownloadState()) {
-				return CmpAny(
-					client1->IsRemoteQueueFull(),
-					client2->IsRemoteQueueFull() );
-			} else {
-				return CmpAny(
-					client1->GetDownloadState(),
-					client2->GetDownloadState() );
 			}
 		}
 

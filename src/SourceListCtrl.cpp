@@ -31,10 +31,10 @@ static CGenericClientListCtrlColumn s_sources_column_info[] = {
 	{ ColumnUserUploaded,		wxTRANSLATE("Uploaded"),	65 },
 	{ ColumnUserProgress,		wxTRANSLATE("Available Parts"),	170 },
 	{ ColumnUserVersion,		wxTRANSLATE("Version"),		50 },
-	{ ColumnUserQueueRankRemote,	wxTRANSLATE("Queue Rank"),	55 },
-	{ ColumnUserStatus,		wxTRANSLATE("Status"),		70 },
+	{ ColumnUserQueueRankRemote,	wxTRANSLATE("Download Status"),	55 },
 	{ ColumnUserOrigin,		wxTRANSLATE("Origin"),		110 },
-	{ ColumnUserFileNameDownload,	wxTRANSLATE("Local File Name"),	200 }
+	{ ColumnUserFileNameDownload,	wxTRANSLATE("Local File Name"),	200 },
+	{ ColumnUserFileNameDownloadRemote, wxTRANSLATE("Remote File Name"), 200 }
 };
 
 BEGIN_EVENT_TABLE(CSourceListCtrl, CGenericClientListCtrl)
