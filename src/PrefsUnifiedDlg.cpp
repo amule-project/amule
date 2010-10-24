@@ -702,12 +702,6 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (CfgChanged(IDC_SHOW_COUNTRY_FLAGS)) {
 		theApp->amuledlg->EnableIP2Country();
 	}
-
-#ifndef CLIENT_GUI
-	if (CfgChanged(IDC_PREVENT_SLEEP)) {
-		PlatformSpecific::AllowSleepMode();
-	}
-#endif
 	
 	if (restart_needed) {
 		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), 
