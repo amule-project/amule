@@ -249,7 +249,7 @@ void CMuleListCtrl::LoadSettings()
 			wxString token = tkz.GetNextToken();
 			wxString name = token.BeforeFirst(wxT(':'));
 			long width = StrToLong(token.AfterFirst(wxT(':')));
-			unsigned int col = GetColumnIndex(name);
+			int col = GetColumnIndex(name);
 			if (col >= 0) {
 				if (col >= m_column_sizes.size()) {
 					m_column_sizes.resize(col + 1, 0);
