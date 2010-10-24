@@ -271,14 +271,27 @@ struct SFindBestPF
 {
 	void operator()(CPartFile* file) {
 		// Check if we should filter out other categories
+		int alphaorder = 0;
+
 		if ((m_category != -1) && (file->GetCategory() != m_category)) {
 			return;
 		} else if (file->GetStatus() != PS_PAUSED) {
 			return;
+		} else if (m_alpha && m_result && ((alphaorder = file->GetFileName().GetPrintable().CmpNoCase(m_result->GetFileName().GetPrintable())) > 0)) {
+			return;
 		}
-	
-		if (!m_result || (file->GetDownPriority() > m_result->GetDownPriority())) {
-			m_result = file;				
+
+		if (!m_result) {
+			m_result = file;
+		} else {
+			if (m_alpha && (alphaorder < 0)) {
+				m_result = file;
+			} else if (file->GetDownPriority() > m_result->GetDownPriority()) {
+				// Either not alpha ordered, or they have the same alpha ordering (could happen if they have same name)
+				m_result = file;
+			} else {
+				// Lower priority file
+			}
 		}
 	}
 
@@ -286,13 +299,15 @@ struct SFindBestPF
 	int m_category;
 	//! If any acceptable files are found, this variable store their pointer
 	CPartFile* m_result;
+	//! If we should order alphabetically
+	bool m_alpha;
 };
 
 
 void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 {
 	if ( thePrefs::StartNextFile() ) {
-		SFindBestPF visitor = { -1, NULL };
+		SFindBestPF visitor = { -1, NULL, thePrefs::StartNextFileAlpha() };
 		
 		{
 			wxMutexLocker lock(m_mutex);
@@ -310,6 +325,8 @@ void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 				
 				visitor = std::for_each(m_filelist.begin(), m_filelist.end(), visitor);
 			}	
+
+			// Alpha doesn't need special cases
 		}
 		
 		if (visitor.m_result) {
