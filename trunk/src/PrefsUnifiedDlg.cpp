@@ -339,10 +339,6 @@ wxDialog(parent, -1, _("Preferences"),
 	// It must not be resized to something smaller than what it currently is
 	wxSize size = GetClientSize();
 	SetSizeHints(size.GetWidth(), size.GetHeight());
-	
-	#ifdef __WXMSW__
-		FindWindow(IDC_VERTTOOLBAR)->Enable(false);
-	#endif
 
 	// Position the dialog.
 	Center();
@@ -852,6 +848,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			theApp->amuledlg->Create_Toolbar(value);
 			// Update the first tool (conn button)
 			theApp->amuledlg->ShowConnectionState();
+			theApp->amuledlg->Layout();
 			break;
 
 		case IDC_ENFORCE_PO_INCOMING:
