@@ -49,13 +49,14 @@ enum GenericColumnEnum {
 	ColumnUserSpeedDown,
 	ColumnUserSpeedUp,
 	ColumnUserProgress,
+	ColumnUserAvailable,
 	ColumnUserVersion,
 	ColumnUserQueueRankLocal,
 	ColumnUserQueueRankRemote,
-	ColumnUserStatus,
 	ColumnUserOrigin,
 	ColumnUserFileNameDownload,
 	ColumnUserFileNameUpload,
+	ColumnUserFileNameDownloadRemote,
 	ColumnInvalid
 };
 
