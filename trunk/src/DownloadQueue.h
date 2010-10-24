@@ -308,6 +308,9 @@ public:
 	
 	void	SetLastKademliaFileRequest()	{lastkademliafilerequest = ::GetTickCount();}
 	
+	uint32	GetRareFileThreshold() const { return m_rareFileThreshold; }
+	uint32	GetCommonFileThreshold() const { return m_commonFileThreshold; }
+
 private:
 	/**
 	 * This function initializes new observers with the current contents of the queue.
@@ -385,7 +388,12 @@ private:
 	
 	/* Kad Stuff */
 	uint32		lastkademliafilerequest;
+
+	//! Threshold for rare files, dynamically based on the sources for each.
+	uint32		m_rareFileThreshold;
 	
+	//! Threshold for common files, dynamically based on the sources for each.
+	uint32		m_commonFileThreshold;
 };
 
 #endif // DOWNLOADQUEUE_H
