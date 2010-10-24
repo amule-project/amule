@@ -251,7 +251,7 @@ void CMuleListCtrl::LoadSettings()
 			long width = StrToLong(token.AfterFirst(wxT(':')));
 			int col = GetColumnIndex(name);
 			if (col >= 0) {
-				if (col >= m_column_sizes.size()) {
+				if (col >= (int) m_column_sizes.size()) {
 					m_column_sizes.resize(col + 1, 0);
 				}
 				m_column_sizes[col] = abs(width);
