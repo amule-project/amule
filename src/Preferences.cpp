@@ -224,7 +224,7 @@ wxString 	CPreferences::s_Ed2kURL;
 wxString 	CPreferences::s_KadURL;
 bool	 	CPreferences::s_GeoIPEnabled;
 wxString 	CPreferences::s_GeoIPUpdateUrl;
-
+bool		CPreferences::s_preventSleepWhileDownloading;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -1249,6 +1249,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );	 
 #endif
+
+	/**
+	 * Power management
+	 **/
+	NewCfgItem( IDC_PREVENT_SLEEP, ( new Cfg_Bool( wxT("/PowerManagement/PreventSleepWhileDownloading"), s_preventSleepWhileDownloading, false )));
 
 	/**
 	 * The following doesn't have an associated widget or section

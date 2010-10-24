@@ -474,6 +474,9 @@ wxSizer *messagePageMessages( wxWindow *parent, bool call_fit = TRUE, bool set_s
 #define ID_BUTTONNEWPREFERENCES 10330
 #define ID_BUTTONIMPORT 10331
 #define ID_ABOUT 10332
+
+#define IDC_PREVENT_SLEEP 10600
+
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

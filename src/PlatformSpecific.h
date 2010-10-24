@@ -133,6 +133,8 @@ inline bool CanFSHandleLargeFiles(const CPath& path)
 	}
 }
 
+void PreventSleepMode();
+void AllowSleepMode();
 
 }; /* namespace PlatformSpecific */
 

@@ -426,11 +426,15 @@ void CDownloadQueue::Process()
 		
 		std::list<int> m_sourcecountlist;
 
+		bool mustPreventSleep = false;
+
 		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 			CPartFile* file = m_filelist[i];
 	
 			CMutexUnlocker unlocker(m_mutex);
 			
+			mustPreventSleep |= !((file->GetStatus() == PS_ERROR) || (file->GetStatus() == PS_INSUFFICIENT) || (file->GetStatus() == PS_PAUSED)  || (file->GetStatus() == PS_COMPLETE));
+
 			if ( file->GetStatus() == PS_READY || file->GetStatus() == PS_EMPTY ){
 				cur_datarate += file->Process( downspeed, cur_udcounter );
 			} else {
@@ -442,6 +446,23 @@ void CDownloadQueue::Process()
 				m_sourcecountlist.push_back(file->GetSourceCount());
 			}
 		}
+
+		if (thePrefs::GetPreventSleepWhileDownloading()) {
+			if ((mustPreventSleep == false) && (theStats::GetSessionSentBytes() < theStats::GetSessionReceivedBytes())) {
+				// I can see right through your clever plan.
+				mustPreventSleep = true;
+			}
+
+			if (mustPreventSleep) {
+				PlatformSpecific::PreventSleepMode();
+			} else {
+				PlatformSpecific::AllowSleepMode();
+			}
+		} else {
+			// Just in case the value changes while we're preventing. Calls to this function are totally inexpensive anwyay
+			PlatformSpecific::AllowSleepMode();
+		}
+
 
 		// Set the source rarity thresholds
 		int nSourceGroups = m_sourcecountlist.size();
@@ -478,8 +499,7 @@ void CDownloadQueue::Process()
 		}
 	
 		m_datarate += cur_datarate;
-	
-	
+
 		if (m_udcounter == 5) {
 			if (theApp->serverconnect->IsUDPSocketAvailable()) {
 				if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
@@ -501,8 +521,6 @@ void CDownloadQueue::Process()
 		}
 	
 		if ( (::GetTickCount() - m_lastsorttime) > 10000 ) {
-			
-			
 			DoSortByPriority();
 		}
 		// Check if any paused files can be resumed

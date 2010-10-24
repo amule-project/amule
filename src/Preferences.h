@@ -569,6 +569,9 @@ public:
 	static wxString	GetLastHTTPDownloadURL(uint8 t);
 	static void		SetLastHTTPDownloadURL(uint8 t, const wxString& val);
 
+	// Sleep
+	static bool		GetPreventSleepWhileDownloading() { return s_preventSleepWhileDownloading; }
+	static void		SetPreventSleepWhileDownloading(bool status) { s_preventSleepWhileDownloading = status; }
 protected:
 	static	int32 GetRecommendedMaxConnections();
 
@@ -796,6 +799,9 @@ protected:
 	// GeoIP
 	static bool s_GeoIPEnabled;
 	static wxString s_GeoIPUpdateUrl;
+
+	// Sleep vetoing
+	static bool s_preventSleepWhileDownloading;
 };
 
 
