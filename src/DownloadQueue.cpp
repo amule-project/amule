@@ -458,9 +458,6 @@ void CDownloadQueue::Process()
 			} else {
 				PlatformSpecific::AllowSleepMode();
 			}
-		} else {
-			// Just in case the value changes while we're preventing. Calls to this function are totally inexpensive anwyay
-			PlatformSpecific::AllowSleepMode();
 		}
 
 

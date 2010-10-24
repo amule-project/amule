@@ -50,6 +50,7 @@
 #include "OScopeCtrl.h"			// Needed for OScopeCtrl
 #include "ServerList.h"
 #include "UserEvents.h"
+#include "PlatformSpecific.h"
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Events
@@ -274,6 +275,10 @@ wxDialog(parent, -1, _("Preferences"),
 			wxStaticText *txt = CastChild(IDC_AMULE_TWEAKS_WARNING, wxStaticText);
 			// Do not wrap this line, Windows _() can't handle wrapped strings
 			txt->SetLabel(_("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."));
+			#if defined CLIENT_GUI || !PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
+				CastChild(IDC_PREVENT_SLEEP, wxCheckBox)->Enable(false);
+				thePrefs::SetPreventSleepWhileDownloading(false);
+			#endif
 		}
 #ifdef __DEBUG__
 		else if (pages[i].m_function == PreferencesDebug) {
@@ -415,6 +420,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_UDPPORT )->Enable( thePrefs::s_UDPEnable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
+	FindWindow( IDC_STARTNEXTFILE_ALPHA )->Enable(thePrefs::StartNextFile());
 
 #ifdef __WXMAC__
 	FindWindow(IDC_ENABLETRAYICON)->Enable(false);
@@ -696,6 +702,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (CfgChanged(IDC_SHOW_COUNTRY_FLAGS)) {
 		theApp->amuledlg->EnableIP2Country();
 	}
+
+#ifndef CLIENT_GUI
+	if (CfgChanged(IDC_PREVENT_SLEEP)) {
+		PlatformSpecific::AllowSleepMode();
+	}
+#endif
 	
 	if (restart_needed) {
 		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), 
@@ -829,6 +841,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_STARTNEXTFILE:
 			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
+			FindWindow(IDC_STARTNEXTFILE_ALPHA)->Enable(value);
 			break;
 
 		case IDC_ENABLETRAYICON:
