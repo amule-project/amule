@@ -1222,6 +1222,10 @@ int CGenericClientListCtrl::Compare(
 			return CmpAny(buffer1, buffer2);
 		}
 
+		case ColumnUserFileNameDownloadRemote: {
+			return CmpAny(client1->GetClientFilename(), client2->GetClientFilename());
+		}
+
 		default:
 			return 0;
 	}
