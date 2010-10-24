@@ -2817,10 +2817,10 @@ void CPartFile::UpdateAutoDownPriority()
 	if (!IsAutoDownPriority()) {
 		return;
 	}
-	if (GetSourceCount() <= RARE_FILE) {
+	if (GetSourceCount() <= theApp->downloadqueue->GetRareFileThreshold()) {
 		if ( GetDownPriority() != PR_HIGH )
 			SetDownPriority(PR_HIGH, false, false);
-	} else if (GetSourceCount() < 100) {
+	} else if (GetSourceCount() < theApp->downloadqueue->GetCommonFileThreshold()) {
 		if ( GetDownPriority() != PR_NORMAL )
 			SetDownPriority(PR_NORMAL, false, false);
 	} else {

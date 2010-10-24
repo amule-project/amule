@@ -87,6 +87,11 @@ CDownloadQueue::CDownloadQueue()
 	m_dwNextTCPSrcReq = 0;
 	m_cRequestsSentToServer = 0;
 	m_lastDiskCheck = 0;
+	
+	// Static thresholds until dynamic kicks in.
+	m_rareFileThreshold = RARE_FILE;
+	m_commonFileThreshold = 100;
+
 	SetLastKademliaFileRequest();
 }
 
@@ -392,6 +397,9 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 	return false;
 }
 
+#define RARITY_FACTOR 4 // < 25%
+#define NORMALITY_FACTOR 2 // <50%
+// x > NORMALITY_FACTOR -> High availablity.
 
 void CDownloadQueue::Process()
 {
@@ -416,6 +424,8 @@ void CDownloadQueue::Process()
 		uint32 cur_datarate = 0;
 		uint32 cur_udcounter = m_udcounter;
 		
+		std::list<int> m_sourcecountlist;
+
 		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 			CPartFile* file = m_filelist[i];
 	
@@ -427,6 +437,44 @@ void CDownloadQueue::Process()
 				//This will make sure we don't keep old sources to paused and stoped files..
 				file->StopPausedFile();
 			}
+
+			if (!file->IsPaused() && !file->IsStopped()) {
+				m_sourcecountlist.push_back(file->GetSourceCount());
+			}
+		}
+
+		// Set the source rarity thresholds
+		int nSourceGroups = m_sourcecountlist.size();
+		if (nSourceGroups) {
+			m_sourcecountlist.sort();
+			if (nSourceGroups == 1) {
+				// High anyway.
+				m_rareFileThreshold = m_sourcecountlist.front() + 1;
+				m_commonFileThreshold = m_rareFileThreshold + 1;
+			} else if (nSourceGroups == 2) {
+				// One high, one low (unless they're both 0, then both high)
+				m_rareFileThreshold = (m_sourcecountlist.back() > 0) ? (m_sourcecountlist.back() - 1) : 1;
+				m_commonFileThreshold = m_rareFileThreshold + 1;
+			} else {
+				// More than two, time to do some math.
+
+				// Lower 25% with the current #define values.
+				int rarecutpoint = (nSourceGroups / RARITY_FACTOR); 
+				for (int i = 0; i < rarecutpoint; ++ i) {
+					m_sourcecountlist.pop_front();
+				}
+				m_rareFileThreshold = (m_sourcecountlist.front() > 0) ? (m_sourcecountlist.front() - 1) : 1;
+
+				// 50% of the non-rare ones, with the curent #define values.
+				int commoncutpoint = (nSourceGroups - rarecutpoint) / NORMALITY_FACTOR;
+				for (int i = 0; i < commoncutpoint; ++ i) {
+					m_sourcecountlist.pop_front();
+				}
+				m_commonFileThreshold = (m_sourcecountlist.front() > 0) ? (m_sourcecountlist.front() - 1) : 1;
+			}
+		} else {
+			m_rareFileThreshold = RARE_FILE;
+			m_commonFileThreshold = 100;
 		}
 	
 		m_datarate += cur_datarate;
