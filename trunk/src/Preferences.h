@@ -301,8 +301,10 @@ public:
 	static void		SetPreviewPrio(bool in)		{ s_bpreviewprio = in; }
 	static bool		StartNextFile()			{ return s_bstartnextfile; }
 	static bool		StartNextFileSame()		{ return s_bstartnextfilesame; }
+	static bool		StartNextFileAlpha()		{ return s_bstartnextfilealpha; }
 	static void		SetStartNextFile(bool val)	{ s_bstartnextfile = val; }
 	static void		SetStartNextFileSame(bool val)	{ s_bstartnextfilesame = val; }
+	static void		SetStartNextFileAlpha(bool val)	{ s_bstartnextfilealpha = val; }
 	static bool		ShowOverhead()			{ return s_bshowoverhead; }
 	static void		SetNewAutoUp(bool m_bInUAP) 	{ s_bUAP = m_bInUAP; }
 	static bool		GetNewAutoUp() 			{ return s_bUAP; }
@@ -672,6 +674,7 @@ protected:
 	static bool	s_bmanualhighprio;
 	static bool	s_bstartnextfile;
 	static bool	s_bstartnextfilesame;	
+	static bool	s_bstartnextfilealpha;
 	static bool	s_bshowoverhead;
 	static bool	s_bDAP;
 	static bool	s_bUAP;
