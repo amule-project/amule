@@ -310,3 +310,76 @@ PlatformSpecific::EFSType PlatformSpecific::GetFilesystemType(const CPath& path)
 
 	return s_fscache[path.GetRaw()] = doGetFilesystemType(path);
 }
+// Power event vetoing
+
+static bool m_preventingSleepMode = false;
+
+#ifdef __WXMSW__
+
+#else
+	#ifdef __WXMAC__
+		// 10.5 only
+		#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+			static IOPMAssertionID assertionID;
+		#else
+			#warning Power event vetoing not implemented.
+		#endif
+	#else
+		#warning Power event vetoing not implemented.
+	#endif
+#endif
+
+void PlatformSpecific::PreventSleepMode()
+{
+	if (!m_preventingSleepMode) {
+		#ifdef __WXMSW__
+			SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
+			m_preventingSleepMode = true;
+		#else
+			#ifdef __WXMAC__
+				// 10.5 only
+				#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+					IOReturn success = IOPMAssertionCreate(kIOPMAssertionTypeNoDisplaySleep, 
+														kIOPMAssertionLevelOn, &assertionID); 
+					if (success == kIOReturnSuccess) {
+						// Correctly vetoed, flag so we don't do it again.
+						m_preventingSleepMode = true;
+					} else {
+						// ??
+					}
+				#else
+					// Not implemented	
+				#endif
+			#else
+				// Not implemented
+			#endif
+		#endif
+	}
+}
+
+void PlatformSpecific::AllowSleepMode()
+{
+	if (m_preventingSleepMode) {
+		#ifdef __WXMSW__
+			SetThreadExecutionState(ES_CONTINUOUS); // Clear the system request flag.
+			m_preventingSleepMode = false;
+		#else
+			#ifdef __WXMAC__
+				// 10.5 only
+				#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+					IOReturn success = IOPMAssertionRelease(assertionID); 
+					if (success == kIOReturnSuccess) {
+						// Correctly restored, flag so we don't do it again.
+						m_preventingSleepMode = false;
+					} else {
+						// ??
+					}
+				#else
+					// Not implemented
+				#endif
+			#else
+				// Not implemented
+			#endif
+		#endif
+	}
+}

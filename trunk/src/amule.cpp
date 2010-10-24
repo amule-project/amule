@@ -66,6 +66,7 @@
 #include "MagnetURI.h"			// Needed for CMagnetURI
 #include "OtherFunctions.h"
 #include "PartFile.h"			// Needed for CPartFile
+#include "PlatformSpecific.h"   // Needed for PlatformSpecific::AllowSleepMode();
 #include "Preferences.h"		// Needed for CPreferences
 #include "SearchList.h"			// Needed for CSearchList
 #include "Server.h"			// Needed for GetListName
@@ -1377,6 +1378,9 @@ void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 
 void CamuleApp::ShutDown()
 {
+	// Just in case
+	PlatformSpecific::AllowSleepMode();
+
 	// Log
 	AddDebugLogLineN(logGeneral, wxT("CamuleApp::ShutDown() has started."));
 
