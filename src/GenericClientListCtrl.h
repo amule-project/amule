@@ -184,6 +184,11 @@ private:
 	void	DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
 
 	/**
+	  * Draaws the file parts bar for a client.
+	  */
+	void	DrawStatusBar( const CUpDownClient* client, wxDC* dc, const wxRect& rect1 ) const;
+
+	/**
 	 * @see CMuleListCtrl::GetTTSText
 	 * Just a dummy
 	 */
