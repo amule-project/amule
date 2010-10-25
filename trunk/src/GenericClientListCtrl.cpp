@@ -641,7 +641,7 @@ void CGenericClientListCtrl::OnDrawItem(
 
 	// Various constant values we use
 	const int iTextOffset = (( rect.GetHeight() - dc->GetCharHeight() ) / 2) + 1 /* Fixes rounding in the centering math, much easier than floor() */;
-	const int iOffset = 4;
+	const int iOffset = 2;
 	wxASSERT(m_ImageList.GetImageCount() > 0);
 	int imageListBitmapYOffset = 0;
 	int imageListBitmapXSize = 0;
@@ -928,6 +928,13 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				}
 			}
 			break;
+
+		case ColumnUserAvailable: {
+				if ( client->GetUpPartCount() ) {
+					DrawStatusBar( client, dc, rect );
+				}
+				break;
+			}
 
 		case ColumnUserVersion: {
 				dc->DrawText(client->GetClientVerString(), rect.GetX(), rect.GetY() + iTextOffset);
@@ -1312,6 +1319,62 @@ void CGenericClientListCtrl::DrawSourceStatusBar(
 	}
 
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
+}
+
+static const CMuleColour crUnavailable(240, 240, 240);
+static const CMuleColour crFlatUnavailable(224, 224, 224);
+
+static const CMuleColour crAvailable(104, 104, 104);
+static const CMuleColour crFlatAvailable(0, 0, 0);
+
+void CGenericClientListCtrl::DrawStatusBar( const CUpDownClient* client, wxDC* dc, const wxRect& rect1 ) const
+{
+	wxRect rect = rect1;
+	rect.y		+= 1;
+	rect.height	-= 2;
+
+	wxPen   old_pen   = dc->GetPen();
+	wxBrush old_brush = dc->GetBrush();
+	bool bFlat = thePrefs::UseFlatBar();
+
+	wxRect barRect = rect;
+	if (!bFlat) { // round bar has a black border, the bar itself is 1 pixel less on each border
+		barRect.x ++;
+		barRect.y ++;
+		barRect.height -= 2;
+		barRect.width -= 2;
+	}
+	static CBarShader s_StatusBar(16);
+
+	uint32 partCount = client->GetUpPartCount();
+
+	// Seems the partfile in the client object is not necessarily valid when bar is drawn for the first time.
+	// Keep it simple and make all parts same size.
+	s_StatusBar.SetFileSize(partCount * PARTSIZE);
+	s_StatusBar.SetHeight(barRect.height);
+	s_StatusBar.SetWidth(barRect.width);
+	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
+
+	uint64 uEnd = 0;
+	for ( uint64 i = 0; i < partCount; i++ ) {
+		uint64 uStart = PARTSIZE * i;
+		uEnd = uStart + PARTSIZE - 1;
+
+		s_StatusBar.FillRange(uStart, uEnd, client->IsUpPartAvailable(i) ? (bFlat ? crFlatAvailable : crAvailable) : (bFlat ? crFlatUnavailable : crUnavailable));
+	}
+	// fill the rest (if partStatus is empty)
+	s_StatusBar.FillRange(uEnd + 1, partCount * PARTSIZE - 1, bFlat ? crFlatUnavailable : crUnavailable);
+	s_StatusBar.Draw(dc, barRect.x, barRect.y, bFlat);
+
+	if (!bFlat) {
+		// Draw black border
+		dc->SetPen( *wxBLACK_PEN );
+		dc->SetBrush( *wxTRANSPARENT_BRUSH );
+		dc->DrawRectangle(rect);
+	}
+
+	dc->SetPen( old_pen );
+	dc->SetBrush( old_brush );
 }
 
 // File_checked_for_headers
