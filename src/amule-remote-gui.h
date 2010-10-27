@@ -491,6 +491,7 @@ public:
 	void UnsetCompletedFilesExist();
 	void ResetCatParts(int cat);
 	void AddSearchToDownload(CSearchFile* toadd, uint8 category);
+	void ClearCompleted(const ListOfUInts32 & ecids);
 };
 
 class CSharedFilesRem  : public std::map<uint32, CKnownFile*> {

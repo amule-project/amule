@@ -159,8 +159,11 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 		for (CDownQueueRem::const_iterator it = theApp->downloadqueue->begin(); it != theApp->downloadqueue->end(); ++it) {
 			CPartFile *cur_file = it->second;
 #else
-		for ( unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); ++i ) {
-			CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
+		std::vector<CPartFile*> fileList;
+		theApp->downloadqueue->CopyFileList(fileList, true);
+		int size = fileList.size();
+		for (int i = 0; i < size; ++i ) {
+			CPartFile *cur_file = fileList[i];
 #endif
 			if ( cur_file && cur_file->CheckShowItemInGivenCat(index) ) {
 				files++;

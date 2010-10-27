@@ -38,6 +38,7 @@ public:
 	CECID()				{ m_ID = ++s_IDCounter; }
 	CECID(uint32 id)	{ m_ID = id; }
 	uint32 ECID() const	{ return m_ID; }
+	void RenewECID()	{ m_ID = ++s_IDCounter; }
 };
 
 #endif

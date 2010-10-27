@@ -159,6 +159,8 @@ Version 2.3.0 - The river knows.
 		* Clients now always get uploaded a full chunk (removed setting)
 		* amulecmd fixes ed2k links where '|' has been replaced with '%7C'
 		* Fixed multi line stdin redirected as batch into amulecmd
+		* "Clear completed" button now only clears downloads in current category
+		* Completed downloads can be seen and cleared in amulegui
 
 	Vollstrecker:
 		* Unify copyright lines

@@ -181,13 +181,18 @@ uint16 CDownloadQueue::GetFileCount() const
 }
 
 
-void CDownloadQueue::CopyFileList(std::vector<CPartFile*>& out_list) const
+void CDownloadQueue::CopyFileList(std::vector<CPartFile*>& out_list, bool includeCompleted) const
 {
 	wxMutexLocker lock(m_mutex);
 
-	out_list.reserve(m_filelist.size());
+	out_list.reserve(m_filelist.size() + includeCompleted ? m_completedDownloads.size() : 0);
 	for (FileQueue::const_iterator it = m_filelist.begin(); it != m_filelist.end(); ++it) {
 		out_list.push_back(*it);
+	}
+	if (includeCompleted) {
+		for (FileList::const_iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); ++it) {
+			out_list.push_back(*it);
+		}
 	}
 }
 
@@ -433,9 +438,10 @@ void CDownloadQueue::Process()
 	
 			CMutexUnlocker unlocker(m_mutex);
 			
-			mustPreventSleep |= !((file->GetStatus() == PS_ERROR) || (file->GetStatus() == PS_INSUFFICIENT) || (file->GetStatus() == PS_PAUSED)  || (file->GetStatus() == PS_COMPLETE));
+			uint8 status = file->GetStatus();
+			mustPreventSleep |= !(status == PS_ERROR || status == PS_INSUFFICIENT || status == PS_PAUSED || status == PS_COMPLETE);
 
-			if ( file->GetStatus() == PS_READY || file->GetStatus() == PS_EMPTY ){
+			if (status == PS_READY || status == PS_EMPTY ){
 				cur_datarate += file->Process( downspeed, cur_udcounter );
 			} else {
 				//This will make sure we don't keep old sources to paused and stoped files..
@@ -544,6 +550,12 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const
 	for ( uint16 i = 0; i < m_filelist.size(); ++i ) {
 		if ( filehash == m_filelist[i]->GetFileHash()) {
 			return m_filelist[ i ];
+		}
+	}
+	// Check completed too so we can execute remote commands (like change cat) on them
+	for (FileList::const_iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); ++it) {
+		if ( filehash == (*it)->GetFileHash()) {
+			return *it;
 		}
 	}
 	
@@ -783,7 +795,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 }
 
 
-void CDownloadQueue::RemoveFile(CPartFile* file)
+void CDownloadQueue::RemoveFile(CPartFile* file, bool keepAsCompleted)
 {
 	RemoveLocalServerRequest( file );
 
@@ -792,6 +804,28 @@ void CDownloadQueue::RemoveFile(CPartFile* file)
 	wxMutexLocker lock( m_mutex );
 
 	EraseValue( m_filelist, file );
+
+	if (keepAsCompleted) {
+		m_completedDownloads.push_back(file);
+	}
+}
+
+
+void CDownloadQueue::ClearCompleted(const ListOfUInts32 & ecids)
+{
+	for (ListOfUInts32::const_iterator it1 = ecids.begin(); it1 != ecids.end(); it1++) {
+		uint32 ecid = *it1;
+		for (FileList::iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); it++) {
+			CPartFile * file = *it;
+			if (file->ECID() == ecid) {
+				m_completedDownloads.erase(it);
+				// get a new EC ID so it is resent and cleared in remote gui
+				file->RenewECID();
+				Notify_DownloadCtrlRemoveFile(file);
+				break;
+			}
+		}
+	}
 }
 
 
@@ -1103,16 +1137,13 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 
 void CDownloadQueue::ResetCatParts(uint8 cat)
 {
-	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
-		CPartFile* file = GetFileByIndex( i );
-		
-		if ( file->GetCategory() == cat ) {
-			// Reset the category
-			file->SetCategory( 0 );
-		} else if ( file->GetCategory() > cat ) {
-			// Set to the new position of the original category
-			file->SetCategory( file->GetCategory() - 1 );
-		}
+	for (FileQueue::iterator it = m_filelist.begin(); it != m_filelist.end(); it++) {
+		CPartFile* file = *it;
+		file->RemoveCategory(cat);
+	}
+	for (FileList::iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); it++) {
+		CPartFile* file = *it;
+		file->RemoveCategory(cat);
 	}
 }
 
