@@ -121,7 +121,8 @@ enum ECOpCodes {
 	EC_OP_AUTH_SALT                     = 0x4F,
 	EC_OP_AUTH_PASSWD                   = 0x50,
 	EC_OP_IPFILTER_UPDATE               = 0x51,
-	EC_OP_GET_UPDATE                    = 0x52
+	EC_OP_GET_UPDATE                    = 0x52,
+	EC_OP_CLEAR_COMPLETED               = 0x53
 };
 
 enum ECTagNames {
@@ -140,6 +141,7 @@ enum ECTagNames {
 	EC_TAG_CAN_ZLIB                           = 0x000C,
 	EC_TAG_CAN_UTF8_NUMBERS                   = 0x000D,
 	EC_TAG_CAN_NOTIFY                         = 0x000E,
+	EC_TAG_ECID                               = 0x000F,
 	EC_TAG_CLIENT_NAME                        = 0x0100,
 		EC_TAG_CLIENT_VERSION                     = 0x0101,
 		EC_TAG_CLIENT_MOD                         = 0x0102,
@@ -535,6 +537,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x50: return wxT("EC_OP_AUTH_PASSWD");
 		case 0x51: return wxT("EC_OP_IPFILTER_UPDATE");
 		case 0x52: return wxT("EC_OP_GET_UPDATE");
+		case 0x53: return wxT("EC_OP_CLEAR_COMPLETED");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }
@@ -557,6 +560,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x000C: return wxT("EC_TAG_CAN_ZLIB");
 		case 0x000D: return wxT("EC_TAG_CAN_UTF8_NUMBERS");
 		case 0x000E: return wxT("EC_TAG_CAN_NOTIFY");
+		case 0x000F: return wxT("EC_TAG_ECID");
 		case 0x0100: return wxT("EC_TAG_CLIENT_NAME");
 		case 0x0101: return wxT("EC_TAG_CLIENT_VERSION");
 		case 0x0102: return wxT("EC_TAG_CLIENT_MOD");

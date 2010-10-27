@@ -112,6 +112,7 @@ public final static byte EC_OP_AUTH_SALT                     = 0x4F;
 public final static byte EC_OP_AUTH_PASSWD                   = 0x50;
 public final static byte EC_OP_IPFILTER_UPDATE               = 0x51;
 public final static byte EC_OP_GET_UPDATE                    = 0x52;
+public final static byte EC_OP_CLEAR_COMPLETED               = 0x53;
 
 public final static short EC_TAG_STRING                             = 0x0000;
 public final static short EC_TAG_PASSWD_HASH                        = 0x0001;
@@ -128,6 +129,7 @@ public final static short EC_TAG_PASSWD_SALT                        = 0x000B;
 public final static short EC_TAG_CAN_ZLIB                           = 0x000C;
 public final static short EC_TAG_CAN_UTF8_NUMBERS                   = 0x000D;
 public final static short EC_TAG_CAN_NOTIFY                         = 0x000E;
+public final static short EC_TAG_ECID                               = 0x000F;
 public final static short EC_TAG_CLIENT_NAME                        = 0x0100;
 public final static short 	EC_TAG_CLIENT_VERSION                     = 0x0101;
 public final static short 	EC_TAG_CLIENT_MOD                         = 0x0102;

@@ -176,8 +176,11 @@ public:
 	void SetFilePath(const CPath& filePath);
 	const CPath& GetFilePath() const { return m_filePath; }
 
-	virtual	bool	IsPartFile() const	{return false;}
-	virtual bool	IsCPartFile() const	{ return false; }
+	// virtual functions for CKnownFile and CPartFile:
+	virtual	bool	IsPartFile() const	{return false;}		// true if not completed
+	virtual bool	IsCompleted() const	{ return true; }	// true if completed
+	virtual bool	IsCPartFile() const	{ return false; }	// true if it's a CPartFile
+
 	virtual bool	LoadFromFile(const CFileDataIO* file);	//load date, hashset and tags from a .met file
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
 	bool	WriteToFile(CFileDataIO* file);

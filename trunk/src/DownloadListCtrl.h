@@ -187,15 +187,6 @@ private:
 	void	OnItemSelectionChanged( wxListEvent& event );
 
 	/**
-	 * Returns true if the given file should be shown in the specified category.
-	 *
-	 * @param file The file to be examined.
-	 * @param newel The new category selection.
-	 * @return True if the file should be shown, false otherwise.
-	 */
-	bool ShowItemInCurrentCat( const CPartFile* file, int newsel ) const;
-
-	/**
 	 * Executes the user-selected preview command on the specified file.
 	 *
 	 * @file The file to be previewed.
@@ -226,9 +217,6 @@ private:
 	//! The currently displayed category
 	uint8 m_category;
 
-	//! True if there are any completed files being displayed.
-	bool  m_completedFiles;
-	
 	//! The number of displayed files
 	int m_filecount;
 

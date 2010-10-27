@@ -2152,7 +2152,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 
 		// remove the file from the suspended uploads list
 		theApp->uploadqueue->ResumeUpload(GetFileHash());		
-		theApp->downloadqueue->RemoveFile(this);
+		theApp->downloadqueue->RemoveFile(this, true);
 		theApp->sharedfiles->SafeAddKFile(this);
 		UpdateDisplayedInfo(true);
 
@@ -3849,6 +3849,18 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 	}
 	
 	return show;
+}
+
+
+void CPartFile::RemoveCategory(uint8 cat)
+{
+	if (m_category == cat) {
+		// Reset the category
+		m_category = 0;
+	} else if (m_category > cat) {
+		// Set to the new position of the original category
+		m_category--;
+	}
 }
 
 

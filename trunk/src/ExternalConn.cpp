@@ -80,7 +80,7 @@ public:
 
 	virtual void SetShared() { }
 	virtual bool IsShared() { return true; }
-	virtual bool IsDownload() { return m_file->IsPartFile(); }
+	virtual bool IsPartFile_Encoder() { return false; }
 	const CKnownFile * GetFile() { return m_file; }
 };
 
@@ -125,7 +125,7 @@ public:
 
 	virtual void SetShared() { m_shared = true; }
 	virtual bool IsShared() { return m_shared; }
-	virtual bool IsDownload() { return true; }
+	virtual bool IsPartFile_Encoder() { return true; }
 };
 
 class CFileEncoderMap : public std::map<uint32, CKnownFile_Encoder*> {
@@ -150,7 +150,7 @@ void CFileEncoderMap::UpdateEncoders()
 	IDSet curr_files, dead_files;
 	// Downloads
 	std::vector<CPartFile*> downloads;
-	theApp->downloadqueue->CopyFileList(downloads);
+	theApp->downloadqueue->CopyFileList(downloads, true);
 	for (uint32 i = downloads.size(); i--;) {
 		uint32 id = downloads[i]->ECID();
 		curr_files.insert(id);
@@ -163,7 +163,9 @@ void CFileEncoderMap::UpdateEncoders()
 	theApp->sharedfiles->CopyFileList(shares);
 	for (uint32 i = shares.size(); i--;) {
 		uint32 id = shares[i]->ECID();
-		if (shares[i]->IsPartFile()) {	// we already have it
+		// Check if it is already there.
+		// The curr_files.count(id) is enough, the IsCPartFile() is just a speedup.
+		if (shares[i]->IsCPartFile() && curr_files.count(id)) {
 			(*this)[id]->SetShared();
 			continue;
 		}
@@ -645,7 +647,10 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	for (CFileEncoderMap::iterator it = encoders.begin(); it != encoders.end(); ++it) {
 		const CKnownFile *cur_file = it->second->GetFile();
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file->ECID());
-		if (cur_file->IsCPartFile()) {
+		// Completed cleared Partfiles are still stored as CPartfile,
+		// but encoded as KnownFile, so we have to check the encoder type
+		// instead of the file type.
+		if (it->second->IsPartFile_Encoder()) {
 			CEC_PartFile_Tag filetag((const CPartFile*) cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
 			// Add information if partfile is shared
 			filetag.AddTag(EC_TAG_PARTFILE_SHARED, it->second->IsShared(), &valuemap);
@@ -1361,7 +1366,17 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 
 			break;
 		}
-
+		case EC_OP_CLEAR_COMPLETED: {
+			ListOfUInts32 toClear;
+			for (CECTag::const_iterator it = request->begin(); it != request->end(); it++) {
+				if (it->GetTagName() == EC_TAG_ECID) {
+					toClear.push_back(it->GetInt());
+				}
+			}
+			theApp->downloadqueue->ClearCompleted(toClear);
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		}
 
 		//
 		// Server commands

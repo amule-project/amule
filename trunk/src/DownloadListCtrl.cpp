@@ -34,6 +34,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "DataToText.h"		// Needed for PriorityToStr
+#include "DownloadQueue.h"
 #include "FileDetailDialog.h"	// Needed for CFileDetailDialog
 #include "GuiEvents.h"		// Needed for CoreNotify_*
 #include "Logger.h"
@@ -170,7 +171,6 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	InsertColumn( ColumnLastReception,	_("Last Reception"),		wxLIST_FORMAT_LEFT, 220, wxT("R") );
 
 	m_category = 0;
-	m_completedFiles = 0;
 	m_filecount = 0;
 	LoadSettings();
 	
@@ -276,9 +276,7 @@ void CDownloadListCtrl::UpdateItem(const void* toupdate)
 			ShowFile( file, true );
 		}
 
-		if (file->GetStatus() == PS_COMPLETE) {
-			m_completedFiles = true;
-
+		if (file->IsCompleted() && show) {
 			CastByID(ID_BTNCLRCOMPL, GetParent(), wxButton)->Enable(true);
 		}
 	}
@@ -327,6 +325,8 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 {
 	Freeze();
 
+	bool hasCompletedDownloads = false;
+
 	// remove all displayed files with a different cat and show the correct ones
 	for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
 		
@@ -334,6 +334,10 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 
 		bool curVisibility = file->CheckShowItemInGivenCat( m_category );
 		bool newVisibility = file->CheckShowItemInGivenCat( newCategory );
+
+		if (newVisibility && file->IsCompleted()) {
+			hasCompletedDownloads = true;
+		}
 	
 		// Check if the visibility of the file has changed. However, if the
 		// current category is the default (0) category, then we can't use
@@ -344,6 +348,8 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 		}
 	}
 	
+	CastByID(ID_BTNCLRCOMPL, GetParent(), wxButton)->Enable(hasCompletedDownloads);
+
 	Thaw();
 
 	m_category = newCategory;
@@ -467,9 +473,12 @@ void CDownloadListCtrl::OnSetCategory( wxCommandEvent& event )
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CoreNotify_PartFile_SetCat( (*it)->GetFile(), event.GetId() - MP_ASSIGNCAT );
+		ShowFile((*it)->GetFile(), false);
 	}
+	wxListEvent ev;
+	OnItemSelectionChanged(ev);	// clear clients that may have been shown
 
-	ChangeCategory( m_category );
+	ChangeCategory( m_category );	// This only updates the visibility of the clear completed button
 }
 
 
@@ -578,7 +587,7 @@ void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 {	
 	CPartFile* file = ((FileCtrlItem_Struct*)GetItemData( evt.GetIndex()))->GetFile();
 
-	if ((!file->IsPartFile() || file->GetStatus() == PS_COMPLETE) && file->PreviewAvailable()) {
+	if ((!file->IsPartFile() || file->IsCompleted()) && file->PreviewAvailable()) {
 		PreviewFile( file );
 	}	
 }
@@ -705,13 +714,13 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 	m_menu->Enable( MP_PAUSE,	canPause );
 	m_menu->Enable( MP_STOP,	canStop );
 	m_menu->Enable( MP_RESUME, 	fileResumable );
-	m_menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
+	m_menu->Enable( MP_CLEARCOMPLETED, CastByID(ID_BTNCLRCOMPL, GetParent(), wxButton)->IsEnabled() );
 
 	wxString view;
-	if (file->IsPartFile() && (file->GetStatus() != PS_COMPLETE)) {
+	if (file->IsPartFile() && !file->IsCompleted()) {
 		view = CFormat(wxT("%s [%s]")) % _("Preview")
 				% file->GetPartMetFileName().RemoveExt();
-	} else if ( file->GetStatus() == PS_COMPLETE ) {
+	} else if ( file->IsCompleted() ) {
 		view = _("&Open the file");
 	}
 	m_menu->SetLabel(MP_VIEW, view);
@@ -877,7 +886,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	switch (nColumn) {
 		// Part Number
 		case ColumnPart: {
-			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+			if (file->IsPartFile() && !file->IsCompleted()) {
 			  text = file->GetPartMetFileName().RemoveAllExt().GetPrintable();
 			}
 			break;
@@ -1204,18 +1213,21 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 
 void CDownloadListCtrl::ClearCompleted()
 {
-	m_completedFiles = false;
 	CastByID(ID_BTNCLRCOMPL, GetParent(), wxButton)->Enable(false);
 	
 	// Search for completed files
+	ListOfUInts32 toClear;
 	for ( ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); ) {
 		FileCtrlItem_Struct* item = it->second; ++it;
 		
 		CPartFile* file = item->GetFile();
 		
-		if ( file->IsPartFile() == false ) {
-			RemoveFile(file);
+		if (file->IsCompleted() && file->CheckShowItemInGivenCat(m_category)) {
+			toClear.push_back(file->ECID());
 		}
+	}
+	if (!toClear.empty()) {
+		theApp->downloadqueue->ClearCompleted(toClear);
 	}
 }
 
@@ -1230,14 +1242,6 @@ void CDownloadListCtrl::ShowFilesCount( int diff )
 	label->GetParent()->Layout();
 }
 
-bool CDownloadListCtrl::ShowItemInCurrentCat(
-	const CPartFile* file, int newsel ) const
-{
-	return 
-		((newsel == 0 && !thePrefs::ShowAllNotCats()) ||
-		 (newsel == 0 && thePrefs::ShowAllNotCats() && file->GetCategory() == 0)) ||
-		(newsel > 0 && newsel == file->GetCategory());
-}
 
 static const CMuleColour crHave(104, 104, 104);
 static const CMuleColour crFlatHave(0, 0, 0);
@@ -1260,7 +1264,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	s_ChunkBar.SetFileSize( file->GetFileSize() );
 	s_ChunkBar.Set3dDepth( thePrefs::Get3DDepth() );
 
-	if ( file->GetStatus() == PS_COMPLETE || file->GetStatus() == PS_COMPLETING ) {
+	if ( file->IsCompleted() || file->GetStatus() == PS_COMPLETING ) {
 		s_ChunkBar.Fill( bFlat ? crFlatProgress : crProgress );
 		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
 		return;
@@ -1391,7 +1395,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	wxString partName;	// File name only, without path
 
 	// Check if we are (pre)viewing a completed file or not
-	if (file->GetStatus() != PS_COMPLETE) {
+	if (!file->IsCompleted()) {
 		// Remove the .met and see if out video player specifiation uses the magic string
 		partName = file->GetPartMetFileName().RemoveExt().GetRaw();
 		partFile = thePrefs::GetTempDir().JoinPaths(file->GetPartMetFileName().RemoveExt()).GetRaw();

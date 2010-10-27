@@ -138,6 +138,8 @@ EC_OP_AUTH_PASSWD                   0x50
 EC_OP_IPFILTER_UPDATE               0x51
 
 EC_OP_GET_UPDATE                    0x52
+
+EC_OP_CLEAR_COMPLETED               0x53
 [/Section]
 
 [Section Content]
@@ -160,6 +162,7 @@ EC_TAG_PASSWD_SALT                        0x000B
 EC_TAG_CAN_ZLIB                           0x000C
 EC_TAG_CAN_UTF8_NUMBERS                   0x000D
 EC_TAG_CAN_NOTIFY                         0x000E
+EC_TAG_ECID                               0x000F
 
 
 EC_TAG_CLIENT_NAME                        0x0100

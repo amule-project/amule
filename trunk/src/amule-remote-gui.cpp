@@ -1065,13 +1065,8 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 				if (tag->GetTagName() == EC_TAG_PARTFILE) {
 					CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
 					ProcessItemUpdate(tag, file);
-					// GUI doesn't allow clear finished files well at the moment, 
-					// so don't show finished files for now until GUI gets unlocked.
-					// Files completing while GUI is open will still show.
-					if (file->IsPartFile()) {
-						(*theApp->downloadqueue)[id] = file;
-						theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
-					}
+					(*theApp->downloadqueue)[id] = file;
+					theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
 					newFile = file;
 				} else {
 					newFile = new CKnownFile(tag);
@@ -1431,14 +1426,7 @@ void CDownQueueRem::ResetCatParts(int cat)
 	// will happen.
 	for (iterator it = begin(); it != end(); it++) {
 		CPartFile* file = it->second;
-		
-		if ( file->GetCategory() == cat ) {
-			// Reset the category
-			file->SetCategory( 0 );
-		} else if ( file->GetCategory() > cat ) {
-			// Set to the new position of the original category
-			file->SetCategory( file->GetCategory() - 1 );
-		}
+		file->RemoveCategory(cat);
 	}
 }
 
@@ -1627,6 +1615,17 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, category));
 	req.AddTag(hashtag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CDownQueueRem::ClearCompleted(const ListOfUInts32 & ecids)
+{
+	CECPacket req(EC_OP_CLEAR_COMPLETED);
+	for (ListOfUInts32::const_iterator it = ecids.begin(); it != ecids.end(); it++) {
+		req.AddTag(CECTag(EC_TAG_ECID, *it));
+	}
 	
 	m_conn->SendPacket(&req);
 }

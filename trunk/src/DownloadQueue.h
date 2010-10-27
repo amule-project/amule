@@ -137,8 +137,9 @@ public:
 	 * Removes the specified file from the queue.
 	 *
 	 * @param toremove A pointer to the file object to be removed.
+	 * @param keepAsCompleted If true add the removed file to the list of completed files.
 	 */
-	void	RemoveFile(CPartFile* toremove);
+	void	RemoveFile(CPartFile* toremove, bool keepAsCompleted = false);
 	
 	
 	/**
@@ -248,7 +249,7 @@ public:
 	/**
 	 * Makes a copy of the file list.
 	 */
-	void	CopyFileList(std::vector<CPartFile*>& out_list) const;
+	void	CopyFileList(std::vector<CPartFile*>& out_list, bool includeCompleted = false) const;
 
 	/**
 	 * Returns the current number of downloading files.
@@ -311,6 +312,11 @@ public:
 	uint32	GetRareFileThreshold() const { return m_rareFileThreshold; }
 	uint32	GetCommonFileThreshold() const { return m_commonFileThreshold; }
 
+	/**
+	 * Remove a file from the list of completed downloads.
+	 */
+	void	ClearCompleted(const ListOfUInts32 & ecids);
+	
 private:
 	/**
 	 * This function initializes new observers with the current contents of the queue.
@@ -378,7 +384,11 @@ private:
 	typedef std::deque<CPartFile*> FileQueue;
 	FileQueue m_filelist;
 	
-	std::list<CPartFile*>		m_localServerReqQueue;
+	typedef std::list<CPartFile*> FileList;
+	FileList		m_localServerReqQueue;
+
+	//! List of downloads completed and still on display
+	FileList		m_completedDownloads;
 
 	//! Observer used to keep track of which servers have yet to be asked for sources
 	CQueueObserver<CServer*>	m_queueServers;
