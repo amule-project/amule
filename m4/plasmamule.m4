@@ -36,4 +36,18 @@ AC_DEFUN([PLASMAMULE_CHECKS],
 			],
 			[DISABLE_PLASMAMULE])
 	])
+	
+	MULE_IF_ENABLED([plasmamule],
+	[
+		AS_IF([test -z ${DEB_HOST_ARCH}],
+		[
+			CHECK_HELPER_APPS
+		])
+	])
+
+	MULE_IF_ENABLED([debug],
+        [
+		DEBUGFLAG="-D__DEBUG__"
+		AC_SUBST(DEBUGFLAG)
+	])
 ])

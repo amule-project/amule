@@ -27,9 +27,9 @@ plasmamule_engine_feeder_SOURCES = plasmamule-engine-feeder.cpp plasmamule-dbus.
 nodist_plasma_engine_plasmamule_so_SOURCES  = plasma-engine-plasmamule.moc
 nodist_plasma_applet_plasmamule_so_SOURCES = plasma-applet-plasmamule.moc
 
-plasma_engine_plasmamule_so_CXXFLAGS = -shared -I${KDE_HEADER_DIR} ${QT_CORE_CXXFLAGS} -DPIC -fPIC
-plasma_applet_plasmamule_so_CXXFLAGS = -shared -D__IMG_PATH__=\"${KDE_ICON_PATH}\" -I${KDE_HEADER_DIR} ${QT_GUI_CXXFLAGS} -DPIC -fPIC
-plasmamule_engine_feeder_CXXFLAGS = -I${KDE_HEADER_DIR} ${QT_GUI_CXXFLAGS}
+plasma_engine_plasmamule_so_CXXFLAGS = -shared -I${KDE_HEADER_DIR} ${QT_CORE_CXXFLAGS} -DPIC -fPIC ${DEBUGFLAG}
+plasma_applet_plasmamule_so_CXXFLAGS = -shared -D__IMG_PATH__=\"${KDE_ICON_PATH}\" -I${KDE_HEADER_DIR} ${QT_GUI_CXXFLAGS} -DPIC -fPIC ${DEBUGFLAG}
+plasmamule_engine_feeder_CXXFLAGS = -I${KDE_HEADER_DIR} ${QT_GUI_CXXFLAGS} ${DEBUGFLAG}
 
 plasmamule_engine_feeder_LDFLAGS = ${QT_GUI_LIBS} -lkdecore -lplasma
 
@@ -41,3 +41,9 @@ noinst_HEADERS = plasma-engine-plasmamule.h plasma-applet-plasmamule.h plasmamul
 CLEANFILES = *.moc
 
 MAINTAINERCLEANFILES = Makefile.in
+
+install-data-hook: ${USER_INSTALL_HOOK}
+
+USER_INSTALL:
+	${UPDATE_MIME_DATABASE} ${KDE_MIME_PATH}
+	${KBUILDSYCOCA}

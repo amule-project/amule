@@ -22,7 +22,7 @@
 //
 
 #include "qt-emc.h"
-#include <kdebug.h>
+
 qtEmc::qtEmc(const QString &filename)
 {
 
@@ -33,7 +33,7 @@ qtEmc::qtEmc(const QString &filename)
 		if (!QString(*constFilesIterator).remove("\n").trimmed().isEmpty())
 		{
 			QFile collection(QString(*constFilesIterator).trimmed());
-kDebug() << "FN: " << collection.size();
+
 			if (collection.open (QIODevice::ReadOnly))
 			{
 				valid = readBinary(collection);

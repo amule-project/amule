@@ -12,6 +12,11 @@ AC_DEFUN([CHECK_MOC_VERSION],
 	AS_IF([test -z ${QT_MOC}],
 	[
 		AC_PATH_PROGS(QT_MOC, moc-qt4 moc)
+		AS_IF([test -z ${QT_MOC}],
+		[
+			echo moc not found
+			exit 1
+		])
 	],
 	[
 		AC_MSG_CHECKING(for moc)
@@ -23,6 +28,7 @@ AC_DEFUN([CHECK_MOC_VERSION],
 		[
 			AC_MSG_RESULT("not found")
 			QT_MOC="not found"
+			exit 1
 		])
 	])
 
@@ -38,6 +44,7 @@ AC_DEFUN([CHECK_MOC_VERSION],
 		[
 			AC_MSG_RESULT(not found ${QT_MOC_VERSION} is too old)
 			QT_MOC="not found"
+			exit 1
 		])
 	])
 ])
@@ -63,6 +70,7 @@ AC_DEFUN([CHECK_QT_HEADERS],
 		AC_MSG_RESULT($QT_GUI_LIBS)
 	],
 		[AC_MSG_RESULT(not found)]
+		exit 1
 	)
 	AC_SUBST(QT_CORE_CXXFLAGS)
 	AC_SUBST(QT_CORE_LIBS)

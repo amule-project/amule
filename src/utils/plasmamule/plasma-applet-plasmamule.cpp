@@ -65,6 +65,13 @@ PlasmaMuleApplet::~PlasmaMuleApplet()
  
 void PlasmaMuleApplet::init()
 {
+	m_debugChannel = KDebug::registerArea ("plasmamule-applet", 
+#ifdef __DEBUG__
+	true
+#else
+	false
+#endif
+	);
 	connectToEngine();
 }
 
@@ -184,7 +191,7 @@ void PlasmaMuleApplet::paintInterface(QPainter *painter,
 		if (painter->boundingRect(contentsRect, Qt::TextDontClip | Qt::AlignTop | Qt::AlignLeft | Qt::TextWordWrap,
 			 message).height() > contentsRect.height())
 		{
-			kDebug() << "Resizing";
+			kDebug(m_debugChannel) << "Resizing";
 			resize(painter->boundingRect(contentsRect, message).height()+(contentsRect.topLeft().y()*2),
 				painter->boundingRect(contentsRect, message).height()+(contentsRect.topLeft().y()*2));
 		}
@@ -219,13 +226,13 @@ void PlasmaMuleApplet::connectToEngine()
 
 void PlasmaMuleApplet::onSourceAdded(const QString& source)
 {
-	kDebug() << "New Source: " << source << " added";
+	kDebug(m_debugChannel) << "New Source: " << source << " added";
 	m_aMuleEngine->connectSource(source, this, 0);
 }
 
 void PlasmaMuleApplet::onSourceRemoved(const QString& source)
 {
-	kDebug() << "Source: " << source << " removed";
+	kDebug(m_debugChannel) << "Source: " << source << " removed";
 	update();
 }
 
@@ -237,7 +244,7 @@ void PlasmaMuleApplet::dataUpdated(const QString& source, const Plasma::DataEngi
 	}
 
 	bool needs_update = FALSE;
-	kDebug() << "Updating data" << data;
+	kDebug(m_debugChannel) << "Updating data" << data;
 	if (data["cat_dirs"].toStringList() != m_catDirs && data.contains("cat_dirs"))
 	{
 		m_catDirs = data["cat_dirs"].toStringList();
@@ -344,14 +351,14 @@ void PlasmaMuleApplet::dataUpdated(const QString& source, const Plasma::DataEngi
 
 	if (needs_update)
 	{
-		kDebug() << "Updating view";
+		kDebug(m_debugChannel) << "Updating view";
 		update();
 	}
 }
 
 void PlasmaMuleApplet::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
-	kDebug() << "Dragged Data detected " << event;
+	kDebug(m_debugChannel) << "Dragged Data detected " << event;
 	if (event->mimeData()->hasUrls())
 	{
 		event->acceptProposedAction();
@@ -368,7 +375,7 @@ void PlasmaMuleApplet::dropEvent(QGraphicsSceneDragDropEvent * event)
 
 	if (m_catNames.count() == 1)
 	{
-		sendLinkToEngine (event->mimeData()->text(), 0, this);
+		sendLinkToEngine (event->mimeData()->text(), 0, this, m_debugChannel);
 	} else {
 		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
 		{
@@ -382,7 +389,7 @@ void PlasmaMuleApplet::dropEvent(QGraphicsSceneDragDropEvent * event)
 		QAction *cat_selection = menu->exec(QCursor::pos());
 		if (cat_selection)
 		{
-				sendLinkToEngine (event->mimeData()->text(), m_catNames.indexOf(cat_selection->text()), this);
+				sendLinkToEngine (event->mimeData()->text(), m_catNames.indexOf(cat_selection->text()), this, m_debugChannel);
 		}
 	}
 
@@ -485,27 +492,27 @@ void PlasmaMuleApplet::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 				ki18nc("EMAIL OF TRANSLATORS", "Your emails"));
 			aboutData->setProgramIconName (service->icon());
 
-			KAboutApplicationDialog* about = new KAboutApplicationDialog(aboutData);
+			KAboutApplicationDialog* about = new KAboutApplicationDialog(aboutData, KAboutApplicationDialog::HideTranslators);
 			about->exec();
 		} else if (selectedItem->text().startsWith("Folder for"))
 		{
-			kDebug() << "Opening Folder " << m_catDirs.at(m_catNames.indexOf(selectedItem->text().remove("Folder for ")));
+			kDebug(m_debugChannel) << "Opening Folder " << m_catDirs.at(m_catNames.indexOf(selectedItem->text().remove("Folder for ")));
 			KUrl url(m_catDirs.at(m_catNames.indexOf(selectedItem->text().remove("Folder for "))) + "/");
                 	(void) new KRun( url, 0, true );
 		} else if (selectedItem->text().startsWith("Download"))
 		{
 			if (selectedItem->text().remove("Download Link from ") == "Clipboard")
 			{
-				sendLinkToEngine (clipboard->text(QClipboard::Clipboard), 0, this);
+				sendLinkToEngine (clipboard->text(QClipboard::Clipboard), 0, this, m_debugChannel);
 			} else {
-				sendLinkToEngine (clipboard->text(QClipboard::Selection), 0, this);
+				sendLinkToEngine (clipboard->text(QClipboard::Selection), 0, this, m_debugChannel);
 			}
 		} else if (selectedItem->text().startsWith("Clipboard->"))
 		{
-			sendLinkToEngine (clipboard->text(QClipboard::Clipboard), m_catNames.indexOf(selectedItem->text().remove("Clipboard->")), this);
+			sendLinkToEngine (clipboard->text(QClipboard::Clipboard), m_catNames.indexOf(selectedItem->text().remove("Clipboard->")), this, m_debugChannel);
 		} else if (selectedItem->text().startsWith("Selection->"))
 		{
-			sendLinkToEngine (clipboard->text(QClipboard::Selection), m_catNames.indexOf(selectedItem->text().remove("Selection->")), this);
+			sendLinkToEngine (clipboard->text(QClipboard::Selection), m_catNames.indexOf(selectedItem->text().remove("Selection->")), this, m_debugChannel);
 		}
 	}
 }

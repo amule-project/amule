@@ -27,6 +27,6 @@
 #include <QString>
 #include <QObject>
 
-void sendLinkToEngine (QString link, int cat, QObject* obj);
+void sendLinkToEngine (QString link, int cat, QObject* obj, int);
 
 #endif

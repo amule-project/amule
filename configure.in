@@ -472,13 +472,13 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, a
 	wxinfo="$WX_PORT"
 	AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 	AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
-	echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
+	echo "                             wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 ])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
-	[echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"])
+	[echo "                             crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"])
 MULE_IF_ENABLED([upnp], [
 	AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
-	echo "                                       libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
+	echo "                             libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"
 ])
 if test ${enable_nls:-yes} = yes; then
 AS_IF([test x$USE_NLS = xno],
@@ -486,28 +486,27 @@ AS_IF([test x$USE_NLS = xno],
 	[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], 
 		[libintl_found="included"], 
 		[libintl_found="system"])])
-echo "                                       libintl               $libintl_found"
+echo "                             libintl               $libintl_found"
 fi
 MULE_IF_ENABLED([geoip],
 	[AS_IF([test -z "${with_geoip_headers:-}${with_geoip_lib:-}"], [geoip_style=system], [geoip_style=user])
 	MULE_IF_ENABLED_ANY([monolithic, amule-gui], 
-		[echo "                                       libGeoIP              ${geoip_style}"])])
+		[echo "                             libGeoIP              ${geoip_style}"])])
 MULE_IF_ENABLED([webserver],
-	[echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"])
+	[echo "                             libpng                ${LIBPNG_VERSION:-Not detected}"])
 MULE_IF_ENABLED([cas],
-	[echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"])
+	[echo "                             libgd                 ${GDLIB_VERSION:-Not detected}"])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui],
-	[echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"])
+	[echo "                             zlib                  ${ZLIB_VERSION:-Not detected}"])
 MULE_IF_ENABLED([plasmamule],
-[echo "                                       qt-moc                ${QT_MOC} ${QT_MOC_VERSION}"
-echo "                                       qt-core-libs          ${QT_CORE_LIBS}"
-echo "                                       qt-gui-libs           ${QT_GUI_LIBS}"
-echo "                                       kde4-config           ${KDE4_CONFIG} (${KDE_CONF_VER})"
-echo "                                       kde-headers           ${KDE_HEADER_DIR}"
-echo "                                       kde-services-path     ${KDE_SERVICE_PATH}"
-echo "                                       kde-module-path       ${KDE_MODULE_PATH}"
-echo "                                       kde-icon-path         ${KDE_ICON_PATH}"
-echo "                                       kde-mime-path         ${KDE_MIME_PATH}"
-echo "                                       kde-applinks-path     ${KDE_APPLNK_PATH}"
-echo "  **** You have to run kbuildsycoca after installing to let plasma know the changes ****"
-echo "  **** You have to run \"update-mime-database ${KDE_MIME_PATH}\" to register the mimetype ****"])
+[echo "                             qt-moc                ${QT_MOC} ${QT_MOC_VERSION}"
+echo "                             qt-core-libs          ${QT_CORE_LIBS}"
+echo "                             qt-gui-libs           ${QT_GUI_LIBS}"
+echo "                             kde4-config           ${KDE4_CONFIG} (${KDE_CONF_VER})"
+echo "                             kde-headers           ${KDE_HEADER_DIR}"
+echo "                             kde-services-path     ${KDE_SERVICE_PATH}"
+echo "                             kde-module-path       ${KDE_MODULE_PATH}"
+echo "                             kde-icon-path         ${KDE_ICON_PATH}"
+echo "                             kde-mime-path         ${KDE_MIME_PATH}"
+echo "                             kde-applinks-path     ${KDE_APPLNK_PATH}"
+])
