@@ -55,7 +55,7 @@ class PlasmaMuleApplet : public Plasma::Applet
 
 		QString calcSize (qlonglong);
 		QStringList m_catDirs, m_catNames;
-		int m_ed2k_state, m_ed2k_server_port, m_kad_status, m_clients_in_up_queue, m_shared_files_count, m_uptime;
+		int m_ed2k_state, m_ed2k_server_port, m_kad_status, m_clients_in_up_queue, m_shared_files_count, m_uptime, m_debugChannel;
 		QString  m_ed2k_id_high_low, m_ed2k_server_name, m_ed2k_server_ip, m_nickname, m_version;
 		double m_down_speed, m_up_speed;
 		qlonglong m_total_bytes_downloaded, m_total_bytes_uploaded, m_session_bytes_downloaded, m_session_bytes_uploaded;

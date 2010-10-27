@@ -28,10 +28,10 @@
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
 
-void sendLinkToEngine (QString link, int cat, QObject* obj)
+void sendLinkToEngine (QString link, int cat, QObject* obj, int debugChannel)
 {
 	QDBusConnection bus = QDBusConnection::sessionBus();
 	QDBusInterface *interface = new QDBusInterface("org.amule.engine", "/Link", "org.amule.engine", bus, obj);
 	interface->call("engine_add_link", link, cat);
-	kDebug() << "Sent Link " << link << "with cat " << cat;
+	kDebug(debugChannel) << "Sent Link " << link << "with cat " << cat;
 }

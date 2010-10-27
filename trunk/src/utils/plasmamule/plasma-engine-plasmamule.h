@@ -63,10 +63,9 @@ class PlasmaMuleEngine : public Plasma::DataEngine
 
 		bool m_OSActive, m_timer;
 
+		int m_debugChannel;
 		KDirWatch m_dirwatcher;
 		QFile m_OSFile;
-		QList<int> downloadsCategories; 
-		QList<void*> downloadsJobs; 
 		QStringList m_incoming_dirs, downloadsNames;
 		QString Home;
 };

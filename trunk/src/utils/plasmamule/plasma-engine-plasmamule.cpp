@@ -88,6 +88,14 @@ void PlasmaMuleEngine::init ()
 		Home += "/";
 	}
 
+	m_debugChannel = KDebug::registerArea ("plasmamule-engine", 
+#ifdef __DEBUG__
+	true
+#else
+	false
+#endif
+	);
+  
 	regDbus();
 	initVals();
 }
@@ -97,21 +105,19 @@ void PlasmaMuleEngine::regDbus ()
 	new EngineAdaptor(this);
 	QDBusConnection dbus = QDBusConnection::sessionBus();
 	dbus.registerObject("/Link", this);
-	kDebug() << "Registerred dbus: " << dbus.registerService("org.amule.engine");
+	kDebug(m_debugChannel) << "Registerred dbus: " << dbus.registerService("org.amule.engine");
 }
 
 void PlasmaMuleEngine::downloadFinished (KIO::Job* job,const QByteArray& data)
 {
 
-	int index = downloadsJobs.indexOf(job);
-
 	if (data.length() == 0)
 	{
-		KNotification::event(KNotification::Notification, QString("Download of %1 failed.").arg(downloadsNames.at(index)));
+		KNotification::event(KNotification::Notification, QString("Download of %1 failed.").arg(job->queryMetaData("Name")));
 		return;
 	}
 
-	kDebug() << QString("Finished download of %1").arg(downloadsNames.at(index));
+	kDebug(m_debugChannel) << QString("Finished download of %1").arg(job->queryMetaData("Name"));
 
 	QString downloadFileName(QString("/tmp/plasmamule-download-%1.emulecollection").arg(qrand()));
 
@@ -119,7 +125,7 @@ void PlasmaMuleEngine::downloadFinished (KIO::Job* job,const QByteArray& data)
 
 	if (!downloadFile.open (QIODevice::WriteOnly | QIODevice::Append))
 	{
-		KNotification::event(KNotification::Notification, QString("%1 can't be written to temp-file.").arg(downloadsNames.at(index)));
+		KNotification::event(KNotification::Notification, QString("%1 can't be written to temp-file.").arg(job->queryMetaData("Name")));
 		return;
 	}
 
@@ -127,14 +133,14 @@ void PlasmaMuleEngine::downloadFinished (KIO::Job* job,const QByteArray& data)
 	out.writeRawData(data, data.length());
 	downloadFile.close();
 
-	engine_add_link (downloadFileName, downloadsCategories.at(index), downloadsNames.at(index));
+	engine_add_link (downloadFileName, job->queryMetaData("Category").toInt(), job->queryMetaData("Name"));
 
 	downloadFile.remove();
 }
 
 void PlasmaMuleEngine::engine_add_link (const QString &link, const int &category, const QString &printname)
 {
-	kDebug() << "Received Link " << link << " with cat " << category;
+	kDebug(m_debugChannel) << "Received Link " << link << " with cat " << category;
 
 	QString link_to_write;
 
@@ -173,12 +179,11 @@ void PlasmaMuleEngine::engine_add_link (const QString &link, const int &category
 		delete collection;
 	} else {
 		KIO::TransferJob *job = KIO::get(KUrl(link));
+		job->addMetaData("Name", link);
+		job->addMetaData("Category", QString(category));
 		connect (job, SIGNAL(data(KIO::Job *, const QByteArray&)), this,
 			SLOT(downloadFinished(KIO::Job *,const QByteArray&)));
-		kDebug() << QString("Starting download of %1").arg(printname);
-		downloadsCategories.append(category);
-		downloadsJobs.append(job);
-		downloadsNames.append(printname);
+		kDebug(m_debugChannel) << QString("Starting download of %1").arg(printname);
 		return;
 	}
 
@@ -253,7 +258,7 @@ void PlasmaMuleEngine::initVals ()
 
 	if (m_OSActive && !m_dirwatcher.contains(m_OSFile.fileName()))
 	{
-		kDebug() << "Registering: " << m_OSFile.fileName() << " for monitoring";
+		kDebug(m_debugChannel) << "Registering: " << m_OSFile.fileName() << " for monitoring";
 		m_dirwatcher.addFile (m_OSFile.fileName());
 		connect (&m_dirwatcher, SIGNAL (dirty (const QString &)), SLOT (file_changed (const QString&)));
 		connect (&m_dirwatcher, SIGNAL (created (const QString &)), SLOT (new_file (const QString&)));
@@ -263,7 +268,7 @@ void PlasmaMuleEngine::initVals ()
 	{
 		if (!m_dirwatcher.contains(*constIterator))
 		{
-			kDebug() << "Registering: " << *constIterator << " for monitoring";
+			kDebug(m_debugChannel) << "Registering: " << *constIterator << " for monitoring";
 			cleanedIncomingDirs.append (*constIterator);
 			m_dirwatcher.addDir (*constIterator, KDirWatch::WatchFiles);
 		} else {
@@ -275,7 +280,7 @@ void PlasmaMuleEngine::initVals ()
 	{
 		if (!cleanedIncomingDirs.contains (*constIterator))
 		{
-			kDebug() << "Removing " << *constIterator << " from monitored dirs";
+			kDebug(m_debugChannel) << "Removing " << *constIterator << " from monitored dirs";
 			m_dirwatcher.removeDir (*constIterator);
 		}
 	}
@@ -291,7 +296,7 @@ void PlasmaMuleEngine::file_changed (const QString &path)
 {
 	if (path == m_OSFile.fileName())
 	{
-		kDebug() << "Rereading " << path;
+		kDebug(m_debugChannel) << "Rereading " << path;
 		updateSourceEvent ("dummy");
 	}
 }
@@ -300,8 +305,11 @@ void PlasmaMuleEngine::new_file (const QString &path)
 {
 	if (path != m_OSFile.fileName())
 	{
-		kDebug() << "File " << path << "was created";
+		kDebug(m_debugChannel) << "File " << path << "was created";
 		KNotification::event(KNotification::Notification, QString("Finished Download of %1").arg(path));
+	} else {
+		kDebug(m_debugChannel) << "Rereading " << path;
+		updateSourceEvent ("dummy");
 	}
 }
 
