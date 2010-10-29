@@ -96,22 +96,28 @@ function refreshFrames()
         <input name="ed2klink" type="text" id="ed2klink" size="50">
         <select name="selectcat" id="selectcat">
         <?php
-			$cats = amule_get_categories();
-			if ( $HTTP_GET_VARS["Submit"] != "" ) {
-				$link = $HTTP_GET_VARS["ed2klink"];
-				$target_cat = $HTTP_GET_VARS["selectcat"];
-				$target_cat_idx = 0;
-            	foreach($cats as $i => $c) {
-            		if ( $target_cat == $c) $target_cat_idx = $i;
-            	}
-            	if ( strlen($link) > 0 ) {
-            		amule_do_ed2k_download_cmd($link, $target_cat_idx);
-            	}
+		$cats = amule_get_categories();
+		if ( $HTTP_GET_VARS["Submit"] != "" ) {
+			$link = $HTTP_GET_VARS["ed2klink"];
+			$target_cat = $HTTP_GET_VARS["selectcat"];
+			$target_cat_idx = 0;
+
+			foreach($cats as $i => $c) {
+				if ( $target_cat == $c) $target_cat_idx = $i;
 			}
-			foreach($cats as $c) {
-				echo  '<option>', $c, '</option>';
+
+			if ( strlen($link) > 0 ) {
+				$links = split("ed2k://", $link);
+				foreach($links as $linkn) {
+				    amule_do_ed2k_download_cmd("ed2k://" . $linkn, $target_cat_idx);
+				}
 			}
-        ?>
+		}
+
+		foreach($cats as $c) {
+			echo  '<option>', $c, '</option>';
+		}
+	?>
         </select>
         <input type="submit" name="Submit" value="Download link" onClick="refreshFrames()">
       </form></td>
