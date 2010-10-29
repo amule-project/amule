@@ -176,6 +176,7 @@ Version 2.3.0 - The river knows.
 
 	woutermense:
 		* Fix 'break/continue [n]' PHP implementation
+		* Allow multiple download links in webserver
 
 	Wuischke:
 		* Simplify browser selection
