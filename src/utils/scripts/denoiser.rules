@@ -162,7 +162,7 @@ MAKEFLAGS=-w -s
 	/^\n/ b 5
 
 	# skipping install-strip target, since it will trigger the echo-denoiser,
-	# and would silence the whole installation, which is abolutely not wanted
+	# and would silence the whole installation, which is absolutely not wanted
 	/^install-strip$/ {
 		s/.*//
 		x
@@ -258,6 +258,18 @@ MAKEFLAGS=-w -s
 	/^[ 	]*@*echo/ {
 		x
 		/maintainer-clean-generic/ b 6a
+		/uninstall/ b 6c
+		# Install targets may contain echo commands that must not be redirected,
+		# so skip this echo unless it contains installation code
+		/install/ {
+			x
+			/$(INSTALL/ b 6d
+			/installing/ b 6d
+			b 6
+			:6d
+			x
+		}
+		:6c
 #if level 3
 		/maintainer/ b 6a
 		/$(RECURSIVE_TARGETS)/ b 6a
