@@ -1238,6 +1238,11 @@ void CUpDownClient::ClearDownloadBlockRequests()
 bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 {
 	//wxASSERT(theApp->clientlist->IsValidClient(this));
+
+	if (HasBeenDeleted()) {
+		AddDebugLogLineN(logClient, wxT("Disconnected() called for already deleted client on ip ") + Uint32toStringIP(GetConnectIP()));
+		return false;
+	}
 	
 	// was this a direct callback?
 	if (m_dwDirectCallbackTimeout != 0) {
