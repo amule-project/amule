@@ -60,6 +60,7 @@
 #include "updownclient.h"
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "ScopedPtr.h"
+#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 
 
 CEConnectDlg::CEConnectDlg()
@@ -141,6 +142,7 @@ int CamuleRemoteGuiApp::OnExit()
 void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
 	static int request_step = 0;
+	static uint32 msPrevStats = 0;
 	
 	if (m_connect->RequestFifoFull()) {
 		return;
@@ -168,13 +170,17 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		} else if (amuledlg->m_transferwnd->IsShown()) {
 			// update both downloads and shared files
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
-			if (amuledlg->m_transferwnd->clientlistctrl->GetShowing()) {
-				// Kry_GUI Request the client list.
-			}
 			amuledlg->m_transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
 		} else if (amuledlg->m_searchwnd->IsShown()) {
 			if (searchlist->m_curr_search != -1) {
 				searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
+			}
+		} else if (amuledlg->m_statisticswnd->IsShown()) {
+			int sStatsUpdate = thePrefs::GetStatsInterval();
+			uint32 msCur = theStats::GetUptimeMillis();
+			if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
+				msPrevStats = msCur;
+				stattree->DoRequery();
 			}
 		}
 		// Back to the roots
@@ -223,6 +229,7 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 		amuledlg = NULL;
 	}
 	delete m_allUploadingKnownFile;
+	delete stattree;
 }
 
 
@@ -348,6 +355,7 @@ void CamuleRemoteGuiApp::Startup() {
 
 	serverconnect = new CServerConnectRem(m_connect);
 	m_statistics = new CStatistics(*m_connect);
+	stattree = new CStatTreeRem(m_connect);
 	
 	clientlist = new CUpDownClientListRem(m_connect);
 	searchlist = new CSearchListRem(m_connect);
@@ -1939,6 +1947,25 @@ bool CPartFile::SavePartFile(bool)
 {
 	wxFAIL;
 	return false;
+}
+
+
+void CStatTreeRem::DoRequery()
+{
+	CECPacket request(EC_OP_GET_STATSTREE);
+	if (thePrefs::GetMaxClientVersions() != 0) {
+		request.AddTag(CECTag(EC_TAG_STATTREE_CAPPING, (uint8)thePrefs::GetMaxClientVersions()));
+	}
+	m_conn->SendRequest(this, &request);
+}
+
+void CStatTreeRem::HandlePacket(const CECPacket * p)
+{
+	const CECTag* treeRoot = p->GetTagByName(EC_TAG_STATTREE_NODE);
+	if (treeRoot) {
+		theApp->amuledlg->m_statisticswnd->RebuildStatTreeRemote(treeRoot);
+		theApp->amuledlg->m_statisticswnd->ShowStatistics();
+	}
 }
 
 CamuleRemoteGuiApp *theApp;

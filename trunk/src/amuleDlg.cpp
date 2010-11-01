@@ -1073,7 +1073,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 
-	static uint32	msPrev1, msPrev5, msPrevStats;
+	static uint32	msPrev1, msPrev5;
 
 	uint32 			msCur = theStats::GetUptimeMillis();
 
@@ -1083,7 +1083,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	}
 
 #ifndef CLIENT_GUI
-	static uint32 msPrevGraph;
+	static uint32 msPrevGraph, msPrevStats;
 	int msGraphUpdate = thePrefs::GetTrafficOMeterInterval() * 1000;
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
@@ -1094,9 +1094,6 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		m_statisticswnd->UpdateStatGraphs(theStats::GetPeakConnections(), update);
 		m_kademliawnd->UpdateGraph(update);
 	}
-#else
-	//#warning TODO: CORE/GUI -- EC needed
-#endif
 	
 	int sStatsUpdate = thePrefs::GetStatsInterval();
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
@@ -1105,6 +1102,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 			m_statisticswnd->ShowStatistics();
 		}
 	}
+#endif
 
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;

@@ -310,6 +310,14 @@ void CStatisticsDlg::ShowStatistics(bool init)
 }
 
 
+#ifdef CLIENT_GUI
+void CStatisticsDlg::RebuildStatTreeRemote(const CECTag * tag)
+{
+	m_stats->RebuildStatTreeRemote(tag);
+}
+#endif
+
+
 void CStatisticsDlg::FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& StatsGUITree, const NodeIdSet& expandednodes)
 {
 	wxMutexLocker lock(statssubtree->GetLock());

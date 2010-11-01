@@ -548,8 +548,9 @@ private:
 
 	static	void	UpdateStats(const CECPacket* stats);
 
-		void	UpdateStatsTree();
-		void	SetAverageMinutes(uint8 minutes)	{ average_minutes = minutes; }
+	void	UpdateStatsTree();
+	void	RebuildStatTreeRemote(const CECTag *);
+	void	SetAverageMinutes(uint8 minutes)	{ average_minutes = minutes; }
 	
  private:
 	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }

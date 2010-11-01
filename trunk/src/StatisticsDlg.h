@@ -36,6 +36,7 @@ typedef std::set<uint32_t>	NodeIdSet;
 class COScopeCtrl;
 class CStatistics;
 class CStatTreeItemBase;
+class CECTag;
 class wxTreeCtrl;
 class wxTreeItemId;
 //struct UpdateInfo;
@@ -63,6 +64,7 @@ public:
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
+	void RebuildStatTreeRemote(const CECTag *);
 	static const wxColour& getColors(unsigned num);	
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
 	COScopeCtrl* GetConnScope() { return pscopeConn; };
