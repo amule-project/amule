@@ -357,6 +357,9 @@ CUpDownClient::~CUpDownClient()
 		delete m_pReqFileAICHHash;
 		m_pReqFileAICHHash = NULL;
 	}
+
+	// Allow detection of deleted clients that didn't go through Safe_Delete
+ 	m_clientState = CS_DYING;
 }
 
 void CUpDownClient::ClearHelloProperties()
