@@ -69,7 +69,7 @@ MULE_ARG_ENABLE([monolithic],	[yes],	[disable building of the monolithic aMule a
 MULE_ARG_ENABLE([amule-daemon],	[no],	[compile aMule daemon version], [AMULE_DAEMON])
 MULE_ARG_ENABLE([amulecmd],	[no],	[compile aMule command line client], [COMPILE_CMD])
 MULE_ARG_ENABLE([webserver],	[no],	[compile aMule WebServer], [WEB])
-MULE_ARG_ENABLE([amule-gui],	[no],	[compile aMule remote GUI (EXPERIMENTAL)], [AMULE_GUI])
+MULE_ARG_ENABLE([amule-gui],	[no],	[compile aMule remote GUI], [AMULE_GUI])
 MULE_ARG_ENABLE([cas],		[no],	[compile C aMule Statistics], [CAS])
 MULE_ARG_ENABLE([wxcas],	[no],	[compile aMule GUI Statistics], [WXCAS])
 MULE_ARG_ENABLE([ed2k],		[yes],	[don't compile aMule ed2k links handler], [ED2K])
@@ -441,7 +441,7 @@ echo "  Should aMule be compiled with UPnP support?                MULE_STATUSOF
 echo "  Should aMule be compiled with IP2country support?          MULE_STATUSOF([geoip])"
 echo "  Should aMule monolithic application be built?              MULE_STATUSOF([monolithic])"
 echo "  Should aMule daemon version be built?                      MULE_STATUSOF([amule-daemon])"
-echo "  Should aMule remote gui be built? (EXPERIMENTAL)           MULE_STATUSOF([amule-gui])"
+echo "  Should aMule remote gui be built?                          MULE_STATUSOF([amule-gui])"
 echo "  Crypto++ library/headers style?                            ${CRYPTOPP_STYLE:-not found}"
 
 echo
