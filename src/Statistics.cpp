@@ -983,19 +983,13 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 
 void CStatistics::UpdateStatsTree()
 {
-	CECPacket request(EC_OP_GET_STATSTREE);
-	if (thePrefs::GetMaxClientVersions() != 0) {
-		request.AddTag(CECTag(EC_TAG_STATTREE_CAPPING, (uint8)thePrefs::GetMaxClientVersions()));
-	}
-	const CECPacket* reply = m_conn.SendRecvPacket(&request);
-	if (reply) {
-		const CECTag* treeRoot = reply->GetTagByName(EC_TAG_STATTREE_NODE);
-		if (treeRoot) {
-			delete s_statTree;
-			s_statTree = new CStatTreeItemBase(treeRoot);
-		}
-	}
-	delete reply;
+}
+
+
+void CStatistics::RebuildStatTreeRemote(const CECTag * tag)
+{
+	delete s_statTree;
+	s_statTree = new CStatTreeItemBase(tag);
 }
 
 #endif /* !CLIENT_GUI */

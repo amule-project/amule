@@ -588,6 +588,14 @@ public:
 	CStatsUpdaterRem() {}
 };
 
+class CStatTreeRem : public CECPacketHandlerBase {
+	virtual void HandlePacket(const CECPacket *);
+	CRemoteConnect *m_conn;
+public:
+	CStatTreeRem(CRemoteConnect * conn) { m_conn = conn; }
+	void DoRequery();
+};
+
 class CListenSocketRem {
 	uint32 m_peak_connections;
 public:
@@ -640,6 +648,7 @@ public:
 	CIPFilterRem *ipfilter;
 	CSearchListRem *searchlist;
 	CListenSocketRem *listensocket;
+	CStatTreeRem * stattree;
 
 	CStatistics *m_statistics;
 
