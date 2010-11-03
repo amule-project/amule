@@ -1842,7 +1842,7 @@ const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID)
 void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 {
 	theStats::UpdateStats(packet);
-  theApp->ShowUserCount(); // maybe there should be a check if a usercount changed ?
+	theApp->ShowUserCount(); // maybe there should be a check if a usercount changed ?
 }
 
 
@@ -1894,11 +1894,14 @@ bool CUpDownClient::SwapToAnotherFile(
 	bool WXUNUSED(bIgnoreNoNeeded),
 	bool WXUNUSED(ignoreSuspensions),
 	bool WXUNUSED(bRemoveCompletely),
-	CPartFile* WXUNUSED(toFile))
+	CPartFile* toFile)
 {
-	// FIXME: add code
-	wxFAIL;
-	return false;
+	CECPacket req(EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE);
+	req.AddTag(CECTag(EC_TAG_CLIENT, ECID()));
+	req.AddTag(CECTag(EC_TAG_PARTFILE, toFile->GetFileHash()));
+	theApp->m_connect->SendPacket(&req);
+	
+	return true;
 }
 
 

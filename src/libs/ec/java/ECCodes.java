@@ -113,6 +113,7 @@ public final static byte EC_OP_AUTH_PASSWD                   = 0x50;
 public final static byte EC_OP_IPFILTER_UPDATE               = 0x51;
 public final static byte EC_OP_GET_UPDATE                    = 0x52;
 public final static byte EC_OP_CLEAR_COMPLETED               = 0x53;
+public final static byte EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   = 0x54;
 
 public final static short EC_TAG_STRING                             = 0x0000;
 public final static short EC_TAG_PASSWD_HASH                        = 0x0001;
