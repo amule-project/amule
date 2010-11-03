@@ -140,6 +140,8 @@ EC_OP_IPFILTER_UPDATE               0x51
 EC_OP_GET_UPDATE                    0x52
 
 EC_OP_CLEAR_COMPLETED               0x53
+
+EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   0x54
 [/Section]
 
 [Section Content]

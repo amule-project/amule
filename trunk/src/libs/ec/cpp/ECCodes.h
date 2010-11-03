@@ -122,7 +122,8 @@ enum ECOpCodes {
 	EC_OP_AUTH_PASSWD                   = 0x50,
 	EC_OP_IPFILTER_UPDATE               = 0x51,
 	EC_OP_GET_UPDATE                    = 0x52,
-	EC_OP_CLEAR_COMPLETED               = 0x53
+	EC_OP_CLEAR_COMPLETED               = 0x53,
+	EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   = 0x54
 };
 
 enum ECTagNames {
@@ -539,6 +540,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x51: return wxT("EC_OP_IPFILTER_UPDATE");
 		case 0x52: return wxT("EC_OP_GET_UPDATE");
 		case 0x53: return wxT("EC_OP_CLEAR_COMPLETED");
+		case 0x54: return wxT("EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }

@@ -472,15 +472,15 @@ ItemList GetSelectedItems( CGenericClientListCtrl* list )
 
 void CGenericClientListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 {
-	
-	for (unsigned i = 0; i < m_knownfiles.size(); ++i) {
-		wxCHECK_RET(m_knownfiles[i]->IsPartFile(), wxT("File is not a partfile when swapping sources"));
-	}
-
 	ItemList sources = ::GetSelectedItems( this );
 	
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
-		(*it)->GetSource()->SwapToAnotherFile( true, false, false,  dynamic_cast<CPartFile*>((*it)->GetOwner()));
+		CKnownFile * kf = (*it)->GetOwner();
+		if (!kf->IsPartFile()) {
+			wxFAIL_MSG(wxT("File is not a partfile when swapping sources"));
+			continue;
+		}
+		(*it)->GetSource()->SwapToAnotherFile( true, false, false,  dynamic_cast<CPartFile*>(kf));
 	}
 }
 

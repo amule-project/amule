@@ -1361,6 +1361,18 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		}
+		case EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE: {
+			theApp->sharedfiles->Reload();
+			uint32 idClient = request->GetTagByNameSafe(EC_TAG_CLIENT)->GetInt();
+			CUpDownClient * client = theApp->clientlist->FindClientByECID(idClient);
+			CMD4Hash idFile = request->GetTagByNameSafe(EC_TAG_PARTFILE)->GetMD4Data();
+			CPartFile * file = theApp->downloadqueue->GetFileByID(idFile);
+			if (client && file) {
+				client->SwapToAnotherFile( true, false, false, file);
+			}
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		}
 
 		//
 		// Server commands

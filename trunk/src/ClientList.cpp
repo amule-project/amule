@@ -458,6 +458,18 @@ CUpDownClient* CClientList::FindClientByIP( uint32 clientip )
 }
 
 
+CUpDownClient* CClientList::FindClientByECID(uint32 ecid) const
+{
+	for (IDMap::const_iterator it =	m_clientList.begin(); it != m_clientList.end(); it++) {
+		if (it->second->ECID() == ecid) {
+			return it->second;
+		}
+	}
+
+	return NULL;
+}
+
+
 bool CClientList::IsIPAlreadyKnown(uint32_t ip)
 {
 	// Find all items with the specified ip
