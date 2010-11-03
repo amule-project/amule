@@ -1558,6 +1558,38 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 		file->UpdateFileRatingCommentAvail();
 	}
 		
+	// Update A4AF sources
+	ListOfUInts32 & clientIDs = file->GetA4AFClientIDs();
+	CECTag *a4aftag = tag->GetTagByName(EC_TAG_PARTFILE_A4AF_SOURCES);
+	if (a4aftag) {
+		file->ClearA4AFList();
+		clientIDs.clear();
+		for (CECTag::const_iterator it = a4aftag->begin(); it != a4aftag->end(); it++) {
+			if (it->GetTagName() != EC_TAG_ECID) {	// should always be this
+				continue;
+			}
+			uint32 id = it->GetInt();
+			CUpDownClient * src = theApp->clientlist->GetByID(id);
+			if (src) {
+				file->AddA4AFSource(src);
+			} else {
+				// client wasn't transmitted yet, try it later
+				clientIDs.push_back(id);
+			}
+		}
+	} else if (!clientIDs.empty()) {
+		// Process clients from the last pass whose ids were still unknown then
+		for (ListOfUInts32::iterator it = clientIDs.begin(); it != clientIDs.end(); ) {
+			ListOfUInts32::iterator it1 = it++;
+			uint32 id = *it1;
+			CUpDownClient * src = theApp->clientlist->GetByID(id);
+			if (src) {
+				file->AddA4AFSource(src);
+				clientIDs.erase(it1);
+			}
+		}
+	}
+		
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(file);
 
 	// If file is shared check if it is already listed in shared files.

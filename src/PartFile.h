@@ -255,6 +255,7 @@ public:
 
 	const SourceSet& GetSourceList()	const { return m_SrcList; }
 	const SourceSet& GetA4AFList()		const { return m_A4AFsrclist; }
+	void	ClearA4AFList()				{ m_A4AFsrclist.clear(); }
 
 	const CReqBlockPtrList	GetRequestedBlockList() const { return m_requestedblocks_list; }
 
@@ -375,6 +376,9 @@ private:
 	uint8   m_iDownPriorityEC;
 	bool	m_isShared;
 	SourcenameItemMap m_SourcenameItemMap;
+
+	ListOfUInts32	m_A4AFClientIDs;
+	ListOfUInts32 & GetA4AFClientIDs()			{ return m_A4AFClientIDs; }
 public:
 	bool	IsShared() const					{ return m_isShared; }
 	SourcenameItemMap &GetSourcenameItemMap()	{ return m_SourcenameItemMap; }
