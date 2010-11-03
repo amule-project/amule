@@ -722,6 +722,10 @@ public:
 
 	virtual bool TransferFromWindow()
 	{
+		if (!m_languagesReady) {
+			return true;	// nothing changed, no problem
+		}
+
 		if ( Cfg_PureInt::TransferFromWindow() ) { 
 			// find wx ID of selected language
 			int i = 0;
