@@ -767,29 +767,13 @@ static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 		}
 		switch (request->GetOpCode()) {
 			case EC_OP_PARTFILE_SWAP_A4AF_THIS:
-				if ((pfile->GetStatus(false) == PS_READY) ||
-					(pfile->GetStatus(false) == PS_EMPTY)) {
-					CKnownFile::SourceSet::const_iterator it = pfile->GetA4AFList().begin();
-					while ( it != pfile->GetA4AFList().end() ) {
-						CUpDownClient *cur_source = *it++;
-						
-						cur_source->SwapToAnotherFile(true, false, false, pfile);
-					}
-				}
+				CoreNotify_PartFile_Swap_A4AF(pfile);
 				break;
 			case EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO:
-				pfile->SetA4AFAuto(!pfile->IsA4AFAuto());
+				CoreNotify_PartFile_Swap_A4AF_Auto(pfile);
 				break;
 			case EC_OP_PARTFILE_SWAP_A4AF_OTHERS:
-				if ((pfile->GetStatus(false) == PS_READY) ||
-				    (pfile->GetStatus(false) == PS_EMPTY)) {
-					CKnownFile::SourceSet::const_iterator it = pfile->GetSourceList().begin();
-					while ( it != pfile->GetSourceList().end() ) {
-						CUpDownClient* cur_source = *it++;
-
-						cur_source->SwapToAnotherFile(false, false, false, NULL);
-					}
-				}
+				CoreNotify_PartFile_Swap_A4AF_Others(pfile);
 				break;
 			case EC_OP_PARTFILE_PAUSE:
 				pfile->PauseFile();
