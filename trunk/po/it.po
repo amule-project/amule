@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-01 22:59+0100\n"
-"PO-Revision-Date: 2010-10-13 15:39+0100\n"
+"PO-Revision-Date: 2010-11-03 16:23+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2127,9 +2127,9 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:964
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
-msgstr "QR: %u (%i)"
+msgstr "In coda: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:974 src/GenericClientListCtrl.cpp:1003
 msgid "Asked for another file"
@@ -2140,9 +2140,9 @@ msgid "Waiting for upload slot"
 msgstr "Upload in attesa:"
 
 #: src/GenericClientListCtrl.cpp:995
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "In coda"
+msgstr "In coda: %u"
 
 #: src/GenericClientListCtrl.cpp:998
 msgid "Uploading"
@@ -3532,7 +3532,7 @@ msgstr "Della stessa categoria"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "In ordine alfabetico"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3705,7 +3705,7 @@ msgstr "Intervallo aggiornamento connessione al server: disabilitato"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Disabilita la modalità standby a tempo"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3745,7 +3745,7 @@ msgstr "Orientamento verticale della barra degli strumenti"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Mostra la nazionalità per client"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -4343,29 +4343,24 @@ msgid "Active Uploads"
 msgstr "Upload attivi"
 
 #: src/muuli_wdr.cpp:3373
-#, fuzzy
 msgid "Percent of total files"
-msgstr "percentuale di file totali"
+msgstr "Percentuale di file totali"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "All files"
-msgstr "File condivisi"
+msgstr "Tutti i file"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Selected files"
-msgstr "Seleziona filtro di visualizzazione"
+msgstr "Seleziona files"
 
 #: src/muuli_wdr.cpp:3422
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Upload attivi"
+msgstr "Solo upload attivi"
 
 #: src/muuli_wdr.cpp:3424
-#, fuzzy
 msgid "Show Clients for"
-msgstr "Mostra client"
+msgstr "Mostra client per"
 
 #: src/muuli_wdr.cpp:3427
 msgid "Reload:"
@@ -5874,12 +5869,10 @@ msgid "Available Parts"
 msgstr "Parti disponibili"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "Stato upload"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "Stato download"
 
@@ -5978,9 +5971,8 @@ msgid "Download Status"
 msgstr "Stato download"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Nome file"
+msgstr "Nome file remoto"
 
 #: src/Statistics.cpp:649
 #, c-format
