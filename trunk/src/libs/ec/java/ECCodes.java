@@ -191,6 +191,7 @@ public final static short 	EC_TAG_PARTFILE_HASH                      = 0x031E;
 public final static short 	EC_TAG_PARTFILE_SHARED                    = 0x031F;
 public final static short 	EC_TAG_PARTFILE_HASHED_PART_COUNT         = 0x0320;
 public final static short 	EC_TAG_PARTFILE_A4AFAUTO                  = 0x0321;
+public final static short 	EC_TAG_PARTFILE_A4AF_SOURCES              = 0x0322;
 public final static short EC_TAG_KNOWNFILE                          = 0x0400;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED                  = 0x0401;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402;

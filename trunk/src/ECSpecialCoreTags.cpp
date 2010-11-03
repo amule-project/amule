@@ -174,6 +174,14 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 	}
 
 	AddTag(EC_TAG_PARTFILE_PARTMETID, file->GetPartMetNumber(), valuemap);
+
+	// A4AF sources
+	CECEmptyTag a4afTag(EC_TAG_PARTFILE_A4AF_SOURCES);
+	const CKnownFile::SourceSet& a4afSources = file->GetA4AFList();
+	for (CKnownFile::SourceSet::const_iterator it = a4afSources.begin(); it != a4afSources.end(); it++) {
+		a4afTag.AddTag(CECTag(EC_TAG_ECID, (*it)->ECID()));
+	}
+	AddTag(a4afTag, valuemap);
 }
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level, 
