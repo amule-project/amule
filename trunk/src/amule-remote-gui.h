@@ -509,6 +509,7 @@ public:
 	void AddFilesFromDirectory(const CPath&);
 	void Reload(bool sendtoserver = true, bool firstload = false);
 	bool RenameFile(CKnownFile* file, const CPath& newName);
+	void SetFileCommentRating(CKnownFile* file, const wxString& newComment, int8 newRating);
 };
 
 class CKnownFilesRem : public CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag> {

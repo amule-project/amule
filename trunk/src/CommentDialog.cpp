@@ -25,6 +25,7 @@
 
 
 #include "CommentDialog.h"	// Interface declarations
+#include "GuiEvents.h"
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "muuli_wdr.h"		// Needed for commentDlg
 // CommentDialog dialog 
@@ -56,10 +57,8 @@ END_EVENT_TABLE()
 
 void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString SValue;
-	SValue = CastChild( IDC_CMT_TEXT, wxTextCtrl )->GetValue();
-	m_file->SetFileComment(SValue);
-	m_file->SetFileRating((int8)ratebox->GetSelection());
+	wxString comment = CastChild( IDC_CMT_TEXT, wxTextCtrl )->GetValue();
+	CoreNotify_KnownFile_Comment_Set(m_file, comment, (int8)ratebox->GetSelection());
 	EndModal(0);
 }
 

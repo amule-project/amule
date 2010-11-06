@@ -965,6 +965,17 @@ bool CSharedFilesRem::RenameFile(CKnownFile* file, const CPath& newName)
 }
 
 
+void CSharedFilesRem::SetFileCommentRating(CKnownFile* file, const wxString& newComment, int8 newRating)
+{
+	CECPacket request(EC_OP_SHARED_FILE_SET_COMMENT);
+	request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
+	request.AddTag(CECTag(EC_TAG_KNOWNFILE_COMMENT, newComment));
+	request.AddTag(CECTag(EC_TAG_KNOWNFILE_RATING, newRating));
+
+	m_conn->SendPacket(&request);
+}
+
+
 void CKnownFilesRem::DeleteItem(CKnownFile * file)
 {
 	uint32 id = file->ECID();
@@ -1025,6 +1036,9 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 	tag->GetCompleteSources(&file->m_nCompleteSourcesCount);
 
 	tag->GetOnQueue(&file->m_queuedCount);
+
+	tag->GetComment(file->m_strComment);
+	tag->GetRating(file->m_iRating);
 
 	requested += file->statistic.requested;
 	transferred += file->statistic.transferred;
@@ -1874,19 +1888,6 @@ void CUpDownClient::RequestSharedFileList()
 {
 	// FIXME: add code
 	wxFAIL;
-}
-
-
-void CKnownFile::SetFileComment(const wxString &)
-{
-	// FIXME: add code
-	wxMessageBox(_("Comments and ratings are not supported on remote gui yet"), _("Information"), wxOK | wxICON_INFORMATION);
-}
-
-
-void CKnownFile::SetFileRating(unsigned char)
-{
-	// FIXME: add code
 }
 
 

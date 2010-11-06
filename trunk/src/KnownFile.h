@@ -146,8 +146,10 @@ protected:
 	CAbstractFile& operator=(const CAbstractFile);
 
 	CMD4Hash	m_abyFileHash;
-	wxString	m_strComment;
-	int8		m_iRating;
+	// comment/rating are read from the config and cached in these variables,
+	// so make the mutable to allow GetFileComment() to be a const method
+	mutable	wxString	m_strComment;
+	mutable	int8		m_iRating;
 	bool		m_hasComment;
 	int8		m_iUserRating;
 	ArrayOfCTag	m_taglist;
@@ -221,11 +223,10 @@ public:
 	void	RemoveUploadingClient(CUpDownClient* client);
 
 	// comment
-	const wxString&	GetFileComment() { if (!m_bCommentLoaded) LoadComment(); return m_strComment; }
-	int8	GetFileRating() 		{ if (!m_bCommentLoaded) LoadComment(); return m_iRating; }
+	const wxString&	GetFileComment()	const	{ if (!m_bCommentLoaded) LoadComment(); return m_strComment; }
+	int8	GetFileRating() 			const	{ if (!m_bCommentLoaded) LoadComment(); return m_iRating; }
 
-	void	SetFileComment(const wxString& strNewComment);
-	void	SetFileRating(int8 iNewRating);
+	void	SetFileCommentRating(const wxString& strNewComment, int8 iNewRating);
 	void	SetPublishedED2K( bool val );
 	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
 
@@ -324,14 +325,14 @@ protected:
 
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
-	void	LoadComment();//comment
+	void	LoadComment() const;
 	ArrayOfCMD4Hash m_hashlist;
 	CPath	m_filePath;
 
 	static void CreateHashFromFile(class CFileAutoClose& file, uint64 offset, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 
-	bool	m_bCommentLoaded;
+	mutable bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;
 	uint16	m_iED2KPartHashCount;

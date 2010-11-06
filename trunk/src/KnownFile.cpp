@@ -1097,41 +1097,29 @@ void CKnownFile::UpdateAutoUpPriority()
 	}
 }
 
-void CKnownFile::SetFileComment(const wxString& strNewComment)
+void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRating)
 { 
-	if (m_strComment != strNewComment) {
+	if (m_strComment != strNewComment || m_iRating != iNewRating) {
 		SetLastPublishTimeKadNotes(0);
 		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 
 		wxConfigBase* cfg = wxConfigBase::Get();
-		cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
+		if (strNewComment.IsEmpty() && iNewRating == 0) {
+			cfg->DeleteGroup(strCfgPath);
+		} else {
+			cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
+			cfg->Write( strCfgPath + wxT("Rate"), (int)iNewRating);
+		}
      
 		m_strComment = strNewComment;
-  
+ 		m_iRating = iNewRating; 
+ 
 		SourceSet::iterator it = m_ClientUploadList.begin();
 		for ( ; it != m_ClientUploadList.end(); it++ ) {
 			(*it)->SetCommentDirty();
 		}
 	}
 }
-
-
-// For File rate 
-void CKnownFile::SetFileRating(int8 iNewRating)
-{ 
-	if (m_iRating != iNewRating) {
-		SetLastPublishTimeKadNotes(0);	
-		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
-		wxConfigBase* cfg = wxConfigBase::Get();
-		cfg->Write( strCfgPath + wxT("Rate"), (int)iNewRating);
-		m_iRating = iNewRating; 
-
-		SourceSet::iterator it = m_ClientUploadList.begin();
-		for ( ; it != m_ClientUploadList.end(); it++ ) {
-			(*it)->SetCommentDirty();
-		}
-	}
-} 
 
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
@@ -1358,7 +1346,7 @@ void CKnownFile::SetFileName(const CPath& filename)
 #endif // CLIENT_GUI
 
 //For File Comment // 
-void CKnownFile::LoadComment()
+void CKnownFile::LoadComment() const
 {
 	#ifndef CLIENT_GUI
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
@@ -1367,14 +1355,9 @@ void CKnownFile::LoadComment()
 	
 	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
 	m_iRating = cfg->Read( strCfgPath + wxT("Rate"), 0l);
-	m_bCommentLoaded = true;	
-	
-	#else
-	m_strComment.Clear();
-	m_bCommentLoaded = true;
-	m_iRating =0;
 	#endif
-	
+
+	m_bCommentLoaded = true;
 }
 
 

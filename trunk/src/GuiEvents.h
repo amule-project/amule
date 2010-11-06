@@ -159,7 +159,7 @@ namespace MuleNotify
 
 	void KnownFile_Up_Prio_Set(CKnownFile* file, uint8 val);
 	void KnownFile_Up_Prio_Auto(CKnownFile* file);
-	void KnownFile_Comment_Set(CKnownFile* file, wxString comment);
+	void KnownFile_Comment_Set(CKnownFile* file, wxString comment, int8 rating);
 
 	void Search_Add_Download(CSearchFile* result, uint8 category);
 	void Search_Update_Progress(uint32 value);
@@ -534,7 +534,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // KnownFile
 #define CoreNotify_KnownFile_Up_Prio_Set(ptr, val)	MuleNotify::DoNotify(&MuleNotify::KnownFile_Up_Prio_Set, ptr, val)
 #define CoreNotify_KnownFile_Up_Prio_Auto(ptr)		MuleNotify::DoNotify(&MuleNotify::KnownFile_Up_Prio_Auto, ptr)
-#define CoreNotify_KnownFile_Comment_Set(ptr, val)	MuleNotify::DoNotify(&MuleNotify::KnownFile_Comment_Set, ptr, val)
+#define CoreNotify_KnownFile_Comment_Set(ptr, v0, v1)	MuleNotify::DoNotify(&MuleNotify::KnownFile_Comment_Set, ptr, v0, v1)
 
 // Search
 #define CoreNotify_Search_Add_Download(ptr, val)	MuleNotify::DoNotify(&MuleNotify::Search_Add_Download, ptr, val)
