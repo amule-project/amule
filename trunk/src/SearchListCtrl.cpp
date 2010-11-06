@@ -663,7 +663,7 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
-	theApp->searchlist->StopGlobalSearch();
+	theApp->searchlist->StopSearch(true);
 	theApp->amuledlg->m_searchwnd->ResetControls();
 	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
 		SetValue(wxT("related::") + file->GetFileHash().Encode());

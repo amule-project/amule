@@ -1703,18 +1703,12 @@ wxString CSearchListRem::StartNewSearch(
 }
 
 
-void CSearchListRem::StopGlobalSearch()
+void CSearchListRem::StopSearch(bool)
 {
 	if (m_curr_search != -1) {
 		CECPacket search_req(EC_OP_SEARCH_STOP);
 		m_conn->SendPacket(&search_req);
 	}
-}
-
-
-void CSearchListRem::StopKadSearch()
-{
-// FIXME implementation needed
 }
 
 

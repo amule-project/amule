@@ -570,8 +570,7 @@ public:
 	wxString StartNewSearch(uint32* nSearchID, SearchType search_type,
 		const CSearchList::CSearchParams& params);
 		
-	void StopGlobalSearch();
-	void StopKadSearch();
+	void StopSearch(bool globalOnly = false);
 	
 	//
 	// template
