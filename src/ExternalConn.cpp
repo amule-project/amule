@@ -1303,7 +1303,6 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
 		case EC_OP_PARTFILE_REMOVE_HIGH_QUEUE:
-		case EC_OP_PARTFILE_CLEANUP_SOURCES:
 		case EC_OP_PARTFILE_SWAP_A4AF_THIS:
 		case EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO:
 		case EC_OP_PARTFILE_SWAP_A4AF_OTHERS:
@@ -1369,6 +1368,17 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			CPartFile * file = theApp->downloadqueue->GetFileByID(idFile);
 			if (client && file) {
 				client->SwapToAnotherFile( true, false, false, file);
+			}
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		}
+		case EC_OP_SHARED_FILE_SET_COMMENT: {
+			CMD4Hash hash = request->GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data();
+			CKnownFile * file = theApp->sharedfiles->GetFileByID(hash);
+			if (file) {
+				wxString newComment = request->GetTagByNameSafe(EC_TAG_KNOWNFILE_COMMENT)->GetStringData();
+				uint8 newRating = request->GetTagByNameSafe(EC_TAG_KNOWNFILE_RATING)->GetInt();
+				CoreNotify_KnownFile_Comment_Set(file, newComment, newRating);
 			}
 			response = new CECPacket(EC_OP_NOOP);
 			break;

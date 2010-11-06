@@ -294,6 +294,11 @@ namespace MuleNotify
 		theApp->sharedfiles->SetFilePrio(file, PR_AUTO);
 	}
 
+	void KnownFile_Comment_Set(CKnownFile* file, wxString comment, int8 rating)
+	{
+		theApp->sharedfiles->SetFileCommentRating(file, comment, rating);
+	}
+	
 	void Download_Set_Cat_Prio(uint8, uint8)
 	{
 	}
@@ -700,9 +705,10 @@ namespace MuleNotify
 		file->UpdateAutoUpPriority();
 	}
 	
-	void KnownFile_Comment_Set(CKnownFile* file, wxString comment)
+	void KnownFile_Comment_Set(CKnownFile* file, wxString comment, int8 rating)
 	{
-		file->SetFileComment(comment);
+		file->SetFileCommentRating(comment, rating);
+		SharedFilesUpdateItem(file);
 	}
 	
 

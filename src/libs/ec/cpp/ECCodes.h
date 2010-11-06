@@ -62,7 +62,7 @@ enum ECOpCodes {
 	EC_OP_PARTFILE_REMOVE_NO_NEEDED     = 0x12,
 	EC_OP_PARTFILE_REMOVE_FULL_QUEUE    = 0x13,
 	EC_OP_PARTFILE_REMOVE_HIGH_QUEUE    = 0x14,
-	EC_OP_PARTFILE_CLEANUP_SOURCES      = 0x15,
+	EC_OP_PARTFILE_UNUSED               = 0x15,
 	EC_OP_PARTFILE_SWAP_A4AF_THIS       = 0x16,
 	EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO  = 0x17,
 	EC_OP_PARTFILE_SWAP_A4AF_OTHERS     = 0x18,
@@ -123,7 +123,8 @@ enum ECOpCodes {
 	EC_OP_IPFILTER_UPDATE               = 0x51,
 	EC_OP_GET_UPDATE                    = 0x52,
 	EC_OP_CLEAR_COMPLETED               = 0x53,
-	EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   = 0x54
+	EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   = 0x54,
+	EC_OP_SHARED_FILE_SET_COMMENT       = 0x55
 };
 
 enum ECTagNames {
@@ -219,6 +220,8 @@ enum ECTagNames {
 		EC_TAG_KNOWNFILE_PRIO                     = 0x040B,
 		EC_TAG_KNOWNFILE_ON_QUEUE                 = 0x040C,
 		EC_TAG_KNOWNFILE_COMPLETE_SOURCES         = 0x040D,
+		EC_TAG_KNOWNFILE_COMMENT                  = 0x040E,
+		EC_TAG_KNOWNFILE_RATING                   = 0x040F,
 	EC_TAG_SERVER                             = 0x0500,
 		EC_TAG_SERVER_NAME                        = 0x0501,
 		EC_TAG_SERVER_DESC                        = 0x0502,
@@ -226,8 +229,8 @@ enum ECTagNames {
 		EC_TAG_SERVER_PING                        = 0x0504,
 		EC_TAG_SERVER_USERS                       = 0x0505,
 		EC_TAG_SERVER_USERS_MAX                   = 0x0506,
-		EC_TAG_SERVER_FILES		          = 0x0507,
-		EC_TAG_SERVER_PRIO	                  = 0x0508,
+		EC_TAG_SERVER_FILES                       = 0x0507,
+		EC_TAG_SERVER_PRIO                        = 0x0508,
 		EC_TAG_SERVER_FAILED                      = 0x0509,
 		EC_TAG_SERVER_STATIC                      = 0x050A,
 		EC_TAG_SERVER_VERSION                     = 0x050B,
@@ -294,18 +297,18 @@ enum ECTagNames {
 			EC_TAG_GENERAL_CHECK_NEW_VERSION          = 0x1204,
 		EC_TAG_PREFS_CONNECTIONS                  = 0x1300,
 			EC_TAG_CONN_DL_CAP                        = 0x1301,
-			EC_TAG_CONN_UL_CAP	                  = 0x1302,
-			EC_TAG_CONN_MAX_DL	                  = 0x1303,
-			EC_TAG_CONN_MAX_UL	                  = 0x1304,
+			EC_TAG_CONN_UL_CAP                        = 0x1302,
+			EC_TAG_CONN_MAX_DL                        = 0x1303,
+			EC_TAG_CONN_MAX_UL                        = 0x1304,
 			EC_TAG_CONN_SLOT_ALLOCATION               = 0x1305,
 			EC_TAG_CONN_TCP_PORT                      = 0x1306,
 			EC_TAG_CONN_UDP_PORT	                  = 0x1307,
 			EC_TAG_CONN_UDP_DISABLE                   = 0x1308,
 			EC_TAG_CONN_MAX_FILE_SOURCES              = 0x1309,
-			EC_TAG_CONN_MAX_CONN	                  = 0x130A,
+			EC_TAG_CONN_MAX_CONN                      = 0x130A,
 			EC_TAG_CONN_AUTOCONNECT                   = 0x130B,
-			EC_TAG_CONN_RECONNECT	                  = 0x130C,
-			EC_TAG_NETWORK_ED2K		          = 0x130D,
+			EC_TAG_CONN_RECONNECT                     = 0x130C,
+			EC_TAG_NETWORK_ED2K                       = 0x130D,
 			EC_TAG_NETWORK_KADEMLIA                   = 0x130E,
 		EC_TAG_PREFS_MESSAGEFILTER                = 0x1400,
 			EC_TAG_MSGFILTER_ENABLED                  = 0x1401,
@@ -350,7 +353,7 @@ enum ECTagNames {
 			EC_TAG_FILES_EXTRACT_METADATA             = 0x180B,
 			EC_TAG_FILES_ALLOC_FULL_SIZE              = 0x180C,
 			EC_TAG_FILES_CHECK_FREE_SPACE             = 0x180D,
-			EC_TAG_FILES_MIN_FREE_SPACE	          = 0x180E,
+			EC_TAG_FILES_MIN_FREE_SPACE               = 0x180E,
 		EC_TAG_PREFS_SRCDROP                      = 0x1900,
 			EC_TAG_SRCDROP_NONEEDED                   = 0x1901,
 			EC_TAG_SRCDROP_DROP_FQS                   = 0x1902,
@@ -479,7 +482,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x12: return wxT("EC_OP_PARTFILE_REMOVE_NO_NEEDED");
 		case 0x13: return wxT("EC_OP_PARTFILE_REMOVE_FULL_QUEUE");
 		case 0x14: return wxT("EC_OP_PARTFILE_REMOVE_HIGH_QUEUE");
-		case 0x15: return wxT("EC_OP_PARTFILE_CLEANUP_SOURCES");
+		case 0x15: return wxT("EC_OP_PARTFILE_UNUSED");
 		case 0x16: return wxT("EC_OP_PARTFILE_SWAP_A4AF_THIS");
 		case 0x17: return wxT("EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO");
 		case 0x18: return wxT("EC_OP_PARTFILE_SWAP_A4AF_OTHERS");
@@ -541,6 +544,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x52: return wxT("EC_OP_GET_UPDATE");
 		case 0x53: return wxT("EC_OP_CLEAR_COMPLETED");
 		case 0x54: return wxT("EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE");
+		case 0x55: return wxT("EC_OP_SHARED_FILE_SET_COMMENT");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }
@@ -640,6 +644,8 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x040B: return wxT("EC_TAG_KNOWNFILE_PRIO");
 		case 0x040C: return wxT("EC_TAG_KNOWNFILE_ON_QUEUE");
 		case 0x040D: return wxT("EC_TAG_KNOWNFILE_COMPLETE_SOURCES");
+		case 0x040E: return wxT("EC_TAG_KNOWNFILE_COMMENT");
+		case 0x040F: return wxT("EC_TAG_KNOWNFILE_RATING");
 		case 0x0500: return wxT("EC_TAG_SERVER");
 		case 0x0501: return wxT("EC_TAG_SERVER_NAME");
 		case 0x0502: return wxT("EC_TAG_SERVER_DESC");

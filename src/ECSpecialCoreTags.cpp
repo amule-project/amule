@@ -222,6 +222,9 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 	AddTag(EC_TAG_PARTFILE_ED2K_LINK,
 			theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
+
+	AddTag(EC_TAG_KNOWNFILE_COMMENT, file->GetFileComment());
+	AddTag(EC_TAG_KNOWNFILE_RATING, file->GetFileRating());
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap) :

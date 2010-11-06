@@ -236,6 +236,9 @@ class CEC_SharedFile_Tag : public CECTag {
 
 		uint16		GetOnQueue(uint16 *target = 0)		const { return AssignIfExist(EC_TAG_KNOWNFILE_ON_QUEUE, target); }
 
+		bool		GetComment(wxString &target)	const { return AssignIfExist(EC_TAG_KNOWNFILE_COMMENT, target); }
+		bool		GetRating(uint8 &target)		const { return AssignIfExist(EC_TAG_KNOWNFILE_RATING, target); }
+
 		bool		GetAICHHash(wxString &target)	const { return AssignIfExist(EC_TAG_KNOWNFILE_AICH_MASTERHASH, target); }
 	private:
 		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
