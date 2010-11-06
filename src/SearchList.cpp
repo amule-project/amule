@@ -259,7 +259,7 @@ CSearchList::CSearchList()
 
 CSearchList::~CSearchList()
 {
-	StopGlobalSearch();
+	StopSearch();
 
 	while (!m_results.empty()) {
 		RemoveResults(m_results.begin()->first);
@@ -466,7 +466,7 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 		}
 	}	
 	// No more servers left to ask.
-	StopGlobalSearch();
+	StopSearch(true);
 }
 
 
@@ -614,7 +614,7 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 }
 
 
-void CSearchList::StopGlobalSearch()
+void CSearchList::StopSearch(bool globalOnly)
 {
 	if (m_searchType == GlobalSearch) {
 		m_currentSearch = -1;
@@ -628,13 +628,7 @@ void CSearchList::StopGlobalSearch()
 		m_searchTimer.Stop();
 
 		CoreNotify_Search_Update_Progress(0xffff);
-	}
-}
-
-
-void CSearchList::StopKadSearch()
-{
-	if (m_searchType == KadSearch) {
+	} else if (m_searchType == KadSearch && !globalOnly) {
 		Kademlia::CSearchManager::StopSearch(m_currentSearch, false);
 		m_currentSearch = -1;
 	}

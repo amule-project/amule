@@ -955,7 +955,7 @@ static CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *reque
 static CECPacket *Get_EC_Response_Search_Stop(const CECPacket *WXUNUSED(request))
 {
 	CECPacket *reply = new CECPacket(EC_OP_MISC_DATA);
-	theApp->searchlist->StopGlobalSearch();
+	theApp->searchlist->StopSearch();
 	return reply;
 }
 

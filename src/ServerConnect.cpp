@@ -402,7 +402,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 				connectedsocket->Close();
 			}
 			connectedsocket = NULL;
-			theApp->searchlist->StopGlobalSearch();			
+			theApp->searchlist->StopSearch(true);			
 			Notify_SearchCancel();
 			theStats::GetServerConnectTimer()->StopTimer();
 			if (thePrefs::Reconnect() && !connecting){

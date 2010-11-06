@@ -413,8 +413,7 @@ void CSearchDlg::CreateNewTab(const wxString& searchString, wxUIntPtr nSearchID)
 
 void CSearchDlg::OnBnClickedStop(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp->searchlist->StopGlobalSearch();
-	theApp->searchlist->StopKadSearch();
+	theApp->searchlist->StopSearch();
 	ResetControls();
 }
 
