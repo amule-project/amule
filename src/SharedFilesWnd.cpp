@@ -92,7 +92,10 @@ CSharedFilesWnd::~CSharedFilesWnd()
 		wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
 		
 		// Save the splitter position
-		config->Write( wxT("/GUI/SharedWnd/Splitter"), splitter->GetSashPosition() );		
+		int pos = splitter->GetSashPosition();
+		if (pos >= s_splitterMin) {
+			config->Write(wxT("/GUI/SharedWnd/Splitter"), pos);
+		}
 		
 		// Save the visible status of the list
 		config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
@@ -243,8 +246,8 @@ void CSharedFilesWnd::Prepare()
 	
 	if ( m_splitter ) {
 		// Some sanity checking
-		if ( m_splitter < 90 ) {
-			m_splitter = 90;
+		if ( m_splitter < s_splitterMin ) {
+			m_splitter = s_splitterMin;
 		} else if ( m_splitter > height - header_height * 2 ) {
 			m_splitter = height - header_height * 2;
 		}
@@ -295,8 +298,8 @@ void CSharedFilesWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 
 void CSharedFilesWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 {
-	if ( evt.GetSashPosition() < 90 ) {
-		evt.SetSashPosition( 90 );
+	if ( evt.GetSashPosition() < s_splitterMin ) {
+		evt.SetSashPosition( s_splitterMin );
 	} else {
 		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
 		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CSharedFilesWnd::OnSashPositionChanging"));
