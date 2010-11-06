@@ -439,8 +439,8 @@ public:
 	//
 	void RemoveServer(CServer* server);
 	void UpdateServerMetFromURL(wxString url);
-	void SaveServerMet();
-	void FilterServers();
+	void SaveServerMet() {}	// not needed here
+	void FilterServers() {}	// not needed here
 	
 	//
 	// template
@@ -457,7 +457,7 @@ public:
 
 	const CClientPtrList& GetList() const { return m_items; };
 
-	void FilterQueues();
+	void FilterQueues() {}	// not needed here
 	//
 	// template
 	//

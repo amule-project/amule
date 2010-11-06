@@ -825,19 +825,6 @@ void CServerListRem::UpdateServerMetFromURL(wxString url)
 }
 
 
-void CServerListRem::SaveServerMet()
-{
-	// lfroen: stub, nothing to do
-}
-
-
-void CServerListRem::FilterServers()
-{
-	// FIXME: add code
-	//wxFAIL;
-}
-
-
 void CServerListRem::RemoveServer(CServer* server)
 {
 	m_conn->RemoveServer(server->GetIP(),server->GetPort());
@@ -1685,13 +1672,6 @@ void CDownQueueRem::ClearCompleted(const ListOfUInts32 & ecids)
 }
 
 
-void CUpDownClientListRem::FilterQueues()
-{
-	// FIXME: add code
-	//wxFAIL;
-}
-
-
 CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag>(conn, true)
 {
 	m_curr_search = -1;
@@ -1860,30 +1840,6 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 }
 
 
-bool CUpDownClient::IsBanned() const
-{
-	// FIXME: add code
-	return false;
-}
-
-
-//
-// Those functions have different implementation in remote gui
-//
-void  CUpDownClient::Ban()
-{
-	// FIXME: add code
-	wxFAIL;
-}
-
-
-void  CUpDownClient::UnBan()
-{
-	// FIXME: add code
-	wxFAIL;
-}
-
-
 void CUpDownClient::RequestSharedFileList()
 {
 	// FIXME: add code
@@ -1943,6 +1899,7 @@ void CPartFile::UpdatePartsInfo()
 }
 
 
+
 void CPartFile::UpdateFileRatingCommentAvail()
 {
 	bool prevComment = m_hasComment;
@@ -1977,12 +1934,6 @@ void CPartFile::UpdateFileRatingCommentAvail()
 	if ((prevComment != m_hasComment) || (prevRating != m_iUserRating)) {
 		UpdateDisplayedInfo();
 	}
-}
-
-bool CPartFile::SavePartFile(bool)
-{
-	wxFAIL;
-	return false;
 }
 
 
