@@ -119,6 +119,8 @@ private:
 	wxRadioBox* m_radioClientMode;
 	//! Flag if window has been prepared
 	bool	m_prepared;
+	//! Minimum position of splitter bar
+	static const int s_splitterMin = 90;
 
 	/**
 	 * Mode which clients are shown

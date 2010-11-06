@@ -121,10 +121,12 @@ public:
 	//! Pointer to the list of clients.
 	CSourceListCtrl*	clientlistctrl;
 	
+private:
 	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
 	int m_splitter;
+	//! Minimum position of splitter bar
+	static const int s_splitterMin = 90;
 
-private:
 	/**
 	 * Event-handler for the set status by category menu-item.
 	 */
