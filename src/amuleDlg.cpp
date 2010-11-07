@@ -615,17 +615,13 @@ void CamuleDlg::AddLogLine(const wxString& line)
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, m_serverwnd, wxTextCtrl );
 	if ( ct ) {
 		// Bold critical log-lines
-		// to enable this on Windows control has to be changed to wxTE_RICH2 in muuli
-#ifdef __WXMSW__
-		ct->AppendText(line); // keep the leading "!" if it can't be bolded
-#else
+		// Works in Windows too thanks to wxTE_RICH2 style in muuli
 		wxTextAttr style = ct->GetDefaultStyle();
 		wxFont font = style.GetFont();
 		font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
 		style.SetFont(font);
 		ct->SetDefaultStyle(style);
 		ct->AppendText(bufferline);
-#endif
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
 	
