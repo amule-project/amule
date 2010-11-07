@@ -4694,11 +4694,11 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
-"korrumpierter Teil (%1$d) in Datei %3$s mit %2$d Teil gefunden - "
-"Dateiergebnishash |%4$s| Dateihash |%5$s|"
+"korrumpierter Teil (%d) in %d-teiliger Datei %s gefunden - "
+"Dateiergebnishash |%s| Dateihash |%s|"
 msgstr[1] ""
-"korrumpierter Teil (%1$d) in Datei %3$s mit %2$d Teilen gefunden - "
-"Dateiergebnishash |%4$s| Dateihash |%5$s|"
+"korrumpierter Teil (%d) in %d-teiliger Datei %s gefunden - "
+"Dateiergebnishash |%s| Dateihash |%s|"
 
 #: src/PartFile.cpp:1173
 #, c-format
