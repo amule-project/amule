@@ -290,14 +290,20 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 }
 
 
-void CSearchListCtrl::UpdateItemColor( long index )
+void CSearchListCtrl::UpdateItemColor(long index)
 {
 	wxListItem item;
 	item.SetId( index );
 	item.SetColumn( ID_SEARCH_COL_SIZE );
-	item.SetMask( wxLIST_MASK_STATE|wxLIST_MASK_TEXT|wxLIST_MASK_IMAGE|wxLIST_MASK_DATA|wxLIST_MASK_WIDTH|wxLIST_MASK_FORMAT );
+	item.SetMask(
+		wxLIST_MASK_STATE |
+		wxLIST_MASK_TEXT |
+		wxLIST_MASK_IMAGE |
+		wxLIST_MASK_DATA |
+		wxLIST_MASK_WIDTH |
+		wxLIST_MASK_FORMAT);
 
-	if ( GetItem(item) ) {
+	if (GetItem(item)) {
 		CMuleColour newcol(wxSYS_COLOUR_WINDOWTEXT);
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
@@ -307,23 +313,28 @@ void CSearchListCtrl::UpdateItemColor( long index )
 		int blue	= newcol.Blue();
 
 		switch (file->GetDownloadStatus()) {
-			case CSearchFile::DOWNLOADED:		// File has already been downloaded. Mark as green.
-												green = 255;
-												break;
-			case CSearchFile::QUEUED:			// File is downloading.
-			case CSearchFile::QUEUEDCANCELED:	// File is downloading and has been canceled before.
-												// Mark as red
-												red = 255;
-												break;
-			case CSearchFile::CANCELED:			// File has been canceled. Mark as magenta.
-												red = 255;
-												blue = 255;
-												break;
-			default:							// File is new, colour after number of files
-												blue += file->GetSourceCount() * 5;
-												if ( blue > 255 ) {
-													blue = 255;
-												}
+		case CSearchFile::DOWNLOADED:
+			// File has already been downloaded. Mark as green.
+			green = 255;
+			break;
+		case CSearchFile::QUEUED:
+			// File is downloading.
+		case CSearchFile::QUEUEDCANCELED:
+			// File is downloading and has been canceled before.
+			// Mark as red
+			red = 255;
+			break;
+		case CSearchFile::CANCELED:
+			// File has been canceled. Mark as magenta.
+			red = 255;
+			blue = 255;
+			break;
+		default:
+			// File is new, colour after number of files
+			blue += file->GetSourceCount() * 5;
+			if ( blue > 255 ) {
+				blue = 255;
+			}
 		}
 
 		// don't forget to set the item data back...
@@ -430,7 +441,6 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 	if (m_filterEnabled && m_filter.IsValid()) {
 		result = m_filter.Matches(file->GetFileName().GetPrintable());
 		result = ((result && !m_invert) || (!result && m_invert));
-	
 		if (result && m_filterKnown) {
 			result = file->GetDownloadStatus() == CSearchFile::NEW;
 		}
@@ -551,12 +561,12 @@ void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 }
 
 
-void CSearchListCtrl::SyncOtherLists( CSearchListCtrl* src )
+void CSearchListCtrl::SyncOtherLists(CSearchListCtrl *src)
 {
 	std::list<CSearchListCtrl*>::iterator it;
 
-	for ( it = s_lists.begin(); it != s_lists.end(); ++it ) {
-		if ( (*it) != src ) {
+	for (it = s_lists.begin(); it != s_lists.end(); ++it) {
+		if ((*it) != src) {
 			SyncLists( src, *it );
 		}
 	}
@@ -629,7 +639,7 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 	
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	while( index != -1 ) {
+	while (index != -1) {
 		CSearchFile* file = (CSearchFile*)GetItemData( index );
 
 		URIs += theApp->CreateED2kLink( file ) + wxT("\n");
@@ -637,7 +647,7 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
-	if ( !URIs.IsEmpty() ) {
+	if (!URIs.IsEmpty()) {
 		theApp->CopyTextToClipboard( URIs.RemoveLast() );
 	}
 }
@@ -646,7 +656,7 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item == -1 ) {
+	if (item == -1) {
 		return;
 	}
 
@@ -658,7 +668,7 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item == -1 ) {
+	if (item == -1) {
 		return;
 	}
 
@@ -710,12 +720,11 @@ void CSearchListCtrl::OnItemActivated(wxListEvent& event)
 
 bool CSearchListCtrl::AltSortAllowed(unsigned column) const
 {
-	switch ( column ) {
-		case ID_SEARCH_COL_SOURCES:
-			return true;
-		
-		default:
-			return false;
+	switch (column) {
+	case ID_SEARCH_COL_SOURCES:
+		return true;
+	default:
+		return false;
 	}
 }
 
@@ -771,7 +780,7 @@ void CSearchListCtrl::OnDrawItem(
 	}
 
 	// Define the border of the drawn area
-	if ( highlighted ) {
+	if (highlighted) {
 		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxSOLID)));
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
@@ -850,7 +859,7 @@ void CSearchListCtrl::OnDrawItem(
 	}
 
 	// Draw tree last so it draws over selected and focus (looks better)
-	if ( tree_show ) {
+	if (tree_show) {
 		// Gather some information
 		const bool notLast = (item + 1 < GetItemCount());
 		const bool notFirst = (item != 0);
@@ -947,11 +956,20 @@ wxString CSearchListCtrl::GetTTSText(unsigned item) const
 wxString CSearchListCtrl::DetermineStatusPrintable(CSearchFile *toshow)
 {
 	switch (toshow->GetDownloadStatus()) {
-		case CSearchFile::DOWNLOADED:		return _("Downloaded");	// File has already been downloaded.
-		case CSearchFile::QUEUED:									// File is downloading.
-		case CSearchFile::QUEUEDCANCELED:	return _("Queued");		// File is downloading and has been canceled before.
-		case CSearchFile::CANCELED:			return _("Canceled");	// File has been canceled.
-		default:							return _("New");		// File is new.
+	case CSearchFile::DOWNLOADED:
+		// File has already been downloaded.
+		return _("Downloaded");
+	case CSearchFile::QUEUED:
+		// File is downloading.
+	case CSearchFile::QUEUEDCANCELED:
+		// File is downloading and has been canceled before.
+		return _("Queued");
+	case CSearchFile::CANCELED:
+		// File has been canceled.
+		return _("Canceled");
+	default:
+		// File is new.
+		return _("New");
 	}
 }
 // File_checked_for_headers
