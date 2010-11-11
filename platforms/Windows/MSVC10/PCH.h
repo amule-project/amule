@@ -65,6 +65,8 @@
 #include "KnownFileList.h"
 #include "ListenSocket.h"
 #include "Logger.h"
+#include "Macros.h"
+#include "MacrosProgramSpecific.h"
 #include "MD4Hash.h"
 #include "OtherFunctions.h"
 #include "PartFile.h"

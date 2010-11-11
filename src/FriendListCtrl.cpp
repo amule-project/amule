@@ -27,7 +27,7 @@
 #include "FriendListCtrl.h"	// Interface declarations
 
 #include <common/MenuIDs.h>
-#include <common/Macros.h>
+#include <common/MacrosProgramSpecific.h>
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg

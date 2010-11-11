@@ -31,6 +31,7 @@
 #	include "PartFileConvert.h"
 #endif
 
+#include <common/MacrosProgramSpecific.h>
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
 

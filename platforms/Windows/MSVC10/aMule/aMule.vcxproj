@@ -361,6 +361,7 @@
     <ClInclude Include="..\..\..\..\src\DownloadListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\DownloadQueue.h" />
     <ClInclude Include="..\..\..\..\src\GenericClientListCtrl.h" />
+    <ClInclude Include="..\..\..\..\src\include\common\MacrosProgramSpecific.h" />
     <ClInclude Include="..\..\..\..\src\IPFilterScanner.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />

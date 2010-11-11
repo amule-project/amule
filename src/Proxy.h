@@ -254,13 +254,8 @@ public:
 protected:
 	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
 	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer);
-#ifndef AMULE_DAEMON
-	bool			CanReceive() const	{ return m_canReceive; };
-	bool			CanSend() const		{ return m_canSend; };
-#else
-	bool			CanReceive() const	{ return true; };
-	bool			CanSend() const		{ return true; };
-#endif
+	bool		CanReceive() const;
+	bool		CanSend() const;
 	//
 	// Initialized at constructor
 	//
