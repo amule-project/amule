@@ -208,7 +208,7 @@ void CFormat::SetCurrentField(const wxString& value)
 		PosEnd
 	} pos = PosNone;
 
-	// Format strings are expected to follow the folllowing structure:
+	// Format strings are expected to follow the following structure:
 	// 	%[Flags][Width][.Precision][Length]<Type>
 	for (size_t i = m_fieldStart + m_fieldLength; i < m_format.Length(); ++i) {
 		const wxChar c = m_format[i];
