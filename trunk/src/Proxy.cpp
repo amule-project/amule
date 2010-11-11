@@ -319,6 +319,24 @@ wxSocketBase &CProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer)
 	return ret;
 }
 
+bool CProxyStateMachine::CanReceive() const	
+{
+#ifdef AMULE_DAEMON
+	return true;
+#else
+	return m_canReceive; 
+#endif
+}
+
+bool CProxyStateMachine::CanSend() const	
+{
+#ifdef AMULE_DAEMON
+	return true;
+#else
+	return m_canSend; 
+#endif
+}
+
 //------------------------------------------------------------------------------
 // CSocks5StateMachine
 //------------------------------------------------------------------------------

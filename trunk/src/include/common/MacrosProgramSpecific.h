@@ -23,28 +23,28 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifndef COMMONMACROS_H
-#define COMMONMACROS_H
+#ifndef MACROSPROGRAMSPECIFIC_H
+#define MACROSPROGRAMSPECIFIC_H
 
-#define	SEC2MS(sec)		((sec)*1000)
-#define	MIN2MS(min)		SEC2MS((min)*60)
-#define	HR2MS(hr)		MIN2MS((hr)*60)
-#define	DAY2MS(day)		HR2MS((day)*24)
-#define	SEC(sec)		(sec)
-#define	MIN2S(min)		((min)*60)
-#define	HR2S(hr)		MIN2S((hr)*60)
-#define	DAY2S(day)		HR2S((day)*24)
+// Built program specific macros
 
-#define COMPILE_DATE				__DATE__
-#define COMPILE_TIME				__TIME__
-
-
-// Build type specific macro
-
-#ifdef __DEBUG__
-#	define DEBUG_ONLY(x)	x
+#ifdef AMULE_DAEMON
+#	define ONLY_ON_DAEMON(x)	x
+#	define NOT_ON_DAEMON(x)
 #else
-#	define DEBUG_ONLY(x)	/* nothing */
+#	define ONLY_ON_DAEMON(x)
+#	define NOT_ON_DAEMON(x)		x
 #endif
 
-#endif // COMMONMACROS_H
+#ifdef CLIENT_GUI
+#	define ONLY_ON_REMOTEGUI(x)	x
+#	define NOT_ON_REMOTEGUI(x)
+#else
+#	define ONLY_ON_REMOTEGUI(x)
+#	define NOT_ON_REMOTEGUI(x)	x
+#endif
+
+#define GUI_ONLY(x)	NOT_ON_DAEMON(x)
+#define CORE_ONLY(x)	NOT_ON_REMOTEGUI(x)
+
+#endif // MACROSPROGRAMSPECIFIC_H

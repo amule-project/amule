@@ -38,22 +38,31 @@ die 'run from src dir after making dependencies' unless -f '.deps/amule-amule.Po
 
 my %checkedFiles;	# key: path  value: 0: ok  1: has AMULE_DAEMON  2: has CLIENT_GUI
 
-sub checkDeps();
+sub checkDeps($$);
 
-# libmuleappcommon, libmuleappcore, libmuleappgui
-my @deps = glob('.deps/lib*.Po');
-checkDeps();
+my @deps;
+# libmuleappcommon
+@deps = glob('.deps/libmuleappcommon*.Po');
+checkDeps(1,1);
+# libmuleappcore (ignore CLIENT_GUI usage)
+@deps = glob('.deps/libmuleappcore*.Po');
+checkDeps(1,0);
+# libmuleappgui (ignore AMULE_DAEMON usage)
+@deps = glob('.deps/libmuleappgui*.Po');
+checkDeps(0,1);
 # libcommon
 chdir 'libs/common';
 @deps = glob('.deps/*.Po');
-checkDeps();
+checkDeps(1,1);
 # libec
 chdir '../ec/cpp';
 @deps = glob('.deps/*.Po');
-checkDeps();
+checkDeps(1,1);
 
-sub checkDeps()
+sub checkDeps($$)
 {
+	my $checkAMULE_DAEMON = shift;
+	my $checkCLIENT_GUI = shift;
 	printf("check %d dependencies in %s\n", scalar @deps, getcwd());
 	foreach (@deps) {
 		open(DEP, $_) or die "can't open $_ : $!";
@@ -63,9 +72,12 @@ sub checkDeps()
 		$line =~ tr/:\\/  /;
 		my @files = split(/\s+/, $line);
 		my $obj = shift @files;
+		my %currentFiles;
 		foreach my $file (@files) {
 			next if $file =~ m-^/usr/-;		# skip system and wx includes
 			next if $file =~ m-/wx/-;
+			next if $currentFiles{$file};
+			$currentFiles{$file} = 1;
 			my $status = $checkedFiles{$file};
 			unless (defined $status) {
 				$status = 0;
@@ -77,8 +89,8 @@ sub checkDeps()
 				close SRC;
 				$checkedFiles{$file} = $status;
 			}
-			print "$obj: AMULE_DAEMON used in $file\n" if ($status & 1);
-			print "$obj: CLIENT_GUI used in $file\n" if ($status & 2);
+			print "$obj: AMULE_DAEMON used in $file\n" if $checkAMULE_DAEMON && ($status & 1);
+			print "$obj: CLIENT_GUI used in $file\n"   if $checkCLIENT_GUI   && ($status & 2);
 		}
 	}
 }
