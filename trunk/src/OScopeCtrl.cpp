@@ -35,6 +35,7 @@
 #include "Logger.h"		// Needed for AddLogLineM
 #include "OScopeCtrl.h"		// Interface declarations
 #include "OtherFunctions.h"	// Needed for CastSecondsToHM
+#include "Statistics.h"
 
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)

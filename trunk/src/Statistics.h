@@ -27,18 +27,10 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
+#include "Constants.h"		// Needed for StatsGraphType
 #include "StatTree.h"		// Needed for CStatTreeItem* classes
-#include "GetTickCount.h"	// Needed for GetTickCount64()
 
 #include <deque>		// Needed for std::deque
-
-enum StatsGraphType {
-	GRAPH_INVALID = 0,
-	GRAPH_DOWN,
-	GRAPH_UP,
-	GRAPH_CONN,
-	GRAPH_KAD
-};
 
 typedef struct UpdateInfo {
 	double timestamp;
@@ -514,8 +506,8 @@ private:
 	CStatistics(CRemoteConnect &conn);
 	~CStatistics();
 
-	static	uint64	GetUptimeMillis()			{ return GetTickCount64() - s_start_time; }
-	static	uint64	GetUptimeSeconds()			{ return (GetTickCount64() - s_start_time) / 1000; }
+	static	uint64	GetUptimeMillis();
+	static	uint64	GetUptimeSeconds();
 
 	static	uint64	GetSessionSentBytes()			{ return 0; } // TODO
 	static	double	GetUploadRate()				{ return (double)s_statData[sdUpload]; }

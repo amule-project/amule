@@ -30,13 +30,14 @@
 #define NULL 0
 #endif
 
+#include <vector>
 #include <wx/control.h>		// Needed for wxControl
 #include <wx/timer.h>		// Needed for wxTimer
 #include <wx/pen.h>
 #include <wx/bitmap.h>
 #include <wx/colour.h>
 
-#include "Statistics.h"		// Needed for StatsGraphType
+#include "Constants.h"		// Needed for StatsGraphType
 
 class wxMemoryDC;
 

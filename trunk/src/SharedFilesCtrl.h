@@ -53,10 +53,8 @@ public:
 	~CSharedFilesCtrl();
 
 
-#ifndef CLIENT_GUI
 	/** Reloads the list of shared files. */
 	void	ShowFileList();
-#endif
 
 	/**
 	 * Adds the specified file to the list, updating filecount and more.

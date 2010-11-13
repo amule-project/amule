@@ -41,6 +41,7 @@
 	#include <cmath>		// Needed for std::floor
 	#include "updownclient.h"	// Needed for CUpDownClient
 #else
+	#include "GetTickCount.h"	// Needed for GetTickCount64()
 	#include "Preferences.h"
 	#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
@@ -990,6 +991,18 @@ void CStatistics::RebuildStatTreeRemote(const CECTag * tag)
 {
 	delete s_statTree;
 	s_statTree = new CStatTreeItemBase(tag);
+}
+
+
+uint64 CStatistics::GetUptimeMillis()
+{
+	return GetTickCount64() - s_start_time;
+}
+
+
+uint64 CStatistics::GetUptimeSeconds()
+{
+	return (GetTickCount64() - s_start_time) / 1000;
 }
 
 #endif /* !CLIENT_GUI */

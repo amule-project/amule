@@ -35,6 +35,7 @@
 #include "ColorFrameCtrl.h"
 #include "amuleDlg.h"
 #include "MuleColour.h"
+#include "Statistics.h"
 
 #ifndef CLIENT_GUI
 #include "kademlia/kademlia/Kademlia.h"
