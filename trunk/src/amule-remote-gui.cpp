@@ -1212,9 +1212,6 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 {
 	CUpDownClient *client = new CUpDownClient(tag);
 	ProcessItemUpdate(tag, client);
-	if (client->m_reqfile) {
-		Notify_SourceCtrlAddSource(client->m_reqfile, client, A4AF_SOURCE);
-	}
 	
 	return client;
 }
@@ -1226,6 +1223,10 @@ void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 		Notify_SourceCtrlRemoveSource(client, client->m_reqfile);
 		client->m_reqfile->DelSource(client);
 		client->m_reqfile = NULL;
+	}
+	if (client->m_uploadingfile) {
+		client->m_uploadingfile->RemoveUploadingClient(client);	// this notifies
+		client->m_uploadingfile = NULL;
 	}
 	delete client;
 }
@@ -1381,14 +1382,12 @@ void CUpDownClientListRem::ProcessItemUpdate(
 			client->m_uploadingfile->RemoveUploadingClient(client);	// this notifies
 			notified = true;
 			client->m_uploadingfile = NULL;
-			//client->m_downPartStatus.clear();
 		}
 		CKnownFile * kf = theApp->knownfiles->GetByID(fileID);
 		if (kf) {
 			client->m_uploadingfile = kf;
 			client->m_uploadingfile->AddUploadingClient(client);	// this notifies
 			notified = true;
-			//client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
 		}
 	}
 
