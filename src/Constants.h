@@ -81,7 +81,16 @@ enum SourceItemType
 	//! A source which is currently queued for this file.
 	AVAILABLE_SOURCE
 };
-	
+
+//! Types of stat graphs
+enum StatsGraphType {
+	GRAPH_INVALID = 0,
+	GRAPH_DOWN,
+	GRAPH_UP,
+	GRAPH_CONN,
+	GRAPH_KAD
+};
+
 // KnownFile constants
 
 #define	PS_READY			0

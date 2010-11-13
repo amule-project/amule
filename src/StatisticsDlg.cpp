@@ -32,6 +32,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "muuli_wdr.h"		// Needed for statsDlg()
 #include "StatisticsDlg.h"	// Interface declarations
+#include "Statistics.h"
 
 
 class CTreeItemData : public wxTreeItemData

@@ -49,6 +49,7 @@
 #include "KadDlg.h"				// Needed for CKadDlg
 #include "OScopeCtrl.h"			// Needed for OScopeCtrl
 #include "ServerList.h"
+#include "Statistics.h"
 #include "UserEvents.h"
 #include "PlatformSpecific.h"
 
