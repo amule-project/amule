@@ -282,6 +282,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	}
 	const CPartFile* pfile = client->GetRequestFile();
 	AddTag(CECTag(EC_TAG_CLIENT_REQUEST_FILE, pfile ? pfile->ECID() : 0), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_REMOTE_FILENAME, client->GetClientFilename()), valuemap);
 
 	if (detail_level != EC_DETAIL_INC_UPDATE) {
 		return;

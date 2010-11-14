@@ -334,6 +334,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 
 		bool UploadFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_FILE, target); }
 		bool RequestFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_REQUEST_FILE, target); }
+		bool RemoteFilename(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_REMOTE_FILENAME, target); }
 	private:
 		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };
