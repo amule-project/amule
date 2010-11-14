@@ -1016,7 +1016,8 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			if (pf) {
 				buffer = pf->GetFileName().GetPrintable();
 			} else {
-				buffer = wxT("[Unknown]");
+				buffer = _("Unknown");
+				buffer = wxT("[") + buffer + wxT("]");
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
@@ -1026,7 +1027,8 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			if (kf) {
 				buffer = kf->GetFileName().GetPrintable();
 			} else {
-				buffer = wxT("[Unknown]");
+				buffer = _("Unknown");
+				buffer = wxT("[") + buffer + wxT("]");
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
@@ -1035,7 +1037,8 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			bool nameMissmatch = false;
 			wxColour savedColour = dc->GetTextForeground();
 			if (client->GetClientFilename().IsEmpty()) {
-				buffer = wxT("[Unknown]");
+				buffer = _("Unknown");
+				buffer = wxT("[") + buffer + wxT("]");
 			} else {
 				buffer = client->GetClientFilename();
 				const CPartFile * pf = client->GetRequestFile();
