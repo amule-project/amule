@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files KAD">
+      <UniqueIdentifier>{a595d5a5-1d4c-4c56-ba8f-b0ac15403f03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\PCH.cpp">
@@ -54,9 +57,6 @@
     <ClCompile Include="..\..\..\..\src\ClientUDPSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\routing\Contact.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\CorruptionBlackBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,9 +90,6 @@
     <ClCompile Include="..\..\..\..\src\EncryptedStreamSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Entry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\ExternalConn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -120,16 +117,7 @@
     <ClCompile Include="..\..\..\..\src\HTTPDownload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Indexed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\IPFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Kademlia.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\net\KademliaUDPListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\KnownFile.cpp">
@@ -162,9 +150,6 @@
     <ClCompile Include="..\..\..\..\src\Packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\net\PacketTracking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -180,9 +165,6 @@
     <ClCompile Include="..\..\..\..\src\Preferences.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Prefs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\Proxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -195,28 +177,16 @@
     <ClCompile Include="..\..\..\..\src\RLE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingBin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingZone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\SafeFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\Scanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Search.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\SearchFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\SearchList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\SearchManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\Server.cpp">
@@ -270,12 +240,6 @@
     <ClCompile Include="..\..\..\..\src\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\UploadBandwidthThrottler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -290,6 +254,45 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\Contact.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Entry.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Indexed.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Kademlia.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\net\KademliaUDPListener.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\net\PacketTracking.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Prefs.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingBin.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingZone.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Search.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\SearchManager.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp">
+      <Filter>Source Files KAD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
