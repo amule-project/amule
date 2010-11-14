@@ -846,7 +846,7 @@ static CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 static CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = NULL;
-	const CECTag *srv_tag = request->GetFirstTagSafe();
+	const CECTag *srv_tag = request->GetTagByName(EC_TAG_SERVER);
 	CServer *srv = 0;
 	if ( srv_tag ) {
 		srv = theApp->serverlist->GetServerByIPTCP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().m_port);
