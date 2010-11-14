@@ -273,6 +273,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_PART_STATUS                 = 0x0624,
 		EC_TAG_CLIENT_NEXT_REQUESTED_PART         = 0x0625,
 		EC_TAG_CLIENT_LAST_DOWNLOADING_PART       = 0x0626,
+		EC_TAG_CLIENT_REMOTE_FILENAME             = 0x0627,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
@@ -697,6 +698,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0624: return wxT("EC_TAG_CLIENT_PART_STATUS");
 		case 0x0625: return wxT("EC_TAG_CLIENT_NEXT_REQUESTED_PART");
 		case 0x0626: return wxT("EC_TAG_CLIENT_LAST_DOWNLOADING_PART");
+		case 0x0627: return wxT("EC_TAG_CLIENT_REMOTE_FILENAME");
 		case 0x0700: return wxT("EC_TAG_SEARCHFILE");
 		case 0x0701: return wxT("EC_TAG_SEARCH_TYPE");
 		case 0x0702: return wxT("EC_TAG_SEARCH_NAME");

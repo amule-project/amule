@@ -261,6 +261,7 @@ public final static short 	EC_TAG_CLIENT_KAD_PORT                    = 0x0623;
 public final static short 	EC_TAG_CLIENT_PART_STATUS                 = 0x0624;
 public final static short 	EC_TAG_CLIENT_NEXT_REQUESTED_PART         = 0x0625;
 public final static short 	EC_TAG_CLIENT_LAST_DOWNLOADING_PART       = 0x0626;
+public final static short 	EC_TAG_CLIENT_REMOTE_FILENAME             = 0x0627;
 public final static short EC_TAG_SEARCHFILE                         = 0x0700;
 public final static short 	EC_TAG_SEARCH_TYPE                        = 0x0701;
 public final static short 	EC_TAG_SEARCH_NAME                        = 0x0702;

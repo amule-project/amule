@@ -1327,6 +1327,8 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		client->m_nSourceFrom = (ESourceFrom)sourceFrom;
 	}
 
+	tag->RemoteFilename(client->m_clientFilename);
+
 	// Download client
 	uint32 fileID;
 	bool notified = false;
