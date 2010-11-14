@@ -303,10 +303,6 @@
     <ResourceCompile Include="..\version.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libs\libkad\libkad.vcxproj">
-      <Project>{dbadf72e-2572-403f-b0d6-ac8c9b3eccfe}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\libs\libmulecommon\libmulecommon.vcxproj">
       <Project>{293e6133-239a-4ed4-838e-9182b07c6b35}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

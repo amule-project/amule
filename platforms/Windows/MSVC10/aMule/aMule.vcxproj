@@ -245,6 +245,19 @@
     <ClCompile Include="..\..\..\..\src\IPFilter.cpp" />
     <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp" />
     <ClCompile Include="..\..\..\..\src\KadDlg.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Entry.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Indexed.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Kademlia.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Prefs.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Search.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\SearchManager.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\net\KademliaUDPListener.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\net\PacketTracking.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\Contact.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingBin.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingZone.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFile.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFileList.cpp" />
     <ClCompile Include="..\..\..\..\src\ListenSocket.cpp" />
@@ -363,6 +376,24 @@
     <ClInclude Include="..\..\..\..\src\GenericClientListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\include\common\MacrosProgramSpecific.h" />
     <ClInclude Include="..\..\..\..\src\IPFilterScanner.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Defines.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Entry.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Error.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Indexed.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Kademlia.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Prefs.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Search.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\SearchManager.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\net\KademliaUDPListener.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\net\PacketTracking.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\routing\Contact.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\routing\Maps.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\routing\RoutingBin.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\routing\RoutingZone.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\utils\KadClientSearcher.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\utils\KadUDPKey.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\utils\UInt128.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />
     <ClInclude Include="..\..\..\..\src\EditServerListDlg.h" />
@@ -472,10 +503,6 @@
   <ItemGroup>
     <ProjectReference Include="..\libs\libGeoIP\libGeoIP.vcxproj">
       <Project>{8ca0f896-7689-4ce0-9d16-99c9c83847e1}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\libs\libkad\libkad.vcxproj">
-      <Project>{dbadf72e-2572-403f-b0d6-ac8c9b3eccfe}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\libs\libmulecommon\libmulecommon.vcxproj">
