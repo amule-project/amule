@@ -157,10 +157,9 @@ void CDeadSourceList::CleanUp()
 
 	DeadSourceIterator it = m_sources.begin();
 	for ( ; it != m_sources.end(); ) {
-		if ( it->second.GetTimeout() < m_dwLastCleanUp ) {
-			m_sources.erase( it++ );
-		} else {
-			++it;
+		DeadSourceIterator it1 = it++;
+		if ( it1->second.GetTimeout() < m_dwLastCleanUp ) {
+			m_sources.erase( it1 );
 		}
 	}
 }
