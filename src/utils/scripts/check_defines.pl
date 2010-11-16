@@ -83,8 +83,8 @@ sub checkDeps($$)
 				$status = 0;
 				open(SRC, $file) or die "can't open $file : $!";
 				while (<SRC>) {
-					$status |= 1 if /^\s*\#if.+AMULE_DAEMON/;
-					$status |= 2 if /^\s*\#if.+CLIENT_GUI/;
+					$status |= 1 if /^\s*\#.+AMULE_DAEMON/;
+					$status |= 2 if /^\s*\#.+CLIENT_GUI/;
 				}
 				close SRC;
 				$checkedFiles{$file} = $status;
