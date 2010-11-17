@@ -62,15 +62,19 @@ endif
 
 libmuleappcommon_a_SOURCES = \
 	CFile.cpp \
+	ClientCredits.cpp \
 	ED2KLink.cpp \
 	GapList.cpp \
 	MagnetURI.cpp \
 	MemFile.cpp \
+	NetworkFunctions.cpp \
+	OtherFunctions.cpp \
 	Packet.cpp \
 	RLE.cpp \
 	SafeFile.cpp \
 	SHA.cpp \
 	Tag.cpp \
+	TerminationProcess.cpp \
 	Timer.cpp
 
 libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
@@ -84,12 +88,14 @@ libmuleappcore_a_SOURCES = \
 	FileArea.cpp \
 	FileAutoClose.cpp \
 	Friend.cpp \
+	IPFilterScanner.cpp \
 	Scanner.cpp \
 	Parser.cpp \
 	PlatformSpecific.cpp \
 	RandomFunctions.cpp \
 	RC4Encrypt.cpp \
 	StateMachine.cpp \
+	TerminationProcessAmuleweb.cpp \
 	ThreadScheduler.cpp \
 	UPnPBase.cpp \
 	kademlia/kademlia/Entry.cpp \
@@ -109,6 +115,7 @@ libmuleappgui_a_SOURCES = \
 	extern/wxWidgets/listctrl.cpp \
 	FileDetailListCtrl.cpp \
 	IP2Country.cpp \
+	MuleColour.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
@@ -135,9 +142,7 @@ core_sources = \
 	EncryptedDatagramSocket.cpp \
 	ExternalConn.cpp \
 	FriendList.cpp \
-	HTTPDownload.cpp \
 	IPFilter.cpp \
-	IPFilterScanner.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
@@ -149,7 +154,6 @@ core_sources = \
 	ServerSocket.cpp \
 	ServerUDPSocket.cpp \
 	SharedFileList.cpp \
-	TerminationProcessAmuleweb.cpp \
 	ThreadTasks.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
@@ -194,22 +198,17 @@ gui_sources = \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
 	MuleTrayIcon.cpp \
-	MuleColour.cpp \
 	TransferWnd.cpp 
 
 
-remote_common_sources = \
-	OtherFunctions.cpp \
-	NetworkFunctions.cpp 
-
 common_sources = \
 	amuleAppCommon.cpp \
-	ClientCredits.cpp \
 	DataToText.cpp \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \
+	HTTPDownload.cpp \
 	Logger.cpp \
 	PartFile.cpp \
 	Preferences.cpp \
@@ -218,9 +217,7 @@ common_sources = \
 	Statistics.cpp \
 	StatTree.cpp \
 	SHAHashSet.cpp \
-	TerminationProcess.cpp \
-	UserEvents.cpp \
-	$(remote_common_sources)
+	UserEvents.cpp
 
 # Libs
 
@@ -249,7 +246,6 @@ common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 
 amulegui_SOURCES = \
 	amule-remote-gui.cpp \
-	HTTPDownload.cpp \
 	$(gui_sources) \
 	$(ec_sources) \
 	$(common_sources)
@@ -264,7 +260,6 @@ amule_SOURCES = \
 
 amuled_SOURCES = \
 	amuled.cpp \
-	Timer.cpp \
 	$(core_sources) \
 	$(ec_sources) \
 	$(common_sources)
@@ -304,7 +299,8 @@ amulecmd_SOURCES = \
 	TextClient.cpp \
 	ExternalConnector.cpp \
 	LoggerConsole.cpp \
-	$(remote_common_sources)
+	OtherFunctions.cpp \
+	NetworkFunctions.cpp 
 
 amulecmd_DEPENDENCIES = $(remote_common_deps)
 amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags)
