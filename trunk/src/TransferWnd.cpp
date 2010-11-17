@@ -320,8 +320,12 @@ void CTransferWnd::ShowQueueCount(uint32 /*number*/)
 
 void CTransferWnd::OnCategoryChanged(wxNotebookEvent& evt)
 {
-  downloadlistctrl->ChangeCategory(evt.GetSelection());
-  downloadlistctrl->SortList();
+	// First remove currently showing sources (switching cat will deselect all)
+	CKnownFileVector filesVector;
+	clientlistctrl->ShowSources(filesVector);
+	// Then change cat
+	downloadlistctrl->ChangeCategory(evt.GetSelection());
+	downloadlistctrl->SortList();
 }
 
 
