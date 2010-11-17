@@ -128,10 +128,7 @@ CTransferWnd::~CTransferWnd()
 		wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
 		
 		// Save the splitter position
-		int pos = splitter->GetSashPosition();
-		if (pos >= s_splitterMin) {
-			config->Write(wxT("/GUI/TransferWnd/Splitter"), pos);
-		}
+		config->Write( wxT("/GUI/TransferWnd/Splitter"), splitter->GetSashPosition() );		
 		
 		// Save the visible status of the list
 		config->Write( wxT("/GUI/TransferWnd/ShowClientList"), true );

@@ -80,27 +80,26 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 
 CSharedFilesWnd::~CSharedFilesWnd()
 {
-	wxConfigBase *config = wxConfigBase::Get();
+	if (m_prepared) {
+		wxConfigBase *config = wxConfigBase::Get();
 
-	if ( !peerslistctrl->GetShowing() ) {
-		// Save the splitter position
-		config->Write( wxT("/GUI/SharedWnd/Splitter"), m_splitter );
+		if ( !peerslistctrl->GetShowing() ) {
+			// Save the splitter position
+			config->Write( wxT("/GUI/SharedWnd/Splitter"), m_splitter );
 	
-		// Save the visible status of the list
-		config->Write( wxT("/GUI/SharedWnd/ShowClientList"), false );
-	} else {
-		wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
+			// Save the visible status of the list
+			config->Write( wxT("/GUI/SharedWnd/ShowClientList"), false );
+		} else {
+			wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
 		
-		// Save the splitter position
-		int pos = splitter->GetSashPosition();
-		if (pos >= s_splitterMin) {
-			config->Write(wxT("/GUI/SharedWnd/Splitter"), pos);
+			// Save the splitter position
+			config->Write(wxT("/GUI/SharedWnd/Splitter"), splitter->GetSashPosition());
+		
+			// Save the visible status of the list
+			config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
 		}
-		
-		// Save the visible status of the list
-		config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
+		config->Write(wxT("/GUI/SharedWnd/ClientShowMode"), (int)m_clientShow);
 	}
-	config->Write(wxT("/GUI/SharedWnd/ClientShowMode"), (int)m_clientShow);
 }
 
 
