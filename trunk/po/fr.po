@@ -12,12 +12,13 @@
 # Youpla <Youpla@boum.fr>, 2008.
 # Dylan Aïssi <bob.dybian@gmail.com>, 2008, 2010.
 # Olivier Sannier <obones att altern dott org>, 2009, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-01 22:59+0100\n"
-"PO-Revision-Date: 2010-07-06 02:03+0100\n"
+"PO-Revision-Date: 2010-11-19 01:44+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -1664,13 +1665,12 @@ msgstr ""
 "les binaires. Utilisez un noyau et un client distant de la même version."
 
 #: src/ExternalConn.cpp:445
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
-"Vous ne pouvez pas connecter une version stable depuis une version instable "
-"SVN ! *pfff* un crash potentiel a été évité"
+"Vous ne pouvez pas connecter une version stable depuis une version de "
+"développement! *pfff* un crash potentiel a été évité"
 
 #: src/ExternalConn.cpp:472
 msgid "Invalid protocol version."
@@ -2139,9 +2139,9 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:964
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
-msgstr "QR : %u (%i)"
+msgstr "En attente : %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:974 src/GenericClientListCtrl.cpp:1003
 msgid "Asked for another file"
@@ -2152,9 +2152,9 @@ msgid "Waiting for upload slot"
 msgstr "Attente d'un slot d'émission"
 
 #: src/GenericClientListCtrl.cpp:995
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "En attente"
+msgstr "En attente : %u"
 
 #: src/GenericClientListCtrl.cpp:998
 msgid "Uploading"
@@ -2359,6 +2359,8 @@ msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
 msgstr ""
+"Impossible de lire le fichier nodes.dat - trop vieux. Cette version (0) "
+"n'est plus supporté."
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -3263,9 +3265,8 @@ msgid "Secure ident:"
 msgstr "Identification sécurisée :"
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "Rang dans la file d'attente"
+msgstr "Rang dans la file d'attente :"
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -3550,7 +3551,7 @@ msgstr "De la même catégorie"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "Dans l'ordre alphabétique"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3723,7 +3724,7 @@ msgstr "Intervalle de rafraîchissement de la connexion serveur : Désactivé"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Désactiver la mise en veille programmé de l'ordinateur"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3763,7 +3764,7 @@ msgstr "Orientation de la barre d'outils verticale"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Voir les drapeaux des pays pour les clients"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -4370,29 +4371,24 @@ msgid "Active Uploads"
 msgstr "Envois Actifs"
 
 #: src/muuli_wdr.cpp:3373
-#, fuzzy
 msgid "Percent of total files"
-msgstr "pour cent du total de fichiers"
+msgstr "Pourcentage du total de fichiers"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "All files"
-msgstr "Tout les fichiers partagés"
+msgstr "Tous les fichiers"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Selected files"
-msgstr "Sélectionner un filtre"
+msgstr "Fichiers sélectionnés"
 
 #: src/muuli_wdr.cpp:3422
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Envois actifs"
+msgstr "Envois actifs seulement"
 
 #: src/muuli_wdr.cpp:3424
-#, fuzzy
 msgid "Show Clients for"
-msgstr "Afficher les clients"
+msgstr "Afficher les clients pour"
 
 #: src/muuli_wdr.cpp:3427
 msgid "Reload:"
@@ -5093,19 +5089,16 @@ msgid "- UDP port changed.\n"
 msgstr "- Port UDP changé.\n"
 
 #: src/PrefsUnifiedDlg.cpp:574
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Connexion externe fermée."
+msgstr "- Port de connexion externe changé.\n"
 
 #: src/PrefsUnifiedDlg.cpp:578
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Nouvelle connexion externe acceptée"
+msgstr "- Consentement de connexion externe changé.\n"
 
 #: src/PrefsUnifiedDlg.cpp:582
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Connexion externe fermée."
+msgstr "- Interface de connexion externe changé.\n"
 
 #: src/PrefsUnifiedDlg.cpp:591
 msgid ""
@@ -5793,9 +5786,8 @@ msgid "Kademlia Status:"
 msgstr "Statut de Kademlia :"
 
 #: src/ServerWnd.cpp:207
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "Tourne sur %s"
+msgstr "Éxécution en mode LAN"
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
@@ -5929,12 +5921,10 @@ msgid "Available Parts"
 msgstr "Parties Disponibles"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "État de l'émission"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "État de la réception"
 
@@ -5943,9 +5933,8 @@ msgid "Origin"
 msgstr "Origine"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "Nom du fichier"
+msgstr "Nom du fichier local"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -6037,9 +6026,8 @@ msgid "Download Status"
 msgstr "État de la réception"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Nom du fichier"
+msgstr "Nom du fichier à distance"
 
 #: src/Statistics.cpp:649
 #, c-format
@@ -6440,12 +6428,11 @@ msgstr "Nombres de résultats de la recherche : %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Progrès de la recherche : %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Afficher le pourcentage de progression"
+msgstr "Progrès de la recherche indisponibles"
 
 #: src/TextClient.cpp:837
 #, c-format

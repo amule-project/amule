@@ -1,17 +1,20 @@
-# French translations for po package
-# Copyright (C) 2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the po package.
-# Automatically generated, 2010.
+# aMule i18n resource file.
+# Copyright (C) 2010 aMule Team
+# This file is distributed under the same license as the aMule package.
+#
+# Translation of aMule to French
+#
+# Dylan Aïssi <bob.dybian@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: po 4a\n"
+"Project-Id-Version: aMule\n"
 "POT-Creation-Date: 2010-01-06 13:26+0100\n"
-"PO-Revision-Date: 2010-01-03 15:19+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2010-11-20 02:33+0100\n"
+"Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
+"Language-Team: Français\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -19,7 +22,7 @@ msgstr ""
 #: amule.1:1
 #, no-wrap
 msgid "AMULE"
-msgstr ""
+msgstr "AMULE"
 
 #. type: TH
 #: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1
@@ -28,19 +31,19 @@ msgstr ""
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "January 2010"
-msgstr ""
+msgstr "Janvier 2010"
 
 #. type: TH
 #: amule.1:1
 #, no-wrap
 msgid "aMule v2.3.0"
-msgstr ""
+msgstr "aMule v2.3.0"
 
 #. type: TH
 #: amule.1:1
 #, no-wrap
 msgid "aMule"
-msgstr ""
+msgstr "aMule"
 
 #. type: SH
 #: amule.1:4 amulecmd.1:5 amuled.1:4 amuleweb.1:4 ed2k.1:4
@@ -49,12 +52,12 @@ msgstr ""
 #: ../../src/utils/wxCas/docs/wxcas.1:3 ../../src/utils/xas/docs/xas.1:3
 #, no-wrap
 msgid "NAME"
-msgstr ""
+msgstr "NOM"
 
 #. type: Plain text
 #: amule.1:6
 msgid "amule - the all-platform eMule p2p client"
-msgstr ""
+msgstr "amule - le client P2P eMule multiplateforme"
 
 #. type: SH
 #: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6
@@ -63,7 +66,7 @@ msgstr ""
 #: ../../src/utils/wxCas/docs/wxcas.1:5 ../../src/utils/xas/docs/xas.1:5
 #, no-wrap
 msgid "SYNOPSIS"
-msgstr ""
+msgstr "SYNOPSIS"
 
 #. type: Plain text
 #: amule.1:10 amulegui.1:10
@@ -88,7 +91,7 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:7
 #, no-wrap
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "DESCRIPTION"
 
 #. type: TP
 #: amule.1:25 amuled.1:26 amulegui.1:24 ed2k.1:21
@@ -214,7 +217,7 @@ msgstr ""
 #: amule.1:70 amulecmd.1:210 amuleweb.1:133
 #, no-wrap
 msgid "NOTES"
-msgstr ""
+msgstr "NOTES"
 
 #. type: SS
 #: amule.1:71 amulecmd.1:211 amuleweb.1:134
@@ -235,12 +238,12 @@ msgstr ""
 #: ../../src/utils/cas/docs/cas.1:35
 #, no-wrap
 msgid "FILES"
-msgstr ""
+msgstr "FICHIERS"
 
 #. type: Plain text
 #: amule.1:77 amuled.1:80
 msgid "~/.aMule/*"
-msgstr ""
+msgstr "~/.aMule/*"
 
 #. type: SH
 #: amule.1:77 amulecmd.1:259 amuled.1:80 amulegui.1:48 amuleweb.1:192
@@ -250,7 +253,7 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:16
 #, no-wrap
 msgid "REPORTING BUGS"
-msgstr ""
+msgstr "RAPPORTER DES BOGUES"
 
 #. type: Plain text
 #: amule.1:80 amulecmd.1:262 amuled.1:83 amulegui.1:51 amuleweb.1:195
@@ -263,6 +266,10 @@ msgid ""
 "our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
+"Veuillez rapporter les bogues sur notre forum (I<http://forum.amule.org/>), "
+"ou sur notre bugtracker (I<http://bugs.amule.org/>).  Veuillez ne pas "
+"rapporter les bogues par e-mail, sur notre liste de diffusion ou directement "
+"à n'importe quel membre  de l'équipe."
 
 #. type: SH
 #: amule.1:80 amulecmd.1:262 amuled.1:83 amulegui.1:51 amuleweb.1:195
@@ -272,7 +279,7 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:19
 #, no-wrap
 msgid "COPYRIGHT"
-msgstr ""
+msgstr "COPYRIGHT"
 
 #. type: Plain text
 #: amule.1:82 amulecmd.1:264 amuled.1:85 amulegui.1:53 amuleweb.1:197
@@ -284,6 +291,8 @@ msgid ""
 "aMule and all of its related utilities are distributed under the GNU General "
 "Public License."
 msgstr ""
+"aMule et tout ses outils sont distribués sous la licence GNU General Public "
+"License."
 
 #. type: SH
 #: amule.1:82 amulecmd.1:264 amuled.1:85 amulegui.1:53 amuleweb.1:197
@@ -293,7 +302,7 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:21
 #, no-wrap
 msgid "SEE ALSO"
-msgstr ""
+msgstr "VOIR AUSSI"
 
 #. type: SH
 #: amule.1:84 amulecmd.1:266 amuled.1:87 amulegui.1:55 amuleweb.1:199
@@ -303,7 +312,7 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:23
 #, no-wrap
 msgid "AUTHOR"
-msgstr ""
+msgstr "AUTEUR"
 
 #. type: Plain text
 #: amule.1:85 amulecmd.1:267 amuled.1:88 amuleweb.1:200 ed2k.1:70
@@ -314,18 +323,20 @@ msgstr ""
 msgid ""
 "This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
 msgstr ""
+"Cette manpage a été écrite par Vollstrecker E<lt>amule@vollstreckernet."
+"deE<gt>"
 
 #. type: TH
 #: amulecmd.1:1
 #, no-wrap
 msgid "AMULECMD"
-msgstr ""
+msgstr "AMULECMD"
 
 #. type: TH
 #: amulecmd.1:1
 #, no-wrap
 msgid "aMuleCmd v2.3.0"
-msgstr ""
+msgstr "aMuleCmd v2.3.0"
 
 #. type: TH
 #: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
@@ -334,7 +345,7 @@ msgstr ""
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "aMule utilities"
-msgstr ""
+msgstr "Outils d'aMule"
 
 #. type: Plain text
 #: amulecmd.1:7
@@ -473,7 +484,7 @@ msgstr ""
 #: amulecmd.1:69
 #, no-wrap
 msgid "COMMANDS"
-msgstr ""
+msgstr "COMMANDES"
 
 #. type: Plain text
 #: amulecmd.1:71
@@ -651,22 +662,22 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:132
 msgid "Automatic priority."
-msgstr ""
+msgstr "Priorité automatique."
 
 #. type: Plain text
 #: amulecmd.1:134
 msgid "High priority."
-msgstr ""
+msgstr "Priorité haute."
 
 #. type: Plain text
 #: amulecmd.1:136
 msgid "Low priority."
-msgstr ""
+msgstr "Priorité basse."
 
 #. type: Plain text
 #: amulecmd.1:138
 msgid "Normal priority."
-msgstr ""
+msgstr "Priorité normal."
 
 #. type: Plain text
 #: amulecmd.1:141
@@ -692,12 +703,12 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:150
 msgid "Reload shared files list."
-msgstr ""
+msgstr "Recharger la liste des fichiers partagés."
 
 #. type: Plain text
 #: amulecmd.1:152
 msgid "Reload IP filter tables."
-msgstr ""
+msgstr "Recharger les tables IP filter"
 
 #. type: Plain text
 #: amulecmd.1:155
@@ -796,12 +807,12 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:191
 msgid "Show log."
-msgstr ""
+msgstr "Afficher le journal."
 
 #. type: Plain text
 #: amulecmd.1:193
 msgid "Show servers list."
-msgstr ""
+msgstr "Afficher la liste des serveurs."
 
 #. type: Plain text
 #: amulecmd.1:195
@@ -824,7 +835,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:201
 msgid "Show statistics tree."
-msgstr ""
+msgstr "Afficher l'arbre des statistiques."
 
 #. type: Plain text
 #: amulecmd.1:205
@@ -850,7 +861,7 @@ msgstr ""
 #: amulecmd.1:215 amuleweb.1:138
 #, no-wrap
 msgid "Languages"
-msgstr ""
+msgstr "Langages"
 
 #. type: Plain text
 #: amulecmd.1:221 amuleweb.1:144
@@ -891,13 +902,13 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:245 amuleweb.1:174
 msgid "~/.aMule/remote.conf"
-msgstr ""
+msgstr "~/.aMule/remote.conf"
 
 #. type: SH
 #: amulecmd.1:245 amuleweb.1:178
 #, no-wrap
 msgid "EXAMPLE"
-msgstr ""
+msgstr "EXEMPLE"
 
 #. type: Plain text
 #: amulecmd.1:247
@@ -912,7 +923,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:251 amuleweb.1:184
 msgid "or"
-msgstr ""
+msgstr "ou"
 
 #. type: Plain text
 #: amulecmd.1:253
@@ -935,24 +946,24 @@ msgstr ""
 #: amuled.1:1
 #, no-wrap
 msgid "AMULED"
-msgstr ""
+msgstr "AMULED"
 
 #. type: TH
 #: amuled.1:1
 #, no-wrap
 msgid "aMule Daemon v2.3.0"
-msgstr ""
+msgstr "aMule Daemon v2.3.0"
 
 #. type: TH
 #: amuled.1:1
 #, no-wrap
 msgid "aMule Daemon"
-msgstr ""
+msgstr "aMule Daemon"
 
 #. type: Plain text
 #: amuled.1:6
 msgid "amuled - the all-platform eMule p2p client - daemonized version"
-msgstr ""
+msgstr "amuled - le client P2P eMule multiplateforme - version daemonisée"
 
 #. type: Plain text
 #: amuled.1:9 ../../src/utils/cas/docs/cas.1:11
@@ -991,24 +1002,24 @@ msgstr ""
 #: amulegui.1:1
 #, no-wrap
 msgid "AMULEGUI"
-msgstr ""
+msgstr "AMULEGUI"
 
 #. type: TH
 #: amulegui.1:1
 #, no-wrap
 msgid "aMuleGUI v2.3.0"
-msgstr ""
+msgstr "aMuleGUI v2.3.0"
 
 #. type: TH
 #: amulegui.1:1
 #, no-wrap
 msgid "aMuleGUI"
-msgstr ""
+msgstr "aMuleGUI"
 
 #. type: Plain text
 #: amulegui.1:6
 msgid "amulegui - aMule control program with GUI"
-msgstr ""
+msgstr "amulegui - programme de controle d'aMule avec Interface Graphique"
 
 #. type: Plain text
 #: amulegui.1:14
@@ -1045,18 +1056,18 @@ msgstr ""
 #: amuleweb.1:1
 #, no-wrap
 msgid "AMULEWEB"
-msgstr ""
+msgstr "AMULEWEB"
 
 #. type: TH
 #: amuleweb.1:1
 #, no-wrap
 msgid "aMule webserver v2.3.0"
-msgstr ""
+msgstr "aMule webserver v2.3.0"
 
 #. type: Plain text
 #: amuleweb.1:6
 msgid "amuleweb - aMule web server"
-msgstr ""
+msgstr "amuleweb - serveur web d'aMule"
 
 #. type: Plain text
 #: amuleweb.1:15
@@ -1121,7 +1132,7 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1:85
 msgid "Enable UPnP."
-msgstr ""
+msgstr "Activer UPnP."
 
 #. type: TP
 #: amuleweb.1:85
@@ -1132,7 +1143,7 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1:88
 msgid "UPnP port."
-msgstr ""
+msgstr "Port UPnP."
 
 #. type: Plain text
 #: amuleweb.1:91
@@ -1215,7 +1226,7 @@ msgstr ""
 #: amuleweb.1:166
 #, no-wrap
 msgid "SKIN SUPPORT"
-msgstr ""
+msgstr "SUPPORT DE THEMES"
 
 #. type: Plain text
 #: amuleweb.1:170
@@ -1237,7 +1248,7 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1:176
 msgid "~/.aMule/webserver/"
-msgstr ""
+msgstr "~/.aMule/webserver/"
 
 #. type: Plain text
 #: amuleweb.1:178
@@ -1272,7 +1283,7 @@ msgstr ""
 #: ed2k.1:1
 #, no-wrap
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #. type: TH
 #: ed2k.1:1
@@ -1336,19 +1347,19 @@ msgstr ""
 #. type: Plain text
 #: ed2k.1:62
 msgid "~/.aMule/ED2KLinks"
-msgstr ""
+msgstr "~/.aMule/ED2KLinks"
 
 #. type: TH
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #, no-wrap
 msgid "ALC"
-msgstr ""
+msgstr "ALC"
 
 #. type: TH
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #, no-wrap
 msgid "aLinkCreator"
-msgstr ""
+msgstr "aLinkCreator"
 
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alc.1:5
@@ -1372,7 +1383,7 @@ msgstr ""
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1
 #, no-wrap
 msgid "ALCC"
-msgstr ""
+msgstr "ALCC"
 
 #. type: TH
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1
@@ -1411,13 +1422,13 @@ msgstr ""
 #: ../../src/utils/cas/docs/cas.1:1
 #, no-wrap
 msgid "CAS"
-msgstr ""
+msgstr "CAS"
 
 #. type: TH
 #: ../../src/utils/cas/docs/cas.1:1
 #, no-wrap
 msgid "cas v0.8"
-msgstr ""
+msgstr "cas v0.8"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:6
@@ -1460,29 +1471,29 @@ msgstr ""
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:37
 msgid "~/.aMule/casrc"
-msgstr ""
+msgstr "~/.aMule/casrc"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:39
 msgid "stat.png"
-msgstr ""
+msgstr "stat.png"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:41
 msgid "tmp.html"
-msgstr ""
+msgstr "tmp.html"
 
 #. type: TH
 #: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "WXCAS"
-msgstr ""
+msgstr "WXCAS"
 
 #. type: TH
 #: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "wxCas"
-msgstr ""
+msgstr "wxCas"
 
 #. type: Plain text
 #: ../../src/utils/wxCas/docs/wxcas.1:5
@@ -1501,13 +1512,13 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "XAS"
-msgstr ""
+msgstr "XAS"
 
 #. type: TH
 #: ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "xas v1.9"
-msgstr ""
+msgstr "xas v1.9"
 
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:5
