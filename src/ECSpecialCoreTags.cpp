@@ -43,6 +43,7 @@
 #include "kademlia/kademlia/Kademlia.h"
 
 
+// used for webserver, amulecmd
 CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
 {
@@ -99,7 +100,26 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 	}
 }
 
-CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
+// used for amulegui (EC_DETAIL_INC_UPDATE)
+CEC_Server_Tag::CEC_Server_Tag(const CServer *server, CValueMap *valuemap) :
+	CECTag(EC_TAG_SERVER, server->ECID())
+{
+	AddTag(EC_TAG_SERVER_NAME, server->GetListName(), valuemap);
+	AddTag(EC_TAG_SERVER_DESC, server->GetDescription(), valuemap);
+	AddTag(EC_TAG_SERVER_VERSION, server->GetVersion(), valuemap);
+	AddTag(EC_TAG_SERVER_IP, server->GetIP(), valuemap);
+	AddTag(EC_TAG_SERVER_PORT, server->GetPort(), valuemap);
+	AddTag(EC_TAG_SERVER_PING, server->GetPing(), valuemap);
+	AddTag(EC_TAG_SERVER_PRIO, server->GetPreferences(), valuemap);
+	AddTag(EC_TAG_SERVER_FAILED, server->GetFailedCount(), valuemap);
+	AddTag(EC_TAG_SERVER_STATIC, server->IsStaticMember(), valuemap);
+	AddTag(EC_TAG_SERVER_USERS, server->GetUsers(), valuemap);
+	AddTag(EC_TAG_SERVER_USERS_MAX, server->GetMaxUsers(), valuemap);
+	AddTag(EC_TAG_SERVER_FILES, server->GetFiles(), valuemap);
+}
+
+
+CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL) : CECTag(EC_TAG_CONNSTATE,
 	(uint8)(
 			(theApp->IsConnectedED2K() ? 0x01 : 0x00)
 			|
@@ -114,7 +134,8 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 {
 	if (theApp->IsConnectedED2K()) {
 		if ( theApp->serverconnect->GetCurrentServer() ) {
-			AddTag(CEC_Server_Tag(theApp->serverconnect->GetCurrentServer(), detail_level));
+			// Send no full server tag, just the ECID of the connected server
+			AddTag(CECTag(EC_TAG_SERVER, theApp->serverconnect->GetCurrentServer()->ECID()));
 		}
 		AddTag(CECTag(EC_TAG_ED2K_ID, theApp->GetED2KID()));
 	}

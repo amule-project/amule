@@ -167,23 +167,23 @@ class CEC_Prefs_Packet : public CECPacket {
 class CEC_Server_Tag : public CECTag {
  	public:
  		CEC_Server_Tag(const CServer *, EC_DETAIL_LEVEL);
+ 		CEC_Server_Tag(const CServer *, CValueMap *valuemap);
  		
- 		wxString ServerName() const { return GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData(); }
- 		wxString ServerDesc() const { return GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData(); }
+ 		wxString ServerName(wxString * target = 0)	const { return AssignIfExist(EC_TAG_SERVER_NAME, target); }
+ 		wxString ServerDesc(wxString * target = 0)	const { return AssignIfExist(EC_TAG_SERVER_DESC, target); }
+ 		wxString ServerVersion(wxString * target = 0)	const { return AssignIfExist(EC_TAG_SERVER_VERSION, target); }
 
- 		uint8 GetPrio() const { return GetTagByNameSafe(EC_TAG_SERVER_PRIO)->GetInt(); }
- 		bool GetStatic() const { return (GetTagByNameSafe(EC_TAG_SERVER_STATIC)->GetInt() == 1); }
+ 		uint32 GetPrio(uint32 * target = 0)			const { return AssignIfExist(EC_TAG_SERVER_PRIO, target); }
+ 		bool GetStatic(bool * target = 0)			const { return AssignIfExist(EC_TAG_SERVER_STATIC, target); }
 
- 		uint32 GetPing() const { return GetTagByNameSafe(EC_TAG_SERVER_PING)->GetInt(); }
- 		uint8 GetFailed() const { return GetTagByNameSafe(EC_TAG_SERVER_FAILED)->GetInt(); }
+ 		uint32 GetPing(uint32 * target = 0)			const { return AssignIfExist(EC_TAG_SERVER_PING, target); }
+ 		uint32 GetFailed(uint32 * target = 0)		const { return AssignIfExist(EC_TAG_SERVER_FAILED, target); }
 
- 		uint32 GetFiles() const { return GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt(); }
- 		uint32 GetUsers() const { return GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt(); }
- 		uint32 GetMaxUsers() const { return GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt(); }
+ 		uint32 GetFiles(uint32 * target = 0)		const { return AssignIfExist(EC_TAG_SERVER_FILES, target); }
+ 		uint32 GetUsers(uint32 * target = 0)		const { return AssignIfExist(EC_TAG_SERVER_USERS, target); }
+ 		uint32 GetMaxUsers(uint32 * target = 0)		const { return AssignIfExist(EC_TAG_SERVER_USERS_MAX, target); }
  		
- 		// we're not using incremental update on server list,
- 		// but template code needs it
- 		uint32 ID() const { return 0; }
+ 		uint32 ID() const { return GetInt(); }
 };
 
 

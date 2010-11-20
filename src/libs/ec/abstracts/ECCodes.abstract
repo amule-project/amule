@@ -263,6 +263,8 @@ EC_TAG_SERVER                             0x0500
 	EC_TAG_SERVER_FAILED                      0x0509
 	EC_TAG_SERVER_STATIC                      0x050A
 	EC_TAG_SERVER_VERSION                     0x050B
+	EC_TAG_SERVER_IP                          0x050C
+	EC_TAG_SERVER_PORT                        0x050D
 
 EC_TAG_CLIENT                             0x0600
 	EC_TAG_CLIENT_SOFTWARE                    0x0601
