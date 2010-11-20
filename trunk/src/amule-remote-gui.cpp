@@ -151,7 +151,6 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	switch (request_step) {
 	case 0:
 		serverconnect->ReQuery();
-		serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
 		request_step++;
 		break;
 	case 1: {
@@ -162,11 +161,10 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		break;
 	}
 	case 2:
-		if (amuledlg->m_sharedfileswnd->IsShown()) {
-			// update both downloads and shared files
+		if (amuledlg->m_sharedfileswnd->IsShown()
+			|| amuledlg->m_serverwnd->IsShown()) {
+			// update downloads, shared files and servers
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
-		} else if (amuledlg->m_serverwnd->IsShown()) {
-			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
 			// update both downloads and shared files
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
@@ -374,7 +372,6 @@ void CamuleRemoteGuiApp::Startup() {
 
 	// Forward wxLog events to CLogger
 	wxLog::SetActiveTarget(new CLoggerTarget);
-	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 	knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
 
 	// Start the Poll Timer
@@ -445,8 +442,6 @@ bool CamuleRemoteGuiApp::AddServer(CServer * server, bool)
 	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, CFormat(wxT("%s:%d")) % server->GetAddress() % server->GetPort()));
 	req.AddTag(CECTag(EC_TAG_SERVER_NAME, server->GetListName()));
 	m_connect->SendPacket(&req);
-
-	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 
 	return true;
 }
@@ -763,24 +758,17 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
 	
 	if (tag->IsConnectedED2K()) {
 		CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);
-		if (!srvtag) {
-			return;
+		if (srvtag) {
+			server = theApp->serverlist->GetByID(srvtag->GetInt());
+			if (server != m_CurrServer) {
+				theApp->amuledlg->m_serverwnd->serverlistctrl->HighlightServer(server, true);
+				m_CurrServer = server;
+			}
 		}
-		server = theApp->serverlist->GetByID(srvtag->GetIPv4Data().IP());
-		if (m_CurrServer && (server != m_CurrServer)) {
-			theApp->amuledlg->m_serverwnd->serverlistctrl->
-				HighlightServer(m_CurrServer, false);
-		}
-		theApp->amuledlg->m_serverwnd->serverlistctrl->
-			HighlightServer(server, true);
-		m_CurrServer = server;
 		theApp->m_ConnState |= CONNECTED_ED2K;
-	} else {
-	    	if ( m_CurrServer ) {
-	    		theApp->amuledlg->m_serverwnd->serverlistctrl->
-				HighlightServer(m_CurrServer, false);
-	    		m_CurrServer = 0;
-	    	}
+	} else if ( m_CurrServer ) {
+	    theApp->amuledlg->m_serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
+	    m_CurrServer = 0;
 	}
 
 	if (tag->IsConnectedKademlia()) {
@@ -804,15 +792,16 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
  */
 CServerListRem::CServerListRem(CRemoteConnect *conn)
 :
-CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn, false)
+CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn, true)
 {
 }
 
 
-void CServerListRem::HandlePacket(const CECPacket *packet)
+void CServerListRem::HandlePacket(const CECPacket *)
 {
-	CRemoteContainer<CServer, uint32, CEC_Server_Tag>::HandlePacket(packet);
-	ReloadControl();
+	// There is no packet for the server list, it is part of the general update packet
+	wxFAIL;
+	// CRemoteContainer<CServer, uint32, CEC_Server_Tag>::HandlePacket(packet);
 }
 
 
@@ -854,7 +843,9 @@ CServer *CServerListRem::GetServerByIPTCP(uint32 WXUNUSED(nIP), uint16 WXUNUSED(
 
 CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 {
-	return new CServer(tag);
+	CServer * server = new CServer(tag);
+	ProcessItemUpdate(tag, server);
+	return server;
 }
 
 
@@ -867,26 +858,45 @@ void CServerListRem::DeleteItem(CServer *in_srv)
 
 uint32 CServerListRem::GetItemID(CServer *server)
 {
-	return server->GetIP();
+	return server->ECID();
 }
 
 
-void CServerListRem::ProcessItemUpdate(CEC_Server_Tag *, CServer *)
+void CServerListRem::ProcessItemUpdate(CEC_Server_Tag * tag, CServer * server)
 {
-	// server list is always realoaded from scratch
-	wxFAIL;
-}
-
-
-void CServerListRem::ReloadControl()
-{
-	for(iterator it = begin(); it != end(); it++) {
-		CServer *srv = *it;
-		theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(srv);
+	if (!tag->HasChildTags()) {
+		return;
 	}
+	tag->ServerName(& server->listname);
+	tag->ServerDesc(& server->description);
+	tag->ServerVersion(& server->m_strVersion);
+	tag->GetMaxUsers(& server->maxusers);
+	
+	tag->GetFiles(& server->files);
+	tag->GetUsers(& server->users);
+   
+	tag->GetPrio(& server->preferences); // SRV_PR_NORMAL = 0, so it's ok
+    tag->GetStatic(& server->staticservermember);
+
+	tag->GetPing(& server->ping);
+	tag->GetFailed(& server->failedcount);	
+
+	theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(server);
 }
 
 
+CServer::CServer(CEC_Server_Tag *tag) : CECID(tag->GetInt())
+{
+	ip = tag->GetTagByNameSafe(EC_TAG_SERVER_IP)->GetInt();
+	port = tag->GetTagByNameSafe(EC_TAG_SERVER_PORT)->GetInt();
+	
+	Init();
+}
+
+
+/*
+ * IP filter
+ */
 CIPFilterRem::CIPFilterRem(CRemoteConnect* conn)
 {
 	m_conn = conn;
@@ -1062,6 +1072,8 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 		ec_tagname_t tagname = curTag->GetTagName();
 		if (tagname == EC_TAG_CLIENT) {
 			theApp->clientlist->ProcessUpdate(curTag, NULL, EC_TAG_CLIENT);
+		} else if (tagname == EC_TAG_SERVER) {
+			theApp->serverlist->ProcessUpdate(curTag, NULL, EC_TAG_SERVER);
 		} else if (tagname == EC_TAG_KNOWNFILE || tagname == EC_TAG_PARTFILE) {
 			CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) curTag;
 			uint32 id = tag->ID();

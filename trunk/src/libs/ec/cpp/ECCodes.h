@@ -234,6 +234,8 @@ enum ECTagNames {
 		EC_TAG_SERVER_FAILED                      = 0x0509,
 		EC_TAG_SERVER_STATIC                      = 0x050A,
 		EC_TAG_SERVER_VERSION                     = 0x050B,
+		EC_TAG_SERVER_IP                          = 0x050C,
+		EC_TAG_SERVER_PORT                        = 0x050D,
 	EC_TAG_CLIENT                             = 0x0600,
 		EC_TAG_CLIENT_SOFTWARE                    = 0x0601,
 		EC_TAG_CLIENT_SCORE                       = 0x0602,
@@ -659,6 +661,8 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0509: return wxT("EC_TAG_SERVER_FAILED");
 		case 0x050A: return wxT("EC_TAG_SERVER_STATIC");
 		case 0x050B: return wxT("EC_TAG_SERVER_VERSION");
+		case 0x050C: return wxT("EC_TAG_SERVER_IP");
+		case 0x050D: return wxT("EC_TAG_SERVER_PORT");
 		case 0x0600: return wxT("EC_TAG_CLIENT");
 		case 0x0601: return wxT("EC_TAG_CLIENT_SOFTWARE");
 		case 0x0602: return wxT("EC_TAG_CLIENT_SCORE");

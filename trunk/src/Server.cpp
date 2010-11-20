@@ -55,32 +55,9 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 	}
 }
 
-#ifdef CLIENT_GUI
-CServer::CServer(CEC_Server_Tag *tag)
-{
-	ip = tag->GetIPv4Data().IP();
-	
-	port = tag->GetIPv4Data().m_port;
-	
-	Init();
-	
-	listname = tag->ServerName();
-	description = tag->ServerDesc();
-	maxusers = tag->GetMaxUsers();
-	
-	files = tag->GetFiles();
-	users = tag->GetUsers();
-   
-	preferences = tag->GetPrio(); // SRV_PR_NORMAL = 0, so it's ok
-    staticservermember = tag->GetStatic();
-
-	ping = tag->GetPing();
-	failedcount = tag->GetFailed();	
-}
-#endif
 
 // copy constructor
-CServer::CServer(CServer* pOld)
+CServer::CServer(CServer* pOld) : CECID(pOld->ECID())
 {
 	wxASSERT(pOld != NULL);
 	

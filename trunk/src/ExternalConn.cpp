@@ -665,6 +665,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 			response->AddTag(filetag);
 		}
 	}
+
 	// Add clients
 	CECEmptyTag clients(EC_TAG_CLIENT);
 	const CClientList::IDMap& clientList = theApp->clientlist->GetClientList();
@@ -674,6 +675,17 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 		clients.AddTag(CEC_UpDownClient_Tag(cur_client, EC_DETAIL_INC_UPDATE, &valuemap));
 	}
 	response->AddTag(clients);
+
+	// Add servers
+	CECEmptyTag servers(EC_TAG_SERVER);
+	std::vector<const CServer*> serverlist = theApp->serverlist->CopySnapshot();
+	uint32 nrServers = serverlist.size();
+	for (uint32 i = 0; i < nrServers; i++) {
+		const CServer* cur_server = serverlist[i];
+		CValueMap &valuemap = tagmap.GetValueMap(cur_server->ECID());
+		servers.AddTag(CEC_Server_Tag(cur_server, &valuemap));
+	}
+	response->AddTag(servers);
 
 	return response;
 }
