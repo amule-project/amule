@@ -145,7 +145,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
 		
-		if (reinterpret_cast<wxUIntPtr>(server) == m_connected && connected) {
+		if (server == m_connected && connected) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
 			++pos;
 		} else if (server->IsStaticMember()) {
@@ -313,7 +313,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 	// Unset the old highlighted server if we are going to set a new one
 	if ( m_connected && highlight ) {
 		// A recursive call to do the real work. 
-		HighlightServer( (CServer*)m_connected, false );
+		HighlightServer( m_connected, false );
 
 		m_connected = 0;
 	}
@@ -329,7 +329,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 			if ( highlight ) {
 				font.SetWeight( wxBOLD );
 
-				m_connected = reinterpret_cast<wxUIntPtr>(server);
+				m_connected = server;
 			}
 
 			item.SetFont( font );
@@ -409,8 +409,9 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 		CServer* server = (CServer*)GetItemData( index );
 
 		// The current server is selected, so we might display the reconnect option
-		if ( reinterpret_cast<wxUIntPtr>(server) == m_connected ) 
+		if (server == m_connected) {
 			enable_reconnect = true;
+		}
 
 		// We want to know which options should be enabled, either one or both
 		enable_static_on	|= !server->IsStaticMember();

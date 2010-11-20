@@ -198,7 +198,7 @@ private:
 
 
 	//! Used to keep track of the last high-lighted item.
-	wxUIntPtr m_connected;
+	const CServer* m_connected;
 	
 	
 	DECLARE_EVENT_TABLE()
