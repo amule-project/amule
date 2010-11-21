@@ -1431,7 +1431,9 @@ void CamuleDlg::DoNetworkRearrange()
 	}
 
 	if (thePrefs::GetNetworkED2K()) {
+#ifndef CLIENT_GUI
 		logs_notebook->AddPage(m_logpages[1].page, m_logpages[1].name);
+#endif
 		logs_notebook->AddPage(m_logpages[2].page, m_logpages[2].name);
 	}
 		
