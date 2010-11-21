@@ -388,6 +388,20 @@ ItemList GetSelectedItems( CDownloadListCtrl* list)
 void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 {
 	ItemList files = ::GetSelectedItems(this);
+	for (ItemList::iterator it = files.begin(); it != files.end(); ) {
+		ItemList::iterator it1 = it++;
+		CPartFile* file = (*it1)->GetFile();
+		if (file) {
+			switch (file->GetStatus()) {
+				case PS_WAITINGFORHASH:
+				case PS_HASHING:
+				case PS_COMPLETING:
+				case PS_COMPLETE:
+					files.erase(it1);
+					break;
+			}
+		}
+	}
 	if (files.size()) {	
 		wxString question;
 		if (files.size() == 1) {
@@ -399,15 +413,7 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 				CPartFile* file = (*it)->GetFile();
 				if (file) {
-					switch (file->GetStatus()) {
-					case PS_WAITINGFORHASH:
-					case PS_HASHING:
-					case PS_COMPLETING:
-					case PS_COMPLETE:
-						break;
-					default:
-						CoreNotify_PartFile_Delete(file);
-					}
+					CoreNotify_PartFile_Delete(file);
 				}
 			}
 		}
