@@ -52,6 +52,7 @@
 #include <common/Format.h>
 #include "IPFilter.h"
 #include <common/FileFunctions.h>	// Needed for UnpackArchive
+#include <common/TextFile.h>	// Needed for CTextFile
 
 CServerList::CServerList()
 {
@@ -67,7 +68,8 @@ bool CServerList::Init()
 	bool bRes = LoadServerMet(CPath(theApp->ConfigDir + wxT("server.met")));
 
 	// insert static servers from textfile
-	LoadStaticServers(theApp->ConfigDir + wxT("staticservers.dat"));
+	m_staticServersConfig = theApp->ConfigDir + wxT("staticservers.dat");
+	LoadStaticServers();
 	
 	// Send the auto-update of server.met via HTTPThread requests
 	current_url_index = 0;
@@ -438,13 +440,13 @@ CServerList::~CServerList()
 }
 
 
-void CServerList::LoadStaticServers( const wxString& filename )
+void CServerList::LoadStaticServers()
 {
-	if ( !CPath::FileExists( filename ) ) {
+	if ( !CPath::FileExists(m_staticServersConfig) ) {
 		return;
 	}
 	
-	wxFileInputStream stream( filename );
+	wxFileInputStream stream(m_staticServersConfig);
 	wxTextInputStream f(stream);
 
 	while ( !stream.Eof() ) {
@@ -506,6 +508,26 @@ void CServerList::LoadStaticServers( const wxString& filename )
 	}
 }
 
+void CServerList::SaveStaticServers()
+{
+	CTextFile file;
+	if (!file.Open(m_staticServersConfig, CTextFile::write)) {
+		AddLogLineN(CFormat( _("Failed to open '%s'") ) % m_staticServersConfig );
+		return;
+	}
+
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+		const CServer* server = *it;
+
+		if (server->IsStaticMember()) {
+			file.WriteLine(CFormat(wxT("%s:%u,%u,%s"))
+				% server->GetAddress() % server->GetPort()
+				% server->GetPreferences() % server->GetListName());
+		}
+	}
+
+	file.Close();
+}
 
 struct ServerPriorityComparator {
 	// Return true iff lhs should strictly appear earlier in the list than rhs.
@@ -610,6 +632,7 @@ CServer* CServerList::GetServerByIPTCP(uint32 nIP, uint16 nPort) const
 	return NULL;
 }
 
+
 CServer* CServerList::GetServerByIPUDP(uint32 nIP, uint16 nUDPPort, bool bObfuscationPorts) const
 {
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
@@ -622,6 +645,34 @@ CServer* CServerList::GetServerByIPUDP(uint32 nIP, uint16 nUDPPort, bool bObfusc
 	}
 	return NULL;
 }
+
+
+CServer* CServerList::GetServerByECID(uint32 ecid) const
+{
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
+        CServer* const s = *it;
+		if (s->ECID() == ecid) {
+			return s;
+		}
+	}
+	return NULL;
+}
+
+
+void CServerList::SetStaticServer(CServer* server, bool isStatic)
+{
+	server->SetIsStaticMember(isStatic);
+	Notify_ServerRefresh(server);
+	SaveStaticServers();
+}
+
+
+void CServerList::SetServerPrio(CServer* server, uint32 prio)
+{
+	server->SetPreference(prio);
+	Notify_ServerRefresh(server);
+}
+
 
 bool CServerList::SaveServerMet()
 {

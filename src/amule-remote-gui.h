@@ -437,6 +437,8 @@ public:
 	//
 	void RemoveServer(CServer* server);
 	void UpdateServerMetFromURL(wxString url);
+	void SetStaticServer(CServer* server, bool isStatic);
+	void SetServerPrio(CServer* server, uint32 prio);
 	void SaveServerMet() {}	// not needed here
 	void FilterServers() {}	// not needed here
 	
