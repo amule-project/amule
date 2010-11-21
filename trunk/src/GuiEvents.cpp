@@ -232,7 +232,16 @@ namespace MuleNotify
 #endif
 	}
 	
+	void ServerRefresh(CServer* NOT_ON_DAEMON(server))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(server);
+		}
+#endif
+	}
 	
+
 #ifdef CLIENT_GUI
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
@@ -426,15 +435,6 @@ namespace MuleNotify
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->HighlightServer(server, highlight);
-		}
-#endif
-	}
-	
-	void ServerRefresh(CServer* NOT_ON_DAEMON(server))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
-			theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(server);
 		}
 #endif
 	}

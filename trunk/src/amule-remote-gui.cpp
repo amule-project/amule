@@ -814,6 +814,34 @@ void CServerListRem::UpdateServerMetFromURL(wxString url)
 }
 
 
+void CServerListRem::SetStaticServer(CServer* server, bool isStatic)
+{
+	// update display right away
+	server->SetIsStaticMember(isStatic);
+	Notify_ServerRefresh(server);
+
+	CECPacket req(EC_OP_SERVER_SET_STATIC_PRIO);
+	req.AddTag(CECTag(EC_TAG_SERVER, server->ECID()));
+	req.AddTag(CECTag(EC_TAG_SERVER_STATIC, isStatic));
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CServerListRem::SetServerPrio(CServer* server, uint32 prio)
+{
+	// update display right away
+	server->SetPreference(prio);
+	Notify_ServerRefresh(server);
+
+	CECPacket req(EC_OP_SERVER_SET_STATIC_PRIO);
+	req.AddTag(CECTag(EC_TAG_SERVER, server->ECID()));
+	req.AddTag(CECTag(EC_TAG_SERVER_PRIO, prio));
+	
+	m_conn->SendPacket(&req);
+}
+
+
 void CServerListRem::RemoveServer(CServer* server)
 {
 	m_conn->RemoveServer(server->GetIP(),server->GetPort());

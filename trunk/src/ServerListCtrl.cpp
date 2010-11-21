@@ -43,7 +43,6 @@
 #include "Server.h"		// Needed for CServer and SRV_PR_*
 #include "Logger.h"
 #include <common/Format.h>	// Needed for CFormat
-#include <common/TextFile.h>	// Needed for CTextFile
 
 
 #define CMuleColour(x) (wxSystemSettings::GetColour(x))
@@ -152,7 +151,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 			const wxString name = (!server->GetListName() ? wxString(_("(Unknown name)")) : server->GetListName());
 			
 			if (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
-				SetStaticServer(server, false);
+				theApp->serverlist->SetStaticServer(server, false);
 				DeleteItem( pos );
 				theApp->serverlist->RemoveServer( server );
 			} else {
@@ -243,7 +242,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 
-	#ifdef __DEBUG__
+	#if defined(__DEBUG__) && !defined(CLIENT_GUI)
 	wxString flags;
 	/* TCP */
 	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
@@ -337,33 +336,6 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 			SetItem( item );
 		}
 	}
-}
-
-//#warning Kry TODO: Dude, this gotta be moved to core
-bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
-{
-	server->SetIsStaticMember( isStatic );
-	RefreshServer( server );
-
-	wxString filename = theApp->ConfigDir + wxT("staticservers.dat");
-
-	CTextFile file;
-	if (!file.Open(filename, CTextFile::write)) {
-		AddLogLineN(CFormat( _("Failed to open '%s'") ) % filename );
-		return false;
-	}
-
-	for (int i = 0; i < GetItemCount(); ++i) {
-		server = reinterpret_cast<CServer*>(GetItemData(i));
-
-		if (server->IsStaticMember()) {
-			file.WriteLine(CFormat(wxT("%s:%u,%u,%s"))
-				% server->GetAddress() % server->GetPort()
-				% server->GetPreferences() % server->GetListName());
-		}
-	}
-
-	return true;
 }
 
 
@@ -474,7 +446,7 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 
 void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 {
-	int priority = 0;
+	uint32 priority = 0;
 
 	switch ( event.GetId() ) {
 		case MP_PRIOLOW:		priority = SRV_PR_LOW;		break;
@@ -490,9 +462,7 @@ void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 	
 	for ( unsigned int i = 0; i < items.size(); ++i ) {
 		CServer* server = (CServer*)items[ i ];
-		
-		server->SetPreference( priority );
-		RefreshServer( server );	
+		theApp->serverlist->SetServerPrio(server, priority);
 	}
 }
 
@@ -508,14 +478,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 
 		// Only update items that have the wrong setting
 		if ( server->IsStaticMember() != isStatic ) {
-			if ( !SetStaticServer( server, isStatic ) ) {
-				wxFAIL;
-
-				return;
-			}
-				
-			server->SetIsStaticMember( isStatic );
-			RefreshServer( server );
+			theApp->serverlist->SetStaticServer(server, isStatic);
 		}
 	}
 }

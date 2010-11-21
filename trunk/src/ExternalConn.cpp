@@ -1435,6 +1435,22 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		}
+		case EC_OP_SERVER_SET_STATIC_PRIO: {
+			uint32 ecid = request->GetTagByNameSafe(EC_TAG_SERVER)->GetInt();
+			CServer * server = theApp->serverlist->GetServerByECID(ecid);
+			if (server) {
+				const CECTag * staticTag = request->GetTagByName(EC_TAG_SERVER_STATIC);
+				if (staticTag) {
+					theApp->serverlist->SetStaticServer(server, staticTag->GetInt() > 0);
+				}
+				const CECTag * prioTag = request->GetTagByName(EC_TAG_SERVER_PRIO);
+				if (prioTag) {
+					theApp->serverlist->SetServerPrio(server, prioTag->GetInt());
+				}
+			}
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		}
 		//
 		// IPFilter
 		//

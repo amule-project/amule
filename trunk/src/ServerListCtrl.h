@@ -126,16 +126,6 @@ public:
 	 */
 	void	HighlightServer( const CServer* server, bool highlight );
 
-	/**
-	 * Marks the specified server as static or not.
-	 *
-	 * @param The server to be marked or unmarked as static.
-	 * @param The new static state.
-	 *
-	 * Other than setting the static setting of the specified server, it
-	 * also adds or removes the server from the static-list file.
-	 */
-	bool	SetStaticServer( CServer* server, bool isStatic );
 
 	
 	/**
