@@ -211,6 +211,7 @@ private:
 	void	OnSwapSource( wxCommandEvent& event );
 	void	OnViewFiles( wxCommandEvent& event );
 	void	OnAddFriend( wxCommandEvent& event );
+	void	OnSetFriendslot( wxCommandEvent& event );
 	void	OnSendMessage( wxCommandEvent& event );
 	void	OnViewClientInfo( wxCommandEvent& event );
 

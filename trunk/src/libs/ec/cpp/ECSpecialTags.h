@@ -49,6 +49,7 @@ class CKnownFile;
 class CPartFile;
 class CSearchFile;
 class CUpDownClient;
+class CFriend;
 
 /*
  * EC tags encoder. Idea: if for an object <X>, client <Z> tag <Y> have value equal to previous
@@ -299,7 +300,7 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint64 XferUpSession(uint64 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_SESSION, target); }
  		uint64 XferDownSession(uint64 *target = 0) const { return AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, target); }
  		
- 		bool IsFriend() const { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
+ 		bool FriendSlot(bool &target) const { return AssignIfExist(EC_TAG_CLIENT_FRIEND_SLOT, target); }
  		
  		bool ClientSoftware(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_SOFTWARE, target); }
 		bool SoftVerStr(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_SOFT_VER_STR, target); }
@@ -380,5 +381,17 @@ class CEC_StatTree_Node_Tag : public CECTag {
 		wxString GetDisplayString() const;
 };
 
-#endif /* ECSPEACIALTAGS_H */
+class CEC_Friend_Tag : public CECTag {
+	public:
+		CEC_Friend_Tag(const CFriend* Friend, CValueMap* valuemap);
+
+ 		uint32		ID() const							{ return GetInt(); }
+		bool		Name(wxString &target) const		{ return AssignIfExist(EC_TAG_FRIEND_NAME, target); }
+		bool		UserHash(CMD4Hash &target) const	{ return AssignIfExist(EC_TAG_FRIEND_HASH, target); }
+		bool		IP(uint32 &target) const			{ return AssignIfExist(EC_TAG_FRIEND_IP, target); }
+		bool		Port(uint16 &target) const			{ return AssignIfExist(EC_TAG_FRIEND_PORT, target); }
+		bool		Client(uint32 &target) const		{ return AssignIfExist(EC_TAG_FRIEND_CLIENT, target); }
+};
+
+#endif /* ECSPECIALTAGS_H */
 // File_checked_for_headers

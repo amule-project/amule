@@ -34,32 +34,48 @@ class CFriend;
 class CUpDownClient;
 class CMD4Hash;
 
-typedef std::list<CFriend*> FriendList;
-
-class CFriendList 
+class CFriendList
 {
+	typedef std::list<CFriend*> FriendList;
 public:
 	CFriendList();
 	~CFriendList();
 	
-	bool		IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort ); 
+	bool		IsAlreadyFriend(uint32 dwLastUsedIP, uint32 nLastUsedPort);
 	void		SaveList();
 	void		LoadList();
-	CFriend*	FindFriend( const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
-	void 		AddFriend(CFriend* toadd);
-	void		AddFriend( CUpDownClient* toadd );
-	void		AddFriend( const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, const wxString& name);
-	void		RemoveFriend( const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort);
-	void		RequestSharedFileList(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
-	void		UpdateFriendName(const CMD4Hash& userhash, const wxString& name, uint32 dwIP, uint16 nPort);
+	CFriend*	FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
+	CFriend*	FindFriend(uint32 ecid);
+	void 		AddFriend(CFriend* toadd, bool notify = true);
+	void		AddFriend(CUpDownClient* toadd);
+	void		AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name, uint32 lastSeen = 0, uint32 lastChatted = 0);
+	void		RemoveFriend(CFriend* toremove);
+	void		RequestSharedFileList(CFriend* Friend);
 
-	void		SetFriendSlot(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state);
-	void		StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
+	void		SetFriendSlot(CFriend* Friend, bool new_state);
+	void		StartChatSession(CFriend* Friend);
 	void		RemoveAllFriendSlots();
 
-//private:
+	// Iterator class
+	class const_iterator {
+		// iterator for internal list
+		FriendList::const_iterator m_it;
+	public:
+		// constructs
+		const_iterator() {};
+		const_iterator(const FriendList::const_iterator& it) { m_it = it; };
+		// operators
+		bool operator != (const const_iterator& it) const { return m_it != it.m_it; }
+		const_iterator& operator ++ ()	{ ++ m_it; return *this; }	// prefix  (assignable)
+		void operator ++ (int)			{ ++ m_it; }				// postfix (not assignable)
+		const CFriend* operator * () { return *m_it; }
+	};
+	// begin/end iterators for looping
+	const_iterator begin() const { return const_iterator(m_FriendList.begin()); }
+	const_iterator end() const { return const_iterator(m_FriendList.end()); }
 
-//	//#warning THIS MUST BE MADE PRIVATE AFTER EC IS CODED
+
+private:
 	FriendList m_FriendList;
 };
 

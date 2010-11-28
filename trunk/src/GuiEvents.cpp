@@ -10,6 +10,7 @@
 #include "SearchFile.h"
 #include "SearchList.h"
 #include "IPFilter.h"
+#include "Friend.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -29,6 +30,7 @@
 
 #ifndef CLIENT_GUI
 #	include "PartFileConvert.h"
+#	include "UploadQueue.h"
 #endif
 
 #include <common/MacrosProgramSpecific.h>
@@ -241,6 +243,25 @@ namespace MuleNotify
 #endif
 	}
 	
+	void ChatUpdateFriend(CFriend * NOT_ON_DAEMON(toupdate))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_chatwnd) {
+			theApp->amuledlg->m_chatwnd->UpdateFriend(toupdate);
+		}
+#endif
+	}
+	
+	void ChatRemoveFriend(CFriend * toremove)
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_chatwnd) {
+			theApp->amuledlg->m_chatwnd->RemoveFriend(toremove);
+		}
+#endif
+		delete toremove;
+	}
+	
 
 #ifdef CLIENT_GUI
 	
@@ -317,6 +338,10 @@ namespace MuleNotify
 	{
 	}
 	
+	void Upload_Resort_Queue()
+	{
+	}
+
 #else
 
 	void SharedFilesShowFile(CKnownFile* NOT_ON_DAEMON(file))
@@ -524,15 +549,6 @@ namespace MuleNotify
 	}
 
 	
-	void ChatRefreshFriend(CFriend * NOT_ON_DAEMON(Friend), bool NOT_ON_DAEMON(connected))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_chatwnd) {
-			theApp->amuledlg->m_chatwnd->RefreshFriend(Friend, connected);
-		}
-#endif
-	}
-	
 	void ChatConnResult(bool NOT_ON_DAEMON(success), uint64 NOT_ON_DAEMON(id), wxString NOT_ON_DAEMON(message))
 	{
 #ifndef AMULE_DAEMON
@@ -721,6 +737,11 @@ namespace MuleNotify
 	void Download_Set_Cat_Status(uint8 cat, int newstatus)
 	{
 		theApp->downloadqueue->SetCatStatus(cat, newstatus);
+	}
+
+	void Upload_Resort_Queue()
+	{
+		theApp->uploadqueue->ResortQueue();
 	}
 
 	void IPFilter_Reload()

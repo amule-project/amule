@@ -25,12 +25,12 @@
 
 
 #include "Friend.h"			// Interface declarations.
-#include "PartFile.h"		// Needed for CPartFile
+#include "SafeFile.h"		// Needed for CFileDataIO
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "GuiEvents.h"		// Needed for Notify_*
 
 
-CFriend::CFriend()
+void CFriend::Init()
 {
 	m_dwLastSeen = 0;
 	m_dwLastUsedIP = 0;
@@ -62,28 +62,33 @@ CFriend::CFriend(CUpDownClient* client)
 {
 	wxASSERT( client );
 	
-	LinkClient(client, false); // On init, no need to unlink. BETTER not to unlink.	
+	m_LinkedClient = NULL;
+	LinkClient(client);
 	
 	m_dwLastChatted = 0;
 }
 
 
-void	CFriend::LinkClient(CUpDownClient* client, bool unlink) {
+void CFriend::LinkClient(CUpDownClient* client)
+{
+	wxASSERT(client);
+
 	// Link the friend to that client
-	if (unlink && m_LinkedClient) { // What, is already linked?
-		if (m_LinkedClient != client){
-			bool bFriendSlot = m_LinkedClient->GetFriendSlot();
-			// avoid that an unwanted client instance keeps a friend slot
-			m_LinkedClient->SetFriendSlot(false);
-			m_LinkedClient->SetFriend(NULL);
-			m_LinkedClient = client;
-			// move an assigned friend slot between different client instances which are/were also friends
-			m_LinkedClient->SetFriendSlot(bFriendSlot);
+	if (m_LinkedClient != client) {		// do nothing if already linked to this client
+		bool hadFriendslot = false;
+		if (m_LinkedClient) { // What, is already linked?
+			hadFriendslot = m_LinkedClient->GetFriendSlot();
+			UnLinkClient(false);
 		}
-	} else {
 		m_LinkedClient = client;
+		m_LinkedClient->SetFriend(this);
+		if (hadFriendslot) {
+			// move an assigned friend slot between different client instances which are/were also friends
+			m_LinkedClient->SetFriendSlot(true);
+		}
 	}
 
+	// always update (even if client stays the same)
 	if ( !client->GetUserName().IsEmpty() ) {
 		m_strName = client->GetUserName();
 	} else {
@@ -94,7 +99,24 @@ void	CFriend::LinkClient(CUpDownClient* client, bool unlink) {
 	m_nLastUsedPort = client->GetUserPort();
 	m_dwLastSeen = time(NULL);
 	// This will update the Link status also on GUI.
-	Notify_ChatRefreshFriend(this, true);
+	Notify_ChatUpdateFriend(this);
+}
+
+
+void CFriend::UnLinkClient(bool notify)
+{
+	if (m_LinkedClient) {
+		// avoid that an unwanted client instance keeps a friend slot
+		if (m_LinkedClient->GetFriendSlot()) {
+			m_LinkedClient->SetFriendSlot(false);
+			CoreNotify_Upload_Resort_Queue();
+		}
+		m_LinkedClient->SetFriend(NULL);
+		m_LinkedClient = NULL;
+		if (notify) {
+			Notify_ChatUpdateFriend(this);
+		}
+	}
 }
 
 

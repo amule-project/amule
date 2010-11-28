@@ -44,6 +44,7 @@ public:
 	bool	IsOnUploadQueue(const CUpDownClient* client) const;
 	bool	IsDownloading(CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
+	void	ResortQueue() { SortGetBestClient(true); }
 	
 	const CClientPtrList& GetWaitingList() const { return m_waitinglist; }
 	const CClientPtrList& GetUploadingList() const { return m_uploadinglist; }

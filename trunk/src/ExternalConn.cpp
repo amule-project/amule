@@ -50,6 +50,8 @@
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "Statistics.h"		// Needed for theStats
 #include "KnownFileList.h"	// Needed for CKnownFileList
+#include "Friend.h"
+#include "FriendList.h"
 #include "RandomFunctions.h"
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/UDPFirewallTester.h"
@@ -687,6 +689,15 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	}
 	response->AddTag(servers);
 
+	// Add friends
+	CECEmptyTag friends(EC_TAG_FRIEND);
+	for (CFriendList::const_iterator it = theApp->friendlist->begin(); it != theApp->friendlist->end(); it++) {
+		const CFriend* cur_friend = *it;
+		CValueMap &valuemap = tagmap.GetValueMap(cur_friend->ECID());
+		friends.AddTag(CEC_Friend_Tag(cur_friend, &valuemap));
+	}
+	response->AddTag(friends);
+
 	return response;
 }
 
@@ -906,6 +917,78 @@ static CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	}
 	return response;
 }
+
+
+static CECPacket *Get_EC_Response_Friend(const CECPacket *request)
+{
+	CECPacket *response = NULL;
+	const CECTag *tag = request->GetTagByName(EC_TAG_FRIEND_ADD);
+	if (tag) {
+		const CECTag *subtag = tag->GetTagByName(EC_TAG_CLIENT);
+		if (subtag) {
+			CUpDownClient * client = theApp->clientlist->FindClientByECID(subtag->GetInt());
+			if (client) {
+				theApp->friendlist->AddFriend(client);
+				response = new CECPacket(EC_OP_NOOP);
+			}
+		} else {
+			const CECTag *hashtag	= tag->GetTagByName(EC_TAG_FRIEND_HASH);
+			const CECTag *iptag		= tag->GetTagByName(EC_TAG_FRIEND_IP);
+			const CECTag *porttag	= tag->GetTagByName(EC_TAG_FRIEND_PORT);
+			const CECTag *nametag	= tag->GetTagByName(EC_TAG_FRIEND_NAME);
+			if (hashtag && iptag && porttag && nametag) {
+				theApp->friendlist->AddFriend(hashtag->GetMD4Data(), iptag->GetInt(), porttag->GetInt(), nametag->GetStringData());
+				response = new CECPacket(EC_OP_NOOP);
+			}
+		}
+	} else if ((tag = request->GetTagByName(EC_TAG_FRIEND_REMOVE))) {
+		const CECTag *subtag = tag->GetTagByName(EC_TAG_FRIEND);
+		if (subtag) {
+			CFriend * Friend = theApp->friendlist->FindFriend(subtag->GetInt());
+			if (Friend) {
+				theApp->friendlist->RemoveFriend(Friend);
+				response = new CECPacket(EC_OP_NOOP);
+			}
+		}
+	} else if ((tag = request->GetTagByName(EC_TAG_FRIEND_FRIENDSLOT))) {
+		const CECTag *subtag = tag->GetTagByName(EC_TAG_FRIEND);
+		if (subtag) {
+			CFriend * Friend = theApp->friendlist->FindFriend(subtag->GetInt());
+			if (Friend) {
+				theApp->friendlist->SetFriendSlot(Friend, tag->GetInt() != 0);
+				response = new CECPacket(EC_OP_NOOP);
+			}
+		}
+	} else if ((tag = request->GetTagByName(EC_TAG_FRIEND_SHARED))) {
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, wxT("Request shared files list not implemented yet.")));
+#if 0
+		// This works fine - but there is no way atm to transfer the results to amulegui, so disable it for now.
+
+		const CECTag *subtag = tag->GetTagByName(EC_TAG_FRIEND);
+		if (subtag) {
+			CFriend * Friend = theApp->friendlist->FindFriend(subtag->GetInt());
+			if (Friend) {
+				theApp->friendlist->RequestSharedFileList(Friend);
+				response = new CECPacket(EC_OP_NOOP);
+			}
+		} else if ((subtag = tag->GetTagByName(EC_TAG_CLIENT))) {
+			CUpDownClient * client = theApp->clientlist->FindClientByECID(subtag->GetInt());
+			if (client) {
+				client->RequestSharedFileList();
+				response = new CECPacket(EC_OP_NOOP);
+			}
+		}
+#endif
+	}
+
+	if (!response) {
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("OOPS! OpCode processing error!")));
+	}
+	return response;
+}
+
 
 static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 {
@@ -1451,6 +1534,13 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		}
+		//
+		// Friends
+		//
+		case EC_OP_FRIEND:
+			response = Get_EC_Response_Friend(request);
+			break;
+
 		//
 		// IPFilter
 		//

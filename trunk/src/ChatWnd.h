@@ -30,7 +30,7 @@
 #include <wx/notebook.h>		// Needed for wxNotebookEvent
 #include "Types.h"
 
-class CDlgFriend;
+class CFriend;
 class CUpDownClient;
 class CChatSelector;
 class CFriendListCtrl;
@@ -42,13 +42,10 @@ public:
 	CChatWnd(wxWindow* pParent = NULL); 
 	~CChatWnd() {};
 
-	void StartSession(CDlgFriend* friend_client, bool setfocus = true);
+	void StartSession(CFriend* friend_client, bool setfocus = true);
 
-	CDlgFriend* FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
-	void	AddFriend(CUpDownClient* toadd);
-	void	AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
-	void	RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort);
-	void	RefreshFriend(class CFriend* Friend, bool connected);
+	void	UpdateFriend(CFriend* toupdate);
+	void	RemoveFriend(CFriend* todel);
 
 	void	ProcessMessage(uint64 sender, const wxString& message);
 	void 	ConnectionResult(bool success, const wxString& message, uint64 id);

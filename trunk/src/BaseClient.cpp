@@ -320,8 +320,7 @@ CUpDownClient::~CUpDownClient()
 	//theApp->clientlist->RemoveClient(this, wxT("Destructing client object"));
 	
 	if (m_Friend) {
-		m_Friend->UnLinkClient();
-		Notify_ChatRefreshFriend(m_Friend, false);
+		m_Friend->UnLinkClient();	// this notifies
 		m_Friend = NULL;
 	}
 
@@ -1361,7 +1360,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 	if (bDelete) {
 		if (m_Friend) {
 			// Remove the friend linkage
-			Notify_ChatRefreshFriend(m_Friend, false);
+			m_Friend->UnLinkClient();	// this notifies
 		}
 	} else {
 		Notify_SharedCtrlRefreshClient( this, peer_type);

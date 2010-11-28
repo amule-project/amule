@@ -565,6 +565,9 @@ bool CamuleApp::OnInit()
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
 
+	// Load saved friendlist (now, so it can update in GUI right away)
+	friendlist->LoadList();
+
 	// The user can start pressing buttons like mad if he feels like it.
 	m_app_state = APP_STATE_RUNNING;
 	

@@ -31,18 +31,7 @@
 
 class wxString;
 class CUpDownClient;
-
-class CDlgFriend {
-public:
-	CDlgFriend(const CMD4Hash& hash, const wxString& name, uint32 ip, uint16 port, bool IsLinked, bool HasFriendSlot);
-
-	wxString m_name;
-	uint32 m_ip;
-	uint16 m_port;
-	CMD4Hash	m_hash;
-	bool islinked;
-	bool hasfriendslot;
-};
+class CFriend;
 
 class CFriendListCtrl : public CMuleListCtrl
 {
@@ -50,17 +39,9 @@ public:
 	CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags);
 	~CFriendListCtrl();
 	
-	bool		IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort ); 
-	void		LoadList();
-	CDlgFriend*	FindFriend( const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
-	void 		AddFriend(CDlgFriend* toadd, bool send_to_core = true);
-	void		AddFriend( CUpDownClient* toadd );
-	void		AddFriend( const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort, bool IsLinked = false, bool HasFriendSlot = false, bool send_to_core = true);
-	void		RemoveFriend(CDlgFriend* todel);
-	void		RemoveFriend(CUpDownClient* todel);
-	void		RefreshFriend(CDlgFriend* toupdate);
-	void		SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state);
-	
+	void 		UpdateFriend(CFriend* toupdate);
+	void		RemoveFriend(CFriend* todel);
+
 protected:
 	DECLARE_EVENT_TABLE()
 

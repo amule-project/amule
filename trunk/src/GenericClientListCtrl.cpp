@@ -46,6 +46,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "TerminationProcess.h"	// Needed for CTerminationProcess
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "FriendList.h"
 
 struct ClientCtrlItem_Struct
 {
@@ -103,6 +104,7 @@ BEGIN_EVENT_TABLE(CGenericClientListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_CHANGE2FILE,		CGenericClientListCtrl::OnSwapSource )
 	EVT_MENU( MP_SHOWLIST,			CGenericClientListCtrl::OnViewFiles )
 	EVT_MENU( MP_ADDFRIEND,			CGenericClientListCtrl::OnAddFriend )
+	EVT_MENU( MP_FRIENDSLOT,		CGenericClientListCtrl::OnSetFriendslot )
 	EVT_MENU( MP_SENDMESSAGE,		CGenericClientListCtrl::OnSendMessage )
 	EVT_MENU( MP_DETAIL,			CGenericClientListCtrl::OnViewClientInfo )
 END_EVENT_TABLE()
@@ -502,10 +504,26 @@ void CGenericClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CUpDownClient* client = (*it)->GetSource();
 		if (client->IsFriend()) {
-			theApp->amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+			theApp->friendlist->RemoveFriend(client->GetFriend());
 		} else {
-			theApp->amuledlg->m_chatwnd->AddFriend( client );
+			theApp->friendlist->AddFriend( client );
 		}
+	}
+}
+
+
+void CGenericClientListCtrl::OnSetFriendslot(wxCommandEvent& evt)
+{
+	ItemList sources = ::GetSelectedItems( this );
+
+	ItemList::iterator it = sources.begin(); 
+	if (it != sources.end()) {
+		CUpDownClient* client = (*it)->GetSource();
+		theApp->friendlist->SetFriendSlot(client->GetFriend(), evt.IsChecked());
+		it++;
+	}
+	if (it != sources.end()) {
+		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxOK | wxICON_ERROR, this);
 	}
 }
 
@@ -563,6 +581,15 @@ void CGenericClientListCtrl::OnMouseRightClick(wxListEvent& evt)
 	m_menu = new wxMenu(wxT("Clients"));
 	m_menu->Append(MP_DETAIL, _("Show &Details"));
 	m_menu->Append(MP_ADDFRIEND, client->IsFriend() ? _("Remove from friends") : _("Add to Friends"));
+
+	m_menu->AppendCheckItem(MP_FRIENDSLOT, _("Establish Friend Slot"));
+	if (client->IsFriend()) {
+		m_menu->Enable(MP_FRIENDSLOT, true);
+		m_menu->Check(MP_FRIENDSLOT, client->GetFriendSlot());
+	} else {
+		m_menu->Enable(MP_FRIENDSLOT, false);
+	}
+
 	m_menu->Append(MP_SHOWLIST, _("View Files"));
 	m_menu->Append(MP_SENDMESSAGE, _("Send message"));
 	

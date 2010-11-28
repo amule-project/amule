@@ -39,6 +39,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SharedFileList.h"
 #include "SearchList.h"
+#include "Friend.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -290,6 +291,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_ASKED_COUNT, client->GetAskedCount()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_OBFUSCATION_STATUS, client->GetObfuscationStatus()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_KAD_PORT, client->GetKadPort()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_FRIEND_SLOT, client->GetFriendSlot()), valuemap);
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 		return;
@@ -340,4 +342,17 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()), valuemap);
 	AddTag(EC_TAG_PARTFILE_HASH, file->GetFileHash(), valuemap);
 }
+
+//
+// Friend
+//
+CEC_Friend_Tag::CEC_Friend_Tag(const CFriend* Friend, CValueMap* valuemap) : CECTag(EC_TAG_FRIEND, Friend->ECID())
+{
+	AddTag(EC_TAG_FRIEND_NAME,	Friend->GetName(), valuemap);
+	AddTag(EC_TAG_FRIEND_HASH,	Friend->GetUserHash(), valuemap);
+	AddTag(EC_TAG_FRIEND_IP,	Friend->GetIP(), valuemap);
+	AddTag(EC_TAG_FRIEND_PORT,	Friend->GetPort(), valuemap);
+	AddTag(EC_TAG_FRIEND_CLIENT, Friend->GetLinkedClient() ? Friend->GetLinkedClient()->ECID() : 0, valuemap);
+}
+
 // File_checked_for_headers

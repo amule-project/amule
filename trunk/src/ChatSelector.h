@@ -32,7 +32,6 @@
 
 class CUpDownClient;
 class CFriend;
-class CDlgFriend;
 
 
 /**

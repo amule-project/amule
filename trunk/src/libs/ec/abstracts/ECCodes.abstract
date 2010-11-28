@@ -146,6 +146,9 @@ EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   0x54
 EC_OP_SHARED_FILE_SET_COMMENT       0x55
 
 EC_OP_SERVER_SET_STATIC_PRIO        0x56
+
+EC_OP_FRIEND                        0x57
+
 [/Section]
 
 [Section Content]
@@ -272,7 +275,7 @@ EC_TAG_CLIENT                             0x0600
 	EC_TAG_CLIENT_SOFTWARE                    0x0601
 	EC_TAG_CLIENT_SCORE                       0x0602
 	EC_TAG_CLIENT_HASH                        0x0603
-	EC_TAG_CLIENT_FRIEND                      0x0604
+	EC_TAG_CLIENT_FRIEND_SLOT                 0x0604
 	EC_TAG_CLIENT_WAIT_TIME                   0x0605
 	EC_TAG_CLIENT_XFER_TIME                   0x0606
 	EC_TAG_CLIENT_QUEUE_TIME                  0x0607
@@ -318,6 +321,17 @@ EC_TAG_SEARCHFILE                         0x0700
 	EC_TAG_SEARCH_EXTENSION                   0x0706
 	EC_TAG_SEARCH_AVAILABILITY                0x0707
 	EC_TAG_SEARCH_STATUS                      0x0708
+
+EC_TAG_FRIEND                             0x0800
+	EC_TAG_FRIEND_NAME                        0x0801
+	EC_TAG_FRIEND_HASH                        0x0802
+	EC_TAG_FRIEND_IP                          0x0803
+	EC_TAG_FRIEND_PORT                        0x0804
+	EC_TAG_FRIEND_CLIENT                      0x0805
+	EC_TAG_FRIEND_ADD                         0x0806
+	EC_TAG_FRIEND_REMOVE                      0x0807
+	EC_TAG_FRIEND_FRIENDSLOT                  0x0808
+	EC_TAG_FRIEND_SHARED                      0x0809
 
 EC_TAG_SELECT_PREFS                       0x1000
 
