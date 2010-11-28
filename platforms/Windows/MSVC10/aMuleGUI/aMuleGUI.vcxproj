@@ -211,6 +211,7 @@
     <ClCompile Include="..\..\..\..\src\EditServerListDlg.cpp" />
     <ClCompile Include="..\..\..\..\src\FileDetailDialog.cpp" />
     <ClCompile Include="..\..\..\..\src\FileDetailListCtrl.cpp" />
+    <ClCompile Include="..\..\..\..\src\Friend.cpp" />
     <ClCompile Include="..\..\..\..\src\FriendListCtrl.cpp" />
     <ClCompile Include="..\..\..\..\src\GapList.cpp" />
     <ClCompile Include="..\..\..\..\src\GenericClientListCtrl.cpp" />

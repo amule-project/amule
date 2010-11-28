@@ -25,6 +25,8 @@
 #ifndef ECID_H
 #define ECID_H
 
+#include "../../../Types.h"	// Needed for uint32
+
 /*
  * Class to create unique IDs for Objects transmitted through EC
  * (Partfiles, Knownfiles, clients...)

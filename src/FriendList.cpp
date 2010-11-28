@@ -34,35 +34,36 @@
 #include "Friend.h"		// Needed for CFriend
 #include "CFile.h"
 #include "Logger.h"
+#include "GuiEvents.h"
 
 CFriendList::CFriendList()
 { 
-	LoadList();
 }
 
 CFriendList::~CFriendList()
 {
 	SaveList();
 
-	while ( m_FriendList.size() ) {
-		delete m_FriendList.front();
-		m_FriendList.pop_front();
+	DeleteContents(m_FriendList);
+}
+
+
+void CFriendList::AddFriend(CFriend* toadd, bool notify)
+{
+	m_FriendList.push_back(toadd);
+	SaveList();
+	if (notify) {
+		Notify_ChatUpdateFriend(toadd);
 	}
 }
 
 
-void CFriendList::AddFriend(CFriend* toadd)
-{
-	m_FriendList.push_back(toadd);
-	SaveList();
-}
-
-
-void CFriendList::AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, const wxString& name)
+void CFriendList::AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name, uint32 lastSeen, uint32 lastChatted)
 {
 	CFriend* NewFriend = new CFriend( userhash, lastSeen, lastUsedIP, lastUsedPort, lastChatted, name);
 
 	AddFriend( NewFriend );
+
 }
 
 
@@ -75,13 +76,12 @@ void CFriendList::AddFriend(CUpDownClient* toadd)
 	CFriend* NewFriend = new CFriend( toadd );
 	toadd->SetFriend(NewFriend);
 	
-	AddFriend( NewFriend );
+	AddFriend(NewFriend, false);	// has already notified
 }
 
 
-void CFriendList::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort)
+void CFriendList::RemoveFriend(CFriend* toremove)
 {
-	CFriend* toremove = FindFriend(userhash, lastUsedIP, lastUsedPort);
 	if (toremove) {
 		if ( toremove->GetLinkedClient() ){
 			toremove->GetLinkedClient()->SetFriendSlot(false);
@@ -93,7 +93,7 @@ void CFriendList::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint
 	
 		SaveList();
 	
-		delete toremove;
+		Notify_ChatRemoveFriend(toremove);	// this deletes the friend
 	}
 }
 
@@ -114,6 +114,7 @@ void CFriendList::LoadList()
 					CFriend* Record = new CFriend();
 					Record->LoadFromFile(&file);
 					m_FriendList.push_back(Record);
+					Notify_ChatUpdateFriend(Record);
 				}				
 			}
 		} else {
@@ -176,6 +177,19 @@ CFriend* CFriendList::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 n
 }
 
 
+CFriend* CFriendList::FindFriend(uint32 ecid) 
+{
+	for (FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
+		CFriend* cur_friend = *it;
+		if (cur_friend->ECID() == ecid) {
+			return cur_friend;
+		}
+	}
+
+	return NULL;
+}
+
+
 bool CFriendList::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort )
 {
 	return (FindFriend( CMD4Hash(), dwLastUsedIP, nLastUsedPort ) != NULL);
@@ -192,8 +206,9 @@ void CFriendList::RemoveAllFriendSlots()
 	}
 }
 
-void	CFriendList::RequestSharedFileList(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort) {
-	CFriend* cur_friend = FindFriend(userhash, dwIP, nPort);
+
+void CFriendList::RequestSharedFileList(CFriend* cur_friend)
+{
 	if (cur_friend) {
 		CUpDownClient* client = cur_friend->GetLinkedClient();
 		if (!client) {
@@ -205,34 +220,32 @@ void	CFriendList::RequestSharedFileList(const CMD4Hash& userhash, uint32 dwIP, u
 	}
 }
 
-void CFriendList::SetFriendSlot(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state) {
-	CFriend* cur_friend = FindFriend(userhash, dwIP, nPort);
-	if (cur_friend && cur_friend->GetLinkedClient()) {
+
+void CFriendList::SetFriendSlot(CFriend* Friend, bool new_state)
+{
+	if (Friend && Friend->GetLinkedClient()) {
 		RemoveAllFriendSlots();
-		cur_friend->GetLinkedClient()->SetFriendSlot(new_state);
+		Friend->GetLinkedClient()->SetFriendSlot(new_state);
+		CoreNotify_Upload_Resort_Queue();
 	}
 }
 
-void CFriendList::StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort) {
-	CFriend* friend_client = FindFriend(userhash, dwIP, nPort);
-	if (friend_client) {
-		CUpDownClient* client = friend_client->GetLinkedClient();
+
+void CFriendList::StartChatSession(CFriend* Friend)
+{
+	if (Friend) {
+		CUpDownClient* client = Friend->GetLinkedClient();
 		if (!client) {
-			client = new CUpDownClient(friend_client->GetPort(), friend_client->GetIP(), 0, 0, 0, true, true);
-			client->SetIP(friend_client->GetIP());
-			client->SetUserName(friend_client->GetName());
+			client = new CUpDownClient(Friend->GetPort(), Friend->GetIP(), 0, 0, 0, true, true);
+			client->SetIP(Friend->GetIP());
+			client->SetUserName(Friend->GetName());
 			theApp->clientlist->AddClient(client);
-			friend_client->LinkClient(client);
+			Friend->LinkClient(client);
 		}
 	} else {
 		AddLogLineC(_("CRITICAL - no client on StartChatSession"));
 	}
 	
 }
-	
-void CFriendList::UpdateFriendName(const CMD4Hash& userhash, const wxString& name, uint32 dwIP, uint16 nPort) {
-	CFriend* friend_client = FindFriend(userhash, dwIP, nPort);
-	friend_client->SetName(name);
-	SaveList();
-}
+
 // File_checked_for_headers

@@ -125,7 +125,8 @@ enum ECOpCodes {
 	EC_OP_CLEAR_COMPLETED               = 0x53,
 	EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE   = 0x54,
 	EC_OP_SHARED_FILE_SET_COMMENT       = 0x55,
-	EC_OP_SERVER_SET_STATIC_PRIO        = 0x56
+	EC_OP_SERVER_SET_STATIC_PRIO        = 0x56,
+	EC_OP_FRIEND                        = 0x57
 };
 
 enum ECTagNames {
@@ -241,7 +242,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_SOFTWARE                    = 0x0601,
 		EC_TAG_CLIENT_SCORE                       = 0x0602,
 		EC_TAG_CLIENT_HASH                        = 0x0603,
-		EC_TAG_CLIENT_FRIEND                      = 0x0604,
+		EC_TAG_CLIENT_FRIEND_SLOT                 = 0x0604,
 		EC_TAG_CLIENT_WAIT_TIME                   = 0x0605,
 		EC_TAG_CLIENT_XFER_TIME                   = 0x0606,
 		EC_TAG_CLIENT_QUEUE_TIME                  = 0x0607,
@@ -286,6 +287,16 @@ enum ECTagNames {
 		EC_TAG_SEARCH_EXTENSION                   = 0x0706,
 		EC_TAG_SEARCH_AVAILABILITY                = 0x0707,
 		EC_TAG_SEARCH_STATUS                      = 0x0708,
+	EC_TAG_FRIEND                             = 0x0800,
+		EC_TAG_FRIEND_NAME                        = 0x0801,
+		EC_TAG_FRIEND_HASH                        = 0x0802,
+		EC_TAG_FRIEND_IP                          = 0x0803,
+		EC_TAG_FRIEND_PORT                        = 0x0804,
+		EC_TAG_FRIEND_CLIENT                      = 0x0805,
+		EC_TAG_FRIEND_ADD                         = 0x0806,
+		EC_TAG_FRIEND_REMOVE                      = 0x0807,
+		EC_TAG_FRIEND_FRIENDSLOT                  = 0x0808,
+		EC_TAG_FRIEND_SHARED                      = 0x0809,
 	EC_TAG_SELECT_PREFS                       = 0x1000,
 		EC_TAG_PREFS_CATEGORIES                   = 0x1100,
 			EC_TAG_CATEGORY                           = 0x1101,
@@ -550,6 +561,7 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x54: return wxT("EC_OP_CLIENT_SWAP_TO_ANOTHER_FILE");
 		case 0x55: return wxT("EC_OP_SHARED_FILE_SET_COMMENT");
 		case 0x56: return wxT("EC_OP_SERVER_SET_STATIC_PRIO");
+		case 0x57: return wxT("EC_OP_FRIEND");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }
@@ -669,7 +681,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0601: return wxT("EC_TAG_CLIENT_SOFTWARE");
 		case 0x0602: return wxT("EC_TAG_CLIENT_SCORE");
 		case 0x0603: return wxT("EC_TAG_CLIENT_HASH");
-		case 0x0604: return wxT("EC_TAG_CLIENT_FRIEND");
+		case 0x0604: return wxT("EC_TAG_CLIENT_FRIEND_SLOT");
 		case 0x0605: return wxT("EC_TAG_CLIENT_WAIT_TIME");
 		case 0x0606: return wxT("EC_TAG_CLIENT_XFER_TIME");
 		case 0x0607: return wxT("EC_TAG_CLIENT_QUEUE_TIME");
@@ -714,6 +726,16 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0706: return wxT("EC_TAG_SEARCH_EXTENSION");
 		case 0x0707: return wxT("EC_TAG_SEARCH_AVAILABILITY");
 		case 0x0708: return wxT("EC_TAG_SEARCH_STATUS");
+		case 0x0800: return wxT("EC_TAG_FRIEND");
+		case 0x0801: return wxT("EC_TAG_FRIEND_NAME");
+		case 0x0802: return wxT("EC_TAG_FRIEND_HASH");
+		case 0x0803: return wxT("EC_TAG_FRIEND_IP");
+		case 0x0804: return wxT("EC_TAG_FRIEND_PORT");
+		case 0x0805: return wxT("EC_TAG_FRIEND_CLIENT");
+		case 0x0806: return wxT("EC_TAG_FRIEND_ADD");
+		case 0x0807: return wxT("EC_TAG_FRIEND_REMOVE");
+		case 0x0808: return wxT("EC_TAG_FRIEND_FRIENDSLOT");
+		case 0x0809: return wxT("EC_TAG_FRIEND_SHARED");
 		case 0x1000: return wxT("EC_TAG_SELECT_PREFS");
 		case 0x1100: return wxT("EC_TAG_PREFS_CATEGORIES");
 		case 0x1101: return wxT("EC_TAG_CATEGORY");

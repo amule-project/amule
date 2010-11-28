@@ -162,6 +162,8 @@ Version 2.3.0 - The river knows.
 		* "Clear completed" button now only clears downloads in current category
 		* Completed downloads can be seen and cleared in amulegui
 		* Bold lines in log window now for Windows too
+		* Allow setting of friend slot from client list control
+		* MANY fixes/implementations for amulegui
 
 	Vollstrecker:
 		* Unify copyright lines

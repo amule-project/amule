@@ -87,7 +87,6 @@ libmuleappcore_a_SOURCES = \
 	DeadSourceList.cpp \
 	FileArea.cpp \
 	FileAutoClose.cpp \
-	Friend.cpp \
 	IPFilterScanner.cpp \
 	Scanner.cpp \
 	Parser.cpp \
@@ -205,6 +204,7 @@ common_sources = \
 	amuleAppCommon.cpp \
 	DataToText.cpp \
 	ECSpecialMuleTags.cpp \
+	Friend.cpp \
 	KnownFile.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \

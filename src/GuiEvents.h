@@ -114,7 +114,8 @@ namespace MuleNotify
 	void Search_Update_Sources(CSearchFile* result);
 	void Search_Add_Result(CSearchFile* result);
 
-	void ChatRefreshFriend(CFriend* Friend, bool connected);
+	void ChatUpdateFriend(CFriend* Friend);
+	void ChatRemoveFriend(CFriend* Friend);
 	void ChatConnResult(bool success, uint64 id, wxString message);
 	void ChatProcessMsg(uint64 sender, wxString message);
 	void ChatSendCaptcha(wxString captcha, uint64 to_id);
@@ -166,6 +167,8 @@ namespace MuleNotify
 
 	void Download_Set_Cat_Prio(uint8 cat, uint8 newprio);
 	void Download_Set_Cat_Status(uint8 cat, int newstatus);
+
+	void Upload_Resort_Queue();
 
 	//
 	// Notifications that always create an event
@@ -483,7 +486,8 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_Search_Add_Result(s)			MuleNotify::DoNotify(&MuleNotify::Search_Add_Result, s)
 
 // chat
-#define Notify_ChatRefreshFriend(ptr, val)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, ptr, val)
+#define Notify_ChatUpdateFriend(ptr)			MuleNotify::DoNotify(&MuleNotify::ChatUpdateFriend, ptr)
+#define Notify_ChatRemoveFriend(ptr)			MuleNotify::DoNotify(&MuleNotify::ChatRemoveFriend, ptr)
 #define Notify_ChatConnResult(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatConnResult, val0, val1, s)
 #define Notify_ChatProcessMsg(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
 #define Notify_ChatSendCaptcha(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatSendCaptcha, val0, s)
@@ -543,6 +547,9 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // download queue
 #define CoreNotify_Download_Set_Cat_Prio(cat, pri)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Prio, cat, pri)
 #define CoreNotify_Download_Set_Cat_Status(cat, st)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Status, cat, st)
+
+// upload queue
+#define CoreNotify_Upload_Resort_Queue()			MuleNotify::DoNotify(&MuleNotify::Upload_Resort_Queue)
 
 //
 // Notifications that always create an event

@@ -582,6 +582,27 @@ public:
 	bool Phase1Done(const CECPacket *);
 };
 
+class CFriendListRem : public CRemoteContainer<CFriend, uint32, CEC_Friend_Tag> {
+	virtual void HandlePacket(const CECPacket *);
+public:
+	CFriendListRem(CRemoteConnect *);
+
+	void		AddFriend(CUpDownClient* toadd);
+	void		AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name);
+	void		RemoveFriend(CFriend* toremove);
+	void		RequestSharedFileList(CFriend* Friend);
+	void		RequestSharedFileList(CUpDownClient* client);
+	void		SetFriendSlot(CFriend* Friend, bool new_state);
+
+	//
+	// template
+	//
+	CFriend *CreateItem(CEC_Friend_Tag *);
+	void DeleteItem(CFriend *);
+	uint32 GetItemID(CFriend *);
+	void ProcessItemUpdate(CEC_Friend_Tag *, CFriend *);
+};
+
 class CStatsUpdaterRem : public CECPacketHandlerBase {
 	virtual void HandlePacket(const CECPacket *);
 public:
@@ -647,6 +668,7 @@ public:
 	CUpDownClientListRem *clientlist;
 	CIPFilterRem *ipfilter;
 	CSearchListRem *searchlist;
+	CFriendListRem *friendlist;
 	CListenSocketRem *listensocket;
 	CStatTreeRem * stattree;
 

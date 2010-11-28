@@ -27,6 +27,7 @@
 #define FRIEND_H
 
 
+#include <ec/cpp/ECID.h>	// Needed for CECID
 #include "MD4Hash.h"
 
 class CUpDownClient;
@@ -35,44 +36,49 @@ class CFileDataIO;
 
 #define	FF_NAME		0x01
 
-class CFriend {
+class CFriend  : public CECID
+{
+friend class CFriendListRem;
 public:
-	CFriend();
+	CFriend()	{ Init(); }
 	~CFriend() {};
 	
 	CFriend(CUpDownClient* client);
 	CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, const wxString& tm_strName);
+	CFriend(uint32 ecid) : CECID(ecid)	{ Init(); }
 	
 	void	SetUserHash(const CMD4Hash& userhash) { m_UserHash = userhash;}
-	bool	HasHash() { return !m_UserHash.IsEmpty(); }
+	bool	HasHash() const			{ return !m_UserHash.IsEmpty(); }
 	const	CMD4Hash& GetUserHash() const { return m_UserHash; }
 	
 	void SetName(const wxString& name) { m_strName = name; }
 	
-	void	LinkClient(CUpDownClient* client, bool unlink = true);
+	void	LinkClient(CUpDownClient* client);
 	CUpDownClient* GetLinkedClient() const { return m_LinkedClient; }
-	void	UnLinkClient() {  m_LinkedClient = NULL; }
+	void	UnLinkClient(bool notify = true);
 	
 	bool	HasFriendSlot();
 
-	const wxString& GetName() { return m_strName; }
-	uint16 GetPort() const { return m_nLastUsedPort; }
-	uint32 GetIP() const { return m_dwLastUsedIP; }
+	const wxString& GetName() const	{ return m_strName; }
+	uint16 GetPort() const			{ return m_nLastUsedPort; }
+	uint32 GetIP() const			{ return m_dwLastUsedIP; }
 	
 	void	LoadFromFile(CFileDataIO* file);
 	void	WriteToFile(CFileDataIO* file);
 
 private:
-	
+	void	Init();
+
 	CUpDownClient* m_LinkedClient;
 
 	CMD4Hash	m_UserHash;
-	uint32	m_dwLastSeen;
-	uint32	m_dwLastUsedIP;
-	uint16	m_nLastUsedPort;
-	uint32	m_dwLastChatted;
+	uint32		m_dwLastUsedIP;
+	uint16		m_nLastUsedPort;
 	wxString	m_strName;
-		
+
+	// write-only info, never used (kept in order not to break the save file)
+	uint32		m_dwLastSeen;
+	uint32		m_dwLastChatted;
 };
 
 #endif

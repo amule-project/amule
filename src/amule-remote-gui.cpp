@@ -41,8 +41,10 @@
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "ClientCredits.h"
 #include "SourceListCtrl.h"
+#include "ChatWnd.h"
 #include "DataToText.h"			// Needed for GetSoftName()
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "Friend.h"
 #include "GuiEvents.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
@@ -162,6 +164,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	}
 	case 2:
 		if (amuledlg->m_sharedfileswnd->IsShown()
+			|| amuledlg->m_chatwnd->IsShown()
 			|| amuledlg->m_serverwnd->IsShown()) {
 			// update downloads, shared files and servers
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
@@ -358,6 +361,8 @@ void CamuleRemoteGuiApp::Startup() {
 	clientlist = new CUpDownClientListRem(m_connect);
 	searchlist = new CSearchListRem(m_connect);
 	serverlist = new CServerListRem(m_connect);
+	friendlist = new CFriendListRem(m_connect);
+
 	
 	sharedfiles	= new CSharedFilesRem(m_connect);
 	knownfiles = new CKnownFilesRem(m_connect);
@@ -1102,6 +1107,8 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 			theApp->clientlist->ProcessUpdate(curTag, NULL, EC_TAG_CLIENT);
 		} else if (tagname == EC_TAG_SERVER) {
 			theApp->serverlist->ProcessUpdate(curTag, NULL, EC_TAG_SERVER);
+		} else if (tagname == EC_TAG_FRIEND) {
+			theApp->friendlist->ProcessUpdate(curTag, NULL, EC_TAG_FRIEND);
 		} else if (tagname == EC_TAG_KNOWNFILE || tagname == EC_TAG_PARTFILE) {
 			CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) curTag;
 			uint32 id = tag->ID();
@@ -1180,6 +1187,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_nKadPort = 0;
 	
 	m_Friend = 0;
+	m_bFriendSlot = false;
 	m_nCurSessionUp = 0;
 	m_reqfile = NULL;
 	m_uploadingfile = NULL;
@@ -1317,6 +1325,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->ServerName(&client->m_ServerName);
 
 	tag->KadPort(client->m_nKadPort);
+	tag->FriendSlot(client->m_bFriendSlot);
 
 	tag->GetCurrentIdentState(&client->m_identState);
 	tag->ObfuscationStatus(client->m_obfuscationStatus);
@@ -1713,6 +1722,151 @@ void CDownQueueRem::ClearCompleted(const ListOfUInts32 & ecids)
 }
 
 
+/*
+ * List of friends.
+ */
+CFriendListRem::CFriendListRem(CRemoteConnect *conn)
+:
+CRemoteContainer<CFriend, uint32, CEC_Friend_Tag>(conn, true)
+{
+}
+
+
+void CFriendListRem::HandlePacket(const CECPacket *)
+{
+	wxFAIL;		// not needed
+}
+
+
+CFriend * CFriendListRem::CreateItem(CEC_Friend_Tag * tag)
+{
+	CFriend * Friend = new CFriend(tag->ID());
+	ProcessItemUpdate(tag, Friend);
+	return Friend;
+}
+
+
+void CFriendListRem::DeleteItem(CFriend * Friend)
+{
+	Friend->UnLinkClient(false);
+	Notify_ChatRemoveFriend(Friend);
+}
+
+
+uint32 CFriendListRem::GetItemID(CFriend * Friend)
+{
+	return Friend->ECID();
+}
+
+
+void CFriendListRem::ProcessItemUpdate(CEC_Friend_Tag * tag, CFriend * Friend)
+{
+	if (!tag->HasChildTags()) {
+		return;
+	}
+	tag->Name(Friend->m_strName);
+	tag->UserHash(Friend->m_UserHash);
+	tag->IP(Friend->m_dwLastUsedIP);
+	tag->Port(Friend->m_nLastUsedPort);
+	uint32 clientID;
+	bool notified = false;
+	if (tag->Client(clientID)) {
+		if (clientID) {
+			CUpDownClient * client = theApp->clientlist->GetByID(clientID);
+			if (client) {
+				Friend->LinkClient(client);	// this notifies
+				notified = true;
+			}
+		} else {
+			// Unlink
+			Friend->UnLinkClient(false);
+		}
+	} 
+	if (!notified) {
+		Notify_ChatUpdateFriend(Friend);
+	}
+}
+
+
+void CFriendListRem::AddFriend(CUpDownClient* toadd)
+{
+	CECPacket req(EC_OP_FRIEND);
+	
+	CECEmptyTag addtag(EC_TAG_FRIEND_ADD);
+	addtag.AddTag(CECTag(EC_TAG_CLIENT, toadd->ECID()));
+	req.AddTag(addtag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CFriendListRem::AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name)
+{
+	CECPacket req(EC_OP_FRIEND);
+	
+	CECEmptyTag addtag(EC_TAG_FRIEND_ADD);
+	addtag.AddTag(CECTag(EC_TAG_FRIEND_HASH, userhash));
+	addtag.AddTag(CECTag(EC_TAG_FRIEND_IP, lastUsedIP));
+	addtag.AddTag(CECTag(EC_TAG_FRIEND_PORT, lastUsedPort));
+	addtag.AddTag(CECTag(EC_TAG_FRIEND_NAME, name));
+	req.AddTag(addtag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CFriendListRem::RemoveFriend(CFriend* toremove)
+{
+	CECPacket req(EC_OP_FRIEND);
+	
+	CECEmptyTag removetag(EC_TAG_FRIEND_REMOVE);
+	removetag.AddTag(CECTag(EC_TAG_FRIEND, toremove->ECID()));
+	req.AddTag(removetag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CFriendListRem::SetFriendSlot(CFriend* Friend, bool new_state)
+{
+	CECPacket req(EC_OP_FRIEND);
+	
+	CECTag slottag(EC_TAG_FRIEND_FRIENDSLOT, new_state);
+	slottag.AddTag(CECTag(EC_TAG_FRIEND, Friend->ECID()));
+	req.AddTag(slottag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CFriendListRem::RequestSharedFileList(CFriend* Friend)
+{
+	CECPacket req(EC_OP_FRIEND);
+	
+	CECEmptyTag sharedtag(EC_TAG_FRIEND_SHARED);
+	sharedtag.AddTag(CECTag(EC_TAG_FRIEND, Friend->ECID()));
+	req.AddTag(sharedtag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+void CFriendListRem::RequestSharedFileList(CUpDownClient* client)
+{
+	CECPacket req(EC_OP_FRIEND);
+	
+	CECEmptyTag sharedtag(EC_TAG_FRIEND_SHARED);
+	sharedtag.AddTag(CECTag(EC_TAG_CLIENT, client->ECID()));
+	req.AddTag(sharedtag);
+	
+	m_conn->SendPacket(&req);
+}
+
+
+
+/*
+ * Search results
+ */
 CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, uint32, CEC_SearchFile_Tag>(conn, true)
 {
 	m_curr_search = -1;
@@ -1877,8 +2031,7 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 
 void CUpDownClient::RequestSharedFileList()
 {
-	// FIXME: add code
-	wxFAIL;
+	theApp->friendlist->RequestSharedFileList(this);
 }
 
 

@@ -28,7 +28,7 @@
 #include "muuli_wdr.h"		// Needed for addFriendDlg
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"	// Needed for amuleDlg
-#include "ChatWnd.h"
+#include "FriendList.h"
 #include "NetworkFunctions.h"
 #include "OtherFunctions.h"
 #include "MD4Hash.h"
@@ -73,7 +73,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 		name = fullip;
 	}
 
-	theApp->amuledlg->m_chatwnd->AddFriend( userhash,name, ip, port);
+	theApp->friendlist->AddFriend(userhash, ip, port, name);
 	
 	EndModal(true); // Friend added
 }
