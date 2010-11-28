@@ -182,7 +182,6 @@ public:
 	 *
 	 * @param clientip The IP of the client to find.
 	 *
-	 * Returns the first client found if there are several with same ip.
 	 */
 	CUpDownClient* FindClientByECID(uint32 ecid) const;
 
