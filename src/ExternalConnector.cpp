@@ -566,8 +566,10 @@ void CaMuleExternalConnector::SaveConfigFile()
 bool CaMuleExternalConnector::OnInit()
 {
 #ifndef __WXMSW__
-	// catch fatal exceptions
-	wxHandleFatalExceptions(true);
+	#if wxUSE_ON_FATAL_EXCEPTION
+		// catch fatal exceptions
+		wxHandleFatalExceptions(true);
+	#endif
 #endif
 
 	m_strFullVersion = strdup((const char *)unicode2char(GetMuleVersion()));

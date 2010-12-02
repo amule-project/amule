@@ -294,10 +294,12 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	}
 
 #ifndef __WXMSW__
-	if ( !cmdline.Found(wxT("disable-fatal")) ) {
-		// catch fatal exceptions
-		wxHandleFatalExceptions(true);
-	}
+	#if wxUSE_ON_FATAL_EXCEPTION
+		if ( !cmdline.Found(wxT("disable-fatal")) ) {
+			// catch fatal exceptions
+			wxHandleFatalExceptions(true);
+		}
+	#endif
 #endif
 
 	theLogger.SetEnabledStdoutLog(cmdline.Found(wxT("log-stdout")));
