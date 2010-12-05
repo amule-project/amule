@@ -173,7 +173,9 @@ public:
 
 	virtual bool	OnInit();
 	int		OnExit();
+#if wxUSE_ON_FATAL_EXCEPTION
 	void		OnFatalException();
+#endif
 	bool		ReinitializeNetwork(wxString *msg);
 
 	// derived classes may override those

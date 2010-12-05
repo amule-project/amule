@@ -999,6 +999,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 } //End Added By Bouc7
 
 
+#if wxUSE_ON_FATAL_EXCEPTION
 // Gracefully handle fatal exceptions and print backtrace if possible
 void CamuleApp::OnFatalException()
 {
@@ -1019,6 +1020,7 @@ void CamuleApp::OnFatalException()
 	
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
 }
+#endif
 
 
 // Sets the localization of aMule
