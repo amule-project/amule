@@ -220,7 +220,12 @@ void CSharedFilesWnd::OnBtnReloadShared( wxCommandEvent& WXUNUSED(evt) )
 
 void CSharedFilesWnd::OnItemSelectionChanged(wxListEvent& evt)
 {
-	SelectionUpdated();
+	EClientShow clientShowMode = (EClientShow) m_radioClientMode->GetSelection();
+
+	// Only update the list of clients if that list shows clients related to the selected shared files
+	if ( clientShowMode == ClientShowSelected ) {
+		SelectionUpdated();
+	}
 
 	evt.Skip();
 }
