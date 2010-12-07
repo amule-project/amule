@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-05 17:19+0100\n"
-"PO-Revision-Date: 2010-09-26 22:28+0100\n"
+"PO-Revision-Date: 2010-12-07 22:04+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2089,9 +2089,9 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:991
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
-msgstr "QR: %u (%i)"
+msgstr "Várólistán: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:1001 src/GenericClientListCtrl.cpp:1030
 msgid "Asked for another file"
@@ -2102,9 +2102,9 @@ msgid "Waiting for upload slot"
 msgstr "Várakozás feltöltési slot-ra"
 
 #: src/GenericClientListCtrl.cpp:1022
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "Várólistások"
+msgstr "Várólistán: %u"
 
 #: src/GenericClientListCtrl.cpp:1025
 msgid "Uploading"
@@ -3482,7 +3482,7 @@ msgstr "Ugyanabból a kategóriából"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "Betűrendi sorrendben"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3656,7 +3656,7 @@ msgstr "Kiszolgáló kapcsolat frissítési gyakorisága: Tiltva"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Számítógép időzített készenléti állapotának hatástalanítása"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3696,7 +3696,7 @@ msgstr "Függőleges eszköztár elrendezés"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Kliensek országzászlajainak megjelenitése"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -4296,29 +4296,24 @@ msgid "Active Uploads"
 msgstr "Aktív feltöltések"
 
 #: src/muuli_wdr.cpp:3373
-#, fuzzy
 msgid "Percent of total files"
-msgstr "összes fájl százaléka"
+msgstr "Összes fájl százalékaként"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "All files"
-msgstr "Összes megosztott fájl"
+msgstr "Összes fájl"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Selected files"
-msgstr "Válassz nézetet"
+msgstr "Kiválasztott fájlok"
 
 #: src/muuli_wdr.cpp:3422
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Aktív feltöltések"
+msgstr "Csak aktív feltöltések"
 
 #: src/muuli_wdr.cpp:3424
-#, fuzzy
 msgid "Show Clients for"
-msgstr "Kliensek megjelenítése"
+msgstr "Kliensek megjelenítése ehez:"
 
 #: src/muuli_wdr.cpp:3427
 msgid "Reload:"
@@ -4997,19 +4992,16 @@ msgid "- UDP port changed.\n"
 msgstr "- UDP port megváltozott.\n"
 
 #: src/PrefsUnifiedDlg.cpp:575
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Külső kapcsolat lezárva."
+msgstr "- Külső kapcsolat port megváltoztatva.\n"
 
 #: src/PrefsUnifiedDlg.cpp:579
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Új külső kapcsolat elfogadva"
+msgstr "- Külső kapcsolat elfogadása megváltoztatva.\n"
 
 #: src/PrefsUnifiedDlg.cpp:583
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Külső kapcsolat lezárva."
+msgstr "- Külső kapcsolat interfész megváltoztatva.\n"
 
 #: src/PrefsUnifiedDlg.cpp:592
 msgid ""
@@ -5677,9 +5669,8 @@ msgid "Kademlia Status:"
 msgstr "Kademlia állapot:"
 
 #: src/ServerWnd.cpp:207
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "%s-en fut"
+msgstr "LAN módban működik"
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
@@ -5813,12 +5804,10 @@ msgid "Available Parts"
 msgstr "Elérhető részek"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "Feltöltési állapot"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "Letöltési állapot"
 
@@ -5917,9 +5906,8 @@ msgid "Download Status"
 msgstr "Letöltési állapot"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Fájlnév"
+msgstr "Távoli fájlnév"
 
 #: src/Statistics.cpp:650
 #, c-format
@@ -6317,12 +6305,11 @@ msgstr "Keresés eredményeinek száma: %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Keresés haladása: %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Százalékos arány mutatása"
+msgstr "Keresés haladása nem elérhető"
 
 #: src/TextClient.cpp:837
 #, c-format
