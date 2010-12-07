@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-05 17:19+0100\n"
-"PO-Revision-Date: 2010-09-26 22:45+0100\n"
+"PO-Revision-Date: 2010-12-07 21:54+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2113,9 +2113,9 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:991
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
-msgstr "QR: %u (%i)"
+msgstr "In Warteschlange: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:1001 src/GenericClientListCtrl.cpp:1030
 msgid "Asked for another file"
@@ -2126,9 +2126,9 @@ msgid "Waiting for upload slot"
 msgstr "Warte auf Upload-Slot"
 
 #: src/GenericClientListCtrl.cpp:1022
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "in Warteschlange"
+msgstr "In Warteschlange: %u"
 
 #: src/GenericClientListCtrl.cpp:1025
 msgid "Uploading"
@@ -3531,7 +3531,7 @@ msgstr "Aus der selben Kategorie"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "In alphabetischer Reihenfolge"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3704,7 +3704,7 @@ msgstr "Server-Wiederverbindungsintervall: Aus"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Zeitgesteuerten Bereitschaftsmodus des Computers deaktivieren"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3744,7 +3744,7 @@ msgstr "Toolbar senkrecht ausrichten"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Landesflaggen für Clients anzeigen"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -3784,7 +3784,7 @@ msgstr "Externe Verbindungen annehmen"
 
 #: src/muuli_wdr.cpp:2190
 msgid "IP of the listening interface:"
-msgstr "IP der Verbindung für eingehende Verbindungen:"
+msgstr "IP der lauschenden Schnittstelle:"
 
 #: src/muuli_wdr.cpp:2194
 msgid ""
@@ -4351,29 +4351,24 @@ msgid "Active Uploads"
 msgstr "Aktive Uploads"
 
 #: src/muuli_wdr.cpp:3373
-#, fuzzy
 msgid "Percent of total files"
 msgstr "Prozent aller Dateien"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "All files"
-msgstr "Alle freigegebenen Dateien"
+msgstr "Alle Dateien"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Selected files"
-msgstr "Ansichtenfilter wählen"
+msgstr "Ausgewählte Dateien"
 
 #: src/muuli_wdr.cpp:3422
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Aktive Uploads"
+msgstr "Nur aktive Uploads"
 
 #: src/muuli_wdr.cpp:3424
-#, fuzzy
 msgid "Show Clients for"
-msgstr "Clients zeigen"
+msgstr "Clients anzeigen für"
 
 #: src/muuli_wdr.cpp:3427
 msgid "Reload:"
@@ -5068,19 +5063,16 @@ msgid "- UDP port changed.\n"
 msgstr "- UDP-Port geändert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:575
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Externe Verbindung getrennt."
+msgstr "- Port externer Verbindung geändert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:579
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Neue externe Verbindung akzeptiert"
+msgstr "- Akzeptanz externer Verbindung geändert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:583
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Externe Verbindung getrennt."
+msgstr "- Schnittstelle der externen Verbindung geändert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:592
 msgid ""
@@ -5759,9 +5751,8 @@ msgid "Kademlia Status:"
 msgstr "Kademlia-Status:"
 
 #: src/ServerWnd.cpp:207
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "Läuft auf %s"
+msgstr "Läuft im LAN Modus"
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
@@ -5893,12 +5884,10 @@ msgid "Available Parts"
 msgstr "Verfügbare Teile"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "Upload-Status"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "Download-Status"
 
@@ -5999,9 +5988,8 @@ msgid "Download Status"
 msgstr "Download-Status"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Dateiname"
+msgstr "Ferndateiname"
 
 #: src/Statistics.cpp:650
 #, c-format
@@ -6398,12 +6386,11 @@ msgstr "Anzahl der Suchergebnisse: %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Vergleichsfortschritt: %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Zeige Prozent des Fortschritts"
+msgstr "Fortschritt der Suche nicht verfügbar"
 
 #: src/TextClient.cpp:837
 #, c-format
