@@ -3696,7 +3696,7 @@ msgstr "Függőleges eszköztár elrendezés"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr "Kliensek országzászlajainak megjelenitése"
+msgstr "Kliensek országzászlajainak megjelenítése"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -4313,7 +4313,7 @@ msgstr "Csak aktív feltöltések"
 
 #: src/muuli_wdr.cpp:3424
 msgid "Show Clients for"
-msgstr "Kliensek megjelenítése ehez:"
+msgstr "Kliensek megjelenítése ehhez:"
 
 #: src/muuli_wdr.cpp:3427
 msgid "Reload:"
