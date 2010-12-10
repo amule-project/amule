@@ -320,6 +320,7 @@ static bool m_preventingSleepMode = false;
 	#ifdef __WXMAC__
 		// 10.5 only
 		#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+			#include <IOPMLib.h>
 			static IOPMAssertionID assertionID;
 		#else
 			#warning Power event vetoing not implemented.
