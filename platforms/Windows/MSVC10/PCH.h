@@ -61,6 +61,7 @@
 
 #include "ClientCreditsList.h"
 #include "ClientList.h"
+#include "ClientRef.h"
 #include "ClientUDPSocket.h"
 #include "ExternalConn.h"
 #include "InternalEvents.h"
@@ -75,7 +76,6 @@
 #include "Server.h"
 #include "Statistics.h"
 #include "ThreadTasks.h"
-#include "updownclient.h"
 #include "UserEvents.h"
 
 #ifndef CLIENT_GUI

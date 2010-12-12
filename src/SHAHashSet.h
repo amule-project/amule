@@ -76,6 +76,7 @@ Version 2 of AICH also supports 32bit identifiers to support large files, check 
 #include <set>
 
 #include "Types.h"
+#include "ClientRef.h"
 
 #define HASHSIZE			20
 #define KNOWN2_MET_FILENAME		wxT("known2_64.met")
@@ -210,7 +211,6 @@ public:
 	{
 		m_nPart = 0;
 		m_pPartFile = NULL;
-		m_pClient= NULL;
 	}
 	CAICHRequestedData& operator=(const CAICHRequestedData& k1)
 	{
@@ -221,7 +221,7 @@ public:
 	}
 	uint16 m_nPart;
 	CPartFile* m_pPartFile;
-	CUpDownClient* m_pClient;
+	CClientRef m_pClient;
 };
 
 

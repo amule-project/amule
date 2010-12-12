@@ -26,7 +26,6 @@
 
 #include "Friend.h"			// Interface declarations.
 #include "SafeFile.h"		// Needed for CFileDataIO
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "GuiEvents.h"		// Needed for Notify_*
 
 
@@ -36,7 +35,6 @@ void CFriend::Init()
 	m_dwLastUsedIP = 0;
 	m_nLastUsedPort = 0;
 	m_dwLastChatted = 0;
-	m_LinkedClient = NULL;
 }
 
 
@@ -53,50 +51,45 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 	} else {
 		m_strName = tm_strName;
 	}	
-	
-	m_LinkedClient = NULL;
 }
 
 
-CFriend::CFriend(CUpDownClient* client)
+CFriend::CFriend(CClientRef client)
 {
-	wxASSERT( client );
-	
-	m_LinkedClient = NULL;
 	LinkClient(client);
 	
 	m_dwLastChatted = 0;
 }
 
 
-void CFriend::LinkClient(CUpDownClient* client)
+void CFriend::LinkClient(CClientRef client)
 {
-	wxASSERT(client);
+	wxASSERT(client.IsLinked());
 
 	// Link the friend to that client
 	if (m_LinkedClient != client) {		// do nothing if already linked to this client
 		bool hadFriendslot = false;
-		if (m_LinkedClient) { // What, is already linked?
-			hadFriendslot = m_LinkedClient->GetFriendSlot();
+		if (m_LinkedClient.IsLinked()) { // What, is already linked?
+			hadFriendslot = m_LinkedClient.GetFriendSlot();
 			UnLinkClient(false);
 		}
 		m_LinkedClient = client;
-		m_LinkedClient->SetFriend(this);
+		m_LinkedClient.SetFriend(this);
 		if (hadFriendslot) {
 			// move an assigned friend slot between different client instances which are/were also friends
-			m_LinkedClient->SetFriendSlot(true);
+			m_LinkedClient.SetFriendSlot(true);
 		}
 	}
 
 	// always update (even if client stays the same)
-	if ( !client->GetUserName().IsEmpty() ) {
-		m_strName = client->GetUserName();
+	if ( !client.GetUserName().IsEmpty() ) {
+		m_strName = client.GetUserName();
 	} else {
 		m_strName = wxT("?");
 	}	
-	m_UserHash = client->GetUserHash();
-	m_dwLastUsedIP = client->GetIP();
-	m_nLastUsedPort = client->GetUserPort();
+	m_UserHash = client.GetUserHash();
+	m_dwLastUsedIP = client.GetIP();
+	m_nLastUsedPort = client.GetUserPort();
 	m_dwLastSeen = time(NULL);
 	// This will update the Link status also on GUI.
 	Notify_ChatUpdateFriend(this);
@@ -105,14 +98,14 @@ void CFriend::LinkClient(CUpDownClient* client)
 
 void CFriend::UnLinkClient(bool notify)
 {
-	if (m_LinkedClient) {
+	if (m_LinkedClient.IsLinked()) {
 		// avoid that an unwanted client instance keeps a friend slot
-		if (m_LinkedClient->GetFriendSlot()) {
-			m_LinkedClient->SetFriendSlot(false);
+		if (m_LinkedClient.GetFriendSlot()) {
+			m_LinkedClient.SetFriendSlot(false);
 			CoreNotify_Upload_Resort_Queue();
 		}
-		m_LinkedClient->SetFriend(NULL);
-		m_LinkedClient = NULL;
+		m_LinkedClient.SetFriend(NULL);
+		m_LinkedClient.Unlink();
 		if (notify) {
 			Notify_ChatUpdateFriend(this);
 		}
@@ -164,8 +157,8 @@ void CFriend::WriteToFile(CFileDataIO* file)
 
 
 bool CFriend::HasFriendSlot() {
-	if (GetLinkedClient()) {
-		return GetLinkedClient()->GetFriendSlot();
+	if (m_LinkedClient.IsLinked()) {
+		return m_LinkedClient.GetFriendSlot();
 	} else {
 		return false;
 	}

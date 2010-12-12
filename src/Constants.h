@@ -119,5 +119,70 @@ enum StatsGraphType {
 #define PR_POWERSHARE			6 //added for powershare (deltaHF)
 
 
+// CUpDownClient constants
+
+enum ESourceFrom {
+	SF_NONE,
+	SF_LOCAL_SERVER,
+	SF_REMOTE_SERVER,
+	SF_KADEMLIA,
+	SF_SOURCE_EXCHANGE,
+	SF_PASSIVE,
+	SF_LINK,
+	SF_SOURCE_SEEDS,
+	SF_SEARCH_RESULT
+};
+
+// downloadstate
+enum EDownloadState {
+	DS_DOWNLOADING = 0,
+	DS_ONQUEUE,
+	DS_CONNECTED,
+	DS_CONNECTING,
+	DS_WAITCALLBACK,
+	DS_WAITCALLBACKKAD,
+	DS_REQHASHSET,
+	DS_NONEEDEDPARTS,
+	DS_TOOMANYCONNS,
+	DS_TOOMANYCONNSKAD,
+	DS_LOWTOLOWIP,
+	DS_BANNED,
+	DS_ERROR,
+	DS_NONE,
+	DS_REMOTEQUEUEFULL  // not used yet, except in statistics
+};
+
+// uploadstate
+enum EUploadState {
+	US_UPLOADING = 0,
+	US_ONUPLOADQUEUE,
+	US_WAITCALLBACK,
+	US_CONNECTING,
+	US_PENDING,
+	US_LOWTOLOWIP,
+	US_BANNED,
+	US_ERROR,
+	US_NONE
+};
+
+// Obfuscation status
+enum EObfuscationState {
+	OBST_UNDEFINED = 0,
+	OBST_ENABLED,
+	OBST_SUPPORTED,
+	OBST_NOT_SUPPORTED,
+	OBST_DISABLED
+};
+
+// m_byChatstate
+enum {
+	MS_NONE = 0,
+	MS_CHATTING,
+	MS_CONNECTING,
+	MS_UNABLETOCONNECT
+};
+
+
+
 #endif
 // File_checked_for_headers

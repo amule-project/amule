@@ -26,8 +26,8 @@
 #ifndef UPLOADQUEUE_H
 #define UPLOADQUEUE_H
 
+#include "ClientRef.h"		// Needed for CClientRefList
 #include "MD4Hash.h"		// Needed for CMD4Hash
-#include <set>
 
 class CUpDownClient;
 class CKnownFile;
@@ -42,12 +42,12 @@ public:
 	bool	RemoveFromUploadQueue(CUpDownClient* client);
 	bool	RemoveFromWaitingQueue(CUpDownClient* client);
 	bool	IsOnUploadQueue(const CUpDownClient* client) const;
-	bool	IsDownloading(CUpDownClient* client) const;
+	bool	IsDownloading(const CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
 	void	ResortQueue() { SortGetBestClient(true); }
 	
-	const CClientPtrList& GetWaitingList() const { return m_waitinglist; }
-	const CClientPtrList& GetUploadingList() const { return m_uploadinglist; }
+	const CClientRefList& GetWaitingList() const { return m_waitinglist; }
+	const CClientRefList& GetUploadingList() const { return m_uploadinglist; }
 	
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 
@@ -56,14 +56,14 @@ public:
 	CKnownFile* GetAllUploadingKnownFile() { return m_allUploadingKnownFile; }
 
 private:
-	void	RemoveFromWaitingQueue(CClientPtrList::iterator pos);
+	void	RemoveFromWaitingQueue(CClientRefList::iterator pos);
 	uint16	GetMaxSlots() const;
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 	bool	IsSuspended(const CMD4Hash& hash) { return suspendedUploadsSet.find(hash) != suspendedUploadsSet.end(); }
 	CUpDownClient*	SortGetBestClient(bool sortonly);
 
-	CClientPtrList m_waitinglist;
-	CClientPtrList m_uploadinglist;
+	CClientRefList m_waitinglist;
+	CClientRefList m_uploadinglist;
 	
 	std::set<CMD4Hash> suspendedUploadsSet;  // set for suspended uploads
 	uint32	m_nLastStartUpload;

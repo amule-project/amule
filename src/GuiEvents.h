@@ -39,6 +39,7 @@ class CSearchFile;
 class CPartFile;
 class CServer;
 class CFriend;
+class CClientRef;
 
 
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
@@ -85,17 +86,17 @@ namespace MuleNotify
 	void SharedFilesUpdateItem(CKnownFile* file);
 
 	void DownloadCtrlUpdateItem(const void* item);
-	void SourceCtrlUpdateSource(CUpDownClient* source, SourceItemType type);
+	void SourceCtrlUpdateSource(uint32 source, SourceItemType type);
 	void DownloadCtrlAddFile(CPartFile* file);
-	void SourceCtrlAddSource(CPartFile* owner, CUpDownClient* source, SourceItemType type);
+	void SourceCtrlAddSource(CPartFile* owner, CClientRef source, SourceItemType type);
 	void DownloadCtrlRemoveFile(CPartFile* file);
-	void SourceCtrlRemoveSource(const CUpDownClient* source, const CPartFile* owner);
+	void SourceCtrlRemoveSource(uint32 source, const CPartFile* owner);
 	void DownloadCtrlHideSource(CPartFile* file);
 	void DownloadCtrlSort();
 
-	void SharedCtrlAddClient(CKnownFile* owner, CUpDownClient* client, SourceItemType type);
-	void SharedCtrlRefreshClient(CUpDownClient* client, SourceItemType type);
-	void SharedCtrlRemoveClient(const CKnownFile* owner, const CUpDownClient* client);
+	void SharedCtrlAddClient(CKnownFile* owner, CClientRef client, SourceItemType type);
+	void SharedCtrlRefreshClient(uint32 client, SourceItemType type);
+	void SharedCtrlRemoveClient(uint32 client, const CKnownFile* owner);
 
 	void ServerAdd(CServer* server);
 	void ServerRemove(CServer* server);
@@ -169,6 +170,8 @@ namespace MuleNotify
 	void Download_Set_Cat_Status(uint8 cat, int newstatus);
 
 	void Upload_Resort_Queue();
+
+	void Client_Delete(CClientRef client);
 
 	//
 	// Notifications that always create an event
@@ -550,6 +553,9 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 // upload queue
 #define CoreNotify_Upload_Resort_Queue()			MuleNotify::DoNotify(&MuleNotify::Upload_Resort_Queue)
+
+// client
+#define CoreNotify_Client_Delete(client)			MuleNotify::DoNotify(&MuleNotify::Client_Delete, client)
 
 //
 // Notifications that always create an event

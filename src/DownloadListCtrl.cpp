@@ -43,7 +43,6 @@
 #include "Preferences.h"
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "TerminationProcess.h"	// Needed for CTerminationProcess
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "TransferWnd.h"
 #include "SourceListCtrl.h"
 

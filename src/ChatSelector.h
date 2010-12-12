@@ -30,7 +30,7 @@
 #include "MuleNotebook.h"
 #include "Types.h"				// Needed for uint16
 
-class CUpDownClient;
+class CClientRef;
 class CFriend;
 
 
@@ -75,7 +75,7 @@ public:
 	void			ConnectionResult(bool success, const wxString& message, uint64 id);
 	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
 	void			ShowCaptchaResult(uint64 id, bool ok);
-	CUpDownClient*	GetCurrentClient() const;
+	bool			GetCurrentClient(CClientRef&) const;
 };
 
 #endif

@@ -32,7 +32,6 @@
 #include "FileDetailDialog.h"	// Interface declarations
 #include "FileDetailListCtrl.h"	// Needed for CFileDetailListCtrl
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"		// Needed for theApp
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -180,7 +179,7 @@ void CFileDetailDialog::FillSourcenameList()
 	const CKnownFile::SourceSet& sources = m_file->GetSourceList();
 	CKnownFile::SourceSet::const_iterator it = sources.begin();
 	for ( ; it != sources.end(); ++it ) {
-		const CUpDownClient &cur_src = **it; 
+		const CClientRef &cur_src = *it; 
 		if (cur_src.GetRequestFile() != m_file ||
 		    cur_src.GetClientFilename().Length() == 0) {
 			continue;

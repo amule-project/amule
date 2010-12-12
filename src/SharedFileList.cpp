@@ -42,7 +42,7 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for PartFile
 #include "Server.h"		// Needed for CServer
-#include "updownclient.h"
+#include "updownclient.h"	// Needed for CUpDownClient
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>

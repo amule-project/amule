@@ -24,7 +24,7 @@
 
 
 #include "KnownFile.h"		// Needed by PriorityToStr
-#include "updownclient.h"	// Needed by DownloadStateToStr and GetSoftName
+#include "Constants.h"		// Needed by DownloadStateToStr and GetSoftName
 #define __need_convstatus	// Only the conversion status enum is needed
 #include "PartFileConvert.h"	// Needed by GetConversionState
 

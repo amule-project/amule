@@ -209,6 +209,7 @@
     <ClCompile Include="..\..\..\..\src\ClientCreditsList.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientDetailDialog.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientList.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientRef.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientTCPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientUDPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\ColorFrameCtrl.cpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="..\..\..\..\src\ClientCreditsList.h" />
     <ClInclude Include="..\..\..\..\src\ClientDetailDialog.h" />
     <ClInclude Include="..\..\..\..\src\ClientList.h" />
+    <ClInclude Include="..\..\..\..\src\ClientRef.h" />
     <ClInclude Include="..\..\..\..\src\ClientTCPSocket.h" />
     <ClInclude Include="..\..\..\..\src\ClientUDPSocket.h" />
     <ClInclude Include="..\..\..\..\src\ColorFrameCtrl.h" />

@@ -23,7 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "updownclient.h"	// Interface
+#include "updownclient.h"		// Needed for CUpDownClient
 
 #include <protocol/Protocols.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
@@ -457,7 +457,7 @@ void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempre
 	
 	m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
 	
-	Notify_SharedCtrlRefreshClient(this, AVAILABLE_SOURCE);
+	Notify_SharedCtrlRefreshClient(ECID(), AVAILABLE_SOURCE);
 }
 
 
@@ -633,7 +633,7 @@ uint32 CUpDownClient::SendBlockData()
 	m_cSendblock++;
 	if (m_cSendblock == 30){
 		m_cSendblock = 0;
-		Notify_SharedCtrlRefreshClient(this, AVAILABLE_SOURCE);
+		Notify_SharedCtrlRefreshClient(ECID(), AVAILABLE_SOURCE);
 	}
 
     return sentBytesCompleteFile + sentBytesPartFile;
@@ -787,7 +787,7 @@ void CUpDownClient::Ban(){
 	SetUploadState(US_BANNED);
 	
 	Notify_ShowQueueCount(theStats::GetWaitingUserCount());
-	Notify_SharedCtrlRefreshClient(this, UNAVAILABLE_SOURCE);
+	Notify_SharedCtrlRefreshClient(ECID(), UNAVAILABLE_SOURCE);
 }
 
 bool CUpDownClient::IsBanned() const

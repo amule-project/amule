@@ -423,6 +423,9 @@
     <ClCompile Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp">
       <Filter>Source Files KAD</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ClientRef.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PCH.h">
@@ -886,6 +889,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.h">
       <Filter>Header Files KAD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ClientRef.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

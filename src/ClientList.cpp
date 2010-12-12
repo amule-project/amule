@@ -89,11 +89,7 @@ CClientList::CClientList()
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
 	m_dwLastClientCleanUp = 0;
-	m_pBuddy = NULL;
 	m_nBuddyStatus = Disconnected;
-#ifdef __WXDEBUG__
-	m_delete_queue_closed = false;
-#endif
 }
 
 
@@ -102,7 +98,6 @@ CClientList::~CClientList()
 	DeleteContents(m_trackedClientsList);
 
 	wxASSERT(m_clientList.empty());
-	wxASSERT(m_delete_queue.empty());
 }
 
 
@@ -133,24 +128,15 @@ void CClientList::AddClient( CUpDownClient* toadd )
 }
 
 
-void CClientList::AddToDeleteQueue(CUpDownClient* client)
+void CClientList::RemoveClient(CUpDownClient* client)
 {
 	RemoveFromKadList( client );
 	RemoveDirectCallback( client );
 
-	// We have to remove the client from the list immediatly, to avoit it getting
-	// found by functions such as AttachToAlreadyKnown and GetClientsFromIP, 
-	// however, if the client isn't on the clientlist, then it is safe to delete 
-	// it right now. Otherwise, push it onto the queue.
 	if ( RemoveIDFromList( client ) ) {
 		// Also remove the ip and hash entries
 		RemoveIPFromList( client );
 		RemoveHashFromList( client );
-		
-		wxASSERT(!m_delete_queue_closed);
-		m_delete_queue.push_back( client );
-	} else {
-		delete client;
 	}
 }
 
@@ -209,7 +195,7 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
 
 	for ( ; range.first != range.second; ++range.first ) {
-		if ( client == range.first->second ) {
+		if ( client == range.first->second.GetClient() ) {
 			/* erase() will invalidate the iterator, but we're not using it anymore 
 			    anyway (notice the break;) */
 			m_clientList.erase( range.first );
@@ -234,7 +220,7 @@ void CClientList::RemoveIPFromList( CUpDownClient* client )
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( client->GetIP() );
 
 	for ( ; range.first != range.second; ++range.first ) {
-		if ( client == range.first->second ) {
+		if ( client == range.first->second.GetClient() ) {
 			/* erase() will invalidate the iterator, but we're not using it anymore 
 			    anyway (notice the break;) */
 			m_ipList.erase( range.first );
@@ -254,7 +240,7 @@ void CClientList::RemoveHashFromList( CUpDownClient* client )
 	std::pair<HashMap::iterator, HashMap::iterator> range = m_hashList.equal_range( client->GetUserHash() );
 
 	for ( ; range.first != range.second; ++range.first ) {
-		if ( client == range.first->second ) {
+		if ( client == range.first->second.GetClient() ) {
 			/* erase() will invalidate the iterator, but we're not using it anymore 
 			    anyway (notice the break;) */
 			m_hashList.erase( range.first );
@@ -282,7 +268,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 			IDMapIteratorPair range = m_ipList.equal_range(userIP);
 
 			for ( ; range.first != range.second; ++range.first ) {
-				CUpDownClient* other = range.first->second;
+				CUpDownClient* other = range.first->second.GetClient();
 				wxASSERT(userIP == other->GetIP());
 						
 				if (userPort && (userPort == other->GetUserPort())) {
@@ -299,7 +285,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 			IDMapIteratorPair range = m_clientList.equal_range(userID);
 
 			for (; range.first != range.second; ++range.first) {
-				CUpDownClient* other = range.first->second;
+				CUpDownClient* other = range.first->second.GetClient();
 				wxASSERT(userID == other->GetUserIDHybrid());
 
 				// For lowid, we also have to check the server
@@ -327,8 +313,8 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 			if (userPort) {
 				IDMap::const_iterator it = range.first;
 				for (; it != range.second; ++it) {
-					if (userPort == it->second->GetUserPort()) {
-						return it->second;
+					if (userPort == it->second.GetUserPort()) {
+						return it->second.GetClient();
 					}
 				}
 			}
@@ -336,8 +322,8 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 			if (userKadPort) {
 				IDMap::const_iterator it = range.first;
 				for (; it != range.second; ++it) {
-					if (userKadPort == it->second->GetKadPort()) {
-						return it->second;
+					if (userKadPort == it->second.GetClient()->GetKadPort()) {
+						return it->second.GetClient();
 					}
 				}
 			}
@@ -352,7 +338,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 
 		// Just return the first item if any
 		if ( range.first != range.second ) {
-			return range.first->second;
+			return range.first->second.GetClient();
 		}
 	}
 
@@ -376,15 +362,9 @@ void CClientList::DeleteAll()
 		IDMap::iterator it = m_clientList.begin();
 		
 		// Will call the removal of the item on this same class 
-		it->second->Disconnected(wxT("Removed while deleting all from ClientList."));
-		it->second->Safe_Delete();
+		it->second.GetClient()->Disconnected(wxT("Removed while deleting all from ClientList."));
+		it->second.GetClient()->Safe_Delete();
 	}
-
-	// Clean up the clients now queued for deletion
-#ifdef __WXDEBUG__
-	m_delete_queue_closed = true;
-#endif
-	ProcessDeleteQueue();
 }
 
 
@@ -438,7 +418,7 @@ CUpDownClient* CClientList::FindClientByIP( uint32 clientip, uint16 port )
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( clientip );
 
 	for ( ; range.first != range.second; ++range.first ) {
-		CUpDownClient* cur_client = range.first->second;
+		CUpDownClient* cur_client = range.first->second.GetClient();
 		// Check if it's actually the client we want
 		if ( cur_client->GetUserPort() == port ) {
 			return cur_client;
@@ -454,15 +434,15 @@ CUpDownClient* CClientList::FindClientByIP( uint32 clientip )
 	// Find all items with the specified ip
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( clientip );
 
-	return (range.first != range.second) ? range.first->second : NULL;
+	return (range.first != range.second) ? range.first->second.GetClient() : NULL;
 }
 
 
 CUpDownClient* CClientList::FindClientByECID(uint32 ecid) const
 {
 	for (IDMap::const_iterator it =	m_clientList.begin(); it != m_clientList.end(); it++) {
-		if (it->second->ECID() == ecid) {
-			return it->second;
+		if (it->second.ECID() == ecid) {
+			return it->second.GetClient();
 		}
 	}
 
@@ -539,30 +519,9 @@ uint16 CClientList::GetClientsFromIP(uint32 dwIP)
 }
 
 
-void CClientList::ProcessDeleteQueue()
-{
-	// Delete pending clients
-	while ( !m_delete_queue.empty() ) {
-		CUpDownClient* toremove = m_delete_queue.front();
-		m_delete_queue.pop_front();
-		
-		// Doing what RemoveClient used to do. Just to be sure...
-		theApp->uploadqueue->RemoveFromUploadQueue( toremove );
-		theApp->uploadqueue->RemoveFromWaitingQueue( toremove );
-		theApp->downloadqueue->RemoveSource( toremove );
-	
-		//Notify_ClientCtrlRemoveClient( toremove );
-
-		delete toremove;
-	}
-}
-
-
 void CClientList::Process()
 {
 	const uint32 cur_tick = ::GetTickCount();
-
-	ProcessDeleteQueue();
 
 	if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick) {
 		m_dwLastBannCleanUp = cur_tick;
@@ -603,9 +562,9 @@ void CClientList::Process()
 	// buddy is just a flag that is used to make sure we are still connected or connecting to a buddy.
 	buddyState buddy = Disconnected;
 	
-	std::set<CUpDownClient*>::iterator current_it = m_KadSources.begin();
+	CClientRefSet::iterator current_it = m_KadSources.begin();
 	while (current_it != m_KadSources.end()) {
-		CUpDownClient* cur_client = *current_it;
+		CUpDownClient* cur_client = current_it->GetClient();
 		++current_it; // Won't be used anymore till while loop 
 		if( !Kademlia::CKademlia::IsRunning() ) {
 			//Clear out this list if we stop running Kad.
@@ -695,11 +654,11 @@ void CClientList::Process()
 
 				//If m_nBuddyStatus is not connected already, we set this client as our buddy!
 				if( m_nBuddyStatus != Connected ) {
-					m_pBuddy = cur_client;
+					m_pBuddy.Link(cur_client);
 					m_nBuddyStatus = Connected;
 					Notify_ServerUpdateED2KInfo();
 				}
-				if( m_pBuddy == cur_client && theApp->IsFirewalled() && cur_client->SendBuddyPingPong() ) {
+				if( m_pBuddy.GetClient() == cur_client && theApp->IsFirewalled() && cur_client->SendBuddyPingPong() ) {
 					cur_client->SendBuddyPing();
 				}
 				break;
@@ -711,13 +670,13 @@ void CClientList::Process()
 
 	//We either never had a buddy, or lost our buddy..
 	if( buddy == Disconnected ) {
-		if( m_nBuddyStatus != Disconnected || m_pBuddy ) {
+		if( m_nBuddyStatus != Disconnected || m_pBuddy.IsLinked() ) {
 			if( Kademlia::CKademlia::IsRunning() && theApp->IsFirewalled() && Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) ) {
 				//We are a lowID client and we just lost our buddy.
 				//Go ahead and instantly try to find a new buddy.
 				Kademlia::CKademlia::GetPrefs()->SetFindBuddy();
 			}
-			m_pBuddy = NULL;
+			m_pBuddy.Unlink();
 			m_nBuddyStatus = Disconnected;
 			Notify_ServerUpdateED2KInfo();
 		}
@@ -744,19 +703,19 @@ void CClientList::Process()
 				}
 			}
 		} else {
-			if( m_pBuddy ) {
+			if (m_pBuddy.IsLinked()) {
 				//Lets make sure that if we have a buddy, they are firewalled!
 				//If they are also not firewalled, then someone must have fixed their firewall or stopped saturating their line.. 
 				//We just set the state of this buddy to KS_NONE and things will be cleared up with the next cycle.
-				if( !m_pBuddy->HasLowID() ) {
-					m_pBuddy->SetKadState(KS_NONE);
+				if( !m_pBuddy.HasLowID() ) {
+					m_pBuddy.GetClient()->SetKadState(KS_NONE);
 				}
 			}
 		}
 	} else {
-		if( m_pBuddy ) {
+		if (m_pBuddy.IsLinked()) {
 			//We are not connected anymore. Just set this buddy to KS_NONE and things will be cleared out on next cycle.
-			m_pBuddy->SetKadState(KS_NONE);
+			m_pBuddy.GetClient()->SetKadState(KS_NONE);
 		}
 	}
 	
@@ -799,10 +758,10 @@ void CClientList::FilterQueues()
 	// Filter client list
 	for ( IDMap::iterator it = m_ipList.begin(); it != m_ipList.end(); ) {
 		IDMap::iterator tmp = it++; // Don't change this to a ++it! 
-		
-		if ( theApp->ipfilter->IsFiltered(tmp->second->GetConnectIP())) {
-			tmp->second->Disconnected(wxT("Filtered by IPFilter"));
-			tmp->second->Safe_Delete();
+		CUpDownClient* client = tmp->second.GetClient();
+		if ( theApp->ipfilter->IsFiltered(client->GetConnectIP())) {
+			client->Disconnected(wxT("Filtered by IPFilter"));
+			client->Safe_Delete();
 		}
 	}
 }
@@ -979,8 +938,8 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem)
 	wxCHECK_RET(torem, wxT("NULL pointer in RemoveFromKadList"));
 
 	if (m_KadSources.erase(torem)) {
-		if(torem == m_pBuddy) {
-			m_pBuddy = NULL;
+		if (torem == m_pBuddy.GetClient()) {
+			m_pBuddy.Unlink();
 			m_nBuddyStatus = Disconnected;
 			Notify_ServerUpdateED2KInfo();
 		}
@@ -1030,7 +989,7 @@ void CClientList::CleanUpClientList()
 		DEBUG_ONLY( uint32 cDeleted = 0; )
 		IDMap::iterator current_it = m_clientList.begin();
 		while (current_it != m_clientList.end()) {
-			CUpDownClient* pCurClient = current_it->second;
+			CUpDownClient* pCurClient = current_it->second.GetClient();
 			++current_it; // Won't be used till while loop again
 			// Don't delete sources coming from source seeds for 10 mins,
 			// to give them a chance to connect and become a useful source.
@@ -1112,7 +1071,7 @@ void CClientList::AddDirectCallbackClient(CUpDownClient* toAdd)
 		return;
 	}
 	for (DirectCallbackList::const_iterator it = m_currentDirectCallbacks.begin(); it != m_currentDirectCallbacks.end(); ++it) {
-		if (*it == toAdd) {
+		if (it->GetClient() == toAdd) {
 			wxFAIL; // might happen very rarely on multiple connection tries, could be fixed in the client class, till then it's not much of a problem though
 			return;
 		}
@@ -1126,7 +1085,7 @@ void CClientList::ProcessDirectCallbackList()
 	const uint32_t cur_tick = ::GetTickCount();
 	for (DirectCallbackList::iterator it = m_currentDirectCallbacks.begin(); it != m_currentDirectCallbacks.end();) {
 		DirectCallbackList::iterator it2 = it++;
-		CUpDownClient* curClient = *it2;
+		CUpDownClient* curClient = it2->GetClient();
 		if (curClient->GetDirectCallbackTimeout() < cur_tick) {
 			wxASSERT(curClient->GetDirectCallbackTimeout() != 0);
 			// TODO LOGREMOVE
@@ -1163,4 +1122,16 @@ bool CClientList::AllowCallbackRequest(uint32_t ip) const
 	}
 	return true;
 }
+
+uint32 CClientList::GetBuddyIP()
+{
+	return GetBuddy()->GetIP();
+}
+
+uint16 CClientList::GetBuddyPort()
+{
+	return GetBuddy()->GetUDPPort();
+}
+
+
 // File_checked_for_headers

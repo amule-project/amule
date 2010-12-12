@@ -41,7 +41,7 @@ class CServer;
 class CKnownFile;
 class CSearchFile;
 class CPartFile;
-class CUpDownClient;
+class CClientRef;
 class CStatistics;
 class CPath;
 
@@ -451,20 +451,18 @@ public:
 	void ProcessItemUpdate(CEC_Server_Tag *, CServer *);
 };
 
-class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
+class CUpDownClientListRem : public CRemoteContainer<CClientRef, uint32, CEC_UpDownClient_Tag> {
 public:
 	CUpDownClientListRem(CRemoteConnect *);
-
-	const CClientPtrList& GetList() const { return m_items; };
 
 	void FilterQueues() {}	// not needed here
 	//
 	// template
 	//
-	CUpDownClient *CreateItem(CEC_UpDownClient_Tag *);
-	void DeleteItem(CUpDownClient *);
-	uint32 GetItemID(CUpDownClient *);
-	void ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *);
+	CClientRef *CreateItem(CEC_UpDownClient_Tag *);
+	void DeleteItem(CClientRef *);
+	uint32 GetItemID(CClientRef *);
+	void ProcessItemUpdate(CEC_UpDownClient_Tag *, CClientRef *);
 };
 
 class CDownQueueRem : public std::map<uint32, CPartFile*> {
@@ -587,11 +585,11 @@ class CFriendListRem : public CRemoteContainer<CFriend, uint32, CEC_Friend_Tag> 
 public:
 	CFriendListRem(CRemoteConnect *);
 
-	void		AddFriend(CUpDownClient* toadd);
+	void		AddFriend(const CClientRef& toadd);
 	void		AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name);
 	void		RemoveFriend(CFriend* toremove);
 	void		RequestSharedFileList(CFriend* Friend);
-	void		RequestSharedFileList(CUpDownClient* client);
+	void		RequestSharedFileList(CClientRef& client);
 	void		SetFriendSlot(CFriend* Friend, bool new_state);
 
 	//

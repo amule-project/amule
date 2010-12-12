@@ -422,6 +422,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\ClientRef.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\ClientTCPSocket.cpp"
 				>
 			</File>
@@ -1005,6 +1009,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\ClientList.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\ClientRef.h"
 				>
 			</File>
 			<File

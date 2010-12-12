@@ -30,7 +30,6 @@
 #include "MD4Hash.h"
 
 class wxString;
-class CUpDownClient;
 class CFriend;
 
 class CFriendListCtrl : public CMuleListCtrl

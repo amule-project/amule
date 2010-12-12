@@ -35,7 +35,7 @@
 #include "Server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "updownclient.h"
+#include "updownclient.h"	// Needed for CUpDownClient
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SharedFileList.h"
 #include "SearchList.h"
@@ -201,7 +201,7 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 	CECEmptyTag a4afTag(EC_TAG_PARTFILE_A4AF_SOURCES);
 	const CKnownFile::SourceSet& a4afSources = file->GetA4AFList();
 	for (CKnownFile::SourceSet::const_iterator it = a4afSources.begin(); it != a4afSources.end(); it++) {
-		a4afTag.AddTag(CECTag(EC_TAG_ECID, (*it)->ECID()));
+		a4afTag.AddTag(CECTag(EC_TAG_ECID, it->ECID()));
 	}
 	AddTag(a4afTag, valuemap);
 }
@@ -259,7 +259,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetIP()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_USER_PORT, client->GetUserPort()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_SERVER_IP, client->GetServerIP()), valuemap);
@@ -352,7 +352,8 @@ CEC_Friend_Tag::CEC_Friend_Tag(const CFriend* Friend, CValueMap* valuemap) : CEC
 	AddTag(EC_TAG_FRIEND_HASH,	Friend->GetUserHash(), valuemap);
 	AddTag(EC_TAG_FRIEND_IP,	Friend->GetIP(), valuemap);
 	AddTag(EC_TAG_FRIEND_PORT,	Friend->GetPort(), valuemap);
-	AddTag(EC_TAG_FRIEND_CLIENT, Friend->GetLinkedClient() ? Friend->GetLinkedClient()->ECID() : 0, valuemap);
+	const CClientRef& linkedClient = Friend->GetLinkedClient();
+	AddTag(EC_TAG_FRIEND_CLIENT, linkedClient.IsLinked() ? linkedClient.ECID() : 0, valuemap);
 }
 
 // File_checked_for_headers

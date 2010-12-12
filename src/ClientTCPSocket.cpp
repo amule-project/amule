@@ -272,6 +272,12 @@ void CClientTCPSocket::Disconnect(const wxString& strReason)
 
 void CClientTCPSocket::Safe_Delete()
 {
+	// More paranoia - make sure client is unlinked in any case
+	if (m_client) {
+		m_client->SetSocket( NULL );
+		m_client = NULL;
+	}
+
 	if ( !ForDeletion() && !OnDestroy() ) {
 		// Paranoia is back.
 		SetNotify(0);
@@ -279,14 +285,18 @@ void CClientTCPSocket::Safe_Delete()
 		// lfroen: first of all - stop handler
 		m_ForDeletion = true;
 
-		if (m_client) {
-			m_client->SetSocket( NULL );
-			m_client = NULL;
-		}
-		
 		byConnected = ES_DISCONNECTED;
 		Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
 		Destroy();
+	}
+}
+
+
+void CClientTCPSocket::Safe_Delete_Client()
+{
+	if (m_client) {
+		m_client->Safe_Delete();
+		m_client = NULL;
 	}
 }
 
@@ -323,7 +333,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			// Socket might die on ConnectionEstablished somehow. Check it.
 			if (m_client) {					
-				Notify_SharedCtrlRefreshClient( m_client , AVAILABLE_SOURCE);
+				Notify_SharedCtrlRefreshClient( m_client->ECID() , AVAILABLE_SOURCE);
 			}
 			
 			break;
@@ -377,7 +387,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					
 			wxASSERT(m_client);
 			
-			// now we check if we now this client already. if yes this socket will
+			// now we check if we know this client already. if yes this socket will
 			// be attached to the known client, the new client will be deleted
 			// and the var. "client" will point to the known client.
 			// if not we keep our new-constructed client ;)
@@ -388,7 +398,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				theApp->clientlist->AddClient(m_client);
 				m_client->SetCommentDirty();
 			}
-			Notify_SharedCtrlRefreshClient( m_client, AVAILABLE_SOURCE );
+			Notify_SharedCtrlRefreshClient( m_client->ECID(), AVAILABLE_SOURCE );
 			// send a response packet with standart informations
 			if ((m_client->GetHashType() == SO_EMULE) && !bIsMuleHello) {
 				m_client->SendMuleInfoPacket(false);				

@@ -31,7 +31,6 @@
 #include "Types.h"
 
 class CFriend;
-class CUpDownClient;
 class CChatSelector;
 class CFriendListCtrl;
 class CMD4Hash;

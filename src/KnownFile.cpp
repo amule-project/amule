@@ -28,18 +28,20 @@
 
 #include "KnownFile.h"		// Do_not_auto_remove
 
-
 #include <protocol/kad/Constants.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
 #include <protocol/Protocols.h>
 #include <tags/FileTags.h>
 
-
 #include <wx/config.h>
 
+#ifdef CLIENT_GUI
+#include "UpDownClientEC.h"	// Needed for CUpDownClient
+#else
+#include "updownclient.h"	// Needed for CUpDownClient
+#endif
 
 #include "MemFile.h"		// Needed for CMemFile
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "Packet.h"		// Needed for CPacket
 #include "Preferences.h"	// Needed for CPreferences
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -444,7 +446,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 {
 	if (m_ClientUploadList.erase(client)) {
-		Notify_SharedCtrlRemoveClient(this, client);
+		Notify_SharedCtrlRemoveClient(client->ECID(), this);
 		UpdateAutoUpPriority();
 	}
 }
@@ -477,7 +479,7 @@ CKnownFile::~CKnownFile()
 {
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); ++it ) {
-		(*it)->ClearUploadFileID();
+		it->ClearUploadFileID();
 	}
 	
 	delete m_pAICHHashSet;
@@ -961,7 +963,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
-		const CUpDownClient *cur_src = *it;
+		const CUpDownClient *cur_src = it->GetClient();
 		
 		if (	cur_src->HasLowID() ||
 			cur_src == forClient ||
@@ -1116,7 +1118,7 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
  
 		SourceSet::iterator it = m_ClientUploadList.begin();
 		for ( ; it != m_ClientUploadList.end(); it++ ) {
-			(*it)->SetCommentDirty();
+			it->SetCommentDirty();
 		}
 	}
 }
@@ -1197,8 +1199,9 @@ void CKnownFile::UpdatePartsInfo()
 		
 		SourceSet::iterator it = m_ClientUploadList.begin();
 		for ( ; it != m_ClientUploadList.end(); it++ ) {
-			if ( !(*it)->GetUpPartStatus().empty() && (*it)->GetUpPartCount() == partcount ) {
-				count.push_back((*it)->GetUpCompleteSourcesCount());
+			CUpDownClient* client = it->GetClient();
+			if ( !client->GetUpPartStatus().empty() && client->GetUpPartCount() == partcount ) {
+				count.push_back(client->GetUpCompleteSourcesCount());
 			}
 		}
 	

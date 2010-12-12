@@ -31,8 +31,8 @@
 
 class wxString;
 class CFriend;
-class CUpDownClient;
 class CMD4Hash;
+class CClientRef;
 
 class CFriendList
 {
@@ -47,7 +47,7 @@ public:
 	CFriend*	FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
 	CFriend*	FindFriend(uint32 ecid);
 	void 		AddFriend(CFriend* toadd, bool notify = true);
-	void		AddFriend(CUpDownClient* toadd);
+	void		AddFriend(const CClientRef& toadd);
 	void		AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name, uint32 lastSeen = 0, uint32 lastChatted = 0);
 	void		RemoveFriend(CFriend* toremove);
 	void		RequestSharedFileList(CFriend* Friend);

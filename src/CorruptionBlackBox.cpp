@@ -26,7 +26,7 @@
 
 #include "CorruptionBlackBox.h"
 #include <protocol/ed2k/Constants.h>	// needed for PARTSIZE
-#include "updownclient.h"
+#include "updownclient.h"		// Needed for CUpDownClient
 #include "Logger.h"
 #include "amule.h"				// needed for theApp
 #include "ClientList.h"
