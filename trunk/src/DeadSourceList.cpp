@@ -27,7 +27,7 @@
 
 #include <common/Macros.h>
 
-#include "updownclient.h"
+#include "updownclient.h"		// Needed for CUpDownClient
 
 #define	CLEANUPTIME			MIN2MS(60)
 

@@ -394,6 +394,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\ClientRef.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\ColorFrameCtrl.cpp"
 				>
 			</File>
@@ -626,10 +630,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\SHAHashSet.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\SharedFilePeersListCtrl.cpp"
 				>
 			</File>
@@ -741,6 +741,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\ClientList.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\ClientRef.h"
 				>
 			</File>
 			<File
@@ -1088,7 +1092,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\updownclient.h"
+				RelativePath="..\..\..\..\src\UpDownClientEC.h"
 				>
 			</File>
 			<File

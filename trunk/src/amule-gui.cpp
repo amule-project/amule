@@ -33,7 +33,6 @@
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "Timer.h"				// Needed for CTimer
 #include "PartFile.h"			// Needed for CPartFile
-#include "updownclient.h"		// Needed for CUpDownClient
 
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg

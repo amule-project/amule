@@ -34,9 +34,7 @@
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
 #include "GapList.h"
 
-
 class CSearchFile;
-class CUpDownClient;
 class CMemFile;
 class CFileDataIO;
 class CED2KFileLink;
@@ -424,7 +422,7 @@ public:
 
 private:
 	/* downloading sources list */
-	CClientPtrList m_downloadingSourcesList;
+	CClientRefList m_downloadingSourcesList;
 
 	/* Kad Stuff */
 	uint32	m_LastSearchTimeKad;

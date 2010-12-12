@@ -44,8 +44,8 @@
 #endif
 
 #include "Constants.h"		// Needed for PS_*, PR_*
+#include "ClientRef.h"		// Needed for CClientRef
 
-class CUpDownClient;
 class CFileDataIO;
 class CPacket;
 class CTag;
@@ -263,7 +263,7 @@ public:
 	uint16 m_nCompleteSourcesCountHi;
 
 	// Common for part and known files.
-	typedef std::set<CUpDownClient*> SourceSet;
+	typedef std::set<CClientRef> SourceSet;
 	SourceSet m_ClientUploadList;
 	ArrayOfUInts16 m_AvailPartFrequency;
 

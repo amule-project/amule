@@ -3,7 +3,6 @@
 #include "amule.h"
 #include "PartFile.h"
 #include "DownloadQueue.h"
-#include "updownclient.h"
 #include "ServerList.h"
 #include "Preferences.h"
 #include "ExternalConn.h"
@@ -180,7 +179,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SourceCtrlUpdateSource(CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
+	void SourceCtrlUpdateSource(uint32 NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
@@ -189,7 +188,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SourceCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
+	void SourceCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CClientRef NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
@@ -198,7 +197,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SourceCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
+	void SourceCtrlRemoveSource(uint32 NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
@@ -207,7 +206,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
+	void SharedCtrlAddClient(CKnownFile* NOT_ON_DAEMON(owner), CClientRef NOT_ON_DAEMON(source), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
@@ -216,7 +215,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SharedCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), SourceItemType NOT_ON_DAEMON(type))
+	void SharedCtrlRefreshClient(uint32 NOT_ON_DAEMON(client), SourceItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
@@ -225,7 +224,7 @@ namespace MuleNotify
 #endif
 	}
 	
-	void SharedCtrlRemoveClient(const CKnownFile* NOT_ON_DAEMON(owner), const CUpDownClient* NOT_ON_DAEMON(source))
+	void SharedCtrlRemoveClient(uint32 NOT_ON_DAEMON(source), const CKnownFile* NOT_ON_DAEMON(owner))
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
@@ -262,7 +261,6 @@ namespace MuleNotify
 		delete toremove;
 	}
 	
-
 #ifdef CLIENT_GUI
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
@@ -649,9 +647,7 @@ namespace MuleNotify
 		if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
 			CPartFile::SourceSet::const_iterator it = file->GetA4AFList().begin();
 			for ( ; it != file->GetA4AFList().end(); ) {
-				CUpDownClient *cur_source = *it++;
-
-				cur_source->SwapToAnotherFile(true, false, false, file);
+				it++->SwapToAnotherFile(true, false, false, file);
 			}
 		}
 	}
@@ -666,9 +662,7 @@ namespace MuleNotify
 		if ((file->GetStatus(false) == PS_READY) || (file->GetStatus(false) == PS_EMPTY)) {
 			CPartFile::SourceSet::const_iterator it = file->GetSourceList().begin();
 			for( ; it != file->GetSourceList().end(); ) {
-				CUpDownClient* cur_source = *it++;
-
-				cur_source->SwapToAnotherFile(false, false, false, NULL);
+				it++->SwapToAnotherFile(false, false, false, NULL);
 			}
 		}
 	}
@@ -754,6 +748,10 @@ namespace MuleNotify
 		theApp->ipfilter->Update(url);
 	}
 
+	void Client_Delete(CClientRef client)
+	{
+		client.Safe_Delete();
+	}
 
 #endif	// #ifdef CLIENT_GUI
 }

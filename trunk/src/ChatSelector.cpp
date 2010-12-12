@@ -29,11 +29,12 @@
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
-#include "amule.h"		// Needed for theApp
-#include "updownclient.h"	// Needed for CUpDownClient
+#include "amule.h"			// Needed for theApp
+#include "ClientRef.h"		// Needed for CClientRef
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 #include "UserEvents.h"
+#include "Constants.h"		// Needed for MS_NONE
 
 //#warning Needed while not ported
 #include "ClientList.h"
@@ -337,18 +338,25 @@ void CChatSelector::ShowCaptchaResult(uint64 id, bool ok)
 }
 
 
-CUpDownClient* CChatSelector::GetCurrentClient() const
-{
 #ifdef CLIENT_GUI
-	return NULL;
+bool CChatSelector::GetCurrentClient(CClientRef&) const
+{
+	return false;
+}
 #else
+bool CChatSelector::GetCurrentClient(CClientRef& clientref) const
+{
 	// Get the chat session associated with the active tab
 	CChatSession* ci = (CChatSession*)GetPage(GetSelection());
 	
 	// Get the client that the session is open to
-	return ci	? theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id))
-				: NULL;
-#endif
+	if (ci) {
+		clientref.Link(theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id)));
+		return true;
+	} else {
+		return false;
+	}
 }
+#endif
 
 // File_checked_for_headers

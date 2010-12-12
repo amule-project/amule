@@ -36,7 +36,6 @@
 #include "Logger.h"
 
 #include "ClientList.h"
-#include "updownclient.h"
 
 BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_ADDTOLIST,CServerWnd::OnBnClickedAddserver)

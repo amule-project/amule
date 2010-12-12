@@ -55,6 +55,7 @@ public:
 	bool		CheckTimeOut();
 
 	void		Safe_Delete();
+	void		Safe_Delete_Client();
 
 	bool		ForDeletion() const { return m_ForDeletion; }
 

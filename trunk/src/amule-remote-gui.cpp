@@ -45,6 +45,7 @@
 #include "DataToText.h"			// Needed for GetSoftName()
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "Friend.h"
+#include "GetTickCount.h"	// Needed for GetTickCount
 #include "GuiEvents.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
@@ -59,7 +60,7 @@
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "TransferWnd.h"		// Needed for CTransferWnd
-#include "updownclient.h"
+#include "UpDownClientEC.h"		// Needed for CUpDownClient
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "ScopedPtr.h"
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
@@ -1156,77 +1157,73 @@ CKnownFilesRem::CKnownFilesRem(CRemoteConnect * conn) : CRemoteContainer<CKnownF
  */
 CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn)
 :
-CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn, true)
+CRemoteContainer<CClientRef, uint32, CEC_UpDownClient_Tag>(conn, true)
 {
+}
+
+
+CClientRef::CClientRef(CEC_UpDownClient_Tag *tag)
+{
+	m_client = new CUpDownClient(tag);
+	m_client->Link();
 }
 
 
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 {
+	m_linked = 0;
+	m_linkedDebug = false;
 	// Clients start up empty, then get asked for their data.
 	// So all data here is processed in ProcessItemUpdate and thus updatable.
-	m_bRemoteQueueFull = false;
-	m_nUserIDHybrid = 0;
-	m_clientSoft = 0;
-	m_bEmuleProtocol = false;
+	//!!: todo, not filled through EC
+	m_bEmuleProtocol		= false;
+	m_AvailPartCount		= 0;	//!!
+	m_clientSoft			= 0;
+	m_nDownloadState		= 0;
+	m_Friend				= NULL;
+	m_bFriendSlot			= false;
+	m_nKadPort				= 0;
+	m_kBpsDown				= 0;
+	m_dwUserIP				= 0;
+	m_lastDownloadingPart	= 0xffff;
+	m_nextRequestedPart		= 0xffff;
+	m_obfuscationStatus		= 0;
+	m_nOldRemoteQueueRank	= 0;
+	m_nRemoteQueueRank		= 0;
+	m_reqfile				= NULL;
+	m_score					= 0;
+	m_dwServerIP			= 0;
+	m_nServerPort			= 0;
+	m_nSourceFrom			= SF_NONE;
+	m_nTransferredDown		= 0;
+	m_nTransferredUp		= 0;
+	m_nUpDatarate			= 0;
+	m_uploadingfile			= NULL;
+	m_waitingPosition		= 0;
+	m_nUploadState			= 0;
+	m_nUserIDHybrid			= 0;
+	m_nUserPort				= 0;
+	m_nClientVersion		= 0;	//!!
+	m_fNoViewSharedFiles	= false;//!!
+	m_identState			= IS_NOTAVAILABLE;
+	m_bRemoteQueueFull		= false;
 
-	// User IP:Port
-	m_nConnectIP = 0;
-	m_dwUserIP = 0;
-	m_nUserPort = 0;
-	m_FullUserIP = 0;
-
-	// Server IP:Port
-	m_dwServerIP = 0;
-	m_nServerPort = 0;
-
-	m_identState = IS_NOTAVAILABLE;
-	m_obfuscationStatus = 0;
-
-	m_nSourceFrom = SF_NONE;
-	m_nKadPort = 0;
-	
-	m_Friend = 0;
-	m_bFriendSlot = false;
-	m_nCurSessionUp = 0;
-	m_reqfile = NULL;
-	m_uploadingfile = NULL;
-	m_lastDownloadingPart = 0xffff;
-	m_nextRequestedPart = 0xffff;
+	//wxString	m_strModVersion;	//!!
+	//wxString	m_sClientOSInfo;	//!!
+	//BitVector	m_upPartStatus;		//!!
 
 	credits = new CClientCredits(new CreditStruct());
 }
 
-/* Warning: do common base */
-
-
-bool CUpDownClient::IsIdentified() const 
+void CUpDownClient::Unlink()
 {
-	return m_identState == IS_IDENTIFIED;
-}
-
-
-bool CUpDownClient::IsBadGuy() const 
-{
-	return m_identState == IS_IDBADGUY;
-}
-
-
-bool CUpDownClient::SUIFailed() const 
-{
-	return m_identState == IS_IDFAILED;
-}
-
-
-bool CUpDownClient::SUINeeded() const 
-{
-	return m_identState == IS_IDNEEDED;
-}
-
-
-bool CUpDownClient::SUINotSupported() const 
-{
-	return m_identState == IS_NOTAVAILABLE;
+	m_linked--;
+	if (!m_linked) {
+		if (m_linkedDebug) {
+			AddDebugLogLineN(logGeneral, CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
+		}
+		delete this;
+	}
 }
 
 
@@ -1256,31 +1253,45 @@ CUpDownClient::~CUpDownClient()
 }
 
 
-CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
+CClientRef *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 {
-	CUpDownClient *client = new CUpDownClient(tag);
+	CClientRef *client = new CClientRef(tag);
 	ProcessItemUpdate(tag, client);
 	
 	return client;
 }
 
 
-void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
+void CUpDownClientListRem::DeleteItem(CClientRef *clientref)
 {
+	CUpDownClient* client = clientref->GetClient();
 	if (client->m_reqfile) {
-		Notify_SourceCtrlRemoveSource(client, client->m_reqfile);
 		client->m_reqfile->DelSource(client);
 		client->m_reqfile = NULL;
 	}
+	Notify_SourceCtrlRemoveSource(client->ECID(), (CPartFile*) NULL);
+
 	if (client->m_uploadingfile) {
 		client->m_uploadingfile->RemoveUploadingClient(client);	// this notifies
 		client->m_uploadingfile = NULL;
 	}
-	delete client;
+	Notify_SharedCtrlRemoveClient(client->ECID(), (CKnownFile*) NULL);
+
+	if (client->m_Friend) {
+		client->m_Friend->UnLinkClient();	// this notifies
+		client->m_Friend = NULL;
+	}
+
+	if (client->m_linked > 1) {
+		AddDebugLogLineN(logGeneral, CFormat(wxT("Client %d still linked in %d places!")) % client->ECID() % (client->m_linked - 1));
+		client->m_linkedDebug = true;
+	}
+
+	delete clientref;
 }
 
 
-uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
+uint32 CUpDownClientListRem::GetItemID(CClientRef *client)
 {
 	return client->ECID();
 }
@@ -1288,35 +1299,33 @@ uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 
 void CUpDownClientListRem::ProcessItemUpdate(
 	CEC_UpDownClient_Tag *tag,
-	CUpDownClient *client)
+	CClientRef *clientref)
 {
 	if (!tag->HasChildTags()) {
 		return;		// speed exit for clients without any change
 	}
+	CUpDownClient *client = clientref->GetClient();
+
 	tag->UserID(&client->m_nUserIDHybrid);
 	tag->ClientName(&client->m_Username);
 	// Client Software
 	bool sw_updated = false;
 	if (tag->ClientSoftware(client->m_clientSoft)) {
-		client->m_clientVersionString = GetSoftName(client->m_clientSoft);
-		client->m_clientSoftString = client->m_clientVersionString;
+		client->m_clientSoftString = GetSoftName(client->m_clientSoft);
 		sw_updated = true;
 	}
 	if (tag->SoftVerStr(client->m_clientVerString) || sw_updated) {
-		if (client->m_clientVersionString == _("Unknown")) {
-			client->m_fullClientVerString = client->m_clientVersionString;
+		if (client->m_clientSoftString == _("Unknown")) {
+			client->m_fullClientVerString = client->m_clientSoftString;
 		} else {
-			client->m_fullClientVerString = client->m_clientVersionString + wxT(" ") + client->m_clientVerString;
+			client->m_fullClientVerString = client->m_clientSoftString + wxT(" ") + client->m_clientVerString;
 		}
 	}
 	// User hash
 	tag->UserHash(&client->m_UserHash);
 
 	// User IP:Port
-	if (tag->UserIP(client->m_dwUserIP)) {
-		client->m_nConnectIP = client->m_dwUserIP;
-		client->m_FullUserIP = client->m_dwUserIP;
-	}
+	tag->UserIP(client->m_dwUserIP);
 	tag->UserPort(&client->m_nUserPort);
 
 	// Server IP:Port
@@ -1335,7 +1344,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->RemoteQueueRank(&client->m_nRemoteQueueRank);
 	client->m_bRemoteQueueFull = client->m_nRemoteQueueRank == 0xffff;
 	tag->OldRemoteQueueRank(&client->m_nOldRemoteQueueRank);
-	tag->AskedCount(&client->m_cAsked);
+	//tag->AskedCount(&client->m_cAsked);
 	
 	tag->ClientDownloadState(client->m_nDownloadState);
 	if (tag->ClientUploadState(client->m_nUploadState)) {
@@ -1348,9 +1357,9 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	
 	tag->SpeedUp(&client->m_nUpDatarate);
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
-		tag->SpeedDown(&client->kBpsDown);
+		tag->SpeedDown(&client->m_kBpsDown);
 	} else {
-		client->kBpsDown = 0;
+		client->m_kBpsDown = 0;
 	}
 
 	//tag->WaitTime(&client->m_WaitTime);
@@ -1383,7 +1392,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	bool notified = false;
 	if (tag->RequestFile(fileID)) {
 		if (client->m_reqfile) {
-			Notify_SourceCtrlRemoveSource(client, client->m_reqfile);
+			Notify_SourceCtrlRemoveSource(client->ECID(), client->m_reqfile);
 			client->m_reqfile->DelSource(client);
 			client->m_reqfile = NULL;
 			client->m_downPartStatus.clear();
@@ -1423,7 +1432,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 				break;
 		}
 			
-		Notify_SourceCtrlUpdateSource(client, type);
+		Notify_SourceCtrlUpdateSource(client->ECID(), type);
 	}
 
 	// Upload client
@@ -1455,7 +1464,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 				type = UNAVAILABLE_SOURCE;
 				break;
 		}
-		Notify_SharedCtrlRefreshClient(client, type);
+		Notify_SharedCtrlRefreshClient(client->ECID(), type);
 	}
 }
 
@@ -1620,9 +1629,9 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 				continue;
 			}
 			uint32 id = it->GetInt();
-			CUpDownClient * src = theApp->clientlist->GetByID(id);
+			CClientRef * src = theApp->clientlist->GetByID(id);
 			if (src) {
-				file->AddA4AFSource(src);
+				file->AddA4AFSource(src->GetClient());
 			} else {
 				// client wasn't transmitted yet, try it later
 				clientIDs.push_back(id);
@@ -1633,9 +1642,9 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 		for (ListOfUInts32::iterator it = clientIDs.begin(); it != clientIDs.end(); ) {
 			ListOfUInts32::iterator it1 = it++;
 			uint32 id = *it1;
-			CUpDownClient * src = theApp->clientlist->GetByID(id);
+			CClientRef * src = theApp->clientlist->GetByID(id);
 			if (src) {
-				file->AddA4AFSource(src);
+				file->AddA4AFSource(src->GetClient());
 				clientIDs.erase(it1);
 			}
 		}
@@ -1772,9 +1781,9 @@ void CFriendListRem::ProcessItemUpdate(CEC_Friend_Tag * tag, CFriend * Friend)
 	bool notified = false;
 	if (tag->Client(clientID)) {
 		if (clientID) {
-			CUpDownClient * client = theApp->clientlist->GetByID(clientID);
+			CClientRef * client = theApp->clientlist->GetByID(clientID);
 			if (client) {
-				Friend->LinkClient(client);	// this notifies
+				Friend->LinkClient(*client);	// this notifies
 				notified = true;
 			}
 		} else {
@@ -1788,12 +1797,12 @@ void CFriendListRem::ProcessItemUpdate(CEC_Friend_Tag * tag, CFriend * Friend)
 }
 
 
-void CFriendListRem::AddFriend(CUpDownClient* toadd)
+void CFriendListRem::AddFriend(const CClientRef& toadd)
 {
 	CECPacket req(EC_OP_FRIEND);
 	
 	CECEmptyTag addtag(EC_TAG_FRIEND_ADD);
-	addtag.AddTag(CECTag(EC_TAG_CLIENT, toadd->ECID()));
+	addtag.AddTag(CECTag(EC_TAG_CLIENT, toadd.ECID()));
 	req.AddTag(addtag);
 	
 	m_conn->SendPacket(&req);
@@ -1851,12 +1860,12 @@ void CFriendListRem::RequestSharedFileList(CFriend* Friend)
 }
 
 
-void CFriendListRem::RequestSharedFileList(CUpDownClient* client)
+void CFriendListRem::RequestSharedFileList(CClientRef& client)
 {
 	CECPacket req(EC_OP_FRIEND);
 	
 	CECEmptyTag sharedtag(EC_TAG_FRIEND_SHARED);
-	sharedtag.AddTag(CECTag(EC_TAG_CLIENT, client->ECID()));
+	sharedtag.AddTag(CECTag(EC_TAG_CLIENT, client.ECID()));
 	req.AddTag(sharedtag);
 	
 	m_conn->SendPacket(&req);
@@ -2031,7 +2040,8 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 
 void CUpDownClient::RequestSharedFileList()
 {
-	theApp->friendlist->RequestSharedFileList(this);
+	CClientRef ref(this);
+	theApp->friendlist->RequestSharedFileList(ref);
 }
 
 
@@ -2047,6 +2057,12 @@ bool CUpDownClient::SwapToAnotherFile(
 	theApp->m_connect->SendPacket(&req);
 	
 	return true;
+}
+
+
+wxString CAICHHash::GetString() const
+{
+	return EncodeBase32(m_abyBuffer, HASHSIZE);
 }
 
 

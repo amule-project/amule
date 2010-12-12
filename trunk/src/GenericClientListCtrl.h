@@ -34,8 +34,8 @@
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 #include "amuleDlg.h"		// Needed for CamuleDlg::DialogType
 
-class CUpDownClient;
 class CPartFile;
+class CClientRef;
 class wxBitmap;
 class wxRect;
 class wxDC;
@@ -117,15 +117,15 @@ public:
 	 * owner is shown, otherwise the source will simply be ignored.
 	 * Duplicates wont be added.
 	 */
-	void AddSource( CKnownFile* owner, CUpDownClient* source, SourceItemType type );
+	void AddSource( CKnownFile* owner, const CClientRef& source, SourceItemType type );
 
 	/**
 	 * Removes a source from the list.
 	 *
-	 * @param source A pointer to the source to be removed.
+	 * @param source ID of the source to be removed.
 	 * @param owner Either a specific file, or NULL to remove the source from all files.
 	 */
-	void RemoveSource( const CUpDownClient* source, const CKnownFile* owner );
+	void RemoveSource( uint32 source, const CKnownFile* owner );
 	
 	/**
 	 * Shows the clients of specific files.
@@ -140,11 +140,11 @@ public:
 	/**
 	 * Updates the state of the specified item, possibly causing a redrawing.
 	 *
-	 * @param toupdate The client to be updated.
+	 * @param toupdate ID of the client to be updated.
 	 * @param type If the source is a current source, or a A4AF source.	 
 	 *
 	 */
-	void UpdateItem(const void* toupdate, SourceItemType type);
+	void UpdateItem(uint32 toupdate, SourceItemType type);
 
 	void SetShowing( bool status ) { m_showing = status; }
 	bool GetShowing() const { return m_showing; }
@@ -181,12 +181,12 @@ private:
 	/**
 	 * Draws the download status (chunk) bar for a client.
 	 */
-	void	DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
+	void	DrawSourceStatusBar( const CClientRef& source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
 
 	/**
 	  * Draaws the file parts bar for a client.
 	  */
-	void	DrawStatusBar( const CUpDownClient* client, wxDC* dc, const wxRect& rect1 ) const;
+	void	DrawStatusBar( const CClientRef& client, wxDC* dc, const wxRect& rect1 ) const;
 
 	/**
 	 * @see CMuleListCtrl::GetTTSText
@@ -205,7 +205,7 @@ private:
 	 */
 	wxString TranslateCIDToName(GenericColumnEnum cid);
 
-	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamColumnSort);
+	static int Compare( const CClientRef& client1, const CClientRef& client2, long lParamColumnSort);
 	
 	// Event-handlers for clients.
 	void	OnSwapSource( wxCommandEvent& event );
@@ -221,8 +221,8 @@ private:
 	void 	OnMouseMiddleClick( wxListEvent& event );
 	void	OnKeyPressed( wxKeyEvent& event );
 
-	//! The type of list used to store items on the listctrl.
-	typedef std::multimap<const void*,ClientCtrlItem_Struct*> ListItems;
+	//! The type of list used to store items on the listctrl. We use the unique ECID as key.
+	typedef std::multimap<uint32, ClientCtrlItem_Struct*> ListItems;
 	//! Shortcut to the pair-type used on the list.
 	typedef ListItems::value_type ListItemsPair;
 	//! This pair is used when searching for equal-ranges.
@@ -249,7 +249,7 @@ private:
 
 	bool m_showing;
 	
-	void RawAddSource(CKnownFile* owner, CUpDownClient* source, SourceItemType type);
+	void RawAddSource(CKnownFile* owner, CClientRef source, SourceItemType type);
 	void RawRemoveSource( ListItems::iterator& it );
 
 	virtual bool IsShowingDownloadSources() const = 0;

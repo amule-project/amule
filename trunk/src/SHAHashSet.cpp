@@ -909,14 +909,13 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	}
 }
 
-#ifndef CLIENT_GUI
 
 void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
 {
 	pClient->SetReqFileAICHHash(NULL);
 	CAICHRequestedData data = GetAICHReqDetails(pClient);
 	RemoveClientAICHRequest(pClient);
-	if (data.m_pClient != pClient) {
+	if (data.m_pClient.GetClient() != pClient) {
 		return;
 	}
 	if( theApp->downloadqueue->IsPartFile(data.m_pPartFile)) {
@@ -927,12 +926,11 @@ void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
 	}
 }
 
-#endif
 
 void CAICHHashSet::RemoveClientAICHRequest(const CUpDownClient* pClient)
 {
 	for (CAICHRequestedDataList::iterator it = m_liRequestedData.begin();it != m_liRequestedData.end(); ++it) {
-		if (it->m_pClient == pClient) {
+		if (it->m_pClient.GetClient() == pClient) {
 			m_liRequestedData.erase(it);
 			return;
 		}
@@ -953,7 +951,7 @@ bool CAICHHashSet::IsClientRequestPending(const CPartFile* pForFile, uint16 nPar
 CAICHRequestedData CAICHHashSet::GetAICHReqDetails(const  CUpDownClient* pClient)
 {
 	for (CAICHRequestedDataList::iterator it = m_liRequestedData.begin();it != m_liRequestedData.end(); ++it) {
-		if (it->m_pClient == pClient) {
+		if (it->m_pClient.GetClient() == pClient) {
 			return *(it);
 		}
 	}	

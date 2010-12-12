@@ -72,7 +72,6 @@ class wxSocketEvent;
 class wxCommandEvent;
 class wxCloseEvent;
 class wxFFileOutputStream;
-class CUpDownClient;
 class CTimer;
 class CTimerEvent;
 class wxSingleInstanceChecker;
@@ -224,7 +223,7 @@ public:
 	uint32	GetBuddyPort() const;
 
 	// Check if we should callback this client
-	bool CanDoCallback(CUpDownClient *client);
+	bool CanDoCallback(uint32 clientServerIP, uint16 clientServerPort);
 
 	// Misc functions
 	void		OnlineSig(bool zero = false);

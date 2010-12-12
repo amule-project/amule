@@ -67,14 +67,14 @@ void CFriendList::AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 
 }
 
 
-void CFriendList::AddFriend(CUpDownClient* toadd)
+void CFriendList::AddFriend(const CClientRef& toadd)
 {
-	if ( toadd->IsFriend() ) {
+	if ( toadd.IsFriend() ) {
 		return;
 	}
 	
 	CFriend* NewFriend = new CFriend( toadd );
-	toadd->SetFriend(NewFriend);
+	toadd.SetFriend(NewFriend);
 	
 	AddFriend(NewFriend, false);	// has already notified
 }
@@ -83,9 +83,10 @@ void CFriendList::AddFriend(CUpDownClient* toadd)
 void CFriendList::RemoveFriend(CFriend* toremove)
 {
 	if (toremove) {
-		if ( toremove->GetLinkedClient() ){
-			toremove->GetLinkedClient()->SetFriendSlot(false);
-			toremove->GetLinkedClient()->SetFriend(NULL);
+		CClientRef client = toremove->GetLinkedClient();
+		if (client.IsLinked()) {
+			client.SetFriendSlot(false);
+			client.SetFriend(NULL);
 			toremove->UnLinkClient();
 		}
 
@@ -200,8 +201,8 @@ void CFriendList::RemoveAllFriendSlots()
 {
 	for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {		
 		CFriend* cur_friend = *it;
-		if ( cur_friend->GetLinkedClient() ) {
-				cur_friend->GetLinkedClient()->SetFriendSlot(false);
+		if (cur_friend->GetLinkedClient().IsLinked()) {
+				cur_friend->GetLinkedClient().SetFriendSlot(false);
 		}
 	}
 }
@@ -210,11 +211,12 @@ void CFriendList::RemoveAllFriendSlots()
 void CFriendList::RequestSharedFileList(CFriend* cur_friend)
 {
 	if (cur_friend) {
-		CUpDownClient* client = cur_friend->GetLinkedClient();
+		CUpDownClient* client = cur_friend->GetLinkedClient().GetClient();
 		if (!client) {
 			client = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0, true, true);
 			client->SetUserName(cur_friend->GetName());
 			theApp->clientlist->AddClient(client);
+			cur_friend->LinkClient(client);
 		}
 		client->RequestSharedFileList();
 	}
@@ -223,9 +225,9 @@ void CFriendList::RequestSharedFileList(CFriend* cur_friend)
 
 void CFriendList::SetFriendSlot(CFriend* Friend, bool new_state)
 {
-	if (Friend && Friend->GetLinkedClient()) {
+	if (Friend && Friend->GetLinkedClient().IsLinked()) {
 		RemoveAllFriendSlots();
-		Friend->GetLinkedClient()->SetFriendSlot(new_state);
+		Friend->GetLinkedClient().SetFriendSlot(new_state);
 		CoreNotify_Upload_Resort_Queue();
 	}
 }
@@ -234,7 +236,7 @@ void CFriendList::SetFriendSlot(CFriend* Friend, bool new_state)
 void CFriendList::StartChatSession(CFriend* Friend)
 {
 	if (Friend) {
-		CUpDownClient* client = Friend->GetLinkedClient();
+		CUpDownClient* client = Friend->GetLinkedClient().GetClient();
 		if (!client) {
 			client = new CUpDownClient(Friend->GetPort(), Friend->GetIP(), 0, 0, 0, true, true);
 			client->SetIP(Friend->GetIP());

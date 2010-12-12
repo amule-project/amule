@@ -76,7 +76,6 @@
 #include "Statistics.h"			// Needed for CStatistics
 #include "TerminationProcessAmuleweb.h"	// Needed for CTerminationProcessAmuleweb
 #include "ThreadTasks.h"
-#include "updownclient.h"		// Needed for CUpDownClient
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "UploadBandwidthThrottler.h"
 #include "UserEvents.h"
@@ -1749,15 +1748,15 @@ uint8	CamuleApp::GetBuddyStatus() const
 
 uint32	CamuleApp::GetBuddyIP() const
 {
-	return clientlist->GetBuddy()->GetIP();
+	return clientlist->GetBuddyIP();
 }
 
 uint32	CamuleApp::GetBuddyPort() const
 {
-	return clientlist->GetBuddy()->GetUDPPort();
+	return clientlist->GetBuddyPort();
 }
 
-bool CamuleApp::CanDoCallback(CUpDownClient *client)
+bool CamuleApp::CanDoCallback(uint32 clientServerIP, uint16 clientServerPort)
 {
 	if (Kademlia::CKademlia::IsConnected()) {
 		if (IsConnectedED2K()) {
@@ -1766,8 +1765,8 @@ bool CamuleApp::CanDoCallback(CUpDownClient *client)
 					//Both Connected - Both Firewalled
 					return false;
 				} else {
-					if (client->GetServerIP() == theApp->serverconnect->GetCurrentServer()->GetIP() &&
-					   client->GetServerPort() == theApp->serverconnect->GetCurrentServer()->GetPort()) {
+					if (clientServerIP == theApp->serverconnect->GetCurrentServer()->GetIP() &&
+					   clientServerPort == theApp->serverconnect->GetCurrentServer()->GetPort()) {
 						// Both Connected - Server lowID, Kad Open - Client on same server
 						// We prevent a callback to the server as this breaks the protocol
 						// and will get you banned.

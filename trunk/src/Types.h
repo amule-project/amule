@@ -111,7 +111,6 @@ typedef uint8_t		byte;
 
 
 class CKnownFile;
-class CUpDownClient;
 
 //! Various common list-types.
 //@{ 
@@ -119,7 +118,6 @@ class CUpDownClient;
 typedef std::list<wxString> CStringList;
 #endif
 typedef std::list<CKnownFile*> CKnownFilePtrList;
-typedef std::list<CUpDownClient*> CClientPtrList;
 //@}
 
 typedef std::vector<uint8>  ArrayOfUInts8;

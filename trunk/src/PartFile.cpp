@@ -47,7 +47,13 @@
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "Server.h"		// Needed for CServer
 #include "ServerConnect.h"	// Needed for CServerConnect
+
+#ifdef CLIENT_GUI
+#include "UpDownClientEC.h"	// Needed for CUpDownClient
+#else
 #include "updownclient.h"	// Needed for CUpDownClient
+#endif
+
 #include "MemFile.h"		// Needed for CMemFile
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -92,6 +98,7 @@ Comment(fr.Comment)
 }
 
 
+#ifndef CLIENT_GUI
 SFileRating::SFileRating(const CUpDownClient &client)
 :
 UserName(client.GetUserName()),
@@ -100,6 +107,7 @@ Rating(client.GetFileRating()),
 Comment(client.GetFileComment())
 {
 }
+#endif
 
 
 SFileRating::~SFileRating()
@@ -953,14 +961,13 @@ void CPartFile::SaveSourceSeeds()
 		return;	
 	}	
 	
-	CClientPtrList source_seeds;
+	CClientRefList source_seeds;
 	int n_sources = 0;
 	
-	CClientPtrList::iterator it = m_downloadingSourcesList.begin();
+	CClientRefList::iterator it = m_downloadingSourcesList.begin();
 	for( ; it != m_downloadingSourcesList.end() && n_sources < MAX_SAVED_SOURCES; ++it) {
-		CUpDownClient *cur_src = *it;
-		if (!cur_src->HasLowID()) {
-			source_seeds.push_back(cur_src);
+		if (!it->HasLowID()) {
+			source_seeds.push_back(*it);
 			++n_sources;
 		}
 	}
@@ -970,9 +977,8 @@ void CPartFile::SaveSourceSeeds()
 		if (GetSourceCount() > 0) {
 			SourceSet::reverse_iterator rit = m_SrcList.rbegin();
 			for ( ; ((rit != m_SrcList.rend()) && (n_sources<MAX_SAVED_SOURCES)); ++rit) {
-				CUpDownClient* cur_src = *rit;
-				if (!cur_src->HasLowID()) {
-					source_seeds.push_back(cur_src);
+				if (!rit->HasLowID()) {
+					source_seeds.push_back(*rit);
 					++n_sources;
 				}
 			}
@@ -998,9 +1004,9 @@ void CPartFile::SaveSourceSeeds()
 		file.WriteUInt8(0); // v3, to avoid v2 clients choking on it.
 		file.WriteUInt8(source_seeds.size());
 		
-		CClientPtrList::iterator it2 = source_seeds.begin();
+		CClientRefList::iterator it2 = source_seeds.begin();
 		for (; it2 != source_seeds.end(); ++it2) {
-			CUpDownClient* cur_src = *it2;		
+			CUpDownClient* cur_src = it2->GetClient();		
 			file.WriteUInt32(cur_src->GetUserIDHybrid());
 			file.WriteUInt16(cur_src->GetUserPort());
 			file.WriteHash(cur_src->GetUserHash());
@@ -1380,9 +1386,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 
 	if (m_icounter < 10) {
 		// Update only downloading sources.
-		CClientPtrList::iterator it = m_downloadingSourcesList.begin();
+		CClientRefList::iterator it = m_downloadingSourcesList.begin();
 		for( ; it != m_downloadingSourcesList.end(); ) {
-			CUpDownClient *cur_src = *it++;
+			CUpDownClient *cur_src = it++->GetClient();
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
 				++transferingsrc;
 				kBpsDown += cur_src->SetDownloadLimit(reducedownload);
@@ -1391,7 +1397,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	} else {
 		// Update all sources (including downloading sources)
 		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-			CUpDownClient* cur_src = *it++;
+			CUpDownClient* cur_src = it++->GetClient();
 			switch (cur_src->GetDownloadState()) {
 				case DS_DOWNLOADING: {
 					++transferingsrc;
@@ -1405,7 +1411,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					break;
 				}
 				case DS_LOWTOLOWIP: {
-					if (cur_src->HasLowID() && !theApp->CanDoCallback(cur_src)) {
+					if (cur_src->HasLowID() && !theApp->CanDoCallback(cur_src->GetServerIP(), cur_src->GetServerPort())) {
 						// If we are almost maxed on sources,
 						// slowly remove these client to see 
 						// if we can find a better source.
@@ -1490,7 +1496,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
 			m_LastNoNeededCheck = dwCurTick;
 			for ( SourceSet::iterator it = m_A4AFsrclist.begin(); it != m_A4AFsrclist.end(); ) {
-				CUpDownClient *cur_source = *it++;
+				CUpDownClient *cur_source = it++->GetClient();
 				uint8 download_state=cur_source->GetDownloadState();
 				if( download_state != DS_DOWNLOADING
 				&& cur_source->GetRequestFile() 
@@ -1738,8 +1744,9 @@ void CPartFile::UpdatePartsInfo()
 		count.reserve(GetSourceCount());	
 	
 		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
-			if ( !(*it)->GetUpPartStatus().empty() && (*it)->GetUpPartCount() == partcount ) {
-				count.push_back((*it)->GetUpCompleteSourcesCount());
+			CUpDownClient* client = it->GetClient();
+			if ( !client->GetUpPartStatus().empty() && client->GetUpPartCount() == partcount ) {
+				count.push_back(client->GetUpCompleteSourcesCount());
 			}
 		}
 	
@@ -2191,7 +2198,7 @@ void CPartFile::PerformFileComplete()
 void  CPartFile::RemoveAllSources(bool bTryToSwap)
 {
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end();) {
-		CUpDownClient* cur_src = *it++;
+		CUpDownClient* cur_src = it++->GetClient();
 		if (bTryToSwap) {
 			if (!cur_src->SwapToAnotherFile(true, true, true, NULL)) {
 				RemoveSource(cur_src,true,false);
@@ -2208,9 +2215,9 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	// remove all links A4AF in sources to this file
 	if(!m_A4AFsrclist.empty()) {
 		for( SourceSet::iterator it = m_A4AFsrclist.begin(); it != m_A4AFsrclist.end(); ) {
-			CUpDownClient* cur_src = *it++;
+			CUpDownClient* cur_src = it++->GetClient();
 			if ( cur_src->DeleteFileRequest( this ) ) {
-				Notify_SourceCtrlRemoveSource(cur_src, this);
+				Notify_SourceCtrlRemoveSource(cur_src->ECID(), this);
 			}
 		}
 		m_A4AFsrclist.clear();
@@ -2410,7 +2417,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 
 	CPacket packet( OP_CANCELTRANSFER, 0, OP_EDONKEYPROT );
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-		CUpDownClient* cur_src = *it++;
+		CUpDownClient* cur_src = it++->GetClient();
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
 			if (!cur_src->GetSentCancelTransfer()) {				
 				theStats::AddUpOverheadOther( packet.GetPacketSize() );
@@ -2577,7 +2584,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 	bool bNeeded;
 	for (SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		bNeeded = false;
-		CUpDownClient* cur_src = *it;
+		CUpDownClient* cur_src = it->GetClient();
 		
 		int state = cur_src->GetDownloadState();
 		int valid = ( state == DS_DOWNLOADING ) || ( state == DS_ONQUEUE && !cur_src->IsRemoteQueueFull() );
@@ -3143,7 +3150,7 @@ void CPartFile::UpdateFileRatingCommentAvail()
 
 	SourceSet::iterator it = m_SrcList.begin();
 	for (; it != m_SrcList.end(); ++it) {
-		CUpDownClient* cur_src = *it;
+		CUpDownClient* cur_src = it->GetClient();
 		
 		if (!cur_src->GetFileComment().IsEmpty()) {
 			if (thePrefs::IsCommentFiltered(cur_src->GetFileComment())) {
@@ -3198,7 +3205,7 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
 {
-	CClientPtrList::iterator it = 
+	CClientRefList::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it == m_downloadingSourcesList.end()) {
 		m_downloadingSourcesList.push_back(client);
@@ -3208,7 +3215,7 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 
 void CPartFile::RemoveDownloadingSource(CUpDownClient* client)
 {
-	CClientPtrList::iterator it = 
+	CClientRefList::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it != m_downloadingSourcesList.end()) {
 		m_downloadingSourcesList.erase(it);
@@ -3282,7 +3289,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart)
 	uint32 cAICHClients = 0;
 	uint32 cAICHLowIDClients = 0;
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {	
-		CUpDownClient* pCurClient = *(it);
+		CUpDownClient* pCurClient = it->GetClient();
 		if (	pCurClient->IsSupportingAICH() &&
 			pCurClient->GetReqFileAICHHash() != NULL &&
 			!pCurClient->IsAICHReqPending()
@@ -3307,7 +3314,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart)
 	}
 	CUpDownClient* pClient = NULL;
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {	
-		CUpDownClient* pCurClient = *(it);
+		CUpDownClient* pCurClient = it->GetClient();
 		if (pCurClient->IsSupportingAICH() && pCurClient->GetReqFileAICHHash() != NULL && !pCurClient->IsAICHReqPending()
 			&& (*pCurClient->GetReqFileAICHHash()) == m_pAICHHashSet->GetMasterHash())
 		{
@@ -3544,7 +3551,7 @@ void CPartFile::GetRatingAndComments(FileRatingList & list) const
 	// This can be pre-processed, but is it worth the CPU?
 	CPartFile::SourceSet::const_iterator it = m_SrcList.begin();
 	for ( ; it != m_SrcList.end(); ++it ) {
-		CUpDownClient *cur_src = *it;
+		CUpDownClient *cur_src = it->GetClient();
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {
 			// AddDebugLogLineN(logPartFile, wxString(wxT("found a comment for ")) << GetFileName());
 			list.push_back(SFileRating(*cur_src));
@@ -3980,7 +3987,7 @@ uint16 CPartFile::GetMaxSourcePerFileUDP() const
 CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller) {
 //	printf("Start slower source calculation\n");
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-		CUpDownClient* cur_src = *it++;
+		CUpDownClient* cur_src = it++->GetClient();
 		if ((cur_src->GetDownloadState() == DS_DOWNLOADING) && (cur_src != caller)) {
 			uint32 factored_bytes_per_second = static_cast<uint32>(
 				(cur_src->GetKBpsDown() * 1024) * DROP_FACTOR);

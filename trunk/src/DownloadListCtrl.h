@@ -35,7 +35,6 @@
 
 
 class CPartFile;
-class CUpDownClient;
 class wxBitmap;
 class wxRect;
 class wxDC;

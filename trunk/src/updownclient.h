@@ -26,6 +26,7 @@
 #ifndef UPDOWNCLIENT_H
 #define UPDOWNCLIENT_H
 
+#include "Constants.h"		// Needed for ESourceFrom
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD4Hash.h"
 #include <common/StringFunctions.h>
@@ -46,56 +47,6 @@ class CKnownFile;
 class CMemFile;
 class CAICHHash;
 
-
-// uploadstate
-#define	US_UPLOADING		0
-#define	US_ONUPLOADQUEUE	1
-#define	US_WAITCALLBACK		2
-#define	US_CONNECTING		3
-#define	US_PENDING		4
-#define	US_LOWTOLOWIP		5
-#define US_BANNED		6
-#define US_ERROR		7
-#define US_NONE			8
-
-// downloadstate
-enum EDownloadState {
-	DS_DOWNLOADING = 0,
-	DS_ONQUEUE,
-	DS_CONNECTED,
-	DS_CONNECTING,
-	DS_WAITCALLBACK,
-	DS_WAITCALLBACKKAD,
-	DS_REQHASHSET,
-	DS_NONEEDEDPARTS,
-	DS_TOOMANYCONNS,
-	DS_TOOMANYCONNSKAD,
-	DS_LOWTOLOWIP,
-	DS_BANNED,
-	DS_ERROR,
-	DS_NONE,
-	DS_REMOTEQUEUEFULL  // not used yet, except in statistics
-};
-
-// m_byChatstate
-enum {
-	MS_NONE = 0,
-	MS_CHATTING,
-	MS_CONNECTING,
-	MS_UNABLETOCONNECT
-};
-
-enum ESourceFrom {
-	SF_NONE,
-	SF_LOCAL_SERVER,
-	SF_REMOTE_SERVER,
-	SF_KADEMLIA,
-	SF_SOURCE_EXCHANGE,
-	SF_PASSIVE,
-	SF_LINK,
-	SF_SOURCE_SEEDS,
-	SF_SEARCH_RESULT
-};
 
 enum EChatCaptchaState {
 	CA_NONE				= 0,
@@ -145,22 +96,13 @@ enum ClientState
 	CS_DYING
 };
 
-// Obfuscation status
-enum EObfuscationState {
-	OBST_UNDEFINED = 0,
-	OBST_ENABLED,
-	OBST_SUPPORTED,
-	OBST_NOT_SUPPORTED,
-	OBST_DISABLED
-};
-
 // This is fixed on ed2k v1, but can be any number on ED2Kv2
 #define STANDARD_BLOCKS_REQUEST 3
 
 class CUpDownClient : public CECID
 {
 	friend class CClientList;
-	friend class CUpDownClientListRem;
+	friend class CClientRef;
 private:
 	/**
 	 * Please note that only the ClientList is allowed to delete the clients.
@@ -168,29 +110,30 @@ private:
 	 * funtion, which will safely remove dead clients once every second.
 	 */
 	~CUpDownClient();
-	
+
+	/**
+	 * Reference count which is increased whenever client is linked to a clientref.
+	 * Clients are to be stored only by ClientRefs, CUpDownClient * are for temporary 
+	 * use only.
+	 * Linking is done only by CClientRef which is friend, so methods are private.
+	 */
+	uint16 m_linked;
+	bool	m_linkedDebug;
+	void	Link()		{ m_linked++; }
+	void	Unlink();
+
 public:
-#ifdef CLIENT_GUI
-	CUpDownClient(class CEC_UpDownClient_Tag *);
-#else
 	//base
 	CUpDownClient(CClientTCPSocket* sender = 0);
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend);
-#endif
+
 	/**
-	 * This function should be called when the client object is to be deleted.
-	 * It'll close the socket of the client and add it to the deletion queue
-	 * owned by the CClientList class. However, if the CUpDownClient isn't on 
-	 * the normal clientlist, it will be deleted immediatly.
-	 * 
-	 * The purpose of this is to avoid clients suddenly being removed due to 
-	 * asyncronous events, such as socket errors, which can result in the 
-	 * problems, as each CUpDownClient object is often kept in multiple lists,
-	 * and instantly removing the client poses the risk of invalidating 
-	 * currently used iterators and/or creating dangling pointers.
-	 * 
-	 * @see CClientList::AddToDeleteQueue
-	 * @see CClientList::Process
+	 * This function is to be called when the client object is to be deleted.
+	 * It'll close the socket of the client and remove it from various lists
+	 * that can own it.
+	 *
+	 * The client will really be deleted only after thelast reference to it
+	 * is unlinked;
 	 */	
 	void		Safe_Delete();
 
@@ -292,21 +235,14 @@ public:
 	//upload
 	uint8		GetUploadState() const		{ return m_nUploadState; }
 	void		SetUploadState(uint8 news);
-	uint32		GetTransferredUp() const	{ return m_nTransferredUp; }
-	uint32		GetSessionUp() const		{ return m_nTransferredUp - m_nCurSessionUp; }
+	uint64		GetTransferredUp() const	{ return m_nTransferredUp; }
+	uint64		GetSessionUp() const		{ return m_nTransferredUp - m_nCurSessionUp; }
 	void		ResetSessionUp();
 	uint32		GetUploadDatarate() const	{ return m_nUpDatarate; }
 
-#ifndef CLIENT_GUI
 	//uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
 	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
 	uint32		GetWaitStartTime() const;
-#else
-	//uint32		m_WaitTime, m_UpStartTimeDelay, m_WaitStartTime;
-	//uint32		GetWaitTime() const		{ return m_WaitTime; }
-	//uint32		GetUpStartTimeDelay() const	{ return m_UpStartTimeDelay; }
-	//uint32		GetWaitStartTime() const	{ return m_WaitStartTime; }
-#endif
 
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 
@@ -315,16 +251,8 @@ public:
 	void		ClearScore()		{ m_score = 0; }
 	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
 	void		SetUploadQueueWaitingPosition(uint16 pos)	{ m_waitingPosition = pos; }
-#ifndef CLIENT_GUI
 	uint8		GetObfuscationStatus() const;
 	uint16		GetNextRequestedPart() const;
-#else
-	EIdentState	m_identState;
-	uint8		GetObfuscationStatus() const { return m_obfuscationStatus; }
-	uint8		m_obfuscationStatus;
-	uint16		m_nextRequestedPart;
-	uint16		GetNextRequestedPart() const { return m_nextRequestedPart; }
-#endif
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	void		CreateNextBlockPackage();
@@ -350,7 +278,7 @@ public:
 
 	const CMD4Hash&	GetUploadFileID() const		{ return m_requpfileid; }
 	void		SetUploadFileID(const CMD4Hash& new_id);
-	void		ClearUploadFileID()		{ m_requpfileid.Clear(); m_uploadingfile = NULL;};
+	void		ClearUploadFileID()		{ m_requpfileid.Clear(); m_uploadingfile = NULL;}
 	uint32		SendBlockData();
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
@@ -401,13 +329,7 @@ public:
 	void		DeleteAllFileRequests();
 	void		SendBlockRequests();
 	void		ProcessBlockPacket(const byte* packet, uint32 size, bool packed, bool largeblocks);
-
-#ifndef CLIENT_GUI
 	uint16		GetAvailablePartCount() const;
-#else
-	uint16		m_AvailPartCount;
-	uint16		GetAvailablePartCount() const	{ return m_AvailPartCount; }
-#endif
 
 	bool		SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
 	void		UDPReaskACK(uint16 nNewQR);
@@ -439,12 +361,7 @@ public:
 
 	const wxString&	GetSoftStr() const 		{ return m_clientSoftString; }
 	const wxString&	GetSoftVerStr() const		{ return m_clientVerString; }
-#ifndef CLIENT_GUI
 	const wxString GetServerName() const;
-#else
-	wxString m_ServerName;
-	const wxString&	GetServerName() const { return m_ServerName; }
-#endif
 	
 	uint16		GetKadPort() const		{ return m_nKadPort; }
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
@@ -508,12 +425,7 @@ public:
 	 *
 	 * @return True if the socket exists and is connected, false otherwise.
 	 */
-#ifndef CLIENT_GUI
 	bool		IsConnected() const;
-#else
-	bool		m_IsConnected;
-	bool		IsConnected() const		{ return m_IsConnected; }
-#endif
 
 	/**
 	 * Safe function for sending packets.
@@ -539,7 +451,7 @@ public:
 	bool		HasBlocks() const		{ return !m_BlockRequests_queue.empty(); }
 
 	/* Source comes from? */
-	ESourceFrom		GetSourceFrom() const	{ return (ESourceFrom)m_nSourceFrom; }
+	ESourceFrom		GetSourceFrom() const	{ return m_nSourceFrom; }
 	void			SetSourceFrom(ESourceFrom val)	{ m_nSourceFrom = val; }
 
 	/* Kad buddy support */

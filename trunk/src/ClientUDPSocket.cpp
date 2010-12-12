@@ -292,8 +292,8 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				CUpDownClient* requester = NULL;
 				CClientList::SourceList clients = theApp->clientlist->GetClientsByHash(userHash);
 				for (CClientList::SourceList::iterator it = clients.begin(); it != clients.end(); ++it) {
-					if ((host == 0 || (*it)->GetIP() == host) && (remoteTCPPort == 0 || (*it)->GetUserPort() == remoteTCPPort)) {
-						requester = *it;
+					if ((host == 0 || it->GetIP() == host) && (remoteTCPPort == 0 || it->GetUserPort() == remoteTCPPort)) {
+						requester = it->GetClient();
 						break;
 					}
 				}

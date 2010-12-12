@@ -26,7 +26,6 @@
 #define DATATOTEXT_H
 
 class wxString;
-class CUpDownClient;
 
 // Returns the textual representation of a priority value
 wxString PriorityToStr( int priority, bool isAuto );

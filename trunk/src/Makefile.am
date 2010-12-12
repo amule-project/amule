@@ -64,6 +64,7 @@ libmuleappcommon_a_SOURCES = \
 	CFile.cpp \
 	ClientCredits.cpp \
 	ED2KLink.cpp \
+	Friend.cpp \
 	GapList.cpp \
 	MagnetURI.cpp \
 	MemFile.cpp \
@@ -152,6 +153,7 @@ core_sources = \
 	ServerList.cpp \
 	ServerSocket.cpp \
 	ServerUDPSocket.cpp \
+	SHAHashSet.cpp \
 	SharedFileList.cpp \
 	ThreadTasks.cpp \
 	UploadBandwidthThrottler.cpp \
@@ -202,9 +204,9 @@ gui_sources = \
 
 common_sources = \
 	amuleAppCommon.cpp \
+	ClientRef.cpp \
 	DataToText.cpp \
 	ECSpecialMuleTags.cpp \
-	Friend.cpp \
 	KnownFile.cpp \
 	GetTickCount.cpp \
 	GuiEvents.cpp \
@@ -216,7 +218,6 @@ common_sources = \
 	Server.cpp \
 	Statistics.cpp \
 	StatTree.cpp \
-	SHAHashSet.cpp \
 	UserEvents.cpp
 
 # Libs
@@ -331,6 +332,7 @@ noinst_HEADERS = \
 		ClientDetailDialog.h \
 		SharedFilePeersListCtrl.h \
 		ClientList.h \
+		ClientRef.h \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
 		ColorFrameCtrl.h \
@@ -442,6 +444,7 @@ noinst_HEADERS = \
 		TransferWnd.h \
 		Types.h \
 		updownclient.h \
+		UpDownClientEC.h \
 		UploadBandwidthThrottler.h \
 		UploadQueue.h \
 		UPnPBase.h \

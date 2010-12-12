@@ -29,8 +29,8 @@
 
 #include <ec/cpp/ECID.h>	// Needed for CECID
 #include "MD4Hash.h"
+#include "ClientRef.h"		// Needed for CClientRef
 
-class CUpDownClient;
 class CFile;
 class CFileDataIO;
 
@@ -43,7 +43,7 @@ public:
 	CFriend()	{ Init(); }
 	~CFriend() {};
 	
-	CFriend(CUpDownClient* client);
+	CFriend(CClientRef client);
 	CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, const wxString& tm_strName);
 	CFriend(uint32 ecid) : CECID(ecid)	{ Init(); }
 	
@@ -53,8 +53,8 @@ public:
 	
 	void SetName(const wxString& name) { m_strName = name; }
 	
-	void	LinkClient(CUpDownClient* client);
-	CUpDownClient* GetLinkedClient() const { return m_LinkedClient; }
+	void	LinkClient(CClientRef client);
+	const CClientRef& GetLinkedClient() const { return m_LinkedClient; }
 	void	UnLinkClient(bool notify = true);
 	
 	bool	HasFriendSlot();
@@ -69,7 +69,7 @@ public:
 private:
 	void	Init();
 
-	CUpDownClient* m_LinkedClient;
+	CClientRef	m_LinkedClient;
 
 	CMD4Hash	m_UserHash;
 	uint32		m_dwLastUsedIP;

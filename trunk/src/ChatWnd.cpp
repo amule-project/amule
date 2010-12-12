@@ -32,7 +32,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "ClientList.h"		// Needed for CClientList
-#include "updownclient.h"	// Needed for CUpDownClient
+#include "ClientRef.h"		// Needed for CClientRef
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
 #include "FriendList.h"		// Needed for CFriendList
 #include "Friend.h"			// Needed for CFriend
@@ -107,8 +107,8 @@ void CChatWnd::OnNMRclickChatTab(wxMouseEvent& evt)
 		wxMenuItem * addFriend = m_menu->Append(MP_ADDFRIEND, _("Add to Friends"));
 
 		// Disable this client if it is already a friend
-		CUpDownClient* client = chatselector->GetCurrentClient();
-		if (client && client->IsFriend()) {
+		CClientRef client;
+		if (chatselector->GetCurrentClient(client) && client.IsFriend()) {
 			addFriend->Enable(false);
 		}
 
@@ -146,10 +146,10 @@ void CChatWnd::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 void CChatWnd::OnAddFriend(wxCommandEvent& WXUNUSED(evt))
 {
 	// Get the client that the session is open to
-	CUpDownClient* client = chatselector->GetCurrentClient();
+	CClientRef client;
 	
 	// Add the client as friend unless it's already a friend
-	if (client && !client->IsFriend()) {
+	if (chatselector->GetCurrentClient(client) && !client.IsFriend()) {
 		theApp->friendlist->AddFriend(client);
 	}
 }
@@ -179,7 +179,7 @@ void CChatWnd::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
 
 void CChatWnd::UpdateFriend(CFriend* toupdate)
 {
-	if (toupdate->GetLinkedClient()) {
+	if (toupdate->GetLinkedClient().IsLinked()) {
 		chatselector->RefreshFriend(GUI_ID(toupdate->GetIP(), toupdate->GetPort()), toupdate->GetName());
 	} else {
 		// drop Chat session

@@ -34,12 +34,9 @@
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
 #include "AddFriend.h"		// Needed for CAddFriend
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
 #include "muuli_wdr.h"
 #include "SafeFile.h"
-
-//#warning REMOVE WHEN EC IS CODED!
 #include "FriendList.h"		// Needed for the friends list
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
@@ -96,7 +93,7 @@ void CFriendListCtrl::UpdateFriend(CFriend* toupdate)
 	}
 
 	SetItem(itemnr, 0, toupdate->GetName());
-	SetItemTextColour(itemnr, toupdate->GetLinkedClient() ? *wxBLUE : *wxBLACK);
+	SetItemTextColour(itemnr, toupdate->GetLinkedClient().IsLinked() ? *wxBLUE : *wxBLACK);
 }
 
 
@@ -127,7 +124,7 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 	if ( cursel != -1 ) {
 		cur_friend = (CFriend*)GetItemData(cursel);
 		menu->Append(MP_DETAIL, _("Show &Details"));
-		menu->Enable(MP_DETAIL, cur_friend->GetLinkedClient() != NULL);
+		menu->Enable(MP_DETAIL, cur_friend->GetLinkedClient().IsLinked());
 	}
 	
 	menu->Append(MP_ADDFRIEND, _("Add a friend"));
@@ -137,7 +134,7 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 		menu->Append(MP_MESSAGE, _("Send &Message"));
 		menu->Append(MP_SHOWLIST, _("View Files"));
 		menu->AppendCheckItem(MP_FRIENDSLOT, _("Establish Friend Slot"));
-		if (cur_friend->GetLinkedClient()) {
+		if (cur_friend->GetLinkedClient().IsLinked()) {
 			menu->Enable(MP_FRIENDSLOT, true);
 			menu->Check(MP_FRIENDSLOT, cur_friend->HasFriendSlot());
 		} else {
@@ -199,7 +196,7 @@ void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event))
 	
 	while( index != -1 ) {
 		CFriend* cur_friend = (CFriend*)GetItemData(index);
-		if (cur_friend->GetLinkedClient()) {
+		if (cur_friend->GetLinkedClient().IsLinked()) {
 			CClientDetailDialog(this, cur_friend->GetLinkedClient()).ShowModal();
 		}		
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );

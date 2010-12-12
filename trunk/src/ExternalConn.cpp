@@ -672,7 +672,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	CECEmptyTag clients(EC_TAG_CLIENT);
 	const CClientList::IDMap& clientList = theApp->clientlist->GetClientList();
 	for (CClientList::IDMap::const_iterator it = clientList.begin(); it != clientList.end(); it++) {
-		const CUpDownClient* cur_client = it->second;
+		const CUpDownClient* cur_client = it->second.GetClient();
 		CValueMap &valuemap = tagmap.GetValueMap(cur_client->ECID());
 		clients.AddTag(CEC_UpDownClient_Tag(cur_client, EC_DETAIL_INC_UPDATE, &valuemap));
 	}
@@ -712,10 +712,10 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 	// (not for incremental update of course)
 	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 
-	const CClientPtrList& clients = theApp->uploadqueue->GetUploadingList();
-	CClientPtrList::const_iterator it = clients.begin();
+	const CClientRefList& clients = theApp->uploadqueue->GetUploadingList();
+	CClientRefList::const_iterator it = clients.begin();
 	for (; it != clients.end(); ++it) {
-		CUpDownClient* cur_client = *it;
+		CUpDownClient* cur_client = it->GetClient();
 
 		if (!cur_client) {	// shouldn't happen
 			continue;
@@ -1185,11 +1185,11 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	strIntMap nameMap;
 	const CPartFile::SourceSet &sources = m_PartFile()->GetSourceList();
 	for (CPartFile::SourceSet::const_iterator it = sources.begin(); it != sources.end(); ++it) {
-		CUpDownClient *cur_src = *it; 
-		if (cur_src->GetRequestFile() != m_file || cur_src->GetClientFilename().Length() == 0) {
+		const CClientRef &cur_src = *it; 
+		if (cur_src.GetRequestFile() != m_file || cur_src.GetClientFilename().Length() == 0) {
 			continue;
 		}
-		const wxString &name = cur_src->GetClientFilename();
+		const wxString &name = cur_src.GetClientFilename();
 		strIntMap::iterator itm = nameMap.find(name);
 		if (itm == nameMap.end()) {
 			nameMap[name] = 1;
