@@ -852,7 +852,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				tempfile.WriteUInt32(list.size());
 				for (unsigned i = 0; i < list.size(); ++i) {
 					if (!list[i]->IsLargeFile() || m_client->SupportsLargeFiles()) {
-						theApp->sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
+						list[i]->CreateOfferedFilePacket(&tempfile, NULL, m_client);
 					}
 				}
 				
@@ -985,7 +985,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				
 				while (!list.empty()) {
 					if (!list.front()->IsLargeFile() || m_client->SupportsLargeFiles()) {
-						theApp->sharedfiles->CreateOfferedFilePacket(list.front(), &tempfile, NULL, m_client);
+						list.front()->CreateOfferedFilePacket(&tempfile, NULL, m_client);
 					}
 					
 					list.pop_front();

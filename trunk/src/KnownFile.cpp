@@ -30,6 +30,7 @@
 
 #include <protocol/kad/Constants.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/ed2k/ClientSoftware.h>
 #include <protocol/Protocols.h>
 #include <tags/FileTags.h>
 
@@ -54,6 +55,7 @@
 #include "SearchFile.h"		// Needed for CSearchFile
 #include "FileArea.h"		// Needed for CFileArea
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
+#include "Server.h"			// Needed for CServer
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
@@ -1074,6 +1076,152 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 	}
 	
 	return result;
+}
+
+
+void CKnownFile::CreateOfferedFilePacket(
+	CMemFile *files,
+	CServer *pServer,
+	CUpDownClient *pClient) {
+		
+	// This function is used for offering files to the local server and for sending
+	// shared files to some other client. In each case we send our IP+Port only, if
+	// we have a HighID.
+
+	wxASSERT(!(pClient && pServer));
+		
+	SetPublishedED2K(true);
+	files->WriteHash(GetFileHash());
+
+	uint32 nClientID = 0;
+	uint16 nClientPort = 0;
+
+	if (pServer) {
+		if (pServer->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
+			#define FILE_COMPLETE_ID		0xfbfbfbfb
+			#define FILE_COMPLETE_PORT	0xfbfb
+			#define FILE_INCOMPLETE_ID	0xfcfcfcfc
+			#define FILE_INCOMPLETE_PORT	0xfcfc
+			// complete   file: ip 251.251.251 (0xfbfbfbfb) port 0xfbfb
+			// incomplete file: op 252.252.252 (0xfcfcfcfc) port 0xfcfc
+			if (GetStatus() == PS_COMPLETE) {
+				nClientID = FILE_COMPLETE_ID;
+				nClientPort = FILE_COMPLETE_PORT;
+			} else {
+				nClientID = FILE_INCOMPLETE_ID;
+				nClientPort = FILE_INCOMPLETE_PORT;
+			}
+		} else {
+			if (theApp->IsConnectedED2K() && !::IsLowID(theApp->GetED2KID())){
+				nClientID = theApp->GetID();
+				nClientPort = thePrefs::GetPort();
+			}
+		}
+	} else {
+		// Do not merge this with the above case - this one
+		// also checks Kad status.
+		if (theApp->IsConnected() && !theApp->IsFirewalled()) {
+			nClientID = theApp->GetID();
+			nClientPort = thePrefs::GetPort();
+		}		
+	}
+
+	files->WriteUInt32(nClientID);
+	files->WriteUInt16(nClientPort);
+	
+	TagPtrList tags;
+
+	// The printable filename is used because it's destined for another user.
+	tags.push_back(new CTagString(FT_FILENAME, GetFileName().GetPrintable()));
+	
+	if (pClient && pClient->GetVBTTags()) {
+		tags.push_back(new CTagVarInt(FT_FILESIZE, GetFileSize()));
+	} else {
+		if (!IsLargeFile()){
+			tags.push_back(new CTagInt32(FT_FILESIZE, GetFileSize()));
+		} else {
+			// Large file
+			// we send 2*32 bit tags to servers, but a real 64 bit tag to other clients.
+			if (pServer) {
+				if (!pServer->SupportsLargeFilesTCP()){
+					wxFAIL;
+					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
+				} else {
+					tags.push_back(new CTagInt32(FT_FILESIZE, (uint32)GetFileSize()));
+					tags.push_back(new CTagInt32(FT_FILESIZE_HI, (uint32)(GetFileSize() >> 32)));
+				}
+			} else {
+				if (!pClient->SupportsLargeFiles()) {
+					wxFAIL;
+					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
+				} else {
+					tags.push_back(new CTagInt64(FT_FILESIZE, GetFileSize()));
+				}
+			}		
+		}
+	}
+	
+	if (GetFileRating()) {
+		tags.push_back(new CTagVarInt(FT_FILERATING, GetFileRating(), (pClient && pClient->GetVBTTags()) ? 0 : 32));
+	}
+
+	// NOTE: Archives and CD-Images are published+searched with file type "Pro"
+	bool bAddedFileType = false;
+	if (pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_TYPETAGINTEGER)) {
+		// Send integer file type tags to newer servers
+		EED2KFileType eFileType = GetED2KFileTypeSearchID(GetED2KFileTypeID(GetFileName()));
+		if (eFileType >= ED2KFT_AUDIO && eFileType <= ED2KFT_CDIMAGE) {
+			tags.push_back(new CTagInt32(FT_FILETYPE, eFileType));
+			bAddedFileType = true;
+		}
+	}
+	if (!bAddedFileType) {
+		// Send string file type tags to:
+		//	- newer servers, in case there is no integer type available for the file type (e.g. emulecollection)
+		//	- older servers
+		//	- all clients
+		wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(GetFileName())));
+		if (!strED2KFileType.IsEmpty()) {
+			tags.push_back(new CTagString(FT_FILETYPE, strED2KFileType));
+		}
+	}
+
+	// There, we could add MetaData info, if we ever get to have that.
+	
+	EUtf8Str eStrEncode;
+
+	bool unicode_support = 
+		// eservers that support UNICODE.
+		(pServer && (pServer->GetUnicodeSupport()))
+		||
+		// clients that support unicode
+		(pClient && pClient->GetUnicodeSupport());
+	eStrEncode = unicode_support ? utf8strRaw : utf8strNone;
+	
+	files->WriteUInt32(tags.size());
+
+	// Sadly, eMule doesn't use a MISCOPTIONS flag on hello packet for this, so we
+	// have to identify the support for new tags by version.
+	bool new_ed2k = 	
+		// eMule client > 0.42f
+		(pClient && pClient->IsEmuleClient() && pClient->GetVersion()  >= MAKE_CLIENT_VERSION(0,42,7))
+		||
+		// aMule >= 2.0.0rc8. Sadly, there's no way to check the rcN number, so I checked
+		// the rc8 changelog. On rc8 OSInfo was introduced, so...
+		(pClient && pClient->GetClientSoft() == SO_AMULE && !pClient->GetClientOSInfo().IsEmpty())
+		||
+		// eservers use a flag for this, at least.
+		(pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_NEWTAGS));
+	
+	for (TagPtrList::iterator it = tags.begin(); it != tags.end(); ++it ) {
+		CTag* pTag = *it;
+		if (new_ed2k) {
+			pTag->WriteNewEd2kTag(files, eStrEncode);
+		} else {
+			pTag->WriteTagToFile(files, eStrEncode);
+		}
+		delete pTag;		
+	}
 }
 
 
