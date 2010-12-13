@@ -38,7 +38,6 @@ class CKnownFile;
 class CMemFile;
 class CMD4Hash;
 class CServer;
-class CUpDownClient;
 class CPublishKeywordList;
 class CPath;
 class CAICHHash;
@@ -56,7 +55,6 @@ public:
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
 	short	GetFilePriorityByID(const CMD4Hash& filehash);
 	const CKnownFile* GetFileByIndex(unsigned int index) const;
-	void	CreateOfferedFilePacket(CKnownFile* cur_file, CMemFile* files, CServer* pServer, CUpDownClient* pClient);
 	size_t	GetCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
 	size_t  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
 	void	CopyFileList(std::vector<CKnownFile*>& out_list) const;
