@@ -1275,6 +1275,7 @@ void CUpDownClientListRem::DeleteItem(CClientRef *clientref)
 		client->m_uploadingfile->RemoveUploadingClient(client);	// this notifies
 		client->m_uploadingfile = NULL;
 	}
+	theApp->m_allUploadingKnownFile->RemoveUploadingClient(client);	// in case it vanished directly while uploading
 	Notify_SharedCtrlRemoveClient(client->ECID(), (CKnownFile*) NULL);
 
 	if (client->m_Friend) {
