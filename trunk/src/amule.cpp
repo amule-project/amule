@@ -255,10 +255,10 @@ int CamuleApp::OnExit()
 
 	// Kill amuleweb if running
 	if (webserver_pid) {
-		AddLogLineNS(CFormat(_("Terminating amuleweb instance with pid `%ld' ... ")) % webserver_pid);
+		AddLogLineNS(CFormat(_("Terminating amuleweb instance with pid '%ld' ... ")) % webserver_pid);
 		wxKillError rc;
 		if (wxKill(webserver_pid, wxSIGTERM, &rc) == -1) {
-			AddLogLineNS(CFormat(_("Killing amuleweb instance with pid `%ld' ... ")) % webserver_pid);
+			AddLogLineNS(CFormat(_("Killing amuleweb instance with pid '%ld' ... ")) % webserver_pid);
 			if (wxKill(webserver_pid, wxSIGKILL, &rc) == -1) {
 				AddLogLineNS(_("Failed"));
 			}

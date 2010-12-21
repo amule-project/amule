@@ -295,7 +295,7 @@ void CPartFile::CreatePartFile()
 		fileCreated = PlatformSpecific::CreateSparseFile(m_PartPath, GetFileSize());
 	}
 	if (!fileCreated) {
-		AddLogLineN(_("ERROR: Failed to create partfile)"));
+		AddLogLineN(_("ERROR: Failed to create partfile"));
 		SetStatus(PS_ERROR);
 	}
 
