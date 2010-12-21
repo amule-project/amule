@@ -402,6 +402,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	OnTCPClientPortChange(e);
 	
 	// Proxy tab initialization
+	FindWindow(ID_PROXY_TYPE)->SetToolTip(_("The type of proxy you are connecting to"));
 	if (!CastChild(ID_PROXY_ENABLE_PROXY, wxCheckBox)->IsChecked()) {
 		FindWindow(ID_PROXY_TYPE)->Enable(false);
 		FindWindow(ID_PROXY_NAME)->Enable(false);

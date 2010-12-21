@@ -2381,7 +2381,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
     CMuleTextCtrl *item11 = new CMuleTextCtrl( parent, IDC_INCOMING, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item11, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxButton *item12 = new wxButton( parent, IDC_BROWSE, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton *item12 = new wxButton( parent, IDC_BROWSE, wxT("..."), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item12, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     item1->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
@@ -2393,7 +2393,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxString strs15[] = 
     {
-        _("Dont change"), 
+        _("Don't change"), 
         _("Low"), 
         _("Normal"), 
         _("High"), 
@@ -3062,13 +3062,12 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxString strs10[] = 
     {
-        _("SOCKS5"), 
-        _("SOCKS4"), 
-        _("HTTP"), 
-        _("SOCKS4a")
+        wxT("SOCKS5"), 
+        wxT("SOCKS4"), 
+        wxT("HTTP"), 
+        wxT("SOCKS4a")
     };
     wxChoice *item10 = new wxChoice( parent, ID_PROXY_TYPE, wxDefaultPosition, wxSize(100,-1), 4, strs10, 0 );
-    item10->SetToolTip( _("The type of proxy you are connecting to") );
     item2->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP, 5 );
 
     wxStaticText *item11 = new wxStaticText( parent, -1, _("Proxy host:"), wxDefaultPosition, wxDefaultSize, 0 );
