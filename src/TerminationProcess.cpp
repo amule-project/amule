@@ -44,7 +44,7 @@ m_cmd(cmd)
 
 void CTerminationProcess::OnTerminate(int pid, int status)
 {
-	AddLogLineN(CFormat(_("Command `%s' with pid `%d' has finished with status code `%d'.")) %
+	AddLogLineN(CFormat(_("Command '%s' with pid '%d' has finished with status code '%d'.")) %
 			m_cmd % pid % status);
 	delete this;
 }

@@ -74,7 +74,7 @@ public:
 	}	
 
 	void UpdateGauge(int total, int current) {
-		CFormat label(_("( %s / %s )"));
+		CFormat label( wxT("( %s / %s )") );
 		
 		label % CastItoXBytes(current);
 		if (total > 0) {
