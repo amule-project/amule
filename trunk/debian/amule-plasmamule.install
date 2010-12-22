@@ -1,0 +1,9 @@
+usr/bin/plasmamule-engine-feeder
+usr/lib/kde4/plasma-applet-plasmamule.so
+usr/lib/kde4/plasma-engine-plasmamule.so
+usr/share/applications/plasmamule-engine-feeder.desktop
+usr/share/icons/hicolor/scalable/mimetypes/application-x-emulecollection.svg
+usr/share/kde4/services/ed2k.protocol
+usr/share/kde4/services/magnet.protocol
+usr/share/kde4/services/plasma-applet-plasmamule.desktop
+usr/share/kde4/services/plasma-engine-plasmamule.desktop

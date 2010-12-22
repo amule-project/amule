@@ -374,6 +374,9 @@ AM_CONDITIONAL([COMPILE_LIB_EC],	[test MULE_IS_ENABLED_ANY([monolithic, amule-da
 # Check for readline library
 MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
 
+AS_IF([test ${PLASMAMULE:-no} = yes],
+[PLASMAMULE_CHECKS])
+
 # DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
 
 MULE_CHECK_CCACHE

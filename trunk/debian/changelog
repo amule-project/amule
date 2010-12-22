@@ -1,3 +1,46 @@
+amule (2.2.6+svn-10406) testing; urgency=low
+
+  * Bumped Standards Version to 3.9.1
+  * Explicitly refer to source format 1.0
+  * debian/control
+    + Corrected spelling-error in description of amule-common
+    + Removed ${shlibs:Depends} in debian/control from:
+      - amule-common
+      - amule-dbg
+      - amule-ed2k-dbg
+      - amule-cas-dbg
+      - amule-wxcas-dbg
+      - amuleweb-dbg
+      - amule-remote-gui-dbg
+      - amule-daemon-dbg
+      - amule-alc-dbg
+      - amule-alcc-dbg
+      - amule-cmd-dbg
+      - amule-utils
+    + Removed ${perl:Depends} in debian/control from amule-ed2k
+    + Explicitly mark amule-utils and amule-utils-gui as meta-package
+    + Added autoconf to Build-Deps
+    + Added Homepage field
+  * Added amule-i18n-ro package
+  * Added amule-plasmamule and amule-plasmamule-dbg packages
+  * debian/rules
+    + Added dh_installmime call for amule-plasmamule
+  * Readded
+    + amule-i18n-ast
+    + amule-i18n-cs
+    + amule-i18n-el
+    + amule-i18n-he
+    + amule-i18n-ja
+    + amule-i18n-sq
+    + amule-i18n-uk
+    + amule.lintian-overrides
+    + amule-skin-mac-gray
+    + amule-skin-priscilla
+    + amule-xas.lintian-overrides
+  * Removed amule.README.Debian
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Wed, 15 Dec 2010 06:25:28 +0100
+
 amule (2.2.6+svn-9854) testing; urgency=low
 
   * Changed Naming Convention to represent the revision
