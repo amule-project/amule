@@ -26,6 +26,7 @@ flags = ${MAKECMDGOALS}
 
 ifeq ("binary", "$(findstring binary, $(flags))")
 
+	PLASMAMULE = --enable-plasmamule
 	WXCAS = --enable-wxcas
 	XAS = --enable-xas
 	CAS = --enable-cas
@@ -40,6 +41,7 @@ ifeq ("binary", "$(findstring binary, $(flags))")
 
 else ifeq ("build", "$(findstring build, $(flags))")
 
+	PLASMAMULE = --enable-plasmamule
 	WXCAS = --enable-wxcas
 	XAS = --enable-xas
 	CAS = --enable-cas
@@ -61,6 +63,10 @@ else
 	wo_amule_utils_gui = $(subst amule-utils-gui,,${flags})
 	wo_all_other_amules = $(subst amulecmd,,$(subst amule-utils-gui,,$(subst amule-utils,,${flags})))
 	LANGUAGE := en_GB
+
+	ifeq ("plasmamule", "$(findstring plasmamule, $(flags))")
+		PLASMAMULE = --enable-plasmamule
+	endif
 
 	ifeq ("wxcas", "$(findstring wxcas, $(flags))")
 		WXCAS = --enable-wxcas
@@ -230,6 +236,10 @@ else
 			LANGUAGE := $(LANGUAGE),pt_PT
 		endif
 
+		ifeq ("i18n-ro", "$(findstring i18n-ro, $(flags))")
+			LANGUAGE := $(LANGUAGE),ro
+		endif
+
 		ifeq ("i18n-ru", "$(findstring i18n-ru, $(flags))")
 			LANGUAGE := $(LANGUAGE),ru
 		endif
@@ -290,6 +300,7 @@ define stage1
 	dh_installmenu -p$(subst -stage1,,$@)
 	dh_installdebconf -p$(subst -stage1,,$@)
 	dh_installman -p$(subst -stage1,,$@)
+	dh_installmime -p$(subst -stage1,,$@)
 	dh_link -p$(subst -stage1,,$@)
 	dh_lintian -p$(subst -stage1,,$@)
 	touch $@
@@ -316,8 +327,10 @@ endef
 config.status: configure
 	dh_testdir
 	CFLAGS="$(CFLAGS)" dh_auto_configure -- --host=$(DEB_HOST_GNU_TYPE)\
+		LDFLAGS="-Wl,--as-needed ${LDFLAGS}"\
 		--enable-ccache\
 		--enable-geoip\
+		${PLASMAMULE}\
 		${AMULECMD}\
 		${DEBUGGING}\
 		${WEBSERVER}\
@@ -466,6 +479,12 @@ alcc-dbg: amule-alcc-dbg
 amulecmd-dbg: amule-cmd-dbg
 	touch @
 
+plasmamule: amule-plasmamule-stage2
+	touch @
+
+plasmamule-dbg: amule-plasmamule-dbg
+	touch @
+
 #Here come the Targets for the langauge packages
 i18n-%: amule-i18n-% ;  
 
@@ -483,9 +502,9 @@ amule-utils-gui: alc remotegui wxcas
 	${stage2}
 
 #These are empty (Space after Semicolon)
-debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg ; 
-normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas ; 
-language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ; 
+debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg plasmamule-dbg; 
+normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas plasmamule ; 
+language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ro i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ;
 i18n-en-only: ; 
 
 #If we build from a svn checkout, we need to generate configure

@@ -17,6 +17,7 @@ alcc			Builds the ed2k-link-creation utility of aMule
 alc			Builds the graphical version of alcc
 amulecmd		Builds the commandline-client for controlling aMule
 xas			Enables the creation of the xas package
+plasmamule		Enables creation of plasma specific parts
 amule-dbg		Creates the debugging symbols for the amule binary
 ed2k-dbg		Creates the debugging symbols for the ed2k binary
 cas-dbg			Creates the debugging symbols for the cas binary
@@ -27,6 +28,7 @@ daemon-dbg		Creates the debugging symbols for the amuled binary
 alcc-dbg		Creates the debugging symbols for the alcc binary
 alc-dbg			Creates the debugging symbols for the alc binary
 amulecmd-dbg		Creates the debugging symbols for the amulecmd binary
+plasmamule-dbg		Creates the debugging symbols for the plasmamule stuff
 amule-utils		Creates the Metapackage for the commandline utilities and all these utils
 			* alcc
 			* amulecmd
@@ -37,7 +39,7 @@ amule-utils-gui		Creates the Metapackage for the graphical utilities and all the
 			* wxcas
 i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, ast, bg, ca, cs,
 			da, de, el, es, et-ee, eu, fi, fr, gl, he, hr, hu, it, it-ch, ja, ko-kr, lt, nl,
-			nn, pl, pt-br, pt-pt, ru, sl, sq, sv, tr, uk, zh-cn or zh-tw
+			nn, pl, pt-br, pt-pt, ro, ru, sl, sq, sv, tr, uk, zh-cn or zh-tw
 			If no i18n-package is given, all will be build.
 			If you just want en_GB, use i18n-en-only
 
