@@ -1503,7 +1503,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 				// Avoid swapping to this file for a while
 				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount(); 
 							
-				Notify_SourceCtrlAddSource(m_reqfile, this, A4AF_SOURCE);
+				Notify_SourceCtrlAddSource(m_reqfile, CCLIENTREF(this, wxT("CUpDownClient::SwapToAnotherFile Notify_SourceCtrlAddSource 1")), A4AF_SOURCE);
 			} else {
 				Notify_SourceCtrlRemoveSource(ECID(), m_reqfile);
 			}
@@ -1520,7 +1520,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 
 			SwapTo->AddSource( this );
 		
-			Notify_SourceCtrlAddSource(SwapTo, this, UNAVAILABLE_SOURCE);
+			Notify_SourceCtrlAddSource(SwapTo, CCLIENTREF(this, wxT("CUpDownClient::SwapToAnotherFile Notify_SourceCtrlAddSource 2")), UNAVAILABLE_SOURCE);
 
 			// Remove the new reqfile from the list of other files
 			m_A4AF_list.erase( target );
@@ -1600,7 +1600,7 @@ void CUpDownClient::SetReqFileAICHHash(CAICHHash* val){
 void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	CAICHRequestedData request;
 	request.m_nPart = nPart;
-	request.m_pClient.Link(this);
+	request.m_pClient.Link(this CLIENT_DEBUGSTRING("CUpDownClient::SendAICHRequest"));
 	request.m_pPartFile = pForFile;
 	CAICHHashSet::m_liRequestedData.push_back(request);
 	m_fAICHRequested = TRUE;

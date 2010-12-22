@@ -45,17 +45,40 @@ class CFriend;
 class BitVector;
 class CMD4Hash;
 
+#define DEBUG_ZOMBIE_CLIENTS
+#ifdef DEBUG_ZOMBIE_CLIENTS
+#define LINKED_FROM , wxString from
+#define CLIENT_DEBUGSTRING(a) , wxT(a)
+#define CCLIENTREF(a, b) CClientRef(a, b)
+#else
+#define LINKED_FROM
+#define CLIENT_DEBUGSTRING(a)
+#define CCLIENTREF(a, b) CClientRef(a)
+#endif
+
 class CClientRef {
 
 	CUpDownClient * m_client;
+#ifdef DEBUG_ZOMBIE_CLIENTS
+	wxString	m_from;
+#endif
 
 public:
 	CClientRef()	{ m_client = NULL; }
 	CClientRef(const CClientRef&);
-	CClientRef(CUpDownClient * client);
+	CClientRef(CUpDownClient * client LINKED_FROM);
 	CClientRef(class CEC_UpDownClient_Tag *);
 	~CClientRef()	{ Unlink(); }
-	CClientRef& operator = (const CClientRef& ref)	{ Link(ref.m_client); return *this; }
+	CClientRef& operator = (const CClientRef& ref)
+	{
+#ifdef DEBUG_ZOMBIE_CLIENTS
+		m_from = ref.m_from;
+		Link(ref.m_client, m_from); 
+#else
+		Link(ref.m_client); 
+#endif
+		return *this; 
+	}
 
 
 // For sets and maps
@@ -70,7 +93,7 @@ public:
 		other.m_client = c;
 	}
 
-	void Link(CUpDownClient * client);
+	void Link(CUpDownClient * client LINKED_FROM);
 	void Unlink();
 	bool IsLinked() const		{ return m_client != NULL; }
 

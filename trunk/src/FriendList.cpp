@@ -216,7 +216,7 @@ void CFriendList::RequestSharedFileList(CFriend* cur_friend)
 			client = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0, true, true);
 			client->SetUserName(cur_friend->GetName());
 			theApp->clientlist->AddClient(client);
-			cur_friend->LinkClient(client);
+			cur_friend->LinkClient(CCLIENTREF(client, wxT("CFriendList::RequestSharedFileList")));
 		}
 		client->RequestSharedFileList();
 	}
@@ -242,7 +242,7 @@ void CFriendList::StartChatSession(CFriend* Friend)
 			client->SetIP(Friend->GetIP());
 			client->SetUserName(Friend->GetName());
 			theApp->clientlist->AddClient(client);
-			Friend->LinkClient(client);
+			Friend->LinkClient(CCLIENTREF(client, wxT("CFriendList::StartChatSession")));
 		}
 	} else {
 		AddLogLineC(_("CRITICAL - no client on StartChatSession"));

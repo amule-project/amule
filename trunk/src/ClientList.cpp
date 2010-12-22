@@ -111,16 +111,16 @@ void CClientList::AddClient( CUpDownClient* toadd )
  		//Notify_ClientCtrlAddClient( toadd );
 	
 		// We always add the ID/ptr pair, regardles of the actual ID value
-		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), toadd ) );
+		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), CCLIENTREF(toadd, wxT("CClientList::AddClient m_clientList.insert"))) );
 
 		// We only add the IP if it is valid
 		if ( toadd->GetIP() ) {
-			m_ipList.insert( IDMapPair( toadd->GetIP(), toadd ) );
+			m_ipList.insert( IDMapPair( toadd->GetIP(), CCLIENTREF(toadd, wxT("CClientList::AddClient m_ipList.insert")) ) );
 		}
 
 		// We only add the hash if it is valid
 		if ( toadd->HasValidHash() ) {
-			m_hashList.insert( HashMapPair( toadd->GetUserHash(), toadd ) );
+			m_hashList.insert( HashMapPair( toadd->GetUserHash(), CCLIENTREF(toadd, wxT("CClientList::AddClient m_hashList.insert")) ) );
 		}
 
 		toadd->UpdateStats();
@@ -151,7 +151,7 @@ void CClientList::UpdateClientID( CUpDownClient* client, uint32 newID )
 	RemoveIDFromList( client );
 
 	// Add the new entry
-	m_clientList.insert( IDMapPair( newID, client ) );
+	m_clientList.insert( IDMapPair( newID, CCLIENTREF(client, wxT("CClientList::UpdateClientID")) ) );
 }
 
 
@@ -165,7 +165,7 @@ void CClientList::UpdateClientIP( CUpDownClient* client, uint32 newIP )
 	RemoveIPFromList( client );
 
 	if ( newIP ) {
-		m_ipList.insert( IDMapPair( newIP, client ) );
+		m_ipList.insert( IDMapPair( newIP, CCLIENTREF(client, wxT("CClientList::UpdateClientIP")) ) );
 	}
 }
 
@@ -182,7 +182,7 @@ void CClientList::UpdateClientHash( CUpDownClient* client, const CMD4Hash& newHa
 
 	// And add the new one if valid
 	if ( !newHash.IsEmpty() ) {
-		m_hashList.insert( HashMapPair( newHash, client ) );
+		m_hashList.insert( HashMapPair( newHash, CCLIENTREF(client, wxT("CClientList::UpdateClientHash")) ) );
 	}
 }
 
@@ -654,7 +654,7 @@ void CClientList::Process()
 
 				//If m_nBuddyStatus is not connected already, we set this client as our buddy!
 				if( m_nBuddyStatus != Connected ) {
-					m_pBuddy.Link(cur_client);
+					m_pBuddy.Link(cur_client CLIENT_DEBUGSTRING("CClientList::Process KS_CONNECTED_BUDDY m_pBuddy.Link"));
 					m_nBuddyStatus = Connected;
 					Notify_ServerUpdateED2KInfo();
 				}
@@ -937,7 +937,7 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem)
 {
 	wxCHECK_RET(torem, wxT("NULL pointer in RemoveFromKadList"));
 
-	if (m_KadSources.erase(torem)) {
+	if (m_KadSources.erase(CCLIENTREF(torem, wxEmptyString))) {
 		if (torem == m_pBuddy.GetClient()) {
 			m_pBuddy.Unlink();
 			m_nBuddyStatus = Disconnected;
@@ -950,7 +950,7 @@ void CClientList::AddToKadList(CUpDownClient* toadd)
 {
 	wxCHECK_RET(toadd, wxT("NULL pointer in AddToKadList"));
 
-	m_KadSources.insert(toadd); // This will take care of duplicates.
+	m_KadSources.insert(CCLIENTREF(toadd, wxT("CClientList::AddToKadList"))); // This will take care of duplicates.
 }
 
 bool CClientList::DoRequestFirewallCheckUDP(const Kademlia::CContact& contact)
@@ -1076,7 +1076,7 @@ void CClientList::AddDirectCallbackClient(CUpDownClient* toAdd)
 			return;
 		}
 	}
-	m_currentDirectCallbacks.push_back(toAdd);
+	m_currentDirectCallbacks.push_back(CCLIENTREF(toAdd, wxT("CClientList::AddDirectCallbackClient")));
 }
 
 void CClientList::ProcessDirectCallbackList()

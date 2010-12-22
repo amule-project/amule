@@ -426,7 +426,7 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
-	m_ClientUploadList.insert(client);
+	m_ClientUploadList.insert(CCLIENTREF(client, wxT("CKnownFile::AddUploadingClient m_ClientUploadList")));
 	
 	SourceItemType type = UNAVAILABLE_SOURCE;
 	switch (client->GetUploadState()) {
@@ -439,7 +439,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 		}
 	}
 
-	Notify_SharedCtrlAddClient(this, client, type);
+	Notify_SharedCtrlAddClient(this, CCLIENTREF(client, wxT("CKnownFile::AddUploadingClient Notify_SharedCtrlAddClient")), type);
 	
 	UpdateAutoUpPriority();
 }
@@ -447,7 +447,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 {
-	if (m_ClientUploadList.erase(client)) {
+	if (m_ClientUploadList.erase(CCLIENTREF(client, wxEmptyString))) {
 		Notify_SharedCtrlRemoveClient(client->ECID(), this);
 		UpdateAutoUpPriority();
 	}

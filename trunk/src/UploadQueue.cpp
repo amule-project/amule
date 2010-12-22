@@ -212,7 +212,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	newclient->ResetSessionUp();
 
 	theApp->uploadBandwidthThrottler->AddToStandardList(m_uploadinglist.size(), newclient->GetSocket());
-	m_uploadinglist.push_back(newclient);
+	m_uploadinglist.push_back(CCLIENTREF(newclient, wxT("CUploadQueue::AddUpNextClient")));
 	m_allUploadingKnownFile->AddUploadingClient(newclient);
 	theStats::AddUploadingClient();
 
@@ -491,7 +491,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		m_nLastStartUpload = tick;
 	} else {
 		// add to waiting queue
-		m_waitinglist.push_back(client);
+		m_waitinglist.push_back(CCLIENTREF(client, wxT("CUploadQueue::AddClientToQueue m_waitinglist.push_back")));
 		// and sort it to update queue ranks
 		SortGetBestClient(true);
 		theStats::AddWaitingClient();
@@ -509,7 +509,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client)
 	theApp->clientlist->AddTrackClient(client);
 	
 	CClientRefList::iterator it = std::find(m_uploadinglist.begin(),
-			m_uploadinglist.end(), client);
+		m_uploadinglist.end(), CCLIENTREF(client, wxEmptyString));
 	
 	if (it != m_uploadinglist.end()) {
 		m_uploadinglist.erase(it);
@@ -614,7 +614,7 @@ uint16 CUploadQueue::SuspendUpload(const CMD4Hash& filehash, bool terminate)
 			if (terminate) {
 				potential->SetUploadState(US_NONE);
 			} else {
-				m_waitinglist.push_back(potential);
+				m_waitinglist.push_back(CCLIENTREF(potential, wxT("CUploadQueue::SuspendUpload")));
 				theStats::AddWaitingClient();
 				potential->SetUploadState(US_ONUPLOADQUEUE);
 				potential->SendRankingInfo();

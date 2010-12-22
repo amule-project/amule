@@ -137,7 +137,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 
 	if (checkfriend) {
 		if ((m_Friend = theApp->friendlist->FindFriend(CMD4Hash(), m_dwUserIP, m_nUserPort)) != NULL){
-			m_Friend->LinkClient(this);
+			m_Friend->LinkClient(CCLIENTREF(this, wxT("CUpDownClient::CUpDownClient m_Friend->LinkClient")));
 		} else{
 			// avoid that an unwanted client instance keeps a friend slot
 			m_bFriendSlot = false;
@@ -149,7 +149,9 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 void CUpDownClient::Init()
 {
 	m_linked = 0;
+#ifdef DEBUG_ZOMBIE_CLIENTS
 	m_linkedDebug = false;
+#endif
 	m_bAddNextConnect = false;
 	credits = NULL;
 	m_byChatstate = MS_NONE;
@@ -384,14 +386,14 @@ void CUpDownClient::Safe_Delete()
 
 	// If called from background, post an event to process it in main thread
 	if (!wxThread::IsMain()) {
-		CoreNotify_Client_Delete(this);
+		CoreNotify_Client_Delete(CCLIENTREF(this, wxT("CUpDownClient::Safe_Delete CoreNotify_Client_Delete")));
 		return;
 	}
 
  	m_clientState = CS_DYING;
 
 	// Make sure client doesn't get deleted until this method is finished
-	CClientRef ref(this);
+	CClientRef ref(CCLIENTREF(this, wxT("CUpDownClient::Safe_Delete reflocker")));
 
 	// Close the socket to avoid any more connections and related events
 	if ( m_socket ) {
@@ -445,10 +447,12 @@ void CUpDownClient::Safe_Delete()
 	delete m_pReqFileAICHHash;
 	m_pReqFileAICHHash = NULL;
 
+#ifdef DEBUG_ZOMBIE_CLIENTS
 	if (m_linked > 1) {
-		AddDebugLogLineN(logClient, CFormat(wxT("Client %d still linked in %d places!")) % ECID() % (m_linked - 1));
+		AddLogLineC(CFormat(wxT("Client %d still linked in %d places: %s")) % ECID() % (m_linked - 1) % GetLinkedFrom());
 		m_linkedDebug = true;
 	}
+#endif
 }
 
 
@@ -695,7 +699,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	}
 
 	if ((m_Friend = theApp->friendlist->FindFriend(m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
-		m_Friend->LinkClient(this);
+		m_Friend->LinkClient(CCLIENTREF(this, wxT("CUpDownClient::ProcessHelloTypePacket m_Friend->LinkClient")));
 	} else{
 		// avoid that an unwanted client instance keeps a friend slot
 		SetFriendSlot(false);
@@ -2905,15 +2909,32 @@ void CUpDownClient::SetConnectOptions(uint8_t options, bool encryption, bool cal
 }
 
 
-void CUpDownClient::Unlink()
+#ifdef DEBUG_ZOMBIE_CLIENTS
+void CUpDownClient::Unlink(const wxString& from)
 {
+	std::multiset<wxString>::iterator it = m_linkedFrom.find(from);
+	if (it != m_linkedFrom.end()) {
+		m_linkedFrom.erase(it);
+	}
 	m_linked--;
 	if (!m_linked) {
 		if (m_linkedDebug) {
-			AddDebugLogLineN(logClient, CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
+			AddLogLineN(CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
 		}
 		delete this;
 	}
 }
+
+#else
+
+void CUpDownClient::Unlink()
+{
+	m_linked--;
+	if (!m_linked) {
+		delete this;
+	}
+}
+#endif
+
 
 // File_checked_for_headers

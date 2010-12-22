@@ -28,6 +28,7 @@
 
 #include <ec/cpp/ECID.h>	// Needed for CECID
 #include "BitVector.h"		// Needed for BitVector
+#include "ClientRef.h"		// Needed for debug defines
 
 class CKnownFile;
 class CPartFile;
@@ -51,9 +52,22 @@ private:
 	 * Linking is done only by CClientRef which is friend, so methods are private.
 	 */
 	uint16	m_linked;
+#ifdef DEBUG_ZOMBIE_CLIENTS
 	bool	m_linkedDebug;
+	std::multiset<wxString> m_linkedFrom;
+	void	Link(const wxString& from)		{ m_linked++; m_linkedFrom.insert(from); }
+	void	Unlink(const wxString& from);
+	wxString GetLinkedFrom() {
+		wxString ret;
+		for (std::multiset<wxString>::iterator it = m_linkedFrom.begin(); it != m_linkedFrom.end(); it++) {
+			ret += *it + wxT(", ");
+		}
+		return ret;
+	}
+#else
 	void	Link()		{ m_linked++; }
 	void	Unlink();
+#endif
 
 public:
 	CUpDownClient(class CEC_UpDownClient_Tag *);
