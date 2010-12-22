@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-05 17:19+0100\n"
-"PO-Revision-Date: 2010-12-07 21:54+0100\n"
+"PO-Revision-Date: 2010-12-11 22:38+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgid ""
 "lowid."
 msgstr ""
 "WARNUNG: Man kann sich nicht als Quelle für einen eD2k-Verweis hinzufügen "
-"während man eine niedrige ID hat (\"LowID\")."
+"während man eine niedrige ID hat."
 
 #: src/amule.cpp:240
 msgid "Now, exiting main app..."
@@ -77,7 +77,7 @@ msgstr "aMule-Herunterfahren abgeschlossen."
 
 #: src/amule.cpp:340
 msgid "Memory debug results for aMule exit:"
-msgstr "Speicherfehlerbehebungsresultate für aMulebeendigung:"
+msgstr "Speicherfehlerbehebungsresultate für aMule-Beendung:"
 
 #: src/amule.cpp:436
 msgid ""
@@ -152,7 +152,7 @@ msgstr "Kann Ports nicht mit der festgelegten Adresse verbinden: %s"
 #: src/amule.cpp:769
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
-msgstr "Port %u ist nicht erreichbar. Du wirst eine LOWID erhalten\n"
+msgstr "Port %u ist nicht erreichbar. Du wirst eine niedrige ID erhalten\n"
 
 #: src/amule.cpp:775
 #, c-format
@@ -231,7 +231,7 @@ msgstr ""
 
 #: src/amule.cpp:1121
 msgid "Server hostname notified"
-msgstr "Server hostname benachrichtigt."
+msgstr "Server Hostname benachrichtigt."
 
 #: src/amule.cpp:1365
 #, c-format
@@ -391,7 +391,7 @@ msgid ""
 "appropriate value. Execute amuled with the flag --ec-config to set the "
 "password. More information can be found at http://wiki.amule.org"
 msgstr ""
-"FEHLER: Ein gültiges Password is nötig um externe Verbindungen nutzen zu "
+"FEHLER: Ein gültiges Password ist nötig um externe Verbindungen nutzen zu "
 "können und aMule daemon kann ohne externe Verbindungen nicht benutzt werden. "
 "Um aMule daemon zu starten muss das \"ECPassword\"-Feld in der Datei ~/."
 "aMule/amule.conf mit einem richtigen Wert versehen sein. amuled kann mit dem "
@@ -447,7 +447,7 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
-"'All-Plattform' p2p client basierend auf eMule \n"
+"'All-Plattform' p2p Client basierend auf eMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:499
@@ -566,12 +566,12 @@ msgstr "Mit den aktuell aktivierten Netzwerken verbinden."
 #: src/amuleDlg.cpp:838
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
-msgstr "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+msgstr "Hoch: %.1f(%.1f) | Herunter: %.1f(%.1f)"
 
 #: src/amuleDlg.cpp:840
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
-msgstr "Up: %.1f | Down: %.1f"
+msgstr "Hoch: %.1f | Herunter: %.1f"
 
 #: src/amuleDlg.cpp:866
 #, c-format
@@ -599,12 +599,12 @@ msgstr "Startbefehl:"
 #: src/amuleDlg.cpp:1218
 #, c-format
 msgid "Skin directory '%s' does not exist"
-msgstr "Verkleidungs(\"Skin\")-Verzeichnis '%s' existiert nicht"
+msgstr "Skin-Verzeichnis '%s' existiert nicht"
 
 #: src/amuleDlg.cpp:1223
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
-msgstr "WARNUNG: Öffnen der Verkleidungsdatei '%s' zum Lesen nicht möglich"
+msgstr "WARNUNG: Öffnen der Skin-Datei '%s' zum Lesen nicht möglich"
 
 #: src/amuleDlg.cpp:1321 src/amuleDlg.cpp:1455 src/muuli_wdr.cpp:1680
 #: src/muuli_wdr.cpp:3534
@@ -665,7 +665,7 @@ msgstr "Einstellungen"
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3542
 msgid "Preferences Settings Window"
-msgstr "Hier können die verschiedenen Einstellungen vorgenommen werden."
+msgstr "Fenster für Einstellungen"
 
 #: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3543
 msgid "Import"
@@ -783,7 +783,7 @@ msgstr "Konnte Liste der freigegebenen Dateien von Benutzer '%s' nicht abrufen"
 
 #: src/BaseClient.cpp:1567
 msgid "Searching buddy for lowid connection"
-msgstr "Suche Buddy für LowID-Verbindung"
+msgstr "Suche Kumpel für Verbindung mit niedriger ID"
 
 #: src/BaseClient.cpp:1779
 #, c-format
@@ -916,7 +916,7 @@ msgstr "*** Verbinde mit Client ***"
 
 #: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
-msgstr "*** Verbindung zum Client nicht aufbaubar / Verbindung verloren ***"
+msgstr "*** Verbindung zum Client fehlgeschlagen / Verbindung verloren ***"
 
 #: src/ChatSelector.cpp:333
 msgid ""
@@ -1112,8 +1112,8 @@ msgstr ""
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
-"Benutzer %s (%u) verweigert den Zugriff auf die Liste "
-"freigegebenerVerzeichnisse/Dateien."
+"Benutzer %s (%u) verweigert den Zugriff auf die Liste freigegebener "
+"Verzeichnisse/Dateien."
 
 #: src/CommentDialog.cpp:35 src/CommentDialogLst.cpp:47
 msgid "File Comments"
@@ -1230,7 +1230,7 @@ msgstr "Keine benötigten Teile"
 
 #: src/DataToText.cpp:68
 msgid "Cannot connect LowID to LowID"
-msgstr "Verbindung LowID zu LowID unmöglich"
+msgstr "Verbindung niedriger ID zu niedriger ID nicht möglich"
 
 #: src/DataToText.cpp:69
 msgid "Too many connections"
@@ -1332,7 +1332,7 @@ msgstr "In Warteschlange"
 
 #: src/DataToText.cpp:152
 msgid "Already downloading"
-msgstr "Bereits herunterladend"
+msgstr "Wird bereits heruntergeladen"
 
 #: src/DataToText.cpp:153
 msgid "Unknown or bad tempfile format."
@@ -1536,7 +1536,7 @@ msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
-"FEHLER: Konnte Sicherungsdatei nicht laden.Suche aufhttp://forum.amule.org "
+"FEHLER: Konnte Sicherungsdatei nicht laden. Suche auf http://forum.amule.org "
 "nach .part.met Wiederherstellungslösungen."
 
 #: src/DownloadQueue.cpp:163
@@ -1551,7 +1551,7 @@ msgstr "Keine Part-Dateien gefunden"
 #, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
-msgstr[0] "%u part-Dateie gefunden"
+msgstr[0] "%u part-Datei gefunden"
 msgstr[1] "%u part-Dateien gefunden"
 
 #: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1467
@@ -1899,7 +1899,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:278
 msgid "Syntax error!"
-msgstr "Syntaxerror!"
+msgstr "Syntax Fehler!"
 
 #: src/ExternalConnector.cpp:281
 msgid "Error processing command - should never happen! Report bug, please\n"
@@ -1995,7 +1995,7 @@ msgstr "Schreibe keinerlei Ausgabe auf stdout."
 
 #: src/ExternalConnector.cpp:447
 msgid "Be verbose - show also debug messages."
-msgstr "Sei ausführlich - Zeige auch Debugnachrichten."
+msgstr "Sei ausführlich - Zeige auch Debug-Nachrichten."
 
 #: src/ExternalConnector.cpp:450
 msgid "Sets program locale (language)."
@@ -2030,15 +2030,15 @@ msgstr "%.2f kB/s"
 
 #: src/FriendList.cpp:121
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht lesen!"
+msgstr "Konnte Freundes-Liste 'emfriends.met' nicht lesen!"
 
 #: src/FriendList.cpp:147
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
-msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht schreiben!"
+msgstr "Konnte Freundes-Liste 'emfriends.met' nicht schreiben!"
 
 #: src/FriendList.cpp:246
 msgid "CRITICAL - no client on StartChatSession"
-msgstr "KRITISCH - kein Client on StartChatSession"
+msgstr "KRITISCH - kein Client bei StartChatSession"
 
 #: src/FriendListCtrl.cpp:125 src/muuli_wdr.cpp:2837 src/muuli_wdr.cpp:3460
 msgid "Friends"
@@ -2123,7 +2123,7 @@ msgstr "Andere Datei angefordert"
 
 #: src/GenericClientListCtrl.cpp:1020
 msgid "Waiting for upload slot"
-msgstr "Warte auf Upload-Slot"
+msgstr "Warte auf Uploadslot"
 
 #: src/GenericClientListCtrl.cpp:1022
 #, c-format
@@ -2154,7 +2154,7 @@ msgstr "HTTP-Download abgebrochen"
 #: src/HTTPDownload.cpp:205
 #, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Kann Zieldatei %s für Download nicht erstellen."
+msgstr "Kann Zieldatei %s für Download nicht erstellen!"
 
 #: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
@@ -2216,7 +2216,7 @@ msgstr ""
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr ""
-"Das Umbennenen der neuen %s-Datei ist fehlgeschlagen, breche Aktualisierung "
+"Das Umbenennen der neuen %s-Datei ist fehlgeschlagen, breche Aktualisierung "
 "ab."
 
 #: src/IP2Country.cpp:142 src/IPFilter.cpp:500
@@ -2226,7 +2226,7 @@ msgstr "%s erfolgreich aktualisiert."
 
 #: src/IP2Country.cpp:144
 msgid "Error updating GeoIP.dat"
-msgstr "Fehler beim aktualisieren der Datei GeoIP.dat"
+msgstr "Fehler beim aktualisieren der GeoIP.dat-Datei"
 
 #: src/IP2Country.cpp:149 src/IPFilter.cpp:505 src/ServerList.cpp:862
 #, c-format
@@ -2236,7 +2236,7 @@ msgstr "Herunterladen der Datei %s von %s fehlgeschlagen."
 #: src/IP2Country.cpp:168
 #, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Herunterladen der Länderdaten von %s fehlgeschlagen."
+msgstr "Herunterladen der Länderdaten für '%s' fehlgeschlagen."
 
 #: src/IPFilter.cpp:113
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
@@ -2258,21 +2258,21 @@ msgstr ""
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] "%u IP-Bereich von %s geladen."
-msgstr[1] "%u IP-Bereiche von %s geladen."
+msgstr[0] "%u IP-Bereich von '%s' geladen."
+msgstr[1] "%u IP-Bereiche von '%s' geladen."
 
 #: src/IPFilter.cpp:325
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
-msgstr[0] "%u fehlerhafte Zeile wurden ignoriert."
+msgstr[0] "%u fehlerhafte Zeile wurde ignoriert."
 msgstr[1] "%u fehlerhafte Zeilen wurden ignoriert."
 
 #: src/IPFilter.cpp:497
 #, c-format
 msgid "Failed to rename new %s file, aborting update."
 msgstr ""
-"Das Umbennenen der neuen %s-Datei ist fehlgeschlagen, breche Aktualisierung "
+"Das Umbenennen der neuen %s-Datei ist fehlgeschlagen, breche Aktualisierung "
 "ab."
 
 #: src/IPFilter.cpp:527
@@ -2312,12 +2312,12 @@ msgstr "Wirklich neue nodes.dat herunterladen?\n"
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
-"Dies wird alle momentanen Knoten entfernen und die Kademlia-Verbindung "
-"neustarten."
+"Dies wird alle momentanen Knoten entfernen und die Kademlia-Verbindung neu "
+"starten."
 
 #: src/KadDlg.cpp:213
 msgid "Continue?"
-msgstr "Weiter?"
+msgstr "Fortsetzen?"
 
 #: src/kademlia/kademlia/SearchManager.cpp:128
 msgid "Kademlia: search keyword too short"
@@ -2517,7 +2517,7 @@ msgstr "Einfügen"
 #: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:385 src/muuli_wdr.cpp:842
 #: src/utils/aLinkCreator/src/alcframe.cpp:155
 msgid "Clear"
-msgstr "Leere"
+msgstr "Leeren"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
@@ -2545,7 +2545,7 @@ msgstr "Geschwindigkeitsbegrenzungen:"
 
 #: src/MuleTrayIcon.cpp:301
 msgid "UL: None"
-msgstr "UL: Keiner"
+msgstr "UL: Keine"
 
 #: src/MuleTrayIcon.cpp:304
 #, c-format
@@ -2694,7 +2694,7 @@ msgstr "Übernehmen"
 msgid ""
 "Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
-"Hier klicken, um den eD2k-Verweis im Texteingabefeld zur Downloadschlange "
+"Hier klicken, um den eD2k-Verweis im Texteingabefeld zur Download-Liste "
 "hinzuzufügen. "
 
 #: src/muuli_wdr.cpp:91
@@ -2727,7 +2727,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:117
 msgid "Up: 0.0 | Down: 0.0"
-msgstr "Up: 0.0 | Down: 0.0"
+msgstr "Hoch: 0.0 | Herunter: 0.0"
 
 #: src/muuli_wdr.cpp:118
 msgid ""
@@ -2745,8 +2745,9 @@ msgid ""
 "optimal connection type)."
 msgstr ""
 "Zeigt den aktuellen Verbindungsstatus an: rote Pfeile bedeuten, dass du im "
-"Moment nicht verbunden bist, gelb bedeutet, du hast eine LowID (firewalled), "
-"und grün bedeutet, dass du eine hohe ID hast (die beste Verbindung)."
+"Moment nicht verbunden bist, gelb bedeutet, du hast eine niedrige ID "
+"(firewalled), und grün bedeutet, dass du eine hohe ID hast (die beste "
+"Verbindung)."
 
 #: src/muuli_wdr.cpp:130
 msgid "Not Connected ..."
@@ -2829,7 +2830,7 @@ msgstr "Videos"
 
 #: src/muuli_wdr.cpp:254
 msgid "Extension"
-msgstr "Dateityp"
+msgstr "Dateiendung"
 
 #: src/muuli_wdr.cpp:260
 msgid "Min Size"
@@ -3042,11 +3043,11 @@ msgid ""
 msgstr ""
 "Für einen Film kann man die Länge, die Handlung, die Sprache,... angeben\n"
 "\n"
-"und wenn es eine Fake-Datei ist, kann man andere aMule-Benutzer davor warnen."
+"und wenn es eine Fälschung ist, kann man andere aMule-Benutzer davor warnen."
 
 #: src/muuli_wdr.cpp:851
 msgid "File Quality"
-msgstr "Dateigüte"
+msgstr "Dateiqualität"
 
 #: src/muuli_wdr.cpp:856 src/OtherFunctions.cpp:261 src/OtherFunctions.cpp:267
 msgid "Not rated"
@@ -3070,7 +3071,7 @@ msgstr "Gut"
 
 #: src/muuli_wdr.cpp:861 src/OtherFunctions.cpp:266
 msgid "Excellent"
-msgstr "Überragend"
+msgstr "Hervorragend"
 
 #: src/muuli_wdr.cpp:864
 msgid "Choose the file rating or advice users if the file is invalid ..."
@@ -3310,23 +3311,24 @@ msgstr "Tray-Icon aktivieren"
 
 #: src/muuli_wdr.cpp:1495
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr "Dies aktiviert/deaktiviert das Symbol im Systray (oder Taskbar)."
+msgstr ""
+"Dies aktiviert/deaktiviert das Symbol im Infobereich (oder Taskleiste)."
 
 #: src/muuli_wdr.cpp:1498
 msgid "Minimize to Tray Icon"
-msgstr "Minimiere zu Tray-Symbol"
+msgstr "Minimiere zu Symbol im Infobereich"
 
 #: src/muuli_wdr.cpp:1499
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
-"Wird dies aktiviert, minimiert aMule zu einem System-Tray-Symbol, anstatt "
-"zur Taskbar."
+"Wird dies aktiviert, minimiert sich aMule in den Infobereich, anstatt in die "
+"Taskleiste."
 
 #: src/muuli_wdr.cpp:1504
 msgid "Tooltip delay time: "
-msgstr "Tooltip-Verzögerungszeit"
+msgstr "Tooltip-Verzögerungszeit:"
 
 #: src/muuli_wdr.cpp:1512
 msgid "seconds"
@@ -3368,7 +3370,7 @@ msgstr "Videoplayer"
 
 #: src/muuli_wdr.cpp:1571
 msgid "Bandwidth limits"
-msgstr "Bandbreitenlimits"
+msgstr "Bandbreitenbegrenzungen"
 
 #: src/muuli_wdr.cpp:1586
 msgid "Upload"
@@ -3431,7 +3433,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1664
 msgid "Max sources per downloading file:"
-msgstr "Maximale Anzahl Quellen per herunterladender Datei:"
+msgstr "Maximale Anzahl Quellen pro heruntergeladener Datei:"
 
 #: src/muuli_wdr.cpp:1670
 msgid "Max simultaneous connections:"
@@ -3483,7 +3485,7 @@ msgstr "Benutze Prioritätssystem"
 
 #: src/muuli_wdr.cpp:1754
 msgid "Use smart LowID check on connect"
-msgstr "Benutze intelligente LowID-Prüfung beim Verbinden"
+msgstr "Benutze intelligente Prüfung für niedrige ID beim Verbinden"
 
 #: src/muuli_wdr.cpp:1758
 msgid "Safe connect"
@@ -3579,7 +3581,7 @@ msgstr "Verzeichnis für temporäre Downloaddateien"
 
 #: src/muuli_wdr.cpp:1888
 msgid "Shared folders"
-msgstr "freigegebene Ordner"
+msgstr "Freigegebene Ordner"
 
 #: src/muuli_wdr.cpp:1891
 msgid "(Right click on folder icon for recursive share)"
@@ -3600,19 +3602,19 @@ msgstr "Aktualisierungsverzögerung: 5 Sekunden"
 
 #: src/muuli_wdr.cpp:1927
 msgid "Time for average graph: 100 mins"
-msgstr "Durchschnittsgraphen in Minunten berechnen: 100 mins"
+msgstr "Durchschnittsgraphen in Minuten berechnen: 100 min"
 
 #: src/muuli_wdr.cpp:1933
 msgid "Connections Graph Scale: 100 "
-msgstr "Verbindungsgraphenskala: 100"
+msgstr "Verbindungsgraphenskalierung: 100"
 
 #: src/muuli_wdr.cpp:1942
 msgid "Download graph scale:"
-msgstr "Downloadgraphskalierung:"
+msgstr "Downloadgraphenskalierung:"
 
 #: src/muuli_wdr.cpp:1951
 msgid "Upload graph scale:"
-msgstr "Uploadgraphskalierung:"
+msgstr "Uploadgraphenskalierung:"
 
 #: src/muuli_wdr.cpp:1965
 msgid "Colours: "
@@ -3656,7 +3658,7 @@ msgstr "Aktive Verbindungen"
 
 #: src/muuli_wdr.cpp:1981
 msgid "Systray Icon Speedbar"
-msgstr "Systrayicon Transferbalken"
+msgstr "Transferbalken des Symbols im Infobereich"
 
 #: src/muuli_wdr.cpp:1982
 msgid "Kad-nodes current"
@@ -3692,7 +3694,7 @@ msgstr "Maximale neue Verbindungen pro 5 Sekunden"
 
 #: src/muuli_wdr.cpp:2055
 msgid "File Buffer Size: 240000 bytes"
-msgstr "Dateipuffergröße: 240000 bytes"
+msgstr "Dateipuffergröße: 240000 Bytes"
 
 #: src/muuli_wdr.cpp:2061
 msgid "Upload Queue Size: 5000 clients"
@@ -3748,7 +3750,7 @@ msgstr "Landesflaggen für Clients anzeigen"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
-msgstr "Downloadwarteschlangendatein"
+msgstr "Downloadwarteschlangendateien"
 
 #: src/muuli_wdr.cpp:2137
 msgid "Show progress percentage"
@@ -3772,7 +3774,7 @@ msgstr "sortiere Dateien automatisch (hohe CPU-Auslastung)"
 
 #: src/muuli_wdr.cpp:2161
 msgid "aMule will sort the columns in your download list automatically"
-msgstr "aMule sortiert automatisch die Anzeige der Downloadliste"
+msgstr "aMule sortiert automatisch die Spalten der Downloadliste"
 
 #: src/muuli_wdr.cpp:2180
 msgid "External Connection Parameters"
@@ -3825,7 +3827,7 @@ msgstr "Kennwort für Vollzugriff"
 
 #: src/muuli_wdr.cpp:2247
 msgid "Enable Low rights User"
-msgstr "Eingeschränkter Benutzer aktiviert"
+msgstr "Eingeschränkten Benutzer aktivieren"
 
 #: src/muuli_wdr.cpp:2253
 msgid "Low rights password"
@@ -4145,12 +4147,12 @@ msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
 msgstr ""
-"Erlaube die Benutzung des systemweiten Ipfilters, falls keine lokale "
-"ipfilter.dat gefunden wird"
+"Erlaube die Benutzung der systemweiten ipfilter-Datei, falls keine lokale "
+"ipfilter.dat gefunden wird."
 
 #: src/muuli_wdr.cpp:2929
 msgid "Enable Online-Signature"
-msgstr "Online-Signatur erstellen"
+msgstr "Online-Signatur aktivieren"
 
 #: src/muuli_wdr.cpp:2931
 msgid ""
@@ -4166,11 +4168,11 @@ msgstr "Aktualisierungsintervall (Sekunden):"
 
 #: src/muuli_wdr.cpp:2940
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr "Ändern des Online-Signatur-Aktualisierungintervalls (in Sekunden)."
+msgstr "Ändern des Online-Signatur-Aktualisierungsintervalls (in Sekunden)."
 
 #: src/muuli_wdr.cpp:2949
 msgid "Save online signature file in: "
-msgstr "Speichere Onlinesignaturdatei in:"
+msgstr "Speichere Online-Signatur-Datei in:"
 
 #: src/muuli_wdr.cpp:2956
 msgid ""
@@ -4571,7 +4573,7 @@ msgstr "Quellen entfernen?"
 
 #: src/PartFile.cpp:290
 msgid "ERROR: Failed to create partfile)"
-msgstr "FEHLER: Erstellen der Part-Datei fehlgeschlagen)"
+msgstr "FEHLER: Erstellen der Part-Datei fehlgeschlagen"
 
 #: src/PartFile.cpp:328
 #, c-format
@@ -4754,7 +4756,7 @@ msgstr "Reserviere"
 
 #: src/PartFile.cpp:3712
 msgid "Insufficient disk space"
-msgstr "Ungenügender Festplattenplatz"
+msgstr "Zu wenig Festplattenplatz"
 
 #: src/PartFile.cpp:3762 src/SearchListCtrl.cpp:961
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
@@ -5127,7 +5129,7 @@ msgid ""
 msgstr ""
 "\n"
 "aMule MUSS jetzt neu gestartet werden.\n"
-"Wenn du jetzt nicht neustartest, beklage dich nicht, wenn irgendwas übles "
+"Wenn du jetzt nicht neu startest, beklage dich nicht, wenn irgendwas übles "
 "passiert.\n"
 
 #: src/PrefsUnifiedDlg.cpp:784
@@ -5187,7 +5189,7 @@ msgstr ""
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Aktualisierungsverzögerung: %d Sekunde"
-msgstr[1] "Update-Verzögerung: %d Sekunden"
+msgstr[1] "Aktualisierungsverzögerung: %d Sekunden"
 
 #: src/PrefsUnifiedDlg.cpp:1059
 #, c-format
@@ -5397,11 +5399,11 @@ msgstr "FEHLER: Ungültiger Socket bei Prüfung auf Zeitüberschreitung"
 #: src/ServerConnect.cpp:471
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
-msgstr "Verbindungsversuch zu %s (%s:%i): Timeout."
+msgstr "Verbindungsversuch zu %s (%s:%i): Zeitüberschreitung."
 
 #: src/ServerConnect.cpp:645
 msgid "Received late result of DNS lookup, discarding."
-msgstr "Erhalte spätes Ergebnis für DNS-Nachschlag, verwerfe."
+msgstr "Verspätetes Ergebnis für DNS-Nachschlag erhalten, wird verworfen."
 
 #: src/ServerList.cpp:86
 #, c-format
@@ -5614,7 +5616,7 @@ msgstr "Markiere die Server als statisch"
 
 #: src/ServerListCtrl.cpp:411
 msgid "Mark servers as non-static"
-msgstr "Markiere dieServer als nicht statisch"
+msgstr "Markiere die Server als nicht statisch"
 
 #: src/ServerListCtrl.cpp:417
 msgid "Remove server"
@@ -5786,24 +5788,24 @@ msgstr "Firewalled-Status: "
 
 #: src/ServerWnd.cpp:230
 msgid "No buddy required - TCP port open"
-msgstr "Kein Buddy notwendig - TCP-Port ist geöffnet."
+msgstr "Kein Kumpel notwendig - TCP-Port ist geöffnet."
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - UDP port open"
-msgstr "Kein Buddy notwendig - UDP-Port ist geöffnet."
+msgstr "Kein Kumpel notwendig - UDP-Port ist geöffnet."
 
 #: src/ServerWnd.cpp:234
 msgid "No buddy"
-msgstr "Kein Kumpel(\"Buddy\")"
+msgstr "Kein Kumpel"
 
 #: src/ServerWnd.cpp:238
 msgid "Connecting to buddy"
-msgstr "Verbinde zu Buddy"
+msgstr "Verbinde zu Kumpel"
 
 #: src/ServerWnd.cpp:241
 #, c-format
 msgid "Connected to buddy at %s"
-msgstr "Verbunden mit Buddy an %s"
+msgstr "Verbunden mit Kumpel an %s"
 
 #: src/ServerWnd.cpp:251
 msgid "Indexed sources:"
@@ -5842,30 +5844,30 @@ msgstr "Füge Datei %s zu freigegebenen Dateien hinzu"
 #, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
-msgstr[0] "%i bekannte freigegebene Dateie gefunden"
+msgstr[0] "%i bekannte freigegebene Datei gefunden"
 msgstr[1] "%i bekannte freigegebene Dateien gefunden"
 
 #: src/SharedFileList.cpp:370
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
-msgstr[0] "%i bekannte Dateie gefunden, %i unbekannt"
+msgstr[0] "%i bekannte Datei gefunden, %i unbekannt"
 msgstr[1] "%i bekannte Dateien gefunden, %i unbekannt"
 
 #: src/SharedFileList.cpp:379
 #, c-format
 msgid "ERROR: Attempted to share %s"
-msgstr "FEHLER: Versucht, %s freizugeben"
+msgstr "FEHLER: Versuchte %s freizugeben"
 
 #: src/SharedFileList.cpp:403
 #, c-format
 msgid "Shared directory not found, skipping: %s"
-msgstr "Freigegebenes Verzeichnis nicht gefunden, überspringe %s"
+msgstr "Freigegebenes Verzeichnis nicht gefunden, überspringe: %s"
 
 #: src/SharedFileList.cpp:475
 #, c-format
 msgid "No shareable files found in directory: %s"
-msgstr "Keine freigebaren Dateien im Ordner gefunden: %s"
+msgstr "Keine freigebbaren Dateien im Ordner gefunden: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
 msgid "User Name"
@@ -5971,8 +5973,7 @@ msgstr "Kopiere eD2k-Verweis in die Zwischenablage (&AICH Info)"
 #: src/SharedFilesCtrl.cpp:317
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
-"Du brauchst eine hohe ID (\"HighID\"), um einen gültigen Quellenverweis zu "
-"erstellen"
+"Du brauchst eine hohe ID, um einen gültigen Quellenverweis zu erstellen"
 
 #: src/SharedFilesCtrl.cpp:463
 #, c-format
@@ -6259,7 +6260,7 @@ msgstr ""
 
 #: src/TextClient.cpp:359
 msgid "Processing by hash: "
-msgstr "Verarbeite Datei Nnach Hash:"
+msgstr "Verarbeite Datei nach Hash:"
 
 #: src/TextClient.cpp:373
 msgid "Processing by filename: "
@@ -6317,7 +6318,7 @@ msgstr "Momentane IP-Filterstufe ist %d.\n"
 #: src/TextClient.cpp:685
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "Bandbreiteneinstellungen: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr "Bandbreiteneinstellungen: Hoch: %u kB/s, Herunter: %u kB/s.\n"
 
 #: src/TextClient.cpp:699
 msgid "eD2k"
@@ -6404,7 +6405,8 @@ msgstr "Zeige kurze Statusinformation."
 #: src/TextClient.cpp:851
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
-"Verbindungszustand, momentane Up/Downloadgeschwindigkeit, usw. zeigen\n"
+"Verbindungszustand, momentane Geschwindigkeit des Hoch-/Herunterladens, usw. "
+"zeigen\n"
 
 #: src/TextClient.cpp:853
 msgid "Show full statistics tree."
@@ -6847,7 +6849,7 @@ msgstr "Aussetzen des Hochladens der Datei '%s'."
 #: src/UserEvents.cpp:131
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
-msgstr "Befehlsausführung fehlgeschlagen: Befehl `%s' aufgrund Eregnis `%s'."
+msgstr "Befehlsausführung fehlgeschlagen: Befehl `%s' aufgrund Ereignis `%s'."
 
 #: src/UserEvents.h:60
 msgid "Download completed"
