@@ -928,7 +928,7 @@ static CECPacket *Get_EC_Response_Friend(const CECPacket *request)
 		if (subtag) {
 			CUpDownClient * client = theApp->clientlist->FindClientByECID(subtag->GetInt());
 			if (client) {
-				theApp->friendlist->AddFriend(client);
+				theApp->friendlist->AddFriend(CCLIENTREF(client, wxT("Get_EC_Response_Friend theApp->friendlist->AddFriend")));
 				response = new CECPacket(EC_OP_NOOP);
 			}
 		} else {

@@ -682,7 +682,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 				sender->UpdateFileRatingCommentAvail();
 			}
 			
-			Notify_SourceCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
+			Notify_SourceCtrlAddSource(sender, CCLIENTREF(source, wxT("CDownloadQueue::CheckAndAddSource Notify_SourceCtrlAddSource 1")), UNAVAILABLE_SOURCE);
 		}
 	} else {
 		// Unknown client, add it to the clients list
@@ -695,7 +695,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 			sender->UpdateFileRatingCommentAvail();
 		}
 	
-		Notify_SourceCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
+		Notify_SourceCtrlAddSource(sender, CCLIENTREF(source, wxT("CDownloadQueue::CheckAndAddSource Notify_SourceCtrlAddSource 2")), UNAVAILABLE_SOURCE);
 	}
 }
 
@@ -740,7 +740,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	if ( file ) {
 		if ( file != sender ) {
 			if ( source->AddRequestForAnotherFile( sender ) ) {
-				Notify_SourceCtrlAddSource( sender, source, A4AF_SOURCE );
+				Notify_SourceCtrlAddSource( sender, CCLIENTREF(source, wxT("CDownloadQueue::CheckAndAddKnownSource Notify_SourceCtrlAddSource 1")), A4AF_SOURCE );
 			}
 		}
 	} else {
@@ -752,7 +752,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 
 		source->SetSourceFrom(SF_PASSIVE);
 		sender->AddSource( source );
-		Notify_SourceCtrlAddSource( sender, source, UNAVAILABLE_SOURCE);
+		Notify_SourceCtrlAddSource( sender, CCLIENTREF(source, wxT("CDownloadQueue::CheckAndAddKnownSource Notify_SourceCtrlAddSource 2")), UNAVAILABLE_SOURCE);
 	}
 }
 

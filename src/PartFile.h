@@ -392,8 +392,8 @@ public:
 	bool IsLocalSrcRequestQueued() const		{ return m_localSrcReqQueued; }
 	void SetLocalSrcRequestQueued(bool value) 	{ m_localSrcReqQueued = value; }
 
-	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(src); }
-	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(src) > 0); }
+	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, wxT("A4AFSource"))); }
+	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, wxEmptyString)) > 0); }
 
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }

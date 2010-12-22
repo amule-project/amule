@@ -3206,9 +3206,9 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
 {
 	CClientRefList::iterator it = 
-		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
+		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), CCLIENTREF(client, wxEmptyString));
 	if (it == m_downloadingSourcesList.end()) {
-		m_downloadingSourcesList.push_back(client);
+		m_downloadingSourcesList.push_back(CCLIENTREF(client, wxT("CPartFile::AddDownloadingSource")));
 	}
 }
 
@@ -3216,7 +3216,7 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 void CPartFile::RemoveDownloadingSource(CUpDownClient* client)
 {
 	CClientRefList::iterator it = 
-		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
+		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), CCLIENTREF(client, wxEmptyString));
 	if (it != m_downloadingSourcesList.end()) {
 		m_downloadingSourcesList.erase(it);
 	}
@@ -3490,7 +3490,7 @@ void CPartFile::ClientStateChanged( int oldState, int newState )
 
 bool CPartFile::AddSource( CUpDownClient* client )
 {
-	if (m_SrcList.insert( client ).second) {
+	if (m_SrcList.insert(CCLIENTREF(client, wxT("CPartFile::AddSource"))).second) {
 		theStats::AddFoundSource();
 		theStats::AddSourceOrigin(client->GetSourceFrom());
 		return true;
@@ -3502,7 +3502,7 @@ bool CPartFile::AddSource( CUpDownClient* client )
 	
 bool CPartFile::DelSource( CUpDownClient* client )
 {
-	if (m_SrcList.erase( client )) {
+	if (m_SrcList.erase(CCLIENTREF(client, wxEmptyString))) {
 		theStats::RemoveSourceOrigin(client->GetSourceFrom());
 		theStats::RemoveFoundSource();
 		return true;
@@ -3602,13 +3602,13 @@ void CPartFile::SetCategory(uint8 cat)
 
 bool CPartFile::AddSource(CUpDownClient* client)
 {
-	return m_SrcList.insert(client).second != 0;
+	return m_SrcList.insert(CCLIENTREF(client, wxT("CPartFile::AddSource"))).second != 0;
 }
 
 	
 bool CPartFile::DelSource(CUpDownClient* client)
 {
-	return m_SrcList.erase(client) != 0;
+	return m_SrcList.erase(CCLIENTREF(client, wxEmptyString)) != 0;
 }
 
 

@@ -1165,14 +1165,20 @@ CRemoteContainer<CClientRef, uint32, CEC_UpDownClient_Tag>(conn, true)
 CClientRef::CClientRef(CEC_UpDownClient_Tag *tag)
 {
 	m_client = new CUpDownClient(tag);
+#ifdef DEBUG_ZOMBIE_CLIENTS
+	m_client->Link(wxT("TAG"));
+#else
 	m_client->Link();
+#endif
 }
 
 
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 {
 	m_linked = 0;
+#ifdef DEBUG_ZOMBIE_CLIENTS
 	m_linkedDebug = false;
+#endif
 	// Clients start up empty, then get asked for their data.
 	// So all data here is processed in ProcessItemUpdate and thus updatable.
 	//!!: todo, not filled through EC
@@ -1215,16 +1221,32 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	credits = new CClientCredits(new CreditStruct());
 }
 
-void CUpDownClient::Unlink()
+#ifdef DEBUG_ZOMBIE_CLIENTS
+void CUpDownClient::Unlink(const wxString& from)
 {
+	std::multiset<wxString>::iterator it = m_linkedFrom.find(from);
+	if (it != m_linkedFrom.end()) {
+		m_linkedFrom.erase(it);
+	}
 	m_linked--;
 	if (!m_linked) {
 		if (m_linkedDebug) {
-			AddDebugLogLineN(logGeneral, CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
+			AddLogLineN(CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
 		}
 		delete this;
 	}
 }
+
+#else
+
+void CUpDownClient::Unlink()
+{
+	m_linked--;
+	if (!m_linked) {
+		delete this;
+	}
+}
+#endif
 
 
 uint64 CUpDownClient::GetDownloadedTotal() const 
@@ -1283,10 +1305,12 @@ void CUpDownClientListRem::DeleteItem(CClientRef *clientref)
 		client->m_Friend = NULL;
 	}
 
+#ifdef DEBUG_ZOMBIE_CLIENTS
 	if (client->m_linked > 1) {
-		AddDebugLogLineN(logGeneral, CFormat(wxT("Client %d still linked in %d places!")) % client->ECID() % (client->m_linked - 1));
+		AddLogLineC(CFormat(wxT("Client %d still linked in %d places: %s")) % client->ECID() % (client->m_linked - 1) % client->GetLinkedFrom());
 		client->m_linkedDebug = true;
 	}
+#endif
 
 	delete clientref;
 }
@@ -1403,7 +1427,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 			client->m_reqfile = (CPartFile *) kf;
 			client->m_reqfile->AddSource(client);
 			client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
-			Notify_SourceCtrlAddSource(client->m_reqfile, client, A4AF_SOURCE);
+			Notify_SourceCtrlAddSource(client->m_reqfile, CCLIENTREF(client, wxT("AddSource")), A4AF_SOURCE);
 			notified = true;
 		}
 	}
@@ -2041,7 +2065,7 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 
 void CUpDownClient::RequestSharedFileList()
 {
-	CClientRef ref(this);
+	CClientRef ref = CCLIENTREF(this, wxEmptyString);
 	theApp->friendlist->RequestSharedFileList(ref);
 }
 

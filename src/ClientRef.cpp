@@ -32,30 +32,42 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #endif
 
+#ifdef DEBUG_ZOMBIE_CLIENTS
+#define MFROM m_from
+#define ASSIGN_MFROM(a) m_from = a
+#else
+#define MFROM
+#define ASSIGN_MFROM(a)
+#endif
+
+
 CClientRef::CClientRef(const CClientRef& ref)
 {
 	m_client = ref.m_client;
+	ASSIGN_MFROM(ref.m_from);
 	if (m_client) {
-		m_client->Link();
+		m_client->Link(MFROM);
 	}
 }
 
 
-CClientRef::CClientRef(CUpDownClient * client)
+CClientRef::CClientRef(CUpDownClient * client LINKED_FROM)
 {
 	m_client = client;
+	ASSIGN_MFROM(from);
 	if (m_client) {
-		m_client->Link();
+		m_client->Link(MFROM);
 	}
 }
 
 
-void CClientRef::Link(CUpDownClient * client)
+void CClientRef::Link(CUpDownClient * client LINKED_FROM)
 {
 	Unlink();
 	m_client = client;
+	ASSIGN_MFROM(from);
 	if (m_client) {
-		m_client->Link();
+		m_client->Link(MFROM);
 	}
 }
 
@@ -63,7 +75,7 @@ void CClientRef::Link(CUpDownClient * client)
 void CClientRef::Unlink()
 {
 	if (m_client) {
-		m_client->Unlink();
+		m_client->Unlink(MFROM);
 		m_client = NULL;
 	}
 }
@@ -75,7 +87,7 @@ void CClientRef::Unlink()
 CUpDownClient * CClientRef::GetClientChecked()
 {
 	if (m_client && m_client->HasBeenDeleted()) {
-		m_client->Unlink();
+		m_client->Unlink(MFROM);
 		m_client = NULL;
 	}
 	return m_client;
@@ -85,7 +97,7 @@ CUpDownClient * CClientRef::GetClientChecked()
 CClientRef&	CClientRef::GetRef()
 {
 	if (m_client && m_client->HasBeenDeleted()) {
-		m_client->Unlink();
+		m_client->Unlink(MFROM);
 		m_client = NULL;
 	}
 	return *this;
