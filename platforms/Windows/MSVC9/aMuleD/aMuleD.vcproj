@@ -386,6 +386,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\ClientRef.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\ClientTCPSocket.cpp"
 				>
 			</File>
