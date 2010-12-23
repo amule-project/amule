@@ -318,11 +318,11 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 			default:
 				AddDebugLogLineC(logServerUDP, CFormat(wxT("Unknown Server UDP opcode %x")) % opcode);
 		}
-	} catch (const wxString& error) {
+	} catch (const wxString& DEBUG_ONLY(error)) {
 		AddDebugLogLineN(logServerUDP, wxT("Error while processing incoming UDP Packet: ") + error);
-	} catch (const CInvalidPacket& error) {
+	} catch (const CInvalidPacket& DEBUG_ONLY(error)) {
 		AddDebugLogLineN(logServerUDP, wxT("Invalid UDP packet encountered: ") + error.what());
-	} catch (const CEOFException& e) {
+	} catch (const CEOFException& DEBUG_ONLY(e)) {
 		AddDebugLogLineN(logServerUDP, wxT("IO error while processing incoming UDP Packet: ") + e.what());
 	}
 	
