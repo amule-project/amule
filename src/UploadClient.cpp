@@ -267,7 +267,7 @@ void CUpDownClient::CreateNextBlockPackage()
 		}
 
 		return;
-	} catch (const wxString& error) {
+	} catch (const wxString& DEBUG_ONLY(error)) {
 		AddDebugLogLineN(logClient, 
 			CFormat(wxT("Client '%s' (%s) caused error while creating packet (%s) - disconnecting client"))
 				% GetUserName() % GetFullIP() % error);
