@@ -198,6 +198,7 @@
     <ClCompile Include="..\..\..\..\src\ClientCredits.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientCreditsList.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientList.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientRef.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientTCPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\ClientUDPSocket.cpp" />
     <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp" />

@@ -294,6 +294,9 @@
     <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp">
       <Filter>Source Files KAD</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ClientRef.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\GapList.h">
