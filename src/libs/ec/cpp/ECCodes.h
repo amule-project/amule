@@ -265,7 +265,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_OBFUSCATION_STATUS          = 0x0618,
 		EC_TAG_CLIENT_CURRENTLYUNUSED1            = 0x0619,
 		EC_TAG_CLIENT_REMOTE_QUEUE_RANK           = 0x061A,
-		EC_TAG_CLIENT_ASKED_COUNT                 = 0x061B,
+		EC_TAG_CLIENT_DISABLE_VIEW_SHARED         = 0x061B,
 		EC_TAG_CLIENT_UPLOAD_STATE                = 0x061C,
 		EC_TAG_CLIENT_EXT_PROTOCOL                = 0x061D,
 		EC_TAG_CLIENT_USER_ID                     = 0x061E,
@@ -278,6 +278,10 @@ enum ECTagNames {
 		EC_TAG_CLIENT_NEXT_REQUESTED_PART         = 0x0625,
 		EC_TAG_CLIENT_LAST_DOWNLOADING_PART       = 0x0626,
 		EC_TAG_CLIENT_REMOTE_FILENAME             = 0x0627,
+		EC_TAG_CLIENT_MOD_VERSION                 = 0x0628,
+		EC_TAG_CLIENT_OS_INFO                     = 0x0629,
+		EC_TAG_CLIENT_AVAILABLE_PARTS             = 0x062A,
+		EC_TAG_CLIENT_UPLOAD_PART_STATUS          = 0x062B,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
@@ -704,7 +708,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0618: return wxT("EC_TAG_CLIENT_OBFUSCATION_STATUS");
 		case 0x0619: return wxT("EC_TAG_CLIENT_CURRENTLYUNUSED1");
 		case 0x061A: return wxT("EC_TAG_CLIENT_REMOTE_QUEUE_RANK");
-		case 0x061B: return wxT("EC_TAG_CLIENT_ASKED_COUNT");
+		case 0x061B: return wxT("EC_TAG_CLIENT_DISABLE_VIEW_SHARED");
 		case 0x061C: return wxT("EC_TAG_CLIENT_UPLOAD_STATE");
 		case 0x061D: return wxT("EC_TAG_CLIENT_EXT_PROTOCOL");
 		case 0x061E: return wxT("EC_TAG_CLIENT_USER_ID");
@@ -717,6 +721,10 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0625: return wxT("EC_TAG_CLIENT_NEXT_REQUESTED_PART");
 		case 0x0626: return wxT("EC_TAG_CLIENT_LAST_DOWNLOADING_PART");
 		case 0x0627: return wxT("EC_TAG_CLIENT_REMOTE_FILENAME");
+		case 0x0628: return wxT("EC_TAG_CLIENT_MOD_VERSION");
+		case 0x0629: return wxT("EC_TAG_CLIENT_OS_INFO");
+		case 0x062A: return wxT("EC_TAG_CLIENT_AVAILABLE_PARTS");
+		case 0x062B: return wxT("EC_TAG_CLIENT_UPLOAD_PART_STATUS");
 		case 0x0700: return wxT("EC_TAG_SEARCHFILE");
 		case 0x0701: return wxT("EC_TAG_SEARCH_TYPE");
 		case 0x0702: return wxT("EC_TAG_SEARCH_NAME");
