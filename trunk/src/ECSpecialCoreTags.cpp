@@ -292,7 +292,6 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, client->GetUploadQueueWaitingPosition()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, client->IsRemoteQueueFull() ? (uint16)0xffff : client->GetRemoteQueueRank()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK, client->GetOldRemoteQueueRank()), valuemap);
-	AddTag(CECTag(EC_TAG_CLIENT_ASKED_COUNT, client->GetAskedCount()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_OBFUSCATION_STATUS, client->GetObfuscationStatus()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_KAD_PORT, client->GetKadPort()), valuemap);
 	AddTag(CECTag(EC_TAG_CLIENT_FRIEND_SLOT, client->GetFriendSlot()), valuemap);
@@ -314,6 +313,11 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	if (detail_level != EC_DETAIL_INC_UPDATE) {
 		return;
 	}
+	AddTag(CECTag(EC_TAG_CLIENT_DISABLE_VIEW_SHARED, client->HasDisabledSharedFiles()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_VERSION, client->GetVersion()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_MOD_VERSION, client->GetClientModString()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_OS_INFO, client->GetClientOSInfo()), valuemap);
+	AddTag(CECTag(EC_TAG_CLIENT_AVAILABLE_PARTS, client->GetAvailablePartCount()), valuemap);
 	if (pfile) {
 		const BitVector & partStatus = client->GetPartStatus();
 		if (partStatus.size() == pfile->GetPartCount()) {
@@ -326,6 +330,12 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 		}
 		AddTag(CECTag(EC_TAG_CLIENT_NEXT_REQUESTED_PART, client->GetNextRequestedPart()), valuemap);
 		AddTag(CECTag(EC_TAG_CLIENT_LAST_DOWNLOADING_PART, client->GetLastDownloadingPart()), valuemap);
+	}
+	if (file) {
+		const BitVector & upPartStatus = client->GetUpPartStatus();
+		if (upPartStatus.size() == file->GetPartCount()) {
+			AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_PART_STATUS, upPartStatus.SizeBuffer(), upPartStatus.GetBuffer()), valuemap);
+		}
 	}
 }
 

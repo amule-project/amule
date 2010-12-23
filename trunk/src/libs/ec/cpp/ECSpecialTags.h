@@ -325,7 +325,6 @@ class CEC_UpDownClient_Tag : public CECTag {
 		uint16 WaitingPosition(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_WAITING_POSITION, target); }
 		uint16 RemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_REMOTE_QUEUE_RANK, target); }
 		uint16 OldRemoteQueueRank(uint16 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_OLD_REMOTE_QUEUE_RANK, target); }
-		uint32 AskedCount(uint32 *target = 0) const { return AssignIfExist(EC_TAG_CLIENT_ASKED_COUNT, target); }
 
 		EIdentState GetCurrentIdentState(EIdentState * target = 0) const { return (EIdentState) AssignIfExist(EC_TAG_CLIENT_IDENT_STATE, (uint32 *) target); }
 		bool ObfuscationStatus(uint8 &target) const { return AssignIfExist(EC_TAG_CLIENT_OBFUSCATION_STATUS, target); }
@@ -336,6 +335,11 @@ class CEC_UpDownClient_Tag : public CECTag {
 		bool UploadFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_UPLOAD_FILE, target); }
 		bool RequestFile(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_REQUEST_FILE, target); }
 		bool RemoteFilename(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_REMOTE_FILENAME, target); }
+ 		bool DisableViewShared(bool &target) const { return AssignIfExist(EC_TAG_CLIENT_DISABLE_VIEW_SHARED, target); }
+ 		bool Version(uint32 &target) const { return AssignIfExist(EC_TAG_CLIENT_VERSION, target); }
+ 		bool ModVersion(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_MOD_VERSION, target); }
+ 		bool OSInfo(wxString &target) const { return AssignIfExist(EC_TAG_CLIENT_OS_INFO, target); }
+ 		bool AvailableParts(uint16 &target) const { return AssignIfExist(EC_TAG_CLIENT_AVAILABLE_PARTS, target); }
 	private:
 		CMD4Hash	GetMD4Data();	// Block it, because it doesn't work anymore! 
 };

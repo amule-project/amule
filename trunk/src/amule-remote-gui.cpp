@@ -1181,9 +1181,8 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 #endif
 	// Clients start up empty, then get asked for their data.
 	// So all data here is processed in ProcessItemUpdate and thus updatable.
-	//!!: todo, not filled through EC
 	m_bEmuleProtocol		= false;
-	m_AvailPartCount		= 0;	//!!
+	m_AvailPartCount		= 0;
 	m_clientSoft			= 0;
 	m_nDownloadState		= 0;
 	m_Friend				= NULL;
@@ -1209,14 +1208,10 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_nUploadState			= 0;
 	m_nUserIDHybrid			= 0;
 	m_nUserPort				= 0;
-	m_nClientVersion		= 0;	//!!
-	m_fNoViewSharedFiles	= false;//!!
+	m_nClientVersion		= 0;
+	m_fNoViewSharedFiles	= false;
 	m_identState			= IS_NOTAVAILABLE;
 	m_bRemoteQueueFull		= false;
-
-	//wxString	m_strModVersion;	//!!
-	//wxString	m_sClientOSInfo;	//!!
-	//BitVector	m_upPartStatus;		//!!
 
 	credits = new CClientCredits(new CreditStruct());
 }
@@ -1369,7 +1364,6 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	tag->RemoteQueueRank(&client->m_nRemoteQueueRank);
 	client->m_bRemoteQueueFull = client->m_nRemoteQueueRank == 0xffff;
 	tag->OldRemoteQueueRank(&client->m_nOldRemoteQueueRank);
-	//tag->AskedCount(&client->m_cAsked);
 	
 	tag->ClientDownloadState(client->m_nDownloadState);
 	if (tag->ClientUploadState(client->m_nUploadState)) {
@@ -1411,6 +1405,11 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	}
 
 	tag->RemoteFilename(client->m_clientFilename);
+	tag->DisableViewShared(client->m_fNoViewSharedFiles);
+	tag->Version(client->m_nClientVersion);
+	tag->ModVersion(client->m_strModVersion);
+	tag->OSInfo(client->m_sClientOSInfo);
+	tag->AvailableParts(client->m_AvailPartCount);
 
 	// Download client
 	uint32 fileID;
@@ -1471,9 +1470,19 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		CKnownFile * kf = theApp->knownfiles->GetByID(fileID);
 		if (kf) {
 			client->m_uploadingfile = kf;
+			client->m_upPartStatus.setsize(kf->GetPartCount(), 0);
 			client->m_uploadingfile->AddUploadingClient(client);	// this notifies
 			notified = true;
 		}
+	}
+
+	// Part status
+	partStatusTag = tag->GetTagByName(EC_TAG_CLIENT_UPLOAD_PART_STATUS);
+	if (partStatusTag) {
+		if (partStatusTag->GetTagDataLen() == client->m_upPartStatus.SizeBuffer()) {
+			client->m_upPartStatus.SetBuffer(partStatusTag->GetTagData());
+		}
+		notified = false;
 	}
 
 	if (!notified && client->m_uploadingfile 
