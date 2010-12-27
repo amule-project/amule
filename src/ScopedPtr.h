@@ -26,6 +26,7 @@
 #ifndef SCOPEDPTR_H
 #define SCOPEDPTR_H
 
+#include "OtherFunctions.h"		// Needed for DeleteContents()
 
 /**
  * CScopedPtr is a simple smart pointer.
@@ -130,6 +131,54 @@ private:
 	//@}
 
 	TYPE* m_ptr;
+};
+
+
+/**
+ * Similar to CScopedPtr, except that a STL container of pointers is expected
+ * which has to be freed with DeleteContents.
+ *
+ * @see CScopedPtr
+ */
+template <typename STL_CONTAINER>
+class CScopedContainer
+{
+public:
+	/** Constructor. Note that CScopedContainer takes ownership of the array. */
+	CScopedContainer(STL_CONTAINER* ptr)
+		: m_ptr(ptr)
+	{}
+
+	CScopedContainer()
+	{
+		m_ptr = new STL_CONTAINER;
+	}
+
+	~CScopedContainer()	
+	{
+		if (m_ptr) {
+			DeleteContents(*m_ptr);
+			delete m_ptr;
+		}
+	}
+
+	//@{
+	/** Deference operators. */
+	STL_CONTAINER& operator*() const	{ return *m_ptr; }
+	//@}
+
+
+	/** Returns the actual pointer value. */
+	STL_CONTAINER* get() const			{ return m_ptr; }
+
+private:
+	//@{
+	//! A scoped container is neither copyable, nor assignable.
+	CScopedContainer(const CScopedContainer<STL_CONTAINER>&);
+	CScopedContainer<STL_CONTAINER>& operator=(const CScopedContainer<STL_CONTAINER>&);
+	//@}
+
+	STL_CONTAINER* m_ptr;
 };
 
 #endif // SCOPEDPTR_H

@@ -965,16 +965,9 @@ void CKademliaUDPListener::ProcessSearchResponse(CMemFile& bio)
 		// supposed to be 'viewed' by user only and not feed into the Kad engine again!
 		// If that tag list is once used for something else than for viewing, special care has to be taken for any
 		// string conversion!
-		TagPtrList* tags = new TagPtrList;
-		try {
-			bio.ReadTagPtrList(tags, true/*bOptACP*/);
-		} catch(...) {
-			deleteTagPtrListEntries(tags);
-			delete tags;
-			tags = NULL;
-			throw;
-		}
-		CSearchManager::ProcessResult(target, answer, tags);
+ 		CScopedContainer<TagPtrList> tags;
+		bio.ReadTagPtrList(tags.get(), true/*bOptACP*/);
+		CSearchManager::ProcessResult(target, answer, tags.get());
 		count--;
 	}
 }
