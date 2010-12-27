@@ -720,7 +720,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 
 	DEBUG_ONLY( uint32_t ignoredCount = 0; )
 	DEBUG_ONLY( uint32_t kad1Count = 0; )
-	CScopedPtr<ContactList> results(new ContactList);
+	CScopedPtr<ContactList> results;
 	for (uint8_t i = 0; i < numContacts; i++) {
 		CUInt128 id = bio.ReadUInt128();
 		uint32_t contactIP = bio.ReadUInt32();

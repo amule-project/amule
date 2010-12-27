@@ -118,7 +118,7 @@ void CHashingTask::Entry()
 	}
 	
 	// For thread-safety, results are passed via a temporary file object.
-	CScopedPtr<CKnownFile> knownfile(new CKnownFile());
+	CScopedPtr<CKnownFile> knownfile;
 	knownfile->m_filePath = m_path;
 	knownfile->SetFileName(m_filename);
 	knownfile->SetFileSize(fileLength);

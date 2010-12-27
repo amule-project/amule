@@ -41,9 +41,14 @@ class CScopedPtr
 {
 public:
 	/** Constructor. Note that CScopedPtr takes ownership of the pointer. */
-	CScopedPtr(TYPE* ptr = 0)
+	CScopedPtr(TYPE* ptr)
 		: m_ptr(ptr)
 	{}
+
+	CScopedPtr()
+	{
+		m_ptr = new TYPE;
+	}
 
 	/** Frees the pointer owned by the instance. */
 	~CScopedPtr()			{ delete m_ptr; }
@@ -90,7 +95,7 @@ class CScopedArray
 {
 public:
 	/** Constructor. Note that CScopedArray takes ownership of the array. */
-	CScopedArray(TYPE* ptr = 0)
+	CScopedArray(TYPE* ptr)
 		: m_ptr(ptr)
 	{}
 
