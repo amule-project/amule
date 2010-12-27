@@ -97,7 +97,7 @@ bool CKnownFileList::Init()
 		AddDebugLogLineN(logKnownFiles, CFormat(wxT("Reading %i known files from file format 0x%2.2x."))
 			% RecordsNumber % version);
 		for (uint32 i = 0; i < RecordsNumber; i++) {
-			CScopedPtr<CKnownFile> record(new CKnownFile());
+			CScopedPtr<CKnownFile> record;
 			if (record->LoadFromFile(&file)) {
 				AddDebugLogLineN(logKnownFiles,
 					CFormat(wxT("Known file read: %s")) % record->GetFileName());
