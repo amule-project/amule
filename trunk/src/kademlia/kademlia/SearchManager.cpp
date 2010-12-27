@@ -512,8 +512,6 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 	} else {
 		s->ProcessResult(answer, info);
 	}
-	deleteTagPtrListEntries(info);
-	delete info;
 }
 
 bool CSearchManager::FindNodeSpecial(const CUInt128& id, CKadClientSearcher *requester)
