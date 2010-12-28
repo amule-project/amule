@@ -146,10 +146,12 @@ static const wxString EmptyString = wxEmptyString;
 #ifdef _MSC_VER
 	#define NOMINMAX
 	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
-#endif
+#else
 	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
 	#include <wingdi.h>	// Do_not_auto_remove
 	#include <winuser.h>	// Do_not_auto_remove
+	#include <winbase.h> // Do_not_auto_remove
+#endif
 	// Windows compilers don't have these constants
 	#ifndef W_OK
 		enum
@@ -161,7 +163,8 @@ static const wxString EmptyString = wxEmptyString;
 		};
 	#endif // W_OK
 	#include <wx/msw/winundef.h>	// Do_not_auto_remove
-#elif !defined(_MSC_VER)
+	#undef GetUserName
+#else // __WXMSW_
 	typedef struct sRECT {
 	  uint32 left;
 	  uint32 top;
