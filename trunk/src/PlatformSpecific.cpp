@@ -310,50 +310,35 @@ PlatformSpecific::EFSType PlatformSpecific::GetFilesystemType(const CPath& path)
 
 	return s_fscache[path.GetRaw()] = doGetFilesystemType(path);
 }
+
+
 // Power event vetoing
 
 static bool m_preventingSleepMode = false;
 
-#ifdef __WXMSW__
-
-#else
-	#ifdef __WXMAC__
-		// 10.5 only
-		#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
-			#include <IOKit/pwr_mgt/IOPMLib.h>
-			static IOPMAssertionID assertionID;
-		#else
-			#warning Power event vetoing not implemented.
-		#endif
-	#else
-		#warning Power event vetoing not implemented.
-	#endif
+#if defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050	// 10.5 only
+	#include <IOKit/pwr_mgt/IOPMLib.h>
+	static IOPMAssertionID assertionID;
 #endif
 
 void PlatformSpecific::PreventSleepMode()
 {
 	if (!m_preventingSleepMode) {
-		#ifdef __WXMSW__
+		#ifdef _MSC_VER
 			SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
 			m_preventingSleepMode = true;
+		#elif defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050	// 10.5 only
+			IOReturn success = IOPMAssertionCreate(kIOPMAssertionTypeNoDisplaySleep, 
+												kIOPMAssertionLevelOn, &assertionID); 
+			if (success == kIOReturnSuccess) {
+				// Correctly vetoed, flag so we don't do it again.
+				m_preventingSleepMode = true;
+			} else {
+				// ??
+			}
 		#else
-			#ifdef __WXMAC__
-				// 10.5 only
-				#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
-					IOReturn success = IOPMAssertionCreate(kIOPMAssertionTypeNoDisplaySleep, 
-														kIOPMAssertionLevelOn, &assertionID); 
-					if (success == kIOReturnSuccess) {
-						// Correctly vetoed, flag so we don't do it again.
-						m_preventingSleepMode = true;
-					} else {
-						// ??
-					}
-				#else
-					// Not implemented	
-				#endif
-			#else
-				// Not implemented
-			#endif
+			#warning Power event vetoing not implemented.
+			// Not implemented	
 		#endif
 	}
 }
@@ -361,26 +346,19 @@ void PlatformSpecific::PreventSleepMode()
 void PlatformSpecific::AllowSleepMode()
 {
 	if (m_preventingSleepMode) {
-		#ifdef __WXMSW__
+		#ifdef _MSC_VER
 			SetThreadExecutionState(ES_CONTINUOUS); // Clear the system request flag.
 			m_preventingSleepMode = false;
+		#elif defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050	// 10.5 only
+			IOReturn success = IOPMAssertionRelease(assertionID); 
+			if (success == kIOReturnSuccess) {
+				// Correctly restored, flag so we don't do it again.
+				m_preventingSleepMode = false;
+			} else {
+				// ??
+			}
 		#else
-			#ifdef __WXMAC__
-				// 10.5 only
-				#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
-					IOReturn success = IOPMAssertionRelease(assertionID); 
-					if (success == kIOReturnSuccess) {
-						// Correctly restored, flag so we don't do it again.
-						m_preventingSleepMode = false;
-					} else {
-						// ??
-					}
-				#else
-					// Not implemented
-				#endif
-			#else
-				// Not implemented
-			#endif
+			// Not implemented
 		#endif
 	}
 }
