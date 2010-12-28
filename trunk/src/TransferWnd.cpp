@@ -87,10 +87,9 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	clientlistctrl   = CastChild( ID_CLIENTLIST, CSourceListCtrl );
 	m_dlTab          = CastChild( ID_CATEGORIES, CMuleNotebook );
 	
-	CMuleNotebook* nb = CastChild( ID_CATEGORIES, CMuleNotebook );
 	// We want to use our own popup
-	nb->SetPopupHandler( this );
-	
+	m_dlTab->SetPopupHandler( this );
+
 	// Set default category
 	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatFilter());
 	theApp->glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
