@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-05 17:19+0100\n"
-"PO-Revision-Date: 2010-07-02 13:46+0300\n"
+"PO-Revision-Date: 2010-12-28 07:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,14 +52,14 @@ msgid "Now, exiting main app..."
 msgstr "Ok, lahkun põhiprogrammist..."
 
 #: src/amule.cpp:259
-#, c-format
+#, fuzzy, c-format
 msgid "Terminating amuleweb instance with pid `%ld' ... "
-msgstr "Mõrvan amuleweb tegelase, protsessi id `%ld' ... "
+msgstr "Mõrvan amuleweb tegelase, protsessi id '%ld' ... "
 
 #: src/amule.cpp:262
-#, c-format
+#, fuzzy, c-format
 msgid "Killing amuleweb instance with pid `%ld' ... "
-msgstr "Mõrvan amuleweb tegelase, protsessi id `%ld' ... "
+msgstr "Mõrvan amuleweb tegelase, protsessi id '%ld' ... "
 
 #: src/amule.cpp:264 src/ClientDetailDialog.cpp:181 src/ServerListCtrl.cpp:94
 msgid "Failed"
@@ -1228,7 +1228,7 @@ msgstr "Ühenduse viga"
 
 #: src/DataToText.cpp:75
 msgid "Remote Queue Full"
-msgstr "Järjekord täis"
+msgstr "KaugJärjekord täis"
 
 #: src/DataToText.cpp:105
 msgid "Old MLDonkey"
@@ -1617,12 +1617,11 @@ msgstr ""
 "kokkusobimatus.Kasuta sama versiooni tuuma ja kaugklienti."
 
 #: src/ExternalConn.cpp:447
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
-"Sa ei saa ajutise SVN versiooniga ühenduda reliisi versiooniga!!!! *RRRRRR* "
+"Ajutise arendusversiooniga ei saa ühenduda reliisi versiooniga!!!! *RRRRRR* "
 "hoidsin ära võimaliku crässi"
 
 #: src/ExternalConn.cpp:474
@@ -2082,7 +2081,7 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:991
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
 msgstr "JK: %u (%i)"
 
@@ -2095,9 +2094,9 @@ msgid "Waiting for upload slot"
 msgstr "Ootan saatmise slotti"
 
 #: src/GenericClientListCtrl.cpp:1022
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "Järjekorras"
+msgstr "Järjekorras: %u"
 
 #: src/GenericClientListCtrl.cpp:1025
 msgid "Uploading"
@@ -2298,6 +2297,8 @@ msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
 msgstr ""
+"nodes.dat faili laadimine ebaõnnestus -  fail on liiga vana. See versiooni "
+"(0) on toetuseta."
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -3186,9 +3187,8 @@ msgid "Secure ident:"
 msgstr "Turvaline ident:"
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "Järjekorras"
+msgstr "Järjekorras:"
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -3249,7 +3249,7 @@ msgstr "Luba Riba(tray) ikoon"
 
 #: src/muuli_wdr.cpp:1495
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr "Siin saad lubada/keelata süsteemiriba (või tegumiriba) ikooni."
+msgstr "Valituna lubadab süsteemiriba (või tegumiriba) ikooni."
 
 #: src/muuli_wdr.cpp:1498
 msgid "Minimize to Tray Icon"
@@ -3468,7 +3468,7 @@ msgstr "Samast kategooriast"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "Tähestikulises järjekorras"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3640,7 +3640,7 @@ msgstr "Serveriühenduse värskenadamise intervall: Ei kasuta"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Keela arvuti ajastatud uinumine"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3680,7 +3680,7 @@ msgstr "Vertikaalne tööriistariba paigutus"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Näita klientide riigi lippe"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -3817,6 +3817,7 @@ msgid "Change priority for new assigned files :"
 msgstr "Muuda uute failide prioriteeti :"
 
 #: src/muuli_wdr.cpp:2396
+#, fuzzy
 msgid "Dont change"
 msgstr "Ära muuda"
 
@@ -4277,27 +4278,22 @@ msgid "Active Uploads"
 msgstr "Aktiivsed saatmised"
 
 #: src/muuli_wdr.cpp:3373
-#, fuzzy
 msgid "Percent of total files"
-msgstr "% kogufailidest"
+msgstr "Protsenti kogufailidest"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "All files"
-msgstr "Kõik jagatud failid"
+msgstr "Kõik failid"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Selected files"
-msgstr "Vali vaate filter"
+msgstr "Valitud failid"
 
 #: src/muuli_wdr.cpp:3422
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Aktiivsed saatmised"
+msgstr "Ainult aktiivsed saatmised"
 
 #: src/muuli_wdr.cpp:3424
-#, fuzzy
 msgid "Show Clients for"
 msgstr "Näita Kliente"
 
@@ -4501,6 +4497,7 @@ msgid "Remove sources?"
 msgstr "Eemaldan allikaid?"
 
 #: src/PartFile.cpp:290
+#, fuzzy
 msgid "ERROR: Failed to create partfile)"
 msgstr "VIGA: Ei suutnud luua osafaili!"
 
@@ -4983,19 +4980,16 @@ msgid "- UDP port changed.\n"
 msgstr "- UDP port muudetud.\n"
 
 #: src/PrefsUnifiedDlg.cpp:575
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Välisühendus suleti"
+msgstr "- Välisühenduse port on muutunud.\n"
 
 #: src/PrefsUnifiedDlg.cpp:579
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Kinnitati uus väline ühendus"
+msgstr "- Välisühenduse luba on muudetud.\n"
 
 #: src/PrefsUnifiedDlg.cpp:583
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Välisühendus suleti"
+msgstr "- Välisühenduse liides muutunud.\n"
 
 #: src/PrefsUnifiedDlg.cpp:592
 msgid ""
@@ -5159,7 +5153,7 @@ msgid "disabled"
 msgstr "keelatud"
 
 #: src/PrefsUnifiedDlg.cpp:1160
-#, c-format
+#, fuzzy, c-format
 msgid "Execute command on `%s' event"
 msgstr "Käivita käsk peale '%s' sündmust"
 
@@ -5662,9 +5656,8 @@ msgid "Kademlia Status:"
 msgstr "Kademlia Olek:"
 
 #: src/ServerWnd.cpp:207
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "Jookseb %s peal"
+msgstr "Jookseb LAN olekus"
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
@@ -5796,12 +5789,10 @@ msgid "Available Parts"
 msgstr "Saadaval osi"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "Saatmise olek"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "Tõmbamise olek"
 
@@ -5810,9 +5801,8 @@ msgid "Origin"
 msgstr "Allikas"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "Faili nimi"
+msgstr "Kohalik faili nimi"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -5900,9 +5890,8 @@ msgid "Download Status"
 msgstr "Tõmbamise olek"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Faili nimi"
+msgstr "Kaugfaili nimi"
 
 #: src/Statistics.cpp:650
 #, c-format
@@ -6150,9 +6139,9 @@ msgid "Never"
 msgstr "Mitte kunagi"
 
 #: src/TerminationProcess.cpp:47
-#, c-format
+#, fuzzy, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
-msgstr "Käsk `%s' protsessi'id %d' lõpetas staatusega`%d'."
+msgstr "Käsk '%s' protsessi'id '%d' lõpetas staatusega '%d'."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
@@ -6297,12 +6286,11 @@ msgstr "Otsingu tulemusi: %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Otsing : %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Näita edenemist protsentuaalselt"
+msgstr "Otsingu edenemist ei saa näidata"
 
 #: src/TextClient.cpp:837
 #, c-format
@@ -6404,7 +6392,7 @@ msgstr "Ühendu ainult Kad võrku."
 
 #: src/TextClient.cpp:872
 msgid "Disconnect from the network."
-msgstr "Lõpeta ühendus võrguga."
+msgstr "Lahku võrgust."
 
 #: src/TextClient.cpp:873
 msgid "This will disconnect from all networks that are currently connected.\n"
@@ -7488,6 +7476,9 @@ msgstr "Töötlen päringut [ümbersuunatud]: "
 
 #~ msgid "WARNING: Failed to delete %s"
 #~ msgstr "HOIATUS: Ei suutnud %s kustutada"
+
+#~ msgid "%u"
+#~ msgstr "%u"
 
 #~ msgid "%u (QR: %u)"
 #~ msgstr "%u (JK: %u)"
