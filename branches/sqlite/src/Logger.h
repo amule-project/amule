@@ -111,7 +111,9 @@ enum DebugType
 	//! Full log of external connection packets
 	logEC,
 	//! Warnings/Errors related to HTTP traffic
-	logHTTP
+	logHTTP,
+	//! Warnings/Errors related to sqlite
+	logSQL
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };

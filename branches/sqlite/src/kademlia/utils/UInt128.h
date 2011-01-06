@@ -119,6 +119,32 @@ public:
 	CUInt128& SetValueBE(const uint8_t *valueBE) throw();
 
 	/**
+	 * Conversion from/to two uint64_t
+	 *
+	 * There are no calculations applied, so choice of low/highword causes
+	 * no platform dependence.
+	 */
+	CUInt128& SetValue(uint64_t low, uint64_t high) throw()
+	{
+		m_data[0] = (uint32_t) low;
+		m_data[1] = (uint32_t) (low >> 32);
+		m_data[2] = (uint32_t) high;
+		m_data[3] = (uint32_t) (high >> 32);
+		return *this;
+	}
+
+	uint64_t GetLowerHalf() const throw()
+	{
+		return (((uint64_t) (m_data[1])) << 32) | m_data[0];
+	}
+
+	uint64_t GetUpperHalf() const throw()
+	{
+		return (((uint64_t) (m_data[3])) << 32) | m_data[2];
+	}
+
+
+	/**
 	 * Stores value used by the crypt functions.
 	 *
 	 * Since eMule started to use the value as-is (four little-endian 32-bit integers in big-endian order),

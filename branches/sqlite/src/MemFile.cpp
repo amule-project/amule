@@ -182,4 +182,29 @@ void CMemFile::ResetData()
 	m_position	= 0;
 }
 
+
+// Compare content to that of other memfile (from its start to its current position).
+// Returns -1 if equal, otherwise first different position.
+// With different size files with same start return pos of first byte behind the shorter file.
+sint64 CMemFile::Compare(const CMemFile& other)
+{
+	sint64 lastpos, endpos;
+	if (m_position < other.m_position) {
+		lastpos = m_position;
+		endpos = m_position;
+	} else if (m_position > other.m_position) {
+		lastpos = other.m_position;
+		endpos = other.m_position;
+	} else {	// same size
+		lastpos = -1;
+		endpos = m_position;
+	}
+	for (sint64 pos = 0; pos < endpos; pos ++) {
+		if (m_buffer[pos] != other.m_buffer[pos]) {
+			return pos;
+		}
+	}
+	return lastpos;
+}
+
 // File_checked_for_headers

@@ -37,6 +37,7 @@ there client on the eMule forum..
 */
 
 #include "Indexed.h"
+#include "IndexedDB.h"
 
 
 #include <protocol/Protocols.h>
@@ -55,6 +56,7 @@ there client on the eMule forum..
 #include "../../amule.h"
 #include "../../Preferences.h"
 #include "../../Logger.h"
+#include "../../Database.h"
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -80,6 +82,9 @@ CIndexed::CIndexed()
 void CIndexed::ReadFile()
 {
 	try {
+		CDatabaseTransaction transaction(theApp->database);
+		CIndexedDB *indexedDB = CKademlia::GetIndexedDB();
+
 		uint32_t totalLoad = 0;
 		uint32_t totalSource = 0;
 		uint32_t totalKeyword = 0;
@@ -161,6 +166,8 @@ void CIndexed::ReadFile()
 									}
 									uint8_t load;
 									if (AddKeyword(keyID, sourceID, toAdd, load)) {
+										uint8 load1;
+										indexedDB->AddKeyword(keyID, sourceID, toAdd, load1);
 										totalKeyword++;
 									} else {
 										delete toAdd;
@@ -732,7 +739,7 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32_t timet)
 	return true;
 }
 
-void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey)
+void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey, CMemFile & mirror)
 {
 	KeyHash* currKeyHash = NULL;
 	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID);
@@ -777,6 +784,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 								currName->WriteTagListWithPublishInfo(&packetdata);
 								if (count % 50 == 0) {
 									DebugSend(Kad2SearchRes, ip, port);
+									mirror.AppendContent(packetdata);
 									CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 									packetdata.Reset();
 									packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
@@ -808,6 +816,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 				packetdata.Seek(16 + 16);
 				packetdata.WriteUInt16(countLeft);
 				DebugSend(Kad2SearchRes, ip, port);
+				mirror.AppendContent(packetdata);
 				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 			}
 		}

@@ -76,7 +76,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logKadPacketTracking,	wxT("Kademlia Packet Tracking") ),
 	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") ),
 	CDebugCategory( logEC,			wxT("External Connect") ),
-	CDebugCategory( logHTTP,		wxT("HTTP") )
+	CDebugCategory( logHTTP,		wxT("HTTP") ),
+	CDebugCategory( logSQL,			wxT("Sqlite database") )
 };
 
 

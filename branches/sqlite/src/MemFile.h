@@ -133,6 +133,13 @@ public:
 
 	// Sometimes it's useful to get the buffer and do stuff with it.
 	byte* GetRawBuffer() const { return m_buffer; }
+
+	// Append content of other memfile (from its start to its current position)
+	void AppendContent(const CMemFile& other) { Write(other.GetRawBuffer(), other.GetPosition()); }
+	
+	// Compare content to that of other memfile (from its start to its current position).
+	// Returns -1 if equal, otherwise first different position.
+	sint64 Compare(const CMemFile& other);
 	
 protected:
 	/** @see CFileDataIO::doRead */

@@ -216,6 +216,7 @@
     <ClCompile Include="..\..\..\..\src\CommentDialog.cpp" />
     <ClCompile Include="..\..\..\..\src\CommentDialogLst.cpp" />
     <ClCompile Include="..\..\..\..\src\CorruptionBlackBox.cpp" />
+    <ClCompile Include="..\..\..\..\src\Database.cpp" />
     <ClCompile Include="..\..\..\..\src\DataToText.cpp" />
     <ClCompile Include="..\..\..\..\src\DeadSourceList.cpp" />
     <ClCompile Include="..\..\..\..\src\DirectoryTreeCtrl.cpp" />
@@ -248,6 +249,7 @@
     <ClCompile Include="..\..\..\..\src\KadDlg.cpp" />
     <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Entry.cpp" />
     <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Indexed.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\IndexedDB.cpp" />
     <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Kademlia.cpp" />
     <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Prefs.cpp" />
     <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Search.cpp" />
@@ -289,6 +291,15 @@
     <ClCompile Include="..\..\..\..\src\PartFileConvertDlg.cpp" />
     <ClCompile Include="..\..\..\..\src\SharedFilePeersListCtrl.cpp" />
     <ClCompile Include="..\..\..\..\src\SourceListCtrl.cpp" />
+    <ClCompile Include="..\..\..\..\src\sqlite3.c">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</BasicRuntimeChecks>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeaderFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
     <ClCompile Include="..\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -370,6 +381,7 @@
     <ClInclude Include="..\..\..\..\src\Constants.h" />
     <ClInclude Include="..\..\..\..\src\CorruptionBlackBox.h" />
     <ClInclude Include="..\..\..\..\src\CryptoPP_Inc.h" />
+    <ClInclude Include="..\..\..\..\src\Database.h" />
     <ClInclude Include="..\..\..\..\src\DataToText.h" />
     <ClInclude Include="..\..\..\..\src\DeadSourceList.h" />
     <ClInclude Include="..\..\..\..\src\DirectoryTreeCtrl.h" />
@@ -382,6 +394,7 @@
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Entry.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Error.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Indexed.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\IndexedDB.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Kademlia.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Prefs.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\kademlia\Search.h" />
