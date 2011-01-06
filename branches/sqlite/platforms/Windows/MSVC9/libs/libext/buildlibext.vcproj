@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="buildlibext"
+	ProjectGUID="{F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6}"
+	RootNamespace="MSVCExpressExtLibs"
+	TargetFrameworkVersion="196613"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="10"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description=""
+				CommandLine=""
+				Outputs=""
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="join external libs"
+				CommandLine="if not exist ..\..\$(ConfigurationName) mkdir ..\..\$(ConfigurationName)&#x0D;&#x0A;lib /out:..\..\$(ConfigurationName)\libext.lib &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_media.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxjpegd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_adv.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxregexud.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_richtext.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxzlibd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_qa.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud_xml.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud_odbc.lib&quot; &quot;..\..\..\..\..\..\cryptopp\win32\output\debug\cryptlib.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxtiffd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud_net.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_core.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_gl.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxpngd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_dbgrid.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_xrc.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxexpatd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_html.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_aui.lib&quot;&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="10"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description=""
+				CommandLine=""
+				Outputs=""
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="join external libs"
+				CommandLine="if not exist ..\..\$(ConfigurationName) mkdir ..\..\$(ConfigurationName)&#x0D;&#x0A;lib /out:..\..\$(ConfigurationName)\libext.lib &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_media.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxjpeg.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_adv.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxregexu.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_richtext.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxzlib.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_qa.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_xml.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_odbc.lib&quot; &quot;..\..\..\..\..\..\cryptopp\win32\output\release\cryptlib.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxtiff.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_net.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_core.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_gl.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxpng.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_dbgrid.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_xrc.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxexpat.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_html.lib&quot; &quot;..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_aui.lib&quot;&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug29|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="10"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description=""
+				CommandLine=""
+				Outputs=""
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="join external libs"
+				CommandLine="if not exist ..\..\$(ConfigurationName) mkdir ..\..\$(ConfigurationName)&#x0D;&#x0A;lib /out:..\..\$(ConfigurationName)\libext.lib &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_media.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxjpegd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_adv.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxregexud.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_richtext.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxzlibd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxbase29ud.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_qa.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxbase29ud_xml.lib&quot; &quot;..\..\..\..\..\..\cryptopp\win32\output\debug\cryptlib.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxtiffd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxbase29ud_net.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_core.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_gl.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxpngd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_xrc.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxexpatd.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_html.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29ud_aui.lib&quot;&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release29|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="10"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description=""
+				CommandLine=""
+				Outputs=""
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="join external libs"
+				CommandLine="if not exist ..\..\$(ConfigurationName) mkdir ..\..\$(ConfigurationName)&#x0D;&#x0A;lib /out:..\..\$(ConfigurationName)\libext.lib &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_media.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxjpeg.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_adv.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxregexu.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_richtext.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxzlib.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxbase29u.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_qa.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxbase29u_xml.lib&quot; &quot;..\..\..\..\..\..\cryptopp\win32\output\release\cryptlib.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxtiff.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxbase29u_net.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_core.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_gl.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxpng.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_xrc.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxexpat.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_html.lib&quot; &quot;..\..\..\..\..\..\wxwidgets29\lib\vc_lib\wxmsw29u_aui.lib&quot;&#x0D;&#x0A;"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,525 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# This file was originally written by Vollstrecker
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+export DEB_BUILD_OPTIONS_PARALLEL=3
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+#Here are the packages that can't be compiled separate now
+general_pkgs = "amule-common"\
+	"amule-skin-gnome"\
+	"amule-skin-kde4"\
+	"amule-skin-mac-gray"\
+	"amule-skin-priscilla"\
+	"amule-skin-tango"\
+	"amule-skin-xfce"
+
+# First, get the targets from commandline
+flags = ${MAKECMDGOALS}
+
+#First we have to find out, if we are called from dpkg-buildpackage
+
+ifeq ("binary", "$(findstring binary, $(flags))")
+
+	PLASMAMULE = --enable-plasmamule
+	WXCAS = --enable-wxcas
+	XAS = --enable-xas
+	CAS = --enable-cas
+	WEBSERVER = --enable-webserver
+	REMOTEGUI = --enable-amule-gui
+	DAEMON = --enable-amule-daemon
+	ALCC = --enable-alcc
+	ALC = --enable-alc
+	AMULECMD = --enable-amulecmd
+	DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	LANGFLAG = --with-language=all
+
+else ifeq ("build", "$(findstring build, $(flags))")
+
+	PLASMAMULE = --enable-plasmamule
+	WXCAS = --enable-wxcas
+	XAS = --enable-xas
+	CAS = --enable-cas
+	WEBSERVER = --enable-webserver
+	REMOTEGUI = --enable-amule-gui
+	DAEMON = --enable-amule-daemon
+	ALCC = --enable-alcc
+	ALC = --enable-alc
+	AMULECMD = --enable-amulecmd
+	DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	LANGFLAG = --with-language=all
+
+else
+	#Now we have to check what packages are build to configure only them
+
+	#We have to filter the right targets (wo_ means without)
+	wo_wxcas = $(subst wxcas,, ${flags})
+	wo_alcc = $(subst alcc,, ${flags})
+	wo_amule_utils_gui = $(subst amule-utils-gui,,${flags})
+	wo_all_other_amules = $(subst amulecmd,,$(subst amule-utils-gui,,$(subst amule-utils,,${flags})))
+	LANGUAGE := en_GB
+
+	ifeq ("plasmamule", "$(findstring plasmamule, $(flags))")
+		PLASMAMULE = --enable-plasmamule
+	endif
+
+	ifeq ("wxcas", "$(findstring wxcas, $(flags))")
+		WXCAS = --enable-wxcas
+	endif
+
+	ifeq ("cas", "$(findstring cas, $(wo_wxcas))")
+		CAS = --enable-cas
+	endif
+
+	ifeq ("webserver", "$(findstring webserver, $(flags))")
+		WEBSERVER = --enable-webserver
+	endif
+
+	ifeq ("remotegui", "$(findstring remotegui, $(flags))")
+		REMOTEGUI = --enable-amule-gui
+	endif
+
+	ifeq ("daemon", "$(findstring daemon, $(flags))")
+		DAEMON = --enable-amule-daemon
+	endif
+
+	ifeq ("alcc", "$(findstring alcc, $(flags))")
+		ALCC = --enable-alcc
+	endif
+
+	ifeq ("alc", "$(findstring alc, $(wo_alcc))")
+		ALC = --enable-alc
+	endif
+
+	ifeq ("amulecmd", "$(findstring amulecmd, $(flags))")
+		AMULECMD = --enable-amulecmd
+	endif
+
+	ifneq ("amule", "$(findstring amule, $(wo_all_other_amules))")
+		AMULE = --disable-monolithic
+	endif
+
+	ifneq ("ed2k", "$(findstring ed2k, $(flags))")
+		ED2K = --disable-ed2k
+	endif
+
+	ifeq ("xas", "$(findstring xas, $(flags))")
+		XAS = --enable-xas
+	endif
+
+	#Now find out if a Metapackage should be build
+	ifeq ("amule-utils-gui", "$(findstring amule-utils-gui, $(flags))")
+		ALC = --enable-alc
+		REMOTEGUI = --enable-amule-gui
+		WXCAS = --enable-wxcas
+	endif
+
+	ifeq ("amule-utils", "$(findstring amule-utils, $(wo_amule_utils_gui))")
+		ALCC = --enable-alcc
+		AMULECMD = --enable-amulecmd
+		CAS = --enable-cas
+	endif
+
+	#Find this whole i18n stuff
+	ifneq ("i18n-en-only", "$(findstring i18n-en-only, $(flags))")
+
+		ifeq ("i18n-ar", "$(findstring i18n-ar, $(flags))")
+			LANGUAGE := $(LANGUAGE),ar
+		endif
+
+		ifeq ("i18n-ast", "$(findstring i18n-ast, $(flags))")
+			LANGUAGE := $(LANGUAGE),ast
+		endif
+
+		ifeq ("i18n-bg", "$(findstring i18n-bg, $(flags))")
+			LANGUAGE := $(LANGUAGE),bg
+		endif
+
+		ifeq ("i18n-ca", "$(findstring i18n-ca, $(flags))")
+			LANGUAGE := $(LANGUAGE),ca
+		endif
+
+		ifeq ("i18n-cs", "$(findstring i18n-cs, $(flags))")
+			LANGUAGE := $(LANGUAGE),cs
+		endif
+
+		ifeq ("i18n-da", "$(findstring i18n-da, $(flags))")
+			LANGUAGE := $(LANGUAGE),da
+		endif
+
+		ifeq ("i18n-de", "$(findstring i18n-de, $(flags))")
+			LANGUAGE := $(LANGUAGE),de
+		endif
+
+		ifeq ("i18n-el", "$(findstring i18n-el, $(flags))")
+			LANGUAGE := $(LANGUAGE),el
+		endif
+
+		ifeq ("i18n-es", "$(findstring i18n-es, $(flags))")
+			LANGUAGE := $(LANGUAGE),es
+		endif
+
+		ifeq ("i18n-et-ee", "$(findstring i18n-et-ee, $(flags))")
+			LANGUAGE := $(LANGUAGE),et_EE
+		endif
+
+		ifeq ("i18n-eu", "$(findstring i18n-eu, $(flags))")
+			LANGUAGE := $(LANGUAGE),eu
+		endif
+
+		ifeq ("i18n-fi", "$(findstring i18n-fi, $(flags))")
+			LANGUAGE := $(LANGUAGE),fi
+		endif
+
+		ifeq ("i18n-fr", "$(findstring i18n-fr, $(flags))")
+			LANGUAGE := $(LANGUAGE),fr
+		endif
+
+		ifeq ("i18n-gl", "$(findstring i18n-gl, $(flags))")
+			LANGUAGE := $(LANGUAGE),gl
+		endif
+
+		ifeq ("i18n-he", "$(findstring i18n-he, $(flags))")
+			LANGUAGE := $(LANGUAGE),he
+		endif
+
+		ifeq ("i18n-hr", "$(findstring i18n-hr, $(flags))")
+			LANGUAGE := $(LANGUAGE),hr
+		endif
+
+		ifeq ("i18n-hu", "$(findstring i18n-hu, $(flags))")
+			LANGUAGE := $(LANGUAGE),hu
+		endif
+
+		ifeq ("i18n-it", "$(findstring i18n-it, $(flags))")
+			LANGUAGE := $(LANGUAGE),it
+		endif
+
+		ifeq ("i18n-it-ch", "$(findstring i18n-it-ch, $(flags))")
+			LANGUAGE := $(LANGUAGE),it_CH
+		endif
+
+		ifeq ("i18n-ja", "$(findstring i18n-ja, $(flags))")
+			LANGUAGE := $(LANGUAGE),ja
+		endif
+
+		ifeq ("i18n-ko-kr", "$(findstring i18n-ko-kr, $(flags))")
+			LANGUAGE := $(LANGUAGE),ko_KR
+		endif
+
+		ifeq ("i18n-lt", "$(findstring i18n-lt, $(flags))")
+			LANGUAGE := $(LANGUAGE),lt
+		endif
+
+		ifeq ("i18n-nl", "$(findstring i18n-nl, $(flags))")
+			LANGUAGE := $(LANGUAGE),hl
+		endif
+
+		ifeq ("i18n-nn", "$(findstring i18n-nn, $(flags))")
+			LANGUAGE := $(LANGUAGE),nn
+		endif
+
+		ifeq ("i18n-pl", "$(findstring i18n-pl, $(flags))")
+			LANGUAGE := $(LANGUAGE),pl
+		endif
+
+		ifeq ("i18n-pt-br", "$(findstring i18n-pt-br, $(flags))")
+			LANGUAGE := $(LANGUAGE),pt_BR
+		endif
+
+		ifeq ("i18n-pt-pt", "$(findstring i18n-pt-pt, $(flags))")
+			LANGUAGE := $(LANGUAGE),pt_PT
+		endif
+
+		ifeq ("i18n-ro", "$(findstring i18n-ro, $(flags))")
+			LANGUAGE := $(LANGUAGE),ro
+		endif
+
+		ifeq ("i18n-ru", "$(findstring i18n-ru, $(flags))")
+			LANGUAGE := $(LANGUAGE),ru
+		endif
+
+		ifeq ("i18n-sl", "$(findstring i18n-sl, $(flags))")
+			LANGUAGE := $(LANGUAGE),sl
+		endif
+
+		ifeq ("i18n-sq", "$(findstring i18n-sq, $(flags))")
+			LANGUAGE := $(LANGUAGE),sq
+		endif
+
+		ifeq ("i18n-sv", "$(findstring i18n-sv, $(flags))")
+			LANGUAGE := $(LANGUAGE),sv
+		endif
+
+		ifeq ("i18n-tr", "$(findstring i18n-tr, $(flags))")
+			LANGUAGE := $(LANGUAGE),tr
+		endif
+
+		ifeq ("i18n-uk", "$(findstring i18n-uk, $(flags))")
+			LANGUAGE := $(LANGUAGE),uk
+		endif
+
+		ifeq ("i18n-zh-cn", "$(findstring i18n-zh-cn, $(flags))")
+			LANGUAGE := $(LANGUAGE),zh_CN
+		endif
+
+		ifeq ("i18n-zh-tw", "$(findstring i18n-zh-tw, $(flags))")
+			LANGUAGE := $(LANGUAGE),zh_TW
+		endif
+
+		ifeq ($(LANGUAGE),en_GB)
+			LANGUAGE = all
+		endif
+
+	endif
+
+	LANGFLAG = --with-language=$(LANGUAGE)
+
+	#And at Last, find out if we compile a debug-package or not.
+	ifeq ("dbg", "$(findstring dbg, $(flags))")
+		DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	else
+		DEBUGGING = --disable-debug --enable-optimize --disable-profile 
+	endif
+endif
+
+#Before we start, I want to introduce two sequences for building the packages
+#I define two, so I can put the commands for the *-dbg packages between them
+define stage1
+	dh_testdir -p$(subst -stage1,,$@)
+	dh_testroot -p$(subst -stage1,,$@)
+	dh_installdirs -p$(subst -stage1,,$@)
+	dh_installchangelogs docs/Changelog -p$(subst -stage1,,$@)
+	dh_installdocs -p$(subst -stage1,,$@)
+	dh_install -Xlicense.txt -p$(subst -stage1,,$@)
+	dh_installmenu -p$(subst -stage1,,$@)
+	dh_installdebconf -p$(subst -stage1,,$@)
+	dh_installman -p$(subst -stage1,,$@)
+	dh_installmime -p$(subst -stage1,,$@)
+	dh_link -p$(subst -stage1,,$@)
+	dh_lintian -p$(subst -stage1,,$@)
+	touch $@
+endef
+
+define strip-stage
+	dh_strip -p$(subst -dbg,,$@) --dbg-package=$@
+endef
+
+define stage2
+	dh_compress -X.pl -p$(subst -stage2,,$@)
+	dh_perl -p$(subst -stage2,,$@)
+	dh_makeshlibs -p$(subst -stage2,,$@)
+	dh_installdeb -p$(subst -stage2,,$@)
+	dh_shlibdeps -p$(subst -stage2,,$@)
+	dh_gencontrol -p$(subst -stage2,,$@)
+	dh_md5sums -p$(subst -stage2,,$@)
+	dh_fixperms -p$(subst -stage2,,$@)
+	dh_builddeb -p$(subst -stage2,,$@)
+	touch $@
+endef
+
+#Now we configure this whole thing
+config.status: configure
+	dh_testdir
+	CFLAGS="$(CFLAGS)" dh_auto_configure -- --host=$(DEB_HOST_GNU_TYPE)\
+		LDFLAGS="-Wl,--as-needed ${LDFLAGS}"\
+		--enable-ccache\
+		--enable-geoip\
+		${PLASMAMULE}\
+		${AMULECMD}\
+		${DEBUGGING}\
+		${WEBSERVER}\
+		${CAS}\
+		${WXCAS}\
+		${ALC}\
+		${ALCC}\
+		${REMOTEGUI}\
+		${DAEMON}\
+		${AMULE}\
+		${ED2K}\
+		$(LANGFLAG)\
+		$(XAS)
+
+#And here is the well known clean target
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean
+	dh_auto_clean
+	dh_prep
+
+#Some generic targets to check the build process
+build: build-stamp
+
+build-stamp:  config.status
+	dh_testdir
+
+	dh_auto_build
+
+	touch build-stamp
+
+#Now we install the packages all together to the tmp-dir inside of debian/
+install: build
+	dh_testdir
+	dh_testroot
+
+	dh_auto_install
+
+#Now first build the packages that are compiled and installed on every build
+amule-common: install
+
+	for pkg in $(general_pkgs); do \
+		dh_testdir -p$$pkg; \
+		dh_testroot -p$$pkg; \
+		dh_installdirs -p$$pkg; \
+		dh_installchangelogs docs/Changelog -p$$pkg; \
+		dh_installdocs -p$$pkg; \
+		dh_install -Xlicense.txt -p$$pkg; \
+		dh_installmenu -p$$pkg; \
+		dh_installdebconf -p$$pkg; \
+		dh_installman -p$$pkg; \
+		dh_link -p$$pkg; \
+		dh_lintian -p$$pkg; \
+		dh_compress -X.pl -p$$pkg; \
+		dh_perl -p$$pkg; \
+		dh_makeshlibs -p$$pkg; \
+		dh_installdeb -p$$pkg; \
+		dh_shlibdeps -p$$pkg; \
+		dh_gencontrol -p$$pkg; \
+		dh_md5sums -p$$pkg; \
+		dh_fixperms -p$$pkg; \
+		dh_builddeb -p$$pkg; \
+	done
+	touch amule-common
+
+%-stage1: amule-common
+	${stage1}
+
+%-stage2: %-stage1
+	${stage2}
+
+amule-%-dbg: amule-%-stage1
+	${stage1}
+	$(strip-stage)
+	${stage2}
+
+amule-dbg: amule-stage1
+	${stage1}
+	$(strip-stage)
+	${stage2}
+
+amuleweb-dbg: amuleweb-stage1
+	${stage1}
+	$(strip-stage)
+	${stage2}
+
+#Now just the targets to map the Commandline Name to the package names
+amule: amule-stage2
+	touch @
+
+ed2k: amule-ed2k-stage2
+	touch @
+
+cas: amule-cas-stage2
+	touch @
+
+wxcas: amule-wxcas-stage2
+	touch @
+
+webserver: amuleweb-stage2 amule-theme-default-stage2
+	touch @
+
+remotegui: amule-remote-gui-stage2
+	touch @
+
+daemon: amule-daemon-stage2
+	touch @
+
+alc: amule-alc-stage2
+	touch @
+
+alcc: amule-alcc-stage2
+	touch @
+
+amulecmd: amule-cmd-stage2
+	touch @
+
+xas: amule-xas-stage2
+	touch @
+
+ed2k-dbg: amule-ed2k-dbg
+	touch @
+
+cas-dbg: amule-cas-dbg
+	touch @
+
+wxcas-dbg: amule-wxcas-dbg
+	touch @
+
+webserver-dbg: amuleweb-dbg
+	touch @
+
+remotegui-dbg: amule-remote-gui-dbg
+	touch @
+
+daemon-dbg: amule-daemon-dbg
+	touch @
+
+alc-dbg: amule-alc-dbg
+	touch @
+
+alcc-dbg: amule-alcc-dbg
+	touch @
+
+amulecmd-dbg: amule-cmd-dbg
+	touch @
+
+plasmamule: amule-plasmamule-stage2
+	touch @
+
+plasmamule-dbg: amule-plasmamule-dbg
+	touch @
+
+#Here come the Targets for the langauge packages
+i18n-%: amule-i18n-% ;  
+
+amule-i18n-%: amule-common
+	${stage1}
+	${stage2}
+
+#They are just metapackages
+amule-utils: alcc amulecmd cas
+	${stage1}
+	${stage2}
+
+amule-utils-gui: alc remotegui wxcas
+	${stage1}
+	${stage2}
+
+#These are empty (Space after Semicolon)
+debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg plasmamule-dbg; 
+normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas plasmamule ; 
+language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ro i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ;
+i18n-en-only: ; 
+
+#If we build from a svn checkout, we need to generate configure
+configure:
+	./autogen.sh
+
+#Now the targets for dpkg-buildpackage
+binary-indep: build install
+
+binary-arch: debug-packages normal-packages language-packages
+
+binary: binary-indep binary-arch
+
+help:
+	cat README.Debian-Packages
+
+.DEFAULT_GOAL = help
+.PHONY: build clean binary-indep binary-arch binary install debug-packages normal-packages i18n-only language-packages

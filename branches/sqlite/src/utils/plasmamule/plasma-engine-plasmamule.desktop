@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=aMule Plasma Engine
+Comment=Gathers Information about aMule
+Type=Service
+
+X-KDE-ServiceTypes=Plasma/DataEngine
+X-KDE-Library=plasma-engine-plasmamule
+X-Plasma-EngineName=plasmamule
+X-KDE-PluginInfo-Author=Werner Mahr (Vollstrecker)
+X-KDE-PluginInfo-Email=amule@vollstreckernet.de
+X-KDE-PluginInfo-Name=plasmamule
+X-KDE-PluginInfo-Version=0.5
+X-KDE-PluginInfo-Website=http://www.amule.org/
+X-KDE-PluginInfo-Category=Applications
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true

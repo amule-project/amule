@@ -1,0 +1,2 @@
+amule-plasmamule: desktop-entry-contains-unknown-key /usr/share/applications/plasmamule-engine-feeder.desktop:12 StartupWMClas
+amule-plasmamule: binary-without-manpage usr/bin/plasmamule-engine-feeder

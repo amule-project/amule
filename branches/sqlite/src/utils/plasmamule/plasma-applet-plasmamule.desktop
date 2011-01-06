@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=aMule Plasma Applet
+Comment=Prints Information about aMule
+Type=Service
+ServiceTypes=Plasma/Applet
+Icon=application-x-emulecollection
+
+X-KDE-Library=plasma-applet-plasmamule
+X-KDE-PluginInfo-Author=Werner Mahr (Vollstrecker)
+X-KDE-PluginInfo-Email=amule@vollstreckernet.de
+X-KDE-PluginInfo-Name=plasmamule
+X-KDE-PluginInfo-Version=0.5
+X-KDE-PluginInfo-Website=http://www.amule.org/
+X-KDE-PluginInfo-Category=Utilities
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true

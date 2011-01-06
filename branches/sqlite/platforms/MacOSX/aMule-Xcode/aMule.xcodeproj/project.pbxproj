@@ -1,0 +1,2058 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		483344701196275F00D9BE75 /* amule.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4833446F1196275F00D9BE75 /* amule.icns */; };
+		4848D2CF1192E83100ED40CC /* GenericClientListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4848D2CD1192E83100ED40CC /* GenericClientListCtrl.cpp */; };
+		4848DC291192E85A00ED40CC /* SharedFilePeersListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4848D8091192E85900ED40CC /* SharedFilePeersListCtrl.cpp */; };
+		4848DC2A1192E85A00ED40CC /* SourceListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4848D80B1192E85900ED40CC /* SourceListCtrl.cpp */; };
+		487911DA11925E61002C086E /* CFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879119511925E61002C086E /* CFile.cpp */; };
+		487911DB11925E61002C086E /* DataToText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879119711925E61002C086E /* DataToText.cpp */; };
+		487911DC11925E61002C086E /* ED2KLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879119911925E61002C086E /* ED2KLink.cpp */; };
+		487911DD11925E61002C086E /* GapList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879119B11925E61002C086E /* GapList.cpp */; };
+		487911DE11925E61002C086E /* MagnetURI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879119D11925E61002C086E /* MagnetURI.cpp */; };
+		487911DF11925E61002C086E /* MemFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879119F11925E61002C086E /* MemFile.cpp */; };
+		487911E111925E61002C086E /* Packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911A311925E61002C086E /* Packet.cpp */; };
+		487911E211925E61002C086E /* RLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911A511925E61002C086E /* RLE.cpp */; };
+		487911E311925E61002C086E /* SafeFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911A711925E61002C086E /* SafeFile.cpp */; };
+		487911E411925E61002C086E /* SHA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911A911925E61002C086E /* SHA.cpp */; };
+		487911E511925E61002C086E /* Tag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911AB11925E61002C086E /* Tag.cpp */; };
+		487911E611925E61002C086E /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911AD11925E61002C086E /* Timer.cpp */; };
+		4879120211925FDD002C086E /* AsyncDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911E811925FDD002C086E /* AsyncDNS.cpp */; };
+		4879120311925FDD002C086E /* DeadSourceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911EA11925FDD002C086E /* DeadSourceList.cpp */; };
+		4879120411925FDD002C086E /* FileArea.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911EC11925FDD002C086E /* FileArea.cpp */; };
+		4879120511925FDD002C086E /* FileAutoClose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911EE11925FDD002C086E /* FileAutoClose.cpp */; };
+		4879120611925FDD002C086E /* Friend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911F011925FDD002C086E /* Friend.cpp */; };
+		4879120711925FDD002C086E /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911F211925FDD002C086E /* Parser.cpp */; };
+		4879120811925FDD002C086E /* PlatformSpecific.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911F411925FDD002C086E /* PlatformSpecific.cpp */; };
+		4879120911925FDD002C086E /* RandomFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911F611925FDD002C086E /* RandomFunctions.cpp */; };
+		4879120A11925FDD002C086E /* RC4Encrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911F811925FDD002C086E /* RC4Encrypt.cpp */; };
+		4879120B11925FDD002C086E /* Scanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911FA11925FDD002C086E /* Scanner.cpp */; };
+		4879120C11925FDD002C086E /* StateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911FC11925FDD002C086E /* StateMachine.cpp */; };
+		4879120D11925FDD002C086E /* ThreadScheduler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487911FE11925FDD002C086E /* ThreadScheduler.cpp */; };
+		4879120E11925FDD002C086E /* UPnPBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879120011925FDD002C086E /* UPnPBase.cpp */; };
+		48791C961192601F002C086E /* Entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487917E11192601E002C086E /* Entry.cpp */; };
+		48791C971192601F002C086E /* SearchManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487917E31192601E002C086E /* SearchManager.cpp */; };
+		48791D081192607A002C086E /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791CD91192607A002C086E /* Contact.cpp */; };
+		48791D091192607A002C086E /* RoutingBin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791CDB1192607A002C086E /* RoutingBin.cpp */; };
+		48791D0C119260A0002C086E /* UInt128.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D0A119260A0002C086E /* UInt128.cpp */; };
+		48791D2A11926A0E002C086E /* BarShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D0E11926A0E002C086E /* BarShader.cpp */; };
+		48791D2B11926A0E002C086E /* ChatWnd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1011926A0E002C086E /* ChatWnd.cpp */; };
+		48791D2C11926A0E002C086E /* ColorFrameCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1211926A0E002C086E /* ColorFrameCtrl.cpp */; };
+		48791D2D11926A0E002C086E /* CommentDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1411926A0E002C086E /* CommentDialog.cpp */; };
+		48791D2E11926A0E002C086E /* CommentDialogLst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1611926A0E002C086E /* CommentDialogLst.cpp */; };
+		48791D2F11926A0E002C086E /* EditServerListDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1811926A0E002C086E /* EditServerListDlg.cpp */; };
+		48791D3011926A0E002C086E /* FileDetailListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1A11926A0E002C086E /* FileDetailListCtrl.cpp */; };
+		48791D3111926A0E002C086E /* IP2Country.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1C11926A0E002C086E /* IP2Country.cpp */; };
+		48791D3211926A0E002C086E /* MuleCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D1E11926A0E002C086E /* MuleCollection.cpp */; };
+		48791D3311926A0E002C086E /* MuleGifCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D2011926A0E002C086E /* MuleGifCtrl.cpp */; };
+		48791D3411926A0E002C086E /* MuleListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D2211926A0E002C086E /* MuleListCtrl.cpp */; };
+		48791D3511926A0E002C086E /* MuleNotebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D2411926A0E002C086E /* MuleNotebook.cpp */; };
+		48791D3611926A0E002C086E /* MuleTextCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D2611926A0E002C086E /* MuleTextCtrl.cpp */; };
+		48791D3711926A0E002C086E /* muuli_wdr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D2811926A0E002C086E /* muuli_wdr.cpp */; };
+		48791D3B11926A2E002C086E /* listctrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D3911926A2E002C086E /* listctrl.cpp */; };
+		48791D7C11926AEE002C086E /* amule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D3D11926AEE002C086E /* amule.cpp */; };
+		48791D7D11926AEE002C086E /* BaseClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D3F11926AEE002C086E /* BaseClient.cpp */; };
+		48791D7E11926AEE002C086E /* CanceledFileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4011926AEE002C086E /* CanceledFileList.cpp */; };
+		48791D7F11926AEE002C086E /* ClientCreditsList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4211926AEE002C086E /* ClientCreditsList.cpp */; };
+		48791D8011926AEE002C086E /* ClientList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4411926AEE002C086E /* ClientList.cpp */; };
+		48791D8111926AEE002C086E /* ClientTCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4611926AEE002C086E /* ClientTCPSocket.cpp */; };
+		48791D8211926AEE002C086E /* ClientUDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4811926AEE002C086E /* ClientUDPSocket.cpp */; };
+		48791D8311926AEE002C086E /* CorruptionBlackBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4A11926AEE002C086E /* CorruptionBlackBox.cpp */; };
+		48791D8411926AEE002C086E /* DownloadClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4C11926AEE002C086E /* DownloadClient.cpp */; };
+		48791D8511926AEE002C086E /* DownloadQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4D11926AEE002C086E /* DownloadQueue.cpp */; };
+		48791D8611926AEE002C086E /* ECSpecialCoreTags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D4F11926AEE002C086E /* ECSpecialCoreTags.cpp */; };
+		48791D8711926AEE002C086E /* EMSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5011926AEE002C086E /* EMSocket.cpp */; };
+		48791D8811926AEE002C086E /* EncryptedDatagramSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5211926AEE002C086E /* EncryptedDatagramSocket.cpp */; };
+		48791D8911926AEE002C086E /* EncryptedStreamSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5411926AEE002C086E /* EncryptedStreamSocket.cpp */; };
+		48791D8A11926AEE002C086E /* ExternalConn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5611926AEE002C086E /* ExternalConn.cpp */; };
+		48791D8B11926AEE002C086E /* FriendList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5711926AEE002C086E /* FriendList.cpp */; };
+		48791D8C11926AEE002C086E /* HTTPDownload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5911926AEE002C086E /* HTTPDownload.cpp */; };
+		48791D8D11926AEE002C086E /* IPFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5B11926AEE002C086E /* IPFilter.cpp */; };
+		48791D8E11926AEE002C086E /* KnownFileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5D11926AEE002C086E /* KnownFileList.cpp */; };
+		48791D8F11926AEE002C086E /* ListenSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D5F11926AEE002C086E /* ListenSocket.cpp */; };
+		48791D9011926AEE002C086E /* MuleUDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6111926AEE002C086E /* MuleUDPSocket.cpp */; };
+		48791D9111926AEE002C086E /* PartFileConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6311926AEE002C086E /* PartFileConvert.cpp */; };
+		48791D9211926AEE002C086E /* SearchFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6511926AEE002C086E /* SearchFile.cpp */; };
+		48791D9311926AEE002C086E /* SearchList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6711926AEE002C086E /* SearchList.cpp */; };
+		48791D9411926AEE002C086E /* ServerConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6911926AEE002C086E /* ServerConnect.cpp */; };
+		48791D9511926AEE002C086E /* ServerList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6B11926AEE002C086E /* ServerList.cpp */; };
+		48791D9611926AEE002C086E /* ServerSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6D11926AEE002C086E /* ServerSocket.cpp */; };
+		48791D9711926AEE002C086E /* ServerUDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D6F11926AEE002C086E /* ServerUDPSocket.cpp */; };
+		48791D9811926AEE002C086E /* SharedFileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D7111926AEE002C086E /* SharedFileList.cpp */; };
+		48791D9911926AEE002C086E /* TerminationProcessAmuleweb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D7311926AEE002C086E /* TerminationProcessAmuleweb.cpp */; };
+		48791D9A11926AEE002C086E /* ThreadTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D7511926AEE002C086E /* ThreadTasks.cpp */; };
+		48791D9B11926AEE002C086E /* UploadBandwidthThrottler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D7711926AEE002C086E /* UploadBandwidthThrottler.cpp */; };
+		48791D9C11926AEE002C086E /* UploadClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D7911926AEE002C086E /* UploadClient.cpp */; };
+		48791D9D11926AEE002C086E /* UploadQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791D7A11926AEE002C086E /* UploadQueue.cpp */; };
+		48791E1211926B21002C086E /* KademliaUDPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791DE311926B21002C086E /* KademliaUDPListener.cpp */; };
+		48791E1311926B21002C086E /* PacketTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791DE511926B21002C086E /* PacketTracking.cpp */; };
+		48791E3611926B41002C086E /* Indexed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791E2511926B41002C086E /* Indexed.cpp */; };
+		48791E3711926B41002C086E /* Kademlia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791E2711926B41002C086E /* Kademlia.cpp */; };
+		48791E3811926B41002C086E /* Prefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791E2911926B41002C086E /* Prefs.cpp */; };
+		48791E3911926B41002C086E /* Search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791E2B11926B41002C086E /* Search.cpp */; };
+		48791E3A11926B41002C086E /* UDPFirewallTester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791E2D11926B41002C086E /* UDPFirewallTester.cpp */; };
+		48791EA911926B54002C086E /* RoutingZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791E7C11926B54002C086E /* RoutingZone.cpp */; };
+		48791EDC11926CC7002C086E /* AddFriend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EAB11926CC7002C086E /* AddFriend.cpp */; };
+		48791EDD11926CC7002C086E /* amule-gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EAD11926CC7002C086E /* amule-gui.cpp */; };
+		48791EDE11926CC7002C086E /* amuleDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EAE11926CC7002C086E /* amuleDlg.cpp */; };
+		48791EDF11926CC7002C086E /* CatDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EB011926CC7002C086E /* CatDialog.cpp */; };
+		48791EE011926CC7002C086E /* ChatSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EB211926CC7002C086E /* ChatSelector.cpp */; };
+		48791EE111926CC7002C086E /* ClientDetailDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EB411926CC7002C086E /* ClientDetailDialog.cpp */; };
+		48791EE311926CC7002C086E /* DirectoryTreeCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EB811926CC7002C086E /* DirectoryTreeCtrl.cpp */; };
+		48791EE411926CC7002C086E /* DownloadListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EBA11926CC7002C086E /* DownloadListCtrl.cpp */; };
+		48791EE511926CC7002C086E /* FileDetailDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EBC11926CC7002C086E /* FileDetailDialog.cpp */; };
+		48791EE611926CC7002C086E /* FriendListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EBE11926CC7002C086E /* FriendListCtrl.cpp */; };
+		48791EE711926CC7002C086E /* KadDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EC011926CC7002C086E /* KadDlg.cpp */; };
+		48791EE811926CC7002C086E /* MuleColour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EC211926CC7002C086E /* MuleColour.cpp */; };
+		48791EE911926CC7002C086E /* MuleTrayIcon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EC411926CC7002C086E /* MuleTrayIcon.cpp */; };
+		48791EEA11926CC7002C086E /* OScopeCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EC611926CC7002C086E /* OScopeCtrl.cpp */; };
+		48791EEB11926CC7002C086E /* PartFileConvertDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EC811926CC7002C086E /* PartFileConvertDlg.cpp */; };
+		48791EEC11926CC7002C086E /* PrefsUnifiedDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ECA11926CC7002C086E /* PrefsUnifiedDlg.cpp */; };
+		48791EED11926CC7002C086E /* SearchDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ECC11926CC7002C086E /* SearchDlg.cpp */; };
+		48791EEE11926CC7002C086E /* SearchListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ECE11926CC7002C086E /* SearchListCtrl.cpp */; };
+		48791EEF11926CC7002C086E /* ServerListCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ED011926CC7002C086E /* ServerListCtrl.cpp */; };
+		48791EF011926CC7002C086E /* ServerWnd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ED211926CC7002C086E /* ServerWnd.cpp */; };
+		48791EF111926CC7002C086E /* SharedFilesCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ED411926CC7002C086E /* SharedFilesCtrl.cpp */; };
+		48791EF211926CC7002C086E /* SharedFilesWnd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ED611926CC7002C086E /* SharedFilesWnd.cpp */; };
+		48791EF311926CC7002C086E /* StatisticsDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791ED811926CC7002C086E /* StatisticsDlg.cpp */; };
+		48791EF411926CC7002C086E /* TransferWnd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791EDA11926CC7002C086E /* TransferWnd.cpp */; };
+		48791F8411926F24002C086E /* amuleAppCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F6611926F24002C086E /* amuleAppCommon.cpp */; };
+		48791F8511926F24002C086E /* ClientCredits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F6711926F24002C086E /* ClientCredits.cpp */; };
+		48791F8611926F24002C086E /* ECSpecialMuleTags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F6911926F24002C086E /* ECSpecialMuleTags.cpp */; };
+		48791F8711926F24002C086E /* GetTickCount.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F6A11926F24002C086E /* GetTickCount.cpp */; };
+		48791F8811926F24002C086E /* GuiEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F6C11926F24002C086E /* GuiEvents.cpp */; };
+		48791F8911926F24002C086E /* KnownFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F6E11926F24002C086E /* KnownFile.cpp */; };
+		48791F8A11926F24002C086E /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7011926F24002C086E /* Logger.cpp */; };
+		48791F8B11926F24002C086E /* PartFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7211926F24002C086E /* PartFile.cpp */; };
+		48791F8C11926F24002C086E /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7411926F24002C086E /* Preferences.cpp */; };
+		48791F8D11926F24002C086E /* Proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7611926F24002C086E /* Proxy.cpp */; };
+		48791F8E11926F24002C086E /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7811926F24002C086E /* Server.cpp */; };
+		48791F8F11926F24002C086E /* SHAHashSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7A11926F24002C086E /* SHAHashSet.cpp */; };
+		48791F9011926F24002C086E /* Statistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7C11926F24002C086E /* Statistics.cpp */; };
+		48791F9111926F24002C086E /* StatTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F7E11926F24002C086E /* StatTree.cpp */; };
+		48791F9211926F24002C086E /* TerminationProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F8011926F24002C086E /* TerminationProcess.cpp */; };
+		48791F9311926F24002C086E /* UserEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791F8211926F24002C086E /* UserEvents.cpp */; };
+		4879200511926F74002C086E /* NetworkFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791FD611926F74002C086E /* NetworkFunctions.cpp */; };
+		4879200611926F74002C086E /* OtherFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48791FD811926F74002C086E /* OtherFunctions.cpp */; };
+		487920371192730F002C086E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 487920361192730F002C086E /* libz.dylib */; };
+		4879206A119274FA002C086E /* FileFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879205C119274FA002C086E /* FileFunctions.cpp */; };
+		4879206B119274FA002C086E /* Format.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879205E119274FA002C086E /* Format.cpp */; };
+		4879206C119274FA002C086E /* MD5Sum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48792060119274FA002C086E /* MD5Sum.cpp */; };
+		4879206D119274FA002C086E /* MuleDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48792062119274FA002C086E /* MuleDebug.cpp */; };
+		4879206E119274FA002C086E /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48792064119274FA002C086E /* Path.cpp */; };
+		4879206F119274FA002C086E /* StringFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48792066119274FA002C086E /* StringFunctions.cpp */; };
+		48792070119274FA002C086E /* TextFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48792068119274FA002C086E /* TextFile.cpp */; };
+		487921EA11927582002C086E /* ECMuleSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879213211927582002C086E /* ECMuleSocket.cpp */; };
+		487921EB11927582002C086E /* ECPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879213411927582002C086E /* ECPacket.cpp */; };
+		487921EC11927582002C086E /* ECSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879213611927582002C086E /* ECSocket.cpp */; };
+		487921ED11927582002C086E /* ECSpecialTags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879213811927582002C086E /* ECSpecialTags.cpp */; };
+		487921EE11927582002C086E /* ECTag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879213A11927582002C086E /* ECTag.cpp */; };
+		487921EF11927582002C086E /* RemoteConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4879213C11927582002C086E /* RemoteConnect.cpp */; };
+		4879238511927626002C086E /* CaptchaDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487922C811927626002C086E /* CaptchaDialog.cpp */; };
+		4879238611927626002C086E /* CaptchaGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487922CA11927626002C086E /* CaptchaGenerator.cpp */; };
+		488D4E8F1192CB880089BF8E /* README BEFORE BUILDING.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 488D4E8E1192CB880089BF8E /* README BEFORE BUILDING.rtf */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = en; path = English.lproj/en; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		256AC3F00F4B6AF500CF3369 /* aMule_Xcode_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aMule_Xcode_Prefix.pch; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4833446F1196275F00D9BE75 /* amule.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = amule.icns; sourceTree = "<group>"; };
+		4848D2CD1192E83100ED40CC /* GenericClientListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GenericClientListCtrl.cpp; path = ../../../src/GenericClientListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		4848D2CE1192E83100ED40CC /* GenericClientListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GenericClientListCtrl.h; path = ../../../src/GenericClientListCtrl.h; sourceTree = SOURCE_ROOT; };
+		4848D8091192E85900ED40CC /* SharedFilePeersListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SharedFilePeersListCtrl.cpp; path = ../../../src/SharedFilePeersListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		4848D80A1192E85900ED40CC /* SharedFilePeersListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SharedFilePeersListCtrl.h; path = ../../../src/SharedFilePeersListCtrl.h; sourceTree = SOURCE_ROOT; };
+		4848D80B1192E85900ED40CC /* SourceListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SourceListCtrl.cpp; path = ../../../src/SourceListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		4848D80C1192E85900ED40CC /* SourceListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SourceListCtrl.h; path = ../../../src/SourceListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48636E2A119E5A4300BC3DB6 /* ArchSpecific.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArchSpecific.h; path = ../../../src/ArchSpecific.h; sourceTree = SOURCE_ROOT; };
+		48636E2B119E5A4300BC3DB6 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../../src/Constants.h; sourceTree = SOURCE_ROOT; };
+		48636E2C119E5A4300BC3DB6 /* CryptoPP_Inc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CryptoPP_Inc.h; path = ../../../src/CryptoPP_Inc.h; sourceTree = SOURCE_ROOT; };
+		4879119511925E61002C086E /* CFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CFile.cpp; path = ../../../src/CFile.cpp; sourceTree = SOURCE_ROOT; };
+		4879119611925E61002C086E /* CFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CFile.h; path = ../../../src/CFile.h; sourceTree = SOURCE_ROOT; };
+		4879119711925E61002C086E /* DataToText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataToText.cpp; path = ../../../src/DataToText.cpp; sourceTree = SOURCE_ROOT; };
+		4879119811925E61002C086E /* DataToText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataToText.h; path = ../../../src/DataToText.h; sourceTree = SOURCE_ROOT; };
+		4879119911925E61002C086E /* ED2KLink.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ED2KLink.cpp; path = ../../../src/ED2KLink.cpp; sourceTree = SOURCE_ROOT; };
+		4879119A11925E61002C086E /* ED2KLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ED2KLink.h; path = ../../../src/ED2KLink.h; sourceTree = SOURCE_ROOT; };
+		4879119B11925E61002C086E /* GapList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GapList.cpp; path = ../../../src/GapList.cpp; sourceTree = SOURCE_ROOT; };
+		4879119C11925E61002C086E /* GapList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GapList.h; path = ../../../src/GapList.h; sourceTree = SOURCE_ROOT; };
+		4879119D11925E61002C086E /* MagnetURI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MagnetURI.cpp; path = ../../../src/MagnetURI.cpp; sourceTree = SOURCE_ROOT; };
+		4879119E11925E61002C086E /* MagnetURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MagnetURI.h; path = ../../../src/MagnetURI.h; sourceTree = SOURCE_ROOT; };
+		4879119F11925E61002C086E /* MemFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MemFile.cpp; path = ../../../src/MemFile.cpp; sourceTree = SOURCE_ROOT; };
+		487911A011925E61002C086E /* MemFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemFile.h; path = ../../../src/MemFile.h; sourceTree = SOURCE_ROOT; };
+		487911A311925E61002C086E /* Packet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Packet.cpp; path = ../../../src/Packet.cpp; sourceTree = SOURCE_ROOT; };
+		487911A411925E61002C086E /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Packet.h; path = ../../../src/Packet.h; sourceTree = SOURCE_ROOT; };
+		487911A511925E61002C086E /* RLE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RLE.cpp; path = ../../../src/RLE.cpp; sourceTree = SOURCE_ROOT; };
+		487911A611925E61002C086E /* RLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLE.h; path = ../../../src/RLE.h; sourceTree = SOURCE_ROOT; };
+		487911A711925E61002C086E /* SafeFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SafeFile.cpp; path = ../../../src/SafeFile.cpp; sourceTree = SOURCE_ROOT; };
+		487911A811925E61002C086E /* SafeFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SafeFile.h; path = ../../../src/SafeFile.h; sourceTree = SOURCE_ROOT; };
+		487911A911925E61002C086E /* SHA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SHA.cpp; path = ../../../src/SHA.cpp; sourceTree = SOURCE_ROOT; };
+		487911AA11925E61002C086E /* SHA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHA.h; path = ../../../src/SHA.h; sourceTree = SOURCE_ROOT; };
+		487911AB11925E61002C086E /* Tag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tag.cpp; path = ../../../src/Tag.cpp; sourceTree = SOURCE_ROOT; };
+		487911AC11925E61002C086E /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tag.h; path = ../../../src/Tag.h; sourceTree = SOURCE_ROOT; };
+		487911AD11925E61002C086E /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = ../../../src/Timer.cpp; sourceTree = SOURCE_ROOT; };
+		487911AE11925E61002C086E /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = ../../../src/Timer.h; sourceTree = SOURCE_ROOT; };
+		487911E811925FDD002C086E /* AsyncDNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AsyncDNS.cpp; path = ../../../src/AsyncDNS.cpp; sourceTree = SOURCE_ROOT; };
+		487911E911925FDD002C086E /* AsyncDNS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncDNS.h; path = ../../../src/AsyncDNS.h; sourceTree = SOURCE_ROOT; };
+		487911EA11925FDD002C086E /* DeadSourceList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeadSourceList.cpp; path = ../../../src/DeadSourceList.cpp; sourceTree = SOURCE_ROOT; };
+		487911EB11925FDD002C086E /* DeadSourceList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeadSourceList.h; path = ../../../src/DeadSourceList.h; sourceTree = SOURCE_ROOT; };
+		487911EC11925FDD002C086E /* FileArea.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileArea.cpp; path = ../../../src/FileArea.cpp; sourceTree = SOURCE_ROOT; };
+		487911ED11925FDD002C086E /* FileArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileArea.h; path = ../../../src/FileArea.h; sourceTree = SOURCE_ROOT; };
+		487911EE11925FDD002C086E /* FileAutoClose.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileAutoClose.cpp; path = ../../../src/FileAutoClose.cpp; sourceTree = SOURCE_ROOT; };
+		487911EF11925FDD002C086E /* FileAutoClose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileAutoClose.h; path = ../../../src/FileAutoClose.h; sourceTree = SOURCE_ROOT; };
+		487911F011925FDD002C086E /* Friend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Friend.cpp; path = ../../../src/Friend.cpp; sourceTree = SOURCE_ROOT; };
+		487911F111925FDD002C086E /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = ../../../src/Friend.h; sourceTree = SOURCE_ROOT; };
+		487911F211925FDD002C086E /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Parser.cpp; path = ../../../src/Parser.cpp; sourceTree = SOURCE_ROOT; };
+		487911F311925FDD002C086E /* Parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Parser.hpp; path = ../../../src/Parser.hpp; sourceTree = SOURCE_ROOT; };
+		487911F411925FDD002C086E /* PlatformSpecific.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlatformSpecific.cpp; path = ../../../src/PlatformSpecific.cpp; sourceTree = SOURCE_ROOT; };
+		487911F511925FDD002C086E /* PlatformSpecific.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlatformSpecific.h; path = ../../../src/PlatformSpecific.h; sourceTree = SOURCE_ROOT; };
+		487911F611925FDD002C086E /* RandomFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RandomFunctions.cpp; path = ../../../src/RandomFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		487911F711925FDD002C086E /* RandomFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RandomFunctions.h; path = ../../../src/RandomFunctions.h; sourceTree = SOURCE_ROOT; };
+		487911F811925FDD002C086E /* RC4Encrypt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RC4Encrypt.cpp; path = ../../../src/RC4Encrypt.cpp; sourceTree = SOURCE_ROOT; };
+		487911F911925FDD002C086E /* RC4Encrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RC4Encrypt.h; path = ../../../src/RC4Encrypt.h; sourceTree = SOURCE_ROOT; };
+		487911FA11925FDD002C086E /* Scanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scanner.cpp; path = ../../../src/Scanner.cpp; sourceTree = SOURCE_ROOT; };
+		487911FB11925FDD002C086E /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scanner.h; path = ../../../src/Scanner.h; sourceTree = SOURCE_ROOT; };
+		487911FC11925FDD002C086E /* StateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StateMachine.cpp; path = ../../../src/StateMachine.cpp; sourceTree = SOURCE_ROOT; };
+		487911FD11925FDD002C086E /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateMachine.h; path = ../../../src/StateMachine.h; sourceTree = SOURCE_ROOT; };
+		487911FE11925FDD002C086E /* ThreadScheduler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ThreadScheduler.cpp; path = ../../../src/ThreadScheduler.cpp; sourceTree = SOURCE_ROOT; };
+		487911FF11925FDD002C086E /* ThreadScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadScheduler.h; path = ../../../src/ThreadScheduler.h; sourceTree = SOURCE_ROOT; };
+		4879120011925FDD002C086E /* UPnPBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UPnPBase.cpp; path = ../../../src/UPnPBase.cpp; sourceTree = SOURCE_ROOT; };
+		4879120111925FDD002C086E /* UPnPBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UPnPBase.h; path = ../../../src/UPnPBase.h; sourceTree = SOURCE_ROOT; };
+		487917E11192601E002C086E /* Entry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entry.cpp; path = ../../../src/kademlia/kademlia/Entry.cpp; sourceTree = SOURCE_ROOT; };
+		487917E21192601E002C086E /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = ../../../src/kademlia/kademlia/Entry.h; sourceTree = SOURCE_ROOT; };
+		487917E31192601E002C086E /* SearchManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SearchManager.cpp; path = ../../../src/kademlia/kademlia/SearchManager.cpp; sourceTree = SOURCE_ROOT; };
+		487917E41192601E002C086E /* SearchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchManager.h; path = ../../../src/kademlia/kademlia/SearchManager.h; sourceTree = SOURCE_ROOT; };
+		48791CD91192607A002C086E /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Contact.cpp; path = ../../../src/kademlia/routing/Contact.cpp; sourceTree = SOURCE_ROOT; };
+		48791CDA1192607A002C086E /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contact.h; path = ../../../src/kademlia/routing/Contact.h; sourceTree = SOURCE_ROOT; };
+		48791CDB1192607A002C086E /* RoutingBin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RoutingBin.cpp; path = ../../../src/kademlia/routing/RoutingBin.cpp; sourceTree = SOURCE_ROOT; };
+		48791CDC1192607A002C086E /* RoutingBin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoutingBin.h; path = ../../../src/kademlia/routing/RoutingBin.h; sourceTree = SOURCE_ROOT; };
+		48791D0A119260A0002C086E /* UInt128.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UInt128.cpp; path = ../../../src/kademlia/utils/UInt128.cpp; sourceTree = SOURCE_ROOT; };
+		48791D0B119260A0002C086E /* UInt128.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UInt128.h; path = ../../../src/kademlia/utils/UInt128.h; sourceTree = SOURCE_ROOT; };
+		48791D0E11926A0E002C086E /* BarShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BarShader.cpp; path = ../../../src/BarShader.cpp; sourceTree = SOURCE_ROOT; };
+		48791D0F11926A0E002C086E /* BarShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BarShader.h; path = ../../../src/BarShader.h; sourceTree = SOURCE_ROOT; };
+		48791D1011926A0E002C086E /* ChatWnd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChatWnd.cpp; path = ../../../src/ChatWnd.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1111926A0E002C086E /* ChatWnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatWnd.h; path = ../../../src/ChatWnd.h; sourceTree = SOURCE_ROOT; };
+		48791D1211926A0E002C086E /* ColorFrameCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorFrameCtrl.cpp; path = ../../../src/ColorFrameCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1311926A0E002C086E /* ColorFrameCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorFrameCtrl.h; path = ../../../src/ColorFrameCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791D1411926A0E002C086E /* CommentDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommentDialog.cpp; path = ../../../src/CommentDialog.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1511926A0E002C086E /* CommentDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentDialog.h; path = ../../../src/CommentDialog.h; sourceTree = SOURCE_ROOT; };
+		48791D1611926A0E002C086E /* CommentDialogLst.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommentDialogLst.cpp; path = ../../../src/CommentDialogLst.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1711926A0E002C086E /* CommentDialogLst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentDialogLst.h; path = ../../../src/CommentDialogLst.h; sourceTree = SOURCE_ROOT; };
+		48791D1811926A0E002C086E /* EditServerListDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditServerListDlg.cpp; path = ../../../src/EditServerListDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1911926A0E002C086E /* EditServerListDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditServerListDlg.h; path = ../../../src/EditServerListDlg.h; sourceTree = SOURCE_ROOT; };
+		48791D1A11926A0E002C086E /* FileDetailListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileDetailListCtrl.cpp; path = ../../../src/FileDetailListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1B11926A0E002C086E /* FileDetailListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileDetailListCtrl.h; path = ../../../src/FileDetailListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791D1C11926A0E002C086E /* IP2Country.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IP2Country.cpp; path = ../../../src/IP2Country.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1D11926A0E002C086E /* IP2Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IP2Country.h; path = ../../../src/IP2Country.h; sourceTree = SOURCE_ROOT; };
+		48791D1E11926A0E002C086E /* MuleCollection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleCollection.cpp; path = ../../../src/MuleCollection.cpp; sourceTree = SOURCE_ROOT; };
+		48791D1F11926A0E002C086E /* MuleCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleCollection.h; path = ../../../src/MuleCollection.h; sourceTree = SOURCE_ROOT; };
+		48791D2011926A0E002C086E /* MuleGifCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleGifCtrl.cpp; path = ../../../src/MuleGifCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791D2111926A0E002C086E /* MuleGifCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleGifCtrl.h; path = ../../../src/MuleGifCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791D2211926A0E002C086E /* MuleListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleListCtrl.cpp; path = ../../../src/MuleListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791D2311926A0E002C086E /* MuleListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleListCtrl.h; path = ../../../src/MuleListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791D2411926A0E002C086E /* MuleNotebook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleNotebook.cpp; path = ../../../src/MuleNotebook.cpp; sourceTree = SOURCE_ROOT; };
+		48791D2511926A0E002C086E /* MuleNotebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleNotebook.h; path = ../../../src/MuleNotebook.h; sourceTree = SOURCE_ROOT; };
+		48791D2611926A0E002C086E /* MuleTextCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleTextCtrl.cpp; path = ../../../src/MuleTextCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791D2711926A0E002C086E /* MuleTextCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleTextCtrl.h; path = ../../../src/MuleTextCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791D2811926A0E002C086E /* muuli_wdr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = muuli_wdr.cpp; path = ../../../src/muuli_wdr.cpp; sourceTree = SOURCE_ROOT; };
+		48791D2911926A0E002C086E /* muuli_wdr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = muuli_wdr.h; path = ../../../src/muuli_wdr.h; sourceTree = SOURCE_ROOT; };
+		48791D3911926A2E002C086E /* listctrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = listctrl.cpp; path = ../../../src/extern/wxWidgets/listctrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791D3A11926A2E002C086E /* listctrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = listctrl.h; path = ../../../src/extern/wxWidgets/listctrl.h; sourceTree = SOURCE_ROOT; };
+		48791D3D11926AEE002C086E /* amule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = amule.cpp; path = ../../../src/amule.cpp; sourceTree = SOURCE_ROOT; };
+		48791D3E11926AEE002C086E /* amule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = amule.h; path = ../../../src/amule.h; sourceTree = SOURCE_ROOT; };
+		48791D3F11926AEE002C086E /* BaseClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseClient.cpp; path = ../../../src/BaseClient.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4011926AEE002C086E /* CanceledFileList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanceledFileList.cpp; path = ../../../src/CanceledFileList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4111926AEE002C086E /* CanceledFileList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CanceledFileList.h; path = ../../../src/CanceledFileList.h; sourceTree = SOURCE_ROOT; };
+		48791D4211926AEE002C086E /* ClientCreditsList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientCreditsList.cpp; path = ../../../src/ClientCreditsList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4311926AEE002C086E /* ClientCreditsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientCreditsList.h; path = ../../../src/ClientCreditsList.h; sourceTree = SOURCE_ROOT; };
+		48791D4411926AEE002C086E /* ClientList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientList.cpp; path = ../../../src/ClientList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4511926AEE002C086E /* ClientList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientList.h; path = ../../../src/ClientList.h; sourceTree = SOURCE_ROOT; };
+		48791D4611926AEE002C086E /* ClientTCPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientTCPSocket.cpp; path = ../../../src/ClientTCPSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4711926AEE002C086E /* ClientTCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientTCPSocket.h; path = ../../../src/ClientTCPSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D4811926AEE002C086E /* ClientUDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientUDPSocket.cpp; path = ../../../src/ClientUDPSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4911926AEE002C086E /* ClientUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientUDPSocket.h; path = ../../../src/ClientUDPSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D4A11926AEE002C086E /* CorruptionBlackBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CorruptionBlackBox.cpp; path = ../../../src/CorruptionBlackBox.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4B11926AEE002C086E /* CorruptionBlackBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CorruptionBlackBox.h; path = ../../../src/CorruptionBlackBox.h; sourceTree = SOURCE_ROOT; };
+		48791D4C11926AEE002C086E /* DownloadClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DownloadClient.cpp; path = ../../../src/DownloadClient.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4D11926AEE002C086E /* DownloadQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DownloadQueue.cpp; path = ../../../src/DownloadQueue.cpp; sourceTree = SOURCE_ROOT; };
+		48791D4E11926AEE002C086E /* DownloadQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadQueue.h; path = ../../../src/DownloadQueue.h; sourceTree = SOURCE_ROOT; };
+		48791D4F11926AEE002C086E /* ECSpecialCoreTags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECSpecialCoreTags.cpp; path = ../../../src/ECSpecialCoreTags.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5011926AEE002C086E /* EMSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EMSocket.cpp; path = ../../../src/EMSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5111926AEE002C086E /* EMSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EMSocket.h; path = ../../../src/EMSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D5211926AEE002C086E /* EncryptedDatagramSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EncryptedDatagramSocket.cpp; path = ../../../src/EncryptedDatagramSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5311926AEE002C086E /* EncryptedDatagramSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EncryptedDatagramSocket.h; path = ../../../src/EncryptedDatagramSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D5411926AEE002C086E /* EncryptedStreamSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EncryptedStreamSocket.cpp; path = ../../../src/EncryptedStreamSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5511926AEE002C086E /* EncryptedStreamSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EncryptedStreamSocket.h; path = ../../../src/EncryptedStreamSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D5611926AEE002C086E /* ExternalConn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExternalConn.cpp; path = ../../../src/ExternalConn.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5711926AEE002C086E /* FriendList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FriendList.cpp; path = ../../../src/FriendList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5811926AEE002C086E /* FriendList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendList.h; path = ../../../src/FriendList.h; sourceTree = SOURCE_ROOT; };
+		48791D5911926AEE002C086E /* HTTPDownload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HTTPDownload.cpp; path = ../../../src/HTTPDownload.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5A11926AEE002C086E /* HTTPDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPDownload.h; path = ../../../src/HTTPDownload.h; sourceTree = SOURCE_ROOT; };
+		48791D5B11926AEE002C086E /* IPFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IPFilter.cpp; path = ../../../src/IPFilter.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5C11926AEE002C086E /* IPFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPFilter.h; path = ../../../src/IPFilter.h; sourceTree = SOURCE_ROOT; };
+		48791D5D11926AEE002C086E /* KnownFileList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KnownFileList.cpp; path = ../../../src/KnownFileList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D5E11926AEE002C086E /* KnownFileList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KnownFileList.h; path = ../../../src/KnownFileList.h; sourceTree = SOURCE_ROOT; };
+		48791D5F11926AEE002C086E /* ListenSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ListenSocket.cpp; path = ../../../src/ListenSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6011926AEE002C086E /* ListenSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListenSocket.h; path = ../../../src/ListenSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D6111926AEE002C086E /* MuleUDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleUDPSocket.cpp; path = ../../../src/MuleUDPSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6211926AEE002C086E /* MuleUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleUDPSocket.h; path = ../../../src/MuleUDPSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D6311926AEE002C086E /* PartFileConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PartFileConvert.cpp; path = ../../../src/PartFileConvert.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6411926AEE002C086E /* PartFileConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PartFileConvert.h; path = ../../../src/PartFileConvert.h; sourceTree = SOURCE_ROOT; };
+		48791D6511926AEE002C086E /* SearchFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SearchFile.cpp; path = ../../../src/SearchFile.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6611926AEE002C086E /* SearchFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchFile.h; path = ../../../src/SearchFile.h; sourceTree = SOURCE_ROOT; };
+		48791D6711926AEE002C086E /* SearchList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SearchList.cpp; path = ../../../src/SearchList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6811926AEE002C086E /* SearchList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchList.h; path = ../../../src/SearchList.h; sourceTree = SOURCE_ROOT; };
+		48791D6911926AEE002C086E /* ServerConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerConnect.cpp; path = ../../../src/ServerConnect.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6A11926AEE002C086E /* ServerConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerConnect.h; path = ../../../src/ServerConnect.h; sourceTree = SOURCE_ROOT; };
+		48791D6B11926AEE002C086E /* ServerList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerList.cpp; path = ../../../src/ServerList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6C11926AEE002C086E /* ServerList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerList.h; path = ../../../src/ServerList.h; sourceTree = SOURCE_ROOT; };
+		48791D6D11926AEE002C086E /* ServerSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerSocket.cpp; path = ../../../src/ServerSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D6E11926AEE002C086E /* ServerSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerSocket.h; path = ../../../src/ServerSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D6F11926AEE002C086E /* ServerUDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerUDPSocket.cpp; path = ../../../src/ServerUDPSocket.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7011926AEE002C086E /* ServerUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerUDPSocket.h; path = ../../../src/ServerUDPSocket.h; sourceTree = SOURCE_ROOT; };
+		48791D7111926AEE002C086E /* SharedFileList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SharedFileList.cpp; path = ../../../src/SharedFileList.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7211926AEE002C086E /* SharedFileList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SharedFileList.h; path = ../../../src/SharedFileList.h; sourceTree = SOURCE_ROOT; };
+		48791D7311926AEE002C086E /* TerminationProcessAmuleweb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TerminationProcessAmuleweb.cpp; path = ../../../src/TerminationProcessAmuleweb.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7411926AEE002C086E /* TerminationProcessAmuleweb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TerminationProcessAmuleweb.h; path = ../../../src/TerminationProcessAmuleweb.h; sourceTree = SOURCE_ROOT; };
+		48791D7511926AEE002C086E /* ThreadTasks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ThreadTasks.cpp; path = ../../../src/ThreadTasks.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7611926AEE002C086E /* ThreadTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadTasks.h; path = ../../../src/ThreadTasks.h; sourceTree = SOURCE_ROOT; };
+		48791D7711926AEE002C086E /* UploadBandwidthThrottler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UploadBandwidthThrottler.cpp; path = ../../../src/UploadBandwidthThrottler.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7811926AEE002C086E /* UploadBandwidthThrottler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadBandwidthThrottler.h; path = ../../../src/UploadBandwidthThrottler.h; sourceTree = SOURCE_ROOT; };
+		48791D7911926AEE002C086E /* UploadClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UploadClient.cpp; path = ../../../src/UploadClient.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7A11926AEE002C086E /* UploadQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UploadQueue.cpp; path = ../../../src/UploadQueue.cpp; sourceTree = SOURCE_ROOT; };
+		48791D7B11926AEE002C086E /* UploadQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadQueue.h; path = ../../../src/UploadQueue.h; sourceTree = SOURCE_ROOT; };
+		48791DE311926B21002C086E /* KademliaUDPListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KademliaUDPListener.cpp; path = ../../../src/kademlia/net/KademliaUDPListener.cpp; sourceTree = SOURCE_ROOT; };
+		48791DE411926B21002C086E /* KademliaUDPListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KademliaUDPListener.h; path = ../../../src/kademlia/net/KademliaUDPListener.h; sourceTree = SOURCE_ROOT; };
+		48791DE511926B21002C086E /* PacketTracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PacketTracking.cpp; path = ../../../src/kademlia/net/PacketTracking.cpp; sourceTree = SOURCE_ROOT; };
+		48791DE611926B21002C086E /* PacketTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PacketTracking.h; path = ../../../src/kademlia/net/PacketTracking.h; sourceTree = SOURCE_ROOT; };
+		48791E2511926B41002C086E /* Indexed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Indexed.cpp; path = ../../../src/kademlia/kademlia/Indexed.cpp; sourceTree = SOURCE_ROOT; };
+		48791E2611926B41002C086E /* Indexed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Indexed.h; path = ../../../src/kademlia/kademlia/Indexed.h; sourceTree = SOURCE_ROOT; };
+		48791E2711926B41002C086E /* Kademlia.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Kademlia.cpp; path = ../../../src/kademlia/kademlia/Kademlia.cpp; sourceTree = SOURCE_ROOT; };
+		48791E2811926B41002C086E /* Kademlia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Kademlia.h; path = ../../../src/kademlia/kademlia/Kademlia.h; sourceTree = SOURCE_ROOT; };
+		48791E2911926B41002C086E /* Prefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Prefs.cpp; path = ../../../src/kademlia/kademlia/Prefs.cpp; sourceTree = SOURCE_ROOT; };
+		48791E2A11926B41002C086E /* Prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefs.h; path = ../../../src/kademlia/kademlia/Prefs.h; sourceTree = SOURCE_ROOT; };
+		48791E2B11926B41002C086E /* Search.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Search.cpp; path = ../../../src/kademlia/kademlia/Search.cpp; sourceTree = SOURCE_ROOT; };
+		48791E2C11926B41002C086E /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../../../src/kademlia/kademlia/Search.h; sourceTree = SOURCE_ROOT; };
+		48791E2D11926B41002C086E /* UDPFirewallTester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UDPFirewallTester.cpp; path = ../../../src/kademlia/kademlia/UDPFirewallTester.cpp; sourceTree = SOURCE_ROOT; };
+		48791E2E11926B41002C086E /* UDPFirewallTester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDPFirewallTester.h; path = ../../../src/kademlia/kademlia/UDPFirewallTester.h; sourceTree = SOURCE_ROOT; };
+		48791E7C11926B54002C086E /* RoutingZone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RoutingZone.cpp; path = ../../../src/kademlia/routing/RoutingZone.cpp; sourceTree = SOURCE_ROOT; };
+		48791E7D11926B54002C086E /* RoutingZone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoutingZone.h; path = ../../../src/kademlia/routing/RoutingZone.h; sourceTree = SOURCE_ROOT; };
+		48791EAB11926CC7002C086E /* AddFriend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddFriend.cpp; path = ../../../src/AddFriend.cpp; sourceTree = SOURCE_ROOT; };
+		48791EAC11926CC7002C086E /* AddFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddFriend.h; path = ../../../src/AddFriend.h; sourceTree = SOURCE_ROOT; };
+		48791EAD11926CC7002C086E /* amule-gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "amule-gui.cpp"; path = "../../../src/amule-gui.cpp"; sourceTree = SOURCE_ROOT; };
+		48791EAE11926CC7002C086E /* amuleDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = amuleDlg.cpp; path = ../../../src/amuleDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791EAF11926CC7002C086E /* amuleDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = amuleDlg.h; path = ../../../src/amuleDlg.h; sourceTree = SOURCE_ROOT; };
+		48791EB011926CC7002C086E /* CatDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CatDialog.cpp; path = ../../../src/CatDialog.cpp; sourceTree = SOURCE_ROOT; };
+		48791EB111926CC7002C086E /* CatDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CatDialog.h; path = ../../../src/CatDialog.h; sourceTree = SOURCE_ROOT; };
+		48791EB211926CC7002C086E /* ChatSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChatSelector.cpp; path = ../../../src/ChatSelector.cpp; sourceTree = SOURCE_ROOT; };
+		48791EB311926CC7002C086E /* ChatSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatSelector.h; path = ../../../src/ChatSelector.h; sourceTree = SOURCE_ROOT; };
+		48791EB411926CC7002C086E /* ClientDetailDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientDetailDialog.cpp; path = ../../../src/ClientDetailDialog.cpp; sourceTree = SOURCE_ROOT; };
+		48791EB511926CC7002C086E /* ClientDetailDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientDetailDialog.h; path = ../../../src/ClientDetailDialog.h; sourceTree = SOURCE_ROOT; };
+		48791EB811926CC7002C086E /* DirectoryTreeCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DirectoryTreeCtrl.cpp; path = ../../../src/DirectoryTreeCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791EB911926CC7002C086E /* DirectoryTreeCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DirectoryTreeCtrl.h; path = ../../../src/DirectoryTreeCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791EBA11926CC7002C086E /* DownloadListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DownloadListCtrl.cpp; path = ../../../src/DownloadListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791EBB11926CC7002C086E /* DownloadListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadListCtrl.h; path = ../../../src/DownloadListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791EBC11926CC7002C086E /* FileDetailDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileDetailDialog.cpp; path = ../../../src/FileDetailDialog.cpp; sourceTree = SOURCE_ROOT; };
+		48791EBD11926CC7002C086E /* FileDetailDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileDetailDialog.h; path = ../../../src/FileDetailDialog.h; sourceTree = SOURCE_ROOT; };
+		48791EBE11926CC7002C086E /* FriendListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FriendListCtrl.cpp; path = ../../../src/FriendListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791EBF11926CC7002C086E /* FriendListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendListCtrl.h; path = ../../../src/FriendListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791EC011926CC7002C086E /* KadDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KadDlg.cpp; path = ../../../src/KadDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791EC111926CC7002C086E /* KadDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KadDlg.h; path = ../../../src/KadDlg.h; sourceTree = SOURCE_ROOT; };
+		48791EC211926CC7002C086E /* MuleColour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleColour.cpp; path = ../../../src/MuleColour.cpp; sourceTree = SOURCE_ROOT; };
+		48791EC311926CC7002C086E /* MuleColour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleColour.h; path = ../../../src/MuleColour.h; sourceTree = SOURCE_ROOT; };
+		48791EC411926CC7002C086E /* MuleTrayIcon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleTrayIcon.cpp; path = ../../../src/MuleTrayIcon.cpp; sourceTree = SOURCE_ROOT; };
+		48791EC511926CC7002C086E /* MuleTrayIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleTrayIcon.h; path = ../../../src/MuleTrayIcon.h; sourceTree = SOURCE_ROOT; };
+		48791EC611926CC7002C086E /* OScopeCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OScopeCtrl.cpp; path = ../../../src/OScopeCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791EC711926CC7002C086E /* OScopeCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OScopeCtrl.h; path = ../../../src/OScopeCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791EC811926CC7002C086E /* PartFileConvertDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PartFileConvertDlg.cpp; path = ../../../src/PartFileConvertDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791EC911926CC7002C086E /* PartFileConvertDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PartFileConvertDlg.h; path = ../../../src/PartFileConvertDlg.h; sourceTree = SOURCE_ROOT; };
+		48791ECA11926CC7002C086E /* PrefsUnifiedDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrefsUnifiedDlg.cpp; path = ../../../src/PrefsUnifiedDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791ECB11926CC7002C086E /* PrefsUnifiedDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefsUnifiedDlg.h; path = ../../../src/PrefsUnifiedDlg.h; sourceTree = SOURCE_ROOT; };
+		48791ECC11926CC7002C086E /* SearchDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SearchDlg.cpp; path = ../../../src/SearchDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791ECD11926CC7002C086E /* SearchDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchDlg.h; path = ../../../src/SearchDlg.h; sourceTree = SOURCE_ROOT; };
+		48791ECE11926CC7002C086E /* SearchListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SearchListCtrl.cpp; path = ../../../src/SearchListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791ECF11926CC7002C086E /* SearchListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchListCtrl.h; path = ../../../src/SearchListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791ED011926CC7002C086E /* ServerListCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerListCtrl.cpp; path = ../../../src/ServerListCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791ED111926CC7002C086E /* ServerListCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerListCtrl.h; path = ../../../src/ServerListCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791ED211926CC7002C086E /* ServerWnd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerWnd.cpp; path = ../../../src/ServerWnd.cpp; sourceTree = SOURCE_ROOT; };
+		48791ED311926CC7002C086E /* ServerWnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerWnd.h; path = ../../../src/ServerWnd.h; sourceTree = SOURCE_ROOT; };
+		48791ED411926CC7002C086E /* SharedFilesCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SharedFilesCtrl.cpp; path = ../../../src/SharedFilesCtrl.cpp; sourceTree = SOURCE_ROOT; };
+		48791ED511926CC7002C086E /* SharedFilesCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SharedFilesCtrl.h; path = ../../../src/SharedFilesCtrl.h; sourceTree = SOURCE_ROOT; };
+		48791ED611926CC7002C086E /* SharedFilesWnd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SharedFilesWnd.cpp; path = ../../../src/SharedFilesWnd.cpp; sourceTree = SOURCE_ROOT; };
+		48791ED711926CC7002C086E /* SharedFilesWnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SharedFilesWnd.h; path = ../../../src/SharedFilesWnd.h; sourceTree = SOURCE_ROOT; };
+		48791ED811926CC7002C086E /* StatisticsDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StatisticsDlg.cpp; path = ../../../src/StatisticsDlg.cpp; sourceTree = SOURCE_ROOT; };
+		48791ED911926CC7002C086E /* StatisticsDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatisticsDlg.h; path = ../../../src/StatisticsDlg.h; sourceTree = SOURCE_ROOT; };
+		48791EDA11926CC7002C086E /* TransferWnd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TransferWnd.cpp; path = ../../../src/TransferWnd.cpp; sourceTree = SOURCE_ROOT; };
+		48791EDB11926CC7002C086E /* TransferWnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TransferWnd.h; path = ../../../src/TransferWnd.h; sourceTree = SOURCE_ROOT; };
+		48791F6611926F24002C086E /* amuleAppCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = amuleAppCommon.cpp; path = ../../../src/amuleAppCommon.cpp; sourceTree = SOURCE_ROOT; };
+		48791F6711926F24002C086E /* ClientCredits.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientCredits.cpp; path = ../../../src/ClientCredits.cpp; sourceTree = SOURCE_ROOT; };
+		48791F6811926F24002C086E /* ClientCredits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientCredits.h; path = ../../../src/ClientCredits.h; sourceTree = SOURCE_ROOT; };
+		48791F6911926F24002C086E /* ECSpecialMuleTags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECSpecialMuleTags.cpp; path = ../../../src/ECSpecialMuleTags.cpp; sourceTree = SOURCE_ROOT; };
+		48791F6A11926F24002C086E /* GetTickCount.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GetTickCount.cpp; path = ../../../src/GetTickCount.cpp; sourceTree = SOURCE_ROOT; };
+		48791F6B11926F24002C086E /* GetTickCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTickCount.h; path = ../../../src/GetTickCount.h; sourceTree = SOURCE_ROOT; };
+		48791F6C11926F24002C086E /* GuiEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GuiEvents.cpp; path = ../../../src/GuiEvents.cpp; sourceTree = SOURCE_ROOT; };
+		48791F6D11926F24002C086E /* GuiEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GuiEvents.h; path = ../../../src/GuiEvents.h; sourceTree = SOURCE_ROOT; };
+		48791F6E11926F24002C086E /* KnownFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KnownFile.cpp; path = ../../../src/KnownFile.cpp; sourceTree = SOURCE_ROOT; };
+		48791F6F11926F24002C086E /* KnownFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KnownFile.h; path = ../../../src/KnownFile.h; sourceTree = SOURCE_ROOT; };
+		48791F7011926F24002C086E /* Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Logger.cpp; path = ../../../src/Logger.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7111926F24002C086E /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = ../../../src/Logger.h; sourceTree = SOURCE_ROOT; };
+		48791F7211926F24002C086E /* PartFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PartFile.cpp; path = ../../../src/PartFile.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7311926F24002C086E /* PartFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PartFile.h; path = ../../../src/PartFile.h; sourceTree = SOURCE_ROOT; };
+		48791F7411926F24002C086E /* Preferences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Preferences.cpp; path = ../../../src/Preferences.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7511926F24002C086E /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = ../../../src/Preferences.h; sourceTree = SOURCE_ROOT; };
+		48791F7611926F24002C086E /* Proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Proxy.cpp; path = ../../../src/Proxy.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7711926F24002C086E /* Proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Proxy.h; path = ../../../src/Proxy.h; sourceTree = SOURCE_ROOT; };
+		48791F7811926F24002C086E /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Server.cpp; path = ../../../src/Server.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7911926F24002C086E /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Server.h; path = ../../../src/Server.h; sourceTree = SOURCE_ROOT; };
+		48791F7A11926F24002C086E /* SHAHashSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SHAHashSet.cpp; path = ../../../src/SHAHashSet.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7B11926F24002C086E /* SHAHashSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHAHashSet.h; path = ../../../src/SHAHashSet.h; sourceTree = SOURCE_ROOT; };
+		48791F7C11926F24002C086E /* Statistics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Statistics.cpp; path = ../../../src/Statistics.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7D11926F24002C086E /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Statistics.h; path = ../../../src/Statistics.h; sourceTree = SOURCE_ROOT; };
+		48791F7E11926F24002C086E /* StatTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StatTree.cpp; path = ../../../src/StatTree.cpp; sourceTree = SOURCE_ROOT; };
+		48791F7F11926F24002C086E /* StatTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatTree.h; path = ../../../src/StatTree.h; sourceTree = SOURCE_ROOT; };
+		48791F8011926F24002C086E /* TerminationProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TerminationProcess.cpp; path = ../../../src/TerminationProcess.cpp; sourceTree = SOURCE_ROOT; };
+		48791F8111926F24002C086E /* TerminationProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TerminationProcess.h; path = ../../../src/TerminationProcess.h; sourceTree = SOURCE_ROOT; };
+		48791F8211926F24002C086E /* UserEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UserEvents.cpp; path = ../../../src/UserEvents.cpp; sourceTree = SOURCE_ROOT; };
+		48791F8311926F24002C086E /* UserEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserEvents.h; path = ../../../src/UserEvents.h; sourceTree = SOURCE_ROOT; };
+		48791FD611926F74002C086E /* NetworkFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetworkFunctions.cpp; path = ../../../src/NetworkFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		48791FD711926F74002C086E /* NetworkFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkFunctions.h; path = ../../../src/NetworkFunctions.h; sourceTree = SOURCE_ROOT; };
+		48791FD811926F74002C086E /* OtherFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OtherFunctions.cpp; path = ../../../src/OtherFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		48791FD911926F74002C086E /* OtherFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OtherFunctions.h; path = ../../../src/OtherFunctions.h; sourceTree = SOURCE_ROOT; };
+		487920361192730F002C086E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		4879205C119274FA002C086E /* FileFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileFunctions.cpp; path = ../../../src/libs/common/FileFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		4879205D119274FA002C086E /* FileFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileFunctions.h; path = ../../../src/libs/common/FileFunctions.h; sourceTree = SOURCE_ROOT; };
+		4879205E119274FA002C086E /* Format.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Format.cpp; path = ../../../src/libs/common/Format.cpp; sourceTree = SOURCE_ROOT; };
+		4879205F119274FA002C086E /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Format.h; path = ../../../src/libs/common/Format.h; sourceTree = SOURCE_ROOT; };
+		48792060119274FA002C086E /* MD5Sum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MD5Sum.cpp; path = ../../../src/libs/common/MD5Sum.cpp; sourceTree = SOURCE_ROOT; };
+		48792061119274FA002C086E /* MD5Sum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MD5Sum.h; path = ../../../src/libs/common/MD5Sum.h; sourceTree = SOURCE_ROOT; };
+		48792062119274FA002C086E /* MuleDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MuleDebug.cpp; path = ../../../src/libs/common/MuleDebug.cpp; sourceTree = SOURCE_ROOT; };
+		48792063119274FA002C086E /* MuleDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuleDebug.h; path = ../../../src/libs/common/MuleDebug.h; sourceTree = SOURCE_ROOT; };
+		48792064119274FA002C086E /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../../src/libs/common/Path.cpp; sourceTree = SOURCE_ROOT; };
+		48792065119274FA002C086E /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../../src/libs/common/Path.h; sourceTree = SOURCE_ROOT; };
+		48792066119274FA002C086E /* StringFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringFunctions.cpp; path = ../../../src/libs/common/StringFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		48792067119274FA002C086E /* StringFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringFunctions.h; path = ../../../src/libs/common/StringFunctions.h; sourceTree = SOURCE_ROOT; };
+		48792068119274FA002C086E /* TextFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextFile.cpp; path = ../../../src/libs/common/TextFile.cpp; sourceTree = SOURCE_ROOT; };
+		48792069119274FA002C086E /* TextFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFile.h; path = ../../../src/libs/common/TextFile.h; sourceTree = SOURCE_ROOT; };
+		4879213211927582002C086E /* ECMuleSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECMuleSocket.cpp; path = ../../../src/libs/ec/cpp/ECMuleSocket.cpp; sourceTree = SOURCE_ROOT; };
+		4879213311927582002C086E /* ECMuleSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECMuleSocket.h; path = ../../../src/libs/ec/cpp/ECMuleSocket.h; sourceTree = SOURCE_ROOT; };
+		4879213411927582002C086E /* ECPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECPacket.cpp; path = ../../../src/libs/ec/cpp/ECPacket.cpp; sourceTree = SOURCE_ROOT; };
+		4879213511927582002C086E /* ECPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECPacket.h; path = ../../../src/libs/ec/cpp/ECPacket.h; sourceTree = SOURCE_ROOT; };
+		4879213611927582002C086E /* ECSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECSocket.cpp; path = ../../../src/libs/ec/cpp/ECSocket.cpp; sourceTree = SOURCE_ROOT; };
+		4879213711927582002C086E /* ECSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSocket.h; path = ../../../src/libs/ec/cpp/ECSocket.h; sourceTree = SOURCE_ROOT; };
+		4879213811927582002C086E /* ECSpecialTags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECSpecialTags.cpp; path = ../../../src/libs/ec/cpp/ECSpecialTags.cpp; sourceTree = SOURCE_ROOT; };
+		4879213911927582002C086E /* ECSpecialTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSpecialTags.h; path = ../../../src/libs/ec/cpp/ECSpecialTags.h; sourceTree = SOURCE_ROOT; };
+		4879213A11927582002C086E /* ECTag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ECTag.cpp; path = ../../../src/libs/ec/cpp/ECTag.cpp; sourceTree = SOURCE_ROOT; };
+		4879213B11927582002C086E /* ECTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECTag.h; path = ../../../src/libs/ec/cpp/ECTag.h; sourceTree = SOURCE_ROOT; };
+		4879213C11927582002C086E /* RemoteConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RemoteConnect.cpp; path = ../../../src/libs/ec/cpp/RemoteConnect.cpp; sourceTree = SOURCE_ROOT; };
+		4879213D11927582002C086E /* RemoteConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteConnect.h; path = ../../../src/libs/ec/cpp/RemoteConnect.h; sourceTree = SOURCE_ROOT; };
+		487922C811927626002C086E /* CaptchaDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptchaDialog.cpp; path = ../../../src/CaptchaDialog.cpp; sourceTree = SOURCE_ROOT; };
+		487922C911927626002C086E /* CaptchaDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptchaDialog.h; path = ../../../src/CaptchaDialog.h; sourceTree = SOURCE_ROOT; };
+		487922CA11927626002C086E /* CaptchaGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptchaGenerator.cpp; path = ../../../src/CaptchaGenerator.cpp; sourceTree = SOURCE_ROOT; };
+		487922CB11927626002C086E /* CaptchaGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptchaGenerator.h; path = ../../../src/CaptchaGenerator.h; sourceTree = SOURCE_ROOT; };
+		488D4E8E1192CB880089BF8E /* README BEFORE BUILDING.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "README BEFORE BUILDING.rtf"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* aMule_Xcode-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "aMule_Xcode-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* aMule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aMule.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				487920371192730F002C086E /* libz.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				48791F9411926F44002C086E /* remote_common_sources */,
+				48791F6511926D4E002C086E /* common_sources */,
+				48791EAA11926B8E002C086E /* gui_sources */,
+				48791D3C11926A40002C086E /* core_sources */,
+				48791D0D119269A0002C086E /* libmuleappgui */,
+				487911E711925EA7002C086E /* libmuleappcore */,
+				4879114A11925DEC002C086E /* libmuleappcommon */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				487920361192730F002C086E /* libz.dylib */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* aMule.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* aMule-Xcode */ = {
+			isa = PBXGroup;
+			children = (
+				488D4E8E1192CB880089BF8E /* README BEFORE BUILDING.rtf */,
+				48792056119274B2002C086E /* libs */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = "aMule-Xcode";
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				48636E2A119E5A4300BC3DB6 /* ArchSpecific.h */,
+				48636E2B119E5A4300BC3DB6 /* Constants.h */,
+				48636E2C119E5A4300BC3DB6 /* CryptoPP_Inc.h */,
+				256AC3F00F4B6AF500CF3369 /* aMule_Xcode_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4833446F1196275F00D9BE75 /* amule.icns */,
+				8D1107310486CEB800E47090 /* aMule_Xcode-Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4879114A11925DEC002C086E /* libmuleappcommon */ = {
+			isa = PBXGroup;
+			children = (
+				4879119511925E61002C086E /* CFile.cpp */,
+				4879119611925E61002C086E /* CFile.h */,
+				4879119711925E61002C086E /* DataToText.cpp */,
+				4879119811925E61002C086E /* DataToText.h */,
+				4879119911925E61002C086E /* ED2KLink.cpp */,
+				4879119A11925E61002C086E /* ED2KLink.h */,
+				4879119B11925E61002C086E /* GapList.cpp */,
+				4879119C11925E61002C086E /* GapList.h */,
+				4879119D11925E61002C086E /* MagnetURI.cpp */,
+				4879119E11925E61002C086E /* MagnetURI.h */,
+				4879119F11925E61002C086E /* MemFile.cpp */,
+				487911A011925E61002C086E /* MemFile.h */,
+				487911A311925E61002C086E /* Packet.cpp */,
+				487911A411925E61002C086E /* Packet.h */,
+				487911A511925E61002C086E /* RLE.cpp */,
+				487911A611925E61002C086E /* RLE.h */,
+				487911A711925E61002C086E /* SafeFile.cpp */,
+				487911A811925E61002C086E /* SafeFile.h */,
+				487911A911925E61002C086E /* SHA.cpp */,
+				487911AA11925E61002C086E /* SHA.h */,
+				487911AB11925E61002C086E /* Tag.cpp */,
+				487911AC11925E61002C086E /* Tag.h */,
+				487911AD11925E61002C086E /* Timer.cpp */,
+				487911AE11925E61002C086E /* Timer.h */,
+			);
+			name = libmuleappcommon;
+			sourceTree = "<group>";
+		};
+		487911E711925EA7002C086E /* libmuleappcore */ = {
+			isa = PBXGroup;
+			children = (
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				4879120F11925FE2002C086E /* kademlia */,
+				487911E811925FDD002C086E /* AsyncDNS.cpp */,
+				487911E911925FDD002C086E /* AsyncDNS.h */,
+				487911EA11925FDD002C086E /* DeadSourceList.cpp */,
+				487911EB11925FDD002C086E /* DeadSourceList.h */,
+				487911EC11925FDD002C086E /* FileArea.cpp */,
+				487911ED11925FDD002C086E /* FileArea.h */,
+				487911EE11925FDD002C086E /* FileAutoClose.cpp */,
+				487911EF11925FDD002C086E /* FileAutoClose.h */,
+				487911F011925FDD002C086E /* Friend.cpp */,
+				487911F111925FDD002C086E /* Friend.h */,
+				487911F211925FDD002C086E /* Parser.cpp */,
+				487911F311925FDD002C086E /* Parser.hpp */,
+				487911F411925FDD002C086E /* PlatformSpecific.cpp */,
+				487911F511925FDD002C086E /* PlatformSpecific.h */,
+				487911F611925FDD002C086E /* RandomFunctions.cpp */,
+				487911F711925FDD002C086E /* RandomFunctions.h */,
+				487911F811925FDD002C086E /* RC4Encrypt.cpp */,
+				487911F911925FDD002C086E /* RC4Encrypt.h */,
+				487911FA11925FDD002C086E /* Scanner.cpp */,
+				487911FB11925FDD002C086E /* Scanner.h */,
+				487911FC11925FDD002C086E /* StateMachine.cpp */,
+				487911FD11925FDD002C086E /* StateMachine.h */,
+				487911FE11925FDD002C086E /* ThreadScheduler.cpp */,
+				487911FF11925FDD002C086E /* ThreadScheduler.h */,
+				4879120011925FDD002C086E /* UPnPBase.cpp */,
+				4879120111925FDD002C086E /* UPnPBase.h */,
+			);
+			name = libmuleappcore;
+			sourceTree = "<group>";
+		};
+		4879120F11925FE2002C086E /* kademlia */ = {
+			isa = PBXGroup;
+			children = (
+				4879121211925FF9002C086E /* utils */,
+				4879121111925FF4002C086E /* routing */,
+				4879121011925FEF002C086E /* kademlia */,
+			);
+			name = kademlia;
+			sourceTree = "<group>";
+		};
+		4879121011925FEF002C086E /* kademlia */ = {
+			isa = PBXGroup;
+			children = (
+				487917E11192601E002C086E /* Entry.cpp */,
+				487917E21192601E002C086E /* Entry.h */,
+				487917E31192601E002C086E /* SearchManager.cpp */,
+				487917E41192601E002C086E /* SearchManager.h */,
+			);
+			name = kademlia;
+			sourceTree = "<group>";
+		};
+		4879121111925FF4002C086E /* routing */ = {
+			isa = PBXGroup;
+			children = (
+				48791CD91192607A002C086E /* Contact.cpp */,
+				48791CDA1192607A002C086E /* Contact.h */,
+				48791CDB1192607A002C086E /* RoutingBin.cpp */,
+				48791CDC1192607A002C086E /* RoutingBin.h */,
+			);
+			name = routing;
+			sourceTree = "<group>";
+		};
+		4879121211925FF9002C086E /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				48791D0A119260A0002C086E /* UInt128.cpp */,
+				48791D0B119260A0002C086E /* UInt128.h */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
+		48791D0D119269A0002C086E /* libmuleappgui */ = {
+			isa = PBXGroup;
+			children = (
+				48791D3811926A11002C086E /* extern */,
+				48791D0E11926A0E002C086E /* BarShader.cpp */,
+				48791D0F11926A0E002C086E /* BarShader.h */,
+				48791D1011926A0E002C086E /* ChatWnd.cpp */,
+				48791D1111926A0E002C086E /* ChatWnd.h */,
+				48791D1211926A0E002C086E /* ColorFrameCtrl.cpp */,
+				48791D1311926A0E002C086E /* ColorFrameCtrl.h */,
+				48791D1411926A0E002C086E /* CommentDialog.cpp */,
+				48791D1511926A0E002C086E /* CommentDialog.h */,
+				48791D1611926A0E002C086E /* CommentDialogLst.cpp */,
+				48791D1711926A0E002C086E /* CommentDialogLst.h */,
+				48791D1811926A0E002C086E /* EditServerListDlg.cpp */,
+				48791D1911926A0E002C086E /* EditServerListDlg.h */,
+				48791D1A11926A0E002C086E /* FileDetailListCtrl.cpp */,
+				48791D1B11926A0E002C086E /* FileDetailListCtrl.h */,
+				48791D1C11926A0E002C086E /* IP2Country.cpp */,
+				48791D1D11926A0E002C086E /* IP2Country.h */,
+				48791D1E11926A0E002C086E /* MuleCollection.cpp */,
+				48791D1F11926A0E002C086E /* MuleCollection.h */,
+				48791D2011926A0E002C086E /* MuleGifCtrl.cpp */,
+				48791D2111926A0E002C086E /* MuleGifCtrl.h */,
+				48791D2211926A0E002C086E /* MuleListCtrl.cpp */,
+				48791D2311926A0E002C086E /* MuleListCtrl.h */,
+				48791D2411926A0E002C086E /* MuleNotebook.cpp */,
+				48791D2511926A0E002C086E /* MuleNotebook.h */,
+				48791D2611926A0E002C086E /* MuleTextCtrl.cpp */,
+				48791D2711926A0E002C086E /* MuleTextCtrl.h */,
+				48791D2811926A0E002C086E /* muuli_wdr.cpp */,
+				48791D2911926A0E002C086E /* muuli_wdr.h */,
+			);
+			name = libmuleappgui;
+			sourceTree = "<group>";
+		};
+		48791D3811926A11002C086E /* extern */ = {
+			isa = PBXGroup;
+			children = (
+				48791D3911926A2E002C086E /* listctrl.cpp */,
+				48791D3A11926A2E002C086E /* listctrl.h */,
+			);
+			name = extern;
+			sourceTree = "<group>";
+		};
+		48791D3C11926A40002C086E /* core_sources */ = {
+			isa = PBXGroup;
+			children = (
+				48791D9E11926AF6002C086E /* kademlia */,
+				48791D3D11926AEE002C086E /* amule.cpp */,
+				48791D3E11926AEE002C086E /* amule.h */,
+				48791D3F11926AEE002C086E /* BaseClient.cpp */,
+				48791D4011926AEE002C086E /* CanceledFileList.cpp */,
+				48791D4111926AEE002C086E /* CanceledFileList.h */,
+				48791D4211926AEE002C086E /* ClientCreditsList.cpp */,
+				48791D4311926AEE002C086E /* ClientCreditsList.h */,
+				48791D4411926AEE002C086E /* ClientList.cpp */,
+				48791D4511926AEE002C086E /* ClientList.h */,
+				48791D4611926AEE002C086E /* ClientTCPSocket.cpp */,
+				48791D4711926AEE002C086E /* ClientTCPSocket.h */,
+				48791D4811926AEE002C086E /* ClientUDPSocket.cpp */,
+				48791D4911926AEE002C086E /* ClientUDPSocket.h */,
+				48791D4A11926AEE002C086E /* CorruptionBlackBox.cpp */,
+				48791D4B11926AEE002C086E /* CorruptionBlackBox.h */,
+				48791D4C11926AEE002C086E /* DownloadClient.cpp */,
+				48791D4D11926AEE002C086E /* DownloadQueue.cpp */,
+				48791D4E11926AEE002C086E /* DownloadQueue.h */,
+				48791D4F11926AEE002C086E /* ECSpecialCoreTags.cpp */,
+				48791D5011926AEE002C086E /* EMSocket.cpp */,
+				48791D5111926AEE002C086E /* EMSocket.h */,
+				48791D5211926AEE002C086E /* EncryptedDatagramSocket.cpp */,
+				48791D5311926AEE002C086E /* EncryptedDatagramSocket.h */,
+				48791D5411926AEE002C086E /* EncryptedStreamSocket.cpp */,
+				48791D5511926AEE002C086E /* EncryptedStreamSocket.h */,
+				48791D5611926AEE002C086E /* ExternalConn.cpp */,
+				48791D5711926AEE002C086E /* FriendList.cpp */,
+				48791D5811926AEE002C086E /* FriendList.h */,
+				48791D5911926AEE002C086E /* HTTPDownload.cpp */,
+				48791D5A11926AEE002C086E /* HTTPDownload.h */,
+				48791D5B11926AEE002C086E /* IPFilter.cpp */,
+				48791D5C11926AEE002C086E /* IPFilter.h */,
+				48791D5D11926AEE002C086E /* KnownFileList.cpp */,
+				48791D5E11926AEE002C086E /* KnownFileList.h */,
+				48791D5F11926AEE002C086E /* ListenSocket.cpp */,
+				48791D6011926AEE002C086E /* ListenSocket.h */,
+				48791D6111926AEE002C086E /* MuleUDPSocket.cpp */,
+				48791D6211926AEE002C086E /* MuleUDPSocket.h */,
+				48791D6311926AEE002C086E /* PartFileConvert.cpp */,
+				48791D6411926AEE002C086E /* PartFileConvert.h */,
+				48791D6511926AEE002C086E /* SearchFile.cpp */,
+				48791D6611926AEE002C086E /* SearchFile.h */,
+				48791D6711926AEE002C086E /* SearchList.cpp */,
+				48791D6811926AEE002C086E /* SearchList.h */,
+				48791D6911926AEE002C086E /* ServerConnect.cpp */,
+				48791D6A11926AEE002C086E /* ServerConnect.h */,
+				48791D6B11926AEE002C086E /* ServerList.cpp */,
+				48791D6C11926AEE002C086E /* ServerList.h */,
+				48791D6D11926AEE002C086E /* ServerSocket.cpp */,
+				48791D6E11926AEE002C086E /* ServerSocket.h */,
+				48791D6F11926AEE002C086E /* ServerUDPSocket.cpp */,
+				48791D7011926AEE002C086E /* ServerUDPSocket.h */,
+				48791D7111926AEE002C086E /* SharedFileList.cpp */,
+				48791D7211926AEE002C086E /* SharedFileList.h */,
+				48791D7311926AEE002C086E /* TerminationProcessAmuleweb.cpp */,
+				48791D7411926AEE002C086E /* TerminationProcessAmuleweb.h */,
+				48791D7511926AEE002C086E /* ThreadTasks.cpp */,
+				48791D7611926AEE002C086E /* ThreadTasks.h */,
+				48791D7711926AEE002C086E /* UploadBandwidthThrottler.cpp */,
+				48791D7811926AEE002C086E /* UploadBandwidthThrottler.h */,
+				48791D7911926AEE002C086E /* UploadClient.cpp */,
+				48791D7A11926AEE002C086E /* UploadQueue.cpp */,
+				48791D7B11926AEE002C086E /* UploadQueue.h */,
+			);
+			name = core_sources;
+			sourceTree = "<group>";
+		};
+		48791D9E11926AF6002C086E /* kademlia */ = {
+			isa = PBXGroup;
+			children = (
+				48791DA111926B07002C086E /* routing */,
+				48791DA011926B03002C086E /* kademlia */,
+				48791D9F11926AFF002C086E /* net */,
+			);
+			name = kademlia;
+			sourceTree = "<group>";
+		};
+		48791D9F11926AFF002C086E /* net */ = {
+			isa = PBXGroup;
+			children = (
+				48791DE311926B21002C086E /* KademliaUDPListener.cpp */,
+				48791DE411926B21002C086E /* KademliaUDPListener.h */,
+				48791DE511926B21002C086E /* PacketTracking.cpp */,
+				48791DE611926B21002C086E /* PacketTracking.h */,
+			);
+			name = net;
+			sourceTree = "<group>";
+		};
+		48791DA011926B03002C086E /* kademlia */ = {
+			isa = PBXGroup;
+			children = (
+				48791E2511926B41002C086E /* Indexed.cpp */,
+				48791E2611926B41002C086E /* Indexed.h */,
+				48791E2711926B41002C086E /* Kademlia.cpp */,
+				48791E2811926B41002C086E /* Kademlia.h */,
+				48791E2911926B41002C086E /* Prefs.cpp */,
+				48791E2A11926B41002C086E /* Prefs.h */,
+				48791E2B11926B41002C086E /* Search.cpp */,
+				48791E2C11926B41002C086E /* Search.h */,
+				48791E2D11926B41002C086E /* UDPFirewallTester.cpp */,
+				48791E2E11926B41002C086E /* UDPFirewallTester.h */,
+			);
+			name = kademlia;
+			sourceTree = "<group>";
+		};
+		48791DA111926B07002C086E /* routing */ = {
+			isa = PBXGroup;
+			children = (
+				48791E7C11926B54002C086E /* RoutingZone.cpp */,
+				48791E7D11926B54002C086E /* RoutingZone.h */,
+			);
+			name = routing;
+			sourceTree = "<group>";
+		};
+		48791EAA11926B8E002C086E /* gui_sources */ = {
+			isa = PBXGroup;
+			children = (
+				4848D8091192E85900ED40CC /* SharedFilePeersListCtrl.cpp */,
+				4848D80A1192E85900ED40CC /* SharedFilePeersListCtrl.h */,
+				4848D80B1192E85900ED40CC /* SourceListCtrl.cpp */,
+				4848D80C1192E85900ED40CC /* SourceListCtrl.h */,
+				4848D2CD1192E83100ED40CC /* GenericClientListCtrl.cpp */,
+				4848D2CE1192E83100ED40CC /* GenericClientListCtrl.h */,
+				48791EAB11926CC7002C086E /* AddFriend.cpp */,
+				48791EAC11926CC7002C086E /* AddFriend.h */,
+				48791EAD11926CC7002C086E /* amule-gui.cpp */,
+				48791EAE11926CC7002C086E /* amuleDlg.cpp */,
+				48791EAF11926CC7002C086E /* amuleDlg.h */,
+				48791EB011926CC7002C086E /* CatDialog.cpp */,
+				48791EB111926CC7002C086E /* CatDialog.h */,
+				48791EB211926CC7002C086E /* ChatSelector.cpp */,
+				48791EB311926CC7002C086E /* ChatSelector.h */,
+				48791EB411926CC7002C086E /* ClientDetailDialog.cpp */,
+				48791EB511926CC7002C086E /* ClientDetailDialog.h */,
+				48791EB811926CC7002C086E /* DirectoryTreeCtrl.cpp */,
+				48791EB911926CC7002C086E /* DirectoryTreeCtrl.h */,
+				48791EBA11926CC7002C086E /* DownloadListCtrl.cpp */,
+				48791EBB11926CC7002C086E /* DownloadListCtrl.h */,
+				48791EBC11926CC7002C086E /* FileDetailDialog.cpp */,
+				48791EBD11926CC7002C086E /* FileDetailDialog.h */,
+				48791EBE11926CC7002C086E /* FriendListCtrl.cpp */,
+				48791EBF11926CC7002C086E /* FriendListCtrl.h */,
+				48791EC011926CC7002C086E /* KadDlg.cpp */,
+				48791EC111926CC7002C086E /* KadDlg.h */,
+				48791EC211926CC7002C086E /* MuleColour.cpp */,
+				48791EC311926CC7002C086E /* MuleColour.h */,
+				48791EC411926CC7002C086E /* MuleTrayIcon.cpp */,
+				48791EC511926CC7002C086E /* MuleTrayIcon.h */,
+				48791EC611926CC7002C086E /* OScopeCtrl.cpp */,
+				48791EC711926CC7002C086E /* OScopeCtrl.h */,
+				48791EC811926CC7002C086E /* PartFileConvertDlg.cpp */,
+				48791EC911926CC7002C086E /* PartFileConvertDlg.h */,
+				48791ECA11926CC7002C086E /* PrefsUnifiedDlg.cpp */,
+				48791ECB11926CC7002C086E /* PrefsUnifiedDlg.h */,
+				48791ECC11926CC7002C086E /* SearchDlg.cpp */,
+				48791ECD11926CC7002C086E /* SearchDlg.h */,
+				48791ECE11926CC7002C086E /* SearchListCtrl.cpp */,
+				48791ECF11926CC7002C086E /* SearchListCtrl.h */,
+				48791ED011926CC7002C086E /* ServerListCtrl.cpp */,
+				48791ED111926CC7002C086E /* ServerListCtrl.h */,
+				48791ED211926CC7002C086E /* ServerWnd.cpp */,
+				48791ED311926CC7002C086E /* ServerWnd.h */,
+				48791ED411926CC7002C086E /* SharedFilesCtrl.cpp */,
+				48791ED511926CC7002C086E /* SharedFilesCtrl.h */,
+				48791ED611926CC7002C086E /* SharedFilesWnd.cpp */,
+				48791ED711926CC7002C086E /* SharedFilesWnd.h */,
+				48791ED811926CC7002C086E /* StatisticsDlg.cpp */,
+				48791ED911926CC7002C086E /* StatisticsDlg.h */,
+				48791EDA11926CC7002C086E /* TransferWnd.cpp */,
+				48791EDB11926CC7002C086E /* TransferWnd.h */,
+			);
+			name = gui_sources;
+			sourceTree = "<group>";
+		};
+		48791F6511926D4E002C086E /* common_sources */ = {
+			isa = PBXGroup;
+			children = (
+				487922C811927626002C086E /* CaptchaDialog.cpp */,
+				487922C911927626002C086E /* CaptchaDialog.h */,
+				487922CA11927626002C086E /* CaptchaGenerator.cpp */,
+				487922CB11927626002C086E /* CaptchaGenerator.h */,
+				48791F6611926F24002C086E /* amuleAppCommon.cpp */,
+				48791F6711926F24002C086E /* ClientCredits.cpp */,
+				48791F6811926F24002C086E /* ClientCredits.h */,
+				48791F6911926F24002C086E /* ECSpecialMuleTags.cpp */,
+				48791F6A11926F24002C086E /* GetTickCount.cpp */,
+				48791F6B11926F24002C086E /* GetTickCount.h */,
+				48791F6C11926F24002C086E /* GuiEvents.cpp */,
+				48791F6D11926F24002C086E /* GuiEvents.h */,
+				48791F6E11926F24002C086E /* KnownFile.cpp */,
+				48791F6F11926F24002C086E /* KnownFile.h */,
+				48791F7011926F24002C086E /* Logger.cpp */,
+				48791F7111926F24002C086E /* Logger.h */,
+				48791F7211926F24002C086E /* PartFile.cpp */,
+				48791F7311926F24002C086E /* PartFile.h */,
+				48791F7411926F24002C086E /* Preferences.cpp */,
+				48791F7511926F24002C086E /* Preferences.h */,
+				48791F7611926F24002C086E /* Proxy.cpp */,
+				48791F7711926F24002C086E /* Proxy.h */,
+				48791F7811926F24002C086E /* Server.cpp */,
+				48791F7911926F24002C086E /* Server.h */,
+				48791F7A11926F24002C086E /* SHAHashSet.cpp */,
+				48791F7B11926F24002C086E /* SHAHashSet.h */,
+				48791F7C11926F24002C086E /* Statistics.cpp */,
+				48791F7D11926F24002C086E /* Statistics.h */,
+				48791F7E11926F24002C086E /* StatTree.cpp */,
+				48791F7F11926F24002C086E /* StatTree.h */,
+				48791F8011926F24002C086E /* TerminationProcess.cpp */,
+				48791F8111926F24002C086E /* TerminationProcess.h */,
+				48791F8211926F24002C086E /* UserEvents.cpp */,
+				48791F8311926F24002C086E /* UserEvents.h */,
+			);
+			name = common_sources;
+			sourceTree = "<group>";
+		};
+		48791F9411926F44002C086E /* remote_common_sources */ = {
+			isa = PBXGroup;
+			children = (
+				48791FD611926F74002C086E /* NetworkFunctions.cpp */,
+				48791FD711926F74002C086E /* NetworkFunctions.h */,
+				48791FD811926F74002C086E /* OtherFunctions.cpp */,
+				48791FD911926F74002C086E /* OtherFunctions.h */,
+			);
+			name = remote_common_sources;
+			sourceTree = "<group>";
+		};
+		48792056119274B2002C086E /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				48792058119274BB002C086E /* ec */,
+				48792057119274B7002C086E /* common */,
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
+		48792057119274B7002C086E /* common */ = {
+			isa = PBXGroup;
+			children = (
+				4879205C119274FA002C086E /* FileFunctions.cpp */,
+				4879205D119274FA002C086E /* FileFunctions.h */,
+				4879205E119274FA002C086E /* Format.cpp */,
+				4879205F119274FA002C086E /* Format.h */,
+				48792060119274FA002C086E /* MD5Sum.cpp */,
+				48792061119274FA002C086E /* MD5Sum.h */,
+				48792062119274FA002C086E /* MuleDebug.cpp */,
+				48792063119274FA002C086E /* MuleDebug.h */,
+				48792064119274FA002C086E /* Path.cpp */,
+				48792065119274FA002C086E /* Path.h */,
+				48792066119274FA002C086E /* StringFunctions.cpp */,
+				48792067119274FA002C086E /* StringFunctions.h */,
+				48792068119274FA002C086E /* TextFile.cpp */,
+				48792069119274FA002C086E /* TextFile.h */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
+		48792058119274BB002C086E /* ec */ = {
+			isa = PBXGroup;
+			children = (
+				487921F011927592002C086E /* cpp */,
+			);
+			name = ec;
+			sourceTree = "<group>";
+		};
+		487921F011927592002C086E /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				4879213211927582002C086E /* ECMuleSocket.cpp */,
+				4879213311927582002C086E /* ECMuleSocket.h */,
+				4879213411927582002C086E /* ECPacket.cpp */,
+				4879213511927582002C086E /* ECPacket.h */,
+				4879213611927582002C086E /* ECSocket.cpp */,
+				4879213711927582002C086E /* ECSocket.h */,
+				4879213811927582002C086E /* ECSpecialTags.cpp */,
+				4879213911927582002C086E /* ECSpecialTags.h */,
+				4879213A11927582002C086E /* ECTag.cpp */,
+				4879213B11927582002C086E /* ECTag.h */,
+				4879213C11927582002C086E /* RemoteConnect.cpp */,
+				4879213D11927582002C086E /* RemoteConnect.h */,
+			);
+			name = cpp;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* aMule */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "aMule" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = aMule;
+			productInstallPath = "$(HOME)/Applications";
+			productName = "aMule-Xcode";
+			productReference = 8D1107320486CEB800E47090 /* aMule.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "aMule" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* aMule-Xcode */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* aMule */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				488D4E8F1192CB880089BF8E /* README BEFORE BUILDING.rtf in Resources */,
+				483344701196275F00D9BE75 /* amule.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				487911DA11925E61002C086E /* CFile.cpp in Sources */,
+				487911DB11925E61002C086E /* DataToText.cpp in Sources */,
+				487911DC11925E61002C086E /* ED2KLink.cpp in Sources */,
+				487911DD11925E61002C086E /* GapList.cpp in Sources */,
+				487911DE11925E61002C086E /* MagnetURI.cpp in Sources */,
+				487911DF11925E61002C086E /* MemFile.cpp in Sources */,
+				487911E111925E61002C086E /* Packet.cpp in Sources */,
+				487911E211925E61002C086E /* RLE.cpp in Sources */,
+				487911E311925E61002C086E /* SafeFile.cpp in Sources */,
+				487911E411925E61002C086E /* SHA.cpp in Sources */,
+				487911E511925E61002C086E /* Tag.cpp in Sources */,
+				487911E611925E61002C086E /* Timer.cpp in Sources */,
+				4879120211925FDD002C086E /* AsyncDNS.cpp in Sources */,
+				4879120311925FDD002C086E /* DeadSourceList.cpp in Sources */,
+				4879120411925FDD002C086E /* FileArea.cpp in Sources */,
+				4879120511925FDD002C086E /* FileAutoClose.cpp in Sources */,
+				4879120611925FDD002C086E /* Friend.cpp in Sources */,
+				4879120711925FDD002C086E /* Parser.cpp in Sources */,
+				4879120811925FDD002C086E /* PlatformSpecific.cpp in Sources */,
+				4879120911925FDD002C086E /* RandomFunctions.cpp in Sources */,
+				4879120A11925FDD002C086E /* RC4Encrypt.cpp in Sources */,
+				4879120B11925FDD002C086E /* Scanner.cpp in Sources */,
+				4879120C11925FDD002C086E /* StateMachine.cpp in Sources */,
+				4879120D11925FDD002C086E /* ThreadScheduler.cpp in Sources */,
+				4879120E11925FDD002C086E /* UPnPBase.cpp in Sources */,
+				48791C961192601F002C086E /* Entry.cpp in Sources */,
+				48791C971192601F002C086E /* SearchManager.cpp in Sources */,
+				48791D081192607A002C086E /* Contact.cpp in Sources */,
+				48791D091192607A002C086E /* RoutingBin.cpp in Sources */,
+				48791D0C119260A0002C086E /* UInt128.cpp in Sources */,
+				48791D2A11926A0E002C086E /* BarShader.cpp in Sources */,
+				48791D2B11926A0E002C086E /* ChatWnd.cpp in Sources */,
+				48791D2C11926A0E002C086E /* ColorFrameCtrl.cpp in Sources */,
+				48791D2D11926A0E002C086E /* CommentDialog.cpp in Sources */,
+				48791D2E11926A0E002C086E /* CommentDialogLst.cpp in Sources */,
+				48791D2F11926A0E002C086E /* EditServerListDlg.cpp in Sources */,
+				48791D3011926A0E002C086E /* FileDetailListCtrl.cpp in Sources */,
+				48791D3111926A0E002C086E /* IP2Country.cpp in Sources */,
+				48791D3211926A0E002C086E /* MuleCollection.cpp in Sources */,
+				48791D3311926A0E002C086E /* MuleGifCtrl.cpp in Sources */,
+				48791D3411926A0E002C086E /* MuleListCtrl.cpp in Sources */,
+				48791D3511926A0E002C086E /* MuleNotebook.cpp in Sources */,
+				48791D3611926A0E002C086E /* MuleTextCtrl.cpp in Sources */,
+				48791D3711926A0E002C086E /* muuli_wdr.cpp in Sources */,
+				48791D3B11926A2E002C086E /* listctrl.cpp in Sources */,
+				48791D7C11926AEE002C086E /* amule.cpp in Sources */,
+				48791D7D11926AEE002C086E /* BaseClient.cpp in Sources */,
+				48791D7E11926AEE002C086E /* CanceledFileList.cpp in Sources */,
+				48791D7F11926AEE002C086E /* ClientCreditsList.cpp in Sources */,
+				48791D8011926AEE002C086E /* ClientList.cpp in Sources */,
+				48791D8111926AEE002C086E /* ClientTCPSocket.cpp in Sources */,
+				48791D8211926AEE002C086E /* ClientUDPSocket.cpp in Sources */,
+				48791D8311926AEE002C086E /* CorruptionBlackBox.cpp in Sources */,
+				48791D8411926AEE002C086E /* DownloadClient.cpp in Sources */,
+				48791D8511926AEE002C086E /* DownloadQueue.cpp in Sources */,
+				48791D8611926AEE002C086E /* ECSpecialCoreTags.cpp in Sources */,
+				48791D8711926AEE002C086E /* EMSocket.cpp in Sources */,
+				48791D8811926AEE002C086E /* EncryptedDatagramSocket.cpp in Sources */,
+				48791D8911926AEE002C086E /* EncryptedStreamSocket.cpp in Sources */,
+				48791D8A11926AEE002C086E /* ExternalConn.cpp in Sources */,
+				48791D8B11926AEE002C086E /* FriendList.cpp in Sources */,
+				48791D8C11926AEE002C086E /* HTTPDownload.cpp in Sources */,
+				48791D8D11926AEE002C086E /* IPFilter.cpp in Sources */,
+				48791D8E11926AEE002C086E /* KnownFileList.cpp in Sources */,
+				48791D8F11926AEE002C086E /* ListenSocket.cpp in Sources */,
+				48791D9011926AEE002C086E /* MuleUDPSocket.cpp in Sources */,
+				48791D9111926AEE002C086E /* PartFileConvert.cpp in Sources */,
+				48791D9211926AEE002C086E /* SearchFile.cpp in Sources */,
+				48791D9311926AEE002C086E /* SearchList.cpp in Sources */,
+				48791D9411926AEE002C086E /* ServerConnect.cpp in Sources */,
+				48791D9511926AEE002C086E /* ServerList.cpp in Sources */,
+				48791D9611926AEE002C086E /* ServerSocket.cpp in Sources */,
+				48791D9711926AEE002C086E /* ServerUDPSocket.cpp in Sources */,
+				48791D9811926AEE002C086E /* SharedFileList.cpp in Sources */,
+				48791D9911926AEE002C086E /* TerminationProcessAmuleweb.cpp in Sources */,
+				48791D9A11926AEE002C086E /* ThreadTasks.cpp in Sources */,
+				48791D9B11926AEE002C086E /* UploadBandwidthThrottler.cpp in Sources */,
+				48791D9C11926AEE002C086E /* UploadClient.cpp in Sources */,
+				48791D9D11926AEE002C086E /* UploadQueue.cpp in Sources */,
+				48791E1211926B21002C086E /* KademliaUDPListener.cpp in Sources */,
+				48791E1311926B21002C086E /* PacketTracking.cpp in Sources */,
+				48791E3611926B41002C086E /* Indexed.cpp in Sources */,
+				48791E3711926B41002C086E /* Kademlia.cpp in Sources */,
+				48791E3811926B41002C086E /* Prefs.cpp in Sources */,
+				48791E3911926B41002C086E /* Search.cpp in Sources */,
+				48791E3A11926B41002C086E /* UDPFirewallTester.cpp in Sources */,
+				48791EA911926B54002C086E /* RoutingZone.cpp in Sources */,
+				48791EDC11926CC7002C086E /* AddFriend.cpp in Sources */,
+				48791EDD11926CC7002C086E /* amule-gui.cpp in Sources */,
+				48791EDE11926CC7002C086E /* amuleDlg.cpp in Sources */,
+				48791EDF11926CC7002C086E /* CatDialog.cpp in Sources */,
+				48791EE011926CC7002C086E /* ChatSelector.cpp in Sources */,
+				48791EE111926CC7002C086E /* ClientDetailDialog.cpp in Sources */,
+				48791EE311926CC7002C086E /* DirectoryTreeCtrl.cpp in Sources */,
+				48791EE411926CC7002C086E /* DownloadListCtrl.cpp in Sources */,
+				48791EE511926CC7002C086E /* FileDetailDialog.cpp in Sources */,
+				48791EE611926CC7002C086E /* FriendListCtrl.cpp in Sources */,
+				48791EE711926CC7002C086E /* KadDlg.cpp in Sources */,
+				48791EE811926CC7002C086E /* MuleColour.cpp in Sources */,
+				48791EE911926CC7002C086E /* MuleTrayIcon.cpp in Sources */,
+				48791EEA11926CC7002C086E /* OScopeCtrl.cpp in Sources */,
+				48791EEB11926CC7002C086E /* PartFileConvertDlg.cpp in Sources */,
+				48791EEC11926CC7002C086E /* PrefsUnifiedDlg.cpp in Sources */,
+				48791EED11926CC7002C086E /* SearchDlg.cpp in Sources */,
+				48791EEE11926CC7002C086E /* SearchListCtrl.cpp in Sources */,
+				48791EEF11926CC7002C086E /* ServerListCtrl.cpp in Sources */,
+				48791EF011926CC7002C086E /* ServerWnd.cpp in Sources */,
+				48791EF111926CC7002C086E /* SharedFilesCtrl.cpp in Sources */,
+				48791EF211926CC7002C086E /* SharedFilesWnd.cpp in Sources */,
+				48791EF311926CC7002C086E /* StatisticsDlg.cpp in Sources */,
+				48791EF411926CC7002C086E /* TransferWnd.cpp in Sources */,
+				48791F8411926F24002C086E /* amuleAppCommon.cpp in Sources */,
+				48791F8511926F24002C086E /* ClientCredits.cpp in Sources */,
+				48791F8611926F24002C086E /* ECSpecialMuleTags.cpp in Sources */,
+				48791F8711926F24002C086E /* GetTickCount.cpp in Sources */,
+				48791F8811926F24002C086E /* GuiEvents.cpp in Sources */,
+				48791F8911926F24002C086E /* KnownFile.cpp in Sources */,
+				48791F8A11926F24002C086E /* Logger.cpp in Sources */,
+				48791F8B11926F24002C086E /* PartFile.cpp in Sources */,
+				48791F8C11926F24002C086E /* Preferences.cpp in Sources */,
+				48791F8D11926F24002C086E /* Proxy.cpp in Sources */,
+				48791F8E11926F24002C086E /* Server.cpp in Sources */,
+				48791F8F11926F24002C086E /* SHAHashSet.cpp in Sources */,
+				48791F9011926F24002C086E /* Statistics.cpp in Sources */,
+				48791F9111926F24002C086E /* StatTree.cpp in Sources */,
+				48791F9211926F24002C086E /* TerminationProcess.cpp in Sources */,
+				48791F9311926F24002C086E /* UserEvents.cpp in Sources */,
+				4879200511926F74002C086E /* NetworkFunctions.cpp in Sources */,
+				4879200611926F74002C086E /* OtherFunctions.cpp in Sources */,
+				4879206A119274FA002C086E /* FileFunctions.cpp in Sources */,
+				4879206B119274FA002C086E /* Format.cpp in Sources */,
+				4879206C119274FA002C086E /* MD5Sum.cpp in Sources */,
+				4879206D119274FA002C086E /* MuleDebug.cpp in Sources */,
+				4879206E119274FA002C086E /* Path.cpp in Sources */,
+				4879206F119274FA002C086E /* StringFunctions.cpp in Sources */,
+				48792070119274FA002C086E /* TextFile.cpp in Sources */,
+				487921EA11927582002C086E /* ECMuleSocket.cpp in Sources */,
+				487921EB11927582002C086E /* ECPacket.cpp in Sources */,
+				487921EC11927582002C086E /* ECSocket.cpp in Sources */,
+				487921ED11927582002C086E /* ECSpecialTags.cpp in Sources */,
+				487921EE11927582002C086E /* ECTag.cpp in Sources */,
+				487921EF11927582002C086E /* RemoteConnect.cpp in Sources */,
+				4879238511927626002C086E /* CaptchaDialog.cpp in Sources */,
+				4879238611927626002C086E /* CaptchaGenerator.cpp in Sources */,
+				4848D2CF1192E83100ED40CC /* GenericClientListCtrl.cpp in Sources */,
+				4848DC291192E85A00ED40CC /* SharedFilePeersListCtrl.cpp in Sources */,
+				4848DC2A1192E85A00ED40CC /* SourceListCtrl.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		48636E0A119E4DBA00BC3DB6 /* Development Debug - wxWidgets 2.9+ */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../src/**";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-I../../../..//wxWidgets/lib/wx/include/osx_cocoa-unicode-static-2.9",
+					"-I../../../../wxWidgets/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+				);
+				OTHER_LDFLAGS = "-L../../../../wxWidgets/lib";
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+			};
+			name = "Development Debug - wxWidgets 2.9+";
+		};
+		48636E0B119E4DBA00BC3DB6 /* Development Debug - wxWidgets 2.9+ */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_WX_EXTENSIONS,
+					"CRYPTOPP_INCLUDE_PREFIX=cryptopp-64bits",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../src\"",
+					"\"$(SRCROOT)/../../../src/libs/\"/**",
+					"\"$(SRCROOT)/../../../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/libs/ec/cpp\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-I../../../../",
+					"-I../../../../wxWidgets/lib/wx/include/osx_cocoa-unicode-static-2.9",
+					"-I../../../../wxWidgets/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../cryptopp-64bits/",
+					"-lcryptopp",
+					"-L../../../../wxWidgets/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					System,
+					"-framework",
+					OpenGL,
+					"-framework",
+					QuickTime,
+					"../../../../wxWidgets/lib/libwx_osx_cocoau_xrc-2.9.a",
+					"../../../../wxWidgets/lib/libwx_osx_cocoau_html-2.9.a",
+					"../../../../wxWidgets/lib/libwx_osx_cocoau_qa-2.9.a",
+					"../../../../wxWidgets/lib/libwx_osx_cocoau_adv-2.9.a",
+					"../../../../wxWidgets/lib/libwx_osx_cocoau_core-2.9.a",
+					"../../../../wxWidgets/lib/libwx_baseu_xml-2.9.a",
+					"../../../../wxWidgets/lib/libwx_baseu_net-2.9.a",
+					"../../../../wxWidgets/lib/libwx_baseu-2.9.a",
+					"-framework",
+					WebKit,
+					"-lexpat",
+					"-lwxregexu-2.9",
+					"-lwxtiff-2.9",
+					"-lwxjpeg-2.9",
+					"-lwxpng-2.9",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "ppc i386 x86_64";
+			};
+			name = "Development Debug - wxWidgets 2.9+";
+		};
+		48636E0C119E4DC400BC3DB6 /* Deployment Debug - wxWidgets 2.9+ */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../src/**";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"-lwx_macud_richtext-2.8",
+					"-lwx_macud_aui-2.8",
+					"-lwx_macud_xrc-2.8",
+					"-lwx_macud_qa-2.8",
+					"-lwx_macud_html-2.8",
+					"-lwx_macud_adv-2.8",
+					"-lwx_macud_core-2.8",
+					"-lwx_base_carbonud_xml-2.8",
+					"-lwx_base_carbonud_net-2.8",
+					"-lwx_base_carbonud-2.8",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "i386 ppc";
+			};
+			name = "Deployment Debug - wxWidgets 2.9+";
+		};
+		48636E0D119E4DC400BC3DB6 /* Deployment Debug - wxWidgets 2.9+ */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WX_EXTENSIONS;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../src\"",
+					"\"$(SRCROOT)/../../../src/libs/\"/**",
+					"\"$(SRCROOT)/../../../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/libs/ec/cpp\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-I../../../../",
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-static-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../cryptopp/",
+					"-lcryptopp",
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"../../../../wxWidgets-2.8/lib/libwx_macud_richtext-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_aui-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_xrc-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_qa-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_html-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_adv-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_core-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_xml-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_net-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud-2.8.a",
+					"-framework",
+					WebKit,
+					"-lwxregexud-2.8",
+					"-lwxexpatd-2.8",
+					"-lwxtiffd-2.8",
+					"-lwxjpegd-2.8",
+					"-lwxpngd-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
+			};
+			name = "Deployment Debug - wxWidgets 2.9+";
+		};
+		48636E0E119E4DCB00BC3DB6 /* Deployment Release - wxWidgets 2.9+ */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../src/**";
+				OTHER_CFLAGS = (
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"-lwx_macud_richtext-2.8",
+					"-lwx_macud_aui-2.8",
+					"-lwx_macud_xrc-2.8",
+					"-lwx_macud_qa-2.8",
+					"-lwx_macud_html-2.8",
+					"-lwx_macud_adv-2.8",
+					"-lwx_macud_core-2.8",
+					"-lwx_base_carbonud_xml-2.8",
+					"-lwx_base_carbonud_net-2.8",
+					"-lwx_base_carbonud-2.8",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "i386 ppc";
+			};
+			name = "Deployment Release - wxWidgets 2.9+";
+		};
+		48636E0F119E4DCB00BC3DB6 /* Deployment Release - wxWidgets 2.9+ */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WX_EXTENSIONS;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../src\"",
+					"\"$(SRCROOT)/../../../src/libs/\"/**",
+					"\"$(SRCROOT)/../../../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/libs/ec/cpp\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-I../../../../",
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-static-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../cryptopp/",
+					"-lcryptopp",
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"../../../../wxWidgets-2.8/lib/libwx_macud_richtext-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_aui-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_xrc-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_qa-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_html-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_adv-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_core-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_xml-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_net-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud-2.8.a",
+					"-framework",
+					WebKit,
+					"-lwxregexud-2.8",
+					"-lwxexpatd-2.8",
+					"-lwxtiffd-2.8",
+					"-lwxjpegd-2.8",
+					"-lwxpngd-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
+			};
+			name = "Deployment Release - wxWidgets 2.9+";
+		};
+		4875E6EA1192DCF9004ABCD5 /* Deployment Debug - wxWidgets 2.8 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../src/**";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"-lwx_macud_richtext-2.8",
+					"-lwx_macud_aui-2.8",
+					"-lwx_macud_xrc-2.8",
+					"-lwx_macud_qa-2.8",
+					"-lwx_macud_html-2.8",
+					"-lwx_macud_adv-2.8",
+					"-lwx_macud_core-2.8",
+					"-lwx_base_carbonud_xml-2.8",
+					"-lwx_base_carbonud_net-2.8",
+					"-lwx_base_carbonud-2.8",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "i386 ppc";
+			};
+			name = "Deployment Debug - wxWidgets 2.8";
+		};
+		4875E6EB1192DCF9004ABCD5 /* Deployment Debug - wxWidgets 2.8 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WX_EXTENSIONS;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../src\"",
+					"\"$(SRCROOT)/../../../src/libs/\"/**",
+					"\"$(SRCROOT)/../../../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/libs/ec/cpp\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-I../../../../",
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-static-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../cryptopp/",
+					"-lcryptopp",
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"../../../../wxWidgets-2.8/lib/libwx_macud_richtext-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_aui-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_xrc-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_qa-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_html-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_adv-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_core-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_xml-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_net-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud-2.8.a",
+					"-framework",
+					WebKit,
+					"-lwxregexud-2.8",
+					"-lwxexpatd-2.8",
+					"-lwxtiffd-2.8",
+					"-lwxjpegd-2.8",
+					"-lwxpngd-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
+			};
+			name = "Deployment Debug - wxWidgets 2.8";
+		};
+		C01FCF4B08A954540054247B /* Development Debug - wxWidgets 2.8 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WX_EXTENSIONS;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../src\"",
+					"\"$(SRCROOT)/../../../src/libs/\"/**",
+					"\"$(SRCROOT)/../../../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/libs/ec/cpp\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-I../../../../",
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-static-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../cryptopp/",
+					"-lcryptopp",
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"../../../../wxWidgets-2.8/lib/libwx_macud_richtext-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_aui-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_xrc-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_qa-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_html-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_adv-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_core-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_xml-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_net-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud-2.8.a",
+					"-framework",
+					WebKit,
+					"-lwxregexud-2.8",
+					"-lwxexpatd-2.8",
+					"-lwxtiffd-2.8",
+					"-lwxjpegd-2.8",
+					"-lwxpngd-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
+			};
+			name = "Development Debug - wxWidgets 2.8";
+		};
+		C01FCF4C08A954540054247B /* Deployment Release - wxWidgets 2.8 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = aMule_Xcode_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WX_EXTENSIONS;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../src\"",
+					"\"$(SRCROOT)/../../../src/libs/\"/**",
+					"\"$(SRCROOT)/../../../src/include/\"/**",
+				);
+				INFOPLIST_FILE = "aMule_Xcode-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../src\"",
+					"\"$(SRCROOT)/../src/libs/\"/**",
+					"\"$(SRCROOT)/../src/libs/ec/cpp\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-I../../../../",
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-static-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../cryptopp/",
+					"-lcryptopp",
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"../../../../wxWidgets-2.8/lib/libwx_macud_richtext-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_aui-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_xrc-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_qa-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_html-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_adv-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_macud_core-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_xml-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud_net-2.8.a",
+					"../../../../wxWidgets-2.8/lib/libwx_base_carbonud-2.8.a",
+					"-framework",
+					WebKit,
+					"-lwxregexud-2.8",
+					"-lwxexpatd-2.8",
+					"-lwxtiffd-2.8",
+					"-lwxjpegd-2.8",
+					"-lwxpngd-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PRODUCT_NAME = aMule;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
+			};
+			name = "Deployment Release - wxWidgets 2.8";
+		};
+		C01FCF4F08A954540054247B /* Development Debug - wxWidgets 2.8 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../src/**";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"-lwx_macud_richtext-2.8",
+					"-lwx_macud_aui-2.8",
+					"-lwx_macud_xrc-2.8",
+					"-lwx_macud_qa-2.8",
+					"-lwx_macud_html-2.8",
+					"-lwx_macud_adv-2.8",
+					"-lwx_macud_core-2.8",
+					"-lwx_base_carbonud_xml-2.8",
+					"-lwx_base_carbonud_net-2.8",
+					"-lwx_base_carbonud-2.8",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+			};
+			name = "Development Debug - wxWidgets 2.8";
+		};
+		C01FCF5008A954540054247B /* Deployment Release - wxWidgets 2.8 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../src/**";
+				OTHER_CFLAGS = (
+					"-I../../../../wxWidgets-2.8/lib/wx/include/mac-unicode-debug-2.8",
+					"-I../../../../wxWidgets-2.8/include",
+					"-I../../../../wxWidgets-2.8/contrib/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXDEBUG__",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-L../../../../wxWidgets-2.8/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"-lwx_macud_richtext-2.8",
+					"-lwx_macud_aui-2.8",
+					"-lwx_macud_xrc-2.8",
+					"-lwx_macud_qa-2.8",
+					"-lwx_macud_html-2.8",
+					"-lwx_macud_adv-2.8",
+					"-lwx_macud_core-2.8",
+					"-lwx_base_carbonud_xml-2.8",
+					"-lwx_base_carbonud_net-2.8",
+					"-lwx_base_carbonud-2.8",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "i386 ppc";
+			};
+			name = "Deployment Release - wxWidgets 2.8";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "aMule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Development Debug - wxWidgets 2.8 */,
+				48636E0B119E4DBA00BC3DB6 /* Development Debug - wxWidgets 2.9+ */,
+				4875E6EB1192DCF9004ABCD5 /* Deployment Debug - wxWidgets 2.8 */,
+				48636E0D119E4DC400BC3DB6 /* Deployment Debug - wxWidgets 2.9+ */,
+				C01FCF4C08A954540054247B /* Deployment Release - wxWidgets 2.8 */,
+				48636E0F119E4DCB00BC3DB6 /* Deployment Release - wxWidgets 2.9+ */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Deployment Release - wxWidgets 2.8";
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "aMule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Development Debug - wxWidgets 2.8 */,
+				48636E0A119E4DBA00BC3DB6 /* Development Debug - wxWidgets 2.9+ */,
+				4875E6EA1192DCF9004ABCD5 /* Deployment Debug - wxWidgets 2.8 */,
+				48636E0C119E4DC400BC3DB6 /* Deployment Debug - wxWidgets 2.9+ */,
+				C01FCF5008A954540054247B /* Deployment Release - wxWidgets 2.8 */,
+				48636E0E119E4DCB00BC3DB6 /* Deployment Release - wxWidgets 2.9+ */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Deployment Release - wxWidgets 2.8";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
