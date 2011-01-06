@@ -44,6 +44,16 @@
 #	include "config.h"		// Needed for ENABLE_IP2COUNTRY
 #endif
 
+#ifdef _MSC_VER
+// For MSVC we need to check here if geoip is available at all. MinGW needs the include below however.
+
+// Block unnecessary includes from GeoIP.h
+#define _WINDOWS_
+#define _WINSOCK2API_
+#define _WS2TCPIP_H_
+#include <GeoIP.h>
+#endif
+
 #ifdef ENABLE_IP2COUNTRY
 
 #include "Preferences.h"	// For thePrefs
@@ -57,13 +67,6 @@
 
 #include <wx/intl.h>
 #include <wx/image.h>
-
-#ifdef _MSC_VER
-// Block unnecessary includes from GeoIP.h
-#define _WINDOWS_
-#define _WINSOCK2API_
-#define _WS2TCPIP_H_
-#endif
 
 #include <GeoIP.h>
 #include "IP2Country.h"
@@ -204,6 +207,25 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 	}
 	
 	return it->second;	
+}
+
+#else
+
+#include "IP2Country.h"
+
+CIP2Country::CIP2Country(const wxString&)
+{
+	m_geoip = NULL;
+}
+
+CIP2Country::~CIP2Country() {}
+void CIP2Country::Enable() {}
+void CIP2Country::DownloadFinished(uint32) {}
+
+const CountryData& CIP2Country::GetCountryData(const wxString &)
+{
+	static CountryData dummy;
+	return dummy;
 }
 
 #endif // ENABLE_IP2COUNTRY
