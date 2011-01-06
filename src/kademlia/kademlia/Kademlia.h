@@ -54,6 +54,7 @@ namespace Kademlia {
 
 class CRoutingZone;
 class CIndexed;
+class CIndexedDB;
 class CKadUDPKey;
 class CKadClientSearcher;
 
@@ -70,6 +71,7 @@ public:
 	static CRoutingZone *		GetRoutingZone()		{ wxCHECK(instance && instance->m_routingZone, NULL); return instance->m_routingZone; }
 	static CKademliaUDPListener *	GetUDPListener()		{ wxCHECK(instance && instance->m_udpListener, NULL); return instance->m_udpListener; }
 	static CIndexed *		GetIndexed()			{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
+	static CIndexedDB *		GetIndexedDB()			{ wxCHECK(instance && instance->m_indexedDB, NULL); return instance->m_indexedDB; }
 	static bool			IsRunning() throw()		{ return m_running; }
 	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
 	static bool			IsFirewalled()
@@ -131,6 +133,7 @@ private:
 	CRoutingZone *		m_routingZone;
 	CKademliaUDPListener *	m_udpListener;
 	CIndexed *		m_indexed;
+	CIndexedDB *	m_indexedDB;
 };
 
 } // End namespace

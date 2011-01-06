@@ -49,6 +49,7 @@ there client on the eMule forum..
 #include "../routing/Contact.h"
 #include "../routing/RoutingZone.h"
 #include "../kademlia/Indexed.h"
+#include "../kademlia/IndexedDB.h"
 #include "../kademlia/Defines.h"
 #include "../kademlia/UDPFirewallTester.h"
 #include "../utils/KadUDPKey.h"
@@ -931,7 +932,15 @@ void CKademliaUDPListener::Process2SearchKeyRequest(const uint8_t *packetData, u
 			throw wxString(wxT("Invalid search expression"));
 		}
 	}
-	CKademlia::GetIndexed()->SendValidKeywordResult(target, pSearchTerms, ip, port, false, startPosition, senderKey);
+	CMemFile oldResult(10000), newResult(10000);
+	CKademlia::GetIndexed()->SendValidKeywordResult(target, pSearchTerms, ip, port, false, startPosition, senderKey, oldResult);
+	CKademlia::GetIndexedDB()->SendValidKeywordResult(target, pSearchTerms, ip, port, false, startPosition, senderKey, newResult);
+	sint64 diffpos = newResult.Compare(oldResult);
+	if (diffpos == -1) {
+		AddDebugLogLineN(logSQL, wxT("SendValidKeywordResult matches"));
+	} else {
+		AddDebugLogLineN(logSQL, CFormat(wxT("SendValidKeywordResult different at pos %d")) % diffpos);
+	}
 	if (pSearchTerms) {
 		Free(pSearchTerms);
 	}
@@ -1002,6 +1011,7 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 {
 	//Used Pointers
 	CIndexed *indexed = CKademlia::GetIndexed();
+	CIndexedDB *indexedDB = CKademlia::GetIndexedDB();
 
 	// check if we are UDP firewalled
 	if (CUDPFirewallTester::IsFirewalledUDP(true)) {
@@ -1073,6 +1083,9 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 			delete entry;
 			throw;
 		}
+
+		uint8 load1;
+		indexedDB->AddKeyword(file, target, entry, load1);
 
 		if (!indexed->AddKeyword(file, target, entry, load)) {
 			//We already indexed the maximum number of keywords.

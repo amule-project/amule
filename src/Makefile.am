@@ -134,6 +134,7 @@ core_sources = \
 	ClientTCPSocket.cpp \
 	ClientUDPSocket.cpp \
 	CorruptionBlackBox.cpp \
+	Database.cpp \
 	DownloadClient.cpp \
 	DownloadQueue.cpp \
 	ECSpecialCoreTags.cpp \
@@ -160,6 +161,7 @@ core_sources = \
 	UploadClient.cpp \
 	UploadQueue.cpp \
 	kademlia/kademlia/Indexed.cpp \
+	kademlia/kademlia/IndexedDB.cpp \
 	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Prefs.cpp \
 	kademlia/kademlia/Search.cpp \
@@ -222,7 +224,7 @@ common_sources = \
 
 # Libs
 
-core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
+core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS) -lsqlite3
 gui_libs = -L. -lmuleappgui $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
@@ -341,6 +343,7 @@ noinst_HEADERS = \
 		Constants.h \
 		CorruptionBlackBox.h \
 		CryptoPP_Inc.h \
+		Database.h \
 		DataToText.h \
 		DeadSourceList.h \
 		DirectoryTreeCtrl.h \

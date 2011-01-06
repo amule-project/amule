@@ -106,6 +106,8 @@ typedef std::map<Kademlia::CUInt128,KeyHash*> KeyHashMap;
 typedef std::map<Kademlia::CUInt128,SrcHash*> SrcHashMap;
 typedef std::map<Kademlia::CUInt128,Load*> LoadMap;
 
+class CMemFile;
+
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
@@ -124,7 +126,7 @@ public:
 	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
 	bool AddLoad(const CUInt128& keyID, uint32_t time);
 	size_t GetFileKeyCount() const throw() { return m_Keyword_map.size(); }
-	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey);
+	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey, CMemFile & mirror);
 	void SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey);
 	void SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint64_t fileSize, const CKadUDPKey& senderKey);
 	bool SendStoreRequest(const CUInt128& keyID);

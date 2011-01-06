@@ -42,6 +42,7 @@ there client on the eMule forum..
 
 #include "Defines.h"
 #include "Indexed.h"
+#include "IndexedDB.h"
 #include "UDPFirewallTester.h"
 #include "../routing/RoutingZone.h"
 #include "../utils/KadUDPKey.h"
@@ -116,9 +117,14 @@ void CKademlia::Start(CPrefs *prefs)
 	// Create our Kad objects.
 	instance = new CKademlia();
 	instance->m_prefs = prefs;
+	instance->m_indexedDB = new CIndexedDB();
+	instance->m_indexedDB->SetDatabase(theApp->database);
 	instance->m_indexed = new CIndexed();
+	// now, AFTER importing data from saved files, cleanup trust values
+	instance->m_indexedDB->StartupCleanup();
 	instance->m_routingZone = new CRoutingZone();
 	instance->m_udpListener = new CKademliaUDPListener();
+
 	// Mark Kad as running state.
 	m_running = true;
 }
@@ -151,6 +157,9 @@ void CKademlia::Stop()
 
 	delete instance->m_indexed;
 	instance->m_indexed = NULL;
+
+	delete instance->m_indexedDB;
+	instance->m_indexedDB = NULL;
 
 	delete instance->m_prefs;
 	instance->m_prefs = NULL;

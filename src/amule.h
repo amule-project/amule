@@ -81,6 +81,7 @@ class CCompletionEvent;
 class CAllocFinishedEvent;
 class wxExecuteData;
 class CLoggingEvent;
+class CDatabase;
 
 
 namespace MuleNotify {
@@ -257,8 +258,9 @@ public:
 	CFriendList*		friendlist;
 	CClientUDPSocket*	clientudp;
 	CStatistics*		m_statistics;
-	CIPFilter*		ipfilter;
+	CIPFilter*			ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	CDatabase*			database;
 #ifdef ENABLE_UPNP
 	CUPnPControlPoint*	m_upnp;
 	std::vector<CUPnPPortMapping> m_upnpMappings;

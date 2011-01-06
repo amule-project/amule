@@ -80,6 +80,7 @@
 #include "UploadBandwidthThrottler.h"
 #include "UserEvents.h"
 #include "ScopedPtr.h"
+#include "Database.h"
 
 #ifdef ENABLE_UPNP
 #include "UPnPBase.h"			// Needed for UPnP
@@ -331,6 +332,9 @@ int CamuleApp::OnExit()
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 
+	delete database;
+	database = NULL;
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("aMule shutdown completed."));
 	}
@@ -399,6 +403,13 @@ bool CamuleApp::OnInit()
 	InstallMuleExceptionHandler();
 
 	if (!InitCommon(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv)) {
+		return false;
+	}
+
+	// Open database
+	database = new CDatabase;
+	if (!database->Init(ConfigDir + wxT("amule.db"))) {
+		AddLogLineCS(_("Error opening sqlite database"));
 		return false;
 	}
 

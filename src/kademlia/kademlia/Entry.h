@@ -48,6 +48,7 @@ there client on the eMule forum..
 
 struct SSearchTerm;
 class CFileDataIO;
+class CDatabase;
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -82,6 +83,7 @@ public:
 	void	 AddTag(CTag *tag)			{ m_taglist.push_back(tag); }
 	uint32_t GetTagCount() const			{ return m_taglist.size() + ((m_uSize != 0) ? 1 : 0) + (GetCommonFileName().IsEmpty() ? 0 : 1); }
 	void	 WriteTagList(CFileDataIO* data)	{ WriteTagListInc(data, 0); }
+	const TagPtrList * GetTagList()		{ return & m_taglist; }
 
 	wxString GetCommonFileNameLowerCase() const	{ return GetCommonFileName().MakeLower(); }
 	wxString GetCommonFileName() const;
@@ -128,7 +130,10 @@ class CKeyEntry : public CEntry
 	void	WriteTagListWithPublishInfo(CFileDataIO *data);
 	static void	ResetGlobalTrackingMap()	{ s_globalPublishIPs.clear(); }
 
-      protected:
+	void	MergeIPsAndFilenames(CDatabase* database, uint64 sourceIndex);
+	bool	HasPublishingIPs() { return m_publishingIPs && ! m_publishingIPs->empty(); }
+
+protected:
 	void	ReCalculateTrustValue();
 	static void	AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& dbgReason);
 

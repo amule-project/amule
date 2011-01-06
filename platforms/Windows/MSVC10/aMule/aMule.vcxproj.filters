@@ -426,6 +426,15 @@
     <ClCompile Include="..\..\..\..\src\ClientRef.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sqlite3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\IndexedDB.cpp">
+      <Filter>Source Files KAD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\Database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PCH.h">
@@ -892,6 +901,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\ClientRef.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\kademlia\kademlia\IndexedDB.h">
+      <Filter>Header Files KAD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
