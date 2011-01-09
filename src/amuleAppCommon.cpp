@@ -470,6 +470,10 @@ bool CamuleAppCommon::CheckPassedLink(const wxString &in, wxString &out, int cat
 {
 	wxString link(in);
 
+	// restore ASCII-encoded pipes
+	link.Replace(wxT("%7C"), wxT("|"));
+	link.Replace(wxT("%7c"), wxT("|"));
+
 	if (link.compare(0, 7, wxT("magnet:")) == 0) {
 		link = CMagnetED2KConverter(link);
 		if (link.empty()) {
