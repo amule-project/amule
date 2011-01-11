@@ -589,7 +589,7 @@ wxString CStatTreeItemMaxConnLimitReached::GetDisplayString() const
 {
 	if (m_count) {
 		return CFormat(wxGetTranslation(m_label)) %
-			CFormat(wxT("%i : %s %s")) % m_count % m_time.FormatISODate() % m_time.FormatISOTime();
+			(CFormat(wxT("%i : %s %s")) % m_count % m_time.FormatISODate() % m_time.FormatISOTime());
 	} else {
 		return CFormat(wxGetTranslation(m_label)) % _("Never");
 	}
