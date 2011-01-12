@@ -1,6 +1,6 @@
 Version 2.3.0 - The river knows.
 ----------
-2010-??-??
+2011-??-??
 
 	freddy77:
 		* Various optimizations of memory usage
@@ -33,6 +33,9 @@ Version 2.3.0 - The river knows.
 		* Part number is now an extra column in the download list
 		* Improvements to preferences dialogs
 		* Redesign skin selection
+
+	Grunt:
+		* Sort downloads by time remaining now has shortest time on top and unknown on bottom
 
 	jolz:
 		* Fixed file locking between ed2k and aMule on Windows

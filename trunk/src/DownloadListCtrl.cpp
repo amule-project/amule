@@ -1188,11 +1188,11 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 			if (file2->getTimeRemaining() == -1) {
 				result = 0;
 			} else {
-				result = -1;
+				result = 1;
 			}
 		} else {
 			if (file2->getTimeRemaining() == -1) {
-				result = 1;
+				result = -1;
 			} else {
 				result = CmpAny(
 					file1->getTimeRemaining(),
