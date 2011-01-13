@@ -13,6 +13,7 @@ src/ChatSelector.cpp
 src/ChatWnd.cpp
 src/ClientCreditsList.cpp
 src/ClientDetailDialog.cpp
+src/ClientRef.cpp
 src/ClientTCPSocket.cpp
 src/CommentDialog.cpp
 src/CommentDialogLst.cpp

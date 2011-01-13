@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-05 17:19+0100\n"
+"POT-Creation-Date: 2011-01-13 07:42+0100\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -42,58 +42,58 @@ msgid ""
 "lowid."
 msgstr ""
 
-#: src/amule.cpp:240
+#: src/amule.cpp:239
 #, fuzzy
 msgid "Now, exiting main app..."
 msgstr ""
 "\n"
 "OK、%s を終了中です…\n"
 
-#: src/amule.cpp:259
+#: src/amule.cpp:258
 #, c-format
-msgid "Terminating amuleweb instance with pid `%ld' ... "
+msgid "Terminating amuleweb instance with pid '%ld' ... "
 msgstr ""
 
-#: src/amule.cpp:262
+#: src/amule.cpp:261
 #, c-format
-msgid "Killing amuleweb instance with pid `%ld' ... "
+msgid "Killing amuleweb instance with pid '%ld' ... "
 msgstr ""
 
-#: src/amule.cpp:264 src/ClientDetailDialog.cpp:181 src/ServerListCtrl.cpp:94
+#: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
 msgstr "失敗しました"
 
-#: src/amule.cpp:270
+#: src/amule.cpp:269
 msgid "aMule OnExit: Terminating core."
 msgstr ""
 
-#: src/amule.cpp:336
+#: src/amule.cpp:335
 #, fuzzy
 msgid "aMule shutdown completed."
 msgstr "ダウンロード完了"
 
-#: src/amule.cpp:340
+#: src/amule.cpp:339
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:436
+#: src/amule.cpp:435
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "終了の確認"
 
-#: src/amule.cpp:439
+#: src/amule.cpp:438
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "新しい外部接続を認められました"
 
-#: src/amule.cpp:450 src/KadDlg.cpp:182 src/KadDlg.cpp:188
-#: src/PrefsUnifiedDlg.cpp:709 src/SharedFilesCtrl.cpp:317
+#: src/amule.cpp:449 src/KadDlg.cpp:182 src/KadDlg.cpp:188
+#: src/PrefsUnifiedDlg.cpp:710 src/SharedFilesCtrl.cpp:317
 msgid "WARNING"
 msgstr "警告"
 
-#: src/amule.cpp:496
+#: src/amule.cpp:495
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -101,13 +101,13 @@ msgstr ""
 "申し訳ありませんが、設定の変更を行ったため、あなたのロケールはシステム標準に"
 "変更されました。"
 
-#: src/amule.cpp:498 src/amule.cpp:1055 src/CatDialog.cpp:141
+#: src/amule.cpp:497 src/amule.cpp:1054 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:343
 #: src/ServerListCtrl.cpp:148
 msgid "Info"
 msgstr "情報"
 
-#: src/amule.cpp:581
+#: src/amule.cpp:580
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -115,39 +115,39 @@ msgstr ""
 "サーバリストにはサーバが一つも入っていません。今aMuleに新しいサーバリストをダ"
 "ウンロードしますか？"
 
-#: src/amule.cpp:582
+#: src/amule.cpp:581
 msgid "Server list download"
 msgstr "サーバリストのダウンロード"
 
-#: src/amule.cpp:655
+#: src/amule.cpp:654
 #, c-format
 msgid "web server running on pid %d"
 msgstr ""
 
-#: src/amule.cpp:659
+#: src/amule.cpp:658
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
-#: src/amule.cpp:660 src/amule.cpp:777 src/amule.cpp:1066
-#: src/amule-remote-gui.cpp:301 src/amule-remote-gui.cpp:323
-#: src/amule-remote-gui.cpp:325 src/amule-remote-gui.cpp:636
+#: src/amule.cpp:659 src/amule.cpp:776 src/amule.cpp:1065
+#: src/amule-remote-gui.cpp:300 src/amule-remote-gui.cpp:322
+#: src/amule-remote-gui.cpp:324 src/amule-remote-gui.cpp:635
 msgid "ERROR"
 msgstr ""
 
-#: src/amule.cpp:742
+#: src/amule.cpp:741
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "指定したアドレスにポートをバインドできませんでした: %s"
 
-#: src/amule.cpp:769
+#: src/amule.cpp:768
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "ポート%uは利用できません。あなたにはLOWIDが与えられます\n"
 
-#: src/amule.cpp:775
+#: src/amule.cpp:774
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -162,15 +162,15 @@ msgstr ""
 "\n"
 "ネットワークを調べ、ポートが入出力に対して開いているか確認してください。"
 
-#: src/amule.cpp:854
+#: src/amule.cpp:853
 msgid "Failed to create OnlineSig File"
 msgstr "オンライン証明ファイルの生成に失敗しました"
 
-#: src/amule.cpp:862
+#: src/amule.cpp:861
 msgid "Failed to create aMule OnlineSig File"
 msgstr "aMuleのオンライン証明ファイルの生成に失敗しました"
 
-#: src/amule.cpp:1032
+#: src/amule.cpp:1031
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -178,41 +178,41 @@ msgstr ""
 "選択したロケールはあなたのシステムにインストールされていないようです。（注"
 "意：いずれにせよ設定を試みます）"
 
-#: src/amule.cpp:1041
+#: src/amule.cpp:1040
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "初めてaMule %sを起動しています"
 
-#: src/amule.cpp:1043
+#: src/amule.cpp:1042
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "このバージョンはテスト・バージョンで、毎日更新されているものです。\n"
 
-#: src/amule.cpp:1044
+#: src/amule.cpp:1043
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "あなたに損害を与えないということは保証できません。家を焼いてしまうかも知れな"
 "いし、\n"
 
-#: src/amule.cpp:1045
+#: src/amule.cpp:1044
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "犬を殺してしまうかも知れません。しかし、安全に使用できる「はず」です。\n"
 
-#: src/amule.cpp:1050
+#: src/amule.cpp:1049
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "私たちのホームページwww.aMule.org、またはIRCチャネルirc.freenode.netの#aMule"
 "には、\n"
 
-#: src/amule.cpp:1051
+#: src/amule.cpp:1050
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "詳細な情報、サポートや新しいリリースがあります。\n"
 
-#: src/amule.cpp:1053
+#: src/amule.cpp:1052
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "バグはhttp://forum.amule.orgに気楽に報告してください"
 
-#: src/amule.cpp:1066
+#: src/amule.cpp:1065
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -220,135 +220,135 @@ msgstr ""
 "あなたが指定したオンライン証明ファイルのフォルダは不正です！\n"
 "設定で訂正するまでオンライン証明を無効にします。"
 
-#: src/amule.cpp:1121
+#: src/amule.cpp:1120
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "サーバ名："
 
-#: src/amule.cpp:1365
+#: src/amule.cpp:1364
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "ファイル '%s' のディスク領域の事前確保が失敗しました: %s"
 
-#: src/amule.cpp:1499
+#: src/amule.cpp:1498
 msgid "ERROR: can't open logfile"
 msgstr "エラー：ログファイルを開くことはできません"
 
-#: src/amule.cpp:1503
+#: src/amule.cpp:1502
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "注意：ログファイルは空です。何かがおかしいです。"
 
-#: src/amule.cpp:1521
+#: src/amule.cpp:1520
 msgid "Log has been reset"
 msgstr "ログはリセットされました"
 
-#: src/amule.cpp:1547
+#: src/amule.cpp:1546
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "サーバ・メッセージ：%s"
 
-#: src/amule.cpp:1585 src/IP2Country.cpp:147 src/IPFilter.cpp:503
+#: src/amule.cpp:1584 src/IP2Country.cpp:150 src/IPFilter.cpp:503
 #: src/ServerList.cpp:860
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
 
-#: src/amule.cpp:1587
+#: src/amule.cpp:1586
 msgid "Failed to download the nodes list."
 msgstr "ノード・リストをダウンロードのに失敗しました。"
 
-#: src/amule.cpp:1607
+#: src/amule.cpp:1606
 msgid "Failed to open the downloaded version check file"
 msgstr "ダウンロードされたバージョン確認ファイルを開くのに失敗しました。"
 
-#: src/amule.cpp:1610 src/amule.cpp:1620 src/amule.cpp:1626
+#: src/amule.cpp:1609 src/amule.cpp:1619 src/amule.cpp:1625
 msgid "Corrupted version check file"
 msgstr "破損されたバージョン確認ファイル"
 
-#: src/amule.cpp:1636
+#: src/amule.cpp:1635
 msgid "You are using an outdated version of aMule!"
 msgstr "あなたは古いバージョンのaMuleを使用しています！"
 
-#: src/amule.cpp:1637
+#: src/amule.cpp:1636
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "あなたのaMuleバージョンは%i.%i.%iで、最新バージョンは%li.%li.%liです"
 
-#: src/amule.cpp:1638
+#: src/amule.cpp:1637
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "最新バージョンはいつもhttp://www.amule.orgにあります"
 
-#: src/amule.cpp:1640
+#: src/amule.cpp:1639
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 "警告：あなたのaMuledバージョンは古くなっています：%i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1644
+#: src/amule.cpp:1643
 msgid "Your copy of aMule is up to date."
 msgstr "あなたのaMuleは最新のバージョンです。"
 
-#: src/amule.cpp:1651
+#: src/amule.cpp:1650
 msgid "Failed to download the version check file"
 msgstr "バージョン確認ファイルのダウンロードに失敗しました"
 
-#: src/amule.cpp:1816 src/amule-remote-gui.cpp:521
+#: src/amule.cpp:1815 src/amule-remote-gui.cpp:520
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "ユーザ: %s | ファイル: %s"
 
-#: src/amule.cpp:1817 src/amule-remote-gui.cpp:522
+#: src/amule.cpp:1816 src/amule-remote-gui.cpp:521
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "ユーザ: E: %s K: %s | ファイル: E: %s K: %s"
 
-#: src/amule.cpp:1826 src/amule-remote-gui.cpp:531
+#: src/amule.cpp:1825 src/amule-remote-gui.cpp:530
 msgid "No networks selected"
 msgstr "ネットワークが選択されていません"
 
-#: src/amule.cpp:1889 src/TextClient.cpp:707
+#: src/amule.cpp:1888 src/TextClient.cpp:707
 msgid "with LowID"
 msgstr "LowIDを持っています"
 
-#: src/amule.cpp:1889 src/TextClient.cpp:707
+#: src/amule.cpp:1888 src/TextClient.cpp:707
 msgid "with HighID"
 msgstr "HighIDを持っています"
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1890
 #, c-format
 msgid "Connected to %s %s"
 msgstr "接続しています：%s %s"
 
-#: src/amule.cpp:1894
+#: src/amule.cpp:1893
 #, c-format
 msgid "Connecting to %s"
 msgstr "%sに接続中です"
 
-#: src/amule.cpp:1896
+#: src/amule.cpp:1895
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:1903
+#: src/amule.cpp:1902
 msgid "Kad started."
 msgstr "Kadを開始しました。"
 
-#: src/amule.cpp:1905
+#: src/amule.cpp:1904
 msgid "Kad stopped."
 msgstr "Kadを中止しました。"
 
-#: src/amule.cpp:1912
+#: src/amule.cpp:1911
 msgid "Connected to Kad (ok)"
 msgstr "Kadに接続しています（OK）"
 
-#: src/amule.cpp:1914
+#: src/amule.cpp:1913
 msgid "Connected to Kad (firewalled)"
 msgstr "Kadに接続しています（ファイアウォール）"
 
-#: src/amule.cpp:1917
+#: src/amule.cpp:1916
 msgid "Disconnected from Kad"
 msgstr "Kadから切断しています"
 
-#: src/amule.cpp:1984
+#: src/amule.cpp:1983
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -356,7 +356,7 @@ msgstr ""
 "UDPポートが設定で無効にされていると、Kadネットワークを使用できないため、開始"
 "しません。"
 
-#: src/amule.cpp:1987
+#: src/amule.cpp:1986
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kadネットワークは設定で無効にされているため、接続はしません。"
 
@@ -471,9 +471,9 @@ msgstr ""
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:510 src/KadDlg.cpp:192 src/PartFile.cpp:916
-#: src/PartFile.cpp:924 src/PrefsUnifiedDlg.cpp:593
-#: src/PrefsUnifiedDlg.cpp:696 src/PrefsUnifiedDlg.cpp:785
+#: src/amuleDlg.cpp:510 src/KadDlg.cpp:192 src/PartFile.cpp:924
+#: src/PartFile.cpp:932 src/PrefsUnifiedDlg.cpp:594
+#: src/PrefsUnifiedDlg.cpp:697 src/PrefsUnifiedDlg.cpp:786
 msgid "Message"
 msgstr "メッセージ"
 
@@ -509,13 +509,13 @@ msgstr "Kad: 接続中"
 msgid "Kad: Off"
 msgstr "Kad: オフ"
 
-#: src/amuleDlg.cpp:766 src/DownloadListCtrl.cpp:415
-#: src/DownloadListCtrl.cpp:645 src/FriendListCtrl.cpp:177
+#: src/amuleDlg.cpp:766 src/DownloadListCtrl.cpp:414
+#: src/DownloadListCtrl.cpp:644 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:809 src/muuli_wdr.cpp:873 src/muuli_wdr.cpp:947
 #: src/muuli_wdr.cpp:1013 src/muuli_wdr.cpp:2333 src/muuli_wdr.cpp:2435
-#: src/muuli_wdr.cpp:3152 src/ServerListCtrl.cpp:153
+#: src/muuli_wdr.cpp:3151 src/ServerListCtrl.cpp:153
 #: src/ServerListCtrl.cpp:527 src/ServerListCtrl.cpp:546
-#: src/TransferWnd.cpp:381 src/utils/wxCas/src/wxcasprefs.cpp:294
+#: src/TransferWnd.cpp:380 src/utils/wxCas/src/wxcasprefs.cpp:294
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -532,7 +532,7 @@ msgid "Disconnect from the currently connected networks"
 msgstr "ネットワークから切断します。"
 
 #: src/amuleDlg.cpp:778 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2759
-#: src/muuli_wdr.cpp:3148 src/muuli_wdr.cpp:3532
+#: src/muuli_wdr.cpp:3147 src/muuli_wdr.cpp:3531
 msgid "Connect"
 msgstr "接続する"
 
@@ -585,81 +585,81 @@ msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
 #: src/amuleDlg.cpp:1321 src/amuleDlg.cpp:1455 src/muuli_wdr.cpp:1680
-#: src/muuli_wdr.cpp:3534
+#: src/muuli_wdr.cpp:3533
 msgid "Networks"
 msgstr "ネットワーク"
 
-#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3533
 msgid "Networks Window"
 msgstr "ネットワークウィンドウ"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3535
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3534
 msgid "Searches"
 msgstr "検索"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3535
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3534
 msgid "Searches Window"
 msgstr "検索ウィンドウ"
 
-#: src/amuleDlg.cpp:1323 src/DownloadListCtrl.cpp:636 src/muuli_wdr.cpp:426
-#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3536 src/Statistics.cpp:670
+#: src/amuleDlg.cpp:1323 src/DownloadListCtrl.cpp:635 src/muuli_wdr.cpp:426
+#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:670
 msgid "Downloads"
 msgstr "ダウンロード数"
 
-#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3536
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3535
 #, fuzzy
 msgid "Downloads Window"
 msgstr "ダウンロード"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3414
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3413
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3538
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3537
 msgid "Shared Files Window"
 msgstr "共有ファイルウィンドウ"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:2975 src/muuli_wdr.cpp:3487
-#: src/muuli_wdr.cpp:3539
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:2975 src/muuli_wdr.cpp:3486
+#: src/muuli_wdr.cpp:3538
 msgid "Messages"
 msgstr "メッセージ"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3539
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3538
 msgid "Messages Window"
 msgstr "メッセージウィンドウ"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3540 src/PrefsUnifiedDlg.cpp:178
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3539 src/PrefsUnifiedDlg.cpp:178
 #: src/Statistics.cpp:640 src/Statistics.cpp:938
 msgid "Statistics"
 msgstr "統計"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3540
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3539
 msgid "Statistics Graph Window"
 msgstr "統計グラフウィインドウ"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3542 src/PrefsUnifiedDlg.cpp:193
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3541 src/PrefsUnifiedDlg.cpp:193
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "設定"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3542
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3541
 msgid "Preferences Settings Window"
 msgstr "個人設定ウィンドウ"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3543
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3542
 msgid "Import"
 msgstr "インポート"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3543
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3542
 msgid "The partfile importer tool"
 msgstr "部分ファイルをインポートするためのツール"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3544
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3543
 #: src/utils/aLinkCreator/src/alcframe.cpp:274
 msgid "About"
 msgstr "情報"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3544
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3543
 msgid "About/Help"
 msgstr "ソフトウェア情報／ヘルプ"
 
@@ -675,126 +675,126 @@ msgstr "Kadネットワーク"
 msgid "No network"
 msgstr "ネットワークなし"
 
-#: src/amule-gui.cpp:195
+#: src/amule-gui.cpp:194
 msgid "aMule remote control"
 msgstr ""
 
-#: src/amule-gui.cpp:197 src/utils/wxCas/src/wxcasframe.cpp:116
+#: src/amule-gui.cpp:196 src/utils/wxCas/src/wxcasframe.cpp:116
 msgid "aMule"
 msgstr "aMule"
 
-#: src/amule-gui.cpp:283
+#: src/amule-gui.cpp:282
 #, fuzzy
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "致命的なエラー：タイマを生成できませんでした"
 
-#: src/amule-remote-gui.cpp:70
+#: src/amule-remote-gui.cpp:71
 msgid "Connect to remote amule"
 msgstr "リモートamuleへ接続する"
 
-#: src/amule-remote-gui.cpp:256
+#: src/amule-remote-gui.cpp:255
 #, fuzzy
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "致命的なエラー：タイマを生成できませんでした"
 
-#: src/amule-remote-gui.cpp:271
+#: src/amule-remote-gui.cpp:270
 #, fuzzy
 msgid "Going to event loop..."
 msgstr "ファイル情報を回復しようとしています…"
 
-#: src/amule-remote-gui.cpp:297
+#: src/amule-remote-gui.cpp:296
 #, fuzzy
 msgid "Connecting..."
 msgstr "接続中"
 
-#: src/amule-remote-gui.cpp:301
+#: src/amule-remote-gui.cpp:300
 msgid "Connection failed "
 msgstr "接続に失敗しました "
 
-#: src/amule-remote-gui.cpp:312
+#: src/amule-remote-gui.cpp:311
 msgid "Remote GUI EC event handler"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:319
+#: src/amule-remote-gui.cpp:318
 msgid "Going down"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:322 src/ExternalConnector.cpp:400
+#: src/amule-remote-gui.cpp:321 src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:325
+#: src/amule-remote-gui.cpp:324
 msgid "Connection closed - aMule has terminated probably."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:410
+#: src/amule-remote-gui.cpp:409
 msgid "Ready"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:588 src/TransferWnd.cpp:346
+#: src/amule-remote-gui.cpp:587 src/TransferWnd.cpp:345
 msgid "All"
 msgstr "全て"
 
-#: src/amule-remote-gui.cpp:634
+#: src/amule-remote-gui.cpp:633
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:1306 src/BaseClient.cpp:1762
-#: src/BaseClient.cpp:2288 src/BaseClient.cpp:2304 src/BaseClient.cpp:2599
-#: src/ClientDetailDialog.cpp:81 src/ClientDetailDialog.cpp:82
-#: src/ClientDetailDialog.cpp:115 src/ClientDetailDialog.cpp:116
-#: src/ClientDetailDialog.cpp:126 src/DataToText.cpp:54 src/DataToText.cpp:70
+#: src/amule-remote-gui.cpp:1336 src/BaseClient.cpp:1785
+#: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2622
+#: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
+#: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
+#: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/DownloadListCtrl.cpp:1058 src/DownloadListCtrl.cpp:1071
-#: src/DownloadListCtrl.cpp:1082 src/ExternalConn.cpp:431
-#: src/FileDetailDialog.cpp:127 src/GenericClientListCtrl.cpp:1046
-#: src/GenericClientListCtrl.cpp:1057 src/GenericClientListCtrl.cpp:1067
-#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:910 src/KnownFile.cpp:916
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2520 src/PartFile.cpp:2526
+#: src/DownloadListCtrl.cpp:1057 src/DownloadListCtrl.cpp:1070
+#: src/DownloadListCtrl.cpp:1081 src/ExternalConn.cpp:431
+#: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1047
+#: src/GenericClientListCtrl.cpp:1058 src/GenericClientListCtrl.cpp:1068
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:914 src/KnownFile.cpp:920
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2527 src/PartFile.cpp:2533
 #: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:885
 msgid "Unknown"
 msgstr "不明"
 
-#: src/BaseClient.cpp:1355
+#: src/BaseClient.cpp:1378
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "ユーザ '%s' から共有ファイルを取得することができませんでした"
 
-#: src/BaseClient.cpp:1567
+#: src/BaseClient.cpp:1590
 msgid "Searching buddy for lowid connection"
 msgstr ""
 
-#: src/BaseClient.cpp:1779
+#: src/BaseClient.cpp:1802
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr "（偽のeMuleバージョン %#x）"
 
-#: src/BaseClient.cpp:1790
+#: src/BaseClient.cpp:1813
 msgid " (Fake eMule)"
 msgstr "（偽のeMule）"
 
-#: src/BaseClient.cpp:1792
+#: src/BaseClient.cpp:1815
 msgid "xMule (Fake eMule)"
 msgstr "xMule（偽のeMule）"
 
-#: src/BaseClient.cpp:1831
+#: src/BaseClient.cpp:1854
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x（eMule v0.%u に基づいています）"
 
-#: src/BaseClient.cpp:2004
+#: src/BaseClient.cpp:2027
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "NickName: %s ID: %u"
 
-#: src/BaseClient.cpp:2006
+#: src/BaseClient.cpp:2029
 #, c-format
 msgid "Requested: %s\n"
 msgstr "要求：%s\n"
 
-#: src/BaseClient.cpp:2008
+#: src/BaseClient.cpp:2031
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -802,7 +802,7 @@ msgid_plural ""
 msgstr[0] ""
 "当セッションのファイル統計： %d / %d の要求を受け入れ、%s 転送された\n"
 
-#: src/BaseClient.cpp:2011
+#: src/BaseClient.cpp:2034
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -810,16 +810,16 @@ msgid_plural ""
 msgstr[0] ""
 "全セッションのファイル統計： %d / %d の要求を受け入れ、%s 転送された\n"
 
-#: src/BaseClient.cpp:2014
+#: src/BaseClient.cpp:2037
 msgid "Requested unknown file"
 msgstr "不明なファイルが要求されました"
 
-#: src/BaseClient.cpp:2677
+#: src/BaseClient.cpp:2700
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "%s（IP：%s）からのメッセージがフィルタされました"
 
-#: src/BaseClient.cpp:2784
+#: src/BaseClient.cpp:2807
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "%s（IP：%s）から新しいメッセージが届きました"
@@ -848,8 +848,8 @@ msgstr "known.metファイル%sを保存する時にIOエラーが発生しま�
 msgid "Enter Captcha"
 msgstr ""
 
-#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:686 src/muuli_wdr.cpp:244
-#: src/SearchListCtrl.cpp:585 src/TransferWnd.cpp:341
+#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:685 src/muuli_wdr.cpp:244
+#: src/SearchListCtrl.cpp:585 src/TransferWnd.cpp:340
 msgid "Category"
 msgstr "カテゴリ"
 
@@ -876,30 +876,30 @@ msgstr ""
 "カテゴリに受信ディレクトリを生成するのに失敗しました。正当なパスを指示してく"
 "ださい！"
 
-#: src/ChatSelector.cpp:127
+#: src/ChatSelector.cpp:129
 #, c-format
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr "チャット・セションを開始しました：%s（%s：%u）-%s %s"
 
-#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
+#: src/ChatSelector.cpp:208 src/ChatSelector.cpp:288
 msgid "*** Connected to Client ***"
 msgstr "*** クライアントに接続しています ***"
 
-#: src/ChatSelector.cpp:249
+#: src/ChatSelector.cpp:251
 msgid "*** Connecting to Client ***"
 msgstr "*** クライアントに接続中です ***"
 
-#: src/ChatSelector.cpp:280
+#: src/ChatSelector.cpp:282
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** クライアントに接続に失敗しました／接続を失いました ***"
 
-#: src/ChatSelector.cpp:333
+#: src/ChatSelector.cpp:335
 msgid ""
 "*** You have passed the captcha check and the user has received your "
 "message. ***"
 msgstr ""
 
-#: src/ChatSelector.cpp:334
+#: src/ChatSelector.cpp:336
 msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
@@ -921,7 +921,7 @@ msgstr "全てのタブを閉める"
 msgid "Close other tabs"
 msgstr "他のタブを閉める"
 
-#: src/ChatWnd.cpp:107 src/GenericClientListCtrl.cpp:583
+#: src/ChatWnd.cpp:107 src/GenericClientListCtrl.cpp:584
 msgid "Add to Friends"
 msgstr "仲間リストに追加する"
 
@@ -941,95 +941,95 @@ msgstr[0] " - %u個のクライアントのクレジット期限が満了しま�
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "'cryptkey.dat'が見つかりませんでした。生成します。"
 
-#: src/ClientDetailDialog.cpp:50
+#: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
 msgstr "クライアントの詳細"
 
-#: src/ClientDetailDialog.cpp:101 src/ServerWnd.cpp:170 src/ServerWnd.cpp:180
+#: src/ClientDetailDialog.cpp:100 src/ServerWnd.cpp:169 src/ServerWnd.cpp:179
 #: src/utils/wxCas/src/onlinesig.cpp:269
 msgid "LowID"
 msgstr "LowID"
 
-#: src/ClientDetailDialog.cpp:101 src/ServerWnd.cpp:183
+#: src/ClientDetailDialog.cpp:100 src/ServerWnd.cpp:182
 #: src/utils/wxCas/src/onlinesig.cpp:267
 msgid "HighID"
 msgstr "HighID"
 
-#: src/ClientDetailDialog.cpp:122
+#: src/ClientDetailDialog.cpp:121
 msgid "Enabled"
 msgstr "有効"
 
-#: src/ClientDetailDialog.cpp:123
+#: src/ClientDetailDialog.cpp:122
 msgid "Supported"
 msgstr "サポート"
 
-#: src/ClientDetailDialog.cpp:124 src/ClientDetailDialog.cpp:178
+#: src/ClientDetailDialog.cpp:123 src/ClientRef.cpp:192
 msgid "Not supported"
 msgstr "非サポート"
 
-#: src/ClientDetailDialog.cpp:125
+#: src/ClientDetailDialog.cpp:124
 msgid "Disabled"
 msgstr "無効"
 
-#: src/ClientDetailDialog.cpp:132 src/ServerWnd.cpp:164 src/ServerWnd.cpp:211
+#: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:163 src/ServerWnd.cpp:210
 #: src/TextClient.cpp:717
 msgid "Connected"
 msgstr "接続"
 
-#: src/ClientDetailDialog.cpp:134 src/ServerWnd.cpp:211
+#: src/ClientDetailDialog.cpp:133 src/ServerWnd.cpp:210
 msgid "Disconnected"
 msgstr "切断"
 
-#: src/ClientDetailDialog.cpp:156 src/ClientDetailDialog.cpp:160
-#: src/DownloadListCtrl.cpp:946 src/GenericClientListCtrl.cpp:875
-#: src/GenericClientListCtrl.cpp:882
+#: src/ClientDetailDialog.cpp:155 src/ClientDetailDialog.cpp:159
+#: src/DownloadListCtrl.cpp:945 src/GenericClientListCtrl.cpp:876
+#: src/GenericClientListCtrl.cpp:883
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:184
+#: src/ClientRef.cpp:196
 msgid "Not complete"
 msgstr "不完全です"
 
-#: src/ClientDetailDialog.cpp:187
+#: src/ClientRef.cpp:198
 msgid "Bad Guy"
 msgstr "悪意の相手"
 
-#: src/ClientDetailDialog.cpp:190
+#: src/ClientRef.cpp:200
 msgid "Verified - OK"
 msgstr "検証されています"
 
-#: src/ClientDetailDialog.cpp:194
+#: src/ClientRef.cpp:203
 msgid "Not Available"
 msgstr "利用不可能です"
 
-#: src/ClientTCPSocket.cpp:834
+#: src/ClientTCPSocket.cpp:844
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ファイル・リストを要求しました -> 許可しました"
 
-#: src/ClientTCPSocket.cpp:855
+#: src/ClientTCPSocket.cpp:865
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ファイル・リストを要求しました -> 拒否しました"
 
-#: src/ClientTCPSocket.cpp:887
+#: src/ClientTCPSocket.cpp:897
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ディレクトリ・リストを要求しました -> 許可しまし"
 "た"
 
-#: src/ClientTCPSocket.cpp:927
+#: src/ClientTCPSocket.cpp:937
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr ""
 "ユーザ %s（%u）はあなたの共有ディレクトリ・リストを要求しました -> 拒否しまし"
 "た"
 
-#: src/ClientTCPSocket.cpp:952
+#: src/ClientTCPSocket.cpp:962
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -1037,39 +1037,39 @@ msgstr ""
 "ユーザ %s（%u）はあなたのディレクトリ %s の共有ファイル・リストを要求しまし"
 "た -> 許可しました"
 
-#: src/ClientTCPSocket.cpp:989
+#: src/ClientTCPSocket.cpp:999
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "ユーザ %s（%u）はあなたのディレクトリ %s の共有ファイル・リストを要求しまし"
 "た -> 拒否しました"
 
-#: src/ClientTCPSocket.cpp:1008
+#: src/ClientTCPSocket.cpp:1018
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "ユーザ %s（%u）は %s のディレクトリを共有しています"
 
-#: src/ClientTCPSocket.cpp:1023
+#: src/ClientTCPSocket.cpp:1033
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "ユーザ %s（%u）は要求されていない共有ディレクトリを送りました。"
 
-#: src/ClientTCPSocket.cpp:1038
+#: src/ClientTCPSocket.cpp:1048
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "ユーザ %s（%u）はディレクトリ %s の共有ファイル・リストを送りました。"
 
-#: src/ClientTCPSocket.cpp:1045
+#: src/ClientTCPSocket.cpp:1055
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "ユーザ %s（%u）は共有ファイル・リストの送信を終了しました"
 
-#: src/ClientTCPSocket.cpp:1050
+#: src/ClientTCPSocket.cpp:1060
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "ユーザ %s（%u）は無用の共有ファイル・リストを送りました。"
 
-#: src/ClientTCPSocket.cpp:1062
+#: src/ClientTCPSocket.cpp:1072
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
@@ -1080,11 +1080,11 @@ msgstr ""
 msgid "File Comments"
 msgstr "ファイル・コメント"
 
-#: src/CommentDialogLst.cpp:55 src/FriendListCtrl.cpp:63
+#: src/CommentDialogLst.cpp:55 src/FriendListCtrl.cpp:60
 msgid "Username"
 msgstr "ユーザ名"
 
-#: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:160
+#: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:159
 #: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:86
 #: src/SharedFilesCtrl.cpp:101
 msgid "File Name"
@@ -1130,19 +1130,19 @@ msgstr "オート [Hi]"
 msgid "Very low"
 msgstr "非常に低い"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2397
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:638 src/muuli_wdr.cpp:2397
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "低い"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2398
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2398
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "普通"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2399
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2399
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1164,17 +1164,17 @@ msgstr "要求中"
 msgid "Connecting via server"
 msgstr "サーバ経由に接続中"
 
-#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:977
+#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:978
 msgid "Queue Full"
 msgstr "キューが一杯"
 
-#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:993
-#: src/KnownFile.cpp:1397
+#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:994
+#: src/KnownFile.cpp:1548
 msgid "On Queue"
 msgstr "キューに入っています"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3716 src/TransferWnd.cpp:354
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3723 src/TransferWnd.cpp:353
 msgid "Downloading"
 msgstr "ダウンロード"
 
@@ -1202,7 +1202,7 @@ msgstr "Kad経由に接続中"
 msgid "Too many Kad connections"
 msgstr "Kad接続が多すぎます"
 
-#: src/DataToText.cpp:73 src/TransferWnd.cpp:309
+#: src/DataToText.cpp:73 src/TransferWnd.cpp:308
 msgid "Banned"
 msgstr "接続禁止"
 
@@ -1234,7 +1234,7 @@ msgstr "ローカルサーバ"
 msgid "Remote Server"
 msgstr "リモートサーバ"
 
-#: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3289
+#: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3288
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:714
 msgid "Kad"
 msgstr "Kad"
@@ -1259,8 +1259,8 @@ msgstr "ソースシード"
 msgid "Search Result"
 msgstr ""
 
-#: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:163
-#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:352
+#: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:162
+#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:351
 msgid "Completed"
 msgstr "完成された数"
 
@@ -1296,64 +1296,64 @@ msgstr "すでにダウンロード中です"
 msgid "Unknown or bad tempfile format."
 msgstr "不明な、または不利なtempfileフォーマット。"
 
-#: src/DownloadListCtrl.cpp:159
+#: src/DownloadListCtrl.cpp:158
 msgid "Part"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:161 src/PartFileConvertDlg.cpp:95
+#: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:95
 #: src/SearchListCtrl.cpp:87 src/SharedFilesCtrl.cpp:102
 msgid "Size"
 msgstr "サイズ"
 
-#: src/DownloadListCtrl.cpp:162 src/muuli_wdr.cpp:3364
+#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:3363
 msgid "Transferred"
 msgstr "転送済み"
 
-#: src/DownloadListCtrl.cpp:164 src/SourceListCtrl.cpp:30
+#: src/DownloadListCtrl.cpp:163 src/SourceListCtrl.cpp:30
 msgid "Speed"
 msgstr "スピード"
 
-#: src/DownloadListCtrl.cpp:165
+#: src/DownloadListCtrl.cpp:164
 msgid "Progress"
 msgstr "進捗状況"
 
-#: src/DownloadListCtrl.cpp:166 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3762 src/SearchListCtrl.cpp:88
+#: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
+#: src/PartFile.cpp:3769 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "ソース数"
 
-#: src/DownloadListCtrl.cpp:167 src/DownloadListCtrl.cpp:644
+#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:643
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
 #: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:144
 msgid "Priority"
 msgstr "優先度"
 
-#: src/DownloadListCtrl.cpp:168 src/PartFile.cpp:3764
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3771
 #: src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "ステータス"
 
-#: src/DownloadListCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:168
 msgid "Time Remaining"
 msgstr "残り時間"
 
-#: src/DownloadListCtrl.cpp:170
+#: src/DownloadListCtrl.cpp:169
 msgid "Last Seen Complete"
 msgstr "最後に全部分を確認した時刻"
 
-#: src/DownloadListCtrl.cpp:171
+#: src/DownloadListCtrl.cpp:170
 msgid "Last Reception"
 msgstr "最後に受信した時刻"
 
-#: src/DownloadListCtrl.cpp:411
+#: src/DownloadListCtrl.cpp:410
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "本当に選択されたファイルを削除しますか？"
 
-#: src/DownloadListCtrl.cpp:413
+#: src/DownloadListCtrl.cpp:412
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "本当に選択されたファイルを削除しますか？"
 
-#: src/DownloadListCtrl.cpp:553 src/SharedFilesCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:552 src/SharedFilesCtrl.cpp:200
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -1362,107 +1362,107 @@ msgstr ""
 "フィードバック:%s (%s)\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:642 src/muuli_wdr.cpp:2400
+#: src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2400
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "自動"
 
-#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:382
+#: src/DownloadListCtrl.cpp:645 src/TransferWnd.cpp:381
 msgid "&Stop"
 msgstr "中止する(&S)"
 
-#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:383
+#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:382
 msgid "&Pause"
 msgstr "停止する(&P)"
 
-#: src/DownloadListCtrl.cpp:648 src/TransferWnd.cpp:384
+#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:383
 msgid "&Resume"
 msgstr "再開する(&R)"
 
-#: src/DownloadListCtrl.cpp:649
+#: src/DownloadListCtrl.cpp:648
 msgid "C&lear completed"
 msgstr "完了したものをクリアする(&L)"
 
-#: src/DownloadListCtrl.cpp:655
+#: src/DownloadListCtrl.cpp:654
 msgid "Swap every A4AF to this file now"
 msgstr "すぐにこのファイルの全てのA4AFを交換する"
 
-#: src/DownloadListCtrl.cpp:657
+#: src/DownloadListCtrl.cpp:656
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "このファイルの全てのA4AFを交換する（オート）"
 
-#: src/DownloadListCtrl.cpp:662
+#: src/DownloadListCtrl.cpp:661
 msgid "Swap every A4AF to any other file now"
 msgstr "このファイル以外の全てのA4AFを交換する"
 
-#: src/DownloadListCtrl.cpp:665
+#: src/DownloadListCtrl.cpp:664
 msgid "Extended Options"
 msgstr "拡張オプション"
 
-#: src/DownloadListCtrl.cpp:670 src/DownloadListCtrl.cpp:730
+#: src/DownloadListCtrl.cpp:669 src/DownloadListCtrl.cpp:729
 msgid "Preview"
 msgstr "プレビュー"
 
-#: src/DownloadListCtrl.cpp:671
+#: src/DownloadListCtrl.cpp:670
 msgid "Show file &details"
 msgstr "ファイルの詳細(&D)"
 
-#: src/DownloadListCtrl.cpp:672 src/muuli_wdr.cpp:780
+#: src/DownloadListCtrl.cpp:671 src/muuli_wdr.cpp:780
 msgid "Show all comments"
 msgstr "全てのコメントを表示"
 
-#: src/DownloadListCtrl.cpp:677
+#: src/DownloadListCtrl.cpp:676
 msgid "Copy magnet URI to clipboard"
 msgstr "マグネットURIをクリップボードへコピーする"
 
-#: src/DownloadListCtrl.cpp:679 src/SharedFilesCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:678 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:681 src/SharedFilesCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:680 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
 msgstr "フィードバックをクリップボードにコピーする"
 
-#: src/DownloadListCtrl.cpp:690
+#: src/DownloadListCtrl.cpp:689
 msgid "unassign"
 msgstr "割り当てない"
 
-#: src/DownloadListCtrl.cpp:697
+#: src/DownloadListCtrl.cpp:696
 msgid "Assign to category"
 msgstr "カテゴリに割り当てる"
 
-#: src/DownloadListCtrl.cpp:733
+#: src/DownloadListCtrl.cpp:732
 msgid "&Open the file"
 msgstr "ファイルを開く(&O)"
 
-#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:793 src/SharedFilesCtrl.cpp:684
 msgid "Enter new name for this file:"
 msgstr "このファイルの新しい名前を入力してください："
 
-#: src/DownloadListCtrl.cpp:795 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:685
 msgid "File rename"
 msgstr "ファイルの改名"
 
-#: src/DownloadListCtrl.cpp:1069 src/DownloadListCtrl.cpp:1080
+#: src/DownloadListCtrl.cpp:1068 src/DownloadListCtrl.cpp:1079
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1250
+#: src/DownloadListCtrl.cpp:1249
 #, c-format
 msgid "Downloads (%i)"
 msgstr "ダウンロード数（%i）"
 
-#: src/DownloadListCtrl.cpp:1394
+#: src/DownloadListCtrl.cpp:1393
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1395
+#: src/DownloadListCtrl.cpp:1394
 msgid "File preview"
 msgstr "ファイル・プレビュー"
 
-#: src/DownloadListCtrl.cpp:1443
+#: src/DownloadListCtrl.cpp:1442
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "エラー：外部メディア・プレイヤーを実行できませんでした！コマンド: `%s'"
@@ -1970,128 +1970,128 @@ msgstr "aMuleの設定ファイルを元に設定ファイルを生成する。"
 msgid "Print program version."
 msgstr "プログラム・バージョンをプリンとする。"
 
-#: src/FileDetailDialog.cpp:59
+#: src/FileDetailDialog.cpp:58
 msgid "File Details"
 msgstr "ファイルの詳細"
 
-#: src/FileDetailDialog.cpp:111
+#: src/FileDetailDialog.cpp:110
 #, c-format
 msgid "%.2f%% done"
 msgstr "%.2f%%終わりました"
 
-#: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1144
+#: src/FileDetailDialog.cpp:112 src/utils/wxCas/src/wxcasframe.cpp:1144
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
 
-#: src/FriendList.cpp:121
+#: src/FriendList.cpp:122
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
 msgstr ""
 
-#: src/FriendList.cpp:147
+#: src/FriendList.cpp:148
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 
-#: src/FriendList.cpp:246
+#: src/FriendList.cpp:248
 msgid "CRITICAL - no client on StartChatSession"
 msgstr ""
 
-#: src/FriendListCtrl.cpp:125 src/muuli_wdr.cpp:2837 src/muuli_wdr.cpp:3460
+#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2837 src/muuli_wdr.cpp:3459
 msgid "Friends"
 msgstr "友達"
 
-#: src/FriendListCtrl.cpp:129 src/GenericClientListCtrl.cpp:582
+#: src/FriendListCtrl.cpp:126 src/GenericClientListCtrl.cpp:583
 msgid "Show &Details"
 msgstr "詳細を表示(&D)"
 
-#: src/FriendListCtrl.cpp:133
+#: src/FriendListCtrl.cpp:130
 msgid "Add a friend"
 msgstr "友達を追加する"
 
-#: src/FriendListCtrl.cpp:136
+#: src/FriendListCtrl.cpp:133
 msgid "Remove Friend"
 msgstr "友達を削除する"
 
-#: src/FriendListCtrl.cpp:137
+#: src/FriendListCtrl.cpp:134
 msgid "Send &Message"
 msgstr "送信 &Message"
 
-#: src/FriendListCtrl.cpp:138 src/GenericClientListCtrl.cpp:593
+#: src/FriendListCtrl.cpp:135 src/GenericClientListCtrl.cpp:594
 msgid "View Files"
 msgstr "ファイルを見る"
 
-#: src/FriendListCtrl.cpp:139 src/GenericClientListCtrl.cpp:585
+#: src/FriendListCtrl.cpp:136 src/GenericClientListCtrl.cpp:586
 msgid "Establish Friend Slot"
 msgstr "友達スロットを設立する"
 
-#: src/FriendListCtrl.cpp:172
+#: src/FriendListCtrl.cpp:169
 msgid "Are you sure that you wish to delete the selected friend?"
 msgstr "選択された友達を削除しますか？"
 
-#: src/FriendListCtrl.cpp:174
+#: src/FriendListCtrl.cpp:171
 msgid "Are you sure that you wish to delete the selected friends?"
 msgstr "選択された友達を削除しますか？"
 
-#: src/FriendListCtrl.cpp:232 src/GenericClientListCtrl.cpp:526
+#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:527
 msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
 msgstr "スロットが一つのみ提供されました。"
 
-#: src/FriendListCtrl.cpp:232 src/GenericClientListCtrl.cpp:526
+#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:527
 msgid "Multiple selection"
 msgstr "複数選択"
 
-#: src/GenericClientListCtrl.cpp:543
+#: src/GenericClientListCtrl.cpp:544
 msgid "Send message to user"
 msgstr "ユーザへメッセージを送る"
 
-#: src/GenericClientListCtrl.cpp:544
+#: src/GenericClientListCtrl.cpp:545
 msgid "Message to send:"
 msgstr "メッセージ："
 
-#: src/GenericClientListCtrl.cpp:583
+#: src/GenericClientListCtrl.cpp:584
 msgid "Remove from friends"
 msgstr "仲間リストから外す"
 
-#: src/GenericClientListCtrl.cpp:594
+#: src/GenericClientListCtrl.cpp:595
 msgid "Send message"
 msgstr "メッセージを送る"
 
-#: src/GenericClientListCtrl.cpp:596
+#: src/GenericClientListCtrl.cpp:597
 msgid "Swap to this file"
 msgstr "このファイルへ交換する"
 
-#: src/GenericClientListCtrl.cpp:939
+#: src/GenericClientListCtrl.cpp:940
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/GenericClientListCtrl.cpp:991
+#: src/GenericClientListCtrl.cpp:992
 #, fuzzy, c-format
 msgid "On Queue: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/GenericClientListCtrl.cpp:1001 src/GenericClientListCtrl.cpp:1030
+#: src/GenericClientListCtrl.cpp:1002 src/GenericClientListCtrl.cpp:1031
 msgid "Asked for another file"
 msgstr "他のファイルを頼みました"
 
-#: src/GenericClientListCtrl.cpp:1020
+#: src/GenericClientListCtrl.cpp:1021
 #, fuzzy
 msgid "Waiting for upload slot"
 msgstr "待機中のアップロード数： %s"
 
-#: src/GenericClientListCtrl.cpp:1022
+#: src/GenericClientListCtrl.cpp:1023
 #, fuzzy, c-format
 msgid "On Queue: %u"
 msgstr "キューに入っています"
 
-#: src/GenericClientListCtrl.cpp:1025
+#: src/GenericClientListCtrl.cpp:1026
 #, fuzzy
 msgid "Uploading"
 msgstr "アップロード"
 
-#: src/GenericClientListCtrl.cpp:1027
+#: src/GenericClientListCtrl.cpp:1028
 #, fuzzy
 msgid "None"
 msgstr "誰も許可しない"
@@ -2099,11 +2099,6 @@ msgstr "誰も許可しない"
 #: src/HTTPDownload.cpp:57
 msgid "Downloading..."
 msgstr "ダウンロード中…"
-
-#: src/HTTPDownload.cpp:77
-#, c-format
-msgid "( %s / %s )"
-msgstr "（ %s / %s）"
 
 #: src/HTTPDownload.cpp:109
 msgid "HTTP download cancelled"
@@ -2152,40 +2147,40 @@ msgstr "サーバへ再接続する"
 msgid "Invalid response from HTTP download server"
 msgstr ""
 
-#: src/IP2Country.cpp:96
+#: src/IP2Country.cpp:99
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr ""
 
-#: src/IP2Country.cpp:124
+#: src/IP2Country.cpp:127
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:130 src/IPFilter.cpp:494
+#: src/IP2Country.cpp:133 src/IPFilter.cpp:494
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:136
+#: src/IP2Country.cpp:139
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr ""
 
-#: src/IP2Country.cpp:142 src/IPFilter.cpp:500
+#: src/IP2Country.cpp:145 src/IPFilter.cpp:500
 #, c-format
 msgid "Successfully updated %s"
 msgstr ""
 
-#: src/IP2Country.cpp:144
+#: src/IP2Country.cpp:147
 msgid "Error updating GeoIP.dat"
 msgstr ""
 
-#: src/IP2Country.cpp:149 src/IPFilter.cpp:505 src/ServerList.cpp:862
+#: src/IP2Country.cpp:152 src/IPFilter.cpp:505 src/ServerList.cpp:862
 #, fuzzy, c-format
 msgid "Failed to download %s from %s"
 msgstr "サーバリストを%sからダウンロードするのに失敗しました"
 
-#: src/IP2Country.cpp:168
+#: src/IP2Country.cpp:171
 #, fuzzy, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "サーバリストを%sからダウンロードするのに失敗しました"
@@ -2311,32 +2306,32 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "%d個のKadコンタクトを書き込みました"
 
-#: src/KnownFile.cpp:1391 src/PartFileConvertDlg.cpp:93
+#: src/KnownFile.cpp:1542 src/PartFileConvertDlg.cpp:93
 msgid "File name"
 msgstr "ファイル名"
 
-#: src/KnownFile.cpp:1392
+#: src/KnownFile.cpp:1543
 msgid "File size"
 msgstr "ファイルサイズ"
 
-#: src/KnownFile.cpp:1393
+#: src/KnownFile.cpp:1544
 msgid "Share ratio"
 msgstr "共有比"
 
-#: src/KnownFile.cpp:1394 src/SharedFilePeersListCtrl.cpp:31
+#: src/KnownFile.cpp:1545 src/SharedFilePeersListCtrl.cpp:31
 #: src/SourceListCtrl.cpp:31
 msgid "Uploaded"
 msgstr "アップロード済み"
 
-#: src/KnownFile.cpp:1395 src/muuli_wdr.cpp:3342
+#: src/KnownFile.cpp:1546 src/muuli_wdr.cpp:3341
 msgid "Requested"
 msgstr "要求済み"
 
-#: src/KnownFile.cpp:1396
+#: src/KnownFile.cpp:1547
 msgid "Accepted"
 msgstr "受付済み"
 
-#: src/KnownFile.cpp:1398
+#: src/KnownFile.cpp:1549
 msgid "Complete sources"
 msgstr "ソース完了"
 
@@ -2352,30 +2347,30 @@ msgstr ""
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3694
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3701
 msgid "Hashing"
 msgstr "ハッシュ中"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3700
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3707
 msgid "Completing"
 msgstr "完了中"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3703
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3710
 msgid "Complete"
 msgstr "完了"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3706 src/TransferWnd.cpp:356
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:355
 msgid "Paused"
 msgstr "停止"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3709 src/TransferWnd.cpp:355
+#: src/PartFile.cpp:3716 src/TransferWnd.cpp:354
 msgid "Erroneous"
 msgstr "エラーあり"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3718 src/TransferWnd.cpp:353
+#: src/PartFile.cpp:3725 src/TransferWnd.cpp:352
 msgid "Waiting"
 msgstr "待機"
 
@@ -2417,11 +2412,11 @@ msgstr ""
 msgid "External Connection: Handshake failed."
 msgstr "外接続用のパスワード。"
 
-#: src/ListenSocket.cpp:66
+#: src/ListenSocket.cpp:65
 msgid "ListenSocket: Ok."
 msgstr ""
 
-#: src/ListenSocket.cpp:68
+#: src/ListenSocket.cpp:67
 msgid "ERROR: Could not listen to TCP port."
 msgstr ""
 
@@ -2434,7 +2429,7 @@ msgid "WARNING: "
 msgstr ""
 
 #: src/MuleNotebook.cpp:167 src/muuli_wdr.cpp:911 src/muuli_wdr.cpp:1440
-#: src/muuli_wdr.cpp:3237 src/muuli_wdr.cpp:3507
+#: src/muuli_wdr.cpp:3236 src/muuli_wdr.cpp:3506
 msgid "Close"
 msgstr "閉じる"
 
@@ -2538,7 +2533,7 @@ msgstr "サーバ名："
 msgid "ServerIP: "
 msgstr "サーバIP："
 
-#: src/MuleTrayIcon.cpp:357 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:357 src/ServerWnd.cpp:187
 #: src/utils/wxCas/src/onlinesig.cpp:272
 msgid "Not Connected"
 msgstr "接続されていません"
@@ -2734,17 +2729,17 @@ msgid "Archives"
 msgstr "アーカイブ"
 
 #: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:199 src/OtherFunctions.cpp:681
-#: src/TransferWnd.cpp:363
+#: src/TransferWnd.cpp:362
 msgid "Audio"
 msgstr "オーディオ"
 
 #: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:213 src/OtherFunctions.cpp:683
-#: src/TransferWnd.cpp:365
+#: src/TransferWnd.cpp:364
 msgid "CD-Images"
 msgstr "CDイメージ"
 
 #: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:220 src/OtherFunctions.cpp:684
-#: src/TransferWnd.cpp:366
+#: src/TransferWnd.cpp:365
 msgid "Pictures"
 msgstr "画像"
 
@@ -2867,7 +2862,7 @@ msgstr "完全名："
 #: src/muuli_wdr.cpp:1357 src/muuli_wdr.cpp:1364 src/muuli_wdr.cpp:1373
 #: src/muuli_wdr.cpp:1380 src/muuli_wdr.cpp:1389 src/muuli_wdr.cpp:1407
 #: src/muuli_wdr.cpp:1416 src/muuli_wdr.cpp:1423 src/muuli_wdr.cpp:1432
-#: src/muuli_wdr.cpp:3345 src/muuli_wdr.cpp:3356 src/muuli_wdr.cpp:3367
+#: src/muuli_wdr.cpp:3344 src/muuli_wdr.cpp:3355 src/muuli_wdr.cpp:3366
 msgid "N/A"
 msgstr "非適用"
 
@@ -3105,7 +3100,7 @@ msgstr "クライアント・ソフトウェア："
 msgid "Client version:"
 msgstr "クライアント・バージョン："
 
-#: src/muuli_wdr.cpp:1275 src/ServerWnd.cpp:247
+#: src/muuli_wdr.cpp:1275 src/ServerWnd.cpp:246
 msgid "IP address:"
 msgstr "IPアドレス："
 
@@ -3361,7 +3356,7 @@ msgstr ""
 msgid "Kademlia"
 msgstr "Kademlia"
 
-#: src/muuli_wdr.cpp:1687 src/muuli_wdr.cpp:3284
+#: src/muuli_wdr.cpp:1687 src/muuli_wdr.cpp:3283
 msgid "ED2K"
 msgstr "ED2K"
 
@@ -3722,7 +3717,7 @@ msgstr ""
 msgid "Enable UPnP port forwarding on the EC port"
 msgstr "ECポートでUPnPポート転送を有効にする"
 
-#: src/muuli_wdr.cpp:2215 src/muuli_wdr.cpp:3132
+#: src/muuli_wdr.cpp:2215 src/muuli_wdr.cpp:3131
 #: src/utils/wxCas/src/wxcasprefs.cpp:210
 msgid "Password"
 msgstr "パスワード"
@@ -3767,8 +3762,8 @@ msgstr "ページのリフレッシュ間隔（秒単位）"
 msgid "Enable Gzip compression"
 msgstr "gzip圧縮を有効にする"
 
-#: src/muuli_wdr.cpp:2328 src/muuli_wdr.cpp:2431 src/ServerWnd.cpp:216
-#: src/ServerWnd.cpp:221
+#: src/muuli_wdr.cpp:2328 src/muuli_wdr.cpp:2431 src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:220
 msgid "OK"
 msgstr "OK"
 
@@ -3792,16 +3787,13 @@ msgstr "コメント："
 msgid "Incoming Dir :"
 msgstr "受信ディレクトリ："
 
-#: src/muuli_wdr.cpp:2384
-msgid "..."
-msgstr "..."
-
 #: src/muuli_wdr.cpp:2391
 msgid "Change priority for new assigned files :"
 msgstr "新しく割り当てられたファイルの優先度を変更する："
 
 #: src/muuli_wdr.cpp:2396
-msgid "Dont change"
+#, fuzzy
+msgid "Don't change"
 msgstr "変更しない"
 
 #: src/muuli_wdr.cpp:2410
@@ -3842,7 +3834,7 @@ msgstr ""
 msgid "Enter the name of the new server here"
 msgstr "新しいサーバの名前をここに入力してください"
 
-#: src/muuli_wdr.cpp:2555 src/ServerWnd.cpp:168
+#: src/muuli_wdr.cpp:2555 src/ServerWnd.cpp:167
 msgid "IP:Port"
 msgstr "IP:ポート"
 
@@ -4177,145 +4169,125 @@ msgstr "プロクシ・サポートを有効／無効にする"
 msgid "Proxy type:"
 msgstr "プロクシの種類："
 
-#: src/muuli_wdr.cpp:3065
-msgid "SOCKS5"
-msgstr "SOCKS5"
-
-#: src/muuli_wdr.cpp:3066
-msgid "SOCKS4"
-msgstr "SOCKS4"
-
-#: src/muuli_wdr.cpp:3067
-msgid "HTTP"
-msgstr "HTTP"
-
-#: src/muuli_wdr.cpp:3068
-msgid "SOCKS4a"
-msgstr "SOCKS4a"
-
-#: src/muuli_wdr.cpp:3071
-msgid "The type of proxy you are connecting to"
-msgstr "接続するプロクシーの種類"
-
-#: src/muuli_wdr.cpp:3074
+#: src/muuli_wdr.cpp:3073
 msgid "Proxy host:"
 msgstr "プロクシー・ホスト："
 
-#: src/muuli_wdr.cpp:3078
+#: src/muuli_wdr.cpp:3077
 msgid "The proxy host name"
 msgstr "プロクシー・ホスト名："
 
-#: src/muuli_wdr.cpp:3081
+#: src/muuli_wdr.cpp:3080
 msgid "Proxy port:"
 msgstr "プロクシー・ポート："
 
-#: src/muuli_wdr.cpp:3085
+#: src/muuli_wdr.cpp:3084
 msgid "The proxy port"
 msgstr "プロクシーのポート"
 
-#: src/muuli_wdr.cpp:3106
+#: src/muuli_wdr.cpp:3105
 msgid "Connect to:"
 msgstr "次に接続する："
 
-#: src/muuli_wdr.cpp:3120
+#: src/muuli_wdr.cpp:3119
 msgid "Login to remote amule"
 msgstr "リモートamuleにログインする"
 
-#: src/muuli_wdr.cpp:3125
+#: src/muuli_wdr.cpp:3124
 msgid "User name"
 msgstr "ユーザ名"
 
-#: src/muuli_wdr.cpp:3142
+#: src/muuli_wdr.cpp:3141
 msgid "Remember those settings"
 msgstr "設定を記憶する"
 
-#: src/muuli_wdr.cpp:3171
+#: src/muuli_wdr.cpp:3170
 msgid "Enable Verbose Debug-Logging."
 msgstr "冗長なデバッグ・ロギングを有効にする"
 
-#: src/muuli_wdr.cpp:3174
+#: src/muuli_wdr.cpp:3173
 msgid "Message Categories:"
 msgstr "メッセージのカテゴリ："
 
-#: src/muuli_wdr.cpp:3200 src/PartFileConvertDlg.cpp:152
+#: src/muuli_wdr.cpp:3199 src/PartFileConvertDlg.cpp:152
 msgid "Waiting..."
 msgstr "待機中…"
 
-#: src/muuli_wdr.cpp:3227
+#: src/muuli_wdr.cpp:3226
 msgid "Add imports"
 msgstr "インポートを追加する"
 
-#: src/muuli_wdr.cpp:3231
+#: src/muuli_wdr.cpp:3230
 msgid "Retry selected"
 msgstr "選択したものを再試行"
 
-#: src/muuli_wdr.cpp:3234
+#: src/muuli_wdr.cpp:3233
 msgid "Remove selected"
 msgstr "選択したものを破棄"
 
-#: src/muuli_wdr.cpp:3306
+#: src/muuli_wdr.cpp:3305
 msgid "Event Types"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3326
+#: src/muuli_wdr.cpp:3325
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3353
+#: src/muuli_wdr.cpp:3352
 #, fuzzy
 msgid "Active Uploads"
 msgstr "アクティブなアップロード数："
 
-#: src/muuli_wdr.cpp:3373
+#: src/muuli_wdr.cpp:3372
 msgid "Percent of total files"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3420
+#: src/muuli_wdr.cpp:3419
 #, fuzzy
 msgid "All files"
 msgstr "共有ファイルを隠す"
 
-#: src/muuli_wdr.cpp:3421
+#: src/muuli_wdr.cpp:3420
 #, fuzzy
 msgid "Selected files"
 msgstr "ビュー・フィルタを選択してください"
 
-#: src/muuli_wdr.cpp:3422
+#: src/muuli_wdr.cpp:3421
 #, fuzzy
 msgid "Active uploads only"
 msgstr "アクティブなアップロード数"
 
-#: src/muuli_wdr.cpp:3424
+#: src/muuli_wdr.cpp:3423
 #, fuzzy
 msgid "Show Clients for"
 msgstr "クライアントを表示する"
 
-#: src/muuli_wdr.cpp:3427
+#: src/muuli_wdr.cpp:3426
 #, fuzzy
 msgid "Reload:"
 msgstr "リストを再ロードする"
 
-#: src/muuli_wdr.cpp:3432
+#: src/muuli_wdr.cpp:3431
 msgid "Reload your shared files"
 msgstr "共有ファイルを再ロードする"
 
-#: src/muuli_wdr.cpp:3502
+#: src/muuli_wdr.cpp:3501
 msgid "Send"
 msgstr "送信する"
 
-#: src/muuli_wdr.cpp:3503
+#: src/muuli_wdr.cpp:3502
 msgid "Sends the specified message."
 msgstr "指示するメッセージを送信します。"
 
-#: src/muuli_wdr.cpp:3508
+#: src/muuli_wdr.cpp:3507
 msgid "Close this chat-session."
 msgstr "チャット・セションを閉じます。"
 
-#: src/muuli_wdr.cpp:3532
+#: src/muuli_wdr.cpp:3531
 msgid "Connect to any server and/or Kad"
 msgstr "すべてのサーバ、もしくはKadに接続する"
 
-#: src/muuli_wdr.cpp:3538 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:728
+#: src/muuli_wdr.cpp:3537 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:728
 msgid "Shared Files"
 msgstr "共有ファイル"
 
@@ -4386,27 +4358,27 @@ msgstr "全て"
 msgid "all others"
 msgstr "他の全て"
 
-#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:350
 msgid "Incomplete"
 msgstr "未完成"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3723 src/TransferWnd.cpp:357
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3730 src/TransferWnd.cpp:356
 msgid "Stopped"
 msgstr "中断しています"
 
-#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:362
+#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:361
 msgid "Video"
 msgstr "ビデオ"
 
-#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:364
+#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:363
 msgid "Archive"
 msgstr "アーカイブ"
 
-#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:367
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:366
 msgid "Text"
 msgstr "テキスト"
 
-#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:358
+#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:357
 msgid "Active"
 msgstr "アクティブ"
 
@@ -4489,109 +4461,110 @@ msgstr "成功にインポートしたダウンロードのソース・ファイ
 msgid "Remove sources?"
 msgstr "ソースを削除しますか？"
 
-#: src/PartFile.cpp:290
-msgid "ERROR: Failed to create partfile)"
+#: src/PartFile.cpp:298
+#, fuzzy
+msgid "ERROR: Failed to create partfile"
 msgstr "エラー：部分ファイルを作成できませんでした！"
 
-#: src/PartFile.cpp:328
+#: src/PartFile.cpp:336
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "metファイルのバックアップを%sからロードしようとしています"
 
-#: src/PartFile.cpp:335
+#: src/PartFile.cpp:343
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
 msgstr ""
 
-#: src/PartFile.cpp:341
+#: src/PartFile.cpp:349
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
 msgstr ""
 
-#: src/PartFile.cpp:352
+#: src/PartFile.cpp:360
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr ""
 
-#: src/PartFile.cpp:602
+#: src/PartFile.cpp:610
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 
-#: src/PartFile.cpp:605
+#: src/PartFile.cpp:613
 msgid "Trying to recover file info..."
 msgstr "ファイル情報を回復しようとしています…"
 
-#: src/PartFile.cpp:620
+#: src/PartFile.cpp:628
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "無名なファイルを回復中です：RecoveredFile.datとして回復しようとします"
 
-#: src/PartFile.cpp:624
+#: src/PartFile.cpp:632
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "得られる全てのファイル情報を回復しました：使用しようとしています…"
 
-#: src/PartFile.cpp:626
+#: src/PartFile.cpp:634
 msgid "Unable to recover file info :("
 msgstr "残念ながら、ファイル情報を回復できませんでした。"
 
-#: src/PartFile.cpp:661
+#: src/PartFile.cpp:669
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "%s（%s）を開くことはできませんでした"
 
-#: src/PartFile.cpp:711
+#: src/PartFile.cpp:719
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr ""
 
-#: src/PartFile.cpp:893
+#: src/PartFile.cpp:901
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "部分ファイル%s（%s ==> %s）の保存中にエラーが発生しました"
 
-#: src/PartFile.cpp:900
+#: src/PartFile.cpp:908
 #, fuzzy
 msgid "IO failure while saving partfile: "
 msgstr "部分ファイル%s（%s ==> %s）の保存中にエラーが発生しました"
 
-#: src/PartFile.cpp:913
+#: src/PartFile.cpp:921
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "'%s'の長さを読み込むことができませんでした。%sファイルを使用します。"
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:929
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "どうか、'%s'はゼロ・サイズです：%sファイルを使用しています。"
 
-#: src/PartFile.cpp:992
+#: src/PartFile.cpp:998
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%sのためのpart.met.seedsファイルは保存できませんでした"
 
-#: src/PartFile.cpp:1018
+#: src/PartFile.cpp:1024
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "%i個のソース・シードを次の部分ファイルに保存しました：%s（%s）"
 
-#: src/PartFile.cpp:1047
+#: src/PartFile.cpp:1053
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "部分ファイル%s（%s）にはシード・ファイルはありません"
 
-#: src/PartFile.cpp:1056
+#: src/PartFile.cpp:1062
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "部分ファイル%s（%s）のシード・ファイルは空です"
 
-#: src/PartFile.cpp:1112
+#: src/PartFile.cpp:1118
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 "部分ファイルのシード・ファイルを読む時にエラーが発生しました：（%s - %s）%s"
 
-#: src/PartFile.cpp:1129 src/PartFile.cpp:1158
+#: src/PartFile.cpp:1135 src/PartFile.cpp:1164
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4603,73 +4576,73 @@ msgstr[0] ""
 "破損されている部分（%d）が%d部分、ファイル%sに見つかりました：FileResultHash "
 "|%s| FileHash |%s|"
 
-#: src/PartFile.cpp:1173
+#: src/PartFile.cpp:1179
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "完成した部分（%i）が%sに見つかりました"
 
-#: src/PartFile.cpp:1206
+#: src/PartFile.cpp:1212
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%sの再ハッシュを終了しました"
 
-#: src/PartFile.cpp:2131
+#: src/PartFile.cpp:2138
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr ""
 
-#: src/PartFile.cpp:2168
+#: src/PartFile.cpp:2175
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "ダウンロードが終了しました：%s"
 
-#: src/PartFile.cpp:2225
+#: src/PartFile.cpp:2232
 #, c-format
 msgid "Deleting file: %s"
 msgstr "ファイルを削除します：%s"
 
-#: src/PartFile.cpp:2287
+#: src/PartFile.cpp:2294
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 
-#: src/PartFile.cpp:2292
+#: src/PartFile.cpp:2299
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
 
-#: src/PartFile.cpp:2967
+#: src/PartFile.cpp:2974
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "注意：ディスク容量が足りません！ファイルを停止します：%s"
 
-#: src/PartFile.cpp:3037
+#: src/PartFile.cpp:3044
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "ダウンロードした部分%i（ファイル：%s）は破損されています"
 
-#: src/PartFile.cpp:3089
+#: src/PartFile.cpp:3096
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "ICH：破損された部分%i（%sのため）を回復しました→：%s バイトを保存しました"
 
-#: src/PartFile.cpp:3696
+#: src/PartFile.cpp:3703
 msgid "Allocating"
 msgstr "領域確保中"
 
-#: src/PartFile.cpp:3712
+#: src/PartFile.cpp:3719
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:3762 src/SearchListCtrl.cpp:961
+#: src/PartFile.cpp:3769 src/SearchListCtrl.cpp:961
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "ダウンロード済み"
 
-#: src/PartFile.cpp:4004
+#: src/PartFile.cpp:4011
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "エラー: 部分ファイル '%s' が開けませんでした"
@@ -4942,47 +4915,51 @@ msgstr ""
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:503
+#: src/PrefsUnifiedDlg.cpp:405
+msgid "The type of proxy you are connecting to"
+msgstr "接続するプロクシーの種類"
+
+#: src/PrefsUnifiedDlg.cpp:504
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:558
+#: src/PrefsUnifiedDlg.cpp:559
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr "この変更点を有効するにはaMuleを再起動しなければなりません：\n"
 
-#: src/PrefsUnifiedDlg.cpp:565
+#: src/PrefsUnifiedDlg.cpp:566
 msgid "- TCP port changed.\n"
 msgstr "- TCPポートを変更しました。\n"
 
-#: src/PrefsUnifiedDlg.cpp:570
+#: src/PrefsUnifiedDlg.cpp:571
 msgid "- UDP port changed.\n"
 msgstr "- UDPポートを変更しました。\n"
 
-#: src/PrefsUnifiedDlg.cpp:575
+#: src/PrefsUnifiedDlg.cpp:576
 #, fuzzy
 msgid "- External connect port changed.\n"
 msgstr "外部接続は終了しました。"
 
-#: src/PrefsUnifiedDlg.cpp:579
+#: src/PrefsUnifiedDlg.cpp:580
 #, fuzzy
 msgid "- External connect acceptance changed.\n"
 msgstr "新しい外部接続を認められました"
 
-#: src/PrefsUnifiedDlg.cpp:583
+#: src/PrefsUnifiedDlg.cpp:584
 #, fuzzy
 msgid "- External connect interface changed.\n"
 msgstr "外部接続は終了しました。"
 
-#: src/PrefsUnifiedDlg.cpp:592
+#: src/PrefsUnifiedDlg.cpp:593
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:599
+#: src/PrefsUnifiedDlg.cpp:600
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -4990,26 +4967,26 @@ msgstr ""
 "外部接続を有効にしましたがパスワードを設定していません。\n"
 "有効なパスワードを設定しないと外部接続を可能できません。"
 
-#: src/PrefsUnifiedDlg.cpp:611
+#: src/PrefsUnifiedDlg.cpp:612
 msgid "- Language changed.\n"
 msgstr "- 言語を変更しました。\n"
 
-#: src/PrefsUnifiedDlg.cpp:616
+#: src/PrefsUnifiedDlg.cpp:617
 msgid "- Temp folder changed.\n"
 msgstr "- 一時フォルダを変更しました。\n"
 
-#: src/PrefsUnifiedDlg.cpp:621
+#: src/PrefsUnifiedDlg.cpp:622
 #, fuzzy
 msgid "- ED2K network enabled.\n"
 msgstr "全てのネットワークが無効になっています。"
 
-#: src/PrefsUnifiedDlg.cpp:691
+#: src/PrefsUnifiedDlg.cpp:692
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:695
+#: src/PrefsUnifiedDlg.cpp:696
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5017,7 +4994,7 @@ msgstr ""
 "UDPポートが無効になっているとKadは開始できません。\n"
 "UDPポートを有効にするか、またはKadを無効にしてください。"
 
-#: src/PrefsUnifiedDlg.cpp:708
+#: src/PrefsUnifiedDlg.cpp:709
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5027,7 +5004,7 @@ msgstr ""
 "必ず早急にaMuleを再起動してください。\n"
 "今すぐに再起動しなければ、挙動がおかしくなる可能性があります。\n"
 
-#: src/PrefsUnifiedDlg.cpp:784
+#: src/PrefsUnifiedDlg.cpp:785
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5037,41 +5014,41 @@ msgstr ""
 "せめて一つのURLを入力して、有効なserver.metファイルを指定してください。\n"
 "このチェックボクスの近くの\"表\"ボタンをクリックして、URLを入力してください。"
 
-#: src/PrefsUnifiedDlg.cpp:918
+#: src/PrefsUnifiedDlg.cpp:919
 msgid "Temporary files"
 msgstr "一時ファイル"
 
-#: src/PrefsUnifiedDlg.cpp:923
+#: src/PrefsUnifiedDlg.cpp:924
 msgid "Incoming files"
 msgstr "受信ファイル"
 
-#: src/PrefsUnifiedDlg.cpp:928
+#: src/PrefsUnifiedDlg.cpp:929
 msgid "Online Signatures"
 msgstr "オンライン署名"
 
-#: src/PrefsUnifiedDlg.cpp:941
+#: src/PrefsUnifiedDlg.cpp:942
 #, c-format
 msgid "Choose a folder for %s"
 msgstr " %s のためのフォルダを選択する"
 
-#: src/PrefsUnifiedDlg.cpp:961
+#: src/PrefsUnifiedDlg.cpp:962
 msgid "Browse for videoplayer"
 msgstr "ビデオプレイヤーを選択する"
 
-#: src/PrefsUnifiedDlg.cpp:965
+#: src/PrefsUnifiedDlg.cpp:966
 msgid "Select browser"
 msgstr "ブラウザを選択する"
 
-#: src/PrefsUnifiedDlg.cpp:971
+#: src/PrefsUnifiedDlg.cpp:972
 #, c-format
 msgid "Executable%s"
 msgstr "実行ファイル%s"
 
-#: src/PrefsUnifiedDlg.cpp:992
+#: src/PrefsUnifiedDlg.cpp:993
 msgid "Edit server list"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:993
+#: src/PrefsUnifiedDlg.cpp:994
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5079,78 +5056,72 @@ msgstr ""
 "server.metファイルをダウンロードするURLをここに追加してください。\n"
 "一行にひとつのURLのみです。"
 
-#: src/PrefsUnifiedDlg.cpp:1052
+#: src/PrefsUnifiedDlg.cpp:1053 src/PrefsUnifiedDlg.cpp:1072
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "アップデート遅延時間： %d 秒"
 
-#: src/PrefsUnifiedDlg.cpp:1059
+#: src/PrefsUnifiedDlg.cpp:1060
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均グラフの時間： %d 分"
 
-#: src/PrefsUnifiedDlg.cpp:1065
+#: src/PrefsUnifiedDlg.cpp:1066
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "接続グラフスケール： %d"
 
-#: src/PrefsUnifiedDlg.cpp:1071
-#, c-format
-msgid "Update delay : %d second"
-msgid_plural "Update delay : %d seconds"
-msgstr[0] "アップデート遅延時間： %d 秒"
-
-#: src/PrefsUnifiedDlg.cpp:1077
+#: src/PrefsUnifiedDlg.cpp:1078
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "ファイルバッファサイズ： %d バイト"
 
-#: src/PrefsUnifiedDlg.cpp:1083
+#: src/PrefsUnifiedDlg.cpp:1084
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "アップロードキューサイズ： %d クライアント"
 
-#: src/PrefsUnifiedDlg.cpp:1090
+#: src/PrefsUnifiedDlg.cpp:1091
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "サーバ接続リフレッシュ遅延時間： %d 分"
 
-#: src/PrefsUnifiedDlg.cpp:1092
+#: src/PrefsUnifiedDlg.cpp:1093
 msgid "Server connection refresh interval: Disabled"
 msgstr "サーバ接続リフレッシュ遅延時間： 無効"
 
-#: src/PrefsUnifiedDlg.cpp:1137
+#: src/PrefsUnifiedDlg.cpp:1138
 #, fuzzy
 msgid "disabled"
 msgstr "無効にする"
 
-#: src/PrefsUnifiedDlg.cpp:1160
-#, c-format
-msgid "Execute command on `%s' event"
+#: src/PrefsUnifiedDlg.cpp:1161
+#, fuzzy, c-format
+msgid "Execute command on '%s' event"
 msgstr " `%s' イベントにコマンドを実行する"
 
-#: src/PrefsUnifiedDlg.cpp:1163
+#: src/PrefsUnifiedDlg.cpp:1164
 msgid "Enable command execution on core"
 msgstr "コアにコマンドを実行することを有効にする"
 
-#: src/PrefsUnifiedDlg.cpp:1171
+#: src/PrefsUnifiedDlg.cpp:1172
 msgid "Core command:"
 msgstr "コアコマンド："
 
-#: src/PrefsUnifiedDlg.cpp:1180
+#: src/PrefsUnifiedDlg.cpp:1181
 msgid "Enable command execution on GUI"
 msgstr "GUIにコマンドを実行することを有効にする"
 
-#: src/PrefsUnifiedDlg.cpp:1188
+#: src/PrefsUnifiedDlg.cpp:1189
 msgid "GUI command:"
 msgstr "GUIコマンド："
 
-#: src/PrefsUnifiedDlg.cpp:1197
+#: src/PrefsUnifiedDlg.cpp:1198
 msgid "The following variables will be replaced:"
 msgstr "次の変数は置換されます："
 
@@ -5472,7 +5443,7 @@ msgid "Servers (%i)"
 msgstr "サーバ （%i）"
 
 #: src/ServerListCtrl.cpp:396 src/ServerSocket.cpp:257
-#: src/ServerSocket.cpp:272 src/ServerWnd.cpp:179
+#: src/ServerSocket.cpp:272 src/ServerWnd.cpp:178
 msgid "Server"
 msgstr "サーバ"
 
@@ -5607,143 +5578,143 @@ msgstr "%s（%s - %s：%i）%sへ接続中です。"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "%sに接続するためのDNSは解決できませんでした：接続はできません！"
 
-#: src/ServerWnd.cpp:103
+#: src/ServerWnd.cpp:102
 msgid "Server not added: No IP or hostname specified."
 msgstr ""
 "サーバは追加しませんでした：IPまたはホスト名は指示されていませんでした。"
 
-#: src/ServerWnd.cpp:108
+#: src/ServerWnd.cpp:107
 msgid "Server not added: Invalid server-port specified."
 msgstr "サーバは追加しませんでした：不正なサーバ・ポートが指示されました。"
 
-#: src/ServerWnd.cpp:161
+#: src/ServerWnd.cpp:160
 msgid "eD2k Status:"
 msgstr ""
 
-#: src/ServerWnd.cpp:172
+#: src/ServerWnd.cpp:171
 msgid "ID"
 msgstr "ID"
 
-#: src/ServerWnd.cpp:204
+#: src/ServerWnd.cpp:203
 msgid "Kademlia Status:"
 msgstr "Kademliaのステータス："
 
-#: src/ServerWnd.cpp:207
+#: src/ServerWnd.cpp:206
 #, fuzzy
 msgid "Running in LAN mode"
 msgstr "%s に起動しています"
 
-#: src/ServerWnd.cpp:207
+#: src/ServerWnd.cpp:206
 msgid "Running"
 msgstr "走っています"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:209
 msgid "Status:"
 msgstr "ステータス："
 
-#: src/ServerWnd.cpp:213
+#: src/ServerWnd.cpp:212
 msgid "Connection State:"
 msgstr "接続状況："
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:214
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
 
-#: src/ServerWnd.cpp:217
+#: src/ServerWnd.cpp:216
 #, fuzzy
 msgid "UDP Connection State:"
 msgstr "接続状況："
 
-#: src/ServerWnd.cpp:220
+#: src/ServerWnd.cpp:219
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
-#: src/ServerWnd.cpp:224
+#: src/ServerWnd.cpp:223
 msgid "Firewalled state: "
 msgstr "ファイアワォールされた状況："
 
-#: src/ServerWnd.cpp:230
+#: src/ServerWnd.cpp:229
 msgid "No buddy required - TCP port open"
 msgstr ""
 
-#: src/ServerWnd.cpp:232
+#: src/ServerWnd.cpp:231
 msgid "No buddy required - UDP port open"
 msgstr ""
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:233
 msgid "No buddy"
 msgstr "仲間がありません"
 
-#: src/ServerWnd.cpp:238
+#: src/ServerWnd.cpp:237
 #, fuzzy
 msgid "Connecting to buddy"
 msgstr "仲間と接続しています"
 
-#: src/ServerWnd.cpp:241
+#: src/ServerWnd.cpp:240
 #, fuzzy, c-format
 msgid "Connected to buddy at %s"
 msgstr "仲間と接続しています"
 
-#: src/ServerWnd.cpp:251
+#: src/ServerWnd.cpp:250
 #, fuzzy
 msgid "Indexed sources:"
 msgstr "見つかったソース："
 
-#: src/ServerWnd.cpp:253
+#: src/ServerWnd.cpp:252
 msgid "Indexed keywords:"
 msgstr ""
 
-#: src/ServerWnd.cpp:255
+#: src/ServerWnd.cpp:254
 #, fuzzy
 msgid "Indexed notes:"
 msgstr "インデックスファイルが見付かりませんでした： "
 
-#: src/ServerWnd.cpp:257
+#: src/ServerWnd.cpp:256
 msgid "Indexed load:"
 msgstr ""
 
-#: src/ServerWnd.cpp:260
+#: src/ServerWnd.cpp:259
 msgid "Average Users:"
 msgstr "平均のユーザ数："
 
-#: src/ServerWnd.cpp:263
+#: src/ServerWnd.cpp:262
 msgid "Average Files:"
 msgstr "平均のファイル数："
 
-#: src/ServerWnd.cpp:268 src/TextClient.cpp:728
+#: src/ServerWnd.cpp:267 src/TextClient.cpp:728
 msgid "Not running"
 msgstr "動作していません"
 
-#: src/SharedFileList.cpp:334
+#: src/SharedFileList.cpp:332
 #, c-format
 msgid "Adding file %s to shares"
 msgstr ""
 
-#: src/SharedFileList.cpp:364
+#: src/SharedFileList.cpp:362
 #, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "%i個の既知の共有ファイルが見つかりました"
 
-#: src/SharedFileList.cpp:370
+#: src/SharedFileList.cpp:368
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "%i個の既知、%i個の未知の共有ファイルが見つかりました"
 
-#: src/SharedFileList.cpp:379
+#: src/SharedFileList.cpp:377
 #, c-format
 msgid "ERROR: Attempted to share %s"
 msgstr ""
 
-#: src/SharedFileList.cpp:403
+#: src/SharedFileList.cpp:401
 #, fuzzy, c-format
 msgid "Shared directory not found, skipping: %s"
 msgstr "サーバは見付かりませんでした： %s"
 
-#: src/SharedFileList.cpp:475
+#: src/SharedFileList.cpp:473
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr ""
@@ -6123,8 +6094,8 @@ msgid "Never"
 msgstr "記録なし"
 
 #: src/TerminationProcess.cpp:47
-#, c-format
-msgid "Command `%s' with pid `%d' has finished with status code `%d'."
+#, fuzzy, c-format
+msgid "Command '%s' with pid '%d' has finished with status code '%d'."
 msgstr ""
 "PID `%2$d' のコマンド  `%1$s' がステータスコード  `%3$d' で終了しました。"
 
@@ -6685,31 +6656,31 @@ msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
 "警告：ファイル '%s' は既に存在します。新しいファイルを '%s' に改名しました。"
 
-#: src/TransferWnd.cpp:193
+#: src/TransferWnd.cpp:192
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr "本当にこのカテゴリの全てのファイルをキャンセルして削除しますか？"
 
-#: src/TransferWnd.cpp:193
+#: src/TransferWnd.cpp:192
 msgid "Confirmation Required"
 msgstr "確認が必要です"
 
-#: src/TransferWnd.cpp:347
+#: src/TransferWnd.cpp:346
 msgid "All others"
 msgstr "他の全て"
 
-#: src/TransferWnd.cpp:369
+#: src/TransferWnd.cpp:368
 msgid "Select view filter"
 msgstr "ビュー・フィルタを選択してください"
 
-#: src/TransferWnd.cpp:372
+#: src/TransferWnd.cpp:371
 msgid "Add category"
 msgstr "カテゴリを追加します"
 
-#: src/TransferWnd.cpp:375
+#: src/TransferWnd.cpp:374
 msgid "Edit category"
 msgstr "カテゴリを編集します"
 
-#: src/TransferWnd.cpp:376
+#: src/TransferWnd.cpp:375
 msgid "Remove category"
 msgstr "カテゴリを削除します"
 
@@ -6725,12 +6696,12 @@ msgstr ""
 msgid "Hashset requested for unknown file: %s"
 msgstr "不明なファイルのハッシュセットが要求されました： %s"
 
-#: src/UploadQueue.cpp:573
+#: src/UploadQueue.cpp:580
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "ファイル %s のアップロードを再開します"
 
-#: src/UploadQueue.cpp:590
+#: src/UploadQueue.cpp:597
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "ファイル %s のアップロードを一時停止します"
@@ -7431,6 +7402,28 @@ msgstr "ログアウトが要求されました\n"
 #: src/webserver/src/WebServer.cpp:1866
 msgid "Processing request [redirected]: "
 msgstr "要求を処理中です [変更しました]： "
+
+#~ msgid "( %s / %s )"
+#~ msgstr "（ %s / %s）"
+
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid "SOCKS5"
+#~ msgstr "SOCKS5"
+
+#~ msgid "SOCKS4"
+#~ msgstr "SOCKS4"
+
+#~ msgid "HTTP"
+#~ msgstr "HTTP"
+
+#~ msgid "SOCKS4a"
+#~ msgstr "SOCKS4a"
+
+#~ msgid "Update delay : %d second"
+#~ msgid_plural "Update delay : %d seconds"
+#~ msgstr[0] "アップデート遅延時間： %d 秒"
 
 #~ msgid "Transferring"
 #~ msgstr "転送中"
