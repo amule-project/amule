@@ -4,13 +4,13 @@
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
-# Hans <herringfish@hot.ee>, 2006, 2007, 2008, 2009, 2010.
+# Hans <herringfish@hot.ee>, 2006, 2007, 2008, 2009, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-13 07:42+0100\n"
-"PO-Revision-Date: 2010-12-28 07:32+0200\n"
+"PO-Revision-Date: 2011-01-01 19:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,12 +52,12 @@ msgid "Now, exiting main app..."
 msgstr "Ok, lahkun põhiprogrammist..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
 msgstr "Mõrvan amuleweb tegelase, protsessi id '%ld' ... "
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
 msgstr "Mõrvan amuleweb tegelase, protsessi id '%ld' ... "
 
@@ -3808,7 +3808,6 @@ msgid "Change priority for new assigned files :"
 msgstr "Muuda uute failide prioriteeti :"
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "Ära muuda"
 
@@ -4468,7 +4467,6 @@ msgid "Remove sources?"
 msgstr "Eemaldan allikaid?"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
 msgstr "VIGA: Ei suutnud luua osafaili!"
 
@@ -5121,7 +5119,7 @@ msgid "disabled"
 msgstr "keelatud"
 
 #: src/PrefsUnifiedDlg.cpp:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
 msgstr "Käivita käsk peale '%s' sündmust"
 
@@ -6107,7 +6105,7 @@ msgid "Never"
 msgstr "Mitte kunagi"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
 msgstr "Käsk '%s' protsessi'id '%d' lõpetas staatusega '%d'."
 
