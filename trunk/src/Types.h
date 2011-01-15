@@ -142,7 +142,7 @@ static const wxString EmptyString = wxEmptyString;
 #endif
 
 
-#ifdef __WXMSW__
+#ifdef _WIN32			// Used in non-wx-apps too (ed2k), so don't use __WXMSW__ here !
 #ifdef _MSC_VER
 	#define NOMINMAX
 	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
@@ -162,16 +162,18 @@ static const wxString EmptyString = wxEmptyString;
 			R_OK = 4    //          read
 		};
 	#endif // W_OK
-	#include <wx/msw/winundef.h>	// Do_not_auto_remove
+	#ifdef __WXMSW__
+		#include <wx/msw/winundef.h>	// Do_not_auto_remove
+	#endif
 	#undef GetUserName
-#else // __WXMSW_
+#else // _WIN32
 	typedef struct sRECT {
 	  uint32 left;
 	  uint32 top;
 	  uint32 right;
 	  uint32 bottom;
 	} RECT;
-#endif /* __WXMSW__ */
+#endif /* _WIN32 */
 
 
 #endif /* TYPES_H */
