@@ -146,13 +146,14 @@ void CTransferWnd::AddCategory( Category_Struct* category )
 	theApp->amuledlg->m_searchwnd->UpdateCatChoice();
 }
 
-void CTransferWnd::UpdateCategory( int index, bool titleChanged )
+void CTransferWnd::UpdateCategory(int index)
 {
-	wxString label = theApp->glob_prefs->GetCategory( index )->title;
-
-	if ( thePrefs::ShowCatTabInfos() ) {
-		uint16 files = 0;
-		uint16 download = 0;
+	uint32 nrCats = theApp->glob_prefs->GetCatCount();
+	std::vector<uint16> files, downloads;
+	bool showCatTabInfos = thePrefs::ShowCatTabInfos();
+	if (showCatTabInfos) {
+		files.insert(files.begin(), nrCats, 0);
+		downloads.insert(downloads.begin(), nrCats, 0);
 		
 #ifdef CLIENT_GUI
 		for (CDownQueueRem::const_iterator it = theApp->downloadqueue->begin(); it != theApp->downloadqueue->end(); ++it) {
@@ -164,25 +165,38 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 		for (int i = 0; i < size; ++i ) {
 			CPartFile *cur_file = fileList[i];
 #endif
-			if ( cur_file && cur_file->CheckShowItemInGivenCat(index) ) {
-				files++;
-				
-				if ( cur_file->GetTransferingSrcCount() ) {
-					download++;
+			bool downloading = cur_file->GetTransferingSrcCount() > 0;
+			int fileCat = cur_file->GetCategory();
+			if ((index == -1 || fileCat == index) && cur_file->CheckShowItemInGivenCat(fileCat)) {
+				files[fileCat]++;
+				if (downloading) {
+					downloads[fileCat]++;
+				}
+			}
+			if (index == -1 && fileCat > 0 && cur_file->CheckShowItemInGivenCat(0)) {
+				files[0]++;
+				if (downloading) {
+					downloads[0]++;
 				}
 			}
 		}
 		
-		label += CFormat(wxT(" (%u/%u)")) % download % files;
 	}
-	
-	m_dlTab->SetPageText( index, label );
-
-
-	if ( titleChanged ) {
-		theApp->amuledlg->m_searchwnd->UpdateCatChoice();
+	int start, end;
+	if (index == -1) {
+		start = 0;
+		end = nrCats - 1;
+	} else {
+		start = index;
+		end = index;
 	}
-	
+	for (int i = start; i <= end; i++) {
+		wxString label = theApp->glob_prefs->GetCategory(i)->title;
+		if (showCatTabInfos) {
+			label += CFormat(wxT(" (%u/%u)")) % downloads[i] % files[i];
+		}
+		m_dlTab->SetPageText(i, label);
+	}
 }
 
 
@@ -395,14 +409,6 @@ void CTransferWnd::OnBtnClearDownloads( wxCommandEvent& WXUNUSED(evt) )
     downloadlistctrl->Freeze();
     downloadlistctrl->ClearCompleted();
     downloadlistctrl->Thaw();
-}
-
-
-void CTransferWnd::UpdateCatTabTitles()
-{
-	for ( uint8 i = 0; i < m_dlTab->GetPageCount(); i++ ) {
-		UpdateCategory( i, false );
-	}
 }
 
 

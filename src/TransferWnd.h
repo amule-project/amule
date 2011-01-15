@@ -75,17 +75,9 @@ public:
 	/**
 	 * Updates the title of the specified category.
 	 *
-	 * @param index The index of the category on the notebook.
-	 * @param titleChanged Set to true if the actual title has changed.
-	 *
-	 * The second paramerter will make the UpdateCategory function signal
-	 * to the searchdlg page that the lists of categories has been changed,
-	 * and force it to refresh its list of categories. 
-	 *
-	 * This however should only be done when the title has actually changed, 
-	 * since it will cause the user-selection to be reset.
+	 * @param index The index of the category on the notebook. -1 will update all categories.
 	 */
-	void UpdateCategory( int index, bool titleChanged = false );
+	void UpdateCategory(int index);
 
 	/**
 	 * Remove category
@@ -106,7 +98,7 @@ public:
 	/**
 	 * Helper-function which updates the displayed titles of all existing categories.
 	 */
-	void	UpdateCatTabTitles();
+	void	UpdateCatTabTitles() { UpdateCategory(-1); }
 
 	
 	/**

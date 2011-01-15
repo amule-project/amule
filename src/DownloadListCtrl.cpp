@@ -487,6 +487,7 @@ void CDownloadListCtrl::OnSetCategory( wxCommandEvent& event )
 	OnItemSelectionChanged(ev);	// clear clients that may have been shown
 
 	ChangeCategory( m_category );	// This only updates the visibility of the clear completed button
+	theApp->amuledlg->m_transferwnd->UpdateCatTabTitles();
 }
 
 

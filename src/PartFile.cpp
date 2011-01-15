@@ -1570,9 +1570,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			UpdateCompletedInfos();
 		}
 		m_bPercentUpdated = false;
-		if (thePrefs::ShowCatTabInfos()) {
-			Notify_ShowUpdateCatTabTitles();
-		}				
 	}
 
 	// release file handle if unused for some time

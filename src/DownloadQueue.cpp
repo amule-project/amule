@@ -169,6 +169,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 
 		DoSortByPriority();
 		CheckDiskspace( path );
+		Notify_ShowUpdateCatTabTitles();
 	}
 }
 
