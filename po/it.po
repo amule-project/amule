@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-13 07:42+0100\n"
-"PO-Revision-Date: 2010-11-03 16:23+0100\n"
+"PO-Revision-Date: 2011-01-20 15:16+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,12 +67,12 @@ msgid "Now, exiting main app..."
 msgstr "Uscita dall'applicazione..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
 msgstr "Sto terminando l'istanza di amuleweb con pid `%ld' ... "
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
 msgstr "Sto terminando l'istanza di amuleweb con pid `%ld' ... "
 
@@ -3869,7 +3869,6 @@ msgid "Change priority for new assigned files :"
 msgstr "Cambia priorità per i nuovi file assegnati:"
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "Non cambiare"
 
@@ -4532,9 +4531,8 @@ msgid "Remove sources?"
 msgstr "Rimuovere le fonti?"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
-msgstr "ERRORE: impossibile creare il file .part)"
+msgstr "ERRORE: impossibile creare il file .part"
 
 #: src/PartFile.cpp:336
 #, c-format
@@ -5191,7 +5189,7 @@ msgid "disabled"
 msgstr "disattivato"
 
 #: src/PrefsUnifiedDlg.cpp:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
 msgstr "Esegui comando se si verifica l'evento '%s'"
 
@@ -6186,9 +6184,9 @@ msgid "Never"
 msgstr "Mai"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "Il programma `%s' con pid `%d' e' terminato uscendo con stato `%d'."
+msgstr "Il programma `%s' con pid `%d' e' terminato con stato `%d'."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
