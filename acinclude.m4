@@ -439,7 +439,7 @@ AC_DEFUN([MULE_CHECK_BFD],
 
 	AC_MSG_CHECKING([for bfd])
 	result=no
-	for bfd_ldadd in "" "${LIBINTL}"; do
+	for bfd_ldadd in "" "${LIBINTL}" "-ldl" "-ldl ${LIBINTL}"; do
 		MULE_BACKUP([LIBS])
 		MULE_BACKUP([LDFLAGS])
 		MULE_PREPEND([LIBS], [-lbfd -liberty ${bfd_ldadd} ${ZLIB_LIBS}])
