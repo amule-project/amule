@@ -13,7 +13,7 @@ ed2k \- aMule ED2k Verweis\-Parser
 [\fB\-c\fP \fI<Pfad>\fP] [\fB\-t\fP \fI<Num>\fP]
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-l ]
-\fI<eD2k\-Verweis>\fP
+\fI<eD2k\-link>\fP
 
 .B_untranslated ed2k
 .RB_untranslated [ \-h ]
@@ -21,9 +21,8 @@ ed2k \- aMule ED2k Verweis\-Parser
 .B_untranslated ed2k
 .RB_untranslated [ \-v ]
 .SH BESCHREIBUNG
-Sendet den übergebenen \fI<eD2k_Verweis>\fP an aMule, d.h. schreibt ihn
-in Datei ~/.aMule/ED2KLinks, welche von aMule sekündlich auf neue Einträge
-geprüft wird.
+Sends the given \fI<eD2k\-link>\fP to aMule, i.e. writes it to the file
+~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
 .TP 
 \fB[ \-c\fP \fI<Pfad>\fP, \fB\-\-config\-dir\fP=\fI<Pfad>\fP \fB]\fP
 Liest die Konfiguration <Pfad> anstelle des Home.
@@ -45,7 +44,7 @@ Gibt eine kurze Nutzungsbeschreibung aus.
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Zeigt die derzeitige Versionsnummer an.
 .TP 
-\fB[ eD2k\-Link ]\fP
+\fB[ eD2k\-link ]\fP
 Fügt einen eD2k\-Verweis zur Downloadliste hinzu.
 .PP
 Der eD2k\-Verweis darf enthalten:
