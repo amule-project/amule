@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-13 07:42+0100\n"
-"PO-Revision-Date: 2011-01-23 12:37+0100\n"
+"PO-Revision-Date: 2011-01-23 17:48+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "Beende amuleweb-Instanz mit pid '%ld' ... "
 #: src/amule.cpp:261
 #, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Bringe amuleweb-Instanz mit pid '%ld' um ... "
+msgstr "Erzwinge Beenden der amuleweb-Instanz mit pid '%ld' ... "
 
 #: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
