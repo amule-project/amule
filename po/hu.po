@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-13 07:42+0100\n"
-"PO-Revision-Date: 2010-12-07 22:04+0100\n"
+"PO-Revision-Date: 2011-01-23 12:31+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,14 +48,14 @@ msgid "Now, exiting main app..."
 msgstr "Kilépés a fő alkalmazásból..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "amuleweb instancia (pid: '%ld') bezárása ... "
+msgstr "Az amuleweb instancia - melynek a pid-je '%ld' - bezárása ... "
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "amuleweb instancia (pid: '%ld') kivégzése ... "
+msgstr "Az amuleweb instancia - melynek a pid-je '%ld' - kivégzése ... "
 
 #: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
@@ -3825,7 +3825,6 @@ msgid "Change priority for new assigned files :"
 msgstr "Újonnan hozzárendelt fájlok prioritásának változtatása :"
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "Ne változzon"
 
@@ -4485,9 +4484,8 @@ msgid "Remove sources?"
 msgstr "Források eltávolítása?"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
-msgstr "HIBA: Részfájl létrehozása sikertelen)"
+msgstr "HIBA: Részfájl létrehozása sikertelen"
 
 #: src/PartFile.cpp:336
 #, c-format
@@ -5130,7 +5128,7 @@ msgid "disabled"
 msgstr "letiltva"
 
 #: src/PrefsUnifiedDlg.cpp:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
 msgstr "Parancs végrehajtása a(z) '%s' eseménynél"
 
@@ -6126,9 +6124,10 @@ msgid "Never"
 msgstr "Soha"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "A parancs `%s' (pid=%d) befejeződött `%d' állapotkóddal."
+msgstr ""
+"A '%s' parancs - melynek pid-je '%d' - befejeződési állapotkódja '%d' volt."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
