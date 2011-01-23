@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-13 07:42+0100\n"
-"PO-Revision-Date: 2010-12-11 22:38+0100\n"
+"PO-Revision-Date: 2011-01-23 12:37+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -54,14 +54,14 @@ msgid "Now, exiting main app..."
 msgstr "Beende nun Hauptanwendung ..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Beende amuleweb-Instanz mit pid '%ld' ..."
+msgstr "Beende amuleweb-Instanz mit pid '%ld' ... "
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Erzwinge Beenden der amuleweb-Instanz mit pid '%ld' ..."
+msgstr "Bringe amuleweb-Instanz mit pid '%ld' um ... "
 
 #: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
@@ -125,7 +125,7 @@ msgstr "Server-Liste herunterladen"
 #: src/amule.cpp:654
 #, c-format
 msgid "web server running on pid %d"
-msgstr "Webserver läuft mit PID %d"
+msgstr "Webserver läuft mit pid %d"
 
 #: src/amule.cpp:658
 msgid ""
@@ -1515,7 +1515,7 @@ msgstr "FEHLER: Konnte externen Mediaplayer nicht starten!Befehl: `%s'"
 #: src/DownloadQueue.cpp:103
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr "Speicher unfertige Datei %u von %u"
+msgstr "Speichere unfertige Datei %u von %u"
 
 #: src/DownloadQueue.cpp:106
 msgid "All PartFiles Saved."
@@ -3874,7 +3874,6 @@ msgid "Change priority for new assigned files :"
 msgstr "Priorität bei neu zugewiesenen Dateien ändern:"
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "Nicht ändern"
 
@@ -4544,7 +4543,6 @@ msgid "Remove sources?"
 msgstr "Quellen entfernen?"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
 msgstr "FEHLER: Erstellen der Part-Datei fehlgeschlagen"
 
@@ -5210,9 +5208,9 @@ msgid "disabled"
 msgstr "deaktiviert"
 
 #: src/PrefsUnifiedDlg.cpp:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
-msgstr "Führe Kommando aus aufgrund Ereignis '%s'"
+msgstr "Führe Kommando beim '%s' Ereignis aus"
 
 #: src/PrefsUnifiedDlg.cpp:1164
 msgid "Enable command execution on core"
@@ -6208,9 +6206,9 @@ msgid "Never"
 msgstr "Niemals"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "Befehl `%s' mit PID `%d' abgeschlossen mit Status-Code `%d'."
+msgstr "Befehl '%s' mit pid '%d' wurde mit Status-Code '%d' abgeschlossen."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
