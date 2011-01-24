@@ -332,8 +332,10 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 		count--;
 	}
 
-	if (found || increase) {
+	if (count > 0) {
 		s_globalPublishIPs[ip & 0xFFFFFF00] = count;
+	} else if (found) {
+		s_globalPublishIPs.erase(ip & 0xFFFFFF00);
 	} else {
 		wxFAIL;
 	}
