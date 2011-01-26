@@ -72,7 +72,7 @@ public:
 	CClientRef& operator = (const CClientRef& ref)
 	{
 #ifdef DEBUG_ZOMBIE_CLIENTS
-		m_from = ref.m_from;
+		m_from = wxT("assigned from ") + ref.m_from;
 		Link(ref.m_client, m_from); 
 #else
 		Link(ref.m_client); 
@@ -91,6 +91,9 @@ public:
 		CUpDownClient * c =	m_client;
 		m_client = other.m_client;
 		other.m_client = c;
+#ifdef DEBUG_ZOMBIE_CLIENTS
+		m_from.swap(other.m_from);
+#endif
 	}
 
 	void Link(CUpDownClient * client LINKED_FROM);
