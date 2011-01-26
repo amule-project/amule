@@ -44,7 +44,7 @@
 CClientRef::CClientRef(const CClientRef& ref)
 {
 	m_client = ref.m_client;
-	ASSIGN_MFROM(ref.m_from);
+	ASSIGN_MFROM(wxT("copy ctor of ") + ref.m_from);
 	if (m_client) {
 		m_client->Link(MFROM);
 	}
