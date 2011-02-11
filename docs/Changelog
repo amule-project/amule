@@ -167,6 +167,8 @@ Version 2.3.0 - The river knows.
 		* Bold lines in log window now for Windows too
 		* Allow setting of friend slot from client list control
 		* MANY fixes/implementations for amulegui
+		* Fix a small memory leak in Kademlia code
+		* Fix occasionally sending junk at end of packets
 
 	Vollstrecker:
 		* Unify copyright lines
