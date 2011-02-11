@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-13 07:42+0100\n"
+"POT-Creation-Date: 2011-02-11 12:39+0100\n"
 "PO-Revision-Date: 2010-10-13 13:02+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@mandriva.org>\n"
 "Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
@@ -518,12 +518,12 @@ msgid "Kad: Off"
 msgstr "Kad: Kapalı"
 
 #: src/amuleDlg.cpp:766 src/DownloadListCtrl.cpp:414
-#: src/DownloadListCtrl.cpp:644 src/FriendListCtrl.cpp:174
+#: src/DownloadListCtrl.cpp:645 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:809 src/muuli_wdr.cpp:873 src/muuli_wdr.cpp:947
 #: src/muuli_wdr.cpp:1013 src/muuli_wdr.cpp:2333 src/muuli_wdr.cpp:2435
 #: src/muuli_wdr.cpp:3151 src/ServerListCtrl.cpp:153
 #: src/ServerListCtrl.cpp:527 src/ServerListCtrl.cpp:546
-#: src/TransferWnd.cpp:380 src/utils/wxCas/src/wxcasprefs.cpp:294
+#: src/TransferWnd.cpp:394 src/utils/wxCas/src/wxcasprefs.cpp:294
 msgid "Cancel"
 msgstr "İptal"
 
@@ -608,7 +608,7 @@ msgstr "Aramalar"
 msgid "Searches Window"
 msgstr "Arama Penceresi"
 
-#: src/amuleDlg.cpp:1323 src/DownloadListCtrl.cpp:635 src/muuli_wdr.cpp:426
+#: src/amuleDlg.cpp:1323 src/DownloadListCtrl.cpp:636 src/muuli_wdr.cpp:426
 #: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:670
 msgid "Downloads"
 msgstr "İndirmeler"
@@ -734,7 +734,7 @@ msgstr "Bağlantı kesildi - Muhtemelen aMule sonlandırıldı."
 msgid "Ready"
 msgstr "Hazır"
 
-#: src/amule-remote-gui.cpp:587 src/TransferWnd.cpp:345
+#: src/amule-remote-gui.cpp:587 src/TransferWnd.cpp:359
 msgid "All"
 msgstr "Tümü"
 
@@ -749,12 +749,12 @@ msgstr "'%s' dizini '%s' sınıfı için oluşturulamadı. '%s' dizini kullanıl
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/DownloadListCtrl.cpp:1057 src/DownloadListCtrl.cpp:1070
-#: src/DownloadListCtrl.cpp:1081 src/ExternalConn.cpp:431
+#: src/DownloadListCtrl.cpp:1058 src/DownloadListCtrl.cpp:1071
+#: src/DownloadListCtrl.cpp:1082 src/ExternalConn.cpp:431
 #: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1047
 #: src/GenericClientListCtrl.cpp:1058 src/GenericClientListCtrl.cpp:1068
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:914 src/KnownFile.cpp:920
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2527 src/PartFile.cpp:2533
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:885
 msgid "Unknown"
 msgstr "Bilinmiyor"
@@ -855,8 +855,8 @@ msgstr "%s dosyası kaydedilirken hata: %s"
 msgid "Enter Captcha"
 msgstr "Captcha Gir"
 
-#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:685 src/muuli_wdr.cpp:244
-#: src/SearchListCtrl.cpp:585 src/TransferWnd.cpp:340
+#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:686 src/muuli_wdr.cpp:244
+#: src/SearchListCtrl.cpp:585 src/TransferWnd.cpp:354
 msgid "Category"
 msgstr "Sınıf"
 
@@ -991,7 +991,7 @@ msgid "Disconnected"
 msgstr "Bağlantı kesildi"
 
 #: src/ClientDetailDialog.cpp:155 src/ClientDetailDialog.cpp:159
-#: src/DownloadListCtrl.cpp:945 src/GenericClientListCtrl.cpp:876
+#: src/DownloadListCtrl.cpp:946 src/GenericClientListCtrl.cpp:876
 #: src/GenericClientListCtrl.cpp:883
 #, c-format
 msgid "%.1f kB/s"
@@ -1135,19 +1135,19 @@ msgstr "Oto (Yük)"
 msgid "Very low"
 msgstr "Çok düşük"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:638 src/muuli_wdr.cpp:2397
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2397
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "Düşük"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2398
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2398
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "Normal"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2399
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2399
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1179,7 +1179,7 @@ msgid "On Queue"
 msgstr "Sırada"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3723 src/TransferWnd.cpp:353
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:367
 msgid "Downloading"
 msgstr "Aktarılıyor"
 
@@ -1207,7 +1207,7 @@ msgstr "Kad.yoluyla bağlanıyor"
 msgid "Too many Kad connections"
 msgstr "Çok fazla Kad. bağlantısı"
 
-#: src/DataToText.cpp:73 src/TransferWnd.cpp:308
+#: src/DataToText.cpp:73 src/TransferWnd.cpp:322
 msgid "Banned"
 msgstr "Engellendi"
 
@@ -1265,7 +1265,7 @@ msgid "Search Result"
 msgstr "Arama Sonucu"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:365
 msgid "Completed"
 msgstr "Tamamlandı"
 
@@ -1323,17 +1323,17 @@ msgid "Progress"
 msgstr "İşlem"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3769 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Kaynaklar"
 
-#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:643
+#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:644
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
 #: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:144
 msgid "Priority"
 msgstr "Öncelik"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3771
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3768
 #: src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "Durum"
@@ -1358,7 +1358,7 @@ msgstr "Seçili dosyayı silmek istediğinizden emin misiniz?"
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Seçili dosyaları silmek istediğinizden emin misiniz?"
 
-#: src/DownloadListCtrl.cpp:552 src/SharedFilesCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:553 src/SharedFilesCtrl.cpp:200
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -1367,97 +1367,97 @@ msgstr ""
 "Geri besleme: %s (%s)\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2400
+#: src/DownloadListCtrl.cpp:642 src/muuli_wdr.cpp:2400
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "Otomatik"
 
-#: src/DownloadListCtrl.cpp:645 src/TransferWnd.cpp:381
+#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:395
 msgid "&Stop"
 msgstr "&Dur"
 
-#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:382
+#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:396
 msgid "&Pause"
 msgstr "&Durakla"
 
-#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:383
+#: src/DownloadListCtrl.cpp:648 src/TransferWnd.cpp:397
 msgid "&Resume"
 msgstr "&Başlat"
 
-#: src/DownloadListCtrl.cpp:648
+#: src/DownloadListCtrl.cpp:649
 msgid "C&lear completed"
 msgstr "Tamamlananları T&emizle"
 
-#: src/DownloadListCtrl.cpp:654
+#: src/DownloadListCtrl.cpp:655
 msgid "Swap every A4AF to this file now"
 msgstr "Tüm A4Afleri derhal bu dosyaya geçir"
 
-#: src/DownloadListCtrl.cpp:656
+#: src/DownloadListCtrl.cpp:657
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Tüm A4Afleri bu dosyaya geçir (Otomatik)"
 
-#: src/DownloadListCtrl.cpp:661
+#: src/DownloadListCtrl.cpp:662
 msgid "Swap every A4AF to any other file now"
 msgstr "Tüm A4Afleri derhal bir başka dosyaya geçir"
 
-#: src/DownloadListCtrl.cpp:664
+#: src/DownloadListCtrl.cpp:665
 msgid "Extended Options"
 msgstr "Genişletilmiş Seçenekler"
 
-#: src/DownloadListCtrl.cpp:669 src/DownloadListCtrl.cpp:729
+#: src/DownloadListCtrl.cpp:670 src/DownloadListCtrl.cpp:730
 msgid "Preview"
 msgstr "Ön İzleme"
 
-#: src/DownloadListCtrl.cpp:670
+#: src/DownloadListCtrl.cpp:671
 msgid "Show file &details"
 msgstr "Dosya &ayrıntılarını göster"
 
-#: src/DownloadListCtrl.cpp:671 src/muuli_wdr.cpp:780
+#: src/DownloadListCtrl.cpp:672 src/muuli_wdr.cpp:780
 msgid "Show all comments"
 msgstr "Tüm yorumları göster"
 
-#: src/DownloadListCtrl.cpp:676
+#: src/DownloadListCtrl.cpp:677
 msgid "Copy magnet URI to clipboard"
 msgstr "Magnet bağlantısını panoya kopyala"
 
-#: src/DownloadListCtrl.cpp:678 src/SharedFilesCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:679 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
 msgstr "eD2k bağlantısını panoya kopya&la"
 
-#: src/DownloadListCtrl.cpp:680 src/SharedFilesCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:681 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
 msgstr "Geri beslemeyi panoya kopyala"
 
-#: src/DownloadListCtrl.cpp:689
+#: src/DownloadListCtrl.cpp:690
 msgid "unassign"
 msgstr "Ekleme"
 
-#: src/DownloadListCtrl.cpp:696
+#: src/DownloadListCtrl.cpp:697
 msgid "Assign to category"
 msgstr "Sınıfa Ekle"
 
-#: src/DownloadListCtrl.cpp:732
+#: src/DownloadListCtrl.cpp:733
 msgid "&Open the file"
 msgstr "Dosyayı &Aç"
 
-#: src/DownloadListCtrl.cpp:793 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:684
 msgid "Enter new name for this file:"
 msgstr "Bu dosya için yeni bir isim girin:"
 
-#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:795 src/SharedFilesCtrl.cpp:685
 msgid "File rename"
 msgstr "Dosya yeniden adlandır"
 
-#: src/DownloadListCtrl.cpp:1068 src/DownloadListCtrl.cpp:1079
+#: src/DownloadListCtrl.cpp:1069 src/DownloadListCtrl.cpp:1080
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1249
+#: src/DownloadListCtrl.cpp:1250
 #, c-format
 msgid "Downloads (%i)"
 msgstr "İndirmeler (%i)"
 
-#: src/DownloadListCtrl.cpp:1393
+#: src/DownloadListCtrl.cpp:1394
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -1466,11 +1466,11 @@ msgstr ""
 "seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın. (öntanımlı "
 "mplayer)"
 
-#: src/DownloadListCtrl.cpp:1394
+#: src/DownloadListCtrl.cpp:1395
 msgid "File preview"
 msgstr "Dosya ön izlemesi"
 
-#: src/DownloadListCtrl.cpp:1442
+#: src/DownloadListCtrl.cpp:1443
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "Hata: Ortam oynatıcısını çalıştırma başarısız! Komut :  `%s'"
@@ -1517,45 +1517,45 @@ msgid_plural "Found %u part files"
 msgstr[0] "%u adet parça dosyası bulundu"
 msgstr[1] "%u adet parça dosyası bulundu"
 
-#: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1467
+#: src/DownloadQueue.cpp:241 src/DownloadQueue.cpp:1468
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr "Geçici dizininin dosya sistemi büyük dosyaları kullanamaz."
 
-#: src/DownloadQueue.cpp:243 src/DownloadQueue.cpp:1470
+#: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1471
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr "Gelen dizininin dosya sistemi büyük dosyaları kullanamaz."
 
-#: src/DownloadQueue.cpp:373
+#: src/DownloadQueue.cpp:374
 #, c-format
 msgid "Downloading %s"
 msgstr "Aktarılıyor %s"
 
-#: src/DownloadQueue.cpp:381
+#: src/DownloadQueue.cpp:382
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Zaten %s dosyasını indirmeye çalışıyorsunuz."
 
-#: src/DownloadQueue.cpp:393
+#: src/DownloadQueue.cpp:394
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Zaten %s dosyası var."
 
-#: src/DownloadQueue.cpp:398
+#: src/DownloadQueue.cpp:399
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "%s dosyasını indirmeyi zaten deniyorsunuz"
 
-#: src/DownloadQueue.cpp:1401
+#: src/DownloadQueue.cpp:1402
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Magnet bağlantısı eD2k' ya çevrilemez: %s"
 
-#: src/DownloadQueue.cpp:1409
+#: src/DownloadQueue.cpp:1410
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Bağlantı için bilinmeyen protokol: %s"
 
-#: src/DownloadQueue.cpp:1430
+#: src/DownloadQueue.cpp:1431
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Geçersiz eD2k bağlantısı! HATA: %s"
@@ -2358,30 +2358,30 @@ msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 "Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir:"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3701
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
 msgid "Hashing"
 msgstr "Adresleniyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3704
 msgid "Completing"
 msgstr "Tamamlanıyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3710
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3707
 msgid "Complete"
 msgstr "Tamamlandı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:355
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:369
 msgid "Paused"
 msgstr "Duraklatıldı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3716 src/TransferWnd.cpp:354
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:368
 msgid "Erroneous"
 msgstr "Hatalı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:352
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:366
 msgid "Waiting"
 msgstr "Bekliyor"
 
@@ -2740,17 +2740,17 @@ msgid "Archives"
 msgstr "Sıkıştırılmış Dosyalar"
 
 #: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:199 src/OtherFunctions.cpp:681
-#: src/TransferWnd.cpp:362
+#: src/TransferWnd.cpp:376
 msgid "Audio"
 msgstr "Ses"
 
 #: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:213 src/OtherFunctions.cpp:683
-#: src/TransferWnd.cpp:364
+#: src/TransferWnd.cpp:378
 msgid "CD-Images"
 msgstr "CD-İmajı"
 
 #: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:220 src/OtherFunctions.cpp:684
-#: src/TransferWnd.cpp:365
+#: src/TransferWnd.cpp:379
 msgid "Pictures"
 msgstr "Resim"
 
@@ -4364,27 +4364,27 @@ msgstr "Tümü"
 msgid "all others"
 msgstr "Diğerleri"
 
-#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:364
 msgid "Incomplete"
 msgstr "Tamamlanmamış"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3730 src/TransferWnd.cpp:356
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:370
 msgid "Stopped"
 msgstr "Durduruldu"
 
-#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:361
+#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:375
 msgid "Video"
 msgstr "Görüntü"
 
-#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:363
+#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:377
 msgid "Archive"
 msgstr "Sıkıştırılmış"
 
-#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:366
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:380
 msgid "Text"
 msgstr "Belge"
 
-#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:357
+#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:371
 msgid "Active"
 msgstr "Etkin"
 
@@ -4595,27 +4595,27 @@ msgstr "Tamamlanmış (%i) parçası %s içinde bulundu."
 msgid "Finished rehashing %s"
 msgstr "%s dosyasının yeniden adreslenmesi bitti"
 
-#: src/PartFile.cpp:2138
+#: src/PartFile.cpp:2135
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "%s tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
 
-#: src/PartFile.cpp:2175
+#: src/PartFile.cpp:2172
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Aktarım tamamlandı: %s"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2229
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Dosya siliniyor: %s"
 
-#: src/PartFile.cpp:2294
+#: src/PartFile.cpp:2291
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "UYARI: İndirlen parça adreslenemiyor - adresleme seti '%s' için eksik"
 
-#: src/PartFile.cpp:2299
+#: src/PartFile.cpp:2296
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4624,37 +4624,37 @@ msgstr ""
 "HATA: Aktarılan parça adreslenemiyor.- adres seti tamamlanmamış (%s). Bu hiç "
 "olmamalıydı"
 
-#: src/PartFile.cpp:2974
+#: src/PartFile.cpp:2971
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "UYARI: Yetersiz disk alanı! %s dosyası duraklatılıyor."
 
-#: src/PartFile.cpp:3044
+#: src/PartFile.cpp:3041
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "İndirilen %i parçası %s dosyasındaydı ve bozuk."
 
-#: src/PartFile.cpp:3096
+#: src/PartFile.cpp:3093
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen miktar: "
 "%s bayt"
 
-#: src/PartFile.cpp:3703
+#: src/PartFile.cpp:3700
 msgid "Allocating"
 msgstr "Ayrılıyor"
 
-#: src/PartFile.cpp:3719
+#: src/PartFile.cpp:3716
 msgid "Insufficient disk space"
 msgstr "Yetersiz disk alanı"
 
-#: src/PartFile.cpp:3769 src/SearchListCtrl.cpp:961
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:961
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "İndirildi"
 
-#: src/PartFile.cpp:4011
+#: src/PartFile.cpp:4008
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "HATA: Parça dosyası '%s' açılamıyor"
@@ -6664,33 +6664,33 @@ msgstr "UYARI: '%s' dosya adı geçersiz ve'%s'olarak yeniden adlandırıldı."
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "UYARI: '%s' dosyası zaten var ve '%s'olarak yeniden adlandırıldı."
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:206
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr ""
 "Bu sınıf içindeki bütün dosyaları iptal edip silmek istediğinizden emin "
 "misiniz?"
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:206
 msgid "Confirmation Required"
 msgstr "Onaylama Gerekiyor"
 
-#: src/TransferWnd.cpp:346
+#: src/TransferWnd.cpp:360
 msgid "All others"
 msgstr "Tüm Diğerleri"
 
-#: src/TransferWnd.cpp:368
+#: src/TransferWnd.cpp:382
 msgid "Select view filter"
 msgstr "Görünüm Süzgeci Seç"
 
-#: src/TransferWnd.cpp:371
+#: src/TransferWnd.cpp:385
 msgid "Add category"
 msgstr "Sınıf Ekle"
 
-#: src/TransferWnd.cpp:374
+#: src/TransferWnd.cpp:388
 msgid "Edit category"
 msgstr "Sınıfı Düzenle"
 
-#: src/TransferWnd.cpp:375
+#: src/TransferWnd.cpp:389
 msgid "Remove category"
 msgstr "Sınıfı Kaldır"
 

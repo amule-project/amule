@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-13 07:42+0100\n"
+"POT-Creation-Date: 2011-02-11 12:39+0100\n"
 "PO-Revision-Date: 2010-09-04 23:36+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -520,12 +520,12 @@ msgid "Kad: Off"
 msgstr "Kad：關閉"
 
 #: src/amuleDlg.cpp:766 src/DownloadListCtrl.cpp:414
-#: src/DownloadListCtrl.cpp:644 src/FriendListCtrl.cpp:174
+#: src/DownloadListCtrl.cpp:645 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:809 src/muuli_wdr.cpp:873 src/muuli_wdr.cpp:947
 #: src/muuli_wdr.cpp:1013 src/muuli_wdr.cpp:2333 src/muuli_wdr.cpp:2435
 #: src/muuli_wdr.cpp:3151 src/ServerListCtrl.cpp:153
 #: src/ServerListCtrl.cpp:527 src/ServerListCtrl.cpp:546
-#: src/TransferWnd.cpp:380 src/utils/wxCas/src/wxcasprefs.cpp:294
+#: src/TransferWnd.cpp:394 src/utils/wxCas/src/wxcasprefs.cpp:294
 msgid "Cancel"
 msgstr "取消"
 
@@ -610,7 +610,7 @@ msgstr "搜尋"
 msgid "Searches Window"
 msgstr "搜尋 視窗"
 
-#: src/amuleDlg.cpp:1323 src/DownloadListCtrl.cpp:635 src/muuli_wdr.cpp:426
+#: src/amuleDlg.cpp:1323 src/DownloadListCtrl.cpp:636 src/muuli_wdr.cpp:426
 #: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:670
 msgid "Downloads"
 msgstr "下載"
@@ -736,7 +736,7 @@ msgstr "已關閉連線 - aMule 可能已經被終止執行了。"
 msgid "Ready"
 msgstr "就緒"
 
-#: src/amule-remote-gui.cpp:587 src/TransferWnd.cpp:345
+#: src/amule-remote-gui.cpp:587 src/TransferWnd.cpp:359
 msgid "All"
 msgstr "全部"
 
@@ -751,12 +751,12 @@ msgstr "無法建立 %s 目錄 ( %s 分類用)，繼續使用 %s 目錄。"
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/DownloadListCtrl.cpp:1057 src/DownloadListCtrl.cpp:1070
-#: src/DownloadListCtrl.cpp:1081 src/ExternalConn.cpp:431
+#: src/DownloadListCtrl.cpp:1058 src/DownloadListCtrl.cpp:1071
+#: src/DownloadListCtrl.cpp:1082 src/ExternalConn.cpp:431
 #: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1047
 #: src/GenericClientListCtrl.cpp:1058 src/GenericClientListCtrl.cpp:1068
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:914 src/KnownFile.cpp:920
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2527 src/PartFile.cpp:2533
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
 #: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:885
 msgid "Unknown"
 msgstr "不明"
@@ -849,8 +849,8 @@ msgstr "儲存 %s 時發生錯誤：%s"
 msgid "Enter Captcha"
 msgstr "輸入圖形驗證碼"
 
-#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:685 src/muuli_wdr.cpp:244
-#: src/SearchListCtrl.cpp:585 src/TransferWnd.cpp:340
+#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:686 src/muuli_wdr.cpp:244
+#: src/SearchListCtrl.cpp:585 src/TransferWnd.cpp:354
 msgid "Category"
 msgstr "分類"
 
@@ -982,7 +982,7 @@ msgid "Disconnected"
 msgstr "已中斷連線"
 
 #: src/ClientDetailDialog.cpp:155 src/ClientDetailDialog.cpp:159
-#: src/DownloadListCtrl.cpp:945 src/GenericClientListCtrl.cpp:876
+#: src/DownloadListCtrl.cpp:946 src/GenericClientListCtrl.cpp:876
 #: src/GenericClientListCtrl.cpp:883
 #, c-format
 msgid "%.1f kB/s"
@@ -1119,19 +1119,19 @@ msgstr "自動 [高]"
 msgid "Very low"
 msgstr "極低"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:638 src/muuli_wdr.cpp:2397
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2397
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "低"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2398
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2398
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "普通"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2399
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2399
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1163,7 +1163,7 @@ msgid "On Queue"
 msgstr "等候中"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3723 src/TransferWnd.cpp:353
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:367
 msgid "Downloading"
 msgstr "正在下載"
 
@@ -1191,7 +1191,7 @@ msgstr "正在用 Kad 連線"
 msgid "Too many Kad connections"
 msgstr "Kad 連線數過多"
 
-#: src/DataToText.cpp:73 src/TransferWnd.cpp:308
+#: src/DataToText.cpp:73 src/TransferWnd.cpp:322
 msgid "Banned"
 msgstr "已封鎖"
 
@@ -1249,7 +1249,7 @@ msgid "Search Result"
 msgstr "搜尋結果"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:365
 msgid "Completed"
 msgstr "已完成"
 
@@ -1307,17 +1307,17 @@ msgid "Progress"
 msgstr "進度"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3769 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "來源"
 
-#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:643
+#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:644
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
 #: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:144
 msgid "Priority"
 msgstr "優先等級"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3771
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3768
 #: src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "狀態"
@@ -1342,7 +1342,7 @@ msgstr "您確定要刪除這個檔案嗎？"
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "您確定要刪除這些檔案嗎？"
 
-#: src/DownloadListCtrl.cpp:552 src/SharedFilesCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:553 src/SharedFilesCtrl.cpp:200
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -1351,97 +1351,97 @@ msgstr ""
 "%s (%s) 回覆訊息\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2400
+#: src/DownloadListCtrl.cpp:642 src/muuli_wdr.cpp:2400
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "自動"
 
-#: src/DownloadListCtrl.cpp:645 src/TransferWnd.cpp:381
+#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:395
 msgid "&Stop"
 msgstr "停止(&S)"
 
-#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:382
+#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:396
 msgid "&Pause"
 msgstr "暫停(&P)"
 
-#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:383
+#: src/DownloadListCtrl.cpp:648 src/TransferWnd.cpp:397
 msgid "&Resume"
 msgstr "續傳(&R)"
 
-#: src/DownloadListCtrl.cpp:648
+#: src/DownloadListCtrl.cpp:649
 msgid "C&lear completed"
 msgstr "清除已傳完成的(&l)"
 
-#: src/DownloadListCtrl.cpp:654
+#: src/DownloadListCtrl.cpp:655
 msgid "Swap every A4AF to this file now"
 msgstr "立即轉移所有 A4AF 到這個檔案"
 
-#: src/DownloadListCtrl.cpp:656
+#: src/DownloadListCtrl.cpp:657
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "自動轉移所有 A4AF 到這個檔案"
 
-#: src/DownloadListCtrl.cpp:661
+#: src/DownloadListCtrl.cpp:662
 msgid "Swap every A4AF to any other file now"
 msgstr "立即轉移所有 A4AF 到其它檔案"
 
-#: src/DownloadListCtrl.cpp:664
+#: src/DownloadListCtrl.cpp:665
 msgid "Extended Options"
 msgstr "擴充選項"
 
-#: src/DownloadListCtrl.cpp:669 src/DownloadListCtrl.cpp:729
+#: src/DownloadListCtrl.cpp:670 src/DownloadListCtrl.cpp:730
 msgid "Preview"
 msgstr "預覽"
 
-#: src/DownloadListCtrl.cpp:670
+#: src/DownloadListCtrl.cpp:671
 msgid "Show file &details"
 msgstr "顯示檔案詳細資訊(&D)"
 
-#: src/DownloadListCtrl.cpp:671 src/muuli_wdr.cpp:780
+#: src/DownloadListCtrl.cpp:672 src/muuli_wdr.cpp:780
 msgid "Show all comments"
 msgstr "顯示所有註解"
 
-#: src/DownloadListCtrl.cpp:676
+#: src/DownloadListCtrl.cpp:677
 msgid "Copy magnet URI to clipboard"
 msgstr "複製 magnet 網址到剪貼簿"
 
-#: src/DownloadListCtrl.cpp:678 src/SharedFilesCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:679 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
 msgstr "複製 eD2k 連結到剪貼簿(&L)"
 
-#: src/DownloadListCtrl.cpp:680 src/SharedFilesCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:681 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
 msgstr "複製傳輸狀況到剪貼簿"
 
-#: src/DownloadListCtrl.cpp:689
+#: src/DownloadListCtrl.cpp:690
 msgid "unassign"
 msgstr "取消"
 
-#: src/DownloadListCtrl.cpp:696
+#: src/DownloadListCtrl.cpp:697
 msgid "Assign to category"
 msgstr "分類"
 
-#: src/DownloadListCtrl.cpp:732
+#: src/DownloadListCtrl.cpp:733
 msgid "&Open the file"
 msgstr "開啟檔案(&O)"
 
-#: src/DownloadListCtrl.cpp:793 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:684
 msgid "Enter new name for this file:"
 msgstr "請輸入新檔案名稱："
 
-#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:795 src/SharedFilesCtrl.cpp:685
 msgid "File rename"
 msgstr "更改檔名"
 
-#: src/DownloadListCtrl.cpp:1068 src/DownloadListCtrl.cpp:1079
+#: src/DownloadListCtrl.cpp:1069 src/DownloadListCtrl.cpp:1080
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1249
+#: src/DownloadListCtrl.cpp:1250
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下載 (%i)"
 
-#: src/DownloadListCtrl.cpp:1393
+#: src/DownloadListCtrl.cpp:1394
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -1449,11 +1449,11 @@ msgstr ""
 "請在偏好設定中設定影片播放器 (預設為 mplayer)，\n"
 "以避免此警告訊息繼續出現。"
 
-#: src/DownloadListCtrl.cpp:1394
+#: src/DownloadListCtrl.cpp:1395
 msgid "File preview"
 msgstr "檔案預覽"
 
-#: src/DownloadListCtrl.cpp:1442
+#: src/DownloadListCtrl.cpp:1443
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "錯誤：無法執行媒體播放器！指令：「 %s 」"
@@ -1499,45 +1499,45 @@ msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "找到 %u 個暫存檔"
 
-#: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1467
+#: src/DownloadQueue.cpp:241 src/DownloadQueue.cpp:1468
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr "設定存放暫存檔的目錄，檔案系統不支援大容量檔案。"
 
-#: src/DownloadQueue.cpp:243 src/DownloadQueue.cpp:1470
+#: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1471
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr "設定存放新進檔案的目錄，檔案系統不支援大容量檔案。"
 
-#: src/DownloadQueue.cpp:373
+#: src/DownloadQueue.cpp:374
 #, c-format
 msgid "Downloading %s"
 msgstr "下載 %s"
 
-#: src/DownloadQueue.cpp:381
+#: src/DownloadQueue.cpp:382
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "您已經在下載檔案 %s 了"
 
-#: src/DownloadQueue.cpp:393
+#: src/DownloadQueue.cpp:394
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "您已經有檔案 %s"
 
-#: src/DownloadQueue.cpp:398
+#: src/DownloadQueue.cpp:399
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "您已經在下載檔案 %s 了"
 
-#: src/DownloadQueue.cpp:1401
+#: src/DownloadQueue.cpp:1402
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "無法將 magnet 連結轉換為 eD2k: %s"
 
-#: src/DownloadQueue.cpp:1409
+#: src/DownloadQueue.cpp:1410
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "有不明協定的連結：%s"
 
-#: src/DownloadQueue.cpp:1430
+#: src/DownloadQueue.cpp:1431
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "無效的 eD2k 連結！錯誤：%s "
@@ -2317,30 +2317,30 @@ msgstr "無法載入已知檔案清單內的項目，檔案可能有損壞"
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr "已知檔案清單內有無效的項目，檔案可能有損壞："
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3701
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
 msgid "Hashing"
 msgstr "正在計算 hash 值"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3704
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3710
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3707
 msgid "Complete"
 msgstr "完成"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:355
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:369
 msgid "Paused"
 msgstr "已暫停"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3716 src/TransferWnd.cpp:354
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:368
 msgid "Erroneous"
 msgstr "錯誤的"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3725 src/TransferWnd.cpp:352
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:366
 msgid "Waiting"
 msgstr "正在等候"
 
@@ -2692,17 +2692,17 @@ msgid "Archives"
 msgstr "壓縮檔"
 
 #: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:199 src/OtherFunctions.cpp:681
-#: src/TransferWnd.cpp:362
+#: src/TransferWnd.cpp:376
 msgid "Audio"
 msgstr "音樂"
 
 #: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:213 src/OtherFunctions.cpp:683
-#: src/TransferWnd.cpp:364
+#: src/TransferWnd.cpp:378
 msgid "CD-Images"
 msgstr "光碟映像"
 
 #: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:220 src/OtherFunctions.cpp:684
-#: src/TransferWnd.cpp:365
+#: src/TransferWnd.cpp:379
 msgid "Pictures"
 msgstr "圖片"
 
@@ -4279,27 +4279,27 @@ msgstr "全部"
 msgid "all others"
 msgstr "其它"
 
-#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:350
+#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:364
 msgid "Incomplete"
 msgstr "不完整"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3730 src/TransferWnd.cpp:356
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:370
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:361
+#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:375
 msgid "Video"
 msgstr "影片"
 
-#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:363
+#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:377
 msgid "Archive"
 msgstr "壓縮檔"
 
-#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:366
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:380
 msgid "Text"
 msgstr "文件"
 
-#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:357
+#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:371
 msgid "Active"
 msgstr "啟動"
 
@@ -4501,27 +4501,27 @@ msgstr "找到已完成的暫存檔 %i 在 %s"
 msgid "Finished rehashing %s"
 msgstr "已重新計算完成 %s 的 hash 值"
 
-#: src/PartFile.cpp:2138
+#: src/PartFile.cpp:2135
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "計算 %s 時發生意外的錯誤，暫停檔案處理"
 
-#: src/PartFile.cpp:2175
+#: src/PartFile.cpp:2172
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "下載完成：%s"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2229
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正刪除檔案：%s "
 
-#: src/PartFile.cpp:2294
+#: src/PartFile.cpp:2291
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：無法計算已下載部份的 hash 值 - %s 的 hash 值組不完整"
 
-#: src/PartFile.cpp:2299
+#: src/PartFile.cpp:2296
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4529,35 +4529,35 @@ msgid ""
 msgstr ""
 "錯誤：無法計算已下載部分的 hash 值 - %s 的 hash 值組不完整，此狀況不該發生"
 
-#: src/PartFile.cpp:2974
+#: src/PartFile.cpp:2971
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：磁碟可用空間不足！暫停檔案：%s "
 
-#: src/PartFile.cpp:3044
+#: src/PartFile.cpp:3041
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "已下載的部份 %i 已損壞 (檔案：%s)"
 
-#: src/PartFile.cpp:3096
+#: src/PartFile.cpp:3093
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：已修復損壞的部份 %i (%s) -> 救回 %s"
 
-#: src/PartFile.cpp:3703
+#: src/PartFile.cpp:3700
 msgid "Allocating"
 msgstr "正在分配"
 
-#: src/PartFile.cpp:3719
+#: src/PartFile.cpp:3716
 msgid "Insufficient disk space"
 msgstr "磁碟空間不足"
 
-#: src/PartFile.cpp:3769 src/SearchListCtrl.cpp:961
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:961
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "已下載"
 
-#: src/PartFile.cpp:4011
+#: src/PartFile.cpp:4008
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "錯誤：無法開啟暫存檔 %s"
@@ -6532,31 +6532,31 @@ msgstr "警告：檔名 %s 無效，已重新命名爲 %s 。"
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "警告：檔案 %s 已經存在，新檔案重新命名爲 %s 。"
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:206
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr "您確定要移除此分類中的所有檔案嗎？"
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:206
 msgid "Confirmation Required"
 msgstr "需要確認"
 
-#: src/TransferWnd.cpp:346
+#: src/TransferWnd.cpp:360
 msgid "All others"
 msgstr "其它"
 
-#: src/TransferWnd.cpp:368
+#: src/TransferWnd.cpp:382
 msgid "Select view filter"
 msgstr "選取顯示過濾"
 
-#: src/TransferWnd.cpp:371
+#: src/TransferWnd.cpp:385
 msgid "Add category"
 msgstr "加入分類"
 
-#: src/TransferWnd.cpp:374
+#: src/TransferWnd.cpp:388
 msgid "Edit category"
 msgstr "編輯分類"
 
-#: src/TransferWnd.cpp:375
+#: src/TransferWnd.cpp:389
 msgid "Remove category"
 msgstr "移除分類"
 
