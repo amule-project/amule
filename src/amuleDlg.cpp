@@ -620,7 +620,9 @@ void CamuleDlg::AddLogLine(const wxString& line)
 		wxFont font = style.GetFont();
 		font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
 		style.SetFont(font);
+#if wxCHECK_VERSION(2, 9, 0)
 		style.SetFontSize(8);
+#endif
 		ct->SetDefaultStyle(style);
 		ct->AppendText(bufferline);
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
