@@ -590,10 +590,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\PartFileConvert.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\PCH.cpp"
 				>
 				<FileConfiguration

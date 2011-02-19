@@ -238,7 +238,6 @@
     <ClCompile Include="..\..\..\..\src\OtherFunctions.cpp" />
     <ClCompile Include="..\..\..\..\src\Packet.cpp" />
     <ClCompile Include="..\..\..\..\src\PartFile.cpp" />
-    <ClCompile Include="..\..\..\..\src\PartFileConvertDlg.cpp" />
     <ClCompile Include="..\..\..\..\src\SharedFilePeersListCtrl.cpp" />
     <ClCompile Include="..\..\..\..\src\SourceListCtrl.cpp" />
     <ClCompile Include="..\PCH.cpp">
@@ -337,7 +336,6 @@
     <ClInclude Include="..\..\..\..\src\OtherFunctions.h" />
     <ClInclude Include="..\..\..\..\src\OtherStructs.h" />
     <ClInclude Include="..\..\..\..\src\PartFile.h" />
-    <ClInclude Include="..\..\..\..\src\PartFileConvertDlg.h" />
     <ClInclude Include="..\..\..\..\src\SharedFilePeersListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\SourceListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\UpDownClientEC.h" />

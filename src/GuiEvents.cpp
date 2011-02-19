@@ -24,11 +24,13 @@
 #	include "DownloadListCtrl.h"
 #	include "muuli_wdr.h"
 #	include "SharedFilePeersListCtrl.h"
-#	include "PartFileConvertDlg.h"
+#	ifndef CLIENT_GUI
+#		include "PartFileConvertDlg.h"
+#		include "PartFileConvert.h"
+#	endif
 #endif
 
 #ifndef CLIENT_GUI
-#	include "PartFileConvert.h"
 #	include "UploadQueue.h"
 #endif
 
@@ -120,55 +122,6 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 		CastByID(IDC_SERVERLISTURL, NULL, wxTextCtrl)->SetValue(url);
-#endif
-	}
-
-	void ConvertUpdateProgress(float NOT_ON_DAEMON(percent), wxString NOT_ON_DAEMON(text), wxString NOT_ON_DAEMON(header))
-	{
-#ifndef AMULE_DAEMON
-		CPartFileConvertDlg::UpdateProgress(percent, text, header);
-#endif
-	}
-
-	void ConvertUpdateJobInfo(ConvertInfo NOT_ON_DAEMON(info))
-	{
-#ifndef AMULE_DAEMON
-		CPartFileConvertDlg::UpdateJobInfo(info);
-#endif
-	}
-
-	void ConvertRemoveJobInfo(unsigned NOT_ON_DAEMON(id))
-	{
-#ifndef AMULE_DAEMON
-		CPartFileConvertDlg::RemoveJobInfo(id);
-#endif
-	}
-
-	void ConvertClearInfos()
-	{
-#ifndef AMULE_DAEMON
-		CPartFileConvertDlg::ClearInfo();
-#endif
-	}
-
-	void ConvertRemoveJob(unsigned NOT_ON_REMOTEGUI(id))
-	{
-#ifndef CLIENT_GUI
-		CPartFileConvert::RemoveJob(id);
-#endif
-	}
-
-	void ConvertRetryJob(unsigned NOT_ON_REMOTEGUI(id))
-	{
-#ifndef CLIENT_GUI
-		CPartFileConvert::RetryJob(id);
-#endif
-	}
-
-	void ConvertReaddAllJobs()
-	{
-#ifndef CLIENT_GUI
-		CPartFileConvert::ReaddAllJobs();
 #endif
 	}
 
@@ -753,6 +706,43 @@ namespace MuleNotify
 		client.Safe_Delete();
 	}
 
-#endif	// #ifdef CLIENT_GUI
+#ifndef AMULE_DAEMON
+	void ConvertUpdateProgress(float percent, wxString text, wxString header)
+	{
+		CPartFileConvertDlg::UpdateProgress(percent, text, header);
+	}
+
+	void ConvertUpdateJobInfo(ConvertInfo info)
+	{
+		CPartFileConvertDlg::UpdateJobInfo(info);
+	}
+
+	void ConvertRemoveJobInfo(unsigned id)
+	{
+		CPartFileConvertDlg::RemoveJobInfo(id);
+	}
+
+	void ConvertClearInfos()
+	{
+		CPartFileConvertDlg::ClearInfo();
+	}
+
+	void ConvertRemoveJob(unsigned id)
+	{
+		CPartFileConvert::RemoveJob(id);
+	}
+
+	void ConvertRetryJob(unsigned id)
+	{
+		CPartFileConvert::RetryJob(id);
+	}
+
+	void ConvertReaddAllJobs()
+	{
+		CPartFileConvert::ReaddAllJobs();
+	}
+#endif	// #ifndef AMULE_DAEMON
+
+#endif	// #ifndef CLIENT_GUI
 }
 // File_checked_for_headers
