@@ -73,9 +73,7 @@ static const char * convert_xpm[] = {
 // CPartFileConvertDlg dialog
 
 BEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
-#ifndef CLIENT_GUI
 	EVT_BUTTON(IDC_ADDITEM,		CPartFileConvertDlg::OnAddFolder)
-#endif
 	EVT_BUTTON(IDC_RETRY,		CPartFileConvertDlg::RetrySel)
 	EVT_BUTTON(IDC_CONVREMOVE,	CPartFileConvertDlg::RemoveSel)
 	EVT_BUTTON(wxID_CANCEL,		CPartFileConvertDlg::OnCloseButton)
@@ -96,11 +94,6 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	m_joblist->InsertColumn(3, _("Filehash"),	wxLIST_FORMAT_LEFT, 100);
 
 	SetIcon(wxICON(convert));
-
-#ifdef CLIENT_GUI
-	// There's no remote directory browser (yet)
-	CastChild(IDC_ADDITEM, wxButton)->Enable(false);
-#endif
 }
 
 // Static methods
@@ -194,7 +187,6 @@ void CPartFileConvertDlg::RemoveJobInfo(unsigned id)
 
 // CPartFileConvertDlg message handlers
 
-#ifndef CLIENT_GUI
 void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 {
 	// TODO: use MuleRemoteDirSelector
@@ -212,7 +204,6 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 		}
 	}
 }
-#endif
 
 void CPartFileConvertDlg::OnClose(wxCloseEvent& WXUNUSED(event))
 {

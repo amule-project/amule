@@ -156,9 +156,6 @@
     <ClCompile Include="..\..\..\..\src\PartFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\PartFileConvert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\PlatformSpecific.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -72,7 +72,9 @@
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "TerminationProcess.h"	// Needed for CTerminationProcess
 #include "TransferWnd.h"	// Needed for CTransferWnd
+#ifndef CLIENT_GUI
 #include "PartFileConvertDlg.h"
+#endif
 #include "IPFilter.h"
 
 #ifndef __WXMSW__
@@ -528,9 +530,11 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 
 void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
 {
+#ifndef CLIENT_GUI
 	if (m_is_safe_state) {
 		CPartFileConvertDlg::ShowGUI(NULL);
 	}
+#endif
 }
 
 
@@ -1329,7 +1333,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->AddTool(ID_BUTTONSTATISTICS, _("Statistics"), m_tblist.GetBitmap(8), wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window"));
 	wndToolbar->AddSeparator();
 	wndToolbar->AddTool(ID_BUTTONNEWPREFERENCES, _("Preferences"), m_tblist.GetBitmap(9), wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window"));
+#ifndef CLIENT_GUI
 	wndToolbar->AddTool(ID_BUTTONIMPORT, _("Import"), m_tblist.GetBitmap(10), wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool"));
+#endif
 	wndToolbar->AddTool(ID_ABOUT, _("About"), m_tblist.GetBitmap(11), wxNullBitmap, wxITEM_NORMAL, _("About/Help"));
 	
 	wndToolbar->ToggleTool(ID_BUTTONDOWNLOADS, true);

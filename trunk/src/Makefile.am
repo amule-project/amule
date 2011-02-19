@@ -146,7 +146,6 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
-	PartFileConvert.cpp \
 	SearchFile.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
@@ -185,7 +184,6 @@ gui_sources = \
 	FileDetailDialog.cpp \
 	KadDlg.cpp \
 	OScopeCtrl.cpp \
-	PartFileConvertDlg.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
 	ServerWnd.cpp \
@@ -254,6 +252,8 @@ amulegui_SOURCES = \
 amule_SOURCES = \
 	CaptchaDialog.cpp \
 	CaptchaGenerator.cpp \
+	PartFileConvert.cpp \
+	PartFileConvertDlg.cpp \
 	$(core_sources) \
 	$(gui_sources) \
 	$(ec_sources) \
