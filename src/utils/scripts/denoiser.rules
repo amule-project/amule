@@ -83,14 +83,18 @@ MAKEFLAGS=-w -s
 
 
 # delete comments
-/^#/ {
-	d
-}
+/^#/ d
 
 # delete empty lines
-/^[ 	]*$/ {
-	d
-}
+/^[ 	]*$/ d
+
+
+# take precedence over automake's silent rules feature
+#if levels 2,3,4
+/^AM_V_[A-Za-z]\+[ 	]*=/ d
+/^am__v_[A-Za-z]\+_0\?[ 	]*=/ d
+/^AM_DEFAULT_VERBOSITY[ 	]*=/ d
+#endif
 
 
 # rewrite compiler flags
@@ -157,6 +161,9 @@ MAKEFLAGS=-w -s
 	# if the current line is empty or not anymore a command, parse as usual
 	/^$/ b 0
 	/^[^	]/ b 0
+
+	# get rid of the last pieces of automake's silent rules feature
+	s/^	$(AM_V_[A-Za-z]\+)/	/
 
 	x
 	/^\n/ b 5
