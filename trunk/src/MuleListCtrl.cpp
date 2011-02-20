@@ -321,16 +321,19 @@ long CMuleListCtrl::GetInsertPos(wxUIntPtr data)
 	int Min = 0;
 	int Max = GetItemCount();
 
-	// Only do this if there are any items and a sorter function
+	// Only do this if there are any items and a sorter function.
+	// Otherwise insert at end.
 	if (Max && m_sort_func) {
-		// This search will narrow down the best place to position the new
-		// item. The result will be the item after that position, which is
-		// the format expected by the insertion function.
+		// This search will find the place to position the new item
+		// so it matches current sorting.
+		// The result will be the position the new item will have
+		// after insertion, which is the format expected by the InsertItem function.
+		// If the item equals another item it will be inserted after it.
 		do {
 			int cur_pos = ( Max - Min ) / 2 + Min;
 			int cmp = CompareItems(data, GetItemData(cur_pos));
 			
-			// Value is lesser than the one at the current pos
+			// Value is less than the one at the current pos
 			if ( cmp < 0 ) {
 				Max = cur_pos;
 			} else {
@@ -341,7 +344,6 @@ long CMuleListCtrl::GetInsertPos(wxUIntPtr data)
 
 	return Max;
 }
-
 
 
 int CMuleListCtrl::CompareItems(wxUIntPtr item1, wxUIntPtr item2)
