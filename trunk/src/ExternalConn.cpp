@@ -1021,7 +1021,7 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 		CSearchFile* sf = *it++;
 		CValueMap &valuemap = tagmap.GetValueMap(sf->ECID());
 		response->AddTag(CEC_SearchFile_Tag(sf, EC_DETAIL_INC_UPDATE, &valuemap));
-		/* Here we could add the children, if amulegui were able to merge them.
+		// Add the children
 		if (sf->HasChildren()) {
 			const CSearchResultList& children = sf->GetChildren();
 			for (size_t i = 0; i < children.size(); ++i) {
@@ -1030,7 +1030,6 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 				response->AddTag(CEC_SearchFile_Tag(sfc, EC_DETAIL_INC_UPDATE, &valuemap1));
 			}
 		}
-		*/
 	}
 	return response;
 }

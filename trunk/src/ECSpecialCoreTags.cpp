@@ -355,6 +355,9 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()), valuemap);
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()), valuemap);
 	AddTag(EC_TAG_PARTFILE_HASH, file->GetFileHash(), valuemap);
+	if (file->GetParent()) {
+		AddTag(EC_TAG_SEARCH_PARENT, file->GetParent()->ECID(), valuemap);
+	}
 }
 
 //

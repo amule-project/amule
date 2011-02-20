@@ -291,6 +291,7 @@ enum ECTagNames {
 		EC_TAG_SEARCH_EXTENSION                   = 0x0706,
 		EC_TAG_SEARCH_AVAILABILITY                = 0x0707,
 		EC_TAG_SEARCH_STATUS                      = 0x0708,
+		EC_TAG_SEARCH_PARENT                      = 0x0709,
 	EC_TAG_FRIEND                             = 0x0800,
 		EC_TAG_FRIEND_NAME                        = 0x0801,
 		EC_TAG_FRIEND_HASH                        = 0x0802,
@@ -734,6 +735,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0706: return wxT("EC_TAG_SEARCH_EXTENSION");
 		case 0x0707: return wxT("EC_TAG_SEARCH_AVAILABILITY");
 		case 0x0708: return wxT("EC_TAG_SEARCH_STATUS");
+		case 0x0709: return wxT("EC_TAG_SEARCH_PARENT");
 		case 0x0800: return wxT("EC_TAG_FRIEND");
 		case 0x0801: return wxT("EC_TAG_FRIEND_NAME");
 		case 0x0802: return wxT("EC_TAG_FRIEND_HASH");
