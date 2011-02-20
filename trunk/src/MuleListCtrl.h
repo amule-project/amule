@@ -298,7 +298,7 @@ protected:
 	 * Note that attempting to sort a column in an unsupported order
 	 * is an illegal operation.
 	 */
-	void SetSorting(unsigned column, unsigned order);
+	virtual void SetSorting(unsigned column, unsigned order);
 
 	/**
 	 * Returns true if the item is sorted compared to its neighbours.

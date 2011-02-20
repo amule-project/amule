@@ -156,6 +156,17 @@ protected:
 	/// Return old column order.
 	wxString GetOldColumnOrder() const;
 
+	/**
+	 * Set the sort column
+	 *
+	 * @param column The column with which the list should be sorted.
+	 * @param order The order in which to sort the column.
+	 *
+	 * Note that attempting to sort a column in an unsupported order
+	 * is an illegal operation.
+	 */
+	void SetSorting(unsigned column, unsigned order);
+
 protected:
 	typedef std::list<CSearchFile*> ResultList;
 

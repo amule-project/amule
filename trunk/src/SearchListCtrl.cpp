@@ -137,11 +137,12 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, wxT("Wrong search-id for result-list"));
 
 	const wxUIntPtr toshowdata = reinterpret_cast<wxUIntPtr>(toshow);
+	CSearchFile* parent = toshow->GetParent();
 
 	// Check if the result should be shown
 	if (FindItem(-1, toshowdata) != -1) {
 		return;
-	} else if (toshow->GetParent() && !toshow->GetParent()->ShowChildren()) {
+	} else if (parent && !parent->ShowChildren()) {
 		return;
 	} else if (!IsFiltered(toshow)) {
 		if (toshow->HasChildren() && toshow->ShowChildren()) {
@@ -167,13 +168,23 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	}
 
 	// Insert the item before the item found by the search
-	uint32 newid = InsertItem(GetInsertPos(toshowdata), toshow->GetFileName().GetPrintable());
+	long insertPos;
+	if (parent) {
+		insertPos = FindItem(-1, (wxUIntPtr)parent);
+		if (insertPos == -1) {
+			wxFAIL;
+			insertPos = GetItemCount();
+		} else {
+			insertPos++;
+		}
+	} else {
+		insertPos = GetInsertPos(toshowdata);
+	}
+	long newid = InsertItem(insertPos, toshow->GetFileName().GetPrintable());
 
 	// Sanity checks to ensure that results/children are properly positioned.
 #ifdef __WXDEBUG__
 	{
-		CSearchFile* parent = toshow->GetParent();
-
 		if (newid > 0) {
 			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);
 			wxASSERT(before);
@@ -537,6 +548,24 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	}
 
 	return modifier * result;
+}
+
+
+void CSearchListCtrl::SetSorting(unsigned column, unsigned order)
+{
+	Freeze();
+	// First collapse all parent items
+	// Backward order means our index won't be influenced by items getting collapsed.
+	for (int i = GetItemCount(); i--;) {
+		CSearchFile* file = ((CSearchFile*)GetItemData(i));
+		if (file->ShowChildren()) {
+			ShowChildren(file, false);
+		}
+	}
+
+	// Then do the sorting
+	CMuleListCtrl::SetSorting(column, order);
+	Thaw();
 }
 
 
