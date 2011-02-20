@@ -279,6 +279,7 @@ public final static short 	EC_TAG_SEARCH_FILE_TYPE                   = 0x0705;
 public final static short 	EC_TAG_SEARCH_EXTENSION                   = 0x0706;
 public final static short 	EC_TAG_SEARCH_AVAILABILITY                = 0x0707;
 public final static short 	EC_TAG_SEARCH_STATUS                      = 0x0708;
+public final static short 	EC_TAG_SEARCH_PARENT                      = 0x0709;
 public final static short EC_TAG_FRIEND                             = 0x0800;
 public final static short 	EC_TAG_FRIEND_NAME                        = 0x0801;
 public final static short 	EC_TAG_FRIEND_HASH                        = 0x0802;

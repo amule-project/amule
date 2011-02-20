@@ -1976,7 +1976,20 @@ m_kadPublishInfo(0)
 	SetFileSize(tag->SizeFull());
 	
 	m_searchID = theApp->searchlist->m_curr_search;
+	uint32 parentID = tag->ParentID();
+	if (parentID) {
+		CSearchFile * parent = theApp->searchlist->GetByID(parentID);
+		if (parent) {
+			parent->AddChild(this);
+		}
+	}
+}
 
+
+void CSearchFile::AddChild(CSearchFile* file)
+{
+	m_children.push_back(file);
+	file->m_parent = this;
 }
 
 

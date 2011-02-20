@@ -325,6 +325,7 @@ EC_TAG_SEARCHFILE                         0x0700
 	EC_TAG_SEARCH_EXTENSION                   0x0706
 	EC_TAG_SEARCH_AVAILABILITY                0x0707
 	EC_TAG_SEARCH_STATUS                      0x0708
+	EC_TAG_SEARCH_PARENT                      0x0709
 
 EC_TAG_FRIEND                             0x0800
 	EC_TAG_FRIEND_NAME                        0x0801

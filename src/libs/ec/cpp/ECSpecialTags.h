@@ -350,6 +350,7 @@ class CEC_SearchFile_Tag : public CECTag {
 
 		// template needs it
  		uint32		ID()	const { return GetInt(); }
+		uint32		ParentID()	const { return GetTagByNameSafe(EC_TAG_SEARCH_PARENT)->GetInt(); }
 
  		CMD4Hash	FileHash()	const { return GetTagByNameSafe(EC_TAG_PARTFILE_HASH)->GetMD4Data(); }
 		wxString	FileHashString() const { return FileHash().Encode(); }
