@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-11 12:39+0100\n"
-"PO-Revision-Date: 2010-09-04 23:36+0800\n"
+"PO-Revision-Date: 2011-02-22 17:05+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -63,14 +63,14 @@ msgid "Now, exiting main app..."
 msgstr "正在離開主程式..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
 msgstr "正在終止 pid %ld 的 amuleweb 執行緒..."
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "正在終止 pid %ld 的 amuleweb 執行緒..."
+msgstr "正在強行終止 pid %ld 的 amuleweb 執行緒..."
 
 #: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
@@ -2049,7 +2049,7 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:992
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
 msgstr "QR：%u (%i)"
 
@@ -2062,9 +2062,9 @@ msgid "Waiting for upload slot"
 msgstr "正在等待上傳位置"
 
 #: src/GenericClientListCtrl.cpp:1023
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "等候中"
+msgstr "QR：%u"
 
 #: src/GenericClientListCtrl.cpp:1026
 msgid "Uploading"
@@ -3402,7 +3402,7 @@ msgstr "同一分類檔案"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "依字母順序"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3572,7 +3572,7 @@ msgstr "伺服器連線更新間隔時間：停用"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "停用電腦的自動進入待命模式功能"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3612,7 +3612,7 @@ msgstr "垂直顯示工具列"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "顯示客戶端的國旗"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -3743,7 +3743,6 @@ msgid "Change priority for new assigned files :"
 msgstr "設定新加入的檔案優先等級為："
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "不要變更"
 
@@ -4160,29 +4159,24 @@ msgid "Active Uploads"
 msgstr "目前上傳數"
 
 #: src/muuli_wdr.cpp:3372
-#, fuzzy
 msgid "Percent of total files"
-msgstr "% (所有檔案)"
+msgstr "% (所有檔案中)"
 
 #: src/muuli_wdr.cpp:3419
-#, fuzzy
 msgid "All files"
-msgstr "所有分享的檔案"
+msgstr "所有檔案"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "Selected files"
-msgstr "選取顯示過濾"
+msgstr "選取的檔案"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Active uploads only"
-msgstr "目前上傳數"
+msgstr "僅限目前上傳中"
 
 #: src/muuli_wdr.cpp:3423
-#, fuzzy
 msgid "Show Clients for"
-msgstr "顯示客戶端"
+msgstr "顯示客戶端："
 
 #: src/muuli_wdr.cpp:3426
 msgid "Reload:"
@@ -4380,7 +4374,6 @@ msgid "Remove sources?"
 msgstr "刪除來源？"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
 msgstr "錯誤：無法建立暫存檔"
 
@@ -4854,19 +4847,16 @@ msgid "- UDP port changed.\n"
 msgstr "- UDP 埠已變更。\n"
 
 #: src/PrefsUnifiedDlg.cpp:576
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "已關閉外部連線。"
+msgstr "- 已變更外部連線埠設定。\n"
 
 #: src/PrefsUnifiedDlg.cpp:580
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "已接受新的外部連線"
+msgstr "- 已變更外部連線設定。\n"
 
 #: src/PrefsUnifiedDlg.cpp:584
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "已關閉外部連線。"
+msgstr "- 已變更外部連線介面設定。\n"
 
 #: src/PrefsUnifiedDlg.cpp:593
 msgid ""
@@ -5018,7 +5008,7 @@ msgid "disabled"
 msgstr "已停用"
 
 #: src/PrefsUnifiedDlg.cpp:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
 msgstr "發生 %s 事件時執行指令"
 
@@ -5135,7 +5125,7 @@ msgstr "連線時發生嚴重錯誤. 網路連線可能有問題"
 #: src/ServerConnect.cpp:350
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
-msgstr "已與 %s (%s:%i) 失去連斷"
+msgstr "已與 %s (%s:%i) 失去連線"
 
 #: src/ServerConnect.cpp:360
 #, c-format
@@ -5506,9 +5496,8 @@ msgid "Kademlia Status:"
 msgstr "Kad 狀態："
 
 #: src/ServerWnd.cpp:206
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "執行於 %s"
+msgstr "在區域網路模式下執行"
 
 #: src/ServerWnd.cpp:206
 msgid "Running"
@@ -5638,12 +5627,10 @@ msgid "Available Parts"
 msgstr "可取得的部份"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "上傳狀態"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "下載狀態"
 
@@ -5741,9 +5728,8 @@ msgid "Download Status"
 msgstr "下載狀態"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "檔案名稱"
+msgstr "遠端檔案名稱"
 
 #: src/Statistics.cpp:650
 #, c-format
@@ -5991,9 +5977,9 @@ msgid "Never"
 msgstr "無"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "指令「 %s 」(pid %d) 的傳回值爲「%d」。 "
+msgstr "指令「 %s 」(pid %d) 的傳回狀態值爲「%d」。 "
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
@@ -6137,12 +6123,11 @@ msgstr "搜尋結果：%i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "搜尋進度：%u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "顯示進度百分比"
+msgstr "沒有進行中的搜尋"
 
 #: src/TextClient.cpp:837
 #, c-format
