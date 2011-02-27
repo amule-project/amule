@@ -77,7 +77,7 @@ void CTestFailureException::PrintBT() const
 	for (; it != m_bt->snapshot.end(); ++it) {
 		indent += ' ';
 
-		Printf(indent + it->file + wxT(":%i -- ") + it->msg, it->line);
+		Print(indent + it->file + wxString::Format(wxT(":%i -- "), it->line) + it->msg);
 	}
 }
 

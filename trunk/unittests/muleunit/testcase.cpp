@@ -60,8 +60,7 @@ const wxString& TestCase::getName() const
 
 bool TestCase::run()
 {
-	Printf(wxT("\nRunning test-collection \"") + m_name + wxT("\" with %u test-cases:"),
-		m_tests.size());
+	Print(wxT("\nRunning test-collection \"") + m_name + wxString::Format(wxT("\" with %u test-cases:"), m_tests.size()));
 
 	bool failures = false;
 	
@@ -69,7 +68,7 @@ bool TestCase::run()
 	for (; it != m_tests.end(); ++it) {
 		Test* test = *it;
 		
-		Printf(wxT("\tTest \"") + test->getTestName() + wxT("\" "));
+		Print(wxT("\tTest \"") + test->getTestName() + wxT("\" "));
 
 		bool wasSetup = false;
 		try {
@@ -77,7 +76,7 @@ bool TestCase::run()
 			wasSetup = true;
 		} catch (const CTestFailureException& e) {
 			failures = true;
-			Printf(wxT("\t\tFailure in setUp:\n"));
+			Print(wxT("\t\tFailure in setUp:\n"));
 			e.PrintBT();
 		}
 
@@ -88,7 +87,7 @@ bool TestCase::run()
 				test->run();
 			} catch (const CTestFailureException& e) {
 				failures = true;
-				Printf(wxT("\t\tFailure running:"));
+				Print(wxT("\t\tFailure running:"));
 				e.PrintBT();
 			}
 		}
@@ -97,7 +96,7 @@ bool TestCase::run()
 			test->tearDown();
 		} catch (const CTestFailureException& e) {
 			failures = true;
-			Printf(wxT("\t\tFailure in tearDown:"));
+			Print(wxT("\t\tFailure in tearDown:"));
 			e.PrintBT();
 		}
 	}

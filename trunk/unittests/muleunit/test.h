@@ -48,15 +48,10 @@ inline size_t ArraySize(T(&)[N])
 }
 
 
-/** Printf for wide-char strings. */
-inline void Printf(const wxChar *pszFormat, ...)
+/** Print wide-char strings. */
+inline void Print(const wxString& str)
 {
-	va_list argptr;
-	va_start(argptr, pszFormat);
-
-	wxPuts(wxString::FormatV(pszFormat, argptr).c_str());
-
-	va_end(argptr);
+	wxPuts(str.c_str());
 }
 
 
