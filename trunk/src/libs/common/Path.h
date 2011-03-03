@@ -26,7 +26,7 @@
 #define FILENAME_H
 
 #include "../../Types.h"
-#include "Format.h"		// Needed for CPrintable
+#include "Format.h"
 
 
 /**
@@ -47,7 +47,7 @@
  * that cross-platform issues can be worked around in a
  * single place.
  */
-class CPath : public CPrintable
+class CPath
 {
 public:
 	/** Default constructor. */
@@ -58,9 +58,6 @@ public:
 
 	/** Copy constructor. Creates a deep-copy of the passed object. */
 	CPath(const CPath& other);
-
-	/** Destructor. */
-	~CPath();
 
 
 	/**
@@ -152,9 +149,6 @@ public:
 	/** Returns true if the the passed path makes up an prefix of this object. */
 	bool StartsWith(const CPath& other) const;
 
-	/** @see cprintable::getprintablestring */
-	wxString GetPrintableString() const;
-
 	/**
 	 * Get truncated path.
 	 *
@@ -213,6 +207,12 @@ private:
 	friend int CmpAny(const CPath& ArgA, const CPath& ArgB);
 };
 
+// Make CPath printable in CFormat
+template<>
+inline CFormat& CFormat::operator%(CPath value)
+{
+	return this->operator%<const wxString&>(value.GetPrintable());
+}
 
 /**
  * Overloaded version of CmpAny for use with CPaths. As this is

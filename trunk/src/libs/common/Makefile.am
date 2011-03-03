@@ -9,22 +9,23 @@ noinst_LIBRARIES = \
 # Common to external apps and core/gui/monolithic
 
 libmulecommon_a_SOURCES = \
+	FileFunctions.cpp \
 	Format.cpp \
 	MD5Sum.cpp \
 	MuleDebug.cpp \
+	Path.cpp \
+	strerror_r.c \
 	StringFunctions.cpp \
-	FileFunctions.cpp \
-	TextFile.cpp \
-	Path.cpp
+	TextFile.cpp
 
 noinst_HEADERS =  \
-		Format.h \
-		MD5Sum.h \
-		MuleDebug.h \
-		StringFunctions.h \
-		FileFunctions.h \
-		TextFile.h \
-		Path.h
+	FileFunctions.h \
+	Format.h \
+	MD5Sum.h \
+	MuleDebug.h \
+	Path.h \
+	strerror_r.h \
+	StringFunctions.h \
+	TextFile.h
 
 MAINTAINERCLEANFILES = Makefile.in
-

@@ -1023,7 +1023,7 @@ void CClientList::CleanUpClientList()
 				if (!(pCurClient->GetKadState() == KS_NONE)) {
 					AddDebugLogLineN(logProxy,
 						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s"))
-							% (long int)pCurClient % pCurClient->GetKadState() % pCurClient->GetFullIP());
+							% (long int)pCurClient % (int)pCurClient->GetKadState() % pCurClient->GetFullIP());
 				}
 				if (!(pCurClient->GetSocket() == NULL)) {
 					AddDebugLogLineN(logProxy,

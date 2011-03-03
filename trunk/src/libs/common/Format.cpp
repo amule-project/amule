@@ -28,58 +28,19 @@
 #	include "config.h"
 #endif
 
-#include <ctype.h>
-
 #if defined HAVE_STDINT_H
 #	include <stdint.h>
 #elif defined HAVE_INTTYPES_H
 #	include <inttypes.h>
 #endif
 
+#include <wx/intl.h>			// Needed for _()
 
-//! Known type-modifiers. 
-enum Modifiers
-{
-	//! No modifier field.
-	modNone,
-	//! Argument is interpreted as short int (integer types).
-	modShort,
-	//! Argument is interpreted as long int (integer types).
-	modLong,
-	//! Two 'long' modifieres, arguments is interpreted as long long (integer types).
-	modLongLong,
-	//! Argument is interpreted as long double (floating point types). Not supported.
-	modLongDouble
-};
-
-
-/**
- * Extracts modifiers from the argument.
- *
- * Note that this function will possibly return wrong results
- * for malformed format strings.
- */
-Modifiers getModifier(const wxString& str)
-{
-	switch ( (wxChar)str[str.Len() - 2]) {
-		case wxT('h'):		// short int (integer types).
-			return modShort;
-		case wxT('l'):		// long int (interger types) or double (floating point types).
-			if ( str.Len() > 3 && str.GetChar( str.Len() - 3 ) == wxT('l') ) {
-				return modLongLong;
-			} else {
-				return modLong;
-			}
-		case wxT('L'):		// long double (floating point types).
-			return modLongDouble;
-		default:
-			return modNone;
-	}
-}
-
+#include <errno.h>			// Needed for errno and EINVAL
+#include "strerror_r.h"			// Needed for mule_strerror_r()
 
 /** Returns true if the char is a format-type. */
-bool isTypeChar(wxChar c)
+inline bool isTypeChar(wxChar c)
 {
 	switch (c) {
 		case wxT('s'):		// String of characters
@@ -95,9 +56,15 @@ bool isTypeChar(wxChar c)
 		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
 		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
 		case wxT('g'):		// Use shorter %e or %f
-		case wxT('G'):		// Use shorter %E or %f
+		case wxT('G'):		// Use shorter %E or %F
 		case wxT('p'):		// Pointer
 		case wxT('n'):		// Not supported, still needs to be caught though
+		case wxT('a'):		// (C99; not in SUSv2) Double in hexadecimal notation.
+		case wxT('A'):		// (C99; not in SUSv2) Double in hexadecimal notation (capital letters).
+		case wxT('C'):		// (Not in C99, but in SUSv2.)  Synonym for lc.  Don't use. Not supported.
+		case wxT('S'):		// (Not in C99, but in SUSv2.)  Synonym for ls.  Don't use. Not supported.
+		case wxT('m'):		// (Glibc extension.)  Print output of strerror(errno).  No argument is required.
+//		case wxT('%'):		// A `%' is written.  No argument is converted.  The complete conversion specification is `%%'.
 			return true;
 	}
 
@@ -105,29 +72,27 @@ bool isTypeChar(wxChar c)
 }
 
 /** Returns true if the char is a valid flag. */
-bool isFlagChar(wxChar c)
+inline bool isFlagChar(wxChar c)
 {
 	switch (c) {
+		// C standard flags
 		case wxT('+'):		// Include sign for integers
 		case wxT('-'):		// Left-align output
 		case wxT('#'):		// Alternate form, varies
 		case wxT(' '):		// Pad with spaces
 		case wxT('0'):		// Pad with zeros
+		// SUSv2
+		case wxT('\''):		// For decimal conversion (i, d, u, f, F, g, G) the output is to be grouped with thousands' grouping characters if the locale information indicates any.
+		// glibc 2.2
+		case wxT('I'):		// For decimal integer conversion (i, d, u) the output uses the locale's alternative output digits, if any.
 			return true;
 	}
 
 	return false;
 }
 
-/** Returns true if the char is an integer (for width + precision). */
-bool isIntChar(wxChar c)
-{
-	return ((c >= wxT('0')) && (c <= wxT('9')));
-}
-
-
 /** Returns true if the char is a valid length modifier. */
-bool isLengthChar(wxChar c)
+inline bool isLengthChar(wxChar c)
 {
 	switch (c) {
 		case wxT('h'):		// Short ('hh') and char ('h')
@@ -136,339 +101,483 @@ bool isLengthChar(wxChar c)
 		case wxT('z'):		// size_t
 		case wxT('j'):		// intmax_t
 		case wxT('t'):		// ptrdiff_t
+		case wxT('q'):		// quad. Synonym for 'll'. Don't use.
 			return true;
 	}
 
-	// Catches widths, precisons and zero-padding
-	return (c >= wxT('0')) && (c <= wxT('9'));
+	return false;
+}
+
+/** Returns true if the argument is a valid length modifier */
+inline bool isValidLength(const wxString& str)
+{
+	return ((str == wxT("hh")) || (str == wxT("h")) ||
+		(str == wxT("l")) || (str == wxT("ll")) ||
+		(str == wxT("L")) || (str == wxT("z")) ||
+		(str == wxT("j")) || (str == wxT("t")) ||
+		(str == wxT("q")));
 }
 
 
-CFormat::CFormat(const wxChar* str)
-{
-	m_fieldStart = 0;
-	m_fieldLength = 0;
-	m_skipCount = 0;
-	m_format = str;
+enum eStringParserStates {
+	esNonFormat = 0,	// Not in a format string
+	esFormatStart,		// Start of a format string
+	esFormat,		// Inside a format string
+	esFormatEnd,		// Finished reading a format string
+	esInvalidFormat		// Invalid (incomplete) format specifier
+};
 
-	if (m_format.Length()) {
-		SetCurrentField(wxEmptyString);
+/**
+ * State machine to extract format specifiers from the string
+ *
+ * All format strings will be extracted, regardless whether they are valid or
+ * not. Also '%%' is considered to be special format string which requires no
+ * arguments, thus it will be extracted too (that is because it has to be
+ * converted to '%').
+ */
+static eStringParserStates stringParser[][3] = {
+			/* %-sign, 		type-char, 	other */
+/* esNonFormat */	{ esFormatStart,	esNonFormat,	esNonFormat	},
+/* esFormatStart */	{ esFormatEnd,		esFormatEnd,	esFormat	},
+/* esFormat */		{ esInvalidFormat,	esFormatEnd,	esFormat	},
+/* esFormatEnd */	{ esFormatStart,	esNonFormat,	esNonFormat	},
+/* esInvalidFormat */	{ esFormatEnd,		esFormatEnd,	esFormat	}
+};
+
+enum eFormatParserStates {
+	efStart = 0,	// Format string start
+	efArgIndex,	// Argument index
+	efArgIndexEnd,	// End of the argument index ('$' sign)
+	efFlagChar,	// Flag character
+	efWidth,	// Width field
+	efPrecStart,	// Precision field start ('.' character)
+	efPrecision,	// Precision field
+	efLength,	// Length field
+	// The following two are terminal states, they terminate processing
+	efType,		// Type character
+	efError		// Invalid format specifier
+};
+
+/**
+ * State machine to parse format specifiers
+ *
+ * Format specifiers are expected to follow the following structure:
+ * 	%[argIndex$][Flags][Width][.Precision][Length]<Type>
+ */
+static eFormatParserStates formatParser[][7] = {
+			/* [1-9],	'0',		flagChar,	'.',		lengthChar,	typeChar,	'$' */
+/* efStart */		{ efArgIndex,	efFlagChar,	efFlagChar,	efPrecStart,	efLength,	efType,		efError, },
+/* efArgIndex */	{ efArgIndex,	efArgIndex,	efError,	efPrecStart,	efLength,	efType,		efArgIndexEnd, },
+/* efArgIndexEnd */	{ efWidth,	efFlagChar,	efFlagChar,	efPrecStart,	efLength,	efType,		efError, },
+/* efFlagChar */	{ efWidth,	efError,	efError,	efPrecStart,	efLength,	efType,		efError, },
+/* efWidth */		{ efWidth,	efWidth,	efError,	efPrecStart,	efLength,	efType,		efError, },
+/* efPrecStart */	{ efPrecision,	efPrecision,	efError,	efError,	efLength,	efType,		efError, },
+/* efPrecision */	{ efPrecision,	efPrecision,	efError,	efError,	efLength,	efType,		efError, },
+/* efLength */		{ efError,	efError,	efError,	efError,	efLength,	efType,		efError, }
+};
+
+// Forward-declare the specialization for const wxString&, needed by the parser
+template<> void CFormat::ProcessArgument(FormatList::iterator, const wxString&);
+
+void CFormat::Init(const wxString& str)
+{
+	m_formatString = str;
+	m_argIndex = 0;
+
+	// Extract format-string-like substrings from the input
+	{
+		size_t formatStart;
+		eStringParserStates state = esNonFormat;
+		for (size_t pos = 0; pos < str.length(); ++pos) {
+			if (str[pos] == wxT('%')) {
+				state = stringParser[state][0];
+			} else if (isTypeChar(str[pos])) {
+				state = stringParser[state][1];
+			} else {
+				state = stringParser[state][2];
+			}
+			switch (state) {
+				case esInvalidFormat:
+					wxFAIL_MSG(wxT("Invalid format specifier: ") + str.Mid(formatStart, pos - formatStart + 1));
+				case esFormatStart:
+					formatStart = pos;
+					break;
+				case esFormatEnd:
+					{
+						FormatSpecifier fs;
+						fs.startPos = formatStart;
+						fs.endPos = pos;
+						fs.result = str.Mid(formatStart, pos - formatStart + 1);
+						m_formats.push_back(fs);
+					}
+				default:
+					break;
+			}
+		}
+		wxASSERT_MSG((state == esFormatEnd) || (state == esNonFormat), wxT("Incomplete format specifier: ") + str.Mid(formatStart));
+	}
+
+	// Parse the extracted format specifiers, removing invalid ones
+	unsigned formatCount = 0;
+	for (FormatList::iterator it = m_formats.begin(); it != m_formats.end();) {
+		if (it->result == wxT("%%")) {
+			it->argIndex = 0;
+			it->result = wxT("%");
+			++it;
+		} else {
+			it->argIndex = ++formatCount;
+			it->flag = '\0';
+			it->width = 0;
+			it->precision = -1;
+			it->type = '\0';
+			unsigned num = 0;
+			wxString lengthModifier;
+			bool isPrecision = false;
+			eFormatParserStates state = efStart;
+			for (size_t pos = 1; pos < it->result.length(); ++pos) {
+				wxChar c = it->result[pos];
+				if ((c >= wxT('1')) && (c <= wxT('9'))) {
+					state = formatParser[state][0];
+				} else if (c == wxT('0')) {
+					state = formatParser[state][1];
+				} else if (isFlagChar(c)) {
+					state = formatParser[state][2];
+				} else if (c == wxT('.')) {
+					state = formatParser[state][3];
+				} else if (isLengthChar(c)) {
+					state = formatParser[state][4];
+				} else if (isTypeChar(c)) {
+					state = formatParser[state][5];
+				} else if (c == wxT('$')) {
+					state = formatParser[state][6];
+				} else {
+					state = efError;
+				}
+				if ((c >= wxT('0')) && (c <= wxT('9'))) {
+					num *= 10;
+					num += (c - wxT('0'));
+				}
+				switch (state) {
+					case efArgIndexEnd:
+						it->argIndex = num;
+						num = 0;
+						break;
+					case efFlagChar:
+						it->flag = c;
+						break;
+					case efPrecStart:
+						it->width = num;
+						num = 0;
+						isPrecision = true;
+						break;
+					case efLength:
+						if (isPrecision) {
+							it->precision = num;
+						} else if (num > 0) {
+							it->width = num;
+						}
+						num = 0;
+						lengthModifier += c;
+						if (!isValidLength(lengthModifier)) {
+							state = efError;
+						}
+						break;
+					case efType:
+						if (isPrecision) {
+							it->precision = num;
+						} else if (num > 0) {
+							it->width = num;
+						}
+						if (c == wxT('m')) {
+							it->argIndex = 0;
+							it->type = wxT('s');
+							int errnum = errno;
+#if defined(HAVE_STRERROR) || defined(HAVE_STRERROR_R)
+							unsigned buflen = 256;
+							bool done = false;
+							do {
+								errno = 0;
+								char* buf = new char[buflen];
+								*buf = '\0';
+								int result = mule_strerror_r(errnum, buf, buflen);
+								if ((result == 0) || (buflen > 1024)) {
+									ProcessArgument<const wxString&>(it, wxString(buf, wxConvLocal));
+								} else if (errno == EINVAL) {
+									if (*buf == '\0') {
+										ProcessArgument<const wxString&>(it, wxString::Format(_("Unknown error %d"), errnum));
+									} else {
+										ProcessArgument<const wxString&>(it, wxString(buf, wxConvLocal));
+									}
+								} else if (errno != ERANGE) {
+									ProcessArgument<const wxString&>(it, wxString::Format(_("Unable to get error description for error %d"), errnum));
+								} else {
+									buflen <<= 1;
+								}
+								delete [] buf;
+								done = ((result == 0) || (errno != ERANGE));
+							} while (!done);
+#else
+							wxFAIL_MSG(wxString::Format(wxT("Unable to get error description for error %d."), errnum));
+							ProcessArgument<const wxString&>(it, wxString::Format(_("Unable to get error description for error %d"), errnum));
+#endif
+						} else {
+							it->type = c;
+						}
+					default:
+						break;
+				}
+				wxCHECK2_MSG(state != efError, break, wxT("Invalid format specifier: ") + it->result);
+				if (state == efType) {
+					// Needed by the '%m' conversion, which takes place immediately,
+					// overwriting it->result
+					break;
+				}
+			}
+			if (state == efError) {
+				it = m_formats.erase(it);
+				--formatCount;
+			} else {
+				++it;
+			}
+		}
 	}
 }
-
-
-CFormat::CFormat(const wxString& str)
-{
-	m_fieldStart = 0;
-	m_fieldLength = 0;
-	m_skipCount = 0;
-	m_format = str;
-
-	if (m_format.Length()) {
-		SetCurrentField(wxEmptyString);
-	}
-}
-
-
-bool CFormat::IsReady() const
-{
-	return (m_fieldStart == m_format.Length());
-}
-
 
 wxString CFormat::GetString() const
 {
-	if (IsReady()) {
-		return m_result;
+	wxString result;
+	FormatList::const_iterator it = m_formats.begin();
+	if (it == m_formats.end()) {
+		result = m_formatString;
 	} else {
-		wxFAIL_MSG(wxT("Called GetString() before all values were passed: ") + m_format);
-
-		// Return as much as possible ...
-		return m_result + m_format.Mid(m_fieldStart);
-	}
-}
-
-
-void CFormat::SetCurrentField(const wxString& value)
-{
-	wxCHECK_RET(m_fieldStart < m_format.Length(),
-		wxT("Setting field in already completed string: ") + m_format);
-
-	if (value.Length()) {
-		m_result += value;
-	}
-
-	enum {
-		PosNone = 0,
-		PosStart,
-		PosFlags,
-		PosWidth,
-		PosPrecision,
-		PosLength,
-		PosEnd
-	} pos = PosNone;
-
-	// Format strings are expected to follow the following structure:
-	// 	%[Flags][Width][.Precision][Length]<Type>
-	for (size_t i = m_fieldStart + m_fieldLength; i < m_format.Length(); ++i) {
-		const wxChar c = m_format[i];
-
-		if (pos >= PosStart) {
-			m_fieldLength++;
-
-			if ((pos <= PosFlags) && isFlagChar(c)) {
-				pos = PosFlags;
-			} else if ((pos <= PosWidth) && isIntChar(c)) {
-				pos = PosWidth;
-			} else if ((pos < PosPrecision) && (c == wxT('.'))) {
-				pos = PosPrecision;
-			} else if ((pos == PosPrecision) && isIntChar(c)) {
-				// Nothing to do ...
-			} else if ((pos < PosLength) && isLengthChar(c)) {
-				pos = PosLength;
-			} else if ((pos == PosLength) && isLengthChar(c) && (c == m_format[i - 1])) {
-				// Nothing to do ...
-			} else if ((pos <= PosLength) && isTypeChar(c)) {
-				pos = PosEnd;
-				break;
-			} else if ((pos <= PosLength) && (c == wxT('%'))) {
-				// Append the %*% to the result
-				m_result += wxT("%");
-				
-				pos = PosNone;
-			} else {
-				// Field is broken ...
-				break;
-			}
-		} else if (c == wxT('%')) {
-			const size_t offset = m_fieldStart + m_fieldLength;
-			// If there was anything before this, then prepend it.
-			if (offset < i) {
-				m_result += m_format.Mid(offset, i - offset);
-			}
-
-			// Starting a new format string
-			pos = PosStart;
-			m_fieldStart = i;
-			m_fieldLength = 1;
-		} else {
-			// Normal text, nothing to do ...
+		unsigned lastEnd = 0;
+		for (; it != m_formats.end(); ++it) {
+			result += m_formatString.Mid(lastEnd, it->startPos - lastEnd);
+			result += it->result;
+			lastEnd = it->endPos + 1;
 		}
+		result += m_formatString.Mid(lastEnd);
 	}
-
-	if (pos == PosNone) {
-		// No fields left
-		m_result += m_format.Mid(m_fieldStart + m_fieldLength);
-		
-		m_fieldStart = m_fieldLength = m_format.Length();
-	} else if (pos != PosEnd) {
-		// A partial field was found ...
-		wxFAIL_MSG(wxT("Invalid field in format string: ") + m_format);
-		wxASSERT_MSG(m_fieldStart + m_fieldLength <= m_format.Length(),
-			wxT("Invalid field-start/length in format string: ") + m_format);
-
-		// Prepend the parsed part of the format-string
-		m_result += m_format.Mid(m_fieldStart, m_fieldLength);
-
-		// Return an empty string the next time GetCurrentField is called
-		m_skipCount++;
-
-		// Anything left to do?
-		if (!IsReady()) {
-			// Find the next format string
-			SetCurrentField(wxEmptyString);
-		}
-	}
+	return result;
 }
 
-
-wxString CFormat::GetCurrentField()
+wxString CFormat::GetModifiers(FormatList::const_iterator it) const
 {
-	wxCHECK_MSG(m_fieldStart < m_format.Length(), wxEmptyString,
-		wxT("Passing argument to already completed string: ") + m_format);
-	wxASSERT_MSG(m_fieldStart + m_fieldLength <= m_format.Length(),
-		wxT("Invalid field-start/length in format string: ") + m_format);
-
-	if (m_skipCount) {
-		// The current field was invalid, so we skip it.
-		m_skipCount--;
-
-		return wxEmptyString;
+	wxString result = wxT("%");
+	if (it->flag != wxT('\0')) {
+		result += it->flag;
 	}
-
-	return m_format.Mid(m_fieldStart, m_fieldLength);
+	if (it->width > 0) {
+		result += wxString::Format(wxT("%u"), it->width);
+	}
+	if (it->precision >= 0) {
+		result += wxString::Format(wxT(".%u"), it->precision);
+	}
+	return result;
 }
 
+// Forward-declare the specialization for unsigned long long
+template<> void CFormat::ProcessArgument(FormatList::iterator, unsigned long long);
 
-wxString CFormat::GetIntegerField(const wxChar* fieldType)
+// Processing a double-precision floating-point argument
+template<>
+void CFormat::ProcessArgument(FormatList::iterator it, double value)
 {
-	const wxString field = GetCurrentField();
-	if (field.IsEmpty()) {
-		// Invalid or missing field ...
-		return field;
-	}
-
-	// Drop type and length
-	wxString newField = field;
-	while (isalpha(newField.Last())) {
-		newField.RemoveLast();
-	}
-	
-	// Set the correct integer type
-	newField += fieldType;
-
-	switch ((wxChar)field.Last()) {
-		case wxT('o'):		// Unsigned octal
-		case wxT('x'):		// Unsigned hexadecimal integer
-		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
-			// Override the default type
-			newField.Last() = field.Last();
-		
-		case wxT('d'):		// Signed decimal integer
-		case wxT('i'):		// Signed decimal integer
-		case wxT('u'):		// Unsigned decimal integer
-			return newField;
-		
-		default:
-			wxFAIL_MSG(wxT("Integer value passed to non-integer format string: ") + m_format);
-			SetCurrentField(field);
-			return wxEmptyString;
-	}
-}
-
-
-CFormat& CFormat::operator%(double value)
-{
-	wxString field = GetCurrentField();
-	if (field.IsEmpty()) {
-		return *this;
-	}
-
-	switch ( (wxChar)field.Last() ) {
-		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
-		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
-		case wxT('f'):		// Decimal floating point
-		case wxT('F'):		// Decimal floating point
-		case wxT('g'):		// Use shorter %e or %f
-		case wxT('G'):		// Use shorter %E or %f
-			wxASSERT_MSG(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format: ") + m_format);
-			
-			SetCurrentField(wxString::Format(field, value));
+	switch (it->type) {
+		case wxT('a'):
+		case wxT('A'):
+		case wxT('e'):
+		case wxT('E'):
+		case wxT('f'):
+		case wxT('F'):
+		case wxT('g'):
+		case wxT('G'):
 			break;
-		
+		case wxT('s'):
+			it->type = wxT('g');
+			break;
 		default:
-			wxFAIL_MSG(wxT("Floating-point value passed to non-float format string: ") + m_format);
-			SetCurrentField(field);
+			wxFAIL_MSG(wxT("Floating-point value passed for non-floating-point format field: ") + it->result);
+			return;
 	}
-
-	return *this;
+	it->result = wxString::Format(GetModifiers(it) + it->type, value);
 }
 
-
-CFormat& CFormat::operator%(wxChar value)
+// Processing a wxChar argument
+template<>
+void CFormat::ProcessArgument(FormatList::iterator it, wxChar value)
 {
-	wxString field = GetCurrentField();
-	
-	if (field.IsEmpty()) {
-		// We've already asserted in GetCurrentField.
-	} else if (field.Last() != wxT('c')) {
-		wxFAIL_MSG(wxT("Char value passed to non-char format string: ") + m_format);
-		SetCurrentField(field);
+	switch (it->type) {
+		case wxT('c'):
+			break;
+		case wxT('s'):
+			it->type = wxT('c');
+			break;
+		case wxT('u'):
+		case wxT('d'):
+		case wxT('i'):
+		case wxT('o'):
+		case wxT('x'):
+		case wxT('X'):
+			ProcessArgument(it, (unsigned long long)value);
+			return;
+		case wxT('a'):
+		case wxT('A'):
+		case wxT('e'):
+		case wxT('E'):
+		case wxT('f'):
+		case wxT('F'):
+		case wxT('g'):
+		case wxT('G'):
+			ProcessArgument(it, (double)value);
+			return;
+		default:
+			wxFAIL_MSG(wxT("Character value passed to non-character format field: ") + it->result);
+			return;
+	}
+	it->result = wxString::Format(GetModifiers(it) + it->type, value);
+}
+
+// Processing a signed long long argument
+template<>
+void CFormat::ProcessArgument(FormatList::iterator it, signed long long value)
+{
+	switch (it->type) {
+		case wxT('c'):
+			ProcessArgument(it, (wxChar)value);
+			return;
+		case wxT('i'):
+			break;
+		case wxT('o'):
+		case wxT('x'):
+		case wxT('X'):
+			ProcessArgument(it, (unsigned long long)value);
+			return;
+		case wxT('u'):
+		case wxT('d'):
+		case wxT('s'):
+			it->type = wxT('i');
+			break;
+		case wxT('a'):
+		case wxT('A'):
+		case wxT('e'):
+		case wxT('E'):
+		case wxT('f'):
+		case wxT('F'):
+		case wxT('g'):
+		case wxT('G'):
+			ProcessArgument(it, (double)value);
+			return;
+		default:
+			wxFAIL_MSG(wxT("Integer value passed for non-integer format field: ") + it->result);
+			return;
+	}
+	it->result = wxString::Format(GetModifiers(it) + WXLONGLONGFMTSPEC + it->type, value);
+}
+
+// Processing an unsigned long long argument
+template<>
+void CFormat::ProcessArgument(FormatList::iterator it, unsigned long long value)
+{
+	switch (it->type) {
+		case wxT('c'):
+			ProcessArgument(it, (wxChar)value);
+			return;
+		case wxT('u'):
+		case wxT('o'):
+		case wxT('x'):
+		case wxT('X'):
+			break;
+		case wxT('i'):
+		case wxT('d'):
+		case wxT('s'):
+			it->type = wxT('u');
+			break;
+		case wxT('a'):
+		case wxT('A'):
+		case wxT('e'):
+		case wxT('E'):
+		case wxT('f'):
+		case wxT('F'):
+		case wxT('g'):
+		case wxT('G'):
+			ProcessArgument(it, (double)value);
+			return;
+		default:
+			wxFAIL_MSG(wxT("Integer value passed for non-integer format field: ") + it->result);
+			return;
+	}
+	it->result = wxString::Format(GetModifiers(it) + WXLONGLONGFMTSPEC + it->type, value);
+}
+
+// Processing a wxString argument
+template<>
+void CFormat::ProcessArgument(FormatList::iterator it, const wxString& value)
+{
+	if (it->type != wxT('s')) {
+		wxFAIL_MSG(wxT("String value passed for non-string format field: ") + it->result);
 	} else {
-		SetCurrentField(wxString::Format(field, value));
-	}
-
-	return *this;
-}
-
-
-CFormat& CFormat::operator%(signed long long value)
-{
-	if (GetCurrentField().EndsWith(wxT("c"))) {
-		SetCurrentField(wxString::Format(GetCurrentField(), (wxChar)value));
-	} else {
-		wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("i"));
-		if (!field.IsEmpty()) {
-			SetCurrentField(wxString::Format(field, value));
-		}
-	}
-
-	return *this;
-}
-
-
-CFormat& CFormat::operator%(unsigned long long value)
-{
-	if (GetCurrentField().EndsWith(wxT("c"))) {
-		SetCurrentField(wxString::Format(GetCurrentField(), (wxChar)value));
-	} else {
-		wxString field = GetIntegerField(WXLONGLONGFMTSPEC  wxT("u"));
-		if (!field.IsEmpty()) {
-			SetCurrentField(wxString::Format(field, value));
-		}
-	}
-
-	return *this;
-}
-
-
-CFormat& CFormat::operator%(const wxString& val)
-{
-	wxString field = GetCurrentField();
-	
-	if (field.IsEmpty()) {
-		// We've already asserted in GetCurrentField
-	} else if (field.Last() != wxT('s')) {
-		wxFAIL_MSG(wxT("String value passed to non-string format string:") + m_format);
-		SetCurrentField(field);
-	} else if (field.GetChar(1) == wxT('.')) {
-		// A max-length is specified
-		wxString size = field.Mid( 2, field.Len() - 3 );
-		long lSize = 0;
-
-		// Try to convert the length-field.
-		if ((size.IsEmpty() || size.ToLong(&lSize)) && (lSize >= 0)) {
-			SetCurrentField(val.Left(lSize));
+		if (it->precision >= 0) {
+			it->result = value.Left(it->precision);
 		} else {
-			wxFAIL_MSG(wxT("Invalid value found in 'precision' field: ") + m_format);
-			SetCurrentField(field);
+			it->result = value;
 		}
-	} else if (field.GetChar(1) == wxT('s')) {
-		// No limit on size, just set the string
-		SetCurrentField(val);
-	} else {
-		SetCurrentField(field);
-		wxFAIL_MSG(wxT("Malformed string format field: ") + m_format);
+		if ((it->width > 0) && (it->result.length() < it->width)) {
+			if (it->flag == wxT('-')) {
+				it->result += wxString(it->width - it->result.length(), wxT(' '));
+			} else {
+				it->result = wxString(it->width -it->result.length(), wxT(' ')) + it->result;
+			}
+		}
 	}
-
-	return *this;
 }
 
-CFormat& CFormat::operator%(void * value)
+// Processing pointer arguments
+template<>
+void CFormat::ProcessArgument(FormatList::iterator it, void * value)
 {
-	wxString field = GetCurrentField();
-	
-	if (field.IsEmpty()) {
-		// We've already asserted in GetCurrentField.
-	} else if (field.Last() != wxT('p')) {
-		wxFAIL_MSG(wxT("Pointer value passed to non-pointer format string: ") + m_format);
-		SetCurrentField(field);
-	} else if (field != wxT("%p")) {
-		wxFAIL_MSG(wxT("Modifiers are not allowed for pointer format string: ") + m_format);
-		SetCurrentField(field);
-	} else {
-		// built-in Format for pointer is not optimal:
+	if ((it->type == wxT('p')) || (it->type == wxT('s'))) {
+		// Modifiers (if any) are ignored for pointer conversions
+		// built-in Format for pointer is not consistent:
 		// - Windows: uppercase, no leading 0x
-		// - Linux:   leading zeros missing 
+		// - Linux:   leading zeros missing
 		// -> format it as hex
-		if (sizeof (void *) == 8) { // 64 bit
-			SetCurrentField(wxString::Format(wxT("0x%016x"), (uintptr_t) value));
-		} else { // 32 bit
-			SetCurrentField(wxString::Format(wxT("0x%08x"),  (uintptr_t) value));
+		if (sizeof(void*) == 8) {
+			// 64 bit
+			it->result = wxString::Format(wxT("0x%016x"), (uintptr_t)value);
+		} else {
+			// 32 bit
+			it->result = wxString::Format(wxT("0x%08x"), (uintptr_t)value);
+		}
+	} else {
+		wxFAIL_MSG(wxT("Pointer value passed for non-pointer format field: ") + it->result);
+	}
+}
+
+
+// Generic argument processor template
+template<typename _Tp>
+CFormat& CFormat::operator%(_Tp value)
+{
+	m_argIndex++;
+	for (FormatList::iterator it = m_formats.begin(); it != m_formats.end(); ++it) {
+		if (it->argIndex == m_argIndex) {
+			if ((it->type != wxT('n')) && (it->type != wxT('C')) && (it->type != wxT('S'))) {
+				ProcessArgument<_Tp>(it, value);
+			} else {
+				wxFAIL_MSG(wxT("Not supported conversion type in format field: ") + it->result);
+			}
 		}
 	}
-
 	return *this;
 }
+
+// explicit instatiation for the types we handle
+template CFormat& CFormat::operator%<double>(double);
+template CFormat& CFormat::operator%<wxChar>(wxChar);
+template CFormat& CFormat::operator%<signed long long>(signed long long);
+template CFormat& CFormat::operator%<unsigned long long>(unsigned long long);
+template CFormat& CFormat::operator%<const wxString&>(const wxString&);
+template CFormat& CFormat::operator%<void *>(void *);
 
 // File_checked_for_headers

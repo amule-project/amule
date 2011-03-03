@@ -28,7 +28,7 @@
 #include <include/common/EventIDs.h>
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, HAVE_STRERROR_R and STRERROR_R_CHAR_P, etc
+	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, etc
 #endif
 
 // Include the necessary headers for select(2), properly guarded
@@ -46,12 +46,6 @@
 #	endif
 #endif
 
-// Prefer the POSIX interface to strerror_r()
-#ifndef _XOPEN_SOURCE
-#define _XOPEN_SOURCE	600
-#endif
-#include <string.h>			// Do_not_auto_remove
-
 #include <wx/utils.h>
 
 #include "Preferences.h"		// Needed for CPreferences
@@ -67,7 +61,6 @@
 #include "ListenSocket.h"		// Do_not_auto_remove (forward declaration not enough)
 
 
-#include <errno.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h> // Do_not_auto_remove
 #endif
@@ -78,53 +71,6 @@
 	#endif
 
 	#include <wx/unix/execute.h>
-#endif
-
-#ifndef HAVE_STRERROR_R
-
-// Replacement strerror_r() function for systems that don't have any.
-// Note that this replacement function is NOT thread-safe!
-static int rpl_strerror_r(int errnum, char *buf, size_t buflen)
-{
-	char *tmp = strerror(errnum);
-	if (tmp == NULL) {
-		errno = EINVAL;
-		return -1;
-	} else {
-		strncpy(buf, tmp, buflen - 1);
-		buf[buflen - 1] = '\0';
-		if (strlen(tmp) >= buflen) {
-			errno = ERANGE;
-			return -1;
-		}
-	}
-	return 0;
-}
-
-#	define strerror_r(errnum, buf, buflen)	rpl_strerror_r(errnum, buf, buflen)
-#else
-#	ifdef STRERROR_R_CHAR_P
-
-// Replacement strerror_r() function for systems that return a char*.
-static int rpl_strerror_r(int errnum, char *buf, size_t buflen)
-{
-	char *tmp = strerror_r(errnum, buf, buflen);
-	if (tmp == NULL) {
-		errno = EINVAL;
-		return -1;
-	} else if (tmp != buf) {
-		strncpy(buf, tmp, buflen - 1);
-		buf[buflen - 1] = '\0';
-		if (strlen(tmp) >= buflen) {
-			errno = ERANGE;
-			return -1;
-		}
-	}
-	return 0;
-}
-
-#		define strerror_r(errnum, buf, buflen)	rpl_strerror_r(errnum, buf, buflen)
-#	endif
 #endif
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
@@ -565,17 +511,10 @@ void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*
 
 pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
 {
-	// strerror_r() buffer
-	const int ERROR_BUFFER_LEN = 256;
-	char errorBuffer[ERROR_BUFFER_LEN];
-
 	*status = 0;
 	pid_t result = waitpid(pid, status, options);
 	if (result == -1) {
-		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		*msg << wxT("Error: waitpid() call failed: ") <<
-			char2unicode(errorBuffer) <<
-			wxT(".");
+		*msg << CFormat(wxT("Error: waitpid() call failed: %m."));
 	} else if (result == 0) {
 		if (options & WNOHANG)  {
 			*msg << wxT("The child is alive.");
@@ -626,10 +565,6 @@ int CamuleDaemonApp::OnRun()
 	}
 
 #ifndef __WXMSW__
-	// strerror_r() buffer
-	const int ERROR_BUFFER_LEN = 256;
-	char errorBuffer[ERROR_BUFFER_LEN];
-
 	// Process the return code of dead children so that we do not create 
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
 	// actualy calls wxHandleProcessTermination() in console applications.
@@ -642,8 +577,7 @@ int CamuleDaemonApp::OnRun()
 	m_newSignalChildAction.sa_flags &= ~SA_RESETHAND;
 	ret = sigaction(SIGCHLD, &m_newSignalChildAction, NULL);
 	if (ret == -1) {
-		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		AddDebugLogLineC(logStandard, wxString(wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD callback with sigaction() failed: ")) << char2unicode(errorBuffer) << wxT("."));
+		AddDebugLogLineC(logStandard, CFormat(wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD callback with sigaction() failed: %m.")));
 	} else {
 		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD callback with sigaction() succeeded."));
 	}
@@ -752,20 +686,11 @@ int CamuleDaemonApp::OnExit()
 	ShutDown();
 
 #ifndef __WXMSW__
-	const int ERROR_BUFFER_LEN = 256;
-	char errorBuffer[ERROR_BUFFER_LEN];
-	wxString msg;
 	int ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
 	if (ret == -1) {
-		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		msg << wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: ") <<
-			char2unicode(errorBuffer) <<
-			wxT(".");
-		AddDebugLogLineC(logStandard, msg);
+		AddDebugLogLineC(logStandard, CFormat(wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: %m.")));
 	} else {
-		msg << wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD "
-			"callback with sigaction() succeeded.");
-		AddDebugLogLineN(logGeneral, msg);
+		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD callback with sigaction() succeeded."));
 	}
 #endif // __WXMSW__
 	
