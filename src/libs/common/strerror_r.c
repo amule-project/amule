@@ -42,11 +42,12 @@
    Note that this replacement function is NOT thread-safe! */
 int mule_strerror_r(int errnum, char *buf, size_t buflen)
 {
+	char *tmp;
 	if ((buf == NULL) || (buflen == 0)) {
 		errno = ERANGE;
 		return -1;
 	}
-	char *tmp = strerror(errnum);
+	tmp = strerror(errnum);
 	if (tmp == NULL) {
 		errno = EINVAL;
 		return -1;

@@ -15,53 +15,59 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\libs\common\FileFunctions.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\FileFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\common\Format.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\Format.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\common\MD5Sum.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\MD5Sum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\common\MuleDebug.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\MuleDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\common\Path.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\common\StringFunctions.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\StringFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\common\TextFile.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\common\TextFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\src\libs\common\strerror_r.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\libs\common\FileFunctions.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\FileFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\common\Format.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\Format.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\common\MD5Sum.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\MD5Sum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\common\MuleDebug.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\MuleDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\common\Path.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\common\StringFunctions.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\StringFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\common\TextFile.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\common\TextFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\common\strerror_r.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\..\src\include\common\ClientVersion.h">
+    <CustomBuild Include="..\..\..\..\..\src\include\common\ClientVersion.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

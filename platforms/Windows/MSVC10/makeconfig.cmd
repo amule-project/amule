@@ -29,4 +29,5 @@ echo #include ^<common/ClientVersion.h^> >>config.h
 :finish
 echo #define CRYPTOPP_INCLUDE_PREFIX	../cryptopp>>config.h
 echo #define PACKAGE "amule">>config.h
+echo #define HAVE_STRERROR>>config.h
 echo #endif>>config.h
