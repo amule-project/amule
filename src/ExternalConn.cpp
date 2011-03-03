@@ -472,7 +472,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")
-					+ CFormat(wxT("( %i != %i )")) % proto_version % EC_CURRENT_PROTOCOL_VERSION));
+					+ CFormat(wxT("( %#.4x != %#.4x )")) % proto_version % (uint16_t)EC_CURRENT_PROTOCOL_VERSION));
 			}
 		} else {
 			response = new CECPacket(EC_OP_AUTH_FAIL);

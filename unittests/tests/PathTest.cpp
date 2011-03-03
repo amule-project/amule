@@ -60,7 +60,7 @@ wxString GetExpectedString(const wxString& src)
 
 wxString StringFrom(const CPath& prt)
 {
-	return prt.GetPrintableString();
+	return prt.GetPrintable();
 }
 
 
@@ -101,8 +101,6 @@ TEST(CPath, DefaultConstructor)
 	ASSERT_EQUALS(wxEmptyString, tmp.GetPrintable());
 	ASSERT_EQUALS(CPath(), tmp.GetPath());
 	ASSERT_EQUALS(CPath(), tmp.GetFullName());
-
-	ASSERT_EQUALS(wxEmptyString, tmp.GetPrintableString());
 }
 
 

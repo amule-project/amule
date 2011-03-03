@@ -288,16 +288,10 @@ CPath::CPath(const wxString& filename)
 
 
 CPath::CPath(const CPath& other)
-	: CPrintable()
-	, m_printable(DeepCopy(other.m_printable))
+	: m_printable(DeepCopy(other.m_printable))
 	, m_filesystem(DeepCopy(other.m_filesystem))
-{
-}
+{}
 
-
-CPath::~CPath()
-{
-}
 
 
 CPath CPath::FromUniv(const wxString& path)
@@ -580,12 +574,6 @@ bool CPath::StartsWith(const CPath& other) const
 
 	const size_t checkLen = std::min(a.Length(), b.Length());
 	return PATHNCMP(a.c_str(), b.c_str(), checkLen) == 0;
-}
-
-
-wxString CPath::GetPrintableString() const
-{
-	return DeepCopy(m_printable);
 }
 
 
