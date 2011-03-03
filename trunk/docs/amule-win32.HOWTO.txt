@@ -7,5 +7,5 @@
 
   This document has been deprecated.
 
-  Please visit http://www.amule.org/wiki/index.php/HowTo_compile_on_Win32 instead.
+  Please visit http://wiki.amule.org/index.php/HowTo_compile_on_Win32 instead.
 

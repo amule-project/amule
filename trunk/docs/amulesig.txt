@@ -59,6 +59,6 @@
 
   Please visit:
   * amulesig.dat
-      http://www.amule.org/wiki/index.php/Amulesig.dat_file
+      http://wiki.amule.org/index.php/Amulesig.dat_file
   * onlinesig.dat
-      http://www.amule.org/wiki/index.php/Onlinesig.dat_file
+      http://wiki.amule.org/index.php/Onlinesig.dat_file
