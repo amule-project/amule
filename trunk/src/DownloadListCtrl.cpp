@@ -432,7 +432,7 @@ void CDownloadListCtrl::OnSetPriority( wxCommandEvent& event )
 		case MP_PRIOHIGH:	priority = PR_HIGH;	break;
 		case MP_PRIOAUTO:	priority = PR_AUTO;	break;
 		default:
-			wxASSERT( false );
+			wxFAIL;
 	}
 
 	ItemList files = ::GetSelectedItems( this );

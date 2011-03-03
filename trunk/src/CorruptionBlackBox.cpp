@@ -42,7 +42,7 @@
 CCorruptionBlackBox::CCBBRecord::CCBBRecord(uint32 nStartPos, uint32 nEndPos, uint32 dwIP)
 {
 	if (nStartPos > nEndPos) {
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 	m_nStartPos = nStartPos;
@@ -78,7 +78,7 @@ void CCorruptionBlackBox::Free()
 void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, uint32 senderIP)
 {
 	if (nStartPos > nEndPos) {
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 	
@@ -115,7 +115,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, uint
 // Piece is removed from the chunk list and added to the client's record.
 void CCorruptionBlackBox::VerifiedData(bool ok, uint16 nPart, uint32 nRelStartPos, uint32 nRelEndPos) {
 	if (nRelStartPos > nRelEndPos) {
-		wxASSERT( false );
+		wxFAIL;
 		return;
 	}
 
