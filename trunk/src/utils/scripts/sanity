@@ -177,7 +177,7 @@ class NoIfNDef < SanityCheck
 		@name  = "NoIfNDef"
 		@title = "No #ifndef in headerfile"
 		@type  = "Good Practice"
-		@desc  = "All header files should contain a #ifndef __<FILENAME>__. The purpuse is to ensure "
+		@desc  = "All header files should contain a #ifndef __<FILENAME>__. The purpose is to ensure "
 		@desc += "that the header can't be included twice, which would introduce a number of problems."
 	end
 
@@ -199,7 +199,7 @@ class ThisDeference < SanityCheck
 		@name  = "ThisDeference"
 		@title = "Dereference of \"this\""
 		@type  = "Good Practice"
-		@desc  = "In all but the case of templates, using \"this->\" is unnescesarry and "
+		@desc  = "In all but the case of templates, using \"this->\" is unnecessary and "
 		@desc += "only decreases the readability of the code."
 	end
 
@@ -219,9 +219,9 @@ class Assert < SanityCheck
 		super
 	
 		@name  = "Assert"
-		@type  = "Consistancy"
+		@type  = "Consistency"
 		@desc  = "wxASSERT()s should be used rather than normal assert()s "
-		@desc += "for the sake of consistancy."
+		@desc += "for the sake of consistency."
 	end
 
 	def parse_file(file, lines) 
@@ -229,6 +229,28 @@ class Assert < SanityCheck
 			line.text =~ /assert\s*\(/
 		end
 		
+		add_results( file, results )
+	end
+end
+
+
+
+class WxFailUsage < SanityCheck
+	def initialize
+		super
+
+		@name  = "WxFailUsagesy"
+		@title = "Always failing wxASSERT()"
+		@type  = "Good Practice"
+		@desc  = "Use wxFAIL instead of an always failing wxASSERT()."
+	end
+
+	def parse_file(file, lines)
+		results = lines.select do |line|
+			line.text =~ /\bwxASSERT\s*\(\s*(0|false)\s*\)/ or
+			line.text =~ /\bwxASSERT_MSG\s*\(\s*(0|false)\s*,/
+		end
+
 		add_results( file, results )
 	end
 end
@@ -243,7 +265,7 @@ class PassByValue < SanityCheck
 		@title = "Pass By Value"
 		@type  = "Good Practice"
 		@desc  = "Passing objects by value means an extra overhead for large datatypes. "
-		@desc += "Therefore should these always be passed by const reference when possible."
+		@desc += "Therefore these should always be passed by const reference when possible."
 		@desc += "Non-const references should only be used for functions where the function is "
 		@desc += "supposed to change the actual value of the argument and return another or no value."
 	end
@@ -254,7 +276,7 @@ class PassByValue < SanityCheck
 		# Only handle header files
 		if file =~ /\.h$/
 			# Items that should be passed by const-ref
-			items = [ "wxString", "wxRect", "wxPoint", "CMD4Hash" ]
+			items = [ "wxString", "wxRect", "wxPoint", "CMD4Hash", "CPath" ]
 
 			lines.each do |line|
 				# Try to identify function definitions
@@ -311,7 +333,7 @@ class IfNotDefined < SanityCheck
 	
 		@name  = "IfDefined"
 		@title = "#if (!)defined"
-		@type  = "Consistancy"
+		@type  = "Consistency"
 		@desc  = "Use #ifndef or #ifdef instead for reasons of simplicity."
 	end
 
@@ -407,7 +429,7 @@ class MissingBody < SanityCheck
 		@name  = "MissingBody"
 		@title = "Missing Body in Loop"
 		@type  = "Garbage"
-		@desc  = "This checks looks for loops without any body. For example \"while(true);\" "
+		@desc  = "This check looks for loops without any body. For example \"while(true);\" "
 		@desc += "In most cases this is a sign of either useless code or bugs. Only in a few "
 		@desc += "cases is it valid code, and in those it can often be represented clearer "
 		@desc += "in other ways."
@@ -436,12 +458,12 @@ class Translation < SanityCheck
 		super
 	
 		@name  = "Translation"
-		@type  = "Consistancy"
+		@type  = "Consistency"
 		@desc  = "Calls to AddLogLine should translate the message, whereas "
 		@desc += "calls to AddDebugLogLine shouldn't. This is because the user "
 		@desc += "is meant to see normal log lines, whereas the the debug-lines "
-		@desc += "are only meant for the developers and I dont know about you, but "
-		@desc += "I dont plan on learning every language we choose to translate "
+		@desc += "are only meant for the developers and I don't know about you, but "
+		@desc += "I don't plan on learning every language we choose to translate "
 		@desc += "aMule to. :P"
 	end
 
@@ -488,10 +510,10 @@ class InlinedIfTrue < SanityCheck
 	def initialize
 		super
 	
-		@name = "InlinedIf"
-		@name = "Inlined If true/false"
-		@type = "Garbage"
-		@desc = "Using variations of (x ? true : false) or (x ? false : true) is just plain stupid."
+		@name  = "InlinedIf"
+		@title = "Inlined If true/false"
+		@type  = "Garbage"
+		@desc  = "Using variations of (x ? true : false) or (x ? false : true) is just plain stupid."
 	end
 
 	def parse_file(file, lines) 
@@ -540,7 +562,7 @@ class MissingImplementation < SanityCheck
 		@desc  = "Forgetting to remove a function-definition after having removed it "
 		@desc += "from the .cpp file only leads to cluttered header files. The only "
 		@desc += "case where non-implemented functions should be used is when it is "
-		@desc += "necesarry to prevent usage of for instance assignment between "
+		@desc += "necessary to prevent usage of for instance assignment between "
 		@desc += "instances of a class."
 
 		@declarations = Array.new
@@ -636,6 +658,7 @@ filterList.push IfZero.new
 filterList.push InlinedIfTrue.new
 filterList.push LoopOnConstant.new
 filterList.push MissingImplementation.new
+filterList.push WxFailUsage.new
 
 
 # Sort enabled filters by type and name. The reason why this is done here is
@@ -977,4 +1000,3 @@ ARGV.each do |param|
 			puts OutputHTML( create_filter_tree( filterList ), create_result_tree( ".", filterList ) )
 	end
 end
-
