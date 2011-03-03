@@ -90,7 +90,7 @@
     The other options are pretty self-explanatory. If you don't know what it
     does, don't touch it as a general rule. More information on getting started
     can be found in the aMule wiki:
-      http://www.amule.org/wiki/index.php/Getting_Started
+      http://wiki.amule.org/index.php/Getting_Started
 
     Don't forget to connect to a server, or you probably won't download too much.
 
@@ -144,7 +144,7 @@
  Tranfers icons
 ----------------
   To find descriptions of the various icons found inside aMule, take a look at
-  http://www.amule.org/wiki/index.php/Getting_Started#Icons_and_What_They_Signify
+  http://wiki.amule.org/index.php/Getting_Started#Icons_and_What_They_Signify
 
 
  License
@@ -256,12 +256,12 @@
       http://www.amule.org
 
   aMule related links
-      http://www.amule.org/wiki/index.php/FAQ_ed2k
-      http://www.amule.org/wiki/index.php/aMule
-      http://www.amule.org/wiki/index.php/FAQ_aMule
-      http://www.amule.org/wiki/index.php/FAQ_utils
-      http://www.amule.org/wiki/index.php/Getting_Started
-      http://www.amule.org/wiki/index.php/aMule_problems
+      http://wiki.amule.org/index.php/FAQ_eD2k-Kademlia
+      http://wiki.amule.org/index.php/aMule
+      http://wiki.amule.org/index.php/FAQ_aMule
+      http://wiki.amule.org/index.php/FAQ_utils
+      http://wiki.amule.org/index.php/Getting_Started
+      http://wiki.amule.org/index.php/aMule_problems
 
   wxWidgets toolkit homepage
       http://www.wxwidgets.org

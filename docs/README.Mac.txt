@@ -8,7 +8,7 @@ Just drag the aMule application to a folder of your choice (e.g., /Applications)
 
 Documentation and help resources:
 ---------------------------------
-The heart of aMule's documentation is the aMule Wiki, which you can find at http://www.amule.org/wiki/index.php/Main_Page. We suggest that you start with the Getting Started Guide (http://www.amule.org/wiki/index.php/Getting_Started) and the aMule FAQ (http://www.amule.org/wiki/index.php/FAQ_aMule). These pages should give you a good idea of how to setup and use aMule.
+The heart of aMule's documentation is the aMule Wiki, which you can find at http://wiki.amule.org/index.php/Main_Page. We suggest that you start with the Getting Started Guide (http://wiki.amule.org/index.php/Getting_Started) and the aMule FAQ (http://wiki.amule.org/index.php/FAQ_aMule). These pages should give you a good idea of how to setup and use aMule.
 
 If you run into any problems you can drop by at the aMule forum (http://forum.amule.org). A lot of questions have already been answered there, so it is always a good idea to start by searching the forum for your particular problem. If you don't find an answer to your problem you can post your problem on the forum and we will do our best to help you out.
 
