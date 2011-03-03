@@ -8,12 +8,12 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either
 # version 2 of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,7 +55,7 @@ class Result
 	def file_name
 		@file.slice( /[^\/]+$/ )
 	end
-	
+
 	def file_path
 		@file.slice( /^.*\// )
 	end
@@ -97,18 +97,18 @@ class SanityCheck
 		@results
 	end
 
-	# This function will be called for each file, with the argument "file" as the 
+	# This function will be called for each file, with the argument "file" as the
 	# name of the file and the argument "lines" being an array of Line objects for
 	# each line of the file.
 	#
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		raise "Missing parse_file() implementation for Filter: #{@name}"
 	end
 
 
 	private
-	
-	def add_results( file, lines = [nil] ) 
+
+	def add_results( file, lines = [nil] )
 		lines.each do |line|
 			@results << Result.new( self, file, line )
 		end
@@ -122,7 +122,7 @@ end
 class CompareAgainstEmptyString < SanityCheck
 	def initialize
 		super
-		
+
 		@name  = "CmpEmptyString"
 		@title = "Comparing With Empty String"
 		@type  = "Good Practice"
@@ -132,8 +132,8 @@ class CompareAgainstEmptyString < SanityCheck
 		@desc += "of wxString."
 	end
 
-	def parse_file(file, lines) 
-		results = lines.select do |line| 
+	def parse_file(file, lines)
+		results = lines.select do |line|
 			line.text =~ /[!=]=\s*(wxEmptyString|wxT\(""\)|_\(""\))/ or
 			line.text =~ /(wxEmptyString|wxT\(""\)|_\(""\))\s*[!=]=/
 		end
@@ -147,7 +147,7 @@ end
 class AssignmentToEmptyString < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "EmptyStringAssignment"
 		@title = "Assignment To Empty String"
 		@type  = "Good Practice"
@@ -157,10 +157,10 @@ class AssignmentToEmptyString < SanityCheck
 		@desc += "clear a string is to use the Clear() member-function of wxString."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		if file =~ /\.cpp$/
-			results = lines.select do |line| 
-				line.text =~ /[^=!]=\s*(wxEmptyString|wxT\(""\)|_\(""\))/ 
+			results = lines.select do |line|
+				line.text =~ /[^=!]=\s*(wxEmptyString|wxT\(""\)|_\(""\))/
 			end
 
 			add_results( file, results )
@@ -173,7 +173,7 @@ end
 class NoIfNDef < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "NoIfNDef"
 		@title = "No #ifndef in headerfile"
 		@type  = "Good Practice"
@@ -195,7 +195,7 @@ end
 class ThisDeference < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "ThisDeference"
 		@title = "Dereference of \"this\""
 		@type  = "Good Practice"
@@ -203,11 +203,11 @@ class ThisDeference < SanityCheck
 		@desc += "only decreases the readability of the code."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			line.text =~ /\bthis->/
 		end
-		
+
 		add_results( file, results )
 	end
 end
@@ -217,18 +217,18 @@ end
 class Assert < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "Assert"
 		@type  = "Consistency"
 		@desc  = "wxASSERT()s should be used rather than normal assert()s "
 		@desc += "for the sake of consistency."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			line.text =~ /assert\s*\(/
 		end
-		
+
 		add_results( file, results )
 	end
 end
@@ -260,7 +260,7 @@ end
 class PassByValue < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "PassByValue"
 		@title = "Pass By Value"
 		@type  = "Good Practice"
@@ -272,7 +272,7 @@ class PassByValue < SanityCheck
 
 	def parse_file(file, lines)
 		results = Array.new
-	
+
 		# Only handle header files
 		if file =~ /\.h$/
 			# Items that should be passed by const-ref
@@ -302,7 +302,7 @@ end
 class CStr < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "CStr"
 		@title = "C_Str or GetData"
 		@type  = "Unicoding"
@@ -312,8 +312,8 @@ class CStr < SanityCheck
 		@desc += "classes have GetData members, so it does some crude filtering."
 	end
 
-	def parse_file(file, lines) 
-		results = lines.select do |line| 
+	def parse_file(file, lines)
+		results = lines.select do |line|
 			if line.text =~ /c_str\(\)/ and line.text !~ /char2unicode\(/
 				true
 			else
@@ -330,14 +330,14 @@ end
 class IfNotDefined < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "IfDefined"
 		@title = "#if (!)defined"
 		@type  = "Consistency"
 		@desc  = "Use #ifndef or #ifdef instead for reasons of simplicity."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			if line.text =~ /^#if.*[\!]?defined\(/
 				not line.text =~ /(\&\&|\|\|)/
@@ -374,7 +374,7 @@ end
 class Copyright < SanityCheck
 	def initialize
 		super
-		
+
 		@name  = "MissingCopyright"
 		@title = "Missing Copyright Notice"
 		@type  = "License"
@@ -386,7 +386,7 @@ class Copyright < SanityCheck
 			found = lines.select do |line|
 				line.text =~ /Copyright\s*\([cC]\)\s*[-\d,]+ aMule (Project|Team)/
 			end
-			
+
 			if found.empty? then
 				add_results( file )
 			end
@@ -399,7 +399,7 @@ end
 class PartOfAmule < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "aMuleNotice"
 		@title = "Missing aMule notice"
 		@type  = "License"
@@ -412,7 +412,7 @@ class PartOfAmule < SanityCheck
 				line.text =~ /This file is part of the aMule Project/ or
 				line.text =~ /This file is part of aMule/
 			end
-			
+
 			if found.empty? then
 				add_results( file )
 			end
@@ -425,7 +425,7 @@ end
 class MissingBody < SanityCheck
 	def initialize
 		super
-		
+
 		@name  = "MissingBody"
 		@title = "Missing Body in Loop"
 		@type  = "Garbage"
@@ -435,12 +435,12 @@ class MissingBody < SanityCheck
 		@desc += "in other ways."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			if line.text =~ /^[^}]*while\s*\(.*\)\s*;/ or
 			   line.text =~ /^\s*for\s*\(.*\)\s*;[^\)]*$/
 				# Avoid returning "for" spanning multiple lines
-				# TODO A better way to count instances 
+				# TODO A better way to count instances
 				line.text.split("(").size == line.text.split(")").size
 			else
 				false
@@ -456,7 +456,7 @@ end
 class Translation < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "Translation"
 		@type  = "Consistency"
 		@desc  = "Calls to AddLogLine should translate the message, whereas "
@@ -467,7 +467,7 @@ class Translation < SanityCheck
 		@desc += "aMule to. :P"
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			if line.text =~ /\"/
 				line.text =~ /AddLogLine.?.?\(.*wxT\(/ or
@@ -486,7 +486,7 @@ end
 class IfZero < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "PreIfConstant"
 		@title = "#if 0-9"
 		@type  = "Garbage"
@@ -495,7 +495,7 @@ class IfZero < SanityCheck
 		@desc += "should be left, but the #ifs removed unless there is a pressing need for them."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			line.text =~ /#if\s+[0-9]/
 		end
@@ -509,16 +509,16 @@ end
 class InlinedIfTrue < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "InlinedIf"
 		@title = "Inlined If true/false"
 		@type  = "Garbage"
 		@desc  = "Using variations of (x ? true : false) or (x ? false : true) is just plain stupid."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
-			line.text =~ /\?\s*(true|false)\s*:\s*(true|false)/i			
+			line.text =~ /\?\s*(true|false)\s*:\s*(true|false)/i
 		end
 
 		add_results( file, results )
@@ -530,7 +530,7 @@ end
 class LoopOnConstant < SanityCheck
 	def initialize
 		super
-	
+
 		@name  = "LoopingOnConstant"
 		@title = "Looping On Constant"
 		@type  = "Garbage"
@@ -540,7 +540,7 @@ class LoopOnConstant < SanityCheck
 		@desc += "or replaced with more elegant code."
 	end
 
-	def parse_file(file, lines) 
+	def parse_file(file, lines)
 		results = lines.select do |line|
 			line.text =~ /while\s*\(\s*([0-9]+|true|false)\s*\)/i or
 			line.text =~ /for\s*\([^;]*;\s*;[^;]*\)/
@@ -575,8 +575,8 @@ class MissingImplementation < SanityCheck
 				pair.first == definition
 			end
 		end
-		
-		
+
+
 		return @declarations.map do |pair|
 			Result.new( self, pair.last.first, pair.last.last )
 		end
@@ -586,36 +586,36 @@ class MissingImplementation < SanityCheck
 		if file =~ /\.h$/ then
 			level = 0
 			tree = Array.new
-			
+
 			lines.each do |line|
 				level += line.text.count( "{" ) - line.text.count( "}" )
-			
-				tree.delete_if do |struct| 
+
+				tree.delete_if do |struct|
 					struct.first > level
 				end
 
-				
+
 				if line.text !~ /^\s*\/\// and line.text !~ /^\s*#/ and line.text !~ /typedef/ then
 					if line.text =~ /^\s*(class|struct)\s+/ and line.text.count( ";" ) == 0 then
 						cur_level = level;
-						
+
 						if line.text.count( "{" ) == 0 then
 							cur_level += 1
 						end
-						
+
 						name = line.text.scan( /^\s*(class|struct)\s+([^\:{;]+)/ )
 						if name != [] then
 							name = name.first.last.strip
 						else
 							name = "Unknown at line " + line.number.to_s + " in " + file
 						end
-						
+
 						tree << [ cur_level, name ]
 					elsif line.text =~ /;\s*$/ and line.text.count( "{" ) == 0 then
 						# No pure virtual functions and no return(blah) calls (which otherwise can fit the requirements)
 						if line.text !~ /=\s*0\s*;\s*$/ and line.text !~ /return/ then
 							re = /^\s*(virtual\s+|static\s+|inline\s+|)\w+(\s+[\*\&]?|[\*\&]\s+)(\w+)\(/.match( line.text )
-	
+
 							if re and level > 0 and tree.last then
 								@declarations << [ tree.last.last + "::" + re[ re.length - 1 ], [ file, line ] ]
 							end
@@ -628,7 +628,7 @@ class MissingImplementation < SanityCheck
 				if line.text =~ /\b\w+::\w+\s*\([^;]+$/
 					@definitions << line.text.scan( /\b(\w+::\w+)\s*\([^;]+$/ ).first.first
 				end
-			end	
+			end
 		end
 	end
 end
@@ -666,7 +666,7 @@ filterList.push WxFailUsage.new
 # or change the name or type of an existing filter.
 filterList.sort! do |x,y|
 	cmp = x.type <=> y.type
-	
+
 	if cmp == 0 then
 		x.title <=> y.title
 	else
@@ -682,7 +682,7 @@ def parse_files( path, filters )
 	require "find"
 
 	Find.find( path ) do |filename|
-		if filename =~ /\.(cpp|h)$/ and not IsFiltered(filename) then 
+		if filename =~ /\.(cpp|h)$/ and not IsFiltered(filename) then
 			File.open(filename, "r") do |aFile|
 				# Read lines and add line-numbers
 				lines = Array.new
@@ -717,7 +717,7 @@ def get_val( key, list )
 	if not list.last or list.last.first != key then
 		list << [ key, Array.new ]
 	end
-	
+
 	list.last.last
 end
 
@@ -726,7 +726,7 @@ end
 def create_result_tree( path, filters )
 	# Gather the results
 	results = parse_files( path, filters )
-	
+
 	# Sort the results by the following sequence of variables: Path -> File -> Filter -> Line
 	results.sort! do |a, b|
 		if (a.file_path <=> b.file_path) == 0 then
@@ -774,7 +774,7 @@ end
 def PadNum( number )
 	num = number.to_s
 
-	if ( num.size < 5 ) 
+	if ( num.size < 5 )
 		( "0" * ( 5 - num.size ) ) + num
 	else
 		num
@@ -784,7 +784,7 @@ end
 
 
 # Helper-function that escapes some chars to HTML codes
-def HTMLEsc( str ) 
+def HTMLEsc( str )
 	str.gsub!( /\&/, "&amp;"  )
 	str.gsub!( /\"/, "&quot;" )
 	str.gsub!( /</,  "&lt;"   )
@@ -800,7 +800,7 @@ end
 # TODO Enable use of templates.
 # TODO Abandon hope.
 def OutputHTML( filters, results )
-	text  = 
+	text  =
 "<html>
 	<head>
 		<STYLE TYPE=\"text/css\">
@@ -820,7 +820,7 @@ def OutputHTML( filters, results )
 				padding-left: 10pt;
 				padding-right: 10pt;
 				padding-top: 5pt;
-			}	
+			}
 		-->
 		</STYLE>
 	</head>
@@ -831,13 +831,13 @@ def OutputHTML( filters, results )
 "
 	# List the filters
 	filters.each do |filterType|
-		text += 
+		text +=
 "			<dt><b>#{filterType.first}</b></dt>
 			<dd>
 				<dl>
 "
 		filterType.last.each do |filter|
-			text += 
+			text +=
 "					<dt id=\"#{filter.name}\"><i>#{filter.title}</i></dt>
 					<dd>
 						#{HTMLEsc(filter.desc)}<p>
@@ -851,11 +851,11 @@ def OutputHTML( filters, results )
 "
 	end
 
-	text += 
+	text +=
 "		</dl>
-	
+
 		<p>
-	
+
 		<h1>Directories</h1>
 		<ul>
 "
@@ -869,40 +869,40 @@ def OutputHTML( filters, results )
 "
 	end
 
-	text += 
+	text +=
 "		</ul>
 
 		<p>
-	
+
 		<h1>Results</h1>
 "
 
 	results.each do |dir|
-		text += 
+		text +=
 "		<div class=\"dir\">
 			<h2 id=\"#{dir.first}\">#{dir.first}</h2>
 "
 
 		dir.last.each do |file|
-			text += 
+			text +=
 "			<div class=\"file\">
 				<h3>#{file.first}</h3>
 
 				<ul>
 "
-			
+
 			file.last.each do |filter|
-				text += 
+				text +=
 "					<li>
 						<div class=\"filter\">
 							<b><a href=\"\##{filter.first.name}\">#{filter.first.title}</a></b>
 
 							<ul>
 "
-			
+
 				filter.last.each do |result|
 					if result.line then
-						text += 
+						text +=
 "								<li><b>#{PadNum(result.line.number)}:</b> #{HTMLEsc(result.line.text.strip)}</li>
 "
 					end
@@ -914,20 +914,20 @@ def OutputHTML( filters, results )
 					</li>
 "
 			end
-			text += 
+			text +=
 "				</ul>
 			</div>
 "
 		end
-		
-		text += 
+
+		text +=
 "		</div>
 
 		<p>
 "
 	end
 
-	text += 
+	text +=
 "	</body>
 </html>"
 
@@ -946,15 +946,15 @@ end
 
 # Fugly output code also goes here, this is a bit more sparse than the HTML stuff
 def OutputTEXT( filters, results )
-	
+
 	# List the filters
 	text = "Filters\n"
 	filters.each do |filterType|
 		text += "\t* #{filterType.first}\n"
-		
+
 		filterType.last.each do |filter|
 			text += "\t\t- #{filter.title}\n"
-		
+
 			text += Columnize( filter.desc, 80, "\t\t\t" ) + "\n\n"
 		end
 	end
@@ -994,9 +994,9 @@ end
 #TODO Improved parameter-handling, add =<file> for the outputing to a file
 ARGV.each do |param|
 	case param
-		when "--text" then 
+		when "--text" then
 			puts OutputTEXT( create_filter_tree( filterList ), create_result_tree( ".", filterList ) )
-		when "--html" then 
+		when "--html" then
 			puts OutputHTML( create_filter_tree( filterList ), create_result_tree( ".", filterList ) )
 	end
 end
