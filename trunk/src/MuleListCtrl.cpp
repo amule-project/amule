@@ -391,10 +391,33 @@ void CMuleListCtrl::SortList()
 
 		m_isSorting = true;
 	
+		MuleSortData sortdata(m_sort_orders, m_sort_func);
+
+		// In many cases control already has correct order, and sorting causes nasty flickering.
+		// Make one pass through it to check if sorting is necessary at all.
+		int nrItems = GetItemCount();
+		bool clean = true;
+		long lastItemdata = 0;
+		if (nrItems > 1) {
+			lastItemdata = GetItemData(0);
+		}
+		for (int i = 1; i < nrItems; i++) {
+			long nextItemdata = GetItemData(i);
+			if (SortProc(lastItemdata, nextItemdata, (long int)&sortdata) > 0) {
+				// ok - we need to sort
+				clean = false;
+				break;
+			}
+			lastItemdata = nextItemdata;
+		}
+		if (clean) {
+			// no need to sort
+			m_isSorting = false;
+			return;
+		}
+
 		// Positions are likely to be invalid after sorting.
 		ResetTTS();
-		
-		MuleSortData sortdata(m_sort_orders, m_sort_func);
 		
 		// Store the current selected items
 		ItemDataList selectedItems = GetSelectedItems();
