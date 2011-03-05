@@ -473,10 +473,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 #ifndef ENABLE_UPNP
 	FindWindow(IDC_UPNP_ENABLED)->Enable(false);	
 	FindWindow(IDC_UPNPTCPPORT)->Enable(false);
+	FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(false);
 	thePrefs::SetUPnPEnabled(false);
-	// TODO: grey out "UPnP TCP Port", "Webserver UPnP TCP Port"
 	FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);	
 	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(false);
+	FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(false);
 	thePrefs::SetUPnPWebServerEnabled(false);
 	FindWindow(IDC_UPNP_EC_ENABLED)->Enable(false);
 	thePrefs::SetUPnPECEnabled(false);
