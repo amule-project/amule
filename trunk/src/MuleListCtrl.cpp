@@ -232,13 +232,21 @@ void CMuleListCtrl::LoadSettings()
 	} else {
 		// Sort orders
 		wxStringTokenizer tokens(sortOrders, wxT(","));
+		// Sort orders are stored in order primary, secondary, ...
+		// We want to apply them with SetSorting(), so we have to apply them in reverse order,
+		// so that the primary order is applied last and wins.
+		// Read them with tokenizer and store them in a list in reverse order.
+		CStringList tokenList;
 		while (tokens.HasMoreTokens()) {
-			wxString token = tokens.GetNextToken();
+			tokenList.push_front(tokens.GetNextToken());
+		}
+		for (CStringList::iterator it = tokenList.begin(); it != tokenList.end(); it++) {
+			wxString token = *it;
 			wxString name = token.BeforeFirst(wxT(':'));
 			long order = StrToLong(token.AfterFirst(wxT(':')).BeforeLast(wxT(':')));
 			long alt = StrToLong(token.AfterLast(wxT(':')));
 			int col = GetColumnIndex(name);
-			if (col > 0) {
+			if (col >= 0) {
 				SetSorting(col, (order ? SORT_DES : 0) | (alt ? SORT_ALT : 0));
 			}
 		}
