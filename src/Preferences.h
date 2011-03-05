@@ -565,6 +565,10 @@ public:
 	static void				SetGeoIPEnabled(bool v)	{s_GeoIPEnabled = v;}
 	static const wxString&	GetGeoIPUpdateUrl()		{return s_GeoIPUpdateUrl;}
 
+	// Stats server
+	static const wxString&	GetStatsServerName()		{return s_StatsServerName;}
+	static const wxString&	GetStatsServerURL()		{return s_StatsServerURL;}
+
 	// HTTP download
 	static wxString	GetLastHTTPDownloadURL(uint8 t);
 	static void		SetLastHTTPDownloadURL(uint8 t, const wxString& val);
@@ -802,6 +806,10 @@ protected:
 
 	// Sleep vetoing
 	static bool s_preventSleepWhileDownloading;
+
+	// Stats server
+	static wxString s_StatsServerName;
+	static wxString s_StatsServerURL;
 };
 
 

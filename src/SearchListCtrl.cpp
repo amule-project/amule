@@ -620,10 +620,13 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		
 		menu.Append(MP_MENU_CATS, _("Download in category"), cats);
 		menu.AppendSeparator();
-/* Commented out while it's gone
-		menu.Append(MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
-		menu.AppendSeparator();
-*/
+
+		const wxString & statsServer = thePrefs::GetStatsServerName();
+		if (!statsServer.IsEmpty()) {
+			menu.Append(MP_RAZORSTATS, CFormat(_("Get %s for this file")) % statsServer);
+			menu.AppendSeparator();
+		}
+
 		menu.Append(MP_SEARCHRELATED, _("Search related files (eD2k, local server)"));
 		menu.AppendSeparator();
 
@@ -690,7 +693,7 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
-	theApp->amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+	theApp->amuledlg->LaunchUrl(thePrefs::GetStatsServerURL() + file->GetFileHash().Encode());
 }
 
 
