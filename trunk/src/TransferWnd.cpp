@@ -234,6 +234,10 @@ void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
 
 void CTransferWnd::OnAddCategory(wxCommandEvent& WXUNUSED(event))
 {
+	if (theApp->glob_prefs->GetCatCount() >= 99) {
+		wxMessageBox(_("Only 99 categories are supported."), _("Too many categories!"), wxOK | wxICON_EXCLAMATION);
+		return;
+	}
 	CCatDialog dialog( this,
 	// Allow browse?
 #ifdef CLIENT_GUI	
