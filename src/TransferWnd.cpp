@@ -86,6 +86,9 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	downloadlistctrl = CastChild( wxT("downloadList"), CDownloadListCtrl );
 	clientlistctrl   = CastChild( ID_CLIENTLIST, CSourceListCtrl );
 	m_dlTab          = CastChild( ID_CATEGORIES, CMuleNotebook );
+
+	// Set disabled image for clear complete button
+	CastChild(ID_BTNCLRCOMPL, wxBitmapButton)->SetBitmapDisabled(amuleDlgImages(34));
 	
 	// We want to use our own popup
 	m_dlTab->SetPopupHandler( this );
