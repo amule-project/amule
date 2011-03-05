@@ -896,7 +896,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		// Part Number
 		case ColumnPart: {
 			if (file->IsPartFile() && !file->IsCompleted()) {
-			  text = file->GetPartMetFileName().RemoveAllExt().GetPrintable();
+			  text = CFormat(wxT("%03d")) % file->GetPartMetNumber();
 			}
 			break;
 		}
@@ -1116,8 +1116,8 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 	// Sort by part number
 	case ColumnPart:
 		result = CmpAny(
-			file1->GetPartMetFileName().RemoveAllExt(),
-			file2->GetPartMetFileName().RemoveAllExt() );
+			file1->GetPartMetNumber(),
+			file2->GetPartMetNumber() );
 		break;
 
 	// Sort by filename
