@@ -235,7 +235,10 @@ void CUploadQueue::Process()
 	//  but the cost for that outweights the benefit. As it is, a slot will be freed
 	//  even if it can't be taken because all of the queue is LowID. But just one,
 	//  and the kicked client will instantly get it back if he has HighID.)
-	if (m_waitinglist.empty() || tick - m_nLastStartUpload < 1000) {
+	// Also, if we are running out of sockets, don't add new clients, but also don't kick existing ones,
+	// or uploading will cease right away.
+	if (m_waitinglist.empty() || tick - m_nLastStartUpload < 1000
+		|| theApp->listensocket->TooManySockets()) {
 		m_allowKicking = false;
 	// Already a slot free, try to fill it
 	} else if (m_uploadinglist.size() < GetMaxSlots()) {
@@ -486,7 +489,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	uint32 tick = GetTickCount();
 	client->ClearWaitStartTime();
 	// if possible start upload right away
-	if (m_waitinglist.empty() && tick - m_nLastStartUpload >= 1000 && m_uploadinglist.size() < GetMaxSlots()) {
+	if (m_waitinglist.empty() && tick - m_nLastStartUpload >= 1000 
+		&& m_uploadinglist.size() < GetMaxSlots()
+		 && !theApp->listensocket->TooManySockets()) {
 		AddUpNextClient(client);
 		m_nLastStartUpload = tick;
 	} else {
