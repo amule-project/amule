@@ -225,6 +225,8 @@ wxString 	CPreferences::s_KadURL;
 bool	 	CPreferences::s_GeoIPEnabled;
 wxString 	CPreferences::s_GeoIPUpdateUrl;
 bool		CPreferences::s_preventSleepWhileDownloading;
+wxString 	CPreferences::s_StatsServerName;
+wxString 	CPreferences::s_StatsServerURL;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -1284,6 +1286,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	wxConfigBase::Get()->DeleteEntry(wxT("/eMule/GeoIPUpdateUrl")); // get rid of the old one for a while
 
 	s_MiscList.push_back( new Cfg_Str( wxT("/WebServer/Path"),				s_sWebPath, wxT("amuleweb") ) );
+
+	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerName"),		s_StatsServerName,	wxT("Shorty's ED2K stats") ) );
+	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerURL"),		s_StatsServerURL,	wxT("http://ed2k.shortypower.dyndns.org/?hash=") ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
