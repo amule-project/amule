@@ -88,6 +88,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_ENFORCE_PO_INCOMING,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_SHOWRATEONTITLE,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_NETWORKED2K,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_NETWORKKAD,		PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
@@ -419,6 +420,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
+	FindWindow( IDC_UDPENABLE )->Enable( !thePrefs::GetNetworkKademlia());
 	FindWindow( IDC_UDPPORT )->Enable( thePrefs::s_UDPEnable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
@@ -765,6 +767,20 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_UDPENABLE:
 			FindWindow( IDC_UDPPORT )->Enable(value);
 			break;
+
+		case IDC_NETWORKKAD: {
+			wxCheckBox * udpPort = (wxCheckBox *) FindWindow(IDC_UDPENABLE);
+			if (value) {
+				// Kad enabled: disable check box, turn UDP on, enable port spin control
+				udpPort->Enable(false);
+				udpPort->SetValue(true);
+				FindWindow(IDC_UDPPORT)->Enable(true);
+			} else {
+				// Kad disabled: enable check box
+				udpPort->Enable(true);
+			}
+			break;
+		}
 
 		case IDC_CHECKDISKSPACE:
 			FindWindow( IDC_MINDISKSPACE )->Enable(value);
