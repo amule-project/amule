@@ -1199,7 +1199,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 	bool ret = true;
 	wxString skinFileName(thePrefs::GetSkin());
 
-	if (skinFileName.IsEmpty()) {
+	if (skinFileName.IsEmpty() || skinFileName.IsSameAs(_("- default -"))) {
 		return false;
 	}
 
