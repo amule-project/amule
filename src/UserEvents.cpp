@@ -46,6 +46,8 @@ static struct {
 	wxString gui_command;
 } s_EventList[] = {
 	USEREVENTS_EVENTLIST()
+	/* This macro expands to initialise the list of user event types. Example:
+	   { wxT("NewChatSession"), wxTRANSLATE("New chat session started"), false, wxEmptyString, false, wxEmptyString }, */
 };
 #undef USEREVENTS_EVENT
 
@@ -121,6 +123,11 @@ static void ExecuteCommand(
 	wxString command = cmd;
 	switch (event) {
 		USEREVENTS_EVENTLIST()
+		/* This macro expands to handle all user event types. Example:
+		   case CUserEvents::NewChatSession: {
+		       command.Replace( wxT("%SENDER"), *((wxString*)object) );
+			   break;
+		   } */
 	}
 	if (!command.empty()) {
 		CTerminationProcess *p = new CTerminationProcess(cmd);

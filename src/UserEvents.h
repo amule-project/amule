@@ -54,7 +54,7 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
  * have to maintain these five places in sync. They are:
  * - one in PrefsUnifiedDlg.cpp (EVENT_LIST, PrefsUnifiedDlg::PrefsUnifiedDlg())
  * - one in this header (CUserEvents::EventType)
- * - two in UserEvents.cpp (static struct EventList[]; CUserEvent::ProcessEvent())
+ * - two in UserEvents.cpp (static struct EventList[]; CUserEvent::ExecuteCommand())
  */
 #define USEREVENTS_EVENTLIST() \
 	USEREVENTS_EVENT(DownloadCompleted, wxTRANSLATE("Download completed"), \
@@ -119,6 +119,8 @@ class CUserEvents {
 	//! Event list
 	enum EventType {
 		USEREVENTS_EVENTLIST()
+		/* This macro expands to the following list of user event types:
+		   DownloadCompleted, NewChatSession, OutOfDiskSpace, ErrorOnCompletion */
 	};
 
 	/**
