@@ -264,6 +264,11 @@ wxDialog(parent, -1, _("Preferences"),
 						USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT);
 					switch (idx) {
 						USEREVENTS_EVENTLIST()
+						/* This macro expands to handle all user event types. Here is an example:
+						   case CUserEvents::NewChatSession: {
+						       CreateEventPanels(idx, wxString(wxT("\n %SENDER - ")) + wxTRANSLATE("Message sender."), Widget);
+						       break;
+						   } */							
 					}
 				}
 			}
