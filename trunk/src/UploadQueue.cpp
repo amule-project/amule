@@ -56,6 +56,7 @@
 #include <common/Format.h>
 #include "UploadBandwidthThrottler.h"
 #include "GuiEvents.h"		// Needed for Notify_*
+#include "ListenSocket.h"
 
 
 //TODO rewrite the whole networkcode, use overlapped sockets
