@@ -321,7 +321,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 	if (theLogger.IsEnabledStdoutLog()) {
 		if ( enable_daemon_fork ) {
-			AddLogLineNS(wxT("Daemon will fork to background - log to stdout disabled"));
+			AddLogLineNS(wxT("Daemon will fork to background - log to stdout disabled"));	// localization not active yet
 			theLogger.SetEnabledStdoutLog(false);
 		} else {
 			AddLogLineNS(wxT("Logging to stdout enabled"));
