@@ -2310,6 +2310,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		} catch (const CEOFException& e) {
 			AddLogLineC(CFormat( _("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
+			SetStatus(PS_ERROR);
 			return false;
 		}
 
