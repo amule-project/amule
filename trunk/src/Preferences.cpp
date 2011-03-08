@@ -180,6 +180,7 @@ bool 		CPreferences::s_AcceptExternalConnections;
 wxString	CPreferences::s_ECAddr;
 uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
+bool		CPreferences::s_TransmitOnlyUploadingClients;
 bool		CPreferences::s_IPFilterClients;
 bool		CPreferences::s_IPFilterServers;
 bool		CPreferences::s_UseSrcSeeds;
@@ -1289,6 +1290,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 
 	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerName"),		s_StatsServerName,	wxT("Shorty's ED2K stats") ) );
 	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerURL"),		s_StatsServerURL,	wxT("http://ed2k.shortypower.dyndns.org/?hash=") ) );
+
+	s_MiscList.push_back( new Cfg_Bool( wxT("/ExternalConnect/TransmitOnlyUploadingClients"),	s_TransmitOnlyUploadingClients, false ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
