@@ -43,7 +43,7 @@
 #include <sys/mman.h>
 #endif
 
-#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(HAVE_MMAP)
+#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(HAVE_MMAP) || defined(__UCLIBC__)
 
 class CFileAreaSigHandler
 {
