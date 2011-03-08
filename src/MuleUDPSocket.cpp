@@ -326,7 +326,7 @@ bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint1
 		} else {
 			// An error which we can't handle happended, so we drop 
 			// the packet rather than risk entering an infinite loop.
-			AddLogLineNS((wxT("WARNING! ") + m_name + wxT(": Packet to ")) 
+			AddLogLineN((wxT("WARNING! ") + m_name + wxT(": Packet to ")) 
 				<< Uint32_16toStringIP_Port(ip, port)
 				<< wxT(" discarded due to error (") << error << wxT(") while sending."));
 			sent = true;
