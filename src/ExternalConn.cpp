@@ -671,8 +671,14 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	// Add clients
 	CECEmptyTag clients(EC_TAG_CLIENT);
 	const CClientList::IDMap& clientList = theApp->clientlist->GetClientList();
+	bool onlyTransmittingClients = thePrefs::IsTransmitOnlyUploadingClients();
 	for (CClientList::IDMap::const_iterator it = clientList.begin(); it != clientList.end(); it++) {
 		const CUpDownClient* cur_client = it->second.GetClient();
+		if (onlyTransmittingClients && !cur_client->IsDownloading()) {
+			// For poor CPU cores only transmit uploading clients. This will save a lot of CPU.
+			// Set ExternalConnect/TransmitOnlyUploadingClients to 1 for it.
+			continue;
+		}
 		CValueMap &valuemap = tagmap.GetValueMap(cur_client->ECID());
 		clients.AddTag(CEC_UpDownClient_Tag(cur_client, EC_DETAIL_INC_UPDATE, &valuemap));
 	}

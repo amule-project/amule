@@ -429,6 +429,8 @@ public:
 	static void			SetECPort(uint32 val) { s_ECPort = val; }
 	static const wxString&	ECPassword()			{ return s_ECPassword; }
 	static void		SetECPass(const wxString& pass)	{ s_ECPassword = pass; }
+	static bool		IsTransmitOnlyUploadingClients() { return s_TransmitOnlyUploadingClients; }
+
 	// Fast ED2K Links Handler Toggling
 	static bool 		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
 
@@ -728,6 +730,7 @@ protected:
 	static wxString s_ECAddr;
 	static uint32	s_ECPort;
 	static wxString	s_ECPassword;
+	static bool		s_TransmitOnlyUploadingClients;
 	
 	// Kry - IPFilter 
 	static bool	s_IPFilterClients;
