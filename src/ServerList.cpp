@@ -173,11 +173,11 @@ bool CServerList::LoadServerMet(const CPath& path)
 			AddLogLineC(CFormat(wxPLURAL("%d server added", "%d servers added", iAddCount)) % iAddCount);
 		}
 	} catch (const CInvalidPacket& err) {
-		AddLogLineC(wxT("Error: the file server.met is corrupted: ") + err.what());
+		AddLogLineC(_("Error: the file 'server.met' is corrupted: ") + err.what());
 		Notify_ServerThaw();
 		return false;
 	} catch (const CSafeIOException& err) {
-		AddLogLineC(wxT("IO error while reading 'server.met': ") + err.what());
+		AddLogLineC(_("IO error while reading 'server.met': ") + err.what());
 		Notify_ServerThaw();
 		return false;
 	}

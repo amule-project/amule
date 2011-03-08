@@ -370,7 +370,7 @@ bool CamuleApp::OnInit()
 {
 #if wxUSE_MEMORY_TRACING
 	// any text before call of Localize_mule needs not to be translated.
-	AddLogLineNS(wxT("Checkpoint set on app init for memory debug"));
+	AddLogLineNS(wxT("Checkpoint set on app init for memory debug"));	// debug output
 	wxDebugContext::SetCheckpoint();
 #endif
 

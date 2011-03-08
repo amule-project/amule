@@ -596,7 +596,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			}
 		}			
 	} catch (const CInvalidPacket& e) {
-		AddLogLineC(CFormat(wxT("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
+		AddLogLineC(CFormat(_("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
 			% m_partmetfilename
 			% GetFileName()
 			% e.what());
@@ -2303,12 +2303,12 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		try {
 			CreateHashFromFile(m_hpartfile, offset, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
-			AddLogLineC(CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+			AddLogLineC(CFormat( _("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
 			SetStatus(PS_ERROR);
 			return false;
 		} catch (const CEOFException& e) {
-			AddLogLineC(CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+			AddLogLineC(CFormat( _("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
 			return false;
 		}
