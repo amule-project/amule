@@ -536,15 +536,6 @@ namespace MuleNotify
 #endif
 	}
 	
-	void ShowQueueCount(uint32 NOT_ON_DAEMON(count))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd) {
-			theApp->amuledlg->m_transferwnd->ShowQueueCount(count);
-		}
-#endif
-	}
-	
 	void ShowUpdateCatTabTitles()
 	{
 #ifndef AMULE_DAEMON

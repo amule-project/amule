@@ -74,8 +74,6 @@ CUploadQueue::CUploadQueue()
 CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 {
 	CUpDownClient* newclient = NULL;
-	// Track if we purged any clients from the queue, as to only send one notify in total
-	bool purged = false;
 	uint32 tick = GetTickCount();
 	m_lastSort = tick;
 	CClientRefList::iterator it = m_waitinglist.begin();
@@ -86,7 +84,6 @@ CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 		// clear dead clients
 		if (tick - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME 
 			|| !theApp->sharedfiles->GetFileByID(cur_client->GetUploadFileID())) {
-			purged = true;
 			cur_client->ClearWaitStartTime();
 			RemoveFromWaitingQueue(it2);
 			if (!cur_client->GetSocket()) {
@@ -148,11 +145,6 @@ CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 				}
 			}
 		}
-	}
-
-	// Update the count on GUI if any clients were purged
-	if (purged || (newclient && !sortonly)) {
-		Notify_ShowQueueCount(m_waitinglist.size());
 	}
 
 #ifdef __DEBUG__
@@ -629,9 +621,6 @@ uint16 CUploadQueue::SuspendUpload(const CMD4Hash& filehash, bool terminate)
 			removed++;
 		}
 	}
-	if (removed) {
-		Notify_ShowQueueCount(m_waitinglist.size());
-	}
 	return removed;
 }
 
@@ -644,7 +633,6 @@ bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client)
 		CClientRefList::iterator it1 = it++;
 		if (it1->GetClient() == client) {
 			RemoveFromWaitingQueue(it1);
-			Notify_ShowQueueCount(m_waitinglist.size());
 			// update ranks of remaining queue
 			while (it != m_waitinglist.end()) {
 				it->GetClient()->SetUploadQueueWaitingPosition(rank++);

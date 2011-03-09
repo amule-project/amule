@@ -86,16 +86,6 @@ public:
 	void RemoveCategoryPage(int index);
 
 	/**
-	 * This functions updates the displayed client-numbers*
-	 *
-	 * @param number The number of clients on the upload queue.
-	 *
-	 * This function updates both the number of clients on the queue,
-	 * as well as the number of banned clients.
-	 */
-	void	ShowQueueCount(uint32 number);
-	
-	/**
 	 * Helper-function which updates the displayed titles of all existing categories.
 	 */
 	void	UpdateCatTabTitles() { UpdateCategory(-1); }
