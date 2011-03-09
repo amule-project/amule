@@ -335,12 +335,12 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 
 void CaMuleExternalConnector::TextShell(const wxString &prompt)
 {
-	char buffer[256];
+	char buffer[2048];
 	wxString buf;
 
 	bool The_End = false;
 	do {
-		GetCommand(prompt, buffer, 256);
+		GetCommand(prompt, buffer, sizeof buffer);
 		buf = char2unicode(buffer);
 		The_End = Parse_Command(buf);
 	} while ((!The_End) && (m_ECClient->IsSocketConnected()));
