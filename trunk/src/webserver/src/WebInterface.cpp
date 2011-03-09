@@ -599,15 +599,16 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
 
+		m_Verbose = false;
+		m_KeepQuiet = true;
+		m_LoadSettingsFromAmule = true;
+
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
 			fprintf(stderr, "FATAL ERROR: Cannot find template: %s\n",
 				(const char *)unicode2char(m_TemplateName));
-			return true;
+			return false;
 		}
-		m_Verbose = false;
-		m_KeepQuiet = true;
-		m_LoadSettingsFromAmule = true;
 		return true;
 	}
 
