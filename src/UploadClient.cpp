@@ -774,8 +774,6 @@ void  CUpDownClient::UnBan(){
 	theApp->clientlist->RemoveBannedClient( GetIP() );
 	SetUploadState(US_NONE);
 	ClearWaitStartTime();
-	
-	Notify_ShowQueueCount(theStats::GetWaitingUserCount());
 }
 
 void CUpDownClient::Ban(){
@@ -786,7 +784,6 @@ void CUpDownClient::Ban(){
 	
 	SetUploadState(US_BANNED);
 	
-	Notify_ShowQueueCount(theStats::GetWaitingUserCount());
 	Notify_SharedCtrlRefreshClient(ECID(), UNAVAILABLE_SOURCE);
 }
 

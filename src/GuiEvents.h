@@ -123,7 +123,6 @@ namespace MuleNotify
 	
 	void ShowConnState(long state);
 	void ShowUserCount(wxString str);
-	void ShowQueueCount(uint32 count);
 	void ShowUpdateCatTabTitles();
 	void ShowGUI();
 
@@ -498,7 +497,6 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // misc
 #define Notify_ShowConnState(val)			MuleNotify::DoNotify(&MuleNotify::ShowConnState, val)
 #define Notify_ShowUserCount(str)			MuleNotify::DoNotify(&MuleNotify::ShowUserCount, str)
-#define Notify_ShowQueueCount(val)			MuleNotify::DoNotify(&MuleNotify::ShowQueueCount, val)
 #define Notify_ShowUpdateCatTabTitles()			MuleNotify::DoNotify(&MuleNotify::ShowUpdateCatTabTitles)
 #define Notify_ShowGUI()				MuleNotify::DoNotify(&MuleNotify::ShowGUI)
 

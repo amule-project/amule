@@ -323,18 +323,6 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 }
 
 
-void CTransferWnd::ShowQueueCount(uint32 /*number*/)
-{
-#if 0
-	wxString str = CFormat(wxT("%u (%u %s)")) % number % theStats::GetBannedCount() % _("Banned");
-	wxStaticText* label = CastChild( ID_CLIENTCOUNT, wxStaticText );
-	
-	label->SetLabel( str );
-	label->GetParent()->Layout();
-#endif
-}
-
-
 void CTransferWnd::OnCategoryChanged(wxNotebookEvent& evt)
 {
 	// First remove currently showing sources (switching cat will deselect all)
