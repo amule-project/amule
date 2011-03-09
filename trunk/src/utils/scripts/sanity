@@ -282,7 +282,12 @@ class PassByValue < SanityCheck
 				# Try to identify function definitions
 				if line.text =~ /^\s*(virtual|static|inline|)\s*\w+\s+\w+\s*\(.*\)/
 					# Split by arguments
-					line.text.match(/\(.*\)/)[0].split(",").each do |str|
+					if line.text =~ /\(.*\)\s*\{/
+						args = line.text.match(/\(.*\)\s*\{/)[0]
+					else
+						args = line.text.match(/\(.*\)/)[0]
+					end
+					args.split(",").each do |str|
 						items.each do |item|
 							if str =~ /#{item}\s*[^\s\&\*\(]/
 								results.push( line )
