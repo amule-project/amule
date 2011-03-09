@@ -47,7 +47,6 @@ public:
 		time_t in_date,
 		uint64 in_size);
 	CKnownFile* FindKnownFileByID(const CMD4Hash& hash);
-	bool	IsKnownFile(const CKnownFile* file);
 	void	PrepareIndex();
 	void	ReleaseIndex();
 

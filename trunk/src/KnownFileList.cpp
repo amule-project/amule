@@ -230,29 +230,6 @@ CKnownFile *CKnownFileList::IsOnDuplicates(
 }
 
 
-bool CKnownFileList::IsKnownFile(const CKnownFile *file) 
-{
-	wxCHECK(file, false);
-
-	wxMutexLocker sLock(list_mut);
-
-	// For the map, search with the key
-	const CMD4Hash &key = file->GetFileHash();
-	CKnownFileMap::const_iterator itMap = m_knownFileMap.find(key);
-	if (itMap != m_knownFileMap.end()) {
-		return true;
-	}
-	// For the list, we have to iterate to search
-	for (KnownFileList::iterator it = m_duplicateFileList.begin();
-	     it != m_duplicateFileList.end(); ++it) {
-		if (*it == file) {
-			return true;
-		}
-	}
-	return false;
-}
-
-
 CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
 {
 	wxMutexLocker sLock(list_mut);
