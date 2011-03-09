@@ -1767,7 +1767,7 @@ int CUpDownClient::GetHashType() const
 
 void CUpDownClient::SetSocket(CClientTCPSocket* socket)
 {
-#if defined(__DEBUG__)
+#ifdef __DEBUG__
 	if (m_socket == NULL && socket != NULL) {
 		theStats::SocketAssignedToClient();
 	} else if (m_socket != NULL && socket == NULL) {
@@ -2752,7 +2752,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 					// replace captchaanswer with withheld message and show it
 					message = m_strCaptchaPendingMsg;
 					m_cCaptchasSent = 0;
-					m_strCaptchaChallenge = wxEmptyString;
+					m_strCaptchaChallenge.Clear();
 					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
 					byte statusResponse = 0; // status response
 					packet->CopyToDataBuffer(0, &statusResponse, 1);
@@ -2761,8 +2761,8 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 				} else { // wrong, cleanup and ignore
 					AddDebugLogLineN(logClient, CFormat(wxT("Captcha answer failed (%s)")) % GetClientFullInfo());
 					m_nChatCaptchaState = CA_NONE;
-					m_strCaptchaChallenge = wxEmptyString;
-					m_strCaptchaPendingMsg = wxEmptyString;
+					m_strCaptchaChallenge.Clear();
+					m_strCaptchaPendingMsg.Clear();
 					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
 					byte statusResponse = (m_cCaptchasSent < 3) ? 1 : 2; // status response
 					packet->CopyToDataBuffer(0, &statusResponse, 1);

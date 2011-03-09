@@ -510,7 +510,7 @@ extern "C" {
 	// left = VAR(func_name), right=ARRAY(args)
 	void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result);
 
-#if defined(__GNUC__)
+#ifdef __GNUC__
 	void php_report_error(PHP_MSG_TYPE mtype, const char *msg, ...)  __attribute__ ((__format__ (__printf__, 2, 3)));
 #else
 	void php_report_error(PHP_MSG_TYPE mtype, const char *msg, ...);

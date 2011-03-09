@@ -1370,7 +1370,7 @@ void CamuleApp::OnFinishedAllocation(CAllocFinishedEvent& evt)
 
 void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 {
-#if defined(AMULE_DAEMON)
+#ifdef AMULE_DAEMON
 	evt.Notify();
 #else
 	if (theApp->amuledlg) {

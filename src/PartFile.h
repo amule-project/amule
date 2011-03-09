@@ -100,7 +100,6 @@ public:
 	CPartFile(const CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
-	bool	CreateFromFile(wxString WXUNUSED(directory), wxString WXUNUSED(filename), void* WXUNUSED(pvProgressParam)) {return false;}// not supported in this class
 	virtual bool LoadFromFile(const CFileDataIO* WXUNUSED(file)) { return false; }
 	bool	WriteToFile(CFileDataIO* WXUNUSED(file))	{ return false; }
 
