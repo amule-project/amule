@@ -275,7 +275,7 @@ class PassByValue < SanityCheck
 
 		# Only handle header files
 		if file =~ /\.h$/
-			# Items that should be passed by const-ref
+			# Items that should not be passed by value
 			items = [ "wxString", "wxRect", "wxPoint", "CMD4Hash", "CPath" ]
 
 			lines.each do |line|
@@ -284,7 +284,7 @@ class PassByValue < SanityCheck
 					# Split by arguments
 					line.text.match(/\(.*\)/)[0].split(",").each do |str|
 						items.each do |item|
-							if str =~ /#{item}\s*[^\s\*]/ and not str =~ /const/
+							if str =~ /#{item}\s*[^\s\&\*\(]/
 								results.push( line )
 							end
 						end
