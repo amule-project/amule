@@ -153,7 +153,7 @@ private:
 		while (true) {
 			if (fcntl(m_fd, F_SETLKW, &lock) == 0) {
 				return true;
-			} else if ((errno != EACCES) and (errno != EAGAIN) and (errno != EINTR)) {
+			} else if ((errno != EACCES) && (errno != EAGAIN) && (errno != EINTR)) {
 				// Not an error we can recover from.
 				break;
 			}

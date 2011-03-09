@@ -349,7 +349,7 @@ class Cfg_Str : public Cfg_Tmpl<wxString>
 {
 public:
 	/** Constructor. */
-	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
+	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = EmptyString )
 	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
 	{}
 
@@ -374,7 +374,7 @@ public:
 class Cfg_Str_Encrypted : public Cfg_Str
 {
 public:
-	Cfg_Str_Encrypted( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
+	Cfg_Str_Encrypted( const wxString& keyname, wxString& value, const wxString& defaultVal = EmptyString )
 	 : Cfg_Str( keyname, value, defaultVal )
 	{}
 
@@ -404,7 +404,7 @@ class Cfg_Path : public Cfg_Str
 {
 public:
 	/** Constructor. */
-	Cfg_Path(const wxString& keyname, CPath& value, const wxString& defaultVal = wxEmptyString )
+	Cfg_Path(const wxString& keyname, CPath& value, const wxString& defaultVal = EmptyString )
 	 : Cfg_Str(keyname, m_temp_path, defaultVal)
 	 , m_real_path(value)
 	{}
@@ -844,7 +844,7 @@ void Cfg_Lang_Base::UpdateChoice(int) {}	// dummy
 class Cfg_Skin : public Cfg_Str
 {
 public:
-	Cfg_Skin( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
+	Cfg_Skin( const wxString& keyname, wxString& value, const wxString& defaultVal = EmptyString )
 		: Cfg_Str( keyname, value, defaultVal ),
 		  m_is_skin(false)
 	{}

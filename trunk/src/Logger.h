@@ -412,7 +412,7 @@ public:
  * preferences.
  * AddLogLineMS will also always print to stdout.
  */
-#if defined(MULEUNIT)
+#ifdef MULEUNIT
 	#define AddDebugLogLineN(...) do {} while (false)
 	#define AddLogLineN(...) do {} while (false)
 	#define AddLogLineNS(...) do {} while (false)

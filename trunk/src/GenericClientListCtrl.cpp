@@ -139,7 +139,7 @@ m_columndata(0, NULL)
 
 wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 {
-	wxString name = wxEmptyString;
+	wxString name;
 
 	switch (cid) {
 		case ColumnUserName:
