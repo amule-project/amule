@@ -1315,18 +1315,15 @@ void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
 	CScopedPtr<CKnownFile> result(evt.GetResult());
 	
-	// Check that the owner is still valid
-	if (knownfiles->IsKnownFile(owner)) {
-		if (result->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE) {
-			CAICHHashSet* oldSet = owner->GetAICHHashset();
-			CAICHHashSet* newSet = result->GetAICHHashset();
+	if (result->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE) {
+		CAICHHashSet* oldSet = owner->GetAICHHashset();
+		CAICHHashSet* newSet = result->GetAICHHashset();
 
-			owner->SetAICHHashset(newSet);
-			newSet->SetOwner(owner);
+		owner->SetAICHHashset(newSet);
+		newSet->SetOwner(owner);
 
-			result->SetAICHHashset(oldSet);
-			oldSet->SetOwner(result.get());
-		}
+		result->SetAICHHashset(oldSet);
+		oldSet->SetOwner(result.get());
 	}
 }
 
