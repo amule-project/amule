@@ -187,6 +187,7 @@ public:
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
 	bool	WriteToFile(CFileDataIO* file);
 	time_t GetLastChangeDatetime() const { return m_lastDateChanged; }
+	void SetLastChangeDatetime(time_t t) { m_lastDateChanged = t; }
 
 	virtual void SetFileSize(uint64 nFileSize);
 

@@ -171,6 +171,7 @@ Version 2.3.0 - The river knows.
 		* Fix a small memory leak in Kademlia code
 		* Fix occasionally sending junk at end of packets
 		* Fix child items in search result getting inserted in wrong positions
+		* Shared files don't lose all information when they get renamed
 
 	Vollstrecker:
 		* Unify copyright lines
