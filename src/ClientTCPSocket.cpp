@@ -896,43 +896,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
 				AddLogLineC(CFormat( _("User %s (%u) requested your shareddirectories-list -> Accepted") )
 					% m_client->GetUserName()
-					% m_client->GetUserIDHybrid() );
-
-				// This list will contain all (unique) folders.
-				std::list<CPath> foldersToSend;
-			   
-				// The shared folders
-				const unsigned folderCount = theApp->glob_prefs->shareddir_list.size();
-				for (unsigned i = 0; i < folderCount; ++i) {
-					foldersToSend.push_back(theApp->glob_prefs->shareddir_list[i]);
-				}
-				
-				// ... the categories folders ... (category 0 -> incoming)
-				for (unsigned i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
-					foldersToSend.push_back(theApp->glob_prefs->GetCategory(i)->path);
-				}
-	
-				// ... and the Magic thing from the eDonkey Hybrids...
-				foldersToSend.push_back(CPath(OP_INCOMPLETE_SHARED_FILES));
-
-				// Strip duplicates
-				foldersToSend.sort();
-				foldersToSend.unique();
-				
-				// Send packet.
-				CMemFile tempfile(80);
-				tempfile.WriteUInt32(foldersToSend.size());
-
-				std::list<CPath>::iterator it = foldersToSend.begin();
-				for (; it != foldersToSend.end(); ++it) {
-					// We need to send the 'raw' filename, so we can recognize it again.
-					tempfile.WriteString(it->GetRaw(), m_client->GetUnicodeSupport());
-				}
-
-				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);
-				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
-				AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRSANS to ") + m_client->GetFullIP() );
-				SendPacket(replypacket, true, true);
+ 					% m_client->GetUserIDHybrid() );
+				// send the list of shared directories
+				m_client->SendSharedDirectories();
 			} else {
 				AddLogLineC(CFormat( _("User %s (%u) requested your shareddirectories-list -> Denied") )
 					% m_client->GetUserName()
@@ -961,40 +927,8 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 				AddLogLineC(CFormat(_("User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 				wxASSERT( data.GetPosition() == data.GetLength() );
-				
-				CKnownFilePtrList list;
-				
-				if (strReqDir == OP_INCOMPLETE_SHARED_FILES) {
-					// get all shared files from download queue
-					int iQueuedFiles = theApp->downloadqueue->GetFileCount();
-					for (int i = 0; i < iQueuedFiles; i++) {
-						CPartFile* pFile = theApp->downloadqueue->GetFileByIndex(i);
-						if (pFile == NULL || pFile->GetStatus(true) != PS_READY) {
-							continue;
-						}
-						
-						list.push_back(pFile);
-					}
-				} else {
-					theApp->sharedfiles->GetSharedFilesByDirectory(strReqDir, list);
-				}
-
-				CMemFile tempfile(80);
-				tempfile.WriteString(strReqDir, m_client->GetUnicodeSupport());
-				tempfile.WriteUInt32(list.size());
-				
-				while (!list.empty()) {
-					if (!list.front()->IsLargeFile() || m_client->SupportsLargeFiles()) {
-						list.front()->CreateOfferedFilePacket(&tempfile, NULL, m_client);
-					}
-					
-					list.pop_front();
-				}
-				
-				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIRANS);
-				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
-				AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESDIRANS to ") + m_client->GetFullIP() );
-				SendPacket(replypacket, true, true);
+				// send the list of shared files for the requested directory
+				m_client->SendSharedFilesOfDirectory(strReqDir);
 			} else {
 				AddLogLineC(CFormat(_("User %s (%u) requested your sharedfiles-list for directory '%s' -> denied")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 				

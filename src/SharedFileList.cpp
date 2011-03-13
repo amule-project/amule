@@ -535,7 +535,10 @@ void CSharedFileList::Reload()
 		
 		/* All Kad keywords must be removed */
 		m_keywords->RemoveAllKeywordReferences();
-		
+
+		/* Public identifiers must be erased as they might be invalid now */
+		m_PublicSharedDirNames.clear();
+
 		FindSharedFiles();
 		
 		/* And now the unreferenced keywords must be removed also */
@@ -942,6 +945,117 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 		}
 	}
 	
+	return false;
+}
+
+
+const CPath* CSharedFileList::GetDirForPublicSharedDirName(const wxString& strSharedDir) const
+{
+	StringPathMap::const_iterator it = m_PublicSharedDirNames.find(strSharedDir);
+
+	if (it != m_PublicSharedDirNames.end()) {
+		return &(it->second);
+	} else {
+		return NULL;
+	}
+}
+
+
+wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
+{
+	// safety check: is the directory supposed to be shared after all?
+	if (!IsShared(dir))	{
+		wxFAIL;
+		return wxT("");
+	}
+	// check if the public name for the directory is cached in our Map
+	StringPathMap::const_iterator it;
+	for (it = m_PublicSharedDirNames.begin(); it != m_PublicSharedDirNames.end(); ++it) {
+		if (it->second.IsSameDir(dir)) {
+			// public name for directory was determined earlier
+			return it->first;
+		}
+	}
+
+	// we store the path separator (forward or back slash) for quick access
+	wxChar cPathSepa = wxFileName::GetPathSeparator();
+
+	// determine and cache the public name for "dir" ...
+	// We need to use the 'raw' filename, so the receiving client can recognize it.
+	wxString strDirectoryTmp = dir.GetRaw();
+	if (strDirectoryTmp.EndsWith(&cPathSepa)) {
+		strDirectoryTmp.RemoveLast();
+	}
+	
+	wxString strPublicName;
+	int iPos;
+	// check all the subdirectories in the path for being shared
+	// the public name will consist of these concatenated
+	while ((iPos = strDirectoryTmp.Find( cPathSepa, true )) != wxNOT_FOUND)	{
+		strPublicName = strDirectoryTmp.Right(strDirectoryTmp.Length() - iPos) + strPublicName;
+		strDirectoryTmp.Truncate(iPos);
+		if (!IsShared(CPath(strDirectoryTmp)))
+			break;
+	}
+	if (!strPublicName.IsEmpty()) {
+		// remove first path separator ???
+		wxASSERT( strPublicName.GetChar(0) == cPathSepa );
+		strPublicName = strPublicName.Right(strPublicName.Length() - 1);
+	} else {
+		// must be a rootdirectory on Windos
+		wxASSERT( strDirectoryTmp.Length() == 2 );
+		strPublicName = strDirectoryTmp;
+	}
+	// we have the name, make sure it is unique by appending an index if necessary
+	if (m_PublicSharedDirNames.find(strPublicName) != m_PublicSharedDirNames.end())	{
+		wxString strUniquePublicName;
+		for (iPos = 2; ; ++iPos) {
+			strUniquePublicName = CFormat(wxT("%s_%i")) % strPublicName % iPos;
+
+			if (m_PublicSharedDirNames.find(strUniquePublicName) == m_PublicSharedDirNames.end()) {
+				AddDebugLogLineN(logClient, CFormat(wxT("Using public name '%s' for directory '%s'"))
+				                            % strUniquePublicName
+				                            % dir.GetPrintable());
+				m_PublicSharedDirNames.insert(std::pair<wxString, CPath> (strUniquePublicName, dir));
+				return strUniquePublicName;
+			}
+			// This is from eMule and it checks if there are more than 200 shared folders with the same public name.
+			// The condition can be true if many shared subfolders with the same name exist in folders that are not
+			// shared. So they get the names of each shared subfolders concatenated. But those might all be the same!
+			// It's here for safety reasons so we should not run out of memory.
+			else if (iPos > 200)  // Only 200 identical names are indexed.
+			{
+				wxASSERT( false );
+				return wxT("");
+			}
+		}
+	} else {
+		AddDebugLogLineN(logClient, CFormat(wxT("Using public name '%s' for directory '%s'")) % strPublicName % dir.GetPrintable());
+		m_PublicSharedDirNames.insert(std::pair<wxString, CPath> (strPublicName, dir));
+		return strPublicName;
+	}
+}
+
+
+bool CSharedFileList::IsShared(const CPath& path) const
+{ 
+	if( path.IsDir(CPath::exists) ) {
+		// check if it's a shared folder
+		const unsigned folderCount = theApp->glob_prefs->shareddir_list.size();
+		for (unsigned i = 0; i < folderCount; ++i) {
+			if (path.IsSameDir(theApp->glob_prefs->shareddir_list[i])) {
+				return true;
+			}
+		}
+	
+		// check if it's one of the categories folders (category 0 = incoming)
+		for (unsigned i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
+			if (path.IsSameDir(theApp->glob_prefs->GetCategory(i)->path)) {
+				return true;
+			}
+		}
+	}
+
 	return false;
 }
 

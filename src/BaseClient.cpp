@@ -28,6 +28,7 @@
 #include <wx/tokenzr.h>
 
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "SharedFileList.h"	// Needed for CSharedFileList
 
 #include <protocol/Protocols.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
@@ -2835,6 +2836,87 @@ bool CUpDownClient::IsMessageFiltered(const wxString& message)
 
 #endif
 
+void CUpDownClient::SendSharedDirectories()
+{
+		// This list will contain all (unique) folders.
+		PathList foldersToSend;
+	   
+		// The shared folders
+		const unsigned folderCount = theApp->glob_prefs->shareddir_list.size();
+		for (unsigned i = 0; i < folderCount; ++i) {
+			foldersToSend.push_back(theApp->glob_prefs->shareddir_list[i]);
+		}
+		
+		// ... the categories folders ... (category 0 -> incoming)
+		for (unsigned i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
+			foldersToSend.push_back(theApp->glob_prefs->GetCategory(i)->path);
+		}
+
+		// Strip duplicates
+		foldersToSend.sort();
+		foldersToSend.unique();
+		
+		// Build packet
+		CMemFile tempfile(80);
+		tempfile.WriteUInt32(foldersToSend.size());
+
+		PathList::iterator it = foldersToSend.begin();
+		for (; it != foldersToSend.end(); ++it) {
+			// Note: the public shared name contains the 'raw' path, so we can recognize it again.
+			//       the 'raw' path is determined using CPath::GetRaw()
+			tempfile.WriteString( theApp->sharedfiles->GetPublicSharedDirName(*it), GetUnicodeSupport() );
+		}
+
+		// ... and the Magic thing from the eDonkey Hybrids...
+		tempfile.WriteString(OP_INCOMPLETE_SHARED_FILES, GetUnicodeSupport());
+
+		// Send the packet.
+		CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);
+		theStats::AddUpOverheadOther(replypacket->GetPacketSize());
+		AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRSANS to ") + GetFullIP() );
+		SendPacket(replypacket, true, true);
+}
+
+void CUpDownClient::SendSharedFilesOfDirectory(const wxString& strReqDir)
+{
+	CKnownFilePtrList list;
+	
+	if (strReqDir == OP_INCOMPLETE_SHARED_FILES) {
+		// get all shared files from download queue
+		int iQueuedFiles = theApp->downloadqueue->GetFileCount();
+		for (int i = 0; i < iQueuedFiles; i++) {
+			CPartFile* pFile = theApp->downloadqueue->GetFileByIndex(i);
+			if (pFile == NULL || pFile->GetStatus(true) != PS_READY) {
+				continue;
+			}
+			list.push_back(pFile);
+		}
+	} else {
+		// get all shared files for the requested directory
+		const CPath *sharedDir = theApp->sharedfiles->GetDirForPublicSharedDirName(strReqDir);
+		if (sharedDir) {
+			theApp->sharedfiles->GetSharedFilesByDirectory(sharedDir->GetRaw(), list);
+		} else {
+			AddLogLineC(CFormat(_("User %s (%u) requested sharedfiles-list for not existing directory '%s' -> Ignored")) % GetUserName() % GetUserIDHybrid() % strReqDir);
+		}
+	}
+
+	CMemFile tempfile(80);
+	tempfile.WriteString(strReqDir, GetUnicodeSupport());
+	tempfile.WriteUInt32(list.size());
+	
+	while (!list.empty()) {
+		if (!list.front()->IsLargeFile() || SupportsLargeFiles()) {
+			list.front()->CreateOfferedFilePacket(&tempfile, NULL, this);
+		}
+		list.pop_front();
+	}
+	
+	CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIRANS);
+	theStats::AddUpOverheadOther(replypacket->GetPacketSize());
+	AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESDIRANS to ") + GetFullIP() );
+	SendPacket(replypacket, true, true);
+}
 
 void CUpDownClient::SendFirewallCheckUDPRequest()
 {

@@ -66,6 +66,7 @@ Version 2.3.0 - The river knows.
 		* Allow Kademlia searches with repetitive keywords.
 		* Allow adding current chat partner to friend list from tab's context menu.
 		* Allow not downloading files via HTTP if the requested file is not newer.
+		* Implemented public shared directory names only containing actually shared subfolders.
 
 	morph:
 		* Patch to uniform and fix minor errors on man pages

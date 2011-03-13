@@ -26,6 +26,7 @@
 #ifndef SHAREDFILELIST_H
 #define SHAREDFILELIST_H
 
+#include <list>
 #include <map>
 #include <wx/thread.h>		// Needed for wxMutex
 
@@ -44,6 +45,8 @@ class CAICHHash;
 
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
+typedef std::map<wxString, CPath> StringPathMap;
+typedef std::list<CPath> PathList;
 
 class CSharedFileList {
 public:
@@ -66,6 +69,24 @@ public:
 	void	Process();
 	void	PublishNextTurn()	{ m_lastPublishED2KFlag = true; }
 	bool	RenameFile(CKnownFile* pFile, const CPath& newName);
+
+	/**
+	 * Returns the name of a folder visible to the public.
+	 *
+	 * @param dir The full path to a shared directory.
+	 * @return The name of the shared directory that will be visible to the public.
+	 *
+	 * This function is used to hide sensitive data considering the directory structure of the client.
+	 * The returned public name consists of only subdirectories that are shared.
+	 * Example: /ed2k/shared/games/tetris -> "games/tetris" if /ed2k/shared are not marked as shared
+	 */
+	wxString		GetPublicSharedDirName(const CPath& dir);
+	const CPath*	GetDirForPublicSharedDirName(const wxString& strSharedDir) const;
+	
+	/**
+	 * Returns true, if the specified path points to a shared directory or single shared file.
+	 */
+	bool			IsShared(const CPath& path) const;
 	
 	/* Kad Stuff */
 	void	Publish();
@@ -94,7 +115,8 @@ private:
 	CKnownFileMap		m_Files_map;
 	mutable wxMutex		list_mut;
 
-	
+	StringPathMap m_PublicSharedDirNames;  //! used for mapping strings to shared directories
+
 	/* Kad Stuff */
 	CPublishKeywordList* m_keywords;
 	unsigned int m_currFileSrc;
