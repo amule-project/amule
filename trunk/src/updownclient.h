@@ -202,6 +202,8 @@ public:
 	void		ClearDownloadBlockRequests();
 	void		RequestSharedFileList();
 	void		ProcessSharedFileList(const byte* pachPacket, uint32 nSize, wxString& pszDirectory);
+	void		SendSharedDirectories();
+	void		SendSharedFilesOfDirectory(const wxString& strReqDir);
 
 	wxString	GetUploadFileInfo();
 
