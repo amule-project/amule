@@ -729,9 +729,8 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	}	
 	
 	// Filter sources which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
-	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash())) || (thePrefs::IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash())))
-	{
-		source->Safe_Delete();
+	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash())) 
+		|| (thePrefs::IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash()))) {
 		return;
 	}		
 	
