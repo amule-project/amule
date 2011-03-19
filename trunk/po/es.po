@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-11 12:39+0100\n"
-"PO-Revision-Date: 2010-03-21 19:13+0100\n"
+"PO-Revision-Date: 2011-03-17 15:45+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -58,14 +58,14 @@ msgid "Now, exiting main app..."
 msgstr "Ahora, saliendo de aplicación principal..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Cerrando instancia amuleweb con pid `%ld' ... "
+msgstr "Cerrando instancia amuleweb con pid '%ld' ... "
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Matando instancia amulweb con pid `%ld' ... "
+msgstr "Matando instancia amulweb con pid '%ld' ... "
 
 #: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
@@ -629,9 +629,8 @@ msgid "Downloads"
 msgstr "Descargas"
 
 #: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3535
-#, fuzzy
 msgid "Downloads Window"
-msgstr "Descargando"
+msgstr "Descargas"
 
 #: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3413
 msgid "Shared files"
@@ -1642,13 +1641,12 @@ msgstr ""
 "núcleo y remoto de la misma versión."
 
 #: src/ExternalConn.cpp:447
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
 "¡No puedes conectar a una versión final desde una versión SVN cualquiera! "
-"*sigh* posible error evitado"
+"*ufff* posible error evitado"
 
 #: src/ExternalConn.cpp:474
 msgid "Invalid protocol version."
@@ -1685,9 +1683,9 @@ msgid "Sent error message \"%s\" to client."
 msgstr "Mensaje \"%s\" de error enviado al cliente."
 
 #: src/ExternalConn.cpp:533
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Intento de acceso no autorizado. Conexión cerrada."
+msgstr "Intento de acceso no autorizado desde %s. Conexión cerrada."
 
 #: src/ExternalConn.cpp:785
 #, c-format
@@ -2115,31 +2113,28 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:992
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
-msgstr "LC: %u (%i)"
+msgstr "En cola: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:1002 src/GenericClientListCtrl.cpp:1031
 msgid "Asked for another file"
 msgstr "Se ha pedido otro archivo"
 
 #: src/GenericClientListCtrl.cpp:1021
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Subidas en espera: %s"
+msgstr "Esperando por un puesto de subida"
 
 #: src/GenericClientListCtrl.cpp:1023
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "En Cola"
+msgstr "En Cola: %u"
 
 #: src/GenericClientListCtrl.cpp:1026
-#, fuzzy
 msgid "Uploading"
-msgstr "Subida"
+msgstr "Subiendo"
 
 #: src/GenericClientListCtrl.cpp:1028
-#, fuzzy
 msgid "None"
 msgstr "Ninguno"
 
@@ -2234,9 +2229,8 @@ msgid "Failed to load country data for '%s'."
 msgstr "Error al cargar datos de paises desde '%s'."
 
 #: src/IPFilter.cpp:113
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
-msgstr "Cargando filtros IP 'ipfilter.dat' y 'ipfilter_static.dat'"
+msgstr "Cargando filtros IP 'ipfilter.dat' y 'ipfilter_static.dat'."
 
 #: src/IPFilter.cpp:297
 #, c-format
@@ -2269,7 +2263,7 @@ msgstr "Error al renombrar el archivo %s, abortando actualización."
 
 #: src/IPFilter.cpp:527
 msgid "IP filter is ready"
-msgstr ""
+msgstr "Filtro IP está listo"
 
 #: src/KadDlg.cpp:86
 msgid ""
@@ -2328,6 +2322,8 @@ msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
 msgstr ""
+"Error al leer el archivo nodes.dat - demasiado antiguo. Esta versión (0) ya "
+"no está soportada."
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -2394,10 +2390,12 @@ msgstr ""
 #: src/KnownFileList.cpp:106
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
+"Error al cargar entrada en lista de conocidos, el archivo debe estar corrupto"
 
 #: src/KnownFileList.cpp:113
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
+"Entrada inválida en lista de conocidos, el archivo debe estar corrupto: "
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
 msgid "Hashing"
@@ -2893,9 +2891,8 @@ msgid "Clears completed downloads"
 msgstr "Limpiar descargas completadas"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Fuentes completas"
+msgstr "Fuentes de archivo:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:171
 msgid "General"
@@ -3229,9 +3226,8 @@ msgid "Secure ident:"
 msgstr "Ident Segura:"
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "En cola"
+msgstr "Rango de cola"
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -3515,7 +3511,7 @@ msgstr "Solo en la misma categoría"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "En orden alfabético"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3688,7 +3684,7 @@ msgstr "Intervalo de actualización de conexión al servidor: Desactivado"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Deshabilitar modo en reposo de ordenador"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3728,7 +3724,7 @@ msgstr "Orientación vertical de la barra de herramientas"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Mostrar las banderas de los países para los clientes"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -3861,7 +3857,6 @@ msgid "Change priority for new assigned files :"
 msgstr "Cambiar prioridad a nuevos archivos asignados :"
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "No cambiar"
 
@@ -3973,11 +3968,8 @@ msgid "Port:"
 msgstr "Puerto:"
 
 #: src/muuli_wdr.cpp:2767
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Conectar desde \n"
-"clientes conocidos"
+msgstr "Conectar desde clientes conocidos"
 
 #: src/muuli_wdr.cpp:2772
 msgid "Disconnect Kad"
@@ -4302,40 +4294,36 @@ msgstr "Tipos de eventos"
 #: src/muuli_wdr.cpp:3325
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Estadísticas y clientes encolados para archivo(s) seleccionado(s) : Sesión / "
+"Total"
 
 #: src/muuli_wdr.cpp:3352
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Subidas aceptadas :"
+msgstr "Subidas activas"
 
 #: src/muuli_wdr.cpp:3372
 msgid "Percent of total files"
-msgstr ""
+msgstr "Porcentaje de archivos totales"
 
 #: src/muuli_wdr.cpp:3419
-#, fuzzy
 msgid "All files"
-msgstr "Oculta los archivos compartidos"
+msgstr "Todos los archivos"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "Selected files"
-msgstr "Seleccionar filtro de vistas"
+msgstr "Archivos seleccionados"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Subidas activas"
+msgstr "Solo subidas activas"
 
 #: src/muuli_wdr.cpp:3423
-#, fuzzy
 msgid "Show Clients for"
-msgstr "Mostrar clientes"
+msgstr "Mostrar clientes para"
 
 #: src/muuli_wdr.cpp:3426
-#, fuzzy
 msgid "Reload:"
-msgstr "Recargar lista"
+msgstr "Recargar:"
 
 #: src/muuli_wdr.cpp:3431
 msgid "Reload your shared files"
@@ -4457,7 +4445,7 @@ msgstr "Activo"
 #: src/OtherFunctions.cpp:1085
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Usando directorio de configuración: %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4535,9 +4523,8 @@ msgid "Remove sources?"
 msgstr "¿Borrar fuentes?"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
-msgstr "ERROR: Error al crear el archivo part"
+msgstr "ERROR: Falló crear el archivo part"
 
 #: src/PartFile.cpp:336
 #, c-format
@@ -4853,9 +4840,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugués (Brasileño)"
 
 #: src/Preferences.cpp:697
-#, fuzzy
 msgid "Romanian"
-msgstr "Albanés"
+msgstr "Rumano"
 
 #: src/Preferences.cpp:698
 msgid "Russian"
@@ -4882,9 +4868,8 @@ msgid "Ukrainian"
 msgstr "Ucraniano"
 
 #: src/Preferences.cpp:765
-#, fuzzy
 msgid "Change Language"
-msgstr "Lenguaje: "
+msgstr "Cambiar Lenguaje: "
 
 #: src/Preferences.cpp:936
 msgid "no options available"
@@ -4969,6 +4954,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"Las siguientes variables serán sustituidas:\n"
+"    %PARTFILE - ruta completa al archivo\n"
+"    %PARTNAME - nombre del archivo"
 
 #: src/PrefsUnifiedDlg.cpp:278
 msgid ""
@@ -5026,19 +5014,16 @@ msgid "- UDP port changed.\n"
 msgstr "- Puerto UDP cambiado.\n"
 
 #: src/PrefsUnifiedDlg.cpp:576
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Conexión externa cerrada."
+msgstr "- Puerto de conexión externa cambiado.\n"
 
 #: src/PrefsUnifiedDlg.cpp:580
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Nueva conexión externa, aceptada"
+msgstr "- Aprobación de conexión externa cambiada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:584
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Conexión externa cerrada."
+msgstr "- Interfaz de conexión externa cambiada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:593
 msgid ""
@@ -5197,9 +5182,9 @@ msgid "disabled"
 msgstr "deshabilitado"
 
 #: src/PrefsUnifiedDlg.cpp:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
-msgstr "Ejecutar comando en el evento `%s'"
+msgstr "Ejecutar comando en el evento '%s'"
 
 #: src/PrefsUnifiedDlg.cpp:1164
 msgid "Enable command execution on core"
@@ -5705,9 +5690,8 @@ msgid "Kademlia Status:"
 msgstr "Estado Kademlia:"
 
 #: src/ServerWnd.cpp:206
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "Ejecutándose en %s"
+msgstr "Ejecutándose en modo Red Local"
 
 #: src/ServerWnd.cpp:206
 msgid "Running"
@@ -5823,43 +5807,36 @@ msgid "No shareable files found in directory: %s"
 msgstr "Sin archivos que compartir en directorio: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
-msgstr "Nombre usuario:"
+msgstr "Nombre Usuario"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
-msgstr "Velocidad de descarga"
+msgstr "Velocidad De Descarga"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
 msgstr "Velocidad de subida"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:32
-#, fuzzy
 msgid "Available Parts"
-msgstr "Disponibles :"
+msgstr "Partes Disponibles"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload status"
 msgstr "Estado de la subida"
 
 #: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
 msgid "Download status"
 msgstr "Estado de la descarga"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Origen"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "Nombre de archivo"
+msgstr "Nombre de archivo local"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -5950,9 +5927,8 @@ msgid "Download Status"
 msgstr "Estado de la descarga"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Nombre de archivo"
+msgstr "Nombre de archivo remoto"
 
 #: src/Statistics.cpp:650
 #, c-format
@@ -6200,9 +6176,9 @@ msgid "Never"
 msgstr "Nunca"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "Comando `%s' con pid `%d' ha terminado con código `%d'."
+msgstr "Comando '%s' con pid '%d' ha terminado con código '%d'."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
@@ -6349,12 +6325,11 @@ msgstr "Número de resultados de la búsqueda: %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Progreso Búsqueda: %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Mostrar porcentaje de progreso"
+msgstr "Progreso de búsqueda no disponible"
 
 #: src/TextClient.cpp:837
 #, c-format
@@ -6808,7 +6783,7 @@ msgstr "Suspendiendo subida del archivo: %s"
 #: src/UserEvents.cpp:131
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
-msgstr "Error al ejecutar el comando '%s' en el evento `%s'."
+msgstr "Error al ejecutar el comando `%s' en el evento `%s'."
 
 #: src/UserEvents.h:60
 msgid "Download completed"
