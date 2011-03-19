@@ -45,7 +45,10 @@ class CFriend;
 class BitVector;
 class CMD4Hash;
 
+#ifdef __WXDEBUG__
 #define DEBUG_ZOMBIE_CLIENTS
+#endif
+
 #ifdef DEBUG_ZOMBIE_CLIENTS
 #define LINKED_FROM , wxString from
 #define CLIENT_DEBUGSTRING(a) , wxT(a)
