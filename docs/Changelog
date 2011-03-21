@@ -65,6 +65,8 @@ Version 2.3.0 - The river knows.
 		* Improved CFormat and enabled reordering of arguments for
 		  translators
 		* Several fixes and improvements for the sanity checker script
+		* Change charset to UTF-8 in amuleweb template
+		* Fixed BFD detection
 
 	Greek:
 		* Part number is now an extra column in the download list
@@ -78,6 +80,7 @@ Version 2.3.0 - The river knows.
 		* Fixed file locking between ed2k and aMule on Windows
 
 	Kry:
+		* Reworked user interface, separating download and upload views
 		* Fix list double-buffering causing artifacts on refresh and when
 		  showing a context menu.
 		* Fix indexes after removing GUI items
@@ -88,6 +91,15 @@ Version 2.3.0 - The river knows.
 		* Added aMuleCMD project for MSVC.
 		* Fixed UnitTests and aMuleCMD in MSVC to use _CONSOLE subsystem.
 		* Preferences changes
+		* Fixed the centering of icons and text
+		* Enable vertical toolbar orientation on WIN32 too
+		* Option to resume next file alphabetically, keeping in mind categories and priority
+		* Fixed crash when column gets removed
+		* Show remote filename in source list
+		* Fixed crash in upload thread on shutdown
+		* Dynamic adjustment of threshold for rarity of download files
+		* Option to prevent the computer from sleeping while downloading in MSW and MacOSX >= 10.5
+		* Mac fixes
 
 	lfroen:
 		* php prefix for lex/yacc
@@ -102,6 +114,7 @@ Version 2.3.0 - The river knows.
 		* Allow Kademlia searches with repetitive keywords.
 		* Allow adding current chat partner to friend list from tab's context menu.
 		* Allow not downloading files via HTTP if the requested file is not newer.
+		* Removed white boxes around file rating icons
 		* Implemented public shared directory names only containing actually shared subfolders.
 
 	morph:
@@ -109,6 +122,7 @@ Version 2.3.0 - The river knows.
 
 	myth:
 		* Feedback from shared files - add number of clients on queue.
+		* New stats server
 
 	Phoenix:
 		* Fixed assertion when trying to preview files smaller than
@@ -181,6 +195,7 @@ Version 2.3.0 - The river knows.
 		* Fixed international file names on Windows
 		* Fixed hangup of EC connection in aMulegui
 		* Fixed category deletion in aMuled
+		* Fixed several crash bugs in Webserver
 		* Improved memory usage, load time and speed of IP filter
 		* Load IP filter in the background on startup
 		* Show when a Kad search is finished in aMulegui (remove '!')
@@ -198,17 +213,29 @@ Version 2.3.0 - The river knows.
 		* "Swap all A4AF to this (auto)" doesn't block sources with no needed parts any more
 		* Don't lock up in an infinite loop if all servers are not resolvable or blocked by IP filter
 		* Clients now always get uploaded a full chunk (removed setting)
-		* amulecmd fixes ed2k links where '|' has been replaced with '%7C'
+		* Tell the user that changes of EC settings require a restart
+		* Deleted and readded download now get shared
+		* Speed improvement for upload queue, and clients never have same rank anymore
+		* Fixed ed2k links where '|' has been replaced with '%7C'
 		* Fixed multi line stdin redirected as batch into amulecmd
+		* Allow enable/disable of IP2Country through GUI
 		* "Clear completed" button now only clears downloads in current category
 		* Completed downloads can be seen and cleared in amulegui
 		* Bold lines in log window now for Windows too
 		* Allow setting of friend slot from client list control
 		* MANY fixes/implementations for amulegui
+		* Fixed saving of splitter bar positions
+		* Get rid of "clearlooks_style_draw_box_gap" messages in console
+		* Fixed several crash bugs caused by deleted client objects
 		* Fix a small memory leak in Kademlia code
 		* Fix occasionally sending junk at end of packets
 		* Fix child items in search result getting inserted in wrong positions
 		* Shared files don't lose all information when they get renamed
+		* Fixed crash bug with sources which are incompatible with our encryption setting
+		* Allow passing of links > 256 chars to amulecmd
+		* Prevent flicker when sorting already sorted lists
+		* Prevent creation of more than 99 categories, since that's the limit
+		* Fixed saving of sort orders
 
 	Vollstrecker:
 		* Unify copyright lines
