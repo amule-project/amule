@@ -19,16 +19,52 @@ Version 2.3.0 - The river knows.
 		* Various fixes to new colour code
 		* Allow user to select display of transfer rates
 		* Extendable list-control settings save/load code
-		* Implemented an alternate method to estimate the real user count
-		  in the Kad network, which is not based on our local routing table.
-		  (port from eMule v0.49b)
-		* Dropped assumption that last search keyword is a filename
-		  extension if length == 3.
-		* Instead of counting unicode characters in a Kad search now we use the
-		  UTF-8 byte count to determine whether the keyword is allowed or not.
-		* Use actual page size in mmap calls instead of a randomly selected
-		  number.
-		* Improved CFormat and enabled reordering of arguments for translators
+		* Drop assumption that last search keyword is a filename
+		  extension if length == 3
+		* Instead of counting unicode characters in a Kad search now we
+		  use the UTF-8 byte count to determine whether the keyword is
+		  allowed or not
+		* Use actual page size in mmap calls instead of a randomly
+		  selected number
+		* Fix custom Crypto++ path not shown by configure
+		* Make <IMG> tags in aMuleWeb HTML 4.01 conforming
+		* Fix HTTP proxy authentication
+		* Use -static for the tests too, when a static binary is
+		  requested to prevent configure succeed where compilation
+		  would fail
+		* Configure now checks only for the tools and libraries needed
+		  for the selected components
+		* Fix aMuleGUI looking for undefined switches
+		* Fix the "blinking" in aMuleGUI's status line
+		* Better reporting of Kad tag reading/parsing errors
+		* Fix the unittests
+		* Some code reorganization
+		* Features/fixes ported from eMule:
+			- Implement an alternate method to estimate the real
+			  user count in the Kad network, which is not based on
+			  our local routing table (0.49b)
+			- Add double quote to word-boundary characters (0.50a)
+			- Drop support for Kad 1.0 (0.50a)
+			- Try to find the closest node alive (0.50a)
+			- Fix a bug in Kad which would not enforce the search
+			  tolerance in certain cases (0.50a)
+			- Change Kad to work better in small LANs (0.50a)
+		* Remove the unimplemented "Create backup for preview" option
+		* Add variables to preview command like in user event commands
+		* Disable 'Show all comments' in the file's context menu if
+		  there are no comments/ratings available
+		* Enable renaming (completed) shared files
+		* Proper handling of %-escaped UTF-8 sequences in ed2k:// URIs
+		* Drop support for nodes.dat version 0
+		* Fix issue #1621: 'ed2k links containing unicode characters will
+		  cause the filename to be truncated'
+		* Fix issue #1634: Change charset to UTF-8 in amuleweb template
+		* Fix installation with denoiser enabled
+		* Add support for automake's --enable-silent-rules feature
+		  (original idea by Gerd78)
+		* Improved CFormat and enabled reordering of arguments for
+		  translators
+		* Several fixes and improvements for the sanity checker script
 
 	Greek:
 		* Part number is now an extra column in the download list
