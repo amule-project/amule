@@ -36,6 +36,7 @@ src/kademlia/kademlia/SearchManager.cpp
 src/kademlia/routing/RoutingZone.cpp
 src/KnownFile.cpp
 src/KnownFileList.cpp
+src/libs/common/Format.cpp
 src/libs/ec/cpp/ECSpecialTags.cpp
 src/libs/ec/cpp/RemoteConnect.cpp
 src/ListenSocket.cpp
