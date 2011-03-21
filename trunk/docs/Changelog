@@ -65,8 +65,7 @@ Version 2.3.0 - The river knows.
 		* Improved CFormat and enabled reordering of arguments for
 		  translators
 		* Several fixes and improvements for the sanity checker script
-		* Change charset to UTF-8 in amuleweb template
-		* Fixed BFD detection
+		* Fix bfd detection
 
 	Greek:
 		* Part number is now an extra column in the download list
