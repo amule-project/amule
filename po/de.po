@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-21 23:13+0100\n"
-"PO-Revision-Date: 2011-01-23 17:48+0100\n"
+"PO-Revision-Date: 2011-03-22 19:10+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -853,13 +853,13 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Neue Nachricht von '%s' (IP:%s)"
 
 #: src/BaseClient.cpp:2900
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"Benutzer %s (%u) hat Deine Liste der freigegebenen Dateien für Verzeichnis %"
-"s angefordert -> abgelehnt"
+"Benutzer %s (%u) hat die Liste freigegebener Dateien für das nicht "
+"vorhandene Verzeichnis '%s' angefordert -> Ignoriert"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:85
 #, c-format
@@ -1076,25 +1076,25 @@ msgstr ""
 "abgelehnt"
 
 #: src/ClientTCPSocket.cpp:928
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"Benutzer %s (%u) hat Deine Liste der freigegebenen Dateien für Verzeichnis %"
-"s angefordert -> akzeptiert"
+"Benutzer %s (%u) hat deine Liste freigegebener Dateien für das Verzeichnis '%"
+"s' angefordert -> akzeptiert"
 
 #: src/ClientTCPSocket.cpp:933
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"Benutzer %s (%u) hat Deine Liste der freigegebenen Dateien für Verzeichnis %"
-"s angefordert -> abgelehnt"
+"Benutzer %s (%u) hat deine Liste freigegebener Dateien für das Verzeichnis '%"
+"s' angefordert -> abgelehnt"
 
 #: src/ClientTCPSocket.cpp:952
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "Benutzer %s (%u) hat Verzeichnis %s freigegeben"
+msgstr "Benutzer %s (%u) hat das Verzeichnis '%s' freigegeben"
 
 #: src/ClientTCPSocket.cpp:967
 #, c-format
@@ -1103,11 +1103,11 @@ msgstr ""
 "Benutzer %s (%u) hat ungefragt seine freigegebenen Verzeichnisse gesendet."
 
 #: src/ClientTCPSocket.cpp:982
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
 msgstr ""
-"Benutzer %s (%u) hat die Liste der freigegebenen Dateien für Verzeichnis %s "
-"gesendet"
+"Benutzer %s (%u) hat die Liste freigegebener Dateien für das Verzeichnis '%"
+"s' gesendet"
 
 #: src/ClientTCPSocket.cpp:989
 #, c-format
@@ -2425,14 +2425,14 @@ msgstr ""
 "beschädigt: "
 
 #: src/libs/common/Format.cpp:307
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error %d"
-msgstr "Unbekannte Version"
+msgstr "Unbekannter Fehler %d"
 
 #: src/libs/common/Format.cpp:312 src/libs/common/Format.cpp:321
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get error description for error %d"
-msgstr "Kann Zieldatei %s für Download nicht erstellen!"
+msgstr "Kann Fehlerbeschreibung für Fehler %d nicht erhalten"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3699
 msgid "Hashing"
@@ -4587,10 +4587,9 @@ msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "FEHLER: ungültige part.met-Dateiversion: %s ==> %s"
 
 #: src/PartFile.cpp:599
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
-msgstr ""
-"Fehler: %s (%s) ist defekt (falscher Tagcount), kann Datei nicht öffnen)."
+msgstr "Fehler: %s (%s) ist defekt (falsche Tags: %s), kann Datei nicht laden."
 
 #: src/PartFile.cpp:610
 #, c-format
@@ -4738,6 +4737,8 @@ msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
+"EOF beim Hashen des %u. heruntergeladenen Teils, mit der Länge %u (max %u), "
+"für die Part-Datei '%s', mit der Länge %u: %s"
 
 #: src/PartFile.cpp:2972
 #, c-format
@@ -5303,9 +5304,9 @@ msgid "Download in category"
 msgstr "Herunterladen in Kategorie"
 
 #: src/SearchListCtrl.cpp:626
-#, fuzzy, c-format
+#, c-format
 msgid "Get %s for this file"
-msgstr "Dieser Datei optionale URLs hinzufügen"
+msgstr "%s für diese Datei erhalten"
 
 #: src/SearchListCtrl.cpp:630
 msgid "Search related files (eD2k, local server)"
@@ -5452,12 +5453,11 @@ msgstr[1] "%d Server hinzugefügt"
 
 #: src/ServerList.cpp:176
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr ""
+msgstr "Fehler: die 'server.met' Datei ist defekt: "
 
 #: src/ServerList.cpp:180
-#, fuzzy
 msgid "IO error while reading 'server.met': "
-msgstr "IO-Fehler während des Lesens der Datei '%s': %s"
+msgstr "IO-Fehler beim Lesen der 'server.met' Datei: "
 
 #: src/ServerList.cpp:193
 #, c-format
@@ -6821,12 +6821,11 @@ msgstr "Bestätigung erforderlich"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr ""
+msgstr "Es werden nur 99 Kategorien unterstützt."
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Zu viele Verbindungen"
+msgstr "Zu viele Kategorien!"
 
 #: src/TransferWnd.cpp:355
 msgid "All others"
