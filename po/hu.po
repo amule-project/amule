@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-21 23:13+0100\n"
-"PO-Revision-Date: 2011-01-23 12:31+0100\n"
+"PO-Revision-Date: 2011-03-22 18:51+0100\n"
 "Last-Translator: Marcell Balla <marcell@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -837,13 +837,13 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Új üzenet '%s'-től (IP:%s)"
 
 #: src/BaseClient.cpp:2900
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"A(z) %s (%u) felhasználó lekérdezte a  megosztott fájljok listáját a %s "
-"könyvtárban -> megtagadva"
+"A(z) %s (%u) felhasználó lekérdezte a nem létező '%s' könyvtárban megosztott "
+"fájljaid listájá -> Mellőzve"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:85
 #, c-format
@@ -1056,25 +1056,25 @@ msgstr ""
 "Megtagadva"
 
 #: src/ClientTCPSocket.cpp:928
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"A(z) %s (%u) felhasználó lekérdezte a megosztott fájlok listáját a %s "
-"könyvtárban -> elfogadva"
+"A(z) %s (%u) felhasználó lekérdezte a '%s' könyvtárban megosztott fájljaid "
+"listáját -> elfogadva"
 
 #: src/ClientTCPSocket.cpp:933
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"A(z) %s (%u) felhasználó lekérdezte a  megosztott fájljok listáját a %s "
-"könyvtárban -> megtagadva"
+"A(z) %s (%u) felhasználó lekérdezte a '%s' könyvtárban megosztott fájljaid "
+"listáját -> megtagadva"
 
 #: src/ClientTCPSocket.cpp:952
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "A(z) %s (%u) felhasználó megosztja a %s könyvtárat"
+msgstr "A(z) %s (%u) felhasználó megosztja a '%s' könyvtárat"
 
 #: src/ClientTCPSocket.cpp:967
 #, c-format
@@ -1082,10 +1082,10 @@ msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "A(z) %s (%u) felhasználó kéretlen megosztott könyvtárakat küldött."
 
 #: src/ClientTCPSocket.cpp:982
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
 msgstr ""
-"A(z) %s (%u) felhasználó elküldte megosztott fájljok listáját a %s "
+"A(z) %s (%u) felhasználó elküldte megosztott fájljai listáját a '%s' "
 "könyvtárhoz"
 
 #: src/ClientTCPSocket.cpp:989
@@ -2386,14 +2386,14 @@ msgstr ""
 "Érvénytelen bejegyzés az ismert fájlok listájában, hiba lehet a fájlban: "
 
 #: src/libs/common/Format.cpp:307
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error %d"
-msgstr "Ismeretlen verzió"
+msgstr "Ismeretlen hiba %d"
 
 #: src/libs/common/Format.cpp:312 src/libs/common/Format.cpp:321
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get error description for error %d"
-msgstr "A letöltéshez szükséges %s célfájl létrehozása sikertelen!"
+msgstr "A %d hiba leírásának lekérése sikertelen"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3699
 msgid "Hashing"
@@ -4528,10 +4528,10 @@ msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "HIBA: Érvénytelen .part.met fájl változat: %s ==> %s"
 
 #: src/PartFile.cpp:599
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
 msgstr ""
-"Hiba: %s (%s) sérült (rossz tag szám), a fájl betöltése nem lehetséges."
+"Hiba: %s (%s) sérült (rossz tagek: %s), a fájl betöltése nem lehetséges."
 
 #: src/PartFile.cpp:610
 #, c-format
@@ -4671,6 +4671,8 @@ msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
+"EOF hiba tördelőalgoritmizáláskor a %u. letöltött résznél, amely %u (max %u) "
+"hosszú és a(z) '%s' részfájlhoz tartozik, amely %u hosszú: %s"
 
 #: src/PartFile.cpp:2972
 #, c-format
@@ -5224,9 +5226,9 @@ msgid "Download in category"
 msgstr "Letöltés kategóriába"
 
 #: src/SearchListCtrl.cpp:626
-#, fuzzy, c-format
+#, c-format
 msgid "Get %s for this file"
-msgstr "URL(ek) hozzáadása ehhez a fájlhoz (nem kötelező)"
+msgstr "%s lekérése ehez a fájlhoz"
 
 #: src/SearchListCtrl.cpp:630
 msgid "Search related files (eD2k, local server)"
@@ -5367,14 +5369,12 @@ msgid_plural "%d servers added"
 msgstr[0] "%d kiszolgáló hozzáadva"
 
 #: src/ServerList.cpp:176
-#, fuzzy
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr "Hiba: a server.met fájl sérült"
+msgstr "Hiba: a 'server.met' fájl sérült: "
 
 #: src/ServerList.cpp:180
-#, fuzzy
 msgid "IO error while reading 'server.met': "
-msgstr "IO hiba a %s fájl olvasása közben: %s"
+msgstr "IO hiba a 'server.met' fájl olvasása közben: "
 
 #: src/ServerList.cpp:193
 #, c-format
@@ -6742,12 +6742,11 @@ msgstr "Megerősítés szükséges"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr ""
+msgstr "Csak 99 kategória támogatott."
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Túl sok a kapcsolat"
+msgstr "Túl sok kategória!"
 
 #: src/TransferWnd.cpp:355
 msgid "All others"
