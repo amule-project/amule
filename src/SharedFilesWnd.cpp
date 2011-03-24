@@ -234,7 +234,6 @@ void CSharedFilesWnd::OnItemSelectionChanged(wxListEvent& evt)
 void CSharedFilesWnd::RemoveAllSharedFiles() {
 	sharedfilesctrl->DeleteAllItems();
 	sharedfilesctrl->ShowFilesCount();
-	peerslistctrl->DeleteAllItems();
 	SelectionUpdated();
 }
 
