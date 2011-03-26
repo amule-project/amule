@@ -10,6 +10,7 @@ echo // Dummy > GeoIP.c
 :c_exist
 if exist geoip_x.c goto finish
 echo creating GeoIP_X.c
-echo #include "GeoIP.c" > GeoIP_X.c
+echo #pragma warning(disable:4996) > GeoIP_X.c
+echo #include "GeoIP.c" >> GeoIP_X.c
 :finish
 
