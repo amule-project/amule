@@ -46,6 +46,7 @@ echo "Bumping from ${oldyear} to ${newyear}..."
 
 if [ "$newyear" = "$oldyear" ]; then
 	echo "Nothing to do."
+	exit
 fi
 
 find '.' \
