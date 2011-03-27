@@ -5,17 +5,9 @@ Current (aMule) author(s):
 | Maintainer(s):                                                                   |
 |    Marcelo Jimenez    aka Phoenix           <phoenix@amule.org>                  |
 |    Dévai Tamás        aka GonoszTopi        <gonosztopi@amule.org>               |
+|    Angel Vidal Veiga  aka Kry               <kry@amule.org>                      |
 |                                                                                  |
 | Developer(s):                                                                    |
-|    Ariano Bertacca    aka bootstrap         <ariano@hirnriss.net>                |
-|    Ken Thomases       aka ken               <ken@codeweavers.com>                |
-|    Leonid Froenchenko aka lfroen            <lfroen@gmail.com>                   |
-|    Patrizio Bassi     aka Hetfield          <hetfield@amule.org>                 |
-|    Pedro De Oliveira  aka falso             <falso@rdk.homeip.net>               |
-|    Stefan Baldus      aka stefanero         <stefanero@amule.org>                |
-|    Tobias Ottmar      aka Citroklar         <citroklar@gmx.net>                  |
-|    Emi Rodriguez      aka MalaPraxis        <badpraxis@googlemail.com>           |
-|    Mikkel Schubert    aka Xaignar           <xaignar@amule.org>                  |
 |    Johannes Krampf    aka wuischke          <wuischke@amule.org>                 |
 |    Martin Brieg       aka Stu Redman        <sturedman@amule.org>                |
 |                                                                                  |
@@ -26,6 +18,15 @@ Current (aMule) author(s):
 |    Matt Britt         aka uberpenguin       <uberpenguin@hotpop.com>             |
 |                                                                                  |
 | Former developer(s):                                                             |
+|    Mikkel Schubert    aka Xaignar           <xaignar@amule.org>                  |
+|    Patrizio Bassi     aka Hetfield          <hetfield@amule.org>                 |
+|    Pedro De Oliveira  aka falso             <falso@rdk.homeip.net>               |
+|    Stefan Baldus      aka stefanero         <stefanero@amule.org>                |
+|    Tobias Ottmar      aka Citroklar         <citroklar@gmx.net>                  |
+|    Emi Rodriguez      aka MalaPraxis        <badpraxis@googlemail.com>           |
+|    Ariano Bertacca    aka bootstrap         <ariano@hirnriss.net>                |
+|    Ken Thomases       aka ken               <ken@codeweavers.com>                |
+|    Leonid Froenchenko aka lfroen            <lfroen@gmail.com>                   |
 |    K. B.              aka deltaHF           <deltahf@amule.org>                  |
 |    George L.          aka croaker           <croaker@users.berlios.de>           |
 |    JT                 aka lemofan           <lemonfan@users.berlios.de>          |
