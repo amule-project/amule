@@ -1,9 +1,9 @@
 //
 // This file is part of aMule Project
 //
-// Copyright (c) 2004-2008 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2008 Barry Dunne ( http://www.emule-project.net )
+// Copyright (c) 2004-2011 Angel Vidal ( kry@amule.org )
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2011 Barry Dunne ( http://www.emule-project.net )
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 
 // This work is based on the java implementation of the Kademlia protocol.
 // Kademlia: Peer-to-peer routing based on the XOR metric
-// Copyright (c) 2002-2008  Petar Maymounkov ( petar@post.harvard.edu )
+// Copyright (c) 2002-2011  Petar Maymounkov ( petar@post.harvard.edu )
 // http://kademlia.scs.cs.nyu.edu
 
 // Note To Mods //

@@ -462,7 +462,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:505
 msgid ""
-"Copyright (c) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2011 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -475,7 +475,7 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Peer-to-peer routing i bazuar ne metriken XOR.\n"
 
 #: src/amuleDlg.cpp:508
-msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:509

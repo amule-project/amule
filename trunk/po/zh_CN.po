@@ -444,7 +444,7 @@ msgstr "联系邮件：admin@amule.org (管理问题) \n"
 
 #: src/amuleDlg.cpp:505
 msgid ""
-"Copyright (c) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2011 aMule Team \n"
 "\n"
 msgstr "版权所有 (C) 2003-2008 aMule 团队 \n"
 
@@ -457,7 +457,7 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia：基于异或算法的点对点路由。\n"
 
 #: src/amuleDlg.cpp:508
-msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr "版权所有 (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:509

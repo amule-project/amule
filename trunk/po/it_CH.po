@@ -8,7 +8,7 @@
 # translation of it_CH.po to Italian
 # translation of source_strings.po to
 # aMule i18n resource file.
-# Copyright (c) 2003-2008 aMule Team
+# Copyright (c) 2003-2011 aMule Team
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""
@@ -463,7 +463,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:505
 msgid ""
-"Copyright (c) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2011 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -476,7 +476,7 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Routing peer-to-peer basato sulla metrica XOR.\n"
 
 #: src/amuleDlg.cpp:508
-msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:509

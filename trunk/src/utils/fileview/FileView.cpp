@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2008 Dévai Tamás ( gonosztopi@amule.org )
-// Copyright (c) 2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2008-2011 Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (c) 2008-2011 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -78,7 +78,7 @@ void CFileView::OnInitCmdLine(wxCmdLineParser& parser)
 bool CFileView::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	if (parser.Found(wxT("version"))) {
-		cout << wxString::Format(wxT("MuleFileView version %u.%u.%u\nCopyright (c) 2008 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
+		cout << wxString::Format(wxT("MuleFileView version %u.%u.%u\nCopyright (c) 2008-2011 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 		return false;
 	} else {
 		wxString strDecode;

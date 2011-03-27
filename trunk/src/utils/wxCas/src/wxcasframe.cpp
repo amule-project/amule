@@ -5,7 +5,7 @@
 ///
 /// Author:       ThePolish <thepolish@vipmail.ru>
 ///
-/// Copyright (c) 2004-2008 ThePolish ( thepolish@vipmail.ru )
+/// Copyright (c) 2004-2011 ThePolish ( thepolish@vipmail.ru )
 ///
 /// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
 ///

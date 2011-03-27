@@ -5,7 +5,7 @@
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
- *  Copyright (c) 2004-2008 Pedro de Oliveira ( falso@rdk.homeip-net )
+ *  Copyright (c) 2004-2011 Pedro de Oliveira ( falso@rdk.homeip-net )
  *
  *  This file is part of aMule.
  *

@@ -3,8 +3,8 @@
 //
 // Parts of this file are based on work from pan One (http://home-3.tiscali.nl/~meost/pms/)
 //
-// Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002-2008 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their

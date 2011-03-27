@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2009 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2009 Frediano Ziglio (freddy77@gamilc.com)
+// Copyright (c) 2009-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2009-2011 Frediano Ziglio (freddy77@gamilc.com)
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
