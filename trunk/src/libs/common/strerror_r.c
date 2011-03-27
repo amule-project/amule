@@ -16,7 +16,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -32,7 +32,7 @@
 
 #include <string.h>			// Needed for strerror_r() and size_t
 
-#if defined(HAVE_STRERROR) || defined(HAVE_STRERROR_R)
+#ifdef HAVE_ERRNO_H
 #	include <errno.h>			// Needed for errno
 #endif
 
@@ -66,8 +66,11 @@ int mule_strerror_r(int errnum, char *buf, size_t buflen)
 #	else
 
 /* No way to get error description */
-int mule_strerror_r(int errnum, char *buf, size_t buflen)
+int mule_strerror_r()
 {
+#ifdef HAVE_ERRNO_H
+	errno = ENOSYS;	/* not implemented */
+#endif
 	return -1;
 }
 
