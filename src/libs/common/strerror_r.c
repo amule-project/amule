@@ -30,8 +30,9 @@
 #	define _XOPEN_SOURCE	600
 #endif
 
+#include <string.h>			// Needed for strerror_r() and size_t
+
 #if defined(HAVE_STRERROR) || defined(HAVE_STRERROR_R)
-#	include <string.h>			// Needed for strerror_r()
 #	include <errno.h>			// Needed for errno
 #endif
 
@@ -65,9 +66,8 @@ int mule_strerror_r(int errnum, char *buf, size_t buflen)
 #	else
 
 /* No way to get error description */
-int mule_strerror_r(int, char*, size_t)
+int mule_strerror_r(int errnum, char *buf, size_t buflen)
 {
-	errno = ENOSYS;	/* not implemented */
 	return -1;
 }
 
