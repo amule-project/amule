@@ -1,5 +1,5 @@
 dnl
-dnl Copyright (c) 2003-2008 aMule Team (http://www.amule.org)
+dnl Copyright (c) 2003-2011 aMule Team (http://www.amule.org)
 dnl Copyright (c) 1995-2008 Free Software Foundation, Inc.
 dnl
 dnl This file is free software, distributed under the terms of the GNU

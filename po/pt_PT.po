@@ -1,4 +1,4 @@
-# Copyright (c) 2003-2008 aMule Team
+# Copyright (c) 2003-2011 aMule Team
 # This file is distributed under the same license as the aMule package.
 # Kry <elkry@users.sourceforge.net>, 2004.
 # IgoR <igor.spy@gmx.net>, 2004.
@@ -457,7 +457,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:505
 msgid ""
-"Copyright (c) 2003-2008 aMule Team \n"
+"Copyright (c) 2003-2011 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -470,7 +470,7 @@ msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: Roteamento peer-to-peer baseado na métrica XOR.\n"
 
 #: src/amuleDlg.cpp:508
-msgid " Copyright (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:509

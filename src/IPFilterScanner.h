@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2009-2010 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2009-2010 Stu Redman ( sturedman@amule.org )
+// Copyright (c) 2009-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2009-2011 Stu Redman ( sturedman@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their

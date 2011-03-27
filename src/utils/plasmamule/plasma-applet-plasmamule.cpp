@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2010 Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>
+// Copyright (c) 2010-2011 Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>
 //
 // Any parts of this program contributed by third-party developers are copyrighted
 // by their respective authors.
