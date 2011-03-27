@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-21 23:13+0100\n"
-"PO-Revision-Date: 2011-01-20 15:16+0100\n"
+"PO-Revision-Date: 2011-03-23 16:12+0100\n"
 "Last-Translator: giuliano <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -863,13 +863,13 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nuovo messaggio da '%s' (IP:%s)"
 
 #: src/BaseClient.cpp:2900
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella %s -"
-"> richiesta negata"
+"L'utente %s (%u) ha richiesto la lista dei file condivisi per una cartella "
+"inesistente '%s' -> richiesta ignorata"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:85
 #, c-format
@@ -1086,25 +1086,25 @@ msgstr ""
 "negata"
 
 #: src/ClientTCPSocket.cpp:928
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella %s -"
-"> richiesta accettata"
+"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella '%"
+"s' -> richiesta accettata"
 
 #: src/ClientTCPSocket.cpp:933
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella %s -"
-"> richiesta negata"
+"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella '%"
+"s' -> richiesta negata"
 
 #: src/ClientTCPSocket.cpp:952
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "L'utente %s (%u) condivide la cartella %s"
+msgstr "L'utente %s (%u) condivide la cartella '%s'"
 
 #: src/ClientTCPSocket.cpp:967
 #, c-format
@@ -1113,10 +1113,10 @@ msgstr ""
 "L'utente %s (%u) ha inviato una lista delle cartelle condivise non richiesta."
 
 #: src/ClientTCPSocket.cpp:982
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
 msgstr ""
-"L'utente %s (%u) ha inviato la lista dei file condivisi nella cartella %s"
+"L'utente %s (%u) ha inviato la lista dei file condivisi nella cartella '%s'"
 
 #: src/ClientTCPSocket.cpp:989
 #, c-format
@@ -2427,14 +2427,14 @@ msgstr ""
 "corrotto:"
 
 #: src/libs/common/Format.cpp:307
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error %d"
-msgstr "Versione sconosciuta"
+msgstr "Errore sconosciuto %d"
 
 #: src/libs/common/Format.cpp:312 src/libs/common/Format.cpp:321
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get error description for error %d"
-msgstr "Impossibile creare il file di destinazione %s per il download!"
+msgstr "Impossibile avere una descrizione per l'errore %d"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3699
 msgid "Hashing"
@@ -4575,10 +4575,10 @@ msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "ERRORE: Versione del file part.met invalida: %s ==> %s"
 
 #: src/PartFile.cpp:599
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
 msgstr ""
-"ERRORE: %s (%s) è corrotto (computo dell'etichetta errato), impossibile "
+"ERRORE: %s (%s) è corrotto (computo delle etichette errate: %s), impossibile "
 "caricare il file."
 
 #: src/PartFile.cpp:610
@@ -4726,6 +4726,8 @@ msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
+"EOF durante l'hashing della parte %u scaricata con lunghezza %u (max %u) del "
+"partfile '%s' con lunghezza %u: %s"
 
 #: src/PartFile.cpp:2972
 #, c-format
@@ -5287,9 +5289,9 @@ msgid "Download in category"
 msgstr "Download nella categoria"
 
 #: src/SearchListCtrl.cpp:626
-#, fuzzy, c-format
+#, c-format
 msgid "Get %s for this file"
-msgstr "Aggiungi URL per questo file"
+msgstr "Ottieni %s per questo file"
 
 #: src/SearchListCtrl.cpp:630
 msgid "Search related files (eD2k, local server)"
@@ -5435,12 +5437,11 @@ msgstr[1] "Aggiunti %d server"
 
 #: src/ServerList.cpp:176
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr ""
+msgstr "Errore: il file 'server.met' è corrotto:"
 
 #: src/ServerList.cpp:180
-#, fuzzy
 msgid "IO error while reading 'server.met': "
-msgstr "Errore IO durante la lettura del file %s: %s"
+msgstr "Errore IO durante la lettura del file 'server.met':"
 
 #: src/ServerList.cpp:193
 #, c-format
@@ -6802,12 +6803,11 @@ msgstr "Conferma richiesta"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr ""
+msgstr "Solo 99 categorie sono accettate."
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Troppe connessioni"
+msgstr "Troppe categorie!"
 
 #: src/TransferWnd.cpp:355
 msgid "All others"
