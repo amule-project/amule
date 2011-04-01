@@ -186,7 +186,7 @@ void CFormat::Init(const wxString& str)
 
 	// Extract format-string-like substrings from the input
 	{
-		size_t formatStart;
+		size_t formatStart = 0;
 		eStringParserStates state = esNonFormat;
 		for (size_t pos = 0; pos < str.length(); ++pos) {
 			if (str[pos] == wxT('%')) {
