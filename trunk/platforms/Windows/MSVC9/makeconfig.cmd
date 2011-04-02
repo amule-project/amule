@@ -24,7 +24,7 @@ goto finish
 
 :nosvnversion
 echo release build, version from ^<common/ClientVersion.h^>
-echo #include ^<common/ClientVersion.h^> >>config.h
+echo #include ^<src/include/common/ClientVersion.h^> >>config.h
 
 :finish
 echo #define CRYPTOPP_INCLUDE_PREFIX	../cryptopp>>config.h
