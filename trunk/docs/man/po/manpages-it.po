@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "POT-Creation-Date: 2011-01-20 23:00+0100\n"
-"PO-Revision-Date: 2010-04-19 14:12+0300\n"
+"PO-Revision-Date: 2011-04-01 15:23+0100\n"
 "Last-Translator: Stefano Corti <iz0bbz@libero.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -88,8 +88,6 @@ msgstr "[B<-w> I<E<lt>percorsoE<gt>>]"
 # type: Plain text
 #. type: Plain text
 #: amule.1:17 amuled.1:19
-#, fuzzy
-#| msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-Link>]"
 msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
 msgstr "[B<-t> I<E<lt>numeroE<gt>>] [I<collegamento-eD2k>]"
 
@@ -145,7 +143,7 @@ msgstr ""
 #. type: Plain text
 #: amule.1:34 amuled.1:42 amulegui.1:33
 msgid "Prints log messages to stdout."
-msgstr "Stampa i messaggi di log nello stdout."
+msgstr "Scrive i messaggi di log nello stdout."
 
 # type: Plain text
 #. type: Plain text
@@ -197,7 +195,7 @@ msgstr ""
 #. type: Plain text
 #: amule.1:52 amulecmd.1:66 amuled.1:60 amulegui.1:48 amuleweb.1:126 ed2k.1:39
 msgid "Displays the current version number."
-msgstr "Visualizza il numero della versione corrente."
+msgstr "Visualizza il numero di versione corrente."
 
 # type: Plain text
 #. type: Plain text
@@ -210,8 +208,7 @@ msgstr "Stampa una breve descrizione dell'utilizzo."
 # type: TP
 #. type: TP
 #: amule.1:55 amuled.1:63 ed2k.1:39
-#, fuzzy, no-wrap
-#| msgid "B<[ eD2k-Link ]>"
+#, no-wrap
 msgid "B<[ eD2k-link ]>"
 msgstr "B<[ collegamento-eD2k ]>"
 
@@ -324,7 +321,7 @@ msgid ""
 "our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
-"Per favore segnalare i bug nel nostro forum (I<http://forum.amule.org/>), o "
+"Per favore segnalare i bug nel nostro forum (I<http://forum.amule.org/>) o "
 "nel nostro bugtracker (I<http://bugs.amule.org/>). Per favore non segnalare "
 "i bug via posta elettronica, né nella nostra mailing list né direttamente a "
 "qualunque membro del gruppo."
@@ -352,7 +349,7 @@ msgid ""
 "Public License."
 msgstr ""
 "aMule e tutti i programmi di utilità correlati sono distribuiti in accordo "
-"con la GNU General Public License. "
+"alla GNU General Public License. "
 
 # type: SH
 #. type: SH
@@ -673,6 +670,10 @@ msgid ""
 "decimal IPv4 address or a resolvable DNS name) aMule will connect to that "
 "server only."
 msgstr ""
+"Con il parametro opzionale si può specificare a che rete connettersi. "
+"Fornendo un indirizzo di server nella forma IP:Porta (dove IP è un indirizzo "
+"IPv4 in forma decimale puntata o un nome DNS risolvibile) aMule si "
+"connetterà solo a quel server."
 
 # type: Plain text
 #. type: Plain text
@@ -1386,16 +1387,12 @@ msgstr "B<[ -t> I<E<lt>nomeE<gt>>, B<--template>=I<E<lt>nomeE<gt>> B<]>"
 # type: Plain text
 #. type: Plain text
 #: amuleweb.1:77
-#, fuzzy
-#| msgid ""
-#| "Loads the template named I<E<lt>nameE<gt>>. See also the section B<SKIN "
-#| "SUPPORT.>"
 msgid ""
 "Loads the template named I<E<lt>nameE<gt>>. See the B<SKIN SUPPORT> section "
 "for details."
 msgstr ""
-"Carica il modello chiamato I<E<lt>nomeE<gt>>. Vedi anche la sezione "
-"B<SUPPORTO AGLI SKIN>."
+"Carica il modello chiamato I<E<lt>nomeE<gt>>. Vedi la sezione B<SUPPORTO "
+"AGLI SKIN> per i dettagli."
 
 # type: TP
 #. type: TP
@@ -1407,15 +1404,11 @@ msgstr "B<[ -s> I<E<lt>portaE<gt>>, B<--server-port>=I<E<lt>portaE<gt>> B<]>"
 # type: Plain text
 #. type: Plain text
 #: amuleweb.1:80
-#, fuzzy
-#| msgid ""
-#| "Webserver's HTTP port. This is the port you can point your browser to "
-#| "(default: I<4711>)."
 msgid ""
 "Webserver's HTTP port. This is the port you must point your browser to "
 "(default: I<4711>)."
 msgstr ""
-"Porta HTTP del web server. Questa è la porta da indicare nel browser "
+"Porta HTTP del server web. Questa è la porta da indicare nel browser "
 "(default: I<4711>)."
 
 # type: Plain text
@@ -1646,25 +1639,18 @@ msgstr "[B<-c> I<E<lt>percorsoE<gt>>] [B<-t> I<E<lt>numeroE<gt>>]"
 # type: Plain text
 #. type: Plain text
 #: ed2k.1:13
-#, fuzzy
-#| msgid "I<E<lt>eD2k-LinkE<gt>>"
 msgid "I<E<lt>eD2k-linkE<gt>>"
 msgstr "I<E<lt>collegamento-eD2kE<gt>>"
 
 # type: Plain text
 #. type: Plain text
 #: ed2k.1:21
-#, fuzzy
-#| msgid ""
-#| "Sends the given I<E<lt>eD2k_linkE<gt>> to aMule, i.e. writes it to the "
-#| "file ~/.aMule/ED2KLinks, which will be checked by aMule every second for "
-#| "links."
 msgid ""
 "Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file "
 "~/.aMule/ED2KLinks, which will be checked by aMule every second for links."
 msgstr ""
 "Invia il I<E<lt>collegamento-eD2kE<gt>> ad aMule, cioè lo scrive nel file ~/."
-"aMule/ED2KLinks, che è controllato da aMule ogni secondo per nuovi "
+"aMule/ED2KLinks, che sarà controllato da aMule ogni secondo per nuovi "
 "collegamenti."
 
 # type: Plain text
@@ -1773,7 +1759,7 @@ msgstr "Calcolatore di collegamenti eD2k di aMule"
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1:6
 msgid "alcc - text based eD2k links calculator for aMule"
-msgstr "alcc - Calcolatore di collegamenti eD2k in formato testo per aMule"
+msgstr "alcc - Generatore di collegamenti eD2k in formato testo per aMule"
 
 # type: Plain text
 #. type: Plain text
@@ -1788,20 +1774,20 @@ msgid ""
 "Compute the eD2k links of all the input files given in the "
 "I<E<lt>inputfiles_listE<gt>> (There can be one or more files)."
 msgstr ""
-"Calcola i collegamenti eD2k di tutti i file in ingresso forniti in "
+"Genera i collegamenti eD2k di tutti i file in ingresso forniti in "
 "I<E<lt>elenco_di_fileE<gt>> (Ci possono essere uno o più file)."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1:19
 msgid "Compute and add part hashes to the computed eD2k links."
-msgstr "Calcola e include gli hash delle singole parti al collegamento eD2k."
+msgstr "Genera e include gli hash delle singole parti al collegamento eD2k."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 msgid "Be verbose - show also calculation steps."
-msgstr "Sii dettagliato - mostra anche i passi di calcolo."
+msgstr "Dettagliato - mostra anche i passaggi di calcolo."
 
 # type: TH
 #. type: TH
@@ -1826,17 +1812,15 @@ msgstr "cas - statistiche c di aMule"
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:18
-#, fuzzy
-#| msgid ""
-#| "B<cas> is a program for displaying the contents of your aMule online "
-#| "signature file to console (in a human readable form)."
 msgid ""
 "B<cas> is a program for displaying the contents of your aMule online "
 "signature file to console (in a human readable form). For this to work, you "
 "must enable the \"Online Signature\" option in aMule's preferences."
 msgstr ""
 "B<cas> è un programma per visualizzare i contenuti del file di firma "
-"generato da aMule in console (in forma leggibile dalle persone)."
+"generato da aMule in console (in forma leggibile dalle persone). Per il "
+"funzionamento, devi abilitare l'opzione \"firma online\" nelle preferenze di "
+"aMule."
 
 # type: Plain text
 #. type: Plain text
@@ -1916,39 +1900,24 @@ msgstr "wxcas - statistiche wx c di aMule"
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/wxCas/docs/wxcas.1:11
-#, fuzzy
-#| msgid ""
-#| "B<wxcas> is a program for displaying the contents of your online "
-#| "signature file in a nice wx Window on your Desktop.  Based on Pedro de "
-#| "Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
-#| "E<lt>thepolish@vipmail.ruE<gt>"
 msgid ""
 "B<wxcas> is a program for displaying the contents of your online signature "
 "file in a nice wx Window on your Desktop.  For this to work, you must enable "
 "the \"Online Signature\" option in aMule's preferences."
 msgstr ""
 "B<wxcas> è un programma per visualizzare i contenuti del file di firma "
-"online in una bella finestra wx sul tuo schermo. Basto su B<cas>(1) di Pedro "
-"de Oliveira.  B<wxcas> è stato scritto da ThePolish E<lt>thepolish@vipmail."
-"ruE<gt>"
+"online in una bella finestra wx sul tuo schermo. Per il funzionamento, devi "
+"abilitare l'opzione \"firma online\" nelle preferenze di aMule."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/wxCas/docs/wxcas.1:14
-#, fuzzy
-#| msgid ""
-#| "B<wxcas> is a program for displaying the contents of your online "
-#| "signature file in a nice wx Window on your Desktop.  Based on Pedro de "
-#| "Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
-#| "E<lt>thepolish@vipmail.ruE<gt>"
 msgid ""
 "Based on Pedro de Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
 "E<lt>thepolish@vipmail.ruE<gt>"
 msgstr ""
-"B<wxcas> è un programma per visualizzare i contenuti del file di firma "
-"online in una bella finestra wx sul tuo schermo. Basto su B<cas>(1) di Pedro "
-"de Oliveira.  B<wxcas> è stato scritto da ThePolish E<lt>thepolish@vipmail."
-"ruE<gt>"
+"Basato su B<cas>(1) di Pedro de Oliveira.  B<wxcas> è stato scritto da "
+"ThePolish E<lt>thepolish@vipmail.ruE<gt>"
 
 # type: TH
 #. type: TH
@@ -1979,13 +1948,6 @@ msgstr "B<nessuna>"
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:12
-#, fuzzy
-#| msgid ""
-#| "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#| "After loading type /xas and it will send statistics to the channel you "
-#| "are in. These are taken from your Online Signature file.  For this to "
-#| "work, you must enable the \"Online Signature\" option in aMules "
-#| "preferences."
 msgid ""
 "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
 "After loading type /xas and it will send statistics to the channel you are "
@@ -1995,42 +1957,21 @@ msgstr ""
 "B<xas> è un plugin per xchat. Per il caricamento vedere la documentazione di "
 "xchat. Dopo il caricamento digitare /xas e le statistiche verranno inviate "
 "sul canale a cui siete collegati. Queste sono prese dal file di firma "
-"online. Per il funzionamento, dovete abilitare l'opzione delle \"firme online"
+"online. Per il funzionamento, dovete abilitare l'opzione della \"firma online"
 "\" nelle preferenze di aMule."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:14
-#, fuzzy
-#| msgid ""
-#| "To enable it on every startup of xchat you can just run the script in /"
-#| "usr/bin/autstart-xas if, if you installed with --prefix=/usr"
 msgid ""
 "To enable it on every startup of xchat you can just run the autstart-xas "
 "script (in /usr/bin if you installed with --prefix=/usr)."
 msgstr ""
-"Per abilitarlo ad ogni avvio di xchat dovete eseguire lo script in /usr/bin/"
-"autostart-xas , se lo avete installato con --prefix=/usr"
+"Per abilitarlo ad ogni avvio di xchat dovete eseguire lo script autostart-"
+"xas (presente in /usr/bin se avete installato con --prefix=/usr)"
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:16
 msgid "B<xas> was originally written by niet"
 msgstr "B<xas> è stato originalmente scritto da niet"
-
-# type: Plain text
-#~ msgid ""
-#~ "When giving ed2k as parameter, it connects only to eD2k-network, to "
-#~ "servers in your serverlist. You may also optionally specify a server "
-#~ "address in IP:Port form, to connect to that server only. The IP must be a "
-#~ "dotted decimal IPv4 address, or a resolvable DNS name."
-#~ msgstr ""
-#~ "Quando viene fornito il parametro ed2k, si connetterà solo alla rete "
-#~ "eD2k, ai server definiti nella lista dei server. Si può anche specificare "
-#~ "come opzione un indirizzo di server nella forma IP:Porta, per connettersi "
-#~ "unicamente a quel server. L'indirizzo IP deve essere un indirizzo IPv4 in "
-#~ "forma decimale puntuata, o un nome DNS risolvibile."
-
-# type: Plain text
-#~ msgid "When giving kad, it connects to Kad only."
-#~ msgstr "Se fornito il parametro kad, si connetterà solo alla rete Kad."
