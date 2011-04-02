@@ -13,7 +13,7 @@ ed2k \- Analizzatore di collegamenti eD2k per aMule
 [\fB\-c\fP \fI<percorso>\fP] [\fB\-t\fP \fI<numero>\fP]
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-l ]
-\fI<eD2k\-link>\fP
+\fI<collegamento\-eD2k>\fP
 
 .B_untranslated ed2k
 .RB_untranslated [ \-h ]
@@ -21,8 +21,9 @@ ed2k \- Analizzatore di collegamenti eD2k per aMule
 .B_untranslated ed2k
 .RB_untranslated [ \-v ]
 .SH DESCRIZIONE
-Sends the given \fI<eD2k\-link>\fP to aMule, i.e. writes it to the file
-~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
+Invia il \fI<collegamento\-eD2k>\fP ad aMule, cioè lo scrive nel file
+~/.aMule/ED2KLinks, che sarà controllato da aMule ogni secondo per nuovi
+collegamenti.
 .TP 
 \fB[ \-c\fP \fI<percorso>\fP, \fB\-\-config\-dir\fP=\fI<percorso>\fP \fB]\fP
 Legge la configurazione dal \fI<percorso>\fP invece che dalla directory
@@ -43,9 +44,9 @@ Elenca tutti i collegamenti trovati nel file emulecollection fornito come
 Stampa una breve descrizione dell'utilizzo.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
-Visualizza il numero della versione corrente.
+Visualizza il numero di versione corrente.
 .TP 
-\fB[ eD2k\-link ]\fP
+\fB[ collegamento\-eD2k ]\fP
 Aggiunge un collegamento eD2k.
 .PP
 Il collegamento eD2k da aggiungere può essere:
@@ -73,13 +74,13 @@ download di \fI<collegamento1>\fP in categoria standard e
 .SH FILE
 ~/.aMule/ED2KLinks
 .SH "SEGNALARE I BUG"
-Per favore segnalare i bug nel nostro forum (\fIhttp://forum.amule.org/\fP), o
+Per favore segnalare i bug nel nostro forum (\fIhttp://forum.amule.org/\fP) o
 nel nostro bugtracker (\fIhttp://bugs.amule.org/\fP). Per favore non segnalare
 i bug via posta elettronica, né nella nostra mailing list né direttamente a
 qualunque membro del gruppo.
 .SH COPYRIGHT
 aMule e tutti i programmi di utilità correlati sono distribuiti in accordo
-con la GNU General Public License.
+alla GNU General Public License.
 .SH "VEDI ANCHE"
 .B_untranslated amule\fR(1)
 .SH AUTORE
