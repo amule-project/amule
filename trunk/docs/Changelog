@@ -103,6 +103,7 @@ Version 2.3.0 - The river knows.
 		* Dynamic adjustment of threshold for rarity of download files
 		* Option to prevent the computer from sleeping while downloading in MSW and MacOSX >= 10.5
 		* Mac fixes
+		* Fixed "out of memory" crashes caused by wxWidgets - so wxWidgets 2.8.12 is required now!
 
 	lfroen:
 		* php prefix for lex/yacc
