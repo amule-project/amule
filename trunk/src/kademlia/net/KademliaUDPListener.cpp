@@ -991,7 +991,7 @@ void CKademliaUDPListener::Process2SearchResponse(const uint8_t *packetData, uin
 	CMemFile bio(packetData, lenPacket);
 
 	// Who sent this packet.
-	CUInt128 source = bio.ReadUInt128();
+	bio.ReadUInt128();
 
 	ProcessSearchResponse(bio);
 }

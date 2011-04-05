@@ -407,8 +407,6 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 		return ;
 	}
 	const CECTag *cattag = 0;
-	PHP_VALUE_NODE intval;
-	intval.type = PHP_VAL_INT;
     if ((cattag = reply->GetTagByName(EC_TAG_PREFS_GENERAL)) != 0) {
 		PHP_VAR_NODE *key = array_get_by_str_key(result, "nick");
 		value_value_free(&key->value);

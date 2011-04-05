@@ -587,12 +587,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			if (!m_hashlist.empty()) {
 				CreateHashFromHashlist(m_hashlist, &checkhash);
 			}
-			bool flag=false;
-			if (m_abyFileHash == checkhash) {
-				flag=true;
-			} else {
+			if (m_abyFileHash != checkhash) {
 				m_hashlist.clear();
-				flag=false;
 			}
 		}			
 	} catch (const CInvalidPacket& e) {
