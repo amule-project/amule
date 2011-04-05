@@ -163,7 +163,6 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 	} else {
 		tries = 3;
 	}
-	bool kadRecvKeyUsed = false;
 	bool kad = false;
 	do {
 		receivebuffer.FullReset();
@@ -173,7 +172,6 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 		if (currentTry == 0) {
 			// kad packet with NodeID as key
 			kad = true;
-			kadRecvKeyUsed = false;
 			if (Kademlia::CKademlia::GetPrefs()) {
 				uint8_t keyData[18];
 				Kademlia::CKademlia::GetPrefs()->GetKadID().StoreCryptValue((uint8_t *)&keyData);
@@ -183,7 +181,6 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 		} else if (currentTry == 1) {
 			// ed2k packet
 			kad = false;
-			kadRecvKeyUsed = false;
 			uint8_t keyData[23];
 			md4cpy(keyData, thePrefs::GetUserHash().GetHash());
 			keyData[20] = MAGICVALUE_UDP;
@@ -193,7 +190,6 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 		} else if (currentTry == 2) {
 			// kad packet with ReceiverKey as key
 			kad = true;
-			kadRecvKeyUsed = true;
 			if (Kademlia::CKademlia::GetPrefs()) {
 				uint8_t keyData[6];
 				PokeUInt32(keyData, Kademlia::CPrefs::GetUDPVerifyKey(ip));

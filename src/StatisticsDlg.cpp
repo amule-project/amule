@@ -237,7 +237,10 @@ void CStatisticsDlg::SetARange(bool SetDownload,int maxValue)
 
 void  CStatisticsDlg::InitTree()
 {
-	wxTreeItemId root=stattree->AddRoot(theStats::GetTreeRoot()->GetDisplayString());
+#ifndef CLIENT_GUI
+	wxTreeItemId root = 
+#endif
+		stattree->AddRoot(theStats::GetTreeRoot()->GetDisplayString());
 
 	ShowStatistics(true);
 
