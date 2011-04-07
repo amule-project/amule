@@ -18,12 +18,13 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-21 23:13+0100\n"
-"PO-Revision-Date: 2011-02-20 20:02+0100\n"
+"PO-Revision-Date: 2011-04-03 23:53+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -725,7 +726,7 @@ msgstr "Connexion distante à aMule"
 
 #: src/amule-remote-gui.cpp:254
 msgid "Fatal Error: Failed to create Poll Timer"
-msgstr "Erreur Fatale : échec de la création du minuteur d'interrogation"
+msgstr "Erreur Fatale : Échec de la création du minuteur d'interrogation"
 
 #: src/amule-remote-gui.cpp:269
 msgid "Going to event loop..."
@@ -863,13 +864,13 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nouveau message de '%s' (IP : %s)"
 
 #: src/BaseClient.cpp:2900
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
 "L'utilisateur %s (%u) a demandé votre liste de fichier partagés pour le "
-"répertoire %s -> refusé"
+"répertoire inexistant '%s' -> ignoré"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:85
 #, c-format
@@ -1082,25 +1083,25 @@ msgstr ""
 "L'utilisateur %s (%u) a demandé votre liste de dossiers partagés -> Refusé"
 
 #: src/ClientTCPSocket.cpp:928
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
 "L'utilisateur %s (%u) a demandé votre liste de fichier partagés pour le "
-"répertoire %s -> accepté"
+"répertoire '%s' -> accepté"
 
 #: src/ClientTCPSocket.cpp:933
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
 "L'utilisateur %s (%u) a demandé votre liste de fichier partagés pour le "
-"répertoire %s -> refusé"
+"répertoire '%s' -> refusé"
 
 #: src/ClientTCPSocket.cpp:952
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "L'utilisateur %s (%u) partage le répertoire %s"
+msgstr "L'utilisateur %s (%u) partage le répertoire '%s'"
 
 #: src/ClientTCPSocket.cpp:967
 #, c-format
@@ -1109,11 +1110,11 @@ msgstr ""
 "L'utilisateur %s (%u) a envoyé une liste de fichier partagés non demandée."
 
 #: src/ClientTCPSocket.cpp:982
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
 msgstr ""
 "L'utilisateur %s (%u) a envoyé la liste des fichiers partagés pour le "
-"répertoire %s"
+"répertoire '%s'"
 
 #: src/ClientTCPSocket.cpp:989
 #, c-format
@@ -1137,7 +1138,7 @@ msgstr ""
 
 #: src/CommentDialog.cpp:35 src/CommentDialogLst.cpp:47
 msgid "File Comments"
-msgstr "Commentaires du fichier"
+msgstr "Commentaires sur le fichier"
 
 #: src/CommentDialogLst.cpp:55 src/FriendListCtrl.cpp:60
 msgid "Username"
@@ -1315,7 +1316,7 @@ msgstr "Lien"
 
 #: src/DataToText.cpp:134
 msgid "Source Seeds"
-msgstr "Sources Seeds"
+msgstr "Source Seeds"
 
 #: src/DataToText.cpp:135
 msgid "Search Result"
@@ -1536,11 +1537,11 @@ msgstr ""
 #: src/DownloadQueue.cpp:103
 #, c-format
 msgid "Saving PartFile %u of %u"
-msgstr "Enregistrement du PartFile %u sur %u"
+msgstr "Enregistrement du fichier .part %u sur %u"
 
 #: src/DownloadQueue.cpp:106
 msgid "All PartFiles Saved."
-msgstr "Tous les PartFiles ont été enregistrés"
+msgstr "Tous les fichiers .part ont été enregistrés."
 
 #: src/DownloadQueue.cpp:113
 #, c-format
@@ -1550,7 +1551,7 @@ msgstr "Chargement des fichiers temporaires depuis %s."
 #: src/DownloadQueue.cpp:132
 #, c-format
 msgid "Loading PartFile %u of %u"
-msgstr "Chargement du PartFile %u sur %u"
+msgstr "Chargement du fichier .part %u sur %u"
 
 #: src/DownloadQueue.cpp:154
 msgid ""
@@ -1562,7 +1563,7 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:163
 msgid "All PartFiles Loaded."
-msgstr "Tous les PartFile ont été chargés."
+msgstr "Tous les fichiers .part ont été chargés."
 
 #: src/DownloadQueue.cpp:166
 msgid "No part files found"
@@ -1721,7 +1722,8 @@ msgstr "Tentative d'accès non autorisé de %s. Connexion fermée."
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
-"Échec de la commande PartFile à distance : Hachage du fichier non trouvé : %s"
+"Échec de la commande du fichier .part à distance : Hachage du fichier non "
+"trouvé : %s"
 
 #: src/ExternalConn.cpp:793
 #, c-format
@@ -2424,7 +2426,7 @@ msgstr "Sources complètes"
 #: src/KnownFileList.cpp:92
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
-"AVERTISSEMENT: La liste de fichiers connus est corrompue, elle contient des "
+"AVERTISSEMENT : La liste de fichiers connus est corrompue, elle contient des "
 "entêtes invalides."
 
 #: src/KnownFileList.cpp:107
@@ -2440,15 +2442,14 @@ msgstr ""
 "corrompu :"
 
 #: src/libs/common/Format.cpp:307
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error %d"
-msgstr "Version inconnue"
+msgstr "Erreur inconnue %d"
 
 #: src/libs/common/Format.cpp:312 src/libs/common/Format.cpp:321
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get error description for error %d"
-msgstr ""
-"Impossible de créer le fichier de destination %s pour le téléchargement!"
+msgstr "Impossible d'obtenir la description d'erreur pour l'erreur %d"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3699
 msgid "Hashing"
@@ -2664,16 +2665,16 @@ msgstr "Port UDP : Non prêt"
 
 #: src/MuleTrayIcon.cpp:396
 msgid "Online Signature: Enabled"
-msgstr "Signature En Ligne : activée"
+msgstr "Signature En Ligne : Activée"
 
 #: src/MuleTrayIcon.cpp:399
 msgid "Online Signature: Disabled"
-msgstr "Signature En Ligne : désactivée"
+msgstr "Signature En Ligne : Désactivée"
 
 #: src/MuleTrayIcon.cpp:406 src/Statistics.cpp:645
 #, c-format
 msgid "Uptime: %s"
-msgstr "Tourne depuis : %s"
+msgstr "Temps de fonctionnement : %s"
 
 #: src/MuleTrayIcon.cpp:412
 #, c-format
@@ -2755,7 +2756,7 @@ msgid ""
 "Users connected to the current server and an estimate of the total number of "
 "users."
 msgstr ""
-"Utilisateurs connectés au serveur courant et une estimation du nombre total "
+"Utilisateurs connectés au serveur actuel et une estimation du nombre total "
 "d'utilisateurs."
 
 #: src/muuli_wdr.cpp:117
@@ -2767,9 +2768,9 @@ msgid ""
 "Current average upload and download rates. If enabled the numbers in the "
 "braces signify the overhead from client communication."
 msgstr ""
-"Taux moyen d'émission et de réception courants. S'il est présent, le chiffre "
-"entre parenthèses indique la bande passante supplémentaire utilisée par les "
-"connexions aux clients."
+"Taux moyen d'émission et de réception actuelles. S'il est présent, le "
+"chiffre entre parenthèses indique la surcharge dût à la communication du "
+"client."
 
 #: src/muuli_wdr.cpp:126
 msgid ""
@@ -2986,7 +2987,7 @@ msgstr "Taille du fichier :"
 
 #: src/muuli_wdr.cpp:573
 msgid "Partfilestatus :"
-msgstr "Statut :"
+msgstr "Statut du fichier .part :"
 
 #: src/muuli_wdr.cpp:584
 msgid "Last seen complete :"
@@ -3030,7 +3031,7 @@ msgstr "Taille reçue :"
 
 #: src/muuli_wdr.cpp:710
 msgid "Intelligent Corruption Handling"
-msgstr "Traitement Intelligent des Corruptions (I.C.H.)"
+msgstr "Gestion Intelligente de la Corruption (I.C.H.)"
 
 #: src/muuli_wdr.cpp:719
 msgid "Lost to corruption :"
@@ -3158,11 +3159,11 @@ msgstr "Vitesse de réception"
 
 #: src/muuli_wdr.cpp:1074 src/muuli_wdr.cpp:1123 src/muuli_wdr.cpp:2681
 msgid "Current"
-msgstr "Courant"
+msgstr "Actuelle"
 
 #: src/muuli_wdr.cpp:1085 src/muuli_wdr.cpp:1134 src/muuli_wdr.cpp:2692
 msgid "Running average"
-msgstr "Moyenne en fonctionnement"
+msgstr "Moyenne totale"
 
 #: src/muuli_wdr.cpp:1096 src/muuli_wdr.cpp:1145 src/muuli_wdr.cpp:2703
 msgid "Session average"
@@ -3242,11 +3243,11 @@ msgstr "Requête actuelle :"
 
 #: src/muuli_wdr.cpp:1345
 msgid "Average upload rate:"
-msgstr "Vitesse d'émission moyenne :"
+msgstr "Vitesse moyenne d'émission :"
 
 #: src/muuli_wdr.cpp:1354
 msgid "Average download rate:"
-msgstr "Vitesse de réception moyenne :"
+msgstr "Vitesse moyenne de réception :"
 
 #: src/muuli_wdr.cpp:1361
 msgid "Uploaded (session):"
@@ -3354,8 +3355,8 @@ msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
-"Activer ceci va faire minimiser aMule dans la boîte à miniatures plutôt que "
-"dans la barre des taches."
+"Activer ceci, va minimiser aMule dans la barre d'état système plutôt que "
+"dans la barre des tâches."
 
 #: src/muuli_wdr.cpp:1504
 msgid "Tooltip delay time: "
@@ -3409,7 +3410,7 @@ msgstr "Émission"
 
 #: src/muuli_wdr.cpp:1595
 msgid "Slot Allocation"
-msgstr "Émission par slot"
+msgstr "Attribution de slot"
 
 #: src/muuli_wdr.cpp:1608
 msgid "Ports"
@@ -3433,7 +3434,7 @@ msgstr "4665"
 
 #: src/muuli_wdr.cpp:1627
 msgid "Extended UDP port (Kad / global search) "
-msgstr "Port UDP étendu (Kad / recherche globale)"
+msgstr "Port UDP étendu (recherche Kad / globale)"
 
 #: src/muuli_wdr.cpp:1631
 msgid "This UDP port is used for extended eD2k requests and Kad network"
@@ -3538,8 +3539,7 @@ msgstr "Activer"
 
 #: src/muuli_wdr.cpp:1790
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr ""
-"Gestion Avancée de la Corruption se fiant aux hachages (non recommandé)"
+msgstr "I.C.H. avancée se fie aux hachages (non recommandé)"
 
 #: src/muuli_wdr.cpp:1798
 msgid "Add files to download in pause mode"
@@ -3660,11 +3660,11 @@ msgstr "Quadrillage"
 
 #: src/muuli_wdr.cpp:1972
 msgid "Download current"
-msgstr "Téléchargement courant"
+msgstr "Téléchargement actuel"
 
 #: src/muuli_wdr.cpp:1973
 msgid "Download running average"
-msgstr "Téléchargement total moyen"
+msgstr "Téléchargement moyen total"
 
 #: src/muuli_wdr.cpp:1974
 msgid "Download session average"
@@ -3672,11 +3672,11 @@ msgstr "Téléchargement moyen sur la session"
 
 #: src/muuli_wdr.cpp:1975
 msgid "Upload current"
-msgstr "Envoi courant"
+msgstr "Envoi actuel"
 
 #: src/muuli_wdr.cpp:1976
 msgid "Upload running average"
-msgstr "Envoi total moyen"
+msgstr "Envoi moyen total"
 
 #: src/muuli_wdr.cpp:1977
 msgid "Upload session average"
@@ -3696,7 +3696,7 @@ msgstr "Nœuds Kad actuels"
 
 #: src/muuli_wdr.cpp:1983
 msgid "Kad-nodes running"
-msgstr "Nœuds Kad en fonctionnement"
+msgstr "Nœuds Kad total"
 
 #: src/muuli_wdr.cpp:1984
 msgid "Kad-nodes session"
@@ -3720,7 +3720,7 @@ msgstr "!!! AVERTISSEMENT !!!"
 
 #: src/muuli_wdr.cpp:2049
 msgid "Max new connections / 5 secs"
-msgstr "Nombre maximum de nouvelles connexions / 5 s"
+msgstr "Nombre maximum de nouvelles connexions / 5 secs"
 
 #: src/muuli_wdr.cpp:2055
 msgid "File Buffer Size: 240000 bytes"
@@ -3764,7 +3764,7 @@ msgstr "Après le nom de l'application"
 
 #: src/muuli_wdr.cpp:2124
 msgid "Show overhead bandwidth"
-msgstr "Afficher la bande passante totale"
+msgstr "Afficher la surcharge de la bande passante"
 
 #: src/muuli_wdr.cpp:2128
 msgid "Vertical toolbar orientation"
@@ -4029,7 +4029,7 @@ msgstr "Déconnecter Kad"
 
 #: src/muuli_wdr.cpp:2810
 msgid "Use Secure User Identification"
-msgstr "Utiliser l'identification utilisateur sécurisée (SUI)"
+msgstr "Utiliser l'Identification Utilisateur Sécurisée (SUI)"
 
 #: src/muuli_wdr.cpp:2812
 msgid ""
@@ -4052,7 +4052,7 @@ msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
 msgstr ""
-"Cette option a activé le brouillage de protocole, cela permet à aMule "
+"Cette option active le brouillage de protocole, cela permet à aMule "
 "d'accepter les connexions brouillées des autres clients."
 
 #: src/muuli_wdr.cpp:2823
@@ -4076,8 +4076,8 @@ msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
-"Avec cette option, aMule n'accepte que les connections brouillées : Vous "
-"aurez moins de sources, mais tout votre trafic sera brouillé."
+"Avec cette option, aMule n'accepte que les connections brouillées. Vous "
+"aurez moins de sources, mais tout votre trafic sera brouillé"
 
 #: src/muuli_wdr.cpp:2836
 msgid "Everybody"
@@ -4334,11 +4334,11 @@ msgstr "Ajouter des fichier à importer"
 
 #: src/muuli_wdr.cpp:3230
 msgid "Retry selected"
-msgstr "Réessayer avec celui sélectionné"
+msgstr "Réessayer avec la sélection"
 
 #: src/muuli_wdr.cpp:3233
 msgid "Remove selected"
-msgstr "Supprimer celui sélectionné"
+msgstr "Supprimer la sélection"
 
 #: src/muuli_wdr.cpp:3305
 msgid "Event Types"
@@ -4605,11 +4605,11 @@ msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "ERREUR : Version du fichier part.met invalide: %s ==> %s"
 
 #: src/PartFile.cpp:599
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
 msgstr ""
-"Erreur : %s (%s) est corrompu (mauvais tagcount), impossible charger le "
-"fichier."
+"Erreur : %s (%s) est corrompu (mauvaises étiquettes : %s), impossible de "
+"charger le fichier."
 
 #: src/PartFile.cpp:610
 #, c-format
@@ -4692,7 +4692,7 @@ msgstr "Le fichier .part %s (%s) a un fichier seeds vide"
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
-"Erreur lors de la lecture de fichier seeds du fichier .part (%s - %s) : %s"
+"Erreur lors de la lecture du fichier seeds du fichier .part (%s - %s) : %s"
 
 #: src/PartFile.cpp:1135 src/PartFile.cpp:1164
 #, c-format
@@ -4756,6 +4756,8 @@ msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
+"EOF lors du hachage du fichier .part téléchargé %u avec une longueur %u (max "
+"%u) du fichier .part '%s' avec une longueur %u : %s"
 
 #: src/PartFile.cpp:2972
 #, c-format
@@ -5181,7 +5183,7 @@ msgstr "Fichiers réceptionnés"
 
 #: src/PrefsUnifiedDlg.cpp:951
 msgid "Online Signatures"
-msgstr "Signatures en ligne"
+msgstr "Signatures En Ligne"
 
 #: src/PrefsUnifiedDlg.cpp:964
 #, c-format
@@ -5325,9 +5327,9 @@ msgid "Download in category"
 msgstr "Télécharger dans la catégorie"
 
 #: src/SearchListCtrl.cpp:626
-#, fuzzy, c-format
+#, c-format
 msgid "Get %s for this file"
-msgstr "Ajouter des URLs optionnelles pour ce fichier"
+msgstr "Obtenir %s pour ce fichier"
 
 #: src/SearchListCtrl.cpp:630
 msgid "Search related files (eD2k, local server)"
@@ -5474,12 +5476,11 @@ msgstr[1] "%d serveurs ajoutés"
 
 #: src/ServerList.cpp:176
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr ""
+msgstr "Erreur : le fichier 'server.met' est corrompu :"
 
 #: src/ServerList.cpp:180
-#, fuzzy
 msgid "IO error while reading 'server.met': "
-msgstr "Erreur d'E/S lors de la lecture du fichier %s : %s"
+msgstr "Erreur d'E/S lors de la lecture de 'server.met' :"
 
 #: src/ServerList.cpp:193
 #, c-format
@@ -5659,11 +5660,11 @@ msgstr "Marquer les serveurs comme non statiques"
 
 #: src/ServerListCtrl.cpp:417
 msgid "Remove server"
-msgstr "Enlever le serveur"
+msgstr "Supprimer le serveur"
 
 #: src/ServerListCtrl.cpp:419
 msgid "Remove servers"
-msgstr "Enlever les serveurs"
+msgstr "Supprimer les serveurs"
 
 #: src/ServerListCtrl.cpp:421
 msgid "Remove all servers"
@@ -5683,7 +5684,7 @@ msgstr "Êtes-vous sûr de vouloir supprimer tout les serveurs ?"
 
 #: src/ServerListCtrl.cpp:541
 msgid "Are you sure that you wish to delete the selected server?"
-msgstr "Êtes-vous sûr de vouloir supprimer le serveurs sélectionné ?"
+msgstr "Êtes-vous sûr de vouloir supprimer le serveur sélectionné ?"
 
 #: src/ServerListCtrl.cpp:543
 msgid "Are you sure that you wish to delete the selected servers?"
@@ -5796,7 +5797,7 @@ msgstr "Statut de Kademlia :"
 
 #: src/ServerWnd.cpp:206
 msgid "Running in LAN mode"
-msgstr "Éxécution en mode LAN"
+msgstr "Exécution en mode LAN"
 
 #: src/ServerWnd.cpp:206
 msgid "Running"
@@ -6046,33 +6047,32 @@ msgstr "Données Émises (Session (Total)) : %s"
 #: src/Statistics.cpp:652 src/Statistics.cpp:673
 #, c-format
 msgid "Total Overhead (Packets): %s"
-msgstr "Bande Passante Supplémentaire Utilisée au Total (Paquets) : %s"
+msgstr "Surcharge Totale (Paquets) : %s"
 
 #: src/Statistics.cpp:653 src/Statistics.cpp:674
 #, c-format
 msgid "File Request Overhead (Packets): %s"
-msgstr "Bande Passante Supplémentaire par les Requêtes Fichiers (Paquets) : %s"
+msgstr "Surcharge Requête Fichier (Paquets) : %s"
 
 #: src/Statistics.cpp:655 src/Statistics.cpp:676
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
-msgstr ""
-"Bande Passante Supplémentaire par les Échanges de Sources (Paquets) : %s"
+msgstr "Surcharge Échange de Source (Paquets) : %s"
 
 #: src/Statistics.cpp:657 src/Statistics.cpp:678
 #, c-format
 msgid "Server Overhead (Packets): %s"
-msgstr "Bande Passante Supplémentaire par les Serveur (Paquets) : %s"
+msgstr "Surcharge Serveur (Paquets) : %s"
 
 #: src/Statistics.cpp:659 src/Statistics.cpp:680
 #, c-format
 msgid "Kad Overhead (Packets): %s"
-msgstr "Bande Passante Supplémentaire par Kad (Paquets) : %s"
+msgstr "Surcharge Kad (Paquets) : %s"
 
 #: src/Statistics.cpp:661 src/Statistics.cpp:682
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr "Overhead crypt (UDP) : %s"
+msgstr "Surcharge Crypt (UDP) : %s"
 
 #: src/Statistics.cpp:663
 #, c-format
@@ -6142,12 +6142,12 @@ msgstr "Vitesse maximale d'émission (Session) : %s"
 #: src/Statistics.cpp:694
 #, c-format
 msgid "Reconnects: %i"
-msgstr "Nombre de reconnexions : %i"
+msgstr "Reconnexions : %i"
 
 #: src/Statistics.cpp:695
 #, c-format
 msgid "Time Since First Transfer: %s"
-msgstr "Temps Depuis le Premier Transfert : %s"
+msgstr "Temps depuis le premier transfert : %s"
 
 #: src/Statistics.cpp:696
 #, c-format
@@ -6157,22 +6157,22 @@ msgstr "Connecté au serveur depuis : %s"
 #: src/Statistics.cpp:697
 #, c-format
 msgid "Active Connections (estimate): %i"
-msgstr "Connexions Actives (estimation) : %i"
+msgstr "Connexions actives (estimation) : %i"
 
 #: src/Statistics.cpp:698
 #, c-format
 msgid "Max Connection Limit Reached: %s"
-msgstr "Limite du nombre Max de Connexion Atteinte : %s"
+msgstr "Limite max de connexion atteinte : %s"
 
 #: src/Statistics.cpp:699
 #, c-format
 msgid "Average Connections (estimate): %g"
-msgstr "Connexions en Moyenne (estimation) : %g"
+msgstr "Moyenne de connexions (estimation) : %g"
 
 #: src/Statistics.cpp:701
 #, c-format
 msgid "Peak Connections (estimate): %i"
-msgstr "Maximum de connexions (estimation) : %i"
+msgstr "Pics de connexions (estimation) : %i"
 
 #: src/Statistics.cpp:703
 msgid "Clients"
@@ -6216,12 +6216,12 @@ msgstr "Total : %s"
 #: src/Statistics.cpp:719
 #, c-format
 msgid "Deleted Servers: %s"
-msgstr "Serveurs Supprimés : %s"
+msgstr "Serveurs supprimés : %s"
 
 #: src/Statistics.cpp:720
 #, c-format
 msgid "Filtered Servers: %s"
-msgstr "Serveurs Filtrés : %s"
+msgstr "Serveurs filtrés : %s"
 
 #: src/Statistics.cpp:721
 #, c-format
@@ -6236,12 +6236,12 @@ msgstr "Fichiers sur les serveurs en fonctionnement : %llu"
 #: src/Statistics.cpp:723
 #, c-format
 msgid "Total Users: %llu"
-msgstr "Utilisateurs au Total : %llu"
+msgstr "Total des utilisateurs : %llu"
 
 #: src/Statistics.cpp:724
 #, c-format
 msgid "Total Files: %llu"
-msgstr "Fichiers au Total : %llu"
+msgstr "Total des fichiers : %llu"
 
 #: src/Statistics.cpp:725
 #, c-format
@@ -6862,12 +6862,11 @@ msgstr "Confirmation requise"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr ""
+msgstr "Seulement 99 catégories sont prises en charge."
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Trop de connexions"
+msgstr "Trop de catégories !"
 
 #: src/TransferWnd.cpp:355
 msgid "All others"
@@ -7007,7 +7006,7 @@ msgid ""
 "aLinkCreator append the current file name"
 msgstr ""
 "Indiquez ici l'URL que vous voulez ajouter au lien eD2k : Ajoutez / à la fin "
-"pour indiquer à aLinkCreator d'ajouter le nom du fichier courant"
+"pour indiquer à aLinkCreator d'ajouter le nom du fichier actuel"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:153
 msgid "Remove"
