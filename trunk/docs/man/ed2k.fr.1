@@ -7,7 +7,7 @@
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NOM
-ed2k \- aMule eD2k link parser
+ed2k \- analyseur lien eD2k pour aMule
 .SH SYNOPSIS
 .B_untranslated ed2k
 [\fB\-c\fP \fI<chemin>\fP] [\fB\-t\fP \fI<num>\fP]
@@ -21,8 +21,9 @@ ed2k \- aMule eD2k link parser
 .B_untranslated ed2k
 .RB_untranslated [ \-v ]
 .SH DESCRIPTION
-Sends the given \fI<eD2k\-link>\fP to aMule, i.e. writes it to the file
-~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
+Envoie le \fI<lien\-eD2k>\fP à aMule, c'est à dire qu'il l'écrit dans le
+fichier  ~/.aMule/ED2KLinks, qui sera vérifié par aMule chaque seconde pour
+les liens.
 .TP 
 \fB[ \-c\fP \fI<chemin>\fP, \fB\-\-config\-dir\fP=\fI<chemin>\fP \fB]\fP
 Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
@@ -32,10 +33,12 @@ défaut
 Définir la catégorie pour les liens eD2k passé à  \fI<num>\fP
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-Loads all link found in the emulecollection given as \fI<ed2k\-link>\fP
+Charge tous les liens trouvés dans le emulecollection donné dans
+\fI<lien\-eD2k>\fP
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Lists all link found in the emulecollection given as \fI<ed2k\-link>\fP
+Liste tous les liens trouvés dans le emulecollection donné dans
+\fI<lien\-eD2k>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Afficher une court description d'utilisation.
@@ -62,10 +65,11 @@ un lien magnétique;
 un fichier de collection emule.
 .RE
 
-\fBThe order in which you give the parameters is important.\fP You can give
-more than one link, and every link can have it's own params.  For example
-\fBed2k <link1> \-t2 <link2>\fP will download \fI<link1>\fP
-in standard category and \fI<link2>\fP in category 2.
+\fBLe ordre dans lequel vous donnez les paramètres est important.\fP Vous
+pouvez donner plus d'un lien, et chaque lien peut avoir ses propres
+paramètres. Par exemple, \fBed2k <lien1> \-t2 <lien2>\fP
+téléchargera \fI<lien1>\fP dans la catégorie standard et
+\fI<lien2>\fP dans la catégorie 2.
 .SH FICHIERS
 ~/.aMule/ED2KLinks
 .SH "RAPPORTER DES BOGUES"
