@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ##################################################
 #             aMule.app bundle creator.          #
 ##################################################
@@ -26,7 +26,7 @@ SRC_FOLDER=$1
 
 
 if [ -z $SRC_FOLDER ]; then
-	SRC_FOLDER="./src"
+	SRC_FOLDER="./"
 fi
 
 echo ""
@@ -37,11 +37,11 @@ rm -r aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
 echo "Done"
 echo ""
 echo -n "Step 2: Copying aMule to app bundle... " 
-cp ${SRC_FOLDER}/amule aMule.app/Contents/MacOS/
-cp ${SRC_FOLDER}/webserver/src/amuleweb aMule.app/Contents/MacOS/
-cp ${SRC_FOLDER}/ed2k aMule.app/Contents/MacOS/
-cp ${SRC_FOLDER}/amulecmd aMule.app/Contents/MacOS/
-cp -R ${SRC_FOLDER}/webserver aMule.app/Contents/Resources
+cp ${SRC_FOLDER}/src/amule aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/src/webserver/src/amuleweb aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/src/ed2k aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/src/amulecmd aMule.app/Contents/MacOS/
+cp -R ${SRC_FOLDER}/src/webserver aMule.app/Contents/Resources
 find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf
 echo "Done"
 echo ""
@@ -97,6 +97,7 @@ echo "Libs info updated, aMule.app is ready to package."
 echo ""
 popd
 echo -n "Creating aMule.zip... "
-zip -9 -r aMule.zip aMule.app/ -j docs/README.Mac.txt docs/COPYING > /dev/null
+zip -9 -r aMule.zip aMule.app/ > /dev/null
+zip -9 -j ${SRC_FOLDER}/docs/README.Mac.txt ${SRC_FOLDER}/docs/COPYING > /dev/null
 echo "Done"
 echo ""
