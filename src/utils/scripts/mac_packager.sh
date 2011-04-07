@@ -22,6 +22,12 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
+SRC_FOLDER=$1
+
+
+if [ -z $SRC_FOLDER ]; then
+	SRC_FOLDER="./src"
+fi
 
 echo ""
 echo -n "Step 1: Cleaning bundle... "
@@ -31,19 +37,19 @@ rm -r aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
 echo "Done"
 echo ""
 echo -n "Step 2: Copying aMule to app bundle... " 
-cp src/amule aMule.app/Contents/MacOS/
-cp src/webserver/src/amuleweb aMule.app/Contents/MacOS/
-cp src/ed2k aMule.app/Contents/MacOS/
-cp src/amulecmd aMule.app/Contents/MacOS/
-cp -R src/webserver aMule.app/Contents/Resources
+cp ${SRC_FOLDER}/amule aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/webserver/src/amuleweb aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/ed2k aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/amulecmd aMule.app/Contents/MacOS/
+cp -R ${SRC_FOLDER}/webserver aMule.app/Contents/Resources
 find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf
 echo "Done"
 echo ""
 echo -n "Step 3: Installing translations to app bundle... "
 orig_dir=`pwd`
-cd po
+pushd ${SRC_FOLDER}/po
 make install datadir=$orig_dir/aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
-cd $orig_dir
+popd
 echo "Done"
 echo ""
 echo "Step 4: Copying libs to Framework"
@@ -60,7 +66,7 @@ echo "Libs copy done."
 echo ""
 echo "Step 5: Update libs info"
 #then install_name_tool on them to fix the path on the shared lib
-cd aMule.app/Contents/
+pushd aMule.app/Contents/
 for i in $( ls Frameworks | grep -v CVS); do
 	echo "    Updating $i"
 	#update library id
@@ -89,7 +95,7 @@ for i in $( ls Frameworks | grep -v CVS); do
 done
 echo "Libs info updated, aMule.app is ready to package."
 echo ""
-cd ../..
+popd
 echo -n "Creating aMule.zip... "
 zip -9 -r aMule.zip aMule.app/ -j docs/README.Mac.txt docs/COPYING > /dev/null
 echo "Done"
