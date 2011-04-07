@@ -1,0 +1,27 @@
+diff -u GNUmakefile-orig GNUmakefile
+--- GNUmakefile-orig	2010-08-09 14:22:42.000000000 -0500
++++ GNUmakefile		2010-12-19 15:14:28.000000000 -0600
+@@ -1,4 +1,4 @@
+-CXXFLAGS = -DNDEBUG -g -O2
++CXXFLAGS += -DNDEBUG -g -O2
+ #CXXFLAGS = -g
+ # -fPIC is supported. Please report any breakage of -fPIC as a bug.
+ # CXXFLAGS += -fPIC
+@@ -35,7 +35,7 @@
+ 
+ ifneq ($(GCC42_OR_LATER),0)
+ ifeq ($(UNAME),Darwin)
+-CXXFLAGS += -arch x86_64 -arch i386
++#CXXFLAGS += -arch x86_64 -arch i386
+ else
+ CXXFLAGS += -march=native
+ endif
+@@ -87,7 +87,7 @@
+ ifeq ($(UNAME),Darwin)
+ AR = libtool
+ ARFLAGS = -static -o
+-CXX = c++
++#CXX = c++
+ IS_GCC2 = $(shell $(CXX) -v 2>&1 | $(EGREP) -c gcc-932)
+ ifeq ($(IS_GCC2),1)
+ CXXFLAGS += -fno-coalesce-templates -fno-coalesce-static-vtables
