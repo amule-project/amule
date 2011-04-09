@@ -500,6 +500,7 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 	CMD4Hash checkid = file->ReadHash();
 	
 	uint16 parts = file->ReadUInt16();
+	m_hashlist.clear();
 	for (uint16 i = 0; i < parts; ++i){
 		CMD4Hash cur_hash = file->ReadHash();
 		m_hashlist.push_back(cur_hash);
@@ -542,6 +543,7 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 {
 	uint32 tagcount = file->ReadUInt32();
+	m_taglist.clear();
 	for (uint32 j = 0; j != tagcount; ++j) {
 		CTag newtag(*file, true);
 		switch(newtag.GetNameID()){
