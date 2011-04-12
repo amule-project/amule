@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -157,6 +157,7 @@
 		4879238511927626002C086E /* CaptchaDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487922C811927626002C086E /* CaptchaDialog.cpp */; };
 		4879238611927626002C086E /* CaptchaGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 487922CA11927626002C086E /* CaptchaGenerator.cpp */; };
 		488D4E8F1192CB880089BF8E /* README BEFORE BUILDING.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 488D4E8E1192CB880089BF8E /* README BEFORE BUILDING.rtf */; };
+		48CB3DB611B58AA80051CAF2 /* IPFilterScanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CB3DB411B58AA80051CAF2 /* IPFilterScanner.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -460,6 +461,8 @@
 		487922CA11927626002C086E /* CaptchaGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptchaGenerator.cpp; path = ../../../src/CaptchaGenerator.cpp; sourceTree = SOURCE_ROOT; };
 		487922CB11927626002C086E /* CaptchaGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptchaGenerator.h; path = ../../../src/CaptchaGenerator.h; sourceTree = SOURCE_ROOT; };
 		488D4E8E1192CB880089BF8E /* README BEFORE BUILDING.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "README BEFORE BUILDING.rtf"; sourceTree = "<group>"; };
+		48CB3DB411B58AA80051CAF2 /* IPFilterScanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IPFilterScanner.cpp; path = ../../../src/IPFilterScanner.cpp; sourceTree = SOURCE_ROOT; };
+		48CB3DB511B58AA80051CAF2 /* IPFilterScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPFilterScanner.h; path = ../../../src/IPFilterScanner.h; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* aMule_Xcode-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "aMule_Xcode-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* aMule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aMule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -749,6 +752,8 @@
 				48791D5A11926AEE002C086E /* HTTPDownload.h */,
 				48791D5B11926AEE002C086E /* IPFilter.cpp */,
 				48791D5C11926AEE002C086E /* IPFilter.h */,
+				48CB3DB511B58AA80051CAF2 /* IPFilterScanner.h */,
+				48CB3DB411B58AA80051CAF2 /* IPFilterScanner.cpp */,
 				48791D5D11926AEE002C086E /* KnownFileList.cpp */,
 				48791D5E11926AEE002C086E /* KnownFileList.h */,
 				48791D5F11926AEE002C086E /* ListenSocket.cpp */,
@@ -1027,11 +1032,14 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "aMule" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* aMule-Xcode */;
 			projectDirPath = "";
-			projectRoot = "";
+			projectRoots = (
+				"",
+				..,
+			);
 			targets = (
 				8D1107260486CEB800E47090 /* aMule */,
 			);
@@ -1203,6 +1211,7 @@
 				4848D2CF1192E83100ED40CC /* GenericClientListCtrl.cpp in Sources */,
 				4848DC291192E85A00ED40CC /* SharedFilePeersListCtrl.cpp in Sources */,
 				4848DC2A1192E85A00ED40CC /* SourceListCtrl.cpp in Sources */,
+				48CB3DB611B58AA80051CAF2 /* IPFilterScanner.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -41,6 +41,7 @@ cp ${SRC_FOLDER}/src/amule aMule.app/Contents/MacOS/
 cp ${SRC_FOLDER}/src/webserver/src/amuleweb aMule.app/Contents/MacOS/
 cp ${SRC_FOLDER}/src/ed2k aMule.app/Contents/MacOS/
 cp ${SRC_FOLDER}/src/amulecmd aMule.app/Contents/MacOS/
+cp ${SRC_FOLDER}/platforms/MacOSX/aMule-Xcode/amule.icns aMule.app/Contents/Resources/
 cp -R ${SRC_FOLDER}/src/webserver aMule.app/Contents/Resources
 find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf
 echo "Done"
