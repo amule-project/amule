@@ -93,6 +93,7 @@ namespace MuleNotify
 	void SourceCtrlRemoveSource(uint32 source, const CPartFile* owner);
 	void DownloadCtrlHideSource(CPartFile* file);
 	void DownloadCtrlSort();
+	void DownloadCtrlDoItemSelectionChanged();
 
 	void SharedCtrlAddClient(CKnownFile* owner, CClientRef client, SourceItemType type);
 	void SharedCtrlRefreshClient(uint32 client, SourceItemType type);
@@ -457,6 +458,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_DownloadCtrlAddFile(file)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddFile, file)
 #define Notify_DownloadCtrlRemoveFile(file)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveFile, file)
 #define Notify_DownloadCtrlSort()			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlSort)
+#define Notify_DownloadCtrlDoItemSelectionChanged()	MuleNotify::DoNotifyAlways(&MuleNotify::DownloadCtrlDoItemSelectionChanged)
 
 // source ctrl
 #define Notify_SourceCtrlUpdateSource(ptr, val)		MuleNotify::DoNotify(&MuleNotify::SourceCtrlUpdateSource, ptr, val)
