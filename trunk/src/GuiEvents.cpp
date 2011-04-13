@@ -134,6 +134,16 @@ namespace MuleNotify
 	}
 
 
+	void DownloadCtrlDoItemSelectionChanged()
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->DoItemSelectionChanged();
+		}
+#endif
+	}
+
+
 	void NodesURLChanged(wxString NOT_ON_DAEMON(url))
 	{
 #ifndef AMULE_DAEMON

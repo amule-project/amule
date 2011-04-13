@@ -171,6 +171,7 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_category = 0;
 	m_filecount = 0;
+	m_ItemSelectionChangePending = false;
 	LoadSettings();
 	
 	//m_ready = true;
@@ -603,23 +604,30 @@ void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 
 void CDownloadListCtrl::OnItemSelectionChanged( wxListEvent& )
 {	
-	if (!IsSorting()) {
-		CKnownFileVector filesVector;
-		filesVector.reserve(GetSelectedItemCount());
-
-		long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-		
-		while ( index > -1 ) {
-			CPartFile* file = ((FileCtrlItem_Struct*)GetItemData( index ))->GetFile();
-			if (file->IsPartFile()) {
-				filesVector.push_back(file);
-			}
-			index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-		}
-		
-		std::sort(filesVector.begin(), filesVector.end());
-		theApp->amuledlg->m_transferwnd->clientlistctrl->ShowSources(filesVector);
+	if (!m_ItemSelectionChangePending && !IsSorting()) {
+		m_ItemSelectionChangePending = true;
+		Notify_DownloadCtrlDoItemSelectionChanged();
 	}
+}
+
+void CDownloadListCtrl::DoItemSelectionChanged()
+{	
+	m_ItemSelectionChangePending = false;
+	CKnownFileVector filesVector;
+	filesVector.reserve(GetSelectedItemCount());
+
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+		
+	while ( index > -1 ) {
+		CPartFile* file = ((FileCtrlItem_Struct*)GetItemData( index ))->GetFile();
+		if (file->IsPartFile()) {
+			filesVector.push_back(file);
+		}
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}
+		
+	std::sort(filesVector.begin(), filesVector.end());
+	theApp->amuledlg->m_transferwnd->clientlistctrl->ShowSources(filesVector);
 }
 
 void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)

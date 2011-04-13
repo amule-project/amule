@@ -130,6 +130,11 @@ public:
 	 */
 	void ClearCompleted();
 
+	/**
+	 * Perform client update when item selection has changed.
+	 */
+	void	DoItemSelectionChanged();
+
 protected:
 	/// Return old column order.
 	wxString GetOldColumnOrder() const;
@@ -215,6 +220,9 @@ private:
 	
 	//! The currently displayed category
 	uint8 m_category;
+
+	//! Flag if change of item selection is pending
+	bool m_ItemSelectionChangePending;
 
 	//! The number of displayed files
 	int m_filecount;
