@@ -3745,11 +3745,11 @@ msgstr "Zeige Transferraten im Titel"
 
 #: src/muuli_wdr.cpp:2117
 msgid "Before application name"
-msgstr "Nach dem Anwendungsnamen"
+msgstr "Vor dem Anwendungsnamen"
 
 #: src/muuli_wdr.cpp:2120
 msgid "After application name"
-msgstr "Vor dem Anwendungsnamen"
+msgstr "Nach dem Anwendungsnamen"
 
 #: src/muuli_wdr.cpp:2124
 msgid "Show overhead bandwidth"
