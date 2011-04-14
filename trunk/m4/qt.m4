@@ -72,6 +72,13 @@ AC_DEFUN([CHECK_QT_HEADERS],
 		[AC_MSG_RESULT(not found)]
 		exit 1
 	)
+
+	AS_IF([test `${PKG_CONFIG} QtDBus --modversion | sed -e 's/\.//g'` -ge 470 ],
+	[
+		QT_DBUS_LDFLAGS="-lQtDBus"
+		AC_SUBST(QT_DBUS_LDFLAGS)
+	])
+
 	AC_SUBST(QT_CORE_CXXFLAGS)
 	AC_SUBST(QT_CORE_LIBS)
 	AC_SUBST(QT_GUI_CXXFLAGS)
