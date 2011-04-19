@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manpages-ru\n"
 "POT-Creation-Date: 2011-01-20 23:00+0100\n"
-"PO-Revision-Date: 2010-12-29 12:07+0100\n"
+"PO-Revision-Date: 2011-04-11 19:02+0100\n"
 "Last-Translator: Radist Morse <radist.morse@gmail.com>\n"
 "Language-Team: Russian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -82,8 +82,6 @@ msgstr "[B<-w> I<E<lt>путьE<gt>>]"
 
 #. type: Plain text
 #: amule.1:17 amuled.1:19
-#, fuzzy
-#| msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-Link>]"
 msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
 msgstr "[B<-t> I<E<lt>номерE<gt>>] [I<eD2k-ссылка>]"
 
@@ -185,8 +183,7 @@ msgstr "Выводит короткую помощь по использован
 
 #. type: TP
 #: amule.1:55 amuled.1:63 ed2k.1:39
-#, fuzzy, no-wrap
-#| msgid "B<[ eD2k-Link ]>"
+#, no-wrap
 msgid "B<[ eD2k-link ]>"
 msgstr "B<[ eD2k-ссылка ]>"
 
@@ -588,6 +585,10 @@ msgid ""
 "decimal IPv4 address or a resolvable DNS name) aMule will connect to that "
 "server only."
 msgstr ""
+"С помощью дополнительного параметра можно указать сеть к которой будет "
+"произведено подключение. При указании адреса сервера в виде IP:Порт (где IP "
+"может быть либо цифровым представлением IPv4 либо DNS-именем) aMule "
+"подключится только к этому серверу."
 
 #. type: Plain text
 #: amulecmd.1:98
@@ -1196,15 +1197,11 @@ msgstr "B<[ -t> I<E<lt>имяE<gt>>, B<--template>=I<E<lt>имяE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1:77
-#, fuzzy
-#| msgid ""
-#| "Loads the template named I<E<lt>nameE<gt>>. See also the section B<SKIN "
-#| "SUPPORT.>"
 msgid ""
 "Loads the template named I<E<lt>nameE<gt>>. See the B<SKIN SUPPORT> section "
 "for details."
 msgstr ""
-"Устанавливает шаблон с указанным I<E<lt>именемE<gt>>. См. также секцию "
+"Устанавливает шаблон с указанным I<E<lt>именемE<gt>>. Подробности в секции "
 "B<ПОДДЕРЖКА СКИНОВ>."
 
 #. type: TP
@@ -1215,10 +1212,6 @@ msgstr "B<[ -s> I<E<lt>портE<gt>>, B<--server-port>=I<E<lt>портE<gt>> B<
 
 #. type: Plain text
 #: amuleweb.1:80
-#, fuzzy
-#| msgid ""
-#| "Webserver's HTTP port. This is the port you can point your browser to "
-#| "(default: I<4711>)."
 msgid ""
 "Webserver's HTTP port. This is the port you must point your browser to "
 "(default: I<4711>)."
@@ -1422,18 +1415,11 @@ msgstr "[B<-c> I<E<lt>путьE<gt>>] [B<-t> I<E<lt>числоE<gt>>]"
 
 #. type: Plain text
 #: ed2k.1:13
-#, fuzzy
-#| msgid "I<E<lt>eD2k-LinkE<gt>>"
 msgid "I<E<lt>eD2k-linkE<gt>>"
 msgstr "I<E<lt>eD2k-ссылкаE<gt>>"
 
 #. type: Plain text
 #: ed2k.1:21
-#, fuzzy
-#| msgid ""
-#| "Sends the given I<E<lt>eD2k_linkE<gt>> to aMule, i.e. writes it to the "
-#| "file ~/.aMule/ED2KLinks, which will be checked by aMule every second for "
-#| "links."
 msgid ""
 "Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file "
 "~/.aMule/ED2KLinks, which will be checked by aMule every second for links."
@@ -1573,17 +1559,14 @@ msgstr "cas - c-статистика aMule"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:18
-#, fuzzy
-#| msgid ""
-#| "B<cas> is a program for displaying the contents of your aMule online "
-#| "signature file to console (in a human readable form)."
 msgid ""
 "B<cas> is a program for displaying the contents of your aMule online "
 "signature file to console (in a human readable form). For this to work, you "
 "must enable the \"Online Signature\" option in aMule's preferences."
 msgstr ""
 "B<cas> - программа для отображения содержимого файла вашей онлайн-подписи "
-"aMule на консоль (в читаемой форме)."
+"aMule на консоль (в читаемой форме). Чтобы это работало, вы должны включить "
+"опцию \"Онлайн подпись\" в настройках aMule."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:22
@@ -1649,38 +1632,23 @@ msgstr "wxcas - wx c-статистика aMule"
 
 #. type: Plain text
 #: ../../src/utils/wxCas/docs/wxcas.1:11
-#, fuzzy
-#| msgid ""
-#| "B<wxcas> is a program for displaying the contents of your online "
-#| "signature file in a nice wx Window on your Desktop.  Based on Pedro de "
-#| "Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
-#| "E<lt>thepolish@vipmail.ruE<gt>"
 msgid ""
 "B<wxcas> is a program for displaying the contents of your online signature "
 "file in a nice wx Window on your Desktop.  For this to work, you must enable "
 "the \"Online Signature\" option in aMule's preferences."
 msgstr ""
 "B<wxcas> - программа для отображения содержимого файла вашей онлайн-подписи "
-"aMule в приятном wx Window окне на вашем рабочем столе. Основана на "
-"программе B<cas>(1) написанной Pedro de Oliveira. B<wxcas> была написана "
-"ThePolish E<lt>thepolish@vipmail.ruE<gt>"
+"aMule в приятном wx Window окне на вашем рабочем столе. Чтобы это работало, "
+"вы должны включить опцию \"Онлайн подпись\" в настройках aMule."
 
 #. type: Plain text
 #: ../../src/utils/wxCas/docs/wxcas.1:14
-#, fuzzy
-#| msgid ""
-#| "B<wxcas> is a program for displaying the contents of your online "
-#| "signature file in a nice wx Window on your Desktop.  Based on Pedro de "
-#| "Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
-#| "E<lt>thepolish@vipmail.ruE<gt>"
 msgid ""
 "Based on Pedro de Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
 "E<lt>thepolish@vipmail.ruE<gt>"
 msgstr ""
-"B<wxcas> - программа для отображения содержимого файла вашей онлайн-подписи "
-"aMule в приятном wx Window окне на вашем рабочем столе. Основана на "
-"программе B<cas>(1) написанной Pedro de Oliveira. B<wxcas> была написана "
-"ThePolish E<lt>thepolish@vipmail.ruE<gt>"
+"Основана на программе B<cas>(1) написанной Pedro de Oliveira. B<wxcas> была "
+"написана ThePolish E<lt>thepolish@vipmail.ruE<gt>"
 
 #. type: TH
 #: ../../src/utils/xas/docs/xas.1:1
@@ -1706,13 +1674,6 @@ msgstr "B<нет>"
 
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:12
-#, fuzzy
-#| msgid ""
-#| "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#| "After loading type /xas and it will send statistics to the channel you "
-#| "are in. These are taken from your Online Signature file.  For this to "
-#| "work, you must enable the \"Online Signature\" option in aMules "
-#| "preferences."
 msgid ""
 "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
 "After loading type /xas and it will send statistics to the channel you are "
@@ -1726,16 +1687,12 @@ msgstr ""
 
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:14
-#, fuzzy
-#| msgid ""
-#| "To enable it on every startup of xchat you can just run the script in /"
-#| "usr/bin/autstart-xas if, if you installed with --prefix=/usr"
 msgid ""
 "To enable it on every startup of xchat you can just run the autstart-xas "
 "script (in /usr/bin if you installed with --prefix=/usr)."
 msgstr ""
-"Чтобы включать его при каждом запуске xchat вы можете выполнить скрипт /usr/"
-"bin/autstart-xas, если вы установили с --prefix=/usr"
+"Чтобы включать его при каждом запуске xchat вы можете просто выполнить "
+"скрипт autstart-xas (в папке /usr/bin если вы установили с --prefix=/usr)."
 
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:16
