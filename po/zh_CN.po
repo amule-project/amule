@@ -5,13 +5,15 @@
 # xiaoqiao <29551030@qq.com>, 2007, 2008.
 # JimHu <jimhuyiwei@gmail.com>, 2009.
 # Xiaoqiao <wo@xiaoqiao.me>, 2010.
+# Yi Qi <u4781098@anu.edu.au>,2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-21 23:13+0100\n"
-"PO-Revision-Date: 2010-07-03 01:00+0800\n"
-"Last-Translator: Xiaoqiao <wo@xiaoqiao.me>\n"
+"PO-Revision-Date: 2011-04-21 12:10+1000\n"
+"Last-Translator: YiQi <u4781098@anu.edu.au>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2250,7 +2252,7 @@ msgstr "Kad：搜索关键词已经在搜索列表中："
 msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
-msgstr ""
+msgstr "无法读取 node.dat 档案 - 版本 （0） 太旧，已经不再支持了。"
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -3416,7 +3418,7 @@ msgstr "来自同一分类"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "依照字母顺序"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3586,7 +3588,7 @@ msgstr "服务器连接刷新周期：禁用"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "停用电脑自动进入待命模式功能"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3622,7 +3624,7 @@ msgstr "垂直显示工具栏"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "显示客户端的国旗"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -4557,7 +4559,7 @@ msgstr ""
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
-msgstr ""
+msgstr "文件结束 当下载  %u 长度 %u (最大 %u) partfile '%s'长度 %u: %s"
 
 #: src/PartFile.cpp:2972
 #, c-format
@@ -5251,7 +5253,7 @@ msgstr[1] "新增%d个服务器"
 
 #: src/ServerList.cpp:176
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr ""
+msgstr "错误: 文件 'server.met' 已经损坏: "
 
 #: src/ServerList.cpp:180
 #, fuzzy
@@ -6189,7 +6191,7 @@ msgstr "搜索结果数量：%i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "搜索进度: %u %% \n"
 
 #: src/TextClient.cpp:832
 #, fuzzy
@@ -6590,7 +6592,7 @@ msgstr "需要确认"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr ""
+msgstr "只支持99个连接数"
 
 #: src/TransferWnd.cpp:238
 #, fuzzy
