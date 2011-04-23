@@ -21,6 +21,10 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
+SCRIPTDIR=`dirname "$0"`
+
+PATH="$SCRIPTDIR:$PATH"
+
 . defs-global.sh
 . defs-wx.sh
 . defs-functions.sh
