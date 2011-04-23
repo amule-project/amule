@@ -87,14 +87,21 @@ echo -e "\tConfiguring wxWidgets..."
 
 pushd ${WXFOLDER} > $STDOUT_FILE
 
+if [ "$SDKNUMBER" == "" ]; then
+	WX_SDK_FLAGS=""	
+else
+	WX_SDK_FLAGS="--with-macosx-sdk=/Developer/SDKs/MacOSX${SDKRELEASE}.sdk \
+	--with-macosx-version-min=$SDKNUMBER"
+fi
+
 if [ -e amulewxcompilation ]; then
 	echo -e "\t\twxWidgets is already configured"
 else
 	make clean >> $STDOUT_FILE 2>/dev/null
 	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION --enable-debug --disable-shared \
 	$EXTRA_WXFLAGS \
-	$ARCHCONFIGFLAGS --with-macosx-sdk=/Developer/SDKs/MacOSX${SDKRELEASE}.sdk \
-	--with-macosx-version-min=$SDKNUMBER  >> $STDOUT_FILE 2>> $ERROR_FILE
+	$ARCHCONFIGFLAGS \
+	$WX_SDK_FLAGS >> $STDOUT_FILE 2>> $ERROR_FILE
 	touch amulewxcompilation >> $STDOUT_FILE
 	echo -e "\t\tConfigured."
 fi
