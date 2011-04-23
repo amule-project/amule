@@ -1,3 +1,7 @@
+# Some helper functions for scripts. 
+# (c) 2011 Angel Vidal ( kry@amule.org ))
+# Public domain. Use at your own risk.
+
 
 RED="\033[1;31m"
 BLUE="\033[0;34m"
