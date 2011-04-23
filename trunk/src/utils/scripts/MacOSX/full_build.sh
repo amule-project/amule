@@ -1,54 +1,13 @@
-SDKRELEASE=10.4u
-SDKNUMBER=10.4
-
-SDK="-isysroot /Developer/SDKs/MacOSX${SDKRELEASE}.sdk -mmacosx-version-min=$SDKNUMBER"
-
-CCVERSION="-4.0"
-
-ARCHCPPFLAGS="-arch i386 -arch ppc"
-ARCHCONFIGFLAGS="--enable-universal_binary"
-
-WXSVNROOT="branches/WX_2_8_BRANCH"
-WXFOLDER="wxWidgets-2.8"
-
-EXTRA_WXFLAGS="--without-odbc --without-expat --with-libpng --without-libtiff --without-libjpg \
-	--without-libmspack --without-sdl --without-gnomeprint --without-gnomevfs --without-opengl \
-	--without-dmalloc --without-themes --with-regex --disable-sdltest --disable-gtktest \
-	--disable-pnm --disable-iff --disable-tga --disable-pcx --enable-gif \
-	--enable-accesibility --disable-dragimage --disable-metafiles --disable-joystick \
-	--enable-busyinfo --disable-splines --disable-miniframe --disable-wizarddlg \
-	--enable-progressdlg --disable-tipdlg --disable-numberdlg --enable-textdlg \
-	--enable-fontdlg --disable-finddlg --enable-filedlg --enable-coldlg --disable-choicedlg \
-	--disable-popupwin --disable-tipwindow --enable-treectrl --disable-toolbook \
-	--disable-treebook --disable-tabdialog --enable-slider --disable-searchctrl \
-	--disable-odcombobox --enable-listbox --disable-listbook --disable-hyperlink \
-	--disable-dataviewctrl --disable-grid --enable-gauge --enable-fontpicker \
-	--enable-filepicker --disable-display --enable-dirpicker --disable-datepick \
-	--enable-colourpicker --disable-collpane --disable-choicebook --enable-checklst \
-	--disable-caret --disable-calendar --disable-bmpcombobox --disable-animatectrl \
-	--disable-metafile --disable-postscript --disable-graphics_ctx --disable-richtext \
-	--disable-webkit --disable-mdidoc --disable-mdi --enable-printarch --disable-aui \
-	--disable-htmlhelp --disable-html --disable-mshtmlhelp --disable-help --enable-protocol \
-	--enable-protocol-http --enable-protocol-ftp --enable-protocol-file --disable-variant \
-	--disable-printfposparam --disable-gstreamer8 --disable-mediactrl --enable-sound \
-	--enable-unicode --disable-tarstream --enable-stopwatch --enable-snglinst --disable-mslu \
-	--disable-dynamicloader --disable-dynlib --disable-dialupman --disable-apple_ieee \
-	--enable-ipc --disable-ole --enable-sockets --enable-protocols --enable-ftp \
-	--enable-http --enable-fileproto --disable-palette --disable-compat26 --disable-docview \
-	--enable-config --with-zlib --enable-textfile --enable-textbuf --disable-aboutdlg \
-	--enable-url --enable-datetime"
-
-ROOT_FOLDER=`pwd`
+. defs-global.sh
+. defs-wx.sh
+. defs-functions.sh
 
 SVN_REPOSITORY=$1
-
 
 AMULE_FOLDER="amule-dev"
 
 echo "Starting build..."
 
-STDOUT_FILE=build_output
-ERROR_FILE=error_output
 echo -e "\tGetting aMule sources..."
 
 echo "Start" > $STDOUT_FILE
@@ -293,9 +252,10 @@ else
 	echo "" >> intl/Makefile >> $STDOUT_FILE 2>> $ERROR_FILE
 fi
 
-echo -e "\t\tRunning configure"
+if [ "$MULECLEAN" == "YES" ]; then
+	echo -e "\t\tRunning configure"
 
-PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin/:${ROOT_FOLDER}/${PKGCFG_FOLDER_INST}/bin/" \
+	PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin/:${ROOT_FOLDER}/${PKGCFG_FOLDER_INST}/bin/" \
 	 ./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
 	CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
 	--disable-nls --disable-dependency-tracking --enable-ccache \
@@ -306,9 +266,10 @@ PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin/:${ROOT_FOLDER}/${PKGCFG
 	--with-geoip-static --with-geoip-headers=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/include --with-geoip-lib=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/lib/ \
 	--enable-cas --enable-webserver --enable-amulecmd --enable-amule-gui --enable-wxcas --enable-alc --enable-alcc --enable-amule-daemon >> $STDOUT_FILE 2>> $ERROR_FILE
 
-#echo -e "\t\tCleaning compilation"
+	echo -e "\t\tCleaning compilation"
 
-#make clean >> $STDOUT_FILE 2>> $ERROR_FILE
+	make clean >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
 
 echo -e "\t\tCompiling aMule"
 
