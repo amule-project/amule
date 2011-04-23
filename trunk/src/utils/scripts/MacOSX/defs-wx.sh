@@ -1,3 +1,7 @@
+# Definitions for MacOSX compilation of wxWidgets. 
+# (c) 2011 Angel Vidal ( kry@amule.org )
+# Public domain. Use at your own risk.
+
 . defs-functions.sh
 
 pn "-- Begin wxWidgets def section --"
