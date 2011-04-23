@@ -1,0 +1,335 @@
+SDKRELEASE=10.4u
+SDKNUMBER=10.4
+
+SDK="-isysroot /Developer/SDKs/MacOSX${SDKRELEASE}.sdk -mmacosx-version-min=$SDKNUMBER"
+
+CCVERSION="-4.0"
+
+ARCHCPPFLAGS="-arch i386 -arch ppc"
+ARCHCONFIGFLAGS="--enable-universal_binary"
+
+WXSVNROOT="branches/WX_2_8_BRANCH"
+WXFOLDER="wxWidgets-2.8"
+
+EXTRA_WXFLAGS="--without-odbc --without-expat --with-libpng --without-libtiff --without-libjpg \
+	--without-libmspack --without-sdl --without-gnomeprint --without-gnomevfs --without-opengl \
+	--without-dmalloc --without-themes --with-regex --disable-sdltest --disable-gtktest \
+	--disable-pnm --disable-iff --disable-tga --disable-pcx --enable-gif \
+	--enable-accesibility --disable-dragimage --disable-metafiles --disable-joystick \
+	--enable-busyinfo --disable-splines --disable-miniframe --disable-wizarddlg \
+	--enable-progressdlg --disable-tipdlg --disable-numberdlg --enable-textdlg \
+	--enable-fontdlg --disable-finddlg --enable-filedlg --enable-coldlg --disable-choicedlg \
+	--disable-popupwin --disable-tipwindow --enable-treectrl --disable-toolbook \
+	--disable-treebook --disable-tabdialog --enable-slider --disable-searchctrl \
+	--disable-odcombobox --enable-listbox --disable-listbook --disable-hyperlink \
+	--disable-dataviewctrl --disable-grid --enable-gauge --enable-fontpicker \
+	--enable-filepicker --disable-display --enable-dirpicker --disable-datepick \
+	--enable-colourpicker --disable-collpane --disable-choicebook --enable-checklst \
+	--disable-caret --disable-calendar --disable-bmpcombobox --disable-animatectrl \
+	--disable-metafile --disable-postscript --disable-graphics_ctx --disable-richtext \
+	--disable-webkit --disable-mdidoc --disable-mdi --enable-printarch --disable-aui \
+	--disable-htmlhelp --disable-html --disable-mshtmlhelp --disable-help --enable-protocol \
+	--enable-protocol-http --enable-protocol-ftp --enable-protocol-file --disable-variant \
+	--disable-printfposparam --disable-gstreamer8 --disable-mediactrl --enable-sound \
+	--enable-unicode --disable-tarstream --enable-stopwatch --enable-snglinst --disable-mslu \
+	--disable-dynamicloader --disable-dynlib --disable-dialupman --disable-apple_ieee \
+	--enable-ipc --disable-ole --enable-sockets --enable-protocols --enable-ftp \
+	--enable-http --enable-fileproto --disable-palette --disable-compat26 --disable-docview \
+	--enable-config --with-zlib --enable-textfile --enable-textbuf --disable-aboutdlg \
+	--enable-url --enable-datetime"
+
+ROOT_FOLDER=`pwd`
+
+SVN_REPOSITORY=$1
+
+
+AMULE_FOLDER="amule-dev"
+
+echo "Starting build..."
+
+STDOUT_FILE=build_output
+ERROR_FILE=error_output
+echo -e "\tGetting aMule sources..."
+
+echo "Start" > $STDOUT_FILE
+echo "Start" > $ERROR_FILE
+
+#Get aMule first, because it may contain patches
+if [ -d $AMULE_FOLDER/ ]; then
+	echo -e "\t\tSources already exist, updating."
+        pushd $AMULE_FOLDER/ >> $STDOUT_FILE
+        svn up >> $STDOUT_FILE
+        popd >> $STDOUT_FILE
+else
+	echo -e "\tFirst checkout."
+	if [ -z $SVN_REPOSITORY ]; then
+		SVN_REPOSITORY=http://amule.googlecode.com/svn/trunk/
+		echo -e "\tUsing public SVN repository at ${SVN_REPOSITORY}."
+	else
+		echo -e "\tUsing provided SVN repository at ${SVN_REPOSITORY}."
+	fi
+	svn co $SVN_REPOSITORY $AMULE_FOLDER >> $STDOUT_FILE
+	if [ ! -d $AMULE_FOLDER/ ]; then
+		echo "ERROR: aMule sources could not be retrieved. Review your settings."
+		exit
+	fi
+fi
+
+
+echo -e "\tDone"
+
+echo -e "\tGetting wxWidgets sources..."
+
+if [ -d ${WXFOLDER} ]; then
+	pushd ${WXFOLDER} >> $STDOUT_FILE
+	svn up >> $STDOUT_FILE 2>> $ERROR_FILE
+	popd >> $STDOUT_FILE
+else
+	echo -e "\tFirst checkout."
+	svn checkout http://svn.wxwidgets.org/svn/wx/wxWidgets/${WXSVNROOT} ${WXFOLDER} >> $STDOUT_FILE 2>> $ERROR_FILE
+	pushd ${WXFOLDER} >> $STDOUT_FILE
+	echo -e "\tApplying patches."
+	for i in ../$AMULE_FOLDER/src/utils/patches/wxWidgets/*.patch; do 
+		echo -e "\t\tAppying \"$i\""
+		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
+	done
+	popd >> $STDOUT_FILE
+fi	
+echo -e "\tDone"
+
+echo -e "\tConfiguring wxWidgets..."
+
+pushd ${WXFOLDER} > $STDOUT_FILE
+
+if [ -e amulewxcompilation ]; then
+	echo -e "\t\twxWidgets is already configured"
+else
+	make clean >> $STDOUT_FILE 2>/dev/null
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION --enable-debug --disable-shared \
+	$EXTRA_WXFLAGS \
+	$ARCHCONFIGFLAGS --with-macosx-sdk=/Developer/SDKs/MacOSX${SDKRELEASE}.sdk \
+	--with-macosx-version-min=$SDKNUMBER  >> $STDOUT_FILE 2>> $ERROR_FILE
+	touch amulewxcompilation >> $STDOUT_FILE
+	echo -e "\t\tConfigured."
+fi
+
+echo -e "\t\tDone"
+
+echo -e "\tCompiling wxWidgets..."
+
+make >> $STDOUT_FILE 2>> $ERROR_FILE
+
+echo -e "\tDone"
+
+popd >> $STDOUT_FILE
+
+CRYPTOPP_FOLDER="cryptopp-source"
+CRYPTOPP_FOLDER_INST="cryptopp"
+CRYPTOPP_URL=`curl -sS http://www.cryptopp.com/ | grep -oE "http://.*/cryptopp/cryptopp[0-9]+\.zip" | sort -r | head -1`
+
+echo -e "\tGetting cryptopp sources..."
+
+if [ -d $CRYPTOPP_FOLDER_INST ]; then
+	echo -e "\t\t$CRYPTOPP_FOLDER_INST already exists, skipping (delete and rerun script to get new sources)"	
+else
+	mkdir $CRYPTOPP_FOLDER
+	mkdir $CRYPTOPP_FOLDER_INST
+	curl -L -o cryptopp.zip $CRYPTOPP_URL >> $STDOUT_FILE 2>> $ERROR_FILE
+	unzip cryptopp.zip -d $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	pushd $CRYPTOPP_FOLDER >> $STDOUT_FILE 
+	#./configure 
+	for i in ../$AMULE_FOLDER/src/utils/patches/cryptopp/*.patch; do 
+		echo -e "\t\tAppying \"$i\"" 
+		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
+	done
+	#cp ../GNUMakefile .
+	echo -e "\t\tCompiling cryptopp..."
+	CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
+		CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" make > $STDOUT_FILE 2> $ERROR_FILE
+	PREFIX=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST make install >> $STDOUT_FILE 2>> $ERROR_FILE
+	popd >> $STDOUT_FILE 
+	rm cryptopp.zip >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm -rf $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+echo -e "\tDone"
+
+# Gettext
+
+echo -e "\tGetting gettext sources..."
+
+GETTEXT_FOLDER="gettext-source"
+GETTEXT_FOLDER_INST="gettext-inst"
+GETTEXT_URL=`curl -sS http://www.gnu.org/software/gettext/ | grep -m 1 -oE "http://[^\"]+/gettext-([0-9]+\.)+tar.gz" | head -1`
+
+if [ -d $GETTEXT_FOLDER_INST ]; then
+	echo -e "\t\t$GETTEXT_FOLDER_INST already exists, skipping"
+else
+	mkdir $GETTEXT_FOLDER
+	mkdir $GETTEXT_FOLDER_INST
+	curl -L -o gettext.tar.gz $GETTEXT_URL >> $STDOUT_FILE 2>> $ERROR_FILE
+	pushd $GETTEXT_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo -e "\t\tCompiling gettext..."
+	tar --strip-components 1 -zxf ../gettext.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
+		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$GETTEXT_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	make >> $STDOUT_FILE 2>> $ERROR_FILE
+	make install >> $STDOUT_FILE 2>> $ERROR_FILE
+	popd >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm gettext.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm -rf $GETTEXT_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+echo -e "\tDone."
+
+#libupnp
+
+echo -e "\tGetting libupnp sources..."
+
+LIBUPNP_FOLDER="libupnp-source"
+LIBUPNP_FOLDER_INST="libupnp-inst"
+LIBUPNP_URL=`curl -sS http://sourceforge.net/projects/pupnp/files/ | grep -m 1 -ioE "http://sourceforge.net/[^\"]+/libupnp-([0-9]+\.)+tar.bz2/download" | head -1`
+
+if [ -d $LIBUPNP_FOLDER_INST ]; then
+	echo -e "\t\t$LIBUPNP_FOLDER_INST already exists, skipping"	
+else
+	mkdir $LIBUPNP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	mkdir $LIBUPNP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	curl -L -o libupnp.tar.bz2 $LIBUPNP_URL  >> $STDOUT_FILE 2>> $ERROR_FILE
+	pushd $LIBUPNP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo -e "\t\tCompiling libupnp..."	
+	tar --strip-components 1 -jxf ../libupnp.tar.bz2 >> $STDOUT_FILE 2>> $ERROR_FILE
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
+		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$LIBUPNP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	make >> $STDOUT_FILE 2>> $ERROR_FILE
+	make install >> $STDOUT_FILE 2>> $ERROR_FILE
+	popd >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm libupnp.tar.bz2 >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm -rf $LIBUPNP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+echo -e "\tDone."
+
+#geoip
+
+echo -e "\tGetting GeoIP sources..."
+
+LIBGEOIP_FOLDER="libgeoip-source"
+LIBGEOIP_FOLDER_INST="libgeoip-inst"
+LIBGEOIP_URL="http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz"
+
+if [ -d $LIBGEOIP_FOLDER_INST ]; then
+	echo -e "\t\t$LIBGEOIP_FOLDER_INST already exists, skipping"	
+else
+	mkdir $LIBGEOIP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	mkdir $LIBGEOIP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	curl -L -o libgeoip.tar.gz $LIBGEOIP_URL >> $STDOUT_FILE 2>> $ERROR_FILE
+	pushd $LIBGEOIP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo -e "\t\tCompiling GeoIP..." 
+	tar --strip-components 2 -zxf ../libgeoip.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
+		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$LIBGEOIP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	make >> $STDOUT_FILE 2>> $ERROR_FILE
+	make install >> $STDOUT_FILE 2>> $ERROR_FILE
+	popd >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm libgeoip.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm -rf $LIBGEOIP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+echo -e "\tDone."
+
+#pkg-config
+
+echo -e "\tGetting pkg-config sources..."
+
+PKGCFG_FOLDER="pkgcfg-source"
+PKGCFG_FOLDER_INST="pkgcfg-inst"
+PKGCFG_FILE=`curl -sS http://pkgconfig.freedesktop.org/releases/ | grep -ioE "pkg-config-([0-9]+\.)+tar.gz" | uniq | sort -r | head -1`
+PKGCFG_URL="http://pkgconfig.freedesktop.org/releases/${PKGCFG_FILE}"
+
+if [ -d $PKGCFG_FOLDER_INST ]; then
+	echo -e "\t\t$PKGCFG_FOLDER_INST already exists, skipping"	
+else
+	mkdir $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	mkdir $PKGCFG_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	curl -L -o pkgcfg.tar.gz $PKGCFG_URL >> $STDOUT_FILE 2>> $ERROR_FILE
+	pushd $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo -e "\t\tCompiling pkg-config..."	
+	tar --strip-components 1 -jxf ../pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
+		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$PKGCFG_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
+	make >> $STDOUT_FILE 2>> $ERROR_FILE
+	make install >> $STDOUT_FILE 2>> $ERROR_FILE
+	popd >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	rm -rf $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+echo -e "\tDone."
+
+# aMule
+
+echo -e "\tFINALLY compiling aMule..."
+
+pushd amule-dev/ >> $STDOUT_FILE 2>> $ERROR_FILE
+
+if [ -f configure ]; then
+	echo -e "\t\tConfigure already exists"
+else
+	PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin" ./autogen.sh >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+if [ -d intl/ ]; then
+	echo -e "\t\tGood: intl folder already exists."
+else
+	mkdir intl >> $STDOUT_FILE 2>> $ERROR_FILE
+	touch intl/Makefile.in >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo "all:" > intl/Makefile >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo "clean:" >> intl/Makefile >> $STDOUT_FILE 2>> $ERROR_FILE
+	echo "" >> intl/Makefile >> $STDOUT_FILE 2>> $ERROR_FILE
+fi
+
+echo -e "\t\tRunning configure"
+
+PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin/:${ROOT_FOLDER}/${PKGCFG_FOLDER_INST}/bin/" \
+	 ./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
+	CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
+	--disable-nls --disable-dependency-tracking --enable-ccache \
+	--with-wxdir=${ROOT_FOLDER}/${WXFOLDER}/ \
+	--with-crypto-prefix=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST \
+	--with-libintl-prefix=${ROOT_FOLDER}/${GETTEXT_FOLDER_INST} \
+	--with-libupnp-prefix=${ROOT_FOLDER}/${LIBUPNP_FOLDER_INST} \
+	--with-geoip-static --with-geoip-headers=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/include --with-geoip-lib=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/lib/ \
+	--enable-cas --enable-webserver --enable-amulecmd --enable-amule-gui --enable-wxcas --enable-alc --enable-alcc --enable-amule-daemon >> $STDOUT_FILE 2>> $ERROR_FILE
+
+#echo -e "\t\tCleaning compilation"
+
+#make clean >> $STDOUT_FILE 2>> $ERROR_FILE
+
+echo -e "\t\tCompiling aMule"
+
+make >> $STDOUT_FILE 2>> $ERROR_FILE
+
+echo -e "\tDone."
+
+popd >> $STDOUT_FILE 2>> $ERROR_FILE
+
+echo -e "Getting application bundle and packaging"
+
+rm -rf aMule.app aMule.zip >> $STDOUT_FILE 2>> $ERROR_FILE
+
+cp -R ${AMULE_FOLDER}/aMule.app . >> $STDOUT_FILE 2>> $ERROR_FILE
+
+find aMule.app \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf >> $STDOUT_FILE 2>> $ERROR_FILE
+
+${AMULE_FOLDER}/src/utils/scripts/mac_packager.sh ${ROOT_FOLDER}/${AMULE_FOLDER}/ >> $STDOUT_FILE 2>> $ERROR_FILE
+
+if [ ! -f aMule.zip ]; then
+	echo "ERROR: aMule.zip was not created. Please review the output files"
+else
+	echo "All Done"
+fi
