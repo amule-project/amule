@@ -134,7 +134,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
     <ClCompile>
-      <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/MP /Zm150 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
