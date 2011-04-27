@@ -286,6 +286,10 @@ else
 	echo "" >> intl/Makefile >> $STDOUT_FILE 2>> $ERROR_FILE
 fi
 
+if [ ! -f src/amule ]; then
+	MULECLEAN=YES
+fi
+
 if [ "$MULECLEAN" == "YES" ]; then
 	echo -e "\t\tRunning configure"
 
