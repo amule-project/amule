@@ -503,6 +503,9 @@ enum StatDataIndex {
 	sdBuddyIP,
 	sdBuddyPort,
 	sdKadInLanMode,
+	sdTotalSentBytes,
+	sdTotalReceivedBytes,
+	sdSharedFileCount,
 
 	sdTotalItems
 };
@@ -524,18 +527,18 @@ private:
 	static	uint64	GetUptimeMillis();
 	static	uint64	GetUptimeSeconds();
 
-	static	uint64	GetTotalSentBytes()			{ return 0; } // TODO
+	static	uint64	GetTotalSentBytes()			{ return s_statData[sdTotalSentBytes]; }
 	static	double	GetUploadRate()				{ return (double)s_statData[sdUpload]; }
 	static	double	GetUpOverheadRate()			{ return (double)s_statData[sdUpOverhead]; }
 
-	static	uint64	GetTotalReceivedBytes()			{ return 0; } // TODO
+	static	uint64	GetTotalReceivedBytes()			{ return s_statData[sdTotalReceivedBytes]; }
 	static	double	GetDownloadRate()			{ return (double)s_statData[sdDownload]; }
 	static	double	GetDownOverheadRate()			{ return (double)s_statData[sdDownOverhead]; }
 
 	static	uint32	GetWaitingUserCount()			{ return s_statData[sdWaitingClients]; }
 	static	uint32	GetBannedCount()			{ return s_statData[sdBannedClients]; }
 
-	static	uint32	GetSharedFileCount()			{ return 0; } // TODO
+	static	uint32	GetSharedFileCount()			{ return s_statData[sdSharedFileCount]; }
 
 	static	uint32	GetED2KUsers()			{ return s_statData[sdED2KUsers]; }
 	static	uint32	GetKadUsers() 			{ return s_statData[sdKadUsers]; }
