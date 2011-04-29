@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -215,7 +215,7 @@ class CUpDownClient;
 
 class CStatistics {
 	friend class CStatisticsDlg;	// to access CStatistics::GetTreeRoot()
- public: 
+ public:
 	CStatistics();
 	~CStatistics();
 
@@ -312,9 +312,9 @@ class CStatistics {
 	static	uint32	GetSharedFileCount()			{ return (*s_numberOfShared); }
 
 	// Kad nodes
-	static void		AddKadNode()					{ ++s_kadNodesCur; }
-	static void		RemoveKadNode()					{ --s_kadNodesCur; }
-	
+	static void	AddKadNode()				{ ++s_kadNodesCur; }
+	static void	RemoveKadNode()				{ --s_kadNodesCur; }
+
 
 	// Other
 	static	void	CalculateRates();
@@ -346,7 +346,7 @@ class CStatistics {
 	static	CECTag*	GetECStatTree(uint8 tree_capping_value)	{ return s_statTree->CreateECTag(tree_capping_value); }
 
 	void SetAverageMinutes(uint8 minutes) { average_minutes = minutes; }
-	
+
  private:
  	std::list<HR>	listHR;
 	typedef std::list<HR>::iterator		listPOS;
@@ -356,7 +356,7 @@ class CStatistics {
 
 	void ComputeAverages(HR **pphr, listRPOS pos, unsigned cntFilled,
 		double sStep, const std::vector<float *> &ppf, StatsGraphType which_graph);
- 
+
 	int GetPointsPerRange()
 	{
 		return (1280/2) - 80; // This used to be a calc. based on GUI width
@@ -368,7 +368,7 @@ class CStatistics {
 	CPreciseRateCounter	m_graphRunningAvgUp;
 	CPreciseRateCounter	m_graphRunningAvgKad;
 
-	
+
 	uint8 average_minutes;
 	int	nHistRanges;
 	int	bitsHistClockMask;
@@ -384,7 +384,7 @@ class CStatistics {
 	static	CStatTreeItemRateCounter*	s_downloadrate;
 
 	/* Tree-related functions */
-	
+
 	static	void	InitStatsTree();
 
 	static	CStatTreeItemBase*	GetTreeRoot()	{ return s_statTree; }
@@ -501,7 +501,7 @@ private:
 	static uint64 s_start_time;
 	static uint64 s_statData[sdTotalItems];
 	uint8 average_minutes;
-	
+
  public:
 	CStatistics(CRemoteConnect &conn);
 	~CStatistics();
@@ -543,7 +543,7 @@ private:
 	void	UpdateStatsTree();
 	void	RebuildStatTreeRemote(const CECTag *);
 	void	SetAverageMinutes(uint8 minutes)	{ average_minutes = minutes; }
-	
+
  private:
 	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }
 };
