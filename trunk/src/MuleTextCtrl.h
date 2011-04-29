@@ -27,6 +27,9 @@
 
 #include <wx/textctrl.h>
 
+#if wxCHECK_VERSION(2, 9, 2)	// wx SVN doesn't allow derive from wxTextCtrl atm
+typedef wxTextCtrl CMuleTextCtrl;
+#else
 
 class wxCommandEvent;
 class wxMouseEvent;
@@ -98,6 +101,7 @@ protected:
 	DECLARE_EVENT_TABLE()
 };
 
+#endif
 #endif
 
 // File_checked_for_headers
