@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -232,9 +232,9 @@ wxString 	CPreferences::s_StatsServerURL;
 /**
  * Template Cfg class for connecting with widgets.
  *
- * This template provides the base functionionality needed to syncronize a 
+ * This template provides the base functionionality needed to syncronize a
  * variable with a widget. However, please note that wxGenericValidator only
- * supports a few types (int, wxString, bool and wxArrayInt), so this template 
+ * supports a few types (int, wxString, bool and wxArrayInt), so this template
  * can't always be used directly.
  *
  * Cfg_Str and Cfg_Bool are able to use this template directly, whereas Cfg_Int
@@ -262,7 +262,7 @@ public:
 #ifndef AMULE_DAEMON
 	/**
 	 * Connects the Cfg to a widget.
-	 * 
+	 *
 	 * @param id The ID of the widget to be connected.
 	 * @param parent The parent of the widget. Use this to speed up searches.
 	 *
@@ -275,12 +275,12 @@ public:
 	{
 		if ( id ) {
 			m_widget = wxWindow::FindWindowById( id, parent );
-		
+
 			if ( m_widget ) {
 				wxGenericValidator validator( &m_value );
 
 				m_widget->SetValidator( validator );
-			
+
 				return true;
 			}
 		} else {
@@ -289,8 +289,8 @@ public:
 
 		return false;
 	}
-	
-	
+
+
 	/** Updates the assosiated variable, returning true on success. */
 	virtual bool TransferFromWindow()
 	{
@@ -299,18 +299,18 @@ public:
 
 			if ( validator ) {
 				TYPE temp = m_value;
-			
+
 				if ( validator->TransferFromWindow() ) {
 					SetChanged( temp != m_value );
 
 					return true;
 				}
 			}
-		} 
-		
+		}
+
 		return false;
 	}
-	
+
 	/** Updates the assosiated widget, returning true on success. */
 	virtual bool TransferToWindow()
 	{
@@ -338,7 +338,7 @@ protected:
 
 	//! Default variable value
 	TYPE	m_default;
-	
+
 	//! Pointer to the widget assigned to the Cfg instance
 	wxWindow*	m_widget;
 };
@@ -359,7 +359,7 @@ public:
 		cfg->Read( GetKey(), &m_value, m_default );
 	}
 
-	
+
 	/** Saves the string to the specified wxConfig object. */
 	virtual void SaveToFile(wxConfigBase* cfg)
 	{
@@ -417,7 +417,7 @@ public:
 		m_real_path = CPath::FromUniv(m_temp_path);
 	}
 
-	
+
 	/** @see Cfg_Str::SaveToFile. */
 	virtual void SaveToFile(wxConfigBase* cfg)
 	{
@@ -434,7 +434,7 @@ public:
 
 		return Cfg_Str::TransferToWindow();
 	}
-	
+
 	/** @see Cfg_Tmpl::TransferFromWindow. */
 	virtual bool TransferFromWindow()
 	{
@@ -455,14 +455,14 @@ private:
 /**
  * Cfg class that takes care of integer types.
  *
- * This template is needed since wxValidator only supports normals ints, and 
+ * This template is needed since wxValidator only supports normals ints, and
  * wxConfig for the matter only supports longs, thus some worksarounds are
- * needed. 
+ * needed.
  *
  * There are two work-arounds:
  *  1) wxValidator only supports int*, so we need a immediate variable to act
  *     as a storage. Thus we use Cfg_Tmpl<int> as base class. Thus this class
- *     contains a integer which we use to pass the value back and forth 
+ *     contains a integer which we use to pass the value back and forth
  *     between the widgets.
  *
  *  2) wxConfig uses longs to save and read values, thus we need an immediate
@@ -482,8 +482,8 @@ public:
 	virtual void LoadFromFile(wxConfigBase* cfg)
 	{
 		long tmp = 0;
-		cfg->Read( GetKey(), &tmp, m_default ); 
-		
+		cfg->Read( GetKey(), &tmp, m_default );
+
 		// Set the temp value
 		m_temp_value = (int)tmp;
 		// Set the actual value
@@ -499,12 +499,12 @@ public:
 #ifndef AMULE_DAEMON
 	virtual bool TransferFromWindow()
 	{
-		if ( Cfg_Tmpl<int>::TransferFromWindow() ) { 
+		if ( Cfg_Tmpl<int>::TransferFromWindow() ) {
 			m_real_value = (TYPE)m_temp_value;
 
 			return true;
-		} 
-		
+		}
+
 		return false;
 	}
 
@@ -513,7 +513,7 @@ public:
 		m_temp_value = (int)m_real_value;
 
 		if ( Cfg_Tmpl<int>::TransferToWindow() ) {
-			
+
 			// In order to let us update labels on slider-changes, we trigger a event
 			wxSlider *slider = dynamic_cast<wxSlider *>(m_widget);
 			if (slider) {
@@ -525,7 +525,7 @@ public:
 
 			return true;
 		}
-		
+
 		return false;
 	}
 #endif
@@ -545,7 +545,7 @@ protected:
  * @param defaultVal The default value if the key isn't found when loading the value.
  * @return A pointer to the new Cfg_Int object. The caller is responsible for deleting it.
  *
- * This template-function returns a Cfg_Int of the appropriate type for the 
+ * This template-function returns a Cfg_Int of the appropriate type for the
  * variable used as argument and should be used to avoid having to specify
  * the integer type when adding a new Cfg_Int, since that's just increases
  * the maintainence burden.
@@ -567,7 +567,7 @@ public:
 	 : Cfg_Tmpl<bool>( keyname, value, defaultVal )
 	{}
 
-	
+
 	virtual void LoadFromFile(wxConfigBase* cfg)
 	{
 		cfg->Read( GetKey(), &m_value, m_default );
@@ -594,7 +594,7 @@ public:
 	virtual void LoadFromFile(wxConfigBase* cfg)
 	{
 		wxString buffer;
-	
+
 		cfg->Read( GetKey(), &buffer, wxT("0") );
 
 		uint64 tmp = 0;
@@ -612,11 +612,11 @@ public:
 	virtual void SaveToFile(wxConfigBase* cfg)
 	{
 		wxString str = CFormat( wxT("%llu") ) % m_value;
-	
+
 		cfg->Write( GetKey(), str );
 	}
 
-	
+
 protected:
 	uint64& m_value;
 };
@@ -662,7 +662,7 @@ typedef struct {
 /**
  * The languages aMule has translation for.
  *
- * Add new languages here. 
+ * Add new languages here.
  * Then activate the test code in Cfg_Lang::UpdateChoice below!
  */
 static LangInfo aMuleLanguages[] = {
@@ -729,7 +729,7 @@ public:
 			return true;	// nothing changed, no problem
 		}
 
-		if ( Cfg_PureInt::TransferFromWindow() ) { 
+		if ( Cfg_PureInt::TransferFromWindow() ) {
 			// find wx ID of selected language
 			int i = 0;
 			while (m_selection > 0) {
@@ -838,7 +838,7 @@ private:
 };
 
 #endif /* ! AMULE_DAEMON */
- 
+
 void Cfg_Lang_Base::UpdateChoice(int) {}	// dummy
 
 class Cfg_Skin : public Cfg_Str
@@ -890,7 +890,7 @@ public:
 		wxString dirName(JoinPaths(GetConfigDir(theApp->m_configFile), folder));
 		wxString Filename;
 		wxDir d;
-		
+
 		if (wxDir::Exists(dirName) &&
 			d.Open(dirName) &&
 			d.GetFirst(& Filename, filespec, flags)
@@ -936,7 +936,7 @@ public:
 		}
 
 		if ( skinSelector->GetCount() == 0 ) {
-			skinSelector->Append(_("no options available"));	
+			skinSelector->Append(_("no options available"));
 		}
 
 		int id = skinSelector->FindString(m_value);
@@ -984,12 +984,12 @@ CPreferences::CPreferences()
 
 		Save();
 	}
-	
+
 	// Mark hash as an eMule-type hash
 	// See also CUpDownClient::GetHashType
 	s_userhash[5] = 14;
 	s_userhash[14] = 111;
-	
+
 #ifndef CLIENT_GUI
 	LoadPreferences();
 	ReloadSharedFolders();
@@ -1004,7 +1004,7 @@ CPreferences::CPreferences()
 
 //
 // Gets called at init time
-// 
+//
 void CPreferences::BuildItemList( const wxString& appdir )
 {
 #ifndef AMULE_DAEMON
@@ -1013,7 +1013,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	int current_id = 0;
 	#define NewCfgItem(ID, COMMAND)	s_CfgList[++current_id] = COMMAND
 #endif /* AMULE_DAEMON */
-	
+
 	/**
 	 * User settings
 	 **/
@@ -1029,7 +1029,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	#ifdef __WXMAC__
 		wxString	customBrowser = wxT("/usr/bin/open");
-	#else 
+	#else
 		wxString	customBrowser; // left empty
 	#endif
 
@@ -1077,10 +1077,10 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( wxT("/Proxy/ProxyPassword"), s_ProxyData.m_password, wxEmptyString )));
 // These were copied from eMule config file, maybe someone with windows can complete this?
 //	NewCfgItem(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	(new Cfg_Bool( wxT("/Proxy/Proxy????"), s_Proxy????, false )));
-	
+
 	/**
 	 * Servers
-	 **/ 
+	 **/
 	NewCfgItem(IDC_REMOVEDEAD,	(new Cfg_Bool( wxT("/eMule/RemoveDeadServer"), s_deadserver, 1 )));
 	NewCfgItem(IDC_SERVERRETRIES,	(MkCfg_Int( wxT("/eMule/DeadServerRetry"), s_deadserverretries, 3 )));
 	NewCfgItem(IDC_SERVERKEEPALIVE,	(MkCfg_Int( wxT("/eMule/ServerKeepAliveTimeout"), s_dwServerKeepAliveTimeoutMins, 0 )));
@@ -1103,7 +1103,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Files
 	 **/
 	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
-	
+
 	#if defined(__WXMAC__) || defined(__WXMSW__)
 		wxString incpath = wxStandardPaths::Get().GetDocumentsDir();
 		if (incpath.IsEmpty()) {
@@ -1112,11 +1112,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 		} else {
 			incpath = JoinPaths(incpath, wxT("aMule Downloads"));
 		}
-	#else 
+	#else
 		wxString incpath = appdir + wxT("Incoming");
 	#endif
 	NewCfgItem(IDC_INCFILES,	(new Cfg_Path(  wxT("/eMule/IncomingDir"), s_incomingdir, incpath )));
-	
+
 	NewCfgItem(IDC_ICH,		(new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true )));
 	NewCfgItem(IDC_AICHTRUST,	(new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, false )));
 	NewCfgItem(IDC_CHECKDISKSPACE,	(new Cfg_Bool( wxT("/eMule/CheckDiskspace"), s_checkDiskspace, true )));
@@ -1181,7 +1181,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  wxT("/SkinGUIOptions/Skin"), s_Skin, wxEmptyString )));
 	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( wxT("/eMule/VerticalToolbar"), s_ToolbarOrientation, false )));
 	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( wxT("/eMule/GeoIPEnabled"), s_GeoIPEnabled, true )));
-	
+
 	/**
 	 * External Apps
 	 */
@@ -1211,9 +1211,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_IPFILTERURL,	(new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString )));
 	NewCfgItem(ID_IPFILTERLEVEL,	(MkCfg_Int( wxT("/eMule/FilterLevel"), s_filterlevel, 127 )));
 	NewCfgItem(IDC_IPFILTERSYS,	(new Cfg_Bool( wxT("/eMule/IPFilterSystem"), s_IPFilterSys, false )));
-		
-	/** 
-	 * Message Filter 
+
+	/**
+	 * Message Filter
 	 **/
 	NewCfgItem(IDC_MSGFILTER,	(new Cfg_Bool( wxT("/eMule/FilterMessages"), s_MustFilterMessages, true )));
 	NewCfgItem(IDC_MSGFILTER_ALL,	(new Cfg_Bool( wxT("/eMule/FilterAllMessages"), s_FilterAllMessages, false )));
@@ -1229,10 +1229,10 @@ void CPreferences::BuildItemList( const wxString& appdir )
 
 	NewCfgItem(IDC_FILTERCOMMENTS,	(new Cfg_Bool( wxT("/eMule/FilterComments"), s_FilterComments, false )));
 	NewCfgItem(IDC_COMMENTWORD,		(new Cfg_Str(  wxT("/eMule/CommentFilter"), s_CommentFilterString, wxEmptyString )));
-	 
+
 	/**
 	 * Hidden files sharing
-	 **/	  
+	 **/
 	NewCfgItem(IDC_SHAREHIDDENFILES,	(new Cfg_Bool( wxT("/eMule/ShareHiddenFiles"), s_ShareHiddenFiles, false )));
 
 	/**
@@ -1244,17 +1244,17 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Version check
 	 **/
 	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( wxT("/eMule/NewVersionCheck"), s_NewVersionCheck, true )));
-	 
+
 	 /**
 	  * Obfuscation
 	  **/
 	NewCfgItem( IDC_SUPPORT_PO, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, true )));
 	NewCfgItem( IDC_ENABLE_PO_OUTGOING, ( new Cfg_Bool( wxT("/Obfuscation/IsCryptLayerRequested"), s_bCryptLayerRequested, true )));
 	NewCfgItem( IDC_ENFORCE_PO_INCOMING, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false )));
-#ifndef CLIENT_GUI	 
+#ifndef CLIENT_GUI
 	// There is no need for GUI items for this two.
 	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
-	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );	 
+	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );
 #endif
 
 	/**
@@ -1276,9 +1276,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ShowAllNotCats"),		s_showAllNotCats, false ) );
 
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
-	
+
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"), 		s_DropSlowSources, false ) );
-		
+
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://download.tuxfamily.org/technosalad/utils/nodes.dat") ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),		s_Ed2kURL, wxT("http://gruk.org/server.met.gz") ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/ShowRatesOnTitle"),		s_showRatesOnTitle, 0 ));
@@ -1295,7 +1295,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
-	for ( int i = 0; i < cntStatColors; i++ ) {  
+	for ( int i = 0; i < cntStatColors; i++ ) {
 		wxString str = CFormat(wxT("/eMule/StatColor%i")) % i;
 		s_MiscList.push_back( new Cfg_Colour( str, CStatisticsDlg::acrStat[i] ) );
 	}
@@ -1321,7 +1321,7 @@ void CPreferences::EraseItemList()
 		delete s_CfgList.begin()->second;
 		s_CfgList.erase( s_CfgList.begin() );
 	}
-	
+
 	CFGList::iterator it = s_MiscList.begin();
 	for ( ; it != s_MiscList.end();  ) {
 		delete *it;
@@ -1356,7 +1356,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 
 	CFGList::iterator it_b = s_MiscList.begin();
 	for ( ; it_b != s_MiscList.end(); ++it_b ) {
-		(*it_b)->LoadFromFile( cfg ); 
+		(*it_b)->LoadFromFile( cfg );
 	}
 
 	// Preserve old value of UDPDisable
@@ -1383,14 +1383,14 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 
 	for ( int i = 0; i < count; i++ ) {
 		const CDebugCategory& cat = theLogger.GetDebugCategory( i );
-		
+
 		bool enabled = false;
 		cfg->Read( wxT("/Debug/Cat_") + cat.GetName(), &enabled );
 
 		theLogger.SetEnabled( cat.GetType(), enabled );
-	}	
+	}
 #endif
-	
+
 	// Now do some post-processing / sanity checking on the values we just loaded
 #ifndef CLIENT_GUI
 	CheckUlDlRatio();
@@ -1412,7 +1412,7 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 
 	CFGList::iterator it_b = s_MiscList.begin();
 	for ( ; it_b != s_MiscList.end(); ++it_b )
-		(*it_b)->SaveToFile( cfg ); 
+		(*it_b)->SaveToFile( cfg );
 
 
 // Save debug-categories
@@ -1423,7 +1423,7 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 		const CDebugCategory& cat = theLogger.GetDebugCategory( i );
 
 		cfg->Write( wxT("/Debug/Cat_") + cat.GetName(), cat.IsEnabled() );
-	}	
+	}
 #endif
 }
 
@@ -1456,9 +1456,9 @@ void CPreferences::UnsetAutoServerStart()
 
 
 // Here we slightly limit the users' ability to be a bad citizen: for very low upload rates
-// we force a low download rate, so as to discourage this type of leeching.  
-// We're Open Source, and whoever wants it can do his own mod to get around this, but the 
-// packaged product will try to enforce good behavior. 
+// we force a low download rate, so as to discourage this type of leeching.
+// We're Open Source, and whoever wants it can do his own mod to get around this, but the
+// packaged product will try to enforce good behavior.
 //
 // Kry note: of course, any leecher mod will be banned asap.
 void CPreferences::CheckUlDlRatio()
@@ -1470,10 +1470,10 @@ void CPreferences::CheckUlDlRatio()
 	// Backwards compatibility
 	if ( s_maxdownload == 0xFFFF )
 		s_maxdownload = UNLIMITED;
-		
+
 	if ( s_maxupload == UNLIMITED )
 		return;
-	
+
 	// Enforce the limits
 	if ( s_maxupload < 4  ) {
 		if ( ( s_maxupload * 3 < s_maxdownload ) || ( s_maxdownload == 0 ) )
@@ -1493,7 +1493,7 @@ void CPreferences::Save()
 	if (!wxFileExists(fullpath)) {
 		preffile.Create(fullpath);
 	}
-	
+
 	if (preffile.Open(fullpath, CFile::read_write)) {
 		try {
 			preffile.WriteUInt8(PREFFILE_VERSION);
@@ -1564,7 +1564,7 @@ void CPreferences::SaveCats()
 
 		// Save the main cat.
 		cfg->Write( wxT("/eMule/AllcatType"), (int)s_allcatFilter);
-		
+
 		// The first category is the default one and should not be counted
 
 		cfg->Write( wxT("/General/Count"), (long)(m_CatList.size() - 1) );
@@ -1581,7 +1581,7 @@ void CPreferences::SaveCats()
 		}
 		// remove deleted cats from config
 		while (cfg->DeleteGroup(CFormat(wxT("/Cat#%i")) % maxcat++)) {}
-		
+
 		cfg->Flush();
 	}
 }
@@ -1617,7 +1617,7 @@ void CPreferences::LoadCats()
 		// Some sanity checking
 		if ( newcat->title.IsEmpty() || !newcat->path.IsOk() ) {
 			AddLogLineN(_("Invalid category found, skipping"));
-			
+
 			delete newcat;
 			continue;
 		}
@@ -1627,7 +1627,7 @@ void CPreferences::LoadCats()
 		newcat->color = StrToULong(cfg->Read(wxT("Color"), wxT("0")));
 
 		AddCat(newcat);
-		
+
 		if (!newcat->path.DirExists()) {
 			CPath::MakeDir(newcat->path);
 		}
@@ -1644,7 +1644,7 @@ uint16 CPreferences::GetDefaultMaxConperFive()
 uint32 CPreferences::AddCat(Category_Struct* cat)
 {
 	m_CatList.push_back( cat );
-	
+
 	return m_CatList.size() - 1;
 }
 
@@ -1653,9 +1653,9 @@ void CPreferences::RemoveCat(size_t index)
 {
 	if ( index < m_CatList.size() ) {
 		CatList::iterator it = m_CatList.begin() + index;
-	
+
 		delete *it;
-		
+
 		m_CatList.erase( it );
 	}
 }
@@ -1678,7 +1678,7 @@ Category_Struct* CPreferences::GetCategory(size_t index)
 const CPath& CPreferences::GetCatPath(uint8 index)
 {
 	wxASSERT( index < m_CatList.size() );
-	
+
 	return m_CatList[index]->path;
 }
 
@@ -1705,7 +1705,7 @@ bool CPreferences::CreateCategory(
 }
 
 bool CPreferences::UpdateCategory(
-	uint8 cat, 
+	uint8 cat,
 	const wxString& name,
 	const CPath& path,
 	const wxString& comment,
@@ -1726,7 +1726,7 @@ bool CPreferences::UpdateCategory(
 	category->comment		= comment;
 	category->color			= color;
 	category->prio			= prio;
-	
+
 	SaveCats();
 	return ret;
 }
@@ -1789,9 +1789,9 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 }
 
 void CPreferences::SetPort(uint16 val)
-{ 
+{
 	// Warning: Check for +3, because server UDP is TCP+3
-	
+
 	if (val +3 > 65535) {
 		AddLogLineC(_("TCP port can't be higher than 65532 due to server UDP socket being TCP+3"));
 		AddLogLineN(CFormat(_("Default port will be used (%d)")) % DEFAULT_TCP_PORT);
@@ -1826,12 +1826,12 @@ void CPreferences::ReloadSharedFolders()
 
 
 bool CPreferences::IsMessageFiltered(const wxString& message)
-{ 
-	if (s_FilterAllMessages) { 
+{
+	if (s_FilterAllMessages) {
 		return true;
 	} else {
 		if (s_FilterSomeMessages) {
-			if (s_MessageFilterString.IsSameAs(wxT("*"))){  
+			if (s_MessageFilterString.IsSameAs(wxT("*"))){
 				// Filter anything
 				return true;
 			} else {
@@ -1843,7 +1843,7 @@ bool CPreferences::IsMessageFiltered(const wxString& message)
 					}
 				}
 				return false;
-			}			
+			}
 		} else {
 			return false;
 		}
@@ -1852,8 +1852,8 @@ bool CPreferences::IsMessageFiltered(const wxString& message)
 
 
 bool CPreferences::IsCommentFiltered(const wxString& comment)
-{ 
-	if (s_FilterComments) { 
+{
+	if (s_FilterComments) {
 		wxStringTokenizer tokenizer( s_CommentFilterString, wxT(",") );
 		while (tokenizer.HasMoreTokens()) {
 			if ( comment.Lower().Trim(false).Trim(true).Contains(

@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,8 +45,8 @@
 	#include "Preferences.h"
 	#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
-	#include "amule.h"		// Needed for theApp
 
+#include "amule.h"		// Needed for theApp
 #include <wx/intl.h>
 
 #ifdef __BSD__
@@ -229,11 +229,11 @@ CStatistics::CStatistics()
 	// Init graphs
 
 	average_minutes = thePrefs::GetStatsAverageMinutes();
-	
+
 	HR hr = {0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0};
 	hrInit = hr;
 	nHistRanges = 7;	// =ceil(log(max_update_delay)/log(2))
-	nPointsPerRange = GetPointsPerRange(); 
+	nPointsPerRange = GetPointsPerRange();
 	bitsHistClockMask = (1 << (nHistRanges-1)) - 1;
 	aposRecycle = new listPOS[nHistRanges];
 	listPOS *ppos = aposRecycle+nHistRanges-1;
@@ -242,7 +242,7 @@ CStatistics::CStatistics()
 		*ppos-- = --listHR.end();
 		for (int j=nPointsPerRange; j>1; --j)
 			listHR.push_back(hr);
-	}	
+	}
 
 	// Init rate counters outside the tree
 
@@ -288,19 +288,19 @@ void CStatistics::CalculateRates()
 /*
 History List
 
-  The basic idea here is that we want to keep as much history as we can without paying 
-a high price in terms of memory space.  Because we keep the history for display purposes, 
-we can take advantage of the fact that when the period shown in the graphs is long 
-then each pixel represents a long period.  So as the most recent history we keep one 
-window full of points at a resolution of 1 second, the next window full at 2 seconds, 
-the next at 4 seconds and so on, up to the maximum desired.  This way there is always 
-at least one sample point per pixel for any update delay set by the user, and the 
+  The basic idea here is that we want to keep as much history as we can without paying
+a high price in terms of memory space.  Because we keep the history for display purposes,
+we can take advantage of the fact that when the period shown in the graphs is long
+then each pixel represents a long period.  So as the most recent history we keep one
+window full of points at a resolution of 1 second, the next window full at 2 seconds,
+the next at 4 seconds and so on, up to the maximum desired.  This way there is always
+at least one sample point per pixel for any update delay set by the user, and the
 memory required grows with the *log* of the total time period covered.
-  The history is kept in a doubly-linked list, with the most recent snapshot at the tail.  
-The number of nodes in the list is fixed, and there are no calls to RemoveHead() and 
-AddTail() which would add overhead and contribute to memory fragmentation.  Instead, 
-every second when a new point gets recorded, one of the existing nodes is recycled; 
-it is disjoined from its present place, put at the tail of the list, and then gets 
+  The history is kept in a doubly-linked list, with the most recent snapshot at the tail.
+The number of nodes in the list is fixed, and there are no calls to RemoveHead() and
+AddTail() which would add overhead and contribute to memory fragmentation.  Instead,
+every second when a new point gets recorded, one of the existing nodes is recycled;
+it is disjoined from its present place, put at the tail of the list, and then gets
 filled with new data.   [Emilio Sandoz]
   This unfortunately does not work with stl classes, as none of them supports moving
 a node to another place, so we have to erase and re-add nodes.
@@ -308,32 +308,32 @@ a node to another place, so we have to erase and re-add nodes.
 
 void CStatistics::RecordHistory()
 {	// First we query and compute some values, then we store them in the history list
-	
+
 	// A few comments about the use of double and float in computations:
 	// Even on a hi-res screen our graphs will have 10 bits of resolution at most,
 	// so the 24 bits resolution of a float on 32 bit Intel processors is more than
-	// enough for all displayed values.  Rate computations however, and especially 
-	// running average computations, use differences (delta bytes/ delta time), and 
-	// for long uptimes the difference between two timestamps can lose too much 
+	// enough for all displayed values.  Rate computations however, and especially
+	// running average computations, use differences (delta bytes/ delta time), and
+	// for long uptimes the difference between two timestamps can lose too much
 	// accuracy because the large mantissa causes less significant bits to be dropped
-	// (same for the difference between two cumulative byte counts).  [We don't store 
+	// (same for the difference between two cumulative byte counts).  [We don't store
 	// these values as integers because they will be used in floating point calculations,
-	// and we want to perform the conversion only once).  Therefore timestamps and 
+	// and we want to perform the conversion only once).  Therefore timestamps and
 	// Kbyte counts are stored in the history as doubles, while computed values use
 	// float (to save space and execution time).
 
 /*
 	Store values; first determine the node to be recycled (using the bits in iClock)
-	
+
     oldest records ----------------- listHR ------------------ youngest records
-	
+
 	O-[Range 2^n sec]-O- ... -O-[Range 4 sec]-O-[Range 2 sec]-O-[Range 1 sec]-O
 	|                 |       |               |               > every 2 secs -^
 	|                 |  ...  |                >--------------- every 4 secs -^
 	|                 |       >------------------------ recycle every 8 secs -^
 	|                 |                                                 ...
-	|                 >-the node at this position is recycled every 2^n secs -^	
-	>-------------------(ditto for the oldest node at the head of the list) --^	
+	|                 >-the node at this position is recycled every 2^n secs -^
+	>-------------------(ditto for the oldest node at the head of the list) --^
 	^                                                         ^
     aposRecycle[nHistRanges-1]               ...              aposRecycle[0]  Tail
 */
@@ -344,7 +344,7 @@ void CStatistics::RecordHistory()
 	if (bits <= bitsHistClockMask) {
 		ppos = aposRecycle;
 		while ((bits /= 2) != 0)  // count to the highest bit that was just toggled to 1
-			++ppos;	
+			++ppos;
 		// recycle one node and jump over the next to move it to the next higher range
 		listHR.push_back(**ppos);
 		*ppos = ++listHR.erase(*ppos);
@@ -354,7 +354,7 @@ void CStatistics::RecordHistory()
 		listHR.push_back(**ppos);
 		*ppos = listHR.erase(*ppos);
 	}
-	
+
 	// now save the latest data point in this node
  	listPOS phr = --listHR.end();
 	phr->kBytesSent = GetSessionSentBytes() / 1024.0;
@@ -365,7 +365,7 @@ void CStatistics::RecordHistory()
 	phr->cntConnections = GetActiveConnections();
 	phr->cntDownloads = GetDownloadingSources();
 	phr->sTimestamp = GetUptimeMillis() / 1000.0;
-	
+
 	s_kadNodesTotal += s_kadNodesCur;
 	phr->kadNodesTotal = s_kadNodesTotal;
 	phr->kadNodesCur = s_kadNodesCur;
@@ -378,18 +378,18 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 	double sFinal,			// latest allowed timestamp
 	const std::vector<float *> &ppf,// an array of pointers to arrays of floats for the result
 	StatsGraphType which_graph)	// the graph which will receive the points
-{	
+{
 	if (sStep==0.0 || cntPoints==0) {
 		return(0);
 	}
-	
+
 	float *pf1 = ppf[0];
 	float *pf2 = ppf[1];
 	float *pf3 = ppf[2];
 	unsigned cntFilled = 0;
 	listRPOS pos = listHR.rbegin();
 
-	// start of list should be an integer multiple of the sampling period for samples 
+	// start of list should be an integer multiple of the sampling period for samples
 	// to be consistent when the graphs are resized horizontally
 	double	sTarget;
 	if (sFinal >= 0.0) {
@@ -406,7 +406,7 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 		ahr = new HR* [cntPoints];
 		pphr = ahr;
 	}
-	
+
 	while (pos != listHR.rend()) {
 		if (pos->sTimestamp > sTarget) {
 			++pos;
@@ -419,7 +419,7 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 			*pf2++ = (float)pos->cntConnections;
 			*pf3++ = (float)pos->cntDownloads;
 		}
-		if (++cntFilled  == cntPoints) {	// enough points 
+		if (++cntFilled  == cntPoints) {	// enough points
 			break;
 		}
 		if (pos->sTimestamp == 0.0) {		// reached beginning of uptime
@@ -452,7 +452,7 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 	double sStep,			// time difference between sample points
 	double *sStart,			// earliest allowed timestamp
 	uint32 **graphData)		// a pointer to a pointer that will point to the graph data array
-{	
+{
 	if (*sStart < 0.0) {
 		*sStart = 0.0;
 	}
@@ -462,7 +462,7 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 	listRPOS	pos = listHR.rbegin();
 	double		LastTimeStamp = pos->sTimestamp;
 	double		sTarget = LastTimeStamp;
-	
+
 	HR	**pphr = new HR *[cntPoints];
 
 	while (pos != listHR.rend()) {
@@ -471,7 +471,7 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 			continue;
 		}
 		pphr[cntFilled] = &(*pos);
-		if (++cntFilled  == cntPoints)		// enough points 
+		if (++cntFilled  == cntPoints)		// enough points
 			break;
 		if (pos->sTimestamp <= *sStart)		// reached beginning of requested time
 			break;
@@ -516,7 +516,7 @@ void CStatistics::ComputeAverages(
 	double		sStep,		// time difference between two samples
 	const std::vector<float *> &ppf,// an array of pointers to arrays of floats with sample data
 	StatsGraphType	which_graph)	// the graph which will receive the points
-{	
+{
 	double		sTarget, kValueRun;
 	uint64 		avgTime = average_minutes * 60;
 	unsigned	nBtPoints = (unsigned)(avgTime / sStep);
@@ -529,7 +529,7 @@ void CStatistics::ComputeAverages(
 		default:
 			wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));
 	}
-	
+
 	runningAvg->m_timespan = avgTime * 1000;
 	runningAvg->m_tick_history.clear();
 	runningAvg->m_byte_history.clear();
@@ -541,12 +541,12 @@ void CStatistics::ComputeAverages(
 	} else {
 		sTarget = std::max(0.0, pos->sTimestamp - sStep);
 	}
-	
+
 	while (nBtPoints--) {
 		while (pos != listHR.rend() && pos->sTimestamp > sTarget) ++pos;	// find next history record
 		if (pos != listHR.rend()) {
 			runningAvg->m_tick_history.push_front((uint64)(pos->sTimestamp * 1000.0));
-			
+
 			uint32 value = 0;
 			switch (which_graph) {
 			case GRAPH_DOWN:
@@ -559,9 +559,9 @@ void CStatistics::ComputeAverages(
 				value = (uint32)(pos->kadNodesCur * 1024.0);
 				break;
 			default:
-				wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));		
-			}		
-			
+				wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));
+			}
+
 			runningAvg->m_byte_history.push_front(value);
 			runningAvg->m_total += value;
 		} else {
@@ -589,7 +589,7 @@ void CStatistics::ComputeAverages(
 			kValueRun = phr->kadNodesTotal;
 			*pf3 = phr->kadNodesCur;
 		}
-		
+
 		*pf1 = kValueRun / phr->sTimestamp;
 		(*runningAvg) += (uint32)(*pf3 * 1024.0);
 		runningAvg->CalculateRate((uint64)(phr->sTimestamp * 1000.0));
@@ -628,7 +628,7 @@ GraphUpdateInfo CStatistics::GetPointsForUpdate()
 	update.kadnodes[0] = phr->kadNodesTotal / phr->sTimestamp;
 	update.kadnodes[1] = m_graphRunningAvgKad.GetRate() / 1024.0;
 	update.kadnodes[2] = phr->kadNodesCur;
-		
+
 	return update;
 }
 
@@ -701,7 +701,7 @@ void CStatistics::InitStatsTree()
 	tmpRoot1->AddChild(new CStatTreeItemPeakConnections(wxTRANSLATE("Peak Connections (estimate): %i")));
 
 	s_clients = (CStatTreeItemHiddenCounter*)s_statTree->AddChild(new CStatTreeItemHiddenCounter(wxTRANSLATE("Clients"), stSortChildren | stSortByValue));
-	s_unknown = (CStatTreeItemCounter*)s_clients->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Unknown: %s")), 6); 
+	s_unknown = (CStatTreeItemCounter*)s_clients->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Unknown: %s")), 6);
 	//s_lowID = (CStatTreeItem*)s_clients->AddChild(new CStatTreeItem(wxTRANSLATE("LowID: %u (%.2f%% Total %.2f%% Known)")), 5);
 	//s_secIdentOnOff = (CStatTreeItem*)s_clients->AddChild(new CStatTreeItem(wxTRANSLATE("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)")), 4);
 #ifdef __DEBUG__
