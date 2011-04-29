@@ -123,8 +123,6 @@ bool		CPreferences::s_paranoidfilter;
 bool		CPreferences::s_IPFilterSys;
 bool		CPreferences::s_onlineSig;
 uint16		CPreferences::s_OSUpdate;
-uint64		CPreferences::s_totalDownloadedBytes;
-uint64		CPreferences::s_totalUploadedBytes;
 wxString	CPreferences::s_languageID;
 uint8		CPreferences::s_iSeeShares;
 uint8		CPreferences::s_iToolDelayTime;
@@ -577,48 +575,6 @@ public:
 	{
 		cfg->Write( GetKey(), m_value );
 	}
-};
-
-
-/**
- * Cfg-class for uint64s, with no associated widgets.
- */
-class Cfg_Counter : public Cfg_Base
-{
-public:
-	Cfg_Counter( const wxString& keyname, uint64& value )
-	 : Cfg_Base( keyname ),
-	   m_value( value )
-	{}
-
-	virtual void LoadFromFile(wxConfigBase* cfg)
-	{
-		wxString buffer;
-
-		cfg->Read( GetKey(), &buffer, wxT("0") );
-
-		uint64 tmp = 0;
-		for (unsigned int i = 0; i < buffer.Length(); ++i) {
-			if ((buffer[i] >= wxChar('0')) &&(buffer[i] <= wxChar('9'))) {
-				tmp = tmp * 10 + (buffer[i] - wxChar('0'));
-			} else {
-				tmp = 0;
-				break;
-			}
-		}
-		m_value = tmp;
-	}
-
-	virtual void SaveToFile(wxConfigBase* cfg)
-	{
-		wxString str = CFormat( wxT("%llu") ) % m_value;
-
-		cfg->Write( GetKey(), str );
-	}
-
-
-protected:
-	uint64& m_value;
 };
 
 
@@ -1266,8 +1222,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * The following doesn't have an associated widget or section
 	 **/
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Language"),			s_languageID ) );
-	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalDownloadedBytes"), s_totalDownloadedBytes ) );
-	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalUploadedBytes"),	s_totalUploadedBytes ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),		s_splitterbarPosition, 75 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),			s_yourHostname, wxEmptyString ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),		s_datetimeformat, wxT("%A, %x, %X") ) );

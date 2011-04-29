@@ -421,14 +421,14 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// Total Downloaded
 	{
-		wxString temp = CastItoXBytes( theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		wxString temp = CastItoXBytes(theStats::GetTotalReceivedBytes());
 		temp = CFormat(_("Total DL: %s")) % temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
 	// Total Uploaded
 	{
-		wxString temp = CastItoXBytes( theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
+		wxString temp = CastItoXBytes(theStats::GetTotalSentBytes());
 		temp = CFormat(_("Total UL: %s")) % temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}

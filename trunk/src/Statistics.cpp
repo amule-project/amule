@@ -34,6 +34,9 @@
 	#ifndef AMULE_DAEMON
 		#include <common/Format.h>		// Needed for CFormat
 	#endif
+	#include "CFile.h"		// Needed for CFile access
+	#include <common/Path.h>	// Needed for JoinPaths
+	#include <wx/config.h>		// Needed for wxConfig
 	#include "DataToText.h"		// Needed for GetSoftName()
 	#include "Preferences.h"	// Needed for thePrefs
 	#include "ListenSocket.h"	// (tree, GetAverageConnections)
@@ -215,8 +218,14 @@ CStatTreeItemCounter*		CStatistics::s_numberOfShared;
 CStatTreeItemCounter*		CStatistics::s_sizeOfShare;
 
 // Kad
-uint64						CStatistics::s_kadNodesTotal;
-uint16						CStatistics::s_kadNodesCur;
+uint64_t			CStatistics::s_kadNodesTotal;
+uint16_t			CStatistics::s_kadNodesCur;
+
+// Totals
+uint64_t			CStatistics::s_totalSent;
+uint64_t			CStatistics::s_totalReceived;
+
+bool				CStatistics::s_statsNeedSave;
 
 
 CStatistics::CStatistics()
@@ -253,6 +262,10 @@ CStatistics::CStatistics()
 
 	InitStatsTree();
 	s_uptime->SetStartTime(start_time);
+
+	// Load saved statistics
+	Load();
+	s_statsNeedSave = false;
 }
 
 
@@ -273,6 +286,74 @@ CStatistics::~CStatistics()
 }
 
 
+uint64_t ReadUInt64FromCfg(wxConfigBase* cfg, const wxString& key)
+{
+	wxString buffer;
+
+	cfg->Read(key, &buffer, wxT("0"));
+
+	uint64 tmp = 0;
+	for (unsigned int i = 0; i < buffer.Length(); ++i) {
+		if ((buffer[i] >= wxChar('0')) &&(buffer[i] <= wxChar('9'))) {
+			tmp = tmp * 10 + (buffer[i] - wxChar('0'));
+		} else {
+			tmp = 0;
+			break;
+		}
+	}
+
+	return tmp;
+}
+
+void CStatistics::Load()
+{
+	CFile f;
+
+	s_totalSent = 0;
+	s_totalReceived = 0;
+	if (f.Open(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")))) {
+		uint8_t version = f.ReadUInt8();
+		if (version == 0) {
+			s_totalSent = f.ReadUInt64();
+			s_totalReceived = f.ReadUInt64();
+		}
+	}
+
+	// Load old values from config
+	bool cfgChanged = false;
+	wxConfigBase* cfg = wxConfigBase::Get();
+	if (cfg->HasEntry(wxT("/Statistics/TotalUploadedBytes"))) {
+		s_totalSent += ReadUInt64FromCfg(cfg, wxT("/Statistics/TotalUploadedBytes"));
+		cfg->DeleteEntry(wxT("/Statistics/TotalUploadedBytes"));
+		cfgChanged = true;
+	}
+	if (cfg->HasEntry(wxT("/Statistics/TotalDownloadedBytes"))) {
+		s_totalReceived += ReadUInt64FromCfg(cfg, wxT("/Statistics/TotalDownloadedBytes"));
+		cfg->DeleteEntry(wxT("/Statistics/TotalDownloadedBytes"));
+		cfgChanged = true;
+	}
+	if (cfgChanged) {
+		cfg->Flush();
+		s_statsNeedSave = s_totalSent > 0 || s_totalReceived > 0;
+		Save();
+	}
+}
+
+
+void CStatistics::Save()
+{
+	if (s_statsNeedSave) {
+		CFile f;
+
+		if (f.Open(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")), CFile::write)) {
+			f.WriteUInt8(0);	/* version */
+			f.WriteUInt64(s_totalSent);
+			f.WriteUInt64(s_totalReceived);
+		}
+		s_statsNeedSave = false;
+	}
+}
+
 void CStatistics::CalculateRates()
 {
 	uint64_t now = GetTickCount64();
@@ -281,6 +362,7 @@ void CStatistics::CalculateRates()
 	s_downloadrate->CalculateRate(now);
 	s_uploadrate->CalculateRate(now);
 }
+
 
 
 /* ------------------------------- GRAPHS ---------------------------- */
@@ -647,7 +729,7 @@ void CStatistics::InitStatsTree()
 	tmpRoot1 = s_statTree->AddChild(new CStatTreeItemBase(wxTRANSLATE("Transfer"), stSortChildren));
 
 	tmpRoot2 = tmpRoot1->AddChild(new CStatTreeItemBase(wxTRANSLATE("Uploads")), 2);
-	s_sessionUpload = (CStatTreeItemUlDlCounter*)tmpRoot2->AddChild(new CStatTreeItemUlDlCounter(wxTRANSLATE("Uploaded Data (Session (Total)): %s"), thePrefs::GetTotalUploaded, stSortChildren | stSortByValue));
+	s_sessionUpload = (CStatTreeItemUlDlCounter*)tmpRoot2->AddChild(new CStatTreeItemUlDlCounter(wxTRANSLATE("Uploaded Data (Session (Total)): %s"), theStats::GetTotalSentBytes, stSortChildren | stSortByValue));
 	// Children will be added on-the-fly
 	s_totalUpOverhead = (CStatTreeItemPacketTotals*)tmpRoot2->AddChild(new CStatTreeItemPacketTotals(wxTRANSLATE("Total Overhead (Packets): %s")));
 	s_fileReqUpOverhead = (CStatTreeItemPackets*)tmpRoot2->AddChild(new CStatTreeItemPackets(wxTRANSLATE("File Request Overhead (Packets): %s")));
@@ -668,7 +750,7 @@ void CStatistics::InitStatsTree()
 	tmpRoot2->AddChild(new CStatTreeItemAverage(wxTRANSLATE("Average upload time: %s"), s_totalUploadTime, s_totalSuccUploads, dmTime));
 
 	tmpRoot2 = tmpRoot1->AddChild(new CStatTreeItemBase(wxTRANSLATE("Downloads")), 1);
-	s_sessionDownload = (CStatTreeItemUlDlCounter*)tmpRoot2->AddChild(new CStatTreeItemUlDlCounter(wxTRANSLATE("Downloaded Data (Session (Total)): %s"), thePrefs::GetTotalDownloaded, stSortChildren | stSortByValue));
+	s_sessionDownload = (CStatTreeItemUlDlCounter*)tmpRoot2->AddChild(new CStatTreeItemUlDlCounter(wxTRANSLATE("Downloaded Data (Session (Total)): %s"), theStats::GetTotalReceivedBytes, stSortChildren | stSortByValue));
 	// Children will be added on-the-fly
 	s_totalDownOverhead = (CStatTreeItemPacketTotals*)tmpRoot2->AddChild(new CStatTreeItemPacketTotals(wxTRANSLATE("Total Overhead (Packets): %s")));
 	s_fileReqDownOverhead = (CStatTreeItemPackets*)tmpRoot2->AddChild(new CStatTreeItemPackets(wxTRANSLATE("File Request Overhead (Packets): %s")));
@@ -684,7 +766,7 @@ void CStatistics::InitStatsTree()
 	s_foundSources = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Found Sources: %s"), stSortChildren | stSortByValue));
 	s_activeDownloads = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Active Downloads (chunks): %s")));
 
-	tmpRoot1->AddChild(new CStatTreeItemRatio(wxTRANSLATE("Session UL:DL Ratio (Total): %s"), s_sessionUpload, s_sessionDownload, thePrefs::GetTotalUploaded, thePrefs::GetTotalDownloaded), 3);
+	tmpRoot1->AddChild(new CStatTreeItemRatio(wxTRANSLATE("Session UL:DL Ratio (Total): %s"), s_sessionUpload, s_sessionDownload, theStats::GetTotalSentBytes, theStats::GetTotalReceivedBytes), 3);
 
 	tmpRoot1 = s_statTree->AddChild(new CStatTreeItemBase(wxTRANSLATE("Connection")));
 	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average download rate (Session): %s"), s_sessionDownload, s_uptime));
