@@ -219,6 +219,9 @@ class CStatistics {
 	CStatistics();
 	~CStatistics();
 
+	static void	Load();
+	static void	Save();
+
 	/* Statistics graph functions */
 
 	void	 RecordHistory();
@@ -238,6 +241,7 @@ class CStatistics {
 	static	uint64	GetStartTime()				{ return s_uptime->GetTimerStart(); }
 
 	// Upload
+	static	uint64	GetTotalSentBytes()			{ return s_totalSent; }
 	static	uint64	GetSessionSentBytes()			{ return (*s_sessionUpload); }
 	static	void	AddUpOverheadFileRequest(uint32 size)	{ (*s_fileReqUpOverhead) += size; (*s_upOverheadRate) += size; }
 	static	void	AddUpOverheadSourceExchange(uint32 size){ (*s_sourceXchgUpOverhead) += size; (*s_upOverheadRate) += size; }
@@ -258,6 +262,7 @@ class CStatistics {
 	static	double	GetUploadRate()				{ return s_uploadrate->GetRate(); }
 
 	// Download
+	static	uint64	GetTotalReceivedBytes()			{ return s_totalReceived; }
 	static	uint64	GetSessionReceivedBytes()		{ return (*s_sessionDownload); }
 	static	void	AddDownOverheadFileRequest(uint32 size)	{ (*s_fileReqDownOverhead) += size; (*s_downOverheadRate) += size; }
 	static	void	AddDownOverheadSourceExchange(uint32 size){ (*s_sourceXchgDownOverhead) += size; (*s_downOverheadRate) += size; }
@@ -327,6 +332,8 @@ class CStatistics {
 
 			(*s_sessionDownload) += bytes;
 			(*s_downloadrate) += bytes;
+			s_totalReceived += bytes;
+			s_statsNeedSave = true;
 		}
 
 	static	void	AddSentBytes(uint32 bytes)
@@ -337,6 +344,8 @@ class CStatistics {
 
 			(*s_sessionUpload) += bytes;
 			(*s_uploadrate) += bytes;
+			s_totalSent += bytes;
+			s_statsNeedSave = true;
 		}
 
 	static	void	AddDownloadFromSoft(uint8 SoftType, uint32 bytes);
@@ -458,8 +467,14 @@ class CStatistics {
 	static	CStatTreeItemCounter*		s_sizeOfShare;
 
 	// Kad nodes
-	static uint64 s_kadNodesTotal;
-	static uint16 s_kadNodesCur;
+	static	uint64_t	s_kadNodesTotal;
+	static	uint16_t	s_kadNodesCur;
+
+	// Total sent/received bytes
+	static	uint64_t	s_totalSent;
+	static	uint64_t	s_totalReceived;
+
+	static	bool		s_statsNeedSave;
 };
 
 #else /* CLIENT_GUI */
@@ -509,11 +524,11 @@ private:
 	static	uint64	GetUptimeMillis();
 	static	uint64	GetUptimeSeconds();
 
-	static	uint64	GetSessionSentBytes()			{ return 0; } // TODO
+	static	uint64	GetTotalSentBytes()			{ return 0; } // TODO
 	static	double	GetUploadRate()				{ return (double)s_statData[sdUpload]; }
 	static	double	GetUpOverheadRate()			{ return (double)s_statData[sdUpOverhead]; }
 
-	static	uint64	GetSessionReceivedBytes()		{ return 0; } // TODO
+	static	uint64	GetTotalReceivedBytes()			{ return 0; } // TODO
 	static	double	GetDownloadRate()			{ return (double)s_statData[sdDownload]; }
 	static	double	GetDownOverheadRate()			{ return (double)s_statData[sdDownOverhead]; }
 

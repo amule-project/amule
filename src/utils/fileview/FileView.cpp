@@ -32,8 +32,8 @@
 #include "../../CFile.h"
 
 #define VERSION_MAJOR	0
-#define VERSION_MINOR	9
-#define VERSION_MICRO	7
+#define VERSION_MINOR	10
+#define VERSION_MICRO	0
 
 class CFileView : public wxApp
 {
@@ -142,6 +142,8 @@ int CFileView::OnRun()
 					DecodeClientsMet(file);
 				} else if (basename == wxT("known.met")) {
 					DecodeKnownMet(file);
+				} else if (basename == wxT("statistics.dat")) {
+					DecodeStatisticsDat(file);
 				} else if (basename.Find(wxT(".part.met")) != wxNOT_FOUND) {
 					DecodePartMetFile(file);
 				} else {

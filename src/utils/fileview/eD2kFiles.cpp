@@ -256,3 +256,15 @@ void DecodePartMetFile(const CFileDataIO& file)
 	}
 	cout << '\n';
 }
+
+void DecodeStatisticsDat(const CFileDataIO& file)
+{
+	uint8_t version = file.ReadUInt8();
+	cout << "Version : " << (unsigned)version << '\n';
+	if (version == 0) {
+		uint64_t tmp = file.ReadUInt64();
+		cout << "Total sent bytes     : " << tmp << " (" << CastItoXBytes(tmp) << ")\n";
+		tmp = file.ReadUInt64();
+		cout << "Total received bytes : " << tmp << " (" << CastItoXBytes(tmp) << ")\n";
+	}
+}

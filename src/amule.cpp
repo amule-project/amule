@@ -963,10 +963,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.AddLine(thePrefs::GetUserNick());
 
 	// Total received in bytes
-	amulesig_out.AddLine( CFormat( wxT("%llu") ) % (theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded()) );
+	amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetTotalReceivedBytes());
 
 	// Total sent in bytes
-	amulesig_out.AddLine( CFormat( wxT("%llu") ) % (theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded()) );
+	amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetTotalSentBytes());
 
 	// amule version
 #ifdef SVNDATE
@@ -1228,19 +1228,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
-		wxString buffer;
-		
-		// Save total upload/download to preferences
-		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer = CFormat(wxT("%llu")) % (theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded());
-		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
-
-		buffer = CFormat(wxT("%llu")) % (theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded());
-		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
-
-		// Write changes to file
-		cfg->Flush();
-
+		theStats::Save();
 	}
 
 	// Special
@@ -1431,12 +1419,7 @@ void CamuleApp::ShutDown()
 		knownfiles->Save();
 	}
 
-	thePrefs::Add2TotalDownloaded(theStats::GetSessionReceivedBytes());
-	thePrefs::Add2TotalUploaded(theStats::GetSessionSentBytes());
-
-	if (glob_prefs) {
-		glob_prefs->Save();
-	}
+	theStats::Save();
 
 	CPath configFileName = CPath(ConfigDir + m_configFile);
 	CPath::BackupFile(configFileName, wxT(".bak"));

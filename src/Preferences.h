@@ -243,10 +243,6 @@ public:
        					{ s_trafficOMeterInterval = in; }
 	static uint16		GetStatsInterval()		{ return s_statsInterval;}
 	static void		SetStatsInterval(uint16 in)	{ s_statsInterval = in; }
-	static void		Add2TotalDownloaded(uint64 in)	{ s_totalDownloadedBytes += in; }
-	static void		Add2TotalUploaded(uint64 in)	{ s_totalUploadedBytes += in; }
-	static uint64		GetTotalDownloaded()		{ return s_totalDownloadedBytes; }
-	static uint64		GetTotalUploaded()		{ return s_totalUploadedBytes; }
 	static bool		IsConfirmExitEnabled()		{ return s_confirmExit; }
 	static bool		FilterLanIPs()			{ return s_filterLanIP; }
 	static void		SetFilterLanIPs(bool val)	{ s_filterLanIP = val; }
@@ -658,8 +654,6 @@ protected:
 	static bool	s_paranoidfilter;
 	static bool	s_onlineSig;
 
-	static uint64  	s_totalDownloadedBytes;
-	static uint64	s_totalUploadedBytes;
 	static wxString	s_languageID;
 	static uint8	s_iSeeShares;		// 0=everybody 1=friends only 2=noone
 	static uint8	s_iToolDelayTime;	// tooltip delay time in seconds
