@@ -23,6 +23,7 @@
 //
 
 #include "MuleTextCtrl.h"
+#if !wxCHECK_VERSION(2, 9, 2)
 #include <wx/menu.h>
 #include <wx/intl.h>
 #include <wx/dataobj.h>
@@ -146,6 +147,7 @@ void CMuleTextCtrl::Clear()
 		wxTextCtrl::Clear();
 	}
 }
+#endif
 #endif
 
 // File_checked_for_headers
