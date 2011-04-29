@@ -66,6 +66,7 @@ Version 2.3.0 - The river knows.
 		  translators
 		* Several fixes and improvements for the sanity checker script
 		* Fix bfd detection
+		* Move statistics from config to statistics.dat
 
 	Greek:
 		* Part number is now an extra column in the download list
