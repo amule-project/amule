@@ -173,6 +173,9 @@ enum ECTagNames {
 		EC_TAG_STATS_BUDDY_IP                     = 0x0215,
 		EC_TAG_STATS_BUDDY_PORT                   = 0x0216,
 		EC_TAG_STATS_KAD_IN_LAN_MODE              = 0x0217,
+		EC_TAG_STATS_TOTAL_SENT_BYTES             = 0x0218,
+		EC_TAG_STATS_TOTAL_RECEIVED_BYTES         = 0x0219,
+		EC_TAG_STATS_SHARED_FILE_COUNT            = 0x021A,
 	EC_TAG_PARTFILE                           = 0x0300,
 		EC_TAG_PARTFILE_NAME                      = 0x0301,
 		EC_TAG_PARTFILE_PARTMETID                 = 0x0302,
@@ -617,6 +620,9 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0215: return wxT("EC_TAG_STATS_BUDDY_IP");
 		case 0x0216: return wxT("EC_TAG_STATS_BUDDY_PORT");
 		case 0x0217: return wxT("EC_TAG_STATS_KAD_IN_LAN_MODE");
+		case 0x0218: return wxT("EC_TAG_STATS_TOTAL_SENT_BYTES");
+		case 0x0219: return wxT("EC_TAG_STATS_TOTAL_RECEIVED_BYTES");
+		case 0x021A: return wxT("EC_TAG_STATS_SHARED_FILE_COUNT");
 		case 0x0300: return wxT("EC_TAG_PARTFILE");
 		case 0x0301: return wxT("EC_TAG_PARTFILE_NAME");
 		case 0x0302: return wxT("EC_TAG_PARTFILE_PARTMETID");

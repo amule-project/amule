@@ -1054,6 +1054,9 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 	s_statData[sdBuddyIP] = stats->GetTagByNameSafe(EC_TAG_STATS_BUDDY_IP)->GetInt();
 	s_statData[sdBuddyPort] = stats->GetTagByNameSafe(EC_TAG_STATS_BUDDY_PORT)->GetInt();
 	s_statData[sdKadInLanMode] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_IN_LAN_MODE)->GetInt();
+	s_statData[sdTotalSentBytes] = stats->GetTagByNameSafe(EC_TAG_STATS_TOTAL_SENT_BYTES)->GetInt();
+	s_statData[sdTotalReceivedBytes] = stats->GetTagByNameSafe(EC_TAG_STATS_TOTAL_RECEIVED_BYTES)->GetInt();
+	s_statData[sdSharedFileCount] = stats->GetTagByNameSafe(EC_TAG_STATS_SHARED_FILE_COUNT)->GetInt();
 
 	const CECTag * LoggerTag = stats->GetTagByName(EC_TAG_STATS_LOGGER_MESSAGE);
 	if (LoggerTag) {

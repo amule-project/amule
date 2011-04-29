@@ -565,6 +565,10 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 			response->AddTag(CECTag(EC_TAG_STATS_DOWN_OVERHEAD, (uint32)theStats::GetDownOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT, /*(uint32)*/theStats::GetBannedCount()));
 			AddLoggerTag(response, LoggerAccess);
+			// Needed only for the remote tray icon context menu
+			response->AddTag(CECTag(EC_TAG_STATS_TOTAL_SENT_BYTES, theStats::GetTotalSentBytes()));
+			response->AddTag(CECTag(EC_TAG_STATS_TOTAL_RECEIVED_BYTES, theStats::GetTotalReceivedBytes()));
+			response->AddTag(CECTag(EC_TAG_STATS_SHARED_FILE_COUNT, theStats::GetSharedFileCount()));
 		case EC_DETAIL_WEB:
 		case EC_DETAIL_CMD:
 			response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theStats::GetUploadRate()));
