@@ -300,14 +300,6 @@ bool CGapList::IsComplete(uint16 part)
 	return status == complete;
 }
 
-void CGapList::DumpList()
-{
-	int i = 0;
-	for (const_iterator it = begin(); it != end(); ++it) {
-		AddDebugLogLineN(logPartFile, CFormat(wxT("  %3d: %5d - %5d")) % i++ % it.start() % it.end());
-	}
-}
-
 inline bool CGapList::ArgCheck(uint64 gapstart, uint64 &gapend) const
 {
 	// end < start: serious error

@@ -85,8 +85,6 @@ public:
 	uint64 GetGapSize();
 	// size of gaps inside one part
 	uint32 GetGapSize(uint16 part) const;
-	// print list for debugging
-	void DumpList();
 
 	// Iterator class to loop through the gaps read-only
 	// Gaps are returned just as start/end value
