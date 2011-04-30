@@ -1206,7 +1206,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 	m_nUserIDHybrid			= 0;
 	m_nUserPort				= 0;
 	m_nClientVersion		= 0;
-	m_fNoViewSharedFiles	= false;
+	m_fNoViewSharedFiles	= true;
 	m_identState			= IS_NOTAVAILABLE;
 	m_bRemoteQueueFull		= false;
 

@@ -357,6 +357,10 @@ void CUpDownClient::ClearHelloProperties()
 	m_fSupportsSourceEx2 = 0;
 	m_fSupportsCaptcha = 0;
 	m_fDirectUDPCallback = 0;
+	m_bIsHybrid = false;
+	m_bIsML = false;
+	m_fNoViewSharedFiles = true;	// that's a sensible default to assume until we get the real value
+	m_bUnicodeSupport = false;
 }
 
 bool CUpDownClient::ProcessHelloPacket(const byte* pachPacket, uint32 nSize)
@@ -467,11 +471,6 @@ bool CUpDownClient::ProcessHelloAnswer(const byte* pachPacket, uint32 nSize)
 
 bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 {
-
-	m_bIsHybrid = false;
-	m_bIsML = false;
-	m_fNoViewSharedFiles = 0;
-	m_bUnicodeSupport = false;
 	uint32 dwEmuleTags = 0;
 
 	CMD4Hash hash = data.ReadHash();

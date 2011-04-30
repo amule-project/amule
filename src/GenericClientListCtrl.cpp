@@ -184,6 +184,9 @@ wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 		case ColumnUserFileNameDownloadRemote:
 			name = wxT("R");
 			break;
+		case ColumnUserSharedFiles:
+			name = wxT("m");
+			break;
 		case ColumnInvalid:
 		default:
 			wxFAIL;
@@ -1081,6 +1084,15 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			}
 			break;
 		}
+		case ColumnUserSharedFiles: {
+			if(client.HasDisabledSharedFiles()) {
+				buffer = _("No");
+			} else {
+				buffer = _("Yes");
+			}
+			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
+			break;
+		}
 	}
 }
 
@@ -1262,6 +1274,10 @@ int CGenericClientListCtrl::Compare(
 
 		case ColumnUserFileNameDownloadRemote: {
 			return CmpAny(client1.GetClientFilename(), client2.GetClientFilename());
+		}
+
+		case ColumnUserSharedFiles: {
+			return CmpAny(client1.HasDisabledSharedFiles(), client2.HasDisabledSharedFiles());
 		}
 
 		default:

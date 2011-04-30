@@ -2,6 +2,9 @@ Version 2.3.0 - The river knows.
 ----------
 2011-??-??
 
+	btkaos:
+		* Show if a client shares its file list in client view
+
 	freddy77:
 		* Various optimizations of memory usage
 		* Access files for reading/writing via mapped memory

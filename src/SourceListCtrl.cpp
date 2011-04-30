@@ -34,7 +34,8 @@ static CGenericClientListCtrlColumn s_sources_column_info[] = {
 	{ ColumnUserQueueRankRemote,	wxTRANSLATE("Download Status"),	55 },
 	{ ColumnUserOrigin,		wxTRANSLATE("Origin"),		110 },
 	{ ColumnUserFileNameDownload,	wxTRANSLATE("Local File Name"),	200 },
-	{ ColumnUserFileNameDownloadRemote, wxTRANSLATE("Remote File Name"), 200 }
+	{ ColumnUserFileNameDownloadRemote, wxTRANSLATE("Remote File Name"), 200 },
+	{ ColumnUserSharedFiles,	wxTRANSLATE("Shares File List"), 100 }
 };
 
 BEGIN_EVENT_TABLE(CSourceListCtrl, CGenericClientListCtrl)
