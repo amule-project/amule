@@ -57,6 +57,7 @@ enum GenericColumnEnum {
 	ColumnUserFileNameDownload,
 	ColumnUserFileNameUpload,
 	ColumnUserFileNameDownloadRemote,
+	ColumnUserSharedFiles,
 	ColumnInvalid
 };
 

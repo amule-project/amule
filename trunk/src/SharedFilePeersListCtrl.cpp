@@ -35,7 +35,8 @@ static CGenericClientListCtrlColumn s_sources_column_info[] = {
 	{ ColumnUserQueueRankLocal,	wxTRANSLATE("Upload status"),	70 },
 	{ ColumnUserQueueRankRemote,	wxTRANSLATE("Download status"),	70 },
 	{ ColumnUserOrigin,		wxTRANSLATE("Origin"),		110 },
-	{ ColumnUserFileNameUpload,	wxTRANSLATE("Local File Name"),	200 }
+	{ ColumnUserFileNameUpload,	wxTRANSLATE("Local File Name"),	200 },
+	{ ColumnUserSharedFiles,	wxTRANSLATE("Shares File List"), 100 }
 };
 
 BEGIN_EVENT_TABLE(CSharedFilePeersListCtrl, CGenericClientListCtrl)
