@@ -32,8 +32,8 @@ static CGenericClientListCtrlColumn s_sources_column_info[] = {
 	{ ColumnUserSpeedUp,		wxTRANSLATE("Upload Speed"),	65 },
 	{ ColumnUserAvailable,		wxTRANSLATE("Available Parts"),	170 },
 	{ ColumnUserVersion,		wxTRANSLATE("Version"),		50 },
-	{ ColumnUserQueueRankLocal,	wxTRANSLATE("Upload status"),	70 },
-	{ ColumnUserQueueRankRemote,	wxTRANSLATE("Download status"),	70 },
+	{ ColumnUserQueueRankLocal,	wxTRANSLATE("Upload Status"),	70 },
+	{ ColumnUserQueueRankRemote,	wxTRANSLATE("Download Status"),	70 },
 	{ ColumnUserOrigin,		wxTRANSLATE("Origin"),		110 },
 	{ ColumnUserFileNameUpload,	wxTRANSLATE("Local File Name"),	200 },
 	{ ColumnUserSharedFiles,	wxTRANSLATE("Shares File List"), 100 }
