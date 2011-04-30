@@ -649,7 +649,7 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 
 }
 
-void CServerSocket::OnError(wxSocketError nErrorCode)
+void CServerSocket::OnError(wxSocketError DEBUG_ONLY(nErrorCode))
 {
 	AddDebugLogLineN(logServer, CFormat(wxT("Error in serversocket: %s(%s:%i): %u"))
 		% cur_server->GetListName() % cur_server->GetFullIP() % cur_server->GetPort() % (int)nErrorCode);

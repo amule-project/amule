@@ -183,7 +183,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 }
 
 
-void CMuleUDPSocket::OnReceiveError(int errorCode, uint32 WXUNUSED(ip), uint16 WXUNUSED(port))
+void CMuleUDPSocket::OnReceiveError(int DEBUG_ONLY(errorCode), uint32 WXUNUSED(ip), uint16 WXUNUSED(port))
 {
 	AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Error while reading: ")) << errorCode);
 }
