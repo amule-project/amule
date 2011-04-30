@@ -2226,8 +2226,11 @@ void CPartFile::Delete()
 	// Barry - Need to tell any connected clients to stop sending the file
 	StopFile(true);
 	AddDebugLogLineN(logPartFile, wxT("\tStopped"));
-	
-	uint16 removed = theApp->uploadqueue->SuspendUpload(GetFileHash(), true);
+
+#ifdef __DEBUG__
+	uint16 removed =
+#endif
+		theApp->uploadqueue->SuspendUpload(GetFileHash(), true);
 	AddDebugLogLineN(logPartFile, CFormat(wxT("\tSuspended upload to %d clients")) % removed);
 	theApp->sharedfiles->RemoveFile(this);
 	AddDebugLogLineN(logPartFile, wxT("\tRemoved from shared"));

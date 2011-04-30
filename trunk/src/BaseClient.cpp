@@ -1260,7 +1260,7 @@ void CUpDownClient::ClearDownloadBlockRequests()
 }
 
 
-bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
+bool CUpDownClient::Disconnected(const wxString& DEBUG_ONLY(strReason), bool bFromSocket)
 {
 	//wxASSERT(theApp->clientlist->IsValidClient(this));
 

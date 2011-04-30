@@ -151,7 +151,9 @@ private:
 				// larger ranges (or theoretical ranges with uneven ends) have to be split
 				uint32 startIP = it.keyStart();
 				uint32 realLength = it.keyEnd() - it.keyStart() + 1;
+#ifdef __DEBUG__
 				std::string * descp = 0;
+#endif
 				while (realLength) {
 					m_rangeIPs.push_back(startIP);
 					uint32 curLength = realLength;
@@ -308,13 +310,17 @@ private:
 			uint32 IPEnd   = 0;
 			uint32 IPAccessLevel = 0;
 			char * IPDescription;
+#ifdef __DEBUG__
 			uint32 time1 = GetTickCountFullRes();
+#endif
 			while (yyiplex(IPStart, IPEnd, IPAccessLevel, IPDescription)) {
 				AddIPRange(IPStart, IPEnd, IPAccessLevel, IPDescription);
 				filtercount++;
 			}
+#ifdef __DEBUG__
 			uint32 time2 = GetTickCountFullRes();
 			AddDebugLogLineN(logIPFilter, CFormat(wxT("time for lexer: %.3f")) % ((time2-time1) / 1000.0));
+#endif
 		} else {
 			AddLogLineC(CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
 			return 0;
