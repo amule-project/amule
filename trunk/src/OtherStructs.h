@@ -80,18 +80,6 @@ struct Requested_Block_Struct{
 __attribute__((__packed__));
 #endif
 
-struct Requested_File_Struct{
-	unsigned char	  fileid[16];
-	uint32	  lastasked;
-	uint8	  badrequests;
-}
-#if defined(_MSC_VER) || defined(__SUNPRO_CC)
-;
-#pragma pack()
-#else
-__attribute__((__packed__));
-#endif
-
 struct Pending_Block_Struct{
 	Requested_Block_Struct*	block;
 	struct z_stream_s*       zStream;       // Barry - Used to unzip packets
