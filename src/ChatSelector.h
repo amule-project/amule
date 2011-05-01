@@ -37,7 +37,7 @@ class CFriend;
 /**
  * This class is used to display chat sessions.
  */
-class CChatSession
+class CChatSession : public CMuleTextCtrl
 {
 public:
 	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr );
@@ -45,7 +45,6 @@ public:
 
 	uint64	m_client_id;
 	bool	m_active;
-	wxTextCtrl *	m_textCtrl;
 	
 	/**
 	 * Appends the specified text.

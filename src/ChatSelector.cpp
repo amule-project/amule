@@ -49,11 +49,11 @@
 #define COLOR_RED   wxTextAttr( wxColor( 255,   0,   0 ) )
 
 CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
+: CMuleTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
 {
 	m_client_id = 0;
 	m_active = false;
-	m_textCtrl = new wxTextCtrl(parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name);
-	m_textCtrl->SetBackgroundColour(*wxWHITE);
+	SetBackgroundColour(*wxWHITE);
 }
 
 
@@ -63,7 +63,6 @@ CChatSession::~CChatSession()
 	#ifndef CLIENT_GUI
 	theApp->clientlist->SetChatState(m_client_id,MS_NONE);
 	#endif
-	delete m_textCtrl;
 }
 
 
@@ -74,23 +73,23 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style, bool n
 
 	while ( tokens.HasMoreTokens() ) {
 		// Check if we should add a time-stamp
-		if ( m_textCtrl->GetNumberOfLines() > 1 ) {
+		if ( GetNumberOfLines() > 1 ) {
 			// Check if the last line ended with a newline
-			wxString line = m_textCtrl->GetLineText( m_textCtrl->GetNumberOfLines() - 1 );
+			wxString line = GetLineText( GetNumberOfLines() - 1 );
 			if ( line.IsEmpty() ) {
-				m_textCtrl->SetDefaultStyle( COLOR_BLACK );
+				SetDefaultStyle( COLOR_BLACK );
 
-				m_textCtrl->AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
+				AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
 			}
 		}
 		
-		m_textCtrl->SetDefaultStyle(style);
+		SetDefaultStyle(style);
 	
-		m_textCtrl->AppendText( tokens.GetNextToken() );
+		AppendText( tokens.GetNextToken() );
 
 		// Only add newlines after the last line if it is desired
 		if ( tokens.HasMoreTokens() || newline ) {
-			m_textCtrl->AppendText( wxT("\n") );
+			AppendText( wxT("\n") );
 		}
 	}
 }
@@ -135,7 +134,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 			% wxDateTime::Now().FormatISOTime());
 	
 	chatsession->AddText( text, COLOR_RED );
-	AddPage(chatsession->m_textCtrl, client_name, show, 0);
+	AddPage(chatsession, client_name, show, 0);
 
 	CUserEvents::ProcessEvent(CUserEvents::NewChatSession, &client_name);
 
