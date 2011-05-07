@@ -86,7 +86,7 @@ wxString GetMuleVersion()
 
 	ver += CFormat(wxT(" v%d.%d.%d")) % wxMAJOR_VERSION % wxMINOR_VERSION % wxRELEASE_NUMBER;
 
-#ifdef __WXDEBUG__
+#ifdef __DEBUG__
 	ver += wxT(" (Debugging)");
 #endif
 	
