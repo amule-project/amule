@@ -402,7 +402,7 @@ wxString get_backtrace(unsigned n)
 				funcname[i] = demangled;
 			}
 			out.Insert(wxConvCurrent->cMB2WX(s_function_name),i*2);
-			out.Insert(wxConvCurrent->cMB2WX(s_file_name) + (CFormat(wxT(":%u")) % s_line_number),i*2+1);
+			out.Insert(CFormat(wxT("%s:%u")) % wxString(wxConvCurrent->cMB2WX(s_file_name)) % s_line_number, i*2+1);
 		} else {
 			out.Insert(wxT("??"),i*2);
 			out.Insert(wxT("??"),i*2+1);

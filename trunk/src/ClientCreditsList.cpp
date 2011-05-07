@@ -270,7 +270,7 @@ bool CClientCreditsList::CreateKeyPair()
 	} catch(const CryptoPP::Exception& e) {
 		AddDebugLogLineC(logCredits,
 			wxString(wxT("Failed to create new RSA keypair: ")) +
-			char2unicode(e.what()));
+			wxString(char2unicode(e.what())));
 		wxFAIL;
  		return false;
  	}
@@ -321,7 +321,7 @@ void CClientCreditsList::InitalizeCrypting()
 		
 		AddDebugLogLineC(logCredits,
 			wxString(wxT("Error while initializing encryption keys: ")) +
-			char2unicode(e.what()));
+			wxString(char2unicode(e.what())));
  	}
 }
 
@@ -365,7 +365,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 		
 		return asink.TotalPutLength();			
 	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineC(logCredits, wxString(wxT("Error while creating signature: ")) + char2unicode(e.what()));
+		AddDebugLogLineC(logCredits, wxString(wxT("Error while creating signature: ")) + wxString(char2unicode(e.what())));
 		wxFAIL;
 		
 		return 0;
@@ -426,7 +426,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 		
  		bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
 	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineC(logCredits, wxString(wxT("Error while verifying identity: ")) + char2unicode(e.what()));
+		AddDebugLogLineC(logCredits, wxString(wxT("Error while verifying identity: ")) + wxString(char2unicode(e.what())));
  		bResult = false;
  	}
 

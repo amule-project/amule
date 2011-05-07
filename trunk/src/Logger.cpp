@@ -177,7 +177,7 @@ void CLogger::AddLogLine(
 		wxASSERT(type == cat.GetType());
 
 		AddLogLine(file, line, critical, logStandard, 
-			cat.GetName() + wxT(": ") + char2unicode(msg.str().c_str()));
+			cat.GetName() + wxT(": ") + wxString(char2unicode(msg.str().c_str())));
 	}
 }
 
