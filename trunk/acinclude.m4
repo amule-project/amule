@@ -321,7 +321,6 @@ AC_DEFUN([MULE_COMPILATION_FLAGS],
 	[
 		MULE_ADDFLAG([CPP], [-D__DEBUG__])
 		MULE_ADDCCXXFLAG([-g])
-		AS_IF([test ${GLIBCXX:-no} = yes],	[MULE_ADDFLAG([CPP], [-D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC])])
 		AS_IF([test ${GCC:-no} = yes],		[MULE_ADDCCXXFLAG([-W -Wall -Wshadow -Wundef -ggdb -fno-inline -fmessage-length=0])])
 		AS_IF([test ${SYS:-unknown} = win32],	[MULE_ADDFLAG([RC], [-D__DEBUG__])])
 	], [
