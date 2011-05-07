@@ -45,7 +45,7 @@ class CFriend;
 class BitVector;
 class CMD4Hash;
 
-#ifdef __WXDEBUG__
+#ifdef __DEBUG__
 #define DEBUG_ZOMBIE_CLIENTS
 #endif
 
