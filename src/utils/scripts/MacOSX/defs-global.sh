@@ -33,6 +33,8 @@ pc $GREEN "\tUsing $SDKNUMBER SDK"
 
 if [ "$SDKNUMBER" != "default" ]; then
 	SDK="-isysroot /Developer/SDKs/MacOSX${SDKRELEASE}.sdk -mmacosx-version-min=$SDKNUMBER"
+else
+	SDKNUMBER=""
 fi
 
 if [ "$UNIVERSAL" == "" ]; then

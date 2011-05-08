@@ -19,7 +19,7 @@ case "$WXVERSION" in
 	;;
 "svn"|"SVN")
 	WXSVNROOT="trunk/"
-	WXFOLDER="wxWidgets-2.8"
+	WXFOLDER="wxWidgets"
 	AUTOPORT=cocoa
 	;;
 *)
