@@ -25,11 +25,9 @@ SCRIPTDIR=`dirname "$0"`
 
 PATH="$SCRIPTDIR:$PATH"
 
-. defs-global.sh
+. defs-global.sh $1
 . defs-wx.sh
 . defs-functions.sh
-
-SVN_REPOSITORY=$1
 
 AMULE_FOLDER="amule-dev"
 
