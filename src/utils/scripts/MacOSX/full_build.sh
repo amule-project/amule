@@ -34,18 +34,16 @@ echo "Start" > $STDOUT_FILE
 echo "Start" > $ERROR_FILE
 
 REPEATSCRIPT=${ROOT_FOLDER}/repeat.sh
-if [ "$SCRIPTNAME" == "repeat.sh" ]; then
-	echo "Replaying aMule compilation for this root folder..."
-else
-	if [ -f $REPEATSCRIPT ]; then
-		chmod 600 $REPEATSCRIPT
-	fi
-	echo "Save configuration commandline to ${REPEATSCRIPT} - execute that script to repeat this compilation with the same options."
-	echo "#!/bin/bash" > $REPEATSCRIPT
-	echo "SDKNUMBER=${SDKNUMBER} UNIVERSAL=${UNIVERSAL} WXVERSION=${WXVERSION} WXPORT=${WXPORT} SLIMWX=${SLIMWX} BUILD_FOLDER=${BUILD_FOLDER} $0" >> $REPEATSCRIPT
-	echo "echo \"Replay done\"" >> $REPEATSCRIPT
-	chmod 500 $REPEATSCRIPT
+if [ -f $REPEATSCRIPT ]; then
+	chmod 600 $REPEATSCRIPT
 fi
+echo "Save configuration commandline to ${REPEATSCRIPT} - execute that script to repeat this compilation with the same options."
+echo "#!/bin/bash" > $REPEATSCRIPT
+echo "echo \"Starting repeat, moving away current repeat.sh\"" >> $REPEATSCRIPT
+echo "rm -rf \${0}.old 2>/dev/null; mv \$0 \${0}.old" >> $REPEATSCRIPT
+echo "SDKNUMBER=${SDKNUMBER} UNIVERSAL=${UNIVERSAL} WXVERSION=${WXVERSION} WXPORT=${WXPORT} SLIMWX=${SLIMWX} BUILD_FOLDER=${BUILD_FOLDER} $0" >> $REPEATSCRIPT
+echo "echo \"Repeat finished\"" >> $REPEATSCRIPT
+chmod 500 $REPEATSCRIPT
 
 echo "Starting build..."
 
