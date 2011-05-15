@@ -2266,7 +2266,7 @@ void CPartFile::Delete()
 	if (!CPath::RemoveFile(BAKName)) {
 		AddDebugLogLineC(logPartFile, CFormat(wxT("Failed to delete '%s'")) % BAKName);
 	} else {
-		AddDebugLogLineN(logPartFile, wxT("\tRemoved .BAK"));
+		AddDebugLogLineN(logPartFile, wxT("\tRemoved .bak"));
 	}
 	
 	CPath SEEDSName = m_fullname.AppendExt(wxT(".seeds"));

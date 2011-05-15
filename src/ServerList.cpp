@@ -802,10 +802,15 @@ bool CServerList::SaveServerMet()
 	
 	servermet.Close();
 	const CPath curservermet = CPath(theApp->ConfigDir + wxT("server.met"));
-	const CPath oldservermet = CPath(theApp->ConfigDir + wxT("server_met.old"));
+	const CPath oldservermet = CPath(theApp->ConfigDir + wxT("server.met.bak"));
+	const CPath obsoleteservermet = CPath(theApp->ConfigDir + wxT("server_met.old"));
 	
 	if (oldservermet.FileExists()) {
 		CPath::RemoveFile(oldservermet);
+	}
+	
+	if (obsoleteservermet.FileExists()) {
+		CPath::RemoveFile(obsoleteservermet);
 	}
 	
 	if (curservermet.FileExists()) {
