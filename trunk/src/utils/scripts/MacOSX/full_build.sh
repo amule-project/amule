@@ -283,7 +283,7 @@ echo -e "\tDone."
 
 echo -e "\tFINALLY compiling aMule..."
 
-pushd amule-dev/ >> $STDOUT_FILE 2>> $ERROR_FILE
+pushd $AMULE_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 
 if [ -f configure ]; then
 	echo -e "\t\tConfigure already exists"
@@ -340,7 +340,7 @@ cp -R ${AMULE_FOLDER}/aMule.app . >> $STDOUT_FILE 2>> $ERROR_FILE
 
 find aMule.app \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf >> $STDOUT_FILE 2>> $ERROR_FILE
 
-${AMULE_FOLDER}/src/utils/scripts/MacOSX/application_packager.sh ${ROOT_FOLDER}/${AMULE_FOLDER}/ >> $STDOUT_FILE 2>> $ERROR_FILE
+. application_packager.sh ${AMULE_FOLDER}/ >> $STDOUT_FILE 2>> $ERROR_FILE
 
 if [ ! -f aMule.zip ]; then
 	echo "ERROR: aMule.zip was not created. Please review the output files"

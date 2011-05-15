@@ -93,11 +93,11 @@ case "$UNIVERSAL" in
 esac
 
 if [ "$STDOUT_FILE" == "" ]; then
-	STDOUT_FILE=build_output
+	STDOUT_FILE=${ROOT_FOLDER}/build_output
 fi
 
 if [ "$ERROR_FILE" == "" ]; then
-	ERROR_FILE=error_output
+	ERROR_FILE=${ROOT_FOLDER}/error_output
 fi
 
 pc $GREEN "\tErrors will be redirected to $ERROR_FILE, normal build output to $STDOUT_FILE"
