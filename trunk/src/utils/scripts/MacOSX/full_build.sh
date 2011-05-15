@@ -92,7 +92,7 @@ else
 	svn checkout http://svn.wxwidgets.org/svn/wx/wxWidgets/${WXSVNROOT} ${WXFOLDER} >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd ${WXFOLDER} >> $STDOUT_FILE
 	echo -e "\tApplying patches."
-	for i in ../$AMULE_FOLDER/src/utils/patches/wxWidgets/*.patch; do 
+	for i in $AMULE_FOLDER/src/utils/patches/wxWidgets/*.patch; do 
 		echo -e "\t\tAppying \"$i\""
 		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
 	done
@@ -148,7 +148,7 @@ else
 	unzip cryptopp.zip -d $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd $CRYPTOPP_FOLDER >> $STDOUT_FILE 
 	#./configure 
-	for i in ../$AMULE_FOLDER/src/utils/patches/cryptopp/*.patch; do 
+	for i in $AMULE_FOLDER/src/utils/patches/cryptopp/*.patch; do 
 		echo -e "\t\tAppying \"$i\"" 
 		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
 	done

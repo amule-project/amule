@@ -18,8 +18,6 @@ if [ -z $SVN_REPOSITORY ]; then
 		pc $RED "\tSVN repository has not been specified, and no local sources found at \"${AMULE_FOLDER}\".\n\tPlease specify your aMule source folder by setting the AMULE_FOLDER variable, or call the script with the SVN repository of your choice as a first parameter, or \"public\" to download from our public SVN repository."
 		exit
 	fi
-else
-        AMULE_FOLDER="amule-dev"
 fi
 
 if [ -z "$BUILD_FOLDER" ]; then
@@ -36,6 +34,10 @@ else
 fi
 
 ROOT_FOLDER=`cd $BUILD_FOLDER; pwd`
+
+if [ -z $AMULE_FOLDER ]; then
+        AMULE_FOLDER="${ROOT_FOLDER}/amule-dev"
+fi
 
 pc $GREEN "\tBuild root absolute path is $ROOT_FOLDER"
 
