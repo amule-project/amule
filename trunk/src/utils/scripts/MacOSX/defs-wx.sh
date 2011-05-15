@@ -62,6 +62,7 @@ fi
 
 case "$SLIMWX" in
 YES|yes)
+	pc $GREEN "\tUsing minimal wxWidgets compilation."
 	SLIM_WX_FLAGS="--without-odbc --without-expat --without-libtiff --without-libjpg \
 	--without-libmspack --without-sdl --without-gnomeprint --without-gnomevfs --without-opengl \
 	--without-dmalloc --without-themes --disable-sdltest --disable-gtktest \
@@ -84,6 +85,7 @@ YES|yes)
 	--disable-palette --disable-compat26 --disable-docview --disable-aboutdlg"
 	;;
 NO|no)
+	pc $GREEN "\tUsing full wxWidgets compilation."
 	SLIM_WX_FLAGS=""
 	;;
 *)
