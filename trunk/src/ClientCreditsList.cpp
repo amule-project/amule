@@ -42,7 +42,7 @@
 
 
 #define CLIENTS_MET_FILENAME		wxT("clients.met")
-#define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.BAK")
+#define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.bak")
 #define CRYPTKEY_FILENAME		wxT("cryptkey.dat")
 
 
