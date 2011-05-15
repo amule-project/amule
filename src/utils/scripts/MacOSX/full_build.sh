@@ -22,6 +22,7 @@
 ## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
 SCRIPTDIR=`dirname "$0"`
+SCRIPTNAME=`basename "$0"`
 
 PATH="$SCRIPTDIR:$PATH"
 
@@ -29,29 +30,46 @@ PATH="$SCRIPTDIR:$PATH"
 . defs-wx.sh
 . defs-functions.sh
 
-AMULE_FOLDER="amule-dev"
+echo "Start" > $STDOUT_FILE
+echo "Start" > $ERROR_FILE
+
+REPEATSCRIPT=${ROOT_FOLDER}/repeat.sh
+if [ "$SCRIPTNAME" == "repeat.sh" ]; then
+	echo "Replaying aMule compilation for this root folder..."
+else
+	if [ -f $REPEATSCRIPT ]; then
+		chmod 600 $REPEATSCRIPT
+	fi
+	echo "Save configuration commandline to ${REPEATSCRIPT} - execute that script to repeat this compilation with the same options."
+	echo "#!/bin/bash" > $REPEATSCRIPT
+	echo "SDKNUMBER=${SDKNUMBER} UNIVERSAL=${UNIVERSAL} WXVERSION=${WXVERSION} WXPORT=${WXPORT} SLIMWX=${SLIMWX} BUILD_FOLDER=${BUILD_FOLDER} $0" >> $REPEATSCRIPT
+	echo "echo \"Replay done\"" >> $REPEATSCRIPT
+	chmod 500 $REPEATSCRIPT
+fi
 
 echo "Starting build..."
 
 echo -e "\tGetting aMule sources..."
 
-echo "Start" > $STDOUT_FILE
-echo "Start" > $ERROR_FILE
-
 #Get aMule first, because it may contain patches
 if [ -d $AMULE_FOLDER/ ]; then
-	echo -e "\t\tSources already exist, updating."
-        pushd $AMULE_FOLDER/ >> $STDOUT_FILE
-        svn up >> $STDOUT_FILE
-        popd >> $STDOUT_FILE
+	if [ -d ${AMULE_FOLDER}/.svn/ ]; then
+		echo -e "\t\tSources already exist, updating."
+	        pushd $AMULE_FOLDER/ >> $STDOUT_FILE
+	        svn up >> $STDOUT_FILE
+	        popd >> $STDOUT_FILE
+	else
+		echo -e "\t\taMule sources at \"" $AMULE_FOLDER "\" are not from SVN checkout, so not updating."
+	fi
 else
 	echo -e "\tFirst checkout."
-	if [ -z $SVN_REPOSITORY ]; then
+	if [ "$SVN_REPOSITORY" == "public" ]; then
 		SVN_REPOSITORY=http://amule.googlecode.com/svn/trunk/
 		echo -e "\tUsing public SVN repository at ${SVN_REPOSITORY}."
 	else
 		echo -e "\tUsing provided SVN repository at ${SVN_REPOSITORY}."
 	fi
+
 	svn co $SVN_REPOSITORY $AMULE_FOLDER >> $STDOUT_FILE
 	if [ ! -d $AMULE_FOLDER/ ]; then
 		echo "ERROR: aMule sources could not be retrieved. Review your settings."
@@ -59,6 +77,7 @@ else
 	fi
 fi
 
+pushd $ROOT_FOLDER >> $STDOUT_FILE
 
 echo -e "\tDone"
 
@@ -330,3 +349,6 @@ if [ ! -f aMule.zip ]; then
 else
 	echo "All Done"
 fi
+
+# Pop root folder.
+popd >> $STDOUT_FILE
