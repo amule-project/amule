@@ -143,6 +143,8 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 			}
 		}
 		AddTag(CECTag(EC_TAG_ED2K_ID, theApp->GetED2KID()));
+	} else if (theApp->serverconnect->IsConnecting()) {
+		AddTag(CECTag(EC_TAG_ED2K_ID, 0xffffffff));
 	}
 
 	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
