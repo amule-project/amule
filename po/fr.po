@@ -57,7 +57,7 @@ msgstr ""
 
 #: src/amule.cpp:239
 msgid "Now, exiting main app..."
-msgstr "Et maintenant on quitte l'application principal…"
+msgstr "Et maintenant on quitte l'application principale…"
 
 #: src/amule.cpp:258
 #, c-format
