@@ -157,7 +157,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		request_step++;
 		break;
 	case 1: {
-		CECPacket stats_req(EC_OP_STAT_REQ);
+		CECPacket stats_req(EC_OP_STAT_REQ, EC_DETAIL_INC_UPDATE);
 		m_connect->SendRequest(&m_stats_updater, &stats_req);
 		request_step++;
 		break;

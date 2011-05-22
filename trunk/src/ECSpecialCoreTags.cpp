@@ -135,11 +135,11 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 {
 	if (theApp->IsConnectedED2K()) {
 		if ( theApp->serverconnect->GetCurrentServer() ) {
-			if (detail_level == EC_DETAIL_CMD) {
-				AddTag(CEC_Server_Tag(theApp->serverconnect->GetCurrentServer(), detail_level));
-			} else {
+			if (detail_level == EC_DETAIL_INC_UPDATE) {
 				// Send no full server tag, just the ECID of the connected server
 				AddTag(CECTag(EC_TAG_SERVER, theApp->serverconnect->GetCurrentServer()->ECID()));
+			} else {
+				AddTag(CEC_Server_Tag(theApp->serverconnect->GetCurrentServer(), detail_level));
 			}
 		}
 		AddTag(CECTag(EC_TAG_ED2K_ID, theApp->GetED2KID()));

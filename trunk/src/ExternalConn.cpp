@@ -561,6 +561,10 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 
 	switch (request->GetDetailLevel()) {
 		case EC_DETAIL_FULL:
+		// This is not an actual INC_UPDATE.
+		// amulegui only sets the detail level of the stats package to EC_DETAIL_INC_UPDATE
+		// so that the included conn state tag is created the way it is needed here.
+		case EC_DETAIL_INC_UPDATE:
 			response->AddTag(CECTag(EC_TAG_STATS_UP_OVERHEAD, (uint32)theStats::GetUpOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_DOWN_OVERHEAD, (uint32)theStats::GetDownOverheadRate()));
 			response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT, /*(uint32)*/theStats::GetBannedCount()));
@@ -607,7 +611,6 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 				response->AddTag(CECTag(EC_TAG_STATS_BUDDY_PORT, BuddyPort));
 			}
 		case EC_DETAIL_UPDATE:
-		case EC_DETAIL_INC_UPDATE:
 			break;
 	};
 
