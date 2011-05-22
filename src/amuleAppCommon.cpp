@@ -162,20 +162,22 @@ wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source
 			strURL << thePrefs::GetYourHostname();
 		} else {
 			uint32 clientID = theApp->GetID();
-			strURL << (uint8) clientID << wxT(".") <<
-			(uint8)(clientID >> 8) << wxT(".") <<
-			(uint8)(clientID >> 16) << wxT(".") <<
-			(uint8)(clientID >> 24);
+			strURL = CFormat(wxT("%s%u.%u.%u.%u"))
+				% strURL
+				% (clientID & 0xff)
+				% ((clientID >> 8) & 0xff)
+				% ((clientID >> 16) & 0xff)
+				% ((clientID >> 24) & 0xff);
 		}
 		
  		strURL << wxT(":") <<
 			thePrefs::GetPort();
 		
 		if (addcryptoptions) {
-			const uint8 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
-			const uint8 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
-			const uint8 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
-			const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0) | (uSupportsCryptLayer ? 0x80 : 0x00);
+			uint8 uSupportsCryptLayer = thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
+			uint8 uRequestsCryptLayer = thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
+			uint8 uRequiresCryptLayer = thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
+			uint16 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0) | (uSupportsCryptLayer ? 0x80 : 0x00);
 			
 			strURL << wxT(":") << byCryptOptions;
 			
