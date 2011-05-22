@@ -159,7 +159,6 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	case 1: {
 		CECPacket stats_req(EC_OP_STAT_REQ);
 		m_connect->SendRequest(&m_stats_updater, &stats_req);
-		amuledlg->ShowTransferRate();			
 		request_step++;
 		break;
 	}
@@ -2078,6 +2077,7 @@ const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID)
 void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 {
 	theStats::UpdateStats(packet);
+	theApp->amuledlg->ShowTransferRate();			
 	theApp->ShowUserCount(); // maybe there should be a check if a usercount changed ?
 }
 
