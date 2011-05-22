@@ -153,7 +153,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	
 	switch (request_step) {
 	case 0:
-		serverconnect->ReQuery();
+		// We used to update the connection state here, but that's done with the stats in the next step now.
 		request_step++;
 		break;
 	case 1: {
@@ -735,15 +735,6 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 	m_Conn->ConnectED2K(server->GetIP(), server->GetPort());
 }
 
-
-bool CServerConnectRem::ReQuery()
-{
-	CECPacket stat_req(EC_OP_GET_CONNSTATE);
-	m_Conn->SendRequest(this, &stat_req);
-
-	return true;
-}
-	
 
 void CServerConnectRem::HandlePacket(const CECPacket *packet)
 {
@@ -2079,6 +2070,8 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 	theStats::UpdateStats(packet);
 	theApp->amuledlg->ShowTransferRate();			
 	theApp->ShowUserCount(); // maybe there should be a check if a usercount changed ?
+	// handle the connstate tag which is included in the stats packet
+	theApp->serverconnect->HandlePacket(packet);
 }
 
 

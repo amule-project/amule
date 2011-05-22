@@ -388,17 +388,16 @@ public:
 	}
 };
 
-class CServerConnectRem : public CECPacketHandlerBase {
+class CServerConnectRem {
 	CRemoteConnect *m_Conn;
 	uint32 m_ID;
 	
 	CServer *m_CurrServer;
-	
-	virtual void HandlePacket(const CECPacket *packet);
-	
+
 public:
+	void HandlePacket(const CECPacket *packet);
+	
 	CServerConnectRem(CRemoteConnect *);
-	bool ReQuery();
 	
 	bool IsConnected() { return (m_ID != 0) && (m_ID != 0xffffffff); }
 	bool IsConnecting() { return m_ID == 0xffffffff; }
