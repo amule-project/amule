@@ -1067,7 +1067,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 		case ColumnUserFileNameDownloadRemote: {
 			bool nameMissmatch = false;
 			wxColour savedColour = dc->GetTextForeground();
-			if (client.GetClientFilename().IsEmpty()) {
+			if (client.GetClientFilename().IsEmpty() || item->GetType() == A4AF_SOURCE) {
 				buffer = _("Unknown");
 				buffer = wxT("[") + buffer + wxT("]");
 			} else {
