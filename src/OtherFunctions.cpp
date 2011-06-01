@@ -790,6 +790,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv1"),  ED2KFT_VIDEO));		// MPEG-1 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv2"),  ED2KFT_VIDEO));		// MPEG-2 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogm"),   ED2KFT_VIDEO));		// Ogg Media File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogv"),   ED2KFT_VIDEO));		// Ogg Theora Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pva"),   ED2KFT_VIDEO));		// MPEG Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".qt"),    ED2KFT_VIDEO));		// QuickTime Movie
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ram"),   ED2KFT_VIDEO));		// Real Audio Media
@@ -809,6 +810,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vivo"),  ED2KFT_VIDEO));		// VivoActive Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vob"),   ED2KFT_VIDEO));		// DVD Video Object File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vp6"),   ED2KFT_VIDEO));		// TrueMotion VP6 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".webm"),  ED2KFT_VIDEO));		// WebM Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wm"),    ED2KFT_VIDEO));		// Windows Media Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmv"),   ED2KFT_VIDEO));		// Windows Media Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xvid"),  ED2KFT_VIDEO));		// Xvid-Encoded Video File
@@ -832,6 +834,8 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tga"),   ED2KFT_IMAGE));		// Targa Graphic
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tif"),   ED2KFT_IMAGE));		// Tagged Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tiff"),  ED2KFT_IMAGE));		// Tagged Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wbmp"),  ED2KFT_IMAGE));		// Wireless Application Protocol Bitmap Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".webp"),  ED2KFT_IMAGE));		// Weppy Photo File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmf"),   ED2KFT_IMAGE));		// Windows Metafile
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmp"),   ED2KFT_IMAGE));		// Windows Media Photo File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xif"),   ED2KFT_IMAGE));		// ScanSoft Pagis Extended Image Format File
@@ -845,6 +849,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bz2"),   ED2KFT_ARCHIVE));	// Bzip Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cab"),   ED2KFT_ARCHIVE));	// Cabinet File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbr"),   ED2KFT_ARCHIVE));	// Comic Book RAR Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbt"),   ED2KFT_ARCHIVE));	// Comic Book Tarball
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cbz"),   ED2KFT_ARCHIVE));	// Comic Book ZIP Archive
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gz"),    ED2KFT_ARCHIVE));	// Gnu Zipped File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hqx"),   ED2KFT_ARCHIVE));	// BinHex 4.0 Encoded File
@@ -865,6 +870,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xpi"),   ED2KFT_ARCHIVE));	// Mozilla Installer Package
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".z"),     ED2KFT_ARCHIVE));	// Unix Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".zip"),   ED2KFT_ARCHIVE));	// Zipped File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".zoo"),   ED2KFT_ARCHIVE));	// Zoo Archive
 
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bat"),   ED2KFT_PROGRAM));	// Batch File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cmd"),   ED2KFT_PROGRAM));	// Command File
@@ -905,11 +911,23 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".htm"),   ED2KFT_DOCUMENT));	// HTML File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".html"),  ED2KFT_DOCUMENT));	// HTML File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nfo"),   ED2KFT_DOCUMENT));	// Warez Information File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".odp"),   ED2KFT_DOCUMENT));	// OpenDocument Presentation
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ods"),   ED2KFT_DOCUMENT));	// OpenDocument Spreadsheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".odt"),   ED2KFT_DOCUMENT));	// OpenDocument File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".otp"),   ED2KFT_DOCUMENT));	// OpenDocument Presentation Template
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ott"),   ED2KFT_DOCUMENT));	// OpenDocument Template File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ots"),   ED2KFT_DOCUMENT));	// OpenDocument Spreadsheet Template
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pdf"),   ED2KFT_DOCUMENT));	// Portable Document Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pps"),   ED2KFT_DOCUMENT));	// PowerPoint Slide Show
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ppt"),   ED2KFT_DOCUMENT));	// PowerPoint Presentation
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ps"),    ED2KFT_DOCUMENT));	// PostScript File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rtf"),   ED2KFT_DOCUMENT));	// Rich Text Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".stc"),   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Spreadsheet Template
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sti"),   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Presentation Template
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".stw"),   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Document Template File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sxc"),   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Spreadsheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sxi"),   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Presentation
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sxw"),   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Document File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".text"),  ED2KFT_DOCUMENT));	// General Text File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".txt"),   ED2KFT_DOCUMENT));	// Text File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wri"),   ED2KFT_DOCUMENT));	// Windows Write Document
