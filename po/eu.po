@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-21 23:13+0100\n"
+"POT-Creation-Date: 2011-06-03 23:17+0200\n"
 "PO-Revision-Date: 2010-02-03 22:12+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Basque <debian-l10n-eu@debian.lists.org>\n"
@@ -39,7 +39,7 @@ msgstr "Emandako erabiltzaile egiaztapena ez da baliozkoa!"
 msgid "Failed to open ED2KLinks file."
 msgstr "Huts ED2KLinks fitxategia irekitzerakoan."
 
-#: src/amuleAppCommon.cpp:188
+#: src/amuleAppCommon.cpp:190
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -135,8 +135,8 @@ msgstr ""
 "konpilatu ezazu amule --enable-webserver erabilian eta make install egin"
 
 #: src/amule.cpp:659 src/amule.cpp:776 src/amule.cpp:1065
-#: src/amule-remote-gui.cpp:299 src/amule-remote-gui.cpp:321
-#: src/amule-remote-gui.cpp:323 src/amule-remote-gui.cpp:634
+#: src/amule-remote-gui.cpp:298 src/amule-remote-gui.cpp:320
+#: src/amule-remote-gui.cpp:322 src/amule-remote-gui.cpp:633
 msgid "ERROR"
 msgstr "ERROREA"
 
@@ -226,129 +226,129 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr "Zerbitzari ostalari-izena notifikatua"
 
-#: src/amule.cpp:1361
+#: src/amule.cpp:1349
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Disko aurresleipenak huts egin du '%s' fitxategiarentzat: %s"
 
-#: src/amule.cpp:1495
+#: src/amule.cpp:1478
 msgid "ERROR: can't open logfile"
 msgstr "ERROREA: ezin da erregistro fitxategia ireki"
 
-#: src/amule.cpp:1499
+#: src/amule.cpp:1482
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ABISUA: erregistro fitxategia hutsik dago. Zerbait oker dago."
 
-#: src/amule.cpp:1517
+#: src/amule.cpp:1500
 msgid "Log has been reset"
 msgstr "Erregistroa berrezarri egin da"
 
-#: src/amule.cpp:1543
+#: src/amule.cpp:1526
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ZerbitzariMezua: %s"
 
-#: src/amule.cpp:1581 src/IP2Country.cpp:150 src/IPFilter.cpp:503
-#: src/ServerList.cpp:860
+#: src/amule.cpp:1564 src/IP2Country.cpp:150 src/IPFilter.cpp:509
+#: src/ServerList.cpp:865
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "%s-ren deskarga baztertua, eskatutako fitxategia ez da berria eta."
 
-#: src/amule.cpp:1583
+#: src/amule.cpp:1566
 msgid "Failed to download the nodes list."
 msgstr "Huts egin du nodo zerrenda deskargatzerakoan."
 
-#: src/amule.cpp:1603
+#: src/amule.cpp:1586
 msgid "Failed to open the downloaded version check file"
 msgstr "Huts egin du"
 
-#: src/amule.cpp:1606 src/amule.cpp:1616 src/amule.cpp:1622
+#: src/amule.cpp:1589 src/amule.cpp:1599 src/amule.cpp:1605
 msgid "Corrupted version check file"
 msgstr "Hondaturiko bertsio arakatze fitxategia"
 
-#: src/amule.cpp:1632
+#: src/amule.cpp:1615
 msgid "You are using an outdated version of aMule!"
 msgstr "Zaharkiturik dagoen aMule bertsio bat erabiltzen ari zara!"
 
-#: src/amule.cpp:1633
+#: src/amule.cpp:1616
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Zure aMule bertsioa %i.%i.%i da eta azken bertsioa %li.%li.%li da"
 
-#: src/amule.cpp:1634
+#: src/amule.cpp:1617
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Azken bertsioa beti http://www.amule.org webgunean aurki daiteke"
 
-#: src/amule.cpp:1636
+#: src/amule.cpp:1619
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "OHARRA: Zure aMuled bertsioa zaharkiturik dago: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1640
+#: src/amule.cpp:1623
 msgid "Your copy of aMule is up to date."
 msgstr "Zure aMule kopia zaharkiturik dago."
 
-#: src/amule.cpp:1647
+#: src/amule.cpp:1630
 msgid "Failed to download the version check file"
 msgstr "Huts bertsio arakatze fitxategia deskargatzerakoan"
 
-#: src/amule.cpp:1812 src/amule-remote-gui.cpp:519
+#: src/amule.cpp:1795 src/amule-remote-gui.cpp:518
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Erab: %s | Fitx: %s"
 
-#: src/amule.cpp:1813 src/amule-remote-gui.cpp:520
+#: src/amule.cpp:1796 src/amule-remote-gui.cpp:519
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Erab: E: %s K: %s | Fitx: E: %s K: %s"
 
-#: src/amule.cpp:1822 src/amule-remote-gui.cpp:529
+#: src/amule.cpp:1805 src/amule-remote-gui.cpp:528
 msgid "No networks selected"
 msgstr "Ez dago sarerik hautatuta"
 
-#: src/amule.cpp:1885 src/TextClient.cpp:707
+#: src/amule.cpp:1868 src/TextClient.cpp:707
 msgid "with LowID"
 msgstr "IDBaxuarekin"
 
-#: src/amule.cpp:1885 src/TextClient.cpp:707
+#: src/amule.cpp:1868 src/TextClient.cpp:707
 msgid "with HighID"
 msgstr "IDAltuarekin"
 
-#: src/amule.cpp:1887
+#: src/amule.cpp:1870
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s-ra konektaturik"
 
-#: src/amule.cpp:1890
+#: src/amule.cpp:1873
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s-ra konektatzen"
 
-#: src/amule.cpp:1892
+#: src/amule.cpp:1875
 msgid "Disconnected from eD2k"
 msgstr "eD2k-tik deskonektatua"
 
-#: src/amule.cpp:1899
+#: src/amule.cpp:1882
 msgid "Kad started."
 msgstr "Kad abiarazirik."
 
-#: src/amule.cpp:1901
+#: src/amule.cpp:1884
 msgid "Kad stopped."
 msgstr "Kad gelditurik."
 
-#: src/amule.cpp:1908
+#: src/amule.cpp:1891
 msgid "Connected to Kad (ok)"
 msgstr "Kad-era Konektatuta (ondo)"
 
-#: src/amule.cpp:1910
+#: src/amule.cpp:1893
 msgid "Connected to Kad (firewalled)"
 msgstr "Kad-era Konektatuta (suebakirik)"
 
-#: src/amule.cpp:1913
+#: src/amule.cpp:1896
 msgid "Disconnected from Kad"
 msgstr "Kad-etik deskonektatua"
 
-#: src/amule.cpp:1980
+#: src/amule.cpp:1963
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -356,7 +356,7 @@ msgstr ""
 "Kad sarea ezin da erabili hobespenetan UDP ataka ezgaiturik badago, ez da "
 "abiaraziko."
 
-#: src/amule.cpp:1983
+#: src/amule.cpp:1966
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad sarea hobespenetan ezgaiturik, ez da konektatuko."
 
@@ -483,8 +483,8 @@ msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:512 src/KadDlg.cpp:192 src/PartFile.cpp:924
-#: src/PartFile.cpp:932 src/PrefsUnifiedDlg.cpp:602
+#: src/amuleDlg.cpp:512 src/KadDlg.cpp:192 src/PartFile.cpp:920
+#: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:602
 #: src/PrefsUnifiedDlg.cpp:705 src/PrefsUnifiedDlg.cpp:808
 msgid "Message"
 msgstr "Mezua"
@@ -493,7 +493,7 @@ msgstr "Mezua"
 msgid "aMule dialog destroyed"
 msgstr "aMule elkarrizketa suntsitua"
 
-#: src/amuleDlg.cpp:573 src/DataToText.cpp:61 src/IPFilter.cpp:537
+#: src/amuleDlg.cpp:573 src/DataToText.cpp:61 src/IPFilter.cpp:543
 msgid "Connecting"
 msgstr "Konektatzen"
 
@@ -521,8 +521,8 @@ msgstr "Kad: Konektatzen"
 msgid "Kad: Off"
 msgstr "Kad: Itzalia"
 
-#: src/amuleDlg.cpp:773 src/DownloadListCtrl.cpp:414
-#: src/DownloadListCtrl.cpp:645 src/FriendListCtrl.cpp:174
+#: src/amuleDlg.cpp:773 src/DownloadListCtrl.cpp:415
+#: src/DownloadListCtrl.cpp:653 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:809 src/muuli_wdr.cpp:873 src/muuli_wdr.cpp:947
 #: src/muuli_wdr.cpp:1013 src/muuli_wdr.cpp:2333 src/muuli_wdr.cpp:2435
 #: src/muuli_wdr.cpp:3151 src/ServerListCtrl.cpp:153
@@ -585,7 +585,7 @@ msgstr "Irteera berrespena"
 msgid "Launch Command: "
 msgstr "Abiarazi komandoa: "
 
-#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2099 src/Preferences.cpp:879
+#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2099 src/Preferences.cpp:835
 msgid "- default -"
 msgstr "- lehenetsia -"
 
@@ -616,8 +616,8 @@ msgstr "Bilaketak"
 msgid "Searches Window"
 msgstr "Bilaketa leihoa"
 
-#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:636 src/muuli_wdr.cpp:426
-#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:670
+#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:644 src/muuli_wdr.cpp:426
+#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:752
 msgid "Downloads"
 msgstr "Deskargak"
 
@@ -644,7 +644,7 @@ msgid "Messages Window"
 msgstr "Mezu leihoa"
 
 #: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3539 src/PrefsUnifiedDlg.cpp:179
-#: src/Statistics.cpp:640 src/Statistics.cpp:938
+#: src/Statistics.cpp:722 src/Statistics.cpp:1020
 msgid "Statistics"
 msgstr "Estatistikak"
 
@@ -706,108 +706,108 @@ msgstr "Errore konponezina: Akats ordutegi nagusia sortzerakoan"
 msgid "Connect to remote amule"
 msgstr "Urruneko amulera konektatu"
 
-#: src/amule-remote-gui.cpp:254
+#: src/amule-remote-gui.cpp:253
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Errore konponezina: Akats ilara ordutegia sortzerakoan"
 
-#: src/amule-remote-gui.cpp:269
+#: src/amule-remote-gui.cpp:268
 msgid "Going to event loop..."
 msgstr "Gertaera begizta batera joaten..."
 
-#: src/amule-remote-gui.cpp:295
+#: src/amule-remote-gui.cpp:294
 msgid "Connecting..."
 msgstr "Konektatzen..."
 
-#: src/amule-remote-gui.cpp:299
+#: src/amule-remote-gui.cpp:298
 msgid "Connection failed "
 msgstr "Konexioak huts egin du "
 
-#: src/amule-remote-gui.cpp:310
+#: src/amule-remote-gui.cpp:309
 msgid "Remote GUI EC event handler"
 msgstr "Urruneko interfaze KK gertaera kudeatzailea"
 
-#: src/amule-remote-gui.cpp:317
+#: src/amule-remote-gui.cpp:316
 msgid "Going down"
 msgstr "Itzaltzen"
 
-#: src/amule-remote-gui.cpp:320 src/ExternalConnector.cpp:400
+#: src/amule-remote-gui.cpp:319 src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "Konexioak huts egin du. Ezin da %s-ra konektatu:%d\n"
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:322
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Konexioa itxita - aMule itxi egin da ziurrenik."
 
-#: src/amule-remote-gui.cpp:408
+#: src/amule-remote-gui.cpp:407
 msgid "Ready"
 msgstr "Prest"
 
-#: src/amule-remote-gui.cpp:586 src/TransferWnd.cpp:354
+#: src/amule-remote-gui.cpp:585 src/TransferWnd.cpp:354
 msgid "All"
 msgstr "Guztiak"
 
-#: src/amule-remote-gui.cpp:632
+#: src/amule-remote-gui.cpp:631
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 "Ezin da '%s' direktorioa sortu '%s' kategoriarentzat, '%s' direktorioa "
 "mantenduko da."
 
-#: src/amule-remote-gui.cpp:1335 src/BaseClient.cpp:1786
-#: src/BaseClient.cpp:2312 src/BaseClient.cpp:2328 src/BaseClient.cpp:2623
+#: src/amule-remote-gui.cpp:1325 src/BaseClient.cpp:1785
+#: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2622
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/DownloadListCtrl.cpp:1058 src/DownloadListCtrl.cpp:1071
-#: src/DownloadListCtrl.cpp:1082 src/ExternalConn.cpp:431
-#: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1047
-#: src/GenericClientListCtrl.cpp:1058 src/GenericClientListCtrl.cpp:1068
-#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:914 src/KnownFile.cpp:920
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2525 src/PartFile.cpp:2531
-#: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:885
+#: src/DownloadListCtrl.cpp:1066 src/DownloadListCtrl.cpp:1079
+#: src/DownloadListCtrl.cpp:1090 src/ExternalConn.cpp:431
+#: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1050
+#: src/GenericClientListCtrl.cpp:1061 src/GenericClientListCtrl.cpp:1071
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:916 src/KnownFile.cpp:922
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:967
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/BaseClient.cpp:1379
+#: src/BaseClient.cpp:1378
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Huts '%s' erabiltzailearen partekatutako fitxategiak jasotzerakoan"
 
-#: src/BaseClient.cpp:1591
+#: src/BaseClient.cpp:1590
 msgid "Searching buddy for lowid connection"
 msgstr "Laguna bilatzen id-baxu konexiorako"
 
-#: src/BaseClient.cpp:1803
+#: src/BaseClient.cpp:1802
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Gezurrezko eMule bertsioa %#x)"
 
-#: src/BaseClient.cpp:1814
+#: src/BaseClient.cpp:1813
 msgid " (Fake eMule)"
 msgstr " (Gezurrezko eMule)"
 
-#: src/BaseClient.cpp:1816
+#: src/BaseClient.cpp:1815
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Gezurrezko eMule)"
 
-#: src/BaseClient.cpp:1855
+#: src/BaseClient.cpp:1854
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (eMule v0.%u-tan oinarriturik)"
 
-#: src/BaseClient.cpp:2028
+#: src/BaseClient.cpp:2027
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Ezizena: %s ID-a: %u"
 
-#: src/BaseClient.cpp:2030
+#: src/BaseClient.cpp:2029
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Eskaerak: %s\n"
 
-#: src/BaseClient.cpp:2032
+#: src/BaseClient.cpp:2031
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -819,7 +819,7 @@ msgstr[1] ""
 "Fitxategi estatistikak saio honentzat. Onarturik %d - %d eskakizunetik, %s "
 "transferiturik\n"
 
-#: src/BaseClient.cpp:2035
+#: src/BaseClient.cpp:2034
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -831,21 +831,21 @@ msgstr[1] ""
 "Fitxategi estatistikak saio guztientzat. Onarturik %d %d eskakizunetik, %s "
 "transferiturik\n"
 
-#: src/BaseClient.cpp:2038
+#: src/BaseClient.cpp:2037
 msgid "Requested unknown file"
 msgstr "Fitxategi ezezaguna eskaturik"
 
-#: src/BaseClient.cpp:2701
+#: src/BaseClient.cpp:2700
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "'%s'-ren mezu bat iragazi da (IP:%s)"
 
-#: src/BaseClient.cpp:2808
+#: src/BaseClient.cpp:2807
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "'%s'-ren mezu berria (IP:%s)"
 
-#: src/BaseClient.cpp:2900
+#: src/BaseClient.cpp:2899
 #, fuzzy, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
@@ -878,7 +878,7 @@ msgstr "Errorea %s fitxategia gordetzerakoan: %s"
 msgid "Enter Captcha"
 msgstr "Idatzi kaptxa"
 
-#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:686 src/muuli_wdr.cpp:244
+#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:694 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:614 src/TransferWnd.cpp:349
 msgid "Category"
 msgstr "Kategoria"
@@ -954,7 +954,7 @@ msgstr "Itxi fitxa guztiak"
 msgid "Close other tabs"
 msgstr "Itxi beste fitxak"
 
-#: src/ChatWnd.cpp:107 src/GenericClientListCtrl.cpp:584
+#: src/ChatWnd.cpp:107 src/GenericClientListCtrl.cpp:587
 msgid "Add to Friends"
 msgstr "Gehitu lagun zerrendara"
 
@@ -1016,8 +1016,8 @@ msgid "Disconnected"
 msgstr "Deskonektatuta"
 
 #: src/ClientDetailDialog.cpp:155 src/ClientDetailDialog.cpp:159
-#: src/DownloadListCtrl.cpp:946 src/GenericClientListCtrl.cpp:876
-#: src/GenericClientListCtrl.cpp:883
+#: src/DownloadListCtrl.cpp:954 src/GenericClientListCtrl.cpp:879
+#: src/GenericClientListCtrl.cpp:886
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
@@ -1177,19 +1177,19 @@ msgstr "Auto[Alt]"
 msgid "Very low"
 msgstr "Oso txikia"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2397
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2397
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "Baxua"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2398
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2398
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "Normala"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2399
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:2399
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1211,17 +1211,17 @@ msgstr "Eskatzen"
 msgid "Connecting via server"
 msgstr "Konektatu zerbitzaria bidez"
 
-#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:978
+#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:981
 msgid "Queue Full"
 msgstr "Ilara Osoa"
 
-#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:994
-#: src/KnownFile.cpp:1548
+#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:997
+#: src/KnownFile.cpp:1550
 msgid "On Queue"
 msgstr "Ilaran"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3721 src/TransferWnd.cpp:362
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:362
 msgid "Downloading"
 msgstr "Deskargatzen"
 
@@ -1365,17 +1365,17 @@ msgid "Progress"
 msgstr "Egoera"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3767 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "Jatorriak"
 
-#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:644
+#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:652
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
 #: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:144
 msgid "Priority"
 msgstr "Lehentasuna"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3769
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3768
 #: src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "Egoera"
@@ -1392,15 +1392,15 @@ msgstr "Azkenez osoa ikusirik"
 msgid "Last Reception"
 msgstr "Azkenez jasoa"
 
-#: src/DownloadListCtrl.cpp:410
+#: src/DownloadListCtrl.cpp:411
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "Ziur zaude aukeratutako fitxategia ezabatu nahi duzula?"
 
-#: src/DownloadListCtrl.cpp:412
+#: src/DownloadListCtrl.cpp:413
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Ziur zaude aukeratutako fitxategia ezabatu nahi duzula?"
 
-#: src/DownloadListCtrl.cpp:553 src/SharedFilesCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:200
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -1409,97 +1409,97 @@ msgstr ""
 "Erantzuna hemendik: %s (%s)\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:642 src/muuli_wdr.cpp:2400
+#: src/DownloadListCtrl.cpp:650 src/muuli_wdr.cpp:2400
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "Auto"
 
-#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:390
+#: src/DownloadListCtrl.cpp:654 src/TransferWnd.cpp:390
 msgid "&Stop"
 msgstr "&Gelditu"
 
-#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:391
+#: src/DownloadListCtrl.cpp:655 src/TransferWnd.cpp:391
 msgid "&Pause"
 msgstr "&Pausa"
 
-#: src/DownloadListCtrl.cpp:648 src/TransferWnd.cpp:392
+#: src/DownloadListCtrl.cpp:656 src/TransferWnd.cpp:392
 msgid "&Resume"
 msgstr "&Berrekin"
 
-#: src/DownloadListCtrl.cpp:649
+#: src/DownloadListCtrl.cpp:657
 msgid "C&lear completed"
 msgstr "G&arbitu bukaturikoak"
 
-#: src/DownloadListCtrl.cpp:655
+#: src/DownloadListCtrl.cpp:663
 msgid "Swap every A4AF to this file now"
 msgstr "Jaitsi fitxategi honen A4AF guztiak orain"
 
-#: src/DownloadListCtrl.cpp:657
+#: src/DownloadListCtrl.cpp:665
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Jaitsi fitxategi honen A4AF guztiak (Auto)"
 
-#: src/DownloadListCtrl.cpp:662
+#: src/DownloadListCtrl.cpp:670
 msgid "Swap every A4AF to any other file now"
 msgstr "Jaitsi fitxategi guztien A4AF guztiak orain"
 
-#: src/DownloadListCtrl.cpp:665
+#: src/DownloadListCtrl.cpp:673
 msgid "Extended Options"
 msgstr "Hedatutako aukerak"
 
-#: src/DownloadListCtrl.cpp:670 src/DownloadListCtrl.cpp:730
+#: src/DownloadListCtrl.cpp:678 src/DownloadListCtrl.cpp:738
 msgid "Preview"
 msgstr "Aurrebista"
 
-#: src/DownloadListCtrl.cpp:671
+#: src/DownloadListCtrl.cpp:679
 msgid "Show file &details"
 msgstr "Erakutsi &xehetasunak"
 
-#: src/DownloadListCtrl.cpp:672 src/muuli_wdr.cpp:780
+#: src/DownloadListCtrl.cpp:680 src/muuli_wdr.cpp:780
 msgid "Show all comments"
 msgstr "Erakutsi iruzkin guztiak"
 
-#: src/DownloadListCtrl.cpp:677
+#: src/DownloadListCtrl.cpp:685
 msgid "Copy magnet URI to clipboard"
 msgstr "Kopiatu URI magnetikoa arbelera"
 
-#: src/DownloadListCtrl.cpp:679 src/SharedFilesCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:687 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
 msgstr "Kopiatu eD2l &lotura arbelera"
 
-#: src/DownloadListCtrl.cpp:681 src/SharedFilesCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:689 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
 msgstr "Kopiatu berrelikadura arbelera"
 
-#: src/DownloadListCtrl.cpp:690
+#: src/DownloadListCtrl.cpp:698
 msgid "unassign"
 msgstr "ezarri gabea"
 
-#: src/DownloadListCtrl.cpp:697
+#: src/DownloadListCtrl.cpp:705
 msgid "Assign to category"
 msgstr "Ezarri kategoria bat"
 
-#: src/DownloadListCtrl.cpp:733
+#: src/DownloadListCtrl.cpp:741
 msgid "&Open the file"
 msgstr "&Ireki fitxategia"
 
-#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:802 src/SharedFilesCtrl.cpp:684
 msgid "Enter new name for this file:"
 msgstr "Sar izen berri bat fitxategi honentzat:"
 
-#: src/DownloadListCtrl.cpp:795 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:803 src/SharedFilesCtrl.cpp:685
 msgid "File rename"
 msgstr "Fitxategia berrizendatu"
 
-#: src/DownloadListCtrl.cpp:1069 src/DownloadListCtrl.cpp:1080
+#: src/DownloadListCtrl.cpp:1077 src/DownloadListCtrl.cpp:1088
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1250
+#: src/DownloadListCtrl.cpp:1258
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Deskargak (%i)"
 
-#: src/DownloadListCtrl.cpp:1394
+#: src/DownloadListCtrl.cpp:1402
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -1508,11 +1508,11 @@ msgstr ""
 "ezarri zure bideo erreproduzigailu gogokoena hobespen leihoan (lehenetsia "
 "mplayer da)."
 
-#: src/DownloadListCtrl.cpp:1395
+#: src/DownloadListCtrl.cpp:1403
 msgid "File preview"
 msgstr "Fitxategi aurreikuspena"
 
-#: src/DownloadListCtrl.cpp:1443
+#: src/DownloadListCtrl.cpp:1451
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr ""
@@ -1699,122 +1699,122 @@ msgstr "Bezero ezezagunen mezuak iragazi"
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "Baimendu gabeko sarrera saiakera. Konexioa itxirik."
 
-#: src/ExternalConn.cpp:791
+#: src/ExternalConn.cpp:798
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "Urruneko ZatiFitxategi komandoak huts egin du: Ez da %s fitxategi "
 "egiaztapena aurkitu"
 
-#: src/ExternalConn.cpp:793
+#: src/ExternalConn.cpp:800
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Ez da %s fitxategi egiaztapena aurkitu"
 
-#: src/ExternalConn.cpp:840 src/ExternalConn.cpp:922 src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:847 src/ExternalConn.cpp:929 src/ExternalConn.cpp:1000
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! OpCode prozesu errorea!"
 
-#: src/ExternalConn.cpp:868
+#: src/ExternalConn.cpp:875
 msgid "Server not added"
 msgstr "Zerbitzaria ez da gehitu"
 
-#: src/ExternalConn.cpp:886
+#: src/ExternalConn.cpp:893
 #, c-format
 msgid "server not found: %s"
 msgstr "ez da zerbitzaria aurkitu: %s"
 
-#: src/ExternalConn.cpp:902
+#: src/ExternalConn.cpp:909
 msgid "need to define server to be removed"
 msgstr "ezabatzeko zerbitzaria ezarri behar da"
 
-#: src/ExternalConn.cpp:916
+#: src/ExternalConn.cpp:923
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k ezgaiturik dago hobespenetan."
 
-#: src/ExternalConn.cpp:1094
+#: src/ExternalConn.cpp:1101
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Bilaketa bidean. Emaitzak emango une batean!"
 
-#: src/ExternalConn.cpp:1100
+#: src/ExternalConn.cpp:1107
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Urruneko interfazeko Web bilaketak ez du zentzurik."
 
-#: src/ExternalConn.cpp:1298
+#: src/ExternalConn.cpp:1305
 msgid "No points for graph."
 msgstr "Ez dago punturik grafikoarentzat."
 
-#: src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1314
 msgid "Your client is not configured for this detail level."
 msgstr "Zure bezeroa ez dago xehetasun maila honetarako konfiguraturik."
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1341
 msgid "External Connection: shutdown requested"
 msgstr "Kanpo konexioa: itzaltzea eskatuta"
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1353
 msgid "Already shutting down."
 msgstr "Dagoeneko irteten."
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1365
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "KanpoKonexioa: '%s' lotura gehitzen."
 
-#: src/ExternalConn.cpp:1364
+#: src/ExternalConn.cpp:1371
 msgid "Invalid link or already on list."
 msgstr "Lotura baliogabea edo zerrendan dagoeneko."
 
-#: src/ExternalConn.cpp:1434
+#: src/ExternalConn.cpp:1441
 msgid "File not found."
 msgstr "Fitxategia ez da aurkitu."
 
-#: src/ExternalConn.cpp:1439
+#: src/ExternalConn.cpp:1446
 msgid "Invalid file name."
 msgstr "Fitxategi izen baliogabea."
 
-#: src/ExternalConn.cpp:1447
+#: src/ExternalConn.cpp:1454
 msgid "Unable to rename file."
 msgstr "Ezinda fitxategia berrizendatu."
 
-#: src/ExternalConn.cpp:1743 src/ExternalConn.cpp:1770
+#: src/ExternalConn.cpp:1750 src/ExternalConn.cpp:1777
 msgid "Kad is disabled in preferences."
 msgstr "Kad ezgaiturik dago hobespenetan."
 
-#: src/ExternalConn.cpp:1782
+#: src/ExternalConn.cpp:1789
 msgid "Already connected to eD2k."
 msgstr "Dagoeneko eD2k-ra konektaturik."
 
-#: src/ExternalConn.cpp:1785
+#: src/ExternalConn.cpp:1792
 msgid "Connecting to eD2k..."
 msgstr "ed2k-era konektatzen..."
 
-#: src/ExternalConn.cpp:1793
+#: src/ExternalConn.cpp:1800
 msgid "Already connected to Kad."
 msgstr "Dagoeneko Kad-era konektaturik."
 
-#: src/ExternalConn.cpp:1796
+#: src/ExternalConn.cpp:1803
 msgid "Connecting to Kad..."
 msgstr "Kad-era konektatzen..."
 
-#: src/ExternalConn.cpp:1803
+#: src/ExternalConn.cpp:1810
 msgid "All networks are disabled."
 msgstr "Sare guztiak ezgaiturik daude."
 
-#: src/ExternalConn.cpp:1811
+#: src/ExternalConn.cpp:1818
 msgid "Disconnected from eD2k."
 msgstr "eD2k-tik deskonektatua."
 
-#: src/ExternalConn.cpp:1815
+#: src/ExternalConn.cpp:1822
 msgid "Disconnected from Kad."
 msgstr "Kad-etik deskonektaturik."
 
-#: src/ExternalConn.cpp:1824
+#: src/ExternalConn.cpp:1831
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Kanpo Konexioa: okerreko opcode-a jasoa: %#x"
 
-#: src/ExternalConn.cpp:1827
+#: src/ExternalConn.cpp:1834
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Opcode baliogabea (okerreko protokolo bertsioa?)"
 
@@ -2054,7 +2054,7 @@ msgstr "KRITIKOA - ez dago bezerorik StartChatSession-en"
 msgid "Friends"
 msgstr "Lagunak"
 
-#: src/FriendListCtrl.cpp:126 src/GenericClientListCtrl.cpp:583
+#: src/FriendListCtrl.cpp:126 src/GenericClientListCtrl.cpp:586
 msgid "Show &Details"
 msgstr "Erakutsi &xehetasunak"
 
@@ -2070,11 +2070,11 @@ msgstr "Ezabatu laguna"
 msgid "Send &Message"
 msgstr "Bidali &mezua"
 
-#: src/FriendListCtrl.cpp:135 src/GenericClientListCtrl.cpp:594
+#: src/FriendListCtrl.cpp:135 src/GenericClientListCtrl.cpp:597
 msgid "View Files"
 msgstr "Ikusi fitxategiak"
 
-#: src/FriendListCtrl.cpp:136 src/GenericClientListCtrl.cpp:586
+#: src/FriendListCtrl.cpp:136 src/GenericClientListCtrl.cpp:589
 msgid "Establish Friend Slot"
 msgstr "Ezarri lagunen ataka"
 
@@ -2086,7 +2086,7 @@ msgstr "Ziur zaude hautatako laguna ezabatu nahi duzula?"
 msgid "Are you sure that you wish to delete the selected friends?"
 msgstr "Ziur zaude hautatako lagunak ezabatu nahi dituzula?"
 
-#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:527
+#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
@@ -2094,62 +2094,70 @@ msgstr ""
 "Ez duzu lagun-ataka bat baino gehiago ezartzeko baimenik.\n"
 " Ataka bat bakarrik dago sinaturik."
 
-#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:527
+#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid "Multiple selection"
 msgstr "Aukera anitza"
 
-#: src/GenericClientListCtrl.cpp:544
+#: src/GenericClientListCtrl.cpp:547
 msgid "Send message to user"
 msgstr "Bidali mezua erabiltzaileari"
 
-#: src/GenericClientListCtrl.cpp:545
+#: src/GenericClientListCtrl.cpp:548
 msgid "Message to send:"
 msgstr "Bidali behar de mezua:"
 
-#: src/GenericClientListCtrl.cpp:584
+#: src/GenericClientListCtrl.cpp:587
 msgid "Remove from friends"
 msgstr "Lagunetatik kendu"
 
-#: src/GenericClientListCtrl.cpp:595
+#: src/GenericClientListCtrl.cpp:598
 msgid "Send message"
 msgstr "Mezua bidali"
 
-#: src/GenericClientListCtrl.cpp:597
+#: src/GenericClientListCtrl.cpp:600
 msgid "Swap to this file"
 msgstr "Swap fitxategi honentzat"
 
-#: src/GenericClientListCtrl.cpp:940
+#: src/GenericClientListCtrl.cpp:943
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/GenericClientListCtrl.cpp:992
+#: src/GenericClientListCtrl.cpp:995
 #, fuzzy, c-format
 msgid "On Queue: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/GenericClientListCtrl.cpp:1002 src/GenericClientListCtrl.cpp:1031
+#: src/GenericClientListCtrl.cpp:1005 src/GenericClientListCtrl.cpp:1034
 msgid "Asked for another file"
 msgstr "Beste fitxategi batez galdeturik"
 
-#: src/GenericClientListCtrl.cpp:1021
+#: src/GenericClientListCtrl.cpp:1024
 #, fuzzy
 msgid "Waiting for upload slot"
 msgstr "Igoerak zain: %s"
 
-#: src/GenericClientListCtrl.cpp:1023
+#: src/GenericClientListCtrl.cpp:1026
 #, fuzzy, c-format
 msgid "On Queue: %u"
 msgstr "Ilaran"
 
-#: src/GenericClientListCtrl.cpp:1026
+#: src/GenericClientListCtrl.cpp:1029
 #, fuzzy
 msgid "Uploading"
 msgstr "Igo"
 
-#: src/GenericClientListCtrl.cpp:1028
+#: src/GenericClientListCtrl.cpp:1031
 #, fuzzy
 msgid "None"
 msgstr "Bat ere ez"
+
+#: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:242
+msgid "No"
+msgstr "Ez"
+
+#: src/GenericClientListCtrl.cpp:1091 src/ServerListCtrl.cpp:242
+msgid "Yes"
+msgstr "Bai"
 
 #: src/HTTPDownload.cpp:57
 msgid "Downloading..."
@@ -2212,7 +2220,7 @@ msgstr "Deskargatu GeoIP.dat berria %s-tik"
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "GeoIP.dat deskargak huts egin du eguneraketa baztertzen."
 
-#: src/IP2Country.cpp:133 src/IPFilter.cpp:494
+#: src/IP2Country.cpp:133 src/IPFilter.cpp:500
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "Huts %s fitxategia ezabatzean, eguneraketa baztertzen."
@@ -2222,7 +2230,7 @@ msgstr "Huts %s fitxategia ezabatzean, eguneraketa baztertzen."
 msgid "Failed to rename %s file, aborting update."
 msgstr "Huts %s fitxategia berrizendatzean, eguneraketa baztertzen."
 
-#: src/IP2Country.cpp:145 src/IPFilter.cpp:500
+#: src/IP2Country.cpp:145 src/IPFilter.cpp:506
 #, c-format
 msgid "Successfully updated %s"
 msgstr "%s behar bezala eguneratu da"
@@ -2231,7 +2239,7 @@ msgstr "%s behar bezala eguneratu da"
 msgid "Error updating GeoIP.dat"
 msgstr "Huts GeoIP.dat deskargatzean"
 
-#: src/IP2Country.cpp:152 src/IPFilter.cpp:505 src/ServerList.cpp:862
+#: src/IP2Country.cpp:152 src/IPFilter.cpp:511 src/ServerList.cpp:867
 #, c-format
 msgid "Failed to download %s from %s"
 msgstr "Huts %s %s-tik deskargatzean"
@@ -2246,40 +2254,40 @@ msgstr "Huts '%s'-ren estatu datuak kargatzean."
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "'ipfilter.dat' eta 'ipfilter_static.dat' IP iragazkiak kargatzen."
 
-#: src/IPFilter.cpp:297
+#: src/IPFilter.cpp:299
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, formatu ezezagunak "
 "aurkitu dira."
 
-#: src/IPFilter.cpp:319
+#: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, ezin da fitxategia "
 "ireki."
 
-#: src/IPFilter.cpp:323
+#: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "IP-eremu %u kargaturik'%s'-tik."
 msgstr[1] "%u IP-eremu kargaturik'%s'-tik."
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:331
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "Gaizki eratutako lerro %u alde batetara utzi da."
 msgstr[1] "Gaizki eratutako %u lerro alde batetara utzi dira."
 
-#: src/IPFilter.cpp:497
+#: src/IPFilter.cpp:503
 #, c-format
 msgid "Failed to rename new %s file, aborting update."
 msgstr "Huts %s fitxategi berria berrizendatzean, eguneraketa baztertzen."
 
-#: src/IPFilter.cpp:527
+#: src/IPFilter.cpp:533
 msgid "IP filter is ready"
 msgstr ""
 
@@ -2372,32 +2380,32 @@ msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "Idatzi Kad kontaktu %d"
 msgstr[1] "Idatzi %d Kad kontaktu"
 
-#: src/KnownFile.cpp:1542 src/PartFileConvertDlg.cpp:91
+#: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
 msgstr "Fitxategia"
 
-#: src/KnownFile.cpp:1543
+#: src/KnownFile.cpp:1545
 msgid "File size"
 msgstr "Fitxategi tamaina"
 
-#: src/KnownFile.cpp:1544
+#: src/KnownFile.cpp:1546
 msgid "Share ratio"
 msgstr "Partekatze erlazioa"
 
-#: src/KnownFile.cpp:1545 src/SharedFilePeersListCtrl.cpp:31
+#: src/KnownFile.cpp:1547 src/SharedFilePeersListCtrl.cpp:31
 #: src/SourceListCtrl.cpp:31
 msgid "Uploaded"
 msgstr "Igoa"
 
-#: src/KnownFile.cpp:1546 src/muuli_wdr.cpp:3341
+#: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3341
 msgid "Requested"
 msgstr "Eskatutakoa"
 
-#: src/KnownFile.cpp:1547
+#: src/KnownFile.cpp:1549
 msgid "Accepted"
 msgstr "Onartua"
 
-#: src/KnownFile.cpp:1549
+#: src/KnownFile.cpp:1551
 msgid "Complete sources"
 msgstr "Jatorri osoak"
 
@@ -2424,30 +2432,30 @@ msgstr "Bertsio ezezaguna"
 msgid "Unable to get error description for error %d"
 msgstr "Ezin da helburu fitxategia sortu %s deskargarentzat!"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3699
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
 msgid "Hashing"
 msgstr "Aztertzen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3705
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3704
 msgid "Completing"
 msgstr "Osotzen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3708
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3707
 msgid "Complete"
 msgstr "Amaitua"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3711 src/TransferWnd.cpp:364
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:364
 msgid "Paused"
 msgstr "Geraturik"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3714 src/TransferWnd.cpp:363
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:363
 msgid "Erroneous"
 msgstr "Akasdun"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3723 src/TransferWnd.cpp:361
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:361
 msgid "Waiting"
 msgstr "Zain"
 
@@ -2646,7 +2654,7 @@ msgstr "Linean sinadura: Gaituta"
 msgid "Online Signature: Disabled"
 msgstr "Linean sinadura: Ezgaitua"
 
-#: src/MuleTrayIcon.cpp:406 src/Statistics.cpp:645
+#: src/MuleTrayIcon.cpp:406 src/Statistics.cpp:727
 #, c-format
 msgid "Uptime: %s"
 msgstr "Abiarazia: %s"
@@ -2967,7 +2975,7 @@ msgstr "Fitxategi zati egoera:"
 msgid "Last seen complete :"
 msgstr "Azkenez osorik ikusia:"
 
-#: src/muuli_wdr.cpp:597 src/Statistics.cpp:647
+#: src/muuli_wdr.cpp:597 src/Statistics.cpp:729
 msgid "Transfer"
 msgstr "Transferentzia"
 
@@ -3563,7 +3571,7 @@ msgstr "Ezarri hemen nahi duzu disko toki txikiena."
 msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "10 jatorri gorde fitxategi arraroentzat (< 20 jatorri)"
 
-#: src/muuli_wdr.cpp:1844 src/Statistics.cpp:649
+#: src/muuli_wdr.cpp:1844 src/Statistics.cpp:731
 msgid "Uploads"
 msgstr "Igoerak"
 
@@ -4365,7 +4373,7 @@ msgstr "Itxi elkarrizketa saio hau."
 msgid "Connect to any server and/or Kad"
 msgstr "Konektatu edozein zerbitzari eta/edo Kad"
 
-#: src/muuli_wdr.cpp:3537 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:728
+#: src/muuli_wdr.cpp:3537 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:810
 msgid "Shared Files"
 msgstr "Partekatutako fitxategiak"
 
@@ -4442,7 +4450,7 @@ msgstr "Beste denak"
 msgid "Incomplete"
 msgstr "Amaitugabea"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3728 src/TransferWnd.cpp:365
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:365
 msgid "Stopped"
 msgstr "Gelditua"
 
@@ -4462,7 +4470,7 @@ msgstr "Testua"
 msgid "Active"
 msgstr "Martxan"
 
-#: src/OtherFunctions.cpp:1085
+#: src/OtherFunctions.cpp:1103
 #, c-format
 msgid "Using config dir: %s"
 msgstr ""
@@ -4567,97 +4575,97 @@ msgstr "ERROREA: part.met fitxategi tamaina 0 da: %s ==> %s"
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "ERROREA: part.met fitxategi bertsio okerra: %s ==> %s"
 
-#: src/PartFile.cpp:599
+#: src/PartFile.cpp:595
 #, fuzzy, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
 msgstr ""
 "Errorea: %s (%s) hondaturik dago (marka kopuru okerra) ezin da fitxategia "
 "kargatu."
 
-#: src/PartFile.cpp:610
+#: src/PartFile.cpp:606
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "ERROREA: %s (%s) hondaturik dago (okerreko etiketa-kopurua), ezin da "
 "fitxategia kargatu."
 
-#: src/PartFile.cpp:613
+#: src/PartFile.cpp:609
 msgid "Trying to recover file info..."
 msgstr "Fitxategi informazioa berreskuratzen saiatzen..."
 
-#: src/PartFile.cpp:628
+#: src/PartFile.cpp:624
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Izen gabeko fitxategia berreskuratzen - RecoveredFile.dat bezala "
 "berreskuratzen saiatuko da"
 
-#: src/PartFile.cpp:632
+#: src/PartFile.cpp:628
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "Fitxategi informazio eskuragarri guztia berreskuraturik :D - Erabiltzen "
 "saiatzen..."
 
-#: src/PartFile.cpp:634
+#: src/PartFile.cpp:630
 msgid "Unable to recover file info :("
 msgstr "Ezin da fitxategi informazioa berreskuratu:("
 
-#: src/PartFile.cpp:669
+#: src/PartFile.cpp:665
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Huts egin du irekitzerakoan: %s (%s)"
 
-#: src/PartFile.cpp:719
+#: src/PartFile.cpp:715
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "ABISUA: %s agian hondaturik dago (%i)"
 
-#: src/PartFile.cpp:901
+#: src/PartFile.cpp:897
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "ERROREA zati fitxategia gordetzerakoan: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:908
+#: src/PartFile.cpp:904
 msgid "IO failure while saving partfile: "
 msgstr "SI errorea zati fitxategia gordetzerakoan: "
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:917
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "Ezin da '%s'-ren tamaina eskuratu - %s fitxategia erabiltzen."
 
-#: src/PartFile.cpp:929
+#: src/PartFile.cpp:925
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' hutsik dago - %s fitxategia erabiliko da."
 
-#: src/PartFile.cpp:998
+#: src/PartFile.cpp:994
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Errorea %s-ren part.met.seeds fitxategia gordetzerakoan"
 
-#: src/PartFile.cpp:1024
+#: src/PartFile.cpp:1020
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "jatorri ale %i bildurik zati fitxategiarentzat: %s (%s)"
 msgstr[1] "%i jatorri ale bildurik zati fitxategiarentzat: %s (%s)"
 
-#: src/PartFile.cpp:1053
+#: src/PartFile.cpp:1049
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "%s (%s) zati fitxategiak ez du ale fitxategirik"
 
-#: src/PartFile.cpp:1062
+#: src/PartFile.cpp:1058
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "%s (%s) zati fitxategiak ale fitxategi huts bat du"
 
-#: src/PartFile.cpp:1118
+#: src/PartFile.cpp:1114
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Errorea zati-fitxategi hazi fitxategia irakurtzerakoan (%s - %s): %s"
 
-#: src/PartFile.cpp:1135 src/PartFile.cpp:1164
+#: src/PartFile.cpp:1131 src/PartFile.cpp:1160
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4672,39 +4680,39 @@ msgstr[1] ""
 "Hondaturiko zatia (%d) aurkitu da %d zatitan %s zati fitxategian - "
 "FitxategiEgiaztapenEmaitza |%s| fitxategiEgiaztapena |%s|"
 
-#: src/PartFile.cpp:1179
+#: src/PartFile.cpp:1175
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Bukatutako (%i) zatia aurkiturik %s-n"
 
-#: src/PartFile.cpp:1212
+#: src/PartFile.cpp:1208
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Amaitutako berrazterketa: %s"
 
-#: src/PartFile.cpp:2135
+#: src/PartFile.cpp:2131
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Ustekabeko errorea %s osatzean. Fitxategia gelditurik"
 
-#: src/PartFile.cpp:2172
+#: src/PartFile.cpp:2168
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Deskarga amaiturik: %s"
 
-#: src/PartFile.cpp:2229
+#: src/PartFile.cpp:2225
 #, c-format
 msgid "Deleting file: %s"
 msgstr "fitxategia ezabatzen:%s"
 
-#: src/PartFile.cpp:2291
+#: src/PartFile.cpp:2290
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "ABISUA: Ezinda deskargaturiko zatia egiaztatu - egiaztapen-bilduma osatugabe "
 "'%s'-rentzat"
 
-#: src/PartFile.cpp:2296
+#: src/PartFile.cpp:2295
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4713,228 +4721,228 @@ msgstr ""
 "ERROREA: Ezin da deskargaturiko zatia egiaztatu - egiaztapen-bilduma "
 "osatugabea (%s). Hau ez zen inoiz gertatu beharko"
 
-#: src/PartFile.cpp:2306 src/PartFile.cpp:2311
+#: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2972
+#: src/PartFile.cpp:2971
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "KONTUZ: Diskoa leku askieza! Fitxategia gelditzen: %s"
 
-#: src/PartFile.cpp:3042
+#: src/PartFile.cpp:3041
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Deskargaturiko %i zatia hondaturik dago fitxategi honetan: %s"
 
-#: src/PartFile.cpp:3094
+#: src/PartFile.cpp:3093
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Hondaturiko %i zatia (%s) konpondurik -> Gordetako byte-ak: %s"
 
-#: src/PartFile.cpp:3701
+#: src/PartFile.cpp:3700
 msgid "Allocating"
 msgstr "Esleitzen"
 
-#: src/PartFile.cpp:3717
+#: src/PartFile.cpp:3716
 msgid "Insufficient disk space"
 msgstr "Disko leku askieza"
 
-#: src/PartFile.cpp:3767 src/SearchListCtrl.cpp:993
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:993
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "Deskargatua"
 
-#: src/PartFile.cpp:4009
+#: src/PartFile.cpp:4008
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ERROREA: Huts '%s' zati fitxategia irekitzean"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:625
 msgid "System default"
 msgstr "Sistema lehenetsia"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:626
 msgid "Albanian"
 msgstr "Albaniera"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:627
 msgid "Arabic"
 msgstr "Arabiera"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:628
 msgid "Asturian"
 msgstr "Bablea"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:629
 msgid "Basque"
 msgstr "Euskara"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:630
 msgid "Bulgarian"
 msgstr "Bulgariera"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:631
 msgid "Catalan"
 msgstr "Katalana"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:632
 msgid "Chinese (Simplified)"
 msgstr "Txinatarra (Sinplea)"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:633
 msgid "Chinese (Traditional)"
 msgstr "Txinatarra (ohizkoa)"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:634
 msgid "Croatian"
 msgstr "Kroaziera"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:635
 msgid "Czech"
 msgstr "Txekiera"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:636
 msgid "Danish"
 msgstr "Daniera"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:637
 msgid "Dutch"
 msgstr "Nederlandera"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:638
 msgid "English (U.K.)"
 msgstr "Ingelesa (E.B.)"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:639
 msgid "Estonian"
 msgstr "Estoniera"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:640
 msgid "Finnish"
 msgstr "Finlandiera"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:641
 msgid "French"
 msgstr "Frantsesa"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:642
 msgid "Galician"
 msgstr "Galiziera"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:643
 msgid "German"
 msgstr "Alemana"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:644
 msgid "Greek"
 msgstr "Grekoa"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:645
 msgid "Hebrew"
 msgstr "Hebreera"
 
-#: src/Preferences.cpp:690
+#: src/Preferences.cpp:646
 msgid "Hungarian"
 msgstr "Hungariera"
 
-#: src/Preferences.cpp:691
+#: src/Preferences.cpp:647
 msgid "Italian"
 msgstr "Italiera"
 
-#: src/Preferences.cpp:692
+#: src/Preferences.cpp:648
 msgid "Italian (Swiss)"
 msgstr "Italiera (Suizarra)"
 
-#: src/Preferences.cpp:693
+#: src/Preferences.cpp:649
 msgid "Japanese"
 msgstr "Japoniera"
 
-#: src/Preferences.cpp:694
+#: src/Preferences.cpp:650
 msgid "Korean"
 msgstr "Koreera"
 
-#: src/Preferences.cpp:695
+#: src/Preferences.cpp:651
 msgid "Lithuanian"
 msgstr "Lituaniera"
 
-#: src/Preferences.cpp:696
+#: src/Preferences.cpp:652
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvegiera (Nynorsk)"
 
-#: src/Preferences.cpp:697
+#: src/Preferences.cpp:653
 msgid "Polish"
 msgstr "Poloniera"
 
-#: src/Preferences.cpp:698
+#: src/Preferences.cpp:654
 msgid "Portuguese"
 msgstr "Portugesa"
 
-#: src/Preferences.cpp:699
+#: src/Preferences.cpp:655
 msgid "Portuguese (Brazilian)"
 msgstr "Portugesa (Brasildarra)"
 
-#: src/Preferences.cpp:700
+#: src/Preferences.cpp:656
 #, fuzzy
 msgid "Romanian"
 msgstr "Albaniera"
 
-#: src/Preferences.cpp:701
+#: src/Preferences.cpp:657
 msgid "Russian"
 msgstr "Errusiera"
 
-#: src/Preferences.cpp:702
+#: src/Preferences.cpp:658
 msgid "Slovenian"
 msgstr "Esloveniera"
 
-#: src/Preferences.cpp:703
+#: src/Preferences.cpp:659
 msgid "Spanish"
 msgstr "Gaztelera"
 
-#: src/Preferences.cpp:704
+#: src/Preferences.cpp:660
 msgid "Swedish"
 msgstr "Suediera"
 
-#: src/Preferences.cpp:705
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "Turkiera"
 
-#: src/Preferences.cpp:706
+#: src/Preferences.cpp:662
 msgid "Ukrainian"
 msgstr "Ukraniera"
 
-#: src/Preferences.cpp:768
+#: src/Preferences.cpp:724
 #, fuzzy
 msgid "Change Language"
 msgstr "Hizkuntza"
 
-#: src/Preferences.cpp:939
+#: src/Preferences.cpp:895
 msgid "no options available"
 msgstr "ez dago aukera erabilgarririk"
 
-#: src/Preferences.cpp:1619
+#: src/Preferences.cpp:1573
 msgid "Invalid category found, skipping"
 msgstr "Kategoria baliogabe aurkitua, baztertzen"
 
-#: src/Preferences.cpp:1796
+#: src/Preferences.cpp:1750
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP ataka ezin da 65532 baino altuagoa izan UDP socket-a TCP+3 bait da"
 
-#: src/Preferences.cpp:1797
+#: src/Preferences.cpp:1751
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Lehenetsiriko ataka erabiliko da (%d)"
 
-#: src/Preferences.cpp:1820
+#: src/Preferences.cpp:1774
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Kentzen ez-dagoen partekatutako direktorioa: %s"
 
-#: src/PrefsUnifiedDlg.cpp:173 src/Statistics.cpp:689
+#: src/PrefsUnifiedDlg.cpp:173 src/Statistics.cpp:771
 msgid "Connection"
 msgstr "Konexioa"
 
@@ -4942,7 +4950,7 @@ msgstr "Konexioa"
 msgid "Directories"
 msgstr "Direktorioak"
 
-#: src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:715
+#: src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:797
 msgid "Servers"
 msgstr "Zerbitzariak"
 
@@ -5475,16 +5483,16 @@ msgstr "Huts '%s' irekitzerakoan"
 msgid "Failed to save server.met!"
 msgstr "Huts server.met gordetzerakoan!"
 
-#: src/ServerList.cpp:836
+#: src/ServerList.cpp:841
 msgid "Invalid URL"
 msgstr "URL Baliogabea"
 
-#: src/ServerList.cpp:858
+#: src/ServerList.cpp:863
 #, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Amaituta zerbitzari zerrenda %s-tik deskargatzeaz"
 
-#: src/ServerList.cpp:873
+#: src/ServerList.cpp:878
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5493,28 +5501,28 @@ msgstr ""
 "Mesedez itsatsi zerbitzari zerrenda erabilgarri bat fitxategi honetan "
 "zerbitzari-zerrenda eguneratu ahal izateko"
 
-#: src/ServerList.cpp:886
+#: src/ServerList.cpp:891
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "Hasi zerbitzari zerrenda %s-tik deskargatzen"
 
-#: src/ServerList.cpp:895
+#: src/ServerList.cpp:900
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr "OHARRA: URL baliogabea ezarri zerbitzari auto-eguneraketarako: %s"
 
-#: src/ServerList.cpp:899
+#: src/ServerList.cpp:904
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "Ez da baliozko server.met auto-deskarga url helbiderik aurkitu addresses.dat "
 "fitxategian"
 
-#: src/ServerList.cpp:915
+#: src/ServerList.cpp:920
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Huts zerbitzari zerrenda %s-tik deskargatzerakoan"
 
-#: src/ServerList.cpp:989
+#: src/ServerList.cpp:994
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -5551,7 +5559,7 @@ msgid "Static"
 msgstr "Estatikoa"
 
 #: src/ServerListCtrl.cpp:96 src/SharedFilePeersListCtrl.cpp:34
-#: src/SourceListCtrl.cpp:33 src/Statistics.cpp:872
+#: src/SourceListCtrl.cpp:33 src/Statistics.cpp:954
 msgid "Version"
 msgstr "Bertsioa"
 
@@ -5571,14 +5579,6 @@ msgstr "(Izen ezezaguna)"
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Ziur al zaude %s zerbitzari tinkoa ezabatu nahi duzula"
-
-#: src/ServerListCtrl.cpp:242
-msgid "Yes"
-msgstr "Bai"
-
-#: src/ServerListCtrl.cpp:242
-msgid "No"
-msgstr "Ez"
 
 #: src/ServerListCtrl.cpp:347
 #, c-format
@@ -5882,12 +5882,11 @@ msgstr "Erabilgarri:"
 
 #: src/SharedFilePeersListCtrl.cpp:35
 #, fuzzy
-msgid "Upload status"
+msgid "Upload Status"
 msgstr "Igoera Egoera"
 
-#: src/SharedFilePeersListCtrl.cpp:36
-#, fuzzy
-msgid "Download status"
+#: src/SharedFilePeersListCtrl.cpp:36 src/SourceListCtrl.cpp:34
+msgid "Download Status"
 msgstr "Deskarga Egoera"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
@@ -5898,6 +5897,11 @@ msgstr ""
 #, fuzzy
 msgid "Local File Name"
 msgstr "Fitxategi izena"
+
+#: src/SharedFilePeersListCtrl.cpp:39 src/SourceListCtrl.cpp:38
+#, fuzzy
+msgid "Shares File List"
+msgstr "Partekatutako fitxategiak"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -5980,244 +5984,240 @@ msgstr "Partekatutako fitxategiak (%i)"
 msgid "[PartFile]"
 msgstr "[ZatiFitxategia]"
 
-#: src/SourceListCtrl.cpp:34
-msgid "Download Status"
-msgstr "Deskarga Egoera"
-
 #: src/SourceListCtrl.cpp:37
 #, fuzzy
 msgid "Remote File Name"
 msgstr "Fitxategi izena"
 
-#: src/Statistics.cpp:650
+#: src/Statistics.cpp:732
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "Igotako datuak (saioa (guztira)): %s"
 
-#: src/Statistics.cpp:652 src/Statistics.cpp:673
+#: src/Statistics.cpp:734 src/Statistics.cpp:755
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "Guztira buruak (paketeak): %s"
 
-#: src/Statistics.cpp:653 src/Statistics.cpp:674
+#: src/Statistics.cpp:735 src/Statistics.cpp:756
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "Fitxategi eskakizun buruak (paketeak): %s"
 
-#: src/Statistics.cpp:655 src/Statistics.cpp:676
+#: src/Statistics.cpp:737 src/Statistics.cpp:758
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "Jatorri aldaketa buruak (paketeak): %s"
 
-#: src/Statistics.cpp:657 src/Statistics.cpp:678
+#: src/Statistics.cpp:739 src/Statistics.cpp:760
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "Zerbitzari buruak (paketeak): %s"
 
-#: src/Statistics.cpp:659 src/Statistics.cpp:680
+#: src/Statistics.cpp:741 src/Statistics.cpp:762
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "Kad buruak (paketeak): %s"
 
-#: src/Statistics.cpp:661 src/Statistics.cpp:682
+#: src/Statistics.cpp:743 src/Statistics.cpp:764
 #, c-format
 msgid "Crypt overhead (UDP): %s"
 msgstr "Zifratu goiburua (UDP): %s"
 
-#: src/Statistics.cpp:663
+#: src/Statistics.cpp:745
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "Igoera aktiboak: %s"
 
-#: src/Statistics.cpp:664
+#: src/Statistics.cpp:746
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "Igoerak zain: %s"
 
-#: src/Statistics.cpp:665
+#: src/Statistics.cpp:747
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "Guztira behar bezala igotako saioak: %s"
 
-#: src/Statistics.cpp:666
+#: src/Statistics.cpp:748
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "Guztira oker igotako saioak: %s"
 
-#: src/Statistics.cpp:668
+#: src/Statistics.cpp:750
 #, c-format
 msgid "Average upload time: %s"
 msgstr "Batez besteko igoera denbora: %s"
 
-#: src/Statistics.cpp:671
+#: src/Statistics.cpp:753
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "Deskargaturiko datuak (saioa (guztira)): %s"
 
-#: src/Statistics.cpp:684
+#: src/Statistics.cpp:766
 #, c-format
 msgid "Found Sources: %s"
 msgstr "Aurkituriko iturburuak: %s"
 
-#: src/Statistics.cpp:685
+#: src/Statistics.cpp:767
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "Deskarga aktiboak (zatiak): %s"
 
-#: src/Statistics.cpp:687
+#: src/Statistics.cpp:769
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "Saio IG/DE abiadura (guztira): %s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:772
 #, c-format
 msgid "Average download rate (Session): %s"
 msgstr "Batazbesteko deskarga tasa (saioa): %s"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:773
 #, c-format
 msgid "Average upload rate (Session): %s"
 msgstr "Batazbesteko igoera tasa (saioa): %s"
 
-#: src/Statistics.cpp:692
+#: src/Statistics.cpp:774
 #, c-format
 msgid "Max download rate (Session): %s"
 msgstr "Gehienezko deskarga tasa (saioa): %s"
 
-#: src/Statistics.cpp:693
+#: src/Statistics.cpp:775
 #, c-format
 msgid "Max upload rate (Session): %s"
 msgstr "Gehienezko igoera tasa (saioa): %s"
 
-#: src/Statistics.cpp:694
+#: src/Statistics.cpp:776
 #, c-format
 msgid "Reconnects: %i"
 msgstr "Berkonexioak: %i"
 
-#: src/Statistics.cpp:695
+#: src/Statistics.cpp:777
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "Denbora lehen transferentziatik: %s"
 
-#: src/Statistics.cpp:696
+#: src/Statistics.cpp:778
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "Zerbitzaria noiztik konektatua: %s"
 
-#: src/Statistics.cpp:697
+#: src/Statistics.cpp:779
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "Konexio aktiboak (estimazioa): %i"
 
-#: src/Statistics.cpp:698
+#: src/Statistics.cpp:780
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "Gehienezko konexio mugara iritsi: %s"
 
-#: src/Statistics.cpp:699
+#: src/Statistics.cpp:781
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "Batez besteko konexioak (ebaluazioa): %g"
 
-#: src/Statistics.cpp:701
+#: src/Statistics.cpp:783
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "Puntako konexioak (estimazioa): %i"
 
-#: src/Statistics.cpp:703
+#: src/Statistics.cpp:785
 msgid "Clients"
 msgstr "Bezeroak"
 
-#: src/Statistics.cpp:704
+#: src/Statistics.cpp:786
 #, c-format
 msgid "Unknown: %s"
 msgstr "Ezezaguna: %s"
 
-#: src/Statistics.cpp:710
+#: src/Statistics.cpp:792
 #, c-format
 msgid "Filtered: %s"
 msgstr "Iragazirik: %s"
 
-#: src/Statistics.cpp:711
+#: src/Statistics.cpp:793
 #, c-format
 msgid "Banned: %s"
 msgstr "Ukatuak: %s"
 
-#: src/Statistics.cpp:712
+#: src/Statistics.cpp:794
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "Guztira: %i Ezagunak: %i"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:798
 #, c-format
 msgid "Working Servers: %i"
 msgstr "Zerbitzariak martxan: %i"
 
-#: src/Statistics.cpp:717
+#: src/Statistics.cpp:799
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "Huts egindako zerbitzariak: %i"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:800
 #, c-format
 msgid "Total: %s"
 msgstr "Guztira: %s"
 
-#: src/Statistics.cpp:719
+#: src/Statistics.cpp:801
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "Ezabatutako zerbitzariak: %s"
 
-#: src/Statistics.cpp:720
+#: src/Statistics.cpp:802
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "Iragaziriko zerbitzariak: %s"
 
-#: src/Statistics.cpp:721
+#: src/Statistics.cpp:803
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "Erabiltzaileak - zerbitzariak martxan: %llu"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:804
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "Fitxategiak - zerbitzariak martxan: %llu"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:805
 #, c-format
 msgid "Total Users: %llu"
 msgstr "Guztira erabiltzaileak: %llu"
 
-#: src/Statistics.cpp:724
+#: src/Statistics.cpp:806
 #, c-format
 msgid "Total Files: %llu"
 msgstr "Guztira fitxategiak: %llu"
 
-#: src/Statistics.cpp:725
+#: src/Statistics.cpp:807
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "Zerbitzari lan karga %.2f%%"
 
-#: src/Statistics.cpp:729
+#: src/Statistics.cpp:811
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "Partekatutako fitxategi kopurua: %s"
 
-#: src/Statistics.cpp:730
+#: src/Statistics.cpp:812
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "Guztira partekatutako fitxategi tamaina: %s"
 
-#: src/Statistics.cpp:732
+#: src/Statistics.cpp:814
 #, c-format
 msgid "Average file size: %s"
 msgstr "Batazbesteko fitxategi tamaina: %s"
 
-#: src/Statistics.cpp:873
+#: src/Statistics.cpp:955
 msgid "Operating System"
 msgstr "Sistema eragilea"
 
-#: src/Statistics.cpp:898
+#: src/Statistics.cpp:980
 msgid "Not Received"
 msgstr "Ez Jasoa"
 
@@ -7566,6 +7566,10 @@ msgstr "Saio amaiera eskakizuna\n"
 #: src/webserver/src/WebServer.cpp:1866
 msgid "Processing request [redirected]: "
 msgstr "Eskakizuna prozesatzen [berbidalia]: "
+
+#, fuzzy
+#~ msgid "Download status"
+#~ msgstr "Deskarga Egoera"
 
 #~ msgid "( %s / %s )"
 #~ msgstr "( %s / %s )"
