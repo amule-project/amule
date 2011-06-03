@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-21 23:13+0100\n"
+"POT-Creation-Date: 2011-06-03 23:17+0200\n"
 "PO-Revision-Date: 2011-04-21 11:46+1000\n"
 "Last-Translator: YiQi <u4781098@anu.edu.au>\n"
 "Language-Team: \n"
@@ -54,7 +54,7 @@ msgstr "這個使用者 hash 值無效！"
 msgid "Failed to open ED2KLinks file."
 msgstr "無法開啟 ED2K 連結檔。"
 
-#: src/amuleAppCommon.cpp:188
+#: src/amuleAppCommon.cpp:190
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -146,8 +146,8 @@ msgstr ""
 "服器的套件，或於編譯 aMule 程式碼時加入 --enable-webserver 選項"
 
 #: src/amule.cpp:659 src/amule.cpp:776 src/amule.cpp:1065
-#: src/amule-remote-gui.cpp:299 src/amule-remote-gui.cpp:321
-#: src/amule-remote-gui.cpp:323 src/amule-remote-gui.cpp:634
+#: src/amule-remote-gui.cpp:298 src/amule-remote-gui.cpp:320
+#: src/amule-remote-gui.cpp:322 src/amule-remote-gui.cpp:633
 msgid "ERROR"
 msgstr "錯誤"
 
@@ -232,135 +232,135 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr "伺服器主機名稱已通告"
 
-#: src/amule.cpp:1361
+#: src/amule.cpp:1349
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "無法為檔案 %s 預先分配磁碟空間：%s "
 
-#: src/amule.cpp:1495
+#: src/amule.cpp:1478
 msgid "ERROR: can't open logfile"
 msgstr "錯誤：無法打開記錄檔"
 
-#: src/amule.cpp:1499
+#: src/amule.cpp:1482
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "警告：沒有記錄檔。肯定有什麽地方出錯了。"
 
-#: src/amule.cpp:1517
+#: src/amule.cpp:1500
 msgid "Log has been reset"
 msgstr "記錄已被清除"
 
-#: src/amule.cpp:1543
+#: src/amule.cpp:1526
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "伺服器訊息：%s"
 
-#: src/amule.cpp:1581 src/IP2Country.cpp:150 src/IPFilter.cpp:503
-#: src/ServerList.cpp:860
+#: src/amule.cpp:1564 src/IP2Country.cpp:150 src/IPFilter.cpp:509
+#: src/ServerList.cpp:865
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "略過不下載 %s ，因為並不是新近檔案。"
 
-#: src/amule.cpp:1583
+#: src/amule.cpp:1566
 msgid "Failed to download the nodes list."
 msgstr "無法下載節點清單。"
 
-#: src/amule.cpp:1603
+#: src/amule.cpp:1586
 msgid "Failed to open the downloaded version check file"
 msgstr "無法開啟下載的版本檢查檔"
 
-#: src/amule.cpp:1606 src/amule.cpp:1616 src/amule.cpp:1622
+#: src/amule.cpp:1589 src/amule.cpp:1599 src/amule.cpp:1605
 msgid "Corrupted version check file"
 msgstr "損壞的版本檢查檔"
 
-#: src/amule.cpp:1632
+#: src/amule.cpp:1615
 msgid "You are using an outdated version of aMule!"
 msgstr "您使用的是過期的 aMule 版本！"
 
-#: src/amule.cpp:1633
+#: src/amule.cpp:1616
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "您的 aMule 版本是 %i.%i.%i，最新版本是 %li.%li.%li"
 
-#: src/amule.cpp:1634
+#: src/amule.cpp:1617
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "最新版本可從這裏下載：http://www.amule.org"
 
-#: src/amule.cpp:1636
+#: src/amule.cpp:1619
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "警告：您的 aMuled 版本已經過期：%i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1640
+#: src/amule.cpp:1623
 msgid "Your copy of aMule is up to date."
 msgstr "您的 aMule 是最新版本。"
 
-#: src/amule.cpp:1647
+#: src/amule.cpp:1630
 msgid "Failed to download the version check file"
 msgstr "無法下載版本檢查檔"
 
-#: src/amule.cpp:1812 src/amule-remote-gui.cpp:519
+#: src/amule.cpp:1795 src/amule-remote-gui.cpp:518
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "使用者：%s | 檔案：%s"
 
-#: src/amule.cpp:1813 src/amule-remote-gui.cpp:520
+#: src/amule.cpp:1796 src/amule-remote-gui.cpp:519
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "使用者：E:%s K:%s | 檔案：E:%s K:%s"
 
-#: src/amule.cpp:1822 src/amule-remote-gui.cpp:529
+#: src/amule.cpp:1805 src/amule-remote-gui.cpp:528
 msgid "No networks selected"
 msgstr "未選取網路"
 
-#: src/amule.cpp:1885 src/TextClient.cpp:707
+#: src/amule.cpp:1868 src/TextClient.cpp:707
 msgid "with LowID"
 msgstr "有 LowID"
 
-#: src/amule.cpp:1885 src/TextClient.cpp:707
+#: src/amule.cpp:1868 src/TextClient.cpp:707
 msgid "with HighID"
 msgstr "有 HighID"
 
-#: src/amule.cpp:1887
+#: src/amule.cpp:1870
 #, c-format
 msgid "Connected to %s %s"
 msgstr "已連線到 %s %s"
 
-#: src/amule.cpp:1890
+#: src/amule.cpp:1873
 #, c-format
 msgid "Connecting to %s"
 msgstr "正在連線到 %s"
 
-#: src/amule.cpp:1892
+#: src/amule.cpp:1875
 msgid "Disconnected from eD2k"
 msgstr "已中斷 eD2k 網路連線"
 
-#: src/amule.cpp:1899
+#: src/amule.cpp:1882
 msgid "Kad started."
 msgstr "Kad 已啓動。"
 
-#: src/amule.cpp:1901
+#: src/amule.cpp:1884
 msgid "Kad stopped."
 msgstr "Kad 已停止。"
 
-#: src/amule.cpp:1908
+#: src/amule.cpp:1891
 msgid "Connected to Kad (ok)"
 msgstr "已連線到 Kad"
 
-#: src/amule.cpp:1910
+#: src/amule.cpp:1893
 msgid "Connected to Kad (firewalled)"
 msgstr "已連線到 Kad 網路 (防火牆內)"
 
-#: src/amule.cpp:1913
+#: src/amule.cpp:1896
 msgid "Disconnected from Kad"
 msgstr "已中斷 Kad 網路連線"
 
-#: src/amule.cpp:1980
+#: src/amule.cpp:1963
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr "Kad 網路未啟動：如果在偏好設定中停用了 UDP 埠，Kad 網路將不能使用。"
 
-#: src/amule.cpp:1983
+#: src/amule.cpp:1966
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 網路在偏好設定中被停用了，沒有連線。"
 
@@ -483,8 +483,8 @@ msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:512 src/KadDlg.cpp:192 src/PartFile.cpp:924
-#: src/PartFile.cpp:932 src/PrefsUnifiedDlg.cpp:602
+#: src/amuleDlg.cpp:512 src/KadDlg.cpp:192 src/PartFile.cpp:920
+#: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:602
 #: src/PrefsUnifiedDlg.cpp:705 src/PrefsUnifiedDlg.cpp:808
 msgid "Message"
 msgstr "訊息"
@@ -493,7 +493,7 @@ msgstr "訊息"
 msgid "aMule dialog destroyed"
 msgstr "aMule 對話方塊已銷毀"
 
-#: src/amuleDlg.cpp:573 src/DataToText.cpp:61 src/IPFilter.cpp:537
+#: src/amuleDlg.cpp:573 src/DataToText.cpp:61 src/IPFilter.cpp:543
 msgid "Connecting"
 msgstr "正在連線"
 
@@ -521,8 +521,8 @@ msgstr "Kad：正在連線"
 msgid "Kad: Off"
 msgstr "Kad：關閉"
 
-#: src/amuleDlg.cpp:773 src/DownloadListCtrl.cpp:414
-#: src/DownloadListCtrl.cpp:645 src/FriendListCtrl.cpp:174
+#: src/amuleDlg.cpp:773 src/DownloadListCtrl.cpp:415
+#: src/DownloadListCtrl.cpp:653 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:809 src/muuli_wdr.cpp:873 src/muuli_wdr.cpp:947
 #: src/muuli_wdr.cpp:1013 src/muuli_wdr.cpp:2333 src/muuli_wdr.cpp:2435
 #: src/muuli_wdr.cpp:3151 src/ServerListCtrl.cpp:153
@@ -585,7 +585,7 @@ msgstr "確認離開"
 msgid "Launch Command: "
 msgstr "執行指令："
 
-#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2099 src/Preferences.cpp:879
+#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2099 src/Preferences.cpp:835
 msgid "- default -"
 msgstr "- 預設 -"
 
@@ -616,8 +616,8 @@ msgstr "搜尋"
 msgid "Searches Window"
 msgstr "搜尋 視窗"
 
-#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:636 src/muuli_wdr.cpp:426
-#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:670
+#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:644 src/muuli_wdr.cpp:426
+#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:752
 msgid "Downloads"
 msgstr "下載"
 
@@ -643,7 +643,7 @@ msgid "Messages Window"
 msgstr "訊息 視窗"
 
 #: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3539 src/PrefsUnifiedDlg.cpp:179
-#: src/Statistics.cpp:640 src/Statistics.cpp:938
+#: src/Statistics.cpp:722 src/Statistics.cpp:1020
 msgid "Statistics"
 msgstr "統計"
 
@@ -705,134 +705,134 @@ msgstr "嚴重錯誤：無法建立主程式端計時器"
 msgid "Connect to remote amule"
 msgstr "連線到遠端 amule"
 
-#: src/amule-remote-gui.cpp:254
+#: src/amule-remote-gui.cpp:253
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "嚴重錯誤：無法建立 Poll Timer"
 
-#: src/amule-remote-gui.cpp:269
+#: src/amule-remote-gui.cpp:268
 msgid "Going to event loop..."
 msgstr "正在進行事件迴圈..."
 
-#: src/amule-remote-gui.cpp:295
+#: src/amule-remote-gui.cpp:294
 msgid "Connecting..."
 msgstr "正在連線..."
 
-#: src/amule-remote-gui.cpp:299
+#: src/amule-remote-gui.cpp:298
 msgid "Connection failed "
 msgstr "無法連線"
 
-#: src/amule-remote-gui.cpp:310
+#: src/amule-remote-gui.cpp:309
 msgid "Remote GUI EC event handler"
 msgstr "遠端 GUI 外部連線事件處理器"
 
-#: src/amule-remote-gui.cpp:317
+#: src/amule-remote-gui.cpp:316
 msgid "Going down"
 msgstr "關閉中"
 
-#: src/amule-remote-gui.cpp:320 src/ExternalConnector.cpp:400
+#: src/amule-remote-gui.cpp:319 src/ExternalConnector.cpp:400
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "無法連線到 %s:%d\n"
 
-#: src/amule-remote-gui.cpp:323
+#: src/amule-remote-gui.cpp:322
 msgid "Connection closed - aMule has terminated probably."
 msgstr "已關閉連線 - aMule 可能已經被終止執行了。"
 
-#: src/amule-remote-gui.cpp:408
+#: src/amule-remote-gui.cpp:407
 msgid "Ready"
 msgstr "就緒"
 
-#: src/amule-remote-gui.cpp:586 src/TransferWnd.cpp:354
+#: src/amule-remote-gui.cpp:585 src/TransferWnd.cpp:354
 msgid "All"
 msgstr "全部"
 
-#: src/amule-remote-gui.cpp:632
+#: src/amule-remote-gui.cpp:631
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr "無法建立 %s 目錄 ( %s 分類用)，繼續使用 %s 目錄。"
 
-#: src/amule-remote-gui.cpp:1335 src/BaseClient.cpp:1786
-#: src/BaseClient.cpp:2312 src/BaseClient.cpp:2328 src/BaseClient.cpp:2623
+#: src/amule-remote-gui.cpp:1325 src/BaseClient.cpp:1785
+#: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2622
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/DownloadListCtrl.cpp:1058 src/DownloadListCtrl.cpp:1071
-#: src/DownloadListCtrl.cpp:1082 src/ExternalConn.cpp:431
-#: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1047
-#: src/GenericClientListCtrl.cpp:1058 src/GenericClientListCtrl.cpp:1068
-#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:914 src/KnownFile.cpp:920
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2525 src/PartFile.cpp:2531
-#: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:885
+#: src/DownloadListCtrl.cpp:1066 src/DownloadListCtrl.cpp:1079
+#: src/DownloadListCtrl.cpp:1090 src/ExternalConn.cpp:431
+#: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1050
+#: src/GenericClientListCtrl.cpp:1061 src/GenericClientListCtrl.cpp:1071
+#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:916 src/KnownFile.cpp:922
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:967
 msgid "Unknown"
 msgstr "不明"
 
-#: src/BaseClient.cpp:1379
+#: src/BaseClient.cpp:1378
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "無法從使用者 %s 取得分享檔案清單"
 
-#: src/BaseClient.cpp:1591
+#: src/BaseClient.cpp:1590
 msgid "Searching buddy for lowid connection"
 msgstr "搜尋 LowID 連線好友"
 
-#: src/BaseClient.cpp:1803
+#: src/BaseClient.cpp:1802
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (假 eMule 版本 %#x)"
 
-#: src/BaseClient.cpp:1814
+#: src/BaseClient.cpp:1813
 msgid " (Fake eMule)"
 msgstr " (假 eMule)"
 
-#: src/BaseClient.cpp:1816
+#: src/BaseClient.cpp:1815
 msgid "xMule (Fake eMule)"
 msgstr "xMule (假 eMule)"
 
-#: src/BaseClient.cpp:1855
+#: src/BaseClient.cpp:1854
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (源自 eMule v0.%u)"
 
-#: src/BaseClient.cpp:2028
+#: src/BaseClient.cpp:2027
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "暱稱：%s ID：%u"
 
-#: src/BaseClient.cpp:2030
+#: src/BaseClient.cpp:2029
 #, c-format
 msgid "Requested: %s\n"
 msgstr "已要求：%s\n"
 
-#: src/BaseClient.cpp:2032
+#: src/BaseClient.cpp:2031
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "本次：共接受 %d/%d 個要求，已傳送 %s\n"
 
-#: src/BaseClient.cpp:2035
+#: src/BaseClient.cpp:2034
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "總計：共接受 %d/%d 個要求，已傳送 %s\n"
 
-#: src/BaseClient.cpp:2038
+#: src/BaseClient.cpp:2037
 msgid "Requested unknown file"
 msgstr "已要求不明檔案"
 
-#: src/BaseClient.cpp:2701
+#: src/BaseClient.cpp:2700
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "來自 %s (IP：%s) 的訊息被過濾掉了"
 
-#: src/BaseClient.cpp:2808
+#: src/BaseClient.cpp:2807
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "來自 %s (IP:%s) 的新訊息"
 
-#: src/BaseClient.cpp:2900
+#: src/BaseClient.cpp:2899
 #, fuzzy, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
@@ -862,7 +862,7 @@ msgstr "儲存 %s 時發生錯誤：%s"
 msgid "Enter Captcha"
 msgstr "輸入圖形驗證碼"
 
-#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:686 src/muuli_wdr.cpp:244
+#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:694 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:614 src/TransferWnd.cpp:349
 msgid "Category"
 msgstr "分類"
@@ -935,7 +935,7 @@ msgstr "關閉所有分頁"
 msgid "Close other tabs"
 msgstr "關閉其它分頁"
 
-#: src/ChatWnd.cpp:107 src/GenericClientListCtrl.cpp:584
+#: src/ChatWnd.cpp:107 src/GenericClientListCtrl.cpp:587
 msgid "Add to Friends"
 msgstr "加入好友"
 
@@ -995,8 +995,8 @@ msgid "Disconnected"
 msgstr "已中斷連線"
 
 #: src/ClientDetailDialog.cpp:155 src/ClientDetailDialog.cpp:159
-#: src/DownloadListCtrl.cpp:946 src/GenericClientListCtrl.cpp:876
-#: src/GenericClientListCtrl.cpp:883
+#: src/DownloadListCtrl.cpp:954 src/GenericClientListCtrl.cpp:879
+#: src/GenericClientListCtrl.cpp:886
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f KB/s"
@@ -1133,19 +1133,19 @@ msgstr "自動 [高]"
 msgid "Very low"
 msgstr "極低"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:639 src/muuli_wdr.cpp:2397
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2397
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "低"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:640 src/muuli_wdr.cpp:2398
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2398
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "普通"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:641 src/muuli_wdr.cpp:2399
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:2399
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1167,17 +1167,17 @@ msgstr "正在要求"
 msgid "Connecting via server"
 msgstr "正在經伺服器連線"
 
-#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:978
+#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:981
 msgid "Queue Full"
 msgstr "等候區已滿"
 
-#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:994
-#: src/KnownFile.cpp:1548
+#: src/DataToText.cpp:64 src/GenericClientListCtrl.cpp:997
+#: src/KnownFile.cpp:1550
 msgid "On Queue"
 msgstr "等候中"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3721 src/TransferWnd.cpp:362
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:362
 msgid "Downloading"
 msgstr "正在下載"
 
@@ -1321,17 +1321,17 @@ msgid "Progress"
 msgstr "進度"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3767 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
 msgid "Sources"
 msgstr "來源"
 
-#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:644
+#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:652
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
 #: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:144
 msgid "Priority"
 msgstr "優先等級"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3769
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3768
 #: src/SearchListCtrl.cpp:91
 msgid "Status"
 msgstr "狀態"
@@ -1348,15 +1348,15 @@ msgstr "最後看到完整檔案"
 msgid "Last Reception"
 msgstr "最後一次下載"
 
-#: src/DownloadListCtrl.cpp:410
+#: src/DownloadListCtrl.cpp:411
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "您確定要刪除這個檔案嗎？"
 
-#: src/DownloadListCtrl.cpp:412
+#: src/DownloadListCtrl.cpp:413
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "您確定要刪除這些檔案嗎？"
 
-#: src/DownloadListCtrl.cpp:553 src/SharedFilesCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:200
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -1365,97 +1365,97 @@ msgstr ""
 "%s (%s) 回覆訊息\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:642 src/muuli_wdr.cpp:2400
+#: src/DownloadListCtrl.cpp:650 src/muuli_wdr.cpp:2400
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "自動"
 
-#: src/DownloadListCtrl.cpp:646 src/TransferWnd.cpp:390
+#: src/DownloadListCtrl.cpp:654 src/TransferWnd.cpp:390
 msgid "&Stop"
 msgstr "停止(&S)"
 
-#: src/DownloadListCtrl.cpp:647 src/TransferWnd.cpp:391
+#: src/DownloadListCtrl.cpp:655 src/TransferWnd.cpp:391
 msgid "&Pause"
 msgstr "暫停(&P)"
 
-#: src/DownloadListCtrl.cpp:648 src/TransferWnd.cpp:392
+#: src/DownloadListCtrl.cpp:656 src/TransferWnd.cpp:392
 msgid "&Resume"
 msgstr "續傳(&R)"
 
-#: src/DownloadListCtrl.cpp:649
+#: src/DownloadListCtrl.cpp:657
 msgid "C&lear completed"
 msgstr "清除已傳完成的(&l)"
 
-#: src/DownloadListCtrl.cpp:655
+#: src/DownloadListCtrl.cpp:663
 msgid "Swap every A4AF to this file now"
 msgstr "立即轉移所有 A4AF 到這個檔案"
 
-#: src/DownloadListCtrl.cpp:657
+#: src/DownloadListCtrl.cpp:665
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "自動轉移所有 A4AF 到這個檔案"
 
-#: src/DownloadListCtrl.cpp:662
+#: src/DownloadListCtrl.cpp:670
 msgid "Swap every A4AF to any other file now"
 msgstr "立即轉移所有 A4AF 到其它檔案"
 
-#: src/DownloadListCtrl.cpp:665
+#: src/DownloadListCtrl.cpp:673
 msgid "Extended Options"
 msgstr "擴充選項"
 
-#: src/DownloadListCtrl.cpp:670 src/DownloadListCtrl.cpp:730
+#: src/DownloadListCtrl.cpp:678 src/DownloadListCtrl.cpp:738
 msgid "Preview"
 msgstr "預覽"
 
-#: src/DownloadListCtrl.cpp:671
+#: src/DownloadListCtrl.cpp:679
 msgid "Show file &details"
 msgstr "顯示檔案詳細資訊(&D)"
 
-#: src/DownloadListCtrl.cpp:672 src/muuli_wdr.cpp:780
+#: src/DownloadListCtrl.cpp:680 src/muuli_wdr.cpp:780
 msgid "Show all comments"
 msgstr "顯示所有註解"
 
-#: src/DownloadListCtrl.cpp:677
+#: src/DownloadListCtrl.cpp:685
 msgid "Copy magnet URI to clipboard"
 msgstr "複製 magnet 網址到剪貼簿"
 
-#: src/DownloadListCtrl.cpp:679 src/SharedFilesCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:687 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
 msgstr "複製 eD2k 連結到剪貼簿(&L)"
 
-#: src/DownloadListCtrl.cpp:681 src/SharedFilesCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:689 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
 msgstr "複製傳輸狀況到剪貼簿"
 
-#: src/DownloadListCtrl.cpp:690
+#: src/DownloadListCtrl.cpp:698
 msgid "unassign"
 msgstr "取消"
 
-#: src/DownloadListCtrl.cpp:697
+#: src/DownloadListCtrl.cpp:705
 msgid "Assign to category"
 msgstr "分類"
 
-#: src/DownloadListCtrl.cpp:733
+#: src/DownloadListCtrl.cpp:741
 msgid "&Open the file"
 msgstr "開啟檔案(&O)"
 
-#: src/DownloadListCtrl.cpp:794 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:802 src/SharedFilesCtrl.cpp:684
 msgid "Enter new name for this file:"
 msgstr "請輸入新檔案名稱："
 
-#: src/DownloadListCtrl.cpp:795 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:803 src/SharedFilesCtrl.cpp:685
 msgid "File rename"
 msgstr "更改檔名"
 
-#: src/DownloadListCtrl.cpp:1069 src/DownloadListCtrl.cpp:1080
+#: src/DownloadListCtrl.cpp:1077 src/DownloadListCtrl.cpp:1088
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1250
+#: src/DownloadListCtrl.cpp:1258
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下載 (%i)"
 
-#: src/DownloadListCtrl.cpp:1394
+#: src/DownloadListCtrl.cpp:1402
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -1463,11 +1463,11 @@ msgstr ""
 "請在偏好設定中設定影片播放器 (預設為 mplayer)，\n"
 "以避免此警告訊息繼續出現。"
 
-#: src/DownloadListCtrl.cpp:1395
+#: src/DownloadListCtrl.cpp:1403
 msgid "File preview"
 msgstr "檔案預覽"
 
-#: src/DownloadListCtrl.cpp:1443
+#: src/DownloadListCtrl.cpp:1451
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "錯誤：無法執行媒體播放器！指令：「 %s 」"
@@ -1646,120 +1646,120 @@ msgstr "傳送錯誤訊息「%s」給客戶端。"
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "%s 試圖非法登入，已關閉連線。"
 
-#: src/ExternalConn.cpp:791
+#: src/ExternalConn.cpp:798
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "無法執行對遠端暫存檔的指令：找不到檔案 hash 值：%s "
 
-#: src/ExternalConn.cpp:793
+#: src/ExternalConn.cpp:800
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "找不到檔案 hash 值：%s "
 
-#: src/ExternalConn.cpp:840 src/ExternalConn.cpp:922 src/ExternalConn.cpp:993
+#: src/ExternalConn.cpp:847 src/ExternalConn.cpp:929 src/ExternalConn.cpp:1000
 msgid "OOPS! OpCode processing error!"
 msgstr "糟糕！指令碼處理錯誤！"
 
-#: src/ExternalConn.cpp:868
+#: src/ExternalConn.cpp:875
 msgid "Server not added"
 msgstr "伺服器未被加入"
 
-#: src/ExternalConn.cpp:886
+#: src/ExternalConn.cpp:893
 #, c-format
 msgid "server not found: %s"
 msgstr "找不到伺服器：%s "
 
-#: src/ExternalConn.cpp:902
+#: src/ExternalConn.cpp:909
 msgid "need to define server to be removed"
 msgstr "必須指定要刪除的伺服器"
 
-#: src/ExternalConn.cpp:916
+#: src/ExternalConn.cpp:923
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k 網路已在偏好設定中被停用了。"
 
-#: src/ExternalConn.cpp:1094
+#: src/ExternalConn.cpp:1101
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "搜尋中，請稍候！"
 
-#: src/ExternalConn.cpp:1100
+#: src/ExternalConn.cpp:1107
 msgid "WebSearch from remote interface makes no sense."
 msgstr "從遠端界面使用網頁搜尋功能沒有意義。"
 
-#: src/ExternalConn.cpp:1298
+#: src/ExternalConn.cpp:1305
 msgid "No points for graph."
 msgstr "此圖沒有參考點。"
 
-#: src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1314
 msgid "Your client is not configured for this detail level."
 msgstr "您的客戶端並沒有設定此細部等級。"
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1341
 msgid "External Connection: shutdown requested"
 msgstr "外部連線：必須關閉"
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1353
 msgid "Already shutting down."
 msgstr "已經在關閉中。"
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1365
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "外部連線：正在加入連結 %s 。"
 
-#: src/ExternalConn.cpp:1364
+#: src/ExternalConn.cpp:1371
 msgid "Invalid link or already on list."
 msgstr "無效連結或已在清單中。"
 
-#: src/ExternalConn.cpp:1434
+#: src/ExternalConn.cpp:1441
 msgid "File not found."
 msgstr "找不到檔案。"
 
-#: src/ExternalConn.cpp:1439
+#: src/ExternalConn.cpp:1446
 msgid "Invalid file name."
 msgstr "無效的檔名。"
 
-#: src/ExternalConn.cpp:1447
+#: src/ExternalConn.cpp:1454
 msgid "Unable to rename file."
 msgstr "無法重新命名。"
 
-#: src/ExternalConn.cpp:1743 src/ExternalConn.cpp:1770
+#: src/ExternalConn.cpp:1750 src/ExternalConn.cpp:1777
 msgid "Kad is disabled in preferences."
 msgstr "Kad 網路已在偏好設定中被停用了。"
 
-#: src/ExternalConn.cpp:1782
+#: src/ExternalConn.cpp:1789
 msgid "Already connected to eD2k."
 msgstr "eD2k 網路已連線。"
 
-#: src/ExternalConn.cpp:1785
+#: src/ExternalConn.cpp:1792
 msgid "Connecting to eD2k..."
 msgstr "eD2k 連線中..."
 
-#: src/ExternalConn.cpp:1793
+#: src/ExternalConn.cpp:1800
 msgid "Already connected to Kad."
 msgstr "Kad 網路已連線。"
 
-#: src/ExternalConn.cpp:1796
+#: src/ExternalConn.cpp:1803
 msgid "Connecting to Kad..."
 msgstr "Kad 連線中..."
 
-#: src/ExternalConn.cpp:1803
+#: src/ExternalConn.cpp:1810
 msgid "All networks are disabled."
 msgstr "所有網路都被停用了。"
 
-#: src/ExternalConn.cpp:1811
+#: src/ExternalConn.cpp:1818
 msgid "Disconnected from eD2k."
 msgstr "已中斷 eD2k 網路連線。"
 
-#: src/ExternalConn.cpp:1815
+#: src/ExternalConn.cpp:1822
 msgid "Disconnected from Kad."
 msgstr "已中斷 Kad 網路連線。"
 
-#: src/ExternalConn.cpp:1824
+#: src/ExternalConn.cpp:1831
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "外部連線：接收到無效的指令碼 - %#x"
 
-#: src/ExternalConn.cpp:1827
+#: src/ExternalConn.cpp:1834
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "無效的指令碼（協定版本錯誤？）"
 
@@ -1994,7 +1994,7 @@ msgstr "重大錯誤 - 開始交談時沒有客戶端"
 msgid "Friends"
 msgstr "好友"
 
-#: src/FriendListCtrl.cpp:126 src/GenericClientListCtrl.cpp:583
+#: src/FriendListCtrl.cpp:126 src/GenericClientListCtrl.cpp:586
 msgid "Show &Details"
 msgstr "顯示詳細資訊(&D)"
 
@@ -2010,11 +2010,11 @@ msgstr "移除好友"
 msgid "Send &Message"
 msgstr "傳送訊息(&M)"
 
-#: src/FriendListCtrl.cpp:135 src/GenericClientListCtrl.cpp:594
+#: src/FriendListCtrl.cpp:135 src/GenericClientListCtrl.cpp:597
 msgid "View Files"
 msgstr "檢視檔案"
 
-#: src/FriendListCtrl.cpp:136 src/GenericClientListCtrl.cpp:586
+#: src/FriendListCtrl.cpp:136 src/GenericClientListCtrl.cpp:589
 msgid "Establish Friend Slot"
 msgstr "建立好友位置"
 
@@ -2026,7 +2026,7 @@ msgstr "您確定要刪除這個好友嗎？"
 msgid "Are you sure that you wish to delete the selected friends?"
 msgstr "您確定要刪除這些好友嗎？"
 
-#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:527
+#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
@@ -2034,59 +2034,67 @@ msgstr ""
 "不允許設定超過一個好友位置。\n"
 " 只設定了一個位置。"
 
-#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:527
+#: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid "Multiple selection"
 msgstr "多重選取"
 
-#: src/GenericClientListCtrl.cpp:544
+#: src/GenericClientListCtrl.cpp:547
 msgid "Send message to user"
 msgstr "傳送訊息給使用者"
 
-#: src/GenericClientListCtrl.cpp:545
+#: src/GenericClientListCtrl.cpp:548
 msgid "Message to send:"
 msgstr "傳送訊息："
 
-#: src/GenericClientListCtrl.cpp:584
+#: src/GenericClientListCtrl.cpp:587
 msgid "Remove from friends"
 msgstr "從好友中刪除"
 
-#: src/GenericClientListCtrl.cpp:595
+#: src/GenericClientListCtrl.cpp:598
 msgid "Send message"
 msgstr "傳送訊息"
 
-#: src/GenericClientListCtrl.cpp:597
+#: src/GenericClientListCtrl.cpp:600
 msgid "Swap to this file"
 msgstr "轉移到這個檔案"
 
-#: src/GenericClientListCtrl.cpp:940
+#: src/GenericClientListCtrl.cpp:943
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/GenericClientListCtrl.cpp:992
+#: src/GenericClientListCtrl.cpp:995
 #, c-format
 msgid "On Queue: %u (%i)"
 msgstr "QR：%u (%i)"
 
-#: src/GenericClientListCtrl.cpp:1002 src/GenericClientListCtrl.cpp:1031
+#: src/GenericClientListCtrl.cpp:1005 src/GenericClientListCtrl.cpp:1034
 msgid "Asked for another file"
 msgstr "已要求其它檔案 (A4AF)"
 
-#: src/GenericClientListCtrl.cpp:1021
+#: src/GenericClientListCtrl.cpp:1024
 msgid "Waiting for upload slot"
 msgstr "正在等待上傳位置"
 
-#: src/GenericClientListCtrl.cpp:1023
+#: src/GenericClientListCtrl.cpp:1026
 #, c-format
 msgid "On Queue: %u"
 msgstr "QR：%u"
 
-#: src/GenericClientListCtrl.cpp:1026
+#: src/GenericClientListCtrl.cpp:1029
 msgid "Uploading"
 msgstr "正在上傳"
 
-#: src/GenericClientListCtrl.cpp:1028
+#: src/GenericClientListCtrl.cpp:1031
 msgid "None"
 msgstr "無"
+
+#: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:242
+msgid "No"
+msgstr "否"
+
+#: src/GenericClientListCtrl.cpp:1091 src/ServerListCtrl.cpp:242
+msgid "Yes"
+msgstr "是"
 
 #: src/HTTPDownload.cpp:57
 msgid "Downloading..."
@@ -2147,7 +2155,7 @@ msgstr "從 %s 下載新的 GeoIP.dat"
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "無法下載 GeoIP.dat，停止更新。"
 
-#: src/IP2Country.cpp:133 src/IPFilter.cpp:494
+#: src/IP2Country.cpp:133 src/IPFilter.cpp:500
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "無法移除 %s 檔案，停止更新。"
@@ -2157,7 +2165,7 @@ msgstr "無法移除 %s 檔案，停止更新。"
 msgid "Failed to rename %s file, aborting update."
 msgstr "無法重新命名 %s 檔案，停止更新。"
 
-#: src/IP2Country.cpp:145 src/IPFilter.cpp:500
+#: src/IP2Country.cpp:145 src/IPFilter.cpp:506
 #, c-format
 msgid "Successfully updated %s"
 msgstr "成功更新 %s"
@@ -2166,7 +2174,7 @@ msgstr "成功更新 %s"
 msgid "Error updating GeoIP.dat"
 msgstr "GeoIP.dat 更新錯誤"
 
-#: src/IP2Country.cpp:152 src/IPFilter.cpp:505 src/ServerList.cpp:862
+#: src/IP2Country.cpp:152 src/IPFilter.cpp:511 src/ServerList.cpp:867
 #, c-format
 msgid "Failed to download %s from %s"
 msgstr "無法下載 %s (從 %s)"
@@ -2180,34 +2188,34 @@ msgstr "無法自 %s 下載國家資料。"
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "正在載入 IP 過濾檔 ipfilter.dat 與 ipfilter_static.dat 。"
 
-#: src/IPFilter.cpp:297
+#: src/IPFilter.cpp:299
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "無法載入 ipfilter.dat 檔案 %s，為不明格式。"
 
-#: src/IPFilter.cpp:319
+#: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "無法載入 ipfilter.dat 檔案 %s，無法開啟檔案。"
 
-#: src/IPFilter.cpp:323
+#: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "已載入 %u 個 IP 區段 (從 %s )。"
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:331
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "放棄 %u 行錯誤資料。"
 
-#: src/IPFilter.cpp:497
+#: src/IPFilter.cpp:503
 #, c-format
 msgid "Failed to rename new %s file, aborting update."
 msgstr "無法重新命名新的 %s 檔案，停止更新。"
 
-#: src/IPFilter.cpp:527
+#: src/IPFilter.cpp:533
 msgid "IP filter is ready"
 msgstr "IP 過濾表已備妥"
 
@@ -2290,32 +2298,32 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "已寫入 %d 個 Kad 聯絡人"
 
-#: src/KnownFile.cpp:1542 src/PartFileConvertDlg.cpp:91
+#: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
 msgstr "檔案名稱"
 
-#: src/KnownFile.cpp:1543
+#: src/KnownFile.cpp:1545
 msgid "File size"
 msgstr "檔案大小"
 
-#: src/KnownFile.cpp:1544
+#: src/KnownFile.cpp:1546
 msgid "Share ratio"
 msgstr "分享率"
 
-#: src/KnownFile.cpp:1545 src/SharedFilePeersListCtrl.cpp:31
+#: src/KnownFile.cpp:1547 src/SharedFilePeersListCtrl.cpp:31
 #: src/SourceListCtrl.cpp:31
 msgid "Uploaded"
 msgstr "已上傳"
 
-#: src/KnownFile.cpp:1546 src/muuli_wdr.cpp:3341
+#: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3341
 msgid "Requested"
 msgstr "已要求"
 
-#: src/KnownFile.cpp:1547
+#: src/KnownFile.cpp:1549
 msgid "Accepted"
 msgstr "已接受"
 
-#: src/KnownFile.cpp:1549
+#: src/KnownFile.cpp:1551
 msgid "Complete sources"
 msgstr "完整來源"
 
@@ -2341,30 +2349,30 @@ msgstr "不明版本"
 msgid "Unable to get error description for error %d"
 msgstr "無法建立要下載的目標檔案 %s ！"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3699
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
 msgid "Hashing"
 msgstr "正在計算 hash 值"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3705
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3704
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3708
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3707
 msgid "Complete"
 msgstr "完成"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3711 src/TransferWnd.cpp:364
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:364
 msgid "Paused"
 msgstr "已暫停"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3714 src/TransferWnd.cpp:363
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:363
 msgid "Erroneous"
 msgstr "錯誤的"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3723 src/TransferWnd.cpp:361
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:361
 msgid "Waiting"
 msgstr "正在等候"
 
@@ -2561,7 +2569,7 @@ msgstr "線上簽名識別：啟用"
 msgid "Online Signature: Disabled"
 msgstr "線上簽名識別：停用"
 
-#: src/MuleTrayIcon.cpp:406 src/Statistics.cpp:645
+#: src/MuleTrayIcon.cpp:406 src/Statistics.cpp:727
 #, c-format
 msgid "Uptime: %s"
 msgstr "已執行時間：%s"
@@ -2872,7 +2880,7 @@ msgstr "暫存檔狀態："
 msgid "Last seen complete :"
 msgstr "最後看到完整檔案："
 
-#: src/muuli_wdr.cpp:597 src/Statistics.cpp:647
+#: src/muuli_wdr.cpp:597 src/Statistics.cpp:729
 msgid "Transfer"
 msgstr "傳輸"
 
@@ -3454,7 +3462,7 @@ msgstr "請輸入最小磁碟可用空間。"
 msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "為來源稀少 (< 20) 的檔案儲存 10 個來源"
 
-#: src/muuli_wdr.cpp:1844 src/Statistics.cpp:649
+#: src/muuli_wdr.cpp:1844 src/Statistics.cpp:731
 msgid "Uploads"
 msgstr "上傳"
 
@@ -4222,7 +4230,7 @@ msgstr "結束本次交談。"
 msgid "Connect to any server and/or Kad"
 msgstr "連線到任何伺服器 和/或 Kad 網路"
 
-#: src/muuli_wdr.cpp:3537 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:728
+#: src/muuli_wdr.cpp:3537 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:810
 msgid "Shared Files"
 msgstr "分享檔案"
 
@@ -4297,7 +4305,7 @@ msgstr "其它"
 msgid "Incomplete"
 msgstr "不完整"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3728 src/TransferWnd.cpp:365
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:365
 msgid "Stopped"
 msgstr "已停止"
 
@@ -4317,7 +4325,7 @@ msgstr "文件"
 msgid "Active"
 msgstr "啟動"
 
-#: src/OtherFunctions.cpp:1085
+#: src/OtherFunctions.cpp:1103
 #, c-format
 msgid "Using config dir: %s"
 msgstr "使用設定目錄：%s"
@@ -4417,88 +4425,88 @@ msgstr "錯誤：part.met 檔案大小為 0：%s ==> %s"
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "錯誤：無效的 part.met 檔案版本：%s ==> %s"
 
-#: src/PartFile.cpp:599
+#: src/PartFile.cpp:595
 #, fuzzy, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
 msgstr "錯誤：%s (%s) 已經損壞 (識別索引錯誤)，無法載入。"
 
-#: src/PartFile.cpp:610
+#: src/PartFile.cpp:606
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr "錯誤：%s (%s) 已經損壞 (識別索引錯誤)，無法載入。"
 
-#: src/PartFile.cpp:613
+#: src/PartFile.cpp:609
 msgid "Trying to recover file info..."
 msgstr "嘗試復原檔案資訊中..."
 
-#: src/PartFile.cpp:628
+#: src/PartFile.cpp:624
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "嘗試復原無名檔案 - 將存爲 RecoveredFile.dat"
 
-#: src/PartFile.cpp:632
+#: src/PartFile.cpp:628
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "已復原所有檔案資訊 :D - 嘗試使用中..."
 
-#: src/PartFile.cpp:634
+#: src/PartFile.cpp:630
 msgid "Unable to recover file info :("
 msgstr "無法復原檔案資訊 :("
 
-#: src/PartFile.cpp:669
+#: src/PartFile.cpp:665
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "無法開啟 %s (%s)"
 
-#: src/PartFile.cpp:719
+#: src/PartFile.cpp:715
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
 msgstr "警告：%s 可能已經損壞 (%i)"
 
-#: src/PartFile.cpp:901
+#: src/PartFile.cpp:897
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "儲存暫存檔時發生錯誤：%s (%s => %s)"
 
-#: src/PartFile.cpp:908
+#: src/PartFile.cpp:904
 msgid "IO failure while saving partfile: "
 msgstr "儲存暫存檔時發生 IO 錯誤："
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:917
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "無法取得 %s 的大小 - 使用 %s 檔案。"
 
-#: src/PartFile.cpp:929
+#: src/PartFile.cpp:925
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "%s 檔案大小爲 0 - 使用 %s 檔案。"
 
-#: src/PartFile.cpp:998
+#: src/PartFile.cpp:994
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "無法儲存 %s 的 part.met.seeds 檔案"
 
-#: src/PartFile.cpp:1024
+#: src/PartFile.cpp:1020
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "已儲存 %i 個來源種子給暫存檔 %s (%s)"
 
-#: src/PartFile.cpp:1053
+#: src/PartFile.cpp:1049
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "暫存檔 %s (%s) 沒有種子檔案"
 
-#: src/PartFile.cpp:1062
+#: src/PartFile.cpp:1058
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "暫存檔 %s (%s) 的種子檔案沒有內容"
 
-#: src/PartFile.cpp:1118
+#: src/PartFile.cpp:1114
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "讀取暫存檔的種子檔案 (%s - %s) 時出錯：%s"
 
-#: src/PartFile.cpp:1135 src/PartFile.cpp:1164
+#: src/PartFile.cpp:1131 src/PartFile.cpp:1160
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4509,37 +4517,37 @@ msgid_plural ""
 msgstr[0] ""
 "找到損壞 (%d) 的 %d 個暫存檔 %s - 檔案結果 hash 值 |%s| 檔案 hash 值 |%s|"
 
-#: src/PartFile.cpp:1179
+#: src/PartFile.cpp:1175
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "找到已完成的暫存檔 %i 在 %s"
 
-#: src/PartFile.cpp:1212
+#: src/PartFile.cpp:1208
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "已重新計算完成 %s 的 hash 值"
 
-#: src/PartFile.cpp:2135
+#: src/PartFile.cpp:2131
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "計算 %s 時發生意外的錯誤，暫停檔案處理"
 
-#: src/PartFile.cpp:2172
+#: src/PartFile.cpp:2168
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "下載完成：%s"
 
-#: src/PartFile.cpp:2229
+#: src/PartFile.cpp:2225
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正刪除檔案：%s "
 
-#: src/PartFile.cpp:2291
+#: src/PartFile.cpp:2290
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：無法計算已下載部份的 hash 值 - %s 的 hash 值組不完整"
 
-#: src/PartFile.cpp:2296
+#: src/PartFile.cpp:2295
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4547,226 +4555,226 @@ msgid ""
 msgstr ""
 "錯誤：無法計算已下載部分的 hash 值 - %s 的 hash 值組不完整，此狀況不該發生"
 
-#: src/PartFile.cpp:2306 src/PartFile.cpp:2311
+#: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr "檔案結束 當下載 %u 長度為 %u (最大數 %u) 暫存檔 '%s' 長度為 %u: %s"
 
-#: src/PartFile.cpp:2972
+#: src/PartFile.cpp:2971
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：磁碟可用空間不足！暫停檔案：%s "
 
-#: src/PartFile.cpp:3042
+#: src/PartFile.cpp:3041
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "已下載的部份 %i 已損壞 (檔案：%s)"
 
-#: src/PartFile.cpp:3094
+#: src/PartFile.cpp:3093
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：已修復損壞的部份 %i (%s) -> 救回 %s"
 
-#: src/PartFile.cpp:3701
+#: src/PartFile.cpp:3700
 msgid "Allocating"
 msgstr "正在分配"
 
-#: src/PartFile.cpp:3717
+#: src/PartFile.cpp:3716
 msgid "Insufficient disk space"
 msgstr "磁碟空間不足"
 
-#: src/PartFile.cpp:3767 src/SearchListCtrl.cpp:993
+#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:993
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "已下載"
 
-#: src/PartFile.cpp:4009
+#: src/PartFile.cpp:4008
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "錯誤：無法開啟暫存檔 %s"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:625
 msgid "System default"
 msgstr "系統預設"
 
-#: src/Preferences.cpp:670
+#: src/Preferences.cpp:626
 msgid "Albanian"
 msgstr "阿爾巴尼亞語"
 
-#: src/Preferences.cpp:671
+#: src/Preferences.cpp:627
 msgid "Arabic"
 msgstr "阿拉伯語"
 
-#: src/Preferences.cpp:672
+#: src/Preferences.cpp:628
 msgid "Asturian"
 msgstr "奧地利語"
 
-#: src/Preferences.cpp:673
+#: src/Preferences.cpp:629
 msgid "Basque"
 msgstr "巴斯克語"
 
-#: src/Preferences.cpp:674
+#: src/Preferences.cpp:630
 msgid "Bulgarian"
 msgstr "保加利亞語"
 
-#: src/Preferences.cpp:675
+#: src/Preferences.cpp:631
 msgid "Catalan"
 msgstr "加泰隆尼亞語"
 
-#: src/Preferences.cpp:676
+#: src/Preferences.cpp:632
 msgid "Chinese (Simplified)"
 msgstr "簡體中文"
 
-#: src/Preferences.cpp:677
+#: src/Preferences.cpp:633
 msgid "Chinese (Traditional)"
 msgstr "正體中文"
 
-#: src/Preferences.cpp:678
+#: src/Preferences.cpp:634
 msgid "Croatian"
 msgstr "克羅埃西亞語"
 
-#: src/Preferences.cpp:679
+#: src/Preferences.cpp:635
 msgid "Czech"
 msgstr "捷克語"
 
-#: src/Preferences.cpp:680
+#: src/Preferences.cpp:636
 msgid "Danish"
 msgstr "丹麥語"
 
-#: src/Preferences.cpp:681
+#: src/Preferences.cpp:637
 msgid "Dutch"
 msgstr "荷蘭語"
 
-#: src/Preferences.cpp:682
+#: src/Preferences.cpp:638
 msgid "English (U.K.)"
 msgstr "英語 (英國)"
 
-#: src/Preferences.cpp:683
+#: src/Preferences.cpp:639
 msgid "Estonian"
 msgstr "愛沙尼亞語"
 
-#: src/Preferences.cpp:684
+#: src/Preferences.cpp:640
 msgid "Finnish"
 msgstr "芬蘭語"
 
-#: src/Preferences.cpp:685
+#: src/Preferences.cpp:641
 msgid "French"
 msgstr "法語"
 
-#: src/Preferences.cpp:686
+#: src/Preferences.cpp:642
 msgid "Galician"
 msgstr "加利西亞語"
 
-#: src/Preferences.cpp:687
+#: src/Preferences.cpp:643
 msgid "German"
 msgstr "德語"
 
-#: src/Preferences.cpp:688
+#: src/Preferences.cpp:644
 msgid "Greek"
 msgstr "希臘語"
 
-#: src/Preferences.cpp:689
+#: src/Preferences.cpp:645
 msgid "Hebrew"
 msgstr "希伯來語"
 
-#: src/Preferences.cpp:690
+#: src/Preferences.cpp:646
 msgid "Hungarian"
 msgstr "匈牙利語"
 
-#: src/Preferences.cpp:691
+#: src/Preferences.cpp:647
 msgid "Italian"
 msgstr "義大利語"
 
-#: src/Preferences.cpp:692
+#: src/Preferences.cpp:648
 msgid "Italian (Swiss)"
 msgstr "意大利語 (瑞士)"
 
-#: src/Preferences.cpp:693
+#: src/Preferences.cpp:649
 msgid "Japanese"
 msgstr "日語"
 
-#: src/Preferences.cpp:694
+#: src/Preferences.cpp:650
 msgid "Korean"
 msgstr "韓語"
 
-#: src/Preferences.cpp:695
+#: src/Preferences.cpp:651
 msgid "Lithuanian"
 msgstr "立陶宛語"
 
-#: src/Preferences.cpp:696
+#: src/Preferences.cpp:652
 msgid "Norwegian (Nynorsk)"
 msgstr "新挪威語"
 
-#: src/Preferences.cpp:697
+#: src/Preferences.cpp:653
 msgid "Polish"
 msgstr "波蘭語"
 
-#: src/Preferences.cpp:698
+#: src/Preferences.cpp:654
 msgid "Portuguese"
 msgstr "葡萄牙語"
 
-#: src/Preferences.cpp:699
+#: src/Preferences.cpp:655
 msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙語 (巴西)"
 
-#: src/Preferences.cpp:700
+#: src/Preferences.cpp:656
 msgid "Romanian"
 msgstr "羅馬尼亞語"
 
-#: src/Preferences.cpp:701
+#: src/Preferences.cpp:657
 msgid "Russian"
 msgstr "俄語"
 
-#: src/Preferences.cpp:702
+#: src/Preferences.cpp:658
 msgid "Slovenian"
 msgstr "斯洛維尼亞語"
 
-#: src/Preferences.cpp:703
+#: src/Preferences.cpp:659
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: src/Preferences.cpp:704
+#: src/Preferences.cpp:660
 msgid "Swedish"
 msgstr "瑞典語"
 
-#: src/Preferences.cpp:705
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "土耳其語"
 
-#: src/Preferences.cpp:706
+#: src/Preferences.cpp:662
 msgid "Ukrainian"
 msgstr "烏克蘭語"
 
-#: src/Preferences.cpp:768
+#: src/Preferences.cpp:724
 msgid "Change Language"
 msgstr "變更語言"
 
-#: src/Preferences.cpp:939
+#: src/Preferences.cpp:895
 msgid "no options available"
 msgstr "沒有選項"
 
-#: src/Preferences.cpp:1619
+#: src/Preferences.cpp:1573
 msgid "Invalid category found, skipping"
 msgstr "找到無效的分類，略過"
 
-#: src/Preferences.cpp:1796
+#: src/Preferences.cpp:1750
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP 埠不可大於 65532，因爲伺服器 UDP 連接端點值爲 TCP 埠值+3"
 
-#: src/Preferences.cpp:1797
+#: src/Preferences.cpp:1751
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "使用預設通訊埠 (%d)"
 
-#: src/Preferences.cpp:1820
+#: src/Preferences.cpp:1774
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "正在放棄不存在的分享目錄：%s "
 
-#: src/PrefsUnifiedDlg.cpp:173 src/Statistics.cpp:689
+#: src/PrefsUnifiedDlg.cpp:173 src/Statistics.cpp:771
 msgid "Connection"
 msgstr "連線"
 
@@ -4774,7 +4782,7 @@ msgstr "連線"
 msgid "Directories"
 msgstr "目錄"
 
-#: src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:715
+#: src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:797
 msgid "Servers"
 msgstr "伺服器"
 
@@ -5281,16 +5289,16 @@ msgstr "無法開啟 %s"
 msgid "Failed to save server.met!"
 msgstr "無法儲存 server.met ！"
 
-#: src/ServerList.cpp:836
+#: src/ServerList.cpp:841
 msgid "Invalid URL"
 msgstr "無效網址"
 
-#: src/ServerList.cpp:858
+#: src/ServerList.cpp:863
 #, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "完成從 %s 下載伺服器清單"
 
-#: src/ServerList.cpp:873
+#: src/ServerList.cpp:878
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5298,26 +5306,26 @@ msgstr ""
 "在 addresses.dat 中找不到伺服器清單檔位址。請在檔案中貼上有效的伺服器清單檔位"
 "址，以自動更新您的伺服器清單"
 
-#: src/ServerList.cpp:886
+#: src/ServerList.cpp:891
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "開始從 %s下載伺服器清單"
 
-#: src/ServerList.cpp:895
+#: src/ServerList.cpp:900
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr "警告：自動更新伺服器的網址無效 - %s"
 
-#: src/ServerList.cpp:899
+#: src/ServerList.cpp:904
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "addresses.dat 檔案中沒有有效的自動更新伺服器清單網址"
 
-#: src/ServerList.cpp:915
+#: src/ServerList.cpp:920
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "無法從 %s 下載伺服器清單"
 
-#: src/ServerList.cpp:989
+#: src/ServerList.cpp:994
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -5353,7 +5361,7 @@ msgstr "靜態"
 
 #
 #: src/ServerListCtrl.cpp:96 src/SharedFilePeersListCtrl.cpp:34
-#: src/SourceListCtrl.cpp:33 src/Statistics.cpp:872
+#: src/SourceListCtrl.cpp:33 src/Statistics.cpp:954
 msgid "Version"
 msgstr "版本"
 
@@ -5371,14 +5379,6 @@ msgstr "(不明名稱)"
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "您確定要刪除靜態伺服器 %s"
-
-#: src/ServerListCtrl.cpp:242
-msgid "Yes"
-msgstr "是"
-
-#: src/ServerListCtrl.cpp:242
-msgid "No"
-msgstr "否"
 
 #: src/ServerListCtrl.cpp:347
 #, c-format
@@ -5673,11 +5673,12 @@ msgid "Available Parts"
 msgstr "可取得的部份"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-msgid "Upload status"
+#, fuzzy
+msgid "Upload Status"
 msgstr "上傳狀態"
 
-#: src/SharedFilePeersListCtrl.cpp:36
-msgid "Download status"
+#: src/SharedFilePeersListCtrl.cpp:36 src/SourceListCtrl.cpp:34
+msgid "Download Status"
 msgstr "下載狀態"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
@@ -5687,6 +5688,11 @@ msgstr "來源"
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
 msgid "Local File Name"
 msgstr "本地檔案名稱"
+
+#: src/SharedFilePeersListCtrl.cpp:39 src/SourceListCtrl.cpp:38
+#, fuzzy
+msgid "Shares File List"
+msgstr "分享檔案"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -5769,243 +5775,239 @@ msgstr "分享檔案 (%i)"
 msgid "[PartFile]"
 msgstr "[--暫存檔--]"
 
-#: src/SourceListCtrl.cpp:34
-msgid "Download Status"
-msgstr "下載狀態"
-
 #: src/SourceListCtrl.cpp:37
 msgid "Remote File Name"
 msgstr "遠端檔案名稱"
 
-#: src/Statistics.cpp:650
+#: src/Statistics.cpp:732
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "本次上傳量/總計上傳量：%s"
 
-#: src/Statistics.cpp:652 src/Statistics.cpp:673
+#: src/Statistics.cpp:734 src/Statistics.cpp:755
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "額外支出傳輸量/封包： %s"
 
-#: src/Statistics.cpp:653 src/Statistics.cpp:674
+#: src/Statistics.cpp:735 src/Statistics.cpp:756
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "  檔案要求支出傳輸量/封包：%s"
 
-#: src/Statistics.cpp:655 src/Statistics.cpp:676
+#: src/Statistics.cpp:737 src/Statistics.cpp:758
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "  來源交換支出傳輸量/封包： %s"
 
-#: src/Statistics.cpp:657 src/Statistics.cpp:678
+#: src/Statistics.cpp:739 src/Statistics.cpp:760
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "  伺服器支出傳輸量/封包： %s"
 
-#: src/Statistics.cpp:659 src/Statistics.cpp:680
+#: src/Statistics.cpp:741 src/Statistics.cpp:762
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "  Kad 網路支出傳輸量/封包： %s"
 
-#: src/Statistics.cpp:661 src/Statistics.cpp:682
+#: src/Statistics.cpp:743 src/Statistics.cpp:764
 #, c-format
 msgid "Crypt overhead (UDP): %s"
 msgstr "  加密支出傳輸量/封包： %s"
 
-#: src/Statistics.cpp:663
+#: src/Statistics.cpp:745
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "目前上傳數：%s"
 
-#: src/Statistics.cpp:664
+#: src/Statistics.cpp:746
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "等候中：%s"
 
-#: src/Statistics.cpp:665
+#: src/Statistics.cpp:747
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "上傳成功總次數：%s"
 
-#: src/Statistics.cpp:666
+#: src/Statistics.cpp:748
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "上傳失敗總次數：%s"
 
-#: src/Statistics.cpp:668
+#: src/Statistics.cpp:750
 #, c-format
 msgid "Average upload time: %s"
 msgstr "平均上傳時間：%s"
 
-#: src/Statistics.cpp:671
+#: src/Statistics.cpp:753
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "本次下載量/總計下載量：%s"
 
-#: src/Statistics.cpp:684
+#: src/Statistics.cpp:766
 #, c-format
 msgid "Found Sources: %s"
 msgstr "找到的來源數：%s"
 
-#: src/Statistics.cpp:685
+#: src/Statistics.cpp:767
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "目前下載中區塊數：%s"
 
-#: src/Statistics.cpp:687
+#: src/Statistics.cpp:769
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "本次上傳下載比率 (總計)：%s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:772
 #, c-format
 msgid "Average download rate (Session): %s"
 msgstr "本次平均下載速度：%s"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:773
 #, c-format
 msgid "Average upload rate (Session): %s"
 msgstr "本次平均上傳速度：%s"
 
-#: src/Statistics.cpp:692
+#: src/Statistics.cpp:774
 #, c-format
 msgid "Max download rate (Session): %s"
 msgstr "本次最大下載速度：%s"
 
-#: src/Statistics.cpp:693
+#: src/Statistics.cpp:775
 #, c-format
 msgid "Max upload rate (Session): %s"
 msgstr "本次最大上傳速度：%s"
 
-#: src/Statistics.cpp:694
+#: src/Statistics.cpp:776
 #, c-format
 msgid "Reconnects: %i"
 msgstr "重新連線次數：%i"
 
-#: src/Statistics.cpp:695
+#: src/Statistics.cpp:777
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "首次傳輸至今時間：%s"
 
-#: src/Statistics.cpp:696
+#: src/Statistics.cpp:778
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "與伺服器連線時間：%s"
 
-#: src/Statistics.cpp:697
+#: src/Statistics.cpp:779
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "目前連線數 (估計值)：%i"
 
-#: src/Statistics.cpp:698
+#: src/Statistics.cpp:780
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "達到最大連線量次數：%s"
 
-#: src/Statistics.cpp:699
+#: src/Statistics.cpp:781
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "平均連線數 (估計值)：%g"
 
-#: src/Statistics.cpp:701
+#: src/Statistics.cpp:783
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "最高連線數 (估計值)：%i"
 
-#: src/Statistics.cpp:703
+#: src/Statistics.cpp:785
 msgid "Clients"
 msgstr "客戶端"
 
-#: src/Statistics.cpp:704
+#: src/Statistics.cpp:786
 #, c-format
 msgid "Unknown: %s"
 msgstr "不明：%s"
 
-#: src/Statistics.cpp:710
+#: src/Statistics.cpp:792
 #, c-format
 msgid "Filtered: %s"
 msgstr "已過濾：%s"
 
-#: src/Statistics.cpp:711
+#: src/Statistics.cpp:793
 #, c-format
 msgid "Banned: %s"
 msgstr "已封鎖：%s"
 
-#: src/Statistics.cpp:712
+#: src/Statistics.cpp:794
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "總計：%i  -  已知：%i"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:798
 #, c-format
 msgid "Working Servers: %i"
 msgstr "有效：%i"
 
-#: src/Statistics.cpp:717
+#: src/Statistics.cpp:799
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "無效：%i"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:800
 #, c-format
 msgid "Total: %s"
 msgstr "總計：%s"
 
-#: src/Statistics.cpp:719
+#: src/Statistics.cpp:801
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "已刪除：%s"
 
-#: src/Statistics.cpp:720
+#: src/Statistics.cpp:802
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "已過濾：%s"
 
-#: src/Statistics.cpp:721
+#: src/Statistics.cpp:803
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "有效使用者數：%llu"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:804
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "有效檔案數：%llu"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:805
 #, c-format
 msgid "Total Users: %llu"
 msgstr "使用者總數：%llu"
 
-#: src/Statistics.cpp:724
+#: src/Statistics.cpp:806
 #, c-format
 msgid "Total Files: %llu"
 msgstr "檔案總數：%llu"
 
-#: src/Statistics.cpp:725
+#: src/Statistics.cpp:807
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "伺服器使用率：%.2f%%"
 
-#: src/Statistics.cpp:729
+#: src/Statistics.cpp:811
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "檔案數：%s"
 
-#: src/Statistics.cpp:730
+#: src/Statistics.cpp:812
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "檔案總容量：%s"
 
-#: src/Statistics.cpp:732
+#: src/Statistics.cpp:814
 #, c-format
 msgid "Average file size: %s"
 msgstr "平均檔案大小：%s"
 
-#: src/Statistics.cpp:873
+#: src/Statistics.cpp:955
 msgid "Operating System"
 msgstr "作業系統"
 
-#: src/Statistics.cpp:898
+#: src/Statistics.cpp:980
 msgid "Not Received"
 msgstr "未收到"
 
@@ -7324,6 +7326,9 @@ msgstr "已要求登出\n"
 #: src/webserver/src/WebServer.cpp:1866
 msgid "Processing request [redirected]: "
 msgstr "正在處理 [已重定向] 的要求："
+
+#~ msgid "Download status"
+#~ msgstr "下載狀態"
 
 #~ msgid "( %s / %s )"
 #~ msgstr "( %s / %s )"
