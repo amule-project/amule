@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-03 23:17+0200\n"
-"PO-Revision-Date: 2011-04-03 23:53+0100\n"
-"Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
+"PO-Revision-Date: 2011-05-31 11:27+0100\n"
+"Last-Translator: \n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr "Ajouter un ami"
 
 #: src/AddFriend.cpp:61
 msgid "You have to enter a valid IP and port!"
-msgstr "Vous devez entrer une IP et un port valides !"
+msgstr "Vous devez entrer une IP et un port valides !"
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67
 msgid "Information"
@@ -83,7 +83,7 @@ msgstr "Fermeture d'aMule terminée."
 
 #: src/amule.cpp:339
 msgid "Memory debug results for aMule exit:"
-msgstr "Résultats du deboguage de la mémoire pour la sortie d'aMule :"
+msgstr "Résultats du débogage de la mémoire pour la sortie d'aMule :"
 
 #: src/amule.cpp:435
 msgid ""
@@ -210,13 +210,13 @@ msgstr ""
 #: src/amule.cpp:1044
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
-"ou tuera votre chien. Mais ça *devrait* être à peu près sûr quand même.\n"
+"ou tuera votre chien. Mais ça *devrait* être à peu près sûr quand-même.\n"
 
 #: src/amule.cpp:1049
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
-"Plus d'informations, de l'aide et de nouvelles versions peuvent être trouvés "
-"sur notre page web,\n"
+"Plus d'informations, de l'aide et de nouvelles versions peuvent être "
+"trouvées sur notre page web,\n"
 
 #: src/amule.cpp:1050
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
@@ -355,7 +355,7 @@ msgstr "Kad arrêté."
 
 #: src/amule.cpp:1891
 msgid "Connected to Kad (ok)"
-msgstr "Connecté à Kad (ok)"
+msgstr "Connecté à Kad (OK)"
 
 #: src/amule.cpp:1893
 msgid "Connected to Kad (firewalled)"
@@ -610,13 +610,13 @@ msgstr "- défaut -"
 #: src/amuleDlg.cpp:1225
 #, c-format
 msgid "Skin directory '%s' does not exist"
-msgstr "Le répertoire de skins '%s' n'existe pas"
+msgstr "Le répertoire de thèmes '%s' n'existe pas"
 
 #: src/amuleDlg.cpp:1230
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
-"AVERTISSEMENT : Impossible d'ouvrir le fichier skin '%s' pour la lecture"
+"AVERTISSEMENT : Impossible d'ouvrir le fichier thème '%s' pour la lecture"
 
 #: src/amuleDlg.cpp:1328 src/amuleDlg.cpp:1464 src/muuli_wdr.cpp:1680
 #: src/muuli_wdr.cpp:3533
@@ -730,7 +730,7 @@ msgstr "Erreur Fatale : Échec de la création du minuteur d'interrogation"
 
 #: src/amule-remote-gui.cpp:268
 msgid "Going to event loop..."
-msgstr "Départ vers la boucle d'évènement…"
+msgstr "Départ vers la boucle d'événement…"
 
 #: src/amule-remote-gui.cpp:294
 msgid "Connecting..."
@@ -742,7 +742,7 @@ msgstr "La connexion a échouée "
 
 #: src/amule-remote-gui.cpp:309
 msgid "Remote GUI EC event handler"
-msgstr "Gestionnaire d'évènement GUI EC distant"
+msgstr "Gestionnaire d'événement GUI EC distant"
 
 #: src/amule-remote-gui.cpp:316
 msgid "Going down"
@@ -1488,7 +1488,7 @@ msgstr "Copier le rapport dans le presse-papiers"
 
 #: src/DownloadListCtrl.cpp:698
 msgid "unassign"
-msgstr "Désassocier"
+msgstr "Dissocier"
 
 #: src/DownloadListCtrl.cpp:705
 msgid "Assign to category"
@@ -2022,7 +2022,7 @@ msgstr "Ne pas afficher de sortie sur stdout."
 
 #: src/ExternalConnector.cpp:447
 msgid "Be verbose - show also debug messages."
-msgstr "Mode bavard - montre aussi les messages de debogage."
+msgstr "Mode bavard - montre aussi les messages de débogage."
 
 #: src/ExternalConnector.cpp:450
 msgid "Sets program locale (language)."
@@ -2166,7 +2166,7 @@ msgstr "En attente : %u"
 
 #: src/GenericClientListCtrl.cpp:1029
 msgid "Uploading"
-msgstr "Uploading"
+msgstr "Téléversement"
 
 #: src/GenericClientListCtrl.cpp:1031
 msgid "None"
@@ -2298,8 +2298,8 @@ msgstr[1] "%u rangs d'IP chargés depuis '%s'. "
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
-msgstr[0] "%u ligne malformée a été mise de coté."
-msgstr[1] "%u lignes malformées ont été mises de coté."
+msgstr[0] "%u ligne mal-formée a été mise de coté."
+msgstr[1] "%u lignes mal-formées ont été mises de coté."
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2322,7 +2322,7 @@ msgstr ""
 #: src/KadDlg.cpp:147
 #, c-format
 msgid "Nodes (%u)"
-msgstr "Noeuds (%u)"
+msgstr "Nœuds (%u)"
 
 #: src/KadDlg.cpp:182
 msgid "Invalid ip to bootstrap"
@@ -2520,11 +2520,11 @@ msgstr "Connexion externe : Accès refusé car :"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:275
 msgid "External Connection: Handshake failed."
-msgstr "Connexion externe : Echange raté."
+msgstr "Connexion externe : Échange raté."
 
 #: src/ListenSocket.cpp:65
 msgid "ListenSocket: Ok."
-msgstr "ListenSocket : Ok."
+msgstr "ListenSocket : OK."
 
 #: src/ListenSocket.cpp:67
 msgid "ERROR: Could not listen to TCP port."
@@ -2744,7 +2744,7 @@ msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
-"Les évènements sont affichés ici. Pour une liste complète des évènements, "
+"Les événements sont affichés ici. Pour une liste complète des évènements, "
 "reportez-vous à la fenêtre journal de l'onglet Serveur."
 
 #: src/muuli_wdr.cpp:94
@@ -3071,7 +3071,7 @@ msgstr "Appliquer"
 
 #: src/muuli_wdr.cpp:804
 msgid "Ok"
-msgstr "Ok"
+msgstr "OK"
 
 #: src/muuli_wdr.cpp:833
 msgid "Comment/Rate file (Text will be visible to all users)"
@@ -3314,7 +3314,7 @@ msgstr "Langue : "
 #: src/muuli_wdr.cpp:1471 src/muuli_wdr.cpp:1505 src/muuli_wdr.cpp:1509
 #: src/muuli_wdr.cpp:1513
 msgid "The delay before showing tool-tips."
-msgstr "Délai avant l'apparition des info-bulles."
+msgstr "Délai avant l'apparition des infobulles."
 
 #: src/muuli_wdr.cpp:1476
 msgid "This specifies the language used on controls."
@@ -3748,7 +3748,7 @@ msgstr "Désactiver la mise en veille programmé de l'ordinateur"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
-msgstr "Skin à utiliser :"
+msgstr "Thème à utiliser :"
 
 #: src/muuli_wdr.cpp:2106
 msgid "Show \"Fast eD2k Links Handler\" in every window."
@@ -3997,7 +3997,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2653
 msgid "Nodes (0)"
-msgstr "Noeuds (0)"
+msgstr "Nœuds (0)"
 
 #: src/muuli_wdr.cpp:2658
 msgid ""
@@ -4326,7 +4326,7 @@ msgstr "Se rappeler de ces réglages"
 
 #: src/muuli_wdr.cpp:3170
 msgid "Enable Verbose Debug-Logging."
-msgstr "Activer l'historique du mode de debogage bavard."
+msgstr "Activer l'historique du mode de débogage bavard."
 
 #: src/muuli_wdr.cpp:3173
 msgid "Message Categories:"
@@ -4725,7 +4725,7 @@ msgstr "Partie complète (%i) trouvée dans %s"
 #: src/PartFile.cpp:1208
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "Re-hachage de %s terminé"
+msgstr "Ré-hachage de %s terminé"
 
 #: src/PartFile.cpp:2131
 #, c-format
@@ -5029,11 +5029,11 @@ msgstr "Avancé"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Events"
-msgstr "Évènements"
+msgstr "Événements"
 
 #: src/PrefsUnifiedDlg.cpp:187
 msgid "Debugging"
-msgstr "Debogage"
+msgstr "Débogage"
 
 #: src/PrefsUnifiedDlg.cpp:245
 msgid ""
@@ -5274,7 +5274,7 @@ msgstr "désactivé"
 #: src/PrefsUnifiedDlg.cpp:1183
 #, c-format
 msgid "Execute command on '%s' event"
-msgstr "Exécuter la commande lors de l'évènement '%s'"
+msgstr "Exécuter la commande lors de l'événement '%s'"
 
 #: src/PrefsUnifiedDlg.cpp:1186
 msgid "Enable command execution on core"
@@ -5676,7 +5676,7 @@ msgstr "Copier les liens eD2k dans le presse-papiers"
 
 #: src/ServerListCtrl.cpp:436
 msgid "Reconnect to server"
-msgstr "Re-connexion au serveur"
+msgstr "Reconnexion au serveur"
 
 #: src/ServerListCtrl.cpp:525
 msgid "Are you sure that you wish to delete all servers?"
@@ -6393,7 +6393,7 @@ msgstr "derrière un pare-feu"
 #: src/TextClient.cpp:721 src/utils/wxCas/src/wxcasframe.cpp:1054
 #: src/utils/wxCas/src/wxcasframe.cpp:1076
 msgid "ok"
-msgstr "ok"
+msgstr "OK"
 
 #: src/TextClient.cpp:734
 #, c-format
