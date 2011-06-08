@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "POT-Creation-Date: 2011-01-20 23:00+0100\n"
-"PO-Revision-Date: 2011-04-04 17:31+0100\n"
+"PO-Revision-Date: 2011-05-31 11:26+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -1108,7 +1108,7 @@ msgstr "aMuleGUI"
 #. type: Plain text
 #: amulegui.1:6
 msgid "amulegui - aMule control program with GUI"
-msgstr "amulegui - programme de controle d'aMule avec Interface Graphique"
+msgstr "amulegui - programme de contrôle d'aMule avec Interface Graphique"
 
 #. type: Plain text
 #: amulegui.1:14
