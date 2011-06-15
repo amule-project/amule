@@ -31,19 +31,9 @@
 	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, etc
 #endif
 
-// Include the necessary headers for select(2), properly guarded
-#if defined HAVE_SYS_SELECT_H && !defined __IRIX__
-#	include <sys/select.h>
-#else
-#	ifdef HAVE_SYS_TIME_H
-#		include <sys/time.h>
-#	endif
-#	ifdef HAVE_SYS_TYPES_H
-#		include <sys/types.h>
-#	endif
-#	ifdef HAVE_UNISTD_H
-#		include <unistd.h>
-#	endif
+// Include the necessary headers for poll(2), properly guarded
+#ifdef HAVE_POLL_H
+#	include <poll.h>
 #endif
 
 #include <wx/utils.h>
@@ -124,104 +114,175 @@ IMPLEMENT_APP(CamuleDaemonApp)
  */
 class CSocketSet {
 		int m_count;
-		int m_fds[FD_SETSIZE], m_fd_idx[FD_SETSIZE];
-		GSocket *m_gsocks[FD_SETSIZE];
-
-		fd_set m_set;
+		int reserved;
+		struct pollfd *poll_fd;
+		GSocket **m_gsocks;
+		std::map<int,int> m_fd_idx;
+		void Reserve();
+		static const short DATA_IN = POLLIN | POLLRDNORM;
+		static const short DATA_OUT = POLLOUT | POLLWRNORM;
 	public:
+		static const int INC_NUM_FD = 1024;
 		CSocketSet();
-		void AddSocket(GSocket *);
-		void RemoveSocket(GSocket *);
-		void FillSet(int &max_fd);
+		~CSocketSet();
+		void AddSocket(GSocket *, GSocketEvent);
+		void RemoveSocket(GSocket *, GSocketEvent);
 		
-		void Detected(void (GSocket::*func)());
-		
-		fd_set *Set() { return &m_set; }
+		void Detected(void (GSocket::*read)(), void (GSocket::*write)());
+		inline struct pollfd* getPoll() { return poll_fd; }
+		inline int getSize() { return m_count; }
 };
 
 CSocketSet::CSocketSet()
 {
 	m_count = 0;
-	for(int i = 0; i < FD_SETSIZE; i++) {
-		m_fds[i] = 0;
-		m_fd_idx[i] = 0xffff;
-		m_gsocks[i] = 0;
-	}
+	reserved = 0;
+	poll_fd = NULL;
+	m_gsocks = NULL;
+
+	Reserve();
 }
 
-void CSocketSet::AddSocket(GSocket *socket)
+CSocketSet::~CSocketSet() {
+	delete[] poll_fd;
+	delete[] m_gsocks;
+	poll_fd = NULL;
+	m_gsocks = NULL;
+}
+
+void CSocketSet::Reserve() {
+	int space = reserved + INC_NUM_FD;
+
+	struct pollfd *tmp_poll_fd = new struct pollfd[space];
+	wxASSERT(tmp_poll_fd);
+	GSocket **tmp_m_gsocks = new GSocket*[space];
+	wxASSERT(tmp_m_gsocks);
+
+	// Copy previous values
+	for (register int i = 0; i < reserved; ++i) {
+		tmp_poll_fd[i].fd = poll_fd[i].fd;
+		tmp_poll_fd[i].events = poll_fd[i].events;
+		tmp_poll_fd[i].revents = poll_fd[i].revents;
+		tmp_m_gsocks[i] = m_gsocks[i];
+	}
+
+	// Initialize new ones
+	for (register int i = reserved; i < space; ++i) {
+		tmp_poll_fd[i].fd = 0;
+		tmp_poll_fd[i].events = 0;
+		tmp_poll_fd[i].revents = 0;
+		tmp_m_gsocks[i] = NULL;
+	}
+
+	reserved = space;
+	if (poll_fd) {
+		delete[] poll_fd;
+		delete[] m_gsocks;
+	}
+	poll_fd = tmp_poll_fd;
+	m_gsocks = tmp_m_gsocks;
+}
+
+void CSocketSet::AddSocket(GSocket *socket, GSocketEvent event)
 {
 	wxASSERT(socket);
-	
+
 	int fd = socket->m_fd;
 
 	if ( fd == -1 ) {
 		return;
 	}
 
-	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
+	wxASSERT( (fd > 2) );
 	
-	if ( m_gsocks[fd] ) {
+	map<int,int>::iterator it_fd = m_fd_idx.find(fd);
+	if (it_fd != m_fd_idx.end()) {
+		register int i = it_fd->second;
+		wxASSERT( m_gsocks[i] == socket ); // Should be the same
+		// This FD already exists. Add the events
+		if (event == GSOCK_INPUT) {
+			poll_fd[i].events |= DATA_IN;
+		} else {
+			poll_fd[i].events |= DATA_OUT;
+		}
 		return;
 	}
-	m_fds[m_count] = fd;
+
+	if (m_count == reserved) {
+		Reserve();
+	}
+
+	poll_fd[m_count].fd = fd;
+
+	if (event == GSOCK_INPUT) {
+		poll_fd[m_count].events = DATA_IN;
+	} else {
+		poll_fd[m_count].events = DATA_OUT;
+	}
+
 	m_fd_idx[fd] = m_count;
-	m_gsocks[fd] = socket;
-	m_count++;
+	m_gsocks[m_count] = socket;
+	++m_count;
 }
 
-void CSocketSet::RemoveSocket(GSocket *socket)
+void CSocketSet::RemoveSocket(GSocket *socket, GSocketEvent event)
 {
 	wxASSERT(socket);
-	
+
 	int fd = socket->m_fd;
 
-	if ( fd == -1 ) {
+	if (fd == -1) {
 		return;
 	}
-	
-	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
-	
-	int i = m_fd_idx[fd];
-	if ( i == 0xffff ) {
+
+	wxASSERT( (fd > 2) );
+
+	map<int,int>::iterator it_fd = m_fd_idx.find(fd);
+	if (it_fd == m_fd_idx.end()) {
 		return;
 	}
-	wxASSERT(m_fds[i] == fd);
-	m_fds[i] = m_fds[m_count-1];
-	m_gsocks[fd] = 0;
-	m_fds[m_count-1] = 0;
-	m_fd_idx[fd] = 0xffff;
-	m_fd_idx[m_fds[i]] = i;
-	m_count--;
-}
 
-void CSocketSet::FillSet(int &max_fd)
-{
-	FD_ZERO(&m_set);
+	int i = it_fd->second;
+	wxASSERT(poll_fd[i].fd == fd);
 
-	for(int i = 0; i < m_count; i++) {
-	    FD_SET(m_fds[i], &m_set);
-	    if ( m_fds[i] > max_fd ) {
-	    	max_fd = m_fds[i];
-	    }
+	// Remove events -> maybe this sockes was an i/o socket
+	if (event == GSOCK_INPUT) {
+		poll_fd[i].events ^= DATA_IN & poll_fd[i].events;
+	} else {
+		poll_fd[i].events ^= DATA_OUT & poll_fd[i].events;
+	}
+
+	// If I have no more events -> erase socket
+	if (!poll_fd[i].events) {
+		poll_fd[i].fd = poll_fd[m_count-1].fd;
+		poll_fd[i].events = poll_fd[m_count-1].events;
+		poll_fd[i].revents = poll_fd[m_count-1].revents;
+		m_gsocks[i] = m_gsocks[m_count-1];
+		m_fd_idx.erase(it_fd);
+		poll_fd[m_count-1].fd = 0;
+		poll_fd[m_count-1].events = 0;
+		m_gsocks[m_count-1] = NULL;
+		m_fd_idx[poll_fd[i].fd] = i;
+		--m_count;
 	}
 }
 
-void CSocketSet::Detected(void (GSocket::*func)())
+void CSocketSet::Detected(void (GSocket::*read)(), void (GSocket::*write)())
 {
-	for (int i = 0; i < m_count; i++) {
-		int fd = m_fds[i];
-		if ( FD_ISSET(fd, &m_set) ) {
-			GSocket *socket = m_gsocks[fd];
-			(*socket.*func)();
+	for (int i = 0; i < m_count; ++i) {
+		if (poll_fd[i].revents & DATA_IN) {
+			(*(m_gsocks[i]).*read)();
+		}
+
+		if (poll_fd[i].revents & DATA_OUT) {
+			(*(m_gsocks[i]).*write)();
 		}
 	}
 }
 
 CAmuledGSocketFuncTable::CAmuledGSocketFuncTable() : m_lock(wxMUTEX_RECURSIVE)
 {
-	m_in_set = new CSocketSet;
-	m_out_set = new CSocketSet;
+	m_set = new CSocketSet;
 	
 	m_lock.Unlock();
 }
@@ -229,41 +290,22 @@ CAmuledGSocketFuncTable::CAmuledGSocketFuncTable() : m_lock(wxMUTEX_RECURSIVE)
 void CAmuledGSocketFuncTable::AddSocket(GSocket *socket, GSocketEvent event)
 {
 	wxMutexLocker lock(m_lock);
-
-	if ( event == GSOCK_INPUT ) {
-		m_in_set->AddSocket(socket);
-	} else {
-		m_out_set->AddSocket(socket);
-	}
+	m_set->AddSocket(socket, event);
 }
 
 void CAmuledGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
 {
 	wxMutexLocker lock(m_lock);
-
-	if ( event == GSOCK_INPUT ) {
-		m_in_set->RemoveSocket(socket);
-	} else {
-		m_out_set->RemoveSocket(socket);
-	}
+	m_set->RemoveSocket(socket, event);
 }
 
 void CAmuledGSocketFuncTable::RunSelect()
 {
 	wxMutexLocker lock(m_lock);
 
-	int max_fd = -1;
-	m_in_set->FillSet(max_fd);
-	m_out_set->FillSet(max_fd);
-
-	struct timeval tv;
-	tv.tv_sec = 0;
-	tv.tv_usec = 10000; // 10ms
-	
-	int result = select(max_fd + 1, m_in_set->Set(), m_out_set->Set(), 0, &tv);
+	int result = poll(m_set->getPoll(), m_set->getSize(), 10000);
 	if ( result > 0 ) {
-		m_in_set->Detected(&GSocket::Detected_Read);
-		m_out_set->Detected(&GSocket::Detected_Write);
+		m_set->Detected(&GSocket::Detected_Read, &GSocket::Detected_Write);
 	}
 }
 
