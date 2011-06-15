@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-03 23:17+0200\n"
-"PO-Revision-Date: 2011-05-31 10:38+0100\n"
-"Last-Translator: \n"
-"Language-Team: turkish <cooker-i18n@mandrivalinux.org>\n"
+"PO-Revision-Date: 2011-06-15 21:36+0200\n"
+"Last-Translator: Atilla ÖNTAŞ <tarakbumba@gmail.com>\n"
+"Language-Team: Turkish <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5798,7 +5798,6 @@ msgid "Available Parts"
 msgstr "Erişilebilir Parçalar"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload Status"
 msgstr "Gönderme Durumu"
 
@@ -5815,9 +5814,8 @@ msgid "Local File Name"
 msgstr "Yerel Dosya Adı"
 
 #: src/SharedFilePeersListCtrl.cpp:39 src/SourceListCtrl.cpp:38
-#, fuzzy
 msgid "Shares File List"
-msgstr "Paylaşılan Dosyalar"
+msgstr "Paylaşılan Dosyalar Listesi"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
