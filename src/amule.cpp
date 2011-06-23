@@ -526,7 +526,7 @@ bool CamuleApp::OnInit()
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check = 
 			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
-				theApp->ConfigDir + wxT("last_version_check"), theApp->ConfigDir + wxT("last_version"), HTTP_VersionCheck, false, true);
+				theApp->ConfigDir + wxT("last_version_check"), theApp->ConfigDir + wxT("last_version"), HTTP_VersionCheck, false, false);
 		version_check->Create();
 		version_check->Run();
 	}
