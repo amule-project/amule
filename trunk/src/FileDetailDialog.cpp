@@ -50,21 +50,25 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_TEXT(IDC_FILENAME, CFileDetailDialog::OnTextFileNameChange)
 	EVT_BUTTON(IDC_APPLY_AND_CLOSE, CFileDetailDialog::OnBnClickedOk)
 	EVT_BUTTON(IDC_APPLY, CFileDetailDialog::OnBnClickedApply)
+	EVT_BUTTON(IDC_PREVFILE, CFileDetailDialog::OnBnClickedPrevFile)
+	EVT_BUTTON(IDC_NEXTFILE, CFileDetailDialog::OnBnClickedNextFile)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
 END_EVENT_TABLE()
 
-CFileDetailDialog::CFileDetailDialog(wxWindow *parent, CPartFile *file)
+CFileDetailDialog::CFileDetailDialog(wxWindow *parent, std::vector<CPartFile *> & files, int index)
 :
 wxDialog(parent, -1, _("File Details"), wxDefaultPosition, wxDefaultSize,
 	wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX),
-m_file(file),
+m_files(files),
+m_index(index),
 m_filenameChanged(false)
 {
 	theApp->m_FileDetailDialogActive++;
 	m_timer.SetOwner(this, ID_MY_TIMER);
 	m_timer.Start(5000);
 	wxSizer *content = fileDetails(this, true);
-	UpdateData();
+	m_file = m_files[m_index];
+	UpdateData(true);
 	content->SetSizeHints(this);
 	content->Show(this, true);
 }
@@ -77,7 +81,7 @@ CFileDetailDialog::~CFileDetailDialog()
 
 void CFileDetailDialog::OnTimer(wxTimerEvent& WXUNUSED(evt))
 {
-	UpdateData();
+	UpdateData(false);
 }
 
 void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
@@ -85,14 +89,13 @@ void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
 	EndModal(0);
 }
 
-void CFileDetailDialog::UpdateData()
+void CFileDetailDialog::UpdateData(bool resetFilename)
 {
 	wxString bufferS;
 	CastChild(IDC_FNAME,   wxStaticText)->SetLabel(MakeStringEscaped(m_file->GetFileName().TruncatePath(60)));
 	CastChild(IDC_METFILE, wxStaticText)->SetLabel(MakeStringEscaped(m_file->GetFullName().TruncatePath(60, true)));
 
-	wxString tmp = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
-	if (tmp.Length() < 3) {
+	if (resetFilename) {
 		resetValueForFilenameTextEdit();
 	}
 
@@ -107,7 +110,7 @@ void CFileDetailDialog::UpdateData()
 	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()));
 	CastChild(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	CastChild(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
-	bufferS = CFormat(_("%.2f%% done")) % m_file->GetPercentCompleted();
+	bufferS = CFormat(_("%.1f%% done")) % m_file->GetPercentCompleted();
 	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS);
 	bufferS = CFormat(_("%.2f kB/s")) % m_file->GetKBpsDown();
 	CastChild(IDC_DATARATE,wxControl)->SetLabel(bufferS);
@@ -284,6 +287,26 @@ void CFileDetailDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 			Layout();
 		}
 	}
+}
+
+
+void CFileDetailDialog::OnBnClickedPrevFile(wxCommandEvent&)
+{
+	if (--m_index < 0) {
+		m_index = m_files.size() - 1;
+	}
+	m_file = m_files[m_index];
+	UpdateData(true);
+}
+
+
+void CFileDetailDialog::OnBnClickedNextFile(wxCommandEvent&)
+{
+	if (++m_index == (int) m_files.size()) {
+		m_index = 0;
+	}
+	m_file = m_files[m_index];
+	UpdateData(true);
 }
 
 

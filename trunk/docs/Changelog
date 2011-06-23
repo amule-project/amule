@@ -243,6 +243,7 @@ Version 2.3.0 - The river knows.
 		* Prevent flicker when sorting already sorted lists
 		* Prevent creation of more than 99 categories, since that's the limit
 		* Fixed saving of sort orders
+		* Allow switching through files in file detail dialog
 
 	Vollstrecker:
 		* Unify copyright lines

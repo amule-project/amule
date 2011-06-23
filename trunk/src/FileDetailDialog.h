@@ -26,6 +26,7 @@
 #ifndef FILEDETAILDIALOG_H
 #define FILEDETAILDIALOG_H
 
+#include <vector>
 
 class CPartFile;
 
@@ -34,7 +35,7 @@ class CPartFile;
 class CFileDetailDialog : public wxDialog
 {
 public:
-	CFileDetailDialog(wxWindow *parent, CPartFile *file);
+	CFileDetailDialog(wxWindow *parent, std::vector<CPartFile *> & files, int index);
 	virtual ~CFileDetailDialog();
 
 protected:
@@ -42,8 +43,10 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 private:
-	void UpdateData();
+	void UpdateData(bool resetFilename);
+	std::vector<CPartFile *> & m_files;
 	CPartFile* m_file;
+	int m_index;
 	wxTimer m_timer;
 	bool m_filenameChanged;
 	
@@ -60,7 +63,8 @@ private:
 	void OnTextFileNameChange(wxCommandEvent& evt);
 	void OnBnClickedOk(wxCommandEvent& evt);
 	void OnBnClickedApply(wxCommandEvent& evt);
-
+	void OnBnClickedPrevFile(wxCommandEvent& evt);
+	void OnBnClickedNextFile(wxCommandEvent& evt);
 };
 
 #endif // FILEDETAILDIALOG_H

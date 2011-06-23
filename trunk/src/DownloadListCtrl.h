@@ -197,6 +197,11 @@ private:
 	 */
 	void PreviewFile(CPartFile* file);
 
+	/**
+	 * Show file detail dialog for item at index
+	 */
+	void ShowFileDetailDialog(long index);
+
 
 	//! The type of list used to store items on the listctrl.
 	typedef std::multimap<const void*,FileCtrlItem_Struct*> ListItems;
