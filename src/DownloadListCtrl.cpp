@@ -565,11 +565,10 @@ void CDownloadListCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 
 void CDownloadListCtrl::OnViewFileInfo( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = ::GetSelectedItems( this );
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
-	if ( files.size() == 1 ) {
-		CFileDetailDialog dialog( this, files.front()->GetFile() );
-		dialog.ShowModal();
+	if (index >= 0) {
+		ShowFileDetailDialog(index);
 	}
 }
 
@@ -771,12 +770,23 @@ void CDownloadListCtrl::OnMouseMiddleClick(wxListEvent& evt)
 {
 	// Check if clicked item is selected. If not, unselect all and select it.
 	long index = CheckSelection(evt);
-	if ( index < 0 ) {
-		return;
+	if (index >= 0) {
+		ShowFileDetailDialog(index);
 	}
+}
 
+
+void CDownloadListCtrl::ShowFileDetailDialog(long index)
+{
+	// Make list of part files in control
+	std::vector<CPartFile *> files;
+	int nrItems = GetItemCount();
+	files.reserve(nrItems);
+	for (int i = 0; i < nrItems; i++) {
+		files.push_back(((FileCtrlItem_Struct*)GetItemData(i))->GetFile());
+	}
 	bool autosort = thePrefs::AutoSortDownload(false);
-	CFileDetailDialog(this, ((FileCtrlItem_Struct*)GetItemData( index ))->GetFile()).ShowModal();
+	CFileDetailDialog(this, files, index).ShowModal();
 	thePrefs::AutoSortDownload(autosort);
 }
 
