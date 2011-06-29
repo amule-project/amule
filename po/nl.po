@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-03 23:17+0200\n"
-"PO-Revision-Date: 2009-03-08 23:18+0100\n"
-"Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
+"PO-Revision-Date: 2011-06-27 03:54+0100\n"
+"Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,14 +54,14 @@ msgid "Now, exiting main app..."
 msgstr "Hoofdapp wordt nu afgesloten..."
 
 #: src/amule.cpp:258
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Amuleweb instantie met pid `%ld' wordt gedood ... "
+msgstr "Amuleweb-instantie met pid '%ld' wordt afgesloten ... "
 
 #: src/amule.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Amuleweb instantie met pid `%ld' wordt gedood ... "
+msgstr "Amuleweb-instantie met pid '%ld' wordt gedood ... "
 
 #: src/amule.cpp:263 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
 msgid "Failed"
@@ -257,7 +257,7 @@ msgstr "ServerBericht: %s"
 #: src/ServerList.cpp:865
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
+msgstr "Download van %s overgeslagen, omdat gevraagd bestand niet nieuwer is."
 
 #: src/amule.cpp:1566
 msgid "Failed to download the nodes list."
@@ -402,7 +402,7 @@ msgstr "amuled: naar de achtergrond - tot ziens"
 
 #: src/amuled.cpp:661
 msgid "Cannot Create Pid File"
-msgstr ""
+msgstr "Kan Pid-Bestand Niet Aanmaken"
 
 #: src/amuled.cpp:711
 #, c-format
@@ -578,9 +578,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Niet Verbonden)"
 
 #: src/amuleDlg.cpp:906
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Wilt u aMule echt afsluiten?"
+msgstr "Wilt u %s echt afsluiten?"
 
 #: src/amuleDlg.cpp:907
 msgid "Exit confirmation"
@@ -627,9 +627,8 @@ msgid "Downloads"
 msgstr "Downloads"
 
 #: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3535
-#, fuzzy
 msgid "Downloads Window"
-msgstr "Downloaden"
+msgstr "Downloadsvenster"
 
 #: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3413
 msgid "Shared files"
@@ -742,7 +741,7 @@ msgstr "Verbinding Mislukt. Kon niet verbinden met %s:%d\n"
 
 #: src/amule-remote-gui.cpp:322
 msgid "Connection closed - aMule has terminated probably."
-msgstr ""
+msgstr "Verbinding verbroken - aMule is waarschijnlijk afgesloten."
 
 #: src/amule-remote-gui.cpp:407
 msgid "Ready"
@@ -756,6 +755,8 @@ msgstr "Alle"
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
+"Kan directory '%s' niet aanmaken voor categorie '%s', directory '%s' wordt "
+"behouden."
 
 #: src/amule-remote-gui.cpp:1325 src/BaseClient.cpp:1785
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2622
@@ -849,34 +850,33 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nieuw bericht van '%s' (IP:%s)"
 
 #: src/BaseClient.cpp:2899
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"Gebruiker %s (%u) vroeg uw gedeeldebestanden-lijst van directory %s op -> "
-"geweigerd"
+"Gebruiker %s (%u) vroeg uw gedeelde-bestandenlijst van niet-bestaande "
+"directory '%s' op -> Genegeerd"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "WARNING: %s cannot be opened."
-msgstr "WAARSCHUWING: known.met kan niet geopend worden."
+msgstr "WAARSCHUWING: %s kan niet geopend worden."
 
 #: src/CanceledFileList.cpp:61
-#, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
-"WAARSCHUWING: Bekende-bestandenlijst beschadigd, bevat ongeldige header."
+"WAARSCHUWING: Geannuleerde-bestandenlijst beschadigd, bevat ongeldige header."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:116
-#, fuzzy, c-format
+#, c-format
 msgid "IO error while reading %s file: %s"
-msgstr "IO fout bij het lezen van known.met bestand: %s"
+msgstr "IO fout bij het lezen van bestand %s: %s"
 
 #: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:162
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving %s file: %s"
-msgstr "Fout bij het bewaren van known.met bestand; %s"
+msgstr "Fout bij het bewaren van bestand %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
@@ -945,7 +945,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:168
 msgid "Close tab"
@@ -1046,43 +1046,43 @@ msgstr "Niet Beschikbaar"
 #: src/ClientTCPSocket.cpp:844
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr "Gebruiker %s (%u) vroeg uw gedeeldebestanden-lijst op -> Geaccepteerd"
+msgstr "Gebruiker %s (%u) vroeg uw gedeelde-bestandenlijst op -> Geaccepteerd"
 
 #: src/ClientTCPSocket.cpp:865
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
-msgstr "Gebruiker %s (%u) vroeg uw gedeeldebestanden-lijst op -> Geweigerd"
+msgstr "Gebruiker %s (%u) vroeg uw gedeelde-bestandenlijst op -> Geweigerd"
 
 #: src/ClientTCPSocket.cpp:897
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr "Gebruiker %s (%u) vroeg uw gedeeldedirectories-lijst op -> Toegestaan"
+msgstr "Gebruiker %s (%u) vroeg uw gedeelde-directorieslijst op -> Toegestaan"
 
 #: src/ClientTCPSocket.cpp:903
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr "Gebruiker %s (%u) vroeg uw gedeeldedirectories-lijst op -> Geweigerd"
+msgstr "Gebruiker %s (%u) vroeg uw gedeelde-directorieslijst op -> Geweigerd"
 
 #: src/ClientTCPSocket.cpp:928
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"Gebruiker %s (%u) vroeg uw gedeeldebestanden-lijst van directory %s op -> "
+"Gebruiker %s (%u) vroeg uw gedeelde-bestandenlijst van directory '%s' op -> "
 "geaccepteerd"
 
 #: src/ClientTCPSocket.cpp:933
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"Gebruiker %s (%u) vroeg uw gedeeldebestanden-lijst van directory %s op -> "
+"Gebruiker %s (%u) vroeg uw gedeelde-bestandenlijst van directory '%s' op -> "
 "geweigerd"
 
 #: src/ClientTCPSocket.cpp:952
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "Gebruiker %s (%u) deelt directory %s"
+msgstr "Gebruiker %s (%u) deelt directory '%s'"
 
 #: src/ClientTCPSocket.cpp:967
 #, c-format
@@ -1090,19 +1090,19 @@ msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Gebruiker %s (%u) stuurde niet-opgevraagde gedeelde dirs."
 
 #: src/ClientTCPSocket.cpp:982
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
-msgstr "Gebruiker %s (%u) stuurde gedeeldebestanden-lijst van directory %s"
+msgstr "Gebruiker %s (%u) stuurde gedeelde-bestandenlijst van directory '%s'"
 
 #: src/ClientTCPSocket.cpp:989
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr "Gebruiker %s (%u) heeft gedeeldebestanden-lijst gestuurd"
+msgstr "Gebruiker %s (%u) heeft gedeelde-bestandenlijst gestuurd"
 
 #: src/ClientTCPSocket.cpp:994
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "Gebruiker %s (%u) stuurde ongewild gedeeldebestanden-lijst"
+msgstr "Gebruiker %s (%u) stuurde ongewild gedeelde-bestandenlijst"
 
 #: src/ClientTCPSocket.cpp:1006
 #, c-format
@@ -1148,6 +1148,8 @@ msgstr[1] "%u commentaren"
 msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
+"Client %s geband voor het sturen van %s beschadigde gegeven van in totaal %s "
+"voor het bestand '%s'"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Lo]"
@@ -1638,13 +1640,12 @@ msgstr ""
 "afstand van dezelfde snapshot."
 
 #: src/ExternalConn.cpp:447
-#, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
-"U kunt niet verbinden met een releaseversie van een willekeurige SVN versie! "
-"*zucht* mogelijke crash voorkomen"
+"U kunt niet verbinden met een release versie vanaf een willekeurig "
+"ontwikkelingssnapshot! *zucht* mogelijke crash voorkomen"
 
 #: src/ExternalConn.cpp:474
 msgid "Invalid protocol version."
@@ -1656,17 +1657,15 @@ msgstr "Ontbrekend protocol versielabel."
 
 #: src/ExternalConn.cpp:486
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
+msgstr "Authenticatie mislukt: ongeldige hash opgegeven als EV-wachtwoord."
 
 #: src/ExternalConn.cpp:503
-#, fuzzy
 msgid "Authentication failed: wrong password."
-msgstr "Authenticatie mislukt."
+msgstr "Authenticatie mislukt: verkeerd wachtwoord."
 
 #: src/ExternalConn.cpp:505
-#, fuzzy
 msgid "Authentication failed: missing password."
-msgstr "Authenticatie mislukt."
+msgstr "Authenticatie mislukt: ontbrekend wachtwoord."
 
 #: src/ExternalConn.cpp:515
 msgid "Invalid request, please authenticate first."
@@ -1677,14 +1676,14 @@ msgid "Access granted."
 msgstr "Toegang verleend."
 
 #: src/ExternalConn.cpp:528
-#, fuzzy, c-format
+#, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "Filter berichten van onbekende clients"
+msgstr "Foutmelding \"%s\" verzonden naar client."
 
 #: src/ExternalConn.cpp:533
-#, fuzzy, c-format
+#, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Poging tot ongeautoriseerde toegang. Verbinding gesloten."
+msgstr "Poging tot ongeautoriseerde toegang van %s. Verbinding gesloten."
 
 #: src/ExternalConn.cpp:798
 #, c-format
@@ -2061,7 +2060,7 @@ msgstr "Bekijk Bestanden"
 
 #: src/FriendListCtrl.cpp:136 src/GenericClientListCtrl.cpp:589
 msgid "Establish Friend Slot"
-msgstr "Maak Vriendenplaats"
+msgstr "Maak Vriendenslot"
 
 #: src/FriendListCtrl.cpp:169
 msgid "Are you sure that you wish to delete the selected friend?"
@@ -2108,33 +2107,30 @@ msgid "A4AF"
 msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:995
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u (%i)"
-msgstr "QR: %u (%i)"
+msgstr "In Wachtrij: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:1005 src/GenericClientListCtrl.cpp:1034
 msgid "Asked for another file"
 msgstr "Al om een ander bestand gevraagd"
 
 #: src/GenericClientListCtrl.cpp:1024
-#, fuzzy
 msgid "Waiting for upload slot"
-msgstr "Wachtende Uploads: %s"
+msgstr "Wachtende op upload slot"
 
 #: src/GenericClientListCtrl.cpp:1026
-#, fuzzy, c-format
+#, c-format
 msgid "On Queue: %u"
-msgstr "In wachtrij"
+msgstr "In wachtrij: %u"
 
 #: src/GenericClientListCtrl.cpp:1029
-#, fuzzy
 msgid "Uploading"
-msgstr "Upload"
+msgstr "Aan het uploaden"
 
 #: src/GenericClientListCtrl.cpp:1031
-#, fuzzy
 msgid "None"
-msgstr "Niemand"
+msgstr "Geen"
 
 #: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:242
 msgid "No"
@@ -2153,27 +2149,27 @@ msgid "HTTP download cancelled"
 msgstr "HTTP download geannuleerd"
 
 #: src/HTTPDownload.cpp:205
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create destination file %s for download!"
-msgstr "Doelmap voor downloads"
+msgstr "Kon doelbestand %s voor download niet aanmaken!"
 
 #: src/HTTPDownload.cpp:210
 msgid "The URL to download can't be empty"
-msgstr ""
+msgstr "De URL om te downloaden mag niet leeg zijn"
 
 #: src/HTTPDownload.cpp:233
 #, c-format
 msgid "The URL %s returned: %i - Error (%i)!"
-msgstr ""
+msgstr "De URL %s leverde op: %i - Fout (%i)!"
 
 #: src/HTTPDownload.cpp:260
 msgid "Critical error while writing downloaded file"
-msgstr ""
+msgstr "Kritieke fout bij het schrijven van gedownload bestand"
 
 #: src/HTTPDownload.cpp:275
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Gedownload"
+msgstr "%d bytes gedownload"
 
 #: src/HTTPDownload.cpp:279
 #, c-format
@@ -2185,15 +2181,16 @@ msgid ""
 "Invalid URL for HTTP download or HTTP redirection (did you forget "
 "'http://' ?)"
 msgstr ""
+"Ongeldige URL voor HTTP download of HTTP redirection (bent u 'http://' "
+"vergeten?"
 
 #: src/HTTPDownload.cpp:379
-#, fuzzy
 msgid "Unable to connect to HTTP download server"
-msgstr "Verbind opnieuw met server"
+msgstr "Kon niet verbinden met HTTP downloadserver"
 
 #: src/HTTPDownload.cpp:400
 msgid "Invalid response from HTTP download server"
-msgstr ""
+msgstr "Ongeldig antwoord van HTTP downloadserver"
 
 #: src/IP2Country.cpp:99
 #, c-format
@@ -2205,36 +2202,35 @@ msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Download van bestand GeoIP.dat mislukt, update wordt gestopt."
 
 #: src/IP2Country.cpp:133 src/IPFilter.cpp:500
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "Kon bestand GeoIP.dat niet verwijderen, update wordt gestopt."
+msgstr "Kon bestand %s niet verwijderen, update wordt gestopt."
 
 #: src/IP2Country.cpp:139
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr "Kon nieuw GeoIP.dat bestand niet hernoemen, update wordt gestopt."
+msgstr "Kon bestand %s niet hernoemen, update wordt gestopt."
 
 #: src/IP2Country.cpp:145 src/IPFilter.cpp:506
-#, fuzzy, c-format
+#, c-format
 msgid "Successfully updated %s"
-msgstr "GeoIP.dat succesvol geüpdatet"
+msgstr "%s succesvol geüpdatet"
 
 #: src/IP2Country.cpp:147
 msgid "Error updating GeoIP.dat"
 msgstr "Fout bij het updaten van GeoIP.dat"
 
 #: src/IP2Country.cpp:152 src/IPFilter.cpp:511 src/ServerList.cpp:867
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to download %s from %s"
-msgstr "Kon GeoIP.dat niet downloaden van %s"
+msgstr "Kon %s niet downloaden van %s"
 
 #: src/IP2Country.cpp:171
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Kon GeoIP.dat niet downloaden van %s"
+msgstr "Kon landgegevens niet laden voor '%s'."
 
 #: src/IPFilter.cpp:113
-#, fuzzy
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "IP-filters 'ipfilter.dat' en 'ipfilter_static.dat' worden geladen."
 
@@ -2263,13 +2259,13 @@ msgstr[0] "%u misvormde regel is genegeerd"
 msgstr[1] "%u misvormde regels zijn genegeerd"
 
 #: src/IPFilter.cpp:503
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename new %s file, aborting update."
-msgstr "Kon nieuw GeoIP.dat bestand niet hernoemen, update wordt gestopt."
+msgstr "Kon nieuw bestand %s niet hernoemen, update wordt gestopt."
 
 #: src/IPFilter.cpp:533
 msgid "IP filter is ready"
-msgstr ""
+msgstr "IP-filter is klaar"
 
 #: src/KadDlg.cpp:86
 msgid ""
@@ -2329,6 +2325,8 @@ msgid ""
 "Failed to read nodes.dat file - too old. This version (0) is not supported "
 "anymore."
 msgstr ""
+"Kon bestand nodes.dat niet lezen - te oud. Deze versie (0) wordt niet meer "
+"ondersteund."
 
 #: src/kademlia/routing/RoutingZone.cpp:210
 #: src/kademlia/routing/RoutingZone.cpp:285
@@ -2395,20 +2393,23 @@ msgstr ""
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
+"Kon vermelding in bekende-bestandenlijst niet laden, bestand kan beschadigd "
+"zijn"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
+"Ongeldige vermelding in bekende-bestandenlijst, bestand kan beschadigd zijn: "
 
 #: src/libs/common/Format.cpp:307
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error %d"
-msgstr "Onbekende versie"
+msgstr "Onbekende fout %d"
 
 #: src/libs/common/Format.cpp:312 src/libs/common/Format.cpp:321
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get error description for error %d"
-msgstr "Doelmap voor downloads"
+msgstr "Kon foutbeschrijving niet verkrijgen voor fout %d"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
 msgid "Hashing"
@@ -2558,12 +2559,12 @@ msgstr "DL: %u"
 #: src/MuleTrayIcon.cpp:318
 #, c-format
 msgid "Download speed: %.1f"
-msgstr "Download snelheid: %.1f"
+msgstr "Downloadsnelheid: %.1f"
 
 #: src/MuleTrayIcon.cpp:320
 #, c-format
 msgid "Upload speed: %.1f"
-msgstr "Upload snelheid: %.1f"
+msgstr "Uploadsnelheid: %.1f"
 
 #: src/MuleTrayIcon.cpp:326
 msgid "Client Information"
@@ -2905,9 +2906,8 @@ msgid "Clears completed downloads"
 msgstr "Verwijderd complete downloads"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Complete bronnen"
+msgstr "Bestandsbronnen:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:172
 msgid "General"
@@ -3116,7 +3116,7 @@ msgstr "Toevoegen"
 
 #: src/muuli_wdr.cpp:1056
 msgid "Download-Speed"
-msgstr "Download-Snelheid"
+msgstr "Downloadsnelheid"
 
 #: src/muuli_wdr.cpp:1074 src/muuli_wdr.cpp:1123 src/muuli_wdr.cpp:2681
 msgid "Current"
@@ -3132,7 +3132,7 @@ msgstr "Sessie gemiddelde"
 
 #: src/muuli_wdr.cpp:1105
 msgid "Upload-Speed"
-msgstr "Upload-Snelheid"
+msgstr "Uploadsnelheid"
 
 #: src/muuli_wdr.cpp:1154
 msgid "Connections"
@@ -3239,9 +3239,8 @@ msgid "Secure ident:"
 msgstr "Veilige identiteit:"
 
 #: src/muuli_wdr.cpp:1420
-#, fuzzy
 msgid "Queue rank:"
-msgstr "In Wachtrij"
+msgstr "Wachtrij positie:"
 
 #: src/muuli_wdr.cpp:1429
 msgid "Queue score:"
@@ -3524,7 +3523,7 @@ msgstr "Uit dezelfde categorie"
 
 #: src/muuli_wdr.cpp:1815
 msgid "In alphabetic order"
-msgstr ""
+msgstr "In alfabetische volgorde"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Preallocate disk space for new files"
@@ -3695,7 +3694,7 @@ msgstr "Server verbinding verversingsinterval: Uitschakelen"
 
 #: src/muuli_wdr.cpp:2073
 msgid "Disable computer's timed standby mode"
-msgstr ""
+msgstr "Schakel standby-modus van computer uit"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Skin to use: "
@@ -3731,7 +3730,7 @@ msgstr "Verticale knoppenbalk"
 
 #: src/muuli_wdr.cpp:2131
 msgid "Show country flags for clients"
-msgstr ""
+msgstr "Toon landenvlaggen voor clients"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Download Queue Files"
@@ -3864,7 +3863,6 @@ msgid "Change priority for new assigned files :"
 msgstr "Verander prioriteit voor nieuw toegevoegde bestanden :"
 
 #: src/muuli_wdr.cpp:2396
-#, fuzzy
 msgid "Don't change"
 msgstr "Niet veranderen"
 
@@ -3975,11 +3973,8 @@ msgid "Port:"
 msgstr "Poort:"
 
 #: src/muuli_wdr.cpp:2767
-#, fuzzy
 msgid "Bootstrap from known clients"
-msgstr ""
-"Bootstrap van \n"
-"bekende clients"
+msgstr "Bootstrap van bekende clients"
 
 #: src/muuli_wdr.cpp:2772
 msgid "Disconnect Kad"
@@ -4306,40 +4301,36 @@ msgstr "Gebeurtenistypes"
 #: src/muuli_wdr.cpp:3325
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
+"Statistieken en clients in wachtrij voor geselecteerd(e) bestand(en) : "
+"Sessie / Alle"
 
 #: src/muuli_wdr.cpp:3352
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Actieve Uploads :"
+msgstr "Actieve Uploads"
 
 #: src/muuli_wdr.cpp:3372
 msgid "Percent of total files"
-msgstr ""
+msgstr "Procent van alle bestanden"
 
 #: src/muuli_wdr.cpp:3419
-#, fuzzy
 msgid "All files"
-msgstr "Verberg gedeelde bestanden"
+msgstr "Alle bestanden"
 
 #: src/muuli_wdr.cpp:3420
-#, fuzzy
 msgid "Selected files"
-msgstr "Selecteer filter"
+msgstr "Geselecteerde bestanden"
 
 #: src/muuli_wdr.cpp:3421
-#, fuzzy
 msgid "Active uploads only"
-msgstr "Actieve uploads"
+msgstr "Alleen actieve uploads"
 
 #: src/muuli_wdr.cpp:3423
-#, fuzzy
 msgid "Show Clients for"
-msgstr "Toon Clients"
+msgstr "Toon Clients voor"
 
 #: src/muuli_wdr.cpp:3426
-#, fuzzy
 msgid "Reload:"
-msgstr "Lijst Opnieuw laden"
+msgstr "Opnieuw laden:"
 
 #: src/muuli_wdr.cpp:3431
 msgid "Reload your shared files"
@@ -4461,7 +4452,7 @@ msgstr "Actief"
 #: src/OtherFunctions.cpp:1103
 #, c-format
 msgid "Using config dir: %s"
-msgstr ""
+msgstr "Gebruikte configdir: %s"
 
 #: src/PartFileConvert.cpp:156
 msgid "Waiting for partfile convert thread to die..."
@@ -4539,9 +4530,8 @@ msgid "Remove sources?"
 msgstr "Verwijder bronnen?"
 
 #: src/PartFile.cpp:298
-#, fuzzy
 msgid "ERROR: Failed to create partfile"
-msgstr "FOUT: Kon partbestand niet aanmaken)"
+msgstr "FOUT: Kon partbestand niet aanmaken"
 
 #: src/PartFile.cpp:336
 #, c-format
@@ -4564,10 +4554,10 @@ msgid "ERROR: Invalid part.met file version: %s ==> %s"
 msgstr "FOUT: Ongeldige part.met bestandsversie: %s ==> %s"
 
 #: src/PartFile.cpp:595
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
 msgstr ""
-"FOUT: %s (%s) is beschadigd (verkeerde tagcount), kan bestand niet laden."
+"FOUT: %s (%s) is beschadigd (verkeerde tags: %s), kan bestand niet laden."
 
 #: src/PartFile.cpp:606
 #, c-format
@@ -4711,6 +4701,8 @@ msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
+"EOB bij het hashen van gedownload deel %u met lengte %u (max %u) van "
+"partbestand '%s' met lengte %u: %s"
 
 #: src/PartFile.cpp:2971
 #, c-format
@@ -4871,9 +4863,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugees (Braziliaans)"
 
 #: src/Preferences.cpp:656
-#, fuzzy
 msgid "Romanian"
-msgstr "Albanees"
+msgstr "Roemeens"
 
 #: src/Preferences.cpp:657
 msgid "Russian"
@@ -4900,9 +4891,8 @@ msgid "Ukrainian"
 msgstr "Oekraïens"
 
 #: src/Preferences.cpp:724
-#, fuzzy
 msgid "Change Language"
-msgstr "Taal: "
+msgstr "Verander Taal"
 
 #: src/Preferences.cpp:895
 msgid "no options available"
@@ -4987,6 +4977,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
+"De volgende variabelen worden vervangen:\n"
+"    %PARTFILE - volledig pad naar het bestand\n"
+"    %PARTNAME - alleen bestandsnaam"
 
 #: src/PrefsUnifiedDlg.cpp:284
 msgid ""
@@ -5040,19 +5033,16 @@ msgid "- UDP port changed.\n"
 msgstr "- UDP poort veranderd.\n"
 
 #: src/PrefsUnifiedDlg.cpp:584
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Externe verbinding gesloten."
+msgstr "- Poort voor externe verbinding veranderd.\n"
 
 #: src/PrefsUnifiedDlg.cpp:588
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Nieuwe externe verbinding geaccepteerd"
+msgstr "- Acceptatie voor externe verbinding veranderd.\n"
 
 #: src/PrefsUnifiedDlg.cpp:592
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Externe verbinding gesloten."
+msgstr "- Interface voor externe verbinding veranderd.\n"
 
 #: src/PrefsUnifiedDlg.cpp:601
 msgid ""
@@ -5210,9 +5200,9 @@ msgid "disabled"
 msgstr "uitgeschakeld"
 
 #: src/PrefsUnifiedDlg.cpp:1183
-#, fuzzy, c-format
+#, c-format
 msgid "Execute command on '%s' event"
-msgstr "Voer commando uit bij gebeurtenis `%s'"
+msgstr "Voer commando uit bij gebeurtenis '%s'"
 
 #: src/PrefsUnifiedDlg.cpp:1186
 msgid "Enable command execution on core"
@@ -5272,9 +5262,9 @@ msgid "Download in category"
 msgstr "Download in categorie"
 
 #: src/SearchListCtrl.cpp:626
-#, fuzzy, c-format
+#, c-format
 msgid "Get %s for this file"
-msgstr "Voeg Optionele URLs toe aan dit bestand"
+msgstr "Verkrijg %s voor dit bestand"
 
 #: src/SearchListCtrl.cpp:630
 msgid "Search related files (eD2k, local server)"
@@ -5289,13 +5279,12 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Kopieer eD2k link naar klembord"
 
 #: src/SearchListCtrl.cpp:1001
-#, fuzzy
 msgid "Canceled"
-msgstr "Annuleren"
+msgstr "Geannuleerd"
 
 #: src/SearchListCtrl.cpp:1004
 msgid "New"
-msgstr ""
+msgstr "Nieuw"
 
 #: src/ServerConnect.cpp:74
 msgid ""
@@ -5419,12 +5408,11 @@ msgstr[1] "%d servers toegevoegd"
 
 #: src/ServerList.cpp:176
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr ""
+msgstr "Fout: het bestand 'server.met' is beschadigd: "
 
 #: src/ServerList.cpp:180
-#, fuzzy
 msgid "IO error while reading 'server.met': "
-msgstr "IO fout bij het lezen van known.met bestand: %s"
+msgstr "IO fout bij het lezen van know'server.met': "
 
 #: src/ServerList.cpp:193
 #, c-format
@@ -5469,9 +5457,9 @@ msgid "Invalid URL"
 msgstr "Ongeldige URL"
 
 #: src/ServerList.cpp:863
-#, fuzzy, c-format
+#, c-format
 msgid "Finished downloading the server list from %s"
-msgstr "Downloaden serverlijst van %s voltooid"
+msgstr "Downloaden van serverlijst vanaf %s voltooid"
 
 #: src/ServerList.cpp:878
 msgid ""
@@ -5722,9 +5710,8 @@ msgid "Kademlia Status:"
 msgstr "Kademlia Status:"
 
 #: src/ServerWnd.cpp:206
-#, fuzzy
 msgid "Running in LAN mode"
-msgstr "Draaiend op %s"
+msgstr "Draaiend in LAN modus"
 
 #: src/ServerWnd.cpp:206
 msgid "Running"
@@ -5840,29 +5827,24 @@ msgid "No shareable files found in directory: %s"
 msgstr "Geen deelbare bestanden gevonden in directory: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
 msgstr "Gebruikersnaam"
 
 #: src/SharedFilePeersListCtrl.cpp:30
-#, fuzzy
 msgid "Download Speed"
-msgstr "Download-Snelheid"
+msgstr "Downloadsnelheid"
 
 #: src/SharedFilePeersListCtrl.cpp:32
-#, fuzzy
 msgid "Upload Speed"
-msgstr "Upload-Snelheid"
+msgstr "Uploadsnelheid"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:32
-#, fuzzy
 msgid "Available Parts"
-msgstr "Beschikbaar :"
+msgstr "Beschikbare Delen"
 
 #: src/SharedFilePeersListCtrl.cpp:35
-#, fuzzy
 msgid "Upload Status"
-msgstr "Upload Status"
+msgstr "Uploadstatus"
 
 #: src/SharedFilePeersListCtrl.cpp:36 src/SourceListCtrl.cpp:34
 msgid "Download Status"
@@ -5870,17 +5852,15 @@ msgstr "Download Status"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Oorsprong"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
-#, fuzzy
 msgid "Local File Name"
-msgstr "Bestandsnaam"
+msgstr "Lokale Bestandsnaam"
 
 #: src/SharedFilePeersListCtrl.cpp:39 src/SourceListCtrl.cpp:38
-#, fuzzy
 msgid "Shares File List"
-msgstr "Gedeelde Bestanden"
+msgstr "Deelt Bestandenlijst"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
@@ -5964,9 +5944,8 @@ msgid "[PartFile]"
 msgstr "[PartBestand]"
 
 #: src/SourceListCtrl.cpp:37
-#, fuzzy
 msgid "Remote File Name"
-msgstr "Bestandsnaam"
+msgstr "Bestandsnaam Op Afstand"
 
 #: src/Statistics.cpp:732
 #, c-format
@@ -6108,19 +6087,19 @@ msgid "Clients"
 msgstr "Clients"
 
 #: src/Statistics.cpp:786
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown: %s"
-msgstr "Onbekende grootte"
+msgstr "Onbekend: %s"
 
 #: src/Statistics.cpp:792
-#, fuzzy, c-format
+#, c-format
 msgid "Filtered: %s"
-msgstr "Gefilterd"
+msgstr "Gefilterd: %s"
 
 #: src/Statistics.cpp:793
-#, fuzzy, c-format
+#, c-format
 msgid "Banned: %s"
-msgstr "Geband"
+msgstr "Geband: %s"
 
 #: src/Statistics.cpp:794
 #, c-format
@@ -6214,9 +6193,9 @@ msgid "Never"
 msgstr "Nooit"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "Commando `%s' met pid `%d' is be?indigd met statuscode `%d'."
+msgstr "Commando `%s' met pid `%d' is geëindigd met statuscode '%d'."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
@@ -6365,12 +6344,11 @@ msgstr "Aantal zoekresultaten: %i\n"
 #: src/TextClient.cpp:830
 #, c-format
 msgid "Search progress: %u %% \n"
-msgstr ""
+msgstr "Voortgang zoeken: %u %% \n"
 
 #: src/TextClient.cpp:832
-#, fuzzy
 msgid "Search progress not available"
-msgstr "Toon voortgangspercentage"
+msgstr "Voortgang zoeken niet beschikbaar"
 
 #: src/TextClient.cpp:837
 #, c-format
@@ -6383,7 +6361,7 @@ msgstr "Toon korte status informatie."
 
 #: src/TextClient.cpp:851
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr "Toon verbindingsstatus, huidige up/download snelheden, etc.\n"
+msgstr "Toon verbindingsstatus, huidige up-/downloadsnelheden, etc.\n"
 
 #: src/TextClient.cpp:853
 msgid "Show full statistics tree."
@@ -6423,33 +6401,28 @@ msgstr ""
 "draaiende kern.\n"
 
 #: src/TextClient.cpp:859
-#, fuzzy
 msgid "Reload the given object."
-msgstr "Laadt gegeven object opnieuw."
+msgstr "Laad gegeven object opnieuw."
 
 #: src/TextClient.cpp:860
-#, fuzzy
 msgid "Reload shared files list."
-msgstr "Laadt gedeelde bestanden lijst opnieuw."
+msgstr "Laad gedeelde-bestandenlijst opnieuw."
 
 #: src/TextClient.cpp:862
-#, fuzzy
 msgid "Reload IP filtering table."
-msgstr "Laadt IP Filter tabel opnieuw uit bestand."
+msgstr "Laad IP-Filtertabel opnieuw."
 
 #: src/TextClient.cpp:863
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "Selecteer IP filter niveau."
+msgstr "Laad huidige IP-filtertabel opnieuw."
 
 #: src/TextClient.cpp:864
-#, fuzzy
 msgid "Update IP filtering table from URL."
-msgstr "Laadt IP Filter tabel opnieuw uit bestand."
+msgstr "Update IP-filtertabel van URL."
 
 #: src/TextClient.cpp:865
 msgid "If URL is omitted the URL from the preferences is used."
-msgstr ""
+msgstr "Als de URL wordt weggelaten wordt de URL uit de voorkeuren gebruikt."
 
 #: src/TextClient.cpp:867
 msgid "Connect to the network."
@@ -6495,9 +6468,8 @@ msgid "Disconnect from Kad only."
 msgstr "Verbreek alleen verbinding met Kad."
 
 #: src/TextClient.cpp:877
-#, fuzzy
 msgid "Add an eD2k or magnet link to core."
-msgstr "Voegt een eD2k of magnet-link toe aan de kern."
+msgstr "Voeg een eD2k- of magnet-link toe aan de kern."
 
 #: src/TextClient.cpp:878
 msgid ""
@@ -6526,9 +6498,8 @@ msgid "Set a preference value."
 msgstr "Stel een voorkeurswaarde in."
 
 #: src/TextClient.cpp:883
-#, fuzzy
 msgid "Set IP filtering preferences."
-msgstr "Stel IPFilter voorkeuren in."
+msgstr "Stel voorkeuren voor IP-filter in."
 
 #: src/TextClient.cpp:884
 msgid "Turn IP filtering on for both clients and servers."
@@ -6595,38 +6566,32 @@ msgid "Get and display a preference value."
 msgstr "Verkrijg en toon een voorkeurswaarde."
 
 #: src/TextClient.cpp:905
-#, fuzzy
 msgid "Get IP filtering preferences."
-msgstr "Verkrijg IPFilter voorkeuren."
+msgstr "Verkrijg voorkeuren voor IP-filter."
 
 #: src/TextClient.cpp:906
-#, fuzzy
 msgid "Get IP filtering state for both clients and servers."
-msgstr "Verkrijg IPFilter status voor zowel clients als servers."
+msgstr "Verkrijg status van IP-filter voor zowel clients als servers."
 
 #: src/TextClient.cpp:907
-#, fuzzy
 msgid "Get IP filtering state for clients only."
-msgstr "Verkrijg IPFilter status alleen voor clients."
+msgstr "Verkrijg status van IP-filter alleen voor clients."
 
 #: src/TextClient.cpp:908
-#, fuzzy
 msgid "Get IP filtering state for servers only."
-msgstr "Verkrijg IPFilter status alleen voor servers."
+msgstr "Verkrijg status van IP-filter alleen voor servers."
 
 #: src/TextClient.cpp:909
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "Selecteer IP filter niveau."
+msgstr "Verkrijg niveau van IP-filter."
 
 #: src/TextClient.cpp:911
 msgid "Get bandwidth limits."
 msgstr "Verkrijg bandbreedte grenzen."
 
 #: src/TextClient.cpp:913
-#, fuzzy
 msgid "Execute a search."
-msgstr "Voert een kad zoekopdracht uit"
+msgstr "Voer een zoekopdracht uit"
 
 #: src/TextClient.cpp:914
 msgid ""
@@ -6644,39 +6609,32 @@ msgstr ""
 "\".\n"
 
 #: src/TextClient.cpp:915
-#, fuzzy
 msgid "Execute a global search."
-msgstr "Voert een globale zoekopdracht uit."
+msgstr "Voer een globale zoekopdracht uit."
 
 #: src/TextClient.cpp:916
-#, fuzzy
 msgid "Execute a local search"
-msgstr "Voert een lokale zoekopdracht uit"
+msgstr "Voer een lokale zoekopdracht uit"
 
 #: src/TextClient.cpp:917
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Voert een kad zoekopdracht uit"
+msgstr "Voer een kad zoekopdracht uit"
 
 #: src/TextClient.cpp:919
-#, fuzzy
 msgid "Show the results of the last search."
-msgstr "Toont de resultaten van de laatste zoekopdracht."
+msgstr "Toon de resultaten van de laatste zoekopdracht."
 
 #: src/TextClient.cpp:920
-#, fuzzy
 msgid "Return the results of the previous search.\n"
-msgstr "Levert de resultaten van de vorige zoekopdracht op.\n"
+msgstr "Lever de resultaten van de vorige zoekopdracht op.\n"
 
 #: src/TextClient.cpp:922
-#, fuzzy
 msgid "Show the progress of a search."
-msgstr "Toont de voortgang van een zoekopdracht."
+msgstr "Toon de voortgang van een zoekopdracht."
 
 #: src/TextClient.cpp:923
-#, fuzzy
 msgid "Show the progress of a search.\n"
-msgstr "Toont de voortgang van een zoekopdracht.\n"
+msgstr "Toon de voortgang van een zoekopdracht.\n"
 
 #: src/TextClient.cpp:925
 msgid "Start downloading a file"
@@ -6733,10 +6691,9 @@ msgid "Show queues/lists."
 msgstr "Toon wachtrij/lijsten."
 
 #: src/TextClient.cpp:950
-#, fuzzy
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
-"Toont upload/download wachtrij, server lijst of gedeelde bestanden lijst.\n"
+"Toon upload/download wachtrij, server lijst of gedeelde-bestandenlijst.\n"
 
 #: src/TextClient.cpp:951
 msgid "Show upload queue."
@@ -6806,12 +6763,11 @@ msgstr "Bevestiging Nodig"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr ""
+msgstr "Enkel 99 categorieën worden ondersteund."
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Te veel verbindingen"
+msgstr "Te veel categorieën!"
 
 #: src/TransferWnd.cpp:355
 msgid "All others"
@@ -7538,7 +7494,7 @@ msgstr "Aanvraag wordt verwerkt [origineel]: "
 
 #: src/webserver/src/WebServer.cpp:1826
 msgid "No password specified, login will not be allowed."
-msgstr ""
+msgstr "Geen wachtwoord opgegeven, login wordt niet toegestaan."
 
 #: src/webserver/src/WebServer.cpp:1828
 msgid "Checking password\n"
