@@ -440,7 +440,7 @@ class CSocketSet;
 class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable
 {
 private:
-	CSocketSet *m_set;
+	CSocketSet *m_in_set, *m_out_set;
 
 	wxMutex m_lock;
 public:

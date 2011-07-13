@@ -125,10 +125,6 @@ Version 2.3.0 - The river knows.
 		* Removed white boxes around file rating icons
 		* Implemented public shared directory names only containing actually shared subfolders.
 
-	marcelpb:
-		* Changed amuled to use poll(2) instead of select(2) to bypass
-		  the maximum TCP connection number limitation of select(2).
-
 	morph:
 		* Patch to uniform and fix minor errors on man pages
 
