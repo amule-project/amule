@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeoIP.h" />
+    <ClInclude Include="GeoIP_X.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="GeoIP.cmd">

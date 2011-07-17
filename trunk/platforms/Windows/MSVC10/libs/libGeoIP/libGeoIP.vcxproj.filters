@@ -23,6 +23,9 @@
     <ClInclude Include="GeoIP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeoIP_X.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="GeoIP.cmd" />
