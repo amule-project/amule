@@ -12,7 +12,8 @@ EXTRA_DIST = \
 	amule.es.1 amuled.es.1 amulecmd.es.1 amulegui.es.1 amuleweb.es.1 ed2k.es.1 \
 	amule.fr.1 amuled.fr.1 amulecmd.fr.1 amulegui.fr.1 amuleweb.fr.1 ed2k.fr.1 \
 	amule.hu.1 amuled.hu.1 amulecmd.hu.1 amulegui.hu.1 amuleweb.hu.1 ed2k.hu.1 \
-	amule.it.1 amuled.it.1 amulecmd.it.1 amulegui.it.1 amuleweb.it.1 ed2k.it.1
+	amule.it.1 amuled.it.1 amulecmd.it.1 amulegui.it.1 amuleweb.it.1 ed2k.it.1 \
+	amule.ru.1 amuled.ru.1 amulecmd.ru.1 amulegui.ru.1 amuleweb.ru.1 ed2k.ru.1
 
 EXTRA_DIST += po4a.config
 
