@@ -5,7 +5,7 @@ EXTRA_DIST = \
 	alc.de.1 alcc.de.1 \
 	alc.es.1 alcc.es.1 \
 	alc.eu.1 alcc.eu.1 \
-	alcc.fr.1 \
+	alc.fr.1 alcc.fr.1 \
 	alc.hu.1 alcc.hu.1 \
 	alc.it.1 alcc.it.1
 
