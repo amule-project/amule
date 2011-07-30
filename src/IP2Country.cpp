@@ -51,6 +51,7 @@
 #define _WINDOWS_
 #define _WINSOCK2API_
 #define _WS2TCPIP_H_
+#define _WSPIAPI_H_
 #include <GeoIP.h>
 #endif
 
