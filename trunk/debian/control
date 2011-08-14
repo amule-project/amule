@@ -397,15 +397,6 @@ Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Portuguese (pt_PT) internationalized (i18n) files for amule
  This package contains the Portuguese internationalized files for amule.
 
-Package: amule-i18n-ro
-Section: localization
-Architecture: any
-Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
-Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
-Description: Romanian (ro) internationalized (i18n) files for amule
- This package contains the Romanian internationalized files for amule.
-
 Package: amule-i18n-ru
 Section: localization
 Architecture: any
