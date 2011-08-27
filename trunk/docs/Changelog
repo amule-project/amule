@@ -240,6 +240,7 @@ Version 2.3.0 - The river knows.
 		* Prevent creation of more than 99 categories, since that's the limit
 		* Fixed saving of sort orders
 		* Allow switching through files in file detail dialog
+		* Improve performance when many small files are hashed
 
 	Vollstrecker:
 		* Unify copyright lines

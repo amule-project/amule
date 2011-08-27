@@ -273,16 +273,26 @@ void CAICHSyncTask::Entry()
 	const CPath fullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
 	
 	CFile file;
-	if (!file.Open(fullpath, (fullpath.FileExists() ? CFile::read_write : CFile::write))) {
-		AddDebugLogLineC( logAICHThread, wxT("Error, failed to open 'known2_64.met' file!") );
-		return;
-	}
-
-	uint32 nLastVerifiedPos = 0;
-	try {
-		if (file.Eof()) {
+	if (!fullpath.FileExists()) {
+		// File does not exist. Try to create it to see if it can be created at all (and don't start hashing otherwise).
+		if (!file.Open(fullpath, CFile::write)) {
+			AddDebugLogLineC( logAICHThread, wxT("Error, failed to open 'known2_64.met' file!") );
+			return;
+		}
+		try {
 			file.WriteUInt8(KNOWN2_MET_VERSION);
-		} else {
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineC(logAICHThread, wxT("IO failure while creating hashlist (Aborting): ") + e.what());
+			return;		
+		}
+	} else {
+		if (!file.Open(fullpath, CFile::read)) {
+			AddDebugLogLineC( logAICHThread, wxT("Error, failed to open 'known2_64.met' file!") );
+			return;
+		}
+
+		uint32 nLastVerifiedPos = 0;
+		try {
 			if (file.ReadUInt8() != KNOWN2_MET_VERSION) {
 				throw CEOFException(wxT("Invalid met-file header found, removing file."));
 			}
@@ -300,17 +310,19 @@ void CAICHSyncTask::Entry()
 				// skip the rest of this hashset
 				nLastVerifiedPos = file.Seek(nHashCount * HASHSIZE, wxFromCurrent);
 			}
-		}
-	} catch (const CEOFException&) {
-		AddDebugLogLineC(logAICHThread, wxT("Hashlist corrupted, truncating file."));
-		file.SetLength(nLastVerifiedPos);
-	} catch (const CIOFailureException& e) {
-		AddDebugLogLineC(logAICHThread, wxT("IO failure while reading hashlist (Aborting): ") + e.what());
+		} catch (const CEOFException&) {
+			AddDebugLogLineC(logAICHThread, wxT("Hashlist corrupted, truncating file."));
+			file.Close();
+			file.Reopen(CFile::read_write);
+			file.SetLength(nLastVerifiedPos);
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineC(logAICHThread, wxT("IO failure while reading hashlist (Aborting): ") + e.what());
 		
-		return;		
-	}
+			return;		
+		}
 	
-	AddDebugLogLineN( logAICHThread, wxT("Masterhashes of known files have been loaded.") );
+		AddDebugLogLineN( logAICHThread, wxT("Masterhashes of known files have been loaded.") );
+	}
 
 	// Now we check that all files which are in the sharedfilelist have a
 	// corresponding hash in our list. Those how don't are queued for hashing.
