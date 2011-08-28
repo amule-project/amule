@@ -76,7 +76,6 @@ enum ECOpCodes {
 	EC_OP_ULOAD_QUEUE                   = 0x20,
 	EC_OP_SHARED_FILES                  = 0x22,
 	EC_OP_SHAREDFILES_RELOAD            = 0x23,
-	EC_OP_SHAREDFILES_ADD_DIRECTORY     = 0x24,
 	EC_OP_RENAME_FILE                   = 0x25,
 	EC_OP_SEARCH_START                  = 0x26,
 	EC_OP_SEARCH_STOP                   = 0x27,
@@ -519,7 +518,6 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x20: return wxT("EC_OP_ULOAD_QUEUE");
 		case 0x22: return wxT("EC_OP_SHARED_FILES");
 		case 0x23: return wxT("EC_OP_SHAREDFILES_RELOAD");
-		case 0x24: return wxT("EC_OP_SHAREDFILES_ADD_DIRECTORY");
 		case 0x25: return wxT("EC_OP_RENAME_FILE");
 		case 0x26: return wxT("EC_OP_SEARCH_START");
 		case 0x27: return wxT("EC_OP_SEARCH_STOP");

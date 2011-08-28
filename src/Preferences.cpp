@@ -61,6 +61,7 @@
 #ifndef CLIENT_GUI
 #include "RandomFunctions.h"
 #include "PlatformSpecific.h"		// Needed for PlatformSpecific::GetMaxConnections()
+#include "SharedFileList.h"			// Needed for theApp->sharedfiles->Reload()
 #endif
 
 // Needed for IP filtering prefs
@@ -1610,6 +1611,9 @@ void CPreferences::RemoveCat(size_t index)
 		delete *it;
 
 		m_CatList.erase( it );
+
+		// remove cat directory from shares
+		theApp->sharedfiles->Reload();
 	}
 }
 
@@ -1672,8 +1676,10 @@ bool CPreferences::UpdateCategory(
 	if (!path.IsOk() || (!path.DirExists() && !CPath::MakeDir(path))) {
 		ret = false;
 		// keep path as it was
-	} else {
+	} else if (category->path != path) {
+		// path changed: reload shared files, adding files in the new path and removing those from the old path
 		category->path		= path;
+		theApp->sharedfiles->Reload();
 	}
 	category->title			= name;
 	category->comment		= comment;

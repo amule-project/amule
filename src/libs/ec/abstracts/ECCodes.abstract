@@ -77,7 +77,6 @@ EC_OP_ULOAD_QUEUE                   0x20
 
 EC_OP_SHARED_FILES                  0x22
 EC_OP_SHAREDFILES_RELOAD            0x23
-EC_OP_SHAREDFILES_ADD_DIRECTORY     0x24
 
 EC_OP_RENAME_FILE                   0x25
 

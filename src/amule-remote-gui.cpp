@@ -957,16 +957,6 @@ void CSharedFilesRem::Reload(bool, bool)
 }
 
 
-void CSharedFilesRem::AddFilesFromDirectory(const CPath& path)
-{
-	CECPacket req(EC_OP_SHAREDFILES_ADD_DIRECTORY);
-
-	req.AddTag(CECTag(EC_TAG_PREFS_DIRECTORIES, path.GetRaw()));
-	
-	m_conn->SendPacket(&req);
-}
-
-
 bool CSharedFilesRem::RenameFile(CKnownFile* file, const CPath& newName)
 {
 	// We use the printable name, as the filename originated from user input,

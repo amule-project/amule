@@ -351,12 +351,21 @@ void CSharedFileList::FindSharedFiles()
 	sharedPaths.unique();
 
 	filelist->PrepareIndex();
-	unsigned addedFiles = 0;
-	std::list<CPath>::iterator it = sharedPaths.begin();
-	for (; it != sharedPaths.end(); ++it) {
-		addedFiles += AddFilesFromDirectory(*it);
+	// Gathering is done in the foreground and can be slowed down severely by parallel background hashing.
+	// So just store the hashing tasks for now.
+	TaskList hashTasks;
+	for (std::list<CPath>::iterator it = sharedPaths.begin(); it != sharedPaths.end(); ++it) {
+		AddFilesFromDirectory(*it, hashTasks);
 	}
 	filelist->ReleaseIndex();
+
+	// Now that the shared files are gathered feed the hashing tasks to the scheduler to start hashing.
+	unsigned addedFiles = 0;
+	for (TaskList::iterator it = hashTasks.begin(); it != hashTasks.end(); ++it) {
+		if (CThreadScheduler::AddTask(*it)) {
+			addedFiles++;
+		}
+	}
 	
 	if (addedFiles == 0) {
 		AddLogLineN(CFormat(wxPLURAL("Found %i known shared file", "Found %i known shared files", GetCount())) % GetCount());
@@ -383,7 +392,7 @@ bool CheckDirectory(const wxString& a, const CPath& b)
 }
 		
 
-unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
+unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks)
 {
 	// Do not allow these folders to be shared:
 	//  - The .aMule folder
@@ -435,7 +444,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 		// This will also catch files with too strict permissions.
 		if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("Failed to retrive modification time or size for '%s', skipping.")) % fullPath);
+				CFormat(wxT("Failed to retrieve modification time or size for '%s', skipping.")) % fullPath);
 			
 			fname = SharedDir.GetNextFile();
 			continue;
@@ -461,16 +470,15 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Hashing new unknown shared file '%s'")) % fname);
 			
-			if (CThreadScheduler::AddTask(new CHashingTask(directory, fname))) {
-				addedFiles++;
-			}
+			hashTasks.push_back(new CHashingTask(directory, fname));
+			addedFiles++;
 		}
 
 		fname = SharedDir.GetNextFile();
 	}
 
 	if ((addedFiles == 0) && (knownFiles == 0)) {
-		AddLogLineNS(CFormat(_("No shareable files found in directory: %s"))
+		AddLogLineN(CFormat(_("No shareable files found in directory: %s"))
 			% directory.GetPrintable());
 	}
 
@@ -530,6 +538,7 @@ void CSharedFileList::Reload()
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
 	// Kry - bah, let's use a var. 
 	if (!reloading) {
+		AddDebugLogLineN(logKnownFiles, wxT("Reload shared files"));
 		reloading = true;
 		Notify_SharedFilesRemoveAllItems();
 		

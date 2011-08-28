@@ -42,6 +42,7 @@ class CServer;
 class CPublishKeywordList;
 class CPath;
 class CAICHHash;
+class CThreadTask;
 
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
@@ -62,7 +63,6 @@ public:
 	size_t  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
 	void	CopyFileList(std::vector<CKnownFile*>& out_list) const;
 	void	UpdateItem(CKnownFile* toupdate);
-	unsigned	AddFilesFromDirectory(const CPath& directory);
 	void    GetSharedFilesByDirectory(const wxString& directory, CKnownFilePtrList& list);
 	void	ClearED2KPublishInfo();
 	void	RepublishFile(CKnownFile* pFile);
@@ -102,7 +102,10 @@ public:
 	void CheckAICHHashes(const std::list<CAICHHash>& hashes);
 	
 private:
+	typedef std::list<CThreadTask *> TaskList;
+
 	bool	AddFile(CKnownFile* pFile);
+	unsigned	AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks);
 	void	FindSharedFiles();
 	bool	reloading;
 	
