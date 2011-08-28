@@ -246,14 +246,7 @@ void CTransferWnd::OnAddCategory(wxCommandEvent& WXUNUSED(event))
 	true
 #endif	
 	);
-	if (dialog.ShowModal() == wxOK) {
-		// Add the files on this folder.
-		Category_Struct* newcat =
-			theApp->glob_prefs->GetCategory(
-				theApp->glob_prefs->GetCatCount()-1);
-		theApp->sharedfiles->AddFilesFromDirectory(newcat->path);
-		theApp->sharedfiles->Reload();		
-	}
+	dialog.ShowModal();
 }
 
 
@@ -288,8 +281,6 @@ void CTransferWnd::RemoveCategoryPage(int index)
 
 void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 {
-	Category_Struct* cat = theApp->glob_prefs->GetCategory(m_dlTab->GetSelection());
-	CPath oldpath = cat->path;
 	CCatDialog dialog( this, 
 	// Allow browse?
 #ifdef CLIENT_GUI	
@@ -299,12 +290,7 @@ void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 #endif
 		, m_dlTab->GetSelection());
 	
-	if (dialog.ShowModal() == wxOK) {
-		if (!oldpath.IsSameDir(cat->path)) {
-			theApp->sharedfiles->AddFilesFromDirectory(cat->path);
-			theApp->sharedfiles->Reload();			
-		}
-	}
+	dialog.ShowModal();
 }
 
 
