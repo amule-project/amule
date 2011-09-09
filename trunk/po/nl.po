@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-03 23:17+0200\n"
+"POT-Creation-Date: 2011-09-09 20:21+0200\n"
 "PO-Revision-Date: 2011-06-27 03:54+0100\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -92,7 +92,7 @@ msgid "Password set and external connections enabled."
 msgstr "Wachtwoord ingesteld en externe verbindingen ingeschakeld."
 
 #: src/amule.cpp:449 src/KadDlg.cpp:182 src/KadDlg.cpp:188
-#: src/PrefsUnifiedDlg.cpp:718 src/SharedFilesCtrl.cpp:317
+#: src/PrefsUnifiedDlg.cpp:726 src/SharedFilesCtrl.cpp:317
 msgid "WARNING"
 msgstr "WAARSCHUWING"
 
@@ -231,129 +231,129 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr "Server hostnaam geïnformeerd"
 
-#: src/amule.cpp:1349
+#: src/amule.cpp:1346
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Toewijzen schijfruimte voor bestand '%s' mislukt: %s"
 
-#: src/amule.cpp:1478
+#: src/amule.cpp:1475
 msgid "ERROR: can't open logfile"
 msgstr "FOUT: kan logbestand niet openen"
 
-#: src/amule.cpp:1482
+#: src/amule.cpp:1479
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "WAARSCHUWING: logbestand is leeg. Er is iets mis."
 
-#: src/amule.cpp:1500
+#: src/amule.cpp:1497
 msgid "Log has been reset"
 msgstr "Log is gereset"
 
-#: src/amule.cpp:1526
+#: src/amule.cpp:1523
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ServerBericht: %s"
 
-#: src/amule.cpp:1564 src/IP2Country.cpp:150 src/IPFilter.cpp:509
+#: src/amule.cpp:1561 src/IP2Country.cpp:151 src/IPFilter.cpp:509
 #: src/ServerList.cpp:865
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "Download van %s overgeslagen, omdat gevraagd bestand niet nieuwer is."
 
-#: src/amule.cpp:1566
+#: src/amule.cpp:1563
 msgid "Failed to download the nodes list."
 msgstr "Kon nodes lijst niet downloaden."
 
-#: src/amule.cpp:1586
+#: src/amule.cpp:1583
 msgid "Failed to open the downloaded version check file"
 msgstr "Kon gedownload versie controle bestand niet openen"
 
-#: src/amule.cpp:1589 src/amule.cpp:1599 src/amule.cpp:1605
+#: src/amule.cpp:1586 src/amule.cpp:1596 src/amule.cpp:1602
 msgid "Corrupted version check file"
 msgstr "Beschadigd versie controle bestand"
 
-#: src/amule.cpp:1615
+#: src/amule.cpp:1612
 msgid "You are using an outdated version of aMule!"
 msgstr "U gebruikt een verouderde versie van aMule!"
 
-#: src/amule.cpp:1616
+#: src/amule.cpp:1613
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Uw aMule versie is %i.%i.%i en de nieuwste versie is %li.%li.%li"
 
-#: src/amule.cpp:1617
+#: src/amule.cpp:1614
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "De nieuwste versie kan altijd gevonden worden op http://www.amule.org"
 
-#: src/amule.cpp:1619
+#: src/amule.cpp:1616
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "WAARSCHUWING: Uw aMuled versie is verouderd: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1623
+#: src/amule.cpp:1620
 msgid "Your copy of aMule is up to date."
 msgstr "U heeft de nieuwste aMule versie."
 
-#: src/amule.cpp:1630
+#: src/amule.cpp:1627
 msgid "Failed to download the version check file"
 msgstr "Kon versie controle bestand niet downloaden"
 
-#: src/amule.cpp:1795 src/amule-remote-gui.cpp:518
+#: src/amule.cpp:1792 src/amule-remote-gui.cpp:518
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Gebruikers: %s | Bestanden: %s"
 
-#: src/amule.cpp:1796 src/amule-remote-gui.cpp:519
+#: src/amule.cpp:1793 src/amule-remote-gui.cpp:519
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Gebruikers: E: %s K: %s | Bestanden: E: %s K: %s"
 
-#: src/amule.cpp:1805 src/amule-remote-gui.cpp:528
+#: src/amule.cpp:1802 src/amule-remote-gui.cpp:528
 msgid "No networks selected"
 msgstr "Geen netwerken geselecteerd"
 
-#: src/amule.cpp:1868 src/TextClient.cpp:707
+#: src/amule.cpp:1865 src/TextClient.cpp:707
 msgid "with LowID"
 msgstr "met Laag ID"
 
-#: src/amule.cpp:1868 src/TextClient.cpp:707
+#: src/amule.cpp:1865 src/TextClient.cpp:707
 msgid "with HighID"
 msgstr "met Hoog ID"
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1867
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Verbonden met %s %s"
 
-#: src/amule.cpp:1873
+#: src/amule.cpp:1870
 #, c-format
 msgid "Connecting to %s"
 msgstr "Verbinden met %s"
 
-#: src/amule.cpp:1875
+#: src/amule.cpp:1872
 msgid "Disconnected from eD2k"
 msgstr "Verbinding verbroken met eD2K"
 
-#: src/amule.cpp:1882
+#: src/amule.cpp:1879
 msgid "Kad started."
 msgstr "Kad gestart."
 
-#: src/amule.cpp:1884
+#: src/amule.cpp:1881
 msgid "Kad stopped."
 msgstr "Kad gestopt."
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1888
 msgid "Connected to Kad (ok)"
 msgstr "Verbonden met Kad (ok)"
 
-#: src/amule.cpp:1893
+#: src/amule.cpp:1890
 msgid "Connected to Kad (firewalled)"
 msgstr "Verbonden met Kad (firewalled)"
 
-#: src/amule.cpp:1896
+#: src/amule.cpp:1893
 msgid "Disconnected from Kad"
 msgstr "Verbinding met Kad verbroken"
 
-#: src/amule.cpp:1963
+#: src/amule.cpp:1960
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -361,7 +361,7 @@ msgstr ""
 "Kad netwerk kan niet gebruikt worden als de UDP poort is uitgeschakeld in "
 "voorkeuren, wordt niet gestart."
 
-#: src/amule.cpp:1966
+#: src/amule.cpp:1963
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad netwerk is uitgeschakeld in voorkeuren, wordt niet mee verbonden."
 
@@ -489,8 +489,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:512 src/KadDlg.cpp:192 src/PartFile.cpp:920
-#: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:602
-#: src/PrefsUnifiedDlg.cpp:705 src/PrefsUnifiedDlg.cpp:808
+#: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:608
+#: src/PrefsUnifiedDlg.cpp:713 src/PrefsUnifiedDlg.cpp:816
 msgid "Message"
 msgstr "Bericht"
 
@@ -527,12 +527,12 @@ msgid "Kad: Off"
 msgstr "Kad: Uitgeschakeld"
 
 #: src/amuleDlg.cpp:773 src/DownloadListCtrl.cpp:415
-#: src/DownloadListCtrl.cpp:653 src/FriendListCtrl.cpp:174
-#: src/muuli_wdr.cpp:809 src/muuli_wdr.cpp:873 src/muuli_wdr.cpp:947
-#: src/muuli_wdr.cpp:1013 src/muuli_wdr.cpp:2333 src/muuli_wdr.cpp:2435
-#: src/muuli_wdr.cpp:3151 src/ServerListCtrl.cpp:153
+#: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
+#: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
+#: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2326 src/muuli_wdr.cpp:2428
+#: src/muuli_wdr.cpp:3144 src/ServerListCtrl.cpp:153
 #: src/ServerListCtrl.cpp:527 src/ServerListCtrl.cpp:546
-#: src/TransferWnd.cpp:389 src/utils/wxCas/src/wxcasprefs.cpp:294
+#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:294
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -540,7 +540,7 @@ msgstr "Annuleren"
 msgid "Stop the current connection attempts"
 msgstr "Beëindig de huidige verbindingspogingen"
 
-#: src/amuleDlg.cpp:779 src/MuleTrayIcon.cpp:496 src/muuli_wdr.cpp:2576
+#: src/amuleDlg.cpp:779 src/MuleTrayIcon.cpp:496 src/muuli_wdr.cpp:2569
 msgid "Disconnect"
 msgstr "Verbreek"
 
@@ -548,8 +548,8 @@ msgstr "Verbreek"
 msgid "Disconnect from the currently connected networks"
 msgstr "Verbreek de huidige verbin"
 
-#: src/amuleDlg.cpp:785 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2759
-#: src/muuli_wdr.cpp:3147 src/muuli_wdr.cpp:3531
+#: src/amuleDlg.cpp:785 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2752
+#: src/muuli_wdr.cpp:3140 src/muuli_wdr.cpp:3524
 msgid "Connect"
 msgstr "Verbinden"
 
@@ -590,7 +590,7 @@ msgstr "Afsluit bevestiging"
 msgid "Launch Command: "
 msgstr "Voer Commando Uit: "
 
-#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2099 src/Preferences.cpp:835
+#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2089 src/Preferences.cpp:838
 msgid "- default -"
 msgstr "- standaard -"
 
@@ -604,105 +604,105 @@ msgstr "Skindirectory '%s' bestaat niet"
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "WAARSCHUWING: Kon skinbestand '%s' niet openen om te lezen"
 
-#: src/amuleDlg.cpp:1328 src/amuleDlg.cpp:1464 src/muuli_wdr.cpp:1680
-#: src/muuli_wdr.cpp:3533
+#: src/amuleDlg.cpp:1328 src/amuleDlg.cpp:1462 src/muuli_wdr.cpp:1670
+#: src/muuli_wdr.cpp:3526
 msgid "Networks"
 msgstr "Netwerken"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3533
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3526
 msgid "Networks Window"
 msgstr "Netwerken Venster"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3527
 msgid "Searches"
 msgstr "Zoeken"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3527
 msgid "Searches Window"
 msgstr "Zoekvenster"
 
-#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:644 src/muuli_wdr.cpp:426
-#: src/muuli_wdr.cpp:1795 src/muuli_wdr.cpp:3535 src/Statistics.cpp:752
+#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:426
+#: src/muuli_wdr.cpp:1785 src/muuli_wdr.cpp:3528 src/Statistics.cpp:752
 msgid "Downloads"
 msgstr "Downloads"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3535
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3528
 msgid "Downloads Window"
 msgstr "Downloadsvenster"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3413
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3406
 msgid "Shared files"
 msgstr "Gedeelde bestanden"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3537
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3530
 msgid "Shared Files Window"
 msgstr "Gedeelde Bestanden Venster"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2975 src/muuli_wdr.cpp:3486
-#: src/muuli_wdr.cpp:3538
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2968 src/muuli_wdr.cpp:3479
+#: src/muuli_wdr.cpp:3531
 msgid "Messages"
 msgstr "Berichten"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3538
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3531
 msgid "Messages Window"
 msgstr "Berichten Venster"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3539 src/PrefsUnifiedDlg.cpp:179
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3532 src/PrefsUnifiedDlg.cpp:179
 #: src/Statistics.cpp:722 src/Statistics.cpp:1020
 msgid "Statistics"
 msgstr "Statistieken"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3539
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3532
 msgid "Statistics Graph Window"
 msgstr "Statistieken Venster (Grafieken)"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3541 src/PrefsUnifiedDlg.cpp:194
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3534 src/PrefsUnifiedDlg.cpp:194
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3541
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3534
 msgid "Preferences Settings Window"
 msgstr "Voorkeuren Instellingen Venster"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3542
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3535
 msgid "Import"
 msgstr "Importeer"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3542
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3535
 msgid "The partfile importer tool"
 msgstr "Het partbestand importeer programma"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3543
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3536
 #: src/utils/aLinkCreator/src/alcframe.cpp:274
 msgid "About"
 msgstr "Over"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3543
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3536
 msgid "About/Help"
 msgstr "Over/Help"
 
-#: src/amuleDlg.cpp:1475
+#: src/amuleDlg.cpp:1473
 msgid "eD2k network"
 msgstr "eD2k netwerk"
 
-#: src/amuleDlg.cpp:1479
+#: src/amuleDlg.cpp:1477
 msgid "Kad network"
 msgstr "Kad netwerk"
 
-#: src/amuleDlg.cpp:1484
+#: src/amuleDlg.cpp:1482
 msgid "No network"
 msgstr "Geen netwerk"
 
-#: src/amule-gui.cpp:194
+#: src/amule-gui.cpp:210
 msgid "aMule remote control"
 msgstr "aMule besturing op afstand"
 
-#: src/amule-gui.cpp:196 src/utils/wxCas/src/wxcasframe.cpp:116
+#: src/amule-gui.cpp:212 src/utils/wxCas/src/wxcasframe.cpp:116
 msgid "aMule"
 msgstr "aMule"
 
-#: src/amule-gui.cpp:282
+#: src/amule-gui.cpp:294
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Fatale Fout: Kon Core Timer niet aanmaken"
 
@@ -747,7 +747,7 @@ msgstr "Verbinding verbroken - aMule is waarschijnlijk afgesloten."
 msgid "Ready"
 msgstr "Klaar"
 
-#: src/amule-remote-gui.cpp:585 src/TransferWnd.cpp:354
+#: src/amule-remote-gui.cpp:585 src/TransferWnd.cpp:340
 msgid "All"
 msgstr "Alle"
 
@@ -758,15 +758,15 @@ msgstr ""
 "Kan directory '%s' niet aanmaken voor categorie '%s', directory '%s' wordt "
 "behouden."
 
-#: src/amule-remote-gui.cpp:1325 src/BaseClient.cpp:1785
+#: src/amule-remote-gui.cpp:1315 src/BaseClient.cpp:1785
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2622
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
-#: src/DownloadListCtrl.cpp:1066 src/DownloadListCtrl.cpp:1079
-#: src/DownloadListCtrl.cpp:1090 src/ExternalConn.cpp:431
-#: src/FileDetailDialog.cpp:126 src/GenericClientListCtrl.cpp:1050
+#: src/DownloadListCtrl.cpp:1076 src/DownloadListCtrl.cpp:1089
+#: src/DownloadListCtrl.cpp:1100 src/ExternalConn.cpp:431
+#: src/FileDetailDialog.cpp:129 src/GenericClientListCtrl.cpp:1050
 #: src/GenericClientListCtrl.cpp:1061 src/GenericClientListCtrl.cpp:1071
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:916 src/KnownFile.cpp:922
 #: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
@@ -882,8 +882,8 @@ msgstr "Fout bij het bewaren van bestand %s: %s"
 msgid "Enter Captcha"
 msgstr "Voer Captcha in"
 
-#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:694 src/muuli_wdr.cpp:244
-#: src/SearchListCtrl.cpp:614 src/TransferWnd.cpp:349
+#: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
+#: src/SearchListCtrl.cpp:614 src/TransferWnd.cpp:335
 msgid "Category"
 msgstr "Categorie"
 
@@ -1021,7 +1021,7 @@ msgid "Disconnected"
 msgstr "Niet verbonden"
 
 #: src/ClientDetailDialog.cpp:155 src/ClientDetailDialog.cpp:159
-#: src/DownloadListCtrl.cpp:954 src/GenericClientListCtrl.cpp:879
+#: src/DownloadListCtrl.cpp:964 src/GenericClientListCtrl.cpp:879
 #: src/GenericClientListCtrl.cpp:886
 #, c-format
 msgid "%.1f kB/s"
@@ -1132,7 +1132,7 @@ msgstr "Waardering"
 msgid "Comment"
 msgstr "Commentaar"
 
-#: src/CommentDialogLst.cpp:103 src/muuli_wdr.cpp:901
+#: src/CommentDialogLst.cpp:103 src/muuli_wdr.cpp:891
 msgid "No comments"
 msgstr "Geen commentaren"
 
@@ -1167,19 +1167,19 @@ msgstr "Auto [Ho]"
 msgid "Very low"
 msgstr "Heel laag"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2397
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2390
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "Laag"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2398
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2391
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "Normaal"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:2399
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2392
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1211,7 +1211,7 @@ msgid "On Queue"
 msgstr "In wachtrij"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:362
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "Downloaden"
 
@@ -1271,7 +1271,7 @@ msgstr "Lokale Server"
 msgid "Remote Server"
 msgstr "Server op Afstand"
 
-#: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3288
+#: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3281
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:714
 msgid "Kad"
 msgstr "Kad"
@@ -1297,7 +1297,7 @@ msgid "Search Result"
 msgstr "Zoekresultaat"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:360
+#: src/OtherFunctions.cpp:674 src/TransferWnd.cpp:346
 msgid "Completed"
 msgstr "Compleet"
 
@@ -1342,7 +1342,7 @@ msgstr "Part"
 msgid "Size"
 msgstr "Grootte"
 
-#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:3363
+#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:3356
 msgid "Transferred"
 msgstr "Overgebracht"
 
@@ -1359,7 +1359,7 @@ msgstr "Voortgang"
 msgid "Sources"
 msgstr "Bronnen"
 
-#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:652
+#: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
 #: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:144
 msgid "Priority"
@@ -1399,97 +1399,97 @@ msgstr ""
 "Feedback van: %s (%s)\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:650 src/muuli_wdr.cpp:2400
+#: src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:2393
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "Auto"
 
-#: src/DownloadListCtrl.cpp:654 src/TransferWnd.cpp:390
+#: src/DownloadListCtrl.cpp:653 src/TransferWnd.cpp:376
 msgid "&Stop"
 msgstr "&Stop"
 
-#: src/DownloadListCtrl.cpp:655 src/TransferWnd.cpp:391
+#: src/DownloadListCtrl.cpp:654 src/TransferWnd.cpp:377
 msgid "&Pause"
 msgstr "&Pauzeer"
 
-#: src/DownloadListCtrl.cpp:656 src/TransferWnd.cpp:392
+#: src/DownloadListCtrl.cpp:655 src/TransferWnd.cpp:378
 msgid "&Resume"
 msgstr "Ve&rder gaan"
 
-#: src/DownloadListCtrl.cpp:657
+#: src/DownloadListCtrl.cpp:656
 msgid "C&lear completed"
 msgstr "Verwijder comp&lete"
 
-#: src/DownloadListCtrl.cpp:663
+#: src/DownloadListCtrl.cpp:662
 msgid "Swap every A4AF to this file now"
 msgstr "Wissel elk A4AF nu uit met dit bestand"
 
-#: src/DownloadListCtrl.cpp:665
+#: src/DownloadListCtrl.cpp:664
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Wissel elk A4AF uit met dit bestand (Auto)"
 
-#: src/DownloadListCtrl.cpp:670
+#: src/DownloadListCtrl.cpp:669
 msgid "Swap every A4AF to any other file now"
 msgstr "Wissel elk A4AF nu uit met de andere bestanden"
 
-#: src/DownloadListCtrl.cpp:673
+#: src/DownloadListCtrl.cpp:672
 msgid "Extended Options"
 msgstr "Uitgebreide Opties"
 
-#: src/DownloadListCtrl.cpp:678 src/DownloadListCtrl.cpp:738
+#: src/DownloadListCtrl.cpp:677 src/DownloadListCtrl.cpp:737
 msgid "Preview"
 msgstr "Voorbeeld"
 
-#: src/DownloadListCtrl.cpp:679
+#: src/DownloadListCtrl.cpp:678
 msgid "Show file &details"
 msgstr "Bekijk &details"
 
-#: src/DownloadListCtrl.cpp:680 src/muuli_wdr.cpp:780
+#: src/DownloadListCtrl.cpp:679 src/muuli_wdr.cpp:768
 msgid "Show all comments"
 msgstr "Bekijk alle commentaren"
 
-#: src/DownloadListCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:684
 msgid "Copy magnet URI to clipboard"
 msgstr "Kopieer magnet URI naar klembord"
 
-#: src/DownloadListCtrl.cpp:687 src/SharedFilesCtrl.cpp:163
+#: src/DownloadListCtrl.cpp:686 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
 msgstr "Kopieer eD2k &link naar klembord"
 
-#: src/DownloadListCtrl.cpp:689 src/SharedFilesCtrl.cpp:169
+#: src/DownloadListCtrl.cpp:688 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
 msgstr "Kopieer feedback naar klembord"
 
-#: src/DownloadListCtrl.cpp:698
+#: src/DownloadListCtrl.cpp:697
 msgid "unassign"
 msgstr "Verwijder toewijzing"
 
-#: src/DownloadListCtrl.cpp:705
+#: src/DownloadListCtrl.cpp:704
 msgid "Assign to category"
 msgstr "Toewijzen aan catgorie"
 
-#: src/DownloadListCtrl.cpp:741
+#: src/DownloadListCtrl.cpp:740
 msgid "&Open the file"
 msgstr "&Open het bestand"
 
-#: src/DownloadListCtrl.cpp:802 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:812 src/SharedFilesCtrl.cpp:684
 msgid "Enter new name for this file:"
 msgstr "Voer een nieuwe naam voor dit bestand in:"
 
-#: src/DownloadListCtrl.cpp:803 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:813 src/SharedFilesCtrl.cpp:685
 msgid "File rename"
 msgstr "Naam wijzigen"
 
-#: src/DownloadListCtrl.cpp:1077 src/DownloadListCtrl.cpp:1088
+#: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1098
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1258
+#: src/DownloadListCtrl.cpp:1268
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Downloads (%i)"
 
-#: src/DownloadListCtrl.cpp:1402
+#: src/DownloadListCtrl.cpp:1412
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -1498,11 +1498,11 @@ msgstr ""
 "dient u uw video afspeelprogramma in te stellen bij voorkeuren (standaard is "
 "mplayer)."
 
-#: src/DownloadListCtrl.cpp:1403
+#: src/DownloadListCtrl.cpp:1413
 msgid "File preview"
 msgstr "Voorbeeld"
 
-#: src/DownloadListCtrl.cpp:1451
+#: src/DownloadListCtrl.cpp:1461
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "FOUT: Opstarten externe mediaspeler mislukt! Commando: '%s'"
@@ -2007,16 +2007,16 @@ msgstr "Maakt config bestand gebaseerd op aMules config bestand."
 msgid "Print program version."
 msgstr "Toon programma versie."
 
-#: src/FileDetailDialog.cpp:58
+#: src/FileDetailDialog.cpp:60
 msgid "File Details"
 msgstr "Bestandsdetails"
 
-#: src/FileDetailDialog.cpp:110
-#, c-format
-msgid "%.2f%% done"
+#: src/FileDetailDialog.cpp:113
+#, fuzzy, c-format
+msgid "%.1f%% done"
 msgstr "%.2f%% compleet"
 
-#: src/FileDetailDialog.cpp:112 src/utils/wxCas/src/wxcasframe.cpp:1144
+#: src/FileDetailDialog.cpp:115 src/utils/wxCas/src/wxcasframe.cpp:1144
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
 #, c-format
 msgid "%.2f kB/s"
@@ -2034,7 +2034,7 @@ msgstr "Kon niet schrijven naar vriendenlijst-bestand 'emfriends.met'!"
 msgid "CRITICAL - no client on StartChatSession"
 msgstr "KRITIEK - geen client bij StartChatSession"
 
-#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2837 src/muuli_wdr.cpp:3459
+#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2830 src/muuli_wdr.cpp:3452
 msgid "Friends"
 msgstr "Vrienden"
 
@@ -2192,40 +2192,40 @@ msgstr "Kon niet verbinden met HTTP downloadserver"
 msgid "Invalid response from HTTP download server"
 msgstr "Ongeldig antwoord van HTTP downloadserver"
 
-#: src/IP2Country.cpp:99
+#: src/IP2Country.cpp:100
 #, c-format
 msgid "Download new GeoIP.dat from %s"
 msgstr "Download van nieuwe GeoIP.dat van %s"
 
-#: src/IP2Country.cpp:127
+#: src/IP2Country.cpp:128
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Download van bestand GeoIP.dat mislukt, update wordt gestopt."
 
-#: src/IP2Country.cpp:133 src/IPFilter.cpp:500
+#: src/IP2Country.cpp:134 src/IPFilter.cpp:500
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "Kon bestand %s niet verwijderen, update wordt gestopt."
 
-#: src/IP2Country.cpp:139
+#: src/IP2Country.cpp:140
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr "Kon bestand %s niet hernoemen, update wordt gestopt."
 
-#: src/IP2Country.cpp:145 src/IPFilter.cpp:506
+#: src/IP2Country.cpp:146 src/IPFilter.cpp:506
 #, c-format
 msgid "Successfully updated %s"
 msgstr "%s succesvol geüpdatet"
 
-#: src/IP2Country.cpp:147
+#: src/IP2Country.cpp:148
 msgid "Error updating GeoIP.dat"
 msgstr "Fout bij het updaten van GeoIP.dat"
 
-#: src/IP2Country.cpp:152 src/IPFilter.cpp:511 src/ServerList.cpp:867
+#: src/IP2Country.cpp:153 src/IPFilter.cpp:511 src/ServerList.cpp:867
 #, c-format
 msgid "Failed to download %s from %s"
 msgstr "Kon %s niet downloaden van %s"
 
-#: src/IP2Country.cpp:171
+#: src/IP2Country.cpp:172
 #, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "Kon landgegevens niet laden voor '%s'."
@@ -2373,7 +2373,7 @@ msgstr "Deel ratio"
 msgid "Uploaded"
 msgstr "Geüpload"
 
-#: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3341
+#: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3334
 msgid "Requested"
 msgstr "Aangevraagd"
 
@@ -2424,17 +2424,17 @@ msgid "Complete"
 msgstr "Compleet"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3710 src/TransferWnd.cpp:364
+#: src/PartFile.cpp:3710 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "Gepauzeerd"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:363
+#: src/PartFile.cpp:3713 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "Foutief"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3722 src/TransferWnd.cpp:361
+#: src/PartFile.cpp:3722 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "Wachten"
 
@@ -2491,8 +2491,8 @@ msgstr "FOUT: "
 msgid "WARNING: "
 msgstr "WAARSCHUWING: "
 
-#: src/MuleNotebook.cpp:167 src/muuli_wdr.cpp:911 src/muuli_wdr.cpp:1440
-#: src/muuli_wdr.cpp:3236 src/muuli_wdr.cpp:3506
+#: src/MuleNotebook.cpp:167 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
+#: src/muuli_wdr.cpp:3229 src/muuli_wdr.cpp:3499
 msgid "Close"
 msgstr "Sluiten"
 
@@ -2509,7 +2509,7 @@ msgstr "Kopiëren"
 msgid "Paste"
 msgstr "Plakken"
 
-#: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:385 src/muuli_wdr.cpp:842
+#: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:385 src/muuli_wdr.cpp:832
 #: src/utils/aLinkCreator/src/alcframe.cpp:155
 msgid "Clear"
 msgstr "Wissen"
@@ -2519,8 +2519,8 @@ msgid "Select All"
 msgstr "Alles Selecteren"
 
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:464 src/MuleTrayIcon.cpp:485
-#: src/muuli_wdr.cpp:1583 src/muuli_wdr.cpp:1592 src/muuli_wdr.cpp:1601
-#: src/muuli_wdr.cpp:1948 src/muuli_wdr.cpp:1957 src/OtherFunctions.cpp:139
+#: src/muuli_wdr.cpp:1573 src/muuli_wdr.cpp:1582 src/muuli_wdr.cpp:1591
+#: src/muuli_wdr.cpp:1938 src/muuli_wdr.cpp:1947 src/OtherFunctions.cpp:139
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
 msgstr "kB/s"
@@ -2798,17 +2798,17 @@ msgid "Archives"
 msgstr "Archieven"
 
 #: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:199 src/OtherFunctions.cpp:681
-#: src/TransferWnd.cpp:371
+#: src/TransferWnd.cpp:357
 msgid "Audio"
 msgstr "Geluid"
 
 #: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:213 src/OtherFunctions.cpp:683
-#: src/TransferWnd.cpp:373
+#: src/TransferWnd.cpp:359
 msgid "CD-Images"
 msgstr "CD-Images"
 
 #: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:220 src/OtherFunctions.cpp:684
-#: src/TransferWnd.cpp:374
+#: src/TransferWnd.cpp:360
 msgid "Pictures"
 msgstr "Plaatjes"
 
@@ -2840,7 +2840,7 @@ msgstr "Bytes"
 msgid "KB"
 msgstr "kB"
 
-#: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1833
+#: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1823
 #: src/OtherFunctions.cpp:110
 msgid "MB"
 msgstr "MB"
@@ -2889,7 +2889,7 @@ msgstr "Zoekt naar meer resultaten op eD2K. Werkt nog niet voor Kad."
 msgid "Stop"
 msgstr "Stop"
 
-#: src/muuli_wdr.cpp:371 src/muuli_wdr.cpp:1577 src/SearchListCtrl.cpp:612
+#: src/muuli_wdr.cpp:371 src/muuli_wdr.cpp:1567 src/SearchListCtrl.cpp:612
 msgid "Download"
 msgstr "Download"
 
@@ -2909,7 +2909,7 @@ msgstr "Verwijderd complete downloads"
 msgid "File sources:"
 msgstr "Bestandsbronnen:"
 
-#: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1226 src/PrefsUnifiedDlg.cpp:172
+#: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1216 src/PrefsUnifiedDlg.cpp:172
 msgid "General"
 msgstr "Algemeen"
 
@@ -2923,14 +2923,14 @@ msgstr "Volledige Naam :"
 #: src/muuli_wdr.cpp:642 src/muuli_wdr.cpp:653 src/muuli_wdr.cpp:664
 #: src/muuli_wdr.cpp:675 src/muuli_wdr.cpp:688 src/muuli_wdr.cpp:695
 #: src/muuli_wdr.cpp:722 src/muuli_wdr.cpp:733 src/muuli_wdr.cpp:744
-#: src/muuli_wdr.cpp:1243 src/muuli_wdr.cpp:1247 src/muuli_wdr.cpp:1262
-#: src/muuli_wdr.cpp:1271 src/muuli_wdr.cpp:1278 src/muuli_wdr.cpp:1287
-#: src/muuli_wdr.cpp:1294 src/muuli_wdr.cpp:1303 src/muuli_wdr.cpp:1310
-#: src/muuli_wdr.cpp:1319 src/muuli_wdr.cpp:1335 src/muuli_wdr.cpp:1348
-#: src/muuli_wdr.cpp:1357 src/muuli_wdr.cpp:1364 src/muuli_wdr.cpp:1373
-#: src/muuli_wdr.cpp:1380 src/muuli_wdr.cpp:1389 src/muuli_wdr.cpp:1407
-#: src/muuli_wdr.cpp:1416 src/muuli_wdr.cpp:1423 src/muuli_wdr.cpp:1432
-#: src/muuli_wdr.cpp:3344 src/muuli_wdr.cpp:3355 src/muuli_wdr.cpp:3366
+#: src/muuli_wdr.cpp:1233 src/muuli_wdr.cpp:1237 src/muuli_wdr.cpp:1252
+#: src/muuli_wdr.cpp:1261 src/muuli_wdr.cpp:1268 src/muuli_wdr.cpp:1277
+#: src/muuli_wdr.cpp:1284 src/muuli_wdr.cpp:1293 src/muuli_wdr.cpp:1300
+#: src/muuli_wdr.cpp:1309 src/muuli_wdr.cpp:1325 src/muuli_wdr.cpp:1338
+#: src/muuli_wdr.cpp:1347 src/muuli_wdr.cpp:1354 src/muuli_wdr.cpp:1363
+#: src/muuli_wdr.cpp:1370 src/muuli_wdr.cpp:1379 src/muuli_wdr.cpp:1397
+#: src/muuli_wdr.cpp:1406 src/muuli_wdr.cpp:1413 src/muuli_wdr.cpp:1422
+#: src/muuli_wdr.cpp:3337 src/muuli_wdr.cpp:3348 src/muuli_wdr.cpp:3359
 msgid "N/A"
 msgstr "N/B"
 
@@ -3006,32 +3006,32 @@ msgstr "Verkregen door compressie :"
 msgid "Packages saved by I.C.H. :"
 msgstr "Pakketten gered door I.C.H. :"
 
-#: src/muuli_wdr.cpp:761
+#: src/muuli_wdr.cpp:754
 msgid "File Names"
 msgstr "BestandsNamen"
 
-#: src/muuli_wdr.cpp:775
+#: src/muuli_wdr.cpp:763
 msgid "Takeover"
 msgstr "Neem over"
 
-#: src/muuli_wdr.cpp:785
+#: src/muuli_wdr.cpp:773
 msgid "Cleanup"
 msgstr "Opruimen"
 
-#: src/muuli_wdr.cpp:799 src/muuli_wdr.cpp:869
+#: src/muuli_wdr.cpp:793 src/muuli_wdr.cpp:859
 msgid "Apply"
 msgstr "Toepassen"
 
-#: src/muuli_wdr.cpp:804
+#: src/muuli_wdr.cpp:798
 msgid "Ok"
 msgstr "Ok"
 
-#: src/muuli_wdr.cpp:833
+#: src/muuli_wdr.cpp:823
 msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr ""
 "Geef bestand commentaar/waardering (Tekst zichtbaar voor alle gebruikers)"
 
-#: src/muuli_wdr.cpp:839
+#: src/muuli_wdr.cpp:829
 msgid ""
 "For a film you can say its length, its story, language ...\\n\\nand if it's "
 "a fake, you can tell that to other users of aMule."
@@ -3039,277 +3039,277 @@ msgstr ""
 "Voor een film kunt iets zeggen over de lengte, het verhaal, de taal ...\\n"
 "\\nen als het nep is kunt u dat vertellen aan de andere gebruikers van aMule."
 
-#: src/muuli_wdr.cpp:851
+#: src/muuli_wdr.cpp:841
 msgid "File Quality"
 msgstr "Bestands Kwaliteit"
 
-#: src/muuli_wdr.cpp:856 src/OtherFunctions.cpp:261 src/OtherFunctions.cpp:267
+#: src/muuli_wdr.cpp:846 src/OtherFunctions.cpp:261 src/OtherFunctions.cpp:267
 msgid "Not rated"
 msgstr "Niet beoordeeld"
 
-#: src/muuli_wdr.cpp:857 src/OtherFunctions.cpp:262
+#: src/muuli_wdr.cpp:847 src/OtherFunctions.cpp:262
 msgid "Invalid / Corrupt / Fake"
 msgstr "Onbruikbaar / Beschadigd / Nep"
 
-#: src/muuli_wdr.cpp:858 src/OtherFunctions.cpp:263
+#: src/muuli_wdr.cpp:848 src/OtherFunctions.cpp:263
 msgid "Poor"
 msgstr "Matig"
 
-#: src/muuli_wdr.cpp:859 src/OtherFunctions.cpp:264
+#: src/muuli_wdr.cpp:849 src/OtherFunctions.cpp:264
 msgid "Fair"
 msgstr "Redelijk"
 
-#: src/muuli_wdr.cpp:860 src/OtherFunctions.cpp:265
+#: src/muuli_wdr.cpp:850 src/OtherFunctions.cpp:265
 msgid "Good"
 msgstr "Goed"
 
-#: src/muuli_wdr.cpp:861 src/OtherFunctions.cpp:266
+#: src/muuli_wdr.cpp:851 src/OtherFunctions.cpp:266
 msgid "Excellent"
 msgstr "Uitstekend"
 
-#: src/muuli_wdr.cpp:864
+#: src/muuli_wdr.cpp:854
 msgid "Choose the file rating or advice users if the file is invalid ..."
 msgstr ""
 "Kies de bestands waardering of adviseer gebruikers als het bestand ongeldig "
 "is ..."
 
-#: src/muuli_wdr.cpp:908
+#: src/muuli_wdr.cpp:898
 msgid "Refresh"
 msgstr "Verversen"
 
-#: src/muuli_wdr.cpp:935
+#: src/muuli_wdr.cpp:925
 msgid "Downloading, please wait ..."
 msgstr "Downloaden, geduld aub ..."
 
-#: src/muuli_wdr.cpp:941
+#: src/muuli_wdr.cpp:931
 msgid "Unknown size"
 msgstr "Onbekende grootte"
 
-#: src/muuli_wdr.cpp:965
+#: src/muuli_wdr.cpp:955
 msgid "Required Information"
 msgstr "Benodigde Informatie"
 
-#: src/muuli_wdr.cpp:970
+#: src/muuli_wdr.cpp:960
 msgid "IP Address :"
 msgstr "IP Adres :"
 
-#: src/muuli_wdr.cpp:976
+#: src/muuli_wdr.cpp:966
 msgid "Port :"
 msgstr "Poort :"
 
-#: src/muuli_wdr.cpp:986
+#: src/muuli_wdr.cpp:976
 msgid "Additional Information"
 msgstr "Extra Informatie"
 
-#: src/muuli_wdr.cpp:991
+#: src/muuli_wdr.cpp:981
 msgid "Username :"
 msgstr "Gebruikersnaam :"
 
-#: src/muuli_wdr.cpp:997
+#: src/muuli_wdr.cpp:987
 msgid "Userhash :"
 msgstr "Gebruikershash :"
 
-#: src/muuli_wdr.cpp:1009 src/muuli_wdr.cpp:2569
+#: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:2562
 #: src/utils/aLinkCreator/src/alcframe.cpp:148
 msgid "Add"
 msgstr "Toevoegen"
 
-#: src/muuli_wdr.cpp:1056
+#: src/muuli_wdr.cpp:1046
 msgid "Download-Speed"
 msgstr "Downloadsnelheid"
 
-#: src/muuli_wdr.cpp:1074 src/muuli_wdr.cpp:1123 src/muuli_wdr.cpp:2681
+#: src/muuli_wdr.cpp:1064 src/muuli_wdr.cpp:1113 src/muuli_wdr.cpp:2674
 msgid "Current"
 msgstr "Huidige"
 
-#: src/muuli_wdr.cpp:1085 src/muuli_wdr.cpp:1134 src/muuli_wdr.cpp:2692
+#: src/muuli_wdr.cpp:1075 src/muuli_wdr.cpp:1124 src/muuli_wdr.cpp:2685
 msgid "Running average"
 msgstr "Lopende gemiddelde"
 
-#: src/muuli_wdr.cpp:1096 src/muuli_wdr.cpp:1145 src/muuli_wdr.cpp:2703
+#: src/muuli_wdr.cpp:1086 src/muuli_wdr.cpp:1135 src/muuli_wdr.cpp:2696
 msgid "Session average"
 msgstr "Sessie gemiddelde"
 
-#: src/muuli_wdr.cpp:1105
+#: src/muuli_wdr.cpp:1095
 msgid "Upload-Speed"
 msgstr "Uploadsnelheid"
 
-#: src/muuli_wdr.cpp:1154
+#: src/muuli_wdr.cpp:1144
 msgid "Connections"
 msgstr "Verbindingen"
 
-#: src/muuli_wdr.cpp:1172 src/muuli_wdr.cpp:1979
+#: src/muuli_wdr.cpp:1162 src/muuli_wdr.cpp:1969
 msgid "Active downloads"
 msgstr "Actieve downloads"
 
-#: src/muuli_wdr.cpp:1183
+#: src/muuli_wdr.cpp:1173
 msgid "Active connections (1:1)"
 msgstr "Actieve verbinding (1:1)"
 
-#: src/muuli_wdr.cpp:1194 src/muuli_wdr.cpp:1980
+#: src/muuli_wdr.cpp:1184 src/muuli_wdr.cpp:1970
 msgid "Active uploads"
 msgstr "Actieve uploads"
 
-#: src/muuli_wdr.cpp:1203
+#: src/muuli_wdr.cpp:1193
 msgid "Statistics Tree"
 msgstr "Statistieken Boom"
 
-#: src/muuli_wdr.cpp:1233
+#: src/muuli_wdr.cpp:1223
 msgid "Username:"
 msgstr "Gebruikersnaam:"
 
-#: src/muuli_wdr.cpp:1236
+#: src/muuli_wdr.cpp:1226
 msgid "Userhash:"
 msgstr "Gebruikershash:"
 
-#: src/muuli_wdr.cpp:1259
+#: src/muuli_wdr.cpp:1249
 msgid "Client software:"
 msgstr "Client software:"
 
-#: src/muuli_wdr.cpp:1268
+#: src/muuli_wdr.cpp:1258
 msgid "Client version:"
 msgstr "Client versie:"
 
-#: src/muuli_wdr.cpp:1275 src/ServerWnd.cpp:246
+#: src/muuli_wdr.cpp:1265 src/ServerWnd.cpp:246
 msgid "IP address:"
 msgstr "IP adres:"
 
-#: src/muuli_wdr.cpp:1284
+#: src/muuli_wdr.cpp:1274
 msgid "User ID:"
 msgstr "Gebruikers ID:"
 
-#: src/muuli_wdr.cpp:1291
+#: src/muuli_wdr.cpp:1281
 msgid "Server IP:"
 msgstr "Server IP:"
 
-#: src/muuli_wdr.cpp:1300
+#: src/muuli_wdr.cpp:1290
 msgid "Server name:"
 msgstr "Servernaam:"
 
-#: src/muuli_wdr.cpp:1307
+#: src/muuli_wdr.cpp:1297
 msgid "Obfuscation:"
 msgstr "Maskering"
 
-#: src/muuli_wdr.cpp:1316
+#: src/muuli_wdr.cpp:1306
 msgid "Kad:"
 msgstr "Kad:"
 
-#: src/muuli_wdr.cpp:1327
+#: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
 msgstr "Overdrachten naar client"
 
-#: src/muuli_wdr.cpp:1332
+#: src/muuli_wdr.cpp:1322
 msgid "Current request:"
 msgstr "Huidige aanvraag:"
 
-#: src/muuli_wdr.cpp:1345
+#: src/muuli_wdr.cpp:1335
 msgid "Average upload rate:"
 msgstr "Gemiddelde upload snelheid:"
 
-#: src/muuli_wdr.cpp:1354
+#: src/muuli_wdr.cpp:1344
 msgid "Average download rate:"
 msgstr "Gemiddelde download snelheid:"
 
-#: src/muuli_wdr.cpp:1361
+#: src/muuli_wdr.cpp:1351
 msgid "Uploaded (session):"
 msgstr "Geupload (sessie):"
 
-#: src/muuli_wdr.cpp:1370
+#: src/muuli_wdr.cpp:1360
 msgid "Downloaded (session):"
 msgstr "Gedownload (sessie):"
 
-#: src/muuli_wdr.cpp:1377
+#: src/muuli_wdr.cpp:1367
 msgid "Uploaded (total):"
 msgstr "Geupload (totaal):"
 
-#: src/muuli_wdr.cpp:1386
+#: src/muuli_wdr.cpp:1376
 msgid "Downloaded (total):"
 msgstr "Gedownload (totaal):"
 
-#: src/muuli_wdr.cpp:1397
+#: src/muuli_wdr.cpp:1387
 msgid "Scores"
 msgstr "Scores"
 
-#: src/muuli_wdr.cpp:1404
+#: src/muuli_wdr.cpp:1394
 msgid "DL/UP modifier:"
 msgstr "DL/UP verhouding:"
 
-#: src/muuli_wdr.cpp:1413
+#: src/muuli_wdr.cpp:1403
 msgid "Secure ident:"
 msgstr "Veilige identiteit:"
 
-#: src/muuli_wdr.cpp:1420
+#: src/muuli_wdr.cpp:1410
 msgid "Queue rank:"
 msgstr "Wachtrij positie:"
 
-#: src/muuli_wdr.cpp:1429
+#: src/muuli_wdr.cpp:1419
 msgid "Queue score:"
 msgstr "Wachtrij score:"
 
-#: src/muuli_wdr.cpp:1458
+#: src/muuli_wdr.cpp:1448
 msgid "Nick"
 msgstr "Bijnaam"
 
-#: src/muuli_wdr.cpp:1461
+#: src/muuli_wdr.cpp:1451
 msgid "http://www.aMule.org - the multi-platform Mule"
 msgstr "http://www.aMule.org - de multi-platform Mule"
 
-#: src/muuli_wdr.cpp:1462
+#: src/muuli_wdr.cpp:1452
 msgid "This is the name that other users will see when connecting to you."
 msgstr "Dit is de naam die andere gebruikers zien wanneer ze met u verbinden."
 
-#: src/muuli_wdr.cpp:1470
+#: src/muuli_wdr.cpp:1460
 msgid "Language: "
 msgstr "Taal: "
 
-#: src/muuli_wdr.cpp:1471 src/muuli_wdr.cpp:1505 src/muuli_wdr.cpp:1509
-#: src/muuli_wdr.cpp:1513
+#: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1495 src/muuli_wdr.cpp:1499
+#: src/muuli_wdr.cpp:1503
 msgid "The delay before showing tool-tips."
 msgstr "De vertraging voordat tool-tips worden getoond."
 
-#: src/muuli_wdr.cpp:1476
+#: src/muuli_wdr.cpp:1466
 msgid "This specifies the language used on controls."
 msgstr "Dit specificeert de taal waarin aMule wordt getoond."
 
-#: src/muuli_wdr.cpp:1481
+#: src/muuli_wdr.cpp:1471
 msgid "Check for new version at startup"
 msgstr "Controleer op nieuwe versie bij het starten"
 
-#: src/muuli_wdr.cpp:1482
+#: src/muuli_wdr.cpp:1472
 msgid "Enabling this will make aMule check for new version at startup"
 msgstr ""
 "Ingeschakeld zorgt dit ervoor dat aMule bij het starten controleert op een "
 "nieuwe versie"
 
-#: src/muuli_wdr.cpp:1485
+#: src/muuli_wdr.cpp:1475
 msgid "Start minimized"
 msgstr "Start geminimaliseerd"
 
-#: src/muuli_wdr.cpp:1486
+#: src/muuli_wdr.cpp:1476
 msgid "Enabling this makes aMule minimize itself upon start."
 msgstr "Als u dit inschakelt zal aMule zichzelf minimaliseren bij het starten."
 
-#: src/muuli_wdr.cpp:1489
+#: src/muuli_wdr.cpp:1479
 msgid "Prompt on exit"
 msgstr "Vraag bevestiging bij afsluiten"
 
-#: src/muuli_wdr.cpp:1491
+#: src/muuli_wdr.cpp:1481
 msgid "Makes aMule prompt before exiting."
 msgstr "Laat aMule om bevestiging vragen alvorens af te sluiten."
 
-#: src/muuli_wdr.cpp:1494
+#: src/muuli_wdr.cpp:1484
 msgid "Enable Tray Icon"
 msgstr "Schakel Tray Pictogram in"
 
-#: src/muuli_wdr.cpp:1495
+#: src/muuli_wdr.cpp:1485
 msgid "This Enables/Disables the system tray (or taskbar) icon."
 msgstr "Dit schakelt het systeemvak (of taakbalk) pictogram in/uit."
 
-#: src/muuli_wdr.cpp:1498
+#: src/muuli_wdr.cpp:1488
 msgid "Minimize to Tray Icon"
 msgstr "Minimaliseer naar Systeemvak"
 
-#: src/muuli_wdr.cpp:1499
+#: src/muuli_wdr.cpp:1489
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
@@ -3317,19 +3317,19 @@ msgstr ""
 "Deze optie zorgt er voor dat aMule geminimaliseerd wordt naar het "
 "Systeemvak, i.p.v. naar de taakbalk."
 
-#: src/muuli_wdr.cpp:1504
+#: src/muuli_wdr.cpp:1494
 msgid "Tooltip delay time: "
 msgstr "Tooltip vertragingstijd: "
 
-#: src/muuli_wdr.cpp:1512
+#: src/muuli_wdr.cpp:1502
 msgid "seconds"
 msgstr "seconden"
 
-#: src/muuli_wdr.cpp:1518
+#: src/muuli_wdr.cpp:1508
 msgid "Browser Selection"
 msgstr "Browser Selectie"
 
-#: src/muuli_wdr.cpp:1524
+#: src/muuli_wdr.cpp:1514
 msgid ""
 "Enter your browser name here. Leave this field empty to use the system "
 "default browser."
@@ -3337,83 +3337,83 @@ msgstr ""
 "Voer hier uw browsernaam in. Laat dit veld leeg om de standaardbrowser van "
 "uw systeem te gebruiken."
 
-#: src/muuli_wdr.cpp:1527 src/muuli_wdr.cpp:1547 src/muuli_wdr.cpp:1872
-#: src/muuli_wdr.cpp:1883 src/muuli_wdr.cpp:2955
+#: src/muuli_wdr.cpp:1517 src/muuli_wdr.cpp:1537 src/muuli_wdr.cpp:1862
+#: src/muuli_wdr.cpp:1873 src/muuli_wdr.cpp:2948
 #: src/utils/aLinkCreator/src/alcframe.cpp:145
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
 msgid "Browse"
 msgstr "Bladeren"
 
-#: src/muuli_wdr.cpp:1532
+#: src/muuli_wdr.cpp:1522
 msgid "Open in new tab if possible"
 msgstr "Open in nieuw tabblad indien mogelijk"
 
-#: src/muuli_wdr.cpp:1534
+#: src/muuli_wdr.cpp:1524
 msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr ""
 "Open de web pagina, indien mogelijk, in een nieuw tabblad in plaats van in "
 "een nieuw venster"
 
-#: src/muuli_wdr.cpp:1539
+#: src/muuli_wdr.cpp:1529
 msgid "Video Player"
 msgstr "Video Speler"
 
-#: src/muuli_wdr.cpp:1571
+#: src/muuli_wdr.cpp:1561
 msgid "Bandwidth limits"
 msgstr "Bandbreedte grenzen"
 
-#: src/muuli_wdr.cpp:1586
+#: src/muuli_wdr.cpp:1576
 msgid "Upload"
 msgstr "Upload"
 
-#: src/muuli_wdr.cpp:1595
+#: src/muuli_wdr.cpp:1585
 msgid "Slot Allocation"
 msgstr "Slot Toewijzing"
 
-#: src/muuli_wdr.cpp:1608
+#: src/muuli_wdr.cpp:1598
 msgid "Ports"
 msgstr "Poorten"
 
-#: src/muuli_wdr.cpp:1614
+#: src/muuli_wdr.cpp:1604
 msgid "Standard TCP Port "
 msgstr "Standaard TCP Poort "
 
-#: src/muuli_wdr.cpp:1618
+#: src/muuli_wdr.cpp:1608
 msgid "This is the standard eD2k port and cannot be disabled."
 msgstr "Dit is de standaard eD2k poort en kan niet uitgeschakeld worden."
 
-#: src/muuli_wdr.cpp:1621
+#: src/muuli_wdr.cpp:1611
 msgid "UDP port for server requests (TCP+3):"
 msgstr "UDP poort voor server aanvragen (TCP+3):"
 
-#: src/muuli_wdr.cpp:1624
+#: src/muuli_wdr.cpp:1614
 msgid "4665"
 msgstr "4665"
 
-#: src/muuli_wdr.cpp:1627
+#: src/muuli_wdr.cpp:1617
 msgid "Extended UDP port (Kad / global search) "
 msgstr "Uitgebreide UDP poort (Kad / globaal zoeken) "
 
-#: src/muuli_wdr.cpp:1631
+#: src/muuli_wdr.cpp:1621
 msgid "This UDP port is used for extended eD2k requests and Kad network"
 msgstr ""
 "Deze UDP poort wordt gebruikt voor uitgebreide eD2k aanvragen en het Kad "
 "netwerk"
 
-#: src/muuli_wdr.cpp:1634
+#: src/muuli_wdr.cpp:1624
 msgid "Enable UPnP for router port forwarding"
 msgstr "Schakel UPnP voor router port forwarding in"
 
-#: src/muuli_wdr.cpp:1639
+#: src/muuli_wdr.cpp:1629
 msgid "UPnP TCP Port (Optional):"
 msgstr "UPnP TCP Poort (Optioneel):"
 
-#: src/muuli_wdr.cpp:1652
+#: src/muuli_wdr.cpp:1642
 msgid "Bind local address to IP (empty for any):"
 msgstr "Bind lokaal adres aan IP (laat leeg voor elk):"
 
-#: src/muuli_wdr.cpp:1656
+#: src/muuli_wdr.cpp:1646
 msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
@@ -3421,358 +3421,363 @@ msgstr ""
 "Enkel voor gevorderde gebruikers: Als u meerdere netwerk interfaces hebt, "
 "voer hier het adres in van de interface waar aMule mee verbonden moet worden."
 
-#: src/muuli_wdr.cpp:1664
+#: src/muuli_wdr.cpp:1654
 msgid "Max sources per downloading file:"
 msgstr "Max bronnen per bestand aan het downloaden:"
 
-#: src/muuli_wdr.cpp:1670
+#: src/muuli_wdr.cpp:1660
 msgid "Max simultaneous connections:"
 msgstr "Max gelijktijdige verbindingen:"
 
-#: src/muuli_wdr.cpp:1683
+#: src/muuli_wdr.cpp:1673
 msgid "Kademlia"
 msgstr "Kademlia"
 
-#: src/muuli_wdr.cpp:1687 src/muuli_wdr.cpp:3283
+#: src/muuli_wdr.cpp:1677 src/muuli_wdr.cpp:3276
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/muuli_wdr.cpp:1696
+#: src/muuli_wdr.cpp:1686
 msgid "Autoconnect on startup"
 msgstr "Autoverbind bij het opstarten"
 
-#: src/muuli_wdr.cpp:1699
+#: src/muuli_wdr.cpp:1689
 msgid "Reconnect on loss"
 msgstr "Verbind opnieuw bij verbroken verbinding"
 
-#: src/muuli_wdr.cpp:1723
+#: src/muuli_wdr.cpp:1713
 msgid "Remove dead server after"
 msgstr "Verwijder dode server na"
 
-#: src/muuli_wdr.cpp:1729
+#: src/muuli_wdr.cpp:1719
 msgid "retries"
 msgstr "pogingen"
 
-#: src/muuli_wdr.cpp:1736
+#: src/muuli_wdr.cpp:1726
 msgid "Auto-update server list at startup"
 msgstr "Auto-update serverlijst bij het opstarten"
 
-#: src/muuli_wdr.cpp:1739
+#: src/muuli_wdr.cpp:1729
 msgid "List"
 msgstr "Lijst"
 
-#: src/muuli_wdr.cpp:1744
+#: src/muuli_wdr.cpp:1734
 msgid "Update server list when connecting to a server"
 msgstr "Update serverlijst bij het verbinden met een server"
 
-#: src/muuli_wdr.cpp:1747
+#: src/muuli_wdr.cpp:1737
 msgid "Update server list when a client connects"
 msgstr "Update serverlijst wanneer een client verbindt"
 
-#: src/muuli_wdr.cpp:1750
+#: src/muuli_wdr.cpp:1740
 msgid "Use priority system"
 msgstr "Gebruik prioriteitssysteem"
 
-#: src/muuli_wdr.cpp:1754
+#: src/muuli_wdr.cpp:1744
 msgid "Use smart LowID check on connect"
 msgstr "Gebruik slimme Laag ID controle bij verbinden"
 
-#: src/muuli_wdr.cpp:1758
+#: src/muuli_wdr.cpp:1748
 msgid "Safe connect"
 msgstr "Veilig verbinden"
 
-#: src/muuli_wdr.cpp:1762
+#: src/muuli_wdr.cpp:1752
 msgid "Autoconnect to servers in static list only"
 msgstr "Autoverbind alleen met servers in statische lijst"
 
-#: src/muuli_wdr.cpp:1765
+#: src/muuli_wdr.cpp:1755
 msgid "Set manually added servers to High Priority"
 msgstr "Zet handmatig toegevoegde servers op Hoge Prioriteit"
 
-#: src/muuli_wdr.cpp:1783
+#: src/muuli_wdr.cpp:1773
 msgid "Intelligent Corruption Handling (I.C.H.)"
 msgstr "Intelligente Corruptie Afhandling (I.C.H.)"
 
-#: src/muuli_wdr.cpp:1786
+#: src/muuli_wdr.cpp:1776
 msgid "Enable"
 msgstr "Inschakelen"
 
-#: src/muuli_wdr.cpp:1790
+#: src/muuli_wdr.cpp:1780
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
 msgstr "Geavanceerde I.C.H. vertrouwt elke hash (niet aanbevolen)"
 
-#: src/muuli_wdr.cpp:1798
+#: src/muuli_wdr.cpp:1788
 msgid "Add files to download in pause mode"
 msgstr "Voeg bestanden aan downloads toe in pauze modus"
 
-#: src/muuli_wdr.cpp:1801
+#: src/muuli_wdr.cpp:1791
 msgid "Add files to download with auto priority"
 msgstr "Voeg bestanden aan downloads toe met auto prioriteit"
 
-#: src/muuli_wdr.cpp:1804
+#: src/muuli_wdr.cpp:1794
 msgid "Try to download first and last chunks first"
 msgstr "Probeer eerste en laatste delen eerst te downloaden"
 
-#: src/muuli_wdr.cpp:1808
+#: src/muuli_wdr.cpp:1798
 msgid "Start next paused file when a file completes"
 msgstr "Start volgend gepauzeerd bestand als een bestand compleet is"
 
-#: src/muuli_wdr.cpp:1812
+#: src/muuli_wdr.cpp:1802
 msgid "From the same category"
 msgstr "Uit dezelfde categorie"
 
-#: src/muuli_wdr.cpp:1815
+#: src/muuli_wdr.cpp:1805
 msgid "In alphabetic order"
 msgstr "In alfabetische volgorde"
 
-#: src/muuli_wdr.cpp:1818
+#: src/muuli_wdr.cpp:1808
 msgid "Preallocate disk space for new files"
 msgstr "Wijst schijfruimte toe voor nieuwe bestanden"
 
-#: src/muuli_wdr.cpp:1819
+#: src/muuli_wdr.cpp:1809
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
 msgstr ""
 "Wijst schijfruimte toe voor nieuwe bestanden, beperkt hierdoor fragmentatie"
 
-#: src/muuli_wdr.cpp:1825
+#: src/muuli_wdr.cpp:1815
 msgid "Stop downloads when free disk space reaches "
 msgstr "Stop downloads als de vrije schijfruimte bedraagt "
 
-#: src/muuli_wdr.cpp:1826
+#: src/muuli_wdr.cpp:1816
 msgid "Select this if you want aMule to check your disk space"
 msgstr "Selecteer dit als u wilt dat aMule uw schijfruimte controleert"
 
-#: src/muuli_wdr.cpp:1830
+#: src/muuli_wdr.cpp:1820
 msgid "Enter here the min disk space desired."
 msgstr "Voer hier de gewenste min schijfruimte in."
 
-#: src/muuli_wdr.cpp:1838
+#: src/muuli_wdr.cpp:1828
 msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "Bewaar 10 bronnen van zeldzame bestanden (<20 bronnen)"
 
-#: src/muuli_wdr.cpp:1844 src/Statistics.cpp:731
+#: src/muuli_wdr.cpp:1834 src/Statistics.cpp:731
 msgid "Uploads"
 msgstr "Uploads"
 
-#: src/muuli_wdr.cpp:1847
+#: src/muuli_wdr.cpp:1837
 msgid "Add new shared files with auto priority"
 msgstr "Voeg nieuwe gedeelde bestanden toe met auto prioriteit"
 
-#: src/muuli_wdr.cpp:1866
+#: src/muuli_wdr.cpp:1856
 msgid "Destination folder for downloads"
 msgstr "Doelmap voor downloads"
 
-#: src/muuli_wdr.cpp:1877
+#: src/muuli_wdr.cpp:1867
 msgid "Folder for temporary download files"
 msgstr "Map voor tijdelijke download bestanden"
 
-#: src/muuli_wdr.cpp:1888
+#: src/muuli_wdr.cpp:1878
 msgid "Shared folders"
 msgstr "Gedeelde mappen"
 
-#: src/muuli_wdr.cpp:1891
+#: src/muuli_wdr.cpp:1881
 msgid "(Right click on folder icon for recursive share)"
 msgstr "(Rechtermuisklik op mappictogram om recursief te delen)"
 
-#: src/muuli_wdr.cpp:1898
+#: src/muuli_wdr.cpp:1888
 msgid "Share hidden files"
 msgstr "Deel verborgen bestanden"
 
-#: src/muuli_wdr.cpp:1918
+#: src/muuli_wdr.cpp:1908
 msgid "Graphs"
 msgstr "Grafieken"
 
-#: src/muuli_wdr.cpp:1921 src/muuli_wdr.cpp:1999
+#: src/muuli_wdr.cpp:1911 src/muuli_wdr.cpp:1989
 msgid "Update delay : 5 secs"
 msgstr "Update vertraging : 5 seconden"
 
-#: src/muuli_wdr.cpp:1927
+#: src/muuli_wdr.cpp:1917
 msgid "Time for average graph: 100 mins"
 msgstr "Tijd voor gemiddelde grafiek: 100 minuten"
 
-#: src/muuli_wdr.cpp:1933
+#: src/muuli_wdr.cpp:1923
 msgid "Connections Graph Scale: 100 "
 msgstr "Schaal Verbindings Grafiek: 100"
 
-#: src/muuli_wdr.cpp:1942
+#: src/muuli_wdr.cpp:1932
 msgid "Download graph scale:"
 msgstr "Schaal downloadgrafiek:"
 
-#: src/muuli_wdr.cpp:1951
+#: src/muuli_wdr.cpp:1941
 msgid "Upload graph scale:"
 msgstr "Schaal uploadgrafiek:"
 
-#: src/muuli_wdr.cpp:1965
+#: src/muuli_wdr.cpp:1955
 msgid "Colours: "
 msgstr "Kleuren: "
 
-#: src/muuli_wdr.cpp:1970
+#: src/muuli_wdr.cpp:1960
 msgid "Background"
 msgstr "Achtergrond"
 
-#: src/muuli_wdr.cpp:1971
+#: src/muuli_wdr.cpp:1961
 msgid "Grid"
 msgstr "Raster"
 
-#: src/muuli_wdr.cpp:1972
+#: src/muuli_wdr.cpp:1962
 msgid "Download current"
 msgstr "Huidige download"
 
-#: src/muuli_wdr.cpp:1973
+#: src/muuli_wdr.cpp:1963
 msgid "Download running average"
 msgstr "Lopend gemiddelde download"
 
-#: src/muuli_wdr.cpp:1974
+#: src/muuli_wdr.cpp:1964
 msgid "Download session average"
 msgstr "Sessie gemiddelde download"
 
-#: src/muuli_wdr.cpp:1975
+#: src/muuli_wdr.cpp:1965
 msgid "Upload current"
 msgstr "Huidige upload"
 
-#: src/muuli_wdr.cpp:1976
+#: src/muuli_wdr.cpp:1966
 msgid "Upload running average"
 msgstr "Lopend gemiddelde upload"
 
-#: src/muuli_wdr.cpp:1977
+#: src/muuli_wdr.cpp:1967
 msgid "Upload session average"
 msgstr "Sessie gemiddelde upload"
 
-#: src/muuli_wdr.cpp:1978
+#: src/muuli_wdr.cpp:1968
 msgid "Active connections"
 msgstr "Actieve verbindingen"
 
-#: src/muuli_wdr.cpp:1981
+#: src/muuli_wdr.cpp:1971
 msgid "Systray Icon Speedbar"
 msgstr "Systeemvak Pictogram Snelheidsbalk"
 
-#: src/muuli_wdr.cpp:1982
+#: src/muuli_wdr.cpp:1972
 msgid "Kad-nodes current"
 msgstr "Kad-nodes huidig"
 
-#: src/muuli_wdr.cpp:1983
+#: src/muuli_wdr.cpp:1973
 msgid "Kad-nodes running"
 msgstr "Kad-nodes draaiende"
 
-#: src/muuli_wdr.cpp:1984
+#: src/muuli_wdr.cpp:1974
 msgid "Kad-nodes session"
 msgstr "Kad-nodes sessie"
 
-#: src/muuli_wdr.cpp:1989 src/muuli_wdr.cpp:2421
+#: src/muuli_wdr.cpp:1979 src/muuli_wdr.cpp:2414
 msgid "Select"
 msgstr "Selecteer"
 
-#: src/muuli_wdr.cpp:1996
+#: src/muuli_wdr.cpp:1986
 msgid "Tree"
 msgstr "Boom"
 
-#: src/muuli_wdr.cpp:2007
+#: src/muuli_wdr.cpp:1997
 msgid "Number of Client Versions shown (0=unlimited)"
 msgstr "Aantal getoonde Client Versies (0=onbegrensd)"
 
-#: src/muuli_wdr.cpp:2035
+#: src/muuli_wdr.cpp:2025
 msgid "!!! WARNING !!!"
 msgstr "!!! WAARSCHUWING !!!"
 
-#: src/muuli_wdr.cpp:2049
+#: src/muuli_wdr.cpp:2039
 msgid "Max new connections / 5 secs"
 msgstr "Max nieuwe verbindingen / 5 seconden"
 
-#: src/muuli_wdr.cpp:2055
+#: src/muuli_wdr.cpp:2045
 msgid "File Buffer Size: 240000 bytes"
 msgstr "Grootte van Bestandsbuffer : 240000 bytes"
 
-#: src/muuli_wdr.cpp:2061
+#: src/muuli_wdr.cpp:2051
 msgid "Upload Queue Size: 5000 clients"
 msgstr "Grootte van Uploadwachtrij: 5000 clients"
 
-#: src/muuli_wdr.cpp:2067
+#: src/muuli_wdr.cpp:2057
 msgid "Server connection refresh interval: Disable"
 msgstr "Server verbinding verversingsinterval: Uitschakelen"
 
-#: src/muuli_wdr.cpp:2073
+#: src/muuli_wdr.cpp:2063
 msgid "Disable computer's timed standby mode"
 msgstr "Schakel standby-modus van computer uit"
 
-#: src/muuli_wdr.cpp:2094
+#: src/muuli_wdr.cpp:2084
 msgid "Skin to use: "
 msgstr "Gebruik skin: "
 
-#: src/muuli_wdr.cpp:2106
+#: src/muuli_wdr.cpp:2096
 msgid "Show \"Fast eD2k Links Handler\" in every window."
 msgstr "Toon \"Snelle eD2k Links Afhandelaar\" in elk venster."
 
-#: src/muuli_wdr.cpp:2110
+#: src/muuli_wdr.cpp:2100
 msgid "Show extended info on categories tabs"
 msgstr "Geef uitgebreide info weer op categorie-tabs"
 
-#: src/muuli_wdr.cpp:2114
+#: src/muuli_wdr.cpp:2104
+#, fuzzy
+msgid "Show application version on title"
+msgstr "Toon overdrachtsnelheden op titel"
+
+#: src/muuli_wdr.cpp:2107
 msgid "Show transfer rates on title"
 msgstr "Toon overdrachtsnelheden op titel"
 
-#: src/muuli_wdr.cpp:2117
+#: src/muuli_wdr.cpp:2110
 msgid "Before application name"
 msgstr "Voor applicatienaam"
 
-#: src/muuli_wdr.cpp:2120
+#: src/muuli_wdr.cpp:2113
 msgid "After application name"
 msgstr "Na applicatienaam"
 
-#: src/muuli_wdr.cpp:2124
+#: src/muuli_wdr.cpp:2117
 msgid "Show overhead bandwidth"
 msgstr "Toon overhead bandbreedte"
 
-#: src/muuli_wdr.cpp:2128
+#: src/muuli_wdr.cpp:2121
 msgid "Vertical toolbar orientation"
 msgstr "Verticale knoppenbalk"
 
-#: src/muuli_wdr.cpp:2131
+#: src/muuli_wdr.cpp:2124
 msgid "Show country flags for clients"
 msgstr "Toon landenvlaggen voor clients"
 
-#: src/muuli_wdr.cpp:2134
+#: src/muuli_wdr.cpp:2127
 msgid "Download Queue Files"
 msgstr "Downloadwachtrij Bestanden"
 
-#: src/muuli_wdr.cpp:2137
+#: src/muuli_wdr.cpp:2130
 msgid "Show progress percentage"
 msgstr "Toon voortgangspercentage"
 
-#: src/muuli_wdr.cpp:2144
+#: src/muuli_wdr.cpp:2137
 msgid "Show progress bar"
 msgstr "Toon voortgangsindicator"
 
-#: src/muuli_wdr.cpp:2148
+#: src/muuli_wdr.cpp:2141
 msgid "Flat"
 msgstr "Plat"
 
-#: src/muuli_wdr.cpp:2154
+#: src/muuli_wdr.cpp:2147
 msgid "Round"
 msgstr "Rond"
 
-#: src/muuli_wdr.cpp:2159
+#: src/muuli_wdr.cpp:2152
 msgid "Auto-sort files (high CPU)"
 msgstr "Auto-sorteer bestanden (hoog CPU gebruik)"
 
-#: src/muuli_wdr.cpp:2161
+#: src/muuli_wdr.cpp:2154
 msgid "aMule will sort the columns in your download list automatically"
 msgstr "aMule zal de kolommen in uw download lijst automatisch sorteren"
 
-#: src/muuli_wdr.cpp:2180
+#: src/muuli_wdr.cpp:2173
 msgid "External Connection Parameters"
 msgstr "Externe Verbinding Parameters"
 
-#: src/muuli_wdr.cpp:2183
+#: src/muuli_wdr.cpp:2176
 msgid "Accept external connections"
 msgstr "Accepteer externe verbindingen"
 
-#: src/muuli_wdr.cpp:2190
+#: src/muuli_wdr.cpp:2183
 msgid "IP of the listening interface:"
 msgstr "IP van de luisterende interface:"
 
-#: src/muuli_wdr.cpp:2194
+#: src/muuli_wdr.cpp:2187
 msgid ""
 "Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
 "An empty field or 0.0.0.0 will mean any interface."
@@ -3780,115 +3785,115 @@ msgstr ""
 "Voer hier een geldig ip in het formaat a.b.c.d in van de luisterende EV "
 "interface. Een leeg veld of 0.0.0.0 betekent elke interface."
 
-#: src/muuli_wdr.cpp:2202 src/muuli_wdr.cpp:2263
+#: src/muuli_wdr.cpp:2195 src/muuli_wdr.cpp:2256
 msgid "TCP port:"
 msgstr "TCP poort:"
 
-#: src/muuli_wdr.cpp:2210
+#: src/muuli_wdr.cpp:2203
 msgid "Enable UPnP port forwarding on the EC port"
 msgstr "Schakel UPnP port forwarding van de EV-poort in"
 
-#: src/muuli_wdr.cpp:2215 src/muuli_wdr.cpp:3131
+#: src/muuli_wdr.cpp:2208 src/muuli_wdr.cpp:3124
 #: src/utils/wxCas/src/wxcasprefs.cpp:210
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: src/muuli_wdr.cpp:2225
+#: src/muuli_wdr.cpp:2218
 msgid "Web server parameters"
 msgstr "Webserver parameters"
 
-#: src/muuli_wdr.cpp:2228
+#: src/muuli_wdr.cpp:2221
 msgid "Run webserver on startup"
 msgstr "Start webserver bij het opstarten"
 
-#: src/muuli_wdr.cpp:2234
+#: src/muuli_wdr.cpp:2227
 msgid "Web template"
 msgstr "Web template"
 
-#: src/muuli_wdr.cpp:2241
+#: src/muuli_wdr.cpp:2234
 msgid "Full rights password"
 msgstr "Alle rechten wachtwoord"
 
-#: src/muuli_wdr.cpp:2247
+#: src/muuli_wdr.cpp:2240
 msgid "Enable Low rights User"
 msgstr "Schakel Gebruiker met Beperkte rechten in"
 
-#: src/muuli_wdr.cpp:2253
+#: src/muuli_wdr.cpp:2246
 msgid "Low rights password"
 msgstr "Beperkte rechten wachtwoord"
 
-#: src/muuli_wdr.cpp:2271
+#: src/muuli_wdr.cpp:2264
 msgid "Enable UPnP port forwarding of the web server port"
 msgstr "Schakel UPnP port forwarding van de web server poort in"
 
-#: src/muuli_wdr.cpp:2276
+#: src/muuli_wdr.cpp:2269
 msgid "Web server UPnP TCP port (Optional)"
 msgstr "Web server UPnP TCP poort (Optioneel)"
 
-#: src/muuli_wdr.cpp:2286
+#: src/muuli_wdr.cpp:2279
 msgid "Page Refresh Time (in secs)"
 msgstr "Pagina Verversingstijd (in seconden)"
 
-#: src/muuli_wdr.cpp:2294
+#: src/muuli_wdr.cpp:2287
 msgid "Enable Gzip compression"
 msgstr "Schakel Gzip compressie in"
 
-#: src/muuli_wdr.cpp:2328 src/muuli_wdr.cpp:2431 src/ServerWnd.cpp:215
+#: src/muuli_wdr.cpp:2321 src/muuli_wdr.cpp:2424 src/ServerWnd.cpp:215
 #: src/ServerWnd.cpp:220
 msgid "OK"
 msgstr "OK"
 
-#: src/muuli_wdr.cpp:2330
+#: src/muuli_wdr.cpp:2323
 msgid "Click here to apply any changes made to the preferences."
 msgstr "Klik hier om de veranderingen gemaakt aan de voorkeuren toe te passen."
 
-#: src/muuli_wdr.cpp:2334
+#: src/muuli_wdr.cpp:2327
 msgid "Reset any changes made to the preferences."
 msgstr "Maak veranderingen aan de voorkeuren ongedaan."
 
-#: src/muuli_wdr.cpp:2358
+#: src/muuli_wdr.cpp:2351
 msgid "Title :"
 msgstr "Titel :"
 
-#: src/muuli_wdr.cpp:2368
+#: src/muuli_wdr.cpp:2361
 msgid "Comment :"
 msgstr "Commentaar :"
 
-#: src/muuli_wdr.cpp:2378
+#: src/muuli_wdr.cpp:2371
 msgid "Incoming Dir :"
 msgstr "Binnenkomende Dir :"
 
-#: src/muuli_wdr.cpp:2391
+#: src/muuli_wdr.cpp:2384
 msgid "Change priority for new assigned files :"
 msgstr "Verander prioriteit voor nieuw toegevoegde bestanden :"
 
-#: src/muuli_wdr.cpp:2396
+#: src/muuli_wdr.cpp:2389
 msgid "Don't change"
 msgstr "Niet veranderen"
 
-#: src/muuli_wdr.cpp:2410
+#: src/muuli_wdr.cpp:2403
 msgid "Select color for this Category (currently selected) :"
 msgstr "Selecteer kleur voor deze Categorie (nu geselecteerd) :"
 
-#: src/muuli_wdr.cpp:2484 src/muuli_wdr.cpp:2509
+#: src/muuli_wdr.cpp:2477 src/muuli_wdr.cpp:2502
 #: src/utils/wxCas/src/wxcasframe.cpp:138
 #: src/utils/wxCas/src/wxcasframe.cpp:142
 msgid "Reset"
 msgstr "Leegmaken"
 
-#: src/muuli_wdr.cpp:2485 src/muuli_wdr.cpp:2510
+#: src/muuli_wdr.cpp:2478 src/muuli_wdr.cpp:2503
 msgid "Click this button to reset the log."
 msgstr "Klik op deze knop om de log te resetten."
 
-#: src/muuli_wdr.cpp:2532
+#: src/muuli_wdr.cpp:2525
 msgid "Click on this button to update the servers list from URL ..."
 msgstr "Klik op deze knop om de lijst van servers te updaten van URL ..."
 
-#: src/muuli_wdr.cpp:2536
+#: src/muuli_wdr.cpp:2529
 msgid "Server list"
 msgstr "Serverlijst"
 
-#: src/muuli_wdr.cpp:2541
+#: src/muuli_wdr.cpp:2534
 msgid ""
 "Enter the url to a server.met file here and press the button to the left to "
 "update the list of known servers."
@@ -3896,55 +3901,55 @@ msgstr ""
 "Voer de url naar een server.met bestand hier in en druk op de knop links om "
 "de lijst met bekende servers te vernieuwen."
 
-#: src/muuli_wdr.cpp:2548
+#: src/muuli_wdr.cpp:2541
 msgid "Add server manually: Name"
 msgstr "Voeg server handmatig toe: Naam"
 
-#: src/muuli_wdr.cpp:2552
+#: src/muuli_wdr.cpp:2545
 msgid "Enter the name of the new server here"
 msgstr "Voer hier de naam van de nieuwe server in"
 
-#: src/muuli_wdr.cpp:2555 src/ServerWnd.cpp:167
+#: src/muuli_wdr.cpp:2548 src/ServerWnd.cpp:167
 msgid "IP:Port"
 msgstr "IP:Poort"
 
-#: src/muuli_wdr.cpp:2559
+#: src/muuli_wdr.cpp:2552
 msgid "Enter the IP of the server here, using the x.x.x.x format."
 msgstr "Voer hier het IP van de server in, gebuik het x.x.x.x formaat."
 
-#: src/muuli_wdr.cpp:2566
+#: src/muuli_wdr.cpp:2559
 msgid "Enter the port of the server here."
 msgstr "Voer hier de poort van de server in."
 
-#: src/muuli_wdr.cpp:2570
+#: src/muuli_wdr.cpp:2563
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "Voeg een server handmatig toe (vul velden links in voor) ..."
 
-#: src/muuli_wdr.cpp:2608
+#: src/muuli_wdr.cpp:2601
 msgid "aMule Log"
 msgstr "aMule Log"
 
-#: src/muuli_wdr.cpp:2612
+#: src/muuli_wdr.cpp:2605
 msgid "Server Info"
 msgstr "Server Info"
 
-#: src/muuli_wdr.cpp:2616
+#: src/muuli_wdr.cpp:2609
 msgid "ED2K Info"
 msgstr "ED2K Info"
 
-#: src/muuli_wdr.cpp:2620
+#: src/muuli_wdr.cpp:2613
 msgid "Kad Info"
 msgstr "Kad Info"
 
-#: src/muuli_wdr.cpp:2649
+#: src/muuli_wdr.cpp:2642
 msgid "Click on this button to update the nodes list from URL ..."
 msgstr "Klik op deze knop om de nodes lijst te updaten van URL ..."
 
-#: src/muuli_wdr.cpp:2653
+#: src/muuli_wdr.cpp:2646
 msgid "Nodes (0)"
 msgstr "Nodes (0)"
 
-#: src/muuli_wdr.cpp:2658
+#: src/muuli_wdr.cpp:2651
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
@@ -3952,39 +3957,39 @@ msgstr ""
 "Voer hier de url in naar een nodes.dat bestand en druk op de knop links om "
 "de lijst van bekende nodes te updaten."
 
-#: src/muuli_wdr.cpp:2663
+#: src/muuli_wdr.cpp:2656
 msgid "Nodes stats"
 msgstr "Nodes stats"
 
-#: src/muuli_wdr.cpp:2714
+#: src/muuli_wdr.cpp:2707
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#: src/muuli_wdr.cpp:2717
+#: src/muuli_wdr.cpp:2710
 msgid "New node"
 msgstr "Nieuwe node"
 
-#: src/muuli_wdr.cpp:2722
+#: src/muuli_wdr.cpp:2715
 msgid "IP:"
 msgstr "IP:"
 
-#: src/muuli_wdr.cpp:2751
+#: src/muuli_wdr.cpp:2744
 msgid "Port:"
 msgstr "Poort:"
 
-#: src/muuli_wdr.cpp:2767
+#: src/muuli_wdr.cpp:2760
 msgid "Bootstrap from known clients"
 msgstr "Bootstrap van bekende clients"
 
-#: src/muuli_wdr.cpp:2772
+#: src/muuli_wdr.cpp:2765
 msgid "Disconnect Kad"
 msgstr "Verbreek verbinding met Kad"
 
-#: src/muuli_wdr.cpp:2810
+#: src/muuli_wdr.cpp:2803
 msgid "Use Secure User Identification"
 msgstr "Gebruik Secure User Identification"
 
-#: src/muuli_wdr.cpp:2812
+#: src/muuli_wdr.cpp:2805
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
@@ -3992,15 +3997,15 @@ msgstr ""
 "Het is aan te raden om deze optie in te schakelen. U ontvangt geen credits "
 "indien SUI niet ingeschakeld is."
 
-#: src/muuli_wdr.cpp:2815
+#: src/muuli_wdr.cpp:2808
 msgid "Protocol Obfuscation"
 msgstr "Protocol Obfuscatie"
 
-#: src/muuli_wdr.cpp:2818
+#: src/muuli_wdr.cpp:2811
 msgid "Support Protocol Obfuscation"
 msgstr "Ondersteun Protocol Obfuscatie"
 
-#: src/muuli_wdr.cpp:2820
+#: src/muuli_wdr.cpp:2813
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
@@ -4008,11 +4013,11 @@ msgstr ""
 "Deze optie schakelt Protocol Obfuscatie in, en zorgt er voor dat aMule "
 "geobfusceerde verbindingen van andere clients accepteert."
 
-#: src/muuli_wdr.cpp:2823
+#: src/muuli_wdr.cpp:2816
 msgid "Use obfuscation for outgoing connections"
 msgstr "Gebruik obfuscatie voor uitgaande verbindingen"
 
-#: src/muuli_wdr.cpp:2825
+#: src/muuli_wdr.cpp:2818
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
@@ -4020,11 +4025,11 @@ msgstr ""
 "Deze optie zorgt er voor dat aMule Protocol Obfuscatie gebruikt bij het "
 "verbinden met andere clients/servers."
 
-#: src/muuli_wdr.cpp:2828
+#: src/muuli_wdr.cpp:2821
 msgid "Accept only obfuscated connections"
 msgstr "Accepteer alleen geobfusceerde verbindingen"
 
-#: src/muuli_wdr.cpp:2829
+#: src/muuli_wdr.cpp:2822
 msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
@@ -4032,81 +4037,81 @@ msgstr ""
 "Deze optie zorgt er voor dat aMule alleen gobfusceerde verbindingen "
 "accepteert. U heeft minder bronnen, maar al uw verkeer is geobfusceerd."
 
-#: src/muuli_wdr.cpp:2836
+#: src/muuli_wdr.cpp:2829
 msgid "Everybody"
 msgstr "Iedereen"
 
-#: src/muuli_wdr.cpp:2838
+#: src/muuli_wdr.cpp:2831
 msgid "No one"
 msgstr "Niemand"
 
-#: src/muuli_wdr.cpp:2840
+#: src/muuli_wdr.cpp:2833
 msgid "Who can see my shared files:"
 msgstr "Wie kan mijn gedeelde bestanden zien:"
 
-#: src/muuli_wdr.cpp:2841
+#: src/muuli_wdr.cpp:2834
 msgid "Select who can request to view a list of your shared files."
 msgstr "Selecteer wie een lijst van uw gedeelde bestanden kan opvragen."
 
-#: src/muuli_wdr.cpp:2844
+#: src/muuli_wdr.cpp:2837
 msgid "IP-Filtering"
 msgstr "IP-Filteren"
 
-#: src/muuli_wdr.cpp:2851
+#: src/muuli_wdr.cpp:2844
 msgid "Filter clients"
 msgstr "Filter clients"
 
-#: src/muuli_wdr.cpp:2853
+#: src/muuli_wdr.cpp:2846
 msgid ""
 "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Schakel filteren van de client IPs in het bestand ~/.aMule/ipfilter.dat in."
 
-#: src/muuli_wdr.cpp:2856
+#: src/muuli_wdr.cpp:2849
 msgid "Filter servers"
 msgstr "Filter servers"
 
-#: src/muuli_wdr.cpp:2858
+#: src/muuli_wdr.cpp:2851
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Schakel filteren van de server IPs in het bestand ~/.aMule/ipfilter.dat in."
 
-#: src/muuli_wdr.cpp:2865
+#: src/muuli_wdr.cpp:2858
 msgid "Reload List"
 msgstr "Lijst Opnieuw laden"
 
-#: src/muuli_wdr.cpp:2866
+#: src/muuli_wdr.cpp:2859
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
 msgstr ""
 "Laadt de lijst met IPs om te filteren opnieuw uit het bestand ~/.aMule/"
 "ipfilter.dat"
 
-#: src/muuli_wdr.cpp:2874
+#: src/muuli_wdr.cpp:2867
 msgid "URL:"
 msgstr "URL:"
 
-#: src/muuli_wdr.cpp:2880
+#: src/muuli_wdr.cpp:2873
 msgid "Update now"
 msgstr "Update nu"
 
-#: src/muuli_wdr.cpp:2885
+#: src/muuli_wdr.cpp:2878
 msgid "Auto-update ipfilter at startup"
 msgstr "Auto-update ipfilter bij het starten"
 
-#: src/muuli_wdr.cpp:2890
+#: src/muuli_wdr.cpp:2883
 msgid "Filtering Level:"
 msgstr "Level van Filteren:"
 
-#: src/muuli_wdr.cpp:2900
+#: src/muuli_wdr.cpp:2893
 msgid "Always filter LAN IPs"
 msgstr "Filter LAN IPs altijd"
 
-#: src/muuli_wdr.cpp:2904
+#: src/muuli_wdr.cpp:2897
 msgid "Paranoid handling of non-matching IPs"
 msgstr "Paranoïde behandeling van niet-kloppende IPs"
 
-#: src/muuli_wdr.cpp:2906
+#: src/muuli_wdr.cpp:2899
 msgid ""
 "Rejects packet if the client ip is different from the ip where the packet is "
 "received from. Use with caution."
@@ -4114,11 +4119,11 @@ msgstr ""
 "Weigert een pakket als de client ip anders is dan het ip waar het pakket van "
 "is ontvangen. Wees voorzichtig hiermee."
 
-#: src/muuli_wdr.cpp:2909
+#: src/muuli_wdr.cpp:2902
 msgid "Use system-wide ipfilter.dat if available"
 msgstr "Gebruik systeemwijd ipfilter.dat indien beschikbaar"
 
-#: src/muuli_wdr.cpp:2910
+#: src/muuli_wdr.cpp:2903
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
@@ -4126,11 +4131,11 @@ msgstr ""
 "Indien er geen lokaal ipfilter.dat gevonden wordt, sta gebruik van een "
 "systeemwijd ipfilter toe."
 
-#: src/muuli_wdr.cpp:2929
+#: src/muuli_wdr.cpp:2922
 msgid "Enable Online-Signature"
 msgstr "Schakel Online-Handtekening in"
 
-#: src/muuli_wdr.cpp:2931
+#: src/muuli_wdr.cpp:2924
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
@@ -4138,221 +4143,221 @@ msgstr ""
 "Schakelt het schrijven van het OH bestand in, die kan gebruikt worden door "
 "externe applicaties om handtekeningen en dergelijke te maken."
 
-#: src/muuli_wdr.cpp:2936
+#: src/muuli_wdr.cpp:2929
 msgid "Update Frequency (Secs):"
 msgstr "Updatefrequentie (Seconden):"
 
-#: src/muuli_wdr.cpp:2940
+#: src/muuli_wdr.cpp:2933
 msgid "Change the frequency (in seconds) of Online Signature updates."
 msgstr ""
 "Verander de frequentie (in seconden) van de Online Handtekening updates."
 
-#: src/muuli_wdr.cpp:2949
+#: src/muuli_wdr.cpp:2942
 msgid "Save online signature file in: "
 msgstr "Bewaar online-handtekeningbestand in: "
 
-#: src/muuli_wdr.cpp:2956
+#: src/muuli_wdr.cpp:2949
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr ""
 "Klik hier om de directory te selecteren die de Online Handtekening bestanden "
 "bevat."
 
-#: src/muuli_wdr.cpp:2978
+#: src/muuli_wdr.cpp:2971
 msgid "Filter incoming messages (except current chat):"
 msgstr "Filter binnenkomende berichten (behalve huidige chat):"
 
-#: src/muuli_wdr.cpp:2981
+#: src/muuli_wdr.cpp:2974
 msgid "Filter all messages"
 msgstr "Filter alle berichten"
 
-#: src/muuli_wdr.cpp:2984
+#: src/muuli_wdr.cpp:2977
 msgid "Filter messages from people not on your friend list"
 msgstr "Filter berichten van mensen niet op uw vriendenlijst"
 
-#: src/muuli_wdr.cpp:2987
+#: src/muuli_wdr.cpp:2980
 msgid "Filter messages from unknown clients"
 msgstr "Filter berichten van onbekende clients"
 
-#: src/muuli_wdr.cpp:2990
+#: src/muuli_wdr.cpp:2983
 msgid "Filter messages containing (use ',' as separator):"
 msgstr "Filter berichten met (gebruik ',' als scheiding):"
 
-#: src/muuli_wdr.cpp:2994 src/muuli_wdr.cpp:3009
+#: src/muuli_wdr.cpp:2987 src/muuli_wdr.cpp:3002
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
 "voeg hier de woorden toe die amule moet filteren en berichten daarmee "
 "blokkeren"
 
-#: src/muuli_wdr.cpp:2997
+#: src/muuli_wdr.cpp:2990
 msgid "Show received messages in the log"
 msgstr "Toon ontvangen berichten in de log"
 
-#: src/muuli_wdr.cpp:3002
+#: src/muuli_wdr.cpp:2995
 msgid "Comments"
 msgstr "Commentaren"
 
-#: src/muuli_wdr.cpp:3005
+#: src/muuli_wdr.cpp:2998
 msgid "Filter comments containing (use ',' as separator):"
 msgstr ""
 "Filter commentaren die de volgende tekens bevatten (gebruik ',' als "
 "scheiding):"
 
-#: src/muuli_wdr.cpp:3028
+#: src/muuli_wdr.cpp:3021
 msgid "Automatic server connect without proxy"
 msgstr "Automatische verbinding met server zonder proxy"
 
-#: src/muuli_wdr.cpp:3034
+#: src/muuli_wdr.cpp:3027
 msgid "Enable authentication"
 msgstr "Schakel aanmelding in"
 
-#: src/muuli_wdr.cpp:3035
+#: src/muuli_wdr.cpp:3028
 msgid "Enable/disable username/password authentication"
 msgstr "Schakel gebruikersnaam/wachtwoord aanmelding in/uit"
 
-#: src/muuli_wdr.cpp:3040
+#: src/muuli_wdr.cpp:3033
 msgid "Username: "
 msgstr "Gebruikersnaam: "
 
-#: src/muuli_wdr.cpp:3044
+#: src/muuli_wdr.cpp:3037
 msgid "The username to use to connect to the proxy"
 msgstr "De gebruikersnaam nodig om te verbinden met de proxy"
 
-#: src/muuli_wdr.cpp:3047
+#: src/muuli_wdr.cpp:3040
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: src/muuli_wdr.cpp:3051
+#: src/muuli_wdr.cpp:3044
 msgid "The password to use to connect to the proxy"
 msgstr "Het wachtwoord nodig om te verbinden met de proxy"
 
-#: src/muuli_wdr.cpp:3054
+#: src/muuli_wdr.cpp:3047
 msgid "Enable Proxy"
 msgstr "Schakel Proxy in"
 
-#: src/muuli_wdr.cpp:3055
+#: src/muuli_wdr.cpp:3048
 msgid "Enable/disable proxy support"
 msgstr "Schakel proxy ondersteuning in/uit"
 
-#: src/muuli_wdr.cpp:3060
+#: src/muuli_wdr.cpp:3053
 msgid "Proxy type:"
 msgstr "Proxy type:"
 
-#: src/muuli_wdr.cpp:3073
+#: src/muuli_wdr.cpp:3066
 msgid "Proxy host:"
 msgstr "Proxy host:"
 
-#: src/muuli_wdr.cpp:3077
+#: src/muuli_wdr.cpp:3070
 msgid "The proxy host name"
 msgstr "De proxy hostnaam"
 
-#: src/muuli_wdr.cpp:3080
+#: src/muuli_wdr.cpp:3073
 msgid "Proxy port:"
 msgstr "Proxy poort:"
 
-#: src/muuli_wdr.cpp:3084
+#: src/muuli_wdr.cpp:3077
 msgid "The proxy port"
 msgstr "De proxy poort"
 
-#: src/muuli_wdr.cpp:3105
+#: src/muuli_wdr.cpp:3098
 msgid "Connect to:"
 msgstr "Verbind met:"
 
-#: src/muuli_wdr.cpp:3119
+#: src/muuli_wdr.cpp:3112
 msgid "Login to remote amule"
 msgstr "Login op amule op afstand"
 
-#: src/muuli_wdr.cpp:3124
+#: src/muuli_wdr.cpp:3117
 msgid "User name"
 msgstr "Gebruikersnaam"
 
-#: src/muuli_wdr.cpp:3141
+#: src/muuli_wdr.cpp:3134
 msgid "Remember those settings"
 msgstr "Onthoud deze instellingen"
 
-#: src/muuli_wdr.cpp:3170
+#: src/muuli_wdr.cpp:3163
 msgid "Enable Verbose Debug-Logging."
 msgstr "Schakel Uitgebreid Debug-Loggen in."
 
-#: src/muuli_wdr.cpp:3173
+#: src/muuli_wdr.cpp:3166
 msgid "Message Categories:"
 msgstr "Bericht Categorie?n"
 
-#: src/muuli_wdr.cpp:3199 src/PartFileConvertDlg.cpp:145
+#: src/muuli_wdr.cpp:3192 src/PartFileConvertDlg.cpp:145
 msgid "Waiting..."
 msgstr "Wachtend..."
 
-#: src/muuli_wdr.cpp:3226
+#: src/muuli_wdr.cpp:3219
 msgid "Add imports"
 msgstr "Voeg geïmporteerden toe"
 
-#: src/muuli_wdr.cpp:3230
+#: src/muuli_wdr.cpp:3223
 msgid "Retry selected"
 msgstr "Probeer geselecteerde opnieuw"
 
-#: src/muuli_wdr.cpp:3233
+#: src/muuli_wdr.cpp:3226
 msgid "Remove selected"
 msgstr "Verwijder geselecteerde"
 
-#: src/muuli_wdr.cpp:3305
+#: src/muuli_wdr.cpp:3298
 msgid "Event Types"
 msgstr "Gebeurtenistypes"
 
-#: src/muuli_wdr.cpp:3325
+#: src/muuli_wdr.cpp:3318
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
 "Statistieken en clients in wachtrij voor geselecteerd(e) bestand(en) : "
 "Sessie / Alle"
 
-#: src/muuli_wdr.cpp:3352
+#: src/muuli_wdr.cpp:3345
 msgid "Active Uploads"
 msgstr "Actieve Uploads"
 
-#: src/muuli_wdr.cpp:3372
+#: src/muuli_wdr.cpp:3365
 msgid "Percent of total files"
 msgstr "Procent van alle bestanden"
 
-#: src/muuli_wdr.cpp:3419
+#: src/muuli_wdr.cpp:3412
 msgid "All files"
 msgstr "Alle bestanden"
 
-#: src/muuli_wdr.cpp:3420
+#: src/muuli_wdr.cpp:3413
 msgid "Selected files"
 msgstr "Geselecteerde bestanden"
 
-#: src/muuli_wdr.cpp:3421
+#: src/muuli_wdr.cpp:3414
 msgid "Active uploads only"
 msgstr "Alleen actieve uploads"
 
-#: src/muuli_wdr.cpp:3423
+#: src/muuli_wdr.cpp:3416
 msgid "Show Clients for"
 msgstr "Toon Clients voor"
 
-#: src/muuli_wdr.cpp:3426
+#: src/muuli_wdr.cpp:3419
 msgid "Reload:"
 msgstr "Opnieuw laden:"
 
-#: src/muuli_wdr.cpp:3431
+#: src/muuli_wdr.cpp:3424
 msgid "Reload your shared files"
 msgstr "Laad uw gedeelde bestanden opnieuw"
 
-#: src/muuli_wdr.cpp:3501
+#: src/muuli_wdr.cpp:3494
 msgid "Send"
 msgstr "Verstuur"
 
-#: src/muuli_wdr.cpp:3502
+#: src/muuli_wdr.cpp:3495
 msgid "Sends the specified message."
 msgstr "Verstuurt het opgegeven bericht."
 
-#: src/muuli_wdr.cpp:3507
+#: src/muuli_wdr.cpp:3500
 msgid "Close this chat-session."
 msgstr "Sluit deze chat-sessie."
 
-#: src/muuli_wdr.cpp:3531
+#: src/muuli_wdr.cpp:3524
 msgid "Connect to any server and/or Kad"
 msgstr "Verbind met een server en/of Kad"
 
-#: src/muuli_wdr.cpp:3537 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:810
+#: src/muuli_wdr.cpp:3530 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:810
 msgid "Shared Files"
 msgstr "Gedeelde Bestanden"
 
@@ -4425,27 +4430,27 @@ msgstr "alle"
 msgid "all others"
 msgstr "alle anderen"
 
-#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:359
+#: src/OtherFunctions.cpp:673 src/TransferWnd.cpp:345
 msgid "Incomplete"
 msgstr "Incompleet"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:365
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "Gestopt"
 
-#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:370
+#: src/OtherFunctions.cpp:680 src/TransferWnd.cpp:356
 msgid "Video"
 msgstr "Video"
 
-#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:372
+#: src/OtherFunctions.cpp:682 src/TransferWnd.cpp:358
 msgid "Archive"
 msgstr "Archief"
 
-#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:375
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:361
 msgid "Text"
 msgstr "Tekst"
 
-#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:366
+#: src/OtherFunctions.cpp:686 src/TransferWnd.cpp:352
 msgid "Active"
 msgstr "Actief"
 
@@ -4738,183 +4743,179 @@ msgstr "Gedownload"
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "FOUT: Kon partbestand '%s' niet openen"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:629
 msgid "System default"
 msgstr "Systeem standaard"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:630
 msgid "Albanian"
 msgstr "Albanees"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:631
 msgid "Arabic"
 msgstr "Arabisch"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:632
 msgid "Asturian"
 msgstr "Asturisch"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:633
 msgid "Basque"
 msgstr "Baskisch"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:634
 msgid "Bulgarian"
 msgstr "Bulgaars"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:635
 msgid "Catalan"
 msgstr "Catalaans"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:636
 msgid "Chinese (Simplified)"
 msgstr "Chinees (Vereenvoudigd)"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:637
 msgid "Chinese (Traditional)"
 msgstr "Chinees (Traditioneel)"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:638
 msgid "Croatian"
 msgstr "Kroatisch"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:639
 msgid "Czech"
 msgstr "Tsjechisch"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:640
 msgid "Danish"
 msgstr "Deens"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:641
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:642
 msgid "English (U.K.)"
 msgstr "Engels (V.K.)"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:643
 msgid "Estonian"
 msgstr "Estonisch"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:644
 msgid "Finnish"
 msgstr "Fins"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:645
 msgid "French"
 msgstr "Frans"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:646
 msgid "Galician"
 msgstr "Gallisch"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:647
 msgid "German"
 msgstr "Duits"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:648
 msgid "Greek"
 msgstr "Grieks"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:649
 msgid "Hebrew"
 msgstr "Hebreeuws"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:650
 msgid "Hungarian"
 msgstr "Hongaars"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:651
 msgid "Italian"
 msgstr "Italiaans"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:652
 msgid "Italian (Swiss)"
 msgstr "Italiaans (Zwitsers)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:653
 msgid "Japanese"
 msgstr "Japans"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:654
 msgid "Korean"
 msgstr "Koreaans"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:655
 msgid "Lithuanian"
 msgstr "Litouws"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:656
 msgid "Norwegian (Nynorsk)"
 msgstr "Noors"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:657
 msgid "Polish"
 msgstr "Pools"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:658
 msgid "Portuguese"
 msgstr "Portugees"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:659
 msgid "Portuguese (Brazilian)"
 msgstr "Portugees (Braziliaans)"
 
-#: src/Preferences.cpp:656
-msgid "Romanian"
-msgstr "Roemeens"
-
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:660
 msgid "Russian"
 msgstr "Russisch"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:661
 msgid "Slovenian"
 msgstr "Sloveens"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:662
 msgid "Spanish"
 msgstr "Spaans"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:663
 msgid "Swedish"
 msgstr "Zweeds"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:664
 msgid "Turkish"
 msgstr "Turks"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:665
 msgid "Ukrainian"
 msgstr "Oekraïens"
 
-#: src/Preferences.cpp:724
+#: src/Preferences.cpp:727
 msgid "Change Language"
 msgstr "Verander Taal"
 
-#: src/Preferences.cpp:895
+#: src/Preferences.cpp:898
 msgid "no options available"
 msgstr "geen opties beschikbaar"
 
-#: src/Preferences.cpp:1573
+#: src/Preferences.cpp:1579
 msgid "Invalid category found, skipping"
 msgstr "Ongeldige categorie gevonden, wordt overgeslagen"
 
-#: src/Preferences.cpp:1750
+#: src/Preferences.cpp:1761
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP poort kan niet hoger zijn dan 65532 omdat de server UDP poort de TCP "
 "poort + 3 is"
 
-#: src/Preferences.cpp:1751
+#: src/Preferences.cpp:1762
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Standaard poort zal worden gebruikt (%d)"
 
-#: src/Preferences.cpp:1774
+#: src/Preferences.cpp:1785
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Laten vallen van niet-bestaande gedeelde directory: %s"
@@ -4981,7 +4982,7 @@ msgstr ""
 "    %PARTFILE - volledig pad naar het bestand\n"
 "    %PARTNAME - alleen bestandsnaam"
 
-#: src/PrefsUnifiedDlg.cpp:284
+#: src/PrefsUnifiedDlg.cpp:279
 msgid ""
 "Do not change these setting unless you know\n"
 "what you are doing, otherwise you can easily\n"
@@ -4997,26 +4998,26 @@ msgstr ""
 "aMule zal goed draaien zonder deze instellingen\n"
 "te wijzigen."
 
-#: src/PrefsUnifiedDlg.cpp:345
+#: src/PrefsUnifiedDlg.cpp:340
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
 msgstr "Kon Cfg niet verbinden met widget met ID %d en sleutel %s"
 
-#: src/PrefsUnifiedDlg.cpp:394
+#: src/PrefsUnifiedDlg.cpp:389
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr "Kon data niet overdragen van Cfg naar widget met ID %d en sleutel %s"
 
-#: src/PrefsUnifiedDlg.cpp:411
+#: src/PrefsUnifiedDlg.cpp:406
 msgid "The type of proxy you are connecting to"
 msgstr "Het type proxy waarmee u verbinding maakt"
 
-#: src/PrefsUnifiedDlg.cpp:512
+#: src/PrefsUnifiedDlg.cpp:518
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr "Kon data niet overdragen van Widget naar Cfg met ID %d en sleutel %s"
 
-#: src/PrefsUnifiedDlg.cpp:567
+#: src/PrefsUnifiedDlg.cpp:573
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -5024,27 +5025,27 @@ msgstr ""
 "aMule moet opnieuw gestart worden om deze veranderingen toe te passen:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:574
+#: src/PrefsUnifiedDlg.cpp:580
 msgid "- TCP port changed.\n"
 msgstr "- TCP poort veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:579
+#: src/PrefsUnifiedDlg.cpp:585
 msgid "- UDP port changed.\n"
 msgstr "- UDP poort veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:584
+#: src/PrefsUnifiedDlg.cpp:590
 msgid "- External connect port changed.\n"
 msgstr "- Poort voor externe verbinding veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:588
+#: src/PrefsUnifiedDlg.cpp:594
 msgid "- External connect acceptance changed.\n"
 msgstr "- Acceptatie voor externe verbinding veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:592
+#: src/PrefsUnifiedDlg.cpp:598
 msgid "- External connect interface changed.\n"
 msgstr "- Interface voor externe verbinding veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:601
+#: src/PrefsUnifiedDlg.cpp:607
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
@@ -5052,7 +5053,7 @@ msgstr ""
 "Uw Auto-update serverlijst is leeg.\n"
 "'Auto-update serverlijst bij het opstarten' wordt uitgeschakeld."
 
-#: src/PrefsUnifiedDlg.cpp:608
+#: src/PrefsUnifiedDlg.cpp:614
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -5061,19 +5062,19 @@ msgstr ""
 "Externe verbindingen kunnen niet ingeschakeld worden tenzij een geldig "
 "wachtwoord is ingesteld."
 
-#: src/PrefsUnifiedDlg.cpp:620
+#: src/PrefsUnifiedDlg.cpp:626
 msgid "- Language changed.\n"
 msgstr "- Taal veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:625
+#: src/PrefsUnifiedDlg.cpp:631
 msgid "- Temp folder changed.\n"
 msgstr "- Temp directory veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:630
+#: src/PrefsUnifiedDlg.cpp:636
 msgid "- ED2K network enabled.\n"
 msgstr "- ED2K netwerk ingeschakeld.\n"
 
-#: src/PrefsUnifiedDlg.cpp:700
+#: src/PrefsUnifiedDlg.cpp:708
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -5081,7 +5082,7 @@ msgstr ""
 "Zowel het eD2K als het Kad netwerk zijn uitgeschakeld.\n"
 "U kun niet verbinden tot u minimaal een netwerk inschakelt."
 
-#: src/PrefsUnifiedDlg.cpp:704
+#: src/PrefsUnifiedDlg.cpp:712
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5089,7 +5090,7 @@ msgstr ""
 "Kad zal niet starten als uw UDP poort is uitgeschakeld.\n"
 "Schakel de UDP poort in of schakel Kad uit."
 
-#: src/PrefsUnifiedDlg.cpp:717
+#: src/PrefsUnifiedDlg.cpp:725
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5099,7 +5100,7 @@ msgstr ""
 "U MOET aMule nu opnieuw starten.\n"
 "Als u dat niet doet moet u niet klagen als er iets misgaat.\n"
 
-#: src/PrefsUnifiedDlg.cpp:807
+#: src/PrefsUnifiedDlg.cpp:815
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5109,41 +5110,41 @@ msgstr ""
 "Vul a.u.b. minimaal een URL naar een geldig server.met bestand in.\n"
 "Klik op de knop \"Lijst\" hiernaast om een URL in te voeren."
 
-#: src/PrefsUnifiedDlg.cpp:941
+#: src/PrefsUnifiedDlg.cpp:949
 msgid "Temporary files"
 msgstr "Tijdelijke bestanden"
 
-#: src/PrefsUnifiedDlg.cpp:946
+#: src/PrefsUnifiedDlg.cpp:954
 msgid "Incoming files"
 msgstr "Binnenkomende bestanden"
 
-#: src/PrefsUnifiedDlg.cpp:951
+#: src/PrefsUnifiedDlg.cpp:959
 msgid "Online Signatures"
 msgstr "Online Handtekeningen"
 
-#: src/PrefsUnifiedDlg.cpp:964
+#: src/PrefsUnifiedDlg.cpp:972
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Kies een directory voor %s"
 
-#: src/PrefsUnifiedDlg.cpp:984
+#: src/PrefsUnifiedDlg.cpp:992
 msgid "Browse for videoplayer"
 msgstr "Blader naar videospeler"
 
-#: src/PrefsUnifiedDlg.cpp:988
+#: src/PrefsUnifiedDlg.cpp:996
 msgid "Select browser"
 msgstr "Selecteer browser"
 
-#: src/PrefsUnifiedDlg.cpp:994
+#: src/PrefsUnifiedDlg.cpp:1002
 #, c-format
 msgid "Executable%s"
 msgstr "Uitvoerbare%s"
 
-#: src/PrefsUnifiedDlg.cpp:1015
+#: src/PrefsUnifiedDlg.cpp:1023
 msgid "Edit server list"
 msgstr "Bewerk serverlijst"
 
-#: src/PrefsUnifiedDlg.cpp:1016
+#: src/PrefsUnifiedDlg.cpp:1024
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5151,76 +5152,76 @@ msgstr ""
 "Voeg hier URL's toe om server.met bestanden te downloaden.\n"
 "Slechts een url per regel."
 
-#: src/PrefsUnifiedDlg.cpp:1075 src/PrefsUnifiedDlg.cpp:1094
+#: src/PrefsUnifiedDlg.cpp:1083 src/PrefsUnifiedDlg.cpp:1102
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Update vertraging: %d seconde"
 msgstr[1] "Update vertraging: %d seconden"
 
-#: src/PrefsUnifiedDlg.cpp:1082
+#: src/PrefsUnifiedDlg.cpp:1090
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Tijd voor gemiddeldengrafiek: %d minuut"
 msgstr[1] "Tijd voor gemiddeldengrafiek: %d minuten"
 
-#: src/PrefsUnifiedDlg.cpp:1088
+#: src/PrefsUnifiedDlg.cpp:1096
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Schaal Verbindingengrafiek: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1100
+#: src/PrefsUnifiedDlg.cpp:1108
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Grootte van Bestandsbuffer: %d byte"
 msgstr[1] "Grootte van Bestandsbuffer: %d bytes"
 
-#: src/PrefsUnifiedDlg.cpp:1106
+#: src/PrefsUnifiedDlg.cpp:1114
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Grootte van Uploadwachtrij: %d client"
 msgstr[1] "Grootte van Uploadwachtrij: %d clients"
 
-#: src/PrefsUnifiedDlg.cpp:1113
+#: src/PrefsUnifiedDlg.cpp:1121
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Server verbinding verversingsinterval: %d minuut"
 msgstr[1] "Server verbinding verversingsinterval: %d minuten"
 
-#: src/PrefsUnifiedDlg.cpp:1115
+#: src/PrefsUnifiedDlg.cpp:1123
 msgid "Server connection refresh interval: Disabled"
 msgstr "Server verbinding verversingstijd: Uitgeschakeld"
 
-#: src/PrefsUnifiedDlg.cpp:1160
+#: src/PrefsUnifiedDlg.cpp:1168
 msgid "disabled"
 msgstr "uitgeschakeld"
 
-#: src/PrefsUnifiedDlg.cpp:1183
+#: src/PrefsUnifiedDlg.cpp:1191
 #, c-format
 msgid "Execute command on '%s' event"
 msgstr "Voer commando uit bij gebeurtenis '%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1186
+#: src/PrefsUnifiedDlg.cpp:1194
 msgid "Enable command execution on core"
 msgstr "Schakel uitvoeren van commando's in kern in"
 
-#: src/PrefsUnifiedDlg.cpp:1194
+#: src/PrefsUnifiedDlg.cpp:1202
 msgid "Core command:"
 msgstr "Kern commando:"
 
-#: src/PrefsUnifiedDlg.cpp:1203
+#: src/PrefsUnifiedDlg.cpp:1211
 msgid "Enable command execution on GUI"
 msgstr "Schakel uitvoeren van commando's in GUI in"
 
-#: src/PrefsUnifiedDlg.cpp:1211
+#: src/PrefsUnifiedDlg.cpp:1219
 msgid "GUI command:"
 msgstr "GUI commando:"
 
-#: src/PrefsUnifiedDlg.cpp:1220
+#: src/PrefsUnifiedDlg.cpp:1228
 msgid "The following variables will be replaced:"
 msgstr "De volgende variabelen worden vervangen:"
 
@@ -5797,31 +5798,31 @@ msgstr "Niet draaiende"
 msgid "Adding file %s to shares"
 msgstr "Bestand %s wordt toegevoegd aan gedeelde bestanden"
 
-#: src/SharedFileList.cpp:362
+#: src/SharedFileList.cpp:371
 #, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] " %i bekend gedeeld bestand gevonden"
 msgstr[1] " %i bekende gedeelde bestanden gevonden"
 
-#: src/SharedFileList.cpp:368
+#: src/SharedFileList.cpp:377
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "%i bekend gedeeld bestand gevonden, %i onbekend"
 msgstr[1] "%i bekende gedeelde bestanden gevonden, %i onbekend"
 
-#: src/SharedFileList.cpp:377
+#: src/SharedFileList.cpp:386
 #, c-format
 msgid "ERROR: Attempted to share %s"
 msgstr "FOUT: Poging om %s te delen"
 
-#: src/SharedFileList.cpp:401
+#: src/SharedFileList.cpp:410
 #, c-format
 msgid "Shared directory not found, skipping: %s"
 msgstr "Gedeelde directory niet gevonden, wordt overgeslagen: %s"
 
-#: src/SharedFileList.cpp:473
+#: src/SharedFileList.cpp:481
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr "Geen deelbare bestanden gevonden in directory: %s"
@@ -6733,18 +6734,18 @@ msgstr ""
 msgid "aMule text client"
 msgstr "aMule tekst client"
 
-#: src/ThreadTasks.cpp:351
+#: src/ThreadTasks.cpp:363
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Oude AICH hashsets in '%s' worden omgezet in 64b in '%s'."
 
-#: src/ThreadTasks.cpp:430
+#: src/ThreadTasks.cpp:442
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "WAARSCHUWING: De bestandsnaam '%s' is ongeldig en is gewijzigd in '%s'."
 
-#: src/ThreadTasks.cpp:442
+#: src/ThreadTasks.cpp:454
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
@@ -6769,23 +6770,23 @@ msgstr "Enkel 99 categorieën worden ondersteund."
 msgid "Too many categories!"
 msgstr "Te veel categorieën!"
 
-#: src/TransferWnd.cpp:355
+#: src/TransferWnd.cpp:341
 msgid "All others"
 msgstr "Alle anderen"
 
-#: src/TransferWnd.cpp:377
+#: src/TransferWnd.cpp:363
 msgid "Select view filter"
 msgstr "Selecteer filter"
 
-#: src/TransferWnd.cpp:380
+#: src/TransferWnd.cpp:366
 msgid "Add category"
 msgstr "Voeg categorie toe"
 
-#: src/TransferWnd.cpp:383
+#: src/TransferWnd.cpp:369
 msgid "Edit category"
 msgstr "Bewerk categorie"
 
-#: src/TransferWnd.cpp:384
+#: src/TransferWnd.cpp:370
 msgid "Remove category"
 msgstr "Verwijder categorie"
 
@@ -7524,6 +7525,9 @@ msgstr "Loguit aangevraagd\n"
 #: src/webserver/src/WebServer.cpp:1866
 msgid "Processing request [redirected]: "
 msgstr "Aanvraag wordt verwerkt [omgeleid]: "
+
+#~ msgid "Romanian"
+#~ msgstr "Roemeens"
 
 #, fuzzy
 #~ msgid "Download status"
