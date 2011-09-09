@@ -181,8 +181,24 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 			}
 		}
 	}
-	
+
+	ResetTitle();
+
 	// Should default/last-used position be overridden?
+	if ( geometry_enabled ) {
+		amuledlg = new CamuleDlg(NULL, m_FrameTitle,
+		                         wxPoint(geometry_x,geometry_y),
+		                         wxSize( geometry_width, geometry_height - 58 ));
+	} else {
+		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
+	}
+
+	return 0;
+}
+
+// Sets m_FrameTitle
+void CamuleGuiBase::ResetTitle()
+{
 #ifdef SVNDATE
 	#ifdef CLIENT_GUI
 		m_FrameTitle = CFormat(wxT("aMule remote control %s %s")) % wxT( VERSION ) % wxT( SVNDATE );
@@ -195,16 +211,12 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	#else
 		m_FrameTitle = _("aMule");
 	#endif
-#endif
-	if ( geometry_enabled ) {
-		amuledlg = new CamuleDlg(NULL, m_FrameTitle,
-		                         wxPoint(geometry_x,geometry_y),
-		                         wxSize( geometry_width, geometry_height - 58 ));
-	} else {
-		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
-	}
 
-	return 0;
+	if (thePrefs::ShowVersionOnTitle()) {
+		m_FrameTitle += wxT(' ');
+		m_FrameTitle += wxT( VERSION );
+	}
+#endif
 }
 
 

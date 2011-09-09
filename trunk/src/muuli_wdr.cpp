@@ -2101,57 +2101,60 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     item5->SetValue( TRUE );
     item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item6 = new wxCheckBox( parent, IDC_SHOWVERSIONONTITLE, _("Show application version on title"), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxRadioButton *item7 = new wxRadioButton( parent, IDC_RATESBEFORETITLE, _("Before application name"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-    item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
+    wxCheckBox *item7 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxRadioButton *item8 = new wxRadioButton( parent, IDC_RATESAFTERTITLE, _("After application name"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->SetValue( TRUE );
+    wxRadioButton *item8 = new wxRadioButton( parent, IDC_RATESBEFORETITLE, _("Before application name"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
     item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
 
-    wxCheckBox *item9 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwidth"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxRadioButton *item9 = new wxRadioButton( parent, IDC_RATESAFTERTITLE, _("After application name"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->SetValue( TRUE );
-    item0->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwidth"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->SetValue( TRUE );
+    item0->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_SHOW_COUNTRY_FLAGS, _("Show country flags for clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item13 = new wxStaticBox( parent, -1, _("Download Queue Files") );
-    wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_SHOW_COUNTRY_FLAGS, _("Show country flags for clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_PERCENT, _("Show progress percentage"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetValue( TRUE );
-    item12->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Download Queue Files") );
+    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
 
-    wxFlexGridSizer *item15 = new wxFlexGridSizer( 4, 0, 0 );
-    item15->AddGrowableCol( 0 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_PERCENT, _("Show progress percentage"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->SetValue( TRUE );
+    item13->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progress bar"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetValue( TRUE );
-    item15->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    wxFlexGridSizer *item16 = new wxFlexGridSizer( 4, 0, 0 );
+    item16->AddGrowableCol( 0 );
 
-    wxStaticText *item17 = new wxStaticText( parent, -1, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progress bar"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetValue( TRUE );
+    item16->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSlider *item18 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
-    item15->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, -1, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item19 = new wxStaticText( parent, -1, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->Add( item19, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxSlider *item19 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
+    item16->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item12->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item20 = new wxStaticText( parent, -1, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item20, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetValue( TRUE );
-    item20->SetToolTip( _("aMule will sort the columns in your download list automatically") );
-    item12->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    item13->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item21 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->SetValue( TRUE );
+    item21->SetToolTip( _("aMule will sort the columns in your download list automatically") );
+    item13->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+
+    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     if (set_sizer)
     {

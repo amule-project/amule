@@ -149,6 +149,9 @@ bool		CPreferences::s_bstartnextfilealpha;
 bool		CPreferences::s_bshowoverhead;
 bool		CPreferences::s_bDAP;
 bool		CPreferences::s_bUAP;
+#ifndef __SVN__
+bool		CPreferences::s_showVersionOnTitle;
+#endif
 uint8_t		CPreferences::s_showRatesOnTitle;
 wxString	CPreferences::s_VideoPlayer;
 bool		CPreferences::s_showAllNotCats;
@@ -1137,6 +1140,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  wxT("/SkinGUIOptions/Skin"), s_Skin, wxEmptyString )));
 	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( wxT("/eMule/VerticalToolbar"), s_ToolbarOrientation, false )));
 	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( wxT("/eMule/GeoIPEnabled"), s_GeoIPEnabled, true )));
+#ifndef __SVN__
+	NewCfgItem(IDC_SHOWVERSIONONTITLE,	(new Cfg_Bool( wxT("/eMule/ShowVersionOnTitle"), s_showVersionOnTitle, false )));
+#endif
 
 	/**
 	 * External Apps
