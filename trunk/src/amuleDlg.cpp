@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -90,8 +90,8 @@
 #ifdef ENABLE_IP2COUNTRY	// That's no bug. MSVC has ENABLE_IP2COUNTRY always on,
 							// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
 void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
-{ 
-	m_IP2Country->DownloadFinished(result); 
+{
+	m_IP2Country->DownloadFinished(result);
 }
 
 void CamuleDlg::EnableIP2Country()
@@ -135,7 +135,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_KEY_UP(CamuleDlg::OnKeyPressed)
 
 	EVT_MENU(wxID_EXIT, CamuleDlg::OnExit)
-	
+
 END_EVENT_TABLE()
 
 #ifndef wxCLOSE_BOX
@@ -204,7 +204,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	m_clientSkinNames[Client_ExcellentRating_Smiley]  = wxT("ExcellentRatingOnFile");
 	m_clientSkinNames[Client_CommentOnly_Smiley]      = wxT("CommentOnly");
 	m_clientSkinNames[Client_Encryption_Smiley]       = wxT("Encrypted");
-	
+
 	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
 	wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
@@ -299,24 +299,24 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 
 	Show(true);
 	// Must we start minimized?
-	if (thePrefs::GetStartMinimized()) { 
+	if (thePrefs::GetStartMinimized()) {
 		DoIconize(true);
 	}
 
 	// Set shortcut keys
-	wxAcceleratorEntry entries[] = { 
+	wxAcceleratorEntry entries[] = {
 		wxAcceleratorEntry(wxACCEL_CTRL, wxT('Q'), wxID_EXIT)
 	};
-	
-	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));	
+
+	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));
 	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
-	
+
 	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
 	wxNotebook* networks_notebook = CastChild( ID_NETNOTEBOOK, wxNotebook);
-	
+
 	wxASSERT(logs_notebook->GetPageCount() == 4);
 	wxASSERT(networks_notebook->GetPageCount() == 2);
-	
+
 	for (uint32 i = 0; i < logs_notebook->GetPageCount(); ++i) {
 		m_logpages[i].page = logs_notebook->GetPage(i);
 		m_logpages[i].name = logs_notebook->GetPageText(i);
@@ -326,7 +326,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		m_networkpages[i].page = networks_notebook->GetPage(i);
 		m_networkpages[i].name = networks_notebook->GetPageText(i);
 	}
-	
+
 	DoNetworkRearrange();
 }
 
@@ -339,7 +339,7 @@ void CamuleDlg::ShowED2KLinksHandler( bool show )
 		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Hiding FED2KLH aborted."));
 		return;
 	}
-	
+
 	s_dlgcnt->Show( s_fed2klh, show );
 	s_dlgcnt->Layout();
 }
@@ -358,13 +358,13 @@ void CamuleDlg::ToogleED2KLinksHandler()
 void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 {
 	m_nActiveDialog = type;
-	
+
 	if ( type == DT_TRANSFER_WND ) {
 		if (thePrefs::ShowCatTabInfos()) {
 			m_transferwnd->UpdateCatTabTitles();
 		}
 	}
-	
+
 	if ( m_activewnd ) {
 		m_activewnd->Show(false);
 		contentSizer->Detach(m_activewnd);
@@ -379,7 +379,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	// we have to refresh it once it is visible again
 	dlg->Refresh( true );
 	dlg->SetFocus();
-	
+
 	if ( type == DT_SHARED_WND ) {
 		// set up splitter now that window sizes are defined
 		m_sharedfileswnd->Prepare();
@@ -396,12 +396,12 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 		if(theApp->IsConnectedED2K() && theApp->serverconnect->IsLowID()) {
 			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
 		} else {
-			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
+			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);
 		}
 	}
 }
 
-		
+
 void CamuleDlg::CreateSystray()
 {
 	wxCHECK_RET(m_wndTaskbarNotifier == NULL,
@@ -410,8 +410,8 @@ void CamuleDlg::CreateSystray()
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
 	// This will effectively show the Tray Icon.
 	UpdateTrayIcon(0);
-}	
-	
+}
+
 
 void CamuleDlg::RemoveSystray()
 {
@@ -499,7 +499,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 #endif
 	msg << wxT("\n\n") << _("'All-Platform' p2p client based on eMule \n\n") <<
 		_("Website: http://www.amule.org \n") <<
-		_("Forum: http://forum.amule.org \n") << 
+		_("Forum: http://forum.amule.org \n") <<
 		_("FAQ: http://wiki.amule.org \n\n") <<
 		_("Contact: admin@amule.org (administrative issues) \n") <<
 		_("Copyright (c) 2003-2011 aMule Team \n\n") <<
@@ -520,7 +520,7 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 		if (m_prefsDialog == NULL) {
 			m_prefsDialog = new PrefsUnifiedDlg(this);
 		}
-		
+
 		m_prefsDialog->TransferToWindow();
 		m_prefsDialog->Show(true);
 		m_prefsDialog->Raise();
@@ -545,7 +545,7 @@ CamuleDlg::~CamuleDlg()
 #ifdef ENABLE_IP2COUNTRY
 	delete m_IP2Country;
 #endif
-	
+
 	AddLogLineN(_("aMule dialog destroyed"));
 }
 
@@ -559,7 +559,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 						#else
 						|| (Kademlia::CKademlia::IsRunning())
 						#endif
-						;	
+						;
 	if (thePrefs::GetNetworkED2K()) {
 		if (disconnect) {
 			//disconnect if currently connected
@@ -568,7 +568,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 			} else {
 				theApp->serverconnect->Disconnect();
 			}
-		} else {		
+		} else {
 			//connect if not currently connected
 			AddLogLineC(_("Connecting"));
 			theApp->serverconnect->ConnectToAnyServer();
@@ -600,7 +600,7 @@ void CamuleDlg::ResetLog(int id)
 	wxCHECK_RET(ct, wxT("Resetting unknown log"));
 
 	ct->Clear();
-	
+
 	if (id == ID_LOGVIEW) {
 		// Also clear the log line
 		wxStaticText* text = CastChild(wxT("infoLabel"), wxStaticText);
@@ -631,7 +631,7 @@ void CamuleDlg::AddLogLine(const wxString& line)
 		ct->AppendText(bufferline);
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
-	
+
 
 	// Set the status-bar if the event warrents it
 	if ( addtostatusbar ) {
@@ -643,7 +643,7 @@ void CamuleDlg::AddLogLine(const wxString& line)
 		text->SetToolTip( bufferline );
 		text->GetParent()->Layout();
 	}
-	
+
 }
 
 
@@ -670,12 +670,12 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 			status_arrows.Add(connImages(t));
 		}
 	}
-	
+
 	m_serverwnd->UpdateED2KInfo();
 	m_serverwnd->UpdateKadInfo();
 
 
-	////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////
 	// Determine the status of the networks
 	//
 	enum ED2KState { ED2KOff = 0, ED2KLowID = 1, ED2KConnecting = 2, ED2KHighID = 3, ED2KUndef = -1 };
@@ -684,7 +684,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	ED2KState ed2kState = ED2KOff;
 	EKadState kadState  = EKadOff;
 
-	////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////
 	// Update the label on the status-bar and determine
 	// the states of the two networks.
 	//
@@ -716,7 +716,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 			kadState = EKadFW;
 		} else {
 			msgKad = _("Kad: Connected");
-			
+
 			kadState = EKadOK;
 		}
 	} else if (theApp->IsKadRunning()) {
@@ -726,7 +726,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	} else if (thePrefs::GetNetworkKademlia()) {
 		msgKad = _("Kad: Off");
 	}
-	
+
 	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 	wxCHECK_RET(connLabel, wxT("'connLabel' widget not found"));
 
@@ -741,7 +741,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	connLabel->GetParent()->Layout();
 
 
-	////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////
 	// Update the connect/disconnect/cancel button.
 	//
 	enum EConnState {
@@ -765,7 +765,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 	if ( (true == skinChanged) || (currentState != s_oldState) ) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
-		
+
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
 
 		switch (currentState) {
@@ -795,7 +795,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	}
 
 
-	////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////
 	// Update the globe-icon in the lower-right corner.
 	// (only if connection state has changed)
 	//
@@ -826,10 +826,10 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 void CamuleDlg::ShowUserCount(const wxString& info)
 {
 	wxStaticText* label = CastChild( wxT("userLabel"), wxStaticText );
-	
+
 	// Update Kad tab
 	m_serverwnd->UpdateKadInfo();
-	
+
 	label->SetLabel(info);
 	label->GetParent()->Layout();
 }
@@ -867,7 +867,7 @@ void CamuleDlg::ShowTransferRate()
 		// set trayicon-icon
 		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
 		UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
-	
+
 		wxString buffer2;
 		if ( theApp->IsConnected() ) {
 			buffer2 = CFormat(_("aMule (%s | Connected)")) % buffer;
@@ -909,7 +909,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 			return;
 		}
 	}
-	
+
 	SaveGUIPrefs();
 
 	Enable(false);
@@ -931,7 +931,7 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 			theApp->downloadqueue->AddLink( strlink, m_transferwnd->downloadlistctrl->GetCategory() );
 		}
 	}
-	
+
 	ctl->SetValue(wxEmptyString);
 }
 
@@ -1031,7 +1031,7 @@ bool CamuleDlg::SaveGUIPrefs()
 }
 
 
-void CamuleDlg::DoIconize(bool iconize) 
+void CamuleDlg::DoIconize(bool iconize)
 {
 	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
 		if (iconize) {
@@ -1091,13 +1091,13 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
-		
+
 		GraphUpdateInfo update = theApp->m_statistics->GetPointsForUpdate();
-		
+
 		m_statisticswnd->UpdateStatGraphs(theStats::GetPeakConnections(), update);
 		m_kademliawnd->UpdateGraph(update);
 	}
-	
+
 	int sStatsUpdate = thePrefs::GetStatsInterval();
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 		if (m_statisticswnd->IsShownOnScreen()) {
@@ -1119,19 +1119,19 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 			m_sharedfileswnd->peerslistctrl->SortList();
 		}
 	}
-	
+
 	if (msCur-msPrev1 > 1000) {  // every second
 		msPrev1 = msCur;
 		if (m_CurrentBlinkBitmap == 12) {
 			m_CurrentBlinkBitmap = 7;
-			SetMessagesTool();		
+			SetMessagesTool();
 		} else {
 			if (m_BlinkMessages) {
 				m_CurrentBlinkBitmap = 12;
 				SetMessagesTool();
 			}
 		}
-		
+
 	}
 }
 
@@ -1140,7 +1140,7 @@ void CamuleDlg::SetMessagesTool()
 {
 	wxWindowUpdateLocker freezer(m_wndToolbar);
 #ifdef __WXCOCOA__
-	m_wndToolbar->FindById(ID_BUTTONMESSAGES)->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));	
+	m_wndToolbar->FindById(ID_BUTTONMESSAGES)->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));
 #else
 	m_wndToolbar->SetToolNormalBitmap(ID_BUTTONMESSAGES, m_tblist.GetBitmap(m_CurrentBlinkBitmap));
 #endif
@@ -1189,7 +1189,7 @@ wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch wsProvid
 			wxFAIL;
 	}
 	URL.Replace(wxT("FILENAME"), filename);
-	
+
 	return URL;
 }
 
@@ -1204,7 +1204,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 	}
 
 	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
-	
+
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
 #ifdef __WXMSW__
 	wxString dataDir(spb.GetPluginsDir());
@@ -1215,7 +1215,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 #endif
 	wxString systemDir(JoinPaths(dataDir,wxT("skins")) + wxFileName::GetPathSeparator());
 
-		
+
 	skinFileName.Replace(wxT("User:"), userDir );
 	skinFileName.Replace(wxT("System:"), systemDir );
 
@@ -1254,7 +1254,7 @@ void CamuleDlg::Add_Skin_Icon(
 	if (useSkins) {
 		wxFFileInputStream in(m_skinFileName.GetFullPath());
 		wxZipInputStream zip(in);
-		
+
 		it = cat.find(wxZipEntry::GetInternalName(iconName + wxT(".png")));
 		if ( it != cat.end() ) {
 			zip.OpenEntry(*it->second);
@@ -1268,9 +1268,9 @@ void CamuleDlg::Add_Skin_Icon(
 						iconName);
 				useSkins = false;
 		}
-		
+
 	}
-	
+
 	wxBitmap bmp(useSkins ? new_image : stdIcon);
 	if (iconName.StartsWith(wxT("Client_"))) {
 		m_imagelist.Add(bmp);
@@ -1283,10 +1283,10 @@ void CamuleDlg::Add_Skin_Icon(
 void CamuleDlg::Apply_Clients_Skin()
 {
 	bool useSkins = Check_and_Init_Skin();
-	
+
 	// Clear the client image list
 	m_imagelist.RemoveAll();
-	
+
 	// Add the images to the image list
 	for (int i = 0; i < CLIENT_SKIN_SIZE; ++i) {
 		Add_Skin_Icon(wxT("Client_") + m_clientSkinNames[i],
@@ -1298,11 +1298,11 @@ void CamuleDlg::Apply_Clients_Skin()
 void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 {
 	bool useSkins = Check_and_Init_Skin();
-	
-	
+
+
 	// Clear the toolbar image list
 	m_tblist.RemoveAll();
-	
+
 	// Add the images to the image list
 	Add_Skin_Icon(wxT("Toolbar_Connect"),    connButImg(0),      useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Disconnect"), connButImg(1),      useSkins);
@@ -1317,10 +1317,10 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(32), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(29), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Blink"),	 amuleDlgImages(33), useSkins);
-	
+
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);
-		
+
 	// Placeholder. Gets updated by ShowConnectionState
 	wndToolbar->AddTool(ID_BUTTONCONNECT, wxT("..."), m_tblist.GetBitmap(0));
 
@@ -1337,13 +1337,13 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->AddTool(ID_BUTTONIMPORT, _("Import"), m_tblist.GetBitmap(10), wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool"));
 #endif
 	wndToolbar->AddTool(ID_ABOUT, _("About"), m_tblist.GetBitmap(11), wxNullBitmap, wxITEM_NORMAL, _("About/Help"));
-	
+
 	wndToolbar->ToggleTool(ID_BUTTONDOWNLOADS, true);
 
 	// Needed for non-GTK platforms, where the
 	// items don't get added immediatly.
 	wndToolbar->Realize();
-	
+
 	// Updates the "Connect" button, and so on.
 	ShowConnectionState(true);
 }
@@ -1378,7 +1378,7 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 			m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	}
 
-	Apply_Toolbar_Skin(m_wndToolbar);		
+	Apply_Toolbar_Skin(m_wndToolbar);
 
 	Thaw();
 }
@@ -1386,7 +1386,7 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 
 void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 {
-	wxFrame::OnSize(evt);	
+	wxFrame::OnSize(evt);
 	if (m_transferwnd && m_transferwnd->clientlistctrl) {
 		// Transfer window's splitter set again if it's hidden.
 		if (!m_transferwnd->clientlistctrl->GetShowing()) {
@@ -1397,7 +1397,6 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 			splitter->SetSashPosition( height );
 		}
 	}
-	
 }
 
 
@@ -1411,7 +1410,7 @@ void CamuleDlg::OnKeyPressed(wxKeyEvent& event)
 			return;
 		}
 	}
-	
+
 	event.Skip();
 }
 
@@ -1423,18 +1422,17 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 
 void CamuleDlg::DoNetworkRearrange()
 {
-	
 	wxWindowUpdateLocker freezer(this);
-	
+
 	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONNETWORKS);
 
 	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
 	wxNotebook* networks_notebook = CastChild( ID_NETNOTEBOOK, wxNotebook);
-	
+
 	while (logs_notebook->GetPageCount() > 1) {
 		logs_notebook->RemovePage(logs_notebook->GetPageCount() - 1);
 	}
-	
+
 	while (networks_notebook->GetPageCount() > 0) {
 		networks_notebook->RemovePage(networks_notebook->GetPageCount() - 1);
 	}
@@ -1445,28 +1443,28 @@ void CamuleDlg::DoNetworkRearrange()
 #endif
 		logs_notebook->AddPage(m_logpages[2].page, m_logpages[2].name);
 	}
-		
+
 	m_networkpages[0].page->Show(thePrefs::GetNetworkED2K());
-	
+
 	if (thePrefs::GetNetworkKademlia()) {
 		logs_notebook->AddPage(m_logpages[3].page, m_logpages[3].name);
 	}
-	
-	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());		
+
+	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());
 
 	networks_notebook->Show(thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia());
-	
+
 	wxWindow* replacement = NULL;
-	
+
 	m_networknotebooksizer->Clear();
-	
+
 	if (thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia()) {
 		toolbarTool->SetLabel(_("Networks"));
-		
+
 		m_networkpages[0].page->Reparent(networks_notebook);
 		m_networkpages[1].page->Reparent(networks_notebook);
-		
-		networks_notebook->AddPage(m_networkpages[0].page, m_networkpages[0].name);		
+
+		networks_notebook->AddPage(m_networkpages[0].page, m_networkpages[0].name);
 		networks_notebook->AddPage(m_networkpages[1].page, m_networkpages[1].name);
 
 		replacement = networks_notebook;
@@ -1483,20 +1481,20 @@ void CamuleDlg::DoNetworkRearrange()
 		// No networks.
 		toolbarTool->SetLabel(_("No network"));
 	}
-	
+
 	if (replacement) {
 		replacement->Reparent(m_networknotebooksizer->GetContainingWindow());
 		m_networknotebooksizer->Add( replacement, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 		m_networknotebooksizer->Layout();
-	} 
-	
+	}
+
 	m_wndToolbar->InsertTool(2, toolbarTool);
-	
+
 	m_wndToolbar->EnableTool(ID_BUTTONNETWORKS, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
 	m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
-	
+
 	m_wndToolbar->Realize();
-	
+
 	m_searchwnd->FixSearchTypes();
 }
 
