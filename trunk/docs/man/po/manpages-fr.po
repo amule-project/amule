@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"POT-Creation-Date: 2011-01-20 23:00+0100\n"
+"POT-Creation-Date: 2011-09-09 21:21+0300\n"
 "PO-Revision-Date: 2011-05-31 11:26+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
@@ -30,13 +30,14 @@ msgstr "AMULE"
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
-msgid "January 2010"
-msgstr "Janvier 2010"
+msgid "October 2011"
+msgstr ""
 
 #. type: TH
 #: amule.1:1
-#, no-wrap
-msgid "aMule v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMule v2.3.0"
+msgid "aMule v2.3.1"
 msgstr "aMule v2.3.0"
 
 #. type: TH
@@ -349,8 +350,9 @@ msgstr "AMULECMD"
 
 #. type: TH
 #: amulecmd.1:1
-#, no-wrap
-msgid "aMuleCmd v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMuleCmd v2.3.0"
+msgid "aMuleCmd v2.3.1"
 msgstr "aMuleCmd v2.3.0"
 
 #. type: TH
@@ -1037,8 +1039,9 @@ msgstr "AMULED"
 
 #. type: TH
 #: amuled.1:1
-#, no-wrap
-msgid "aMule Daemon v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMule Daemon v2.3.0"
+msgid "aMule Daemon v2.3.1"
 msgstr "aMule Daemon v2.3.0"
 
 #. type: TH
@@ -1095,8 +1098,9 @@ msgstr "AMULEGUI"
 
 #. type: TH
 #: amulegui.1:1
-#, no-wrap
-msgid "aMuleGUI v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMuleGUI v2.3.0"
+msgid "aMuleGUI v2.3.1"
 msgstr "aMuleGUI v2.3.0"
 
 #. type: TH
@@ -1157,8 +1161,9 @@ msgstr "AMULEWEB"
 
 #. type: TH
 #: amuleweb.1:1
-#, no-wrap
-msgid "aMule webserver v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMule webserver v2.3.0"
+msgid "aMule webserver v2.3.1"
 msgstr "aMule webserver v2.3.0"
 
 #. type: Plain text
@@ -1734,3 +1739,6 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:16
 msgid "B<xas> was originally written by niet"
 msgstr "B<xas> a été initialement écrit par niet"
+
+#~ msgid "January 2010"
+#~ msgstr "Janvier 2010"
