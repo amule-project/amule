@@ -243,11 +243,6 @@ wxDialog(parent, -1, _("Preferences"),
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 			#endif /* __WXMSW__ */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
-		} else if (pages[i].m_function == PreferencesGuiTweaksTab) {
-			#ifndef ENABLE_IP2COUNTRY
-				CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(false);
-				thePrefs::SetGeoIPEnabled(false);
-			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
@@ -466,6 +461,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	::SendCheckBoxEvent(this, IDC_SUPPORT_PO);
 	::SendCheckBoxEvent(this, IDC_ENABLE_PO_OUTGOING);
 	::SendCheckBoxEvent(this, IDC_ENFORCE_PO_INCOMING);
+
+#ifndef ENABLE_IP2COUNTRY
+	CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(false);
+	thePrefs::SetGeoIPEnabled(false);
+#endif
 
 	// Show rates on title
 	FindWindow(IDC_RATESBEFORETITLE)->Enable(thePrefs::GetShowRatesOnTitle() != 0);
