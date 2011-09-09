@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-01-20 23:00+0100\n"
+"POT-Creation-Date: 2011-09-09 21:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,13 +25,13 @@ msgstr ""
 #. type: TH
 #: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1 ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1 ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
-msgid "January 2010"
+msgid "October 2011"
 msgstr ""
 
 #. type: TH
 #: amule.1:1
 #, no-wrap
-msgid "aMule v2.3.0"
+msgid "aMule v2.3.1"
 msgstr ""
 
 #. type: TH
@@ -277,7 +277,7 @@ msgstr ""
 #. type: TH
 #: amulecmd.1:1
 #, no-wrap
-msgid "aMuleCmd v2.3.0"
+msgid "aMuleCmd v2.3.1"
 msgstr ""
 
 #. type: TH
@@ -885,7 +885,7 @@ msgstr ""
 #. type: TH
 #: amuled.1:1
 #, no-wrap
-msgid "aMule Daemon v2.3.0"
+msgid "aMule Daemon v2.3.1"
 msgstr ""
 
 #. type: TH
@@ -941,7 +941,7 @@ msgstr ""
 #. type: TH
 #: amulegui.1:1
 #, no-wrap
-msgid "aMuleGUI v2.3.0"
+msgid "aMuleGUI v2.3.1"
 msgstr ""
 
 #. type: TH
@@ -996,7 +996,7 @@ msgstr ""
 #. type: TH
 #: amuleweb.1:1
 #, no-wrap
-msgid "aMule webserver v2.3.0"
+msgid "aMule webserver v2.3.1"
 msgstr ""
 
 #. type: Plain text

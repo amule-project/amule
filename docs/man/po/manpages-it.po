@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
-"POT-Creation-Date: 2011-01-20 23:00+0100\n"
+"POT-Creation-Date: 2011-09-09 21:21+0300\n"
 "PO-Revision-Date: 2011-04-01 15:23+0100\n"
 "Last-Translator: Stefano Corti <iz0bbz@libero.it>\n"
 "Language-Team: none\n"
@@ -23,21 +23,21 @@ msgstr ""
 msgid "AMULE"
 msgstr "AMULE"
 
-# type: TH
 #. type: TH
 #: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
-msgid "January 2010"
-msgstr "Gennaio 2010"
+msgid "October 2011"
+msgstr ""
 
 # type: TH
 #. type: TH
 #: amule.1:1
-#, no-wrap
-msgid "aMule v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMule v2.3.0"
+msgid "aMule v2.3.1"
 msgstr "aMule v2.3.0"
 
 # type: TH
@@ -396,8 +396,9 @@ msgstr "AMULECMD"
 # type: TH
 #. type: TH
 #: amulecmd.1:1
-#, no-wrap
-msgid "aMuleCmd v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMuleCmd v2.3.0"
+msgid "aMuleCmd v2.3.1"
 msgstr "aMuleCmd v2.3.0"
 
 # type: TH
@@ -1183,8 +1184,9 @@ msgstr "AMULED"
 # type: TH
 #. type: TH
 #: amuled.1:1
-#, no-wrap
-msgid "aMule Daemon v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMule Daemon v2.3.0"
+msgid "aMule Daemon v2.3.1"
 msgstr "aMule Daemon v2.3.0"
 
 # type: TH
@@ -1252,8 +1254,9 @@ msgstr "AMULEGUI"
 # type: TH
 #. type: TH
 #: amulegui.1:1
-#, no-wrap
-msgid "aMuleGUI v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMuleGUI v2.3.0"
+msgid "aMuleGUI v2.3.1"
 msgstr "aMuleGUI v2.3.0"
 
 # type: TH
@@ -1322,8 +1325,9 @@ msgstr "AMULEWEB"
 # type: TH
 #. type: TH
 #: amuleweb.1:1
-#, no-wrap
-msgid "aMule webserver v2.3.0"
+#, fuzzy, no-wrap
+#| msgid "aMule webserver v2.3.0"
+msgid "aMule webserver v2.3.1"
 msgstr "aMule webserver v2.3.0"
 
 # type: Plain text
@@ -1975,3 +1979,7 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:16
 msgid "B<xas> was originally written by niet"
 msgstr "B<xas> è stato originalmente scritto da niet"
+
+# type: TH
+#~ msgid "January 2010"
+#~ msgstr "Gennaio 2010"
