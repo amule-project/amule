@@ -467,6 +467,12 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	thePrefs::SetGeoIPEnabled(false);
 #endif
 
+#ifdef __SVN__
+	// Version is always shown on the title in development versions
+	CastChild(IDC_SHOWVERSIONONTITLE, wxCheckBox)->SetValue(true);
+	CastChild(IDC_SHOWVERSIONONTITLE, wxCheckBox)->Enable(false);
+#endif
+
 	// Show rates on title
 	FindWindow(IDC_RATESBEFORETITLE)->Enable(thePrefs::GetShowRatesOnTitle() != 0);
 	FindWindow(IDC_RATESAFTERTITLE)->Enable(thePrefs::GetShowRatesOnTitle() != 0);
@@ -652,7 +658,9 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (CfgChanged(ID_IPFILTERLEVEL)) {
 		theApp->ipfilter->Reload();
 	}
-	
+
+	theApp->ResetTitle();
+
 	if (thePrefs::GetShowRatesOnTitle()) {
 		// This avoids a 5 seconds delay to show the title
 		theApp->amuledlg->ShowTransferRate();

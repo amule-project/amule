@@ -356,9 +356,10 @@ public:
 
 	wxString	m_FrameTitle;
 	CamuleDlg*	amuledlg;
-	int m_FileDetailDialogActive;
+	int		m_FileDetailDialogActive;
 
 	bool CopyTextToClipboard( wxString strText );
+	void ResetTitle();
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	virtual int ShowAlert(wxString msg, wxString title, int flags);
