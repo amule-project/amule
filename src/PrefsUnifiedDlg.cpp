@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -136,7 +136,7 @@ END_EVENT_TABLE()
  *
  * This can be used enforce logical constraints by passing by
  * sending a check-box event for each checkbox, when transfering
- * to the UI. However, it should also be used for checkboxes that 
+ * to the UI. However, it should also be used for checkboxes that
  * have no side-effects other than enabling/disabling other
  * widgets in the preferences dialogs.
  */
@@ -196,7 +196,7 @@ wxDialog(parent, -1, _("Preferences"),
 	wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
 	preferencesDlgTop(this, false);
-	
+
 	m_PrefsIcons = CastChild(ID_PREFSLISTCTRL, wxListCtrl);
 	wxImageList *icon_list = new wxImageList(16, 16);
 	m_PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
@@ -216,7 +216,7 @@ wxDialog(parent, -1, _("Preferences"),
 		icon_list->Add(amuleSpecial(pages[i].m_imageidx));
 		m_PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
 	}
-	
+
 	// Set list-width so that there aren't any scrollers
 	m_PrefsIcons->SetColumnWidth(0, wxLIST_AUTOSIZE);
 	m_PrefsIcons->SetMinSize(wxSize(m_PrefsIcons->GetColumnWidth(0) + 10, -1));
@@ -239,7 +239,7 @@ wxDialog(parent, -1, _("Preferences"),
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
-			#ifdef __WXMSW__ 
+			#ifdef __WXMSW__
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 			#endif /* __WXMSW__ */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
@@ -268,7 +268,7 @@ wxDialog(parent, -1, _("Preferences"),
 						   case CUserEvents::NewChatSession: {
 						       CreateEventPanels(idx, wxString(wxT("\n %SENDER - ")) + wxTRANSLATE("Message sender."), Widget);
 						       break;
-						   } */							
+						   } */
 					}
 				}
 			}
@@ -316,7 +316,7 @@ wxDialog(parent, -1, _("Preferences"),
 		prefs_sizer->Detach(Widget);
 		Widget->Show(false);
 	}
-	
+
 	// Default to the General tab
 	m_CurrentPanel = DefaultWidget;
 	prefs_sizer->Add(DefaultWidget, 0, wxGROW|wxEXPAND);
@@ -402,11 +402,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		thePrefs::s_colors[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
 		thePrefs::s_colors_ref[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
 	}
-	
+
 	// Connection tab
 	wxSpinEvent e;
 	OnTCPClientPortChange(e);
-	
+
 	// Proxy tab initialization
 	FindWindow(ID_PROXY_TYPE)->SetToolTip(_("The type of proxy you are connecting to"));
 	if (!CastChild(ID_PROXY_ENABLE_PROXY, wxCheckBox)->IsChecked()) {
@@ -420,7 +420,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	}
 	// This option from the proxy tab is currently unused
 	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
-	
+
 	// Enable/Disable some controls
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
@@ -442,13 +442,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
 		FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(false);
 		FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(false);
-		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);		
+		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);
 		FindWindow(IDC_MSGWORD)->Enable(false);
 	} else if (CastChild(IDC_MSGFILTER_ALL, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(false);
 		FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(false);
-		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);		
-		FindWindow(IDC_MSGWORD)->Enable(false);	
+		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);
+		FindWindow(IDC_MSGWORD)->Enable(false);
 	}
 
 	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
@@ -457,8 +457,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 #ifdef CLIENT_GUI
 	// Disable dirpickers unless it's a localhost connection
 	if (!theApp->m_connect->IsConnectedToLocalHost()) {
-		FindWindow(IDC_SELINCDIR)->Enable(false);	
-		FindWindow(IDC_SELTEMPDIR)->Enable(false);	
+		FindWindow(IDC_SELINCDIR)->Enable(false);
+		FindWindow(IDC_SELTEMPDIR)->Enable(false);
 	}
 #endif
 
@@ -476,11 +476,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 
 	// UPNP
 #ifndef ENABLE_UPNP
-	FindWindow(IDC_UPNP_ENABLED)->Enable(false);	
+	FindWindow(IDC_UPNP_ENABLED)->Enable(false);
 	FindWindow(IDC_UPNPTCPPORT)->Enable(false);
 	FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(false);
 	thePrefs::SetUPnPEnabled(false);
-	FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);	
+	FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);
 	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(false);
 	FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(false);
 	thePrefs::SetUPnPWebServerEnabled(false);
@@ -497,7 +497,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		list->Check( i, theLogger.GetDebugCategory( i ).IsEnabled() );
 	}
 #endif
-	
+
 	return true;
 }
 
@@ -542,7 +542,7 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	// Send preferences to core.
 	theApp->glob_prefs->SendToRemote();
 	#endif
-	
+
 	return true;
 }
 
@@ -565,7 +565,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	bool restart_needed = false;
 	wxString restart_needed_msg = _("aMule must be restarted to enable these changes:\n\n");
-	
+
 	// do sanity checking, special processing, and user notifications here
 	thePrefs::CheckUlDlRatio();
 
@@ -594,8 +594,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
-	
-	if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) && 
+
+	if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) &&
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(_("Your Auto-update server list is empty.\n'Auto-update server list at startup' will be disabled."),
@@ -607,7 +607,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 		wxMessageBox( _("You have enabled external connections but have not specified a password.\nExternal connections cannot be enabled unless a valid password is specified."));
 	}
-	
+
 	// save the preferences on ok
 	theApp->glob_prefs->Save();
 
@@ -690,34 +690,34 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (!thePrefs::GetNetworkED2K() && theApp->IsConnectedED2K()) {
 		theApp->DisconnectED2K();
 	}
-	
+
 	if (!thePrefs::GetNetworkKademlia() && theApp->IsConnectedKad()) {
 		theApp->StopKad();
-	}	
+	}
 
 	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
 		wxMessageBox(
 			_("Both eD2k and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them."));
-	}	
-	
+	}
+
 	if (thePrefs::GetNetworkKademlia() && thePrefs::IsUDPDisabled()) {
 		wxMessageBox(_("Kad will not start if your UDP port is disabled.\nEnable UDP port or disable Kad."),
 			 _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
-	
+
 	if (CfgChanged(IDC_NETWORKKAD) || CfgChanged(IDC_NETWORKED2K)) {
 		theApp->amuledlg->DoNetworkRearrange();
 	}
-	
+
 	if (CfgChanged(IDC_SHOW_COUNTRY_FLAGS)) {
 		theApp->amuledlg->EnableIP2Country();
 	}
-	
+
 	if (restart_needed) {
 		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), 
 			_("WARNING"), wxOK | wxICON_EXCLAMATION, this);
 	}
-	
+
 	Show(false);
 }
 
@@ -725,7 +725,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 {
 	Show(false);
-	
+
 	// Try to keep the window alive when possible
 	if (event.CanVeto()) {
 		event.Veto();
@@ -733,14 +733,14 @@ void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 		if (theApp->amuledlg) {
 			theApp->amuledlg->m_prefsDialog = NULL;
 		}
-	
+
 		// Un-Connect the Cfgs
 		thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
 		for (; it != thePrefs::s_CfgList.end(); ++it) {
 			// Checking for failures
 			it->second->ConnectToWidget( 0 );
 		}
-		
+
 		Destroy();
 	}
 }
@@ -757,7 +757,7 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 {
 	bool	value = event.IsChecked();
-	int	id = event.GetId();	
+	int	id = event.GetId();
 
 	// Check if this checkbox is one of the User Events checkboxes
 	if (id >= USEREVENTS_FIRST_ID &&
@@ -790,7 +790,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_CHECKDISKSPACE:
 			FindWindow( IDC_MINDISKSPACE )->Enable(value);
-			break;	
+			break;
 
 		case IDC_ONLINESIG:
 			FindWindow( IDC_OSDIR )->Enable(value);;
@@ -802,7 +802,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOSERVER:
-			if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) && 
+			if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) &&
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
 				wxMessageBox(_("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL."),
 					_("Message"), wxOK | wxICON_INFORMATION);
@@ -815,7 +815,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(IDC_MSGFILTER_ALL)->Enable(value);
 			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(value);
 			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(value);
-			FindWindow(IDC_MSGFILTER_WORD)->Enable(value);		
+			FindWindow(IDC_MSGFILTER_WORD)->Enable(value);
 			if (value) {
 				FindWindow(IDC_MSGWORD)->Enable(
 					CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
@@ -828,7 +828,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			// Toogle filtering by data.
 			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(!value);
 			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(!value);
-			FindWindow(IDC_MSGFILTER_WORD)->Enable(!value);		
+			FindWindow(IDC_MSGFILTER_WORD)->Enable(!value);
 			if (!value) {
 				FindWindow(IDC_MSGWORD)->Enable(
 					CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
@@ -997,7 +997,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 #else
 		% wxT("|*");
 #endif
-	
+
 	wxString str = wxFileSelector( title, wxEmptyString, wxEmptyString,
 		wxEmptyString, wildcard, 0, this );
 
@@ -1137,7 +1137,7 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 	// We only do checks if the rate is limited
 	if ( event.GetPosition() != (int)UNLIMITED ) {
 		wxSpinCtrl* dlrate = CastChild( IDC_MAXDOWN, wxSpinCtrl );
-	
+
 		if ( event.GetPosition() < 4 ) {
 			if (	( event.GetPosition() * 3 < dlrate->GetValue() ) ||
 				( dlrate->GetValue() == (int)UNLIMITED ) ) {
@@ -1155,8 +1155,8 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 
 void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 {
-	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel( 
-		m_ServerTabVisible ? (wxString() << (CastChild(IDC_PORT, wxSpinCtrl)->GetValue() + 3)) 
+	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(
+		m_ServerTabVisible ? (wxString() << (CastChild(IDC_PORT, wxSpinCtrl)->GetValue() + 3))
 							: wxString(_("disabled")));
 }
 

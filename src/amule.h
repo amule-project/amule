@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -138,7 +138,7 @@ public:
 	void		AddLinksFromFile();
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);
-	wxString	CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool addcryptoptions = false);	
+	wxString	CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool addcryptoptions = false);
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	// Who am I ?
 #ifdef AMULE_DAEMON
@@ -235,11 +235,11 @@ public:
 
 	// return current (valid) public IP or 0 if unknown
 	// If ignorelocal is true, don't use m_localip
-	uint32	GetPublicIP(bool ignorelocal = false) const; 
+	uint32	GetPublicIP(bool ignorelocal = false) const;
 	void		SetPublicIP(const uint32 dwIP);
-	
+
 	uint32	GetED2KID() const;
-	uint32	GetID() const;	
+	uint32	GetID() const;
 
 	// Other parts of the interface and such
 	CPreferences*		glob_prefs;
@@ -294,11 +294,11 @@ public:
 
 
 	void DisconnectED2K();
-	
+
 	bool CryptoAvailable() const;
-	
+
 protected:
-	
+
 #ifdef __WXDEBUG__
 	/**
 	 * Handles asserts in a thread-safe manner.
@@ -384,7 +384,7 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
 
 	int OnExit();
 	bool OnInit();
-	
+
 public:
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags);
@@ -419,7 +419,7 @@ extern CamuleGuiApp *theApp;
 // wxWidgets 2.8 requires special code for event handling and sockets.
 // 2.9 doesn't, so standard event loop and sockets can be used
 //
-// Windows: aMuled compiles with 2.8 (without the special code), 
+// Windows: aMuled compiles with 2.8 (without the special code),
 // but works only with 2.9
 
 #if !wxCHECK_VERSION(2, 9, 0)
@@ -517,7 +517,7 @@ private:
 	int OnExit();
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-	
+
 #ifndef __WXMSW__
 	struct sigaction m_oldSignalChildAction;
 	struct sigaction m_newSignalChildAction;
@@ -529,7 +529,7 @@ public:
 
 #ifdef AMULED28
 	CamuleDaemonApp();
-	
+
 	void ExitMainLoop() { m_Exit = true; }
 #endif
 
@@ -538,9 +538,9 @@ public:
 #endif
 
 	bool CopyTextToClipboard(wxString strText);
-	
+
 	virtual int ShowAlert(wxString msg, wxString title, int flags);
-	
+
 	DECLARE_EVENT_TABLE()
 };
 
