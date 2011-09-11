@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-09 20:21+0200\n"
-"PO-Revision-Date: 2011-07-20 10:16+0100\n"
+"PO-Revision-Date: 2011-09-10 20:11+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -2048,9 +2048,9 @@ msgid "File Details"
 msgstr "Détails du fichier"
 
 #: src/FileDetailDialog.cpp:113
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% fait"
+msgstr "%.1f%% fait"
 
 #: src/FileDetailDialog.cpp:115 src/utils/wxCas/src/wxcasframe.cpp:1144
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
@@ -3759,9 +3759,8 @@ msgid "Show extended info on categories tabs"
 msgstr "Afficher des infos supplémentaires sur les onglets des catégories"
 
 #: src/muuli_wdr.cpp:2104
-#, fuzzy
 msgid "Show application version on title"
-msgstr "Afficher les taux de transfert dans la barre de titre"
+msgstr "Afficher la version de l'application dans le titre"
 
 #: src/muuli_wdr.cpp:2107
 msgid "Show transfer rates on title"
