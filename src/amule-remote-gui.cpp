@@ -1091,9 +1091,12 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 			CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) curTag;
 			uint32 id = tag->ID();
 			core_files.insert(id);
-			if ( m_items_hash.count(id) ) {
+			std::map<uint32, CKnownFile*>::iterator it2 = m_items_hash.find(id);
+			if (it2 != m_items_hash.end() ) {
 				// Item already known: update it
-				ProcessItemUpdate(tag, m_items_hash[id]);
+				if (tag->HasChildTags()) {
+					ProcessItemUpdate(tag, it2->second);
+				}
 			} else {
 				CKnownFile * newFile;
 				if (tag->GetTagName() == EC_TAG_PARTFILE) {
