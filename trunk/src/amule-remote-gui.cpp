@@ -984,6 +984,15 @@ void CSharedFilesRem::SetFileCommentRating(CKnownFile* file, const wxString& new
 }
 
 
+void CSharedFilesRem::CopyFileList(std::vector<CKnownFile*>& out_list) const
+{
+	out_list.reserve(size());
+	for (const_iterator it = begin(); it != end(); it++) {
+		out_list.push_back(it->second);
+	}
+}
+
+
 void CKnownFilesRem::DeleteItem(CKnownFile * file)
 {
 	uint32 id = file->ECID();
@@ -1052,7 +1061,9 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 	transferred += file->statistic.transferred;
 	accepted += file->statistic.transferred;
 	
-	theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
+	if (!m_initialUpdate) {
+		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
+	}
 
 	if (file->IsPartFile()) {
 		ProcessItemUpdatePartfile((CEC_PartFile_Tag *) tag, (CPartFile *) file);
@@ -1090,14 +1101,19 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 		} else if (tagname == EC_TAG_KNOWNFILE || tagname == EC_TAG_PARTFILE) {
 			CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) curTag;
 			uint32 id = tag->ID();
-			core_files.insert(id);
-			std::map<uint32, CKnownFile*>::iterator it2 = m_items_hash.find(id);
-			if (it2 != m_items_hash.end() ) {
-				// Item already known: update it
-				if (tag->HasChildTags()) {
-					ProcessItemUpdate(tag, it2->second);
+			bool isNew = true;
+			if (!m_initialUpdate) {
+				core_files.insert(id);
+				std::map<uint32, CKnownFile*>::iterator it2 = m_items_hash.find(id);
+				if (it2 != m_items_hash.end() ) {
+					// Item already known: update it
+					if (tag->HasChildTags()) {
+						ProcessItemUpdate(tag, it2->second);
+					}
+					isNew = false;
 				}
-			} else {
+			}
+			if (isNew) {
 				CKnownFile * newFile;
 				if (tag->GetTagName() == EC_TAG_PARTFILE) {
 					CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
@@ -1109,17 +1125,25 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 					newFile = new CKnownFile(tag);
 					ProcessItemUpdate(tag, newFile);
 					(*theApp->sharedfiles)[id] = newFile;
-					theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(newFile);
+					if (!m_initialUpdate) {
+						theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(newFile);
+					}
 				}
 				AddItem(newFile);
 			}
 		}
 	}
-	// remove items no longer present
-	for(iterator it = begin(); it != end();) {
-		iterator it2 = it++;
-		if (!core_files.count(GetItemID(*it2))) {
-			RemoveItem(it2);	// This calls DeleteItem, where it is removed from lists and views.
+
+	if (m_initialUpdate) {
+		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFileList();
+		m_initialUpdate = false;
+	} else {
+		// remove items no longer present
+		for(iterator it = begin(); it != end();) {
+			iterator it2 = it++;
+			if (!core_files.count(GetItemID(*it2))) {
+				RemoveItem(it2);	// This calls DeleteItem, where it is removed from lists and views.
+			}
 		}
 	}
 }
@@ -1129,6 +1153,7 @@ CKnownFilesRem::CKnownFilesRem(CRemoteConnect * conn) : CRemoteContainer<CKnownF
 	requested = 0;
 	transferred = 0;
 	accepted = 0;
+	m_initialUpdate = true;
 }
 
 
