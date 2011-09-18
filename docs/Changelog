@@ -241,6 +241,7 @@ Version 2.3.0 - The river knows.
 		* Fixed saving of sort orders
 		* Allow switching through files in file detail dialog
 		* Improve performance when many small files are hashed
+		* Fix: if a file had more than two copies shared it was hashed on every startup
 
 	Vollstrecker:
 		* Unify copyright lines

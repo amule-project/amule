@@ -128,6 +128,7 @@ void CKnownFileList::Save()
 	}
 
 	wxMutexLocker sLock(list_mut);
+	AddDebugLogLineN(logKnownFiles, CFormat(wxT("start saving %s")) % m_filename);
 
 	try {
 		// Kry - This is the version, but we don't know it till
@@ -161,6 +162,7 @@ void CKnownFileList::Save()
 	} catch (const CIOFailureException& e) {
 		AddLogLineC(CFormat(_("Error while saving %s file: %s")) % m_filename % e.what());
 	}
+	AddDebugLogLineN(logKnownFiles, CFormat(wxT("finished saving %s")) % m_filename);
 }
 
 
@@ -271,15 +273,17 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 			return true;
 		} else {
 			CKnownFile *existing = it->second;
-			time_t in_date = existing->GetLastChangeDatetime();
-			uint64 in_size = existing->GetFileSize();
-			CPath filename = existing->GetFileName();
-			if (KnownFileMatches(Record, filename, in_date, in_size) ||
-			    IsOnDuplicates(filename, in_date, in_size)) {
+			if (KnownFileMatches(Record, existing->GetFileName(), existing->GetLastChangeDatetime(), existing->GetFileSize())) {
 				// The file is already on the list, ignore it.
+				AddDebugLogLineN(logKnownFiles, CFormat(wxT("%s is already on the list")) % Record->GetFileName().GetPrintable());
+				return false;
+			} else if (IsOnDuplicates(Record->GetFileName(), Record->GetLastChangeDatetime(), Record->GetFileSize())) {
+				// The file is on the duplicates list, ignore it.
+				// Should not happen, at least not after hashing. Or why did it get hashed in the first place then?
+				AddDebugLogLineN(logKnownFiles, CFormat(wxT("%s is on the duplicates list")) % Record->GetFileName().GetPrintable());
 				return false;
 			} else {
-				if (afterHashing && in_size == Record->GetFileSize()) {
+				if (afterHashing && existing->GetFileSize() == Record->GetFileSize()) {
 					// We just hashed a "new" shared file and find it's already known under a different name or date.
 					// Guess what - it was probably renamed or touched.
 					// So copy over all properties from the existing known file and just keep name/date.
