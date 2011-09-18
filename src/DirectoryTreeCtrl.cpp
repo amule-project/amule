@@ -221,7 +221,7 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 
 CPath CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
-	wxCHECK_MSG(hItem.IsOk(), CPath(), wxT("Invalid item in GetFullPath"));
+	{ wxCHECK_MSG(hItem.IsOk(), CPath(), wxT("Invalid item in GetFullPath")); }
 	
 	CPath result;
 	for (; hItem.IsOk(); hItem = GetItemParent(hItem)) {

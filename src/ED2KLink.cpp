@@ -58,14 +58,14 @@ CED2KLink::LinkType CED2KLink::GetKind() const
 CED2KLink* CED2KLink::CreateLinkFromUrl(const wxString& link)
 {
 	wxRegEx re_type(wxT("ed2k://\\|(file|server|serverlist)\\|.*/"), wxRE_ICASE | wxRE_DEFAULT);
-	wxCHECK(re_type.IsValid(), NULL);
+	{ wxCHECK(re_type.IsValid(), NULL); }
 
 	if (!re_type.Matches(link)) {
 		throw wxString(wxT("Not a valid ed2k-URI"));
 	}
 
 	wxString type = re_type.GetMatch(link, 1).MakeLower();
-	wxCHECK(type.Length(), NULL);
+	{ wxCHECK(type.Length(), NULL); }
 	
 	if (type == wxT("file")) {
 		return new CED2KFileLink(link);

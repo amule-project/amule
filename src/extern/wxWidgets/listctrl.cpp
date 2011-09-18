@@ -3741,11 +3741,11 @@ void wxListMainWindow::SetColumn( int col, wxListItem &item )
 
 void wxListMainWindow::SetColumnWidth( int col, int width )
 {
-    wxCHECK_RET( col >= 0 && col < GetColumnCount(),
-                 _T("invalid column index") );
+    { wxCHECK_RET( col >= 0 && col < GetColumnCount(),
+                 _T("invalid column index") ); }
 
-    wxCHECK_RET( InReportView(),
-                 _T("SetColumnWidth() can only be called in report mode.") );
+    { wxCHECK_RET( InReportView(),
+                 _T("SetColumnWidth() can only be called in report mode.") ); }
 
     m_dirty = true;
     wxListHeaderWindow *headerWin = GetListCtrl()->m_headerWin;
@@ -3753,7 +3753,7 @@ void wxListMainWindow::SetColumnWidth( int col, int width )
         headerWin->m_dirty = true;
 
     wxListHeaderDataList::compatibility_iterator node = m_columns.Item( col );
-    wxCHECK_RET( node, _T("no column?") );
+	{ wxCHECK_RET( node, _T("no column?") ); }
 
     wxListHeaderData *column = node->GetData();
 
