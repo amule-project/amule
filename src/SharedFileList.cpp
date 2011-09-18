@@ -423,15 +423,12 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 
 	CDirIterator SharedDir(directory); 
 
-	CPath fname = SharedDir.GetFirstFile(searchFor);
-	while (fname.IsOk()) {
+	for (CPath fname = SharedDir.GetFirstFile(searchFor); fname.IsOk(); fname = SharedDir.GetNextFile()) {
 		CPath fullPath = directory.JoinPaths(fname);
 	
 		if (!fullPath.FileExists()) {
 			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Shared file does not exist (possibly a broken link): %s")) % fullPath);
-			
-			fname = SharedDir.GetNextFile();
 			continue;
 		}
 
@@ -445,8 +442,12 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 		if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
 			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Failed to retrieve modification time or size for '%s', skipping.")) % fullPath);
-			
-			fname = SharedDir.GetNextFile();
+			continue;
+		}
+
+		if (fsize == 0) {
+			AddDebugLogLineN(logKnownFiles,
+				CFormat(wxT("Skip zero size file '%s'")) % fullPath);
 			continue;
 		}
 
@@ -473,8 +474,6 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 			hashTasks.push_back(new CHashingTask(directory, fname));
 			addedFiles++;
 		}
-
-		fname = SharedDir.GetNextFile();
 	}
 
 	if ((addedFiles == 0) && (knownFiles == 0)) {
