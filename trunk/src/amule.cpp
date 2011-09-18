@@ -1808,9 +1808,9 @@ void CamuleApp::ShowUserCount() {
 
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 {
-	wxCHECK_RET(listensocket, wxT("Connection-event for NULL'd listen-socket"));
-	wxCHECK_RET(event.GetSocketEvent() == wxSOCKET_CONNECTION,
-		wxT("Invalid event received for listen-socket"));
+	{ wxCHECK_RET(listensocket, wxT("Connection-event for NULL'd listen-socket")); }
+	{ wxCHECK_RET(event.GetSocketEvent() == wxSOCKET_CONNECTION,
+		wxT("Invalid event received for listen-socket")); }
 	
 	if (m_app_state == APP_STATE_RUNNING) {
 		listensocket->OnAccept(0);

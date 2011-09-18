@@ -728,7 +728,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	}
 
 	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
-	wxCHECK_RET(connLabel, wxT("'connLabel' widget not found"));
+	{ wxCHECK_RET(connLabel, wxT("'connLabel' widget not found")); }
 
 	wxString labelMsg;
 	if (msgED2K.Length() && msgKad.Length()) {

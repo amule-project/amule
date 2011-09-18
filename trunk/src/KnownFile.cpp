@@ -814,7 +814,7 @@ void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint64 offset, uint32 
 void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut )
 {
 	wxASSERT_MSG(Output || pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
-	wxCHECK_RET(input, wxT("No input to hash from in CreateHashFromInput"));
+	{ wxCHECK_RET(input, wxT("No input to hash from in CreateHashFromInput")); }
 	wxASSERT(Length <= PARTSIZE); // We never hash more than one PARTSIZE
 	
 	CMemFile data(input, Length);
