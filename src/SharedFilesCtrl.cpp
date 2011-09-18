@@ -211,7 +211,6 @@ void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 }
 
 
-#ifndef CLIENT_GUI
 void CSharedFilesCtrl::ShowFileList()
 {
 	Freeze();
@@ -228,7 +227,6 @@ void CSharedFilesCtrl::ShowFileList()
 	
 	Thaw();
 }
-#endif
 
 
 void CSharedFilesCtrl::RemoveFile(CKnownFile *toRemove)
