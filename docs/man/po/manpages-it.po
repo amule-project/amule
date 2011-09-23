@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "POT-Creation-Date: 2011-09-09 21:21+0300\n"
-"PO-Revision-Date: 2011-04-01 15:23+0100\n"
+"PO-Revision-Date: 2011-09-20 13:46+0100\n"
 "Last-Translator: Stefano Corti <iz0bbz@libero.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -30,15 +30,14 @@ msgstr "AMULE"
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "October 2011"
-msgstr ""
+msgstr "Ottobre 2011"
 
 # type: TH
 #. type: TH
 #: amule.1:1
-#, fuzzy, no-wrap
-#| msgid "aMule v2.3.0"
+#, no-wrap
 msgid "aMule v2.3.1"
-msgstr "aMule v2.3.0"
+msgstr "aMule v2.3.1"
 
 # type: TH
 #. type: TH
@@ -396,10 +395,9 @@ msgstr "AMULECMD"
 # type: TH
 #. type: TH
 #: amulecmd.1:1
-#, fuzzy, no-wrap
-#| msgid "aMuleCmd v2.3.0"
+#, no-wrap
 msgid "aMuleCmd v2.3.1"
-msgstr "aMuleCmd v2.3.0"
+msgstr "aMuleCmd v2.3.1"
 
 # type: TH
 #. type: TH
@@ -1184,10 +1182,9 @@ msgstr "AMULED"
 # type: TH
 #. type: TH
 #: amuled.1:1
-#, fuzzy, no-wrap
-#| msgid "aMule Daemon v2.3.0"
+#, no-wrap
 msgid "aMule Daemon v2.3.1"
-msgstr "aMule Daemon v2.3.0"
+msgstr "aMule Daemon v2.3.1"
 
 # type: TH
 #. type: TH
@@ -1254,10 +1251,9 @@ msgstr "AMULEGUI"
 # type: TH
 #. type: TH
 #: amulegui.1:1
-#, fuzzy, no-wrap
-#| msgid "aMuleGUI v2.3.0"
+#, no-wrap
 msgid "aMuleGUI v2.3.1"
-msgstr "aMuleGUI v2.3.0"
+msgstr "aMuleGUI v2.3.1"
 
 # type: TH
 #. type: TH
@@ -1287,8 +1283,8 @@ msgid ""
 "functionalities as amule, even if the core works on another computer."
 msgstr ""
 "B<amulegui> è un programma client, e può connettersi tramite EC ad amule o "
-"amuled. Si può gestire amule con esso. Esso fornisce circa le stesse "
-"funzionalità di amule, anche se il motore lavora su un'altro computer."
+"amuled. Con esso si può gestire amule. Fornisce circa le stesse funzionalità "
+"di amule, anche se il motore lavora su un'altro computer."
 
 # type: Plain text
 #. type: Plain text
@@ -1325,10 +1321,9 @@ msgstr "AMULEWEB"
 # type: TH
 #. type: TH
 #: amuleweb.1:1
-#, fuzzy, no-wrap
-#| msgid "aMule webserver v2.3.0"
+#, no-wrap
 msgid "aMule webserver v2.3.1"
-msgstr "aMule webserver v2.3.0"
+msgstr "aMule webserver v2.3.1"
 
 # type: Plain text
 #. type: Plain text
@@ -1979,7 +1974,3 @@ msgstr ""
 #: ../../src/utils/xas/docs/xas.1:16
 msgid "B<xas> was originally written by niet"
 msgstr "B<xas> è stato originalmente scritto da niet"
-
-# type: TH
-#~ msgid "January 2010"
-#~ msgstr "Gennaio 2010"
