@@ -7,10 +7,10 @@
 
  About
 -------
-  aMule is a multiplatform ed2k client, fork of the eMule client, using the
+  aMule is a multi-platform ed2k client, fork of the eMule client, using the
   wxWidgets class library. It was originally forked from the xMule project,
-  which in turn was forked from the lMule project. This is turn was the first
-  fork of eMule to run nativly on Linux and other Unix-like systems.
+  which in turn was forked from the lMule project. This in turn was the first
+  fork of eMule to run natively on GNU/Linux and other Unix-like systems.
 
 
  Installation
@@ -25,9 +25,9 @@
   - Enter a nickname or leave as the default value.
 
   - Enter the "Download Capacity" and "Upload Capacity" according to your
-    internet connection. All values in aMule are kiloBytes (kB), but your
-    Internet Service Provider's numbers are most likely kiloBits (kb). 
-    
+    Internet connection. All values in aMule are kiloBytes (kB), but your
+    Internet Service Provider's numbers are most likely kiloBits (kb).
+
     8 kiloBits make up 1 kiloByte, so if your Internet Connection is 768kb
     Downstream and 128kb Upstream (i.e. German Telekom DSL), your correct
     values are:
@@ -40,13 +40,13 @@
     know them to determine the following down/upload limits:
 
   - Enter "Download Limit" and "Upload Limit"  (IMPORTANT!)
-    
+
     Download Limit:
         Leave this at 0, which stands for "no limit". However, if aMule uses
         too much bandwidth and causes problems with other applications using
-        your internet connection, it would be a good idea to limit this to
-        aproximetly 80% of your downstream capacity.
- 
+        your Internet connection, it would be a good idea to limit this to
+        approximately 80% of your downstream capacity.
+
     Upload Limit:
         It is recommended that you set this limit to around 80% of your actual
         upstream capacity, in order to avoid degrading the performance of your
@@ -59,7 +59,7 @@
          >= 10      |    No limit
           < 10      |    Upload Limit * 4
           <  4      |    Upload Limit * 3
-          
+
 
     NOTE: 56k Modem users: aMule only accepts integral values for these
           settings, you can't enter 1.6 or whatever your sweet-spot setting
@@ -69,15 +69,15 @@
     As a general rule, set it to 500 - 2000.
 
   - "Maximum Sources per File":
-    This depends on how many files you tend to download at a time, if you 
+    This depends on how many files you tend to download at a time, if you
     tend to download few files, high values are acceptable, otherwise go
     for lower values so that all files will be able to get sources.
 
   - Choose the directories you want to share with other users:
     DO NOT SHARE YOUR COMPLETE HARDDISK!
-    
-    It is suggested that you either use the "Incoming" folder or a seperate
-    folder for the files you wish to share, to avoid inadvertedly sharing
+
+    It is suggested that you either use the "Incoming" folder or a separate
+    folder for the files you wish to share, to avoid inadvertently sharing
     private files.
 
     If you share more than 200 files, you should consider that some servers
@@ -100,10 +100,10 @@
   * NEVER run aMule as root.
   * If you are behind a firewall or router, be sure that the ports have been
     opened. The default ports are 4662 (TCP). 4665 (UDP) and 4672 (UDP). If
-    these are blocked, you will receive a "LowID" which results in fewer 
-    availble sources for the files you are downloading.
-  * Obtain an appropriate server.met: e.g., if you are a dialup, using
-    a large server list is not appropiate.
+    these are blocked, you will receive a "LowID" which results in fewer
+    available sources for the files you are downloading.
+  * Obtain an appropriate server.met: e.g., if you are a dial-up, using
+    a large server list is not appropriate.
   * Set your temp and shared directories in Preferences->Directories
     * To recursively select a certain directory, right-click over it.
     * You should *NOT* share
@@ -114,10 +114,10 @@
         private SSH keys, credit card numbers :) are *not* shared. So generally
         do not share your entire home directory, although you might want to
         share some files or directories in it.
-  * Remember that you get certain download priveledges with those clients
+  * Remember that you get certain download privileges with those clients
     (aMule, eMule, etc users) to whom you upload files, in the form of reduced
     queue waits.
-  * Please note that compilation with optimizations is supported. However, if 
+  * Please note that compilation with optimizations is supported. However, if
     you pull a Gentoo, we will probably just tell you to recompile aMule and/or
     your system with sane compiler-flags before we will attempt to address the
     problem.
@@ -125,7 +125,7 @@
 
  Obtaining your first server list
 ----------------------------------
-  Use one of the following links in the "Update server.met from URL" box in 
+  Use one of the following links in the "Update server.met from URL" box in
   the Server tab. They are apparently updated every 20 minutes.
 
   * The current top 50 servers (these fill up fast):
@@ -134,7 +134,7 @@
       http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met
   * The biggest list (about 300 servers) maintained by the site. Only if you
     have a very decent connection:
-      http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met 
+      http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met
   * Should maurice be down for some reasons, use this server.met instead:
       http://www.srv1000.com/azz/server.met
 
@@ -149,7 +149,7 @@
 
  License
 ---------
-  aMule -- like eMule -- is released under the GNU General Public License. 
+  aMule -- like eMule -- is released under the GNU General Public License.
   See the "COPYING" file for details.
 
 
@@ -166,7 +166,7 @@
   the server name you are connected to. If they're green, your ID is high. If
   they're yellow, your ID is low.
 
-  
+
   -- What does high and low ID mean anyway? --
 
   When your ID is high (green arrows), everything is fine.
@@ -177,21 +177,21 @@
 
   NOTE: you can also get a low ID when the server you connected to is too busy
   to answer properly, or simply badly configured. When you are sure your
-  settings are ok and you SHOULD have a high ID, connect to another server.
+  settings are OK and you SHOULD have a high ID, connect to another server.
 
-  
+
   -- I'd like to search for specific file types, what filter stands for which files? --
 
-  File Type Extensions found
+  File Type Extensions found (this list is far from being complete)
   --------------------------------------------------------------------
-  Audio         .mp3 .mp2 .mpc .wav .ogg .aac .mp4 .ape .au .wma
-  Video         .avi .mpg .mpeg .ram .rm .vob .divx .mov .ogg .vivo
+  Audio         .mp3 .mp2 .mpc .wav .ogg .flac .aac .ape .au .wma
+  Video         .avi .mpg .mpeg .ram .rm .vob .divx .mov .ogv .webm .vivo
   Program       .exe .com
-  Archive       .zip .rar .ace .tar.gz .tar.bz2 .Z .arj
+  Archive       .zip .rar .ace .tar.gz .tar.bz2 .Z .arj .cbz .cbr
   CDImage       .bin .cue .iso .nrg .ccd .sub .img
   Picture       .jpg .jpeg .bmp .gif .tif .png
 
-  
+
   -- What are all those fancy colors in the download progress bar about? --
 
   Each download in the the transfers window has a coloured bar to show current
@@ -215,7 +215,7 @@
   Learning how the progress bar works will greatly help your understanding
   of the eD2k network.
 
-  
+
   -- Where can I get more information? --
 
   Here are some links that might be of your interest:
@@ -228,7 +228,7 @@
 
   * eMule documents
       http://www.emule-project.net/home/perl/help.cgi
- 
+
 
  Want to help?
 ---------------
@@ -237,10 +237,10 @@
   project in the form of new features, bug fixes, feature requests, etc.
 
   If you are not a programmer you can still contribute by providing good bug
-  reports  when you come accross a problem with aMule. A good bug report gives
+  reports when you come across a problem with aMule. A good bug report gives
   the aMule Team information enough to reproduce the bug (so we can see it in
-  action) and fix it. If possible, try to isolate under which the bug occurs 
-  (eg. does it happen on some specific window, with some specific files, some
+  action) and fix it. If possible, try to isolate under which the bug occurs
+  (e.g. does it happen on some specific window, with some specific files, some
   specific conditions etc.) and provide as much detail as you can in your
   report.
 
@@ -281,4 +281,4 @@
   illegal activities.
 
 
--- Last modified Sun May 1 13:05:02 CEST 2005 --
+-- Last modified Thu Sep 29 05:22:45 CEST 2011 --
