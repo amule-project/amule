@@ -51,7 +51,7 @@ public:
 	enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
 
 	/** @see wxFile::OpenMode */
-	enum OpenMode { read, write, read_write, write_append, write_excl };
+	enum OpenMode { read, write, read_write, write_append, write_excl, write_safe };
 
 	
 	/**
@@ -84,6 +84,10 @@ public:
 	 * 
 	 * Calling Open with the openmodes 'write' or 'write_append' will 
 	 * create the specified file if it does not already exist.
+	 *
+	 * Calling Open with the openmode 'write_safe' will append ".new"
+	 * to the file name and otherwise work like 'write'.
+	 * On close it will be renamed to the original name.
 	 *
 	 * If an accessMode is not explicitly specified, the accessmode
 	 * specified via CPreferences::GetFilePermissions will be used.
@@ -197,6 +201,9 @@ private:
 	
 	//! The full path to the current file.
 	CPath m_filePath;
+
+	//! Are we using safe write mode?
+	bool m_safeWrite;
 };
 
 
