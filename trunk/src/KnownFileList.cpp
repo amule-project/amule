@@ -122,7 +122,7 @@ bool CKnownFileList::Init()
 
 void CKnownFileList::Save()
 {
-	CFile file(theApp->ConfigDir + m_filename, CFile::write);
+	CFile file(theApp->ConfigDir + m_filename, CFile::write_safe);
 	if (!file.IsOpened()) {
 		return;
 	}

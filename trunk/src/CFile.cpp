@@ -148,7 +148,7 @@ CSeekFailureException::CSeekFailureException(const wxString& desc)
 
 
 CFile::CFile()
-	: m_fd(fd_invalid)
+	: m_fd(fd_invalid), m_safeWrite(false)
 {}
 
 
@@ -218,6 +218,8 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 {
 	MULE_VALIDATE_PARAMS(fileName.IsOk(), wxT("CFile: Cannot open, empty path."));
+	m_safeWrite = false;
+	m_filePath = fileName;
 
 #ifdef __linux__
 	int flags = O_BINARY | O_LARGEFILE;
@@ -242,6 +244,12 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 			flags |= O_WRONLY | O_CREAT | O_TRUNC;
 			break;
 		
+		case write_safe:
+			flags |= O_WRONLY | O_CREAT | O_TRUNC;
+			m_filePath = m_filePath.AppendExt(wxT(".new"));
+			m_safeWrite = true;
+			break;
+		
 		case write_excl:
 			flags |= O_WRONLY | O_CREAT | O_EXCL;
 			break;
@@ -255,13 +263,11 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 		Close();	
 	}
 	
-	m_filePath = fileName;
-
 	// Windows needs wide character file names
 #ifdef __WXMSW__
-	m_fd = _wopen(fileName.GetRaw().c_str(), flags, accessMode);
+	m_fd = _wopen(m_filePath.GetRaw().c_str(), flags, accessMode);
 #else
-	Unicode2CharBuf tmpFileName = filename2char(fileName.GetRaw());
+	Unicode2CharBuf tmpFileName = filename2char(m_filePath.GetRaw());
 	wxASSERT_MSG(tmpFileName, wxT("Convertion failed in CFile::Open"));
 	m_fd = open(tmpFileName, flags, accessMode);
 #endif
@@ -286,7 +292,15 @@ bool CFile::Close()
 	bool closed = (close(m_fd) != -1);
 	syscall_check(closed, m_filePath, wxT("closing file"));
 	
-	m_fd = fd_invalid;	
+	m_fd = fd_invalid;
+
+	if (m_safeWrite) {
+		CPath filePathTemp(m_filePath);
+		m_filePath = m_filePath.RemoveExt();	// restore m_filePath for Reopen()
+		if (closed) {
+			closed = CPath::RenameFile(filePathTemp, m_filePath, true);
+		}
+	}
 	
 	return closed;
 }
