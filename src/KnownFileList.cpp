@@ -159,6 +159,7 @@ void CKnownFileList::Save()
 		
 		file.Seek(0);
 		file.WriteUInt8(bContainsAnyLargeFiles ? MET_HEADER_WITH_LARGEFILES : MET_HEADER);
+		file.Close();
 	} catch (const CIOFailureException& e) {
 		AddLogLineC(CFormat(_("Error while saving %s file: %s")) % m_filename % e.what());
 	}

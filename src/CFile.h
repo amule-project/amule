@@ -88,6 +88,7 @@ public:
 	 * Calling Open with the openmode 'write_safe' will append ".new"
 	 * to the file name and otherwise work like 'write'.
 	 * On close it will be renamed to the original name.
+	 * Close() has to be called manually - destruct won't rename the file!
 	 *
 	 * If an accessMode is not explicitly specified, the accessmode
 	 * specified via CPreferences::GetFilePermissions will be used.

@@ -169,6 +169,10 @@ CFile::CFile(const wxString& fileName, OpenMode mode)
 CFile::~CFile()
 { 
 	if (IsOpened()) {
+		// If the writing gets aborted, dtor is still called.
+		// In this case do NOT replace the original file with the
+		// probably broken new one!
+		m_safeWrite = false;
 		Close(); 
 	}
 }
