@@ -1375,7 +1375,7 @@ bool CUpDownClient::Disconnected(const wxString& DEBUG_ONLY(strReason), bool bFr
 	SetSocket(NULL);
 
 	if (m_iFileListRequested) {
-		AddLogLineN(CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
+		AddLogLineC(CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
 		m_iFileListRequested = 0;
 	}
 
