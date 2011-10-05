@@ -54,7 +54,6 @@ typedef std::vector<CSearchFile*> CSearchResultList;
  *
  * TODO: Server IP/Port are currently not used.
  * TODO: Client ID/Port are currently not used.
- * TODO: Directories are currently not used.
  */
 class CSearchFile : public CAbstractFile, public CECID
 {	
@@ -177,6 +176,8 @@ public:
 	void	 SetKadPublishInfo(uint32_t val) throw()	{ m_kadPublishInfo = val; }
 	uint32_t GetKadPublishInfo() const throw()		{ return m_kadPublishInfo; }
 
+	const wxString& GetDirectory() const throw()	{ return m_directory; }
+
 private:
 	//! CSearchFile is not assignable.
 	CSearchFile& operator=(const CSearchFile& other);
@@ -206,10 +207,8 @@ private:
 	//! The download status.
 	enum DownloadStatus m_downloadStatus;
 
-	//@{
-	//! TODO: Currently not used.
+	//! Directory where file is stored (when it is part of a remote shared files list).
 	wxString		m_directory;
-	//@}
 
 	std::list<ClientStruct>	m_clients;
 	uint32_t		m_clientID;
