@@ -62,7 +62,8 @@ enum SearchListColumns {
 	ID_SEARCH_COL_SOURCES,
 	ID_SEARCH_COL_TYPE,
 	ID_SEARCH_COL_FILEID,
-	ID_SEARCH_COL_STATUS
+	ID_SEARCH_COL_STATUS,
+	ID_SEARCH_COL_DIRECTORY
 };
 
 
@@ -89,6 +90,7 @@ m_filterEnabled(false)
 	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT,  65, wxT("Y") );
 	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, wxT("I") );
 	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, wxT("S") );
+	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, wxT("D") );  // I would have prefered "Directory" but this is already translated
 
 	m_nResultsID = 0;
 
@@ -240,6 +242,9 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 
 	// File status
 	SetItem(newid, ID_SEARCH_COL_STATUS, DetermineStatusPrintable(toshow));
+
+	// Directory where file is located (has a value when search file comes from a "view shared files" request)
+	SetItem(newid, ID_SEARCH_COL_DIRECTORY, toshow->GetDirectory());
 
 	// Set the color of the item
 	UpdateItemColor( newid );
@@ -544,6 +549,14 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 		// Sort by file status
 		case ID_SEARCH_COL_STATUS:
 			result = CmpAny(DetermineStatusPrintable(file2), DetermineStatusPrintable(file1));
+			break;
+
+		// Sort by directory
+		case ID_SEARCH_COL_DIRECTORY:
+			result = CmpAny(file1->GetDirectory(), file2->GetDirectory());
+			if (result == 0) {	// if equal sort by name
+				result = CmpAny(file1->GetFileName(), file2->GetFileName());
+			}
 			break;
 	}
 
