@@ -84,7 +84,7 @@ void CFriend::LinkClient(CClientRef client)
 	// always update (even if client stays the same)
 	if ( !client.GetUserName().IsEmpty() ) {
 		m_strName = client.GetUserName();
-	} else {
+	} else if (m_strName.IsEmpty()) {
 		m_strName = wxT("?");
 	}	
 	m_UserHash = client.GetUserHash();
