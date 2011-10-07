@@ -88,6 +88,39 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 			LIBPNG_LDFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --ldflags | sed -e "s/ *${LIBPNG_LIBS}$//"`
 			LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
 			AC_MSG_RESULT([yes (version $LIBPNG_VERSION)])
+
+			AC_MSG_CHECKING([if libpng is usable])
+
+			SAVED_CFLAGS=$CFLAGS
+			SAVED_LDFLAGS=$LDFLAGS
+			SAVED_LIBS=$LIBS
+
+			CFLAGS+=" $LIBPNG_CFLAGS"
+			LDFLAGS+=" $LIBPNG_LDFLAGS"
+			LIBS+=" $LIBPNG_LIBS"
+
+			AC_LINK_IFELSE([
+				AC_LANG_PROGRAM([[
+					#include <png.h>
+                                	#include <stdio.h>
+				]], [[
+					png_uint_32 libpng_vn = png_access_version_number()
+					printf("\nlibpng version %i\n\n", libpng_vn);
+				]])
+			], [
+				AC_MSG_RESULT([yes])
+			],
+			[
+				AC_MSG_RESULT([no (failed to compile and link test program)])
+				LIBPNG_LIBS=
+				LIBPNG_LDFLAGS=
+				LIBPNG_CFLAGS=
+				LIBPNG_VERSION=
+			])
+
+			CFLAGS=$SAVED_CFLAGS
+			LDFLAGS=$SAVED_LDFLAGS
+			LIBS=$SAVED_LIBS
 		])
 	])
 
