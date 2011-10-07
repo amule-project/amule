@@ -81,7 +81,9 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_FILTERCOMMENTS,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
+#ifndef __WXMAC__
 	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
+#endif
 	EVT_CHECKBOX(IDC_VERTTOOLBAR,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_SUPPORT_PO,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENABLE_PO_OUTGOING,	PrefsUnifiedDlg::OnCheckBoxChange)
@@ -243,6 +245,10 @@ wxDialog(parent, -1, _("Preferences"),
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 			#endif /* __WXMSW__ */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
+			#ifdef __WXMAC__
+				FindWindow(IDC_ENABLETRAYICON)->Show(false);
+				FindWindow(IDC_MINTRAY)->Show(false);
+			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
@@ -426,10 +432,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 	FindWindow( IDC_STARTNEXTFILE_ALPHA )->Enable(thePrefs::StartNextFile());
 
-#ifdef __WXMAC__
-	FindWindow(IDC_ENABLETRAYICON)->Enable(false);
-	FindWindow(IDC_MINTRAY)->Enable(false);
-#else
+#ifndef __WXMAC__
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
 #endif
 
@@ -869,7 +872,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
 			FindWindow(IDC_STARTNEXTFILE_ALPHA)->Enable(value);
 			break;
-
+#ifndef __WXMAC__
 		case IDC_ENABLETRAYICON:
 			FindWindow(IDC_MINTRAY)->Enable(value);
 			if (value) {
@@ -879,7 +882,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			}
 			thePrefs::SetUseTrayIcon(value);
 			break;
-
+#endif
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 
