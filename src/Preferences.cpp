@@ -740,12 +740,12 @@ public:
 			// time when the settings dialog is opened for the first time.
 			wxBusyCursor busyCursor;
 			aMuleLanguages[0].displayname = wxGetTranslation(aMuleLanguages[0].name);
+
+			// This supresses error-messages about invalid locales
 			for (unsigned int i = 1; i < itemsof(aMuleLanguages); ++i) {
-				if (wxLocale::IsAvailable(aMuleLanguages[i].id)) {
-					// This supresses error-messages about invalid locales.
+				if ((aMuleLanguages[i].id > wxLANGUAGE_USER_DEFINED) || wxLocale::IsAvailable(aMuleLanguages[i].id)) {
 					wxLogNull	logTarget;
 					wxLocale 	locale_to_check;
-
 					InitLocale(locale_to_check, aMuleLanguages[i].id);
 					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(wxT(PACKAGE))) {
 						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]");
@@ -766,6 +766,9 @@ public:
 			wxLocale tmpLocale;
 			InitLocale(tmpLocale, theApp->m_locale.GetLanguage());
 			FillChoice();
+			if (m_langSelector->GetCount() == 1) {
+				wxMessageBox(_("There are no translations installed for aMule"), _("No languages available"), wxICON_INFORMATION | wxOK);
+			}
 			m_langSelector->SetSelection(m_selection);
 			m_languagesReady = true;
 		}
