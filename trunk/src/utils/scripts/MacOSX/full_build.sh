@@ -24,6 +24,9 @@
 SCRIPTDIR=`dirname "$0"`
 SCRIPTNAME=`basename "$0"`
 
+## Get full path
+SCRIPTDIR=`cd $SCRIPTDIR; pwd`
+
 PATH="$SCRIPTDIR:$PATH"
 
 . defs-global.sh $1
@@ -41,7 +44,13 @@ echo "Save configuration commandline to ${REPEATSCRIPT} - execute that script to
 echo "#!/bin/bash" > $REPEATSCRIPT
 echo "echo \"Starting repeat, moving away current repeat.sh\"" >> $REPEATSCRIPT
 echo "rm -rf \${0}.old 2>/dev/null; mv \$0 \${0}.old" >> $REPEATSCRIPT
-echo "SDKNUMBER=${SDKNUMBER} UNIVERSAL=${UNIVERSAL} WXVERSION=${WXVERSION} WXPORT=${WXPORT} SLIMWX=${SLIMWX} BUILD_FOLDER=${BUILD_FOLDER} $0" >> $REPEATSCRIPT
+if [ x"$SDKNUMBER" == x"" ]; then
+	SDKSTRING="default"
+else
+	SDKSTRING=$SDKNUMBER
+fi
+
+echo "SDKNUMBER=${SDKSTRING} UNIVERSAL=${UNIVERSAL} WXVERSION=${WXVERSION} WXPORT=${WXPORT} SLIMWX=${SLIMWX} BUILD_FOLDER=${BUILD_FOLDER} $0" >> $REPEATSCRIPT
 echo "echo \"Repeat finished\"" >> $REPEATSCRIPT
 chmod 500 $REPEATSCRIPT
 
@@ -113,7 +122,11 @@ if [ -e amulewxcompilation ]; then
 	echo -e "\t\twxWidgets is already configured"
 else
 	make clean >> $STDOUT_FILE 2>/dev/null
-	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION --enable-debug --disable-shared \
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
+	CFLAGS="$CFLAGS $ARCHCPPFLAGS" CXXFLAGS="$CXXFLAGS $ARCHCPPFLAGS" CPPFLAGS="$CPPFLAGS $ARCHCPPFLAGS" \
+	LDFLAGS="$LDFLAGS $ARCHCPPFLAGS" \
+	OBJCFLAGS="$OBJCFLAGS $ARCHCPPFLAGS" OBJCXXFLAGS="$OBJCXXFLAGS $ARCHCPPFLAGS" \
+	--enable-debug --disable-shared \
 	$EXTRA_WXFLAGS \
 	$ARCHCONFIGFLAGS \
 	$WX_SDK_FLAGS >> $STDOUT_FILE 2>> $ERROR_FILE
@@ -255,10 +268,13 @@ echo -e "\tGetting pkg-config sources..."
 
 PKGCFG_FOLDER="pkgcfg-source"
 PKGCFG_FOLDER_INST="pkgcfg-inst"
-PKGCFG_FILE=`curl -sS http://pkgconfig.freedesktop.org/releases/ | grep -ioE "pkg-config-([0-9]+\.)+tar.gz" | uniq | sort -r | head -1`
-PKGCFG_URL="http://pkgconfig.freedesktop.org/releases/${PKGCFG_FILE}"
+# pkgconfig introduced a dependency on glib to build on 0.26, and I refuse to build the whole glib for this. 
+# On top of it, glib uses pkgconfig to configure itself... 
+#PKGCFG_FILE=`curl -sS http://pkgconfig.freedesktop.org/releases/ | grep -ioE "pkg-config-([0-9]+\.)+tar.gz" | uniq | sort -r | head -1`
+#PKGCFG_URL="http://pkgconfig.freedesktop.org/releases/${PKGCFG_FILE}"
+PKGCFG_URL="http://pkgconfig.freedesktop.org/releases/pkg-config-0.25.tar.gz"
 
-if [ -d $PKGCFG_FOLDER_INST ]; then
+if [ -f $PKGCFG_FOLDER_INST/bin/pkg-config ]; then
 	echo -e "\t\t$PKGCFG_FOLDER_INST already exists, skipping"	
 else
 	mkdir $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
@@ -273,9 +289,14 @@ else
 	make >> $STDOUT_FILE 2>> $ERROR_FILE
 	make install >> $STDOUT_FILE 2>> $ERROR_FILE
 	popd >> $STDOUT_FILE 2>> $ERROR_FILE
-	rm pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
-	rm -rf $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	if [ -f $PKGCFG_FOLDER_INST/bin/pkg-config ]; then
+		rm -f pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+		rm -rf $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
+	else
+		echo -e " ERROR: check output $STDOUT_FILE and $ERROR_FILE for details. "
+	fi
 fi
+
 
 echo -e "\tDone."
 
@@ -317,7 +338,7 @@ if [ "$MULECLEAN" == "YES" ]; then
 	--with-libintl-prefix=${ROOT_FOLDER}/${GETTEXT_FOLDER_INST} \
 	--with-libupnp-prefix=${ROOT_FOLDER}/${LIBUPNP_FOLDER_INST} \
 	--with-geoip-static --with-geoip-headers=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/include --with-geoip-lib=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/lib/ \
-	--enable-cas --enable-webserver --enable-amulecmd --enable-amule-gui --enable-wxcas --enable-alc --enable-alcc --enable-amule-daemon >> $STDOUT_FILE 2>> $ERROR_FILE
+	--disable-cas --disable-webserver --disable-amulecmd --disable-amule-gui --disable-wxcas --disable-alc --disable-alcc --disable-amule-daemon >> $STDOUT_FILE 2>> $ERROR_FILE
 
 	echo -e "\t\tCleaning compilation"
 
