@@ -204,6 +204,10 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 						IMAGE_FOLDER, -1,
 						new CItemData(item));
 	
+	// BUG: wxGenericTreeControl won't set text calculated sizes when the item is created in AppendItem.
+	// This causes asserts on Mac and possibly other systems, so we have to repeat setting the string here.
+	SetItemText(treeItem, item.GetPrintable()); 
+
 	if (IsShared(fullPath)) {
 		SetItemBold(treeItem, true);
 	}
