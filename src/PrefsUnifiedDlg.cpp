@@ -91,6 +91,9 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_SHOWRATEONTITLE,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_NETWORKED2K,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_NETWORKKAD,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_UPNP_ENABLED,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_UPNP_WEBSERVER_ENABLED,PrefsUnifiedDlg::OnCheckBoxChange)
+
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
@@ -495,6 +498,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	thePrefs::SetUPnPWebServerEnabled(false);
 	FindWindow(IDC_UPNP_EC_ENABLED)->Enable(false);
 	thePrefs::SetUPnPECEnabled(false);
+#else
+	FindWindow(IDC_UPNPTCPPORT)->Enable(thePrefs::GetUPnPEnabled());
+	FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(thePrefs::GetUPnPEnabled());
+	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(thePrefs::GetUPnPWebServerEnabled());
+	FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(thePrefs::GetUPnPWebServerEnabled());
 #endif
 
 #ifdef __DEBUG__
@@ -783,6 +791,16 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	switch ( id ) {
 		case IDC_UDPENABLE:
 			FindWindow( IDC_UDPPORT )->Enable(value);
+			break;
+
+		case IDC_UPNP_ENABLED:
+			FindWindow(IDC_UPNPTCPPORT)->Enable(value);
+			FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(value);
+			break;
+
+		case IDC_UPNP_WEBSERVER_ENABLED:
+			FindWindow(IDC_WEBUPNPTCPPORT)->Enable(value);
+			FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(value);
 			break;
 
 		case IDC_NETWORKKAD: {
