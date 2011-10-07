@@ -42,7 +42,7 @@ fi
 pc $GREEN "\tBuild root absolute path is $ROOT_FOLDER"
 
 if [ "$SDKNUMBER" == "" ]; then
-	pc $BLUE "\tAutomatically setting SDK to 10.4u (tiger with i386 and ppc, gcc 4.0) - set SDKNUMBER to your preferred SDK if you want to target it (10.5, 10.6) or \"default\" for the default SDK."
+	pc $BLUE "\tAutomatically setting SDK to 10.4u (tiger with i386 and ppc, gcc 4.0) - set SDKNUMBER to your preferred SDK if you want to target it (10.5, 10.6, 10.7) or \"default\" for the default SDK."
 	SDKNUMBER=10.4
 fi
 
@@ -51,13 +51,13 @@ case "$SDKNUMBER" in
 	SDKRELEASE=10.4u
 	CCVERSION="-4.0"
 	;;
-"10.5"|"10.6")
+"10.5"|"10.6"|"10.7")
 	SDKRELEASE=$SDKNUMBER
 	;;
 default)
 	;;
 *)
-	pc $RED "Valid SDKNUMBER values are 10.4, 10.5, 10.6 and default."
+	pc $RED "Valid SDKNUMBER values are 10.4, 10.5, 10.6, 10.7 and default."
 	exit
 	;;
 esac
@@ -78,7 +78,7 @@ fi
 case "$UNIVERSAL" in
 "NO"|"no")
 	pc $GREEN "\tDisabling universal build"
-	ARCHCPPFLAGS=""
+	ARCHCPPFLAGS="$BUILDARCHS"
 	ARCHCONFIGFLAGS=""
 	;;
 "YES"|"yes")
