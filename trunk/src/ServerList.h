@@ -56,6 +56,7 @@ public:
 	CServer*	GetServerByECID(uint32 ecid) const;
 	void		GetStatus(uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
+	bool		IsInitialized() const { return m_initialized; }
 	void		Sort();
 	void 		UpdateServerMetFromURL(const wxString& strURL);	
 	void		DownloadFinished(uint32 result);	
@@ -98,6 +99,7 @@ private:
 
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
 	wxString	m_URLUpdate;
+	bool		m_initialized;
 };
 
 #endif // SERVERLIST_H

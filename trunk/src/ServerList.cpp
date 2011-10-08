@@ -59,6 +59,7 @@ CServerList::CServerList()
 	m_serverpos = m_servers.end();
 	m_statserverpos = m_servers.end();
 	m_nLastED2KServerLinkCheck = ::GetTickCount();
+	m_initialized = false;
 }
 
 
@@ -77,6 +78,7 @@ bool CServerList::Init()
 		AutoUpdate();
 	}	
 	
+	m_initialized = true;
 	return bRes;
 }
 
@@ -430,7 +432,7 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 
 CServerList::~CServerList()
 {
-	if (thePrefs::GetNetworkED2K()) {
+	if (thePrefs::GetNetworkED2K() && IsInitialized()) {
 		SaveServerMet();
 	}
 	while ( !m_servers.empty() ) {
