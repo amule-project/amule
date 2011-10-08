@@ -108,6 +108,10 @@ Version 2.3.0 - The river knows.
 		* Option to prevent the computer from sleeping while downloading in MSW and MacOSX >= 10.5
 		* Mac fixes
 		* Fixed "out of memory" crashes caused by wxWidgets - so wxWidgets 2.8.12 is required now!
+		* Show warning dialog if "Change language" is selected and no languages are installed
+		* Added backtrace support for MacOSX
+		* Add locale support in the mac bundle with updated scripts 
+		  (translations are now supported on MacOSX builds)
 
 	lfroen:
 		* php prefix for lex/yacc
@@ -242,6 +246,8 @@ Version 2.3.0 - The river knows.
 		* Allow switching through files in file detail dialog
 		* Improve performance when many small files are hashed
 		* Fix: if a file had more than two copies shared it was hashed on every startup
+		* Show directory in search list for "view shared files" searches
+		* Safe writing of known.met and nodes.dat (don't overwrite existing until write is finished)
 		* Show directory in search list for "view shared files" searches
 
 	Vollstrecker:
