@@ -222,6 +222,11 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 {
 	MULE_VALIDATE_PARAMS(fileName.IsOk(), wxT("CFile: Cannot open, empty path."));
+
+	if (IsOpened()) {
+		Close();	
+	}
+	
 	m_safeWrite = false;
 	m_filePath = fileName;
 
@@ -261,10 +266,6 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 		case read_write:
 			flags |= O_RDWR;
         	break;
-	}
-	
-	if (IsOpened()) {
-		Close();	
 	}
 	
 	// Windows needs wide character file names
