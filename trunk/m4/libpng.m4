@@ -102,9 +102,9 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 			AC_LINK_IFELSE([
 				AC_LANG_PROGRAM([[
 					#include <png.h>
-                                	#include <stdio.h>
+					#include <stdio.h>
 				]], [[
-					png_uint_32 libpng_vn = png_access_version_number()
+					png_uint_32 libpng_vn = png_access_version_number();
 					printf("\nlibpng version %i\n\n", libpng_vn);
 				]])
 			], [
