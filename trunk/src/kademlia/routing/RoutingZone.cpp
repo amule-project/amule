@@ -310,7 +310,7 @@ void CRoutingZone::WriteFile()
 	try {
 		unsigned int count = 0;
 		CFile file;
-		if (file.Open(m_filename, CFile::write)) {
+		if (file.Open(m_filename, CFile::write_safe)) {
 			// Start file with 0 to prevent older clients from reading it.
 			file.WriteUInt32(0);
 			// Now tag it with a version which happens to be 2.
@@ -333,6 +333,7 @@ void CRoutingZone::WriteFile()
 				c->GetUDPKey().StoreToFile(file);
 				file.WriteUInt8(c->IsIPVerified() ? 1 : 0);
 			}
+			file.Close();
 		}
 		AddLogLineN(CFormat(wxPLURAL("Wrote %d Kad contact", "Wrote %d Kad contacts", count)) % count);
 	} catch (const CIOFailureException& e) {
