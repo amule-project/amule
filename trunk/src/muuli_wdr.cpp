@@ -1481,68 +1481,71 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item9->SetToolTip( _("Makes aMule prompt before exiting.") );
     item0->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
-    item0->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_MACHIDEONCLOSE, _("Hide application window when close button is pressed"), wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetToolTip( _("Enabling this will make aMule minimize to the System Tray, rather than the taskbar.") );
-    item0->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
+    item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxBoxSizer *item12 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetToolTip( _("Enabling this will make aMule minimize to the System Tray, rather than the taskbar.") );
+    item0->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxStaticText *item13 = new wxStaticText( parent, -1, _("Tooltip delay time: "), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetToolTip( _("The delay before showing tool-tips.") );
-    item12->Add( item13, 1, wxALIGN_CENTER, 0 );
+    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 9, 1 );
+    wxStaticText *item14 = new wxStaticText( parent, -1, _("Tooltip delay time: "), wxDefaultPosition, wxDefaultSize, 0 );
     item14->SetToolTip( _("The delay before showing tool-tips.") );
-    item12->Add( item14, 0, wxALIGN_CENTER|wxLEFT, 5 );
+    item13->Add( item14, 1, wxALIGN_CENTER, 0 );
 
-    wxStaticText *item15 = new wxStaticText( parent, -1, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxSpinCtrl *item15 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 9, 1 );
     item15->SetToolTip( _("The delay before showing tool-tips.") );
-    item12->Add( item15, 1, wxALIGN_CENTER|wxLEFT, 5 );
+    item13->Add( item15, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, -1, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetToolTip( _("The delay before showing tool-tips.") );
+    item13->Add( item16, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Browser Selection") );
-    wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxVERTICAL );
+    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Browser Selection") );
+    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
 
-    CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item19->SetToolTip( _("Enter your browser name here. Leave this field empty to use the system default browser.") );
-    item18->Add( item19, 1, wxGROW, 0 );
+    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item20 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item20, 0, wxGROW, 0 );
+    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item20->SetToolTip( _("Enter your browser name here. Leave this field empty to use the system default browser.") );
+    item19->Add( item20, 1, wxGROW, 0 );
 
-    item16->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item21 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item21, 0, wxGROW, 0 );
 
-    wxCheckBox *item21 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->SetValue( TRUE );
-    item21->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item16->Add( item21, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->SetValue( TRUE );
+    item22->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item17->Add( item22, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Video Player") );
-    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
+    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("Video Player") );
+    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
 
-    CMuleTextCtrl *item25 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, wxT("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item24->Add( item25, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxBoxSizer *item25 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item26 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    CMuleTextCtrl *item26 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, wxT("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item25->Add( item26, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item27 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxStaticText *item27 = new wxStaticText( parent, IDC_PREVIEW_NOTE, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item22->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item23->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticText *item28 = new wxStaticText( parent, IDC_PREVIEW_NOTE, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     if (set_sizer)
     {
