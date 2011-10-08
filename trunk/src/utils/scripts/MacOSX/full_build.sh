@@ -326,19 +326,23 @@ if [ ! -f src/amule ]; then
 	MULECLEAN=YES
 fi
 
+rm -rf ${ROOT_FOLDER}/amule-inst/
+mkdir -p ${ROOT_FOLDER}/amule-inst/
+
 if [ "$MULECLEAN" == "YES" ]; then
 	echo -e "\t\tRunning configure"
 
 	PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin/:${ROOT_FOLDER}/${PKGCFG_FOLDER_INST}/bin/" \
 	 ./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
 	CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
-	--disable-nls --disable-dependency-tracking --enable-ccache \
+	--enable-nls --disable-dependency-tracking --enable-ccache \
 	--with-wxdir=${ROOT_FOLDER}/${WXFOLDER}/ \
 	--with-crypto-prefix=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST \
 	--with-libintl-prefix=${ROOT_FOLDER}/${GETTEXT_FOLDER_INST} \
 	--with-libupnp-prefix=${ROOT_FOLDER}/${LIBUPNP_FOLDER_INST} \
 	--with-geoip-static --with-geoip-headers=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/include --with-geoip-lib=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/lib/ \
-	--disable-cas --disable-webserver --disable-amulecmd --disable-amule-gui --disable-wxcas --disable-alc --disable-alcc --disable-amule-daemon >> $STDOUT_FILE 2>> $ERROR_FILE
+	--disable-cas --disable-webserver --disable-amulecmd --disable-amule-gui --disable-wxcas --disable-alc --disable-alcc --disable-amule-daemon \
+	--prefix=${ROOT_FOLDER}/amule-inst/ >> $STDOUT_FILE 2>> $ERROR_FILE
 
 	echo -e "\t\tCleaning compilation"
 
@@ -351,6 +355,12 @@ make >> $STDOUT_FILE 2>> $ERROR_FILE
 
 echo -e "\tDone."
 
+echo -e "\t\tFaking install"
+
+make install >> $STDOUT_FILE 2>> $ERROR_FILE
+
+echo -e "\tDone."
+
 popd >> $STDOUT_FILE 2>> $ERROR_FILE
 
 echo -e "Getting application bundle and packaging"
@@ -360,6 +370,10 @@ rm -rf aMule.app aMule.zip >> $STDOUT_FILE 2>> $ERROR_FILE
 cp -R ${AMULE_FOLDER}/aMule.app . >> $STDOUT_FILE 2>> $ERROR_FILE
 
 find aMule.app \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf >> $STDOUT_FILE 2>> $ERROR_FILE
+
+echo -e "Copying i18n files..."
+cp -r amule-inst/share/locale aMule.app/Contents/SharedSupport/
+echo -e "Done."
 
 . application_packager.sh ${AMULE_FOLDER}/ >> $STDOUT_FILE 2>> $ERROR_FILE
 
