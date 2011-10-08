@@ -122,7 +122,7 @@ if [ -e amulewxcompilation ]; then
 	echo -e "\t\twxWidgets is already configured"
 else
 	make clean >> $STDOUT_FILE 2>/dev/null
-	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION \
 	CFLAGS="$CFLAGS $ARCHCPPFLAGS" CXXFLAGS="$CXXFLAGS $ARCHCPPFLAGS" CPPFLAGS="$CPPFLAGS $ARCHCPPFLAGS" \
 	LDFLAGS="$LDFLAGS $ARCHCPPFLAGS" \
 	OBJCFLAGS="$OBJCFLAGS $ARCHCPPFLAGS" OBJCXXFLAGS="$OBJCXXFLAGS $ARCHCPPFLAGS" \
@@ -165,7 +165,7 @@ else
 	done
 	#cp ../GNUMakefile .
 	echo -e "\t\tCompiling cryptopp..."
-	CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
+	CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION \
 		CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" make > $STDOUT_FILE 2> $ERROR_FILE
 	PREFIX=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST make install >> $STDOUT_FILE 2>> $ERROR_FILE
 	popd >> $STDOUT_FILE 
@@ -192,7 +192,7 @@ else
 	pushd $GETTEXT_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	echo -e "\t\tCompiling gettext..."
 	tar --strip-components 1 -zxf ../gettext.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
-	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
 		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$GETTEXT_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	make >> $STDOUT_FILE 2>> $ERROR_FILE
@@ -221,7 +221,7 @@ else
 	pushd $LIBUPNP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	echo -e "\t\tCompiling libupnp..."	
 	tar --strip-components 1 -jxf ../libupnp.tar.bz2 >> $STDOUT_FILE 2>> $ERROR_FILE
-	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
 		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$LIBUPNP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	make >> $STDOUT_FILE 2>> $ERROR_FILE
@@ -250,7 +250,7 @@ else
 	pushd $LIBGEOIP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	echo -e "\t\tCompiling GeoIP..." 
 	tar --strip-components 2 -zxf ../libgeoip.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
-	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
 		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$LIBGEOIP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	make >> $STDOUT_FILE 2>> $ERROR_FILE
@@ -282,8 +282,8 @@ else
 	curl -L -o pkgcfg.tar.gz $PKGCFG_URL >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	echo -e "\t\tCompiling pkg-config..."	
-	tar --strip-components 1 -jxf ../pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
-	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
+	tar --strip-components 1 -zxf ../pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
+	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
 		--disable-debug --disable-shared --prefix=${ROOT_FOLDER}/$PKGCFG_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	make >> $STDOUT_FILE 2>> $ERROR_FILE
@@ -333,7 +333,7 @@ if [ "$MULECLEAN" == "YES" ]; then
 	echo -e "\t\tRunning configure"
 
 	PATH="${PATH}:${ROOT_FOLDER}/${GETTEXT_FOLDER_INST}/bin/:${ROOT_FOLDER}/${PKGCFG_FOLDER_INST}/bin/" \
-	 ./configure CC=gcc$CCVERSION CXX=g++$CCVERSION LD=g++$CCVERSION \
+	 ./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION \
 	CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
 	--enable-nls --disable-dependency-tracking --enable-ccache \
 	--with-wxdir=${ROOT_FOLDER}/${WXFOLDER}/ \
