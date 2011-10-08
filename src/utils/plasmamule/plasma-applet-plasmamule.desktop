@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=aMule Plasma Applet
 Comment=Prints Information about aMule
+Comment[fr]=Affiche des informations sur aMule
+Comment[tr]=aMule hakkında bilgi görüntüler
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=application-x-emulecollection
