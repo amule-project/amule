@@ -461,7 +461,107 @@ wxString get_backtrace(unsigned n)
 #endif /* HAVE_EXECINFO */
 }
 
-#else	/* !__LINUX__ */
+#elif defined( __APPLE__ )
+
+// According to sources, parts of this code originate at http://www.tlug.org.za/wiki/index.php/Obtaining_a_stack_trace_in_C_upon_SIGSEGV
+// which doesn't exist anymore. 
+
+// Other code (stack frame list and demangle related) has been modified from code with license:
+
+// Copyright 2007 Edd Dawson.
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+#include <string>
+#include <dlfcn.h>
+#include <cxxabi.h>
+#include <sstream>
+
+class stack_frame
+{
+public:
+	stack_frame(const void * f_instruction, const std::string& f_function) : frame_instruction(f_instruction), frame_function(f_function) {};
+
+	const void *instruction() const { return frame_instruction; }
+	const std::string& function() const { return frame_function; }
+
+private:
+	const void * frame_instruction;
+	const std::string frame_function;
+};
+
+std::string demangle(const char *name)
+{
+	int status = 0;
+	char *d = 0;
+	std::string ret = name;
+	try {
+		if ((d = abi::__cxa_demangle(name, 0, 0, &status))) {
+			ret = d;
+		}
+	} catch(...) {  }
+
+	std::free(d);
+	return ret;
+}
+
+
+void fill_frames(std::list<stack_frame> &frames)
+{
+	try {
+		void **fp = (void **) __builtin_frame_address (1);
+		void *saved_pc = NULL;
+
+		// First frame is skipped
+		while (fp != NULL) {
+   			fp = (void**)(*fp);
+			if (*fp == NULL) {
+    				break;
+			}
+	
+#if defined(__i386__)
+			saved_pc = fp[1];
+#elif defined(__ppc__)
+			saved_pc = *(fp + 2);
+#else
+			// ?
+			saved_pc = *(fp + 2);
+#endif
+			if (saved_pc) {
+				Dl_info info;
+
+				if (dladdr(saved_pc, &info)) {
+					frames.push_back(stack_frame(saved_pc, demangle(info.dli_sname) + " in " + info.dli_fname));
+				}
+			}
+		}
+	} catch (...) {
+		// Nothing to be done here, just leave.
+	}
+}
+
+wxString get_backtrace(unsigned n)
+{
+	std::list<stack_frame> frames;
+	fill_frames(frames);
+	std::ostringstream backtrace;
+	std::list<stack_frame>::iterator it = frames.begin();
+
+	int count = 0;
+	while (it != frames.end()) {
+		if (count >= n) {
+			backtrace << (*it).instruction() << " : " << (*it).function() << std::endl;
+ 			++it;
+		}
+
+		++count;
+	}
+
+	return wxString(backtrace.str().c_str(), wxConvUTF8);
+}
+
+#else /* ! __APPLE__ */
 
 wxString get_backtrace(unsigned WXUNUSED(n))
 {
