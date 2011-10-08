@@ -676,14 +676,13 @@ void CServerList::SetServerPrio(CServer* server, uint32 prio)
 
 bool CServerList::SaveServerMet()
 {
-	CPath newservermet = CPath(theApp->ConfigDir + wxT("server.met.new"));
+	CPath curservermet = CPath(theApp->ConfigDir + wxT("server.met"));
 	
-	CFile servermet( newservermet, CFile::write );
+	CFile servermet(curservermet, CFile::write_safe);
 	if (!servermet.IsOpened()) {
 		AddLogLineN(_("Failed to save server.met!"));
 		return false;
 	}
-
 
 	try {
 		servermet.WriteUInt8(0xE0);
@@ -779,45 +778,35 @@ bool CServerList::SaveServerMet()
 			CTagInt32( ST_LOWIDUSERS, server->GetLowIDUsers()    ).WriteTagToFile( &servermet );
 			
 			if (server->GetServerKeyUDP(true)) {
-				CTagInt32(ST_UDPKEY, server->GetServerKeyUDP(true)).WriteTagToFile( &servermet );;
+				CTagInt32(ST_UDPKEY, server->GetServerKeyUDP(true)).WriteTagToFile( &servermet );
 			}
 
 			if (server->GetServerKeyUDPIP()) {
-				CTagInt32(ST_UDPKEYIP, server->GetServerKeyUDPIP()).WriteTagToFile( &servermet );;;
+				CTagInt32(ST_UDPKEYIP, server->GetServerKeyUDPIP()).WriteTagToFile( &servermet );
 			}
 
 			if (server->GetObfuscationPortTCP()) {
-				CTagInt16(ST_TCPPORTOBFUSCATION, server->GetObfuscationPortTCP()).WriteTagToFile( &servermet );;;
+				CTagInt16(ST_TCPPORTOBFUSCATION, server->GetObfuscationPortTCP()).WriteTagToFile( &servermet );
 			}
 
 			if (server->GetObfuscationPortUDP()) {
-				CTagInt16(ST_UDPPORTOBFUSCATION, server->GetObfuscationPortUDP()).WriteTagToFile( &servermet );;;
+				CTagInt16(ST_UDPPORTOBFUSCATION, server->GetObfuscationPortUDP()).WriteTagToFile( &servermet );
 			}
 			
 		}
+		// Now server.met.new is ready to be closed and renamed to server.met.
+		// But first rename existing server.met to server.met.bak (replacing old .bak file).
+		const CPath oldservermet = CPath(theApp->ConfigDir + wxT("server.met.bak"));
+		if (curservermet.FileExists()) {
+			CPath::RenameFile(curservermet, oldservermet, true);
+		}
+
+		servermet.Close();
+
 	} catch (const CIOFailureException& e) {
 		AddLogLineC(wxT("IO failure while writing 'server.met': ") + e.what());
 		return false;
 	}
-	
-	servermet.Close();
-	const CPath curservermet = CPath(theApp->ConfigDir + wxT("server.met"));
-	const CPath oldservermet = CPath(theApp->ConfigDir + wxT("server.met.bak"));
-	const CPath obsoleteservermet = CPath(theApp->ConfigDir + wxT("server_met.old"));
-	
-	if (oldservermet.FileExists()) {
-		CPath::RemoveFile(oldservermet);
-	}
-	
-	if (obsoleteservermet.FileExists()) {
-		CPath::RemoveFile(obsoleteservermet);
-	}
-	
-	if (curservermet.FileExists()) {
-		CPath::RenameFile(curservermet, oldservermet);
-	}
-	
-	CPath::RenameFile(newservermet, curservermet);
 	
 	return true;
 }
