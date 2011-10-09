@@ -108,6 +108,7 @@ CPath		CPreferences::s_tempdir;
 bool		CPreferences::s_ICH;
 uint8		CPreferences::s_depth3D;
 bool		CPreferences::s_scorsystem;
+bool		CPreferences::s_hideonclose;
 bool		CPreferences::s_mintotray;
 bool		CPreferences::s_trayiconenabled;
 bool		CPreferences::s_addnewfilespaused;
@@ -1125,6 +1126,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * GUI behavior
 	 **/
+	NewCfgItem(IDC_MACHIDEONCLOSE,	(new Cfg_Bool( wxT("/GUI/HideOnClose"), s_hideonclose, false )));
 	NewCfgItem(IDC_ENABLETRAYICON,	(new Cfg_Bool( wxT("/eMule/EnableTrayIcon"), s_trayiconenabled, false )));
 	NewCfgItem(IDC_MINTRAY,		(new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false )));
 	NewCfgItem(IDC_EXIT,		(new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, true )));

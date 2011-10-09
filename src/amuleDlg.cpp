@@ -293,6 +293,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	m_statisticswnd->Init();
 	m_kademliawnd->Init();
 	m_searchwnd->UpdateCatChoice();
+
 	if (thePrefs::UseTrayIcon()) {
 		CreateSystray();
 	}
@@ -901,6 +902,12 @@ void CamuleDlg::DlgShutDown()
 
 void CamuleDlg::OnClose(wxCloseEvent& evt)
 {
+	if (thePrefs::HideOnClose() && evt.CanVeto()) {
+		Show(false);
+		evt.Veto();
+		return;
+	}
+
 	// This will be here till the core close is != app close
 	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
 		if (wxNO == wxMessageBox(wxString(CFormat(_("Do you really want to exit %s?")) % theApp->GetMuleAppName()),
@@ -1417,7 +1424,7 @@ void CamuleDlg::OnKeyPressed(wxKeyEvent& event)
 
 void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
-	Close();
+	Close(true);
 }
 
 void CamuleDlg::DoNetworkRearrange()
