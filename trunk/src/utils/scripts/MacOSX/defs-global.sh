@@ -85,6 +85,7 @@ case "$UNIVERSAL" in
 	pc $GREEN "\tUsing universal build (i386, pcc)" 
 	ARCHCPPFLAGS="-arch i386 -arch ppc"
 	ARCHCONFIGFLAGS="--enable-universal_binary"
+	CCVERSION="-4.0"
 	;;
 *)
 	pc $RED "Only the values \"NO\" and \"YES\" are valid for UNIVERSAL"
