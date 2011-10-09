@@ -81,9 +81,8 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_FILTERCOMMENTS,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
-#ifndef __WXMAC__
 	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
-#endif
+	EVT_CHECKBOX(IDC_MACHIDEONCLOSE,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_VERTTOOLBAR,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_SUPPORT_PO,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENABLE_PO_OUTGOING,	PrefsUnifiedDlg::OnCheckBoxChange)
@@ -251,6 +250,8 @@ wxDialog(parent, -1, _("Preferences"),
 			#ifdef __WXMAC__
 				FindWindow(IDC_ENABLETRAYICON)->Show(false);
 				FindWindow(IDC_MINTRAY)->Show(false);
+			#else
+				FindWindow(IDC_MACHIDEONCLOSE)->Show(false);
 			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
@@ -435,9 +436,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 	FindWindow( IDC_STARTNEXTFILE_ALPHA )->Enable(thePrefs::StartNextFile());
 
-#ifndef __WXMAC__
+	FindWindow(IDC_MACHIDEONCLOSE)->Enable(true);
+	FindWindow(IDC_EXIT)->Enable(!thePrefs::HideOnClose());
+	if (!thePrefs::HideOnClose()) {
+		CastChild(IDC_EXIT, wxCheckBox)->SetValue(false);
+	}
+
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
-#endif
 
 	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
@@ -890,7 +895,12 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
 			FindWindow(IDC_STARTNEXTFILE_ALPHA)->Enable(value);
 			break;
-#ifndef __WXMAC__
+
+		case IDC_MACHIDEONCLOSE:
+			FindWindow(IDC_EXIT)->Enable(!value);
+			CastChild(IDC_EXIT, wxCheckBox)->SetValue(!value && thePrefs::IsConfirmExitEnabled());
+			break;
+
 		case IDC_ENABLETRAYICON:
 			FindWindow(IDC_MINTRAY)->Enable(value);
 			if (value) {
@@ -900,7 +910,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			}
 			thePrefs::SetUseTrayIcon(value);
 			break;
-#endif
+
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 

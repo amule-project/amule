@@ -233,6 +233,8 @@ public:
 	static void		SetMinToTray(bool val)		{ s_mintotray = val; }
 	static bool		UseTrayIcon()			{ return s_trayiconenabled; }
 	static void		SetUseTrayIcon(bool val)	{ s_trayiconenabled = val; }
+	static bool		HideOnClose()			{ return s_hideonclose; }
+	static void		SetHideOnClose(bool val)	{ s_hideonclose = val; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
        					{s_autoconnect = inautoconnect; }
@@ -644,6 +646,7 @@ protected:
 	static uint8	s_depth3D;
 
 	static bool	s_scorsystem;
+	static bool	s_hideonclose;
 	static bool	s_mintotray;
 	static bool	s_trayiconenabled;
 	static bool	s_addnewfilespaused;
