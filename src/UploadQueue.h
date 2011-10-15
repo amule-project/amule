@@ -44,7 +44,7 @@ public:
 	bool	IsOnUploadQueue(const CUpDownClient* client) const;
 	bool	IsDownloading(const CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
-	void	ResortQueue() { SortGetBestClient(true); }
+	void	ResortQueue() { SortGetBestClient(); }
 	
 	const CClientRefList& GetWaitingList() const { return m_waitinglist; }
 	const CClientRefList& GetUploadingList() const { return m_uploadinglist; }
@@ -60,7 +60,7 @@ private:
 	uint16	GetMaxSlots() const;
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 	bool	IsSuspended(const CMD4Hash& hash) { return suspendedUploadsSet.find(hash) != suspendedUploadsSet.end(); }
-	CUpDownClient*	SortGetBestClient(bool sortonly);
+	void	SortGetBestClient(CClientRef * bestClient = NULL);
 
 	CClientRefList m_waitinglist;
 	CClientRefList m_uploadinglist;

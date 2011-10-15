@@ -71,9 +71,8 @@ CUploadQueue::CUploadQueue()
 }
 
 
-CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
+void CUploadQueue::SortGetBestClient(CClientRef * bestClient)
 {
-	CUpDownClient* newclient = NULL;
 	uint32 tick = GetTickCount();
 	m_lastSort = tick;
 	CClientRefList::iterator it = m_waitinglist.begin();
@@ -123,11 +122,12 @@ CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 	// - find best high id client
 	// - mark all better low id clients as enabled for upload
 	uint16 rank = 1;
+	bool bestClientFound = false;
 	for (it = m_waitinglist.begin(); it != m_waitinglist.end(); ) {
 		CClientRefList::iterator it2 = it++;
 		CUpDownClient* cur_client = it2->GetClient();
 		cur_client->SetUploadQueueWaitingPosition(rank++);
-		if (newclient) {
+		if (bestClientFound) {
 			// There's a better high id client
 			cur_client->m_bAddNextConnect = false;
 		} else {
@@ -136,9 +136,10 @@ CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 				cur_client->m_bAddNextConnect = true;
 			} else {
 				// We found a high id client (or a currently connected low id client)
-				newclient = cur_client;
+				bestClientFound = true;
 				cur_client->m_bAddNextConnect = false;
-				if (!sortonly) {
+				if (bestClient) {
+					bestClient->Link(cur_client CLIENT_DEBUGSTRING("CUploadQueue::SortGetBestClient"));
 					RemoveFromWaitingQueue(it2);
 					rank--;
 					lastupslotHighID = true; // VQB LowID alternate
@@ -160,17 +161,17 @@ CUpDownClient* CUploadQueue::SortGetBestClient(bool sortonly)
 			);
 	}
 #endif	// __DEBUG__
-
-	return newclient;
 }
 
 
 void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 {
 	CUpDownClient* newclient = NULL;
+	CClientRef newClientRef;
 	// select next client or use given client
 	if (!directadd) {
-		newclient = SortGetBestClient(false);
+		SortGetBestClient(&newClientRef);
+		newclient = newClientRef.GetClient();
 		if (!newclient) {
 			return;
 		}
@@ -271,7 +272,7 @@ void CUploadQueue::Process()
 
 	// Periodically resort queue if it doesn't happen anyway
 	if ((sint32) (tick - m_lastSort) > MIN2MS(2)) {
-		SortGetBestClient(true);
+		SortGetBestClient();
 	}
 }
 
@@ -491,7 +492,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		// add to waiting queue
 		m_waitinglist.push_back(CCLIENTREF(client, wxT("CUploadQueue::AddClientToQueue m_waitinglist.push_back")));
 		// and sort it to update queue ranks
-		SortGetBestClient(true);
+		SortGetBestClient();
 		theStats::AddWaitingClient();
 		client->ClearAskedCount();
 		client->SetUploadState(US_ONUPLOADQUEUE);
