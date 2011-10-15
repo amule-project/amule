@@ -1368,10 +1368,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	// If buffer size exceeds limit, or if not written within time limit, flush data
 	if (	(m_nTotalBufferData > thePrefs::GetFileBufferSize()) ||
 		(dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT))) {
-		// Avoid flushing while copying preview file
-		if (!m_bPreviewing) {
-			FlushBuffer();
-		}
+		FlushBuffer();
 	}
 
 
@@ -3653,7 +3650,6 @@ void CPartFile::Init()
 	m_count = 0;
 	percentcompleted = 0;
 	completedsize=0;
-	m_bPreviewing = false;
 	lastseencomplete = 0;
 	m_availablePartsCount=0;
 	m_ClientSrcAnswered = 0;
@@ -3662,7 +3658,6 @@ void CPartFile::Init()
 	m_nTotalBufferData = 0;
 	m_nLastBufferFlushTime = 0;
 	m_bPercentUpdated = false;
-	m_bRecoveringArchive = false;
 	m_iGainDueToCompression = 0;
 	m_iLostDueToCorruption = 0;
 	m_iTotalPacketsSavedDueToICH = 0;
