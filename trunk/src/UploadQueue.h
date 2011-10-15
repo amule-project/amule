@@ -29,6 +29,18 @@
 #include "ClientRef.h"		// Needed for CClientRefList
 #include "MD4Hash.h"		// Needed for CMD4Hash
 
+// Experimental extended upload queue population
+//
+// When a client is set up from scratch (no shares, all downloads empty)
+// it takes a while after completion of the first downloaded chunks until
+// uploads start. Problem is, upload queue is empty, because clients that
+// find nothing to download don't stay queued.
+//
+// Set this to 1 for faster finding of upload slots in this case.
+// aMule will then try to contact its sources for uploading if the
+// upload queue is empty.
+#define EXTENDED_UPLOADQUEUE 0
+
 class CUpDownClient;
 class CKnownFile;
 
@@ -64,7 +76,12 @@ private:
 
 	CClientRefList m_waitinglist;
 	CClientRefList m_uploadinglist;
-	
+
+#if EXTENDED_UPLOADQUEUE
+	CClientRefList m_possiblyWaitingList;
+	int		PopulatePossiblyWaitingList();
+#endif
+
 	std::set<CMD4Hash> suspendedUploadsSet;  // set for suspended uploads
 	uint32	m_nLastStartUpload;
 	uint32	m_lastSort;
