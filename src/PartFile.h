@@ -150,7 +150,6 @@ public:
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
-	//void	SetNotCurrentSourcesCount(uint16 new_count)	{ m_notCurrentSources = new_count; };	
 	uint16	GetValidSourcesCount() const	{ return m_validSources; };
 	
 	uint64	GetNeededSpace();
@@ -165,9 +164,6 @@ public:
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
 	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);	
-
-	// Barry - Is archive recovery in progress
-	volatile bool m_bRecoveringArchive;
 
 	// Barry - Added to prevent list containing deleted blocks on shutdown
 	void	RemoveAllRequestedBlocks(void);
@@ -201,7 +197,6 @@ public:
 	void	SetCategory(uint8 cat);
 	void	RemoveCategory(uint8 cat);
 
-	volatile bool m_bPreviewing;
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
 	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
 	void	SetAutoDownPriority(bool flag)	{ m_bAutoDownPriority = flag; }
@@ -397,8 +392,6 @@ public:
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
 	
-//	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
-
 	void AddDownloadingSource(CUpDownClient* client);
           
 	void RemoveDownloadingSource(CUpDownClient* client);
