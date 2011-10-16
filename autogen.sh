@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Helps bootstrapping 'aMule' when checked out from the source control system.
 # Requires GNU autoconf, GNU automake and GNU which.
 
