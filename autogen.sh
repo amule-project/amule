@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Helps bootstrapping 'aMule' when checked out from the source control system.
 # Requires GNU autoconf, GNU automake and GNU which.
 
@@ -50,7 +50,7 @@ datarootdir = @datarootdir@' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f 
 datarootdir = @datarootdir@' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
     fi
 UNAME=`uname`
-if [ x$UNAME == x"Darwin" ]; then
+if [ x$UNAME = x"Darwin" ]; then
     echo Not patching po/Makefile.in.in - sed is too old.
 else
     sed -e '/^clean:/a\
