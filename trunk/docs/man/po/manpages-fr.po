@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"POT-Creation-Date: 2011-09-09 21:21+0300\n"
+"POT-Creation-Date: 2011-10-31 22:06+0100\n"
 "PO-Revision-Date: 2011-09-10 20:11+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
@@ -29,8 +29,9 @@ msgstr "AMULE"
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
-#, no-wrap
-msgid "October 2011"
+#, fuzzy, no-wrap
+#| msgid "October 2011"
+msgid "November 2011"
 msgstr "Octobre 2011"
 
 #. type: TH

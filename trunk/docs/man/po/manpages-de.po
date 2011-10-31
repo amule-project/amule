@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: manpages-de\n"
-"POT-Creation-Date: 2011-09-09 21:21+0300\n"
+"POT-Creation-Date: 2011-10-31 22:06+0100\n"
 "PO-Revision-Date: 2010-01-29 23:02+0100\n"
 "Last-Translator: Balla Marcell <bmk@chello.hu>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -27,7 +27,7 @@ msgstr "AMULE"
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
-msgid "October 2011"
+msgid "November 2011"
 msgstr ""
 
 # type: TH
