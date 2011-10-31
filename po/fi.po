@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 20:21+0200\n"
+"POT-Creation-Date: 2011-10-31 23:46+0100\n"
 "PO-Revision-Date: 2010-01-19 17:34+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@nomovok.com>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -89,7 +89,7 @@ msgid "Password set and external connections enabled."
 msgstr "Salasana asetettu ja etäyhteydet sallittu."
 
 #: src/amule.cpp:449 src/KadDlg.cpp:182 src/KadDlg.cpp:188
-#: src/PrefsUnifiedDlg.cpp:726 src/SharedFilesCtrl.cpp:317
+#: src/PrefsUnifiedDlg.cpp:742 src/SharedFilesCtrl.cpp:315
 msgid "WARNING"
 msgstr "VAROITUS"
 
@@ -102,7 +102,7 @@ msgstr ""
 "Pahoittelen."
 
 #: src/amule.cpp:497 src/amule.cpp:1054 src/CatDialog.cpp:141
-#: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:343
+#: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:345
 #: src/ServerListCtrl.cpp:148
 msgid "Info"
 msgstr "Info"
@@ -251,7 +251,7 @@ msgid "ServerMessage: %s"
 msgstr "Palvelimen viesti: %s"
 
 #: src/amule.cpp:1561 src/IP2Country.cpp:151 src/IPFilter.cpp:509
-#: src/ServerList.cpp:865
+#: src/ServerList.cpp:856
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
@@ -426,15 +426,15 @@ msgstr ""
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "KRIITTINEN VIRHE: Ajastimen luominen epäonnistui"
 
-#: src/amuleDlg.cpp:492
+#: src/amuleDlg.cpp:493
 msgid "aMule remote control "
 msgstr "aMule etähallinta "
 
-#: src/amuleDlg.cpp:498
+#: src/amuleDlg.cpp:499
 msgid "Snapshot:"
 msgstr "Tilannevedos:"
 
-#: src/amuleDlg.cpp:500
+#: src/amuleDlg.cpp:501
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -442,15 +442,15 @@ msgstr ""
 "'Kaikkien alustojen' p2p-asiakas perustuen eMuleen\n"
 "\n"
 
-#: src/amuleDlg.cpp:501
+#: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
 msgstr "Verkkosivu: http://www.amule.org\n"
 
-#: src/amuleDlg.cpp:502
+#: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
 msgstr "Foorumi: http://forum.amule.org\n"
 
-#: src/amuleDlg.cpp:503
+#: src/amuleDlg.cpp:504
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
@@ -458,11 +458,11 @@ msgstr ""
 "UKK: http://wiki.amule.org\n"
 "\n"
 
-#: src/amuleDlg.cpp:504
+#: src/amuleDlg.cpp:505
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Yhteys: admin@amule.org (hallinnolliset asiat, englanniksi)\n"
 
-#: src/amuleDlg.cpp:505
+#: src/amuleDlg.cpp:506
 msgid ""
 "Copyright (c) 2003-2011 aMule Team \n"
 "\n"
@@ -470,227 +470,227 @@ msgstr ""
 "Tekijänoikeudet (c) 2003-2008 aMule-Tiimi\n"
 "\n"
 
-#: src/amuleDlg.cpp:506
+#: src/amuleDlg.cpp:507
 msgid "Part of aMule is based on \n"
 msgstr "Osa aMulesta perustuu\n"
 
-#: src/amuleDlg.cpp:507
+#: src/amuleDlg.cpp:508
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademliaan: Vertaisreititys perustuen XOR-metriikkaan.\n"
 
-#: src/amuleDlg.cpp:508
+#: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 " Tekijänoikeudet (c) 2002-2008 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
-#: src/amuleDlg.cpp:509
+#: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:512 src/KadDlg.cpp:192 src/PartFile.cpp:920
-#: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:608
-#: src/PrefsUnifiedDlg.cpp:713 src/PrefsUnifiedDlg.cpp:816
+#: src/amuleDlg.cpp:513 src/KadDlg.cpp:192 src/PartFile.cpp:920
+#: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:624
+#: src/PrefsUnifiedDlg.cpp:729 src/PrefsUnifiedDlg.cpp:842
 msgid "Message"
 msgstr "Viesti"
 
-#: src/amuleDlg.cpp:549
+#: src/amuleDlg.cpp:550
 msgid "aMule dialog destroyed"
 msgstr "aMulen dialogi tuhottu"
 
-#: src/amuleDlg.cpp:573 src/DataToText.cpp:61 src/IPFilter.cpp:543
+#: src/amuleDlg.cpp:574 src/DataToText.cpp:61 src/IPFilter.cpp:543
 msgid "Connecting"
 msgstr "Yhdistetään"
 
-#: src/amuleDlg.cpp:704
+#: src/amuleDlg.cpp:705
 msgid "eD2k: Connecting"
 msgstr "eD2k: Yhdistetään"
 
-#: src/amuleDlg.cpp:708
+#: src/amuleDlg.cpp:709
 msgid "eD2k: Disconnected"
 msgstr "eD2k: Ei yhdistetty"
 
-#: src/amuleDlg.cpp:714
+#: src/amuleDlg.cpp:715
 msgid "Kad: Firewalled"
 msgstr "Kad: Palomuurattu"
 
-#: src/amuleDlg.cpp:718
+#: src/amuleDlg.cpp:719
 msgid "Kad: Connected"
 msgstr "Kad: Yhdistety"
 
-#: src/amuleDlg.cpp:723
+#: src/amuleDlg.cpp:724
 msgid "Kad: Connecting"
 msgstr "Kad: Yhdistetään"
 
-#: src/amuleDlg.cpp:727
+#: src/amuleDlg.cpp:728
 msgid "Kad: Off"
 msgstr "Kad: Pois päältä"
 
-#: src/amuleDlg.cpp:773 src/DownloadListCtrl.cpp:415
+#: src/amuleDlg.cpp:774 src/DownloadListCtrl.cpp:415
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
-#: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2326 src/muuli_wdr.cpp:2428
-#: src/muuli_wdr.cpp:3144 src/ServerListCtrl.cpp:153
+#: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:153
 #: src/ServerListCtrl.cpp:527 src/ServerListCtrl.cpp:546
 #: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:294
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: src/amuleDlg.cpp:774
+#: src/amuleDlg.cpp:775
 msgid "Stop the current connection attempts"
 msgstr "Pysäytä nykyiset yhteysyritykset"
 
-#: src/amuleDlg.cpp:779 src/MuleTrayIcon.cpp:496 src/muuli_wdr.cpp:2569
+#: src/amuleDlg.cpp:780 src/MuleTrayIcon.cpp:496 src/muuli_wdr.cpp:2572
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
-#: src/amuleDlg.cpp:780
+#: src/amuleDlg.cpp:781
 msgid "Disconnect from the currently connected networks"
 msgstr "Katkaise yhteys yhdistettyihin verkkoihin"
 
-#: src/amuleDlg.cpp:785 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2752
-#: src/muuli_wdr.cpp:3140 src/muuli_wdr.cpp:3524
+#: src/amuleDlg.cpp:786 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2755
+#: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3527
 msgid "Connect"
 msgstr "Yhdistä"
 
-#: src/amuleDlg.cpp:786
+#: src/amuleDlg.cpp:787
 msgid "Connect to the currently enabled networks"
 msgstr "Yhdistä sallittuihin verkkoihin"
 
-#: src/amuleDlg.cpp:845
+#: src/amuleDlg.cpp:846
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Ylös: %.1f(%.1f) | Alas: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:847
+#: src/amuleDlg.cpp:848
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Ylös: %.1f | Alas: %.1f"
 
-#: src/amuleDlg.cpp:873
+#: src/amuleDlg.cpp:874
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Yhdistetty)"
 
-#: src/amuleDlg.cpp:875
+#: src/amuleDlg.cpp:876
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ei yhdistetty)"
 
-#: src/amuleDlg.cpp:906
+#: src/amuleDlg.cpp:913
 #, c-format
 msgid "Do you really want to exit %s?"
 msgstr "Haluatko varmasti sulkea %sn?"
 
-#: src/amuleDlg.cpp:907
+#: src/amuleDlg.cpp:914
 msgid "Exit confirmation"
 msgstr "Lopettamisen varmistus"
 
-#: src/amuleDlg.cpp:1166
+#: src/amuleDlg.cpp:1173
 msgid "Launch Command: "
 msgstr "Suorita komento: "
 
-#: src/amuleDlg.cpp:1202 src/muuli_wdr.cpp:2089 src/Preferences.cpp:838
+#: src/amuleDlg.cpp:1209 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
 msgstr "- oletus -"
 
-#: src/amuleDlg.cpp:1225
+#: src/amuleDlg.cpp:1232
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Teemakansiota '%s' ei ole olemassa"
 
-#: src/amuleDlg.cpp:1230
+#: src/amuleDlg.cpp:1237
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "VAROITUS: Ei voida avata teematiedostoa '%s' luettavaksi"
 
-#: src/amuleDlg.cpp:1328 src/amuleDlg.cpp:1462 src/muuli_wdr.cpp:1670
-#: src/muuli_wdr.cpp:3526
+#: src/amuleDlg.cpp:1335 src/amuleDlg.cpp:1469 src/muuli_wdr.cpp:1673
+#: src/muuli_wdr.cpp:3529
 msgid "Networks"
 msgstr "Verkot"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:3526
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3529
 msgid "Networks Window"
 msgstr "Verkkoikkuna"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3527
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3530
 msgid "Searches"
 msgstr "Haut"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:3527
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3530
 msgid "Searches Window"
 msgstr "Hakujen ikkuna"
 
-#: src/amuleDlg.cpp:1330 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:426
-#: src/muuli_wdr.cpp:1785 src/muuli_wdr.cpp:3528 src/Statistics.cpp:752
+#: src/amuleDlg.cpp:1337 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:426
+#: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:3531 src/Statistics.cpp:752
 msgid "Downloads"
 msgstr "Lataukset"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3528
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3531
 #, fuzzy
 msgid "Downloads Window"
 msgstr "Lataa"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3406
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3409
 msgid "Shared files"
 msgstr "Jaetut tiedostot"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:3530
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3533
 msgid "Shared Files Window"
 msgstr "Jaettujen tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2968 src/muuli_wdr.cpp:3479
-#: src/muuli_wdr.cpp:3531
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:2971 src/muuli_wdr.cpp:3482
+#: src/muuli_wdr.cpp:3534
 msgid "Messages"
 msgstr "Viestit"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3531
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3534
 msgid "Messages Window"
 msgstr "Viestien ikkuna"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3532 src/PrefsUnifiedDlg.cpp:179
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3535 src/PrefsUnifiedDlg.cpp:183
 #: src/Statistics.cpp:722 src/Statistics.cpp:1020
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:3532
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3535
 msgid "Statistics Graph Window"
 msgstr "Tilastokuvaajien ikkuna"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3534 src/PrefsUnifiedDlg.cpp:194
+#: src/amuleDlg.cpp:1342 src/muuli_wdr.cpp:3537 src/PrefsUnifiedDlg.cpp:198
 #: src/utils/wxCas/src/wxcasprefs.cpp:50
 msgid "Preferences"
 msgstr "Asetukset"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1342 src/muuli_wdr.cpp:3537
 msgid "Preferences Settings Window"
 msgstr "Asetuksien säätöikkuna"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3535
+#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:3538
 msgid "Import"
 msgstr "Tuonti"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3535
+#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:3538
 msgid "The partfile importer tool"
 msgstr "Osatiedostojen tuontityökalu"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3536
+#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3539
 #: src/utils/aLinkCreator/src/alcframe.cpp:274
 msgid "About"
 msgstr "Tietoja"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3536
+#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3539
 msgid "About/Help"
 msgstr "Tietoja/Ohje"
 
-#: src/amuleDlg.cpp:1473
+#: src/amuleDlg.cpp:1480
 msgid "eD2k network"
 msgstr "eD2k-verkko"
 
-#: src/amuleDlg.cpp:1477
+#: src/amuleDlg.cpp:1484
 msgid "Kad network"
 msgstr "Kad-verkko"
 
-#: src/amuleDlg.cpp:1482
+#: src/amuleDlg.cpp:1489
 msgid "No network"
 msgstr "Ei verkkoa"
 
@@ -756,7 +756,7 @@ msgstr "Kaikki"
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr "Ei voida luoda kansiota '%s' luokalle '%s', pidän kansion '%s'."
 
-#: src/amule-remote-gui.cpp:1315 src/BaseClient.cpp:1785
+#: src/amule-remote-gui.cpp:1343 src/BaseClient.cpp:1785
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2622
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
@@ -767,7 +767,7 @@ msgstr "Ei voida luoda kansiota '%s' luokalle '%s', pidän kansion '%s'."
 #: src/FileDetailDialog.cpp:129 src/GenericClientListCtrl.cpp:1050
 #: src/GenericClientListCtrl.cpp:1061 src/GenericClientListCtrl.cpp:1071
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:916 src/KnownFile.cpp:922
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2521 src/PartFile.cpp:2527
 #: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:967
 msgid "Unknown"
 msgstr "Tuntematon"
@@ -869,7 +869,7 @@ msgstr ""
 msgid "IO error while reading %s file: %s"
 msgstr "IO-virhe luettaessa tiedostoa %s: %s"
 
-#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:162
+#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:164
 #, c-format
 msgid "Error while saving %s file: %s"
 msgstr "Virhe tallennettaessa tiedostoa %s: %s"
@@ -879,7 +879,7 @@ msgid "Enter Captcha"
 msgstr "Syötä kuvavarmennus"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
-#: src/SearchListCtrl.cpp:614 src/TransferWnd.cpp:335
+#: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
 msgid "Category"
 msgstr "Luokittelu"
 
@@ -1109,7 +1109,7 @@ msgid "Username"
 msgstr "Käyttäjänimi"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:159
-#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:86
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:87
 #: src/SharedFilesCtrl.cpp:101
 msgid "File Name"
 msgstr "Tiedoston nimi"
@@ -1157,19 +1157,19 @@ msgstr "Auto [Ko]"
 msgid "Very low"
 msgstr "Erittäin matala"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2390
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2393
 #: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
 #: src/SharedFilesCtrl.cpp:137
 msgid "Low"
 msgstr "Matala"
 
-#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2391
+#: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2394
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Normal"
 msgstr "Normaali"
 
-#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2392
+#: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2395
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "High"
@@ -1201,7 +1201,7 @@ msgid "On Queue"
 msgstr "Jonossa"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3720 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:676 src/PartFile.cpp:3715 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "Lataa"
 
@@ -1261,7 +1261,7 @@ msgstr "Paikallinen Palvelin"
 msgid "Remote Server"
 msgstr "Etäpalvelin"
 
-#: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3281
+#: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3284
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:714
 msgid "Kad"
 msgstr "Kad"
@@ -1311,7 +1311,7 @@ msgstr "VIRHE: IO-virhe!"
 msgid "ERROR: Failed!"
 msgstr "VIRHE: Epäonnistui!"
 
-#: src/DataToText.cpp:151 src/SearchListCtrl.cpp:998
+#: src/DataToText.cpp:151 src/SearchListCtrl.cpp:1011
 msgid "Queued"
 msgstr "Jonossa"
 
@@ -1328,11 +1328,11 @@ msgid "Part"
 msgstr "Osa"
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:93
-#: src/SearchListCtrl.cpp:87 src/SharedFilesCtrl.cpp:102
+#: src/SearchListCtrl.cpp:88 src/SharedFilesCtrl.cpp:102
 msgid "Size"
 msgstr "Koko"
 
-#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:3356
+#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:3359
 msgid "Transferred"
 msgstr "Siirretty"
 
@@ -1345,7 +1345,7 @@ msgid "Progress"
 msgstr "Edistyminen"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:88
+#: src/PartFile.cpp:3761 src/SearchListCtrl.cpp:89
 msgid "Sources"
 msgstr "Lähteet"
 
@@ -1355,8 +1355,8 @@ msgstr "Lähteet"
 msgid "Priority"
 msgstr "Tärkeys"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3768
-#: src/SearchListCtrl.cpp:91
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3763
+#: src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Tila"
 
@@ -1389,7 +1389,7 @@ msgstr ""
 "Palaute tullut: %s (%s)\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:2393
+#: src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:2396
 #: src/SharedFilesCtrl.cpp:142
 msgid "Auto"
 msgstr "Automaattinen"
@@ -1462,11 +1462,11 @@ msgstr "Luokittele"
 msgid "&Open the file"
 msgstr "Avaa tied&osto"
 
-#: src/DownloadListCtrl.cpp:812 src/SharedFilesCtrl.cpp:684
+#: src/DownloadListCtrl.cpp:812 src/SharedFilesCtrl.cpp:682
 msgid "Enter new name for this file:"
 msgstr "Anna uusi nimi tälle tiedostolle:"
 
-#: src/DownloadListCtrl.cpp:813 src/SharedFilesCtrl.cpp:685
+#: src/DownloadListCtrl.cpp:813 src/SharedFilesCtrl.cpp:683
 msgid "File rename"
 msgstr "Tiedoston uudelleennimeäminen"
 
@@ -2026,7 +2026,7 @@ msgstr ""
 msgid "CRITICAL - no client on StartChatSession"
 msgstr "KRIITTINEN - ei asiakasta keskustelun aloituksessa"
 
-#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2830 src/muuli_wdr.cpp:3452
+#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2833 src/muuli_wdr.cpp:3455
 msgid "Friends"
 msgstr "Kaverit"
 
@@ -2216,7 +2216,7 @@ msgstr "GeoIP.dat päivitetty onnistuneesti"
 msgid "Error updating GeoIP.dat"
 msgstr "Virhe päivitettäessä GeoIP.dat-tiedostoa"
 
-#: src/IP2Country.cpp:153 src/IPFilter.cpp:511 src/ServerList.cpp:867
+#: src/IP2Country.cpp:153 src/IPFilter.cpp:511 src/ServerList.cpp:858
 #, fuzzy, c-format
 msgid "Failed to download %s from %s"
 msgstr "GeoIP.dat-tiedoston lataus epäonnistui osoitteesta %s"
@@ -2347,7 +2347,7 @@ msgstr[0] "Vain %d Kad-kontakti saatavilla, tiedostoa nodes.dat ei tallennettu"
 msgstr[1] ""
 "Vain %d Kad-kontaktia saatavilla, tiedostoa nodes.dat ei tallennettu"
 
-#: src/kademlia/routing/RoutingZone.cpp:337
+#: src/kademlia/routing/RoutingZone.cpp:338
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2371,7 +2371,7 @@ msgstr "Jakosuhde"
 msgid "Uploaded"
 msgstr "Lähetetty"
 
-#: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3334
+#: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3337
 msgid "Requested"
 msgstr "Pyydetty"
 
@@ -2407,30 +2407,30 @@ msgstr "Tuntematon versio"
 msgid "Unable to get error description for error %d"
 msgstr "Kansio ladatuille tiedostoille"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3698
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3693
 msgid "Hashing"
 msgstr "Luo tarkistetta"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3704
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3699
 msgid "Completing"
 msgstr "Viimeistelee"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3707
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3702
 msgid "Complete"
 msgstr "Valmis"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:678
-#: src/PartFile.cpp:3710 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3705 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "Tauotettu"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:677
-#: src/PartFile.cpp:3713 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3708 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "Virheellinen"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:675
-#: src/PartFile.cpp:3722 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3717 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "Odottaa"
 
@@ -2487,7 +2487,7 @@ msgid "WARNING: "
 msgstr "VAROITUS: "
 
 #: src/MuleNotebook.cpp:167 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
-#: src/muuli_wdr.cpp:3229 src/muuli_wdr.cpp:3499
+#: src/muuli_wdr.cpp:3232 src/muuli_wdr.cpp:3502
 msgid "Close"
 msgstr "Sulje"
 
@@ -2514,8 +2514,8 @@ msgid "Select All"
 msgstr "Valitse kaikki"
 
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:464 src/MuleTrayIcon.cpp:485
-#: src/muuli_wdr.cpp:1573 src/muuli_wdr.cpp:1582 src/muuli_wdr.cpp:1591
-#: src/muuli_wdr.cpp:1938 src/muuli_wdr.cpp:1947 src/OtherFunctions.cpp:139
+#: src/muuli_wdr.cpp:1576 src/muuli_wdr.cpp:1585 src/muuli_wdr.cpp:1594
+#: src/muuli_wdr.cpp:1941 src/muuli_wdr.cpp:1950 src/OtherFunctions.cpp:139
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
 msgstr "KB/s"
@@ -2753,7 +2753,7 @@ msgstr "Etsi"
 msgid "Name:"
 msgstr "Nimi:"
 
-#: src/muuli_wdr.cpp:191 src/SearchListCtrl.cpp:89 src/SharedFilesCtrl.cpp:103
+#: src/muuli_wdr.cpp:191 src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:103
 msgid "Type"
 msgstr "Tyyppi"
 
@@ -2832,7 +2832,7 @@ msgstr "Tavua"
 msgid "KB"
 msgstr "KB"
 
-#: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1823
+#: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1826
 #: src/OtherFunctions.cpp:110
 msgid "MB"
 msgstr "MB"
@@ -2881,7 +2881,7 @@ msgstr "Hakee enemmän tuloksia eD2k:sta. Ei vielä tuettuna Kadissa."
 msgid "Stop"
 msgstr "Pysäytä"
 
-#: src/muuli_wdr.cpp:371 src/muuli_wdr.cpp:1567 src/SearchListCtrl.cpp:612
+#: src/muuli_wdr.cpp:371 src/muuli_wdr.cpp:1570 src/SearchListCtrl.cpp:625
 msgid "Download"
 msgstr "Lataa"
 
@@ -2902,7 +2902,7 @@ msgstr "Siivoaa valmistuneet lataukset pois näkyvistä"
 msgid "File sources:"
 msgstr "Täysiä lähteitä"
 
-#: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1216 src/PrefsUnifiedDlg.cpp:172
+#: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1216 src/PrefsUnifiedDlg.cpp:176
 msgid "General"
 msgstr "Yleiset"
 
@@ -2923,7 +2923,7 @@ msgstr "Koko nimi :"
 #: src/muuli_wdr.cpp:1347 src/muuli_wdr.cpp:1354 src/muuli_wdr.cpp:1363
 #: src/muuli_wdr.cpp:1370 src/muuli_wdr.cpp:1379 src/muuli_wdr.cpp:1397
 #: src/muuli_wdr.cpp:1406 src/muuli_wdr.cpp:1413 src/muuli_wdr.cpp:1422
-#: src/muuli_wdr.cpp:3337 src/muuli_wdr.cpp:3348 src/muuli_wdr.cpp:3359
+#: src/muuli_wdr.cpp:3340 src/muuli_wdr.cpp:3351 src/muuli_wdr.cpp:3362
 msgid "N/A"
 msgstr "Ei saatavilla"
 
@@ -3101,7 +3101,7 @@ msgstr "Käyttäjänimi :"
 msgid "Userhash :"
 msgstr "Käyttäjätarkiste :"
 
-#: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:2562
+#: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:2565
 #: src/utils/aLinkCreator/src/alcframe.cpp:148
 msgid "Add"
 msgstr "Lisää"
@@ -3110,15 +3110,15 @@ msgstr "Lisää"
 msgid "Download-Speed"
 msgstr "Latausnopeus"
 
-#: src/muuli_wdr.cpp:1064 src/muuli_wdr.cpp:1113 src/muuli_wdr.cpp:2674
+#: src/muuli_wdr.cpp:1064 src/muuli_wdr.cpp:1113 src/muuli_wdr.cpp:2677
 msgid "Current"
 msgstr "Nykyinen"
 
-#: src/muuli_wdr.cpp:1075 src/muuli_wdr.cpp:1124 src/muuli_wdr.cpp:2685
+#: src/muuli_wdr.cpp:1075 src/muuli_wdr.cpp:1124 src/muuli_wdr.cpp:2688
 msgid "Running average"
 msgstr "Yhtäjaksoinen keskiarvo"
 
-#: src/muuli_wdr.cpp:1086 src/muuli_wdr.cpp:1135 src/muuli_wdr.cpp:2696
+#: src/muuli_wdr.cpp:1086 src/muuli_wdr.cpp:1135 src/muuli_wdr.cpp:2699
 msgid "Session average"
 msgstr "Session keskiarvo"
 
@@ -3130,7 +3130,7 @@ msgstr "Lähetysnopeus"
 msgid "Connections"
 msgstr "Yhteydet"
 
-#: src/muuli_wdr.cpp:1162 src/muuli_wdr.cpp:1969
+#: src/muuli_wdr.cpp:1162 src/muuli_wdr.cpp:1972
 msgid "Active downloads"
 msgstr "Aktiiviset lataukset"
 
@@ -3138,7 +3138,7 @@ msgstr "Aktiiviset lataukset"
 msgid "Active connections (1:1)"
 msgstr "Aktiiviset yhteydet (1:1)"
 
-#: src/muuli_wdr.cpp:1184 src/muuli_wdr.cpp:1970
+#: src/muuli_wdr.cpp:1184 src/muuli_wdr.cpp:1973
 msgid "Active uploads"
 msgstr "Aktiiviset lähetykset"
 
@@ -3255,8 +3255,8 @@ msgstr "Tämä on nimi jonka muut käyttäjät näkevät yhdistäessään sinuun
 msgid "Language: "
 msgstr "Kieli:"
 
-#: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1495 src/muuli_wdr.cpp:1499
-#: src/muuli_wdr.cpp:1503
+#: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
+#: src/muuli_wdr.cpp:1506
 msgid "The delay before showing tool-tips."
 msgstr "Viive työkaluvihjeiden näyttämiseen."
 
@@ -3291,37 +3291,41 @@ msgid "Makes aMule prompt before exiting."
 msgstr "Amule kysyy varmistuksen ennen poistumista."
 
 #: src/muuli_wdr.cpp:1484
+msgid "Hide application window when close button is pressed"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
 msgstr "Näytä kuvake palkissa"
 
-#: src/muuli_wdr.cpp:1485
+#: src/muuli_wdr.cpp:1488
 msgid "This Enables/Disables the system tray (or taskbar) icon."
 msgstr ""
 "Tämä sallii tai estää kuvakkeen näyttämisen järjestelmä-/tehtäväpalkissa."
 
-#: src/muuli_wdr.cpp:1488
+#: src/muuli_wdr.cpp:1491
 msgid "Minimize to Tray Icon"
 msgstr "Pienennä palkkikuvakkeeksi"
 
-#: src/muuli_wdr.cpp:1489
+#: src/muuli_wdr.cpp:1492
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr "Tämä päällä aMule pienentyy järjestelmäpalkkiin tehtäväpalkin sijaan."
 
-#: src/muuli_wdr.cpp:1494
+#: src/muuli_wdr.cpp:1497
 msgid "Tooltip delay time: "
 msgstr "Työkaluvihjeiden viive:"
 
-#: src/muuli_wdr.cpp:1502
+#: src/muuli_wdr.cpp:1505
 msgid "seconds"
 msgstr "sekuntia"
 
-#: src/muuli_wdr.cpp:1508
+#: src/muuli_wdr.cpp:1511
 msgid "Browser Selection"
 msgstr "Selaimen valinta"
 
-#: src/muuli_wdr.cpp:1514
+#: src/muuli_wdr.cpp:1517
 msgid ""
 "Enter your browser name here. Leave this field empty to use the system "
 "default browser."
@@ -3329,82 +3333,82 @@ msgstr ""
 "Syötä tähän selaimesi nimi. Jätä tyhjäksi jos haluat käyttää järjestelmän "
 "oletusselainta."
 
-#: src/muuli_wdr.cpp:1517 src/muuli_wdr.cpp:1537 src/muuli_wdr.cpp:1862
-#: src/muuli_wdr.cpp:1873 src/muuli_wdr.cpp:2948
+#: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
+#: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:145
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
 msgid "Browse"
 msgstr "Selaa"
 
-#: src/muuli_wdr.cpp:1522
+#: src/muuli_wdr.cpp:1525
 msgid "Open in new tab if possible"
 msgstr "Avaa uuteen välilehteen mikäli mahdollista"
 
-#: src/muuli_wdr.cpp:1524
+#: src/muuli_wdr.cpp:1527
 msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr ""
 "Avaa verkkosivun uuteen välilehteen uuden ikkunan sijaan kun se on "
 "mahdollista"
 
-#: src/muuli_wdr.cpp:1529
+#: src/muuli_wdr.cpp:1532
 msgid "Video Player"
 msgstr "Videotoistin"
 
-#: src/muuli_wdr.cpp:1561
+#: src/muuli_wdr.cpp:1564
 msgid "Bandwidth limits"
 msgstr "Kaistankäytön rajoitukset"
 
-#: src/muuli_wdr.cpp:1576
+#: src/muuli_wdr.cpp:1579
 msgid "Upload"
 msgstr "Lähetys"
 
-#: src/muuli_wdr.cpp:1585
+#: src/muuli_wdr.cpp:1588
 msgid "Slot Allocation"
 msgstr "Paikkavaraus"
 
-#: src/muuli_wdr.cpp:1598
+#: src/muuli_wdr.cpp:1601
 msgid "Ports"
 msgstr "Portit"
 
-#: src/muuli_wdr.cpp:1604
+#: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
 msgstr "Vakio TCP-portti"
 
-#: src/muuli_wdr.cpp:1608
+#: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
 msgstr "Tämä on vakio eD2k-portti eikä sitä voi kytkeä pois päältä."
 
-#: src/muuli_wdr.cpp:1611
+#: src/muuli_wdr.cpp:1614
 msgid "UDP port for server requests (TCP+3):"
 msgstr "UDP-portti palvelinpyyntöihin (TCP+3):"
 
-#: src/muuli_wdr.cpp:1614
+#: src/muuli_wdr.cpp:1617
 msgid "4665"
 msgstr "4665"
 
-#: src/muuli_wdr.cpp:1617
+#: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
 msgstr "Laajennettu UDP-portti (Kad / haku kaikkialta)."
 
-#: src/muuli_wdr.cpp:1621
+#: src/muuli_wdr.cpp:1624
 msgid "This UDP port is used for extended eD2k requests and Kad network"
 msgstr ""
 "Tätä UDP-porttia käytetään laajennettuihin eD2k-hakuihin sekä Kad-verkossa"
 
-#: src/muuli_wdr.cpp:1624
+#: src/muuli_wdr.cpp:1627
 msgid "Enable UPnP for router port forwarding"
 msgstr "Käytä UPnP:tä reitittimen portinohjauksessa"
 
-#: src/muuli_wdr.cpp:1629
+#: src/muuli_wdr.cpp:1632
 msgid "UPnP TCP Port (Optional):"
 msgstr "UPnP:n TCP-portti (Valinnainen):"
 
-#: src/muuli_wdr.cpp:1642
+#: src/muuli_wdr.cpp:1645
 msgid "Bind local address to IP (empty for any):"
 msgstr "Sido paikallinen osoite IP:hen (tyhjä sallii mihin tahansa):"
 
-#: src/muuli_wdr.cpp:1646
+#: src/muuli_wdr.cpp:1649
 msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
@@ -3412,115 +3416,115 @@ msgstr ""
 "Vain edistyneille käyttäjille: mikäli sinulla on useampia verkkoliitäntöjä, "
 "syötä sen liitännän osoite johon haluat aMulen sidottavan."
 
-#: src/muuli_wdr.cpp:1654
+#: src/muuli_wdr.cpp:1657
 msgid "Max sources per downloading file:"
 msgstr "Lähteitä enintään tiedostoa kohden:"
 
-#: src/muuli_wdr.cpp:1660
+#: src/muuli_wdr.cpp:1663
 msgid "Max simultaneous connections:"
 msgstr "Yhtäaikaisten yhteyksien enimmäismäärä:"
 
-#: src/muuli_wdr.cpp:1673
+#: src/muuli_wdr.cpp:1676
 msgid "Kademlia"
 msgstr "Kademlia"
 
-#: src/muuli_wdr.cpp:1677 src/muuli_wdr.cpp:3276
+#: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3279
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/muuli_wdr.cpp:1686
+#: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
 msgstr "Yhdistä automaattisesti käynnistettäessä"
 
-#: src/muuli_wdr.cpp:1689
+#: src/muuli_wdr.cpp:1692
 msgid "Reconnect on loss"
 msgstr "Yhdistä uudelleen yhteyden katketessa"
 
-#: src/muuli_wdr.cpp:1713
+#: src/muuli_wdr.cpp:1716
 msgid "Remove dead server after"
 msgstr "Poista toimimattomat palvelimet"
 
-#: src/muuli_wdr.cpp:1719
+#: src/muuli_wdr.cpp:1722
 msgid "retries"
 msgstr "yrityksen jälkeen"
 
-#: src/muuli_wdr.cpp:1726
+#: src/muuli_wdr.cpp:1729
 msgid "Auto-update server list at startup"
 msgstr "Päivitä palvelinlista käynnistettäessä"
 
-#: src/muuli_wdr.cpp:1729
+#: src/muuli_wdr.cpp:1732
 msgid "List"
 msgstr "Lista"
 
-#: src/muuli_wdr.cpp:1734
+#: src/muuli_wdr.cpp:1737
 msgid "Update server list when connecting to a server"
 msgstr "Päivitä palvelinlista yhdistettäessä palvelimelle"
 
-#: src/muuli_wdr.cpp:1737
+#: src/muuli_wdr.cpp:1740
 msgid "Update server list when a client connects"
 msgstr "Päivitä palvelinlista asiakkaan yhdistäessä"
 
-#: src/muuli_wdr.cpp:1740
+#: src/muuli_wdr.cpp:1743
 msgid "Use priority system"
 msgstr "Käytä tärkeysjärjestystä"
 
-#: src/muuli_wdr.cpp:1744
+#: src/muuli_wdr.cpp:1747
 msgid "Use smart LowID check on connect"
 msgstr "Käytä älykästä LowID-tarkistusta yhdistettäessä"
 
-#: src/muuli_wdr.cpp:1748
+#: src/muuli_wdr.cpp:1751
 msgid "Safe connect"
 msgstr "Turvallinen yhdistäminen"
 
-#: src/muuli_wdr.cpp:1752
+#: src/muuli_wdr.cpp:1755
 msgid "Autoconnect to servers in static list only"
 msgstr "Yhdistä automaattisesti vain pysyville palvelimille"
 
-#: src/muuli_wdr.cpp:1755
+#: src/muuli_wdr.cpp:1758
 msgid "Set manually added servers to High Priority"
 msgstr "Aseta käsin syötetyt palvelimet korkealle tärkeydelle"
 
-#: src/muuli_wdr.cpp:1773
+#: src/muuli_wdr.cpp:1776
 msgid "Intelligent Corruption Handling (I.C.H.)"
 msgstr "Älykäs turmeltumien käsittely (I.C.H.)"
 
-#: src/muuli_wdr.cpp:1776
+#: src/muuli_wdr.cpp:1779
 msgid "Enable"
 msgstr "Käytä"
 
-#: src/muuli_wdr.cpp:1780
+#: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
 msgstr "Kehittynyt I.C.H. luottaa kaikkiin tarkisteisiin (ei suositella)"
 
-#: src/muuli_wdr.cpp:1788
+#: src/muuli_wdr.cpp:1791
 msgid "Add files to download in pause mode"
 msgstr "Lisää tiedostot lataukseen tauotettuna"
 
-#: src/muuli_wdr.cpp:1791
+#: src/muuli_wdr.cpp:1794
 msgid "Add files to download with auto priority"
 msgstr "Lisää tiedostot lataukseen tärkeys automaattisella"
 
-#: src/muuli_wdr.cpp:1794
+#: src/muuli_wdr.cpp:1797
 msgid "Try to download first and last chunks first"
 msgstr "Yritä ladata ensimmäiset ja viimeiset palat ensin"
 
-#: src/muuli_wdr.cpp:1798
+#: src/muuli_wdr.cpp:1801
 msgid "Start next paused file when a file completes"
 msgstr "Käynnistä seuraava tauotetty tiedosto kun tiedosto valmistuu"
 
-#: src/muuli_wdr.cpp:1802
+#: src/muuli_wdr.cpp:1805
 msgid "From the same category"
 msgstr "Samasta luokasta"
 
-#: src/muuli_wdr.cpp:1805
+#: src/muuli_wdr.cpp:1808
 msgid "In alphabetic order"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1808
+#: src/muuli_wdr.cpp:1811
 msgid "Preallocate disk space for new files"
 msgstr "Esivaraa levytila uusille tiedostoille"
 
-#: src/muuli_wdr.cpp:1809
+#: src/muuli_wdr.cpp:1812
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
@@ -3528,249 +3532,249 @@ msgstr ""
 "Uusia tiedostoja lisätessä varaa levytilaa koko tiedostolle, vähentää "
 "pirstaloitumista"
 
-#: src/muuli_wdr.cpp:1815
+#: src/muuli_wdr.cpp:1818
 msgid "Stop downloads when free disk space reaches "
 msgstr "Pysäytä lataukset kun tyhjän levytilan määrä saavuttaa "
 
-#: src/muuli_wdr.cpp:1816
+#: src/muuli_wdr.cpp:1819
 msgid "Select this if you want aMule to check your disk space"
 msgstr "Valitse tämä mikäli haluat aMulen tarkistavan vapaan levytilan määrän"
 
-#: src/muuli_wdr.cpp:1820
+#: src/muuli_wdr.cpp:1823
 msgid "Enter here the min disk space desired."
 msgstr "Syötä tähän levytila jonka haluat jättää vapaaksi."
 
-#: src/muuli_wdr.cpp:1828
+#: src/muuli_wdr.cpp:1831
 msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "Tallenna 10 lähdettä harvinaisille tiedostoille (< 20 lähdettä)"
 
-#: src/muuli_wdr.cpp:1834 src/Statistics.cpp:731
+#: src/muuli_wdr.cpp:1837 src/Statistics.cpp:731
 msgid "Uploads"
 msgstr "Lähetykset"
 
-#: src/muuli_wdr.cpp:1837
+#: src/muuli_wdr.cpp:1840
 msgid "Add new shared files with auto priority"
 msgstr "Lisää uudet jaetut tiedostot tärkeys automaattisella"
 
-#: src/muuli_wdr.cpp:1856
+#: src/muuli_wdr.cpp:1859
 msgid "Destination folder for downloads"
 msgstr "Kansio ladatuille tiedostoille"
 
-#: src/muuli_wdr.cpp:1867
+#: src/muuli_wdr.cpp:1870
 msgid "Folder for temporary download files"
 msgstr "Kansio latauksen väliaikaisille tiedostoille"
 
-#: src/muuli_wdr.cpp:1878
+#: src/muuli_wdr.cpp:1881
 msgid "Shared folders"
 msgstr "Jaetut kansiot"
 
-#: src/muuli_wdr.cpp:1881
+#: src/muuli_wdr.cpp:1884
 msgid "(Right click on folder icon for recursive share)"
 msgstr ""
 "(Klikkaa oikealla painikkeella kansion kuvaketta jakaaksesi rekursiivisesti)"
 
-#: src/muuli_wdr.cpp:1888
+#: src/muuli_wdr.cpp:1891
 msgid "Share hidden files"
 msgstr "Jaa piilotiedostot"
 
-#: src/muuli_wdr.cpp:1908
+#: src/muuli_wdr.cpp:1911
 msgid "Graphs"
 msgstr "Kuvaajat"
 
-#: src/muuli_wdr.cpp:1911 src/muuli_wdr.cpp:1989
+#: src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:1992
 msgid "Update delay : 5 secs"
 msgstr "Päivitysväli : 5 sekuntia"
 
-#: src/muuli_wdr.cpp:1917
+#: src/muuli_wdr.cpp:1920
 msgid "Time for average graph: 100 mins"
 msgstr "Keskimääräiskuvaajan aika: 100 minuuttia"
 
-#: src/muuli_wdr.cpp:1923
+#: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
 msgstr "Yhteyskuvaajan Skaala: 100 "
 
-#: src/muuli_wdr.cpp:1932
+#: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
 msgstr "Latauskuvaajan skaala:"
 
-#: src/muuli_wdr.cpp:1941
+#: src/muuli_wdr.cpp:1944
 msgid "Upload graph scale:"
 msgstr "Lähetyskuvaajan skaala:"
 
-#: src/muuli_wdr.cpp:1955
+#: src/muuli_wdr.cpp:1958
 msgid "Colours: "
 msgstr "Värit:"
 
-#: src/muuli_wdr.cpp:1960
+#: src/muuli_wdr.cpp:1963
 msgid "Background"
 msgstr "Taustaväri"
 
-#: src/muuli_wdr.cpp:1961
+#: src/muuli_wdr.cpp:1964
 msgid "Grid"
 msgstr "Ruudukko"
 
-#: src/muuli_wdr.cpp:1962
+#: src/muuli_wdr.cpp:1965
 msgid "Download current"
 msgstr "Hetkittäinen lataus"
 
-#: src/muuli_wdr.cpp:1963
+#: src/muuli_wdr.cpp:1966
 msgid "Download running average"
 msgstr "Latauksen yhtäjaksoinen keskiarvo"
 
-#: src/muuli_wdr.cpp:1964
+#: src/muuli_wdr.cpp:1967
 msgid "Download session average"
 msgstr "Latauksen keskiarvo sessiossa"
 
-#: src/muuli_wdr.cpp:1965
+#: src/muuli_wdr.cpp:1968
 msgid "Upload current"
 msgstr "Hetkittäinen lähetys"
 
-#: src/muuli_wdr.cpp:1966
+#: src/muuli_wdr.cpp:1969
 msgid "Upload running average"
 msgstr "Lähetyksen yhtäjaksoinen keskiarvo"
 
-#: src/muuli_wdr.cpp:1967
+#: src/muuli_wdr.cpp:1970
 msgid "Upload session average"
 msgstr "Lähetyksen keskiarvo sessiossa"
 
-#: src/muuli_wdr.cpp:1968
+#: src/muuli_wdr.cpp:1971
 msgid "Active connections"
 msgstr "Aktiiviset yhteydet"
 
-#: src/muuli_wdr.cpp:1971
+#: src/muuli_wdr.cpp:1974
 msgid "Systray Icon Speedbar"
 msgstr "Järjestelmäpalkin nopeusnäyttö"
 
-#: src/muuli_wdr.cpp:1972
+#: src/muuli_wdr.cpp:1975
 msgid "Kad-nodes current"
 msgstr "Kad-yhteyksiä tällä hetkellä"
 
-#: src/muuli_wdr.cpp:1973
+#: src/muuli_wdr.cpp:1976
 msgid "Kad-nodes running"
 msgstr "Kad-yhteyksiä aktiivisena"
 
-#: src/muuli_wdr.cpp:1974
+#: src/muuli_wdr.cpp:1977
 msgid "Kad-nodes session"
 msgstr "Kad-yhteyksiä sessiossa"
 
-#: src/muuli_wdr.cpp:1979 src/muuli_wdr.cpp:2414
+#: src/muuli_wdr.cpp:1982 src/muuli_wdr.cpp:2417
 msgid "Select"
 msgstr "Valitse"
 
-#: src/muuli_wdr.cpp:1986
+#: src/muuli_wdr.cpp:1989
 msgid "Tree"
 msgstr "Puu"
 
-#: src/muuli_wdr.cpp:1997
+#: src/muuli_wdr.cpp:2000
 msgid "Number of Client Versions shown (0=unlimited)"
 msgstr "Näytettävien asiakasversioiden määrä (0=rajoittamattomasti)"
 
-#: src/muuli_wdr.cpp:2025
+#: src/muuli_wdr.cpp:2028
 msgid "!!! WARNING !!!"
 msgstr "!!! VAROITUS !!!"
 
-#: src/muuli_wdr.cpp:2039
+#: src/muuli_wdr.cpp:2042
 msgid "Max new connections / 5 secs"
 msgstr "Enimmäismäärä uusia yhteyksiä / 5 s"
 
-#: src/muuli_wdr.cpp:2045
+#: src/muuli_wdr.cpp:2048
 msgid "File Buffer Size: 240000 bytes"
 msgstr "Tiedostopuskurin koko: 240000 tavua"
 
-#: src/muuli_wdr.cpp:2051
+#: src/muuli_wdr.cpp:2054
 msgid "Upload Queue Size: 5000 clients"
 msgstr "Lähetysjonon koko: 5000 asiakasta"
 
-#: src/muuli_wdr.cpp:2057
+#: src/muuli_wdr.cpp:2060
 msgid "Server connection refresh interval: Disable"
 msgstr "Palvelinyhteyden päivitysväli: Poissa käytöstä"
 
-#: src/muuli_wdr.cpp:2063
+#: src/muuli_wdr.cpp:2066
 msgid "Disable computer's timed standby mode"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2084
+#: src/muuli_wdr.cpp:2087
 msgid "Skin to use: "
 msgstr "Käytettävä teema:"
 
-#: src/muuli_wdr.cpp:2096
+#: src/muuli_wdr.cpp:2099
 msgid "Show \"Fast eD2k Links Handler\" in every window."
 msgstr "Näytä \"Nopea eD2k-linkkien käsittelijä\" jokaisessa ikkunassa."
 
-#: src/muuli_wdr.cpp:2100
+#: src/muuli_wdr.cpp:2103
 msgid "Show extended info on categories tabs"
 msgstr "Näytä laajennetut tiedot luokitteluvälilehdillä"
 
-#: src/muuli_wdr.cpp:2104
+#: src/muuli_wdr.cpp:2107
 #, fuzzy
 msgid "Show application version on title"
 msgstr "Näytä siirtonopeudet otsikossa"
 
-#: src/muuli_wdr.cpp:2107
+#: src/muuli_wdr.cpp:2110
 msgid "Show transfer rates on title"
 msgstr "Näytä siirtonopeudet otsikossa"
 
-#: src/muuli_wdr.cpp:2110
+#: src/muuli_wdr.cpp:2113
 msgid "Before application name"
 msgstr "Ennen sovelluksen nimeä"
 
-#: src/muuli_wdr.cpp:2113
+#: src/muuli_wdr.cpp:2116
 msgid "After application name"
 msgstr "Sovelluksen nimen perässä"
 
-#: src/muuli_wdr.cpp:2117
+#: src/muuli_wdr.cpp:2120
 msgid "Show overhead bandwidth"
 msgstr "Näytä otsikkotietoihin kuluva kaista"
 
-#: src/muuli_wdr.cpp:2121
+#: src/muuli_wdr.cpp:2124
 msgid "Vertical toolbar orientation"
 msgstr "Pystysuuntainen työkalupalkki"
 
-#: src/muuli_wdr.cpp:2124
+#: src/muuli_wdr.cpp:2127
 msgid "Show country flags for clients"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2127
+#: src/muuli_wdr.cpp:2130
 msgid "Download Queue Files"
 msgstr "Latausjonon tiedostot"
 
-#: src/muuli_wdr.cpp:2130
+#: src/muuli_wdr.cpp:2133
 msgid "Show progress percentage"
 msgstr "Näytä edistyminen prosentteina"
 
-#: src/muuli_wdr.cpp:2137
+#: src/muuli_wdr.cpp:2140
 msgid "Show progress bar"
 msgstr "Näytä edistymispalkki"
 
-#: src/muuli_wdr.cpp:2141
+#: src/muuli_wdr.cpp:2144
 msgid "Flat"
 msgstr "Tasainen"
 
-#: src/muuli_wdr.cpp:2147
+#: src/muuli_wdr.cpp:2150
 msgid "Round"
 msgstr "Pyöreä"
 
-#: src/muuli_wdr.cpp:2152
+#: src/muuli_wdr.cpp:2155
 msgid "Auto-sort files (high CPU)"
 msgstr "Järjestä tiedostot automaattisesti (iso suorittimen käyttö)"
 
-#: src/muuli_wdr.cpp:2154
+#: src/muuli_wdr.cpp:2157
 msgid "aMule will sort the columns in your download list automatically"
 msgstr "aMule järjestää sarakkeet latauslistassasi automaattisesti"
 
-#: src/muuli_wdr.cpp:2173
+#: src/muuli_wdr.cpp:2176
 msgid "External Connection Parameters"
 msgstr "Etäyhteyksien asetukset"
 
-#: src/muuli_wdr.cpp:2176
+#: src/muuli_wdr.cpp:2179
 msgid "Accept external connections"
 msgstr "Hyväksy etäyhteydet"
 
-#: src/muuli_wdr.cpp:2183
+#: src/muuli_wdr.cpp:2186
 msgid "IP of the listening interface:"
 msgstr "Kuunneltavan verkkoliitännän IP:"
 
-#: src/muuli_wdr.cpp:2187
+#: src/muuli_wdr.cpp:2190
 msgid ""
 "Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
 "An empty field or 0.0.0.0 will mean any interface."
@@ -3778,116 +3782,116 @@ msgstr ""
 "Syötä tähän sen verkkoliitännän ip jota kuunnellaan etäyhteyksiä varten. "
 "Tyhjä tai 0.0.0.0 tarkoittaa kaikkia verkkoliitäntöjä."
 
-#: src/muuli_wdr.cpp:2195 src/muuli_wdr.cpp:2256
+#: src/muuli_wdr.cpp:2198 src/muuli_wdr.cpp:2259
 msgid "TCP port:"
 msgstr "TCP-portti:"
 
-#: src/muuli_wdr.cpp:2203
+#: src/muuli_wdr.cpp:2206
 msgid "Enable UPnP port forwarding on the EC port"
 msgstr "Kytke päälle UPnP-portinohjaus etäyhteysportissa"
 
-#: src/muuli_wdr.cpp:2208 src/muuli_wdr.cpp:3124
+#: src/muuli_wdr.cpp:2211 src/muuli_wdr.cpp:3127
 #: src/utils/wxCas/src/wxcasprefs.cpp:210
 msgid "Password"
 msgstr "Salasana"
 
-#: src/muuli_wdr.cpp:2218
+#: src/muuli_wdr.cpp:2221
 msgid "Web server parameters"
 msgstr "Web-palvelimen asetukset"
 
-#: src/muuli_wdr.cpp:2221
+#: src/muuli_wdr.cpp:2224
 msgid "Run webserver on startup"
 msgstr "Käynnistä web-palvelin käynnistettäessä"
 
-#: src/muuli_wdr.cpp:2227
+#: src/muuli_wdr.cpp:2230
 msgid "Web template"
 msgstr "Web-sapluuna"
 
-#: src/muuli_wdr.cpp:2234
+#: src/muuli_wdr.cpp:2237
 msgid "Full rights password"
 msgstr "Täysien oikeuksien salasana"
 
-#: src/muuli_wdr.cpp:2240
+#: src/muuli_wdr.cpp:2243
 msgid "Enable Low rights User"
 msgstr "Salli rajoitettujen oikeuksien käyttäjä"
 
-#: src/muuli_wdr.cpp:2246
+#: src/muuli_wdr.cpp:2249
 msgid "Low rights password"
 msgstr "Rajoitettujen oikeuksien salasana"
 
-#: src/muuli_wdr.cpp:2264
+#: src/muuli_wdr.cpp:2267
 msgid "Enable UPnP port forwarding of the web server port"
 msgstr "Käytä UPnP-portinohjausta web-palvelimen portissa"
 
-#: src/muuli_wdr.cpp:2269
+#: src/muuli_wdr.cpp:2272
 msgid "Web server UPnP TCP port (Optional)"
 msgstr "Web-palvelimen UPnP TCP-portti (Valinnainen)"
 
-#: src/muuli_wdr.cpp:2279
+#: src/muuli_wdr.cpp:2282
 msgid "Page Refresh Time (in secs)"
 msgstr "Sivun päivitysväli (sekunneissa)"
 
-#: src/muuli_wdr.cpp:2287
+#: src/muuli_wdr.cpp:2290
 msgid "Enable Gzip compression"
 msgstr "Salli gzip-pakkaus"
 
-#: src/muuli_wdr.cpp:2321 src/muuli_wdr.cpp:2424 src/ServerWnd.cpp:215
+#: src/muuli_wdr.cpp:2324 src/muuli_wdr.cpp:2427 src/ServerWnd.cpp:215
 #: src/ServerWnd.cpp:220
 msgid "OK"
 msgstr "OK"
 
-#: src/muuli_wdr.cpp:2323
+#: src/muuli_wdr.cpp:2326
 msgid "Click here to apply any changes made to the preferences."
 msgstr "Napsauta tästä saattaaksesi voimaan asetuksiin tehdyt muutokset."
 
-#: src/muuli_wdr.cpp:2327
+#: src/muuli_wdr.cpp:2330
 msgid "Reset any changes made to the preferences."
 msgstr "Nollaa asetuksiin tekemäsi muutokset."
 
-#: src/muuli_wdr.cpp:2351
+#: src/muuli_wdr.cpp:2354
 msgid "Title :"
 msgstr "Otsikko :"
 
-#: src/muuli_wdr.cpp:2361
+#: src/muuli_wdr.cpp:2364
 msgid "Comment :"
 msgstr "Kommentti :"
 
-#: src/muuli_wdr.cpp:2371
+#: src/muuli_wdr.cpp:2374
 msgid "Incoming Dir :"
 msgstr "Saapuvien kansio :"
 
-#: src/muuli_wdr.cpp:2384
+#: src/muuli_wdr.cpp:2387
 msgid "Change priority for new assigned files :"
 msgstr "Vaihda tärkeyttä uusille sijoitetuille tiedostoille :"
 
-#: src/muuli_wdr.cpp:2389
+#: src/muuli_wdr.cpp:2392
 #, fuzzy
 msgid "Don't change"
 msgstr "Älä vaihda"
 
-#: src/muuli_wdr.cpp:2403
+#: src/muuli_wdr.cpp:2406
 msgid "Select color for this Category (currently selected) :"
 msgstr "Valitse väri tälle luokalle (valittuna) :"
 
-#: src/muuli_wdr.cpp:2477 src/muuli_wdr.cpp:2502
+#: src/muuli_wdr.cpp:2480 src/muuli_wdr.cpp:2505
 #: src/utils/wxCas/src/wxcasframe.cpp:138
 #: src/utils/wxCas/src/wxcasframe.cpp:142
 msgid "Reset"
 msgstr "Tyhjennä"
 
-#: src/muuli_wdr.cpp:2478 src/muuli_wdr.cpp:2503
+#: src/muuli_wdr.cpp:2481 src/muuli_wdr.cpp:2506
 msgid "Click this button to reset the log."
 msgstr "Napsauta tätä painiketta nollataksesi lokin."
 
-#: src/muuli_wdr.cpp:2525
+#: src/muuli_wdr.cpp:2528
 msgid "Click on this button to update the servers list from URL ..."
 msgstr "Napsauta tätä nappia päivittääksesi palvelinlistan osoitteesta ..."
 
-#: src/muuli_wdr.cpp:2529
+#: src/muuli_wdr.cpp:2532
 msgid "Server list"
 msgstr "Palvelinlista"
 
-#: src/muuli_wdr.cpp:2534
+#: src/muuli_wdr.cpp:2537
 msgid ""
 "Enter the url to a server.met file here and press the button to the left to "
 "update the list of known servers."
@@ -3895,56 +3899,56 @@ msgstr ""
 "Syötä tähän server.met-tiedostoon osoittava url ja paina nappia vasemmalla "
 "päivittääksesi tunnettujen palvelimien listan."
 
-#: src/muuli_wdr.cpp:2541
+#: src/muuli_wdr.cpp:2544
 msgid "Add server manually: Name"
 msgstr "Palvelimen lisäys käsin: Nimi"
 
-#: src/muuli_wdr.cpp:2545
+#: src/muuli_wdr.cpp:2548
 msgid "Enter the name of the new server here"
 msgstr "Syötä uuden palvelimen nimi tähän"
 
-#: src/muuli_wdr.cpp:2548 src/ServerWnd.cpp:167
+#: src/muuli_wdr.cpp:2551 src/ServerWnd.cpp:167
 msgid "IP:Port"
 msgstr "IP:Portti"
 
-#: src/muuli_wdr.cpp:2552
+#: src/muuli_wdr.cpp:2555
 msgid "Enter the IP of the server here, using the x.x.x.x format."
 msgstr "Syötä uuden palvelimen IP tähän, muodossa x.x.x.x."
 
-#: src/muuli_wdr.cpp:2559
+#: src/muuli_wdr.cpp:2562
 msgid "Enter the port of the server here."
 msgstr "Syötä palvelimen portti tähän."
 
-#: src/muuli_wdr.cpp:2563
+#: src/muuli_wdr.cpp:2566
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "Lisää palvelin käsin (täytä vasemmalla olevat kentät) ..."
 
-#: src/muuli_wdr.cpp:2601
+#: src/muuli_wdr.cpp:2604
 msgid "aMule Log"
 msgstr "aMule loki"
 
-#: src/muuli_wdr.cpp:2605
+#: src/muuli_wdr.cpp:2608
 msgid "Server Info"
 msgstr "Palvelimen tiedot"
 
-#: src/muuli_wdr.cpp:2609
+#: src/muuli_wdr.cpp:2612
 msgid "ED2K Info"
 msgstr "ED2K Info"
 
-#: src/muuli_wdr.cpp:2613
+#: src/muuli_wdr.cpp:2616
 msgid "Kad Info"
 msgstr "Kad Info"
 
-#: src/muuli_wdr.cpp:2642
+#: src/muuli_wdr.cpp:2645
 msgid "Click on this button to update the nodes list from URL ..."
 msgstr ""
 "Napsauta tätä nappia päivittääksesi yhteyspisteiden listan osoitteesta ..."
 
-#: src/muuli_wdr.cpp:2646
+#: src/muuli_wdr.cpp:2649
 msgid "Nodes (0)"
 msgstr "Yhteyspisteitä (0)"
 
-#: src/muuli_wdr.cpp:2651
+#: src/muuli_wdr.cpp:2654
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
@@ -3952,57 +3956,57 @@ msgstr ""
 "Syötä tähän nodes.dat-tiedostoon osoittava url ja paina nappia vasemmalla "
 "päivittääksesi tunnettujen yhteyspisteiden listan."
 
-#: src/muuli_wdr.cpp:2656
+#: src/muuli_wdr.cpp:2659
 msgid "Nodes stats"
 msgstr "Yhteyspisteiden tilastot"
 
-#: src/muuli_wdr.cpp:2707
+#: src/muuli_wdr.cpp:2710
 msgid "Bootstrap"
 msgstr "Yhdistämisapu"
 
-#: src/muuli_wdr.cpp:2710
+#: src/muuli_wdr.cpp:2713
 msgid "New node"
 msgstr "Uusi yhteyspiste"
 
-#: src/muuli_wdr.cpp:2715
+#: src/muuli_wdr.cpp:2718
 msgid "IP:"
 msgstr "IP:"
 
-#: src/muuli_wdr.cpp:2744
+#: src/muuli_wdr.cpp:2747
 msgid "Port:"
 msgstr "Portti:"
 
-#: src/muuli_wdr.cpp:2760
+#: src/muuli_wdr.cpp:2763
 #, fuzzy
 msgid "Bootstrap from known clients"
 msgstr ""
 "Käytä tunnettuja \n"
 "asiakkaita yhdistämisapuna"
 
-#: src/muuli_wdr.cpp:2765
+#: src/muuli_wdr.cpp:2768
 msgid "Disconnect Kad"
 msgstr "Katkaise Kad-yhteys"
 
-#: src/muuli_wdr.cpp:2803
+#: src/muuli_wdr.cpp:2806
 msgid "Use Secure User Identification"
 msgstr "Käytä turvattua käyttäjän tunnistusta"
 
-#: src/muuli_wdr.cpp:2805
+#: src/muuli_wdr.cpp:2808
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
 msgstr ""
 "Tunnistuksen käyttö on suositeltavaa. Muuten et hyödy pistejärjestelmästä."
 
-#: src/muuli_wdr.cpp:2808
+#: src/muuli_wdr.cpp:2811
 msgid "Protocol Obfuscation"
 msgstr "Protokollan kätkeminen"
 
-#: src/muuli_wdr.cpp:2811
+#: src/muuli_wdr.cpp:2814
 msgid "Support Protocol Obfuscation"
 msgstr "Tuki protokollan kätkemiselle"
 
-#: src/muuli_wdr.cpp:2813
+#: src/muuli_wdr.cpp:2816
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
@@ -4010,11 +4014,11 @@ msgstr ""
 "Tämä valinta sallii aMulen ottaa vastaan kätketyn protokollan yhteyksiä "
 "muilta asiakkailta."
 
-#: src/muuli_wdr.cpp:2816
+#: src/muuli_wdr.cpp:2819
 msgid "Use obfuscation for outgoing connections"
 msgstr "Käytä kätkemistä lähtevissä yhteyksissä"
 
-#: src/muuli_wdr.cpp:2818
+#: src/muuli_wdr.cpp:2821
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
@@ -4022,11 +4026,11 @@ msgstr ""
 "Tämä valittuna aMule käyttää protokollan kätkemistä ottaessaan yhteyttä "
 "muihin asiakkaisiin/palvelimiin."
 
-#: src/muuli_wdr.cpp:2821
+#: src/muuli_wdr.cpp:2824
 msgid "Accept only obfuscated connections"
 msgstr "Vastaanota vain kätkettyjä yhteyksiä"
 
-#: src/muuli_wdr.cpp:2822
+#: src/muuli_wdr.cpp:2825
 msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
@@ -4034,83 +4038,83 @@ msgstr ""
 "Tämä valittuna aMule hyväksyy vain kätketyt yhteydet. Lähteitä on vähemmän "
 "saatavilla mutta kaikki liikenteesi on kätketyllä protokollalla."
 
-#: src/muuli_wdr.cpp:2829
+#: src/muuli_wdr.cpp:2832
 msgid "Everybody"
 msgstr "Kaikki"
 
-#: src/muuli_wdr.cpp:2831
+#: src/muuli_wdr.cpp:2834
 msgid "No one"
 msgstr "Ei kukaan"
 
-#: src/muuli_wdr.cpp:2833
+#: src/muuli_wdr.cpp:2836
 msgid "Who can see my shared files:"
 msgstr "Ketkä voivat nähdä jaetut tiedostoni:"
 
-#: src/muuli_wdr.cpp:2834
+#: src/muuli_wdr.cpp:2837
 msgid "Select who can request to view a list of your shared files."
 msgstr ""
 "Valitse ketkä voivat pyytää nähtäville sinun jaettujen tiedostojen listaasi."
 
-#: src/muuli_wdr.cpp:2837
+#: src/muuli_wdr.cpp:2840
 msgid "IP-Filtering"
 msgstr "IP-suodatus"
 
-#: src/muuli_wdr.cpp:2844
+#: src/muuli_wdr.cpp:2847
 msgid "Filter clients"
 msgstr "Suodata asiakkaat"
 
-#: src/muuli_wdr.cpp:2846
+#: src/muuli_wdr.cpp:2849
 msgid ""
 "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Salli asiakas-IP:den suodatus kuten määritelty tiedostossa ~/.aMule/ipfilter."
 "dat."
 
-#: src/muuli_wdr.cpp:2849
+#: src/muuli_wdr.cpp:2852
 msgid "Filter servers"
 msgstr "Suodata palvelimet"
 
-#: src/muuli_wdr.cpp:2851
+#: src/muuli_wdr.cpp:2854
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Salli palvelin-IP:den suodatus kuten määritelty tiedostossa ~/.aMule/"
 "ipfilter.dat."
 
-#: src/muuli_wdr.cpp:2858
+#: src/muuli_wdr.cpp:2861
 msgid "Reload List"
 msgstr "Uudelleenlataa lista"
 
-#: src/muuli_wdr.cpp:2859
+#: src/muuli_wdr.cpp:2862
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
 msgstr ""
 "Uudelleenlataa suodatettavien IP:den lista tiedostosta ~/.aMule/ipfilter.dat."
 
-#: src/muuli_wdr.cpp:2867
+#: src/muuli_wdr.cpp:2870
 msgid "URL:"
 msgstr "URL:"
 
-#: src/muuli_wdr.cpp:2873
+#: src/muuli_wdr.cpp:2876
 msgid "Update now"
 msgstr "Päivitä nyt"
 
-#: src/muuli_wdr.cpp:2878
+#: src/muuli_wdr.cpp:2881
 msgid "Auto-update ipfilter at startup"
 msgstr "Päivitä ip-suodatus automaattisesti käynnistettäessä"
 
-#: src/muuli_wdr.cpp:2883
+#: src/muuli_wdr.cpp:2886
 msgid "Filtering Level:"
 msgstr "Suodatustaso:"
 
-#: src/muuli_wdr.cpp:2893
+#: src/muuli_wdr.cpp:2896
 msgid "Always filter LAN IPs"
 msgstr "Suodata aina lähiverkon IP:t"
 
-#: src/muuli_wdr.cpp:2897
+#: src/muuli_wdr.cpp:2900
 msgid "Paranoid handling of non-matching IPs"
 msgstr "Käsittele muut IP:t vainoharhaisesti"
 
-#: src/muuli_wdr.cpp:2899
+#: src/muuli_wdr.cpp:2902
 msgid ""
 "Rejects packet if the client ip is different from the ip where the packet is "
 "received from. Use with caution."
@@ -4118,11 +4122,11 @@ msgstr ""
 "Hylkää paketit mikäli asiakkaan ip on eri kuin mistä paketti saapui. Käytä "
 "varoen."
 
-#: src/muuli_wdr.cpp:2902
+#: src/muuli_wdr.cpp:2905
 msgid "Use system-wide ipfilter.dat if available"
 msgstr "Käytä järjestelmänlaajuista ipfilter.dat-tiedostoa mikäli saatavilla"
 
-#: src/muuli_wdr.cpp:2903
+#: src/muuli_wdr.cpp:2906
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
@@ -4130,11 +4134,11 @@ msgstr ""
 "Mikäli paikallista ipfilter.dat:ia ei löydy, käytetään järjestelmänlaajuista "
 "ipfilter.dat-tiedostoa."
 
-#: src/muuli_wdr.cpp:2922
+#: src/muuli_wdr.cpp:2925
 msgid "Enable Online-Signature"
 msgstr "Kytke Online-Signeeraus päälle"
 
-#: src/muuli_wdr.cpp:2924
+#: src/muuli_wdr.cpp:2927
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
@@ -4142,220 +4146,220 @@ msgstr ""
 "Kytkee päälle Online-Signeeraustiedoston kirjoittamisen, jota muut ohjelmat "
 "voivat käyttää esimerkiksi signeerauksissa."
 
-#: src/muuli_wdr.cpp:2929
+#: src/muuli_wdr.cpp:2932
 msgid "Update Frequency (Secs):"
 msgstr "Päivitysväli (sekuntia):"
 
-#: src/muuli_wdr.cpp:2933
+#: src/muuli_wdr.cpp:2936
 msgid "Change the frequency (in seconds) of Online Signature updates."
 msgstr "Muuttaa Online-Signeerauksen päivitysväliä, annetaan sekunteina."
 
-#: src/muuli_wdr.cpp:2942
+#: src/muuli_wdr.cpp:2945
 msgid "Save online signature file in: "
 msgstr "Online-signeeraus-tiedoston tallennuspaikka:"
 
-#: src/muuli_wdr.cpp:2949
+#: src/muuli_wdr.cpp:2952
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr "Napsauta tästä valitaksesi kansio Online-Signeerauksen tiedostoille."
 
-#: src/muuli_wdr.cpp:2971
+#: src/muuli_wdr.cpp:2974
 msgid "Filter incoming messages (except current chat):"
 msgstr "Suodata saapuvat viestit (ei koske keskusteluja):"
 
-#: src/muuli_wdr.cpp:2974
+#: src/muuli_wdr.cpp:2977
 msgid "Filter all messages"
 msgstr "Suodata kaikki viestit"
 
-#: src/muuli_wdr.cpp:2977
+#: src/muuli_wdr.cpp:2980
 msgid "Filter messages from people not on your friend list"
 msgstr "Suodata viestit ihmisiltä jotka eivät ole kaverilistallasi"
 
-#: src/muuli_wdr.cpp:2980
+#: src/muuli_wdr.cpp:2983
 msgid "Filter messages from unknown clients"
 msgstr "Suodata viestit tuntemattomilta asiakkailta"
 
-#: src/muuli_wdr.cpp:2983
+#: src/muuli_wdr.cpp:2986
 msgid "Filter messages containing (use ',' as separator):"
 msgstr "Suodata viestit jotka sisältävät (käytä merkkiä ',' erottimena):"
 
-#: src/muuli_wdr.cpp:2987 src/muuli_wdr.cpp:3002
+#: src/muuli_wdr.cpp:2990 src/muuli_wdr.cpp:3005
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
 "Syötä tähän suodatettavat sanat ja aMule estää viestit jotka sisältävät "
 "sellaisen"
 
-#: src/muuli_wdr.cpp:2990
+#: src/muuli_wdr.cpp:2993
 msgid "Show received messages in the log"
 msgstr "Näytä vastaanotetut viestit lokissa"
 
-#: src/muuli_wdr.cpp:2995
+#: src/muuli_wdr.cpp:2998
 msgid "Comments"
 msgstr "Kommentit"
 
-#: src/muuli_wdr.cpp:2998
+#: src/muuli_wdr.cpp:3001
 msgid "Filter comments containing (use ',' as separator):"
 msgstr "Suodata kommentit jotka sisältävät (käytä merkkiä ',' erottimena):"
 
-#: src/muuli_wdr.cpp:3021
+#: src/muuli_wdr.cpp:3024
 msgid "Automatic server connect without proxy"
 msgstr "Automaattinen palvelinyhteys ilman välityspalvelinta"
 
-#: src/muuli_wdr.cpp:3027
+#: src/muuli_wdr.cpp:3030
 msgid "Enable authentication"
 msgstr "Käytä tunnistautumista"
 
-#: src/muuli_wdr.cpp:3028
+#: src/muuli_wdr.cpp:3031
 msgid "Enable/disable username/password authentication"
 msgstr "Kytkee päälle/pois käyttäjänimellä/salasanalla tunnistautumisen"
 
-#: src/muuli_wdr.cpp:3033
+#: src/muuli_wdr.cpp:3036
 msgid "Username: "
 msgstr "Käyttäjänimi:"
 
-#: src/muuli_wdr.cpp:3037
+#: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
 msgstr "Käyttäjänimi tunnistautuessa välityspalvelimelle"
 
-#: src/muuli_wdr.cpp:3040
+#: src/muuli_wdr.cpp:3043
 msgid "Password:"
 msgstr "Salasana:"
 
-#: src/muuli_wdr.cpp:3044
+#: src/muuli_wdr.cpp:3047
 msgid "The password to use to connect to the proxy"
 msgstr "Salasana tunnistautuessa välityspalvelimelle"
 
-#: src/muuli_wdr.cpp:3047
+#: src/muuli_wdr.cpp:3050
 msgid "Enable Proxy"
 msgstr "Käytä välityspalvelinta"
 
-#: src/muuli_wdr.cpp:3048
+#: src/muuli_wdr.cpp:3051
 msgid "Enable/disable proxy support"
 msgstr "Kytke päälle/pois välityspalvelimen tuki"
 
-#: src/muuli_wdr.cpp:3053
+#: src/muuli_wdr.cpp:3056
 msgid "Proxy type:"
 msgstr "Tyyppi:"
 
-#: src/muuli_wdr.cpp:3066
+#: src/muuli_wdr.cpp:3069
 msgid "Proxy host:"
 msgstr "Välityspalvelin:"
 
-#: src/muuli_wdr.cpp:3070
+#: src/muuli_wdr.cpp:3073
 msgid "The proxy host name"
 msgstr "Välityspalvelimen verkkonimi"
 
-#: src/muuli_wdr.cpp:3073
+#: src/muuli_wdr.cpp:3076
 msgid "Proxy port:"
 msgstr "Portti:"
 
-#: src/muuli_wdr.cpp:3077
+#: src/muuli_wdr.cpp:3080
 msgid "The proxy port"
 msgstr "Välityspalvelimen portti"
 
-#: src/muuli_wdr.cpp:3098
+#: src/muuli_wdr.cpp:3101
 msgid "Connect to:"
 msgstr "Yhdistä:"
 
-#: src/muuli_wdr.cpp:3112
+#: src/muuli_wdr.cpp:3115
 msgid "Login to remote amule"
 msgstr "Kirjaudu etä-aMuleen"
 
-#: src/muuli_wdr.cpp:3117
+#: src/muuli_wdr.cpp:3120
 msgid "User name"
 msgstr "Käyttäjänimi"
 
-#: src/muuli_wdr.cpp:3134
+#: src/muuli_wdr.cpp:3137
 msgid "Remember those settings"
 msgstr "Muista nämä asetukset"
 
-#: src/muuli_wdr.cpp:3163
+#: src/muuli_wdr.cpp:3166
 msgid "Enable Verbose Debug-Logging."
 msgstr "Käytä monisanaista lokiin kirjausta."
 
-#: src/muuli_wdr.cpp:3166
+#: src/muuli_wdr.cpp:3169
 msgid "Message Categories:"
 msgstr "Viestien luokat:"
 
-#: src/muuli_wdr.cpp:3192 src/PartFileConvertDlg.cpp:145
+#: src/muuli_wdr.cpp:3195 src/PartFileConvertDlg.cpp:145
 msgid "Waiting..."
 msgstr "Odottaa..."
 
-#: src/muuli_wdr.cpp:3219
+#: src/muuli_wdr.cpp:3222
 msgid "Add imports"
 msgstr "Lisää tuonteja"
 
-#: src/muuli_wdr.cpp:3223
+#: src/muuli_wdr.cpp:3226
 msgid "Retry selected"
 msgstr "Yritä uudelleen valittuja"
 
-#: src/muuli_wdr.cpp:3226
+#: src/muuli_wdr.cpp:3229
 msgid "Remove selected"
 msgstr "Poista valitut"
 
-#: src/muuli_wdr.cpp:3298
+#: src/muuli_wdr.cpp:3301
 msgid "Event Types"
 msgstr "Tapahtumatyypit"
 
-#: src/muuli_wdr.cpp:3318
+#: src/muuli_wdr.cpp:3321
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3345
+#: src/muuli_wdr.cpp:3348
 #, fuzzy
 msgid "Active Uploads"
 msgstr "Aktiiviset lähetykset :"
 
-#: src/muuli_wdr.cpp:3365
+#: src/muuli_wdr.cpp:3368
 msgid "Percent of total files"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3412
+#: src/muuli_wdr.cpp:3415
 #, fuzzy
 msgid "All files"
 msgstr "Piilota jaetut tiedostot"
 
-#: src/muuli_wdr.cpp:3413
+#: src/muuli_wdr.cpp:3416
 #, fuzzy
 msgid "Selected files"
 msgstr "Valitse suodatin"
 
-#: src/muuli_wdr.cpp:3414
+#: src/muuli_wdr.cpp:3417
 #, fuzzy
 msgid "Active uploads only"
 msgstr "Aktiiviset lähetykset"
 
-#: src/muuli_wdr.cpp:3416
+#: src/muuli_wdr.cpp:3419
 #, fuzzy
 msgid "Show Clients for"
 msgstr "Näytä asiakkaat"
 
-#: src/muuli_wdr.cpp:3419
+#: src/muuli_wdr.cpp:3422
 #, fuzzy
 msgid "Reload:"
 msgstr "Uudelleenlataa lista"
 
-#: src/muuli_wdr.cpp:3424
+#: src/muuli_wdr.cpp:3427
 msgid "Reload your shared files"
 msgstr "Uudelleenlataa jaetut tiedostot"
 
-#: src/muuli_wdr.cpp:3494
+#: src/muuli_wdr.cpp:3497
 msgid "Send"
 msgstr "Lähetä"
 
-#: src/muuli_wdr.cpp:3495
+#: src/muuli_wdr.cpp:3498
 msgid "Sends the specified message."
 msgstr "Lähettää annetun viestin."
 
-#: src/muuli_wdr.cpp:3500
+#: src/muuli_wdr.cpp:3503
 msgid "Close this chat-session."
 msgstr "Sulje tämä keskustelu."
 
-#: src/muuli_wdr.cpp:3524
+#: src/muuli_wdr.cpp:3527
 msgid "Connect to any server and/or Kad"
 msgstr "Yhdistä mihin tahansa palvelimeen ja/tai Kadiin"
 
-#: src/muuli_wdr.cpp:3530 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:810
+#: src/muuli_wdr.cpp:3533 src/SharedFilesCtrl.cpp:134 src/Statistics.cpp:810
 msgid "Shared Files"
 msgstr "Jaetut tiedostot"
 
@@ -4432,7 +4436,7 @@ msgstr "kaikki muut"
 msgid "Incomplete"
 msgstr "Keskeneräinen"
 
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3727 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3722 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "Pysäytetty"
 
@@ -4667,29 +4671,29 @@ msgstr "Valmis osa (%i) kohteessa %s"
 msgid "Finished rehashing %s"
 msgstr "Tarkiste uudelleenluotu: %s"
 
-#: src/PartFile.cpp:2131
+#: src/PartFile.cpp:2128
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "Odottamaton virhe viimeistellessä %s. Tiedosto tauotettu"
 
-#: src/PartFile.cpp:2168
+#: src/PartFile.cpp:2165
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Lataus suoritettu: %s"
 
-#: src/PartFile.cpp:2225
+#: src/PartFile.cpp:2222
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Poistetaan tiedosto: %s"
 
-#: src/PartFile.cpp:2290
+#: src/PartFile.cpp:2287
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "VAROITUS: Ei voitu laskea tarkistetta ladatusta osasta - tarkistejoukko on "
 "puutteellinen kohteelle '%s'"
 
-#: src/PartFile.cpp:2295
+#: src/PartFile.cpp:2292
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4698,285 +4702,294 @@ msgstr ""
 "VIRHE: Ei voitu luoda tarkistetta ladatulle osalle - tarkistejoukko on "
 "puutteellinen (%s). Näin ei pitäisi koskaan tapahtua."
 
-#: src/PartFile.cpp:2305 src/PartFile.cpp:2310
+#: src/PartFile.cpp:2302 src/PartFile.cpp:2307
 #, c-format
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2971
+#: src/PartFile.cpp:2968
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "VAROITUS: Levytilaa ei ole tarpeeksi! Tauotan tiedoston: %s"
 
-#: src/PartFile.cpp:3041
+#: src/PartFile.cpp:3038
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Ladattu osa %i on turmeltunut tiedostossa: %s"
 
-#: src/PartFile.cpp:3093
+#: src/PartFile.cpp:3090
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "ICH: Ennallistettu turmeltunut osa %i kohteessa %s -> Säästetyt tavut: %s"
 
-#: src/PartFile.cpp:3700
+#: src/PartFile.cpp:3695
 msgid "Allocating"
 msgstr "Allokoidaan"
 
-#: src/PartFile.cpp:3716
+#: src/PartFile.cpp:3711
 msgid "Insufficient disk space"
 msgstr "Riittämätön levytila"
 
-#: src/PartFile.cpp:3766 src/SearchListCtrl.cpp:993
+#: src/PartFile.cpp:3761 src/SearchListCtrl.cpp:1006
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "Ladattu"
 
-#: src/PartFile.cpp:4008
+#: src/PartFile.cpp:4003
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "VIRHE: Ei voida avata osatiedostoa '%s'"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "System default"
 msgstr "Järjestelmän vakio"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:631
 msgid "Albanian"
 msgstr "Albania"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:632
 msgid "Arabic"
 msgstr "Arabia"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Asturian"
 msgstr "Asturia"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:634
 msgid "Basque"
 msgstr "Baski"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:635
 msgid "Bulgarian"
 msgstr "Bulgaria"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:636
 msgid "Catalan"
 msgstr "Katalaani"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:637
 msgid "Chinese (Simplified)"
 msgstr "Kiina (Yksinkertaistettu)"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:638
 msgid "Chinese (Traditional)"
 msgstr "Kiina (Perinteinen)"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:639
 msgid "Croatian"
 msgstr "Kroatia"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:640
 msgid "Czech"
 msgstr "Tsekki"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:641
 msgid "Danish"
 msgstr "Tanska"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:642
 msgid "Dutch"
 msgstr "Hollanti"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:643
 msgid "English (U.K.)"
 msgstr "Englanti (U.K.)"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:644
 msgid "Estonian"
 msgstr "Viro"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:645
 msgid "Finnish"
 msgstr "Suomi"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:646
 msgid "French"
 msgstr "Ranska"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:647
 msgid "Galician"
 msgstr "Galicia (Galego)"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "German"
 msgstr "Saksa"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Greek"
 msgstr "Kreikka"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Hebrew"
 msgstr "Heprea"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Hungarian"
 msgstr "Unkari"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Italian"
 msgstr "Italia"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Italian (Swiss)"
 msgstr "Italia (Sveitsi)"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Japanese"
 msgstr "Japani"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Korean"
 msgstr "Korea"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Lithuanian"
 msgstr "Liettua"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Norwegian (Nynorsk)"
 msgstr "Norja (Nynorsk)"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Polish"
 msgstr "Puola"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Portuguese"
 msgstr "Portugali"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Portuguese (Brazilian)"
 msgstr "Portugali (Brazilia)"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Russian"
 msgstr "Venäjä"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Slovenian"
 msgstr "Slovenia"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Spanish"
 msgstr "Espanja"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 msgid "Swedish"
 msgstr "Ruotsi"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Turkish"
 msgstr "Turkki"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Ukrainian"
 msgstr "Ukraina"
 
-#: src/Preferences.cpp:727
+#: src/Preferences.cpp:728
 #, fuzzy
 msgid "Change Language"
 msgstr "Kieli:"
 
-#: src/Preferences.cpp:898
+#: src/Preferences.cpp:771
+msgid "There are no translations installed for aMule"
+msgstr ""
+
+#: src/Preferences.cpp:771
+#, fuzzy
+msgid "No languages available"
+msgstr "Ei saatavissa"
+
+#: src/Preferences.cpp:902
 msgid "no options available"
 msgstr "vaihtoehtoja ei saatavilla"
 
-#: src/Preferences.cpp:1579
+#: src/Preferences.cpp:1584
 msgid "Invalid category found, skipping"
 msgstr "Löytyi epäkelpo luokka, ohitetaan"
 
-#: src/Preferences.cpp:1761
+#: src/Preferences.cpp:1766
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP-portti ei voi olla korkeampi kuin 65532 koska serverin käyttämä UDP-"
 "pistukka on TCP+3"
 
-#: src/Preferences.cpp:1762
+#: src/Preferences.cpp:1767
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Käytetään oletusporttia (%d)"
 
-#: src/Preferences.cpp:1785
+#: src/Preferences.cpp:1790
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Unohdetaan olematon jaettu kansio: %s"
 
-#: src/PrefsUnifiedDlg.cpp:173 src/Statistics.cpp:771
+#: src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:771
 msgid "Connection"
 msgstr "Yhteys"
 
-#: src/PrefsUnifiedDlg.cpp:174
+#: src/PrefsUnifiedDlg.cpp:178 src/SearchListCtrl.cpp:93
 msgid "Directories"
 msgstr "Kansiot"
 
-#: src/PrefsUnifiedDlg.cpp:175 src/Statistics.cpp:797
+#: src/PrefsUnifiedDlg.cpp:179 src/Statistics.cpp:797
 msgid "Servers"
 msgstr "Palvelimet"
 
-#: src/PrefsUnifiedDlg.cpp:176 src/ServerListCtrl.cpp:92
+#: src/PrefsUnifiedDlg.cpp:180 src/ServerListCtrl.cpp:92
 msgid "Files"
 msgstr "Tiedostot"
 
-#: src/PrefsUnifiedDlg.cpp:177
+#: src/PrefsUnifiedDlg.cpp:181
 msgid "Security"
 msgstr "Turvallisuus"
 
-#: src/PrefsUnifiedDlg.cpp:178
+#: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
 msgstr "Käyttöliittymä"
 
-#: src/PrefsUnifiedDlg.cpp:180
+#: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
 msgstr "Välityspalvelin"
 
-#: src/PrefsUnifiedDlg.cpp:181
+#: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
 msgstr "Suodattimet"
 
-#: src/PrefsUnifiedDlg.cpp:182
+#: src/PrefsUnifiedDlg.cpp:186
 msgid "Remote Controls"
 msgstr "Etähallinta"
 
-#: src/PrefsUnifiedDlg.cpp:183
+#: src/PrefsUnifiedDlg.cpp:187
 msgid "Online Signature"
 msgstr "Online-Signeeraus"
 
-#: src/PrefsUnifiedDlg.cpp:184
+#: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
 msgstr "Laajennetut"
 
-#: src/PrefsUnifiedDlg.cpp:185
+#: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
 msgstr "Tapahtumat"
 
-#: src/PrefsUnifiedDlg.cpp:187
+#: src/PrefsUnifiedDlg.cpp:191
 msgid "Debugging"
 msgstr "Debuggaus"
 
-#: src/PrefsUnifiedDlg.cpp:245
+#: src/PrefsUnifiedDlg.cpp:249
 msgid ""
 "The following variables will be substituted:\n"
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:279
+#: src/PrefsUnifiedDlg.cpp:289
 msgid ""
 "Do not change these setting unless you know\n"
 "what you are doing, otherwise you can easily\n"
@@ -4992,29 +5005,29 @@ msgstr ""
 "aMule toimii hyvin vaikka näitä ei\n"
 "säädettäisikään."
 
-#: src/PrefsUnifiedDlg.cpp:340
+#: src/PrefsUnifiedDlg.cpp:350
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
 msgstr "Asetuksen kytkeminen widgettiin epäonnistui ID:llä %d ja avaimella %s"
 
-#: src/PrefsUnifiedDlg.cpp:389
+#: src/PrefsUnifiedDlg.cpp:399
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr ""
 "Datan siirtäminen asetuksesta widgettiin epäonnistui ID:llä %d ja avaimella %"
 "s"
 
-#: src/PrefsUnifiedDlg.cpp:406
+#: src/PrefsUnifiedDlg.cpp:416
 msgid "The type of proxy you are connecting to"
 msgstr "Yhdistettävän välityspalvelimen tyyppi"
 
-#: src/PrefsUnifiedDlg.cpp:518
+#: src/PrefsUnifiedDlg.cpp:534
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr ""
 "Datan siirtäminen widgetistä asetukseen epäonnistui ID:llä %d ja avaimella %s"
 
-#: src/PrefsUnifiedDlg.cpp:573
+#: src/PrefsUnifiedDlg.cpp:589
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -5022,30 +5035,30 @@ msgstr ""
 "aMule on käynnistettävä uudelleen näiden muutosten voimaansaattamiseksi:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:580
+#: src/PrefsUnifiedDlg.cpp:596
 msgid "- TCP port changed.\n"
 msgstr "- TCP-portti muuttui.\n"
 
-#: src/PrefsUnifiedDlg.cpp:585
+#: src/PrefsUnifiedDlg.cpp:601
 msgid "- UDP port changed.\n"
 msgstr "- UDP-portti muuttui.\n"
 
-#: src/PrefsUnifiedDlg.cpp:590
+#: src/PrefsUnifiedDlg.cpp:606
 #, fuzzy
 msgid "- External connect port changed.\n"
 msgstr "Etäyhteys suljettu."
 
-#: src/PrefsUnifiedDlg.cpp:594
+#: src/PrefsUnifiedDlg.cpp:610
 #, fuzzy
 msgid "- External connect acceptance changed.\n"
 msgstr "Uusi etäyhteys hyväksytty"
 
-#: src/PrefsUnifiedDlg.cpp:598
+#: src/PrefsUnifiedDlg.cpp:614
 #, fuzzy
 msgid "- External connect interface changed.\n"
 msgstr "Etäyhteys suljettu."
 
-#: src/PrefsUnifiedDlg.cpp:607
+#: src/PrefsUnifiedDlg.cpp:623
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
@@ -5053,7 +5066,7 @@ msgstr ""
 "Palvelinlistan automaattisen päivityksen lista on tyhjä.\n"
 "'Päivitä palvelinlista käynnistettäessä' kytketään pois päältä."
 
-#: src/PrefsUnifiedDlg.cpp:614
+#: src/PrefsUnifiedDlg.cpp:630
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -5061,19 +5074,19 @@ msgstr ""
 "Olet sallinut etäyhteydet mutta et ole antanut salasanaa.\n"
 "Etäyhteydet eivät ole mahdollisia ellei salasanaa ole annettu."
 
-#: src/PrefsUnifiedDlg.cpp:626
+#: src/PrefsUnifiedDlg.cpp:642
 msgid "- Language changed.\n"
 msgstr "- Kieli vaihtui.\n"
 
-#: src/PrefsUnifiedDlg.cpp:631
+#: src/PrefsUnifiedDlg.cpp:647
 msgid "- Temp folder changed.\n"
 msgstr "- Väliaikaiskansio muuttui.\n"
 
-#: src/PrefsUnifiedDlg.cpp:636
+#: src/PrefsUnifiedDlg.cpp:652
 msgid "- ED2K network enabled.\n"
 msgstr "- ED2K-verkko käytössä.\n"
 
-#: src/PrefsUnifiedDlg.cpp:708
+#: src/PrefsUnifiedDlg.cpp:724
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -5081,7 +5094,7 @@ msgstr ""
 "Sekä eD2k- että Kad-verkko on pois päältä.\n"
 "Et voi yhdistää ennen kuin ainakin toinen niistä on sallittu."
 
-#: src/PrefsUnifiedDlg.cpp:712
+#: src/PrefsUnifiedDlg.cpp:728
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5089,7 +5102,7 @@ msgstr ""
 "Kad ei käynnisty mikäli UDP-portti on pois päältä.\n"
 "Salli UDP-portti tai kytke Kad pois päältä."
 
-#: src/PrefsUnifiedDlg.cpp:725
+#: src/PrefsUnifiedDlg.cpp:741
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5099,7 +5112,7 @@ msgstr ""
 "Sinun on uudelleenkäynnistettävä aMule nyt.\n"
 "Mikäli et uudelleenkäynnistä nyt, älä valita mikäli jotain pahaa tapahtuu.\n"
 
-#: src/PrefsUnifiedDlg.cpp:815
+#: src/PrefsUnifiedDlg.cpp:841
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -5110,41 +5123,41 @@ msgstr ""
 "tiedostoon.\n"
 "Klikkaa nappia \"Lista\" tämän valintaruudun vierestä syöttääksesi URLin."
 
-#: src/PrefsUnifiedDlg.cpp:949
+#: src/PrefsUnifiedDlg.cpp:980
 msgid "Temporary files"
 msgstr "Väliaikaiset tiedostot"
 
-#: src/PrefsUnifiedDlg.cpp:954
+#: src/PrefsUnifiedDlg.cpp:985
 msgid "Incoming files"
 msgstr "Saapuvat tiedostot"
 
-#: src/PrefsUnifiedDlg.cpp:959
+#: src/PrefsUnifiedDlg.cpp:990
 msgid "Online Signatures"
 msgstr "Online-Signeeraukset"
 
-#: src/PrefsUnifiedDlg.cpp:972
+#: src/PrefsUnifiedDlg.cpp:1003
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Valitse kansio kohteelle %s"
 
-#: src/PrefsUnifiedDlg.cpp:992
+#: src/PrefsUnifiedDlg.cpp:1023
 msgid "Browse for videoplayer"
 msgstr "Etsi videosoitin"
 
-#: src/PrefsUnifiedDlg.cpp:996
+#: src/PrefsUnifiedDlg.cpp:1027
 msgid "Select browser"
 msgstr "Valitse selain"
 
-#: src/PrefsUnifiedDlg.cpp:1002
+#: src/PrefsUnifiedDlg.cpp:1033
 #, c-format
 msgid "Executable%s"
 msgstr "Suoritettava tiedosto%s"
 
-#: src/PrefsUnifiedDlg.cpp:1023
+#: src/PrefsUnifiedDlg.cpp:1054
 msgid "Edit server list"
 msgstr "Muokkaa palvelinlistaa"
 
-#: src/PrefsUnifiedDlg.cpp:1024
+#: src/PrefsUnifiedDlg.cpp:1055
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5152,76 +5165,76 @@ msgstr ""
 "Syötä tähän URLit joista server.met-tiedostot haetaan.\n"
 "Vain yksi urli riville."
 
-#: src/PrefsUnifiedDlg.cpp:1083 src/PrefsUnifiedDlg.cpp:1102
+#: src/PrefsUnifiedDlg.cpp:1114 src/PrefsUnifiedDlg.cpp:1133
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Päivitysväli: %d sekunti"
 msgstr[1] "Päivitysväli: %d sekuntia"
 
-#: src/PrefsUnifiedDlg.cpp:1090
+#: src/PrefsUnifiedDlg.cpp:1121
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Keskimääräiskuvaajan aika: %d minuutti"
 msgstr[1] "Keskimääräiskuvaajan aika: %d minuuttia"
 
-#: src/PrefsUnifiedDlg.cpp:1096
+#: src/PrefsUnifiedDlg.cpp:1127
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Yhteyskuvaajan skaala: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1108
+#: src/PrefsUnifiedDlg.cpp:1139
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Tiedostopuskurin koko: %d tavu"
 msgstr[1] "Tiedostopuskurin koko: %d tavua"
 
-#: src/PrefsUnifiedDlg.cpp:1114
+#: src/PrefsUnifiedDlg.cpp:1145
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Lähetysjonon koko: %d asiakas"
 msgstr[1] "Lähetysjonon koko: %d asiakasta"
 
-#: src/PrefsUnifiedDlg.cpp:1121
+#: src/PrefsUnifiedDlg.cpp:1152
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Palvelinyhteyden päivitysväli: %d minuutti"
 msgstr[1] "Palvelinyhteyden päivitysväli: %d minuuttia"
 
-#: src/PrefsUnifiedDlg.cpp:1123
+#: src/PrefsUnifiedDlg.cpp:1154
 msgid "Server connection refresh interval: Disabled"
 msgstr "Palvelinyhteyden päivitysväli: Ei käytössä"
 
-#: src/PrefsUnifiedDlg.cpp:1168
+#: src/PrefsUnifiedDlg.cpp:1199
 msgid "disabled"
 msgstr "poissa käytöstä"
 
-#: src/PrefsUnifiedDlg.cpp:1191
+#: src/PrefsUnifiedDlg.cpp:1222
 #, fuzzy, c-format
 msgid "Execute command on '%s' event"
 msgstr "Suorita komento tapahtuman `%s' yhteydessä"
 
-#: src/PrefsUnifiedDlg.cpp:1194
+#: src/PrefsUnifiedDlg.cpp:1225
 msgid "Enable command execution on core"
 msgstr "Mahdollista komentojen suorittaminen ytimestä"
 
-#: src/PrefsUnifiedDlg.cpp:1202
+#: src/PrefsUnifiedDlg.cpp:1233
 msgid "Core command:"
 msgstr "Ytimen komento:"
 
-#: src/PrefsUnifiedDlg.cpp:1211
+#: src/PrefsUnifiedDlg.cpp:1242
 msgid "Enable command execution on GUI"
 msgstr "Mahdollista komentojen suorittaminen graafisesta käyttöliittymästä"
 
-#: src/PrefsUnifiedDlg.cpp:1219
+#: src/PrefsUnifiedDlg.cpp:1250
 msgid "GUI command:"
 msgstr "Graafisen käyttöliittymän komento:"
 
-#: src/PrefsUnifiedDlg.cpp:1228
+#: src/PrefsUnifiedDlg.cpp:1259
 msgid "The following variables will be replaced:"
 msgstr "Seuraavat muuttujat korvataan:"
 
@@ -5235,7 +5248,7 @@ msgstr ""
 msgid "Search warning"
 msgstr "Hakuvaroitus"
 
-#: src/SearchDlg.cpp:626 src/SearchListCtrl.cpp:615
+#: src/SearchDlg.cpp:626 src/SearchListCtrl.cpp:628
 msgid "Main"
 msgstr "Kaikki"
 
@@ -5251,40 +5264,40 @@ msgstr "eD2k-hakua ei voida tehdä mikäli eD2k ei ole yhdistettynä"
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Odottamaton virhe Kad-hakua tehtäessä: "
 
-#: src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:105
+#: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:105
 msgid "FileID"
 msgstr "Tiedostotunniste"
 
-#: src/SearchListCtrl.cpp:611
+#: src/SearchListCtrl.cpp:624
 msgid "File"
 msgstr "Tiedosto"
 
-#: src/SearchListCtrl.cpp:621
+#: src/SearchListCtrl.cpp:634
 msgid "Download in category"
 msgstr "Lataa luokassa"
 
-#: src/SearchListCtrl.cpp:626
+#: src/SearchListCtrl.cpp:639
 #, fuzzy, c-format
 msgid "Get %s for this file"
 msgstr "Lisää Valinnaisia URLeja tälle tiedostolle"
 
-#: src/SearchListCtrl.cpp:630
+#: src/SearchListCtrl.cpp:643
 msgid "Search related files (eD2k, local server)"
 msgstr "Hae tähän liittyviä tiedostoja (eD2k, paikallinen palvelin)"
 
-#: src/SearchListCtrl.cpp:635
+#: src/SearchListCtrl.cpp:648
 msgid "Mark as known file"
 msgstr "Merkitse tunnetuksi tiedostoksi"
 
-#: src/SearchListCtrl.cpp:639 src/ServerListCtrl.cpp:426
+#: src/SearchListCtrl.cpp:652 src/ServerListCtrl.cpp:426
 msgid "Copy eD2k link to clipboard"
 msgstr "Kopioi eD2k-linkki leikepöydälle"
 
-#: src/SearchListCtrl.cpp:1001
+#: src/SearchListCtrl.cpp:1014
 msgid "Canceled"
 msgstr "Peruutettu"
 
-#: src/SearchListCtrl.cpp:1004
+#: src/SearchListCtrl.cpp:1017
 msgid "New"
 msgstr "Uusi"
 
@@ -5369,99 +5382,99 @@ msgstr "Yhteysyritys kohteeseen %s (%s:%i) aikakatkaistiin."
 msgid "Received late result of DNS lookup, discarding."
 msgstr "Vastaanotettiin myöhästynyt vastaus DNS-kyselyyn, ohitetaan."
 
-#: src/ServerList.cpp:86
+#: src/ServerList.cpp:88
 #, c-format
 msgid "Loading server.met file: %s"
 msgstr "Lataan tiedostoa server.met: %s"
 
-#: src/ServerList.cpp:91
+#: src/ServerList.cpp:93
 msgid "Server.met file not found!"
 msgstr "Tiedostoa server.met ei löytynyt!"
 
-#: src/ServerList.cpp:99
+#: src/ServerList.cpp:101
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
 msgstr "Server.met-tiedoston '%s' avaaminen epäonnistui, tuntematon muotoilu."
 
-#: src/ServerList.cpp:105
+#: src/ServerList.cpp:107
 msgid "Failed to open server.met!"
 msgstr "Server.met:in avaus epäonnistui!"
 
-#: src/ServerList.cpp:116
+#: src/ServerList.cpp:118
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr "Server.met on turmeltunut, virheellinen versiotunniste: 0x%x, koko %i"
 
-#: src/ServerList.cpp:171
+#: src/ServerList.cpp:173
 #, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i palvelin tiedostossa server.met"
 msgstr[1] "%i palvelinta tiedostossa server.met"
 
-#: src/ServerList.cpp:173
+#: src/ServerList.cpp:175
 #, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d palvelin lisätty"
 msgstr[1] "%d palvelinta lisätty"
 
-#: src/ServerList.cpp:176
+#: src/ServerList.cpp:178
 msgid "Error: the file 'server.met' is corrupted: "
 msgstr ""
 
-#: src/ServerList.cpp:180
+#: src/ServerList.cpp:182
 #, fuzzy
 msgid "IO error while reading 'server.met': "
 msgstr "IO-virhe luettaessa tiedostoa %s: %s"
 
-#: src/ServerList.cpp:193
+#: src/ServerList.cpp:195
 #, c-format
 msgid "Server not added: [%s:%d] does not specify a valid port."
 msgstr "Palvelinta ei lisätty: [%s:%d] ei määritä kelvollista porttia."
 
-#: src/ServerList.cpp:211
+#: src/ServerList.cpp:213
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
 msgstr "Palvelinta ei lisätty: IP [%s:%d] on suodatettu tai virheellinen."
 
-#: src/ServerList.cpp:230
+#: src/ServerList.cpp:232
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
 msgstr ""
 "Palvelinta ei lisätty: IP:porttia [%s:%d] vastaava palvelin on jo listalla."
 
-#: src/ServerList.cpp:248
+#: src/ServerList.cpp:250
 #, c-format
 msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "Palvelin lisätty: Palvelin [%s:%d] on nimeltään '%s'."
 
-#: src/ServerList.cpp:343
+#: src/ServerList.cpp:345
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
 msgstr ""
 "Olet yhdistettynä palvelimeen jota yrität poistaa, katkaise yhteys ensin."
 
-#: src/ServerList.cpp:515
+#: src/ServerList.cpp:517
 #, c-format
 msgid "Failed to open '%s'"
 msgstr "Kohteen '%s' avaaminen ei onnistunut"
 
-#: src/ServerList.cpp:683
+#: src/ServerList.cpp:685
 msgid "Failed to save server.met!"
 msgstr "Server.met:n tallennus epäonnistui!"
 
-#: src/ServerList.cpp:841
+#: src/ServerList.cpp:832
 msgid "Invalid URL"
 msgstr "Virheellinen URL"
 
-#: src/ServerList.cpp:863
+#: src/ServerList.cpp:854
 #, fuzzy, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Palvelinlista ladattu osoitteesta %s"
 
-#: src/ServerList.cpp:878
+#: src/ServerList.cpp:869
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5470,28 +5483,28 @@ msgstr ""
 "ja liitä kelvollinen palvelinlistan osoite tähän tiedostoon palvelinlistan "
 "automaattiseksi päivittämiseksi"
 
-#: src/ServerList.cpp:891
+#: src/ServerList.cpp:882
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "Aloita palvelinlistan lataus osoitteesta %s"
 
-#: src/ServerList.cpp:900
+#: src/ServerList.cpp:891
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr "VAROITUS: palvelinlistan automaattisen päivityksen url ei kelpaa: %s"
 
-#: src/ServerList.cpp:904
+#: src/ServerList.cpp:895
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "Addresses.dat-tiedostosta ei löytynyt kelvollisia urleja server.met:in "
 "automaattilataukselle"
 
-#: src/ServerList.cpp:920
+#: src/ServerList.cpp:911
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Palvelinlistan %s lataus epäonnistui"
 
-#: src/ServerList.cpp:994
+#: src/ServerList.cpp:985
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -5824,7 +5837,7 @@ msgstr "VIRHE: Yritettiin jakaa %s"
 msgid "Shared directory not found, skipping: %s"
 msgstr "Jaettua kansiota ei löytynyt, hypätään yli: %s"
 
-#: src/SharedFileList.cpp:481
+#: src/SharedFileList.cpp:480
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr "Jaettavia tiedostoja ei löytynyt kansiosta: %s"
@@ -5940,16 +5953,16 @@ msgstr "Kopioi eD2k-linkki leikepöydälle (Verkkonimi) (Kyptaustiedoilla)"
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Kopioi eD2k-linkki leikepöydälle (&AICH-tiedot)"
 
-#: src/SharedFilesCtrl.cpp:317
+#: src/SharedFilesCtrl.cpp:315
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Tarvitset HighID:een luodaksesi voimassa olevan lähdelinkin"
 
-#: src/SharedFilesCtrl.cpp:463
+#: src/SharedFilesCtrl.cpp:461
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Jaetut tiedostot (%i)"
 
-#: src/SharedFilesCtrl.cpp:598
+#: src/SharedFilesCtrl.cpp:596
 msgid "[PartFile]"
 msgstr "[Osatiedosto]"
 
@@ -6808,12 +6821,12 @@ msgstr ""
 msgid "Hashset requested for unknown file: %s"
 msgstr "Tarkistejoukkoa pyydettiin tuntemattomalle tiedostolle: %s"
 
-#: src/UploadQueue.cpp:578
+#: src/UploadQueue.cpp:596
 #, c-format
 msgid "Resuming uploads of file: %s"
 msgstr "Jatketaan tiedoston %s lähetyksiä"
 
-#: src/UploadQueue.cpp:595
+#: src/UploadQueue.cpp:613
 #, c-format
 msgid "Suspending upload of file: %s"
 msgstr "Keskeytetään tiedoston %s lähetys"
