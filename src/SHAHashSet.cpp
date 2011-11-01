@@ -146,12 +146,11 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 
 
 // recursive
-// calculates missing hash fromt he existing ones
+// calculates missing hash from the existing ones
 // overwrites existing hashs
 // fails if no hash is found for any branch
 bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
 {
-	wxASSERT ( !( (m_pLeftTree != NULL) ^ (m_pRightTree != NULL)) ); 
 	if (m_pLeftTree && m_pRightTree) {
 		if ( !m_pLeftTree->ReCalculateHash(hashalg, bDontReplace) || !m_pRightTree->ReCalculateHash(hashalg, bDontReplace) ) {
 			return false;
@@ -169,8 +168,11 @@ bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
 		} else {
 			return m_bHashValid;
 		}
-	} else {
+	} else if (m_pLeftTree == NULL && m_pRightTree == NULL) {
 		return true;
+	} else {
+		AddDebugLogLineN(logSHAHashSet, wxT("ReCalculateHash failed - Hashtree incomplete"));
+		return false;
 	}
 }
 
