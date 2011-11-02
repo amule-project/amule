@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-09-16 12:03+0100\n"
+"PO-Revision-Date: 2011-11-02 15:22+0100\n"
 "Last-Translator: Giuliano Manzitti <giuliano1979@hotmail.com>\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3330,7 +3330,7 @@ msgstr "Fa in modo che aMule chieda conferma prima di uscire."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr ""
+msgstr "Nascondi la finestra quando il pulsante di chiusura è premuto."
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -4934,12 +4934,11 @@ msgstr "Lingua"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "Non ci sono traduzioni installate per aMule"
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Non disponibile"
+msgstr "Nessuna lingua disponibile"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
