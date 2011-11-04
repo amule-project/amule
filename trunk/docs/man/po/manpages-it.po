@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "POT-Creation-Date: 2011-10-31 22:06+0100\n"
-"PO-Revision-Date: 2011-09-20 13:46+0100\n"
+"PO-Revision-Date: 2011-11-04 12:11+0100\n"
 "Last-Translator: Stefano Corti <iz0bbz@libero.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -28,10 +28,9 @@ msgstr "AMULE"
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
-#, fuzzy, no-wrap
-#| msgid "October 2011"
+#, no-wrap
 msgid "November 2011"
-msgstr "Ottobre 2011"
+msgstr "Novembre 2011"
 
 # type: TH
 #. type: TH
@@ -203,7 +202,7 @@ msgstr "Visualizza il numero di versione corrente."
 #: ../../src/utils/aLinkCreator/docs/alcc.1:22
 #: ../../src/utils/cas/docs/cas.1:32
 msgid "Prints a short usage description."
-msgstr "Stampa una breve descrizione dell'utilizzo."
+msgstr "Visualizza una breve descrizione dell'utilizzo."
 
 # type: TP
 #. type: TP
