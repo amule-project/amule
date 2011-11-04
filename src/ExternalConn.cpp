@@ -469,6 +469,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 					% (canZLIB ? wxT("yes") : wxT("no"))
 					% (canUTF8numbers ? wxT("yes") : wxT("no"))
 					% (m_haveNotificationSupport ? wxT("yes") : wxT("no")));
+				if (canZLIB && canUTF8numbers) {}	// get rid of unused variable warning
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")
