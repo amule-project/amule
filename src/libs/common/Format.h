@@ -78,7 +78,8 @@
  *    types are silently ignored (i.e. for example the invalid @c '%%qs'
  *    format-specifier is silently treated as @c '%%s').
  *  - @c 'p' conversion ignores all modifiers except the argument index reference.
- *  - You can mix positional and indexed argument references.
+ *  - You can mix positional and indexed argument references. (You actually can't,
+ *    because msgfmt will treat this as an error.)
  *  - With indexed argument references we allow to leave gaps in the indices.
  */
 class CFormat
