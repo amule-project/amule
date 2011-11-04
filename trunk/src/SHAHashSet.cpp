@@ -909,6 +909,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 			FreeHashSet();
 		}
 	}
+	if (bAdded) {}	// get rid of unused variable warning
 }
 
 
