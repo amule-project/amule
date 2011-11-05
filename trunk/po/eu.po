@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-11-04 09:55+0200\n"
+"PO-Revision-Date: 2011-11-04 23:17+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.0\n"
+"X-Generator: Lokalize 1.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/AddFriend.cpp:45
@@ -1090,7 +1090,7 @@ msgstr "%s (%u) erabiltzailearen '%s' partekatutako direktorioa"
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr ""
-"%s (%u) erabiltzailea eskatugabeko partekatutako direktorioak bidali ditu."
+"%s (%u) erabiltzailea eskatu gabeko partekatutako direktorioak bidali ditu."
 
 #: src/ClientTCPSocket.cpp:982
 #, c-format
@@ -1463,7 +1463,7 @@ msgstr "Kopiatu URI magnetikoa arbelera"
 
 #: src/DownloadListCtrl.cpp:686 src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k &link to clipboard"
-msgstr "Kopiatu eD2l &lotura arbelera"
+msgstr "Kopiatu eD2k &lotura arbelera"
 
 #: src/DownloadListCtrl.cpp:688 src/SharedFilesCtrl.cpp:169
 msgid "Copy feedback to clipboard"
@@ -1694,7 +1694,7 @@ msgstr "\"%s\" errore mezua bezerora bidalia."
 #: src/ExternalConn.cpp:533
 #, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
-msgstr "Baimendugabeko sarrera saiakera %s-tik. Konexioa itxia."
+msgstr "Baimendu gabeko sarrera saiakera %s-tik. Konexioa itxia."
 
 #: src/ExternalConn.cpp:798
 #, c-format
@@ -1999,7 +1999,7 @@ msgstr "Ez ezer bistarazi irteera estandarrean."
 
 #: src/ExternalConnector.cpp:447
 msgid "Be verbose - show also debug messages."
-msgstr "Luze - arazpen mezuak ere bistarazi."
+msgstr "Luze - arazten mezuak ere bistarazi."
 
 #: src/ExternalConnector.cpp:450
 msgid "Sets program locale (language)."
@@ -2122,7 +2122,7 @@ msgstr "A4AF"
 #: src/GenericClientListCtrl.cpp:995
 #, c-format
 msgid "On Queue: %u (%i)"
-msgstr "Hilaran: %u (%i)"
+msgstr "Ilaran: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:1005 src/GenericClientListCtrl.cpp:1034
 msgid "Asked for another file"
@@ -2130,7 +2130,7 @@ msgstr "Beste fitxategi batez galdeturik"
 
 #: src/GenericClientListCtrl.cpp:1024
 msgid "Waiting for upload slot"
-msgstr "Igoera ataka baten zai"
+msgstr "Igoera ataka baten zain"
 
 #: src/GenericClientListCtrl.cpp:1026
 #, c-format
@@ -2412,13 +2412,13 @@ msgstr ""
 #: src/KnownFileList.cpp:107
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
-"Huts fitxategi ezagunen zerredako sarrera bat kargatzean, hondaturik egon "
+"Huts fitxategi ezagunen zerrendako sarrera bat kargatzean, hondaturik egon "
 "liteke"
 
 #: src/KnownFileList.cpp:114
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
-"Okerreko sarrera fitxategi ezagunen zerredako fitxategian, hondaturik egon "
+"Okerreko sarrera fitxategi ezagunen zerrendako fitxategian, hondaturik egon "
 "liteke: "
 
 #: src/libs/common/Format.cpp:307
@@ -2737,7 +2737,7 @@ msgid ""
 "Users connected to the current server and an estimate of the total number of "
 "users."
 msgstr ""
-"Uneko zerbitzarira konektauriko erabiltzaileak eta guztirako erabiltzaile "
+"Uneko zerbitzarira konektaturiko erabiltzaileak eta guztirako erabiltzaile "
 "kalkulua."
 
 #: src/muuli_wdr.cpp:117
@@ -3083,7 +3083,7 @@ msgstr "Ondo"
 
 #: src/muuli_wdr.cpp:851 src/OtherFunctions.cpp:266
 msgid "Excellent"
-msgstr "Ezinobea"
+msgstr "Hobezina"
 
 #: src/muuli_wdr.cpp:854
 msgid "Choose the file rating or advice users if the file is invalid ..."
@@ -3316,7 +3316,7 @@ msgstr "aMulek irten aurretik galdetzea egiten du."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr "Ezkutatu aplikazio leiohoa itxi botoia sakatzean"
+msgstr "Ezkutatu aplikazio leihoa itxi botoia sakatzean"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -3714,7 +3714,7 @@ msgstr "Zerbitzari konexio berritze aldia: Ezgaiturik"
 
 #: src/muuli_wdr.cpp:2066
 msgid "Disable computer's timed standby mode"
-msgstr "Ezgaitu oredangailu ordualariaren bigarren planuko modua"
+msgstr "Ezgaitu ordenagailu ordulariaren bigarren planoko modua"
 
 #: src/muuli_wdr.cpp:2087
 msgid "Skin to use: "
@@ -4289,7 +4289,7 @@ msgstr "Ezarpen hauek gogoratu"
 
 #: src/muuli_wdr.cpp:3166
 msgid "Enable Verbose Debug-Logging."
-msgstr "Gaitu arazpen luzeko saio hasiera."
+msgstr "Gaitu arazten luzeko saio hasiera."
 
 #: src/muuli_wdr.cpp:3169
 msgid "Message Categories:"
@@ -4551,7 +4551,7 @@ msgstr "ERROREA: Huts zati fitxategia sortzerakoan"
 #: src/PartFile.cpp:336
 #, c-format
 msgid "Trying to load backup of met-file from %s"
-msgstr "met-file fitxategiaren basbeskopia %s-tik kargatzen saiatzen"
+msgstr "met-file fitxategiaren babes-kopia %s-tik kargatzen saiatzen"
 
 #: src/PartFile.cpp:343
 #, c-format
@@ -4720,8 +4720,8 @@ msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
 "s' with length %u: %s"
 msgstr ""
-"Egiaztapenean fitxategi amaiera deskargaturiko %u zatian, %u tamaina duena "
-"(geh. %u) %u tamaina duen '%s' zati-fitxategian: %s"
+"Egiaztapenean fitxategi amaiera deskargaturiko %2$u tamaina duen %1$u zatian "
+"(geh. %3$u) %5$u tamaina duen '%4$s' zati-fitxategian: %6$s"
 
 #: src/PartFile.cpp:2968
 #, c-format
@@ -4850,7 +4850,7 @@ msgstr "Italiera"
 
 #: src/Preferences.cpp:653
 msgid "Italian (Swiss)"
-msgstr "Italiera (Suizarra)"
+msgstr "Italiera (Suitzarra)"
 
 #: src/Preferences.cpp:654
 msgid "Japanese"
@@ -4989,7 +4989,7 @@ msgstr "Gertaerak"
 
 #: src/PrefsUnifiedDlg.cpp:191
 msgid "Debugging"
-msgstr "Arazpena"
+msgstr "Araztena"
 
 #: src/PrefsUnifiedDlg.cpp:249
 msgid ""
@@ -4997,9 +4997,9 @@ msgid ""
 "    %PARTFILE - full path to the file\n"
 "    %PARTNAME - file name only"
 msgstr ""
-"Hurrengo alsagaiak ordeztuko dira:\n"
+"Hurrengo aldagaiak ordeztuko dira:\n"
 "    %PARTFILE - fitxategiaren bide osoa\n"
-"    %PARTNAME - fitaxtegi-izena soilik"
+"    %PARTNAME - fitxategi-izena soilik"
 
 #: src/PrefsUnifiedDlg.cpp:289
 msgid ""
@@ -5296,7 +5296,7 @@ msgstr "Markatu fitxategia ezaguna bezala"
 
 #: src/SearchListCtrl.cpp:652 src/ServerListCtrl.cpp:426
 msgid "Copy eD2k link to clipboard"
-msgstr "Kopiatu eD2l lotura arbelera"
+msgstr "Kopiatu ed2k lotura arbelera"
 
 #: src/SearchListCtrl.cpp:1014
 msgid "Canceled"
@@ -5811,11 +5811,11 @@ msgstr "Indexaturiko karga:"
 
 #: src/ServerWnd.cpp:259
 msgid "Average Users:"
-msgstr "Batazbesteko erab:"
+msgstr "Bataz besteko erab:"
 
 #: src/ServerWnd.cpp:262
 msgid "Average Files:"
-msgstr "Batazbesteko fitxategiak:"
+msgstr "Bataz besteko fitxategiak:"
 
 #: src/ServerWnd.cpp:267 src/TextClient.cpp:728
 msgid "Not running"
@@ -6059,12 +6059,12 @@ msgstr "Saio IG/DE abiadura (guztira): %s"
 #: src/Statistics.cpp:772
 #, c-format
 msgid "Average download rate (Session): %s"
-msgstr "Batazbesteko deskarga tasa (saioa): %s"
+msgstr "Bataz besteko deskarga tasa (saioa): %s"
 
 #: src/Statistics.cpp:773
 #, c-format
 msgid "Average upload rate (Session): %s"
-msgstr "Batazbesteko igoera tasa (saioa): %s"
+msgstr "Bataz besteko igoera tasa (saioa): %s"
 
 #: src/Statistics.cpp:774
 #, c-format
@@ -6198,7 +6198,7 @@ msgstr "Guztira partekatutako fitxategi tamaina: %s"
 #: src/Statistics.cpp:814
 #, c-format
 msgid "Average file size: %s"
-msgstr "Batazbesteko fitxategi tamaina: %s"
+msgstr "Bataz besteko fitxategi tamaina: %s"
 
 #: src/Statistics.cpp:955
 msgid "Operating System"
@@ -6224,7 +6224,7 @@ msgstr "Inoiz ere ez"
 #: src/TerminationProcess.cpp:47
 #, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "'%d' pid-a duen '%s' komandoa '%d' egoera kodeaz amaitu da."
+msgstr "'%2$d' pid-a duen '%1$s' komandoa '%3$d' egoera kodeaz amaitu da."
 
 #: src/TextClient.cpp:134
 msgid "Execute <str> and exit."
@@ -6795,7 +6795,7 @@ msgstr "Berrespena beharrezkoa"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr "99 kategoria soilik onartzend dira."
+msgstr "99 kategoria soilik onartzen dira."
 
 #: src/TransferWnd.cpp:238
 msgid "Too many categories!"
@@ -7550,7 +7550,7 @@ msgstr "Saio amaiera eskakizuna\n"
 
 #: src/webserver/src/WebServer.cpp:1866
 msgid "Processing request [redirected]: "
-msgstr "Eskakizuna prozesatzen [berbidalia]: "
+msgstr "Eskakizuna prozesatzen [birbidalia]: "
 
 #, fuzzy
 #~ msgid "Romanian"
