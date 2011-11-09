@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: po 4a\n"
 "POT-Creation-Date: 2011-10-31 22:06+0100\n"
-"PO-Revision-Date: 2011-09-11 17:52+0100\n"
+"PO-Revision-Date: 2011-11-09 01:14+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -26,10 +26,9 @@ msgstr "AMULE"
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
-#, fuzzy, no-wrap
-#| msgid "October 2011"
+#, no-wrap
 msgid "November 2011"
-msgstr "2011. október"
+msgstr "2011. november"
 
 #. type: TH
 #: amule.1:1

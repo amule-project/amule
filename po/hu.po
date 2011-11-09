@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-09-11 17:50+0100\n"
+"PO-Revision-Date: 2011-11-09 01:17+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3289,7 +3289,7 @@ msgstr "Figyelmeztessen az aMule bezárása előtt."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr ""
+msgstr "Az alkalmazás ablakának elrejtése a bezárás gomb megnyomásakor"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -4877,12 +4877,11 @@ msgstr "Nyelv megváltoztatása"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "Nincsenek fordítások telepítve az aMule-hez"
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Nem elérhető"
+msgstr "Nincs elérhető nyelv"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
