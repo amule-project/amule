@@ -41,9 +41,3 @@ noinst_HEADERS = plasma-engine-plasmamule.h plasma-applet-plasmamule.h plasmamul
 CLEANFILES = *.moc
 
 MAINTAINERCLEANFILES = Makefile.in
-
-install-data-hook: ${USER_INSTALL_HOOK}
-
-USER_INSTALL:
-	${UPDATE_MIME_DATABASE} ${KDE_MIME_PATH}
-	${KBUILDSYCOCA}
