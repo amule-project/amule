@@ -14,6 +14,7 @@ call svnversion >nul 2>&1
 if errorlevel 1 goto nosvnversion
 FOR /F %%i IN ('svnversion src') DO set svnv=%%i
 if %svnv%==exported goto nosvnversion
+if %svnv%==Unversioned goto nosvnversion
 
 :foundsvnversion
 echo SVNDATE is %svnv%
