@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-06-27 03:54+0100\n"
+"PO-Revision-Date: 2011-11-11 03:26+0100\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2012,9 +2012,9 @@ msgid "File Details"
 msgstr "Bestandsdetails"
 
 #: src/FileDetailDialog.cpp:113
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% compleet"
+msgstr "%.1f%% voltooid"
 
 #: src/FileDetailDialog.cpp:115 src/utils/wxCas/src/wxcasframe.cpp:1144
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
@@ -3299,7 +3299,7 @@ msgstr "Laat aMule om bevestiging vragen alvorens af te sluiten."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr ""
+msgstr "Verberg applicatievenster wanneer op de sluitknop wordt geklikt"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -3713,9 +3713,8 @@ msgid "Show extended info on categories tabs"
 msgstr "Geef uitgebreide info weer op categorie-tabs"
 
 #: src/muuli_wdr.cpp:2107
-#, fuzzy
 msgid "Show application version on title"
-msgstr "Toon overdrachtsnelheden op titel"
+msgstr "Toon applicatieversie op titel"
 
 #: src/muuli_wdr.cpp:2110
 msgid "Show transfer rates on title"
@@ -4901,12 +4900,11 @@ msgstr "Verander Taal"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "Er zijn geen vertalingen voor aMule geïnstalleerd"
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Niet beschikbaar"
+msgstr "Geen talen beschikbaar"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
