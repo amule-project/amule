@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-09-29 08:27+0100\n"
+"PO-Revision-Date: 2011-11-01 23:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3275,7 +3275,7 @@ msgstr "aMule'nin çıkıştan önce uyarmasını sağlar."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr ""
+msgstr "Kapatma butonuna tıklandığında uygulamayı sakla"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -4862,12 +4862,11 @@ msgstr "Dili Değiştirin "
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "aMule tercümeleri kurulu değildir"
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Devre dışı"
+msgstr "Diller mevcut değil"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
