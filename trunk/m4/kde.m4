@@ -185,29 +185,3 @@ AC_DEFUN([KDE_APPLNK_PATH_CHECK],
 	AC_MSG_RESULT(${KDE_APPLNK_PATH})
 	AC_SUBST(KDE_APPLNK_PATH)
 ])
-
-AC_DEFUN([CHECK_HELPER_APPS],
-[
-	AC_PATH_PROGS(KBUILDSYCOCA, kbuildsycoca4 kbuildsycoca)
-
-	AS_IF([test -z ${KBUILDSYCOCA}],
-	[
-		echo "No tool for KDE Systemcache Management found"
-		exit 1
-	])
-
-	AC_SUBST(KBUILDSYCOCA)
-
-	AC_PATH_PROG(UPDATE_MIME_DATABASE, update-mime-database)
-
-	AS_IF([test -z ${UPDATE_MIME_DATABASE}],
-	[
-		echo "No tool for MIME Datanase Management found"
-		exit 1
-	])
-
-	AC_SUBST(UPDATE_MIME_DATABASE)
-
-	USER_INSTALL_HOOK="USER_INSTALL"
-	AC_SUBST(USER_INSTALL_HOOK)
-])
