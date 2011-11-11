@@ -1,3 +1,27 @@
+amule (2.3.1) testing; urgency=low
+
+  * New Upstream Release
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Fri, 11 Nov 2011 11:11:11 +0200
+
+amule (2.3.0~rc2+svn-10603) testing; urgency=low
+
+  * Removed amule-ed2k.docs
+  * Switched to debhelper 8
+  * Resorted all files alphabetically
+  * Switched to 3.0 (quilt) source-format
+  * Updated build-deps to dh-8 and wx 2.8.12 minimum
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Thu, 01 Sep 2011 15:34:28 +0200
+
+amule (2.3.0~rc2+svn-10600) testing; urgency=low
+
+  * New upstream release candidate
+  * Removed amule-i18n-ro package
+  * Synced manpages to upstream
+
+ -- Dévai Tamás (gonosztopi) <gonosztopi@amule.org>  Sun, 14 Aug 2011 20:56:11 +0000
+
 amule (2.2.6+svn-10406) testing; urgency=low
 
   * Bumped Standards Version to 3.9.1
