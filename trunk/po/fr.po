@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-09-10 20:11+0100\n"
+"PO-Revision-Date: 2011-11-09 18:49+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -2166,7 +2166,7 @@ msgstr "En attente : %u"
 
 #: src/GenericClientListCtrl.cpp:1029
 msgid "Uploading"
-msgstr "Téléversement"
+msgstr "Émission en cours"
 
 #: src/GenericClientListCtrl.cpp:1031
 msgid "None"
@@ -3348,7 +3348,7 @@ msgstr "Confirmation de fermeture d'aMule."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr ""
+msgstr "Cacher la fenêtre de l'application lorsque le bouton Fermer est pressé"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -4964,12 +4964,11 @@ msgstr "Changer de Langue"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "Il n'y a pas de traductions installés pour aMule"
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Non disponible"
+msgstr "Pas de langues disponibles"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
