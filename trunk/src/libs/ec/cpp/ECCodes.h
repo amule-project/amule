@@ -33,7 +33,7 @@ typedef uint8_t ec_tagtype_t;
 typedef uint32_t ec_taglen_t;
 
 enum ProtocolVersion {
-	EC_CURRENT_PROTOCOL_VERSION = 0x0203
+	EC_CURRENT_PROTOCOL_VERSION = 0x0204
 };
 
 enum ECFlags {
@@ -467,7 +467,7 @@ enum EcPrefs {
 wxString GetDebugNameProtocolVersion(uint16 arg)
 {
 	switch (arg) {
-		case 0x0203: return wxT("EC_CURRENT_PROTOCOL_VERSION");
+		case 0x0204: return wxT("EC_CURRENT_PROTOCOL_VERSION");
 		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
 	}
 }
