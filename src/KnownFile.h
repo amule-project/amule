@@ -302,6 +302,9 @@ public:
 	void	SetShowPeers( bool val )	{ m_showPeers = val; }
 	bool	ShowPeers()	const			{ return m_showPeers; }
 
+	virtual	void SetHashingProgress(uint16) const {}	// does something for CPartFile only
+	uint16	GetHashingProgress() const	{ return m_hashingProgress; }
+
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);
 	friend class CKnownFilesRem;
@@ -342,6 +345,10 @@ protected:
 	uint8	m_iUpPriority;
 	bool	m_bAutoUpPriority;
 	bool	m_PublishedED2K;
+	// Index of part being hashed, 0: no hashing in progress.
+	// The known file is const in the hashing thread, so rather drill this little hole by making it mutable
+	// than opening it all up.
+	mutable	uint16 m_hashingProgress;
 
 	/* Kad stuff */
 	Kademlia::WordList wordlist;
