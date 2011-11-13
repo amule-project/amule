@@ -976,7 +976,8 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 				
 				wxMemoryDC cdcStatus;
 				
-				if ( item->dwUpdated < dwTicks || !item->status || iWidth != item->status->GetWidth() ) {
+				if (item->dwUpdated < dwTicks || file->GetHashingProgress() > 0
+						|| !item->status || iWidth != item->status->GetWidth()) {
 					if ( item->status == NULL) {
 						item->status = new wxBitmap(iWidth, iHeight);
 					} else if ( item->status->GetWidth() != iWidth ) {
@@ -1007,11 +1008,13 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 				dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 				
 				if (thePrefs::ShowPercent()) {
-					// Percentage of completing
-					// We strip anything below the first decimal point,
-					// to avoid Format doing roundings
-					float percent = floor( file->GetPercentCompleted() * 10.0f ) / 10.0f;
-				
+					// Percentage of completing or hashing
+					uint16	hashingProgress = file->GetHashingProgress();
+					double	percent = hashingProgress == 0 ? file->GetPercentCompleted()
+										: 100.0 * hashingProgress * PARTSIZE / file->GetFileSize();
+					if (percent > 100.0) {
+						percent = 100.0;
+					}
 					wxString buffer = CFormat(wxT("%.1f%%")) % percent;
 					int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
@@ -1020,7 +1023,9 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 					
 					dc->GetTextExtent(buffer, &textwidth, &textheight);
 					wxColour AktColor = dc->GetTextForeground();
-					if (thePrefs::ShowProgBar()) {
+					// Ordinary progress bar: white percentage
+					// Hashing progressbar (green/yellow): black percentage
+					if (thePrefs::ShowProgBar() && hashingProgress == 0) {
 						dc->SetTextForeground(*wxWHITE);
 					} else {
 						dc->SetTextForeground(*wxBLACK);
@@ -1295,8 +1300,19 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		s_ChunkBar.Fill( bFlat ? crFlatProgress : crProgress );
 		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
 		return;
+	} else if (file->GetHashingProgress() > 0) {
+		uint64 left = file->GetHashingProgress() * PARTSIZE;
+		if (left < file->GetFileSize() - 1) {
+			// Fill the amount not yet hashed with yellow
+			s_ChunkBar.FillRange(left + 1, file->GetFileSize() - 1, bFlat ? crFlatPending : crPending);
+		} else {
+			left = file->GetFileSize() - 1;
+		}
+	    // Fill the amount already hashed with green
+	    s_ChunkBar.FillRange(0, left, bFlat ? crFlatProgress : crProgress);
+		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat);
+		return;
 	}
-	
 	// Part availability ( of missing parts )
 	const CGapList& gaplist = file->GetGapList();
 	CGapList::const_iterator it = gaplist.begin();

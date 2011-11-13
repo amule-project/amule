@@ -3898,6 +3898,13 @@ uint16 CPartFile::GetPartMetNumber() const
 }
 
 
+void CPartFile::SetHashingProgress(uint16 part) const
+{
+	m_hashingProgress = part;
+	Notify_DownloadCtrlUpdateItem(this);
+}
+
+
 #ifndef CLIENT_GUI
 
 uint8 CPartFile::GetStatus(bool ignorepause) const

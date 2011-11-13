@@ -148,18 +148,22 @@ void CHashingTask::Entry()
 	// This loops creates the part-hashes, loop-de-loop.
 	try {
 		for (uint16 part = 0; part < knownfile->GetPartCount() && !TestDestroy(); part++) {
+			m_owner->SetHashingProgress(part + 1);
 			if (CreateNextPartHash(file, part, knownfile.get(), m_toHash) == false) {
 				AddDebugLogLineC(logHasher,
 					CFormat(wxT("Error while hashing file, skipping: %s"))
 						% m_filename);
 			
+				m_owner->SetHashingProgress(0);
 				return;
 			}
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineC(logHasher, wxT("IO exception while hashing file: ") + e.what());
+		m_owner->SetHashingProgress(0);
 		return;
 	}
+	m_owner->SetHashingProgress(0);
 
 	if ((m_toHash & EH_MD4) && !TestDestroy()) {
 		// If the file is < PARTSIZE, then the filehash is that one hash,
