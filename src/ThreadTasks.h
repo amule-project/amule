@@ -112,7 +112,7 @@ protected:
 	const CKnownFile* m_owner;
 
 private:
-	void SetHashingProgress(uint16 part) { if (m_owner) { m_owner->SetHashingProgress(part); } }
+	void SetHashingProgress(uint16 part);
 };
 
 
