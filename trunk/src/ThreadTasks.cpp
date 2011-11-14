@@ -207,6 +207,14 @@ void CHashingTask::Entry()
 }
 
 
+void CHashingTask::SetHashingProgress(uint16 part)
+{
+	if (m_owner) {
+		m_owner->SetHashingProgress(part);
+	}
+}
+
+
 bool CHashingTask::CreateNextPartHash(CFileAutoClose& file, uint16 part, CKnownFile* owner, EHashes toHash)
 {
 	wxCHECK_MSG(!file.Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
