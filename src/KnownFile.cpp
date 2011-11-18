@@ -321,7 +321,6 @@ void CKnownFile::Init()
 	m_lastDateChanged = 0;
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
-	m_hashingProgress = 0;
 
 	statistic.fileParent = this;
 

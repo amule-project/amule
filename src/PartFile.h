@@ -261,13 +261,6 @@ public:
 	void		AddDeadSource(const CUpDownClient* client);
 
 	/**
-	 * Set the current progress of hashing and display it in the download list control.
-	 *
-	 * @param part Number of part currently being hashed. 0 for no hashing in progress.
-	 */
-	virtual	void SetHashingProgress(uint16 part) const;
-
-	/**
 	 * Checks if a source is recorded as being dead for this file.
 	 *
 	 * @param client The client to evaluate.

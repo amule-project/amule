@@ -110,9 +110,6 @@ protected:
 	EHashes m_toHash;
 	//! If a partfile or an AICH hashing, this pointer stores it for callbacks.
 	const CKnownFile* m_owner;
-
-private:
-	void SetHashingProgress(uint16 part);
 };
 
 

@@ -177,7 +177,6 @@ CEC_SharedFile_Tag(file, detail_level, valuemap, EC_TAG_PARTFILE)
 	AddTag(EC_TAG_PARTFILE_LAST_RECV, file->GetLastChangeDatetime(), valuemap);
 	AddTag(EC_TAG_PARTFILE_DOWNLOAD_ACTIVE, file->GetDlActiveTime(), valuemap);
 	AddTag(EC_TAG_PARTFILE_AVAILABLE_PARTS, file->GetAvailablePartCount(), valuemap);
-	AddTag(EC_TAG_PARTFILE_HASHED_PART_COUNT, file->GetHashingProgress(), valuemap);
 
 	AddTag(EC_TAG_PARTFILE_LOST_CORRUPTION, file->GetLostDueToCorruption(), valuemap);
 	AddTag(EC_TAG_PARTFILE_GAINED_COMPRESSION, file->GetGainDueToCompression(), valuemap);
