@@ -1,0 +1,83 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "November 2011" "aMule парсер ссылок eD2k v1.5.1" "утилиты aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH ИМЯ
+ed2k \- aMule парсер ссылок eD2k
+.SH ОБЗОР
+.B_untranslated ed2k
+[\fB\-c\fP \fI<путь>\fP] [\fB\-t\fP \fI<число>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k\-ссылка>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH ОПИСАНИЕ
+Пысылает указанную \fI<eD2k\-ссылку>\fP в aMule, т.е. пишет ее в файл
+~/.aMule/ED2KLinks, который проверяется каждую секунду.
+.TP 
+\fB[ \-c\fP \fI<путь>\fP, \fB\-\-config\-dir\fP=\fI<путь>\fP \fB]\fP
+Прочитать конфигурацию из места, указанного в \fI<пути>\fP, вместо
+домашнего каталога
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<номер>\fP \fB]\fP
+Указать \fI<номер>\fP категории для eD2k ссылок.
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Загружает все ссылки из emulecollection как \fI<ed2k\-ссылки>\fP
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Перечисляет все ссылки из emulecollection как \fI<ed2k\-ссылки>\fP
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Выводит короткую помощь по использованию.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Выводит информацию о версии.
+.TP 
+\fB[ eD2k\-ссылка ]\fP
+Передает eD2k\-ссылку в ядро.
+.PP
+Добавляемая eD2k\-ссылка может быть:
+.RS 3
+.IP \(bu 2
+файловая ссылка (ed2k://|file|...), она будет добавлена в очередь закачки;
+.IP \(bu 2
+серверная ссылка (ed2k://|server|...), она будет добавлена в список
+серверов;
+.IP \(bu 2
+ссылка на список серверов, тогда все сервера из списка будут добавлены в
+список серверов;
+.IP \(bu 2
+magnet\-ссылка;
+.IP \(bu 2
+файл emulecollection.
+.RE
+
+\fBПорядок параметров важен.\fP Вы можете указать более одной ссылки, и каждая
+ссылка может иметь свои собственные параметры. Например \fBed2k
+<ссылка1> \-t2 <ссылка2>\fP загрузит \fI<ссылку1>\fP в
+стандартную категорию и \fI<ссылку2>\fP в категорию 2.
+.SH ФАЙЛЫ
+~/.aMule/ED2KLinks
+.SH "СООБЩЕНИЕ ОБ ОШИБКАХ"
+Пожалуйста, сообщайте об ошибках либо на нашем форуме
+(\fIhttp://forum.amule.org/\fP), либо в багтрекере
+(\fIhttp://bugs.amule.org/\fP). Пожалуйста, не сообщайте об ошбках по
+электронной почте, по нашим спискам рассылки, или напрямую участникам.
+.SH "АВТОРСКИЕ ПРАВА"
+aMule и все прилагающиеся инструменты распространаются под Открытым
+Лицензионным Соглашением GNU (GNU GPL).
+.SH "СМ. ТАКЖЕ"
+.B_untranslated amule\fR(1)
+.SH АВТОРЫ
+Автор страницы помощи: Vollstrecker <amule@vollstreckernet.de>,
+перевод: Radist Morse <radist.morse@gmail.com>

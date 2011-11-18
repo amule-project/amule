@@ -1,0 +1,75 @@
+}
+caption {
+	font-family: Helvetica;
+	font-size: 18px;
+	font-weight: bold;
+	color: #003161;
+}
+th {
+	font-family: Helvetica;
+	font-size: 14px;
+	font-height: 22px;
+	font-weight: bold;
+	color: #003161;
+}
+a:link {
+	color: #003161;
+	text-decoration: none;
+}
+a:active {
+	color: #003161;
+	text-decoration: none;
+}
+a:visited {
+	color: #003161;
+	text-decoration: none;
+}
+a:hover {
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+td {
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: normal;
+}
+label {
+	font-family: Helvetica;
+	font-size: 14px;
+	font-weight: bold;
+}
+.texte {
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: normal;
+}
+.texteinv {
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	color: white;
+}
+label {
+font-family:"trebuchet ms",sans-serif;
+font-size: 12px;
+font-weight:bold
+}
+input {
+border:1px solid #003161;
+background-color: white;
+font-family:"trebuchet ms",sans-serif;
+font-size: 12px;
+color: #003161;
+}
+select, option {
+background-color: white;
+font-size: 12px;
+color: #003161;
+}
+textarea {
+border:1px solid #003161;
+background-color: white;
+font-family:"trebuchet ms",sans-serif;
+font-size: 12px;
+color: #003161;
+}

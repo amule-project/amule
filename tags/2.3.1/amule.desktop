@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=aMule
+Exec=amule
+Icon=amule
+Terminal=false
+Type=Application
+Categories=Network;P2P;
+Comment=A client for the eD2k network
+Comment[fr]=Un client pour le réseau eD2k
+Comment[tr]=eD2k ağı için istemci

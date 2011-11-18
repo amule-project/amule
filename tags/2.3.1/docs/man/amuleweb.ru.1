@@ -1,0 +1,215 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "November 2011" "aMule webserver v2.3.1" "утилиты aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH ИМЯ
+amuleweb \- вебсервер aMule
+.SH ОБЗОР
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<хост>\fP] [\fB\-p\fP \fI<порт>\fP] [\fB\-P\fP
+\fI<пароль>\fP] [\fB\-f\fP \fI<путь>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<язык>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<имя>\fP] [\fB\-s\fP \fI<порт>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<порт>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<пароль>\fP] [\fB\-G\fP \fI<пароль>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<путь>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<путь>\fP]
+
+.SH ОПИСАНИЕ
+\fBamuleweb\fP организует доступ к amule через веб браузер. Вы можете запустить
+amuleweb вместе с \fBamule\fP(1), или отдельно позже. Настройки могут быть
+определены с помощью командной строки или файла конфигурации. Опции
+командной строки являются приоритетными по отношению к файлу конфигурации.
+.TP 
+\fB[ \-h\fP \fI<хост>\fP, \fB\-\-host\fP=\fI<хост>\fP \fB]\fP
+Адрес компьютера на котором работает aMule (по умолчанию:
+\fIlocalhost\fP). \fI<Хост>\fP может быть IP\-адресом или DNS\-именем.
+.TP 
+\fB[ \-p\fP \fI<порт>\fP, \fB\-\-port\fP=\fI<порт>\fP \fB]\fP
+Порт, который использует aMule для внешних соединений. Указывается в
+Настройках\->Удаленное управление (по умолчанию: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<пароль>\fP, \fB\-\-password\fP=\fI<пароль>\fP \fB]\fP
+Пароль для внешних соединений.
+.TP 
+\fB[ \-f\fP \fI<путь>\fP, \fB\-\-config\-file\fP=\fI<путь>\fP \fB]\fP
+Использовать указанный файл конфигурации. По умолчанию используется
+\fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Не печетать ничего в стандартный вывод.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Выводить также отладочную информацию.
+.TP 
+\fB[ \-l\fP \fI<язык>\fP, \fB\-\-locale\fP=\fI<язык>\fP \fB]\fP
+Задать локаль (язык). См. секцию \fBЗАМЕЧАНИЯ\fP для дополнительной информации
+по параметру \fI<язык>\fP.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Записать параметр командной строки в файл конфигурации и выйти
+.TP 
+\fB[ \-t\fP \fI<имя>\fP, \fB\-\-template\fP=\fI<имя>\fP \fB]\fP
+Устанавливает шаблон с указанным \fI<именем>\fP. Подробности в секции
+\fBПОДДЕРЖКА СКИНОВ\fP.
+.TP 
+\fB[ \-s\fP \fI<порт>\fP, \fB\-\-server\-port\fP=\fI<порт>\fP \fB]\fP
+HTTP порт вебсервера. Этот порт должен быть указан в строке адреса браузера
+(по умолчанию: \fI4711\fP).
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+Включить UPnP.
+.TP 
+\fB[ \-U\fP \fI<порт>\fP, \fB\-\-upnp\-port\fP \fI<порт>\fP \fB]\fP
+Порт UPnP.
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Включает использование gzip\-сжатия HTTP данных для уменьшения трафика.
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+Отключает использование gzip\-сжатия (вариант по умолчанию).
+.TP 
+\fB[ \-A\fP \fI<пароль>\fP, \fB\-\-admin\-pass\fP=\fI<пароль>\fP \fB]\fP
+Пароль для полного доступа к вебсерверу.
+.TP 
+\fB[ \-G\fP \fI<пароль>\fP, \fB\-\-guest\-pass\fP=\fI<пароль>\fP \fB]\fP
+Пароль для гостевого доступа к вебсерверу.
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Разрешить гостевой доступ.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Запретить гостевой доступ (вариант по умолчанию).
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+Загрузить/сохранить настройки вебсервера из/в удаленный aMule. Это приводит
+к игнорированию параметров командной строки и конфигурационного файла, и
+загрузки их из aMule. При сохранении настроек они будут писаться не в файл
+конфигурации, а в aMule. (Конечно, работает только для настроек которые
+могут быть заданы через меню Настройки\->Удаленный контроль)
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+Отключить интерпретатор PHP (устарело)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+Перекомпилирует страницы PHP при каждом обращении.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<путь>\fP \fB]\fP
+Создать файл конфигурации на основе файла указанного в \fI<пути>\fP и
+выйти. Указанный файл должен быть валидным файлом конфигурации aMule.
+.TP 
+.B_untranslated [ \-\-help ]\fR
+Выводит короткую помощь по использованию.
+.TP 
+.B_untranslated [ \-\-version ]\fR
+Выводит информацию о версии.
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<путь>\fP \fB]\fP
+Путь к файлу конфигурации aMule. \fBНЕ ИСПОЛЬЗУЙТЕ НАПРЯМУЮ!\fP aMule
+использует данную опцию для запуска amuleweb вместе с amule. Эта опция
+приводит к игнорированию параметров командной строки и конфигурационного
+файла, настройки читаются из заданного файла. Также подразумеваются опции
+\fB\-q \-L\fP.
+.SH ЗАМЕЧАНИЯ
+.SS Пути
+Для всех опций, в которых указывается \fI<путь>\fP, если \fIпуть\fP не
+содержит каталога (т.е. только имя самого файла), то предполагается, что
+файл находится в каталоге конфигурации, \fI~/.aMule\fP.
+.SS Языки
+Параметр \fI<язык>\fP для опции \fB\-l\fP имеет следующую форму:
+\fIязык\fP[\fB_\fP\fIЯЗЫК\fP][\fB.\fP\fIкодировка\fP][\fB@\fP\fIмодификатор\fP], где \fIязык\fP
+является основным языком, \fIЯЗЫК\fP \- диалект/территория, \fIкодировка\fP \-
+используемая кодировка символов и \fIмодификатор\fP позволяет пользователю
+использовать определенный вариант локализации в данной категории.
+
+К примеру, все следующие строчки являются приемлемыми:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Хотя все приведенный строки будут приняты, поля \fIкодировка\fP и
+\fIмодификатор\fP пока не используются.
+
+К дополнению к приведенному формату, можно просто указать английское имя
+языка. Так, \fB\-l russian\fP тоже приемлемо и равносильно \fB\-l ru_RU\fP.
+
+Когда язык не указан ни в качестве опции ни в файле конфигурации,
+используется системный.
+.SH "ПОДДЕРЖКА СКИНОВ"
+\fBamuleweb\fP имеет возможность отображать информацию с разными скинами. Эти
+скины называются шаблонами, и вы можете переключить amuleweb на определенный
+шаблон использую опцию \fB\-t\fP командной строки. Шаблоны ищутся в двух местах:
+первое \fI~/.aMule/webserver/\fP, затем \fI/usr/share/amule/webserver/\fP, если
+инсталяция была проведена с \-\-prefix=/usr.
+.PP
+Каждый шаблон должен являться каталогом с именем шаблона, и все необходимые
+файлы должны находится внутри этого каталога.
+.SH ФАЙЛЫ
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH ПРИМЕРЫ
+Как правило, в первый раз amuleweb запускается так:
+.PP
+\fBamuleweb\fP \fB\-h\fP \fIимя_хоста\fP \fB\-p\fP \fIEC_порт\fP \fB\-P\fP \fIEC_пароль\fP \fB\-s\fP
+\fIHTTP_порт\fP \fB\-A\fP \fIпароль_полного_доступа\fP \fB\-w\fP
+.PP
+или
+.PP
+\fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+Это сохранит параметры в \fI$HOME/.aMule/remote.conf\fP, и в дальнейшем надо
+будет только набрать:
+.PP
+.B_untranslated amuleweb
+.PP
+Конечно, вы можете указать иное количество аргументов в первой строке
+примера, или не использовать ее вообще.
+.SH "СООБЩЕНИЕ ОБ ОШИБКАХ"
+Пожалуйста, сообщайте об ошибках либо на нашем форуме
+(\fIhttp://forum.amule.org/\fP), либо в багтрекере
+(\fIhttp://bugs.amule.org/\fP). Пожалуйста, не сообщайте об ошбках по
+электронной почте, по нашим спискам рассылки, или напрямую участникам.
+.SH "АВТОРСКИЕ ПРАВА"
+aMule и все прилагающиеся инструменты распространаются под Открытым
+Лицензионным Соглашением GNU (GNU GPL).
+.SH "СМ. ТАКЖЕ"
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH АВТОРЫ
+Автор страницы помощи: Vollstrecker <amule@vollstreckernet.de>,
+перевод: Radist Morse <radist.morse@gmail.com>

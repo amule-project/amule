@@ -1,0 +1,54 @@
+This debian rules file controls the buildprocess of the packages of aMule you can either run
+dpkg-buildpackage -us -uc -b -rfakeroot
+to build them all, or you can invoke debian/rules directly with the target you want to be build. If you run
+debian/rules without a target, or with the target help, this help will be printed. Other possible targets
+are listed below, you can combine them as you need. amule-common, the packages with the skins and
+i18n-en-gb are build everytime. The Theme for the webserver get build when you build the
+webserver.
+
+amule			Builds the normal GUI-Version of aMule
+ed2k			Builds the ed2k-client of aMule
+cas			Builds the cas binary for commandline statistics
+wxcas			Builds the graphical version of cas
+webserver		Builds the webserver for controlling aMule
+remotegui		Builds the remote GUI for controlling aMule
+daemon			Builds the daemonized version of aMule
+alcc			Builds the ed2k-link-creation utility of aMule
+alc			Builds the graphical version of alcc
+amulecmd		Builds the commandline-client for controlling aMule
+xas			Enables the creation of the xas package
+plasmamule		Enables creation of plasma specific parts
+amule-dbg		Creates the debugging symbols for the amule binary
+ed2k-dbg		Creates the debugging symbols for the ed2k binary
+cas-dbg			Creates the debugging symbols for the cas binary
+wxcas-dbg		Creates the debugging symbols for the wxcas binary
+webserver-dbg		Creates the debugging symbols for the amuleweb binary
+remotegui-dbg		Creates the debugging symbols for the amulegui binary
+daemon-dbg		Creates the debugging symbols for the amuled binary
+alcc-dbg		Creates the debugging symbols for the alcc binary
+alc-dbg			Creates the debugging symbols for the alc binary
+amulecmd-dbg		Creates the debugging symbols for the amulecmd binary
+plasmamule-dbg		Creates the debugging symbols for the plasmamule stuff
+amule-utils		Creates the Metapackage for the commandline utilities and all these utils
+			* alcc
+			* amulecmd
+			* cas
+amule-utils-gui		Creates the Metapackage for the graphical utilities and all these utils
+			* alc
+			* remotegui
+			* wxcas
+i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, ast, bg, ca, cs,
+			da, de, el, es, et-ee, eu, fi, fr, gl, he, hr, hu, it, it-ch, ja, ko-kr, lt, nl,
+			nn, pl, pt-br, pt-pt, ro, ru, sl, sq, sv, tr, uk, zh-cn or zh-tw
+			If no i18n-package is given, all will be build.
+			If you just want en_GB, use i18n-en-only
+
+If one of the -dbg targets is choosen, the corresponding binary will be built, too. In this case,
+debugging is enabled, optimising is disabled. Is no -dbg target choosen, debugging is disabled, 
+optimising is enabled.
+
+If you choose to just build a few packages, you have to explicit activate ed2k or xas if 
+you want to get the pkg's
+
+The targets can be given in any order and combination
+

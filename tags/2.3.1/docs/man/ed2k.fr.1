@@ -1,0 +1,87 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "Novembre 2011" "aMule eD2k link parser v1.5.1" "Outils d'aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOM
+ed2k \- analyseur lien eD2k pour aMule
+.SH SYNOPSIS
+.B_untranslated ed2k
+[\fB\-c\fP \fI<chemin>\fP] [\fB\-t\fP \fI<num>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<lien eD2k>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH DESCRIPTION
+Envoie le \fI<lien\-eD2k>\fP à aMule, c'est à dire qu'il l'écrit dans le
+fichier  ~/.aMule/ED2KLinks, qui sera vérifié par aMule chaque seconde pour
+les liens.
+.TP 
+\fB[ \-c\fP \fI<chemin>\fP, \fB\-\-config\-dir\fP=\fI<chemin>\fP \fB]\fP
+Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
+défaut
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+Définir la catégorie pour les liens eD2k passé à  \fI<num>\fP
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Charge tous les liens trouvés dans le emulecollection donné dans
+\fI<lien\-eD2k>\fP
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Liste tous les liens trouvés dans le emulecollection donné dans
+\fI<lien\-eD2k>\fP
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Afficher une court description d'utilisation.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Affiche le numéro de la version actuelle.
+.TP 
+\fB[ lien eD2k ]\fP
+Ajoute un lien eD2k au noyau.
+.PP
+Le lien eD2k à ajouter peut être :
+.RS 3
+.IP \(bu 2
+un lien fichier (ed2k://|fichier|…), il sera ajouté à la file de
+téléchargement;
+.IP \(bu 2
+un lien serveur (ed2k://|serveur|…), il sera ajouté à la liste des serveurs;
+.IP \(bu 2
+un lien de liste de serveurs, dans ce cas tous les serveurs dans la liste
+seront ajoutés à la liste des serveurs;
+.IP \(bu 2
+un lien magnétique;
+.IP \(bu 2
+un fichier de collection emule.
+.RE
+
+\fBLe ordre dans lequel vous donnez les paramètres est important.\fP Vous
+pouvez donner plus d'un lien, et chaque lien peut avoir ses propres
+paramètres. Par exemple, \fBed2k <lien1> \-t2 <lien2>\fP
+téléchargera \fI<lien1>\fP dans la catégorie standard et
+\fI<lien2>\fP dans la catégorie 2.
+.SH FICHIERS
+~/.aMule/ED2KLinks
+.SH "RAPPORTER DES BOGUES"
+Veuillez rapporter les bogues sur notre forum (\fIhttp://forum.amule.org/\fP),
+ou sur notre bugtracker (\fIhttp://bugs.amule.org/\fP).  Veuillez ne pas
+rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
+à n'importe quel membre  de l'équipe.
+.SH COPYRIGHT
+aMule et tout ses outils sont distribués sous la licence GNU General Public
+License.
+.SH "VOIR AUSSI"
+.B_untranslated amule\fR(1)
+.SH AUTEUR
+Cette manpage a été écrite par Vollstrecker
+<amule@vollstreckernet.de>

@@ -1,0 +1,90 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "Novembre 2011" "Analizzatore di collegamenti eD2k per aMule v1.5.1" "Utilità di aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOME
+ed2k \- Analizzatore di collegamenti eD2k per aMule
+.SH SINTASSI
+.B_untranslated ed2k
+[\fB\-c\fP \fI<percorso>\fP] [\fB\-t\fP \fI<numero>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<collegamento\-eD2k>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH DESCRIZIONE
+Invia il \fI<collegamento\-eD2k>\fP ad aMule, cioè lo scrive nel file
+~/.aMule/ED2KLinks, che sarà controllato da aMule ogni secondo per nuovi
+collegamenti.
+.TP 
+\fB[ \-c\fP \fI<percorso>\fP, \fB\-\-config\-dir\fP=\fI<percorso>\fP \fB]\fP
+Legge la configurazione dal \fI<percorso>\fP invece che dalla directory
+dell'utente.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<numero>\fP \fB]\fP
+Imposta la categoria per i collegamenti eD2k ricevuti a \fI<numero>\fP
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Carica tutti i collegamenti trovati nel file emulecollection fornito come
+\fI<collegamento\-ed2k>\fP
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Elenca tutti i collegamenti trovati nel file emulecollection fornito come
+\fI<collegamento\-ed2k>\fP
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Visualizza una breve descrizione dell'utilizzo.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Visualizza il numero di versione corrente.
+.TP 
+\fB[ collegamento\-eD2k ]\fP
+Aggiunge un collegamento eD2k.
+.PP
+Il collegamento eD2k da aggiungere può essere:
+.RS 3
+.IP \(bu 2
+un collegamento a un file (ed2k://|file|...), sarà aggiunto alla coda di
+download;
+.IP \(bu 2
+un collegamento a un server (ed2k://|server|...), sarà aggiunto alla lista
+dei server;
+.IP \(bu 2
+un collegamento a una lista di server, nel cui caso tutti i server inclusi
+nella lista verranno aggiunti alla lista dei server;
+.IP \(bu 2
+un collegamento magnet;
+.IP \(bu 2
+un file emulecollection.
+.RE
+
+\fBL'ordine con cui fornisci i parametri è importante.\fP Si può fornire più di
+un collegamento, e ogni collegamento può avere propri parametri. Per esempio
+\fBed2k <collegamento1> \-t2 <collegamento2>\fP eseguirà il
+download di \fI<collegamento1>\fP in categoria standard e
+\fI<collegamento2>\fP in categoria 2.
+.SH FILE
+~/.aMule/ED2KLinks
+.SH "SEGNALARE I BUG"
+Per favore segnalare i bug nel nostro forum (\fIhttp://forum.amule.org/\fP) o
+nel nostro bugtracker (\fIhttp://bugs.amule.org/\fP). Per favore non segnalare
+i bug via posta elettronica, né nella nostra mailing list né direttamente a
+qualunque membro del gruppo.
+.SH COPYRIGHT
+aMule e tutti i programmi di utilità correlati sono distribuiti in accordo
+alla GNU General Public License.
+.SH "VEDI ANCHE"
+.B_untranslated amule\fR(1)
+.SH AUTORE
+Questa pagina del manuale è stata scritta da Vollstrecker
+<amule@vollstreckernet.de>
+.SH TRADUZIONE ITALIANA
+Stefano Corti <iz0bbz@libero.it>

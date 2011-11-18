@@ -1,0 +1,61 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH CAS 1 "November 2011" "cas v0.8" "aMule utilidades"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOMBRE
+cas \- c estadisticas de aMule
+.SH SINOPSIS
+.B_untranslated cas
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-p ]
+[\fB\-c\fP \fI<path>\fP]
+
+.B_untranslated cas
+.RB_untranslated [ \-h ]
+.SH DESCRIPCIÓN
+\fBcas\fP is a program for displaying the contents of your aMule online
+signature file to console (in a human readable form). For this to work, you
+must enable the "Online Signature" option in aMule's preferences.
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
+Writes the online signature picture.  You can optionally append
+\fI=<PATH>\fP to this option, to specify the location it should be
+written to.
+.TP 
+.B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
+HTML page with stats and picture.  You can optionally append
+\fI=<PATH>\fP to this option, to specify the location it should be
+written to.
+.TP 
+\fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
+Leer configuración desde \fI<path>\fP en lugar de home
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Imprime una breve descripción de uso.
+.P
+Without any options, it prints online signature data to stdout.
+
+\fBcas\fP was written by Pedro de Oliveira <falso@rdk.homeip.net>
+.SH ARCHIVOS
+~/.aMule/casrc
+.br
+stat.png
+.br
+tmp.html
+.SH "INFORMANDO ERRORES"
+Por favor informa de fallos ya sea en nuestro foro
+(\fIhttp://forum.amule.org/\fP), o en nuestro bugtracker
+(\fIhttp://bugs.amule.org/\fP). Por favor no informe de fallos por correo, ni
+en nuestras listas, ni directamente al correo de algun miembro del equipo.
+.SH COPYRIGHT
+aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
+General Public License.
+.SH "VEASE TAMBIEN"
+.B_untranslated amule\fR(1), \fBwxcas\fR(1)
+.SH AUTOR
+Esta página de manualfue escrita por Vollstrecker
+<amule@vollstreckernet.de>

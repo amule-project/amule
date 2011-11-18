@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug29|Win32">
+      <Configuration>Debug29</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release29|Win32">
+      <Configuration>Release29</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{10E42FDA-AA34-4F8E-BC7C-B51EACA4E75F}</ProjectGuid>
+    <RootNamespace>aMuleD</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>$(SolutionDir)PCH.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>$(SolutionDir)PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Daemon\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;shlwapi.lib;$(OutDir)libext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>$(SolutionDir)PCH.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>$(SolutionDir)PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Daemon\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;shlwapi.lib;$(OutDir)libext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>$(SolutionDir)PCH.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>$(SolutionDir)PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Daemon\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;shlwapi.lib;$(OutDir)libext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CONSOLE;wxUSE_GUI=0;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;AMULE_DAEMON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>$(SolutionDir)PCH.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>$(SolutionDir)PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Daemon\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;shlwapi.lib;$(OutDir)libext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\amule.cpp" />
+    <ClCompile Include="..\..\..\..\src\amuleAppCommon.cpp" />
+    <ClCompile Include="..\..\..\..\src\amuled.cpp" />
+    <ClCompile Include="..\..\..\..\src\AsyncDNS.cpp" />
+    <ClCompile Include="..\..\..\..\src\BaseClient.cpp" />
+    <ClCompile Include="..\..\..\..\src\CanceledFileList.cpp" />
+    <ClCompile Include="..\..\..\..\src\CFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientCredits.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientCreditsList.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientList.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientRef.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientTCPSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\ClientUDPSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\IPFilterScanner.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\Contact.cpp" />
+    <ClCompile Include="..\..\..\..\src\CorruptionBlackBox.cpp" />
+    <ClCompile Include="..\..\..\..\src\DataToText.cpp" />
+    <ClCompile Include="..\..\..\..\src\DeadSourceList.cpp" />
+    <ClCompile Include="..\..\..\..\src\DownloadClient.cpp" />
+    <ClCompile Include="..\..\..\..\src\DownloadQueue.cpp" />
+    <ClCompile Include="..\..\..\..\src\ECSpecialCoreTags.cpp" />
+    <ClCompile Include="..\..\..\..\src\ECSpecialMuleTags.cpp" />
+    <ClCompile Include="..\..\..\..\src\ED2KLink.cpp" />
+    <ClCompile Include="..\..\..\..\src\EMSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\EncryptedDatagramSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\EncryptedStreamSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Entry.cpp" />
+    <ClCompile Include="..\..\..\..\src\ExternalConn.cpp" />
+    <ClCompile Include="..\..\..\..\src\FileArea.cpp" />
+    <ClCompile Include="..\..\..\..\src\FileAutoClose.cpp" />
+    <ClCompile Include="..\..\..\..\src\Friend.cpp" />
+    <ClCompile Include="..\..\..\..\src\FriendList.cpp" />
+    <ClCompile Include="..\..\..\..\src\GapList.cpp" />
+    <ClCompile Include="..\..\..\..\src\GetTickCount.cpp" />
+    <ClCompile Include="..\..\..\..\src\GuiEvents.cpp" />
+    <ClCompile Include="..\..\..\..\src\HTTPDownload.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Indexed.cpp" />
+    <ClCompile Include="..\..\..\..\src\IPFilter.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Kademlia.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\net\KademliaUDPListener.cpp" />
+    <ClCompile Include="..\..\..\..\src\KnownFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\KnownFileList.cpp" />
+    <ClCompile Include="..\..\..\..\src\ListenSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\Logger.cpp" />
+    <ClCompile Include="..\..\..\..\src\MagnetURI.cpp" />
+    <ClCompile Include="..\..\..\..\src\MemFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\MuleUDPSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\NetworkFunctions.cpp" />
+    <ClCompile Include="..\..\..\..\src\OtherFunctions.cpp" />
+    <ClCompile Include="..\..\..\..\src\Packet.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\net\PacketTracking.cpp" />
+    <ClCompile Include="..\..\..\..\src\Parser.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">4065;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4065;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">4065;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4065;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\PartFile.cpp" />
+    <ClCompile Include="..\PCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\PlatformSpecific.cpp" />
+    <ClCompile Include="..\..\..\..\src\Preferences.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Prefs.cpp" />
+    <ClCompile Include="..\..\..\..\src\Proxy.cpp" />
+    <ClCompile Include="..\..\..\..\src\RandomFunctions.cpp" />
+    <ClCompile Include="..\..\..\..\src\RC4Encrypt.cpp" />
+    <ClCompile Include="..\..\..\..\src\RLE.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingBin.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\routing\RoutingZone.cpp" />
+    <ClCompile Include="..\..\..\..\src\SafeFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\Scanner.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">4003;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4003;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">4003;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4003;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\Search.cpp" />
+    <ClCompile Include="..\..\..\..\src\SearchFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\SearchList.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\SearchManager.cpp" />
+    <ClCompile Include="..\..\..\..\src\Server.cpp" />
+    <ClCompile Include="..\..\..\..\src\ServerConnect.cpp" />
+    <ClCompile Include="..\..\..\..\src\ServerList.cpp" />
+    <ClCompile Include="..\..\..\..\src\ServerSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\ServerUDPSocket.cpp" />
+    <ClCompile Include="..\..\..\..\src\SHA.cpp" />
+    <ClCompile Include="..\..\..\..\src\SHAHashSet.cpp" />
+    <ClCompile Include="..\..\..\..\src\SharedFileList.cpp" />
+    <ClCompile Include="..\..\..\..\src\StateMachine.cpp" />
+    <ClCompile Include="..\..\..\..\src\Statistics.cpp" />
+    <ClCompile Include="..\..\..\..\src\StatTree.cpp" />
+    <ClCompile Include="..\..\..\..\src\Tag.cpp" />
+    <ClCompile Include="..\..\..\..\src\TerminationProcess.cpp" />
+    <ClCompile Include="..\..\..\..\src\TerminationProcessAmuleweb.cpp" />
+    <ClCompile Include="..\..\..\..\src\ThreadScheduler.cpp" />
+    <ClCompile Include="..\..\..\..\src\ThreadTasks.cpp" />
+    <ClCompile Include="..\..\..\..\src\Timer.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\kademlia\UDPFirewallTester.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp" />
+    <ClCompile Include="..\..\..\..\src\UploadBandwidthThrottler.cpp" />
+    <ClCompile Include="..\..\..\..\src\UploadClient.cpp" />
+    <ClCompile Include="..\..\..\..\src\UploadQueue.cpp" />
+    <ClCompile Include="..\..\..\..\src\UserEvents.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\GapList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libs\libmulecommon\libmulecommon.vcxproj">
+      <Project>{293e6133-239a-4ed4-838e-9182b07c6b35}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\libmuleec\libmuleec.vcxproj">
+      <Project>{5a9ec6a5-68a3-43c8-960e-f7f03b16f1d1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

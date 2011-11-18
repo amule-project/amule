@@ -1,0 +1,85 @@
+.TH AMULE 1 "November 2011" "aMule v2.3.1" "aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NAME
+amule \- the all\-platform eMule p2p client
+.SH SYNOPSIS
+.B_untranslated amule
+.RB [ \-c " " \fI<path> ]
+.RB [ \-geometry " " \fI<geom> ]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+.RB [ \-w " " \fI<path> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
+.RB [ \-t " " \fI<num> ]
+.RI [ eD2k-link ]
+
+.B_untranslated amule
+.RB_untranslated [ \-v ]
+
+.B_untranslated amule
+.RB_untranslated [ \-h ]
+
+.SH DESCRIPTION
+.TP
+\fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
+Read config from \fI<path>\fR instead of home
+.TP
+\fB[ \-geometry \fI<geom>\fR \fB]\fR
+Sets the geometry of the app. \fI<geom>\fR uses the same format as standard X11 apps:	[\fB=\fR][\fI<width>\fR{\fBxX\fR}\fI<height>\fR][{\fB+-\fR}\fI<xoffset>\fR{\fB+-\fR}\fI<yoffset>\fR]
+.TP
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
+Prints log messages to stdout.
+.TP
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
+Resets config to default values.
+.TP
+\fB[ \-w\fR \fI<path>\fR, \fB\-\-use\-amuleweb\fR=\fI<path>\fR \fB]\fR
+Specify location of amuleweb binary to \fI<path>\fR.
+.TP
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Does not handle fatal exception.
+.TP
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Does not disable stdin.
+.TP
+\fB[ \-t\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
+Set category for passed eD2k links to \fI<num>\fR
+.TP
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Displays the current version number.
+.TP
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Prints a short usage description.
+.TP
+\fB[ eD2k-link ]\fR
+Adds an eD2k-link to the core.
+.PP
+The eD2k link to be added can be:
+.RS 3
+.IP \(bu 2
+a file link (ed2k://|file|...), it will be added to the download queue;
+.IP \(bu 2
+a server link (ed2k://|server|...), it will be added to the server list;
+.IP \(bu 2
+a serverlist link, in which case all servers in the list will be added to the server list;
+.IP \(bu 2
+a magnet link.
+.RE
+.SH NOTES
+.SS Paths
+For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
+directory part (i.e. just a plain filename), then it is considered to be under
+the aMule configuration directory, \fI~/.aMule\fR.
+.SH FILES
+~/.aMule/*
+.SH REPORTING BUGS
+Please report bugs either on our forum (\fIhttp://forum.amule.org/\fR), or in our bugtracker (\fIhttp://bugs.amule.org/\fR).
+Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.
+.SH COPYRIGHT
+aMule and all of its related utilities are distributed under the GNU General Public License.
+.SH SEE ALSO
+.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.SH AUTHOR
+This manpage was written by Vollstrecker <amule@vollstreckernet.de>

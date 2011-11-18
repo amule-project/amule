@@ -1,0 +1,88 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "November 2011" "aMule eD2k Verweis parser v1.5.1" "aMule Hilfsprogramme"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NAME
+ed2k \- aMule ED2k Verweis\-Parser
+.SH SYNTAX
+.B_untranslated ed2k
+[\fB\-c\fP \fI<Pfad>\fP] [\fB\-t\fP \fI<Num>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k\-link>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH BESCHREIBUNG
+Sends the given \fI<eD2k\-link>\fP to aMule, i.e. writes it to the file
+~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
+.TP 
+\fB[ \-c\fP \fI<Pfad>\fP, \fB\-\-config\-dir\fP=\fI<Pfad>\fP \fB]\fP
+Liest die Konfiguration <Pfad> anstelle des Home.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<Num>\fP \fB]\fP
+Setzt die Kategorie für den übergebenen eD2k Verweis \fI<Num>\fP
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Lädt alle Verweise aus der als \fI<eD2k_Verweis>\fP übergebenen
+emulecollection.
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Listet alle Verweise in der emulecollection die als
+\fI<eD2k_Verweis>\fP übergeben wurde auf.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Gibt eine kurze Nutzungsbeschreibung aus.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Zeigt die derzeitige Versionsnummer an.
+.TP 
+\fB[ eD2k\-link ]\fP
+Fügt einen eD2k\-Verweis zur Downloadliste hinzu.
+.PP
+Der eD2k\-Verweis darf enthalten:
+.RS 3
+.IP \(bu 2
+ein Link zu einer Datei (ed2k://|file|...), dieser wird Downloadliste
+hinzugefügt;
+.IP \(bu 2
+ein Link zu einem Server (ed2k://|server|...), dieser wird der Serverliste
+hinzugefügt;
+.IP \(bu 2
+ein Serverlisten\-Verweis, in diesem Fall werden alle Server dieser Liste der
+Serverliste hinzugefügt;
+.IP \(bu 2
+ein Magnetverweis;
+.IP \(bu 2
+eine emulecollection Datei.
+.RE
+
+\fBDie Reihenfolge in der du die Parameter angibst, ist entscheidend.\fP Du
+kannst mehr als einen Verweis übergeben und jeder Verweis kann seine eigenen
+Parameter haben.  Zum Beispiel \fBed2k <Verweis1> \-t2
+<Verweis2>\fP lädt \fI<Verweis1>\fP in der Standardkategorie und
+\fI<Verweis2>\fP in Kategorie 2 herunter.
+.SH DATEIEN
+~/.aMule/ED2KLinks
+.SH "FEHLER MELDEN"
+Bitte meldet Fehler entweder in unserem Forum (\fIhttp://forum.amule.org/\fP),
+oder in unseren Bugtracker (\fIhttp://bugs.amule.org/\fP). Bitte meldet uns
+weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
+Teammitglieder.
+.SH COPYRIGHT
+aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
+General Public License
+.SH "SIEHE AUCH"
+.B_untranslated amule\fR(1)
+.SH VERFASSER
+Diese manpage wurde geschrieben von Vollstrecker
+<amule@vollstreckernet.de>
+
+Diese manpage wurde übersetzt von Vollstrecker <amule@vollstreckernet.de>

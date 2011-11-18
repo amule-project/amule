@@ -1,0 +1,288 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULECMD 1 "2011. november" "aMuleCmd v2.3.1" "aMule segédprogramok"
+.als B_untranslated B
+.als RB_untranslated RB
+.als SS_untranslated SS
+.SH NÉV
+amulecmd \- Szöveges program az aMule "távvezérléséhez"
+.SH ÁTTEKINTÉS
+.B_untranslated amulecmd
+[\fB\-h\fP \fI<gép>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<jelszó>\fP] [\fB\-f\fP \fI<fájl>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<nyelv>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP
+\fI<parancs>\fP]\fB \fP}
+
+.B_untranslated amulecmd
+[\fB\-\-create\-config\-from\fP=\fI<fájl>\fP]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-help ]
+.SH LEÍRÁS
+Az amulecmd egy szöveges program az aMule vezérlésére.
+.TP 
+\fB[ \-h\fP \fI<gép>\fP, \fB\-\-host\fP=\fI<gép>\fP \fB]\fP
+A gép, amelyen az aMule fut (alapértelmezés: \fIlocalhost\fP). A
+\fI<gép>\fP lehet egy IP cím vagy egy DNS név.
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+Az aMule távoli elérés portja, amint az a Beállítások\->Távoli Elérés
+panelen beállítható (alapértelemzés: \fI4712\fP).
+.TP 
+\fB[ \-P\fP \fI<jelszó>\fP, \fB\-\-password\fP=\fI<jelszó>\fP \fB]\fP
+A távoli elérés jelszava.
+.TP 
+\fB[ \-f\fP \fI<fájl>\fP, \fB\-\-config\-file\fP=\fI<fájl>\fP \fB]\fP
+A megadott konfigurációs fájl használata. Az alapértelmezett konfigurációs
+fájl: \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Ne írjon semmit a szabvány kimenetre.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Bőbeszédű mód \- a hibakeresési üzenetek megjelenítése.
+.TP 
+\fB[ \-l\fP \fI<nyelv>\fP, \fB\-\-locale\fP=\fI<nyelv>\fP \fB]\fP
+Beállítja a program nyelvét. Lásd a \fBMEGJEGYZÉSEK\fP fejezetet a
+\fI<nyelv>\fP paraméter bővebb leírásához.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+A parancssori paramétereket beírja a konfigurációs fájlba és kilép.
+.TP 
+\fB[ \-c\fP \fI<parancs>\fP, \fB\-\-command\fP=\fI<parancs>\fP \fB]\fP
+Végrehajtja a megadott parancsot, mintha azt a saját parancssorába írtuk
+volna be, majd kilép.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<fájl>\fP \fB]\fP
+Konfigurációs fájl készítése a \fI<fájl>\fP alapján, amely az aMule
+érvényes konfigurációs fájlja kell legyen, majd utána kilép.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Megjeleníti a verziószámot.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Egy rövid használati leírást jelenít meg.
+.SH PARANCSOK
+Minden parancs érzéketlen a kis/nagy betűkre.
+.SS "Add \fI<eD2k\-hivatkozás>\fP | \fI<magnet\-hivatkozás>\fP"
+Egy eD2k vagy magnet hivatkozást ad a letöltéshez.
+
+Az eD2k hivatkozás a következő lehet:
+.RS 3
+.IP \(bu 2
+egy fájl hivatkozás (ed2k://|file|...), ez a letöltési sorhoz lesz
+hozzáadva;
+.IP \(bu 2
+egy kiszolgáló hivatkozás (ed2k://|server|...), ez a kiszolgáló\-listához
+lesz hozzáadva;
+.IP \(bu 2
+egy kiszolgáló\-lista hivatkozás, mely esetben a listában szereplő összes
+kiszolgáló a kiszolgáló\-listához adódik.
+.RE
+
+A magnet hivatkozásnak tartalmaznia kell az eD2k hash\-t és a fájl hosszát.
+.SS "Cancel \fI<hash>\fP | \fI<szám>\fP"
+Megszakítja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
+letöltést. Az értékek megszerzéséhez használd a \fBshow\fP parancsot.
+.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|név>\fP ]"
+Kapcsolódik a hálózathoz.
+
+A Beállításokban engedélyezett összes hálózathoz kapcsolódik.
+
+Az opcionális paraméterrel megadható, melyik hálózathoz csatlakozzon. Egy
+kiszolgáló címének IP:Port formában történő megadásával (ahol az IP vagy egy
+pontozott decimális cím, vagy egy feloldható DNS név) az aMule a megadott
+kiszolgálóhoz fog csatlakozni.
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
+Leválasztás minden csatlakoztatott hálózatról, vagy csak a megadott
+hálózatról.
+.SS "Download \fI<szám>\fP"
+Letölt egy fájlt.
+
+Meg kell adni egy fájl számát a legutóbbi keresésből. Például: a
+\(Bqdownload 12\(rq parancs az előző keresés eredményei közül a 12\-es
+sorszámú fájlt fogja letölteni.
+.SS_untranslated Exit
+Leválasztás az amule(d)\-ről és kilépés az amulecmd\-ből.
+.SS "Get \fI<mit>\fP"
+Megmutat egy beállítás értéket.
+
+A \fI<mit>\fP lehetséges értékei:
+.RS
+.IP BwLimits 10
+Sávszélesség határok.
+.IP IPFilter 10
+IP\-szűrő beállítások.
+.RE
+.SS "Help [ \fI<parancs>\fP ]"
+Egy rövid használati leírást jelenít meg. Ha paraméter nélkül hívjuk meg,
+kilistázza az elérhető parancsokat. Ha egy \fI<parancs>\fP\-ot is
+megadunk, rövid leírást ad az adott parancsról.
+.SS "Pause \fI<hash>\fP | \fI<szám>\fP"
+Megállítja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
+letöltést. Az értékek megszerzéséhez használd a \fBshow\fP parancsot.
+.SS "Priority \fI<prioritás>\fP \fI<hash>\fP | \fI<szám>\fP"
+Beállítja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
+letöltés prioritását.
+
+A \fI<prioritás>\fP lehetséges értékei:
+.RS
+.IP Auto 10
+Automatikus prioritás.
+.IP High 10
+Magas prioritás.
+.IP Low 10
+Alacsony prioritás.
+.IP Normal 10
+Normál prioritás.
+.RE
+.SS_untranslated Progress
+Egy folymatban lévő keresés állapotát jeleníti meg.
+.SS_untranslated Quit
+Az \fBexit\fP parancs szinonímája.
+.SS "Reload \fI<mit>\fP"
+A megadott objektum újratöltése.
+
+A \fI<mit>\fP lehetséges értékei:
+.RS
+.IP Shared 10
+A megosztott fájlok listájt tölti újra.
+.IP IPFilter 10
+Az IP szűrő újratöltése.
+.RE
+.SS_untranslated Reset
+Napló újrakezdése.
+.SS_untranslated Results
+Az utolsó keresés eredményeinek megjelenítése.
+.SS "Resume \fI<hash>\fP | \fI<szám>\fP"
+Folytatja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
+letöltést. Az értékek megszerzéséhez használd a \fBshow\fP parancsot.
+.SS "Search \fI<típus>\fP \fI<kulcsszó>\fP"
+Elindít egy keresést a megadott \fI<kulcsszó>\fP\-ra. Kötelező megadni a
+keresés típusát és a kulcsszót. Példa: a \(Bqsearch kad amule\(rq parancs
+egy Kademlia keresést indít az \(Bqamule\(rq kulcsszóra.
+
+Elérhető keresés típusok:
+.RS
+.IP Global 10
+Globális keresést hajt végre.
+.IP Kad 10
+A Kademlia hálózaton keres.
+.IP Local 10
+Lokális keresés.
+.RE
+.SS "Set \fI<mit>\fP"
+Egy beállítás érték megváltoztatása.
+
+A \fI<mit>\fP lehetséges értékei:
+.RS
+.IP BwLimits 10
+Sávszélesség határok beállítása.
+.IP IPFilter 10
+IP\-szűrő beállításainak módosítása.
+.RE
+.SS "Show \fI<mit>\fP"
+Megmutatja a fel\- és letöltési sort, a kiszolgáló\- és megosztott fájlok
+listáját.
+
+A \fI<mit>\fP lehetséges értékei:
+.RS
+.IP DL 10
+Letöltési lista megjelenítése.
+.IP Log 10
+Napló megjelenítése.
+.IP Servers 10
+Kiszolgálók listájának megjelenítése.
+.IP UL 10
+Feltöltési lista megjelenítése.
+.RE
+.SS_untranslated Shutdown
+Leállítja a távoli magot (amule/amuled). Ez egyszersmind a szöveges klienst
+is leállítja, mivel az nemigen használható futó mag nélkül.
+.SS "Statistics [ \fI<szám>\fP ]"
+A statisztika fa megjelenítése.
+
+Lehetséges megadni egy számot a 0\-255 tartományban, amely megadja az
+ügyfél\-verziók al\-fák maximális nagyságát. Nulla megadása vagy a szám teljes
+elhagyása nem korlátoz.
+
+Példa: a \(Bqstatistics 5\(rq parancs csak az 5 leggyakoribb ügyfél
+változatot mutatja minden ügyfél típusra.
+.SS_untranslated Status
+Megjeleníti a kapcsolat állapotát, pillanatnyi fel\-/letöltési sebességet,
+stb.
+.SH MEGJEGYZÉSEK
+.SS "Elérési utak"
+Minden olyan opciónál amely \fI<fájl>\fP paramétert kér, ha a megadott
+\fIfájl\fP nem tartalmaz könyvtár komponenst (vagyis tisztán csak egy fájlnév),
+akkor azt az aMule konfigurációs könyvtárában (\fI~/.aMule\fP) fogja keresni.
+.SS Nyelvek
+A \fB\-l\fP opció \fI<nyelv>\fP paramétere a következőképpen adható meg:
+\fInyelv\fP[\fB_\fP\fITERÜLET\fP][\fB.\fP\fIkódolás\fP][\fB@\fP\fImódosító\fP], ahol \fInyelv\fP az
+elsődleges nyelv, \fITERÜLET\fP egy nyelvváltozat/terület kódja, \fIkódolás\fP a
+karakterkészlet kódja és a \fImódosító\fP \(Bqlehetővé teszi, hogy a
+felhasználó kiválasszon egy meghatározott esetet a helyi jellemzők adataiból
+egyetlen kategórián belül\(rq.
+
+Például a következő értékek mind érvényesek:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Habár a fentieket mind elfogadja a program, mint érvényes
+nyelvmeghatározást, a \fIkódolás\fP és \fImódosító\fP még nem használt.
+
+Ráadásként a fenti formátumhoz, megadható akár egy nyelv teljes angol
+megnevezése is, így például a \fB\-l german\fP szintén érvényes és egyenértékű a
+\fB\-l de_DE\fP megadással.
+
+Ha sem a konfigurációs fájlban, sem a parancssorban nincs megadva a nyelv,
+akkor a rendszer alapértelmezett nyelvét fogja használni.
+.SH FÁJLOK
+~/.aMule/remote.conf
+.SH PÉLDA
+Tipikusan az amulecmd\-t először a következőképpen indítjuk:
+.PP
+\fBamulecmd\fP \fB\-h\fP \fIgépnév\fP \fB\-p\fP \fIEC\-port\fP \fB\-P\fP \fIEC\-jelszó\fP \fB\-w\fP
+.PP
+vagy
+.PP
+\fBamulecmd\fP
+\fB\-\-create\-config\-from\fP=\fI/home/felhasználónév/.aMule/amule.conf\fP
+.PP
+Ez elmenti a beállításokat a \fI$HOME/.aMule/remote.conf\fP fájlba, hogy később
+már csak ezt kelljen írni:
+
+.B_untranslated amulecmd
+
+Természetesen nem kötelező ezt a példát követni.
+.SH "HIBÁK JELENTÉSE"
+A hibákat kérjük vagy a fórumon (\fIhttp://forum.amule.org/\fP), vagy a
+hibakövetőben (\fIhttp://bugs.amule.org/\fP) jelentsék. Hibákról kérjük ne
+írjanak levelet (e\-mail\-t) se a levelezési listára, se közvetlenül
+valamelyik fejlesztőnek.
+.SH COPYRIGHT
+Az aMule és az összes hozzá tartozó segédprogram a GNU General Public
+License védelme alatt áll.
+.SH "LÁSD MÉG"
+.B_untranslated amule\fR(1), \fBamuled\fR(1)
+.SH SZERZŐ
+Ezt a kézikönyv lapot Vollstrecker <amule@vollstreckernet.de> írta.
+.SH MAGYAR FORDÍTÁS
+Dévai Tamás <gonosztopi@amule.org>

@@ -1,0 +1,215 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "November 2011" "aMule webserver v2.3.1" "aMule utilidades"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOMBRE
+amuleweb \- servidor web de aMule
+.SH SINOPSIS
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<host>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<password>\fP] [\fB\-f\fP \fI<path>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<lang>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<name>\fP] [\fB\-s\fP \fI<port>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<port>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<password>\fP] [\fB\-G\fP \fI<password>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<path>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<path>\fP]
+
+.SH DESCRIPCIÓN
+\fBamuleweb\fP manages your access to amule through a web browser.  You can
+start amuleweb together with \fBamule\fP(1), or separately, any time later.
+Options can be specified via command\-line or via config\-file.  Command\-line
+options take precedence over config\-file options.
+.TP 
+\fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
+Host donde se está ejecutando aMule. (por defecto: \fIlocalhost\fP).
+\fI<host>\fP debe ser o una dirección IP o un nombre DNS
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+Puerto de conexión externa de aMule, puesto en Opciones\->Controles
+Remotos (por defecto: 4712)
+.TP 
+\fB[ \-P\fP \fI<password>\fP, \fB\-\-password\fP=\fI<password>\fP \fB]\fP
+Contraseña de conexiones externas
+.TP 
+\fB[ \-f\fP \fI<path>\fP, \fB\-\-config\-file\fP=\fI<path>\fP \fB]\fP
+Usar la configuración dada por el archivo. El archivo de configuración por
+defecto es \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+No mostrar nada por la salida estándar
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Modo Extendido \- muestra también los mensajes de depuración.
+.TP 
+\fB[ \-l\fP \fI<lang>\fP, \fB\-\-locale\fP=\fI<lang>\fP \fB]\fP
+Selecciona el idioma del programa. Ver la sección \fBNOTAS\fP para la
+descripción del parámetro del \fI<lang>\fP.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Escribe opciones de la línea de comando al archivo de configuración y
+termina.
+.TP 
+\fB[ \-t\fP \fI<name>\fP, \fB\-\-template\fP=\fI<name>\fP \fB]\fP
+Loads the template named \fI<name>\fP. See the \fBSKIN SUPPORT\fP section
+for details.
+.TP 
+\fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
+Webserver's HTTP port. This is the port you must point your browser to
+(default: \fI4711\fP).
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+Habilitar UPnP.
+.TP 
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+Puerto UPnP.
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Enables using gzip compression in HTTP traffic to save bandwidth.
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+Deshabilitar la compresión gzip (esto es por defecto).
+.TP 
+\fB[ \-A\fP \fI<passwd>\fP, \fB\-\-admin\-pass\fP=\fI<passwd>\fP \fB]\fP
+Contraseña de acceso completo al servidor web.
+.TP 
+\fB[ \-G\fP \fI<passwd>\fP, \fB\-\-guest\-pass\fP=\fI<passwd>\fP \fB]\fP
+Contraseña de invitado al servidor web.
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Permitir acceso invitado.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Deniega el acceso invitado (defecto)
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+Load/save webserver settings from/to remote aMule.  This causes amuleweb to
+ignore command\-line and config\-file settings, and load them from aMule.
+When saving preferences none will be written to the config file, but to
+aMule.  (Of course, this works only for those settings that can be set in
+aMule's Preferences\->Remote Controls.)
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+Deshabilitar interprete PHP (obsoleto)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+Recompilar páginas PHP en cada solicitud.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
+Crear archivo de configuración basado en \fI<path>\fP, el cual debe
+apuntar a un archivo de configuración válido, y entonces termina.
+.TP 
+.B_untranslated [ \-\-help ]\fR
+Imprime una breve descripción de uso.
+.TP 
+.B_untranslated [ \-\-version ]\fR
+Mostrar el número de la versión actual.
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<path>\fP \fB]\fP
+aMule config file path.  \fBDO NOT USE DIRECTLY!\fP aMule uses this option when
+starting amuleweb at aMule startup.  This option causes all other
+command\-line and config\-file settings to be ignored, preferences to be read
+from the given config file, and also implies the \fB\-q \-L\fP options.
+.SH NOTAS
+.SS Rutas
+Todas las opciones que tengan \fI<path>\fP como valor, si \fIpath\fP
+contiene un directorio sin part (p.e. solo un archivo normal), entones se
+tomará el directorio de la configuración, \fI~/.aMule\fP.
+.SS Lenguajes
+The \fI<lang>\fP parameter for the \fB\-l\fP option has the following form:
+\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] where \fIlang\fP is the
+primary language, \fILANG\fP is a sublanguage/territory, \fIencoding\fP is the
+character set to use and \fImodifier\fP allows the user to select a specific
+instance of localization data within a single category.
+
+Por ejemplo, las siguientes cadenas son válidas:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Though all the above strings are accepted as valid language definitions,
+\fIencoding\fP and \fImodifier\fP are yet unused.
+
+In addition to the format above, you can also specify full language names in
+English \- so \fB\-l german\fP is also valid and is equal to \fB\-l de_DE\fP.
+
+When no locale is defined, either on command\-line or in config file, system
+default language will be used.
+.SH "SOPORTE TEMAS."
+\fBamuleweb\fP is capable of displaying information in different skins.  These
+skins are called templates, and you can make amuleweb load a specific
+template via the \fB\-t\fP command line option.  Templates are searched in two
+places: first in \fI~/.aMule/webserver/\fP and then in
+\fI/usr/share/amule/webserver/\fP if you installed with \-\-prefix=/usr.
+.PP
+Each template must be in a subdirectory of the template name, and this
+directory must contain all files the template needs.
+.SH ARCHIVOS
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH EJEMPLO
+Normalmente amuleweb se ejecutara primero como:
+.PP
+\fBamuleweb\fP \fB\-h\fP \fIhostname\fP \fB\-p\fP \fIECport\fP \fB\-P\fP \fIECpassword\fP \fB\-s\fP
+\fIHTTPport\fP \fB\-A\fP \fIAdminPassword\fP \fB\-w\fP
+.PP
+o
+.PP
+\fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/usuario/.aMule/amule.conf\fP
+.PP
+Esto guardará las opciones en \fI$HOME/.aMule/remote.conf\fP, y después sólo
+tiene que escribir:
+.PP
+.B_untranslated amuleweb
+.PP
+Por supuesto, puede especificar las opciones en el ejemplo de la primera
+linea, y también puede omitirlo.
+.SH "INFORMANDO ERRORES"
+Por favor informa de fallos ya sea en nuestro foro
+(\fIhttp://forum.amule.org/\fP), o en nuestro bugtracker
+(\fIhttp://bugs.amule.org/\fP). Por favor no informe de fallos por correo, ni
+en nuestras listas, ni directamente al correo de algun miembro del equipo.
+.SH COPYRIGHT
+aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
+General Public License.
+.SH "VEASE TAMBIEN"
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH AUTOR
+Esta página de manualfue escrita por Vollstrecker
+<amule@vollstreckernet.de>

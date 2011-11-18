@@ -1,0 +1,88 @@
+
+
+                              -------
+                              INSTALL
+                              -------
+
+
+ Requirements
+--------------
+
+  To compile aMule, you'll need at least the following packages:
+    * zlib >= 1.1.4       (1.2.3 is recommended)
+    * wxWidgets >= 2.8.0  (2.8.9 is recommended)
+    * Crypto++ >= 5.1     (5.5.2 is recommended)
+    * the perl File::Copy module
+
+  For aMuleWeb you'll also need:
+    * a POSIX compliant regex library (like libgnurx or libregex, for most
+      GNU systems it's part of the standard C library).
+
+  Optionally you may want to provide:
+    * libgd (or gdlib) >= 2.0.0, to let cas generate statistics images;
+    * libupnp >= 1.6.6 if you want to have UPnP support;
+    * libpng >= 1.2.0 to let aMuleWeb generate nice statistics graphs;
+    * libGeoIP >= 1.4.4 if you want colourful country flags and IP to country
+      mappings in the GUI;
+    * gettext >= 0.11.5 if you want to enable NLS (Native Language Support).
+
+  It is known to compile with GCC 3.2, 3.3, 3.4, 4.1, 4.2 and 4.3; 
+  Sun Studio 12 and MSVC. GCC 2.95 is not supported.
+
+  aMule requires a wxWidgets builds that supports unicode. Since wxWidgets
+  does not support unicode with GTK1, it is not possible to make aMule use
+  GTK1.
+
+  As Crypto++ is very sensitive to compiler defects, if you're compiling it
+  from source be sure to always test your compilation with `cryptest.exe v'.
+  (Yes, it's called cryptest.exe on all platforms.) Only when all tests
+  passed may you safely go on with compiling aMule.
+  Adding "-DCRYPTOPP_DISABLE_ASM -O1" to CXXFLAGS is known to resolve 
+  these problems.
+
+
+ Compiling aMule
+-----------------
+
+  Compiling and installing aMule is as easy as running the usual
+  
+    ./configure
+    make
+    make install
+
+  commands (if you have all the above requirements fulfilled, of course).
+
+  Solutions for Microsoft Visual Studio 2008 and the free Express Edition
+  are included. Please see the readme file for more information.
+
+
+ ADVANCED OPTIONS
+------------------
+
+  These are some of the availabe configure options:
+
+    --disable-debug           disable additional debugging output
+    --enable-optimize         enable code optimizing
+    --enable-amulecmd         compile aMule command line client
+    --enable-amule-gui        compile aMule remote GUI (EXPERIMENTAL)
+    --enable-amule-daemon     compile aMule daemon version
+    --enable-webserver        compile aMule WebServer
+    --enable-cas              compile C aMule Statistics
+    --enable-wxcas            compile aMule GUI Statistics
+    --disable-ed2k            don't compile aMule ed2k links handler
+    --enable-alc              compile aMuleLinkCreator GUI version
+    --enable-alcc             compile aMuleLinkCreator for console
+    --disable-monolithic      disable building of the monolithic aMule app
+	
+  For a full list of available options run `./configure --help' from the
+  aMule source directory.
+
+
+ Links
+-------
+
+  Detailed information on compiling and installing aMule:
+    http://www.amule.org/wiki/index.php/Main_Page
+
+  Forum to ask questions, report bugs, etc:
+    http://forum.amule.org/

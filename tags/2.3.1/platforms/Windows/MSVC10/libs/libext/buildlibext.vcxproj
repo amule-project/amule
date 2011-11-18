@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug29|Win32">
+      <Configuration>Debug29</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release29|Win32">
+      <Configuration>Release29</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F8C2C7F5-CBF1-46C1-81C9-22AD406B52C6}</ProjectGuid>
+    <RootNamespace>MSVCExpressExtLibs</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>join external libs</Message>
+      <Command>if not exist ..\..\$(Configuration) mkdir ..\..\$(Configuration)
+lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_media.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxjpegd.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_adv.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxregexud.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_richtext.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxzlibd.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_qa.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud_xml.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud_odbc.lib" "..\..\..\..\..\..\cryptopp\win32\output\debug\cryptlib.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxtiffd.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28ud_net.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_core.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_gl.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxpngd.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_dbgrid.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_xrc.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxexpatd.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_html.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28ud_aui.lib"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>join external libs</Message>
+      <Command>if not exist ..\..\$(Configuration) mkdir ..\..\$(Configuration)
+lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_media.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxjpeg.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_adv.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxregexu.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_richtext.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxzlib.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_qa.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_xml.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_odbc.lib" "..\..\..\..\..\..\cryptopp\win32\output\release\cryptlib.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxtiff.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxbase28u_net.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_core.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_gl.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxpng.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_dbgrid.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_xrc.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxexpat.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_html.lib" "..\..\..\..\..\..\wxwidgets\lib\vc_lib\wxmsw28u_aui.lib"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>join external libs</Message>
+      <Command>if not exist ..\..\$(Configuration) mkdir ..\..\$(Configuration)
+lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_media.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxjpegd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_adv.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxregexud.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_richtext.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxzlibd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29ud.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_qa.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29ud_xml.lib" "..\..\..\..\..\..\cryptopp\win32\output\debug\cryptlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxtiffd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29ud_net.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_core.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_gl.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxpngd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_xrc.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxexpatd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_html.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_aui.lib"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>join external libs</Message>
+      <Command>if not exist ..\..\$(Configuration) mkdir ..\..\$(Configuration)
+lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_media.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxjpeg.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_adv.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxregexu.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_richtext.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxzlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29u.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_qa.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29u_xml.lib" "..\..\..\..\..\..\cryptopp\win32\output\release\cryptlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxtiff.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29u_net.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_core.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_gl.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxpng.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_xrc.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxexpat.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_html.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_aui.lib"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_adv.vcxproj">
+      <Project>{24c45343-fd20-5c92-81c1-35a2ae841e79}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_aui.vcxproj">
+      <Project>{a16d3832-0f42-57ce-8f48-50e06649ade8}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_base.vcxproj">
+      <Project>{3fcc50c2-81e9-5db2-b8d8-2129427568b1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_core.vcxproj">
+      <Project>{6744dad8-9c70-574a-bff2-9f8dddb24a75}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_gl.vcxproj">
+      <Project>{da8b15ef-6750-5928-bc0e-c748213cf9b2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_html.vcxproj">
+      <Project>{33cc42f9-7756-5587-863c-8d4461b7c5dd}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_media.vcxproj">
+      <Project>{8bd8f8d9-4275-5b42-a8f4-f1db2970a550}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_net.vcxproj">
+      <Project>{69f2ede4-7d21-5738-9bc0-f66f61c9ae00}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_qa.vcxproj">
+      <Project>{e21129e0-7c08-5936-9d8c-0d60b5319ba7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_richtext.vcxproj">
+      <Project>{7fb0902d-8579-5dce-b883-daf66a885005}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxexpat.vcxproj">
+      <Project>{a1a8355b-0988-528e-9cc2-b971d6266669}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxjpeg.vcxproj">
+      <Project>{6053cc38-cdee-584c-8bc8-4b000d800fc7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxpng.vcxproj">
+      <Project>{8acc122a-ca6a-5aa6-9c97-9cdd2e533db0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxregex.vcxproj">
+      <Project>{56a4b526-bb81-5d01-aaa9-16d23bbb169d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxtiff.vcxproj">
+      <Project>{75596ce6-5ae7-55c9-b890-c07b0a657a83}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxzlib.vcxproj">
+      <Project>{8b867186-a0b5-5479-b824-e176edd27c40}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_xml.vcxproj">
+      <Project>{3e6dca27-5fa3-53ec-bbd6-2d42294b7ae6}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_xrc.vcxproj">
+      <Project>{09f2f96a-1cc6-5e43-af1d-956ec2a4888d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_adv.vcxproj">
+      <Project>{fe8c58ce-6828-4125-8563-28f929d307c2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_aui.vcxproj">
+      <Project>{64dd39fc-b3fa-4625-86ba-d8a7ae7d1d2c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_base.vcxproj">
+      <Project>{3ea1ce4c-c6fa-42c0-a152-10fda37fe935}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_core.vcxproj">
+      <Project>{83e249bf-12a0-4d0d-b9a5-b9560fde0ba1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_dbgrid.vcxproj">
+      <Project>{c4590207-2d76-445f-833d-d59bb14d2c51}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_gl.vcxproj">
+      <Project>{8cf291f4-6284-4118-98a7-9d2146c6d5ea}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_html.vcxproj">
+      <Project>{8e917a7a-cc97-45c8-80a1-2ebd30936d23}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_media.vcxproj">
+      <Project>{6b245136-054c-4400-bf21-d30b05c231cd}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_net.vcxproj">
+      <Project>{c963a510-37eb-4d71-85b9-2380fcd4b3d3}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_odbc.vcxproj">
+      <Project>{b535be44-fccc-4911-862f-a7ed6cc6b597}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_qa.vcxproj">
+      <Project>{ae383b44-ee53-4353-9bf0-2f3767d6ce51}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_richtext.vcxproj">
+      <Project>{4740520c-adf1-464d-97c5-85fcfeecf76d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_wxexpat.vcxproj">
+      <Project>{474a0ed2-5969-47f0-b37f-7bc05c44f99b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_wxjpeg.vcxproj">
+      <Project>{4c6519fa-63b7-4631-b087-a17a368dbcd9}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_wxpng.vcxproj">
+      <Project>{4f88c347-8c7a-47c1-84c8-d4e154a33d30}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_wxregex.vcxproj">
+      <Project>{a960d0ad-c20e-4fd6-b477-6509232c7d94}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_wxtiff.vcxproj">
+      <Project>{456e58bd-84ca-4190-a88b-0a9b30dfd6d6}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_wxzlib.vcxproj">
+      <Project>{99a6cd35-a635-4e39-93ff-f9a359e356d2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_xml.vcxproj">
+      <Project>{46b97e73-8e57-42c1-a46e-af0495d625dd}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets\build\msw\wx_xrc.vcxproj">
+      <Project>{ba59346e-5eb2-4d25-94a7-132d9c953a05}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dummy.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
