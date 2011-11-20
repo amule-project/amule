@@ -144,7 +144,9 @@ static const wxString EmptyString = wxEmptyString;
 
 #ifdef _WIN32			// Used in non-wx-apps too (ed2k), so don't use __WXMSW__ here !
 #ifdef _MSC_VER
-	#define NOMINMAX
+	#ifndef NOMINMAX
+		#define NOMINMAX
+	#endif
 	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
 #else
 	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
