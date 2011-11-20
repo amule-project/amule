@@ -927,8 +927,8 @@ void CSearch::ProcessResultNotes(const CUInt128& answer, TagPtrList *info)
 	// Process a received Note to a file.
 	// Create a Note and set the IDs.
 	CEntry* entry = new CEntry();
-	entry->m_uKeyID.SetValue(m_target);
-	entry->m_uSourceID.SetValue(answer);
+	entry->m_uKeyID = m_target;
+	entry->m_uSourceID = answer;
 
 	bool bFilterComment = false;
 

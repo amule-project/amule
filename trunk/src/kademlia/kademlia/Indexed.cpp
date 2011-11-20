@@ -213,8 +213,8 @@ void CIndexed::ReadFile()
 									}
 									tagList--;
 								}
-								toAdd->m_uKeyID.SetValue(keyID);
-								toAdd->m_uSourceID.SetValue(sourceID);
+								toAdd->m_uKeyID = keyID;
+								toAdd->m_uSourceID = sourceID;
 								uint8_t load;
 								if (AddSources(keyID, sourceID, toAdd, load)) {
 									totalSource++;
@@ -493,11 +493,11 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	KeyHash* currKeyHash = NULL;
 	if (itKeyHash == m_Keyword_map.end()) {
 		Source* currSource = new Source;
-		currSource->sourceID.SetValue(sourceID);
+		currSource->sourceID = sourceID;
 		entry->MergeIPsAndFilenames(NULL); // IpTracking init
 		currSource->entryList.push_front(entry);
 		currKeyHash = new KeyHash;
-		currKeyHash->keyID.SetValue(keyID);
+		currKeyHash->keyID = keyID;
 		currKeyHash->m_Source_map[currSource->sourceID] = currSource;
 		m_Keyword_map[currKeyHash->keyID] = currKeyHash;
 		load = 1;
@@ -549,7 +549,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			return true;
 		} else {
 			currSource = new Source;
-			currSource->sourceID.SetValue(sourceID);
+			currSource->sourceID = sourceID;
 			entry->MergeIPsAndFilenames(NULL); // IpTracking init
 			currSource->entryList.push_front(entry);
 			currKeyHash->m_Source_map[currSource->sourceID] = currSource;
@@ -575,10 +575,10 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if (itSrcHash == m_Sources_map.end()) {
 		Source* currSource = new Source;
-		currSource->sourceID.SetValue(sourceID);
+		currSource->sourceID = sourceID;
 		currSource->entryList.push_front(entry);
 		currSrcHash = new SrcHash;
-		currSrcHash->keyID.SetValue(keyID);
+		currSrcHash->keyID = keyID;
 		currSrcHash->m_Source_map.push_front(currSource);
 		m_Sources_map[currSrcHash->keyID] =  currSrcHash;
 		m_totalIndexSource++;
@@ -617,14 +617,14 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			currSource->entryList.pop_back();
 			wxASSERT(currName != NULL);
 			delete currName;
-			currSource->sourceID.SetValue(sourceID);
+			currSource->sourceID = sourceID;
 			currSource->entryList.push_front(entry);
 			currSrcHash->m_Source_map.push_front(currSource);
 			load = 100;
 			return true;
 		} else {
 			Source* currSource = new Source;
-			currSource->sourceID.SetValue(sourceID);
+			currSource->sourceID = sourceID;
 			currSource->entryList.push_front(entry);
 			currSrcHash->m_Source_map.push_front(currSource);
 			m_totalIndexSource++;
@@ -650,10 +650,10 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 	SrcHashMap::iterator itNoteHash = m_Notes_map.find(keyID);
 	if (itNoteHash == m_Notes_map.end()) {
 		Source* currNote = new Source;
-		currNote->sourceID.SetValue(sourceID);
+		currNote->sourceID = sourceID;
 		currNote->entryList.push_front(entry);
 		currNoteHash = new SrcHash;
-		currNoteHash->keyID.SetValue(keyID);
+		currNoteHash->keyID = keyID;
 		currNoteHash->m_Source_map.push_front(currNote);
 		m_Notes_map[currNoteHash->keyID] = currNoteHash;
 		load = 1;
@@ -693,14 +693,14 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			currNote->entryList.pop_back();
 			wxASSERT(currName != NULL);
 			delete currName;
-			currNote->sourceID.SetValue(sourceID);
+			currNote->sourceID = sourceID;
 			currNote->entryList.push_front(entry);
 			currNoteHash->m_Source_map.push_front(currNote);
 			load = 100;
 			return true;
 		} else {
 			Source* currNote = new Source;
-			currNote->sourceID.SetValue(sourceID);
+			currNote->sourceID = sourceID;
 			currNote->entryList.push_front(entry);
 			currNoteHash->m_Source_map.push_front(currNote);
 			load = (size * 100) / KADEMLIAMAXNOTESPERFILE;
@@ -725,7 +725,7 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32_t timet)
 	}
 
 	load = new Load();
-	load->keyID.SetValue(keyID);
+	load->keyID = keyID;
 	load->time = timet;
 	m_Load_map[load->keyID] = load;
 	m_totalIndexLoad++;

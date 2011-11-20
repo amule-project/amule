@@ -1637,8 +1637,8 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 			CMemFile data(buffer, size);
 			CUInt128 check = data.ReadUInt128();
-			check.XOR(Kademlia::CUInt128(true));
-			if( check.CompareTo(Kademlia::CKademlia::GetPrefs()->GetKadID())) {
+			check ^= Kademlia::CUInt128(true);
+			if (check != Kademlia::CKademlia::GetPrefs()->GetKadID()) {
 				break;
 			}
 			CUInt128 fileid = data.ReadUInt128();
