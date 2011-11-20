@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,12 +39,12 @@ class CSearchFile;
 
 /**
  * This class is used to display search results.
- * 
- * Results on added to the list will be colored according to 
+ *
+ * Results on added to the list will be colored according to
  * the number of sources and other parameters (see UpdateColor).
  *
  * To display results, first use the ShowResults function, which will display
- * all current results with the specified id and afterwards you can use the 
+ * all current results with the specified id and afterwards you can use the
  * AddResult function to add new results or the UpdateResult function to update
  * already present results. Please note that it is not possible to add results
  * with the AddResult function before calling ShowResults.
@@ -54,7 +54,7 @@ class CSearchListCtrl : public CMuleListCtrl
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @see CMuleListCtrl::CMuleListCtrl for documentation of parameters.
 	 */
 	 CSearchListCtrl(
@@ -65,7 +65,7 @@ public:
                 long style = wxLC_ICON,
                 const wxValidator& validator = wxDefaultValidator,
                 const wxString &name = wxT("mulelistctrl") );
-			
+
 	/**
 	 * Destructor.
 	 */
@@ -76,7 +76,7 @@ public:
 	 *
 	 * @param The new result to be shown.
 	 *
-	 * Please note that no duplicates checking is done, so the pointer should 
+	 * Please note that no duplicates checking is done, so the pointer should
 	 * point to a new file in order to avoid problems. Also note that the result
 	 * will be inserted sorted according to current sort-type, so there is no
 	 * need to resort the list after adding new items.
@@ -87,7 +87,7 @@ public:
 	 * Removes the specified file from the list.
 	 */
 	void	RemoveResult(CSearchFile* toshow);
-	
+
 	/**
 	 * Updates the specified source.
 	 *
@@ -116,12 +116,12 @@ public:
 	void UpdateItemColor(long index);
 
 	/**
-	 * Returns the current Search Id. 
+	 * Returns the current Search Id.
 	 *
 	 * @return The Search Id of the displayed results (set through ShowResults()).
 	 */
 	wxUIntPtr	GetSearchId();
-	
+
 	/**
 	 * Sets the filter which decides which results should be shown.
 	 *
@@ -137,18 +137,18 @@ public:
 	 * Toggles the use of filtering on and off.
 	 */
 	void	EnableFiltering(bool enabled);
-	
+
 	/**
 	 * Returns the number of items hidden due to filtering.
 	 */
 	size_t	GetHiddenItemCount() const;
-	
+
 	/**
 	 * Attempts to download all selected items, updating color-scheme as needed.
 	 *
 	 * @param category The target category, or -1 to use the drop-down selection.
 	 */
-	void	DownloadSelected(int category = -1);	
+	void	DownloadSelected(int category = -1);
 
 	static wxString DetermineStatusPrintable(CSearchFile *toshow);
 
@@ -181,7 +181,7 @@ protected:
 
 	//! Controls if shared/queued results should be shown.
 	bool		m_filterKnown;
-	
+
 	//! Controls if the result of filter-hits should be inverted
 	bool		m_invert;
 
@@ -192,7 +192,7 @@ protected:
 	 * Returns true if the filename is filtered.
 	 */
 	bool	IsFiltered(const CSearchFile* file);
-	
+
 	/**
 	 * Sorter function used by wxListCtrl::SortItems function.
 	 *
@@ -233,11 +233,11 @@ protected:
 	 * the src argument as the src argument of the SyncLists function.
 	 */
 	static void SyncOtherLists( CSearchListCtrl* src );
-	
+
 	//! This list contains pointers to all current instances of CSearchListCtrl.
 	static std::list<CSearchListCtrl*> s_lists;
-	
-	//! The ID of the search-results which the list is displaying or zero if unset. 
+
+	//! The ID of the search-results which the list is displaying or zero if unset.
 	wxUIntPtr m_nResultsID;
 
 	//! Custom drawing, needed to display children of search-results.
@@ -257,10 +257,10 @@ protected:
 	 * Event handler for double-clicks or enter.
 	 */
 	void OnItemActivated( wxListEvent& event );
-	
+
 	/**
 	 * Event handler for left-clicks on the column headers.
-	 * 
+	 *
 	 * This eventhandler takes care of sync'ing all the other lists with this one.
 	 */
 	void OnColumnLClick( wxListEvent& event );
@@ -271,7 +271,7 @@ protected:
 	 * This eventhandler takes care of sync'ing all the other lists with this one.
 	 */
 	void OnColumnResize( wxListEvent& event );
-	
+
 	/**
 	 * Event handler for get-url menu items.
 	 */

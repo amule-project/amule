@@ -17,12 +17,12 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
-// Kry - Modified version of the original SHA.cpp to work on linux and 
+// Kry - Modified version of the original SHA.cpp to work on linux and
 // use wxWidgets. Original license follows.
 //
 
@@ -33,27 +33,27 @@
 
  LICENSE TERMS
 
- The free distribution and use of this software in both source and binary 
+ The free distribution and use of this software in both source and binary
  form is allowed (with or without changes) provided that:
 
-   1. distributions of this source code include the above copyright 
+   1. distributions of this source code include the above copyright
       notice, this list of conditions and the following disclaimer;
 
    2. distributions in binary form include the above copyright
       notice, this list of conditions and the following disclaimer
       in the documentation and/or other associated materials;
 
-   3. the copyright holder's name is not used to endorse products 
-      built using this software without specific written permission. 
+   3. the copyright holder's name is not used to endorse products
+      built using this software without specific written permission.
 
  ALTERNATIVELY, provided that this notice is retained in full, this product
  may be distributed under the terms of the GNU General Public License (GPL),
  in which case the provisions of the GPL apply INSTEAD OF those given above.
- 
+
  DISCLAIMER
 
  This software is provided 'as is' with no explicit or implied warranties
- in respect of its properties, including, but not limited to, correctness 
+ in respect of its properties, including, but not limited to, correctness
  and/or fitness for purpose.
  ---------------------------------------------------------------------------
  Issue Date: 30/11/2002
@@ -71,11 +71,11 @@ CSHA::CSHA()
 }
 
 /*
-    To obtain the highest speed on processors with 32-bit words, this code 
+    To obtain the highest speed on processors with 32-bit words, this code
     needs to determine the order in which bytes are packed into such words.
-    The following block of code is an attempt to capture the most obvious 
-    ways in which various environemnts specify their endian definitions. 
-    It may well fail, in which case the definitions will need to be set by 
+    The following block of code is an attempt to capture the most obvious
+    ways in which various environemnts specify their endian definitions.
+    It may well fail, in which case the definitions will need to be set by
     editing at the points marked **** EDIT HERE IF NECESSARY **** below.
 */
 #define SHA_LITTLE_ENDIAN   1234 /* byte 0 is least significant (i386) */
@@ -125,7 +125,7 @@ void CSHA::Compile()
 
     for(i = 0; i < 20; ++i)
     {
-        rnd(ch, 0x5a827999);    
+        rnd(ch, 0x5a827999);
     }
 
     for(i = 20; i < 40; ++i)
@@ -143,10 +143,10 @@ void CSHA::Compile()
         rnd(parity, 0xca62c1d6);
     }
 
-    m_nHash[0] += a; 
-    m_nHash[1] += b; 
-    m_nHash[2] += c; 
-    m_nHash[3] += d; 
+    m_nHash[0] += a;
+    m_nHash[1] += b;
+    m_nHash[2] += c;
+    m_nHash[3] += d;
     m_nHash[4] += e;
 }
 
@@ -176,8 +176,8 @@ void CSHA::GetHash(CAICHHash& Hash)
 void CSHA::Add(const void* pData, uint32 nLength)
 {
 	const unsigned char* data = (const unsigned char*)pData;
-	
-	uint32 pos = (uint32)(m_nCount[0] & SHA1_MASK), 
+
+	uint32 pos = (uint32)(m_nCount[0] & SHA1_MASK),
              space = SHA1_BLOCK_SIZE - pos;
     const unsigned char *sp = data;
 
@@ -187,7 +187,7 @@ void CSHA::Add(const void* pData, uint32 nLength)
     while(nLength >= space)     /* tranfer whole blocks while possible  */
     {
         memcpy(((unsigned char*)m_nBuffer) + pos, sp, space);
-        sp += space; nLength -= space; space = SHA1_BLOCK_SIZE; pos = 0; 
+        sp += space; nLength -= space; space = SHA1_BLOCK_SIZE; pos = 0;
         Compile();
     }
 
@@ -197,14 +197,14 @@ void CSHA::Add(const void* pData, uint32 nLength)
 /* SHA1 final padding and digest calculation  */
 
 #if (wxBYTE_ORDER == wxLITTLE_ENDIAN)
-static uint32  mask[4] = 
+static uint32  mask[4] =
 	{   0x00000000, 0x000000ff, 0x0000ffff, 0x00ffffff };
-static uint32  bits[4] = 
+static uint32  bits[4] =
 	{   0x00000080, 0x00008000, 0x00800000, 0x80000000 };
 #else
-static uint32  mask[4] = 
+static uint32  mask[4] =
 	{   0x00000000, 0xff000000, 0xffff0000, 0xffffff00 };
-static uint32  bits[4] = 
+static uint32  bits[4] =
 	{   0x80000000, 0x00800000, 0x00008000, 0x00000080 };
 #endif
 
@@ -218,7 +218,7 @@ void CSHA::Finish(CAICHHash& Hash)
     /* endian machines they will be at the bottom. Hence the AND    */
     /* and OR masks above are reversed for little endian systems    */
 	/* Note that we can always add the first padding byte at this	*/
-	/* because the buffer always contains at least one empty slot	*/ 
+	/* because the buffer always contains at least one empty slot	*/
     m_nBuffer[i >> 2] = (m_nBuffer[i >> 2] & mask[i & 3]) | bits[i & 3];
 
     /* we need 9 or more empty positions, one for the padding byte  */
@@ -233,9 +233,9 @@ void CSHA::Finish(CAICHHash& Hash)
     else    /* compute a word index for the empty buffer positions  */
         i = (i >> 2) + 1;
 
-    while(i < 14) /* and zero pad all but last two positions      */ 
+    while(i < 14) /* and zero pad all but last two positions      */
         m_nBuffer[i++] = 0;
-    
+
     /* assemble the eight byte counter in in big-endian format		*/
     m_nBuffer[14] = swap_b32((m_nCount[1] << 3) | (m_nCount[0] >> 29));
     m_nBuffer[15] = swap_b32(m_nCount[0] << 3);

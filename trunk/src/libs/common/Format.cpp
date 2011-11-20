@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -136,7 +136,7 @@ enum eStringParserStates {
  * converted to '%').
  */
 static eStringParserStates stringParser[][3] = {
-			/* %-sign, 		type-char, 	other */
+			/* %-sign,		type-char,	other */
 /* esNonFormat */	{ esFormatStart,	esNonFormat,	esNonFormat	},
 /* esFormatStart */	{ esFormatEnd,		esFormatEnd,	esFormat	},
 /* esFormat */		{ esInvalidFormat,	esFormatEnd,	esFormat	},
@@ -162,7 +162,7 @@ enum eFormatParserStates {
  * State machine to parse format specifiers
  *
  * Format specifiers are expected to follow the following structure:
- * 	%[argIndex$][Flags][Width][.Precision][Length]<Type>
+ *	%[argIndex$][Flags][Width][.Precision][Length]<Type>
  */
 static eFormatParserStates formatParser[][7] = {
 			/* [1-9],	'0',		flagChar,	'.',		lengthChar,	typeChar,	'$' */

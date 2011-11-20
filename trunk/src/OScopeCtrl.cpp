@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,8 +45,8 @@ END_EVENT_TABLE()
 
 
 const wxColour crPreset [ 16 ] = {
-	wxColour( 0xFF, 0x00, 0x00 ),  wxColour( 0xFF, 0xC0, 0xC0 ),  
-	wxColour( 0xFF, 0xFF, 0x00 ),  wxColour( 0xFF, 0xA0, 0x00 ),  
+	wxColour( 0xFF, 0x00, 0x00 ),  wxColour( 0xFF, 0xC0, 0xC0 ),
+	wxColour( 0xFF, 0xFF, 0x00 ),  wxColour( 0xFF, 0xA0, 0x00 ),
 	wxColour( 0xA0, 0x60, 0x00 ),  wxColour( 0x00, 0xFF, 0x00 ),
 	wxColour( 0x00, 0xA0, 0x00 ),  wxColour( 0x00, 0x00, 0xFF ),
 	wxColour( 0x00, 0xA0, 0xFF ),  wxColour( 0x00, 0xFF, 0xFF ),
@@ -64,7 +64,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	// use 0.0 as the default first point.
 	// these are public member variables, and can be changed outside
 	// (after construction).
-	
+
 	// G.Hayduk: NTrends is the number of trends that will be drawn on
 	// the plot. First 15 plots have predefined colors, but others will
 	// be drawn with white, unless you call SetPlotColor
@@ -73,7 +73,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned i=0; i<nTrends; ++i, ++ppds){
-		ppds->crPlot = (i<15 ? crPreset[i] : *wxWHITE); 
+		ppds->crPlot = (i<15 ? crPreset[i] : *wxWHITE);
 		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
 	}
@@ -83,7 +83,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	nDelayedPoints = 0;
 	sLastTimestamp = 0.0;
 	sLastPeriod = 1.0;
-	nShiftPixels = 1;  
+	nShiftPixels = 1;
 	nYDecimals = nDecimals;
 	m_bgColour  = wxColour(  0,   0,   0) ;  // see also SetBackgroundColor
 	m_gridColour  = wxColour(  0, 255, 255) ;  // see also SetGridColor
@@ -94,7 +94,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 
 	nXGrids = 6;
 	nYGrids = 5;
-	
+
 	graph_type = type;
 
 	// Connect the timer (dynamically, so the Controls don't have to share a common timer id)
@@ -120,9 +120,9 @@ void COScopeCtrl::SetRange(float fLower, float fUpper, unsigned iTrend)
 		return;
 	ppds->fLowerLimit = fLower;
 	ppds->fUpperLimit = fUpper;
-	ppds->fVertScale = (float)m_rectPlot.GetHeight() / (fUpper-fLower); 
+	ppds->fVertScale = (float)m_rectPlot.GetHeight() / (fUpper-fLower);
 	ppds->yPrev = GetPlotY(ppds->fPrev, ppds);
-	
+
 	if (iTrend == 0) {
 		InvalidateCtrl();
 	} else {
@@ -154,7 +154,7 @@ void COScopeCtrl::SetGridColor(const wxColour& cr)
 	if (cr == m_gridColour) {
 		return;
 	}
-	
+
 	m_gridColour = cr;
 	InvalidateGrid() ;
 }
@@ -186,7 +186,7 @@ void COScopeCtrl::SetBackgroundColor(const wxColour& cr)
 
 void COScopeCtrl::RecreateGrid()
 {
-	// There is a lot of drawing going on here - particularly in terms of 
+	// There is a lot of drawing going on here - particularly in terms of
 	// drawing the grid.  Don't panic, this is all being drawn (only once)
 	// to a bitmap.  The result is then BitBlt'd to the control whenever needed.
 	bRecreateGrid = false;
@@ -247,8 +247,8 @@ void COScopeCtrl::RecreateGrid()
 		strXUnits = CFormat( _("Disabled [%s]") ) % strTemp;
 	} else {
 		strXUnits = strTemp;
-	}	
-	
+	}
+
 	dcGrid.GetTextExtent(strXUnits,&sizX,&sizY);
 	dcGrid.DrawText(strXUnits,(m_rectPlot.GetLeft() + m_rectPlot.GetRight())/2-sizX/2,m_rectPlot.GetBottom()+4);
 
@@ -258,7 +258,7 @@ void COScopeCtrl::RecreateGrid()
 		dcGrid.DrawText(strYUnits, m_rectPlot.GetLeft()-4-sizX, (m_rectPlot.GetTop()+m_rectPlot.GetBottom())/2-sizY/2);
 	}
 	// no more drawing to this bitmap is needed until the setting are changed
-	
+
 	if (bRecreateGraph) {
 		RecreateGraph(false);
 	}
@@ -277,13 +277,13 @@ void COScopeCtrl::AppendPoints(double sTimestamp, const std::vector<float *> &ap
 		// We do this by simply drawing the history up to and including
 		// the new point.
 		int n = std::min(m_rectPlot.GetWidth(), nDelayedPoints + 1);
-		nDelayedPoints = 0; 
+		nDelayedPoints = 0;
 		PlotHistory(n, true, false);
 	} else {
 		ShiftGraph(1);
 		DrawPoints(apf, 1);
 	}
-	
+
 	Refresh(false);
 }
 
@@ -293,7 +293,7 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	m_onPaint = true;
 
 	// no real plotting work is performed here unless we are coming out of a hidden state;
-	// normally, just putting the existing bitmaps on the client to avoid flicker, 
+	// normally, just putting the existing bitmaps on the client to avoid flicker,
 	// establish a memory dc and then BitBlt it to the client
 	wxBufferedPaintDC dc(this);
 
@@ -306,17 +306,17 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	} else if (bRecreateGraph) {
 		RecreateGraph(true);
 	}
-	
+
 	if (nDelayedPoints) {				// we've just come out of hiding, so catch up
-		int n = std::min(m_rectPlot.GetWidth(), nDelayedPoints);		
-		nDelayedPoints = 0;				// (this is more efficient than plotting in the 
-		PlotHistory(n, true, false);	// background because the bitmap is shifted only 
+		int n = std::min(m_rectPlot.GetWidth(), nDelayedPoints);
+		nDelayedPoints = 0;				// (this is more efficient than plotting in the
+		PlotHistory(n, true, false);	// background because the bitmap is shifted only
 	}									// once for all delayed points together)
-	
-	// We have assured that we have a valid and resized if needed 
+
+	// We have assured that we have a valid and resized if needed
 	// wxDc and bitmap. Proceed to blit.
 	dc.DrawBitmap(m_bmapGrid, 0, 0, false);
-	
+
 	// Overwrites the plot section of the image
 	dc.DrawBitmap(m_bmapPlot, m_rectPlot.x, m_rectPlot.y, false);
 
@@ -328,7 +328,7 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxLONG_DASH)));
 	for (unsigned j = 1; j < (nYGrids + 1); ++j) {
 		unsigned GridPos = (m_rectPlot.GetHeight())*j/( nYGrids + 1 ) + m_rectPlot.GetTop();
-		
+
 		dc.DrawLine(m_rectPlot.GetLeft(), GridPos, m_rectPlot.GetRight(), GridPos);
 	}
 }
@@ -350,14 +350,14 @@ void COScopeCtrl::OnSize(wxSizeEvent& WXUNUSED(evt))
 
 	// the "left" coordinate and "width" will be modified in
 	// InvalidateCtrl to be based on the y axis scaling
-	m_rectPlot.SetLeft(20); 
+	m_rectPlot.SetLeft(20);
 	m_rectPlot.SetTop(10);
 	m_rectPlot.SetRight(std::max<int>(m_rectPlot.GetLeft() + 1, m_rectClient.GetRight() - 40));
 	m_rectPlot.SetBottom(std::max<int>(m_rectPlot.GetTop() + 1, m_rectClient.GetBottom() - 25));
-	
+
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned iTrend=0; iTrend<nTrends; ++iTrend, ++ppds) {
-		ppds->fVertScale = (float)m_rectPlot.GetHeight() / (ppds->fUpperLimit-ppds->fLowerLimit); 
+		ppds->fVertScale = (float)m_rectPlot.GetHeight() / (ppds->fUpperLimit-ppds->fLowerLimit);
 		ppds->yPrev = GetPlotY(ppds->fPrev, ppds);
 	}
 
@@ -387,7 +387,7 @@ void COScopeCtrl::ShiftGraph(unsigned cntPoints)
 	// clear a rectangle over the right side of plot prior to adding the new points
 	dcPlot.SetPen(*wxTRANSPARENT_PEN);
 	dcPlot.SetBrush(brushBack);	// fill with background color
-	dcPlot.DrawRectangle(m_rectPlot.GetWidth()-cntPixelOffset, 0, 
+	dcPlot.DrawRectangle(m_rectPlot.GetWidth()-cntPixelOffset, 0,
 		cntPixelOffset, m_rectPlot.GetHeight());
 }
 
@@ -405,8 +405,8 @@ unsigned COScopeCtrl::GetPlotY(float fPlot, PlotData_t* ppds)
 
 
 void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints)
-{	
-	// this appends a new set of data points to a graph; all of the plotting is 
+{
+	// this appends a new set of data points to a graph; all of the plotting is
 	// directed to the memory based bitmap associated with dcPlot
 	// the will subsequently be BitBlt'd to the client in OnPaint
 	// draw the next line segement
@@ -425,7 +425,7 @@ void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints
 			y = GetPlotY(*pf--, ppds);
 
 			// Map onto the smaller bitmap
-			dcPlot.DrawLine(x - nShiftPixels - m_rectPlot.GetX(), 
+			dcPlot.DrawLine(x - nShiftPixels - m_rectPlot.GetX(),
 					yPrev - m_rectPlot.GetY(),
 					x - m_rectPlot.GetX(),
 					y - m_rectPlot.GetY());
@@ -439,10 +439,10 @@ void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints
 
 
 #ifndef CLIENT_GUI
-void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh) 
+void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh)
 {
 	wxASSERT(graph_type != GRAPH_INVALID);
-	
+
 	if (graph_type != GRAPH_INVALID) {
 		unsigned i;
 		unsigned cntFilled;
@@ -457,7 +457,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 				if (bShiftGraph) {  // delayed points - we have an fPrev
 					ShiftGraph(cntFilled);
 				} else {  // fresh graph, we need to preset fPrev, yPrev
-					PlotData_t* ppds = pdsTrends;	
+					PlotData_t* ppds = pdsTrends;
 					for(i=0; i<nTrends; ++i, ++ppds)
 						ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
 					cntFilled--;
@@ -484,7 +484,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 }
 #else
 //#warning CORE/GUI -- EC needed
-void COScopeCtrl::PlotHistory(unsigned, bool, bool) 
+void COScopeCtrl::PlotHistory(unsigned, bool, bool)
 {
 }
 #endif
@@ -494,35 +494,35 @@ void COScopeCtrl::RecreateGraph(bool bRefresh)
 {
 	bRecreateGraph = false;
 	nDelayedPoints = 0;
-	
+
 	wxMemoryDC dcPlot(m_bmapPlot);
 	dcPlot.SetBackground(brushBack);
 	dcPlot.Clear();
-	
+
 	PlotHistory(m_rectPlot.GetWidth(), false, bRefresh);
 }
 
 
 void COScopeCtrl::Reset(double sNewPeriod)
-{ 
+{
 	bool bStoppedPrev = bStopped;
 	bStopped = false;
 	if (sLastPeriod != sNewPeriod  ||  bStoppedPrev) {
 		sLastPeriod = sNewPeriod;
 		InvalidateCtrl();
-	}		
+	}
 }
 
 
 void COScopeCtrl::Stop()
-{ 
+{
 	bStopped = true;
 	bRecreateGraph = false;
 	RecreateGrid();
 }
 
 
-void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid) 
+void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid)
 {
 	bRecreateGraph |= bInvalidateGraph;
 	bRecreateGrid |= bInvalidateGrid;
@@ -541,9 +541,9 @@ void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid)
 void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 /*	The timer is used to consolidate redrawing of the graphs:  when the user resizes
 	the application, we get multiple calls to OnSize.  If he changes several parameters
-	in the Preferences, we get several individual SetXYZ calls.  If we were to try to 
-	recreate the graphs for each such event, performance would be sluggish, but with 
-	the timer, each event (if they come in quick succession) simply restarts the timer 
+	in the Preferences, we get several individual SetXYZ calls.  If we were to try to
+	recreate the graphs for each such event, performance would be sluggish, but with
+	the timer, each event (if they come in quick succession) simply restarts the timer
 	until there is a little pause and OnTimer actually gets called and does its work.
 */
 {

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,7 +55,7 @@ CClientCredits::CClientCredits(const CMD4Hash& key)
 {
 	m_pCredits = new CreditStruct();
 	m_pCredits->key = key;
-	
+
 	InitalizeIdent();
 	m_dwUnSecureWaitTime = ::GetTickCount();
 	m_dwSecureWaitTime = ::GetTickCount();
@@ -79,11 +79,11 @@ void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavai
 				return;
 			}
 			break;
-	 	case IS_NOTAVAILABLE:
-	 	case IS_IDENTIFIED:
+		case IS_NOTAVAILABLE:
+		case IS_IDENTIFIED:
 			break;
 	}
-	
+
 	m_pCredits->downloaded += bytes;
 }
 
@@ -98,11 +98,11 @@ void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP, bool cryptoavail)
 				return;
 			}
 			break;
-	 	case IS_NOTAVAILABLE:
-	 	case IS_IDENTIFIED:
+		case IS_NOTAVAILABLE:
+		case IS_IDENTIFIED:
 			break;
 	}
-	
+
 	m_pCredits->uploaded += bytes;
 }
 
@@ -131,22 +131,22 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP, bool cryptoavail)
 				return 1.0f;
 			}
 			break;
-	 	case IS_NOTAVAILABLE:
-	 	case IS_IDENTIFIED:
+		case IS_NOTAVAILABLE:
+		case IS_IDENTIFIED:
 			break;
 	}
-	
+
 	if (GetDownloadedTotal() < 1000000) {
 		return 1.0f;
 	}
-	
+
 	float result = 0.0f;
 	if (!GetUploadedTotal()) {
 		result = 10.0f;
 	} else {
 		result = (GetDownloadedTotal() * 2.0f) / GetUploadedTotal();
 	}
-	
+
 	float result2 = sqrt((GetDownloadedTotal() / 1048576.0) + 2.0f);
 	if (result > result2) {
 		result = result2;
@@ -157,7 +157,7 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP, bool cryptoavail)
 	} else if (result > 10.0f) {
 		return 10.0f;
 	}
-	
+
 	return result;
 }
 
@@ -191,13 +191,13 @@ void CClientCredits::Verified(uint32 dwForIP)
 	m_dwIdentIP = dwForIP;
 	// client was verified, copy the keyto store him if not done already
 	if (m_pCredits->nKeySize == 0){
-		m_pCredits->nKeySize = m_nPublicKeyLen; 
+		m_pCredits->nKeySize = m_nPublicKeyLen;
 		memcpy(m_pCredits->abySecureIdent, m_abyPublicKey, m_nPublicKeyLen);
 		if (GetDownloadedTotal() > 0){
 			// for security reason, we have to delete all prior credits here
 			// in order to save this client, set 1 byte
 			m_pCredits->downloaded = 1;
-			m_pCredits->uploaded = 1; 
+			m_pCredits->uploaded = 1;
 			AddDebugLogLineN( logCredits, wxT("Credits deleted due to new SecureIdent") );
 		}
 	}
@@ -225,7 +225,7 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const
 		if (dwForIP == m_dwIdentIP)
 			return IS_IDENTIFIED;
 		else
-			return IS_IDBADGUY; 
+			return IS_IDBADGUY;
 			// mod note: clients which just reconnected after an IP change and have to ident yet will also have this state for 1-2 seconds
 			//		 so don't try to spam such clients with "bad guy" messages (besides: spam messages are always bad)
 	}
@@ -247,11 +247,11 @@ uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP)
 			}
 			else{	// bad boy
 				// this can also happen if the client has not identified himself yet, but will do later - so maybe he is not a bad boy :) .
-				
+
 				m_dwUnSecureWaitTime = ::GetTickCount();
 				m_dwWaitTimeIP = dwForIP;
 				return m_dwUnSecureWaitTime;
-			}	
+			}
 		}
 	}
 	else{	// not a SecureHash Client - handle it like before for now (no security checks)

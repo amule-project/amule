@@ -55,7 +55,7 @@
 
 
 /**
- * This functions displays a verbose description of 
+ * This functions displays a verbose description of
  * any unhandled exceptions that occour and then
  * terminate the program by raising SIGABRT.
  */
@@ -64,12 +64,12 @@ void OnUnhandledException()
 	// Revert to the original exception handler, to avoid
 	// infinate recursion, in case something goes wrong in
 	// this function.
-	std::set_terminate(std::abort);	
+	std::set_terminate(std::abort);
 
 #ifdef HAVE_CXXABI
 	std::type_info *t = __cxxabiv1::__cxa_current_exception_type();
 	FILE* output = stderr;
-#else 
+#else
 	FILE* output = stdout;
 	bool t = true;
 #endif
@@ -112,7 +112,7 @@ void InstallMuleExceptionHandler()
 
 
 // Make it 1 for getting the file path also
-#define TOO_VERBOSE_BACKTRACE 0 
+#define TOO_VERBOSE_BACKTRACE 0
 
 #if wxUSE_STACKWALKER && defined(__WXMSW__)
 
@@ -247,7 +247,7 @@ void init_backtrace_info()
 		return;
 	}
 
-	s_have_backtrace_symbols = (get_backtrace_symbols(s_abfd, &s_symbol_list) > 0); 
+	s_have_backtrace_symbols = (get_backtrace_symbols(s_abfd, &s_symbol_list) > 0);
 }
 
 
@@ -285,20 +285,20 @@ wxString demangle(const wxString& function)
 {
 #ifdef HAVE_CXXABI
 	wxString result;
-	
+
 	if (function.Mid(0,2) == wxT("_Z")) {
 		int status;
 		char *demangled = abi::__cxa_demangle(function.mb_str(), NULL, NULL, &status);
-		
+
 		if (!status) {
 			result = wxConvCurrent->cMB2WX(demangled);
 		}
-		
+
 		if (demangled) {
 			free(demangled);
 		}
 	}
-	
+
 	return result;
 #else
 	return wxEmptyString;
@@ -329,7 +329,7 @@ wxString get_backtrace(unsigned n)
 	std::vector<wxString> funcname(num_entries);
 	std::vector<wxString> address(num_entries);
 	wxString AllAddresses;
-	
+
 	for (int i = 0; i < num_entries; ++i) {
 		wxString wxBtString = wxConvCurrent->cMB2WX(bt_strings[i]);
 		int posLPar = wxBtString.Find(wxT('('));
@@ -450,7 +450,7 @@ wxString get_backtrace(unsigned n)
 		} else {
 			btLine += libname[i];
 		}
-		
+
 		trace += btLine + wxT("\n");
 	}
 
@@ -464,7 +464,7 @@ wxString get_backtrace(unsigned n)
 #elif defined( __APPLE__ )
 
 // According to sources, parts of this code originate at http://www.tlug.org.za/wiki/index.php/Obtaining_a_stack_trace_in_C_upon_SIGSEGV
-// which doesn't exist anymore. 
+// which doesn't exist anymore.
 
 // Other code (stack frame list and demangle related) has been modified from code with license:
 
@@ -515,11 +515,11 @@ void fill_frames(std::list<stack_frame> &frames)
 
 		// First frame is skipped
 		while (fp != NULL) {
-   			fp = (void**)(*fp);
+			fp = (void**)(*fp);
 			if (*fp == NULL) {
-    				break;
+				break;
 			}
-	
+
 #if defined(__i386__)
 			saved_pc = fp[1];
 #elif defined(__ppc__)
@@ -552,7 +552,7 @@ wxString get_backtrace(unsigned n)
 	while (it != frames.end()) {
 		if (count >= n) {
 			backtrace << (*it).instruction() << " : " << (*it).function() << std::endl;
- 			++it;
+			++it;
 		}
 
 		++count;

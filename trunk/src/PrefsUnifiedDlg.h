@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -57,12 +57,12 @@ public:
 	 * @param parent The parent window.
 	 *
 	 * This constructor is a much more simple version of the wxDialog one,
-	 * which only needs to know the parent of the dialog. Please note that 
-	 * it is private so that we can ensure that only one dialog has been 
+	 * which only needs to know the parent of the dialog. Please note that
+	 * it is private so that we can ensure that only one dialog has been
 	 * created at one time.
 	 */
 	PrefsUnifiedDlg(wxWindow* parent);
-	
+
 	/**
 	 * Updates the widgets with the values of the preference-variables.
 	 */
@@ -86,7 +86,7 @@ protected:
 
 
 	//! Pointer to the shared-files list
-	CDirectoryTreeCtrl* 	m_ShareSelector;
+	CDirectoryTreeCtrl*	m_ShareSelector;
 
 	//! Pointer to the color-selector
 	wxChoice*		m_choiceColor;

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,7 +37,7 @@ class CDirectoryTreeCtrl : public wxTreeCtrl
 {
 public:
 	typedef std::vector<CPath> PathList;
-	
+
 	CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags);
 	virtual ~CDirectoryTreeCtrl();
 
@@ -45,7 +45,7 @@ public:
 	void GetSharedDirectories(PathList* list);
 	// set list of shared directories
 	void SetSharedDirectories(PathList* list);
-	
+
 	// User made any changes to list?
 	bool HasChanged;
 
@@ -77,7 +77,7 @@ private:
 	void AddShare(const CPath& path);
 	void DelShare(const CPath& path);
 	void MarkChildren(wxTreeItemId hChild, bool mark, bool recursed);
-	
+
 	void OnItemExpanding(wxTreeEvent& evt);
 	void OnRButtonDown(wxTreeEvent& evt);
 	void OnItemActivated(wxTreeEvent& evt);
@@ -91,9 +91,9 @@ private:
 	bool m_IsInit;
 	// Are we running the remote GUI, and from a remote location?
 	bool m_IsRemote;
-	
+
 	wxTreeItemId m_root;
-	
+
 	DECLARE_EVENT_TABLE()
 };
 

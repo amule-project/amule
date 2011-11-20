@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,13 +43,13 @@
 // ntohl
 #define ENDIAN_NTOHL(x) ( wxUINT32_SWAP_ON_LE(x) )
 // new
-#define ENDIAN_NTOHLL(x) ( wxUINT64_SWAP_ON_LE(x) )	
+#define ENDIAN_NTOHLL(x) ( wxUINT64_SWAP_ON_LE(x) )
 // htons
 #define ENDIAN_HTONS(x) ( wxUINT16_SWAP_ON_LE(x) )
 // htonl
-#define ENDIAN_HTONL(x) ( wxUINT32_SWAP_ON_LE(x) )	
+#define ENDIAN_HTONL(x) ( wxUINT32_SWAP_ON_LE(x) )
 // new
-#define ENDIAN_HTONLL(x) ( wxUINT64_SWAP_ON_LE(x) )	
+#define ENDIAN_HTONLL(x) ( wxUINT64_SWAP_ON_LE(x) )
 
 
 /**

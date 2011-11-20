@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -107,7 +107,7 @@ public:
 
 	void RotateReferences(unsigned iRotateSize) {
 		wxCHECK_RET(m_aFiles.size(), wxT("RotateReferences: Rotating empty array"));
-		
+
 		unsigned shift = (iRotateSize % m_aFiles.size());
 		std::rotate(m_aFiles.begin(), m_aFiles.begin() + shift, m_aFiles.end());
 	}
@@ -198,7 +198,7 @@ CPublishKeyword* CPublishKeywordList::FindKeyword(const wxString& rstrKeyword, C
 			return pPubKw;
 		}
 	}
-	
+
 	return NULL;
 }
 
@@ -306,7 +306,7 @@ CSharedFileList::~CSharedFileList()
 }
 
 
-void CSharedFileList::FindSharedFiles() 
+void CSharedFileList::FindSharedFiles()
 {
 	/* Abort loading if we are shutting down. */
 	if(theApp->IsOnShutDown()) {
@@ -327,17 +327,17 @@ void CSharedFileList::FindSharedFiles()
 	// All part files are automatically shared.
 	for ( uint32 i = 0; i < theApp->downloadqueue->GetFileCount(); ++i ) {
 		CPartFile* file = theApp->downloadqueue->GetFileByIndex( i );
-		
+
 		if ( file->GetStatus(true) == PS_READY ) {
 			AddLogLineNS(CFormat(_("Adding file %s to shares"))
 				% file->GetFullName().GetPrintable());
 			AddFile(file);
 		}
 	}
-	
+
 	// Create a list of all shared paths and weed out duplicates.
 	std::list<CPath> sharedPaths;
-	
+
 	// Global incoming dir and all category incoming directories are automatically shared.
 	sharedPaths.push_back(thePrefs::GetIncomingDir());
 	for (unsigned int i = 1;i < theApp->glob_prefs->GetCatCount(); ++i) {
@@ -366,13 +366,13 @@ void CSharedFileList::FindSharedFiles()
 			addedFiles++;
 		}
 	}
-	
+
 	if (addedFiles == 0) {
 		AddLogLineN(CFormat(wxPLURAL("Found %i known shared file", "Found %i known shared files", GetCount())) % GetCount());
 
 		// Make sure the AICH-hashes are up to date.
 		CThreadScheduler::AddTask(new CAICHSyncTask());
-	} else {	
+	} else {
 		// New files, AICH thread will be run at the end of the hashing thread.
 		AddLogLineN(CFormat(wxPLURAL("Found %i known shared file, %i unknown", "Found %i known shared files, %i unknown", GetCount())) % GetCount() % addedFiles);
 	}
@@ -390,7 +390,7 @@ bool CheckDirectory(const wxString& a, const CPath& b)
 
 	return false;
 }
-		
+
 
 unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks)
 {
@@ -409,10 +409,10 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 	if (!directory.DirExists()) {
 		AddLogLineNS(CFormat(_("Shared directory not found, skipping: %s"))
 			% directory.GetPrintable());
-		
+
 		return 0;
 	}
-	
+
 	CDirIterator::FileType searchFor = CDirIterator::FileNoHidden;
 	if (thePrefs::ShareHiddenFiles()) {
 		 searchFor = CDirIterator::File;
@@ -421,11 +421,11 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 	unsigned knownFiles = 0;
 	unsigned addedFiles = 0;
 
-	CDirIterator SharedDir(directory); 
+	CDirIterator SharedDir(directory);
 
 	for (CPath fname = SharedDir.GetFirstFile(searchFor); fname.IsOk(); fname = SharedDir.GetNextFile()) {
 		CPath fullPath = directory.JoinPaths(fname);
-	
+
 		if (!fullPath.FileExists()) {
 			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Shared file does not exist (possibly a broken link): %s")) % fullPath);
@@ -470,7 +470,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 			//not in knownfilelist - start adding thread to hash file
 			AddDebugLogLineN(logKnownFiles,
 				CFormat(wxT("Hashing new unknown shared file '%s'")) % fname);
-			
+
 			hashTasks.push_back(new CHashingTask(directory, fname));
 			addedFiles++;
 		}
@@ -488,7 +488,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 bool CSharedFileList::AddFile(CKnownFile* pFile)
 {
 	wxASSERT(pFile->GetHashCount() == pFile->GetED2KPartHashCount());
-	
+
 	wxMutexLocker lock(list_mut);
 
 	CKnownFileMap::value_type entry(pFile->GetFileHash(), pFile);
@@ -505,12 +505,12 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
 {
 	// TODO: Check if the file is already known - only with another date
-	
+
 	if (AddFile(toadd)) {
 		Notify_SharedFilesShowFile(toadd);
 	}
-	
-	if (!bOnlyAdd && theApp->IsConnectedED2K()) {		
+
+	if (!bOnlyAdd && theApp->IsConnectedED2K()) {
 		// Publishing of files is not anymore handled here.
 		// Instead, the timer does it by itself.
 		m_lastPublishED2KFlag = true;
@@ -535,12 +535,12 @@ void CSharedFileList::Reload()
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
-	// Kry - bah, let's use a var. 
+	// Kry - bah, let's use a var.
 	if (!reloading) {
 		AddDebugLogLineN(logKnownFiles, wxT("Reload shared files"));
 		reloading = true;
 		Notify_SharedFilesRemoveAllItems();
-		
+
 		/* All Kad keywords must be removed */
 		m_keywords->RemoveAllKeywordReferences();
 
@@ -548,12 +548,12 @@ void CSharedFileList::Reload()
 		m_PublicSharedDirNames.clear();
 
 		FindSharedFiles();
-		
+
 		/* And now the unreferenced keywords must be removed also */
 		m_keywords->PurgeUnreferencedKeywords();
-		
+
 		Notify_SharedFilesShowFileList();
-	
+
 		reloading = false;
 	}
 }
@@ -575,7 +575,7 @@ CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
 {
 	wxMutexLocker lock(list_mut);
 	CKnownFileMap::iterator it = m_Files_map.find(filehash);
-	
+
 	if ( it != m_Files_map.end() ) {
 		return it->second;
 	} else {
@@ -684,7 +684,7 @@ bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
 void CSharedFileList::SendListToServer(){
 	std::vector<CKnownFile*> SortedList;
 
-	{	
+	{
 		wxMutexLocker lock(list_mut);
 
 		if (m_Files_map.empty() || !theApp->IsConnectedED2K() ) {
@@ -702,17 +702,17 @@ void CSharedFileList::SendListToServer(){
 		}
 	}
 
-	std::sort( SortedList.begin(), SortedList.end(), SortFunc ); 
-	
-	// Limits for the server. 
-	
-	CServer* server = theApp->serverconnect->GetCurrentServer();	
-	
+	std::sort( SortedList.begin(), SortedList.end(), SortFunc );
+
+	// Limits for the server.
+
+	CServer* server = theApp->serverconnect->GetCurrentServer();
+
 	uint32 limit = server ? server->GetSoftFiles() : 0;
 	if( limit == 0 || limit > 200 ) {
 		limit = 200;
 	}
-	
+
 	if( (uint32)SortedList.size() < limit ) {
 		limit = SortedList.size();
 		if (limit == 0) {
@@ -722,11 +722,11 @@ void CSharedFileList::SendListToServer(){
 	}
 
 	CMemFile files;
-	
+
 	// Files sent.
-	files.WriteUInt32(limit);	
-	
-	uint16 count = 0;	
+	files.WriteUInt32(limit);
+
+	uint16 count = 0;
 	// Add to packet
 	std::vector<CKnownFile*>::iterator sorted_it = SortedList.begin();
 	for ( ; (sorted_it != SortedList.end()) && (count < limit); ++sorted_it ) {
@@ -734,12 +734,12 @@ void CSharedFileList::SendListToServer(){
 		if (!file->IsLargeFile() || (server && server->SupportsLargeFilesTCP())) {
 			file->CreateOfferedFilePacket(&files, server, NULL);
 		}
-		file->SetPublishedED2K(true);	
+		file->SetPublishedED2K(true);
 		++count;
 	}
-	
+
 	wxASSERT(count == limit);
-	
+
 	CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 	// compress packet
 	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
@@ -772,12 +772,12 @@ void CSharedFileList::Publish()
 	unsigned int tNow = time(NULL);
 	bool IsFirewalled = theApp->IsFirewalled();
 
-	if( Kademlia::CKademlia::IsConnected() && ( !IsFirewalled || ( IsFirewalled && theApp->clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::GetPublish()) { 
+	if( Kademlia::CKademlia::IsConnected() && ( !IsFirewalled || ( IsFirewalled && theApp->clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::GetPublish()) {
 		//We are connected to Kad. We are either open or have a buddy. And Kad is ready to start publishing.
 
 		if( Kademlia::CKademlia::GetTotalStoreKey() < KADEMLIATOTALSTOREKEY) {
 
-			//We are not at the max simultaneous keyword publishes 
+			//We are not at the max simultaneous keyword publishes
 			if (tNow >= m_keywords->GetNextPublishTime()) {
 
 				//Enough time has passed since last keyword publish
@@ -834,7 +834,7 @@ void CSharedFileList::Publish()
 				m_keywords->SetNextPublishTime(KADEMLIAPUBLISHTIME+tNow);
 			}
 		}
-		
+
 		if( Kademlia::CKademlia::GetTotalStoreSrc() < KADEMLIATOTALSTORESRC) {
 			if(tNow >= m_lastPublishKadSrc) {
 				if(m_currFileSrc > GetCount()) {
@@ -848,7 +848,7 @@ void CSharedFileList::Publish()
 						if(Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STOREFILE, true, kadFileID )==NULL) {
 							pCurKnownFile->SetLastPublishTimeKadSrc(0,0);
 						}
-					}	
+					}
 				}
 				m_currFileSrc++;
 
@@ -870,7 +870,7 @@ void CSharedFileList::Publish()
 						kadFileID.SetValueBE(pCurKnownFile->GetFileHash().GetHash());
 						if(Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STORENOTES, true, kadFileID )==NULL)
 							pCurKnownFile->SetLastPublishTimeKadNotes(0);
-					}	
+					}
 				}
 				m_currFileNotes++;
 
@@ -899,14 +899,14 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 {
 	if (file->IsPartFile()) {
 		CPartFile* pfile = dynamic_cast<CPartFile*>(file);
-		
+
 		if (file->GetStatus() != PS_COMPLETING) {
 			pfile->SetFileName(newName);
 			pfile->SavePartFile();
-	
+
 			Notify_SharedFilesUpdateItem(file);
 			Notify_DownloadCtrlUpdateItem(file);
-			
+
 			return true;
 		}
 	} else {
@@ -948,11 +948,11 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 
 			Notify_DownloadCtrlUpdateItem(file);
 			Notify_SharedFilesUpdateItem(file);
-			
+
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -994,7 +994,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 	if (strDirectoryTmp.EndsWith(&cPathSepa)) {
 		strDirectoryTmp.RemoveLast();
 	}
-	
+
 	wxString strPublicName;
 	int iPos;
 	// check all the subdirectories in the path for being shared
@@ -1046,7 +1046,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 
 
 bool CSharedFileList::IsShared(const CPath& path) const
-{ 
+{
 	if( path.IsDir(CPath::exists) ) {
 		// check if it's a shared folder
 		const unsigned folderCount = theApp->glob_prefs->shareddir_list.size();
@@ -1055,7 +1055,7 @@ bool CSharedFileList::IsShared(const CPath& path) const
 				return true;
 			}
 		}
-	
+
 		// check if it's one of the categories folders (category 0 = incoming)
 		for (unsigned i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
 			if (path.IsSameDir(theApp->glob_prefs->GetCategory(i)->path)) {
@@ -1077,7 +1077,7 @@ void CSharedFileList::CheckAICHHashes(const std::list<CAICHHash>& hashes)
 	CKnownFileMap::iterator it = m_Files_map.begin();
 	for (; it != m_Files_map.end(); ++it) {
 		const CKnownFile* file = it->second;
-	
+
 		if (file->IsPartFile() == false) {
 			CAICHHashSet* hashset = file->GetAICHHashset();
 

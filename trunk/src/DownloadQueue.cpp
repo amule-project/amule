@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -87,7 +87,7 @@ CDownloadQueue::CDownloadQueue()
 	m_dwNextTCPSrcReq = 0;
 	m_cRequestsSentToServer = 0;
 	m_lastDiskCheck = 0;
-	
+
 	// Static thresholds until dynamic kicks in.
 	m_rareFileThreshold = RARE_FILE;
 	m_commonFileThreshold = 100;
@@ -111,7 +111,7 @@ CDownloadQueue::~CDownloadQueue()
 void CDownloadQueue::LoadMetFiles(const CPath& path)
 {
 	AddLogLineNS(CFormat(_("Loading temp files from %s.")) % path.GetPrintable());
-	
+
 	std::vector<CPath> files;
 
 	// Locate part-files to be loaded
@@ -127,7 +127,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 	// file is broken in case of crashes, or the like.
 	std::sort(files.begin(), files.end());
 
-	// Load part-files	
+	// Load part-files
 	for ( size_t i = 0; i < files.size(); i++ ) {
 		AddLogLineNS(CFormat(_("Loading PartFile %u of %u")) % (i + 1) % files.size());
 		fileName = files[i].GetFullName();
@@ -161,7 +161,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 		}
 	}
 	AddLogLineNS(_("All PartFiles Loaded."));
-	
+
 	if ( GetFileCount() == 0 ) {
 		AddLogLineN(_("No part files found"));
 	} else {
@@ -177,7 +177,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 uint16 CDownloadQueue::GetFileCount() const
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	return m_filelist.size();
 }
 
@@ -213,7 +213,7 @@ void CDownloadQueue::SetUDPServer( CServer* server )
 	m_udpserver = server;
 }
 
-	
+
 void CDownloadQueue::SaveSourceSeeds()
 {
 	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
@@ -252,7 +252,7 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	} catch (const CInvalidPacket& WXUNUSED(e)) {
 		AddDebugLogLineC(logDownloadQueue, wxT("Search-result contained invalid tags, could not add"));
 	}
-	
+
 	if ( newfile && newfile->GetStatus() != PS_ERROR ) {
 		AddDownload( newfile, thePrefs::AddNewFilesPaused(), category );
 		// Add any possible sources
@@ -319,10 +319,10 @@ void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 {
 	if ( thePrefs::StartNextFile() ) {
 		SFindBestPF visitor = { -1, NULL, thePrefs::StartNextFileAlpha() };
-		
+
 		{
 			wxMutexLocker lock(m_mutex);
-			
+
 			if (thePrefs::StartNextFileSame()) {
 				// Get a download in the same category
 				visitor.m_category = oldfile->GetCategory();
@@ -333,13 +333,13 @@ void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 			if (visitor.m_result == NULL) {
 				// Get a download, regardless of category
 				visitor.m_category = -1;
-				
+
 				visitor = std::for_each(m_filelist.begin(), m_filelist.end(), visitor);
-			}	
+			}
 
 			// Alpha doesn't need special cases
 		}
-		
+
 		if (visitor.m_result) {
 			visitor.m_result->ResumeFile();
 		}
@@ -370,36 +370,36 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 		AddDebugLogLineN( logDownloadQueue, wxT("Tried to add download into invalid category.") );
 	}
 	Notify_DownloadCtrlAddFile( file );
-	theApp->searchlist->UpdateSearchFileByHash(file->GetFileHash()); 	// Update file in the search dialog if it's still open
+	theApp->searchlist->UpdateSearchFileByHash(file->GetFileHash());	// Update file in the search dialog if it's still open
 	AddLogLineC(CFormat(_("Downloading %s")) % file->GetFileName() );
 }
 
 
-bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const 
+bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 {
 	if (CKnownFile* file = theApp->sharedfiles->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
 			AddLogLineC(CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
 		} else {
-			// Check if the file exists, since otherwise the user is forced to 
+			// Check if the file exists, since otherwise the user is forced to
 			// manually reload the shares to download a file again.
 			CPath fullpath = file->GetFilePath().JoinPaths(file->GetFileName());
 			if (!fullpath.FileExists()) {
 				// The file is no longer available, unshare it
 				theApp->sharedfiles->RemoveFile(file);
-				
+
 				return false;
 			}
-			
+
 			AddLogLineC(CFormat( _("You already have the file '%s'") ) % file->GetFileName());
 		}
-		
+
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
 		AddLogLineC(CFormat( _("You are already trying to download the file %s") ) % file->GetFileName());
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -411,34 +411,34 @@ void CDownloadQueue::Process()
 {
 	// send src requests to local server
 	ProcessLocalRequests();
-	
+
 	{
 		wxMutexLocker lock(m_mutex);
 
 		uint32 downspeed = 0;
 		if (thePrefs::GetMaxDownload() != UNLIMITED && m_datarate > 1500) {
-			downspeed = (((uint32)thePrefs::GetMaxDownload())*1024*100)/(m_datarate+1); 
+			downspeed = (((uint32)thePrefs::GetMaxDownload())*1024*100)/(m_datarate+1);
 			if (downspeed < 50) {
 				downspeed = 50;
 			} else if (downspeed > 200) {
 				downspeed = 200;
 			}
 		}
-	
+
 		m_datarate = 0;
 		m_udcounter++;
 		uint32 cur_datarate = 0;
 		uint32 cur_udcounter = m_udcounter;
-		
+
 		std::list<int> m_sourcecountlist;
 
 		bool mustPreventSleep = false;
 
 		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 			CPartFile* file = m_filelist[i];
-	
+
 			CMutexUnlocker unlocker(m_mutex);
-			
+
 			uint8 status = file->GetStatus();
 			mustPreventSleep |= !(status == PS_ERROR || status == PS_INSUFFICIENT || status == PS_PAUSED || status == PS_COMPLETE);
 
@@ -487,7 +487,7 @@ void CDownloadQueue::Process()
 				// More than two, time to do some math.
 
 				// Lower 25% with the current #define values.
-				int rarecutpoint = (nSourceGroups / RARITY_FACTOR); 
+				int rarecutpoint = (nSourceGroups / RARITY_FACTOR);
 				for (int i = 0; i < rarecutpoint; ++ i) {
 					m_sourcecountlist.pop_front();
 				}
@@ -504,20 +504,20 @@ void CDownloadQueue::Process()
 			m_rareFileThreshold = RARE_FILE;
 			m_commonFileThreshold = 100;
 		}
-	
+
 		m_datarate += cur_datarate;
 
 		if (m_udcounter == 5) {
 			if (theApp->serverconnect->IsUDPSocketAvailable()) {
 				if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
 					m_lastudpstattime = ::GetTickCount();
-					
+
 					CMutexUnlocker unlocker(m_mutex);
 					theApp->serverlist->ServerStats();
 				}
 			}
 		}
-	
+
 		if (m_udcounter == 10) {
 			m_udcounter = 0;
 			if (theApp->serverconnect->IsUDPSocketAvailable()) {
@@ -526,16 +526,16 @@ void CDownloadQueue::Process()
 				}
 			}
 		}
-	
+
 		if ( (::GetTickCount() - m_lastsorttime) > 10000 ) {
 			DoSortByPriority();
 		}
 		// Check if any paused files can be resumed
-			
+
 		CheckDiskspace(thePrefs::GetTempDir());
 	}
-	
-	
+
+
 	// Check for new links once per second.
 	if ((::GetTickCount() - m_nLastED2KLinkCheck) >= 1000) {
 		theApp->AddLinksFromFile();
@@ -547,7 +547,7 @@ void CDownloadQueue::Process()
 CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	for ( uint16 i = 0; i < m_filelist.size(); ++i ) {
 		if ( filehash == m_filelist[i]->GetFileHash()) {
 			return m_filelist[ i ];
@@ -559,7 +559,7 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const
 			return *it;
 		}
 	}
-	
+
 	return NULL;
 }
 
@@ -567,11 +567,11 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const
 CPartFile* CDownloadQueue::GetFileByIndex(unsigned int index)  const
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	if ( index < m_filelist.size() ) {
 		return m_filelist[ index ];
 	}
-	
+
 	wxFAIL;
 	return NULL;
 }
@@ -586,7 +586,7 @@ bool CDownloadQueue::IsPartFile(const CKnownFile* file) const
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -630,8 +630,8 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash())) || (thePrefs::IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash()))) {
 		source->Safe_Delete();
 		return;
-	}	
-	
+	}
+
 	// Find all clients with the same hash
 	if ( source->HasValidHash() ) {
 		CClientList::SourceList found = theApp->clientlist->GetClientsByHash( source->GetUserHash() );
@@ -650,7 +650,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 						Notify_SourceCtrlAddSource(sender, *it, A4AF_SOURCE);
 					}
 				}
-				
+
 				source->Safe_Delete();
 				return;
 			}
@@ -661,7 +661,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 
 	// Our new source is real new but maybe it is already uploading to us?
 	// If yes the known client will be attached to the var "source" and the old
-	// source-client will be deleted. However, if the request file of the known 
+	// source-client will be deleted. However, if the request file of the known
 	// source is NULL, then we have to treat it almost like a new source and if
 	// it isn't NULL and not "sender", then we shouldn't move it, but rather add
 	// a request for the new file.
@@ -670,7 +670,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		// Already queued for another file?
 		if ( source->GetRequestFile() ) {
 			// If we're already queued for the right file, then there's nothing to do
-			if ( sender != source->GetRequestFile() ) {	
+			if ( sender != source->GetRequestFile() ) {
 				// Add the new file to the request list
 				source->AddRequestForAnotherFile( sender );
 			}
@@ -682,7 +682,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 			if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
 				sender->UpdateFileRatingCommentAvail();
 			}
-			
+
 			Notify_SourceCtrlAddSource(sender, CCLIENTREF(source, wxT("CDownloadQueue::CheckAndAddSource Notify_SourceCtrlAddSource 1")), UNAVAILABLE_SOURCE);
 		}
 	} else {
@@ -690,12 +690,12 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		source->SetRequestFile( sender );
 
 		theApp->clientlist->AddClient(source);
-	
+
 		sender->AddSource( source );
 		if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
 			sender->UpdateFileRatingCommentAvail();
 		}
-	
+
 		Notify_SourceCtrlAddSource(sender, CCLIENTREF(source, wxT("CDownloadQueue::CheckAndAddSource Notify_SourceCtrlAddSource 2")), UNAVAILABLE_SOURCE);
 	}
 }
@@ -704,7 +704,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source)
 {
 	// Kad reviewed
-	
+
 	if (sender->IsStopped()) {
 		return;
 	}
@@ -726,16 +726,16 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 			AddDebugLogLineN(logIPFilter, wxT("Ignored already known source with IP=%s") + Uint32toStringIP(nClientIP));
 			return;
 		}
-	}	
-	
+	}
+
 	// Filter sources which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
-	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash())) 
+	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash()))
 		|| (thePrefs::IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash()))) {
 		return;
-	}		
-	
+	}
+
 	CPartFile* file = source->GetRequestFile();
-	
+
 	// Check if the file is already queued for something else
 	if ( file ) {
 		if ( file != sender ) {
@@ -761,16 +761,16 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 {
 	bool removed = false;
 	toremove->DeleteAllFileRequests();
-	
+
 	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
 		CPartFile* cur_file = GetFileByIndex( i );
-		
+
 		// Remove from source-list
 		if ( cur_file->DelSource( toremove ) ) {
-			
+
 			// Remove from sourcelist widget
 			Notify_SourceCtrlRemoveSource(toremove->ECID(), cur_file);
-			
+
 			cur_file->RemoveDownloadingSource(toremove);
 			removed = true;
 			if ( bDoStatsUpdate ) {
@@ -786,7 +786,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	if ( !toremove->GetFileComment().IsEmpty() || toremove->GetFileRating()>0) {
 		toremove->GetRequestFile()->UpdateFileRatingCommentAvail();
 	}
-	
+
 	toremove->SetRequestFile( NULL );
 	toremove->SetDownloadState(DS_NONE);
 	toremove->ResetFileStatusInfo();
@@ -835,7 +835,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 
 	for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
 		const CKnownFile::SourceSet& set = m_filelist[i]->GetSourceList();
-		
+
 		for ( CKnownFile::SourceSet::const_iterator it = set.begin(); it != set.end(); it++ ) {
 			if ( it->GetIP() == dwIP && it->GetUDPPort() == nUDPPort ) {
 				return it->GetClient();
@@ -871,43 +871,43 @@ bool CDownloadQueue::SendNextUDPPacket()
 	// Start monitoring the server and the files list
 	if ( !m_queueServers.IsActive() ) {
 		AddObserver( &m_queueFiles );
-		
+
 		theApp->serverlist->AddObserver( &m_queueServers );
 	}
-	
 
- 	bool packetSent = false;
- 	while ( !packetSent ) {
- 		// Get max files ids per packet for current server
- 		int filesAllowed = GetMaxFilesPerUDPServerPacket();
- 
- 		if (filesAllowed < 1 || !m_udpserver || IsConnectedServer(m_udpserver)) {
- 			// Select the next server to ask, must not be the connected server
- 			do {
+
+	bool packetSent = false;
+	while ( !packetSent ) {
+		// Get max files ids per packet for current server
+		int filesAllowed = GetMaxFilesPerUDPServerPacket();
+
+		if (filesAllowed < 1 || !m_udpserver || IsConnectedServer(m_udpserver)) {
+			// Select the next server to ask, must not be the connected server
+			do {
 				m_udpserver = m_queueServers.GetNext();
 			} while (IsConnectedServer(m_udpserver));
-	
- 			m_cRequestsSentToServer = 0;
- 			filesAllowed = GetMaxFilesPerUDPServerPacket();
-  		}
- 
- 		
- 		// Check if we have asked all servers, in which case we are done
- 		if (m_udpserver == NULL) {
- 			DoStopUDPRequests();
- 			
- 			return false;
-  		}
-  
- 		// Memoryfile containing the hash of every file to request
+
+			m_cRequestsSentToServer = 0;
+			filesAllowed = GetMaxFilesPerUDPServerPacket();
+		}
+
+
+		// Check if we have asked all servers, in which case we are done
+		if (m_udpserver == NULL) {
+			DoStopUDPRequests();
+
+			return false;
+		}
+
+		// Memoryfile containing the hash of every file to request
 		// 28bytes allocation because 16b + 4b + 8b is the worse case scenario.
- 		CMemFile hashlist( 28 );
- 		
+		CMemFile hashlist( 28 );
+
 		CPartFile* file = m_queueFiles.GetNext();
-		
+
 		while ( file && filesAllowed ) {
- 			uint8 status = file->GetStatus();
- 			
+			uint8 status = file->GetStatus();
+
 			if ( ( status == PS_READY || status == PS_EMPTY ) && file->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP() ) {
 				if (file->IsLargeFile() && !m_udpserver->SupportsLargeFilesUDP()) {
 					AddDebugLogLineN(logDownloadQueue, wxT("UDP Request for sources on a large file ignored: server doesn't support it"));
@@ -926,29 +926,29 @@ bool CDownloadQueue::SendNextUDPPacket()
 					}
 					--filesAllowed;
 				}
-  			}
-		
+			}
+
 			// Avoid skipping a file if we can't send any more currently
 			if ( filesAllowed ) {
 				file = m_queueFiles.GetNext();
 			}
 		}
-		
+
 		// See if we have anything to send
- 		if ( hashlist.GetLength() ) {
- 			packetSent = SendGlobGetSourcesUDPPacket(hashlist);
+		if ( hashlist.GetLength() ) {
+			packetSent = SendGlobGetSourcesUDPPacket(hashlist);
 		}
- 		
- 		// Check if we've covered every file
+
+		// Check if we've covered every file
 		if ( file == NULL ) {
- 			// Reset the list of asked files so that the loop will start over
+			// Reset the list of asked files so that the loop will start over
 			m_queueFiles.Reset();
-			
- 			// Unset the server so that the next server will be used
- 			m_udpserver = NULL;
-  		}
-  	}
-	
+
+			// Unset the server so that the next server will be used
+			m_udpserver = NULL;
+		}
+	}
+
 	return true;
 }
 
@@ -966,7 +966,7 @@ void CDownloadQueue::DoStopUDPRequests()
 	// No need to observe when we wont be using the results
 	theApp->serverlist->RemoveObserver( &m_queueServers );
 	RemoveObserver( &m_queueFiles );
-	
+
 	m_udpserver = 0;
 	m_lastudpsearchtime = ::GetTickCount();
 }
@@ -975,18 +975,18 @@ void CDownloadQueue::DoStopUDPRequests()
 // Comparison function needed by sort. Returns true if file1 preceeds file2
 bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
 	if (file1->GetDownPriority() != file2->GetDownPriority()) {
-		// To place high-priority files before low priority files we have to 
-		// invert this test, since PR_LOW is lower than PR_HIGH, and since 
+		// To place high-priority files before low priority files we have to
+		// invert this test, since PR_LOW is lower than PR_HIGH, and since
 		// placing a PR_LOW file before a PR_HIGH file would mean that
 		// the PR_LOW file gets sources before the PR_HIGH file ...
 		return (file1->GetDownPriority() > file2->GetDownPriority());
 	} else {
 		int sourcesA = file1->GetSourceCount();
 		int sourcesB = file2->GetSourceCount();
-		
+
 		int notSourcesA = file1->GetNotCurrentSourcesCount();
 		int notSourcesB = file2->GetNotCurrentSourcesCount();
-		
+
 		int cmp = CmpAny( sourcesA - notSourcesA, sourcesB - notSourcesB );
 
 		if ( cmp == 0 ) {
@@ -1021,7 +1021,7 @@ void CDownloadQueue::ResetLocalServerRequests()
 void CDownloadQueue::RemoveLocalServerRequest( CPartFile* file )
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	EraseValue( m_localServerReqQueue, file );
 
 	file->SetLocalSrcRequestQueued(false);
@@ -1031,11 +1031,11 @@ void CDownloadQueue::RemoveLocalServerRequest( CPartFile* file )
 void CDownloadQueue::ProcessLocalRequests()
 {
 	wxMutexLocker lock( m_mutex );
-	
-	bool bServerSupportsLargeFiles = theApp->serverconnect 
+
+	bool bServerSupportsLargeFiles = theApp->serverconnect
 									&& theApp->serverconnect->GetCurrentServer()
 									&& theApp->serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
-	
+
 	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
 		CMemFile dataTcpFrame(22);
 		const int iMaxFilesPerTcpFrame = 15;
@@ -1130,7 +1130,7 @@ void CDownloadQueue::ProcessLocalRequests()
 void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	m_localServerReqQueue.push_back(sender);
 }
 
@@ -1152,7 +1152,7 @@ void CDownloadQueue::SetCatPrio(uint8 cat, uint8 newprio)
 {
 	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
 		CPartFile* file = GetFileByIndex( i );
-		
+
 		if ( !cat || file->GetCategory() == cat ) {
 			if ( newprio == PR_AUTO ) {
 				file->SetAutoDownPriority(true);
@@ -1171,19 +1171,19 @@ void CDownloadQueue::SetCatStatus(uint8 cat, int newstatus)
 
 	{
 		wxMutexLocker lock(m_mutex);
-	
+
 		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 			if ( m_filelist[i]->CheckShowItemInGivenCat(cat) ) {
 				files.push_back( m_filelist[i] );
 			}
 		}
 	}
-	
+
 	std::list<CPartFile*>::iterator it = files.begin();
-		
+
 	for ( ; it != files.end(); it++ ) {
 		switch ( newstatus ) {
-			case MP_CANCEL:	(*it)->Delete(); 	break;
+			case MP_CANCEL:	(*it)->Delete();	break;
 			case MP_PAUSE:	(*it)->PauseFile();	break;
 			case MP_STOP:	(*it)->StopFile();	break;
 			case MP_RESUME:	(*it)->ResumeFile();	break;
@@ -1195,7 +1195,7 @@ void CDownloadQueue::SetCatStatus(uint8 cat, int newstatus)
 uint16 CDownloadQueue::GetDownloadingFileCount() const
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	uint16 count = 0;
 	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 		uint8 status = m_filelist[i]->GetStatus();
@@ -1203,7 +1203,7 @@ uint16 CDownloadQueue::GetDownloadingFileCount() const
 			count++;
 		}
 	}
-	
+
 	return count;
 }
 
@@ -1218,7 +1218,7 @@ uint16 CDownloadQueue::GetPausedFileCount() const
 			count++;
 		}
 	}
-	
+
 	return count;
 }
 
@@ -1228,7 +1228,7 @@ void CDownloadQueue::CheckDiskspace( const CPath& path )
 	if ( ::GetTickCount() - m_lastDiskCheck < DISKSPACERECHECKTIME ) {
 		return;
 	}
-	
+
 	m_lastDiskCheck = ::GetTickCount();
 
 	uint64 min = 0;
@@ -1250,17 +1250,17 @@ void CDownloadQueue::CheckDiskspace( const CPath& path )
 			CUserEvents::OutOfDiskSpace,
 			wxT("Temporary partition"));
 	}
-	
+
 	for (unsigned int i = 0; i < m_filelist.size(); ++i) {
 		CPartFile* file = m_filelist[i];
-		
+
 		switch ( file->GetStatus() ) {
 			case PS_ERROR:
 			case PS_COMPLETING:
 			case PS_COMPLETE:
 				continue;
 		}
-	
+
 		if ( free >= min && file->GetInsufficient() ) {
 			// We'll try to resume files if there is enough free space
 			if ( free - file->GetNeededSpace() > min ) {
@@ -1299,7 +1299,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 	if (!m_udpserver) {
 		return false;
 	}
-	
+
 	CPacket packet(data, OP_EDONKEYPROT, ((m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) ? OP_GLOBGETSOURCES2 : OP_GLOBGETSOURCES));
 
 	theStats::AddUpOverheadServer(packet.GetPacketSize());
@@ -1317,7 +1317,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 	}
 
 	wxMutexLocker lock( m_mutex );
-		
+
 	Hostname_Entry entry = { fileid, pszHostname, port, hash, cryptoptions };
 	m_toresolve.push_front(entry);
 
@@ -1345,7 +1345,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 	wxMutexLocker lock( m_mutex );
 
 	wxASSERT( m_toresolve.size() );
-	
+
 	Hostname_Entry resolved = m_toresolve.front();
 	m_toresolve.pop_front();
 
@@ -1364,11 +1364,11 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 				sources.WriteHash(sourcehash);
 			}
 			sources.Seek(0,wxFromStart);
-			
+
 			file->AddSources(sources, 0, 0, SF_LINK, true);
 		}
 	}
-	
+
 	while (m_toresolve.size()) {
 		Hostname_Entry entry = m_toresolve.front();
 
@@ -1416,12 +1416,12 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, uint8 category )
 {
 	wxASSERT( !link.IsEmpty() );
 	wxString URI = link;
-	
+
 	// Need the links to end with /, otherwise CreateLinkFromUrl crashes us.
 	if ( URI.Last() != wxT('/') ) {
 		URI += wxT("/");
 	}
-	
+
 	try {
 		CScopedPtr<CED2KLink> uri(CED2KLink::CreateLinkFromUrl(URI));
 
@@ -1429,7 +1429,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, uint8 category )
 	} catch ( const wxString& err ) {
 		AddLogLineC(CFormat( _("Invalid eD2k link! ERROR: %s")) % err);
 	}
-	
+
 	return false;
 }
 
@@ -1439,13 +1439,13 @@ bool CDownloadQueue::AddED2KLink( const CED2KLink* link, uint8 category )
 	switch ( link->GetKind() ) {
 		case CED2KLink::kFile:
 			return AddED2KLink( dynamic_cast<const CED2KFileLink*>( link ), category );
-			
+
 		case CED2KLink::kServer:
 			return AddED2KLink( dynamic_cast<const CED2KServerLink*>( link ) );
-			
+
 		case CED2KLink::kServerList:
 			return AddED2KLink( dynamic_cast<const CED2KServerListLink*>( link ) );
-			
+
 		default:
 			return false;
 	}
@@ -1473,42 +1473,42 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, uint8 category )
 		}
 
 		file = new CPartFile(link);
-	
+
 		if (file->GetStatus() == PS_ERROR) {
 			delete file;
 			return false;
 		}
-		
+
 		AddDownload(file, thePrefs::AddNewFilesPaused(), category);
 	}
-	
+
 	if (link->HasValidAICHHash()) {
 		CAICHHashSet* hashset = file->GetAICHHashset();
-		
+
 		if (!hashset->HasValidMasterHash() || (hashset->GetMasterHash() != link->GetAICHHash())) {
 			hashset->SetMasterHash(link->GetAICHHash(), AICH_VERIFIED);
 			hashset->FreeHashSet();
 		}
 	}
-	
+
 	const CED2KFileLink::CED2KLinkSourceList& list = link->m_sources;
 	CED2KFileLink::CED2KLinkSourceList::const_iterator it = list.begin();
 	for (; it != list.end(); ++it) {
 		AddToResolve(link->GetHashKey(), it->addr, it->port, it->hash, it->cryptoptions);
 	}
 
-	return true;	
+	return true;
 }
 
 
 bool CDownloadQueue::AddED2KLink( const CED2KServerLink* link )
 {
 	CServer *server = new CServer( link->GetPort(), Uint32toStringIP( link->GetIP() ) );
-	
+
 	server->SetListName( Uint32toStringIP( link->GetIP() ) );
-	
+
 	theApp->serverlist->AddServer(server);
-	
+
 	Notify_ServerAdd(server);
 
 	return true;
@@ -1526,7 +1526,7 @@ bool CDownloadQueue::AddED2KLink( const CED2KServerListLink* link )
 void CDownloadQueue::ObserverAdded( ObserverType* o )
 {
 	CObservableQueue<CPartFile*>::ObserverAdded( o );
-	
+
 	EventType::ValueList list;
 
 	{
@@ -1568,7 +1568,7 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 		return;
 	}
 
-	CUpDownClient* ctemp = NULL; 
+	CUpDownClient* ctemp = NULL;
 	switch (type) {
 		case 4:
 		case 1: {

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -70,7 +70,7 @@ string GetLinksFilePath(const string& configDir)
 #ifdef __APPLE__
 
 	std::string strDir;
-	
+
 	FSRef fsRef;
 	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
 		CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
@@ -128,11 +128,11 @@ string GetLinksFilePath(const string& configDir)
 char HexToDec( const string& hex )
 {
 	char result = 0;
-	
+
 	for ( size_t i = 0; i < hex.length(); ++i ) {
 		char cur = toupper( hex.at(i) );
 		result *= 16;
-		
+
 		if ( isdigit( cur ) ) {
 			result += cur - '0';
 		} else if ( cur >= 'A' && cur <= 'F' ) {
@@ -156,7 +156,7 @@ string Unescape( const string& str )
 {
 	string result;
 	result.reserve( str.length() );
-	
+
 	for ( size_t i = 0; i < str.length(); ++i ) {
 		if ( str.at(i) == '%' && ( i + 2 < str.length() ) ) {
 			char unesc = HexToDec( str.substr( i + 1, 2 ) );
@@ -187,7 +187,7 @@ string strip( const string& str )
 	int first = 0;
 	int last  = str.length() - 1;
 
-	// A simple but no very optimized way to narrow down the 
+	// A simple but no very optimized way to narrow down the
 	// usable text within the string.
 	while ( first <= last ) {
 		if ( isspace( str.at(first) ) ) {
@@ -198,8 +198,8 @@ string strip( const string& str )
 			break;
 		}
 	};
-	
-	return str.substr( first, 1 + last - first );	
+
+	return str.substr( first, 1 + last - first );
 }
 
 
@@ -225,7 +225,7 @@ bool isMD4Hash( const string& str )
 {
 	for ( size_t i = 0; i < str.length(); i++ ) {
 		const char c = toupper( str.at(i) );
-		
+
 		if ( !isdigit( c ) && ( c < 'A' || c > 'F' ) ) {
 			return false;
 		}
@@ -240,8 +240,8 @@ bool isMD4Hash( const string& str )
  */
 string getVersion()
 {
-  	std::ostringstream v;
-	
+	std::ostringstream v;
+
 	v << "aMule ED2k link parser v"
 		<< versionMajor << "."
 		<< versionMinor << "."
@@ -262,7 +262,7 @@ void badLink( const string& type, const string& err, const string& uri )
 
 
 /**
- * Writes a string to the ED2KLinks file. 
+ * Writes a string to the ED2KLinks file.
  *
  * If errors are detected, it will terminate the program.
  */
@@ -271,7 +271,7 @@ void writeLink( const string& uri, const string& config_dir )
 	// Attempt to lock the ED2KLinks file
 	static CFileLock lock(GetLinksFilePath(config_dir));
 	static std::ofstream file;
-	
+
 	if (!file.is_open()) {
 		string path = GetLinksFilePath(config_dir);
 		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
@@ -307,12 +307,12 @@ bool checkFileLink( const string& uri )
 		valid &= ( name_off < size_off );
 		valid &= ( size_off < hash_off );
 		valid &= ( hash_off != string::npos );
-	
+
 		if ( !valid ) {
 			badLink( "file", "invalid link format", uri );
 			return false;
 		}
-		
+
 		string name = uri.substr( base_off + 1, name_off - base_off - 1 );
 		string size = uri.substr( name_off + 1, size_off - name_off - 1 );
 		string hash = uri.substr( size_off + 1, hash_off - size_off - 1 );
@@ -356,12 +356,12 @@ bool checkServerLink( const string& uri )
 		valid &= ( base_off < host_off );
 		valid &= ( host_off < port_off );
 		valid &= ( port_off != string::npos );
-	
+
 		if ( !valid || uri.at( port_off + 1 ) != '/' ) {
 			badLink( "server", "invalid link format", uri );
 			return false;
 		}
-		
+
 		string host = uri.substr( base_off + 1, host_off - base_off - 1 );
 		string port = uri.substr( host_off + 1, port_off - host_off - 1 );
 
@@ -397,12 +397,12 @@ bool checkServerListLink( const string& uri )
 		bool valid = true;
 		valid &= ( base_off < path_off );
 		valid &= ( path_off != string::npos );
-	
+
 		if ( !valid ) {
 			badLink( "serverlist", "invalid link format", uri );
 			return false;
 		}
-		
+
 		string path = uri.substr( base_off + 1, path_off - base_off - 1 );
 
 		if ( path.empty() ) {
@@ -441,9 +441,9 @@ int main(int argc, char *argv[])
 			if ( arg.at( arg.length() - 1 ) != '/' ) {
 				arg += '/';
 			}
-			
+
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
-		
+
 			if ( (type == "file") && checkFileLink( arg ) ) {
 				arg += category;
 				writeLink( arg, config_path );
@@ -482,7 +482,7 @@ int main(int argc, char *argv[])
 				<< "    --emulecollection, -e   Loads all links of an emulecollection\n\n"
 				<< "*** NOTE: Option order is important! ***\n"
 				<< std::endl;
-			
+
 		} else if (arg == "-v" || arg == "--version") {
 			std::cout << getVersion() << std::endl;
 		} else if (arg == "-t" || arg == "--category") {

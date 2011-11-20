@@ -21,7 +21,7 @@
 ## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
 use File::Copy;
-use warnings; 
+use warnings;
 use strict;
 
 my $exit_with_help;
@@ -93,15 +93,15 @@ foreach $contact (@ARGV) {
 		print "\t\t\tUDPPort : " . $udpport . "\n";
 		print "\t\t\tType    : " . $type . "\n";
 
-		print MET	&hash_string($1) . 
-				&int32_string($ip) .	
-				&int16_string($tcpport) . 
-				&int16_string($udpport) . 
+		print MET	&hash_string($1) .
+				&int32_string($ip) .
+				&int16_string($tcpport) .
+				&int16_string($udpport) .
 				&byte_string($type);
 	} else {
 		die "Malformed contact line, can't continue: " . $contact . "\n";
-	} 
-}	
+	}
+}
 
 print "Closing nodes.dat\n\n";
 close(MET);

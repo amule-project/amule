@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -38,7 +38,7 @@
 	- Handshake
 		-> The handshake is encrypted - except otherwise noted - by the Keys created above
 		-> Padding is currently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
-		Client A: <SemiRandomNotProtocolMarker 7 Bits[Unencrypted]><ED2K Marker 1Bit = 1><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16>	
+		Client A: <SemiRandomNotProtocolMarker 7 Bits[Unencrypted]><ED2K Marker 1Bit = 1><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16>
 
 	- Additional Comments:
 		- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
@@ -57,7 +57,7 @@
 	- Handshake
 		-> The handshake is encrypted - except otherwise noted - by the Keys created above
 		-> Padding is currently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
-		Client A: <SemiRandomNotProtocolMarker 1[Unencrypted]><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16>	
+		Client A: <SemiRandomNotProtocolMarker 1[Unencrypted]><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16>
 
 	- Overhead: 8 Bytes per UDP Packet
 
@@ -69,7 +69,7 @@
 		- SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromise, turning in complete randomness (and nice design) but gaining a lower CPU usage
 
 ****************************** KAD Packets
-			  
+
 - Keycreation Client <-> Client:
 	- Client A (Outgoing connection):
 		Sendkey: Md5(<KadID 16><RandomKeyPartClientA 2>)  18
@@ -209,14 +209,14 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 
 	if (value == MAGICVALUE_UDP_SYNC_CLIENT) {
 		// yup this is an encrypted packet
-// 		// debugoutput notices
-// 		// the following cases are "allowed" but shouldn't happen given that there is only our implementation yet
-// 		if (bKad && (pbyBufIn[0] & 0x01) != 0)
-// 			DebugLog(_T("Received obfuscated UDP packet from clientIP: %s with wrong key marker bits (kad packet, ed2k bit)"), ipstr(dwIP));
-// 		else if (bKad && !bKadRecvKeyUsed && (pbyBufIn[0] & 0x02) != 0)
-// 			DebugLog(_T("Received obfuscated UDP packet from clientIP: %s with wrong key marker bits (kad packet, nodeid key, recvkey bit)"), ipstr(dwIP));
-// 		else if (bKad && bKadRecvKeyUsed && (pbyBufIn[0] & 0x02) == 0)
-// 			DebugLog(_T("Received obfuscated UDP packet from clientIP: %s with wrong key marker bits (kad packet, recvkey key, nodeid bit)"), ipstr(dwIP));
+//		// debugoutput notices
+//		// the following cases are "allowed" but shouldn't happen given that there is only our implementation yet
+//		if (bKad && (pbyBufIn[0] & 0x01) != 0)
+//			DebugLog(_T("Received obfuscated UDP packet from clientIP: %s with wrong key marker bits (kad packet, ed2k bit)"), ipstr(dwIP));
+//		else if (bKad && !bKadRecvKeyUsed && (pbyBufIn[0] & 0x02) != 0)
+//			DebugLog(_T("Received obfuscated UDP packet from clientIP: %s with wrong key marker bits (kad packet, nodeid key, recvkey bit)"), ipstr(dwIP));
+//		else if (bKad && bKadRecvKeyUsed && (pbyBufIn[0] & 0x02) == 0)
+//			DebugLog(_T("Received obfuscated UDP packet from clientIP: %s with wrong key marker bits (kad packet, recvkey key, nodeid bit)"), ipstr(dwIP));
 
 		uint8_t padLen;
 		receivebuffer.RC4Crypt(bufIn + 7, (uint8_t*)&padLen, 1);
@@ -284,14 +284,14 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8_t **buf, int bufLen, const
 			PokeUInt32(keyData, receiverVerifyKey);
 			PokeUInt16(keyData+4, randomKeyPart);
 			md5.Calculate(keyData, sizeof(keyData));
-			//DEBUG_ONLY( DebugLog(_T("Creating obfuscated Kad packet encrypted by ReceiverKey (%u)"), nReceiverVerifyKey) );  
+			//DEBUG_ONLY( DebugLog(_T("Creating obfuscated Kad packet encrypted by ReceiverKey (%u)"), nReceiverVerifyKey) );
 		}
 		else if (clientHashOrKadID != NULL && !CMD4Hash(clientHashOrKadID).IsEmpty()) {
 			uint8_t keyData[18];
 			md4cpy(keyData, clientHashOrKadID);
 			PokeUInt16(keyData+16, randomKeyPart);
 			md5.Calculate(keyData, sizeof(keyData));
-			//DEBUG_ONLY( DebugLog(_T("Creating obfuscated Kad packet encrypted by Hash/NodeID %s"), md4str(pachClientHashOrKadID)) );  
+			//DEBUG_ONLY( DebugLog(_T("Creating obfuscated Kad packet encrypted by Hash/NodeID %s"), md4str(pachClientHashOrKadID)) );
 		}
 		else {
 			wxFAIL;

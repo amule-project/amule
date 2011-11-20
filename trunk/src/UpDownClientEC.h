@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,7 +47,7 @@ private:
 
 	/**
 	 * Reference count which is increased whenever client is linked to a clientref.
-	 * Clients are to be stored only by ClientRefs, CUpDownClient * are for temporary 
+	 * Clients are to be stored only by ClientRefs, CUpDownClient * are for temporary
 	 * use only.
 	 * Linking is done only by CClientRef which is friend, so methods are private.
 	 */
@@ -99,7 +99,7 @@ public:
 	uint16				GetRemoteQueueRank() const				{ return m_nRemoteQueueRank; }
 	CPartFile*			GetRequestFile() const					{ return m_reqfile; }
 	uint32				GetScore() const						{ return m_score; }
-	double 				GetScoreRatio() const;
+	double				GetScoreRatio() const;
 	uint32				GetServerIP() const						{ return m_dwServerIP; }
 	const wxString		GetServerName() const					{ return m_ServerName; }
 	uint16				GetServerPort() const					{ return m_nServerPort; }

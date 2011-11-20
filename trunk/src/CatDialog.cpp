@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -72,7 +72,7 @@ wxDialog(parent, -1, _("Category"),
 	if (index > -1) {
 		m_category = theApp->glob_prefs->GetCategory(index);
 	}
-	
+
 	if (m_category) {
 		// Filling values by the specified category
 		CastChild(IDC_TITLE,	wxTextCtrl)->SetValue(m_category->title);
@@ -80,7 +80,7 @@ wxDialog(parent, -1, _("Category"),
 		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue(m_category->path.GetRaw());
 		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue(m_category->comment);
 		CastChild(IDC_PRIOCOMBO,wxChoice)->SetSelection(m_category->prio);
-		
+
 		m_colour = CMuleColour(m_category->color);
 	} else {
 		// Default values for new categories
@@ -88,12 +88,12 @@ wxDialog(parent, -1, _("Category"),
 		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue(thePrefs::GetIncomingDir().GetRaw());
 		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue(wxEmptyString);
 		CastChild(IDC_PRIOCOMBO,wxChoice)->SetSelection(0);
-		
+
 		m_colour = CMuleColour(rand() % 255, rand() % 255, rand() % 255);
 	}
-	
+
 	CastChild(ID_BOX_CATCOLOR, wxStaticBitmap)->SetBitmap(MakeBitmap());
-	
+
 	if (!allowbrowse) {
 		CastChild(IDC_BROWSE, wxButton)->Destroy();
 	}
@@ -112,15 +112,15 @@ wxBitmap CCatDialog::MakeBitmap()
 
 	dc.SetBrush(m_colour.GetBrush());
 	dc.DrawRectangle(0, 0, 16, 16);
-	
+
 	return bitmap;
 }
 
 
 void CCatDialog::OnBnClickedBrowse(wxCommandEvent& WXUNUSED(evt))
-{	
+{
 	wxString dir = CastChild(IDC_INCOMING, wxTextCtrl)->GetValue();
-	
+
 	dir = wxDirSelector(
 		_("Choose a folder for incoming files"),
 		dir, wxDD_DEFAULT_STYLE, wxDefaultPosition, this);
@@ -133,7 +133,7 @@ void CCatDialog::OnBnClickedBrowse(wxCommandEvent& WXUNUSED(evt))
 void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString newname = CastChild(IDC_TITLE, wxTextCtrl)->GetValue();
-	
+
 	// No empty names
 	if (newname.IsEmpty()) {
 		wxMessageBox(
@@ -141,15 +141,15 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 			_("Info"), wxOK, this);
 		return;
 	}
-	
+
 	CPath newpath = CPath(CastChild(IDC_INCOMING, wxTextCtrl)->GetValue());
-	
-	// No empty dirs please 
+
+	// No empty dirs please
 	if (!newpath.IsOk()) {
 		wxMessageBox(
 			_("You must specify a path for the category!"),
 			_("Info"), wxOK, this);
-		
+
 		return;
 	}
 
@@ -190,22 +190,22 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 	if (!m_category) {
 		// New category, or the old one is gone
 		 theApp->glob_prefs->CreateCategory(
-			m_category, newname, newpath, 
+			m_category, newname, newpath,
 			CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(),
 			m_colour.GetULong(),
- 			CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
-        	
+			CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
+
 		theApp->amuledlg->m_transferwnd->AddCategory(m_category);
 	} else {
-		theApp->glob_prefs->UpdateCategory(index, newname, newpath, 
-        	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_colour.GetULong(),
-        	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
+		theApp->glob_prefs->UpdateCategory(index, newname, newpath,
+		CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_colour.GetULong(),
+		CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
 
 		theApp->amuledlg->m_transferwnd->UpdateCategory(index);
 		theApp->amuledlg->m_transferwnd->downloadlistctrl->Refresh();
 		theApp->amuledlg->m_searchwnd->UpdateCatChoice();
 	}
-	
+
 	EndModal(wxID_OK);
 }
 

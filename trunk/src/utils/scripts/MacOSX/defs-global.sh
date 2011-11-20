@@ -82,7 +82,7 @@ case "$UNIVERSAL" in
 	ARCHCONFIGFLAGS=""
 	;;
 "YES"|"yes")
-	pc $GREEN "\tUsing universal build (i386, pcc)" 
+	pc $GREEN "\tUsing universal build (i386, pcc)"
 	ARCHCPPFLAGS="-arch i386 -arch ppc"
 	ARCHCONFIGFLAGS="--enable-universal_binary"
 	CCVERSION="-4.0"

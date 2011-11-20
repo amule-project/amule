@@ -22,7 +22,7 @@ const STestStr g_fromFSTests[] = {
 	{ true, wxConvFileName->cMB2WC("\xe1\x62\x63"), wxT("\xe1\x62\x63") },
 	{ true, wxConvFileName->cMB2WC("\xe6\xf8\xe5"), wxT("\xe6\xf8\xe5") },
 	{ true, wxConvFileName->cMB2WC("\xd8\xa7\xd9\x84\xd8\xb9"), wxT("\u0627\u0644\u0639") },
-	
+
 	// From User
 	{ false, wxT("\u0627\u0644\u0639"), wxT("\u0627\u0644\u0639") }
 };
@@ -112,12 +112,12 @@ TEST(CPath, PathConstructor)
 		ASSERT_FALSE(tmp.IsOk());
 		ASSERT_EQUALS(tmp, CPath());
 	}
-	
+
 
 	for (size_t i = 0; i < ArraySize(g_fromFSTests); ++i) {
 		const wxString input = g_fromFSTests[i].input;
 		const wxString result = g_fromFSTests[i].expected;
-		
+
 		ASSERT_TRUE(result.Length());
 		ASSERT_TRUE(input.Length());
 
@@ -180,7 +180,7 @@ TEST(CPath, CopyConstructor)
 	{
 		CPath a;
 		CPath b(a);
-		
+
 		ASSERT_EQUALS(a, b);
 		ASSERT_FALSE(a.IsOk());
 		ASSERT_FALSE(b.IsOk());
@@ -192,7 +192,7 @@ TEST(CPath, Operators)
 {
 	const wxChar* tmpPath1 = wxT("foobar.tgz");
 	const wxChar* tmpPath2 = wxT("barfoo.tar");
-	
+
 	{
 		CPath a, b;
 		ASSERT_EQUALS(a, b);
@@ -239,7 +239,7 @@ TEST(CPath, Operators)
 
 		ASSERT_EQUALS(a, b);
 	}
-#endif 
+#endif
 
 	// TODO: Less than
 }
@@ -264,7 +264,7 @@ TEST(CPath, JoinPaths)
 	ASSERT_EQUALS(expected1, Norm(wxT("/home")).JoinPaths(Norm(wxT("/amule/"))));
 	ASSERT_EQUALS(expected1, Norm(wxT("/home/")).JoinPaths(Norm(wxT("/amule/"))));
 	ASSERT_EQUALS(expected1, Norm(wxT("/home/")).JoinPaths(Norm(wxT("amule/"))));
-	
+
 	ASSERT_EQUALS(expected2, Norm(wxT("/home")).JoinPaths(Norm(wxT("amule"))));
 	ASSERT_EQUALS(expected2, Norm(wxT("/home")).JoinPaths(Norm(wxT("/amule"))));
 	ASSERT_EQUALS(expected2, Norm(wxT("/home/")).JoinPaths(Norm(wxT("/amule"))));
@@ -272,7 +272,7 @@ TEST(CPath, JoinPaths)
 
 	ASSERT_EQUALS(expected1, expected1.JoinPaths(CPath()));
 	ASSERT_EQUALS(expected1, CPath().JoinPaths(expected1));
-	
+
 	ASSERT_EQUALS(expected2, expected2.JoinPaths(CPath()));
 	ASSERT_EQUALS(expected2, CPath().JoinPaths(expected2));
 }
@@ -306,7 +306,7 @@ TEST(CPath, IsSameDir)
 	ASSERT_TRUE(Norm(wxT("/root/")).IsSameDir(Norm(wxT("/root"))));
 	ASSERT_TRUE(Norm(wxT("/root")).IsSameDir(Norm(wxT("/root/"))));
 	ASSERT_TRUE(Norm(wxT("/root/")).IsSameDir(Norm(wxT("/root/"))));
-	
+
 	ASSERT_FALSE(CPath().IsSameDir(Norm(wxT("/"))));
 	ASSERT_FALSE(Norm(wxT("/")).IsSameDir(CPath()));
 
@@ -337,14 +337,14 @@ TEST(CPath, GetPath_FullName)
 
 	{
 		const CPath path = Norm(wxT("mule"));
-		
+
 		ASSERT_EQUALS(path.GetPath(), CPath());
 		ASSERT_EQUALS(path.GetFullName(), Norm(wxT("mule")));
 	}
 
 	{
 		const CPath path = Norm(wxT("mule.ext"));
-		
+
 		ASSERT_EQUALS(path.GetPath(), CPath());
 		ASSERT_EQUALS(path.GetFullName(), Norm(wxT("mule.ext")));
 	}

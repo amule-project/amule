@@ -1,7 +1,7 @@
 /*
- *  Name:         Shared functions     
+ *  Name:         Shared functions
  *
- *  Purpose:      Functions that are used various times in cas 
+ *  Purpose:      Functions that are used various times in cas
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *

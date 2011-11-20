@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -64,7 +64,7 @@ PHP_EXP_NODE *make_const_exp_dnum(int number)
 	node->op = PHP_OP_VAL;
 	node->val_node.type = PHP_VAL_INT;
 	node->val_node.int_val = number;
-	
+
 	return node;
 }
 
@@ -74,7 +74,7 @@ PHP_EXP_NODE *make_const_exp_fnum(float number)
 	node->op = PHP_OP_VAL;
 	node->val_node.type = PHP_VAL_FLOAT;
 	node->val_node.float_val = number;
-	
+
 	return node;
 }
 
@@ -103,7 +103,7 @@ PHP_EXP_NODE *make_const_exp_str(char *s, int unescape)
 	} else {
 		node->val_node.str_val = strdup(s);
 	}
-	
+
 	return node;
 }
 
@@ -113,7 +113,7 @@ PHP_EXP_NODE *make_const_exp_int_obj(void *obj)
 	node->op = PHP_OP_VAL;
 	node->val_node.type = PHP_VAL_INT_DATA;
 	node->val_node.ptr_val = obj;
-	
+
 	return node;
 }
 
@@ -161,15 +161,15 @@ PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node, ch
 	param->si_var = var_exp_node->var_si_node;
 	param->si_var->type = PHP_SCOPE_PARAM;
 	//printf("mark %p->%p as param\n", param->si_var, param->si_var->var);
-	
+
 	param->var = param->si_var->var;
-	
+
 	delete var_exp_node;
 	param->class_name = class_name ? strdup(class_name) : 0;
 	param->byref = byref;
-	
+
 	PHP_EXP_NODE *curr_node = make_const_exp_int_obj(param);
-	
+
 	if ( list ) {
 		PHP_EXP_NODE *p = list;
 		while ( p->next) {
@@ -189,10 +189,10 @@ PHP_SYN_NODE *make_expr_syn_node(PHP_STATMENT_TYPE type, PHP_EXP_NODE *expr)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = type;
 	syn_node->node_expr = expr;
-	
+
 	return syn_node;
 }
 
@@ -201,14 +201,14 @@ PHP_SYN_NODE *make_ifelse_syn_node(PHP_EXP_NODE *expr,
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = PHP_ST_IF;
 	syn_node->node_if.cond = expr;
 	syn_node->node_if.code_if = then_node;
-	
+
 	if ( elseif_list ) {
 		syn_node->node_if.code_else = elseif_list;
-	
+
 		PHP_SYN_NODE *curr_if = elseif_list;
 		while ( curr_if->node_if.code_else ) {
 			curr_if = curr_if->node_if.code_else;
@@ -224,11 +224,11 @@ PHP_SYN_NODE *make_while_loop_syn_node(PHP_EXP_NODE *cond, PHP_SYN_NODE *code, i
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = do_while ? PHP_ST_WHILE : PHP_ST_DO_WHILE;
 	syn_node->node_while.cond = cond;
 	syn_node->node_while.code = code;
-	
+
 	return syn_node;
 }
 
@@ -243,7 +243,7 @@ PHP_SYN_NODE *make_for_syn_node(PHP_EXP_NODE *start, PHP_EXP_NODE *cond,
 	syn_node->node_for.cond = cond;
 	syn_node->node_for.do_next = next;
 	syn_node->node_for.code = code;
-	
+
 	return syn_node;
 }
 
@@ -252,19 +252,19 @@ PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = PHP_ST_FOREACH;
 	syn_node->node_foreach.elems = elems;
 	syn_node->node_foreach.code = code;
 	syn_node->node_foreach.i_key = i_key ? i_key->var_si_node : 0;
 	syn_node->node_foreach.i_val = i_val->var_si_node;
 	syn_node->node_foreach.byref = byref;
-	
+
 	if ( i_key ) {
 		delete i_key;
 	}
 	delete i_val;
-	
+
 	return syn_node;
 }
 
@@ -272,13 +272,13 @@ PHP_SYN_NODE *make_func_decl_syn_node(const char *name, PHP_EXP_NODE *param_list
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = PHP_ST_FUNC_DECL;
-	
+
 	syn_node->func_decl = new PHP_SYN_FUNC_DECL_NODE;
 	memset(syn_node->func_decl, 0, sizeof(PHP_SYN_FUNC_DECL_NODE));
 	syn_node->func_decl->name = strdup(name);
-	
+
 	if ( param_list ) {
 		PHP_EXP_NODE *curr_param = param_list;
 		// count parameters first
@@ -300,7 +300,7 @@ PHP_SYN_NODE *make_func_decl_syn_node(const char *name, PHP_EXP_NODE *param_list
 			curr_param = p;
 		}
 	}
-	
+
 	return syn_node;
 }
 
@@ -308,12 +308,12 @@ PHP_SYN_NODE *make_class_decl_syn_node()
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = PHP_ST_CLASS_DECL;
-	
+
 	syn_node->class_decl = new PHP_SYN_CLASS_DECL_NODE;
 	memset(syn_node->class_decl, 0, sizeof(PHP_SYN_CLASS_DECL_NODE));
-	
+
 	return syn_node;
 }
 
@@ -321,9 +321,9 @@ PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
-	
+
 	syn_node->type = PHP_ST_SWITCH;
-	
+
 	//
 	// Bind all statement lists into single one for
 	// simplier execution
@@ -338,10 +338,10 @@ PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list)
 			stat_list_tail = cur_stat_list;
 		}
 	}
-		
+
 	syn_node->node_switch.cond = cond;
 	syn_node->node_switch.case_list = case_list;
-	
+
 	return syn_node;
 }
 
@@ -350,7 +350,7 @@ PHP_VAR_NODE *make_var_node()
 	PHP_VAR_NODE *node = new PHP_VAR_NODE;
 	memset(node, 0, sizeof(PHP_VAR_NODE));
 	node->value.type = PHP_VAL_NONE;
-	
+
 	return node;
 }
 
@@ -358,7 +358,7 @@ PHP_VAR_NODE *make_array_var()
 {
 	PHP_VAR_NODE *node = make_var_node();
 	cast_value_array(&node->value);
-	
+
 	return node;
 }
 
@@ -369,7 +369,7 @@ PHP_EXP_NODE *get_var_node(const char *name)
 {
 	PHP_EXP_NODE *node = make_zero_exp_node();
 	node->op = PHP_OP_VAR;
-	
+
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, name);
 	if ( si ) {
 		if ( (si->type == PHP_SCOPE_VAR) || (si->type == PHP_SCOPE_PARAM) ) {
@@ -385,7 +385,7 @@ PHP_EXP_NODE *get_var_node(const char *name)
 		add_var_2_scope(g_current_scope, make_var_node(), name);
 		node->var_si_node = get_scope_item(g_current_scope, name);
 	}
-	
+
 	return node;
 }
 
@@ -487,7 +487,7 @@ void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 		}
 		params[i].si_var->var = params[i].var;
 	}
-	
+
 	PHP_SCOPE_TABLE_TYPE *curr_scope_map = (PHP_SCOPE_TABLE_TYPE *)g_current_scope;
 	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();i++) {
 		if ( (i->second->type == PHP_SCOPE_VAR) || (i->second->type == PHP_SCOPE_PARAM) ) {
@@ -511,7 +511,7 @@ void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 PHP_SCOPE_TABLE make_scope_table()
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = new PHP_SCOPE_TABLE_TYPE;
-	
+
 	return scope_map;
 }
 
@@ -538,7 +538,7 @@ void switch_pop_scope_table(int old_free)
 void delete_scope_table(PHP_SCOPE_TABLE scope)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
-	
+
 	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
 		switch ( i->second->type ) {
 			case PHP_SCOPE_PARAM:
@@ -567,7 +567,7 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 	}
 	delete scope_map;
 }
-	
+
 void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
@@ -603,7 +603,7 @@ PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
 	memset(it, 0, sizeof(PHP_SCOPE_ITEM));
-	
+
 	std::string key(name);
 	(*scope_map)[key] = it;
 	return it;
@@ -682,7 +682,7 @@ PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key)
 		(arr_ptr->array)[key] = add_node;
 		arr_ptr->sorted_keys.push_back(key);
 		return add_node;
-	}	
+	}
 }
 
 PHP_VAR_NODE *array_get_by_int_key(PHP_VALUE_NODE *array, int key)
@@ -691,7 +691,7 @@ PHP_VAR_NODE *array_get_by_int_key(PHP_VALUE_NODE *array, int key)
 		return 0;
 	}
 	char s_key[32];
-	snprintf(s_key, sizeof(s_key), "%d", key);	
+	snprintf(s_key, sizeof(s_key), "%d", key);
 	return array_get_by_str_key(array, s_key);
 }
 
@@ -752,7 +752,7 @@ void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
 void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node)
 {
 	char s_key[32];
-	snprintf(s_key, sizeof(s_key), "%d", key);	
+	snprintf(s_key, sizeof(s_key), "%d", key);
 	array_add_to_str_key(array, s_key, node);
 }
 
@@ -766,7 +766,7 @@ int array_is_key_here(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key)
 	PHP_VALUE_NODE s_key = *key;
 	cast_value_str(&s_key);
 	std::string arr_key(s_key.str_val);
-	
+
 	return arr_ptr->array.count(arr_key);
 }
 
@@ -776,7 +776,7 @@ int array_get_size(PHP_VALUE_NODE *array)
 		return 0;
 	}
 	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
-	
+
 	return arr_ptr->array.size();
 }
 
@@ -802,7 +802,7 @@ void value_value_assign(PHP_VALUE_NODE *dst, PHP_VALUE_NODE *src)
 	switch(src->type) {
 		// scalars are copied. Objects are copied too, since
 		// interpreter doesn't allocate them.
-		case PHP_VAL_NONE: 
+		case PHP_VAL_NONE:
 		case PHP_VAL_BOOL:
 		case PHP_VAL_INT:
 		case PHP_VAL_FLOAT:
@@ -885,7 +885,7 @@ void cast_value_dnum(PHP_VALUE_NODE *val)
 			free(str);
 			break;
 		}
-		case PHP_VAL_ARRAY: 
+		case PHP_VAL_ARRAY:
 		case PHP_VAL_OBJECT: val->int_val = 0; break;
 		case PHP_VAL_VAR_NODE:
 		case PHP_VAL_INT_DATA: assert(0); break;
@@ -912,7 +912,7 @@ void cast_value_fnum(PHP_VALUE_NODE *val)
 			free(str);
 			break;
 		}
-		case PHP_VAL_ARRAY: 
+		case PHP_VAL_ARRAY:
 		case PHP_VAL_OBJECT: val->float_val = 0; break;
 		case PHP_VAL_VAR_NODE:
 		case PHP_VAL_INT_DATA: assert(0); break;
@@ -973,7 +973,7 @@ PHP_EXP_NODE *make_func_call_exp(char *func_name, PHP_EXP_NODE *args)
 	call_node->tree_node.left->val_node.str_val = strdup(func_name);
 	// set params
 	call_node->tree_node.right = args;
-	
+
 	return call_node;
 }
 
@@ -985,7 +985,7 @@ PHP_EXP_NODE *make_func_call_param_list()
 
 	exp_node->op = PHP_OP_VAR;
 	exp_node->var_node = params;
-	
+
 	return exp_node;
 }
 
@@ -1009,11 +1009,11 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 		return;
 	}
 	PHP_SCOPE_TABLE func_scope = make_scope_table();
-	
+
 	PHP_SYN_NODE *decl_node = make_func_decl_syn_node(def->name, 0);
 	decl_node->func_decl->param_count = def->param_count;
 	decl_node->func_decl->params = new PHP_FUNC_PARAM_DEF[def->param_count];
-	
+
 	//
 	// Built-in functions don't have class specifier, and can handle
 	// default arguments internally
@@ -1032,7 +1032,7 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	decl_node->func_decl->scope = func_scope;
 	decl_node->func_decl->is_native = 1;
 	decl_node->func_decl->native_ptr = def->func;
-	
+
 	add_func_2_scope(g_global_scope, decl_node);
 }
 
@@ -1055,11 +1055,11 @@ void php_add_native_class(const char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_ge
 void php_engine_init()
 {
 	g_global_scope = make_scope_table();
-	
+
 	g_current_scope = g_global_scope;
-	
+
 	g_scope_stack = new PHP_SCOPE_STACK_TYPE;
-	
+
 	// here built-in functions/objects/vars are loaded
 	php_init_core_lib();
 	php_init_amule_lib();
@@ -1094,7 +1094,7 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 		case PHP_OP_ARRAY: {
 				PHP_EXP_NODE *curr = tree->tree_node.left;
                 while (curr) {
-                	PHP_EXP_NODE *next = curr->next;
+                       PHP_EXP_NODE *next = curr->next;
                     php_exp_tree_free(curr->exp_node);
                     delete curr;
                     curr = next;
@@ -1108,7 +1108,7 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 			php_exp_tree_free(tree->tree_node.left);
 			php_exp_tree_free(tree->tree_node.right);
 	}
-	
+
 	delete tree;
 }
 
@@ -1123,7 +1123,7 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 			case PHP_ST_ECHO: {
 					PHP_EXP_NODE *curr = tree->node_expr;
                     while (curr) {
-                    	PHP_EXP_NODE *next = curr->next;
+                       PHP_EXP_NODE *next = curr->next;
                         php_exp_tree_free(curr->exp_node);
                         delete curr;
                         curr = next;
@@ -1172,11 +1172,11 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 					php_syn_tree_free(tree->node_switch.case_list->exp_node->tree_node.syn_right);
 					PHP_EXP_NODE *curr = tree->node_switch.case_list;
                     while (curr) {
-                    	PHP_EXP_NODE *next = curr->next;
-                    	if ( curr->exp_node ) {
+                       PHP_EXP_NODE *next = curr->next;
+                       if ( curr->exp_node ) {
 	                        php_exp_tree_free(curr->exp_node->tree_node.left);
-    	                    delete curr->exp_node;
-                    	}
+	                    delete curr->exp_node;
+                       }
                         delete curr;
                         curr = next;
                     }
@@ -1191,7 +1191,7 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 		delete tree;
 		tree = next_node;
 	}
-}	
+}
 
 void php_engine_free()
 {
@@ -1409,11 +1409,11 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 				php_eval_simple_math(expr->op, &result_val_left, &result_val_right, result);
 			}
 			break;
-    	case PHP_OP_SHL:
-    	case PHP_OP_SHR:
-    	case PHP_OP_OR:
-    	case PHP_OP_AND:
-    	case PHP_OP_XOR:
+	case PHP_OP_SHL:
+	case PHP_OP_SHR:
+	case PHP_OP_OR:
+	case PHP_OP_AND:
+	case PHP_OP_XOR:
 		case PHP_OP_LOG_OR:
 		case PHP_OP_LOG_AND:
 		case PHP_OP_LOG_XOR:
@@ -1478,7 +1478,7 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			php_report_error(PHP_ERROR, "Value of static class members not supported");
 			break;
 		default: ;
-			
+
 	}
 	value_value_free(&result_val_left);
 	value_value_free(&result_val_right);
@@ -1490,7 +1490,7 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 
 	PHP_VALUE_NODE index;
 	index.type = PHP_VAL_NONE;
-	
+
 	switch(expr->op) {
 		case PHP_OP_VAR:
 			lval_node = expr->var_si_node->var;
@@ -1579,7 +1579,7 @@ void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, P
 				break;
 			default:
 				php_report_error(PHP_INTERNAL_ERROR, "This op is not compare op");
-		}	
+		}
 	} else {
 		PHP_VALUE_TYPE restype = cast_type_resolve(op1, op2);
 		switch(op) {
@@ -1674,30 +1674,30 @@ void php_eval_int_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, 
 	cast_value_dnum(op2);
 	result->type = PHP_VAL_INT;
 	switch(op) {
-    	case PHP_OP_SHL:
-    		result->int_val = op1->int_val << op2->int_val;
-    		break;
-    	case PHP_OP_SHR:
-    		result->int_val = op1->int_val >> op2->int_val;
-    		break;
-    	case PHP_OP_OR:
-    		result->int_val = op1->int_val | op2->int_val;
-    		break;
+	case PHP_OP_SHL:
+		result->int_val = op1->int_val << op2->int_val;
+		break;
+	case PHP_OP_SHR:
+		result->int_val = op1->int_val >> op2->int_val;
+		break;
+	case PHP_OP_OR:
+		result->int_val = op1->int_val | op2->int_val;
+		break;
 		case PHP_OP_LOG_OR:
-    		result->int_val = op1->int_val || op2->int_val;
-    		break;
-    	case PHP_OP_AND:
-    		result->int_val = op1->int_val & op2->int_val;
-    		break;
+		result->int_val = op1->int_val || op2->int_val;
+		break;
+	case PHP_OP_AND:
+		result->int_val = op1->int_val & op2->int_val;
+		break;
 		case PHP_OP_LOG_AND:
-    		result->int_val = op1->int_val && op2->int_val;
-    		break;
+		result->int_val = op1->int_val && op2->int_val;
+		break;
 		case PHP_OP_LOG_XOR:
 			op1->int_val = op1->int_val ? 1 : 0;
 			op2->int_val = op2->int_val ? 1 : 0;
-    	case PHP_OP_XOR:
-    		result->int_val = op1->int_val ^ op2->int_val;
-    		break;
+	case PHP_OP_XOR:
+		result->int_val = op1->int_val ^ op2->int_val;
+		break;
 		default:
 			php_report_error(PHP_INTERNAL_ERROR, "This op is not int math");
 	}
@@ -1741,11 +1741,11 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 		php_report_error(PHP_INTERNAL_ERROR, "Wrong type in function decl node");
 		return;
 	}
-	
+
 	//
 	// Switch stack and call function
 	//
-	
+
 	PHP_SYN_FUNC_DECL_NODE *func_decl = func->func_decl;
 
 	std::map<std::string, PHP_VAR_NODE *> saved_vars;
@@ -1767,9 +1767,9 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 	switch_pop_scope_table(0);
 	func_scope_copy_back(func_decl->params, func_decl->param_count,
 		(PHP_SCOPE_TABLE_TYPE *)func_decl->scope, &r_node->var_node->value, saved_vars);
-	
+
 	//scope_reset_nonstatics(func_decl->scope);
-	
+
 }
 
 /*
@@ -1845,7 +1845,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					curr_exec_result = cond_result.int_val;
 				}
 				break;
-				
+
 			case PHP_ST_WHILE:
 			case PHP_ST_DO_WHILE:
 				if ( node->type == PHP_ST_WHILE ) {
@@ -1886,7 +1886,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				cast_value_bool(&cond_result);
 				while ( cond_result.int_val ) {
 					curr_exec_result = php_execute(node->node_for.code, 0);
-					// handle 'break' and 'continue' 
+					// handle 'break' and 'continue'
 					if ( curr_exec_result < 0 ) {
 						curr_exec_result++;
 						break;
@@ -1936,7 +1936,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 							value_value_assign(curr_value, &i_val->var->value);
 						}
 						value_value_free(&i_val->var->value);
-						// handle 'break' and 'continue' 
+						// handle 'break' and 'continue'
 						if ( curr_exec_result < 0 ) {
 							curr_exec_result++;
 							break;
@@ -2024,7 +2024,7 @@ void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 			type_msg = "PHP Internal Error:";
 			break;
 	}
-	
+
 	va_list args;
 	va_start(args, msg);
 	vsnprintf(msgbuf, sizeof(msgbuf), msg, args);

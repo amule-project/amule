@@ -26,7 +26,7 @@ JOBS=4
 
 #
 # This function uses three parameters:
-#    $1 - an input parameter specifying a mask for the distribution, 
+#    $1 - an input parameter specifying a mask for the distribution,
 #         e.g., 'aMule-CVS-*' for cvs tarballs or 'aMule-*' for distro tarballs.
 #    $2 - an output parameter with the name of the variable that will
 #         receive the full file name of the tar archive
@@ -42,17 +42,17 @@ function lookup_distro {
     #echo $2    # evaluates to XXX_FILENAME
     #echo ${!2} # evaluates to /home/user/dir/xxx-y.z.t.tar.gz
 
-    # remove the directory and the extension parts and assing it 
+    # remove the directory and the extension parts and assing it
     # to XXX_DISTRO in $3
     case ${!2} in
 	*.gz)
 	    eval $3=$(basename ${!2} .tar.gz)
 	    ;;
-	
+
 	*.bz2)
 	    eval $3=$(basename ${!2} .tar.bz2)
 	    ;;
-	
+
 	*.zip)
 	    eval $3=$(basename ${!2} .zip)
 	    ;;
@@ -194,7 +194,7 @@ function build_libupnp {
 #
 function build_wxwidgets {
 	untar_distro ${WXWIDGETS_FILENAME}
-	
+
 	WXWIDGETS_INSTALL_DIR="${PREFIX}/wxWidgets"
 	cd wxWidgets-?.?.?
 	./configure \
@@ -271,7 +271,7 @@ build_amule
 cd ..
 
 
-echo 
+echo
 echo Finished compilation.
 echo You should run aMule like this:
 echo '$LD_LIBRARY_PATH'=${WXWIDGETS_INSTALL_DIR}/lib:${LIBUPNP_INSTALL_DIR}/lib LANG=en_US.UTF-8 ${AMULE_INSTALL_DIR}/bin/amule

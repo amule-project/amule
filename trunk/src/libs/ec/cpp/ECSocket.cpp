@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -176,7 +176,7 @@ void CQueuedData::WriteToSocket(CECSocket *sock)
 {
 	wxCHECK_RET(m_rd_ptr < m_wr_ptr,
 		wxT("Reading past written data in WriteToSocket"));
-	
+
 	sock->SocketWrite(m_rd_ptr, GetUnreadDataLength());
 	m_rd_ptr += sock->GetLastCount();
 }
@@ -271,7 +271,7 @@ m_in_header(true),
 m_my_flags(0x20),
 m_haveNotificationSupport(false)
 {
-	
+
 }
 
 CECSocket::~CECSocket()
@@ -299,7 +299,7 @@ void CECSocket::SendPacket(const CECPacket *packet)
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
 	SendPacket(packet);
-	
+
 	if (m_curr_rx_data->ReadFromSocketAll(this, EC_HEADER_SIZE) != EC_HEADER_SIZE
 		|| SocketError()		// This is a synchronous read, so WouldBlock is an error too.
 		|| !ReadHeader()) {
@@ -348,8 +348,8 @@ std::string CECSocket::GetLastErrorMsg()
 	return error_string.str();
 }
 
-bool CECSocket::SocketRealError() 
-{ 
+bool CECSocket::SocketRealError()
+{
 	bool ret = false;
 	if (InternalError()) {
 		int lastError = InternalGetLastError();
@@ -389,7 +389,7 @@ void CECSocket::OnInput()
 		}
 		bytes_rx = GetLastCount();
 		m_bytes_needed -= bytes_rx;
-	
+
 		if (m_bytes_needed == 0) {
 			if (m_in_header) {
 				m_in_header = false;
@@ -440,7 +440,7 @@ void CECSocket::OnOutput()
 			if ( !WaitSocketWrite(10, 0) ) {
 				// Still not through ?
 				if (WouldBlock()) {
-					// WouldBlock() is only EAGAIN or EWOULD_BLOCK, 
+					// WouldBlock() is only EAGAIN or EWOULD_BLOCK,
 					// and those shouldn't create an infinite wait.
 					// So give it another chance.
 					continue;
@@ -474,7 +474,7 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len)
 
 	if (m_curr_rx_data->GetUnreadDataLength() < required_len) {
 		// need more data that we have. Looks like nothing will help here
-		AddDebugLogLineN(logEC, CFormat(wxT("ReadBufferFromSocket: not enough data (%d < %d)")) 
+		AddDebugLogLineN(logEC, CFormat(wxT("ReadBufferFromSocket: not enough data (%d < %d)"))
 			% m_curr_rx_data->GetUnreadDataLength() % required_len);
 		return 0;
 	}
@@ -750,7 +750,7 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 
 	flags &= m_my_flags;
 	m_tx_flags = flags;
-	
+
 	if (flags & EC_FLAG_ZLIB) {
 		m_z.zalloc = Z_NULL;
 		m_z.zfree = Z_NULL;
@@ -767,11 +767,11 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 
 	uint32_t tmp_flags = ENDIAN_HTONL(flags);
 	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
-	
+
 	// preallocate 4 bytes in buffer for packet length
 	uint32_t packet_len = 0;
 	WriteBufferToSocket(&packet_len, sizeof(uint32));
-	
+
 	packet->WritePacket(*this);
 
 	// Finalize zlib compression and move current data to outout queue
@@ -792,7 +792,7 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 	// now write actual length at offset 4
 	uint32 packet_len_E = ENDIAN_HTONL(packet_len);
 	(*outputStart)->WriteAt(&packet_len_E, 4, 4);
-	
+
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = deflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
@@ -809,7 +809,7 @@ const CECPacket *CECSocket::ReadPacket()
 	CECPacket *packet = 0;
 
 	uint32_t flags = m_rx_flags;
-	
+
 	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
 		// Protocol error - other end might use an older protocol
 		AddDebugLogLineN(logEC, wxT("ReadPacket: protocol error"));
@@ -825,7 +825,7 @@ const CECPacket *CECSocket::ReadPacket()
 	    m_z.opaque = Z_NULL;
 	    m_z.avail_in = 0;
 	    m_z.next_in = 0;
-	    
+
 		int zerror = inflateInit(&m_z);
 		if (zerror != Z_OK) {
 			AddDebugLogLineN(logEC, wxT("ReadPacket: zlib error"));
@@ -838,7 +838,7 @@ const CECPacket *CECSocket::ReadPacket()
 
 	m_curr_rx_data->ToZlib(m_z);
 	packet = new CECPacket();
-	
+
 	if (!packet->ReadFromSocket(*this)) {
 		AddDebugLogLineN(logEC, wxT("ReadPacket: error in packet read"));
 		cout << "ReadPacket: error in packet read" << endl;

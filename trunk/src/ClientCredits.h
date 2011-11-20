@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -38,7 +38,7 @@ class CreditStruct
 {
 public:
 	CreditStruct();
-	
+
 	CMD4Hash	key;
 	uint64		uploaded;		// uploaded TO him
 	uint64		downloaded;	// downloaded from him
@@ -64,9 +64,9 @@ public:
 	CClientCredits(const CMD4Hash& key);
 	~CClientCredits();
 
-	const CMD4Hash& GetKey() const 			{return m_pCredits->key;}
+	const CMD4Hash& GetKey() const			{return m_pCredits->key;}
 	const byte*	GetSecureIdent() const	{return m_abyPublicKey;}
-	uint8	GetSecIDKeyLen() const 			{return m_nPublicKeyLen;}
+	uint8	GetSecIDKeyLen() const			{return m_nPublicKeyLen;}
 	const CreditStruct* GetDataStruct() const	{return m_pCredits;}
 	void	ClearWaitStartTime();
 	void	AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavail);
@@ -84,7 +84,7 @@ public:
 	void	Verified(uint32 dwForIP);
 	EIdentState GetIdentState() const { return m_identState; }
 	void	SetIdentState(EIdentState state) { m_identState = state; }
-	
+
 private:
 	EIdentState		m_identState;
 	void			InitalizeIdent();

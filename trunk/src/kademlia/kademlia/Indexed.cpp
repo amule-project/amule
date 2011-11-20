@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -365,7 +365,7 @@ CIndexed::~CIndexed()
 				delete currNote;
 			}
 			delete currNoteHash;
-		} 
+		}
 
 		m_Notes_map.clear();
 	} catch (const CSafeIOException& err) {
@@ -436,7 +436,7 @@ void CIndexed::Clean()
 
 		CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
 		while (itSource != currSrcHash->m_Source_map.end()) {
-			Source* currSource = *itSource;			
+			Source* currSource = *itSource;
 
 			CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
 			while (itEntry != currSource->entryList.end()) {
@@ -489,7 +489,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		return false;
 	}
 
-	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID); 
+	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID);
 	KeyHash* currKeyHash = NULL;
 	if (itKeyHash == m_Keyword_map.end()) {
 		Source* currSource = new Source;
@@ -504,7 +504,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		m_totalIndexKeyword++;
 		return true;
 	} else {
-		currKeyHash = itKeyHash->second; 
+		currKeyHash = itKeyHash->second;
 		size_t indexTotal = currKeyHash->m_Source_map.size();
 		if (indexTotal > KADEMLIAMAXINDEX) {
 			load = 100;
@@ -570,7 +570,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	if( entry->m_uIP == 0 || entry->m_uTCPport == 0 || entry->m_uUDPport == 0 || entry->GetTagCount() == 0 || entry->m_tLifeTime < time(NULL)) {
 		return false;
 	}
-		
+
 	SrcHash* currSrcHash = NULL;
 	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if (itSrcHash == m_Sources_map.end()) {
@@ -632,7 +632,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -663,8 +663,8 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 		currNoteHash = itNoteHash->second;
 		size_t size = currNoteHash->m_Source_map.size();
 
-		for (CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin(); itSource != currNoteHash->m_Source_map.end(); ++itSource) {			
-			Source* currNote = *itSource;			
+		for (CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin(); itSource != currNoteHash->m_Source_map.end(); ++itSource) {
+			Source* currNote = *itSource;
 			if( currNote->entryList.size() ) {
 				CEntry* currEntry = currNote->entryList.front();
 				wxASSERT(currEntry!=NULL);
@@ -827,7 +827,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 		int count = 0 - startPosition;
 
 		for (CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin(); itSource != currSrcHash->m_Source_map.end(); ++itSource) {
-			Source* currSource = *itSource;	
+			Source* currSource = *itSource;
 			if (currSource->entryList.size()) {
 				Kademlia::CEntry* currName = currSource->entryList.front();
 				if (count < 0) {
@@ -868,7 +868,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 	SrcHash* currNoteHash = NULL;
 	SrcHashMap::iterator itNote = m_Notes_map.find(keyID);
 	if (itNote != m_Notes_map.end()) {
-		currNoteHash = itNote->second;		
+		currNoteHash = itNote->second;
 		CMemFile packetdata(1024*50);
 		packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 		packetdata.WriteUInt128(keyID);

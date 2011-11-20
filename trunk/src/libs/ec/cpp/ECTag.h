@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -28,7 +28,7 @@
 #include <iostream>
 #include <sstream>
 
-// Must be first! 
+// Must be first!
 #ifdef USE_WX_EXTENSIONS
 #include <wx/string.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
@@ -63,7 +63,7 @@ class EC_IPv4_t {
 			m_ip[3] = (ip >> 24) & 0xff;
 			m_port = port;
 		}
-		
+
 		uint32 IP()
 		{
 			return m_ip[0] | (m_ip[1] << 8) | (m_ip[2] << 16) | (m_ip[3] << 24);
@@ -77,13 +77,13 @@ class EC_IPv4_t {
 			if (brackets) string_ip << "]";
 			return string_ip.str();
 		}
-		
+
 		#ifdef USE_WX_EXTENSIONS
 		wxString StringIP(bool brackets = true) {
 			return char2unicode(StringIPSTL(brackets).c_str());
 		}
 		#endif
-		
+
 		uint8 m_ip[4];
 		uint16 m_port;
 };
@@ -128,39 +128,39 @@ class CECTag {
 		#endif
 
 		const CECTag*	GetFirstTagSafe() const { return m_tagList.empty() ? &s_theNullTag : & *m_tagList.begin(); }
-		
+
 		const CECTag*	GetTagByName(ec_tagname_t name) const;
 		CECTag*			GetTagByName(ec_tagname_t name);
 		const CECTag*	GetTagByNameSafe(ec_tagname_t name) const;
-		
+
 		size_t			GetTagCount() const { return m_tagList.size(); }
 		bool			HasChildTags() const { return !m_tagList.empty(); }
-		const void *	GetTagData() const { 
+		const void *	GetTagData() const {
 			EC_ASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
-			return m_tagData; 
+			return m_tagData;
 		}
 		uint16_t		GetTagDataLen() const { return m_dataLen; }
 		uint32_t		GetTagLen() const;
 		ec_tagname_t		GetTagName() const { return m_tagName; }
-		
+
 		// Retrieving special data types
 		uint64_t		GetInt() const;
 		bool			IsInt() const { return m_dataType >= EC_TAGTYPE_UINT8 && m_dataType <= EC_TAGTYPE_UINT64; }
 		double			GetDoubleData() const;
 		std::string		GetStringDataSTL() const;
 		bool			IsString() const { return m_dataType == EC_TAGTYPE_STRING; }
-		
+
 		#ifdef USE_WX_EXTENSIONS
 		wxString GetStringData() const;
 		void SetStringData(const wxString& s);
-		#endif 
-		
-		EC_IPv4_t 	GetIPv4Data() const;
+		#endif
+
+		EC_IPv4_t	GetIPv4Data() const;
 		CMD4Hash	GetMD4Data() const;
 
 		void		DebugPrint(int level, bool print_empty) const;
 		void		swap(CECTag & t);
-		
+
 		// If tag exists, return its value and store it in target (if target != NULL)
 		// Else return safe value and don't touch target
 		// Allows for one function for old and new style.
@@ -215,9 +215,9 @@ class CECTag {
 
 		typedef std::list<CECTag> TagList;
 		TagList m_tagList;
-		
+
 		static const CECTag s_theNullTag;
-		
+
 		// To be used by the string constructors.
 		void ConstructStringTag(ec_tagname_t name, const std::string& data);
 

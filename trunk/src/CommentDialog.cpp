@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -28,10 +28,10 @@
 #include "GuiEvents.h"
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "muuli_wdr.h"		// Needed for commentDlg
-// CommentDialog dialog 
+// CommentDialog dialog
 
 //IMPLEMENT_DYNAMIC(CCommentDialog, CDialog)
-CCommentDialog::CCommentDialog(wxWindow* parent,CKnownFile* file) 
+CCommentDialog::CCommentDialog(wxWindow* parent,CKnownFile* file)
 : wxDialog(parent,-1,_("File Comments"),
 wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
@@ -65,12 +65,12 @@ void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 void CCommentDialog::OnBnClickedClear(wxCommandEvent& WXUNUSED(evt))
 {
 	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(wxEmptyString);
-} 
+}
 
 void CCommentDialog::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 {
 	EndModal(0);
-} 
+}
 
 bool CCommentDialog::OnInitDialog()
 {

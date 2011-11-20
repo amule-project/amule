@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,7 +39,7 @@ class CED2KLink
 {
 public:
 	typedef enum { kServerList, kServer , kFile , kInvalid } LinkType;
-	
+
 	static CED2KLink* CreateLinkFromUrl(const wxString& link);
 
 	LinkType GetKind() const;
@@ -59,7 +59,7 @@ class CED2KFileLink : public CED2KLink
 {
 	friend class CED2KLink;
 	CED2KFileLink(const wxString& link);
-	
+
 public:
 	virtual ~CED2KFileLink();
 
@@ -87,12 +87,12 @@ public:
 		//! Client hash for encryption
 		wxString hash;
 		//! Client cryptoptions
-		uint8 cryptoptions;		
+		uint8 cryptoptions;
 	};
 
-	typedef std::deque<SED2KLinkSource> CED2KLinkSourceList;	
+	typedef std::deque<SED2KLinkSource> CED2KLinkSourceList;
 	CED2KLinkSourceList m_sources;
-	
+
 private:
 	CED2KFileLink(); // Not defined
 	CED2KFileLink(const CED2KFileLink&); // Not defined
@@ -129,7 +129,7 @@ private:
 
 class CED2KServerListLink : public CED2KLink
 {
-	friend class CED2KLink;	
+	friend class CED2KLink;
 	CED2KServerListLink(const wxString& link);
 
 public:

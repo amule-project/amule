@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -97,7 +97,7 @@ void CamuleAppCommon::AddLinksFromFile()
 	if (!wxFile::Exists(fullPath)) {
 		return;
 	}
-	
+
 	// Attempt to lock the ED2KLinks file.
 	CFileLock lock((const char*)unicode2char(fullPath));
 
@@ -105,7 +105,7 @@ void CamuleAppCommon::AddLinksFromFile()
 	if ( file.Open() ) {
 		for ( unsigned int i = 0; i < file.GetLineCount(); i++ ) {
 			wxString line = file.GetLine( i ).Strip( wxString::both );
-			
+
 			if ( !line.IsEmpty() ) {
 				// Special case! used by a secondary running mule to raise this one.
 				if (line == wxT("RAISE_DIALOG")) {
@@ -127,7 +127,7 @@ void CamuleAppCommon::AddLinksFromFile()
 	} else {
 		AddLogLineNS(_("Failed to open ED2KLinks file."));
 	}
-	
+
 	// Delete the file.
 	wxRemoveFile(theApp->ConfigDir + wxT("ED2KLinks"));
 }
@@ -154,7 +154,7 @@ wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source
 	wxString strURL = CFormat(wxT("ed2k://|file|%s|%i|%s|/"))
 		% f->GetFileName().Cleanup(false)
 		% f->GetFileSize() % f->GetFileHash().Encode();
-	
+
 	if (add_source && theApp->IsConnected() && !theApp->IsFirewalled()) {
 		// Create the first part of the URL
 		strURL << wxT("|sources,");
@@ -169,18 +169,18 @@ wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source
 				% ((clientID >> 16) & 0xff)
 				% ((clientID >> 24) & 0xff);
 		}
-		
- 		strURL << wxT(":") <<
+
+		strURL << wxT(":") <<
 			thePrefs::GetPort();
-		
+
 		if (addcryptoptions) {
 			uint8 uSupportsCryptLayer = thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 			uint8 uRequestsCryptLayer = thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 			uint8 uRequiresCryptLayer = thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
 			uint16 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0) | (uSupportsCryptLayer ? 0x80 : 0x00);
-			
+
 			strURL << wxT(":") << byCryptOptions;
-			
+
 			if (byCryptOptions & 0x80) {
 				strURL << wxT(":") << thePrefs::GetUserHash().Encode();
 			}
@@ -203,7 +203,7 @@ wxString CamuleAppCommon::CreateED2kAICHLink(const CKnownFile* f)
 	if (f->HasProperAICHHashSet()) {
 		strURL.RemoveLast();		// remove trailing '/'
 		strURL << wxT("h=") << f->GetAICHMasterHash() << wxT("|/");
-	}	
+	}
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|h=<AICH master hash>|/"
 	return strURL;
@@ -271,18 +271,18 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
-		return false;		
+		return false;
 	} else if (cmdline.Found(wxT("help"))) {
 		cmdline.Usage();
 		return false;
-	}	
+	}
 
 	if ( cmdline.Found(wxT("version"))) {
 		// This looks silly with logging macros that add a timestamp.
 		printf("%s\n", (const char*)unicode2char(wxString(CFormat(wxT("%s (OS: %s)")) % FullMuleVersion % OSType)));
 		return false;
 	}
-	
+
 	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
 		// Make an absolute path from the config dir
 		wxFileName fn(ConfigDir);
@@ -305,7 +305,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 #endif
 
 	theLogger.SetEnabledStdoutLog(cmdline.Found(wxT("log-stdout")));
-#ifdef AMULE_DAEMON		
+#ifdef AMULE_DAEMON
 	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
 	if ( cmdline.Found(wxT("pid-file"), &m_PidFile) ) {
 		// Remove any existing PidFile
@@ -329,7 +329,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 			AddLogLineNS(wxT("Logging to stdout enabled"));
 		}
 	}
-	
+
 	AddLogLineNS(wxT("Initialising ") + FullMuleVersion);
 
 	// Ensure that "~/.aMule/" is accessible.
@@ -337,7 +337,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	if (!CheckMuleDirectory(wxT("configuration"), CPath(ConfigDir), wxEmptyString, outDir)) {
 		return false;
 	}
-	
+
 	if (cmdline.Found(wxT("reset-config"))) {
 		// Make a backup first.
 		wxRemoveFile(ConfigDir + m_configFile + wxT(".backup"));
@@ -370,7 +370,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 			AddLogLineCS(wxT("Failed to open 'ED2KLinks', cannot add links."));
 		}
 	}
-	
+
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
 	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
 	AddLogLineCS(wxT("WARNING: The check for other instances is currently disabled in amuled.\n"
@@ -385,26 +385,26 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		AddLogLineCS(CFormat(wxT("There is an instance of %s already running")) % m_appName);
 		AddLogLineNS(CFormat(wxT("(lock file: %s%s)")) % ConfigDir % lockfile);
 		if (linksPassed) {
-			AddLogLineNS(CFormat(wxT("passed %d %s to it, finished")) % linksActuallyPassed 
+			AddLogLineNS(CFormat(wxT("passed %d %s to it, finished")) % linksActuallyPassed
 				% (linksPassed == 1 ? wxT("link") : wxT("links")));
 			return false;
 		}
-		
+
 		// This is very tricky. The most secure way to communicate is via ED2K links file
 		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
 		if (!ed2kFile.Exists()) {
 			ed2kFile.Create();
 		}
-			
+
 		if (ed2kFile.Open()) {
 			ed2kFile.AddLine(wxT("RAISE_DIALOG"));
 			ed2kFile.Write();
-			
+
 			AddLogLineNS(wxT("Raising current running instance."));
 		} else {
 			AddLogLineCS(wxT("Failed to open 'ED2KFile', cannot signal running instance."));
 		}
-			
+
 		return false;
 	} else {
 		AddLogLineNS(wxT("No other instances are running."));
@@ -413,7 +413,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 #ifndef __WXMSW__
 	// Close standard-input
-	if ( !cmdline.Found(wxT("enable-stdin")) ) 	{
+	if ( !cmdline.Found(wxT("enable-stdin")) )	{
 		// The full daemon will close all std file-descriptors by itself,
 		// so closing it here would lead to the closing on the first open
 		// file, which is the logfile opened below
@@ -425,7 +425,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 	// Create the CFG file we shall use and set the config object as the global cfg file
 	wxConfig::Set(new wxFileConfig( wxEmptyString, wxEmptyString, ConfigDir + m_configFile));
-	
+
 	// Make a backup of the log file
 	CPath logfileName = CPath(ConfigDir + m_logFile);
 	if (logfileName.FileExists()) {
@@ -539,8 +539,8 @@ bool CamuleAppCommon::CheckMuleDirectory(const wxString& desc, const CPath& dire
 		}
 
 		return CheckMuleDirectory(desc, fallback, wxEmptyString, outDir);
-	} 
-	
+	}
+
 	theApp->ShowAlert(msg, wxT("Fatal error."), wxICON_ERROR | wxOK);
 	outDir = CPath(wxEmptyString);
 	return false;

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -70,7 +70,7 @@ private:
 	static const unsigned int EC_SOCKET_BUFFER_SIZE = 2048;
 	static const unsigned int EC_HEADER_SIZE = 8;
 	const bool m_use_events;
-	
+
 	// Output related data
 	std::list<CQueuedData *> m_output_queue;
 
@@ -79,14 +79,14 @@ private:
 	std::vector<unsigned char> m_out_ptr;
 	std::auto_ptr<CQueuedData> m_curr_rx_data;
 	std::auto_ptr<CQueuedData> m_curr_tx_data;
-	
+
 	// This transfer only
 	uint32_t m_rx_flags;
 	uint32_t m_tx_flags;
 	size_t m_bytes_needed;
 	bool m_in_header;
-	
-	
+
+
 	uint32_t m_curr_packet_len;
 	z_stream m_z;
 
@@ -102,7 +102,7 @@ public:
 	void CloseSocket() { InternalClose(); }
 
 	bool HaveNotificationSupport() const { return m_haveNotificationSupport; }
-		
+
 	/**
 	 * Sends an EC packet and returns immediately.
 	 *
@@ -195,8 +195,8 @@ public:
 	void OnInput();
 	void OnOutput();
 
-	bool WouldBlock() { return InternalGetLastError() == EC_ERROR_WOULDBLOCK; } 
-	bool GotError() { return InternalGetLastError() != EC_ERROR_NOERROR; } 
+	bool WouldBlock() { return InternalGetLastError() == EC_ERROR_WOULDBLOCK; }
+	bool GotError() { return InternalGetLastError() != EC_ERROR_NOERROR; }
 
 	void SocketRead(void* ptr, size_t len) { InternalRead(ptr,len); }
 	void SocketWrite(const void* ptr, size_t len) { InternalWrite(ptr,len); }
@@ -206,12 +206,12 @@ public:
 	size_t GetLastCount() { return InternalLastCount(); }
 	bool WaitSocketConnect(long secs = -1, long msecs = 0) { return InternalWaitOnConnect(secs,msecs); }
 	bool WaitSocketWrite(long secs = -1, long msecs = 0) { return InternalWaitForWrite(secs,msecs); }
-	bool WaitSocketRead(long secs = -1, long msecs = 0) { return InternalWaitForRead(secs,msecs); }	
-	
+	bool WaitSocketRead(long secs = -1, long msecs = 0) { return InternalWaitForRead(secs,msecs); }
+
 	bool IsSocketConnected() { return InternalIsConnected(); }
-	
+
 	void DestroySocket() { return InternalDestroy(); }
-	
+
 	bool DataPending();
  private:
 	const CECPacket *ReadPacket();
@@ -230,10 +230,10 @@ public:
 
 	size_t	ReadBufferFromSocket(void *buffer, size_t len);
 	void	WriteBufferToSocket(const void *buffer, size_t len);
-	
- 	/* virtuals */
+
+	/* virtuals */
 	virtual void WriteDoneAndQueueEmpty() = 0;
-	
+
 	virtual bool InternalConnect(uint32_t ip, uint16_t port, bool wait) = 0;
 
 	virtual size_t InternalLastCount() = 0;
@@ -247,7 +247,7 @@ public:
 	virtual bool InternalError() = 0;
 	virtual void InternalRead(void* ptr, size_t len) = 0;
 	virtual void InternalWrite(const void* ptr, size_t len) = 0;
-	
+
 	virtual bool InternalIsConnected() = 0;
 	virtual void InternalDestroy() = 0;
 
@@ -267,14 +267,14 @@ public:
 	{
 		m_rd_ptr = m_wr_ptr = &m_data[0];
 	}
-	
+
 	~CQueuedData() {}
-	
+
 	void Rewind()
 	{
 		m_rd_ptr = m_wr_ptr = &m_data[0];
 	}
-	
+
 	void Write(const void *data, size_t len);
 	void WriteAt(const void *data, size_t len, size_t off);
 	void Read(void *data, size_t len);
@@ -287,12 +287,12 @@ public:
 		m_z.avail_in = (uInt)GetUnreadDataLength();
 		m_z.next_in = m_rd_ptr;
 	}
-	
+
 	void WriteToSocket(CECSocket *sock);
 	void ReadFromSocket(CECSocket *sock, size_t len);
-	
+
 	size_t ReadFromSocketAll(CECSocket *sock, size_t len);
-	
+
 	size_t GetLength() const;
 	size_t GetDataLength() const;
 	size_t GetRemLength() const;

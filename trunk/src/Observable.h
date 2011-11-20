@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,10 +45,10 @@ template <typename TEST> class CObservable;
  * In order to simplify matters for subclasses, both the Observer and the
  * Observable class keep track of which objects are observing what, so that
  * instances can safely be created and destroyed without having to manually
- * keep the observers and observables in sync. 
+ * keep the observers and observables in sync.
  */
 template <typename EventType>
-class CObserver 
+class CObserver
 {
 	friend class CObservable<EventType>;
 public:
@@ -61,7 +61,7 @@ public:
 	 * as to avoid dangling pointers. This will not result in actual
 	 * events.
 	 */
-	virtual ~CObserver();	
+	virtual ~CObserver();
 
 
 protected:
@@ -72,8 +72,8 @@ protected:
 	 * @param e The actual event.
 	 */
 	virtual void ReceiveNotification( const ObservableType* o, const EventType& e ) = 0;
-	
-	
+
+
 private:
 	//! Mutex used to make access to the list of observed objects thread safe.
 	wxMutex m_mutex;
@@ -120,19 +120,19 @@ public:
 	 *
 	 * @param o The observer to unsubscribe from this observable.
 	 * @return True if the observer was removed, false otherwise.
-	 * 
+	 *
 	 * ObserverRemoved() will be called for the observer "o", allowing
-	 * the subclass to take steps to avoid outdated data being kept. 
+	 * the subclass to take steps to avoid outdated data being kept.
 	 */
 	bool RemoveObserver( ObserverType* o );
 
 protected:
 	/**
 	 * This function notifies all or an specific observer of an event.
-	 * 
+	 *
 	 * @param e The event to be published.
 	 * @param o A specific subscribing observer or NULL for all subscribers.
-	 * 
+	 *
 	 * The purpose of the second parameter is to allow notifications of
 	 * specific observers when the ObserverAdded() or ObserverRemoved()
 	 * functions are called and it should not be used outside of these
@@ -147,14 +147,14 @@ protected:
 	 * ObserverRemoved is called on each observer.
 	 */
 	void RemoveAllObservers();
-	
-	
+
+
 	/**
 	 * This function is called when an observer has been added to the observable.
 	 */
 	virtual void ObserverAdded( ObserverType* ) {};
-	
-	
+
+
 	/**
 	 * This function is called when observers are removed from the observable.
 	 *
@@ -164,12 +164,12 @@ protected:
 	 */
 	virtual void ObserverRemoved( ObserverType* ) {};
 
-	
+
 private:
 	//! Mutex used to ensure thread-safety of the basic operations.
 	wxMutex m_mutex;
 
-	typedef std::set<ObserverType*> ObserverSetType;	
+	typedef std::set<ObserverType*> ObserverSetType;
 	typedef typename ObserverSetType::iterator myIteratorType;
 
 	//! Set of all observers subscribing to this observable.
@@ -182,21 +182,21 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 
-	
+
 
 template <typename EventType>
 CObserver<EventType>::~CObserver()
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	while ( !m_list.empty() ) {
 		ObservableType* o = *m_list.begin();
-		
+
 		{
 			wxMutexLocker oLock(o->m_mutex);
 			o->m_list.erase( this );
 		}
-		
+
 		m_list.erase( m_list.begin() );
 	}
 }
@@ -209,7 +209,7 @@ CObservable<EventType>::~CObservable()
 
 	while ( !m_list.empty() ) {
 		ObserverType* o = *m_list.begin();
-		
+
 		{
 			wxMutexLocker oLock(o->m_mutex);
 			o->m_list.erase( this );
@@ -238,7 +238,7 @@ bool CObservable<EventType>::AddObserver( CObserver<EventType>* o )
 	}
 
 	ObserverAdded( o );
-	
+
 	return true;
 }
 
@@ -287,12 +287,12 @@ template <typename EventType>
 void CObservable<EventType>::RemoveAllObservers()
 {
 	wxMutexLocker lock(m_mutex);
-	
+
 	while ( !m_list.empty() ) {
 		ObserverType* o = *m_list.begin();
 		m_list.erase( m_list.begin() );
 		CMutexUnlocker unlocker(m_mutex);
-		
+
 		{
 			wxMutexLocker oLock(o->m_mutex);
 			o->m_list.erase( this );

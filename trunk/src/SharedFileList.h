@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -53,7 +53,7 @@ class CSharedFileList {
 public:
 	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
-	void 	Reload();
+	void	Reload();
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
 	void	RemoveFile(CKnownFile* toremove);
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
@@ -82,25 +82,25 @@ public:
 	 */
 	wxString		GetPublicSharedDirName(const CPath& dir);
 	const CPath*	GetDirForPublicSharedDirName(const wxString& strSharedDir) const;
-	
+
 	/**
 	 * Returns true, if the specified path points to a shared directory or single shared file.
 	 */
 	bool			IsShared(const CPath& path) const;
-	
+
 	/* Kad Stuff */
 	void	Publish();
 	void	AddKeywords(CKnownFile* pFile);
-	void	RemoveKeywords(CKnownFile* pFile);	
+	void	RemoveKeywords(CKnownFile* pFile);
 	// This is actually unused, but keep it here - will be needed later.
 	void	ClearKadSourcePublishInfo();
 
-	/** 
- 	 * Checks for files which missing or wrong AICH hashes.
- 	 * Those that are found are scheduled for ACIH hashing.
- 	 */
+	/**
+	 * Checks for files which missing or wrong AICH hashes.
+	 * Those that are found are scheduled for ACIH hashing.
+	 */
 	void CheckAICHHashes(const std::list<CAICHHash>& hashes);
-	
+
 private:
 	typedef std::list<CThreadTask *> TaskList;
 
@@ -108,10 +108,10 @@ private:
 	unsigned	AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks);
 	void	FindSharedFiles();
 	bool	reloading;
-	
+
 	void	SendListToServer();
 	uint32 m_lastPublishED2K;
-	bool	 m_lastPublishED2KFlag;	
+	bool	 m_lastPublishED2KFlag;
 
 	CKnownFileList*	filelist;
 

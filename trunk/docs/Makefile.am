@@ -8,7 +8,7 @@ dist_doc_DATA = \
 	license.txt \
 	README \
 	TODO \
-	EC_Protocol.txt 
+	EC_Protocol.txt
 
 EXTRA_DIST = \
 	Doxyfile \

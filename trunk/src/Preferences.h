@@ -148,7 +148,7 @@ public:
 	 *
 	 * @return True if the variable has changed, false otherwise.
 	 */
-	virtual bool HasChanged() 			{ return m_changed; }
+	virtual bool HasChanged()			{ return m_changed; }
 
 
 protected:
@@ -237,14 +237,14 @@ public:
 	static void		SetHideOnClose(bool val)	{ s_hideonclose = val; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
-       					{s_autoconnect = inautoconnect; }
+						{s_autoconnect = inautoconnect; }
 	static bool		AddServersFromServer()		{ return s_addserversfromserver; }
 	static void		SetAddServersFromServer(bool val) { s_addserversfromserver = val; }
 	static bool		AddServersFromClient()		{ return s_addserversfromclient; }
 	static void		SetAddServersFromClient(bool val) { s_addserversfromclient = val; }
 	static uint16		GetTrafficOMeterInterval()	{ return s_trafficOMeterInterval; }
 	static void		SetTrafficOMeterInterval(uint16 in)
-       					{ s_trafficOMeterInterval = in; }
+						{ s_trafficOMeterInterval = in; }
 	static uint16		GetStatsInterval()		{ return s_statsInterval;}
 	static void		SetStatsInterval(uint16 in)	{ s_statsInterval = in; }
 	static bool		IsConfirmExitEnabled()		{ return s_confirmExit; }
@@ -258,7 +258,7 @@ public:
 	static uint32		GetMaxGraphDownloadRate()	{ return s_maxGraphDownloadRate; }
 	static void		SetMaxGraphUploadRate(uint32 in){ s_maxGraphUploadRate=in; }
 	static void		SetMaxGraphDownloadRate(uint32 in)
-       					{ s_maxGraphDownloadRate = in; }
+						{ s_maxGraphDownloadRate = in; }
 
 	static uint16		GetMaxDownload()		{ return s_maxdownload; }
 	static uint16		GetMaxConnections()		{ return s_maxconnections; }
@@ -291,10 +291,10 @@ public:
 					{ s_startMinimized = instartMinimized;}
 	static bool		GetSmartIdCheck()		{ return s_smartidcheck; }
 	static void		SetSmartIdCheck( bool in_smartidcheck )
-       					{ s_smartidcheck = in_smartidcheck; }
+						{ s_smartidcheck = in_smartidcheck; }
 	static uint8		GetSmartIdState()		{ return s_smartidstate; }
 	static void		SetSmartIdState( uint8 in_smartidstate )
-       					{ s_smartidstate = in_smartidstate; }
+						{ s_smartidstate = in_smartidstate; }
 	static bool		GetVerbose()			{ return s_bVerbose; }
 	static void		SetVerbose(bool val)		{ s_bVerbose = val; }
 	static bool		GetPreviewPrio()		{ return s_bpreviewprio; }
@@ -306,19 +306,19 @@ public:
 	static void		SetStartNextFileSame(bool val)	{ s_bstartnextfilesame = val; }
 	static void		SetStartNextFileAlpha(bool val)	{ s_bstartnextfilealpha = val; }
 	static bool		ShowOverhead()			{ return s_bshowoverhead; }
-	static void		SetNewAutoUp(bool m_bInUAP) 	{ s_bUAP = m_bInUAP; }
-	static bool		GetNewAutoUp() 			{ return s_bUAP; }
-	static void		SetNewAutoDown(bool m_bInDAP) 	{ s_bDAP = m_bInDAP; }
-	static bool		GetNewAutoDown() 		{ return s_bDAP; }
+	static void		SetNewAutoUp(bool m_bInUAP)	{ s_bUAP = m_bInUAP; }
+	static bool		GetNewAutoUp()			{ return s_bUAP; }
+	static void		SetNewAutoDown(bool m_bInDAP)	{ s_bDAP = m_bInDAP; }
+	static bool		GetNewAutoDown()		{ return s_bDAP; }
 
 	static const wxString&	GetVideoPlayer()		{ return s_VideoPlayer; }
 
-	static uint32		GetFileBufferSize() 		{ return s_iFileBufferSize*15000; }
+	static uint32		GetFileBufferSize()		{ return s_iFileBufferSize*15000; }
 	static void		SetFileBufferSize(uint32 val)	{ s_iFileBufferSize = val/15000; }
-	static uint32		GetQueueSize() 			{ return s_iQueueSize*100; }
+	static uint32		GetQueueSize()			{ return s_iQueueSize*100; }
 	static void		SetQueueSize(uint32 val)	{ s_iQueueSize = val/100; }
 
-	static uint8		Get3DDepth() 			{ return s_depth3D;}
+	static uint8		Get3DDepth()			{ return s_depth3D;}
 	static bool		AddNewFilesPaused()		{ return s_addnewfilespaused; }
 	static void		SetAddNewFilesPaused(bool val)	{ s_addnewfilespaused = val; }
 
@@ -336,32 +336,32 @@ public:
 	static uint64	GetMinFreeDiskSpace()				{ return s_uMinFreeDiskSpace * 1048576ull; }
 	static void		SetMinFreeDiskSpaceMB(uint32 val)	{ s_uMinFreeDiskSpace = val; }
 
-	static const wxString&	GetYourHostname() 		{ return s_yourHostname; }
+	static const wxString&	GetYourHostname()		{ return s_yourHostname; }
 	static void		SetYourHostname(const wxString& s)	{ s_yourHostname = s; }
 
 	static void		SetMaxUpload(uint16 in);
 	static void		SetMaxDownload(uint16 in);
-	static void		SetSlotAllocation(uint16 in) 	{ s_slotallocation = (in >= 1) ? in : 1; };
+	static void		SetSlotAllocation(uint16 in)	{ s_slotallocation = (in >= 1) ? in : 1; };
 
 	typedef std::vector<CPath> PathList;
 	PathList shareddir_list;
 
 	wxArrayString adresses_list;
 
-	static bool	 	AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
+	static bool		AutoConnectStaticOnly()		{ return s_autoconnectstaticonly; }
 	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }
 	static bool		GetUPnPEnabled()		{ return s_UPnPEnabled; }
 	static void		SetUPnPEnabled(bool val)	{ s_UPnPEnabled = val; }
 	static bool		GetUPnPECEnabled()		{ return s_UPnPECEnabled; }
 	static void		SetUPnPECEnabled(bool val)	{ s_UPnPECEnabled = val; }
-	static bool		GetUPnPWebServerEnabled() 	{ return s_UPnPWebServerEnabled; }
+	static bool		GetUPnPWebServerEnabled()	{ return s_UPnPWebServerEnabled; }
 	static void		SetUPnPWebServerEnabled(bool val){ s_UPnPWebServerEnabled = val; }
 	static uint16		GetUPnPTCPPort()		{ return s_UPnPTCPPort; }
 	static void		SetUPnPTCPPort(uint16 val)	{ s_UPnPTCPPort = val; }
-	static bool		IsManualHighPrio() 		{ return s_bmanualhighprio; }
+	static bool		IsManualHighPrio()		{ return s_bmanualhighprio; }
 	static void		SetManualHighPrio(bool val)	{ s_bmanualhighprio = val; }
 	void			LoadCats();
-	static const wxString&	GetDateTimeFormat() 		{ return s_datetimeformat; }
+	static const wxString&	GetDateTimeFormat()		{ return s_datetimeformat; }
 	// Download Categories
 	uint32			AddCat(Category_Struct* cat);
 	void			RemoveCat(size_t index);
@@ -374,65 +374,65 @@ public:
 	bool			UpdateCategory(uint8 cat, const wxString& name, const CPath& path,
 						const wxString& comment, uint32 color, uint8 prio);
 
-	static AllCategoryFilter	GetAllcatFilter() 		{ return s_allcatFilter; }
+	static AllCategoryFilter	GetAllcatFilter()		{ return s_allcatFilter; }
 	static void		SetAllcatFilter(AllCategoryFilter in)	{ s_allcatFilter = in; }
 
-	static bool		ShowAllNotCats() 		{ return s_showAllNotCats; }
+	static bool		ShowAllNotCats()		{ return s_showAllNotCats; }
 
 	// WebServer
-	static uint16 		GetWSPort() 			{ return s_nWebPort; }
-	static void		SetWSPort(uint16 uPort) 	{ s_nWebPort=uPort; }
+	static uint16		GetWSPort()			{ return s_nWebPort; }
+	static void		SetWSPort(uint16 uPort)		{ s_nWebPort=uPort; }
 	static uint16		GetWebUPnPTCPPort()		{ return s_nWebUPnPTCPPort; }
 	static void		SetWebUPnPTCPPort(uint16 val)	{ s_nWebUPnPTCPPort = val; }
-	static const wxString&	GetWSPass() 			{ return s_sWebPassword; }
+	static const wxString&	GetWSPass()			{ return s_sWebPassword; }
 	static void		SetWSPass(const wxString& pass)	{ s_sWebPassword = pass; }
-	static const wxString&	GetWSPath() 			{ return s_sWebPath; }
+	static const wxString&	GetWSPath()			{ return s_sWebPath; }
 	static void		SetWSPath(const wxString& path)	{ s_sWebPath = path; }
-	static bool		GetWSIsEnabled() 		{ return s_bWebEnabled; }
-	static void		SetWSIsEnabled(bool bEnable) 	{ s_bWebEnabled=bEnable; }
-	static bool		GetWebUseGzip() 		{ return s_bWebUseGzip; }
-	static void		SetWebUseGzip(bool bUse) 	{ s_bWebUseGzip=bUse; }
-	static uint32 		GetWebPageRefresh() 		{ return s_nWebPageRefresh; }
+	static bool		GetWSIsEnabled()		{ return s_bWebEnabled; }
+	static void		SetWSIsEnabled(bool bEnable)	{ s_bWebEnabled=bEnable; }
+	static bool		GetWebUseGzip()			{ return s_bWebUseGzip; }
+	static void		SetWebUseGzip(bool bUse)	{ s_bWebUseGzip=bUse; }
+	static uint32		GetWebPageRefresh()		{ return s_nWebPageRefresh; }
 	static void		SetWebPageRefresh(uint32 nRefresh) { s_nWebPageRefresh=nRefresh; }
-	static bool		GetWSIsLowUserEnabled() 	{ return s_bWebLowEnabled; }
-	static void		SetWSIsLowUserEnabled(bool in) 	{ s_bWebLowEnabled=in; }
-	static const wxString&	GetWSLowPass() 			{ return s_sWebLowPassword; }
+	static bool		GetWSIsLowUserEnabled()		{ return s_bWebLowEnabled; }
+	static void		SetWSIsLowUserEnabled(bool in)	{ s_bWebLowEnabled=in; }
+	static const wxString&	GetWSLowPass()			{ return s_sWebLowPassword; }
 	static void		SetWSLowPass(const wxString& pass)	{ s_sWebLowPassword = pass; }
 	static const wxString&	GetWebTemplate()		{ return s_WebTemplate; }
 	static void		SetWebTemplate(const wxString& val) { s_WebTemplate = val; }
 
 	static void		SetMaxSourcesPerFile(uint16 in) { s_maxsourceperfile=in;}
-	static void		SetMaxConnections(uint16 in) 	{ s_maxconnections =in;}
+	static void		SetMaxConnections(uint16 in)	{ s_maxconnections =in;}
 
-	static bool		ShowCatTabInfos() 		{ return s_showCatTabInfos; }
-	static void		ShowCatTabInfos(bool in) 	{ s_showCatTabInfos=in; }
+	static bool		ShowCatTabInfos()		{ return s_showCatTabInfos; }
+	static void		ShowCatTabInfos(bool in)	{ s_showCatTabInfos=in; }
 
 	// Sources Dropping Tweaks
-	static bool		DropNoNeededSources() 		{ return s_NoNeededSources > 0; }
-	static bool		SwapNoNeededSources() 		{ return s_NoNeededSources == 2; }
+	static bool		DropNoNeededSources()		{ return s_NoNeededSources > 0; }
+	static bool		SwapNoNeededSources()		{ return s_NoNeededSources == 2; }
 	static uint8		GetNoNeededSources()		{ return s_NoNeededSources; }
 	static void		SetNoNeededSources(uint8 val)	{ s_NoNeededSources = val; }
-	static bool		DropFullQueueSources() 		{ return s_DropFullQueueSources; }
+	static bool		DropFullQueueSources()		{ return s_DropFullQueueSources; }
 	static void		SetDropFullQueueSources(bool val) { s_DropFullQueueSources = val; }
-	static bool		DropHighQueueRankingSources() 	{ return s_DropHighQueueRankingSources; }
+	static bool		DropHighQueueRankingSources()	{ return s_DropHighQueueRankingSources; }
 	static void		SetDropHighQueueRankingSources(bool val) { s_DropHighQueueRankingSources = val; }
-	static uint32		HighQueueRanking() 		{ return s_HighQueueRanking; }
+	static uint32		HighQueueRanking()		{ return s_HighQueueRanking; }
 	static void		SetHighQueueRanking(uint32 val)	{ s_HighQueueRanking = val; }
-	static uint32		GetAutoDropTimer() 		{ return s_AutoDropTimer; }
+	static uint32		GetAutoDropTimer()		{ return s_AutoDropTimer; }
 	static void		SetAutoDropTimer(uint32 val)	{ s_AutoDropTimer = val; }
 
 	// External Connections
-	static bool 		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
+	static bool		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
 	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
 	static const wxString&	GetECAddress()			{ return s_ECAddr; }
-	static uint32 		ECPort()			{ return s_ECPort; }
+	static uint32		ECPort()			{ return s_ECPort; }
 	static void			SetECPort(uint32 val) { s_ECPort = val; }
 	static const wxString&	ECPassword()			{ return s_ECPassword; }
 	static void		SetECPass(const wxString& pass)	{ s_ECPassword = pass; }
 	static bool		IsTransmitOnlyUploadingClients() { return s_TransmitOnlyUploadingClients; }
 
 	// Fast ED2K Links Handler Toggling
-	static bool 		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
+	static bool		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
 
 	// Ip filter
 	static bool		IsFilteringClients()		{ return s_IPFilterClients; }
@@ -449,7 +449,7 @@ public:
 	static void		SetIPFilterSystem(bool val)	{ s_IPFilterSys = val; }
 
 	// Source seeds On/Off
-	static bool		GetSrcSeedsOn() 			{ return s_UseSrcSeeds; }
+	static bool		GetSrcSeedsOn()			{ return s_UseSrcSeeds; }
 	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
 
 	static bool		IsSecureIdentEnabled()			{ return s_SecIdent; }
@@ -464,7 +464,7 @@ public:
 	static bool		GetAllocFullFile()		{ return s_allocFullFile; };
 	static void		SetAllocFullFile(bool val)	{ s_allocFullFile = val; }
 
-	static wxString 	GetBrowser();
+	static wxString		GetBrowser();
 
 	static const wxString&	GetSkin()			{ return s_Skin; }
 
@@ -498,9 +498,9 @@ public:
 	static void		SetMustFilterMessages(bool val)	{ s_MustFilterMessages = val; }
 	static bool		IsFilterAllMessages()		{ return s_FilterAllMessages; }
 	static void		SetFilterAllMessages(bool val)	{ s_FilterAllMessages = val; }
-	static bool		MsgOnlyFriends() 		{ return s_msgonlyfriends;}
+	static bool		MsgOnlyFriends()		{ return s_msgonlyfriends;}
 	static void		SetMsgOnlyFriends(bool val)	{ s_msgonlyfriends = val; }
-	static bool		MsgOnlySecure() 		{ return s_msgsecure;}
+	static bool		MsgOnlySecure()			{ return s_msgsecure;}
 	static void		SetMsgOnlySecure(bool val)	{ s_msgsecure = val; }
 	static bool		IsFilterByKeywords()		{ return s_FilterSomeMessages; }
 	static void		SetFilterByKeywords(bool val)	{ s_FilterSomeMessages = val; }
@@ -681,7 +681,7 @@ protected:
 	static bool	s_startMinimized;
 	static uint16	s_MaxConperFive;
 	static bool	s_checkDiskspace;
-	static uint32 	s_uMinFreeDiskSpace;
+	static uint32	s_uMinFreeDiskSpace;
 	static wxString	s_yourHostname;
 	static bool	s_bVerbose;
 	static bool	s_bmanualhighprio;
@@ -733,7 +733,7 @@ protected:
 	static uint32	s_AutoDropTimer;
 
 	// Kry - external connections
-	static bool 	s_AcceptExternalConnections;
+	static bool	s_AcceptExternalConnections;
 	static wxString s_ECAddr;
 	static uint32	s_ECPort;
 	static wxString	s_ECPassword;
@@ -770,16 +770,16 @@ protected:
 	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 
 	// Message Filtering
-	static bool 		s_MustFilterMessages;
-	static wxString 	s_MessageFilterString;
-	static bool		s_FilterAllMessages;
-	static bool		s_FilterSomeMessages;
-	static bool		s_ShowMessagesInLog;
-	static bool		s_IsAdvancedSpamfilterEnabled;
-	static bool		s_IsChatCaptchaEnabled;
+	static bool	s_MustFilterMessages;
+	static wxString	s_MessageFilterString;
+	static bool	s_FilterAllMessages;
+	static bool	s_FilterSomeMessages;
+	static bool	s_ShowMessagesInLog;
+	static bool	s_IsAdvancedSpamfilterEnabled;
+	static bool	s_IsChatCaptchaEnabled;
 
-	static bool 		s_FilterComments;
-	static wxString 	s_CommentFilterString;
+	static bool	s_FilterComments;
+	static wxString	s_CommentFilterString;
 
 
 	// Hidden files sharing

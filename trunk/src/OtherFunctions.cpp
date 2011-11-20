@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,7 +37,7 @@
 
 #include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
-#include <common/ClientVersion.h>	
+#include <common/ClientVersion.h>
 #include <common/MD5Sum.h>
 #include <common/Path.h>
 #include "MD4Hash.h"
@@ -52,16 +52,16 @@
 	#include <cerrno>
 #else
 	#include <wx/utils.h>
-#endif	
+#endif
 
 
 wxString GetMuleVersion()
 {
 	wxString ver(wxT(VERSION));
-	
+
 	ver += wxT(" compiled with ");
 
-	
+
 	// Figure out the wx build-type
 	#if   defined(__WXGTK20__)
 		ver += wxT("wxGTK2");
@@ -89,11 +89,11 @@ wxString GetMuleVersion()
 #ifdef __DEBUG__
 	ver += wxT(" (Debugging)");
 #endif
-	
+
 #ifdef SVNDATE
 	ver += CFormat(wxT(" (Snapshot: %s)")) % wxT(SVNDATE);
 #endif
-	
+
 	return ver;
 }
 
@@ -153,7 +153,7 @@ wxString CastSecondsToHM(uint32 count, uint16 msecs)
 				% (count + ((float)msecs/1000)) % _("secs");
 		}
 	} else if (count < 3600) {
-		return CFormat(wxT("%u:%02u %s")) 
+		return CFormat(wxT("%u:%02u %s"))
 			% (count/60) % (count % 60) % _("mins");
 	} else if (count < 86400) {
 		return CFormat(wxT("%u:%02u %s"))
@@ -187,7 +187,7 @@ FileType GetFiletype(const CPath& filename)
 wxString GetFiletypeDesc(FileType type, bool translated)
 {
 	switch ( type ) {
-		case ftVideo:	
+		case ftVideo:
 			if (translated) {
 				return _("Videos");
 			} else {
@@ -200,49 +200,49 @@ wxString GetFiletypeDesc(FileType type, bool translated)
 			} else {
 				return wxT("Audio");
 			}
-			break;			
-		case ftArchive:	
+			break;
+		case ftArchive:
 			if (translated) {
 				return _("Archives");
 			} else {
 				return wxT("Archives");
 			}
-			break;			
+			break;
 		case ftCDImage:
 			if (translated) {
 				return _("CD-Images");
 			} else {
 				return wxT("CD-Images");
 			}
-			break;			
+			break;
 		case ftPicture:
 			if (translated) {
 				return _("Pictures");
 			} else {
 				return wxT("Pictures");
 			}
-			break;			
+			break;
 		case ftText:
 			if (translated) {
 				return _("Texts");
 			} else {
 				return wxT("Texts");
 			}
-			break;			
+			break;
 		case ftProgram:
 			if (translated) {
 				return _("Programs");
 			} else {
 				return wxT("Programs");
 			}
-			break;			
+			break;
 		default:
 			if (translated) {
 				return _("Any");
 			} else {
 				return wxT("Any");
 			}
-			break;			
+			break;
 	}
 }
 
@@ -492,7 +492,7 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 {
 	wxString pbBufferOut;
 	wxString strHeader;
-	
+
 	if( !strHeaderLine.IsEmpty() ) {
 		strHeader = wxT("-----BEGIN ") + strHeaderLine + wxT("-----");
 		if( g_fUseCRLF ) {
@@ -504,12 +504,12 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 	unsigned long nDiv = ((unsigned long)bufLen) / 3;
 	unsigned long nRem = ((unsigned long)bufLen) % 3;
 	unsigned int NewLineSize = g_fUseCRLF ? 2 : 1;
-	
+
 	// Allocate enough space in the output buffer to speed up things
 	pbBufferOut.Alloc(
 		strHeader.Len() * 2 +		// header/footer
-		(bufLen * 4) / 3 + 1 + 		// Number of codes
-		nDiv           * NewLineSize + 	// Number of new lines
+		(bufLen * 4) / 3 + 1 +		// Number of codes
+		nDiv           * NewLineSize +	// Number of new lines
 		(nRem ? 1 : 0) * NewLineSize );	// Last line
 	pbBufferOut = strHeader;
 
@@ -578,7 +578,7 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 		}
 		pbBufferOut += wxT("\n");
 	}
-	
+
 	return pbBufferOut;
 }
 
@@ -593,7 +593,7 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 		*buffer = 0;
 		nData = 1;
 	}
-	
+
 	for(unsigned int j = 0; j < base64BufLen; ++j) {
 		wxChar c = base64Buffer[j];
 		wxChar bits = wxT('z');
@@ -659,7 +659,7 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 	} else {
 		buffer[i+nData] = 0;
 	}
-	
+
 	return i + nData;
 }
 
@@ -668,7 +668,7 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 wxString GetCatTitle(AllCategoryFilter cat)
 {
 	switch (cat) {
-		case acfAll:	 	 return _("all");
+		case acfAll:		 return _("all");
 		case acfAllOthers:   return _("all others");
 		case acfIncomplete:	 return _("Incomplete");
 		case acfCompleted:	 return _("Completed");
@@ -676,14 +676,14 @@ wxString GetCatTitle(AllCategoryFilter cat)
 		case acfDownloading: return _("Downloading");
 		case acfErroneous:	 return _("Erroneous");
 		case acfPaused:		 return _("Paused");
-		case acfStopped:	 return _("Stopped");		
+		case acfStopped:	 return _("Stopped");
 		case acfVideo:		 return _("Video");
 		case acfAudio:		 return _("Audio");
 		case acfArchive:	 return _("Archive");
 		case acfCDImages:	 return _("CD-Images");
 		case acfPictures:	 return _("Pictures");
 		case acfText:		 return _("Text");
-		case acfActive:		 return _("Active");		
+		case acfActive:		 return _("Active");
 		default: return wxT("?");
 	}
 }
@@ -947,7 +947,7 @@ EED2KFileType GetED2KFileTypeID(const CPath& fileName)
 	if (ext.IsEmpty()) {
 		return ED2KFT_ANY;
 	}
-	
+
 	SED2KFileTypeMap::iterator it = ED2KFileTypesMap.find(wxT(".") + ext);
 	if (it != ED2KFileTypesMap.end()) {
 		return it->second.GetType();
@@ -1015,10 +1015,10 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 {
 	const unsigned char *p = (const unsigned char *)buff;
 	int lines = (n + 15)/ 16;
-	
+
 	wxString result;
 	// Allocate aproximetly what is needed
-	result.Alloc( ( lines + 1 ) * 80 ); 
+	result.Alloc( ( lines + 1 ) * 80 );
 	if ( !msg.IsEmpty() ) {
 		result += msg + wxT(" - ok=") + ( ok ? wxT("true, ") : wxT("false, ") );
 	}
@@ -1027,12 +1027,12 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 	for ( int i = 0; i < lines; ++i) {
 		// Show address
 		result += CFormat(wxT("%08x  ")) % (i * 16);
-		
+
 		// Show two columns of hex-values
 		for ( int j = 0; j < 2; ++j) {
 			for ( int k = 0; k < 8; ++k) {
 				int pos = 16 * i + 8 * j + k;
-				
+
 				if ( pos < n ) {
 					result += CFormat(wxT("%02x ")) % p[pos];
 				} else {
@@ -1061,7 +1061,7 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 		result += wxT("|\n");
 	}
 	result.Shrink();
-	
+
 	return result;
 }
 
@@ -1144,8 +1144,8 @@ void InitCustomLanguages()
 
 void InitLocale(wxLocale& locale, int language)
 {
-	locale.Init(language, wxLOCALE_LOAD_DEFAULT); 
-	
+	locale.Init(language, wxLOCALE_LOAD_DEFAULT);
+
 #if defined(__WXMAC__) || defined(__WXMSW__)
 	locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
 #endif
@@ -1165,7 +1165,7 @@ int StrLang2wx(const wxString& language)
 			// Traditional Chinese: original Chinese, used in Taiwan, Hong Kong and Macau.
 			// Simplified Chinese: simplified Chinese characters used in Mainland China since 1950s, and in some other places such as Singapore and Malaysia.
 			//
-			// Chinese (Traditional) contains zh_TW, zh_HK and zh_MO (but there are differences in some words). 
+			// Chinese (Traditional) contains zh_TW, zh_HK and zh_MO (but there are differences in some words).
 			// Because of most Traditional Chinese user are in Taiwan, zh_TW becomes the representation of Traditional Chinese.
 			// Chinese (Simplified) contains zh_CN, zh_SG and zh_MY. In the same reason, zh_CN becomes the representation of Simplified Chinese.
 			// (see http://forum.amule.org/index.php?topic=13208.msg98043#msg98043 )

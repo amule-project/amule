@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -46,7 +46,7 @@
 #ifdef _MSC_VER
 #define isatty(DUMMY) 0
 #define YY_NO_UNISTD_H
-#pragma warning(disable:4003) 
+#pragma warning(disable:4003)
 #endif
 
 #define YY_NEVER_INTERACTIVE 1
@@ -107,7 +107,7 @@ WS		[ \t\r]*
 
 ^{WS}{IP}{WS}-{WS}{IP}{WS},{WS}{NO}{WS},.*		{
 		/* PeerGuardian filter line
-		   <IPStart> - <IPEnd> , <AccessLevel> , <Description> 
+		   <IPStart> - <IPEnd> , <AccessLevel> , <Description>
 		*/
 		char * ip1 = yytext;
 		char * ip2 = strchr(ip1 + 7, '-') + 1;
@@ -146,7 +146,7 @@ WS		[ \t\r]*
 		yyip_Line++;
 	}
 
-^.			{ 
+^.			{
 		/* Bad line */
 		yyip_Bad++;
 		AddDebugLogLineN(logIPFilter, CFormat(wxT("error in line %d: %s")) % yyip_Line % wxString(char2unicode(yytext)));

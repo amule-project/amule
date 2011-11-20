@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,15 +42,15 @@ void StopTickTimer(){};
 uint32 GetTickCountFullRes() {
 	return GetTickCount_64();
 }
-	
+
 /**
  * Returns the tickcount in 64bits.
  */
 uint64 GetTickCount_64()
 {
 	// Use highres timer for all operations on Windows
-	// The Timer starts at system boot and runs (on a Intel Quad core) 
-	// with 14 million ticks per second. So it won't overflow for 
+	// The Timer starts at system boot and runs (on a Intel Quad core)
+	// with 14 million ticks per second. So it won't overflow for
 	// 35000 years.
 
 	// Convert hires ticks to milliseconds
@@ -91,7 +91,7 @@ uint32 GetTickCountFullRes(void) {
  */
 	#include <wx/timer.h>
 
-	class MyTimer : public wxTimer 
+	class MyTimer : public wxTimer
 	{
 	public:
 		MyTimer() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); Start(20); }
@@ -99,7 +99,7 @@ uint32 GetTickCountFullRes(void) {
 		static uint64 GetTickCountNow64() { return tic64; }
 	private:
 		void Notify() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); }
-		
+
 		static uint32 tic32;
 		static uint64 tic64;
 	};
@@ -108,24 +108,24 @@ uint32 GetTickCountFullRes(void) {
 
 	// Initialization of the static MyTimer member variables.
 	uint32 MyTimer::tic32 = 0;
-	uint64 MyTimer::tic64 = 0;	
-	
-	void StartTickTimer() { 
-		wxASSERT(mytimer == NULL); 
+	uint64 MyTimer::tic64 = 0;
+
+	void StartTickTimer() {
+		wxASSERT(mytimer == NULL);
 		mytimer = new MyTimer();
 	}
 
-	void StopTickTimer() { 
-		wxASSERT(mytimer != NULL); 
+	void StopTickTimer() {
+		wxASSERT(mytimer != NULL);
 		delete mytimer;
 		mytimer = NULL;
 	}
-	
-	uint32 GetTickCount(){ 
-		wxASSERT(mytimer != NULL); 
+
+	uint32 GetTickCount(){
+		wxASSERT(mytimer != NULL);
 		return MyTimer::GetTickCountNow();
 	}
-	
+
 	uint64 GetTickCount64(){
 		wxASSERT(mytimer != NULL);
 		return MyTimer::GetTickCountNow64();
@@ -145,7 +145,7 @@ uint32 GetTickCountFullRes(void) {
 	void StopTickTimer() {}
 
 	uint32 GetTickCount() { return GetTickCountFullRes(); }
-		
+
 	// avoids 32bit rollover error for differences above 50days
 	uint64 GetTickCount64() {
 		struct timeval aika;

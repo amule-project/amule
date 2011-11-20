@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -41,9 +41,9 @@ BEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
 	EVT_LIST_ITEM_SELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_LIST_ITEM_DESELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_BUTTON( ID_BTNRELSHARED,			CSharedFilesWnd::OnBtnReloadShared )
- 	EVT_BUTTON(ID_SHAREDCLIENTTOGGLE,		CSharedFilesWnd::OnToggleClientList)
+	EVT_BUTTON(ID_SHAREDCLIENTTOGGLE,		CSharedFilesWnd::OnToggleClientList)
 	EVT_RADIOBOX(ID_SHOW_CLIENTS_MODE,		CSharedFilesWnd::OnSelectClientsMode)
-	
+
 	EVT_SPLITTER_SASH_POS_CHANGING(ID_SHARESSPLATTER, CSharedFilesWnd::OnSashPositionChanging)
 END_EVENT_TABLE()
 
@@ -62,11 +62,11 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	wxASSERT(sharedfilesctrl);
 	wxASSERT(peerslistctrl);
 	m_prepared		= false;
-	
-	m_splitter = 0;	
-	
+
+	m_splitter = 0;
+
 	wxConfigBase *config = wxConfigBase::Get();
-	
+
 	// Check if the clientlist is hidden
 	bool show = true;
 	config->Read( wxT("/GUI/SharedWnd/ShowClientList"), &show, true );
@@ -86,15 +86,15 @@ CSharedFilesWnd::~CSharedFilesWnd()
 		if ( !peerslistctrl->GetShowing() ) {
 			// Save the splitter position
 			config->Write( wxT("/GUI/SharedWnd/Splitter"), m_splitter );
-	
+
 			// Save the visible status of the list
 			config->Write( wxT("/GUI/SharedWnd/ShowClientList"), false );
 		} else {
 			wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
-		
+
 			// Save the splitter position
 			config->Write(wxT("/GUI/SharedWnd/Splitter"), splitter->GetSashPosition());
-		
+
 			// Save the visible status of the list
 			config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
 		}
@@ -112,9 +112,9 @@ void CSharedFilesWnd::SelectionUpdated()
 		m_bar_requests->SetRange( lRequested );
 		m_bar_accepted->SetRange( lAccepted );
 		m_bar_transfer->SetRange( lTransferred / 1024 );
-		
+
 		CKnownFileVector fileVector;
-		
+
 		// Create a total statistic for the selected item(s)
 		uint32 session_requests = 0;
 		uint32 session_accepted = 0;
@@ -122,24 +122,24 @@ void CSharedFilesWnd::SelectionUpdated()
 		uint32 all_requests = 0;
 		uint32 all_accepted = 0;
 		uint64 all_transferred = 0;
-		
+
 		long index = -1;
 		int filter = (m_clientShow == ClientShowSelected) ? wxLIST_STATE_SELECTED : wxLIST_STATE_DONTCARE;
 		while ( (index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, filter)) != -1) {
 			CKnownFile* file = (CKnownFile*)sharedfilesctrl->GetItemData( index );
 			wxASSERT(file);
-				
+
 			// Bars are always for selected files
 			if (sharedfilesctrl->GetItemState(index, wxLIST_STATE_SELECTED)) {
 				session_requests   += file->statistic.GetRequests();
 				session_accepted   += file->statistic.GetAccepts();
 				session_transferred += file->statistic.GetTransferred();
-			
+
 				all_requests   += file->statistic.GetAllTimeRequests();
 				all_accepted   += file->statistic.GetAllTimeAccepts();
 				all_transferred += file->statistic.GetAllTimeTransferred();
 			}
-					
+
 			if (m_clientShow != ClientShowUploading) {
 				fileVector.push_back(file);
 			}
@@ -157,10 +157,10 @@ void CSharedFilesWnd::SelectionUpdated()
 			// Transferred
 			m_bar_transfer->SetValue( 0 );
 			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("- / -") );
-			
+
 		} else {
-			std::sort(fileVector.begin(), fileVector.end());			
-			
+			std::sort(fileVector.begin(), fileVector.end());
+
 			// Store text lengths, and layout() when the texts have grown
 			static uint32 lReq = 0, lAcc = 0, lTrans = 0;
 			// Requests
@@ -168,7 +168,7 @@ void CSharedFilesWnd::SelectionUpdated()
 			m_bar_requests->SetValue( session_requests );
 			wxString labelReq = CFormat(wxT("%d / %d")) % session_requests % all_requests;
 			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel(labelReq);
-		
+
 			// Accepted requets
 			session_accepted = session_accepted > lAccepted ? lAccepted : session_accepted;
 			m_bar_accepted->SetValue( session_accepted );
@@ -188,7 +188,7 @@ void CSharedFilesWnd::SelectionUpdated()
 				s_sharedfilespeerHeader->Layout();
 			}
 		}
-	
+
 		if (m_clientShow == ClientShowUploading) {
 			// The GenericClientListCtrl is designed to show clients associated with a KnownFile.
 			// So the uploadqueue carries a special known file with all ongoing uploads in its upload list.
@@ -201,7 +201,7 @@ void CSharedFilesWnd::SelectionUpdated()
 #endif
 		}
 		peerslistctrl->ShowSources(fileVector);
-		
+
 		Refresh();
 		Layout();
 	}
@@ -245,8 +245,8 @@ void CSharedFilesWnd::Prepare()
 	m_prepared = true;
 	wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
 	int height = splitter->GetSize().GetHeight();
-	int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();	
-	
+	int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();
+
 	if ( m_splitter ) {
 		// Some sanity checking
 		if ( m_splitter < s_splitterMin ) {
@@ -270,26 +270,26 @@ void CSharedFilesWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 {
 	wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
 	wxBitmapButton*   button = CastChild( ID_SHAREDCLIENTTOGGLE, wxBitmapButton );
-	
+
 	if ( !peerslistctrl->GetShowing() ) {
 		splitter->SetSashPosition( m_splitter );
 		m_splitter = 0;
-		
+
 		peerslistctrl->SetShowing( true );
-		
+
 		button->SetBitmapLabel( amuleDlgImages( 10 ) );
 		button->SetBitmapFocus( amuleDlgImages( 10 ) );
 		button->SetBitmapSelected( amuleDlgImages( 10 ) );
 		button->SetBitmapHover( amuleDlgImages( 10 ) );
 	} else {
 		peerslistctrl->SetShowing( false );
-	
+
 		m_splitter = splitter->GetSashPosition();
-	
+
 		// Add the height of the listctrl to the top-window
 		int height = peerslistctrl->GetSize().GetHeight()
 					 + splitter->GetWindow1()->GetSize().GetHeight();
-	
+
 		splitter->SetSashPosition( height );
 
 		button->SetBitmapLabel( amuleDlgImages( 11 ) );
@@ -306,9 +306,9 @@ void CSharedFilesWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 	} else {
 		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
 		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CSharedFilesWnd::OnSashPositionChanging"));
-		
+
 		int height = splitter->GetSize().GetHeight();
-		int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();	
+		int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();
 		int mousey = wxGetMousePosition().y - splitter->GetScreenRect().GetTop();
 
 		if ( !peerslistctrl->GetShowing() ) {

@@ -1,4 +1,4 @@
-#!/usr/bin/perl 
+#!/usr/bin/perl
 # we register the script
 # if someone knows how to unload it clean....do tell
 IRC::register("xas", "1.9", "","XChat aMule stats");
@@ -16,7 +16,7 @@ IRC::add_command_handler("xas","xas");
 #06.05.2005 - niet      : file handle change
 #12.10.2004 - bisley    : added session/total ratios
 #16.06.2004 - niet      : added support for memory usage and binary name
-#05.05.2004 - Jacobo221 : fixed typos, sig 2 support, new outputs, crash detect 
+#05.05.2004 - Jacobo221 : fixed typos, sig 2 support, new outputs, crash detect
 #29.04.2004 - niet      : renamed astats to xas (X-Chat Amule statistics)
 #22.04.2004 - citroklar : added smp support
 #      2004 - bootstrap : some hints on file opening
@@ -52,7 +52,7 @@ sub xas
 	if ($amulesigdata[4] eq "H")
 		{$amuleid="high"}
 	 else
-	 	{$amuleid="low"};
+		{$amuleid="low"};
 
 	# are we online / offline / connecting
 	#kad on
@@ -61,8 +61,8 @@ sub xas
 			#$amulestatus="Not Connected";
 			$amulextatus="Kad: ok";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
-			$amulestatus="connecting"; 
-		    $amulextatus="| Kad: ok"; 
+			$amulestatus="connecting";
+		    $amulextatus="| Kad: ok";
 		} else {
 			$amulestatus="online";
 			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] | Kad: ok";
@@ -72,8 +72,8 @@ sub xas
 			#$amulestatus="Not Connected";
 			$amulextatus="Kad: firewalled";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
-			$amulestatus="connecting"; 
-            		$amulextatus="| Kad: firewalled"; 
+			$amulestatus="connecting";
+			$amulextatus="| Kad: firewalled";
 		} else {
 			$amulestatus="online";
 			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] | Kad: firewalled";
@@ -83,7 +83,7 @@ sub xas
 			$amulestatus="Not Connected";
 			$amulextatus="| Kad: off";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
-			$amulestatus="connecting"; 
+			$amulestatus="connecting";
 			$amulextatus="| Kad: off" ;
 		} else {
 			$amulestatus="online";
@@ -107,7 +107,7 @@ sub xas
 	my $totalratio = calc_ratio($tdl,$tul);
 
 	my $sessionratio = calc_ratio($sdl,$sul);
-	
+
 	# do int_to_bytes to make human-readable output
 	$tdl = int_to_bytes($tdl);
 	$tul = int_to_bytes($tul);
@@ -119,9 +119,9 @@ sub xas
 	my $days    = pull_count($seconds, 86400);
         my $hours   = pull_count($seconds, 3600);
         my $minutes = pull_count($seconds, 60);
-	
+
 	my $runtime;
-	
+
 	if ($days > 0) {
 		$runtime = sprintf "%02iD %02ih %02imin %02is", $days, $hours, $minutes, $seconds;
 	}
@@ -134,7 +134,7 @@ sub xas
 	else {
 		$runtime = sprintf "%02is", $seconds;
 	}
-	
+
 	# and display it
 
 	# if current user isn't running aMule
@@ -156,12 +156,12 @@ sub xas
 		}
 		else {
 		IRC::command "/say $amulesigdata[10] is $amulestatus $amulextatus";}
-	
+
 		IRC::command "/say aMule $amulesigdata[13] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
 
 		# we only display "number of cpus" when we have more then one
 		if ($number_cpus > 1) {
-			IRC::command "/say on $number_cpus x $cpu @ $mhz up $uptime" } 
+			IRC::command "/say on $number_cpus x $cpu @ $mhz up $uptime" }
 		else {
 			IRC::command "/say on $cpu @ $mhz MHz up $uptime" };
 
@@ -225,7 +225,7 @@ sub calc_ratio
 sub int_to_bytes
 {
 	my($value) = int($_[0]);
-	
+
 	if ($value >= 1073741824) {
 		$value = (sprintf("%0.2f",$value/1073741824));
 		return "$value GiB";

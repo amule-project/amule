@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -114,7 +114,7 @@ private:
 
 	/**
 	 * Reference count which is increased whenever client is linked to a clientref.
-	 * Clients are to be stored only by ClientRefs, CUpDownClient * are for temporary 
+	 * Clients are to be stored only by ClientRefs, CUpDownClient * are for temporary
 	 * use only.
 	 * Linking is done only by CClientRef which is friend, so methods are private.
 	 */
@@ -148,7 +148,7 @@ public:
 	 *
 	 * The client will really be deleted only after thelast reference to it
 	 * is unlinked;
-	 */	
+	 */
 	void		Safe_Delete();
 
 	/**
@@ -167,8 +167,8 @@ public:
 	const wxString&	GetUserName() const		{ return m_Username; }
 	//Only use this when you know the real IP or when your clearing it.
 	void		SetIP( uint32 val );
-	uint32		GetIP() const 			{ return m_dwUserIP; }
-	bool		HasLowID() const 		{ return IsLowID(m_nUserIDHybrid); }
+	uint32		GetIP() const			{ return m_dwUserIP; }
+	bool		HasLowID() const		{ return IsLowID(m_nUserIDHybrid); }
 	wxString	GetFullIP() const		{ return Uint32toStringIP(m_FullUserIP); }
 	uint32		GetConnectIP() const		{ return m_nConnectIP; }
 	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
@@ -179,7 +179,7 @@ public:
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
 	void		SetServerIP(uint32 nIP)		{ m_dwServerIP = nIP; }
 	uint16		GetServerPort()	const		{ return m_nServerPort; }
-	void		SetServerPort(uint16 nPort)	{ m_nServerPort = nPort; }	
+	void		SetServerPort(uint16 nPort)	{ m_nServerPort = nPort; }
 	const CMD4Hash&	GetUserHash() const		{ return m_UserHash; }
 	void		SetUserHash(const CMD4Hash& userhash);
 	void		ValidateHash()			{ m_HasValidHash = !m_UserHash.IsEmpty(); }
@@ -194,7 +194,7 @@ public:
 	void		SetUDPPort(uint16 nPort)	{ m_nUDPPort = nPort; }
 	uint8		GetUDPVersion() const		{ return m_byUDPVer; }
 	uint8		GetExtendedRequestsVersion() const { return m_byExtendedRequestsVer; }
-	bool		IsFriend() const 		{ return m_Friend != NULL; }
+	bool		IsFriend() const		{ return m_Friend != NULL; }
 	bool		IsML() const			{ return m_bIsML; }
 	bool		IsHybrid() const		{ return m_bIsHybrid; }
 	uint32		GetCompatibleClient() const	{ return m_byCompatibleClient; }
@@ -222,25 +222,25 @@ public:
 	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }
 	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount(); }
 	void		SetLastAskedForSources()	{ m_dwLastAskedForSources = ::GetTickCount(); }
-	uint32		GetLastSrcReqTime() const 	{ return m_dwLastSourceRequest; }
+	uint32		GetLastSrcReqTime() const	{ return m_dwLastSourceRequest; }
 	uint32		GetLastSrcAnswerTime() const	{ return m_dwLastSourceAnswer; }
 	uint32		GetLastAskedForSources() const	{ return m_dwLastAskedForSources; }
-	bool		GetFriendSlot() const 		{ return m_bFriendSlot; }
+	bool		GetFriendSlot() const		{ return m_bFriendSlot; }
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true)	{ m_bCommentDirty = bDirty; }
 	uint8		GetSourceExchange1Version() const	{ return m_bySourceExchange1Ver; }
 	bool		SupportsSourceExchange2() const		{ return m_fSupportsSourceEx2; }
-	
+
 	bool		SafeSendPacket(CPacket* packet);
 
 	void		ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks);
-	void		ProcessRequestPartsPacketv2(const CMemFile& data);	
-	
+	void		ProcessRequestPartsPacketv2(const CMemFile& data);
+
 	void		SendPublicKeyPacket();
 	void		SendSignaturePacket();
 	void		ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize);
 	void		ProcessSignaturePacket(const byte* pachPacket, uint32 nSize);
-	uint8		GetSecureIdentState(); 
+	uint8		GetSecureIdentState();
 
 	void		SendSecIdentStatePacket();
 	void		ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nSize);
@@ -256,11 +256,11 @@ public:
 	void		ResetSessionUp();
 	uint32		GetUploadDatarate() const	{ return m_nUpDatarate; }
 
-	//uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
+	//uint32		GetWaitTime() const		{ return m_dwUploadTime - GetWaitStartTime(); }
 	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
 	uint32		GetWaitStartTime() const;
 
-	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
+	bool		IsDownloading()	const		{ return (m_nUploadState == US_UPLOADING); }
 
 	uint32		GetScore() const	{ return m_score; }
 	uint32		CalculateScore()	{ m_score = CalculateScoreInternal(); return m_score; }
@@ -272,7 +272,7 @@ public:
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	void		CreateNextBlockPackage();
-	void		SetUpStartTime() 		{ m_dwUploadTime = ::GetTickCount(); }
+	void		SetUpStartTime()		{ m_dwUploadTime = ::GetTickCount(); }
 	void		SetWaitStartTime();
 	void		ClearWaitStartTime();
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
@@ -299,22 +299,22 @@ public:
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
 	void		SendCommentInfo(CKnownFile *file);
-	bool 		IsDifferentPartBlock() const;
+	bool		IsDifferentPartBlock() const;
 	void		UnBan();
 	void		Ban();
 	bool		m_bAddNextConnect;      // VQB Fix for LowID slots only on connection
-	uint32		GetAskedCount() const 		{ return m_cAsked; }
+	uint32		GetAskedCount() const		{ return m_cAsked; }
 	void		AddAskedCount()			{ m_cAsked++; }
 	void		ClearAskedCount()		{ m_cAsked = 1; }	// 1, because it's cleared *after* the first request...
-	void		FlushSendBlocks();	// call this when you stop upload, 
+	void		FlushSendBlocks();	// call this when you stop upload,
 						// or the socket might be not able to send
 	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
-	uint32		GetLastUpRequest() const 	{ return m_dwLastUpRequest; }
-	size_t		GetUpPartCount() const 		{ return m_upPartStatus.size(); }
+	uint32		GetLastUpRequest() const	{ return m_dwLastUpRequest; }
+	size_t		GetUpPartCount() const		{ return m_upPartStatus.size(); }
 
 
 	//download
-	void 		SetRequestFile(CPartFile* reqfile); 
+	void		SetRequestFile(CPartFile* reqfile);
 	CPartFile*	GetRequestFile() const		{ return m_reqfile; }
 
 	uint8		GetDownloadState() const	{ return m_nDownloadState; }
@@ -324,7 +324,7 @@ public:
 
 	bool		IsPartAvailable(uint16 iPart) const
 					{ return ( iPart < m_downPartStatus.size() ) ? m_downPartStatus.get(iPart) : 0; }
-	bool		IsUpPartAvailable(uint16 iPart) const 
+	bool		IsUpPartAvailable(uint16 iPart) const
 					{ return ( iPart < m_upPartStatus.size() ) ? m_upPartStatus.get(iPart) : 0;}
 
 	const BitVector& GetPartStatus() const		{ return m_downPartStatus; }
@@ -334,7 +334,7 @@ public:
 	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
 	uint16		GetOldRemoteQueueRank() const	{ return m_nOldRemoteQueueRank; }
 	void		SetRemoteQueueFull(bool flag)	{ m_bRemoteQueueFull = flag; }
-	bool		IsRemoteQueueFull() const 	{ return m_bRemoteQueueFull; }
+	bool		IsRemoteQueueFull() const	{ return m_bRemoteQueueFull; }
 	void		SetRemoteQueueRank(uint16 nr);
 	bool		AskForDownload();
 	void		SendStartupLoadReq();
@@ -372,13 +372,13 @@ public:
 	bool		IsMessageFiltered(const wxString& message);
 
 	//File Comment
-	const wxString&	GetFileComment() const 		{ return m_strComment; }
+	const wxString&	GetFileComment() const		{ return m_strComment; }
 	uint8		GetFileRating() const		{ return m_iRating; }
 
-	const wxString&	GetSoftStr() const 		{ return m_clientSoftString; }
+	const wxString&	GetSoftStr() const		{ return m_clientSoftString; }
 	const wxString&	GetSoftVerStr() const		{ return m_clientVerString; }
 	const wxString GetServerName() const;
-	
+
 	uint16		GetKadPort() const		{ return m_nKadPort; }
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
 
@@ -390,15 +390,15 @@ public:
 	bool		IsAICHReqPending() const	{return m_fAICHRequested; }
 	void		ProcessAICHAnswer(const byte* packet, uint32 size);
 	void		ProcessAICHRequest(const byte* packet, uint32 size);
-	void		ProcessAICHFileHash(CMemFile* data, const CPartFile* file);	
+	void		ProcessAICHFileHash(CMemFile* data, const CPartFile* file);
 
 	EUtf8Str	GetUnicodeSupport() const;
 
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
-	int 		unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
-	void 		UpdateDisplayedInfo(bool force = false);
-	int 		GetFileListRequested() const 	{ return m_iFileListRequested; }
-	void 		SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
+	int		unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
+	void		UpdateDisplayedInfo(bool force = false);
+	int		GetFileListRequested() const	{ return m_iFileListRequested; }
+	void		SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
 
 	void		ResetFileStatusInfo();
 
@@ -417,20 +417,20 @@ public:
 
 	/**
 	 * Sets the current socket of the client.
-	 * 
+	 *
 	 * @param socket The pointer to the new socket, can be NULL.
 	 *
 	 * Please note that this function DOES NOT delete the old socket.
 	 */
-	void 		SetSocket(CClientTCPSocket* socket);
+	void		SetSocket(CClientTCPSocket* socket);
 
 	/**
 	 * Function for accessing the socket owned by a client.
-	 * 
+	 *
 	 * @return The pointer (can be NULL) to the socket used by this client.
 	 *
 	 * Please note that the socket object is quite volatile and can be removed
-	 * from one function call to the next, therefore, you should normally use 
+	 * from one function call to the next, therefore, you should normally use
 	 * the safer functions below, which all check if the socket is valid before
 	 * deferring it.
 	 */
@@ -485,27 +485,27 @@ public:
 	//KadIPCheck
 	bool		SendBuddyPingPong()		{ return m_dwLastBuddyPingPongTime < ::GetTickCount(); }
 	bool		AllowIncomeingBuddyPingPong()	{ return m_dwLastBuddyPingPongTime < (::GetTickCount()-(3*60*1000)); }
-	void		SetLastBuddyPingPongTime()	{ m_dwLastBuddyPingPongTime = (::GetTickCount()+(10*60*1000)); }	
+	void		SetLastBuddyPingPongTime()	{ m_dwLastBuddyPingPongTime = (::GetTickCount()+(10*60*1000)); }
 	EKadState	GetKadState() const		{ return m_nKadState; }
 	void		SetKadState(EKadState nNewS)	{ m_nKadState = nNewS; }
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
 	void		ProcessFirewallCheckUDPRequest(CMemFile *data);
 	// Kad added by me
 	bool		SendBuddyPing();
-	
+
 	/* Returns the client hash type (SO_EMULE, mldonkey, etc) */
 	int		GetHashType() const;
 
 	/**
 	 * Checks that a client isn't aggressively re-asking for files.
-	 * 
+	 *
 	 * Call this when a file is requested. If the time since the last request is
 	 * less than MIN_REQUESTTIME, 3 is added to the m_Aggressiveness variable.
 	 * If the time since the last request is >= MIN_REQUESTTIME, the variable is
 	 * decremented by 1. The client is banned if the variable reaches 10 or above.
 	 *
 	 * To check if a client is aggressive use the IsClientAggressive() function.
-	 * 
+	 *
 	 * Currently this function is called when the following packets are received:
 	 *  - OP_STARTUPLOADREQ
 	 *  - OP_REASKFILEPING
@@ -522,43 +522,43 @@ public:
 
 	/* Returns a pointer to the credits, only for hash purposes */
 	void*		GetCreditsHash() const { return (void*)credits; }
-	
+
 	uint16		GetLastDownloadingPart() const { return m_lastDownloadingPart; }
-	
+
 	bool		GetOSInfoSupport() const { return m_fOsInfoSupport; }
-	
+
 	bool		GetVBTTags() const { return m_fValueBasedTypeTags; }
-	
+
 	uint16		GetLastPartAsked() const { return m_lastPartAsked; }
-	
+
 	void		SetLastPartAsked(uint16 nPart) { m_lastPartAsked = nPart; }
-	
+
 	CFriend*	GetFriend() const { return m_Friend; }
-	
+
 	void		SetFriend(CFriend* newfriend) { m_Friend = newfriend; }
-	
+
 	bool		IsIdentified() const;
-	
+
 	bool		IsBadGuy() const;
-	
+
 	bool		SUIFailed() const;
-	
+
 	bool		SUINeeded() const;
-	
+
 	bool		SUINotSupported() const;
 
 	uint64		GetDownloadedTotal() const;
-	
+
 	uint64		GetUploadedTotal() const;
-	
-	double 		GetScoreRatio() const;
-	
+
+	double		GetScoreRatio() const;
+
 	uint32		GetCreationTime() const { return m_nCreationTime; }
-	
+
 	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
 
 	EIdentState	GetCurrentIdentState() const { return credits ? credits->GetCurrentIdentState(GetIP()) : IS_NOTAVAILABLE; }
-	
+
 #ifdef __DEBUG__
 	/* Kry - Debug. See connection_reason definition comment below */
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
@@ -580,11 +580,11 @@ public:
 	bool		ShouldReceiveCryptUDPPackets() const;
 
 	bool		HasDisabledSharedFiles() const { return m_fNoViewSharedFiles; }
-	
+
 private:
-	
+
 	CClientCredits	*credits;
-	CFriend 	*m_Friend;
+	CFriend		*m_Friend;
 
 	uint64		m_nTransferredUp;
 	sint64		m_nCurQueueSessionPayloadUp;
@@ -607,7 +607,7 @@ private:
 	 * This struct is used to keep track of CPartFiles which this source shares.
 	 */
 	struct A4AFStamp {
-		//! Signifies if this sources has needed parts for this file. 
+		//! Signifies if this sources has needed parts for this file.
 		bool NeededParts;
 		//! This is set when we wish to avoid swapping to this file for a while.
 		uint32 timestamp;
@@ -626,7 +626,7 @@ private:
 	 * @param ignoresuspended Do not check the timestamp when checking the file.
 	 * @return True if the file is a viable target, false otherwise.
 	 *
-	 * This function is used to perform checks to see if we should consider 
+	 * This function is used to perform checks to see if we should consider
 	 * this file a viable target for A4AF swapping. Unless ignoresuspended is
 	 * true, it will examine the timestamp of the file and reset it if needed.
 	 */
@@ -670,16 +670,16 @@ private:
 	bool		m_bCommentDirty;
 	bool		m_bIsHybrid;
 	bool		m_bIsML;
- 	bool		m_bSupportsPreview;
-	bool		m_bUnicodeSupport;	
+	bool		m_bSupportsPreview;
+	bool		m_bUnicodeSupport;
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;
 	ClientState	m_clientState;
-	CClientTCPSocket*	m_socket;		
+	CClientTCPSocket*	m_socket;
 	bool		m_fNeedOurPublicIP; // we requested our IP from this client
 
 	// Kry - Secure User Ident import
-	ESecureIdentState	m_SecureIdentState; 
+	ESecureIdentState	m_SecureIdentState;
 	uint8		m_byInfopacketsReceived;		// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
 	uint32		m_dwLastSignatureIP;
 	uint8		m_bySupportSecIdent;
@@ -740,7 +740,7 @@ private:
 	uint32		bytesReceivedCycle;
 	// chat
 	wxString	m_strComment;
-	uint8 		m_byChatstate;
+	uint8		m_byChatstate;
 	uint8		m_nChatCaptchaState;
 	uint8		m_cCaptchasSent;
 	int8		m_iRating;
@@ -751,8 +751,8 @@ private:
 
 	unsigned int
 		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
-		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, 
-					  // if this flag is not set, we just know that we don't know 
+		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature,
+					  // if this flag is not set, we just know that we don't know
 					  // for sure if it is enabled
 		m_fSupportsPreview   : 1,
 		m_fIsSpammer	     : 1,
@@ -778,12 +778,12 @@ private:
 
 	bool		m_bHelloAnswerPending;
 
-	//! This vector contains the avilability of parts for the file we requested 
+	//! This vector contains the avilability of parts for the file we requested
 	//! from this user. When changing it, be sure to call CPartFile::UpdatePartsFrequency
 	//! so that the files know the actual availability of parts.
 	BitVector	m_downPartStatus;
 
-	CAICHHash* 	m_pReqFileAICHHash; 
+	CAICHHash*	m_pReqFileAICHHash;
 
 	ESourceFrom	m_nSourceFrom;
 
@@ -793,19 +793,19 @@ private:
 	uint32		m_nBuddyIP;
 	uint16		m_nBuddyPort;
 
-	EKadState	m_nKadState;	
+	EKadState	m_nKadState;
 
 	uint8		m_byKadVersion;
 	uint32		m_dwLastBuddyPingPongTime;
 	uint32_t	m_dwDirectCallbackTimeout;
 
-	//! This keeps track of aggressive requests for files. 
+	//! This keeps track of aggressive requests for files.
 	uint16		m_Aggressiveness;
 	//! This tracks the time of the last time since a file was requested
 	uint32		m_LastFileRequest;
 
-	bool 		m_OSInfo_sent;
-	
+	bool		m_OSInfo_sent;
+
 	wxString	m_clientSoftString;	/* software name */
 	wxString	m_clientVerString;	/* version + optional mod name */
 	wxString	m_clientVersionString;	/* version string */
@@ -823,19 +823,19 @@ private:
 	uint32		m_lastClientSoft;
 	uint32		m_lastClientVersion;
 	wxString	m_lastOSInfo;
-	
+
 	/* For buddies timeout */
 	uint32		m_nCreationTime;
-	
+
 	/* Calculation of last average speed */
 	uint32		m_lastaverage;
 	uint32		m_last_block_start;
-	
+
 	/* Save the encryption status for display when disconnected */
 	bool		m_hasbeenobfuscatinglately;
-	
+
 	/* Kry - Debug thing. Clients created just to check their data
-	   have this string set to the reason we want to check them. 
+	   have this string set to the reason we want to check them.
 	   Obviously, once checked, we disconnect them. Take that, sucker.
 	   This debug code is just for me I'm afraid. */
 #ifdef __DEBUG__

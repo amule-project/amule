@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,9 +37,9 @@ class CPartFile;
  * This dialog is used to display file-comments received from other clients.
  */
 class CCommentDialogLst : public wxDialog
-{ 
-public: 
-	CCommentDialogLst(wxWindow* pParent, CPartFile* file); 
+{
+public:
+	CCommentDialogLst(wxWindow* pParent, CPartFile* file);
 	~CCommentDialogLst();
 
 	/**
@@ -48,13 +48,13 @@ public:
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 
 private:
-	void OnBnClickedApply(wxCommandEvent& evt); 
-	void OnBnClickedRefresh(wxCommandEvent& evt); 
+	void OnBnClickedApply(wxCommandEvent& evt);
+	void OnBnClickedRefresh(wxCommandEvent& evt);
 
 	/**
 	 * Updates the contents of the comments/ratings list.
 	 */
-	void UpdateList(); 
+	void UpdateList();
 
 	/**
 	 * Clears the contents of the comments/ratings list.
@@ -66,7 +66,7 @@ private:
 
 	//! The list containing comments/ratings.
 	CMuleListCtrl* m_list;
-	
+
 
 	DECLARE_EVENT_TABLE()
 };

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,7 +42,7 @@ enum OP_ClientToServerTCP {
 //	OP_CHAT_MESSAGE				= 0x1E,	// (deprecated, not supported by server any longer)
 //	OP_JOIN_ROOM				= 0x1F,	// (deprecated, not supported by server any longer)
 	OP_QUERY_MORE_RESULT		= 0x21,	// (null)
-	OP_GETSOURCES_OBFU	= 0x23,	
+	OP_GETSOURCES_OBFU	= 0x23,
 	OP_SERVERLIST				= 0x32,	// <count 1>(<IP 4><PORT 2>)[count] server->client
 	OP_SEARCHRESULT				= 0x33,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
 	OP_SERVERSTATUS				= 0x34,	// <USER 4><FILES 4>

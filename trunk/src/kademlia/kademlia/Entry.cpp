@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -349,7 +349,7 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 
 void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 {
-	// this is called when replacing a stored entry with a refreshed one. 
+	// this is called when replacing a stored entry with a refreshed one.
 	// we want to take over the tracked IPs and the different filenames from the old entry, the rest is still
 	// "overwritten" with the refreshed values. This might be not perfect for the taglist in some cases, but we can't afford
 	// to store hundreds of taglists to figure out the best one like we do for the filenames now
@@ -371,7 +371,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 	} else {
 		// merge the tracked IPs, add this one if not already on the list
 		m_publishingIPs = fromEntry->m_publishingIPs;
-		fromEntry->m_publishingIPs = NULL;	
+		fromEntry->m_publishingIPs = NULL;
 		bool fastRefresh = false;
 		for (PublishingIPList::iterator it = m_publishingIPs->begin(); it != m_publishingIPs->end(); ++it) {
 			if (it->m_ip == m_uIP) {
@@ -432,7 +432,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			AdjustGlobalPublishTracking(curEntry.m_ip, false, wxT("more than 100 publishers purge"));
 		}
 
-		// since we added a new publisher, we want to (re)calculate the trust value for this entry		
+		// since we added a new publisher, we want to (re)calculate the trust value for this entry
 		ReCalculateTrustValue();
 	}
 	AddDebugLogLineN(logKadEntryTracking, CFormat(wxT("Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: %s"))
@@ -561,16 +561,16 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CFileDataIO* data)
 	}
 	ReCalculateTrustValue();
 // #ifdef __DEBUG__
-// 	if (GetTrustValue() < 1.0) {
-// 		AddDebugLogLineN(logKadEntryTracking,CFormat(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file %s"))
-// 			% nameCount % ipCount % GetTrustValue() % m_uSourceID.ToHexString());
-// 	}
+//	if (GetTrustValue() < 1.0) {
+//		AddDebugLogLineN(logKadEntryTracking,CFormat(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file %s"))
+//			% nameCount % ipCount % GetTrustValue() % m_uSourceID.ToHexString());
+//	}
 // #endif
 }
 
 void CKeyEntry::DirtyDeletePublishData()
 {
-	// instead of deleting our publishers properly in the destructor with decreasing the count in the global map 
+	// instead of deleting our publishers properly in the destructor with decreasing the count in the global map
 	// we just remove them, and trust that the caller in the end also resets the global map, so the
 	// kad shutdown is speed up a bit
 	delete m_publishingIPs;

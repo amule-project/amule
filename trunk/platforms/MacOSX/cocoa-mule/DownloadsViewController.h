@@ -5,7 +5,7 @@
 @interface DownloadsViewController : NSObject {
 
 	IBOutlet NSTableView *m_tableview;
-	
+
 	amuleFileSet *m_fileset;
 	amuleData *m_amuledata;
 }

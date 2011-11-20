@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -48,7 +48,7 @@ wxString get_backtrace(unsigned n);
 
 /**
  * This exception should be used to implement other
- * types of exceptions. It should never be caught, 
+ * types of exceptions. It should never be caught,
  * instead catch the subtypes.
  */
 class CMuleException
@@ -65,7 +65,7 @@ private:
 
 
 /**
- * This exception type is used to represent exceptions that are 
+ * This exception type is used to represent exceptions that are
  * caused by invalid operations. Exceptions of this type should
  * not be caught as they are the result of bugs.
  */
@@ -106,7 +106,7 @@ struct CInvalidPacket : public CMuleException
 };
 
 
-// This ifdef ensures that we wont get assertions while 
+// This ifdef ensures that we wont get assertions while
 // unittesting, which would otherwise impede the tests.
 #ifdef MULEUNIT
 	#define _MULE_THROW(cond, cls, msg) \

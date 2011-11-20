@@ -72,13 +72,13 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 					0.0, config->x[i], config->y[i], lines[i]);
 		}
 	}
-	
+
 	if (config->img_type==0) {
 		path = get_amule_path("aMule-online-sign.png", 0, path_for_picture);
 	} else {
 		path = get_amule_path("aMule-online-sign.jpg", 0, path_for_picture);
 	}
-		
+
 	if (path == NULL && config->img_type==0) {
 		perror("could not get PNG path\n");
 		return 0;
@@ -88,13 +88,13 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 	}
 	out = fopen(path, "w");
 	free(path);
-	
+
 	if (config->img_type==0) {
 		gdImagePng(im, out);
 	} else {
 		gdImageJpeg(im, out, -1);
 	}
-	
+
 	fclose(out);
 	printf("Online Signature picture created.\n");
 	gdImageDestroy(im);

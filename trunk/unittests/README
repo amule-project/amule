@@ -1,12 +1,12 @@
 UnitTests provide an easy way to perform automated testing (including)
-regression-testing and are desbribed in depth at 
+regression-testing and are desbribed in depth at
 http://c2.com/cgi/wiki?UnitTest
 
 The UnitTest framework MuleUnit is a minimalistic UnitTesting-framework
 based on the EasyUnit framework, with the goal of making testing of the
 aMule codebase easier.
- 
- 
+
+
 How to use:
  This section describes the step-by-step of creating a new testcase.
 
@@ -22,23 +22,23 @@ How to use:
     A fixture is a way to ease the preparation before and after
     each test and consists of (optionally) a setUp function which
     is run before each unittest, a tearDown function wich is run
-    after each unittest and any number of member-variables and 
+    after each unittest and any number of member-variables and
     helper-functions.
 
-    
+
     A simple testcase (in this case for the Stack class) is declared
     like this, though the name "StackTest" may be anything.
-      
+
       #include <muleunit/test.h>
 
       DECLARE_SIMPLE(StackTest);
-    
-    
+
+
     If we wanted to have a default stack-object created before each test
     and deleted afterwards, we could use a fixture, which is done like so:
 
       #include <muleunit/test.h>
-      
+
       DECLARE(StackTest);
         Stack<int>* m_stack;
 
@@ -61,15 +61,15 @@ How to use:
 
  2) Writing Tests
     To add an actual test to the test-case, the following is done:
-      
+
       TEST(StackTest, AStackTest)
       {
         <test here>
       }
- 
- 
+
+
     This will create and register a unittest to the StackTest
-    test-case which has the name "AStackTest". An simple example 
+    test-case which has the name "AStackTest". An simple example
     of this can be seen here:
 
       TEST(StackTest, PushAndPop)
@@ -78,7 +78,7 @@ How to use:
 
         ASSERT_EQUALS(10, m_stack->pop());
       }
-    
+
 
     A test-case can have any number of unittests assosiated with it,
     but each test in a test-case must be uniquely named.
@@ -88,46 +88,46 @@ How to use:
     Assuming that the testcase described above has been placed in
     tests/StackTest.cpp, the follow entry needs to be added to the
     Makefile.am file in tests/:
-      
+
       StackTest_SOURCES = StackTest.cpp
       StackTest_CXXFLAGS = $(CXXFLAGS)
       StackTest_LDADD = $(LDADD)
 
     And the TESTS variable must be updated to contain an entry for
     the stack testcase: "StackTest"
-    
-    At the moment, in order for the makefile to be updated with the 
-    next test-case you need to execute the following from the 
+
+    At the moment, in order for the makefile to be updated with the
+    next test-case you need to execute the following from the
     amule-dev/ dir:
-      
+
       $ automake unittests/tests/Makefile
       $ ./configure <your options>
-    
+
     This only need to be done when the Makefile.am file has been
     changed, not when test test-cases themselves are changed.
 
-  
+
   4) Running the test
     Simply executing the make target check will execute all unittests
     registered in the Makefile ("-s" is used for silent operation):
-      
+
       $ make -s check
-  
+
       Making check in tests
       Test case "StackTest" SUCCEEDED with 0 failure(s) and 1 success(es):
         Test "AStackTest" SUCCEEDED!
-      
+
       PASS: StackTest
-  
+
       ==================
       All 1 tests passed
       ==================
 
-    
+
 	Should a test fail, the output will be like the following:
-	
+
       $ make -s check
-  
+
       Making check in tests
       Test case "StackTest" FAILED with 1 failure(s) and 0 success(es):
         Test "Foo" FAILED :
@@ -142,5 +142,5 @@ How to use:
 
   5) More
     More information about available test-macros can be found in the
-    muleunit/test.h header-file. 
+    muleunit/test.h header-file.
 

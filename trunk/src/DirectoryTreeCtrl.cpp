@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -97,12 +97,12 @@ void CDirectoryTreeCtrl::Init()
 	// Gives wxTreeCtrl ownership of the list
 	AssignImageList(images);
 
-	
+
 	// Create an empty root item, which we can
 	// safely append when creating a full path.
 	m_root = AddRoot(wxEmptyString, IMAGE_FOLDER, -1,
 					new CItemData(CPath()));
-	
+
 	if (!m_IsRemote) {
 	#ifndef __WXMSW__
 		AddChildItem(m_root, CPath(wxT("/")));
@@ -179,7 +179,7 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark, bool recur
 		AddSubdirectories(hChild, GetFullPath(hChild));
 		SortChildren(hChild);
 	}
-	
+
 	wxTreeItemIdValue cookie;
 	wxTreeItemId hChild2 = GetFirstChild(hChild, cookie);
 	if (hChild2.IsOk()) {
@@ -198,24 +198,24 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark, bool recur
 void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 {
 	wxCHECK_RET(hBranch.IsOk(), wxT("Attempted to add children to invalid item"));
-	
+
 	CPath fullPath = GetFullPath(hBranch).JoinPaths(item);
 	wxTreeItemId treeItem = AppendItem(hBranch, item.GetPrintable(),
 						IMAGE_FOLDER, -1,
 						new CItemData(item));
-	
+
 	// BUG: wxGenericTreeControl won't set text calculated sizes when the item is created in AppendItem.
 	// This causes asserts on Mac and possibly other systems, so we have to repeat setting the string here.
-	SetItemText(treeItem, item.GetPrintable()); 
+	SetItemText(treeItem, item.GetPrintable());
 
 	if (IsShared(fullPath)) {
 		SetItemBold(treeItem, true);
 	}
-	
+
 	if (HasSharedSubdirectory(fullPath)) {
 		SetHasSharedSubdirectory(treeItem, true);
 	}
-	
+
 	if (HasSubdirectories(fullPath)) {
 		// Trick. will show + if it has subdirs
 		AppendItem(treeItem, wxT("."));
@@ -226,7 +226,7 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 CPath CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
 	{ wxCHECK_MSG(hItem.IsOk(), CPath(), wxT("Invalid item in GetFullPath")); }
-	
+
 	CPath result;
 	for (; hItem.IsOk(); hItem = GetItemParent(hItem)) {
 		CItemData* data = dynamic_cast<CItemData*>(GetItemData(hItem));
@@ -244,11 +244,11 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const CPath& pa
 	wxCHECK_RET(path.IsOk(), wxT("Invalid path in AddSubdirectories"));
 
 	CDirIterator sharedDir(path);
-	
-	CPath dirName = sharedDir.GetFirstFile(CDirIterator::Dir); 
+
+	CPath dirName = sharedDir.GetFirstFile(CDirIterator::Dir);
 	while (dirName.IsOk()) {
 		AddChildItem(hBranch, dirName);
-		
+
 		dirName = sharedDir.GetNextFile();
 	}
 }
@@ -266,7 +266,7 @@ bool CDirectoryTreeCtrl::HasSubdirectories(const CPath& folder)
 void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 {
 	wxCHECK_RET(list, wxT("Invalid list in GetSharedDirectories"));
-	
+
 	for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); it++) {
 		list->push_back(it->second);
 	}
@@ -276,7 +276,7 @@ void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 {
 	wxCHECK_RET(list, wxT("Invalid list in SetSharedDirectories"));
-	
+
 	m_lstShared.clear();
 	for (PathList::iterator it = list->begin(); it != list->end(); it++) {
 		m_lstShared.insert(SharedMapItem(GetKey(*it), *it));
@@ -318,13 +318,13 @@ void CDirectoryTreeCtrl::UpdateSharedDirectories()
 	// drives, on unix there is only the root dir).
 	wxTreeItemIdValue cookie;
 	wxTreeItemId hChild = GetFirstChild(GetRootItem(), cookie);
-	
+
 	while (hChild.IsOk()) {
 		// Does this drive have shared subfolders?
-		if (HasSharedSubdirectory(GetFullPath(hChild))) { 
+		if (HasSharedSubdirectory(GetFullPath(hChild))) {
 			SetHasSharedSubdirectory(hChild, true);
 		}
-		
+
 		// Is this drive shared?
 		if (IsShared(GetFullPath(hChild))) {
 			SetItemBold(hChild, true);
@@ -358,7 +358,7 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked, bool re
 		SetItemBold(hItem, bChecked);
 
 		if (bChecked) {
-			AddShare(GetFullPath(hItem)); 
+			AddShare(GetFullPath(hItem));
 		} else {
 			DelShare(GetFullPath(hItem));
 		}
@@ -381,11 +381,11 @@ bool CDirectoryTreeCtrl::IsShared(const CPath& path)
 void CDirectoryTreeCtrl::AddShare(const CPath& path)
 {
 	wxCHECK_RET(path.IsOk(), wxT("Invalid path in AddShare"));
-	
+
 	if (IsShared(path)) {
 		return;
 	}
-	
+
 	m_lstShared.insert(SharedMapItem(GetKey(path), path));
 }
 
@@ -393,7 +393,7 @@ void CDirectoryTreeCtrl::AddShare(const CPath& path)
 void CDirectoryTreeCtrl::DelShare(const CPath& path)
 {
 	wxCHECK_RET(path.IsOk(), wxT("Invalid path in DelShare"));
-	
+
 	m_lstShared.erase(GetKey(path));
 }
 

@@ -36,7 +36,7 @@ AC_DEFUN([PLASMAMULE_CHECKS],
 			],
 			[DISABLE_PLASMAMULE])
 	])
-	
+
 	MULE_IF_ENABLED([debug],
         [
 		DEBUGFLAG="-D__DEBUG__"

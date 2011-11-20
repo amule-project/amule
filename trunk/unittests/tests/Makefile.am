@@ -1,6 +1,6 @@
-# If any tests uses more than a cpp/h fileset, then 
+# If any tests uses more than a cpp/h fileset, then
 # make a seperate subfolder for it to reduce clutter.
-#SUBDIRS = 
+#SUBDIRS =
 EXTRA_DIST =
 
 # Use this to be able to catch assertions as exceptions
@@ -42,7 +42,7 @@ PathTest_SOURCES = PathTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_src
 
 # Tests for the CTextFile class
 TextFileTest_SOURCES = TextFileTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/libs/common/TextFile.cpp
-TextFileTest_CPPFLAGS = $(AM_CPPFLAGS) -DSRCDIR="$(srcdir)" 
+TextFileTest_CPPFLAGS = $(AM_CPPFLAGS) -DSRCDIR="$(srcdir)"
 EXTRA_DIST += TextFileTest_dos.txt TextFileTest_unix.txt
 
 # Tests for the CTag class

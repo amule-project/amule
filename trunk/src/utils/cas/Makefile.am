@@ -24,7 +24,7 @@ noinst_HEADERS = configfile.h \
 cas_CPPFLAGS = $(MULECPPFLAGS) $(CAS_DEFS)
 cas_CFLAGS = $(MULECFLAGS) $(GDLIB_CFLAGS)
 cas_LDFLAGS = $(MULELDFLAGS) $(GDLIB_LDFLAGS)
-cas_LDADD= $(GDLIB_LIBS) 
+cas_LDADD= $(GDLIB_LIBS)
 
 if NEED_CORESERVICES
 cas_LDFLAGS += -framework CoreServices

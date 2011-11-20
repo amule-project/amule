@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -36,7 +36,7 @@ class CSourceListCtrl : public CGenericClientListCtrl
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @see CGenericClientListCtrl::CGenericClientListCtrl for documentation of parameters.
 	 */
 	 CSourceListCtrl(
@@ -47,11 +47,11 @@ public:
                 long style = wxLC_ICON,
                 const wxValidator& validator = wxDefaultValidator,
                 const wxString &name = wxT("sourcelistctrl") );
-				
+
 	/**
 	 * Destructor.
-	 */	 
-	virtual	~CSourceListCtrl();	
+	 */
+	virtual	~CSourceListCtrl();
 
 private:
 	virtual CamuleDlg::DialogType GetParentDialog() { return CamuleDlg::DT_TRANSFER_WND; }
@@ -59,9 +59,9 @@ private:
 	virtual void SetShowSources(CKnownFile * f, bool b) const;
 
 	static int wxCALLBACK SourceSortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
-	
+
 	bool IsShowingDownloadSources() const { return true; }
-	
+
 	DECLARE_EVENT_TABLE()
 };
 

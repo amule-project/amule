@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,7 +43,7 @@ class CMD4Hash;
  *
  * Basic IO operations will either succeed or throw an exception,
  * so that failure cannot be ignored. There are currently 3 types
- * of failures: Read past EOF, errors while reading, and errors 
+ * of failures: Read past EOF, errors while reading, and errors
  * while writing.
  *
  * Beyond basic IO, the interface provides functions for reading
@@ -63,13 +63,13 @@ public:
 	 * for safe deletion objects via CFileDataIO pointers.
 	 */
 	virtual ~CFileDataIO();
-	
-	
+
+
 	/**
 	 * Must return the current position in the file.
 	 */
 	virtual uint64 GetPosition() const = 0;
-	
+
 	/**
 	 * Must return the length of the file-object in bytes.
 	 */
@@ -80,17 +80,17 @@ public:
 	 */
 	virtual bool Eof() const;
 
-	
+
 	/**
 	 * Changes the file position.
 	 *
 	 * Note that seeking to an negative position is an illegal operation.
-	 * 
+	 *
 	 * @see wxFile::Seek
 	 */
 	virtual uint64 Seek(sint64 offset, wxSeekMode from = wxFromStart) const;
 
- 
+
 	/**
 	 * Reads 'count' bytes into 'buffer'.
 	 *
@@ -103,8 +103,8 @@ public:
 	 * the position and target buffer is left unchanged.
 	 *
 	 * However, it is also possible that the read will
-	 * fail due to IO errors (bad hardware, ect), in which 
-	 * case an CIOFailureException will be thrown. 
+	 * fail due to IO errors (bad hardware, ect), in which
+	 * case an CIOFailureException will be thrown.
 	 */
 	virtual void Read(void* buffer, size_t count) const;
 
@@ -121,8 +121,8 @@ public:
 	 */
 	virtual void Write(const void* buffer, size_t count);
 
-	
-	/**	
+
+	/**
 	 * Reads the given type from the file, stored as little-endian.
 	 *
 	 * @see CSafeFileIO::Read
@@ -140,7 +140,7 @@ public:
 
 	/**
 	 * Reads a string from the file.
-	 * 
+	 *
 	 * @param bOptUTF8 Specifies if the string is UTF8 encoded.
 	 * @param lenBytes The number of bytes used to store the string length.
 	 * @param SafeRead Avoids throwing CEOFException, see below.
@@ -152,7 +152,7 @@ public:
 	 *
 	 * @see CSafeFileIO::Read
 	 */
- 	virtual wxString	ReadString(bool bOptUTF8, uint8 lenBytes = 2, bool SafeRead = false) const;
+	virtual wxString	ReadString(bool bOptUTF8, uint8 lenBytes = 2, bool SafeRead = false) const;
 
 	/**
 	 * Reads a string from the file, where the length is specified directly.
@@ -166,10 +166,10 @@ public:
 	 */
 	virtual wxString	ReadOnlyString(bool bOptUTF8, uint16 length) const;
 
-	
+
 	/**
 	 * Writes a value of the given type to the file, storing it as little-endian.
-	 *	
+	 *
 	 * @see CSafeFileIO::Write
 	 */
 	//@{
@@ -180,9 +180,9 @@ public:
 	virtual void WriteUInt128(const CUInt128& value);
 	virtual void WriteHash(const CMD4Hash& value);
 	virtual void WriteFloat(float value);
-	virtual void WriteBsob( const unsigned char* val, uint8 size);	
+	virtual void WriteBsob( const unsigned char* val, uint8 size);
 	//@}
-	
+
 	/**
 	 * Writes a text-string to the file.
 	 *
@@ -209,7 +209,7 @@ public:
 	uint64		GetIntTagValue() const;
 
 /* Some functions I added for simplicity */
-	// Very obvious 
+	// Very obvious
 	bool IsEmpty() { return (GetLength() == 0); }
 
 	// Appends to the end
@@ -223,7 +223,7 @@ protected:
 	 * @param count The number of bytes to read / written.
 	 * @return The number of bytes read / written or -1 in case of errors.
 	 *
-	 * Note that the return value must be the actual number of bytes 
+	 * Note that the return value must be the actual number of bytes
 	 * read or written, with the exception that in case of errors, -1
 	 * may be returned. This is because the return value is used to
 	 * detect if the operation succeded.
@@ -252,7 +252,7 @@ protected:
 private:
 	/**
 	 * Helper-function that does the actual writing of the string.
-	 * 
+	 *
 	 * @param str The string to be written.
 	 * @param encoding The encoding of the string.
 	 * @param lenBytes The number of bytes used to store the string length.
@@ -274,7 +274,7 @@ struct CSafeIOException : public CMuleException
 
 
 /**
- * This exception is thrown when attempts are 
+ * This exception is thrown when attempts are
  * made at reading past the end of the file.
  *
  * This typically happens when a invalid packet
@@ -282,7 +282,7 @@ struct CSafeIOException : public CMuleException
  * is not fatal.
  */
 struct CEOFException : public CSafeIOException {
-	CEOFException(const wxString& desc);	
+	CEOFException(const wxString& desc);
 };
 
 

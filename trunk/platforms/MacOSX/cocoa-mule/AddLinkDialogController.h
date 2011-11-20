@@ -7,7 +7,7 @@
     IBOutlet id m_dlg;
 
 	bool m_dlg_result;
-	
+
 	NSString *m_link_val;
 }
 

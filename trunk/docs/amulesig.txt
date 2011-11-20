@@ -38,7 +38,7 @@
    8		0		As online	Number of clients waiting for upload	As online
    9		0		As online	Number of shared files			As online
   10		As online	As online	Nick used on the ed2k network		As online
-  11		As online	As online	Total download in bytes 		As online
+  11		As online	As online	Total download in bytes			As online
   12		As online	As online	Total upload in bytes			As online
   13		As online	As online	aMule version				As online
   14		0		As online	Total Downloaded in Session in bytes	As online

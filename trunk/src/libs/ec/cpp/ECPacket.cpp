@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,10 +55,10 @@ void CECPacket::DebugPrint(bool incoming, uint32 trueSize) const
 		uint32 size = GetPacketLength() + sizeof(ec_opcode_t) + 2;	// full length incl. header
 
 		if (trueSize == 0 || size == trueSize) {
-			DoECLogLine(CFormat(wxT("%s %s %d")) % (incoming ? wxT("<") : wxT(">")) 
+			DoECLogLine(CFormat(wxT("%s %s %d")) % (incoming ? wxT("<") : wxT(">"))
 				% GetDebugNameECOpCodes(m_opCode) % size);
 		} else {
-			DoECLogLine(CFormat(wxT("%s %s %d (compressed: %d)")) % (incoming ? wxT("<") : wxT(">")) 
+			DoECLogLine(CFormat(wxT("%s %s %d (compressed: %d)")) % (incoming ? wxT("<") : wxT(">"))
 				% GetDebugNameECOpCodes(m_opCode) % size % trueSize);
 		}
 		CECTag::DebugPrint(1, false);

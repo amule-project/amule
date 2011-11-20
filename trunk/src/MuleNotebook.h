@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -54,7 +54,7 @@ class wxWindow;
 
 
 /**
- * This is an NoteBook control which adds additional features above what is 
+ * This is an NoteBook control which adds additional features above what is
  * provided by the wxNoteBook widget. Currently it includes:
  *  - Use of images on the tabs for closing the pages.
  *  - A popup-menu for closing one or more pages.
@@ -96,12 +96,12 @@ public:
 	void EnablePopup( bool enable );
 
 	/**
-	 * Sets an external widget to handle the popup-event.  
+	 * Sets an external widget to handle the popup-event.
 	 *
 	 * @param widget The widget which would recieve the event or NULL to disable.
 	 *
-	 * Setting the handler to a non-NULL pointer means that upon right-clicks, a 
-	 * right click event will be sent to that widget, so that it can create a 
+	 * Setting the handler to a non-NULL pointer means that upon right-clicks, a
+	 * right click event will be sent to that widget, so that it can create a
 	 * popup-menu. The coordinates will be fixed to fit onto the specified widget,
 	 * so no mapping is needed.
 	 */
@@ -117,17 +117,17 @@ protected:
 	 * Event handler for mouse motion (for highlighting the 'x')
 	 */
 	void OnMouseMotion(wxMouseEvent &event);
-	
+
 	/**
 	 * Event-handler for right-clicks that takes care of displaying the popup-menu.
-	 */	 
+	 */
 	void OnRMButton(wxMouseEvent& event);
 
 	/**
 	 * Event-handler fo the Close item on the popup-menu.
 	 */
 	void OnPopupClose(wxCommandEvent& evt);
-	
+
 	/**
 	 * Event-handler fo the CloseAll item on the popup-menu.
 	 */

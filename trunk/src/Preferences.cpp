@@ -161,7 +161,7 @@ bool		CPreferences::s_msgsecure;
 uint8		CPreferences::s_filterlevel;
 uint8		CPreferences::s_iFileBufferSize;
 uint8		CPreferences::s_iQueueSize;
-wxString 	CPreferences::s_datetimeformat;
+wxString	CPreferences::s_datetimeformat;
 wxString	CPreferences::s_sWebPath;
 wxString	CPreferences::s_sWebPassword;
 wxString	CPreferences::s_sWebLowPassword;
@@ -179,7 +179,7 @@ bool		CPreferences::s_DropFullQueueSources;
 bool		CPreferences::s_DropHighQueueRankingSources;
 uint32		CPreferences::s_HighQueueRanking;
 uint32		CPreferences::s_AutoDropTimer;
-bool 		CPreferences::s_AcceptExternalConnections;
+bool		CPreferences::s_AcceptExternalConnections;
 wxString	CPreferences::s_ECAddr;
 uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
@@ -199,14 +199,14 @@ wxString	CPreferences::s_Skin;
 bool		CPreferences::s_FastED2KLinksHandler;
 bool		CPreferences::s_ToolbarOrientation;
 bool		CPreferences::s_AICHTrustEveryHash;
-wxString 	CPreferences::s_CommentFilterString;
+wxString	CPreferences::s_CommentFilterString;
 bool		CPreferences::s_IPFilterAutoLoad;
 wxString	CPreferences::s_IPFilterURL;
 CMD4Hash	CPreferences::s_userhash;
 bool		CPreferences::s_MustFilterMessages;
-wxString 	CPreferences::s_MessageFilterString;
+wxString	CPreferences::s_MessageFilterString;
 bool		CPreferences::s_FilterAllMessages;
-bool 		CPreferences::s_FilterComments;
+bool		CPreferences::s_FilterComments;
 bool		CPreferences::s_FilterSomeMessages;
 bool		CPreferences::s_ShowMessagesInLog;
 bool		CPreferences::s_IsAdvancedSpamfilterEnabled;
@@ -224,13 +224,13 @@ bool		CPreferences::s_IsClientCryptLayerRequired;
 uint32		CPreferences::s_dwKadUDPKey;
 uint8		CPreferences::s_byCryptTCPPaddingLength;
 
-wxString 	CPreferences::s_Ed2kURL;
-wxString 	CPreferences::s_KadURL;
-bool	 	CPreferences::s_GeoIPEnabled;
-wxString 	CPreferences::s_GeoIPUpdateUrl;
+wxString	CPreferences::s_Ed2kURL;
+wxString	CPreferences::s_KadURL;
+bool		CPreferences::s_GeoIPEnabled;
+wxString	CPreferences::s_GeoIPUpdateUrl;
 bool		CPreferences::s_preventSleepWhileDownloading;
-wxString 	CPreferences::s_StatsServerName;
-wxString 	CPreferences::s_StatsServerURL;
+wxString	CPreferences::s_StatsServerName;
+wxString	CPreferences::s_StatsServerURL;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -746,7 +746,7 @@ public:
 			for (unsigned int i = 1; i < itemsof(aMuleLanguages); ++i) {
 				if ((aMuleLanguages[i].id > wxLANGUAGE_USER_DEFINED) || wxLocale::IsAvailable(aMuleLanguages[i].id)) {
 					wxLogNull	logTarget;
-					wxLocale 	locale_to_check;
+					wxLocale	locale_to_check;
 					InitLocale(locale_to_check, aMuleLanguages[i].id);
 					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(wxT(PACKAGE))) {
 						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]");
@@ -1065,7 +1065,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * Files
 	 **/
-	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
+	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  wxT("/eMule/TempDir"),	s_tempdir, appdir + wxT("Temp") )));
 
 	#if defined(__WXMAC__) || defined(__WXMSW__)
 		wxString incpath = wxStandardPaths::Get().GetDocumentsDir();
@@ -1242,7 +1242,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
 
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"), 		s_DropSlowSources, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"),		s_DropSlowSources, false ) );
 
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://download.tuxfamily.org/technosalad/utils/nodes.dat") ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),		s_Ed2kURL, wxT("http://gruk.org/server.met.gz") ) );

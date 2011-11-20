@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,8 +37,8 @@
 
 #include <wx/menu.h>
 
-#include "amule.h" 			// Needed for theApp
-#include "amuleDlg.h" 		// Needed for IsShown
+#include "amule.h"			// Needed for theApp
+#include "amuleDlg.h"		// Needed for IsShown
 #include "Preferences.h"	// Needed for thePrefs
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "Server.h"			// Needed for CServer
@@ -113,7 +113,7 @@ void CMuleTrayIcon::SetUploadSpeed(wxCommandEvent& event){
 }
 
 void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
-	
+
 	wxObject* obj=event.GetEventObject();
 	if (obj!=NULL) {
 		wxMenu *menu = dynamic_cast<wxMenu *>(obj);
@@ -140,7 +140,7 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 
 
 void CMuleTrayIcon::ServerConnection(wxCommandEvent& WXUNUSED(event))
-{	
+{
 	wxCommandEvent evt;
 	theApp->amuledlg->OnBnConnect(evt);
 }
@@ -171,7 +171,7 @@ CMuleTrayIcon::CMuleTrayIcon()
 	Disconnected_Icon_size = wxIcon(mule_Tr_grey_big_ico_xpm).GetHeight();
 }
 
-CMuleTrayIcon::~CMuleTrayIcon() 
+CMuleTrayIcon::~CMuleTrayIcon()
 {
 }
 
@@ -186,13 +186,13 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 	switch (Icon) {
 		case TRAY_ICON_HIGHID:
 			// Most likely case, test first
-			Bar_ySize = HighId_Icon_size; 
+			Bar_ySize = HighId_Icon_size;
 			break;
 		case TRAY_ICON_LOWID:
-			Bar_ySize = LowId_Icon_size; 
+			Bar_ySize = LowId_Icon_size;
 			break;
 		case TRAY_ICON_DISCONNECTED:
-			Bar_ySize = Disconnected_Icon_size; 
+			Bar_ySize = Disconnected_Icon_size;
 			break;
 		default:
 			wxFAIL;
@@ -200,7 +200,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 
 	// Lookup this values for speed improvement: don't draw if not needed
 	int NewSize = (Bar_ySize * percent) / 100;
-	
+
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
 		if ((Old_SpeedSize > NewSize) || (Old_Icon != Icon)) {
@@ -223,44 +223,44 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 
 		Old_Icon = Icon;
 		Old_SpeedSize = NewSize;
-		
+
 		// Do whatever to the icon before drawing it (percent)
-		
+
 		wxBitmap TempBMP;
 		TempBMP.CopyFromIcon(CurrentIcon);
-		
+
 		TempBMP.SetMask(NULL);
 
 		IconWithSpeed.SelectObject(TempBMP);
 
-		
-		// Speed bar is: centered, taking 80% of the icon heigh, and 
+
+		// Speed bar is: centered, taking 80% of the icon heigh, and
 		// right-justified taking a 10% of the icon width.
-		
+
 		// X
-		int Bar_xSize = 4; 
-		int Bar_xPos = CurrentIcon.GetWidth() - 5; 
-		
+		int Bar_xSize = 4;
+		int Bar_xPos = CurrentIcon.GetWidth() - 5;
+
 		IconWithSpeed.SetBrush(*(wxTheBrushList->FindOrCreateBrush(CStatisticsDlg::getColors(11))));
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
-		
+
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
-		
+
 		// Unselect the icon.
 		IconWithSpeed.SelectObject(wxNullBitmap);
-		
+
 		// Do transparency
 
 		// Set a new mask with transparency set to red.
 		wxMask* new_mask = new wxMask(TempBMP, wxColour(0xFF, 0x00, 0x00));
-		
+
 		TempBMP.SetMask(new_mask);
 		CurrentIcon.CopyFromBitmap(TempBMP);
 
 		UpdateTray();
 	}
 }
-		
+
 void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
 {
 	CurrentTip = Tip;
@@ -275,20 +275,20 @@ void CMuleTrayIcon::UpdateTray()
 {
 	// Icon update and Tip update
 #ifndef __WXCOCOA__
-	if (IsOk()) 
+	if (IsOk())
 #endif
 	{
 		SetIcon(CurrentIcon, CurrentTip);
-	}	
+	}
 }
 
 
-wxMenu* CMuleTrayIcon::CreatePopupMenu() 
+wxMenu* CMuleTrayIcon::CreatePopupMenu()
 {
 	// Creates dinamically the menu to show the user.
 	wxMenu *traymenu = new wxMenu();
 	traymenu->SetTitle(_("aMule Tray Menu"));
-	
+
 	// Build the Top string name
 	wxString label = MOD_VERSION_LONG;
 	traymenu->Append(TRAY_MENU_INFO, label);
@@ -300,7 +300,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	if ( max_upload == UNLIMITED ) {
 		label += _("UL: None");
 	}
-	else { 
+	else {
 		label += CFormat(_("UL: %u")) % max_upload;
 	}
 	label += wxT(", ");
@@ -331,11 +331,11 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
-	
+
 	// Client ID
 	{
 		wxString temp = _("ClientID: ");
-		
+
 		if (theApp->IsConnectedED2K()) {
 			temp += CFormat(wxT("%u")) % theApp->GetED2KID();
 		} else {
@@ -348,7 +348,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	{
 		wxString temp_name = _("ServerName: ");
 		wxString temp_ip   = _("ServerIP: ");
-		
+
 		if ( theApp->serverconnect->GetCurrentServer() ) {
 			temp_name += theApp->serverconnect->GetCurrentServer()->GetListName();
 			temp_ip   += theApp->serverconnect->GetCurrentServer()->GetFullIP();
@@ -359,7 +359,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp_name);
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp_ip);
 	}
-	
+
 	// IP Address
 	{
 		wxString temp = CFormat(_("IP: %s")) % ( (theApp->GetPublicIP()) ? Uint32toStringIP(theApp->GetPublicIP()) : wxString(_("Unknown")) );
@@ -377,7 +377,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
-	
+
 	// UDP PORT
 	{
 		wxString temp;
@@ -418,14 +418,14 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		wxString temp = CFormat(_("Queued clients: %d")) % theStats::GetWaitingUserCount();
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
-	
+
 	// Total Downloaded
 	{
 		wxString temp = CastItoXBytes(theStats::GetTotalReceivedBytes());
 		temp = CFormat(_("Total DL: %s")) % temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
-	
+
 	// Total Uploaded
 	{
 		wxString temp = CastItoXBytes(theStats::GetTotalSentBytes());
@@ -434,31 +434,31 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	}
 
 	traymenu->Append(TRAY_MENU_CLIENTINFO,ClientInfoMenu->GetTitle(),ClientInfoMenu);
-	
+
 	// Separator
 	traymenu->AppendSeparator();
-	
+
 	// Upload Speed sub-menu
 	wxMenu* UploadSpeedMenu = new wxMenu();
 	UploadSpeedMenu->SetTitle(_("Upload limit"));
-	
+
 	// Download Speed sub-menu
 	wxMenu* DownloadSpeedMenu = new wxMenu();
 	DownloadSpeedMenu->SetTitle(_("Download limit"));
-	
+
 	// Upload Speed sub-menu
 	{
 		UploadSpeedMenu->Append(UPLOAD_ITEM1, _("Unlimited"));
 
 		uint32 max_ul_speed = thePrefs::GetMaxGraphUploadRate();
-		
+
 		if ( max_ul_speed == UNLIMITED ) {
 			max_ul_speed = 100;
 		}
 		else if ( max_ul_speed < 10 ) {
 			max_ul_speed = 10;
 		}
-			
+
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_ul_speed / 5) * (5 - i);
 			wxString temp = CFormat(wxT("%u %s")) % tempspeed % _("kB/s");
@@ -466,20 +466,20 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		}
 	}
 	traymenu->Append(0,UploadSpeedMenu->GetTitle(),UploadSpeedMenu);
-	
+
 	// Download Speed sub-menu
-	{ 
+	{
 		DownloadSpeedMenu->Append(DOWNLOAD_ITEM1, _("Unlimited"));
 
 		uint32 max_dl_speed = thePrefs::GetMaxGraphDownloadRate();
-		
+
 		if ( max_dl_speed == UNLIMITED ) {
 			max_dl_speed = 100;
 		}
 		else if ( max_dl_speed < 10 ) {
 			max_dl_speed = 10;
 		}
-	
+
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_dl_speed / 5) * (5 - i);
 			wxString temp = CFormat(wxT("%d %s")) % tempspeed % _("kB/s");
@@ -490,7 +490,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	traymenu->Append(0,DownloadSpeedMenu->GetTitle(),DownloadSpeedMenu);
 	// Separator
 	traymenu->AppendSeparator();
-	
+
 	if (theApp->IsConnected()) {
 		//Disconnection Speed item
 		traymenu->Append(TRAY_MENU_DISCONNECT, _("Disconnect"));
@@ -498,10 +498,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		//Connect item
 		traymenu->Append(TRAY_MENU_CONNECT, _("Connect"));
 	}
-	
+
 	// Separator
 	traymenu->AppendSeparator();
-	
+
 	if (theApp->amuledlg->IsShown()) {
 		//hide item
 		traymenu->Append(TRAY_MENU_HIDE, _("Hide aMule"));
@@ -509,15 +509,15 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		//show item
 		traymenu->Append(TRAY_MENU_SHOW, _("Show aMule"));
 	}
-	
+
 	// Separator
 	traymenu->AppendSeparator();
 
 	// Exit item
 	traymenu->Append(TRAY_MENU_EXIT, _("Exit"));
-	
+
 	return traymenu;
-}		
+}
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
 {

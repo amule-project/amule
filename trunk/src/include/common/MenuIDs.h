@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -49,7 +49,7 @@ enum {
 	MP_GETCOMMENTS,
 	MP_SEARCHRELATED,
 	MP_MARK_AS_KNOWN,
-//For comments 
+//For comments
 	MP_CMT,
 
 	MP_PRIOVERYLOW,
@@ -62,7 +62,7 @@ enum {
 	MP_GETMAGNETLINK,
 	MP_GETED2KLINK,
 	MP_GETSOURCEED2KLINK,
-	MP_GETCRYPTSOURCEDED2KLINK,	
+	MP_GETCRYPTSOURCEDED2KLINK,
 	MP_GETHOSTNAMESOURCEED2KLINK,
 	MP_GETHOSTNAMECRYPTSOURCEED2KLINK,
 	MP_GETAICHED2KLINK,
@@ -122,7 +122,7 @@ enum {
 	MP_LISTCOL_14,
 	MP_LISTCOL_15,
 
-	MP_ASSIGNCAT 	= MP_LISTCOL_15   + 1,   // reserve some for categories (about 100)
+	MP_ASSIGNCAT	= MP_LISTCOL_15   + 1,   // reserve some for categories (about 100)
 	MP_CAT_SET0		= MP_ASSIGNCAT    + 100, // reserve some for change all-cats (about 50)
 	MP_SWITCHCTRL_0 = MP_CAT_SET0     + 50,
 	MP_SWITCHCTRL_9	= MP_SWITCHCTRL_0 + 9,

@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,14 +39,14 @@ class CFileAutoClose;
  * This task performs MD4 and/or AICH hashings of a file,
  * depending on the type. For new shared files (using the
  * first constructor, with part == NULL), both MD4 and
- * AICH hashes are created. For incomplete partfiles 
+ * AICH hashes are created. For incomplete partfiles
  * (rehashed due to changed timestamps), only MD4 hashing
- * is done. For complete partfiles, both MD4 and AICH 
+ * is done. For complete partfiles, both MD4 and AICH
  * hashing is done.
  *
  * For existing shared files (using the second constructor),
  * only an AICH hash is created.
- * 
+ *
  * @see CHashingEvent
  * @see CAICHSyncTask
  */
@@ -64,7 +64,7 @@ public:
 	 * @see EVT_MULE_HASHING
 	 */
 	CHashingTask(const CPath& path, const CPath& filename, const CPartFile* part = NULL);
-	
+
 	/**
 	 * Schedules a KnownFile to have a AICH hashset created, used by CAICHSyncTask.
 	 *
@@ -72,7 +72,7 @@ public:
 	 * @see EVT_MULE_AICH_HASHING
 	 **/
 	CHashingTask(const CKnownFile* toAICHHash);
-	
+
 protected:
 	//! Specifies which hashes should be calculated when the task is executed.
 	enum EHashes {
@@ -82,8 +82,8 @@ protected:
 
 	//! @see CThreadTask::OnLastTask
 	virtual void OnLastTask();
-	
-	//! @see CThreadTask::Entry	
+
+	//! @see CThreadTask::Entry
 	virtual void Entry();
 
 	/**
@@ -95,7 +95,7 @@ protected:
 	 * @bool createAICH Specifies if AICH hash-sets should be created as well.
 	 * @return Returns false on read-errors, true otherwise.
 	 *
-	 * This function will create a MD4 hash and, if specified, a AICH hashset for 
+	 * This function will create a MD4 hash and, if specified, a AICH hashset for
 	 * the next part of the file. This function makes the assumption that it wont
 	 * be called for closed or EOF files.
 	 */
@@ -127,7 +127,7 @@ public:
 	CAICHSyncTask();
 
 protected:
-	/** See CThreadTask::Entry */	
+	/** See CThreadTask::Entry */
 	virtual void Entry();
 
 	/** Converts old known2.met files to known2_64.met files. */
@@ -139,7 +139,7 @@ protected:
  * This task performs the final tasks on a complete download.
  *
  * This includes finding a usable destination filename, removing
- * old data files and moving the part-file (potentially to a 
+ * old data files and moving the part-file (potentially to a
  * different partition).
  **/
 class CCompletionTask : public CThreadTask
@@ -149,14 +149,14 @@ public:
 	 * Creates a thread which will complete the given download.
 	 */
 	CCompletionTask(const CPartFile* file);
-	
+
 protected:
-	/** See CThreadTask::Entry */	
+	/** See CThreadTask::Entry */
 	virtual void Entry();
 
-	/** See CThreadTask::OnExit */	
+	/** See CThreadTask::OnExit */
 	virtual void OnExit();
-	
+
 	//! The target filename.
 	CPath		m_filename;
 	//! The full path to the .met-file
@@ -203,17 +203,17 @@ class CAllocateFileTask : public CThreadTask
 /**
  * This event is used to signal the completion of a hashing event.
  *
- * @see CHashingTask 
+ * @see CHashingTask
  */
 class CHashingEvent : public wxEvent
 {
 public:
 	/**
 	 * @param type MULE_EVT_HASHING or MULE_EVT_AICH_HASHING.
-	 * @param result 
+	 * @param result
 	 */
 	CHashingEvent(wxEventType type, CKnownFile* result, const CKnownFile* owner = NULL);
-	
+
 	/** @see wxEvent::Clone */
 	virtual wxEvent* Clone() const;
 
@@ -221,7 +221,7 @@ public:
 	const CKnownFile* GetOwner() const;
 	/** Returns a CKnownfile used to store the results of the hashing. */
 	CKnownFile* GetResult() const;
-	
+
 private:
 	//! The file owner.
 	const CKnownFile* m_owner;
@@ -238,16 +238,16 @@ class CCompletionEvent : public wxEvent
 public:
 	/** Constructor, see getter funtion for description of parameters. */
 	CCompletionEvent(bool errorOccured, const CPartFile* owner, const CPath& fullPath);
-	
+
 	/** @see wxEvent::Clone */
 	virtual wxEvent* Clone() const;
 
 	/** Returns true if completion failed. */
 	bool ErrorOccured() const;
-	
+
 	/** Returns the owner of the file that was being completed. */
 	const CPartFile* GetOwner() const;
-	
+
 	/** Returns the full path to the completed file (empty on failure). */
 	const CPath& GetFullPath() const;
 private:
@@ -256,7 +256,7 @@ private:
 
 	//! The owner of the completed .part file.
 	const CPartFile* m_owner;
-	
+
 	//! Specifies if completion failed.
 	bool m_error;
 };
@@ -305,7 +305,7 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING, -1)
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING, -1)
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED, -1)
 
-	
+
 typedef void (wxEvtHandler::*MuleHashingEventFunction)(CHashingEvent&);
 typedef void (wxEvtHandler::*MuleCompletionEventFunction)(CCompletionEvent&);
 typedef void (wxEvtHandler::*MuleAllocFinishedEventFunction)(CAllocFinishedEvent&);

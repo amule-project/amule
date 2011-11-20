@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -70,7 +70,7 @@ wxString URLEncode(const wxString& sIn)
 {
 	wxString sOut;
 	unsigned char curChar;
-	
+
 	for ( unsigned int i = 0; i < sIn.Length(); ++i ) {
 		curChar = sIn.GetChar( i );
 
@@ -94,11 +94,11 @@ wxChar HexToDec( const wxString& hex )
 {
 	wxChar result = 0;
 	wxString str = hex.Upper();
-	
+
 	for ( size_t i = 0; i < str.Len(); ++i ) {
 		result *= 16;
 		wxChar cur = str.GetChar(i);
-		
+
 		if ( isdigit( cur ) ) {
 			result += cur - wxT('0');
 		} else if ( cur >= wxT('A') && cur <= wxT('F') ) {
@@ -152,7 +152,7 @@ wxString UnescapeHTML(const wxString& str)
 wxString validateURI(const wxString& url)
 {
 	wxURI uri(url);
-	
+
 	return uri.BuildURI();
 }
 
@@ -167,7 +167,7 @@ inline wxString GetNextField(const wxString& str, size_t& cookie)
 {
 	// These are taken to seperate "fields"
 	static const wxChar* s_delims = wxT("\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~");
-	
+
 	wxString field;
 	ECharType curType = ECTNone;
 	for (; cookie < str.Length(); ++cookie) {
@@ -212,7 +212,7 @@ int FuzzyStrCmp(const wxString& a, const wxString& b)
 		if (aField.IsNumber() && bField.IsNumber()) {
 			unsigned long aInteger = StrToULong(aField);
 			unsigned long bInteger = StrToULong(bField);
-			
+
 			if (aInteger < bInteger) {
 				return -1;
 			} else if (aInteger > bInteger) {
@@ -235,7 +235,7 @@ int FuzzyStrCaseCmp(const wxString& a, const wxString& b)
 }
 
 
-	
+
 CSimpleTokenizer::CSimpleTokenizer(const wxString& str, wxChar token)
 	: m_string(str),
 	  m_delim(token),

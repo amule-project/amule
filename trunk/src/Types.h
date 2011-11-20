@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -28,7 +28,7 @@
 
 #ifndef USE_STD_STRING
 #include <wx/string.h>		// Needed for wxString and wxEmptyString
-#endif 
+#endif
 
 #include <list>			// Needed for std::list
 #include <vector>		// Needed for std::vector
@@ -54,10 +54,10 @@
 	#define ULONGLONG(x) x##ui64
 #endif
 
-// These are _MSC_VER defines used in eMule. They should 
-// not be used in aMule, instead, use this table to 
-// find the type to use in order to get the desired 
-// effect. 
+// These are _MSC_VER defines used in eMule. They should
+// not be used in aMule, instead, use this table to
+// find the type to use in order to get the desired
+// effect.
 //////////////////////////////////////////////////
 // Name              // Type To Use In Amule    //
 //////////////////////////////////////////////////
@@ -91,7 +91,7 @@
 // POINT             // wxPoint                 //
 //////////////////////////////////////////////////
 
-/* 
+/*
  * Backwards compatibility with emule.
  * Note that the int* types are indeed unsigned.
  */
@@ -113,7 +113,7 @@ typedef uint8_t		byte;
 class CKnownFile;
 
 //! Various common list-types.
-//@{ 
+//@{
 #ifndef USE_STD_STRING
 typedef std::list<wxString> CStringList;
 #endif
@@ -128,7 +128,7 @@ typedef std::vector<uint64> ArrayOfUInts64;
 typedef std::list<uint32>	ListOfUInts32;
 
 /* This is the Evil Void String For Returning On Const References From Hell */
-// IT MEANS I WANT TO USE IT EVERYWHERE. DO NOT MOVE IT. 
+// IT MEANS I WANT TO USE IT EVERYWHERE. DO NOT MOVE IT.
 // THE FACT SOMETHING IS USED IN JUST ONE PLACE DOESN'T MEAN IT HAS
 // TO BE MOVED TO THAT PLACE. I MIGHT NEED IT ELSEWHERE LATER.
 //

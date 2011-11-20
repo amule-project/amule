@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -49,7 +49,7 @@ enum Server_tags {
 	ST_UDPKEY		= 0x95,	// <uint32>
 	ST_UDPKEYIP		= 0x96,	// <uint32>
 	ST_TCPPORTOBFUSCATION	= 0x97,	// <uint16>
-	ST_UDPPORTOBFUSCATION	= 0x98	// <uint16>	
+	ST_UDPPORTOBFUSCATION	= 0x98	// <uint16>
 };
 
 #endif // SERVERTAGS_H

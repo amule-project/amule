@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,7 +47,7 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
 END_EVENT_TABLE()
 
-	
+
 CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 : wxPanel(pParent, -1)
 {
@@ -73,7 +73,7 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	wxASSERT(KadInfoList);
 	KadInfoList->InsertColumn(0, wxEmptyString);
 	KadInfoList->InsertColumn(1, wxEmptyString);
-	
+
 	sizer->Show(this,TRUE);
 }
 
@@ -81,7 +81,7 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 CServerWnd::~CServerWnd()
 {
 	thePrefs::SetEd2kServersUrl(CastChild( IDC_SERVERLISTURL, wxTextCtrl )->GetValue());
-	thePrefs::SetKadNodesUrl(CastChild( IDC_NODESLISTURL, wxTextCtrl )->GetValue());	
+	thePrefs::SetKadNodesUrl(CastChild( IDC_NODESLISTURL, wxTextCtrl )->GetValue());
 }
 
 
@@ -102,15 +102,15 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 		AddLogLineC(_("Server not added: No IP or hostname specified."));
 		return;
 	}
-	
+
 	if ( port <= 0 || port > 65535 ) {
 		AddLogLineC(_("Server not added: Invalid server-port specified."));
 		return;
 	}
-  
+
 	CServer* toadd = new CServer( port, serveraddr );
 	toadd->SetListName( servername.IsEmpty() ? serveraddr : servername );
-	
+
 	if ( theApp->AddServer( toadd, true ) ) {
 		CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
 		CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
@@ -120,15 +120,15 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 		// See note on CServerList::AddServer
 		if (update == NULL && toadd->GetIP() != 0) {
 			update = theApp->serverlist->GetServerByIPTCP(toadd->GetIP(), toadd->GetPort());
-		}		
-		
+		}
+
 		if ( update ) {
 			update->SetListName(toadd->GetListName());
 			serverlistctrl->RefreshServer(update);
 		}
 		delete toadd;
 	}
-	
+
 	theApp->serverlist->SaveServerMet();
 }
 
@@ -155,24 +155,24 @@ void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 void CServerWnd::UpdateED2KInfo()
 {
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
-	
+
 	ED2KInfoList->DeleteAllItems();
 	ED2KInfoList->InsertItem(0, _("eD2k Status:"));
 
 	if (theApp->IsConnectedED2K()) {
 		ED2KInfoList->SetItem(0, 1, _("Connected"));
 
-		// Connection data		
-		
+		// Connection data
+
 		ED2KInfoList->InsertItem(1, _("IP:Port"));
-		ED2KInfoList->SetItem(1, 1, theApp->serverconnect->IsLowID() ? 
+		ED2KInfoList->SetItem(1, 1, theApp->serverconnect->IsLowID() ?
 			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp->GetED2KID(), thePrefs::GetPort()));
 
 		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
 		ED2KInfoList->SetItem(2, 1, CFormat(wxT("%u")) % theApp->GetED2KID());
-		
-		ED2KInfoList->InsertItem(3, wxEmptyString);		
+
+		ED2KInfoList->InsertItem(3, wxEmptyString);
 
 		if (theApp->serverconnect->IsLowID()) {
 			ED2KInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
@@ -181,7 +181,7 @@ void CServerWnd::UpdateED2KInfo()
 			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp->GetED2KID(), thePrefs::GetPort()));
 			ED2KInfoList->SetItem(3, 1, _("HighID"));
 		}
-		
+
 	} else {
 		// No data
 		ED2KInfoList->SetItem(0, 1, _("Not Connected"));
@@ -285,6 +285,6 @@ void CServerWnd::OnBnClickedED2KDisconnect(wxCommandEvent& WXUNUSED(evt))
 		theApp->serverconnect->StopConnectionTry();
 	} else {
 		theApp->serverconnect->Disconnect();
-	}	
+	}
 }
 // File_checked_for_headers

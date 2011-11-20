@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -72,8 +72,8 @@ public:
 	 * Destructor.
 	 */
 	~CClientList();
-	
-	
+
+
 	/**
 	 * Adds a client to the global list of clients.
 	 *
@@ -98,11 +98,11 @@ public:
 	 * @param newIP The new IP adress of the client.
 	 *
 	 * This function is to be called before the client actually changes its
-	 * IP-address, and will update the old entry with the new value. There 
+	 * IP-address, and will update the old entry with the new value. There
 	 * will only be added an entry if the new IP isn't zero.
 	 */
 	void	UpdateClientIP( CUpDownClient* client, uint32 newIP );
-	
+
 	/**
 	 * Updates the recorded ID of the specified client.
 	 *
@@ -110,7 +110,7 @@ public:
 	 * @param newID The new ID of the client.
 	 *
 	 * This function is to be called before the client actually changes its
-	 * ID, and will update the old entry with the new value. Unlike the other 
+	 * ID, and will update the old entry with the new value. Unlike the other
 	 * two functions, this function will always ensure that there is an entry
 	 * for the client, regardless of the value of newID.
 	 */
@@ -123,7 +123,7 @@ public:
 	 * @param newHash The new user-hash.
 	 *
 	 * This function is to be called before the client actually changes its
-	 * user-hash, and will update the old entry with the new value. There will 
+	 * user-hash, and will update the old entry with the new value. There will
 	 * only be added an entry if the new hash is valid.
 	 */
 	void	UpdateClientHash( CUpDownClient* client, const CMD4Hash& newHash );
@@ -134,7 +134,7 @@ public:
 	 */
 	uint32	GetClientCount() const;
 
-	
+
 	/**
 	 * Deletes all tracked clients.
 	 */
@@ -147,8 +147,8 @@ public:
 	 * @param client A pointer to the pointer of the new instance.
 	 * @param sender The socket assosiated with the new instance.
 	 *
-	 * Call this function when a new client-instance has been created. This function will then 
-	 * compare it against all existing clients and see if we already have an instance matching 
+	 * Call this function when a new client-instance has been created. This function will then
+	 * compare it against all existing clients and see if we already have an instance matching
 	 * the new one. If that is the case, it will delete the new instance and set the pointer to
 	 * the existing one.
 	 */
@@ -185,14 +185,14 @@ public:
 
 	//! The list-type used to store clients IPs and other information
 	typedef std::map<uint32, uint32> ClientMap;
-	
+
 
 	/**
 	 * Adds a client to the list of tracked clients.
-	 * 
+	 *
 	 * @param toadd The client to track.
 	 *
-	 * This function is used to keep track of clients after they 
+	 * This function is used to keep track of clients after they
 	 * have been deleted and makes it possible to spot port or hash
 	 * changes.
 	 */
@@ -208,11 +208,11 @@ public:
 
 	/**
 	 * Checks if a client has changed its user-hash.
-	 * 
+	 *
 	 * @param dwIP The IP of the client.
 	 * @param nPort The port of the client.
 	 * @param pNewHash The userhash assosiated with the client.
-	 * 
+	 *
 	 */
 	bool	ComparePriorUserhash( uint32 dwIP, uint16 nPort, void* pNewHash );
 
@@ -243,7 +243,7 @@ public:
 	/**
 	 * Main loop.
 	 *
-	 * This function takes care of cleaning the various lists and deleting 
+	 * This function takes care of cleaning the various lists and deleting
 	 * pending clients on the deletion-queue.
 	 */
 	void	Process();
@@ -261,7 +261,7 @@ public:
 
 	//! The type of the list used to store client-pointers for a couple of tasks.
 	typedef std::deque<CClientRef> SourceList;
-	
+
 
 	/**
 	 * Returns a list of clients with the specified user-hash.
@@ -273,14 +273,14 @@ public:
 	 * simply result in nothing being found.
 	 */
 	SourceList	GetClientsByHash( const CMD4Hash& hash );
-	
+
 	/**
 	 * Returns a list of clients with the specified IP.
 	 *
 	 * @param ip The IP-address to search for.
 	 *
 	 * This function will return a list of clients with the specified IP,
-	 * provided that the IP is a non-zero value. A value of zero will not 
+	 * provided that the IP is a non-zero value. A value of zero will not
 	 * result in any results.
 	 */
 	SourceList	GetClientsByIP( unsigned long ip );
@@ -317,14 +317,14 @@ public:
 	 * sources and should not be added to partfiles.
 	 */
 	bool		IsDeadSource(const CUpDownClient* client);
-	
+
 	/**
 	 * Sends a message to a client, identified by a GUI_ID
 	 *
 	 * @return Success
 	 */
 	 bool	SendChatMessage(uint64 client_id, const wxString& message);
-	 
+
 	/**
 	 * Stops a chat session with a client.
 	 *
@@ -372,8 +372,8 @@ private:
 	 * using the same checks as CUpDownClient::Compare, but without the overhead.
 	 */
 	CUpDownClient* FindMatchingClient( CUpDownClient* client );
-	
-	
+
+
 	/**
 	 * Check if we already know this IP.
 	 *
@@ -407,10 +407,10 @@ private:
 
 	//! The map of clients with valid hashes
 	HashMap	m_hashList;
-	
+
 	//! The map of clients with valid IPs
 	IDMap	m_ipList;
-	
+
 	//! The full lists of clients
 	IDMap	m_clientList;
 
@@ -429,7 +429,7 @@ private:
 
 	//! List of unusable sources.
 	CDeadSourceList	m_deadSources;
-	
+
 	/* Kad Stuff */
 	CClientRefSet	m_KadSources;
 	CClientRef		m_pBuddy;

@@ -10,8 +10,8 @@
 /// Copyright (c) 2004-2011 Marcelo Roberto Jimenez ( phoenix@amule.org )
 ///
 /// Pixmaps from:
-/// 	http://jimmac.musichall.cz/ikony.php3 
-/// 	http://www.everaldo.com 
+///	http://jimmac.musichall.cz/ikony.php3
+///	http://www.everaldo.com
 ///	http://www.icomania.com
 ///
 /// This program is free software; you can redistribute it and/or modify

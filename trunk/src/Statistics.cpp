@@ -438,7 +438,7 @@ void CStatistics::RecordHistory()
 	}
 
 	// now save the latest data point in this node
- 	listPOS phr = --listHR.end();
+	listPOS phr = --listHR.end();
 	phr->kBytesSent = GetSessionSentBytes() / 1024.0;
 	phr->kBytesReceived = GetSessionReceivedBytes() / 1024.0;
 	phr->kBpsUpCur = GetUploadRate() / 1024.0;
@@ -600,7 +600,7 @@ void CStatistics::ComputeAverages(
 	StatsGraphType	which_graph)	// the graph which will receive the points
 {
 	double		sTarget, kValueRun;
-	uint64 		avgTime = average_minutes * 60;
+	uint64		avgTime = average_minutes * 60;
 	unsigned	nBtPoints = (unsigned)(avgTime / sStep);
 
 	CPreciseRateCounter* runningAvg = NULL;

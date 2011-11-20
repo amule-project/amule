@@ -2,12 +2,12 @@
 
 @interface BaseItem : NSObject {
 	NSString *m_text;
-	
+
 	NSString *m_view_id;
-	
+
 	NSMutableArray *m_subitems;
 	int m_subitems_count;
-	
+
 	NSImage *m_icon;
 }
 
@@ -28,7 +28,7 @@
 
 @interface CategoryItemFactory : BaseItem
 {
-	
+
 }
 
 + (BaseItem *)initFilesItem;
@@ -41,14 +41,14 @@ enum {
 	RootItemNetwork = 0,
 	RootItemFiles,
 	RootItemSearch,
-	
+
 	RootItemLast
 };
 
 
 @interface amuleSourceListDataSource : NSObject
 {
-	BaseItem *g_root_items[RootItemLast];   
+	BaseItem *g_root_items[RootItemLast];
 }
 
 + (amuleSourceListDataSource *)initWithData;

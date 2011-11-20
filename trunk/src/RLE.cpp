@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -30,9 +30,9 @@
 /*
  * RLE encoder implementation. This is RLE implementation for very specific
  * purpose: encode DIFFERENCE between subsequent states of status bar.
- * 
+ *
  * This difference is calculated by xor-ing with previous data
- * 
+ *
  * We can't use implementation with "control char" since this encoder
  * will process binary data - not ascii (or unicode) strings
  */
@@ -99,7 +99,7 @@ bool RLE_Data::Realloc(int size)
 	}
 	delete [] m_buff;
 	m_buff = buff;
-	
+
 	m_len = size;
 	return true;
 }
@@ -176,7 +176,7 @@ const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen, bool &
 		memcpy(m_buff, data, m_len);
 		changed = true;
 	}
-	
+
 	//
 	// now RLE
 	//
@@ -201,14 +201,14 @@ const uint8 * RLE_Data::Encode(const uint8 *data, int inlen, int &outlen, bool &
 	}
 
 	outlen = j;
-	
+
 	//
 	// If using differential encoder, remember current data for
 	// later use
 	if ( m_use_diff ) {
 		memcpy(m_buff, data, m_len);
 	}
-	
+
 	return enc_buff;
 }
 

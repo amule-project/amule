@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -38,32 +38,32 @@ enum EUtf8Str
 	utf8strRaw
 };
 
-/****************************************************/ 
+/****************************************************/
 /******************* Inlines ************************/
 /****************************************************/
 
-/** 
+/**
  * Functions to perform Unicode <-> (char *) and UTF-8 conversion
- * 
- * Please, DO NOT store pointers returned by unicode2char(), because they 
+ *
+ * Please, DO NOT store pointers returned by unicode2char(), because they
  * get free'ed as soon as the return value of cWX2MB gets out of scope.
  * If you need to store a pointer, use a buffer of type wxWX2MBbuf:
  * and then cast it to a char pointer, e.g.:
- * 
+ *
  * const wxWX2MBbuf buf(unicode2char(aWxString));
- * 
+ *
  * --- Now you can freely use buf as if it were a (const char *) ---
- * 
+ *
  * puts(buf);
  * printf("%s", (const char *)buf);
  *
  * The cast in printf is necessary because variable number of parameter
  * functions have no type for these parameters, so the automatic casting
  * of wxWX2MBbuf to (const char *) is not performed.
- * 
+ *
  * --- don't worry about memory allocation, memory will be       ---
  * --- free'ed when buf gets out of scope, i.e., upon return     ---
- * 
+ *
  * wxMB2WXbuf, wxWX2MBbuf are always the appropriate return type,
  * either (wxChar *) or (wxWCharBuffer)
  *
@@ -187,7 +187,7 @@ inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 }
 
 
-/****************************************************/ 
+/****************************************************/
 /***************** Non-inlines **********************/
 /****************************************************/
 
@@ -226,7 +226,7 @@ wxString validateURI(const wxString& url);
  * @return Returns -1 if a < b, 1 if a > b and 0 if a = b
  *
  * This function basically splits the two strings into a number of
- * fields, deliniated by whitespace, non-alphanumerical chars. The 
+ * fields, deliniated by whitespace, non-alphanumerical chars. The
  * numerals are then converted to integers, and the fields are
  * compared. This allows strings such as "a (2)" and "a (10)" to
  * be properly sorted for displaying.
@@ -282,10 +282,10 @@ public:
 private:
 	//! The string being tokenized.
 	wxString m_string;
-	
+
 	//! The delimiter used to split the string.
 	wxChar m_delim;
-	
+
 	//! A pointer to the current position in the string.
 	const wxChar* m_ptr;
 

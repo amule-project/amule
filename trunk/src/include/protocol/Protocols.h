@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -36,18 +36,18 @@ enum Protocols {
 	OP_PACKEDPROT			= 0xD4,
 	OP_EMULEPROT			= 0xC5,
 
-	// Reserved for later UDP headers (important for EncryptedDatagramSocket)	
+	// Reserved for later UDP headers (important for EncryptedDatagramSocket)
 	OP_UDPRESERVEDPROT1 = 0xA3,
 	OP_UDPRESERVEDPROT2 = 0xB2,
 
 	// Kademlia 1/2
 	OP_KADEMLIAHEADER		= 0xE4,
 	OP_KADEMLIAPACKEDPROT	= 0xE5,
-	
+
 	// Kry tests
 	OP_ED2KV2HEADER			= 0xF4,
 	OP_ED2KV2PACKEDPROT		= 0xF5,
-	
+
 	OP_MLDONKEYPROT			= 0x00
 };
 

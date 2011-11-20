@@ -23,7 +23,7 @@
 # Gimme a break, it's my second perl app... (Kry)
 
 use File::Copy;
-use warnings; 
+use warnings;
 use strict;
 use POSIX;
 
@@ -173,7 +173,7 @@ sub read_content_section {
 	local (*INFO) = $_[0];
 	local (*CPPOUTPUT) = $_[1];
 	local (*JAVAOUTPUT) = $_[2];
-	
+
 	my $line = <INFO>;
 	my $datatype = "";
 	if ($line =~ /^Type\s+(.+)$/) {
@@ -192,7 +192,7 @@ sub read_content_section {
 	} else {
 		die "Unknown type on content section\n";
 	}
-	
+
 }
 
 sub read_define_content {
@@ -266,14 +266,14 @@ sub read_enum_content {
 			if ($line =~ /^(.+)\s+(.+)$/) {
 				my $firstoperand = $1;
 				my $secondoperand = $2;
-	
+
 				if ($first) {
 					write_cpp_enum_start(*CPPOUTPUT, $dataname, $datatype);
 				}
 
 				write_cpp_enum_line(*CPPOUTPUT, $firstoperand, $secondoperand, $first);
 				write_java_define_line(*JAVAOUTPUT, $firstoperand, $secondoperand, $datatype);
-	
+
 				if ($first) {
 					$first = "";
 				}
@@ -336,7 +336,7 @@ sub write_cpp_enum_start {
 	local (*OUTPUT) = $_[0];
 
 	print OUTPUT "enum " . $_[1] . " {\n";
-	
+
 	push @debugOut, "wxString GetDebugName$_[1]($_[2] arg)\n{\n\tswitch (arg) {";
 }
 
@@ -383,18 +383,18 @@ sub write_cpp_typedef_line {
 	my $preamble = "";
 
 	my $datatype = $_[2];
-	
+
 	if ($datatype) {
-		if ($datatype =~ /^u?int(8|16|32|64)$/) { 
+		if ($datatype =~ /^u?int(8|16|32|64)$/) {
 			$translated_type = $datatype . "_t";
 		} elsif ($datatype eq "string") {
 			$translated_type = "std::string"
-		} else { 
+		} else {
 			$preamble = "// ";
 			$translated_type = $datatype;
 		}
 	} else {
-		die "No data type on abstract"; 
+		die "No data type on abstract";
 	}
 
 	print OUTPUT $preamble . "typedef " . $translated_type . " " . $_[1] . ";\n";

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -40,7 +40,7 @@
  *
  * In addition to implementing the CFileDataIO interface,
  * it offers improved support for UTF8 filenames and 64b
- * file-IO on both windows and unix-like systems. 
+ * file-IO on both windows and unix-like systems.
  *
  * @see wxFile
  */
@@ -53,12 +53,12 @@ public:
 	/** @see wxFile::OpenMode */
 	enum OpenMode { read, write, read_write, write_append, write_excl, write_safe };
 
-	
+
 	/**
 	 * Creates a closed file.
 	 */
 	CFile();
-	
+
 	/**
 	 * Constructor, calls Open on the specified file.
 	 *
@@ -73,7 +73,7 @@ public:
 	 */
 	virtual ~CFile();
 
-		
+
 	/**
 	 * Opens a file.
 	 *
@@ -81,8 +81,8 @@ public:
 	 * @param mode The opening mode.
 	 * @param accessMode The permissions in case a new file is created.
 	 * @return True if the file was opened, false otherwise.
-	 * 
-	 * Calling Open with the openmodes 'write' or 'write_append' will 
+	 *
+	 * Calling Open with the openmodes 'write' or 'write_append' will
 	 * create the specified file if it does not already exist.
 	 *
 	 * Calling Open with the openmode 'write_safe' will append ".new"
@@ -100,12 +100,12 @@ public:
 	 * Reopens a file which was opened and closed before.
 	 *
 	 * @param mode The opening mode.
-	 * 
+	 *
 	 * The filename used for last open is used again.
 	 * No return value - function throws on failure.
 	 */
 	void Reopen(OpenMode mode);
-	
+
 	/**
 	 * Calling Create is equivilant of calling open with OpenMode 'write'.
 	 *
@@ -116,7 +116,7 @@ public:
 	 */
 	bool Create(const CPath& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
 	bool Create(const wxString& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
-	
+
 	/**
 	 * Closes the file.
 	 *
@@ -142,20 +142,20 @@ public:
 	 */
 	bool Flush();
 
-	
+
 	/**
 	 * @see CSafeFileIO::GetLength
 	 *
-	 * Note that calling GetLength on a closed file 
+	 * Note that calling GetLength on a closed file
 	 * is an illegal operation.
 	 */
 	virtual uint64 GetLength() const;
-	
+
 	/**
 	 * Resizes the file to the specified length.
 	 */
 	bool SetLength(uint64 newLength);
-	
+
 	/**
 	 * @see CSafeFileIO::GetPosition
 	 *
@@ -163,25 +163,25 @@ public:
 	 * is an illegal operation.
 	 */
 	virtual uint64 GetPosition() const;
-	
+
 	/**
 	 * Returns the current available bytes to read on the file before EOF
-	 * 
+	 *
 	 */
-	virtual uint64 GetAvailable() const;	
-	
+	virtual uint64 GetAvailable() const;
+
 	/**
 	 * Returns the path of the currently opened file.
-	 * 
+	 *
 	 */
 	const CPath& GetFilePath() const;
-	
+
 
 	/**
 	 * Returns true if the file is opened, false otherwise.
 	 */
 	bool IsOpened() const;
-	
+
 protected:
 	/** @see CFileDataIO::doRead **/
 	virtual sint64 doRead(void* buffer, size_t count) const;
@@ -196,10 +196,10 @@ private:
 	CFile(const CFile&);
 	CFile& operator=(const CFile&);
 	//@}
-	
+
 	//! File descriptor or 'fd_invalid' if not opened
 	int m_fd;
-	
+
 	//! The full path to the current file.
 	CPath m_filePath;
 

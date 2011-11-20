@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -121,7 +121,7 @@ namespace MuleNotify
 	void ChatConnResult(bool success, uint64 id, wxString message);
 	void ChatProcessMsg(uint64 sender, wxString message);
 	void ChatSendCaptcha(wxString captcha, uint64 to_id);
-	
+
 	void ShowConnState(long state);
 	void ShowUserCount(wxString str);
 	void ShowUpdateCatTabTitles();
@@ -181,8 +181,8 @@ namespace MuleNotify
 
 	////////////////////////////////////////////////////////////
 	// Notification utilities
-	
-	/** 
+
+	/**
 	 * The base class of the functions.
 	 *
 	 * This class allows the the notification call to be executed
@@ -208,7 +208,7 @@ namespace MuleNotify
 	{
 	public:
 		typedef void (*FuncType)();
-		
+
 		/** Creates a functor from the given function. */
 		CMuleNotifier0(FuncType func)
 			: m_func(func) {}
@@ -221,7 +221,7 @@ namespace MuleNotify
 		/** @see CMuleNotifierBase::Clone */
 		virtual CMuleNotiferBase* Clone() const {
 			return new CMuleNotifier0(m_func);
-		}		
+		}
 
 	private:
 		FuncType	m_func;
@@ -234,7 +234,7 @@ namespace MuleNotify
 	{
 	public:
 		typedef void (*FuncType)(ARG);
-		
+
 		/** Creates a functor from the given function and arguments. */
 		CMuleNotifier1(FuncType func, ARG arg)
 			: m_func(func),
@@ -263,7 +263,7 @@ namespace MuleNotify
 	{
 	public:
 		typedef void (*FuncType)(ARG_1, ARG_2);
-		
+
 		/** Creates a functor from the given function and arguments. */
 		CMuleNotifier2(FuncType func, ARG_1 arg1, ARG_2 arg2)
 			: m_func(func),
@@ -294,7 +294,7 @@ namespace MuleNotify
 	{
 	public:
 		typedef void (*FuncType)(ARG_1, ARG_2, ARG_3);
-		
+
 		/** Creates a functor from the given function and arguments. */
 		CMuleNotifier3(FuncType func, ARG_1 arg1, ARG_2 arg2, ARG_3 arg3)
 			: m_func(func),
@@ -321,7 +321,7 @@ namespace MuleNotify
 	};
 
 
-	/** 
+	/**
 	 * This event is sent when a worker-thread makes use of a notify-macro.
 	 *
 	 * This insures that all notifications are executed on the main thread,
@@ -338,12 +338,12 @@ namespace MuleNotify
 		{
 			wxASSERT(m_functor);
 		}
-		
+
 		/** Destructor, frees the functor object. */
 		virtual ~CMuleGUIEvent() {
 			delete m_functor;
 		}
-		
+
 		/** Executes the notification. */
 		void Notify() const {
 			m_functor->Notify();
@@ -353,29 +353,29 @@ namespace MuleNotify
 		virtual wxEvent* Clone() const {
 			return new CMuleGUIEvent(m_functor->Clone());
 		}
-		
+
 	private:
 		/** Not copyable. */
 		CMuleGUIEvent(const CMuleGUIEvent&);
 		/** Not assignable. */
 		CMuleGUIEvent& operator=(const CMuleGUIEvent&);
-		
-		//! The actual functor object, 
+
+		//! The actual functor object,
 		CMuleNotiferBase* m_functor;
 	};
 
-	
+
 	/**
 	 * This function will execute or queue a given notification functor.
 	 *
 	 * If the caller is the main thread, the functor is executed immediatly,
-	 * thus acting like a regular function call. OTOH, if the caller is a 
+	 * thus acting like a regular function call. OTOH, if the caller is a
 	 * worker thread, the functor is cloned and sent via an event to
 	 * wxTheApp.
 	 */
 	void HandleNotification(const CMuleNotiferBase& ntf);
-	
-	/** 
+
+	/**
 	 * These functions take a function pointer and a set of arguments,
 	 * matching those of the function-pointer. A functor is created
 	 * from these and either executed immediatly, or sent as an event
@@ -411,7 +411,7 @@ namespace MuleNotify
 	 * even from the main thread.
 	 */
 	void HandleNotificationAlways(const CMuleNotiferBase& ntf);
-	
+
 	inline void DoNotifyAlways(void (*func)()) {
 		HandleNotificationAlways(CMuleNotifier0(func));
 	}
@@ -449,7 +449,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_SharedFilesShowFile(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFile, file)
 #define Notify_SharedFilesRemoveFile(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveFile, file)
 #define Notify_SharedFilesRemoveAllItems()		MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveAllFiles)
-#define Notify_SharedFilesShowFileList()        	MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFileList)
+#define Notify_SharedFilesShowFileList()		MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFileList)
 #define Notify_SharedFilesSort()			MuleNotify::DoNotify(&MuleNotify::SharedFilesSort)
 #define Notify_SharedFilesUpdateItem(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesUpdateItem, file)
 

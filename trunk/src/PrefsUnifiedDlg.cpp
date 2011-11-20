@@ -167,7 +167,7 @@ struct PrefsPage
 	//! Function pointer to the wxDesigner function creating the dialog.
 	wxSizer*	(*m_function)(wxWindow*, bool, bool );
 	//! The index of the image used on the list.
-	int 		m_imageidx;
+	int		m_imageidx;
 };
 
 
@@ -738,7 +738,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if (restart_needed) {
-		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), 
+		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"),
 			_("WARNING"), wxOK | wxICON_EXCLAMATION, this);
 	}
 
@@ -786,7 +786,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	// Check if this checkbox is one of the User Events checkboxes
 	if (id >= USEREVENTS_FIRST_ID &&
 	    id < USEREVENTS_FIRST_ID +
-	    	(int)CUserEvents::GetCount() * USEREVENTS_IDS_PER_EVENT) {
+		(int)CUserEvents::GetCount() * USEREVENTS_IDS_PER_EVENT) {
 		// The corresponding text control always has
 		// an ID one greater than the checkbox
 		FindWindow(id + 1)->Enable(value);

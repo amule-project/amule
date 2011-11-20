@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -36,15 +36,15 @@
 
 /**
  * This class provides an easy way to lock non-critical
- * files used by multiple applications. However, since 
+ * files used by multiple applications. However, since
  * the implementation relies on fcntl, it may not work
  * on all filesystems (NFS) and thus locking is not
  * certain.
  *
- * Currently, this lock holds an exclusive lock on the 
+ * Currently, this lock holds an exclusive lock on the
  * file in question. It is assumed that the file will
  * be read/written by all users.
- * 
+ *
  */
 class CFileLock
 {
@@ -59,13 +59,13 @@ public:
 	CFileLock(const std::string& file)
 #ifdef _WIN32
 		: m_ok(false)
-   	{
+	{
 		hd = CreateFileA((file + "_lock").c_str(),
-			GENERIC_READ | GENERIC_WRITE, 
+			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,		// share - shareable
 			NULL,									// security - not inheritable
 			CREATE_ALWAYS,
-			FILE_ATTRIBUTE_ARCHIVE, 
+			FILE_ATTRIBUTE_ARCHIVE,
 			NULL);
 		if (hd != INVALID_HANDLE_VALUE) {
 			m_ok = SetLock(true);
@@ -82,13 +82,13 @@ public:
 			CloseHandle(hd);
 		}
 	}
-		
+
 private:
 	//! Not copyable.
 	CFileLock(const CFileLock&);
 	//! Not assignable.
 	CFileLock& operator=(const CFileLock&);
-	
+
 	/** Locks or unlocks the lock-file, returning true on success. */
 	bool SetLock(bool doLock) {
 		// lock/unlock first byte in the file
@@ -104,17 +104,17 @@ private:
 		}
 		return ret != 0;
 	}
-	
-	
+
+
 	//! Desriptor of the file being locked.
-	HANDLE hd; 
+	HANDLE hd;
 
 	//! Specifies if the file-lock was aquired.
 	bool m_ok;
 #else
 		: m_fd(-1),
 		  m_ok(false)
-   	{
+	{
 		// File must be open with O_WRONLY to be able to set write-locks.
 		m_fd = ::open((file + "_lock").c_str(), O_CREAT | O_WRONLY, 0600);
 		if (m_fd != -1) {
@@ -132,18 +132,18 @@ private:
 			close(m_fd);
 		}
 	}
-		
+
 private:
 	//! Not copyable.
 	CFileLock(const CFileLock&);
 	//! Not assignable.
 	CFileLock& operator=(const CFileLock&);
-	
+
 	/** Locks or unlocks the lock-file, returning true on success. */
 	bool SetLock(bool doLock) {
 		struct flock lock;
 		lock.l_type = (doLock ? F_WRLCK : F_UNLCK);
-		
+
 		// Lock the entire file
 		lock.l_whence = SEEK_SET;
 		lock.l_start = 0;
@@ -161,10 +161,10 @@ private:
 
 		return false;
 	}
-	
-	
+
+
 	//! Desribtor of the file being locked.
-	int m_fd; 
+	int m_fd;
 
 	//! Specifies if the file-lock was aquired.
 	bool m_ok;

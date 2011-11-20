@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -31,7 +31,7 @@
 
 /**
  * CMemFile handles virtual files stored in memory.
- * 
+ *
  * This class allows for manipulation of binary data in memory such
  * as data sent over networks. Using this class rather than writing
  * the stream onto a struct confers the following advantages:
@@ -43,7 +43,7 @@
  *  - Strings of dynamic length can be read.
  *
  * Most of these advantages also hold for writing packets.
- * 
+ *
  * @see CFileDataIO
  */
 class CMemFile : public CFileDataIO
@@ -51,14 +51,14 @@ class CMemFile : public CFileDataIO
 public:
 	/**
 	 * Creates a dynamic file object.
-	 * 
+	 *
 	 * @param growthRate The growth-rate of the buffer.
 	 *
 	 * The growth-rate specified by how much the buffer-size will
 	 * be increased when the memfile runs out of space. Normally
 	 * this means that the amount of re-allocations is cut down
 	 * at the expence of slightly higher mem-usage.
-	 * 
+	 *
 	 * If the size of the entire file to be written is known
 	 * in advance, one can avoid needless re-allocations by
 	 * specifying the exact length as the growth-rate.
@@ -80,7 +80,7 @@ public:
 	 *
 	 * Note that while it is valid to resize the buffer to a length
 	 * between zero and 'bufferSize', it is not valid to resize it
-	 * to a length greater than the length specified in the 
+	 * to a length greater than the length specified in the
 	 * constructor. This also holds for writes that would increase
 	 * the length.
 	 *
@@ -93,54 +93,54 @@ public:
 
 	/** Destructor. */
 	virtual ~CMemFile();
-	
+
 
 	/** @see CFileDataIO::GetPosition */
 	virtual uint64 GetPosition() const;
-	
+
 	/** @see CFileDataIO::GetLength */
 	virtual uint64 GetLength() const;
 
-	
-	/** 
+
+	/**
 	 * Changes the length of the file, possibly resizing the buffer.
 	 *
 	 * @param newLen The new length of the file.
-	 * 
-	 * If the current position is greater than the new length, it 
+	 *
+	 * If the current position is greater than the new length, it
 	 * will be set to the end of the file.
-	 * 
-	 * Note that changing the lenght of a file with an attached buffer 
-	 * to a value greater than the actual buffer size is an illegal 
+	 *
+	 * Note that changing the lenght of a file with an attached buffer
+	 * to a value greater than the actual buffer size is an illegal
 	 * operation.
 	 */
 	virtual void SetLength(size_t newLen);
 
-	/** 
+	/**
 	 * Resets the memfile to the start.
 	 */
 	virtual void Reset() const { doSeek(0); }
-	
+
 	/**
 	 * Returns the bytes available to read before EOF
 	 */
 	virtual sint64 GetAvailable() const { return GetLength() - GetPosition(); }
 
-	/** 
+	/**
 	 * Resets the memfile to the starting values.
 	 */
 	virtual void ResetData();
 
 	// Sometimes it's useful to get the buffer and do stuff with it.
 	byte* GetRawBuffer() const { return m_buffer; }
-	
+
 protected:
 	/** @see CFileDataIO::doRead */
 	virtual sint64 doRead(void* buffer, size_t count) const;
 
 	/** @see CFileDataIO::doWrite */
 	virtual sint64 doWrite(const void* buffer, size_t count);
-	
+
 	/** @see CFileDataIO::doSeek */
 	virtual sint64 doSeek(sint64 offset) const;
 
@@ -153,10 +153,10 @@ private:
 
 	/** Enlarges the buffer to at least 'size' length. */
 	void enlargeBuffer(size_t size);
-	
+
 	//! The growth-rate for the buffer.
 	unsigned int m_growthRate;
-	//! The current position in the file. 
+	//! The current position in the file.
 	mutable size_t m_position;
 	//! The actual size of the buffer.
 	size_t	m_BufferSize;

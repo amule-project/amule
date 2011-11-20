@@ -1,12 +1,12 @@
 /*
- *  Name:         HTML creation functions 
+ *  Name:         HTML creation functions
  *
  *  Purpose:      Create a nice HTML page with all the statistics
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
  *  Copyright (c) 2004-2011 Pedro de Oliveira ( falso@rdk.homeip-net )
- * 
+ *
  *  This file is part of aMule.
  *
  *  This program is free software; you can redistribute it and/or modify

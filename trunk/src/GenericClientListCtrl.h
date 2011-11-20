@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -84,7 +84,7 @@ class CGenericClientListCtrl : public CMuleListCtrl
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @see CMuleListCtrl::CMuleListCtrl for documentation of parameters.
 	 */
 	 CGenericClientListCtrl(
@@ -96,11 +96,11 @@ public:
                 long style,
                 const wxValidator& validator,
                 const wxString &name);
-				
+
 	/**
 	 * Destructor.
-	 */	 
-	virtual	~CGenericClientListCtrl();	
+	 */
+	virtual	~CGenericClientListCtrl();
 
 	/**
 	 * Initializes the control. We need a 2-stage initialization so the derived class members can be called.
@@ -127,7 +127,7 @@ public:
 	 * @param owner Either a specific file, or NULL to remove the source from all files.
 	 */
 	void RemoveSource( uint32 source, const CKnownFile* owner );
-	
+
 	/**
 	 * Shows the clients of specific files.
 	 *
@@ -142,7 +142,7 @@ public:
 	 * Updates the state of the specified item, possibly causing a redrawing.
 	 *
 	 * @param toupdate ID of the client to be updated.
-	 * @param type If the source is a current source, or a A4AF source.	 
+	 * @param type If the source is a current source, or a A4AF source.
 	 *
 	 */
 	void UpdateItem(uint32 toupdate, SourceItemType type);
@@ -207,7 +207,7 @@ private:
 	wxString TranslateCIDToName(GenericColumnEnum cid);
 
 	static int Compare( const CClientRef& client1, const CClientRef& client2, long lParamColumnSort);
-	
+
 	// Event-handlers for clients.
 	void	OnSwapSource( wxCommandEvent& event );
 	void	OnViewFiles( wxCommandEvent& event );
@@ -218,8 +218,8 @@ private:
 
 	// Misc event-handlers
 	void	OnItemActivated( wxListEvent& event );
-	void 	OnMouseRightClick( wxListEvent& event );
-	void 	OnMouseMiddleClick( wxListEvent& event );
+	void	OnMouseRightClick( wxListEvent& event );
+	void	OnMouseMiddleClick( wxListEvent& event );
 	void	OnKeyPressed( wxKeyEvent& event );
 
 	//! The type of list used to store items on the listctrl. We use the unique ECID as key.
@@ -232,24 +232,24 @@ private:
 	//! This list contains everything shown on the list. Sources are only to
 	//! be found on this list if they are being displayed
 	ListItems	m_ListItems;
-	
+
 	//! Pointer to the current menu object, used to avoid multiple menus.
 	wxMenu*		m_menu;
 	//! Cached brush object.
 	wxBrush	m_hilightBrush;
 	//! Cached brush object.
 	wxBrush	m_hilightUnfocusBrush;
-	
+
 	//! The number of displayed sources
 	int m_clientcount;
 
 	//! The files being shown, if any.
 	CKnownFileVector m_knownfiles;
-	
+
 	DECLARE_EVENT_TABLE()
 
 	bool m_showing;
-	
+
 	void RawAddSource(CKnownFile* owner, CClientRef source, SourceItemType type);
 	void RawRemoveSource( ListItems::iterator& it );
 

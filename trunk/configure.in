@@ -18,7 +18,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -132,7 +132,7 @@ AC_SUBST([AMULEWEB_DEFS])dnl
 
 # Check for perl File::Copy
 AC_MSG_CHECKING([for File::Copy])
-AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])], 
+AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])],
 	[MULE_WARNING(
 		[File::Copy perl module is required by the mldonkey_importer script.
 		If you want to use this script please install File::Copy from CPAN.])])
@@ -156,10 +156,10 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, a
 	WX_CONFIG_CHECK([2.8.12], [wxWin=1],,, [$WXCONFIG_FLAGS])
 	AS_IF([test "$wxWin" != 1],
 		[AC_MSG_ERROR([
-		wxWidgets must be installed on your system but wx-config 
-		script couldn't be found. Please check that wx-config is 
-		in path or specified by --with-wx-config=path flag, the 
-		directory where wxWidgets libraries are installed (returned 
+		wxWidgets must be installed on your system but wx-config
+		script couldn't be found. Please check that wx-config is
+		in path or specified by --with-wx-config=path flag, the
+		directory where wxWidgets libraries are installed (returned
 		by 'wx-config --libs' command) is in LD_LIBRARY_PATH or
 		equivalent variable and wxWidgets version is 2.8.12 or above.
 		])]
@@ -434,8 +434,8 @@ echo
 echo "  Configured aMule ${PACKAGE_VERSION}${SVN_REVISION} for '${host}'."
 echo
 echo "  aMule enabled options:"
-echo 
-echo "  **** aMule Core ****" 
+echo
+echo "  **** aMule Core ****"
 echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
 echo "  Should aMule be compiled with i18n support?                ${USE_NLS:-no}"
 echo "  Should aMule be compiled in debug mode?                    MULE_STATUSOF([debug])"
@@ -487,14 +487,14 @@ MULE_IF_ENABLED([upnp], [
 if test ${enable_nls:-yes} = yes; then
 AS_IF([test x$USE_NLS = xno],
 	[libintl_found="Not detected"],
-	[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], 
-		[libintl_found="included"], 
+	[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes],
+		[libintl_found="included"],
 		[libintl_found="system"])])
 echo "                             libintl               $libintl_found"
 fi
 MULE_IF_ENABLED([geoip],
 	[AS_IF([test -z "${with_geoip_headers:-}${with_geoip_lib:-}"], [geoip_style=system], [geoip_style=user])
-	MULE_IF_ENABLED_ANY([monolithic, amule-gui], 
+	MULE_IF_ENABLED_ANY([monolithic, amule-gui],
 		[echo "                             libGeoIP              ${geoip_style}"])])
 MULE_IF_ENABLED([webserver],
 	[echo "                             libpng                ${LIBPNG_VERSION:-Not detected}"])

@@ -64,14 +64,14 @@ class alcc : public wxAppConsole
 
     /// Command line preocessing
     virtual bool OnCmdLineParsed(wxCmdLineParser& cmdline);
-    
+
   protected:
     wxLocale m_locale; // Used to tell wxCas to use aMule catalog
-    
+
   public:
     /// Application
     virtual int OnRun ();
-    
+
     /// Cleaning on exit
     virtual int OnExit();
 };

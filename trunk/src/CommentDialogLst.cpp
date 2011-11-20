@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -44,7 +44,7 @@ END_EVENT_TABLE()
  */
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent, CPartFile* file)
 :
-wxDialog(parent, -1, wxString(_("File Comments")), 
+wxDialog(parent, -1, wxString(_("File Comments")),
 	wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
 m_file(file)
 {
@@ -57,7 +57,7 @@ m_file(file)
 	m_list->InsertColumn(2, _("Rating"), wxLIST_FORMAT_LEFT, 80);
 	m_list->InsertColumn(3, _("Comment"), wxLIST_FORMAT_LEFT, 340);
 	m_list->SetSortFunc(SortProc);
-	
+
 	UpdateList();
 }
 
@@ -84,7 +84,7 @@ void CCommentDialogLst::UpdateList()
 {
 	int count = 0;
 	ClearList();
- 
+
 	FileRatingList list;
 	m_file->GetRatingAndComments(list);
 	for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
@@ -104,10 +104,10 @@ void CCommentDialogLst::UpdateList()
 	} else {
 		info = CFormat(wxPLURAL("%u comment", "%u comments", count)) % count;
 	}
-	
+
 	FindWindow(IDC_CMSTATUS)->SetLabel(info);
 	FindWindow(IDC_CMSTATUS)->GetParent()->Layout();
-	
+
 	m_file->UpdateFileRatingCommentAvail();
 }
 
@@ -127,9 +127,9 @@ int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	SFileRating* file1 = (SFileRating*)item1;
 	SFileRating* file2 = (SFileRating*)item2;
-	
+
 	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	
+
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		case 0:		return mod * file1->UserName.Cmp(file2->UserName);
 		case 1:		return mod * file1->FileName.Cmp(file2->FileName);

@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,12 +47,12 @@ public:
 	CPacket(byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
 	~CPacket();
-	
+
 	byte*			GetHeader();
 	byte*			GetUDPHeader();
 	byte*			GetPacket();
 	byte*			DetachPacket();
-	uint32 			GetRealPacketSize() const	{ return size + 6; }
+	uint32			GetRealPacketSize() const	{ return size + 6; }
 	static uint32		GetPacketSizeFromHeader(const byte* rawHeader);
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
@@ -60,21 +60,21 @@ public:
 	bool			UnPackPacket(uint32 uMaxDecompressedSize = 50000);
 	// -khaos--+++> Returns either -1, 0 or 1.  -1 is unset, 0 is from complete file, 1 is from part file
 	bool			IsFromPF()		{ return m_bFromPF; }
-	
+
 	uint8			GetOpCode() const	{ return opcode; }
 	void			SetOpCode(uint8 oc)	{ opcode = oc; }
 	uint32			GetPacketSize() const	{ return size; }
 	uint8			GetProtocol() const	{ return prot; }
 	void			SetProtocol(uint8 p)	{ prot = p; }
-	const byte* 	GetDataBuffer(void) const { return pBuffer; }
-	void 			Copy16ToDataBuffer(const void* data);
-	void 			CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n);
+	const byte*	GetDataBuffer(void) const { return pBuffer; }
+	void			Copy16ToDataBuffer(const void* data);
+	void			CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n);
 	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0);
-	
+
 private:
 	//! CPacket is not assignable.
 	CPacket& operator=(const CPacket&);
-	
+
 	uint32		size;
 	uint8		opcode;
 	uint8		prot;

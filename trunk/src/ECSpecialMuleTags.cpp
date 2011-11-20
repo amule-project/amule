@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -315,7 +315,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		if (thePrefs::IsSecureIdentEnabled()) {
 			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_USE_SECIDENT));
 		}
-		
+
 		if (thePrefs::IsClientCryptLayerSupported()) {
 			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_OBFUSCATION_SUPPORTED));
 		}
@@ -397,7 +397,7 @@ void CEC_Prefs_Packet::Apply()
 	// webserver doesn't transmit all boolean values
 	//
 	bool use_tag = (GetDetailLevel() == EC_DETAIL_FULL);
-	
+
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UL_CAP)) != NULL) {
 			thePrefs::SetMaxGraphUploadRate(oneTag->GetInt());
@@ -487,7 +487,7 @@ void CEC_Prefs_Packet::Apply()
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetManualHighPrio, EC_TAG_SERVERS_MANUAL_HIGH_PRIO);
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_UPDATE_URL)) != NULL) {
 			thePrefs::SetEd2kServersUrl(oneTag->GetStringData());
-		}		
+		}
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_FILES)) != NULL) {
@@ -578,7 +578,7 @@ void CEC_Prefs_Packet::Apply()
 			thePrefs::SetServerKeepAliveTimeout(oneTag->GetInt());
 		}
 	}
-	
+
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_KADEMLIA)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_KADEMLIA_UPDATE_URL)) != NULL) {
 			thePrefs::SetKadNodesUrl(oneTag->GetStringData());

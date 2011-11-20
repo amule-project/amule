@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -60,13 +60,13 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 CServer::CServer(CServer* pOld) : CECID(pOld->ECID())
 {
 	wxASSERT(pOld != NULL);
-	
+
 	TagPtrList::iterator it = pOld->m_taglist.begin();
 	for ( ; it != pOld->m_taglist.end(); ++it ) {
 		m_taglist.push_back((*it)->CloneTag());
 	}
 	port = pOld->port;
-	ip = pOld->ip; 
+	ip = pOld->ip;
 	realport = pOld->realport;
 	staticservermember=pOld->IsStaticMember();
 	tagcount = pOld->tagcount;
@@ -75,7 +75,7 @@ CServer::CServer(CServer* pOld) : CECID(pOld->ECID())
 	users = pOld->users;
 	preferences = pOld->preferences;
 	ping = pOld->ping;
-	failedcount = pOld->failedcount; 
+	failedcount = pOld->failedcount;
 	lastpinged = pOld->lastpinged;
 	lastpingedtime = pOld->lastpingedtime;
 	m_dwRealLastPingedTime = pOld->m_dwRealLastPingedTime;
@@ -107,9 +107,9 @@ CServer::~CServer()
 }
 
 void CServer::Init() {
-	
+
 	ipfull = Uint32toStringIP(ip);
-	
+
 	realport = 0;
 	tagcount = 0;
 	files = 0;
@@ -119,7 +119,7 @@ void CServer::Init() {
 	description.Clear();
 	listname.Clear();
 	dynip.Clear();
-	failedcount = 0; 
+	failedcount = 0;
 	lastpinged = 0;
 	lastpingedtime = 0;
 	m_dwRealLastPingedTime = 0;
@@ -129,7 +129,7 @@ void CServer::Init() {
 	m_uUDPFlags = 0;
 	challenge = 0;
 	softfiles = 0;
-	hardfiles = 0;	
+	hardfiles = 0;
 	m_strVersion = _("Unknown");
 	m_uLowIDUsers = 0;
 	m_uDescReqChallenge = 0;
@@ -143,8 +143,8 @@ void CServer::Init() {
 	m_dwIPServerKeyUDP = 0;
 	m_nObfuscationPortTCP = 0;
 	m_nObfuscationPortUDP = 0;
-	
-}	
+
+}
 
 
 bool CServer::AddTagFromFile(CFileDataIO* servermet)
@@ -152,56 +152,56 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 	if (servermet == NULL) {
 		return false;
 	}
-	
+
 	CTag tag(*servermet, true);
 
-	switch(tag.GetNameID()){		
+	switch(tag.GetNameID()){
 	case ST_SERVERNAME:
 		if (listname.IsEmpty()) {
 			listname = tag.GetStr();
 		}
 		break;
-		
+
 	case ST_DESCRIPTION:
 		if (description.IsEmpty()) {
 			description = tag.GetStr();
 		}
 		break;
-		
+
 	case ST_PREFERENCE:
 		preferences = tag.GetInt();
 		break;
-		
+
 	case ST_PING:
 		ping = tag.GetInt();
 		break;
-		
+
 	case ST_DYNIP:
 		if (dynip.IsEmpty()) {
 			dynip = tag.GetStr();
 		}
 		break;
-		
+
 	case ST_FAIL:
 		failedcount = tag.GetInt();
 		break;
-		
+
 	case ST_LASTPING:
 		lastpinged = tag.GetInt();
 		break;
-		
+
 	case ST_MAXUSERS:
 		maxusers = tag.GetInt();
 		break;
-		
+
 	case ST_SOFTFILES:
 		softfiles = tag.GetInt();
 		break;
-		
+
 	case ST_HARDFILES:
 		hardfiles = tag.GetInt();
 		break;
-		
+
 	case ST_VERSION:
 		if (tag.IsStr()) {
 			// m_strVersion defaults to _("Unknown"), so check for that as well
@@ -214,11 +214,11 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 			wxFAIL;
 		}
 		break;
-		
+
 	case ST_UDPFLAGS:
 		m_uUDPFlags = tag.GetInt();
 		break;
-		
+
 	case ST_AUXPORTSLIST:
 		m_auxPorts = tag.GetStr();
 
@@ -228,23 +228,23 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 			port = StrToULong(m_auxPorts.BeforeFirst(','));
 		}
 		break;
-		
+
 	case ST_LOWIDUSERS:
 		m_uLowIDUsers = tag.GetInt();
 		break;
-	
+
 	case ST_UDPKEY:
 		m_dwServerKeyUDP = tag.GetInt();
 		break;
-	
+
 	case ST_UDPKEYIP:
 		m_dwIPServerKeyUDP = tag.GetInt();
 		break;
-	
+
 	case ST_TCPPORTOBFUSCATION:
 		m_nObfuscationPortTCP = (uint16)tag.GetInt();
 		break;
-	
+
 	case ST_UDPPORTOBFUSCATION:
 		m_nObfuscationPortUDP = (uint16)tag.GetInt();
 		break;
@@ -260,7 +260,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 			wxFAIL;
 		}
 	}
-	
+
 	return true;
 }
 

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,7 +42,7 @@
 #include <common/Format.h>		// Needed for CFormat
 
 
-// Default colors, 
+// Default colors,
 #define COLOR_BLACK wxTextAttr( wxColor(   0,   0,   0 ) )
 #define COLOR_BLUE  wxTextAttr( wxColor(   0,   0, 255 ) )
 #define COLOR_GREEN wxTextAttr( wxColor(   0, 102,   0 ) )
@@ -82,9 +82,9 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style, bool n
 				AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
 			}
 		}
-		
+
 		SetDefaultStyle(style);
-	
+
 		AppendText( tokens.GetNextToken() );
 
 		// Only add newlines after the last line if it is desired
@@ -101,16 +101,16 @@ CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos
 : CMuleNotebook(parent, id, pos, siz, style)
 {
 	wxImageList* imagelist = new wxImageList(16,16);
-	
+
 	// Chat icon -- default state
 	imagelist->Add(wxBitmap(chat_ico_xpm));
 	// Close icon -- on mouseover
 	imagelist->Add(amuleSpecial(4));
-	
+
 	AssignImageList(imagelist);
 }
 
-CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& client_name, bool show) 
+CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& client_name, bool show)
 {
 	// Check to see if we've already opened a session for this user
 	if ( GetPageByClientID( client_id ) ) {
@@ -126,13 +126,13 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	chatsession->m_client_id = client_id;
 
 	wxString text;
-   	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s")) 
-		 	% client_name
+	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s"))
+			% client_name
 			% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 			% PORT_FROM_GUI_ID(client_id)
 			% wxDateTime::Now().FormatISODate()
 			% wxDateTime::Now().FormatISOTime());
-	
+
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client_name, show, 0);
 
@@ -146,12 +146,12 @@ CChatSession* CChatSelector::GetPageByClientID(uint64 client_id)
 {
 	for ( unsigned int i = 0; i < (unsigned int ) GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
-		
+
 		if( page->m_client_id == client_id ) {
 			return page;
 		}
 	}
-	
+
 	return NULL;
 }
 
@@ -160,12 +160,12 @@ int CChatSelector::GetTabByClientID(uint64 client_id)
 {
 	for ( unsigned int i = 0; i < (unsigned int) GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
-		
+
 		if( page->m_client_id == client_id ) {
 			return i;
 		}
 	}
-	
+
 	return -1;
 }
 
@@ -185,11 +185,11 @@ bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 		// No need to define client_name. If needed, will be build on tab creation.
 		client_message = message;
 	}
-	
+
 	bool newtab = !session;
-	
+
 	if ( !session ) {
-		// This must be a mesage from a client that is not already chatting 
+		// This must be a mesage from a client that is not already chatting
 		if (client_name.IsEmpty()) {
 			// Core did not send us the name.
 			// This must NOT happen.
@@ -197,21 +197,21 @@ bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 			uint32 ip = IP_FROM_GUI_ID(sender_id);
 			client_name = CFormat(wxT("IP: %s Port: %u")) % Uint32toStringIP(ip) % PORT_FROM_GUI_ID(sender_id);
 		}
-		
+
 		session = StartSession( sender_id, client_name, true );
 	}
 
 	// Other client connected after disconnection or a new session
 	if ( !session->m_active ) {
 		session->m_active = true;
-		
+
 		session->AddText( _("*** Connected to Client ***"), COLOR_RED );
 	}
-	
+
 	// Page text is client name
 	session->AddText( GetPageText(GetTabByClientID(sender_id)), COLOR_BLUE, false );
 	session->AddText( wxT(": ") + client_message, COLOR_BLACK );
-	
+
 	return newtab;
 }
 
@@ -222,13 +222,13 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	if ( message.IsEmpty() ) {
 		return false;
 	}
-	
+
 	if (to_id) {
 		// Checks if there's a page with this client, and selects it or creates it
 		StartSession(to_id, client_name, true);
 	}
-	
-	int usedtab = GetSelection();	
+
+	int usedtab = GetSelection();
 	// Workaround for a problem with wxNotebook, where an invalid selection is returned
 	if (usedtab >= (int)GetPageCount()) {
 		usedtab = GetPageCount() - 1;
@@ -236,13 +236,13 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	if (usedtab == -1) {
 		return false;
 	}
-	
+
 	CChatSession* ci = (CChatSession*)GetPage( usedtab );
 
 	ci->m_active = true;
 
 	//#warning EC needed here.
-	
+
 	#ifndef CLIENT_GUI
 	if (theApp->clientlist->SendChatMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
@@ -277,10 +277,10 @@ void CChatSelector::ConnectionResult(bool success, const wxString& message, uint
 	if ( !ci ) {
 		return;
 	}
-	
+
 	if ( !success ) {
 		ci->AddText( _("*** Failed to Connect to client / Connection lost ***"), COLOR_RED );
-	
+
 		ci->m_active = false;
 	} else {
 		// Kry - Woops, fix for the everlasting void message sending.
@@ -315,8 +315,8 @@ void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 {
 	wxASSERT( toupdate_id );
 
-	int tab = GetTabByClientID(toupdate_id); 
-	
+	int tab = GetTabByClientID(toupdate_id);
+
 	if (tab != -1) {
 		// This client has a tab.
 		SetPageText(tab,new_name);
@@ -349,7 +349,7 @@ bool CChatSelector::GetCurrentClient(CClientRef& clientref) const
 {
 	// Get the chat session associated with the active tab
 	CChatSession* ci = (CChatSession*)GetPage(GetSelection());
-	
+
 	// Get the client that the session is open to
 	if (ci) {
 		clientref.Link(theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id)) CLIENT_DEBUGSTRING("CChatSelector::GetCurrentClient"));

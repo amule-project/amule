@@ -61,9 +61,9 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	Unicode2CharBuf ansi_buffer(unicode2UTF8(rstrKeyword));
-	
+
 	md4_hasher.CalculateDigest(Output, (const byte *) (const char *) ansi_buffer, strlen(ansi_buffer));
-	
+
 	pKadID->SetValueBE(Output);
 }
 
@@ -73,7 +73,7 @@ bool IdentifyKeyword(const Kademlia::CUInt128& keyID, const wxString& str, wxStr
 	wxStringTokenizer tkz(str, Kademlia::CSearchManager::GetInvalidKeywordChars());
 	while (tkz.HasMoreTokens()) {
 		wxString current_word = tkz.GetNextToken();
-		
+
 		if (current_word.Length() > 2) {
 			current_word.MakeLower();
 			Kademlia::CUInt128 currentID;

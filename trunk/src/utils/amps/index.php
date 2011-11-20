@@ -227,7 +227,7 @@ function output_sig_image()
 	$serverimg = @imagecreatefrompng(IMAGEPATH."/".SERVERIMG);
 	$queueimg = @imagecreatefrompng(IMAGEPATH."/".QUEUEIMG);
 	$timegenimg = @imagecreatefrompng(IMAGEPATH."/".TIMEGENIMG);
-	
+
 	if($values["kad"] == "2") {
 		if ($values["highlowid"] == "H" && $values["connected"] == "1")
 			$idimg = @imagecreatefrompng(IMAGEPATH."/".HIGHIDIMGKADON);
@@ -241,7 +241,7 @@ function output_sig_image()
                 else if ($values["highlowid"] == "L" && $values["connected"] == "1")
                         $idimg = @imagecreatefrompng(IMAGEPATH."/".LOWIDIMGKADFW);
                 else
-                        $idimg = @imagecreatefrompng(IMAGEPATH."/".NOCONNIMGKADFW);	
+                        $idimg = @imagecreatefrompng(IMAGEPATH."/".NOCONNIMGKADFW);
 	} else {
 		if ($values["highlowid"] == "H" && $values["connected"] == "1")
                         $idimg = @imagecreatefrompng(IMAGEPATH."/".HIGHIDIMGKADOFF);

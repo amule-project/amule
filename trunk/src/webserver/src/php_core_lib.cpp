@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,7 +55,7 @@
 
 /*
  * Built-in php functions. Those are both library and core internals.
- * 
+ *
  * I'm not going event to get near to what Zend provide, but
  * at least base things must be here
  */
@@ -118,7 +118,7 @@ class SortElem {
 
 		PHP_VAR_NODE *obj;
 		static PHP_SYN_FUNC_DECL_NODE *callback;
-		
+
 		friend bool operator<(const SortElem &o1, const SortElem &o2);
 };
 
@@ -130,7 +130,7 @@ bool operator<(const SortElem &o1, const SortElem &o2)
 
 	value_value_assign(&SortElem::callback->params[0].si_var->var->value, &o1.obj->value);
 	value_value_assign(&SortElem::callback->params[1].si_var->var->value, &o2.obj->value);
-	
+
 	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)SortElem::callback->scope);
 
 	//
@@ -146,7 +146,7 @@ bool operator<(const SortElem &o1, const SortElem &o2)
 
 	value_value_free(&SortElem::callback->params[0].si_var->var->value);
 	value_value_free(&SortElem::callback->params[1].si_var->var->value);
-	
+
 	return result.int_val != 0;
 }
 
@@ -286,7 +286,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 	if ( result ) {
 		cast_value_array(result);
 	} else {
-		return; 
+		return;
 	}
 	PHP_VALUE_NODE *pattern, *string_to_split, *split_limit;
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
@@ -311,7 +311,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 		cast_value_dnum(split_limit);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
-		return;		
+		return;
 	}
 #ifdef PHP_STANDALONE_EN
 	regex_t preg;
@@ -334,7 +334,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 #endif
 	char *str_2_match = string_to_split->str_val;
 	char *tmp_buff = new char[strlen(string_to_split->str_val)+1];
-	
+
 	while ( 1 ) {
 //		printf("matching: %s\n", str_2_match);
 #ifdef PHP_STANDALONE_EN
@@ -352,7 +352,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 		if (!preg.GetMatch(&start, &len)) {
 			break;	// shouldn't happen
 		}
-#endif	
+#endif
 		/*
 		 * I will use only first match, since I don't see any sense to have more
 		 * then 1 match in split() call
@@ -370,7 +370,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 		tmp_buff[start] = 0;
 #endif
 //		printf("Match added [%s]\n", tmp_buff);
-		
+
 		PHP_VAR_NODE *match_val = array_push_back(result);
 		match_val->value.type = PHP_VAL_STRING;
 		match_val->value.str_val = strdup(tmp_buff);
@@ -385,7 +385,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 	PHP_VAR_NODE *match_val = array_push_back(result);
 	match_val->value.type = PHP_VAL_STRING;
 	match_val->value.str_val = strdup(str_2_match);
-	
+
 	delete [] tmp_buff;
 #ifdef PHP_STANDALONE_EN
 	delete [] pmatch;
@@ -465,7 +465,7 @@ void php_native_ngettext(PHP_VALUE_NODE *result)
 
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
-		"var_dump", 
+		"var_dump",
 		1,
 		php_native_var_dump,
 	},
@@ -541,7 +541,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	}
 
 	phpparse();
-	
+
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
 }
@@ -558,7 +558,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 
 	php_set_input_buffer(php_buf, len);
 	phpparse();
-	
+
 	m_syn_tree_top = g_syn_tree_top;
 }
 
@@ -577,7 +577,7 @@ void CPhPLibContext::SetContext()
 void CPhPLibContext::Execute(CWriteStrBuffer *buf)
 {
 	m_curr_str_buffer = buf;
-	
+
 	PHP_VALUE_NODE val;
 	php_execute(g_syn_tree_top, &val);
 }
@@ -588,13 +588,13 @@ CPhPLibContext *CPhPLibContext::g_curr_context = 0;
  * For simplicity and performance sake, this function can
  * only handle limited-length printf's. In should be NOT be used
  * for string concatenation like printf("xyz %s %s", s1, s2).
- * 
+ *
  * Engine will call Print for "print" and "echo"
  */
 void CPhPLibContext::Printf(const char *str, ...)
 {
 	va_list args;
-        
+
 	va_start(args, str);
 	if ( !g_curr_context || !g_curr_context->m_curr_str_buffer ) {
 		vprintf(str, args);
@@ -625,7 +625,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 		return;
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
-		printf("ERROR: fseek failed on php source file [%s]\n", file); 
+		printf("ERROR: fseek failed on php source file [%s]\n", file);
 		return;
 	}
 	int size = ftell(f);
@@ -668,7 +668,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 #endif
 
 		delete context;
-		
+
 		scan_ptr = curr_code_end;
 	}
 
@@ -689,7 +689,7 @@ CWriteStrBuffer::CWriteStrBuffer()
 {
 	m_alloc_size = 1024;
 	m_total_length = 0;
-	
+
 	AllocBuf();
 }
 
@@ -714,7 +714,7 @@ void CWriteStrBuffer::Write(const char *s, int len)
 		len = strlen(s);
 	}
 	m_total_length += len;
-	
+
 	while ( len ) {
 		if ( (len + 1) <= m_curr_buf_left ) {
 			strncpy(m_buf_ptr, s, len);
@@ -725,7 +725,7 @@ void CWriteStrBuffer::Write(const char *s, int len)
 			memcpy(m_buf_ptr, s, m_curr_buf_left);
 			int rem_len = len - m_curr_buf_left;
 			s += m_curr_buf_left;
-						
+
 			len = rem_len;
 			m_buf_list.push_back(m_curr_buf);
 			AllocBuf();

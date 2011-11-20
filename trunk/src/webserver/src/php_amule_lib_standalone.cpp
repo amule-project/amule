@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -51,7 +51,7 @@ void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
@@ -75,9 +75,9 @@ void php_native_reload_shared_file_cmd(PHP_VALUE_NODE *)
 }
 
 /*
- * 
+ *
  * Usage: php_native_download_file_cmd($file_hash, "command", $optional_arg)
- * 
+ *
  */
 void php_native_download_file_cmd(PHP_VALUE_NODE *)
 {
@@ -87,7 +87,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
@@ -101,7 +101,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 		php_report_error(PHP_ERROR, "Commands 'prio' and 'setcat' needs 3-rd argument");
 		return;
 	}
-		
+
 	printf("php_native_download_file_cmd: hash=%s cmd=%s\n", str_hash, cmd_name);
 }
 
@@ -145,7 +145,7 @@ void php_native_add_server_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *addr = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si ) {
 		php_report_error(PHP_ERROR, "Missing argument 2: $server_port");
@@ -251,7 +251,7 @@ void php_native_search_download_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
@@ -321,7 +321,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 void php_get_log(PHP_VALUE_NODE *result)
 {
 	value_value_free(result);
-	
+
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	bool rst;
 	if ( !si ) {
@@ -340,7 +340,7 @@ void php_get_log(PHP_VALUE_NODE *result)
 void php_get_serverinfo(PHP_VALUE_NODE *result)
 {
 	value_value_free(result);
-	
+
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	bool rst;
 	if ( !si ) {
@@ -364,7 +364,7 @@ void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
 		return;
 	}
 	char *str_link = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
@@ -605,17 +605,17 @@ int main(int argc, char *argv[])
 	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
 
 	CWriteStrBuffer buffer;
-	
+
 	//phpdebug = 0;
 
 	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
-	
+
 	int size = buffer.Length();
 	char *buf = new char [size+1];
 	buffer.CopyAll(buf);
 	printf("%s", buf);
 	delete [] buf;
-	
+
 	return 0;
 }
 

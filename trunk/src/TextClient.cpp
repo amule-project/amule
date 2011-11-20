@@ -17,12 +17,12 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
-	
+
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for VERSION
@@ -78,16 +78,16 @@ enum {
 	CMD_ID_RELOAD_IPFILTER_NET,
 	CMD_ID_SET_IPFILTER_ON,
 	CMD_ID_SET_IPFILTER_OFF,
- 	CMD_ID_SET_IPFILTER_CLIENTS_ON,
+	CMD_ID_SET_IPFILTER_CLIENTS_ON,
 	CMD_ID_SET_IPFILTER_CLIENTS_OFF,
- 	CMD_ID_SET_IPFILTER_SERVERS_ON,
+	CMD_ID_SET_IPFILTER_SERVERS_ON,
 	CMD_ID_SET_IPFILTER_SERVERS_OFF,
 	CMD_ID_SET_IPFILTER_LEVEL,
- 	CMD_ID_GET_IPFILTER,
- 	CMD_ID_GET_IPFILTER_STATE,
+	CMD_ID_GET_IPFILTER,
+	CMD_ID_GET_IPFILTER_STATE,
 	CMD_ID_GET_IPFILTER_STATE_CLIENTS,
 	CMD_ID_GET_IPFILTER_STATE_SERVERS,
- 	CMD_ID_GET_IPFILTER_LEVEL,
+	CMD_ID_GET_IPFILTER_LEVEL,
 	CMD_ID_SHOW_UL,
 	CMD_ID_SHOW_DL,
 	CMD_ID_SHOW_LOG,
@@ -95,10 +95,10 @@ enum {
 	CMD_ID_SHOW_SHARED,
 	CMD_ID_RESET_LOG,
 	CMD_ID_SHUTDOWN,
- 	CMD_ID_ADDLINK,
- 	CMD_ID_SET_BWLIMIT_UP,
- 	CMD_ID_SET_BWLIMIT_DOWN,
- 	CMD_ID_GET_BWLIMITS,
+	CMD_ID_ADDLINK,
+	CMD_ID_SET_BWLIMIT_UP,
+	CMD_ID_SET_BWLIMIT_DOWN,
+	CMD_ID_GET_BWLIMITS,
 	CMD_ID_STATTREE,
 	CMD_ID_SEARCH,
 	CMD_ID_SEARCH_GLOBAL,
@@ -130,8 +130,8 @@ IMPLEMENT_APP (CamulecmdApp)
 void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(parser, "amulecmd");
-	parser.AddOption(wxT("c"), wxT("command"), 
-		_("Execute <str> and exit."), 
+	parser.AddOption(wxT("c"), wxT("command"),
+		_("Execute <str> and exit."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 }
 
@@ -179,7 +179,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			CmdId = CMD_ID_GET_IPFILTER_STATE;
 		}
 	}
-	
+
 	switch (CmdId) {
 		case CMD_ID_STATUS:
 			request_list.push_back(new CECPacket(EC_OP_STAT_REQ, EC_DETAIL_CMD));
@@ -189,7 +189,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(new CECPacket(EC_OP_SHUTDOWN));
 			break;
 
- 		case CMD_ID_CONNECT:
+		case CMD_ID_CONNECT:
 			if ( !args.IsEmpty() ) {
 				unsigned int ip[4];
 				unsigned int port;
@@ -228,11 +228,11 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(new CECPacket(EC_OP_SERVER_CONNECT));
 			break;
 
- 		case CMD_ID_CONNECT_KAD:
+		case CMD_ID_CONNECT_KAD:
 			request_list.push_back(new CECPacket(EC_OP_KAD_START));
 			break;
 
- 		case CMD_ID_DISCONNECT:
+		case CMD_ID_DISCONNECT:
 			request_list.push_back(new CECPacket(EC_OP_DISCONNECT));
 			break;
 
@@ -240,7 +240,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(new CECPacket(EC_OP_SERVER_DISCONNECT));
 			break;
 
- 		case CMD_ID_DISCONNECT_KAD:
+		case CMD_ID_DISCONNECT_KAD:
 			request_list.push_back(new CECPacket(EC_OP_KAD_STOP));
 			break;
 
@@ -331,7 +331,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				const CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 
-				if (reply_all) { 
+				if (reply_all) {
 					switch(CmdId) {
 						case CMD_ID_PAUSE:
 								request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
@@ -345,7 +345,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					// We loop through all the arguments
 					while(argsTokenizer.HasMoreTokens()) {
 						token=argsTokenizer.GetNextToken();
-						
+
 						// If the user requested all, then we select all files and exit the loop
 						// since there is little point to add anything more to "everything"
 						if( token == wxT("all") ) {
@@ -372,9 +372,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 									partmetname.Truncate(partmetname.Len()-5) == token) {
 									Show(_("Processing by filename: "+token+wxT("\n")));
 									request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
-								}		
-							}	
-						} // End of filename check else	
+								}
+							}
+						} // End of filename check else
 					} // End of argument token loop
 
 				request_list.push_back(request);
@@ -423,7 +423,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					}
 				} else {
 						Show(_("Not a valid hash (length should be exactly 32 chars)\n"));
-						return 0;					
+						return 0;
 				}
 			}
 			break;
@@ -514,13 +514,13 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if (search_type != EC_SEARCH_GLOBAL && search_type != EC_SEARCH_LOCAL){
 				search_type = EC_SEARCH_KAD;
 			}
-			if (!args.IsEmpty()) 
-			{	
-				wxString search = args; 
+			if (!args.IsEmpty())
+			{
+				wxString search = args;
 				wxString type;
-				wxString extention; 
-				uint32 avail = 0; 
-				uint32 min_size = 0; 
+				wxString extention;
+				uint32 avail = 0;
+				uint32 min_size = 0;
 				uint32 max_size = 0;
 
 				request = new CECPacket(EC_OP_SEARCH_START);
@@ -531,7 +531,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SEARCH:
 			printf("No search type defined.\nType 'help search' to get more help.\n");
 			break;
-			
+
 
 		case CMD_ID_SEARCH_RESULTS:
 			request_list.push_back(new CECPacket(EC_OP_SEARCH_RESULTS, EC_DETAIL_FULL));
@@ -542,8 +542,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_DOWNLOAD:
-			if (!args.IsEmpty()) 
-			{	
+			if (!args.IsEmpty())
+			{
 				unsigned long int id = 0;
 				if (args.ToULong(&id) == true && id < m_Results_map.size()) {
 
@@ -561,7 +561,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				}
 			}
 			break;
-		
+
 		default:
 			return CMD_ERR_PROCESS_CMD;
 	}
@@ -600,21 +600,21 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 	unsigned int nr_max = 5;
 	unsigned long int id = 0;
 	wxString output, name, sources, mb , kb;
-	
+
 	printf("Nr.    Filename:                                                                        Size(MB):  Sources: \n");
 	printf("-----------------------------------------------------------------------------------------------------------\n");
 
 	for( std::map<unsigned long int,SearchFile*>::iterator iter = results_map.begin(); iter != results_map.end(); iter++ ) {
-    		id = (*iter).first;
+		id = (*iter).first;
 		SearchFile* file = (*iter).second;
-		
-		output.Printf(wxT("%i.      "), id);		
-		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);		
+
+		output.Printf(wxT("%i.      "), id);
+		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);
 		mb.Printf(wxT("     %d"), file->lFileSize/1024/1024);
 		kb.Printf(wxT(".%d"), file->lFileSize/1024%1024);
-		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);	
+		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);
 		printf("%s     %ld\n",(const char*)unicode2char(output), file->lSourceCount );
- 	}
+	}
 }
 
 
@@ -737,10 +737,10 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				s <<	CFormat(_("\nUpload:\t%s")) % CastItoSpeed(tmpTag->GetInt());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
-				s << 	CFormat(_("\nClients in queue:\t%d\n")) % tmpTag->GetInt();
+				s <<	CFormat(_("\nClients in queue:\t%d\n")) % tmpTag->GetInt();
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_TOTAL_SRC_COUNT)) != 0) {
-				s << 	CFormat(_("\nTotal sources:\t%d\n")) % tmpTag->GetInt();
+				s <<	CFormat(_("\nTotal sources:\t%d\n")) % tmpTag->GetInt();
 			}
 			break;
 		}
@@ -861,7 +861,7 @@ void CamulecmdApp::OnInitCommandSet()
 
 	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ID_RELOAD_IPFILTER_LOCAL, wxTRANSLATE("Reload IP filtering table."), wxEmptyString, CMD_PARAM_OPTIONAL);
 	tmp2->AddCommand(wxT("File"), CMD_ID_RELOAD_IPFILTER_LOCAL, wxTRANSLATE("Reload current IP filtering table."), wxEmptyString, CMD_PARAM_NEVER);
-	tmp2->AddCommand(wxT("Net"), CMD_ID_RELOAD_IPFILTER_NET, wxTRANSLATE("Update IP filtering table from URL."), 
+	tmp2->AddCommand(wxT("Net"), CMD_ID_RELOAD_IPFILTER_NET, wxTRANSLATE("Update IP filtering table from URL."),
 					wxTRANSLATE("If URL is omitted the URL from the preferences is used."), CMD_PARAM_OPTIONAL);
 
 	tmp = m_commands.AddCommand(wxT("Connect"), CMD_ID_CONNECT, wxTRANSLATE("Connect to the network."),
@@ -874,7 +874,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("ED2K"), CMD_ID_DISCONNECT_ED2K, wxTRANSLATE("Disconnect from eD2k only."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Kad"), CMD_ID_DISCONNECT_KAD, wxTRANSLATE("Disconnect from Kad only."), wxEmptyString, CMD_PARAM_NEVER);
 
- 	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Add an eD2k or magnet link to core."),
+	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Add an eD2k or magnet link to core."),
 			      wxTRANSLATE("The eD2k link to be added can be:\n*) a file link (ed2k://|file|...), it will be added to the download queue,\n*) a server link (ed2k://|server|...), it will be added to the server list,\n*) or a serverlist link, in which case all servers in the list will be added to the\n   server list.\n\nThe magnet link must contain the eD2k hash and file length.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Set"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set a preference value."),
@@ -930,14 +930,14 @@ void CamulecmdApp::OnInitCommandSet()
 	// TODO: These commands below need implementation and/or rewrite!
 	//
 
-  	m_commands.AddCommand(wxT("Pause"), CMD_ID_PAUSE, wxTRANSLATE("Pause download."),
- 			      wxEmptyString, CMD_PARAM_ALWAYS);
+	m_commands.AddCommand(wxT("Pause"), CMD_ID_PAUSE, wxTRANSLATE("Pause download."),
+			      wxEmptyString, CMD_PARAM_ALWAYS);
 
-  	m_commands.AddCommand(wxT("Resume"), CMD_ID_RESUME, wxTRANSLATE("Resume download."),
- 			      wxEmptyString, CMD_PARAM_ALWAYS);
+	m_commands.AddCommand(wxT("Resume"), CMD_ID_RESUME, wxTRANSLATE("Resume download."),
+			      wxEmptyString, CMD_PARAM_ALWAYS);
 
-   	m_commands.AddCommand(wxT("Cancel"), CMD_ID_CANCEL, wxTRANSLATE("Cancel download."),
-  			      wxEmptyString, CMD_PARAM_ALWAYS);
+	m_commands.AddCommand(wxT("Cancel"), CMD_ID_CANCEL, wxTRANSLATE("Cancel download."),
+			      wxEmptyString, CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Priority"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set download priority."),
 				    wxTRANSLATE("Set priority of a download to Low, Normal, High or Auto.\n"), CMD_PARAM_ALWAYS);
@@ -945,14 +945,14 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("Normal"), CMD_ID_PRIORITY_NORMAL, wxTRANSLATE("Set priority to normal."), wxEmptyString, CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("High"), CMD_ID_PRIORITY_HIGH, wxTRANSLATE("Set priority to high."), wxEmptyString, CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("Auto"), CMD_ID_PRIORITY_AUTO, wxTRANSLATE("Set priority to auto."), wxEmptyString, CMD_PARAM_ALWAYS);
-				  
+
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
 				    wxTRANSLATE("Show upload/download queue, server list or shared files list.\n"), CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("UL"), CMD_ID_SHOW_UL, wxTRANSLATE("Show upload queue."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("DL"), CMD_ID_SHOW_DL, wxTRANSLATE("Show download queue."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Log"), CMD_ID_SHOW_LOG, wxTRANSLATE("Show log."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Servers"), CMD_ID_SHOW_SERVERS, wxTRANSLATE("Show servers list."), wxEmptyString, CMD_PARAM_NEVER);
-// 	tmp->AddCommand(wxT("Shared"), CMD_ID_SHOW_SHARED, wxTRANSLATE("Show shared files list."), wxEmptyString, CMD_PARAM_NEVER);
+//	tmp->AddCommand(wxT("Shared"), CMD_ID_SHOW_SHARED, wxTRANSLATE("Show shared files list."), wxEmptyString, CMD_PARAM_NEVER);
 
 	m_commands.AddCommand(wxT("Reset"), CMD_ID_RESET_LOG, wxTRANSLATE("Reset log."), wxEmptyString, CMD_PARAM_NEVER);
 

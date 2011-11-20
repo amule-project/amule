@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -245,7 +245,7 @@ void CKademlia::Process()
 						zone->m_nextBigTimer = HR2S(1) + now;
 						m_bigTimer = SEC(10) + now;
 					}
-				} 
+				}
 			}
 		}
 
@@ -254,7 +254,7 @@ void CKademlia::Process()
 			zone->m_nextSmallTimer = MIN2S(1) + now;
 		}
 	}
-	
+
 	// This is a convenient place to add this, although not related to routing
 	if (m_nextSearchJumpStart <= now) {
 		CSearchManager::JumpStart();
@@ -505,11 +505,11 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	char* ansi_buffer = strdup(unicode2UTF8(rstrKeyword));
-	
+
 	//printf("Kad keyword hash: UTF8 %s\n",ansi_buffer);
 	md4_hasher.CalculateDigest(Output,(const unsigned char*)ansi_buffer,strlen(ansi_buffer));
 	//DumpMem(Output,16);
 	free(ansi_buffer);
-	
+
 	pKadID->SetValueBE(Output);
 }

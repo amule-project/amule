@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -56,7 +56,7 @@ enum {
 
 
 /**
- * The mule tray icon class is responsible for drawing the mule systray icon 
+ * The mule tray icon class is responsible for drawing the mule systray icon
  * and reacting to the user input on it.
  */
 class CMuleTrayIcon : public wxTaskBarIcon
@@ -73,17 +73,17 @@ public:
 	~CMuleTrayIcon();
 
 	/**
-	 * Set the Tray icon. 
+	 * Set the Tray icon.
 	 * @param Icon The wxIcon object with the new tray icon
 	 */
 	void SetTrayIcon(int Icon, uint32 percent);
-	
+
 	/**
 	 * Set the Tray tooltip
 	 * @param Tip The wxString object with the new tray tooltip
 	 */
 	void SetTrayToolTip(const wxString& Tip);
-	
+
 private:
 
 	virtual wxMenu* CreatePopupMenu();
@@ -96,7 +96,7 @@ private:
 	void ServerConnection(wxCommandEvent&);
 	void ShowHide(wxCommandEvent&);
 	void Close(wxCommandEvent&);
-	
+
 	int Old_Icon;
 	int Old_SpeedSize;
 

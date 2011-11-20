@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -30,11 +30,11 @@ enum OP_ClientToServerUDP {
 	OP_GLOBSEARCHREQ3			= 0x90, // <1 tag set><search_tree>
 	OP_GLOBSEARCHREQ2			= 0x92, // <search_tree>
 	OP_GLOBGETSOURCES2			= 0x94,	// <HASH 16><FILESIZE 4>
-										// largefiles only: <HASH 16><FILESIZE 4(0)><FILESIZE 8> (17.8)		
+										// largefiles only: <HASH 16><FILESIZE 4(0)><FILESIZE 8> (17.8)
 	OP_GLOBSERVSTATREQ			= 0x96,	// (null)
 	OP_GLOBSERVSTATRES			= 0x97,	// <USER 4><FILES 4>
 	OP_GLOBSEARCHREQ			= 0x98,	// <search_tree>
-	OP_GLOBSEARCHRES			= 0x99,	// 
+	OP_GLOBSEARCHRES			= 0x99,	//
 	OP_GLOBGETSOURCES			= 0x9A,	// <HASH 16>
 	OP_GLOBFOUNDSOURCES			= 0x9B,	//
 	OP_GLOBCALLBACKREQ			= 0x9C,	// <IP 4><PORT 2><client_ID 4>

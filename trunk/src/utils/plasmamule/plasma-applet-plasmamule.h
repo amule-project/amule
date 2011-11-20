@@ -15,7 +15,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,7 +39,7 @@ class PlasmaMuleApplet : public Plasma::Applet
 
 		void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
 		void init();
-		
+
 	public Q_SLOTS:
 		void onSourceAdded(const QString&);
 		void onSourceRemoved(const QString&);
@@ -66,5 +66,5 @@ class PlasmaMuleApplet : public Plasma::Applet
 	signals:
 		void engine_add_link(QString, int);
 };
- 
+
 #endif

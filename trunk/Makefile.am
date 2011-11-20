@@ -11,10 +11,10 @@ EXTRA_DIST = amule.rc amule.ico amule.png convert.ico \
 	amule_build_install.sh autogen.sh \
 	po/l10n.xsl
 
-dist_icon_DATA = 
+dist_icon_DATA =
 icondir = $(datadir)/pixmaps
 
-dist_util_DATA = 
+dist_util_DATA =
 utildir = $(datadir)/applications
 
 if MONOLITHIC

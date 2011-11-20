@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -51,7 +51,7 @@ class CECAuthPacket : public CECPacket {
 class CRemoteConnect : public CECMuleSocket {
 private:
 	// State enums for connection SM ( client side ) in case of async processing
-	enum { 
+	enum {
 		EC_INIT,         // initial state
 		EC_CONNECT_SENT, // socket connect request sent
 		EC_REQ_SENT,     // sent auth request to core, waiting for reply
@@ -78,9 +78,9 @@ private:
 	bool m_canUTF8numbers;
 	bool m_canNotify;
 
-	void WriteDoneAndQueueEmpty();	
+	void WriteDoneAndQueueEmpty();
 public:
-	// The event handler is used for notifying connect/close 
+	// The event handler is used for notifying connect/close
 	CRemoteConnect(wxEvtHandler* evt_handler);
 
 	void SetCapabilities(bool canZLIB, bool canUTF8numbers, bool canNotify);
@@ -96,15 +96,15 @@ public:
 	{
 		return m_req_count > m_req_fifo_thr;
 	}
-	
+
 	virtual void OnConnect(); // To override connection events
 	virtual void OnLost(); // To override close events
 
 	void SendRequest(CECPacketHandlerBase *handler, const CECPacket *request);
 	void SendPacket(const CECPacket *request);
-	
+
 	/********************* EC API ********************/
-	
+
 
 	/* Misc */
 
@@ -116,26 +116,26 @@ public:
 
 
 	/* Kad */
-	
+
 	// Connects Kad network
 	void StartKad();
-	
+
 	// Disconnects Kad network
 	void StopKad();
-	
-	
+
+
 	/* ED2K */
-	
-	// Connects to ED2K. If ip and port are not 0, connect 
+
+	// Connects to ED2K. If ip and port are not 0, connect
 	// to the specific port. Otherwise, connect to any.
 	void ConnectED2K(uint32 ip, uint16 port);
-	
+
 	// Disconnects from ED2K
 	void DisconnectED2K();
 
 
 	/* Servers */
-	
+
 	// Adds a server
 	void AddServer(uint32 ip,
 		       uint16 port);
@@ -153,7 +153,7 @@ public:
 
 
 	/* Search */
-	
+
 	// Starts new search
 	void StartSearch();
 

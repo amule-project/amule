@@ -1,6 +1,6 @@
 //
 // This file is part of the aMule Project.
-//  
+//
 // Copyright (c) 2004-2011 shakraw ( shakraw@users.sourceforge.net )
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -44,13 +44,13 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 	m_Cookie = 0;
 	m_IsGet = false;
 	m_IsPost = false;
-	
+
 	m_pParent = parent;
-	
+
 	SetEventHandler(*parent, ID_WEBCLIENTSOCKET_EVENT);
 	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	Notify(true);
-	
+
 }
 
 void CWebSocket::OnError()
@@ -76,9 +76,9 @@ void CWebSocket::OnInput()
 		m_dwBufSize = newsize;
 		// And read again
 		Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
-		m_dwRecv += LastCount();				
+		m_dwRecv += LastCount();
 	}
-	
+
 	if (LastCount() == 0) {
 		if (Error()) {
 			if (LastError() != wxSOCKET_WOULDBLOCK) {
@@ -87,10 +87,10 @@ void CWebSocket::OnInput()
 			}
 		}
 	}
-	
+
 	m_pBuf[m_dwRecv] = '\0';
 
-	
+
 	//
 	// Check what kind of request is that
 	if ( !m_IsGet && !m_IsPost ) {
@@ -104,10 +104,10 @@ void CWebSocket::OnInput()
 			return ;
 		}
 	}
-	// 
+	//
 	// RFC1945:
 	//
-	
+
 	//
 	// "GET" must have last line empty
 	if ( m_IsGet ) {
@@ -191,13 +191,13 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 		return;
 	}
 	*pHeader++ = 0;
-	
+
 	wxString sURL(char2unicode(path));
 	if ( is_post ) {
 		wxString sData(char2unicode(pData));
 		sURL += wxT("?") + sData.Left(dwDataLen);
 	}
-	
+
 	//
 	// Find session cookie.
 	//
@@ -209,7 +209,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 			char *value = strchr(current_cookie, '=');
 			if ( value ) {
 				sessid = atoi(++value);
-			}			
+			}
 		}
 	}
 	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
@@ -263,14 +263,14 @@ void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 conte
 	SendData(szBuf, strlen(szBuf));
 }
 
-void CWebSocket::SendData(const void* pData, uint32 dwDataSize) 
+void CWebSocket::SendData(const void* pData, uint32 dwDataSize)
 {
 	const char * data = (const char*) pData;
 	if (!m_pHead) {
 		// try to send it directly
 		Write(data, dwDataSize);
 		uint32 nRes = LastCount();
-		if ((nRes < dwDataSize) && 
+		if ((nRes < dwDataSize) &&
 			Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
 			Close();
 		} else {

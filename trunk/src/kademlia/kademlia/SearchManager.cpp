@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -270,7 +270,7 @@ void CSearchManager::JumpStart()
 					current_it->second->PrepareToStop();
 				} else {
 					current_it->second->JumpStart();
-				}					
+				}
 				break;
 			}
 			case CSearch::KEYWORD: {
@@ -406,7 +406,7 @@ void CSearchManager::UpdateStats() throw()
 	uint8_t m_totalSource = 0;
 	uint8_t m_totalNotes = 0;
 	uint8_t m_totalStoreNotes = 0;
-		
+
 	for (SearchMap::const_iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 		switch(it->second->GetSearchTypes()){
 			case CSearch::FILE: {

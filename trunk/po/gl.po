@@ -6,7 +6,7 @@
 # coa codificación UTF-8 para que non lle de problemas a ninguén,
 # ou ben usade este comando para converter de calquera codificación
 # a UTF-8:
-# 	msgconv -t UTF-8 gl.po > gl.po.new && mv gl.po.new gl.po
+#	msgconv -t UTF-8 gl.po > gl.po.new && mv gl.po.new gl.po
 # Onde gl.po é o ficheiro que estades a traducir.
 # Copyright (c) 2003-2011 aMule Team.
 #

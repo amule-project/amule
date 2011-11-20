@@ -162,7 +162,7 @@ keywordchar		[^ \"()]
 static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize)
 {
 	wxASSERT( _pszLexBuff != NULL );
-	
+
 	if (_pszLexBuff == NULL) {
 		YY_FATAL_ERROR("Input in flex scanner failed");
 	}
@@ -193,7 +193,7 @@ void LexInit(const wxString& pszInput)
 void LexFree()
 {
 	yylex_destroy();
-	
+
 	yyleng = 0;
 	yytext = NULL;
 	yyin = NULL;
@@ -205,7 +205,7 @@ void LexFree()
 	yy_did_buffer_switch_on_eof = 0;
 	yy_last_accepting_state = 0;
 	yy_last_accepting_cpos = NULL;
-	
+
 #if YY_STACK_USED
 	yy_start_stack_ptr = 0;
 	yy_start_stack_depth = 0;

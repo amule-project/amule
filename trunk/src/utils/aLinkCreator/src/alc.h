@@ -45,10 +45,10 @@ class alc:public wxApp
   {
   private:
     AlcFrame *m_alcFrame;
-    
+
   protected:
     wxLocale m_locale; // Used to tell wxCas to use aMule catalog
-    
+
   public:
     virtual bool OnInit ();
     AlcFrame *GetMainFrame();

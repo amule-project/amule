@@ -8,16 +8,16 @@
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-//  
+//
 // This library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-//  
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
-//  
+//
 
 #ifndef TEST_H
 #define TEST_H
@@ -87,13 +87,13 @@ public:
 };
 
 
-/** 
+/**
  * This class is used to produce informative backtraces
  *
  * This is done by specifying a "context" for a given scope, using
  * the CONTEXT macro, at which point a description is added to the
  * current list of contexts. At destruction, when the scope is exited,
- * the context is removed from the queue. 
+ * the context is removed from the queue.
  *
  * The resulting "backtrace" can then be printed by calling the
  * PrintBT() function of an CTestFailureException.
@@ -117,7 +117,7 @@ public:
 #define CONTEXT(x) CContext wxCONCAT(context,__LINE__)(wxT(__FILE__), __LINE__, x)
 
 
-/** 
+/**
  * This class disables assertions while it is in scope.
  */
 class CAssertOff
@@ -129,7 +129,7 @@ public:
 
 
 /**
- * Test class containing all macros to do unit testing. 
+ * Test class containing all macros to do unit testing.
  * A test object represents a test that will be executed. Once it has been
  * executed, it reports all failures in the testPartResult linked list.
  *
@@ -194,7 +194,7 @@ public:
 	static void DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
 	{
 		if (!(a == b)) {
-			wxString message = wxT("Expected '") + StringFrom(a) + 
+			wxString message = wxT("Expected '") + StringFrom(a) +
 								wxT("' but got '") + StringFrom(b) + wxT("'");
 
 			throw CTestFailureException(message, file, line);
@@ -306,7 +306,7 @@ inline wxString StringFrom(signed long long value)
 	} catch (const std::exception& e) { \
 		THROW_TEST_FAILURE(wxString::FromAscii(e.what())); \
 	}
-	
+
 
 
 /**
@@ -372,7 +372,7 @@ inline wxString StringFrom(signed long long value)
 		testCaseName##Declare##Test(const wxString& testCaseName, const wxString& testName) \
 			: Test (testCaseName, testName) {} \
 		virtual void run() = 0; \
-		
+
 /**
  * Ending macro used after DECLARE.
  *

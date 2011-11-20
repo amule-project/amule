@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,7 +47,7 @@ class wxMemoryDC;
 class COScopeCtrl : public wxControl
 {
 	friend class CStatisticsDlg;
-		
+
 public:
 	COScopeCtrl(int NTrends, int nDecimals, StatsGraphType type, wxWindow* parent = NULL);
 	~COScopeCtrl();
@@ -68,12 +68,12 @@ public:
 	void DelayPoints()		{ nDelayedPoints++; }
 
 	StatsGraphType graph_type;
-	
+
 public:
 	unsigned nTrends;
 	unsigned nXGrids;
 	unsigned nYGrids;
-	unsigned nShiftPixels;         // amount to shift with each new point 
+	unsigned nShiftPixels;         // amount to shift with each new point
 	unsigned nYDecimals;
 
 	wxString strXUnits;
@@ -82,7 +82,7 @@ public:
 	wxColour m_gridColour;
 
 	typedef struct PlotDataStruct {
-		wxColour crPlot;	       // data plot color  
+		wxColour crPlot;	       // data plot color
 		wxPen  penPlot;
 		unsigned yPrev;
 		float fPrev;

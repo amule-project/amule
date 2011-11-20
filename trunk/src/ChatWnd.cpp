@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -80,7 +80,7 @@ void CChatWnd::StartSession(CFriend* friend_client, bool setfocus)
 	}
 
 	// Check to enable the window controls if needed
-	CheckNewButtonsState();	
+	CheckNewButtonsState();
 }
 
 
@@ -89,21 +89,21 @@ void CChatWnd::OnNMRclickChatTab(wxMouseEvent& evt)
 	// Only handle events from the chat-notebook
 	if (evt.GetEventObject() != (wxObject*)chatselector)
 		return;
-	
+
 	if (chatselector->GetSelection() == -1) {
 		return;
 	}
-	
+
 	// Avoid opening another menu when it's already open
-	if (m_menu == NULL) {  
+	if (m_menu == NULL) {
 		m_menu = new wxMenu(_("Chat"));
-		
+
 		m_menu->Append(MP_CLOSE_TAB, wxString(_("Close tab")));
 		m_menu->Append(MP_CLOSE_ALL_TABS, wxString(_("Close all tabs")));
 		m_menu->Append(MP_CLOSE_OTHER_TABS, wxString(_("Close other tabs")));
-		
+
 		m_menu->AppendSeparator();
-		
+
 		wxMenuItem * addFriend = m_menu->Append(MP_ADDFRIEND, _("Add to Friends"));
 
 		// Disable this client if it is already a friend
@@ -113,7 +113,7 @@ void CChatWnd::OnNMRclickChatTab(wxMouseEvent& evt)
 		}
 
 		PopupMenu(m_menu, evt.GetPosition());
-		
+
 		delete m_menu;
 		m_menu = NULL;
 	}
@@ -135,7 +135,7 @@ void CChatWnd::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
 void CChatWnd::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 {
 	wxNotebookPage* current = chatselector->GetPage(chatselector->GetSelection());
-	
+
 	for (int i = chatselector->GetPageCount() - 1; i >= 0; i--) {
 		if (current != chatselector->GetPage(i))
 			chatselector->DeletePage( i );
@@ -147,7 +147,7 @@ void CChatWnd::OnAddFriend(wxCommandEvent& WXUNUSED(evt))
 {
 	// Get the client that the session is open to
 	CClientRef client;
-	
+
 	// Add the client as friend unless it's already a friend
 	if (chatselector->GetCurrentClient(client) && !client.IsFriend()) {
 		theApp->friendlist->AddFriend(client);
@@ -158,7 +158,7 @@ void CChatWnd::OnAddFriend(wxCommandEvent& WXUNUSED(evt))
 void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString message = CastChild(IDC_CMESSAGE, wxTextCtrl)->GetValue();
-	
+
 	SendMessage(message);
 }
 
@@ -216,7 +216,7 @@ void CChatWnd::ConnectionResult(bool success, const wxString& message, uint64 id
 
 void CChatWnd::SendMessage(const wxString& message, const wxString& client_name, uint64 to_id)
 {
-	
+
 	if (chatselector->SendMessage( message, client_name, to_id )) {
 		CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
@@ -244,14 +244,14 @@ void CChatWnd::CheckNewButtonsState()
 				// Nothing to be done here. Keep current state, which should be enabled.
 				wxASSERT(GetParent()->FindWindow(IDC_CSEND)->IsEnabled());
 				wxASSERT(GetParent()->FindWindow(IDC_CCLOSE)->IsEnabled());
-				wxASSERT(GetParent()->FindWindow(IDC_CMESSAGE)->IsEnabled());			
+				wxASSERT(GetParent()->FindWindow(IDC_CMESSAGE)->IsEnabled());
 				break;
 	}
 }
 
 
 bool CChatWnd::IsIdValid(uint64 id)
-{ 
+{
 	return chatselector->GetTabByClientID(id) >= 0;
 }
 

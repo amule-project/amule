@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -81,8 +81,8 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data) : m_tag
 /**
  * Creates a new CECTag instance for custom data
  *
- * @param name	 	TAG name
- * @param length 	length of data buffer that will be alloc'ed
+ * @param name		TAG name
+ * @param length	length of data buffer that will be alloc'ed
  * @param dataptr	pointer to a void pointer which will be assigned the internal TAG data buffer
  *
  * \note TAG data buffer has to be filled with valid data after the ctor
@@ -218,10 +218,10 @@ void CECTag::InitInt(uint64 data)
 	} else {
 		m_dataType = EC_TAGTYPE_UINT64;
 		m_dataLen = 8;
-	}	
-	
+	}
+
 	NewData();
-	
+
 	switch (m_dataType) {
 		case EC_TAGTYPE_UINT8:
 			PokeUInt8( m_tagData, (uint8) data );
@@ -314,7 +314,7 @@ bool CECTag::operator==(const CECTag& tag) const
 /**
  * Add a child tag to this one. The tag argument is reset to an empty tag.
  *
- * Be very careful that this method swallows the content of \e tag, leaving \e tag empty. 
+ * Be very careful that this method swallows the content of \e tag, leaving \e tag empty.
  * Thus, the following code won't work as expected:
  * \code
  * {
@@ -352,7 +352,7 @@ bool CECTag::operator==(const CECTag& tag) const
  * \endcode
  *
  * @param tag a CECTag class instance to add.
- * @return \b true if tag was really added, 
+ * @return \b true if tag was really added,
  * \b false when it was omitted through valuemap.
  */
 bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
@@ -417,11 +417,11 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 	}
 	m_tagName = tmp_tagName >> 1;
 	bool hasChildren = (tmp_tagName & 0x01) != 0;
-	
+
 	if (!socket.ReadNumber(&m_dataType, sizeof(ec_tagtype_t))) {
 		return false;
 	}
-	
+
 	if (!socket.ReadNumber(&m_dataLen, sizeof(ec_taglen_t))) {
 		return false;
 	}
@@ -429,7 +429,7 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 	if (hasChildren && !ReadChildren(socket)) {
 		return false;
 	}
-	
+
 	unsigned int tmp_len = m_dataLen;
 	m_dataLen = 0;
 	m_dataLen = tmp_len - GetTagLen();
@@ -452,21 +452,21 @@ bool CECTag::WriteTag(CECSocket& socket) const
 	ec_tagtype_t type = m_dataType;
 	ec_taglen_t tagLen = GetTagLen();
 	wxASSERT(type != EC_TAGTYPE_UNKNOWN);
-	
+
 	if (!socket.WriteNumber(&tmp_tagName, sizeof(ec_tagname_t))) return false;
 	if (!socket.WriteNumber(&type, sizeof(ec_tagtype_t))) return false;
 	if (!socket.WriteNumber(&tagLen, sizeof(ec_taglen_t))) return false;
-	
+
 	if (!m_tagList.empty()) {
 		if (!WriteChildren(socket)) return false;
 	}
-	
+
 	if (m_dataLen > 0) {
 		if (m_tagData != NULL) {	// This is here only to make sure everything, it should not be NULL at this point
 			if (!socket.WriteBuffer(m_tagData, m_dataLen)) return false;
 		}
 	}
-	
+
 	return true;
 }
 
@@ -543,7 +543,7 @@ const CECTag* CECTag::GetTagByNameSafe(ec_tagname_t name) const
 }
 
 /**
- * Query TAG length that is suitable for the TAGLEN field (i.e.\ 
+ * Query TAG length that is suitable for the TAGLEN field (i.e.\
  * without it's own header size).
  *
  * @return Tag length, containing its childs' length.
@@ -587,7 +587,7 @@ uint64_t CECTag::GetInt() const
 
 
 std::string CECTag::GetStringDataSTL() const
-{ 
+{
 	if (m_dataType != EC_TAGTYPE_STRING) {
 		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
 		return std::string();
@@ -602,14 +602,14 @@ std::string CECTag::GetStringDataSTL() const
 
 #ifdef USE_WX_EXTENSIONS
 wxString CECTag::GetStringData() const
-{ 
+{
 	return UTF82unicode(GetStringDataSTL().c_str());
 }
 #endif
 
 
 CMD4Hash CECTag::GetMD4Data() const
-{ 
+{
 	if (m_dataType != EC_TAGTYPE_HASH16) {
 		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
 		return CMD4Hash();
@@ -617,9 +617,9 @@ CMD4Hash CECTag::GetMD4Data() const
 
 	EC_ASSERT(m_tagData != NULL);
 
-	// Doesn't matter if m_tagData is NULL in CMD4Hash(), 
+	// Doesn't matter if m_tagData is NULL in CMD4Hash(),
 	// that'll just result in an empty hash.
-	return CMD4Hash((const unsigned char *)m_tagData); 
+	return CMD4Hash((const unsigned char *)m_tagData);
 }
 
 
@@ -635,7 +635,7 @@ CMD4Hash CECTag::GetMD4Data() const
 EC_IPv4_t CECTag::GetIPv4Data() const
 {
 	EC_IPv4_t p(0, 0);
-	
+
 	if (m_dataType != EC_TAGTYPE_IPV4) {
 		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
 	} else if (m_tagData == NULL) {
@@ -667,9 +667,9 @@ double CECTag::GetDoubleData(void) const
 		EC_ASSERT(false);
 		return 0;
 	}
-	
+
 	std::istringstream double_str(m_tagData);
-	
+
 	double data;
 	double_str >> data;
 	return data;
@@ -970,7 +970,7 @@ bool CECTag::AssignIfExist(ec_tagname_t tagname, wxString &target) const
 		return true;
 	}
 	return false;
-}		
+}
 #endif
 
 

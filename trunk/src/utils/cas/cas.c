@@ -1,12 +1,12 @@
 /*
- *  Name:         Main cas file 
+ *  Name:         Main cas file
  *
  *  Purpose:      aMule Statistics
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
  *  Copyright (c) 2004-2011 Pedro de Oliveira ( falso@rdk.homeip-net )
- * 
+ *
  *  This file is part of aMule.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -50,14 +50,14 @@
 # define no_argument 0
 # define required_argument 1
 # define optional_argument 2
- 
+
 struct option {
 	const char *name;
 	int has_arg;
 	int *flag;
 	int val;
 };
- 
+
 int getopt_long(int argc,
 		char * const argv[],
 		const char *optstring,
@@ -205,8 +205,8 @@ int main(int argc, char *argv[])
 		}
 		if (errflag) {
 			usage(argv[0]);
-               		exit (2);
-          	}
+			exit (2);
+		}
 
 	/* get amulesig path */
 
@@ -221,8 +221,8 @@ int main(int argc, char *argv[])
 	if ((amulesig = fopen(path, "r")) == NULL) {
 		fprintf(stderr, "Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
 		exit(2);
-	} 
-	/* i believe this shouldnt be here. 
+	}
+	/* i believe this shouldnt be here.
 	The freq of update could be higher than 60 seconds.
 	And it doesn't mean that the amule is not running.
 	*/
@@ -275,22 +275,22 @@ int main(int argc, char *argv[])
 	strftime(arr, 20, "%b %d %Y, %H:%M", ltp);
 
 	// if amule isn't running say that and exit else print out the stuff
-	
+
 	// if amule uptime is 0, then its not running...
 	if (strncmp(stats[16],"0",1) == 0 ) {
 		perror("aMule is not running\n");
 		exit(3);
 	}
-	
-	
+
+
 	if (strncmp(stats[0],"2",1) == 0)
 		CreateLine(lines, 0 ,"aMule %s is connecting\n", stats[13]);
 	else
 		CreateLine(lines, 0, "aMule %s has been running for %s\n",
 				stats[13], timeconv(stats[16]));
 
-	
-	
+
+
 	if (strncmp(stats[0],"0",1) == 0 && strncmp(stats[5],"0",1) == 0)
 		CreateLine(lines, 1, "%s is not connected ", stats[10]);
 	else if (strncmp(stats[0],"0",1) == 0 && strncmp(stats[5],"0",1) != 0)
@@ -298,8 +298,8 @@ int main(int argc, char *argv[])
 	else
 		CreateLine(lines, 1, "%s is connected to %s [%s:%s] with ", stats[10],
 			stats[1], stats[2], stats[3]);
-	
-	
+
+
 	if (strncmp(stats[5],"2",1) == 0) {
 		if (strncmp(stats[4],"H",1) == 0)
 			AppendToLine(lines, 1, "HighID | Kad: ok \n");
@@ -312,7 +312,7 @@ int main(int argc, char *argv[])
 			AppendToLine(lines, 1, "HighID | Kad: firewalled \n");
 		else if (strncmp(stats[4],"L",1) == 0)
                         AppendToLine(lines, 1, "LowID | Kad: firewalled \n");
-        	else
+		else
 			AppendToLine(lines, 1, "Kad: firewalled \n");
 	} else {
 		if (strncmp(stats[4],"H",1) == 0)
@@ -355,7 +355,7 @@ int main(int argc, char *argv[])
 #endif
 
 	if (use_page == 1) {
-		
+
 		if (!readconfig(&config)) {
 			perror("Could not read config file\n");
 			exit(4);

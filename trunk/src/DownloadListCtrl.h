@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,7 +45,7 @@ struct FileCtrlItem_Struct;
  * This class is responsible for representing the download queue.
  *
  * The CDownlodListCtrl class is responsible for drawing files being downloaded.
- * It is in many ways primary widget within the application, since it is here that 
+ * It is in many ways primary widget within the application, since it is here that
  * users can inspect and manipulate their current downloads.
  *
  */
@@ -54,7 +54,7 @@ class CDownloadListCtrl : public CMuleListCtrl
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @see CMuleListCtrl::CMuleListCtrl for documentation of parameters.
 	 */
 	 CDownloadListCtrl(
@@ -65,11 +65,11 @@ public:
                 long style = wxLC_ICON,
                 const wxValidator& validator = wxDefaultValidator,
                 const wxString &name = wxT("downloadlistctrl") );
-				
+
 	/**
 	 * Destructor.
-	 */	 
-	virtual	~CDownloadListCtrl();	
+	 */
+	virtual	~CDownloadListCtrl();
 
 
 	/**
@@ -80,16 +80,16 @@ public:
 	 * Please note that duplicates wont be added.
 	 */
 	void AddFile( CPartFile* file );
-	
+
 	/**
 	 * Removes the specified file from the list.
 	 *
 	 * @param file A valid pointer of the file to be removed.
 	 *
-	 * This function also removes any sources assosiated with the file. 
+	 * This function also removes any sources assosiated with the file.
 	 */
 	void RemoveFile( CPartFile* file );
-	
+
 	/**
 	 * Shows or hides the sources of a specific file.
 	 *
@@ -106,7 +106,7 @@ public:
 	 *
 	 * @param toupdate The source or file to be updated.
 	 *
-	 * Calling this function with a file as the argument will ensure that the 
+	 * Calling this function with a file as the argument will ensure that the
 	 * file is hidden/shown depending on its state and the currently selected
 	 * category.
 	 */
@@ -116,15 +116,15 @@ public:
 	 * Returns the current category.
 	 */
 	uint8 GetCategory() const;
-	
+
 	/**
 	 * Changes the displayed category and updates the list of shown files.
-	 * 
+	 *
 	 * @param newCategory The new category to display.
 	 */
 	void ChangeCategory( int newCategory );
 
-	
+
 	/**
 	 * Clears all completed files from the list.
 	 */
@@ -145,13 +145,13 @@ private:
 	 */
 	void ShowFilesCount( int diff );
 
-	
+
 	/**
 	 * @see CMuleListCtrl::GetTTSText
 	 */
-	virtual wxString GetTTSText(unsigned item) const;	
-	
-	
+	virtual wxString GetTTSText(unsigned item) const;
+
+
 	/**
 	 * Overloaded function needed for custom drawing of items.
 	 */
@@ -168,13 +168,13 @@ private:
 	void	DrawFileStatusBar( const CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat ) const;
 
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
-	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );	
+	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );
 
 	// Event-handlers for files
 	void	OnCancelFile( wxCommandEvent& event );
 	void	OnSetPriority( wxCommandEvent& event );
 	void	OnSwapSources( wxCommandEvent& event );
-	void	OnSetCategory( wxCommandEvent& event );	
+	void	OnSetCategory( wxCommandEvent& event );
 	void	OnSetStatus( wxCommandEvent& event );
 	void	OnClearCompleted( wxCommandEvent& event );
 	void	OnGetLink( wxCommandEvent& event );
@@ -182,11 +182,11 @@ private:
 	void	OnViewFileInfo( wxCommandEvent& event );
 	void	OnViewFileComments( wxCommandEvent& event );
 	void	OnPreviewFile( wxCommandEvent& event );
-	
+
 	// Misc event-handlers
 	void	OnItemActivated( wxListEvent& event );
-	void 	OnMouseRightClick( wxListEvent& event );
-	void 	OnMouseMiddleClick( wxListEvent& event );
+	void	OnMouseRightClick( wxListEvent& event );
+	void	OnMouseMiddleClick( wxListEvent& event );
 	void	OnKeyPressed( wxKeyEvent& event );
 	void	OnItemSelectionChanged( wxListEvent& event );
 
@@ -215,14 +215,14 @@ private:
 	//! always be found on this list, even if they are currently hidden.
 	ListItems	m_ListItems;
 
-	
+
 	//! Pointer to the current menu object, used to avoid multiple menus.
 	wxMenu*		m_menu;
 	//! Cached brush object.
 	wxBrush	m_hilightBrush;
 	//! Cached brush object.
-	wxBrush	m_hilightUnfocusBrush;	
-	
+	wxBrush	m_hilightUnfocusBrush;
+
 	//! The currently displayed category
 	uint8 m_category;
 

@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -68,8 +68,8 @@ protected:
 	 * This function takes care of creating the popup-menu.
 	 *
 	 * Please note that by using the RIGHT_DOWN event, I'm disabling the second
-	 * type of selection that the wxTextCtrl supports. However, I frankly only 
-	 * noticed that second selection type while implementing this, so I doubth 
+	 * type of selection that the wxTextCtrl supports. However, I frankly only
+	 * noticed that second selection type while implementing this, so I doubth
 	 * that anyone will be missing it ...
 	 */
 	void OnRightDown( wxMouseEvent& evt );
@@ -78,20 +78,20 @@ protected:
 	 * This function takes care of pasting text.
 	 *
 	 * Pleaes note that it is only needed because wxMenu disallows enabling and
-	 * disabling of items that use the predefined wxID_PASTE id. This is the 
-	 * only one of the already provided commands we need to override, since the 
+	 * disabling of items that use the predefined wxID_PASTE id. This is the
+	 * only one of the already provided commands we need to override, since the
 	 * others already work just fine.
 	 */
 	void OnPaste( wxCommandEvent& evt );
-	
+
 	/**
 	 * This functions takes care of selecting all text.
 	 */
 	void OnSelAll( wxCommandEvent& evt );
-	
+
 	/**
 	 * This functions takes care of clearing the text.
-	 */ 
+	 */
 	void OnClear( wxCommandEvent& evt );
 
 

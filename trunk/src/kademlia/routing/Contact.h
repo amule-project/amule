@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -85,7 +85,7 @@ public:
 
 	time_t	 GetCreatedTime() const throw()			{ return m_created; }
 
-	void	 SetExpireTime(time_t value) throw()		{ m_expires = value; };	
+	void	 SetExpireTime(time_t value) throw()		{ m_expires = value; };
 	time_t	 GetExpireTime() const throw()			{ return m_expires; }
 
 	time_t	 GetLastTypeSet() const throw()			{ return m_lastTypeSet; }

@@ -251,7 +251,7 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 		MULELDFLAGS="-bind_at_load"
 		touch src/Scanner.cpp
 		;;
-	openbsd*) 
+	openbsd*)
 		SYS=openbsd
 		LIBS="$LIBS -L/usr/local/lib"
 		MULECPPFLAGS="-D__OPENBSD__"
@@ -389,7 +389,7 @@ AC_DEFUN([MULE_CHECK_WX_SUPPORTS_LARGEFILE],
 		AC_MSG_RESULT([no])
 		AC_MSG_ERROR([
 	Support for large files in wxWidgets is required by aMule.
-	To continue you must recompile wxWidgets with support for 
+	To continue you must recompile wxWidgets with support for
 	large files enabled.])
 	])
 
@@ -642,7 +642,7 @@ AC_DEFUN([MULE_DENOISER],
 
 	AC_CONFIG_COMMANDS([denoiser], [[if test $denoiserlevel -gt 0; then
 		if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
-		sed -e "1{x;s/.*/1/;x;};/^[ 	]*\$/d;/^#if /{/level.*$denoiserlevel/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[ 	]*#/d;x;/^1/{x;b;};x;d" \
+		sed -e "1{x;s/.*/1/;x;};/^[	 ]*\$/d;/^#if /{/level.*$denoiserlevel/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[	 ]*#/d;x;/^1/{x;b;};x;d" \
 			$srcdir/src/utils/scripts/denoiser.rules > src/utils/scripts/denoiser.sed
 		for i in `find . -name 'Makefile' -print`; do
 			if test -n "`head -n 1 $i | grep '^#'`"; then

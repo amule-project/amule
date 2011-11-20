@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -44,9 +44,9 @@ class CPath;
  * @param ArgB The value to compare ArgA against.
  * @return See below.
  *
- * Use this function to safely compare two arguments of a type that supports 
+ * Use this function to safely compare two arguments of a type that supports
  * the "<" operator. It works like strcmp and returns a negative value if ArgA
- * is less than ArgB, zero if ArgA is equal to ArgB and a positive value if 
+ * is less than ArgB, zero if ArgA is equal to ArgB and a positive value if
  * ArgA is greater than ArgB.
  */
 template <class TYPE>
@@ -97,7 +97,7 @@ unsigned int EraseFirstValue( LIST& list, const ITEM& item )
 	for (; it != list.end(); ++it) {
 		if (*it == item) {
 			list.erase(it);
-			
+
 			return true;
 		}
 	}
@@ -145,7 +145,7 @@ struct SDoDelete
 	template <typename FIRST, typename SECOND>
 	void operator()(const std::pair<FIRST, SECOND>& pair) {
 		delete pair.second;
-	}		
+	}
 };
 
 
@@ -156,7 +156,7 @@ void DeleteContents(STL_CONTAINER& container)
 	// Ensure that the actual container wont contain dangling pointers during
 	// this operation, to ensure that the destructors cant access them.
 	STL_CONTAINER copy;
-	
+
 	std::swap(copy, container);
 	std::for_each(copy.begin(), copy.end(), SDoDelete());
 }
@@ -196,7 +196,7 @@ wxString GetMuleVersion();
  *
  * It has the advantage of validating the cast in debug builds and being much
  * shorter than than manually typing wxStaticCast + FindWindow. This mean that
- * we will be alerted in case of widget changing type, instead of getting just 
+ * we will be alerted in case of widget changing type, instead of getting just
  * getting bad mojo due to casting a pointer to the wrong type.
  */
 #define CastChild( IdOrName, type )			dynamic_cast<type*>( FindWindow( IdOrName ) )
@@ -300,7 +300,7 @@ public:
 	{
 		return s_t;
 	}
-	
+
 private:
 	EED2KFileType s_t;
 };

@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -32,14 +32,14 @@
 #define USE_MULE_PEN_CACHE 1
 #define USE_MULE_BRUSH_CACHE 1
 
-std::map<uint32_t, wxPen*> wxPenCache; 
+std::map<uint32_t, wxPen*> wxPenCache;
 std::map<uint32_t, wxBrush*> wxBrushCache;
 
 const wxPen& CMuleColour::GetPen(int width, int style) const
 {
 #if USE_MULE_PEN_CACHE
 	wxPen* result = NULL;
-	
+
 	if (m_cachedpen && (m_cachedpen->GetWidth() == width) && (m_cachedpen->GetStyle() == style)) {
 		result = m_cachedpen;
 	} else {
@@ -54,18 +54,18 @@ const wxPen& CMuleColour::GetPen(int width, int style) const
 			wxPenCache.insert(std::pair<uint32_t, wxPen*>(hash, result));
 		}
 	}
-	
+
 	return *result;
-#else 
+#else
 	return *wxThePenList->FindOrCreatePen(wxColour(m_red, m_green, m_blue), width, style);
 #endif
 }
 
 const wxBrush& CMuleColour::GetBrush(int style) const
 {
-#if USE_MULE_BRUSH_CACHE	
+#if USE_MULE_BRUSH_CACHE
 	wxBrush* result = NULL;
-	
+
 	if (m_cachedbrush && (m_cachedbrush->GetStyle() == style)) {
 		result = m_cachedbrush;
 	} else {
@@ -80,7 +80,7 @@ const wxBrush& CMuleColour::GetBrush(int style) const
 			wxBrushCache.insert(std::pair<uint32_t, wxBrush*>(hash, result));
 		}
 	}
-	
+
 	return *result;
 #else
 	return *wxTheBrushList->FindOrCreateBrush(wxColour(m_red, m_green, m_blue), style);

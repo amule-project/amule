@@ -2,7 +2,7 @@ SUBDIRS = cpp
 
 # Sources
 
-MAINTAINERCLEANFILES = Makefile.in 
+MAINTAINERCLEANFILES = Makefile.in
 
 BUILT_SOURCES = ECGeneratedFiles
 

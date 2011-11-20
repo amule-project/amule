@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -162,13 +162,13 @@ public:
 	 */
 	wxString TruncatePath(size_t length, bool isFilePath = false) const;
 
-	/** 
+	/**
 	 * Renames the file 'src' to the file 'dst', overwriting if specified. Note that
 	 * renaming cannot be done across volumes. For that CopyFile is required.
 	 */
 	static bool RenameFile(const CPath& src, const CPath& dst, bool overwrite = false);
 	/**
-	 * Copies the file 'src' to the file 'dst', overwriting if specified. 
+	 * Copies the file 'src' to the file 'dst', overwriting if specified.
 	 * The silly name is used to avoid conflicts with the #define CopyFile,
 	 * which is set on MSW.
 	 */

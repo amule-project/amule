@@ -23,7 +23,7 @@
 # Gimme a break, is my first perl app... (Kry)
 
 use File::Copy;
-use warnings; 
+use warnings;
 use strict;
 
 my $exit_with_help;
@@ -59,7 +59,7 @@ while ($line !~ /^\s*files\s*=\s*\[\s*$/) {
 	if (!($line)) {
 		die $input_folder . "/files.ini seems not to be a mldonkey files.ini\n";
 	}
-	chop $line;	
+	chop $line;
 }
 
 #We're at the start of the downloading files section.
@@ -135,8 +135,8 @@ sub read_file_info {
 			if ($result eq "done") {
 				print "MD4 list: @md4_list\n";
 			}
-			
-			
+
+
 		}
 
 		if ($line =~ /^\s*file_present_chunks\s*=\s*\[\s*$/) {
@@ -160,15 +160,15 @@ sub read_file_info {
 			if ($result eq "done") {
 				# Process mldonkey gaps to aMule gaps
 				print "ML Gaps list: @ml_gaps\n";
-				
+
 				@gap_list = &convert_gap_format($file_size,@ml_gaps);
-				
+
 				print "aMule Gaps list: @gap_list\n";
 			}
-			
-			
+
+
 		}
-		
+
 		if ($done ne "true") {
 			$line = <INFO>;
 		}
@@ -181,19 +181,19 @@ sub read_file_info {
 			if (!(@md4_list)) {
 				print "WARNING: File has no md4 hashes list, imported file will have 0 bytes downloaded\n";
 			}
-			
+
 			my $first_free_number = &get_first_free_number;
-			
+
 			my $met_file = $output_folder . sprintf("/%03d.part.met",$first_free_number);
 
 			&create_met_file($met_file,$file_name,$file_size,$md4_hash,@md4_list,"---",@gap_list);
 
 			print "File $met_file imported successfully.\n";
-			
+
 			my $from = $input_folder . "/" . $part_file;
 			my $destination = $output_folder . sprintf("/%03d.part",$first_free_number);
 			copy($from, $destination) or die "CRITICAL: File $from cannot be copied to $destination. Error: $!\n";
-			
+
 		} else {
 			print "Not enough info to import file, sorry.\n";
 		}
@@ -228,28 +228,28 @@ sub create_met_file {
 
 	#Calculate number of MD4 hashes
 	my @md4_hashlist = ();
-	
+
 	my $i = 4;
-	
+
 	while ($_[$i] ne "---") {
 		push (@md4_hashlist,$_[$i]);
 		$i++;
 	}
-	
+
 	$i++;
-	
+
 	my @gaps_list = ();
 	while ($_[$i]) {
 		push(@gaps_list,$_[$i]);
 		$i++;
 	}
-	
+
 	print "Write aMule gap list: @gaps_list\n";
-	
+
 	my $md4_hashsize = @md4_hashlist;
-	
+
 	print "MD4 hashlist size $md4_hashsize\n";
-	
+
 	#Number of MD4 hashes (2 bytes)
 	print MET &int16_string($md4_hashsize);
 
@@ -257,46 +257,46 @@ sub create_met_file {
 	my $md4_parthash = "";
 	foreach $md4_parthash (@md4_hashlist) {
 		print MET &hash_string($md4_parthash);
-	}	
+	}
 
 	#Number of tags (4 bytes)
-	
+
 	my $tags_number = 2; # Fixed tags (Name + Size)
 
 	$tags_number = $tags_number + @gaps_list;
-	
+
 	print MET &int32_string($tags_number);
-	
+
 	#Name tag (x bytes)
-	
+
 	print MET &tag_string(2,0,0x01,$_[1]); # Tagtype string, id FT_FILENAME, value
-	
+
 	#Size tag (x bytes)
-	
+
 	if ($large_file eq "yes") {
-		print MET &tag_string(0x0b,0,0x02,$_[2]); # Tagtype UINT64, id FT_FILESIZE, value	
+		print MET &tag_string(0x0b,0,0x02,$_[2]); # Tagtype UINT64, id FT_FILESIZE, value
 	} else {
 		print MET &tag_string(3,0,0x02,$_[2]); # Tagtype UINT32, id FT_FILESIZE, value
 	}
-	
+
 	my $t = 0;
 
 	my $tag_type;
 	if ($large_file eq "yes") {
 		$tag_type = 0x0b;
 	} else {
-		$tag_type = 0x03;		
+		$tag_type = 0x03;
 	}
 
 	while (@gaps_list[$t*2]) {
 		my $gap_start = @gaps_list[$t*2];
 		my $gap_end = @gaps_list[$t*2+1];
-		
+
 		print "Gap $t start $gap_start end $gap_end\n";
-		
+
 		print MET &tag_string($tag_type,1,sprintf("%c%d",0x09,$t),$gap_start);
 		print MET &tag_string($tag_type,1,sprintf("%c%d",0x0a,$t),$gap_end);
-		
+
 		$t++;
 	}
 
@@ -333,10 +333,10 @@ sub tag_string {
 	# ONLY STRINGS AND UINT32/64 SUPPORTED
 
 	my $final_string = "";
-	
+
 	# Tag type
 	$final_string = $final_string . &byte_string($_[0]);
-	
+
 	if ($_[1] == 0) {
 		# Byte ID tag
 		$final_string = $final_string . &int16_string(1);
@@ -372,8 +372,8 @@ sub convert_gap_format {
 	if ($_[1] != 0) {
 		push(@converted_gaps,0);
 		push(@converted_gaps,$_[1]);
-	} 
-	
+	}
+
 	$n++;
 
 	while ($_[$n+1]) {
@@ -381,24 +381,24 @@ sub convert_gap_format {
 		push(@converted_gaps,$_[$n+1]);
 		$n += 2;
 	}
-	
+
 	if ($_[$n] != $total_size) {
 		push(@converted_gaps,$_[$n]);
 		push(@converted_gaps,$total_size);
 	}
-	
+
 	@converted_gaps;
 }
 
 sub get_first_free_number {
 	my $n = 1;
 	my $result = 0;
-	
+
 	while (!$result && !($n>999)) {
 		open(TEST, " <" . $output_folder . sprintf("/%03d.part.met",$n)) or $result=$n;
 		close(TEST);
 		$n++;
 	}
-	
+
 	$result;
 }

@@ -205,11 +205,11 @@ void CRoutingBin::GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_
 	// Remove any extra results by least wanted first.
 	while (result->size() > maxRequired) {
 		// Dec in use count.
- 		if (inUse) {
-  			(--result->end())->second->DecUse();
+		if (inUse) {
+			(--result->end())->second->DecUse();
 		}
- 		// Remove from results
- 		result->erase(--result->end());
+		// Remove from results
+		result->erase(--result->end());
 	}
 }
 

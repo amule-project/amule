@@ -6,7 +6,7 @@
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
  *  Copyright (c) 2004-2011 Pedro de Oliveira ( falso@rdk.homeip-net )
- * 
+ *
  *  This file is part of aMule.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -131,7 +131,7 @@ int readconfig(CONF *config)
 				if (strcmp(option, "img_type") == 0) {
 					sscanf(buffer, "%*s %d", &config->img_type);
 				}
-					
+
 				for (i = 0; i < IMG_TEXTLINES; i++) {
 					if (strcmp(option, lines[i]) == 0) {
 						sscanf(buffer,

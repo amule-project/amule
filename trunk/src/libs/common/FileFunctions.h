@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -33,7 +33,7 @@
 #include <wx/dir.h>
 
 
-// Dir iterator: needed because wxWidget's wxFindNextFile and 
+// Dir iterator: needed because wxWidget's wxFindNextFile and
 // wxFindFirstFile are bugged like hell.
 class CDirIterator : private wxDir
 {
@@ -54,7 +54,7 @@ public:
 
 	bool HasSubDirs(const wxString& spec = wxEmptyString);
 };
-	
+
 
 //! Filetypes understood by UnpackArchive
 enum EFileType

@@ -8,12 +8,12 @@
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-//  
+//
 // This library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-//  
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -63,11 +63,11 @@ bool TestCase::run()
 	Print(wxT("\nRunning test-collection \"") + m_name + wxString::Format(wxT("\" with %u test-cases:"), m_tests.size()));
 
 	bool failures = false;
-	
+
 	TestList::iterator it = m_tests.begin();
 	for (; it != m_tests.end(); ++it) {
 		Test* test = *it;
-		
+
 		Print(wxT("\tTest \"") + test->getTestName() + wxT("\" "));
 
 		bool wasSetup = false;
@@ -91,7 +91,7 @@ bool TestCase::run()
 				e.PrintBT();
 			}
 		}
-		
+
 		try {
 			test->tearDown();
 		} catch (const CTestFailureException& e) {

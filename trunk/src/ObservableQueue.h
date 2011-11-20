@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -40,10 +40,10 @@ class CQueueObserver;
  * This specific protocol can be used by a class to make changes to its
  * contents visible, assuming that said contents does not rely on being
  * in a specific order, as insertions commands do not specify positions.
- * 
+ *
  * The class CQueueObserver implements a queue that will always be kept
  * in sync with the class observed, so that it is possible to handle all
- * elements in a container object over a longer period of time, which 
+ * elements in a container object over a longer period of time, which
  * would normally result in problems with changes accomulating in the list.
  */
 template <typename ValueType>
@@ -74,13 +74,13 @@ public:
 		INITIAL
 	};
 
-	
+
 	/**
 	 * Constructor for misc events.
 	 */
 	CQueueEvent( Type event );
-	
-	
+
+
 	/**
 	 * Constructor for events regarding multiple values.
 	 *
@@ -111,14 +111,14 @@ public:
 	 * Returns a copy of the ith value.
 	 */
 	ValueType GetValue( size_t i ) const;
-	
-	
+
+
 private:
 	//! Pointer to a list of values. May be NULL.
 	const ValueList* m_list;
 	//! Pointer to a single value. May be NULL.
 	const ValueType* m_value;
-	//! The actual event-type.	
+	//! The actual event-type.
 	Type m_type;
 };
 
@@ -128,9 +128,9 @@ private:
  * This class forms the superclass for observable queues or lists.
  *
  * The protocol defined above is used (CQueueEvent).
- * 
- * By subclassing this class, a container object can ensure that classes 
- * observing it are able to keep in sync with the changes made to the 
+ *
+ * By subclassing this class, a container object can ensure that classes
+ * observing it are able to keep in sync with the changes made to the
  * contents, with a few limits.
  *
  * For one thing, the value is assumed to be both key and value, so
@@ -153,13 +153,13 @@ public:
 	 * Sends STOPPING to all observers.
 	 */
 	virtual ~CObservableQueue();
-	
+
 protected:
 	typedef CQueueEvent< ValueType > EventType;
 	typedef CObserver< EventType > ObserverType;
 	typedef typename EventType::ValueList ValueList;
 
-	
+
 	/**
 	 * Sends a STARTING event to new observers.
 	 */
@@ -177,8 +177,8 @@ protected:
  * This class is an automatically synchronized queue connected with an ObservableQueue.
  *
  * Note that this observer can only be assigned to ONE observable at a time!
- * 
- * This class implements a queue (out-order not specified) that allows an 
+ *
+ * This class implements a queue (out-order not specified) that allows an
  * ObservableQueue object to be object to be used as a queue without making
  * by another object in a safe manner. Changes to the contents of the original
  * queue are propagated to this queue, such that it will never contain values
@@ -186,8 +186,8 @@ protected:
  * to the original queue.
  *
  * This allows the contents to be accessed safely, when for instance it is
- * needed to iterate over the contents over a period of time, where one 
- * cannot be certain of the current state of the actual contents of the 
+ * needed to iterate over the contents over a period of time, where one
+ * cannot be certain of the current state of the actual contents of the
  * original lists.
  *
  * This class supersedes such broken solutions such as remembering the last
@@ -210,21 +210,21 @@ public:
 	 * Constructor.
 	 */
 	CQueueObserver();
-	
-	
+
+
 	/**
 	 * Overloaded notification function.
 	 */
 	virtual void ReceiveNotification( const ObservableType*, const EventType& e );
 
-	
+
 	/**
 	 * Returns the next element from the queue.
 	 *
-	 * Note: Objects will not be returned in the same order as 
-	 * they were found in the original observable. Also, note 
+	 * Note: Objects will not be returned in the same order as
+	 * they were found in the original observable. Also, note
 	 * that calling GetNext() on an empty queue should only be
-	 * done if the default contructed value does not match a 
+	 * done if the default contructed value does not match a
 	 * valid object and can be used to check for End of Queue.
 	 */
 	ValueType GetNext();
@@ -243,11 +243,11 @@ public:
 	 * Clears the queue and readds itself to the current object being observed.
 	 */
 	void Reset();
-	
+
 private:
 	//! Lock used to ensure the threadsafety of the class
 	mutable wxMutex m_mutex;
-	
+
 	typedef std::multiset<ValueType> Queue;
 	typedef typename Queue::iterator QueueIterator;
 	//! The remaining items.
@@ -386,7 +386,7 @@ template <typename ValueType>
 ValueType CQueueObserver<ValueType>::GetNext()
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	if ( m_queue.size() ) {
 		ValueType v = *m_queue.begin();
 		m_queue.erase( m_queue.begin() );
@@ -402,7 +402,7 @@ template <typename ValueType>
 size_t CQueueObserver<ValueType>::GetRemaining() const
 {
 	wxMutexLocker lock( m_mutex );
-	
+
 	return m_queue.size();
 }
 
@@ -418,15 +418,15 @@ template <typename ValueType>
 void CQueueObserver<ValueType>::Reset()
 {
 	ObservableType* owner;
-	
+
 	{
 		wxMutexLocker lock(m_mutex);
-		m_queue.clear();	
+		m_queue.clear();
 		owner = const_cast<ObservableType*>( m_owner );
 	}
 
 	owner->RemoveObserver( this );
-	owner->AddObserver( this );	
+	owner->AddObserver( this );
 }
 
 

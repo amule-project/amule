@@ -42,8 +42,8 @@
 #include "ed2khash.h"
 
 
-// efe, sorry for that, i have not enough time to do the right thing now, but 
-// please, create a file called like unicodestuff.h and put this. Include in 
+// efe, sorry for that, i have not enough time to do the right thing now, but
+// please, create a file called like unicodestuff.h and put this. Include in
 // alcc.c and here. And remove this stupid comment :)
 //-----------------------------------------------------------------------------
 // efe, this can be put in a separete include file, if you want to reuse
@@ -230,7 +230,7 @@ wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* ar
   if ( arrayOfUrls && !arrayOfUrls->IsEmpty())
     {
       size_t i;
-      for ( i = 0; i < arrayOfUrls->GetCount(); i++ ) 
+      for ( i = 0; i < arrayOfUrls->GetCount(); i++ )
         {
           ed2kLink += wxT("s=") + (*arrayOfUrls)[i] + wxT("|");
         }

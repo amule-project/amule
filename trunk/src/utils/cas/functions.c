@@ -6,7 +6,7 @@
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
  *  Copyright (c) 2004-2011 Pedro de Oliveira ( falso@rdk.homeip-net )
- * 
+ *
  *  This file is part of aMule.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -201,7 +201,7 @@ char *get_amule_path(const char *file, int force_directory, const char *cmdline_
 		if (path[strlen(path) - 1] == CAS_DIR_SEPARATOR[0]) {
 			strcat(path, file);
 		}
-	}	
+	}
 
 	return path;
 }

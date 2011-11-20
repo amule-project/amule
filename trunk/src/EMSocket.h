@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -48,8 +48,8 @@ class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket
 public:
 	CEMSocket(const CProxyData *ProxyData = NULL);
 	virtual ~CEMSocket();
-	
-	virtual void 	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+
+	virtual void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};
 	uint8	GetConState()	{return byConnected;}
 	void	SetDownloadLimit(uint32 limit);
@@ -57,7 +57,7 @@ public:
 
 	virtual uint32	GetTimeOut() const;
 	virtual void	SetTimeOut(uint32 uTimeOut);
-	
+
     uint32	GetLastCalledSend() { return lastCalledSend; }
 
     uint64	GetSentBytesCompleteFileSinceLastCallAndReset();
@@ -70,32 +70,32 @@ public:
     virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, false); };
 
     uint32	GetNeededBytes();
-	
+
 	void	Destroy();
 	bool OnDestroy() { return DoingDestroy; };
-	
+
 	//protected:
 	// these functions are public on our code because of the amuleDlg::socketHandler
 	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
-	virtual void	OnSend(int nErrorCode);	
+	virtual void	OnSend(int nErrorCode);
 	virtual void	OnReceive(int nErrorCode);
-	
+
 protected:
 
 	virtual bool	PacketReceived(CPacket* WXUNUSED(packet)) { return false; };
 	virtual void	OnClose(int nErrorCode);
-	
+
 	uint8	byConnected;
 	uint32	m_uTimeOut;
 
 private:
     virtual SocketSentBytes Send(uint32 maxNumberOfBytesToSend, uint32 minFragSize, bool onlyAllowedToSendControlPacket);
-	void	ClearQueues();	
+	void	ClearQueues();
 
     uint32	GetNextFragSize(uint32 current, uint32 minFragSize);
     bool    HasSent() { return m_hasSent; }
-	
-	// Download (pseudo) rate control	
+
+	// Download (pseudo) rate control
 	uint32	downloadLimit;
 	bool	downloadLimitEnable;
 	bool	pendingOnReceive;
@@ -124,7 +124,7 @@ private:
 
 	typedef	std::list<StandardPacketQueueEntry> CStdPacketQueue;
 	CStdPacketQueue m_standard_queue;
-	
+
     bool m_currentPacket_is_controlpacket;
 
 	wxMutex	m_sendLocker;

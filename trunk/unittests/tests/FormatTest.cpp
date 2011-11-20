@@ -6,7 +6,7 @@
 
 using namespace muleunit;
 
-// Note: These tests have been written in accordance with the 
+// Note: These tests have been written in accordance with the
 //       capabilities of printf found in printf(3).
 // Note to the above: Except where otherwise stated.
 
@@ -94,7 +94,7 @@ TEST(Format, SetStringAndGetString)
 	{ \
 		wxString reference	= wxString::Format(wxString(wxT("%")) + wxformat, value); \
 		wxString actual		= CFormat(wxString(wxT("%")) + cformat) % value; \
- 		ASSERT_EQUALS_M(reference, actual, wxString(wxT("%")) << wxformat \
+		ASSERT_EQUALS_M(reference, actual, wxString(wxT("%")) << wxformat \
 				<< wxT(" vs. %") << cformat << wxT(": '") + reference + wxT("' != '") + actual + wxT("'")); \
 	}
 
@@ -241,7 +241,7 @@ TEST(Format, MultipleFields)
 		ASSERT_EQUALS(wxT("-1 _ 2 _ -4"), fmt1.GetString());
 	}
 
-	{	
+	{
 		CFormat fmt2(wxT("%d _ %u _ %i"));
 		fmt2 % -1;
 		fmt2 %  2u;
@@ -258,7 +258,7 @@ TEST(Format, MultipleFields)
 }
 
 
-TEST(Format, EscapedPercentageSign) 
+TEST(Format, EscapedPercentageSign)
 {
 	{
 		CFormat fmt1(wxT("%%"));
@@ -278,7 +278,7 @@ TEST(Format, EscapedPercentageSign)
 
 	{
 		CFormat fmt4(wxT("%% _ %% _ %%"));
-		ASSERT_EQUALS(wxT("% _ % _ %"), fmt4.GetString());	
+		ASSERT_EQUALS(wxT("% _ % _ %"), fmt4.GetString());
 	}
 }
 
@@ -320,7 +320,7 @@ TEST(Format, MalformedFields)
 		ASSERT_EQUALS(wxT("1%q"), CFormat(wxT("%i%q")) % 1);
 		ASSERT_EQUALS(wxT("%q1"), CFormat(wxT("%q%i")) % 1);
 
-		// Wrong and right arguments 
+		// Wrong and right arguments
 		ASSERT_EQUALS(wxT("%i -- 17"), CFormat(wxT("%i -- %i")) % 1.0 % 17);
 	}
 }
@@ -369,7 +369,7 @@ TEST(Format, NotSupported)
 	}
 #endif
 
-	{		
+	{
 		CAssertOff null;
 
 		ASSERT_EQUALS(wxT("%*d"), CFormat(wxT("%*d")) % 1);
@@ -397,18 +397,18 @@ TEST(Format, Overfeeding)
 
 
 TEST(Format, 64bValues)
-{	
+{
 	{
 		CFormat fmt(wxT("%lli - %lli"));
-	   	fmt % MIN(sint64) % MAX(sint64);
+		fmt % MIN(sint64) % MAX(sint64);
 		ASSERT_EQUALS(wxT("-9223372036854775808 - 9223372036854775807"), fmt.GetString());
 	}
 
 	{
 		CFormat fmt(wxT("%llu - %llu"));
-	   	fmt % MIN(uint64) % MAX(uint64);
+		fmt % MIN(uint64) % MAX(uint64);
 		ASSERT_EQUALS(wxT("0 - 18446744073709551615"), fmt.GetString());
-	}	
+	}
 }
 
 

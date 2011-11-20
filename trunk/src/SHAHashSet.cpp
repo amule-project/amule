@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -62,14 +62,14 @@ void CAICHHash::Read(CFileDataIO* file)
 
 
 void CAICHHash::Write(CFileDataIO* file) const
-{ 
+{
 	file->Write(m_abyBuffer,HASHSIZE);
 }
 
 unsigned int CAICHHash::DecodeBase32(const wxString &base32)
 {
-	return ::DecodeBase32(base32, HASHSIZE, m_abyBuffer);	
-}	
+	return ::DecodeBase32(base32, HASHSIZE, m_abyBuffer);
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -97,11 +97,11 @@ CAICHHashTree::~CAICHHashTree()
 CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nLevel)
 {
 	(*nLevel)++;
-	
+
 	wxCHECK(*nLevel <= 22, NULL);
 	wxCHECK(nStartPos + nSize <= m_nDataSize, NULL);
 	wxCHECK(nSize <= m_nDataSize, NULL);
-	
+
 	if (nStartPos == 0 && nSize == m_nDataSize) {
 		// this is the searched hash
 		return this;
@@ -110,7 +110,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 		wxFAIL;
 		return NULL;
 	} else {
-		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
+		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0);
 		uint64 nLeft = (((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
 		uint64 nRight = m_nDataSize - nLeft;
 		if (nStartPos < nLeft) {
@@ -118,13 +118,13 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 				wxFAIL;
 				return NULL;
 			}
-			
+
 			if (m_pLeftTree == NULL) {
 				m_pLeftTree = new CAICHHashTree(nLeft, true, (nLeft <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
 			} else {
 				wxASSERT( m_pLeftTree->m_nDataSize == nLeft );
 			}
-			
+
 			return m_pLeftTree->FindHash(nStartPos, nSize, nLevel);
 		} else {
 			nStartPos -= nLeft;
@@ -132,13 +132,13 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 				wxFAIL;
 				return NULL;
 			}
-			
+
 			if (m_pRightTree == NULL) {
 				m_pRightTree = new CAICHHashTree(nRight, false, (nRight <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
 			} else {
-				wxASSERT( m_pRightTree->m_nDataSize == nRight ); 
+				wxASSERT( m_pRightTree->m_nDataSize == nRight );
 			}
-			
+
 			return m_pRightTree->FindHash(nStartPos, nSize, nLevel);
 		}
 	}
@@ -193,7 +193,7 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
 		AddDebugLogLineN(logSHAHashSet, wxT("VerifyHashTree - No masterhash available"));
 		return false;
 	}
-	
+
 		// calculated missing hashs without overwriting anything
 		if (m_pLeftTree && !m_pLeftTree->m_bHashValid) {
 			m_pLeftTree->ReCalculateHash(hashalg, true);
@@ -201,7 +201,7 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
 		if (m_pRightTree && !m_pRightTree->m_bHashValid) {
 			m_pRightTree->ReCalculateHash(hashalg, true);
 		}
-		
+
 		if ((m_pRightTree && m_pRightTree->m_bHashValid) ^ (m_pLeftTree && m_pLeftTree->m_bHashValid)) {
 			// one branch can never be verified
 			if (bDeleteBadTrees) {
@@ -217,15 +217,15 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
 			AddDebugLogLineN(logSHAHashSet, wxT("VerifyHashSet failed - Hashtree incomplete"));
 			return false;
 		}
-	if ((m_pRightTree && m_pRightTree->m_bHashValid) && (m_pLeftTree && m_pLeftTree->m_bHashValid)) {			
-	    // check verify the hashs of both child nodes against my hash 
-	
+	if ((m_pRightTree && m_pRightTree->m_bHashValid) && (m_pLeftTree && m_pLeftTree->m_bHashValid)) {
+	    // check verify the hashs of both child nodes against my hash
+
 		CAICHHash CmpHash;
 		hashalg->Reset();
 		hashalg->Add(m_pLeftTree->m_Hash.GetRawHash(), HASHSIZE);
 		hashalg->Add(m_pRightTree->m_Hash.GetRawHash(), HASHSIZE);
 		hashalg->Finish(CmpHash);
-		
+
 		if (m_Hash != CmpHash) {
 			if (bDeleteBadTrees) {
 				if (m_pLeftTree) {
@@ -256,7 +256,7 @@ void CAICHHashTree::SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* 
 		AddDebugLogLineN(logSHAHashSet, wxT("Critical Error: Failed to Insert SHA-HashBlock, FindHash() failed!"));
 		return;
 	}
-	
+
 	//sanity
 	if (pToInsert->m_nBaseSize != EMBLOCKSIZE || pToInsert->m_nDataSize != nSize) {
 		wxFAIL;
@@ -273,7 +273,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 {
 	wxCHECK(nStartPos + nSize <= m_nDataSize, false);
 	wxCHECK(nSize <= m_nDataSize, false);
-	
+
 	if (nStartPos == 0 && nSize == m_nDataSize) {
 		// this is the searched part, now write all blocks of this part
 		// hashident for this level will be adjsuted by WriteLowestLevelHash
@@ -285,8 +285,8 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 	} else {
 		wHashIdent <<= 1;
 		wHashIdent |= (m_bIsLeftBranch) ? 1: 0;
-		
-		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
+
+		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0);
 		uint64 nLeft = ( ((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
 		uint64 nRight = m_nDataSize - nLeft;
 		if (m_pLeftTree == NULL || m_pRightTree == NULL) {
@@ -319,14 +319,14 @@ void CAICHHashTree::WriteHash(CFileDataIO* fileDataOut, uint32 wHashIdent, bool 
 	wxASSERT( m_bHashValid );
 	wHashIdent <<= 1;
 	wHashIdent |= (m_bIsLeftBranch) ? 1: 0;
-	
+
 	if (!b32BitIdent) {
 		wxASSERT( wHashIdent <= 0xFFFF );
 		fileDataOut->WriteUInt16((uint16)wHashIdent);
 	} else {
 		fileDataOut->WriteUInt32(wHashIdent);
 	}
-	
+
 	m_Hash.Write(fileDataOut);
 }
 
@@ -344,7 +344,7 @@ bool CAICHHashTree::WriteLowestLevelHashs(CFileDataIO* fileDataOut, uint32 wHash
 			} else if (!bNoIdent && b32BitIdent) {
 				fileDataOut->WriteUInt32(wHashIdent);
 			}
-			
+
 			m_Hash.Write(fileDataOut);
 			return true;
 		} else {
@@ -366,10 +366,10 @@ bool CAICHHashTree::LoadLowestLevelHashs(CFileDataIO* fileInput)
 	if (m_nDataSize <= m_nBaseSize) { // sanity
 		// lowest level, read hash
 		m_Hash.Read(fileInput);
-		m_bHashValid = true; 
+		m_bHashValid = true;
 		return true;
 	} else {
-		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
+		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0);
 		uint64 nLeft = ( ((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
 		uint64 nRight = m_nDataSize - nLeft;
 		if (m_pLeftTree == NULL) {
@@ -380,7 +380,7 @@ bool CAICHHashTree::LoadLowestLevelHashs(CFileDataIO* fileInput)
 		if (m_pRightTree == NULL) {
 			m_pRightTree = new CAICHHashTree(nRight, false, (nRight <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
 		} else {
-			wxASSERT( m_pRightTree->m_nDataSize == nRight ); 
+			wxASSERT( m_pRightTree->m_nDataSize == nRight );
 		}
 		return m_pLeftTree->LoadLowestLevelHashs(fileInput)
 				&& m_pRightTree->LoadLowestLevelHashs(fileInput);
@@ -412,7 +412,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 			return true;
 		}
 		m_Hash.Read(fileInput);
-		m_bHashValid = true; 
+		m_bHashValid = true;
 		return true;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
 		// this is already the last level, cant go deeper
@@ -422,7 +422,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 		// adjust ident to point the path to the next node
 		wHashIdent <<= 1;
 		nLevel--;
-		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
+		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0);
 		uint64 nLeft = ( ((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
 		uint64 nRight = m_nDataSize - nLeft;
 		if ((wHashIdent & 0x80000000) > 0) {
@@ -436,7 +436,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 			if (m_pRightTree == NULL) {
 				m_pRightTree = new CAICHHashTree(nRight, false, (nRight <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
 			} else {
-				wxASSERT( m_pRightTree->m_nDataSize == nRight ); 
+				wxASSERT( m_pRightTree->m_nDataSize == nRight );
 			}
 			return m_pRightTree->SetHash(fileInput, wHashIdent, nLevel);
 		}
@@ -532,14 +532,14 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 		wxFAIL;
 		return false;
 	}
-	
+
 	/* V2 AICH Hash Packet:
 		<count1 uint16>											16bit-hashs-to-read
 		(<identifier uint16><hash HASHSIZE>)[count1]			AICH hashs
 		<count2 uint16>											32bit-hashs-to-read
 		(<identifier uint32><hash HASHSIZE>)[count2]			AICH hashs
 	*/
-	
+
 	// at this time we check the recoverydata for the correct ammounts of hashs only
 	// all hash are then taken into the tree, depending on there hashidentifier (except the masterhash)
 
@@ -579,7 +579,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 // TODO:			theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (2)"), m_pOwner->GetFileName() );
 			return false;
 		}
-		
+
 // TODO: DEBUG_ONLY( theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with  %u 32bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable ) );
 		for (uint32 i = 0; i != nHashsToRead; i++) {
 			uint32 wHashIdent = fileDataIn->ReadUInt32();
@@ -593,7 +593,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 			}
 		}
 	}
-	
+
 	if (nHashsAvailable == 0) {
 // TODO:		theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Packet didn't contained any hashs"), m_pOwner->GetFileName() );
 		return false;
@@ -652,7 +652,7 @@ bool CAICHHashSet::SaveHashSet()
 				AddDebugLogLineC(logSHAHashSet, wxT("Saving failed: Current file is not a met-file!"));
 				return false;
 			}
-			
+
 			AddDebugLogLineN(logSHAHashSet, CFormat(wxT("Met file is version 0x%2.2x.")) % header);
 		} else {
 			file.WriteUInt8(KNOWN2_MET_VERSION);
@@ -701,7 +701,7 @@ bool CAICHHashSet::SaveHashSet()
 		AddDebugLogLineC(logSHAHashSet, wxT("IO error while saving AICH HashSet: ") + e.what());
 		return false;
 	}
-			
+
 	FreeHashSet();
 	return true;
 }
@@ -732,8 +732,8 @@ bool CAICHHashSet::LoadHashSet()
 		if (header != KNOWN2_MET_VERSION) {
 			AddDebugLogLineC(logSHAHashSet, wxT("Loading failed: Current file is not a met-file!"));
 			return false;
-		}		
-		
+		}
+
 		CAICHHash CurrentHash;
 		uint64 nExistingSize = file.GetLength();
 		uint32 nHashCount;
@@ -825,7 +825,7 @@ bool CAICHHashSet::VerifyHashTree(bool bDeleteBadTrees)
 void CAICHHashSet::SetFileSize(uint64 nSize)
 {
 	m_pHashTree.m_nDataSize = nSize;
-	m_pHashTree.m_nBaseSize = (nSize <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE;	
+	m_pHashTree.m_nBaseSize = (nSize <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE;
 }
 
 
@@ -876,7 +876,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 		//trusted
 		AddDebugLogLineN(logSHAHashSet,
 			CFormat(wxT("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
-			   		wxT("We trust the Hash %s from %u client(s) (%u%%). File: %s"))
+					wxT("We trust the Hash %s from %u client(s) (%u%%). File: %s"))
 				% (bAdded ? wxT("") : wxT("not "))
 				% m_aUntrustedHashs.size()
 				% nSigningIPsTotal
@@ -884,7 +884,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 				% nMostTrustedIPs
 				% ((100 * nMostTrustedIPs) / nSigningIPsTotal)
 				% m_pOwner->GetFileName());
-			
+
 		SetStatus(AICH_TRUSTED);
 		if (!HasValidMasterHash() || GetMasterHash() != m_aUntrustedHashs[nMostTrustedPos].m_Hash) {
 			SetMasterHash(m_aUntrustedHashs[nMostTrustedPos].m_Hash, AICH_TRUSTED);
@@ -902,7 +902,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 				% nMostTrustedIPs
 				% ((100 * nMostTrustedIPs) / nSigningIPsTotal)
 				% m_pOwner->GetFileName());
-					
+
 		SetStatus(AICH_UNTRUSTED);
 		if (!HasValidMasterHash() || GetMasterHash() != m_aUntrustedHashs[nMostTrustedPos].m_Hash) {
 			SetMasterHash(m_aUntrustedHashs[nMostTrustedPos].m_Hash, AICH_UNTRUSTED);
@@ -957,7 +957,7 @@ CAICHRequestedData CAICHHashSet::GetAICHReqDetails(const  CUpDownClient* pClient
 		if (it->m_pClient.GetClient() == pClient) {
 			return *(it);
 		}
-	}	
+	}
 	wxFAIL;
 	CAICHRequestedData empty;
 	return empty;
@@ -1013,7 +1013,7 @@ void CAICHHashSet::DbgTest()
 	uint64 i;
 	for (i = 0; i+9728000 < TESTSIZE; i += 9728000) {
 		VERIFY( CreatePartRecoveryData(i, &file) );
-		
+
 		/*uint32 nRandomCorruption = (rand() * rand()) % (file.GetLength()-4);
 		file.Seek(nRandomCorruption, CFile::begin);
 		file.Write(&nRandomCorruption, 4);*/

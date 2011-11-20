@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,8 +55,8 @@ m_proxyEnable(proxyEnable),
 m_proxyType(proxyType),
 m_proxyHostName(proxyHostName),
 m_proxyPort(proxyPort),
-/* 
- * The flag m_enablePassword is currently not used. The first 
+/*
+ * The flag m_enablePassword is currently not used. The first
  * authentication method tryed is No-Authentication, the second
  * is username/password. If there is no username/password in
  * CProxyData, a NULL username/password is sent. That will probably
@@ -153,16 +153,16 @@ wxString &CProxyStateMachine::NewName(wxString &s, CProxyCommand proxyCommand)
 	case PROXY_CMD_CONNECT:
 		s += wxT("-CONNECT");
 		break;
-		
+
 	case PROXY_CMD_BIND:
 		s += wxT("-BIND");
 		break;
-		
+
 	case PROXY_CMD_UDP_ASSOCIATE:
 		s += wxT("-UDP");
 		break;
 	}
-	
+
 	return s;
 }
 
@@ -178,14 +178,14 @@ bool CProxyStateMachine::Start(const wxIPaddress &peerAddress, wxSocketClient *p
 		wxFAIL;
 		return false;
 	}
-	
+
 	// To run the state machine, return and just let the events start to happen.
 	return true;
 }
 
 t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 {
-	// Default is stay in current state	
+	// Default is stay in current state
 	t_sm_state ret = GetState();
 	switch(event)
 	{
@@ -193,28 +193,28 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 		AddDebugLogLineN(logProxy, wxT("Connection event"));
 		m_isConnected = true;
 		break;
-		
+
 	case wxSOCKET_INPUT:
 		AddDebugLogLineN(logProxy, wxT("Input event"));
 		m_canReceive = true;
 		break;
-		
+
 	case wxSOCKET_OUTPUT:
 		AddDebugLogLineN(logProxy, wxT("Output event"));
 		m_canSend = true;
 		break;
-		
+
 	case wxSOCKET_LOST:
 		AddDebugLogLineN(logProxy, wxT("Lost connection event"));
 		m_isLost = true;
 		m_ok = false;
 		break;
-		
+
 	default:
 		AddDebugLogLineN(logProxy, wxT("Unknown event"));
 		break;
 	}
-	
+
 	// Aborting conditions:
 	// - wxSOCKET_LOST event
 	// - More than 10 times on the same state
@@ -222,7 +222,7 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 		GetClocksInCurrentState() > 10) {
 		ret = PROXY_STATE_END;
 	}
-	
+
 	return ret;
 }
 
@@ -238,19 +238,19 @@ void CProxyStateMachine::AddDummyEvent()
 }
 
 /*
- * Notice! These includes are here as long as it is impossible to retrieve 
+ * Notice! These includes are here as long as it is impossible to retrieve
  * the event handler from the socket. They should be removed. For now,
  * please leave it here.
  */
 
 void CProxyStateMachine::ReactivateSocket()
 {
-	/*    If proxy is beeing used, then the TCP socket handlers 
+	/*    If proxy is beeing used, then the TCP socket handlers
 	 * (CServerSocketHandler and CClientTCPSocketHandler) will not
 	 * receive a wxSOCKET_CONNECTION event, because the connection has
 	 * already started with the proxy. So we must add a wxSOCKET_CONNECTION
 	 * event to make things go undetected. A wxSOCKET_OUTPUT event is also
-	 * necessary to start sending data to the server. */ 
+	 * necessary to start sending data to the server. */
 	CProxySocket *s = dynamic_cast<CProxySocket *>(m_proxyClientSocket);
 	// If that is not true, we are in serious trouble...
 	wxASSERT(s);
@@ -295,7 +295,7 @@ wxSocketBase &CProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *b
 			m_canSend = false;
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -315,25 +315,25 @@ wxSocketBase &CProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer)
 			m_canReceive = false;
 		}
 	}
-	
+
 	return ret;
 }
 
-bool CProxyStateMachine::CanReceive() const	
+bool CProxyStateMachine::CanReceive() const
 {
 #ifdef AMULE_DAEMON
 	return true;
 #else
-	return m_canReceive; 
+	return m_canReceive;
 #endif
 }
 
-bool CProxyStateMachine::CanSend() const	
+bool CProxyStateMachine::CanSend() const
 {
 #ifdef AMULE_DAEMON
 	return true;
 #else
-	return m_canSend; 
+	return m_canSend;
 #endif
 }
 
@@ -391,7 +391,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	(this->*m_process_state[state])(entry);
 #ifdef __DEBUG__
 	int n = 0;
-	
+
 	switch (state) {
 	case SOCKS5_STATE_START:
 	case SOCKS5_STATE_END:
@@ -402,14 +402,14 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	default:
 		n = 0;
 		break;
-		
+
 	case SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD:
 	case SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI:
 	case SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD:
 	case SOCKS5_STATE_SEND_COMMAND_REQUEST:
 		n = m_packetLenght;
 		break;
-	
+
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD:
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI:
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD:
@@ -417,7 +417,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 		n = m_lastRead;
 		break;
 	}
-	
+
 	if (entry) {
 		DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
@@ -444,17 +444,17 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 			ret = SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD:
 		if (CanReceive()) {
 			ret = SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD:
 		ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD;
 		break;
-		
+
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD:
 		if (m_ok) {
 			if (CanSend()) {
@@ -462,15 +462,15 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 				case SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED:
 					ret = SOCKS5_STATE_SEND_COMMAND_REQUEST;
 					break;
-					
+
 				case SOCKS5_AUTH_METHOD_GSSAPI:
 					ret = SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI;
 					break;
-					
+
 				case SOCKS5_AUTH_METHOD_USERNAME_PASSWORD:
 					ret = SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD;
 					break;
-				
+
 				case SOCKS5_AUTH_METHOD_NO_ACCEPTABLE_METHODS:
 				default:
 					ret = SOCKS5_STATE_END;
@@ -483,7 +483,7 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 			ret = SOCKS5_STATE_END;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI:
 		if (m_ok) {
 			if (CanReceive()) {
@@ -493,7 +493,7 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 			ret = SOCKS5_STATE_END;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD:
 		if (m_ok) {
 			if (CanReceive()) {
@@ -503,15 +503,15 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 			ret = SOCKS5_STATE_END;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI:
 		ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI;
 		break;
-		
+
 	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD:
 		ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD;
 		break;
-		
+
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI:
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD:
 		if (m_ok) {
@@ -522,7 +522,7 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 			ret = SOCKS5_STATE_END;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_SEND_COMMAND_REQUEST:
 		if (m_ok) {
 			if (CanReceive()) {
@@ -532,33 +532,33 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 			ret = SOCKS5_STATE_END;
 		}
 		break;
-		
+
 	case SOCKS5_STATE_RECEIVE_COMMAND_REPLY:
 		ret = SOCKS5_STATE_PROCESS_COMMAND_REPLY;
 		break;
-		
+
 	case SOCKS5_STATE_PROCESS_COMMAND_REPLY:
 		ret = SOCKS5_STATE_END;
 		break;
-		
+
 	case SOCKS5_STATE_END:
 	default:
 		break;
 	}
-	
+
 	return ret;
 }
 
 /**
- * 	So, this is how you do it: the state machine is clocked by the events
+ *	So, this is how you do it: the state machine is clocked by the events
  * that happen inside the event handler. You can add a dummy event whenever
  * you see that the system will not generate an event. But don't add dummy
  * events before reads, reads should only be performed after input events.
  *
- * 	Maybe it makes sense to add a dummy event before a read if there is no
+ *	Maybe it makes sense to add a dummy event before a read if there is no
  * state change (wait state).
  *
- * 	The event system will generate at least 2 events, one wxSOCKET_CONNECTION,
+ *	The event system will generate at least 2 events, one wxSOCKET_CONNECTION,
  * one wxSOCKET_OUTPUT, so we will have 2 clocks in our state machine. Plus, each
  * time there is unread data in the receive buffer of the socket, a wxSOCKET_INPUT
  * event will be generated. If you feel you will need more clocks than these, use
@@ -588,7 +588,7 @@ void CSocks5StateMachine::process_send_query_authentication_method(bool entry)
 		m_buffer[4] = SOCKS5_AUTH_METHOD_GSSAPI;
 		m_packetLenght = 4;
 		//m_packetLenght = 5;
-		
+
 		// Send the authentication method negotiation packet
 		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
 	}
@@ -601,7 +601,7 @@ void CSocks5StateMachine::process_receive_authentication_method(bool entry)
 		m_packetLenght = 2;
 		ProxyRead(*m_proxyClientSocket, m_buffer);
 	}
-	/* This is added because there will be no more input events. If the 
+	/* This is added because there will be no more input events. If the
 	 * world was a nice place, we could think about joining the
 	 * process_receive and the process_process states here, but some day
 	 * we might have to deal with the fact that the i/o operation has been
@@ -646,7 +646,7 @@ void CSocks5StateMachine::process_send_authentication_username_password(bool ent
 		m_packetLenght = 1 + 1 + lenUser + 1 + lenPassword;
 		unsigned int offsetUser = 2;
 		unsigned int offsetPassword = offsetUser + lenUser + 1;
-		
+
 		// Prepare username/password buffer
 		m_buffer[0] = SOCKS5_AUTH_VERSION_USERNAME_PASSWORD;
 		m_buffer[offsetUser-1] = lenUser;
@@ -655,7 +655,7 @@ void CSocks5StateMachine::process_send_authentication_username_password(bool ent
 		m_buffer[offsetPassword-1] = lenPassword;
 		memcpy(m_buffer+offsetPassword, unicode2char(m_proxyData.m_password),
 			lenPassword);
-		
+
 		// Send the username/password packet
 		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
 	}
@@ -692,11 +692,11 @@ void CSocks5StateMachine::process_send_command_request(bool entry)
 		case PROXY_CMD_CONNECT:
 			m_buffer[1] = SOCKS5_CMD_CONNECT;
 			break;
-			
+
 		case PROXY_CMD_BIND:
 			m_buffer[1] = SOCKS5_CMD_BIND;
 			break;
-			
+
 		case PROXY_CMD_UDP_ASSOCIATE:
 			m_buffer[1] = SOCKS5_CMD_UDP_ASSOCIATE;
 			break;
@@ -705,7 +705,7 @@ void CSocks5StateMachine::process_send_command_request(bool entry)
 		m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
 		PokeUInt32( m_buffer+4, StringIPtoUint32(m_peerAddress->IPAddress()) );
 		RawPokeUInt16( m_buffer+8, ENDIAN_HTONS( m_peerAddress->Service() ) );
-		
+
 		// Send the command packet
 		m_packetLenght = 10;
 		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
@@ -806,7 +806,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	(this->*m_process_state[state])(entry);
 #ifdef __DEBUG__
 	int n = 0;
-	
+
 	switch (state) {
 	case SOCKS4_STATE_START:
 	case SOCKS4_STATE_END:
@@ -814,16 +814,16 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	default:
 		n = 0;
 		break;
-		
+
 	case SOCKS4_STATE_SEND_COMMAND_REQUEST:
 		n = m_packetLenght;
 		break;
-	
+
 	case SOCKS4_STATE_PROCESS_COMMAND_REPLY:
 		n = m_lastRead;
 		break;
 	}
-	
+
 	if (entry) {
 		DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
@@ -843,7 +843,7 @@ t_sm_state CSocks4StateMachine::next_state(t_sm_event event)
 			ret = SOCKS4_STATE_SEND_COMMAND_REQUEST;
 		}
 		break;
-		
+
 	case SOCKS4_STATE_SEND_COMMAND_REQUEST:
 		if (m_ok) {
 			if (CanReceive()) {
@@ -853,20 +853,20 @@ t_sm_state CSocks4StateMachine::next_state(t_sm_event event)
 			ret = SOCKS4_STATE_END;
 		}
 		break;
-		
+
 	case SOCKS4_STATE_RECEIVE_COMMAND_REPLY:
 		ret = SOCKS4_STATE_PROCESS_COMMAND_REPLY;
 		break;
-		
+
 	case SOCKS4_STATE_PROCESS_COMMAND_REPLY:
 		ret = SOCKS4_STATE_END;
 		break;
-		
+
 	case SOCKS4_STATE_END:
 	default:
 		break;
 	}
-	
+
 	return ret;
 }
 
@@ -891,11 +891,11 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 		case PROXY_CMD_CONNECT:
 			m_buffer[1] = SOCKS4_CMD_CONNECT;
 			break;
-			
+
 		case PROXY_CMD_BIND:
 			m_buffer[1] = SOCKS4_CMD_BIND;
 			break;
-			
+
 		case PROXY_CMD_UDP_ASSOCIATE:
 			m_ok = false;
 			return;
@@ -915,7 +915,7 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 		// Common processing for SOCKS4/SOCKS4a
 		unsigned int offsetUser = 8;
 		unsigned char lenUser = m_proxyData.m_userName.Len();
-		memcpy(m_buffer + offsetUser, 
+		memcpy(m_buffer + offsetUser,
 			unicode2char(m_proxyData.m_userName), lenUser);
 		m_buffer[offsetUser + lenUser] = 0;
 		// Special processing for SOCKS4a
@@ -923,7 +923,7 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 		case PROXY_SOCKS4a: {
 			unsigned int offsetDomain = offsetUser + lenUser + 1;
 			unsigned char lenDomain = m_peerAddress->Hostname().Len();
-			memcpy(m_buffer + offsetDomain, 
+			memcpy(m_buffer + offsetDomain,
 				unicode2char(m_peerAddress->Hostname()), lenDomain);
 			m_buffer[offsetDomain + lenDomain] = 0;
 			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + 1 + lenDomain + 1;
@@ -953,7 +953,7 @@ void CSocks4StateMachine::process_process_command_reply(bool entry)
 {
 	if (entry) {
 		m_lastReply = m_buffer[1];
-		
+
 		// Process the server's reply
 		m_ok = m_ok &&
 			m_buffer[0] == SOCKS4_REPLY_CODE &&
@@ -1001,7 +1001,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	(this->*m_process_state[state])(entry);
 #ifdef __DEBUG__
 	int n = 0;
-	
+
 	switch (state) {
 	case HTTP_STATE_START:
 	case HTTP_STATE_END:
@@ -1009,16 +1009,16 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	default:
 		n = 0;
 		break;
-		
+
 	case HTTP_STATE_SEND_COMMAND_REQUEST:
 		n = m_packetLenght;
 		break;
-	
+
 	case HTTP_STATE_PROCESS_COMMAND_REPLY:
 		n = m_lastRead;
 		break;
 	}
-	
+
 	if (entry) {
 		DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
@@ -1038,7 +1038,7 @@ t_sm_state CHttpStateMachine::next_state(t_sm_event event)
 			ret = HTTP_STATE_SEND_COMMAND_REQUEST;
 		}
 		break;
-		
+
 	case HTTP_STATE_SEND_COMMAND_REQUEST:
 		if (m_ok) {
 			if (CanReceive()) {
@@ -1048,20 +1048,20 @@ t_sm_state CHttpStateMachine::next_state(t_sm_event event)
 			ret = HTTP_STATE_END;
 		}
 		break;
-		
+
 	case HTTP_STATE_RECEIVE_COMMAND_REPLY:
 		ret = HTTP_STATE_PROCESS_COMMAND_REPLY;
 		break;
-		
+
 	case HTTP_STATE_PROCESS_COMMAND_REPLY:
 		ret = HTTP_STATE_END;
 		break;
-		
+
 	case HTTP_STATE_END:
 	default:
 		break;
 	}
-	
+
 	return ret;
 }
 
@@ -1091,24 +1091,24 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 				EncodeBase64(unicode2char(userPass), userPass.Length());
 		}
 		wxString msg;
-		
+
 		switch (m_proxyCommand) {
 		case PROXY_CMD_CONNECT:
 			msg <<
 			wxT("CONNECT ") << ip << wxT(":") << port << wxT(" HTTP/1.1\r\n") <<
 			wxT("Host: ")   << ip << wxT(":") << port << wxT("\r\n");
 			if (m_proxyData.m_enablePassword) {
-				msg << 
+				msg <<
 				wxT("Authorization: Basic ")       << userPassEncoded << wxT("\r\n") <<
 				wxT("Proxy-Authorization: Basic ") << userPassEncoded << wxT("\r\n");
 			}
 			msg << wxT("\r\n");
 			break;
-			
+
 		case PROXY_CMD_BIND:
-			m_ok = false;	
+			m_ok = false;
 			break;
-			
+
 		case PROXY_CMD_UDP_ASSOCIATE:
 			m_ok = false;
 			return;
@@ -1178,23 +1178,23 @@ m_savedSocketEventHandlerId(0)
 		switch (m_proxyData.m_proxyType) {
 		case PROXY_NONE:
 			break;
-	
+
 		case PROXY_SOCKS5:
 			m_proxyStateMachine =
 				new CSocks5StateMachine(*proxyData, proxyCommand);
 			break;
-		
+
 		case PROXY_SOCKS4:
 		case PROXY_SOCKS4a:
 			m_proxyStateMachine =
 				new CSocks4StateMachine(*proxyData, proxyCommand);
 			break;
-		
+
 		case PROXY_HTTP:
 			m_proxyStateMachine =
 				new CHttpStateMachine(*proxyData, proxyCommand);
 			break;
-		
+
 		default:
 			break;
 		}
@@ -1235,36 +1235,36 @@ bool CProxySocket::Start(const wxIPaddress &peerAddress)
 	Connect(m_proxyAddress, false);
 	SetFlags(wxSOCKET_NONE);
 	bool ok = m_proxyStateMachine->Start(peerAddress, this);
-	
+
 	return ok;
 }
 
 bool CProxySocket::ProxyIsCapableOf(CProxyCommand proxyCommand) const
 {
 	bool ret = false;
-	
+
 	switch (m_proxyData.m_proxyType) {
 	case PROXY_NONE:
 		ret = false;
 		break;
-		
+
 	case PROXY_SOCKS5:
 		ret =	proxyCommand == PROXY_CMD_CONNECT ||
 			proxyCommand == PROXY_CMD_BIND ||
 			proxyCommand == PROXY_CMD_UDP_ASSOCIATE;
 		break;
-		
+
 	case PROXY_SOCKS4:
 	case PROXY_SOCKS4a:
 		ret =	proxyCommand == PROXY_CMD_CONNECT ||
 			proxyCommand == PROXY_CMD_BIND;
 		break;
-		
+
 	case PROXY_HTTP:
 		ret =	proxyCommand == PROXY_CMD_CONNECT;
 		break;
 	}
-	
+
 	return ret;
 }
 
@@ -1284,13 +1284,13 @@ bool CSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
 	wxMutexLocker lock(m_socketLocker);
 	bool ok;
-	
+
 	if (GetUseProxy() && ProxyIsCapableOf(PROXY_CMD_CONNECT)) {
 		ok = Start(address);
 	} else {
 		ok = wxSocketClient::Connect(address, wait);
 	}
-	
+
 	return ok;
 }
 
@@ -1300,14 +1300,14 @@ CSocketClientProxy& CSocketClientProxy::Read(void *buffer, wxUint32 nbytes)
 	CProxySocket::Read(buffer, nbytes);
 
 	return *this;
-	
+
 }
 
 CSocketClientProxy& CSocketClientProxy::Write(const void *buffer, wxUint32 nbytes)
 {
 	wxMutexLocker lock(m_socketLocker);
 	CProxySocket::Write(buffer, nbytes);
-	
+
 	return *this;
 }
 
@@ -1398,15 +1398,15 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 				}
 			}
 				break;
-				
+
 			case SOCKS5_ATYP_DOMAINNAME:
 				offset = PROXY_UDP_OVERHEAD_DOMAIN_NAME;
 				break;
-				
+
 			case SOCKS5_ATYP_IPV6_ADDRESS:
 				offset = PROXY_UDP_OVERHEAD_IPV6;
 				break;
-				
+
 			default:
 				/* Error! */
 				offset = 0;
@@ -1415,11 +1415,11 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 			memcpy(buf, bufUDP + offset, nBytes);
 			// Uncomment here to see the buffer contents on console
 			// DumpMem(bufUDP, wxDatagramSocket::LastCount(), wxT("RecvFrom"), 3);
-			
+
 			/* Only delete buffer if it was dynamically created */
 			if (bufUDP != m_proxyTCPSocket.GetBuffer()) {
 				/* We should use a fixed buffer to avoid
-				 * new/delete it all the time. 
+				 * new/delete it all the time.
 				 * I need an upper bound */
 				delete bufUDP;
 			}
@@ -1431,7 +1431,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 	} else {
 		wxDatagramSocket::RecvFrom(addr, buf, nBytes);
 	}
-	
+
 	return *this;
 }
 
@@ -1460,7 +1460,7 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 	} else {
 		wxDatagramSocket::SendTo(addr, buf, nBytes);
 	}
-	
+
 	return *this;
 }
 
@@ -1474,17 +1474,17 @@ wxUint32 CDatagramSocketProxy::LastCount(void) const
 		case UDP_OPERATION_SEND_TO:
 			ret = Ok() ? wxDatagramSocket::LastCount() - m_lastUDPOverhead : 0;
 			break;
-			
+
 		case UDP_OPERATION_NONE:
 		default:
 			ret = 0;
 			break;
-		
+
 		}
 	} else {
 		ret = wxDatagramSocket::LastCount();
 	}
-	
+
 	return ret;
 }
 

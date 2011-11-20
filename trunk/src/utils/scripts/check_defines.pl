@@ -23,14 +23,14 @@
 #
 # To speed up compilation we compile some files used in amule, amuled, amulegui
 # into libs which we link to the apps.
-# This concept can only work if the files (or their includes) don't use 
+# This concept can only work if the files (or their includes) don't use
 # preprocessor macros used to tell these projects apart.
 #
 # This script checks for usage of these macros.
 # It has to be run from the src dir after running configure to build the deps.
 #
 
-use warnings; 
+use warnings;
 use strict;
 use Cwd;
 

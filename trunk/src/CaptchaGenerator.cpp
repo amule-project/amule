@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,7 +43,7 @@ CCaptchaGenerator::CCaptchaGenerator(uint32 nLetterCount)
 
 void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
 {
-	static wxString schCaptchaContent = wxT("ABCDEFGHJKLMNPQRSTUVWXYZ123456789"); 
+	static wxString schCaptchaContent = wxT("ABCDEFGHJKLMNPQRSTUVWXYZ123456789");
 	m_strCaptchaText.Clear();
 	// Bitmap must be created with full depth, or it will fail on GTK
 	wxBitmap pimgResult(LETTERSIZE + (nLetterCount-1)*CROWDEDSIZE, 36);
@@ -57,7 +57,7 @@ void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
 	for (uint32 i = 0; i < nLetterCount; i++) {
 		wxString strLetter(schCaptchaContent[GetRandomUint16() % schCaptchaContent.length()]);
 		m_strCaptchaText += strLetter;
-		
+
 		uint16 nRandomSize = 30 - GetRandomUint16() % 12;
 		wxFont font(nRandomSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 		dc.SetFont(font);

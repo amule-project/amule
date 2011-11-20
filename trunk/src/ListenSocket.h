@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -32,7 +32,7 @@
 
 #include "Proxy.h"		// Needed fot CProxyData, CSocketServerProxy
 
-#include <set> 
+#include <set>
 
 class CClientTCPSocket;
 
@@ -56,21 +56,21 @@ public:
 	void	RecalculateStats();
 	void	ReStartListening();
 	void	UpdateConnectionsStatus();
-	
+
 	float	GetMaxConperFiveModifier();
 	uint32	GetTotalConnectionChecks()	{ return totalconnectionchecks; }
 	float	GetAverageConnections()		{ return averageconnections; }
-	
+
 	bool	OnShutdown() { return shutdown;}
-	
+
 private:
-	
+
 	typedef std::set<CClientTCPSocket *> SocketSet;
 	SocketSet socket_list;
-	
+
 	bool bListening;
 	bool shutdown;
-	
+
 	uint16	m_OpenSocketsInterval;
 	uint16	m_ConnectionStates[3];
 	uint16	m_nPeningConnections;

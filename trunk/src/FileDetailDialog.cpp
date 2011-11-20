@@ -21,7 +21,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -124,7 +124,7 @@ void CFileDetailDialog::UpdateData(bool resetFilename)
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 	bufferS = CastSecondsToHM(m_file->GetDlActiveTime());
 	CastChild(IDC_DLACTIVETIME, wxControl)->SetLabel(bufferS);
-	
+
 	if (m_file->lastseencomplete==0) {
 		bufferS = wxString(_("Unknown")).MakeLower();
 	} else {
@@ -146,10 +146,10 @@ void CFileDetailDialog::UpdateData(bool resetFilename)
 
 void CFileDetailDialog::FillSourcenameList()
 {
-	CFileDetailListCtrl* pmyListCtrl; 
+	CFileDetailListCtrl* pmyListCtrl;
 	int itempos;
-	int inserted = 0; 
-	pmyListCtrl = CastChild(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl ); 
+	int inserted = 0;
+	pmyListCtrl = CastChild(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl );
 
 	// reset
 	for (int i=0;i<pmyListCtrl->GetItemCount();i++){
@@ -173,24 +173,24 @@ void CFileDetailDialog::FillSourcenameList()
 			tmpitem.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
 			inserted++;
-		} else { 
+		} else {
 			SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(itempos));
 			item->count = cur_src.count;
-		} 
+		}
 	}
 #else // CLIENT_GUI
 	const CKnownFile::SourceSet& sources = m_file->GetSourceList();
 	CKnownFile::SourceSet::const_iterator it = sources.begin();
 	for ( ; it != sources.end(); ++it ) {
-		const CClientRef &cur_src = *it; 
+		const CClientRef &cur_src = *it;
 		if (cur_src.GetRequestFile() != m_file ||
 		    cur_src.GetClientFilename().Length() == 0) {
 			continue;
 		}
 
 		itempos = pmyListCtrl->FindItem(-1,cur_src.GetClientFilename());
-		if (itempos == -1) { 
-			int itemid = pmyListCtrl->InsertItem(0, cur_src.GetClientFilename()); 
+		if (itempos == -1) {
+			int itemid = pmyListCtrl->InsertItem(0, cur_src.GetClientFilename());
 			SourcenameItem *item = new SourcenameItem(cur_src.GetClientFilename(), 1);
 			pmyListCtrl->SetItemPtrData(0, reinterpret_cast<wxUIntPtr>(item));
 			// background.. argh -- PA: was in old version - do we still need this?
@@ -199,10 +199,10 @@ void CFileDetailDialog::FillSourcenameList()
 			tmpitem.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
 			inserted++;
-		} else { 
+		} else {
 			SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(itempos));
 			item->count++;
-		} 
+		}
 	}
 #endif // CLIENT_GUI
 
@@ -249,7 +249,7 @@ void CFileDetailDialog::setValueForFilenameTextEdit(const wxString &s)
 
 void CFileDetailDialog::setEnableForApplyButton()
 {
-	bool enabled = 
+	bool enabled =
 		m_file->GetStatus() != PS_COMPLETE &&
 		m_file->GetStatus() != PS_COMPLETING &&
 		m_filenameChanged;
@@ -281,9 +281,9 @@ void CFileDetailDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 		if (theApp->sharedfiles->RenameFile(m_file, fileName)) {
 			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName().GetPrintable()));
 			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName().GetPrintable());
-			
+
 			resetValueForFilenameTextEdit();
-	
+
 			Layout();
 		}
 	}
@@ -366,7 +366,7 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString filename;
 	filename = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
-	
+
 	int extpos = filename.Find('.', true);
 	wxString ext;
 	if (extpos > 0) {

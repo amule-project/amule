@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,12 +45,12 @@
 BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_TEXT(ID_NODE_IP1, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_IP2, CKadDlg::OnFieldsChange)
-	EVT_TEXT(ID_NODE_IP3, CKadDlg::OnFieldsChange)	
+	EVT_TEXT(ID_NODE_IP3, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_IP4, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_PORT, CKadDlg::OnFieldsChange)
 
 	EVT_TEXT_ENTER(IDC_NODESLISTURL ,CKadDlg::OnBnClickedUpdateNodeList)
-	
+
 	EVT_BUTTON(ID_NODECONNECT, CKadDlg::OnBnClickedBootstrapClient)
 	EVT_BUTTON(ID_KNOWNNODECONNECT, CKadDlg::OnBnClickedBootstrapKnown)
 	EVT_BUTTON(ID_KADDISCONNECT, CKadDlg::OnBnClickedDisconnectKad)
@@ -59,7 +59,7 @@ END_EVENT_TABLE()
 
 
 
-CKadDlg::CKadDlg(wxWindow* pParent) 
+CKadDlg::CKadDlg(wxWindow* pParent)
 	: wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") )
 {
 	m_kad_scope = NULL;
@@ -74,7 +74,7 @@ void CKadDlg::Init()
 
 #ifndef __WXMSW__
 	//
-	// Get label with line breaks out of muuli.wdr, because generated code fails 
+	// Get label with line breaks out of muuli.wdr, because generated code fails
 	// to compile in Windows.
 	//
 	// In Windows, setting a button label with a newline fails (the newline is ignored).
@@ -95,9 +95,9 @@ void CKadDlg::SetUpdatePeriod(int step)
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
 	if (step == 0) {
-	 	m_kad_scope->Stop();
+		m_kad_scope->Stop();
 	} else {
-	 	m_kad_scope->Reset(step);
+		m_kad_scope->Reset(step);
 	}
 }
 
@@ -106,13 +106,13 @@ void CKadDlg::SetGraphColors()
 {
 	static const char aTrend[] = { 2,      1,        0        };
 	static const int aRes[]    = { IDC_C0, IDC_C0_3, IDC_C0_2 };
-	
+
 	m_kad_scope->SetBackgroundColor(CStatisticsDlg::getColors(0));
 	m_kad_scope->SetGridColor(CStatisticsDlg::getColors(1));
-	
-	for (size_t i = 0; i < 3; ++i) {	
+
+	for (size_t i = 0; i < 3; ++i) {
 		m_kad_scope->SetPlotColor(CStatisticsDlg::getColors(12 + i), aTrend[i]);
-		
+
 		CColorFrameCtrl* ctrl = CastChild(aRes[i], CColorFrameCtrl);
 		ctrl->SetBackgroundBrushColour(CMuleColour(CStatisticsDlg::getColors(12 + i)));
 		ctrl->SetFrameBrushColour(*wxBLACK);
@@ -121,14 +121,14 @@ void CKadDlg::SetGraphColors()
 
 
 void CKadDlg::UpdateGraph(const GraphUpdateInfo& update)
-{	
+{
 	std::vector<float *> v(3);
 	v[0] = const_cast<float *>(&update.kadnodes[0]);
 	v[1] = const_cast<float *>(&update.kadnodes[1]);
 	v[2] = const_cast<float *>(&update.kadnodes[2]);
 	const std::vector<float *> &apfKad(v);
 	unsigned nodeCount = static_cast<unsigned>(update.kadnodes[2]);
-	
+
 	if (!IsShownOnScreen()) {
 		m_kad_scope->DelayPoints();
 	} else {
@@ -152,14 +152,14 @@ void CKadDlg::UpdateGraph(const GraphUpdateInfo& update)
 // Enables or disables the node connect button depending on the conents of the text fields
 void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 {
-	// These are the IDs of the search-fields 
+	// These are the IDs of the search-fields
 	int textfields[] = { ID_NODE_IP1, ID_NODE_IP2, ID_NODE_IP3, ID_NODE_IP4, ID_NODE_PORT};
 
 	bool enable = true;
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
 		enable &= !CastChild(textfields[i], wxTextCtrl)->GetValue().IsEmpty();
 	}
-	
+
 	// Enable the node connect button if all fields contain text
 	FindWindowById(ID_NODECONNECT)->Enable( enable );
 }
@@ -171,11 +171,11 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 		// Ip is reversed since StringIPtoUint32 returns anti-host and kad expects host order
 		uint32 ip = StringIPtoUint32(
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP4 ))->GetValue() +
-					wxT(".") + 
+					wxT(".") +
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP3 ))->GetValue() +
-					wxT(".") + 
+					wxT(".") +
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP2 ))->GetValue() +
-					wxT(".") + 
+					wxT(".") +
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
 
 		if (ip == 0) {

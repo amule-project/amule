@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -31,10 +31,10 @@
 
 class CKnownFile;
 
-// CCommentDialog dialog 
+// CCommentDialog dialog
 
 class CCommentDialog : public wxDialog
-{ 
+{
 public:
 	CCommentDialog(wxWindow* pParent, CKnownFile* file);   // standard constructor
 	virtual ~CCommentDialog();
@@ -44,7 +44,7 @@ protected:
 public:
 	void OnBnClickedApply(wxCommandEvent& evt);
 	void OnBnClickedClear(wxCommandEvent& evt);
-	void OnBnClickedCancel(wxCommandEvent& evt); 
+	void OnBnClickedCancel(wxCommandEvent& evt);
 private:
 	wxChoice* ratebox;
 	CKnownFile* m_file;

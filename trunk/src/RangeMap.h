@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -50,7 +50,7 @@ struct CRangeMapHelper
 	//! Typedef specifying the type to use when a non-const referenecs is expected.
 	typedef VALUE& ValueRef;
 	//! Typedef specifying the type to use when a const referenecs is expected.
-	typedef const VALUE& ConstValueRef; 
+	typedef const VALUE& ConstValueRef;
 	//! Typedef specifying the type to use when a const pointer is expected.
 	typedef const VALUE* ConstValuePtr;
 
@@ -71,12 +71,12 @@ struct CRangeMapHelper
  */
 template <typename KEYTYPE>
 struct CRangeMapHelper<void, KEYTYPE>
-{	
+{
 	typedef void ValuePtr;
 	typedef void ValueRef;
 	typedef void ConstValueRef;
 	typedef void ConstValuePtr;
-	
+
 	KEYTYPE first;
 
 	bool operator==(const CRangeMapHelper<void, KEYTYPE>&) const {
@@ -90,14 +90,14 @@ struct CRangeMapHelper<void, KEYTYPE>
  *
  * Each range has a user-specified value associated. The map supports quick
  * lookup of which range covers a particular key-value, and will merge or
- * split existing ranges when new ranges are added. 
+ * split existing ranges when new ranges are added.
  *
  * The decision on whenever to split/resize a range or to merge the two ranges
- * involved is based on equality of the user-specified value, using the 
- * equality operator. Thus if two ranges with the same user-value are placed 
+ * involved is based on equality of the user-specified value, using the
+ * equality operator. Thus if two ranges with the same user-value are placed
  * adjacent to each other or partially overlapping each other, then they will
  * be merged into a single range. If the user-values of the two ranges are
- * different, then the old range will be either resized or split, based on the 
+ * different, then the old range will be either resized or split, based on the
  * position of the new range.
  *
  * In cases where ranges are split into two parts, copies will be made of the
@@ -124,7 +124,7 @@ private:
 	//! Typedefs used to distinguish between our custom iterator and the real ones.
 	typedef typename RangeMap::iterator RangeIterator;
 	typedef typename RangeMap::const_iterator ConstRangeIterator;
-	
+
 	//! The raw map of range values.
 	RangeMap	m_ranges;
 
@@ -136,7 +136,7 @@ private:
 	 * for that range.
 	 *
 	 * Special member-functions are keyStart() and keyEnd().
-	 */ 
+	 */
 	template <typename RealIterator, typename ReturnTypeRef, typename ReturnTypePtr>
 	class iterator_base {
 		friend class CRangeMap<VALUE, KEYTYPE>;
@@ -156,12 +156,12 @@ private:
 			return m_it != other.m_it;
 		}
 
-		
+
 		//! Returns the starting point of the range
 		KEYTYPE keyStart() const {
 			return m_it->first;
 		}
-		
+
 		//! Returns the end-point of the range
 		KEYTYPE keyEnd() const {
 			return m_it->second.first;
@@ -171,7 +171,7 @@ private:
 		//! Prefix increment.
 		iterator_base& operator++() {
 			++m_it;
-			
+
 			return *this;
 		}
 
@@ -217,13 +217,13 @@ private:
 public:
 	typedef iterator_base<RangeIterator, ValueRef, ValuePtr> iterator;
 	typedef iterator_base<ConstRangeIterator, ConstValueRef, ConstValuePtr> const_iterator;
-	
+
 	//! The type used to specify size, ie size().
 	typedef typename RangeMap::size_type size_type;
-	
+
 	//! The type of user-data saved with each range.
 	typedef VALUE value_type;
-	
+
 	/**
 	 * Default constructor.
 	 */
@@ -235,7 +235,7 @@ public:
 	 */
 	CRangeMap(const CRangeMap<VALUE, KEYTYPE>& other)
 		: m_ranges( other.m_ranges )
-	{	
+	{
 	}
 
 	/**
@@ -253,7 +253,7 @@ public:
 	void swap(CRangeMap<VALUE, KEYTYPE>& other) {
 		std::swap(m_ranges, other.m_ranges);
 	}
-	
+
 
 	/**
 	 * Equality operator for two ranges.
@@ -265,15 +265,15 @@ public:
 		if ( this == &other ) {
 			return true;
 		}
-		
+
 		// Check size, must be the same
 		if ( size() != other.size() ) {
 			return false;
 		}
-		
+
 		return (m_ranges == other.m_ranges);
 	}
-	
+
 
 	/**
 	 * Returns an iterator pointing to the first range.
@@ -314,7 +314,7 @@ public:
 	 */
 	iterator erase(iterator pos) {
 		MULE_VALIDATE_PARAMS(pos != end(), wxT("Cannot erase 'end'"));
-	
+
 		RangeIterator temp = pos.m_it++;
 
 		m_ranges.erase(temp);
@@ -383,12 +383,12 @@ public:
 		HELPER entry = HELPER();
 		// Need to set the 'end' field.
 		entry.first = endPos;
-		
-		// Insert without merging, which forces the creation of an entry that 
+
+		// Insert without merging, which forces the creation of an entry that
 		// only covers the specified range, which will crop existing ranges.
 		erase(do_insert(startPos, entry, false));
-	}	
-	
+	}
+
 
 	/**
 	 * Inserts a new range into the map, potentially erasing/changing old ranges.
@@ -399,7 +399,7 @@ public:
 	 * @return An iterator pointing to the resulting range, covering at least the specified range.
 	 *
 	 * This function inserts the specified range into the map, while overwriting
-	 * or resizing existing ranges if there is any conflict. Ranges might also 
+	 * or resizing existing ranges if there is any conflict. Ranges might also
 	 * be merged, if the object of each evaluates to being equal, in which case
 	 * the old range will be removed and the new extended to include the old
 	 * range. This also includes ranges placed directly after or in front of each
@@ -408,7 +408,7 @@ public:
 	 * This has the result that the iterator returned can point to a range quite
 	 * different from what was originally specified. If this is not desired, then
 	 * the VALUE type should simply be made to return false on all equality tests.
-	 * Otherwise, the only promise that is made is that the resulting range has 
+	 * Otherwise, the only promise that is made is that the resulting range has
 	 * the same user-data (based on the equality operator) as the what was specified.
 	 *
 	 * Note that the start position must be smaller than or equal to the end-position.
@@ -436,7 +436,7 @@ protected:
 	 */
 	iterator do_insert(KEYTYPE start, HELPER entry, bool merge = true) {
 		MULE_VALIDATE_PARAMS(start <= entry.first, wxT("Not a valid range."));
-		
+
 		RangeIterator it = get_insert_it(start);
 		while ( it != m_ranges.end() ) {
 			// Begins before the current span
@@ -476,7 +476,7 @@ protected:
 					m_ranges.erase( it++ );
 				}
 			}
-			
+
 			// Starts inside the current span or after the current span
 			else {
 				// Starts inside the current span
@@ -490,10 +490,10 @@ protected:
 
 						// Insert the new span
 						m_ranges.insert(it, RangePair(entry.first + 1, it->second));
-						
+
 						// Resize the current span to fit before the new span
 						it->second.first = start - 1;
-		
+
 						break;
 					} else {
 						// Ends past the current span, resize or merge
@@ -526,7 +526,7 @@ protected:
 		return m_ranges.insert(it, RangePair(start, entry));
 	}
 
-	
+
 	/**
 	 * Finds the optimal location to start looking for insertion points.
 	 *
@@ -557,7 +557,7 @@ protected:
 
 		return it;
 	}
-	
+
 
 	//! Helper function that resizes an existing range to the specified size.
 	RangeIterator resize( KEYTYPE startPos, KEYTYPE endPos, RangeIterator it ) {

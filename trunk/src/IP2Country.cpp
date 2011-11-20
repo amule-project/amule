@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -28,15 +28,15 @@
 // Country flags are from FAMFAMFAM (http://www.famfamfam.com)
 //
 // Flag icons - http://www.famfamfam.com
-// 
+//
 // These icons are public domain, and as such are free for any use (attribution appreciated but not required).
-// 
+//
 // Note that these flags are named using the ISO3166-1 alpha-2 country codes where appropriate.
 // A list of codes can be found at http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 //
 // If you find these icons useful, please donate via paypal to mjames@gmail.com
 // (or click the donate button available at http://www.famfamfam.com/lab/icons/silk)
-// 
+//
 // Contact: mjames@gmail.com
 //
 
@@ -147,8 +147,8 @@ void CIP2Country::DownloadFinished(uint32 result)
 		} else {
 			AddLogLineC(_("Error updating GeoIP.dat"));
 		}
- 	} else if (result == HTTP_Skipped) {
- 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % m_DataBaseName);
+	} else if (result == HTTP_Skipped) {
+		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % m_DataBaseName);
 	} else {
 		AddLogLineC(CFormat(_("Failed to download %s from %s")) % m_DataBaseName % thePrefs::GetGeoIPUpdateUrl());
 		// if it failed and there is no database, turn it off
@@ -165,7 +165,7 @@ void CIP2Country::LoadFlags()
 		CountryData countrydata;
 		countrydata.Name = char2unicode(flags::flagXPMCodeVector[i].code);
 		countrydata.Flag = wxImage(flags::flagXPMCodeVector[i].xpm);
-		
+
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
 		} else {
@@ -190,24 +190,24 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 	if (m_geoip == NULL) {
 		CountryDataMap::iterator it = m_CountryDataMap.find(wxString(wxT("unknown")));
 		it->second.Name = wxT("?");
-		return it->second;	
+		return it->second;
 	}
-	
+
 	const wxString CCode = wxString(char2unicode(GeoIP_country_code_by_addr(m_geoip, unicode2char(ip)))).MakeLower();
-	
+
 	CountryDataMap::iterator it = m_CountryDataMap.find(CCode);
-	if (it == m_CountryDataMap.end()) { 
+	if (it == m_CountryDataMap.end()) {
 		// Show the code and ?? flag
 		it = m_CountryDataMap.find(wxString(wxT("unknown")));
 		wxASSERT(it != m_CountryDataMap.end());
 		if (CCode.IsEmpty()) {
 			it->second.Name = wxT("?");
 		} else{
-			it->second.Name = CCode;			
+			it->second.Name = CCode;
 		}
 	}
-	
-	return it->second;	
+
+	return it->second;
 }
 
 #else

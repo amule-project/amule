@@ -1,4 +1,4 @@
-SUBDIRS = 
+SUBDIRS =
 MAINTAINERCLEANFILES = Makefile.in
 DIST_SUBDIRS = muleunit tests
 

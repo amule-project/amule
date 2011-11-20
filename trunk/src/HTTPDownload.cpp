@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -56,50 +56,50 @@ public:
 	CHTTPDownloadDialog(CHTTPDownloadThread* thread)
 	  : wxDialog(wxTheApp->GetTopWindow(), -1, _("Downloading..."),
 			wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSYSTEM_MENU)
-   	{
+	{
 		downloadDlg(this, true)->Show(this, true);
-	
+
 		m_progressbar = CastChild(ID_HTTPDOWNLOADPROGRESS, wxGaugeControl);
 		m_progressbar->SetRange(100);
 
 		m_ani = CastChild(ID_ANIMATE, MuleGifCtrl);
 		m_ani->LoadData((const char*)inetDownload, sizeof(inetDownload));
 		m_ani->Start();
-	
+
 		m_thread = thread;
 	}
 
 	~CHTTPDownloadDialog() {
 		StopThread();
-	}	
+	}
 
 	void UpdateGauge(int total, int current) {
 		CFormat label( wxT("( %s / %s )") );
-		
+
 		label % CastItoXBytes(current);
 		if (total > 0) {
 			label % CastItoXBytes(total);
 		} else {
 			label % _("Unknown");
 		}
-	
+
 		CastChild(IDC_DOWNLOADSIZE, wxStaticText)->SetLabel(label.GetString());
-	
+
 		if (total && (total != m_progressbar->GetRange())) {
 			m_progressbar->SetRange(total);
 		}
-	
+
 		if (current && (current <= total)) {
 			m_progressbar->SetValue(current);
 		}
-	
+
 		Layout();
 	}
 
 private:
 	void StopThread() {
 		if (m_thread) {
-		 	m_thread->Stop();
+			m_thread->Stop();
 			delete m_thread;
 			m_thread = NULL;
 		}
@@ -110,7 +110,7 @@ private:
 		Show(false);
 		StopThread();
 	}
-	
+
 	void OnProgress(CMuleInternalEvent& evt) {
 		UpdateGauge(evt.GetExtraLong(), evt.GetInt());
 	}
@@ -119,11 +119,11 @@ private:
 		Show(false);
 		Destroy();
 	}
-  
+
 	CMuleThread*	m_thread;
-	MuleGifCtrl* 	m_ani;
+	MuleGifCtrl*	m_ani;
 	wxGaugeControl* m_progressbar;
-	
+
 	DECLARE_EVENT_TABLE()
 };
 
@@ -136,7 +136,7 @@ END_EVENT_TABLE()
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_PROGRESS)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN)
-	
+
 #endif
 
 
@@ -187,18 +187,18 @@ wxString CHTTPDownloadThread::FormatDateHTTP(const wxDateTime& date)
 
 CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 {
-	if (TestDestroy()) { 
+	if (TestDestroy()) {
 		return NULL;
 	}
-	
+
 	wxHTTP* url_handler = NULL;
-	
+
 	AddDebugLogLineN(logHTTP, wxT("HTTP download thread started"));
-	
+
 	const CProxyData* proxy_data = thePrefs::GetProxyData();
 	bool use_proxy = proxy_data != NULL && proxy_data->m_proxyEnable;
-	
-	try {	
+
+	try {
 		wxFFileOutputStream outfile(m_tempfile);
 
 		if (!outfile.Ok()) {
@@ -305,15 +305,15 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 }
 
 
-void CHTTPDownloadThread::OnExit() 
+void CHTTPDownloadThread::OnExit()
 {
 #ifndef AMULE_DAEMON
 	if (m_companion) {
 		CMuleInternalEvent termEvent(wxEVT_HTTP_SHUTDOWN);
-		wxPostEvent(m_companion, termEvent);	
+		wxPostEvent(m_companion, termEvent);
 	}
 #endif
-	
+
 	// Notice the app that the file finished download
 	CMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_id);
@@ -330,7 +330,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 	if (TestDestroy()) {
 		return NULL;
 	}
-	
+
 	if (!location.StartsWith(wxT("http://"))) {
 		// This is not a http url
 		throw wxString(_("Invalid URL for HTTP download or HTTP redirection (did you forget 'http://' ?)"));
@@ -344,8 +344,8 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 	// I belive this is a bug...
 	// Sometimes "Location" header looks like this:
 	// "http://www.whatever.com:8080http://www.whatever.com/downloads/something.zip"
-	// So let's clean it...				
-		
+	// So let's clean it...
+
 	int bad_url_pos = host.Find(wxT("http://"));
 	wxString location_url;
 	if (bad_url_pos != -1) {
@@ -353,7 +353,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 		location_url = host.Mid(bad_url_pos);
 		host = host.Left(bad_url_pos);
 		// After the first '/' non-http-related, it's the location part of the URL
-		location_url = location_url.Right(location_url.Len() - 7).AfterFirst(wxT('/'));					
+		location_url = location_url.Right(location_url.Len() - 7).AfterFirst(wxT('/'));
 	} else {
 		// Regular Location field
 		// After the first '/', it's the location part of the URL
@@ -363,7 +363,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 	}
 
 	// Build the cleaned url now
-	wxString url = wxT("http://") + host + wxT("/") + location_url;			
+	wxString url = wxT("http://") + host + wxT("/") + location_url;
 
 	int port = 80;
 	if (host.Find(wxT(':')) != -1) {
@@ -376,7 +376,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 	addr.Hostname(host);
 	addr.Service(port);
 	if (!url_handler->Connect(addr, true)) {
-		throw wxString(_("Unable to connect to HTTP download server"));		
+		throw wxString(_("Unable to connect to HTTP download server"));
 	}
 
 	wxInputStream* url_read_stream = url_handler->GetInputStream(url);

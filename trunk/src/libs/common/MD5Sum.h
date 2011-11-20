@@ -1,5 +1,5 @@
 // This file is part of the aMule Project.
- /* 
+ /*
  Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
  Copyright (c) 1991-2011, RSA Data Security, Inc. Created 1991. All
  rights reserved.
@@ -32,7 +32,7 @@ public:
 	MD5Sum();
 	MD5Sum(const wxString& sSource);
 	MD5Sum(const uint8* buffer, size_t len);
-	
+
 	wxString Calculate(const wxString& sSource);
 	wxString Calculate(const uint8* buffer, size_t len);
 
