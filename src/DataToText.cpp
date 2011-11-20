@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -68,13 +68,13 @@ wxString DownloadStateToStr( int state, bool queueFull )
 		case DS_LOWTOLOWIP:		return _("Cannot connect LowID to LowID");
 		case DS_TOOMANYCONNS:		return _("Too many connections");
 		case DS_NONE:			return _("Unknown");
-		case DS_WAITCALLBACKKAD: 	return _("Connecting via Kad");
+		case DS_WAITCALLBACKKAD:	return _("Connecting via Kad");
 		case DS_TOOMANYCONNSKAD:	return _("Too many Kad connections");
 		case DS_BANNED:			return _("Banned");
 		case DS_ERROR:			return _("Connection Error");
 		case DS_REMOTEQUEUEFULL:	return _("Remote Queue Full");
 	}
-	
+
 	wxFAIL;
 
 	return _("Unknown");
@@ -128,7 +128,7 @@ wxString OriginToText(unsigned int source_from)
 		case SF_LOCAL_SERVER:		return wxTRANSLATE("Local Server");
 		case SF_REMOTE_SERVER:		return wxTRANSLATE("Remote Server");
 		case SF_KADEMLIA:		return wxTRANSLATE("Kad");
-		case SF_SOURCE_EXCHANGE: 	return wxTRANSLATE("Source Exchange");
+		case SF_SOURCE_EXCHANGE:	return wxTRANSLATE("Source Exchange");
 		case SF_PASSIVE:		return wxTRANSLATE("Passive");
 		case SF_LINK:			return wxTRANSLATE("Link");
 		case SF_SOURCE_SEEDS:		return wxTRANSLATE("Source Seeds");

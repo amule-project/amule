@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -61,7 +61,7 @@ public:
 	 * Note: IP2Test must be in anti-host order (BE on LE platform, LE on BE platform).
 	 */
 	bool	IsFiltered( uint32 IP2test, bool isServer = false );
-	
+
 	/**
 	 * Returns the number of banned ranges.
 	 */
@@ -70,14 +70,14 @@ public:
 	/**
 	 * Reloads the ipfilter files, discarding the current list of ranges.
 	 */
-	void 	Reload();
+	void	Reload();
 
 	/**
 	 * Starts a download of the ipfilter-list at the specified URL.
 	 *
 	 * @param A valid URL.
 	 *
-	 * Once the file has been downloaded, the ipfilter.dat file 
+	 * Once the file has been downloaded, the ipfilter.dat file
 	 * will be replaced with the new file and Reload will be called.
 	 */
 	void	Update(const wxString& strURL);
@@ -86,26 +86,26 @@ public:
 	 * This function is called when a download is completed.
 	 */
 	void	DownloadFinished(uint32 result);
-	
+
 	/**
 	 * True once initial startup has finished (stays true while reloading later).
 	 */
 	bool	IsReady() const { return m_ready; }
-	
+
 	/**
-	 * These functions are called to tell the filter to start networks once it 
+	 * These functions are called to tell the filter to start networks once it
 	 * has finished loading.
 	 */
 	void	StartKADWhenReady() { m_startKADWhenReady = true; }
 	void	ConnectToAnyServerWhenReady() { m_connectToAnyServerWhenReady = true; }
-	
+
 private:
 	/** Handles the result of loading the dat-files. */
 	void	OnIPFilterEvent(CIPFilterEvent&);
-	
+
 	//! The URL from which the IP filter was downloaded
 	wxString m_URL;
-	
+
 	// The IP ranges
 	typedef std::vector<uint32> RangeIPs;
 	RangeIPs m_rangeIPs;

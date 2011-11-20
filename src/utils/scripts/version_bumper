@@ -45,10 +45,10 @@ else
 		fi
 		if test x"`echo "$OLD_VERSION" | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+"`" != x"$OLD_VERSION"; then
 			echo "Specified old version ($OLD_VERSION) does not conform to a.b.c form."
-		else 
+		else
 			if test x"`echo "$NEW_VERSION" | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+"`" != x"$NEW_VERSION"; then
-        	                echo "Specified new version ($NEW_VERSION) does not conform to a.b.c form."
-	        	else
+				echo "Specified new version ($NEW_VERSION) does not conform to a.b.c form."
+			else
 				echo "Bumping from $OLD_VERSION to $NEW_VERSION"
 				#Command:
 				sed -i "s/$OLD_VERSION/$NEW_VERSION/g" aMule.app/Contents/Info.plist configure.in src/include/common/ClientVersion.h docs/Doxyfile aMule.spec po/*.po

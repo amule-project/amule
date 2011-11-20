@@ -1,5 +1,5 @@
 /*
- *  Name:         Graphics functions   
+ *  Name:         Graphics functions
  *
  *  Purpose:      All the functions that are used to create the Online Signature Image
  *

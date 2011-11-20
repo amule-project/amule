@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -100,15 +100,15 @@ bool CDeadSourceList::IsDeadSource(const CUpDownClient* client)
 		client->GetServerIP(),
 		client->GetKadPort()
 	);
-	
-	
+
+
 	DeadSourcePair range = m_sources.equal_range( client->GetUserIDHybrid() );
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( range.first->second == source ) {
 			// Check if the entry is still valid
 			if ( range.first->second.GetTimeout() > GetTickCount() ) {
 				return true;
-			} 
+			}
 
 			// The source is no longer dead, so remove it to reduce the size of the list
 			m_sources.erase( range.first );
@@ -131,12 +131,12 @@ void CDeadSourceList::AddDeadSource( const CUpDownClient* client )
 
 	// Set the timeout for the new source
 	source.SetTimeout( client->HasLowID() ? BLOCKTIMEFW : BLOCKTIME );
-	
+
 	// Check if the source is already listed
 	DeadSourcePair range = m_sources.equal_range( client->GetUserIDHybrid() );
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( range.first->second == source ) {
-			range.first->second = source;			
+			range.first->second = source;
 			return;
 		}
 	}

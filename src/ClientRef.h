@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -28,8 +28,8 @@
 
 //
 // Clients are stored in many places. To prevent problems when a client gets deleted
-// and later a pointer to a deleted client is referenced, clients are now stored in 
-// this class only. It uses reference counting in the client which deletes the client only 
+// and later a pointer to a deleted client is referenced, clients are now stored in
+// this class only. It uses reference counting in the client which deletes the client only
 // after the last reference has been unlinked.
 // Also the class is used as abstraction layer for the CUpDownClient class.
 //
@@ -76,11 +76,11 @@ public:
 	{
 #ifdef DEBUG_ZOMBIE_CLIENTS
 		m_from = wxT("assigned from ") + ref.m_from;
-		Link(ref.m_client, m_from); 
+		Link(ref.m_client, m_from);
 #else
-		Link(ref.m_client); 
+		Link(ref.m_client);
 #endif
-		return *this; 
+		return *this;
 	}
 
 
@@ -138,7 +138,7 @@ public:
 	uint16				GetRemoteQueueRank() const;
 	CPartFile*			GetRequestFile() const;
 	uint32				GetScore() const;
-	double 				GetScoreRatio() const;
+	double				GetScoreRatio() const;
 	uint32				GetServerIP() const;
 	const wxString		GetServerName() const;
 	uint16				GetServerPort() const;

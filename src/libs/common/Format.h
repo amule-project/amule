@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -92,7 +92,7 @@ class CFormat
 		unsigned	argIndex;	//!< Argument index. (Position, unless specified otherwise.)
 		wxChar		flag;		//!< The optional flag character.
 		unsigned	width;		//!< The optional field width.
-		signed 		precision;	//!< The optional precision value.
+		signed		precision;	//!< The optional precision value.
 		// length is not stored
 		wxChar		type;		//!< The conversion type.
 		size_t		startPos;	//!< Position of the first character of the format-specifier in the format-string.
@@ -111,7 +111,7 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * This form is required to construct from a plain char * 
+	 * This form is required to construct from a plain char *
 	 * with wx 2.9
 	 *
 	 * @param str The format-string to be used.
@@ -143,12 +143,12 @@ public:
 	 * Returns the resulting string.
 	 */
 	wxString GetString() const;
-	
+
 	/**
 	 * Implicit conversion to wxString.
 	 */
 	operator wxString() const		{ return GetString(); };
-	 
+
 private:
 	/**
 	 * Initialize internal structures.

@@ -28,13 +28,13 @@
 	NSString *res = nil;
 	double dnum = number;
 	if ( number < 1024 ) { // bytes
-		res = [NSString stringWithFormat:@"%llu bytes", number]; 
+		res = [NSString stringWithFormat:@"%llu bytes", number];
 	} else if ( number < 1024*1024 ) { // K
-		res = [NSString stringWithFormat:@"%0.2f Kb", dnum / 1024.0]; 
+		res = [NSString stringWithFormat:@"%0.2f Kb", dnum / 1024.0];
 	} else if ( number < 1024*1024*1024 ) { // M
-		res = [NSString stringWithFormat:@"%.2f Mb", dnum / 1048576.0]; 
+		res = [NSString stringWithFormat:@"%.2f Mb", dnum / 1048576.0];
 	} else {
-		res = [NSString stringWithFormat:@"%.2f Gb", dnum / 1073741824.0]; 
+		res = [NSString stringWithFormat:@"%.2f Gb", dnum / 1073741824.0];
 	}
 	return res;
 }
@@ -65,28 +65,28 @@
 
 + (id)createFromEC: (ECTagMD5 *) tag {
 	DownloadingFile *obj = [[DownloadingFile alloc] init];
-	
+
 	obj->m_hash = [tag getMD5Data];
-	
+
 	ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
 	ECTagString *stag = (ECTagString *)nametag;
 	obj->m_name = stag.stringValue;;
-	
+
 	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
 	NSLog(@"[EC]: added partfile [%@]\n", obj->m_name);
 	[obj updateFromEC:tag];
-	
+
 	return obj;
 }
 
 - (void)updateFromEC:(ECTagMD5 *) tag {
 	NSLog(@"[EC]: updating partfile [%@]\n", m_name);
-	
+
 	m_size_done = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_DONE];
 	m_size_xfer = [tag tagInt64ByName:EC_TAG_PARTFILE_SIZE_XFER];
-	
+
 	m_speed = [tag tagInt64ByName:EC_TAG_PARTFILE_SPEED];
-	
+
 	m_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT];
 	m_non_current_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT];
 	m_xfer_src_count = [tag tagInt64ByName: EC_TAG_PARTFILE_SOURCE_COUNT_XFER];
@@ -144,7 +144,7 @@
 
 + (id)createFromEC: (ECTagMD5 *) tag {
 	SearchFile *obj = [[SearchFile alloc] init];
-	
+
 	obj->m_hash = [tag getMD5Data];
 
 	ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
@@ -154,9 +154,9 @@
 	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
 
 	obj->m_known = ([tag tagByName: EC_TAG_KNOWNFILE] == nil) ? false : true;
-	
+
 	[obj updateFromEC:tag];
-	
+
 	return obj;
 }
 
@@ -190,15 +190,15 @@
 	SharedFile *obj = [[SharedFile alloc] init];
 
 	obj->m_hash = [tag getMD5Data];
-	
+
 	ECTag *nametag = [tag tagByName: EC_TAG_PARTFILE_NAME];
 	ECTagString *stag = (ECTagString *)nametag;
 	obj->m_name = stag.stringValue;;
-	
+
 	obj->m_size = [tag tagInt64ByName: EC_TAG_PARTFILE_SIZE_FULL];
-		
+
 	[obj updateFromEC:tag];
-	
+
 	return obj;
 }
 
@@ -241,10 +241,10 @@
 	m_req_count_all = [tag tagInt64ByName: EC_TAG_KNOWNFILE_REQ_COUNT_ALL];
 	m_accept_count = [tag tagInt64ByName: EC_TAG_KNOWNFILE_ACCEPT_COUNT];
 	m_accept_count_all = [tag tagInt64ByName: EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL];
-	
+
 	m_size_xfer = [tag tagInt64ByName: EC_TAG_KNOWNFILE_XFERRED];
 	m_size_xfer_all = [tag tagInt64ByName: EC_TAG_KNOWNFILE_XFERRED_ALL];
-	
+
 	m_prio = [tag tagInt64ByName:EC_TAG_PARTFILE_PRIO];
 	if ( m_prio > 10 ) {
 		m_auto_prio = true;
@@ -252,7 +252,7 @@
 	} else {
 		m_auto_prio = false;
 	}
-	
+
 }
 
 @end
@@ -275,7 +275,7 @@
 	id objKey = [object key];
 	[m_file_dict setObject:object forKey:objKey];
 	[m_file_array addObject:object];
-	
+
 	[self reloadGui];
 }
 
@@ -343,13 +343,13 @@
 + (id)initWithConnection:(ECRemoteConnection *) connection {
 	amuleData *obj = [[amuleData alloc] init];
 	connection.delegate = obj;
-	
+
 	obj->m_connection = connection;
-	
+
 	obj->m_downloads = [[amuleFileSet alloc] init];
 	obj->m_shared = [[amuleFileSet alloc] init];
 	obj->m_search_results = [[amuleFileSet alloc] init];
-	 
+
 	return obj;
 }
 
@@ -377,7 +377,7 @@
 }
 
 - (void)handleError {
-		NSRunCriticalAlertPanel(@"Daemon communication error", 
+		NSRunCriticalAlertPanel(@"Daemon communication error",
 						@"Connection with core daemon (amuled) failed",
 						@"Quit", nil,nil);
 		exit(-1);
@@ -471,11 +471,11 @@
 	if ( avail ) {
 		[searchtag.subtags addObject:[ECTagInt32 tagFromInt32:avail withName:EC_TAG_SEARCH_AVAILABILITY]];
 	}
-	
+
 	[packet.subtags addObject:searchtag];
-	
+
 	[m_connection sendPacket:packet];
-	
+
 	m_search_running = true;
 }
 
@@ -483,7 +483,7 @@
 	ECPacket *packet = [ECPacket packetWithOpcode:EC_OP_SEARCH_STOP];
 
 	[m_connection sendPacket:packet];
-	
+
 	m_search_running = false;
 }
 

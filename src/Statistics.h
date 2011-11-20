@@ -236,7 +236,7 @@ class CStatistics {
 	/* Access to the tree */
 
 	// uptime
-	static	uint64	GetUptimeMillis() 			{ return s_uptime->GetTimerValue(); }
+	static	uint64	GetUptimeMillis()			{ return s_uptime->GetTimerValue(); }
 	static	uint64	GetUptimeSeconds()			{ return s_uptime->GetTimerSeconds(); }
 	static	uint64	GetStartTime()				{ return s_uptime->GetTimerStart(); }
 
@@ -357,7 +357,7 @@ class CStatistics {
 	void SetAverageMinutes(uint8 minutes) { average_minutes = minutes; }
 
  private:
- 	std::list<HR>	listHR;
+	std::list<HR>	listHR;
 	typedef std::list<HR>::iterator		listPOS;
 	typedef std::list<HR>::reverse_iterator	listRPOS;
 
@@ -441,7 +441,7 @@ class CStatistics {
 
 	// Clients
 	static	CStatTreeItemHiddenCounter*	s_clients;
-	static	CStatTreeItemCounter*  		s_unknown;
+	static	CStatTreeItemCounter*		s_unknown;
 	//static	CStatTreeItem			s_lowID;
 	//static	CStatTreeItem			s_secIdentOnOff;
 #ifdef __DEBUG__
@@ -541,9 +541,9 @@ private:
 	static	uint32	GetSharedFileCount()			{ return s_statData[sdSharedFileCount]; }
 
 	static	uint32	GetED2KUsers()			{ return s_statData[sdED2KUsers]; }
-	static	uint32	GetKadUsers() 			{ return s_statData[sdKadUsers]; }
+	static	uint32	GetKadUsers()			{ return s_statData[sdKadUsers]; }
 	static	uint32	GetED2KFiles()			{ return s_statData[sdED2KFiles]; }
-	static	uint32	GetKadFiles() 			{ return s_statData[sdKadFiles]; }
+	static	uint32	GetKadFiles()			{ return s_statData[sdKadFiles]; }
 
 	static	bool	IsFirewalledKadUDP()	{ return s_statData[sdKadFirewalledUDP] != 0; }
 	static	uint32	GetKadIndexedSources()	{ return s_statData[sdKadIndexedSources]; }

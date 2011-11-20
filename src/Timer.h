@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,21 +47,21 @@ public:
 	 * @param oneShot Specifies if only one event should be produced.
 	 */
 	bool Start(int millisecs, bool oneShot = false);
-	
-	/** 
+
+	/**
 	 * Returns true if the timer is running.
 	 */
 	bool IsRunning() const;
 
 	/**
-	 * Stops the timer. 
+	 * Stops the timer.
 	 *
-	 * Note that this does not delete the actual thread 
-	 * immediatly, but no new events will be queued after 
+	 * Note that this does not delete the actual thread
+	 * immediatly, but no new events will be queued after
 	 * calling this function.
 	 */
 	void Stop();
-	
+
 private:
 	CTimerThread* m_thread;
 	wxEvtHandler* m_owner;
@@ -72,7 +72,7 @@ private:
 
 class CTimerEvent : public wxEvent
 {
-public:	
+public:
 	CTimerEvent(int id = 0);
 
 	virtual wxEvent* Clone() const;
@@ -81,7 +81,7 @@ public:
 
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_TIMER, -1)
 
-	
+
 typedef void (wxEvtHandler::*MuleTimerEventFunction)(CTimerEvent&);
 
 #define EVT_MULE_TIMER(id, func) \

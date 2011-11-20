@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -44,7 +44,7 @@ public:
 		do {
 			// current time
 			uint32 now = GetTickCountFullRes();
-			// This is typically zero, because lastEvent was already incremented by one period. 
+			// This is typically zero, because lastEvent was already incremented by one period.
 			sint32 delta = now - lastEvent;
 			if (delta > 100 * m_period) {
 				// We're way too far behind.  Probably what really happened is
@@ -56,7 +56,7 @@ public:
 
 			// Wait one period (adjusted by the difference just calculated)
 			sint32 timeout = ((m_period < delta) ? 0 : (m_period - delta));
-			
+
 			// In normal operation, we will never actually acquire the
 			// semaphore; we will always timeout.  This is used to
 			// implement a Sleep operation which the owning CTimer can
@@ -66,16 +66,16 @@ public:
 			if (m_sleepSemaphore.WaitTimeout(timeout) == wxSEMA_TIMEOUT) {
 				// Increment for one event only, so no events can be lost.
 				lastEvent += m_period;
-					
+
 				wxPostEvent(m_owner, evt);
 			} else {
 				break;
 			}
 		} while (!m_oneShot);
-		
+
 		return NULL;
 	}
-	
+
 	sint32			m_period;
 	bool			m_oneShot;
 	wxEvtHandler*	m_owner;
@@ -110,11 +110,11 @@ bool CTimer::IsRunning() const
 bool CTimer::Start(int millisecs, bool oneShot)
 {
 	wxCHECK_MSG(m_id != -1, false, wxT("Invalid target-ID for timer-events."));
-	
+
 	// Since this class generally matches wxTimer, calling
 	// start on a running timer stops and then restarts it.
 	Stop();
-	
+
 	m_thread = new CTimerThread();
 	m_thread->m_period	= millisecs;
 	m_thread->m_oneShot	= oneShot;

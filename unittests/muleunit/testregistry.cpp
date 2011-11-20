@@ -8,12 +8,12 @@
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-//  
+//
 // This library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-//  
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -65,7 +65,7 @@ void TestRegistry::add(Test *test)
 	const wxString tcName = test->getTestCaseName();
 	const wxString tName = test->getTestName();
 
-	
+
 	if (m_testCases.empty() || m_testCases.back()->getName() != tcName) {
 		m_testCases.push_back(new TestCase(tcName));
 	}
@@ -77,12 +77,12 @@ void TestRegistry::add(Test *test)
 bool TestRegistry::runTests()
 {
 	bool success = true;
-	
+
 	TestCaseList::iterator it = m_testCases.begin();
 	for (; it != m_testCases.end(); ++it) {
 		success &= (*it)->run();
 	}
-	
+
 	return success;
 }
 

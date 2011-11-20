@@ -1,12 +1,12 @@
 /*
- *  Name:         HTML creation functions 
+ *  Name:         HTML creation functions
  *
  *  Purpose:      Create a nice HTML page with all the statistics
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
  *  Copyright (c) 2004-2011 Pedro de Oliveira ( falso@rdk.homeip-net )
- * 
+ *
  *  This file is part of aMule.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,7 @@ int create_html(char *stats[20], char *lines[6], char template[120], char *path_
 		perror("Could not open file");
 		exit (43);
 	}
-	
+
 	struct stat sb;
 	if (fstat(fdTmpl, &sb) < 0)
 	{
@@ -92,7 +92,7 @@ int create_html(char *stats[20], char *lines[6], char template[120], char *path_
 		mem[len++] = ler;
 	}
 	fclose(fTmpl);
-	
+
 	/* printf ("HTML: %s\n", mem); */
 
 	int t;
@@ -112,7 +112,7 @@ int create_html(char *stats[20], char *lines[6], char template[120], char *path_
 		free(mem);
 		return 0;
 	}
-	
+
 	FILE *fHTML = NULL;
 	if ((fHTML = fopen(path, "w")) == NULL)
 	{
@@ -126,7 +126,7 @@ int create_html(char *stats[20], char *lines[6], char template[120], char *path_
 	fprintf(fHTML, "%s", mem);
 	fclose(fHTML);
 	free(mem);
-	
+
 	printf("HTML file created.\n");
 
 	return 1;

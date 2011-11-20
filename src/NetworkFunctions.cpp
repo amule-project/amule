@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,7 +43,7 @@ bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 	wxString str = strIP.Strip( wxString::both );
 	for (size_t i = 0; i < str.Length(); i++) {
 		wxChar c = str.GetChar( i );
-		
+
 		if ( c >= wxT('0') && c <= wxT('9') && (value >> 8) == 0) {
 			value = ( value * 10 ) + ( c - wxT('0') );
 			++digit;
@@ -119,7 +119,7 @@ const IPRange ranges[] = {
 { wxT("172.16.0.0"),    12, true  }, // Private-Use Networks               [RFC1918]
 { wxT("191.255.0.0"),   16, false }, // Reserved but subject
                                      //    to allocation                          --
-{ wxT("192.0.0.0"),     24, false }, // Reserved but subject          
+{ wxT("192.0.0.0"),     24, false }, // Reserved but subject
                                      //    to allocation                          --
 { wxT("192.0.2.0"),     24, false }, // Test-Net
 { wxT("192.88.99.0"),   24, false }, // 6to4 Relay Anycast                 [RFC3068]

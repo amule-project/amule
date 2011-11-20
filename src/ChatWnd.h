@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -35,10 +35,10 @@ class CChatSelector;
 class CFriendListCtrl;
 class CMD4Hash;
 
-class CChatWnd : public wxPanel 
+class CChatWnd : public wxPanel
 {
 public:
-	CChatWnd(wxWindow* pParent = NULL); 
+	CChatWnd(wxWindow* pParent = NULL);
 	~CChatWnd() {};
 
 	void StartSession(CFriend* friend_client, bool setfocus = true);
@@ -47,14 +47,14 @@ public:
 	void	RemoveFriend(CFriend* todel);
 
 	void	ProcessMessage(uint64 sender, const wxString& message);
-	void 	ConnectionResult(bool success, const wxString& message, uint64 id);
+	void	ConnectionResult(bool success, const wxString& message, uint64 id);
 
 	void	SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
 
 	bool	IsIdValid(uint64 id);
 	void	ShowCaptchaResult(uint64 id, bool ok);
 	void	EndSession(uint64 id);
-		
+
 protected:
 	/**
 	 * Event-handler for displaying the chat-popup menu.
@@ -64,7 +64,7 @@ protected:
 	 * Event-handler fo the Close item on the popup-menu.
 	 */
 	void	OnPopupClose(wxCommandEvent& evt);
-	
+
 	/**
 	 * Event-handler fo the CloseAll item on the popup-menu.
 	 */

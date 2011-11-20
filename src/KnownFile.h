@@ -135,11 +135,11 @@ public:
 
 	/* Comment and rating */
 	virtual const wxString&	GetFileComment() const { return m_strComment; }
-	virtual int8	GetFileRating() 		const { return m_iRating; }
+	virtual int8	GetFileRating()		const { return m_iRating; }
 
 	bool	HasComment() const		{ return m_hasComment; }
 	bool	HasRating() const		{ return (m_iUserRating != 0); }
-	int8	UserRating() const 		{ return m_iUserRating; }
+	int8	UserRating() const		{ return m_iUserRating; }
 
 protected:
 	//! CAbstractFile is not assignable.
@@ -225,7 +225,7 @@ public:
 
 	// comment
 	const wxString&	GetFileComment()	const	{ if (!m_bCommentLoaded) LoadComment(); return m_strComment; }
-	int8	GetFileRating() 			const	{ if (!m_bCommentLoaded) LoadComment(); return m_iRating; }
+	int8	GetFileRating()			const	{ if (!m_bCommentLoaded) LoadComment(); return m_iRating; }
 
 	void	SetFileCommentRating(const wxString& strNewComment, int8 iNewRating);
 	void	SetPublishedED2K( bool val );
@@ -270,9 +270,9 @@ public:
 	ArrayOfUInts16 m_AvailPartFrequency;
 
 	/**
- 	 * Returns a base-16 encoding of the master hash, or
- 	 * an empty string if no such hash exists.
- 	 */
+	 * Returns a base-16 encoding of the master hash, or
+	 * an empty string if no such hash exists.
+	 */
 	wxString GetAICHMasterHash() const;
 	/** Returns true if the AICH-Hashset is valid, and verified or complete. */
 	bool HasProperAICHHashSet() const;

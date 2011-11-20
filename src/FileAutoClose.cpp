@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,7 +37,7 @@ CFileAutoClose::CFileAutoClose()
 	  m_size(0),
 	  m_lastAccess(TheTime)
 {}
-	
+
 CFileAutoClose::CFileAutoClose(const CPath& path, CFile::OpenMode mode)
 {
 	Open(path, mode);
@@ -52,7 +52,7 @@ bool CFileAutoClose::Open(const CPath& path, CFile::OpenMode mode)
 	m_lastAccess = TheTime;
 	return m_file.Open(path, mode);
 }
-	
+
 bool CFileAutoClose::Create(const CPath& path, bool overwrite)
 {
 	m_mode = CFile::write;
@@ -60,7 +60,7 @@ bool CFileAutoClose::Create(const CPath& path, bool overwrite)
 	m_lastAccess = TheTime;
 	return m_file.Create(path, overwrite);
 }
-	
+
 bool CFileAutoClose::Close()
 {
 	bool state = m_autoClosed ? true : m_file.Close();
@@ -72,7 +72,7 @@ uint64 CFileAutoClose::GetLength() const
 {
 	return m_autoClosed ? m_size : m_file.GetLength();
 }
-	
+
 bool CFileAutoClose::SetLength(uint64 newLength)
 {
 	Reopen();
@@ -88,7 +88,7 @@ bool CFileAutoClose::IsOpened() const
 {
 	return m_autoClosed || m_file.IsOpened();
 }
-	
+
 void CFileAutoClose::ReadAt(void* buffer, uint64 offset, size_t count)
 {
 	Reopen();
@@ -116,7 +116,7 @@ int CFileAutoClose::fd()
 	return m_file.fd();
 }
 
-void CFileAutoClose::Unlock() 
+void CFileAutoClose::Unlock()
 {
 	if (m_locked) {
 		m_locked--;

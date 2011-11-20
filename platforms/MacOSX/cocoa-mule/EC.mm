@@ -16,14 +16,14 @@
 		NSLog(@"[EC] buffer for tag is too short");
 		return nil;
 	}
-	
+
 	uint16_t name16 = *(uint16_t *)(*buffer);
 	name16 = ntohs(name16);
 	bool have_subtags = (name16 & 1) != 0;
 	name16 >>= 1;
 	ECTagNames tag_name = (ECTagNames)(name16);
 	*buffer += sizeof(name16);
-	
+
 	uint8_t type8 = *(*buffer);
 	ECTagTypes tag_type = (ECTagTypes)type8;
 	*buffer += sizeof(type8);
@@ -31,7 +31,7 @@
 	uint32_t size32 = *(uint32_t *)(*buffer);
 	size32 = ntohl(size32);
 	*buffer += sizeof(uint32_t);
-	
+
 	NSMutableArray *subtags = have_subtags ? [ECTag readSubtags:buffer withLenght:(length-3)] : nil;
 
 	switch (tag_type) {
@@ -60,7 +60,7 @@
 		tag->m_name = tag_name;
 		tag->m_subtags = subtags;
 	}
-	return tag;	
+	return tag;
 }
 
 + (NSMutableArray *)readSubtags:(uint8_t **) buffer withLenght:(int) length {
@@ -76,7 +76,7 @@
 			[array addObject:tag];
 		}
 	}
-	
+
 	return array;
 }
 
@@ -185,8 +185,8 @@
 	tag->m_size = 1;
 	tag->m_type = EC_TAGTYPE_UINT8;
 	tag->m_name = name;
-	
-	return tag;	
+
+	return tag;
 }
 
 + (id)tagFromBuffer:(uint8_t **) buffer {
@@ -194,15 +194,15 @@
 	tag->m_val = **buffer;
 	tag->m_size = 1;
 	tag->m_type = EC_TAGTYPE_UINT8;
-	
+
 	*buffer += 1;
-	
+
 	return tag;
 }
 
 - (void)writeToSocket:(NSOutputStream *) socket {
 	[super writeToSocket:socket];
-	
+
 	[socket write:&m_val maxLength:sizeof(m_val)];
 }
 
@@ -218,17 +218,17 @@
 	tag->m_size = 2;
 	tag->m_type = EC_TAGTYPE_UINT16;
 	tag->m_name = name;
-	
-	return tag;	
+
+	return tag;
 }
 
 + (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt16 *tag = [[ECTagInt16 alloc] init];
-	
+
 	tag->m_val = ntohs(*((uint16_t *)(*buffer)));
 	tag->m_size = 2;
 	tag->m_type = EC_TAGTYPE_UINT16;
-	
+
 	*buffer += 2;
 
 	return tag;
@@ -247,17 +247,17 @@
 	tag->m_size = 4;
 	tag->m_type = EC_TAGTYPE_UINT32;
 	tag->m_name = name;
-	
-	return tag;	
+
+	return tag;
 }
 
 + (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagInt32 *tag = [[ECTagInt32 alloc] init];
-	
+
 	tag->m_val = ntohl(*((uint32_t *)(*buffer)));
 	tag->m_size = 4;
 	tag->m_type = EC_TAGTYPE_UINT32;
-	
+
 	*buffer += 4;
 
 	return tag;
@@ -276,8 +276,8 @@
 	tag->m_size = 8;
 	tag->m_type = EC_TAGTYPE_UINT64;
 	tag->m_name = name;
-	
-	return tag;	
+
+	return tag;
 }
 
 
@@ -288,22 +288,22 @@
 	uint32 val32 = *((uint32_t *)(*buffer));
 	hi = ntohl(val32);
 	*buffer += 4;
-	
+
 	val32 = *((uint32_t *)(*buffer));
 	lo = ntohl(val32);
 	*buffer += 4;
-	
+
 	tag->m_val = (hi << 32) | lo;
 	tag->m_size = 8;
 	tag->m_type = EC_TAGTYPE_UINT64;
-	
+
 	return tag;
 }
 
 
 - (void)writeToSocket:(NSOutputStream *) socket {
 	[super writeToSocket:socket];
-	
+
 	uint32_t val32 = m_val >> 32;
 	val32 = htonl(val32);
 	[socket write:(uint8_t *)&val32 maxLength:sizeof(val32)];
@@ -320,7 +320,7 @@
 
 - (void)writeToSocket:(NSOutputStream *) socket {
 	[super writeToSocket:socket];
-	
+
 	[socket write:(const uint8_t *)[m_data bytes] maxLength:m_size];
 }
 
@@ -334,7 +334,7 @@
 
 	tag->m_data = [NSData dataWithBytes: *buffer length: length];
 	[tag->m_data retain];
-	
+
 	return tag;
 }
 
@@ -351,7 +351,7 @@
 	CC_MD5_Init(&ctx);
 	CC_MD5_Update(&ctx, [string UTF8String], [string length]);
 	CC_MD5_Final(md5data, &ctx);
-	
+
 	tag->m_data = [NSData dataWithBytes: md5data length: sizeof(md5data)];
 	[tag->m_data retain];
 	tag->m_size = 16;
@@ -363,13 +363,13 @@
 
 + (id)tagFromBuffer:(uint8_t **) buffer {
 	ECTagMD5 *tag = [[ECTagMD5 alloc] init];
-	
+
 	tag->m_data = 0;
 	tag->m_val.lo = *((uint64_t *)(*buffer));
 	(*buffer) += 8;
 	tag->m_val.hi = *((uint64_t *)(*buffer));
 	(*buffer) += 8;
-	
+
 	return tag;
 }
 
@@ -415,7 +415,7 @@
 
 	tag->m_val = [NSString stringWithCString:(char *)(*buffer) encoding:NSUTF8StringEncoding];
 	*buffer += [tag->m_val length] + 1;
-	
+
 	return tag;
 }
 
@@ -429,7 +429,7 @@
 	ECPacket *p = [[ECPacket alloc] init];
 
 	[p initWithOpcode:opcode];
-	
+
 	return p;
 }
 
@@ -450,7 +450,7 @@
 	}
 	ECPacket *p = [[ECPacket alloc] init];
 	uint8_t *data = buffer;
-	
+
 	p->m_flags = ntohl(*((uint32_t *)data));
 	data += 4;
 	uint32_t packet_size = ntohl(*((uint32_t *)data));
@@ -475,7 +475,7 @@
 			}
 		}
 	}
-	
+
 	return p;
 }
 
@@ -483,7 +483,7 @@
 	// 1 (command) + 2 (tag count)
 	int packet_size = [self getSize] + 1 + 2;
 
-// No need for zlib on client side	
+// No need for zlib on client side
 //	if ( packet_size > MaxUncompressedPacket ) {
 //		m_flags |= (Int32)ECFlags.EC_FLAG_ZLIB;
 //	}
@@ -541,7 +541,7 @@
 //						 md5data[12],md5data[13],md5data[14],md5data[15]
 //						 ];
 	NSString *saltMD5 = [p getMD5_Str: saltStr];
-	
+
 	NSString *newPass = [NSString stringWithFormat:@"%@%@", [p getMD5_Str: password], saltMD5];
 
 	NSLog(@"[EC] using salt=%@ saltHash=%@ newPass=%@\n", saltStr, saltMD5, newPass);
@@ -559,18 +559,18 @@
 
 + (id)loginPacket:(NSString *) version {
 	ECLoginRequestPacket *p = [[ECLoginRequestPacket alloc] init];
-	
+
 	[p initWithOpcode:EC_OP_AUTH_REQ];
-	
+
 	ECTagString *version_tag = [ECTagString tagFromString:version withName:EC_TAG_CLIENT_VERSION];
 	[p->m_subtags addObject:version_tag];
-	
+
 	ECTagString *client_name_tag = [ECTagString tagFromString:@"cocoa-frontend" withName:EC_TAG_CLIENT_NAME];
 	[p->m_subtags addObject:client_name_tag];
-	
+
 	ECTagInt64 *proto_version_tag = [ECTagInt64 tagFromInt64:EC_CURRENT_PROTOCOL_VERSION withName:EC_TAG_PROTOCOL_VERSION];
 	[p->m_subtags addObject:proto_version_tag];
-	
+
 	return p;
 }
 
@@ -584,13 +584,13 @@
 
 + (id)remoteConnection {
 	ECRemoteConnection *p = [[ECRemoteConnection alloc] init];
-	
+
 	//
 	// rx buffer can be resized as needed
 	//
 	p->m_rxbuf = [NSMutableData dataWithLength:1024];
 	[p->m_rxbuf retain];
-	
+
 	p->m_login_handler = [amuleLoginHandler initWithConnection:p];
 	[p->m_login_handler retain];
 	//
@@ -600,7 +600,7 @@
 //	p->m_txbuf = [NSMutableData dataWithLength:1024];
 //	[p->m_txbuf retain];
 	p->m_txbuf = nil;
-	
+
 	return p;
 }
 
@@ -610,7 +610,7 @@
 
 	[m_istream release];
 	[m_ostream release];
-	
+
 	[super dealloc];
 }
 
@@ -633,10 +633,10 @@
 
 - (void)connectToAddress:(NSString *) hostname withPort:(int)trgport {
 	m_error = false;
-	
+
 	NSHost *host = [NSHost hostWithName:hostname];
 	NSString *addr = nil;
-	
+
 	//
 	// On Mac localhost has ipv6 address (linklocal), but amuled listen
 	// only on ipv4
@@ -657,10 +657,10 @@
 
 	[m_istream retain];
 	[m_ostream retain];
-	
+
 	[m_istream setDelegate:self];
 	[m_ostream setDelegate:self];
-	
+
 	[m_istream scheduleInRunLoop:[NSRunLoop currentRunLoop]
             forMode:NSDefaultRunLoopMode];
 
@@ -669,7 +669,7 @@
 
 	[m_istream open];
 	[m_ostream open];
-	
+
 	m_remaining_size = 8;
 	m_rx_size = 0;
 }
@@ -677,7 +677,7 @@
 - (void)sendLogin:(NSString *) password {
 
 	[m_login_handler usePass: password];
-	
+
 	ECLoginRequestPacket *p = [ECLoginRequestPacket loginPacket:@"0.1"];
 	[self sendPacket:p];
 }
@@ -685,11 +685,11 @@
 - (void)sendPacket:(ECPacket *) packet {
 	NSOutputStream *memstream = [NSOutputStream outputStreamToMemory];
 	[memstream open];
-	
+
 	[packet writeToSocket:memstream];
 	id data = [memstream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
-	
- 	m_tx_size = [data length];
+
+	m_tx_size = [data length];
 	NSLog(@"[EC] sending packet %d bytes\n", m_tx_size);
 	m_tx_ptr = [m_ostream write:(const uint8_t *)[data bytes] maxLength:[data length]];
 	NSLog(@"[EC] %d bytes sent\n", m_tx_ptr);
@@ -779,7 +779,7 @@
 					int packet_length = [m_rxbuf length] - packet_offset;
 					ECPacket *packet = [ECPacket packetFromBuffer:packet_start withLength:packet_length];
 					packet_offset += m_rx_size;
-					
+
 					if ( [m_login_handler loginOK] ) {
 #ifdef EC_RX_DEBUG
 						NSLog(@"[EC] calling delegate\n");
@@ -797,7 +797,7 @@
 			}
             break;
         }
-		
+
         case NSStreamEventHasSpaceAvailable:
 		{
 			if ( m_txbuf != nil ) {
@@ -832,9 +832,9 @@
 
 + (id)initWithConnection:(ECRemoteConnection *) connection {
 
-	amuleLoginHandler *obj = [[amuleLoginHandler alloc] init]; 
+	amuleLoginHandler *obj = [[amuleLoginHandler alloc] init];
 	obj->m_connection = connection;
-	
+
 	obj->m_state = LOGIN_REQUEST_SENT;
 
 	return obj;
@@ -851,16 +851,16 @@
 			break;
 		case LOGIN_REQUEST_SENT:
 			if ( packet.opcode == EC_OP_AUTH_SALT ) {
-				
+
 				uint64_t salt = [packet tagInt64ByName:EC_TAG_PASSWD_SALT];
 				ECLoginAuthPacket *auth_packet = [ECLoginAuthPacket loginPacket:m_pass withSalt:salt];
 				[m_connection sendPacket:auth_packet];
-				
+
 				m_state = LOGIN_PASS_SENT;
 			} else {
 				NSLog(@"[EC]: error - expecting packet with EC_OP_AUTH_SALT, not [%d]\n", packet.opcode);
 				m_state = LOGIN_IDLE;
-			} 
+			}
 			break;
 		case LOGIN_PASS_SENT:
 			if ( packet.opcode == EC_OP_AUTH_OK ) {

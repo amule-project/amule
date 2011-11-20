@@ -27,15 +27,15 @@ dnl --------------------------------------------------------------------------
 dnl
 dnl This macro sets these variables:
 dnl - LIBUPNP_VERSION
-dnl 	Something like "1.6.7"
+dnl	Something like "1.6.7"
 dnl - LIBUPNP_CPPFLAGS
-dnl 	Flags to be added to CPPFLAGS
+dnl	Flags to be added to CPPFLAGS
 dnl - LIBUPNP_CFLAGS
-dnl 	Flags to be added to CFLAGS
+dnl	Flags to be added to CFLAGS
 dnl - LIBUPNP_LDFLAGS
-dnl 	Flags to be added to LDFLAGS
+dnl	Flags to be added to LDFLAGS
 dnl - LIBUPNP_LIBS
-dnl 	Library to be added to LIBS
+dnl	Library to be added to LIBS
 dnl
 dnl The LIBUPNP_CPPFLAGS, LIBUPNP_CFLAGS, LIBUPNP_LDFLAGS and LIBUPNP_LIBS variables are also substituted.
 dnl

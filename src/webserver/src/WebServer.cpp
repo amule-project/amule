@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -184,9 +184,9 @@ CParsedUrl::CParsedUrl(const wxString &url)
 
 	if ( url.Find('?') != -1 ) {
 		m_file.Truncate(m_file.Find('?'));
-		
+
 		wxString params = url.AfterFirst('?');
-		
+
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
 			wxString param_val = tkz.GetNextToken();
@@ -221,7 +221,7 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_ImageLib(templateDir)
 {
 	webInterface = webApp;
-	
+
 	//
 	// Init stat graphs
 #ifdef WITH_LIBPNG
@@ -234,7 +234,7 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_ImageLib.AddImage(new CDynStatisticImage(200, false, m_Stats.KadCount()),
 		wxT("/amule_stats_kad.png"));
 #endif
-	
+
 	m_upnpEnabled = webInterface->m_UPnPWebServerEnabled;
 	m_upnpTCPPort = webInterface->m_UPnPTCPPort;
 
@@ -265,7 +265,7 @@ void CWebServerBase::StartServer()
 	wxIPV4address addr;
 	addr.AnyAddress();
 	addr.Service(webInterface->m_WebserverPort);
-	
+
 	m_webserver_socket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
 	m_webserver_socket->SetEventHandler(*this, ID_WEBLISTENSOCKET_EVENT);
 	m_webserver_socket->SetNotify(wxSOCKET_CONNECTION_FLAG);
@@ -293,12 +293,12 @@ void CWebServerBase::StopServer()
 void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
 {
 	CWebSocket *client = new CWebSocket(this);
-	
+
     if ( m_webserver_socket->AcceptWith(*client, false) ) {
-    	webInterface->Show(_("web client connection accepted\n"));
+	webInterface->Show(_("web client connection accepted\n"));
     } else {
-    	delete client;
-    	webInterface->Show(_("ERROR: cannot accept web client connection\n"));
+	delete client;
+	webInterface->Show(_("ERROR: cannot accept web client connection\n"));
     }
 }
 
@@ -334,7 +334,7 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 	// To prevent access to non-template images, we disallow use of paths in filenames.
 	wxString imgName = wxT("/") + wxFileName(Data.parsedURL.File()).GetFullName();
 	CAnyImage *img = m_ImageLib.GetImage(imgName);
-	
+
 	// Only static images are available to visitors, in order to prevent
 	// information leakage, but still allowing images on the login page.
 	if (img && (session->m_loggedin || dynamic_cast<CFileImage*>(img))) {
@@ -385,7 +385,7 @@ void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint3
 	CECPacket *ec_cmd = 0;
 	CMD4Hash fileHash;
 	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
-	
+
 	CECTag hashtag(EC_TAG_KNOWNFILE, fileHash);
 	if (cmd == wxT("prio")) {
 		ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
@@ -405,7 +405,7 @@ void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint3
 				GetLowerPrioShared(file->nFilePriority, file->bFileAutoPriority)));
 		}
 	}
-	
+
 	if ( ec_cmd ) {
 		ec_cmd->AddTag(hashtag);
 		Send_Discard_V2_Request(ec_cmd);
@@ -424,7 +424,7 @@ void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uin
 	CECPacket *ec_cmd = 0;
 	CMD4Hash fileHash;
 	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
-	
+
 	CECTag hashtag(EC_TAG_PARTFILE, fileHash);
 	if (cmd == wxT("pause")) {
 		ec_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
@@ -462,7 +462,7 @@ void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 {
 	CMD4Hash fileHash;
 	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
-	
+
 	CECPacket ec_cmd(EC_OP_DOWNLOAD_SEARCH_RESULT);
 	CECTag link_tag(EC_TAG_KNOWNFILE, fileHash);
 
@@ -477,7 +477,7 @@ void CWebServerBase::Send_AddServer_Cmd(wxString addr, wxString port, wxString n
 
 	ec_cmd.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, addr.Trim() + wxT(":") + port.Trim()));
 	ec_cmd.AddTag(CECTag(EC_TAG_SERVER_NAME, name));
-	
+
 	Send_Discard_V2_Request(&ec_cmd);
 }
 
@@ -535,7 +535,7 @@ int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *sour
 	if (err != Z_OK) {
 		return err;
 	}
-	
+
 	snprintf((char*)dest, *destLen, "%c%c%c%c%c%c%c%c%c%c", gz_magic[0], gz_magic[1],
 		Z_DEFLATED, 0 /*flags*/, 0,0,0,0 /*time*/, 0 /*xflags*/, 255);
 
@@ -564,13 +564,13 @@ int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *sour
 	*(((Bytef*) dest)+10+stream.total_out+7) = (Bytef)(( sourceLen >>24) &	0xFF);
 	// return  destLength
 	*destLen = 10 + stream.total_out + 8;
-	
+
 	return err;
 }
 
 
 
-/* 
+/*
  * Item container implementation
  */
 
@@ -584,7 +584,7 @@ ServersInfo *ServersInfo::m_This = 0;
 ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry>(webApp)
 {
 	m_This = this;
-	
+
 }
 
 bool ServersInfo::ReQuery()
@@ -599,7 +599,7 @@ bool ServersInfo::ReQuery()
 	EraseAll();
 	for (CECPacket::const_iterator it = srv_reply->begin(); it != srv_reply->end(); it++) {
 		const CECTag *tag = & *it;
-		
+
 		ServerEntry Entry;
 		Entry.sServerName =
 			_SpecialChars(tag->GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData());
@@ -617,7 +617,7 @@ bool ServersInfo::ReQuery()
 		AddItem(Entry);
 	}
 	delete srv_reply;
-	
+
 	return true;
 }
 
@@ -628,7 +628,7 @@ SharedFile::SharedFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 		lFileSize = tag->SizeFull();
 		sED2kLink = _SpecialChars(tag->FileEd2kLink());
 		nHash = tag->FileHash();
-		
+
 		ProcessUpdate(tag);
 }
 
@@ -684,8 +684,8 @@ DownloadFile::DownloadFile(CEC_PartFile_Tag *tag) : CECID(tag->ID())
 	lFileSpeed = tag->Speed();
 	fCompleted = (100.0*lFileCompleted) / lFileSize;
 	wxtLastSeenComplete = wxDateTime( tag->LastSeenComplete() );
-	
-	ProcessUpdate(tag);							
+
+	ProcessUpdate(tag);
 }
 
 void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
@@ -693,7 +693,7 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	if (!tag) {
 		return;
 	}
-	
+
 	lFilePrio = tag->DownPrio();
 	if ( lFilePrio >= 10 ) {
 		lFilePrio -= 10;
@@ -702,7 +702,7 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		bFileAutoPriority = false;
 	}
 	nCat = tag->FileCat();
-	
+
 	nFileStatus = tag->FileStatus();
 	lSourceCount = tag->SourceCount();
 	lNotCurrentSourceCount = tag->SourceNotCurrCount();
@@ -780,7 +780,7 @@ void DownloadFileInfo::ItemDeleted(DownloadFile *item)
 bool DownloadFileInfo::ReQuery()
 {
 	DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
-	
+
 	return true;
 }
 
@@ -818,13 +818,13 @@ bool UploadsInfo::ReQuery()
 	// query succeded - flush existing values and refill
 	EraseAll();
 	for (CECPacket::const_iterator it = up_reply->begin(); it != up_reply->end(); it++) {
-		
+
 		UploadFile curr((CEC_UpDownClient_Tag *) & *it);
-		
+
 		AddItem(curr);
 	}
 	delete up_reply;
-	
+
 	return true;
 }
 
@@ -859,18 +859,18 @@ SearchInfo::SearchInfo(CamulewebApp *webApp) :
 bool SearchInfo::ReQuery()
 {
 	DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
-	
+
 	return true;
 }
 
 
 /*!
  * Image classes:
- * 
+ *
  * CFileImage: simply represent local file
  * CDynProgressImage: dynamically generated from gap info
  */
- 
+
 CAnyImage::CAnyImage(int size)
 {
 	m_size = 0;
@@ -966,7 +966,7 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0)
 /*!
  * "Modifiers" for 3D look of progress bar. Those modifiers must be substracted from
  * image (with saturation), values, and not multiplied, as amule doesn for some reason.
- * 
+ *
  */
 CImage3D_Modifiers::CImage3D_Modifiers(int width)
 {
@@ -1001,13 +1001,13 @@ void CProgressImage::CreateSpan()
 	// Step 1: get gap list
 	const Gap_Struct * gap_list = (const Gap_Struct *) &(m_file->m_Gaps[0]);
 	int gap_list_size = m_file->m_Gaps.size() / 2;
-	
+
 	// allocate for worst case !
 	int color_gaps_alloc = 2 * (2 * gap_list_size + m_file->lFileSize / PARTSIZE + 1);
 	Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
-	
+
 	// Step 2: combine gap and part status information
-	
+
 	// Init first item to dummy info, so we will always have "previous" item
 	int colored_gaps_size = 0;
 	colored_gaps[0].start = 0;
@@ -1029,9 +1029,9 @@ void CProgressImage::CreateSpan()
 
 			uint64 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
 			uint64 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
-			
+
 			wxASSERT(colored_gaps_size < color_gaps_alloc);
-			
+
 			if ( (colored_gaps[colored_gaps_size].end == fill_gap_begin) &&
 				(colored_gaps[colored_gaps_size].color == color) ) {
 				colored_gaps[colored_gaps_size].end = fill_gap_end;
@@ -1042,13 +1042,13 @@ void CProgressImage::CreateSpan()
 				colored_gaps[colored_gaps_size].color = color;
 			}
 		}
-		
+
 	}
 	//
 	// Now line rendering
 	for(int i = 0; i < m_width; ++i) {
 		m_ColorLine[i] = 0x0;
-	}	
+	}
 	if (m_file->lFileSize < (uint32)m_width) {
 		//
 		// if file is that small, draw it in single step
@@ -1087,7 +1087,7 @@ void CProgressImage::CreateSpan()
 
 CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 {
-	
+
 	//
 	// Allocate array of "row pointers" - libpng need it in this form
 	// Fill it also with the image data
@@ -1098,7 +1098,7 @@ CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 	for (int i = 0; i < m_height;i++) {
 		m_row_ptrs[i] = &m_img_data[3*m_width*i];
 	}
-	
+
 }
 
 CDynPngImage::~CDynPngImage()
@@ -1124,13 +1124,13 @@ unsigned char *CDynPngImage::RequestData(int &size)
 	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
 		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 	png_set_write_fn(png_ptr, this, png_write_fn, 0);
-	
+
 	m_size = 0;
 	png_write_info(png_ptr, info_ptr);
 	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
 	png_write_end(png_ptr, 0);
 	png_destroy_write_struct(&png_ptr, &info_ptr);
-	
+
 	return CAnyImage::RequestData(size);
 }
 
@@ -1152,7 +1152,7 @@ wxString CDynProgressImage::GetHTML()
 	// template contain %s (name) %d (width) %s (alt)
 	return (CFormat(m_template) % m_name % m_width % wxT("Progress bar")).GetString();
 }
-	
+
 void CDynProgressImage::DrawImage()
 {
 	CreateSpan();
@@ -1185,7 +1185,7 @@ CDynProgressImage::CDynProgressImage(int width, int height, wxString &tmpl, Down
 	CProgressImage(width, height, tmpl, file)
 {
 	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
-	
+
 }
 
 
@@ -1195,9 +1195,9 @@ wxString CDynProgressImage::GetHTML()
 		wxT("transparent.gif"), wxT("black.gif"), wxT("yellow.gif"), wxT("red.gif"),
 		wxT("blue1.gif"),       wxT("blue2.gif"), wxT("blue3.gif"),  wxT("blue4.gif"),
 		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif") };
-		
+
 	CreateSpan();
-	
+
 	wxString str;
 	uint32 lastcolor = m_ColorLine[0];
 	int lastindex = 0;
@@ -1223,7 +1223,7 @@ wxString CDynProgressImage::GetHTML()
 				}
 			}
 			str += (CFormat(m_template) % progresscolor[color_idx]
-				   		% (i - lastindex) % wxString(progresscolor[color_idx]).BeforeLast(wxT('.'))).GetString();
+						% (i - lastindex) % wxString(progresscolor[color_idx]).BeforeLast(wxT('.'))).GetString();
 			lastindex = i;
 			lastcolor = m_ColorLine[i];
 		}
@@ -1270,7 +1270,7 @@ void CStatsData::PushSample(uint32 sample)
 	m_start_index = (m_start_index + 1) % m_size;
 	m_end_index = (m_end_index + 1) % m_size;
 	m_data[m_start_index] = sample;
-	
+
 	if ( m_max_value < sample ) {
 		m_max_value = sample;
 	}
@@ -1282,7 +1282,7 @@ CStatsCollection::CStatsCollection(int size, CamulewebApp *iface)
 	m_up_speed = new CStatsData(size);
 	m_conn_number = new CStatsData(size);
 	m_kad_count = new CStatsData(size);
-	
+
 	m_iface = iface;
 	m_LastTimeStamp = 0.0;
 	m_size = size;
@@ -1300,13 +1300,13 @@ void CStatsCollection::ReQuery()
 	CECPacket request(EC_OP_GET_STATSGRAPHS);
 
 	request.AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)m_size));
-	
+
 	uint16 m_nGraphScale = 1;
 	request.AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
 	if (m_LastTimeStamp > 0.0) {
 		request.AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_LastTimeStamp));
 	}
-	
+
 	const CECPacket *response = m_iface->SendRecvMsg_v2(&request);
 
 	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
@@ -1332,20 +1332,20 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 {
 	m_data = data;
 	m_scale1024 = scale1024;
-	
+
 	// actual name doesn't matter, just make it unique
 	m_name = CFormat(wxT("dyn_%p_stat.png")) % data;
-	
+
 	m_num_font_w_size = 8;
 	m_num_font_h_size = 16;
-	
+
 	// leave enough space for 4 digit number
 	int img_delta = m_num_font_w_size / 4;
 	m_left_margin = 4*(m_num_font_w_size + img_delta) + img_delta;
 	// leave enough space for number height
 	m_bottom_margin = m_num_font_h_size;
-	
-	
+
+
 	m_y_axis_size = m_height - m_bottom_margin;
 	// allocate storage for background. Using 1 chunk to speed up
 	// the rendering
@@ -1354,7 +1354,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	for(int i = 0; i < m_height; i++) {
 		m_row_bg_ptrs[i] = &m_background[i*m_width*3];
 	}
-	
+
 	//
 	// Prepare background
 	//
@@ -1380,7 +1380,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 		set_rgb_color_val(m_row_bg_ptrs[m_y_axis_size - 0]+3*j, axis_color, 0);
 		set_rgb_color_val(m_row_bg_ptrs[m_y_axis_size - 1]+3*j, axis_color, 0);
 	}
-	
+
 	// horisontal grid
 	int v_grid_size = m_y_axis_size / 4;
 	for(int i = m_y_axis_size - v_grid_size; i >= v_grid_size; i -= v_grid_size) {
@@ -1391,7 +1391,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 			}
 		}
 	}
-	
+
 	//
 	// Pre-create masks for digits
 	//
@@ -1413,13 +1413,13 @@ void CDynStatisticImage::DrawImage()
 {
 	// copy background first
 	memcpy(m_img_data, m_background, m_width*m_height*3);
-	
+
 	//
 	// Now graph itself
 	//
 	static const COLORTYPE graph_color = RGB(0xff, 0x00, 0x00);
 	int maxval = m_data->Max();
-	
+
 	if ( m_scale1024 ) {
 		if ( maxval > 1024 ) {
 			maxval /= 1024;
@@ -1445,7 +1445,7 @@ void CDynStatisticImage::DrawImage()
 	int img_delta = m_num_font_w_size / 4;
 	// Number "0" is always there
 	m_digits[0]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, m_y_axis_size-m_num_font_h_size-5);
-	
+
 	//
 	// When data is scaled down, axis are scaled UP and viceversa
 	int y_axis_max = m_y_axis_size;
@@ -1466,7 +1466,7 @@ void CDynStatisticImage::DrawImage()
 	}
 	// --X-
 	if ( y_axis_max > 9 ) {
-		m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs, 
+		m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs,
 			3*img_delta+2*m_num_font_w_size, img_delta);
 	}
 	// ---X
@@ -1519,7 +1519,7 @@ void CDynStatisticImage::DrawImage()
 unsigned char *CDynStatisticImage::RequestData(int &size)
 {
 	DrawImage();
-	
+
 	return CDynPngImage::RequestData(size);
 }
 
@@ -1540,13 +1540,13 @@ CNumImageMask::CNumImageMask(int number, int width, int height)
 	m_h_segsize = width;
 	m_height = height;
 	m_width = width;
-	
+
 	m_row_mask_ptrs = new png_bytep[m_height];
 	for(int i = 0; i < m_height; i++) {
 		m_row_mask_ptrs[i] = new png_byte[3*m_width];
 		memset(m_row_mask_ptrs[i], 0x00, 3*m_width);
 	}
-	
+
 	int seg_status = m_num_to_7_decode[number];
 	for(int i = 0; i < 7; i++) {
 		if ( seg_status & (1 << i) ) {
@@ -1594,7 +1594,7 @@ void CNumImageMask::DrawVertLine(int offx, int offy)
 
 /*
  * Segment id decoding defined as following
- * 
+ *
  *   ---- 0 ----
  *   |         |
  *   1         2
@@ -1680,7 +1680,7 @@ CAnyImage *CImageLib::GetImage(const wxString &name)
 	}
 }
 
-/* 
+/*
  * Script-based webserver
  */
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
@@ -1694,7 +1694,7 @@ CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templat
 	} else if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.php")).GetFullPath()) ) {
 		m_index = wxT("index.php");
 	} else {
-		webInterface->Show(_("Index file not found: ") + 
+		webInterface->Show(_("Index file not found: ") +
 			wxFileName(m_wwwroot, wxT("index.{html,php}")).GetFullPath() + wxT("\n"));
 	}
 }
@@ -1710,7 +1710,7 @@ char *CScriptWebServer::GetErrorPage(const char *message, long &size)
 		"<html><title> Error -%s </title></html>", message);
 
 	size = strlen(buf);
-	
+
 	return buf;
 }
 
@@ -1718,9 +1718,9 @@ char *CScriptWebServer::Get_404_Page(long &size)
 {
 		char *buf = new char [1024];
 		strcpy(buf, "<html><title> Error - requested page not found </title></html>");
-		
+
 		size = strlen(buf);
-		
+
 		return buf;
 }
 
@@ -1741,7 +1741,7 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	size = fread(buf, 1, size, f);
 	buf[size] = 0;
 	fclose(f);
-	
+
 	return buf;
 }
 
@@ -1754,13 +1754,13 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 
 	CWriteStrBuffer buffer;
 	CPhpFilter(this, sess, filename, &buffer);
-	
+
 	size = buffer.Length();
 	char *buf = new char [size+1];
 	buffer.CopyAll(buf);
-	
+
 	fclose(f);
-	
+
 	return buf;
 }
 
@@ -1804,7 +1804,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	long httpOutLen;
 	char *httpOut = 0;
-	
+
 	// Strip out any path-component to prevent information leakage.
 	wxString filename = wxFileName(Data.parsedURL.File()).GetFullName();
 
@@ -1819,7 +1819,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	session->m_vars["login_error"] = "";
 	if ( !session->m_loggedin ) {
 		filename = wxT("login.php");
-		
+
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
 		if (webInterface->m_AdminPass.IsEmpty() && webInterface->m_GuestPass.IsEmpty()) {
 			session->m_vars["login_error"] = "No password specified, login will not be allowed.";
@@ -1827,7 +1827,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			session->m_loggedin = false;
-			
+
 			CMD4Hash PwHash;
 			if (!PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
@@ -1842,7 +1842,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			} else {
 				session->m_vars["login_error"] = "Password incorrect, please try again.";
 			}
-			
+
 			if ( session->m_loggedin ) {
 				filename = m_index;
 				Print(_("Password ok\n"));
@@ -1864,11 +1864,11 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	}
 
 	Print(_("Processing request [redirected]: ") + filename + wxT("\n"));
-	
+
 	session->m_vars["auto_refresh"] = (const char *)unicode2char(
 		wxString(CFormat(wxT("%d")) % webInterface->m_PageRefresh));
 	session->m_vars["content_type"] = "text/html";
-	
+
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if (req_file.EndsWith(wxT(".html"))) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
@@ -1888,14 +1888,14 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	} else {
 		httpOut = GetErrorPage("aMuleweb doesn't handle the requested file type ", httpOutLen);
 	}
-	
+
 	bool isUseGzip = webInterface->m_UseGzip;
 
 	if (isUseGzip)	{
 		bool bOk = false;
 		uLongf destLen = httpOutLen + 1024;
 		char *gzipOut = new char[destLen];
-		if( GzipCompress((Bytef*)gzipOut, &destLen, 
+		if( GzipCompress((Bytef*)gzipOut, &destLen,
 		   (const Bytef*)httpOut, httpOutLen, Z_DEFAULT_COMPRESSION) == Z_OK) {
 			bOk = true;
 		}
@@ -1908,7 +1908,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			delete[] gzipOut;
 		}
 	}
-		
+
 	if ( httpOut ) {
 		Data.pSocket->SendHttpHeaders(session->m_vars["content_type"].c_str(), isUseGzip, httpOutLen, Data.SessionID);
 		Data.pSocket->SendData(httpOut, httpOutLen);

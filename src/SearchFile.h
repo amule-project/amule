@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,16 +39,16 @@ typedef std::vector<CSearchFile*> CSearchResultList;
 
 /**
  * Represents a search-result returned from a server or client.
- * 
+ *
  * A file may have either a parent or any number of children.
  * When a child is added to a result, the parent becomes a generic
  * representation of all its children, which will include a copy
  * of the original result. The parent object will contain the sum
- * of sources (total/complete) and will have the most common 
+ * of sources (total/complete) and will have the most common
  * filename. Children are owned by their parents, and can be
  * displayed on CSearchListCtrl.
- * 
- * Basic file parameters (hash, name, size, rating) can be read 
+ *
+ * Basic file parameters (hash, name, size, rating) can be read
  * via the CAbstractFile functions. Tags pertaining to meta-data
  * are stored in the taglist inherited from CAbstractFile.
  *
@@ -56,19 +56,19 @@ typedef std::vector<CSearchFile*> CSearchResultList;
  * TODO: Client ID/Port are currently not used.
  */
 class CSearchFile : public CAbstractFile, public CECID
-{	
+{
 public:
 	/** Constructor used to create results on the remote GUI. */
 	CSearchFile(class CEC_SearchFile_Tag* tag);
 	/** Copy constructor, also copies children. */
 	CSearchFile(const CSearchFile& other);
-	
+
 	/**
 	 * Normal constructor, reads a result from a packet.
 	 *
 	 * @param data Source of results-packet.
 	 * @param optUTF8 Specifies if text-strings are to be read as UTF8.
-	 * @param searchID searchID The 
+	 * @param searchID searchID The
 	 * @param serverIP The IP of the server that sent this result.
 	 * @param serverPort The port of the server that sent this result.
 	 * @param directory If from a clients shared files, the directory this file is in.
@@ -83,11 +83,11 @@ public:
 		const wxString& directory = wxEmptyString,
 		bool kademlia = false);
 
-	
+
 	/** Frees all children owned by this file. */
 	virtual ~CSearchFile();
 
-	
+
 	/**
 	 * Merges the two results into one.
 	 *
@@ -122,7 +122,7 @@ public:
 	void SetDownloadStatus();
 	/** Set download status directly. */
 	void SetDownloadStatus(enum DownloadStatus s)	{ m_downloadStatus = s; }
-		
+
 	/** Returns the parent of this file. */
 	CSearchFile *GetParent() const			{ return m_parent; }
 	/** Returns the list of children belonging to this file. */
@@ -133,12 +133,12 @@ public:
 	bool ShowChildren() const				{ return m_showChildren; }
 	/** Enable/Disable displaying of children (set in CSearchListCtrl). */
 	void SetShowChildren(bool show)			{ m_showChildren = show; }
-	
+
 	/**
 	 * Adds the given file as a child of this file.
 	 *
 	 * Note that a file can either be a parent _or_
-	 * a child, but not both. Also note that it is 
+	 * a child, but not both. Also note that it is
 	 * only legal to add children whose filesize and
 	 * filehash matches the parent's. AddChild takes
 	 * ownership of the file.
@@ -189,7 +189,7 @@ private:
 	 * of fileratings is set, based on files that have a rating only.
 	 */
 	void	UpdateParent();
-	
+
 	//! The parent of this result.
 	CSearchFile*		m_parent;
 	//! Any children this result may have.

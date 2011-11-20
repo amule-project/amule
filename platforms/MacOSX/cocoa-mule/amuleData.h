@@ -20,20 +20,20 @@
 
 @end
 
-@interface DownloadingFile : amuleFile {	
+@interface DownloadingFile : amuleFile {
 	int m_src_count;
 	int m_non_current_src_count;
 	int m_xfer_src_count;
 	int m_a4af_src_count;
-	
+
 	uint64_t m_size_done;
 	uint64_t m_size_xfer;
-	
+
 	int m_prio;
 	bool m_auto_prio;
-	
+
 	int m_speed;
-	
+
 }
 
 + (id)createFromEC:(ECTagMD5 *) tag;
@@ -60,7 +60,7 @@
 @interface SearchFile : amuleFile {
 	int m_src_count;
 	int m_complete_src_count;
-	
+
 	bool m_known;
 }
 
@@ -74,17 +74,17 @@
 
 @end
 
-@interface SharedFile : amuleFile {	
+@interface SharedFile : amuleFile {
 	int m_req_count;
 	int m_req_count_all;
 	int m_accept_count;
 	int m_accept_count_all;
-	
+
 	uint64_t m_size_xfer;
 	uint64_t m_size_xfer_all;
-	
+
 	int m_prio;
-	bool m_auto_prio;	
+	bool m_auto_prio;
 }
 
 + (id)createFromEC:(ECTagMD5 *) tag;
@@ -109,7 +109,7 @@
 @interface amuleFileSet : NSObject {
 	NSMutableDictionary *m_file_dict;
 	NSMutableArray *m_file_array;
-	
+
 	id m_gui_controller;
 }
 

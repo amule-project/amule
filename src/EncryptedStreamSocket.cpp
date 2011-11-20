@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,7 +37,7 @@
 			-> The handshake is encrypted - except otherwise noted - by the Keys created above
 			-> Handshake is blocking - do not start sending an answer before the request is completely received (this includes the random bytes)
 			-> EncryptionMethod = 0 is Obfuscation and the only supported method right now
-		Client A: <SemiRandomNotProtocolMarker 1[Unencrypted]><RandomKeyPart 4[Unencrypted]><MagicValue 4><EncryptionMethodsSupported 1><EncryptionMethodPreferred 1><PaddingLen 1><RandomBytes PaddingLen%max256>	
+		Client A: <SemiRandomNotProtocolMarker 1[Unencrypted]><RandomKeyPart 4[Unencrypted]><MagicValue 4><EncryptionMethodsSupported 1><EncryptionMethodPreferred 1><PaddingLen 1><RandomBytes PaddingLen%max256>
 		Client B: <MagicValue 4><EncryptionMethodsSelected 1><PaddingLen 1><RandomBytes PaddingLen%max256>
 			-> The basic handshake is finished here, if an additional/different EncryptionMethod was selected it may continue negotiating details for this one
 
@@ -183,7 +183,7 @@ void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uint8_
 // together with the fact that each byte must pass the keystream only once
 int CEncryptedStreamSocket::Write(const void* lpBuf, uint32_t nBufLen)
 {
-	//printf("Starting write for %s\n", (const char*) unicode2char(DbgGetIPString()));	
+	//printf("Starting write for %s\n", (const char*) unicode2char(DbgGetIPString()));
 	if (!IsEncryptionLayerReady()) {
 		wxFAIL;
 		return 0;
@@ -218,11 +218,11 @@ int CEncryptedStreamSocket::Read(void* lpBuf, uint32_t nBufLen)
 	m_bFullReceive = m_nObfusicationBytesReceived == (uint32)nBufLen;
 
 	//printf("Read %i bytes on %s, socket %p\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()), this);
-	
+
 	if (m_nObfusicationBytesReceived == (uint32_t)SOCKET_ERROR || m_nObfusicationBytesReceived <= 0) {
 		return m_nObfusicationBytesReceived;
 	}
-	
+
 	switch (m_StreamCryptState) {
 		case ECS_NONE: // disabled, just pass it through
 			return m_nObfusicationBytesReceived;
@@ -244,7 +244,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, uint32_t nBufLen)
 					bNormalHeader = true;
 					break;
 			}
-			
+
 			if (!bNormalHeader) {
 				//printf("Not a normal header, negotiating encryption\n");
 				StartNegotiation(false);
@@ -265,7 +265,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, uint32_t nBufLen)
 				// doesn't seem to be encrypted
 				//printf("Encrypted data doesn't seem to be encrypted\n");
 				m_StreamCryptState = ECS_NONE;
-				
+
 				// if we require an encrypted connection, cut the connection here. This shouldn't happen that often
 				// at least with other up-to-date eMule clients because they check for incompability before connecting if possible
 				if (thePrefs::IsClientCryptLayerRequired()) {
@@ -735,7 +735,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32_t nBuf
 
 	uint32_t result = 0;
 	if (!bDelaySend) {
-		//printf("Writing negotiation data on %s: ", (const char*) unicode2char(DbgGetIPString()));					
+		//printf("Writing negotiation data on %s: ", (const char*) unicode2char(DbgGetIPString()));
 		CSocketClientProxy::Write(pBuffer, nBufLen);
 		result = CSocketClientProxy::LastCount();
 		//printf("Wrote %i bytes\n",result);

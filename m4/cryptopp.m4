@@ -16,7 +16,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -30,21 +30,21 @@ dnl --------------------------------------------------------------------------
 dnl
 dnl This macro sets these variables:
 dnl - CRYPTOPP_PREFIX
-dnl 	This is the user or system directory where crypto++ is installed or sources
+dnl	This is the user or system directory where crypto++ is installed or sources
 dnl - CRYPTOPP_VERSION_STRING
-dnl 	Something like "5.5.2"
+dnl	Something like "5.5.2"
 dnl - CRYPTOPP_VERSION_NUMBER
-dnl 	Something like 5005002
+dnl	Something like 5005002
 dnl - CRYPTOPP_STYLE
-dnl 	"sources", "installed" or "gentoo_debian"
+dnl	"sources", "installed" or "gentoo_debian"
 dnl - CRYPTOPP_LIB_NAME
-dnl 	"cryptopp" or "crypto++"
+dnl	"cryptopp" or "crypto++"
 dnl - CRYPTOPP_INCLUDE_PREFIX
-dnl 	The string that goes here: #include <@CRYPTOPP_INCLUDE_PREFIX@/rsa.h>
+dnl	The string that goes here: #include <@CRYPTOPP_INCLUDE_PREFIX@/rsa.h>
 dnl - CRYPTOPP_CPPFLAGS
-dnl 	Flags to be added to CPPFLAGS
+dnl	Flags to be added to CPPFLAGS
 dnl - CRYPTOPP_LDFLAGS
-dnl 	Flags to be added to LDFLAGS
+dnl	Flags to be added to LDFLAGS
 dnl - CRYPTOPP_LIBS
 dnl	Library to be added to LIBS
 dnl
@@ -52,11 +52,11 @@ dnl The CRYPTOPP_CPPFLAGS, CRYPTOPP_LDFLAGS and CRYPTOPP_LIBS variables are also
 dnl
 dnl Worth notice:
 dnl - cryptopp_includedir
-dnl 	The string that goes in -I on CPPFLAGS
+dnl	The string that goes in -I on CPPFLAGS
 dnl - cryptopp_libdir
-dnl 	The string that goes in -L on LDFLAGS
+dnl	The string that goes in -L on LDFLAGS
 dnl - cryptopp_header_path
-dnl 	The file we use to discover the version of cryptopp
+dnl	The file we use to discover the version of cryptopp
 dnl
 AC_DEFUN([MULE_CHECK_CRYPTOPP],
 [dnl

@@ -5,18 +5,18 @@
 
 @interface AppController : NSObject {
     IBOutlet id m_main_tabview;
-	
+
 	IBOutlet id m_dload_controller;
 	IBOutlet id m_search_controller;
 	IBOutlet id m_shared_controller;
-	
+
 	IBOutlet id m_add_link_dlg;
-	
+
 	IBOutlet id m_connection_status_text;
-	
+
 	ECRemoteConnection *m_connection;
 	amuleData *m_data;
-	
+
 	int m_daemon_pid;
 
 	NSString *m_targetaddr;

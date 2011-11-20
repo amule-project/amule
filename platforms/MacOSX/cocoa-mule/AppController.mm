@@ -11,7 +11,7 @@
 
 - (IBAction)show_Networks:(id)sender {
 	[m_main_tabview selectTabViewItemAtIndex: 2];
-	
+
 
 //	ECLoginPacket *p = [ECLoginPacket loginPacket:@"123456" withVersion:@"0.1"];
 //	NSOutputStream *stream = [NSOutputStream outputStreamToMemory];
@@ -21,7 +21,7 @@
 //	[stream open];
 //	[p writeToSocket:stream];
 //	id data = [stream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
-// 	int off = [data length];
+//	int off = [data length];
 //	NSLog(@"off=%d", off);
 //	[m_connection sendPacket:p];
 }
@@ -48,7 +48,7 @@
 -(IBAction)show_About:(id)sender {
 }
 
-- (IBAction)addLink:(id)sender;{	
+- (IBAction)addLink:(id)sender;{
 	bool dlgResult = [m_add_link_dlg showDlg:nil];
 	if ( dlgResult ) {
 		ECPacket *packet = [ECPacket packetWithOpcode:EC_OP_ADD_LINK];
@@ -59,13 +59,13 @@
 
 - (bool)askCoreParams {
 	LoginDialogController *dlg = [[LoginDialogController alloc] init];
-	
+
 	bool dlgResult = [dlg showDlg:nil];
 
 	m_targetaddr = dlg.host;
 	m_targetport = dlg.port;
 	m_corepass = dlg.pass;
-	
+
 	return dlgResult;
 }
 
@@ -76,12 +76,12 @@
 	if ([m_dload_controller respondsToSelector:@selector(saveGui)]) {
 		[m_dload_controller performSelector:@selector(saveGui)];
 	}
-	
+
 	//
 	// Save main window
 	//
 	[[NSUserDefaults standardUserDefaults] setInteger:[m_main_tabview indexOfTabViewItem: [m_main_tabview selectedTabViewItem] ] forKey:@"activeTab"];
-	
+
 	//
 	// If we have slave daemon process, terminate it
 	//
@@ -105,21 +105,21 @@
 	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 	NSString *mode = [args stringForKey:@"mode"];
 	NSLog(@"amule controller started, mode = [%@]\n", mode);
-	
-	
+
+
 	[[NSApplication sharedApplication] setDelegate:self];
-	
+
 	[self restoreMainWindow];
-	
+
 	m_targetaddr = 0;
 	m_targetport = 0;
 	m_corepass = nil;
-	
+
 	m_daemon_pid = 0;
 	if ( (mode != nil) && ([mode compare:@"guitest"] == NSOrderedSame) ) {
 		NSLog(@"Started in GUI test mode - will not connect to core");
 		return;
-	}	
+	}
 
 	if ( (mode != nil) && ([mode compare:@"remote"] == NSOrderedSame) ) {
 		m_targetaddr = @"127.0.0.1";
@@ -138,13 +138,13 @@
 		m_targetaddr = @"127.0.0.1";
 		m_targetport = 4712;
 		if ( [self startDaemon] == -1 ) {
-			NSRunCriticalAlertPanel(@"Daemon startup error", 
+			NSRunCriticalAlertPanel(@"Daemon startup error",
 							@"Unable to start core daemon (amuled)",
 							@"OK", nil,nil);
 			[[NSApplication sharedApplication] terminate:self];
 		}
 	}
-	
+
 	m_connection = [ECRemoteConnection remoteConnection];
 	[m_connection retain];
 	m_data = [amuleData initWithConnection:m_connection];
@@ -171,7 +171,7 @@
 		}
 	}
 	if ( m_connection.error ) {
-		NSRunCriticalAlertPanel(@"Connection error", 
+		NSRunCriticalAlertPanel(@"Connection error",
                         @"Unable to start communication with daemon",
                         @"OK", nil,nil);
 		exit(-1);

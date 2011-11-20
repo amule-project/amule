@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -32,8 +32,8 @@
  * CScopedPtr is a simple smart pointer.
  *
  * This class is a replacement for std::auto_ptr, with simpler
- * copying schematics, in that it doesn't allow copying or 
- * assignment, compared to auto_ptr, which allows only one 
+ * copying schematics, in that it doesn't allow copying or
+ * assignment, compared to auto_ptr, which allows only one
  * instance to own a pointer (swapping at assignment).
  */
 template <typename TYPE>
@@ -159,7 +159,7 @@ public:
 		m_ptr = new STL_CONTAINER;
 	}
 
-	~CScopedContainer()	
+	~CScopedContainer()
 	{
 		if (m_ptr) {
 			DeleteContents(*m_ptr);

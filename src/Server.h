@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -30,8 +30,8 @@
 #include "OtherStructs.h"
 #include <ec/cpp/ECID.h>	// Needed for CECID
 
-#include <protocol/ed2k/Client2Server/TCP.h> 
-#include <protocol/ed2k/Client2Server/UDP.h> 
+#include <protocol/ed2k/Client2Server/TCP.h>
+#include <protocol/ed2k/Client2Server/UDP.h>
 
 class CFileDataIO;
 
@@ -57,15 +57,15 @@ public:
 	void		AddTag(CTag* in_tag)	{m_taglist.push_back(in_tag);}
 	const wxString &GetListName() const	{return listname;}
 	const wxString &GetFullIP() const	{return ipfull;}
-	
+
 	const wxString &GetAddress() const {
 		if (!dynip.IsEmpty()) {
 			return dynip;
 		} else {
 			return ipfull;
 		}
-	}	
-	
+	}
+
 	// the official port
 	uint16  GetPort() const			{return realport ? realport : port;}
 	// the connection port
@@ -75,23 +75,23 @@ public:
 	void	SetListName(const wxString& newname);
 	void	SetDescription(const wxString& newdescription);
 	uint32	GetIP() const			{return ip;}
-	uint32	GetFiles() const		{return files;} 
-	uint32	GetUsers() const		{return users;} 
-	const wxString	&GetDescription() const	{return description;} 
-	uint32	GetPing() const			{return ping;} 
-	uint32	GetPreferences() const		{return preferences;} 
+	uint32	GetFiles() const		{return files;}
+	uint32	GetUsers() const		{return users;}
+	const wxString	&GetDescription() const	{return description;}
+	uint32	GetPing() const			{return ping;}
+	uint32	GetPreferences() const		{return preferences;}
 	uint32	GetMaxUsers() const		{return maxusers;}
 	void	SetMaxUsers(uint32 in_maxusers) {maxusers = in_maxusers;}
 	void	SetUserCount(uint32 in_users)	{users = in_users;}
 	void	SetFileCount(uint32 in_files)	{files = in_files;}
-	void	ResetFailedCount()		{failedcount = 0;} 
-	void	AddFailedCount()		{failedcount++;} 
-	uint32	GetFailedCount() const		{return failedcount;} 
+	void	ResetFailedCount()		{failedcount = 0;}
+	void	AddFailedCount()		{failedcount++;}
+	uint32	GetFailedCount() const		{return failedcount;}
 	void	SetID(uint32 newip);
 	const wxString &GetDynIP() const	{return dynip;}
 	bool	HasDynIP() const		{return !dynip.IsEmpty() ;}
 	void	SetDynIP(const wxString& newdynip);
-	
+
 	uint32	GetLastPingedTime() const				{return lastpingedtime;}
 	void	SetLastPingedTime(uint32 in_lastpingedtime)	{lastpingedtime = in_lastpingedtime;}
 
@@ -100,7 +100,7 @@ public:
 
 	uint32	GetLastPinged() const		{return lastpinged;}
 	void	SetLastPinged(uint32 in_lastpinged) {lastpinged = in_lastpinged;}
-	
+
 	void	SetPing(uint32 in_ping)		{ping = in_ping;}
 	void	SetPreference(uint32 in_preferences) {preferences = in_preferences;}
 	void	SetIsStaticMember(bool in)	{staticservermember=in;}
@@ -123,7 +123,7 @@ public:
 	void	SetDescReqChallenge(uint32 uDescReqChallenge) {m_uDescReqChallenge = uDescReqChallenge;}
 	uint8	GetLastDescPingedCount() const	{return lastdescpingedcout;}
 	void	SetLastDescPingedCount(bool reset);
-	
+
 	uint16	GetObfuscationPortTCP() const			{return m_nObfuscationPortTCP;}
 	void	SetObfuscationPortTCP(uint16 nPort)		{m_nObfuscationPortTCP = nPort;}
 
@@ -137,24 +137,24 @@ public:
 	void	SetCryptPingReplyPending(bool bVal)		{m_bCryptPingReplyPending = bVal;}
 
 	uint32	GetServerKeyUDPIP() const				{return m_dwIPServerKeyUDP;}
-	
+
 	bool	GetUnicodeSupport() const				{return (GetTCPFlags() & SRV_TCPFLG_UNICODE) != 0;}
 	bool	GetRelatedSearchSupport() const			{return (GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH) != 0;}
 	bool	SupportsLargeFilesTCP() const			{return (GetTCPFlags() & SRV_TCPFLG_LARGEFILES) != 0;}
-	bool	SupportsLargeFilesUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_LARGEFILES) != 0;}	
+	bool	SupportsLargeFilesUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_LARGEFILES) != 0;}
 	bool	SupportsObfuscationUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION) != 0;}
 	bool	SupportsObfuscationTCP() const			{return (GetObfuscationPortTCP() != 0) && (((GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION) != 0) || ((GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) != 0));}
 	bool	SupportsGetSourcesObfuscation() const	{return (GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) != 0;} // mapped to TCPFLAG_TCPOBFU
-	
+
 	const wxString& GetAuxPortsList() const	{return m_auxPorts;}
 	void	SetAuxPortsList(const wxString& val)	{m_auxPorts = val;}
-	
+
 	uint64 GetLastDNSSolve() const { return m_lastdnssolve; }
 	void SetLastDNSSolve(uint64 value) { m_lastdnssolve = value; }
-	
+
 	bool GetDNSError() const { return m_dnsfailure; }
 	void SetDNSError(bool value) { m_dnsfailure = value; }
-	
+
 private:
 	uint32		challenge;
 	uint32		lastpinged; //This is to get the ping delay.
@@ -174,7 +174,7 @@ private:
 	uint32		ip;
 	uint16		port;
 	uint16		realport;
-	uint32		failedcount; 
+	uint32		failedcount;
 	uint32		m_uDescReqChallenge;
 	uint8		lastdescpingedcout;
 	TagPtrList		m_taglist;
@@ -184,18 +184,18 @@ private:
 	uint32		m_uUDPFlags;
 	uint32		m_uLowIDUsers;
 	wxString	m_auxPorts;
-	
+
 	uint64		m_lastdnssolve;
 	bool		m_dnsfailure;
-	
-	bool		m_bCryptPingReplyPending;	
+
+	bool		m_bCryptPingReplyPending;
 	uint32		m_dwServerKeyUDP;
 	uint32		m_dwIPServerKeyUDP;
 	uint16		m_nObfuscationPortTCP;
 	uint16		m_nObfuscationPortUDP;
-	
+
 	uint32		m_dwRealLastPingedTime;
-	
+
 	void Init();
 };
 

@@ -48,9 +48,9 @@ void CompareReadLines(size_t count, const wxChar* expected[], EReadTextFile crit
 		CONTEXT(wxString(wxT("Checking file: ")) + g_filesDefault[j]);
 
 		ASSERT_TRUE(file.Open(CPath(wxSTRINGIZE_T(SRCDIR)).JoinPaths(CPath(g_filesDefault[j])).GetRaw(), CTextFile::read));
-		
+
 		wxArrayString lines = file.ReadLines(criteria);
-		
+
 		ASSERT_EQUALS(ArrToStr(count, expected), ArrToStr(lines));
 		ASSERT_EQUALS(count, lines.GetCount());
 	}
@@ -89,7 +89,7 @@ TEST(TextFile, ReadLines)
 			wxT(" "),
 			wxT("")
 		};
-		
+
 		CompareReadLines(ArraySize(lines), lines, (EReadTextFile)0);
 	}
 
@@ -107,7 +107,7 @@ TEST(TextFile, ReadLines)
 			wxT(" "),
 		};
 
-		CompareReadLines(ArraySize(lines), lines, txtIgnoreEmptyLines);		
+		CompareReadLines(ArraySize(lines), lines, txtIgnoreEmptyLines);
 	}
 
 	{
@@ -186,7 +186,7 @@ public:
 
 		{
 			CONTEXT(wxT("Writing lines manually"));
-				
+
 			CTextFile file;
 			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
 
@@ -214,7 +214,7 @@ public:
 
 		{
 			CONTEXT(wxT("Writing lines automatically"));
-				
+
 			CTextFile file;
 			ASSERT_FALSE(file.IsOpened());
 			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));

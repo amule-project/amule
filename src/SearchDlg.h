@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,7 +42,7 @@ class CSearchFile;
 
 
 /**
- * This class represents the Search Dialog, which takes care of 
+ * This class represents the Search Dialog, which takes care of
  * enabling the user to search and to display results in a readable
  * manner.
  */
@@ -72,11 +72,11 @@ public:
 
 	/**
 	 * Updates a changed result.
-	 * 
+	 *
 	 * @param A pointer to the updated CSearchFile.
 	 *
 	 * This function will update the source-count and color of the result, and
-	 * if needed, it will also move the result so that the current sorting 
+	 * if needed, it will also move the result so that the current sorting
 	 * is maintained.
 	 */
 	void UpdateResult(CSearchFile* toupdate);
@@ -131,24 +131,24 @@ public:
 	void		OnBnClickedDownload(wxCommandEvent& ev);
 
 	CSearchListCtrl* GetSearchList( wxUIntPtr id );
-	
+
 	void	UpdateProgress(uint32 new_value);
 
 	void	StartNewSearch();
-	
+
 	void FixSearchTypes();
-	
+
 private:
 	// Event handlers
 	void		OnFieldChanged(wxEvent& evt);
-	
+
 	void		OnListItemSelected(wxListEvent& ev);
 	void		OnBnClickedReset(wxCommandEvent& ev);
 	void		OnBnClickedClear(wxCommandEvent& ev);
 	void		OnExtendedSearchChange(wxCommandEvent& ev);
 	void		OnFilterCheckChange(wxCommandEvent& ev);
 	void		OnFilteringChange(wxCommandEvent& ev);
-	
+
 	void		OnSearchClosing(wxBookCtrlEvent& evt);
 
 	void		OnBnClickedStart(wxCommandEvent& evt);
@@ -159,9 +159,9 @@ private:
 	 * Event-handler for page-chages which takes care of enabling/disabling the download button.
 	 */
 	void		OnSearchPageChanged(wxBookCtrlEvent& evt);
-	
+
 	uint32		m_last_search_time;
-	
+
 	wxGauge*	m_progressbar;
 
 	CMuleNotebook*	m_notebook;

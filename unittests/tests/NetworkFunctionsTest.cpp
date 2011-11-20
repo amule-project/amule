@@ -14,7 +14,7 @@ TEST(NetworkFunctions, StringIPtoUint32)
 	int items = itemsof(values);
 	int whites = 2;
 	int zeros = 2;
-	
+
 	// Test a few standard IP combinations
 	for (int wl = 0; wl < whites; ++wl) {
 		for (int wr = 0; wr < whites; ++wr) {
@@ -43,11 +43,11 @@ TEST(NetworkFunctions, StringIPtoUint32)
 											   << wxString(wxT(' '), wr);
 
 											uint32 resultIP = 17;
-											
+
 											ASSERT_TRUE(StringIPtoUint32(IP, resultIP));
 
 											uint32 expected = (values[d] << 24) | (values[c] << 16) | (values[b] << 8) | values[a];
-										
+
 											ASSERT_EQUALS(expected, resultIP);
 										}
 									}
@@ -60,10 +60,10 @@ TEST(NetworkFunctions, StringIPtoUint32)
 		}
 	}
 
-	
+
 	// Test invalid IPs
 	uint32 dummyIP = 27;
-	
+
 	// Missing fields
 	ASSERT_FALSE(StringIPtoUint32(wxT(".2.3.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1..3.4"), dummyIP));
@@ -101,11 +101,11 @@ TEST(NetworkFunctions, StringIPtoUint32)
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.-2.3.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.-3.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.3.-4"), dummyIP));
-	
+
 	// Whitespace between fields
 	for (unsigned i = 0; i < itemsof(whitespace); ++i) {
 		wxChar c = whitespace[i];
-		
+
 		ASSERT_FALSE(StringIPtoUint32(wxString::Format(wxT("1%c.2.3.4"), c), dummyIP));
 		ASSERT_FALSE(StringIPtoUint32(wxString::Format(wxT("1.%c2.3.4"), c), dummyIP));
 		ASSERT_FALSE(StringIPtoUint32(wxString::Format(wxT("1.2%c.3.4"), c), dummyIP));
@@ -114,7 +114,7 @@ TEST(NetworkFunctions, StringIPtoUint32)
 		ASSERT_FALSE(StringIPtoUint32(wxString::Format(wxT("1.2.3.%c4"), c), dummyIP));
 	}
 
-	
+
 	// Faar too large values (triggered overflow and became negative)
 	ASSERT_FALSE(StringIPtoUint32(wxT("2147483648.2.3.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2147483648.3.4"), dummyIP));
@@ -127,7 +127,7 @@ TEST(NetworkFunctions, StringIPtoUint32)
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.4294967296.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.3.4294967296"), dummyIP));
 
-	
+
 	// The dummyIP value shouldn't have been changed by any of these calls
 	ASSERT_EQUALS(27u, dummyIP);
 }

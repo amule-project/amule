@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -35,7 +35,7 @@
 #include <common/Format.h>		// needed for CFormat
 #include <common/Macros.h>
 
-#define	 CBB_BANTHRESHOLD	32 //% max corrupted data	
+#define	 CBB_BANTHRESHOLD	32 //% max corrupted data
 
 // Record to store information which piece of data was downloaded from which client
 
@@ -81,7 +81,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, uint
 		wxFAIL;
 		return;
 	}
-	
+
 	// convert pos to relative block pos
 	uint16 nPart = (uint16)(nStartPos / PARTSIZE);
 	uint32 nRelStartPos = nStartPos - nPart*PARTSIZE;
@@ -106,7 +106,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, uint
 	}
 	if (!merged) {
 		list.push_back(CCBBRecord(nRelStartPos, nRelEndPos, senderIP));
-		AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): transferred: new record for part %d (%d - %d, %s)")) 
+		AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): transferred: new record for part %d (%d - %d, %s)"))
 			% m_partNumber % nPart % nRelStartPos % nRelEndPos % Uint32toStringIP(senderIP));
 	}
 }
@@ -224,7 +224,7 @@ void CCorruptionBlackBox::EvaluateData()
 				clientName = Uint32toStringIP(ip);
 				theApp->clientlist->AddBannedClient(ip);
 			}
-			AddLogLineN(CFormat(_("Banned client %s for sending %s corrupt data of %s total for the file '%s'")) 
+			AddLogLineN(CFormat(_("Banned client %s for sending %s corrupt data of %s total for the file '%s'"))
 				% clientName % CastItoXBytes(bad) % CastItoXBytes(good + bad) % m_fileName);
 		} else {
 			CUpDownClient* pSuspectClient = theApp->clientlist->FindClientByIP(ip);

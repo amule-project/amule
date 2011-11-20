@@ -21,7 +21,7 @@ aMule contains a lot of features that are only accessible through pop-up menus, 
 
 If you haven't bought an additional multi-button mouse with your Mac, you only have one mouse button (the one that corresponds to a left-click or "normal" click on a multi-button mouse). Fortunately, you can emulate the second button by HOLDING DOWN THE CONTROL-KEY ON THE KEYBOARD WHILE YOU CLICK. For example, do a "control-click" now on a file that you are downloading and see how a pop-up menu shows up with further option.
 
-If you want to discover all of aMule's hidden functionalities just try to control-click everything that moves.  
+If you want to discover all of aMule's hidden functionalities just try to control-click everything that moves.
 This includes all the lists of files, clients & servers, all the labels on the top of these lists (e.g. "File Name"), the bar "all" at the top of the download window, ...
 
 By the way, these emulated right-clicks work system-wide. Just try control-clicking a file in the Finder, an icon in the Dock, a marked word in TextEdit or MS Word.

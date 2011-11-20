@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,9 +39,9 @@
 //-----------------------------------------------------------------------------
 //
 // This is the socket that listens to incomming connections in aMule's TCP port
-// As soon as a connection is detected, it creates a new socket of type 
+// As soon as a connection is detected, it creates a new socket of type
 // CClientTCPSocket to handle (accept) the connection.
-// 
+//
 
 CListenSocket::CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData)
 :
@@ -58,9 +58,9 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	averageconnections = 0.0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
- 		SetEventHandler(*theApp, ID_LISTENSOCKET_EVENT);
- 		SetNotify(wxSOCKET_CONNECTION_FLAG);
- 		Notify(true);
+		SetEventHandler(*theApp, ID_LISTENSOCKET_EVENT);
+		SetNotify(wxSOCKET_CONNECTION_FLAG);
+		Notify(true);
 
 		AddLogLineNS(_("ListenSocket: Ok."));
 	} else {
@@ -170,7 +170,7 @@ void CListenSocket::Process()
 			}
 		}
 	}
-	
+
 	if ((GetOpenSockets()+5 < thePrefs::GetMaxConnections() || theApp->serverconnect->IsConnecting()) && !bListening) {
 		ReStartListening();
 	}
@@ -221,7 +221,7 @@ void CListenSocket::KillAllSockets()
 			cur_socket->Safe_Delete_Client();
 		} else {
 			cur_socket->Safe_Delete();
-			cur_socket->Destroy(); 
+			cur_socket->Destroy();
 		}
 	}
 }
@@ -268,7 +268,7 @@ float CListenSocket::GetMaxConperFiveModifier()
 	if ( SpikeSize > SpikeTolerance ) {
 		return 0;
 	}
-	
+
 	return 1.0f - (SpikeSize/SpikeTolerance);
 }
 // File_checked_for_headers

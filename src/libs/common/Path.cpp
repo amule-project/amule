@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -150,7 +150,7 @@ wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
 				if (isFAT32) {
 					continue;
 				}
-				
+
 			default:
 				if ((c == wxT(' ')) && !keepSpaces) {
 					result += wxT("%20");
@@ -201,7 +201,7 @@ wxString DoCleanPath(const wxString& path)
 #ifdef __WXMSW__
 	// stat fails on windows if there are trailing path-separators.
 	wxString cleanPath = StripSeparators(path, wxString::trailing);
-	
+
 	// Root paths must end with a separator (X:\ rather than X:).
 	// See comments in wxDirExists.
 	if ((cleanPath.Length() == 2) && (cleanPath.Last() == wxT(':'))) {
@@ -233,7 +233,7 @@ bool IsSameAs(const wxString& a, const wxString& b)
 	// lead to some unexpected behavior.
 	wxFileName fn1(a);
 	wxFileName fn2(b);
-	
+
 	fn1.Normalize(flags, cwd);
 	fn2.Normalize(flags, cwd);
 
@@ -471,7 +471,7 @@ CPath CPath::JoinPaths(const CPath& other) const
 		return CPath(other);
 	} else if (!other.IsOk()) {
 		return CPath(*this);
-	} 
+	}
 
 	CPath joinedPath;
 	// DeepCopy shouldn't be needed, as JoinPaths results in the creation of a new string.
@@ -508,7 +508,7 @@ CPath CPath::AppendExt(const wxString& ext) const
 {
 	wxASSERT(ext.IsAscii());
 
-	// Though technically, and empty extension would simply 
+	// Though technically, and empty extension would simply
 	// be another . at the end of the filename, we ignore them.
 	if (ext.IsEmpty()) {
 		return *this;
@@ -566,7 +566,7 @@ bool CPath::StartsWith(const CPath& other) const
 	// normalized first (in the constructor).
 	const wxString a = StripSeparators(m_filesystem, wxString::trailing) + wxFileName::GetPathSeparator();
 	const wxString b = StripSeparators(other.m_filesystem, wxString::trailing) + wxFileName::GetPathSeparator();
-	
+
 	if (a.Length() < b.Length()) {
 		// Cannot possibly be a prefix.
 		return false;
@@ -602,7 +602,7 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 	CPath dst = CPath(src.m_filesystem + appendix);
 
 	if (CPath::CloneFile(src, dst, true)) {
-		// Try to ensure that the backup gets physically written 
+		// Try to ensure that the backup gets physically written
 #if defined __WXMSW__ || defined __IRIX__
 		wxFFile backupFile;
 #else
@@ -699,7 +699,7 @@ wxString CPath::TruncatePath(size_t length, bool isFilePath) const
 	}
 
 	if (file.Length() > length) {
-		if (length > 5) {		
+		if (length > 5) {
 			file = file.Left(length - 5) + wxT("[...]");
 		} else {
 			file.Clear();

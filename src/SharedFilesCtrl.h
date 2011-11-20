@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -60,7 +60,7 @@ public:
 	 * Adds the specified file to the list, updating filecount and more.
 	 *
 	 * @param file The new file to be shown.
-	 * 
+	 *
 	 * Note that the item is inserted in sorted order.
 	 */
 	void	ShowFile(CKnownFile* file);
@@ -83,21 +83,21 @@ public:
 	 * Updates the number of shared files displayed above the list.
 	 */
 	void	ShowFilesCount();
-	
+
 protected:
 	/// Return old column order.
 	wxString GetOldColumnOrder() const;
 
 private:
 	/**
-	 * Adds the specified file to the list. 
+	 * Adds the specified file to the list.
 	 *
 	 * If 'batch' is true, the item will be inserted last,
-	 * and the files-count will not be updated, nor is 
+	 * and the files-count will not be updated, nor is
 	 * the list checked for dupes.
 	 */
 	void	DoShowFile(CKnownFile* file, bool batch);
-	
+
 	/**
 	 * Draws the graph of file-part availability.
 	 *
@@ -105,25 +105,25 @@ private:
 	 * @param dc The wcDC to draw on.
 	 * @param rect The drawing area.
 	 *
-	 * This function draws a barspan showing the availability of the parts of 
+	 * This function draws a barspan showing the availability of the parts of
 	 * a file, for both Part-files and Known-files. Availability for Part-files
-	 * is determined using the currently known sources, while availability for 
+	 * is determined using the currently known sources, while availability for
 	 * Known-files is determined using the sources requesting that file.
 	 */
 	void	DrawAvailabilityBar( CKnownFile* file, wxDC* dc, const wxRect& rect ) const;
-	
+
 	/**
 	 * Overloaded function needed to do custom drawing of the items.
 	 */
 	virtual void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);
 
-	
+
 	/**
 	 * @see CMuleListCtrl::GetTTSText
 	 */
 	virtual wxString GetTTSText(unsigned item) const;
-	
-	
+
+
 	/**
 	 * Sorter-function.
 	 *
@@ -148,22 +148,22 @@ private:
 	 * Event-handler for right-clicks on the list-items.
 	 */
 	void	OnGetFeedback(wxCommandEvent& event);
-	
+
 	/**
 	 * Event-handler for the Set Priority menu items.
 	 */
 	void	OnSetPriority( wxCommandEvent& event );
-	
+
 	/**
 	 * Event-handler for the Auto-Priority menu item.
 	 */
 	void	OnSetPriorityAuto( wxCommandEvent& event );
-	
+
 	/**
 	 * Event-handler for the Create ED2K/Magnet URI items.
 	 */
 	void	OnCreateURI( wxCommandEvent& event );
-	 
+
 	/**
 	 * Event-handler for the Edit Comment menu item.
 	 */

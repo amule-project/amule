@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -53,15 +53,15 @@ public:
 	/**
 	 * The various ways in which a column can be sorted.
 	 *
-	 * If SORT_DES is not set, sorting is taken to be 
-	 * ascending. If SORT_ALT is not set, sorting is 
+	 * If SORT_DES is not set, sorting is taken to be
+	 * ascending. If SORT_ALT is not set, sorting is
 	 * taken to be normal.
 	 */
 	enum MLOrder
 	{
 		//! If set, sorting is to be in descending order.
 		SORT_DES	= 0x1000,
-		
+
 		//! If sorting should use alternate method.
 		//! Is specified in with or without DEC.
 		SORT_ALT	= 0x2000
@@ -75,7 +75,7 @@ public:
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @see wxGenericListCtrl::wxGenericListCtrl for documentation of parameters.
 	 */
 	 CMuleListCtrl(
@@ -90,9 +90,9 @@ public:
 	/**
 	 * Destructor.
 	 *
-	 * If a name for the table has been specified with SetTableName, then 
+	 * If a name for the table has been specified with SetTableName, then
 	 * column settings will be saved automatically.
-	 */ 
+	 */
 	virtual ~CMuleListCtrl();
 
 	/**
@@ -116,11 +116,11 @@ public:
 	 * This function tries to locate the best place to insert an item.
 	 *
 	 * @param The userdata of the new item.
-	 * 
+	 *
 	 * This function does a binary type search to locate the best place to
-	 * insert the new item with the specified userdata. It then returns the 
+	 * insert the new item with the specified userdata. It then returns the
 	 * item after this position. To do this, the sorter-function must be set
-	 * through the SetSortFunc function, otherwise it will just return the 
+	 * through the SetSortFunc function, otherwise it will just return the
 	 * position after the last item.
 	 */
 	long GetInsertPos( wxUIntPtr data );
@@ -146,7 +146,7 @@ public:
 	 * vector, which can then be manipulated with regards to changes made
 	 * in the current order of the listctrl items.
 	 */
-	ItemDataList GetSelectedItems() const;	
+	ItemDataList GetSelectedItems() const;
 
 	/**
 	 * Sets the sorter function.
@@ -225,7 +225,7 @@ public:
 	 * Indicates if we're in the process of sorting.
 	 */
 	bool IsSorting() const { return m_isSorting; }
-	
+
 protected:
 
 	/**
@@ -236,7 +236,7 @@ protected:
 	 * Subclasses of CMuleListCtrl can allow alternative sorting
 	 * of columns. This is done by overriding this function and
 	 * returning true for the columns where alternative sorting
-	 * is desired. 
+	 * is desired.
 	 */
 	virtual bool AltSortAllowed(unsigned column) const;
 
@@ -256,7 +256,7 @@ protected:
 	 *
 	 * @param name The new name or an empty string to disable.
 	 *
-	 * You need to call this function with a unique name before you can 
+	 * You need to call this function with a unique name before you can
 	 * make use of the LoadSettings/SaveSettings functions. CMuleListCtrl
 	 * uses the name specified in this command to create unique keynames.
 	 */
@@ -307,7 +307,7 @@ protected:
 
 	/**
 	 * Check and fix selection state.
-	 * 
+	 *
 	 * @param event The event which triggered the selection.
 	 * @return The index of the item selected or -1 if none.
 	 *
@@ -383,14 +383,14 @@ private:
 
 	/**
 	 * Wrapper around the user-provided sorter function.
-	 * 
+	 *
 	 * This function ensures that items are sorted in the order
 	 * specified by clicking on column-headers, and also enforces
 	 * that different entries are never considered equal. This is
 	 * required for lists that make use of child-items, since
 	 * otherwise, parents may not end up properly located in
 	 * relation to child-items.
-	 */	
+	 */
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 
 	/** Compares two items in the list, using the current sort sequence. */
@@ -403,11 +403,11 @@ private:
 	class MuleSortData {
 	public:
 		MuleSortData(CSortingList sort_orders, MuleListCtrlCompare sort_func) : m_sort_orders(sort_orders), m_sort_func(sort_func) { };
-		
+
 		CSortingList m_sort_orders;
 		MuleListCtrlCompare m_sort_func;
-	};	
-	
+	};
+
 	//! This list contains in order the columns sequence to sort by.
 	CSortingList m_sort_orders;
 
@@ -464,7 +464,7 @@ private:
 		int index;
 		int	defaultWidth;
 		wxString name;
-		ColNameEntry(int _index, int _defaultWidth, const wxString& _name) 
+		ColNameEntry(int _index, int _defaultWidth, const wxString& _name)
 			:	index(_index), defaultWidth(_defaultWidth), name(_name) {}
 	};
 
@@ -476,13 +476,13 @@ private:
 
 	/// This vector contains a cache of the columns' sizes.
 	typedef std::vector<int>		ColSizeVector;
-	
+
 	/// Container for column sizes cache.
 	ColSizeVector	m_column_sizes;
 
 	// True while sorting.
 	bool m_isSorting;
-	
+
 	DECLARE_EVENT_TABLE()
 };
 

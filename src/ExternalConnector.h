@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -25,9 +25,9 @@
 /*
  * This file must be included with wxUSE_GUI defined to zero or one.
  * Usually on console applications, this will be taken care of in
- * configure time. This is because wx classes will be compiled 
+ * configure time. This is because wx classes will be compiled
  * differently in each case.
- * 
+ *
  */
 
 #ifndef __EXTERNALCONNECTOR_H__
@@ -106,7 +106,7 @@ class CaMuleExternalConnector : public wxApp
 public:
 	//
 	// Constructor & Destructor
-	// 
+	//
 	CaMuleExternalConnector();
 	~CaMuleExternalConnector();
 
@@ -126,7 +126,7 @@ public:
 
 	//
 	// Other functions
-	// 
+	//
 	void Show(const wxString &s);
 	void DebugShow(const wxString &s) { if (m_Verbose) Show(s); }
 	const wxString& GetCmdArgs() const { return m_cmdargs; }
@@ -142,7 +142,7 @@ public:
 
 	//
 	// Command line processing
-	// 
+	//
 	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser, const char* appname);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
@@ -162,8 +162,8 @@ protected:
 	// returns canonical name of set (current) locale
 	virtual wxString SetLocale(const wxString& language);
 
-	long	 	m_port;
-	wxString 	m_host;
+	long		m_port;
+	wxString	m_host;
 	CMD4Hash	m_password;
 	bool		m_ZLIB;
 	bool		m_KeepQuiet;

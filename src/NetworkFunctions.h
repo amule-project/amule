@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -41,7 +41,7 @@ inline wxString Uint32toStringIP(uint32 ip)
 
 inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
 {
-	return CFormat(wxT("%u.%u.%u.%u:%u")) % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24) % port;	
+	return CFormat(wxT("%u.%u.%u.%u:%u")) % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24) % port;
 }
 
 // These functions take IPs in host-order
@@ -59,17 +59,17 @@ inline wxString KadIPPortToString(uint32_t ip, uint16_t port)
  * Parses a String-IP and saves the IP in the referenced variable.
  *
  * @param strIP A string-ip in the format "a.b.c.d".
- * @param Ip The value to save the result in. 
+ * @param Ip The value to save the result in.
  * @return True if the string was parsed, false otherwise.
  *
- * When parsing the IP address, whitespace before or after the 
- * ip-address is ignored and the resulting IP is saved in 
+ * When parsing the IP address, whitespace before or after the
+ * ip-address is ignored and the resulting IP is saved in
  * anti-host order.
  *
  * The reason for the existance of this function is the fact that
  * the standard inet_aton function treats numbers with 0 prefixed
  * as octals, which is desirable.
- * 
+ *
  * Note: The reference value will not be changed unless the string
  *       contains a valid IP adress.
  */
@@ -78,25 +78,25 @@ bool	StringIPtoUint32(const wxString &strIP, uint32& Ip);
 
 /**
  * Parses a String-IP and returns the IP or 0 if it was invalid.
- * 
+ *
  * @param strIP A string-ip in the format "a.b.c.d".
  * @return The resulting IP-address or zero if invalid (or 0.0.0.0).
- * 
+ *
  * The IP will be saved in anti-host order.
  */
 inline uint32 StringIPtoUint32(const wxString &strIP)
 {
 	uint32 ip = 0;
 	StringIPtoUint32( strIP, ip );
-	
+
 	return ip;
 }
 /**
  * Parses a String-IHost and returns the IP or 0 if it was invalid.
- * 
+ *
  * @param Host A string with the Host to convert.
  * @return The resulting IP-address or zero if invalid (or 0.0.0.0).
- * 
+ *
  * The IP will be saved in anti-host order.
  */
 uint32 StringHosttoUint32(const wxString &Host);
@@ -107,7 +107,7 @@ uint32 StringHosttoUint32(const wxString &Host);
  * @param IP the IP-address to check.
  * @param filterLAN Specifies if LAN IP-ranges should be filtered.
  * @return True if it was valid, false otherwise.
- * 
+ *
  * Note: IP must be in anti-host order (BE on LE platform, LE on BE platform).
  */
 bool IsGoodIP( uint32 IP, bool filterLAN );

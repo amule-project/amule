@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -308,7 +308,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 {
 #ifdef HAVE_LIBREADLINE
 		char *text = readline(unicode2char(prompt + wxT("$ ")));
-		if (text && *text && 
+		if (text && *text &&
 		    (m_InputLine == 0 || strcmp(text,m_InputLine) != 0)) {
 		  add_history (text);
 		}
@@ -383,7 +383,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		// Clear plain-text password
 		pass_plain		= wxT("01234567890123456789");
 	}
-	
+
 	if (!m_password.IsEmpty()) {
 
 		// Create the socket
@@ -630,7 +630,7 @@ wxAppTraits* CaMuleExternalConnector::CreateTraits()
 void CaMuleExternalConnector::OnFatalException()
 {
 	/* Print the backtrace */
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
+	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 	fprintf(stderr, "A fatal error has occurred and %s has crashed.\n", m_appname);
 	fprintf(stderr, "Please assist us in fixing this problem by posting the backtrace below in our\n");
 	fprintf(stderr, "'aMule Crashes' forum and include as much information as possible regarding the\n");
@@ -641,10 +641,10 @@ void CaMuleExternalConnector::OnFatalException()
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
 	fprintf(stderr, "Current version is: %s %s\n", m_appname, m_strFullVersion);
 	fprintf(stderr, "Running on: %s\n\n", m_strOSDescription);
-	
+
 	print_backtrace(1); // 1 == skip this function.
-	
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
+
+	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 }
 #endif
 

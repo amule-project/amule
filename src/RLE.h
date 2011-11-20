@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -36,19 +36,19 @@ class RLE_Data
 {
 public:
 	RLE_Data(int len = 0, bool use_diff = true)	{ setup(len, use_diff); }
-	
+
 	// those constructors are for stl containers
 	RLE_Data(const RLE_Data & obj)	{ setup(obj.m_len, obj.m_use_diff, obj.m_buff); }
 	RLE_Data &operator=(const RLE_Data &);
-	
+
 	~RLE_Data();
 
 	const uint8 *Encode(const ArrayOfUInts16 &data, int &outlen, bool &changed);
 	const uint8 *Encode(const ArrayOfUInts64 &data, int &outlen, bool &changed);
-	
+
 	const uint8 *Decode(const uint8 *data, int len);
 	void Decode(const uint8 *data, int len, ArrayOfUInts64 &outdata);
-	
+
 	void ResetEncoder();
 
 	// decoder will need access to data

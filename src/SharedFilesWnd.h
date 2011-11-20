@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,25 +43,25 @@ class wxRadioBox;
 class CSharedFilesWnd : public wxPanel
 {
 public:
-	/** 
+	/**
 	 * Constructor.
 	 */
 	CSharedFilesWnd(wxWindow* pParent = NULL);
-	
+
 	/**
 	 * Destructor.
 	 */
 	~CSharedFilesWnd();
-	
+
 
 	/**
 	 * This function updates the statistics of the selected items.
 	 *
 	 * Call this function when an item has been selected, or when a
-	 * selected item changes. It 
+	 * selected item changes. It
 	 */
 	void SelectionUpdated();
-	
+
 
 	/**
 	 * Deletes all files and updates widget
@@ -77,16 +77,16 @@ public:
 
 	//! Pointer to the widget containing the list of shared files.
 	CSharedFilesCtrl* sharedfilesctrl;
-	
+
 	//! Pointer to the list of clients.
 	CSharedFilePeersListCtrl*	peerslistctrl;
-	
+
 	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
 	int m_splitter;
 private:
 	/**
 	 * Event-handler for reloading the list of shared files.
-	 */	
+	 */
 	void OnBtnReloadShared(wxCommandEvent &evt);
 
 	/**
@@ -132,7 +132,7 @@ private:
 	};
 	EClientShow m_clientShow;
 
-	
+
 	DECLARE_EVENT_TABLE()
 };
 

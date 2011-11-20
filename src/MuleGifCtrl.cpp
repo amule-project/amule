@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,17 +45,17 @@ public:
 	{
 		m_nframe = 0;
 	}
-	
+
 	~MuleGIFDecoder() { }
-	
+
 	void GoFirstFrame() { m_nframe = 0; }
 	void GoNextFrame() { m_nframe < GetFrameCount() - 1 ? m_nframe++ : m_nframe = 0; }
 	void GoLastFrame() { m_nframe = GetFrameCount() - 1; }
-	
+
 	void ConvertToImage(wxImage* image) { wxGIFDecoder::ConvertToImage(m_nframe, image); }
-	
+
 	long GetDelay() { return wxGIFDecoder::GetDelay(m_nframe); }
-		
+
 private:
 	uint32_t m_nframe;
 };
@@ -90,23 +90,23 @@ bool MuleGifCtrl::LoadData(const char* data, int size)
 {
 	if (m_decoder) {
 		m_timer.Stop();
-   		delete m_decoder;
-  		m_decoder = NULL;
+		delete m_decoder;
+		m_decoder = NULL;
 	}
-	
-  	wxMemoryInputStream stream(data, size);
-  	m_decoder = new MuleGIFDecoder();
-  	if ( m_decoder->LoadGIF(stream) != wxGIF_OK ) {
-   		delete m_decoder;
-   		m_decoder = NULL;
-   		return false;
-  	}
-	
+
+	wxMemoryInputStream stream(data, size);
+	m_decoder = new MuleGIFDecoder();
+	if ( m_decoder->LoadGIF(stream) != wxGIF_OK ) {
+		delete m_decoder;
+		m_decoder = NULL;
+		return false;
+	}
+
 	m_decoder->GoFirstFrame();
 	wxImage frame;
 	m_decoder->ConvertToImage( &frame );
 	m_frame = wxBitmap(frame);
-	
+
 	return true;
 }
 
@@ -144,13 +144,13 @@ void MuleGifCtrl::OnTimer(wxTimerEvent& WXUNUSED(event))
 		if (m_decoder->IsAnimation()) {
 			m_decoder->GoNextFrame();
 		}
-		
+
 		wxImage frame;
 		m_decoder->ConvertToImage(&frame);
 		m_frame = wxBitmap(frame);
-		
+
 		Refresh();
-		
+
 		if (m_decoder->IsAnimation()) {
 			m_timer.Start(m_decoder->GetDelay(), true);
 		}
@@ -161,12 +161,12 @@ void MuleGifCtrl::OnTimer(wxTimerEvent& WXUNUSED(event))
 void MuleGifCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
 	wxBufferedPaintDC dc(this);
-	
+
 	wxSize clientsize = GetClientSize();
 	wxSize gifsize = m_decoder->GetAnimationSize();
 	int x = (clientsize.GetWidth()-gifsize.GetWidth())/2;
 	int y = (clientsize.GetHeight()-gifsize.GetHeight())/2;
-	
+
 	dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
 	dc.Clear();
 	dc.DrawBitmap(m_frame, x, y, true);

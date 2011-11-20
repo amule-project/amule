@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,30 +37,30 @@ CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoi
 {
 	// Set sorter function
 	SetSortFunc(SortProc);
-	
+
 	// Initial sorting: Sources descending
 	InsertColumn(0, _("File Name"), wxLIST_FORMAT_LEFT, 370);
 	InsertColumn(1, _("Sources"), wxLIST_FORMAT_LEFT, 70);
-	
+
 	SetSorting(1, CMuleListCtrl::SORT_DES);
 
 	SortList();
 }
 
 int CFileDetailListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
-{ 
+{
 	// Comparison for different sortings
 	SourcenameItem *item1 = (SourcenameItem*)param1;
 	SourcenameItem *item2 = (SourcenameItem*)param2;
 
 	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	
+
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		case 1: return mod * (item1->count - item2->count);			// Sources descending
 		case 0: return mod * item1->name.CmpNoCase(item2->name);	// Name descending
 		default: return 0;
 	}
-} 
+}
 
 
 void CFileDetailListCtrl::OnSelect(wxListEvent& event)

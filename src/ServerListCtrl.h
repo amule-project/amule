@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -38,9 +38,9 @@
 #define	COLUMN_SERVER_PRIO	7
 #define	COLUMN_SERVER_FAILS	8
 #define	COLUMN_SERVER_STATIC	9
-#define	COLUMN_SERVER_VERSION 	10
-#define	COLUMN_SERVER_TCPFLAGS 	11
-#define	COLUMN_SERVER_UDPFLAGS 	12
+#define	COLUMN_SERVER_VERSION	10
+#define	COLUMN_SERVER_TCPFLAGS	11
+#define	COLUMN_SERVER_UDPFLAGS	12
 
 class CServer;
 class CServerList;
@@ -48,12 +48,12 @@ class wxListEvent;
 class wxCommandEvent;
 
 
-/** 
+/**
  * The CServerListCtrl is used to display the list of servers which the user
  * can connect to and which we request sources from. It is a permanently sorted
  * list in that it always ensure that the items are sorted in the correct order.
  */
-class CServerListCtrl : public CMuleListCtrl 
+class CServerListCtrl : public CMuleListCtrl
 {
 public:
 	/**
@@ -69,7 +69,7 @@ public:
                 long style = wxLC_ICON,
                 const wxValidator& validator = wxDefaultValidator,
                 const wxString &name = wxT("mulelistctrl") );
-	
+
 	/**
 	 * Destructor.
 	 */
@@ -81,39 +81,39 @@ public:
 	 *
 	 * @param A pointer to the new server.
 	 *
-	 * Internally this function calls RefreshServer and ShowServerCount, with 
+	 * Internally this function calls RefreshServer and ShowServerCount, with
 	 * the result that it is legal to add servers already in the list, though
 	 * not recommended.
 	 */
 	void	AddServer( CServer* toadd );
-	
+
 	/**
 	 * Removes a server from the displayed list.
 	 */
 	void	RemoveServer(CServer* server);
-	
+
 	/**
-	 * Removes all servers with the specified state. 
+	 * Removes all servers with the specified state.
 	 *
 	 * @param state All items with this state will be removed, default being all.
 	 */
 	void	RemoveAllServers(int state = wxLIST_STATE_DONTCARE);
-	
-	
+
+
 	/**
 	 * Updates the displayed information on a server.
 	 *
 	 * @param server The server to be updated.
 	 *
-	 * This function will not only update the displayed information, it will also 
+	 * This function will not only update the displayed information, it will also
 	 * reposition the item should it be nescecarry to enforce the current sorting.
 	 * Also note that this function does not require that the server actually is
-	 * on the list already, since AddServer makes use of it, but this should 
+	 * on the list already, since AddServer makes use of it, but this should
 	 * generally be avoided, since it will result in the server-count getting
 	 * skewed until the next AddServer call.
-	 */	
+	 */
 	void	RefreshServer( CServer* server );
-	
+
 	/**
 	 * Sets the highlighting of the specified server.
 	 *
@@ -121,13 +121,13 @@ public:
 	 * @param highlight The new highlighting state.
 	 *
 	 * Please note that only _one_ item is allowed to be highlighted at any
-	 * one time, so calling this function while another item is already 
+	 * one time, so calling this function while another item is already
 	 * highlighted will result in the old item not being highlighted any more.
 	 */
 	void	HighlightServer( const CServer* server, bool highlight );
 
 
-	
+
 	/**
 	 * This function updates the server-count in the server-wnd.
 	 */
@@ -143,27 +143,27 @@ private:
 	 * Event-handler for handling item activation (connect).
 	 */
 	void	OnItemActivated( wxListEvent& event );
-	
+
 	/**
 	 * Event-handler for displaying the popup-menu.
 	 */
 	void	OnItemRightClicked( wxListEvent& event );
-	
+
 	/**
 	 * Event-handler for priority changes.
 	 */
 	void	OnPriorityChange( wxCommandEvent& event );
-	
+
 	/**
 	 * Event-handler for static changes.
 	 */
 	void	OnStaticChange( wxCommandEvent& event );
-	
+
 	/**
 	 * Event-handler for server connections.
 	 */
 	void	OnConnectToServer( wxCommandEvent& event );
-	
+
 	/**
 	 * Event-handler for copying server-urls to the clipboard.
 	 */
@@ -178,7 +178,7 @@ private:
 	 * Event-handler for deleting servers when the delete-key is pressed.
 	 */
 	void	OnKeyPressed( wxKeyEvent& event );
-	
+
 	/**
 	 * Sorter function.
 	 *
@@ -189,8 +189,8 @@ private:
 
 	//! Used to keep track of the last high-lighted item.
 	const CServer* m_connected;
-	
-	
+
+
 	DECLARE_EVENT_TABLE()
 };
 

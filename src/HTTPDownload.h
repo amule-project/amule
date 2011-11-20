@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -46,13 +46,13 @@ class CHTTPDownloadThread : public CMuleThread
 {
 public:
 	/** Note: wxChar* is used to circumvent the thread-unsafe wxString reference counting. */
-	CHTTPDownloadThread(const wxString& url, const wxString& filename, const wxString& oldfilename, HTTP_Download_File file_id, 
+	CHTTPDownloadThread(const wxString& url, const wxString& filename, const wxString& oldfilename, HTTP_Download_File file_id,
 						bool showDialog, bool checkDownloadNewer);
 
 	static void StopAll();
 private:
 	ExitCode		Entry();
-	virtual void 		OnExit();
+	virtual void		OnExit();
 
 	wxString		m_url;
 	wxString		m_tempfile;

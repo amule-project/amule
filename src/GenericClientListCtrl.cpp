@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -58,7 +58,7 @@ struct ClientCtrlItem_Struct
 		  m_owner(NULL),
 		  m_type(UNAVAILABLE_SOURCE)
 	{ }
-	
+
 	~ClientCtrlItem_Struct() {
 		delete status;
 	}
@@ -81,9 +81,9 @@ struct ClientCtrlItem_Struct
 		m_sourceValue = source;
 		m_type = type;
 	}
-	
+
 	void SetType(SourceItemType type) { m_type = type; }
-	
+
 	uint32		dwUpdated;
 	wxBitmap*	status;
 
@@ -129,11 +129,11 @@ m_columndata(0, NULL)
 
 	m_menu = NULL;
 	m_showing = false;
-	
+
 	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125).GetBrush();
 
 	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125).GetBrush();
-	
+
 	m_clientcount = 0;
 }
 
@@ -201,12 +201,12 @@ void CGenericClientListCtrl::InitColumnData()
 	if (!m_columndata.n_columns) {
 		throw wxString(wxT("CRITICAL: Initialization of the column data lacks subclass information"));
 	}
-	
-	for (int i = 0; i < m_columndata.n_columns; ++i) { 
+
+	for (int i = 0; i < m_columndata.n_columns; ++i) {
 		InsertColumn( i, wxGetTranslation(m_columndata.columns[i].title), wxLIST_FORMAT_LEFT, m_columndata.columns[i].width, TranslateCIDToName(m_columndata.columns[i].cid));
 	}
 
-	LoadSettings();	
+	LoadSettings();
 }
 
 CGenericClientListCtrl::~CGenericClientListCtrl()
@@ -220,19 +220,19 @@ void CGenericClientListCtrl::RawAddSource(CKnownFile* owner, CClientRef source, 
 {
 	ClientCtrlItem_Struct* newitem = new ClientCtrlItem_Struct;
 	newitem->SetContents(owner, source, type);
-	
+
 	m_ListItems.insert( ListItemsPair(source.ECID(), newitem) );
-	
+
 	long item = InsertItem( GetItemCount(), wxEmptyString );
 	SetItemPtrData( item, reinterpret_cast<wxUIntPtr>(newitem) );
-	SetItemBackgroundColour( item, GetBackgroundColour() );	
+	SetItemBackgroundColour( item, GetBackgroundColour() );
 }
 
 void CGenericClientListCtrl::AddSource(CKnownFile* owner, const CClientRef& source, SourceItemType type)
 {
 	wxCHECK_RET(owner, wxT("NULL owner in CGenericClientListCtrl::AddSource"));
 	wxCHECK_RET(source.IsLinked(), wxT("Unlinked source in CGenericClientListCtrl::AddSource"));
-	
+
 	// Update the other instances of this source
 	bool bFound = false;
 	ListIteratorPair rangeIt = m_ListItems.equal_range(source.ECID());
@@ -242,13 +242,13 @@ void CGenericClientListCtrl::AddSource(CKnownFile* owner, const CClientRef& sour
 		// Check if this source has been already added to this file => to be sure
 		if ( cur_item->GetOwner() == owner ) {
 			// Update this instance with its new setting
-			if ((type == A4AF_SOURCE) && 
-				cur_item->GetSource().GetRequestFile() 
-				&& std::binary_search(m_knownfiles.begin(), m_knownfiles.end(), cur_item->GetSource().GetRequestFile())) {				
+			if ((type == A4AF_SOURCE) &&
+				cur_item->GetSource().GetRequestFile()
+				&& std::binary_search(m_knownfiles.begin(), m_knownfiles.end(), cur_item->GetSource().GetRequestFile())) {
 				cur_item->SetContents(owner, source, AVAILABLE_SOURCE);
 			} else {
 				cur_item->SetContents(owner, source, type);
-			}			
+			}
 			cur_item->dwUpdated = 0;
 			bFound = true;
 		} else if ( type == AVAILABLE_SOURCE ) {
@@ -264,7 +264,7 @@ void CGenericClientListCtrl::AddSource(CKnownFile* owner, const CClientRef& sour
 
 	if ( std::binary_search(m_knownfiles.begin(), m_knownfiles.end(), owner) ) {
 		RawAddSource(owner, source, type);
-		
+
 		ShowSourcesCount( 1 );
 	}
 }
@@ -272,9 +272,9 @@ void CGenericClientListCtrl::AddSource(CKnownFile* owner, const CClientRef& sour
 void CGenericClientListCtrl::RawRemoveSource( ListItems::iterator& it)
 {
 	ClientCtrlItem_Struct* item = it->second;
-	
+
 	long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
-	
+
 	if ( index > -1 ) {
 		DeleteItem( index );
 	}
@@ -289,23 +289,23 @@ void CGenericClientListCtrl::RemoveSource(uint32 source, const CKnownFile* owner
 {
 	// A NULL owner means remove it no matter what.
 	wxCHECK_RET(source, wxT("NULL source in CGenericClientListCtrl::RemoveSource"));
-	
+
 	// Retrieve all entries matching the source
 	ListIteratorPair rangeIt = m_ListItems.equal_range(source);
-	
+
 	int removedItems = 0;
-	
+
 	for ( ListItems::iterator it = rangeIt.first; it != rangeIt.second;  /* no ++, it happens later */) {
 		ListItems::iterator tmp = it++;
-		
+
 		if ( owner == NULL || owner == tmp->second->GetOwner() ) {
 
 			RawRemoveSource(tmp);
-			
+
 			++removedItems;
 		}
 	}
-	
+
 	ShowSourcesCount((-1) * removedItems);
 }
 
@@ -313,7 +313,7 @@ void CGenericClientListCtrl::UpdateItem(uint32 toupdate, SourceItemType type)
 {
 	// Retrieve all entries matching the source
 	ListIteratorPair rangeIt = m_ListItems.equal_range( toupdate );
-	
+
 	if ( rangeIt.first != rangeIt.second ) {
 		// Visible lines, default to all because not all platforms
 		// support the GetVisibleLines function
@@ -323,23 +323,23 @@ void CGenericClientListCtrl::UpdateItem(uint32 toupdate, SourceItemType type)
 		// Get visible lines if we need them
 		GetVisibleLines( &first, &last );
 	#endif
-		
+
 		for ( ListItems::iterator it = rangeIt.first; it != rangeIt.second; ++it ) {
 			ClientCtrlItem_Struct* item = it->second;
-			
+
 			long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
 
-			if ((type == A4AF_SOURCE) && 
-					item->GetSource().GetRequestFile() 
+			if ((type == A4AF_SOURCE) &&
+					item->GetSource().GetRequestFile()
 					&& std::binary_search(m_knownfiles.begin(), m_knownfiles.end(), item->GetSource().GetRequestFile())) {
-				
-				item->SetType(AVAILABLE_SOURCE);	
+
+				item->SetType(AVAILABLE_SOURCE);
 			} else {
 				item->SetType(type);
 			}
-			
+
 			item->dwUpdated = 0;
-			
+
 			// Only update visible lines
 			if ( index >= first && index <= last) {
 				RefreshItem( index );
@@ -349,9 +349,9 @@ void CGenericClientListCtrl::UpdateItem(uint32 toupdate, SourceItemType type)
 }
 
 void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
-{	
+{
 	Freeze();
-	
+
 	// The stored vector is sorted, as is the received one, so we can use binary_search
 
 	for (unsigned i = 0; i < m_knownfiles.size(); ++i) {
@@ -360,7 +360,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 			SetShowSources(m_knownfiles[i], false);
 		}
 	}
-	
+
 	// This will call again SetShowSources in files that were in both vectors. Right now
 	// that function is just a inline setter, so any way to prevent it would be wasteful,
 	// but this must be reviewed if that fact changes.
@@ -368,11 +368,11 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 	for (unsigned i = 0; i < files.size(); ++i) {
 		SetShowSources(files[i], true);
 	}
-	
-	// We must cleanup sources that are not in the received files. 
-	
+
+	// We must cleanup sources that are not in the received files.
+
 	int itemDiff = 0;
-	
+
 	for (ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); /* no ++, it happens later */) {
 		ListItems::iterator tmp = it++;
 		ClientCtrlItem_Struct* item = tmp->second;
@@ -382,24 +382,24 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 			--itemDiff;
 		}
 	}
-	
+
 	for (unsigned i = 0; i < files.size(); ++i) {
-		
+
 		// Only those that weren't showing already
 		if (!std::binary_search(m_knownfiles.begin(), m_knownfiles.end(), files[i])) {
-			
+
 			CKnownFile* file = files[i];
 
 			wxASSERT_MSG(file, wxT("NULL file in CGenericClientListCtrl::ShowSources"));
-			
+
 			if (file) {
-				
+
 				CKnownFile::SourceSet::const_iterator it;
-			
+
 				if (IsShowingDownloadSources()) {
 					const CKnownFile::SourceSet& normSources = (dynamic_cast<CPartFile*>( file ))->GetSourceList();
 					const CKnownFile::SourceSet& a4afSources = (dynamic_cast<CPartFile*>( file ))->GetA4AFList();
-						
+
 					// Adding normal sources
 					for ( it = normSources.begin(); it != normSources.end(); ++it ) {
 						switch (it->GetDownloadState()) {
@@ -414,7 +414,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 								++itemDiff;
 						}
 					}
-			
+
 					// Adding A4AF sources
 					for ( it = a4afSources.begin(); it != a4afSources.end(); ++it ) {
 						// Only add if the A4AF file is not in the shown list.
@@ -438,18 +438,18 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 								RawAddSource( file, *it, UNAVAILABLE_SOURCE );
 								++itemDiff;
 						}
-					}			
+					}
 				}
 			}
 		}
 	}
 
-	m_knownfiles = files;	
-	
+	m_knownfiles = files;
+
 	ShowSourcesCount( itemDiff );
-		 
+
 	SortList();
-	
+
 	Thaw();
 }
 
@@ -464,12 +464,12 @@ ItemList GetSelectedItems( CGenericClientListCtrl* list )
 	ItemList results;
 
 	long index = list->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	while ( index > -1 ) {
 		ClientCtrlItem_Struct* item = (ClientCtrlItem_Struct*)list->GetItemData( index );
 
 		results.push_back( item );
-		
+
 		index = list->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
@@ -479,7 +479,7 @@ ItemList GetSelectedItems( CGenericClientListCtrl* list )
 void CGenericClientListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 {
 	ItemList sources = ::GetSelectedItems( this );
-	
+
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CKnownFile * kf = (*it)->GetOwner();
 		if (!kf->IsPartFile()) {
@@ -495,7 +495,7 @@ void CGenericClientListCtrl::OnViewFiles( wxCommandEvent& WXUNUSED(event) )
 {
 	ItemList sources = ::GetSelectedItems( this );
 
-	if ( sources.size() == 1 ) {		
+	if ( sources.size() == 1 ) {
 		sources.front()->GetSource().RequestSharedFileList();
 	}
 }
@@ -520,7 +520,7 @@ void CGenericClientListCtrl::OnSetFriendslot(wxCommandEvent& evt)
 {
 	ItemList sources = ::GetSelectedItems( this );
 
-	ItemList::iterator it = sources.begin(); 
+	ItemList::iterator it = sources.begin();
 	if (it != sources.end()) {
 		CClientRef &client = (*it)->GetSource();
 		theApp->friendlist->SetFriendSlot(client.GetFriend(), evt.IsChecked());
@@ -543,7 +543,7 @@ void CGenericClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 		// start an event-loop, in which the client may be deleted.
 		wxString userName = source.GetUserName();
 		uint64 userID = GUI_ID(source.GetIP(), source.GetUserPort());
-		
+
 		wxString message = ::wxGetTextFromUser(_("Send message to user"),
 			_("Message to send:"));
 		if ( !message.IsEmpty() ) {
@@ -574,14 +574,14 @@ void CGenericClientListCtrl::OnMouseRightClick(wxListEvent& evt)
 	long index = CheckSelection(evt);
 	if (index < 0) {
 		return;
-	}	
-	
+	}
+
 	delete m_menu;
 	m_menu = NULL;
-	
+
 	ClientCtrlItem_Struct* item = (ClientCtrlItem_Struct*)GetItemData( index );
 	CClientRef& client = item->GetSource();
-	
+
 	m_menu = new wxMenu(wxT("Clients"));
 	m_menu->Append(MP_DETAIL, _("Show &Details"));
 	m_menu->Append(MP_ADDFRIEND, client.IsFriend() ? _("Remove from friends") : _("Add to Friends"));
@@ -596,21 +596,21 @@ void CGenericClientListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 	m_menu->Append(MP_SHOWLIST, _("View Files"));
 	m_menu->Append(MP_SENDMESSAGE, _("Send message"));
-	
+
 	m_menu->Append(MP_CHANGE2FILE, _("Swap to this file"));
-	
+
 	// Only enable the Swap option for A4AF sources
 	m_menu->Enable(MP_CHANGE2FILE, (item->GetType() == A4AF_SOURCE));
 	// We need a valid IP if we are to message the client
 	m_menu->Enable(MP_SENDMESSAGE, (client.GetIP() != 0));
-	
+
 	m_menu->Enable(MP_SHOWLIST, !client.HasDisabledSharedFiles());
-	
+
 	PopupMenu(m_menu, evt.GetPoint());
-	
+
 	delete m_menu;
 	m_menu = NULL;
-	
+
 }
 
 
@@ -621,7 +621,7 @@ void CGenericClientListCtrl::OnMouseMiddleClick(wxListEvent& evt)
 	if ( index < 0 ) {
 		return;
 	}
-	
+
 	CClientDetailDialog(this, ((ClientCtrlItem_Struct*)GetItemData( index ))->GetSource()).ShowModal();
 }
 
@@ -684,9 +684,9 @@ void CGenericClientListCtrl::OnDrawItem(
 	}
 
 	wxRect cur_rec( iOffset, rect.y, 0, rect.height );
-	
+
 	for (int i = 0; i < GetColumnCount(); ++i) {
-		
+
 		int columnwidth = GetColumnWidth(i);
 
 		if (columnwidth > 2*iOffset) {
@@ -695,11 +695,11 @@ void CGenericClientListCtrl::OnDrawItem(
 			target_rec.width = columnwidth - 2*iOffset;
 
 			GenericColumnEnum cid = m_columndata.columns[i].cid;
-			
+
 			// Draw the item
 			DrawClientItem(dc, cid, target_rec, content, iTextOffset, imageListBitmapYOffset, imageListBitmapXSize);
 		}
-		
+
 		// Increment to the next column
 		cur_rec.x += columnwidth;
 	}
@@ -709,7 +709,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 {
 	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight() );
 	wxString buffer;
-	
+
 	const CClientRef& client = item->GetSource();
 
 	switch (nColumn) {
@@ -722,7 +722,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			uint8 image = Client_Grey_Smiley;
 
 			if (item->GetType() != A4AF_SOURCE) {
-				
+
 				switch (client.GetDownloadState()) {
 					case DS_CONNECTING:
 					case DS_CONNECTED:
@@ -757,10 +757,10 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 				// Next
 
-				point.x += iBitmapXSize; 
+				point.x += iBitmapXSize;
 
 				uint8 clientImage = Client_Unknown;
-				
+
 				if ( client.IsFriend() ) {
 					clientImage = Client_Friend_Smiley;
 				} else {
@@ -805,7 +805,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 				if (client.GetScoreRatio() > 1) {
 					// Has credits, draw the gold star
-					m_ImageList.Draw(Client_CreditsYellow_Smiley, *dc, point.x, realY, 
+					m_ImageList.Draw(Client_CreditsYellow_Smiley, *dc, point.x, realY,
 						wxIMAGELIST_DRAW_TRANSPARENT );
 				}	else if ( !client.ExtProtocolAvailable() ) {
 					// No Ext protocol -> Draw the '-'
@@ -816,22 +816,22 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				if (client.IsIdentified()) {
 					// the 'v'
 					m_ImageList.Draw(Client_SecIdent_Smiley, *dc, point.x, realY,
-						wxIMAGELIST_DRAW_TRANSPARENT);					
+						wxIMAGELIST_DRAW_TRANSPARENT);
 				} else if (client.IsBadGuy()) {
 					// the 'X'
 					m_ImageList.Draw(Client_BadGuy_Smiley, *dc, point.x, realY,
-						wxIMAGELIST_DRAW_TRANSPARENT);					
+						wxIMAGELIST_DRAW_TRANSPARENT);
 				}
-							
+
 				if (client.GetObfuscationStatus() == OBST_ENABLED) {
 					// the "¿" except it's a key
 					m_ImageList.Draw(Client_Encryption_Smiley, *dc, point.x, realY,
-						wxIMAGELIST_DRAW_TRANSPARENT);					
-				}				
-				
+						wxIMAGELIST_DRAW_TRANSPARENT);
+				}
+
 				// Next
 
-				point.x += iBitmapXSize; 
+				point.x += iBitmapXSize;
 
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
@@ -844,9 +844,9 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 					dc->DrawBitmap(countrydata.Flag,
 						point.x, realY,
 						true);
-				
+
 					userName << countrydata.Name;
-				
+
 					userName << wxT(" - ");
 
 					point.x += countrydata.Flag.GetWidth() + 2 /*Padding*/;
@@ -894,15 +894,15 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 				// don't draw Text beyond the bar
 				dc->SetClippingRegion(rect.GetX(), rect.GetY() + 1, iWidth, iHeight);
-			
+
 				if ( item->GetType() != A4AF_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
-					
+
 					wxMemoryDC cdcStatus;
 
-					if ( item->dwUpdated < dwTicks || !item->status || 
+					if ( item->dwUpdated < dwTicks || !item->status ||
 							iWidth != item->status->GetWidth() ) {
-						
+
 						if (item->status == NULL) {
 							item->status = new wxBitmap(iWidth, iHeight);
 						} else if ( item->status->GetWidth() != iWidth ) {
@@ -918,13 +918,13 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 						} else {
 							DrawSourceStatusBar( client, &cdcStatus,
 								wxRect(1, 1, iWidth - 2, iHeight - 2), false);
-				
+
 							// Draw black border
 							cdcStatus.SetPen( *wxBLACK_PEN );
 							cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
 							cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );
 						}
-						
+
 						// Plus ten seconds
 						item->dwUpdated = dwTicks + 10000;
 					} else {
@@ -941,21 +941,21 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 						a4af = wxT("?");
 					}
 					buffer = CFormat(wxT("%s: %s")) % _("A4AF") % a4af;
-					
+
 					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;
-					
+
 					wxCoord txtwidth, txtheight;
-					
+
 					dc->GetTextExtent(buffer, &txtwidth, &txtheight);
-					
+
 					dc->SetTextForeground(*wxBLACK);
 					dc->DrawText(buffer, wxMax(rect.GetX() + 2, midx - (txtwidth >> 1)), midy - (txtheight >> 1));
 
 					// Draw black border
 					dc->SetPen( *wxBLACK_PEN );
 					dc->SetBrush( *wxTRANSPARENT_BRUSH );
-					dc->DrawRectangle( rect.GetX(), rect.GetY() + 1, iWidth, iHeight );		
+					dc->DrawRectangle( rect.GetX(), rect.GetY() + 1, iWidth, iHeight );
 				}
 			}
 			break;
@@ -974,7 +974,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 		case ColumnUserQueueRankRemote: {
 			sint16 qrDiff = 0;
-			wxColour savedColour = dc->GetTextForeground();	
+			wxColour savedColour = dc->GetTextForeground();
 			// We only show the queue rank for sources actually queued for that file
 			if (	item->GetType() != A4AF_SOURCE && client.GetDownloadState() == DS_ONQUEUE ) {
 				if (client.IsRemoteQueueFull()) {
@@ -999,13 +999,13 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				}
 			} else {
 				if (item->GetType() != A4AF_SOURCE) {
-					buffer = DownloadStateToStr( client.GetDownloadState(), 
+					buffer = DownloadStateToStr( client.GetDownloadState(),
 						client.IsRemoteQueueFull() );
 				} else {
 					buffer = _("Asked for another file");
 					if (	client.GetRequestFile() &&
 						client.GetRequestFile()->GetFileName().IsOk()) {
-						buffer += CFormat(wxT(" (%s)")) 
+						buffer += CFormat(wxT(" (%s)"))
 							% client.GetRequestFile()->GetFileName();
 					}
 				}
@@ -1016,7 +1016,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			}
 			break;
 		}
-		case ColumnUserQueueRankLocal:	
+		case ColumnUserQueueRankLocal:
 			if (item->GetType() != A4AF_SOURCE) {
 				if (client.GetUploadState() == US_ONUPLOADQUEUE ) {
 					uint16 nRank = client.GetUploadQueueWaitingPosition();
@@ -1128,9 +1128,9 @@ int CGenericClientListCtrl::Compare(
 		// Sort by name
 		case ColumnUserName:
 			return CmpAny( client1.GetUserName(), client2.GetUserName() );
-	
+
 		// Sort by transferred in the following fields
-		case ColumnUserDownloaded:	
+		case ColumnUserDownloaded:
 			return CmpAny( client1.GetTransferredDown(), client2.GetTransferredDown() );
 
 		// Sort by transferred in the following fields
@@ -1140,7 +1140,7 @@ int CGenericClientListCtrl::Compare(
 		// Sort by speed
 		case ColumnUserSpeedDown:
 			return CmpAny( client1.GetKBpsDown(), client2.GetKBpsDown() );
-		
+
 		// Sort by speed
 		case ColumnUserSpeedUp:
 			return CmpAny( client1.GetUploadDatarate(), client2.GetUploadDatarate() );
@@ -1150,7 +1150,7 @@ int CGenericClientListCtrl::Compare(
 			return CmpAny(
 				client1.GetAvailablePartCount(),
 				client2.GetAvailablePartCount() );
-		
+
 		// Sort by client version
 		case ColumnUserVersion: {
 			int cmp = client1.GetSoftStr().Cmp(client2.GetSoftStr());
@@ -1163,7 +1163,7 @@ int CGenericClientListCtrl::Compare(
 			}
 			return cmp;
 		}
-		
+
 		// Sort by Queue-Rank
 		case ColumnUserQueueRankRemote: {
 			// This will sort by download state: Downloading, OnQueue, Connecting ...
@@ -1200,7 +1200,7 @@ int CGenericClientListCtrl::Compare(
 				}
 			}
 		}
-		
+
 		// Sort by Queue-Rank
 		case ColumnUserQueueRankLocal: {
 			// This will sort by download state: Downloading, OnQueue, Connecting ...
@@ -1243,7 +1243,7 @@ int CGenericClientListCtrl::Compare(
 		// Source of source ;)
 		case ColumnUserOrigin:
 			return CmpAny(client1.GetSourceFrom(), client2.GetSourceFrom());
-		
+
 		// Sort by local filename (download)
 		case ColumnUserFileNameDownload: {
 			wxString buffer1, buffer2;
@@ -1291,7 +1291,7 @@ void CGenericClientListCtrl::ShowSourcesCount( int diff )
 	m_clientcount += diff;
 	wxStaticText* label = CastByID( ID_CLIENTCOUNT, GetParent(), wxStaticText );
 
-	if (label) {	
+	if (label) {
 		label->SetLabel(CFormat(wxT("%i")) % m_clientcount);
 		label->GetParent()->Layout();
 	}
@@ -1323,7 +1323,7 @@ void CGenericClientListCtrl::DrawSourceStatusBar(
 
 	if (reqfile && reqfile->GetPartCount() == partStatus.size()) {
 		s_StatusBar.SetFileSize(reqfile->GetFileSize());
-		uint16 lastDownloadingPart = source.GetDownloadState() == DS_DOWNLOADING 
+		uint16 lastDownloadingPart = source.GetDownloadState() == DS_DOWNLOADING
 									? source.GetLastDownloadingPart() : 0xffff;
 		uint16 nextRequestedPart = source.GetNextRequestedPart();
 

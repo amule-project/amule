@@ -42,7 +42,7 @@ rm -rf intl/*
     autopoint --force
     if grep -q datarootdir po/Makefile.in.in; then
         echo autopoint honors dataroot variable, not patching.
-    else 
+    else
 	echo autopoint does not honor dataroot variable, patching.
         sed -e '/^datadir *=/a\
 datarootdir = @datarootdir@' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in

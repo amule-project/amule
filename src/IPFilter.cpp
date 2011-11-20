@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,11 +55,11 @@ END_DECLARE_EVENT_TYPES()
 
 DEFINE_EVENT_TYPE(MULE_EVT_IPFILTER_LOADED)
 
-	
+
 class CIPFilterEvent : public wxEvent
 {
 public:
-	CIPFilterEvent(CIPFilter::RangeIPs rangeIPs, CIPFilter::RangeLengths rangeLengths, CIPFilter::RangeNames rangeNames) 
+	CIPFilterEvent(CIPFilter::RangeIPs rangeIPs, CIPFilter::RangeLengths rangeLengths, CIPFilter::RangeNames rangeNames)
 		: wxEvent(-1, MULE_EVT_IPFILTER_LOADED)
 	{
 		// Physically copy the vectors, this will hopefully resize them back to their needed capacity.
@@ -68,12 +68,12 @@ public:
 		// This one is usually empty, and should always be swapped, not copied.
 		std::swap(m_rangeNames, rangeNames);
 	}
-	
+
 	/** @see wxEvent::Clone */
 	virtual wxEvent* Clone() const {
 		return new CIPFilterEvent(*this);
 	}
-	
+
 	CIPFilter::RangeIPs m_rangeIPs;
 	CIPFilter::RangeLengths m_rangeLengths;
 	CIPFilter::RangeNames m_rangeNames;
@@ -209,20 +209,20 @@ private:
 			return AccessLevel == other.AccessLevel;
 		}
 
-// Since descriptions are only used for debugging messages, there 
+// Since descriptions are only used for debugging messages, there
 // is no need to keep them in memory when running a non-debug build.
 #ifdef __DEBUG__
 		//! Contains the user-description of the range.
 		std::string	Description;
 #endif
-		
+
 		//! The AccessLevel for this filter.
 		uint8		AccessLevel;
 	};
 
 	//! The is the type of map used to store the IPs.
 	typedef CRangeMap<rangeObject, uint32> IPMap;
-	
+
 	bool m_storeDescriptions;
 
 	// the generated filter
@@ -242,11 +242,11 @@ private:
 	 * @param AccessLevel The AccessLevel of this range.
 	 * @param Description The assosiated description of this range.
 	 * @return true if the range was added, false if it was discarded.
-	 * 
+	 *
 	 * This function inserts the specified range into the IPMap. Invalid
 	 * ranges where the AccessLevel is not within the range 0..255, or
 	 * where IPEnd < IPstart not inserted.
-	 */	
+	 */
 	bool AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const char* DEBUG_ONLY(Description))
 	{
 		if (AccessLevel < 256) {
@@ -292,14 +292,14 @@ private:
 			wxT("guarding.p2p"),
 			NULL
 		};
-		
+
 		// Try to unpack the file, might be an archive
 
 		if (UnpackArchive(path, ipfilter_files).second != EFT_Text) {
 			AddLogLineC(CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
 			return 0;
 		}
-		
+
 		int filtercount = 0;
 		yyip_Bad = 0;
 		wxFFile readFile;
@@ -348,7 +348,7 @@ END_EVENT_TABLE()
 
 
 /**
- * This function creates a text-file containing the specified text, 
+ * This function creates a text-file containing the specified text,
  * but only if the file does not already exist.
  */
 static bool CreateDummyFile(const wxString& filename, const wxString& text)
@@ -382,7 +382,7 @@ CIPFilter::CIPFilter() :
 		// redownload if user deleted file
 		thePrefs::SetLastHTTPDownloadURL(HTTP_IPFilter, wxEmptyString);
 	}
-	
+
 	const wxString staticDat = theApp->ConfigDir + wxT("ipfilter_static.dat");
 	const wxString staticMsg = wxString()
 		<< wxT("# This file is used to store ipfilter-ranges that should\n")
@@ -460,7 +460,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 	}
 	if (found) {
 		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s%s")) % Uint32toStringIP(IPTest)
-			% (i < (int)m_rangeNames.size() ? (wxT(" (") + wxString(char2unicode(m_rangeNames[i].c_str())) + wxT(")")) 
+			% (i < (int)m_rangeNames.size() ? (wxT(" (") + wxString(char2unicode(m_rangeNames[i].c_str())) + wxT(")"))
 											: wxString(wxEmptyString)));
 		if (isServer) {
 			theStats::AddFilteredServer();
@@ -531,7 +531,7 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 		return;
 	}
 	AddLogLineN(_("IP filter is ready"));
-	
+
 	if (thePrefs::IsFilteringClients()) {
 		theApp->clientlist->FilterQueues();
 	}

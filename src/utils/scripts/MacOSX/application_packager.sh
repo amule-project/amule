@@ -36,7 +36,7 @@ rm -r aMule.app/Contents/Resources/webserver 1> /dev/null 2> /dev/null
 rm -r aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
 echo "Done"
 echo ""
-echo -n "Step 2: Copying aMule to app bundle... " 
+echo -n "Step 2: Copying aMule to app bundle... "
 cp ${SRC_FOLDER}/src/amule aMule.app/Contents/MacOS/
 cp ${SRC_FOLDER}/src/webserver/src/amuleweb aMule.app/Contents/MacOS/
 cp ${SRC_FOLDER}/src/ed2k aMule.app/Contents/MacOS/
@@ -60,8 +60,8 @@ for i in $( otool -L	aMule.app/Contents/MacOS/amule \
 						aMule.app/Contents/MacOS/amuleweb \
 						aMule.app/Contents/MacOS/ed2k \
 						aMule.app/Contents/MacOS/amulecmd \
-			| sort -u | grep libwx_ | cut -d " " -f 1 ); do 
-	cp $i aMule.app/Contents/Frameworks; 
+			| sort -u | grep libwx_ | cut -d " " -f 1 ); do
+	cp $i aMule.app/Contents/Frameworks;
 done
 echo "Libs copy done."
 echo ""

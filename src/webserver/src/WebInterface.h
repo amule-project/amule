@@ -1,6 +1,6 @@
 //
 // This file is part of the aMule Project.
-//  
+//
 // Copyright (c) 2004-2011 shakraw ( shakraw@users.sourceforge.net )
 // Copyright (c) 2004-2011 Angel Vidal ( kry@amule.org )
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -89,10 +89,10 @@ public:
 	virtual wxString SetLocale(const wxString& language);
 
 	DECLARE_EVENT_TABLE();
-	
+
 private:
 	virtual bool	OnInit();
-	virtual int 	OnRun();
+	virtual int	OnRun();
 
 	bool	m_localTemplate;
 };

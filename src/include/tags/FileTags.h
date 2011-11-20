@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -50,7 +50,7 @@
 #define	FT_DL_ACTIVE_TIME		0x23	// <uint32>
 #define	FT_CORRUPTEDPARTS		0x24	// <string>
 #define	FT_DL_PREVIEW			0x25
-#define	FT_KADLASTPUBLISHNOTES		0x26	// <uint32> 
+#define	FT_KADLASTPUBLISHNOTES		0x26	// <uint32>
 #define	FT_AICH_HASH			0x27
 #define	FT_COMPLETE_SOURCES		0x30	// nr. of sources which share a
 						// complete version of the
@@ -119,11 +119,11 @@
 #define	TAG_SOURCETYPE			wxT("\xFF")	// <uint8>
 
 // Media values for FT_FILETYPE
-#define	ED2KFTSTR_AUDIO			wxT("Audio")	
-#define	ED2KFTSTR_VIDEO			wxT("Video")	
-#define	ED2KFTSTR_IMAGE			wxT("Image")	
-#define	ED2KFTSTR_DOCUMENT		wxT("Doc")	
-#define	ED2KFTSTR_PROGRAM		wxT("Pro")	
+#define	ED2KFTSTR_AUDIO			wxT("Audio")
+#define	ED2KFTSTR_VIDEO			wxT("Video")
+#define	ED2KFTSTR_IMAGE			wxT("Image")
+#define	ED2KFTSTR_DOCUMENT		wxT("Doc")
+#define	ED2KFTSTR_PROGRAM		wxT("Pro")
 #define	ED2KFTSTR_ARCHIVE		wxT("Arc")	// *Mule internal use only
 #define	ED2KFTSTR_CDIMAGE		wxT("Iso")	// *Mule internal use only
 

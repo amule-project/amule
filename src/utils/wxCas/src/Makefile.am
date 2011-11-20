@@ -11,7 +11,7 @@ wxcas_SOURCES = onlinesig.cpp \
 		wxcasframe.cpp \
 		wxcasprefs.cpp \
 		wxcascte.cpp \
-		wxcaspix.cpp	
+		wxcaspix.cpp
 
 noinst_HEADERS = onlinesig.h \
 		linuxmon.h \

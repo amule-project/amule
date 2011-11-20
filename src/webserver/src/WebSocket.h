@@ -1,6 +1,6 @@
 //
 // This file is part of the aMule Project.
-//  
+//
 // Copyright (c) 2004-2011 shakraw ( shakraw@users.sourceforge.net )
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -41,7 +41,7 @@ class CWebServer;
 class CWebSocket : public wxSocketClient {
 	public:
 		CWebSocket(CWebServerBase *parent);
-		
+
         void OnError();
         void OnLost();
 
@@ -53,22 +53,22 @@ class CWebSocket : public wxSocketClient {
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
 		void SendHttpHeaders(const char * szType, bool use_gzip, uint32 content_len, int session_id);
-		
+
 		CWebServerBase *m_pParent;
-	
+
 		class CChunk {
 			public:
 				char* m_pData;
 				char* m_pToSend;
 				uint32 m_dwSize;
-			
+
 				CChunk* m_pNext;
 				~CChunk() { if (m_pData) delete[] m_pData; }
 		};
 
 		CChunk *m_pHead; // tails of what has to be sent
 		CChunk *m_pTail;
-		
+
 		bool m_IsGet, m_IsPost;
 		char *m_Cookie;
 		char *m_pBuf;

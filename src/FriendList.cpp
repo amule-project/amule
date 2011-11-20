@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -37,7 +37,7 @@
 #include "GuiEvents.h"
 
 CFriendList::CFriendList()
-{ 
+{
 }
 
 CFriendList::~CFriendList()
@@ -72,10 +72,10 @@ void CFriendList::AddFriend(const CClientRef& toadd)
 	if ( toadd.IsFriend() ) {
 		return;
 	}
-	
+
 	CFriend* NewFriend = new CFriend( toadd );
 	toadd.SetFriend(NewFriend);
-	
+
 	AddFriend(NewFriend, false);	// has already notified
 }
 
@@ -91,21 +91,21 @@ void CFriendList::RemoveFriend(CFriend* toremove)
 		}
 
 		m_FriendList.remove(toremove);
-	
+
 		SaveList();
-	
+
 		Notify_ChatRemoveFriend(toremove);	// this deletes the friend
 	}
 }
 
 void CFriendList::LoadList()
 {
-  	CPath metfile = CPath(theApp->ConfigDir + wxT("emfriends.met"));
-	
+	CPath metfile = CPath(theApp->ConfigDir + wxT("emfriends.met"));
+
 	if (!metfile.FileExists()) {
 		return;
 	}
-	
+
 	CFile file;
 	try {
 		if ( file.Open(metfile) ) {
@@ -116,7 +116,7 @@ void CFriendList::LoadList()
 					Record->LoadFromFile(&file);
 					m_FriendList.push_back(Record);
 					Notify_ChatUpdateFriend(Record);
-				}				
+				}
 			}
 		} else {
 			AddLogLineN(_("Failed to open friend list file 'emfriends.met' for reading!"));
@@ -126,7 +126,7 @@ void CFriendList::LoadList()
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineC(logGeneral, wxT("IO error while reading 'emfriends.met': ") + e.what());
 	}
-	
+
 }
 
 
@@ -137,7 +137,7 @@ void CFriendList::SaveList()
 		try {
 			file.WriteUInt8(MET_HEADER);
 			file.WriteUInt32(m_FriendList.size());
-		
+
 			for (FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
 				(*it)->WriteToFile(&file);
 			}
@@ -150,11 +150,11 @@ void CFriendList::SaveList()
 }
 
 
-CFriend* CFriendList::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort) 
+CFriend* CFriendList::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort)
 {
-	
+
 	for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
-		
+
 		CFriend* cur_friend = *it;
 		// to avoid that unwanted clients become a friend, we have to distinguish between friends with
 		// a userhash and of friends which are identified by IP+port only.
@@ -178,7 +178,7 @@ CFriend* CFriendList::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 n
 }
 
 
-CFriend* CFriendList::FindFriend(uint32 ecid) 
+CFriend* CFriendList::FindFriend(uint32 ecid)
 {
 	for (FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
 		CFriend* cur_friend = *it;
@@ -199,7 +199,7 @@ bool CFriendList::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort )
 
 void CFriendList::RemoveAllFriendSlots()
 {
-	for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {		
+	for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
 		CFriend* cur_friend = *it;
 		if (cur_friend->GetLinkedClient().IsLinked()) {
 				cur_friend->GetLinkedClient().SetFriendSlot(false);
@@ -247,7 +247,7 @@ void CFriendList::StartChatSession(CFriend* Friend)
 	} else {
 		AddLogLineC(_("CRITICAL - no client on StartChatSession"));
 	}
-	
+
 }
 
 // File_checked_for_headers

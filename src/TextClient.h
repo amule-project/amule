@@ -1,6 +1,6 @@
 //
 // This file is part of the aMule Project.
-// 
+//
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003-2011 Angel Vidal ( kry@amule.org )
 //
@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,9 +42,9 @@ class SearchFile {
 		wxString  sHash;
 		long lSourceCount;
 		bool bPresent;
-		
+
 		SearchFile(CEC_SearchFile_Tag *);
-		
+
 		void ProcessUpdate(CEC_SearchFile_Tag *);
 		static class SearchInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }

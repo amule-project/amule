@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -44,7 +44,7 @@ public:
 	uint8 abyState[256];
 	uint8 byX;
 	uint8 byY;
-	
+
 public:
 	RC4_Key_Struct() {}
 	~RC4_Key_Struct() {}
@@ -66,18 +66,18 @@ public:
 	// Sets the encryption key
 	void SetKey(const MD5Sum& keyhash, bool bSkipDiscard = false);
 
-	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call 
+	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call
 	// to add data, as Append(), must assert if the inner data is encrypted.
 	// Make sure to check SetKey has been called!
 	void Encrypt();
 
 	// RC4 encrypts an external buffer with the current key.
 	void RC4Crypt(const uint8 *pachIn, uint8 *pachOut, uint32 nLen);
-	
+
 	// Returns a uint8* buffer with a copy of the internal data, and clears the internal one.
 	uint8* Detach();
 
-	// Also clears the encryption flag	
+	// Also clears the encryption flag
 	void ResetData();
 
 	// Resets everything, as if the object has just been created.
@@ -87,7 +87,7 @@ private:
 	bool m_encrypted;
 	bool m_hasKey;
 	RC4_Key_Struct m_key;
-	
+
 	void RC4CreateKey(const uint8* pachKeyData, uint32 nLen, bool bSkipDiscard);
 };
 

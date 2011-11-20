@@ -1,4 +1,4 @@
-# Some helper functions for scripts. 
+# Some helper functions for scripts.
 # (c) 2011 Angel Vidal ( kry@amule.org ))
 # Public domain. Use at your own risk.
 

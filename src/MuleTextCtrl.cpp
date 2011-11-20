@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -31,17 +31,17 @@
 /**
  * These are the IDs used to identify the different menu-items.
  *
- * Please note that I make use of predefined wxIDs for the first two, but not 
- * for Paste. This is because wxMenu poses some restrictions on what can be 
- * done with items using those IDs, and by default, Paste is enabled even if 
+ * Please note that I make use of predefined wxIDs for the first two, but not
+ * for Paste. This is because wxMenu poses some restrictions on what can be
+ * done with items using those IDs, and by default, Paste is enabled even if
  * there's nothing to paste!
- */ 
+ */
 enum CMTC_Events
 {
 	//! Cut text, uses provided ID
 	CMTCE_Cut	= wxID_CUT,
 	//! Copy text, uses privided ID
-	CMTCE_Copy 	= wxID_COPY,
+	CMTCE_Copy	= wxID_COPY,
 	//! Paste text, uses custom ID
 	CMTCE_Paste = wxID_HIGHEST + 666,	// Random satanic ID
 	//! Clear text, uses custom ID
@@ -55,9 +55,9 @@ BEGIN_EVENT_TABLE(CMuleTextCtrl, wxTextCtrl)
 #ifndef __WXGTK__
 	EVT_RIGHT_DOWN	(CMuleTextCtrl::OnRightDown)
 
-	EVT_MENU    	(CMTCE_Paste,	CMuleTextCtrl::OnPaste)
-	EVT_MENU    	(CMTCE_Clear,	CMuleTextCtrl::OnClear)
-	EVT_MENU    	(CMTCE_SelAll,	CMuleTextCtrl::OnSelAll)
+	EVT_MENU	(CMTCE_Paste,	CMuleTextCtrl::OnPaste)
+	EVT_MENU	(CMTCE_Clear,	CMuleTextCtrl::OnClear)
+	EVT_MENU	(CMTCE_SelAll,	CMuleTextCtrl::OnSelAll)
 #endif
 END_EVENT_TABLE()
 
@@ -75,14 +75,14 @@ void CMuleTextCtrl::OnRightDown( wxMouseEvent& evt )
 		SetFocus();
 
 	wxMenu popup_menu;
-	
+
 	popup_menu.Append( CMTCE_Cut, _("Cut") );
 	popup_menu.Append( CMTCE_Copy, _("Copy") );
 	popup_menu.Append( CMTCE_Paste, _("Paste") );
 	popup_menu.Append( CMTCE_Clear, _("Clear") );
-	
+
 	popup_menu.AppendSeparator();
-	
+
 	popup_menu.Append( CMTCE_SelAll, _("Select All") );
 
 
@@ -95,7 +95,7 @@ void CMuleTextCtrl::OnRightDown( wxMouseEvent& evt )
 		if ( wxTheClipboard->Open() ) {
 			if ( wxTheClipboard->IsSupported( wxDF_TEXT ) ) {
 				wxTextDataObject data;
-	 			wxTheClipboard->GetData( data );
+				wxTheClipboard->GetData( data );
 
 				canpaste = (data.GetTextLength() > 0);
 			}

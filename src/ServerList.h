@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,7 +42,7 @@ public:
 	bool		AddServer(CServer* in_server, bool fromUser = false);
 	void		RemoveServer(CServer* in_server);
 	void		RemoveAllServers();
-	void		RemoveDeadServers();	
+	void		RemoveDeadServers();
 	bool		LoadServerMet(const CPath& path);
 	bool		SaveServerMet();
 	void		ServerStats();
@@ -58,13 +58,13 @@ public:
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
 	bool		IsInitialized() const { return m_initialized; }
 	void		Sort();
-	void 		UpdateServerMetFromURL(const wxString& strURL);	
-	void		DownloadFinished(uint32 result);	
-	void		AutoDownloadFinished(uint32 result);	
+	void		UpdateServerMetFromURL(const wxString& strURL);
+	void		DownloadFinished(uint32 result);
+	void		AutoDownloadFinished(uint32 result);
 	uint32		GetAvgFile() const;
 
 	std::vector<const CServer*> CopySnapshot() const;
-	
+
 	/** Refilters all servers though the IPFilter. */
 	void FilterServers();
 
@@ -81,12 +81,12 @@ public:
 	 */
 	void		SetStaticServer(CServer* server, bool isStatic);
 	void		SetServerPrio(CServer* server, uint32 prio);
-	
+
 private:
-	virtual void 	ObserverAdded( ObserverType* );
+	virtual void	ObserverAdded( ObserverType* );
 	void		AutoUpdate();
 	CServer*	GetNextStatServer();
-	
+
 	wxString	m_staticServersConfig;
 	void		LoadStaticServers();
 	void		SaveStaticServers();

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,8 +47,8 @@ public:
 	{
 		Add(pszString);
 	}
-	
-	void Add(ESearchOperators eOperator) 
+
+	void Add(ESearchOperators eOperator)
 	{
 		if (eOperator == SEARCHOP_AND) {
 			m_aExpr.Add(SEARCHOPTOK_AND);
@@ -60,7 +60,7 @@ public:
 			m_aExpr.Add(SEARCHOPTOK_NOT);
 		}
 	}
-	
+
 	void Add(const wxString& pszString)
 	{
 		m_aExpr.Add(pszString);
@@ -73,14 +73,14 @@ public:
 			m_aExpr.Add(pexpr->m_aExpr[i]);
 		}
 	}
-	
+
 	void Concatenate(const wxString& pstrString)
 	{
 		wxASSERT( m_aExpr.GetCount() == 1 );
 		m_aExpr[0] += ' ';
 		m_aExpr[0] += pstrString;
 	}
-	
+
 	wxArrayString m_aExpr;
 };
 

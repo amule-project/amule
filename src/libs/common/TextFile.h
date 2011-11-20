@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -36,7 +36,7 @@ class CPath;
 enum EReadTextFile
 {
 	/** Do not filter anything */
-	txtReadAll = 0,	
+	txtReadAll = 0,
 	/** Do not return empty lines. Can be combined with txtStripWhiteSpace */
 	txtIgnoreEmptyLines = 1,
 	/** Do not return lines starting with a '#' */
@@ -55,7 +55,7 @@ enum EReadTextFile
  * This class is a wrapper around wxFFile, letting an text file be read
  * or written line-by-line. The class provides transparent and automatic
  * EOL-style handling.
- * 
+ *
  * Note that it is not possible to seek in a CTextFile, only sequential
  * reading or writing is possible. Also note that the maximum length of a
  * line is fixed (see CTextFile::GetNextLine), however this shouldn't be
@@ -103,7 +103,7 @@ public:
 	 **/
 	wxString	GetNextLine(EReadTextFile flags = txtReadAll, const wxMBConv& conv = wxConvLibc, bool* result = NULL);
 
-	/** 
+	/**
 	 * Writes the line to a writable file, returning true on success.
 	 *
 	 * @param conv The converter used to convert from widechar to multibyte.

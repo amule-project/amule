@@ -40,7 +40,7 @@ amuleweb-stage2
 amule-wxcas-dbg
 amule-wxcas-stage1
 amule-wxcas-stage2
-build-stamp 
+build-stamp
 cas
 cas-dbg
 daemon

@@ -25,7 +25,7 @@ Description: utilities for amule
  amule-utils is a meta-package for a set of tools to control amule.
  .
  alcc lets you created ed2k-links and hashes from the commandline
- cas is a remplacement software for astats. It produces statistic from amule. 
+ cas is a remplacement software for astats. It produces statistic from amule.
  amulecmd is a software which helps you to control amule trough a terminal.
 
 Package: amule-utils-gui
@@ -159,7 +159,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Asturian (ast) internationalized (i18n) files for amule
  This package contains the Asturian internationalized files for amule.
 
@@ -177,7 +177,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Catalan (ca) internationalized (i18n) files for amule
  This package contains the Catalan internationalized files for amule.
 
@@ -186,7 +186,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Czech (cs) internationalized (i18n) files for amule
  This package contains the Czech internationalized files for amule.
 
@@ -213,7 +213,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Greek (el) internationalized (i18n) files for amule
  This package contains the Greek internationalized files for amule.
 
@@ -285,7 +285,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Hebrew (he) internationalized (i18n) files for amule
  This package contains the Hebrew internationalized files for amule.
 
@@ -330,7 +330,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Japanese (ja) internationalized (i18n) files for amule
  This package contains the Japanese internationalized files for amule.
 
@@ -420,7 +420,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Albanian (sq) internationalized (i18n) files for amule
  This package contains the Albanian internationalized files for amule.
 
@@ -447,7 +447,7 @@ Section: localization
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}) 
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Ukrainian (uk) internationalized (i18n) files for amule
  This package contains the Catalan internationalized files for amule.
 
@@ -587,7 +587,7 @@ Provides: amule-skin
 Conflicts: amule (<< ${binary:Version})
 Description: Mac Gray Skin files for amule
  This package contains the Mac Gray Skin files for amule.
- 
+
 Package: amule-skin-priscilla
 Architecture: any
 Depends: amule (= ${binary:Version}), ${misc:Depends}

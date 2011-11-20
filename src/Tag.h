@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -50,9 +50,9 @@ public:
 	uint8 GetType() const		{ return m_uType; }
 	uint8 GetNameID() const		{ return m_uName; }
 	const wxString& GetName() const	{ return m_Name; }
-	
+
 	bool IsStr() const		{ return m_uType == TAGTYPE_STRING; }
-	bool IsInt() const		{ return 
+	bool IsInt() const		{ return
 		(m_uType == TAGTYPE_UINT64) ||
 		(m_uType == TAGTYPE_UINT32) ||
 		(m_uType == TAGTYPE_UINT16) ||
@@ -61,29 +61,29 @@ public:
 	bool IsHash() const		{ return m_uType == TAGTYPE_HASH16; }
 	bool IsBlob() const		{ return m_uType == TAGTYPE_BLOB; }
 	bool IsBsob() const		{ return m_uType == TAGTYPE_BSOB; }
-	
+
 	uint64 GetInt() const;
-	
+
 	const wxString& GetStr() const;
-	
+
 	float GetFloat() const;
-	
+
 	const CMD4Hash& GetHash() const;
-	
+
 	const byte* GetBlob() const;
 	uint32 GetBlobSize() const;
-	
+
 	const byte* GetBsob() const;
 	uint32 GetBsobSize() const;
-	
+
 	CTag* CloneTag()		{ return new CTag(*this); }
-	
+
 	bool WriteTagToFile(CFileDataIO* file,
 		EUtf8Str eStrEncode = utf8strNone,
 		bool restrictive = true) const;			// old eD2K tags
 	bool WriteNewEd2kTag(CFileDataIO* file,
 		EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
-	
+
 	wxString GetFullInfo() const;
 
 protected:
@@ -100,11 +100,11 @@ protected:
 	};
 
 	uint32		m_nSize;
-	
+
 private:
 	uint8		m_uName;
 	wxString	m_Name;
-	
+
 };
 
 typedef std::list<CTag*> TagPtrList;
@@ -119,9 +119,9 @@ public:
 
 	CTagIntSized(uint8 name, uint64 value, uint8 bitsize)
 		: CTag(name) {
-			Init(value, bitsize);			
+			Init(value, bitsize);
 		}
-		
+
 protected:
 	CTagIntSized(const wxString& name) : CTag(name) {}
 	CTagIntSized(uint8 name) : CTag(name) {}
@@ -129,22 +129,22 @@ protected:
 	void Init(uint64 value, uint8 bitsize) {
 			switch (bitsize) {
 				case 64:
-					wxASSERT(value <= ULONGLONG(0xFFFFFFFFFFFFFFFF)); 
+					wxASSERT(value <= ULONGLONG(0xFFFFFFFFFFFFFFFF));
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT64;
 					break;
 				case 32:
-					wxASSERT(value <= 0xFFFFFFFF); 
+					wxASSERT(value <= 0xFFFFFFFF);
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT32;
 					break;
 				case 16:
-					wxASSERT(value <= 0xFFFF); 
+					wxASSERT(value <= 0xFFFF);
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT16;
 					break;
 				case 8:
-					wxASSERT(value <= 0xFF); 
+					wxASSERT(value <= 0xFF);
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT8;
 					break;
@@ -170,7 +170,7 @@ private:
 		if (forced_bits) {
 			// The bitsize was forced.
 			Init(value,forced_bits);
-		} else { 
+		} else {
 			m_uVal = value;
 			if (value <= 0xFF) {
 				m_uType = TAGTYPE_UINT8;
@@ -181,7 +181,7 @@ private:
 			} else {
 				m_uType = TAGTYPE_UINT64;
 			}
-		}		
+		}
 	}
 };
 

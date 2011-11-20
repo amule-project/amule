@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -49,7 +49,7 @@ bool CTextFile::Open(const CPath& path, EOpenMode mode)
 	Close();
 
 	m_mode = mode;
-	
+
 	if (mode == read) {
 		if (path.FileExists()) {
 			m_file.Open(path.GetRaw(), wxT("r"));
@@ -78,7 +78,7 @@ bool CTextFile::IsOpened() const
 bool CTextFile::Eof() const
 {
 	// This is needed because feof will crash if the
-	// underlying FILE pointer is NULL, as is the 
+	// underlying FILE pointer is NULL, as is the
 	// case when the file is closed.
 	return m_file.IsOpened() ? m_file.Eof() : true;
 }
@@ -104,7 +104,7 @@ wxString CTextFile::GetNextLine(EReadTextFile flags, const wxMBConv& conv, bool*
 	// Loop until EOF (fgets will then return NULL) or a newline is read.
 	while (fgets(buffer, TXTBUF_SIZE, m_file.fp())) {
 		// Filters must be first applied here to avoid unnecessary CPU usage.
-		
+
 		if (line.IsEmpty()) {
 			if (buffer[0] == '\0') {
 				// Empty line.
@@ -137,7 +137,7 @@ wxString CTextFile::GetNextLine(EReadTextFile flags, const wxMBConv& conv, bool*
 						line.RemoveLast(2);
 					} else {
 						// Only a newline.
-						line.RemoveLast(1);					
+						line.RemoveLast(1);
 					}
 				} else {
 					// Empty line
@@ -162,11 +162,11 @@ wxString CTextFile::GetNextLine(EReadTextFile flags, const wxMBConv& conv, bool*
 			is_filtered = true;
 		}
 	}
-	
+
 	if (result) {
 		*result = !is_filtered;
 	}
-	
+
 	return line;
 }
 
@@ -178,7 +178,7 @@ bool CTextFile::WriteLine(const wxString& line, const wxMBConv& conv)
 
 	// Ensures that use of newlines/carriage-returns matches the OS
 	wxString result = wxTextBuffer::Translate(line);
-	
+
 	// Only add line-breaks between lines, as otherwise the number of
 	// lines would grow as the result of the addition of an empty line,
 	// at the end of the file.
@@ -192,7 +192,7 @@ bool CTextFile::WriteLine(const wxString& line, const wxMBConv& conv)
 
 		return (m_file.Write(strBuffer, length) == length);
 	}
-	
+
 	return false;
 }
 
@@ -203,7 +203,7 @@ wxArrayString CTextFile::ReadLines(EReadTextFile flags, const wxMBConv& conv)
 
 	while (!Eof()) {
 		bool result = true;
-		
+
 		wxString line = GetNextLine(flags, conv, &result);
 
 		if (result) {

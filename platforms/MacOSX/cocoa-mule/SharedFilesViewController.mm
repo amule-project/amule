@@ -39,7 +39,7 @@
 - (void)awakeFromNib {
 	[m_table_view setDelegate:self];
 	[m_table_view setDataSource:self];
-	
+
 	//
 	// load column status
 	//

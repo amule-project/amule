@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -88,13 +88,13 @@ const int categoryCount = sizeof( g_debugcats ) / sizeof( g_debugcats[0] );
 bool CLogger::IsEnabled( DebugType type ) const
 {
 	int index = (int)type;
-	
+
 	if ( index >= 0 && index < categoryCount ) {
 		const CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT( type == cat.GetType() );
 
 		return ( cat.IsEnabled() && thePrefs::GetVerbose() );
-	} 
+	}
 
 	wxFAIL;
 	return false;
@@ -102,10 +102,10 @@ bool CLogger::IsEnabled( DebugType type ) const
 #endif
 
 
-void CLogger::SetEnabled( DebugType type, bool enabled ) 
+void CLogger::SetEnabled( DebugType type, bool enabled )
 {
 	int index = (int)type;
-	
+
 	if ( index >= 0 && index < categoryCount ) {
 		CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT( type == cat.GetType() );
@@ -133,7 +133,7 @@ void CLogger::AddLogLine(
 			return;
 		}
 		int index = (int)type;
-		
+
 		if ( index >= 0 && index < categoryCount ) {
 			const CDebugCategory& cat = g_debugcats[ index ];
 			wxASSERT(type == cat.GetType());
@@ -155,7 +155,7 @@ void CLogger::AddLogLine(
 	// Try to handle events immediatly when possible (to save to file).
 	if (wxThread::IsMain()) {
 		// main thread and log file available: process directly
-		ProcessEvent(Event);			
+		ProcessEvent(Event);
 	} else {
 		// otherwise put to background
 		AddPendingEvent(Event);
@@ -171,12 +171,12 @@ void CLogger::AddLogLine(
 	const std::ostringstream &msg)
 {
 	int index = (int)type;
-	
+
 	if ( index >= 0 && index < categoryCount ) {
 		const CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT(type == cat.GetType());
 
-		AddLogLine(file, line, critical, logStandard, 
+		AddLogLine(file, line, critical, logStandard,
 			cat.GetName() + wxT(": ") + wxString(char2unicode(msg.str().c_str())));
 	}
 }
@@ -206,7 +206,7 @@ bool CLogger::OpenLogfile(const wxString & name)
 	} else {
 		CloseLogfile();
 	}
-	return ret; 
+	return ret;
 }
 
 
@@ -226,9 +226,9 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 	// Create the timestamp
 	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime()
 #ifdef CLIENT_GUI
- 					+ wxT(" (remote-GUI): ");
+					+ wxT(" (remote-GUI): ");
 #else
- 					+ wxT(": ");
+					+ wxT(": ");
 #endif
 
 	// critical lines get a ! prepended, ordinary lines a blank
@@ -240,7 +240,7 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 		DoLine(wxT(" \n"), evt.ToStdout(), evt.ToGUI());
 	} else {
 		// Split multi-line messages into individual lines
-		wxStringTokenizer tokens( bufferline, wxT("\n") );		
+		wxStringTokenizer tokens( bufferline, wxT("\n") );
 		while ( tokens.HasMoreTokens() ) {
 			wxString fullline = prefix + stamp + tokens.GetNextToken() + wxT("\n");
 			DoLine(fullline, evt.ToStdout(), evt.ToGUI());
@@ -321,9 +321,9 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	recursion = true;
 
 	wxCHECK_RET(msg, wxT("Log message is NULL in DoLogString!"));
-	
+
 	wxString str(msg);
-	
+
 	// This is much simpler than manually handling all wx log-types.
 	if (str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "))) {
 		AddLogLineC(str);

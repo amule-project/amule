@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -49,10 +49,10 @@ class CSearchDlg;
 class CChatWnd;
 class CStatisticsDlg;
 class CKadDlg;
-class PrefsUnifiedDlg;	
+class PrefsUnifiedDlg;
 
 
-class CMuleTrayIcon;		
+class CMuleTrayIcon;
 
 struct PageType {
 	wxWindow* page;
@@ -67,7 +67,7 @@ struct PageType {
 
 #define DEFAULT_SIZE_X  800
 #define DEFAULT_SIZE_Y  600
-		
+
 
 enum ClientSkinEnum {
 	Client_Green_Smiley = 0,
@@ -103,7 +103,7 @@ enum ClientSkinEnum {
 
 
 // CamuleDlg Dialogfeld
-class CamuleDlg : public wxFrame 
+class CamuleDlg : public wxFrame
 {
 public:
 	CamuleDlg(
@@ -116,14 +116,14 @@ public:
 	void AddLogLine(const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(int id);
-	
+
 	void ShowUserCount(const wxString& info = wxEmptyString);
 	void ShowConnectionState(bool skinChanged = false);
 	void ShowTransferRate();
-	
+
 	bool StatisticsWindowActive()
 		{ return (m_activewnd == (wxWindow*)m_statisticswnd); }
-	
+
 	/* Returns the active dialog. Needed to check what to redraw. */
 	enum DialogType {
 		DT_TRANSFER_WND,
@@ -145,7 +145,7 @@ public:
 	 */
 	bool IsDialogVisible( DialogType dlg )
 	{
-		return m_nActiveDialog == dlg && m_is_safe_state /* && !IsIconized() */; 
+		return m_nActiveDialog == dlg && m_is_safe_state /* && !IsIconized() */;
 	}
 
 	void ShowED2KLinksHandler( bool show );
@@ -159,7 +159,7 @@ public:
 	bool SafeState()	{ return m_is_safe_state; }
 
 	void LaunchUrl(const wxString &url);
-	
+
 	//! These are the currently known web-search providers
 	enum WebSearch {
 		WS_FILEHASH
@@ -168,7 +168,7 @@ public:
 	wxString GenWebSearchUrl( const wxString &filename, WebSearch provider );
 
 	void CreateSystray();
-	void RemoveSystray();	
+	void RemoveSystray();
 
 	void StartGuiTimer()	{ gui_timer->Start(100); }
 	void StopGuiTimer()	{ gui_timer->Stop(); }
@@ -180,9 +180,9 @@ public:
 
 	void SetMessageBlink(bool state) { m_BlinkMessages = state; }
 	void Create_Toolbar(bool orientation);
-	
+
 	void DoNetworkRearrange();
-	
+
 	CIP2Country*		m_IP2Country;
 	void IP2CountryDownloadFinished(uint32 result);
 	void EnableIP2Country();
@@ -199,10 +199,10 @@ public:
 	PrefsUnifiedDlg*	m_prefsDialog;
 
 	int			m_srv_split_pos;
-	
+
 	wxImageList m_imagelist;
 	wxImageList m_tblist;
-	
+
 protected:
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnAboutButton(wxCommandEvent& ev);
@@ -237,11 +237,11 @@ private:
 	PageType m_logpages[4];
 	PageType m_networkpages[2];
 
-	bool LoadGUIPrefs(bool override_pos, bool override_size); 
+	bool LoadGUIPrefs(bool override_pos, bool override_size);
 	bool SaveGUIPrefs();
 
 	void UpdateTrayIcon(int percent);
-	
+
 	void Apply_Clients_Skin();
 	void Apply_Toolbar_Skin(wxToolBar *wndToolbar);
 	bool Check_and_Init_Skin();

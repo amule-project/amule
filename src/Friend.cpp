@@ -1,6 +1,6 @@
 //
 // This file is part of the aMule Project.
-// 
+//
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -50,14 +50,14 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 		m_strName = wxT("?");
 	} else {
 		m_strName = tm_strName;
-	}	
+	}
 }
 
 
 CFriend::CFriend(CClientRef client)
 {
 	LinkClient(client);
-	
+
 	m_dwLastChatted = 0;
 }
 
@@ -86,7 +86,7 @@ void CFriend::LinkClient(CClientRef client)
 		m_strName = client.GetUserName();
 	} else if (m_strName.IsEmpty()) {
 		m_strName = wxT("?");
-	}	
+	}
 	m_UserHash = client.GetUserHash();
 	m_dwLastUsedIP = client.GetIP();
 	m_nLastUsedPort = client.GetUserPort();
@@ -145,9 +145,9 @@ void CFriend::WriteToFile(CFileDataIO* file)
 	file->WriteUInt16(m_nLastUsedPort);
 	file->WriteUInt32(m_dwLastSeen);
 	file->WriteUInt32(m_dwLastChatted);
-	
+
 	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 2 );
-	file->WriteUInt32(tagcount);			
+	file->WriteUInt32(tagcount);
 	if ( !m_strName.IsEmpty() ) {
 		CTagString nametag(FF_NAME, m_strName);
 		nametag.WriteTagToFile(file, utf8strOptBOM);

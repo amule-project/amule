@@ -19,7 +19,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -232,7 +232,7 @@ void CSearch::PrepareToStop() throw()
 	// Adjust created time so that search will delete within 15 seconds.
 	// This gives late results time to be processed.
 	m_created = time(NULL) - baseTime + SEC(15);
-	m_stopping = true;	
+	m_stopping = true;
 }
 
 void CSearch::JumpStart()
@@ -279,7 +279,7 @@ void CSearch::JumpStart()
 	while (!m_possible.empty()) {
 		// Get a contact closest to our target.
 		CContact *c = m_possible.begin()->second;
-	
+
 		// Have we already tried to contact this node.
 		if (m_tried.count(m_possible.begin()->first) > 0) {
 			// Did we get a response from this node, if so, try to store or get info.
@@ -297,7 +297,7 @@ void CSearch::JumpStart()
 			break;
 		}
 	}
-	
+
 }
 
 void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *results)
@@ -584,7 +584,7 @@ void CSearch::StorePacket()
 				CUInt128 id(CKademlia::GetPrefs()->GetClientHash());
 				TagPtrList taglist;
 
-				//We can use type for different types of sources. 
+				//We can use type for different types of sources.
 				//1 HighID sources..
 				//2 cannot be used as older clients will not work.
 				//3 Firewalled Kad Source.
@@ -674,7 +674,7 @@ void CSearch::StorePacket()
 
 			while (count && (itListFileID != m_fileIDs.end())) {
 				uint16_t packetCount = 0;
-				CMemFile packetdata(1024*50); // Allocate a good amount of space.			
+				CMemFile packetdata(1024*50); // Allocate a good amount of space.
 				packetdata.WriteUInt128(m_target);
 				packetdata.WriteUInt16(0); // Will be updated before sending.
 				while ((packetCount < 50) && (itListFileID != m_fileIDs.end())) {
@@ -915,7 +915,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 			m_answers++;
 			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, buddyip, buddyport, byCryptOptions);
 			break;
-		case 2: 
+		case 2:
 			//Don't use this type, some clients will process it wrong.
 		default:
 			break;
@@ -1208,7 +1208,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 {
 	// We're going to publish a keyword, set up the tag list
 	TagPtrList taglist;
-	
+
 	try {
 		if (file && bio) {
 			// Name, Size
@@ -1222,14 +1222,14 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 			if (!strED2KFileType.IsEmpty()) {
 				taglist.push_back(new CTagString(TAG_FILETYPE, strED2KFileType));
 			}
-			
+
 			// additional meta data (Artist, Album, Codec, Length, ...)
 			// only send verified meta data to nodes
 			if (file->GetMetaDataVer() > 0) {
 				static const struct{
 					uint8_t	nName;
 					uint8_t	nType;
-				} _aMetaTags[] = 
+				} _aMetaTags[] =
 				{
 					{ FT_MEDIA_ARTIST,  2 },
 					{ FT_MEDIA_ALBUM,   2 },
@@ -1269,7 +1269,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 		AddDebugLogLineC(logKadSearch, wxT("CInvalidPacket Exception in CSearch::PreparePacketForTags: ") + err.what());
 	} catch (const wxString& e) {
 		AddDebugLogLineC(logKadSearch, wxT("Exception in CSearch::PreparePacketForTags: ") + e);
-	} 
+	}
 
 	deleteTagPtrListEntries(&taglist);
 }

@@ -19,16 +19,16 @@ EXTRA_DIST = \
 	Scanner.h.in \
 	Scanner.l \
 	IPFilterScanner.l \
-	muuli.wdr 
+	muuli.wdr
 
-bin_PROGRAMS = 
+bin_PROGRAMS =
 
 if MONOLITHIC
 bin_PROGRAMS += amule
 endif
 
 if COMPILE_CMD
-bin_PROGRAMS += amulecmd   
+bin_PROGRAMS += amulecmd
 endif
 
 if ED2K
@@ -121,7 +121,7 @@ libmuleappgui_a_SOURCES = \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
 	MuleCollection.cpp \
-	muuli_wdr.cpp 
+	muuli_wdr.cpp
 
 libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(GEOIP_CPPFLAGS)
 
@@ -197,7 +197,7 @@ gui_sources = \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
 	MuleTrayIcon.cpp \
-	TransferWnd.cpp 
+	TransferWnd.cpp
 
 
 common_sources = \
@@ -276,14 +276,14 @@ amulegui_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 amulegui_LDADD = $(gui_libs) $(common_libs) $(WXBASE_LIBS)
 
 amuled_DEPENDENCIES = $(core_deps) $(common_deps)
-amuled_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
+amuled_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON
 amuled_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 amuled_LDADD = $(common_libs) $(core_libs) $(WXBASE_LIBS)
 
 ed2k_SOURCES = \
 	ED2KLinkParser.cpp \
 	MagnetURI.cpp \
-	MuleCollection.cpp	
+	MuleCollection.cpp
 
 ed2k_CPPFLAGS = $(AM_CPPFLAGS) -DUSE_STD_STRING
 
@@ -301,7 +301,7 @@ amulecmd_SOURCES = \
 	ExternalConnector.cpp \
 	LoggerConsole.cpp \
 	OtherFunctions.cpp \
-	NetworkFunctions.cpp 
+	NetworkFunctions.cpp
 
 amulecmd_DEPENDENCIES = $(remote_common_deps)
 amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags)

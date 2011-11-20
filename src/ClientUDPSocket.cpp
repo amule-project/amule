@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -78,7 +78,7 @@ void CClientUDPSocket::OnReceive(int errorCode)
 void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
-	
+
 	uint8_t *decryptedBuffer;
 	uint32_t receiverVerifyKey;
 	uint32_t senderVerifyKey;
@@ -151,8 +151,8 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				if (!md4cmp(packet, buddy->GetBuddyID())) {
 					/*
 						The packet has an initial 16 bytes key for the buddy.
-						This is currently unused, so to make the transformation 
-						we discard the first 10 bytes below and then overwrite 
+						This is currently unused, so to make the transformation
+						we discard the first 10 bytes below and then overwrite
 						the other 6 with ip/port.
 					*/
 					CMemFile mem_packet(packet+10,size-10);
@@ -171,13 +171,13 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 		case OP_REASKFILEPING: {
 			AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
 			theStats::AddDownOverheadFileRequest(size);
-			
+
 			CMemFile data_in(packet, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(reqfilehash);
 			bool bSenderMultipleIpUnknown = false;
 			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(host, port, true, &bSenderMultipleIpUnknown);
-			
+
 			if (!reqfile) {
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
 				theStats::AddUpOverheadFileRequest(response->GetPacketSize());
@@ -186,13 +186,13 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				} else {
 					SendPacket(response, host, port, false, NULL, false, 0);
 				}
-				
+
 				break;
 			}
-			
+
 			if (sender){
 				sender->CheckForAggressive();
-				
+
 				//Make sure we are still thinking about the same file
 				if (reqfilehash == sender->GetUploadFileID()) {
 					sender->AddAskedCount();
@@ -204,12 +204,12 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					} else  if (sender->GetUDPVersion() > 2) {
 						uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
 						uint16 nCompleteCountNew = data_in.ReadUInt16();
-						sender->SetUpCompleteSourcesCount(nCompleteCountNew);							
+						sender->SetUpCompleteSourcesCount(nCompleteCountNew);
 						if (nCompleteCountLast != nCompleteCountNew) {
 							reqfile->UpdatePartsInfo();
 						}
 					}
-					
+
 					CMemFile data_out(128);
 					if(sender->GetUDPVersion() > 3) {
 						if (reqfile->IsPartFile()) {
@@ -218,7 +218,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 							data_out.WriteUInt16(0);
 						}
 					}
-					
+
 					data_out.WriteUInt16(sender->GetUploadQueueWaitingPosition());
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
@@ -226,7 +226,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					SendPacket(response, host, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash().GetHash(), false, 0);
 				} else {
 					AddDebugLogLineN( logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );
-				}						
+				}
 			} else {
 				if (!bSenderMultipleIpUnknown) {
 					if ((theStats::GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
@@ -250,7 +250,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			}
 			break;
 		}
-		case OP_REASKACK: {				
+		case OP_REASKACK: {
 			theStats::AddDownOverheadFileRequest(size);
 			CUpDownClient* sender = theApp->downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender) {
@@ -314,7 +314,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			break;
 		}
 		default:
-			theStats::AddDownOverheadOther(size);				
+			theStats::AddDownOverheadOther(size);
 	}
 }
 // File_checked_for_headers

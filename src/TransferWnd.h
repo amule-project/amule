@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,7 +42,7 @@ class wxEvent;
 class wxMenu;
 
 /**
- * This class takes care of managing the lists and other controls contained 
+ * This class takes care of managing the lists and other controls contained
  * in the transfer-window. It's primary function is to manage the user-defined
  * categories.
  */
@@ -53,25 +53,25 @@ public:
 	 * Constructor.
 	 */
 	CTransferWnd(wxWindow* pParent = NULL);
-	
+
 	/**
 	 * Destructor.
 	 */
 	~CTransferWnd();
-	
+
 
 	/**
 	 * Adds the specified category to the end of the list.
 	 *
 	 * @param category A pointer to the new category.
 	 *
-	 * This function should be called after a category has been 
+	 * This function should be called after a category has been
 	 * added to the lists of categories. The new category is assumed
 	 * to be the last, and thus will be appended to the end of the tabs
 	 * on the category-notebook.
 	 */
 	void AddCategory( Category_Struct* category );
-	
+
 	/**
 	 * Updates the title of the specified category.
 	 *
@@ -90,7 +90,7 @@ public:
 	 */
 	void	UpdateCatTabTitles() { UpdateCategory(-1); }
 
-	
+
 	/**
 	 * Call this function before displaying the dialog.
 	 *
@@ -102,7 +102,7 @@ public:
 	CDownloadListCtrl*	downloadlistctrl;
 	//! Pointer to the list of clients.
 	CSourceListCtrl*	clientlistctrl;
-	
+
 private:
 	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
 	int m_splitter;
@@ -148,7 +148,7 @@ private:
 	 * Event-handler for changing categories.
 	 */
 	void OnCategoryChanged(wxBookCtrlEvent& evt);
-	
+
 	/**
 	 * Event-handler for displaying the category-popup menu.
 	 */
@@ -158,7 +158,7 @@ private:
 	 * Event-handler for the list-toggle button.
 	 */
 	void OnToggleClientList( wxCommandEvent& event );
-    
+
 	/**
 	 * Event-handler for changes in the sash divider position.
 	 */

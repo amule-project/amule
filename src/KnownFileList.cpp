@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -73,7 +73,7 @@ CKnownFileList::~CKnownFileList()
 bool CKnownFileList::Init()
 {
 	CFile file;
-	
+
 	CPath fullpath = CPath(theApp->ConfigDir + m_filename);
 	if (!fullpath.FileExists()) {
 		// This is perfectly normal. The file was probably either
@@ -85,14 +85,14 @@ bool CKnownFileList::Init()
 		AddLogLineC(CFormat(_("WARNING: %s cannot be opened.")) % m_filename);
 		return false;
 	}
-	
+
 	try {
 		uint8 version = file.ReadUInt8();
 		if ((version != MET_HEADER) && (version != MET_HEADER_WITH_LARGEFILES)) {
 			AddLogLineC(_("WARNING: Known file list corrupted, contains invalid header."));
 			return false;
 		}
-		
+
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
 		AddDebugLogLineN(logKnownFiles, CFormat(wxT("Reading %i known files from file format 0x%2.2x."))
@@ -108,14 +108,14 @@ bool CKnownFileList::Init()
 			}
 		}
 		AddDebugLogLineN(logKnownFiles, wxT("Finished reading known files"));
-	
+
 		return true;
 	} catch (const CInvalidPacket& e) {
 		AddLogLineC(_("Invalid entry in known file list, file may be corrupt: ") + e.what());
 	} catch (const CSafeIOException& e) {
 		AddLogLineC(CFormat(_("IO error while reading %s file: %s")) % m_filename % e.what());
-	}	
-	
+	}
+
 	return false;
 }
 
@@ -136,7 +136,7 @@ void CKnownFileList::Save()
 		// to be compatible with previous versions.
 		bool bContainsAnyLargeFiles = false;
 		file.WriteUInt8(0);
-		
+
 		file.WriteUInt32(m_knownFileMap.size() + m_duplicateFileList.size());
 
 		// Duplicates handling. Duplicates needs to be saved first,
@@ -148,7 +148,7 @@ void CKnownFileList::Save()
 				bContainsAnyLargeFiles = true;
 			}
 		}
-		
+
 		CKnownFileMap::iterator it = m_knownFileMap.begin();
 		for (; it != m_knownFileMap.end(); ++it) {
 			it->second->WriteToFile(&file);
@@ -156,7 +156,7 @@ void CKnownFileList::Save()
 				bContainsAnyLargeFiles = true;
 			}
 		}
-		
+
 		file.Seek(0);
 		file.WriteUInt8(bContainsAnyLargeFiles ? MET_HEADER_WITH_LARGEFILES : MET_HEADER);
 		file.Close();
@@ -168,7 +168,7 @@ void CKnownFileList::Save()
 
 
 void CKnownFileList::Clear()
-{	
+{
 	wxMutexLocker sLock(list_mut);
 
 	DeleteContents(m_knownFileMap);
@@ -183,7 +183,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 	uint64 in_size)
 {
 	wxMutexLocker sLock(list_mut);
-	
+
 	if (m_knownSizeMap) {
 		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
 		p = m_knownSizeMap->equal_range((uint32) in_size);
@@ -237,15 +237,15 @@ CKnownFile *CKnownFileList::IsOnDuplicates(
 CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
 {
 	wxMutexLocker sLock(list_mut);
-	
+
 	if (!hash.IsEmpty()) {
 		if (m_knownFileMap.find(hash) != m_knownFileMap.end()) {
 			return m_knownFileMap[hash];
 		} else {
-			return NULL;	
+			return NULL;
 		}
 	}
-	return NULL;	
+	return NULL;
 
 }
 
@@ -270,7 +270,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 		const CMD4Hash& tkey = Record->GetFileHash();
 		CKnownFileMap::iterator it = m_knownFileMap.find(tkey);
 		if (it == m_knownFileMap.end()) {
-			m_knownFileMap[tkey] = Record;			
+			m_knownFileMap[tkey] = Record;
 			return true;
 		} else {
 			CKnownFile *existing = it->second;
@@ -304,7 +304,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 					// Removing the old kad keywords created with the old filename
 					theApp->sharedfiles->RemoveKeywords(existing);
 				}
-				m_knownFileMap[tkey] = Record;	
+				m_knownFileMap[tkey] = Record;
 				return true;
 			}
 		}
@@ -312,7 +312,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 		AddDebugLogLineN(logGeneral,
 			CFormat(wxT("%s is 0-size, not added")) %
 			Record->GetFileName());
-		
+
 		return false;
 	}
 }

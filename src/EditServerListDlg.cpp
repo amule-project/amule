@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,8 +39,8 @@ END_EVENT_TABLE()
 EditServerListDlg::EditServerListDlg(wxWindow *parent,
                                      const wxString& caption,
                                      const wxString& message,
-				     const wxString& filename) : wxDialog(parent, -1, caption, 
-					     			      wxDefaultPosition, wxSize(400,200),
+				     const wxString& filename) : wxDialog(parent, -1, caption,
+								      wxDefaultPosition, wxSize(400,200),
 								      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
   m_file = filename;
@@ -52,7 +52,7 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
   topsizer->Add( CreateTextSizer( message ), 0, wxALL, 10 );
 
   m_textctrl = new wxTextCtrl(this, -1, wxEmptyString,
-			      wxDefaultPosition, 
+			      wxDefaultPosition,
 			      wxDefaultSize,
 			      wxTE_MULTILINE);
   topsizer->Add( m_textctrl, 1, wxEXPAND | wxLEFT|wxRIGHT, 15 );
@@ -65,8 +65,8 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
   Centre( wxBOTH );
 
   if (wxFile::Exists(filename))
-  	m_textctrl->LoadFile(filename);
-  
+	m_textctrl->LoadFile(filename);
+
   m_textctrl->SetFocus();
 
   wxEndBusyCursor();

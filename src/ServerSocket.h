@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -48,8 +48,8 @@ public:
 	virtual ~CServerSocket();
 
 	void	ConnectToServer(CServer* server, bool bNoCrypt = false);
-	sint8	GetConnectionState()	const	{ return connectionstate; } 
- 	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
+	sint8	GetConnectionState()	const	{ return connectionstate; }
+	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
 	void	OnClose(wxSocketError nErrorCode);
@@ -57,17 +57,17 @@ public:
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(CPacket* packet);
-	void 	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+	void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsSolving() const { return m_IsSolving;};
- 	void	OnHostnameResolved(uint32 ip);
- 	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
-	
+	void	OnHostnameResolved(uint32 ip);
+	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
+
 	uint32 GetServerIP() const;
-	
+
 private:
 	bool	ProcessPacket(const byte* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);
-	CServerConnect*	serverconnect; 
+	CServerConnect*	serverconnect;
 	sint8	connectionstate;
 	CServer*	cur_server;
 	bool m_bNoCrypt;

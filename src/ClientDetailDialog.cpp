@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -79,8 +79,8 @@ bool CClientDetailDialog::OnInitDialog() {
 	} else {
 		CastChild(ID_DNAME, wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DHASH, wxStaticText)->SetLabel(_("Unknown"));
-	}	
-	
+	}
+
 	// Client Software
 	wxString OSInfo = m_client.GetClientOSInfo();
 	if (!OSInfo.IsEmpty()) {
@@ -94,7 +94,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	// Client Version
 	CastChild(ID_DVERSION, wxStaticText)->SetLabel(
 		m_client.GetSoftVerStr());
-	
+
 	// User ID
 	CastChild(ID_DID, wxStaticText)->SetLabel(
 		CFormat(wxT("%u (%s)")) % m_client.GetUserIDHybrid() % (m_client.HasLowID() ? _("LowID") : _("HighID")));
@@ -102,7 +102,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	// Client IP/Port
 	CastChild(ID_DIP, wxStaticText)->SetLabel(
 		CFormat(wxT("%s:%i")) % m_client.GetFullIP() % m_client.GetUserPort());
-	
+
 	// Server IP/Port/Name
 	if (m_client.GetServerIP()) {
 		wxString srvaddr = Uint32toStringIP(m_client.GetServerIP());
@@ -141,51 +141,51 @@ bool CClientDetailDialog::OnInitDialog() {
 	} else {
 		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(wxT("-"));
 	}
-	
+
 	// Upload
 	CastChild(ID_DDUP, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client.GetTransferredDown()));
-	
+
 	// Download
 	CastChild(ID_DDOWN, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client.GetTransferredUp()));
-	
+
 	// Average Upload Rate
 	CastChild(ID_DAVUR, wxStaticText)->SetLabel(
 		CFormat(_("%.1f kB/s")) % m_client.GetKBpsDown());
-	
+
 	// Average Download Rate
 	CastChild(ID_DAVDR, wxStaticText)->SetLabel(
 		CFormat(_("%.1f kB/s")) % (m_client.GetUploadDatarate() / 1024.0f));
-	
+
 	// Total Upload
 	CastChild(ID_DUPTOTAL, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client.GetDownloadedTotal()));
-	
+
 	// Total Download
 	CastChild(ID_DDOWNTOTAL, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client.GetUploadedTotal()));
-	
+
 	// DL/UP Modifier
 	CastChild(ID_DRATIO, wxStaticText)->SetLabel(
 		CFormat(wxT("%.1f")) % m_client.GetScoreRatio());
-	
+
 	// Secure Ident
 	CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
 		m_client.GetSecureIdentTextStatus());
-	
+
 	// Queue Score
 	if (m_client.GetUploadState() != US_NONE) {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(
 			CFormat(wxT("%u")) % m_client.GetUploadQueueWaitingPosition());
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
-			CFormat(wxT("%u")) % m_client.GetScore());		
+			CFormat(wxT("%u")) % m_client.GetScore());
 	} else {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(wxT("-"));
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
 	}
 	Layout();
-	
+
 	return true;
 }
 // File_checked_for_headers

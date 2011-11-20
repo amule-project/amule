@@ -1085,7 +1085,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 	static uint32	msPrev1, msPrev5;
 
-	uint32 			msCur = theStats::GetUptimeMillis();
+	uint32			msCur = theStats::GetUptimeMillis();
 
 	// can this actually happen under wxwin ?
 	if (!SafeState()) {

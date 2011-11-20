@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -69,7 +69,7 @@ class CObjTagMap {
 		{
 			return m_obj_map[ECID];
 		}
-		
+
 		size_t size()
 		{
 			return m_obj_map.size();
@@ -89,7 +89,7 @@ private:
 public:
 	ExternalConn(amuleIPV4Address addr, wxString *msg);
 	~ExternalConn();
-	
+
 	wxSocketServer *m_ECServer;
 	ECNotifier *m_ec_notifier;
 
@@ -124,14 +124,14 @@ class ECPartFileMsgSource : public ECUpdateMsgSource {
 		std::map<CMD4Hash, PARTFILE_STATUS> m_dirty_status;
 	public:
 		ECPartFileMsgSource();
-		
+
 		void SetDirty(CPartFile *file);
 		void SetNew(CPartFile *file);
 		void SetCompleted(CPartFile *file);
 		void SetRemoved(CPartFile *file);
-		
+
 		virtual CECPacket *GetNextPacket();
-	
+
 };
 
 class ECKnownFileMsgSource : public ECUpdateMsgSource {
@@ -149,7 +149,7 @@ class ECKnownFileMsgSource : public ECUpdateMsgSource {
 		void SetDirty(CKnownFile *file);
 		void SetNew(CKnownFile *file);
 		void SetRemoved(CKnownFile *file);
-		
+
 		virtual CECPacket *GetNextPacket();
 };
 
@@ -167,7 +167,7 @@ class ECStatusMsgSource : public ECUpdateMsgSource {
 		uint32 GetKadStatus();
 	public:
 		ECStatusMsgSource();
-		
+
 		virtual CECPacket *GetNextPacket();
 };
 
@@ -181,12 +181,12 @@ class ECSearchMsgSource : public ECUpdateMsgSource {
 		std::map<CMD4Hash, SEARCHFILE_STATUS> m_dirty_status;
 	public:
 		ECSearchMsgSource();
-		
+
 		void SetDirty(CSearchFile *file);
 		void SetChildDirty(CSearchFile *file);
-	
+
 		void FlushStatus();
-	
+
 		virtual CECPacket *GetNextPacket();
 };
 
@@ -200,15 +200,15 @@ class ECNotifier {
 			EC_CLIENT,
 			EC_STATUS,
 			EC_KNOWN,
-			
+
 			EC_STATUS_LAST_PRIO
 		};
-		
+
 		//ECUpdateMsgSource *m_msg_source[EC_STATUS_LAST_PRIO];
 		std::map<CECServerSocket *, ECUpdateMsgSource **> m_msg_source;
-		
+
 		void NextPacketToSocket();
-		
+
 		CECPacket *GetNextPacket(ECUpdateMsgSource *msg_source_array[]);
 		// Make class non assignable
 		void operator=(const ECNotifier&);
@@ -216,12 +216,12 @@ class ECNotifier {
 	public:
 		ECNotifier();
 		~ECNotifier();
-		
+
 		void Add_EC_Client(CECServerSocket *sock);
 		void Remove_EC_Client(CECServerSocket *sock);
-		
+
 		CECPacket *GetNextPacket(CECServerSocket *sock);
-		
+
 		//
 		// Interface to notification macros
 		//
@@ -230,7 +230,7 @@ class ECNotifier {
 		void DownloadFile_RemoveSource(CPartFile *file);
 		void DownloadFile_AddFile(CPartFile *file);
 		void DownloadFile_AddSource(CPartFile *file);
-		
+
 		void SharedFile_AddFile(CKnownFile *file);
 		void SharedFile_RemoveFile(CKnownFile *file);
 		void SharedFile_RemoveAllFiles();

@@ -18,13 +18,13 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-/* 
+/*
  SHA hashset basically exists of 1 Tree for all Parts (9.28MB) + n Trees
  for all blocks (180KB) while n is the number of Parts.
  This means it is NOT a complete hashtree, since the 9.28MB is a given level, in order
@@ -38,7 +38,7 @@
 Example tree:
 	FileSize: 19506000 Bytes = 18,6 MB
 
-              X(18,6 MB)                               		MasterHash
+              X(18,6 MB)						MasterHash
              /          \
           X(18,55)       \
          /        \       \
@@ -60,10 +60,10 @@ position (since the first node is always seen as left).
 Example
 
     x                   0000000000000001
-   / \		
+   / \
   x   \			0000000000000011
  / \   \
-x  _X_  x 	        0000000000000110
+x  _X_  x	        0000000000000110
 
 
 Version 2 of AICH also supports 32bit identifiers to support large files, check CAICHHashSet::CreatePartRecoveryData
@@ -101,13 +101,13 @@ class CUpDownClient;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHash
-class CAICHHash 
+class CAICHHash
 {
 private:
 	byte m_abyBuffer[HASHSIZE];
 
 public:
-	CAICHHash() 				{ memset(m_abyBuffer, 0, HASHSIZE); }
+	CAICHHash()				{ memset(m_abyBuffer, 0, HASHSIZE); }
 	CAICHHash(CFileDataIO* file)		{ Read(file); }
 	CAICHHash(byte* data)			{ Read(data); }
 	CAICHHash(const CAICHHash& k1)		{ *this = k1; }
@@ -133,7 +133,7 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHashAlgo
-class CAICHHashAlgo 
+class CAICHHashAlgo
 {
 public:
 	virtual ~CAICHHashAlgo() {};
@@ -156,7 +156,7 @@ private:
 	bool m_bHashValid;	// the hash is valid and not empty
 	CAICHHashTree* m_pLeftTree;
 	CAICHHashTree* m_pRightTree;
-	
+
 public:
 	CAICHHashTree(uint64 nDataSize, bool bLeftBranch, uint64 nBaseSize);
 	~CAICHHashTree();
@@ -166,7 +166,7 @@ public:
 	uint64 GetNBaseSize() const		{ return m_nBaseSize; }
 	bool GetIsLeftBranch() const		{ return m_bIsLeftBranch; }
 	bool GetHashValid() const		{ return m_bHashValid; }
-	
+
 	void SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* pHashAlg);
 	bool ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace );
 	bool VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees);
@@ -197,7 +197,7 @@ public:
 		m_Hash = k1.m_Hash ;
 		return *this;
 	}
-	bool AddSigningIP(uint32 dwIP);	
+	bool AddSigningIP(uint32 dwIP);
 
 	CAICHHash m_Hash;
 	std::set<uint32> m_adwIpsSigning;
@@ -226,7 +226,7 @@ public:
 
 
 using namespace std;
-	
+
 typedef std::list<CAICHRequestedData> CAICHRequestedDataList;
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -237,11 +237,11 @@ private:
 	CKnownFile* m_pOwner;
 	EAICHStatus m_eStatus;
 	deque<CAICHUntrustedHash> m_aUntrustedHashs;
-	
+
 public:
 	static CAICHRequestedDataList m_liRequestedData;
 	CAICHHashTree m_pHashTree;
-	
+
 	CAICHHashSet(CKnownFile* pOwner);
 	~CAICHHashSet(void);
 	bool CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad = false);
@@ -252,11 +252,11 @@ public:
 	bool IsPartDataAvailable(uint64 nPartStartPos);
 	void SetStatus(EAICHStatus bNewValue)	{ m_eStatus = bNewValue; }
 	EAICHStatus GetStatus()	const		{ return m_eStatus; }
-	
+
 	void FreeHashSet();
 	void SetFileSize(uint64 nSize);
-	
-	CAICHHash& GetMasterHash()		{ return m_pHashTree.m_Hash; } 
+
+	CAICHHash& GetMasterHash()		{ return m_pHashTree.m_Hash; }
 	void SetMasterHash(const CAICHHash& Hash, EAICHStatus eNewStatus);
 	bool HasValidMasterHash()		{ return m_pHashTree.m_bHashValid; }
 
@@ -269,7 +269,7 @@ public:
 	static bool IsClientRequestPending(const CPartFile* pForFile, uint16 nPart);
 	static CAICHRequestedData GetAICHReqDetails(const  CUpDownClient* pClient);
 	void DbgTest();
-	
+
 	void SetOwner(CKnownFile* owner)	{ m_pOwner = owner; }
 };
 

@@ -75,7 +75,7 @@
 - (void)awakeFromNib {
 	[m_tableview setDelegate:self];
 	[m_tableview setDataSource:self];
-	
+
 	//
 	// load column status
 	//

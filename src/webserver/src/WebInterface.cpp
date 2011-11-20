@@ -1,6 +1,6 @@
 //
 // This file is part of the aMule Project.
-//  
+//
 // Copyright (c) 2004-2011 shakraw ( shakraw@users.sourceforge.net )
 // Copyright (c) 2003-2011 Angel Vidal ( kry@amule.org )
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -62,7 +62,7 @@
 #ifdef AMULEWEB28
 /*
  * Socket handling in wxBase (same as amuled)
- * 
+ *
  */
 class CSocketSet
 {
@@ -493,7 +493,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		return true;
 	}
 #endif
-	
+
 	dir = wxStandardPaths::Get().GetResourcesDir();	// Returns 'aMule' when we use 'amule' elsewhere
 #if !defined(__WXMSW__) && !defined(__WXMAC__)
 	dir = dir.BeforeLast(wxFileName::GetPathSeparator());
@@ -504,7 +504,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		templateDir = dir;
 		return true;
 	}
-	
+
 	// template not found. reverting to default
 	const wxChar* const defaultTemplateName = wxT("default");
 
@@ -519,47 +519,47 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser, "amuleweb");
-	amuleweb_parser.AddOption(wxT("t"), wxT("template"), 
-		_("Loads template <str>"), 
+	amuleweb_parser.AddOption(wxT("t"), wxT("template"),
+		_("Loads template <str>"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-		
-	amuleweb_parser.AddOption(wxT("s"), wxT("server-port"), 
+
+	amuleweb_parser.AddOption(wxT("s"), wxT("server-port"),
 		_("Web server HTTP port"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("u"), wxT("enable-upnp"), 
+	amuleweb_parser.AddSwitch(wxT("u"), wxT("enable-upnp"),
 		_("Use UPnP port forwarding on web server port"),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	
-	amuleweb_parser.AddSwitch(wxT("U"), wxT("upnp-port"), 
+
+	amuleweb_parser.AddSwitch(wxT("U"), wxT("upnp-port"),
 		_("UPnP port"),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	
-	amuleweb_parser.AddSwitch(wxT("z"), wxT("enable-gzip"), 
+
+	amuleweb_parser.AddSwitch(wxT("z"), wxT("enable-gzip"),
 		_("Use gzip compression"),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	
-	amuleweb_parser.AddSwitch(wxT("Z"), wxT("disable-gzip"), 
+
+	amuleweb_parser.AddSwitch(wxT("Z"), wxT("disable-gzip"),
 		wxT("Do not use gzip compression"),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	
-	amuleweb_parser.AddOption(wxT("A"), wxT("admin-pass"), 
-		_("Full access password for web server"), 
+
+	amuleweb_parser.AddOption(wxT("A"), wxT("admin-pass"),
+		_("Full access password for web server"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxT("G"), wxT("guest-pass"), 
-		_("Guest password for web server"), 
+	amuleweb_parser.AddOption(wxT("G"), wxT("guest-pass"),
+		_("Guest password for web server"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("a"), wxT("allow-guest"), 
+	amuleweb_parser.AddSwitch(wxT("a"), wxT("allow-guest"),
 		_("Allow guest access"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("d"), wxT("deny-guest"), 
+	amuleweb_parser.AddSwitch(wxT("d"), wxT("deny-guest"),
 		_("Deny guest access"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("L"), wxT("load-settings"), 
+	amuleweb_parser.AddSwitch(wxT("L"), wxT("load-settings"),
 		_("Load/save web server settings from/to remote aMule"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
@@ -571,7 +571,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	 * In this mode, internal PHP interpreter is activated, and
 	 * amuleweb will forward there requests for .php pages
 	 */
-	amuleweb_parser.AddSwitch(wxEmptyString, wxT("no-php"), 
+	amuleweb_parser.AddSwitch(wxEmptyString, wxT("no-php"),
 		_("Disable PHP interpreter (deprecated)"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
@@ -579,7 +579,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	 * Reload .php page each time it's requested - don't cache
 	 * compilation results. Used for script development.
 	 */
-	amuleweb_parser.AddSwitch(wxT("N"), wxT("no-script-cache"), 
+	amuleweb_parser.AddSwitch(wxT("N"), wxT("no-script-cache"),
 		_("Recompile PHP pages on each request"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 }

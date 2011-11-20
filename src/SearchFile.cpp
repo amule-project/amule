@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -59,7 +59,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 		m_clientID = 0;
 		m_clientPort = 0;
 	}
-	
+
 	uint32 tagcount = data.ReadUInt32();
 	for (unsigned int i = 0; i < tagcount; ++i) {
 		CTag tag(data, optUTF8);
@@ -72,7 +72,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 				break;
 			case FT_FILESIZE_HI:
 				SetFileSize((((uint64)tag.GetInt()) << 32) + GetFileSize());
-				break;				
+				break;
 			case FT_FILERATING:
 				m_iUserRating = (tag.GetInt() & 0xF) / 3;
 				break;
@@ -118,7 +118,7 @@ CSearchFile::CSearchFile(const CSearchFile& other)
 
 
 CSearchFile::~CSearchFile()
-{	
+{
 	for (size_t i = 0; i < m_children.size(); ++i) {
 		delete m_children.at(i);
 	}
@@ -188,7 +188,7 @@ void CSearchFile::AddChild(CSearchFile* file)
 	wxCHECK_RET(!GetParent(), wxT("A child cannot have children of its own"));
 	wxCHECK_RET(GetFileHash() == file->GetFileHash(), wxT("Mismatching child/parent hashes"));
 	wxCHECK_RET(GetFileSize() == file->GetFileSize(), wxT("Mismatching child/parent sizes"));
-	
+
 	// If no children exists, then we add the current item.
 	if (GetChildren().empty()) {
 		// Merging duplicate names instead of adding a new one
@@ -218,10 +218,10 @@ void CSearchFile::AddChild(CSearchFile* file)
 		}
 	}
 
-	// New unique child.	
+	// New unique child.
 	m_children.push_back(file);
 	UpdateParent();
-	
+
 	if (ShowChildren()) {
 		Notify_Search_Add_Result(file);
 	}

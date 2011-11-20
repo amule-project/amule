@@ -6,9 +6,9 @@
 @interface ECTag : NSObject {
 	ECTagTypes m_type;
     ECTagNames m_name;
-	
+
 	int m_size;
-	
+
 	NSMutableArray *m_subtags;
 }
 
@@ -105,7 +105,7 @@ typedef struct {
 @end
 
 @interface ECTagString : ECTagData {
-	// string 
+	// string
 	NSString *m_val;
 }
 
@@ -127,7 +127,7 @@ typedef struct {
 - (void)initWithOpcode:(ec_opcode_t) opcode;
 
 - (void)writeToSocket:(NSOutputStream *) socket;
- 
+
 @property (readonly) ec_opcode_t opcode;
 
 @end
@@ -139,7 +139,7 @@ typedef struct {
 
 - (NSString *)getMD5_Str:(NSString *) str;
 
-@end	
+@end
 
 @interface ECLoginRequestPacket : ECPacket
 {
@@ -159,9 +159,9 @@ typedef struct {
 		LOGIN_PASS_SENT,
 		LOGIN_OK
 	} m_state;
-	
+
 	ECRemoteConnection *m_connection;
-	
+
 	NSString *m_pass;
 }
 
@@ -184,9 +184,9 @@ typedef struct {
 @interface ECRemoteConnection : NSObject {
 	NSInputStream *m_istream;
 	NSOutputStream *m_ostream;
-	
+
 	NSMutableData *m_rxbuf;
-	
+
 	int m_rx_size;
 	int m_remaining_size;
 
@@ -194,11 +194,11 @@ typedef struct {
 	NSData *m_txbuf;
 	int m_tx_ptr;
 	int m_tx_size;
-		
+
 	amuleLoginHandler *m_login_handler;
-	
+
     id delegate;
-	
+
 	bool m_error;
 }
 

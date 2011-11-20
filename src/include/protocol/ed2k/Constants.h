@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -69,7 +69,7 @@
 #define	PURGESOURCESWAPSTOP			MIN2MS(15)	// How long forbid swapping a source to a certain file (NNP,...)
 #define	CONNECTION_LATENCY			22050	// latency for responces
 #define	CLIENTBANTIME				HR2MS(2) // 2h
-#define	TRACKED_CLEANUP_TIME			HR2MS(1) 
+#define	TRACKED_CLEANUP_TIME			HR2MS(1)
 #define	KEEPTRACK_TIME				HR2MS(2) // how long to keep track of clients which were once in the uploadqueue
 #define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
 

@@ -1,4 +1,4 @@
-# Definitions for MacOSX compilation of wxWidgets. 
+# Definitions for MacOSX compilation of wxWidgets.
 # (c) 2011 Angel Vidal ( kry@amule.org )
 # Public domain. Use at your own risk.
 
@@ -39,7 +39,7 @@ case "$WXPORT" in
 COCOA|cocoa)
 	if [ "$WXVERSION" == "2.8" ]; then
 		pc $RED "The $WXWIDGETS port on wxWidgets $WXVERSION is unusable for this application. Please select a different port, or a different wxWidgets version."
- 		exit
+		exit
 	fi
 	PORTFLAGS="--with-cocoa"
 	;;
@@ -50,7 +50,7 @@ CARBON|carbon)
 	pc $RED "Valid WXPORT values are cocoa and carbon."
 	exit
 	;;
-esac	
+esac
 
 pc $GREEN "\tUsing wxWidgets $WXPORT port."
 

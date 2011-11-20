@@ -148,7 +148,7 @@ wxString GetDefaultAmulesigPath()
 	}
 
 #elif defined(__WXMSW__)
- 
+
 	LPITEMIDLIST pidl;
 
 	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);

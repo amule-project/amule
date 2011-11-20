@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -47,17 +47,17 @@ class CUpDownClient;
  * This is important, since these sources would be removed and readded
  * repeatedly, causing extra overhead with no gain.
  */
-class CDeadSourceList 
+class CDeadSourceList
 {
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param isGlobal Specifies if the list is global or not, used for debugging.
 	 */
 	CDeadSourceList(bool isGlobal = false);
 
-	
+
 	/**
 	 * Adds a client to the list of dead sources.
 	 */
@@ -67,7 +67,7 @@ public:
 	 * Returns true if the client object is a dead source.
 	 */
 	bool		IsDeadSource(const CUpDownClient* client);
-	
+
 
 	/**
 	 * Returns the number of sources.
@@ -95,7 +95,7 @@ private:
 		 * @param ServerIP The ip of the connected server.
 		 * @param KadPort The Kad port used by the client.
 		 *
-		 * Notes: 
+		 * Notes:
 		 *  * ID must be specified.
 		 *  * Either KadPort or Port must be specified.
 		 *  * For lowid sources, ServerIP must be specified.
@@ -103,13 +103,13 @@ private:
 		 */
 		CDeadSource(uint32 ID, uint16 Port, uint32 ServerIP, uint16 KadPort);
 
-		
+
 		/**
 		 * Equality operator.
 		 */
 		bool operator==(const CDeadSource& other) const;
 
-		
+
 		/**
 		 * Sets the timestamp for the time where this entry will expire.
 		 */
@@ -119,7 +119,7 @@ private:
 		 * Returns the timestamp of this entry.
 		 */
 		uint32	GetTimeout() const;
-		
+
 	private:
 		//! The ID/IP of the client.
 		uint32			m_ID;
@@ -133,14 +133,14 @@ private:
 		uint32			m_TimeStamp;
 	};
 
-	
+
 	typedef std::multimap< uint32, CDeadSource > DeadSourceMap;
 	typedef DeadSourceMap::iterator DeadSourceIterator;
 	typedef std::pair<DeadSourceIterator, DeadSourceIterator> DeadSourcePair;
 	//! List of currently dead sources.
 	DeadSourceMap m_sources;
 
-	
+
 	//! The timestamp of when the last cleanup was performed.
 	uint32	m_dwLastCleanUp;
 	//! Specifies if the list is global or not.

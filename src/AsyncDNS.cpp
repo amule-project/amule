@@ -18,7 +18,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -46,7 +46,7 @@ wxThread::ExitCode CAsyncDNS::Entry()
 	uint32 result = StringHosttoUint32(m_ipName);
 	uint32 event_id = 0;
 	void* event_data = NULL;
-	
+
 	switch (m_type) {
 		case DNS_UDP:
 			event_id = wxEVT_CORE_UDP_DNS_DONE;
@@ -63,14 +63,14 @@ wxThread::ExitCode CAsyncDNS::Entry()
 		default:
 			AddLogLineN(wxT("WRONG TYPE ID ON ASYNC DNS SOLVING!!!"));
 	}
-	
+
 	if (event_id) {
 		CMuleInternalEvent evt(event_id);
 		evt.SetExtraLong(result);
 		evt.SetClientData(event_data);
 		wxPostEvent(m_handler,evt);
 	}
-	
+
 	return NULL;
 }
 // File_checked_for_headers

@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,15 +42,15 @@ class CCaptchaDialog : public wxDialog
 {
 public:
 	/**
-	 * Constructor. 
+	 * Constructor.
 	 *
 	 * @param parent The window that created the dialog.
 	 * @param client The client whose details we're showing.
 	 */
-	CCaptchaDialog(wxWindow*parent, const wxImage& captchaImage, uint64 id);   
-	
+	CCaptchaDialog(wxWindow*parent, const wxImage& captchaImage, uint64 id);
+
 	/**
-	 * Destructor. 
+	 * Destructor.
 	 */
 	virtual ~CCaptchaDialog();
 
@@ -58,14 +58,14 @@ protected:
 
 	/**
 	 * Creates all the data objects in the dialog, filling them accordingly.
-	 * 
+	 *
 	 * Called when the dialog object is created.
 	 */
-	virtual bool OnInitDialog();	
-	
+	virtual bool OnInitDialog();
+
 	/**
 	 * Ends the dialog, calling EndModal with return value 0
-	 * 
+	 *
 	 * @param evt The close event, unused right now
 	 */
 	void OnBnClose(wxCommandEvent& evt);

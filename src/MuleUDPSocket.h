@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,7 +39,7 @@ class CPacket;
  *
  * The CMuleUDPSocket are created with the NOWAIT option and
  * handle both INPUT and OUTPUT events.
- * 
+ *
  * The following additional features are provided compared to CDatagramSocketProxy:
  *  - Goverened by the UBT.
  *  - Automatic sending/receiving of packets.
@@ -50,7 +50,7 @@ class CPacket;
  */
 class CMuleUDPSocket : public ThrottledControlSocket
 {
-	
+
 public:
 	/**
 	 * Opens a UDP socket at the specified address.
@@ -61,13 +61,13 @@ public:
 	 * @param ProxyData ProxyData assosiated with the socket.
 	 */
 	CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData = NULL);
-	
+
 	/**
 	 * Destructor, safely closes the socket if opened.
 	 */
 	virtual ~CMuleUDPSocket();
 
-	
+
 	/**
 	 * Opens the socket.
 	 *
@@ -75,7 +75,7 @@ public:
 	 * the constructor.
 	 */
 	void Open();
-	
+
 	/**
 	 * Closes the socket.
 	 *
@@ -83,8 +83,8 @@ public:
 	 * already closed socket is an illegal operation.
 	 */
 	void Close();
-	
-	
+
+
 	/** This function is called by aMule when the socket may send. */
 	virtual void OnSend(int errorCode);
 	/** This function is called by aMule when there are data to be received. */
@@ -101,7 +101,7 @@ public:
 	 * @param IP The target IP address.
 	 * @param port The target port.
 	 * @param bEncrypt If the packet must be encrypted
-	 * @param port The target port.	 
+	 * @param port The target port.
 	 * @param pachTargetClientHashORKadID The client hash or Kad ID
 	 * @param bKad
 	 * @param nReceiverVerifyKey
@@ -128,10 +128,10 @@ protected:
 	 */
 	virtual void OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length) = 0;
 
-	
+
 	/** See ThrottledControlSocket::SendControlData */
 	SocketSentBytes  SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize);
-	    
+
 private:
 	/**
 	 * Sends a packet to the specified address.
@@ -157,7 +157,7 @@ private:
 	 */
 	void	DestroySocket();
 
-	
+
 	//! Specifies if the last write attempt would cause the socket to block.
 	bool					m_busy;
 	//! The name of the socket, used for debugging messages.
@@ -172,7 +172,7 @@ private:
 	wxMutex					m_mutex;
 	//! The currently opened socket, if any.
 	CEncryptedDatagramSocket*	m_socket;
-	
+
 	//! Storage struct used for queueing packets.
 	struct UDPPack
 	{
@@ -191,9 +191,9 @@ private:
 		// The verification key for RC4 encryption.
 		uint32 nReceiverVerifyKey;
 		// Client hash or kad ID.
-		uint8 pachTargetClientHashORKadID[16];		
+		uint8 pachTargetClientHashORKadID[16];
 	} ;
-	
+
 	//! The queue of packets waiting to be sent.
 	std::list<UDPPack> m_queue;
 };

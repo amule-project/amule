@@ -37,7 +37,7 @@ AC_DEFUN([VL_LIB_READLINE], [
       vl_cv_lib_readline="no"
       LIBS="$ORIG_LIBS"
       READLINE_LIBS=""
-    else 
+    else
       READLINE_LIBS="$vl_cv_lib_readline"
     fi
   ])

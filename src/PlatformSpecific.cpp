@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -46,20 +46,20 @@ static wxString SystemError()
 {
 	WCHAR * lpMsgBuf = NULL;
 
-	FormatMessageW( 
+	FormatMessageW(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 		NULL,
 		GetLastError(),
 		0, // Default language
 		(LPWSTR) &lpMsgBuf,
 		0,
-		NULL 
+		NULL
 	);
 
 	wxString ret(lpMsgBuf);
 	LocalFree(lpMsgBuf);
 	return ret;
-} 
+}
 
 // Create a file in sparse mode
 bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
@@ -67,11 +67,11 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 	DWORD dwReturnedBytes=0;
 
 	HANDLE hd = CreateFileW(name.GetRaw().c_str(),
-		GENERIC_READ | GENERIC_WRITE, 
+		GENERIC_READ | GENERIC_WRITE,
 		0,       // share - not shareable
 		NULL,    // security - not inheritable
 		CREATE_ALWAYS,
-		FILE_ATTRIBUTE_ARCHIVE, 
+		FILE_ATTRIBUTE_ARCHIVE,
 		NULL);
 	if (hd == INVALID_HANDLE_VALUE) {
 		AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (OPEN): %s ")) % name % SystemError());
@@ -90,7 +90,7 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 		fzdi.BeyondFinalZero = size;
 		LARGE_INTEGER largo;
 		largo.QuadPart = size;
-		
+
 		// zero the data
 		if (!DeviceIoControl(hd, FSCTL_SET_ZERO_DATA, (LPVOID) &fzdi, sizeof(fzdi), NULL, 0, &dwReturnedBytes, NULL)) {
 			AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (ZERO): %s")) % name % SystemError());
@@ -328,8 +328,8 @@ void PlatformSpecific::PreventSleepMode()
 			SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
 			m_preventingSleepMode = true;
 		#elif defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050	// 10.5 only
-			IOReturn success = IOPMAssertionCreate(kIOPMAssertionTypeNoDisplaySleep, 
-												kIOPMAssertionLevelOn, &assertionID); 
+			IOReturn success = IOPMAssertionCreate(kIOPMAssertionTypeNoDisplaySleep,
+												kIOPMAssertionLevelOn, &assertionID);
 			if (success == kIOReturnSuccess) {
 				// Correctly vetoed, flag so we don't do it again.
 				m_preventingSleepMode = true;
@@ -338,7 +338,7 @@ void PlatformSpecific::PreventSleepMode()
 			}
 		#else
 			#warning Power event vetoing not implemented.
-			// Not implemented	
+			// Not implemented
 		#endif
 	}
 }
@@ -350,7 +350,7 @@ void PlatformSpecific::AllowSleepMode()
 			SetThreadExecutionState(ES_CONTINUOUS); // Clear the system request flag.
 			m_preventingSleepMode = false;
 		#elif defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050	// 10.5 only
-			IOReturn success = IOPMAssertionRelease(assertionID); 
+			IOReturn success = IOPMAssertionRelease(assertionID);
 			if (success == kIOReturnSuccess) {
 				// Correctly restored, flag so we don't do it again.
 				m_preventingSleepMode = false;

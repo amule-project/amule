@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,7 +43,7 @@
 /*
  * Built-in php functions. Those are amule-specific funcions, accessing EC and internal
  * datastructre
- * 
+ *
  */
 
 void php_native_shared_file_cmd(PHP_VALUE_NODE *)
@@ -54,7 +54,7 @@ void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
@@ -81,9 +81,9 @@ void php_native_reload_shared_file_cmd(PHP_VALUE_NODE *)
 }
 
 /*
- * 
+ *
  * Usage: php_native_download_file_cmd($file_hash, "command", $optional_arg)
- * 
+ *
  */
 void php_native_download_file_cmd(PHP_VALUE_NODE *)
 {
@@ -93,7 +93,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
@@ -107,7 +107,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 		php_report_error(PHP_ERROR, "Commands 'prio' and 'setcat' needs 3-rd argument");
 		return;
 	}
-		
+
 	CPhPLibContext::g_curr_context->WebServer()->Send_DownloadFile_Cmd(wxString(char2unicode(str_hash)),
 		wxString(char2unicode(cmd_name)),
 		opt_param ? opt_param->value.int_val : 0);
@@ -157,7 +157,7 @@ void php_native_add_server_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *addr = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si ) {
 		php_report_error(PHP_ERROR, "Missing argument 2: $server_port");
@@ -222,7 +222,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	if (!tag) {
 		return ;
 	}
-	
+
 	cast_value_array(result);
 	PHP_VAR_NODE *id = array_get_by_str_key(result, "id");
 	cast_value_dnum(&id->value);
@@ -241,7 +241,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			srv_name->value.type = PHP_VAL_STRING;
 			srv_name->value.str_val = strdup(unicode2UTF8(sname->GetStringData()));
 		}
-		
+
 		const CECTag *susers = server->GetTagByName(EC_TAG_SERVER_USERS);
 		if ( susers ) {
 			PHP_VAR_NODE *srv_users = array_get_by_str_key(result, "serv_users");
@@ -249,7 +249,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			srv_users->value.type = PHP_VAL_INT;
 			srv_users->value.int_val = susers->GetInt();
 		}
-			
+
 	}
 	// kademlia
 	PHP_VAR_NODE *kad = array_get_by_str_key(result, "kad_connected");
@@ -269,7 +269,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
 	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt();
-	
+
 	speed = array_get_by_str_key(result, "speed_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
@@ -279,7 +279,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
 	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt();
-	
+
 	speed = array_get_by_str_key(result, "speed_limit_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
@@ -327,10 +327,10 @@ PHP_2_EC_OPT_DEF g_connection_opt_defs[] = {
 	{ "max_line_up_cap", EC_TAG_CONN_UL_CAP, 4}, { "max_line_down_cap", EC_TAG_CONN_DL_CAP, 4},
 	{ "max_up_limit", EC_TAG_CONN_MAX_UL, 2}, { "max_down_limit", EC_TAG_CONN_MAX_DL, 2},
 	{ "slot_alloc", EC_TAG_CONN_SLOT_ALLOCATION, 2},
-	{ "tcp_port", EC_TAG_CONN_TCP_PORT, 2}, { "udp_port", EC_TAG_CONN_UDP_PORT, 2}, 
+	{ "tcp_port", EC_TAG_CONN_TCP_PORT, 2}, { "udp_port", EC_TAG_CONN_UDP_PORT, 2},
 	{ "udp_dis", EC_TAG_CONN_UDP_DISABLE, 0},
 	{ "max_file_src", EC_TAG_CONN_MAX_FILE_SOURCES, 2},
-	{ "max_conn_total", EC_TAG_CONN_MAX_CONN, 2}, 
+	{ "max_conn_total", EC_TAG_CONN_MAX_CONN, 2},
 	{ "autoconn_en", EC_TAG_CONN_AUTOCONNECT, 0}, { "reconn_en", EC_TAG_CONN_RECONNECT, 0},
 	{0, (ECTagNames)0, 0}
 };
@@ -417,7 +417,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != 0) {
 		PHP_VAR_NODE *cat = array_get_by_str_key(result, "connection");
 		cast_value_array(&cat->value);
-		
+
 		ec_tag_2_php(cattag, g_connection_opt_defs, cat);
 	}
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_FILES)) != 0) {
@@ -517,7 +517,7 @@ void php_native_search_download_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
@@ -563,7 +563,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 		case 0: search_type = EC_SEARCH_LOCAL; break;
 		case 1: search_type = EC_SEARCH_GLOBAL; break;
 		case 2: search_type = EC_SEARCH_KAD; break;
-		default: 
+		default:
 			php_report_error(PHP_ERROR, "Invalid search type %"PRIu64, si->var->value.int_val);
 			return;
 	}
@@ -601,7 +601,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 void php_get_log(PHP_VALUE_NODE *result)
 {
 	value_value_free(result);
-	
+
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	bool rst;
 	if ( !si ) {
@@ -630,7 +630,7 @@ void php_get_log(PHP_VALUE_NODE *result)
 void php_get_serverinfo(PHP_VALUE_NODE *result)
 {
 	value_value_free(result);
-	
+
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	bool rst;
 	if ( !si ) {
@@ -666,7 +666,7 @@ void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
 		return;
 	}
 	char *str_link = si->var->value.str_val;
-	
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
@@ -743,7 +743,7 @@ void amule_load_stats()
 
 /*
  * Convert CEC_StatTree_Node_Tag into php associative array
- * 
+ *
  * Since data structure is recoursive - we need helper function
  * to perform conversion
  */
@@ -767,7 +767,7 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 		return;
 	}
 	value_value_free(result);
-	
+
 	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
 	const CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if ( !response ) {

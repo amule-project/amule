@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -30,7 +30,7 @@
 #include <iosfwd>
 
 
-enum DebugType 
+enum DebugType
 {
 	//! Standard warning, not debug
 	logStandard = -1,
@@ -126,7 +126,7 @@ class CDebugCategory
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param type The actual debug-category type.
 	 * @param name The user-readable name.
 	 */
@@ -178,9 +178,9 @@ public:
 #ifdef __DEBUG__
 	bool IsEnabled( DebugType ) const;
 #else
-	bool IsEnabled( DebugType ) const 	{ return false; }
+	bool IsEnabled( DebugType ) const	{ return false; }
 #endif
-	
+
 	/**
 	 * Enables or disables debug-messages for a specific category.
 	 */
@@ -190,13 +190,13 @@ public:
 	 * Returns true if logging to stdout is enabled
 	 */
 	bool IsEnabledStdoutLog() const		{ return m_StdoutLog; }
-	
+
 	/**
 	 * Enables or disables logging to stdout.
 	 */
 	void SetEnabledStdoutLog(bool enabled)	{ m_StdoutLog = enabled; }
 
-	
+
 	/**
 	 * Logs the specified line of text, prefixed with the name of the DebugType.
 	 * (except for logStandard)
@@ -207,7 +207,7 @@ public:
 	 * @param type The debug-category, the name of which will be prepended to the line.
 	 * @param str The actual line of text.
 	 *
-	 * This function is thread-safe. If it is called by the main thread, the 
+	 * This function is thread-safe. If it is called by the main thread, the
 	 * event will be sent directly to the application, otherwise it will be
 	 * queued in the event-loop.
 	 */
@@ -258,8 +258,8 @@ public:
 	/**
 	 * Get name of Logfile
 	 */
-	const wxString & GetLogfileName() const { 
-		return m_LogfileName; 
+	const wxString & GetLogfileName() const {
+		return m_LogfileName;
 	}
 
 	/**
@@ -277,7 +277,7 @@ public:
 	}
 
 private:
-	class wxFFileOutputStream* applog; 	// the logfile
+	class wxFFileOutputStream* applog;	// the logfile
 	wxString m_LogfileName;
 	wxString m_ApplogBuf;
 	bool m_StdoutLog;
@@ -305,7 +305,7 @@ class CLoggerTarget : public wxLog
 {
 public:
 	CLoggerTarget();
-	
+
 	/**
 	 * @see wxLog::DoLogString
 	 */
@@ -333,7 +333,7 @@ public:
 		, m_msg(msg.c_str(), msg.Length())
 	{
 	}
-	
+
 	const wxString& Message() const {
 		return m_msg;
 	}
@@ -353,7 +353,7 @@ public:
 	wxEvent* Clone() const {
 		return new CLoggingEvent(m_critical, m_stdout, m_GUI, m_msg);
 	}
-	
+
 private:
 	bool		m_critical;
 	bool		m_stdout;
@@ -403,12 +403,12 @@ public:
 
 
 /**
- * These macros should be used when logging. The 
+ * These macros should be used when logging. The
  * AddLogLineM macro will simply call one of the
  * two CLogger::AddLogLine functions depending on
  * parameters, but AddDebugLogLine* will only log
  * a message if the message is either critical or
- * the specified debug-type is enabled in the 
+ * the specified debug-type is enabled in the
  * preferences.
  * AddLogLineMS will also always print to stdout.
  */

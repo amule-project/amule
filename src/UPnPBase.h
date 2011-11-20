@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -60,7 +60,7 @@ private:
 	std::string m_enabled;
 	std::string m_description;
 	std::string m_key;
-	
+
 public:
 	CUPnPPortMapping(
 		int port = 0,
@@ -98,15 +98,15 @@ public:
 	static const std::string &UPNP_SERVICE_WAN_IP_CONNECTION;
 	static const std::string &UPNP_SERVICE_WAN_PPP_CONNECTION;
 	CUPnPControlPoint &m_ctrlPoint;
-	
+
 public:
 	CUPnPLib(CUPnPControlPoint &ctrlPoint);
 	~CUPnPLib() {}
 
-	// Convenience function so we don't have to write explicit calls 
+	// Convenience function so we don't have to write explicit calls
 	// to char2unicode every time
 	std::string GetUPnPErrorMessage(int code) const;
-	
+
 	// Convenience function to avoid repetitive processing of error
 	// messages
 	std::string processUPnPErrorMessage(
@@ -119,7 +119,7 @@ public:
 	void ProcessActionResponse(
 		IXML_Document *RespDoc,
 		const std::string &actionName) const;
-	
+
 	// IXML_Element
 	IXML_Element *Element_GetRootElement(
 		IXML_Document *doc) const;
@@ -272,7 +272,7 @@ private:
 	const std::string m_direction;
 	bool m_retval;
 	const std::string m_relatedStateVariable;
-	
+
 public:
 	CUPnPArgument(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -300,7 +300,7 @@ private:
 	const CUPnPControlPoint &m_UPnPControlPoint;
 	ArgumentList m_ArgumentList;
 	const std::string m_name;
-	
+
 public:
 	CUPnPAction(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -322,7 +322,7 @@ class CUPnPAllowedValue
 private:
 	const CUPnPControlPoint &m_UPnPControlPoint;
 	const std::string m_allowedValue;
-	
+
 public:
 	CUPnPAllowedValue(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -346,7 +346,7 @@ private:
 	const std::string m_dataType;
 	const std::string m_defaultValue;
 	const std::string m_sendEvents;
-	
+
 public:
 	CUPnPStateVariable(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -374,7 +374,7 @@ private:
 	ActionList m_ActionList;
 	ServiceStateTable m_ServiceStateTable;
 	const std::string m_SCPDURL;
-	
+
 public:
 	CUPnPSCPD(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -394,7 +394,7 @@ class CUPnPArgumentValue
 private:
 	std::string m_argument;
 	std::string m_value;
-	
+
 public:
 	CUPnPArgumentValue();
 	CUPnPArgumentValue(const std::string &argument, const std::string &value);
@@ -423,7 +423,7 @@ private:
 	int m_timeout;
 	Upnp_SID m_SID;
 	std::auto_ptr<CUPnPSCPD> m_SCPD;
-	
+
 public:
 	CUPnPService(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -431,7 +431,7 @@ public:
 		IXML_Element *service,
 		const std::string &URLBase);
 	~CUPnPService();
-	
+
 	const std::string &GetServiceType() const
 		{ return m_serviceType; }
 	const std::string &GetServiceId() const
@@ -464,7 +464,7 @@ public:
 		{ return m_SCPD.get() != NULL; }
 	void SetSCPD(CUPnPSCPD *SCPD)
 		{ m_SCPD.reset(SCPD); }
-	
+
 	bool Execute(
 		const std::string &ActionName,
 		const std::vector<CUPnPArgumentValue> &ArgValue) const;
@@ -481,7 +481,7 @@ private:
 	// Please, lock these lists before use
 	DeviceList m_DeviceList;
 	ServiceList m_ServiceList;
-	
+
 	const std::string m_deviceType;
 	const std::string m_friendlyName;
 	const std::string m_manufacturer;
@@ -494,7 +494,7 @@ private:
 	const std::string m_UDN;
 	const std::string m_UPC;
 	std::string m_presentationURL;
-	
+
 public:
 	CUPnPDevice(
 		const CUPnPControlPoint &upnpControlPoint,
@@ -502,7 +502,7 @@ public:
 		IXML_Element *device,
 		const std::string &URLBase);
 	~CUPnPDevice() {}
-	
+
 	const std::string &GetUDN() const
 		{ return m_UDN; }
 	const std::string &GetDeviceType() const
@@ -534,7 +534,7 @@ public:
 		const char *location,
 		int expires);
 	~CUPnPRootDevice() {}
-	
+
 	const std::string &GetURLBase() const
 		{ return m_URLBase; }
 	const std::string &GetLocation() const
@@ -576,7 +576,7 @@ public:
 		std::vector<CUPnPPortMapping> &upnpPortMapping);
 	bool DeletePortMappings(
 		std::vector<CUPnPPortMapping> &upnpPortMapping);
-	
+
 	UpnpClient_Handle GetUPnPClientHandle()	const
 		{ return m_UPnPClientHandle; }
 
@@ -594,7 +594,7 @@ public:
 		Upnp_EventType EventType,
 		void* Event,
 		void* Cookie);
-	
+
 private:
 	void OnEventReceived(
 		const std::string &Sid,

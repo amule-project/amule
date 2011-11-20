@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -35,8 +35,8 @@ class wxDC;
 /**
  * The barshader class is responsible for drawing the chunk-based progress bars used in aMule.
  *
- * CBarShader represents the chunks of a file through the use of spans, which 
- * cover a range in the file with a certain color. New spans can be added on 
+ * CBarShader represents the chunks of a file through the use of spans, which
+ * cover a range in the file with a certain color. New spans can be added on
  * the fly and old spans are automatically removed, resized or merged when
  * necessary.
  *
@@ -47,7 +47,7 @@ class CBarShader
 public:
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param height The height of the area upon which the span is drawn.
 	 * @param width  The width of the area upon which the span is drawn.
 	 */
@@ -61,7 +61,7 @@ public:
 	/**
 	 * Sets the width of the drawn bar.
 	 *
-	 * @param width The new width. 
+	 * @param width The new width.
 	 *
 	 * Setting this sets the width the bar which is used when it
 	 * is drawn and resets the pixel buffer to the fill color.
@@ -71,7 +71,7 @@ public:
 	/**
 	 * Sets the height of the drawn bar.
 	 *
-	 * @param height The new height. 
+	 * @param height The new height.
 	 *
 	 * Changes the height of the bar, used when it is drawn.
 	 */
@@ -89,7 +89,7 @@ public:
 	 *
 	 * @param fileSize The new filesize.
 	 *
-	 * Calling this function sets a new filesize, which is the virtual 
+	 * Calling this function sets a new filesize, which is the virtual
 	 * length of the bar. This function must be called before any filling.
 	 */
 	void SetFileSize(uint64 fileSize)	{ m_FileSize = fileSize; }
@@ -137,7 +137,7 @@ private:
 	 * Calculates the modifiers used to create 3d effect.
 	 */
 	void BuildModifiers();
-	
+
 	//! The width of the drawn bar
 	unsigned	m_Width;
 	//! The height of the drawn bar
@@ -146,7 +146,7 @@ private:
 	uint64	m_FileSize;
 	//! Pointer to array of modifers used to create 3D effect. Size is (m_Height+1)/2 when set.
 	double*	m_Modifiers;
-	//! The current 3d level 
+	//! The current 3d level
 	uint16	m_used3dlevel;
 
 	// color for each pixel across the width is stored here

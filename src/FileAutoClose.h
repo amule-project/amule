@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -32,18 +32,18 @@
  * This class encapsulates the CFile class.
  *
  * It allows to close the used file handle and reopen
- * it on usage to minimize the number of used file handles. 
+ * it on usage to minimize the number of used file handles.
  *
  */
 class CFileAutoClose
 {
 public:
-	
+
 	/**
 	 * Creates a closed file.
 	 */
 	CFileAutoClose();
-	
+
 	/**
 	 * Constructor, calls Open on the specified file.
 	 *
@@ -68,7 +68,7 @@ public:
 	 * @return True if the file was opened, false otherwise.
 	 */
 	bool Open(const CPath& path, CFile::OpenMode mode = CFile::read);
-	
+
 	/**
 	 * Calling Create is equivilant of calling open with OpenMode 'write'.
 	 *
@@ -78,7 +78,7 @@ public:
 	 * @see CFile::Open
 	 */
 	bool Create(const CPath& path, bool overwrite = false);
-	
+
 	/**
 	 * Closes the file.
 	 *
@@ -90,20 +90,20 @@ public:
 	/**
 	 * @see CSafeFileIO::GetLength
 	 *
-	 * Note that calling GetLength on a closed file 
+	 * Note that calling GetLength on a closed file
 	 * is an illegal operation.
 	 */
 	uint64 GetLength() const;
-	
+
 	/**
 	 * Resizes the file to the specified length.
 	 *
 	 */
 	bool SetLength(uint64 newLength);
-	
+
 	/**
 	 * Returns the path of the currently opened file.
-	 * 
+	 *
 	 */
 	const CPath& GetFilePath() const;
 
@@ -111,7 +111,7 @@ public:
 	 * Returns true if the file is opened, false otherwise.
 	 */
 	bool IsOpened() const;
-	
+
 	/**
 	 * Reads 'count' bytes into 'buffer'.
 	 *
@@ -142,10 +142,10 @@ public:
 	/**
 	 * Returns the file descriptior assosiated with the file.
 	 *
-	 * This breaks the purpose of this class of course. 
+	 * This breaks the purpose of this class of course.
 	 * Therefore the AutoClose mechanism is disabled when fd() is called.
 	 * It's required for FileArea's mmap stuff.
-	 * Currently FileArea objects are shortlived enough for this not being 
+	 * Currently FileArea objects are shortlived enough for this not being
 	 * a problem anyway, but that might change in the future.
 	 */
 	int fd();
@@ -161,7 +161,7 @@ private:
 	CFileAutoClose(const CFileAutoClose&);
 	CFileAutoClose& operator=(const CFileAutoClose&);
 	//@}
-	
+
 	/**
 	 * Check if file was autoclosed, and reopen if needed.
 	 */
@@ -169,14 +169,14 @@ private:
 
 	//! The wrapped CFile.
 	CFile m_file;
-	
+
 	//! The mode used to open it.
 	CFile::OpenMode m_mode;
 
 	//! Is it temporarily closed?
 	bool m_autoClosed;
 
-	//! Autoclosing is disabled if != 0 
+	//! Autoclosing is disabled if != 0
 	uint16 m_locked;
 
 	//! Size before it was closed.

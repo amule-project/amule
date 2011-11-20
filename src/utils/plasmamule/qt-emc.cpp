@@ -15,7 +15,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -41,7 +41,7 @@ qtEmc::qtEmc(const QString &filename)
 				valid = FALSE;
 				errorCode = BadFileFormat;
 			}
-	
+
 			collection.close();
 		}
 	}
@@ -328,7 +328,7 @@ bool qtEmc::readBinary(QFile &collection)
 								} else if (fileName.length() == length)
 								{
 									int pos=0;
-	
+
 									for (int k=0; k<length; k++)
 									{
 										if (fileName.at(k) != buffer[k+pos])
@@ -339,9 +339,9 @@ bool qtEmc::readBinary(QFile &collection)
 
 									fileName.chop(pos);
 								}
-	
+
 								delete [] buffer;
-	
+
 								if (in.atEnd() && (j != tagCount) && (i =! fileCount))
 								{
 									errorCode = CorruptFile;

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -55,7 +55,7 @@ class CTreeItemData : public wxTreeItemData
 const wxColour& CStatisticsDlg::getColors(unsigned num)
 {
 	wxCHECK(num < 15, *wxBLACK);
-	
+
 	return acrStat[num];
 }
 
@@ -110,11 +110,11 @@ void CStatisticsDlg::InitGraphs()
 
 // this array is now used to store the current color settings and to define the defaults
 wxColour CStatisticsDlg::acrStat[cntStatColors] =
-	{ 
+	{
 		wxColour(0,0,64), wxColour(192,192,255), wxColour(128, 255, 128), wxColour(0, 210, 0),
 		wxColour(0, 128, 0), wxColour(255, 128, 128), wxColour(200, 0, 0), wxColour(140, 0, 0),
-	  	wxColour(150, 150, 255), wxColour(192, 0, 192), wxColour(255, 255, 128), wxColour(0, 0, 0), 
-	  	wxColour(128, 255, 128), wxColour(0, 210, 0), wxColour(0, 128, 0)
+		wxColour(150, 150, 255), wxColour(192, 0, 192), wxColour(255, 255, 128), wxColour(0, 0, 0),
+		wxColour(128, 255, 128), wxColour(0, 210, 0), wxColour(0, 128, 0)
 	};
 
 void CStatisticsDlg::ApplyStatsColor(int index)
@@ -123,25 +123,25 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 	static int aRes[] = { 0,0, IDC_C0,IDC_C0_3,IDC_C0_2,  IDC_C1,IDC_C1_3,IDC_C1_2,  IDC_S0,IDC_S3,IDC_S1 };
 	static COScopeCtrl** apscope[] = { NULL, NULL, &pscopeDL,&pscopeDL,&pscopeDL, &pscopeUL,&pscopeUL,&pscopeUL, &pscopeConn,&pscopeConn,&pscopeConn };
 
-	const wxColour& cr = acrStat[index];  
+	const wxColour& cr = acrStat[index];
 
 	int iRes = aRes[index];
 	int iTrend = aTrend[index];
 	COScopeCtrl** ppscope = apscope[index];
 	CColorFrameCtrl* ctrl;
 	switch (index) {
-		case 0:	
+		case 0:
 				pscopeDL->SetBackgroundColor(cr);
 				pscopeUL->SetBackgroundColor(cr);
 				pscopeConn->SetBackgroundColor(cr);
 				break;
-		case 1:	
+		case 1:
 				pscopeDL->SetGridColor(cr);
 				pscopeUL->SetGridColor(cr);
 				pscopeConn->SetGridColor(cr);
 				break;
 		case 2:  case 3:  case 4:
-		case 5:  case 6:  case 7:	
+		case 5:  case 6:  case 7:
 		case 8:  case 9:  case 10:
 				(*ppscope)->SetPlotColor(cr, iTrend);
 				if ((ctrl = CastChild(iRes, CColorFrameCtrl)) == NULL) {
@@ -157,7 +157,7 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 
 void CStatisticsDlg::UpdateStatGraphs(const uint32 peakconnections, const GraphUpdateInfo& update)
 {
-	
+
 	std::vector<float *> v1(3);
 	v1[0] = const_cast<float *>(&update.downloads[0]);
 	v1[1] = const_cast<float *>(&update.downloads[1]);
@@ -173,7 +173,7 @@ void CStatisticsDlg::UpdateStatGraphs(const uint32 peakconnections, const GraphU
 	v3[1] = const_cast<float *>(&update.connections[1]);
 	v3[2] = const_cast<float *>(&update.connections[2]);
 	const std::vector<float *> &apfConn(v3);
-	
+
 	if (!IsShownOnScreen()) {
 		pscopeDL->DelayPoints();
 		pscopeUL->DelayPoints();
@@ -185,17 +185,17 @@ void CStatisticsDlg::UpdateStatGraphs(const uint32 peakconnections, const GraphU
 	if (nScale != nScalePrev) {
 		nScalePrev = nScale;
 		wxStaticText* label = CastChild( ID_ACTIVEC, wxStaticText );
-		
+
 		label->SetLabel(CFormat(_("Active connections (1:%u)")) % nScale);
 		label->GetParent()->Layout();
-		
+
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);
 	}
-	
+
 	if (!IsShownOnScreen()) {
 		return;
 	}
-	
+
 	pscopeDL->AppendPoints(update.timestamp, apfDown);
 	pscopeUL->AppendPoints(update.timestamp, apfUp);
 	pscopeConn->AppendPoints(update.timestamp, apfConn);
@@ -206,13 +206,13 @@ void CStatisticsDlg::SetUpdatePeriod(int step)
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
 	if (step == 0) {
-	 	pscopeDL->Stop();
- 		pscopeUL->Stop();
-	 	pscopeConn->Stop();
+		pscopeDL->Stop();
+		pscopeUL->Stop();
+		pscopeConn->Stop();
 	} else {
-	 	pscopeDL->Reset(step);
- 		pscopeUL->Reset(step);
-	 	pscopeConn->Reset(step);
+		pscopeDL->Reset(step);
+		pscopeUL->Reset(step);
+		pscopeConn->Reset(step);
 	}
 }
 
@@ -220,8 +220,8 @@ void CStatisticsDlg::SetUpdatePeriod(int step)
 void CStatisticsDlg::ResetAveragingTime()
 {
 	// this gets called after the value in Preferences/Statistics/time for running avg has been changed
- 	pscopeDL->InvalidateGraph();
- 	pscopeUL->InvalidateGraph();
+	pscopeDL->InvalidateGraph();
+	pscopeUL->InvalidateGraph();
 }
 
 
@@ -238,7 +238,7 @@ void CStatisticsDlg::SetARange(bool SetDownload,int maxValue)
 void  CStatisticsDlg::InitTree()
 {
 #ifndef CLIENT_GUI
-	wxTreeItemId root = 
+	wxTreeItemId root =
 #endif
 		stattree->AddRoot(theStats::GetTreeRoot()->GetDisplayString());
 
@@ -264,7 +264,7 @@ void CStatisticsDlg::GetExpandedNodes(NodeIdSet& nodeset, const wxTreeItemId& ro
 {
 	wxTreeItemIdValue cookie;
 	wxTreeItemId temp_it = stattree->GetFirstChild(root,cookie);
-	
+
 	while (temp_it.IsOk()) {
 		if (stattree->IsExpanded(temp_it)) {
 			nodeset.insert(dynamic_cast<CTreeItemData*>(stattree->GetItemData(temp_it))->GetUniqueId());
@@ -286,7 +286,7 @@ void CStatisticsDlg::ShowStatistics(bool init)
 		// Update sorting / get tree via EC
 		m_stats->UpdateStatsTree();
 	}
-	
+
 	CStatTreeItemBase* treeRoot = theStats::GetTreeRoot();
 	wxTreeItemId root = stattree->GetRootItem();
 	FillTree(treeRoot, root, ExpandedNodes);
@@ -330,11 +330,11 @@ void CStatisticsDlg::FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& Sta
 	StatTreeItemIterator temp_it = statssubtree->GetFirstVisibleChild(thePrefs::GetMaxClientVersions());
 #else
 	StatTreeItemIterator temp_it = statssubtree->GetFirstVisibleChild();
-#endif	
+#endif
 
 	wxTreeItemIdValue cookie;
 	wxTreeItemId temp_GUI_it = stattree->GetFirstChild(StatsGUITree,cookie);
-	
+
 	while (!statssubtree->IsAtEndOfList(temp_it)) {
 		wxTreeItemId temp_item;
 		if (temp_GUI_it.IsOk()) {
@@ -361,7 +361,7 @@ void CStatisticsDlg::FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& Sta
 			stattree->DeleteChildren(temp_item);
 		}
 		statssubtree->GetNextVisibleChild(temp_it);
-	}	
+	}
 
 	// What if GUI has more items than tree?
 	// Delete the extra items.

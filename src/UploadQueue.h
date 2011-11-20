@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -57,10 +57,10 @@ public:
 	bool	IsDownloading(const CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
 	void	ResortQueue() { SortGetBestClient(); }
-	
+
 	const CClientRefList& GetWaitingList() const { return m_waitinglist; }
 	const CClientRefList& GetUploadingList() const { return m_uploadinglist; }
-	
+
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 
 	uint16	SuspendUpload(const CMD4Hash &, bool terminate);

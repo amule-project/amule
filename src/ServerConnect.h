@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -25,7 +25,7 @@
 
 //
 // Client to Server communication
-// 
+//
 
 #ifndef SERVERCONNECT_H
 #define SERVERCONNECT_H
@@ -59,15 +59,15 @@ class CServerConnect {
 public:
 	CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address);
 	~CServerConnect();
-	
+
 	void	ConnectionFailed(CServerSocket* sender);
 	void	ConnectionEstablished(CServerSocket* sender);
-	
+
 	void	ConnectToAnyServer(bool prioSort = true, bool bNoCrypt = false);
 	void	ConnectToServer(CServer* toconnect, bool multiconnect = false, bool bNoCrypt = false);
 	void	StopConnectionTry();
 	void	CheckForTimeout();
-	
+
 	// safe socket closure and destruction
 	void	DestroySocket(CServerSocket* pSck);
 	bool	SendPacket(CPacket* packet,bool delpacket = true, CServerSocket* to = 0);
@@ -89,11 +89,11 @@ public:
 	bool	IsLocalServer(uint32 dwIP, uint16 nPort);
 	void	TryAnotherConnectionrequest();
 	bool	IsSingleConnect()	{ return singleconnecting; }
-	void	KeepConnectionAlive();	
+	void	KeepConnectionAlive();
 
 	bool AwaitingTestFromIP(uint32 ip);
 	bool IsConnectedObfuscated() const;
-	
+
 	/**
 	 * Called when a socket has been DNS resolved.
 	 *
@@ -114,7 +114,7 @@ private:
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
 	CServerUDPSocket*	serverudpsocket;
-	
+
 	// list of currently opened sockets
 	typedef	std::list<CServerSocket*>	SocketsList;
 	SocketsList	m_lstOpenSockets;

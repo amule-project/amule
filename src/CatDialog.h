@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,8 +39,8 @@ class wxBitmap;
  * the user can add or change them.
  *
  * It is a self-contained entity, and does not rely on the categories staying
- * the same while the dialog is visble, though it will overwrite any changes 
- * made to the selected category in the mean time. Also, if the selected category 
+ * the same while the dialog is visble, though it will overwrite any changes
+ * made to the selected category in the mean time. Also, if the selected category
  * has been deleted then it will simply be readded.
  *
  * It does however rely on the Transferwnd keeping its own list of categories up-
@@ -56,16 +56,16 @@ public:
 	 * @param catindex The category to be edited.
 	 *
 	 * The parameter catindex can be a valid index, in which case that category
-	 * will be selected, or it can be less than zero, in which case a new 
+	 * will be selected, or it can be less than zero, in which case a new
 	 * category will be created.
 	 */
 	CCatDialog(wxWindow* parent, bool allowbrowse, int catindex = -1 );
-	
+
 	/**
 	 * Destructor.
 	 */
 	~CCatDialog();
-	
+
 private:
 	/**
 	 * Helper function for making the color-preview.
@@ -96,7 +96,7 @@ private:
 	 * Event-handler for selecting category color.
 	 */
 	void OnBnClickColor(wxCommandEvent& evt);
-	
+
 	DECLARE_EVENT_TABLE()
 };
 

@@ -16,7 +16,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -75,7 +75,7 @@ wxString MD5Sum::Calculate(const uint8* buffer, size_t len)
 	}
 
 	memcpy(m_rawhash, digest, 16);
-	
+
 	return m_sHash;
 }
 
@@ -188,7 +188,7 @@ void MD5Update (MD5_CTX *context, const unsigned char *input, size_t inputLen)
 }
 
 /* MD5 finalization. Ends an MD5 message-digest operation, writing the
- * the message digest and zeroizing the context. 
+ * the message digest and zeroizing the context.
  */
 void MD5Final (unsigned char digest[16], MD5_CTX *context)
 {

@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -41,8 +41,8 @@
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnRightClick)
-	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated) 
-	
+	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated)
+
 	EVT_MENU(MP_MESSAGE, CFriendListCtrl::OnSendMessage)
 	EVT_MENU(MP_REMOVEFRIEND, CFriendListCtrl::OnRemoveFriend)
 	EVT_MENU(MP_ADDFRIEND, CFriendListCtrl::OnAddFriend)
@@ -70,12 +70,12 @@ void CFriendListCtrl::RemoveFriend(CFriend* toremove)
 	if (!toremove) {
 		return;
 	}
-	
+
 	sint32 itemnr = FindItem(-1, reinterpret_cast<wxUIntPtr>(toremove));
-	
+
 	if ( itemnr == -1 )
 		return;
-	
+
 	DeleteItem(itemnr);
 }
 
@@ -100,35 +100,35 @@ void CFriendListCtrl::UpdateFriend(CFriend* toupdate)
 void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(event))
 {
 	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	
+
 	CFriend* cur_friend = (CFriend*)GetItemData(cursel);
-	
+
 	/* ignore this one, it is not activated anymore :) */
 	if (cur_friend == NULL) {
 		return;
 	}
 
 	theApp->amuledlg->m_chatwnd->StartSession(cur_friend);
-	
+
 }
 
 
 void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 {
 	int cursel = CheckSelection(event);
-	
+
 	CFriend* cur_friend = NULL;
-	
+
 	wxMenu* menu = new wxMenu(_("Friends"));
-	
+
 	if ( cursel != -1 ) {
 		cur_friend = (CFriend*)GetItemData(cursel);
 		menu->Append(MP_DETAIL, _("Show &Details"));
 		menu->Enable(MP_DETAIL, cur_friend->GetLinkedClient().IsLinked());
 	}
-	
+
 	menu->Append(MP_ADDFRIEND, _("Add a friend"));
-	
+
 	if (cursel != (-1)) {
 		menu->Append(MP_REMOVEFRIEND, _("Remove Friend"));
 		menu->Append(MP_MESSAGE, _("Send &Message"));
@@ -141,24 +141,24 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 			menu->Enable(MP_FRIENDSLOT, false);
 		}
 	}
-	
+
 	PopupMenu(menu, event.GetPosition());
 	delete menu;
 }
 
 void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	while( index != -1 ) {
 		CFriend* cur_friend = (CFriend*)GetItemData(index);
-		theApp->amuledlg->m_chatwnd->StartSession(cur_friend);			
-		//#warning CORE/GUI!			
+		theApp->amuledlg->m_chatwnd->StartSession(cur_friend);
+		//#warning CORE/GUI!
 		#ifndef CLIENT_GUI
 		theApp->friendlist->StartChatSession(cur_friend);
-		#endif		
+		#endif
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	}	
+	}
 }
 
 
@@ -173,7 +173,7 @@ void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event))
 
 	if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 		long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 		while( index != -1 ) {
 			CFriend* cur_friend = (CFriend*)GetItemData(index);
 			theApp->friendlist->RemoveFriend(cur_friend);
@@ -186,35 +186,35 @@ void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event))
 
 void CFriendListCtrl::OnAddFriend(wxCommandEvent& WXUNUSED(event))
 {
-	CAddFriend(this).ShowModal();			
+	CAddFriend(this).ShowModal();
 }
 
 
 void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event))
 {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	while( index != -1 ) {
 		CFriend* cur_friend = (CFriend*)GetItemData(index);
 		if (cur_friend->GetLinkedClient().IsLinked()) {
 			CClientDetailDialog(this, cur_friend->GetLinkedClient()).ShowModal();
-		}		
+		}
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	}	
-	
+	}
+
 }
 
 
 void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event))
 {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	while( index != -1 ) {
 		CFriend* cur_friend = (CFriend*)GetItemData(index);
 		theApp->friendlist->RequestSharedFileList(cur_friend);
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	}	
-	
+	}
+
 }
 
 
@@ -222,7 +222,7 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event)
 {
 	// Get item
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	CFriend* cur_friend = (CFriend*)GetItemData(index);	
+	CFriend* cur_friend = (CFriend*)GetItemData(index);
 	theApp->friendlist->SetFriendSlot(cur_friend, event.IsChecked());
 	index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (index != -1) {

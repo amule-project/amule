@@ -82,7 +82,7 @@ Section 1.1: Transmission layer
 
 
     Transmission layer example:
-    	0x30 0x23 <appdata>	- Client uses no extensions on this packet,
+	0x30 0x23 <appdata>	- Client uses no extensions on this packet,
 		and indicates that it can accept zlib compression and
 		compressed numbers.
 
@@ -121,12 +121,12 @@ Section 1.2: Application layer
 	    <tag data>
 
     The ec_tagname_t is defined as an uint16, ec_taglen_t as an uint32 value
-    at the moment. ec_tagtype_t is an uint8. 
+    at the moment. ec_tagtype_t is an uint8.
 	TagName tells what it contains (see ECcodes.h for details).
 	TagType sends the type of this tag (see ECPacket.h for types)
     TagLen contains the whole length of the tag, including the lengths of the
-    possible sub-tags, but without the size of the tagName, tagType and 
-	tagLen fields. Actually the lowest bit of the tagname doesn't belong to the 
+    possible sub-tags, but without the size of the tagName, tagType and
+	tagLen fields. Actually the lowest bit of the tagname doesn't belong to the
 	tagName itself, so it has to be cleared before checking the name.
 
     Tags may contain sub-tags to store the information, and a tagCount field
@@ -212,7 +212,7 @@ Section 3: Clarifying things
     connection.
 
     EC_OP_AUTH_REQ (0x02)
-        +----EC_TAG_CLIENT_NAME (0x06) (optional)	
+        +----EC_TAG_CLIENT_NAME (0x06) (optional)
         +----EC_TAG_PASSWD_HASH (0x04)
         +----EC_TAG_PROTOCOL_VERSION (0x0c)
         +----EC_TAG_CLIENT_VERSION (0x08) (optional)

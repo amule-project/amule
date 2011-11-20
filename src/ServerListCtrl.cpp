@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -50,20 +50,20 @@
 
 BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK( -1,	CServerListCtrl::OnItemRightClicked)
-	EVT_LIST_ITEM_ACTIVATED( -1, 	CServerListCtrl::OnItemActivated )
+	EVT_LIST_ITEM_ACTIVATED( -1,	CServerListCtrl::OnItemActivated )
 
 	EVT_MENU( MP_PRIOLOW,			CServerListCtrl::OnPriorityChange )
 	EVT_MENU( MP_PRIONORMAL,		CServerListCtrl::OnPriorityChange )
 	EVT_MENU( MP_PRIOHIGH,			CServerListCtrl::OnPriorityChange )
-	
+
 	EVT_MENU( MP_ADDTOSTATIC,		CServerListCtrl::OnStaticChange )
 	EVT_MENU( MP_REMOVEFROMSTATIC,	CServerListCtrl::OnStaticChange )
 
 	EVT_MENU( MP_CONNECTTO,			CServerListCtrl::OnConnectToServer )
-	
+
 	EVT_MENU( MP_REMOVE,			CServerListCtrl::OnRemoveServers )
 	EVT_MENU( MP_REMOVEALL,			CServerListCtrl::OnRemoveServers )
-	
+
 	EVT_MENU( MP_GETED2KLINK,		CServerListCtrl::OnGetED2kURL )
 
 	EVT_CHAR( CServerListCtrl::OnKeyPressed )
@@ -98,8 +98,8 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 	InsertColumn( COLUMN_SERVER_TCPFLAGS,	wxT("TCP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("t") );
 	InsertColumn( COLUMN_SERVER_UDPFLAGS,	wxT("UDP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("u") );
 	#endif
-	
-	
+
+
 	LoadSettings();
 }
 
@@ -120,7 +120,7 @@ void CServerListCtrl::AddServer( CServer* toadd )
 	// RefreshServer will add the server.
 	// This also means that we have simple duplicity checking. ;)
 	RefreshServer( toadd );
-	
+
 	ShowServerCount();
 }
 
@@ -131,7 +131,7 @@ void CServerListCtrl::RemoveServer(CServer* server)
 	if ( result != -1 ) {
 		DeleteItem(result);
 		ShowServerCount();
-	}	
+	}
 }
 
 
@@ -143,13 +143,13 @@ void CServerListCtrl::RemoveAllServers(int state)
 
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
-		
+
 		if (server == m_connected && connected) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
 			++pos;
 		} else if (server->IsStaticMember()) {
 			const wxString name = (!server->GetListName() ? wxString(_("(Unknown name)")) : server->GetListName());
-			
+
 			if (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
 				theApp->serverlist->SetStaticServer(server, false);
 				DeleteItem( pos );
@@ -161,7 +161,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 			DeleteItem( pos );
 			theApp->serverlist->RemoveServer( server );
 		}
-		
+
 		pos = GetNextItem(pos - 1, wxLIST_NEXT_ALL, state);
 	}
 
@@ -171,7 +171,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 
 void CServerListCtrl::RefreshServer( CServer* server )
 {
-	// Cant really refresh a NULL server 
+	// Cant really refresh a NULL server
 	if (!server) {
 		return;
 	}
@@ -182,13 +182,13 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		// We are not at the sure that the server isn't in the list, so we can re-add
 		itemnr = InsertItem( GetInsertPos( ptr ), server->GetListName() );
 		SetItemPtrData( itemnr, ptr );
-	
+
 		wxListItem item;
 		item.SetId( itemnr );
 		item.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
 		SetItem( item );
 	}
-	
+
 	wxString serverName;
 #ifdef ENABLE_IP2COUNTRY
 	// Get the country name
@@ -209,7 +209,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 			CFormat(wxT("%u (%s)")) % server->GetPort() % server->GetAuxPortsList());
 	}
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
-	
+
 	if ( server->GetPing() ) {
 		SetItem( itemnr, COLUMN_SERVER_PING,
 			CastSecondsToHM(server->GetPing()/1000, server->GetPing() % 1000 ) );
@@ -253,7 +253,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_UNICODE) {
 		flags += wxT("u");
-	}          	
+	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH) {
 		flags += wxT("r");
 	}
@@ -266,9 +266,9 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	if (server->GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) {
 		flags += wxT("o");
 	}
-	
+
 	SetItem( itemnr, COLUMN_SERVER_TCPFLAGS, flags );
-	
+
 	/* UDP */
 	flags.Clear();
 	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES) {
@@ -279,7 +279,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_NEWTAGS) {
 		flags += wxT("n");
-	}          	
+	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_UNICODE) {
 		flags += wxT("u");
 	}
@@ -296,9 +296,9 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		flags += wxT("O");
 	}
 	SetItem( itemnr, COLUMN_SERVER_UDPFLAGS, flags );
-	
+
 	#endif
-	
+
 	// Deletions of items causes rather large ammount of flicker, so to
 	// avoid this, we resort the list to ensure correct ordering.
 	if (!IsItemSorted(itemnr)) {
@@ -311,20 +311,20 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 {
 	// Unset the old highlighted server if we are going to set a new one
 	if ( m_connected && highlight ) {
-		// A recursive call to do the real work. 
+		// A recursive call to do the real work.
 		HighlightServer( m_connected, false );
 
 		m_connected = 0;
 	}
-	
+
 	long itemnr = FindItem( -1,  reinterpret_cast<wxUIntPtr>(server) );
 	if ( itemnr > -1 ) {
 		wxListItem item;
 		item.SetId( itemnr );
-		
+
 		if ( GetItem( item ) ) {
 			wxFont font = GetFont();
-			
+
 			if ( highlight ) {
 				font.SetWeight( wxBOLD );
 
@@ -356,10 +356,10 @@ void CServerListCtrl::OnItemActivated( wxListEvent& event )
 	long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	while ( item > -1 ) {
 		SetItemState( item, 0, wxLIST_STATE_SELECTED);
-		
+
 		item = GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
-		
+
 	SetItemState( event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
 
 	wxCommandEvent nulEvt;
@@ -428,7 +428,7 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 		serverMenu->Append( MP_GETED2KLINK, _("Copy eD2k links to clipboard") );
 	}
 
-	serverMenu->Enable( MP_REMOVEFROMSTATIC, 	enable_static_off );
+	serverMenu->Enable( MP_REMOVEFROMSTATIC,	enable_static_off );
 	serverMenu->Enable( MP_ADDTOSTATIC,			enable_static_on  );
 
 	if ( GetSelectedItemCount() == 1 ) {
@@ -451,15 +451,15 @@ void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 	switch ( event.GetId() ) {
 		case MP_PRIOLOW:		priority = SRV_PR_LOW;		break;
 		case MP_PRIONORMAL:		priority = SRV_PR_NORMAL;	break;
-		case MP_PRIOHIGH:		priority = SRV_PR_HIGH;		break;		
-				
+		case MP_PRIOHIGH:		priority = SRV_PR_HIGH;		break;
+
 		default:
 			return;
 	}
 
-	
+
 	ItemDataList items = GetSelectedItems();
-	
+
 	for ( unsigned int i = 0; i < items.size(); ++i ) {
 		CServer* server = (CServer*)items[ i ];
 		theApp->serverlist->SetServerPrio(server, priority);
@@ -472,7 +472,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 	bool isStatic = ( event.GetId() == MP_ADDTOSTATIC );
 
 	ItemDataList items = GetSelectedItems();
-	
+
 	for ( unsigned int i = 0; i < items.size(); ++i ) {
 		CServer* server = (CServer*)items[ i ];
 
@@ -487,7 +487,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	if ( item > -1 ) {
 		if ( theApp->IsConnectedED2K() ) {
 			theApp->serverconnect->Disconnect();
@@ -496,24 +496,24 @@ void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 		theApp->serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );
 	}
 }
-	
+
 
 void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 {
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	wxString URL;
-	
+
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
-		
+
 		URL += CFormat(wxT("ed2k://|server|%s|%d|/\n"))	% server->GetFullIP() % server->GetPort();
-		
+
 		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
-	
+
 	URL.RemoveLast();
-	
+
 	theApp->CopyTextToClipboard( URL );
 }
 
@@ -523,14 +523,14 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 	if ( event.GetId() == MP_REMOVEALL ) {
 		if ( GetItemCount() ) {
 			wxString question = _("Are you sure that you wish to delete all servers?");
-	
+
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 				if ( theApp->serverconnect->IsConnecting() ) {
 					theApp->downloadqueue->StopUDPRequests();
 					theApp->serverconnect->StopConnectionTry();
 					theApp->serverconnect->Disconnect();
 				}
-			
+
 				RemoveAllServers(wxLIST_STATE_DONTCARE);
 			}
 		}
@@ -542,7 +542,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 			} else {
 				question = _("Are you sure that you wish to delete the selected servers?");
 			}
-	
+
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 				RemoveAllServers(wxLIST_STATE_SELECTED);
 			}
@@ -570,12 +570,12 @@ int CServerListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	CServer* server2 = (CServer*)item2;
 
 	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	
+
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by server-name
 		case COLUMN_SERVER_NAME:
 			return mode * server1->GetListName().CmpNoCase(server2->GetListName());
-		
+
 		// Sort by address
 		case COLUMN_SERVER_ADDR:
 			{

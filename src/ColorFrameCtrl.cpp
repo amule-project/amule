@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -76,9 +76,9 @@ void CColorFrameCtrl::SetBackgroundBrushColour(const wxColour& colour)
 	Refresh(FALSE);
 }  // SetBackgroundColor
 
- 
+
 ////////////////////////////////////////////////////////////////////////////
-void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt)) 
+void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 {
   wxPaintDC dc(this);
 
@@ -101,7 +101,7 @@ void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
   dc.SetPen(*wxWHITE_PEN);
   dc.DrawLine(rc.x+rc.width-1,rc.y,rc.x+rc.width-1,rc.y+rc.height-1);
   dc.DrawLine(rc.x+rc.width-1,rc.y+rc.height-1,rc.x,rc.y+rc.height-1);
-  
+
   dc.SetPen(*wxGREY_PEN);
   dc.DrawLine(rc.x+rc.width,rc.y,rc.x,rc.y);
   dc.DrawLine(rc.x,rc.y,rc.x,rc.y+rc.height);
@@ -109,7 +109,7 @@ void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 } // OnPaint
 
 /////////////////////////////////////////////////////////////////////////////
-void CColorFrameCtrl::OnSize(wxSizeEvent& WXUNUSED(evt)) 
+void CColorFrameCtrl::OnSize(wxSizeEvent& WXUNUSED(evt))
 {
 
 	// NOTE: OnSize automatically gets called during the setup of the control

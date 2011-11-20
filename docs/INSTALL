@@ -26,7 +26,7 @@
       mappings in the GUI;
     * gettext >= 0.11.5 if you want to enable NLS (Native Language Support).
 
-  It is known to compile with GCC 3.2, 3.3, 3.4, 4.1, 4.2 and 4.3; 
+  It is known to compile with GCC 3.2, 3.3, 3.4, 4.1, 4.2 and 4.3;
   Sun Studio 12 and MSVC. GCC 2.95 is not supported.
 
   aMule requires a wxWidgets builds that supports unicode. Since wxWidgets
@@ -37,7 +37,7 @@
   from source be sure to always test your compilation with `cryptest.exe v'.
   (Yes, it's called cryptest.exe on all platforms.) Only when all tests
   passed may you safely go on with compiling aMule.
-  Adding "-DCRYPTOPP_DISABLE_ASM -O1" to CXXFLAGS is known to resolve 
+  Adding "-DCRYPTOPP_DISABLE_ASM -O1" to CXXFLAGS is known to resolve
   these problems.
 
 
@@ -45,7 +45,7 @@
 -----------------
 
   Compiling and installing aMule is as easy as running the usual
-  
+
     ./configure
     make
     make install
@@ -73,7 +73,7 @@
     --enable-alc              compile aMuleLinkCreator GUI version
     --enable-alcc             compile aMuleLinkCreator for console
     --disable-monolithic      disable building of the monolithic aMule app
-	
+
   For a full list of available options run `./configure --help' from the
   aMule source directory.
 

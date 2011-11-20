@@ -23,14 +23,14 @@ if test x"`ls docs/Changelog`" = x""; then
   echo "This script must be run on aMule base directory."
 else
   CHANGELOG="Changelog-`grep -h -E 'Version [0-9]\.[0-9]+\.[0-9]+.*' docs/Changelog | head -n 1 | cut -d ' ' -f 2`"
-  head -n `grep -hn -E '(\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-)+' docs/Changelog | cut -d ':' -f 1 | head -1` docs/Changelog > $CHANGELOG 
+  head -n `grep -hn -E '(\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-)+' docs/Changelog | cut -d ':' -f 1 | head -1` docs/Changelog > $CHANGELOG
   sed -i -r "s/\t([A-Z,a-z].+):$/'''\1:'''/g" $CHANGELOG
   sed -i -r "s/^(Version .+)$/=== \1 ===/g" $CHANGELOG
   sed -i -r "s/^----------$//g" $CHANGELOG
   sed -i -r "s/^([0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?)$/''\1''/g" $CHANGELOG
   sed -i -r "s/\t+(\*? .+)$/\1/g" $CHANGELOG
-  while test x"`grep -E '^\s+.+$' $CHANGELOG`" != x""; do 
-    sed -i -r "N 
+  while test x"`grep -E '^\s+.+$' $CHANGELOG`" != x""; do
+    sed -i -r "N
 		s/^(\*?.*)\n\s+([^\*]+)$/\1 \2/g " $CHANGELOG;
   done
   echo "$CHANGELOG created."

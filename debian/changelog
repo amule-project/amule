@@ -619,7 +619,7 @@ amule (2.1.1+CVS20060505-2) testing; urgency=low
   * Renamed package amuled to amule-daemon to be compatible to the official deb
     thanks to Jacobo221 for the hint.
   * Split off all languages to separate pkg's. Thanks to Uwe for initial work.
-  * Cleaned up TODO-Debian 
+  * Cleaned up TODO-Debian
   * Moved complete to dh_install
   * Removed usr/share and usr/share/pixmaps from debian/amule.dirs
   * Moved /usr/share/doc/amule/TODO and /usr/share/doc/amule/TODO to amule-common
@@ -920,7 +920,7 @@ amule (2.0.0rc7+CVS20041031) unstable; urgency=low
 amule (2.0.0rc7+CVS20041030) unstable; urgency=low
 
   * Changed Versionerror for yesterdays Version in Changelog
-  * Added Recommends for amule-utils, amule-cas, amule-wxcas and 
+  * Added Recommends for amule-utils, amule-cas, amule-wxcas and
     amule-xas to amule
 
  -- Vollstrecker <amule@vollstreckernet.de>  Tue,  2 Nov 2004 13:20:45 +0100
@@ -972,7 +972,7 @@ amule (2.0.0rc7+CVS20041023-1) unstable; urgency=low
 
 amule (2.0.0rc7-1) unstable; urgency=low
 
-  * Initial Release. Based on the work of Julien Delange 
+  * Initial Release. Based on the work of Julien Delange
     <julien@gunnm.org>
 
  -- Vollstrecker <amule@vollstreckernet.de>  Fri,  8 Oct 2004 18:46:26 +0200

@@ -267,13 +267,13 @@ int CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 int CamuleGuiApp::OnExit()
 {
 	delete core_timer;
-	
-	return CamuleApp::OnExit();	
+
+	return CamuleApp::OnExit();
 }
 
 
 void CamuleGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
-{		
+{
 	amuledlg->DlgShutDown();
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();

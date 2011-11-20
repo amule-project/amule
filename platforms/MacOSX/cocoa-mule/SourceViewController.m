@@ -6,17 +6,17 @@
 	BaseItem *node = [[BaseItem alloc] init];
 	node->m_text = [NSString stringWithString:text];
 	[node->m_text retain];
-	
+
 	node->m_subitems = [NSMutableArray arrayWithCapacity:16];
 	[node->m_subitems retain];
 	node->m_subitems_count = 0;
-	
+
 	node->m_view_id = viewId;
 	if ( viewId != nil ) {
 		[node->m_view_id retain];
-	}       
-	
-	
+	}
+
+
 //	NSString* imageName = [[NSBundle mainBundle] pathForResource:@"Client_Transfer" ofType:@"png"];
 //	NSImage* imageObj = [[NSImage alloc] initWithContentsOfFile:imageName];
 	NSString *imageName = @"Client_Transfer";
@@ -24,7 +24,7 @@
 	[imageObj retain];
 	assert(imageObj);
 	node->m_icon = imageObj;
-	
+
 	return node;
 }
 
@@ -32,7 +32,7 @@
 {
 	[m_text release];
 	[m_subitems release];
-	
+
 	[super dealloc];
 }
 
@@ -73,17 +73,17 @@
 
 + (BaseItem *)initFilesItem {
 	BaseItem *it = [BaseItem initWithText:@"Files" withViewId:nil];
-	
+
 	BaseItem *all = [BaseItem initWithText:@"All files" withViewId:@"all"];
 	BaseItem *dl = [BaseItem initWithText:@"Downloads" withViewId:@"downloads"];
 	BaseItem *ul = [BaseItem initWithText:@"Uploads" withViewId:@"upload"];
 	BaseItem *sh = [BaseItem initWithText:@"Shared" withViewId:@"shared"];
-	
+
 	[it addSubItem:all];
 	[it addSubItem:dl];
 	[it addSubItem:ul];
 	[it addSubItem:sh];
-	
+
 	return it;
 }
 
@@ -107,7 +107,7 @@
 	obj->g_root_items[RootItemFiles] = [CategoryItemFactory initFilesItem];
 	obj->g_root_items[RootItemNetwork] = [CategoryItemFactory initNetworksItem];
 	obj->g_root_items[RootItemSearch] = [CategoryItemFactory initSearchItem];
-	
+
 	return obj;
 }
 
@@ -135,7 +135,7 @@
 	return [item itemAtIndex: index];
 }
 
-- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item 
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
 	NSString *columnId = [tableColumn identifier];
 	if ( [columnId compare:@"status"] == NSOrderedSame ) {
@@ -198,7 +198,7 @@
     result.origin.x += PADDING_BEFORE_IMAGE;
 
 	result.size = [m_icon size];
-	
+
     return result;
 }
 
@@ -226,18 +226,18 @@
 }
 
 - (void)drawInteriorWithFrame:(NSRect)bounds inView:(NSView *)controlView {
-	
+
     NSRect imageRect = [self imageRectForBounds:bounds];
 
 	[m_icon setFlipped:[controlView isFlipped]];
 	[m_icon drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-	
+
     NSRect titleRect = [self titleRectForBounds:bounds];
     NSAttributedString *title = [self attributedStringValue];
     if ([title length] > 0) {
         [title drawInRect:titleRect];
     }
-	
+
 }
 
 @end
@@ -246,7 +246,7 @@
 
 - (void)awakeFromNib {
 	[m_outline_view setDelegate:self];
-	
+
 	id datasource = [amuleSourceListDataSource initWithData];
 
 	[m_outline_view setDataSource:datasource];
@@ -257,7 +257,7 @@
 		id item = [m_outline_view itemAtRow:i];
 		[m_outline_view expandItem:item];
 	}
-	
+
 }
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification {
@@ -265,8 +265,8 @@
 	id item = [m_outline_view itemAtRow:selRow];
 	id viewId = [item viewId];
 	NSLog(@"select tab=%@\n", viewId);
-	
-	[m_tab_view selectTabViewItemWithIdentifier:viewId]; 
+
+	[m_tab_view selectTabViewItemWithIdentifier:viewId];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {

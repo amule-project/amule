@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -38,12 +38,12 @@ class CWriteStrBuffer {
 		char *m_curr_buf;
 		char *m_buf_ptr;
 		int m_curr_buf_left;
-		
+
 		void AllocBuf();
 	public:
 		CWriteStrBuffer();
 		~CWriteStrBuffer();
-		
+
 		void Write(const char *s, int len = -1);
 		void CopyAll(char *dst_buffer);
 		int Length() { return m_total_length; }
@@ -55,7 +55,7 @@ class CSession;
 class CPhPLibContext {
 		PHP_SYN_NODE *m_syn_tree_top;
 		PHP_SCOPE_TABLE m_global_scope;
-		
+
 		CWriteStrBuffer *m_curr_str_buffer;
 
 		CWebServerBase *m_server;
@@ -64,11 +64,11 @@ class CPhPLibContext {
 		CPhPLibContext(CWebServerBase *server, const char *file);
 		CPhPLibContext(CWebServerBase *server, char *php_buf, int len);
 		~CPhPLibContext();
-		
+
 		// init global vars, so parser/execution can start
 		void SetContext();
 		void Execute(CWriteStrBuffer *);
-		
+
 #ifdef __GNUC__
 		static void Printf(const char *str, ...)  __attribute__ ((__format__ (__printf__, 1, 2)));
 #else

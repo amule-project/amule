@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -45,9 +45,9 @@ class CTimerWnd;
 class CClientTCPSocket : public CEMSocket
 {
 public:
-	CClientTCPSocket(CUpDownClient* in_client = NULL, const CProxyData *ProxyData = NULL);	
+	CClientTCPSocket(CUpDownClient* in_client = NULL, const CProxyData *ProxyData = NULL);
 	virtual ~CClientTCPSocket();
-	
+
 	void		Disconnect(const wxString& strReason);
 
 	bool		InitNetworkData();
@@ -62,14 +62,14 @@ public:
 	void		OnConnect(int nErrorCode);
 	void		OnSend(int nErrorCode);
 	void		OnReceive(int nErrorCode);
-	
+
 	void		OnClose(int nErrorCode);
 	void		OnError(int nErrorCode);
-	
+
 	uint32		GetRemoteIP() const { return m_remoteip; }
-		
+
 	CUpDownClient* GetClient() { return m_client; }
-	
+
 	virtual void SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
     virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
     virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);

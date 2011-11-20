@@ -42,9 +42,9 @@ $text["kadonmsg"]       = "( Kad: on )";
 $text["kadfwmsg"]       = "( Kad: firewalled)";
 $text["kadoffmsg"]      = "( Kad: off )";
 $text["kadstatus"]      = "Kad Status";
-$text["kadfw"]     	= "Firewalled";
-$text["kadon"]         	= "Connected";
-$text["kadoff"]        	= "Disconnected";
+$text["kadfw"]          = "Firewalled";
+$text["kadon"]          = "Connected";
+$text["kadoff"]         = "Disconnected";
 // try to keep these next three short, otherwise the signature
 // image will look messy
 $text["na"]		= "N/A";

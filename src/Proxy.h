@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -58,7 +58,7 @@ const unsigned char SOCKS4_REPLY_FAILED_DIFFERENT_USERIDS	= 93;
  * - RFC-1961: GSS-API Authentication Method for SOCKS Version 5
  * - RFC-1508: Generic Security Service Application Program Interface
  * - RFC-1509: Genecic Security Service API: C-bindings
- *   
+ *
  */
 
 const unsigned char SOCKS5_VERSION = 0x05;
@@ -122,7 +122,7 @@ public:
 	CProxyData();
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param proxyEnable	Whether proxy is enabled or not.
 	 * @param proxyType	The type of the proxy server.
 	 * @param proxyHostName	The proxy host name or IP address.
@@ -190,7 +190,7 @@ private:
  * Proxy protocol needs much less than this. 1024 would be ok. Other options are
  * - Default ethernet MTU - Eth-II - IP - UDP: 1,514 - 14 - 20 - 8 = 1472 bytes;
  * - Default token ring MTU 4,202 - overheads = ??.
- * It would be really more efficient if the final object was less than 
+ * It would be really more efficient if the final object was less than
  * a page (4096 bytes) in size.
  */
 //const unsigned int PROXY_BUFFER_SIZE = 1024;
@@ -240,13 +240,13 @@ public:
 	 * @param cmd	The proxy command.
 	 */
 	static wxString	&NewName(wxString &s, CProxyCommand cmd);
-	
+
 	/* Interface */
 	bool		Start(const wxIPaddress &peerAddress, wxSocketClient *proxyClientSocket);
 	t_sm_state	HandleEvent(t_sm_event event);
 	void		AddDummyEvent();
 	void		ReactivateSocket();
-	char 		*GetBuffer()				{ return m_buffer; }
+	char		*GetBuffer()				{ return m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_proxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_lastReply; }
 	bool		IsEndState() const			{ return GetState() == PROXY_STATE_END; }
@@ -277,7 +277,7 @@ protected:
 	// Will be initialized at Start()
 	//
 	wxIPaddress		*m_peerAddress;
-	wxSocketClient		*m_proxyClientSocket;	
+	wxSocketClient		*m_proxyClientSocket;
 	wxIPaddress		*m_proxyBoundAddress;
 	amuleIPV4Address	m_proxyBoundAddressIPV4;
 	//wxIPV6address		m_proxyBoundAddressIPV6;
@@ -322,7 +322,7 @@ public:
 		CProxyCommand proxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
-	
+
 private:
 	/* State Processors */
 	void process_start(bool entry);
@@ -369,7 +369,7 @@ public:
 		CProxyCommand proxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
-	
+
 private:
 	/* State Processors */
 	void process_start(bool entry);
@@ -407,7 +407,7 @@ public:
 		CProxyCommand proxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
-	
+
 private:
 	/* State Processors */
 	void process_start(bool entry);
@@ -436,10 +436,10 @@ public:
 		const CProxyData *proxyData = NULL,
 		CProxyCommand proxyCommand = PROXY_CMD_CONNECT,
 		CDatagramSocketProxy *udpSocket = NULL);
-	
+
 	/* Destructor */
 	~CProxySocket();
-	
+
 	/* I know, this is not very good, because SetEventHandler is not
 	 * virtual in wxSocketBase, but I need to GetEventHandler in Proxy.cpp,
 	 * so...
@@ -463,18 +463,18 @@ public:
 		m_socketEventHandlerId = m_savedSocketEventHandlerId;
 		SetEventHandler(*m_socketEventHandler, m_socketEventHandlerId);
 	}
-	
+
 	/* Interface */
 	void		SetProxyData(const CProxyData *proxyData);
 	bool		GetUseProxy() const	{ return m_useProxy; }
-	char 		*GetBuffer()		{ return m_proxyStateMachine->GetBuffer(); }
+	char		*GetBuffer()		{ return m_proxyStateMachine->GetBuffer(); }
 	wxIPaddress	&GetProxyBoundAddress(void) const
 						{ return m_proxyStateMachine->GetProxyBoundAddress(); }
 	bool Start(const wxIPaddress &peerAddress);
 	bool ProxyIsCapableOf(CProxyCommand proxyCommand) const;
 	bool ProxyNegotiationIsOver() const	{ return m_proxyStateMachine->IsEndState(); }
 	CDatagramSocketProxy *GetUDPSocket() const { return m_udpSocket; }
-	
+
 private:
 	bool			m_useProxy;
 	CProxyData		m_proxyData;
@@ -498,7 +498,7 @@ public:
 	CSocketClientProxy(
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const CProxyData *proxyData = NULL);
-		
+
 	/* Interface */
 	bool Connect(wxIPaddress &address, bool wait);
 	CSocketClientProxy& Read(void *buffer, wxUint32 nbytes);
@@ -520,11 +520,11 @@ public:
 		wxIPaddress &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const CProxyData *proxyData = NULL);
-		
+
 	/* Interface */
 	CSocketServerProxy& Read(void *buffer, wxUint32 nbytes);
 	CSocketServerProxy& Write(const void *buffer, wxUint32 nbytes);
-	
+
 private:
 	wxMutex			m_socketLocker;
 };
@@ -539,7 +539,7 @@ enum UDPOperation {
 	UDP_OPERATION_SEND_TO
 };
 
-const unsigned int PROXY_UDP_OVERHEAD_IPV4 		= 10;
+const unsigned int PROXY_UDP_OVERHEAD_IPV4		= 10;
 const unsigned int PROXY_UDP_OVERHEAD_DOMAIN_NAME	= 262;
 const unsigned int PROXY_UDP_OVERHEAD_IPV6		= 20;
 const unsigned int PROXY_UDP_MAXIMUM_OVERHEAD		= PROXY_UDP_OVERHEAD_DOMAIN_NAME;
@@ -552,20 +552,20 @@ public:
 		wxIPaddress &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const CProxyData *proxyData = NULL);
-	
+
 	/* Destructor */
 	~CDatagramSocketProxy();
-	
+
 	/* Interface */
 	void SetUDPSocketOk() { m_udpSocketOk = true; }
-	
+
 	/* wxDatagramSocket Interface */
 	virtual wxDatagramSocket& RecvFrom(
 		wxSockAddress& addr, void* buf, wxUint32 nBytes );
 	virtual wxDatagramSocket& SendTo(
 		wxIPaddress& addr, const void* buf, wxUint32 nBytes );
 	virtual wxUint32 LastCount(void) const;
-	
+
 private:
 	bool			m_udpSocketOk;
 	CProxySocket		m_proxyTCPSocket;

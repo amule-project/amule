@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -42,7 +42,7 @@
 //
 // This class assumes that the following line has been executed:
 //
-// 	wxConvFileName = &aMuleConvBrokenFileNames;
+//	wxConvFileName = &aMuleConvBrokenFileNames;
 //
 // This line is necessary so that wxWidgets handles unix file names correctly.
 //
@@ -53,7 +53,7 @@ CDirIterator::CDirIterator(const CPath& dir)
 
 
 CDirIterator::~CDirIterator()
-{	
+{
 }
 
 
@@ -62,7 +62,7 @@ CPath CDirIterator::GetFirstFile(FileType type, const wxString& mask)
 	if (!IsOpened()) {
 		return CPath();
 	}
-	
+
 	wxString fileName;
 	if (!GetFirst(&fileName, mask, type)) {
 		return CPath();
@@ -113,16 +113,16 @@ EFileType GuessFiletype(const wxString& file)
 		return EFT_Met;
 	}
 
-	// Check at most the first ten chars, if all are printable, 
+	// Check at most the first ten chars, if all are printable,
 	// then we can probably assume it is ascii text-file.
 	for (int i = 0; i < read; ++i) {
-		if (!(		isprint(head[i]) 
+		if (!(		isprint(head[i])
 				||	isspace(head[i])
 				||	(i < 3 && head[i] == UTF8bom[i]))) {
 			return EFT_Unknown;
 		}
 	}
-	
+
 	return EFT_Text;
 }
 
@@ -133,16 +133,16 @@ EFileType GuessFiletype(const wxString& file)
  */
 bool UnpackZipFile(const wxString& file, const wxChar* files[])
 {
-	wxZipFSHandler archive; 
+	wxZipFSHandler archive;
 	wxString filename = archive.FindFirst(
 		wxT("file:") + file + wxT("#zip:/*"), wxFILE);
-	
+
 	wxTempFile target(file);
 
 	while (!filename.IsEmpty() && !target.Length()) {
 		// Extract the filename part of the URI
 		filename = filename.AfterLast(wxT(':')).Lower();
-	
+
 		// We only care about the files specified in the array
 		for (size_t i = 0; files[i] && !target.Length(); ++i) {
 			if (files[i] == filename) {
@@ -158,7 +158,7 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 						while (!zip.Eof()) {
 							zip.Read(buffer, sizeof(buffer));
 							target.Write(buffer, zip.LastRead());
-						}						
+						}
 						break;
 					}
 				}
@@ -167,7 +167,7 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 
 		filename = archive.FindNext();
 	}
-	
+
 	if (target.Length()) {
 		target.Commit();
 		return true;
@@ -207,7 +207,7 @@ bool UnpackGZipFile(const wxString& file)
 				} else {
 					errString = wxString::FromAscii(gzerrstr);
 				}
-				
+
 				// AddDebugLogLineN( logFileIO, wxT("Error reading gzip stream (") + errString + wxT(")") );
 				write = false;
 				break;

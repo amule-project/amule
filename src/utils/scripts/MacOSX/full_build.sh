@@ -99,12 +99,12 @@ else
 	svn checkout http://svn.wxwidgets.org/svn/wx/wxWidgets/${WXSVNROOT} ${WXFOLDER} >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd ${WXFOLDER} >> $STDOUT_FILE
 	echo -e "\tApplying patches."
-	for i in $AMULE_FOLDER/src/utils/patches/wxWidgets/*.patch; do 
+	for i in $AMULE_FOLDER/src/utils/patches/wxWidgets/*.patch; do
 		echo -e "\t\tAppying \"$i\""
 		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
 	done
 	popd >> $STDOUT_FILE
-fi	
+fi
 echo -e "\tDone"
 
 echo -e "\tConfiguring wxWidgets..."
@@ -112,7 +112,7 @@ echo -e "\tConfiguring wxWidgets..."
 pushd ${WXFOLDER} > $STDOUT_FILE
 
 if [ "$SDKNUMBER" == "" ]; then
-	WX_SDK_FLAGS=""	
+	WX_SDK_FLAGS=""
 else
 	WX_SDK_FLAGS="--with-macosx-sdk=/Developer/SDKs/MacOSX${SDKRELEASE}.sdk \
 	--with-macosx-version-min=$SDKNUMBER"
@@ -151,16 +151,16 @@ CRYPTOPP_URL=`curl -sS http://www.cryptopp.com/ | grep -oE "http://.*/cryptopp/c
 echo -e "\tGetting cryptopp sources..."
 
 if [ -d $CRYPTOPP_FOLDER_INST ]; then
-	echo -e "\t\t$CRYPTOPP_FOLDER_INST already exists, skipping (delete and rerun script to get new sources)"	
+	echo -e "\t\t$CRYPTOPP_FOLDER_INST already exists, skipping (delete and rerun script to get new sources)"
 else
 	mkdir $CRYPTOPP_FOLDER
 	mkdir $CRYPTOPP_FOLDER_INST
 	curl -L -o cryptopp.zip $CRYPTOPP_URL >> $STDOUT_FILE 2>> $ERROR_FILE
 	unzip cryptopp.zip -d $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
-	pushd $CRYPTOPP_FOLDER >> $STDOUT_FILE 
-	#./configure 
-	for i in $AMULE_FOLDER/src/utils/patches/cryptopp/*.patch; do 
-		echo -e "\t\tAppying \"$i\"" 
+	pushd $CRYPTOPP_FOLDER >> $STDOUT_FILE
+	#./configure
+	for i in $AMULE_FOLDER/src/utils/patches/cryptopp/*.patch; do
+		echo -e "\t\tAppying \"$i\""
 		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
 	done
 	#cp ../GNUMakefile .
@@ -168,7 +168,7 @@ else
 	CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION \
 		CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" make > $STDOUT_FILE 2> $ERROR_FILE
 	PREFIX=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST make install >> $STDOUT_FILE 2>> $ERROR_FILE
-	popd >> $STDOUT_FILE 
+	popd >> $STDOUT_FILE
 	rm cryptopp.zip >> $STDOUT_FILE 2>> $ERROR_FILE
 	rm -rf $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 fi
@@ -213,13 +213,13 @@ LIBUPNP_FOLDER_INST="libupnp-inst"
 LIBUPNP_URL=`curl -sS http://sourceforge.net/projects/pupnp/files/ | grep -m 1 -ioE "http://sourceforge.net/[^\"]+/libupnp-([0-9]+\.)+tar.bz2/download" | head -1`
 
 if [ -d $LIBUPNP_FOLDER_INST ]; then
-	echo -e "\t\t$LIBUPNP_FOLDER_INST already exists, skipping"	
+	echo -e "\t\t$LIBUPNP_FOLDER_INST already exists, skipping"
 else
 	mkdir $LIBUPNP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	mkdir $LIBUPNP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	curl -L -o libupnp.tar.bz2 $LIBUPNP_URL  >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd $LIBUPNP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
-	echo -e "\t\tCompiling libupnp..."	
+	echo -e "\t\tCompiling libupnp..."
 	tar --strip-components 1 -jxf ../libupnp.tar.bz2 >> $STDOUT_FILE 2>> $ERROR_FILE
 	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
@@ -242,13 +242,13 @@ LIBGEOIP_FOLDER_INST="libgeoip-inst"
 LIBGEOIP_URL="http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz"
 
 if [ -d $LIBGEOIP_FOLDER_INST ]; then
-	echo -e "\t\t$LIBGEOIP_FOLDER_INST already exists, skipping"	
+	echo -e "\t\t$LIBGEOIP_FOLDER_INST already exists, skipping"
 else
 	mkdir $LIBGEOIP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	mkdir $LIBGEOIP_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	curl -L -o libgeoip.tar.gz $LIBGEOIP_URL >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd $LIBGEOIP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
-	echo -e "\t\tCompiling GeoIP..." 
+	echo -e "\t\tCompiling GeoIP..."
 	tar --strip-components 2 -zxf ../libgeoip.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
 	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \
@@ -268,20 +268,20 @@ echo -e "\tGetting pkg-config sources..."
 
 PKGCFG_FOLDER="pkgcfg-source"
 PKGCFG_FOLDER_INST="pkgcfg-inst"
-# pkgconfig introduced a dependency on glib to build on 0.26, and I refuse to build the whole glib for this. 
-# On top of it, glib uses pkgconfig to configure itself... 
+# pkgconfig introduced a dependency on glib to build on 0.26, and I refuse to build the whole glib for this.
+# On top of it, glib uses pkgconfig to configure itself...
 #PKGCFG_FILE=`curl -sS http://pkgconfig.freedesktop.org/releases/ | grep -ioE "pkg-config-([0-9]+\.)+tar.gz" | uniq | sort -r | head -1`
 #PKGCFG_URL="http://pkgconfig.freedesktop.org/releases/${PKGCFG_FILE}"
 PKGCFG_URL="http://pkgconfig.freedesktop.org/releases/pkg-config-0.25.tar.gz"
 
 if [ -f $PKGCFG_FOLDER_INST/bin/pkg-config ]; then
-	echo -e "\t\t$PKGCFG_FOLDER_INST already exists, skipping"	
+	echo -e "\t\t$PKGCFG_FOLDER_INST already exists, skipping"
 else
 	mkdir $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 	mkdir $PKGCFG_FOLDER_INST >> $STDOUT_FILE 2>> $ERROR_FILE
 	curl -L -o pkgcfg.tar.gz $PKGCFG_URL >> $STDOUT_FILE 2>> $ERROR_FILE
 	pushd $PKGCFG_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
-	echo -e "\t\tCompiling pkg-config..."	
+	echo -e "\t\tCompiling pkg-config..."
 	tar --strip-components 1 -zxf ../pkgcfg.tar.gz >> $STDOUT_FILE 2>> $ERROR_FILE
 	./configure CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" \
 		CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" --disable-dependency-tracking \

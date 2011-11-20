@@ -118,7 +118,7 @@ void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t p
 {
 	CMemFile packetdata;
 	packetdata.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
-	
+
 	if (kadVersion > 1) {
 		packetdata.WriteUInt16(thePrefs::GetPort());
 		packetdata.WriteUInt8(KADEMLIA_VERSION);
@@ -779,7 +779,7 @@ void CKademliaUDPListener::Free(SSearchTerm* pSearchTerms)
 
 SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int iLevel)
 {
-	// the max. depth has to match our own limit for creating the search expression 
+	// the max. depth has to match our own limit for creating the search expression
 	// (see also 'ParsedSearchExpression' and 'GetSearchPacket')
 	if (iLevel >= 24){
 		AddDebugLogLineN(logKadSearch, wxT("***NOTE: Search expression tree exceeds depth limit!"));
@@ -844,10 +844,10 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		}
 	} else if (op == 0x01) { // String
 		wxString str(bio.ReadString(true));
-		
+
 		// Make lowercase, the search code expects lower case strings!
-		str.MakeLower(); 
-		
+		str.MakeLower();
+
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = SSearchTerm::String;
 		pSearchTerm->astr = new wxArrayString;
@@ -961,11 +961,11 @@ void CKademliaUDPListener::ProcessSearchResponse(CMemFile& bio)
 
 		// Get info about answer
 		// NOTE: this is the one and only place in Kad where we allow string conversion to local code page in
-		// case we did not receive an UTF8 string. this is for backward compatibility for search results which are 
+		// case we did not receive an UTF8 string. this is for backward compatibility for search results which are
 		// supposed to be 'viewed' by user only and not feed into the Kad engine again!
 		// If that tag list is once used for something else than for viewing, special care has to be taken for any
 		// string conversion!
- 		CScopedContainer<TagPtrList> tags;
+		CScopedContainer<TagPtrList> tags;
 		bio.ReadTagPtrList(tags.get(), true/*bOptACP*/);
 		CSearchManager::ProcessResult(target, answer, tags.get());
 		count--;
@@ -1532,7 +1532,7 @@ void CKademliaUDPListener::Process2Ping(uint32_t ip, uint16_t port, const CKadUD
 	CMemFile packetdata(2);
 	packetdata.WriteUInt16(port);
 	DebugSend(Kad2Pong, ip, port);
-	SendPacket(packetdata, KADEMLIA2_PONG, ip, port, senderKey, NULL); 
+	SendPacket(packetdata, KADEMLIA2_PONG, ip, port, senderKey, NULL);
 }
 
 // KADEMLIA2_PONG

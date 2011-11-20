@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
-// 
+//
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
 // respective authors.
@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -32,7 +32,7 @@
 #include "NetworkFunctions.h"
 #include "OtherFunctions.h"
 #include "MD4Hash.h"
-#include <common/StringFunctions.h> // Needed for unicode2char 
+#include <common/StringFunctions.h> // Needed for unicode2char
 
 
 BEGIN_EVENT_TABLE(CAddFriend, wxDialog)
@@ -56,12 +56,12 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	wxString fullip = CastChild(ID_IPADDRESS, wxTextCtrl)->GetValue().Strip(wxString::both);
 	uint16 port = StrToULong( CastChild(ID_IPORT, wxTextCtrl)->GetValue() );
 	uint32 ip = StringIPtoUint32(fullip);
-	
+
 	if (!ip || !port) {
 		wxMessageBox(_("You have to enter a valid IP and port!"), _("Information"), wxOK | wxICON_INFORMATION, this);
-		return;		
+		return;
 	}
-	
+
 	CMD4Hash userhash;
 	if ((!hash.IsEmpty()) && (!userhash.Decode(hash))) {
 		wxMessageBox(_("The specified userhash is not valid!"), _("Information"), wxOK | wxICON_INFORMATION, this);
@@ -74,7 +74,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	}
 
 	theApp->friendlist->AddFriend(userhash, ip, port, name);
-	
+
 	EndModal(true); // Friend added
 }
 

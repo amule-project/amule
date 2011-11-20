@@ -17,7 +17,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
@@ -43,21 +43,21 @@ public:
 	bool ConnectSocket(wxIPV4address& address);
 
  private:
- 	bool InternalConnect(uint32_t ip, uint16_t port, bool wait);
-	
- 	int InternalGetLastError();
- 
+	bool InternalConnect(uint32_t ip, uint16_t port, bool wait);
+
+	int InternalGetLastError();
+
 	size_t InternalLastCount() { return wxSocketClient::LastCount(); };
 	bool InternalWaitOnConnect(long secs = -1, long msecs = 0) { return wxSocketClient::WaitOnConnect(secs,msecs); };
 	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForWrite(secs,msecs); };
 	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForRead(secs,msecs); };
-	
+
 	bool InternalError() { return wxSocketClient::Error(); }
 	void InternalClose() { wxSocketClient::Close(); }
-	
+
 	void InternalRead(void* ptr, size_t len) { wxASSERT(len < 0xFFFFFFFF); wxSocketClient::Read(ptr, (wxUint32)len); };
 	void InternalWrite(const void* ptr, size_t len) { wxASSERT(len < 0xFFFFFFFF); wxSocketClient::Write(ptr, (wxUint32)len); };
-	
+
 	bool InternalIsConnected() { return wxSocketClient::IsConnected(); }
 	void InternalDestroy() { wxSocketClient::Destroy(); }
 };
