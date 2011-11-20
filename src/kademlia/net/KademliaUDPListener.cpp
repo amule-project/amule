@@ -653,7 +653,7 @@ void CKademliaUDPListener::ProcessKademlia2Request(const uint8_t *packetData, ui
 	CUInt128 target = bio.ReadUInt128();
 	// Convert Target to Distance as this is how we store contacts.
 	CUInt128 distance(CKademlia::GetPrefs()->GetKadID());
-	distance.XOR(target);
+	distance ^= target;
 
 	// This makes sure we are not mistaken identify. Some client may have fresh installed and have a new KadID.
 	CUInt128 check = bio.ReadUInt128();
@@ -1013,7 +1013,7 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 	CUInt128 file = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::GetPrefs()->GetKadID());
-	distance.XOR(file);
+	distance ^= file;
 
 	if (distance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 		return;
@@ -1032,8 +1032,8 @@ void CKademliaUDPListener::Process2PublishKeyRequest(const uint8_t *packetData, 
 		{
 			entry->m_uIP = ip;
 			entry->m_uUDPport = port;
-			entry->m_uKeyID.SetValue(file);
-			entry->m_uSourceID.SetValue(target);
+			entry->m_uKeyID = file;
+			entry->m_uSourceID = target;
 			entry->m_tLifeTime = (uint32_t)time(NULL) + KADEMLIAREPUBLISHTIMEK;
 			entry->m_bSource = false;
 			uint32_t tags = bio.ReadUInt8();
@@ -1111,7 +1111,7 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 	CUInt128 file = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::GetPrefs()->GetKadID());
-	distance.XOR(file);
+	distance ^= file;
 
 	if (distance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 		return;
@@ -1125,8 +1125,8 @@ void CKademliaUDPListener::Process2PublishSourceRequest(const uint8_t *packetDat
 	try {
 		entry->m_uIP = ip;
 		entry->m_uUDPport = port;
-		entry->m_uKeyID.SetValue(file);
-		entry->m_uSourceID.SetValue(target);
+		entry->m_uKeyID = file;
+		entry->m_uSourceID = target;
 		entry->m_bSource = false;
 		entry->m_tLifeTime = (uint32_t)time(NULL) + KADEMLIAREPUBLISHTIMES;
 		bool addUDPPortTag = true;
@@ -1291,7 +1291,7 @@ void CKademliaUDPListener::Process2PublishNotesRequest(const uint8_t *packetData
 	CUInt128 target = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::GetPrefs()->GetKadID());
-	distance.XOR(target);
+	distance ^= target;
 
 	if (distance.Get32BitChunk(0) > SEARCHTOLERANCE && !::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 		return;
@@ -1303,8 +1303,8 @@ void CKademliaUDPListener::Process2PublishNotesRequest(const uint8_t *packetData
 	try {
 		entry->m_uIP = ip;
 		entry->m_uUDPport = port;
-		entry->m_uKeyID.SetValue(target);
-		entry->m_uSourceID.SetValue(source);
+		entry->m_uKeyID = target;
+		entry->m_uSourceID = source;
 		entry->m_bSource = false;
 		uint32_t tags = bio.ReadUInt8();
 		while (tags > 0) {
@@ -1477,7 +1477,7 @@ void CKademliaUDPListener::ProcessFindBuddyResponse(const uint8_t *packetData, u
 
 	CMemFile bio(packetData, lenPacket);
 	CUInt128 check = bio.ReadUInt128();
-	check.XOR(CUInt128(true));
+	check ^= CUInt128(true);
 	if (CKademlia::GetPrefs()->GetKadID() == check) {
 		CUInt128 userID = bio.ReadUInt128();
 		uint16_t tcpport = bio.ReadUInt16();

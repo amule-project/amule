@@ -175,6 +175,62 @@ TEST_M(CUInt128, ConstructFromUint32, wxT("CUInt128(uint32_t)"))
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::uintValue), CUInt128(0x12345678u));
 }
 
+TEST_M(CUInt128, ConstructWithBits, wxT("CUInt128(const CUInt128&, unsigned)"))
+{
+	CUInt128 a((uint8_t *)&TestData::sequence);
+	CUInt128 b((uint8_t *)&TestData::minusOne);
+
+	{
+		CUInt128 testa(a, 1);
+		ASSERT_EQUALS(0u, testa.Get32BitChunk(0) & 0x80000000);
+
+		CUInt128 testb(b, 1);
+		ASSERT_EQUALS(0x80000000u, testb.Get32BitChunk(0) & 0x80000000);
+	}
+	{
+		CUInt128 testa(a, 2);
+		ASSERT_EQUALS(0u, testa.Get32BitChunk(0) & 0xc0000000);
+
+		CUInt128 testb(b, 2);
+		ASSERT_EQUALS(0xc0000000u, testb.Get32BitChunk(0) & 0xc0000000);
+	}
+	{
+		CUInt128 testa(a, 8);
+		ASSERT_EQUALS(0u, testa.Get32BitChunk(0) & 0xff000000);
+
+		CUInt128 testb(b, 8);
+		ASSERT_EQUALS(0xff000000u, testb.Get32BitChunk(0) & 0xff000000);
+	}
+	{
+		CUInt128 testa(a, 31);
+		ASSERT_EQUALS(0x00010202u, testa.Get32BitChunk(0) & 0xfffffffe);
+
+		CUInt128 testb(b, 31);
+		ASSERT_EQUALS(0xfffffffeu, testb.Get32BitChunk(0) & 0xfffffffe);
+	}
+	{
+		CUInt128 testa(a, 32);
+		ASSERT_EQUALS(0x00010203u, testa.Get32BitChunk(0));
+
+		CUInt128 testb(b, 32);
+		ASSERT_EQUALS(0xffffffffu, testb.Get32BitChunk(0));
+	}
+	{
+		CUInt128 testa(a, 33);
+		ASSERT_EQUALS(0u, testa.Get32BitChunk(1) & 0x80000000);
+
+		CUInt128 testb(b, 33);
+		ASSERT_EQUALS(0x80000000u, testb.Get32BitChunk(1) & 0x80000000);
+	}
+	{
+		CUInt128 testa(a, 128);
+		ASSERT_EQUALS(a, testa);
+
+		CUInt128 testb(b, 128);
+		ASSERT_EQUALS(b, testb);
+	}
+}
+
 TEST_M(CUInt128, AssignCUInt128, wxT("operator=(const CUInt128&)"))
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
@@ -217,24 +273,6 @@ TEST(CUInt128, Set32BitChunk)
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
 }
 
-TEST_M(CUInt128, SetValueCUInt128, wxT("SetValue(const CUInt128&)"))
-{
-	CUInt128 a((uint8_t *)&TestData::sequence);
-	CUInt128 b;
-
-	b.SetValue(a);
-	ASSERT_EQUALS(a, b);
-}
-
-TEST_M(CUInt128, SetValueUint32, wxT("SetValue(uint32_t)"))
-{
-	CUInt128 a((uint8_t *)&TestData::uintValue);
-	CUInt128 b;
-
-	b.SetValue(0x12345678u);
-	ASSERT_EQUALS(a, b);
-}
-
 TEST(CUInt128, SetValueBE)
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
@@ -255,131 +293,6 @@ TEST(CUInt128, StoreCryptValue)
 	test.StoreCryptValue((uint8_t *)&tmp);
 	ASSERT_EQUALS(CUInt128((uint8_t *)&ref), CUInt128((uint8_t *)&tmp));
 }
-
-TEST(CUInt128, ShiftLeft)
-{
-	CUInt128 test((uint8_t *)&TestData::one);
-	uint8_t r1[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2 };
-	uint8_t r2[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 };
-	uint8_t r3[16] = { 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	uint8_t r4[16] = { 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-	test.ShiftLeft(0);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::one), test);
-	test.ShiftLeft(1);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r1), test);
-	test.ShiftLeft(32);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r2), test);
-	test.ShiftLeft(58);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r3), test);
-	test.SetValueBE((uint8_t *)&TestData::one);
-	test.ShiftLeft(127);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r4), test);
-	test.SetValueBE((uint8_t *)&TestData::one);
-	test.ShiftLeft(128);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::zero), test);
-}
-
-TEST_M(CUInt128, AddCUInt128, wxT("Add(const CUInt128&)"))
-{
-	uint8_t d0[16] = { 0xfc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
-	uint8_t r2[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	uint8_t r3[16] = { 0xfc, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	uint8_t r4[16] = { 0xf8, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	CUInt128 a((uint8_t *)&TestData::sequence);
-	CUInt128 d((uint8_t *)&d0);
-
-	a.Add(CUInt128(0x01234567u));
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r1), a);
-	a.Add(CUInt128(0xff000000u));
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r2), a);
-	a.Add(d);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r3), a);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&d0), d);
-	a.Add(d);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r4), a);
-	a.SetValueBE((uint8_t *)&TestData::minusOne);
-	a.Add(CUInt128((uint8_t *)&TestData::one));
-	ASSERT_EQUALS(CUInt128(), a);
-}
-
-TEST_M(CUInt128, AddUint32, wxT("Add(uint32_t)"))
-{
-	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
-	uint8_t r2[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	CUInt128 a((uint8_t *)&TestData::sequence);
-
-	a.Add(0x01234567u);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r1), a);
-	a.Add(0xff000000u);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r2), a);
-	a.SetValueBE((uint8_t *)&TestData::minusOne);
-	a.Add(1u);
-	ASSERT_EQUALS(0, a);
-}
-
-TEST_M(CUInt128, SubtractCUInt128, wxT("Subtract(const CUInt128&)"))
-{
-	uint8_t d0[16] = { 0xfc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
-	uint8_t r2[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	uint8_t r3[16] = { 0xfc, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	uint8_t r4[16] = { 0xf8, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	CUInt128 a((uint8_t *)&r4);
-	CUInt128 d((uint8_t *)&d0);
-
-	a.Subtract(d);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r3), a);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&d0), d);
-	a.Subtract(d);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r2), a);
-	a.Subtract(CUInt128(0xff000000u));
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r1), a);
-	a.Subtract(CUInt128(0x01234567u));
-	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), a);
-	a.SetValue(0u);
-	a.Subtract(CUInt128((uint8_t *)&TestData::one));
-	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::minusOne), a);
-}
-
-TEST_M(CUInt128, SubtractUint32, wxT("Subtract(uint32_t)"))
-{
-	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
-	uint8_t r2[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
-	CUInt128 a((uint8_t *)&r2);
-
-	a.Subtract(0xff000000u);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&r1), a);
-	a.Subtract(0x01234567u);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), a);
-	a.SetValue(0u);
-	a.Subtract(1u);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::minusOne), a);
-}
-
-TEST_M(CUInt128, XorCUInt128, wxT("XOR(const CUInt128&)"))
-{
-	uint8_t xd[16] = { 0xff, 0x00, 0xee, 0x11, 0xdd, 0x22, 0xcc, 0x33, 0xbb, 0x44, 0xaa, 0x55, 0x99, 0x66, 0x88, 0x77 };
-	uint8_t xr[16] = { 0xff, 0x01, 0xec, 0x12, 0xd9, 0x27, 0xca, 0x34, 0xb3, 0x4d, 0xa0, 0x5e, 0x95, 0x6b, 0x86, 0x78 };
-	CUInt128 a((uint8_t *)&TestData::sequence);
-	CUInt128 x((uint8_t *)&xd);
-
-	a.XOR(x);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&xr), a);
-	ASSERT_EQUALS(CUInt128((uint8_t *)&xd), x);
-}
-
-// Not yet implemented
-#if 0
-TEST_M(CUInt128, XorUint32, wxT("XOR(uint32_t)"))
-{
-	CUInt128 a(0x12345678u);
-
-	a.XOR(0x76543210u);
-	ASSERT_EQUALS(0x64606468, a);
-}
-#endif
 
 TEST_M(CUInt128, OperatorShiftLeftAssign, wxT("operator<<=(unsigned)"))
 {
@@ -463,7 +376,7 @@ TEST_M(CUInt128, OperatorSubtractAssignCUInt128, wxT("operator-=(const CUInt128&
 	ASSERT_EQUALS(CUInt128((uint8_t *)&r1), a);
 	a -= CUInt128(0x01234567u);
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), a);
-	a.SetValue(0u);
+	a = 0;
 	a -= CUInt128((uint8_t *)&TestData::one);
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::minusOne), a);
 }
@@ -719,7 +632,7 @@ TEST_M(CUInt128, OperatorAddCUInt128, wxT("operator+(const CUInt128&)"))
 	CUInt128 check(a);
 
 	CUInt128 result(a + a);
-	check.Add(ref);
+	check += ref;
 	ASSERT_EQUALS(check, result);
 	ASSERT_EQUALS(ref, a);
 
@@ -743,7 +656,7 @@ TEST_M(CUInt128, OperatorSubtractCUInt128, wxT("operator-(const CUInt128&)"))
 	CUInt128 result(a - b);
 	ASSERT_EQUALS(refa, a);
 	ASSERT_EQUALS(refb, b);
-	check.Subtract(b);
+	check -= b;
 	ASSERT_EQUALS(check, result);
 
 	result = b - a;
@@ -778,7 +691,7 @@ TEST_M(CUInt128, OperatorAddUint32, wxT("operator+(uint32_t)"))
 	CUInt128 check(a);
 
 	CUInt128 result(a + b);
-	check.Add(b);
+	check += b;
 	ASSERT_EQUALS(check, result);
 	ASSERT_EQUALS(ref, a);
 
@@ -801,7 +714,7 @@ TEST_M(CUInt128, OperatorSubtractUint32, wxT("operator-(uint32_t)"))
 
 	CUInt128 result(a - b);
 	ASSERT_EQUALS(ref, a);
-	check.Subtract(b);
+	check -= b;
 	ASSERT_EQUALS(check, result);
 
 	result = a - ~b;
@@ -834,7 +747,7 @@ TEST_M(CUInt128, OperatorAddUint32CUInt128, wxT("operator+(uint32_t, const CUInt
 	CUInt128 check(b);
 
 	CUInt128 result(b + a);
-	check.Add(a);
+	check += a;
 	ASSERT_EQUALS(check, result);
 	ASSERT_EQUALS(ref, a);
 
@@ -857,7 +770,7 @@ TEST_M(CUInt128, OperatorSubtractUint32CUInt128, wxT("operator-(uint32_t, const 
 
 	CUInt128 result(b - a);
 	ASSERT_EQUALS(ref, a);
-	check.Subtract(a);
+	check -= a;
 	ASSERT_EQUALS(check, result);
 }
 

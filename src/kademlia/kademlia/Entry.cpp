@@ -65,11 +65,11 @@ CEntry* CEntry::Copy() const
 		entry->m_filenames.push_back(*it);
 	}
 	entry->m_uIP = m_uIP;
-	entry->m_uKeyID.SetValue(m_uKeyID);
+	entry->m_uKeyID = m_uKeyID;
 	entry->m_tLifeTime = m_tLifeTime;
 	entry->m_uSize = m_uSize;
 	entry->m_bSource = m_bSource;
-	entry->m_uSourceID.SetValue(m_uSourceID);
+	entry->m_uSourceID = m_uSourceID;
 	entry->m_uTCPport = m_uTCPport;
 	entry->m_uUDPport = m_uUDPport;
 	for (TagPtrList::const_iterator it = m_taglist.begin(); it != m_taglist.end(); ++it) {
