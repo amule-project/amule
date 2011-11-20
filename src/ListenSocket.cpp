@@ -57,7 +57,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
-	if (Ok()) {
+	if (IsOk()) {
 		SetEventHandler(*theApp, ID_LISTENSOCKET_EVENT);
 		SetNotify(wxSOCKET_CONNECTION_FLAG);
 		Notify(true);
