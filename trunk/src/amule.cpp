@@ -760,7 +760,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// This command just sets a flag to control maximum number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
 	// be already comming in.
-	if (listensocket->Ok()) {
+	if (listensocket->IsOk()) {
 		listensocket->StartListening();
 	} else {
 		// If we wern't able to start listening, we need to warn the user
