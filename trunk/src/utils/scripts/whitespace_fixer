@@ -21,7 +21,7 @@ find . \( \
 		-path './src/IPFilterScanner.cpp' -o \
 		-path './src/IPFilterScanner.h' -o \
 		-path './src/Parser.cpp' -o \
-		-path './src/Parser.h' -o \
+		-path './src/Parser.hpp' -o \
 		-path './src/Scanner.cpp' -o \
 		-path './src/Scanner.h' -o \
 		-path './src/utils/aLinkCreator/src/alcpix.cpp' -o \
