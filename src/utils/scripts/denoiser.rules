@@ -176,6 +176,13 @@ MAKEFLAGS=-w -s
 		b 0
 	}
 
+	# ship the check target, otherwise test results would be stripped
+	/^check-TESTS$/ {
+		s/.*//
+		x
+		b 0
+	}
+
 	# do some output based on rule target
 	/\.o$/ {
 		i\
