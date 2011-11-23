@@ -48,40 +48,38 @@ there client on the eMule forum..
 using namespace Kademlia;
 ////////////////////////////////////////
 
-CUInt128::CUInt128(const CUInt128 &value, uint32_t numBits)
+CUInt128::CUInt128(const CUInt128 &value, unsigned numBits)
 {
 	// Copy the whole uint32s
-	uint32_t numULONGs = numBits / 32;
-	for (uint32_t i = 0; i < numULONGs; ++i) {
-		m_data[i] = value.m_data[i];
+	unsigned numULONGs = numBits / 32;
+	for (unsigned i = 0; i < numULONGs; i++) {
+		Set32BitChunk(i, value.Get32BitChunk(i));
 	}
 
 	// Copy the remaining bits
-	for (uint32_t i = (32 * numULONGs); i < numBits; ++i) {
+	for (unsigned i = numULONGs * 32; i < numBits; i++) {
 		SetBitNumber(i, value.GetBitNumber(i));
 	}
 
-	// Pad with random bytes (Not seeding based on time to allow multiple different ones to be created in quick succession)
-	for (uint32_t i = numBits; i < 128; ++i) {
-		SetBitNumber(i, (rand() % 2));
+	// Fill the remaining bits of the current 32-bit chunk with random bits
+	// (Not seeding based on time to allow multiple different ones to be created in quick succession)
+	numULONGs = (numBits + 31) / 32;
+	for (unsigned i = numBits; i < numULONGs * 32; i++) {
+		SetBitNumber(i, rand() % 2);
 	}
-}
 
-CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
-{
-	m_data[0] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+0));
-	m_data[1] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+4));
-	m_data[2] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+8));
-	m_data[3] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+12));
-	return *this;
+	// Pad with random bytes
+	for (unsigned i = numULONGs; i < 3; i++) {
+		Set32BitChunk(i, rand());
+	}
 }
 
 wxString CUInt128::ToHexString() const
 {
 	wxString str;
 
-	for (int i = 0; i < 4; ++i) {
-		str.Append(CFormat(wxT("%08X")) % m_data[i]);
+	for (int i = 3; i >= 0; i--) {
+		str.Append(CFormat(wxT("%08X")) % m_data.u32_data[i]);
 	}
 
 	return str;
@@ -92,7 +90,7 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	wxString str;
 	str.Alloc(128);
 	int b;
-	for (int i = 0; i < 128; ++i) {
+	for (int i = 0; i < 128; i++) {
 		b = GetBitNumber(i);
 		if ((!trim) || (b != 0)) {
 			str.Append(b ? wxT("1") : wxT("0"));
@@ -105,32 +103,42 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	return str;
 }
 
+CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
+{
+	m_data.u32_data[3] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE));
+	m_data.u32_data[2] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE + 4));
+	m_data.u32_data[1] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE + 8));
+	m_data.u32_data[0] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE + 12));
+
+	return *this;
+}
+
 void CUInt128::ToByteArray(uint8_t *b) const
 {
 	wxCHECK_RET(b != NULL, wxT("Destination buffer missing."));
 
-	RawPokeUInt32(b,      wxUINT32_SWAP_ON_LE(m_data[0]));
-	RawPokeUInt32(b + 4,  wxUINT32_SWAP_ON_LE(m_data[1]));
-	RawPokeUInt32(b + 8,  wxUINT32_SWAP_ON_LE(m_data[2]));
-	RawPokeUInt32(b + 12, wxUINT32_SWAP_ON_LE(m_data[3]));
+	RawPokeUInt32(b,      wxUINT32_SWAP_ON_LE(m_data.u32_data[3]));
+	RawPokeUInt32(b + 4,  wxUINT32_SWAP_ON_LE(m_data.u32_data[2]));
+	RawPokeUInt32(b + 8,  wxUINT32_SWAP_ON_LE(m_data.u32_data[1]));
+	RawPokeUInt32(b + 12, wxUINT32_SWAP_ON_LE(m_data.u32_data[0]));
 }
 
 void CUInt128::StoreCryptValue(uint8_t *buf) const
 {
 	wxCHECK_RET(buf != NULL, wxT("Destination buffer missing."));
 
-	RawPokeUInt32(buf,      wxUINT32_SWAP_ON_BE(m_data[0]));
-	RawPokeUInt32(buf + 4,  wxUINT32_SWAP_ON_BE(m_data[1]));
-	RawPokeUInt32(buf + 8,  wxUINT32_SWAP_ON_BE(m_data[2]));
-	RawPokeUInt32(buf + 12, wxUINT32_SWAP_ON_BE(m_data[3]));
+	RawPokeUInt32(buf,      wxUINT32_SWAP_ON_BE(m_data.u32_data[3]));
+	RawPokeUInt32(buf + 4,  wxUINT32_SWAP_ON_BE(m_data.u32_data[2]));
+	RawPokeUInt32(buf + 8,  wxUINT32_SWAP_ON_BE(m_data.u32_data[1]));
+	RawPokeUInt32(buf + 12, wxUINT32_SWAP_ON_BE(m_data.u32_data[0]));
 }
 
 int CUInt128::CompareTo(const CUInt128 &other) const throw()
 {
-	for (int i = 0; i < 4; ++i) {
-	    if (m_data[i] < other.m_data[i])
+	for (int i = 3; i >= 0; i--) {
+	    if (m_data.u32_data[i] < other.m_data.u32_data[i])
 			return -1;
-	    if (m_data[i] > other.m_data[i])
+	    if (m_data.u32_data[i] > other.m_data.u32_data[i])
 			return 1;
 	}
 	return 0;
@@ -138,9 +146,9 @@ int CUInt128::CompareTo(const CUInt128 &other) const throw()
 
 int CUInt128::CompareTo(uint32_t value) const throw()
 {
-	if ((m_data[0] > 0) || (m_data[1] > 0) || (m_data[2] > 0) || (m_data[3] > value))
+	if ((m_data.u64_data[1] > 0) || (m_data.u32_data[1] > 0) || (m_data.u32_data[0] > value))
 		return 1;
-	if (m_data[3] < value)
+	if (m_data.u32_data[0] < value)
 		return -1;
 	return 0;
 }
@@ -150,10 +158,10 @@ CUInt128& CUInt128::Add(const CUInt128 &value) throw()
 	if (value.IsZero()) return *this;
 
 	int64_t sum = 0;
-	for (int i = 3; i >= 0; i--) {
-		sum += m_data[i];
-		sum += value.m_data[i];
-		m_data[i] = (uint32_t)sum;
+	for (int i = 0; i < 4; i++) {
+		sum += m_data.u32_data[i];
+		sum += value.m_data.u32_data[i];
+		m_data.u32_data[i] = (uint32_t)sum;
 		sum >>= 32;
 	}
 	return *this;
@@ -164,10 +172,10 @@ CUInt128& CUInt128::Subtract(const CUInt128 &value) throw()
 	if (value.IsZero()) return *this;
 
 	int64_t sum = 0;
-	for (int i = 3; i >= 0; i--) {
-		sum += m_data[i];
-		sum -= value.m_data[i];
-		m_data[i] = (uint32_t)sum;
+	for (int i = 0; i < 4; i++) {
+		sum += m_data.u32_data[i];
+		sum -= value.m_data.u32_data[i];
+		m_data.u32_data[i] = (uint32_t)sum;
 		sum >>= 32;
 	}
 	return *this;
@@ -183,17 +191,20 @@ CUInt128& CUInt128::ShiftLeft(unsigned bits) throw()
 		return *this;
 	}
 
-	uint32_t result[] = {0,0,0,0};
+	union {
+		uint32_t u32_data[4];
+		uint64_t u64_data[2];
+	} result = {{ 0, 0, 0, 0 }};
 	int indexShift = (int)bits / 32;
 	int64_t shifted = 0;
 	for (int i = 3; i >= indexShift; i--)
 	{
-		shifted += ((int64_t)m_data[i]) << (bits % 32);
-		result[i-indexShift] = (uint32_t)shifted;
+		shifted += ((int64_t)m_data.u32_data[3 - i]) << (bits % 32);
+		result.u32_data[3 - i + indexShift] = (uint32_t)shifted;
 		shifted = shifted >> 32;
 	}
-	for (int i = 0; i < 4; ++i)
-		m_data[i] = result[i];
+	m_data.u64_data[0] = result.u64_data[0];
+	m_data.u64_data[1] = result.u64_data[1];
 
 	return *this;
 }
