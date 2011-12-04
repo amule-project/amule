@@ -613,6 +613,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		restart_needed = true;
 		restart_needed_msg += _("- External connect interface changed.\n");
 	}
+	if (CfgChanged(IDC_SUPPORT_PO)) {
+		restart_needed = true;
+		restart_needed_msg += _("- Protocol obfuscation support changed.\n");
+	}
 
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
