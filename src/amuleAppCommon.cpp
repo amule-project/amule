@@ -212,10 +212,8 @@ wxString CamuleAppCommon::CreateED2kAICHLink(const CKnownFile* f)
 bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 {
 	theApp->SetAppName(wxT("aMule"));
-	wxString FullMuleVersion = GetFullMuleVersion();
-	wxString OSDescription = wxGetOsDescription();
-	strFullMuleVersion = strdup((const char *)unicode2char(FullMuleVersion));
-	strOSDescription = strdup((const char *)unicode2char(OSDescription));
+	FullMuleVersion = GetFullMuleVersion();
+	OSDescription = wxGetOsDescription();
 	OSType = OSDescription.BeforeFirst( wxT(' ') );
 	if ( OSType.IsEmpty() ) {
 		OSType = wxT("Unknown");
@@ -295,6 +293,10 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		ConfigDir = GetConfigDir();
 	}
 
+	// Backtracing works in MSW.
+	// Problem is just that the backtraces are useless, because apparently the context gets lost 
+	// in the try/catch somewhere.
+	// So leave it out.
 #ifndef __WXMSW__
 	#if wxUSE_ON_FATAL_EXCEPTION
 		if ( !cmdline.Found(wxT("disable-fatal")) ) {

@@ -565,8 +565,7 @@ wxString get_backtrace(unsigned n)
 
 wxString get_backtrace(unsigned WXUNUSED(n))
 {
-	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
-	return wxEmptyString;
+	return wxT("--== no BACKTRACE for your platform ==--\n\n");
 }
 
 #endif /* !__LINUX__ */

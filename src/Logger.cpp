@@ -270,6 +270,18 @@ void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 }
 
 
+void CLogger::EmergencyLog(const wxString &message, bool closeLog)
+{
+	fprintf(stderr, "%s", (const char*)unicode2char(message));
+	m_ApplogBuf += message;
+	FlushApplog();
+	if (closeLog && applog) {
+		applog->Close();
+		applog = NULL;
+	}
+}
+
+
 void CLogger::FlushApplog()
 {
 	if (applog) { // Wait with output until logfile is actually opened

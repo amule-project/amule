@@ -208,9 +208,6 @@ CamuleApp::CamuleApp()
 
 	enable_daemon_fork = false;
 
-	strFullMuleVersion = NULL;
-	strOSDescription = NULL;
-
 	// Apprently needed for *BSD
 	SetResourceLimits();
 
@@ -224,13 +221,6 @@ CamuleApp::~CamuleApp()
 	// Closing the log-file as the very last thing, since
 	// wxWidgets log-events are saved in it as well.
 	theLogger.CloseLogfile();
-
-	if (strFullMuleVersion) {
-		free(strFullMuleVersion);
-	}
-	if (strOSDescription) {
-		free(strOSDescription);
-	}
 }
 
 int CamuleApp::OnExit()
@@ -1003,21 +993,23 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 void CamuleApp::OnFatalException()
 {
 	/* Print the backtrace */
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
-	fprintf(stderr, "A fatal error has occurred and aMule has crashed.\n");
-	fprintf(stderr, "Please assist us in fixing this problem by posting the backtrace below in our\n");
-	fprintf(stderr, "'aMule Crashes' forum and include as much information as possible regarding the\n");
-	fprintf(stderr, "circumstances of this crash. The forum is located here:\n");
-	fprintf(stderr, "    http://forum.amule.org/index.php?board=67.0\n");
-	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
-	fprintf(stderr, "    http://wiki.amule.org/index.php/Backtraces\n\n");
-	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
-	fprintf(stderr, "Current version is: %s\n", strFullMuleVersion);
-	fprintf(stderr, "Running on: %s\n\n", strOSDescription);
+	wxString msg;
+	msg	<< wxT("\n--------------------------------------------------------------------------------\n")
+		<< wxT("A fatal error has occurred and aMule has crashed.\n")
+		<< wxT("Please assist us in fixing this problem by posting the backtrace below in our\n")
+		<< wxT("'aMule Crashes' forum and include as much information as possible regarding the\n")
+		<< wxT("circumstances of this crash. The forum is located here:\n")
+		<< wxT("    http://forum.amule.org/index.php?board=67.0\n")
+		<< wxT("If possible, please try to generate a real backtrace of this crash:\n")
+		<< wxT("    http://wiki.amule.org/index.php/Backtraces\n\n")
+		<< wxT("----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n")
+		<< wxT("Current version is: ") << FullMuleVersion
+		<< wxT("\nRunning on: ") << OSDescription
+		<< wxT("\n\n")
+		<< get_backtrace(1) // 1 == skip this function.
+		<< wxT("\n--------------------------------------------------------------------------------\n");
 
-	print_backtrace(1); // 1 == skip this function.
-
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
+	theLogger.EmergencyLog(msg, true);
 }
 #endif
 
@@ -1080,23 +1072,24 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 				const wxChar* func, const wxChar* cond, const wxChar* msg)
 {
-	if (!wxUSE_STACKWALKER || !wxThread::IsMain() || !IsRunning()) {
-		wxString errmsg = CFormat( wxT("%s:%s:%d: Assertion '%s' failed. %s") )
-			% file % func % line % cond % ( msg ? msg : wxT("") );
-
-		fprintf(stderr, "Assertion failed: %s\n", (const char*)unicode2char(errmsg));
-
-		// Skip the function-calls directly related to the assert call.
-		fprintf(stderr, "\nBacktrace follows:\n");
-		print_backtrace(3);
-		fprintf(stderr, "\n");
-	}
+	wxString errmsg = CFormat( wxT("Assertion failed: %s:%s:%d: Assertion '%s' failed. %s\nBacktrace follows:\n%s\n") )
+		% file % func % line % cond % ( msg ? msg : wxT("") )
+		% get_backtrace(2);		// Skip the function-calls directly related to the assert call.
+	theLogger.EmergencyLog(errmsg, false);
 
 	if (wxThread::IsMain() && IsRunning()) {
 		AMULE_APP_BASE::OnAssertFailure(file, line, func, cond, msg);
 	} else {
+#ifdef _MSC_VER
+		wxString s = CFormat(wxT("%s in %s")) % cond % func;
+		if (msg) {
+			s << wxT(" : ") << msg;
+		}
+		_wassert(s, file, line);
+#else
 		// Abort, allows gdb to catch the assertion
 		raise( SIGABRT );
+#endif
 	}
 }
 #endif

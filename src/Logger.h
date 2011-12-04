@@ -236,6 +236,11 @@ public:
 
 
 	/**
+	 * Emergency log for crashes.
+	 */
+	void EmergencyLog(const wxString &message, bool closeLog = true);
+
+	/**
 	 * Returns a category specified by index.
 	 */
 	const CDebugCategory&	GetDebugCategory( int index );

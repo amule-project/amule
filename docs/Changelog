@@ -4,6 +4,8 @@ Version 2.4.0 - The river knows.
 
 	Stu Redman:
 		* Display hashing progress in progress bars
+		* Assertion from background thread now prints a message and not just closes the app
+		* Backtrace (crash or assertion) is written to logfile
 
 --------------------------------------------------------------------------------
 
