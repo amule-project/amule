@@ -40,6 +40,7 @@
 #include "OtherFunctions.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "ClientList.h"
+#include "Preferences.h"
 
 
 CMuleUDPSocket::CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData)
@@ -232,7 +233,8 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bE
 	newpending.port = port;
 	newpending.packet = packet;
 	newpending.time = GetTickCount();
-	newpending.bEncrypt = bEncrypt && (pachTargetClientHashORKadID != NULL || (bKad && nReceiverVerifyKey != 0));
+	newpending.bEncrypt = bEncrypt && (pachTargetClientHashORKadID != NULL || (bKad && nReceiverVerifyKey != 0))
+							&& thePrefs::IsClientCryptLayerSupported();
 	newpending.bKad = bKad;
 	newpending.nReceiverVerifyKey = nReceiverVerifyKey;
 	if (newpending.bEncrypt && pachTargetClientHashORKadID != NULL) {
