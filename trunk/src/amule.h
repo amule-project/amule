@@ -114,8 +114,8 @@ private:
 
 	bool		CheckPassedLink(const wxString &in, wxString &out, int cat);
 protected:
-	char		*strFullMuleVersion;
-	char		*strOSDescription;
+	wxString	FullMuleVersion;
+	wxString	OSDescription;
 	wxString	OSType;
 	bool		enable_daemon_fork;
 	bool		ec_config;
