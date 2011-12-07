@@ -252,6 +252,7 @@ wxDialog(parent, -1, _("Preferences"),
 				FindWindow(IDC_MINTRAY)->Show(false);
 			#else
 				FindWindow(IDC_MACHIDEONCLOSE)->Show(false);
+				thePrefs::SetHideOnClose(false);
 			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
@@ -438,7 +439,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 
 	FindWindow(IDC_MACHIDEONCLOSE)->Enable(true);
 	FindWindow(IDC_EXIT)->Enable(!thePrefs::HideOnClose());
-	if (!thePrefs::HideOnClose()) {
+	if (thePrefs::HideOnClose()) {
 		CastChild(IDC_EXIT, wxCheckBox)->SetValue(false);
 	}
 

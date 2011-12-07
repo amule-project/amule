@@ -7,6 +7,7 @@ Version 2.4.0 - The river knows.
 		* Assertion from background thread now prints a message and not just closes the app
 		* Backtrace (crash or assertion) is written to logfile
 		* Fix: disabling protocol obfuscation broke Kad and triggered assertions
+		* Fixed "Prompt on exit" preference
 
 --------------------------------------------------------------------------------
 
