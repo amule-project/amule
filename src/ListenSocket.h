@@ -73,7 +73,7 @@ private:
 
 	uint16	m_OpenSocketsInterval;
 	uint16	m_ConnectionStates[3];
-	uint16	m_nPeningConnections;
+	uint16	m_nPendingConnections;
 	uint32	totalconnectionchecks;
 	float	averageconnections;
 };
