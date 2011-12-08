@@ -53,7 +53,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	bListening = false;
 	shutdown = false;
 	m_OpenSocketsInterval = 0;
-	m_nPeningConnections = 0;
+	m_nPendingConnections = 0;
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
@@ -98,8 +98,8 @@ void CListenSocket::ReStartListening()
 {
 	// 0.42e
 	bListening = true;
-	if (m_nPeningConnections) {
-		m_nPeningConnections--;
+	if (m_nPendingConnections) {
+		m_nPendingConnections--;
 		OnAccept(0);
 	}
 }
@@ -115,10 +115,10 @@ void CListenSocket::OnAccept(int nErrorCode)
 {
 	// 0.42e
 	if (!nErrorCode) {
-		m_nPeningConnections++;
-		if (m_nPeningConnections < 1) {
+		m_nPendingConnections++;
+		if (m_nPendingConnections < 1) {
 			wxFAIL;
-			m_nPeningConnections = 1;
+			m_nPendingConnections = 1;
 		}
 		if (TooManySockets(true) && !theApp->serverconnect->IsConnecting()) {
 			StopListening();
@@ -131,8 +131,8 @@ void CListenSocket::OnAccept(int nErrorCode)
 		}
 		// Deal with the pending connections, there might be more than one, due to
 		// the StopListening() call above.
-		while (m_nPeningConnections) {
-			m_nPeningConnections--;
+		while (m_nPendingConnections) {
+			m_nPendingConnections--;
 			// Create a new socket to deal with the connection
 			CClientTCPSocket* newclient = new CClientTCPSocket();
 			// Accept the connection and give it to the newly created socket
