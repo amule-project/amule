@@ -228,7 +228,8 @@ void CListenSocket::KillAllSockets()
 
 bool CListenSocket::TooManySockets(bool bIgnoreInterval)
 {
-	if (GetOpenSockets() > thePrefs::GetMaxConnections() || (m_OpenSocketsInterval > (thePrefs::GetMaxConperFive()*GetMaxConperFiveModifier()) && !bIgnoreInterval)) {
+	if (GetOpenSockets() > thePrefs::GetMaxConnections() 
+		|| (!bIgnoreInterval && m_OpenSocketsInterval > (thePrefs::GetMaxConperFive() * GetMaxConperFiveModifier()))) {
 		return true;
 	} else {
 		return false;
