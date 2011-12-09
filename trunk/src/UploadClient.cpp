@@ -274,7 +274,7 @@ void CUpDownClient::CreateNextBlockPackage()
 	} catch (const CIOFailureException& error) {
 		AddDebugLogLineC(logClient, wxT("IO failure while reading requested file: ") + error.what());
 	} catch (const CEOFException& WXUNUSED(error)) {
-		AddDebugLogLineC(logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
+		AddDebugLogLineN(logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
 	}
 
 	// Error occured.
