@@ -94,6 +94,14 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	m_joblist->InsertColumn(3, _("Filehash"),	wxLIST_FORMAT_LEFT, 100);
 
 	SetIcon(wxICON(convert));
+
+#ifdef CLIENT_GUI
+	// There's no remote directory browser (yet), thus disable the
+	// directory selector unless we're using a localhost connection
+	if (!theApp->m_connect->IsConnectedToLocalHost()) {
+		CastChild(IDC_ADDITEM, wxButton)->Enable(false);
+	}
+#endif
 }
 
 // Static methods
