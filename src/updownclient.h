@@ -30,6 +30,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD4Hash.h"
 #include <common/StringFunctions.h>
+#include <common/Macros.h>
 #include "NetworkFunctions.h"
 #include "OtherStructs.h"
 #include "ClientCredits.h"	// Needed for EIdentState
@@ -407,7 +408,7 @@ public:
 	bool		GetSentCancelTransfer() const	{ return m_fSentCancelTransfer; }
 	void		SetSentCancelTransfer(bool bVal)	{ m_fSentCancelTransfer = bVal; }
 
-	wxString	GetClientFullInfo();
+	DEBUG_ONLY( wxString	GetClientFullInfo(); )
 	wxString	GetClientShortInfo();
 
 	const wxString& GetClientOSInfo() const		{ return m_sClientOSInfo; }

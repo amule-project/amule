@@ -2301,6 +2301,7 @@ bool CUpDownClient::CheckHandshakeFinished() const
 }
 
 
+#ifdef __DEBUG__
 wxString CUpDownClient::GetClientFullInfo()
 {
 	if (m_clientVerString.IsEmpty()) {
@@ -2315,7 +2316,7 @@ wxString CUpDownClient::GetClientFullInfo()
 		% m_clientVerString
 		% m_strModVersion;
 }
-
+#endif
 
 wxString CUpDownClient::GetClientShortInfo()
 {
