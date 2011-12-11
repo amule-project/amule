@@ -2,6 +2,9 @@ Version 2.4.0 - The river knows.
 ----------
 201?-??-??
 
+	gnazio:
+		* Fixed configure of libpng when sh != bash
+
 	Stu Redman:
 		* Display hashing progress in progress bars
 		* Assertion from background thread now prints a message and not just closes the app
