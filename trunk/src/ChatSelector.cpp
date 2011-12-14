@@ -352,11 +352,13 @@ bool CChatSelector::GetCurrentClient(CClientRef& clientref) const
 
 	// Get the client that the session is open to
 	if (ci) {
-		clientref.Link(theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id)) CLIENT_DEBUGSTRING("CChatSelector::GetCurrentClient"));
-		return true;
-	} else {
-		return false;
+		CUpDownClient * client = theApp->clientlist->FindClientByIP(IP_FROM_GUI_ID(ci->m_client_id), PORT_FROM_GUI_ID(ci->m_client_id));
+		if (client) {
+			clientref.Link(client CLIENT_DEBUGSTRING("CChatSelector::GetCurrentClient"));
+			return true;
+		}
 	}
+	return false;
 }
 #endif
 
