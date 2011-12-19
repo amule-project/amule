@@ -132,6 +132,10 @@ void CLogger::AddLogLine(
 		if (!critical && !IsEnabled(type)) {
 			return;
 		}
+		if (!critical && thePrefs::GetVerboseLogfile()) {
+			// print non critical debug messages only to the logfile
+			toGUI = false;
+		}
 		int index = (int)type;
 
 		if ( index >= 0 && index < categoryCount ) {

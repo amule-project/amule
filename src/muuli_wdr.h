@@ -420,67 +420,68 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit = TRUE, bool set_s
 wxSizer *CoreConnect( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 #define ID_VERBOSEDEBUG 10305
-#define ID_DEBUGCATS 10306
+#define ID_VERBOSEDEBUGLOGFILE 10306
+#define ID_DEBUGCATS 10307
 wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *IDC_CURJOB;
-#define IDC_CONV_PB_LABEL 10307
-#define IDC_CONV_PROZENT 10308
-#define IDC_CONV_PB_CURRENT 10309
-#define IDC_JOBLIST 10310
-#define IDC_ADDITEM 10311
-#define IDC_RETRY 10312
-#define IDC_CONVREMOVE 10313
+#define IDC_CONV_PB_LABEL 10308
+#define IDC_CONV_PROZENT 10309
+#define IDC_CONV_PB_CURRENT 10310
+#define IDC_JOBLIST 10311
+#define IDC_ADDITEM 10312
+#define IDC_RETRY 10313
+#define IDC_CONVREMOVE 10314
 wxSizer *convertDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_KADINFO 10314
+#define ID_KADINFO 10315
 wxSizer *Kad_Info( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *m_networknotebooksizer;
-#define ID_NETNOTEBOOK 10315
+#define ID_NETNOTEBOOK 10316
 wxSizer *NetDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *IDC_PREFS_EVENTS_PAGE;
-#define IDC_EVENTLIST 10316
+#define IDC_EVENTLIST 10317
 wxSizer *PreferencesEventsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *s_sharedfilespeerHeader;
-#define ID_SHAREDCLIENTTOGGLE 10317
-#define IDC_SREQUESTED 10318
-#define IDC_SACCEPTED 10319
-#define IDC_STRANSFERRED 10320
-#define ID_LINE 10321
-#define ID_SHAREDCLIENTLIST 10322
+#define ID_SHAREDCLIENTTOGGLE 10318
+#define IDC_SREQUESTED 10319
+#define IDC_SACCEPTED 10320
+#define IDC_STRANSFERRED 10321
+#define ID_LINE 10322
+#define ID_SHAREDCLIENTLIST 10323
 wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_SHOW_CLIENTS_MODE 10323
-#define ID_BTNRELSHARED 10324
-#define ID_SHFILELIST 10325
+#define ID_SHOW_CLIENTS_MODE 10324
+#define ID_BTNRELSHARED 10325
+#define ID_SHFILELIST 10326
 wxSizer *sharedfilesTopDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_FRIENDLIST 10326
+#define ID_FRIENDLIST 10327
 wxSizer *messagePageFriends( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_CHATSELECTOR 10327
-#define IDC_CMESSAGE 10328
-#define IDC_CSEND 10329
-#define IDC_CCLOSE 10330
+#define IDC_CHATSELECTOR 10328
+#define IDC_CMESSAGE 10329
+#define IDC_CSEND 10330
+#define IDC_CCLOSE 10331
 wxSizer *messagePageMessages( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10331
-#define ID_BUTTONNETWORKS 10332
-#define ID_BUTTONSEARCH 10333
-#define ID_BUTTONDOWNLOADS 10334
-#define ID_BUTTONSHARED 10335
-#define ID_BUTTONMESSAGES 10336
-#define ID_BUTTONSTATISTICS 10337
-#define ID_BUTTONNEWPREFERENCES 10338
-#define ID_BUTTONIMPORT 10339
-#define ID_ABOUT 10340
+#define ID_BUTTONCONNECT 10332
+#define ID_BUTTONNETWORKS 10333
+#define ID_BUTTONSEARCH 10334
+#define ID_BUTTONDOWNLOADS 10335
+#define ID_BUTTONSHARED 10336
+#define ID_BUTTONMESSAGES 10337
+#define ID_BUTTONSTATISTICS 10338
+#define ID_BUTTONNEWPREFERENCES 10339
+#define ID_BUTTONIMPORT 10340
+#define ID_ABOUT 10341
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
