@@ -143,6 +143,7 @@ bool		CPreferences::s_checkDiskspace;
 uint32		CPreferences::s_uMinFreeDiskSpace;
 wxString	CPreferences::s_yourHostname;
 bool		CPreferences::s_bVerbose;
+bool		CPreferences::s_bVerboseLogfile;
 bool		CPreferences::s_bmanualhighprio;
 bool		CPreferences::s_bstartnextfile;
 bool		CPreferences::s_bstartnextfilesame;
@@ -1011,6 +1012,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Debugging
 	 **/
 	NewCfgItem(ID_VERBOSEDEBUG, (new Cfg_Bool( wxT("/eMule/VerboseDebug"), s_bVerbose, false )));
+	NewCfgItem(ID_VERBOSEDEBUGLOGFILE, (new Cfg_Bool( wxT("/eMule/VerboseDebugLogfile"), s_bVerboseLogfile, false )));
 #endif
 
 	/**
