@@ -11,6 +11,7 @@ Version 2.4.0 - The river knows.
 		* Backtrace (crash or assertion) is written to logfile
 		* Fix: disabling protocol obfuscation broke Kad and triggered assertions
 		* Fixed "Prompt on exit" preference
+		* Fixed country flags for Turkish localization
 
 --------------------------------------------------------------------------------
 
