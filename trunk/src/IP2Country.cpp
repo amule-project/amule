@@ -163,7 +163,7 @@ void CIP2Country::LoadFlags()
 	// Load data from xpm files
 	for (int i = 0; i < flags::FLAGS_XPM_SIZE; ++i) {
 		CountryData countrydata;
-		countrydata.Name = char2unicode(flags::flagXPMCodeVector[i].code);
+		countrydata.Name = wxString(flags::flagXPMCodeVector[i].code, wxConvISO8859_1);
 		countrydata.Flag = wxImage(flags::flagXPMCodeVector[i].xpm);
 
 		if (countrydata.Flag.IsOk()) {
@@ -193,7 +193,18 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 		return it->second;
 	}
 
-	const wxString CCode = wxString(char2unicode(GeoIP_country_code_by_addr(m_geoip, unicode2char(ip)))).MakeLower();
+	// wxString::MakeLower() fails miserably in Turkish localization with their dotted/non-dotted 'i's
+	// So fall back to some good ole C string processing.
+	std::string strCode;
+	const char * c = GeoIP_country_code_by_addr(m_geoip, unicode2char(ip));
+	if (!c) {
+		c = "unknown";
+	}
+	for ( ; *c; c++) {
+		strCode += ((*c >= 'A' && *c <= 'Z') ? *c + 'a' - 'A' : *c);
+	}
+
+	const wxString CCode(strCode.c_str(), wxConvISO8859_1);
 
 	CountryDataMap::iterator it = m_CountryDataMap.find(CCode);
 	if (it == m_CountryDataMap.end()) {
