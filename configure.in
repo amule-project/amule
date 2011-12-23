@@ -137,9 +137,6 @@ AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])],
 		[File::Copy perl module is required by the mldonkey_importer script.
 		If you want to use this script please install File::Copy from CPAN.])])
 
-# Check if we need to install skins
-MULE_IF_ENABLED_ANY([monolithic, amule-gui], [INSTALL_SKINS=yes], [INSTALL_SKINS=no])
-
 # Check for GeoIP (required for IP2Country capability)
 MULE_IF_ENABLED_ANY([monolithic, amule-gui], [MULE_CHECK_GEOIP])
 
@@ -366,7 +363,7 @@ AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
-AM_CONDITIONAL(INSTALL_SKINS, test x$INSTALL_SKINS = xyes)
+AM_CONDITIONAL(INSTALL_SKINS, test MULE_IS_ENABLED_ANY([monolithic, amule-gui]))
 AM_CONDITIONAL(PLASMAMULE, test MULE_IS_ENABLED([plasmamule]))
 
 AM_CONDITIONAL([COMPILE_LIB_COMMON],	[test MULE_IS_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui, fileview])])
