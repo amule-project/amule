@@ -24,7 +24,7 @@
 //
 
 #ifndef COMMONCONSTANTS_H
-#define COMMONMACROS_H
+#define COMMONCONSTANTS_H
 
 const unsigned UNLIMITED = 0;
 
