@@ -262,12 +262,6 @@ wxString GetFiletypeByName(const CPath& filename, bool translated = true);
 // Returns the name associated with a category value.
 wxString GetCatTitle(AllCategoryFilter cat);
 
-/* Other */
-
-
-//! Returns the number of items in an array.
-#define itemsof(x) (sizeof(x)/sizeof(x[0]))
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // ED2K File Type

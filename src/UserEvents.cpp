@@ -55,13 +55,13 @@ static struct {
 #ifdef __WXDEBUG__
 inline bool CheckIndex(const unsigned int idx)
 {
-	return (idx < sizeof(s_EventList) / sizeof(s_EventList[0]));
+	return (idx < itemsof(s_EventList));
 }
 #endif
 
 unsigned int CUserEvents::GetCount()
 {
-	return sizeof(s_EventList) / sizeof(s_EventList[0]);
+	return itemsof(s_EventList);
 }
 
 const wxString& CUserEvents::GetDisplayName(enum EventType event)

@@ -39,6 +39,9 @@
 #define COMPILE_TIME				__TIME__
 
 
+//! Returns the number of items in an array.
+#define itemsof(x)	(sizeof(x) / sizeof(x[0]))
+
 // Build type specific macro
 
 #ifdef __DEBUG__
