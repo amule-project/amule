@@ -27,6 +27,7 @@
 #include "PrefsUnifiedDlg.h"
 
 #include <common/Constants.h>
+#include <common/Macros.h>		// Needed for itemsof()
 
 #include <wx/colordlg.h>
 #include <wx/tooltip.h>
@@ -38,7 +39,6 @@
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
 #include "IPFilter.h"			// Needed for CIPFilter
-#include "SearchList.h"
 #include "ClientList.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 #include "Preferences.h"
@@ -51,7 +51,7 @@
 #include "ServerList.h"
 #include "Statistics.h"
 #include "UserEvents.h"
-#include "PlatformSpecific.h"
+#include "PlatformSpecific.h"		// Needed for PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Events

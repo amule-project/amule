@@ -80,7 +80,7 @@ CDebugCategory g_debugcats[] = {
 };
 
 
-const int categoryCount = sizeof( g_debugcats ) / sizeof( g_debugcats[0] );
+const int categoryCount = itemsof(g_debugcats);
 
 
 
