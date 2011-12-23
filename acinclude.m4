@@ -311,7 +311,7 @@ dnl Checks type of compilation requested by user, and sets various flags
 dnl accordingly.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_COMPILATION_FLAGS],
-[AC_REQUIRE([MULE_CHECK_GLIBCXX])dnl
+[dnl AC_REQUIRE([MULE_CHECK_GLIBCXX])dnl
 
 	MULE_ARG_ENABLE([debug],	[yes],	[disable additional debugging output])
 	MULE_ARG_ENABLE([profile],	[no],	[enable code profiling])
@@ -359,6 +359,46 @@ AC_LANG_ASSERT([C++])dnl
 		]])
 	], [GLIBCXX=yes], [GLIBCXX=no])
 	AC_MSG_RESULT([$GLIBCXX])
+])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_STRICT_ALIASING
+dnl
+dnl Checks whether the C++ compiler uses strict aliasing.
+dnl This check could use the C compiler, but the source is C++ and the two
+dnl compilers are not necessarily the same, or they might use different
+dnl compiler flags...
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_STRICT_ALIASING],
+[AC_LANG_ASSERT([C++])dnl
+
+	AH_TEMPLATE([GCC_USES_STRICT_ALIASING], [Define to 1 if the C++ compiler is the GNU C++ compiler and it is using strict aliasing.])
+
+	AS_IF([test ${GCC:-no} = yes],
+	[
+		dnl Backup current flags and turn warnings into errors
+		MULE_BACKUP([CXXFLAGS])
+		MULE_APPEND([CXXFLAGS], [$MULECPPFLAGS $MULECFLAGS $MULECXXFLAGS -Werror])
+
+		AC_MSG_CHECKING([whether the C++ compiler ($CXX) uses strict aliasing])
+		AC_COMPILE_IFELSE([
+			AC_LANG_PROGRAM([], [[
+				int a;
+				short *b = (short*)&a;
+				short c = *b;
+
+				return c;
+			]])
+		], [
+			AC_MSG_RESULT([no])
+		], [
+			AC_MSG_RESULT([yes])
+			AC_DEFINE([GCC_USES_STRICT_ALIASING])
+		])
+
+		dnl Restore flags
+		MULE_RESTORE([CXXFLAGS])
+	])
 ])
 
 dnl ---------------------------------------------------------------------------

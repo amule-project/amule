@@ -27,6 +27,9 @@
 #define ARCHSPECIFIC_H
 
 #include "Types.h"
+#ifdef HAVE_CONFIG_H
+#	include "config.h"
+#endif
 
 #define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ON_BE(x))
 #define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ON_BE(x)
@@ -103,8 +106,8 @@ inline void PokeUInt64(void* p, uint64 nVal);
 // \}
 
 
-#if defined(__arm__) || defined(__sparc__) || defined(__mips__)
-	#define ARM_OR_SPARC
+#if defined(__arm__) || defined(__sparc__) || defined(__mips__) || defined(GCC_USES_STRICT_ALIASING)
+	#define ARCHSPECIFIC_USE_MEMCPY
 #endif
 
 
@@ -113,7 +116,7 @@ inline void PokeUInt64(void* p, uint64 nVal);
 
 inline uint16 RawPeekUInt16(const void* p)
 {
-#ifndef ARM_OR_SPARC
+#ifndef ARCHSPECIFIC_USE_MEMCPY
 	return *((uint16*)p);
 #else
 	uint16 value;
@@ -125,7 +128,7 @@ inline uint16 RawPeekUInt16(const void* p)
 
 inline uint32 RawPeekUInt32(const void* p)
 {
-#ifndef ARM_OR_SPARC
+#ifndef ARCHSPECIFIC_USE_MEMCPY
 	return *((uint32*)p);
 #else
 	uint32 value;
@@ -137,7 +140,7 @@ inline uint32 RawPeekUInt32(const void* p)
 
 inline uint64 RawPeekUInt64(const void* p)
 {
-#ifndef ARM_OR_SPARC
+#ifndef ARCHSPECIFIC_USE_MEMCPY
 	return *((uint64*)p);
 #else
 	uint64 value;
@@ -177,7 +180,7 @@ inline uint64 PeekUInt64(const void* p)
 
 inline void RawPokeUInt16(void* p, uint16 nVal)
 {
-#ifndef ARM_OR_SPARC
+#ifndef ARCHSPECIFIC_USE_MEMCPY
 	*((uint16*)p) = nVal;
 #else
 	memcpy( p, &nVal, sizeof(uint16) );
@@ -187,7 +190,7 @@ inline void RawPokeUInt16(void* p, uint16 nVal)
 
 inline void RawPokeUInt32(void* p, uint32 nVal)
 {
-#ifndef ARM_OR_SPARC
+#ifndef ARCHSPECIFIC_USE_MEMCPY
 	*((uint32*)p) = nVal;
 #else
 	memcpy( p, &nVal, sizeof(uint32) );
@@ -197,7 +200,7 @@ inline void RawPokeUInt32(void* p, uint32 nVal)
 
 inline void RawPokeUInt64(void* p, uint64 nVal)
 {
-#ifndef ARM_OR_SPARC
+#ifndef ARCHSPECIFIC_USE_MEMCPY
 	*((uint64*)p) = nVal;
 #else
 	memcpy( p, &nVal, sizeof(uint64) );
@@ -226,6 +229,9 @@ inline void PokeUInt64(void* p, uint64 nVal)
 {
 	RawPokeUInt64( p, ENDIAN_SWAP_64( nVal ) );
 }
+
+// Don't pollute the preprocessor namespace
+#undef ARCHSPECIFIC_USE_MEMCPY
 
 #endif
 // File_checked_for_headers
