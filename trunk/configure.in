@@ -219,10 +219,13 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 	installation directory).])
 ])])
 
+MULE_COMPILATION_FLAGS
+
 dnl Checks requiring C++
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, ed2k, alc, alcc, wxcas, fileview],
 [AC_LANG_PUSH([C++])
-MULE_CHECK_GLIBCXX
+dnl MULE_CHECK_GLIBCXX
+MULE_CHECK_STRICT_ALIASING
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, alc, alcc], [MULE_CHECK_WX_SUPPORTS_LARGEFILE])
 
 # Check if the compiler is broken, wrt. exceptions.
@@ -328,8 +331,6 @@ MULE_CHECK_EXECINFO
 AC_CACHE_SAVE
 
 # Other tests
-# aMule options
-MULE_COMPILATION_FLAGS
 
 # autoconf >= 2.60 already defines ${docdir}, but we always need it.
 AC_MSG_CHECKING([for docdir])
