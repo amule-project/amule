@@ -1,0 +1,217 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "Kasım 2011" "aMule webserver v2.3.1" "aMule yardımcı araçları"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH İSİM
+amuleweb \- aMule web sunucusu
+.SH KULLANIM
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<sunucu>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<şifre>\fP] [\fB\-f\fP \fI<yol>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<dil>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<isim>\fP] [\fB\-s\fP \fI<port>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<port>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<şifre>\fP] [\fB\-G\fP \fI<şifre>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<yol>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<yol>\fP]
+
+.SH AÇIKLAMA
+\fBamuleweb\fP amule'e bir ağ tarayıcısı ile erişmenize olanak
+sağlar. amuleweb'i amule ile aynı anda ya da ayrı olarak, daha sonra ne
+zaman isterseniz başlatabilirsiniz. Seçenekleri komut satırı ya da
+yapılandırma dosyası ile belirtmek mümkündür. Komut satırı ile belirtilen
+seçenekler yapılandırma dosyası ile belirtilenlerden daha yüksek
+önceliklidir.
+.TP 
+\fB[ \-h\fP \fI<sunucu>\fP, \fB\-\-host\fP=\fI<sunucu>\fP \fB]\fP
+aMule'ün çalıştığı sunucu ya da bilgisayar (varsayılan:
+\fIlocalhost\fP). \fI<sunucu>\fP bir IP adresi ya da DNS ismi olabilir
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+aMule'ün dışarıya bağlandığında kullandığı port, Ayarlar\->Uzak
+Denetimler seçeneğinde belirlenir (varsayılan: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<şifre>\fP, \fB\-\-password\fP=\fI<şifre>\fP \fB]\fP
+Dışarıdan yapılan bağlantılar için şifre.
+.TP 
+\fB[ \-f\fP \fI<yol>\fP, \fB\-\-config\-file\fP=\fI<yol>\fP \fB]\fP
+Belirtilen yapılandırma dosyasını kullanır. Varsayılan yapılandırma dosyası
+şudur: \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Standart çıktıya hiçbir veri yazdırmaz.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Geveze olur \- debug mesajlarını da gösterir.
+.TP 
+\fB[ \-l\fP \fI<dil>\fP, \fB\-\-locale\fP=\fI<dil>\fP \fB]\fP
+Programın kullandığı dili belirler. \fI<dil>\fP parametresinin
+tanımlaması için \fBNOTLAR\fP bölümüne bakınız.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Komut satırı seçeneklerini yapılandırma dosyasına yazıp çıkar
+.TP 
+\fB[ \-t\fP \fI<isim>\fP, \fB\-\-template\fP=\fI<isim>\fP \fB]\fP
+Adı \fI<isim>\fP olan şablonu yükler. Ayrıntılar için \fBTEMA DESTEĞİ\fP
+bölümüne bakınız.
+.TP 
+\fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
+Web sunucusunun HTTP portu. Bu ağ tarayıcınızda kullanmanız gereken port
+numarasıdır (varsayılan: \fI4711\fP).
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+UPnP'yi etkinleştirir.
+.TP 
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+UPnP port numarası.
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Bant genişliğinden tasarruf etmek için gzip sıkıştırmasını etkinleştirir.
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+Gzip sıkıştırmasını devre dışı bırakır (bu varsayılan değerdir).
+.TP 
+\fB[ \-A\fP \fI<şifre>\fP, \fB\-\-admin\-pass\fP=\fI<şifre>\fP \fB]\fP
+Sunucuya tam erişim için şifre (parola).
+.TP 
+\fB[ \-G\fP \fI<şifre>\fP, \fB\-\-guest\-pass\fP=\fI<şifre>\fP \fB]\fP
+Web sunucusu için misafir şifresi.
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Misafir erişimini etkinleştirir.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Misafir erişimine izin vermez (varsayılan değer).
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+web sunucusu ayarlarını aMule'den/aMule'e yükler/kaydeder. Bu amuleweb'in
+komut satırı ve yapılandırma dosyası ayarlarını görmezden gelmesine yol
+açar. Ayarlar kaydedilirken hiçbiri yapılandırma dosyasına yazılmaz, aMule'e
+yazılır. (Tabii ki bu sadece aMule'ün Ayarlar\->Uzak Denetiminde
+kurulabilen değerler için geçerlidir.)
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+PHP yorumlayıcısını devre dışı bırakır (eskimiş)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+PHP sayfalarını her sorguda yeniden derler.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<yol>\fP \fB]\fP
+\fI<yol>\fPa dayalı yapılandırma dosyası yaratır ve çıkar. Yolun
+geçerli bir aMule dosyasına işaret etmesi gerekir.
+.TP 
+.B_untranslated [ \-\-help ]\fR
+Kısa bir kullanım açıklaması görüntüler.
+.TP 
+.B_untranslated [ \-\-version ]\fR
+Geçerli sürüm numarasını görüntüler.
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<yol>\fP \fB]\fP
+aMule yapılandırma dosyasına erişim yolu.  \fBDOĞRUDAN KULLANMAYIN!\fP aMule bu
+seçeneği amuleweb'i aMule ile başlatırken kullanır.  Bu seçenek diğer tüm
+komut satırı ve yapılandırma dosyası ayarlarının görmezden gelinmesine,
+ayarların verilen yapılandırma dosyasından okunmasına yol açar ve \fB\-q \-L\fP
+seçeneklerinin kullanılacağı anlamına da gelir.
+.SH NOTLAR
+.SS Yollar
+\fI<yol>\fP değeri alan  tüm seçenekler için eğer \fIyol\fP hiçbir dizin
+içermiyorsa (yani sadece bir dosya ismiyse) aMule yapılandırma dizini
+(\fI~/.aMule\fP) varsayılır.
+.SS Diller
+\fB\-l\fP seçeneği için \fI<dil>\fP parametresi şu biçimde kullanılmalıdır:
+\fIdil\fP[\fB_\fP\fIDİL\fP][\fB.\fP\fIkodlama\fP][\fB@\fP\fIniteleyici\fP] ki burada \fIdil\fP
+birinci dil, \fIDİL\fP lehçe/bölge, \fIkodlama\fP karakter setidir ve
+\fIniteleyici\fP kullanıcıya belli bir kategori içinde belli yerelleştirme
+verileri kullanma olanağı sağlar.
+
+Örnek olarak, aşağıdaki dizeler geçerlidir:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Yukarıdaki tüm dizeler geçerlidir ancak \fIkodlama\fP ve \fIniteleyici\fP henüz
+kullanılmamaktadır.
+
+Yukarıdakilere ek olarak dil isimlerini İngilizce olarak belirtebilirsiniz \-
+yani \fB\-l german\fP ile \fB\-l de_DE\fP eşdeğerdir ve ikisi de geçerlidir.
+
+Ne komut satırında ne de yapılandırma dosyasında hiçbir dil belirtilmediği
+zaman sistemin varsayılan dili kullanılacaktır.
+.SH "TEMA DESTEĞİ"
+\fBamuleweb\fP bilgileri çeşitli temalarda görüntüleyebilir. Bu temalara şablon
+adı verilir ve amuleweb'in belli bir şablonu yüklemesini \fB\-t\fP komut satırı
+seçeneği ile sağlayabilirsiniz. Şablonlar iki konumda aranır: önce
+\fI~/.aMule/webserver/\fP konumunda, sonra da, kurulum \-\-prefix=/usr ile
+yapıldıysa \fI/usr/share/amule/webserver/\fP konumunda.
+.PP
+Her şablonun şablon isminin alt dizininde bulunması gerekir ve bu dizinin
+şablonun ihtiyaç duyduğu tüm dosyaları bulundurması şarttır.
+.SH DOSYALAR
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH ÖRNEK
+Tipik olarak amuleweb ilk defada şu şekilde başlayacaktır:
+.PP
+\fBamuleweb\fP \fB\-h\fP \fIhostismi\fP \fB\-p\fP \fIDBport\fP \fB\-P\fP \fIDBşifresi\fP \fB\-s\fP
+\fIHTTPport\fP \fB\-A\fP \fIAdminŞifresi\fP \fB\-w\fP
+.PP
+ya da
+.PP
+\fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/kullanıcıadı/.aMule/amule.conf\fP
+.PP
+Ayarları \fI$HOME/.aMule/remote.conf\fP dosyasına kayıt eder ve daha sonra
+sadece şunu girmeniz yeterli olacaktır:
+.PP
+.B_untranslated amuleweb
+.PP
+Tabii ki ilk örnek satırında daha az ya da fazla seçenek belirtebilirsiniz,
+hatta onu tamamen görmezden gelebilirsiniz.
+.SH GERİBİLDİRİM
+Hataları bildirmek için forumumuzu (\fIhttp://forum.amule.org/\fP) ya da hata
+takipçimizi (\fIhttp://bugs.amule.org/\fP) kullanınız. Hataları bildirmek için
+e\-mail ve e\-mail listemizi kullanmamanızı ve geliştiricilerden birine
+doğrudan bildirmemenizi rica ederiz.
+.SH "TELİF HAKKI"
+aMule ve ilgili tüm yardımcı araçları GNU Genel Kamu Lisansı çerçevesinde
+dağıtılmaktadır.
+.SH "İLGİLİ BELGELER"
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH YAZAN
+Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
+tarafından yazılmıştır.

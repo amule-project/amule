@@ -1,0 +1,264 @@
+.TH AMULECMD 1 "November 2011" "aMuleCmd v2.3.1" "aMule utilities"
+.als B_untranslated B
+.als RB_untranslated RB
+.als SS_untranslated SS
+.SH NAME
+amulecmd \- Console-based program to control aMule
+.SH SYNOPSIS
+.B_untranslated amulecmd
+.RB [ \-h " " \fI<host> ]
+.RB [ \-p " " \fI<port> ]
+.RB [ \-P " " \fI<password> ]
+.RB [ \-f " " \fI<path> ]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+.RB [ \-l " " \fI<lang> ]
+.RB { " " [ \-w ] " " | " " [ \-c " " \fI<command> ] " " }
+
+.B_untranslated amulecmd
+.RB [ \-\-create\-config\-from = \fI<path> ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-help ]
+.SH DESCRIPTION
+.B amulecmd
+is a console-based client to control aMule.
+.TP
+\fB[ \-h\fR \fI<host>\fR, \fB\-\-host\fR=\fI<host>\fR \fB]\fR
+Host where aMule is running (default: \fIlocalhost\fR).
+\fI<host>\fR might be an IP address or a DNS name
+.TP
+\fB[ \-p\fR \fI<port>\fR, \fB\-\-port\fR=\fI<port>\fR \fB]\fR
+aMule's port for External Connections, as set in Preferences->Remote Controls (default: \fI4712\fR)
+.TP
+\fB[ \-P\fR \fI<password>\fR, \fB\-\-password\fR=\fI<password>\fR \fB]\fR
+External Connections password.
+.TP
+\fB[ \-f\fR \fI<path>\fR, \fB\-\-config\-file\fR=\fI<path>\fR \fB]\fR
+Use the given configuration file.
+Default configuration file is \fI~/.aMule/remote.conf\fR
+.TP
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Do not print any output to stdout.
+.TP
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Be verbose \-
+show also debug messages.
+.TP
+\fB[ \-l\fR \fI<lang>\fR, \fB\-\-locale\fR=\fI<lang>\fR \fB]\fR
+Sets program locale (language).
+See the \fBNOTES\fR section for the description of the \fI<lang>\fR parameter.
+.TP
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Write command line options to config file and exit
+.TP
+\fB[ \-c\fR \fI<command>\fR, \fB\-\-command\fR=\fI<command>\fR \fB]\fR
+Execute \fI<command>\fR as if it was entered at amulecmd's prompt and exit.
+.TP
+\fB[ \-\-create\-config\-from\fR=\fI<path>\fR \fB]\fR
+Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
+.TP
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Displays the current version number.
+.TP
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Prints a short usage description.
+.SH COMMANDS
+All commands are case insensitive.
+.SS Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
+Adds an eD2k-link or a magnet-link to the core.
+
+The eD2k link to be added can be:
+.RS 3
+.IP \(bu 2
+a file link (ed2k://|file|...), it will be added to the download queue;
+.IP \(bu 2
+a server link (ed2k://|server|...), it will be added to the server list;
+.IP \(bu 2
+a serverlist link, in which case all servers in the list will be added to the server list.
+.RE
+
+The magnet link must contain the eD2k hash and file length.
+.SS Cancel \fI<hash>\fP | \fI<number>\fP
+Cancels the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
+.SS Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
+Connect to the network.
+
+This will connect to all networks that are enabled in Preferences.
+
+With the optional parameter you can specify which network to connect to. Giving
+a server address in the form of IP:Port (where IP is either a dotted decimal
+IPv4 address or a resolvable DNS name) aMule will connect to that server only.
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
+Disconnect from all networks you are connected to, or just disconnect from the
+specified network.
+.SS Download \fI<number>\fP
+Start downloading a file.
+
+The \fI<number>\fR of a file from the last search has to be given.
+Example: `download 12' will start to download the file with the number 12 of the
+previous search.
+.SS_untranslated Exit
+Disconnect from amule/amuled and quit amulecmd.
+.SS Get \fI<what>\fP
+Get and display a preference value.
+
+Available values for \fI<what>\fR:
+.RS
+.IP BwLimits 10
+Get bandwidth limits.
+.IP IPFilter 10
+Get IPFilter preferences.
+.RE
+.SS Help [ \fI<command>\fP ]
+Prints a short usage description.
+If called without parameter, it shows a list of available commands.
+If called with \fI<command>\fR, it shows a short description of the given command.
+.SS Pause \fI<hash>\fP | \fI<number>\fP
+Pauses the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
+.SS Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
+Set priority of a download specified by \fI<hash>\fR or \fI<number>\fR.
+
+Available values for \fI<priority>\fR:
+.RS
+.IP Auto 10
+Automatic priority.
+.IP High 10
+High priority.
+.IP Low 10
+Low priority.
+.IP Normal 10
+Normal priority.
+.RE
+.SS_untranslated Progress
+Shows the progress of an on\-going search.
+.SS_untranslated Quit
+A synonim of the \fBexit\fR command.
+.SS Reload \fI<what>\fP
+Reloads a given object.
+
+Available values for \fI<what>\fR:
+.RS
+.IP Shared 10
+Reload shared files list.
+.IP IPFilter 10
+Reload IP filter tables.
+.RE
+.SS_untranslated Reset
+Reset the log.
+.SS_untranslated Results
+Shows you the results of the last search.
+.SS Resume \fI<hash>\fP | \fI<number>\fP
+Resumes the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
+.SS Search \fI<type>\fP \fI<keyword>\fR
+Makes a search for the given \fI<keyword>\fR. A search type and a keyword to search is mandatory to do this.
+Example: `search kad amule' performs a kad search for `amule'.
+
+Available search types:
+.RS
+.IP Global 10
+Performs a global search.
+.IP Kad 10
+Performs a search on the Kademlia network.
+.IP Local 10
+Performs a local search.
+.RE
+.SS Set \fI<what>\fR
+Sets a given preferences value.
+
+Available values for \fI<what>\fR:
+.RS
+.IP BwLimits 10
+Set bandwidth limits.
+.IP IPFilter 10
+Set IPFilter preferences.
+.RE
+.SS Show \fI<what>\fR
+Shows upload/download queue, servers list or shared files list.
+
+Available values for \fI<what>\fR:
+.RS
+.IP DL 10
+Show download queue.
+.IP Log 10
+Show log.
+.IP Servers 10
+Show servers list.
+.IP UL 10
+Show upload queue.
+.RE
+.SS_untranslated Shutdown
+Shutdown the remote running core (amule/amuled).
+This will also shut down the text client, since it is unusable without a running core.
+.SS Statistics [ \fI<number>\fP ]
+Show statistics tree.
+
+The optional \fI<number>\fR in the range of 0-255 can be passed as argument to this
+command, which tells how many entries of the client version subtree should be
+shown. Passing 0, or omitting it means `unlimited'.
+
+Example: `statistics 5' will show only the top 5 versions for each client
+type.
+.SS_untranslated Status
+Show connection status, current up/download speeds, etc.
+.SH NOTES
+.SS Paths
+For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
+directory part (i.e. just a plain filename), then it is considered to be under
+the aMule configuration directory, \fI~/.aMule\fR.
+.SS Languages
+The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
+where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory,
+\fIencoding\fR is the character set to use and \fImodifier\fR
+allows the user to select a specific instance of localization data within a
+single category.
+
+For example, the following strings are valid:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Though all the above strings are accepted as valid language definitions,
+\fIencoding\fR and \fImodifier\fR are yet unused.
+
+In addition to the format above, you can also specify full language names in
+English - so \fB\-l german\fR is also valid and is equal to \fB\-l de_DE\fR.
+
+When no locale is defined, either on command-line or in config file, system
+default language will be used.
+.SH FILES
+~/.aMule/remote.conf
+.SH EXAMPLE
+Typically amulecmd will be first run as:
+.PP
+\fBamulecmd\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-w\fR
+.PP
+or
+.PP
+\fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+These will save settings to \fI$HOME/.aMule/remote.conf\fR, and later you only need to type:
+
+.B_untranslated amulecmd
+
+Of course, you don't have to follow this example.
+.SH REPORTING BUGS
+Please report bugs either on our forum (\fIhttp://forum.amule.org/\fR), or in our bugtracker (\fIhttp://bugs.amule.org/\fR).
+Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.
+.SH COPYRIGHT
+aMule and all of its related utilities are distributed under the GNU General Public License.
+.SH SEE ALSO
+.B_untranslated amule\fR(1), \fBamuled\fR(1)
+.SH AUTHOR
+This manpage was written by Vollstrecker <amule@vollstreckernet.de>

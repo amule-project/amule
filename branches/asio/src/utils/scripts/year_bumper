@@ -1,0 +1,67 @@
+#!/bin/sh -eu
+
+## This file is part of the aMule Project
+##
+## Copyright (c) 2011 Dévai Tamás ( gonosztopi@amule.org )
+## Copyright (c) 2011 aMule Team ( admin@amule.org / http://www.amule.org )
+##
+## This program is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation; either
+## version 2 of the License, or (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+
+# Usage:
+#	year_bumper [oldyear [newyear]]
+#
+#	oldyear defaults to the year found in configure.in
+#	newyear defaults to the current year
+
+if [ ! -f ./configure.in ]; then
+	echo "This script must be run from the source root directory!"
+	exit 1
+fi
+
+if [ $# -ge 1 ]; then
+	oldyear="$1"
+else
+	oldyear=`sed -e 's/# Copyright (c) 2003-\([0-9]\{4\}\).*/\1/;t;d' ./configure.in`
+fi
+
+if [ $# -ge 2 ]; then
+	newyear="$2"
+else
+	newyear=`date "+%Y"`
+fi
+
+echo "Bumping from ${oldyear} to ${newyear}..."
+
+if [ "$newyear" = "$oldyear" ]; then
+	echo "Nothing to do."
+	exit
+fi
+
+find '.' \
+	'(' \
+		-name '.svn' -o	\
+		-name '.hg' -o	\
+		-name '.git' -o	\
+		-name '*.wdr'	\
+	')' -prune -o \
+	-type f -print | \
+while read f; do
+	if file "$f" | grep -q text ; then
+		if grep -q "$oldyear" "$f" ; then
+			echo $f
+			sed -i -e "/Copyright/{s/-${oldyear}/-${newyear}/g;s/${oldyear}/${oldyear}-${newyear}/g;}" "$f"
+		fi
+	fi
+done

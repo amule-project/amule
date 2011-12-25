@@ -1,0 +1,99 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULED 1 "Novembre 2011" "aMule Daemon v2.3.1" "aMule Daemon"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOM
+amuled \- le client P2P eMule multiplateforme \- version daemonisée
+.SH SYNOPSIS
+.B_untranslated amuled
+[\fB\-c\fP \fI<chemin>\fP]
+.RB_untranslated [ \-f ]
+[\fB\-p\fP \fI<chemin>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+[\fB\-w\fP \fI<chemin>\fP]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
+[\fB\-t\fP \fI<num>\fP] [\fIlien eD2k\fP]
+
+.B_untranslated amuled
+.RB_untranslated [ \-v ]
+
+.B_untranslated amuled
+.RB_untranslated [ \-h ]
+.SH DESCRIPTION
+.TP 
+\fB[ \-c\fP \fI<chemin>\fP, \fB\-\-config\-dir\fP=\fI<chemin>\fP \fB]\fP
+Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
+défaut
+.TP 
+.B_untranslated [ \-f\fR, \fB\-\-full\-daemon ]\fR
+Embranchements en arrière plan.
+.TP 
+\fB[ \-p\fP \fI<chemin>\fP, \fB\-\-pid\-file\fP=\fI<chemin>\fP \fB]\fP
+Après l'embranchement, créer un fichier pid dans le
+\fI<répertoire>\fP.  \fI<répertoire>\fP doit contenir le fichier.
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-ec\-config ]\fR
+Configurer les EC (Connexions Externes).
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
+Afficher les messages du journal sur stdout.
+.TP 
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
+Réinitialiser la configuration par défaut.
+.TP 
+\fB[ \-w\fP \fI<chemin>\fP, \fB\-\-use\-amuleweb\fP=\fI<chemin>\fP \fB]\fP
+Préciser l'emplacement du binaire d'amuleweb \fI<chemin>\fP.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Ne pas prendre en charge une exception fatale.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Ne pas désactiver stdin.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+Définir la catégorie pour les liens eD2k passé à  \fI<num>\fP
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Affiche le numéro de la version actuelle.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Afficher une court description d'utilisation.
+.TP 
+\fB[ lien eD2k ]\fP
+Ajoute un lien eD2k au noyau.
+.PP
+Le lien eD2k à ajouter peut être :
+.RS 3
+.IP \(bu 2
+un lien fichier (ed2k://|fichier|…), il sera ajouté à la file de
+téléchargement;
+.IP \(bu 2
+un lien serveur (ed2k://|serveur|…), il sera ajouté à la liste des serveurs;
+.IP \(bu 2
+un lien de liste de serveurs, dans ce cas tous les serveurs dans la liste
+seront ajoutés à la liste des serveurs;
+.IP \(bu 2
+un lien magnétique.
+.RE
+.SH FICHIERS
+~/.aMule/*
+.SH "RAPPORTER DES BOGUES"
+Veuillez rapporter les bogues sur notre forum (\fIhttp://forum.amule.org/\fP),
+ou sur notre bugtracker (\fIhttp://bugs.amule.org/\fP).  Veuillez ne pas
+rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
+à n'importe quel membre  de l'équipe.
+.SH COPYRIGHT
+aMule et tout ses outils sont distribués sous la licence GNU General Public
+License.
+.SH "VOIR AUSSI"
+.B_untranslated alcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
+.SH AUTEUR
+Cette manpage a été écrite par Vollstrecker
+<amule@vollstreckernet.de>

@@ -1,0 +1,85 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "Kasım 2011" "aMule eD2k bağlantı çözümleyicisi v1.5.1" "aMule yardımcı araçları"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH İSİM
+ed2k \- aMule eD2k bağlantı çözümleyicisi
+.SH KULLANIM
+.B_untranslated ed2k
+[\fB\-c\fP \fI<yol>\fP] [\fB\-t\fP \fI<sayı>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k\-bağlantısı>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH AÇIKLAMA
+Herhangi bir \fI<eD2k\-bağlantısını>\fP aMule'e gönderir, yani onu
+~/.aMule/ED2KLinks dosyasına yazar ki bu dosya aMule tarafından her saniye
+bağlantılar için sorgulanır.
+.TP 
+\fB[ \-c\fP \fI<yol>\fP, \fB\-\-config\-dir\fP=\fI<yol>\fP \fB]\fP
+Yapılandırmayı home yerine \fI<yol>\fPdan oku
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<sayı>\fP \fB]\fP
+\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler.
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Bir emule koleksiyonunda \fI<ed2k\-bağlantısı>\fP şeklinde bulunan tüm
+bağlantıları yükler
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Bir emule koleksiyonunda \fI<ed2k\-bağlantısı>\fP şeklinde bulunan tüm
+bağlantıları listeler
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Kısa bir kullanım açıklaması görüntüler.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Geçerli sürüm numarasını görüntüler.
+.TP 
+\fB[ eD2k\-bağlantısı ]\fP
+Çekirdeğe bir eD2k bağlantısı ekler.
+.PP
+Eklenecek eD2k bağlantısı şunlardan biri olabilir:
+.RS 3
+.IP \(bu 2
+bir dosya bağlantısı (ed2k://|file|...) ki indirmeler kuyruğuna eklenir;
+.IP \(bu 2
+bir sunucu bağlantısı (ed2k://|server|...) ki sunucu listesine eklenir;
+.IP \(bu 2
+bir sunucu listesi bağlantısı, bu durumda listedeki tüm sunucular sunucu
+listesine eklenir;
+.IP \(bu 2
+bir magnet bağlantısı;
+.IP \(bu 2
+bir emulecollection dosyası.
+.RE
+
+\fBParametrelerin giriş sırası önemlidir.\fP Birden fazla bağlantı
+girebilirsiniz ve her bağlantının kendine özel parametreleri
+olabilir. Örneğin \fBed2k <bağlantı1> \-t2 <bağlantı2>\fP
+\fI<bağlantı1>\fP dosyasını standart kategoriye ve
+\fI<bağlantı2>\fP dosyasını ikinci kategoriye indirecektir.
+.SH DOSYALAR
+~/.aMule/ED2KLinks
+.SH GERİBİLDİRİM
+Hataları bildirmek için forumumuzu (\fIhttp://forum.amule.org/\fP) ya da hata
+takipçimizi (\fIhttp://bugs.amule.org/\fP) kullanınız. Hataları bildirmek için
+e\-mail ve e\-mail listemizi kullanmamanızı ve geliştiricilerden birine
+doğrudan bildirmemenizi rica ederiz.
+.SH "TELİF HAKKI"
+aMule ve ilgili tüm yardımcı araçları GNU Genel Kamu Lisansı çerçevesinde
+dağıtılmaktadır.
+.SH "İLGİLİ BELGELER"
+.B_untranslated amule\fR(1)
+.SH YAZAN
+Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
+tarafından yazılmıştır.

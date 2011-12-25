@@ -1,0 +1,281 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULECMD 1 "Kasım 2011" "aMuleCmd v2.3.1" "aMule yardımcı araçları"
+.als B_untranslated B
+.als RB_untranslated RB
+.als SS_untranslated SS
+.SH İSİM
+amulecmd \- aMule'ü yönetmek için konsol temelli bir program
+.SH KULLANIM
+.B_untranslated amulecmd
+[\fB\-h\fP \fI<sunucu>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<şifre>\fP] [\fB\-f\fP \fI<yol>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<dil>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP \fI<komut>\fP]\fB
+\fP}
+
+.B_untranslated amulecmd
+[\fB\-\-create\-config\-from\fP=\fI<yol>\fP]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-help ]
+.SH AÇIKLAMA
+\fBamulecmd\fP aMule'ü yönetmek için konsol temelli bir programdır.
+.TP 
+\fB[ \-h\fP \fI<sunucu>\fP, \fB\-\-host\fP=\fI<sunucu>\fP \fB]\fP
+aMule'ün çalıştığı sunucu ya da bilgisayar (varsayılan:
+\fIlocalhost\fP). \fI<sunucu>\fP bir IP adresi ya da DNS ismi olabilir
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+aMule'ün dışarıya bağlandığında kullandığı port, Ayarlar\->Uzak
+Denetimler seçeneğinde belirlenir (varsayılan: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<şifre>\fP, \fB\-\-password\fP=\fI<şifre>\fP \fB]\fP
+Dışarıdan yapılan bağlantılar için şifre.
+.TP 
+\fB[ \-f\fP \fI<yol>\fP, \fB\-\-config\-file\fP=\fI<yol>\fP \fB]\fP
+Belirtilen yapılandırma dosyasını kullanır. Varsayılan yapılandırma dosyası
+şudur: \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Standart çıktıya hiçbir veri yazdırmaz.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Geveze olur \- debug mesajlarını da gösterir.
+.TP 
+\fB[ \-l\fP \fI<dil>\fP, \fB\-\-locale\fP=\fI<dil>\fP \fB]\fP
+Programın kullandığı dili belirler. \fI<dil>\fP parametresinin
+tanımlaması için \fBNOTLAR\fP bölümüne bakınız.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Komut satırı seçeneklerini yapılandırma dosyasına yazıp çıkar
+.TP 
+\fB[ \-c\fP \fI<komut>\fP, \fB\-\-command\fP=\fI<komut>\fP \fB]\fP
+\fI<komut>\fPu amulecmd'ın komut istemine girilmiş gibi çalıştırır ve
+çıkar.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<yol>\fP \fB]\fP
+\fI<yol>\fPa dayalı yapılandırma dosyası yaratır ve çıkar. Yolun
+geçerli bir aMule dosyasına işaret etmesi gerekir.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Geçerli sürüm numarasını görüntüler.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Kısa bir kullanım açıklaması görüntüler.
+.SH KOMUTLAR
+Tüm komutlar harf büyüklüğüne duyarsızdır.
+.SS "Add \fI<eD2k\-bağlantısı>\fP | \fI<magnet\-bağlantısı>\fP"
+Çekirdeğe bir eD2k ya da magnet bağlantısı ekler.
+
+Eklenecek eD2k bağlantısı şunlardan biri olabilir:
+.RS 3
+.IP \(bu 2
+bir dosya bağlantısı (ed2k://|file|...) ki indirmeler kuyruğuna eklenir;
+.IP \(bu 2
+bir sunucu bağlantısı (ed2k://|server|...) ki sunucu listesine eklenir;
+.IP \(bu 2
+bir sunucu listesi bağlantısı, bu durumda listedeki tüm sunucular sunucu
+listesine eklenir.
+.RE
+
+Magnet bağlantısı eD2k hash değerini ve dosya boyutunu içermelidir.
+.SS "Cancel \fI<hash>\fP | \fI<sayı>\fP"
+\fI<hash>\fP ya da \fI<sayı>\fP tarafından belirtilen indirmeyi
+iptal eder. Değerleri öğrenmek için \fBshow\fP komutunu kullanınız.
+.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|isim>\fP ]"
+Ağa bağlanır.
+
+Ayarlarda ekinleştirilmiş tüm ağlara bağlanır.
+
+Ek bir parametreyle hangi ağa bağlanmak istediğinizi
+belirtebilirsiniz. IP:port şeklinde (IP ya noktalarla ayrılmış ondalık bir
+IPv4 adresi ya da çözümlenebilen bir DNS ismi olmalıdır) bir sunucu adresi
+verirseniz aMule sadece bu sunucuya bağlanacaktır.
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
+Ya çevrimiçi olan tüm ağlarla bağlantıyı keser, ya da sadece belirtilen ağ
+ile.
+.SS "Download \fI<sayı>\fP"
+Bir dosyayı indirmeye başlar.
+
+Bir dosyanın son aramadan \fI<sayı>\fP değeri girilmesi
+gerekir. Örneğin `download 12' son aramadaki 12 numaralı dosyayı indirmeye
+başlar.
+.SS_untranslated Exit
+amule/amuled ile bağlantıyı keser ve amulecmd kapanır.
+.SS "Get \fI<değer>\fP"
+Bir ayar değerini görüntüler.
+
+\fI<değer>\fP ile kullanılabilecek değerler:
+.RS
+.IP BwLimits 10
+Bant genişliği değerlerini görüntüler.
+.IP IPFilter 10
+IPFilter ayarlarını görüntüler.
+.RE
+.SS "Help [ \fI<komut>\fP ]"
+Kısa bir kullanım açıklaması görüntüler. Bir parametre ile kullanılırsa
+mevcut komutların listesini verir. \fI<komut>\fP ile kullanılırsa
+belirtilen komutun kısa bir açıklamasını görüntüler.
+.SS "Pause \fI<hash>\fP | \fI<sayı>\fP"
+\fI<hash>\fP ya da \fI<sayı>\fP değerleri ile belirtilen indirmeyi
+duraklatır. Bu değerleri elde etmek için \fBshow\fP komutunu kullanabilirsiniz.
+.SS "Priority \fI<öncelik>\fP \fI<hash>\fP | \fI<sayı>\fP"
+\fI<hash>\fP ya da \fI<sayı>\fP ile belirtilen bir indirmenin
+önceliğini ayarlar.
+
+\fI<öncelik>\fP için kullanılabilecek değerler:
+.RS
+.IP Auto 10
+Otomatik öncelik.
+.IP High 10
+Yüksek öncelik.
+.IP Low 10
+Düşük öncelik.
+.IP Normal 10
+Normal öncelik.
+.RE
+.SS_untranslated Progress
+Sürmekte olan bir aramanın ilerlemesini gösterir.
+.SS_untranslated Quit
+\fBexit\fP komutu ile eş anlamlıdır.
+.SS "Reload \fI<değer>\fP"
+Belirtilen değeri yeniden yükler.
+
+\fI<değer>\fP ile kullanılabilecek değerler:
+.RS
+.IP Shared 10
+Paylaşılan dosyalar listesini yeniden yükler.
+.IP IPFilter 10
+IP filtre tablolarını yeniden yükler.
+.RE
+.SS_untranslated Reset
+Günlüğü sıfırlar.
+.SS_untranslated Results
+Son aramanın sonuçlarını gösterir.
+.SS "Resume \fI<hash>\fP | \fI<sayı>\fP"
+\fI<hash>\fP ya da \fI<sayı>\fP ile belirtilen indirmeye kaldığı
+yerden devam eder. Değeri öğrenmek için \fBshow\fP komutunu kullanabilirsiniz.
+.SS "Search \fI<tür>\fP \fI<anahtarkelime>\fP"
+Girilen \fI<anahtarkelime>\fP için bir arama yapar. Bir arama türü ve
+bir anahtar kelime kullanmanız mecburidir. Örneğin `search kad amule' kad
+ağında `amule' sözcüğü ile arama yapar.
+
+Kullanılabilecek arama türleri:
+.RS
+.IP Global 10
+Genel arama yapar.
+.IP Kad 10
+Kad ağında arama yapar.
+.IP Local 10
+Sunucuda arama yapar.
+.RE
+.SS "Set \fI<değer>\fP"
+Belirtilen değeri ayarlara girer.
+
+\fI<değer>\fP ile kullanılabilecek değerler:
+.RS
+.IP BwLimits 10
+Bant genişliği değerlerini ayarlar.
+.IP IPFilter 10
+IPFilter tercihlerini ayarlar.
+.RE
+.SS "Show \fI<değer>\fP"
+İndirme/aktarma kuyruğunu, sunucu listesini ya da paylaşılan dosya listesini
+gösterir.
+
+\fI<değer>\fP ile kullanılabilecek değerler:
+.RS
+.IP DL 10
+İndirme kuyruğunu gösterir.
+.IP Log 10
+Günlüğü (log) gösterir.
+.IP Servers 10
+Sunucu listesini gösterir.
+.IP UL 10
+Aktarma (gönderilen dosyalar) kuyruğunu gösterir.
+.RE
+.SS_untranslated Shutdown
+Uzakta çalışmakta olan çekirdeği (amule/amuled) kapatır. Bu metin temelli
+istemciyi de kapatacaktır çünkü çekirdek olmadan işleyemez.
+.SS "İstatistikler [ \fI<sayı>\fP ] "
+İstatistikler ağacını gösterir.
+
+0\-255 arası \fI<sayı>\fP isteğe bağlı argüman olarak komuta
+aktarılabilir, bu kaç tane istemci sürümü alt ağacının gösterileceğini
+belirtir. 0 kullanımı ya da hiçbir argüman kullanılmaması `sınırsız'
+anlamına gelir.
+
+Örneğin `statistics 5' her istemcinin en çok kullanılan 5 sürümünü gösterir.
+.SS_untranslated Status
+Bağlantı durumunu, sürmekte olan indirmeleri ve aktarmaları vs. gösterir.
+.SH NOTLAR
+.SS Yollar
+\fI<yol>\fP değeri alan  tüm seçenekler için eğer \fIyol\fP hiçbir dizin
+içermiyorsa (yani sadece bir dosya ismiyse) aMule yapılandırma dizini
+(\fI~/.aMule\fP) varsayılır.
+.SS Diller
+\fB\-l\fP seçeneği için \fI<dil>\fP parametresi şu biçimde kullanılmalıdır:
+\fIdil\fP[\fB_\fP\fIDİL\fP][\fB.\fP\fIkodlama\fP][\fB@\fP\fIniteleyici\fP] ki burada \fIdil\fP
+birinci dil, \fIDİL\fP lehçe/bölge, \fIkodlama\fP karakter setidir ve
+\fIniteleyici\fP kullanıcıya belli bir kategori içinde belli yerelleştirme
+verileri kullanma olanağı sağlar.
+
+Örnek olarak, aşağıdaki dizeler geçerlidir:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Yukarıdaki tüm dizeler geçerlidir ancak \fIkodlama\fP ve \fIniteleyici\fP henüz
+kullanılmamaktadır.
+
+Yukarıdakilere ek olarak dil isimlerini İngilizce olarak belirtebilirsiniz \-
+yani \fB\-l german\fP ile \fB\-l de_DE\fP eşdeğerdir ve ikisi de geçerlidir.
+
+Ne komut satırında ne de yapılandırma dosyasında hiçbir dil belirtilmediği
+zaman sistemin varsayılan dili kullanılacaktır.
+.SH DOSYALAR
+~/.aMule/remote.conf
+.SH ÖRNEK
+Tipik olarak amulecmd ilk defada şu şekilde başlayacaktır:
+.PP
+\fBamulecmd\fP \fB\-h\fP \fIbilgisayaradı\fP \fB\-p\fP \fIDBport\fP \fB\-P\fP \fIDBşifre\fP \fB\-w\fP
+.PP
+ya da
+.PP
+\fBamulecmd\fP \fB\-\-create\-config\-from\fP=\fI/home/kullanıcıadı/.aMule/amule.conf\fP
+.PP
+Ayarları \fI$HOME/.aMule/remote.conf\fP dosyasına kayıt eder ve daha sonra
+sadece şunu girmeniz yeterli olacaktır:
+
+.B_untranslated amulecmd
+
+Tabii ki bu örneğe harfiyen uymanız zorunlu değildir.
+.SH GERİBİLDİRİM
+Hataları bildirmek için forumumuzu (\fIhttp://forum.amule.org/\fP) ya da hata
+takipçimizi (\fIhttp://bugs.amule.org/\fP) kullanınız. Hataları bildirmek için
+e\-mail ve e\-mail listemizi kullanmamanızı ve geliştiricilerden birine
+doğrudan bildirmemenizi rica ederiz.
+.SH "TELİF HAKKI"
+aMule ve ilgili tüm yardımcı araçları GNU Genel Kamu Lisansı çerçevesinde
+dağıtılmaktadır.
+.SH "İLGİLİ BELGELER"
+.B_untranslated amule\fR(1), \fBamuled\fR(1)
+.SH YAZAN
+Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
+tarafından yazılmıştır.

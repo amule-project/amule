@@ -1,0 +1,223 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "2011. november" "aMule web kiszolgáló v2.3.1" "aMule segédprogramok"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NÉV
+amuleweb \- aMule web kiszolgáló
+.SH ÁTTEKINTÉS
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<gép>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<jelszó>\fP] [\fB\-f\fP \fI<fájl>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<nyelv>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<sablon>\fP] [\fB\-s\fP \fI<port>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<port>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<jelszó>\fP] [\fB\-G\fP \fI<jelszó>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<fájl>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<fájl>\fP]
+
+.SH LEÍRÁS
+Az \fBamuleweb\fP programmal egy web\-böngésző segítségével vezérelhetjük az
+amule(d)\-t. Az amuleweb\-et az \fBamule\fP(1)\-vel együtt is lehet indítani, vagy
+külön, kézzel. A beállításait konfigurációs fájlban vagy parancssorban is
+megadhatjuk. A parancssori opciók elsőbbséget élveznek a konfigurácós
+fájlban találtakkal szemben.
+.TP 
+\fB[ \-h\fP \fI<gép>\fP, \fB\-\-host\fP=\fI<gép>\fP \fB]\fP
+A gép, amelyen az aMule fut (alapértelmezés: \fIlocalhost\fP). A
+\fI<gép>\fP lehet egy IP cím vagy egy DNS név.
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+Az aMule távoli elérés portja, amint az a Beállítások\->Távoli Elérés
+panelen beállítható (alapértelemzés: \fI4712\fP).
+.TP 
+\fB[ \-P\fP \fI<jelszó>\fP, \fB\-\-password\fP=\fI<jelszó>\fP \fB]\fP
+A távoli elérés jelszava.
+.TP 
+\fB[ \-f\fP \fI<fájl>\fP, \fB\-\-config\-file\fP=\fI<fájl>\fP \fB]\fP
+A megadott konfigurációs fájl használata. Az alapértelmezett konfigurációs
+fájl: \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Ne írjon semmit a szabvány kimenetre.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Bőbeszédű mód \- a hibakeresési üzenetek megjelenítése.
+.TP 
+\fB[ \-l\fP \fI<nyelv>\fP, \fB\-\-locale\fP=\fI<nyelv>\fP \fB]\fP
+Beállítja a program nyelvét. Lásd a \fBMEGJEGYZÉSEK\fP fejezetet a
+\fI<nyelv>\fP paraméter bővebb leírásához.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+A parancssori paramétereket beírja a konfigurációs fájlba és kilép.
+.TP 
+\fB[ \-t\fP \fI<sablon>\fP, \fB\-\-template\fP=\fI<sablon>\fP \fB]\fP
+Betölti a \fI<név>\fP nevű sablont. Bővebb részletekért lásd a
+\fBSABLONOK\fP fejezetet.
+.TP 
+\fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
+Web kiszolgáló HTTP port. Erre a portra kell irányítanod a böngésződet
+(alapértelmezés: \fI4711\fP).
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+UPnP engedélyezése.
+.TP 
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+UPnP port.
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Engedélyezi a gzip tömörítést a HTTP adatátvitelnél a sávszélesség jobb
+kihasználása érdekében.
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+gzip tömörítés tiltása (alapértelmezett).
+.TP 
+\fB[ \-A\fP \fI<jelszó>\fP, \fB\-\-admin\-pass\fP=\fI<jelszó>\fP \fB]\fP
+Teljes hozzáférésű jelszó a web kiszolgálóhoz.
+.TP 
+\fB[ \-G\fP \fI<jelszó>\fP, \fB\-\-guest\-pass\fP=\fI<jelszó>\fP \fB]\fP
+Web kiszolgáló vendég felhasználó jelszava.
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Vendég felhasználó engedélyezése.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Vendég felhasználó tiltása (alapértelmezett).
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+Beállítások töltése/mentése a távoli aMule\-ról/ra. Ebben az esetben az
+amuleweb figyelmen kívül hagyja azokat a parancssori és konfigurációs
+fájlbeli beállításokat, amelyeket az aMule\-tól is be tud szerezni (ezek
+beállíthatók a Beállítások\->Távoli Elérés pontban). A beállítások
+mentésekor sem írja azokat fájlba (mint egyébként), hanem az aMule\-t
+értesíti a beállítások megváltozásáról. Azon beállítások, melyek az aMule
+Beállítások párbeszédpaneljén nem szerepelnek, nem kerülnek mentésre.
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+PHP értelmező letiltása (elavult, ne használd)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+PHP oldalak újrafordítása minden kérésnél.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<fájl>\fP \fB]\fP
+Konfigurációs fájl készítése a \fI<fájl>\fP alapján, amely az aMule
+érvényes konfigurációs fájlja kell legyen, majd utána kilép.
+.TP 
+.B_untranslated [ \-\-help ]\fR
+Egy rövid használati leírást jelenít meg.
+.TP 
+.B_untranslated [ \-\-version ]\fR
+Megjeleníti a verziószámot.
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<fájl>\fP \fB]\fP
+aMule konfigurációs fájl. \fBNE HASZNÁLD!\fP Az aMule használja ezt a
+paramétert amikor automatikusan indítja az amuleweb\-et. Ezen paraméter
+hatására minden más parancssori és konfigurációs fájl\-béli beállítást
+figyelmen kívül hagy, a beállításait a megadott \fI<fájl>\fP\-ból
+olvassa, illetve bekapcsolja a \fB\-q \-L\fP opciókat.
+.SH MEGJEGYZÉSEK
+.SS "Elérési utak"
+Minden olyan opciónál amely \fI<fájl>\fP paramétert kér, ha a megadott
+\fIfájl\fP nem tartalmaz könyvtár komponenst (vagyis tisztán csak egy fájlnév),
+akkor azt az aMule konfigurációs könyvtárában (\fI~/.aMule\fP) fogja keresni.
+.SS Nyelvek
+A \fB\-l\fP opció \fI<nyelv>\fP paramétere a következőképpen adható meg:
+\fInyelv\fP[\fB_\fP\fITERÜLET\fP][\fB.\fP\fIkódolás\fP][\fB@\fP\fImódosító\fP], ahol \fInyelv\fP az
+elsődleges nyelv, \fITERÜLET\fP egy nyelvváltozat/terület kódja, \fIkódolás\fP a
+karakterkészlet kódja és a \fImódosító\fP \(Bqlehetővé teszi, hogy a
+felhasználó kiválasszon egy meghatározott esetet a helyi jellemzők adataiból
+egyetlen kategórián belül\(rq.
+
+Például a következő értékek mind érvényesek:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Habár a fentieket mind elfogadja a program, mint érvényes
+nyelvmeghatározást, a \fIkódolás\fP és \fImódosító\fP még nem használt.
+
+Ráadásként a fenti formátumhoz, megadható akár egy nyelv teljes angol
+megnevezése is, így például a \fB\-l german\fP szintén érvényes és egyenértékű a
+\fB\-l de_DE\fP megadással.
+
+Ha sem a konfigurációs fájlban, sem a parancssorban nincs megadva a nyelv,
+akkor a rendszer alapértelmezett nyelvét fogja használni.
+.SH SABLONOK
+Az \fBamuleweb\fP képes az információ különböző felületekkel történő
+megjelenítésére. Ezeket hívjuk sablonoknak, és az amuleweb a \fB\-t\fP
+parancssori opcióval vehető rá egy adott sablon használatára. A sablonokat a
+következő helyeken keresi: először a \fI~/.aMule/webserver/\fP könyvtárban,
+majd utána a \fI/usr/share/amule/webserver/\fP könyvtárban.
+.PP
+Minden sablonnak a sablon nevével megegyező alkönyvtárban kell lennie, és ez
+a könyvtár kell tartalmazzon minden fájlt, amelyre a sablonnak szüksége van.
+.SH FÁJLOK
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH PÉLDA
+Tipikusan az amuleweb\-et először a következőképpen indítjuk:
+.PP
+\fBamuleweb\fP \fB\-h\fP \fIgépnév\fP \fB\-p\fP \fIEC\-port\fP \fB\-P\fP \fIEC\-jelszó\fP \fB\-s\fP
+\fIHTTP\-port\fP \fB\-A\fP \fIadmin\-jelszó\fP \fB\-w\fP
+.PP
+vagy
+.PP
+\fBamuleweb\fP
+\fB\-\-create\-config\-from\fP=\fI/home/felhasználónév/.aMule/amule.conf\fP
+.PP
+Ez elmenti a beállításokat a \fI$HOME/.aMule/remote.conf\fP fájlba, hogy később
+már csak ezt kelljen írni:
+.PP
+.B_untranslated amuleweb
+.PP
+Természetesen más paraméterek is megadhatók az első példában, illetve
+teljesen el is hagyhatóak.
+.SH "HIBÁK JELENTÉSE"
+A hibákat kérjük vagy a fórumon (\fIhttp://forum.amule.org/\fP), vagy a
+hibakövetőben (\fIhttp://bugs.amule.org/\fP) jelentsék. Hibákról kérjük ne
+írjanak levelet (e\-mail\-t) se a levelezési listára, se közvetlenül
+valamelyik fejlesztőnek.
+.SH COPYRIGHT
+Az aMule és az összes hozzá tartozó segédprogram a GNU General Public
+License védelme alatt áll.
+.SH "LÁSD MÉG"
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH SZERZŐ
+Ezt a kézikönyv lapot Vollstrecker <amule@vollstreckernet.de> írta.
+.SH MAGYAR FORDÍTÁS
+Dévai Tamás <gonosztopi@amule.org>

@@ -1,0 +1,50 @@
+.TH CAS 1 "November 2011" "cas v0.8" "aMule utilities"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NAME
+cas \- c aMule statistics
+.SH SYNOPSIS
+.B_untranslated cas
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-p ]
+.RB [ \-c " " \fI<path> ]
+
+.B_untranslated cas
+.RB_untranslated [ \-h ]
+.SH DESCRIPTION
+\fBcas\fR is a program for displaying the contents of your aMule online
+signature file to console (in a human readable form). For this to work, you
+must enable the "Online Signature" option in aMule's preferences.
+.TP
+.B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
+Writes the online signature picture.
+You can optionally append \fI=<PATH>\fR to this option, to specify the location it should be written to.
+.TP
+.B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
+HTML page with stats and picture.
+You can optionally append \fI=<PATH>\fR to this option, to specify the location it should be written to.
+.TP
+\fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
+Read config from \fI<path>\fR instead of home
+.TP
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Prints a short usage description.
+.P
+Without any options, it prints online signature data to stdout.
+
+\fBcas\fR was written by Pedro de Oliveira <falso@rdk.homeip.net>
+.SH FILES
+~/.aMule/casrc
+.br
+stat.png
+.br
+tmp.html
+.SH REPORTING BUGS
+Please report bugs either on our forum (\fIhttp://forum.amule.org/\fR), or in our bugtracker (\fIhttp://bugs.amule.org/\fR).
+Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.
+.SH COPYRIGHT
+aMule and all of its related utilities are distributed under the GNU General Public License.
+.SH SEE ALSO
+.B_untranslated amule\fR(1), \fBwxcas\fR(1)
+.SH AUTHOR
+This manpage was written by Vollstrecker <amule@vollstreckernet.de>

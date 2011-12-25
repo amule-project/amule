@@ -1,0 +1,199 @@
+.TH AMULEWEB 1 "November 2011" "aMule webserver v2.3.1" "aMule utilities"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NAME
+amuleweb \- aMule web server
+.SH SYNOPSIS
+.B_untranslated amuleweb
+.RB [ \-h " " \fI<host> ]
+.RB [ \-p " " \fI<port> ]
+.RB [ \-P " " \fI<password> ]
+.RB [ \-f " " \fI<path> ]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+.RB [ \-l " " \fI<lang> ]
+.RB_untranslated [ \-w ]
+.RB [ \-t " " \fI<name> ]
+.RB [ \-s " " \fI<port> ]
+.RB_untranslated [ \-u ]
+.RB [ \-U " " \fI<port> ]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+.RB [ \-A " " \fI<password> ]
+.RB [ \-G " " \fI<password> ]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+.RB [ \-\-create-config-from = \fI<path> ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+.RB [ \-\-amule\-config\-file = \fI<path> ]
+
+.SH DESCRIPTION
+\fBamuleweb\fR manages your access to amule through a web browser.
+You can start amuleweb together with \fBamule\fR(1), or separately, any time later.
+Options can be specified via command-line or via config-file.
+Command-line options take precedence over config-file options.
+.TP
+\fB[ \-h\fR \fI<host>\fR, \fB\-\-host\fR=\fI<host>\fR \fB]\fR
+Host where aMule is running (default: \fIlocalhost\fR).
+\fI<host>\fR might be an IP address or a DNS name
+.TP
+\fB[ \-p\fR \fI<port>\fR, \fB\-\-port\fR=\fI<port>\fR \fB]\fR
+aMule's port for External Connections, as set in Preferences->Remote Controls (default: \fI4712\fR)
+.TP
+\fB[ \-P\fR \fI<password>\fR, \fB\-\-password\fR=\fI<password>\fR \fB]\fR
+External Connections password.
+.TP
+\fB[ \-f\fR \fI<path>\fR, \fB\-\-config\-file\fR=\fI<path>\fR \fB]\fR
+Use the given configuration file.
+Default configuration file is \fI~/.aMule/remote.conf\fR
+.TP
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Do not print any output to stdout.
+.TP
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Be verbose \-
+show also debug messages.
+.TP
+\fB[ \-l\fR \fI<lang>\fR, \fB\-\-locale\fR=\fI<lang>\fR \fB]\fR
+Sets program locale (language).
+See the \fBNOTES\fR section for the description of the \fI<lang>\fR parameter.
+.TP
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Write command line options to config file and exit
+.TP
+\fB[ \-t\fR \fI<name>\fR, \fB\-\-template\fR=\fI<name>\fR \fB]\fR
+Loads the template named \fI<name>\fR. See the \fBSKIN SUPPORT\fR section for details.
+.TP
+\fB[ \-s\fR \fI<port>\fR, \fB\-\-server\-port\fR=\fI<port>\fR \fB]\fR
+Webserver's HTTP port. This is the port you must point your browser to (default: \fI4711\fR).
+.TP
+.B_untranslated [ \-u ]\fR
+.br
+Enable UPnP.
+.TP
+\fB[ \-U\fR \fI<port>\fR, \fB\-\-upnp\-port\fR \fI<port>\fR \fB]\fR
+UPnP port.
+.TP
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Enables using gzip compression in HTTP traffic to save bandwidth.
+.TP
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+Disables using gzip compression (this is the default).
+.TP
+\fB[ \-A\fR \fI<passwd>\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR \fB]\fR
+Full access password for webserver.
+.TP
+\fB[ \-G\fR \fI<passwd>\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR \fB]\fR
+Guest password for webserver.
+.TP
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Allows guest access.
+.TP
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Denies guest access (default).
+.TP
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+Load/save webserver settings from/to remote aMule.
+This causes amuleweb to ignore command-line and config-file settings, and load them from aMule.
+When saving preferences none will be written to the config file, but to aMule.
+(Of course, this works only for those settings that can be set in aMule's Preferences->Remote Controls.)
+.TP
+.B_untranslated [ \-\-no\-php ]\fR
+Disable PHP interpreter (deprecated)
+.TP
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+Recompiles PHP pages on each request.
+.TP
+\fB[ \-\-create\-config\-from\fR=\fI<path>\fR \fB]\fR
+Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
+.TP
+.B_untranslated [ \-\-help ]\fR
+Prints a short usage description.
+.TP
+.B_untranslated [ \-\-version ]\fR
+Displays the current version number.
+.TP
+\fB[ \-\-amule\-config\-file\fR=\fI<path>\fR \fB]\fR
+aMule config file path.
+.B DO NOT USE DIRECTLY!
+aMule uses this option when starting amuleweb at aMule startup.
+This option causes all other command-line and config-file settings to be ignored, preferences to be read from the given config file, and also implies the \fB\-q \-L\fR options.
+.SH NOTES
+.SS Paths
+For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
+directory part (i.e. just a plain filename), then it is considered to be under
+the aMule configuration directory, \fI~/.aMule\fR.
+.SS Languages
+The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
+where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory,
+\fIencoding\fR is the character set to use and \fImodifier\fR
+allows the user to select a specific instance of localization data within a
+single category.
+
+For example, the following strings are valid:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Though all the above strings are accepted as valid language definitions,
+\fIencoding\fR and \fImodifier\fR are yet unused.
+
+In addition to the format above, you can also specify full language names in
+English - so \fB\-l german\fR is also valid and is equal to \fB\-l de_DE\fR.
+
+When no locale is defined, either on command-line or in config file, system
+default language will be used.
+.SH SKIN SUPPORT
+\fBamuleweb\fR is capable of displaying information in different skins.
+These skins are called templates, and you can make amuleweb load a specific template via the \fB\-t\fR command line option.
+Templates are searched in two places: first in \fI~/.aMule/webserver/\fR and then in \fI/usr/share/amule/webserver/\fR if you installed with \-\-prefix=/usr.
+.PP
+Each template must be in a subdirectory of the template name, and this directory must contain all files the template needs.
+.SH FILES
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fR/webserver/
+.SH EXAMPLE
+Typically amuleweb will be first run as:
+.PP
+\fBamuleweb\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-s\fR \fIHTTPport\fR \fB\-A\fR \fIAdminPassword\fR \fB\-w\fR
+.PP
+or
+.PP
+\fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+These will save settings to \fI$HOME/.aMule/remote.conf\fR, and later you only need to type:
+.PP
+.B_untranslated amuleweb
+.PP
+Of course, you may specify any more or less options on the first example line, and you may also totally omit it.
+.SH REPORTING BUGS
+Please report bugs either on our forum (\fIhttp://forum.amule.org/\fR), or in our bugtracker (\fIhttp://bugs.amule.org/\fR).
+Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.
+.SH COPYRIGHT
+aMule and all of its related utilities are distributed under the GNU General Public License.
+.SH SEE ALSO
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH AUTHOR
+This manpage was written by Vollstrecker <amule@vollstreckernet.de>

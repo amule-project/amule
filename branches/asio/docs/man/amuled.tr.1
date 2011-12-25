@@ -1,0 +1,98 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULED 1 "Kasım 2011" "aMule Daemon v2.3.1" "aMule Daemon"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH İSİM
+amuled \- her platformda çalışan eMule p2p istemcisi \- daemon sürümü
+.SH KULLANIM
+.B_untranslated amuled
+[\fB\-c\fP \fI<yol>\fP]
+.RB_untranslated [ \-f ]
+[\fB\-p\fP \fI<yol>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+[\fB\-w\fP \fI<yol>\fP]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
+[\fB\-t\fP \fI<sayı>\fP] [\fIeD2k\-bağlantısı\fP]
+
+.B_untranslated amuled
+.RB_untranslated [ \-v ]
+
+.B_untranslated amuled
+.RB_untranslated [ \-h ]
+.SH AÇIKLAMA
+.TP 
+\fB[ \-c\fP \fI<yol>\fP, \fB\-\-config\-dir\fP=\fI<yol>\fP \fB]\fP
+Yapılandırmayı home yerine \fI<yol>\fPdan oku
+.TP 
+.B_untranslated [ \-f\fR, \fB\-\-full\-daemon ]\fR
+Kendisini arkaplana çatallar.
+.TP 
+\fB[ \-p\fP \fI<yol>\fP, \fB\-\-pid\-file\fP=\fI<yol>\fP \fB]\fP
+Çatallamadan sonra \fI<yol>\fP konumunda bir pid\-file dosyası
+yaratır. \fI<yol>\fPun dosya ismini içermesi gerekir.
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-ec\-config ]\fR
+DB (Dış Bağlantılar) Kurulumu
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
+Log mesajlarını standart çıktıya gönderir.
+.TP 
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
+Yapılandırmayı varsayılan değerlere sıfırlar.
+.TP 
+\fB[ \-w\fP \fI<yol>\fP, \fB\-\-use\-amuleweb\fP=\fI<yol>\fP \fB]\fP
+amuleweb çalıştırılabilir dosyasının konumunu \fI<yol>\fP olarak
+belirler.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Kritik istisnaları ele almaz.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+standart girdiyi devre dışı bırakmaz.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<sayı>\fP \fB]\fP
+\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Geçerli sürüm numarasını görüntüler.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Kısa bir kullanım açıklaması görüntüler.
+.TP 
+\fB[ eD2k\-bağlantısı ]\fP
+Çekirdeğe bir eD2k bağlantısı ekler.
+.PP
+Eklenecek eD2k bağlantısı şunlardan biri olabilir:
+.RS 3
+.IP \(bu 2
+bir dosya bağlantısı (ed2k://|file|...) ki indirmeler kuyruğuna eklenir;
+.IP \(bu 2
+bir sunucu bağlantısı (ed2k://|server|...) ki sunucu listesine eklenir;
+.IP \(bu 2
+bir sunucu listesi bağlantısı, bu durumda listedeki tüm sunucular sunucu
+listesine eklenir;
+.IP \(bu 2
+bir magnet bağlantısı.
+.RE
+.SH DOSYALAR
+~/.aMule/*
+.SH GERİBİLDİRİM
+Hataları bildirmek için forumumuzu (\fIhttp://forum.amule.org/\fP) ya da hata
+takipçimizi (\fIhttp://bugs.amule.org/\fP) kullanınız. Hataları bildirmek için
+e\-mail ve e\-mail listemizi kullanmamanızı ve geliştiricilerden birine
+doğrudan bildirmemenizi rica ederiz.
+.SH "TELİF HAKKI"
+aMule ve ilgili tüm yardımcı araçları GNU Genel Kamu Lisansı çerçevesinde
+dağıtılmaktadır.
+.SH "İLGİLİ BELGELER"
+.B_untranslated alcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
+.SH YAZAN
+Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
+tarafından yazılmıştır.

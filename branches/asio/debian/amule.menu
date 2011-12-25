@@ -1,0 +1,3 @@
+?package(amule):needs="X11" section="Applications/Network/File Transfer"\
+  title="amule" command="/usr/bin/amule"\
+  icon="/usr/share/pixmaps/amule.xpm"

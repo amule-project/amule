@@ -1,0 +1,52 @@
+#!/bin/sh -eu
+
+if [ ! -f './configure.in' ]; then
+	echo "Error: You must run this script from the source root directory!"
+	exit 1
+fi
+
+find . \( \
+		-name '.svn' -o \
+		-path './.git' -o \
+		-path './.hg' -o \
+		-path './autom4te.cache' -o \
+		-path './docs/Doxyfile' -o \
+		-name '.deps' -o \
+		-name 'Makefile' -o \
+		-name 'Makefile.in' -o \
+		-name 'ECCodes.h' -o \
+		-name 'ECCodes.java' -o \
+		-name 'ECTagTypes.h' -o \
+		-name 'ECTagTypes.java' -o \
+		-path './src/IPFilterScanner.cpp' -o \
+		-path './src/IPFilterScanner.h' -o \
+		-path './src/Parser.cpp' -o \
+		-path './src/Parser.hpp' -o \
+		-path './src/Scanner.cpp' -o \
+		-path './src/Scanner.h' -o \
+		-path './src/utils/aLinkCreator/src/alcpix.cpp' -o \
+		-path './src/utils/wxCas/src/wxcaspix.cpp' -o \
+		-path './src/utils/scripts/denoiser.rules' -o \
+		-path './src/webserver/src/php_lexer.c' -o \
+		-path './src/webserver/src/php_lexer.h' -o \
+		-path './src/webserver/src/php_parser.c' -o \
+		-path './src/webserver/src/php_parser.h' -o \
+		-path './unittests/tests/TextFileTest_dos.txt' -o \
+		-path './unittests/tests/TextFileTest_unix.txt' -o \
+		-name 'muuli_wdr.*' -o \
+		-name '*~' -o \
+		-name '*.o' -o \
+		-name '*.a' -o \
+		-name '*.wdr' -o \
+		-name '*.png' -o \
+		-name '*.gif' -o \
+		-name '*.ico' -o \
+		-name '*.gmo' -o \
+		-name '*.xpm' -o \
+		-name '*.1' \
+	\) -prune -o \
+	-type f -a \
+	-exec /bin/sh -c "file {} | grep -q text" ';' -a \
+	-print0 | \
+xargs -0t -n 1 \
+	sed -i -e 's/[\t ]\+$//;s/ \+\t/\t/g'

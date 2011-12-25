@@ -1,0 +1,86 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "2011. november" "aMule eD2k hivatkozás kezelő v1.5.1" "aMule segédprogramok"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NÉV
+ed2k \- Az aMule eD2k hivatkozás kezelő.
+.SH ÁTTEKINTÉS
+.B_untranslated ed2k
+[\fB\-c\fP \fI<útvonal>\fP] [\fB\-t\fP \fI<szám>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k\-hivatkozás>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH LEÍRÁS
+Elküldi a megadott \fI<eD2k hivatkozás>\fP\-t az aMule\-nek, azaz beírja
+a ~/.aMule/ED2KLinks fájlba, amit az aMule másodpercenként megnéz,
+hivatkozásokat keresve.
+.TP 
+\fB[ \-c\fP \fI<útvonal>\fP, \fB\-\-config\-dir\fP=\fI<útvonal>\fP \fB]\fP
+A beállításokat az \fI<útvonal>\fP\-ból olvassa az alapértelmezett
+helyett.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<szám>\fP \fB]\fP
+A megadott eD2k hivatkozást a \fI<szám>\fP\-adik kategóriába tölti.
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+A megadott gyűjtemény összes fájlját letölti.
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Kilistázza a megadott gyűjtmény összes fájlját.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Egy rövid használati leírást jelenít meg.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Megjeleníti a verziószámot.
+.TP 
+\fB[ eD2k\-hivatkozás ]\fP
+eD2k hivatkozás letöltése.
+.PP
+Az eD2k hivatkozás a következő lehet:
+.RS 3
+.IP \(bu 2
+egy fájl hivatkozás (ed2k://|file|...), ez a letöltési sorhoz lesz
+hozzáadva;
+.IP \(bu 2
+egy kiszolgáló hivatkozás (ed2k://|server|...), ez a kiszolgáló\-listához
+lesz hozzáadva;
+.IP \(bu 2
+egy kiszolgáló\-lista hivatkozás, mely esetben a listában szereplő összes
+kiszolgáló a kiszolgáló\-listához adódik;
+.IP \(bu 2
+egy magnet hivatkozás;
+.IP \(bu 2
+egy emulecollection (gyűjtemény) fájl.
+.RE
+
+\fBA paraméterek sorrendje számít.\fP Megadhatsz egynél több hivatkozást,
+mindegyiket a saját paramétereivel. Például az \fBed2k <link1> \-t2
+<link2>\fP parancs a \fI<link1>\fP\-et az alapértelmezett, míg a
+\fI<link2>\fP\-t a 2. kategóriába tölti.
+.SH FÁJLOK
+~/.aMule/ED2KLinks
+.SH "HIBÁK JELENTÉSE"
+A hibákat kérjük vagy a fórumon (\fIhttp://forum.amule.org/\fP), vagy a
+hibakövetőben (\fIhttp://bugs.amule.org/\fP) jelentsék. Hibákról kérjük ne
+írjanak levelet (e\-mail\-t) se a levelezési listára, se közvetlenül
+valamelyik fejlesztőnek.
+.SH COPYRIGHT
+Az aMule és az összes hozzá tartozó segédprogram a GNU General Public
+License védelme alatt áll.
+.SH "LÁSD MÉG"
+.B_untranslated amule\fR(1)
+.SH SZERZŐ
+Ezt a kézikönyv lapot Vollstrecker <amule@vollstreckernet.de> írta.
+.SH MAGYAR FORDÍTÁS
+Dévai Tamás <gonosztopi@amule.org>

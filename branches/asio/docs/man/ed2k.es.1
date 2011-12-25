@@ -1,0 +1,83 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "November 2011" "Analizador aMule de enlaces eD2k v1.5.1" "aMule utilidades"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOMBRE
+ed2k \- analizador aMule de enlaces eD2k
+.SH SINOPSIS
+.B_untranslated ed2k
+[\fB\-c\fP \fI<path>\fP] [\fB\-t\fP \fI<num>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k\-link>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH DESCRIPCIÓN
+Sends the given \fI<eD2k\-link>\fP to aMule, i.e. writes it to the file
+~/.aMule/ED2KLinks, which will be checked by aMule every second for links.
+.TP 
+\fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
+Leer configuración desde \fI<path>\fP en lugar de home
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+Fijar categoría para enlace eD2k pasado a \fI<num>\fP
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Loads all link found in the emulecollection given as \fI<ed2k\-link>\fP
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Lists all link found in the emulecollection given as \fI<ed2k\-link>\fP
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Imprime una breve descripción de uso.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Mostrar el número de la versión actual.
+.TP 
+\fB[ eD2k\-link ]\fP
+Añadir un enlace eD2k al núcleo.
+.PP
+El enlace eD2k para ser añadido puede ser:
+.RS 3
+.IP \(bu 2
+un enlace de archivo (ed2k://|archivo|...), será añádido a la cola de
+descarga.
+.IP \(bu 2
+un enlace de servidor (ed2k://|servidor|...), será añádido a la cola de
+servidores.
+.IP \(bu 2
+un enlace de lista de servidores, en cuyo caso todos los servidores de la
+lista serán añadidos a la lista de servidores.
+.IP \(bu 2
+Un enlace magnet;
+.IP \(bu 2
+Un archivo emulecollection.
+.RE
+
+\fBThe order in which you give the parameters is important.\fP You can give
+more than one link, and every link can have it's own params.  For example
+\fBed2k <link1> \-t2 <link2>\fP will download \fI<link1>\fP
+in standard category and \fI<link2>\fP in category 2.
+.SH ARCHIVOS
+~/.aMule/ED2KLinks
+.SH "INFORMANDO ERRORES"
+Por favor informa de fallos ya sea en nuestro foro
+(\fIhttp://forum.amule.org/\fP), o en nuestro bugtracker
+(\fIhttp://bugs.amule.org/\fP). Por favor no informe de fallos por correo, ni
+en nuestras listas, ni directamente al correo de algun miembro del equipo.
+.SH COPYRIGHT
+aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
+General Public License.
+.SH "VEASE TAMBIEN"
+.B_untranslated amule\fR(1)
+.SH AUTOR
+Esta página de manualfue escrita por Vollstrecker
+<amule@vollstreckernet.de>
