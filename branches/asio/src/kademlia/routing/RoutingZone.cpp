@@ -812,7 +812,7 @@ void CRoutingZone::OnSmallTimer()
 			CKademlia::GetUDPListener()->SendMyDetails(KADEMLIA2_HELLO_REQ, c->GetIPAddress(), c->GetUDPPort(), c->GetVersion(), 0, NULL, false);
 			wxASSERT(c->GetUDPKey() == CKadUDPKey(0));
 		} else {
-			wxFAIL;
+			//wxFAIL;	// thanks, I'm having enough problems without any Kad asserts
 		}
 	}
 }

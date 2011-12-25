@@ -33,6 +33,7 @@
 #include "SearchList.h"
 #include "IPFilter.h"
 #include "Friend.h"
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -55,6 +56,8 @@
 
 #ifndef CLIENT_GUI
 #	include "UploadQueue.h"
+#	include "ClientTCPSocket.h"
+#	include "ListenSocket.h"
 #endif
 
 #include <common/MacrosProgramSpecific.h>
@@ -766,6 +769,43 @@ namespace MuleNotify
 		CPartFileConvert::ReaddAllJobs();
 	}
 #endif	// #ifndef AMULE_DAEMON
+
+	void ClientTCP_Connect(CClientTCPSocket * socket, int error)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Connect %s %d")) % socket->GetIP() % error);
+		socket->OnConnect(error);
+	}
+
+	void ClientTCP_Send(CClientTCPSocket * socket, int error)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Send %s %d")) % socket->GetIP() % error);
+		socket->OnSend(error);
+	}
+
+	void ClientTCP_Receive(CClientTCPSocket * socket, int error)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Receive %s %d")) % socket->GetIP() % error);
+		socket->EventProcessed();
+		socket->OnReceive(error);
+	}
+
+	void ClientTCP_Error(CClientTCPSocket * socket, wxString error)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Error %s %s")) % socket->GetIP() % error);
+		socket->Disconnect(error);
+	}
+
+	void ClientTCP_Destroy(CLibSocket * socket)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Destroy %s")) % socket->GetIP());
+		delete socket;
+	}
+
+	void ServerTCP_Accept()
+	{
+		AddDebugLogLineF(logAsio, wxT("ServerTCP_Accept"));
+		theApp->listensocket->OnAccept();
+	}
 
 #endif	// #ifndef CLIENT_GUI
 }

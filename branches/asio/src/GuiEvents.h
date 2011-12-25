@@ -40,6 +40,8 @@ class CPartFile;
 class CServer;
 class CFriend;
 class CClientRef;
+class CClientTCPSocket;
+class CLibSocket;
 
 
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
@@ -172,6 +174,18 @@ namespace MuleNotify
 	void Upload_Resort_Queue();
 
 	void Client_Delete(CClientRef client);
+
+	//
+	// core internal notifications
+	//
+
+	// ASIO sockets
+	void ClientTCP_Connect(CClientTCPSocket * socket, int error);
+	void ClientTCP_Send(CClientTCPSocket * socket, int error);
+	void ClientTCP_Receive(CClientTCPSocket * socket, int error);
+	void ClientTCP_Error(CClientTCPSocket * socket, wxString error);
+	void ClientTCP_Destroy(CLibSocket * socket);
+	void ServerTCP_Accept();
 
 	//
 	// Notifications that always create an event
@@ -556,6 +570,19 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 // client
 #define CoreNotify_Client_Delete(client)			MuleNotify::DoNotify(&MuleNotify::Client_Delete, client)
+
+//
+// core internal notifications
+//
+
+// ASIO sockets
+#define CoreNotify_ClientTCP_Connect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::ClientTCP_Connect, ptr, val)
+#define CoreNotify_ClientTCP_Send(ptr, val)			MuleNotify::DoNotify(&MuleNotify::ClientTCP_Send, ptr, val)
+#define CoreNotify_ClientTCP_Receive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::ClientTCP_Receive, ptr, val)
+#define CoreNotify_ClientTCP_Error(ptr, str)		MuleNotify::DoNotify(&MuleNotify::ClientTCP_Error, ptr, str)
+#define CoreNotify_ClientTCP_Destroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::ClientTCP_Destroy, ptr)
+#define CoreNotify_ServerTCP_Accept()				MuleNotify::DoNotify(&MuleNotify::ServerTCP_Accept)
+
 
 //
 // Notifications that always create an event

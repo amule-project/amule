@@ -321,6 +321,9 @@ int CamuleApp::OnExit()
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 
+	delete m_AsioService;
+	m_AsioService = NULL;
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("aMule shutdown completed."));
 	}
@@ -537,6 +540,9 @@ bool CamuleApp::OnInit()
 	// and the UBT constructor creates a thread.
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 
+	m_AsioService = new CAsioService;
+
+	
 	// Start performing background tasks
 	// This will start loading the IP filter. It will start right away.
 	// Log is confusing, because log entries from background will only be printed
@@ -747,12 +753,9 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	listensocket = new CListenSocket(myaddr[2]);
 	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
 		% ip % (unsigned int)(thePrefs::GetPort());
-	// This command just sets a flag to control maximum number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
 	// be already comming in.
-	if (listensocket->IsOk()) {
-		listensocket->StartListening();
-	} else {
+	if (!listensocket->IsOk()) {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
 		err = CFormat(_("Port %u is not available. You will be LOWID\n")) %
@@ -1384,6 +1387,10 @@ void CamuleApp::ShutDown()
 	AddDebugLogLineN(logGeneral, wxT("Terminate upload thread."));
 	uploadBandwidthThrottler->EndThread();
 
+	AddDebugLogLineN(logGeneral, wxT("Terminate ASIO thread."));
+	m_AsioService->Stop();
+	m_AsioService->Wait();
+
 	// Close sockets to avoid new clients coming in
 	if (listensocket) {
 		listensocket->Close();
@@ -1806,12 +1813,12 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 		wxT("Invalid event received for listen-socket")); }
 
 	if (m_app_state == APP_STATE_RUNNING) {
-		listensocket->OnAccept(0);
+		listensocket->OnAccept();
 	} else if (m_app_state == APP_STATE_STARTING) {
 		// When starting up, connection may be made before we are able
 		// to handle them. However, if these are ignored, no futher
 		// connection-events will be triggered, so we have to accept it.
-		wxSocketBase* socket = listensocket->Accept(false);
+		CLibSocket* socket = listensocket->Accept(false);
 
 		wxCHECK_RET(socket, wxT("NULL returned by Accept() during startup"));
 

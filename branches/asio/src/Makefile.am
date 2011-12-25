@@ -103,6 +103,8 @@ libmuleappcore_a_SOURCES = \
 	kademlia/routing/RoutingBin.cpp \
 	kademlia/utils/UInt128.cpp
 
+libmuleappcore_a_SOURCES += LibSocketAsio.cpp
+
 libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
 
@@ -374,6 +376,7 @@ noinst_HEADERS = \
 		KadDlg.h \
 		KnownFile.h \
 		KnownFileList.h \
+		LibSocket.h \
 		ListenSocket.h \
 		Logger.h \
 		MagnetURI.h \

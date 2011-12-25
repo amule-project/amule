@@ -40,11 +40,9 @@ class CClientTCPSocket;
 class CListenSocket : public CSocketServerProxy
 {
 public:
-	CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData = NULL);
+	CListenSocket(amuleIPV4Address &addr, const CProxyData *ProxyData = NULL);
 	~CListenSocket();
-	bool	StartListening();
-	void	StopListening();
-	void	OnAccept(int nErrorCode);
+	void	OnAccept();
 	void	Process();
 	void	RemoveSocket(CClientTCPSocket* todel);
 	void	AddSocket(CClientTCPSocket* toadd);
@@ -54,7 +52,6 @@ public:
 	bool    IsValidSocket(CClientTCPSocket* totest);
 	void	AddConnection();
 	void	RecalculateStats();
-	void	ReStartListening();
 	void	UpdateConnectionsStatus();
 
 	float	GetMaxConperFiveModifier();
@@ -68,12 +65,11 @@ private:
 	typedef std::set<CClientTCPSocket *> SocketSet;
 	SocketSet socket_list;
 
-	bool bListening;
 	bool shutdown;
+	bool m_pending;
 
 	uint16	m_OpenSocketsInterval;
 	uint16	m_ConnectionStates[3];
-	uint16	m_nPendingConnections;
 	uint32	totalconnectionchecks;
 	float	averageconnections;
 };

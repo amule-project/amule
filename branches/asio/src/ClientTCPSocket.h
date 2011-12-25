@@ -74,6 +74,8 @@ public:
     virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
     virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
 
+	virtual eLibSocketType GetSocketType() const { return eLibSocketClientTCP; }
+
 protected:
 	virtual bool PacketReceived(CPacket* packet);
 
