@@ -40,7 +40,7 @@
 #include <common/Format.h>	// Needed for CFormat
 #include "Logger.h"
 #include "GuiEvents.h"
-#include "ClientTCPSocket.h"
+#include "EMSocket.h"
 #include "amuleIPV4Address.h"
 
 using namespace boost::asio;
@@ -169,27 +169,6 @@ public:
 		return readCache;
 	}
 
-/*
-	// Write is synchronous (called from UBT thread)
-	// This does NOT work, because write_some always blocks until at least one byte is written.
-	void Write(const void * buf, uint32 nbytes)
-	{
-		//async_send(buffer(buf, nbytes), 
-		//	boost::bind(& CAsioSocketImpl::HandleSend, this, placeholders::error, placeholders::bytes_transferred));
-		AddDebugLogLineF(logAsio, CFormat(wxT("Write %d %s")) % nbytes % m_IP);
-		error_code ec;
-		non_blocking();
-		// Does not work. The crap blocks, whatever we do. >:(
-		m_lastCount = write_some(buffer(buf, nbytes), ec);
-		m_Error = ec != false;
-		if (m_lastCount != nbytes || m_Error) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("WriteError %d %s - %d%s")) % nbytes % m_IP % m_lastCount % (m_Error ? wxT(" err") : wxT("")));
-			if (m_Error) {
-				CoreNotify_ClientTCP_Error(dynamic_cast<CClientTCPSocket *>(m_socket), wxString(wxT("Write Error")));
-			}
-		}
-	}
-*/
 
 	// Make a copy of the data and send it in background
 	// - unless a background send is already going on
@@ -318,15 +297,15 @@ private:
 	{
 		m_OK = !err;
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect %d %s")) % m_OK % m_IP);
-		if (m_libSocket->GetSocketType() == eLibSocketClientTCP) {
-			CClientTCPSocket * cSocket = dynamic_cast<CClientTCPSocket *>(m_libSocket);
+		if (m_libSocket->GetSocketType() == eLibSocketEM) {
+			CEMSocket * cSocket = dynamic_cast<CEMSocket *>(m_libSocket);
 			if (cSocket->ForDeletion()) {
 				AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect: socket pending for deletion %s")) % m_IP);
 			} else {
-				CoreNotify_ClientTCP_Connect(cSocket, err.value());
+				CoreNotify_EMSocket_Connect(cSocket, err.value());
 				if (m_OK) {
 					// After connect also send a OUTPUT event to show data is available
-					CoreNotify_ClientTCP_Send(cSocket, 0);
+					CoreNotify_EMSocket_Send(cSocket, 0);
 					// Start reading
 					StartBackgroundRead();
 				}
@@ -347,12 +326,12 @@ private:
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
 		}
 
-		if (m_libSocket->GetSocketType() == eLibSocketClientTCP) {
-			CClientTCPSocket * cSocket = dynamic_cast<CClientTCPSocket *>(m_libSocket);
+		if (m_libSocket->GetSocketType() == eLibSocketEM) {
+			CEMSocket * cSocket = dynamic_cast<CEMSocket *>(m_libSocket);
 			if (cSocket->ForDeletion()) {
 				AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
 			} else {
-				CoreNotify_ClientTCP_Send(cSocket, m_ErrorCode);
+				CoreNotify_EMSocket_Send(cSocket, m_ErrorCode);
 			}
 		} else {
 			AddDebugLogLineC(logAsio, CFormat(wxT("Bad socket type %d in HandleSend")) % (int)m_libSocket->GetSocketType());
@@ -398,8 +377,8 @@ private:
 		}
 
 		m_readPending = false;
-		if (m_libSocket->GetSocketType() == eLibSocketClientTCP) {
-			CClientTCPSocket * cSocket = dynamic_cast<CClientTCPSocket *>(m_libSocket);
+		if (m_libSocket->GetSocketType() == eLibSocketEM) {
+			CEMSocket * cSocket = dynamic_cast<CEMSocket *>(m_libSocket);
 			if (cSocket->ForDeletion()) {
 				AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
 			} else {
@@ -413,7 +392,7 @@ private:
 	void HandleDestroy()
 	{
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleDestroy() %p %p %s")) % m_libSocket % this % m_IP);
-		CoreNotify_ClientTCP_Destroy(m_libSocket);
+		CoreNotify_LibSocket_Destroy(m_libSocket);
 	}
 
 
@@ -433,7 +412,7 @@ private:
 	void PostReadEvent()
 	{
 		if (!m_readPending && !m_eventPending) {
-			CoreNotify_ClientTCP_Receive(dynamic_cast<CClientTCPSocket *>(m_libSocket), m_ErrorCode);
+			CoreNotify_EMSocket_Receive(dynamic_cast<CEMSocket *>(m_libSocket), m_ErrorCode);
 			m_eventPending = true;
 			AddDebugLogLineF(logAsio, CFormat(wxT("Posted read event %s")) % m_IP);
 		}
