@@ -40,7 +40,7 @@ class CPartFile;
 class CServer;
 class CFriend;
 class CClientRef;
-class CClientTCPSocket;
+class CEMSocket;
 class CLibSocket;
 
 
@@ -180,11 +180,10 @@ namespace MuleNotify
 	//
 
 	// ASIO sockets
-	void ClientTCP_Connect(CClientTCPSocket * socket, int error);
-	void ClientTCP_Send(CClientTCPSocket * socket, int error);
-	void ClientTCP_Receive(CClientTCPSocket * socket, int error);
-	void ClientTCP_Error(CClientTCPSocket * socket, wxString error);
-	void ClientTCP_Destroy(CLibSocket * socket);
+	void EMSocket_Connect(CEMSocket * socket, int error);
+	void EMSocket_Send(CEMSocket * socket, int error);
+	void EMSocket_Receive(CEMSocket * socket, int error);
+	void LibSocket_Destroy(CLibSocket * socket);
 	void ServerTCP_Accept();
 
 	//
@@ -576,11 +575,10 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 //
 
 // ASIO sockets
-#define CoreNotify_ClientTCP_Connect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::ClientTCP_Connect, ptr, val)
-#define CoreNotify_ClientTCP_Send(ptr, val)			MuleNotify::DoNotify(&MuleNotify::ClientTCP_Send, ptr, val)
-#define CoreNotify_ClientTCP_Receive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::ClientTCP_Receive, ptr, val)
-#define CoreNotify_ClientTCP_Error(ptr, str)		MuleNotify::DoNotify(&MuleNotify::ClientTCP_Error, ptr, str)
-#define CoreNotify_ClientTCP_Destroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::ClientTCP_Destroy, ptr)
+#define CoreNotify_EMSocket_Connect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::EMSocket_Connect, ptr, val)
+#define CoreNotify_EMSocket_Send(ptr, val)			MuleNotify::DoNotify(&MuleNotify::EMSocket_Send, ptr, val)
+#define CoreNotify_EMSocket_Receive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::EMSocket_Receive, ptr, val)
+#define CoreNotify_LibSocket_Destroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocket_Destroy, ptr)
 #define CoreNotify_ServerTCP_Accept()				MuleNotify::DoNotify(&MuleNotify::ServerTCP_Accept)
 
 

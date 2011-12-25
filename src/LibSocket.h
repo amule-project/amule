@@ -36,7 +36,7 @@ class wxIPaddress;
 
 enum eLibSocketType {
 	eLibSocketBase = 0,
-	eLibSocketClientTCP,
+	eLibSocketEM,
 };
 
 //

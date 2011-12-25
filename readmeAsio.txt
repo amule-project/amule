@@ -18,18 +18,18 @@ The goal is far from reached. THIS IS ONLY AN EXPERIMENTAL PROTOTYPE.
 
 What it does:
 - compile aMule (monolith) in debug mode in MSVC10 and Linux
-- run it (Kad-only) in Windows and Linux
+- run it in Windows and Linux
 It's been running for a night now in my Linux VM without crashing. Performance is as 
 usual.
 
 Not done yet / problems:
-- ED2K networking
 - amuled
 - UDP is still wx
 - configure (no wx mode atm)
 - better error handling/error messages
 - further abstraction (replace wx socket constants in code)
 - proxy is disabled (and may remain so in ASIO mode)
+- AsyncDNS is still wx
 
 If you like to play with new stuff I'd like you to try it out and give me feedback.
 Especially if you are having networking problems or out of memory crashes, or if you

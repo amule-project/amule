@@ -56,7 +56,7 @@
 
 #ifndef CLIENT_GUI
 #	include "UploadQueue.h"
-#	include "ClientTCPSocket.h"
+#	include "EMSocket.h"
 #	include "ListenSocket.h"
 #endif
 
@@ -770,34 +770,28 @@ namespace MuleNotify
 	}
 #endif	// #ifndef AMULE_DAEMON
 
-	void ClientTCP_Connect(CClientTCPSocket * socket, int error)
+	void EMSocket_Connect(CEMSocket * socket, int error)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Connect %s %d")) % socket->GetIP() % error);
+		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Connect %s %d")) % socket->GetIP() % error);
 		socket->OnConnect(error);
 	}
 
-	void ClientTCP_Send(CClientTCPSocket * socket, int error)
+	void EMSocket_Send(CEMSocket * socket, int error)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Send %s %d")) % socket->GetIP() % error);
+		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Send %s %d")) % socket->GetIP() % error);
 		socket->OnSend(error);
 	}
 
-	void ClientTCP_Receive(CClientTCPSocket * socket, int error)
+	void EMSocket_Receive(CEMSocket * socket, int error)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Receive %s %d")) % socket->GetIP() % error);
+		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Receive %s %d")) % socket->GetIP() % error);
 		socket->EventProcessed();
 		socket->OnReceive(error);
 	}
 
-	void ClientTCP_Error(CClientTCPSocket * socket, wxString error)
+	void LibSocket_Destroy(CLibSocket * socket)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Error %s %s")) % socket->GetIP() % error);
-		socket->Disconnect(error);
-	}
-
-	void ClientTCP_Destroy(CLibSocket * socket)
-	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("ClientTCP_Destroy %s")) % socket->GetIP());
+		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Destroy %s")) % socket->GetIP());
 		delete socket;
 	}
 

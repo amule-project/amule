@@ -53,7 +53,7 @@ public:
 	wxString info;
 
 	void	OnClose(wxSocketError nErrorCode);
-	void	OnConnect(wxSocketError nErrorCode);
+	void	OnConnect(int nErrorCode);
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(CPacket* packet);

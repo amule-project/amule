@@ -156,7 +156,7 @@ CServerSocket::~CServerSocket()
 }
 
 
-void CServerSocket::OnConnect(wxSocketError nErrorCode)
+void CServerSocket::OnConnect(int nErrorCode)
 {
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
