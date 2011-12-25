@@ -23,6 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#define PROXY_BROKEN		// Let's get Proxy back to functional AFTER ASIO works
 
 #include "Proxy.h"		/* for Interface		*/
 
@@ -264,6 +265,7 @@ void CProxyStateMachine::ReactivateSocket()
 		// No need to call RestoreState(), that socket will no longer
 		// be used after proxy negotiation.
 	} else {
+#ifndef PROXY_BROKEN
 		// The original socket was a TCP socket
 		s->RestoreEventHandler();
 		wxSocketEvent e(s->GetEventHandlerId());
@@ -278,6 +280,7 @@ void CProxyStateMachine::ReactivateSocket()
 			h->AddPendingEvent(e);
 		}
 		s->RestoreState();
+#endif
 	}
 }
 
@@ -1165,7 +1168,7 @@ CProxySocket::CProxySocket(
 	CProxyCommand proxyCommand,
 	CDatagramSocketProxy *udpSocket)
 :
-wxSocketClient(flags),
+CLibSocket(flags),
 m_proxyStateMachine(NULL),
 m_udpSocket(udpSocket),
 m_socketEventHandler(NULL),
@@ -1208,6 +1211,9 @@ CProxySocket::~CProxySocket()
 
 void CProxySocket::SetProxyData(const CProxyData *proxyData)
 {
+#ifdef PROXY_BROKEN
+	proxyData = NULL;
+#endif
 	m_useProxy = proxyData != NULL && proxyData->m_proxyEnable;
 	if (proxyData) {
 		m_proxyData = *proxyData;
@@ -1220,6 +1226,9 @@ void CProxySocket::SetProxyData(const CProxyData *proxyData)
 
 bool CProxySocket::Start(const wxIPaddress &peerAddress)
 {
+#ifdef PROXY_BROKEN
+	return false;
+#else
 	SaveState();
 	// Important note! SaveState()/RestoreState() DO NOT save/restore
 	// the event handler. The method SaveEventHandler() has been created
@@ -1237,6 +1246,7 @@ bool CProxySocket::Start(const wxIPaddress &peerAddress)
 	bool ok = m_proxyStateMachine->Start(peerAddress, this);
 
 	return ok;
+#endif
 }
 
 bool CProxySocket::ProxyIsCapableOf(CProxyCommand proxyCommand) const
@@ -1280,7 +1290,7 @@ CProxySocket(flags, proxyData, PROXY_CMD_CONNECT)
 {
 }
 
-bool CSocketClientProxy::Connect(wxIPaddress &address, bool wait)
+bool CSocketClientProxy::Connect(amuleIPV4Address &address, bool wait)
 {
 	wxMutexLocker lock(m_socketLocker);
 	bool ok;
@@ -1288,27 +1298,22 @@ bool CSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 	if (GetUseProxy() && ProxyIsCapableOf(PROXY_CMD_CONNECT)) {
 		ok = Start(address);
 	} else {
-		ok = wxSocketClient::Connect(address, wait);
+		ok = CLibSocket::Connect(address, wait);
 	}
 
 	return ok;
 }
 
-CSocketClientProxy& CSocketClientProxy::Read(void *buffer, wxUint32 nbytes)
+uint32 CSocketClientProxy::Read(void *buffer, wxUint32 nbytes)
 {
 	wxMutexLocker lock(m_socketLocker);
-	CProxySocket::Read(buffer, nbytes);
-
-	return *this;
-
+	return CProxySocket::Read(buffer, nbytes);
 }
 
-CSocketClientProxy& CSocketClientProxy::Write(const void *buffer, wxUint32 nbytes)
+uint32 CSocketClientProxy::Write(const void *buffer, wxUint32 nbytes)
 {
 	wxMutexLocker lock(m_socketLocker);
-	CProxySocket::Write(buffer, nbytes);
-
-	return *this;
+	return CProxySocket::Write(buffer, nbytes);
 }
 
 //------------------------------------------------------------------------------
@@ -1316,29 +1321,13 @@ CSocketClientProxy& CSocketClientProxy::Write(const void *buffer, wxUint32 nbyte
 //------------------------------------------------------------------------------
 
 CSocketServerProxy::CSocketServerProxy(
-	wxIPaddress &address,
+	amuleIPV4Address &address,
 	wxSocketFlags flags,
 	const CProxyData *)
 :
-wxSocketServer(address, flags)
+CLibSocketServer(address, flags)
 {
 	/* Maybe some day when socks6 is out... :) */
-}
-
-CSocketServerProxy& CSocketServerProxy::Read(void *buffer, wxUint32 nbytes)
-{
-	wxMutexLocker lock(m_socketLocker);
-	wxSocketServer::Read(buffer, nbytes);
-
-	return *this;
-}
-
-CSocketServerProxy& CSocketServerProxy::Write(const void *buffer, wxUint32 nbytes)
-{
-	wxMutexLocker lock(m_socketLocker);
-	wxSocketServer::Write(buffer, nbytes);
-
-	return *this;
 }
 
 //------------------------------------------------------------------------------

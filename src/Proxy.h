@@ -30,6 +30,7 @@
 
 #include "amuleIPV4Address.h"	// For amuleIPV4address
 #include "StateMachine.h"	// For CStateMachine
+#include "LibSocket.h"
 
 /******************************************************************************/
 
@@ -426,7 +427,7 @@ private:
 
 class CDatagramSocketProxy;
 
-class CProxySocket : public wxSocketClient
+class CProxySocket : public CLibSocket
 {
 friend class CProxyEventHandler;
 public:
@@ -448,7 +449,7 @@ public:
 	{
 		m_socketEventHandler = &handler;
 		m_socketEventHandlerId = id;
-		wxSocketClient::SetEventHandler(handler, id);
+		CLibSocket::SetEventHandler(handler, id);
 	}
 	wxEvtHandler *GetEventHandler(void)	const { return m_socketEventHandler; }
 	int GetEventHandlerId(void)		const { return m_socketEventHandlerId; }
@@ -500,9 +501,9 @@ public:
 		const CProxyData *proxyData = NULL);
 
 	/* Interface */
-	bool Connect(wxIPaddress &address, bool wait);
-	CSocketClientProxy& Read(void *buffer, wxUint32 nbytes);
-	CSocketClientProxy& Write(const void *buffer, wxUint32 nbytes);
+	bool Connect(amuleIPV4Address &address, bool wait);
+	uint32 Read(void *buffer, wxUint32 nbytes);
+	uint32 Write(const void *buffer, wxUint32 nbytes);
 
 private:
 	wxMutex			m_socketLocker;
@@ -512,18 +513,14 @@ private:
 // CSocketServerProxy
 //------------------------------------------------------------------------------
 
-class CSocketServerProxy : public wxSocketServer
+class CSocketServerProxy : public CLibSocketServer
 {
 public:
 	/* Constructor */
 	CSocketServerProxy(
-		wxIPaddress &address,
+		amuleIPV4Address &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const CProxyData *proxyData = NULL);
-
-	/* Interface */
-	CSocketServerProxy& Read(void *buffer, wxUint32 nbytes);
-	CSocketServerProxy& Write(const void *buffer, wxUint32 nbytes);
 
 private:
 	wxMutex			m_socketLocker;

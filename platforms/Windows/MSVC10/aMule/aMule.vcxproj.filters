@@ -426,6 +426,9 @@
     <ClCompile Include="..\..\..\..\src\ClientRef.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\LibSocketAsio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PCH.h">
@@ -891,6 +894,9 @@
       <Filter>Header Files KAD</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\ClientRef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\LibSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

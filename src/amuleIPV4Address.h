@@ -26,9 +26,11 @@
 #ifndef AMULEIPV4ADDRESS_H
 #define AMULEIPV4ADDRESS_H
 
+#include <string>
 #include <wx/object.h>			// Needed by wx/sckaddr.h
 
 #include "NetworkFunctions.h"	// Needed for StringIPtoUint32
+#include <common/StringFunctions.h> // Needed for unicode2char
 
 class amuleIPV4Address : public wxIPV4address
 {
@@ -54,6 +56,18 @@ public:
 		}
 
 		return wxIPV4address::Hostname(Uint32toStringIP(ip));
+	}
+
+	std::string GetStrIP() const
+	{
+		return std::string(unicode2char(IPAddress()));
+	}
+
+	std::string GetStrPort() const
+	{
+		wxString port;
+		port << Service();
+		return std::string(unicode2char(port));
 	}
 };
 

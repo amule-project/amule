@@ -124,7 +124,7 @@ CEMSocket::~CEMSocket()
 void CEMSocket::Destroy() {
 	if (!DoingDestroy) {
 		DoingDestroy = true;
-		wxSocketClient::Destroy();
+		CLibSocket::Destroy();
 	}
 }
 

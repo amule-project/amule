@@ -207,14 +207,12 @@ int CEncryptedStreamSocket::Write(const void* lpBuf, uint32_t nBufLen)
 	}
 
 	//printf("Writing %i bytes of data\n", nBufLen);
-	CSocketClientProxy::Write(lpBuf, nBufLen);
-	return CSocketClientProxy::LastCount();
+	return CSocketClientProxy::Write(lpBuf, nBufLen);
 }
 
 int CEncryptedStreamSocket::Read(void* lpBuf, uint32_t nBufLen)
 {
-	CSocketClientProxy::Read(lpBuf, nBufLen);
-	m_nObfusicationBytesReceived = CSocketClientProxy::LastCount();
+	m_nObfusicationBytesReceived = CSocketClientProxy::Read(lpBuf, nBufLen);
 	m_bFullReceive = m_nObfusicationBytesReceived == (uint32)nBufLen;
 
 	//printf("Read %i bytes on %s, socket %p\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()), this);
@@ -736,8 +734,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32_t nBuf
 	uint32_t result = 0;
 	if (!bDelaySend) {
 		//printf("Writing negotiation data on %s: ", (const char*) unicode2char(DbgGetIPString()));
-		CSocketClientProxy::Write(pBuffer, nBufLen);
-		result = CSocketClientProxy::LastCount();
+		result = CSocketClientProxy::Write(pBuffer, nBufLen);
 		//printf("Wrote %i bytes\n",result);
 	}
 
