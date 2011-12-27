@@ -455,7 +455,7 @@ void CServerList::LoadStaticServers()
 		wxString line = f.ReadLine();
 
 		// Skip comments
-		if ( line.GetChar(0) == '#' || line.GetChar(0) == '/') {
+		if (line.IsEmpty() || line.GetChar(0) == '#' || line.GetChar(0) == '/') {
 			continue;
 		}
 

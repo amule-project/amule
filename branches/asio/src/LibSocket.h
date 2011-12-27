@@ -27,11 +27,6 @@
 #ifndef __LIBSOCKET_H__
 #define __LIBSOCKET_H__
 
-enum eLibSocketType {
-	eLibSocketBase = 0,
-	eLibSocketEM,
-};
-
 #ifdef ASIO_SOCKETS
 
 #include <wx/event.h>
@@ -52,13 +47,14 @@ class CLibSocket
 {
 	friend class CAsioSocketImpl;
 public:
-	CLibSocket(int flags);
+	CLibSocket(int flags = 0);
 	virtual ~CLibSocket();
 
 	// wx Stuff
 	bool	Connect(const amuleIPV4Address& adr, bool wait);
+	bool	IsConnected() const;
 	bool	IsOk() const;
-	void	GetPeer(amuleIPV4Address& adr);
+	bool	GetPeer(amuleIPV4Address& adr);
 	void	Destroy();
 	void	SetEventHandler(wxEvtHandler& handler, int id);
 //	uint32	LastCount() const;  // No. We don't have this. We return it directly with Read() and Write()
@@ -78,10 +74,13 @@ public:
 	void	Discard() {}	// probably not needed
 	void	SetLocal(const amuleIPV4Address& local);
 
-	// new Stuff
+	// not supported
+	void SetFlags(int) {}
+	bool WaitOnConnect(long, long)	{ return false; }
+	bool WaitForWrite(long, long)	{ return false; }
+	bool WaitForRead(long, long)	{ return false; }
 
-	// Socket Type
-	virtual eLibSocketType GetSocketType() const { return eLibSocketBase; }
+	// new Stuff
 
 	// Show we're ready for another event
 	void	EventProcessed();
@@ -91,6 +90,14 @@ public:
 
 	// Get IP of client
 	const wxChar * GetIP() const;
+
+	// True if Destroy() has been called for socket
+	virtual bool ForDeletion() const { return false; }
+
+	// Handlers
+	virtual void OnConnect(int) {}
+	virtual void OnSend(int) {}
+	virtual void OnReceive(int) {}
 
 private:
 	class CAsioSocketImpl * m_aSocket;
@@ -110,6 +117,8 @@ public:
 	CLibSocket * Accept(bool wait = true);
 	// Accept an incoming connection using the specified socket object.
 	bool	AcceptWith(CLibSocket & socket, bool wait);
+
+	virtual	void OnAccept() {}
 
 	bool	IsOk() const;
 
@@ -159,11 +168,15 @@ private:
 class CLibSocket : public wxSocketClient
 {
 public:
-	CLibSocket(wxSocketFlags flags) : wxSocketClient(flags) {}
+	CLibSocket(wxSocketFlags flags = 0) : wxSocketClient(flags) {}
 
 	// not actually called
 	const wxChar * GetIP() const { return wxEmptyString; }
 	void	EventProcessed() {}
+	// unused Handlers
+	virtual void OnConnect(int) {}
+	virtual void OnSend(int) {}
+	virtual void OnReceive(int) {}
 
 	uint32 Read(void *buffer, wxUint32 nbytes)
 	{
@@ -185,13 +198,14 @@ private:
 class CLibSocketServer : public wxSocketServer
 {
 public:
-	CLibSocketServer(amuleIPV4Address &address,	wxSocketFlags flags) : wxSocketServer(address, flags) {}
+	CLibSocketServer(const amuleIPV4Address &address,	wxSocketFlags flags) : wxSocketServer(address, flags) {}
 
 	CLibSocket * Accept(bool wait) { return (CLibSocket *) wxSocketServer::Accept(wait); }
 
 	bool SocketAvailable() { return true; }
 
 	void RestartAccept() {}
+	virtual	void OnAccept() {}
 };
 
 

@@ -172,23 +172,25 @@ void CQueuedData::Read(void *data, size_t len)
 }
 
 
-void CQueuedData::WriteToSocket(CECSocket *sock)
+uint32 CQueuedData::WriteToSocket(CECSocket *sock)
 {
-	wxCHECK_RET(m_rd_ptr < m_wr_ptr,
+	wxCHECK2_MSG(m_rd_ptr < m_wr_ptr, 0,
 		wxT("Reading past written data in WriteToSocket"));
 
-	sock->SocketWrite(m_rd_ptr, GetUnreadDataLength());
-	m_rd_ptr += sock->GetLastCount();
+	uint32 write = sock->SocketWrite(m_rd_ptr, GetUnreadDataLength());
+	m_rd_ptr += write;
+	return write;
 }
 
 
-void CQueuedData::ReadFromSocket(CECSocket *sock, size_t len)
+uint32 CQueuedData::ReadFromSocket(CECSocket *sock, size_t len)
 {
 	const size_t canWrite = std::min(GetRemLength(), len);
 	wxASSERT(len == canWrite);
 
-	sock->SocketRead(m_wr_ptr, canWrite);
-	m_wr_ptr += sock->GetLastCount();
+	uint32 read = sock->SocketRead(m_wr_ptr, canWrite);
+	m_wr_ptr += read;
+	return read;
 }
 
 
@@ -206,9 +208,9 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 		}
 
 		wxASSERT(m_wr_ptr + read_rem <= &m_data[0] + m_data.size());
-		sock->SocketRead(m_wr_ptr, read_rem);
-		m_wr_ptr += sock->GetLastCount();
-		read_rem -= sock->GetLastCount();
+		uint32 read = sock->SocketRead(m_wr_ptr, read_rem);
+		m_wr_ptr += read;
+		read_rem -= read;
 
 		if (sock->SocketRealError()) {
 			AddDebugLogLineN(logEC, wxT("ReadFromSocketAll: socket error"));
@@ -380,14 +382,13 @@ void CECSocket::OnInput()
 {
 	size_t bytes_rx = 0;
 	do {
-		m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
+		bytes_rx = m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
 		if (SocketRealError()) {
 			AddDebugLogLineN(logEC, wxT("OnInput: socket error"));
 			OnError();
 			// socket already disconnected in this point
 			return;
 		}
-		bytes_rx = GetLastCount();
 		m_bytes_needed -= bytes_rx;
 
 		if (m_bytes_needed == 0) {

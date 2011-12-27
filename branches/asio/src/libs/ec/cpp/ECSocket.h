@@ -198,12 +198,11 @@ public:
 	bool WouldBlock() { return InternalGetLastError() == EC_ERROR_WOULDBLOCK; }
 	bool GotError() { return InternalGetLastError() != EC_ERROR_NOERROR; }
 
-	void SocketRead(void* ptr, size_t len) { InternalRead(ptr,len); }
-	void SocketWrite(const void* ptr, size_t len) { InternalWrite(ptr,len); }
+	uint32 SocketRead(void* ptr, size_t len) { return InternalRead(ptr,len); }
+	uint32 SocketWrite(const void* ptr, size_t len) { return InternalWrite(ptr,len); }
 	bool SocketError() { return InternalError() && GotError(); }
 	bool SocketRealError();
 
-	size_t GetLastCount() { return InternalLastCount(); }
 	bool WaitSocketConnect(long secs = -1, long msecs = 0) { return InternalWaitOnConnect(secs,msecs); }
 	bool WaitSocketWrite(long secs = -1, long msecs = 0) { return InternalWaitForWrite(secs,msecs); }
 	bool WaitSocketRead(long secs = -1, long msecs = 0) { return InternalWaitForRead(secs,msecs); }
@@ -236,7 +235,6 @@ public:
 
 	virtual bool InternalConnect(uint32_t ip, uint16_t port, bool wait) = 0;
 
-	virtual size_t InternalLastCount() = 0;
 	virtual bool InternalWaitOnConnect(long secs = -1, long msecs = 0) = 0;
 	virtual bool InternalWaitForWrite(long secs = -1, long msecs = 0) = 0;
 	virtual bool InternalWaitForRead(long secs = -1, long msecs = 0) = 0;
@@ -245,8 +243,8 @@ public:
 
 	virtual void InternalClose() = 0;
 	virtual bool InternalError() = 0;
-	virtual void InternalRead(void* ptr, size_t len) = 0;
-	virtual void InternalWrite(const void* ptr, size_t len) = 0;
+	virtual uint32 InternalRead(void* ptr, uint32 len) = 0;
+	virtual uint32 InternalWrite(const void* ptr, uint32 len) = 0;
 
 	virtual bool InternalIsConnected() = 0;
 	virtual void InternalDestroy() = 0;
@@ -288,8 +286,8 @@ public:
 		m_z.next_in = m_rd_ptr;
 	}
 
-	void WriteToSocket(CECSocket *sock);
-	void ReadFromSocket(CECSocket *sock, size_t len);
+	uint32 WriteToSocket(CECSocket *sock);
+	uint32 ReadFromSocket(CECSocket *sock, size_t len);
 
 	size_t ReadFromSocketAll(CECSocket *sock, size_t len);
 

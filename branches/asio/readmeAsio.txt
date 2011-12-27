@@ -27,7 +27,7 @@ Not done yet / problems:
 - UDP is still wx
 - configure
 - better error handling/error messages
-- EC is still wx
+- amulegui is still wx
 - further abstraction (replace wx socket constants in code)
 - proxy is disabled (and may remain so in ASIO mode)
 - AsyncDNS is still wx
@@ -52,5 +52,8 @@ Then configure aMule using
 CPPFLAGS="-I~/amule/boost_1_48_0 -DASIO_SOCKETS=1"
 LDFLAGS=-L~/amule/boost_1_48_0/stage/lib
 LIBS=-l:libboost_system.a
+
+Important: aMule prints "Asio thread started" in log and console on startup. 
+If it doesn't you have probably configured it to use wx sockets!
 
 Mind, amuled is not supported at the moment.

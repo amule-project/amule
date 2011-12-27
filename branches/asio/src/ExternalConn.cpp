@@ -319,14 +319,14 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		}
 
 		// Create the socket
-		m_ECServer = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
+		m_ECServer = new CExternalConnListener(addr, wxSOCKET_REUSEADDR, this);
 		m_ECServer->SetEventHandler(*this, SERVER_ID);
 		m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
 		m_ECServer->Notify(true);
 
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
-		if (m_ECServer->Ok()) {
+		if (m_ECServer->IsOk()) {
 			msgLocal = CFormat(wxT("*** TCP socket (ECServer) listening on %s:%d")) % ip % port;
 			*msg += msgLocal + wxT("\n");
 			AddLogLineN(msgLocal);
@@ -391,12 +391,18 @@ void ExternalConn::ResetAllLogs()
 
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 {
-	CECServerSocket *sock = new CECServerSocket(m_ec_notifier);
+	m_ECServer->OnAccept();
+}
+
+
+void CExternalConnListener::OnAccept()
+{
+	CECServerSocket *sock = new CECServerSocket(m_conn->m_ec_notifier);
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
 	// should ALWAYS be a pending connection).
-	if ( m_ECServer->AcceptWith(*sock, false) ) {
+	if (AcceptWith(*sock, false)) {
 		AddLogLineN(_("New external connection accepted"));
 	} else {
 		delete sock;

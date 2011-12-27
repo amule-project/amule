@@ -38,10 +38,10 @@
 #include "LibSocket.h"
 #include <wx/socket.h>		// wxSocketError
 #include <wx/thread.h>		// wxMutex
+#include <wx/intl.h>		// _()
 #include <common/Format.h>	// Needed for CFormat
 #include "Logger.h"
 #include "GuiEvents.h"
-#include "EMSocket.h"
 #include "amuleIPV4Address.h"
 
 using namespace boost::asio;
@@ -72,6 +72,7 @@ public:
 		m_eventPending = false;
 		m_port = 0;
 		m_sendBuffer = NULL;
+		m_connected = false;
 		m_closed = false;
 		m_dying = false;
 		m_IP = wxT("?");
@@ -102,12 +103,18 @@ public:
 			error_code ec;
 			connect(*m_socket, endpoint_iterator, ec);
 			m_OK = !ec;
+			m_connected = m_OK;
 		} else {
 			async_connect(*m_socket, endpoint_iterator, 
 				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error, endpoint_iterator));
 			m_OK = true;
 		}
 		return m_OK;
+	}
+
+	bool IsConnected() const
+	{
+		return m_connected;
 	}
 
 	// For wxSocketClient, Ok won't return true unless the client is connected to a server.
@@ -193,6 +200,7 @@ public:
 	{
 		if (!m_closed) {
 			m_closed = true;
+			m_connected = false;
 			s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
 		}
 	}
@@ -215,10 +223,10 @@ public:
 	}
 
 
-	void GetPeer(amuleIPV4Address& adr)
+	bool GetPeer(amuleIPV4Address& adr)
 	{
-		adr.Hostname(m_IP);
-		adr.Service(m_port);
+		return adr.Hostname(m_IP)
+				&& adr.Service(m_port);
 	}
 
 
@@ -232,6 +240,7 @@ public:
 		m_libSocket = socket;
 		// Also do some setting up
 		m_OK = true;
+		m_connected = true;
 		// Start reading
 		StartBackgroundRead();
 	}
@@ -298,21 +307,17 @@ private:
 	{
 		m_OK = !err;
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect %d %s")) % m_OK % m_IP);
-		if (m_libSocket->GetSocketType() == eLibSocketEM) {
-			CEMSocket * cSocket = dynamic_cast<CEMSocket *>(m_libSocket);
-			if (cSocket->ForDeletion()) {
-				AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect: socket pending for deletion %s")) % m_IP);
-			} else {
-				CoreNotify_EMSocket_Connect(cSocket, err.value());
-				if (m_OK) {
-					// After connect also send a OUTPUT event to show data is available
-					CoreNotify_EMSocket_Send(cSocket, 0);
-					// Start reading
-					StartBackgroundRead();
-				}
-			}
+		if (m_libSocket->ForDeletion()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect: socket pending for deletion %s")) % m_IP);
 		} else {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Bad socket type %d in HandleConnect")) % (int)m_libSocket->GetSocketType());
+			CoreNotify_LibSocketConnect(m_libSocket, err.value());
+			if (m_OK) {
+				// After connect also send a OUTPUT event to show data is available
+				CoreNotify_LibSocketSend(m_libSocket, 0);
+				// Start reading
+				StartBackgroundRead();
+				m_connected = true;
+			}
 		}
 	}
 
@@ -327,15 +332,10 @@ private:
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
 		}
 
-		if (m_libSocket->GetSocketType() == eLibSocketEM) {
-			CEMSocket * cSocket = dynamic_cast<CEMSocket *>(m_libSocket);
-			if (cSocket->ForDeletion()) {
-				AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
-			} else {
-				CoreNotify_EMSocket_Send(cSocket, m_ErrorCode);
-			}
+		if (m_libSocket->ForDeletion()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
 		} else {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Bad socket type %d in HandleSend")) % (int)m_libSocket->GetSocketType());
+			CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
 		}
 	}
 
@@ -378,15 +378,10 @@ private:
 		}
 
 		m_readPending = false;
-		if (m_libSocket->GetSocketType() == eLibSocketEM) {
-			CEMSocket * cSocket = dynamic_cast<CEMSocket *>(m_libSocket);
-			if (cSocket->ForDeletion()) {
-				AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
-			} else {
-				PostReadEvent();
-			}
+		if (m_libSocket->ForDeletion()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
 		} else {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Bad socket type %d in HandleSend")) % (int)m_libSocket->GetSocketType());
+			PostReadEvent();
 		}
 	}
 
@@ -413,7 +408,7 @@ private:
 	void PostReadEvent()
 	{
 		if (!m_readPending && !m_eventPending) {
-			CoreNotify_EMSocket_Receive(dynamic_cast<CEMSocket *>(m_libSocket), m_ErrorCode);
+			CoreNotify_LibSocketReceive(m_libSocket, m_ErrorCode);
 			m_eventPending = true;
 			AddDebugLogLineF(logAsio, CFormat(wxT("Posted read event %s")) % m_IP);
 		}
@@ -469,6 +464,7 @@ private:
 	bool			m_eventPending;
 	char *			m_sendBuffer;
 	deadline_timer	m_timer;
+	bool			m_connected;
 	bool			m_closed;
 	bool			m_dying;
 };
@@ -497,6 +493,12 @@ bool CLibSocket::Connect(const amuleIPV4Address& adr, bool wait)
 }
 
 
+bool CLibSocket::IsConnected() const
+{
+	return m_aSocket->IsConnected();
+}
+
+
 bool CLibSocket::IsOk() const
 {
 	return m_aSocket->IsOk();
@@ -509,9 +511,9 @@ bool CLibSocket::Error() const
 }
 
 
-void CLibSocket::GetPeer(amuleIPV4Address& adr)
+bool CLibSocket::GetPeer(amuleIPV4Address& adr)
 {
-	m_aSocket->GetPeer(adr);
+	return m_aSocket->GetPeer(adr);
 }
 
 
@@ -598,7 +600,9 @@ const wxChar * CLibSocket::GetIP() const
 class CAsioSocketServerImpl : public ip::tcp::acceptor
 {
 public:
-	CAsioSocketServerImpl(const amuleIPV4Address& adr) : ip::tcp::acceptor(s_io_service)
+	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer) 
+		: ip::tcp::acceptor(s_io_service),
+		  m_libSocketServer(libSocketServer)
 	{
 		m_ok = false;
 		m_currentSocket = NULL;
@@ -702,10 +706,12 @@ private:
 			AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d")) 
 				% m_currentSocket->GetIP() % m_currentSocket->GetPort());
 			m_socketAvailable = true;
-			CoreNotify_ServerTCP_Accept();
+			CoreNotify_ServerTCP_Accept(m_libSocketServer);
 		}
 	}
 
+	// The wrapper object
+	CLibSocketServer * m_libSocketServer;
 	// Startup ok
 	bool m_ok;
 	// Accept error
@@ -719,7 +725,7 @@ private:
 
 CLibSocketServer::CLibSocketServer(const amuleIPV4Address& adr, int /* flags */)
 {
-	m_aServer = new CAsioSocketServerImpl(adr);
+	m_aServer = new CAsioSocketServerImpl(adr, this);
 }
 
 
