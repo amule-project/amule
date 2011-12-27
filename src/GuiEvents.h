@@ -40,8 +40,8 @@ class CPartFile;
 class CServer;
 class CFriend;
 class CClientRef;
-class CEMSocket;
 class CLibSocket;
+class CLibSocketServer;
 
 
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
@@ -180,11 +180,11 @@ namespace MuleNotify
 	//
 
 	// ASIO sockets
-	void EMSocket_Connect(CEMSocket * socket, int error);
-	void EMSocket_Send(CEMSocket * socket, int error);
-	void EMSocket_Receive(CEMSocket * socket, int error);
+	void LibSocketConnect(CLibSocket * socket, int error);
+	void LibSocketSend(CLibSocket * socket, int error);
+	void LibSocketReceive(CLibSocket * socket, int error);
 	void LibSocket_Destroy(CLibSocket * socket);
-	void ServerTCP_Accept();
+	void ServerTCP_Accept(CLibSocketServer * socketServer);
 
 	//
 	// Notifications that always create an event
@@ -575,11 +575,11 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 //
 
 // ASIO sockets
-#define CoreNotify_EMSocket_Connect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::EMSocket_Connect, ptr, val)
-#define CoreNotify_EMSocket_Send(ptr, val)			MuleNotify::DoNotify(&MuleNotify::EMSocket_Send, ptr, val)
-#define CoreNotify_EMSocket_Receive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::EMSocket_Receive, ptr, val)
+#define CoreNotify_LibSocketConnect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::LibSocketConnect, ptr, val)
+#define CoreNotify_LibSocketSend(ptr, val)			MuleNotify::DoNotify(&MuleNotify::LibSocketSend, ptr, val)
+#define CoreNotify_LibSocketReceive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketReceive, ptr, val)
 #define CoreNotify_LibSocket_Destroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocket_Destroy, ptr)
-#define CoreNotify_ServerTCP_Accept()				MuleNotify::DoNotify(&MuleNotify::ServerTCP_Accept)
+#define CoreNotify_ServerTCP_Accept(ptr)			MuleNotify::DoNotify(&MuleNotify::ServerTCP_Accept, ptr)
 
 
 //

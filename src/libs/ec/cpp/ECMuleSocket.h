@@ -26,7 +26,7 @@
 #ifndef ECMULESOCKET_H
 #define ECMULESOCKET_H
 
-#include <wx/socket.h>		// Needed for wxSocketClient
+#include "../../../LibSocket.h"
 #include "ECSocket.h"
 
 /*! \class CECMuleSocket
@@ -35,31 +35,33 @@
  *
  */
 
-class CECMuleSocket : public CECSocket,  public wxSocketClient {
+class CECMuleSocket : public CECSocket,  public CLibSocket {
 public:
 	CECMuleSocket(bool use_events);
 	virtual ~CECMuleSocket();
 
 	bool ConnectSocket(wxIPV4address& address);
 
- private:
+	virtual void OnSend(int)	{ OnOutput(); }
+	virtual void OnReceive(int)	{ OnInput(); }
+
+private:
 	bool InternalConnect(uint32_t ip, uint16_t port, bool wait);
 
 	int InternalGetLastError();
 
-	size_t InternalLastCount() { return wxSocketClient::LastCount(); };
-	bool InternalWaitOnConnect(long secs = -1, long msecs = 0) { return wxSocketClient::WaitOnConnect(secs,msecs); };
-	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForWrite(secs,msecs); };
-	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForRead(secs,msecs); };
+	bool InternalWaitOnConnect(long secs = -1, long msecs = 0) { return CLibSocket::WaitOnConnect(secs,msecs); };
+	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return CLibSocket::WaitForWrite(secs,msecs); };
+	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return CLibSocket::WaitForRead(secs,msecs); };
 
-	bool InternalError() { return wxSocketClient::Error(); }
-	void InternalClose() { wxSocketClient::Close(); }
+	bool InternalError() { return CLibSocket::Error(); }
+	void InternalClose() { CLibSocket::Close(); }
 
-	void InternalRead(void* ptr, size_t len) { wxASSERT(len < 0xFFFFFFFF); wxSocketClient::Read(ptr, (wxUint32)len); };
-	void InternalWrite(const void* ptr, size_t len) { wxASSERT(len < 0xFFFFFFFF); wxSocketClient::Write(ptr, (wxUint32)len); };
+	uint32 InternalRead(void* ptr, uint32 len)			{ return CLibSocket::Read(ptr, len); };
+	uint32 InternalWrite(const void* ptr, uint32 len)	{ return CLibSocket::Write(ptr, len); };
 
-	bool InternalIsConnected() { return wxSocketClient::IsConnected(); }
-	void InternalDestroy() { wxSocketClient::Destroy(); }
+	bool InternalIsConnected() { return CLibSocket::IsConnected(); }
+	void InternalDestroy() { CLibSocket::Destroy(); }
 };
 
 #endif // ECMULESOCKET_H

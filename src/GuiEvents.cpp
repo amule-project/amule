@@ -770,35 +770,35 @@ namespace MuleNotify
 	}
 #endif	// #ifndef AMULE_DAEMON
 
-	void EMSocket_Connect(CEMSocket * socket, int error)
+	void LibSocketConnect(CLibSocket * socket, int error)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Connect %s %d")) % socket->GetIP() % error);
+		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect %s %d")) % socket->GetIP() % error);
 		socket->OnConnect(error);
 	}
 
-	void EMSocket_Send(CEMSocket * socket, int error)
+	void LibSocketSend(CLibSocket * socket, int error)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Send %s %d")) % socket->GetIP() % error);
+		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend %s %d")) % socket->GetIP() % error);
 		socket->OnSend(error);
 	}
 
-	void EMSocket_Receive(CEMSocket * socket, int error)
+	void LibSocketReceive(CLibSocket * socket, int error)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Receive %s %d")) % socket->GetIP() % error);
+		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive %s %d")) % socket->GetIP() % error);
 		socket->EventProcessed();
 		socket->OnReceive(error);
 	}
 
 	void LibSocket_Destroy(CLibSocket * socket)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("EMSocket_Destroy %s")) % socket->GetIP());
+		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocket_Destroy %s")) % socket->GetIP());
 		delete socket;
 	}
 
-	void ServerTCP_Accept()
+	void ServerTCP_Accept(CLibSocketServer * socketServer)
 	{
 		AddDebugLogLineF(logAsio, wxT("ServerTCP_Accept"));
-		theApp->listensocket->OnAccept();
+		socketServer->OnAccept();
 	}
 
 #endif	// #ifndef CLIENT_GUI

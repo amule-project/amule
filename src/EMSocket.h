@@ -81,7 +81,6 @@ public:
 	virtual void	OnReceive(int nErrorCode);
 	virtual void	OnConnect(int nErrorCode) = 0;
 
-	virtual eLibSocketType GetSocketType() const { return eLibSocketEM; }
 	virtual bool	ForDeletion() const { return false; }
 
 protected:

@@ -27,6 +27,7 @@
 
 #include <common/MD5Sum.h>
 #include <common/Format.h>
+#include "../../../amuleIPV4Address.h"
 
 #include <wx/intl.h>
 
@@ -158,7 +159,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 
 bool CRemoteConnect::IsConnectedToLocalHost()
 {
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	return GetPeer(addr) ? addr.IsLocalHost() : false;
 }
 
