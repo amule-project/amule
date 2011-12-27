@@ -25,8 +25,9 @@ usual.
 Not done yet / problems:
 - amuled
 - UDP is still wx
-- configure (no wx mode atm)
+- configure
 - better error handling/error messages
+- EC is still wx
 - further abstraction (replace wx socket constants in code)
 - proxy is disabled (and may remain so in ASIO mode)
 - AsyncDNS is still wx
@@ -48,7 +49,8 @@ cd ~/amule/boost_1_48_0
 ./b2
 
 Then configure aMule using
-CPPFLAGS=-I~/amule/boost_1_48_0
-LDFLAGS=~/amule/boost_1_48_0/stage/lib/libboost_system.a
+CPPFLAGS="-I~/amule/boost_1_48_0 -DASIO_SOCKETS=1"
+LDFLAGS=-L~/amule/boost_1_48_0/stage/lib
+LIBS=-l:libboost_system.a
 
 Mind, amuled is not supported at the moment.

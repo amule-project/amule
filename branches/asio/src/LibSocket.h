@@ -27,17 +27,18 @@
 #ifndef __LIBSOCKET_H__
 #define __LIBSOCKET_H__
 
+enum eLibSocketType {
+	eLibSocketBase = 0,
+	eLibSocketEM,
+};
+
+#ifdef ASIO_SOCKETS
+
 #include <wx/event.h>
 #include <wx/thread.h>
 #include "Types.h"
 #include <wx/socket.h>		// for wxSocketError - remove me
 class amuleIPV4Address;
-class wxIPaddress;
-
-enum eLibSocketType {
-	eLibSocketBase = 0,
-	eLibSocketEM,
-};
 
 //
 // Abstraction class for library TCP socket
@@ -91,11 +92,9 @@ public:
 	// Get IP of client
 	const wxChar * GetIP() const;
 
-protected:
-	uint32	DataAvailable();
-
 private:
 	class CAsioSocketImpl * m_aSocket;
+	void LastCount();	// block this
 };
 
 
@@ -149,5 +148,61 @@ private:
 
 };
 
+
+#else // ASIO_SOCKETS
+
+// use wx sockets
+
+#include <wx/socket.h>
+#include "amuleIPV4Address.h"
+
+class CLibSocket : public wxSocketClient
+{
+public:
+	CLibSocket(wxSocketFlags flags) : wxSocketClient(flags) {}
+
+	// not actually called
+	const wxChar * GetIP() const { return wxEmptyString; }
+	void	EventProcessed() {}
+
+	uint32 Read(void *buffer, wxUint32 nbytes)
+	{
+		wxSocketClient::Read(buffer, nbytes);
+		return wxSocketClient::LastCount();
+	}
+
+	uint32 Write(const void *buffer, wxUint32 nbytes)
+	{
+		wxSocketClient::Write(buffer, nbytes);
+		return wxSocketClient::LastCount();
+	}
+
+private:
+	void LastCount();	// block this
+};
+
+
+class CLibSocketServer : public wxSocketServer
+{
+public:
+	CLibSocketServer(amuleIPV4Address &address,	wxSocketFlags flags) : wxSocketServer(address, flags) {}
+
+	CLibSocket * Accept(bool wait) { return (CLibSocket *) wxSocketServer::Accept(wait); }
+
+	bool SocketAvailable() { return true; }
+
+	void RestartAccept() {}
+};
+
+
+class CAsioService
+{
+public:
+	void Wait() {}
+	void Stop() {}
+};
+
+
+#endif
 
 #endif
