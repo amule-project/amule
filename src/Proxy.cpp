@@ -23,7 +23,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifdef ASIO_SOCKETS
 #define PROXY_BROKEN		// Let's get Proxy back to functional AFTER ASIO works
+#endif
 
 #include "Proxy.h"		/* for Interface		*/
 

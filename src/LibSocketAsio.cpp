@@ -23,6 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifdef ASIO_SOCKETS
 
 #ifdef _MSC_VER
 #define _WIN32_WINNT 0x0501		// Boost complains otherwise
@@ -800,11 +801,12 @@ void CAsioService::Stop()
 
 void * CAsioService::Entry()
 {
-	AddDebugLogLineN(logAsio, wxT("CAsioService started"));
+	AddLogLineNS(_("Asio thread started"));
 	io_service::work worker(s_io_service);		// keep io_service running
 	s_io_service.run();
-	AddDebugLogLineN(logAsio, wxT("CAsioService stopped"));
+	AddDebugLogLineN(logAsio, wxT("Asio thread stopped"));
 
 	return NULL;
 }
 
+#endif
