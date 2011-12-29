@@ -1,0 +1,51 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH CAS 1 "2011 十一月" "cas v0.8" "aMule 的工具程式"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH 名稱
+cas \- 以 C 語言撰寫的 aMule 統計資訊程式
+.SH 簡介
+.B_untranslated cas
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-p ]
+[\fB\-c\fP \fI<路徑>\fP]
+
+.B_untranslated cas
+.RB_untranslated [ \-h ]
+.SH 說明
+\fBcas\fP 是可以在終端機界面以人類可閱讀的形式顯示你的 aMule 線上簽名識別檔的程式。要使用這個功能，你必須在偏好設定裏啟用「線上簽名識別」。
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
+除存線上簽名識別圖片。你也可以在選項中加入 \fI=<路徑>\fP 來指定要儲存的地方。
+.TP 
+.B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
+有統計資訊與圖片的 HTML 檔案。你也可以在選項中加入 \fI=<路徑>\fP 來指定要儲存的地方。
+.TP 
+\fB[ \-c\fP \fI<路徑>\fP, \fB\-\-config\-dir\fP=\fI<路徑>\fP \fB]\fP
+從 \fI<path>\fP 讀取設定檔，而不是個人目錄
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+顯示簡短的使用說明。
+.P
+如果沒有選項，會在標準輸出顯示線上簽名識別。
+
+\fBcas\fP 的作者：Pedro de Oliveira <falso@rdk.homeip.net>
+.SH 檔案
+~/.aMule/casrc
+.br
+stat.png
+.br
+tmp.html
+.SH 回報問題
+請到我們的論壇 (\fIhttp://forum.amule.org/\fP) 或錯誤追蹤網站 (\fIhttp://bugs.amule.org/\fP)
+回報發現的問題。請不要用 e\-mail 或在我們的群組信件中回報，也不要直接通知某個團隊成員。
+.SH 版權
+aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
+.SH 參考
+.B_untranslated amule\fR(1), \fBwxcas\fR(1)
+.SH 作者
+說明文件撰寫者： Vollstrecker <amule@vollstreckernet.de>

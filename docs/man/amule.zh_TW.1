@@ -1,0 +1,89 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULE 1 "2011 十一月" "aMule v2.3.1" aMule
+.als B_untranslated B
+.als RB_untranslated RB
+.SH 名稱
+amule \- 跨平台的 eMule P2P 客戶端程式
+.SH 簡介
+.B_untranslated amule
+[\fB\-c\fP \fI<路徑>\fP] [\fB\-geometry\fP \fI<視窗狀態>\fP]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+[\fB\-w\fP \fI<路徑>\fP]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
+[\fB\-t\fP \fI<號碼>\fP] [\fIeD2k 連結\fP]
+
+.B_untranslated amule
+.RB_untranslated [ \-v ]
+
+.B_untranslated amule
+.RB_untranslated [ \-h ]
+
+.SH 說明
+.TP 
+\fB[ \-c\fP \fI<路徑>\fP, \fB\-\-config\-dir\fP=\fI<路徑>\fP \fB]\fP
+從 \fI<path>\fP 讀取設定檔，而不是個人目錄
+.TP 
+\fB[ \-geometry \fP\fI<視窗狀態>\fP \fB]\fP
+設定這個應用程式的視窗狀態。\fI<視窗狀態>\fP 使用和 X11
+應用程式一樣的格式：	[\fB=\fP][\fI<寬度>\fP{\fBxX\fP}\fI<高度>\fP][{\fB+\-\fP}\fI<X
+偏移>\fP{\fB+\-\fP}\fI<Y 偏移>\fP]
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
+將程式記錄顯示在標準輸出。
+.TP 
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
+將設定重設為預設值。
+.TP 
+\fB[ \-w\fP \fI<路徑>\fP, \fB\-\-use\-amuleweb\fP=\fI<路徑>\fP \fB]\fP
+設定 amuleweb 的執行檔位置在 \fI<路徑>\fP。
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+不處理嚴重錯誤。
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+不停用標準輸入。
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<號碼>\fP \fB]\fP
+給輸入成功的 eD2k 連結分類編號為 \fI<號碼>\fP
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+顯示目前的版本號碼。
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+顯示簡短的使用說明。
+.TP 
+\fB[ eD2k 連結 ]\fP
+將 eD2k 連結加到核心。
+.PP
+可以使用以下幾種 eD2k 連結：
+.RS 3
+.IP \(bu 2
+檔案連結 (ed2k://|file|...)，會將檔案加入下載等候區；
+.IP \(bu 2
+伺服器連結 (ed2k://|server|...)，會將伺服器加入 aMule 的伺服器清單；
+.IP \(bu 2
+伺服器清單連結，在清單內的伺服器會被加入 aMule 的伺服器清單；
+.IP \(bu 2
+magnet 連結。
+.RE
+.SH 附註
+.SS 路徑
+對於有 \fI<路徑>\fP 的選項，如果 \fI路徑\fP 裏面沒有含目錄 (即只有單純檔名)，則會被認為是在 aMule 的設定檔所在目錄
+\fI~/.aMule\fP 下。
+.SH 檔案
+~/.aMule/*
+.SH 回報問題
+請到我們的論壇 (\fIhttp://forum.amule.org/\fP) 或錯誤追蹤網站 (\fIhttp://bugs.amule.org/\fP)
+回報發現的問題。請不要用 e\-mail 或在我們的群組信件中回報，也不要直接通知某個團隊成員。
+.SH 版權
+aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
+.SH 參考
+.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.SH 作者
+說明文件撰寫者： Vollstrecker <amule@vollstreckernet.de>

@@ -1,0 +1,247 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULECMD 1 "2011 十一月" "aMuleCmd v2.3.1" "aMule 的工具程式"
+.als B_untranslated B
+.als RB_untranslated RB
+.als SS_untranslated SS
+.SH 名稱
+amulecmd \- 終端機模式下控制 aMule 的程式
+.SH 簡介
+.B_untranslated amulecmd
+[\fB\-h\fP \fI<主機>\fP] [\fB\-p\fP \fI<通訊埠>\fP] [\fB\-P\fP \fI<密碼>\fP]
+[\fB\-f\fP \fI<路徑>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<語言>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP \fI<指令>\fP]\fB \fP}
+
+.B_untranslated amulecmd
+[\fB\-\-create\-config\-from\fP=\fI<路徑>\fP]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-help ]
+.SH 說明
+\fBamulecmd\fP 是終端機模式下控制 aMule 的的客戶端程式。
+.TP 
+\fB[ \-h\fP \fI<主機>\fP, \fB\-\-host\fP=\fI<主機>\fP \fB]\fP
+正在執行 aMule 核心的主機 (預設：\fI本機\fP)， \fI<主機>\fP 可以是 IP 位址或網域名稱
+.TP 
+\fB[ \-p\fP \fI<通訊埠>\fP, \fB\-\-port\fP=\fI<通訊埠>\fP \fB]\fP
+aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預設：\fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<密碼>\fP, \fB\-\-password\fP=\fI<密碼>\fP \fB]\fP
+外部連線密碼。
+.TP 
+\fB[ \-f\fP \fI<路徑>\fP, \fB\-\-config\-file\fP=\fI<路徑>\fP \fB]\fP
+使用指定的設定檔，預設是 \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+不將任何資訊顯示在標準輸出。
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+詳細模式 \- 也顯示除錯訊息。
+.TP 
+\fB[ \-l\fP \fI<語言>\fP, \fB\-\-locale\fP=\fI<語言>\fP \fB]\fP
+設定程式的語系 (語言)。請看 \fB附註\fP 章節裏關於 \fI<語言>\fP 參數的說明。
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+將命令列選項寫入設定檔後離開
+.TP 
+\fB[ \-c\fP \fI<指令>\fP, \fB\-\-command\fP=\fI<指令>\fP \fB]\fP
+像在 amulecmd 的命令列模式下一樣，執行 \fI<指令>\fP 後離開。
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<路徑>\fP \fB]\fP
+參考 \fI<path>\fP 裏的資料來建立設定檔後離開。(\fI<path>\fP 裏必須有有效的 aMule 設定檔)
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+顯示目前的版本號碼。
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+顯示簡短的使用說明。
+.SH 指令
+所有指令都不分大小寫。
+.SS "Add \fI<eD2k 連結>\fP | \fI<magnet 連結>\fP"
+將 eD2k 連結或 magnet 加到核心。
+
+可以使用以下幾種 eD2k 連結：
+.RS 3
+.IP \(bu 2
+檔案連結 (ed2k://|file|...)，會將檔案加入下載等候區；
+.IP \(bu 2
+伺服器連結 (ed2k://|server|...)，會將伺服器加入 aMule 的伺服器清單；
+.IP \(bu 2
+伺服器清單，所有在這個清單內的伺服器都會被加到 aMule 的伺服器清單。
+.RE
+
+magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
+.SS "Cancel \fI<hash 值>\fP | \fI<編號>\fP"
+取消下載指定的檔案，指定方式：\fI<hash 值>\fP 或 \fI<編號>\fP；要查詢數值請用 \fBshow\fP。
+.SS "connect [ \fIkad\fP | \fIed2k\fP | \fI<IP | 網域名稱>\fP ]"
+連線到網路。
+
+這樣將會連線到在偏好設定中啟用的所有網路。
+
+用這個選項參數，你可以指定要連線到哪個網路：用「IP:port」格式指定伺服器的位址 (IP 可以用有小數點的十進位 IPv4 網址，或是可從 DNS
+轉換的網域名稱)，aMule 就會只連線到那個伺服器。
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
+中斷所有已連線的網路，或只中斷指定的網路連線。
+.SS "download \fI<編號>\fP"
+開始下載檔案。
+
+\fI<編號>\fP 指上次搜尋檔案時的結果。例如：「download 12」會下載上次搜尋時編號 12 的檔案。
+.SS_untranslated Exit
+始 amule/amuled 斷線，並離開 amulecmd。
+.SS "get \fI<目標>\fP"
+取得並顯示某個偏好設定的值。
+
+\fI<目標>\fP 參數可用的值：
+.RS
+.IP BwLimits 10
+取得頻寬限制。
+.IP IPFilter 10
+取得 IP 過濾器的偏好設定。
+.RE
+.SS "help [ \fI<命令>\fP ]"
+顯示使用說明。如果沒有加參數，會顯示可用的指令一覽；如果加了 \fI<指令>\fP 參數，會顯示該指令的簡單說明。
+.SS "pause \fI<hash 值>\fP | \fI<編號>\fP"
+暫停下載指定的檔案，指定方式：\fI<hash 值>\fP 或 \fI<編號>\fP；要查詢數值請用 \fBshow\fP。
+.SS "priority \fI<優先程度>\fP \fI<hash 值>\fP | \fI<編號>\fP"
+用 \fI<hash 值>\fP 或 \fI<編號>\fP 設定下載檔案的優先程度。
+
+可用在 \fI<優先度>\fP 的參數：
+.RS
+.IP Auto 10
+自動優先權。
+.IP High 10
+高優先權。
+.IP Low 10
+低優先權。
+.IP Normal 10
+一般優先權。
+.RE
+.SS_untranslated Progress
+顯示正在進行中的搜尋進度。
+.SS_untranslated Quit
+功能和 \fBexit\fP 一樣的指令。
+.SS "reload \fI<目標>\fP"
+重新載入指定的物件。
+
+\fI<目標>\fP 參數可用的值：
+.RS
+.IP Shared 10
+重新載入分享檔案清單。
+.IP IPFilter 10
+重新載入 IP 過濾器資料。
+.RE
+.SS_untranslated Reset
+清除記錄。
+.SS_untranslated Results
+顯示上次搜尋的結果。
+.SS "resume \fI<hash 值>\fP | \fI<編號>\fP"
+繼續下載指定的檔案，指定方式：\fI<hash 值>\fP 或 \fI<編號>\fP；要查詢數值請用 \fBshow\fP。
+.SS "search \fI<種類>\fP \fI<關鍵字>\fP"
+用指定的 \fI<關鍵字>\fP 搜尋。必須要有搜尋的「種類」加上「關鍵字」，例如：「search kad amule」會開始在 KAD
+網路搜尋「amule」。
+
+可用的搜尋類型：
+.RS
+.IP Global 10
+開始在全球伺服器搜尋。
+.IP Kad 10
+開始在 Kad 搜尋。
+.IP Local 10
+開始在本地伺服器搜尋。
+.RE
+.SS "set \fI<目標>\fP"
+設定指定的偏好設定值。
+
+\fI<目標>\fP 參數可用的值：
+.RS
+.IP BwLimits 10
+設定頻寬限制。
+.IP IPFilter 10
+設定 IP過濾器的偏好設定。
+.RE
+.SS "show \fI<目標>\fP"
+顯示 上傳/下載 等候區、伺服器清單 或 分享檔案清單。
+
+\fI<目標>\fP 參數可用的值：
+.RS
+.IP DL 10
+顯示下載等候區。
+.IP Log 10
+顯示記錄。
+.IP Servers 10
+顯示伺服器清單。
+.IP UL 10
+顯示上傳等候區。
+.RE
+.SS_untranslated Shutdown
+關閉在遠端執行的核心 (amule/amuled)。這樣也會關閉文字模式客戶端程式，因為不能在沒有核心下執行。
+.SS "statistics [ \fI<號字>\fP ]"
+顯示統計資訊。
+
+\fI<編號>\fP 是這個指令的參數之一，用來指定要顯示多少個客戶端程式的版本附加版本；須為 0\-255 的數字，輸入 0
+或略過不輸入則表示「不限」。
+
+範例：「statistics 5」只會顯示每個客戶端種類的前 5 個版本。
+.SS_untranslated Status
+顯示 連線狀態、目前的上傳/下載速度 等等。
+.SH 附註
+.SS 路徑
+對於有 \fI<路徑>\fP 的選項，如果 \fI路徑\fP 裏面沒有含目錄 (即只有單純檔名)，則會被認為是在 aMule 的設定檔所在目錄
+\fI~/.aMule\fP 下。
+.SS 語言
+\fB\-l\fP 選項的 \fI<語系>\fP
+參數有以下幾種樣式：\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP]。其中：\fIlang\fP
+是主要的語系代碼，\fILANG\fP 是語系次分類、使用地區代碼，\fIencoding\fP 是使用的編碼，\fImodifier\fP
+則讓使用者用一個代號就指定一組語系設定。例如：「zh_TW.UTF\-8@Taiwan」
+
+例如，以下的字串都有效：
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+雖然上面這些都是合於規定的語系設定參數，但 \fIencoding\fP 和 \fImodifier\fP 目前已經沒在使用了。
+
+你也可以使用完整的英文名稱來設定語系，例如：\fB\-l german\fP 也等於 \fB\-l de_DE\fP。
+
+沒有在命令列或設定檔中設定語系時，會使用系統預設語言。
+.SH 檔案
+~/.aMule/remote.conf
+.SH 範例
+通常 amulecmd 會優先以這樣執行：
+.PP
+\fBamulecmd\fP \fB\-h\fP \fI主機名稱\fP \fB\-p\fP \fI外部連線通訊埠\fP \fB\-P\fP \fI外部連線密碼\fP \fB\-w\fP
+.PP
+或
+.PP
+\fBamulecmd\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+這樣就會將設定儲存到 \fI$HOME/.aMule/remote.conf\fP，然後你只需要再輸入：
+
+.B_untranslated amulecmd
+
+當然，你可以不必都遵照這個範例。
+.SH 回報問題
+請到我們的論壇 (\fIhttp://forum.amule.org/\fP) 或錯誤追蹤網站 (\fIhttp://bugs.amule.org/\fP)
+回報發現的問題。請不要用 e\-mail 或在我們的群組信件中回報，也不要直接通知某個團隊成員。
+.SH 版權
+aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
+.SH 參考
+.B_untranslated amule\fR(1), \fBamuled\fR(1)
+.SH 作者
+說明文件撰寫者： Vollstrecker <amule@vollstreckernet.de>
