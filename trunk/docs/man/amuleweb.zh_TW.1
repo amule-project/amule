@@ -1,0 +1,187 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "2011 十一月" "aMule webserver v2.3.1" "aMule 的工具程式"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH 名稱
+amuleweb \- aMule 網頁伺服器
+.SH 簡介
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<主機>\fP] [\fB\-p\fP \fI<通訊埠>\fP] [\fB\-P\fP \fI<密碼>\fP]
+[\fB\-f\fP \fI<路徑>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<語言>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<名稱>\fP] [\fB\-s\fP \fI<通訊埠t>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<通訊埠>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<密碼>\fP] [\fB\-G\fP \fI<密碼>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<路徑>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<路徑>\fP]
+
+.SH 說明
+\fBamuleweb\fP 可以經由網頁瀏覽器來管理 amule。你可以和 \fBamule\fP(1) 一起執行
+amuleweb，也可以稍候再另外執行。可以在命令列或是用用設定檔指定參數，命令列參數會優先於設定檔的參數。
+.TP 
+\fB[ \-h\fP \fI<主機>\fP, \fB\-\-host\fP=\fI<主機>\fP \fB]\fP
+正在執行 aMule 核心的主機 (預設：\fI本機\fP)， \fI<主機>\fP 可以是 IP 位址或網域名稱
+.TP 
+\fB[ \-p\fP \fI<通訊埠>\fP, \fB\-\-port\fP=\fI<通訊埠>\fP \fB]\fP
+aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預設：\fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<密碼>\fP, \fB\-\-password\fP=\fI<密碼>\fP \fB]\fP
+外部連線密碼。
+.TP 
+\fB[ \-f\fP \fI<路徑>\fP, \fB\-\-config\-file\fP=\fI<路徑>\fP \fB]\fP
+使用指定的設定檔，預設是 \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+不將任何資訊顯示在標準輸出。
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+詳細模式 \- 也顯示除錯訊息。
+.TP 
+\fB[ \-l\fP \fI<語言>\fP, \fB\-\-locale\fP=\fI<語言>\fP \fB]\fP
+設定程式的語系 (語言)。請看 \fB附註\fP 章節裏關於 \fI<語言>\fP 參數的說明。
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+將命令列選項寫入設定檔後離開
+.TP 
+\fB[ \-t\fP \fI<名稱>\fP, \fB\-\-template\fP=\fI<名稱>\fP \fB]\fP
+載入 \fI<名稱>\fP 這個模板。詳細請參考 \fB外觀面板支援\fP 章節。
+.TP 
+\fB[ \-s\fP \fI<通訊埠>\fP, \fB\-\-server\-port\fP=\fI<通訊埠>\fP \fB]\fP
+網頁伺服器的 HTTP 連接埠：要用瀏覽器連線時必須加以指定 (預設：\fI4711\fP)。
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+啟用 UPnP。
+.TP 
+\fB[ \-U\fP \fI<通訊埠>\fP, \fB\-\-upnp\-port\fP \fI<通訊埠>\fP \fB]\fP
+UPnP 通訊埠。
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+在 HTTP 傳輸時啟用 gzip 壓縮以節省頻寬。
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+停用 gzip 壓縮 (這是預設值)。
+.TP 
+\fB[ \-A\fP \fI<密碼>\fP, \fB\-\-admin\-pass\fP=\fI<密碼>\fP \fB]\fP
+網站伺服器的完整存取密碼。
+.TP 
+\fB[ \-G\fP \fI<密碼>\fP, \fB\-\-guest\-pass\fP=\fI<密碼>\fP \fB]\fP
+網站伺服器的訪客密碼。
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+允許訪客連線。
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+禁止訪客連線 (預設)。
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+從遠端的 aMule 載入網頁伺服器設定/將設定儲存到遠端。這個會使 amuleweb
+忽略命令列與設定檔內的設定、並從遠端載入新設定；儲存時則只會寫入遠端 aMule 的設定。(當然，只限於 aMule 的 偏好設定 > 遠端控制
+裏的幾個設定項目)
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+停用 PHP 解譯器 (不建議)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+爲每個要求重編譯 PHP 頁面。
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<路徑>\fP \fB]\fP
+參考 \fI<path>\fP 裏的資料來建立設定檔後離開。(\fI<path>\fP 裏必須有有效的 aMule 設定檔)
+.TP 
+.B_untranslated [ \-\-help ]\fR
+顯示簡短的使用說明。
+.TP 
+.B_untranslated [ \-\-version ]\fR
+顯示目前的版本號碼。
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<路徑>\fP \fB]\fP
+aMule 設定擋路徑。\fB請不要直接使用！\fP這個選項會導致原有命令列和設定檔的設定都被忽略都被忽略。 啟動 aMule 後在開啟 amuleweb
+時會用這個選項，從指定的設定檔讀取偏好設定，並自行加上 \fB\-q \-L\fP 選項。
+.SH 附註
+.SS 路徑
+對於有 \fI<路徑>\fP 的選項，如果 \fI路徑\fP 裏面沒有含目錄 (即只有單純檔名)，則會被認為是在 aMule 的設定檔所在目錄
+\fI~/.aMule\fP 下。
+.SS 語言
+\fB\-l\fP 選項的 \fI<語系>\fP
+參數有以下幾種樣式：\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP]。其中：\fIlang\fP
+是主要的語系代碼，\fILANG\fP 是語系次分類、使用地區代碼，\fIencoding\fP 是使用的編碼，\fImodifier\fP
+則讓使用者用一個代號就指定一組語系設定。例如：「zh_TW.UTF\-8@Taiwan」
+
+例如，以下的字串都有效：
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+雖然上面這些都是合於規定的語系設定參數，但 \fIencoding\fP 和 \fImodifier\fP 目前已經沒在使用了。
+
+你也可以使用完整的英文名稱來設定語系，例如：\fB\-l german\fP 也等於 \fB\-l de_DE\fP。
+
+沒有在命令列或設定檔中設定語系時，會使用系統預設語言。
+.SH 外觀面板支援
+\fBamuleweb\fP 可以用不同的外觀面板顯示資訊；這些面板稱為「模板」，你可以用在命令列用 \fB\-t\fP 選項讓 amuleweb
+載入指定的模板。程式會在兩個地方搜尋模板：先從 \fI~/.aMule/webserver/\fP，然後如果是用 \-\-prefix=/usr
+安裝程式，就會再到 \fI/usr/share/amule/webserver/\fP 搜尋。
+.PP
+每個模板都必須被放在以該模板名稱命名的子目錄下，這個目錄裏也必須包含所有模板需要的檔案。
+.SH 檔案
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH 範例
+通常 amuleweb 會優先以這樣執行：
+.PP
+\fBamuleweb\fP \fB\-h\fP \fI主機名稱\fP \fB\-p\fP \fI外部連線通訊埠\fP \fB\-P\fP \fI外部連線密碼\fP \fB\-s\fP \fIHTTP 通訊埠\fP
+\fB\-A\fP \fI管理者密碼\fP \fB\-w\fP
+.PP
+或
+.PP
+\fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+這樣就會將設定儲存到 \fI$HOME/.aMule/remote.conf\fP，然後你只需要再輸入：
+.PP
+.B_untranslated amuleweb
+.PP
+當然，你可以指定比第一行範例裏更多或更少的選項，甚至您也可以完全不使用。
+.SH 回報問題
+請到我們的論壇 (\fIhttp://forum.amule.org/\fP) 或錯誤追蹤網站 (\fIhttp://bugs.amule.org/\fP)
+回報發現的問題。請不要用 e\-mail 或在我們的群組信件中回報，也不要直接通知某個團隊成員。
+.SH 版權
+aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
+.SH 參考
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH 作者
+說明文件撰寫者： Vollstrecker <amule@vollstreckernet.de>

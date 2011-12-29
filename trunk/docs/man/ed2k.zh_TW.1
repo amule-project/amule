@@ -1,0 +1,74 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "2011 十一月" "aMule 的 eD2k 連結分析程式 v1.5.1" "aMule 的工具程式"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH 名稱
+ed2k \- aMule 的 eD2k 連結分析程式
+.SH 簡介
+.B_untranslated ed2k
+[\fB\-c\fP \fI<路徑>\fP] [\fB\-t\fP \fI<號碼>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k 連結>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH 說明
+將指定的 \fI<eD2k 連結>\fP 傳送給 aMule，會寫入 aMule 隨時都在檢查有無新增連結的
+~/.aMule/ED2KLinks 檔案裏。
+.TP 
+\fB[ \-c\fP \fI<路徑>\fP, \fB\-\-config\-dir\fP=\fI<路徑>\fP \fB]\fP
+從 \fI<path>\fP 讀取設定檔，而不是個人目錄
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<號碼>\fP \fB]\fP
+給輸入成功的 eD2k 連結分類編號為 \fI<號碼>\fP
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+載入所有以 \fI<eD2k 連結>\fP 方式指定的 eMule 收藏庫裏找到的連結
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+列出所有以 \fI<eD2k 連結>\fP 方式指定的 eMule 收藏庫裏找到的連結
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+顯示簡短的使用說明。
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+顯示目前的版本號碼。
+.TP 
+\fB[ eD2k 連結 ]\fP
+將 eD2k 連結加到核心。
+.PP
+可以使用以下幾種 eD2k 連結：
+.RS 3
+.IP \(bu 2
+檔案連結 (ed2k://|file|...)，會將檔案加入下載等候區；
+.IP \(bu 2
+伺服器連結 (ed2k://|server|...)，會將伺服器加入 aMule 的伺服器清單；
+.IP \(bu 2
+伺服器清單連結，在清單內的伺服器會被加入 aMule 的伺服器清單；
+.IP \(bu 2
+magnet 連結；
+.IP \(bu 2
+eMule 收藏庫檔案。
+.RE
+
+\fB指定參數時的順序很重要。\fP你可以指定兩個以上的連結、每個連結都有自己的參數。例如：\fBed2k <連結一> \-t2
+<連結二>\fP 會將 \fI<連結一>\fP 放在「預設分類」、將 \fI<連結二>\fP 放在「分類2」。
+.SH 檔案
+~/.aMule/ED2KLinks
+.SH 回報問題
+請到我們的論壇 (\fIhttp://forum.amule.org/\fP) 或錯誤追蹤網站 (\fIhttp://bugs.amule.org/\fP)
+回報發現的問題。請不要用 e\-mail 或在我們的群組信件中回報，也不要直接通知某個團隊成員。
+.SH 版權
+aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
+.SH 參考
+.B_untranslated amule\fR(1)
+.SH 作者
+說明文件撰寫者： Vollstrecker <amule@vollstreckernet.de>

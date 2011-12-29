@@ -1,0 +1,1645 @@
+# aMule i18n resource file.
+# Copyright (C) 2010 - 2011 aMule Team
+# This file is distributed under the same license as the aMule package.
+#
+# Translator:
+#
+# Wayne Su <mstarmstar@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: aMule Manual zh_TW\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-31 22:06+0100\n"
+"PO-Revision-Date: 2011-12-27 14:53+0800\n"
+"Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#. type: TH
+#: amule.1:1
+#, no-wrap
+msgid "AMULE"
+msgstr "AMULE"
+
+#. type: TH
+#: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1
+#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
+#: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "November 2011"
+msgstr "2011 十一月"
+
+#. type: TH
+#: amule.1:1
+#, no-wrap
+msgid "aMule v2.3.1"
+msgstr "aMule v2.3.1"
+
+#. type: TH
+#: amule.1:1
+#, no-wrap
+msgid "aMule"
+msgstr "aMule"
+
+#. type: SH
+#: amule.1:4 amulecmd.1:5 amuled.1:4 amuleweb.1:4 ed2k.1:4
+#: ../../src/utils/aLinkCreator/docs/alc.1:3
+#: ../../src/utils/aLinkCreator/docs/alcc.1:4 ../../src/utils/cas/docs/cas.1:4
+#: ../../src/utils/wxCas/docs/wxcas.1:3 ../../src/utils/xas/docs/xas.1:3
+#, no-wrap
+msgid "NAME"
+msgstr "名稱"
+
+#. type: Plain text
+#: amule.1:6
+msgid "amule - the all-platform eMule p2p client"
+msgstr "amule - 跨平台的 eMule P2P 客戶端程式"
+
+#. type: SH
+#: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6
+#: ../../src/utils/aLinkCreator/docs/alc.1:5
+#: ../../src/utils/aLinkCreator/docs/alcc.1:6 ../../src/utils/cas/docs/cas.1:6
+#: ../../src/utils/wxCas/docs/wxcas.1:5 ../../src/utils/xas/docs/xas.1:5
+#, no-wrap
+msgid "SYNOPSIS"
+msgstr "簡介"
+
+#. type: Plain text
+#: amule.1:10 amulegui.1:10
+msgid "[B<-c> I<E<lt>pathE<gt>>] [B<-geometry> I<E<lt>geomE<gt>>]"
+msgstr "[B<-c> I<E<lt>路徑E<gt>>] [B<-geometry> I<E<lt>視窗狀態E<gt>>]"
+
+#. type: Plain text
+#: amule.1:13 amuled.1:15
+msgid "[B<-w> I<E<lt>pathE<gt>>]"
+msgstr "[B<-w> I<E<lt>路徑E<gt>>]"
+
+#. type: Plain text
+#: amule.1:17 amuled.1:19
+msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
+msgstr "[B<-t> I<E<lt>號碼E<gt>>] [I<eD2k 連結>]"
+
+#. type: SH
+#: amule.1:24 amulecmd.1:26 amuled.1:25 amulegui.1:20 amuleweb.1:41 ed2k.1:19
+#: ../../src/utils/aLinkCreator/docs/alc.1:7
+#: ../../src/utils/aLinkCreator/docs/alcc.1:14
+#: ../../src/utils/cas/docs/cas.1:14 ../../src/utils/wxCas/docs/wxcas.1:7
+#: ../../src/utils/xas/docs/xas.1:7
+#, no-wrap
+msgid "DESCRIPTION"
+msgstr "說明"
+
+#. type: TP
+#: amule.1:25 amuled.1:26 amulegui.1:24 ed2k.1:21
+#: ../../src/utils/cas/docs/cas.1:26
+#, no-wrap
+msgid "B<[ -c> I<E<lt>pathE<gt>>, B<--config-dir>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ -c> I<E<lt>路徑E<gt>>, B<--config-dir>=I<E<lt>路徑E<gt>> B<]>"
+
+#. type: Plain text
+#: amule.1:28 amuled.1:29 amulegui.1:27 ed2k.1:24
+#: ../../src/utils/cas/docs/cas.1:29
+msgid "Read config from I<E<lt>pathE<gt>> instead of home"
+msgstr "從 I<E<lt>pathE<gt>> 讀取設定檔，而不是個人目錄"
+
+#. type: TP
+#: amule.1:28 amulegui.1:27
+#, no-wrap
+msgid "B<[ -geometry >I<E<lt>geomE<gt>> B<]>"
+msgstr "B<[ -geometry >I<E<lt>視窗狀態E<gt>> B<]>"
+
+#. type: Plain text
+#: amule.1:31 amulegui.1:30
+msgid ""
+"Sets the geometry of the app. I<E<lt>geomE<gt>> uses the same format as "
+"standard X11 apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>][{B<"
+"+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
+msgstr ""
+"設定這個應用程式的視窗狀態。I<E<lt>視窗狀態E<gt>> 使用和 X11 應用程式一樣的格"
+"式：\t[B<=>][I<E<lt>寬度E<gt>>{B<xX>}I<E<lt>高度E<gt>>][{B<+->}I<E<lt>X 偏移"
+"E<gt>>{B<+->}I<E<lt>Y 偏移E<gt>>]"
+
+#. type: Plain text
+#: amule.1:34 amuled.1:42 amulegui.1:33
+msgid "Prints log messages to stdout."
+msgstr "將程式記錄顯示在標準輸出。"
+
+#. type: Plain text
+#: amule.1:37 amuled.1:45 amulegui.1:36
+msgid "Resets config to default values."
+msgstr "將設定重設為預設值。"
+
+#. type: TP
+#: amule.1:37 amuled.1:45
+#, no-wrap
+msgid "B<[ -w> I<E<lt>pathE<gt>>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ -w> I<E<lt>路徑E<gt>>, B<--use-amuleweb>=I<E<lt>路徑E<gt>> B<]>"
+
+#. type: Plain text
+#: amule.1:40 amuled.1:48
+msgid "Specify location of amuleweb binary to I<E<lt>pathE<gt>>."
+msgstr "設定 amuleweb 的執行檔位置在 I<E<lt>路徑E<gt>>。"
+
+#. type: Plain text
+#: amule.1:43 amuled.1:51
+msgid "Does not handle fatal exception."
+msgstr "不處理嚴重錯誤。"
+
+#. type: Plain text
+#: amule.1:46 amuled.1:54
+msgid "Does not disable stdin."
+msgstr "不停用標準輸入。"
+
+#. type: TP
+#: amule.1:46 amuled.1:54 amulegui.1:39 ed2k.1:24
+#, no-wrap
+msgid "B<[ -t>, B<--category>=I<E<lt>numE<gt>> B<]>"
+msgstr "B<[ -t>, B<--category>=I<E<lt>號碼E<gt>> B<]>"
+
+#. type: Plain text
+#: amule.1:49 amuled.1:57 amulegui.1:42 ed2k.1:27
+msgid "Set category for passed eD2k links to I<E<lt>numE<gt>>"
+msgstr "給輸入成功的 eD2k 連結分類編號為 I<E<lt>號碼E<gt>>"
+
+#. type: Plain text
+#: amule.1:52 amulecmd.1:66 amuled.1:60 amulegui.1:48 amuleweb.1:126 ed2k.1:39
+msgid "Displays the current version number."
+msgstr "顯示目前的版本號碼。"
+
+#. type: Plain text
+#: amule.1:55 amulecmd.1:69 amuled.1:63 amulegui.1:45 amuleweb.1:123 ed2k.1:36
+#: ../../src/utils/aLinkCreator/docs/alcc.1:22
+#: ../../src/utils/cas/docs/cas.1:32
+msgid "Prints a short usage description."
+msgstr "顯示簡短的使用說明。"
+
+#. type: TP
+#: amule.1:55 amuled.1:63 ed2k.1:39
+#, no-wrap
+msgid "B<[ eD2k-link ]>"
+msgstr "B<[ eD2k 連結 ]>"
+
+#. type: Plain text
+#: amule.1:58 amuled.1:66 ed2k.1:42
+msgid "Adds an eD2k-link to the core."
+msgstr "將 eD2k 連結加到核心。"
+
+#. type: Plain text
+#: amule.1:60 amulecmd.1:75 amuled.1:68 ed2k.1:44
+msgid "The eD2k link to be added can be:"
+msgstr "可以使用以下幾種 eD2k 連結："
+
+#. type: Plain text
+#: amule.1:63 amulecmd.1:78 amuled.1:71 ed2k.1:47
+msgid "a file link (ed2k://|file|...), it will be added to the download queue;"
+msgstr "檔案連結 (ed2k://|file|...)，會將檔案加入下載等候區；"
+
+#. type: Plain text
+#: amule.1:65 amulecmd.1:80 amuled.1:73 ed2k.1:49
+msgid ""
+"a server link (ed2k://|server|...), it will be added to the server list;"
+msgstr "伺服器連結 (ed2k://|server|...)，會將伺服器加入 aMule 的伺服器清單；"
+
+#. type: Plain text
+#: amule.1:67 amuled.1:75 ed2k.1:51
+msgid ""
+"a serverlist link, in which case all servers in the list will be added to "
+"the server list;"
+msgstr "伺服器清單連結，在清單內的伺服器會被加入 aMule 的伺服器清單；"
+
+#. type: Plain text
+#: amule.1:69 amuled.1:77
+msgid "a magnet link."
+msgstr "magnet 連結。"
+
+#. type: SH
+#: amule.1:70 amulecmd.1:207 amuleweb.1:132
+#, no-wrap
+msgid "NOTES"
+msgstr "附註"
+
+#. type: SS
+#: amule.1:71 amulecmd.1:208 amuleweb.1:133
+#, no-wrap
+msgid "Paths"
+msgstr "路徑"
+
+#. type: Plain text
+#: amule.1:75 amulecmd.1:212 amuleweb.1:137
+msgid ""
+"For all options which take a I<E<lt>pathE<gt>> value, if the I<path> "
+"contains no directory part (i.e. just a plain filename), then it is "
+"considered to be under the aMule configuration directory, I<~/.aMule>."
+msgstr ""
+"對於有 I<E<lt>路徑E<gt>> 的選項，如果 I<路徑> 裏面沒有含目錄 (即只有單純檔"
+"名)，則會被認為是在 aMule 的設定檔所在目錄 I<~/.aMule> 下。"
+
+#. type: SH
+#: amule.1:75 amulecmd.1:240 amuled.1:78 amuleweb.1:171 ed2k.1:60
+#: ../../src/utils/cas/docs/cas.1:36
+#, no-wrap
+msgid "FILES"
+msgstr "檔案"
+
+#. type: Plain text
+#: amule.1:77 amuled.1:80
+msgid "~/.aMule/*"
+msgstr "~/.aMule/*"
+
+#. type: SH
+#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191
+#: ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11
+#: ../../src/utils/aLinkCreator/docs/alcc.1:26
+#: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
+#: ../../src/utils/xas/docs/xas.1:16
+#, no-wrap
+msgid "REPORTING BUGS"
+msgstr "回報問題"
+
+#. type: Plain text
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
+#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: ../../src/utils/aLinkCreator/docs/alcc.1:29
+#: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
+#: ../../src/utils/xas/docs/xas.1:19
+msgid ""
+"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
+"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"mail, neither to our mailing list nor directly to any team member."
+msgstr ""
+"請到我們的論壇 (I<http://forum.amule.org/>) 或錯誤追蹤網站 (I<http://bugs."
+"amule.org/>) 回報發現的問題。請不要用 e-mail 或在我們的群組信件中回報，也不要"
+"直接通知某個團隊成員。"
+
+#. type: SH
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
+#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: ../../src/utils/aLinkCreator/docs/alcc.1:29
+#: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
+#: ../../src/utils/xas/docs/xas.1:19
+#, no-wrap
+msgid "COPYRIGHT"
+msgstr "版權"
+
+#. type: Plain text
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
+#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: ../../src/utils/aLinkCreator/docs/alcc.1:31
+#: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
+#: ../../src/utils/xas/docs/xas.1:21
+msgid ""
+"aMule and all of its related utilities are distributed under the GNU General "
+"Public License."
+msgstr "aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。"
+
+#. type: SH
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
+#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: ../../src/utils/aLinkCreator/docs/alcc.1:31
+#: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
+#: ../../src/utils/xas/docs/xas.1:21
+#, no-wrap
+msgid "SEE ALSO"
+msgstr "參考"
+
+#. type: SH
+#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198
+#: ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18
+#: ../../src/utils/aLinkCreator/docs/alcc.1:33
+#: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
+#: ../../src/utils/xas/docs/xas.1:23
+#, no-wrap
+msgid "AUTHOR"
+msgstr "作者"
+
+#. type: Plain text
+#: amule.1:85 amulecmd.1:264 amuled.1:88 amuleweb.1:199 ed2k.1:70
+#: ../../src/utils/aLinkCreator/docs/alc.1:19
+#: ../../src/utils/aLinkCreator/docs/alcc.1:34
+#: ../../src/utils/cas/docs/cas.1:50 ../../src/utils/wxCas/docs/wxcas.1:24
+#: ../../src/utils/xas/docs/xas.1:24
+msgid ""
+"This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
+msgstr "說明文件撰寫者： Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
+
+#. type: TH
+#: amulecmd.1:1
+#, no-wrap
+msgid "AMULECMD"
+msgstr "AMULECMD"
+
+#. type: TH
+#: amulecmd.1:1
+#, no-wrap
+msgid "aMuleCmd v2.3.1"
+msgstr "aMuleCmd v2.3.1"
+
+#. type: TH
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
+#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
+#: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "aMule utilities"
+msgstr "aMule 的工具程式"
+
+#. type: Plain text
+#: amulecmd.1:7
+msgid "amulecmd - Console-based program to control aMule"
+msgstr "amulecmd - 終端機模式下控制 aMule 的程式"
+
+#. type: Plain text
+#: amulecmd.1:13 amuleweb.1:12
+msgid ""
+"[B<-h> I<E<lt>hostE<gt>>] [B<-p> I<E<lt>portE<gt>>] [B<-P> "
+"I<E<lt>passwordE<gt>>] [B<-f> I<E<lt>pathE<gt>>]"
+msgstr ""
+"[B<-h> I<E<lt>主機E<gt>>] [B<-p> I<E<lt>通訊埠E<gt>>] [B<-P> I<E<lt>密碼"
+"E<gt>>] [B<-f> I<E<lt>路徑E<gt>>]"
+
+#. type: Plain text
+#: amulecmd.1:17
+msgid ""
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
+"B< >}"
+msgstr ""
+"[B<-l> I<E<lt>語言E<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>指令E<gt>>]B< >}"
+
+#. type: Plain text
+#: amulecmd.1:20 amuleweb.1:31
+msgid "[B<--create-config-from>=I<E<lt>pathE<gt>>]"
+msgstr "[B<--create-config-from>=I<E<lt>路徑E<gt>>]"
+
+#. type: Plain text
+#: amulecmd.1:29
+msgid "B<amulecmd> is a console-based client to control aMule."
+msgstr "B<amulecmd> 是終端機模式下控制 aMule 的的客戶端程式。"
+
+#. type: TP
+#: amulecmd.1:29 amuleweb.1:46
+#, no-wrap
+msgid "B<[ -h> I<E<lt>hostE<gt>>, B<--host>=I<E<lt>hostE<gt>> B<]>"
+msgstr "B<[ -h> I<E<lt>主機E<gt>>, B<--host>=I<E<lt>主機E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:33 amuleweb.1:50
+msgid ""
+"Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> "
+"might be an IP address or a DNS name"
+msgstr ""
+"正在執行 aMule 核心的主機 (預設：I<本機>)， I<E<lt>主機E<gt>> 可以是 IP 位址"
+"或網域名稱"
+
+#. type: TP
+#: amulecmd.1:33 amuleweb.1:50
+#, no-wrap
+msgid "B<[ -p> I<E<lt>portE<gt>>, B<--port>=I<E<lt>portE<gt>> B<]>"
+msgstr "B<[ -p> I<E<lt>通訊埠E<gt>>, B<--port>=I<E<lt>通訊埠E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:36 amuleweb.1:53
+msgid ""
+"aMule's port for External Connections, as set in Preferences-E<gt>Remote "
+"Controls (default: I<4712>)"
+msgstr ""
+"aMule 外部連線用的通訊埠，在 偏好設定 E<gt>  遠端控制 設定 (預設：I<4712>)"
+
+#. type: TP
+#: amulecmd.1:36 amuleweb.1:53
+#, no-wrap
+msgid "B<[ -P> I<E<lt>passwordE<gt>>, B<--password>=I<E<lt>passwordE<gt>> B<]>"
+msgstr "B<[ -P> I<E<lt>密碼E<gt>>, B<--password>=I<E<lt>密碼E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:39 amuleweb.1:56
+msgid "External Connections password."
+msgstr "外部連線密碼。"
+
+#. type: TP
+#: amulecmd.1:39 amuleweb.1:56
+#, no-wrap
+msgid "B<[ -f> I<E<lt>pathE<gt>>, B<--config-file>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ -f> I<E<lt>路徑E<gt>>, B<--config-file>=I<E<lt>路徑E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:43 amuleweb.1:60
+msgid ""
+"Use the given configuration file.  Default configuration file is I<~/.aMule/"
+"remote.conf>"
+msgstr "使用指定的設定檔，預設是 I<~/.aMule/remote.conf>"
+
+#. type: Plain text
+#: amulecmd.1:46 amuleweb.1:63
+msgid "Do not print any output to stdout."
+msgstr "不將任何資訊顯示在標準輸出。"
+
+#. type: Plain text
+#: amulecmd.1:50 amuleweb.1:67
+msgid "Be verbose - show also debug messages."
+msgstr "詳細模式 - 也顯示除錯訊息。"
+
+#. type: TP
+#: amulecmd.1:50 amuleweb.1:67
+#, no-wrap
+msgid "B<[ -l> I<E<lt>langE<gt>>, B<--locale>=I<E<lt>langE<gt>> B<]>"
+msgstr "B<[ -l> I<E<lt>語言E<gt>>, B<--locale>=I<E<lt>語言E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:54 amuleweb.1:71
+msgid ""
+"Sets program locale (language).  See the B<NOTES> section for the "
+"description of the I<E<lt>langE<gt>> parameter."
+msgstr ""
+"設定程式的語系 (語言)。請看 B<附註> 章節裏關於 I<E<lt>語言E<gt>> 參數的說明。"
+
+#. type: Plain text
+#: amulecmd.1:57 amuleweb.1:74
+msgid "Write command line options to config file and exit"
+msgstr "將命令列選項寫入設定檔後離開"
+
+#. type: TP
+#: amulecmd.1:57
+#, no-wrap
+msgid "B<[ -c> I<E<lt>commandE<gt>>, B<--command>=I<E<lt>commandE<gt>> B<]>"
+msgstr "B<[ -c> I<E<lt>指令E<gt>>, B<--command>=I<E<lt>指令E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:60
+msgid ""
+"Execute I<E<lt>commandE<gt>> as if it was entered at amulecmd's prompt and "
+"exit."
+msgstr "像在 amulecmd 的命令列模式下一樣，執行 I<E<lt>指令E<gt>> 後離開。"
+
+#. type: TP
+#: amulecmd.1:60 amuleweb.1:117
+#, no-wrap
+msgid "B<[ --create-config-from>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ --create-config-from>=I<E<lt>路徑E<gt>> B<]>"
+
+#. type: Plain text
+#: amulecmd.1:63 amuleweb.1:120
+msgid ""
+"Create config file based upon I<E<lt>pathE<gt>>, which must point to a valid "
+"aMule config file, and then exit."
+msgstr ""
+"參考 I<E<lt>pathE<gt>> 裏的資料來建立設定檔後離開。(I<E<lt>pathE<gt>> 裏必須"
+"有有效的 aMule 設定檔)"
+
+#. type: SH
+#: amulecmd.1:69
+#, no-wrap
+msgid "COMMANDS"
+msgstr "指令"
+
+#. type: Plain text
+#: amulecmd.1:71
+msgid "All commands are case insensitive."
+msgstr "所有指令都不分大小寫。"
+
+#. type: SS
+#: amulecmd.1:71
+#, no-wrap
+msgid "Add I<E<lt>eD2k-linkE<gt>> | I<E<lt>magnet-linkE<gt>>"
+msgstr "Add I<E<lt>eD2k 連結E<gt>> | I<E<lt>magnet 連結E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:73
+msgid "Adds an eD2k-link or a magnet-link to the core."
+msgstr "將 eD2k 連結或 magnet 加到核心。"
+
+#. type: Plain text
+#: amulecmd.1:82
+msgid ""
+"a serverlist link, in which case all servers in the list will be added to "
+"the server list."
+msgstr "伺服器清單，所有在這個清單內的伺服器都會被加到 aMule 的伺服器清單。"
+
+#. type: Plain text
+#: amulecmd.1:85
+msgid "The magnet link must contain the eD2k hash and file length."
+msgstr "magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。"
+
+#. type: SS
+#: amulecmd.1:85
+#, no-wrap
+msgid "Cancel I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+msgstr "Cancel I<E<lt>hash 值E<gt>> | I<E<lt>編號E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:87
+msgid ""
+"Cancels the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. "
+"To get the value use B<show>."
+msgstr ""
+"取消下載指定的檔案，指定方式：I<E<lt>hash 值E<gt>> 或 I<E<lt>編號E<gt>>；要查"
+"詢數值請用 B<show>。"
+
+#. type: SS
+#: amulecmd.1:87
+#, no-wrap
+msgid "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|nameE<gt>> ]"
+msgstr "connect [ I<kad> | I<ed2k> | I<E<lt>IP | 網域名稱E<gt>> ]"
+
+#. type: Plain text
+#: amulecmd.1:89
+msgid "Connect to the network."
+msgstr "連線到網路。"
+
+#. type: Plain text
+#: amulecmd.1:91
+msgid "This will connect to all networks that are enabled in Preferences."
+msgstr "這樣將會連線到在偏好設定中啟用的所有網路。"
+
+#. type: Plain text
+#: amulecmd.1:95
+msgid ""
+"With the optional parameter you can specify which network to connect to. "
+"Giving a server address in the form of IP:Port (where IP is either a dotted "
+"decimal IPv4 address or a resolvable DNS name) aMule will connect to that "
+"server only."
+msgstr ""
+"用這個選項參數，你可以指定要連線到哪個網路：用「IP:port」格式指定伺服器的位"
+"址 (IP 可以用有小數點的十進位 IPv4 網址，或是可從 DNS 轉換的網域名稱)，aMule "
+"就會只連線到那個伺服器。"
+
+#. type: Plain text
+#: amulecmd.1:98
+msgid ""
+"Disconnect from all networks you are connected to, or just disconnect from "
+"the specified network."
+msgstr "中斷所有已連線的網路，或只中斷指定的網路連線。"
+
+#. type: SS
+#: amulecmd.1:98
+#, no-wrap
+msgid "Download I<E<lt>numberE<gt>>"
+msgstr "download I<E<lt>編號E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:100
+msgid "Start downloading a file."
+msgstr "開始下載檔案。"
+
+#. type: Plain text
+#: amulecmd.1:104
+msgid ""
+"The I<E<lt>numberE<gt>> of a file from the last search has to be given.  "
+"Example: `download 12' will start to download the file with the number 12 of "
+"the previous search."
+msgstr ""
+"I<E<lt>編號E<gt>> 指上次搜尋檔案時的結果。例如：「download 12」會下載上次搜尋"
+"時編號 12 的檔案。"
+
+#. type: Plain text
+#: amulecmd.1:106
+msgid "Disconnect from amule/amuled and quit amulecmd."
+msgstr "始 amule/amuled 斷線，並離開 amulecmd。"
+
+#. type: SS
+#: amulecmd.1:106
+#, no-wrap
+msgid "Get I<E<lt>whatE<gt>>"
+msgstr "get I<E<lt>目標E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:108
+msgid "Get and display a preference value."
+msgstr "取得並顯示某個偏好設定的值。"
+
+#. type: Plain text
+#: amulecmd.1:110 amulecmd.1:144 amulecmd.1:173 amulecmd.1:183
+msgid "Available values for I<E<lt>whatE<gt>>:"
+msgstr "I<E<lt>目標E<gt>> 參數可用的值："
+
+#. type: Plain text
+#: amulecmd.1:113
+msgid "Get bandwidth limits."
+msgstr "取得頻寬限制。"
+
+#. type: Plain text
+#: amulecmd.1:115
+msgid "Get IPFilter preferences."
+msgstr "取得 IP 過濾器的偏好設定。"
+
+#. type: SS
+#: amulecmd.1:116
+#, no-wrap
+msgid "Help [ I<E<lt>commandE<gt>> ]"
+msgstr "help [ I<E<lt>命令E<gt>> ]"
+
+#. type: Plain text
+#: amulecmd.1:120
+msgid ""
+"Prints a short usage description.  If called without parameter, it shows a "
+"list of available commands.  If called with I<E<lt>commandE<gt>>, it shows a "
+"short description of the given command."
+msgstr ""
+"顯示使用說明。如果沒有加參數，會顯示可用的指令一覽；如果加了 I<E<lt>指令"
+"E<gt>> 參數，會顯示該指令的簡單說明。"
+
+#. type: SS
+#: amulecmd.1:120
+#, no-wrap
+msgid "Pause I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+msgstr "pause I<E<lt>hash 值E<gt>> | I<E<lt>編號E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:122
+msgid ""
+"Pauses the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. "
+"To get the value use B<show>."
+msgstr ""
+"暫停下載指定的檔案，指定方式：I<E<lt>hash 值E<gt>> 或 I<E<lt>編號E<gt>>；要查"
+"詢數值請用 B<show>。"
+
+#. type: SS
+#: amulecmd.1:122
+#, no-wrap
+msgid "Priority I<E<lt>priorityE<gt>> I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+msgstr "priority I<E<lt>優先程度E<gt>> I<E<lt>hash 值E<gt>> | I<E<lt>編號E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:124
+msgid ""
+"Set priority of a download specified by I<E<lt>hashE<gt>> or "
+"I<E<lt>numberE<gt>>."
+msgstr "用 I<E<lt>hash 值E<gt>> 或 I<E<lt>編號E<gt>> 設定下載檔案的優先程度。"
+
+#. type: Plain text
+#: amulecmd.1:126
+msgid "Available values for I<E<lt>priorityE<gt>>:"
+msgstr "可用在 I<E<lt>優先度E<gt>> 的參數："
+
+#. type: Plain text
+#: amulecmd.1:129
+msgid "Automatic priority."
+msgstr "自動優先權。"
+
+#. type: Plain text
+#: amulecmd.1:131
+msgid "High priority."
+msgstr "高優先權。"
+
+#. type: Plain text
+#: amulecmd.1:133
+msgid "Low priority."
+msgstr "低優先權。"
+
+#. type: Plain text
+#: amulecmd.1:135
+msgid "Normal priority."
+msgstr "一般優先權。"
+
+#. type: Plain text
+#: amulecmd.1:138
+msgid "Shows the progress of an on-going search."
+msgstr "顯示正在進行中的搜尋進度。"
+
+#. type: Plain text
+#: amulecmd.1:140
+msgid "A synonim of the B<exit> command."
+msgstr "功能和 B<exit> 一樣的指令。"
+
+#. type: SS
+#: amulecmd.1:140
+#, no-wrap
+msgid "Reload I<E<lt>whatE<gt>>"
+msgstr "reload I<E<lt>目標E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:142
+msgid "Reloads a given object."
+msgstr "重新載入指定的物件。"
+
+#. type: Plain text
+#: amulecmd.1:147
+msgid "Reload shared files list."
+msgstr "重新載入分享檔案清單。"
+
+#. type: Plain text
+#: amulecmd.1:149
+msgid "Reload IP filter tables."
+msgstr "重新載入 IP 過濾器資料。"
+
+#. type: Plain text
+#: amulecmd.1:152
+msgid "Reset the log."
+msgstr "清除記錄。"
+
+#. type: Plain text
+#: amulecmd.1:154
+msgid "Shows you the results of the last search."
+msgstr "顯示上次搜尋的結果。"
+
+#. type: SS
+#: amulecmd.1:154
+#, no-wrap
+msgid "Resume I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+msgstr "resume I<E<lt>hash 值E<gt>> | I<E<lt>編號E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:156
+msgid ""
+"Resumes the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. "
+"To get the value use B<show>."
+msgstr ""
+"繼續下載指定的檔案，指定方式：I<E<lt>hash 值E<gt>> 或 I<E<lt>編號E<gt>>；要查"
+"詢數值請用 B<show>。"
+
+#. type: SS
+#: amulecmd.1:156
+#, no-wrap
+msgid "Search I<E<lt>typeE<gt>> I<E<lt>keywordE<gt>>"
+msgstr "search I<E<lt>種類E<gt>> I<E<lt>關鍵字E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:159
+msgid ""
+"Makes a search for the given I<E<lt>keywordE<gt>>. A search type and a "
+"keyword to search is mandatory to do this.  Example: `search kad amule' "
+"performs a kad search for `amule'."
+msgstr ""
+"用指定的 I<E<lt>關鍵字E<gt>> 搜尋。必須要有搜尋的「種類」加上「關鍵字」，例"
+"如：「search kad amule」會開始在 KAD 網路搜尋「amule」。"
+
+#. type: Plain text
+#: amulecmd.1:161
+msgid "Available search types:"
+msgstr "可用的搜尋類型："
+
+#. type: Plain text
+#: amulecmd.1:164
+msgid "Performs a global search."
+msgstr "開始在全球伺服器搜尋。"
+
+#. type: Plain text
+#: amulecmd.1:166
+msgid "Performs a search on the Kademlia network."
+msgstr "開始在 Kad 搜尋。"
+
+#. type: Plain text
+#: amulecmd.1:168
+msgid "Performs a local search."
+msgstr "開始在本地伺服器搜尋。"
+
+#. type: SS
+#: amulecmd.1:169
+#, no-wrap
+msgid "Set I<E<lt>whatE<gt>>"
+msgstr "set I<E<lt>目標E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:171
+msgid "Sets a given preferences value."
+msgstr "設定指定的偏好設定值。"
+
+#. type: Plain text
+#: amulecmd.1:176
+msgid "Set bandwidth limits."
+msgstr "設定頻寬限制。"
+
+#. type: Plain text
+#: amulecmd.1:178
+msgid "Set IPFilter preferences."
+msgstr "設定 IP過濾器的偏好設定。"
+
+#. type: SS
+#: amulecmd.1:179
+#, no-wrap
+msgid "Show I<E<lt>whatE<gt>>"
+msgstr "show I<E<lt>目標E<gt>>"
+
+#. type: Plain text
+#: amulecmd.1:181
+msgid "Shows upload/download queue, servers list or shared files list."
+msgstr "顯示 上傳/下載 等候區、伺服器清單 或 分享檔案清單。"
+
+#. type: Plain text
+#: amulecmd.1:186
+msgid "Show download queue."
+msgstr "顯示下載等候區。"
+
+#. type: Plain text
+#: amulecmd.1:188
+msgid "Show log."
+msgstr "顯示記錄。"
+
+#. type: Plain text
+#: amulecmd.1:190
+msgid "Show servers list."
+msgstr "顯示伺服器清單。"
+
+#. type: Plain text
+#: amulecmd.1:192
+msgid "Show upload queue."
+msgstr "顯示上傳等候區。"
+
+#. type: Plain text
+#: amulecmd.1:196
+msgid ""
+"Shutdown the remote running core (amule/amuled).  This will also shut down "
+"the text client, since it is unusable without a running core."
+msgstr ""
+"關閉在遠端執行的核心 (amule/amuled)。這樣也會關閉文字模式客戶端程式，因為不能"
+"在沒有核心下執行。"
+
+#. type: SS
+#: amulecmd.1:196
+#, no-wrap
+msgid "Statistics [ I<E<lt>numberE<gt>> ]"
+msgstr "statistics [ I<E<lt>號字E<gt>> ]"
+
+#. type: Plain text
+#: amulecmd.1:198
+msgid "Show statistics tree."
+msgstr "顯示統計資訊。"
+
+#. type: Plain text
+#: amulecmd.1:202
+msgid ""
+"The optional I<E<lt>numberE<gt>> in the range of 0-255 can be passed as "
+"argument to this command, which tells how many entries of the client version "
+"subtree should be shown. Passing 0, or omitting it means `unlimited'."
+msgstr ""
+"I<E<lt>編號E<gt>> 是這個指令的參數之一，用來指定要顯示多少個客戶端程式的版本"
+"附加版本；須為 0-255 的數字，輸入 0 或略過不輸入則表示「不限」。"
+
+#. type: Plain text
+#: amulecmd.1:205
+msgid ""
+"Example: `statistics 5' will show only the top 5 versions for each client "
+"type."
+msgstr "範例：「statistics 5」只會顯示每個客戶端種類的前 5 個版本。"
+
+#. type: Plain text
+#: amulecmd.1:207
+msgid "Show connection status, current up/download speeds, etc."
+msgstr "顯示 連線狀態、目前的上傳/下載速度 等等。"
+
+#. type: SS
+#: amulecmd.1:212 amuleweb.1:137
+#, no-wrap
+msgid "Languages"
+msgstr "語言"
+
+#. type: Plain text
+#: amulecmd.1:218 amuleweb.1:143
+msgid ""
+"The I<E<lt>langE<gt>> parameter for the B<-l> option has the following form: "
+"I<lang>[B<_>I<LANG>][B<.>I<encoding>][B<@>I<modifier>] where I<lang> is the "
+"primary language, I<LANG> is a sublanguage/territory, I<encoding> is the "
+"character set to use and I<modifier> allows the user to select a specific "
+"instance of localization data within a single category."
+msgstr ""
+"B<-l> 選項的 I<E<lt>語系E<gt>> 參數有以下幾種樣式：I<lang>[B<_>I<LANG>][B<."
+">I<encoding>][B<@>I<modifier>]。其中：I<lang> 是主要的語系代碼，I<LANG> 是語"
+"系次分類、使用地區代碼，I<encoding> 是使用的編碼，I<modifier> 則讓使用者用一"
+"個代號就指定一組語系設定。例如：「zh_TW.UTF-8@Taiwan」"
+
+#. type: Plain text
+#: amulecmd.1:220 amuleweb.1:145
+msgid "For example, the following strings are valid:"
+msgstr "例如，以下的字串都有效："
+
+#. type: Plain text
+#: amulecmd.1:234 amuleweb.1:159
+msgid ""
+"Though all the above strings are accepted as valid language definitions, "
+"I<encoding> and I<modifier> are yet unused."
+msgstr ""
+"雖然上面這些都是合於規定的語系設定參數，但 I<encoding> 和 I<modifier> 目前已"
+"經沒在使用了。"
+
+#. type: Plain text
+#: amulecmd.1:237 amuleweb.1:162
+msgid ""
+"In addition to the format above, you can also specify full language names in "
+"English - so B<-l german> is also valid and is equal to B<-l de_DE>."
+msgstr ""
+"你也可以使用完整的英文名稱來設定語系，例如：B<-l german> 也等於 B<-l de_DE>。"
+
+#. type: Plain text
+#: amulecmd.1:240 amuleweb.1:165
+msgid ""
+"When no locale is defined, either on command-line or in config file, system "
+"default language will be used."
+msgstr "沒有在命令列或設定檔中設定語系時，會使用系統預設語言。"
+
+#. type: Plain text
+#: amulecmd.1:242 amuleweb.1:173
+msgid "~/.aMule/remote.conf"
+msgstr "~/.aMule/remote.conf"
+
+#. type: SH
+#: amulecmd.1:242 amuleweb.1:177
+#, no-wrap
+msgid "EXAMPLE"
+msgstr "範例"
+
+#. type: Plain text
+#: amulecmd.1:244
+msgid "Typically amulecmd will be first run as:"
+msgstr "通常 amulecmd 會優先以這樣執行："
+
+#. type: Plain text
+#: amulecmd.1:246
+msgid "B<amulecmd> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-w>"
+msgstr ""
+"B<amulecmd> B<-h> I<主機名稱> B<-p> I<外部連線通訊埠> B<-P> I<外部連線密碼> "
+"B<-w>"
+
+#. type: Plain text
+#: amulecmd.1:248 amuleweb.1:183
+msgid "or"
+msgstr "或"
+
+#. type: Plain text
+#: amulecmd.1:250
+msgid "B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+msgstr ""
+"B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+
+#. type: Plain text
+#: amulecmd.1:252 amuleweb.1:187
+msgid ""
+"These will save settings to I<$HOME/.aMule/remote.conf>, and later you only "
+"need to type:"
+msgstr "這樣就會將設定儲存到 I<$HOME/.aMule/remote.conf>，然後你只需要再輸入："
+
+#. type: Plain text
+#: amulecmd.1:256
+msgid "Of course, you don't have to follow this example."
+msgstr "當然，你可以不必都遵照這個範例。"
+
+#. type: TH
+#: amuled.1:1
+#, no-wrap
+msgid "AMULED"
+msgstr "AMULED"
+
+#. type: TH
+#: amuled.1:1
+#, no-wrap
+msgid "aMule Daemon v2.3.1"
+msgstr "aMule Daemon v2.3.1"
+
+#. type: TH
+#: amuled.1:1
+#, no-wrap
+msgid "aMule Daemon"
+msgstr "aMule Daemon"
+
+#. type: Plain text
+#: amuled.1:6
+msgid "amuled - the all-platform eMule p2p client - daemonized version"
+msgstr "amuled - 跨平台的 eMule P2P 客戶端程式 背景常駐程式版"
+
+#. type: Plain text
+#: amuled.1:9 ../../src/utils/cas/docs/cas.1:11
+msgid "[B<-c> I<E<lt>pathE<gt>>]"
+msgstr "[B<-c> I<E<lt>路徑E<gt>>]"
+
+#. type: Plain text
+#: amuled.1:11
+msgid "[B<-p> I<E<lt>pathE<gt>>]"
+msgstr "[B<-p> I<E<lt>路徑E<gt>>]"
+
+#. type: Plain text
+#: amuled.1:32
+msgid "Forks to background."
+msgstr "在背景開啟新程式。"
+
+#. type: TP
+#: amuled.1:32
+#, no-wrap
+msgid "B<[ -p> I<E<lt>pathE<gt>>, B<--pid-file>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ -p> I<E<lt>路徑E<gt>>, B<--pid-file>=I<E<lt>路徑E<gt>> B<]>"
+
+#. type: Plain text
+#: amuled.1:36
+msgid ""
+"After fork, create a pid-file in the I<E<lt>pathE<gt>>.  I<E<lt>pathE<gt>> "
+"has to contain the filename."
+msgstr ""
+"開啟新程式後，在 I<E<lt>路徑E<gt>> 下建立 pid 檔案。I<E<lt>路徑E<gt>> 裏必須"
+"有檔案名稱。"
+
+#. type: Plain text
+#: amuled.1:39
+msgid "Configure EC (External Connections)."
+msgstr "設定 EC (外部連線)。"
+
+#. type: TH
+#: amulegui.1:1
+#, no-wrap
+msgid "AMULEGUI"
+msgstr "AMULEGUI"
+
+#. type: TH
+#: amulegui.1:1
+#, no-wrap
+msgid "aMuleGUI v2.3.1"
+msgstr "aMuleGUI v2.3.1"
+
+#. type: TH
+#: amulegui.1:1
+#, no-wrap
+msgid "aMuleGUI"
+msgstr "aMuleGUI"
+
+#. type: Plain text
+#: amulegui.1:6
+msgid "amulegui - aMule control program with GUI"
+msgstr "amulegui - 圖形介面的 aMule 控制程式"
+
+#. type: Plain text
+#: amulegui.1:14
+msgid "[B<-t> I<E<lt>numE<gt>>]"
+msgstr "[B<-t> I<E<lt>號碼E<gt>>]"
+
+#. type: Plain text
+#: amulegui.1:24
+msgid ""
+"B<amulegui> is a client program, and can be connected to amule or amuled via "
+"EC. You can manage your amule program with it. It provides almost the same "
+"functionalities as amule, even if the core works on another computer."
+msgstr ""
+"B<amulegui> 是個客戶端程式，可以經由外部連線和 amule 或 amuled 連線，可以用它"
+"來管理 amule 程式。甚至就算核心程式是在別台電腦上執行時，它也能提供和 amule "
+"幾乎一樣的功能。"
+
+#. type: Plain text
+#: amulegui.1:39
+msgid "Skip connection dialog."
+msgstr "跳過連線對話。"
+
+#. type: Plain text
+#: amulegui.1:57
+msgid ""
+"This manpage was written by Julien Delange for Debian E<lt>julien AT gunnm "
+"DOT orgE<gt>"
+msgstr ""
+"說明文件撰寫者： Julien Delange for Debian E<lt>julien AT gunnm DOT orgE<gt>"
+
+#. type: Plain text
+#: amulegui.1:58
+msgid ""
+"This manpage was rewritten by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
+msgstr "說明文件撰寫者： Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
+
+#. type: TH
+#: amuleweb.1:1
+#, no-wrap
+msgid "AMULEWEB"
+msgstr "AMULEWEB"
+
+#. type: TH
+#: amuleweb.1:1
+#, no-wrap
+msgid "aMule webserver v2.3.1"
+msgstr "aMule webserver v2.3.1"
+
+#. type: Plain text
+#: amuleweb.1:6
+msgid "amuleweb - aMule web server"
+msgstr "amuleweb - aMule 網頁伺服器"
+
+#. type: Plain text
+#: amuleweb.1:15
+msgid "[B<-l> I<E<lt>langE<gt>>]"
+msgstr "[B<-l> I<E<lt>語言E<gt>>]"
+
+#. type: Plain text
+#: amuleweb.1:18
+msgid "[B<-t> I<E<lt>nameE<gt>>] [B<-s> I<E<lt>portE<gt>>]"
+msgstr "[B<-t> I<E<lt>名稱E<gt>>] [B<-s> I<E<lt>通訊埠tE<gt>>]"
+
+#. type: Plain text
+#: amuleweb.1:20
+msgid "[B<-U> I<E<lt>portE<gt>>]"
+msgstr "[B<-U> I<E<lt>通訊埠E<gt>>]"
+
+#. type: Plain text
+#: amuleweb.1:24
+msgid "[B<-A> I<E<lt>passwordE<gt>>] [B<-G> I<E<lt>passwordE<gt>>]"
+msgstr "[B<-A> I<E<lt>密碼E<gt>>] [B<-G> I<E<lt>密碼E<gt>>]"
+
+#. type: Plain text
+#: amuleweb.1:40
+msgid "[B<--amule-config-file>=I<E<lt>pathE<gt>>]"
+msgstr "[B<--amule-config-file>=I<E<lt>路徑E<gt>>]"
+
+#. type: Plain text
+#: amuleweb.1:46
+msgid ""
+"B<amuleweb> manages your access to amule through a web browser.  You can "
+"start amuleweb together with B<amule>(1), or separately, any time later.  "
+"Options can be specified via command-line or via config-file.  Command-line "
+"options take precedence over config-file options."
+msgstr ""
+"B<amuleweb> 可以經由網頁瀏覽器來管理 amule。你可以和 B<amule>(1) 一起執行 "
+"amuleweb，也可以稍候再另外執行。可以在命令列或是用用設定檔指定參數，命令列參"
+"數會優先於設定檔的參數。"
+
+#. type: TP
+#: amuleweb.1:74
+#, no-wrap
+msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>名稱E<gt>>, B<--template>=I<E<lt>名稱E<gt>> B<]>"
+
+#. type: Plain text
+#: amuleweb.1:77
+msgid ""
+"Loads the template named I<E<lt>nameE<gt>>. See the B<SKIN SUPPORT> section "
+"for details."
+msgstr "載入 I<E<lt>名稱E<gt>> 這個模板。詳細請參考 B<外觀面板支援> 章節。"
+
+#. type: TP
+#: amuleweb.1:77
+#, no-wrap
+msgid "B<[ -s> I<E<lt>portE<gt>>, B<--server-port>=I<E<lt>portE<gt>> B<]>"
+msgstr "B<[ -s> I<E<lt>通訊埠E<gt>>, B<--server-port>=I<E<lt>通訊埠E<gt>> B<]>"
+
+#. type: Plain text
+#: amuleweb.1:80
+msgid ""
+"Webserver's HTTP port. This is the port you must point your browser to "
+"(default: I<4711>)."
+msgstr ""
+"網頁伺服器的 HTTP 連接埠：要用瀏覽器連線時必須加以指定 (預設：I<4711>)。"
+
+#. type: Plain text
+#: amuleweb.1:84
+msgid "Enable UPnP."
+msgstr "啟用 UPnP。"
+
+#. type: TP
+#: amuleweb.1:84
+#, no-wrap
+msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port> I<E<lt>portE<gt>> B<]>"
+msgstr "B<[ -U> I<E<lt>通訊埠E<gt>>, B<--upnp-port> I<E<lt>通訊埠E<gt>> B<]>"
+
+#. type: Plain text
+#: amuleweb.1:87
+msgid "UPnP port."
+msgstr "UPnP 通訊埠。"
+
+#. type: Plain text
+#: amuleweb.1:90
+msgid "Enables using gzip compression in HTTP traffic to save bandwidth."
+msgstr "在 HTTP 傳輸時啟用 gzip 壓縮以節省頻寬。"
+
+#. type: Plain text
+#: amuleweb.1:93
+msgid "Disables using gzip compression (this is the default)."
+msgstr "停用 gzip 壓縮 (這是預設值)。"
+
+#. type: TP
+#: amuleweb.1:93
+#, no-wrap
+msgid "B<[ -A> I<E<lt>passwdE<gt>>, B<--admin-pass>=I<E<lt>passwdE<gt>> B<]>"
+msgstr "B<[ -A> I<E<lt>密碼E<gt>>, B<--admin-pass>=I<E<lt>密碼E<gt>> B<]>"
+
+#. type: Plain text
+#: amuleweb.1:96
+msgid "Full access password for webserver."
+msgstr "網站伺服器的完整存取密碼。"
+
+#. type: TP
+#: amuleweb.1:96
+#, no-wrap
+msgid "B<[ -G> I<E<lt>passwdE<gt>>, B<--guest-pass>=I<E<lt>passwdE<gt>> B<]>"
+msgstr "B<[ -G> I<E<lt>密碼E<gt>>, B<--guest-pass>=I<E<lt>密碼E<gt>> B<]>"
+
+#. type: Plain text
+#: amuleweb.1:99
+msgid "Guest password for webserver."
+msgstr "網站伺服器的訪客密碼。"
+
+#. type: Plain text
+#: amuleweb.1:102
+msgid "Allows guest access."
+msgstr "允許訪客連線。"
+
+#. type: Plain text
+#: amuleweb.1:105
+msgid "Denies guest access (default)."
+msgstr "禁止訪客連線 (預設)。"
+
+#. type: Plain text
+#: amuleweb.1:111
+msgid ""
+"Load/save webserver settings from/to remote aMule.  This causes amuleweb to "
+"ignore command-line and config-file settings, and load them from aMule.  "
+"When saving preferences none will be written to the config file, but to "
+"aMule.  (Of course, this works only for those settings that can be set in "
+"aMule's Preferences-E<gt>Remote Controls.)"
+msgstr ""
+"從遠端的 aMule 載入網頁伺服器設定/將設定儲存到遠端。這個會使 amuleweb 忽略命"
+"令列與設定檔內的設定、並從遠端載入新設定；儲存時則只會寫入遠端 aMule 的設定。"
+"(當然，只限於 aMule 的 偏好設定 E<gt> 遠端控制 裏的幾個設定項目)"
+
+#. type: Plain text
+#: amuleweb.1:114
+msgid "Disable PHP interpreter (deprecated)"
+msgstr "停用 PHP 解譯器 (不建議)"
+
+#. type: Plain text
+#: amuleweb.1:117
+msgid "Recompiles PHP pages on each request."
+msgstr "爲每個要求重編譯 PHP 頁面。"
+
+#. type: TP
+#: amuleweb.1:126
+#, no-wrap
+msgid "B<[ --amule-config-file>=I<E<lt>pathE<gt>> B<]>"
+msgstr "B<[ --amule-config-file>=I<E<lt>路徑E<gt>> B<]>"
+
+#. type: Plain text
+#: amuleweb.1:132
+msgid ""
+"aMule config file path.  B<DO NOT USE DIRECTLY!> aMule uses this option when "
+"starting amuleweb at aMule startup.  This option causes all other command-"
+"line and config-file settings to be ignored, preferences to be read from the "
+"given config file, and also implies the B<-q -L> options."
+msgstr ""
+"aMule 設定擋路徑。B<請不要直接使用！>這個選項會導致原有命令列和設定檔的設定都"
+"被忽略都被忽略。 啟動 aMule 後在開啟 amuleweb 時會用這個選項，從指定的設定檔"
+"讀取偏好設定，並自行加上 B<-q -L> 選項。"
+
+#. type: SH
+#: amuleweb.1:165
+#, no-wrap
+msgid "SKIN SUPPORT"
+msgstr "外觀面板支援"
+
+#. type: Plain text
+#: amuleweb.1:169
+msgid ""
+"B<amuleweb> is capable of displaying information in different skins.  These "
+"skins are called templates, and you can make amuleweb load a specific "
+"template via the B<-t> command line option.  Templates are searched in two "
+"places: first in I<~/.aMule/webserver/> and then in I</usr/share/amule/"
+"webserver/> if you installed with --prefix=/usr."
+msgstr ""
+"B<amuleweb> 可以用不同的外觀面板顯示資訊；這些面板稱為「模板」，你可以用在命"
+"令列用 B<-t> 選項讓 amuleweb 載入指定的模板。程式會在兩個地方搜尋模板：先從 "
+"I<~/.aMule/webserver/>，然後如果是用 --prefix=/usr 安裝程式，就會再到 I</usr/"
+"share/amule/webserver/> 搜尋。"
+
+#. type: Plain text
+#: amuleweb.1:171
+msgid ""
+"Each template must be in a subdirectory of the template name, and this "
+"directory must contain all files the template needs."
+msgstr ""
+"每個模板都必須被放在以該模板名稱命名的子目錄下，這個目錄裏也必須包含所有模板"
+"需要的檔案。"
+
+#. type: Plain text
+#: amuleweb.1:175
+msgid "~/.aMule/webserver/"
+msgstr "~/.aMule/webserver/"
+
+#. type: Plain text
+#: amuleweb.1:177
+msgid "I<$(pkgdatadir)>/webserver/"
+msgstr "I<$(pkgdatadir)>/webserver/"
+
+#. type: Plain text
+#: amuleweb.1:179
+msgid "Typically amuleweb will be first run as:"
+msgstr "通常 amuleweb 會優先以這樣執行："
+
+#. type: Plain text
+#: amuleweb.1:181
+msgid ""
+"B<amuleweb> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-s> "
+"I<HTTPport> B<-A> I<AdminPassword> B<-w>"
+msgstr ""
+"B<amuleweb> B<-h> I<主機名稱> B<-p> I<外部連線通訊埠> B<-P> I<外部連線密碼> "
+"B<-s> I<HTTP 通訊埠> B<-A> I<管理者密碼> B<-w>"
+
+#. type: Plain text
+#: amuleweb.1:185
+msgid "B<amuleweb> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+msgstr ""
+"B<amuleweb> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+
+#. type: Plain text
+#: amuleweb.1:191
+msgid ""
+"Of course, you may specify any more or less options on the first example "
+"line, and you may also totally omit it."
+msgstr ""
+"當然，你可以指定比第一行範例裏更多或更少的選項，甚至您也可以完全不使用。"
+
+#. type: TH
+#: ed2k.1:1
+#, no-wrap
+msgid "ED2K"
+msgstr "ED2K"
+
+#. type: TH
+#: ed2k.1:1
+#, no-wrap
+msgid "aMule eD2k link parser v1.5.1"
+msgstr "aMule 的 eD2k 連結分析程式 v1.5.1"
+
+#. type: Plain text
+#: ed2k.1:6
+msgid "ed2k - aMule eD2k link parser"
+msgstr "ed2k - aMule 的 eD2k 連結分析程式"
+
+#. type: Plain text
+#: ed2k.1:10
+msgid "[B<-c> I<E<lt>pathE<gt>>] [B<-t> I<E<lt>numE<gt>>]"
+msgstr "[B<-c> I<E<lt>路徑E<gt>>] [B<-t> I<E<lt>號碼E<gt>>]"
+
+#. type: Plain text
+#: ed2k.1:13
+msgid "I<E<lt>eD2k-linkE<gt>>"
+msgstr "I<E<lt>eD2k 連結E<gt>>"
+
+#. type: Plain text
+#: ed2k.1:21
+msgid ""
+"Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file "
+"~/.aMule/ED2KLinks, which will be checked by aMule every second for links."
+msgstr ""
+"將指定的 I<E<lt>eD2k 連結E<gt>> 傳送給 aMule，會寫入 aMule 隨時都在檢查有無新"
+"增連結的 ~/.aMule/ED2KLinks 檔案裏。"
+
+#. type: Plain text
+#: ed2k.1:30
+msgid ""
+"Loads all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
+msgstr "載入所有以 I<E<lt>eD2k 連結E<gt>> 方式指定的 eMule 收藏庫裏找到的連結"
+
+#. type: Plain text
+#: ed2k.1:33
+msgid ""
+"Lists all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
+msgstr "列出所有以 I<E<lt>eD2k 連結E<gt>> 方式指定的 eMule 收藏庫裏找到的連結"
+
+#. type: Plain text
+#: ed2k.1:53
+msgid "a magnet link;"
+msgstr "magnet 連結；"
+
+#. type: Plain text
+#: ed2k.1:55
+msgid "an emulecollection file."
+msgstr "eMule 收藏庫檔案。"
+
+#. type: Plain text
+#: ed2k.1:60
+msgid ""
+"B<The order in which you give the parameters is important.> You can give "
+"more than one link, and every link can have it's own params.  For example "
+"B<ed2k E<lt>link1E<gt> -t2 E<lt>link2E<gt>> will download I<E<lt>link1E<gt>> "
+"in standard category and I<E<lt>link2E<gt>> in category 2."
+msgstr ""
+"B<指定參數時的順序很重要。>你可以指定兩個以上的連結、每個連結都有自己的參數。"
+"例如：B<ed2k E<lt>連結一E<gt> -t2 E<lt>連結二E<gt>> 會將 I<E<lt>連結一E<gt>> "
+"放在「預設分類」、將 I<E<lt>連結二E<gt>> 放在「分類2」。"
+
+#. type: Plain text
+#: ed2k.1:62
+msgid "~/.aMule/ED2KLinks"
+msgstr "~/.aMule/ED2KLinks"
+
+#. type: TH
+#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#, no-wrap
+msgid "ALC"
+msgstr "ALC"
+
+#. type: TH
+#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#, no-wrap
+msgid "aLinkCreator"
+msgstr "aLinkCreator"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alc.1:5
+msgid "aLinkCreator - the aMule eD2k link creator"
+msgstr "aLinkCreator - aMule 的 eD2k 連結建立程式"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alc.1:9
+msgid ""
+"B<alc> is a graphical utility to create an eD2k link to any file on your "
+"computer."
+msgstr "B<alc> 是可以用來建立你電腦上任何檔案的 eD2k 連結的圖形介面工具程式。"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
+#: ../../src/utils/wxCas/docs/wxcas.1:16
+msgid "This app doesn't take any arguments."
+msgstr "這個應用程式不接受任何引數。"
+
+#. type: TH
+#: ../../src/utils/aLinkCreator/docs/alcc.1:1
+#, no-wrap
+msgid "ALCC"
+msgstr "ALCC"
+
+#. type: TH
+#: ../../src/utils/aLinkCreator/docs/alcc.1:1
+#, no-wrap
+msgid "aMule eD2k links calculator"
+msgstr "aMule 的 eD2k 連結計算程式"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alcc.1:6
+msgid "alcc - text based eD2k links calculator for aMule"
+msgstr "alcc - aMule 的文字介面 eD2k 連結計算程式"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alcc.1:11
+msgid "I<E<lt>inputfiles_listE<gt>>"
+msgstr "I<E<lt>i輸入檔案清單E<gt>>"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alcc.1:16
+msgid ""
+"Compute the eD2k links of all the input files given in the "
+"I<E<lt>inputfiles_listE<gt>> (There can be one or more files)."
+msgstr ""
+"計算 I<E<lt>輸入檔案清單E<gt>> 裏所有檔案的 eD2k 連結。(可接受一個或多個檔案)"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alcc.1:19
+msgid "Compute and add part hashes to the computed eD2k links."
+msgstr "計算並將暫存檔 hash 值新增到已計算好的 eD2k 連結裏。"
+
+#. type: Plain text
+#: ../../src/utils/aLinkCreator/docs/alcc.1:26
+msgid "Be verbose - show also calculation steps."
+msgstr "詳細模式 - 也顯示計算的過程。"
+
+#. type: TH
+#: ../../src/utils/cas/docs/cas.1:1
+#, no-wrap
+msgid "CAS"
+msgstr "CAS"
+
+#. type: TH
+#: ../../src/utils/cas/docs/cas.1:1
+#, no-wrap
+msgid "cas v0.8"
+msgstr "cas v0.8"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:6
+msgid "cas - c aMule statistics"
+msgstr "cas - 以 C 語言撰寫的 aMule 統計資訊程式"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:18
+msgid ""
+"B<cas> is a program for displaying the contents of your aMule online "
+"signature file to console (in a human readable form). For this to work, you "
+"must enable the \"Online Signature\" option in aMule's preferences."
+msgstr ""
+"B<cas> 是可以在終端機界面以人類可閱讀的形式顯示你的 aMule 線上簽名識別檔的程"
+"式。要使用這個功能，你必須在偏好設定裏啟用「線上簽名識別」。"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:22
+msgid ""
+"Writes the online signature picture.  You can optionally append "
+"I<=E<lt>PATHE<gt>> to this option, to specify the location it should be "
+"written to."
+msgstr ""
+"除存線上簽名識別圖片。你也可以在選項中加入 I<=E<lt>路徑E<gt>> 來指定要儲存的地"
+"方。"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:26
+msgid ""
+"HTML page with stats and picture.  You can optionally append "
+"I<=E<lt>PATHE<gt>> to this option, to specify the location it should be "
+"written to."
+msgstr ""
+"有統計資訊與圖片的 HTML 檔案。你也可以在選項中加入 I<=E<lt>路徑E<gt>> 來指定要"
+"儲存的地方。"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:34
+msgid "Without any options, it prints online signature data to stdout."
+msgstr "如果沒有選項，會在標準輸出顯示線上簽名識別。"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:36
+msgid "B<cas> was written by Pedro de Oliveira E<lt>falso@rdk.homeip.netE<gt>"
+msgstr "B<cas> 的作者：Pedro de Oliveira E<lt>falso@rdk.homeip.netE<gt>"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:38
+msgid "~/.aMule/casrc"
+msgstr "~/.aMule/casrc"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:40
+msgid "stat.png"
+msgstr "stat.png"
+
+#. type: Plain text
+#: ../../src/utils/cas/docs/cas.1:42
+msgid "tmp.html"
+msgstr "tmp.html"
+
+#. type: TH
+#: ../../src/utils/wxCas/docs/wxcas.1:1
+#, no-wrap
+msgid "WXCAS"
+msgstr "WXCAS"
+
+#. type: TH
+#: ../../src/utils/wxCas/docs/wxcas.1:1
+#, no-wrap
+msgid "wxCas"
+msgstr "wxCas"
+
+#. type: Plain text
+#: ../../src/utils/wxCas/docs/wxcas.1:5
+msgid "wxcas - wx c aMule statistics"
+msgstr "wxcas - 以 C 語言、wxWidgets 撰寫的 aMule 統計資訊程式"
+
+#. type: Plain text
+#: ../../src/utils/wxCas/docs/wxcas.1:11
+msgid ""
+"B<wxcas> is a program for displaying the contents of your online signature "
+"file in a nice wx Window on your Desktop.  For this to work, you must enable "
+"the \"Online Signature\" option in aMule's preferences."
+msgstr ""
+"B<wxcas> 是可以在桌面以更佳的 wx 視窗顯示你的 aMule 線上簽名識別檔的程式。要"
+"使用這個功能，你必須在偏好設定裏啟用「線上簽名識別」。"
+
+#. type: Plain text
+#: ../../src/utils/wxCas/docs/wxcas.1:14
+msgid ""
+"Based on Pedro de Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
+"E<lt>thepolish@vipmail.ruE<gt>"
+msgstr ""
+"改寫自 Pedro de Oliveira 的 B<cas>(1)， B<wxcas>的作者：ThePolish "
+"E<lt>thepolish@vipmail.ruE<gt>"
+
+#. type: TH
+#: ../../src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "XAS"
+msgstr "XAS"
+
+#. type: TH
+#: ../../src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "xas v1.9"
+msgstr "xas v1.9"
+
+#. type: Plain text
+#: ../../src/utils/xas/docs/xas.1:5
+msgid "xas - X-Chat aMule Statistics"
+msgstr "xas - 用於 X-Chat 的 aMule 統計資訊程式"
+
+#. type: Plain text
+#: ../../src/utils/xas/docs/xas.1:7
+msgid "B<none>"
+msgstr "B<無>"
+
+#. type: Plain text
+#: ../../src/utils/xas/docs/xas.1:12
+msgid ""
+"B<xas> is a plugin for xchat. For loading see your xchat documentation. "
+"After loading type /xas and it will send statistics to the channel you are "
+"in. These are taken from your Online Signature file.  For this to work, you "
+"must enable the \"Online Signature\" option in aMule's preferences."
+msgstr ""
+"B<xas> 是 xchat 的插件，請參考你的 xchat 相關文件以瞭解如何載入。載入之後，輸"
+"入 /xas 就會把從你的線上簽名識別檔取得統計資訊傳到你目前所在的頻道。要使用這"
+"個功能，你必須在偏好設定裏啟用「線上簽名識別」。"
+
+#. type: Plain text
+#: ../../src/utils/xas/docs/xas.1:14
+msgid ""
+"To enable it on every startup of xchat you can just run the autstart-xas "
+"script (in /usr/bin if you installed with --prefix=/usr)."
+msgstr ""
+"你可以執行 autstart-xas (如果是用 --prefix=/usr 安裝程式，就在 /usr/bin 下) "
+"在每次啟動 xchat 時都啟用它。"
+
+#. type: Plain text
+#: ../../src/utils/xas/docs/xas.1:16
+msgid "B<xas> was originally written by niet"
+msgstr "B<xas> 的原作者：niet"
