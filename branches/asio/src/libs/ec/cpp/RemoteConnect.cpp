@@ -135,6 +135,8 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Service(port);
 
 	if (ConnectSocket(addr)) {
+		// We get here only in case of synchronous connect.
+		// Otherwise we continue in OnConnect.
 		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
 
 		std::auto_ptr<const CECPacket> getSalt(SendRecvPacket(&login_req));

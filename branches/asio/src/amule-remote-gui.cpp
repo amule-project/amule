@@ -216,6 +216,11 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	delete poll_timer;
 	poll_timer = NULL;
 
+	m_AsioService->Stop();
+	m_AsioService->Wait();
+	delete m_AsioService;
+	m_AsioService = NULL;
+
 	// Destroy the EC socket
 	m_connect->Destroy();
 	m_connect = NULL;
@@ -255,6 +260,8 @@ bool CamuleRemoteGuiApp::OnInit()
 	}
 
 	m_connect = new CRemoteConnect(this);
+
+	m_AsioService = new CAsioService;
 
 	glob_prefs = new CPreferencesRem(m_connect);
 	long enableZLIB;
@@ -321,6 +328,8 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 		} else {		// server disconnected (probably terminated) later
 			wxMessageBox(_("Connection closed - aMule has terminated probably."), _("ERROR"), wxOK);
 		}
+		wxCloseEvent ev;
+		ShutDown(ev);
 		ExitMainLoop();
 	}
 }

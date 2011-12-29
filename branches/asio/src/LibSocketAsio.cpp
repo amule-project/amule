@@ -94,6 +94,7 @@ public:
 		SetIpString(adr.IPAddress());
 		m_port = adr.Service();
 		m_closed = false;
+		m_OK = false;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Connect %s %p")) % m_IP % this);
 		ip::tcp::resolver resolver(s_io_service);
 		ip::tcp::resolver::query query(adr.GetStrIP(), adr.GetStrPort());
@@ -104,12 +105,13 @@ public:
 			connect(*m_socket, endpoint_iterator, ec);
 			m_OK = !ec;
 			m_connected = m_OK;
+			return m_OK;
 		} else {
 			async_connect(*m_socket, endpoint_iterator, 
 				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error, endpoint_iterator));
-			m_OK = true;
+			// m_OK and return are false because we are not connected yet
+			return false;
 		}
-		return m_OK;
 	}
 
 	bool IsConnected() const
@@ -140,26 +142,31 @@ public:
 	// Strategy:
 	// - Read some data in background into a buffer
 	// - Callback posts event when something is there
-	// - Read first from buffer, if not enough read non-blocking from socket if there is more data there 
+	// - Read data from buffer
 	// - If data is exhausted, start reading more in background
 	// - If not, post another event (making sure events don't pile up though)
 	uint32 Read(char * buf, uint32 bytesToRead)
 	{
-		//ClearError();
-		if (m_Error) {
+		if (bytesToRead == 0) {			// huh?
+			return 0;
+		}
+
+		if (m_Error && m_ErrorCode != wxSOCKET_WOULDBLOCK) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Error")) % m_IP % bytesToRead);
 			return 0;
 		}
 
 		if (m_readPending					// Background read hasn't completed.
-			|| m_readBufferContent == 0		// shouldn't be if it's not pending
-			|| bytesToRead == 0) {			// huh?
+			|| m_readBufferContent == 0) {	// shouldn't be if it's not pending
 			
 			m_Error = true;
 			m_ErrorCode = wxSOCKET_WOULDBLOCK;
 			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Block")) % m_IP % bytesToRead);
 			return 0;
 		}
+
+		ResetBlock();	// shouldn't be needed
+
 		// Read from our buffer
 		uint32 readCache = std::min(m_readBufferContent, bytesToRead);
 		memcpy(buf, m_readBufferPtr, readCache);
@@ -169,7 +176,7 @@ public:
 		AddDebugLogLineF(logAsio, CFormat(wxT("Read2 %s %d - %d")) % m_IP % bytesToRead % readCache);
 		if (m_readBufferContent) {
 			// Data left, post another event
-			PostReadEvent();
+			PostReadEvent(1);
 		} else {
 			// Nothing left, read more
 			StartBackgroundRead();
@@ -201,7 +208,11 @@ public:
 		if (!m_closed) {
 			m_closed = true;
 			m_connected = false;
-			s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
+			if (s_io_service.stopped()) {
+				DispatchClose();
+			} else {
+				s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
+			}
 		}
 	}
 
@@ -215,11 +226,15 @@ public:
 		m_dying = true;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Destroy() %p %p %s")) % m_libSocket % this % m_IP);
 		Close();
-		// Close prevents creation of any more callbacks, but does not clear any callbacks already
-		// sitting in Asio's event queue (I have seen such a crash).
-		// So create a delay timer so they can be called until core is notified.
-		m_timer.expires_from_now(boost::posix_time::seconds(5));
-		m_timer.async_wait(boost::bind(& CAsioSocketImpl::HandleDestroy, this));
+		if (s_io_service.stopped()) {
+			HandleDestroy();
+		} else {
+			// Close prevents creation of any more callbacks, but does not clear any callbacks already
+			// sitting in Asio's event queue (I have seen such a crash).
+			// So create a delay timer so they can be called until core is notified.
+			m_timer.expires_from_now(boost::posix_time::seconds(1));
+			m_timer.async_wait(boost::bind(& CAsioSocketImpl::HandleDestroy, this));
+		}
 	}
 
 
@@ -326,23 +341,26 @@ private:
 		delete[] m_sendBuffer;
 		m_sendBuffer = NULL;
 
-		if (SetError(err)) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleSend Error %d %s")) % bytes_transferred % m_IP);
-		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
-		}
-
 		if (m_libSocket->ForDeletion()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
 		} else {
-			CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
+			if (SetError(err)) {
+				AddDebugLogLineN(logAsio, CFormat(wxT("HandleSend Error %d %s")) % bytes_transferred % m_IP);
+				PostLostEvent();
+			} else {
+				AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
+				ResetBlock();
+				CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
+			}
 		}
 	}
 
 	void HandleRead(const error_code & ec)
 	{
 		if (SetError(ec)) {
+			// This is what we get in Windows when a connection gets closed from remote.
 			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError %s %s")) % m_IP % ErrorMessage(ec));
+			PostLostEvent();
 			return;
 		}
 
@@ -350,14 +368,14 @@ private:
 		uint32 avail = m_socket->available(ec2);
 		if (SetError(ec2)) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError available %d %s %s")) % avail % m_IP % ErrorMessage(ec2));
+			PostLostEvent();
 			return;
 		}
 		if (avail == 0) {
+			// This is what we get in Linux when a connection gets closed from remote.
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleReadError nothing available %s")) % m_IP);
 			SetError();
-			// try again in 10 sec - useless, never returns anything
-			//m_timer.expires_from_now(boost::posix_time::seconds(10));
-			//m_timer.async_wait(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
+			PostLostEvent();
 			return;
 		}
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead %d %s")) % avail % m_IP);
@@ -374,6 +392,7 @@ private:
 		m_readBufferContent = m_socket->read_some(buffer(m_readBuffer, avail), ec2);
 		if (SetError(ec2) || m_readBufferContent == 0) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError read %d %s %s")) % m_readBufferContent % m_IP % ErrorMessage(ec2));
+			PostLostEvent();
 			return;
 		}
 
@@ -381,14 +400,15 @@ private:
 		if (m_libSocket->ForDeletion()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
 		} else {
-			PostReadEvent();
+			ResetBlock();
+			PostReadEvent(2);
 		}
 	}
 
 	void HandleDestroy()
 	{
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleDestroy() %p %p %s")) % m_libSocket % this % m_IP);
-		CoreNotify_LibSocket_Destroy(m_libSocket);
+		CoreNotify_LibSocketDestroy(m_libSocket);
 	}
 
 
@@ -405,12 +425,19 @@ private:
 		s_io_service.post(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
 	}
 
-	void PostReadEvent()
+	void PostReadEvent(int from)
 	{
-		if (!m_readPending && !m_eventPending) {
-			CoreNotify_LibSocketReceive(m_libSocket, m_ErrorCode);
+		if (!m_eventPending) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("Post read event %d %s")) % from % m_IP);
 			m_eventPending = true;
-			AddDebugLogLineF(logAsio, CFormat(wxT("Posted read event %s")) % m_IP);
+			CoreNotify_LibSocketReceive(m_libSocket, m_ErrorCode);
+		}
+	}
+
+	void PostLostEvent()
+	{
+		if (!m_libSocket->ForDeletion()) {
+			CoreNotify_LibSocketLost(m_libSocket);
 		}
 	}
 
@@ -434,6 +461,13 @@ private:
 			ClearError();
 		}
 		return m_Error;
+	}
+
+	void ResetBlock()
+	{
+		if (m_ErrorCode == wxSOCKET_WOULDBLOCK) {
+			ClearError();
+		}
 	}
 
 	//
@@ -706,7 +740,7 @@ private:
 			AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d")) 
 				% m_currentSocket->GetIP() % m_currentSocket->GetPort());
 			m_socketAvailable = true;
-			CoreNotify_ServerTCP_Accept(m_libSocketServer);
+			CoreNotify_ServerTCPAccept(m_libSocketServer);
 		}
 	}
 

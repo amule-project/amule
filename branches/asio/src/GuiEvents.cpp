@@ -770,6 +770,8 @@ namespace MuleNotify
 	}
 #endif	// #ifndef AMULE_DAEMON
 
+#endif	// #ifndef CLIENT_GUI
+
 	void LibSocketConnect(CLibSocket * socket, int error)
 	{
 		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect %s %d")) % socket->GetIP() % error);
@@ -789,18 +791,23 @@ namespace MuleNotify
 		socket->OnReceive(error);
 	}
 
-	void LibSocket_Destroy(CLibSocket * socket)
+	void LibSocketLost(CLibSocket * socket)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost %s")) % socket->GetIP());
+		socket->OnLost();
+	}
+
+	void LibSocketDestroy(CLibSocket * socket)
 	{
 		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocket_Destroy %s")) % socket->GetIP());
 		delete socket;
 	}
 
-	void ServerTCP_Accept(CLibSocketServer * socketServer)
+	void ServerTCPAccept(CLibSocketServer * socketServer)
 	{
 		AddDebugLogLineF(logAsio, wxT("ServerTCP_Accept"));
 		socketServer->OnAccept();
 	}
 
-#endif	// #ifndef CLIENT_GUI
 }
 // File_checked_for_headers

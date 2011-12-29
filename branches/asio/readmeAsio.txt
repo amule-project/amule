@@ -27,7 +27,6 @@ Not done yet / problems:
 - UDP is still wx
 - configure
 - better error handling/error messages
-- amulegui is still wx
 - further abstraction (replace wx socket constants in code)
 - proxy is disabled (and may remain so in ASIO mode)
 - AsyncDNS is still wx

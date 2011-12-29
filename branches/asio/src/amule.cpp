@@ -1369,6 +1369,11 @@ void CamuleApp::ShutDown()
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTTINGDOWN;
 
+	// Stop ASIO thread
+	AddDebugLogLineN(logGeneral, wxT("Terminate ASIO thread."));
+	m_AsioService->Stop();
+	m_AsioService->Wait();
+
 	StopKad();
 
 	// Kry - Save the sources seeds on app exit
@@ -1386,10 +1391,6 @@ void CamuleApp::ShutDown()
 
 	AddDebugLogLineN(logGeneral, wxT("Terminate upload thread."));
 	uploadBandwidthThrottler->EndThread();
-
-	AddDebugLogLineN(logGeneral, wxT("Terminate ASIO thread."));
-	m_AsioService->Stop();
-	m_AsioService->Wait();
 
 	// Close sockets to avoid new clients coming in
 	if (listensocket) {
