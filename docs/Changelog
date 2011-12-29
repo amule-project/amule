@@ -12,6 +12,7 @@ Version 2.4.0 - The river knows.
 		* Fix: disabling protocol obfuscation broke Kad and triggered assertions
 		* Fixed "Prompt on exit" preference
 		* Fixed country flags for Turkish localization
+		* Fixed loading of zipped IP filter (#1674)
 
 --------------------------------------------------------------------------------
 

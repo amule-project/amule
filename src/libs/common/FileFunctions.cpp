@@ -133,39 +133,32 @@ EFileType GuessFiletype(const wxString& file)
  */
 bool UnpackZipFile(const wxString& file, const wxChar* files[])
 {
-	wxZipFSHandler archive;
-	wxString filename = archive.FindFirst(
-		wxT("file:") + file + wxT("#zip:/*"), wxFILE);
-
 	wxTempFile target(file);
-
-	while (!filename.IsEmpty() && !target.Length()) {
-		// Extract the filename part of the URI
-		filename = filename.AfterLast(wxT(':')).Lower();
-
+	std::auto_ptr<wxZipEntry> entry;
+	wxFFileInputStream fileInputStream(file);
+	wxZipInputStream zip(fileInputStream);
+	bool run = true;
+	while (run) {
+		entry.reset(zip.GetNextEntry());
+		if (entry.get() == NULL) {
+			break;
+		}
+		// access meta-data
+		wxString name = entry->GetName();
 		// We only care about the files specified in the array
-		for (size_t i = 0; files[i] && !target.Length(); ++i) {
-			if (files[i] == filename) {
-				std::auto_ptr<wxZipEntry> entry;
-				wxFFileInputStream fileInputStream(file);
-				wxZipInputStream zip(fileInputStream);
-				while (entry.reset(zip.GetNextEntry()), entry.get() != NULL) {
-					// access meta-data
-					wxString name = entry->GetName();
-					// read 'zip' to access the entry's data
-					if (name == filename) {
-						char buffer[10240];
-						while (!zip.Eof()) {
-							zip.Read(buffer, sizeof(buffer));
-							target.Write(buffer, zip.LastRead());
-						}
-						break;
-					}
+		// probably needed to weed out included nfos
+		for (int i = 0; run && files[i]; i++) {
+			if (name.CmpNoCase(files[i]) == 0) {
+				// we found the entry we want
+				// read 'zip' to access the entry's data
+				char buffer[10240];
+				while (!zip.Eof()) {
+					zip.Read(buffer, sizeof(buffer));
+					target.Write(buffer, zip.LastRead());
 				}
+				run = false;
 			}
 		}
-
-		filename = archive.FindNext();
 	}
 
 	if (target.Length()) {
