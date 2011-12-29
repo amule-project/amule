@@ -183,8 +183,9 @@ namespace MuleNotify
 	void LibSocketConnect(CLibSocket * socket, int error);
 	void LibSocketSend(CLibSocket * socket, int error);
 	void LibSocketReceive(CLibSocket * socket, int error);
-	void LibSocket_Destroy(CLibSocket * socket);
-	void ServerTCP_Accept(CLibSocketServer * socketServer);
+	void LibSocketLost(CLibSocket * socket);
+	void LibSocketDestroy(CLibSocket * socket);
+	void ServerTCPAccept(CLibSocketServer * socketServer);
 
 	//
 	// Notifications that always create an event
@@ -578,8 +579,9 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define CoreNotify_LibSocketConnect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::LibSocketConnect, ptr, val)
 #define CoreNotify_LibSocketSend(ptr, val)			MuleNotify::DoNotify(&MuleNotify::LibSocketSend, ptr, val)
 #define CoreNotify_LibSocketReceive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketReceive, ptr, val)
-#define CoreNotify_LibSocket_Destroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocket_Destroy, ptr)
-#define CoreNotify_ServerTCP_Accept(ptr)			MuleNotify::DoNotify(&MuleNotify::ServerTCP_Accept, ptr)
+#define CoreNotify_LibSocketLost(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketLost, ptr)
+#define CoreNotify_LibSocketDestroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketDestroy, ptr)
+#define CoreNotify_ServerTCPAccept(ptr)			MuleNotify::DoNotify(&MuleNotify::ServerTCPAccept, ptr)
 
 
 //

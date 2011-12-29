@@ -78,6 +78,8 @@ libmuleappcommon_a_SOURCES = \
 	TerminationProcess.cpp \
 	Timer.cpp
 
+libmuleappcommon_a_SOURCES += LibSocketAsio.cpp
+
 libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
 
@@ -102,8 +104,6 @@ libmuleappcore_a_SOURCES = \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	kademlia/utils/UInt128.cpp
-
-libmuleappcore_a_SOURCES += LibSocketAsio.cpp
 
 libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 

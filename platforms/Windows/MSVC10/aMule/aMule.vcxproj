@@ -78,7 +78,7 @@
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ASIO_SOCKETS;_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;ENABLE_NLS;ENABLE_IP2COUNTRY;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>

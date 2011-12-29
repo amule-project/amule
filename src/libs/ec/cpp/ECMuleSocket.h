@@ -42,6 +42,8 @@ public:
 
 	bool ConnectSocket(wxIPV4address& address);
 
+	virtual void OnConnect()	{}					// This is overwritten in RemoteConnect
+	virtual void OnConnect(int)	{ OnConnect(); }	// This is called from LibSocketAsio
 	virtual void OnSend(int)	{ OnOutput(); }
 	virtual void OnReceive(int)	{ OnInput(); }
 

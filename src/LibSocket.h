@@ -98,6 +98,7 @@ public:
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}
 	virtual void OnReceive(int) {}
+	virtual void OnLost() {}
 
 private:
 	class CAsioSocketImpl * m_aSocket;
@@ -177,6 +178,7 @@ public:
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}
 	virtual void OnReceive(int) {}
+	virtual void OnLost() {}
 
 	uint32 Read(void *buffer, wxUint32 nbytes)
 	{

@@ -77,8 +77,8 @@
     <ClCompile>
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ASIO_SOCKETS;_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -99,13 +99,14 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\..\boost\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -128,13 +129,14 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\..\boost\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -156,13 +158,14 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\..\boost\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -185,6 +188,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\..\boost\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -222,6 +226,28 @@
     <ClCompile Include="..\..\..\..\src\IP2Country.cpp" />
     <ClCompile Include="..\..\..\..\src\KadDlg.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFile.cpp" />
+    <ClCompile Include="..\..\..\..\src\LibSocketAsio.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeaderFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\Logger.cpp" />
     <ClCompile Include="..\..\..\..\src\MagnetURI.cpp" />
     <ClCompile Include="..\..\..\..\src\MemFile.cpp" />
