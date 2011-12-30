@@ -32,7 +32,7 @@
 class CEncryptedDatagramSocket : public CDatagramSocketProxy
 {
 public:
-	CEncryptedDatagramSocket(wxIPaddress &address, wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
+	CEncryptedDatagramSocket(amuleIPV4Address &address, wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedDatagramSocket();
 
 // TODO: Make protected once the UDP socket is again its own class.

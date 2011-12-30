@@ -1337,9 +1337,9 @@ CLibSocketServer(address, flags)
 //------------------------------------------------------------------------------
 
 CDatagramSocketProxy::CDatagramSocketProxy(
-	wxIPaddress &address, wxSocketFlags flags, const CProxyData *proxyData)
+	amuleIPV4Address &address, wxSocketFlags flags, const CProxyData *proxyData)
 :
-wxDatagramSocket(address, flags),
+CLibUDPSocket(address, flags),
 m_proxyTCPSocket(wxSOCKET_NOWAIT, proxyData, PROXY_CMD_UDP_ASSOCIATE, this)
 {
 	m_udpSocketOk = false;
@@ -1358,9 +1358,9 @@ CDatagramSocketProxy::~CDatagramSocketProxy()
 	// UDP ASSOCIATE request arrived terminates."
 }
 
-wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
-	wxSockAddress &addr, void* buf, wxUint32 nBytes )
+uint32 CDatagramSocketProxy::RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes)
 {
+	uint32 read = 0;
 	wxMutexLocker lock(m_socketLocker);
 	m_lastUDPOperation = UDP_OPERATION_RECV_FROM;
 	if (m_proxyTCPSocket.GetUseProxy()) {
@@ -1371,7 +1371,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 			} else {
 				bufUDP = m_proxyTCPSocket.GetBuffer();
 			}
-			wxDatagramSocket::RecvFrom(
+			read = CLibUDPSocket::RecvFrom(
 				m_proxyTCPSocket.GetProxyBoundAddress(),
 				bufUDP, nBytes + PROXY_UDP_MAXIMUM_OVERHEAD);
 			unsigned int offset;
@@ -1420,15 +1420,15 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 			 */
 		}
 	} else {
-		wxDatagramSocket::RecvFrom(addr, buf, nBytes);
+		read = CLibUDPSocket::RecvFrom(addr, buf, nBytes);
 	}
 
-	return *this;
+	return read;
 }
 
-wxDatagramSocket &CDatagramSocketProxy::SendTo(
-	wxIPaddress &addr, const void* buf, wxUint32 nBytes )
+uint32 CDatagramSocketProxy::SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes)
 {
+	uint32 sent = 0;
 	wxMutexLocker lock(m_socketLocker);
 	m_lastUDPOperation = UDP_OPERATION_SEND_TO;
 	m_lastUDPOverhead = PROXY_UDP_OVERHEAD_IPV4;
@@ -1442,41 +1442,17 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 			RawPokeUInt16( m_proxyTCPSocket.GetBuffer()+8, ENDIAN_HTONS( addr.Service() ) );
 			memcpy(m_proxyTCPSocket.GetBuffer() + PROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 			nBytes += PROXY_UDP_OVERHEAD_IPV4;
-			wxDatagramSocket::SendTo(
+			sent = CLibUDPSocket::SendTo(
 				m_proxyTCPSocket.GetProxyBoundAddress(),
 				m_proxyTCPSocket.GetBuffer(), nBytes);
 			// Uncomment here to see the buffer contents on console
 			// DumpMem(m_proxyTCPSocket.GetBuffer(), nBytes, wxT("SendTo"), 3);
 		}
 	} else {
-		wxDatagramSocket::SendTo(addr, buf, nBytes);
+		sent = CLibUDPSocket::SendTo(addr, buf, nBytes);
 	}
 
-	return *this;
-}
-
-wxUint32 CDatagramSocketProxy::LastCount(void) const
-{
-	wxUint32 ret;
-
-	if (m_proxyTCPSocket.GetUseProxy()) {
-		switch (m_lastUDPOperation) {
-		case UDP_OPERATION_RECV_FROM:
-		case UDP_OPERATION_SEND_TO:
-			ret = Ok() ? wxDatagramSocket::LastCount() - m_lastUDPOverhead : 0;
-			break;
-
-		case UDP_OPERATION_NONE:
-		default:
-			ret = 0;
-			break;
-
-		}
-	} else {
-		ret = wxDatagramSocket::LastCount();
-	}
-
-	return ret;
+	return sent;
 }
 
 #endif // CLIENT_GUI

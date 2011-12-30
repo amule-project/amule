@@ -55,12 +55,12 @@ public:
 	bool	IsConnected() const;
 	bool	IsOk() const;
 	bool	GetPeer(amuleIPV4Address& adr);
-	void	Destroy();
 	void	SetEventHandler(wxEvtHandler& handler, int id);
 //	uint32	LastCount() const;  // No. We don't have this. We return it directly with Read() and Write()
 	uint32	Read(void * buffer, uint32 nbytes);
 	uint32	Write(const void * buffer, uint32 nbytes);
 	void	Close();
+	void	Destroy();
 
 	// Replace these
 	void	SetNotify(int);
@@ -144,6 +144,37 @@ private:
 
 
 //
+// UDP socket
+//
+class CLibUDPSocket
+{
+	friend class CAsioUDPSocketImpl;
+public:
+	CLibUDPSocket(amuleIPV4Address &address, int flags);
+	virtual ~CLibUDPSocket();
+
+	// wx Stuff
+	bool	IsOk() const;
+	virtual uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes);
+	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes);
+	bool	Error() const;
+	wxSocketError	LastError();
+	void	Close();
+	void	Destroy();
+	void	SetClientData(class CMuleUDPSocket *);
+
+	// Not needed here
+	void	SetEventHandler(wxEvtHandler&, int) {}
+	void	SetNotify(int) {}
+	bool	Notify(bool) { return true; }
+
+private:
+	class CAsioUDPSocketImpl * m_aSocket;
+	void LastCount();	// block this
+};
+
+
+//
 // ASIO event loop
 //
 class CAsioService : public wxThread 
@@ -208,6 +239,28 @@ public:
 
 	void RestartAccept() {}
 	virtual	void OnAccept() {}
+};
+
+
+class CLibUDPSocket : public wxDatagramSocket
+{
+public:
+	CLibUDPSocket(amuleIPV4Address &address, wxSocketFlags flags) : wxDatagramSocket(address, flags) {}
+
+	virtual uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes)
+	{
+		wxDatagramSocket::RecvFrom(addr, buf, nBytes);
+		return wxDatagramSocket::LastCount();
+	}
+
+	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes)
+	{
+		wxDatagramSocket::SendTo(addr, buf, nBytes);
+		return wxDatagramSocket::LastCount();
+	}
+
+private:
+	void LastCount();	// block this
 };
 
 

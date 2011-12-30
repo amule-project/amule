@@ -58,6 +58,11 @@ public:
 		return wxIPV4address::Hostname(Uint32toStringIP(ip));
 	}
 
+	virtual bool Hostname(std::string name)
+	{
+		return wxIPV4address::Hostname(wxString(name.c_str(), wxConvUTF8));
+	}
+
 	std::string GetStrIP() const
 	{
 		return std::string(unicode2char(IPAddress()));

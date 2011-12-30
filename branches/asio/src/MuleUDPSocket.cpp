@@ -74,7 +74,7 @@ void CMuleUDPSocket::CreateSocket()
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	m_socket->Notify(true);
 
-	if (!m_socket->Ok()) {
+	if (!m_socket->IsOk()) {
 		AddDebugLogLineC(logMuleUDP, wxT("Failed to create valid ") + m_name);
 		DestroySocket();
 	} else {
@@ -130,16 +130,13 @@ void CMuleUDPSocket::OnSend(int errorCode)
 }
 
 
-const unsigned UDP_BUFFER_SIZE = 16384;
-
-
 void CMuleUDPSocket::OnReceive(int errorCode)
 {
 	AddDebugLogLineN(logMuleUDP, CFormat(wxT("Got UDP callback for read: Error %i Socket state %i"))
 		% errorCode % Ok());
 
 	char buffer[UDP_BUFFER_SIZE];
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	unsigned length = 0;
 	bool error = false;
 	int lastError = 0;
@@ -147,7 +144,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	{
 		wxMutexLocker lock(m_mutex);
 
-		if (errorCode || (m_socket == NULL) || !m_socket->Ok()) {
+		if (errorCode || (m_socket == NULL) || !m_socket->IsOk()) {
 			DestroySocket();
 			CreateSocket();
 
@@ -155,7 +152,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		}
 
 
-		length = m_socket->RecvFrom(addr, buffer, UDP_BUFFER_SIZE).LastCount();
+		length = m_socket->RecvFrom(addr, buffer, UDP_BUFFER_SIZE);
 		error = m_socket->Error();
 		lastError = m_socket->LastError();
 	}
@@ -256,7 +253,7 @@ bool CMuleUDPSocket::Ok()
 {
 	wxMutexLocker lock(m_mutex);
 
-	return m_socket && m_socket->Ok();
+	return m_socket && m_socket->IsOk();
 }
 
 
@@ -304,7 +301,7 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint16_t port)
 {
 	// Just pretend that we sent the packet in order to avoid infinite loops.
-	if (!(m_socket && m_socket->Ok())) {
+	if (!(m_socket && m_socket->IsOk())) {
 		return true;
 	}
 

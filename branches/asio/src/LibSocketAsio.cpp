@@ -43,6 +43,8 @@
 #include "Logger.h"
 #include "GuiEvents.h"
 #include "amuleIPV4Address.h"
+#include "MuleUDPSocket.h"
+#include "OtherFunctions.h"	// DeleteContents
 
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
@@ -420,9 +422,7 @@ private:
 	{
 		m_readPending = true;
 		m_readBufferContent = 0;
-		// This is also called from the handler when 0 bytes were read.
-		// So use post instead of dispatch to create a loop event in any case.
-		s_io_service.post(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
+		s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
 	}
 
 	void PostReadEvent(int from)
@@ -644,8 +644,7 @@ public:
 		m_acceptError = false;
 
 		try {
-			ip::address_v4 ipadr;
-			ipadr.from_string(adr.GetStrIP());
+			ip::address_v4 ipadr = ip::address_v4::from_string(adr.GetStrIP());
 			ip::tcp::endpoint endpoint(ipadr, adr.Service());
 			open(endpoint.protocol());
 			set_option(ip::tcp::acceptor::reuse_address(true));
@@ -807,6 +806,309 @@ bool CLibSocketServer::SocketAvailable()
 bool CLibSocketServer::RestartAccept()
 {
 	return m_aServer->RestartAccept();
+}
+
+
+
+/**
+ * ASIO UDP socket implementation
+ */
+
+class CAsioUDPSocketImpl
+{
+private:
+	// UDP data block
+	class CUDPData {
+	public:
+		char * buffer;
+		uint32 size;
+		amuleIPV4Address ipadr;
+
+		CUDPData(const void * src, uint32 _size, amuleIPV4Address adr) :
+			size(_size), ipadr(adr)
+		{
+			buffer = new char[size];
+			memcpy(buffer, src, size);
+		}
+
+		~CUDPData()
+		{
+			delete[] buffer;
+		}
+	};
+
+public:
+	CAsioUDPSocketImpl(const amuleIPV4Address &address, int /* flags */, CLibUDPSocket * libSocket) :
+		m_libSocket(libSocket),
+		m_timer(s_io_service)
+	{
+		m_muleSocket = NULL;
+		m_readBuffer = new char[CMuleUDPSocket::UDP_BUFFER_SIZE];
+		m_OK = true;
+
+		try {
+			ip::address_v4 addr = ip::address_v4::from_string(address.GetStrIP());
+			ip::udp::endpoint endpoint(addr, address.Service());
+			m_socket = new ip::udp::socket(s_io_service, endpoint);
+			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % address.IPAddress() % address.Service());
+			StartBackgroundRead();
+		} catch (system_error err) {
+			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % address.IPAddress() % address.Service() % ErrorMessage(err.code()));
+			m_socket = NULL;
+			m_OK = false;
+		}
+	}
+
+	~CAsioUDPSocketImpl()
+	{
+		AddDebugLogLineF(logAsio, wxT("UDP ~CAsioUDPSocketImpl"));
+		delete m_socket;
+		delete[] m_readBuffer;
+		DeleteContents(m_receiveBuffers);
+	}
+
+	void SetClientData(CMuleUDPSocket * muleSocket)
+	{
+		AddDebugLogLineF(logAsio, wxT("UDP SetClientData"));
+		m_muleSocket = muleSocket;
+	}
+
+	uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes)
+	{
+		CUDPData * recdata;
+		{
+			wxMutexLocker lock(m_receiveBuffersLock);
+			if (m_receiveBuffers.empty()) {
+				AddDebugLogLineN(logAsio, wxT("UDP RecvFromError no data"));
+				return 0;
+			}
+			recdata = * m_receiveBuffers.begin();
+			m_receiveBuffers.pop_front();
+		}
+		uint32 read = recdata->size;
+		if (read > nBytes) {
+			// should not happen
+			AddDebugLogLineN(logAsio, CFormat(wxT("UDP RecvFromError too much data %d")) % read);
+			read = nBytes;
+		}
+		memcpy(buf, recdata->buffer, read);
+		addr = recdata->ipadr;
+		delete recdata;
+		return read;
+	}
+
+	uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes)
+	{
+		// Collect data, make a copy of the buffer's content
+		CUDPData * recdata = new CUDPData(buf, nBytes, addr);
+		AddDebugLogLineF(logAsio, CFormat(wxT("UDP SendTo %d to %s")) % nBytes % addr.IPAddress());
+		s_io_service.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata));
+		return nBytes;
+	}
+
+	bool IsOk() const
+	{
+		return m_OK;
+	}
+
+	void Close()
+	{
+		if (s_io_service.stopped()) {
+			DispatchClose();
+		} else {
+			s_io_service.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchClose, this));
+		}
+	}
+
+	void Destroy()
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("Destroy() %p %p")) % m_libSocket % this);
+		Close();
+		if (s_io_service.stopped()) {
+			HandleDestroy();
+		} else {
+			// Close prevents creation of any more callbacks, but does not clear any callbacks already
+			// sitting in Asio's event queue (I have seen such a crash).
+			// So create a delay timer so they can be called until core is notified.
+			m_timer.expires_from_now(boost::posix_time::seconds(1));
+			m_timer.async_wait(boost::bind(& CAsioUDPSocketImpl::HandleDestroy, this));
+		}
+	}
+
+
+private:
+	//
+	// Dispatch handlers
+	// Access to m_socket is all bundled in the thread running s_io_service to avoid 
+	// concurrent access to the socket from several threads.
+	// So once things are running (after connect), all access goes through one of these handlers.
+	//
+	void DispatchClose()
+	{
+		error_code ec;
+		m_socket->close(ec);
+		if (ec) {
+			AddDebugLogLineC(logAsio, CFormat(wxT("UDP Close error %s")) % ErrorMessage(ec));
+		} else {
+			AddDebugLogLineF(logAsio, wxT("UDP Closed"));
+		}
+	}
+
+	void DispatchSendTo(CUDPData * recdata)
+	{
+		ip::address_v4 addr = ip::address_v4::from_string(recdata->ipadr.GetStrIP());
+		ip::udp::endpoint endpoint(addr, recdata->ipadr.Service());
+
+		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size 
+			% wxString(endpoint.address().to_string().c_str(), wxConvUTF8) % endpoint.port());
+//			% endpoint.address().to_string() % endpoint.port());
+		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
+			boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata));
+	}
+
+	//
+	// Completion handlers for async requests
+	//
+
+	void HandleRead(const error_code & ec, size_t received)
+	{
+		if (ec) {
+			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ErrorMessage(ec));
+		} else if (received == 0) {
+			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
+		} else if (m_muleSocket == NULL) {
+			AddDebugLogLineN(logAsio, wxT("UDP HandleReadError no handler"));
+		} else {
+
+			amuleIPV4Address ipadr;
+			ipadr.Hostname(m_receiveEndpoint.address().to_string());
+			uint16 port = m_receiveEndpoint.port();
+			ipadr.Service(port);
+			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleRead %d %s:%d")) % received % ipadr.IPAddress() % port);
+
+			// create our read buffer
+			CUDPData * recdata = new CUDPData(m_readBuffer, received, ipadr);
+			{
+				wxMutexLocker lock(m_receiveBuffersLock);
+				m_receiveBuffers.push_back(recdata);
+			}
+			CoreNotify_UDPSocketReceive(m_muleSocket);
+		}
+		StartBackgroundRead();
+	}
+
+	void HandleSendTo(const error_code & ec, size_t sent, CUDPData * recdata)
+	{
+		if (ec) {
+			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError %s")) % ErrorMessage(ec));
+		} else if (sent != recdata->size) {
+			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError tosend: %d sent %d")) % recdata->size % sent);
+		}
+		if (m_muleSocket == NULL) {
+			AddDebugLogLineN(logAsio, wxT("UDP HandleSendToError no handler"));
+		} else {
+			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleSendTo %d to %s")) % sent % recdata->ipadr.IPAddress());
+			CoreNotify_UDPSocketSend(m_muleSocket);
+		}
+		delete recdata;
+	}
+
+	void HandleDestroy()
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("HandleDestroy() %p %p")) % m_libSocket % this);
+		delete m_libSocket;
+	}
+
+	//
+	// Other functions
+	//
+
+	void StartBackgroundRead()
+	{
+		m_socket->async_receive_from(buffer(m_readBuffer, CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
+			boost::bind(& CAsioUDPSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred));
+	}
+
+	CLibUDPSocket *		m_libSocket;
+	ip::udp::socket *	m_socket;
+	CMuleUDPSocket *	m_muleSocket;
+	bool				m_OK;
+	deadline_timer		m_timer;
+
+	// One fix receive buffer
+	char *				m_readBuffer;
+	// and a list of dynamic buffers. UDP data may be coming in faster
+	// than the main loop can handle it.
+	std::list<CUDPData *>	m_receiveBuffers;
+	wxMutex				m_receiveBuffersLock;
+
+	// Address of last reception
+	ip::udp::endpoint	m_receiveEndpoint;
+};
+
+
+/**
+ * Library UDP socket wrapper
+ */
+
+CLibUDPSocket::CLibUDPSocket(amuleIPV4Address &address, int flags)
+{
+	m_aSocket = new CAsioUDPSocketImpl(address, flags, this);
+}
+
+
+CLibUDPSocket::~CLibUDPSocket()
+{
+	AddDebugLogLineF(logAsio, CFormat(wxT("~CLibUDPSocket() %p %p")) % this % m_aSocket);
+	delete m_aSocket;
+}
+
+
+bool CLibUDPSocket::IsOk() const
+{
+	return m_aSocket->IsOk();
+}
+
+
+uint32 CLibUDPSocket::RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes)
+{
+	return m_aSocket->RecvFrom(addr, buf, nBytes);
+}
+
+
+uint32 CLibUDPSocket::SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes)
+{
+	return m_aSocket->SendTo(addr, buf, nBytes);
+}
+
+
+void CLibUDPSocket::SetClientData(CMuleUDPSocket * muleSocket)
+{
+	m_aSocket->SetClientData(muleSocket);
+}
+
+
+bool CLibUDPSocket::Error() const
+{
+	return !IsOk();
+}
+
+
+wxSocketError CLibUDPSocket::LastError()
+{
+	return wxSOCKET_NOERROR;
+}
+
+
+void CLibUDPSocket::Close()
+{
+	m_aSocket->Close();
+}
+
+
+void CLibUDPSocket::Destroy()
+{
+	m_aSocket->Destroy();
 }
 
 

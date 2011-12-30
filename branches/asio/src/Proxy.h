@@ -248,7 +248,7 @@ public:
 	void		AddDummyEvent();
 	void		ReactivateSocket();
 	char		*GetBuffer()				{ return m_buffer; }
-	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_proxyBoundAddress; }
+	amuleIPV4Address	&GetProxyBoundAddress(void) const	{ return *m_proxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_lastReply; }
 	bool		IsEndState() const			{ return GetState() == PROXY_STATE_END; }
 
@@ -279,7 +279,7 @@ protected:
 	//
 	wxIPaddress		*m_peerAddress;
 	wxSocketClient		*m_proxyClientSocket;
-	wxIPaddress		*m_proxyBoundAddress;
+	amuleIPV4Address	*m_proxyBoundAddress;
 	amuleIPV4Address	m_proxyBoundAddressIPV4;
 	//wxIPV6address		m_proxyBoundAddressIPV6;
 	//
@@ -469,7 +469,7 @@ public:
 	void		SetProxyData(const CProxyData *proxyData);
 	bool		GetUseProxy() const	{ return m_useProxy; }
 	char		*GetBuffer()		{ return m_proxyStateMachine->GetBuffer(); }
-	wxIPaddress	&GetProxyBoundAddress(void) const
+	amuleIPV4Address	&GetProxyBoundAddress(void) const
 						{ return m_proxyStateMachine->GetProxyBoundAddress(); }
 	bool Start(const wxIPaddress &peerAddress);
 	bool ProxyIsCapableOf(CProxyCommand proxyCommand) const;
@@ -541,12 +541,12 @@ const unsigned int PROXY_UDP_OVERHEAD_DOMAIN_NAME	= 262;
 const unsigned int PROXY_UDP_OVERHEAD_IPV6		= 20;
 const unsigned int PROXY_UDP_MAXIMUM_OVERHEAD		= PROXY_UDP_OVERHEAD_DOMAIN_NAME;
 
-class CDatagramSocketProxy : public wxDatagramSocket
+class CDatagramSocketProxy : public CLibUDPSocket
 {
 public:
 	/* Constructor */
 	CDatagramSocketProxy(
-		wxIPaddress &address,
+		amuleIPV4Address &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const CProxyData *proxyData = NULL);
 
@@ -557,11 +557,8 @@ public:
 	void SetUDPSocketOk() { m_udpSocketOk = true; }
 
 	/* wxDatagramSocket Interface */
-	virtual wxDatagramSocket& RecvFrom(
-		wxSockAddress& addr, void* buf, wxUint32 nBytes );
-	virtual wxDatagramSocket& SendTo(
-		wxIPaddress& addr, const void* buf, wxUint32 nBytes );
-	virtual wxUint32 LastCount(void) const;
+	virtual uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes);
+	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes);
 
 private:
 	bool			m_udpSocketOk;
