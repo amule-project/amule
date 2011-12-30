@@ -58,6 +58,7 @@
 #	include "UploadQueue.h"
 #	include "EMSocket.h"
 #	include "ListenSocket.h"
+#	include "MuleUDPSocket.h"
 #endif
 
 #include <common/MacrosProgramSpecific.h>
@@ -771,6 +772,22 @@ namespace MuleNotify
 #endif	// #ifndef AMULE_DAEMON
 
 #endif	// #ifndef CLIENT_GUI
+
+	void UDPSocketSend(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
+	{
+#ifndef CLIENT_GUI
+		AddDebugLogLineF(logAsio, wxT("UDPSocketSend"));
+		socket->OnSend(0);
+#endif
+	}
+
+	void UDPSocketReceive(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
+	{
+#ifndef CLIENT_GUI
+		AddDebugLogLineF(logAsio, wxT("UDPSocketReceive"));
+		socket->OnReceive(0);
+#endif
+	}
 
 	void LibSocketConnect(CLibSocket * socket, int error)
 	{

@@ -17,14 +17,13 @@ and not even included in the headers.
 The goal is far from reached. THIS IS ONLY AN EXPERIMENTAL PROTOTYPE.
 
 What it does:
-- compile aMule (monolith) in debug mode in MSVC10 and Linux
+- compile aMule (monolith) and amulegui in debug mode in MSVC10 and Linux
 - run it in Windows and Linux
 It's been running for a night now in my Linux VM without crashing. Performance is as 
 usual.
 
 Not done yet / problems:
 - amuled
-- UDP is still wx
 - configure
 - better error handling/error messages
 - further abstraction (replace wx socket constants in code)
