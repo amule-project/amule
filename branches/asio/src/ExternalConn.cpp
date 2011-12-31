@@ -376,6 +376,7 @@ void ExternalConn::KillAllSockets()
 		s->Close();
 		s->Destroy();
 	}
+	socket_list.clear();
 }
 
 
