@@ -117,7 +117,7 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleDaemonApp)
 
-#ifdef AMULED28
+#ifdef AMULED28_SOCKETS
 /*
  * Socket handling in wxBase
  *
@@ -321,11 +321,6 @@ void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
 	Uninstall_Callback(socket, GSOCK_OUTPUT);
 }
 
-#endif	// AMULED28
-
-#ifndef __WXMSW__
-
-#ifdef AMULED28
 
 CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table)
 :
@@ -378,7 +373,9 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 	return new CDaemonAppTraits(m_table);
 }
 
-#else	// AMULED28
+#else	// AMULED28_SOCKETS
+
+#ifndef __WXMSW__
 
 CDaemonAppTraits::CDaemonAppTraits()
 :
@@ -393,9 +390,9 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 	return new CDaemonAppTraits();
 }
 
-#endif	// !AMULED28
-
 #endif	// __WXMSW__
+
+#endif	// !AMULED28_SOCKETS
 
 #if defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
 #include <wx/stdpaths.h> // Do_not_auto_remove (guess)
@@ -407,17 +404,20 @@ wxStandardPathsBase& CDaemonAppTraits::GetStandardPaths()
 #endif
 
 
-#ifdef AMULED28
+#ifdef AMULED28_EVENTLOOP
 
 CamuleDaemonApp::CamuleDaemonApp()
 :
-m_Exit(false),
-m_table(new CAmuledGSocketFuncTable())
+m_Exit(false)
+#ifdef AMULED28_SOCKETS
+,m_table(new CAmuledGSocketFuncTable())
+#endif
 {
+	// work around problem from http://trac.wxwidgets.org/ticket/2145
 	wxPendingEventsLocker = new wxCriticalSection;
 }
 
-#endif	// !AMULED28
+#endif	// AMULED28_EVENTLOOP
 
 
 #ifndef __WXMSW__
@@ -550,6 +550,30 @@ pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
 	return result;
 }
 
+#else // __WXMSW__
+//
+// CTRL-C-Handler
+// see http://msdn.microsoft.com/en-us/library/windows/desktop/ms685049%28v=vs.85%29.aspx
+//
+static BOOL CtrlHandler(DWORD fdwCtrlType)
+{
+	switch (fdwCtrlType) {
+		case CTRL_C_EVENT:
+		case CTRL_CLOSE_EVENT:
+		case CTRL_BREAK_EVENT:
+			// handle these
+			AddLogLineNS(wxT("Received break event, exit main loop"));
+			theApp->ExitMainLoop();
+			return TRUE;
+			break;
+		case CTRL_LOGOFF_EVENT:
+		case CTRL_SHUTDOWN_EVENT:
+		default:
+			// don't handle these
+			return FALSE;
+			break;
+	}
+}
 
 #endif // __WXMSW__
 
@@ -564,7 +588,9 @@ int CamuleDaemonApp::OnRun()
 		return 0;
 	}
 
-#ifndef __WXMSW__
+#ifdef __WXMSW__
+	SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE);
+#else
 	// Process the return code of dead children so that we do not create
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
 	// actualy calls wxHandleProcessTermination() in console applications.
@@ -583,12 +609,17 @@ int CamuleDaemonApp::OnRun()
 	}
 #endif // __WXMSW__
 
-#ifdef AMULED28
+#ifdef AMULED28_EVENTLOOP
 
 	while ( !m_Exit ) {
+#ifdef AMULED28_SOCKETS
 		m_table->RunSelect();
 		ProcessPendingEvents();
 		((CDaemonAppTraits *)GetTraits())->DeletePending();
+#else
+		wxMilliSleep(10);
+		ProcessPendingEvents();
+#endif
 	}
 
 	// ShutDown is beeing called twice. Once here and again in OnExit().
@@ -597,13 +628,7 @@ int CamuleDaemonApp::OnRun()
 	return 0;
 
 #else
-
-#ifdef AMULED_DUMMY
-	return 0;
-#else
 	return wxApp::OnRun();
-#endif
-
 #endif
 }
 
@@ -670,7 +695,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 
 int CamuleDaemonApp::OnExit()
 {
-#ifdef AMULED28
+#ifdef AMULED28_SOCKETS
 	/*
 	 * Stop all socket threads before entering
 	 * shutdown sequence.
@@ -693,11 +718,6 @@ int CamuleDaemonApp::OnExit()
 		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD callback with sigaction() succeeded."));
 	}
 #endif // __WXMSW__
-
-	// lfroen: delete socket threads
-	if (ECServerHandler) {
-		ECServerHandler = 0;
-	}
 
 	delete core_timer;
 
