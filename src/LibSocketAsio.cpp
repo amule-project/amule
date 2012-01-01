@@ -54,11 +54,6 @@ static 	io_service s_io_service;
  * ASIO Client TCP socket implementation
  */
 
-static wxString ErrorMessage(const error_code& ec)
-{
-	return wxString(ec.message().c_str(), wxConvUTF8);
-}
-
 class CAsioSocketImpl
 {
 public:
@@ -267,7 +262,7 @@ public:
 		error_code ec;
 		ip::tcp::endpoint endpoint = m_socket->remote_endpoint(ec);
 		if (SetError(ec)) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UpdateIP failed %p %s")) % this % ErrorMessage(ec));
+			AddDebugLogLineN(logAsio, CFormat(wxT("UpdateIP failed %p %s")) % this % ec.message());
 			return;
 		}
 		ip::address adr = endpoint.address();
@@ -296,7 +291,7 @@ private:
 		error_code ec;
 		m_socket->close(ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Close error %s %s")) % m_IP % ErrorMessage(ec));
+			AddDebugLogLineC(logAsio, CFormat(wxT("Close error %s %s")) % m_IP % ec.message());
 		} else {
 			AddDebugLogLineF(logAsio, CFormat(wxT("Closed %s")) % m_IP);
 		}
@@ -361,7 +356,7 @@ private:
 	{
 		if (SetError(ec)) {
 			// This is what we get in Windows when a connection gets closed from remote.
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError %s %s")) % m_IP % ErrorMessage(ec));
+			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError %s %s")) % m_IP % ec.message());
 			PostLostEvent();
 			return;
 		}
@@ -369,7 +364,7 @@ private:
 		error_code ec2;
 		uint32 avail = m_socket->available(ec2);
 		if (SetError(ec2)) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError available %d %s %s")) % avail % m_IP % ErrorMessage(ec2));
+			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError available %d %s %s")) % avail % m_IP % ec2.message());
 			PostLostEvent();
 			return;
 		}
@@ -393,7 +388,7 @@ private:
 		// read available data
 		m_readBufferContent = m_socket->read_some(buffer(m_readBuffer, avail), ec2);
 		if (SetError(ec2) || m_readBufferContent == 0) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError read %d %s %s")) % m_readBufferContent % m_IP % ErrorMessage(ec2));
+			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError read %d %s %s")) % m_readBufferContent % m_IP % ec2.message());
 			PostLostEvent();
 			return;
 		}
@@ -654,7 +649,7 @@ public:
 			m_ok = true;
 			AddDebugLogLineN(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d")) % adr.IPAddress() % adr.Service());
 		} catch (system_error err) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d failed - %s")) % adr.IPAddress() % adr.Service() % ErrorMessage(err.code()));
+			AddDebugLogLineC(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d failed - %s")) % adr.IPAddress() % adr.Service() % err.code().message());
 		}
 	}
 
@@ -729,7 +724,7 @@ private:
 	void HandleAccept(const error_code& error)
 	{
 		if (error) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Error in HandleAccept: %s")) % ErrorMessage(error));
+			AddDebugLogLineC(logAsio, CFormat(wxT("Error in HandleAccept: %s")) % error.message());
 			// Try again
 			delete m_currentSocket;
 			m_currentSocket = NULL;
@@ -853,7 +848,7 @@ public:
 			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % address.IPAddress() % address.Service());
 			StartBackgroundRead();
 		} catch (system_error err) {
-			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % address.IPAddress() % address.Service() % ErrorMessage(err.code()));
+			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % address.IPAddress() % address.Service() % err.code().message());
 			m_socket = NULL;
 			m_OK = false;
 		}
@@ -948,7 +943,7 @@ private:
 		error_code ec;
 		m_socket->close(ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("UDP Close error %s")) % ErrorMessage(ec));
+			AddDebugLogLineC(logAsio, CFormat(wxT("UDP Close error %s")) % ec.message());
 		} else {
 			AddDebugLogLineF(logAsio, wxT("UDP Closed"));
 		}
@@ -960,8 +955,7 @@ private:
 		ip::udp::endpoint endpoint(addr, recdata->ipadr.Service());
 
 		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size 
-			% wxString(endpoint.address().to_string().c_str(), wxConvUTF8) % endpoint.port());
-//			% endpoint.address().to_string() % endpoint.port());
+			% endpoint.address().to_string() % endpoint.port());
 		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
 			boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata));
 	}
@@ -973,7 +967,7 @@ private:
 	void HandleRead(const error_code & ec, size_t received)
 	{
 		if (ec) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ErrorMessage(ec));
+			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ec.message());
 		} else if (received == 0) {
 			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
 		} else if (m_muleSocket == NULL) {
@@ -1000,7 +994,7 @@ private:
 	void HandleSendTo(const error_code & ec, size_t sent, CUDPData * recdata)
 	{
 		if (ec) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError %s")) % ErrorMessage(ec));
+			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError %s")) % ec.message());
 		} else if (sent != recdata->size) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError tosend: %d sent %d")) % recdata->size % sent);
 		}

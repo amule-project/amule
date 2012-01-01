@@ -138,6 +138,7 @@ public:
 	// explicit overloads to avoid pass-by-value even in debug builds.
 	CFormat& operator%(const wxString& value)		{ return this->operator%<const wxString&>(value); }
 	CFormat& operator%(const CFormat& value)		{ return this->operator%<const wxString&>(value); }
+	CFormat& operator%(const std::string& value)	{ return this->operator%<const wxString&>(wxString(value.c_str(), wxConvUTF8)); }
 
 	/**
 	 * Returns the resulting string.
