@@ -431,7 +431,7 @@ public:
 	#define AddLogLineU(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 // Macros for 'N'on critical logging
 	#ifdef __DEBUG__
-		#define AddDebugLogLineN(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
+		#define AddDebugLogLineN(type, string) if (theLogger.IsEnabled(type)) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
 	#else
 		#define AddDebugLogLineN(type, string)	do {} while (false)
 	#endif
