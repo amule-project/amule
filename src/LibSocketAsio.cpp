@@ -93,19 +93,18 @@ public:
 		m_closed = false;
 		m_OK = false;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Connect %s %p")) % m_IP % this);
-		ip::tcp::resolver resolver(s_io_service);
-		ip::tcp::resolver::query query(adr.GetStrIP(), adr.GetStrPort());
-		ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+		ip::tcp::endpoint endpoint(ip::address_v4::from_string(adr.GetStrIP()), adr.Service());
+
 		if (wait) {
 			wxFAIL;	// we're not supposed to do that
 			error_code ec;
-			connect(*m_socket, endpoint_iterator, ec);
+			m_socket->connect(endpoint, ec);
 			m_OK = !ec;
 			m_connected = m_OK;
 			return m_OK;
 		} else {
-			async_connect(*m_socket, endpoint_iterator, 
-				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error, endpoint_iterator));
+			m_socket->async_connect(endpoint, 
+				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error));
 			// m_OK and return are false because we are not connected yet
 			return false;
 		}
@@ -242,6 +241,30 @@ public:
 	}
 
 
+	void SetLocal(const amuleIPV4Address& local)
+	{
+		/* That's useless. Why bind a client socket to a local address? 
+		   All you get is: Can't bind socket to local endpoint 192.168.178.34:21746 : Address already in use
+		error_code ec;
+		if (!m_socket->is_open()) {
+			// Socket is usually still closed when this is called
+			m_socket->open(boost::asio::ip::tcp::v4(), ec);
+			if (ec) {
+				AddDebugLogLineC(logAsio, CFormat(wxT("Can't open socket : %s")) % ec.message());
+			}
+		}
+		ip::tcp::endpoint endpoint(ip::address_v4::from_string(local.GetStrIP()), local.Service());
+		m_socket->bind(endpoint, ec);
+		if (ec) {
+			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s:%d : %s")) 
+				% local.IPAddress() % local.Service() % ec.message());
+		} else {
+			AddDebugLogLineF(logAsio, CFormat(wxT("Bound socket to local endpoint %s:%d")) % local.IPAddress() % local.Service());
+		}
+		*/
+	}
+
+
 	void EventProcessed()
 	{
 		m_eventPending = false;
@@ -315,7 +338,7 @@ private:
 	// Completion handlers for async requests
 	//
 
-	void HandleConnect(const error_code& err, ip::tcp::resolver::iterator WXUNUSED(endpoint_iterator))
+	void HandleConnect(const error_code& err)
 	{
 		m_OK = !err;
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect %d %s")) % m_OK % m_IP);
@@ -575,27 +598,15 @@ void CLibSocket::Close()
 }
 
 
-// Replace these
-void CLibSocket::SetNotify(int)
-{
-}
-
-
-bool CLibSocket::Notify(bool)
-{
-	return false;
-}
-
-
 wxSocketError CLibSocket::LastError()
 {
 	return m_aSocket->LastError();
 }
 
 
-// lower Prio
 void CLibSocket::SetLocal(const amuleIPV4Address& local)
 {
+	m_aSocket->SetLocal(local);
 }
 
 
