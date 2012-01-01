@@ -46,6 +46,7 @@ class amuleIPV4Address;
 class CLibSocket
 {
 	friend class CAsioSocketImpl;
+	friend class CAsioSocketServerImpl;
 public:
 	CLibSocket(int flags = 0);
 	virtual ~CLibSocket();
@@ -56,15 +57,14 @@ public:
 	bool	IsOk() const;
 	bool	GetPeer(amuleIPV4Address& adr);
 	void	SetEventHandler(wxEvtHandler& handler, int id);
-//	uint32	LastCount() const;  // No. We don't have this. We return it directly with Read() and Write()
 	uint32	Read(void * buffer, uint32 nbytes);
 	uint32	Write(const void * buffer, uint32 nbytes);
 	void	Close();
 	void	Destroy();
 
-	// Replace these
-	void	SetNotify(int);
-	bool	Notify(bool);
+	// Not needed here, we always notify
+	void	SetNotify(int) {}
+	void	Notify(bool) {}
 
 	bool	Error() const;
 	wxSocketError	LastError();
@@ -85,9 +85,6 @@ public:
 	// Show we're ready for another event
 	void	EventProcessed();
 
-	// Replace the internal socket
-	void	LinkSocketImpl(class CAsioSocketImpl *);
-
 	// Get IP of client
 	const wxChar * GetIP() const;
 
@@ -101,8 +98,11 @@ public:
 	virtual void OnLost() {}
 
 private:
+	// Replace the internal socket
+	void	LinkSocketImpl(class CAsioSocketImpl *);
+
 	class CAsioSocketImpl * m_aSocket;
-	void LastCount();	// block this
+	void LastCount();	// No. We don't have this. We return it directly with Read() and Write()
 };
 
 
