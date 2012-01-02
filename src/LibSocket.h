@@ -91,6 +91,9 @@ public:
 	// True if Destroy() has been called for socket
 	virtual bool ForDeletion() const { return false; }
 
+	// Version of Boost library
+	static wxString BoostVersion();
+
 	// Handlers
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}
@@ -222,6 +225,8 @@ public:
 		wxSocketClient::Write(buffer, nbytes);
 		return wxSocketClient::LastCount();
 	}
+
+	static wxString BoostVersion() { return wxEmptyString; }
 
 private:
 	void LastCount();	// block this

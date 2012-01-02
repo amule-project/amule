@@ -36,6 +36,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/version.hpp>
 
 //
 // Do away with building Boost.System, adding lib paths...
@@ -638,6 +639,12 @@ void CLibSocket::LinkSocketImpl(class CAsioSocketImpl * socket)
 const wxChar * CLibSocket::GetIP() const
 {
 	return m_aSocket->GetIP();
+}
+
+
+wxString CLibSocket::BoostVersion()
+{
+	return CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
 }
 
 
