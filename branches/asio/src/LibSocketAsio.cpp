@@ -250,10 +250,11 @@ public:
 	}
 
 
+	//
+	// Bind socket to local endpoint if user wants to choose the local address
+	//
 	void SetLocal(const amuleIPV4Address& local)
 	{
-		/* That's useless. Why bind a client socket to a local address? 
-		   All you get is: Can't bind socket to local endpoint 192.168.178.34:21746 : Address already in use
 		error_code ec;
 		if (!m_socket->is_open()) {
 			// Socket is usually still closed when this is called
@@ -262,15 +263,20 @@ public:
 				AddDebugLogLineC(logAsio, CFormat(wxT("Can't open socket : %s")) % ec.message());
 			}
 		}
-		ip::tcp::endpoint endpoint(ip::address_v4::from_string(local.GetStrIP()), local.Service());
+		//
+		// We are using random (OS-defined) local ports.
+		// To set a constant output port, first call
+		// m_socket->set_option(socket_base::reuse_address(true));
+		// and then set the endpoint's port to it.
+		//
+		ip::tcp::endpoint endpoint(ip::address_v4::from_string(local.GetStrIP()), 0);
 		m_socket->bind(endpoint, ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s:%d : %s")) 
-				% local.IPAddress() % local.Service() % ec.message());
+			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s : %s")) 
+				% local.IPAddress() % ec.message());
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("Bound socket to local endpoint %s:%d")) % local.IPAddress() % local.Service());
+			AddDebugLogLineF(logAsio, CFormat(wxT("Bound socket to local endpoint %s")) % local.IPAddress());
 		}
-		*/
 	}
 
 
