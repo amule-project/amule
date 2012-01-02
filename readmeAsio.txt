@@ -38,17 +38,12 @@ Compilation:
 
 Get current boost lib from www.boost.org . Extract it to your favorite 
 place (like ~/amule/boost_1_48_0).
-Boost.Asio is header-only, but it requires Boost.System for its error codes 
-so we need to do a little compiling:
+Boost.Asio is header-only. It requires Boost.System for its error codes,
+but we include the single .cpp directly, so we don't need to build
+anything of boost.
 
-cd ~/amule/boost_1_48_0
-./bootstrap.sh --with-libraries=system
-./b2
-
-Then configure aMule using
+Configure aMule using
 CPPFLAGS="-I~/amule/boost_1_48_0 -DASIO_SOCKETS=1"
-LDFLAGS=-L~/amule/boost_1_48_0/stage/lib
-LIBS=-l:libboost_system.a
 
 Important: aMule prints "Asio thread started" in log and console on startup. 
 If it doesn't you have probably configured it to use wx sockets!
