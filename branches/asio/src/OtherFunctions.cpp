@@ -43,6 +43,7 @@
 #include "MD4Hash.h"
 #include "Logger.h"
 #include "BitVector.h"		// Needed for BitVector
+#include "LibSocket.h"		// Needed for BoostVersion
 
 #include "OtherFunctions.h"	// Interface declarations
 
@@ -85,6 +86,11 @@ wxString GetMuleVersion()
 	#endif
 
 	ver += CFormat(wxT(" v%d.%d.%d")) % wxMAJOR_VERSION % wxMINOR_VERSION % wxRELEASE_NUMBER;
+
+	wxString boost(CLibSocket::BoostVersion());
+	if (!boost.IsEmpty()) {
+		ver += wxT(" and Boost ") + boost;
+	}
 
 #ifdef __DEBUG__
 	ver += wxT(" (Debugging)");
