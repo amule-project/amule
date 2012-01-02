@@ -32,8 +32,16 @@
 // Windows requires that Boost headers are included before wx headers.
 // This works if precompiled headers are disabled for this file.
 
+#define BOOST_ALL_NO_LIB
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+
+//
+// Do away with building Boost.System, adding lib paths...
+// Just include the single file and be done.
+//
+#include <boost/../libs/system/src/error_code.cpp>
 
 #include "LibSocket.h"
 #include <wx/socket.h>		// wxSocketError
