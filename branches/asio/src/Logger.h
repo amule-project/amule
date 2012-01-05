@@ -289,6 +289,7 @@ private:
 	wxString m_ApplogBuf;
 	bool m_StdoutLog;
 	int  m_count;			// output line counter
+	wxMutex m_lineLock;
 
 	/**
 	 * Write all waiting log info to the logfile
@@ -299,6 +300,11 @@ private:
 	 * Really output a single line
 	 */
 	void DoLine(const wxString & line, bool toStdout, bool toGUI);
+
+	/**
+	 * Really output several lines
+	 */
+	void DoLines(const wxString & lines, bool critical, bool toStdout, bool toGUI);
 
 	DECLARE_EVENT_TABLE()
 };
