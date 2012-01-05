@@ -448,7 +448,11 @@ public:
 	#define AddLogLineC(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string)
 	#define AddLogLineCS(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string, true)
 // Macros for logging to logfile only
-	#define AddDebugLogLineF(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string, false, false)
+	#ifdef __DEBUG__
+		#define AddDebugLogLineF(type, string) if (theLogger.IsEnabled(type)) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string, false, false)
+	#else
+		#define AddDebugLogLineF(type, string)	do {} while (false)
+	#endif
 	#define AddLogLineF(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string, false, false)
 #endif
 
