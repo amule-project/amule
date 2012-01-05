@@ -186,6 +186,7 @@ namespace MuleNotify
 	void LibSocketReceive(CLibSocket * socket, int error);
 	void LibSocketLost(CLibSocket * socket);
 	void LibSocketDestroy(CLibSocket * socket);
+	void ProxySocketEvent(CLibSocket * socket, int evt);
 	void ServerTCPAccept(CLibSocketServer * socketServer);
 	void UDPSocketSend(CMuleUDPSocket * socket);
 	void UDPSocketReceive(CMuleUDPSocket * socket);
@@ -587,6 +588,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define CoreNotify_ServerTCPAccept(ptr)				MuleNotify::DoNotify(&MuleNotify::ServerTCPAccept, ptr)
 #define CoreNotify_UDPSocketSend(ptr)				MuleNotify::DoNotify(&MuleNotify::UDPSocketSend, ptr)
 #define CoreNotify_UDPSocketReceive(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::UDPSocketReceive, ptr)
+#define CoreNotify_ProxySocketEvent(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::ProxySocketEvent, ptr, val)
 
 
 //

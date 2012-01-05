@@ -81,6 +81,7 @@ public:
 		m_connected = false;
 		m_closed = false;
 		m_dying = false;
+		m_proxyState = false;
 		m_IP = wxT("?");
 		ClearError();
 		m_socket = new ip::tcp::socket(s_io_service);
@@ -97,7 +98,9 @@ public:
 
 	bool Connect(const amuleIPV4Address& adr, bool wait)
 	{
-		SetIpString(adr.IPAddress());
+		if (!m_proxyState) {
+			SetIpString(adr.IPAddress());
+		}
 		m_port = adr.Service();
 		m_closed = false;
 		m_OK = false;
@@ -317,6 +320,23 @@ public:
 		return * m_socket;
 	}
 
+	bool GetProxyState() const { return m_proxyState; }
+
+	void SetProxyState(bool state, const amuleIPV4Address * adr) 
+	{ 
+		m_proxyState = state;
+		if (state) {
+			// Start. Get the true IP for logging.
+			wxASSERT(adr);
+			SetIpString(adr->IPAddress());
+			AddDebugLogLineF(logAsio, CFormat(wxT("SetProxyState to proxy %s")) % m_IP);
+		} else {
+			// Transition from proxy to normal mode
+			AddDebugLogLineF(logAsio, CFormat(wxT("SetProxyState to normal %s")) % m_IP);
+			ClearError();
+		}
+	}
+
 private:
 	//
 	// Dispatch handlers
@@ -337,6 +357,7 @@ private:
 
 	void DispatchBackgroundRead()
 	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("DispatchBackgroundRead %s")) % m_IP);
 		m_socket->async_read_some(null_buffers(), 
 			boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error));
 		//m_socket->async_read_some(buffer(m_readBuffer, c_readBufferSize), 
@@ -469,7 +490,7 @@ private:
 
 	void PostLostEvent()
 	{
-		if (!m_libSocket->ForDeletion()) {
+		if (!m_libSocket->ForDeletion() && !m_closed) {
 			CoreNotify_LibSocketLost(m_libSocket);
 		}
 	}
@@ -509,7 +530,7 @@ private:
 	// So store our IP string in a wxString which is used nowhere.
 	// Store a pointer to its string buffer as well and use THAT everywhere.
 	//
-	void SetIpString (const wxString & ip)
+	void SetIpString(const wxString & ip)
 	{
 		m_IPstring = ip;
 		m_IP = m_IPstring.c_str();
@@ -534,6 +555,7 @@ private:
 	bool			m_connected;
 	bool			m_closed;
 	bool			m_dying;
+	bool			m_proxyState;
 };
 
 
@@ -651,6 +673,18 @@ const wxChar * CLibSocket::GetIP() const
 wxString CLibSocket::BoostVersion()
 {
 	return CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
+}
+
+
+bool CLibSocket::GetProxyState() const
+{
+	return m_aSocket->GetProxyState();
+}
+
+
+void CLibSocket::SetProxyState(bool state, const amuleIPV4Address * adr)
+{
+	m_aSocket->SetProxyState(state, adr);
 }
 
 

@@ -94,11 +94,16 @@ public:
 	// Version of Boost library
 	static wxString BoostVersion();
 
+	// Get/set proxy state
+	bool GetProxyState() const;
+	void SetProxyState(bool state, const amuleIPV4Address * adr = 0);
+
 	// Handlers
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}
 	virtual void OnReceive(int) {}
 	virtual void OnLost() {}
+	virtual void OnProxyEvent(int) {}
 
 private:
 	// Replace the internal socket
@@ -207,12 +212,14 @@ public:
 
 	// not actually called
 	const wxChar * GetIP() const { return wxEmptyString; }
-	void	EventProcessed() {}
+	void EventProcessed() {}
+	bool GetProxyState() const { return false; }
 	// unused Handlers
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}
 	virtual void OnReceive(int) {}
 	virtual void OnLost() {}
+	virtual void OnProxyEvent(int) {}
 
 	uint32 Read(void *buffer, wxUint32 nbytes)
 	{

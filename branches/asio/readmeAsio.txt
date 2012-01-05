@@ -14,19 +14,13 @@ And with ASIO sockets it should perform better at least in some aspects
 There are no plans to "boostify" aMule. Boost is encapsulated in the implementation
 and not even included in the headers.
 
-The goal is far from reached. THIS IS ONLY AN EXPERIMENTAL PROTOTYPE.
-
-What it does:
-- compile aMule, amuled and amulegui in debug mode in MSVC10 and Linux
-- run it in Windows and Linux
-It's been running for a night now in my Linux VM without crashing. Performance is as 
-usual.
+Implementation is near complete. It's been tested briefly in Windows and Linux.
+More testing is required.
 
 Not done yet / problems:
 - configure
 - better error handling/error messages
 - further abstraction (replace wx socket constants in code)
-- proxy is disabled (and may remain so in ASIO mode)
 - AsyncDNS is still wx
 
 If you like to play with new stuff I'd like you to try it out and give me feedback.

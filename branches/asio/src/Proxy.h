@@ -243,7 +243,7 @@ public:
 	static wxString	&NewName(wxString &s, CProxyCommand cmd);
 
 	/* Interface */
-	bool		Start(const wxIPaddress &peerAddress, wxSocketClient *proxyClientSocket);
+	bool		Start(const amuleIPV4Address &peerAddress, CLibSocket *proxyClientSocket);
 	t_sm_state	HandleEvent(t_sm_event event);
 	void		AddDummyEvent();
 	void		ReactivateSocket();
@@ -253,8 +253,8 @@ public:
 	bool		IsEndState() const			{ return GetState() == PROXY_STATE_END; }
 
 protected:
-	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
-	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer);
+	uint32		ProxyWrite(CLibSocket &socket, const void *buffer, wxUint32 nbytes);
+	uint32		ProxyRead(CLibSocket &socket, void *buffer);
 	bool		CanReceive() const;
 	bool		CanSend() const;
 	//
@@ -272,13 +272,12 @@ protected:
 	bool			m_canSend;
 	bool			m_ok;
 	unsigned int		m_lastRead;
-	unsigned int		m_lastWritten;
 	wxSocketError		m_lastError;
 	//
 	// Will be initialized at Start()
 	//
-	wxIPaddress		*m_peerAddress;
-	wxSocketClient		*m_proxyClientSocket;
+	amuleIPV4Address	*m_peerAddress;
+	CLibSocket			*m_proxyClientSocket;
 	amuleIPV4Address	*m_proxyBoundAddress;
 	amuleIPV4Address	m_proxyBoundAddressIPV4;
 	//wxIPV6address		m_proxyBoundAddressIPV6;
@@ -441,6 +440,7 @@ public:
 	/* Destructor */
 	~CProxySocket();
 
+#ifndef ASIO_SOCKETS
 	/* I know, this is not very good, because SetEventHandler is not
 	 * virtual in wxSocketBase, but I need to GetEventHandler in Proxy.cpp,
 	 * so...
@@ -464,6 +464,9 @@ public:
 		m_socketEventHandlerId = m_savedSocketEventHandlerId;
 		SetEventHandler(*m_socketEventHandler, m_socketEventHandlerId);
 	}
+#endif
+	// Asio mode
+	virtual void	OnProxyEvent(int evt);
 
 	/* Interface */
 	void		SetProxyData(const CProxyData *proxyData);
@@ -471,7 +474,7 @@ public:
 	char		*GetBuffer()		{ return m_proxyStateMachine->GetBuffer(); }
 	amuleIPV4Address	&GetProxyBoundAddress(void) const
 						{ return m_proxyStateMachine->GetProxyBoundAddress(); }
-	bool Start(const wxIPaddress &peerAddress);
+	bool Start(const amuleIPV4Address &peerAddress);
 	bool ProxyIsCapableOf(CProxyCommand proxyCommand) const;
 	bool ProxyNegotiationIsOver() const	{ return m_proxyStateMachine->IsEndState(); }
 	CDatagramSocketProxy *GetUDPSocket() const { return m_udpSocket; }
