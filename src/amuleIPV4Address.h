@@ -38,6 +38,11 @@ public:
 	amuleIPV4Address() {}
 	amuleIPV4Address(const wxIPV4address &a) : wxIPV4address(a) {}
 
+	virtual wxString Hostname()
+	{
+		return wxIPV4address::Hostname();
+	}
+
 	virtual bool Hostname(const wxString& name)
 	{
 		// Some people are sometimes fools.

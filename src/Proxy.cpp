@@ -23,10 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef ASIO_SOCKETS
-#define PROXY_BROKEN		// Let's get Proxy back to functional AFTER ASIO works
-#endif
-
 #include "Proxy.h"		/* for Interface		*/
 
 #include <common/EventIDs.h>
@@ -35,6 +31,7 @@
 #include "Logger.h"		/* for AddDebugLogLineN		*/
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
 #include <common/StringFunctions.h>	/* for unicode2char */
+#include "GuiEvents.h"
 
 //------------------------------------------------------------------------------
 // CProxyData
@@ -115,6 +112,15 @@ void CProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 	sock->m_proxyStateMachine->Clock();
 }
 
+//
+// In Asio mode the event handler is:
+//
+void CProxySocket::OnProxyEvent(int evt)
+{
+	m_proxyStateMachine->Schedule(evt);
+	m_proxyStateMachine->Clock();
+}
+
 //------------------------------------------------------------------------------
 // CProxyStateMachine
 //------------------------------------------------------------------------------
@@ -134,7 +140,6 @@ m_canReceive(false),
 m_canSend(false),
 m_ok(true),
 m_lastRead(0),
-m_lastWritten(0),
 // Will be initialized at Start()
 m_peerAddress(NULL),
 m_proxyClientSocket(NULL),
@@ -169,22 +174,25 @@ wxString &CProxyStateMachine::NewName(wxString &s, CProxyCommand proxyCommand)
 	return s;
 }
 
-bool CProxyStateMachine::Start(const wxIPaddress &peerAddress, wxSocketClient *proxyClientSocket)
+bool CProxyStateMachine::Start(const amuleIPV4Address &peerAddress, CLibSocket *proxyClientSocket)
 {
 	m_proxyClientSocket = proxyClientSocket;
-	try {
-		const wxIPV4address &peer = dynamic_cast<const wxIPV4address &>(peerAddress);
-		m_peerAddress = new amuleIPV4Address(peer);
-	} catch (const std::bad_cast& WXUNUSED(e)) {
-		// Should process other types of wxIPAddres before quitting
-		AddDebugLogLineN(logProxy, wxT("(1)bad_cast exception!"));
-		wxFAIL;
-		return false;
-	}
+	m_peerAddress = new amuleIPV4Address(peerAddress);
+	//try {
+	//	const wxIPV4address &peer = dynamic_cast<const wxIPV4address &>(peerAddress);
+	//	m_peerAddress = new amuleIPV4Address(peer);
+	//} catch (const std::bad_cast& WXUNUSED(e)) {
+	//	// Should process other types of wxIPAddres before quitting
+	//	AddDebugLogLineN(logProxy, wxT("(1)bad_cast exception!"));
+	//	wxFAIL;
+	//	return false;
+	//}
 
 	// To run the state machine, return and just let the events start to happen.
 	return true;
 }
+
+static const int wxSOCKET_DUMMY_VALUE = wxSOCKET_INPUT + wxSOCKET_OUTPUT + wxSOCKET_CONNECTION + wxSOCKET_LOST;
 
 t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 {
@@ -213,8 +221,12 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 		m_ok = false;
 		break;
 
+	case wxSOCKET_DUMMY_VALUE:
+		AddDebugLogLineN(logProxy, wxT("Dummy event"));
+		break;
+
 	default:
-		AddDebugLogLineN(logProxy, wxT("Unknown event"));
+		AddDebugLogLineN(logProxy, CFormat(wxT("Unknown event %d")) % event);
 		break;
 	}
 
@@ -231,13 +243,18 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 
 void CProxyStateMachine::AddDummyEvent()
 {
+#ifdef ASIO_SOCKETS
+	CProxySocket *s = dynamic_cast<CProxySocket *>(m_proxyClientSocket);
+	if (s) {	// should always be
+		CoreNotify_ProxySocketEvent(s, wxSOCKET_DUMMY_VALUE);
+	}
+#else
 	wxSocketEvent e(ID_PROXY_SOCKET_EVENT);
 	// Make sure this is an unknown event :)
-	e.m_event = (wxSocketNotify)(
-		wxSOCKET_INPUT + wxSOCKET_OUTPUT +
-		wxSOCKET_CONNECTION + wxSOCKET_LOST);
+	e.m_event = (wxSocketNotify)(wxSOCKET_DUMMY_VALUE);
 	e.SetEventObject(m_proxyClientSocket);
 	g_proxyEventHandler.AddPendingEvent(e);
+#endif
 }
 
 /*
@@ -267,8 +284,18 @@ void CProxyStateMachine::ReactivateSocket()
 		// No need to call RestoreState(), that socket will no longer
 		// be used after proxy negotiation.
 	} else {
-#ifndef PROXY_BROKEN
 		// The original socket was a TCP socket
+#ifdef ASIO_SOCKETS
+		if (s->GetProxyState()) {	// somehow this gets called twice ?
+			s->SetProxyState(false);
+			CoreNotify_LibSocketConnect(s, 0);
+			if (m_ok) {
+				CoreNotify_LibSocketSend(s, 0);
+			} else {
+				CoreNotify_LibSocketLost(s);
+			}
+		}
+#else
 		s->RestoreEventHandler();
 		wxSocketEvent e(s->GetEventHandlerId());
 		e.m_event = wxSOCKET_CONNECTION;
@@ -286,10 +313,9 @@ void CProxyStateMachine::ReactivateSocket()
 	}
 }
 
-wxSocketBase &CProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes)
+uint32 CProxyStateMachine::ProxyWrite(CLibSocket &socket, const void *buffer, wxUint32 nbytes)
 {
-	wxSocketBase &ret = socket.Write(buffer, nbytes);
-	m_lastWritten = m_proxyClientSocket->LastCount();
+	uint32 written = socket.Write(buffer, nbytes);
 	/* Set the status of this operation */
 	m_lastError = wxSOCKET_NOERROR;
 	m_ok = !m_proxyClientSocket->Error();
@@ -300,16 +326,16 @@ wxSocketBase &CProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *b
 			m_canSend = false;
 		}
 	}
+	AddDebugLogLineN(logProxy, CFormat(wxT("ProxyWrite %d %d ok %d cansend %d")) % nbytes % written % m_ok % m_canSend);
 
-	return ret;
+	return written;
 }
 
-wxSocketBase &CProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer)
+uint32 CProxyStateMachine::ProxyRead(CLibSocket &socket, void *buffer)
 {
 	/* Always try to read the full buffer. That explicitly demands that
 	 * the socket has the flag wxSOCKET_NONE. */
-	wxSocketBase &ret = socket.Read(buffer, PROXY_BUFFER_SIZE);
-	m_lastRead = m_proxyClientSocket->LastCount();
+	m_lastRead = socket.Read(buffer, PROXY_BUFFER_SIZE);
 	/* Set the status of this operation */
 	m_lastError = wxSOCKET_NOERROR;
 	m_ok = !m_proxyClientSocket->Error();
@@ -320,26 +346,24 @@ wxSocketBase &CProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer)
 			m_canReceive = false;
 		}
 	}
+#ifdef ASIO_SOCKETS
+	// We will get a new event right away if data is left, or when new data gets available.
+	// So block for now.
+	m_canReceive = false;
+#endif
+	AddDebugLogLineN(logProxy, CFormat(wxT("ProxyRead %d ok %d canrec %d")) % m_lastRead % m_ok % m_canReceive);
 
-	return ret;
+	return m_lastRead;
 }
 
 bool CProxyStateMachine::CanReceive() const
 {
-#ifdef AMULE_DAEMON
-	return true;
-#else
 	return m_canReceive;
-#endif
 }
 
 bool CProxyStateMachine::CanSend() const
 {
-#ifdef AMULE_DAEMON
-	return true;
-#else
 	return m_canSend;
-#endif
 }
 
 //------------------------------------------------------------------------------
@@ -1213,9 +1237,6 @@ CProxySocket::~CProxySocket()
 
 void CProxySocket::SetProxyData(const CProxyData *proxyData)
 {
-#ifdef PROXY_BROKEN
-	proxyData = NULL;
-#endif
 	m_useProxy = proxyData != NULL && proxyData->m_proxyEnable;
 	if (proxyData) {
 		m_proxyData = *proxyData;
@@ -1226,10 +1247,10 @@ void CProxySocket::SetProxyData(const CProxyData *proxyData)
 	}
 }
 
-bool CProxySocket::Start(const wxIPaddress &peerAddress)
+bool CProxySocket::Start(const amuleIPV4Address &peerAddress)
 {
-#ifdef PROXY_BROKEN
-	return false;
+#ifdef ASIO_SOCKETS
+	SetProxyState(true, &peerAddress);
 #else
 	SaveState();
 	// Important note! SaveState()/RestoreState() DO NOT save/restore
@@ -1243,12 +1264,10 @@ bool CProxySocket::Start(const wxIPaddress &peerAddress)
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
+#endif
 	Connect(m_proxyAddress, false);
 	SetFlags(wxSOCKET_NONE);
-	bool ok = m_proxyStateMachine->Start(peerAddress, this);
-
-	return ok;
-#endif
+	return m_proxyStateMachine->Start(peerAddress, this);
 }
 
 bool CProxySocket::ProxyIsCapableOf(CProxyCommand proxyCommand) const
