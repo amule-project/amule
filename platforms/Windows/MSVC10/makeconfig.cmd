@@ -21,11 +21,20 @@ echo SVNDATE is %svnv%
 echo #define SVNDATE "rev. %svnv%">>config.h
 echo #define VERSION "SVN">>config.h
 echo #define __PRERELEASE__>>config.h
-goto finish
+goto boost1
 
 :nosvnversion
 echo release build, version from ^<common/ClientVersion.h^>
 echo #include ^<src/include/common/ClientVersion.h^> >>config.h
+
+:boost1
+if not exist ..\boost\boost\asio.hpp goto boost2
+if not exist ..\boost\libs\system\src\error_code.cpp goto boost2
+echo Boost detected, using Asio sockets
+echo #define ASIO_SOCKETS>>config.h
+goto finish
+:boost2
+echo no Boost found, using wx sockets
 
 :finish
 echo #define CRYPTOPP_INCLUDE_PREFIX	../cryptopp>>config.h

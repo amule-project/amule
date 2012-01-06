@@ -27,6 +27,10 @@
 #ifndef __LIBSOCKET_H__
 #define __LIBSOCKET_H__
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"		// defines ASIO_SOCKETS
+#endif
+
 #ifdef ASIO_SOCKETS
 
 #include <wx/event.h>
