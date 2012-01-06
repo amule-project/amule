@@ -26,32 +26,18 @@
 #ifndef AMULEIPV4ADDRESS_H
 #define AMULEIPV4ADDRESS_H
 
-#include <string>
-#include <wx/object.h>			// Needed by wx/sckaddr.h
+#include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 
-#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
-#include <common/StringFunctions.h> // Needed for unicode2char
-
-class amuleIPV4Address : public wxIPV4address
+class amuleIPV4Address
 {
 public:
-	amuleIPV4Address() {}
-	amuleIPV4Address(const wxIPV4address &a) : wxIPV4address(a) {}
+	amuleIPV4Address();
+	amuleIPV4Address(const amuleIPV4Address &a);
+	amuleIPV4Address(const class CamuleIPV4Endpoint &ep);
+	virtual ~amuleIPV4Address();
+	const amuleIPV4Address& operator = (const amuleIPV4Address &a);
 
-	virtual wxString Hostname()
-	{
-		return wxIPV4address::Hostname();
-	}
-
-	virtual bool Hostname(const wxString& name)
-	{
-		// Some people are sometimes fools.
-		if (name.IsEmpty()) {
-			return false;
-		}
-
-		return wxIPV4address::Hostname(name);
-	}
+	virtual bool Hostname(const wxString& name);
 
 	virtual bool Hostname(uint32 ip)
 	{
@@ -60,25 +46,31 @@ public:
 			return false;
 		}
 
-		return wxIPV4address::Hostname(Uint32toStringIP(ip));
+		return Hostname(Uint32toStringIP(ip));
 	}
 
-	virtual bool Hostname(std::string name)
-	{
-		return wxIPV4address::Hostname(wxString(name.c_str(), wxConvUTF8));
-	}
 
-	std::string GetStrIP() const
-	{
-		return std::string(unicode2char(IPAddress()));
-	}
+	// Set the port to that corresponding to the specified service.
+	// Returns true on success, false if something goes wrong (invalid service).
+	virtual bool Service(uint16 service);
 
-	std::string GetStrPort() const
-	{
-		wxString port;
-		port << Service();
-		return std::string(unicode2char(port));
-	}
+	// Returns the current service.
+	virtual uint16 Service() const;
+
+	// Determines if current address is set to localhost.
+	virtual bool IsLocalHost() const;
+
+	// Returns a wxString containing the IP address.
+	virtual wxString IPAddress() const;
+
+	// Set address to any of the addresses of the current machine.
+	virtual bool AnyAddress();
+
+	const class CamuleIPV4Endpoint & GetEndpoint() const;
+	class CamuleIPV4Endpoint & GetEndpoint();
+
+private:
+	class CamuleIPV4Endpoint * m_endpoint;
 };
 
 #endif // AMULEIPV4ADDRESS_H

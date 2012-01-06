@@ -63,6 +63,14 @@ static 	io_service s_io_service;
  * ASIO Client TCP socket implementation
  */
 
+class CamuleIPV4Endpoint : public ip::tcp::endpoint {
+public:
+	CamuleIPV4Endpoint() {}
+
+	CamuleIPV4Endpoint(const CamuleIPV4Endpoint & impl) : ip::tcp::endpoint(impl) {}
+	CamuleIPV4Endpoint(const ip::udp::endpoint & ep) { address(ep.address()); port(ep.port()); }
+};
+
 class CAsioSocketImpl
 {
 public:
@@ -105,17 +113,16 @@ public:
 		m_closed = false;
 		m_OK = false;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Connect %s %p")) % m_IP % this);
-		ip::tcp::endpoint endpoint(ip::address_v4::from_string(adr.GetStrIP()), adr.Service());
 
 		if (wait) {
 			wxFAIL;	// we're not supposed to do that
 			error_code ec;
-			m_socket->connect(endpoint, ec);
+			m_socket->connect(adr.GetEndpoint(), ec);
 			m_OK = !ec;
 			m_connected = m_OK;
 			return m_OK;
 		} else {
-			m_socket->async_connect(endpoint, 
+			m_socket->async_connect(adr.GetEndpoint(), 
 				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error));
 			// m_OK and return are false because we are not connected yet
 			return false;
@@ -272,7 +279,8 @@ public:
 		// m_socket->set_option(socket_base::reuse_address(true));
 		// and then set the endpoint's port to it.
 		//
-		ip::tcp::endpoint endpoint(ip::address_v4::from_string(local.GetStrIP()), 0);
+		CamuleIPV4Endpoint endpoint(local.GetEndpoint());
+		endpoint.port(0);
 		m_socket->bind(endpoint, ec);
 		if (ec) {
 			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s : %s")) 
@@ -705,11 +713,9 @@ public:
 		m_acceptError = false;
 
 		try {
-			ip::address_v4 ipadr = ip::address_v4::from_string(adr.GetStrIP());
-			ip::tcp::endpoint endpoint(ipadr, adr.Service());
-			open(endpoint.protocol());
+			open(adr.GetEndpoint().protocol());
 			set_option(ip::tcp::acceptor::reuse_address(true));
-			bind(endpoint);
+			bind(adr.GetEndpoint());
 			listen();
 			StartAccept();
 			m_ok = true;
@@ -908,8 +914,7 @@ public:
 		m_OK = true;
 
 		try {
-			ip::address_v4 addr = ip::address_v4::from_string(address.GetStrIP());
-			ip::udp::endpoint endpoint(addr, address.Service());
+			ip::udp::endpoint endpoint(address.GetEndpoint().address(), address.Service());
 			m_socket = new ip::udp::socket(s_io_service, endpoint);
 			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % address.IPAddress() % address.Service());
 			StartBackgroundRead();
@@ -1017,8 +1022,7 @@ private:
 
 	void DispatchSendTo(CUDPData * recdata)
 	{
-		ip::address_v4 addr = ip::address_v4::from_string(recdata->ipadr.GetStrIP());
-		ip::udp::endpoint endpoint(addr, recdata->ipadr.Service());
+		ip::udp::endpoint endpoint(recdata->ipadr.GetEndpoint().address(), recdata->ipadr.Service());
 
 		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size 
 			% endpoint.address().to_string() % endpoint.port());
@@ -1040,11 +1044,8 @@ private:
 			AddDebugLogLineN(logAsio, wxT("UDP HandleReadError no handler"));
 		} else {
 
-			amuleIPV4Address ipadr;
-			ipadr.Hostname(m_receiveEndpoint.address().to_string());
-			uint16 port = m_receiveEndpoint.port();
-			ipadr.Service(port);
-			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleRead %d %s:%d")) % received % ipadr.IPAddress() % port);
+			amuleIPV4Address ipadr = amuleIPV4Address(CamuleIPV4Endpoint(m_receiveEndpoint));
+			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleRead %d %s:%d")) % received % ipadr.IPAddress() % ipadr.Service());
 
 			// create our read buffer
 			CUDPData * recdata = new CUDPData(m_readBuffer, received, ipadr);
@@ -1209,6 +1210,116 @@ void * CAsioService::Entry()
 	AddDebugLogLineN(logAsio, wxT("Asio thread stopped"));
 
 	return NULL;
+}
+
+
+
+/**
+ * amuleIPV4Address
+ */
+
+amuleIPV4Address::amuleIPV4Address()
+{
+	m_endpoint = new CamuleIPV4Endpoint();
+}
+
+amuleIPV4Address::amuleIPV4Address(const amuleIPV4Address &a)
+{
+	*this = a;
+}
+
+amuleIPV4Address::amuleIPV4Address(const CamuleIPV4Endpoint &ep)
+{
+	m_endpoint = new CamuleIPV4Endpoint(ep);
+}
+
+amuleIPV4Address::~amuleIPV4Address()
+{
+	delete m_endpoint;
+}
+
+const amuleIPV4Address& amuleIPV4Address:: operator = (const amuleIPV4Address &a)
+{
+	m_endpoint = new CamuleIPV4Endpoint(* a.m_endpoint);
+	return *this;
+}
+
+bool amuleIPV4Address::Hostname(const wxString& name)
+{
+	if (name.IsEmpty()) {
+		return false;
+	}
+	// This is usually just an IP.
+	std::string sname(unicode2char(name));
+	error_code ec;
+	ip::address_v4 adr = ip::address_v4::from_string(sname, ec);
+	if (!ec) {
+		m_endpoint->address(adr);
+		return true;
+	}
+	AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") failed, not an IP address %s")) % name % ec.message());
+
+	// Try to resolve (sync). Normally not required. Unless you type in your hostname as "local IP address" or something.
+	error_code ec2;
+	ip::tcp::resolver res(s_io_service);
+	// We only want to get IPV4 addresses.
+	ip::tcp::resolver::query query(ip::tcp::v4(), sname, "");
+	ip::tcp::resolver::iterator endpoint_iterator = res.resolve(query, ec2);
+	if (ec2) {
+		AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolve failed: %s")) % name % ec2.message());
+		return false;
+	}
+	if (endpoint_iterator == ip::tcp::resolver::iterator()) {
+		AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolve failed: no address found")) % name);
+		return false;
+	}
+	m_endpoint->address(endpoint_iterator->endpoint().address());
+	AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolved to %s")) % name % IPAddress());
+	return true;
+}
+
+bool amuleIPV4Address::Service(uint16 service)
+{
+	if (service == 0) {
+		return false;
+	}
+	m_endpoint->port(service);
+	return true;
+}
+
+uint16 amuleIPV4Address::Service() const
+{
+	return m_endpoint->port();
+}
+
+bool amuleIPV4Address::IsLocalHost() const
+{
+	return m_endpoint->address().is_loopback();
+}
+
+wxString amuleIPV4Address::IPAddress() const
+{
+	return CFormat(wxT("%s")) % m_endpoint->address().to_string();
+}
+
+// "Set address to any of the addresses of the current machine."
+// This just sets the address to 0.0.0.0 .
+// wx does the same.
+bool amuleIPV4Address::AnyAddress()
+{
+	m_endpoint->address(ip::address_v4::any());
+	AddDebugLogLineN(logAsio, CFormat(wxT("AnyAddress: set to %s")) % IPAddress());
+	return true;
+}
+
+const CamuleIPV4Endpoint & amuleIPV4Address::GetEndpoint() const
+{
+	return * m_endpoint;
+}
+
+CamuleIPV4Endpoint & amuleIPV4Address::GetEndpoint()
+{
+	return * m_endpoint;
 }
 
 #endif
