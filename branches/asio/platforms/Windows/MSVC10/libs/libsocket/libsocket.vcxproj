@@ -18,8 +18,15 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\src\LibSocketAsio.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\LibSocketWX.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\src\LibSocket.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5A9EC6A5-68A3-43C8-960E-F7F03B16F1D1}</ProjectGuid>
+    <ProjectGuid>{5A9EC6A5-68A3-43C8-960E-F7F99B16F1D1}</ProjectGuid>
     <RootNamespace>libmuleec</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -73,7 +80,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -83,15 +90,12 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -99,15 +103,12 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug29|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswud;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;__DEBUG__;_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -117,15 +118,12 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release29|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\boost;$(SolutionDir)..\..\..\..\wxWidgets29\include;$(SolutionDir)..\..\..\..\wxWidgets29\lib\vc_lib\mswu;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\..\wxWidgets29\src\zlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_LIB;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -133,36 +131,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECMuleSocket.cpp" />
-    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECPacket.cpp" />
-    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECSocket.cpp" />
-    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECSpecialTags.cpp" />
-    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECTag.cpp" />
-    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\RemoteConnect.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECCodes.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECFileConfig.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECID.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECMuleSocket.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECPacket.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECSocket.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECSpecialTags.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECTag.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECTagTypes.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\RemoteConnect.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\libmulecommon\libmulecommon.vcxproj">
-      <Project>{293e6133-239a-4ed4-838e-9182b07c6b35}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

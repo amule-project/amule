@@ -426,9 +426,6 @@
     <ClCompile Include="..\..\..\..\src\ClientRef.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\LibSocketAsio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PCH.h">

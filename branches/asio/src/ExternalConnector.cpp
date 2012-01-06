@@ -665,4 +665,20 @@ void CaMuleExternalConnector::OnAssertFailure(const wxChar *file, int line, cons
 #endif
 }
 #endif
+
+namespace MuleNotify
+{
+	void HandleNotification(const class CMuleNotiferBase&) {}
+	void HandleNotificationAlways(const class CMuleNotiferBase&) {}
+	void UDPSocketSend(class CMuleUDPSocket *) {}
+	void UDPSocketReceive(class CMuleUDPSocket *) {}
+	void LibSocketConnect(class CLibSocket *, int) {}
+	void LibSocketSend(class CLibSocket *, int) {}
+	void LibSocketReceive(class CLibSocket *, int) {}
+	void LibSocketLost(class CLibSocket *) {}
+	void LibSocketDestroy(class CLibSocket *) {}
+	void ProxySocketEvent(class CLibSocket *, int) {}
+	void ServerTCPAccept(class CLibSocketServer *) {}
+}
+
 // File_checked_for_headers
