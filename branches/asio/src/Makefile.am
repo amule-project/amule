@@ -78,7 +78,10 @@ libmuleappcommon_a_SOURCES = \
 	TerminationProcess.cpp \
 	Timer.cpp
 
+# if Asio
 libmuleappcommon_a_SOURCES += LibSocketAsio.cpp
+# else
+libmuleappcommon_a_SOURCES += LibSocketWX.cpp
 
 libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
@@ -275,7 +278,7 @@ amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 amulegui_DEPENDENCIES = $(common_deps) $(gui_deps)
 amulegui_CPPFLAGS = $(AM_CPPFLAGS) $(gui_flags) $(common_flags) -DCLIENT_GUI
 amulegui_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
-amulegui_LDADD = $(gui_libs) $(common_libs) $(WXBASE_LIBS)
+amulegui_LDADD = $(common_libs) $(gui_libs)
 
 amuled_DEPENDENCIES = $(core_deps) $(common_deps)
 amuled_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON

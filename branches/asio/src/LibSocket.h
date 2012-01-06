@@ -221,6 +221,11 @@ public:
 	virtual void OnLost() {}
 	virtual void OnProxyEvent(int) {}
 
+	// methods using amuleIPV4Address
+	bool Connect(amuleIPV4Address& adr, bool wait);		// Yes. adr is not const.
+	bool GetPeer(amuleIPV4Address& adr);
+	void SetLocal(amuleIPV4Address& local);				// Same here.
+
 	uint32 Read(void *buffer, wxUint32 nbytes)
 	{
 		wxSocketClient::Read(buffer, nbytes);
@@ -243,7 +248,7 @@ private:
 class CLibSocketServer : public wxSocketServer
 {
 public:
-	CLibSocketServer(const amuleIPV4Address &address,	wxSocketFlags flags) : wxSocketServer(address, flags) {}
+	CLibSocketServer(const amuleIPV4Address &address, wxSocketFlags flags);
 
 	CLibSocket * Accept(bool wait) { return (CLibSocket *) wxSocketServer::Accept(wait); }
 
@@ -257,19 +262,11 @@ public:
 class CLibUDPSocket : public wxDatagramSocket
 {
 public:
-	CLibUDPSocket(amuleIPV4Address &address, wxSocketFlags flags) : wxDatagramSocket(address, flags) {}
+	CLibUDPSocket(amuleIPV4Address &address, wxSocketFlags flags);
 
-	virtual uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes)
-	{
-		wxDatagramSocket::RecvFrom(addr, buf, nBytes);
-		return wxDatagramSocket::LastCount();
-	}
+	virtual uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes);
 
-	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes)
-	{
-		wxDatagramSocket::SendTo(addr, buf, nBytes);
-		return wxDatagramSocket::LastCount();
-	}
+	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes);
 
 private:
 	void LastCount();	// block this

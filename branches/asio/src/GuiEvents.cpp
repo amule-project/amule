@@ -775,7 +775,13 @@ namespace MuleNotify
 
 	void UDPSocketSend(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
 	{
-#ifndef CLIENT_GUI
+#ifdef CLIENT_GUI
+		// HACK: LibSocketWX is needed in libec, but discarded from libmuleappcommon before,
+		//       unless we use something from it in a non-lib module.
+		//       I could have done LOTS of full-non-lib builds in the time required to track
+		//       this down. >:(
+		amuleIPV4Address dummy;		// function is never called in amulegui anyway
+#else
 		AddDebugLogLineF(logAsio, wxT("UDPSocketSend"));
 		socket->OnSend(0);
 #endif

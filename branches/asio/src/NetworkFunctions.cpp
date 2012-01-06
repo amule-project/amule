@@ -25,6 +25,7 @@
 //
 
 #include "NetworkFunctions.h"	// Interface declaration
+#include "amuleIPV4Address.h"
 
 bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 {
@@ -77,16 +78,15 @@ uint32 StringHosttoUint32(const wxString &Host)
 	if (Host.IsEmpty()) {
 		return 0;
 	}
-	// Why using native things when we have a wrapper for it :)
-	wxIPV4address solver;
-	solver.Hostname(Host);
-	uint32 result = StringIPtoUint32(solver.IPAddress());
-	if (result != (uint32)-1) {
-		return result;
-	} else {
-		// This actually happens on wrong hostname
-		return 0;
+	amuleIPV4Address solver;
+	if (solver.Hostname(Host)) {
+		uint32 result = StringIPtoUint32(solver.IPAddress());
+		if (result != (uint32)-1) {	// should not happen
+			return result;
+		}
 	}
+	// This actually happens on wrong hostname
+	return 0;
 }
 
 /**
