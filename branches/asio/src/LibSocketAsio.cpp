@@ -72,7 +72,14 @@ public:
 	CamuleIPV4Endpoint() {}
 
 	CamuleIPV4Endpoint(const CamuleIPV4Endpoint & impl) : ip::tcp::endpoint(impl) {}
+	CamuleIPV4Endpoint(const ip::tcp::endpoint & ep) { * this = ep; }
 	CamuleIPV4Endpoint(const ip::udp::endpoint & ep) { address(ep.address()); port(ep.port()); }
+
+	const CamuleIPV4Endpoint& operator = (const ip::tcp::endpoint & ep)
+	{
+		* (ip::tcp::endpoint *) this = ep;
+		return *this;
+	}
 };
 
 class CAsioSocketImpl
@@ -118,7 +125,7 @@ public:
 	bool Connect(const amuleIPV4Address& adr, bool wait)
 	{
 		if (!m_proxyState) {
-			SetIpString(adr.IPAddress());
+			SetIp(adr);
 		}
 		m_port = adr.Service();
 		m_closed = false;
@@ -275,8 +282,9 @@ public:
 
 	bool GetPeer(amuleIPV4Address& adr)
 	{
-		return adr.Hostname(m_IP)
-				&& adr.Service(m_port);
+		adr = m_IPAddress;
+		AddDebugLogLineF(logAsio, CFormat(wxT("GetPeer : %s")) % adr.IPAddress());
+		return true;
 	}
 
 
@@ -326,18 +334,18 @@ public:
 		StartBackgroundRead();
 	}
 
-	void UpdateIP()
+	bool UpdateIP()
 	{
 		error_code ec;
-		ip::tcp::endpoint endpoint = m_socket->remote_endpoint(ec);
+		amuleIPV4Address addr = CamuleIPV4Endpoint(m_socket->remote_endpoint(ec));
 		if (SetError(ec)) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UpdateIP failed %p %s")) % this % ec.message());
-			return;
+			return false;
 		}
-		ip::address adr = endpoint.address();
-		SetIpString(wxString(adr.to_string().c_str(), wxConvUTF8));
-		m_port = endpoint.port();
+		SetIp(addr);
+		m_port = addr.Service();
 		AddDebugLogLineF(logAsio, CFormat(wxT("UpdateIP %s %d %p")) % m_IP % m_port % this);
+		return true;
 	}
 
 	const wxChar * GetIP() const { return m_IP; }
@@ -356,7 +364,7 @@ public:
 		if (state) {
 			// Start. Get the true IP for logging.
 			wxASSERT(adr);
-			SetIpString(adr->IPAddress());
+			SetIp(*adr);
 			AddDebugLogLineF(logAsio, CFormat(wxT("SetProxyState to proxy %s")) % m_IP);
 		} else {
 			// Transition from proxy to normal mode
@@ -577,16 +585,18 @@ private:
 	// So store our IP string in a wxString which is used nowhere.
 	// Store a pointer to its string buffer as well and use THAT everywhere.
 	//
-	void SetIpString(const wxString & ip)
+	void SetIp(const amuleIPV4Address& adr)
 	{
-		m_IPstring = ip;
+		m_IPAddress = adr;
+		m_IPstring = m_IPAddress.IPAddress();
 		m_IP = m_IPstring.c_str();
 	}
 
 	CLibSocket	*	m_libSocket;
 	ip::tcp::socket	*	m_socket;
-	wxString		m_IPstring;			// remote IP
-	const wxChar *	m_IP;				
+	amuleIPV4Address m_IPAddress;		// remote IP
+	wxString		m_IPstring;			// as String (use nowhere because of threading!)
+	const wxChar *	m_IP;				// as char*  (use in debug logs)
 	uint16			m_port;				// remote port
 	bool			m_OK;
 	bool			m_Error;
@@ -796,7 +806,7 @@ public:
 		accept(m_currentSocket->GetAsioSocket(), ec);
 		// back to blocking
 		non_blocking(false);
-		if (ec) {
+		if (ec || !m_currentSocket->UpdateIP()) {
 			// nothing there
 			m_socketAvailable = false;
 			// start getting another one
@@ -805,7 +815,6 @@ public:
 		} else {
 			// we got another socket right away
 			m_socketAvailable = true;	// it is already true, but this improves readability
-			m_currentSocket->UpdateIP();
 			AddDebugLogLineF(logAsio, wxT("AcceptWith: ok, another socket is available"));
 		}
 
@@ -839,17 +848,21 @@ private:
 	{
 		if (error) {
 			AddDebugLogLineC(logAsio, CFormat(wxT("Error in HandleAccept: %s")) % error.message());
-			// Try again
-			delete m_currentSocket;
-			m_currentSocket = NULL;
 			m_acceptError = true;
 		} else {
-			m_currentSocket->UpdateIP();
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d")) 
-				% m_currentSocket->GetIP() % m_currentSocket->GetPort());
-			m_socketAvailable = true;
-			CoreNotify_ServerTCPAccept(m_libSocketServer);
+			if (m_currentSocket->UpdateIP()) {
+				AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d")) 
+					% m_currentSocket->GetIP() % m_currentSocket->GetPort());
+				m_socketAvailable = true;
+				CoreNotify_ServerTCPAccept(m_libSocketServer);
+				return;
+			} else {
+				AddDebugLogLineN(logAsio, wxT("Error in HandleAccept: invalid socket"));
+			}
 		}
+		// Try again
+		delete m_currentSocket;
+		m_currentSocket = NULL;
 	}
 
 	// The wrapper object
@@ -1272,7 +1285,7 @@ amuleIPV4Address::amuleIPV4Address(const amuleIPV4Address &a)
 
 amuleIPV4Address::amuleIPV4Address(const CamuleIPV4Endpoint &ep)
 {
-	m_endpoint = new CamuleIPV4Endpoint(ep);
+	*this = ep;
 }
 
 amuleIPV4Address::~amuleIPV4Address()
@@ -1283,6 +1296,12 @@ amuleIPV4Address::~amuleIPV4Address()
 const amuleIPV4Address& amuleIPV4Address:: operator = (const amuleIPV4Address &a)
 {
 	m_endpoint = new CamuleIPV4Endpoint(* a.m_endpoint);
+	return *this;
+}
+
+const amuleIPV4Address& amuleIPV4Address:: operator = (const CamuleIPV4Endpoint &ep)
+{
+	m_endpoint = new CamuleIPV4Endpoint(ep);
 	return *this;
 }
 
