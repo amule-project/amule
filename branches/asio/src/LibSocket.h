@@ -56,33 +56,30 @@ public:
 	virtual ~CLibSocket();
 
 	// wx Stuff
+	void	Notify(bool);
 	bool	Connect(const amuleIPV4Address& adr, bool wait);
 	bool	IsConnected() const;
 	bool	IsOk() const;
 	bool	GetPeer(amuleIPV4Address& adr);
-	void	SetEventHandler(wxEvtHandler& handler, int id);
+	void	SetLocal(const amuleIPV4Address& local);
 	uint32	Read(void * buffer, uint32 nbytes);
 	uint32	Write(const void * buffer, uint32 nbytes);
 	void	Close();
 	void	Destroy();
 
-	// Not needed here, we always notify
+	// Not needed here, we always notify the same way
 	void	SetNotify(int) {}
-	void	Notify(bool) {}
+	void	SetEventHandler(wxEvtHandler&, int) {}
 
 	bool	Error() const;
 	wxSocketError	LastError();
 
-
-	// lower Prio
-	void	Discard() {}	// probably not needed
-	void	SetLocal(const amuleIPV4Address& local);
-
 	// not supported
 	void SetFlags(int) {}
-	bool WaitOnConnect(long, long)	{ return false; }
-	bool WaitForWrite(long, long)	{ return false; }
-	bool WaitForRead(long, long)	{ return false; }
+	void Discard() {}
+	bool WaitOnConnect(long, long)	{ return true; }
+	bool WaitForWrite(long, long)	{ return true; }
+	bool WaitForRead(long, long)	{ return true; }
 
 	// new Stuff
 

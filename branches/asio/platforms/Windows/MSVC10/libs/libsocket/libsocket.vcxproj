@@ -25,6 +25,16 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\src\LibSocket.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libmulecommon\libmulecommon.vcxproj">
+      <Project>{293e6133-239a-4ed4-838e-9182b07c6b35}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A9EC6A5-68A3-43C8-960E-F7F99B16F1D1}</ProjectGuid>
     <RootNamespace>libmuleec</RootNamespace>
