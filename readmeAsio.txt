@@ -22,7 +22,7 @@ Not done yet / problems:
 - better error handling/error messages
 - further abstraction (replace wx socket constants in code)
 - make use of background resolve for AsyncDNS instead of spawning a thread
-- amuleweb, amulecmd
+- amuleweb still uses wx on webserver side (EC is Asio)
 
 If you like to play with new stuff I'd like you to try it out and give me feedback.
 Especially if you are having networking problems or out of memory crashes, or if you

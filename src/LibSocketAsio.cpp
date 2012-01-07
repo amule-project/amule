@@ -94,6 +94,8 @@ public:
 		m_closed = false;
 		m_dying = false;
 		m_proxyState = false;
+		m_notify = true;
+		m_sync = false;
 		m_IP = wxT("?");
 		ClearError();
 		m_socket = new ip::tcp::socket(s_io_service);
@@ -108,6 +110,11 @@ public:
 		delete[] m_sendBuffer;
 	}
 
+	void Notify(bool notify)
+	{
+		m_notify = notify;
+	}
+
 	bool Connect(const amuleIPV4Address& adr, bool wait)
 	{
 		if (!m_proxyState) {
@@ -116,10 +123,10 @@ public:
 		m_port = adr.Service();
 		m_closed = false;
 		m_OK = false;
+		m_sync = !m_notify;		// set this once for the whole lifetime of the socket
 		AddDebugLogLineF(logAsio, CFormat(wxT("Connect %s %p")) % m_IP % this);
 
-		if (wait) {
-			wxFAIL;	// we're not supposed to do that
+		if (wait || m_sync) {
 			error_code ec;
 			m_socket->connect(adr.GetEndpoint(), ec);
 			m_OK = !ec;
@@ -170,6 +177,10 @@ public:
 			return 0;
 		}
 
+		if (m_sync) {
+			return ReadSync(buf, bytesToRead);
+		}
+
 		if (m_Error && m_ErrorCode != wxSOCKET_WOULDBLOCK) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Error")) % m_IP % bytesToRead);
 			return 0;
@@ -208,6 +219,10 @@ public:
 	// - unless a background send is already going on
 	uint32 Write(const void * buf, uint32 nbytes)
 	{
+		if (m_sync) {
+			return WriteSync(buf, nbytes);
+		}
+
 		if (m_sendBuffer) {
 			m_Error = true;
 			m_ErrorCode = wxSOCKET_WOULDBLOCK;
@@ -222,12 +237,13 @@ public:
 		return nbytes;
 	}
 
+
 	void Close()
 	{
 		if (!m_closed) {
 			m_closed = true;
 			m_connected = false;
-			if (s_io_service.stopped()) {
+			if (m_sync || s_io_service.stopped()) {
 				DispatchClose();
 			} else {
 				s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
@@ -245,7 +261,7 @@ public:
 		m_dying = true;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Destroy() %p %p %s")) % m_libSocket % this % m_IP);
 		Close();
-		if (s_io_service.stopped()) {
+		if (m_sync || s_io_service.stopped()) {
 			HandleDestroy();
 		} else {
 			// Close prevents creation of any more callbacks, but does not clear any callbacks already
@@ -537,6 +553,25 @@ private:
 	}
 
 	//
+	// Synchronous sockets (amulecmd)
+	//
+	uint32 ReadSync(char * buf, uint32 bytesToRead)
+	{
+		error_code ec;
+		uint32 received = read(*m_socket, buffer(buf, bytesToRead), ec);
+		SetError(ec);
+		return received;
+	}
+
+	uint32 WriteSync(const void * buf, uint32 nbytes)
+	{
+		error_code ec;
+		uint32 sent = write(*m_socket, buffer(buf, nbytes), ec);
+		SetError(ec);
+		return sent;
+	}
+
+	//
 	// Access to even const & wxString is apparently not thread-safe.
 	// Locks are set/removed in wx and reference counts can go astray.
 	// So store our IP string in a wxString which is used nowhere.
@@ -568,6 +603,8 @@ private:
 	bool			m_closed;
 	bool			m_dying;
 	bool			m_proxyState;
+	bool			m_notify;			// set by Notify()
+	bool			m_sync;				// copied from !m_notify on Connect()
 };
 
 
@@ -624,8 +661,9 @@ void CLibSocket::Destroy()
 }
 
 
-void CLibSocket::SetEventHandler(wxEvtHandler& , int )
+void CLibSocket::Notify(bool notify)
 {
+	m_aSocket->Notify(notify);
 }
 
 
