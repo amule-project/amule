@@ -53,19 +53,17 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 
 }
 
-void CWebSocket::OnError()
-{
-}
-
 void CWebSocket::OnLost()
 {
+	Close();
+	Destroy();
 }
 
-void CWebSocket::OnInput()
+void CWebSocket::OnReceive(int)
 {
-	Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
-	m_dwRecv += LastCount();
-	while ((m_dwRecv == m_dwBufSize) && (LastCount()!=0) && (!Error())) {
+	uint32 read = Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
+	m_dwRecv += read;
+	while ((m_dwRecv == m_dwBufSize) && (read != 0) && (!Error())) {
 		// Buffer is too small. Make it bigger.
 		uint32 newsize = m_dwBufSize + (m_dwBufSize  >> 1);
 		char* newbuffer = new char[newsize];
@@ -75,11 +73,11 @@ void CWebSocket::OnInput()
 		m_pBuf = newbuffer;
 		m_dwBufSize = newsize;
 		// And read again
-		Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
-		m_dwRecv += LastCount();
+		read = Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
+		m_dwRecv += read;
 	}
 
-	if (LastCount() == 0) {
+	if (read == 0) {
 		if (Error()) {
 			if (LastError() != wxSOCKET_WOULDBLOCK) {
 				Close();
@@ -93,7 +91,7 @@ void CWebSocket::OnInput()
 
 	//
 	// Check what kind of request is that
-	if ( !m_IsGet && !m_IsPost ) {
+	if ( !m_IsGet && !m_IsPost && m_dwRecv >= 4) {
 		if ( !strncasecmp(m_pBuf, "GET", 3) ) {
 			m_IsGet = true;
 		} else if ( !strncasecmp(m_pBuf, "POST", 4) ) {
@@ -115,7 +113,6 @@ void CWebSocket::OnInput()
 			//
 			// Process request
 			OnRequestReceived(m_pBuf, 0, 0);
-			OnOutput();
 		}
 	}
 	//
@@ -137,17 +134,15 @@ void CWebSocket::OnInput()
 			cont += 4;
 			if ( cont - m_pBuf + len <= (int)m_dwRecv ) {
 				OnRequestReceived(m_pBuf, cont, len);
-				OnOutput();
 			}
 		}
 	}
 }
 
-void CWebSocket::OnOutput()
+void CWebSocket::OnSend(int)
 {
 	while (m_pHead && m_pHead->m_pToSend) {
-		Write(m_pHead->m_pToSend, m_pHead->m_dwSize);
-		uint32 nRes = LastCount();
+		uint32 nRes = Write(m_pHead->m_pToSend, m_pHead->m_dwSize);
 		if (nRes >= m_pHead->m_dwSize) {
 			// erase this chunk
 			CChunk* pNext = m_pHead->m_pNext;
@@ -163,8 +158,8 @@ void CWebSocket::OnOutput()
 				if (Error()) {
 					if (LastError() != wxSOCKET_WOULDBLOCK) {
 						Close();
-						break;
 					}
+					break;
 				}
 			}
 		}
@@ -265,34 +260,29 @@ void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 conte
 
 void CWebSocket::SendData(const void* pData, uint32 dwDataSize)
 {
-	const char * data = (const char*) pData;
-	if (!m_pHead) {
-		// try to send it directly
-		Write(data, dwDataSize);
-		uint32 nRes = LastCount();
-		if ((nRes < dwDataSize) &&
-			Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
-			Close();
-		} else {
-			data += nRes;
-			dwDataSize -= nRes;
-		}
+	if (!dwDataSize) {	// sanity
+		return;
 	}
-	if (dwDataSize) {
-		// push it to our tails
-		CChunk* pChunk = new CChunk;
-		pChunk->m_pNext = NULL;
-		pChunk->m_dwSize = dwDataSize;
-		pChunk->m_pData = new char[dwDataSize];
-		memcpy(pChunk->m_pData, data, dwDataSize);
-		// push it to the end of our queue
-		pChunk->m_pToSend = pChunk->m_pData;
-		if (m_pTail) {
-			m_pTail->m_pNext = pChunk;
-		} else {
-			m_pHead = pChunk;
-		}
-		m_pTail = pChunk;
+	const char * data = (const char*) pData;
+	bool outputRequired = !m_pHead;
+
+	// push it to our tails
+	CChunk* pChunk = new CChunk;
+	pChunk->m_pNext = NULL;
+	pChunk->m_dwSize = dwDataSize;
+	pChunk->m_pData = new char[dwDataSize];
+	memcpy(pChunk->m_pData, data, dwDataSize);
+	// push it to the end of our queue
+	pChunk->m_pToSend = pChunk->m_pData;
+	if (m_pTail) {
+		m_pTail->m_pNext = pChunk;
+	} else {
+		m_pHead = pChunk;
+	}
+	m_pTail = pChunk;
+
+	if (outputRequired) {
+		OnSend(0);
 	}
 }
 // File_checked_for_headers

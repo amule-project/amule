@@ -816,6 +816,9 @@ public:
 			// we got another socket right away
 			m_socketAvailable = true;	// it is already true, but this improves readability
 			AddDebugLogLineF(logAsio, wxT("AcceptWith: ok, another socket is available"));
+			// aMule actually doesn't need a notification as it polls the listen socket.
+			// amuleweb does need it though
+			CoreNotify_ServerTCPAccept(m_libSocketServer);
 		}
 
 		return true;
@@ -1382,5 +1385,77 @@ CamuleIPV4Endpoint & amuleIPV4Address::GetEndpoint()
 {
 	return * m_endpoint;
 }
+
+
+//
+// Notification stuff
+//
+namespace MuleNotify
+{
+
+	void LibSocketConnect(CLibSocket * socket, int error)
+	{
+		if (socket->GetProxyState()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Proxy %s %d")) % socket->GetIP() % error);
+			socket->OnProxyEvent(wxSOCKET_CONNECTION);
+		} else {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect %s %d")) %socket->GetIP() % error);
+			socket->OnConnect(error);
+		}
+	}
+
+	void LibSocketSend(CLibSocket * socket, int error)
+	{
+		if (socket->GetProxyState()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Proxy %s %d")) % socket->GetIP() % error);
+			socket->OnProxyEvent(wxSOCKET_OUTPUT);
+		} else {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend %s %d")) % socket->GetIP() % error);
+			socket->OnSend(error);
+		}
+	}
+
+	void LibSocketReceive(CLibSocket * socket, int error)
+	{
+		socket->EventProcessed();
+		if (socket->GetProxyState()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Proxy %s %d")) % socket->GetIP() % error);
+			socket->OnProxyEvent(wxSOCKET_INPUT);
+		} else {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive %s %d")) % socket->GetIP() % error);
+			socket->OnReceive(error);
+		}
+	}
+
+	void LibSocketLost(CLibSocket * socket)
+	{
+		if (socket->GetProxyState()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Proxy %s")) % socket->GetIP());
+			socket->OnProxyEvent(wxSOCKET_LOST);
+		} else {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost %s")) % socket->GetIP());
+			socket->OnLost();
+		}
+	}
+
+	void LibSocketDestroy(CLibSocket * socket)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocket_Destroy %s")) % socket->GetIP());
+		delete socket;
+	}
+
+	void ProxySocketEvent(CLibSocket * socket, int evt)
+	{
+		AddDebugLogLineF(logAsio, CFormat(wxT("ProxySocketEvent %s %d")) % socket->GetIP() % evt);
+		socket->OnProxyEvent(evt);
+	}
+
+	void ServerTCPAccept(CLibSocketServer * socketServer)
+	{
+		AddDebugLogLineF(logAsio, wxT("ServerTCP_Accept"));
+		socketServer->OnAccept();
+	}
+
+} // namespace MuleNotify
 
 #endif

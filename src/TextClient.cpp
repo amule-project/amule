@@ -990,4 +990,14 @@ bool ECLogIsEnabled()
 void DoECLogLine(const wxString &)
 {
 }
+
+
+namespace MuleNotify
+{
+	void HandleNotification(const class CMuleNotiferBase&) {}
+	void HandleNotificationAlways(const class CMuleNotiferBase&) {}
+	void UDPSocketSend(class CMuleUDPSocket *) {}
+	void UDPSocketReceive(class CMuleUDPSocket *) {}
+}
+
 // File_checked_for_headers
