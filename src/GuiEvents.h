@@ -580,13 +580,13 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 //
 
 // ASIO sockets
-#define CoreNotify_LibSocketConnect(ptr, val)		MuleNotify::DoNotify(&MuleNotify::LibSocketConnect, ptr, val)
-#define CoreNotify_LibSocketSend(ptr, val)			MuleNotify::DoNotify(&MuleNotify::LibSocketSend, ptr, val)
+#define CoreNotify_LibSocketConnect(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketConnect, ptr, val)
+#define CoreNotify_LibSocketSend(ptr, val)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketSend, ptr, val)
 #define CoreNotify_LibSocketReceive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketReceive, ptr, val)
 #define CoreNotify_LibSocketLost(ptr)				MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketLost, ptr)
 #define CoreNotify_LibSocketDestroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketDestroy, ptr)
-#define CoreNotify_ServerTCPAccept(ptr)				MuleNotify::DoNotify(&MuleNotify::ServerTCPAccept, ptr)
-#define CoreNotify_UDPSocketSend(ptr)				MuleNotify::DoNotify(&MuleNotify::UDPSocketSend, ptr)
+#define CoreNotify_ServerTCPAccept(ptr)				MuleNotify::DoNotifyAlways(&MuleNotify::ServerTCPAccept, ptr)
+#define CoreNotify_UDPSocketSend(ptr)				MuleNotify::DoNotifyAlways(&MuleNotify::UDPSocketSend, ptr)
 #define CoreNotify_UDPSocketReceive(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::UDPSocketReceive, ptr)
 #define CoreNotify_ProxySocketEvent(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::ProxySocketEvent, ptr, val)
 
