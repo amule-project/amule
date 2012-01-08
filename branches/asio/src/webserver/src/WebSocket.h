@@ -29,6 +29,7 @@
 
 
 #include "WebServer.h"
+#include <LibSocket.h>
 
 
 #ifdef ENABLE_UPNP
@@ -38,15 +39,13 @@ class CUPnPPortMapping;
 class CWebServer;
 
 
-class CWebSocket : public wxSocketClient {
+class CWebSocket : public CLibSocket {
 	public:
 		CWebSocket(CWebServerBase *parent);
 
-        void OnError();
-        void OnLost();
-
-        void OnInput();
-        void OnOutput();
+		virtual void OnSend(int);
+		virtual void OnReceive(int);
+		virtual void OnLost();
 
         void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
 

@@ -687,9 +687,21 @@ class CUPnPControlPoint;
 class CUPnPPortMapping;
 #endif
 
+class CWebLibSocketServer : public CLibSocketServer {
+public:
+	CWebLibSocketServer(const class amuleIPV4Address& adr, int flags, CWebServerBase * webServerBase);
+
+	virtual	void OnAccept();
+private:
+	CWebServerBase * m_webServerBase;
+};
+
+
 class CWebServerBase : public wxEvtHandler {
 	protected:
-		wxSocketServer *m_webserver_socket;
+		CWebLibSocketServer *m_webserver_socket;
+
+		class CAsioService *m_AsioService;
 
 		ServersInfo m_ServersInfo;
 		SharedFileInfo m_SharedFileInfo;
@@ -722,7 +734,7 @@ class CWebServerBase : public wxEvtHandler {
 		DECLARE_EVENT_TABLE();
 	public:
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);
-		virtual ~CWebServerBase() { }
+		virtual ~CWebServerBase();
 
 		void Send_Discard_V2_Request(CECPacket *request);
 
