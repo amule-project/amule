@@ -324,6 +324,8 @@ int CamuleApp::OnExit()
 	delete m_AsioService;
 	m_AsioService = NULL;
 
+	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("aMule shutdown completed."));
 	}
@@ -409,6 +411,9 @@ bool CamuleApp::OnInit()
 	} else {
 		return false;
 	}
+
+	// Initialize wx sockets (needed for http download in background with Asio sockets)
+	wxSocketBase::Initialize();
 
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
