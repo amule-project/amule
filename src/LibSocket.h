@@ -92,9 +92,6 @@ public:
 	// True if Destroy() has been called for socket
 	virtual bool ForDeletion() const { return false; }
 
-	// Version of Boost library
-	static wxString BoostVersion();
-
 	// Get/set proxy state
 	bool GetProxyState() const;
 	void SetProxyState(bool state, const amuleIPV4Address * adr = 0);

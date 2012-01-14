@@ -43,7 +43,6 @@
 #include "MD4Hash.h"
 #include "Logger.h"
 #include "BitVector.h"		// Needed for BitVector
-#include "LibSocket.h"		// Needed for BoostVersion
 
 #include "OtherFunctions.h"	// Interface declarations
 
@@ -87,9 +86,8 @@ wxString GetMuleVersion()
 
 	ver += CFormat(wxT(" v%d.%d.%d")) % wxMAJOR_VERSION % wxMINOR_VERSION % wxRELEASE_NUMBER;
 
-	wxString boost(CLibSocket::BoostVersion());
-	if (!boost.IsEmpty()) {
-		ver += wxT(" and Boost ") + boost;
+	if (!MuleBoostVersion.IsEmpty()) {
+		ver += wxT(" and Boost ") + MuleBoostVersion;
 	}
 
 #ifdef __DEBUG__
@@ -102,6 +100,9 @@ wxString GetMuleVersion()
 
 	return ver;
 }
+
+// This gets filled if we link with LibSocketAsio.cpp
+wxString MuleBoostVersion;
 
 
 // Formats a filesize in bytes to make it suitable for displaying
