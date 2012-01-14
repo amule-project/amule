@@ -317,14 +317,12 @@ uint32 CProxyStateMachine::ProxyWrite(CLibSocket &socket, const void *buffer, wx
 {
 	uint32 written = socket.Write(buffer, nbytes);
 	/* Set the status of this operation */
-	m_lastError = wxSOCKET_NOERROR;
-	m_ok = !m_proxyClientSocket->Error();
-	if (!m_ok) {
-		m_lastError = m_proxyClientSocket->LastError();
-		m_ok = m_lastError == wxSOCKET_WOULDBLOCK;
-		if (m_ok) {
-			m_canSend = false;
-		}
+	m_ok = true;
+	if (m_proxyClientSocket->BlocksWrite()) {
+		m_lastError = 0;
+		m_canSend = false;
+	} else if ((m_lastError = m_proxyClientSocket->LastError()) != 0) {
+		m_ok = false;
 	}
 	AddDebugLogLineN(logProxy, CFormat(wxT("ProxyWrite %d %d ok %d cansend %d")) % nbytes % written % m_ok % m_canSend);
 
@@ -337,14 +335,12 @@ uint32 CProxyStateMachine::ProxyRead(CLibSocket &socket, void *buffer)
 	 * the socket has the flag wxSOCKET_NONE. */
 	m_lastRead = socket.Read(buffer, PROXY_BUFFER_SIZE);
 	/* Set the status of this operation */
-	m_lastError = wxSOCKET_NOERROR;
-	m_ok = !m_proxyClientSocket->Error();
-	if (!m_ok) {
-		m_lastError = m_proxyClientSocket->LastError();
-		m_ok = m_lastError == wxSOCKET_WOULDBLOCK;
-		if (m_ok) {
-			m_canReceive = false;
-		}
+	m_ok = true;
+	if (m_proxyClientSocket->BlocksRead()) {
+		m_lastError = 0;
+		m_canReceive = false;
+	} else if ((m_lastError = m_proxyClientSocket->LastError()) != 0) {
+		m_ok = false;
 	}
 #ifdef ASIO_SOCKETS
 	// We will get a new event right away if data is left, or when new data gets available.

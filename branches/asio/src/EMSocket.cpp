@@ -184,8 +184,7 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode))
 void CEMSocket::OnReceive(int nErrorCode)
 {
 	if(nErrorCode) {
-		uint32 error = LastError();
-		if (error != wxSOCKET_WOULDBLOCK) {
+		if (LastError()) {
 			OnError(nErrorCode);
 			return;
 		}
@@ -236,10 +235,11 @@ void CEMSocket::OnReceive(int nErrorCode)
 		if (readMax) {
 			wxMutexLocker lock(m_sendLocker);
 			ret = Read(buf, readMax);
-			if (Error() || (ret == 0)) {
-				if (LastError() == wxSOCKET_WOULDBLOCK) {
-					pendingOnReceive = true;
-				}
+			if (BlocksRead()) {
+				pendingOnReceive = true;
+				return;
+			}
+			if (LastError() || ret == 0) {
 				return;
 			}
 		}
@@ -571,19 +571,13 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 
 				uint32 result = CEncryptedStreamSocket::Write(sendbuffer+sent,tosend);
 
-				if (Error()){
-
-					uint32 error = LastError();
-					if (error == wxSOCKET_WOULDBLOCK){
-						m_bBusy = true;
-
-						SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
-
-						return returnVal; // Send() blocked, onsend will be called when ready to send again
-					} else{
-						// Send() gave an error
-						anErrorHasOccured = true;
-					}
+				if (BlocksWrite()) {
+					m_bBusy = true;
+					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+					return returnVal; // Send() blocked, onsend will be called when ready to send again
+				} else if (LastError()) {
+					// Send() gave an error
+					anErrorHasOccured = true;
 				} else {
 					// we managed to send some bytes. Perform bookkeeping.
 					m_bBusy = false;

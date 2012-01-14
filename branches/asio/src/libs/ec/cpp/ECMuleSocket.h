@@ -40,7 +40,7 @@ public:
 	CECMuleSocket(bool use_events);
 	virtual ~CECMuleSocket();
 
-	bool ConnectSocket(wxIPV4address& address);
+	bool ConnectSocket(class wxIPV4address& address);
 
 	virtual void OnConnect()	{}					// This is overwritten in RemoteConnect
 	virtual void OnConnect(int)	{ OnConnect(); }	// This is called from LibSocketAsio
@@ -56,7 +56,7 @@ private:
 	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return CLibSocket::WaitForWrite(secs,msecs); };
 	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return CLibSocket::WaitForRead(secs,msecs); };
 
-	bool InternalError() { return CLibSocket::Error(); }
+	bool InternalError() { return CLibSocket::LastError() != 0; }
 	void InternalClose() { CLibSocket::Close(); }
 
 	uint32 InternalRead(void* ptr, uint32 len)			{ return CLibSocket::Read(ptr, len); };

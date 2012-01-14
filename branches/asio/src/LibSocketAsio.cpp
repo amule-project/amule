@@ -49,7 +49,6 @@
 #include <boost/../libs/system/src/error_code.cpp>
 
 #include "LibSocket.h"
-#include <wx/socket.h>		// wxSocketError
 #include <wx/thread.h>		// wxMutex
 #include <wx/intl.h>		// _()
 #include <common/Format.h>	// Needed for CFormat
@@ -90,6 +89,9 @@ public:
 		m_timer(s_io_service)
 	{
 		m_OK = false;
+		m_blocksRead = false;
+		m_blocksWrite = false;
+		m_ErrorCode = 0;
 		m_readBuffer = NULL;
 		m_readBufferSize = 0;
 		m_readPending = false;
@@ -104,7 +106,6 @@ public:
 		m_notify = true;
 		m_sync = false;
 		m_IP = wxT("?");
-		ClearError();
 		m_socket = new ip::tcp::socket(s_io_service);
 
 		// Set socket to non blocking
@@ -158,16 +159,22 @@ public:
 		return m_OK;
 	}
 
-	// Returns true if an error occurred in the last IO operation.
-	bool Error() const
-	{
-		return m_Error;
-	}
-
 	// Returns the actual error code
-	wxSocketError LastError() const
+	int LastError() const
 	{
 		return m_ErrorCode;
+	}
+
+	// Is reading blocked?
+	bool BlocksRead() const
+	{
+		return m_blocksRead;
+	}
+
+	// Is writing blocked?
+	bool BlocksWrite() const
+	{
+		return m_blocksWrite;
 	}
 
 	// Problem: wx sends an event when data gets available, so first there is an event, then Read() is called
@@ -188,7 +195,7 @@ public:
 			return ReadSync(buf, bytesToRead);
 		}
 
-		if (m_Error && m_ErrorCode != wxSOCKET_WOULDBLOCK) {
+		if (m_ErrorCode) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Error")) % m_IP % bytesToRead);
 			return 0;
 		}
@@ -196,13 +203,12 @@ public:
 		if (m_readPending					// Background read hasn't completed.
 			|| m_readBufferContent == 0) {	// shouldn't be if it's not pending
 			
-			m_Error = true;
-			m_ErrorCode = wxSOCKET_WOULDBLOCK;
+			m_blocksRead = true;
 			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Block")) % m_IP % bytesToRead);
 			return 0;
 		}
 
-		ResetBlock();	// shouldn't be needed
+		m_blocksRead = false;	// shouldn't be needed
 
 		// Read from our buffer
 		uint32 readCache = std::min(m_readBufferContent, bytesToRead);
@@ -231,8 +237,7 @@ public:
 		}
 
 		if (m_sendBuffer) {
-			m_Error = true;
-			m_ErrorCode = wxSOCKET_WOULDBLOCK;
+			m_blocksWrite = true;
 			AddDebugLogLineF(logAsio, CFormat(wxT("Write blocks %d %p %s")) % nbytes % m_sendBuffer % m_IP);
 			return 0;
 		}
@@ -240,7 +245,7 @@ public:
 		m_sendBuffer = new char[nbytes];
 		memcpy(m_sendBuffer, buf, nbytes);
 		s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes));
-		ClearError();
+		m_ErrorCode = 0;
 		return nbytes;
 	}
 
@@ -369,7 +374,7 @@ public:
 		} else {
 			// Transition from proxy to normal mode
 			AddDebugLogLineF(logAsio, CFormat(wxT("SetProxyState to normal %s")) % m_IP);
-			ClearError();
+			m_ErrorCode = 0;
 		}
 	}
 
@@ -441,7 +446,7 @@ private:
 				PostLostEvent();
 			} else {
 				AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
-				ResetBlock();
+				m_blocksWrite = false;
 				CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
 			}
 		}
@@ -492,7 +497,7 @@ private:
 		if (m_libSocket->ForDeletion()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
 		} else {
-			ResetBlock();
+			m_blocksRead = false;
 			PostReadEvent(2);
 		}
 	}
@@ -531,16 +536,9 @@ private:
 		}
 	}
 
-	void ClearError()
-	{
-		m_Error = false;
-		m_ErrorCode = wxSOCKET_NOERROR;
-	}
-
 	void SetError()
 	{
-		m_Error = true;
-		m_ErrorCode = wxSOCKET_IOERR;
+		m_ErrorCode = 2;
 	}
 
 	bool SetError(const error_code & err)
@@ -548,16 +546,9 @@ private:
 		if (err) {
 			SetError();
 		} else {
-			ClearError();
+			m_ErrorCode = 0;
 		}
-		return m_Error;
-	}
-
-	void ResetBlock()
-	{
-		if (m_ErrorCode == wxSOCKET_WOULDBLOCK) {
-			ClearError();
-		}
+		return m_ErrorCode != 0;
 	}
 
 	//
@@ -599,8 +590,9 @@ private:
 	const wxChar *	m_IP;				// as char*  (use in debug logs)
 	uint16			m_port;				// remote port
 	bool			m_OK;
-	bool			m_Error;
-	wxSocketError	m_ErrorCode;
+	int				m_ErrorCode;
+	bool			m_blocksRead;
+	bool			m_blocksWrite;
 	char *			m_readBuffer;
 	uint32			m_readBufferSize;
 	char *			m_readBufferPtr;
@@ -653,12 +645,6 @@ bool CLibSocket::IsOk() const
 }
 
 
-bool CLibSocket::Error() const
-{
-	return m_aSocket->Error();
-}
-
-
 bool CLibSocket::GetPeer(amuleIPV4Address& adr)
 {
 	return m_aSocket->GetPeer(adr);
@@ -695,7 +681,7 @@ void CLibSocket::Close()
 }
 
 
-wxSocketError CLibSocket::LastError()
+int CLibSocket::LastError() const
 {
 	return m_aSocket->LastError();
 }
@@ -709,6 +695,18 @@ void CLibSocket::SetLocal(const amuleIPV4Address& local)
 
 
 // new Stuff
+
+bool CLibSocket::BlocksRead() const
+{
+	return m_aSocket->BlocksRead();
+}
+
+
+bool CLibSocket::BlocksWrite() const
+{
+	return m_aSocket->BlocksWrite();
+}
+
 
 void CLibSocket::EventProcessed()
 {
@@ -1201,15 +1199,9 @@ void CLibUDPSocket::SetClientData(CMuleUDPSocket * muleSocket)
 }
 
 
-bool CLibUDPSocket::Error() const
+int CLibUDPSocket::LastError() const
 {
 	return !IsOk();
-}
-
-
-wxSocketError CLibUDPSocket::LastError()
-{
-	return wxSOCKET_NOERROR;
 }
 
 

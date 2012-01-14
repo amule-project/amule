@@ -202,13 +202,13 @@ void CServerSocket::OnConnect(int nErrorCode)
 
 }
 
-void CServerSocket::OnReceive(wxSocketError nErrorCode)
+void CServerSocket::OnReceive(int nErrorCode)
 {
 	if (connectionstate != CS_CONNECTED && !serverconnect->IsConnecting()) {
 		serverconnect->DestroySocket(this);
 		return;
 	}
-	CEMSocket::OnReceive((int)nErrorCode);
+	CEMSocket::OnReceive(nErrorCode);
 	m_dwLastTransmission = GetTickCount();
 }
 
@@ -649,10 +649,10 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 
 }
 
-void CServerSocket::OnError(wxSocketError DEBUG_ONLY(nErrorCode))
+void CServerSocket::OnError(int DEBUG_ONLY(nErrorCode))
 {
 	AddDebugLogLineN(logServer, CFormat(wxT("Error in serversocket: %s(%s:%i): %u"))
-		% cur_server->GetListName() % cur_server->GetFullIP() % cur_server->GetPort() % (int)nErrorCode);
+		% cur_server->GetListName() % cur_server->GetFullIP() % cur_server->GetPort() % nErrorCode);
 	SetConnectionState(CS_DISCONNECTED);
 }
 
@@ -684,7 +684,7 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 }
 
 
-void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
+void CServerSocket::OnClose(int WXUNUSED(nErrorCode))
 {
 	CEMSocket::OnClose(0);
 
