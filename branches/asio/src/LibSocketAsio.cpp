@@ -57,7 +57,7 @@
 #include "GuiEvents.h"
 #include "amuleIPV4Address.h"
 #include "MuleUDPSocket.h"
-#include "OtherFunctions.h"	// DeleteContents
+#include "OtherFunctions.h"	// DeleteContents, MuleBoostVersion
 
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
@@ -727,12 +727,6 @@ void CLibSocket::LinkSocketImpl(class CAsioSocketImpl * socket)
 const wxChar * CLibSocket::GetIP() const
 {
 	return m_aSocket->GetIP();
-}
-
-
-wxString CLibSocket::BoostVersion()
-{
-	return CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
 }
 
 
@@ -1457,5 +1451,19 @@ namespace MuleNotify
 	}
 
 } // namespace MuleNotify
+
+//
+// Initialize MuleBoostVersion
+//
+class CMuleBoostVersionSetter {
+public:
+	CMuleBoostVersionSetter()
+	{
+		MuleBoostVersion = CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
+	}
+};
+
+// Initialize MuleBoostVersion before executing any code
+static CMuleBoostVersionSetter theCMuleBoostVersionSetter;
 
 #endif
