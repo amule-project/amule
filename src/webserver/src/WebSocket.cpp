@@ -63,7 +63,7 @@ void CWebSocket::OnReceive(int)
 {
 	uint32 read = Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
 	m_dwRecv += read;
-	while ((m_dwRecv == m_dwBufSize) && (read != 0) && (!Error())) {
+	while ((m_dwRecv == m_dwBufSize) && (read != 0) && (!LastError())) {
 		// Buffer is too small. Make it bigger.
 		uint32 newsize = m_dwBufSize + (m_dwBufSize  >> 1);
 		char* newbuffer = new char[newsize];
@@ -78,11 +78,9 @@ void CWebSocket::OnReceive(int)
 	}
 
 	if (read == 0) {
-		if (Error()) {
-			if (LastError() != wxSOCKET_WOULDBLOCK) {
-				Close();
-				return ;
-			}
+		if (LastError()) {
+			Close();
+			return ;
 		}
 	}
 
@@ -151,16 +149,15 @@ void CWebSocket::OnSend(int)
 				m_pTail = NULL;
 			}
 		} else {
-			if ((nRes > 0) && (!Error())) {
+			if (LastError()) {
+				Close();
+				break;
+			} else if (nRes > 0) {
 				m_pHead->m_pToSend += nRes;
 				m_pHead->m_dwSize -= nRes;
 			} else {
-				if (Error()) {
-					if (LastError() != wxSOCKET_WOULDBLOCK) {
-						Close();
-					}
-					break;
-				}
+				// blocks
+				break;
 			}
 		}
 	}

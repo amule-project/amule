@@ -105,7 +105,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 			break;
 		case wxSOCKET_CONNECTION:
 			// connection stablished, nothing to do about it?
-			socket->OnConnect(socket->Error() ? socket->LastError() : 0);
+			socket->OnConnect(socket->LastError());
 			break;
 		default:
 			// Nothing should arrive here...

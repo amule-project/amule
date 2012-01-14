@@ -36,7 +36,6 @@
 #include <wx/event.h>
 #include <wx/thread.h>
 #include "Types.h"
-#include <wx/socket.h>		// for wxSocketError - remove me
 class amuleIPV4Address;
 
 //
@@ -71,8 +70,8 @@ public:
 	void	SetNotify(int) {}
 	void	SetEventHandler(wxEvtHandler&, int) {}
 
-	bool	Error() const;
-	wxSocketError	LastError();
+	// Get last error, 0 == no error
+	int		LastError() const;
 
 	// not supported
 	void SetFlags(int) {}
@@ -82,6 +81,10 @@ public:
 	bool WaitForRead(long, long)	{ return true; }
 
 	// new Stuff
+
+	// Check if socket is currently blocking for read or write
+	bool	BlocksRead() const;
+	bool	BlocksWrite() const;
 
 	// Show we're ready for another event
 	void	EventProcessed();
@@ -109,6 +112,7 @@ private:
 
 	class CAsioSocketImpl * m_aSocket;
 	void LastCount();	// No. We don't have this. We return it directly with Read() and Write()
+	bool Error() const;	// Only use LastError
 };
 
 
@@ -163,8 +167,7 @@ public:
 	bool	IsOk() const;
 	virtual uint32 RecvFrom(amuleIPV4Address& addr, void* buf, uint32 nBytes);
 	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes);
-	bool	Error() const;
-	wxSocketError	LastError();
+	int		LastError() const;
 	void	Close();
 	void	Destroy();
 	void	SetClientData(class CMuleUDPSocket *);
@@ -174,9 +177,16 @@ public:
 	void	SetNotify(int) {}
 	bool	Notify(bool) { return true; }
 
+	// Check if socket is currently blocking for write
+	// Well - we apparently have block in wx. At least we handle it in MuleUDPSocket.
+	// But this makes no sense. We send a packet to an IP in background. 
+	// Either this works after some time, or not. But there is no block.
+	bool	BlocksWrite() const { return false; }
+
 private:
-	class CAsioUDPSocketImpl * m_aSocket;
-	void LastCount();	// block this
+	class	CAsioUDPSocketImpl * m_aSocket;
+	void	LastCount();	// block this
+	bool	Error() const;	// Only use LastError
 };
 
 
@@ -224,6 +234,28 @@ public:
 	bool GetPeer(amuleIPV4Address& adr);
 	void SetLocal(amuleIPV4Address& local);				// Same here.
 
+	// Get last error, 0 == no error
+	// BLOCK is also not an error!
+	int	LastError() const
+	{
+		int ret = 0;
+		if (wxSocketClient::Error()) {
+			ret = wxSocketClient::LastError();
+			if (ret == wxSOCKET_WOULDBLOCK) {
+				ret = 0;
+			}
+		}
+		return ret;
+	}
+
+	// Check if socket is currently blocking for read or write
+	bool	BlocksRead() const
+	{
+		return wxSocketClient::Error() && wxSocketClient::LastError() == wxSOCKET_WOULDBLOCK;
+	}
+
+	bool	BlocksWrite() const { return BlocksRead(); }	// no difference here
+
 	uint32 Read(void *buffer, wxUint32 nbytes)
 	{
 		wxSocketClient::Read(buffer, nbytes);
@@ -236,10 +268,9 @@ public:
 		return wxSocketClient::LastCount();
 	}
 
-	static wxString BoostVersion() { return wxEmptyString; }
-
 private:
 	void LastCount();	// block this
+	bool Error() const;	// Only use LastError
 };
 
 
@@ -266,8 +297,29 @@ public:
 
 	virtual uint32 SendTo(const amuleIPV4Address& addr, const void* buf, uint32 nBytes);
 
+	// Get last error, 0 == no error
+	int	LastError() const
+	{
+		int ret = 0;
+		if (wxDatagramSocket::Error()) {
+			ret = wxDatagramSocket::LastError();
+			if (ret == wxSOCKET_WOULDBLOCK) {
+				ret = 0;
+			}
+		}
+		return ret;
+	}
+
+	// Check if socket is currently blocking for write
+	// I wonder if this EVER returns true (see Asio)
+	bool	BlocksWrite() const
+	{
+		return wxDatagramSocket::Error() && wxDatagramSocket::LastError() == wxSOCKET_WOULDBLOCK;
+	}
+
 private:
 	void LastCount();	// block this
+	bool Error() const;	// Only use LastError
 };
 
 

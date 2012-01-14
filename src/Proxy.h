@@ -271,8 +271,8 @@ protected:
 	bool			m_canReceive;
 	bool			m_canSend;
 	bool			m_ok;
-	unsigned int		m_lastRead;
-	wxSocketError		m_lastError;
+	unsigned int	m_lastRead;
+	int				m_lastError;
 	//
 	// Will be initialized at Start()
 	//
