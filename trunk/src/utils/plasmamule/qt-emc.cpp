@@ -87,6 +87,8 @@ const QString qtEmc::getErrorMessage()
 			return QString("Your collection file was corrupted and ends to Early");
 		}
 	}
+	
+	return QString("Unknown Error-Code");
 }
 
 const QStringList qtEmc::getLinks()
