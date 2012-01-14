@@ -1,8 +1,21 @@
+amule (2.3.1+svn-10712) testing; urgency=low
+
+  * Added Chinese (Traditional) manpages
+
+ -- Dévai Tamás (gonosztopi) <gonosztopi@amule.org>  Thu, 29 Dec 2011 21:20:09 +0000
+
+amule (2.3.1+svn-10696) testing; urgency=low
+
+  * Fixed amule-plasmamule.install for buildd-env
+  * Set Build-Dep to libreadline-dev
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Tue, 15 Dec 2011 01:31:11 +0100
+
 amule (2.3.1) testing; urgency=low
 
   * New Upstream Release
 
- -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Fri, 11 Nov 2011 11:11:11 +0200
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Fri, 11 Nov 2011 11:11:11 +0100
 
 amule (2.3.0~rc2+svn-10603) testing; urgency=low
 
