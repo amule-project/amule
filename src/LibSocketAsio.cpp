@@ -1466,15 +1466,7 @@ namespace MuleNotify
 //
 // Initialize MuleBoostVersion
 //
-class CMuleBoostVersionSetter {
-public:
-	CMuleBoostVersionSetter()
-	{
-		MuleBoostVersion = CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
-	}
-};
+wxString MuleBoostVersion = CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
 
-// Initialize MuleBoostVersion before executing any code
-static CMuleBoostVersionSetter theCMuleBoostVersionSetter;
 
 #endif
