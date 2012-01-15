@@ -77,7 +77,7 @@ CListenSocket::~CListenSocket()
 #ifdef __DEBUG__
 	// No new sockets should have been opened by now
 	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); it++) {
-		wxASSERT((*it)->OnDestroy());
+		wxASSERT((*it)->IsDestroying());
 	}
 #endif
 
@@ -128,12 +128,8 @@ void CListenSocket::Process()
 	SocketSet::iterator it = socket_list.begin();
 	while ( it != socket_list.end() ) {
 		CClientTCPSocket* cur_socket = *it++;
-		if (!cur_socket->OnDestroy()) {
-			if (cur_socket->ForDeletion()) {
-				cur_socket->Destroy();
-			} else {
-				cur_socket->CheckTimeOut();
-			}
+		if (!cur_socket->IsDestroying()) {
+			cur_socket->CheckTimeOut();
 		}
 	}
 

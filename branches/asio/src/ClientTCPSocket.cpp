@@ -89,7 +89,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 		return;
 	}
 
-	if (socket->OnDestroy() || socket->ForDeletion()) {
+	if (socket->IsDestroying()) {
 		return;
 	}
 
@@ -135,7 +135,6 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 	}
 
 	ResetTimeOutTimer();
-	m_ForDeletion = false;
 
 	SetEventHandler(g_clientReqSocketHandler, ID_CLIENTTCPSOCKET_EVENT);
 	SetNotify(
@@ -278,17 +277,9 @@ void CClientTCPSocket::Safe_Delete()
 		m_client = NULL;
 	}
 
-	if ( !ForDeletion() && !OnDestroy() ) {
-		// Paranoia is back.
-		SetNotify(0);
-		Notify(false);
-		// lfroen: first of all - stop handler
-		m_ForDeletion = true;
-
-		byConnected = ES_DISCONNECTED;
-		Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
-		Destroy();
-	}
+	// Destroy may be called several times
+	byConnected = ES_DISCONNECTED;
+	Destroy();
 }
 
 

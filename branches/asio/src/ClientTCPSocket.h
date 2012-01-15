@@ -57,8 +57,6 @@ public:
 	void		Safe_Delete();
 	void		Safe_Delete_Client();
 
-	bool		ForDeletion() const { return m_ForDeletion; }
-
 	void		OnConnect(int nErrorCode);
 	void		OnSend(int nErrorCode);
 	void		OnReceive(int nErrorCode);
@@ -86,7 +84,6 @@ private:
 	void	ResetTimeOutTimer();
 	void	SetClient(CUpDownClient* client);
 
-	bool	m_ForDeletion; // 0.30c (Creteil), set as bool
 	uint32	timeout_timer;
 	uint32	m_remoteip;
 };

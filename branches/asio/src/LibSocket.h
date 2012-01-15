@@ -93,7 +93,7 @@ public:
 	const wxChar * GetIP() const;
 
 	// True if Destroy() has been called for socket
-	virtual bool ForDeletion() const { return false; }
+	bool	IsDestroying() const;
 
 	// Get/set proxy state
 	bool GetProxyState() const;
@@ -216,7 +216,7 @@ private:
 class CLibSocket : public wxSocketClient
 {
 public:
-	CLibSocket(wxSocketFlags flags = 0) : wxSocketClient(flags) {}
+	CLibSocket(wxSocketFlags flags = 0) : wxSocketClient(flags), m_isDestroying(false) {}
 
 	// not actually called
 	const wxChar * GetIP() const { return wxEmptyString; }
@@ -268,7 +268,22 @@ public:
 		return wxSocketClient::LastCount();
 	}
 
+	void	Destroy()
+	{
+		if (!m_isDestroying) {
+			m_isDestroying = true;
+			SetNotify(0);
+			Notify(false);
+			Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
+			wxSocketClient::Destroy();
+		}
+	}
+
+	bool	IsDestroying() const { return m_isDestroying; }
+
 private:
+	bool	m_isDestroying;		// true if Destroy() was called
+
 	void LastCount();	// block this
 	bool Error() const;	// Only use LastError
 };

@@ -101,7 +101,7 @@ public:
 		m_sendBuffer = NULL;
 		m_connected = false;
 		m_closed = false;
-		m_dying = false;
+		m_isDestroying = false;
 		m_proxyState = false;
 		m_notify = true;
 		m_sync = false;
@@ -157,6 +157,11 @@ public:
 	bool IsOk() const 
 	{
 		return m_OK;
+	}
+
+	bool IsDestroying() const 
+	{
+		return m_isDestroying;
 	}
 
 	// Returns the actual error code
@@ -266,11 +271,11 @@ public:
 
 	void Destroy()
 	{
-		if (m_dying) {
+		if (m_isDestroying) {
 			AddDebugLogLineC(logAsio, CFormat(wxT("Destroy() already dying socket %p %p %s")) % m_libSocket % this % m_IP);
 			return;
 		}
-		m_dying = true;
+		m_isDestroying = true;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Destroy() %p %p %s")) % m_libSocket % this % m_IP);
 		Close();
 		if (m_sync || s_io_service.stopped()) {
@@ -419,7 +424,7 @@ private:
 	{
 		m_OK = !err;
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect %d %s")) % m_OK % m_IP);
-		if (m_libSocket->ForDeletion()) {
+		if (m_isDestroying) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect: socket pending for deletion %s")) % m_IP);
 		} else {
 			CoreNotify_LibSocketConnect(m_libSocket, err.value());
@@ -438,7 +443,7 @@ private:
 		delete[] m_sendBuffer;
 		m_sendBuffer = NULL;
 
-		if (m_libSocket->ForDeletion()) {
+		if (m_isDestroying) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
 		} else {
 			if (SetError(err)) {
@@ -454,6 +459,10 @@ private:
 
 	void HandleRead(const error_code & ec)
 	{
+		if (m_isDestroying) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
+		}
+
 		if (SetError(ec)) {
 			// This is what we get in Windows when a connection gets closed from remote.
 			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError %s %s")) % m_IP % ec.message());
@@ -494,12 +503,8 @@ private:
 		}
 
 		m_readPending = false;
-		if (m_libSocket->ForDeletion()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
-		} else {
-			m_blocksRead = false;
-			PostReadEvent(2);
-		}
+		m_blocksRead = false;
+		PostReadEvent(2);
 	}
 
 	void HandleDestroy()
@@ -531,7 +536,7 @@ private:
 
 	void PostLostEvent()
 	{
-		if (!m_libSocket->ForDeletion() && !m_closed) {
+		if (!m_isDestroying && !m_closed) {
 			CoreNotify_LibSocketLost(m_libSocket);
 		}
 	}
@@ -603,7 +608,7 @@ private:
 	deadline_timer	m_timer;
 	bool			m_connected;
 	bool			m_closed;
-	bool			m_dying;
+	bool			m_isDestroying;		// true if Destroy() was called
 	bool			m_proxyState;
 	bool			m_notify;			// set by Notify()
 	bool			m_sync;				// copied from !m_notify on Connect()
@@ -657,6 +662,12 @@ void CLibSocket::Destroy()
 }
 
 
+bool CLibSocket::IsDestroying() const 
+{
+	return m_aSocket->IsDestroying();
+}
+
+	
 void CLibSocket::Notify(bool notify)
 {
 	m_aSocket->Notify(notify);
@@ -1381,7 +1392,9 @@ namespace MuleNotify
 
 	void LibSocketConnect(CLibSocket * socket, int error)
 	{
-		if (socket->GetProxyState()) {
+		if (socket->IsDestroying()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Destroying %s %d")) % socket->GetIP() % error);
+		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Proxy %s %d")) % socket->GetIP() % error);
 			socket->OnProxyEvent(wxSOCKET_CONNECTION);
 		} else {
@@ -1392,7 +1405,9 @@ namespace MuleNotify
 
 	void LibSocketSend(CLibSocket * socket, int error)
 	{
-		if (socket->GetProxyState()) {
+		if (socket->IsDestroying()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Destroying %s %d")) % socket->GetIP() % error);
+		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Proxy %s %d")) % socket->GetIP() % error);
 			socket->OnProxyEvent(wxSOCKET_OUTPUT);
 		} else {
@@ -1404,7 +1419,9 @@ namespace MuleNotify
 	void LibSocketReceive(CLibSocket * socket, int error)
 	{
 		socket->EventProcessed();
-		if (socket->GetProxyState()) {
+		if (socket->IsDestroying()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Destroying %s %d")) % socket->GetIP() % error);
+		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Proxy %s %d")) % socket->GetIP() % error);
 			socket->OnProxyEvent(wxSOCKET_INPUT);
 		} else {
@@ -1415,7 +1432,9 @@ namespace MuleNotify
 
 	void LibSocketLost(CLibSocket * socket)
 	{
-		if (socket->GetProxyState()) {
+		if (socket->IsDestroying()) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Destroying %s")) % socket->GetIP());
+		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Proxy %s")) % socket->GetIP());
 			socket->OnProxyEvent(wxSOCKET_LOST);
 		} else {
