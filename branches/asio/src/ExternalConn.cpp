@@ -536,9 +536,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 			AddLogLineN(CFormat(_("Sent error message \"%s\" to client.")) % wxGetTranslation(response->GetFirstTagSafe()->GetStringData()));
 		}
 		// Access denied!
-		amuleIPV4Address address;
-		GetPeer(address);
-		AddLogLineN(CFormat(_("Unauthorized access attempt from %s. Connection closed.")) % address.IPAddress() );
+		AddLogLineN(CFormat(_("Unauthorized access attempt from %s. Connection closed.")) % GetPeer() );
 		m_conn_state = CONN_FAILED;
 	}
 

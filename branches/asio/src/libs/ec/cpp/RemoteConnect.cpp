@@ -162,7 +162,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 bool CRemoteConnect::IsConnectedToLocalHost()
 {
 	amuleIPV4Address addr;
-	return GetPeer(addr) ? addr.IsLocalHost() : false;
+	return addr.Hostname(GetPeer()) ? addr.IsLocalHost() : false;
 }
 
 void CRemoteConnect::WriteDoneAndQueueEmpty()

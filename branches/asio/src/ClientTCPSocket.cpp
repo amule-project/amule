@@ -168,20 +168,18 @@ bool CClientTCPSocket::InitNetworkData()
 {
 	wxASSERT(!m_remoteip);
 	wxASSERT(!m_client);
-	amuleIPV4Address addr;
-	GetPeer(addr);
-	m_remoteip = StringIPtoUint32(addr.IPAddress());
+	m_remoteip = GetPeerInt();
 
 	MULE_CHECK(m_remoteip, false);
 
 	if (theApp->ipfilter->IsFiltered(m_remoteip)) {
-		AddDebugLogLineN(logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Filtered IP)"));
+		AddDebugLogLineN(logClient, wxT("Denied connection from ") + GetPeer() + wxT("(Filtered IP)"));
 		return false;
 	} else if (theApp->clientlist->IsBannedClient(m_remoteip)) {
-		AddDebugLogLineN(logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Banned IP)"));
+		AddDebugLogLineN(logClient, wxT("Denied connection from ") + GetPeer() + wxT("(Banned IP)"));
 		return false;
 	} else {
-		AddDebugLogLineN(logClient, wxT("Accepted connection from ") + addr.IPAddress());
+		AddDebugLogLineN(logClient, wxT("Accepted connection from ") + GetPeer());
 		return true;
 	}
 }

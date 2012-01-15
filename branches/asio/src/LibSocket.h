@@ -59,7 +59,6 @@ public:
 	bool	Connect(const amuleIPV4Address& adr, bool wait);
 	bool	IsConnected() const;
 	bool	IsOk() const;
-	bool	GetPeer(amuleIPV4Address& adr);
 	void	SetLocal(const amuleIPV4Address& local);
 	uint32	Read(void * buffer, uint32 nbytes);
 	uint32	Write(const void * buffer, uint32 nbytes);
@@ -98,6 +97,10 @@ public:
 	// Get/set proxy state
 	bool GetProxyState() const;
 	void SetProxyState(bool state, const amuleIPV4Address * adr = 0);
+
+	// Get peer address (better API than wx)
+	wxString	GetPeer();
+	uint32		GetPeerInt();
 
 	// Handlers
 	virtual void OnConnect(int) {}
@@ -280,6 +283,16 @@ public:
 	}
 
 	bool	IsDestroying() const { return m_isDestroying; }
+
+	// Get peer address (better API than wx)
+	wxString	GetPeer()
+	{
+		wxIPV4address adr;
+		wxSocketClient::GetPeer(adr);
+		return adr.IPAddress();
+	}
+
+	uint32		GetPeerInt() { return StringIPtoUint32(GetPeer()); }
 
 private:
 	bool	m_isDestroying;		// true if Destroy() was called
