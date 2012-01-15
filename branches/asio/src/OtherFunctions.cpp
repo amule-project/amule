@@ -101,9 +101,6 @@ wxString GetMuleVersion()
 	return ver;
 }
 
-// This gets filled if we link with LibSocketAsio.cpp
-wxString MuleBoostVersion;
-
 
 // Formats a filesize in bytes to make it suitable for displaying
 wxString CastItoXBytes( uint64 count )
