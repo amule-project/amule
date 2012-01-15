@@ -84,7 +84,7 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 		return;
 	}
 
-	if (socket->OnDestroy()) {
+	if (socket->IsDestroying()) {
 		return;
 	}
 

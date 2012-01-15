@@ -71,17 +71,12 @@ public:
 
     uint32	GetNeededBytes();
 
-	void	Destroy();
-	bool OnDestroy() { return DoingDestroy; };
-
 	//protected:
 	// these functions are public on our code because of the amuleDlg::socketHandler
 	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
 	virtual void	OnSend(int nErrorCode);
 	virtual void	OnReceive(int nErrorCode);
 	virtual void	OnConnect(int nErrorCode) = 0;
-
-	virtual bool	ForDeletion() const { return false; }
 
 protected:
 
@@ -147,8 +142,6 @@ private:
 
     bool m_bBusy;
     bool m_hasSent;
-
-	bool DoingDestroy;
 };
 
 

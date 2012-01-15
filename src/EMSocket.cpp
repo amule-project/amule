@@ -95,9 +95,6 @@ CEMSocket::CEMSocket(const CProxyData *ProxyData)
     m_hasSent = false;
 
 	lastFinishedStandard = 0;
-
-	DoingDestroy = false;
-
 }
 
 CEMSocket::~CEMSocket()
@@ -117,15 +114,8 @@ CEMSocket::~CEMSocket()
 
     ClearQueues();
 
-	SetNotify(0);
+	SetNotify(0);	// this is already done in Destroy()
 	Notify(FALSE);
-}
-
-void CEMSocket::Destroy() {
-	if (!DoingDestroy) {
-		DoingDestroy = true;
-		CLibSocket::Destroy();
-	}
 }
 
 
