@@ -161,9 +161,7 @@ void CServerSocket::OnConnect(int nErrorCode)
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
-				amuleIPV4Address tmpaddr;
-				GetPeer(tmpaddr);
-				uint32 server_ip = StringIPtoUint32(tmpaddr.IPAddress());
+				uint32 server_ip = GetPeerInt();
 				cur_server->SetID(server_ip);
 				// GetServerByAddress may return NULL, so we must test!
 				// This was the reason why amule would crash when trying to

@@ -258,9 +258,7 @@ void CUpDownClient::Init()
 	m_nSourceFrom = SF_NONE;
 
 	if (m_socket) {
-		amuleIPV4Address address;
-		m_socket->GetPeer(address);
-		SetIP(StringIPtoUint32(address.IPAddress()));
+		SetIP(m_socket->GetPeerInt());
 	} else {
 		SetIP(0);
 	}
@@ -660,9 +658,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	}
 
 	if (m_socket) {
-		amuleIPV4Address address;
-		m_socket->GetPeer(address);
-		SetIP(StringIPtoUint32(address.IPAddress()));
+		SetIP(m_socket->GetPeerInt());
 	} else {
 		throw wxString(wxT("Huh, socket failure. Avoided crash this time."));
 	}
@@ -733,9 +729,7 @@ bool CUpDownClient::SendHelloPacket()
 	}
 
 	// if IP is filtered, don't greet him but disconnect...
-	amuleIPV4Address address;
-	m_socket->GetPeer(address);
-	if ( theApp->ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
+	if (theApp->ipfilter->IsFiltered(m_socket->GetPeerInt())) {
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
 			return false;

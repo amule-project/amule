@@ -290,13 +290,15 @@ public:
 	}
 
 
-	bool GetPeer(amuleIPV4Address& adr)
+	wxString GetPeer()
 	{
-		adr = m_IPAddress;
-		AddDebugLogLineF(logAsio, CFormat(wxT("GetPeer : %s")) % adr.IPAddress());
-		return true;
+		return m_IP;
 	}
 
+	uint32 GetPeerInt()
+	{
+		return m_IPint;
+	}
 
 	//
 	// Bind socket to local endpoint if user wants to choose the local address
@@ -583,16 +585,17 @@ private:
 	//
 	void SetIp(const amuleIPV4Address& adr)
 	{
-		m_IPAddress = adr;
-		m_IPstring = m_IPAddress.IPAddress();
+		m_IPstring = adr.IPAddress();
 		m_IP = m_IPstring.c_str();
+		m_IPint = StringIPtoUint32(m_IPstring);
 	}
 
 	CLibSocket	*	m_libSocket;
 	ip::tcp::socket	*	m_socket;
-	amuleIPV4Address m_IPAddress;		// remote IP
+										// remote IP
 	wxString		m_IPstring;			// as String (use nowhere because of threading!)
 	const wxChar *	m_IP;				// as char*  (use in debug logs)
+	uint32			m_IPint;			// as int
 	uint16			m_port;				// remote port
 	bool			m_OK;
 	int				m_ErrorCode;
@@ -650,9 +653,15 @@ bool CLibSocket::IsOk() const
 }
 
 
-bool CLibSocket::GetPeer(amuleIPV4Address& adr)
+wxString CLibSocket::GetPeer()
 {
-	return m_aSocket->GetPeer(adr);
+	return m_aSocket->GetPeer();
+}
+
+
+uint32 CLibSocket::GetPeerInt()
+{
+	return m_aSocket->GetPeerInt();
 }
 
 
