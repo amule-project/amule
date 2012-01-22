@@ -148,9 +148,6 @@ public:
 
 	// Do we have a socket available if AcceptWith() is called ?
 	bool	SocketAvailable();
-
-	// Restart accepting if needed
-	bool	RestartAccept();
 private:
 	class CAsioSocketServerImpl * m_aServer;
 };
@@ -311,7 +308,6 @@ public:
 
 	bool SocketAvailable() { return true; }
 
-	void RestartAccept() {}
 	virtual	void OnAccept() {}
 };
 

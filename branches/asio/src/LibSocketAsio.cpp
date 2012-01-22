@@ -57,6 +57,7 @@
 #include "amuleIPV4Address.h"
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents, MuleBoostVersion
+#include "ScopedPtr.h"
 
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
@@ -769,12 +770,11 @@ class CAsioSocketServerImpl : public ip::tcp::acceptor
 public:
 	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer) 
 		: ip::tcp::acceptor(s_io_service),
-		  m_libSocketServer(libSocketServer)
+		  m_libSocketServer(libSocketServer),
+		  m_currentSocket(NULL)
 	{
 		m_ok = false;
-		m_currentSocket = NULL;
 		m_socketAvailable = false;
-		m_acceptError = false;
 
 		try {
 			open(adr.GetEndpoint().protocol());
@@ -806,10 +806,10 @@ public:
 		}
 
 		// return the socket we received
-		socket.LinkSocketImpl(m_currentSocket);
+		socket.LinkSocketImpl(m_currentSocket.release());
 
 		// check if we have another socket ready for reception
-		m_currentSocket = new CAsioSocketImpl(NULL);
+		m_currentSocket.reset(new CAsioSocketImpl(NULL));
 		error_code ec;
 		// async_accept does not work if server is non-blocking
 		// temporarily switch it to non-blocking
@@ -838,24 +838,11 @@ public:
 
 	bool SocketAvailable() const { return m_socketAvailable; }
 
-	bool RestartAccept()
-	{
-		if (!m_acceptError) {
-			return false;
-		}
-		m_acceptError = false;
-		AddDebugLogLineN(logAsio, wxT("RestartAccept after error"));
-		StartAccept();
-		return true;
-	}
-
 private:
 
 	void StartAccept()
 	{
-		if (!m_currentSocket) {
-			m_currentSocket = new CAsioSocketImpl(NULL);
-		}
+		m_currentSocket.reset(new CAsioSocketImpl(NULL));
 		async_accept(m_currentSocket->GetAsioSocket(), boost::bind(& CAsioSocketServerImpl::HandleAccept, this, placeholders::error));
 	}
 
@@ -863,7 +850,6 @@ private:
 	{
 		if (error) {
 			AddDebugLogLineC(logAsio, CFormat(wxT("Error in HandleAccept: %s")) % error.message());
-			m_acceptError = true;
 		} else {
 			if (m_currentSocket->UpdateIP()) {
 				AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d")) 
@@ -875,19 +861,17 @@ private:
 				AddDebugLogLineN(logAsio, wxT("Error in HandleAccept: invalid socket"));
 			}
 		}
-		// Try again
-		delete m_currentSocket;
-		m_currentSocket = NULL;
+		// We were not successful. Try again.
+		// Post the request to the event queue to make sure it doesn't get called immediately.
+		s_io_service.post(boost::bind(& CAsioSocketServerImpl::StartAccept, this));
 	}
 
 	// The wrapper object
 	CLibSocketServer * m_libSocketServer;
 	// Startup ok
 	bool m_ok;
-	// Accept error
-	bool m_acceptError;
 	// The last socket that connected to us
-	CAsioSocketImpl * m_currentSocket;
+	CScopedPtr<CAsioSocketImpl> m_currentSocket;
 	// Is there a socket available?
 	bool m_socketAvailable;
 };
@@ -938,13 +922,6 @@ bool CLibSocketServer::SocketAvailable()
 {
 	return m_aServer->SocketAvailable();
 }
-
-
-bool CLibSocketServer::RestartAccept()
-{
-	return m_aServer->RestartAccept();
-}
-
 
 
 /**
