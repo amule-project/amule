@@ -136,7 +136,6 @@ void CListenSocket::Process()
 	if (m_pending) {
 		OnAccept();
 	}
-	RestartAccept();
 }
 
 void CListenSocket::RecalculateStats()
