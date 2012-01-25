@@ -28,7 +28,7 @@
 #define __LIBSOCKET_H__
 
 #ifdef HAVE_CONFIG_H
-#	include "config.h"		// defines ASIO_SOCKETS
+#	include "config.h"		// Needed for ASIO_SOCKETS
 #endif
 
 #ifdef ASIO_SOCKETS
@@ -179,7 +179,7 @@ public:
 
 	// Check if socket is currently blocking for write
 	// Well - we apparently have block in wx. At least we handle it in MuleUDPSocket.
-	// But this makes no sense. We send a packet to an IP in background. 
+	// But this makes no sense. We send a packet to an IP in background.
 	// Either this works after some time, or not. But there is no block.
 	bool	BlocksWrite() const { return false; }
 
@@ -193,7 +193,7 @@ private:
 //
 // ASIO event loop
 //
-class CAsioService : public wxThread 
+class CAsioService : public wxThread
 {
 public:
     CAsioService();
@@ -206,7 +206,7 @@ private:
 };
 
 
-#else // ASIO_SOCKETS
+#else /* ASIO_SOCKETS */
 
 // use wx sockets
 
@@ -354,7 +354,6 @@ public:
 	void Stop() {}
 };
 
+#endif /* ASIO_SOCKETS */
 
-#endif
-
-#endif
+#endif /* __LIBSOCKET_H__ */

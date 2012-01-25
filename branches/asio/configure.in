@@ -32,6 +32,7 @@ AC_PREREQ(2.59)
 
 AC_CONFIG_SRCDIR([src/amule.cpp])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
 AM_MAINTAINER_MODE
 
 dnl Check host system.
@@ -56,6 +57,7 @@ AC_PROG_MAKE_SET
 AC_PROG_LEX
 AC_PROG_INSTALL
 AC_PROG_RANLIB
+AC_PROG_SED
 AC_PROG_YACC
 
 dnl Find the right ranlib, even when cross-compiling
@@ -232,6 +234,8 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, alc, alcc], [MULE_CHECK_WX_SUPPOR
 MULE_CHECK_EXCEPTIONS
 
 MULE_CHECK_CXXABI
+
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver], [MULE_CHECK_BOOST([1.42])])
 AC_LANG_POP([C++])
 ])
 
@@ -473,6 +477,14 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, a
 	AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 	echo "                             wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 ])
+AS_IF([test ${with_boost:-no} != no],
+[MULE_IF(
+	[test ${with_boost:-no} = disabled],
+		[echo "                             boost                 Not detected"],
+	[test ${boost_cv_inc_path:-yes} != yes],
+		[echo "                             boost                 `echo ${boost_cv_lib_version} | sed -e 's/_/./g'` (in ${boost_cv_inc_path})"],
+		[echo "                             boost                 `echo ${boost_cv_lib_version} | sed -e 's/_/./g'`"],
+)])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 	[echo "                             crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"])
 MULE_IF_ENABLED([upnp], [

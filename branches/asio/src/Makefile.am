@@ -16,6 +16,8 @@ endif
 
 EXTRA_DIST = \
 	aMule.xpm \
+	LibSocketAsio.cpp \
+	LibSocketWX.cpp \
 	Parser.y \
 	Scanner.h.in \
 	Scanner.l \
@@ -61,13 +63,8 @@ endif
 
 # Socket lib (WX or Asio)
 
-libmulesocket_a_SOURCES =
-# if Asio
-libmulesocket_a_SOURCES += LibSocketAsio.cpp
-# else
-libmulesocket_a_SOURCES += LibSocketWX.cpp
-
-libmulesocket_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmulesocket_a_SOURCES = LibSocket.cpp
+libmulesocket_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(BOOST_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 
 
 # Common to core/gui/monolithic
@@ -235,7 +232,7 @@ common_sources = \
 core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
 gui_libs = -L. -lmuleappgui $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
-common_libs = -L. -lmuleappcommon $(remote_common_libs) -lmulesocket $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
+common_libs = -L. -lmuleappcommon $(remote_common_libs) -lmulesocket $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
 
 core_deps = libmuleappcore.a
 gui_deps = libmuleappgui.a
@@ -320,7 +317,7 @@ amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags)
 amulecmd_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -L. -lmulecommon -lec -lmulesocket \
-	$(WXBASE_LIBS) $(READLINE_LIBS) $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
+	$(WXBASE_LIBS) $(READLINE_LIBS) $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS)
 
 noinst_HEADERS = \
 		AddFriend.h \
