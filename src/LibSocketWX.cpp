@@ -28,10 +28,9 @@
 // (Implementation for Asio is in LibSocketAsio.cpp
 //
 
-#include "LibSocket.h"		// for ASIO_SOCKETS
+#include "LibSocket.h"
 #include "Logger.h"
 
-#ifndef ASIO_SOCKETS
 
 class CamuleIPV4Endpoint : public wxIPV4address {
 public:
@@ -64,7 +63,7 @@ CLibSocketServer::CLibSocketServer(const amuleIPV4Address &address,	wxSocketFlag
 {
 }
 
-CLibUDPSocket::CLibUDPSocket(amuleIPV4Address &address, wxSocketFlags flags) : wxDatagramSocket(address.GetEndpoint(), flags) 
+CLibUDPSocket::CLibUDPSocket(amuleIPV4Address &address, wxSocketFlags flags) : wxDatagramSocket(address.GetEndpoint(), flags)
 {
 }
 
@@ -152,5 +151,3 @@ CamuleIPV4Endpoint & amuleIPV4Address::GetEndpoint()
 }
 
 wxString MuleBoostVersion;
-
-#endif

@@ -24,10 +24,8 @@
 //
 
 #ifdef HAVE_CONFIG_H
-#	include "config.h"		// defines ASIO_SOCKETS
+#	include "config.h"		// Needed for HAVE_BOOST_SOURCES
 #endif
-
-#ifdef ASIO_SOCKETS
 
 #ifdef _MSC_VER
 #define _WIN32_WINNT 0x0501		// Boost complains otherwise
@@ -46,7 +44,11 @@
 // Do away with building Boost.System, adding lib paths...
 // Just include the single file and be done.
 //
-#include <boost/../libs/system/src/error_code.cpp>
+#ifdef HAVE_BOOST_SOURCES
+#	include <boost/../libs/system/src/error_code.cpp>
+#else
+#	include <boost/system/error_code.hpp>
+#endif
 
 #include "LibSocket.h"
 #include <wx/thread.h>		// wxMutex
@@ -85,7 +87,7 @@ public:
 class CAsioSocketImpl
 {
 public:
-	CAsioSocketImpl(CLibSocket * libSocket) : 
+	CAsioSocketImpl(CLibSocket * libSocket) :
 		m_libSocket(libSocket),
 		m_timer(s_io_service)
 	{
@@ -142,7 +144,7 @@ public:
 			m_connected = m_OK;
 			return m_OK;
 		} else {
-			m_socket->async_connect(adr.GetEndpoint(), 
+			m_socket->async_connect(adr.GetEndpoint(),
 				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error));
 			// m_OK and return are false because we are not connected yet
 			return false;
@@ -155,12 +157,12 @@ public:
 	}
 
 	// For wxSocketClient, Ok won't return true unless the client is connected to a server.
-	bool IsOk() const 
+	bool IsOk() const
 	{
 		return m_OK;
 	}
 
-	bool IsDestroying() const 
+	bool IsDestroying() const
 	{
 		return m_isDestroying;
 	}
@@ -208,7 +210,7 @@ public:
 
 		if (m_readPending					// Background read hasn't completed.
 			|| m_readBufferContent == 0) {	// shouldn't be if it's not pending
-			
+
 			m_blocksRead = true;
 			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Block")) % m_IP % bytesToRead);
 			return 0;
@@ -324,7 +326,7 @@ public:
 		endpoint.port(0);
 		m_socket->bind(endpoint, ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s : %s")) 
+			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s : %s"))
 				% local.IPAddress() % ec.message());
 		} else {
 			AddDebugLogLineF(logAsio, CFormat(wxT("Bound socket to local endpoint %s")) % local.IPAddress());
@@ -371,8 +373,8 @@ public:
 
 	bool GetProxyState() const { return m_proxyState; }
 
-	void SetProxyState(bool state, const amuleIPV4Address * adr) 
-	{ 
+	void SetProxyState(bool state, const amuleIPV4Address * adr)
+	{
 		m_proxyState = state;
 		if (state) {
 			// Start. Get the true IP for logging.
@@ -389,7 +391,7 @@ public:
 private:
 	//
 	// Dispatch handlers
-	// Access to m_socket is all bundled in the thread running s_io_service to avoid 
+	// Access to m_socket is all bundled in the thread running s_io_service to avoid
 	// concurrent access to the socket from several threads.
 	// So once things are running (after connect), all access goes through one of these handlers.
 	//
@@ -407,9 +409,9 @@ private:
 	void DispatchBackgroundRead()
 	{
 		AddDebugLogLineF(logAsio, CFormat(wxT("DispatchBackgroundRead %s")) % m_IP);
-		m_socket->async_read_some(null_buffers(), 
+		m_socket->async_read_some(null_buffers(),
 			boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error));
-		//m_socket->async_read_some(buffer(m_readBuffer, c_readBufferSize), 
+		//m_socket->async_read_some(buffer(m_readBuffer, c_readBufferSize),
 		//	boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred));
 	}
 
@@ -672,12 +674,12 @@ void CLibSocket::Destroy()
 }
 
 
-bool CLibSocket::IsDestroying() const 
+bool CLibSocket::IsDestroying() const
 {
 	return m_aSocket->IsDestroying();
 }
 
-	
+
 void CLibSocket::Notify(bool notify)
 {
 	m_aSocket->Notify(notify);
@@ -768,7 +770,7 @@ void CLibSocket::SetProxyState(bool state, const amuleIPV4Address * adr)
 class CAsioSocketServerImpl : public ip::tcp::acceptor
 {
 public:
-	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer) 
+	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer)
 		: ip::tcp::acceptor(s_io_service),
 		  m_libSocketServer(libSocketServer),
 		  m_currentSocket(NULL)
@@ -852,7 +854,7 @@ private:
 			AddDebugLogLineC(logAsio, CFormat(wxT("Error in HandleAccept: %s")) % error.message());
 		} else {
 			if (m_currentSocket->UpdateIP()) {
-				AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d")) 
+				AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d"))
 					% m_currentSocket->GetIP() % m_currentSocket->GetPort());
 				m_socketAvailable = true;
 				CoreNotify_ServerTCPAccept(m_libSocketServer);
@@ -1052,7 +1054,7 @@ public:
 private:
 	//
 	// Dispatch handlers
-	// Access to m_socket is all bundled in the thread running s_io_service to avoid 
+	// Access to m_socket is all bundled in the thread running s_io_service to avoid
 	// concurrent access to the socket from several threads.
 	// So once things are running (after connect), all access goes through one of these handlers.
 	//
@@ -1071,7 +1073,7 @@ private:
 	{
 		ip::udp::endpoint endpoint(recdata->ipadr.GetEndpoint().address(), recdata->ipadr.Service());
 
-		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size 
+		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size
 			% endpoint.address().to_string() % endpoint.port());
 		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
 			boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata));
@@ -1453,6 +1455,3 @@ namespace MuleNotify
 // Initialize MuleBoostVersion
 //
 wxString MuleBoostVersion = CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
-
-
-#endif

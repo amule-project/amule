@@ -18,7 +18,6 @@ Implementation is near complete. It's been tested briefly in Windows and Linux.
 More testing is required.
 
 Not done yet / problems:
-- configure
 - better error handling/error messages
 - further abstraction (replace wx socket constants in code)
 - make use of background resolve for AsyncDNS instead of spawning a thread
@@ -37,8 +36,9 @@ but we include the single .cpp directly, so we don't need to build
 anything of boost.
 
 Configure aMule using
-CPPFLAGS="-I~/amule/boost_1_48_0 -DASIO_SOCKETS=1"
+  ./configure --with-boost
+or
+  ./configure --with-boost=/path/to/boost/sources
 
 Important: aMule prints "Asio thread started" in log and console on startup. 
 If it doesn't you have probably configured it to use wx sockets!
-
