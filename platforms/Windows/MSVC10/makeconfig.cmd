@@ -32,6 +32,7 @@ if not exist ..\boost\boost\asio.hpp goto boost2
 if not exist ..\boost\libs\system\src\error_code.cpp goto boost2
 echo Boost detected, using Asio sockets
 echo #define ASIO_SOCKETS>>config.h
+echo #define HAVE_BOOST_SOURCES>>config.h
 goto finish
 :boost2
 echo no Boost found, using wx sockets
