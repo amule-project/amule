@@ -235,7 +235,7 @@ MULE_CHECK_EXCEPTIONS
 
 MULE_CHECK_CXXABI
 
-MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver], [MULE_CHECK_BOOST([1.42])])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver], [MULE_CHECK_BOOST([1.47])])
 AC_LANG_POP([C++])
 ])
 
