@@ -68,7 +68,6 @@ AC_DEFUN([MULE_CHECK_BOOST],
 		BOOST_REQUIRE([$1], [with_boost=disabled])
 		AS_IF([test ${with_boost:-no} != disabled], [
 			_BOOST_FIND_COMPILER_TAG
-			BOOST_SYSTEM([mt])
 			AC_MSG_CHECKING([for Boost sources])
 			MULE_BACKUP([CPPFLAGS])
 			MULE_APPEND([CPPFLAGS], [$BOOST_CPPFLAGS])
@@ -79,6 +78,7 @@ AC_DEFUN([MULE_CHECK_BOOST],
 				AC_MSG_RESULT([yes])
 			], [
 				AC_MSG_RESULT([no])
+				BOOST_SYSTEM([mt])
 				AS_IF([test ${boost_cv_lib_system:-no} != yes], [
 					MULE_WARNING([Boost support has been disabled because Boost.System not found])
 					with_boost=disabled
