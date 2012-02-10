@@ -24,16 +24,14 @@
 //
 
 
-#include "Tag.h"				// Interface declarations
+#include "Tag.h"			// Interface declarations
 
 #include <common/Format.h>		// Needed for WXLONGLONGFMTSPEC
 
-#include "SafeFile.h"		// Needed for CFileDataIO
+#include "SafeFile.h"			// Needed for CFileDataIO
 #include "MD4Hash.h"			// Needed for CMD4Hash
+#include "CompilerSpecific.h"		// Needed for __FUNCTION__
 
-#ifdef __SUNPRO_CC
-#define __FUNCTION__ __FILE__+__LINE__
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // CTag

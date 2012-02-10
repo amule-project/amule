@@ -66,14 +66,11 @@ there client on the eMule forum..
 #include "../../ScopedPtr.h"
 #include "../../IPFilter.h"
 #include "../../RandomFunctions.h"		// Needed for GetRandomUint128()
+#include "../../CompilerSpecific.h"		// Needed for __FUNCTION__
 
 #include <wx/tokenzr.h>
 
 #define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
-
-#if defined(__SUNPRO_CC)
-#define __FUNCTION__ __FILE__+__LINE__
-#endif
 
 #define CHECK_PACKET_SIZE(OP, SIZE) \
 	if (lenPacket OP (uint32_t)(SIZE)) \
