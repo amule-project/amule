@@ -23,16 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "SafeFile.h"				// Interface declarations.
-#include "MD4Hash.h"				// Needed for CMD4Hash
+#include "SafeFile.h"			// Interface declarations.
+#include "MD4Hash.h"			// Needed for CMD4Hash
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
-#include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
+#include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
 #include "Logger.h"
-#include <common/Format.h>	// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
+#include "CompilerSpecific.h"		// Needed for __FUNCTION__
 
-#if defined(__SUNPRO_CC)
-#define __FUNCTION__ __FILE__+__LINE__
-#endif
 
 #define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 

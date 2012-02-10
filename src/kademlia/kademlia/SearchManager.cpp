@@ -48,12 +48,9 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include "../../RandomFunctions.h"		// Needed for GetRandomUInt128()
 #include "../../OtherFunctions.h"		// Needed for DeleteContents()
+#include "../../CompilerSpecific.h"		// Needed for __FUNCTION__
 
 #include <wx/tokenzr.h>
-
-#if defined(__SUNPRO_CC)
-#define __FUNCTION__ __FILE__+__LINE__
-#endif
 
 ////////////////////////////////////////
 using namespace Kademlia;
