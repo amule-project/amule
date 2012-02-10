@@ -13,6 +13,7 @@ Version 2.4.0 - The river knows.
 		* Fixed "Prompt on exit" preference
 		* Fixed country flags for Turkish localization
 		* Fixed loading of zipped IP filter (#1674)
+		* Fixed showing of shared files to other clients
 
 --------------------------------------------------------------------------------
 
