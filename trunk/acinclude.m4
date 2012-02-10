@@ -569,9 +569,13 @@ dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_CHECK_CXXABI],
 [AC_LANG_ASSERT([C++])dnl
 
+	AC_CHECK_HEADERS([typeinfo])
 	AC_MSG_CHECKING([for <cxxabi.h> and __cxa_demangle()])
 	AC_LINK_IFELSE([
 		AC_LANG_PROGRAM([[
+			#ifdef HAVE_TYPEINFO
+			#	include <typeinfo>
+			#endif
 			#include <cxxabi.h>
 		]], [[
 			int status;

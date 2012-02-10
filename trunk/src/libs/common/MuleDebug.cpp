@@ -38,6 +38,9 @@
 #endif
 
 #ifdef HAVE_CXXABI
+#	ifdef HAVE_TYPEINFO
+#		include <typeinfo>	// Needed for some MacOSX versions with broken system headers
+#	endif
 #	include <cxxabi.h>
 #endif
 
