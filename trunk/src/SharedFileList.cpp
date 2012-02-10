@@ -626,10 +626,8 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString& directory,
 		CKnownFile *cur_file = pos->second;
 
 		if (dir.IsSameDir(cur_file->GetFilePath())) {
-			continue;
+			list.push_back(cur_file);
 		}
-
-		list.push_back(cur_file);
 	}
 }
 

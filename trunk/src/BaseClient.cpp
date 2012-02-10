@@ -2858,7 +2858,7 @@ void CUpDownClient::SendSharedDirectories()
 
 		// Build packet
 		CMemFile tempfile(80);
-		tempfile.WriteUInt32(foldersToSend.size());
+		tempfile.WriteUInt32(foldersToSend.size() + 1);	// + 1 for the incomplete files
 
 		PathList::iterator it = foldersToSend.begin();
 		for (; it != foldersToSend.end(); ++it) {
