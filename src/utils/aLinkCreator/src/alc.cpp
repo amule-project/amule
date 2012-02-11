@@ -26,15 +26,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for PACKAGE
 #else

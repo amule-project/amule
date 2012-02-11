@@ -31,22 +31,20 @@
 #define _WXCASFRAME_H
 
 
-#ifdef __BORLANDC__
- #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
- #include "wx/wx.h"
-#endif
-
-#include <wx/statline.h>
-#include <wx/toolbar.h>
-#include <wx/timer.h>
+#include <wx/bitmap.h>
+#include <wx/button.h>
 #include <wx/filename.h>
+#include <wx/frame.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/statbox.h>
+#include <wx/statline.h>
+#include <wx/stattext.h>
+#include <wx/timer.h>
+#include <wx/toolbar.h>
+
 
 #include "onlinesig.h"
-
 
 #ifdef __LINUX__		// System monitoring on Linux
 #include "linuxmon.h"

@@ -31,18 +31,15 @@
 #define _WXCASPREFS_H
 
 
-#ifdef __BORLANDC__
- #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
- #include "wx/wx.h"
-#endif
-
+#include <wx/checkbox.h>
+#include <wx/combobox.h>
 #include <wx/dialog.h>
+#include <wx/sizer.h>
 #include <wx/spinctrl.h>
+#include <wx/statbox.h>
 #include <wx/statline.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 /// Preference Dialog
 class WxCasPrefs: public wxDialog

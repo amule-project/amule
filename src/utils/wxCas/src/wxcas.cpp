@@ -27,16 +27,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-
-#ifdef __BORLANDC__
- #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
- #include "wx/wx.h"
-#endif
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for PACKAGE
@@ -44,13 +34,14 @@
 #define PACKAGE "amule"
 #endif
 
+#include <wx/config.h>
+#include <wx/image.h>
+
+#include "wxcas.h"
+
 #if !wxUSE_PRINTING_ARCHITECTURE
 #error You must set wxUSE_PRINTING_ARCHITECTURE to 1 in setup.h to compile wxCas.
 #endif
-
-#include <wx/config.h>
-
-#include "wxcas.h"
 
 // Application implementation
 IMPLEMENT_APP ( WxCas )

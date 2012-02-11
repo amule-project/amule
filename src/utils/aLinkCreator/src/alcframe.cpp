@@ -31,25 +31,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
-
-#include <wx/textfile.h>
-#include <wx/file.h>
-#include <wx/timer.h>
-#include <wx/listbox.h>
-#include <wx/url.h>
-#include <wx/uri.h>
-#include <wx/filename.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
+#include <wx/file.h>
 #include <wx/filedlg.h>
+#include <wx/filename.h>
+#include <wx/button.h>
+#include <wx/icon.h>
+#include <wx/log.h>
+#include <wx/msgdlg.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
+#include <wx/textfile.h>
+#include <wx/timer.h>
+#include <wx/toolbar.h>
+#include <wx/uri.h>
+#include <wx/url.h>
 
 #ifdef __WXMSW__
 	#include <winerror.h>

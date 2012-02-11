@@ -28,19 +28,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef __BORLANDC__
- #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
- #include "wx/wx.h"
-#endif
-
 #include <wx/config.h>
+#include <wx/dcmemory.h>
 #include <wx/datetime.h>
 #include <wx/filedlg.h>
+#include <wx/icon.h>
 #include <wx/image.h>
+#include <wx/log.h>
+#include <wx/msgdlg.h>
 #include <wx/protocol/ftp.h>
 #include <wx/version.h>
 #include <wx/wfstream.h>

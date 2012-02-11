@@ -25,18 +25,9 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 ////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
 
 #include <wx/ffile.h>
+#include <wx/log.h>
 #include <wx/regex.h>
 
 #include "ed2khash.h"

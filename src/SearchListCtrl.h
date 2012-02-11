@@ -27,7 +27,7 @@
 #define SEARCHLISTCTRL_H
 
 
-#include "wx/colour.h"		// Needed for wxColour
+#include <wx/colour.h>		// Needed for wxColour
 #include <wx/regex.h>		// Needed for wxRegExp
 
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl

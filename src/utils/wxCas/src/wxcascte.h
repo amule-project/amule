@@ -31,15 +31,6 @@
 #define _WXCASCTE_H
 
 
-#ifdef __BORLANDC__
- #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
- #include "wx/wx.h"
-#endif
-
 /// Constants used in wxCas
 struct WxCasCte
 {

@@ -48,7 +48,7 @@
 #include "Logger.h"
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/utils/KadUDPKey.h"
-#include "zlib.h"
+#include <zlib.h>
 #include "EncryptedDatagramSocket.h"
 
 //
