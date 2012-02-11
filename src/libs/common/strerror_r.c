@@ -30,10 +30,10 @@
 #	define _XOPEN_SOURCE	600
 #endif
 
-#include <string.h>			// Needed for strerror_r() and size_t
+#include <string.h>			/* Needed for strerror_r() and size_t */
 
 #ifdef HAVE_ERRNO_H
-#	include <errno.h>			// Needed for errno
+#	include <errno.h>		/* Needed for errno */
 #endif
 
 #ifndef HAVE_STRERROR_R
