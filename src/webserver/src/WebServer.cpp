@@ -1064,18 +1064,24 @@ void CProgressImage::CreateSpan()
 		}
 	} else {
 		uint32 factor = m_file->lFileSize / m_width;
-		for(int i = 1; i <= colored_gaps_size;i++) {
+		for (int i = 1; i <= colored_gaps_size;i++) {
 			uint32 start = colored_gaps[i].start / factor;
 			uint32 end = colored_gaps[i].end / factor;
-			for(uint32 j = start; j < end; j++) {
+			if ((int)end > m_width) {
+				end = m_width;
+			}
+			for (uint32 j = start; j < end; j++) {
 				m_ColorLine[j] = colored_gaps[i].color;
 			}
 		}
 		// overwrite requested parts
-		for(uint32 i = 0; i < m_file->m_ReqParts.size(); i++) {
+		for (uint32 i = 0; i < m_file->m_ReqParts.size(); i++) {
 			uint32 start = m_file->m_ReqParts[i].start / factor;
 			uint32 end = m_file->m_ReqParts[i].end / factor;
-			for(uint32 j = start; j < end; j++) {
+			if ((int)end > m_width) {
+				end = m_width;
+			}
+			for (uint32 j = start; j < end; j++) {
 				m_ColorLine[j] = RGB(255, 208, 0);
 			}
 		}
