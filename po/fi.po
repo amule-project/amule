@@ -6155,7 +6155,7 @@ msgstr "Tiedostoja yhteensä: %llu"
 #: src/Statistics.cpp:807
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr "Palvelimien käyttö: %.2f% %"
+msgstr "Palvelimien käyttö: %.2f%%"
 
 #: src/Statistics.cpp:811
 #, c-format
