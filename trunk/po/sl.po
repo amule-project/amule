@@ -2021,7 +2021,7 @@ msgstr "Podrobnosti datoteke"
 #: src/FileDetailDialog.cpp:113
 #, fuzzy, c-format
 msgid "%.1f%% done"
-msgstr "%.2f% % zaključeno"
+msgstr "%.2f%% zaključeno"
 
 #: src/FileDetailDialog.cpp:115 src/utils/wxCas/src/wxcasframe.cpp:1144
 #: src/utils/wxCas/src/wxcasframe.cpp:1154
@@ -6230,7 +6230,7 @@ msgstr "Skupno datotek: %llu"
 #: src/Statistics.cpp:807
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr "Zasedenost strežnikov: %.2f% %"
+msgstr "Zasedenost strežnikov: %.2f%%"
 
 #: src/Statistics.cpp:811
 #, c-format
