@@ -311,12 +311,16 @@ void CStatistics::Load()
 
 	s_totalSent = 0;
 	s_totalReceived = 0;
-	if (f.Open(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")))) {
-		uint8_t version = f.ReadUInt8();
-		if (version == 0) {
-			s_totalSent = f.ReadUInt64();
-			s_totalReceived = f.ReadUInt64();
+	try {
+		if (f.Open(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")))) {
+			uint8_t version = f.ReadUInt8();
+			if (version == 0) {
+				s_totalSent = f.ReadUInt64();
+				s_totalReceived = f.ReadUInt64();
+			}
 		}
+	} catch (CSafeIOException e) {
+		AddLogLineN(e.what());
 	}
 
 	// Load old values from config
