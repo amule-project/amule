@@ -30,19 +30,16 @@
 #ifndef _ALCFRAME_H
 #define _ALCFRAME_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
-
-#include <wx/statline.h>
+#include <wx/bitmap.h>
+#include <wx/checkbox.h>
+#include <wx/frame.h>
+#include <wx/listbox.h>
+#include <wx/panel.h>
 #include <wx/progdlg.h>
+#include <wx/sizer.h>
+#include <wx/statline.h>
+#include <wx/textctrl.h>
 
 
 // Compute and display md4sum or not

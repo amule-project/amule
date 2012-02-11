@@ -28,8 +28,8 @@
 #define UPNPCOMPATIBILITY_H
 
 
-#include "upnp.h"
-#include "upnptools.h"
+#include <upnp.h>
+#include <upnptools.h>
 
 
 #include <sstream>

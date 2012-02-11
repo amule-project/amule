@@ -27,15 +27,7 @@
 #define _ALCC_H
 
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
-
+#include <wx/app.h>
 #include <wx/cmdline.h>
 
 //-----------------------------------------------------------------------------
