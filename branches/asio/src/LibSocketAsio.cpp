@@ -956,22 +956,14 @@ private:
 public:
 	CAsioUDPSocketImpl(const amuleIPV4Address &address, int /* flags */, CLibUDPSocket * libSocket) :
 		m_libSocket(libSocket),
-		m_timer(s_io_service)
+		m_timer(s_io_service),
+		m_address(address)
 	{
 		m_muleSocket = NULL;
+		m_socket = NULL;
 		m_readBuffer = new char[CMuleUDPSocket::UDP_BUFFER_SIZE];
 		m_OK = true;
-
-		try {
-			ip::udp::endpoint endpoint(address.GetEndpoint().address(), address.Service());
-			m_socket = new ip::udp::socket(s_io_service, endpoint);
-			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % address.IPAddress() % address.Service());
-			StartBackgroundRead();
-		} catch (system_error err) {
-			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % address.IPAddress() % address.Service() % err.code().message());
-			m_socket = NULL;
-			m_OK = false;
-		}
+		CreateSocket();
 	}
 
 	~CAsioUDPSocketImpl()
@@ -1087,8 +1079,10 @@ private:
 	{
 		if (ec) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ec.message());
+			CreateSocket(false);
 		} else if (received == 0) {
 			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
+			CreateSocket(false);
 		} else if (m_muleSocket == NULL) {
 			AddDebugLogLineN(logAsio, wxT("UDP HandleReadError no handler"));
 		} else {
@@ -1111,8 +1105,10 @@ private:
 	{
 		if (ec) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError %s")) % ec.message());
+			CreateSocket();
 		} else if (sent != recdata->size) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError tosend: %d sent %d")) % recdata->size % sent);
+			CreateSocket();
 		}
 		if (m_muleSocket == NULL) {
 			AddDebugLogLineN(logAsio, wxT("UDP HandleSendToError no handler"));
@@ -1133,6 +1129,23 @@ private:
 	// Other functions
 	//
 
+	void CreateSocket(bool startBackgroundRead = true)
+	{
+		try {
+			delete m_socket;
+			ip::udp::endpoint endpoint(m_address.GetEndpoint().address(), m_address.Service());
+			m_socket = new ip::udp::socket(s_io_service, endpoint);
+			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % m_address.IPAddress() % m_address.Service());
+			if (startBackgroundRead) {
+				StartBackgroundRead();
+			}
+		} catch (system_error err) {
+			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % m_address.IPAddress() % m_address.Service() % err.code().message());
+			m_socket = NULL;
+			m_OK = false;
+		}
+	}
+
 	void StartBackgroundRead()
 	{
 		m_socket->async_receive_from(buffer(m_readBuffer, CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
@@ -1144,6 +1157,7 @@ private:
 	CMuleUDPSocket *	m_muleSocket;
 	bool				m_OK;
 	deadline_timer		m_timer;
+	amuleIPV4Address	m_address;
 
 	// One fix receive buffer
 	char *				m_readBuffer;
