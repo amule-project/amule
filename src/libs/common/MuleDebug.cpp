@@ -35,6 +35,10 @@
 
 #ifdef HAVE_EXECINFO
 #	include <execinfo.h>
+#	include <wx/utils.h>			// Needed for wxArrayString
+#	ifndef HAVE_BFD
+#		include <wx/thread.h>		// Needed for wxThread
+#	endif
 #endif
 
 #ifdef HAVE_CXXABI
@@ -44,7 +48,6 @@
 #	include <cxxabi.h>
 #endif
 
-#include <wx/utils.h>			// Needed for wxArrayString
 
 #if wxUSE_STACKWALKER && defined(__WXMSW__)
 	#include <wx/stackwalk.h> // Do_not_auto_remove
