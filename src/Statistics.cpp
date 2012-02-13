@@ -51,6 +51,7 @@
 
 #include "amule.h"		// Needed for theApp
 #include <wx/intl.h>
+#include "Logger.h"
 
 #ifdef __BSD__
 	// glibc -> bsd libc
