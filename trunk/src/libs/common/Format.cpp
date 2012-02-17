@@ -544,7 +544,7 @@ void CFormat::ProcessArgument(FormatList::iterator it, void * value)
 		// -> format it as hex
 		if (sizeof(void*) == 8) {
 			// 64 bit
-			it->result = wxString::Format(wxT("0x%016x"), (uintptr_t)value);
+			it->result = wxString::Format(wxString(wxT("0x%016")) + WXLONGLONGFMTSPEC + wxT("x"), (uintptr_t)value);
 		} else {
 			// 32 bit
 			it->result = wxString::Format(wxT("0x%08x"), (uintptr_t)value);

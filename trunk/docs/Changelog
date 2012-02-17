@@ -14,6 +14,7 @@ Version 2.4.0 - The river knows.
 		* Fixed country flags for Turkish localization
 		* Fixed loading of zipped IP filter (#1674)
 		* Fixed showing of shared files to other clients
+		* Fixed assertions in CFormat("%p") on 64 bit OS with wx 2.9
 
 --------------------------------------------------------------------------------
 
