@@ -193,16 +193,15 @@ private:
 //
 // ASIO event loop
 //
-class CAsioService : public wxThread
+class CAsioService
 {
 public:
     CAsioService();
     ~CAsioService();
 	void Stop();
 private:
-
-    void* Entry();
-
+	static const int m_numberOfThreads;
+	class CAsioServiceThread * m_threads;
 };
 
 

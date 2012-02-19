@@ -65,6 +65,9 @@ using namespace boost::asio;
 using namespace boost::system;	// for error_code
 static 	io_service s_io_service;
 
+// Number of threads in the Asio thread pool
+const int CAsioService::m_numberOfThreads = 4;
+
 /**
  * ASIO Client TCP socket implementation
  */
@@ -89,6 +92,7 @@ class CAsioSocketImpl
 public:
 	CAsioSocketImpl(CLibSocket * libSocket) :
 		m_libSocket(libSocket),
+		m_strand(s_io_service),
 		m_timer(s_io_service)
 	{
 		m_OK = false;
@@ -145,7 +149,7 @@ public:
 			return m_OK;
 		} else {
 			m_socket->async_connect(adr.GetEndpoint(),
-				boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error));
+				m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error)));
 			// m_OK and return are false because we are not connected yet
 			return false;
 		}
@@ -252,7 +256,7 @@ public:
 		AddDebugLogLineF(logAsio, CFormat(wxT("Write %d %s")) % nbytes % m_IP);
 		m_sendBuffer = new char[nbytes];
 		memcpy(m_sendBuffer, buf, nbytes);
-		s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes));
+		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes));
 		m_ErrorCode = 0;
 		return nbytes;
 	}
@@ -266,7 +270,7 @@ public:
 			if (m_sync || s_io_service.stopped()) {
 				DispatchClose();
 			} else {
-				s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
+				m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
 			}
 		}
 	}
@@ -288,7 +292,7 @@ public:
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
 			m_timer.expires_from_now(boost::posix_time::seconds(1));
-			m_timer.async_wait(boost::bind(& CAsioSocketImpl::HandleDestroy, this));
+			m_timer.async_wait(m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleDestroy, this)));
 		}
 	}
 
@@ -410,15 +414,13 @@ private:
 	{
 		AddDebugLogLineF(logAsio, CFormat(wxT("DispatchBackgroundRead %s")) % m_IP);
 		m_socket->async_read_some(null_buffers(),
-			boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error));
-		//m_socket->async_read_some(buffer(m_readBuffer, c_readBufferSize),
-		//	boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred));
+			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error)));
 	}
 
 	void DispatchWrite(uint32 nbytes)
 	{
 		async_write(*m_socket, buffer(m_sendBuffer, nbytes),
-			boost::bind(& CAsioSocketImpl::HandleSend, this, placeholders::error, placeholders::bytes_transferred));
+			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleSend, this, placeholders::error, placeholders::bytes_transferred)));
 	}
 
 	//
@@ -527,7 +529,7 @@ private:
 	{
 		m_readPending = true;
 		m_readBufferContent = 0;
-		s_io_service.dispatch(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
+		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
 	}
 
 	void PostReadEvent(int from)
@@ -618,6 +620,7 @@ private:
 	bool			m_proxyState;
 	bool			m_notify;			// set by Notify()
 	bool			m_sync;				// copied from !m_notify on Connect()
+	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 };
 
 
@@ -772,6 +775,7 @@ class CAsioSocketServerImpl : public ip::tcp::acceptor
 public:
 	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer)
 		: ip::tcp::acceptor(s_io_service),
+		  m_strand(s_io_service),
 		  m_libSocketServer(libSocketServer),
 		  m_currentSocket(NULL)
 	{
@@ -845,7 +849,8 @@ private:
 	void StartAccept()
 	{
 		m_currentSocket.reset(new CAsioSocketImpl(NULL));
-		async_accept(m_currentSocket->GetAsioSocket(), boost::bind(& CAsioSocketServerImpl::HandleAccept, this, placeholders::error));
+		async_accept(m_currentSocket->GetAsioSocket(), 
+			m_strand.wrap(boost::bind(& CAsioSocketServerImpl::HandleAccept, this, placeholders::error)));
 	}
 
 	void HandleAccept(const error_code& error)
@@ -865,7 +870,7 @@ private:
 		}
 		// We were not successful. Try again.
 		// Post the request to the event queue to make sure it doesn't get called immediately.
-		s_io_service.post(boost::bind(& CAsioSocketServerImpl::StartAccept, this));
+		m_strand.post(boost::bind(& CAsioSocketServerImpl::StartAccept, this));
 	}
 
 	// The wrapper object
@@ -876,6 +881,7 @@ private:
 	CScopedPtr<CAsioSocketImpl> m_currentSocket;
 	// Is there a socket available?
 	bool m_socketAvailable;
+	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 };
 
 
@@ -957,6 +963,7 @@ public:
 	CAsioUDPSocketImpl(const amuleIPV4Address &address, int /* flags */, CLibUDPSocket * libSocket) :
 		m_libSocket(libSocket),
 		m_timer(s_io_service),
+		m_strand(s_io_service),
 		m_address(address)
 	{
 		m_muleSocket = NULL;
@@ -1009,7 +1016,7 @@ public:
 		// Collect data, make a copy of the buffer's content
 		CUDPData * recdata = new CUDPData(buf, nBytes, addr);
 		AddDebugLogLineF(logAsio, CFormat(wxT("UDP SendTo %d to %s")) % nBytes % addr.IPAddress());
-		s_io_service.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata));
+		m_strand.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata));
 		return nBytes;
 	}
 
@@ -1023,7 +1030,7 @@ public:
 		if (s_io_service.stopped()) {
 			DispatchClose();
 		} else {
-			s_io_service.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchClose, this));
+			m_strand.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchClose, this));
 		}
 	}
 
@@ -1038,7 +1045,7 @@ public:
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
 			m_timer.expires_from_now(boost::posix_time::seconds(1));
-			m_timer.async_wait(boost::bind(& CAsioUDPSocketImpl::HandleDestroy, this));
+			m_timer.async_wait(m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleDestroy, this)));
 		}
 	}
 
@@ -1068,7 +1075,7 @@ private:
 		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size
 			% endpoint.address().to_string() % endpoint.port());
 		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
-			boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata));
+			m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata)));
 	}
 
 	//
@@ -1149,7 +1156,7 @@ private:
 	void StartBackgroundRead()
 	{
 		m_socket->async_receive_from(buffer(m_readBuffer, CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
-			boost::bind(& CAsioUDPSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred));
+			m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred)));
 	}
 
 	CLibUDPSocket *		m_libSocket;
@@ -1168,6 +1175,7 @@ private:
 
 	// Address of last reception
 	ip::udp::endpoint	m_receiveEndpoint;
+	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 };
 
 
@@ -1234,20 +1242,39 @@ void CLibUDPSocket::Destroy()
  * CAsioService - ASIO event loop thread
  */
 
+class CAsioServiceThread : public wxThread {
+public:
+	CAsioServiceThread::CAsioServiceThread() : wxThread(wxTHREAD_JOINABLE)
+	{
+		static int count = 0;
+		m_threadNumber = ++count;
+		Create();
+		Run();
+	}
+
+	void * Entry()
+	{
+		AddLogLineNS(CFormat(_("Asio thread %d started")) % m_threadNumber);
+		io_service::work worker(s_io_service);		// keep io_service running
+		s_io_service.run();
+		AddDebugLogLineN(logAsio, CFormat(wxT("Asio thread %d stopped")) % m_threadNumber);
+
+		return NULL;
+	}
+
+private:
+	int m_threadNumber;
+};
+
 /**
  * The constructor starts the thread.
  */
 CAsioService::CAsioService()
-		: wxThread( wxTHREAD_JOINABLE )
 {
-	Create();
-	Run();
+	m_threads = new CAsioServiceThread[m_numberOfThreads];
 }
 
 
-/**
- * The destructor stops the thread. If the thread has already stoppped, destructor does nothing.
- */
 CAsioService::~CAsioService()
 {
 }
@@ -1255,19 +1282,20 @@ CAsioService::~CAsioService()
 
 void CAsioService::Stop()
 {
+	if (!m_threads) {
+		return;
+	}
 	s_io_service.stop();
+	// Wait for threads to exit
+	for (int i = 0; i < m_numberOfThreads; i++) {
+		CAsioServiceThread * t = m_threads + i;
+		t->Wait();
+	}
+	delete[] m_threads;
+	m_threads = 0;
 }
 
 
-void * CAsioService::Entry()
-{
-	AddLogLineNS(_("Asio thread started"));
-	io_service::work worker(s_io_service);		// keep io_service running
-	s_io_service.run();
-	AddDebugLogLineN(logAsio, wxT("Asio thread stopped"));
-
-	return NULL;
-}
 
 
 
