@@ -1377,7 +1377,6 @@ void CamuleApp::ShutDown()
 	// Stop ASIO thread
 	AddDebugLogLineN(logGeneral, wxT("Terminate ASIO thread."));
 	m_AsioService->Stop();
-	m_AsioService->Wait();
 
 	StopKad();
 
