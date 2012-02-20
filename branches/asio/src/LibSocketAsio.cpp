@@ -613,6 +613,7 @@ private:
 	uint32			m_readBufferContent;
 	bool			m_eventPending;
 	char *			m_sendBuffer;
+	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 	deadline_timer	m_timer;
 	bool			m_connected;
 	bool			m_closed;
@@ -620,7 +621,6 @@ private:
 	bool			m_proxyState;
 	bool			m_notify;			// set by Notify()
 	bool			m_sync;				// copied from !m_notify on Connect()
-	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 };
 
 
@@ -775,9 +775,9 @@ class CAsioSocketServerImpl : public ip::tcp::acceptor
 public:
 	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer)
 		: ip::tcp::acceptor(s_io_service),
-		  m_strand(s_io_service),
 		  m_libSocketServer(libSocketServer),
-		  m_currentSocket(NULL)
+		  m_currentSocket(NULL),
+		  m_strand(s_io_service)
 	{
 		m_ok = false;
 		m_socketAvailable = false;
@@ -962,8 +962,8 @@ private:
 public:
 	CAsioUDPSocketImpl(const amuleIPV4Address &address, int /* flags */, CLibUDPSocket * libSocket) :
 		m_libSocket(libSocket),
-		m_timer(s_io_service),
 		m_strand(s_io_service),
+		m_timer(s_io_service),
 		m_address(address)
 	{
 		m_muleSocket = NULL;
@@ -1163,6 +1163,7 @@ private:
 	ip::udp::socket *	m_socket;
 	CMuleUDPSocket *	m_muleSocket;
 	bool				m_OK;
+	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 	deadline_timer		m_timer;
 	amuleIPV4Address	m_address;
 
@@ -1175,7 +1176,6 @@ private:
 
 	// Address of last reception
 	ip::udp::endpoint	m_receiveEndpoint;
-	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
 };
 
 
@@ -1244,7 +1244,7 @@ void CLibUDPSocket::Destroy()
 
 class CAsioServiceThread : public wxThread {
 public:
-	CAsioServiceThread::CAsioServiceThread() : wxThread(wxTHREAD_JOINABLE)
+	CAsioServiceThread() : wxThread(wxTHREAD_JOINABLE)
 	{
 		static int count = 0;
 		m_threadNumber = ++count;
