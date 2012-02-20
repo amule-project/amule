@@ -217,7 +217,6 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	poll_timer = NULL;
 
 	m_AsioService->Stop();
-	m_AsioService->Wait();
 	delete m_AsioService;
 	m_AsioService = NULL;
 

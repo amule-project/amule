@@ -247,7 +247,6 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 CWebServerBase::~CWebServerBase()
 {
 	m_AsioService->Stop();
-	m_AsioService->Wait();
 	delete m_AsioService;
 }
 
