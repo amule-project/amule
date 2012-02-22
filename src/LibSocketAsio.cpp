@@ -1086,10 +1086,8 @@ private:
 	{
 		if (ec) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ec.message());
-			CreateSocket(false);
 		} else if (received == 0) {
 			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
-			CreateSocket(false);
 		} else if (m_muleSocket == NULL) {
 			AddDebugLogLineN(logAsio, wxT("UDP HandleReadError no handler"));
 		} else {
@@ -1112,10 +1110,8 @@ private:
 	{
 		if (ec) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError %s")) % ec.message());
-			CreateSocket();
 		} else if (sent != recdata->size) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError tosend: %d sent %d")) % recdata->size % sent);
-			CreateSocket();
 		}
 		if (m_muleSocket == NULL) {
 			AddDebugLogLineN(logAsio, wxT("UDP HandleSendToError no handler"));
@@ -1136,16 +1132,14 @@ private:
 	// Other functions
 	//
 
-	void CreateSocket(bool startBackgroundRead = true)
+	void CreateSocket()
 	{
 		try {
 			delete m_socket;
 			ip::udp::endpoint endpoint(m_address.GetEndpoint().address(), m_address.Service());
 			m_socket = new ip::udp::socket(s_io_service, endpoint);
 			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % m_address.IPAddress() % m_address.Service());
-			if (startBackgroundRead) {
-				StartBackgroundRead();
-			}
+			StartBackgroundRead();
 		} catch (system_error err) {
 			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % m_address.IPAddress() % m_address.Service() % err.code().message());
 			m_socket = NULL;
