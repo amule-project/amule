@@ -302,7 +302,7 @@ echo -e "\tDone."
 
 # aMule
 
-echo -e "\tFINALLY compiling aMule..."
+echo -e "\tFINALLY compiling aMule and aMuleGUI ..."
 
 pushd $AMULE_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
 
@@ -341,7 +341,7 @@ if [ "$MULECLEAN" == "YES" ]; then
 	--with-libintl-prefix=${ROOT_FOLDER}/${GETTEXT_FOLDER_INST} \
 	--with-libupnp-prefix=${ROOT_FOLDER}/${LIBUPNP_FOLDER_INST} \
 	--with-geoip-static --with-geoip-headers=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/include --with-geoip-lib=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/lib/ \
-	--disable-cas --disable-webserver --disable-amulecmd --disable-amule-gui --disable-wxcas --disable-alc --disable-alcc --disable-amule-daemon \
+	--disable-cas --disable-webserver --disable-amulecmd --enable-amule-gui --disable-wxcas --disable-alc --disable-alcc --disable-amule-daemon \
 	--prefix=${ROOT_FOLDER}/amule-inst/ >> $STDOUT_FILE 2>> $ERROR_FILE
 
 	echo -e "\t\tCleaning compilation"
@@ -365,14 +365,17 @@ popd >> $STDOUT_FILE 2>> $ERROR_FILE
 
 echo -e "Getting application bundle and packaging"
 
-rm -rf aMule.app aMule.zip >> $STDOUT_FILE 2>> $ERROR_FILE
+rm -rf aMule.app aMule.zip aMuleGUI.app aMuleGUI.zip >> $STDOUT_FILE 2>> $ERROR_FILE
 
 cp -R ${AMULE_FOLDER}/aMule.app . >> $STDOUT_FILE 2>> $ERROR_FILE
+cp -R ${AMULE_FOLDER}/aMuleGUI.app . >> $STDOUT_FILE 2>> $ERROR_FILE
 
 find aMule.app \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf >> $STDOUT_FILE 2>> $ERROR_FILE
+find aMuleGUI.app \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf >> $STDOUT_FILE 2>> $ERROR_FILE
 
 echo -e "Copying i18n files..."
 cp -r amule-inst/share/locale aMule.app/Contents/SharedSupport/
+cp -r amule-inst/share/locale aMuleGUI.app/Contents/SharedSupport/
 echo -e "Done."
 
 . application_packager.sh ${AMULE_FOLDER}/ >> $STDOUT_FILE 2>> $ERROR_FILE

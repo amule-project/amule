@@ -42,8 +42,8 @@ fi
 pc $GREEN "\tBuild root absolute path is $ROOT_FOLDER"
 
 if [ "$SDKNUMBER" == "" ]; then
-	pc $BLUE "\tAutomatically setting SDK to 10.4u (tiger with i386 and ppc, gcc 4.0) - set SDKNUMBER to your preferred SDK if you want to target it (10.5, 10.6, 10.7) or \"default\" for the default SDK."
-	SDKNUMBER=10.4
+	pc $BLUE "\tAutomatically setting SDK to 10.6 (Snow Leopard) - set SDKNUMBER to your preferred SDK if you want to target it (10.4, 10.5, 10.6, 10.7) or \"default\" for the default SDK."
+	SDKNUMBER=10.6
 fi
 
 case "$SDKNUMBER" in
@@ -71,8 +71,8 @@ else
 fi
 
 if [ "$UNIVERSAL" == "" ]; then
-	pc $BLUE "\tAutomatically enabling universal (i386, ppc) build. Set UNIVERSAL=NO to build just for the current architecture."
-	UNIVERSAL="YES"
+	pc $BLUE "\tAutomatically disabling universal (i386 and ppc) build. Default architecture will be used. Set UNIVERSAL=YES to build a binary compatible with the ppc architecture."
+	UNIVERSAL="NO"
 fi
 
 case "$UNIVERSAL" in
