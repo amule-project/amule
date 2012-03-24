@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-31 23:46+0100\n"
-"PO-Revision-Date: 2011-11-01 23:27+0100\n"
+"PO-Revision-Date: 2012-03-23 10:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "X-Poedit-Language: Turkish\n"
 "X-Poedit-Country: TURKEY\n"
 
@@ -811,9 +811,7 @@ msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
-"Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
-msgstr[1] ""
-"Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
+"Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:2034
 #, c-format
@@ -821,10 +819,7 @@ msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
-"Tüm oturumlar için dosya durumu: Kabul edilen istek %d si %d nin, %s "
-"aktarıldı\n"
-msgstr[1] ""
-"Tüm oturumlar için dosya durumu: Kabul edilen istek %d si %d nin, %s "
+"Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s "
 "aktarıldı\n"
 
 #: src/BaseClient.cpp:2037
@@ -956,14 +951,12 @@ msgstr "Arkadaşlara Ekle"
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "Kredi dosyası yüklendi. %u adet kullanıcı biliniyor"
-msgstr[1] "Kredi dosyası yüklendi. %u adet kullanıcı biliniyor"
 
 #: src/ClientCreditsList.cpp:161
 #, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - %u adet kullanıcı için krediler bitti!"
-msgstr[1] " - %u adet kullanıcı için krediler bitti!"
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1129,7 +1122,6 @@ msgstr "Yorum yok"
 msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "%u adet yorum"
-msgstr[1] "%u adet yorum"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1535,7 +1527,6 @@ msgstr "Hiç part dosyası bulunamadı"
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "%u adet parça dosyası bulundu"
-msgstr[1] "%u adet parça dosyası bulundu"
 
 #: src/DownloadQueue.cpp:241 src/DownloadQueue.cpp:1467
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2236,14 +2227,12 @@ msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "%u adet IP-aralığı '%s' den  yüklendi."
-msgstr[1] "%u adet IP-aralığı '%s' den  yüklendi."
 
 #: src/IPFilter.cpp:331
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "%u adet bozuk satır göz ardı edildi."
-msgstr[1] "%u adet bozuk satır göz ardı edildi."
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2321,7 +2310,6 @@ msgstr ""
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "%u adet Kademlia bağlantısı okundu"
-msgstr[1] "%u adet Kademlia bağlantısı okundu"
 
 #: src/kademlia/routing/RoutingZone.cpp:222
 #: src/kademlia/routing/RoutingZone.cpp:289
@@ -2335,14 +2323,12 @@ msgstr ""
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Sadece %d Kad bağlantısı var. Nodes.dat yazılamadı"
-msgstr[1] "Sadece %d adet Kad bağlantısı var. Nodes.dat yazılamadı"
 
 #: src/kademlia/routing/RoutingZone.cpp:338
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "%d Kademlia bağlantısı yazıldı"
-msgstr[1] "%d Kademlia bağlantısı yazıldı"
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -4340,7 +4326,6 @@ msgstr "Devre dışı [%s]"
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "bayt"
-msgstr[1] "bayt"
 
 #: src/OtherFunctions.cpp:108
 msgid "kB"
@@ -4370,7 +4355,6 @@ msgstr "T"
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "bayt/sn"
-msgstr[1] "bayt/sn"
 
 #: src/OtherFunctions.cpp:141
 msgid "MB/s"
@@ -4593,7 +4577,6 @@ msgstr "%s için pat.met girdilerini kaydetme başarısız."
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "%i kaynak tohumu parça dosyası için kaydedildi: %s (%s)"
-msgstr[1] "%i kaynak tohumu parça dosyası için kaydedildi: %s (%s)"
 
 #: src/PartFile.cpp:1049
 #, c-format
@@ -4621,9 +4604,6 @@ msgid_plural ""
 msgstr[0] ""
 "Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi "
 "|%s| Dosya adreslemesi |%s|"
-msgstr[1] ""
-"Bozuk parça (%d) %d parçadosyası %s içinde bulundu -Dosya sonuç adreslemesi |"
-"%s| Dosya adreslemesi |%s|"
 
 #: src/PartFile.cpp:1175
 #, c-format
@@ -5129,14 +5109,12 @@ msgstr ""
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Güncelleme gecikmesi: %d saniye"
-msgstr[1] "Güncelleme gecikmesi: %d saniye"
 
 #: src/PrefsUnifiedDlg.cpp:1121
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Ortalama grafiği için süre: %d dakika"
-msgstr[1] "Ortalama grafiği için süre: %d dakika"
 
 #: src/PrefsUnifiedDlg.cpp:1127
 #, c-format
@@ -5148,21 +5126,18 @@ msgstr "Bağlantı Grafik Ölçüsü: %d"
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Dosya Alım Boyutu: %d bayt"
-msgstr[1] "Dosya Alım Boyutu: %d bayt"
 
 #: src/PrefsUnifiedDlg.cpp:1145
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Gönderme Sıra Boyutu: %d kullanıcı"
-msgstr[1] "Gönderme Sıra Boyutu: %d kullanıcı"
 
 #: src/PrefsUnifiedDlg.cpp:1152
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Sunucu bağlantısı yenileme sıklığı: %d dakika"
-msgstr[1] "Sunucu bağlantısı yenileme sıklığı: %d dakika"
 
 #: src/PrefsUnifiedDlg.cpp:1154
 msgid "Server connection refresh interval: Disabled"
@@ -5316,7 +5291,6 @@ msgstr "%s (%s:%i) görünüşe göre dolu."
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Sunucuya otomatik bağlanma %d saniye içinde tekrar denenecek"
-msgstr[1] "Sunucuya otomatik bağlanma %d saniye içinde tekrar denenecek"
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5368,14 +5342,12 @@ msgstr "Server.met dosyası bozuk, geçersiz sürüm eki bulundu: 0x%x, size %i"
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i adet sunucu server.met dosyasında bulundu"
-msgstr[1] "%i adet sunucu server.met dosyasında bulundu"
 
 #: src/ServerList.cpp:175
 #, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d adet sunucu eklendi"
-msgstr[1] "%d adet sunucu eklendi"
 
 #: src/ServerList.cpp:178
 msgid "Error: the file 'server.met' is corrupted: "
@@ -5616,7 +5588,6 @@ msgstr "Bilinmeyen sunucu bilgisi alındı! - çok kısa"
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "%d adet yeni sunucu alındı"
-msgstr[1] "%d adet yeni sunucu alındı"
 
 #: src/ServerSocket.cpp:538
 msgid "Saving of server-list completed."
@@ -5773,14 +5744,12 @@ msgstr "%s dosyası paylaşılanlara ekleniyor"
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "Bilinen %i adet paylaşılmış dosya bulundu"
-msgstr[1] "Bilinen %i adet paylaşılmış dosya bulundu"
 
 #: src/SharedFileList.cpp:377
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Bilinen %i adet paylaşılmış dosya bulundu. Bilinmeyen %i adet"
-msgstr[1] "Bilinen %i adet paylaşılmış dosya bulundu. Bilinmeyen %i adet"
 
 #: src/SharedFileList.cpp:386
 #, c-format

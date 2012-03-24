@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "POT-Creation-Date: 2011-10-31 22:06+0100\n"
-"PO-Revision-Date: 2011-11-01 23:37+0100\n"
+"PO-Revision-Date: 2012-03-23 10:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Language: tr\n"
 "X-Poedit-Language: Turkish\n"
 "X-Poedit-Country: TURKEY\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #. type: TH
 #: amule.1:1
