@@ -790,14 +790,11 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		if (boolop == 0x00) { // AND
 			SSearchTerm* pSearchTerm = new SSearchTerm;
 			pSearchTerm->type = SSearchTerm::AND;
-			//TRACE(" AND");
-			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL){
-				wxFAIL;
+			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
 				delete pSearchTerm;
 				return NULL;
 			}
-			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL){
-				wxFAIL;
+			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
 				Free(pSearchTerm->left);
 				delete pSearchTerm;
 				return NULL;
@@ -806,14 +803,11 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		} else if (boolop == 0x01) { // OR
 			SSearchTerm* pSearchTerm = new SSearchTerm;
 			pSearchTerm->type = SSearchTerm::OR;
-			//TRACE(" OR");
-			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL){
-				wxFAIL;
+			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
 				delete pSearchTerm;
 				return NULL;
 			}
-			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL){
-				wxFAIL;
+			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
 				Free(pSearchTerm->left);
 				delete pSearchTerm;
 				return NULL;
@@ -822,14 +816,11 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		} else if (boolop == 0x02) { // NOT
 			SSearchTerm* pSearchTerm = new SSearchTerm;
 			pSearchTerm->type = SSearchTerm::NOT;
-			//TRACE(" NOT");
-			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL){
-				wxFAIL;
+			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
 				delete pSearchTerm;
 				return NULL;
 			}
-			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL){
-				wxFAIL;
+			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
 				Free(pSearchTerm->left);
 				delete pSearchTerm;
 				return NULL;
@@ -851,7 +842,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 
 		// pre-tokenize the string term
 		//#warning TODO: TokenizeOptQuotedSearchTerm
-		wxStringTokenizer token(str, CSearchManager::GetInvalidKeywordChars(),wxTOKEN_DEFAULT );
+		wxStringTokenizer token(str, CSearchManager::GetInvalidKeywordChars(), wxTOKEN_DEFAULT );
 		while (token.HasMoreTokens()) {
 			wxString strTok(token.GetNextToken());
 			if (!strTok.IsEmpty()) {
