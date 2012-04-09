@@ -647,6 +647,7 @@ namespace MuleNotify
 	void PartFile_Pause(CPartFile* file)
 	{
 		file->PauseFile();
+		file->SavePartFile();
 	}
 
 	void PartFile_Resume(CPartFile* file)
@@ -658,6 +659,7 @@ namespace MuleNotify
 	void PartFile_Stop(CPartFile* file)
 	{
 		file->StopFile();
+		file->SavePartFile();
 	}
 
 	void PartFile_PrioAuto(CPartFile* file, bool val)
