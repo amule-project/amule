@@ -331,14 +331,14 @@ CObservableQueue<ValueType>::~CObservableQueue()
 template <typename ValueType>
 void CObservableQueue<ValueType>::ObserverAdded( ObserverType* o )
 {
-	NotifyObservers( EventType( EventType::STARTING ), o );
+	this->NotifyObservers( EventType( EventType::STARTING ), o );
 }
 
 
 template <typename ValueType>
 void CObservableQueue<ValueType>::ObserverRemoved( ObserverType* o )
 {
-	NotifyObservers( EventType( EventType::STOPPING ), o );
+	this->NotifyObservers( EventType( EventType::STOPPING ), o );
 }
 
 
