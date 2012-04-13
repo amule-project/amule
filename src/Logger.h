@@ -111,7 +111,9 @@ enum DebugType
 	//! Full log of external connection packets
 	logEC,
 	//! Warnings/Errors related to HTTP traffic
-	logHTTP
+	logHTTP,
+	//! Warnings/Errors related to Boost Asio networking 
+	logAsio
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };
@@ -287,6 +289,7 @@ private:
 	wxString m_ApplogBuf;
 	bool m_StdoutLog;
 	int  m_count;			// output line counter
+	wxMutex m_lineLock;
 
 	/**
 	 * Write all waiting log info to the logfile
@@ -297,6 +300,11 @@ private:
 	 * Really output a single line
 	 */
 	void DoLine(const wxString & line, bool toStdout, bool toGUI);
+
+	/**
+	 * Really output several lines
+	 */
+	void DoLines(const wxString & lines, bool critical, bool toStdout, bool toGUI);
 
 	DECLARE_EVENT_TABLE()
 };
@@ -429,7 +437,7 @@ public:
 	#define AddLogLineU(critical, type, string) theLogger.AddLogLine(__TFILE__, __LINE__, critical, type, string)
 // Macros for 'N'on critical logging
 	#ifdef __DEBUG__
-		#define AddDebugLogLineN(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
+		#define AddDebugLogLineN(type, string) if (theLogger.IsEnabled(type)) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string)
 	#else
 		#define AddDebugLogLineN(type, string)	do {} while (false)
 	#endif
@@ -440,7 +448,11 @@ public:
 	#define AddLogLineC(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string)
 	#define AddLogLineCS(string) theLogger.AddLogLine(__TFILE__, __LINE__, true, logStandard, string, true)
 // Macros for logging to logfile only
-	#define AddDebugLogLineF(type, string) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string, false, false)
+	#ifdef __DEBUG__
+		#define AddDebugLogLineF(type, string) if (theLogger.IsEnabled(type)) theLogger.AddLogLine(__TFILE__, __LINE__, false, type, string, false, false)
+	#else
+		#define AddDebugLogLineF(type, string)	do {} while (false)
+	#endif
 	#define AddLogLineF(string) theLogger.AddLogLine(__TFILE__, __LINE__, false, logStandard, string, false, false)
 #endif
 

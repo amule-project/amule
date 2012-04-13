@@ -110,7 +110,6 @@ protected:
 	virtual void OnError(int /*nErrorCode*/) {};
 	virtual void OnSend(int nErrorCode);
 
-	wxString	DbgGetIPString();
 	void		CryptPrepareSendData(uint8_t* pBuffer, uint32_t nLen);
 	bool		IsEncryptionLayerReady();
 	uint8_t		GetSemiRandomNotProtocolMarker() const;

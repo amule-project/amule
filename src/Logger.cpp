@@ -76,7 +76,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logKadPacketTracking,	wxT("Kademlia Packet Tracking") ),
 	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") ),
 	CDebugCategory( logEC,			wxT("External Connect") ),
-	CDebugCategory( logHTTP,		wxT("HTTP") )
+	CDebugCategory( logHTTP,		wxT("HTTP") ),
+	CDebugCategory( logAsio,		wxT("Asio Sockets") )
 };
 
 
@@ -154,15 +155,13 @@ void CLogger::AddLogLine(
 	}
 #endif
 
-	CLoggingEvent Event(critical, toStdout, toGUI, msg);
-
-	// Try to handle events immediatly when possible (to save to file).
-	if (wxThread::IsMain()) {
-		// main thread and log file available: process directly
-		ProcessEvent(Event);
-	} else {
-		// otherwise put to background
+	if (toGUI && !wxThread::IsMain()) {
+		// put to background
+		CLoggingEvent Event(critical, toStdout, toGUI, msg);
 		AddPendingEvent(Event);
+	} else {
+		// Try to handle events immediatly when possible (to save to file).
+		DoLines(msg, critical, toStdout, toGUI);
 	}
 }
 
@@ -224,8 +223,14 @@ void CLogger::CloseLogfile()
 
 void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 {
+	DoLines(evt.Message(), evt.IsCritical(), evt.ToStdout(), evt.ToGUI());
+}
+
+
+void CLogger::DoLines(const wxString & lines, bool critical, bool toStdout, bool toGUI)
+{
 	// Remove newspace at end
-	wxString bufferline = evt.Message().Strip(wxString::trailing);
+	wxString bufferline = lines.Strip(wxString::trailing);
 
 	// Create the timestamp
 	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime()
@@ -237,17 +242,17 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 
 	// critical lines get a ! prepended, ordinary lines a blank
 	// logfile-only lines get a . to prevent transmission on EC
-	wxString prefix = !evt.ToGUI() ? wxT(".") : (evt.IsCritical() ? wxT("!") : wxT(" "));
+	wxString prefix = !toGUI ? wxT(".") : (critical ? wxT("!") : wxT(" "));
 
 	if ( bufferline.IsEmpty() ) {
 		// If it's empty we just write a blank line with no timestamp.
-		DoLine(wxT(" \n"), evt.ToStdout(), evt.ToGUI());
+		DoLine(wxT(" \n"), toStdout, toGUI);
 	} else {
 		// Split multi-line messages into individual lines
 		wxStringTokenizer tokens( bufferline, wxT("\n") );
 		while ( tokens.HasMoreTokens() ) {
 			wxString fullline = prefix + stamp + tokens.GetNextToken() + wxT("\n");
-			DoLine(fullline, evt.ToStdout(), evt.ToGUI());
+			DoLine(fullline, toStdout, toGUI);
 		}
 	}
 }
@@ -255,15 +260,18 @@ void CLogger::OnLoggingEvent(class CLoggingEvent& evt)
 
 void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 {
-	++m_count;
+	{
+		wxMutexLocker lock(m_lineLock);
+		++m_count;
 
-	// write to logfile
-	m_ApplogBuf += line;
-	FlushApplog();
+		// write to logfile
+		m_ApplogBuf += line;
+		FlushApplog();
 
-	// write to Stdout
-	if (m_StdoutLog || toStdout) {
-		printf("%s", (const char*)unicode2char(line));
+		// write to Stdout
+		if (m_StdoutLog || toStdout) {
+			printf("%s", (const char*)unicode2char(line));
+		}
 	}
 #ifndef AMULE_DAEMON
 	// write to Listcontrol

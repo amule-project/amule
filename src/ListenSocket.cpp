@@ -38,22 +38,21 @@
 // CListenSocket
 //-----------------------------------------------------------------------------
 //
-// This is the socket that listens to incomming connections in aMule's TCP port
+// This is the socket that listens to incoming connections in aMule's TCP port
 // As soon as a connection is detected, it creates a new socket of type
 // CClientTCPSocket to handle (accept) the connection.
 //
 
-CListenSocket::CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData)
+CListenSocket::CListenSocket(amuleIPV4Address &addr, const CProxyData *ProxyData)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
-// wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
+// wxSOCKET_REUSEADDR - means we can reuse the socket immediately (wx-2.5.3)
 CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 {
 	// 0.42e - vars not used by us
-	bListening = false;
+	m_pending = false;
 	shutdown = false;
 	m_OpenSocketsInterval = 0;
-	m_nPendingConnections = 0;
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
@@ -78,7 +77,7 @@ CListenSocket::~CListenSocket()
 #ifdef __DEBUG__
 	// No new sockets should have been opened by now
 	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); it++) {
-		wxASSERT((*it)->OnDestroy());
+		wxASSERT((*it)->IsDestroying());
 	}
 #endif
 
@@ -86,58 +85,22 @@ CListenSocket::~CListenSocket()
 }
 
 
-bool CListenSocket::StartListening()
+void CListenSocket::OnAccept()
 {
-	// 0.42e
-	bListening = true;
-
-	return true;
-}
-
-void CListenSocket::ReStartListening()
-{
-	// 0.42e
-	bListening = true;
-	if (m_nPendingConnections) {
-		m_nPendingConnections--;
-		OnAccept(0);
-	}
-}
-
-void CListenSocket::StopListening()
-{
-	// 0.42e
-	bListening = false;
-	theStats::AddMaxConnectionLimitReached();
-}
-
-void CListenSocket::OnAccept(int nErrorCode)
-{
-	// 0.42e
-	if (!nErrorCode) {
-		m_nPendingConnections++;
-		if (m_nPendingConnections < 1) {
-			wxFAIL;
-			m_nPendingConnections = 1;
-		}
-		if (TooManySockets(true) && !theApp->serverconnect->IsConnecting()) {
-			StopListening();
-			return;
-		} else if (bListening == false) {
-			// If the client is still at maxconnections,
-			// this will allow it to go above it ...
-			// But if you don't, you will get a lowID on all servers.
-			ReStartListening();
-		}
-		// Deal with the pending connections, there might be more than one, due to
-		// the StopListening() call above.
-		while (m_nPendingConnections) {
-			m_nPendingConnections--;
+	m_pending = true;
+	// If the client is still at maxconnections,
+	// this will allow it to go above it ...
+	// But if you don't, you will get a lowID on all servers.
+	while (m_pending && (theApp->serverconnect->IsConnecting() || !TooManySockets())) {
+		if (!SocketAvailable()) {
+			m_pending = false;
+		} else {
 			// Create a new socket to deal with the connection
 			CClientTCPSocket* newclient = new CClientTCPSocket();
 			// Accept the connection and give it to the newly created socket
 			if (!AcceptWith(*newclient, false)) {
 				newclient->Safe_Delete();
+				m_pending = false;
 			} else {
 				wxASSERT(theApp->IsRunning());
 				if (!newclient->InitNetworkData()) {
@@ -147,6 +110,9 @@ void CListenSocket::OnAccept(int nErrorCode)
 				}
 			}
 		}
+	}
+	if (m_pending) {
+		theStats::AddMaxConnectionLimitReached();
 	}
 }
 
@@ -162,17 +128,13 @@ void CListenSocket::Process()
 	SocketSet::iterator it = socket_list.begin();
 	while ( it != socket_list.end() ) {
 		CClientTCPSocket* cur_socket = *it++;
-		if (!cur_socket->OnDestroy()) {
-			if (cur_socket->ForDeletion()) {
-				cur_socket->Destroy();
-			} else {
-				cur_socket->CheckTimeOut();
-			}
+		if (!cur_socket->IsDestroying()) {
+			cur_socket->CheckTimeOut();
 		}
 	}
 
-	if ((GetOpenSockets()+5 < thePrefs::GetMaxConnections() || theApp->serverconnect->IsConnecting()) && !bListening) {
-		ReStartListening();
+	if (m_pending) {
+		OnAccept();
 	}
 }
 

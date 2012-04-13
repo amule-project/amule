@@ -40,6 +40,9 @@ class CPartFile;
 class CServer;
 class CFriend;
 class CClientRef;
+class CLibSocket;
+class CLibSocketServer;
+class CMuleUDPSocket;
 
 
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
@@ -172,6 +175,21 @@ namespace MuleNotify
 	void Upload_Resort_Queue();
 
 	void Client_Delete(CClientRef client);
+
+	//
+	// core internal notifications
+	//
+
+	// ASIO sockets
+	void LibSocketConnect(CLibSocket * socket, int error);
+	void LibSocketSend(CLibSocket * socket, int error);
+	void LibSocketReceive(CLibSocket * socket, int error);
+	void LibSocketLost(CLibSocket * socket);
+	void LibSocketDestroy(CLibSocket * socket);
+	void ProxySocketEvent(CLibSocket * socket, int evt);
+	void ServerTCPAccept(CLibSocketServer * socketServer);
+	void UDPSocketSend(CMuleUDPSocket * socket);
+	void UDPSocketReceive(CMuleUDPSocket * socket);
 
 	//
 	// Notifications that always create an event
@@ -556,6 +574,22 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 // client
 #define CoreNotify_Client_Delete(client)			MuleNotify::DoNotify(&MuleNotify::Client_Delete, client)
+
+//
+// core internal notifications
+//
+
+// ASIO sockets
+#define CoreNotify_LibSocketConnect(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketConnect, ptr, val)
+#define CoreNotify_LibSocketSend(ptr, val)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketSend, ptr, val)
+#define CoreNotify_LibSocketReceive(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketReceive, ptr, val)
+#define CoreNotify_LibSocketLost(ptr)				MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketLost, ptr)
+#define CoreNotify_LibSocketDestroy(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::LibSocketDestroy, ptr)
+#define CoreNotify_ServerTCPAccept(ptr)				MuleNotify::DoNotifyAlways(&MuleNotify::ServerTCPAccept, ptr)
+#define CoreNotify_UDPSocketSend(ptr)				MuleNotify::DoNotifyAlways(&MuleNotify::UDPSocketSend, ptr)
+#define CoreNotify_UDPSocketReceive(ptr)			MuleNotify::DoNotifyAlways(&MuleNotify::UDPSocketReceive, ptr)
+#define CoreNotify_ProxySocketEvent(ptr, val)		MuleNotify::DoNotifyAlways(&MuleNotify::ProxySocketEvent, ptr, val)
+
 
 //
 // Notifications that always create an event

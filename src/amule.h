@@ -63,6 +63,7 @@ class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
+class CAsioService;
 #ifdef ENABLE_UPNP
 class CUPnPControlPoint;
 class CUPnPPortMapping;
@@ -259,6 +260,7 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	CAsioService*		m_AsioService;
 #ifdef ENABLE_UPNP
 	CUPnPControlPoint*	m_upnp;
 	std::vector<CUPnPPortMapping> m_upnpMappings;
@@ -424,15 +426,24 @@ extern CamuleGuiApp *theApp;
 // but works only with 2.9
 
 #if !wxCHECK_VERSION(2, 9, 0)
-	#ifdef __WXMSW__
-		// MSW: can't run amuled with 2.8 anyway, just get it compiled
-		#define AMULED_DUMMY
-	#else
-		#define AMULED28
+	// wx 2.8 needs a hand-made event loop in any case
+	#define AMULED28_EVENTLOOP
+
+	// wx 2.8 also needs extra socket code, unless we have ASIO sockets
+	// 
+	#ifdef HAVE_CONFIG_H
+	#	include "config.h"		// defines ASIO_SOCKETS
+	#endif
+
+	#ifndef ASIO_SOCKETS
+		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
+		#ifndef __WXMSW__
+			#define AMULED28_SOCKETS
+		#endif
 	#endif
 #endif
 
-#ifdef AMULED28
+#ifdef AMULED28_SOCKETS
 #include <wx/socket.h>
 
 class CSocketSet;
@@ -463,7 +474,7 @@ public:
 };
 
 
-#endif // AMULED28
+#endif // AMULED28_SOCKETS
 
 // no AppTraits used on Windows
 #ifndef __WXMSW__
@@ -478,7 +489,7 @@ private:
 	struct sigaction m_oldSignalChildAction;
 	struct sigaction m_newSignalChildAction;
 
-#ifdef AMULED28
+#ifdef AMULED28_SOCKETS
 	CAmuledGSocketFuncTable *m_table;
 	wxMutex m_lock;
 	std::list<wxObject *> m_sched_delete;
@@ -489,10 +500,10 @@ public:
 	virtual void RemoveFromPendingDelete(wxObject *object);
 
 	void DeletePending();
-#else	// AMULED28
+#else	// AMULED28_SOCKETS
 public:
 	CDaemonAppTraits();
-#endif	// !AMULED28
+#endif	// !AMULED28_SOCKETS
 
 	virtual int WaitForChild(wxExecuteData& execData);
 
@@ -509,8 +520,10 @@ pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
 class CamuleDaemonApp : public CamuleApp
 {
 private:
-#ifdef AMULED28
+#ifdef AMULED28_EVENTLOOP
 	bool m_Exit;
+#endif
+#ifdef AMULED28_SOCKETS
 	CAmuledGSocketFuncTable *m_table;
 #endif
 	bool OnInit();
@@ -528,14 +541,10 @@ public:
 
 public:
 
-#ifdef AMULED28
+#ifdef AMULED28_EVENTLOOP
 	CamuleDaemonApp();
 
 	void ExitMainLoop() { m_Exit = true; }
-#endif
-
-#ifdef AMULED_DUMMY
-	void ExitMainLoop() {}
 #endif
 
 	bool CopyTextToClipboard(wxString strText);

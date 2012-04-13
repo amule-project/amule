@@ -15,54 +15,54 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECMuleSocket.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECMuleSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECPacket.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECPacket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECSocket.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECSpecialTags.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECSpecialTags.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\ECTag.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECTag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\libs\ec\cpp\RemoteConnect.cpp">
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\RemoteConnect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECCodes.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECFileConfig.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECFileConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECID.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECMuleSocket.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECMuleSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECPacket.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECPacket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECSocket.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECSpecialTags.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECSpecialTags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECTag.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\ECTagTypes.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECTagTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\libs\ec\cpp\RemoteConnect.h">
+    <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\RemoteConnect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

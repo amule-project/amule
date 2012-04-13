@@ -22,7 +22,7 @@ php_parser.c: php_parser.y
 php_lexer.c: php_lexer.l
 	$(LEX) -P php -o$@ $<
 
-amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a
+amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a ../../libmulesocket.a
 amuleweb_CPPFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include \
 	$(MULECPPFLAGS) $(AMULEWEB_DEFS) $(BFD_CPPFLAGS) $(WXBASE_CPPFLAGS) \
 	-DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" \
@@ -30,9 +30,9 @@ amuleweb_CPPFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top
 amuleweb_CFLAGS = $(MULECFLAGS) $(WX_CFLAGS_ONLY) $(LIBPNG_CFLAGS) $(LIBUPNP_CFLAGS)
 amuleweb_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY) $(LIBPNG_CFLAGS) $(LIBUPNP_CFLAGS)
 
-amuleweb_LDFLAGS = $(MULELDFLAGS) -L../../libs/common -L../../libs/ec/cpp $(LIBPNG_LDFLAGS) $(ZLIB_LDFLAGS) $(LIBUPNP_LDFLAGS)
-amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(BFD_LIBS) $(ZLIB_LIBS) \
-	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(LIBINTL) $(LIBUPNP_LIBS)
+amuleweb_LDFLAGS = $(MULELDFLAGS) -L../../libs/common -L../../libs/ec/cpp -L../.. $(LIBPNG_LDFLAGS) $(ZLIB_LDFLAGS) $(LIBUPNP_LDFLAGS)
+amuleweb_LDADD = -lec -lmulecommon -lmulesocket $(WXBASE_LIBS) $(BFD_LIBS) $(ZLIB_LIBS) \
+	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(LIBINTL) $(LIBUPNP_LIBS) $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS)
 
 noinst_HEADERS = \
 		 WebInterface.h \
