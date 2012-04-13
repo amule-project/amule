@@ -84,7 +84,7 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 		return;
 	}
 
-	if (socket->OnDestroy()) {
+	if (socket->IsDestroying()) {
 		return;
 	}
 
@@ -156,14 +156,12 @@ CServerSocket::~CServerSocket()
 }
 
 
-void CServerSocket::OnConnect(wxSocketError nErrorCode)
+void CServerSocket::OnConnect(int nErrorCode)
 {
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
-				amuleIPV4Address tmpaddr;
-				GetPeer(tmpaddr);
-				uint32 server_ip = StringIPtoUint32(tmpaddr.IPAddress());
+				uint32 server_ip = GetPeerInt();
 				cur_server->SetID(server_ip);
 				// GetServerByAddress may return NULL, so we must test!
 				// This was the reason why amule would crash when trying to
@@ -202,13 +200,13 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 
 }
 
-void CServerSocket::OnReceive(wxSocketError nErrorCode)
+void CServerSocket::OnReceive(int nErrorCode)
 {
 	if (connectionstate != CS_CONNECTED && !serverconnect->IsConnecting()) {
 		serverconnect->DestroySocket(this);
 		return;
 	}
-	CEMSocket::OnReceive((int)nErrorCode);
+	CEMSocket::OnReceive(nErrorCode);
 	m_dwLastTransmission = GetTickCount();
 }
 
@@ -649,10 +647,10 @@ void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 
 }
 
-void CServerSocket::OnError(wxSocketError DEBUG_ONLY(nErrorCode))
+void CServerSocket::OnError(int DEBUG_ONLY(nErrorCode))
 {
 	AddDebugLogLineN(logServer, CFormat(wxT("Error in serversocket: %s(%s:%i): %u"))
-		% cur_server->GetListName() % cur_server->GetFullIP() % cur_server->GetPort() % (int)nErrorCode);
+		% cur_server->GetListName() % cur_server->GetFullIP() % cur_server->GetPort() % nErrorCode);
 	SetConnectionState(CS_DISCONNECTED);
 }
 
@@ -684,7 +682,7 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 }
 
 
-void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
+void CServerSocket::OnClose(int WXUNUSED(nErrorCode))
 {
 	CEMSocket::OnClose(0);
 

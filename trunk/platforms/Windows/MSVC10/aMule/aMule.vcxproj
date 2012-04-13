@@ -396,6 +396,7 @@
     <ClInclude Include="..\..\..\..\src\kademlia\utils\KadClientSearcher.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\utils\KadUDPKey.h" />
     <ClInclude Include="..\..\..\..\src\kademlia\utils\UInt128.h" />
+    <ClInclude Include="..\..\..\..\src\LibSocket.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />
     <ClInclude Include="..\..\..\..\src\EditServerListDlg.h" />
@@ -518,6 +519,14 @@
     <ProjectReference Include="..\libs\libmuleexternalwxlistctrl\libmuleexternalwxlistctrl.vcxproj">
       <Project>{16c7a051-9097-41a5-ba26-fec1ea1f16ef}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\libsocket\libsocket.vcxproj">
+      <Project>{5a9ec6a5-68a3-43c8-960e-f7f99b16f1d1}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

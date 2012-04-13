@@ -656,6 +656,8 @@ public:
 
 	CPreferencesRem *glob_prefs;
 
+	CAsioService*	m_AsioService;
+
 	//
 	// Provide access to core data thru EC
 	CServerConnectRem *serverconnect;

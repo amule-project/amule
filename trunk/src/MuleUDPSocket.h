@@ -118,6 +118,9 @@ public:
 	 */
 	bool	Ok();
 
+	/** Read buffer size */
+	static const unsigned UDP_BUFFER_SIZE = 16384;
+
 protected:
 	/**
 	 * This function is called when a packet has been received.

@@ -52,10 +52,10 @@ public:
 	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
-	void	OnClose(wxSocketError nErrorCode);
-	void	OnConnect(wxSocketError nErrorCode);
-	void	OnReceive(wxSocketError nErrorCode);
-	void	OnError(wxSocketError nErrorCode);
+	void	OnClose(int nErrorCode);
+	void	OnConnect(int nErrorCode);
+	void	OnReceive(int nErrorCode);
+	void	OnError(int nErrorCode);
 	bool	PacketReceived(CPacket* packet);
 	void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsSolving() const { return m_IsSolving;};

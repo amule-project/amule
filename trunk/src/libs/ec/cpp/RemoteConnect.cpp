@@ -27,6 +27,7 @@
 
 #include <common/MD5Sum.h>
 #include <common/Format.h>
+#include "../../../amuleIPV4Address.h"
 
 #include <wx/intl.h>
 
@@ -134,6 +135,8 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Service(port);
 
 	if (ConnectSocket(addr)) {
+		// We get here only in case of synchronous connect.
+		// Otherwise we continue in OnConnect.
 		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
 
 		std::auto_ptr<const CECPacket> getSalt(SendRecvPacket(&login_req));
@@ -158,8 +161,8 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 
 bool CRemoteConnect::IsConnectedToLocalHost()
 {
-	wxIPV4address addr;
-	return GetPeer(addr) ? addr.IsLocalHost() : false;
+	amuleIPV4Address addr;
+	return addr.Hostname(GetPeer()) ? addr.IsLocalHost() : false;
 }
 
 void CRemoteConnect::WriteDoneAndQueueEmpty()

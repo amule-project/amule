@@ -33,6 +33,7 @@
 #include "SearchList.h"
 #include "IPFilter.h"
 #include "Friend.h"
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 #	include "ChatWnd.h"
@@ -55,6 +56,9 @@
 
 #ifndef CLIENT_GUI
 #	include "UploadQueue.h"
+#	include "EMSocket.h"
+#	include "ListenSocket.h"
+#	include "MuleUDPSocket.h"
 #endif
 
 #include <common/MacrosProgramSpecific.h>
@@ -770,5 +774,33 @@ namespace MuleNotify
 #endif	// #ifndef AMULE_DAEMON
 
 #endif	// #ifndef CLIENT_GUI
+
+	void FixAmuleGuiLinkage()
+	{
+		// HACK: LibSocketWX is needed in libec, but discarded from libmuleappcommon before,
+		//       unless we use something from it in a non-lib module.
+		//       I could have done LOTS of full-non-lib builds in the time required to track
+		//       this down. >:(
+		//		 Function is never called of course.
+		amuleIPV4Address dummy;
+	}
+
+	void UDPSocketSend(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
+	{
+#ifndef CLIENT_GUI
+		AddDebugLogLineF(logAsio, wxT("UDPSocketSend"));
+		socket->OnSend(0);
+#endif
+	}
+
+	void UDPSocketReceive(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
+	{
+#ifndef CLIENT_GUI
+		AddDebugLogLineF(logAsio, wxT("UDPSocketReceive"));
+		socket->OnReceive(0);
+#endif
+	}
+
+
 }
 // File_checked_for_headers

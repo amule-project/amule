@@ -170,3 +170,6 @@ int CFileView::OnRun()
 
 	return 0;
 }
+
+// Dummy used in OtherFunctions.cpp
+wxString MuleBoostVersion;

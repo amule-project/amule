@@ -89,7 +89,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 		return;
 	}
 
-	if (socket->OnDestroy() || socket->ForDeletion()) {
+	if (socket->IsDestroying()) {
 		return;
 	}
 
@@ -105,7 +105,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 			break;
 		case wxSOCKET_CONNECTION:
 			// connection stablished, nothing to do about it?
-			socket->OnConnect(socket->Error() ? socket->LastError() : 0);
+			socket->OnConnect(socket->LastError());
 			break;
 		default:
 			// Nothing should arrive here...
@@ -135,7 +135,6 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 	}
 
 	ResetTimeOutTimer();
-	m_ForDeletion = false;
 
 	SetEventHandler(g_clientReqSocketHandler, ID_CLIENTTCPSOCKET_EVENT);
 	SetNotify(
@@ -169,20 +168,18 @@ bool CClientTCPSocket::InitNetworkData()
 {
 	wxASSERT(!m_remoteip);
 	wxASSERT(!m_client);
-	amuleIPV4Address addr;
-	GetPeer(addr);
-	m_remoteip = StringIPtoUint32(addr.IPAddress());
+	m_remoteip = GetPeerInt();
 
 	MULE_CHECK(m_remoteip, false);
 
 	if (theApp->ipfilter->IsFiltered(m_remoteip)) {
-		AddDebugLogLineN(logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Filtered IP)"));
+		AddDebugLogLineN(logClient, wxT("Denied connection from ") + GetPeer() + wxT("(Filtered IP)"));
 		return false;
 	} else if (theApp->clientlist->IsBannedClient(m_remoteip)) {
-		AddDebugLogLineN(logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Banned IP)"));
+		AddDebugLogLineN(logClient, wxT("Denied connection from ") + GetPeer() + wxT("(Banned IP)"));
 		return false;
 	} else {
-		AddDebugLogLineN(logClient, wxT("Accepted connection from ") + addr.IPAddress());
+		AddDebugLogLineN(logClient, wxT("Accepted connection from ") + GetPeer());
 		return true;
 	}
 }
@@ -278,17 +275,9 @@ void CClientTCPSocket::Safe_Delete()
 		m_client = NULL;
 	}
 
-	if ( !ForDeletion() && !OnDestroy() ) {
-		// Paranoia is back.
-		SetNotify(0);
-		Notify(false);
-		// lfroen: first of all - stop handler
-		m_ForDeletion = true;
-
-		byConnected = ES_DISCONNECTED;
-		Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
-		Destroy();
-	}
+	// Destroy may be called several times
+	byConnected = ES_DISCONNECTED;
+	Destroy();
 }
 
 

@@ -54,12 +54,13 @@
 #include <wx/apptrait.h>
 #include <wx/socket.h>
 
+#include <GuiEvents.h>
 
 #ifdef ENABLE_NLS
 #	include <libintl.h>
 #endif
 
-#ifdef AMULEWEB28
+#ifdef AMULEWEB28_SOCKETS
 /*
  * Socket handling in wxBase (same as amuled)
  *
@@ -355,13 +356,6 @@ void CWebserverAppTraits::DeletePending()
 	}
 }
 
-
-CamulewebApp::CamulewebApp() : m_table(new CWebserverGSocketFuncTable)
-{
-	wxPendingEventsLocker = new wxCriticalSection;
-}
-
-
 wxAppTraits *CamulewebApp::CreateTraits()
 {
 	return new CWebserverAppTraits(m_table);
@@ -369,13 +363,57 @@ wxAppTraits *CamulewebApp::CreateTraits()
 
 #endif
 
+#ifdef AMULEWEB28_EVENTLOOP
+CamulewebApp::CamulewebApp() 
+#ifdef AMULEWEB28_SOCKETS
+	: m_table(new CWebserverGSocketFuncTable)
+#endif
+{
+	wxPendingEventsLocker = new wxCriticalSection;
+}
+#endif
+
+
 //-------------------------------------------------------------------
 IMPLEMENT_APP(CamulewebApp)
 //-------------------------------------------------------------------
 
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
 
 BEGIN_EVENT_TABLE(CamulewebApp, CaMuleExternalConnector)
+	EVT_MULE_NOTIFY(CamulewebApp::OnNotifyEvent)
 END_EVENT_TABLE()
+
+
+
+void CamulewebApp::OnNotifyEvent(CMuleGUIEvent& evt)
+{
+	evt.Notify();
+}
+
+namespace MuleNotify
+{
+	void HandleNotification(const CMuleNotiferBase& ntf)
+	{
+		if (wxThread::IsMain()) {
+			ntf.Notify();
+		} else {
+			CMuleGUIEvent evt(ntf.Clone());
+			wxPostEvent(wxTheApp, evt);
+		}
+	}
+
+
+	void HandleNotificationAlways(const CMuleNotiferBase& ntf)
+	{
+		CMuleGUIEvent evt(ntf.Clone());
+		wxPostEvent(wxTheApp, evt);
+	}
+
+	void UDPSocketSend(class CMuleUDPSocket *) {}
+	void UDPSocketReceive(class CMuleUDPSocket *) {}
+}
+
 
 void CamulewebApp::Post_Shell()
 {
@@ -696,18 +734,21 @@ void CamulewebApp::Pre_Shell()
 
 void CamulewebApp::TextShell(const wxString &)
 {
-#ifdef AMULEWEB28
+#ifdef AMULEWEB28_EVENTLOOP
+
 	while (true) {
+#ifdef AMULEWEB28_SOCKETS
 		m_table->RunSelect();
 		ProcessPendingEvents();
 		((CWebserverAppTraits *)GetTraits())->DeletePending();
-	}
 #else
-
-#ifndef AMULEWEB_DUMMY
-	wxApp::OnRun();
+		wxMilliSleep(10);
+		ProcessPendingEvents();
 #endif
+	}
 
+#else
+	wxApp::OnRun();
 #endif
 }
 

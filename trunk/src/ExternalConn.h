@@ -79,6 +79,18 @@ class CObjTagMap {
 
 class CECServerSocket;
 class ECNotifier;
+class ExternalConn;
+
+class CExternalConnListener : public CLibSocketServer
+{
+public:
+	CExternalConnListener(const amuleIPV4Address& adr, int flags, ExternalConn * conn)
+		: CLibSocketServer(adr, flags), m_conn(conn) {}
+	void OnAccept();
+private:
+	ExternalConn * m_conn;
+};
+
 
 class ExternalConn : public wxEvtHandler
 {
@@ -90,7 +102,7 @@ public:
 	ExternalConn(amuleIPV4Address addr, wxString *msg);
 	~ExternalConn();
 
-	wxSocketServer *m_ECServer;
+	CExternalConnListener *m_ECServer;
 	ECNotifier *m_ec_notifier;
 
 	void AddSocket(CECServerSocket *s);

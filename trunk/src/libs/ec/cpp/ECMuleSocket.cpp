@@ -25,6 +25,7 @@
 
 #include "ECMuleSocket.h"
 
+#include "../../../amuleIPV4Address.h"
 #include "../../../NetworkFunctions.h"
 
 //-------------------- CECSocketHandler --------------------
@@ -79,8 +80,7 @@ static CECMuleSocketHandler	g_ECSocketHandler;
 
 CECMuleSocket::CECMuleSocket(bool use_events)
 :
-CECSocket(use_events),
-wxSocketClient()
+CECSocket(use_events)
 {
 	if ( use_events ) {
 		SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
@@ -105,10 +105,10 @@ bool CECMuleSocket::ConnectSocket(wxIPV4address& address)
 
 
 bool CECMuleSocket::InternalConnect(uint32_t ip, uint16_t port, bool wait) {
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	addr.Hostname(Uint32toStringIP(ip));
 	addr.Service(port);
-	return wxSocketClient::Connect(addr, wait);
+	return CLibSocket::Connect(addr, wait);
 }
 
 int CECMuleSocket::InternalGetLastError() {

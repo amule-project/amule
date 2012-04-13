@@ -86,6 +86,10 @@ wxString GetMuleVersion()
 
 	ver += CFormat(wxT(" v%d.%d.%d")) % wxMAJOR_VERSION % wxMINOR_VERSION % wxRELEASE_NUMBER;
 
+	if (!MuleBoostVersion.IsEmpty()) {
+		ver += wxT(" and Boost ") + MuleBoostVersion;
+	}
+
 #ifdef __DEBUG__
 	ver += wxT(" (Debugging)");
 #endif

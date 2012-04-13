@@ -74,7 +74,7 @@ void CMuleUDPSocket::CreateSocket()
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	m_socket->Notify(true);
 
-	if (!m_socket->Ok()) {
+	if (!m_socket->IsOk()) {
 		AddDebugLogLineC(logMuleUDP, wxT("Failed to create valid ") + m_name);
 		DestroySocket();
 	} else {
@@ -130,16 +130,13 @@ void CMuleUDPSocket::OnSend(int errorCode)
 }
 
 
-const unsigned UDP_BUFFER_SIZE = 16384;
-
-
 void CMuleUDPSocket::OnReceive(int errorCode)
 {
 	AddDebugLogLineN(logMuleUDP, CFormat(wxT("Got UDP callback for read: Error %i Socket state %i"))
 		% errorCode % Ok());
 
 	char buffer[UDP_BUFFER_SIZE];
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	unsigned length = 0;
 	bool error = false;
 	int lastError = 0;
@@ -147,7 +144,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	{
 		wxMutexLocker lock(m_mutex);
 
-		if (errorCode || (m_socket == NULL) || !m_socket->Ok()) {
+		if (errorCode || (m_socket == NULL) || !m_socket->IsOk()) {
 			DestroySocket();
 			CreateSocket();
 
@@ -155,9 +152,9 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		}
 
 
-		length = m_socket->RecvFrom(addr, buffer, UDP_BUFFER_SIZE).LastCount();
-		error = m_socket->Error();
+		length = m_socket->RecvFrom(addr, buffer, UDP_BUFFER_SIZE);
 		lastError = m_socket->LastError();
+		error = lastError != 0;
 	}
 
 	const uint32 ip = StringIPtoUint32(addr.IPAddress());
@@ -256,7 +253,7 @@ bool CMuleUDPSocket::Ok()
 {
 	wxMutexLocker lock(m_mutex);
 
-	return m_socket && m_socket->Ok();
+	return m_socket && m_socket->IsOk();
 }
 
 
@@ -304,7 +301,7 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint16_t port)
 {
 	// Just pretend that we sent the packet in order to avoid infinite loops.
-	if (!(m_socket && m_socket->Ok())) {
+	if (!(m_socket && m_socket->IsOk())) {
 		return true;
 	}
 
@@ -317,22 +314,18 @@ bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint1
 	m_busy = false;
 	bool sent = false;
 	m_socket->SendTo(addr, buffer, length);
-	if (m_socket->Error()) {
-		wxSocketError error = m_socket->LastError();
-
-		if (error == wxSOCKET_WOULDBLOCK) {
-			// Socket is busy and can't send this data right now,
-			// so we just return not sent and set the wouldblock
-			// flag so it gets resent when socket is ready.
-			m_busy = true;
-		} else {
-			// An error which we can't handle happended, so we drop
-			// the packet rather than risk entering an infinite loop.
-			AddLogLineN((wxT("WARNING! ") + m_name + wxT(": Packet to "))
-				<< Uint32_16toStringIP_Port(ip, port)
-				<< wxT(" discarded due to error (") << error << wxT(") while sending."));
-			sent = true;
-		}
+	if (m_socket->BlocksWrite()) {
+		// Socket is busy and can't send this data right now,
+		// so we just return not sent and set the wouldblock
+		// flag so it gets resent when socket is ready.
+		m_busy = true;
+	} else if (uint32 error = m_socket->LastError()) {
+		// An error which we can't handle happended, so we drop
+		// the packet rather than risk entering an infinite loop.
+		AddLogLineN((wxT("WARNING! ") + m_name + wxT(": Packet to "))
+			<< Uint32_16toStringIP_Port(ip, port)
+			<< wxT(" discarded due to error (") << error << wxT(") while sending."));
+		sent = true;
 	} else {
 		AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Packet sent ("))
 			<< Uint32_16toStringIP_Port(ip, port) << wxT("): ")

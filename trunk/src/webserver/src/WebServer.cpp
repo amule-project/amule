@@ -44,6 +44,7 @@
 //-------------------------------------------------------------------
 
 #include "WebSocket.h"		// Needed for StopSockets()
+#include <amuleIPV4Address.h>
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
@@ -238,7 +239,17 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_upnpEnabled = webInterface->m_UPnPWebServerEnabled;
 	m_upnpTCPPort = webInterface->m_UPnPTCPPort;
 
+	m_AsioService = new CAsioService;
 }
+
+
+// Probably always terminated by Ctrl-C or kill, but make a clean shutdown of the service anyway 
+CWebServerBase::~CWebServerBase()
+{
+	m_AsioService->Stop();
+	delete m_AsioService;
+}
+
 
 //sends output to web interface
 void CWebServerBase::Print(const wxString &s)
@@ -262,15 +273,15 @@ void CWebServerBase::StartServer()
 	}
 #endif
 
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	addr.AnyAddress();
 	addr.Service(webInterface->m_WebserverPort);
 
-	m_webserver_socket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
+	m_webserver_socket = new CWebLibSocketServer(addr, wxSOCKET_REUSEADDR, this);
 	m_webserver_socket->SetEventHandler(*this, ID_WEBLISTENSOCKET_EVENT);
 	m_webserver_socket->SetNotify(wxSOCKET_CONNECTION_FLAG);
 	m_webserver_socket->Notify(true);
-	if (!m_webserver_socket->Ok()) {
+	if (!m_webserver_socket->IsOk()) {
 		delete m_webserver_socket;
 		m_webserver_socket = 0;
 	}
@@ -292,13 +303,24 @@ void CWebServerBase::StopServer()
 
 void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
 {
-	CWebSocket *client = new CWebSocket(this);
+	m_webserver_socket->OnAccept();
+}
 
-    if ( m_webserver_socket->AcceptWith(*client, false) ) {
-	webInterface->Show(_("web client connection accepted\n"));
+CWebLibSocketServer::CWebLibSocketServer(const class amuleIPV4Address& adr, int flags, CWebServerBase * webServerBase)
+	:	CLibSocketServer(adr, flags), 
+		m_webServerBase(webServerBase)
+{
+}
+
+void CWebLibSocketServer::OnAccept()
+{
+	CWebSocket *client = new CWebSocket(m_webServerBase);
+
+    if (AcceptWith(*client, false) ) {
+		m_webServerBase->webInterface->Show(_("web client connection accepted\n"));
     } else {
-	delete client;
-	webInterface->Show(_("ERROR: cannot accept web client connection\n"));
+		delete client;
+		m_webServerBase->webInterface->Show(_("ERROR: cannot accept web client connection\n"));
     }
 }
 
@@ -311,10 +333,10 @@ void CWebServerBase::OnWebSocketEvent(wxSocketEvent& event)
         socket->OnLost();
         break;
     case wxSOCKET_INPUT:
-        socket->OnInput();
+        socket->OnReceive(0);
         break;
     case wxSOCKET_OUTPUT:
-        socket->OnOutput();
+        socket->OnSend(0);
         break;
     case wxSOCKET_CONNECTION:
         break;

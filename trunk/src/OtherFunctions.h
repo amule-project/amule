@@ -183,6 +183,8 @@ OutputIterator STLCopy_n(InputIterator first, size_t n, OutputIterator result)
  */
 wxString GetMuleVersion();
 
+extern wxString MuleBoostVersion;
+
 
 /**
  * Helperfunction for accessing a child of the calling widget.
