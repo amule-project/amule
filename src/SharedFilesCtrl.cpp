@@ -64,6 +64,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHOSTNAMECRYPTSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETAICHED2KLINK,	CSharedFilesCtrl::OnCreateURI )
+	EVT_MENU( MP_GETAICHED2KLINKSRC,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_RENAME,		CSharedFilesCtrl::OnRename )
 	EVT_MENU( MP_WS,		CSharedFilesCtrl::OnGetFeedback )
 
@@ -166,9 +167,11 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy eD2k link to clipboard (&Hostname)"));
 		m_menu->Append(MP_GETHOSTNAMECRYPTSOURCEED2KLINK,_("Copy eD2k link to clipboard (Hostname) (With &Crypt options)"));
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy eD2k link to clipboard (&AICH info)"));
+		m_menu->Append(MP_GETAICHED2KLINKSRC,_("Copy eD2k link to clipboard (&AICH info + Source)"));
 		m_menu->Append(MP_WS,_("Copy feedback to clipboard"));
 
 		m_menu->Enable(MP_GETAICHED2KLINK, file->HasProperAICHHashSet());
+		m_menu->Enable(MP_GETAICHED2KLINKSRC, file->HasProperAICHHashSet());
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_GETHOSTNAMECRYPTSOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 
@@ -326,10 +329,11 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 			case MP_GETMAGNETLINK:				URIs += theApp->CreateMagnetLink( file ) + wxT("\n");				break;
 			case MP_GETED2KLINK:				URIs += theApp->CreateED2kLink( file ) + wxT("\n");					break;
 			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file , true) + wxT("\n");			break;
-			case MP_GETCRYPTSOURCEDED2KLINK:			URIs += theApp->CreateED2kLink( file , true, false, true) + wxT("\n");			break;
+			case MP_GETCRYPTSOURCEDED2KLINK:	URIs += theApp->CreateED2kLink( file , true, false, true) + wxT("\n");			break;
 			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kLink( file , true, true) + wxT("\n");	break;
-			case MP_GETHOSTNAMECRYPTSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file, true, true, true ) + wxT("\n");			break;
-			case MP_GETAICHED2KLINK:			URIs += theApp->CreateED2kAICHLink( file ) + wxT("\n");				break;
+			case MP_GETHOSTNAMECRYPTSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file, true, true, true ) + wxT("\n");	break;
+			case MP_GETAICHED2KLINK:			URIs += theApp->CreateED2kLink(file, false, false, false, true) + wxT("\n");		break;
+			case MP_GETAICHED2KLINKSRC:			URIs += theApp->CreateED2kLink(file, true,  false, false, true) + wxT("\n");		break;
 		}
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
