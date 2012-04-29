@@ -139,8 +139,7 @@ public:
 	void		AddLinksFromFile();
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);
-	wxString	CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool addcryptoptions = false);
-	wxString	CreateED2kAICHLink(const CKnownFile* f);
+	wxString	CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool add_cryptoptions = false, bool add_AICH = false);
 	// Who am I ?
 #ifdef AMULE_DAEMON
 	bool		IsDaemon() const { return true; }

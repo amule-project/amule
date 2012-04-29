@@ -146,14 +146,25 @@ wxString CamuleAppCommon::CreateMagnetLink(const CAbstractFile *f)
 	return uri.GetLink();
 }
 
+
 // Returns a ed2k file URL
-wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source, bool use_hostname, bool addcryptoptions)
+wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source, bool use_hostname, bool add_cryptoptions, bool add_AICH)
 {
-	wxASSERT(!(!add_source && (use_hostname || addcryptoptions)));
+	wxASSERT(!(!add_source && (use_hostname || add_cryptoptions)));
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
-	wxString strURL = CFormat(wxT("ed2k://|file|%s|%i|%s|/"))
+	wxString strURL = CFormat(wxT("ed2k://|file|%s|%i|%s|"))
 		% f->GetFileName().Cleanup(false)
 		% f->GetFileSize() % f->GetFileHash().Encode();
+
+	// Append the AICH info
+	if (add_AICH) {
+		const CKnownFile* kf = dynamic_cast<const CKnownFile*>(f);
+		if (kf && kf->HasProperAICHHashSet()) {
+			strURL << wxT("h=") << kf->GetAICHMasterHash() << wxT("|");
+		}
+	}
+
+	strURL << wxT("/");
 
 	if (add_source && theApp->IsConnected() && !theApp->IsFirewalled()) {
 		// Create the first part of the URL
@@ -173,7 +184,7 @@ wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source
 		strURL << wxT(":") <<
 			thePrefs::GetPort();
 
-		if (addcryptoptions) {
+		if (add_cryptoptions) {
 			uint8 uSupportsCryptLayer = thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 			uint8 uRequestsCryptLayer = thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 			uint8 uRequiresCryptLayer = thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
@@ -190,24 +201,10 @@ wxString CamuleAppCommon::CreateED2kLink(const CAbstractFile *f, bool add_source
 		AddLogLineC(_("WARNING: You can't add yourself as a source for an eD2k link while having a lowid."));
 	}
 
-	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
+	// Result is "ed2k://|file|<filename>|<size>|<hash>|[h=<AICH master hash>|]/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
 	return strURL;
 }
 
-// Returns a ed2k link with AICH info if available
-wxString CamuleAppCommon::CreateED2kAICHLink(const CKnownFile* f)
-{
-	// Create the first part of the URL
-	wxString strURL = CreateED2kLink(f);
-	// Append the AICH info
-	if (f->HasProperAICHHashSet()) {
-		strURL.RemoveLast();		// remove trailing '/'
-		strURL << wxT("h=") << f->GetAICHMasterHash() << wxT("|/");
-	}
-
-	// Result is "ed2k://|file|<filename>|<size>|<hash>|h=<AICH master hash>|/"
-	return strURL;
-}
 
 bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 {
