@@ -35,7 +35,7 @@ BUILT_SOURCES = ECVersion.h
 CLEANFILES = ECVersion.h EC-timestamp mkFileSum$(BUILD_EXEEXT)
 
 mkFileSum$(BUILD_EXEEXT): $(top_srcdir)/src/utils/mkFileSum.c
-	$(BUILD_CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $^ -o $@
+	$(BUILD_CC) $(BUILD_CFLAGS) $(BUILD_CPPFLAGS) $(BUILD_LDFLAGS) $^ -o $@
 
 ECVersion.h: EC-timestamp
 	@if test ! -f $@; then \
