@@ -84,5 +84,10 @@ public:
 	wxArrayString m_aExpr;
 };
 
+#ifdef _MSC_VER
+#define YY_NO_UNISTD_H
+#define DEBUG_NEW new
+#endif
+
 #endif
 // File_checked_for_headers
