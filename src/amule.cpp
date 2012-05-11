@@ -431,7 +431,7 @@ bool CamuleApp::OnInit()
 	// Configure EC for amuled when invoked with ec-config
 	if (ec_config) {
 		AddLogLineNS(_("\nEC configuration"));
-		thePrefs::SetECPass(GetPassword());
+		thePrefs::SetECPass(GetPassword(false).Encode());
 		thePrefs::EnableExternalConnections(true);
 		AddLogLineNS(_("Password set and external connections enabled."));
 	}
@@ -1617,6 +1617,7 @@ void CamuleApp::CheckNewVersion(uint32 result)
 
 			if (curVer < newVer) {
 				AddLogLineC(_("You are using an outdated version of aMule!"));
+				// cppcheck-suppress zerodiv
 				AddLogLineN(CFormat(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li")) % VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
 				AddLogLineN(_("The latest version can always be found at http://www.amule.org"));
 				#ifdef AMULE_DAEMON

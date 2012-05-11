@@ -127,6 +127,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
                 }
               else
                 {
+		  delete [] buf;
                   return (false);
                 }
 
@@ -151,8 +152,16 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 #endif
 #else
 
-          tmpCharHash = (unsigned char*)realloc(tmpCharHash,
+          unsigned char *tmpPtr = (unsigned char*)realloc(tmpCharHash,
                                                 sizeof(unsigned char) * (MD4_HASHLEN_BYTE * partcount));
+	  if (tmpPtr) {
+		  tmpCharHash = tmpPtr;
+	  } else {
+		  delete [] buf;
+		  free(tmpCharHash);
+		  wxLogError(_("Out of memory while calculating ed2k hash!"));
+		  return (false);
+	  }
           memcpy ( tmpCharHash + MD4_HASHLEN_BYTE * (partcount - 1), ret, MD4_HASHLEN_BYTE );
 #endif
 

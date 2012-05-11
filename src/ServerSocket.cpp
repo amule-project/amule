@@ -451,7 +451,6 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				// FIXME some statuspackets have a different size -> why? structur?
 				if (size < 8) {
 					throw wxString(wxT("Invalid server status packet"));
-					break;
 				}
 				CServer* update = theApp->serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {

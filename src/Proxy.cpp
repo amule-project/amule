@@ -106,10 +106,10 @@ void CProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 	CProxySocket *sock = dynamic_cast<CProxySocket *>(event.GetSocket());
 	if (sock) {
 		sock->m_proxyStateMachine->Schedule(event.GetSocketEvent());
+		sock->m_proxyStateMachine->Clock();
 	} else {
 		// we're doomed :)
 	}
-	sock->m_proxyStateMachine->Clock();
 }
 
 //
@@ -1430,7 +1430,7 @@ uint32 CDatagramSocketProxy::RecvFrom(amuleIPV4Address& addr, void* buf, uint32 
 				/* We should use a fixed buffer to avoid
 				 * new/delete it all the time.
 				 * I need an upper bound */
-				delete bufUDP;
+				delete [] bufUDP;
 			}
 			/* There is still one problem pending, fragmentation.
 			 * Either we support it or we have to drop fragmented

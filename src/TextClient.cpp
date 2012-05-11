@@ -194,7 +194,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				unsigned int ip[4];
 				unsigned int port;
 				// Not much we can do against this unicode2char.
-				int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
+				int result = sscanf(unicode2char(args), "%3d.%3d.%3d.%3d:%5d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
 				if (result != 5) {
 					// Try to resolve DNS -- good for dynamic IP servers
 					wxString serverName(args.BeforeFirst(wxT(':')));
@@ -204,7 +204,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					wxIPV4address a;
 					a.Hostname(serverName);
 					a.Service(port);
-					result = sscanf(unicode2char(a.IPAddress()), "%d.%d.%d.%d", &ip[0], &ip[1], &ip[2], &ip[3]);
+					result = sscanf(unicode2char(a.IPAddress()), "%3d.%3d.%3d.%3d", &ip[0], &ip[1], &ip[2], &ip[3]);
 					if (serverName.IsEmpty() || !ok || (result != 4)) {
 						Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
 						return 0;

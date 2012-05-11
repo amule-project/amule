@@ -129,11 +129,13 @@ keywordchar		[^ \"()]
 						} else {
 							if ((unsigned char)c >= 0x80/* && IsDBCSLeadByte(yytext[0]) */){
 								psz[i++] = (unsigned char)c;
-								if (i >= l){
-									psz = (char*)realloc(psz, l += 128);
-									if (psz == NULL){
+								if (i >= l) {
+									char *tmp = (char*)realloc(psz, l += 128);
+									if (tmp == NULL){
 										yyerror("Less memory for string");
 										break;
+									} else {
+										psz = tmp;
 									}
 								}
 								c = yyinput();
@@ -141,11 +143,13 @@ keywordchar		[^ \"()]
 						}
 
 						psz[i++] = (unsigned char)c;
-						if (i >= l){
-							psz = (char*)realloc(psz, l += 128);
-							if (psz == NULL){
+						if (i >= l) {
+							char *tmp = (char*)realloc(psz, l += 128);
+							if (tmp == NULL){
 								yyerror("Less memory for string");
 								break;
+							} else {
+								psz = tmp;
 							}
 						}
 					}

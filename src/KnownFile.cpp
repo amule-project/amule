@@ -243,8 +243,9 @@ void CAbstractFile::AddTagUnique(const CTag &rTag)
 		       (!(*it).GetName().IsEmpty() &&
 			!rTag.GetName().IsEmpty() &&
 			(*it).GetName() == rTag.GetName()) ) &&
-		     (*it).GetType() == rTag.GetType()){
-			m_taglist.erase(it);
+		     (*it).GetType() == rTag.GetType())
+		{
+			it = m_taglist.erase(it);
 			m_taglist.insert(it, rTag);
 			return;
 		}

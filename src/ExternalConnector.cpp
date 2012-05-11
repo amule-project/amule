@@ -61,6 +61,7 @@
 
 #include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
+#include "OtherFunctions.h"		// Needed for GetPassword()
 
 #ifdef _MSC_VER  // silly warnings about deprecated functions
 #pragma warning(disable:4996)
@@ -361,27 +362,11 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 
 	// HostName, Port and Password
 	if ( m_password.IsEmpty() ) {
-		wxString pass_plain;
-		#ifndef __WXMSW__
-			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
-		#else
-			//#warning This way, pass enter is not hidden on windows. Bad thing.
-			char temp_str[512];
-			fflush(stdin);
-			printf("Enter password for mule connection: \n");
-			fflush(stdout);
-			fgets(temp_str, 512, stdin);
-			temp_str[strlen(temp_str)-1] = '\0';
-			pass_plain = char2unicode(temp_str);
-		#endif
-		wxCHECK2(m_password.Decode(MD5Sum(pass_plain).GetHash()), /* Do nothing. */ );
+		m_password = GetPassword(true);
 		// MD5 hash for an empty string, according to rfc1321.
 		if (m_password.Encode() == wxT("D41D8CD98F00B204E9800998ECF8427E")) {
 			m_password.Clear();
 		}
-
-		// Clear plain-text password
-		pass_plain		= wxT("01234567890123456789");
 	}
 
 	if (!m_password.IsEmpty()) {
@@ -572,6 +557,10 @@ bool CaMuleExternalConnector::OnInit()
 	#endif
 #endif
 
+	// If we didn't know that OnInit is called only once when creating the
+	// object, it could cause a memory leak. The two pointers below should
+	// be free()'d before assigning the new value.
+	// cppcheck-suppress publicAllocationError
 	m_strFullVersion = strdup((const char *)unicode2char(GetMuleVersion()));
 	m_strOSDescription = strdup((const char *)unicode2char(wxGetOsDescription()));
 

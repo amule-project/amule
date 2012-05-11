@@ -1,23 +1,22 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 2.4.2.  */
 
 /* Skeleton implementation for Bison's Yacc-like parsers in C
-
-   Free Software Foundation, Inc.
-
-   This program is free software; you can redistribute it and/or modify
+   
+      Copyright (C) 1984, 1989-1990, 2000-2006, 2009-2010 Free Software
+   Foundation, Inc.
+   
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
-
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -28,7 +27,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-
+   
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -46,7 +45,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.3"
+#define YYBISON_VERSION "2.4.2"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -54,17 +53,115 @@
 /* Pure parsers.  */
 #define YYPURE 0
 
+/* Push parsers.  */
+#define YYPUSH 0
+
+/* Pull parsers.  */
+#define YYPULL 1
+
 /* Using locations.  */
 #define YYLSP_NEEDED 0
 
 /* Substitute the variable and function names.  */
-#define yyparse phpparse
-#define yylex   phplex
-#define yyerror phperror
-#define yylval  phplval
-#define yychar  phpchar
-#define yydebug phpdebug
-#define yynerrs phpnerrs
+#define yyparse         phpparse
+#define yylex           phplex
+#define yyerror         phperror
+#define yylval          phplval
+#define yychar          phpchar
+#define yydebug         phpdebug
+#define yynerrs         phpnerrs
+
+
+/* Copy the first part of user declarations.  */
+
+/* Line 189 of yacc.c  */
+#line 1 "php_parser.y"
+
+//
+// This file is part of the aMule Project.
+//
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2005-2011 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
+//
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
+
+#include <stdio.h>
+#include <string.h>
+
+#include "php_syntree.h"
+
+int phplex();
+
+// add item to syntree list
+PHP_SYN_NODE *add_statement_2_list(PHP_SYN_NODE *list, PHP_SYN_NODE *st)
+{
+	if ( st && list) {
+		PHP_SYN_NODE *last = list;
+		while ( last->next_node ) {
+			last = last->next_node;
+		}
+		last->next_node = st;
+		return list;
+	} else if ( st ) {
+		return st;
+	} else {
+		return list;
+	}
+}
+
+PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
+{
+	if ( list ) {
+		PHP_SYN_NODE *curr_if = list;
+		while ( curr_if->node_if.code_else ) {
+			curr_if = curr_if->node_if.code_else;
+		}
+		curr_if->node_if.code_else = branch;
+		return list;
+	} else {
+		return branch;
+	}
+}
+
+
+
+/* Line 189 of yacc.c  */
+#line 147 "php_parser.c"
+
+/* Enabling traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 1
+#endif
+
+/* Enabling verbose error messages.  */
+#ifdef YYERROR_VERBOSE
+# undef YYERROR_VERBOSE
+# define YYERROR_VERBOSE 1
+#else
+# define YYERROR_VERBOSE 0
+#endif
+
+/* Enabling the token table.  */
+#ifndef YYTOKEN_TABLE
+# define YYTOKEN_TABLE 0
+#endif
 
 
 /* Tokens.  */
@@ -163,209 +260,37 @@
      END_SCRIPT = 345
    };
 #endif
-/* Tokens.  */
-#define FNUMBER 258
-#define DNUMBER 259
-#define STRING 260
-#define IDENT 261
-#define VARIABLE 262
-#define T_ECHO 263
-#define EXIT 264
-#define IF 265
-#define DO 266
-#define WHILE 267
-#define ENDWHILE 268
-#define FOR 269
-#define ENDFOR 270
-#define FOREACH 271
-#define ENDFOREACH 272
-#define DECLARE 273
-#define ENDDECLARE 274
-#define AS 275
-#define CONST 276
-#define GLOBAL 277
-#define UNSET 278
-#define ISSET 279
-#define EMPTY 280
-#define SWITCH 281
-#define ENDSWITCH 282
-#define CASE 283
-#define DEFAULT 284
-#define BREAK 285
-#define CONTINUE 286
-#define FUNCTION 287
-#define RETURN 288
-#define CLASS 289
-#define INTERFACE 290
-#define EXTENDS 291
-#define IMPLEMENTS 292
-#define OBJECT_OPERATOR 293
-#define HASH_ASSIGN 294
-#define LIST 295
-#define ARRAY 296
-#define CLASS_SCOPE 297
-#define PRINT 298
-#define SR_EQ 299
-#define SL_EQ 300
-#define XOR_EQ 301
-#define OR_EQ 302
-#define AND_EQ 303
-#define MOD_EQ 304
-#define CONCAT_EQ 305
-#define DIV_EQ 306
-#define MUL_EQ 307
-#define MINUS_EQ 308
-#define PLUS_EQ 309
-#define LOG_OR 310
-#define LOG_XOR 311
-#define LOG_AND 312
-#define BOOLEAN_OR 313
-#define BOOLEAN_AND 314
-#define IS_NOIDENTICAL 315
-#define IS_IDENTICAL 316
-#define IS_NOEQUAL 317
-#define IS_EQ 318
-#define IS_GREATER_OR_EQ 319
-#define IS_SMALLER_OR_EQ 320
-#define SR 321
-#define SL 322
-#define INSTANCEOF 323
-#define UNSET_CAST 324
-#define BOOL_CAST 325
-#define OBJECT_CAST 326
-#define ARRAY_CAST 327
-#define STRING_CAST 328
-#define DOUBLE_CAST 329
-#define INT_CAST 330
-#define DEC 331
-#define INC 332
-#define CLONE 333
-#define NEW 334
-#define ELSEIF 335
-#define ELSE 336
-#define ENDIF 337
-#define PUBLIC 338
-#define PROTECTED 339
-#define PRIVATE 340
-#define FINAL 341
-#define ABSTRACT 342
-#define STATIC 343
-#define START_SCRIPT 344
-#define END_SCRIPT 345
 
 
-
-
-/* Copy the first part of user declarations.  */
-#line 1 "php_parser.y"
-
-//
-// This file is part of the aMule Project.
-//
-// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2005-2011 Froenchenko Leonid ( lfroen@gmail.com / http://www.amule.org )
-//
-// Any parts of this program derived from the xMule, lMule or eMule project,
-// or contributed by third-party developers are copyrighted by their
-// respective authors.
-//
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
-//
-
-#include <stdio.h>
-#include <string.h>
-
-#include "php_syntree.h"
-
-int phplex();
-
-// add item to syntree list
-PHP_SYN_NODE *add_statement_2_list(PHP_SYN_NODE *list, PHP_SYN_NODE *st)
-{
-	if ( st && list) {
-		PHP_SYN_NODE *last = list;
-		while ( last->next_node ) {
-			last = last->next_node;
-		}
-		last->next_node = st;
-		return list;
-	} else if ( st ) {
-		return st;
-	} else {
-		return list;
-	}
-}
-
-PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
-{
-	if ( list ) {
-		PHP_SYN_NODE *curr_if = list;
-		while ( curr_if->node_if.code_else ) {
-			curr_if = curr_if->node_if.code_else;
-		}
-		curr_if->node_if.code_else = branch;
-		return list;
-	} else {
-		return branch;
-	}
-}
-
-
-
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 1
-#endif
-
-/* Enabling verbose error messages.  */
-#ifdef YYERROR_VERBOSE
-# undef YYERROR_VERBOSE
-# define YYERROR_VERBOSE 1
-#else
-# define YYERROR_VERBOSE 0
-#endif
-
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
-#endif
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 67 "php_parser.y"
 {
+
+/* Line 214 of yacc.c  */
+#line 67 "php_parser.y"
+
 	PHP_SYN_NODE *syn_node;
 	PHP_EXP_NODE *exp_node;
 
 	char str_val[256];
-}
-/* Line 193 of yacc.c.  */
-#line 357 "php_parser.c"
-	YYSTYPE;
+
+
+
+/* Line 214 of yacc.c  */
+#line 282 "php_parser.c"
+} YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
-# define YYSTYPE_IS_TRIVIAL 1
 #endif
-
 
 
 /* Copy the second part of user declarations.  */
 
 
-/* Line 216 of yacc.c.  */
-#line 370 "php_parser.c"
+/* Line 264 of yacc.c  */
+#line 294 "php_parser.c"
 
 #ifdef short
 # undef short
@@ -440,14 +365,14 @@ typedef short int yytype_int16;
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static int
-YYID (int i)
+YYID (int yyi)
 #else
 static int
-YYID (i)
-    int i;
+YYID (yyi)
+    int yyi;
 #endif
 {
-  return i;
+  return yyi;
 }
 #endif
 
@@ -528,9 +453,9 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
-  yytype_int16 yyss;
-  YYSTYPE yyvs;
-  };
+  yytype_int16 yyss_alloc;
+  YYSTYPE yyvs_alloc;
+};
 
 /* The size of the maximum gap between one aligned stack and the next.  */
 # define YYSTACK_GAP_MAXIMUM (sizeof (union yyalloc) - 1)
@@ -564,12 +489,12 @@ union yyalloc
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack)					\
+# define YYSTACK_RELOCATE(Stack_alloc, Stack)				\
     do									\
       {									\
 	YYSIZE_T yynewbytes;						\
-	YYCOPY (&yyptr->Stack, Stack, yysize);				\
-	Stack = &yyptr->Stack;						\
+	YYCOPY (&yyptr->Stack_alloc, Stack, yysize);			\
+	Stack = &yyptr->Stack_alloc;					\
 	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
 	yyptr += yynewbytes / sizeof (*yyptr);				\
       }									\
@@ -780,7 +705,7 @@ static const char *const yytname[] =
   "program_tree", "top_statement_list", "top_statement", "statement",
   "decl_list", "expr_list", "variable_list", "global_var_list",
   "global_var", "static_var_list", "static_var", "function_decl_statement",
-  "@1", "parameter_list", "optional_class_type", "for_statement",
+  "$@1", "parameter_list", "optional_class_type", "for_statement",
   "foreach_statement", "for_expr", "elseif_list", "else_statement",
   "while_statement", "switch_case_list", "case_list", "case_list_item",
   "case_separator", "const_value", "variable", "deref_variable",
@@ -1650,9 +1575,18 @@ static const yytype_uint8 yystos[] =
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
-   Once GCC version 2 has supplanted version 1, this can go.  */
+   Once GCC version 2 has supplanted version 1, this can go.  However,
+   YYFAIL appears to be in use.  Nevertheless, it is formally deprecated
+   in Bison 2.4.2's NEWS entry, where a plan to phase it out is
+   discussed.  */
 
 #define YYFAIL		goto yyerrlab
+#if defined YYFAIL
+  /* This is here to suppress warnings from the GCC cpp's
+     -Wunused-macros.  Normally we don't worry about that warning, but
+     some users do, and we want to make it easy for users to remove
+     YYFAIL uses, which will produce warnings from Bison 2.5.  */
+#endif
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
@@ -1820,17 +1754,20 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_stack_print (yytype_int16 *bottom, yytype_int16 *top)
+yy_stack_print (yytype_int16 *yybottom, yytype_int16 *yytop)
 #else
 static void
-yy_stack_print (bottom, top)
-    yytype_int16 *bottom;
-    yytype_int16 *top;
+yy_stack_print (yybottom, yytop)
+    yytype_int16 *yybottom;
+    yytype_int16 *yytop;
 #endif
 {
   YYFPRINTF (stderr, "Stack now");
-  for (; bottom <= top; ++bottom)
-    YYFPRINTF (stderr, " %d", *bottom);
+  for (; yybottom <= yytop; yybottom++)
+    {
+      int yybot = *yybottom;
+      YYFPRINTF (stderr, " %d", yybot);
+    }
   YYFPRINTF (stderr, "\n");
 }
 
@@ -1864,11 +1801,11 @@ yy_reduce_print (yyvsp, yyrule)
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
-      fprintf (stderr, "   $%d = ", yyi + 1);
+      YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(yyvsp[(yyi + 1) - (yynrhs)])
 		       		       );
-      fprintf (stderr, "\n");
+      YYFPRINTF (stderr, "\n");
     }
 }
 
@@ -2148,10 +2085,8 @@ yydestruct (yymsg, yytype, yyvaluep)
 	break;
     }
 }
-
 
 /* Prevent warnings from -Wmissing-prototypes.  */
-
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
 int yyparse (void *YYPARSE_PARAM);
@@ -2167,11 +2102,10 @@ int yyparse ();
 #endif /* ! YYPARSE_PARAM */
 
 
-
-/* The look-ahead symbol.  */
+/* The lookahead symbol.  */
 int yychar;
 
-/* The semantic value of the look-ahead symbol.  */
+/* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval;
 
 /* Number of syntax errors so far.  */
@@ -2179,9 +2113,9 @@ int yynerrs;
 
 
 
-/*----------.
-| yyparse.  |
-`----------*/
+/*-------------------------.
+| yyparse or yypush_parse.  |
+`-------------------------*/
 
 #ifdef YYPARSE_PARAM
 #if (defined __STDC__ || defined __C99__FUNC__ \
@@ -2205,14 +2139,39 @@ yyparse ()
 #endif
 #endif
 {
-  
-  int yystate;
+
+
+    int yystate;
+    /* Number of tokens to shift before error messages enabled.  */
+    int yyerrstatus;
+
+    /* The stacks and their tools:
+       `yyss': related to states.
+       `yyvs': related to semantic values.
+
+       Refer to the stacks thru separate pointers, to allow yyoverflow
+       to reallocate them elsewhere.  */
+
+    /* The state stack.  */
+    yytype_int16 yyssa[YYINITDEPTH];
+    yytype_int16 *yyss;
+    yytype_int16 *yyssp;
+
+    /* The semantic value stack.  */
+    YYSTYPE yyvsa[YYINITDEPTH];
+    YYSTYPE *yyvs;
+    YYSTYPE *yyvsp;
+
+    YYSIZE_T yystacksize;
+
   int yyn;
   int yyresult;
-  /* Number of tokens to shift before error messages enabled.  */
-  int yyerrstatus;
-  /* Look-ahead token as an internal (translated) token number.  */
-  int yytoken = 0;
+  /* Lookahead token as an internal (translated) token number.  */
+  int yytoken;
+  /* The variables used to return semantic value and location from the
+     action routines.  */
+  YYSTYPE yyval;
+
 #if YYERROR_VERBOSE
   /* Buffer for error messages, and its allocated size.  */
   char yymsgbuf[128];
@@ -2220,51 +2179,28 @@ yyparse ()
   YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
 #endif
 
-  /* Three stacks and their tools:
-     `yyss': related to states,
-     `yyvs': related to semantic values,
-     `yyls': related to locations.
-
-     Refer to the stacks thru separate pointers, to allow yyoverflow
-     to reallocate them elsewhere.  */
-
-  /* The state stack.  */
-  yytype_int16 yyssa[YYINITDEPTH];
-  yytype_int16 *yyss = yyssa;
-  yytype_int16 *yyssp;
-
-  /* The semantic value stack.  */
-  YYSTYPE yyvsa[YYINITDEPTH];
-  YYSTYPE *yyvs = yyvsa;
-  YYSTYPE *yyvsp;
-
-
-
 #define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
-
-  YYSIZE_T yystacksize = YYINITDEPTH;
-
-  /* The variables used to return semantic value and location from the
-     action routines.  */
-  YYSTYPE yyval;
-
 
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
+
+  yytoken = 0;
+  yyss = yyssa;
+  yyvs = yyvsa;
+  yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
 
   yystate = 0;
   yyerrstatus = 0;
   yynerrs = 0;
-  yychar = YYEMPTY;		/* Cause a token to be read.  */
+  yychar = YYEMPTY; /* Cause a token to be read.  */
 
   /* Initialize stack pointers.
      Waste one element of value and location stack
      so that they stay on the same level as the state stack.
      The wasted elements are never initialized.  */
-
   yyssp = yyss;
   yyvsp = yyvs;
 
@@ -2294,7 +2230,6 @@ yyparse ()
 	YYSTYPE *yyvs1 = yyvs;
 	yytype_int16 *yyss1 = yyss;
 
-
 	/* Each stack pointer address is followed by the size of the
 	   data in use in that stack, in bytes.  This used to be a
 	   conditional around just the two extra args, but that might
@@ -2302,7 +2237,6 @@ yyparse ()
 	yyoverflow (YY_("memory exhausted"),
 		    &yyss1, yysize * sizeof (*yyssp),
 		    &yyvs1, yysize * sizeof (*yyvsp),
-
 		    &yystacksize);
 
 	yyss = yyss1;
@@ -2325,9 +2259,8 @@ yyparse ()
 	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
 	if (! yyptr)
 	  goto yyexhaustedlab;
-	YYSTACK_RELOCATE (yyss);
-	YYSTACK_RELOCATE (yyvs);
-
+	YYSTACK_RELOCATE (yyss_alloc, yyss);
+	YYSTACK_RELOCATE (yyvs_alloc, yyvs);
 #  undef YYSTACK_RELOCATE
 	if (yyss1 != yyssa)
 	  YYSTACK_FREE (yyss1);
@@ -2338,7 +2271,6 @@ yyparse ()
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
 
-
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
 		  (unsigned long int) yystacksize));
 
@@ -2348,6 +2280,9 @@ yyparse ()
 
   YYDPRINTF ((stderr, "Entering state %d\n", yystate));
 
+  if (yystate == YYFINAL)
+    YYACCEPT;
+
   goto yybackup;
 
 /*-----------.
@@ -2356,16 +2291,16 @@ yyparse ()
 yybackup:
 
   /* Do appropriate processing given the current state.  Read a
-     look-ahead token if we need one and don't already have one.  */
+     lookahead token if we need one and don't already have one.  */
 
-  /* First try to decide what to do without reference to look-ahead token.  */
+  /* First try to decide what to do without reference to lookahead token.  */
   yyn = yypact[yystate];
   if (yyn == YYPACT_NINF)
     goto yydefault;
 
-  /* Not known => get a look-ahead token if don't already have one.  */
+  /* Not known => get a lookahead token if don't already have one.  */
 
-  /* YYCHAR is either YYEMPTY or YYEOF or a valid look-ahead symbol.  */
+  /* YYCHAR is either YYEMPTY or YYEOF or a valid lookahead symbol.  */
   if (yychar == YYEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token: "));
@@ -2397,20 +2332,16 @@ yybackup:
       goto yyreduce;
     }
 
-  if (yyn == YYFINAL)
-    YYACCEPT;
-
   /* Count tokens shifted since error; after three, turn off error
      status.  */
   if (yyerrstatus)
     yyerrstatus--;
 
-  /* Shift the look-ahead token.  */
+  /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
 
-  /* Discard the shifted token unless it is eof.  */
-  if (yychar != YYEOF)
-    yychar = YYEMPTY;
+  /* Discard the shifted token.  */
+  yychar = YYEMPTY;
 
   yystate = yyn;
   *++yyvsp = yylval;
@@ -2450,111 +2381,155 @@ yyreduce:
   switch (yyn)
     {
         case 2:
+
+/* Line 1464 of yacc.c  */
 #line 142 "php_parser.y"
     { g_syn_tree_top = (yyvsp[(2) - (3)].syn_node); ;}
     break;
 
   case 3:
+
+/* Line 1464 of yacc.c  */
 #line 146 "php_parser.y"
     { (yyval.syn_node) = add_statement_2_list((yyvsp[(1) - (2)].syn_node), (yyvsp[(2) - (2)].syn_node)); ;}
     break;
 
   case 4:
+
+/* Line 1464 of yacc.c  */
 #line 147 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 6:
+
+/* Line 1464 of yacc.c  */
 #line 153 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (3)].syn_node); ;}
     break;
 
   case 8:
+
+/* Line 1464 of yacc.c  */
 #line 159 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (3)].syn_node); ;}
     break;
 
   case 9:
+
+/* Line 1464 of yacc.c  */
 #line 160 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_EXPR, (yyvsp[(1) - (2)].exp_node)); ;}
     break;
 
   case 10:
+
+/* Line 1464 of yacc.c  */
 #line 161 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 11:
+
+/* Line 1464 of yacc.c  */
 #line 162 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (3)].syn_node); ;}
     break;
 
   case 12:
+
+/* Line 1464 of yacc.c  */
 #line 163 "php_parser.y"
     { (yyval.syn_node) = make_ifelse_syn_node((yyvsp[(3) - (7)].exp_node), (yyvsp[(5) - (7)].syn_node), (yyvsp[(6) - (7)].syn_node), (yyvsp[(7) - (7)].syn_node)); ;}
     break;
 
   case 13:
+
+/* Line 1464 of yacc.c  */
 #line 164 "php_parser.y"
     { (yyval.syn_node) = make_while_loop_syn_node((yyvsp[(3) - (5)].exp_node), (yyvsp[(5) - (5)].syn_node), 1); ;}
     break;
 
   case 14:
+
+/* Line 1464 of yacc.c  */
 #line 165 "php_parser.y"
     { (yyval.syn_node) = make_while_loop_syn_node((yyvsp[(5) - (7)].exp_node), (yyvsp[(2) - (7)].syn_node), 0); ;}
     break;
 
   case 15:
+
+/* Line 1464 of yacc.c  */
 #line 166 "php_parser.y"
     { (yyval.syn_node) = make_for_syn_node((yyvsp[(3) - (9)].exp_node), (yyvsp[(5) - (9)].exp_node), (yyvsp[(7) - (9)].exp_node), (yyvsp[(9) - (9)].syn_node)); ;}
     break;
 
   case 16:
+
+/* Line 1464 of yacc.c  */
 #line 167 "php_parser.y"
     { (yyval.syn_node) = make_switch_syn_node((yyvsp[(3) - (5)].exp_node), (yyvsp[(5) - (5)].exp_node)); ;}
     break;
 
   case 17:
+
+/* Line 1464 of yacc.c  */
 #line 168 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_CONTINUE, 0); ;}
     break;
 
   case 18:
+
+/* Line 1464 of yacc.c  */
 #line 169 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_CONTINUE, (yyvsp[(2) - (3)].exp_node)); ;}
     break;
 
   case 19:
+
+/* Line 1464 of yacc.c  */
 #line 170 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_BREAK, 0); ;}
     break;
 
   case 20:
+
+/* Line 1464 of yacc.c  */
 #line 171 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_BREAK, (yyvsp[(2) - (3)].exp_node)); ;}
     break;
 
   case 21:
+
+/* Line 1464 of yacc.c  */
 #line 172 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_RET, 0); ;}
     break;
 
   case 22:
+
+/* Line 1464 of yacc.c  */
 #line 173 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_RET, (yyvsp[(2) - (3)].exp_node)); ;}
     break;
 
   case 23:
+
+/* Line 1464 of yacc.c  */
 #line 174 "php_parser.y"
     { (yyval.syn_node) = make_expr_syn_node(PHP_ST_ECHO, (yyvsp[(2) - (3)].exp_node)); ;}
     break;
 
   case 24:
+
+/* Line 1464 of yacc.c  */
 #line 175 "php_parser.y"
     {  ;}
     break;
 
   case 25:
+
+/* Line 1464 of yacc.c  */
 #line 176 "php_parser.y"
     {
 				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[(3) - (7)].exp_node), 0, (yyvsp[(5) - (7)].exp_node), (yyvsp[(7) - (7)].syn_node), 0);
@@ -2562,6 +2537,8 @@ yyreduce:
     break;
 
   case 26:
+
+/* Line 1464 of yacc.c  */
 #line 179 "php_parser.y"
     {
 				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[(3) - (9)].exp_node), (yyvsp[(5) - (9)].exp_node), (yyvsp[(7) - (9)].exp_node), (yyvsp[(9) - (9)].syn_node), 0);
@@ -2569,6 +2546,8 @@ yyreduce:
     break;
 
   case 27:
+
+/* Line 1464 of yacc.c  */
 #line 182 "php_parser.y"
     {
 				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[(3) - (10)].exp_node), (yyvsp[(5) - (10)].exp_node), (yyvsp[(8) - (10)].exp_node), (yyvsp[(10) - (10)].syn_node), 1);
@@ -2576,36 +2555,50 @@ yyreduce:
     break;
 
   case 28:
+
+/* Line 1464 of yacc.c  */
 #line 185 "php_parser.y"
     { ;}
     break;
 
   case 29:
+
+/* Line 1464 of yacc.c  */
 #line 186 "php_parser.y"
     { ;}
     break;
 
   case 30:
+
+/* Line 1464 of yacc.c  */
 #line 187 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 31:
+
+/* Line 1464 of yacc.c  */
 #line 190 "php_parser.y"
     {  ;}
     break;
 
   case 32:
+
+/* Line 1464 of yacc.c  */
 #line 191 "php_parser.y"
     {  ;}
     break;
 
   case 33:
+
+/* Line 1464 of yacc.c  */
 #line 194 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_LIST, 0); (yyval.exp_node)->exp_node = (yyvsp[(1) - (1)].exp_node); ;}
     break;
 
   case 34:
+
+/* Line 1464 of yacc.c  */
 #line 195 "php_parser.y"
     {
 				PHP_EXP_NODE *last = (yyvsp[(1) - (3)].exp_node);
@@ -2617,16 +2610,22 @@ yyreduce:
     break;
 
   case 37:
+
+/* Line 1464 of yacc.c  */
 #line 211 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 38:
+
+/* Line 1464 of yacc.c  */
 #line 212 "php_parser.y"
     {  ;}
     break;
 
   case 39:
+
+/* Line 1464 of yacc.c  */
 #line 216 "php_parser.y"
     {
 		const char *varname = get_scope_var_name(g_current_scope, (yyvsp[(1) - (1)].exp_node)->var_si_node->var);
@@ -2644,21 +2643,29 @@ yyreduce:
     break;
 
   case 40:
+
+/* Line 1464 of yacc.c  */
 #line 231 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 41:
+
+/* Line 1464 of yacc.c  */
 #line 232 "php_parser.y"
     {  ;}
     break;
 
   case 42:
+
+/* Line 1464 of yacc.c  */
 #line 235 "php_parser.y"
     { (yyvsp[(1) - (1)].exp_node)->var_node->flags |= PHP_VARFLAG_STATIC; (yyval.exp_node) = (yyvsp[(1) - (1)].exp_node); ;}
     break;
 
   case 43:
+
+/* Line 1464 of yacc.c  */
 #line 236 "php_parser.y"
     {
 			(yyvsp[(1) - (3)].exp_node)->var_node->flags |= PHP_VARFLAG_STATIC; (yyval.exp_node) = (yyvsp[(1) - (3)].exp_node);
@@ -2667,6 +2674,8 @@ yyreduce:
     break;
 
   case 44:
+
+/* Line 1464 of yacc.c  */
 #line 244 "php_parser.y"
     {
 				switch_push_scope_table(make_scope_table())
@@ -2674,6 +2683,8 @@ yyreduce:
     break;
 
   case 45:
+
+/* Line 1464 of yacc.c  */
 #line 246 "php_parser.y"
     {
 				(yyval.syn_node) = make_func_decl_syn_node((yyvsp[(2) - (9)].str_val), (yyvsp[(5) - (9)].exp_node));
@@ -2687,106 +2698,148 @@ yyreduce:
     break;
 
   case 46:
+
+/* Line 1464 of yacc.c  */
 #line 255 "php_parser.y"
     {  ;}
     break;
 
   case 47:
+
+/* Line 1464 of yacc.c  */
 #line 259 "php_parser.y"
     { (yyval.exp_node) = make_func_param(0, (yyvsp[(2) - (2)].exp_node), (yyvsp[(1) - (2)].str_val), 0); ;}
     break;
 
   case 48:
+
+/* Line 1464 of yacc.c  */
 #line 260 "php_parser.y"
     { (yyval.exp_node) = make_func_param(0, (yyvsp[(3) - (3)].exp_node), (yyvsp[(1) - (3)].str_val), 1); ;}
     break;
 
   case 49:
+
+/* Line 1464 of yacc.c  */
 #line 261 "php_parser.y"
     { (yyval.exp_node) = make_func_param((yyvsp[(1) - (4)].exp_node), (yyvsp[(4) - (4)].exp_node), (yyvsp[(3) - (4)].str_val), 0); ;}
     break;
 
   case 50:
+
+/* Line 1464 of yacc.c  */
 #line 262 "php_parser.y"
     { (yyval.exp_node) = make_func_param((yyvsp[(1) - (5)].exp_node), (yyvsp[(5) - (5)].exp_node), (yyvsp[(3) - (5)].str_val), 1); ;}
     break;
 
   case 51:
+
+/* Line 1464 of yacc.c  */
 #line 263 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
   case 52:
+
+/* Line 1464 of yacc.c  */
 #line 267 "php_parser.y"
     { (yyval.str_val)[0] = 0; ;}
     break;
 
   case 55:
+
+/* Line 1464 of yacc.c  */
 #line 273 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (4)].syn_node); ;}
     break;
 
   case 57:
+
+/* Line 1464 of yacc.c  */
 #line 278 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (4)].syn_node); ;}
     break;
 
   case 59:
+
+/* Line 1464 of yacc.c  */
 #line 282 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
   case 60:
+
+/* Line 1464 of yacc.c  */
 #line 286 "php_parser.y"
     { (yyval.syn_node) = add_branch_2_elseif((yyvsp[(1) - (6)].syn_node), make_ifelse_syn_node((yyvsp[(4) - (6)].exp_node), (yyvsp[(6) - (6)].syn_node), 0, 0)); ;}
     break;
 
   case 61:
+
+/* Line 1464 of yacc.c  */
 #line 287 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 62:
+
+/* Line 1464 of yacc.c  */
 #line 291 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 63:
+
+/* Line 1464 of yacc.c  */
 #line 292 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (2)].syn_node); ;}
     break;
 
   case 65:
+
+/* Line 1464 of yacc.c  */
 #line 296 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[(2) - (4)].syn_node); ;}
     break;
 
   case 66:
+
+/* Line 1464 of yacc.c  */
 #line 300 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(2) - (3)].exp_node); ;}
     break;
 
   case 67:
+
+/* Line 1464 of yacc.c  */
 #line 301 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(3) - (4)].exp_node); ;}
     break;
 
   case 68:
+
+/* Line 1464 of yacc.c  */
 #line 302 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(2) - (4)].exp_node); ;}
     break;
 
   case 69:
+
+/* Line 1464 of yacc.c  */
 #line 303 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(3) - (5)].exp_node); ;}
     break;
 
   case 70:
+
+/* Line 1464 of yacc.c  */
 #line 307 "php_parser.y"
     {  (yyval.exp_node) = 0; ;}
     break;
 
   case 71:
+
+/* Line 1464 of yacc.c  */
 #line 308 "php_parser.y"
     {
 			(yyvsp[(2) - (4)].exp_node)->tree_node.syn_right = (yyvsp[(4) - (4)].syn_node);
@@ -2804,421 +2857,589 @@ yyreduce:
     break;
 
   case 72:
+
+/* Line 1464 of yacc.c  */
 #line 323 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LIST, (yyvsp[(2) - (2)].exp_node), 0); ;}
     break;
 
   case 73:
+
+/* Line 1464 of yacc.c  */
 #line 324 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LIST, 0, 0); ;}
     break;
 
   case 79:
+
+/* Line 1464 of yacc.c  */
 #line 335 "php_parser.y"
     { (yyval.exp_node) = make_known_const((yyvsp[(1) - (1)].str_val)); ;}
     break;
 
   case 81:
+
+/* Line 1464 of yacc.c  */
 #line 339 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_CLASS_DEREF, make_const_exp_str((yyvsp[(1) - (3)].str_val), 0), make_const_exp_str((yyvsp[(3) - (3)].str_val), 0)); ;}
     break;
 
   case 82:
+
+/* Line 1464 of yacc.c  */
 #line 340 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_OBJECT_DEREF, (yyvsp[(1) - (3)].exp_node), make_const_exp_str((yyvsp[(3) - (3)].str_val), 0)); ;}
     break;
 
   case 84:
+
+/* Line 1464 of yacc.c  */
 #line 345 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[(1) - (3)].exp_node), 0); ;}
     break;
 
   case 85:
+
+/* Line 1464 of yacc.c  */
 #line 346 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[(1) - (4)].exp_node), (yyvsp[(3) - (4)].exp_node));;}
     break;
 
   case 86:
+
+/* Line 1464 of yacc.c  */
 #line 347 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[(1) - (4)].exp_node), (yyvsp[(3) - (4)].exp_node));;}
     break;
 
   case 87:
+
+/* Line 1464 of yacc.c  */
 #line 348 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_VAR_BY_EXP, (yyvsp[(3) - (4)].exp_node)); ;}
     break;
 
   case 88:
+
+/* Line 1464 of yacc.c  */
 #line 352 "php_parser.y"
     { (yyval.exp_node) = make_func_call_exp((yyvsp[(1) - (4)].str_val), (yyvsp[(3) - (4)].exp_node)); ;}
     break;
 
   case 89:
+
+/* Line 1464 of yacc.c  */
 #line 353 "php_parser.y"
     { ;}
     break;
 
   case 90:
+
+/* Line 1464 of yacc.c  */
 #line 354 "php_parser.y"
     { ;}
     break;
 
   case 91:
+
+/* Line 1464 of yacc.c  */
 #line 357 "php_parser.y"
     { (yyval.exp_node) = make_func_call_param_list(); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[(1) - (1)].exp_node), 0); ;}
     break;
 
   case 92:
+
+/* Line 1464 of yacc.c  */
 #line 358 "php_parser.y"
     { (yyval.exp_node) = make_func_call_param_list(); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[(2) - (2)].exp_node), 1); ;}
     break;
 
   case 93:
+
+/* Line 1464 of yacc.c  */
 #line 359 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(1) - (3)].exp_node); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[(3) - (3)].exp_node), 0); ;}
     break;
 
   case 94:
+
+/* Line 1464 of yacc.c  */
 #line 360 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(1) - (4)].exp_node); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[(4) - (4)].exp_node), 1); ;}
     break;
 
   case 95:
+
+/* Line 1464 of yacc.c  */
 #line 361 "php_parser.y"
     { (yyval.exp_node) = make_func_call_param_list(); ;}
     break;
 
   case 96:
+
+/* Line 1464 of yacc.c  */
 #line 366 "php_parser.y"
     { ;}
     break;
 
   case 98:
+
+/* Line 1464 of yacc.c  */
 #line 368 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 99:
+
+/* Line 1464 of yacc.c  */
 #line 369 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(1) - (1)].exp_node); ;}
     break;
 
   case 100:
+
+/* Line 1464 of yacc.c  */
 #line 370 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_MAKE_REF, (yyvsp[(1) - (4)].exp_node), (yyvsp[(4) - (4)].exp_node)); ;}
     break;
 
   case 101:
+
+/* Line 1464 of yacc.c  */
 #line 375 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_ADD, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 102:
+
+/* Line 1464 of yacc.c  */
 #line 376 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_SUB, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 103:
+
+/* Line 1464 of yacc.c  */
 #line 377 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_MUL, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 104:
+
+/* Line 1464 of yacc.c  */
 #line 378 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_DIV, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 105:
+
+/* Line 1464 of yacc.c  */
 #line 379 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_CAT, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 106:
+
+/* Line 1464 of yacc.c  */
 #line 380 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_REM, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 107:
+
+/* Line 1464 of yacc.c  */
 #line 381 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_AND, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 108:
+
+/* Line 1464 of yacc.c  */
 #line 382 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_OR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 109:
+
+/* Line 1464 of yacc.c  */
 #line 383 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_XOR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 110:
+
+/* Line 1464 of yacc.c  */
 #line 384 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_SHL, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 111:
+
+/* Line 1464 of yacc.c  */
 #line 385 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (3)].exp_node), make_exp_2(PHP_OP_SHR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node))); ;}
     break;
 
   case 112:
+
+/* Line 1464 of yacc.c  */
 #line 387 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (2)].exp_node), make_exp_2(PHP_OP_ADD, (yyvsp[(1) - (2)].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 113:
+
+/* Line 1464 of yacc.c  */
 #line 388 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(2) - (2)].exp_node), make_exp_2(PHP_OP_ADD, (yyvsp[(2) - (2)].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 114:
+
+/* Line 1464 of yacc.c  */
 #line 389 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(1) - (2)].exp_node), make_exp_2(PHP_OP_SUB, (yyvsp[(1) - (2)].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 115:
+
+/* Line 1464 of yacc.c  */
 #line 390 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[(2) - (2)].exp_node), make_exp_2(PHP_OP_SUB, (yyvsp[(2) - (2)].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 116:
+
+/* Line 1464 of yacc.c  */
 #line 392 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_OR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 117:
+
+/* Line 1464 of yacc.c  */
 #line 393 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_AND, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 118:
+
+/* Line 1464 of yacc.c  */
 #line 394 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_OR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 119:
+
+/* Line 1464 of yacc.c  */
 #line 395 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_AND, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 120:
+
+/* Line 1464 of yacc.c  */
 #line 396 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_XOR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 121:
+
+/* Line 1464 of yacc.c  */
 #line 397 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_OR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 122:
+
+/* Line 1464 of yacc.c  */
 #line 398 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_AND, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 123:
+
+/* Line 1464 of yacc.c  */
 #line 399 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_XOR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 124:
+
+/* Line 1464 of yacc.c  */
 #line 400 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_CAT, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 125:
+
+/* Line 1464 of yacc.c  */
 #line 401 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ADD, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 126:
+
+/* Line 1464 of yacc.c  */
 #line 402 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SUB, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 127:
+
+/* Line 1464 of yacc.c  */
 #line 403 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_MUL, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 128:
+
+/* Line 1464 of yacc.c  */
 #line 404 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_DIV, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 129:
+
+/* Line 1464 of yacc.c  */
 #line 405 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_REM, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 130:
+
+/* Line 1464 of yacc.c  */
 #line 406 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SHL, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 131:
+
+/* Line 1464 of yacc.c  */
 #line 407 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SHR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 132:
+
+/* Line 1464 of yacc.c  */
 #line 408 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(2) - (2)].exp_node); ;}
     break;
 
   case 133:
+
+/* Line 1464 of yacc.c  */
 #line 409 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SUB, make_const_exp_dnum(0), (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 134:
+
+/* Line 1464 of yacc.c  */
 #line 410 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_LOG_NOT, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 135:
+
+/* Line 1464 of yacc.c  */
 #line 411 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_NOT, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 136:
+
+/* Line 1464 of yacc.c  */
 #line 412 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SAME, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 137:
+
+/* Line 1464 of yacc.c  */
 #line 413 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_NOT_SAME, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 138:
+
+/* Line 1464 of yacc.c  */
 #line 414 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_EQ, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 139:
+
+/* Line 1464 of yacc.c  */
 #line 415 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_NEQ, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 140:
+
+/* Line 1464 of yacc.c  */
 #line 416 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LWR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 141:
+
+/* Line 1464 of yacc.c  */
 #line 417 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LWR_EQ, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 142:
+
+/* Line 1464 of yacc.c  */
 #line 418 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_GRT, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 143:
+
+/* Line 1464 of yacc.c  */
 #line 419 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_GRT_EQ, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 144:
+
+/* Line 1464 of yacc.c  */
 #line 420 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(2) - (3)].exp_node); ;}
     break;
 
   case 145:
+
+/* Line 1464 of yacc.c  */
 #line 421 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_MUX, (yyvsp[(3) - (5)].exp_node), (yyvsp[(5) - (5)].exp_node)); (yyval.exp_node)->exp_node = (yyvsp[(1) - (5)].exp_node); ;}
     break;
 
   case 146:
+
+/* Line 1464 of yacc.c  */
 #line 422 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_CAST_INT, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 147:
+
+/* Line 1464 of yacc.c  */
 #line 423 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_CAST_FLOAT, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 148:
+
+/* Line 1464 of yacc.c  */
 #line 424 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_CAST_STR, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 149:
+
+/* Line 1464 of yacc.c  */
 #line 425 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_CAST_BOOL, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 150:
+
+/* Line 1464 of yacc.c  */
 #line 428 "php_parser.y"
     {  ;}
     break;
 
   case 151:
+
+/* Line 1464 of yacc.c  */
 #line 429 "php_parser.y"
     {  ;}
     break;
 
   case 152:
+
+/* Line 1464 of yacc.c  */
 #line 430 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(2) - (2)].exp_node); ;}
     break;
 
   case 153:
+
+/* Line 1464 of yacc.c  */
 #line 432 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(1) - (1)].exp_node); ;}
     break;
 
   case 154:
+
+/* Line 1464 of yacc.c  */
 #line 433 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_ARRAY, (yyvsp[(3) - (4)].exp_node)); ;}
     break;
 
   case 155:
+
+/* Line 1464 of yacc.c  */
 #line 434 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_PRINT, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
   case 156:
+
+/* Line 1464 of yacc.c  */
 #line 437 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(2) - (3)].exp_node); ;}
     break;
 
   case 157:
+
+/* Line 1464 of yacc.c  */
 #line 438 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
   case 158:
+
+/* Line 1464 of yacc.c  */
 #line 439 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
   case 161:
+
+/* Line 1464 of yacc.c  */
 #line 447 "php_parser.y"
     { /*$$ = make_assign_node($1);*/ ;}
     break;
 
   case 162:
+
+/* Line 1464 of yacc.c  */
 #line 448 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[(3) - (4)].exp_node); ;}
     break;
 
   case 163:
+
+/* Line 1464 of yacc.c  */
 #line 449 "php_parser.y"
     { /*$$ = make_assign_node(0);*/ ;}
     break;
 
   case 164:
+
+/* Line 1464 of yacc.c  */
 #line 452 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_LIST, 0); (yyval.exp_node)->exp_node = (yyvsp[(1) - (1)].exp_node); ;}
     break;
 
   case 165:
+
+/* Line 1464 of yacc.c  */
 #line 453 "php_parser.y"
     {
 				PHP_EXP_NODE *last = (yyvsp[(1) - (3)].exp_node);
@@ -3230,28 +3451,37 @@ yyreduce:
     break;
 
   case 166:
+
+/* Line 1464 of yacc.c  */
 #line 462 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_ARRAY_PAIR, (yyvsp[(1) - (1)].exp_node)); ;}
     break;
 
   case 167:
+
+/* Line 1464 of yacc.c  */
 #line 463 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_PAIR, (yyvsp[(1) - (3)].exp_node), (yyvsp[(3) - (3)].exp_node)); ;}
     break;
 
   case 168:
+
+/* Line 1464 of yacc.c  */
 #line 464 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_REF_PAIR, (yyvsp[(1) - (4)].exp_node), (yyvsp[(4) - (4)].exp_node)); ;}
     break;
 
   case 169:
+
+/* Line 1464 of yacc.c  */
 #line 465 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_ARRAY_REF_PAIR, (yyvsp[(2) - (2)].exp_node)); ;}
     break;
 
 
-/* Line 1267 of yacc.c.  */
-#line 3256 "php_parser.c"
+
+/* Line 1464 of yacc.c  */
+#line 3485 "php_parser.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3261,7 +3491,6 @@ yyreduce:
   YY_STACK_PRINT (yyss, yyssp);
 
   *++yyvsp = yyval;
-
 
   /* Now `shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
@@ -3327,7 +3556,7 @@ yyerrlab:
 
   if (yyerrstatus == 3)
     {
-      /* If just tried and failed to reuse look-ahead token after an
+      /* If just tried and failed to reuse lookahead token after an
 	 error, discard it.  */
 
       if (yychar <= YYEOF)
@@ -3344,7 +3573,7 @@ yyerrlab:
 	}
     }
 
-  /* Else will try to reuse look-ahead token after shifting the error
+  /* Else will try to reuse lookahead token after shifting the error
      token.  */
   goto yyerrlab1;
 
@@ -3401,9 +3630,6 @@ yyerrlab1:
       YY_STACK_PRINT (yyss, yyssp);
     }
 
-  if (yyn == YYFINAL)
-    YYACCEPT;
-
   *++yyvsp = yylval;
 
 
@@ -3428,7 +3654,7 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#ifndef yyoverflow
+#if !defined(yyoverflow) || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -3439,7 +3665,7 @@ yyexhaustedlab:
 #endif
 
 yyreturn:
-  if (yychar != YYEOF && yychar != YYEMPTY)
+  if (yychar != YYEMPTY)
      yydestruct ("Cleanup: discarding lookahead",
 		 yytoken, &yylval);
   /* Do not reclaim the symbols of the rule which action triggered

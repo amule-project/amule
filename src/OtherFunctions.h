@@ -30,6 +30,7 @@
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "Preferences.h"	// Needed for AllCategoryFilter enumeration
+#include "MD4Hash.h"		// Needed for CMD4Hash
 
 #include <algorithm>		// Needed for std::for_each	// Do_not_auto_remove (mingw-gcc-3.4.5)
 
@@ -380,7 +381,7 @@ wxString wxLang2Str(const int lang);
 /**
  * Generate MD5Hash of prompt input
  */
-wxString GetPassword();
+CMD4Hash GetPassword(bool allowEmptyPassword = false);
 
 
 #if wxUSE_THREADS

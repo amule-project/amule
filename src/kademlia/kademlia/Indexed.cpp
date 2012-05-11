@@ -230,12 +230,12 @@ void CIndexed::ReadFile()
 				}
 			}
 			s_file.Close();
-
-			m_totalIndexSource = totalSource;
-			m_totalIndexKeyword = totalKeyword;
-			m_totalIndexLoad = totalLoad;
-			AddDebugLogLineN(logKadIndex, CFormat(wxT("Read %u source, %u keyword, and %u load entries")) % totalSource % totalKeyword % totalLoad);
 		}
+
+		m_totalIndexSource = totalSource;
+		m_totalIndexKeyword = totalKeyword;
+		m_totalIndexLoad = totalLoad;
+		AddDebugLogLineN(logKadIndex, CFormat(wxT("Read %u source, %u keyword, and %u load entries")) % totalSource % totalKeyword % totalLoad);
 	} catch (const CSafeIOException& err) {
 		AddDebugLogLineC(logKadIndex, wxT("CSafeIOException in CIndexed::readFile: ") + err.what());
 	} catch (const CInvalidPacket& err) {

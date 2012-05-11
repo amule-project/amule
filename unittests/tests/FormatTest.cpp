@@ -226,6 +226,7 @@ TEST(Format, InjectNULLString)
 
 		format += wxT("s");
 
+		// cppcheck-suppress zerodiv
 		wxString actual = CFormat(format) % (const wxChar*)NULL;
 
 		ASSERT_TRUE_M(actual.IsEmpty(), wxT("Expected empty string, got '") + actual + wxT("'"));
