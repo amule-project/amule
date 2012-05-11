@@ -29,6 +29,7 @@ void CreateLine(char *lines[], int line, const char *format, ...)
 	/* Guess we need no more than 80 bytes. */
 	int n, size = 100;
 	char *p;
+	char *tmp;
 	va_list ap;
 	if ((p = malloc(size)) == NULL) {
 		lines[line] = NULL;
@@ -41,19 +42,22 @@ void CreateLine(char *lines[], int line, const char *format, ...)
 		va_end(ap);
 		/* If that worked, set the line. */
 		if (n > -1 && n < size) {
-			lines[line] = p;
-			return;
+			break;
 		}
 		/* Else try again with more space. */
 		if (n > -1)	/* glibc 2.1 */
 			size = n+1;	/* precisely what is needed */
 		else		/* glibc 2.0 */
 			size *= 2;	/* twice the old size */
-		if ((p = realloc(p, size)) == NULL) {
-			lines[line] = NULL;
-			return;
+		if ((tmp = realloc(p, size)) == NULL) {
+			free(p);
+			p = NULL;
+			break;
+		} else {
+			p = tmp;
 		}
 	}
+	lines[line] = p;
 }
 
 void AppendToLine(char *lines[], int line, const char *text)

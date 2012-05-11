@@ -32,6 +32,14 @@
 #include "configfile.h"
 #include "functions.h"
 
+#define STRINGIFY(x)	#x
+#define STRINGIFY_EXPAND(x)	STRINGIFY(x)
+
+#define MAX_CONF_ARG_LEN_STR	STRINGIFY_EXPAND(MAX_CONF_ARG_LEN)
+
+#define MAX_CONF_KEY_LEN	12
+#define MAX_CONF_KEY_LEN_STR	STRINGIFY_EXPAND(MAX_CONF_KEY_LEN)
+
 int writeconfig(void)
 {
 	FILE *config;
@@ -42,7 +50,7 @@ int writeconfig(void)
 		"#\n",
 		"# font - full path to a ttf font\n",
 		"# font_size - size the font\n",
-		"# source_image - image where the text will be writen\n",
+		"# source_image - image where the text will be written\n",
 		"# *_line - x,y,[1/0] enabled or disabled\n\n",
 		"font /usr/share/fonts/corefonts/times.ttf\n",
 		"font_size 10.5\n",
@@ -113,29 +121,29 @@ int readconfig(CONF *config)
 		if (fgets (buffer,120,conf)) {
 			if (buffer[0] != '#') {
 				/* Only two fileds per line */
-				sscanf(buffer, "%s %*s", option);
+				sscanf(buffer, "%" MAX_CONF_KEY_LEN_STR "s %*" MAX_CONF_ARG_LEN_STR "s", option);
 				fflush (stdout);
 		// Jacobo221 - [ToDo] So lines can't be swapped...
 				if (strcmp(option, "font") == 0) {
-					sscanf(buffer, "%*s %s", config->font);
+					sscanf(buffer, "%*" MAX_CONF_KEY_LEN_STR "s %" MAX_CONF_ARG_LEN_STR "s", config->font);
 				}
 				if (strcmp(option, "font_size") == 0) {
-					sscanf(buffer, "%*s %f", &config->size);
+					sscanf(buffer, "%*" MAX_CONF_KEY_LEN_STR "s %10f", &config->size);
 				}
 				if (strcmp(option, "source_image") == 0) {
-					sscanf(buffer, "%*s %s", config->source);
+					sscanf(buffer, "%*" MAX_CONF_KEY_LEN_STR "s %" MAX_CONF_ARG_LEN_STR "s", config->source);
 				}
 				if (strcmp(option, "template") == 0) {
-					sscanf(buffer, "%*s %s", config->template);
+					sscanf(buffer, "%*" MAX_CONF_KEY_LEN_STR "s %" MAX_CONF_ARG_LEN_STR "s", config->template);
 				}
 				if (strcmp(option, "img_type") == 0) {
-					sscanf(buffer, "%*s %d", &config->img_type);
+					sscanf(buffer, "%*" MAX_CONF_KEY_LEN_STR "s %1d", &config->img_type);
 				}
 
 				for (i = 0; i < IMG_TEXTLINES; i++) {
 					if (strcmp(option, lines[i]) == 0) {
 						sscanf(buffer,
-							"%*s %d,%d,%d",
+							"%*" MAX_CONF_KEY_LEN_STR "s %4d,%4d,%4d",
 							&config->x[i], &config->y[i],
 							&config->enabled[i]);
 					}

@@ -626,6 +626,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
 		printf("ERROR: fseek failed on php source file [%s]\n", file);
+		fclose(f);
 		return;
 	}
 	int size = ftell(f);

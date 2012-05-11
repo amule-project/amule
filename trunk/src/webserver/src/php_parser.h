@@ -1,23 +1,22 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 2.4.2.  */
 
 /* Skeleton interface for Bison's Yacc-like parsers in C
-
-   Copyright (c) 1984-2008 Free Software Foundation, Inc.
-
-   This program is free software; you can redistribute it and/or modify
+   
+      Copyright (C) 1984, 1989-1990, 2000-2006, 2009-2010 Free Software
+   Foundation, Inc.
+   
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
-
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -28,9 +27,10 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-
+   
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
+
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -128,115 +128,31 @@
      END_SCRIPT = 345
    };
 #endif
-/* Tokens.  */
-#define FNUMBER 258
-#define DNUMBER 259
-#define STRING 260
-#define IDENT 261
-#define VARIABLE 262
-#define T_ECHO 263
-#define EXIT 264
-#define IF 265
-#define DO 266
-#define WHILE 267
-#define ENDWHILE 268
-#define FOR 269
-#define ENDFOR 270
-#define FOREACH 271
-#define ENDFOREACH 272
-#define DECLARE 273
-#define ENDDECLARE 274
-#define AS 275
-#define CONST 276
-#define GLOBAL 277
-#define UNSET 278
-#define ISSET 279
-#define EMPTY 280
-#define SWITCH 281
-#define ENDSWITCH 282
-#define CASE 283
-#define DEFAULT 284
-#define BREAK 285
-#define CONTINUE 286
-#define FUNCTION 287
-#define RETURN 288
-#define CLASS 289
-#define INTERFACE 290
-#define EXTENDS 291
-#define IMPLEMENTS 292
-#define OBJECT_OPERATOR 293
-#define HASH_ASSIGN 294
-#define LIST 295
-#define ARRAY 296
-#define CLASS_SCOPE 297
-#define PRINT 298
-#define SR_EQ 299
-#define SL_EQ 300
-#define XOR_EQ 301
-#define OR_EQ 302
-#define AND_EQ 303
-#define MOD_EQ 304
-#define CONCAT_EQ 305
-#define DIV_EQ 306
-#define MUL_EQ 307
-#define MINUS_EQ 308
-#define PLUS_EQ 309
-#define LOG_OR 310
-#define LOG_XOR 311
-#define LOG_AND 312
-#define BOOLEAN_OR 313
-#define BOOLEAN_AND 314
-#define IS_NOIDENTICAL 315
-#define IS_IDENTICAL 316
-#define IS_NOEQUAL 317
-#define IS_EQ 318
-#define IS_GREATER_OR_EQ 319
-#define IS_SMALLER_OR_EQ 320
-#define SR 321
-#define SL 322
-#define INSTANCEOF 323
-#define UNSET_CAST 324
-#define BOOL_CAST 325
-#define OBJECT_CAST 326
-#define ARRAY_CAST 327
-#define STRING_CAST 328
-#define DOUBLE_CAST 329
-#define INT_CAST 330
-#define DEC 331
-#define INC 332
-#define CLONE 333
-#define NEW 334
-#define ELSEIF 335
-#define ELSE 336
-#define ENDIF 337
-#define PUBLIC 338
-#define PROTECTED 339
-#define PRIVATE 340
-#define FINAL 341
-#define ABSTRACT 342
-#define STATIC 343
-#define START_SCRIPT 344
-#define END_SCRIPT 345
-
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 67 "php_parser.y"
 {
+
+/* Line 1685 of yacc.c  */
+#line 67 "php_parser.y"
+
 	PHP_SYN_NODE *syn_node;
 	PHP_EXP_NODE *exp_node;
 
 	char str_val[256];
-}
-/* Line 1529 of yacc.c.  */
-#line 236 "php_parser.h"
-	YYSTYPE;
+
+
+
+/* Line 1685 of yacc.c  */
+#line 150 "php_parser.h"
+} YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
-# define YYSTYPE_IS_TRIVIAL 1
 #endif
 
 extern YYSTYPE phplval;
+
 

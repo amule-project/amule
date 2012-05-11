@@ -348,6 +348,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
             }
           else
             {
+              delete [] buf;
               return (_("Cancelled !"));
             }
         }

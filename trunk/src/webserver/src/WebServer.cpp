@@ -1321,6 +1321,7 @@ CStatsCollection::~CStatsCollection()
 	delete m_down_speed;
 	delete m_up_speed;
 	delete m_conn_number;
+	delete m_kad_count;
 }
 
 void CStatsCollection::ReQuery()
@@ -1759,6 +1760,7 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 		return Get_404_Page(size);
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
+		fclose(f);
 		return GetErrorPage("fseek failed", size);
 	}
 

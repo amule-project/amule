@@ -1127,6 +1127,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, GetFileSize()-1)){
 			if (result->GetFileHash() != GetFileHash()){
+				// cppcheck-suppress zerodiv
 				AddLogLineN(CFormat(wxPLURAL(
 						"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|",
 						"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|",

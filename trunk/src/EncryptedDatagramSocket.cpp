@@ -294,6 +294,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8_t **buf, int bufLen, const
 			//DEBUG_ONLY( DebugLog(_T("Creating obfuscated Kad packet encrypted by Hash/NodeID %s"), md4str(pachClientHashOrKadID)) );
 		}
 		else {
+			delete [] cryptedBuffer;
 			wxFAIL;
 			return bufLen;
 		}

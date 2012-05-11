@@ -216,7 +216,7 @@ EOL ("\r"|"\n"|"\r\n")
 
 {HEX_NUM} {
 	int val;
-	sscanf(yytext, "0x%x", &val);
+	sscanf(yytext, "0x%16x", &val);
 	phplval.exp_node = make_const_exp_dnum(val);
 	return DNUMBER;
 	}

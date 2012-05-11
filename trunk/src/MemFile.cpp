@@ -115,10 +115,13 @@ void CMemFile::enlargeBuffer(size_t size)
 		newsize = size;
 	}
 
-	m_buffer = (byte*)realloc(m_buffer, newsize);
-	m_BufferSize = newsize;
+	byte *tmp = (byte*)realloc(m_buffer, newsize);
+	if (tmp) {
+		m_buffer = tmp;
+		m_BufferSize = newsize;
+	}
 
-	MULE_VALIDATE_STATE(m_buffer, wxT("CMemFile: Failed to (re)allocate buffer"));
+	MULE_VALIDATE_STATE(tmp, wxT("CMemFile: Failed to (re)allocate buffer"));
 }
 
 
