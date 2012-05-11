@@ -2248,12 +2248,14 @@ void CPartFile::Delete()
 
 	AddDebugLogLineN(logPartFile, wxT("\tClosed"));
 
+	// cppcheck-suppress duplicateBranch
 	if (!CPath::RemoveFile(m_fullname)) {
 		AddDebugLogLineC(logPartFile, CFormat(wxT("\tFailed to delete '%s'")) % m_fullname);
 	} else {
 		AddDebugLogLineN(logPartFile, wxT("\tRemoved .part.met"));
 	}
 
+	// cppcheck-suppress duplicateBranch
 	if (!CPath::RemoveFile(m_PartPath)) {
 		AddDebugLogLineC(logPartFile, CFormat(wxT("Failed to delete '%s'")) % m_PartPath);
 	} else {
@@ -2261,6 +2263,7 @@ void CPartFile::Delete()
 	}
 
 	CPath BAKName = m_fullname.AppendExt(PARTMET_BAK_EXT);
+	// cppcheck-suppress duplicateBranch
 	if (!CPath::RemoveFile(BAKName)) {
 		AddDebugLogLineC(logPartFile, CFormat(wxT("Failed to delete '%s'")) % BAKName);
 	} else {
@@ -2269,6 +2272,7 @@ void CPartFile::Delete()
 
 	CPath SEEDSName = m_fullname.AppendExt(wxT(".seeds"));
 	if (SEEDSName.FileExists()) {
+		// cppcheck-suppress duplicateBranch
 		if (CPath::RemoveFile(SEEDSName)) {
 			AddDebugLogLineN(logPartFile, wxT("\tRemoved .seeds"));
 		} else {
@@ -3556,7 +3560,7 @@ void CPartFile::GetRatingAndComments(FileRatingList & list) const
 
 #else   // CLIENT_GUI
 
-CPartFile::CPartFile(CEC_PartFile_Tag *tag) : CKnownFile(tag)
+CPartFile::CPartFile(const CEC_PartFile_Tag *tag) : CKnownFile(tag)
 {
 	Init();
 

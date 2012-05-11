@@ -519,6 +519,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	clientid = 0;
 	singleconnecting = false;
 	m_recurseTryAnotherConnectionrequest = false;
+	m_bTryObfuscated = thePrefs::IsServerCryptLayerTCPRequested();
 
 	// initalize socket for udp packets
 	if (thePrefs::GetNetworkED2K()) {

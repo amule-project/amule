@@ -162,7 +162,7 @@ class CEC_Prefs_Packet : public CECPacket {
 	public:
 		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL prefs_detail = EC_DETAIL_FULL, EC_DETAIL_LEVEL cat_details = EC_DETAIL_FULL);
 
-		void Apply();
+		void Apply() const;
 };
 
 class CEC_Server_Tag : public CECTag {
@@ -347,7 +347,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 
 class CEC_SearchFile_Tag : public CECTag {
 	public:
-		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
+		CEC_SearchFile_Tag(const CSearchFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap = NULL);
 
 		// template needs it
 		uint32		ID()	const { return GetInt(); }

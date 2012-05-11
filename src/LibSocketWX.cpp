@@ -95,7 +95,7 @@ amuleIPV4Address::~amuleIPV4Address()
 	delete m_endpoint;
 }
 
-const amuleIPV4Address& amuleIPV4Address:: operator = (const amuleIPV4Address &a)
+amuleIPV4Address& amuleIPV4Address::operator=(const amuleIPV4Address &a)
 {
 	m_endpoint = new CamuleIPV4Endpoint(* a.m_endpoint);
 	return *this;

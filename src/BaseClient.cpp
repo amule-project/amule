@@ -832,6 +832,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 
+#ifdef __DEBUG__
 		if (!bAnswer) {
 			if (!OSInfo) {
 				AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() );
@@ -841,6 +842,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		} else {
 			AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_EMULEINFOANSWER to ") + GetFullIP() );
 		}
+#endif
 	}
 }
 
@@ -1725,11 +1727,13 @@ void CUpDownClient::ConnectionEstablished()
 		CPacket* packet = new CPacket(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES, 0, OP_EDONKEYPROT);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
+#ifdef __DEBUG__
 		if (m_fSharedDirectories) {
 			AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRS to ") + GetFullIP() );
 		} else {
 			AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_ASKSHAREDFILES to ") + GetFullIP() );
 		}
+#endif
 	}
 
 	while (!m_WaitingPackets_list.empty()) {
@@ -2195,6 +2199,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 		return;
 	}
 
+	// cppcheck-suppress duplicateBranch
 	if (theApp->clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], GetIP(), byChaIPKind ) ) {
 		// result is saved in function above
 		AddDebugLogLineN( logClient, CFormat( wxT("'%s' has passed the secure identification, V2 State: %i") ) % GetUserName() % byChaIPKind );
@@ -2207,8 +2212,8 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 
 void CUpDownClient::SendSecIdentStatePacket(){
 	// check if we need public key and signature
-	uint8 nValue = 0;
 	if (credits){
+		uint8 nValue = 0;
 		if (theApp->CryptoAvailable()){
 			if (credits->GetSecIDKeyLen() == 0) {
 				nValue = IS_KEYANDSIGNEEDED;

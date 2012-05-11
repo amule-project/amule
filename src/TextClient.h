@@ -43,7 +43,7 @@ class SearchFile {
 		long lSourceCount;
 		bool bPresent;
 
-		SearchFile(CEC_SearchFile_Tag *);
+		SearchFile(const CEC_SearchFile_Tag *);
 
 		static class SearchInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }

@@ -142,7 +142,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 	  theApp->serverconnect->IsConnecting();
 
 	while ( pos != -1 ) {
-		CServer* server = (CServer*)GetItemData(pos);
+		CServer* server = reinterpret_cast<CServer*>(GetItemData(pos));
 
 		if (server == m_connected && connected) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
@@ -378,7 +378,7 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 
 	// Gather information on the selected items
 	while ( index > -1 ) {
-		CServer* server = (CServer*)GetItemData( index );
+		CServer* server = reinterpret_cast<CServer*>(GetItemData(index));
 
 		// The current server is selected, so we might display the reconnect option
 		if (server == m_connected) {
@@ -461,7 +461,7 @@ void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 	ItemDataList items = GetSelectedItems();
 
 	for ( unsigned int i = 0; i < items.size(); ++i ) {
-		CServer* server = (CServer*)items[ i ];
+		CServer* server = reinterpret_cast<CServer*>(items[i]);
 		theApp->serverlist->SetServerPrio(server, priority);
 	}
 }
@@ -474,7 +474,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 	ItemDataList items = GetSelectedItems();
 
 	for ( unsigned int i = 0; i < items.size(); ++i ) {
-		CServer* server = (CServer*)items[ i ];
+		CServer* server = reinterpret_cast<CServer*>(items[i]);
 
 		// Only update items that have the wrong setting
 		if ( server->IsStaticMember() != isStatic ) {
@@ -493,7 +493,7 @@ void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 			theApp->serverconnect->Disconnect();
 		}
 
-		theApp->serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );
+		theApp->serverconnect->ConnectToServer( reinterpret_cast<CServer*>(GetItemData(item)) );
 	}
 }
 
@@ -505,7 +505,7 @@ void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 	wxString URL;
 
 	while ( pos != -1 ) {
-		CServer* server = (CServer*)GetItemData(pos);
+		CServer* server = reinterpret_cast<CServer*>(GetItemData(pos));
 
 		URL += CFormat(wxT("ed2k://|server|%s|%d|/\n"))	% server->GetFullIP() % server->GetPort();
 
@@ -566,8 +566,8 @@ void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
 
 int CServerListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
-	CServer* server1 = (CServer*)item1;
-	CServer* server2 = (CServer*)item2;
+	CServer* server1 = reinterpret_cast<CServer*>(item1);
+	CServer* server2 = reinterpret_cast<CServer*>(item2);
 
 	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 

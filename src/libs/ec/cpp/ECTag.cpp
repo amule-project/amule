@@ -110,8 +110,8 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name)
 
 	m_dataLen = sizeof(EC_IPv4_t);
 	NewData();
-	RawPokeUInt32( ((EC_IPv4_t *)m_tagData)->m_ip, RawPeekUInt32( data.m_ip ) );
-	((EC_IPv4_t *)m_tagData)->m_port = ENDIAN_HTONS(data.m_port);
+	RawPokeUInt32( reinterpret_cast<EC_IPv4_t *>(m_tagData)->m_ip, RawPeekUInt32( data.m_ip ) );
+	reinterpret_cast<EC_IPv4_t *>(m_tagData)->m_port = ENDIAN_HTONS(data.m_port);
 	m_dataType = EC_TAGTYPE_IPV4;
 }
 
@@ -490,7 +490,7 @@ bool CECTag::ReadChildren(CECSocket& socket)
 bool CECTag::WriteChildren(CECSocket& socket) const
 {
 	wxASSERT(m_tagList.size() < 0xFFFF);
-    uint16 tmp = (uint16)m_tagList.size();
+	uint16 tmp = (uint16)m_tagList.size();
 	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
 	for (const_iterator it = begin(); it != end(); ++it) {
 		if (!it->WriteTag(socket)) return false;
@@ -641,8 +641,8 @@ EC_IPv4_t CECTag::GetIPv4Data() const
 	} else if (m_tagData == NULL) {
 		EC_ASSERT(false);
 	} else {
-		RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
-		p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
+		RawPokeUInt32( p.m_ip, RawPeekUInt32( reinterpret_cast<EC_IPv4_t *>(m_tagData)->m_ip ) );
+		p.m_port = ENDIAN_NTOHS(reinterpret_cast<EC_IPv4_t *>(m_tagData)->m_port);
 	}
 
 	return p;

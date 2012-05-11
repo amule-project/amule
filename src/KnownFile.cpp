@@ -61,33 +61,36 @@
 
 #include <common/Format.h>
 
-CFileStatistic::CFileStatistic() :
-	requested(0),
-	transferred(0),
-	accepted(0),
-	alltimerequested(0),
-	alltimetransferred(0),
-	alltimeaccepted(0)
-{
-}
+CFileStatistic::CFileStatistic(CKnownFile *parent)
+	: fileParent(parent),
+	  requested(0),
+	  transferred(0),
+	  accepted(0),
+	  alltimerequested(0),
+	  alltimetransferred(0),
+	  alltimeaccepted(0)
+{}
 
 #ifndef CLIENT_GUI
 
-void CFileStatistic::AddRequest(){
+void CFileStatistic::AddRequest()
+{
 	requested++;
 	alltimerequested++;
 	theApp->knownfiles->requested++;
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
-void CFileStatistic::AddAccepted(){
+void CFileStatistic::AddAccepted()
+{
 	accepted++;
 	alltimeaccepted++;
 	theApp->knownfiles->accepted++;
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
-void CFileStatistic::AddTransferred(uint64 bytes){
+void CFileStatistic::AddTransferred(uint64 bytes)
+{
 	transferred += bytes;
 	alltimetransferred += bytes;
 	theApp->knownfiles->transferred += bytes;
@@ -100,25 +103,23 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 /* Abstract File (base class)*/
 
 CAbstractFile::CAbstractFile()
-:
-m_iRating(0),
-m_hasComment(false),
-m_iUserRating(0),
-m_nFileSize(0)
-{
-}
+	: m_iRating(0),
+	  m_hasComment(false),
+	  m_iUserRating(0),
+	  m_nFileSize(0)
+{}
 
 
 CAbstractFile::CAbstractFile(const CAbstractFile& other)
-:
-m_abyFileHash(other.m_abyFileHash),
-m_strComment(other.m_strComment),
-m_iRating(other.m_iRating),
-m_hasComment(other.m_hasComment),
-m_iUserRating(other.m_iUserRating),
-m_taglist(other.m_taglist),
-m_nFileSize(other.m_nFileSize),
-m_fileName(other.m_fileName)
+	: m_abyFileHash(other.m_abyFileHash),
+	  m_strComment(other.m_strComment),
+	  m_iRating(other.m_iRating),
+	  m_hasComment(other.m_hasComment),
+	  m_iUserRating(other.m_iUserRating),
+	  m_taglist(other.m_taglist),
+	  m_kadNotes(),
+	  m_nFileSize(other.m_nFileSize),
+	  m_fileName(other.m_fileName)
 {
 /* // TODO: Currently it's not safe to duplicate the entries, but isn't needed either.
 	CKadEntryPtrList::const_iterator it = other.m_kadNotes.begin();
@@ -276,11 +277,14 @@ void CAbstractFile::AddNote(Kademlia::CEntry *)
 /* Known File */
 
 CKnownFile::CKnownFile()
+	: statistic(this)
 {
 	Init();
 }
 
-CKnownFile::CKnownFile(uint32 ecid) : CECID(ecid)
+CKnownFile::CKnownFile(uint32 ecid)
+	: CECID(ecid),
+	  statistic(this)
 {
 	Init();
 }
@@ -289,8 +293,9 @@ CKnownFile::CKnownFile(uint32 ecid) : CECID(ecid)
 //#warning Experimental: Construct a CKnownFile from a CSearchFile
 CKnownFile::CKnownFile(const CSearchFile &searchFile)
 :
-// This will copy the file hash
-CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
+	// This will copy the file hash
+	CAbstractFile(static_cast<const CAbstractFile &>(searchFile)),
+	statistic(this)
 {
 	Init();
 
@@ -323,8 +328,6 @@ void CKnownFile::Init()
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_hashingProgress = 0;
-
-	statistic.fileParent = this;
 
 #ifndef CLIENT_GUI
 	m_pAICHHashSet = new CAICHHashSet(this);
@@ -458,7 +461,9 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 
 #ifdef CLIENT_GUI
 
-CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
+CKnownFile::CKnownFile(const CEC_SharedFile_Tag *tag)
+	: CECID(tag->ID()),
+	  statistic(this)
 {
 	Init();
 
@@ -469,12 +474,10 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag) : CECID(tag->ID())
 }
 
 CKnownFile::~CKnownFile()
-{
-}
+{}
 
 void CKnownFile::UpdateAutoUpPriority()
-{
-}
+{}
 
 
 #else // ! CLIENT_GUI
@@ -575,21 +578,19 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				break;
 
 			case FT_ATTRANSFERRED:
-				statistic.alltimetransferred += newtag.GetInt();
+				statistic.SetAllTimeTransferred(statistic.GetAllTimeTransferred() + newtag.GetInt());
 				break;
 
 			case FT_ATTRANSFERREDHI:
-				statistic.alltimetransferred =
-					(((uint64)newtag.GetInt()) << 32) +
-					((uint64)statistic.alltimetransferred);
+				statistic.SetAllTimeTransferred(statistic.GetAllTimeTransferred() + (((uint64)newtag.GetInt()) << 32));
 				break;
 
 			case FT_ATREQUESTED:
-				statistic.alltimerequested = newtag.GetInt();
+				statistic.SetAllTimeRequests(newtag.GetInt());
 				break;
 
 			case FT_ATACCEPTED:
-				statistic.alltimeaccepted = newtag.GetInt();
+				statistic.SetAllTimeAccepts(newtag.GetInt());
 				break;
 
 			case FT_ULPRIORITY:
@@ -726,7 +727,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	// We still save the unicoded filename, for backwards
 	// compatibility with pre-2.2 and other clients.
 	CTagString nametag_unicode(FT_FILENAME, GetFileName().GetRaw());
-	// We write it with BOM to kep eMule compatibility
+	// We write it with BOM to keep eMule compatibility
 	nametag_unicode.WriteTagToFile(file,utf8strOptBOM);
 
 	// The non-unicoded filename is written in an 'universial'
@@ -740,11 +741,11 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 	// statistic
 	uint32 tran;
-	tran=statistic.alltimetransferred & 0xFFFFFFFF;
+	tran = statistic.GetAllTimeTransferred() & 0xFFFFFFFF;
 	CTagInt32 attag1(FT_ATTRANSFERRED, tran);
 	attag1.WriteTagToFile(file);
 
-	tran=statistic.alltimetransferred>>32;
+	tran = statistic.GetAllTimeTransferred() >> 32;
 	CTagInt32 attag4(FT_ATTRANSFERREDHI, tran);
 	attag4.WriteTagToFile(file);
 
@@ -913,8 +914,8 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 		return NULL;
 	}
 
-	if ((((CKnownFile*)forClient->GetRequestFile() != this)
-		&& ((CKnownFile*)forClient->GetUploadFile() != this)) || forClient->GetUploadFileID() != GetFileHash()) {
+	if (((static_cast<CKnownFile*>(forClient->GetRequestFile()) != this)
+		&& (forClient->GetUploadFile() != this)) || forClient->GetUploadFileID() != GetFileHash()) {
 		wxString file1 = _("Unknown");
 		if (forClient->GetRequestFile() && forClient->GetRequestFile()->GetFileName().IsOk()) {
 			file1 = forClient->GetRequestFile()->GetFileName().GetPrintable();
@@ -1279,7 +1280,7 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 	m_iUpPriority = iNewUpPriority;
 	if( IsPartFile() && m_bsave ) {
-		((CPartFile*)this)->SavePartFile();
+		static_cast<CPartFile*>(this)->SavePartFile();
 	}
 }
 

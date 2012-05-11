@@ -345,6 +345,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	}
 
 	size_t linksPassed = cmdline.GetParamCount();	// number of links from the command line
+	// cppcheck-suppress variableScope
 	int linksActuallyPassed = 0;					// number of links that pass the syntax check
 	if (linksPassed) {
 		long cat = 0;

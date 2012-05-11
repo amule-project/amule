@@ -59,7 +59,7 @@ class CSearchFile : public CAbstractFile, public CECID
 {
 public:
 	/** Constructor used to create results on the remote GUI. */
-	CSearchFile(class CEC_SearchFile_Tag* tag);
+	CSearchFile(const class CEC_SearchFile_Tag* tag);
 	/** Copy constructor, also copies children. */
 	CSearchFile(const CSearchFile& other);
 

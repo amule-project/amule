@@ -224,7 +224,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	theStats::AddUploadingClient();
 
 	// Statistic
-	CKnownFile* reqfile = (CKnownFile*) newclient->GetUploadFile();
+	CKnownFile* reqfile = const_cast<CKnownFile*>(newclient->GetUploadFile());
 	if (reqfile) {
 		reqfile->statistic.AddAccepted();
 	}
@@ -478,7 +478,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	}
 
 	// statistic values
-	CKnownFile* reqfile = (CKnownFile*) client->GetUploadFile();
+	CKnownFile* reqfile = const_cast<CKnownFile*>(client->GetUploadFile());
 	if (reqfile) {
 		reqfile->statistic.AddRequest();
 	}

@@ -80,7 +80,7 @@ uint64 CMemFile::GetPosition() const
 
 void CMemFile::SetLength(size_t newLen)
 {
-	MULE_VALIDATE_STATE(!m_readonly, wxT("CMemFile: Attempted to change lenght on a read-only buffer."));
+	MULE_VALIDATE_STATE(!m_readonly, wxT("CMemFile: Attempted to change length on a read-only buffer."));
 
 	if (newLen > m_BufferSize) {
 		enlargeBuffer(newLen);

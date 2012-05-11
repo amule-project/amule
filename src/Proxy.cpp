@@ -589,12 +589,8 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
  * event will be generated. If you feel you will need more clocks than these, use
  * AddDummyEvent(), but I suggest you review your state machine design first.
  */
-void CSocks5StateMachine::process_start(bool entry)
-{
-	if (entry) {
-	} else {
-	}
-}
+void CSocks5StateMachine::process_start(bool)
+{}
 
 void CSocks5StateMachine::process_end(bool)
 {
@@ -895,12 +891,8 @@ t_sm_state CSocks4StateMachine::next_state(t_sm_event event)
 	return ret;
 }
 
-void CSocks4StateMachine::process_start(bool entry)
-{
-	if (entry) {
-	} else {
-	}
-}
+void CSocks4StateMachine::process_start(bool)
+{}
 
 void CSocks4StateMachine::process_end(bool)
 {
@@ -1093,12 +1085,8 @@ t_sm_state CHttpStateMachine::next_state(t_sm_event event)
 	return ret;
 }
 
-void CHttpStateMachine::process_start(bool entry)
-{
-	if (entry) {
-	} else {
-	}
-}
+void CHttpStateMachine::process_start(bool)
+{}
 
 void CHttpStateMachine::process_end(bool)
 {

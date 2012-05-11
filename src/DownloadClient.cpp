@@ -1290,7 +1290,7 @@ void CUpDownClient::UDPReaskForDownload()
 
 		if (GetUDPVersion() > 3) {
 			if (m_reqfile->IsPartFile()) {
-				((CPartFile*)m_reqfile)->WritePartStatus(&data);
+				static_cast<CPartFile*>(m_reqfile)->WritePartStatus(&data);
 			}
 			else {
 				data.WriteUInt16(0);
@@ -1316,7 +1316,7 @@ void CUpDownClient::UDPReaskForDownload()
 
 		if (GetUDPVersion() > 3) {
 			if (m_reqfile->IsPartFile()) {
-				((CPartFile*)m_reqfile)->WritePartStatus(&data);
+				static_cast<CPartFile*>(m_reqfile)->WritePartStatus(&data);
 			} else {
 				data.WriteUInt16(0);
 			}
@@ -1711,7 +1711,7 @@ void CUpDownClient::ProcessAICHFileHash(CMemFile* data, const CPartFile* file){
 	if (file == NULL){
 		pPartFile = theApp->downloadqueue->GetFileByID(data->ReadHash());
 	} else {
-		pPartFile = (CPartFile*)file;
+		pPartFile = const_cast<CPartFile*>(file);
 	}
 	CAICHHash ahMasterHash(data);
 

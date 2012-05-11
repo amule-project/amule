@@ -126,7 +126,7 @@ public:
 	 */
 	CStatTreeItemBase(const wxString &label, unsigned flags = stNone)
 		: m_label(label), m_parent(NULL), m_flags(flags), m_id(0),
-		m_uniqueid(NewStatTreeItemId())
+		m_visible_counter(0), m_uniqueid(NewStatTreeItemId())
 		{}
 #else
 	/**

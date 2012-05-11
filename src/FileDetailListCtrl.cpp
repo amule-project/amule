@@ -50,8 +50,8 @@ CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoi
 int CFileDetailListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
 	// Comparison for different sortings
-	SourcenameItem *item1 = (SourcenameItem*)param1;
-	SourcenameItem *item2 = (SourcenameItem*)param2;
+	SourcenameItem *item1 = reinterpret_cast<SourcenameItem*>(param1);
+	SourcenameItem *item2 = reinterpret_cast<SourcenameItem*>(param2);
 
 	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 

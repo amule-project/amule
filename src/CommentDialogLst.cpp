@@ -116,7 +116,7 @@ void CCommentDialogLst::ClearList()
 {
 	size_t count = m_list->GetItemCount();
 	for (size_t i = 0; i < count; ++i) {
-		delete (SFileRating*)m_list->GetItemData(i);
+		delete reinterpret_cast<SFileRating*>(m_list->GetItemData(i));
 	}
 
 	m_list->DeleteAllItems();
@@ -125,8 +125,8 @@ void CCommentDialogLst::ClearList()
 
 int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
-	SFileRating* file1 = (SFileRating*)item1;
-	SFileRating* file2 = (SFileRating*)item2;
+	SFileRating* file1 = reinterpret_cast<SFileRating*>(item1);
+	SFileRating* file2 = reinterpret_cast<SFileRating*>(item2);
 
 	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 

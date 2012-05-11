@@ -196,10 +196,12 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 CaMuleExternalConnector::CaMuleExternalConnector()
 	: m_configFile(NULL),
 	  m_port(-1),
+	  m_ZLIB(false),
 	  m_KeepQuiet(false),
 	  m_Verbose(false),
 	  m_interactive(false),
 	  m_commands(*this),
+	  m_appname(NULL),
 	  m_ECClient(NULL),
 	  m_InputLine(NULL),
 	  m_NeedsConfigSave(false),

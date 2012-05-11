@@ -145,7 +145,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 CChatSession* CChatSelector::GetPageByClientID(uint64 client_id)
 {
 	for ( unsigned int i = 0; i < (unsigned int ) GetPageCount(); i++ ) {
-		CChatSession* page = (CChatSession*)GetPage( i );
+		CChatSession* page = static_cast<CChatSession*>(GetPage(i));
 
 		if( page->m_client_id == client_id ) {
 			return page;
@@ -159,7 +159,7 @@ CChatSession* CChatSelector::GetPageByClientID(uint64 client_id)
 int CChatSelector::GetTabByClientID(uint64 client_id)
 {
 	for ( unsigned int i = 0; i < (unsigned int) GetPageCount(); i++ ) {
-		CChatSession* page = (CChatSession*)GetPage( i );
+		CChatSession* page = static_cast<CChatSession*>(GetPage(i));
 
 		if( page->m_client_id == client_id ) {
 			return i;
@@ -237,7 +237,7 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 		return false;
 	}
 
-	CChatSession* ci = (CChatSession*)GetPage( usedtab );
+	CChatSession* ci = static_cast<CChatSession*>(GetPage(usedtab));
 
 	ci->m_active = true;
 
@@ -348,7 +348,7 @@ bool CChatSelector::GetCurrentClient(CClientRef&) const
 bool CChatSelector::GetCurrentClient(CClientRef& clientref) const
 {
 	// Get the chat session associated with the active tab
-	CChatSession* ci = (CChatSession*)GetPage(GetSelection());
+	CChatSession* ci = static_cast<CChatSession*>(GetPage(GetSelection()));
 
 	// Get the client that the session is open to
 	if (ci) {

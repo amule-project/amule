@@ -70,7 +70,7 @@ public:
 	CClientRef()	{ m_client = NULL; }
 	CClientRef(const CClientRef&);
 	CClientRef(CUpDownClient * client LINKED_FROM);
-	CClientRef(class CEC_UpDownClient_Tag *);
+	CClientRef(const class CEC_UpDownClient_Tag *);
 	~CClientRef()	{ Unlink(); }
 	CClientRef& operator = (const CClientRef& ref)
 	{

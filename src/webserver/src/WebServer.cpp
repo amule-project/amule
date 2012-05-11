@@ -1137,7 +1137,7 @@ CDynPngImage::~CDynPngImage()
 
 void CDynPngImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
 {
-	CDynPngImage *This = (CDynPngImage *)png_get_io_ptr(png_ptr);
+	CDynPngImage *This = static_cast<CDynPngImage *>(png_get_io_ptr(png_ptr));
 	wxASSERT((png_size_t)(This->m_size + length) <= (png_size_t)This->m_alloc_size);
 	memcpy(This->m_data + This->m_size, data, length);
 	This->m_size += length;

@@ -349,6 +349,7 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	wxString str(msg);
 
 	// This is much simpler than manually handling all wx log-types.
+	// cppcheck-suppress duplicateBranch
 	if (str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "))) {
 		AddLogLineC(str);
 	} else {

@@ -213,7 +213,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					CMemFile data_out(128);
 					if(sender->GetUDPVersion() > 3) {
 						if (reqfile->IsPartFile()) {
-							((CPartFile*)reqfile)->WritePartStatus(&data_out);
+							static_cast<CPartFile*>(reqfile)->WritePartStatus(&data_out);
 						} else {
 							data_out.WriteUInt16(0);
 						}

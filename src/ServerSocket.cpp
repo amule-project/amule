@@ -311,9 +311,9 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 
 				// save TCP flags in 'cur_server'
 				wxASSERT(cur_server);
-				uint32 ConnPort = 0;
 				CServer* pServer = NULL;
 				if (cur_server) {
+					uint32 ConnPort = 0;
 					uint32 rport = cur_server->GetConnPort();
 					pServer = theApp->serverlist->GetServerByAddress(cur_server->GetAddress(), rport);
 					if (size >= 4+4 /* uint32 (ID) + uint32 (TCP flags)*/) {
@@ -344,7 +344,6 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				}
 
 				uint32 dwServerReportedIP = 0;
-				uint32 dwObfuscationTCPPort = 0;
 				if (size >= 4 + 4 + 4 + 4 + 4 /* All of the above + reported ip + obfuscation port */) {
 					dwServerReportedIP = data.ReadUInt32();
 					if (::IsLowID(dwServerReportedIP)){
@@ -352,7 +351,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						dwServerReportedIP = 0;
 					}
 					wxASSERT( dwServerReportedIP == new_id || ::IsLowID(new_id) );
-					dwObfuscationTCPPort = data.ReadUInt32();
+					uint32 dwObfuscationTCPPort = data.ReadUInt32();
 					if (dwObfuscationTCPPort != 0) {
 						if (cur_server != NULL) {
 							cur_server->SetObfuscationPortTCP(dwObfuscationTCPPort);

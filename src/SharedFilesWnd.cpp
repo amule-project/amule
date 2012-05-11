@@ -126,7 +126,7 @@ void CSharedFilesWnd::SelectionUpdated()
 		long index = -1;
 		int filter = (m_clientShow == ClientShowSelected) ? wxLIST_STATE_SELECTED : wxLIST_STATE_DONTCARE;
 		while ( (index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, filter)) != -1) {
-			CKnownFile* file = (CKnownFile*)sharedfilesctrl->GetItemData( index );
+			CKnownFile* file = reinterpret_cast<CKnownFile*>(sharedfilesctrl->GetItemData(index));
 			wxASSERT(file);
 
 			// Bars are always for selected files

@@ -170,19 +170,16 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		// Ip is reversed since StringIPtoUint32 returns anti-host and kad expects host order
 		uint32 ip = StringIPtoUint32(
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP4 ))->GetValue() +
-					wxT(".") +
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP3 ))->GetValue() +
-					wxT(".") +
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP2 ))->GetValue() +
-					wxT(".") +
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP4))->GetValue() + wxT(".") +
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP3))->GetValue() + wxT(".") +
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP2))->GetValue() + wxT(".") +
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP1))->GetValue() );
 
 		if (ip == 0) {
 			wxMessageBox(_("Invalid ip to bootstrap"), _("WARNING"), wxOK | wxICON_EXCLAMATION, this);
 		} else {
 			unsigned long port;
-			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
+			if (dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_PORT))->GetValue().ToULong(&port)) {
 				theApp->BootstrapKad(ip, port);
 			} else {
 				wxMessageBox(_("Invalid port to bootstrap"), _("WARNING"), wxOK | wxICON_EXCLAMATION, this);
@@ -211,7 +208,7 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
 						_("Doing so will remove your current nodes and restart Kademlia connection.")
 					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO, this) == wxYES ) {
-		wxString strURL = ((wxTextCtrl*)FindWindowById( IDC_NODESLISTURL ))->GetValue();
+		wxString strURL = dynamic_cast<wxTextCtrl*>(FindWindowById(IDC_NODESLISTURL))->GetValue();
 
 		thePrefs::SetKadNodesUrl(strURL);
 		theApp->UpdateNotesDat(strURL);

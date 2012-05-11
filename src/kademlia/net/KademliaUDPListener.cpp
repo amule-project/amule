@@ -582,6 +582,7 @@ void CKademliaUDPListener::Process2HelloResponseAck(const uint8_t *packetData, u
 	// Additional packet to complete a three-way-handshake, making sure the remote contact is not using a spoofed ip.
 	CMemFile bio(packetData, lenPacket);
 	CUInt128 remoteID = bio.ReadUInt128();
+	// cppcheck-suppress duplicateBranch
 	if (!CKademlia::GetRoutingZone()->VerifyContact(remoteID, ip)) {
 		AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
 	} else {
@@ -699,6 +700,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 	CUInt128 contactID;
 	if (IsLegacyChallenge(target, ip, KADEMLIA2_REQ, contactID)) {
 		// yup it is, set the contact as verified
+		// cppcheck-suppress duplicateBranch
 		if (!routingZone->VerifyContact(contactID, ip)) {
 			AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
 		} else {
@@ -1533,6 +1535,7 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 	CUInt128 contactID;
 	if (IsLegacyChallenge(CUInt128((uint32_t)0), ip, KADEMLIA2_PING, contactID)) {
 		// yup it is, set the contact as verified
+		// cppcheck-suppress duplicateBranch
 		if (!CKademlia::GetRoutingZone()->VerifyContact(contactID, ip)) {
 			AddDebugLogLineN(logKadRouting, wxT("Unable to find valid sender in routing table (sender: ") + KadIPToString(ip) + wxT(")"));
 		} else {

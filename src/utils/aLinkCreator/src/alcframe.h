@@ -76,7 +76,6 @@ class AlcFrame:public wxFrame
     wxCheckBox *m_parthashesCheck;
 
     wxProgressDialog *m_progressBar;
-    bool m_goAhead;
 
 
 #ifdef WANT_MD4SUM

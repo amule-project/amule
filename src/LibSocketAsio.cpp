@@ -96,6 +96,7 @@ public:
 class CAsioSocketImpl
 {
 public:
+	// cppcheck-suppress uninitMemberVar m_readBufferPtr
 	CAsioSocketImpl(CLibSocket * libSocket) :
 		m_libSocket(libSocket),
 		m_strand(s_io_service),
@@ -119,6 +120,7 @@ public:
 		m_notify = true;
 		m_sync = false;
 		m_IP = wxT("?");
+		m_IPint = 0;
 		m_socket = new ip::tcp::socket(s_io_service);
 
 		// Set socket to non blocking
@@ -1323,13 +1325,13 @@ amuleIPV4Address::~amuleIPV4Address()
 	delete m_endpoint;
 }
 
-const amuleIPV4Address& amuleIPV4Address:: operator = (const amuleIPV4Address &a)
+amuleIPV4Address& amuleIPV4Address::operator=(const amuleIPV4Address &a)
 {
 	m_endpoint = new CamuleIPV4Endpoint(* a.m_endpoint);
 	return *this;
 }
 
-const amuleIPV4Address& amuleIPV4Address:: operator = (const CamuleIPV4Endpoint &ep)
+amuleIPV4Address& amuleIPV4Address::operator=(const CamuleIPV4Endpoint &ep)
 {
 	m_endpoint = new CamuleIPV4Endpoint(ep);
 	return *this;

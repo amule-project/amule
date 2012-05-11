@@ -1105,7 +1105,7 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 
 void CamuleApp::OnUDPDnsDone(CMuleInternalEvent& evt)
 {
-	CServerUDPSocket* socket =(CServerUDPSocket*)evt.GetClientData();
+	CServerUDPSocket* socket =reinterpret_cast<CServerUDPSocket*>(evt.GetClientData());
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
 
@@ -1563,7 +1563,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 
 				Kademlia::CKademlia::Start();
 				theApp->ShowConnectionState();
-
+			// cppcheck-suppress duplicateBranch
 			} else if (event.GetExtraLong() == HTTP_Skipped) {
 				AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("nodes.dat"));
 			} else {
@@ -1874,6 +1874,7 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 
 				AddLogLineC(CFormat(_("Connected to %s %s")) % connected_server % id);
 			} else {
+				// cppcheck-suppress duplicateBranch
 				if ( theApp->serverconnect->IsConnecting() ) {
 					AddLogLineC(CFormat(_("Connecting to %s")) % connected_server);
 				} else {
@@ -1883,6 +1884,7 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 		}
 
 		if (changed_flags & CONNECTED_KAD_NOT) {
+			// cppcheck-suppress duplicateBranch
 			if (state & CONNECTED_KAD_NOT) {
 				AddLogLineC(_("Kad started."));
 			} else {
@@ -1892,6 +1894,7 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 
 		if (changed_flags & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 			if (state & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
+				// cppcheck-suppress duplicateBranch
 				if (state & CONNECTED_KAD_OK) {
 					AddLogLineC(_("Connected to Kad (ok)"));
 				} else {
@@ -1914,7 +1917,7 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 
 void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 {
-	CMuleUDPSocket* socket = (CMuleUDPSocket*)(event.GetClientData());
+	CMuleUDPSocket* socket = reinterpret_cast<CMuleUDPSocket*>(event.GetClientData());
 	wxCHECK_RET(socket, wxT("No socket owner specified."));
 
 	if (IsOnShutDown() || thePrefs::IsUDPDisabled()) return;

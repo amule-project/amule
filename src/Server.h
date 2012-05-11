@@ -51,7 +51,7 @@ public:
 	CServer(ServerMet_Struct* in_data);
 	CServer(uint16 in_port, const wxString& i_addr);
 	CServer(CServer* pOld);
-	CServer(class CEC_Server_Tag *);
+	CServer(const class CEC_Server_Tag *);
 
 	~CServer();
 	void		AddTag(CTag* in_tag)	{m_taglist.push_back(in_tag);}

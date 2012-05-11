@@ -49,7 +49,7 @@ public:
 	~MuleGIFDecoder() { }
 
 	void GoFirstFrame() { m_nframe = 0; }
-	void GoNextFrame() { m_nframe < GetFrameCount() - 1 ? m_nframe++ : m_nframe = 0; }
+	void GoNextFrame() { (m_nframe < GetFrameCount() - 1) ? m_nframe++ : m_nframe = 0; }
 	void GoLastFrame() { m_nframe = GetFrameCount() - 1; }
 
 	void ConvertToImage(wxImage* image) { wxGIFDecoder::ConvertToImage(m_nframe, image); }

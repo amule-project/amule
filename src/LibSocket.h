@@ -303,7 +303,7 @@ class CLibSocketServer : public wxSocketServer
 public:
 	CLibSocketServer(const amuleIPV4Address &address, wxSocketFlags flags);
 
-	CLibSocket * Accept(bool wait) { return (CLibSocket *) wxSocketServer::Accept(wait); }
+	CLibSocket * Accept(bool wait) { return static_cast<CLibSocket*>(wxSocketServer::Accept(wait)); }
 
 	bool SocketAvailable() { return true; }
 

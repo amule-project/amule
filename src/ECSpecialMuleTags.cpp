@@ -373,7 +373,7 @@ void ApplyBoolean(bool use_tag, const CECTag *thisTab, void (applyFunc)(bool), i
  *  -> On remote gui they are loaded on startup, and then changed on-command
  *  -> Webserver doesn't supposed to change it.
  */
-void CEC_Prefs_Packet::Apply()
+void CEC_Prefs_Packet::Apply() const
 {
 	const CECTag *thisTab = NULL;
 	const CECTag *oneTag = NULL;

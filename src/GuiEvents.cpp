@@ -128,7 +128,7 @@ namespace MuleNotify
 	void DownloadCtrlUpdateItem(const void* item)
 	{
 #ifndef CLIENT_GUI
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_SetDirty((CPartFile *)item);
+		theApp->ECServerHandler->m_ec_notifier->DownloadFile_SetDirty(static_cast<const CPartFile*>(item));
 #endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {

@@ -926,12 +926,12 @@ bool CIndexed::SendStoreRequest(const CUInt128& keyID)
 }
 
 SSearchTerm::SSearchTerm()
-{
-	type = AND;
-	tag = NULL;
-	left = NULL;
-	right = NULL;
-}
+	: type(AND),
+	  tag(NULL),
+	  astr(NULL),
+	  left(NULL),
+	  right(NULL)
+{}
 
 SSearchTerm::~SSearchTerm()
 {

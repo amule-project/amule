@@ -259,22 +259,20 @@ size_t CQueuedData::GetUnreadDataLength() const
 //
 
 CECSocket::CECSocket(bool use_events)
-:
-m_use_events(use_events),
-m_in_ptr(EC_SOCKET_BUFFER_SIZE),
-m_out_ptr(EC_SOCKET_BUFFER_SIZE),
-m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
-m_curr_tx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
-m_rx_flags(0),
-m_tx_flags(0),
-// setup initial state: 4 flags + 4 length
-m_bytes_needed(EC_HEADER_SIZE),
-m_in_header(true),
-m_my_flags(0x20),
-m_haveNotificationSupport(false)
-{
-
-}
+	: m_use_events(use_events),
+	  m_in_ptr(EC_SOCKET_BUFFER_SIZE),
+	  m_out_ptr(EC_SOCKET_BUFFER_SIZE),
+	  m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
+	  m_curr_tx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
+	  m_rx_flags(0),
+	  m_tx_flags(0),
+	  // setup initial state: 4 flags + 4 length
+	  m_bytes_needed(EC_HEADER_SIZE),
+	  m_in_header(true),
+	  m_curr_packet_len(0),
+	  m_my_flags(0x20),
+	  m_haveNotificationSupport(false)
+{}
 
 CECSocket::~CECSocket()
 {
@@ -775,7 +773,7 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 
 	packet->WritePacket(*this);
 
-	// Finalize zlib compression and move current data to outout queue
+	// Finalize zlib compression and move current data to output queue
 	FlushBuffers();
 
 	// find the beginning of our data in the output queue

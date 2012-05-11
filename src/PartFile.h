@@ -92,7 +92,7 @@ public:
 
 	CPartFile();
 #ifdef CLIENT_GUI
-	CPartFile(CEC_PartFile_Tag *tag);
+	CPartFile(const CEC_PartFile_Tag *tag);
 #else
 	virtual void	SetFileName(const CPath& filename);
 #endif

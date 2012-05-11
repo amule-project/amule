@@ -113,7 +113,7 @@ enum {
 };
 
 // method to create a SearchFile
-SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
+SearchFile::SearchFile(const CEC_SearchFile_Tag *tag)
 {
 	nHash = tag->FileHash();
 	sHash = nHash.Encode();
@@ -350,7 +350,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 						// since there is little point to add anything more to "everything"
 						if( token == wxT("all") ) {
 							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); ++it) {
-								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *) & *it;
+								const CEC_PartFile_Tag *tag = static_cast<const CEC_PartFile_Tag *>(&*it);
 								request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
 							}
 							break;
@@ -362,7 +362,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 						} else {
 							 // Go through the dl queue and look at each filename
 							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); ++it) {
-								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *) & *it;
+								const CEC_PartFile_Tag *tag = static_cast<const CEC_PartFile_Tag *>(&*it);
 								wxString partmetname = tag->PartMetName();
 
 								// We check for filename, XXX.pat.met, XXX.part, XXX
@@ -619,14 +619,14 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 
 
 // Formats a statistics (sub)tree to text
-wxString StatTree2Text(CEC_StatTree_Node_Tag *tree, int depth)
+wxString StatTree2Text(const CEC_StatTree_Node_Tag *tree, int depth)
 {
 	if (!tree) {
 		return wxEmptyString;
 	}
 	wxString result = wxString(wxChar(' '), depth) + tree->GetDisplayString() + wxT("\n");
 	for (CECTag::const_iterator it = tree->begin(); it != tree->end(); ++it) {
-		CEC_StatTree_Node_Tag *tmp = (CEC_StatTree_Node_Tag*) & *it;
+		const CEC_StatTree_Node_Tag *tmp = static_cast<const CEC_StatTree_Node_Tag*>(&*it);
 		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
 			result += StatTree2Text(tmp, depth + 1);
 		}
@@ -694,12 +694,12 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_STATS: {
-			CEC_ConnState_Tag *connState = (CEC_ConnState_Tag*)response->GetTagByName(EC_TAG_CONNSTATE);
+			const CEC_ConnState_Tag *connState = static_cast<const CEC_ConnState_Tag*>(response->GetTagByName(EC_TAG_CONNSTATE));
 			if (connState) {
 				s << _("eD2k") << wxT(": ");
 				if (connState->IsConnectedED2K()) {
-					CECTag *server = connState->GetTagByName(EC_TAG_SERVER);
-					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
+					const CECTag *server = connState->GetTagByName(EC_TAG_SERVER);
+					const CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 					if (server && serverName) {
 						s << CFormat(_("Connected to %s %s %s")) %
 						 serverName->GetStringData() %
@@ -746,29 +746,29 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 		}
 		case EC_OP_DLOAD_QUEUE:
 			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
-				CEC_PartFile_Tag *tag =	(CEC_PartFile_Tag *) & *it;
-					uint64 filesize, donesize;
-					filesize = tag->SizeFull();
-					donesize = tag->SizeDone();
-					s <<	tag->FileHashString() << wxT(" ") <<
-						tag->FileName() <<
-						(CFormat(wxT("\n\t [%.1f%%] %4i/%4i "))
-							% ((float)donesize / ((float)filesize)*100.0)
-							% ((int)tag->SourceCount() - (int)tag->SourceNotCurrCount())
-							% (int)tag->SourceCount()) <<
-						((int)tag->SourceCountA4AF() ? wxString(CFormat(wxT("+%2.2i ")) % (int)tag->SourceCountA4AF()) : wxString(wxT("    "))) <<
-						((int)tag->SourceXferCount() ? wxString(CFormat(wxT("(%2.2i) - ")) % (int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
-						tag->GetFileStatusString();
-					s << wxT(" - ") << tag->PartMetName();
-                    if (tag->DownPrio() < 10) {
-                            s << wxT(" - ") << PriorityToStr((int)tag->DownPrio(), 0);
-                    } else {
-                            s << wxT(" - ") << PriorityToStr((tag->DownPrio() - 10), 1);
-                    }
-					if ( tag->SourceXferCount() > 0) {
-						s << wxT(" - ") + CastItoSpeed(tag->Speed());
-					}
-					s << wxT("\n");
+				const CEC_PartFile_Tag *tag = static_cast<const CEC_PartFile_Tag *>(&*it);
+				uint64 filesize, donesize;
+				filesize = tag->SizeFull();
+				donesize = tag->SizeDone();
+				s <<	tag->FileHashString() << wxT(" ") <<
+					tag->FileName() <<
+					(CFormat(wxT("\n\t [%.1f%%] %4i/%4i "))
+						% ((float)donesize / ((float)filesize)*100.0)
+						% ((int)tag->SourceCount() - (int)tag->SourceNotCurrCount())
+						% (int)tag->SourceCount()) <<
+					((int)tag->SourceCountA4AF() ? wxString(CFormat(wxT("+%2.2i ")) % (int)tag->SourceCountA4AF()) : wxString(wxT("    "))) <<
+					((int)tag->SourceXferCount() ? wxString(CFormat(wxT("(%2.2i) - ")) % (int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
+					tag->GetFileStatusString();
+				s << wxT(" - ") << tag->PartMetName();
+				if (tag->DownPrio() < 10) {
+					s << wxT(" - ") << PriorityToStr((int)tag->DownPrio(), 0);
+				} else {
+					s << wxT(" - ") << PriorityToStr((tag->DownPrio() - 10), 1);
+				}
+				if ( tag->SourceXferCount() > 0) {
+					s << wxT(" - ") + CastItoSpeed(tag->Speed());
+				}
+				s << wxT("\n");
 			}
 			break;
 		case EC_OP_ULOAD_QUEUE:
@@ -806,7 +806,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_STATSTREE:
-			s << StatTree2Text((CEC_StatTree_Node_Tag*)response->GetTagByName(EC_TAG_STATTREE_NODE), 0);
+			s << StatTree2Text(static_cast<const CEC_StatTree_Node_Tag*>(response->GetTagByName(EC_TAG_STATTREE_NODE)), 0);
 			break;
 
 		case EC_OP_SEARCH_RESULTS:
@@ -815,7 +815,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			m_Results_map.clear();
 			s += CFormat(_("Number of search results: %i\n")) % response->GetTagCount();
 			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
-				CEC_SearchFile_Tag *tag = (CEC_SearchFile_Tag *) & *it;
+				const CEC_SearchFile_Tag *tag = static_cast<const CEC_SearchFile_Tag *>(&*it);
 				//printf("Tag FileName: %s \n",(const char*)unicode2char(tag->FileName()));
 				m_Results_map[i++] = new SearchFile(tag);
 			}

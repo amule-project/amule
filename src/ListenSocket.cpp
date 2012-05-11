@@ -55,6 +55,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	m_OpenSocketsInterval = 0;
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
+	memset(m_ConnectionStates, 0, 3 * sizeof(m_ConnectionStates[0]));
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (IsOk()) {
 		SetEventHandler(*theApp, ID_LISTENSOCKET_EVENT);
@@ -141,7 +142,7 @@ void CListenSocket::Process()
 void CListenSocket::RecalculateStats()
 {
 	// 0.42e
-	memset(m_ConnectionStates,0,6);
+	memset(m_ConnectionStates, 0, 3 * sizeof(m_ConnectionStates[0]));
 	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); ) {
 		CClientTCPSocket* cur_socket = *it++;
 		switch (cur_socket->GetConState()) {
@@ -190,7 +191,7 @@ void CListenSocket::KillAllSockets()
 
 bool CListenSocket::TooManySockets(bool bIgnoreInterval)
 {
-	if (GetOpenSockets() > thePrefs::GetMaxConnections() 
+	if (GetOpenSockets() > thePrefs::GetMaxConnections()
 		|| (!bIgnoreInterval && m_OpenSocketsInterval > (thePrefs::GetMaxConperFive() * GetMaxConperFiveModifier()))) {
 		return true;
 	} else {
@@ -227,7 +228,7 @@ float CListenSocket::GetMaxConperFiveModifier()
 		return 1;
 	}
 
-	float SpikeTolerance = 2.5f*thePrefs::GetMaxConperFive();
+	float SpikeTolerance = 2.5f * thePrefs::GetMaxConperFive();
 	if ( SpikeSize > SpikeTolerance ) {
 		return 0;
 	}
