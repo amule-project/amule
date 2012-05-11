@@ -441,9 +441,8 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				// if we are downloading this file, this could be a new source
 				// no passive adding of files with only one part
 				if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
-					if (thePrefs::GetMaxSourcePerFile() >
-						((CPartFile*)reqfile)->GetSourceCount()) {
-						theApp->downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
+					if (thePrefs::GetMaxSourcePerFile() > static_cast<CPartFile*>(reqfile)->GetSourceCount()) {
+						theApp->downloadqueue->CheckAndAddKnownSource(static_cast<CPartFile*>(reqfile), m_client);
 					}
 				}
 
@@ -516,7 +515,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				CMemFile data(16+16);
 				data.WriteHash(reqfile->GetFileHash());
 				if (reqfile->IsPartFile()) {
-					((CPartFile*)reqfile)->WritePartStatus(&data);
+					static_cast<CPartFile*>(reqfile)->WritePartStatus(&data);
 				} else {
 					data.WriteUInt16(0);
 				}
@@ -1084,8 +1083,8 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			// if we are downloading this file, this could be a new source
 			// no passive adding of files with only one part
 			if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
-				if (thePrefs::GetMaxSourcePerFile() > ((CPartFile*)reqfile)->GetSourceCount()) {
-					theApp->downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
+				if (thePrefs::GetMaxSourcePerFile() > static_cast<CPartFile*>(reqfile)->GetSourceCount()) {
+					theApp->downloadqueue->CheckAndAddKnownSource(static_cast<CPartFile*>(reqfile), m_client);
 				}
 			}
 			// check to see if this is a new file they are asking for
@@ -1125,7 +1124,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 						AddDebugLogLineN( logRemoteClient, wxT("Remote Client: OP_MULTIPACKET has OP_SETREQFILEID") );
 						data_out.WriteUInt8(OP_FILESTATUS);
 						if (reqfile->IsPartFile()) {
-							((CPartFile*)reqfile)->WritePartStatus(&data_out);
+							static_cast<CPartFile*>(reqfile)->WritePartStatus(&data_out);
 						} else {
 							data_out.WriteUInt16(0);
 						}
@@ -1152,7 +1151,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 									//if not complete and file is rare
 									(    reqfile->IsPartFile()
 									&& (bNeverAskedBefore || dwTimePassed > SOURCECLIENTREASKS)
-									&& ((CPartFile*)reqfile)->GetSourceCount() <= RARE_FILE
+									&& static_cast<CPartFile*>(reqfile)->GetSourceCount() <= RARE_FILE
 									) ||
 									//OR if file is not rare or if file is complete
 									( (bNeverAskedBefore || dwTimePassed > SOURCECLIENTREASKS * MINCOMMONPENALTY) )
@@ -1464,7 +1463,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					if(
 					//if not complete and file is rare, allow once every 40 minutes
 					( file->IsPartFile() &&
-					((CPartFile*)file)->GetSourceCount() <= RARE_FILE &&
+					static_cast<CPartFile*>(file)->GetSourceCount() <= RARE_FILE &&
 					(bNeverAskedBefore || dwTimePassed > SOURCECLIENTREASKS)
 					) ||
 					//OR if file is not rare or if file is complete, allow every 90 minutes
@@ -1496,15 +1495,14 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 
 			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
-			const CKnownFile* file = theApp->downloadqueue->GetFileByID(hash);
+			CKnownFile* file = theApp->downloadqueue->GetFileByID(hash);
 			if(file){
 				if (file->IsPartFile()){
 					//set the client's answer time
 					m_client->SetLastSrcAnswerTime();
 					//and set the file's last answer time
-					((CPartFile*)file)->SetLastAnsweredTime();
-
-					((CPartFile*)file)->AddClientSources(&data, SF_SOURCE_EXCHANGE, m_client->GetSourceExchange1Version(), false, m_client);
+					static_cast<CPartFile*>(file)->SetLastAnsweredTime();
+					static_cast<CPartFile*>(file)->AddClientSources(&data, SF_SOURCE_EXCHANGE, m_client->GetSourceExchange1Version(), false, m_client);
 				}
 			}
 			break;
@@ -1522,14 +1520,14 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			CMemFile data(buffer, size);
 			uint8 byVersion = data.ReadUInt8();
 			CMD4Hash hash = data.ReadHash();
-			const CKnownFile* file = theApp->downloadqueue->GetFileByID(hash);
+			CKnownFile* file = theApp->downloadqueue->GetFileByID(hash);
 			if (file){
 				if (file->IsPartFile()){
 					//set the client's answer time
 					m_client->SetLastSrcAnswerTime();
 					//and set the file's last answer time
-					((CPartFile*)file)->SetLastAnsweredTime();
-					((CPartFile*)file)->AddClientSources(&data, SF_SOURCE_EXCHANGE, byVersion, true, m_client);
+					static_cast<CPartFile*>(file)->SetLastAnsweredTime();
+					static_cast<CPartFile*>(file)->AddClientSources(&data, SF_SOURCE_EXCHANGE, byVersion, true, m_client);
 				}
 			}
 			break;
@@ -1738,7 +1736,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					CMemFile data_out(128);
 					if(sender->GetUDPVersion() > 3) {
 						if (reqfile->IsPartFile()) {
-							((CPartFile*)reqfile)->WritePartStatus(&data_out);
+							static_cast<CPartFile*>(reqfile)->WritePartStatus(&data_out);
 						} else {
 							data_out.WriteUInt16(0);
 						}

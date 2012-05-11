@@ -131,16 +131,16 @@ class ECPartFileMsgSource : public ECUpdateMsgSource {
 			bool m_removed;
 			bool m_finished;
 			bool m_dirty;
-			CPartFile *m_file;
+			const CPartFile *m_file;
 		} PARTFILE_STATUS;
 		std::map<CMD4Hash, PARTFILE_STATUS> m_dirty_status;
 	public:
 		ECPartFileMsgSource();
 
-		void SetDirty(CPartFile *file);
-		void SetNew(CPartFile *file);
-		void SetCompleted(CPartFile *file);
-		void SetRemoved(CPartFile *file);
+		void SetDirty(const CPartFile *file);
+		void SetNew(const CPartFile *file);
+		void SetCompleted(const CPartFile *file);
+		void SetRemoved(const CPartFile *file);
 
 		virtual CECPacket *GetNextPacket();
 
@@ -152,15 +152,15 @@ class ECKnownFileMsgSource : public ECUpdateMsgSource {
 			bool m_comment_changed;
 			bool m_removed;
 			bool m_dirty;
-			CKnownFile *m_file;
+			const CKnownFile *m_file;
 		} KNOWNFILE_STATUS;
 		std::map<CMD4Hash, KNOWNFILE_STATUS> m_dirty_status;
 	public:
 		ECKnownFileMsgSource();
 
-		void SetDirty(CKnownFile *file);
-		void SetNew(CKnownFile *file);
-		void SetRemoved(CKnownFile *file);
+		void SetDirty(const CKnownFile *file);
+		void SetNew(const CKnownFile *file);
+		void SetRemoved(const CKnownFile *file);
 
 		virtual CECPacket *GetNextPacket();
 };
@@ -188,14 +188,14 @@ class ECSearchMsgSource : public ECUpdateMsgSource {
 			bool m_new;
 			bool m_child_dirty;
 			bool m_dirty;
-			CSearchFile *m_file;
+			const CSearchFile *m_file;
 		} SEARCHFILE_STATUS;
 		std::map<CMD4Hash, SEARCHFILE_STATUS> m_dirty_status;
 	public:
 		ECSearchMsgSource();
 
-		void SetDirty(CSearchFile *file);
-		void SetChildDirty(CSearchFile *file);
+		void SetDirty(const CSearchFile *file);
+		void SetChildDirty(const CSearchFile *file);
 
 		void FlushStatus();
 
@@ -237,14 +237,14 @@ class ECNotifier {
 		//
 		// Interface to notification macros
 		//
-		void DownloadFile_SetDirty(CPartFile *file);
-		void DownloadFile_RemoveFile(CPartFile *file);
-		void DownloadFile_RemoveSource(CPartFile *file);
-		void DownloadFile_AddFile(CPartFile *file);
-		void DownloadFile_AddSource(CPartFile *file);
+		void DownloadFile_SetDirty(const CPartFile *file);
+		void DownloadFile_RemoveFile(const CPartFile *file);
+		void DownloadFile_RemoveSource(const CPartFile *file);
+		void DownloadFile_AddFile(const CPartFile *file);
+		void DownloadFile_AddSource(const CPartFile *file);
 
-		void SharedFile_AddFile(CKnownFile *file);
-		void SharedFile_RemoveFile(CKnownFile *file);
+		void SharedFile_AddFile(const CKnownFile *file);
+		void SharedFile_RemoveFile(const CKnownFile *file);
 		void SharedFile_RemoveAllFiles();
 
 };

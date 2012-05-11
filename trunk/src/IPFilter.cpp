@@ -505,6 +505,7 @@ void CIPFilter::DownloadFinished(uint32 result)
 		} else {
 			AddLogLineN(CFormat(_("Successfully updated %s")) % datName);
 		}
+	// cppcheck-suppress duplicateBranch
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % datName);
 	} else {

@@ -1969,7 +1969,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 						php_eval_compare(PHP_OP_EQ, &cur_value, &cond_result, &cmp_result);
 						if ( cmp_result.int_val ) {
 							// execute code and rest of case statements
-							cur_exec = (PHP_SYN_NODE *)curr->exp_node->tree_node.syn_right;
+							cur_exec = static_cast<PHP_SYN_NODE *>(curr->exp_node->tree_node.syn_right);
 							break;
 						}
 						curr = curr->next;

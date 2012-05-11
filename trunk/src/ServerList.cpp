@@ -169,6 +169,7 @@ bool CServerList::LoadServerMet(const CPath& path)
 
 		Notify_ServerThaw();
 
+		// cppcheck-suppress duplicateBranch
 		if (!merge) {
 			AddLogLineC(CFormat(wxPLURAL("%i server in server.met found", "%i servers in server.met found", fservercount)) % fservercount);
 		} else {
@@ -852,6 +853,7 @@ void CServerList::DownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		CPath::RemoveFile(tempFilename);
 		AddLogLineN(CFormat(_("Finished downloading the server list from %s")) % m_URLUpdate);
+	// cppcheck-suppress duplicateBranch
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("server.met"));
 	} else {

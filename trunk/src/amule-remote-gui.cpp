@@ -574,7 +574,7 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 
 void CPreferencesRem::HandlePacket(const CECPacket *packet)
 {
-	((CEC_Prefs_Packet *)packet)->Apply();
+	static_cast<const CEC_Prefs_Packet *>(packet)->Apply();
 
 	const CECTag *cat_tags = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES);
 	if (cat_tags) {
@@ -746,8 +746,7 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 
 void CServerConnectRem::HandlePacket(const CECPacket *packet)
 {
-	CEC_ConnState_Tag *tag =
-		(CEC_ConnState_Tag *)packet->GetTagByName(EC_TAG_CONNSTATE);
+	const CEC_ConnState_Tag *tag = static_cast<const CEC_ConnState_Tag *>(packet->GetTagByName(EC_TAG_CONNSTATE));
 	if (!tag) {
 		return;
 	}
@@ -758,7 +757,7 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
 	theApp->m_clientID = tag->GetClientId();
 
 	if (tag->IsConnectedED2K()) {
-		CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);
+		const CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);
 		if (srvtag) {
 			server = theApp->serverlist->GetByID(srvtag->GetInt());
 			if (server != m_CurrServer) {
@@ -870,7 +869,7 @@ CServer *CServerListRem::GetServerByIPTCP(uint32 WXUNUSED(nIP), uint16 WXUNUSED(
 	return 0;
 }
 
-CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
+CServer *CServerListRem::CreateItem(const CEC_Server_Tag *tag)
 {
 	CServer * server = new CServer(tag);
 	ProcessItemUpdate(tag, server);
@@ -891,7 +890,7 @@ uint32 CServerListRem::GetItemID(CServer *server)
 }
 
 
-void CServerListRem::ProcessItemUpdate(CEC_Server_Tag * tag, CServer * server)
+void CServerListRem::ProcessItemUpdate(const CEC_Server_Tag * tag, CServer * server)
 {
 	if (!tag->HasChildTags()) {
 		return;
@@ -914,7 +913,7 @@ void CServerListRem::ProcessItemUpdate(CEC_Server_Tag * tag, CServer * server)
 }
 
 
-CServer::CServer(CEC_Server_Tag *tag) : CECID(tag->GetInt())
+CServer::CServer(const CEC_Server_Tag *tag) : CECID(tag->GetInt())
 {
 	ip = tag->GetTagByNameSafe(EC_TAG_SERVER_IP)->GetInt();
 	port = tag->GetTagByNameSafe(EC_TAG_SERVER_PORT)->GetInt();
@@ -1009,7 +1008,7 @@ void CKnownFilesRem::DeleteItem(CKnownFile * file)
 		theApp->sharedfiles->erase(id);
 	}
 	if (theApp->downloadqueue->count(id)) {
-		theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile((CPartFile *) file);
+		theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(static_cast<CPartFile *>(file));
 		theApp->downloadqueue->erase(id);
 	}
 	delete file;
@@ -1022,9 +1021,9 @@ uint32 CKnownFilesRem::GetItemID(CKnownFile *file)
 }
 
 
-void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
+void CKnownFilesRem::ProcessItemUpdate(const CEC_SharedFile_Tag *tag, CKnownFile *file)
 {
-	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+	const CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	if (parttag) {
 		const uint8 *data =	file->m_partStatus.Decode(
 				(uint8 *)parttag->GetTagData(),
@@ -1042,6 +1041,7 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 	}
 	tag->UpPrio(&file->m_iUpPriorityEC);
 	tag->GetAICHHash(file->m_AICHMasterHash);
+	// Bad thing - direct writing another class' members
 	tag->GetRequests(&file->statistic.requested);
 	tag->GetAllRequests(&file->statistic.alltimerequested);
 	tag->GetAccepts(&file->statistic.accepted);
@@ -1074,7 +1074,7 @@ void CKnownFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file
 	}
 
 	if (file->IsPartFile()) {
-		ProcessItemUpdatePartfile((CEC_PartFile_Tag *) tag, (CPartFile *) file);
+		ProcessItemUpdatePartfile(static_cast<const CEC_PartFile_Tag *>(tag), static_cast<CPartFile *>(file));
 	}
 }
 
@@ -1107,7 +1107,7 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 		} else if (tagname == EC_TAG_FRIEND) {
 			theApp->friendlist->ProcessUpdate(curTag, NULL, EC_TAG_FRIEND);
 		} else if (tagname == EC_TAG_KNOWNFILE || tagname == EC_TAG_PARTFILE) {
-			CEC_SharedFile_Tag *tag = (CEC_SharedFile_Tag *) curTag;
+			const CEC_SharedFile_Tag *tag = static_cast<const CEC_SharedFile_Tag *>(curTag);
 			uint32 id = tag->ID();
 			bool isNew = true;
 			if (!m_initialUpdate) {
@@ -1124,7 +1124,7 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 			if (isNew) {
 				CKnownFile * newFile;
 				if (tag->GetTagName() == EC_TAG_PARTFILE) {
-					CPartFile *file = new CPartFile((CEC_PartFile_Tag *) tag);
+					CPartFile *file = new CPartFile(static_cast<const CEC_PartFile_Tag *>(tag));
 					ProcessItemUpdate(tag, file);
 					(*theApp->downloadqueue)[id] = file;
 					theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -1175,7 +1175,7 @@ CRemoteContainer<CClientRef, uint32, CEC_UpDownClient_Tag>(conn, true)
 }
 
 
-CClientRef::CClientRef(CEC_UpDownClient_Tag *tag)
+CClientRef::CClientRef(const CEC_UpDownClient_Tag *tag)
 {
 	m_client = new CUpDownClient(tag);
 #ifdef DEBUG_ZOMBIE_CLIENTS
@@ -1186,7 +1186,7 @@ CClientRef::CClientRef(CEC_UpDownClient_Tag *tag)
 }
 
 
-CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
+CUpDownClient::CUpDownClient(const CEC_UpDownClient_Tag *tag) : CECID(tag->ID())
 {
 	m_linked = 0;
 #ifdef DEBUG_ZOMBIE_CLIENTS
@@ -1283,7 +1283,7 @@ CUpDownClient::~CUpDownClient()
 }
 
 
-CClientRef *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
+CClientRef *CUpDownClientListRem::CreateItem(const CEC_UpDownClient_Tag *tag)
 {
 	CClientRef *client = new CClientRef(tag);
 	ProcessItemUpdate(tag, client);
@@ -1331,7 +1331,7 @@ uint32 CUpDownClientListRem::GetItemID(CClientRef *client)
 
 
 void CUpDownClientListRem::ProcessItemUpdate(
-	CEC_UpDownClient_Tag *tag,
+	const CEC_UpDownClient_Tag *tag,
 	CClientRef *clientref)
 {
 	if (!tag->HasChildTags()) {
@@ -1399,8 +1399,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	//tag->LastReqTime(&client->m_dwLastUpRequest);
 	//tag->QueueTime(&client->m_WaitStartTime);
 
-	CreditStruct *credit_struct =
-		(CreditStruct *)client->credits->GetDataStruct();
+	CreditStruct *credit_struct = const_cast<CreditStruct *>(client->credits->GetDataStruct());
 	tag->XferUp(&credit_struct->uploaded);
 	tag->XferUpSession(&client->m_nTransferredUp);
 
@@ -1436,7 +1435,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		}
 		CKnownFile * kf = theApp->knownfiles->GetByID(fileID);
 		if (kf && kf->IsCPartFile()) {
-			client->m_reqfile = (CPartFile *) kf;
+			client->m_reqfile = static_cast<CPartFile *>(kf);
 			client->m_reqfile->AddSource(client);
 			client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
 			Notify_SourceCtrlAddSource(client->m_reqfile, CCLIENTREF(client, wxT("AddSource")), A4AF_SOURCE);
@@ -1445,7 +1444,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 	}
 
 	// Part status
-	CECTag * partStatusTag = tag->GetTagByName(EC_TAG_CLIENT_PART_STATUS);
+	const CECTag * partStatusTag = tag->GetTagByName(EC_TAG_CLIENT_PART_STATUS);
 	if (partStatusTag) {
 		if (partStatusTag->GetTagDataLen() == 0) {
 			// empty tag means full source
@@ -1547,7 +1546,7 @@ void CDownQueueRem::ResetCatParts(int cat)
 
 
 
-void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile *file)
+void CKnownFilesRem::ProcessItemUpdatePartfile(const CEC_PartFile_Tag *tag, CPartFile *file)
 {
 	//
 	// update status
@@ -1592,9 +1591,9 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	//
 	// Copy part/gap status
 	//
-	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+	const CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+	const CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+	const CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
 	if (gaptag || parttag || reqtag) {
 		PartFileEncoderData &encoder = file->m_PartFileEncoderData;
 
@@ -1633,7 +1632,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	}
 
 	// Get source names and counts
-	CECTag *srcnametag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
+	const CECTag *srcnametag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
 	if (srcnametag) {
 		SourcenameItemMap &map = file->GetSourcenameItemMap();
 		for (CECTag::const_iterator it = srcnametag->begin(); it != srcnametag->end(); ++it) {
@@ -1653,7 +1652,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	}
 
 	// Get comments
-	CECTag *commenttag = tag->GetTagByName(EC_TAG_PARTFILE_COMMENTS);
+	const CECTag *commenttag = tag->GetTagByName(EC_TAG_PARTFILE_COMMENTS);
 	if (commenttag) {
 		file->ClearFileRatingList();
 		for (CECTag::const_iterator it = commenttag->begin(); it != commenttag->end(); ) {
@@ -1668,7 +1667,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 
 	// Update A4AF sources
 	ListOfUInts32 & clientIDs = file->GetA4AFClientIDs();
-	CECTag *a4aftag = tag->GetTagByName(EC_TAG_PARTFILE_A4AF_SOURCES);
+	const CECTag *a4aftag = tag->GetTagByName(EC_TAG_PARTFILE_A4AF_SOURCES);
 	if (a4aftag) {
 		file->ClearA4AFList();
 		clientIDs.clear();
@@ -1795,7 +1794,7 @@ void CFriendListRem::HandlePacket(const CECPacket *)
 }
 
 
-CFriend * CFriendListRem::CreateItem(CEC_Friend_Tag * tag)
+CFriend * CFriendListRem::CreateItem(const CEC_Friend_Tag * tag)
 {
 	CFriend * Friend = new CFriend(tag->ID());
 	ProcessItemUpdate(tag, Friend);
@@ -1816,7 +1815,7 @@ uint32 CFriendListRem::GetItemID(CFriend * Friend)
 }
 
 
-void CFriendListRem::ProcessItemUpdate(CEC_Friend_Tag * tag, CFriend * Friend)
+void CFriendListRem::ProcessItemUpdate(const CEC_Friend_Tag * tag, CFriend * Friend)
 {
 	if (!tag->HasChildTags()) {
 		return;
@@ -1974,7 +1973,7 @@ void CSearchListRem::HandlePacket(const CECPacket *packet)
 }
 
 
-CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
+CSearchFile::CSearchFile(const CEC_SearchFile_Tag *tag)
 :
 CECID(tag->ID()),
 m_parent(NULL),
@@ -2015,7 +2014,7 @@ CSearchFile::~CSearchFile()
 }
 
 
-CSearchFile *CSearchListRem::CreateItem(CEC_SearchFile_Tag *tag)
+CSearchFile *CSearchListRem::CreateItem(const CEC_SearchFile_Tag *tag)
 {
 	CSearchFile *file = new CSearchFile(tag);
 	ProcessItemUpdate(tag, file);
@@ -2038,7 +2037,7 @@ uint32 CSearchListRem::GetItemID(CSearchFile *file)
 }
 
 
-void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *file)
+void CSearchListRem::ProcessItemUpdate(const CEC_SearchFile_Tag *tag, CSearchFile *file)
 {
 	uint32 sourceCount = file->m_sourceCount;
 	uint32 completeSourceCount = file->m_completeSourceCount;

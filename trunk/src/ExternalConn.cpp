@@ -108,7 +108,7 @@ class CPartFile_Encoder : public CKnownFile_Encoder {
 	bool m_shared;
 
 	// cast inherited member to CPartFile
-	CPartFile * m_PartFile() { wxASSERT(m_file->IsCPartFile()); return (CPartFile *)m_file; }
+	const CPartFile * m_PartFile() { wxCHECK(m_file->IsCPartFile(), NULL); return static_cast<const CPartFile *>(m_file); }
 public:
 	// encoder side
 	CPartFile_Encoder(const CPartFile *file = 0) : CKnownFile_Encoder(file)
@@ -431,7 +431,9 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 	}
 
 	if ((m_conn_state == CONN_INIT) && (request->GetOpCode() == EC_OP_AUTH_REQ) ) {
+		// cppcheck-suppress unreadVariable
 		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
+		// cppcheck-suppress unreadVariable
 		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
 
 		AddLogLineN(CFormat( _("Connecting client: %s %s") )
@@ -633,7 +635,7 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 	encoders.UpdateEncoders();
 
 	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
-		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
+		const CKnownFile *cur_file = theApp->sharedfiles->GetFileByIndex(i);
 
 		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->ECID())) ) {
 			continue;
@@ -662,11 +664,11 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 		// but encoded as KnownFile, so we have to check the encoder type
 		// instead of the file type.
 		if (it->second->IsPartFile_Encoder()) {
-			CEC_PartFile_Tag filetag((const CPartFile*) cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
+			CEC_PartFile_Tag filetag(static_cast<const CPartFile*>(cur_file), EC_DETAIL_INC_UPDATE, &valuemap);
 			// Add information if partfile is shared
 			filetag.AddTag(EC_TAG_PARTFILE_SHARED, it->second->IsShared(), &valuemap);
 
-			CPartFile_Encoder * enc = (CPartFile_Encoder *) encoders[cur_file->ECID()];
+			CPartFile_Encoder * enc = static_cast<CPartFile_Encoder *>(encoders[cur_file->ECID()]);
 			enc->Encode(&filetag);
 			response->AddTag(filetag);
 		} else {
@@ -771,7 +773,7 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
 
-		CPartFile_Encoder * enc = (CPartFile_Encoder *) encoders[cur_file->ECID()];
+		CPartFile_Encoder * enc = static_cast<CPartFile_Encoder *>(encoders[cur_file->ECID()]);
 		if ( detail_level != EC_DETAIL_UPDATE ) {
 			enc->ResetEncoder();
 		}
@@ -1072,7 +1074,7 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
 	wxString response;
 
-	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetFirstTagSafe();
+	const CEC_Search_Tag *search_request = static_cast<const CEC_Search_Tag *>(request->GetFirstTagSafe());
 	theApp->searchlist->RemoveResults(0xffffffff);
 
 	CSearchList::CSearchParams params;
@@ -1268,7 +1270,7 @@ void CKnownFile_Encoder::Encode(CECTag *parent)
 	//
 	// Reference to the availability list
 	const ArrayOfUInts16& list = m_file->IsPartFile() ?
-		((CPartFile*)m_file)->m_SrcpartFrequency :
+		static_cast<const CPartFile*>(m_file)->m_SrcpartFrequency :
 		m_file->m_AvailPartFrequency;
 	// Don't add tag if available parts aren't populated yet.
 	if (!list.empty()) {
@@ -1607,7 +1609,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CEC_Prefs_Packet(request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt(), request->GetDetailLevel());
 			break;
 		case EC_OP_SET_PREFERENCES:
-			((CEC_Prefs_Packet *)request)->Apply();
+			static_cast<const CEC_Prefs_Packet *>(request)->Apply();
 			theApp->glob_prefs->Save();
 			if (thePrefs::IsFilteringClients()) {
 				theApp->clientlist->FilterQueues();
@@ -1626,13 +1628,13 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 
 		case EC_OP_CREATE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetFirstTagSafe();
-				if (tag->Create()) {
+				CEC_Category_Tag tag(*static_cast<const CEC_Category_Tag*>(request->GetFirstTagSafe()));
+				if (tag.Create()) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
 					response = new CECPacket(EC_OP_FAILED);
 					response->AddTag(CECTag(EC_TAG_CATEGORY, theApp->glob_prefs->GetCatCount() - 1));
-					response->AddTag(CECTag(EC_TAG_CATEGORY_PATH, tag->Path()));
+					response->AddTag(CECTag(EC_TAG_CATEGORY_PATH, tag.Path()));
 				}
 				Notify_CategoryAdded();
 			} else {
@@ -1641,15 +1643,15 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_UPDATE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetFirstTagSafe();
-				if (tag->Apply()) {
+				CEC_Category_Tag tag(*static_cast<const CEC_Category_Tag*>(request->GetFirstTagSafe()));
+				if (tag.Apply()) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
 					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_CATEGORY, tag->GetInt()));
-					response->AddTag(CECTag(EC_TAG_CATEGORY_PATH, tag->Path()));
+					response->AddTag(CECTag(EC_TAG_CATEGORY, tag.GetInt()));
+					response->AddTag(CECTag(EC_TAG_CATEGORY_PATH, tag.Path()));
 				}
-				Notify_CategoryUpdate(tag->GetInt());
+				Notify_CategoryUpdate(tag.GetInt());
 			} else {
 				response = new CECPacket(EC_OP_NOOP);
 			}
@@ -1667,6 +1669,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		// Logging
 		//
 		case EC_OP_ADDLOGLINE:
+			// cppcheck-suppress duplicateBranch
 			if (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL) {
 				AddLogLineC(request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData());
 			} else {
@@ -1675,6 +1678,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_ADDDEBUGLOGLINE:
+			// cppcheck-suppress duplicateBranch
 			if (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL) {
 				AddDebugLogLineC(logGeneral, request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData());
 			} else {
@@ -1904,7 +1908,7 @@ ECPartFileMsgSource::ECPartFileMsgSource()
 	}
 }
 
-void ECPartFileMsgSource::SetDirty(CPartFile *file)
+void ECPartFileMsgSource::SetDirty(const CPartFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	if ( m_dirty_status.find(filehash) != m_dirty_status.end() ) {
@@ -1912,7 +1916,7 @@ void ECPartFileMsgSource::SetDirty(CPartFile *file)
 	}
 }
 
-void ECPartFileMsgSource::SetNew(CPartFile *file)
+void ECPartFileMsgSource::SetNew(const CPartFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	wxASSERT ( m_dirty_status.find(filehash) == m_dirty_status.end() );
@@ -1920,7 +1924,7 @@ void ECPartFileMsgSource::SetNew(CPartFile *file)
 	m_dirty_status[filehash] = status;
 }
 
-void ECPartFileMsgSource::SetCompleted(CPartFile *file)
+void ECPartFileMsgSource::SetCompleted(const CPartFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
@@ -1928,7 +1932,7 @@ void ECPartFileMsgSource::SetCompleted(CPartFile *file)
 	m_dirty_status[filehash].m_finished = true;
 }
 
-void ECPartFileMsgSource::SetRemoved(CPartFile *file)
+void ECPartFileMsgSource::SetRemoved(const CPartFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
@@ -1943,7 +1947,7 @@ CECPacket *ECPartFileMsgSource::GetNextPacket()
 		if ( it->second.m_new || it->second.m_dirty || it->second.m_removed) {
 			CMD4Hash filehash = it->first;
 
-			CPartFile *partfile = it->second.m_file;
+			const CPartFile *partfile = it->second.m_file;
 
 			CECPacket *packet = new CECPacket(EC_OP_DLOAD_QUEUE);
 			if ( it->second.m_removed ) {
@@ -1969,13 +1973,13 @@ CECPacket *ECPartFileMsgSource::GetNextPacket()
 ECKnownFileMsgSource::ECKnownFileMsgSource()
 {
 	for (unsigned int i = 0; i < theApp->sharedfiles->GetFileCount(); i++) {
-		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
+		const CKnownFile *cur_file = theApp->sharedfiles->GetFileByIndex(i);
 		KNOWNFILE_STATUS status = { true, false, false, true, cur_file };
 		m_dirty_status[cur_file->GetFileHash()] = status;
 	}
 }
 
-void ECKnownFileMsgSource::SetDirty(CKnownFile *file)
+void ECKnownFileMsgSource::SetDirty(const CKnownFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	if ( m_dirty_status.find(filehash) != m_dirty_status.end() ) {
@@ -1983,7 +1987,7 @@ void ECKnownFileMsgSource::SetDirty(CKnownFile *file)
 	}
 }
 
-void ECKnownFileMsgSource::SetNew(CKnownFile *file)
+void ECKnownFileMsgSource::SetNew(const CKnownFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	wxASSERT ( m_dirty_status.find(filehash) == m_dirty_status.end() );
@@ -1991,7 +1995,7 @@ void ECKnownFileMsgSource::SetNew(CKnownFile *file)
 	m_dirty_status[filehash] = status;
 }
 
-void ECKnownFileMsgSource::SetRemoved(CKnownFile *file)
+void ECKnownFileMsgSource::SetRemoved(const CKnownFile *file)
 {
 	CMD4Hash filehash = file->GetFileHash();
 	wxASSERT ( m_dirty_status.find(filehash) != m_dirty_status.end() );
@@ -2006,7 +2010,7 @@ CECPacket *ECKnownFileMsgSource::GetNextPacket()
 		if ( it->second.m_new || it->second.m_dirty || it->second.m_removed) {
 			CMD4Hash filehash = it->first;
 
-			CKnownFile *partfile = it->second.m_file;
+			const CKnownFile *partfile = it->second.m_file;
 
 			CECPacket *packet = new CECPacket(EC_OP_SHARED_FILES);
 			if ( it->second.m_removed ) {
@@ -2060,7 +2064,7 @@ void ECSearchMsgSource::FlushStatus()
 	m_dirty_status.clear();
 }
 
-void ECSearchMsgSource::SetDirty(CSearchFile *file)
+void ECSearchMsgSource::SetDirty(const CSearchFile *file)
 {
 	if ( m_dirty_status.count(file->GetFileHash()) ) {
 		m_dirty_status[file->GetFileHash()].m_dirty = true;
@@ -2072,7 +2076,7 @@ void ECSearchMsgSource::SetDirty(CSearchFile *file)
 	}
 }
 
-void ECSearchMsgSource::SetChildDirty(CSearchFile *file)
+void ECSearchMsgSource::SetChildDirty(const CSearchFile *file)
 {
 	m_dirty_status[file->GetFileHash()].m_child_dirty = true;
 }
@@ -2134,65 +2138,65 @@ CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
 //
 // Interface to notification macros
 //
-void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
+void ECNotifier::DownloadFile_SetDirty(const CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); ++i) {
 		CECServerSocket *sock = i->first;
 		if ( sock->HaveNotificationSupport() ) {
 			ECUpdateMsgSource **notifier_array = i->second;
-			((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetDirty(file);
+			static_cast<ECPartFileMsgSource *>(notifier_array[EC_PARTFILE])->SetDirty(file);
 		}
 	}
 	NextPacketToSocket();
 }
 
-void ECNotifier::DownloadFile_RemoveFile(CPartFile *file)
+void ECNotifier::DownloadFile_RemoveFile(const CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
-		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetRemoved(file);
+		static_cast<ECPartFileMsgSource *>(notifier_array[EC_PARTFILE])->SetRemoved(file);
 	}
 	NextPacketToSocket();
 }
 
-void ECNotifier::DownloadFile_RemoveSource(CPartFile *)
+void ECNotifier::DownloadFile_RemoveSource(const CPartFile *)
 {
 	// per-partfile source list is not supported (yet), and IMHO quite useless
 }
 
-void ECNotifier::DownloadFile_AddFile(CPartFile *file)
+void ECNotifier::DownloadFile_AddFile(const CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
-		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetNew(file);
+		static_cast<ECPartFileMsgSource *>(notifier_array[EC_PARTFILE])->SetNew(file);
 	}
 	NextPacketToSocket();
 }
 
-void ECNotifier::DownloadFile_AddSource(CPartFile *)
+void ECNotifier::DownloadFile_AddSource(const CPartFile *)
 {
 	// per-partfile source list is not supported (yet), and IMHO quite useless
 }
 
-void ECNotifier::SharedFile_AddFile(CKnownFile *file)
+void ECNotifier::SharedFile_AddFile(const CKnownFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
-		((ECKnownFileMsgSource *)notifier_array[EC_KNOWN])->SetNew(file);
+		static_cast<ECKnownFileMsgSource *>(notifier_array[EC_KNOWN])->SetNew(file);
 	}
 	NextPacketToSocket();
 }
 
-void ECNotifier::SharedFile_RemoveFile(CKnownFile *file)
+void ECNotifier::SharedFile_RemoveFile(const CKnownFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
 		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
-		((ECKnownFileMsgSource *)notifier_array[EC_KNOWN])->SetRemoved(file);
+		static_cast<ECKnownFileMsgSource *>(notifier_array[EC_KNOWN])->SetRemoved(file);
 	}
 	NextPacketToSocket();
 }

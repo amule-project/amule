@@ -65,11 +65,9 @@ typedef vector<CTag> ArrayOfCTag;
 
 class CFileStatistic
 {
-	friend class CKnownFile;
 	friend class CKnownFilesRem;
-
 public:
-	CFileStatistic();
+	CFileStatistic(CKnownFile *parent);
 	void	AddRequest();
 	void	AddAccepted();
 	void    AddTransferred(uint64 bytes);
@@ -82,9 +80,9 @@ public:
 	void	SetAllTimeAccepts(uint32 new_value)	{ alltimeaccepted = new_value; };
 	uint64	GetAllTimeTransferred() const		{return alltimetransferred;}
 	void	SetAllTimeTransferred(uint64 new_value)	{ alltimetransferred = new_value; };
-	CKnownFile* fileParent;
 
 private:
+	CKnownFile* fileParent;
 	uint16 requested;
 	uint64 transferred;
 	uint16 accepted;
@@ -147,7 +145,7 @@ protected:
 
 	CMD4Hash	m_abyFileHash;
 	// comment/rating are read from the config and cached in these variables,
-	// so make the mutable to allow GetFileComment() to be a const method
+	// so make them mutable to allow GetFileComment() to be a const method
 	mutable	wxString	m_strComment;
 	mutable	int8		m_iRating;
 	bool		m_hasComment;
@@ -306,7 +304,7 @@ public:
 	uint16	GetHashingProgress() const	{ return m_hashingProgress; }
 
 #ifdef CLIENT_GUI
-	CKnownFile(CEC_SharedFile_Tag *);
+	CKnownFile(const CEC_SharedFile_Tag *);
 	friend class CKnownFilesRem;
 	RLE_Data m_partStatus;
 

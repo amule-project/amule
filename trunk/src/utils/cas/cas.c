@@ -115,13 +115,12 @@ int getopt_long(int argc,
                 const struct option *longopts,
                 int *longindex)
 {
-int i;
-int length;
 if ( (optind > 0) && (optind < argc) &&
      (strncmp(argv[optind],"--",2) == 0) &&
      (argv[optind][2] != '\0') ) {
+        int i;
         for (i = 0; longopts[i].name != NULL; i++) {
-                length = strlen(longopts[i].name);
+                int length = strlen(longopts[i].name);
                 if (strncmp(argv[optind]+2,longopts[i].name,length) == 0) {
                         if ( (longopts[i].has_arg == no_argument) && (argv[optind][2+length] == '\0') ) {
                                 optind++;
@@ -158,7 +157,6 @@ int main(int argc, char *argv[])
 {
 	/* Declaration of variables */
 	FILE *amulesig;
-	int use_out_pic = 0;
 	int use_page = 0;
 	char *config_path=NULL;
 	char *path;
@@ -169,7 +167,10 @@ int main(int argc, char *argv[])
 	int i;
 	int c;
 	int errflag = 0;
+#ifdef __GD__
+	int use_out_pic = 0;
 	char *path_for_picture=NULL;
+#endif /* __GD__ */
 	char *path_for_html=NULL;
 	CONF config;
 	time_t lt;
@@ -193,6 +194,7 @@ int main(int argc, char *argv[])
 				path_for_html = optarg;
 			}
 			break;
+#ifdef __GD__
 		case 'P':
 		case 'o':
 			use_out_pic=1;
@@ -200,6 +202,7 @@ int main(int argc, char *argv[])
 				path_for_picture = optarg;
 			}
 			break;
+#endif /* __GD__ */
 		case '?':
 			errflag++;
 		}

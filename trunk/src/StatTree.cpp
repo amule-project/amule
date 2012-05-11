@@ -55,8 +55,8 @@ uint32_t NewStatTreeItemId()
 
 #ifdef CLIENT_GUI
 CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
-	: m_label(((CEC_StatTree_Node_Tag*)tag)->GetDisplayString())
-	  , m_uniqueid(tag->GetTagByNameSafe(EC_TAG_STATTREE_NODEID)->GetInt())
+	: m_label(static_cast<const CEC_StatTree_Node_Tag*>(tag)->GetDisplayString()),
+	  m_uniqueid(tag->GetTagByNameSafe(EC_TAG_STATTREE_NODEID)->GetInt())
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STATTREE_NODE);
 
@@ -174,7 +174,7 @@ bool CStatTreeItemBase::ValueSort(const CStatTreeItemBase* a, const CStatTreeIte
 	if (a->m_id < 0x00000100 || a->m_id > 0x7fffffff || b->m_id < 0x00000100 || b->m_id > 0x7fffffff) {
 		return a->m_id > b->m_id;
 	} else {
-		return ((CStatTreeItemCounter*)a)->GetValue() > ((CStatTreeItemCounter*)b)->GetValue();
+		return dynamic_cast<const CStatTreeItemCounter*>(a)->GetValue() > dynamic_cast<const CStatTreeItemCounter*>(b)->GetValue();
 	}
 }
 
@@ -303,7 +303,7 @@ wxString CStatTreeItemCounterTmpl<_Tp>::GetDisplayString() const
 	} else {
 		wxString result = CFormat(wxT("%u")) % m_value;
 		if ((m_flags & stShowPercent) && m_parent) {
-			result += CFormat(wxT(" (%.2f%%)")) % (((double)m_value / ((CStatTreeItemCounterTmpl<_Tp>*)m_parent)->m_value) * 100.0);
+			result += CFormat(wxT(" (%.2f%%)")) % ((double(m_value) / dynamic_cast<CStatTreeItemCounterTmpl<_Tp>*>(m_parent)->m_value) * 100.0);
 		}
 		return label % result;
 	}
@@ -324,7 +324,7 @@ void CStatTreeItemCounterTmpl<_Tp>::AddECValues(CECTag *tag) const
 		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_ISTRING));
 		if ((m_flags & stShowPercent) && m_parent) {
 			CECTag tmp(EC_TAG_STAT_NODE_VALUE,
-				((double)m_value / ((CStatTreeItemCounterTmpl<_Tp>*)m_parent)->m_value) * 100.0);
+				(double(m_value) / dynamic_cast<CStatTreeItemCounterTmpl<_Tp>*>(m_parent)->m_value) * 100.0);
 			tmp.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_DOUBLE));
 			value.AddTag(tmp);
 		}

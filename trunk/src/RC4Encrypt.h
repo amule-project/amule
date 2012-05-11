@@ -38,16 +38,11 @@
 
 class MD5Sum;
 
-class RC4_Key_Struct
+struct RC4_Key_Struct
 {
-public:
 	uint8 abyState[256];
 	uint8 byX;
 	uint8 byY;
-
-public:
-	RC4_Key_Struct() {}
-	~RC4_Key_Struct() {}
 };
 
 

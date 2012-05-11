@@ -80,7 +80,7 @@ CPacket::CPacket(uint8 protocol)
 CPacket::CPacket(byte* rawHeader, byte *buf)
 {
 	memset(head, 0, sizeof head);
-	Header_Struct* header = (Header_Struct*)rawHeader;
+	Header_Struct* header = reinterpret_cast<Header_Struct*>(rawHeader);
 	size		= ENDIAN_SWAP_32(header->packetlength) - 1;
 	opcode		= header->command;
 	prot		= header->eDonkeyID;
@@ -168,7 +168,7 @@ CPacket::~CPacket()
 
 uint32 CPacket::GetPacketSizeFromHeader(const byte* rawHeader)
 {
-	Header_Struct* header = (Header_Struct*)rawHeader;
+	const Header_Struct* header = reinterpret_cast<const Header_Struct*>(rawHeader);
 	uint32 size = ENDIAN_SWAP_32(header->packetlength);
 	if (size < 1 || size >= 0x7ffffff0u)
 		return 0;
@@ -224,7 +224,7 @@ byte* CPacket::DetachPacket() {
 byte* CPacket::GetHeader() {
 	wxASSERT( !m_bSplitted );
 
-	Header_Struct* header = (Header_Struct*) head;
+	Header_Struct* header = reinterpret_cast<Header_Struct*>(head);
 	header->command = opcode;
 	header->eDonkeyID =  prot;
 	header->packetlength = ENDIAN_SWAP_32(size + 1);
@@ -236,7 +236,7 @@ byte* CPacket::GetUDPHeader() {
 	wxASSERT( !m_bSplitted );
 
 	memset(head, 0, 6);
-	UDP_Header_Struct* header = (UDP_Header_Struct*) head;
+	UDP_Header_Struct* header = reinterpret_cast<UDP_Header_Struct*>(head);
 	header->eDonkeyID =  prot;
 	header->command = opcode;
 

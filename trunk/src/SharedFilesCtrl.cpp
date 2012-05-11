@@ -145,7 +145,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(0,_("Priority"),prioMenu);
 		m_menu->AppendSeparator();
 
-		CKnownFile* file = (CKnownFile*)GetItemData(item_hit);
+		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(item_hit));
 		if (file->GetFileComment().IsEmpty() && !file->GetFileRating()) {
 			m_menu->Append(MP_CMT, _("Add Comment/Rating"));
 		} else {
@@ -204,7 +204,7 @@ void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 		} else {
 			feed += wxT("\n");
 		}
-		feed += ((CKnownFile*)GetItemData(index))->GetFeedback();
+		feed += reinterpret_cast<CKnownFile*>(GetItemData(index))->GetFeedback();
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 
@@ -283,7 +283,7 @@ void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while( index != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( index );
+		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(index));
 		CoreNotify_KnownFile_Up_Prio_Set( file, priority );
 
 		RefreshItem( index );
@@ -298,7 +298,7 @@ void CSharedFilesCtrl::OnSetPriorityAuto( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while( index != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( index );
+		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(index));
 		CoreNotify_KnownFile_Up_Prio_Auto(file);
 
 		RefreshItem( index );
@@ -323,7 +323,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while( index != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( index );
+		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(index));
 
 		switch ( event.GetId() ) {
 			case MP_GETMAGNETLINK:				URIs += theApp->CreateMagnetLink( file ) + wxT("\n");				break;
@@ -350,7 +350,7 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	if ( index != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( index );
+		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(index));
 
 		CCommentDialog dialog( this, file );
 
@@ -361,8 +361,8 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 
 int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
-	CKnownFile* file1 = (CKnownFile*)item1;
-	CKnownFile* file2 = (CKnownFile*)item2;
+	CKnownFile* file1 = reinterpret_cast<CKnownFile*>(item1);
+	CKnownFile* file2 = reinterpret_cast<CKnownFile*>(item2);
 
 	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	bool altSorting = (sortData & CMuleListCtrl::SORT_ALT) > 0;
@@ -472,7 +472,7 @@ void CSharedFilesCtrl::ShowFilesCount()
 
 void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted )
 {
-	CKnownFile *file = (CKnownFile*)GetItemData(item);
+	CKnownFile *file = reinterpret_cast<CKnownFile*>(GetItemData(item));
 	wxASSERT( file );
 
 	if ( highlighted ) {
@@ -638,7 +638,7 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxR
 {
 	// Reference to the availability list
 	const ArrayOfUInts16& list = file->IsPartFile() ?
-		((CPartFile*)file)->m_SrcpartFrequency :
+		static_cast<CPartFile*>(file)->m_SrcpartFrequency :
 		file->m_AvailPartFrequency;
 	wxPen   old_pen   = dc->GetPen();
 	wxBrush old_brush = dc->GetBrush();
@@ -680,7 +680,7 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if ( item != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData(item);
+		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(item));
 
 		wxString strNewName = ::wxGetTextFromUser(
 			_("Enter new name for this file:"),
@@ -710,7 +710,7 @@ void CSharedFilesCtrl::OnAddCollection( wxCommandEvent& WXUNUSED(evt) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (item != -1) {
-		CKnownFile *file = (CKnownFile*)GetItemData(item);
+		CKnownFile *file = reinterpret_cast<CKnownFile*>(GetItemData(item));
 		wxString CollectionFile = file->GetFilePath().JoinPaths(file->GetFileName()).GetRaw();
 		CMuleCollection my_collection;
 		if (my_collection.Open( (std::string)CollectionFile.mb_str() )) {

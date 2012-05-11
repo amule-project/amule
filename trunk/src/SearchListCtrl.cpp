@@ -188,7 +188,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 #ifdef __WXDEBUG__
 	{
 		if (newid > 0) {
-			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);
+			CSearchFile* before = reinterpret_cast<CSearchFile*>(GetItemData(newid - 1));
 			wxASSERT(before);
 			if (parent) {
 				wxASSERT((before->GetParent() == parent) || (before == parent));
@@ -198,7 +198,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 		}
 
 		if ((int)newid < GetItemCount() - 1) {
-			CSearchFile* after = (CSearchFile*)GetItemData(newid + 1);
+			CSearchFile* after = reinterpret_cast<CSearchFile*>(GetItemData(newid + 1));
 			wxASSERT(after);
 			if (parent) {
 				wxASSERT((after->GetParent() == parent) || (!after->GetParent()));
@@ -322,7 +322,7 @@ void CSearchListCtrl::UpdateItemColor(long index)
 	if (GetItem(item)) {
 		CMuleColour newcol(wxSYS_COLOUR_WINDOWTEXT);
 
-		CSearchFile* file = (CSearchFile*)GetItemData(index);
+		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(index));
 
 		int red		= newcol.Red();
 		int green	= newcol.Green();
@@ -401,7 +401,7 @@ void CSearchListCtrl::SetFilter(const wxString& regExp, bool invert, bool filter
 
 		// Filter items already on the list
 		for (int i = 0; i < GetItemCount();) {
-			CSearchFile* file = (CSearchFile*)GetItemData(i);
+			CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(i));
 
 			if (IsFiltered(file)) {
 				++i;
@@ -468,8 +468,8 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 
 int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
-	CSearchFile* file1 = (CSearchFile*)item1;
-	CSearchFile* file2 = (CSearchFile*)item2;
+	CSearchFile* file1 = reinterpret_cast<CSearchFile*>(item1);
+	CSearchFile* file2 = reinterpret_cast<CSearchFile*>(item2);
 
 	// Modifies the result, 1 for ascending, -1 for decending
 	int modifier = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
@@ -570,7 +570,7 @@ void CSearchListCtrl::SetSorting(unsigned column, unsigned order)
 	// First collapse all parent items
 	// Backward order means our index won't be influenced by items getting collapsed.
 	for (int i = GetItemCount(); i--;) {
-		CSearchFile* file = ((CSearchFile*)GetItemData(i));
+		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(i));
 		if (file->ShowChildren()) {
 			ShowChildren(file, false);
 		}
@@ -685,7 +685,7 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while (index != -1) {
-		CSearchFile* file = (CSearchFile*)GetItemData( index );
+		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(index));
 
 		URIs += theApp->CreateED2kLink( file ) + wxT("\n");
 
@@ -705,7 +705,7 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 		return;
 	}
 
-	CSearchFile* file = (CSearchFile*)GetItemData( item );
+	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
 	theApp->amuledlg->LaunchUrl(thePrefs::GetStatsServerURL() + file->GetFileHash().Encode());
 }
 
@@ -717,7 +717,7 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 		return;
 	}
 
-	CSearchFile* file = (CSearchFile*)GetItemData( item );
+	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
 	theApp->searchlist->StopSearch(true);
 	theApp->amuledlg->m_searchwnd->ResetControls();
 	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
@@ -731,7 +731,7 @@ void CSearchListCtrl::OnMarkAsKnown( wxCommandEvent& WXUNUSED(event) )
 #ifndef CLIENT_GUI
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index > -1) {
-		CSearchFile *searchFile = (CSearchFile *)GetItemData(index);
+		CSearchFile *searchFile = reinterpret_cast<CSearchFile *>(GetItemData(index));
 		CKnownFile *knownFile(new CKnownFile(*searchFile));
 		theApp->knownfiles->SafeAddKFile(knownFile);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
@@ -754,7 +754,7 @@ void CSearchListCtrl::OnPopupDownload(wxCommandEvent& event)
 
 void CSearchListCtrl::OnItemActivated(wxListEvent& event)
 {
-	CSearchFile* file = ((CSearchFile*)GetItemData(event.GetIndex()));
+	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(event.GetIndex()));
 	if (file->HasChildren()) {
 		ShowChildren(file, !file->ShowChildren());
 	} else {
@@ -791,7 +791,7 @@ void CSearchListCtrl::DownloadSelected(int category)
 	// Process all selections
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index > -1) {
-		CSearchFile* file = (CSearchFile*)GetItemData(index);
+		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(index));
 		CoreNotify_Search_Add_Download(file, category);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
@@ -808,7 +808,7 @@ const wxBrush& GetBrush(wxSystemColour index)
 void CSearchListCtrl::OnDrawItem(
 	int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
-	CSearchFile* file = (CSearchFile*)GetItemData(item);
+	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
 
 	// Define text-color and background
 	if (highlighted) {
@@ -908,7 +908,7 @@ void CSearchListCtrl::OnDrawItem(
 		// Gather some information
 		const bool notLast = (item + 1 < GetItemCount());
 		const bool notFirst = (item != 0);
-		const bool hasNext = notLast && ((CSearchFile*)GetItemData(item + 1))->GetParent();
+		const bool hasNext = notLast && reinterpret_cast<CSearchFile*>(GetItemData(item + 1))->GetParent();
 		const int middle = cur_rec.y + ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
@@ -950,7 +950,7 @@ void CSearchListCtrl::OnDrawItem(
 		CSearchFile* parent = file->GetParent();
 
 		if (item > 0) {
-			CSearchFile* before = (CSearchFile*)GetItemData(item - 1);
+			CSearchFile* before = reinterpret_cast<CSearchFile*>(GetItemData(item - 1));
 			wxASSERT(before);
 			if (parent) {
 				wxASSERT((before->GetParent() == parent) || (before == parent));
@@ -960,7 +960,7 @@ void CSearchListCtrl::OnDrawItem(
 		}
 
 		if (item < GetItemCount() - 1) {
-			CSearchFile* after = (CSearchFile*)GetItemData(item + 1);
+			CSearchFile* after = reinterpret_cast<CSearchFile*>(GetItemData(item + 1));
 			wxASSERT(after);
 			if (parent) {
 				wxASSERT((after->GetParent() == parent) || (!after->GetParent()));

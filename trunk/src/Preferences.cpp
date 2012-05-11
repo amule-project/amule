@@ -673,6 +673,7 @@ typedef Cfg_Int<int> Cfg_PureInt;
 class Cfg_Lang : public Cfg_PureInt, public Cfg_Lang_Base
 {
 public:
+	// cppcheck-suppress uninitMemberVar m_selection, m_langSelector
 	Cfg_Lang()
 		: Cfg_PureInt( wxEmptyString, m_selection, 0 )
 	{

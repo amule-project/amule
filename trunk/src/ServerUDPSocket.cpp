@@ -80,11 +80,13 @@ void CServerUDPSocket::OnPacketReceived(uint32 serverip, uint16 serverport, byte
 
 		wxASSERT( dwKey != 0 );
 		nPayLoadLen = CEncryptedDatagramSocket::DecryptReceivedServer(buffer, length, &pBuffer, dwKey, serverip);
+#ifdef __DEBUG__
 		if (nPayLoadLen == length) {
 			AddDebugLogLineN(logServerUDP, CFormat(wxT("Expected encrypted packet, but received unencrytped from server %s, UDPKey %u, Challenge: %u")) % pServer->GetListName() % pServer->GetServerKeyUDP() % pServer->GetChallenge());
 		} else {
 			AddDebugLogLineN(logServerUDP, CFormat(wxT("Received encrypted packet from server %s, UDPKey %u, Challenge: %u")) % pServer->GetListName() % pServer->GetServerKeyUDP() % pServer->GetChallenge());
 		}
+#endif
 	}
 
 	uint8 protocol = pBuffer[0];

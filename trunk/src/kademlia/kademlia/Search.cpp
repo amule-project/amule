@@ -966,7 +966,7 @@ void CSearch::ProcessResultNotes(const CUInt128& answer, TagPtrList *info)
 
 	if (!file) {
 		// If we didn't find anything check if it's in our download queue.
-		file = (CKnownFile*)theApp->downloadqueue->GetFileByID(fileHash);
+		file = theApp->downloadqueue->GetFileByID(fileHash);
 	}
 
 	// If we found a file try to add the note to the file.

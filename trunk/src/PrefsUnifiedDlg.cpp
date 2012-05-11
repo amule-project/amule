@@ -1082,7 +1082,7 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 	prefs_sizer->Detach( m_CurrentPanel );
 	m_CurrentPanel->Show( false );
 
-	m_CurrentPanel = (wxPanel *) m_PrefsIcons->GetItemData(event.GetIndex());
+	m_CurrentPanel = reinterpret_cast<wxPanel*>(m_PrefsIcons->GetItemData(event.GetIndex()));
 	if (pages[event.GetIndex()].m_function == PreferencesDirectoriesTab) {
 		CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl)->Init();
 	}

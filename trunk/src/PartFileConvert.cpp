@@ -52,7 +52,9 @@ struct ConvertJob {
 	uint32_t	spaceneeded;
 	uint8		partmettype;
 	bool		removeSource;
-	ConvertJob()	{ id=s_nextJobId++; size=0; spaceneeded=0; partmettype=PMT_UNKNOWN; removeSource=true; }
+	ConvertJob(const CPath& file, bool deleteSource, ConvStatus status)
+		: id(s_nextJobId++), folder(file), state(status), size(0), spaceneeded(0), partmettype(PMT_UNKNOWN), removeSource(deleteSource)
+		{}
 };
 
 ConvertInfo::ConvertInfo(ConvertJob *job)
@@ -104,10 +106,7 @@ void CPartFileConvert::ConvertToeMule(const CPath& file, bool deletesource)
 		return;
 	}
 
-	ConvertJob* newjob = new ConvertJob();
-	newjob->folder = file;
-	newjob->removeSource = deletesource;
-	newjob->state = CONV_QUEUE;
+	ConvertJob* newjob = new ConvertJob(file, deletesource, CONV_QUEUE);
 
 	wxMutexLocker lock(s_mutex);
 
@@ -225,7 +224,6 @@ wxThread::ExitCode CPartFileConvert::Entry()
 ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 {
 	wxString filepartindex;
-	unsigned fileindex;
 
 	CPath folder	= fileName.GetPath();
 	CPath partfile	= fileName.GetFullName();
@@ -266,6 +264,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 	}
 
 	if (s_pfconverting->partmettype == PMT_SPLITTED) {
+		unsigned fileindex;
 		char *ba = new char [PARTSIZE];
 
 		try {

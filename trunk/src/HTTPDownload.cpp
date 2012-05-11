@@ -235,11 +235,13 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		}
 
 		int download_size = url_read_stream->GetSize();
+#ifdef __DEBUG__
 		if (download_size == -1) {
 			AddDebugLogLineN(logHTTP, wxT("Download size not received, downloading until connection is closed"));
 		} else {
 			AddDebugLogLineN(logHTTP, CFormat(wxT("Download size: %i")) % download_size);
 		}
+#endif
 
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.

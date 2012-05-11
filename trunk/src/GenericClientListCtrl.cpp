@@ -466,7 +466,7 @@ ItemList GetSelectedItems( CGenericClientListCtrl* list )
 	long index = list->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while ( index > -1 ) {
-		ClientCtrlItem_Struct* item = (ClientCtrlItem_Struct*)list->GetItemData( index );
+		ClientCtrlItem_Struct* item = reinterpret_cast<ClientCtrlItem_Struct*>(list->GetItemData( index ));
 
 		results.push_back( item );
 
@@ -565,7 +565,7 @@ void CGenericClientListCtrl::OnViewClientInfo( wxCommandEvent& WXUNUSED(event) )
 
 void CGenericClientListCtrl::OnItemActivated( wxListEvent& evt )
 {
-	CClientDetailDialog( this, ((ClientCtrlItem_Struct*)GetItemData( evt.GetIndex()))->GetSource() ).ShowModal();
+	CClientDetailDialog( this, reinterpret_cast<ClientCtrlItem_Struct*>(GetItemData( evt.GetIndex()))->GetSource() ).ShowModal();
 }
 
 
@@ -579,7 +579,7 @@ void CGenericClientListCtrl::OnMouseRightClick(wxListEvent& evt)
 	delete m_menu;
 	m_menu = NULL;
 
-	ClientCtrlItem_Struct* item = (ClientCtrlItem_Struct*)GetItemData( index );
+	ClientCtrlItem_Struct* item = reinterpret_cast<ClientCtrlItem_Struct*>(GetItemData( index ));
 	CClientRef& client = item->GetSource();
 
 	m_menu = new wxMenu(wxT("Clients"));
@@ -622,7 +622,7 @@ void CGenericClientListCtrl::OnMouseMiddleClick(wxListEvent& evt)
 		return;
 	}
 
-	CClientDetailDialog(this, ((ClientCtrlItem_Struct*)GetItemData( index ))->GetSource()).ShowModal();
+	CClientDetailDialog(this, reinterpret_cast<ClientCtrlItem_Struct*>(GetItemData( index ))->GetSource()).ShowModal();
 }
 
 
@@ -644,7 +644,7 @@ void CGenericClientListCtrl::OnDrawItem(
 		return;
 	}
 
-	ClientCtrlItem_Struct* content = (ClientCtrlItem_Struct *)GetItemData(item);
+	ClientCtrlItem_Struct* content = reinterpret_cast<ClientCtrlItem_Struct *>(GetItemData(item));
 
 	// Define text-color and background
 	// and the border of the drawn area
@@ -1098,8 +1098,8 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 int CGenericClientListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
-	ClientCtrlItem_Struct* item1 = (ClientCtrlItem_Struct*)param1;
-	ClientCtrlItem_Struct* item2 = (ClientCtrlItem_Struct*)param2;
+	ClientCtrlItem_Struct* item1 = reinterpret_cast<ClientCtrlItem_Struct*>(param1);
+	ClientCtrlItem_Struct* item2 = reinterpret_cast<ClientCtrlItem_Struct*>(param2);
 
 	int sortMod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	sortData &= CMuleListCtrl::COLUMN_MASK;

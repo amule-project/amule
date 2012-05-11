@@ -36,12 +36,7 @@
 
 #include "UPnPCompatibility.h"
 
-
-#ifdef UPNP_C
-	std::string stdEmptyString;
-#else // UPNP_C
-	extern std::string stdEmptyString;
-#endif // UPNP_C
+extern std::string stdEmptyString;
 
 
 /**
@@ -216,20 +211,6 @@ extern const char s_serviceList[];
 extern const char s_device[];
 extern const char s_deviceList[];
 
-#ifdef UPNP_C
-	const char s_argument[] = "argument";
-	const char s_argumentList[] = "argumentList";
-	const char s_action[] = "action";
-	const char s_actionList[] = "actionList";
-	const char s_allowedValue[] = "allowedValue";
-	const char s_allowedValueList[] = "allowedValueList";
-	const char s_stateVariable[] = "stateVariable";
-	const char s_serviceStateTable[] = "serviceStateTable";
-	const char s_service[] = "service";
-	const char s_serviceList[] = "serviceList";
-	const char s_device[] = "device";
-	const char s_deviceList[] = "deviceList";
-#endif // UPNP_C
 
 
 class CUPnPArgument;

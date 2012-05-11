@@ -169,17 +169,16 @@ protected:
 	}
 public:
 	CRemoteContainer(CRemoteConnect *conn, bool inc_tags)
-	{
-		m_state = IDLE;
-
-		m_conn = conn;
-		m_item_count = 0;
-		m_inc_tags = inc_tags;
-	}
+		: m_state(IDLE),
+		  m_conn(conn),
+		  m_item_count(0),
+		  m_inc_tags(inc_tags),
+		  m_full_req_cmd(0),
+		  m_full_req_tag(0)
+	{}
 
 	virtual ~CRemoteContainer()
-	{
-	}
+	{}
 
 	typedef typename std::list<T *>::iterator iterator;
 	iterator begin() { return m_items.begin(); }
@@ -312,7 +311,7 @@ public:
 	void ProcessFull(const CECPacket *reply)
 	{
 		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
-			G *tag = (G *) & *it;
+			const G *tag = static_cast<const G *>(&*it);
 			// initialize item data from EC tag
 			AddItem(CreateItem(tag));
 		}
@@ -336,7 +335,7 @@ public:
 	{
 		std::set<I> core_files;
 		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
-			G *tag = (G *) & *it;
+			const G *tag = static_cast<const G *>(&*it);
 			if ( tag->GetTagName() != req_type ) {
 				continue;
 			}
@@ -367,7 +366,7 @@ public:
 		}
 	}
 
-	virtual T *CreateItem(G *)
+	virtual T *CreateItem(const G *)
 	{
 		return 0;
 	}
@@ -378,7 +377,7 @@ public:
 	{
 		return I();
 	}
-	virtual void ProcessItemUpdate(G *, T *)
+	virtual void ProcessItemUpdate(const G *, T *)
 	{
 	}
 
@@ -444,10 +443,10 @@ public:
 	//
 	// template
 	//
-	CServer *CreateItem(CEC_Server_Tag *);
+	CServer *CreateItem(const CEC_Server_Tag *);
 	void DeleteItem(CServer *);
 	uint32 GetItemID(CServer *);
-	void ProcessItemUpdate(CEC_Server_Tag *, CServer *);
+	void ProcessItemUpdate(const CEC_Server_Tag *, CServer *);
 };
 
 class CUpDownClientListRem : public CRemoteContainer<CClientRef, uint32, CEC_UpDownClient_Tag> {
@@ -458,10 +457,10 @@ public:
 	//
 	// template
 	//
-	CClientRef *CreateItem(CEC_UpDownClient_Tag *);
+	CClientRef *CreateItem(const CEC_UpDownClient_Tag *);
 	void DeleteItem(CClientRef *);
 	uint32 GetItemID(CClientRef *);
-	void ProcessItemUpdate(CEC_UpDownClient_Tag *, CClientRef *);
+	void ProcessItemUpdate(const CEC_UpDownClient_Tag *, CClientRef *);
 };
 
 class CDownQueueRem : public std::map<uint32, CPartFile*> {
@@ -510,8 +509,8 @@ public:
 };
 
 class CKnownFilesRem : public CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag> {
-	CKnownFile * CreateKnownFile(CEC_SharedFile_Tag *tag, CKnownFile *file = NULL);
-	CPartFile  * CreatePartFile(CEC_PartFile_Tag *tag);
+	CKnownFile * CreateKnownFile(const CEC_SharedFile_Tag *tag, CKnownFile *file = NULL);
+	CPartFile  * CreatePartFile(const CEC_PartFile_Tag *tag);
 
 	bool m_initialUpdate;	// improved handling for first data transfer
 public:
@@ -526,14 +525,14 @@ public:
 	//
 	// template
 	//
-	CKnownFile *CreateItem(CEC_SharedFile_Tag *) { wxFAIL; return NULL; }	// unused, required by template
+	CKnownFile *CreateItem(const CEC_SharedFile_Tag *) { wxFAIL; return NULL; }	// unused, required by template
 	void DeleteItem(CKnownFile *);
 	uint32 GetItemID(CKnownFile *);
-	void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
+	void ProcessItemUpdate(const CEC_SharedFile_Tag *, CKnownFile *);
 	bool Phase1Done(const CECPacket *) { return true; }
 	void ProcessUpdate(const CECTag *reply, CECPacket *full_req, int req_type);
 
-	void ProcessItemUpdatePartfile(CEC_PartFile_Tag *, CPartFile *);
+	void ProcessItemUpdatePartfile(const CEC_PartFile_Tag *, CPartFile *);
 };
 
 class CIPFilterRem {
@@ -573,10 +572,10 @@ public:
 	//
 	// template
 	//
-	CSearchFile *CreateItem(CEC_SearchFile_Tag *);
+	CSearchFile *CreateItem(const CEC_SearchFile_Tag *);
 	void DeleteItem(CSearchFile *);
 	uint32 GetItemID(CSearchFile *);
-	void ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *);
+	void ProcessItemUpdate(const CEC_SearchFile_Tag *, CSearchFile *);
 	bool Phase1Done(const CECPacket *);
 };
 
@@ -595,10 +594,10 @@ public:
 	//
 	// template
 	//
-	CFriend *CreateItem(CEC_Friend_Tag *);
+	CFriend *CreateItem(const CEC_Friend_Tag *);
 	void DeleteItem(CFriend *);
 	uint32 GetItemID(CFriend *);
-	void ProcessItemUpdate(CEC_Friend_Tag *, CFriend *);
+	void ProcessItemUpdate(const CEC_Friend_Tag *, CFriend *);
 };
 
 class CStatsUpdaterRem : public CECPacketHandlerBase {

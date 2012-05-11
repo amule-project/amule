@@ -36,7 +36,7 @@
 #include <wx/zipstrm.h>
 
 #include "Types.h"			// Needed for uint32
-
+#include "StatisticsDlg.h"
 
 class wxTimerEvent;
 class wxTextCtrl;
@@ -47,7 +47,6 @@ class CServerWnd;
 class CSharedFilesWnd;
 class CSearchDlg;
 class CChatWnd;
-class CStatisticsDlg;
 class CKadDlg;
 class PrefsUnifiedDlg;
 
@@ -122,7 +121,7 @@ public:
 	void ShowTransferRate();
 
 	bool StatisticsWindowActive()
-		{ return (m_activewnd == (wxWindow*)m_statisticswnd); }
+		{ return (m_activewnd == static_cast<wxWindow*>(m_statisticswnd)); }
 
 	/* Returns the active dialog. Needed to check what to redraw. */
 	enum DialogType {

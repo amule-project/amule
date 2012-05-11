@@ -218,7 +218,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	if (!stats) {
 		return ;
 	}
-	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)stats->GetTagByName(EC_TAG_CONNSTATE);
+	const CEC_ConnState_Tag *tag = static_cast<const CEC_ConnState_Tag *>(stats->GetTagByName(EC_TAG_CONNSTATE));
 	if (!tag) {
 		return ;
 	}
@@ -779,7 +779,7 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 		delete response;
 		return;
 	}
-	CEC_StatTree_Node_Tag *stats_root = (CEC_StatTree_Node_Tag *)response->GetTagByName(EC_TAG_STATTREE_NODE);
+	const CEC_StatTree_Node_Tag *stats_root = static_cast<const CEC_StatTree_Node_Tag *>(response->GetTagByName(EC_TAG_STATTREE_NODE));
 	//ecstats2php(stats_root, result);
 	for (CECTag::const_iterator it = stats_root->begin(); it != stats_root->end(); ++it) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
@@ -834,7 +834,7 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 		value_value_free(result);
 		return;
 	}
-	DownloadFile *obj = (DownloadFile *)ptr;
+	DownloadFile *obj = static_cast<DownloadFile *>(ptr);
 	result->type = PHP_VAL_INT;
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
@@ -889,7 +889,7 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		value_value_free(result);
 		return;
 	}
-	UploadFile *obj = (UploadFile *)ptr;
+	UploadFile *obj = static_cast<UploadFile *>(ptr);
 	result->type = PHP_VAL_INT;
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
@@ -934,7 +934,7 @@ void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 		value_value_free(result);
 		return;
 	}
-	ServerEntry *obj = (ServerEntry *)ptr;
+	ServerEntry *obj = static_cast<ServerEntry *>(ptr);
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sServerName));
@@ -970,7 +970,7 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		value_value_free(result);
 		return;
 	}
-	SharedFile *obj = (SharedFile *)ptr;
+	SharedFile *obj = static_cast<SharedFile *>(ptr);
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
@@ -1022,7 +1022,7 @@ void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		value_value_free(result);
 		return;
 	}
-	SearchFile *obj = (SearchFile *)ptr;
+	SearchFile *obj = static_cast<SearchFile *>(ptr);
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));

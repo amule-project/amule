@@ -498,14 +498,10 @@ bool AlcFrame::Hook(int percent)
 /// Compute Hashes on Start Button
 void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
 {
-  size_t i;
   wxString filename = m_inputFileTextCtrl->GetValue();
 
   if (!filename.empty ())
     {
-      // Initialize computation
-      m_goAhead=true;
-
       // Chrono
       wxStopWatch chrono;
 
@@ -548,7 +544,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
           // Get URLs
           wxArrayString arrayOfUrls;
           wxString url;
-          for (i=0;i < m_inputUrlListBox->GetCount();++i)
+          for (size_t i = 0; i < m_inputUrlListBox->GetCount(); ++i)
             {
               url=m_inputUrlListBox->GetString(i);
               if (url.Right(1) == wxT("/"))
@@ -597,9 +593,8 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
   if (!url.IsEmpty())
     {
       // Check if the URL already exist in list
-      size_t i;
       bool UrlNotExists = true;
-      for (i=0;i < m_inputUrlListBox->GetCount();++i)
+      for (size_t i = 0; i < m_inputUrlListBox->GetCount(); ++i)
         {
           if (url == m_inputUrlListBox->GetString(i))
             {

@@ -370,7 +370,7 @@ int CMuleListCtrl::CompareItems(wxUIntPtr item1, wxUIntPtr item2)
 
 int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long data)
 {
-	MuleSortData* sortdata = (MuleSortData*) data;
+	MuleSortData* sortdata = reinterpret_cast<MuleSortData*>(data);
 	const CSortingList& orders = sortdata->m_sort_orders;
 
 	CSortingList::const_iterator it = orders.begin();

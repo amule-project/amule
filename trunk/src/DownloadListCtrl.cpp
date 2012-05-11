@@ -378,7 +378,7 @@ ItemList GetSelectedItems( CDownloadListCtrl* list)
 	long index = list->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while ( index > -1 ) {
-		FileCtrlItem_Struct* item = (FileCtrlItem_Struct*)list->GetItemData( index );
+		FileCtrlItem_Struct* item = reinterpret_cast<FileCtrlItem_Struct*>(list->GetItemData( index ));
 		results.push_back( item );
 
 		index = list->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -594,7 +594,7 @@ void CDownloadListCtrl::OnPreviewFile( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 {
-	CPartFile* file = ((FileCtrlItem_Struct*)GetItemData( evt.GetIndex()))->GetFile();
+	CPartFile* file = reinterpret_cast<FileCtrlItem_Struct*>(GetItemData(evt.GetIndex()))->GetFile();
 
 	if ((!file->IsPartFile() || file->IsCompleted()) && file->PreviewAvailable()) {
 		PreviewFile( file );
@@ -618,7 +618,7 @@ void CDownloadListCtrl::DoItemSelectionChanged()
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 	while ( index > -1 ) {
-		CPartFile* file = ((FileCtrlItem_Struct*)GetItemData( index ))->GetFile();
+		CPartFile* file = reinterpret_cast<FileCtrlItem_Struct*>(GetItemData( index ))->GetFile();
 		if (file->IsPartFile()) {
 			filesVector.push_back(file);
 		}
@@ -639,7 +639,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 	delete m_menu;
 	m_menu = NULL;
 
-	FileCtrlItem_Struct* item = (FileCtrlItem_Struct*)GetItemData( index );
+	FileCtrlItem_Struct* item = reinterpret_cast<FileCtrlItem_Struct*>(GetItemData( index ));
 	m_menu = new wxMenu( _("Downloads") );
 
 	wxMenu* priomenu = new wxMenu();
@@ -783,7 +783,7 @@ void CDownloadListCtrl::ShowFileDetailDialog(long index)
 	int nrItems = GetItemCount();
 	files.reserve(nrItems);
 	for (int i = 0; i < nrItems; i++) {
-		files.push_back(((FileCtrlItem_Struct*)GetItemData(i))->GetFile());
+		files.push_back(reinterpret_cast<FileCtrlItem_Struct*>(GetItemData(i))->GetFile());
 	}
 	bool autosort = thePrefs::AutoSortDownload(false);
 	CFileDetailDialog(this, files, index).ShowModal();
@@ -834,7 +834,7 @@ void CDownloadListCtrl::OnDrawItem(
 		return;
 	}
 
-	FileCtrlItem_Struct* content = (FileCtrlItem_Struct *)GetItemData(item);
+	FileCtrlItem_Struct* content = reinterpret_cast<FileCtrlItem_Struct *>(GetItemData(item));
 
 	// Define text-color and background
 	// and the border of the drawn area
@@ -1114,14 +1114,14 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 
 wxString CDownloadListCtrl::GetTTSText(unsigned item) const
 {
-	return ((FileCtrlItem_Struct*)GetItemData(item))->GetFile()->GetFileName().GetPrintable();
+	return reinterpret_cast<FileCtrlItem_Struct*>(GetItemData(item))->GetFile()->GetFileName().GetPrintable();
 }
 
 
 int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
-	FileCtrlItem_Struct* item1 = (FileCtrlItem_Struct*)param1;
-	FileCtrlItem_Struct* item2 = (FileCtrlItem_Struct*)param2;
+	FileCtrlItem_Struct* item1 = reinterpret_cast<FileCtrlItem_Struct*>(param1);
+	FileCtrlItem_Struct* item2 = reinterpret_cast<FileCtrlItem_Struct*>(param2);
 
 	int sortMod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	sortData &= CMuleListCtrl::COLUMN_MASK;

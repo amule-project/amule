@@ -29,25 +29,25 @@
 
 #ifdef ENABLE_UPNP
 
-#define UPNP_C
-
 #include "UPnPBase.h"
 
-
-#include <dlfcn.h>		// For dlopen(), dlsym(), dlclose()
 #include <algorithm>		// For transform()
 
 
-#ifdef __GNUC__
-	#if __GNUC__ >= 4
-		#define REINTERPRET_CAST(x) reinterpret_cast<x>
-	#endif
-#endif
-#ifndef REINTERPRET_CAST
-	// Let's hope that function pointers are equal in size to data pointers
-	#define REINTERPRET_CAST(x) (x)
-#endif
+std::string stdEmptyString;
 
+const char s_argument[] = "argument";
+const char s_argumentList[] = "argumentList";
+const char s_action[] = "action";
+const char s_actionList[] = "actionList";
+const char s_allowedValue[] = "allowedValue";
+const char s_allowedValueList[] = "allowedValueList";
+const char s_stateVariable[] = "stateVariable";
+const char s_serviceStateTable[] = "serviceStateTable";
+const char s_service[] = "service";
+const char s_serviceList[] = "serviceList";
+const char s_device[] = "device";
+const char s_deviceList[] = "deviceList";
 
 /**
  * Case insensitive std::string comparison
@@ -187,9 +187,8 @@ void CUPnPLib::ProcessActionResponse(
 IXML_Element *CUPnPLib::Element_GetRootElement(
 	IXML_Document *doc) const
 {
-	IXML_Element *root = REINTERPRET_CAST(IXML_Element *)(
-		ixmlNode_getFirstChild(
-			REINTERPRET_CAST(IXML_Node *)(doc)));
+	IXML_Element *root = reinterpret_cast<IXML_Element *>(
+		ixmlNode_getFirstChild(&doc->n));
 
 	return root;
 }
@@ -201,10 +200,9 @@ IXML_Element *CUPnPLib::Element_GetRootElement(
 IXML_Element *CUPnPLib::Element_GetFirstChild(
 	IXML_Element *parent) const
 {
-	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(parent);
-	IXML_Node *child = ixmlNode_getFirstChild(node);
+	IXML_Node *child = ixmlNode_getFirstChild(&parent->n);
 
-	return REINTERPRET_CAST(IXML_Element *)(child);
+	return reinterpret_cast<IXML_Element *>(child);
 }
 
 
@@ -214,10 +212,9 @@ IXML_Element *CUPnPLib::Element_GetFirstChild(
 IXML_Element *CUPnPLib::Element_GetNextSibling(
 	IXML_Element *child) const
 {
-	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(child);
-	IXML_Node *sibling = ixmlNode_getNextSibling(node);
+	IXML_Node *sibling = ixmlNode_getNextSibling(&child->n);
 
-	return REINTERPRET_CAST(IXML_Element *)(sibling);
+	return reinterpret_cast<IXML_Element *>(sibling);
 }
 
 
@@ -227,8 +224,7 @@ IXML_Element *CUPnPLib::Element_GetNextSibling(
 const DOMString CUPnPLib::Element_GetTag(
 	IXML_Element *element) const
 {
-	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(element);
-	const DOMString tag = ixmlNode_getNodeName(node);
+	const DOMString tag = ixmlNode_getNodeName(&element->n);
 
 	return tag;
 }
@@ -243,8 +239,7 @@ const std::string CUPnPLib::Element_GetTextValue(
 	if (!element) {
 		return stdEmptyString;
 	}
-	IXML_Node *text = ixmlNode_getFirstChild(
-		REINTERPRET_CAST(IXML_Node *)(element));
+	IXML_Node *text = ixmlNode_getFirstChild(&element->n);
 	const DOMString s = ixmlNode_getNodeValue(text);
 	std::string ret;
 	if (s) {
@@ -281,15 +276,14 @@ IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
 		return NULL;
 	}
 
-	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(element);
-	IXML_Node *child = ixmlNode_getFirstChild(node);
+	IXML_Node *child = ixmlNode_getFirstChild(&element->n);
 	const DOMString childTag = ixmlNode_getNodeName(child);
 	while(child && childTag && strcmp(tag, childTag)) {
 		child = ixmlNode_getNextSibling(child);
 		childTag = ixmlNode_getNodeName(child);
 	}
 
-	return REINTERPRET_CAST(IXML_Element *)(child);
+	return reinterpret_cast<IXML_Element *>(child);
 }
 
 
@@ -304,22 +298,21 @@ IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
 		return NULL;
 	}
 
-	IXML_Node *child = REINTERPRET_CAST(IXML_Node *)(element);
+	IXML_Node *child = &element->n;
 	const DOMString childTag = NULL;
 	do {
 		child = ixmlNode_getNextSibling(child);
 		childTag = ixmlNode_getNodeName(child);
 	} while(child && childTag && strcmp(tag, childTag));
 
-	return REINTERPRET_CAST(IXML_Element *)(child);
+	return reinterpret_cast<IXML_Element *>(child);
 }
 
 
 const std::string CUPnPLib::Element_GetAttributeByTag(
 	IXML_Element *element, const DOMString tag) const
 {
-	IXML_NamedNodeMap *NamedNodeMap = ixmlNode_getAttributes(
-		REINTERPRET_CAST(IXML_Node *)(element));
+	IXML_NamedNodeMap *NamedNodeMap = ixmlNode_getAttributes(&element->n);
 	IXML_Node *attribute = ixmlNamedNodeMap_getNamedItem(NamedNodeMap, tag);
 	const DOMString s = ixmlNode_getNodeValue(attribute);
 	std::string ret;

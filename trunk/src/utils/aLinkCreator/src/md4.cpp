@@ -310,7 +310,6 @@ wxString MD4::calcMd4FromString(const wxString &buf)
 /// Get Md4 hash from a file
 wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 {
-  unsigned int bufSize;
   unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
 
@@ -323,7 +322,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
     }
   else
     {
-      bufSize = calcBufSize(file.Length());
+      unsigned int bufSize = calcBufSize(file.Length());
       char *buf = new char[bufSize];
 
       bool keep_going = true;

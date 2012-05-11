@@ -204,7 +204,7 @@ void CUpDownClient::CreateNextBlockPackage()
 			// Check if this know file is a CPartFile.
 			// For completed part files IsPartFile() returns false, so they are
 			// correctly treated as plain CKnownFile.
-			CPartFile* srcPartFile = srcfile->IsPartFile() ? (CPartFile*)srcfile : NULL;
+			CPartFile* srcPartFile = srcfile->IsPartFile() ? static_cast<CPartFile*>(srcfile) : NULL;
 
 			// THIS EndOffset points BEHIND the last byte requested
 			// (other than the offsets used in the PartFile code)

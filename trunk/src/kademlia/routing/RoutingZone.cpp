@@ -142,14 +142,13 @@ void CRoutingZone::ReadFile(const wxString& specialNodesdat)
 	bool doHaveVerifiedContacts = false;
 	// Read in the saved contact list
 	try {
-		uint32_t numContacts = 0;
 		uint32_t validContacts = 0;
 		CFile file;
 		if (CPath::FileExists(specialNodesdat.IsEmpty() ? m_filename : specialNodesdat) && file.Open(m_filename, CFile::read)) {
 			// Get how many contacts in the saved list.
 			// NOTE: Older clients put the number of contacts here...
 			//       Newer clients always have 0 here to prevent older clients from reading it.
-			numContacts = file.ReadUInt32();
+			uint32_t numContacts = file.ReadUInt32();
 			uint32_t fileVersion = 0;
 			if (numContacts == 0) {
 				if (file.GetLength() >= 8) {

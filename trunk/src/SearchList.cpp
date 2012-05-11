@@ -252,9 +252,9 @@ CSearchList::CSearchList()
 	  m_searchInProgress(false),
 	  m_currentSearch(-1),
 	  m_searchPacket(NULL),
-	  m_64bitSearchPacket(false)
-{
-}
+	  m_64bitSearchPacket(false),
+	  m_KadSearchFinished(true)
+{}
 
 
 CSearchList::~CSearchList()

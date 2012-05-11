@@ -70,7 +70,7 @@ private:
 #endif
 
 public:
-	CUpDownClient(class CEC_UpDownClient_Tag *);
+	CUpDownClient(const class CEC_UpDownClient_Tag *);
 
 	void	RequestSharedFileList();
 
