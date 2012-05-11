@@ -39,7 +39,7 @@ CServer::CServer(ServerMet_Struct* in_data)
 	Init();
 }
 
-CServer::CServer(uint16 in_port, const wxString i_addr)
+CServer::CServer(uint16 in_port, const wxString& i_addr)
 {
 
 	port = in_port;

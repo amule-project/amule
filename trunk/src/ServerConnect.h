@@ -83,7 +83,6 @@ public:
 	uint32	GetClientID()	{ return clientid; }
 	CServer*GetCurrentServer();
 	uint32	clientid;
-	uint8	pendingConnects;
 	bool	IsLowID()	{ return ::IsLowID(clientid); }
 	void	SetClientID(uint32 newid);
 	bool	IsLocalServer(uint32 dwIP, uint16 nPort);

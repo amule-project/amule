@@ -968,7 +968,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 	uint32 cDbgNoSrc = 0;
 
 	SourceSet::iterator it = m_ClientUploadList.begin();
-	for ( ; it != m_ClientUploadList.end(); it++ ) {
+	for ( ; it != m_ClientUploadList.end(); ++it ) {
 		const CUpDownClient *cur_src = it->GetClient();
 
 		if (	cur_src->HasLowID() ||
@@ -1269,7 +1269,7 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
 		m_iRating = iNewRating;
 
 		SourceSet::iterator it = m_ClientUploadList.begin();
-		for ( ; it != m_ClientUploadList.end(); it++ ) {
+		for ( ; it != m_ClientUploadList.end(); ++it ) {
 			it->SetCommentDirty();
 		}
 	}
@@ -1350,7 +1350,7 @@ void CKnownFile::UpdatePartsInfo()
 		count.reserve(m_ClientUploadList.size());
 
 		SourceSet::iterator it = m_ClientUploadList.begin();
-		for ( ; it != m_ClientUploadList.end(); it++ ) {
+		for ( ; it != m_ClientUploadList.end(); ++it ) {
 			CUpDownClient* client = it->GetClient();
 			if ( !client->GetUpPartStatus().empty() && client->GetUpPartCount() == partcount ) {
 				count.push_back(client->GetUpCompleteSourcesCount());

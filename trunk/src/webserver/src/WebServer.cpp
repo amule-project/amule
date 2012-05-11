@@ -205,7 +205,7 @@ CParsedUrl::CParsedUrl(const wxString &url)
 
 void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
 {
-	for(std::map<wxString, wxString>::iterator i = m_params.begin(); i != m_params.end(); i++) {
+	for(std::map<wxString, wxString>::iterator i = m_params.begin(); i != m_params.end(); ++i) {
 		std::string key(unicode2char(i->first)), value(unicode2char(i->second));
 		dst[key] = value;
 	}
@@ -379,7 +379,7 @@ void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 	const CECTag *tag = NULL;
 	if (reply) {
 		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
-			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 				tag = & *it;
 				if (tag->GetTagName() == EC_TAG_STRING) {
 					webInterface->Show(tag->GetStringData());
@@ -619,7 +619,7 @@ bool ServersInfo::ReQuery()
 	//
 	// query succeded - flush existing values and refill
 	EraseAll();
-	for (CECPacket::const_iterator it = srv_reply->begin(); it != srv_reply->end(); it++) {
+	for (CECPacket::const_iterator it = srv_reply->begin(); it != srv_reply->end(); ++it) {
 		const CECTag *tag = & *it;
 
 		ServerEntry Entry;
@@ -839,7 +839,7 @@ bool UploadsInfo::ReQuery()
 	//
 	// query succeded - flush existing values and refill
 	EraseAll();
-	for (CECPacket::const_iterator it = up_reply->begin(); it != up_reply->end(); it++) {
+	for (CECPacket::const_iterator it = up_reply->begin(); it != up_reply->end(); ++it) {
 
 		UploadFile curr((CEC_UpDownClient_Tag *) & *it);
 
@@ -1075,7 +1075,7 @@ void CProgressImage::CreateSpan()
 		//
 		// if file is that small, draw it in single step
 		//
-		if (m_file->m_ReqParts.size()) {
+		if (!m_file->m_ReqParts.empty()) {
 			for(int i = 0; i < m_width; ++i) {
 				m_ColorLine[i] = RGB(255, 208, 0);
 			}

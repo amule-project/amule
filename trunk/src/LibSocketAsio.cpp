@@ -796,7 +796,7 @@ public:
 			StartAccept();
 			m_ok = true;
 			AddDebugLogLineN(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d")) % adr.IPAddress() % adr.Service());
-		} catch (system_error err) {
+		} catch (const system_error& err) {
 			AddDebugLogLineC(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d failed - %s")) % adr.IPAddress() % adr.Service() % err.code().message());
 		}
 	}
@@ -1146,7 +1146,7 @@ private:
 			m_socket = new ip::udp::socket(s_io_service, endpoint);
 			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % m_address.IPAddress() % m_address.Service());
 			StartBackgroundRead();
-		} catch (system_error err) {
+		} catch (const system_error& err) {
 			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % m_address.IPAddress() % m_address.Service() % err.code().message());
 			m_socket = NULL;
 			m_OK = false;

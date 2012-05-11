@@ -277,7 +277,7 @@ public:
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
 #endif
-	void SetOSFiles(const wxString new_path);
+	void SetOSFiles(const wxString& new_path);
 
 	const wxString& GetOSType() const { return OSType; }
 

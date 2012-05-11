@@ -172,7 +172,7 @@ void CRoutingBin::GetEntries(ContactList *result, bool emptyFirst) const
 	}
 
 	// Append all entries to the results.
-	if (m_entries.size() > 0) {
+	if (!m_entries.empty()) {
 		result->insert(result->end(), m_entries.begin(), m_entries.end());
 	}
 }
@@ -185,7 +185,7 @@ void CRoutingBin::GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_
 	}
 
 	// No entries, no closest.
-	if (m_entries.size() == 0) {
+	if (m_entries.empty()) {
 		return;
 	}
 

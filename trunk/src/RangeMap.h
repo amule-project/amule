@@ -365,7 +365,7 @@ public:
 			// Our target range must come before the one we found; does it exist?
 			if ( it != m_ranges.begin() ) {
 				// Go back to the last range which starts at or before key
-				it--;
+				--it;
 
 				// Check if this range covers the key
 				if ( key <= it->second.first ) {

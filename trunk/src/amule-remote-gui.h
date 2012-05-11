@@ -241,7 +241,7 @@ public:
 			return;
 		}
 
-		for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
+		for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); ++j) {
 			this->DeleteItem(*j);
 		}
 
@@ -311,7 +311,7 @@ public:
 
 	void ProcessFull(const CECPacket *reply)
 	{
-		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 			G *tag = (G *) & *it;
 			// initialize item data from EC tag
 			AddItem(CreateItem(tag));
@@ -335,7 +335,7 @@ public:
 	virtual void ProcessUpdate(const CECTag *reply, CECPacket *full_req, int req_type)
 	{
 		std::set<I> core_files;
-		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+		for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 			G *tag = (G *) & *it;
 			if ( tag->GetTagName() != req_type ) {
 				continue;

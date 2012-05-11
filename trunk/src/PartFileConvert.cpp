@@ -47,7 +47,6 @@ struct ConvertJob {
 	CPath		folder;
 	CPath		filename;
 	wxString	filehash;
-	int		format;
 	ConvStatus	state;
 	uint32_t	size;
 	uint32_t	spaceneeded;
@@ -225,7 +224,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 
 ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 {
-	wxString filepartindex, buffer;
+	wxString filepartindex;
 	unsigned fileindex;
 
 	CPath folder	= fileName.GetPath();
@@ -324,9 +323,8 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			while (filename.IsOk()) {
 				// stats
 				++curindex;
-				buffer = CFormat(_("Loading data from old download file (%u of %u)")) % curindex % partfilecount;
 
-				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), buffer);
+				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), CFormat(_("Loading data from old download file (%u of %u)")) % curindex % partfilecount);
 
 				long l;
 				filename.GetFullName().RemoveExt().GetExt().ToLong(&l);
@@ -344,9 +342,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 				inputfile.Read(ba, toReadWrite);
 				inputfile.Close();
 
-				buffer = CFormat(_("Saving data block into new single download file (%u of %u)")) % curindex % partfilecount;
-
-				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), buffer);
+				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), CFormat(_("Saving data block into new single download file (%u of %u)")) % curindex % partfilecount);
 
 				// write the buffered data
 				file->m_hpartfile.WriteAt(ba, chunkstart, toReadWrite);

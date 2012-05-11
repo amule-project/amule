@@ -260,7 +260,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		T * GetByHash(const CMD4Hash &fileHash)
 		{
 			T * ret = 0;
-			for (typename std::map<I, T *>::iterator it = m_items_hash.begin(); it != m_items_hash.end(); it++) {
+			for (typename std::map<I, T *>::iterator it = m_items_hash.begin(); it != m_items_hash.end(); ++it) {
 				if (it->second->nHash == fileHash) {
 					ret = it->second;
 					break;
@@ -276,7 +276,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 		{
 			std::set<I> core_files;
-			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 				G *tag = (G *) & *it;
 
 				core_files.insert(tag->ID());
@@ -288,7 +288,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 				}
 			}
 			std::list<I> del_ids;
-			for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
+			for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); ++j) {
 				if ( core_files.count(j->ID()) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
@@ -299,9 +299,9 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 					del_ids.push_back(j->ID());
 				}
 			}
-			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); j++) {
+			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); ++j) {
 				m_items_hash.erase(*j);
-				for(typename std::list<T>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
+				for(typename std::list<T>::iterator k = this->m_items.begin(); k != this->m_items.end(); ++k) {
 					if ( *j == k->ID() ) {
 						this->m_items.erase(k);
 						break;
@@ -312,7 +312,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 
 		void ProcessFull(const CECPacket *reply)
 		{
-			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 				G *tag = (G *) & *it;
 				// initialize item data from EC tag
 				T item(tag);

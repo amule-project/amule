@@ -737,7 +737,7 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 	std::list<CQueuedData*>::iterator outputStart = m_output_queue.begin();
 	uint32 outputQueueSize = m_output_queue.size();
 	for (uint32 i = 1; i < outputQueueSize; i++) {
-		outputStart++;
+		++outputStart;
 	}
 
 	uint32_t flags = 0x20;
@@ -780,12 +780,12 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 
 	// find the beginning of our data in the output queue
 	if (outputQueueSize) {
-		outputStart++;
+		++outputStart;
 	} else {
 		outputStart = m_output_queue.begin();
 	}
 	// now calculate actual size of data
-	for(std::list<CQueuedData*>::iterator it = outputStart; it != m_output_queue.end(); it++) {
+	for(std::list<CQueuedData*>::iterator it = outputStart; it != m_output_queue.end(); ++it) {
 		packet_len += (uint32_t)(*it)->GetDataLength();
 	}
 	// header size is not counted

@@ -318,7 +318,7 @@ void CSearchFile::SetDownloadStatus()
 		m_downloadStatus = NEW;
 	}
 	// Update status of children too
-	for (CSearchResultList::iterator it = m_children.begin(); it != m_children.end(); it++) {
+	for (CSearchResultList::iterator it = m_children.begin(); it != m_children.end(); ++it) {
 		Notify_Search_Update_Sources(*it);
 	}
 }

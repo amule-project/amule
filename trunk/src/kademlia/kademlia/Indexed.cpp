@@ -515,7 +515,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.find(sourceID);
 		if (itSource != currKeyHash->m_Source_map.end()) {
 			currSource = itSource->second;
-			if (currSource->entryList.size() > 0) {
+			if (!currSource->entryList.empty()) {
 				if (indexTotal > KADEMLIAMAXINDEX - 5000) {
 					load = 100;
 					//We are in a hot node.. If we continued to update all the publishes
@@ -590,7 +590,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 
 		for (CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin(); itSource != currSrcHash->m_Source_map.end(); ++itSource) {
 			Source* currSource = *itSource;
-			if (currSource->entryList.size()) {
+			if (!currSource->entryList.empty()) {
 				CEntry* currEntry = currSource->entryList.front();
 				wxASSERT(currEntry != NULL);
 				if (currEntry->m_uIP == entry->m_uIP && (currEntry->m_uTCPport == entry->m_uTCPport || currEntry->m_uUDPport == entry->m_uUDPport)) {
@@ -665,7 +665,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 
 		for (CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin(); itSource != currNoteHash->m_Source_map.end(); ++itSource) {
 			Source* currNote = *itSource;
-			if( currNote->entryList.size() ) {
+			if (!currNote->entryList.empty()) {
 				CEntry* currEntry = currNote->entryList.front();
 				wxASSERT(currEntry!=NULL);
 				if (currEntry->m_uIP == entry->m_uIP || currEntry->m_uSourceID == entry->m_uSourceID) {
@@ -828,7 +828,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 
 		for (CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin(); itSource != currSrcHash->m_Source_map.end(); ++itSource) {
 			Source* currSource = *itSource;
-			if (currSource->entryList.size()) {
+			if (!currSource->entryList.empty()) {
 				Kademlia::CEntry* currName = currSource->entryList.front();
 				if (count < 0) {
 					count++;
@@ -878,7 +878,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 
 		for (CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin(); itSource != currNoteHash->m_Source_map.end(); ++itSource ) {
 			Source* currNote = *itSource;
-			if (currNote->entryList.size()) {
+			if (!currNote->entryList.empty()) {
 				Kademlia::CEntry* currName = currNote->entryList.front();
 				if (count < maxResults) {
 					if (!fileSize || !currName->m_uSize || fileSize == currName->m_uSize) {

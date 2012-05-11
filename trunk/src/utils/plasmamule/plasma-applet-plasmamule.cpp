@@ -377,7 +377,7 @@ void PlasmaMuleApplet::dropEvent(QGraphicsSceneDragDropEvent * event)
 	{
 		sendLinkToEngine (event->mimeData()->text(), 0, this, m_debugChannel);
 	} else {
-		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
+		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); ++constIterator)
 		{
 			menu->addAction(*constIterator);
 			if (constIterator != m_catNames.constEnd())
@@ -406,7 +406,7 @@ void PlasmaMuleApplet::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 		menu.addAction (KIcon("folder"), QString("Default"));
 	} else {
 		QMenu *open_sub_menu = menu.addMenu("Open Incoming");
-		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
+		for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); ++constIterator)
 		{
 			open_sub_menu->addAction(KIcon("folder"), "Folder for " + *constIterator);
 			if (constIterator != m_catNames.constEnd())
@@ -440,7 +440,7 @@ void PlasmaMuleApplet::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 		} else	{
 			QMenu *download_sub_menu = menu.addMenu("Download Link");
 
-			for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); constIterator++)
+			for (constIterator = m_catNames.constBegin(); constIterator != m_catNames.constEnd(); ++constIterator)
 			{
 				if (!clipboard->text(QClipboard::Clipboard).isEmpty())
 				{

@@ -349,7 +349,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 						// If the user requested all, then we select all files and exit the loop
 						// since there is little point to add anything more to "everything"
 						if( token == wxT("all") ) {
-							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); it++) {
+							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); ++it) {
 								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *) & *it;
 								request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
 							}
@@ -361,7 +361,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 							}
 						} else {
 							 // Go through the dl queue and look at each filename
-							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); it++) {
+							for (CECPacket::const_iterator it = reply_all->begin(); it != reply_all->end(); ++it) {
 								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *) & *it;
 								wxString partmetname = tag->PartMetName();
 
@@ -604,7 +604,7 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 	printf("Nr.    Filename:                                                                        Size(MB):  Sources: \n");
 	printf("-----------------------------------------------------------------------------------------------------------\n");
 
-	for( std::map<unsigned long int,SearchFile*>::iterator iter = results_map.begin(); iter != results_map.end(); iter++ ) {
+	for( std::map<unsigned long int,SearchFile*>::iterator iter = results_map.begin(); iter != results_map.end(); ++iter ) {
 		id = (*iter).first;
 		SearchFile* file = (*iter).second;
 
@@ -625,7 +625,7 @@ wxString StatTree2Text(CEC_StatTree_Node_Tag *tree, int depth)
 		return wxEmptyString;
 	}
 	wxString result = wxString(wxChar(' '), depth) + tree->GetDisplayString() + wxT("\n");
-	for (CECTag::const_iterator it = tree->begin(); it != tree->end(); it++) {
+	for (CECTag::const_iterator it = tree->begin(); it != tree->end(); ++it) {
 		CEC_StatTree_Node_Tag *tmp = (CEC_StatTree_Node_Tag*) & *it;
 		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
 			result += StatTree2Text(tmp, depth + 1);
@@ -688,7 +688,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_STRINGS:
-			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
 				const CECTag &tag = *it;
 				s << tag.GetStringData() << wxT("\n");
 			}
@@ -745,7 +745,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			break;
 		}
 		case EC_OP_DLOAD_QUEUE:
-			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
 				CEC_PartFile_Tag *tag =	(CEC_PartFile_Tag *) & *it;
 					uint64 filesize, donesize;
 					filesize = tag->SizeFull();
@@ -772,7 +772,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_ULOAD_QUEUE:
-			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
 				const CECTag *tag = & *it;
 				const CECTag *clientName = tag->GetTagByName(EC_TAG_CLIENT_NAME);
 				const CECTag *partfileName = tag->GetTagByName(EC_TAG_PARTFILE_NAME);
@@ -789,13 +789,13 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			break;
 		case EC_OP_LOG:
-			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
 				const CECTag &tag = *it;
 				s << tag.GetStringData() << wxT("\n");
 			}
 			break;
 		case EC_OP_SERVER_LIST:
-			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
 				const CECTag &tag = *it;
 				const CECTag *serverName = tag.GetTagByName(EC_TAG_SERVER_NAME);
 				if (serverName) {
@@ -814,7 +814,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			int i = 0;
 			m_Results_map.clear();
 			s += CFormat(_("Number of search results: %i\n")) % response->GetTagCount();
-			for (CECPacket::const_iterator it = response->begin(); it != response->end(); it++) {
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
 				CEC_SearchFile_Tag *tag = (CEC_SearchFile_Tag *) & *it;
 				//printf("Tag FileName: %s \n",(const char*)unicode2char(tag->FileName()));
 				m_Results_map[i++] = new SearchFile(tag);

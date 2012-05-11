@@ -387,7 +387,7 @@ ValueType CQueueObserver<ValueType>::GetNext()
 {
 	wxMutexLocker lock( m_mutex );
 
-	if ( m_queue.size() ) {
+	if (!m_queue.empty()) {
 		ValueType v = *m_queue.begin();
 		m_queue.erase( m_queue.begin() );
 

@@ -442,7 +442,7 @@ void CHTTPDownloadThread::StopAll()
 		wxMutexLocker lock(s_allThreadsMutex);
 		std::swap(allThreads, s_allThreads);
 	}
-	for (ThreadSet::iterator it = allThreads.begin(); it != allThreads.end(); it++) {
+	for (ThreadSet::iterator it = allThreads.begin(); it != allThreads.end(); ++it) {
 		(*it)->Stop();
 	}
 }

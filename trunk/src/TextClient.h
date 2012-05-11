@@ -45,7 +45,6 @@ class SearchFile {
 
 		SearchFile(CEC_SearchFile_Tag *);
 
-		void ProcessUpdate(CEC_SearchFile_Tag *);
 		static class SearchInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }
 };

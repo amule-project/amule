@@ -531,7 +531,7 @@ void CEC_Prefs_Packet::Apply()
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_SHARED)) != NULL) {
 			theApp->glob_prefs->shareddir_list.clear();
-			for (CECTag::const_iterator it = oneTag->begin(); it != oneTag->end(); it++) {
+			for (CECTag::const_iterator it = oneTag->begin(); it != oneTag->end(); ++it) {
 				theApp->glob_prefs->shareddir_list.push_back(CPath(it->GetStringData()));
 			}
 		}

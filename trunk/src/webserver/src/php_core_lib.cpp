@@ -178,13 +178,13 @@ void php_native_usort(PHP_VALUE_NODE *)
 	//
 	// create vector of values
 	//
-	if ( arr_obj->array.size() == 0 ) {
+	if ( arr_obj->array.empty() ) {
 		php_report_error(PHP_WARNING, "Sorting array of size 0");
 		return;
 	}
 
 	std::list<SortElem> sort_list;
-	for(PHP_ARRAY_ITER_TYPE i = arr_obj->array.begin(); i != arr_obj->array.end(); i++) {
+	for(PHP_ARRAY_ITER_TYPE i = arr_obj->array.begin(); i != arr_obj->array.end(); ++i) {
 		sort_list.push_back(SortElem(i->second));
 	}
 	SortElem::callback = func_decl;
@@ -193,7 +193,7 @@ void php_native_usort(PHP_VALUE_NODE *)
 	arr_obj->array.clear();
 	arr_obj->sorted_keys.clear();
 	unsigned int key = 0;
-	for(std::list<SortElem>::iterator i = sort_list.begin(); i != sort_list.end(); i++) {
+	for(std::list<SortElem>::iterator i = sort_list.begin(); i != sort_list.end(); ++i) {
 		array_add_to_int_key(&array->value, key++, i->obj);
 	}
 
@@ -696,7 +696,7 @@ CWriteStrBuffer::CWriteStrBuffer()
 
 CWriteStrBuffer::~CWriteStrBuffer()
 {
-	for(std::list<char *>::iterator i = m_buf_list.begin(); i != m_buf_list.end(); i++) {
+	for(std::list<char *>::iterator i = m_buf_list.begin(); i != m_buf_list.end(); ++i) {
 		delete [] *i;
 	}
 	delete [] m_curr_buf;
@@ -738,7 +738,7 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 {
 	char *curr_ptr = dst_buffer;
 	int rem_size = m_total_length;
-	for(std::list<char *>::iterator i = m_buf_list.begin(); i != m_buf_list.end(); i++) {
+	for(std::list<char *>::iterator i = m_buf_list.begin(); i != m_buf_list.end(); ++i) {
 		memcpy(curr_ptr, *i, m_alloc_size);
 		rem_size -= m_alloc_size;
 		curr_ptr += m_alloc_size;
@@ -756,7 +756,7 @@ void load_session_vars(const char *target, std::map<std::string, std::string> &v
 	// i'm not building exp tree, node not needed
 	delete sess_vars_exp_node;
 	cast_value_array(&sess_vars->value);
-	for(std::map<std::string, std::string>::iterator i = varmap.begin(); i != varmap.end(); i++) {
+	for(std::map<std::string, std::string>::iterator i = varmap.begin(); i != varmap.end(); ++i) {
 		PHP_VAR_NODE *curr_var = array_get_by_str_key(&sess_vars->value, i->first);
 		PHP_VALUE_NODE val;
 		val.type = PHP_VAL_STRING;

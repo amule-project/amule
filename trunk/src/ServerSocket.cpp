@@ -353,12 +353,13 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 					}
 					wxASSERT( dwServerReportedIP == new_id || ::IsLowID(new_id) );
 					dwObfuscationTCPPort = data.ReadUInt32();
-					if (cur_server != NULL && dwObfuscationTCPPort != 0) {
-						cur_server->SetObfuscationPortTCP((uint16)dwObfuscationTCPPort);
-					}
-
-					if (pServer != NULL && dwObfuscationTCPPort != 0) {
-						pServer->SetObfuscationPortTCP((uint16)dwObfuscationTCPPort);
+					if (dwObfuscationTCPPort != 0) {
+						if (cur_server != NULL) {
+							cur_server->SetObfuscationPortTCP(dwObfuscationTCPPort);
+						}
+						if (pServer != NULL) {
+							pServer->SetObfuscationPortTCP(dwObfuscationTCPPort);
+						}
 					}
 				}
 

@@ -46,10 +46,12 @@ void CGapList::Init(uint64 fileSize, bool isEmpty)
 	if (isEmpty) {
 		m_partsComplete.resize(m_iPartCount, incomplete);
 		AddGap(0, fileSize - 1);
+		m_totalGapSize = fileSize;
 	} else {
 		m_partsComplete.resize(m_iPartCount, complete);
+		m_totalGapSize = 0;
 	}
-	m_totalGapSizeValid = false;
+	m_totalGapSizeValid = true;
 }
 
 
@@ -208,7 +210,7 @@ uint64 CGapList::GetGapSize()
 		m_totalGapSize = 0;
 
 		ListType::const_iterator it = m_gaplist.begin();
-		for (; it != m_gaplist.end(); it++) {
+		for (; it != m_gaplist.end(); ++it) {
 			m_totalGapSize += it->first - it->second + 1;
 		}
 	}

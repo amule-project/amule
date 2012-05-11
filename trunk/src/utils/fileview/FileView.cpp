@@ -102,7 +102,7 @@ bool CFileView::OnCmdLineParsed(wxCmdLineParser& parser)
 		for (size_t n = 0; n < parser.GetParamCount(); n++) {
 			m_files.push_back(parser.GetParam(n));
 		}
-		if (m_files.size() == 0) {
+		if (m_files.empty()) {
 			parser.Usage();
 			return false;
 		} else {

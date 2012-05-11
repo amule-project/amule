@@ -331,7 +331,7 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 	bool hasCompletedDownloads = false;
 
 	// remove all displayed files with a different cat and show the correct ones
-	for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
+	for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); ++it) {
 
 		CPartFile* file =  it->second->GetFile();
 
@@ -405,7 +405,7 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 			}
 		}
 	}
-	if (files.size()) {
+	if (!files.empty()) {
 		wxString question;
 		if (files.size() == 1) {
 			question = _("Are you sure that you wish to delete the selected file?");

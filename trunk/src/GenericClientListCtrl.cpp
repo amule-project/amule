@@ -524,7 +524,7 @@ void CGenericClientListCtrl::OnSetFriendslot(wxCommandEvent& evt)
 	if (it != sources.end()) {
 		CClientRef &client = (*it)->GetSource();
 		theApp->friendlist->SetFriendSlot(client.GetFriend(), evt.IsChecked());
-		it++;
+		++it;
 	}
 	if (it != sources.end()) {
 		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxOK | wxICON_ERROR, this);

@@ -579,7 +579,7 @@ void CKeyEntry::DirtyDeletePublishData()
 
 void CKeyEntry::WriteTagListWithPublishInfo(CFileDataIO* data)
 {
-	if (m_publishingIPs == NULL || m_publishingIPs->size() == 0) {
+	if (m_publishingIPs == NULL || m_publishingIPs->empty()) {
 		wxFAIL;
 		WriteTagList(data);
 		return;

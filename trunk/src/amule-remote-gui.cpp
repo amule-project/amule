@@ -578,7 +578,7 @@ void CPreferencesRem::HandlePacket(const CECPacket *packet)
 
 	const CECTag *cat_tags = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES);
 	if (cat_tags) {
-		for (CECTag::const_iterator it = cat_tags->begin(); it != cat_tags->end(); it++) {
+		for (CECTag::const_iterator it = cat_tags->begin(); it != cat_tags->end(); ++it) {
 			const CECTag &cat_tag = *it;
 			Category_Struct *cat = new Category_Struct;
 			cat->title = cat_tag.GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
@@ -995,7 +995,7 @@ void CSharedFilesRem::SetFileCommentRating(CKnownFile* file, const wxString& new
 void CSharedFilesRem::CopyFileList(std::vector<CKnownFile*>& out_list) const
 {
 	out_list.reserve(size());
-	for (const_iterator it = begin(); it != end(); it++) {
+	for (const_iterator it = begin(); it != end(); ++it) {
 		out_list.push_back(it->second);
 	}
 }
@@ -1097,7 +1097,7 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 	accepted = 0;
 
 	std::set<uint32> core_files;
-	for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); it++) {
+	for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 		const CECTag * curTag = &*it;
 		ec_tagname_t tagname = curTag->GetTagName();
 		if (tagname == EC_TAG_CLIENT) {
@@ -1539,7 +1539,7 @@ void CDownQueueRem::ResetCatParts(int cat)
 	// Called when category is deleted. Command will be performed on the remote side,
 	// but files still should be updated here right away, or drawing errors (colour not available)
 	// will happen.
-	for (iterator it = begin(); it != end(); it++) {
+	for (iterator it = begin(); it != end(); ++it) {
 		CPartFile* file = it->second;
 		file->RemoveCategory(cat);
 	}
@@ -1636,7 +1636,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	CECTag *srcnametag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
 	if (srcnametag) {
 		SourcenameItemMap &map = file->GetSourcenameItemMap();
-		for (CECTag::const_iterator it = srcnametag->begin(); it != srcnametag->end(); it++) {
+		for (CECTag::const_iterator it = srcnametag->begin(); it != srcnametag->end(); ++it) {
 			uint32 key = it->GetInt();
 			int count = it->GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_NAMES_COUNTS)->GetInt();
 			if (count == 0) {
@@ -1672,7 +1672,7 @@ void CKnownFilesRem::ProcessItemUpdatePartfile(CEC_PartFile_Tag *tag, CPartFile 
 	if (a4aftag) {
 		file->ClearA4AFList();
 		clientIDs.clear();
-		for (CECTag::const_iterator it = a4aftag->begin(); it != a4aftag->end(); it++) {
+		for (CECTag::const_iterator it = a4aftag->begin(); it != a4aftag->end(); ++it) {
 			if (it->GetTagName() != EC_TAG_ECID) {	// should always be this
 				continue;
 			}
@@ -1771,7 +1771,7 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 void CDownQueueRem::ClearCompleted(const ListOfUInts32 & ecids)
 {
 	CECPacket req(EC_OP_CLEAR_COMPLETED);
-	for (ListOfUInts32::const_iterator it = ecids.begin(); it != ecids.end(); it++) {
+	for (ListOfUInts32::const_iterator it = ecids.begin(); it != ecids.end(); ++it) {
 		req.AddTag(CECTag(EC_TAG_ECID, *it));
 	}
 
