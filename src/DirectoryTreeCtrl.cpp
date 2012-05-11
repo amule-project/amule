@@ -267,7 +267,7 @@ void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 {
 	wxCHECK_RET(list, wxT("Invalid list in GetSharedDirectories"));
 
-	for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); it++) {
+	for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); ++it) {
 		list->push_back(it->second);
 	}
 }
@@ -278,7 +278,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 	wxCHECK_RET(list, wxT("Invalid list in SetSharedDirectories"));
 
 	m_lstShared.clear();
-	for (PathList::iterator it = list->begin(); it != list->end(); it++) {
+	for (PathList::iterator it = list->begin(); it != list->end(); ++it) {
 		m_lstShared.insert(SharedMapItem(GetKey(*it), *it));
 	}
 
@@ -308,7 +308,7 @@ void CDirectoryTreeCtrl::UpdateSharedDirectories()
 	// ugly hack to at least show shared dirs in remote gui
 	if (m_IsRemote) {
 		DeleteChildren(m_root);
-		for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); it++) {
+		for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); ++it) {
 			AppendItem(m_root, it->second.GetPrintable(), IMAGE_FOLDER, -1, new CItemData(it->second));
 		}
 		return;

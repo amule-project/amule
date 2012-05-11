@@ -187,7 +187,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 	if (m_knownSizeMap) {
 		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
 		p = m_knownSizeMap->equal_range((uint32) in_size);
-		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; it++) {
+		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; ++it) {
 			CKnownFile *cur_file = it->second;
 			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
 				return cur_file;
@@ -215,7 +215,7 @@ CKnownFile *CKnownFileList::IsOnDuplicates(
 	if (m_duplicateSizeMap) {
 		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
 		p = m_duplicateSizeMap->equal_range((uint32) in_size);
-		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; it++) {
+		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; ++it) {
 			CKnownFile *cur_file = it->second;
 			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
 				return cur_file;
@@ -323,11 +323,11 @@ void CKnownFileList::PrepareIndex()
 {
 	ReleaseIndex();
 	m_knownSizeMap = new KnownFileSizeMap;
-	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin(); it != m_knownFileMap.end(); it++) {
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin(); it != m_knownFileMap.end(); ++it) {
 		m_knownSizeMap->insert(std::pair<uint32, CKnownFile*>((uint32) it->second->GetFileSize(), it->second));
 	}
 	m_duplicateSizeMap = new KnownFileSizeMap;
-	for (KnownFileList::const_iterator it = m_duplicateFileList.begin(); it != m_duplicateFileList.end(); it++) {
+	for (KnownFileList::const_iterator it = m_duplicateFileList.begin(); it != m_duplicateFileList.end(); ++it) {
 		m_duplicateSizeMap->insert(std::pair<uint32, CKnownFile*>((uint32) (*it)->GetFileSize(), *it));
 	}
 }

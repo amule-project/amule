@@ -488,11 +488,8 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 	bool unicoded = (sender->GetUnicodeSupport() != utf8strNone);
 	for (unsigned int i = 0; i != results; ++i){
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, searchID, 0, 0, directory);
-		if (sender) {
-			toadd->SetClientID(sender->GetUserIDHybrid());
-			toadd->SetClientPort(sender->GetUserPort());
-		}
-
+		toadd->SetClientID(sender->GetUserIDHybrid());
+		toadd->SetClientPort(sender->GetUserPort());
 		AddToList(toadd, true);
 	}
 
@@ -1016,7 +1013,7 @@ void CSearchList::KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt
 
 void CSearchList::UpdateSearchFileByHash(const CMD4Hash& hash)
 {
-	for (ResultMap::iterator it = m_results.begin(); it != m_results.end(); it++) {
+	for (ResultMap::iterator it = m_results.begin(); it != m_results.end(); ++it) {
 		CSearchResultList& results = it->second;
 		for (size_t i = 0; i < results.size(); ++i) {
 			CSearchFile* item = results.at(i);

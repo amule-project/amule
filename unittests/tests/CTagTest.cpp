@@ -570,7 +570,7 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 	buf.WriteUInt8(tagNames.size());
 	int counter = 0;
 	// For each tagNames entry write an 8bit int tag (type:0x9)
-	for (TagNamesByString::iterator it_name = tagNames.begin(); it_name != tagNames.end(); it_name++) {
+	for (TagNamesByString::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
 		buf.WriteUInt8(0x09); // 8 bit int tag type
 
 		buf.WriteUInt8(0x01); // single char string
@@ -591,7 +591,7 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 	TagPtrList::iterator it = taglist.begin();
 
 	counter = 0;
-	for (TagNamesByString::iterator it_name = tagNames.begin(); it_name != tagNames.end(); it_name++) {
+	for (TagNamesByString::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
 		CONTEXT(wxT("Testing tag name: ") + it_name->second);
 		CheckTagData(*it++, it_name->first, valid_tag_value(counter++));
 	}
@@ -651,7 +651,7 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 	CMemFile buf;
 
 	uint64 counter = 0;
-	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); it_name++) {
+	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
 		// m_uType
 		buf.WriteUInt8(0x09 + 0x80);
 		// m_uName
@@ -663,7 +663,7 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 	buf.Seek(0, wxFromStart);
 
 	counter = 0;
-	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); it_name++) {
+	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
 		CONTEXT(wxString::Format(wxT("Reading tag#%d"), counter));
 		CTag* newtag = new CTag(buf, true);
 		CheckTagName(it_name->first, newtag);

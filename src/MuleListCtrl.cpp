@@ -240,7 +240,7 @@ void CMuleListCtrl::LoadSettings()
 		while (tokens.HasMoreTokens()) {
 			tokenList.push_front(tokens.GetNextToken());
 		}
-		for (CStringList::iterator it = tokenList.begin(); it != tokenList.end(); it++) {
+		for (CStringList::iterator it = tokenList.begin(); it != tokenList.end(); ++it) {
 			wxString token = *it;
 			wxString name = token.BeforeFirst(wxT(':'));
 			long order = StrToLong(token.AfterFirst(wxT(':')).BeforeLast(wxT(':')));

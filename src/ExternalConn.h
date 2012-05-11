@@ -52,7 +52,7 @@ class CTagSet : public std::set<T> {
 	public:
 		CTagSet(const CECPacket *request) : std::set<T>()
 		{
-			for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+			for (CECPacket::const_iterator it = request->begin(); it != request->end(); ++it) {
 				const CECTag *tag = & *it;
 				if ( tag->GetTagName() == OP ) {
 					InSet(tag, T());

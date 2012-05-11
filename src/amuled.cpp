@@ -595,18 +595,20 @@ int CamuleDaemonApp::OnRun()
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
 	// actualy calls wxHandleProcessTermination() in console applications.
 	// We do our best here.
-	int ret = 0;
-	ret = sigaction(SIGCHLD, NULL, &m_oldSignalChildAction);
+	DEBUG_ONLY( int ret = 0; )
+	DEBUG_ONLY( ret = ) sigaction(SIGCHLD, NULL, &m_oldSignalChildAction);
 	m_newSignalChildAction = m_oldSignalChildAction;
 	m_newSignalChildAction.sa_sigaction = OnSignalChildHandler;
 	m_newSignalChildAction.sa_flags |=  SA_SIGINFO;
 	m_newSignalChildAction.sa_flags &= ~SA_RESETHAND;
-	ret = sigaction(SIGCHLD, &m_newSignalChildAction, NULL);
+	DEBUG_ONLY( ret = ) sigaction(SIGCHLD, &m_newSignalChildAction, NULL);
+#ifdef __DEBUG__
 	if (ret == -1) {
 		AddDebugLogLineC(logStandard, CFormat(wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD callback with sigaction() failed: %m.")));
 	} else {
 		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD callback with sigaction() succeeded."));
 	}
+#endif
 #endif // __WXMSW__
 
 #ifdef AMULED28_EVENTLOOP
@@ -711,12 +713,14 @@ int CamuleDaemonApp::OnExit()
 	ShutDown();
 
 #ifndef __WXMSW__
-	int ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
+	DEBUG_ONLY( int ret = ) sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
+#ifdef __DEBUG__
 	if (ret == -1) {
 		AddDebugLogLineC(logStandard, CFormat(wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: %m.")));
 	} else {
 		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD callback with sigaction() succeeded."));
 	}
+#endif
 #endif // __WXMSW__
 
 	delete core_timer;

@@ -107,11 +107,11 @@ void CUploadQueue::SortGetBestClient(CClientRef * bestClient)
 		// Check if it's better than that of a previous one, and move it up then.
 		CClientRefList::iterator it1 = it2;
 		while (it1 != m_waitinglist.begin()) {
-			it1--;
+			--it1;
 			if (cur_score > it1->GetClient()->GetScore()) {
 				// swap them
 				std::swap(*it2, *it1);
-				it2--;
+				--it2;
 			} else {
 				// no need to check further since list is already sorted
 				break;
@@ -152,7 +152,7 @@ void CUploadQueue::SortGetBestClient(CClientRef * bestClient)
 
 #ifdef __DEBUG__
 	AddDebugLogLineN(logLocalClient, CFormat(wxT("Current UL queue (%d):")) % (rank - 1));
-	for (it = m_waitinglist.begin(); it != m_waitinglist.end(); it++) {
+	for (it = m_waitinglist.begin(); it != m_waitinglist.end(); ++it) {
 		CUpDownClient* c = it->GetClient();
 		AddDebugLogLineN(logLocalClient, CFormat(wxT("%4d %7d  %s %5d  %s"))
 			% c->GetUploadQueueWaitingPosition()
@@ -329,7 +329,7 @@ CUploadQueue::~CUploadQueue()
 
 bool CUploadQueue::IsOnUploadQueue(const CUpDownClient* client) const
 {
-	for (CClientRefList::const_iterator it = m_waitinglist.begin(); it != m_waitinglist.end(); it++) {
+	for (CClientRefList::const_iterator it = m_waitinglist.begin(); it != m_waitinglist.end(); ++it) {
 		if (it->GetClient() == client) {
 			return true;
 		}
@@ -340,7 +340,7 @@ bool CUploadQueue::IsOnUploadQueue(const CUpDownClient* client) const
 
 bool CUploadQueue::IsDownloading(const CUpDownClient* client) const
 {
-	for (CClientRefList::const_iterator it = m_uploadinglist.begin(); it != m_uploadinglist.end(); it++) {
+	for (CClientRefList::const_iterator it = m_uploadinglist.begin(); it != m_uploadinglist.end(); ++it) {
 		if (it->GetClient() == client) {
 			return true;
 		}
@@ -464,7 +464,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	found = theApp->clientlist->GetClientsByIP( client->GetIP() );
 
 	int ipCount = 0;
-	for ( it = found.begin(); it != found.end(); it++ ) {
+	for ( it = found.begin(); it != found.end(); ++it ) {
 		if ( ( it->GetClient() == client ) || IsOnUploadQueue( it->GetClient() ) ) {
 			ipCount++;
 		}
@@ -654,7 +654,7 @@ bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client)
 			// update ranks of remaining queue
 			while (it != m_waitinglist.end()) {
 				it->GetClient()->SetUploadQueueWaitingPosition(rank++);
-				it++;
+				++it;
 			}
 			return true;
 		}

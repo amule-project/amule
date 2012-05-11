@@ -663,7 +663,7 @@ bool CUPnPService::Execute(
 	AddDebugLogLineN(logUPnP, msgAction);
 	// Everything is ok, make the action
 	IXML_Document *ActionDoc = NULL;
-	if (ArgValue.size()) {
+	if (!ArgValue.empty()) {
 		for (unsigned int i = 0; i < ArgValue.size(); ++i) {
 			int ret = UpnpAddToAction(
 				&ActionDoc,

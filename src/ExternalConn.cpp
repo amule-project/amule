@@ -140,7 +140,7 @@ public:
 CFileEncoderMap::~CFileEncoderMap()
 {
 	// DeleteContents() causes infinite recursion here!
-	for (iterator it = begin(); it != end(); it++) {
+	for (iterator it = begin(); it != end(); ++it) {
 		delete it->second;
 	}
 }
@@ -180,13 +180,13 @@ void CFileEncoderMap::UpdateEncoders()
 	// (std::map documentation is unclear if a construct like
 	//		iterator to_del = it++; erase(to_del) ;
 	// works or invalidates it too.)
-	for (iterator it = begin(); it != end(); it++) {
+	for (iterator it = begin(); it != end(); ++it) {
 		if (!curr_files.count(it->first)) {
 			dead_files.insert(it->first);
 		}
 	}
 	// then delete them
-	for (IDSet::iterator it = dead_files.begin(); it != dead_files.end(); it++) {
+	for (IDSet::iterator it = dead_files.begin(); it != dead_files.end(); ++it) {
 		iterator it2 = find(*it);
 		delete it2->second;
 		erase(it2);
@@ -462,21 +462,17 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				//
 				// So far ok, check capabilities of client
 				//
-				bool canZLIB = false, canUTF8numbers = false;
 				if (request->GetTagByName(EC_TAG_CAN_ZLIB)) {
-					canZLIB = true;
 					m_my_flags |= EC_FLAG_ZLIB;
 				}
 				if (request->GetTagByName(EC_TAG_CAN_UTF8_NUMBERS)) {
-					canUTF8numbers = true;
 					m_my_flags |= EC_FLAG_UTF8_NUMBERS;
 				}
 				m_haveNotificationSupport = request->GetTagByName(EC_TAG_CAN_NOTIFY) != NULL;
 				AddDebugLogLineN(logEC, CFormat(wxT("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s") )
-					% (canZLIB ? wxT("yes") : wxT("no"))
-					% (canUTF8numbers ? wxT("yes") : wxT("no"))
+					% ((m_my_flags & EC_FLAG_ZLIB) ? wxT("yes") : wxT("no"))
+					% ((m_my_flags & EC_FLAG_UTF8_NUMBERS) ? wxT("yes") : wxT("no"))
 					% (m_haveNotificationSupport ? wxT("yes") : wxT("no")));
-				if (canZLIB && canUTF8numbers) {}	// get rid of unused variable warning
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")
@@ -685,7 +681,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	CECEmptyTag clients(EC_TAG_CLIENT);
 	const CClientList::IDMap& clientList = theApp->clientlist->GetClientList();
 	bool onlyTransmittingClients = thePrefs::IsTransmitOnlyUploadingClients();
-	for (CClientList::IDMap::const_iterator it = clientList.begin(); it != clientList.end(); it++) {
+	for (CClientList::IDMap::const_iterator it = clientList.begin(); it != clientList.end(); ++it) {
 		const CUpDownClient* cur_client = it->second.GetClient();
 		if (onlyTransmittingClients && !cur_client->IsDownloading()) {
 			// For poor CPU cores only transmit uploading clients. This will save a lot of CPU.
@@ -710,7 +706,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 
 	// Add friends
 	CECEmptyTag friends(EC_TAG_FRIEND);
-	for (CFriendList::const_iterator it = theApp->friendlist->begin(); it != theApp->friendlist->end(); it++) {
+	for (CFriendList::const_iterator it = theApp->friendlist->begin(); it != theApp->friendlist->end(); ++it) {
 		const CFriend* cur_friend = *it;
 		CValueMap &valuemap = tagmap.GetValueMap(cur_friend->ECID());
 		friends.AddTag(CEC_Friend_Tag(cur_friend, &valuemap));
@@ -792,7 +788,7 @@ static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	CECPacket *response = NULL;
 
 	// request can contain multiple files.
-	for (CECPacket::const_iterator it1 = request->begin(); it1 != request->end(); it1++) {
+	for (CECPacket::const_iterator it1 = request->begin(); it1 != request->end(); ++it1) {
 		const CECTag &hashtag = *it1;
 
 		wxASSERT(hashtag.GetTagName() == EC_TAG_PARTFILE);
@@ -1056,7 +1052,7 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 static CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
-	for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+	for (CECPacket::const_iterator it = request->begin(); it != request->end(); ++it) {
 		const CECTag &tag = *it;
 		CMD4Hash hash = tag.GetMD4Data();
 		uint8 category = tag.GetFirstTagSafe()->GetInt();
@@ -1124,7 +1120,7 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 static CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_NOOP);
-	for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+	for (CECPacket::const_iterator it = request->begin(); it != request->end(); ++it) {
 		const CECTag &tag = *it;
 		CMD4Hash hash = tag.GetMD4Data();
 		uint8 prio = tag.GetFirstTagSafe()->GetInt();
@@ -1243,7 +1239,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	//
 	// Add new names
 	//
-	for (strIntMap::iterator it3 = nameMap.begin(); it3 != nameMap.end(); it3++) {
+	for (strIntMap::iterator it3 = nameMap.begin(); it3 != nameMap.end(); ++it3) {
 		int id = ++m_sourcenameID;
 		CECIntTag tag(EC_TAG_PARTFILE_SOURCE_NAMES, id);
 		tag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, it3->first));
@@ -1360,7 +1356,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			}
 			break;
 		case EC_OP_ADD_LINK:
-			for (CECPacket::const_iterator it = request->begin(); it != request->end(); it++) {
+			for (CECPacket::const_iterator it = request->begin(); it != request->end(); ++it) {
 				const CECTag &tag = *it;
 				wxString link = tag.GetStringData();
 				int category = 0;
@@ -1464,7 +1460,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		}
 		case EC_OP_CLEAR_COMPLETED: {
 			ListOfUInts32 toClear;
-			for (CECTag::const_iterator it = request->begin(); it != request->end(); it++) {
+			for (CECTag::const_iterator it = request->begin(); it != request->end(); ++it) {
 				if (it->GetTagName() == EC_TAG_ECID) {
 					toClear.push_back(it->GetInt());
 				}
@@ -2128,7 +2124,7 @@ CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
 			return 0;
 		}
 		CECPacket *packet = GetNextPacket(notifier_array);
-		printf("[EC] next update packet; opcode=%x\n",packet ? packet->GetOpCode() : 0xff);
+		//printf("[EC] next update packet; opcode=%x\n",packet ? packet->GetOpCode() : 0xff);
 		return packet;
 	} else {
 		return 0;
@@ -2141,7 +2137,7 @@ CECPacket *ECNotifier::GetNextPacket(CECServerSocket *sock)
 void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
+		i != m_msg_source.end(); ++i) {
 		CECServerSocket *sock = i->first;
 		if ( sock->HaveNotificationSupport() ) {
 			ECUpdateMsgSource **notifier_array = i->second;
@@ -2154,7 +2150,7 @@ void ECNotifier::DownloadFile_SetDirty(CPartFile *file)
 void ECNotifier::DownloadFile_RemoveFile(CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
+		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetRemoved(file);
 	}
@@ -2169,7 +2165,7 @@ void ECNotifier::DownloadFile_RemoveSource(CPartFile *)
 void ECNotifier::DownloadFile_AddFile(CPartFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
+		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECPartFileMsgSource *)notifier_array[EC_PARTFILE])->SetNew(file);
 	}
@@ -2184,7 +2180,7 @@ void ECNotifier::DownloadFile_AddSource(CPartFile *)
 void ECNotifier::SharedFile_AddFile(CKnownFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
+		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECKnownFileMsgSource *)notifier_array[EC_KNOWN])->SetNew(file);
 	}
@@ -2194,7 +2190,7 @@ void ECNotifier::SharedFile_AddFile(CKnownFile *file)
 void ECNotifier::SharedFile_RemoveFile(CKnownFile *file)
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
+		i != m_msg_source.end(); ++i) {
 		ECUpdateMsgSource **notifier_array = i->second;
 		((ECKnownFileMsgSource *)notifier_array[EC_KNOWN])->SetRemoved(file);
 	}
@@ -2235,13 +2231,13 @@ void ECNotifier::Remove_EC_Client(CECServerSocket *sock)
 void ECNotifier::NextPacketToSocket()
 {
 	for(std::map<CECServerSocket *, ECUpdateMsgSource **>::iterator i = m_msg_source.begin();
-		i != m_msg_source.end(); i++) {
+		i != m_msg_source.end(); ++i) {
 		CECServerSocket *sock = i->first;
 		if ( sock->HaveNotificationSupport() && !sock->DataPending() ) {
 			ECUpdateMsgSource **notifier_array = i->second;
 			CECPacket *packet = GetNextPacket(notifier_array);
 			if ( packet ) {
-				printf("[EC] sending update packet; opcode=%x\n",packet->GetOpCode());
+				//printf("[EC] sending update packet; opcode=%x\n",packet->GetOpCode());
 				sock->SendPacket(packet);
 			}
 		}

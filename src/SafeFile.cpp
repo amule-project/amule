@@ -561,7 +561,7 @@ void CFileDataIO::WriteTagPtrList(const TagPtrList& tagList)
 
 	WriteUInt8(count);
 	TagPtrList::const_iterator it;
-	for (it = tagList.begin(); it != tagList.end(); it++) {
+	for (it = tagList.begin(); it != tagList.end(); ++it) {
 		WriteTag(**it);
 	}
 }

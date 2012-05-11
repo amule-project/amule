@@ -401,7 +401,6 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 	m_downPartStatus.clear();
 
 	bool bPartsNeeded = false;
-	int iNeeded = 0;
 	if (!nED2KPartCount)
 	{
 		m_nPartCount = m_reqfile->GetPartCount();
@@ -441,7 +440,6 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 					if (status) {
 						if (!m_reqfile->IsComplete(done)){
 							bPartsNeeded = true;
-							iNeeded++;
 						}
 					}
 					done++;
@@ -594,7 +592,7 @@ void CUpDownClient::SendBlockRequests()
 	if (GetVBTTags()) {
 
 		// Ask new blocks only when all completed
-		if (m_PendingBlocks_list.size()) {
+		if (!m_PendingBlocks_list.empty()) {
 			return;
 		}
 
@@ -660,9 +658,9 @@ void CUpDownClient::SendBlockRequests()
 		if (!slower_client->GetSentCancelTransfer()) {
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-			if (slower_client != this) {
+//			if (slower_client != this) {
 //				printf("Dropped client %p to allow client %p to download\n",slower_client, this);
-			}
+//			}
 			slower_client->ClearDownloadBlockRequests();
 			slower_client->SendPacket(packet,true,true);
 			slower_client->SetSentCancelTransfer(1);

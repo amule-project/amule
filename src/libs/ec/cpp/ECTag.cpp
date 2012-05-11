@@ -290,7 +290,7 @@ CECTag& CECTag::operator=(const CECTag& tag)
 			m_tagData = NULL;
 		}
 		m_tagList.clear();
-		for (const_iterator it = tag.begin(); it != tag.end(); it++) {
+		for (const_iterator it = tag.begin(); it != tag.end(); ++it) {
 			m_tagList.push_back(*it);
 		}
 	}
@@ -492,7 +492,7 @@ bool CECTag::WriteChildren(CECSocket& socket) const
 	wxASSERT(m_tagList.size() < 0xFFFF);
     uint16 tmp = (uint16)m_tagList.size();
 	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
-	for (const_iterator it = begin(); it != end(); it++) {
+	for (const_iterator it = begin(); it != end(); ++it) {
 		if (!it->WriteTag(socket)) return false;
 	}
 	return true;
@@ -506,7 +506,7 @@ bool CECTag::WriteChildren(CECSocket& socket) const
  */
 const CECTag* CECTag::GetTagByName(ec_tagname_t name) const
 {
-	for (const_iterator it = begin(); it != end(); it++) {
+	for (const_iterator it = begin(); it != end(); ++it) {
 		if (it->m_tagName == name) return & *it;
 	}
 	return NULL;
@@ -520,7 +520,7 @@ const CECTag* CECTag::GetTagByName(ec_tagname_t name) const
  */
 CECTag* CECTag::GetTagByName(ec_tagname_t name)
 {
-	for (TagList::iterator it = m_tagList.begin(); it != m_tagList.end(); it++) {
+	for (TagList::iterator it = m_tagList.begin(); it != m_tagList.end(); ++it) {
 		if (it->m_tagName == name) return & *it;
 	}
 	return NULL;
@@ -551,7 +551,7 @@ const CECTag* CECTag::GetTagByNameSafe(ec_tagname_t name) const
 uint32 CECTag::GetTagLen(void) const
 {
 	uint32 length = m_dataLen;
-	for (const_iterator it = begin(); it != end(); it++) {
+	for (const_iterator it = begin(); it != end(); ++it) {
 		length += it->GetTagLen();
 		length += sizeof(ec_tagname_t) + sizeof(ec_tagtype_t) + sizeof(ec_taglen_t) + (it->HasChildTags() ? 2 : 0);
 	}

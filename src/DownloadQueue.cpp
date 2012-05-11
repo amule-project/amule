@@ -637,7 +637,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		CClientList::SourceList found = theApp->clientlist->GetClientsByHash( source->GetUserHash() );
 
 		CClientList::SourceList::iterator it = found.begin();
-		for ( ; it != found.end(); it++ ) {
+		for ( ; it != found.end(); ++it ) {
 			CKnownFile* file = it->GetRequestFile();
 
 			// Only check files on the download-queue
@@ -813,9 +813,9 @@ void CDownloadQueue::RemoveFile(CPartFile* file, bool keepAsCompleted)
 
 void CDownloadQueue::ClearCompleted(const ListOfUInts32 & ecids)
 {
-	for (ListOfUInts32::const_iterator it1 = ecids.begin(); it1 != ecids.end(); it1++) {
+	for (ListOfUInts32::const_iterator it1 = ecids.begin(); it1 != ecids.end(); ++it1) {
 		uint32 ecid = *it1;
-		for (FileList::iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); it++) {
+		for (FileList::iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); ++it) {
 			CPartFile * file = *it;
 			if (file->ECID() == ecid) {
 				m_completedDownloads.erase(it);
@@ -836,7 +836,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 	for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
 		const CKnownFile::SourceSet& set = m_filelist[i]->GetSourceList();
 
-		for ( CKnownFile::SourceSet::const_iterator it = set.begin(); it != set.end(); it++ ) {
+		for ( CKnownFile::SourceSet::const_iterator it = set.begin(); it != set.end(); ++it ) {
 			if ( it->GetIP() == dwIP && it->GetUDPPort() == nUDPPort ) {
 				return it->GetClient();
 			}
@@ -1060,7 +1060,7 @@ void CDownloadQueue::ProcessLocalRequests()
 						posNextRequest = it;
 					}
 
-					it++;
+					++it;
 				} else {
 					it = m_localServerReqQueue.erase(it);
 					cur_file->SetLocalSrcRequestQueued(false);
@@ -1137,11 +1137,11 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 
 void CDownloadQueue::ResetCatParts(uint8 cat)
 {
-	for (FileQueue::iterator it = m_filelist.begin(); it != m_filelist.end(); it++) {
+	for (FileQueue::iterator it = m_filelist.begin(); it != m_filelist.end(); ++it) {
 		CPartFile* file = *it;
 		file->RemoveCategory(cat);
 	}
-	for (FileList::iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); it++) {
+	for (FileList::iterator it = m_completedDownloads.begin(); it != m_completedDownloads.end(); ++it) {
 		CPartFile* file = *it;
 		file->RemoveCategory(cat);
 	}
@@ -1181,7 +1181,7 @@ void CDownloadQueue::SetCatStatus(uint8 cat, int newstatus)
 
 	std::list<CPartFile*>::iterator it = files.begin();
 
-	for ( ; it != files.end(); it++ ) {
+	for ( ; it != files.end(); ++it ) {
 		switch ( newstatus ) {
 			case MP_CANCEL:	(*it)->Delete();	break;
 			case MP_PAUSE:	(*it)->PauseFile();	break;
@@ -1369,7 +1369,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 		}
 	}
 
-	while (m_toresolve.size()) {
+	while (!m_toresolve.empty()) {
 		Hostname_Entry entry = m_toresolve.front();
 
 		// Check if it is a simple dot address

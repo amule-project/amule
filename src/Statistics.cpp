@@ -78,7 +78,7 @@ void CPreciseRateCounter::CalculateRate(uint64_t now)
 
 	// Checking maximal timespan, but make sure not to remove
 	// the extra node in m_tick_history.
-	while (timespan > m_timespan && m_byte_history.size() > 0) {
+	while (timespan > m_timespan && !m_byte_history.empty()) {
 		m_total -= m_byte_history.front();
 		m_byte_history.pop_front();
 		m_tick_history.pop_front();
@@ -87,7 +87,7 @@ void CPreciseRateCounter::CalculateRate(uint64_t now)
 
 	// Count rate/average
 	if (m_count_average) {
-		if (m_byte_history.size() > 0) {
+		if (!m_byte_history.empty()) {
 			m_rate = m_total / (double)m_byte_history.size();
 		}
 	} else {
@@ -320,7 +320,7 @@ void CStatistics::Load()
 				s_totalReceived = f.ReadUInt64();
 			}
 		}
-	} catch (CSafeIOException e) {
+	} catch (const CSafeIOException& e) {
 		AddLogLineN(e.what());
 	}
 
@@ -1065,7 +1065,7 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 
 	const CECTag * LoggerTag = stats->GetTagByName(EC_TAG_STATS_LOGGER_MESSAGE);
 	if (LoggerTag) {
-		for (CECTag::const_iterator it = LoggerTag->begin(); it != LoggerTag->end(); it++) {
+		for (CECTag::const_iterator it = LoggerTag->begin(); it != LoggerTag->end(); ++it) {
 			theApp->AddRemoteLogLine(it->GetStringData());
 		}
 	}

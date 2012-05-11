@@ -49,7 +49,7 @@ class CServer : public CECID
 friend class CServerListRem;
 public:
 	CServer(ServerMet_Struct* in_data);
-	CServer(uint16 in_port, const wxString i_addr);
+	CServer(uint16 in_port, const wxString& i_addr);
 	CServer(CServer* pOld);
 	CServer(class CEC_Server_Tag *);
 

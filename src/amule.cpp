@@ -1055,7 +1055,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 }
 
 
-void CamuleApp::SetOSFiles(const wxString new_path)
+void CamuleApp::SetOSFiles(const wxString& new_path)
 {
 	if ( thePrefs::IsOnlineSignatureEnabled() ) {
 		if ( ::wxDirExists(new_path) ) {

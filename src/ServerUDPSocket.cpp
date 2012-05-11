@@ -401,7 +401,7 @@ void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket
 
 void CServerUDPSocket::SendQueue()
 {
-	while (m_queue.size()) {
+	while (!m_queue.empty()) {
 		ServerUDPPacket item = m_queue.front();
 		CPacket* packet = item.packet;
 

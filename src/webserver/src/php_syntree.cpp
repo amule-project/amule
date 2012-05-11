@@ -406,7 +406,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	//
 	// Step 1: save origival vars
 	PHP_SCOPE_TABLE_TYPE *curr_scope_map = (PHP_SCOPE_TABLE_TYPE *)g_current_scope;
-	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();i++) {
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();++i) {
 		if ( (i->second->type == PHP_SCOPE_VAR) || (i->second->type == PHP_SCOPE_PARAM) ) {
 			if ( !(i->second->var->flags & PHP_VARFLAG_STATIC) ) {
 				//printf("Saving %s = %p->%p\n", i->first.c_str(), i->second, i->second->var);
@@ -448,7 +448,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 
 	//
 	// Step 4: allocate new stack local vars
-	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();i++) {
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();++i) {
 		if ( !((i->second->type == PHP_SCOPE_PARAM) || (i->second->type == PHP_SCOPE_VAR)) ) {
 			continue;
 		}
@@ -489,7 +489,7 @@ void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 	}
 
 	PHP_SCOPE_TABLE_TYPE *curr_scope_map = (PHP_SCOPE_TABLE_TYPE *)g_current_scope;
-	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();i++) {
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();++i) {
 		if ( (i->second->type == PHP_SCOPE_VAR) || (i->second->type == PHP_SCOPE_PARAM) ) {
 			if ( !(i->second->var->flags & PHP_VARFLAG_STATIC) ) {
 				//printf("Restoring %s = %p->%p\n", i->first.c_str(), i->second, i->second->var);
@@ -539,7 +539,7 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 
-	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();++i) {
 		switch ( i->second->type ) {
 			case PHP_SCOPE_PARAM:
 				//break;
@@ -645,7 +645,7 @@ const char *get_scope_var_name(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 
-	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();++i) {
 		if ( i->second->type == PHP_SCOPE_VAR ) {
 			PHP_VAR_NODE *curr_var = i->second->var;
 			if ( curr_var == var ) {
@@ -662,7 +662,7 @@ const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i)
 {
 	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
 	PHP_ARRAY_ITER_TYPE it = arr_ptr->array.begin();
-	while(i--) it++;
+	while(i--) ++it;
 	return it->first;
 }
 
@@ -740,7 +740,7 @@ void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
 		PHP_VAR_NODE *node = (arr_ptr->array)[key];
 		var_node_free(node);
 		arr_ptr->array.erase(key);
-		for(PHP_ARRAY_KEY_ITER_TYPE i = arr_ptr->sorted_keys.begin(); i != arr_ptr->sorted_keys.end(); i++) {
+		for(PHP_ARRAY_KEY_ITER_TYPE i = arr_ptr->sorted_keys.begin(); i != arr_ptr->sorted_keys.end(); ++i) {
 			if ( *i == key ) {
 				arr_ptr->sorted_keys.erase(i);
 				break;
@@ -819,7 +819,7 @@ void value_value_assign(PHP_VALUE_NODE *dst, PHP_VALUE_NODE *src)
 		case PHP_VAL_ARRAY: {
 			dst->ptr_val = new PHP_ARRAY_TYPE;
 			PHP_ARRAY_TYPE *src_array = (PHP_ARRAY_TYPE *)src->ptr_val;
-			for(PHP_ARRAY_KEY_ITER_TYPE i = src_array->sorted_keys.begin(); i != src_array->sorted_keys.end(); i++) {
+			for(PHP_ARRAY_KEY_ITER_TYPE i = src_array->sorted_keys.begin(); i != src_array->sorted_keys.end(); ++i) {
 				PHP_VAR_NODE *added = array_get_by_str_key(dst, *i);
 				value_value_assign(&added->value, &src_array->array[*i]->value);
 			}
@@ -856,7 +856,7 @@ void value_value_free(PHP_VALUE_NODE *val)
 		}
 		case PHP_VAL_ARRAY: {
 			for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)val->ptr_val)->array.begin();
-				i != ((PHP_ARRAY_TYPE *)val->ptr_val)->array.end(); i++) {
+				i != ((PHP_ARRAY_TYPE *)val->ptr_val)->array.end(); ++i) {
 					PHP_VAR_NODE *var_i = i->second;
 					var_node_free(var_i);
 				}
@@ -1082,7 +1082,7 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 				PHP_VAR_NODE *args = tree->tree_node.right->var_node;
 				PHP_VALUE_NODE *args_array = &args->value;
 				for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)args_array->ptr_val)->array.begin();
-					i != ((PHP_ARRAY_TYPE *)args_array->ptr_val)->array.end(); i++) {
+					i != ((PHP_ARRAY_TYPE *)args_array->ptr_val)->array.end(); ++i) {
 					PHP_VAR_NODE *var_i = i->second;
 					php_exp_tree_free((PHP_EXP_NODE *)var_i->value.ptr_val);
 				}

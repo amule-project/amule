@@ -127,7 +127,7 @@ private:
 	void	Unlink(const wxString& from);
 	wxString GetLinkedFrom() {
 		wxString ret;
-		for (std::multiset<wxString>::iterator it = m_linkedFrom.begin(); it != m_linkedFrom.end(); it++) {
+		for (std::multiset<wxString>::iterator it = m_linkedFrom.begin(); it != m_linkedFrom.end(); ++it) {
 			ret += *it + wxT(", ");
 		}
 		return ret;

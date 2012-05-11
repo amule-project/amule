@@ -855,7 +855,7 @@ uint32_t CRoutingZone::GetBootstrapContacts(ContactList *results, uint32_t maxRe
 	uint32_t count = 0;
 	ContactList top;
 	TopDepth(LOG_BASE_EXPONENT, &top);
-	if (top.size() > 0) {
+	if (!top.empty()) {
 		for (ContactList::const_iterator it = top.begin(); it != top.end(); ++it) {
 			results->push_back(*it);
 			count++;

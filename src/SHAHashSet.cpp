@@ -407,8 +407,8 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 	if (nLevel == 0) {
 		// this is the searched hash
 		if (m_bHashValid && !bAllowOverwrite) {
-			// not allowed to overwrite this hash, however move the filepointer by reading a hash
-			CAICHHash(file);
+			// not allowed to overwrite this hash, however move the filepointer as if we read a hash
+			fileInput->Seek(HASHSIZE, wxFromCurrent);
 			return true;
 		}
 		m_Hash.Read(fileInput);

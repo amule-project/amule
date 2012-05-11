@@ -149,7 +149,7 @@ wxString CEC_StatTree_Node_Tag::GetDisplayString() const
 		}
 	}
 	CFormat label(my_label);
-	for (const_iterator it = begin(); it != end(); it++) {
+	for (const_iterator it = begin(); it != end(); ++it) {
 		if (it->GetTagName() == EC_TAG_STAT_NODE_VALUE) {
 			FormatValue(label, &*it);
 		}

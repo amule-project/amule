@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	QStringList cat_names = data["cat_names"].toStringList();
 	QMenu *menu = new QMenu;
 
-	for (QStringList::const_iterator constIterator = cat_names.constBegin(); constIterator != cat_names.constEnd(); constIterator++)
+	for (QStringList::const_iterator constIterator = cat_names.constBegin(); constIterator != cat_names.constEnd(); ++constIterator)
 	{
 		menu->addAction(*constIterator);
 		if (constIterator != cat_names.constEnd())

@@ -263,7 +263,7 @@ void CServerList::ServerStats()
 {
 	uint32 tNow = ::GetTickCount();
 
-	if (theApp->IsConnectedED2K() && m_servers.size() > 0) {
+	if (theApp->IsConnectedED2K() && !m_servers.empty()) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
 		if (!ping_server) {

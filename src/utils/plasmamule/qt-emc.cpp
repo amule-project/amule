@@ -28,7 +28,7 @@ qtEmc::qtEmc(const QString &filename)
 
 	QStringList files = filename.split("file://");
 
-	for (QStringList::const_iterator constFilesIterator = files.constBegin(); constFilesIterator != files.constEnd(); constFilesIterator++)
+	for (QStringList::const_iterator constFilesIterator = files.constBegin(); constFilesIterator != files.constEnd(); ++constFilesIterator)
 	{
 		if (!QString(*constFilesIterator).remove("\n").trimmed().isEmpty())
 		{

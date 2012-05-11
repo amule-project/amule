@@ -161,7 +161,7 @@ void PlasmaMuleEngine::engine_add_link (const QString &link, const int &category
 		if (collection->isValid())
 		{
 			QStringList links = collection->getLinks();
-			for (QStringList::const_iterator constIterator = links.constBegin(); constIterator != links.constEnd(); constIterator++)
+			for (QStringList::const_iterator constIterator = links.constBegin(); constIterator != links.constEnd(); ++constIterator)
 			{
 				link_to_write.append(*constIterator);
 
@@ -264,7 +264,7 @@ void PlasmaMuleEngine::initVals ()
 		connect (&m_dirwatcher, SIGNAL (created (const QString &)), SLOT (new_file (const QString&)));
 	}
 
-	for (constIterator = tempIncomingDirs.constBegin(); constIterator != tempIncomingDirs.constEnd(); constIterator++)
+	for (constIterator = tempIncomingDirs.constBegin(); constIterator != tempIncomingDirs.constEnd(); ++constIterator)
 	{
 		if (!m_dirwatcher.contains(*constIterator))
 		{
@@ -276,7 +276,7 @@ void PlasmaMuleEngine::initVals ()
 		}
 	}
 
-	for (constIterator = m_incoming_dirs.constBegin(); constIterator != m_incoming_dirs.constEnd(); constIterator++)
+	for (constIterator = m_incoming_dirs.constBegin(); constIterator != m_incoming_dirs.constEnd(); ++constIterator)
 	{
 		if (!cleanedIncomingDirs.contains (*constIterator))
 		{

@@ -198,12 +198,12 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 		switch (hTag) {
 		// FT_FILENAME
 		case 0x01: {
-			std::string fileName = ReadString(infile, hTagType);
+			/*std::string fileName =*/ ReadString(infile, hTagType);
 			break;
 		}
 		// FT_COLLECTIONAUTHOR
 		case 0x31: {
-			std::string CollectionAuthor = ReadString(infile, hTagType);
+			/*std::string CollectionAuthor =*/ ReadString(infile, hTagType);
 			break;
 		}
 		// FT_COLLECTIONAUTHORKEY
@@ -254,7 +254,6 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 		std::string fileHash = std::string(32, '0');
 		uint64_t fileSize = 0;
 		std::string fileName;
-		std::string FileComment;
 		for(size_t fTi = 0; fTi < fTagCount; ++fTi) {
 			int fTagType = infile.get();
 			if (!infile.good()) {
@@ -313,7 +312,7 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 			}
 			// FT_FILECOMMENT
 			case 0xF6: {
-				FileComment = ReadString(infile, fTagType^0x80);
+				/* std::string FileComment =*/ ReadString(infile, fTagType^0x80);
 				break;
 			}
 			// FT_FILERATING

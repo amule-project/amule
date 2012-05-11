@@ -92,7 +92,6 @@ private:
 	byte			m_abyPublicKey[80];			// even keys which are not verified will be stored here, and - if verified - copied into the struct
 	uint8			m_nPublicKeyLen;
 	uint32			m_dwIdentIP;
-	uint32			m_dwWaitTime;
 	uint32			m_dwSecureWaitTime;
 	uint32			m_dwUnSecureWaitTime;
 	uint32			m_dwWaitTimeIP;			   // client IP assigned to the waittime

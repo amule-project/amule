@@ -401,8 +401,6 @@ DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION, wxEVT_USER_FIRST + 1000)
 
 class wxECSocketEvent : public wxEvent {
 public:
-	wxECSocketEvent(int id, int event_id)	: wxEvent(event_id, id) {}
-	wxECSocketEvent(int id)			: wxEvent(-1, id) {}
 	wxECSocketEvent(int id, bool result, const wxString& reply) : wxEvent(-1, id)
 	{
 		m_value = result;

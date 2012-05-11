@@ -301,7 +301,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	const CECTag *cats_tag = reply->GetFirstTagSafe();
 	if (cats_tag->HasChildTags()) {
 		int i = 0;
-		for (CECTag::const_iterator it = cats_tag->begin(); it != cats_tag->end(); it++) {
+		for (CECTag::const_iterator it = cats_tag->begin(); it != cats_tag->end(); ++it) {
 			const CECTag *categoryTitle = it->GetTagByName(EC_TAG_CATEGORY_TITLE);
 			PHP_VAR_NODE *cat = array_get_by_int_key(result, i++);
 			value_value_free(&cat->value);
@@ -707,7 +707,7 @@ void amule_obj_array_create(const char *class_name, PHP_VALUE_NODE *result)
 		var->value.obj_val.class_name = class_name;
 		const T *cur_item = &(*it);
 		var->value.obj_val.inst_ptr = (void *)cur_item;
-		it++;
+		++it;
 	}
 }
 
@@ -752,7 +752,7 @@ void ecstats2php(CEC_StatTree_Node_Tag *root, PHP_VALUE_NODE *result)
 	cast_value_array(result);
 	std::string key(unicode2UTF8(root->GetDisplayString()));
 	PHP_VAR_NODE *v_key = array_get_by_str_key(result, key);
-	for (CECTag::const_iterator it = root->begin(); it != root->end(); it++) {
+	for (CECTag::const_iterator it = root->begin(); it != root->end(); ++it) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
 		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
 			ecstats2php(tag, &v_key->value);
@@ -781,7 +781,7 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 	}
 	CEC_StatTree_Node_Tag *stats_root = (CEC_StatTree_Node_Tag *)response->GetTagByName(EC_TAG_STATTREE_NODE);
 	//ecstats2php(stats_root, result);
-	for (CECTag::const_iterator it = stats_root->begin(); it != stats_root->end(); it++) {
+	for (CECTag::const_iterator it = stats_root->begin(); it != stats_root->end(); ++it) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
 		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
 			ecstats2php(tag, result);
