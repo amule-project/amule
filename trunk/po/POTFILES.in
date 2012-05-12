@@ -39,6 +39,7 @@ src/KnownFileList.cpp
 src/libs/common/Format.cpp
 src/libs/ec/cpp/ECSpecialTags.cpp
 src/libs/ec/cpp/RemoteConnect.cpp
+src/LibSocketAsio.cpp
 src/ListenSocket.cpp
 src/Logger.cpp
 src/MuleNotebook.cpp
