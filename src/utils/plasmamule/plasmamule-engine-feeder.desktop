@@ -13,4 +13,4 @@ Icon=application-x-emulecollection
 MimeType=application/x-emulecollection;
 NoDisplay=true
 StartupNotify=false
-StartupWMClas=false
+StartupWMClass=false
