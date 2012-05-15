@@ -428,7 +428,7 @@ class CStatistics {
 	static	CStatTreeItemPackets*		s_serverDownOverhead;
 	static	CStatTreeItemPackets*		s_kadDownOverhead;
 	static	CStatTreeItemCounter*		s_cryptDownOverhead;
-	static	CStatTreeItemNativeCounter*	s_foundSources;
+	static	CStatTreeItemCounter*		s_foundSources;
 	static	CStatTreeItemNativeCounter*	s_activeDownloads;
 
 	// Connection

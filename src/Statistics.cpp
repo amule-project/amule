@@ -180,7 +180,7 @@ CStatTreeItemPackets*		CStatistics::s_sourceXchgDownOverhead;
 CStatTreeItemPackets*		CStatistics::s_serverDownOverhead;
 CStatTreeItemPackets*		CStatistics::s_kadDownOverhead;
 CStatTreeItemCounter*		CStatistics::s_cryptDownOverhead;
-CStatTreeItemNativeCounter*	CStatistics::s_foundSources;
+CStatTreeItemCounter*		CStatistics::s_foundSources;
 CStatTreeItemNativeCounter*	CStatistics::s_activeDownloads;
 
 // Connection
@@ -768,7 +768,7 @@ void CStatistics::InitStatsTree()
 	s_totalDownOverhead->AddPacketCounter(s_kadDownOverhead);
 	s_cryptDownOverhead = static_cast<CStatTreeItemCounter*>(tmpRoot2->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Crypt overhead (UDP): %s"))));
 	s_cryptDownOverhead->SetDisplayMode(dmBytes);
-	s_foundSources = static_cast<CStatTreeItemNativeCounter*>(tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Found Sources: %s"), stSortChildren | stSortByValue)));
+	s_foundSources = static_cast<CStatTreeItemCounter*>(tmpRoot2->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Found Sources: %s"), stSortChildren | stSortByValue)));
 	s_activeDownloads = static_cast<CStatTreeItemNativeCounter*>(tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Active Downloads (chunks): %s"))));
 
 	tmpRoot1->AddChild(new CStatTreeItemRatio(wxTRANSLATE("Session UL:DL Ratio (Total): %s"), s_sessionUpload, s_sessionDownload, theStats::GetTotalSentBytes, theStats::GetTotalReceivedBytes), 3);
@@ -852,11 +852,11 @@ void CStatistics::UpdateStatsTree()
 
 void CStatistics::AddSourceOrigin(unsigned origin)
 {
-	CStatTreeItemNativeCounter* counter = static_cast<CStatTreeItemNativeCounter*>(s_foundSources->GetChildById(0x0100 + origin));
+	CStatTreeItemCounter* counter = static_cast<CStatTreeItemCounter*>(s_foundSources->GetChildById(0x0100 + origin));
 	if (counter) {
 		++(*counter);
 	} else {
-		counter = new CStatTreeItemNativeCounter(OriginToText(origin) + wxT(": %s"), stHideIfZero | stShowPercent);
+		counter = new CStatTreeItemCounter(OriginToText(origin) + wxT(": %s"), stHideIfZero | stShowPercent);
 		++(*counter);
 		s_foundSources->AddChild(counter, 0x0100 + origin);
 	}
@@ -864,7 +864,7 @@ void CStatistics::AddSourceOrigin(unsigned origin)
 
 void CStatistics::RemoveSourceOrigin(unsigned origin)
 {
-	CStatTreeItemNativeCounter* counter = static_cast<CStatTreeItemNativeCounter*>(s_foundSources->GetChildById(0x0100 + origin));
+	CStatTreeItemCounter* counter = static_cast<CStatTreeItemCounter*>(s_foundSources->GetChildById(0x0100 + origin));
 	wxASSERT(counter);
 	--(*counter);
 }
