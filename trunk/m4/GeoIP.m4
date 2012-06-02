@@ -53,7 +53,7 @@ AC_DEFUN([MULE_CHECK_GEOIP],
 				AC_COMPILE_IFELSE([
 					AC_LANG_PROGRAM([[
 						#include <GeoIP.h>
-						#ifdef _WINSOCK2_H
+						#if (defined _WINSOCK2API_ || defined _WINSOCK2_H)
 							I do know it's not the best approach, but at least works with MinGW stock headers.
 							(tested with w32api-3.12)
 						#endif

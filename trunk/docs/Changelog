@@ -5,6 +5,9 @@ Version 2.4.0 - The river knows.
 	gnazio:
 		* Fixed configure of libpng when sh != bash
 
+	iz0bbz:
+		* Fix WinSock library version detection with MinGW-w64
+
 	Stu Redman:
 		* Display hashing progress in progress bars
 		* Assertion from background thread now prints a message and not just closes the app
