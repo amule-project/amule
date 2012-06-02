@@ -227,13 +227,13 @@ void CECTag::InitInt(uint64 data)
 			PokeUInt8( m_tagData, (uint8) data );
 			break;
 		case EC_TAGTYPE_UINT16:
-			PokeUInt16( m_tagData, ENDIAN_HTONS((uint16) data ));
+			RawPokeUInt16( m_tagData, ENDIAN_HTONS((uint16) data ));
 			break;
 		case EC_TAGTYPE_UINT32:
-			PokeUInt32( m_tagData, ENDIAN_HTONL((uint32) data ));
+			RawPokeUInt32( m_tagData, ENDIAN_HTONL((uint32) data ));
 			break;
 		case EC_TAGTYPE_UINT64:
-			PokeUInt64( m_tagData, ENDIAN_HTONLL(data) );
+			RawPokeUInt64( m_tagData, ENDIAN_HTONLL(data) );
 			break;
 	}
 }
