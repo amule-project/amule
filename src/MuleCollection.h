@@ -30,9 +30,7 @@
 #include <string>
 #include <vector>
 
-#ifndef __MINGW32__
 #include "Types.h"
-#endif
 
 struct CollectionFile
 {

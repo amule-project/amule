@@ -7,6 +7,7 @@ Version 2.4.0 - The river knows.
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
+		* Fix compilation with MinGW-w64
 
 	Stu Redman:
 		* Display hashing progress in progress bars
