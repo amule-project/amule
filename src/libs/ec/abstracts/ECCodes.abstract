@@ -204,6 +204,7 @@ EC_TAG_STATS_UL_SPEED                     0x0200
 	EC_TAG_STATS_TOTAL_SENT_BYTES             0x0218
 	EC_TAG_STATS_TOTAL_RECEIVED_BYTES         0x0219
 	EC_TAG_STATS_SHARED_FILE_COUNT            0x021A
+	EC_TAG_STATS_KAD_NODES                    0x021B
 
 EC_TAG_PARTFILE                           0x0300
 	EC_TAG_PARTFILE_NAME                      0x0301

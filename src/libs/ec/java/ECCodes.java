@@ -163,6 +163,7 @@ public final static short 	EC_TAG_STATS_KAD_IN_LAN_MODE              = 0x0217;
 public final static short 	EC_TAG_STATS_TOTAL_SENT_BYTES             = 0x0218;
 public final static short 	EC_TAG_STATS_TOTAL_RECEIVED_BYTES         = 0x0219;
 public final static short 	EC_TAG_STATS_SHARED_FILE_COUNT            = 0x021A;
+public final static short 	EC_TAG_STATS_KAD_NODES                    = 0x021B;
 public final static short EC_TAG_PARTFILE                           = 0x0300;
 public final static short 	EC_TAG_PARTFILE_NAME                      = 0x0301;
 public final static short 	EC_TAG_PARTFILE_PARTMETID                 = 0x0302;

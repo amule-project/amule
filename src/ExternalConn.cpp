@@ -55,6 +55,7 @@
 #include "RandomFunctions.h"
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/UDPFirewallTester.h"
+#include "Statistics.h"
 
 
 //-------------------- File_Encoder --------------------
@@ -593,6 +594,7 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 				response->AddTag(CECTag(EC_TAG_STATS_KAD_USERS, Kademlia::CKademlia::GetKademliaUsers()));
 				response->AddTag(CECTag(EC_TAG_STATS_ED2K_FILES, totalfile));
 				response->AddTag(CECTag(EC_TAG_STATS_KAD_FILES, Kademlia::CKademlia::GetKademliaFiles()));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_NODES, CStatistics::GetKadNodes()));
 			}
 			// Kad stats
 			if (Kademlia::CKademlia::IsConnected()) {
