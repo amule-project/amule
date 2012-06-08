@@ -143,17 +143,10 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef _WIN32			// Used in non-wx-apps too (ed2k), so don't use __WXMSW__ here !
-#ifdef _MSC_VER
 	#ifndef NOMINMAX
 		#define NOMINMAX
 	#endif
 	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
-#else
-	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
-	#include <wingdi.h>	// Do_not_auto_remove
-	#include <winuser.h>	// Do_not_auto_remove
-	#include <winbase.h> // Do_not_auto_remove
-#endif
 	// Windows compilers don't have these constants
 	#ifndef W_OK
 		enum
