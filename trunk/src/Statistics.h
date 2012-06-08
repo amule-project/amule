@@ -319,6 +319,7 @@ class CStatistics {
 	// Kad nodes
 	static void	AddKadNode()				{ ++s_kadNodesCur; }
 	static void	RemoveKadNode()				{ --s_kadNodesCur; }
+	static uint16_t GetKadNodes()			{ return s_kadNodesCur; }
 
 
 	// Other
@@ -499,6 +500,7 @@ enum StatDataIndex {
 	sdKadIndexedNotes,
 	sdKadIndexedLoad,
 	sdKadIPAdress,
+	sdKadNodes,
 	sdBuddyStatus,
 	sdBuddyIP,
 	sdBuddyPort,
@@ -555,6 +557,7 @@ private:
 	static	uint32	GetBuddyIP()			{ return s_statData[sdBuddyIP]; }
 	static	uint32	GetBuddyPort()			{ return s_statData[sdBuddyPort]; }
 	static	bool	IsKadRunningInLanMode()	{ return s_statData[sdKadInLanMode] != 0; }
+	static	uint32	GetKadNodes()			{ return s_statData[sdKadNodes]; }
 
 	static	void	UpdateStats(const CECPacket* stats);
 

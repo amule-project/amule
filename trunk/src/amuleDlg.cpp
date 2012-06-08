@@ -1125,6 +1125,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 			m_transferwnd->clientlistctrl->SortList();
 			m_sharedfileswnd->peerslistctrl->SortList();
 		}
+		m_kademliawnd->UpdateNodeCount(CStatistics::GetKadNodes());
 	}
 
 	if (msCur-msPrev1 > 1000) {  // every second

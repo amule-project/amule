@@ -45,6 +45,7 @@ public:
 	void SetUpdatePeriod(int step);
 	void SetGraphColors();
 	void UpdateGraph(const GraphUpdateInfo& update);
+	void UpdateNodeCount(unsigned nodes);
 
 private:
 	COScopeCtrl* m_kad_scope;

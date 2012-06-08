@@ -140,7 +140,11 @@ void CKadDlg::UpdateGraph(const GraphUpdateInfo& update)
 
 		m_kad_scope->AppendPoints(update.timestamp, apfKad);
 	}
+}
 
+
+void CKadDlg::UpdateNodeCount(unsigned nodeCount)
+{
 	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
 	wxCHECK_RET(label, wxT("Failed to find kad-nodes label"));
 
