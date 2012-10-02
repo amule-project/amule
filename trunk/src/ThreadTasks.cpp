@@ -192,6 +192,8 @@ void CHashingTask::Entry()
 					CFormat(wxT("Warning, failed to save AICH hashset for file: %s"))
 						% m_filename );
 			}
+			// delete hashset now to free memory
+			AICHHashSet->FreeHashSet();
 		}
 	}
 

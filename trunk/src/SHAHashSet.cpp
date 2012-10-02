@@ -622,7 +622,6 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 }
 
 // this function is only allowed to be called right after successfully calculating the hashset (!)
-// will delete the hashset, after saving to free the memory
 bool CAICHHashSet::SaveHashSet()
 {
 	if (m_eStatus != AICH_HASHSETCOMPLETE) {
@@ -702,7 +701,6 @@ bool CAICHHashSet::SaveHashSet()
 		return false;
 	}
 
-	FreeHashSet();
 	return true;
 }
 
