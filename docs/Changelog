@@ -20,6 +20,7 @@ Version 2.4.0 - The river knows.
 		* Fixed showing of shared files to other clients
 		* Fixed assertions in CFormat("%p") on 64 bit OS with wx 2.9
 		* Boost Asio can now be used as networking layer instead of wxWidgets
+		* Fixed memory leak when AICH hashing already known files
 
 --------------------------------------------------------------------------------
 
