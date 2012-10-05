@@ -100,6 +100,7 @@ inline bool CanFSHandleSpecialChars(const CPath& path)
 {
 	switch (GetFilesystemType(path)) {
 		case fsFAT:
+		case fsNTFS:
 		case fsHFS:
 			return false;
 		default:
