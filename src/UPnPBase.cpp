@@ -33,6 +33,11 @@
 
 #include <algorithm>		// For transform()
 
+#if UPNP_VERSION < 10617
+  #define GET_UPNP_STRING(a) (a)
+#else
+  #define GET_UPNP_STRING(a) UpnpString_get_String(a)
+#endif
 
 std::string stdEmptyString;
 
@@ -1292,7 +1297,7 @@ upnpEventRenewalComplete:
 		} else {
 #if 0
 			TvCtrlPointHandleSubscribeUpdate(
-				es_event->PublisherUrl,
+				GET_UPNP_STRING(es_event->PublisherUrl),
 				es_event->Sid,
 				es_event->TimeOut );
 #endif
@@ -1317,7 +1322,7 @@ upnpEventSubscriptionExpired:
 		int TimeOut = 1801;
 		int ret = UpnpSubscribe(
 			upnpCP->m_UPnPClientHandle,
-			es_event->PublisherUrl,
+			GET_UPNP_STRING(es_event->PublisherUrl),
 			&TimeOut,
 			newSID);
 		if (ret != UPNP_E_SUCCESS) {
@@ -1326,13 +1331,13 @@ upnpEventSubscriptionExpired:
 				msg.str(), es_event->ErrCode, NULL, NULL);
 		} else {
 			ServiceMap::iterator it =
-				upnpCP->m_ServiceMap.find(es_event->PublisherUrl);
+				upnpCP->m_ServiceMap.find(GET_UPNP_STRING(es_event->PublisherUrl));
 			if (it != upnpCP->m_ServiceMap.end()) {
 				CUPnPService &service = *(it->second);
 				service.SetTimeout(TimeOut);
 				service.SetSID(newSID);
 				msg2 << "Re-subscribed to EventURL '" <<
-					es_event->PublisherUrl <<
+					GET_UPNP_STRING(es_event->PublisherUrl) <<
 					"' with SID == '" <<
 					newSID << "'.";
 				AddDebugLogLineC(logUPnP, msg2);
