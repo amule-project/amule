@@ -158,8 +158,9 @@ void MD4::MD4Final(struct MD4Context *ctx, unsigned char* digest)
   byteReverse(ctx->in, 14);
 
   // Append length in bits and transform
-  ((uint32_t *) ctx->in)[14] = ctx->bits[0];
-  ((uint32_t *) ctx->in)[15] = ctx->bits[1];
+  uint32_t * in32 = (uint32_t *) ctx->in;
+  in32[14] = ctx->bits[0];
+  in32[15] = ctx->bits[1];
 
   MD4Transform(ctx->buf, (uint32_t *) ctx->in);
   byteReverse((unsigned char *) ctx->buf, 4);
