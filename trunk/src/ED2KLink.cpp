@@ -227,7 +227,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 					}
 				}
 
-				SED2KLinkSource entry = { addr, port, sourcehash, cryptoptions };
+				SED2KLinkSource entry = { addr, (uint16) port, sourcehash, cryptoptions };
 
 				m_sources.push_back(entry);
 			}

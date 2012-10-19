@@ -174,7 +174,7 @@ void CQueuedData::Read(void *data, size_t len)
 
 uint32 CQueuedData::WriteToSocket(CECSocket *sock)
 {
-	wxCHECK2_MSG(m_rd_ptr < m_wr_ptr, 0,
+	wxCHECK_MSG(m_rd_ptr < m_wr_ptr, 0,
 		wxT("Reading past written data in WriteToSocket"));
 
 	uint32 write = sock->SocketWrite(m_rd_ptr, GetUnreadDataLength());

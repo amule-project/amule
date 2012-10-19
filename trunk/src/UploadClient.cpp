@@ -609,7 +609,7 @@ uint32 CUpDownClient::SendBlockData()
         // Store how much data we've transferred this round,
         // to be able to calculate average speed later
         // keep sum of all values in list up to date
-        TransferredData newitem = {sentBytesCompleteFile + sentBytesPartFile, curTick};
+        TransferredData newitem = {(uint32) (sentBytesCompleteFile + sentBytesPartFile), curTick};
         m_AvarageUDR_list.push_back(newitem);
         m_nSumForAvgUpDataRate += sentBytesCompleteFile + sentBytesPartFile;
     }

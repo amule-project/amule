@@ -337,7 +337,7 @@ void PlatformSpecific::PreventSleepMode()
 				// ??
 			}
 		#else
-			#warning Power event vetoing not implemented.
+			//#warning Power event vetoing not implemented.
 			// Not implemented
 		#endif
 	}
