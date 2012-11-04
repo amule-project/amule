@@ -29,14 +29,20 @@
 
 #ifdef ENABLE_UPNP
 
+// check for broken Debian-hacked libUPnP
+#include <upnp.h>
+#ifdef STRING_H			// defined in UpnpString.h Yes, I would have liked UPNPSTRING_H much better.
+#define BROKEN_DEBIAN_LIBUPNP
+#endif
+
 #include "UPnPBase.h"
 
 #include <algorithm>		// For transform()
 
-#if UPNP_VERSION < 10617
-  #define GET_UPNP_STRING(a) (a)
-#else
+#ifdef BROKEN_DEBIAN_LIBUPNP
   #define GET_UPNP_STRING(a) UpnpString_get_String(a)
+#else
+  #define GET_UPNP_STRING(a) (a)
 #endif
 
 std::string stdEmptyString;
