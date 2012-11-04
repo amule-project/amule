@@ -1046,21 +1046,16 @@ void CPartFile::LoadSourceSeeds()
 
 	CFile file(seedsPath, CFile::read);
 	if (!file.IsOpened()) {
-		AddLogLineN(CFormat( _("Partfile %s (%s) has no seeds file") )
+		// Exists but can't be opened. Should not happen. Probably permission problem, try to remove it.
+		AddLogLineN(CFormat( _("Can't read seeds file for Partfile %s (%s)") )
 			% m_partmetfilename
 			% GetFileName() );
+		CPath::RemoveFile(seedsPath);
 		return;
 	}
 
-
+	bool badSeedsFile = false;
 	try {
-		if (file.GetLength() <= 1) {
-			AddLogLineN(CFormat( _("Partfile %s (%s) has a void seeds file") )
-				% m_partmetfilename
-				% GetFileName() );
-			return;
-		}
-
 		uint8 src_count = file.ReadUInt8();
 
 		bool bUseSX2Format = (src_count == 0);
@@ -1115,9 +1110,14 @@ void CPartFile::LoadSourceSeeds()
 				% m_partmetfilename
 				% GetFileName()
 				% e.what() );
+		badSeedsFile = true;
 	}
 
 	file.Close();
+	if (badSeedsFile) {
+		// If we got an exception reading it remove it.
+		CPath::RemoveFile(seedsPath);
+	}
 }
 
 void CPartFile::PartFileHashFinished(CKnownFile* result)
