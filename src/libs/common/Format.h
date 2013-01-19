@@ -26,6 +26,7 @@
 #define FORMAT_H
 
 #include <list>
+#include <string> // Needed to use std::string
 #include "MuleDebug.h"
 
 
