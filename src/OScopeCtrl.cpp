@@ -196,7 +196,6 @@ void COScopeCtrl::RecreateGrid()
 
 	wxMemoryDC dcGrid(m_bmapGrid);
 
-	int nCharacters ;
 	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
 	wxString strTemp;
 
@@ -204,10 +203,6 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid.SetBrush(brushBack);
 	dcGrid.SetPen(*wxTRANSPARENT_PEN);
 	dcGrid.DrawRectangle(m_rectClient);
-	// draw the plot rectangle: determine how wide the y axis scaling values are,
-	// add the units digit, decimal point, one decimal place, and an extra space
-	nCharacters = std::abs((int)std::log10(std::fabs(pdsTrends[0].fUpperLimit))) ;
-	nCharacters = std::max(nCharacters, std::abs((int)std::log10(std::fabs(pdsTrends[0].fLowerLimit)))) + 4;
 
 	// adjust the plot rectangle dimensions
 	// assume 6 pixels per character (this may need to be adjusted)
