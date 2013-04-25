@@ -242,7 +242,7 @@ static_var : VARIABLE				{ $1->var_node->flags |= PHP_VARFLAG_STATIC; $$ = $1; }
 
 function_decl_statement:
 		FUNCTION IDENT {
-				switch_push_scope_table(make_scope_table())
+				switch_push_scope_table(make_scope_table());
 			} '(' parameter_list ')' '{' top_statement_list '}' {
 				$$ = make_func_decl_syn_node($2, $5);
 				$$->func_decl->scope = g_current_scope;
