@@ -905,14 +905,17 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sub"),   ED2KFT_CDIMAGE));	// Subtitle File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".toast"), ED2KFT_CDIMAGE));	// Toast Disc Image
 
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".azw"),   ED2KFT_DOCUMENT));	// EBook File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".chm"),   ED2KFT_DOCUMENT));	// Compiled HTML Help File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".css"),   ED2KFT_DOCUMENT));	// Cascading Style Sheet
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".diz"),   ED2KFT_DOCUMENT));	// Description in Zip File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".doc"),   ED2KFT_DOCUMENT));	// Document File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dot"),   ED2KFT_DOCUMENT));	// Document Template File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".epub"),  ED2KFT_DOCUMENT));	// EBook File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hlp"),   ED2KFT_DOCUMENT));	// Help File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".htm"),   ED2KFT_DOCUMENT));	// HTML File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".html"),  ED2KFT_DOCUMENT));	// HTML File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mobi"),  ED2KFT_DOCUMENT));	// EBook File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nfo"),   ED2KFT_DOCUMENT));	// Warez Information File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".odp"),   ED2KFT_DOCUMENT));	// OpenDocument Presentation
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ods"),   ED2KFT_DOCUMENT));	// OpenDocument Spreadsheet
