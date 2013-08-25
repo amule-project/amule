@@ -69,9 +69,13 @@
 	#ifdef  HAVE_SYS_WAIT_H
 		#include <sys/wait.h> // Do_not_auto_remove
 	#endif
+	#include <wx/ffile.h>
+#endif
 
+#ifdef AMULED_APPTRAITS
 	#include <wx/unix/execute.h>
 #endif
+
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	//
@@ -373,9 +377,9 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 	return new CDaemonAppTraits(m_table);
 }
 
-#else	// AMULED28_SOCKETS
+#endif	// AMULED28_SOCKETS
 
-#ifndef __WXMSW__
+#ifdef AMULED_APPTRAITS
 
 CDaemonAppTraits::CDaemonAppTraits()
 :
@@ -390,9 +394,7 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 	return new CDaemonAppTraits();
 }
 
-#endif	// __WXMSW__
-
-#endif	// !AMULED28_SOCKETS
+#endif	// AMULED_APPTRAITS
 
 #if defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
 #include <wx/stdpaths.h> // Do_not_auto_remove (guess)
@@ -420,11 +422,9 @@ m_Exit(false)
 #endif	// AMULED28_EVENTLOOP
 
 
-#ifndef __WXMSW__
-
+#ifdef AMULED_APPTRAITS
 
 static EndProcessDataMap endProcDataMap;
-
 
 int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 {
@@ -550,7 +550,10 @@ pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
 	return result;
 }
 
-#else // __WXMSW__
+#endif	// AMULED_APPTRAITS
+
+
+#ifdef __WXMSW__
 //
 // CTRL-C-Handler
 // see http://msdn.microsoft.com/en-us/library/windows/desktop/ms685049%28v=vs.85%29.aspx
@@ -590,7 +593,9 @@ int CamuleDaemonApp::OnRun()
 
 #ifdef __WXMSW__
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE);
-#else
+#endif // __WXMSW__
+
+#ifdef AMULED_APPTRAITS
 	// Process the return code of dead children so that we do not create
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
 	// actualy calls wxHandleProcessTermination() in console applications.
@@ -609,7 +614,7 @@ int CamuleDaemonApp::OnRun()
 		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD callback with sigaction() succeeded."));
 	}
 #endif
-#endif // __WXMSW__
+#endif	// AMULED_APPTRAITS
 
 #ifdef AMULED28_EVENTLOOP
 
@@ -712,7 +717,7 @@ int CamuleDaemonApp::OnExit()
 
 	ShutDown();
 
-#ifndef __WXMSW__
+#ifdef AMULED_APPTRAITS
 	DEBUG_ONLY( int ret = ) sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
 #ifdef __DEBUG__
 	if (ret == -1) {
@@ -721,7 +726,7 @@ int CamuleDaemonApp::OnExit()
 		AddDebugLogLineN(logGeneral, wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD callback with sigaction() succeeded."));
 	}
 #endif
-#endif // __WXMSW__
+#endif // AMULED_APPTRAITS
 
 	delete core_timer;
 

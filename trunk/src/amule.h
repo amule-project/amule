@@ -475,8 +475,16 @@ public:
 
 #endif // AMULED28_SOCKETS
 
-// no AppTraits used on Windows
-#ifndef __WXMSW__
+// AppTrait functionality is required for 2.8 wx sockets
+// Otherwise it's used to prevent zombie child processes,
+// which stops working with wx 2.9.5.
+// So disable it there (no idea if this has a noticeable impact).
+
+#if !wxCHECK_VERSION(2, 9, 5) && !defined(__WXMSW__)
+#define AMULED_APPTRAITS
+#endif
+
+#ifdef AMULED_APPTRAITS
 
 typedef std::map<int, class wxEndProcessData *> EndProcessDataMap;
 
@@ -513,7 +521,8 @@ public:
 
 void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
 pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
-#endif // __WXMSW__
+
+#endif // AMULED_APPTRAITS
 
 
 class CamuleDaemonApp : public CamuleApp
@@ -531,12 +540,12 @@ private:
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
-#ifndef __WXMSW__
+#ifdef AMULED_APPTRAITS
 	struct sigaction m_oldSignalChildAction;
 	struct sigaction m_newSignalChildAction;
 public:
 	wxAppTraits *CreateTraits();
-#endif // __WXMSW__
+#endif // AMULED_APPTRAITS
 
 public:
 
