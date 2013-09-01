@@ -377,7 +377,7 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 	return new CDaemonAppTraits(m_table);
 }
 
-#endif	// AMULED28_SOCKETS
+#else	// AMULED28_SOCKETS
 
 #ifdef AMULED_APPTRAITS
 
@@ -395,6 +395,8 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 }
 
 #endif	// AMULED_APPTRAITS
+
+#endif	// !AMULED28_SOCKETS
 
 #if defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
 #include <wx/stdpaths.h> // Do_not_auto_remove (guess)
