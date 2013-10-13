@@ -374,7 +374,7 @@ bool CamuleApp::OnInit()
 
 	m_localip = StringHosttoUint32(::wxGetFullHostName());
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	// get rid of sigpipe
 	signal(SIGPIPE, SIG_IGN);
 #else
@@ -436,7 +436,7 @@ bool CamuleApp::OnInit()
 		AddLogLineNS(_("Password set and external connections enabled."));
 	}
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	if (getuid() == 0) {
 		wxString msg =
 			wxT("Warning! You are running aMule as root.\n")
@@ -636,7 +636,7 @@ bool CamuleApp::OnInit()
 		}
 #endif
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #	define QUOTE	wxT("\"")
 #else
 #	define QUOTE	wxT("\'")

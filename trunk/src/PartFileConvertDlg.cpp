@@ -38,7 +38,7 @@
 CPartFileConvertDlg*	CPartFileConvertDlg::s_convertgui = NULL;
 
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 /* XPM */
 static const char * convert_xpm[] = {
 "16 16 9 1",
@@ -67,7 +67,7 @@ static const char * convert_xpm[] = {
 "    #$%$#       ",
 "     #$#        ",
 "      #         "};
-#endif /* ! __WXMSW__ */
+#endif /* ! __WINDOWS__  */
 
 // Modeless Dialog Implementation
 // CPartFileConvertDlg dialog

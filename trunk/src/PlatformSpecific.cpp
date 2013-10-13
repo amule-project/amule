@@ -29,7 +29,7 @@
 #endif
 
 // NTFS Sparse Files (only for MSW)
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #include "common/Format.h"
 #include "Logger.h"
 #include <winbase.h>
@@ -113,7 +113,7 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t WXUNUSED(siz
 
 #endif
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #include <wx/msw/registry.h>
 #include <wx/utils.h>
 
@@ -152,7 +152,7 @@ int PlatformSpecific::GetMaxConnections()
 #endif
 
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #include <winbase.h>
 #include <shlwapi.h>
 

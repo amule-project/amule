@@ -53,7 +53,7 @@ wxBitmap WxCasPix::getPixmap( const wxString& name )
 	} else if ( name == wxT( "stop" ) ) {
 		wxBitmap bitmap( m_stop_xpm );
 		return bitmap;
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	} else if ( name == wxT( "wxcas" ) ) {
 		wxBitmap bitmap( m_wxcas_xpm );
 		return bitmap;
@@ -1448,7 +1448,7 @@ WxCasPix::m_stop_xpm[] =
         "!!!!!!!!!!!!!*!!!!!!!!!!!!!!!!!!"
     };
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 const char *
 WxCasPix::m_wxcas_xpm[] =
     { /* XPM */
@@ -1678,5 +1678,5 @@ WxCasPix::m_wxcas_xpm[] =
         "+X+X+X4.%.7.7.| '.+.&./ ^ +X+X+X+X_.+X+X+X+X+X+X+X+X+X+X+X+X+X+X",
         "+X+X+X+X3.+./ +.+X+X1.].+X+X+X+X+X_.+X+X+X+X+X+X+X+X+X+X+X+X+X+X"
     };
-#endif /* !__WXMSW__ */
+#endif /* !__WINDOWS__  */
 // File_checked_for_headers

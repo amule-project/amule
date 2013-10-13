@@ -72,7 +72,7 @@ void CKadDlg::Init()
 	m_kad_scope->SetRanges(0.0, thePrefs::GetStatsMax());
 	m_kad_scope->SetYUnits(wxT("Nodes"));
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	//
 	// Get label with line breaks out of muuli.wdr, because generated code fails
 	// to compile in Windows.

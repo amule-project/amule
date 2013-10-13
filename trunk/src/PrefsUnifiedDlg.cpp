@@ -243,9 +243,9 @@ wxDialog(parent, -1, _("Preferences"),
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
-			#ifdef __WXMSW__
+			#ifdef __WINDOWS__ 
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
-			#endif /* __WXMSW__ */
+			#endif /* __WINDOWS__  */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
 			#ifdef __WXMAC__
 				FindWindow(IDC_ENABLETRAYICON)->Show(false);
@@ -1036,7 +1036,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 			return;
 	}
 	wxString wildcard = CFormat(_("Executable%s"))
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 		% wxT(" (*.exe)|*.exe");
 #else
 		% wxT("|*");

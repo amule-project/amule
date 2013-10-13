@@ -319,7 +319,7 @@ void CGenericClientListCtrl::UpdateItem(uint32 toupdate, SourceItemType type)
 		// support the GetVisibleLines function
 		long first = 0, last = GetItemCount();
 
-	#ifndef __WXMSW__
+	#ifndef __WINDOWS__ 
 		// Get visible lines if we need them
 		GetVisibleLines( &first, &last );
 	#endif

@@ -26,7 +26,7 @@
 #include <wx/wx.h>
 #include <wx/colordlg.h>
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	#include <io.h> // Do_not_auto_remove
 #endif
 

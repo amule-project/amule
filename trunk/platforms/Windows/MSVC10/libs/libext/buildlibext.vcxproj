@@ -100,7 +100,7 @@ lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxwidgets\li
     <PostBuildEvent>
       <Message>join external libs</Message>
       <Command>if not exist ..\..\$(Configuration) mkdir ..\..\$(Configuration)
-lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_media.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxjpegd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_adv.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxregexud.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_richtext.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxzlibd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29ud.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_qa.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29ud_xml.lib" "..\..\..\..\..\..\cryptopp\win32\output\debug\cryptlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxtiffd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29ud_net.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_core.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_gl.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxpngd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_xrc.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxexpatd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_html.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29ud_aui.lib"
+lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_media.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxjpegd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_adv.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxregexud.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_richtext.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxzlibd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase30ud.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_qa.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase30ud_xml.lib" "..\..\..\..\..\..\cryptopp\win32\output\debug\cryptlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxtiffd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase30ud_net.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_core.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_gl.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxpngd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_xrc.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxexpatd.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_html.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30ud_aui.lib"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -112,80 +112,80 @@ lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\
     <PostBuildEvent>
       <Message>join external libs</Message>
       <Command>if not exist ..\..\$(Configuration) mkdir ..\..\$(Configuration)
-lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_media.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxjpeg.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_adv.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxregexu.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_richtext.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxzlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29u.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_qa.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29u_xml.lib" "..\..\..\..\..\..\cryptopp\win32\output\release\cryptlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxtiff.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase29u_net.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_core.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_gl.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxpng.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_xrc.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxexpat.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_html.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw29u_aui.lib"
+lib /LTCG /out:..\..\$(Configuration)\libext.lib "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_media.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxjpeg.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_adv.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxregexu.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_richtext.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxzlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase30u.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_qa.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase30u_xml.lib" "..\..\..\..\..\..\cryptopp\win32\output\release\cryptlib.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxtiff.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxbase30u_net.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_core.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_gl.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxpng.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_xrc.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxexpat.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_html.lib" "..\..\..\..\..\..\wxWidgets29\lib\vc_lib\wxmsw30u_aui.lib"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_adv.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_adv.vcxproj">
       <Project>{24c45343-fd20-5c92-81c1-35a2ae841e79}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_aui.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_aui.vcxproj">
       <Project>{a16d3832-0f42-57ce-8f48-50e06649ade8}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_base.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_base.vcxproj">
       <Project>{3fcc50c2-81e9-5db2-b8d8-2129427568b1}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_core.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_core.vcxproj">
       <Project>{6744dad8-9c70-574a-bff2-9f8dddb24a75}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_gl.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_gl.vcxproj">
       <Project>{da8b15ef-6750-5928-bc0e-c748213cf9b2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_html.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_html.vcxproj">
       <Project>{33cc42f9-7756-5587-863c-8d4461b7c5dd}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_media.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_media.vcxproj">
       <Project>{8bd8f8d9-4275-5b42-a8f4-f1db2970a550}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_net.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_net.vcxproj">
       <Project>{69f2ede4-7d21-5738-9bc0-f66f61c9ae00}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_qa.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_qa.vcxproj">
       <Project>{e21129e0-7c08-5936-9d8c-0d60b5319ba7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_richtext.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_richtext.vcxproj">
       <Project>{7fb0902d-8579-5dce-b883-daf66a885005}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxexpat.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_wxexpat.vcxproj">
       <Project>{a1a8355b-0988-528e-9cc2-b971d6266669}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxjpeg.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_wxjpeg.vcxproj">
       <Project>{6053cc38-cdee-584c-8bc8-4b000d800fc7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxpng.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_wxpng.vcxproj">
       <Project>{8acc122a-ca6a-5aa6-9c97-9cdd2e533db0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxregex.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_wxregex.vcxproj">
       <Project>{56a4b526-bb81-5d01-aaa9-16d23bbb169d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxtiff.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_wxtiff.vcxproj">
       <Project>{75596ce6-5ae7-55c9-b890-c07b0a657a83}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_wxzlib.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_wxzlib.vcxproj">
       <Project>{8b867186-a0b5-5479-b824-e176edd27c40}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_xml.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_xml.vcxproj">
       <Project>{3e6dca27-5fa3-53ec-bbd6-2d42294b7ae6}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc9_xrc.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\wxWidgets29\build\msw\wx_vc10_xrc.vcxproj">
       <Project>{09f2f96a-1cc6-5e43-af1d-956ec2a4888d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

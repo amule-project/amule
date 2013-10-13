@@ -61,7 +61,7 @@ WxCas::OnInit ()
 	wxImage::AddHandler ( new wxJPEGHandler );
 #endif
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	SetPrintMode ( wxPRINT_WINDOWS );
 #else
 	SetPrintMode ( wxPRINT_POSTSCRIPT );

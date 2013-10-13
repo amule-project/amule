@@ -34,10 +34,10 @@
 
 #include "Types.h"		// Needed for int32, uint16 and uint64
 #include <map>
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	#include <signal.h>
 //	#include <wx/unix/execute.h>
-#endif // __WXMSW__
+#endif // __WINDOWS__ 
 
 
 class CAbstractFile;
@@ -436,7 +436,7 @@ extern CamuleGuiApp *theApp;
 
 	#ifndef ASIO_SOCKETS
 		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
-		#ifndef __WXMSW__
+		#ifndef __WINDOWS__ 
 			#define AMULED28_SOCKETS
 		#endif
 	#endif
@@ -480,7 +480,7 @@ public:
 // which stops working with wx 2.9.5.
 // So disable it there (no idea if this has a noticeable impact).
 
-#if !wxCHECK_VERSION(2, 9, 5) && !defined(__WXMSW__)
+#if !wxCHECK_VERSION(2, 9, 5) && !defined(__WINDOWS__ )
 #define AMULED_APPTRAITS
 #endif
 

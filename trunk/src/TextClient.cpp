@@ -32,7 +32,7 @@
 
 #include "TextClient.h"
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	#include <unistd.h> // Do_not_auto_remove
 #endif
 

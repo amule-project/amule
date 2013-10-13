@@ -147,7 +147,7 @@ protected:
 	DECLARE_EVENT_TABLE()
 };
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	#define MULE_NOTEBOOK_TAB_HEIGHT 26
 #else
 	#define MULE_NOTEBOOK_TAB_HEIGHT 40

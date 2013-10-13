@@ -28,7 +28,7 @@
 
 uint32 TheTime = 0;
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 
 void StartTickTimer(){};
 

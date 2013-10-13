@@ -115,7 +115,7 @@ private:
 		     thePrefs::UseIPFilterSystem() ) {
 			// Load from system wide IP filter file
 			wxStandardPathsBase &spb(wxStandardPaths::Get());
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 			wxString dataDir(spb.GetPluginsDir());
 #elif defined(__WXMAC__)
 			wxString dataDir(spb.GetDataDir());

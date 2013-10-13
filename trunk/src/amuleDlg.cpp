@@ -77,7 +77,7 @@
 #endif
 #include "IPFilter.h"
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 #include "aMule.xpm"
 #endif
 
@@ -211,7 +211,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxInitAllImageHandlers();
 	Apply_Clients_Skin();
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
 #endif
 
@@ -1060,7 +1060,7 @@ void CamuleDlg::DoIconize(bool iconize)
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 // Evil Hack: check if the mouse is inside the window
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	if (GetScreenRect().Contains(wxGetMousePosition()))
 #endif
 	{
@@ -1214,7 +1214,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
 
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	wxString dataDir(spb.GetPluginsDir());
 #elif defined(__WXMAC__)
 		wxString dataDir(spb.GetDataDir());

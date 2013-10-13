@@ -48,7 +48,7 @@
 // Global constants
 #ifdef __WXGTK__
 	const int COL_SIZE_MIN = 10;
-#elif defined(__WXMSW__) || defined(__WXMAC__) || defined(__WXCOCOA__)
+#elif defined(__WINDOWS__ ) || defined(__WXMAC__) || defined(__WXCOCOA__)
 	const int COL_SIZE_MIN = 0;
 #else
 	#error Need to define COL_SIZE_MIN for your OS

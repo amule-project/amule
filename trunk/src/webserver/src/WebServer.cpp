@@ -960,7 +960,7 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0)
 {
 	m_size = 0;
 	m_name = name;
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	wxFFile fis(m_name, wxT("rb"));
 #else
 	wxFFile fis(m_name);

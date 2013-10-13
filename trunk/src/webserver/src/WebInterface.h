@@ -43,7 +43,7 @@
 
 	#ifndef ASIO_SOCKETS
 		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
-		#ifndef __WXMSW__
+		#ifndef __WINDOWS__ 
 			#define AMULEWEB28_SOCKETS
 		#endif
 	#endif

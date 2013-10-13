@@ -51,7 +51,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 		wxFrame ( ( wxFrame * ) NULL, -1, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE )
 {
 	// Give it an icon
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	wxIcon icon(wxT("wxcas"));
 #else
 	wxIcon icon;
@@ -102,7 +102,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	// Main Panel static line
 	m_staticLine = new wxStaticLine ( m_mainPanel, -1 );
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 
 	m_BottomStaticLine = new wxStaticLine ( m_mainPanel, -1 );
 #endif
@@ -181,7 +181,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 
 	m_mainPanelVBox->Add ( m_absHitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 
 	m_mainPanelVBox->Add ( m_BottomStaticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
 #endif
@@ -277,7 +277,7 @@ WxCasFrame::GetStatImage () const
 	wxMemoryDC memdc;
 	memdc.SelectObject ( statBitmap );
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 
 	memdc.
 	SetFont ( wxFont ( 6, wxSWISS, wxNORMAL, wxBOLD ) );

@@ -39,7 +39,7 @@
 #endif
 
 // standard
-#if defined(__WXMSW__) && !defined(__GNUWIN32__) && !defined(__WXWINE__) && !defined(__WXMICROWIN__)
+#if defined(__WINDOWS__ ) && !defined(__GNUWIN32__) && !defined(__WXWINE__) && !defined(__WXMICROWIN__)
 #	include <io.h>
 #	ifndef __SALFORDC__
 #		define   WIN32_LEAN_AND_MEAN
@@ -92,14 +92,14 @@ char* mktemp( char * path ) { return path ;}
 #	define   O_BINARY    (0)
 #endif  //__UNIX__
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #include <wx/msw/mslu.h>
 #endif
 
 
 // The following defines handle different names across platforms,
 // and ensures that we use 64b IO on windows (only 32b by default).
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	#define FLUSH_FD(x)			_commit(x)
 	#define SEEK_FD(x, y, z)		_lseeki64(x, y, z)
 	#define TELL_FD(x)			_telli64(x)
@@ -271,7 +271,7 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 	}
 
 	// Windows needs wide character file names
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	m_fd = _wopen(m_filePath.GetRaw().c_str(), flags, accessMode);
 #else
 	Unicode2CharBuf tmpFileName = filename2char(m_filePath.GetRaw());
@@ -427,7 +427,7 @@ bool CFile::SetLength(uint64 new_len)
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #ifdef _MSC_VER
 // MSVC has a 64bit version
 	bool result = _chsize_s(m_fd, new_len) == 0;
