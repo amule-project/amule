@@ -241,7 +241,7 @@ void CDownloadListCtrl::UpdateItem(const void* toupdate)
 	// support the GetVisibleLines function
 	long first = 0, last = GetItemCount();
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	// Get visible lines if we need them
 	if ( rangeIt.first != rangeIt.second ) {
 		GetVisibleLines( &first, &last );
@@ -1412,7 +1412,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	}
 }
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 #	define QUOTE	wxT("\"")
 #else
 #	define QUOTE	wxT("\'")
@@ -1458,7 +1458,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		}
 	}
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	// We have to escape quote characters in the file name, otherwise arbitrary
 	// options could be passed to the player.
 	partFile.Replace(QUOTE, wxT("\\") QUOTE);

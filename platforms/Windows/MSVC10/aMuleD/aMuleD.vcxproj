@@ -298,6 +298,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\GapList.h" />
+    <ClInclude Include="..\PCH.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\version.rc" />

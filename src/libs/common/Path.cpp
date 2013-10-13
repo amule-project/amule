@@ -26,7 +26,7 @@
 #include "StringFunctions.h"		// Needed for filename2char()
 
 #include <wx/file.h>
-#if defined __WXMSW__ || defined __IRIX__
+#if defined __WINDOWS__  || defined __IRIX__
 #	include <wx/ffile.h>
 #endif
 #include <wx/utils.h>
@@ -37,7 +37,7 @@
 // using a different encoding than the current system-wide setting. If
 // this is not done, such filenames will fail during conversion to/from
 // multibyte (as in cWC2MB/cMB2WC).
-#if !wxUSE_GUI && !defined(__WXMSW__)
+#if !wxUSE_GUI && !defined(__WINDOWS__ )
 void* setFNConv()
 {
 	// This uses the same method as wxApp::Initialize under GTK2
@@ -58,7 +58,7 @@ static void* s_foo = setFNConv();
 // case-insensitive cmp for that platform. TODO:
 // Perhaps it would be better to simply lowercase
 // m_filesystem in the constructor ...
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	#define PATHCMP(a, b)		wxStricmp(a, b)
 	#define PATHNCMP(a, b, n)	wxStrnicmp(a, b, n)
 #else
@@ -198,7 +198,7 @@ wxString DoRemoveExt(const wxString& path)
 /** Readies a path for use with wxAccess.. */
 wxString DoCleanPath(const wxString& path)
 {
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	// stat fails on windows if there are trailing path-separators.
 	wxString cleanPath = StripSeparators(path, wxString::trailing);
 
@@ -269,7 +269,7 @@ CPath::CPath(const wxString& filename)
 		// saved as UTF8, even if the system is not unicode enabled,
 		// preserving the original filename till the user has fixed
 		// his system ...
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 		// Magic fails on Windows where we always work with wide char file names.
 		m_filesystem = DeepCopy(filename);
 		m_printable = m_filesystem;
@@ -603,7 +603,7 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 
 	if (CPath::CloneFile(src, dst, true)) {
 		// Try to ensure that the backup gets physically written
-#if defined __WXMSW__ || defined __IRIX__
+#if defined __WINDOWS__  || defined __IRIX__
 		wxFFile backupFile;
 #else
 		wxFile backupFile;

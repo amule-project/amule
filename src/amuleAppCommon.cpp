@@ -229,7 +229,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	cmdline.AddSwitch(wxT("e"), wxT("ec-config"), wxT("Configure EC (External Connections)."));
 #else
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	// MSW shows help otions in a dialog box, and the formatting doesn't fit there
 #define HELPTAB wxT("\t")
 #else
@@ -251,7 +251,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	// Change webserver path. This is also a config option, so this switch will go at some time.
 	cmdline.AddOption(wxT("w"), wxT("use-amuleweb"), wxT("Specify location of amuleweb binary."));
 #endif
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Do not handle fatal exception."));
 // Keep stdin open to run valgrind --gen_suppressions
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Do not disable stdin."));
@@ -294,7 +294,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	// Problem is just that the backtraces are useless, because apparently the context gets lost 
 	// in the try/catch somewhere.
 	// So leave it out.
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	#if wxUSE_ON_FATAL_EXCEPTION
 		if ( !cmdline.Found(wxT("disable-fatal")) ) {
 			// catch fatal exceptions
@@ -411,7 +411,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	}
 #endif
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	// Close standard-input
 	if ( !cmdline.Found(wxT("enable-stdin")) )	{
 		// The full daemon will close all std file-descriptors by itself,

@@ -48,7 +48,7 @@
 #include <wx/uri.h>
 #include <wx/url.h>
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	#include <winerror.h>
 	#include <shlobj.h>
 #elif defined(__WXMAC__)
@@ -72,7 +72,7 @@ AlcFrame::AlcFrame (const wxString & title):
     wxFrame ((wxFrame *) NULL, -1, title)
 {
   // Give it an icon
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
   wxIcon icon(wxT("alc"));
 #else
   wxIcon icon;
@@ -325,7 +325,7 @@ AlcFrame::OnBrowseButton (wxCommandEvent & WXUNUSED(event))
 void
 AlcFrame::SetFileToHash()
 {
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	wxString browseroot;
 	LPITEMIDLIST pidl;
 	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &pidl);

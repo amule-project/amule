@@ -34,7 +34,7 @@
 
 #include "Types.h"		// Do_not_auto_remove (win32)
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	#include <winsock.h>	// Do_not_auto_remove
 #else
 	#include <sys/types.h>	// Do_not_auto_remove

@@ -49,7 +49,7 @@ bool CreateSparseFile(const CPath& name, uint64_t size);
  *
  * Currently anything but windows will return the default value (-1);
  */
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 int GetMaxConnections();
 #else
 inline int GetMaxConnections() { return -1; }
@@ -92,7 +92,7 @@ EFSType GetFilesystemType(const CPath& path);
  *
  * Based on http://en.wikipedia.org/wiki/Comparison_of_file_systems
  */
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 inline bool CanFSHandleSpecialChars(const CPath& WXUNUSED(path)) { return false; }
 #else
 // Other filesystem types may be added
@@ -138,7 +138,7 @@ inline bool CanFSHandleLargeFiles(const CPath& path)
  * Disable / enable computer's energy saving "standby" mode.
  *
  */
-#if defined __WXMSW__ || defined __WXMAC__
+#if defined __WINDOWS__  || defined __WXMAC__
 	#define PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE 1
 #else
 	#define PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE 0

@@ -104,7 +104,7 @@ void CDirectoryTreeCtrl::Init()
 					new CItemData(CPath()));
 
 	if (!m_IsRemote) {
-	#ifndef __WXMSW__
+	#ifndef __WINDOWS__ 
 		AddChildItem(m_root, CPath(wxT("/")));
 	#else
 		// this might take awhile, so change the cursor

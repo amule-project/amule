@@ -234,7 +234,7 @@ void CaMuleExternalConnector::Show(const wxString &s)
 {
 	if( !m_KeepQuiet ) {
 		printf("%s", (const char *)unicode2char(s));
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 		fflush(stdout);
 #endif
 	}
@@ -552,7 +552,7 @@ void CaMuleExternalConnector::SaveConfigFile()
 
 bool CaMuleExternalConnector::OnInit()
 {
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	#if wxUSE_ON_FATAL_EXCEPTION
 		// catch fatal exceptions
 		wxHandleFatalExceptions(true);

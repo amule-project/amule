@@ -299,6 +299,9 @@
     <ClInclude Include="..\..\..\..\src\GapList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\PCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\version.rc">

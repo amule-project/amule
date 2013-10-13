@@ -560,7 +560,7 @@ void CAllocateFileTask::Entry()
 	CFile file;
 	file.Open(m_file->GetFullName().RemoveExt(), CFile::read_write);
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	try {
 		// File is already created as non-sparse, so we only need to set the length.
 		// This will fail to allocate the file e.g. under wine on linux/ext3,

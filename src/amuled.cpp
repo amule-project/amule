@@ -65,7 +65,7 @@
 #include <sys/resource.h> // Do_not_auto_remove
 #endif
 
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	#ifdef  HAVE_SYS_WAIT_H
 		#include <sys/wait.h> // Do_not_auto_remove
 	#endif
@@ -555,7 +555,7 @@ pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
 #endif	// AMULED_APPTRAITS
 
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 //
 // CTRL-C-Handler
 // see http://msdn.microsoft.com/en-us/library/windows/desktop/ms685049%28v=vs.85%29.aspx
@@ -580,7 +580,7 @@ static BOOL CtrlHandler(DWORD fdwCtrlType)
 	}
 }
 
-#endif // __WXMSW__
+#endif // __WINDOWS__ 
 
 
 int CamuleDaemonApp::OnRun()
@@ -593,9 +593,9 @@ int CamuleDaemonApp::OnRun()
 		return 0;
 	}
 
-#ifdef __WXMSW__
+#ifdef __WINDOWS__ 
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE);
-#endif // __WXMSW__
+#endif // __WINDOWS__ 
 
 #ifdef AMULED_APPTRAITS
 	// Process the return code of dead children so that we do not create
@@ -657,7 +657,7 @@ bool CamuleDaemonApp::OnInit()
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
-#ifndef __WXMSW__
+#ifndef __WINDOWS__ 
 	if ( !enable_daemon_fork ) {
 		return 0;
 	}
