@@ -185,8 +185,11 @@ uint16 CDownloadQueue::GetFileCount() const
 void CDownloadQueue::CopyFileList(std::vector<CPartFile*>& out_list, bool includeCompleted) const
 {
 	wxMutexLocker lock(m_mutex);
-
-	out_list.reserve(m_filelist.size() + includeCompleted ? m_completedDownloads.size() : 0);
+	uint32 reserve = m_filelist.size();
+	if (includeCompleted) {
+		reserve += m_completedDownloads.size();
+	}
+	out_list.reserve(reserve);
 	for (FileQueue::const_iterator it = m_filelist.begin(); it != m_filelist.end(); ++it) {
 		out_list.push_back(*it);
 	}
