@@ -313,7 +313,8 @@ void CStatistics::Load()
 	s_totalSent = 0;
 	s_totalReceived = 0;
 	try {
-		if (f.Open(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")))) {
+		CPath path(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")));
+		if (path.FileExists() && f.Open(path)) {
 			uint8_t version = f.ReadUInt8();
 			if (version == 0) {
 				s_totalSent = f.ReadUInt64();
