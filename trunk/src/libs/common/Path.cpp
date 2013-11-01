@@ -31,6 +31,7 @@
 #endif
 #include <wx/utils.h>
 #include <wx/filename.h>
+#include <algorithm>	// Needed for std::min
 
 
 // This is required in order to ensure that wx can "handle" filenames
