@@ -35,6 +35,7 @@
 #include <zlib.h> // Do_not_auto_remove
 #endif
 #include <memory>		// Needed for std::auto_ptr
+#include <algorithm>	// Needed for std::min
 
 #include "FileFunctions.h"
 #include "StringFunctions.h"
