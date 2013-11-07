@@ -1277,8 +1277,8 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 			sharedfiles->SafeAddKFile(result);
 
 			bytecount += result->GetFileSize();
-			// If we have added files with a total size of ~300mb
-			if (bytecount >= 314572800) {
+			// If we have added files with a total size of ~3000mb
+			if (bytecount >= 3145728000) {
 				AddDebugLogLineN(logKnownFiles, wxT("Failsafe for crash on file hashing creation"));
 				if ( m_app_state != APP_STATE_SHUTTINGDOWN ) {
 					knownfiles->Save();
