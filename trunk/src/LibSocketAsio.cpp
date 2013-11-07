@@ -41,6 +41,7 @@
 	#define BOOST_PP_VARIADICS 0
 #endif
 
+#include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
