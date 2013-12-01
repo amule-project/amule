@@ -321,11 +321,30 @@ static bool m_preventingSleepMode = false;
 	static IOPMAssertionID assertionID;
 #endif
 
+// IOPMAssertionCreate has been introduced in Leopard (10.5) but deprecated starting from Snow Leopard(10.6)
+// For more details see:
+// - http://developer.apple.com/library/mac/#qa/qa1340/_index.html
+// - http://www.cimgf.com/2009/10/14/the-journey-to-disabling-sleep-with-iokit/
+#if defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1060	// 10.6 only
+CFStringRef reasonForActivity= CFSTR("Prevent Display Sleep");
+#endif
+
 void PlatformSpecific::PreventSleepMode()
 {
 	if (!m_preventingSleepMode) {
 		#ifdef _MSC_VER
 			SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
+		// IOPMAssertionCreate has been introduced in Leopard (10.5) but deprecated starting from Snow Leopard(10.6)
+		#elif defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1060	// 10.6 only
+			IOReturn success = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
+												kIOPMAssertionLevelOn, reasonForActivity, &assertionID);
+			if (success == kIOReturnSuccess) {
+				// Correctly vetoed, flag so we don't do it again.
+				m_preventingSleepMode = true;
+			} else {
+				// May be should be better to trace in log?
+			}
+
 			m_preventingSleepMode = true;
 		#elif defined(__WXMAC__) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1050	// 10.5 only
 			IOReturn success = IOPMAssertionCreate(kIOPMAssertionTypeNoDisplaySleep,
