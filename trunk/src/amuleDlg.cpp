@@ -1430,19 +1430,19 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 
 void CamuleDlg::DoNetworkRearrange()
 {
+#if !defined(__WXOSX_COCOA__)
+	// in Mac OS with wxWidgets >= 3.0 and COCOA the following seems to cause problems
+	// (window is not refreshed after changes in network settings)
 	wxWindowUpdateLocker freezer(this);
+#endif
 
 	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONNETWORKS);
 
+	// set the log windows
 	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
-	wxNotebook* networks_notebook = CastChild( ID_NETNOTEBOOK, wxNotebook);
 
 	while (logs_notebook->GetPageCount() > 1) {
 		logs_notebook->RemovePage(logs_notebook->GetPageCount() - 1);
-	}
-
-	while (networks_notebook->GetPageCount() > 0) {
-		networks_notebook->RemovePage(networks_notebook->GetPageCount() - 1);
 	}
 
 	if (thePrefs::GetNetworkED2K()) {
@@ -1452,15 +1452,23 @@ void CamuleDlg::DoNetworkRearrange()
 		logs_notebook->AddPage(m_logpages[2].page, m_logpages[2].name);
 	}
 
-	m_networkpages[0].page->Show(thePrefs::GetNetworkED2K());
-
 	if (thePrefs::GetNetworkKademlia()) {
 		logs_notebook->AddPage(m_logpages[3].page, m_logpages[3].name);
 	}
 
-	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());
+	// Set the main window.
+	// If we have both networks active, activate a notebook to select between them.
+	// If only one is active, show the window directly without a surrounding one tab notebook.
+	wxNotebook* networks_notebook = CastChild(ID_NETNOTEBOOK, wxNotebook);
+	// The pages have to be removed from the notebook to be reassigned to the window correctly.
+	// (Otherwise they could stay in the notebook all the time.)
+	networks_notebook->Show(false);
+	while (networks_notebook->GetPageCount() > 0) {
+		networks_notebook->RemovePage(networks_notebook->GetPageCount() - 1);
+	}
 
-	networks_notebook->Show(thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia());
+	m_networkpages[0].page->Show(thePrefs::GetNetworkED2K());
+	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());
 
 	wxWindow* replacement = NULL;
 
@@ -1468,22 +1476,20 @@ void CamuleDlg::DoNetworkRearrange()
 
 	if (thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia()) {
 		toolbarTool->SetLabel(_("Networks"));
-
 		m_networkpages[0].page->Reparent(networks_notebook);
 		m_networkpages[1].page->Reparent(networks_notebook);
 
 		networks_notebook->AddPage(m_networkpages[0].page, m_networkpages[0].name);
 		networks_notebook->AddPage(m_networkpages[1].page, m_networkpages[1].name);
+		networks_notebook->Show(true);
 
 		replacement = networks_notebook;
 
 	} else if (thePrefs::GetNetworkED2K()) {
 		toolbarTool->SetLabel(_("eD2k network"));
 		replacement = m_networkpages[0].page;
-		m_networkpages[1].page->Reparent(m_networknotebooksizer->GetContainingWindow());
 	} else if (thePrefs::GetNetworkKademlia()) {
 		toolbarTool->SetLabel(_("Kad network"));
-		m_networkpages[0].page->Reparent(m_networknotebooksizer->GetContainingWindow());
 		replacement = m_networkpages[1].page;
 	} else {
 		// No networks.
