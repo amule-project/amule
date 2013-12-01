@@ -34,27 +34,6 @@
 #include <algorithm>	// Needed for std::min
 
 
-// This is required in order to ensure that wx can "handle" filenames
-// using a different encoding than the current system-wide setting. If
-// this is not done, such filenames will fail during conversion to/from
-// multibyte (as in cWC2MB/cMB2WC).
-#if !wxUSE_GUI && !defined(__WINDOWS__ )
-void* setFNConv()
-{
-	// This uses the same method as wxApp::Initialize under GTK2
-	wxString encName = wxLocale::GetSystemEncodingName().Upper();
-	if (encName.IsEmpty() || (encName == wxT("US-ASCII"))) {
-		encName = wxT("UTF-8");
-	}
-
-	return wxConvFileName = new wxConvBrokenFileNames(encName);
-}
-
-// Ensure intialization
-static void* s_foo = setFNConv();
-#endif
-
-
 // Windows has case-insensitive paths, so we use a
 // case-insensitive cmp for that platform. TODO:
 // Perhaps it would be better to simply lowercase
