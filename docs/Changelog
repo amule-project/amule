@@ -9,6 +9,9 @@ Version 2.4.0 - The river knows.
 		* Fix WinSock library version detection with MinGW-w64
 		* Fix compilation with MinGW-w64
 
+	Mr Hyde:
+		* Fix  "Disable computer's timed standby mode" for MacOS 10.9 Mavericks
+
 	Stu Redman:
 		* Display hashing progress in progress bars
 		* Assertion from background thread now prints a message and not just closes the app
