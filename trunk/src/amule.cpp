@@ -574,7 +574,6 @@ bool CamuleApp::OnInit()
 	if (!serverlist->GetServerCount() && thePrefs::GetNetworkED2K()) {
 		// There are no servers and ED2K active -> ask for download.
 		// As we cannot ask in amuled, we just update there
-		// Kry TODO: Store server.met URL on preferences and use it here and in GUI.
 #ifndef AMULE_DAEMON
 		if (wxYES == wxMessageBox(
 			wxString(
@@ -584,11 +583,7 @@ bool CamuleApp::OnInit()
 			static_cast<wxWindow*>(theApp->amuledlg)))
 #endif
 		{
-		// workaround amuled crash
-#ifndef AMULE_DAEMON
-			serverlist->UpdateServerMetFromURL(
-				wxT("http://gruk.org/server.met.gz"));
-#endif
+			serverlist->UpdateServerMetFromURL(thePrefs::GetEd2kServersUrl());
 		}
 	}
 
