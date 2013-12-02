@@ -841,8 +841,9 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 }
 
 
-void CServerList::DownloadFinished(uint32 result)
+bool CServerList::DownloadFinished(uint32 result)
 {
+	bool ret = false;
 	if(result == HTTP_Success) {
 		const CPath tempFilename = CPath(theApp->ConfigDir + wxT("server.met.download"));
 
@@ -853,12 +854,14 @@ void CServerList::DownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		CPath::RemoveFile(tempFilename);
 		AddLogLineN(CFormat(_("Finished downloading the server list from %s")) % m_URLUpdate);
+		ret = true;
 	// cppcheck-suppress duplicateBranch
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("server.met"));
 	} else {
 		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("server.met") % m_URLUpdate);
 	}
+	return ret;
 }
 
 

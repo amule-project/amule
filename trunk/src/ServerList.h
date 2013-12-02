@@ -59,7 +59,7 @@ public:
 	bool		IsInitialized() const { return m_initialized; }
 	void		Sort();
 	void		UpdateServerMetFromURL(const wxString& strURL);
-	void		DownloadFinished(uint32 result);
+	bool		DownloadFinished(uint32 result);
 	void		AutoDownloadFinished(uint32 result);
 	uint32		GetAvgFile() const;
 
