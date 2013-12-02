@@ -1460,29 +1460,24 @@ void CamuleDlg::DoNetworkRearrange()
 	// If we have both networks active, activate a notebook to select between them.
 	// If only one is active, show the window directly without a surrounding one tab notebook.
 	wxNotebook* networks_notebook = CastChild(ID_NETNOTEBOOK, wxNotebook);
-	// The pages have to be removed from the notebook to be reassigned to the window correctly.
-	// (Otherwise they could stay in the notebook all the time.)
-	networks_notebook->Show(false);
-	while (networks_notebook->GetPageCount() > 0) {
-		networks_notebook->RemovePage(networks_notebook->GetPageCount() - 1);
-	}
 
-	m_networkpages[0].page->Show(thePrefs::GetNetworkED2K());
-	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());
+	// First hide all windows
+	networks_notebook->Show(false);
+	m_networkpages[0].page->Show(false);
+	m_networkpages[1].page->Show(false);
+	m_networknotebooksizer->Clear();
 
 	wxWindow* replacement = NULL;
-
-	m_networknotebooksizer->Clear();
 
 	if (thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia()) {
 		toolbarTool->SetLabel(_("Networks"));
 		m_networkpages[0].page->Reparent(networks_notebook);
 		m_networkpages[1].page->Reparent(networks_notebook);
-
-		networks_notebook->AddPage(m_networkpages[0].page, m_networkpages[0].name);
-		networks_notebook->AddPage(m_networkpages[1].page, m_networkpages[1].name);
-		networks_notebook->Show(true);
-
+		// This is where things get tricky.
+		// Since we messed with the notebook, we now have to show the page which is currently selected.
+		// Only the selected page (ED2K), not the hidden page (Kad).
+		networks_notebook->SetSelection(0);
+		m_networkpages[0].page->Show();
 		replacement = networks_notebook;
 
 	} else if (thePrefs::GetNetworkED2K()) {
@@ -1498,6 +1493,7 @@ void CamuleDlg::DoNetworkRearrange()
 
 	if (replacement) {
 		replacement->Reparent(m_networknotebooksizer->GetContainingWindow());
+		replacement->Show();
 		m_networknotebooksizer->Add( replacement, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 		m_networknotebooksizer->Layout();
 	}
