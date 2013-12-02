@@ -1248,7 +1248,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"),		s_DropSlowSources, false ) );
 
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://upd.emule-security.org/nodes.dat") ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),		s_Ed2kURL, wxT("http://gruk.org/server.met.gz") ) );
+	s_MiscList.push_back( new Cfg_Str(	wxT("/eMule/Ed2kServersUrl"),		s_Ed2kURL, wxT("http://upd.emule-security.org/server.met") ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/ShowRatesOnTitle"),		s_showRatesOnTitle, 0 ));
 
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/GeoLiteCountryUpdateUrl"),		s_GeoIPUpdateUrl, wxT("http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz") ) );
