@@ -1534,7 +1534,11 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 			ipfilter->DownloadFinished(event.GetExtraLong());
 			break;
 		case HTTP_ServerMet:
-			serverlist->DownloadFinished(event.GetExtraLong());
+			if (serverlist->DownloadFinished(event.GetExtraLong()) && !IsConnectedED2K()) {
+				// If successfully downloaded a server list, and are not connected at the moment, try to connect.
+				// This happens when no server met is available on startup.
+				serverconnect->ConnectToAnyServer();
+			}
 			break;
 		case HTTP_ServerMetAuto:
 			serverlist->AutoDownloadFinished(event.GetExtraLong());
