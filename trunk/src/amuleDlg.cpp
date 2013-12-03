@@ -1505,6 +1505,7 @@ void CamuleDlg::DoNetworkRearrange()
 
 	m_wndToolbar->Realize();
 
+	ShowConnectionState();	// status in the bottom right
 	m_searchwnd->FixSearchTypes();
 }
 
