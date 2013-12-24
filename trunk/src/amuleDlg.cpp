@@ -1430,7 +1430,12 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 
 void CamuleDlg::DoNetworkRearrange()
 {
+#if !defined(__WXOSX_COCOA__)
+	// in Mac OS with wxWidgets >= 3.0 and COCOA the following seems to cause problems
+	// (window is not refreshed after changes in network settings)
 	wxWindowUpdateLocker freezer(this);
+#endif
+
 	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONNETWORKS);
 
 	// set the log windows
