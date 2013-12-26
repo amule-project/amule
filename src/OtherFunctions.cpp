@@ -77,9 +77,11 @@ wxString GetMuleVersion()
 	// 2.8 Mac
 	#elif defined(__WXMAC__)
 		ver += wxT("wxMac");
-	#elif defined(__WINDOWS__ ) && defined(__VISUALC__)
+	#elif defined(__WXBASE__)
+		ver += wxT("wxBase");
+	#elif defined(__WINDOWS__) && defined(__VISUALC__)
 		ver += wxT("wxMSW VC");
-	#elif defined(__WINDOWS__ )
+	#elif defined(__WINDOWS__)
 		ver += wxT("wxMSW");
 	#endif
 
