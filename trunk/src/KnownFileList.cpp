@@ -267,6 +267,12 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd, bool afterHashing)
 bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 {
 	if (Record->GetFileSize() > 0) {
+		// sanity check if the number of part hashes is correct here
+		if (Record->GetHashCount() != Record->GetED2KPartHashCount()) {
+			AddDebugLogLineC(logKnownFiles, CFormat(wxT("%s with size %d should have %d part hashes, but only %d are available")) 
+				% Record->GetFileName().GetPrintable() % Record->GetFileSize() % Record->GetED2KPartHashCount() % Record->GetHashCount());
+			return false;
+		}
 		const CMD4Hash& tkey = Record->GetFileHash();
 		CKnownFileMap::iterator it = m_knownFileMap.find(tkey);
 		if (it == m_knownFileMap.end()) {
@@ -293,7 +299,13 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 					CMemFile f;
 					existing->WriteToFile(&f);
 					f.Reset();
-					Record->LoadFromFile(&f);
+					if (!Record->LoadFromFile(&f)) {
+						// this also shouldn't happen
+						AddDebugLogLineC(logKnownFiles, CFormat(wxT("error copying known file: existing: %s %d %d %d  Record: %s %d %d %d"))
+							% existing->GetFileName().GetPrintable() % existing->GetFileSize() % existing->GetED2KPartHashCount() % existing->GetHashCount()
+							% Record->GetFileName().GetPrintable() % Record->GetFileSize() % Record->GetED2KPartHashCount() % Record->GetHashCount());
+						return false;
+					}
 					Record->SetLastChangeDatetime(newDate);
 					Record->SetFileName(newName);
 				}
