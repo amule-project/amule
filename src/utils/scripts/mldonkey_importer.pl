@@ -392,13 +392,10 @@ sub convert_gap_format {
 
 sub get_first_free_number {
 	my $n = 1;
-	my $result = 0;
 
-	while (!$result && !($n>999)) {
-		open(TEST, " <" . $output_folder . sprintf("/%03d.part.met",$n)) or $result=$n;
-		close(TEST);
+	while (-f sprintf("$output_folder/%03d.part.met",$n)) {
 		$n++;
 	}
 
-	$result;
+	$n;
 }
