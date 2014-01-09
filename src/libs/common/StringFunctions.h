@@ -47,10 +47,10 @@ enum EUtf8Str
  *
  * Please, DO NOT store pointers returned by unicode2char(), because they
  * get free'ed as soon as the return value of cWX2MB gets out of scope.
- * If you need to store a pointer, use a buffer of type wxWX2MBbuf:
+ * If you need to store a pointer, use a buffer of type wxCharBuffer:
  * and then cast it to a char pointer, e.g.:
  *
- * const wxWX2MBbuf buf(unicode2char(aWxString));
+ * const wxCharBuffer buf(unicode2char(aWxString));
  *
  * --- Now you can freely use buf as if it were a (const char *) ---
  *
@@ -59,31 +59,36 @@ enum EUtf8Str
  *
  * The cast in printf is necessary because variable number of parameter
  * functions have no type for these parameters, so the automatic casting
- * of wxWX2MBbuf to (const char *) is not performed.
+ * of wxCharBuffer to (const char *) is not performed.
  *
  * --- don't worry about memory allocation, memory will be       ---
  * --- free'ed when buf gets out of scope, i.e., upon return     ---
  *
- * wxMB2WXbuf, wxWX2MBbuf are always the appropriate return type,
+ * wxWCharBuffer, wxCharBuffer are always the appropriate return type,
  * either (wxChar *) or (wxWCharBuffer)
  *
  * Use the simplified names Unicode2CharBuf and Char2UnicodeBuf, and
  * do not declare these names const or the compiler will complain about
  * a double const.
  */
-typedef const wxWX2MBbuf Unicode2CharBuf;
-typedef const wxMB2WXbuf Char2UnicodeBuf;
+typedef const wxCharBuffer Unicode2CharBuf;
+typedef const wxWCharBuffer Char2UnicodeBuf;
 
 Unicode2CharBuf unicode2char(const wxChar* x);
+Unicode2CharBuf unicode2char(const Char2UnicodeBuf& x);
+inline Unicode2CharBuf unicode2char(const wxString& x)		{ return unicode2char(x.wc_str()); }
 inline Char2UnicodeBuf char2unicode(const char* x)	{ return wxConvLocal.cMB2WX(x); }
 
 inline Unicode2CharBuf unicode2UTF8(const wxChar* x)	{ return wxConvUTF8.cWX2MB(x); }
+inline Unicode2CharBuf unicode2UTF8(const Char2UnicodeBuf& x)	{ return wxConvUTF8.cWX2MB(x); }
+inline Unicode2CharBuf unicode2UTF8(const wxString& x)	{ return x.utf8_str(); }
 inline Char2UnicodeBuf UTF82unicode(const char* x)	{ return wxConvUTF8.cMB2WX(x); }
 
 inline const wxCharBuffer char2UTF8(const char *x)	{ return unicode2UTF8(char2unicode(x)); }
 inline const wxCharBuffer UTF82char(const char *x)	{ return unicode2char(UTF82unicode(x)); }
 
 inline Unicode2CharBuf filename2char(const wxChar* x)	{ return wxConvFile.cWC2MB(x); }
+inline Unicode2CharBuf filename2char(const wxString& x)	{ return x.mb_str(wxConvFile); }
 inline Char2UnicodeBuf char2filename(const char* x)	{ return wxConvFile.cMB2WC(x); }
 
 

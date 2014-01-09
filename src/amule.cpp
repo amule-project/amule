@@ -1088,7 +1088,7 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 		if (msg) {
 			s << wxT(" : ") << msg;
 		}
-		_wassert(s, file, line);
+		_wassert(s.wc_str(), file, line);
 #else
 		// Abort, allows gdb to catch the assertion
 		raise( SIGABRT );

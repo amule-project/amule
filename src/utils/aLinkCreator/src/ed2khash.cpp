@@ -33,22 +33,6 @@
 #include "ed2khash.h"
 
 
-// efe, sorry for that, i have not enough time to do the right thing now, but
-// please, create a file called like unicodestuff.h and put this. Include in
-// alcc.c and here. And remove this stupid comment :)
-//-----------------------------------------------------------------------------
-// efe, this can be put in a separete include file, if you want to reuse
-static wxCSConv aMuleConv(wxS("iso8859-1"));
-#ifdef wxUSE_UNICODE
-        #define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
-        #define char2unicode(x) aMuleConv.cMB2WX(x)
-#else
-        #define unicode2char(x) x.c_str()
-        #define char2unicode(x) x
-#endif
-//-----------------------------------------------------------------------------
-
-
 /// Constructor
 Ed2kHash::Ed2kHash():MD4()
 {
@@ -70,7 +54,8 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
   wxFFile file(filename.GetFullPath(), wxT("rbS"));
   if (! file.IsOpened())
     {
-      wxLogError (_("Unable to open %s"),unicode2char(filename.GetFullPath()));
+	  // This doesn't make much sense to me, but it is what it was before and actually works.
+	  wxLogError(_("Unable to open %s"), ((const char*)filename.GetFullPath().mb_str(wxConvISO8859_1)));
       return (false);
     }
   else

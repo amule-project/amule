@@ -119,8 +119,9 @@ void CIP2Country::DownloadFinished(uint32 result)
 		wxString newDat = m_DataBasePath + wxT(".download");
 
 		// Try to unpack the file, might be an archive
+		wxWCharBuffer dataBaseName = m_DataBaseName.wc_str();
 		const wxChar* geoip_files[] = {
-			m_DataBaseName,
+			dataBaseName,
 			NULL
 		};
 

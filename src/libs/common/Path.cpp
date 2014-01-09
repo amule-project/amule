@@ -254,7 +254,7 @@ CPath::CPath(const wxString& filename)
 		m_filesystem = DeepCopy(filename);
 		m_printable = m_filesystem;
 #else
-		fn = wxConvUTF8.cWC2MB(filename);
+		fn = filename.utf8_str();
 		m_filesystem = wxConvFile.cMB2WC(fn);
 
 		// There's no need to try to unmangle the filename here.
@@ -276,7 +276,7 @@ CPath::CPath(const CPath& other)
 
 CPath CPath::FromUniv(const wxString& path)
 {
-	wxCharBuffer fn = wxConvISO8859_1.cWC2MB(path);
+	wxCharBuffer fn = path.mb_str(wxConvISO8859_1);
 
 	return CPath(wxConvFile.cMB2WC(fn));
 
@@ -289,7 +289,7 @@ wxString CPath::ToUniv(const CPath& path)
 	// as a raw bytestream (which is what ISO8859-1 amounts
 	// to), we can always recreate the on-disk filename, as
 	// if we had read it using wx functions.
-	wxCharBuffer fn = wxConvFile.cWC2MB(path.m_filesystem);
+	wxCharBuffer fn = path.m_filesystem.mb_str(wxConvFile);
 
 	return wxConvISO8859_1.cMB2WC(fn);
 }
