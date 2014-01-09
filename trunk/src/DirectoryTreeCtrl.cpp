@@ -118,7 +118,7 @@ void CDirectoryTreeCtrl::Init()
 				continue;
 			}
 			wxString driveStr = CFormat(wxT("%c:")) % drive;
-			uint32 type = GetDriveType(driveStr + wxT("\\"));
+			uint32 type = GetDriveType((driveStr + wxT("\\")).wc_str());
 
 			// skip removable/undefined drives, share only fixed or remote drives
 			if ((type == 3 || type == 4)   // fixed drive / remote drive

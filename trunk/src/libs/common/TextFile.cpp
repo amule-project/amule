@@ -186,7 +186,7 @@ bool CTextFile::WriteLine(const wxString& line, const wxMBConv& conv)
 		result = wxTextBuffer::GetEOL() + result;
 	}
 
-	wxCharBuffer strBuffer = conv.cWC2MB(result);
+	wxCharBuffer strBuffer = result.mb_str(conv);
 	if (strBuffer) {
 		const size_t length = strlen(strBuffer);
 

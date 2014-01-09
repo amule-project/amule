@@ -25,6 +25,8 @@ Version 2.4.0 - The river knows.
 		* Boost Asio can now be used as networking layer instead of wxWidgets
 		* Fixed memory leak when AICH hashing already known files
 		* New download links for server list and nodes.dat (with gav616 and xosevp)
+		* Projects for Visual Studio 2013 (which is now the preferred Win32 compiler)
+		* Fixed build with wx 3.0 (including STL build)
 
 --------------------------------------------------------------------------------
 

@@ -330,7 +330,7 @@ void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeL
 		}
 		default: {
 			// Non UTF-8 strings are saved as Latin-1
-			wxCharBuffer s1 = wxConvISO8859_1.cWC2MB(str);
+			wxCharBuffer s1 = str.mb_str(wxConvISO8859_1);
 			WriteStringCore(s1, utf8strNone, SizeLen);
 		}
 	}
