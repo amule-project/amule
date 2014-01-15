@@ -32,47 +32,25 @@
 
 #include "Types.h"
 
-struct CollectionFile
-{
-	std::string m_fileName;
-	uint64_t m_fileSize;
-	std::string m_fileHash;
-
-	CollectionFile(
-		const std::string &fileName = "",
-		uint64_t fileSize = 0,
-		const std::string &fileHash = "");
-};
-
 
 class CMuleCollection
 {
 private:
-	std::vector<CollectionFile> vCollection;
+	std::vector<std::string> vCollection;
 
 public:
-	CMuleCollection();
-	~CMuleCollection();
+	CMuleCollection() {};
+	~CMuleCollection() {};
 
 	bool Open(const std::string &File);
-	size_t GetFileCount() const { return vCollection.size(); }
 
-	std::string GetEd2kLink(size_t index) const;
-	std::string GetFileName(size_t index) const;
-	uint64_t GetFileSize(size_t index) const;
-	std::string GetFileHash(size_t index) const;
+	size_t 			size() const 			{ return vCollection.size(); }
+	std::string&		operator[](size_t index)	{ return vCollection[index]; }
+	const std::string&	operator[](size_t index) const	{ return vCollection[index]; }
 
 private:
 	bool OpenBinary(const std::string &File);
 	bool OpenText(const std::string &File);
-
-	bool AddLink(const std::string &Link);
-	bool AddFile(
-		const std::string &fileName,
-		uint64_t fileSize,
-		const std::string &fileHash);
-
-	static bool IsValidHash(const std::string &fileHash);
 
 	template <typename intType>
 	intType ReadInt(std::ifstream& infile);

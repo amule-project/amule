@@ -501,11 +501,11 @@ int main(int argc, char *argv[])
 				CMuleCollection my_collection;
 				if (my_collection.Open( /* emulecollection file */ argv[++i] ))
 				{
-					for(size_t e = 0;e < my_collection.GetFileCount();e++)
+					for(size_t e = 0; e < my_collection.size(); e++)
 						if (listOnly)
-							std::cout << my_collection.GetEd2kLink(e) << std::endl;
+							std::cout << my_collection[e] << std::endl;
 						else
-							writeLink( my_collection.GetEd2kLink(e), config_path );
+							writeLink( my_collection[e], config_path );
 				} else {
 					std::cerr << "Invalid emulecollection file: " << argv[i] << std::endl;
 					errors = true;

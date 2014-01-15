@@ -2,8 +2,14 @@ Version 2.4.0 - The river knows.
 ----------
 201?-??-??
 
+	Dan64:
+		* Read AICH root hashes binary eMuleCollection files
+
 	gnazio:
 		* Fixed configure of libpng when sh != bash
+
+	GonoszTopi:
+		* Allow any kind of file links in collections
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
