@@ -1,5 +1,5 @@
 # aMule i18n resource file.
-# Copyright (C) 2004 - 2011 aMule Team
+# Copyright (C) 2004 - 2014 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Translation of aMule to French
@@ -11,14 +11,14 @@
 # Carlos Diaz <cskyline@gmail.com>, 2008.
 # Youpla <Youpla@boum.fr>, 2008.
 # Olivier Sannier <obones att altern dott org>, 2009, 2010.
-# Dylan Aïssi <bob.dybian@gmail.com>, 2008 - 2011.
+# Dylan Aïssi <bob.dybian@gmail.com>, 2008 - 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-12 07:21+0200\n"
-"PO-Revision-Date: 2011-11-09 18:49+0100\n"
+"PO-Revision-Date: 2014-02-15 13:05+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -2523,9 +2523,9 @@ msgid "External Connection: Handshake failed."
 msgstr "Connexion externe : Échange raté."
 
 #: src/LibSocketAsio.cpp:1259
-#, fuzzy, c-format
+#, c-format
 msgid "Asio thread %d started"
-msgstr "Processus de téléchargement HTTP démarré"
+msgstr "Processus ASIO %d démarré"
 
 #: src/ListenSocket.cpp:65
 msgid "ListenSocket: Ok."
@@ -4342,9 +4342,8 @@ msgid "Enable Verbose Debug-Logging."
 msgstr "Activer l'historique du mode de débogage bavard."
 
 #: src/muuli_wdr.cpp:3169
-#, fuzzy
 msgid "Only to Logfile"
-msgstr "&Ouvrir le fichier"
+msgstr "Seulement vers le fichier journal"
 
 #: src/muuli_wdr.cpp:3172
 msgid "Message Categories:"
@@ -5135,9 +5134,8 @@ msgid "- External connect interface changed.\n"
 msgstr "- Interface de connexion externe changé.\n"
 
 #: src/PrefsUnifiedDlg.cpp:619
-#, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
-msgstr "Brouillage de protocole"
+msgstr "- Support du brouillage de protocole changé.\n"
 
 #: src/PrefsUnifiedDlg.cpp:628
 msgid ""
@@ -6050,9 +6048,8 @@ msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Copier le lien eD2k dans le presse-papiers (Info &AICH)"
 
 #: src/SharedFilesCtrl.cpp:170
-#, fuzzy
 msgid "Copy eD2k link to clipboard (&AICH info + Source)"
-msgstr "Copier le lien eD2k dans le presse-papiers (Info &AICH)"
+msgstr "Copier le lien eD2k dans le presse-papiers (Info &AICH + Source)"
 
 #: src/SharedFilesCtrl.cpp:318
 msgid "You need a HighID to create a valid sourcelink"
@@ -7195,7 +7192,7 @@ msgstr "Impossible d'ouvrir %s"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:162
 msgid "Out of memory while calculating ed2k hash!"
-msgstr ""
+msgstr "Dépassement de mémoire lors du calcul du hachage eD2k!"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
