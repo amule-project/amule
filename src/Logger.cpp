@@ -173,15 +173,7 @@ void CLogger::AddLogLine(
 	DebugType type,
 	const std::ostringstream &msg)
 {
-	int index = (int)type;
-
-	if ( index >= 0 && index < categoryCount ) {
-		const CDebugCategory& cat = g_debugcats[ index ];
-		wxASSERT(type == cat.GetType());
-
-		AddLogLine(file, line, critical, logStandard,
-			cat.GetName() + wxT(": ") + wxString(char2unicode(msg.str().c_str())));
-	}
+	AddLogLine(file, line, critical, type, wxString(char2unicode(msg.str().c_str())));
 }
 
 
