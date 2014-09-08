@@ -3,13 +3,14 @@ Version 2.4.0 - The river knows.
 201?-??-??
 
 	Dan64:
-		* Read AICH root hashes binary eMuleCollection files
+		* Read AICH root hashes from binary eMuleCollection files
 
 	gnazio:
 		* Fixed configure of libpng when sh != bash
 
 	GonoszTopi:
 		* Allow any kind of file links in collections
+		* Make UPnP log go to the appropriate category (#1681)
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
