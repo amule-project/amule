@@ -406,8 +406,7 @@ AM_CONDITIONAL([COMPILE_LIB_COMMON],	[test MULE_IS_ENABLED_ANY([monolithic, amul
 AM_CONDITIONAL([COMPILE_LIB_EC],	[test MULE_IS_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui])])
 
 dnl Generate the Makefiles
-AC_CONFIG_FILES([Compilation.flags
-		 Makefile
+AC_CONFIG_FILES([Makefile
 		 docs/Makefile
 		 docs/man/Makefile
 		 intl/Makefile
